@@ -16,9 +16,6 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
--- The lemmas are the general-purpose proofs we reuse in each other section
-open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas         homo using (pow-cong) public
-
 -- Proofs for each component of the polynomial
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition       homo using (⊞-hom) public
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication homo using (⊠-hom) public

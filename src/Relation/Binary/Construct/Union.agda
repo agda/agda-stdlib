@@ -10,7 +10,7 @@ module Relation.Binary.Construct.Union where
 
 open import Data.Product
 open import Data.Sum.Base as Sum
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (yes; no)
@@ -25,8 +25,7 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-_∪_ : ∀ {A : Set a} {B : Set b} →
-      REL A B ℓ₁ → REL A B ℓ₂ → REL A B (ℓ₁ ⊔ ℓ₂)
+_∪_ : REL A B ℓ₁ → REL A B ℓ₂ → REL A B (ℓ₁ ⊔ ℓ₂)
 L ∪ R = λ i j → L i j ⊎ R i j
 
 ------------------------------------------------------------------------

@@ -20,7 +20,7 @@ import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Categorical using (monad)
-open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_)
+open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
@@ -39,6 +39,7 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
+import Relation.Nullary.Reflects as Reflects
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
 open import Relation.Nullary.Negation
@@ -48,7 +49,7 @@ private
 
   variable
     ℓ : Level
-    A B : Set ℓ
+    A B C : Set ℓ
 
 ------------------------------------------------------------------------
 -- Publicly re-export properties from Core
@@ -146,6 +147,33 @@ module _ {v : A} where
     where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ (f : A → B → C) where
+
+  ∈-cartesianProductWith⁺ : ∀ {xs ys a b} → a ∈ xs → b ∈ ys →
+                            f a b ∈ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁺ = Membershipₛ.∈-cartesianProductWith⁺
+    (P.setoid A) (P.setoid B) (P.setoid C) (P.cong₂ f)
+
+  ∈-cartesianProductWith⁻ : ∀ xs ys {v} → v ∈ cartesianProductWith f xs ys →
+                            ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
+  ∈-cartesianProductWith⁻ = Membershipₛ.∈-cartesianProductWith⁻
+    (P.setoid A) (P.setoid B) (P.setoid C) f
+
+------------------------------------------------------------------------
+-- cartesianProduct
+
+∈-cartesianProduct⁺ : ∀ {x : A} {y : B} {xs ys} → x ∈ xs → y ∈ ys →
+                      (x , y) ∈ cartesianProduct xs ys
+∈-cartesianProduct⁺ = ∈-cartesianProductWith⁺ _,_
+
+∈-cartesianProduct⁻ : ∀ xs ys {xy@(x , y) : A × B} →
+                      xy ∈ cartesianProduct xs ys → x ∈ xs × y ∈ ys
+∈-cartesianProduct⁻ xs ys xy∈p[xs,ys] with ∈-cartesianProductWith⁻ _,_ xs ys xy∈p[xs,ys]
+... | (x , y , x∈xs , y∈ys , refl) = x∈xs , y∈ys
+
+------------------------------------------------------------------------
 -- applyUpTo
 
 module _ (f : ℕ → A) where
@@ -156,6 +184,38 @@ module _ (f : ℕ → A) where
   ∈-applyUpTo⁻ : ∀ {v n} → v ∈ applyUpTo f n →
                  ∃ λ i → i < n × v ≡ f i
   ∈-applyUpTo⁻ = Membershipₛ.∈-applyUpTo⁻ (P.setoid _) f
+
+------------------------------------------------------------------------
+-- upTo
+
+∈-upTo⁺ : ∀ {n i} → i < n → i ∈ upTo n
+∈-upTo⁺ = ∈-applyUpTo⁺ id
+
+∈-upTo⁻ : ∀ {n i} → i ∈ upTo n → i < n
+∈-upTo⁻ p with ∈-applyUpTo⁻ id p
+... | _ , i<n , refl = i<n
+
+------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ (f : ℕ → A) where
+
+  ∈-applyDownFrom⁺ : ∀ {i n} → i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁺ = Membershipₛ.∈-applyDownFrom⁺ (P.setoid _) f
+
+  ∈-applyDownFrom⁻ : ∀ {v n} → v ∈ applyDownFrom f n →
+                     ∃ λ i → i < n × v ≡ f i
+  ∈-applyDownFrom⁻ = Membershipₛ.∈-applyDownFrom⁻ (P.setoid _) f
+
+------------------------------------------------------------------------
+-- downFrom
+
+∈-downFrom⁺ : ∀ {n i} → i < n → i ∈ downFrom n
+∈-downFrom⁺ i<n = ∈-applyDownFrom⁺ id i<n
+
+∈-downFrom⁻ : ∀ {n i} → i ∈ downFrom n → i < n
+∈-downFrom⁻ p with ∈-applyDownFrom⁻ id p
+... | _ , i<n , refl = i<n
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -304,16 +364,17 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
     lemma i≤j i≰1+j refl = i≰1+j (≤-step i≤j)
 
     f′ⱼ∈xs : ∀ j → f′ j ∈ xs
-    f′ⱼ∈xs j with i ≤? j
-    ... | yes i≤j = ∈-if-not-i (<⇒≢ (s≤s i≤j))
-    ... | no  i≰j = ∈-if-not-i (<⇒≢ (≰⇒> i≰j) ∘ sym)
+    f′ⱼ∈xs j with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
+    ... | true  | p = ∈-if-not-i (<⇒≢ (s≤s p))
+    ... | false | p = ∈-if-not-i (<⇒≢ (≰⇒> p) ∘ sym)
 
     f′-injective′ : Injective {B = P.setoid _} (→-to-⟶ f′)
-    f′-injective′ {j} {k} eq with i ≤? j | i ≤? k
-    ... | yes _   | yes _   = P.cong pred (f-inj eq)
-    ... | yes i≤j | no  i≰k = contradiction (f-inj eq) (lemma i≤j i≰k)
-    ... | no  i≰j | yes i≤k = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
-    ... | no  _   | no  _   = f-inj eq
+    f′-injective′ {j} {k} eq with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
+                                | i ≤ᵇ k | Reflects.invert (≤ᵇ-reflects-≤ i k)
+    ... | true  | p | true  | q = P.cong pred (f-inj eq)
+    ... | true  | p | false | q = contradiction (f-inj eq) (lemma p q)
+    ... | false | p | true  | q = contradiction (f-inj eq) (lemma q p ∘ sym)
+    ... | false | p | false | q = f-inj eq
 
     f′-inj = record
       { to        = →-to-⟶ f′
@@ -327,30 +388,3 @@ there-injective-≢∈ : ∀ {xs} {x y z : A} {x∈xs : x ∈ xs} {y∈xs : y �
                      there {x = z} x∈xs ≢∈ there y∈xs →
                      x∈xs ≢∈ y∈xs
 there-injective-≢∈ neq refl eq = neq refl (P.cong there eq)
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-boolFilter-∈ : ∀ (p : A → Bool) (xs : List A) {x} →
-           x ∈ xs → p x ≡ true → x ∈ boolFilter p xs
-boolFilter-∈ p (x ∷ xs) (here refl) px≡true rewrite px≡true = here refl
-boolFilter-∈ p (y ∷ xs) (there pxs) px≡true with p y
-... | true  = there (boolFilter-∈ p xs pxs px≡true)
-... | false =        boolFilter-∈ p xs pxs px≡true
-{-# WARNING_ON_USAGE boolFilter-∈
-"Warning: boolFilter was deprecated in v0.15.
-Please use filter instead."
-#-}
-
--- Version 0.16
-
-filter-∈ = ∈-filter⁺
-{-# WARNING_ON_USAGE filter-∈
-"Warning: filter-∈ was deprecated in v0.16.
-Please use ∈-filter⁺ instead."
-#-}

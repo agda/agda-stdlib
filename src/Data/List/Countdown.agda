@@ -17,8 +17,7 @@ open import Data.Fin.Base using (Fin; zero; suc; punchOut)
 open import Data.Fin.Properties
   using (suc-injective; punchOut-injective)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Injection
+open import Function.Bundles
   using (Injection; module Injection)
 open import Data.Bool.Base using (true; false)
 open import Data.List hiding (lookup)
@@ -126,11 +125,11 @@ record _⊕_ (counted : List Elem) (n : ℕ) : Set where
 
 empty : ∀ {n} → Injection D.setoid (PropEq.setoid (Fin n)) → [] ⊕ n
 empty inj =
-  record { kind      = inj₂ ∘ _⟨$⟩_ to
+  record { kind      = inj₂ ∘ to
          ; injective = λ {x} {y} {i} eq₁ eq₂ → injective (begin
-             to ⟨$⟩ x  ≡⟨ inj₂-injective eq₁ ⟩
-             i         ≡⟨ PropEq.sym $ inj₂-injective eq₂ ⟩
-             to ⟨$⟩ y  ∎)
+             to x ≡⟨ inj₂-injective eq₁ ⟩
+             i    ≡⟨ PropEq.sym $ inj₂-injective eq₂ ⟩
+             to y ∎)
          }
   where open Injection inj
 
@@ -139,17 +138,15 @@ empty inj =
 emptyFromList : (counted : List Elem) → (∀ x → x ∈ counted) →
                 [] ⊕ length counted
 emptyFromList counted complete = empty record
-  { to = record
-    { _⟨$⟩_ = λ x → first-index x (complete x)
-    ; cong  = first-index-cong (complete _) (complete _)
-    }
+  { to        = λ x → first-index x (complete x)
+  ; cong      = first-index-cong (complete _) (complete _)
   ; injective = first-index-injective (complete _) (complete _)
   }
 
 -- Finds out if an element has been counted yet.
 
 lookup : ∀ {counted n} → counted ⊕ n → ∀ x → Dec (x ∈ counted)
-lookup {counted} _ x = Any.any (_≟_ x) counted
+lookup {counted} _ x = Any.any? (_≟_ x) counted
 
 -- When no element remains to be counted all elements have been
 -- counted.

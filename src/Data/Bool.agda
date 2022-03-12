@@ -22,19 +22,4 @@ open import Data.Bool.Base public
 -- Publicly re-export queries
 
 open import Data.Bool.Properties public
-  using (_≟_; _≤?_; _<?_)
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-decSetoid = Data.Bool.Properties.≡-decSetoid
-{-# WARNING_ON_USAGE decSetoid
-"Warning: decSetoid was deprecated in v1.1.
-Please use ≡-decSetoid from Data.Bool.Properties instead."
-#-}
+  using (T?; _≟_; _≤?_; _<?_)

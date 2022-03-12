@@ -4,7 +4,7 @@
 -- An example showing how the Debug.Trace module can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --rewriting --guardedness #-}
 
 module README.Debug.Trace where
 
@@ -46,8 +46,8 @@ div m n    = just (go m m) where
   go : (fuel : ℕ) (m : ℕ) → ℕ
   go zero       m = trace ("Invariant: " ++ show m ++ " should be zero.") zero
   go (suc fuel) m =
-    let m' = trace ("Thunk for step " ++ show fuel ++ " forced") (m ∸ n) in
-    trace ("Recursive call for step " ++ show fuel) (suc (go fuel m'))
+    let m′ = trace ("Thunk for step " ++ show fuel ++ " forced") (m ∸ n) in
+    trace ("Recursive call for step " ++ show fuel) (suc (go fuel m′))
 
 -- To observe the behaviour of this code, we need to compile it and run it.
 -- To run it, we need a main function. We define a very basic one: run div,
@@ -56,8 +56,10 @@ div m n    = just (go m m) where
 -- We add two calls to trace to see when div is evaluated and when the returned
 -- number is forced (by a call to show).
 
+open import Level using (0ℓ)
 open import IO
 
+main : Main
 main =
   let r = trace "Call to div" (div 4 2)
       j = λ n → trace "Forcing the result wrapped in just." (putStrLn (show n)) in

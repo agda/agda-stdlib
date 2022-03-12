@@ -10,6 +10,7 @@
 
 module Relation.Binary.Core where
 
+open import Data.Product using (_×_)
 open import Function.Base using (_on_)
 open import Level using (Level; _⊔_; suc)
 
@@ -38,12 +39,16 @@ Rel A ℓ = REL A A ℓ
 -- Relationships between relations
 ------------------------------------------------------------------------
 
-infixr 4 _⇒_ _=[_]⇒_
+infix 4 _⇒_ _⇔_ _=[_]⇒_
 
 -- Implication/containment - could also be written _⊆_.
+-- and corresponding notion of equivalence
 
 _⇒_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
 P ⇒ Q = ∀ {x y} → P x y → Q x y
+
+_⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
+P ⇔ Q = P ⇒ Q × Q ⇒ P
 
 -- Generalised implication - if P ≡ Q it can be read as "f preserves P".
 

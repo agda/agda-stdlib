@@ -1,12 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Order morphisms
+-- This module is DEPRECATED. Please use `Relation.Binary.Morphism`
+-- instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.OrderMorphism where
+
+{-# WARNING_ON_IMPORT
+"Relation.Binary.OrderMorphism was deprecated in v1.5.
+Use Relation.Binary.Reasoning.Morphism instead."
+#-}
 
 open import Relation.Binary
 open Poset
@@ -19,6 +25,7 @@ record _⇒-Poset_ {p₁ p₂ p₃ p₄ p₅ p₆}
   field
     fun      : Carrier P₁ → Carrier P₂
     monotone : _≤_ P₁ =[ fun ]⇒ _≤_ P₂
+
 
 _⇒-DTO_ : ∀ {p₁ p₂ p₃ p₄ p₅ p₆} →
           DecTotalOrder p₁ p₂ p₃ →
@@ -52,3 +59,24 @@ const {P₂ = P₂} x = record
   { fun      = F.const x
   ; monotone = F.const (refl P₂)
   }
+
+{-# WARNING_ON_USAGE _⇒-Poset_
+"Warning: _⇒-Poset_ was deprecated in v1.5.
+Please use `IsOrderHomomorphism` from `Relation.Binary.Morphism.Structures` instead."
+#-}
+{-# WARNING_ON_USAGE _⇒-DTO_
+"Warning: _⇒-DTO_ was deprecated in v1.5.
+Please use `IsOrderHomomorphism` from `Relation.Binary.Morphism.Structures` instead."
+#-}
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v1.5.
+Please use `issOrderHomomorphism` from `Relation.Binary.Morphism.Construct.Constant` instead."
+#-}
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v1.5.
+Please use `isOrderHomomorphism` from `Relation.Binary.Morphism.Construct.Composition` instead."
+#-}
+{-# WARNING_ON_USAGE const
+"Warning: const was deprecated in v1.5.
+Please use `isOrderHomomorphism` from `Relation.Binary.Morphism.Construct.Constant` instead."
+#-}

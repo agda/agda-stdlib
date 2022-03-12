@@ -51,16 +51,16 @@ Bit     = Digit 2
 
 toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
 toNatDigits base@(suc zero)    n = replicate n 1
-toNatDigits base@(suc (suc b)) n = aux (<-wellFounded n) []
+toNatDigits base@(suc (suc b)) n = aux (<-wellFounded-fast n) []
   where
   aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
-  aux {zero}        _        xs =  (0 ∷ xs)
-  aux {n@(suc n-1)} (acc wf) xs with does (0 <? n / base)
-  ... | false =  (n % base) ∷ xs
-  ... | true  =  aux (wf (n / base) q<n) ((n % base) ∷ xs)
+  aux {zero}        _      xs =  (0 ∷ xs)
+  aux {n@(suc _)} (acc wf) xs with does (0 <? n / base)
+  ... | false = (n % base) ∷ xs
+  ... | true  = aux (wf (n / base) q<n) ((n % base) ∷ xs)
     where
     q<n : n / base < n
-    q<n = m/n<m n base (s≤s z≤n) (s≤s (s≤s z≤n))
+    q<n = m/n<m n base (s<s z<s)
 
 ------------------------------------------------------------------------
 -- Converting between `ℕ` and expansions of `Digit base`

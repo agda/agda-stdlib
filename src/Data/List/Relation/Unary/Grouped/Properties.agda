@@ -39,8 +39,8 @@ module _ (P : Rel A p) (Q : Rel B q) where
   map⁺ {f} {x ∷ xs} P⇔Q (all[¬Px,xs] ∷≉ g) = aux all[¬Px,xs] ∷≉ map⁺ P⇔Q g where
     aux : ∀ {ys} → All (λ y → ¬ P x y) ys → All (λ y → ¬ Q (f x) y) (map f ys)
     aux [] = []
-    aux (py ∷ pys) = py ∘ Equivalence.g P⇔Q ∷ aux pys
-  map⁺ {f} {x₁ ∷ x₂ ∷ xs} P⇔Q (Px₁x₂ ∷≈ g) = Equivalence.f P⇔Q Px₁x₂ ∷≈ map⁺ P⇔Q g
+    aux (py ∷ pys) = py ∘ Equivalence.from P⇔Q ∷ aux pys
+  map⁺ {f} {x₁ ∷ x₂ ∷ xs} P⇔Q (Px₁x₂ ∷≈ g) = Equivalence.to P⇔Q Px₁x₂ ∷≈ map⁺ P⇔Q g
 
   map⁻ : ∀ {f xs} → (∀ {x y} → P x y ⇔ Q (f x) (f y)) → Grouped Q (map f xs) → Grouped P xs
   map⁻ {f} {[]} P⇔Q [] = []
@@ -48,8 +48,8 @@ module _ (P : Rel A p) (Q : Rel B q) where
   map⁻ {f} {x₁ ∷ x₂ ∷ xs} P⇔Q (all[¬Qx,xs] ∷≉ g) = aux all[¬Qx,xs] ∷≉ map⁻ P⇔Q g where
     aux : ∀ {ys} → All (λ y → ¬ Q (f x₁) y) (map f ys) → All (λ y → ¬ P x₁ y) ys
     aux {[]} [] = []
-    aux {y ∷ ys} (py ∷ pys) = py ∘ Equivalence.f P⇔Q ∷ aux pys
-  map⁻ {f} {x₁ ∷ x₂ ∷ xs} P⇔Q (Qx₁x₂ ∷≈ g) = Equivalence.g P⇔Q Qx₁x₂ ∷≈ map⁻ P⇔Q g
+    aux {y ∷ ys} (py ∷ pys) = py ∘ Equivalence.to P⇔Q ∷ aux pys
+  map⁻ {f} {x₁ ∷ x₂ ∷ xs} P⇔Q (Qx₁x₂ ∷≈ g) = Equivalence.from P⇔Q Qx₁x₂ ∷≈ map⁻ P⇔Q g
 
 ------------------------------------------------------------------------
 -- [_]

@@ -35,15 +35,16 @@ open import Level using (Level; _⊔_)
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Int
 
-import IO.Primitive    as STD
-import Data.List.Base  as STD
-import Data.Maybe.Base as STD
-import Data.Product    as STD
-import Data.Sum        as STD
+import IO.Primitive            as STD
+import Data.List.Base          as STD
+import Data.List.NonEmpty.Base as STD
+import Data.Maybe.Base         as STD
+import Data.Product            as STD
+import Data.Sum.Base           as STD
 
-import Foreign.Haskell.Maybe  as FFI
-import Foreign.Haskell.Pair   as FFI
-import Foreign.Haskell.Either as FFI
+import Foreign.Haskell.Pair          as FFI
+import Foreign.Haskell.Either        as FFI
+import Foreign.Haskell.List.NonEmpty as FFI
 
 private
   variable
@@ -107,14 +108,6 @@ instance
 -- can be converted to their FFI equivalents which are bound to actual
 -- Haskell types.
 
--- Maybe
-
-  maybe-toFFI : Coercible₁ a b STD.Maybe FFI.Maybe
-  maybe-toFFI = TrustMe
-
-  maybe-fromFFI : Coercible₁ a b FFI.Maybe STD.Maybe
-  maybe-fromFFI = TrustMe
-
 -- Product
 
   pair-toFFI : Coercible₂ a b c d STD._×_ FFI.Pair
@@ -131,8 +124,21 @@ instance
   either-fromFFI : Coercible₂ a b c d FFI.Either STD._⊎_
   either-fromFFI = TrustMe
 
+-- NonEmpty
+
+  nonEmpty-toFFI : Coercible₁ a b STD.List⁺ FFI.NonEmpty
+  nonEmpty-toFFI = TrustMe
+
+  nonEmpty-fromFFI : Coercible₁ a b FFI.NonEmpty STD.List⁺
+  nonEmpty-fromFFI = TrustMe
+
 -- We follow up with purely structural rules for builtin data types which
 -- already have known low-level representations.
+
+-- Maybe
+
+  coerce-maybe : Coercible₁ a b STD.Maybe STD.Maybe
+  coerce-maybe = TrustMe
 
 -- List
 

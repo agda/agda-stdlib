@@ -4,13 +4,13 @@
 -- Streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Stream where
 
 open import Codata.Musical.Notation
 open import Codata.Musical.Colist using (Colist; []; _∷_)
-open import Data.Vec    using (Vec;    []; _∷_)
+open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -165,18 +165,3 @@ infixr 5 _⋎-cong_
 _⋎-cong_ : ∀ {a} {A : Set a} {xs xs′ ys ys′ : Stream A} →
            xs ≈ xs′ → ys ≈ ys′ → xs ⋎ ys ≈ xs′ ⋎ ys′
 (x ∷ xs≈) ⋎-cong ys≈ = x ∷ ♯ (ys≈ ⋎-cong ♭ xs≈)
-
-------------------------------------------------------------------------
--- Legacy
-
-import Codata.Stream as S
-open import Codata.Thunk
-import Size
-
-module _ {a} {A : Set a} where
-
-  fromMusical : ∀ {i} → Stream A → S.Stream A i
-  fromMusical (x ∷ xs) = x S.∷ λ where .force → fromMusical (♭ xs)
-
-  toMusical : S.Stream A Size.∞ → Stream A
-  toMusical (x S.∷ xs) = x ∷ ♯ toMusical (xs .force)

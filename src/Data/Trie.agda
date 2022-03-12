@@ -7,7 +7,7 @@
 -- See README.Data.Trie.NonDependent for an example of using a trie to
 -- build a lexer.
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 open import Relation.Binary using (Rel; StrictTotalOrder)
 
@@ -28,7 +28,7 @@ open StrictTotalOrder S
   renaming (Carrier to Key)
 
 open import Data.List.Relation.Binary.Equality.Setoid Eq.setoid
-open import Data.AVL.Value ≋-setoid using (Value)
+open import Data.Tree.AVL.Value ≋-setoid using (Value)
 
 ------------------------------------------------------------------------
 -- Definition

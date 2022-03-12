@@ -13,7 +13,7 @@ module Text.Pretty.Core where
 import Level
 
 open import Data.Bool.Base using (Bool)
-open import Data.Erased    as Erased using (Erased) hiding (module Erased)
+open import Data.Irrelevant as Irrelevant using (Irrelevant) hiding (module Irrelevant)
 open import Data.List.Base as List   using (List; []; _∷_)
 open import Data.Nat.Base            using (ℕ; zero; suc; _+_; _⊔_; _≤_; z≤n)
 open import Data.Nat.Properties
@@ -30,6 +30,7 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Relation.Unary.All as Allᴹ using (nothing; just)
 
 open import Data.String.Base as String
+  using (String; length; replicate; _++_; unlines)
 open import Data.String.Unsafe as Stringₚ
 open import Function.Base
 open import Relation.Nullary using (Dec)
@@ -79,7 +80,7 @@ text s = record
   ; lastWidth = width
   ; last      = s , ⦇ refl ⦈
   ; maxWidth  = width , ⦇ (≤-refl , nothing) ⦈
-  } where width = length s; open Erased
+  } where width = length s; open Irrelevant
 
 ------------------------------------------------------------------------
 -- Empty
@@ -207,7 +208,7 @@ private
     block : [ xs ∈ Content ∣ size xs ≡ height ]
     block .value = vBlock
     block .proof = ⦇ isBlock (Block.block x .proof) (Block.block y .proof) ⦈
-      where open Erased
+      where open Irrelevant
 
     isLastLine : length lastx ≡ x.lastWidth →
                  length lasty ≡ y.lastWidth →
@@ -225,7 +226,7 @@ private
     last : [ s ∈ String ∣ length s ≡ lastWidth ]
     last .value = vLast
     last .proof = ⦇ isLastLine (Block.last x .proof) (Block.last y .proof) ⦈
-      where open Erased
+      where open Irrelevant
 
     vMaxWidth : ℕ
     vMaxWidth = widthx ⊔ (x.lastWidth + widthy)
@@ -233,7 +234,7 @@ private
     isMaxWidth₁ : y.lastWidth ≤ widthy → lastWidth ≤ vMaxWidth
     isMaxWidth₁ p = begin
       lastWidth            ≤⟨ +-monoʳ-≤ x.lastWidth p ⟩
-      x.lastWidth + widthy ≤⟨ n≤m⊔n _ _ ⟩
+      x.lastWidth + widthy ≤⟨ m≤n⊔m _ _ ⟩
       vMaxWidth            ∎ where open ≤-Reasoning
 
     isMaxWidth₂ : length lastx ≡ x.lastWidth →
@@ -256,7 +257,7 @@ private
         length (lastx ++ hd)     ≡⟨ length-++ lastx hd ⟩
         length lastx + length hd ≡⟨ cong (_+ _) ∣x∣≡ ⟩
         x.lastWidth + length hd  ≤⟨ +-monoʳ-≤ x.lastWidth ∣hd∣ ⟩
-        x.lastWidth + widthy     ≤⟨ n≤m⊔n _ _ ⟩
+        x.lastWidth + widthy     ≤⟨ m≤n⊔m _ _ ⟩
         vMaxWidth                ∎ where open ≤-Reasoning
 
       indented : ∀ s → length s ≤ widthy →
@@ -265,7 +266,7 @@ private
         length (indent pad s)          ≡⟨ size-indent pad s ⟩
         maybe′ length 0 pad + length s ≡⟨ cong (_+ _) size-pad ⟩
         x.lastWidth + length s         ≤⟨ +-monoʳ-≤ x.lastWidth ∣s∣ ⟩
-        x.lastWidth + widthy           ≤⟨ n≤m⊔n (widthx) _ ⟩
+        x.lastWidth + widthy           ≤⟨ m≤n⊔m (widthx) _ ⟩
         vMaxWidth                      ∎ where open ≤-Reasoning
 
     maxWidth : [ n ∈ ℕ ∣ lastWidth ≤ n × All≤ n vBlock ]
@@ -277,7 +278,7 @@ private
                           (map proj₂ (Block.maxWidth x .proof))
                           (map proj₂ (Block.maxWidth y .proof))
             ⦈
-      ⦈ where open Erased
+      ⦈ where open Irrelevant
 
 infixl 4 _<>_
 _<>_ : Block → Block → Block
@@ -300,7 +301,7 @@ private
     vMaxWidth = widthx
 
     last : [ s ∈ String ∣ length s ≡ lastWidth ]
-    last = "" , ⦇ refl ⦈ where open Erased
+    last = "" , ⦇ refl ⦈ where open Irrelevant
 
     vContent = node? blockx lastx (leaf tt)
 
@@ -313,7 +314,7 @@ private
 
     block : [ xs ∈ Content ∣ size xs ≡ height ]
     block .value = vContent
-    block .proof = Erased.map isBlock $ Block.block x .proof
+    block .proof = Irrelevant.map isBlock $ Block.block x .proof
 
     maxWidth : [ n ∈ ℕ ∣ lastWidth ≤ n × All≤ n vContent ]
     maxWidth .value = widthx
@@ -323,7 +324,7 @@ private
                    (pure (leaf tt))
       ⦈ where
 
-      open Erased
+      open Irrelevant
 
       middle : length lastx ≡ x.lastWidth → x.lastWidth ≤ vMaxWidth →
                length lastx ≤ vMaxWidth

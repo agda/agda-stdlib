@@ -8,15 +8,19 @@
 
 module Data.Vec.Relation.Unary.All.Properties where
 
+open import Data.Nat.Base using (zero; suc; _+_)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec.Base as Vec
+import Data.Vec.Properties as Vecₚ
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Level using (Level)
 open import Function.Base using (_∘_; id)
 open import Function.Inverse using (_↔_; inverse)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
+open import Relation.Binary as B using (REL)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; →-to-⟶)
 
@@ -103,6 +107,51 @@ module _ {m} {P : Pred A p} where
   concat⁻ (xs ∷ xss) pxss = ++ˡ⁻ xs pxss ∷ concat⁻ xss (++ʳ⁻ xs pxss)
 
 ------------------------------------------------------------------------
+-- swap
+
+module _ {_~_ : REL A B p} where
+
+  All-swap : ∀ {n m xs ys} →
+             All (λ x → All (x ~_) ys) {n} xs →
+             All (λ y → All (_~ y) xs) {m} ys
+  All-swap {ys = []}     _   = []
+  All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
+  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxs) =
+    (x~y ∷ (All.map All.head pxs)) ∷
+    All-swap (x~ys ∷ (All.map All.tail pxs))
+
+
+------------------------------------------------------------------------
+-- tabulate
+
+module _ {P : A → Set p} where
+
+  tabulate⁺ : ∀ {n} {f : Fin n → A} →
+              (∀ i → P (f i)) → All P (tabulate f)
+  tabulate⁺ {zero}  Pf = []
+  tabulate⁺ {suc n} Pf = Pf zero ∷ tabulate⁺ (Pf ∘ suc)
+
+  tabulate⁻ : ∀ {n} {f : Fin n → A} →
+              All P (tabulate f) → (∀ i → P (f i))
+  tabulate⁻ {suc n} (px ∷ _) zero    = px
+  tabulate⁻ {suc n} (_ ∷ pf) (suc i) = tabulate⁻ pf i
+
+------------------------------------------------------------------------
+-- take and drop
+
+module _ {P : A → Set p} where
+
+  drop⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {n} (drop m xs)
+  drop⁺ zero pxs = pxs
+  drop⁺ (suc m) {x ∷ xs} (px ∷ pxs)
+    rewrite Vecₚ.unfold-drop m x xs = drop⁺ m pxs
+
+  take⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
+  take⁺ zero pxs = []
+  take⁺ (suc m) {x ∷ xs} (px ∷ pxs)
+    rewrite Vecₚ.unfold-take m x xs = px ∷ take⁺ m pxs
+
+------------------------------------------------------------------------
 -- toList
 
 module _ {P : Pred A p} where
@@ -127,62 +176,3 @@ module _ {P : Pred A p} where
   fromList⁻ : ∀ {xs} → All P (fromList xs) → List.All P xs
   fromList⁻ {[]}     []         = []
   fromList⁻ {x ∷ xs} (px ∷ pxs) = px ∷ (fromList⁻ pxs)
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.16
-
-All-map     = map⁺
-{-# WARNING_ON_USAGE All-map
-"Warning: All-map was deprecated in v0.16.
-Please use map⁺ instead."
-#-}
-map-All     = map⁻
-{-# WARNING_ON_USAGE map-All
-"Warning: map-All was deprecated in v0.16.
-Please use map⁻ instead."
-#-}
-All-++⁺     = ++⁺
-{-# WARNING_ON_USAGE All-++⁺
-"Warning: All-++⁺ was deprecated in v0.16.
-Please use ++⁺ instead."
-#-}
-All-++ˡ⁻    = ++ˡ⁻
-{-# WARNING_ON_USAGE All-++ˡ⁻
-"Warning: All-++ˡ⁻ was deprecated in v0.16.
-Please use ++ˡ⁻ instead."
-#-}
-All-++ʳ⁻    = ++ʳ⁻
-{-# WARNING_ON_USAGE All-++ʳ⁻
-"Warning: All-++ʳ⁻ was deprecated in v0.16.
-Please use ++ʳ⁻ instead."
-#-}
-All-++⁻     = ++⁻
-{-# WARNING_ON_USAGE All-++⁻
-"Warning: All-++⁻ was deprecated in v0.16.
-Please use ++⁻ instead."
-#-}
-All-++⁺∘++⁻ = ++⁺∘++⁻
-{-# WARNING_ON_USAGE All-++⁺∘++⁻
-"Warning: All-++⁺∘++⁻ was deprecated in v0.16.
-Please use ++⁺∘++⁻ instead."
-#-}
-All-++⁻∘++⁺ = ++⁻∘++⁺
-{-# WARNING_ON_USAGE All-++⁻∘++⁺
-"Warning: All-++⁻∘++⁺ was deprecated in v0.16.
-Please use ++⁻∘++⁺ instead."
-#-}
-All-concat⁺ = concat⁺
-{-# WARNING_ON_USAGE All-concat⁺
-"Warning: All-concat⁺ was deprecated in v0.16.
-Please use concat⁺ instead."
-#-}
-All-concat⁻ = concat⁻
-{-# WARNING_ON_USAGE All-concat⁻
-"Warning: All-concat⁻ was deprecated in v0.16.
-Please use concat⁻ instead."
-#-}

@@ -4,14 +4,14 @@
 -- Costrings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Costring where
 
-open import Codata.Musical.Colist as Colist using (Colist)
-open import Data.Char using (Char)
-open import Data.String as String using (String)
-open import Function using (_∘_)
+open import Codata.Musical.Colist.Base as Colist using (Colist)
+open import Data.Char.Base using (Char)
+open import Data.String.Base as String using (String)
+open import Function.Base using (_∘_)
 
 -- Possibly infinite strings.
 

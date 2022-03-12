@@ -137,7 +137,8 @@ whitespace .bot = nothing
 unsafeDisplay : TabularConfig → List (List String) → List String
 unsafeDisplay _ []              = []
 unsafeDisplay c (header ∷ rows) =
-  map String.concat $ th ++ (trs ∷ʳ? lbot) where
+  map String.concat $ th ++ (trs ∷ʳ? lbot)
+  where
 
   cellsOf : Maybe Char → List String → List String
   cellsOf nothing  = id

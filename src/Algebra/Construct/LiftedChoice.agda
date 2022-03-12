@@ -16,13 +16,8 @@ open import Relation.Nullary using (¬_; yes; no)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Product using (_×_; _,_)
 open import Level using (Level; _⊔_)
-open import Function.Base using (id; _on_)
-open import Function.Injection using (Injection)
-open import Function.Equality using (Π)
-open import Relation.Binary using (Setoid; _Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Unary using (Pred)
-open import Relation.Nullary.Negation using (contradiction)
 
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
@@ -134,26 +129,19 @@ module _ {_≈_ : Rel B ℓ} {_∙_ : Op₂ B}
     isMagma : IsMagma _≈′_ _◦_
     isMagma = record
       { isEquivalence = ≈′-isEquivalence
-      ; ∙-cong        = cong (λ {x y} → f-injective {x} {y}) f-cong
+      ; ∙-cong        = cong (λ {x} → f-injective {x}) f-cong
       }
 
     isSemigroup : Associative _≈_ _∙_ → IsSemigroup _≈′_ _◦_
     isSemigroup ∙-assoc = record
       { isMagma = isMagma
-      ; assoc   = assoc (λ {x y} → f-injective {x} {y}) ∙-assoc
+      ; assoc   = assoc (λ {x} → f-injective {x}) ∙-assoc
       }
 
     isBand : Associative _≈_ _∙_ → IsBand _≈′_ _◦_
     isBand ∙-assoc = record
       { isSemigroup = isSemigroup ∙-assoc
       ; idem        = idem f E.reflexive
-      }
-
-    isSemilattice : Associative _≈_ _∙_ → Commutative _≈_ _∙_ →
-                    IsSemilattice _≈′_ _◦_
-    isSemilattice ∙-assoc ∙-comm = record
-      { isBand = isBand ∙-assoc
-      ; comm   = comm (λ {x y} → f-injective {x} {y}) ∙-comm
       }
 
     isSelectiveMagma : IsSelectiveMagma _≈′_ _◦_

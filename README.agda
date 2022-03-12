@@ -1,7 +1,9 @@
+{-# OPTIONS --rewriting --guardedness --sized-types #-}
+
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.4-dev
+-- The Agda standard library, version 2.0
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -16,7 +18,7 @@ module README where
 -- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.1.
+-- This version of the library has been tested using Agda 2.6.2.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
@@ -25,7 +27,25 @@ module README where
 -- backend.
 
 ------------------------------------------------------------------------
--- Module hierarchy
+-- Stability guarantees
+------------------------------------------------------------------------
+
+-- We do our best to adhere to the spirit of semantic versioning in that
+-- minor versions should not break people's code. This applies to the
+-- the entire library with one exception: modules with names that end in
+-- either ".Core" or ".Primitive".
+
+-- The former have (mostly) been created to avoid mutual recursion
+-- between modules and the latter to bind primitive operations to the
+-- more efficient operations supplied by the relevant backend.
+
+-- These modules may undergo backwards incompatible changes between
+-- minor versions and therefore are imported directly at your own risk.
+-- Instead their contents should be accessed by their parent module,
+-- whose interface will remain stable.
+
+------------------------------------------------------------------------
+-- High-level overview of contents
 ------------------------------------------------------------------------
 
 -- The top-level module names of the library are currently allocated
@@ -50,7 +70,7 @@ import README.Axiom
 
 -- • Codata
 --     Coinductive data types and properties. There are two different
---     approaches taken. The `Codata` folder contains the new more
+--     approaches taken. The `Codata.Sized` folder contains the new more
 --     standard approach using sized types. The `Codata.Musical`
 --     folder contains modules using the old musical notation.
 
@@ -72,6 +92,8 @@ import README.Data
 -- • IO
 --     Input/output-related functions.
 
+import README.IO
+
 -- • Level
 --     Universe levels.
 
@@ -89,6 +111,26 @@ import README.Data
 
 -- • Tactic
 --     Tactics for automatic proof generation
+
+-- ∙ Text
+--     Format-based printing, Pretty-printing, and regular expressions
+
+
+------------------------------------------------------------------------
+-- Library design
+------------------------------------------------------------------------
+-- The following modules contain a discussion of some of the choices
+-- that have been made whilst designing the library.
+
+-- • How mathematical hierarchies (e.g. preorder, partial order, total
+-- order) are handled in the library.
+
+import README.Design.Hierarchies
+
+-- • How decidability is handled in the library.
+
+import README.Design.Decidability
+
 
 ------------------------------------------------------------------------
 -- A selection of useful library modules
@@ -115,8 +157,8 @@ import Data.Vec      -- Fixed-length vectors.
 
 -- • Some co-inductive data types
 
-import Codata.Stream -- Streams.
-import Codata.Colist -- Colists.
+import Codata.Sized.Stream -- Streams.
+import Codata.Sized.Colist -- Colists.
 
 -- • Some types used to structure computations
 
@@ -160,114 +202,20 @@ import Data.Nat.Induction
 -- • Support for coinduction
 
 import Codata.Musical.Notation
-import Codata.Thunk
+import Codata.Sized.Thunk
 
 -- • IO
 
 import IO
 
-------------------------------------------------------------------------
--- Record hierarchies
-------------------------------------------------------------------------
+-- ∙ Text
 
--- When an abstract hierarchy of some sort (for instance semigroup →
--- monoid → group) is included in the library the basic approach is to
--- specify the properties of every concept in terms of a record
--- containing just properties, parameterised on the underlying
--- operations, sets etc.:
---
---   record IsSemigroup {A} (≈ : Rel A) (∙ : Op₂ A) : Set where
---     open FunctionProperties ≈
---     field
---       isEquivalence : IsEquivalence ≈
---       assoc         : Associative ∙
---       ∙-cong        : ∙ Preserves₂ ≈ ⟶ ≈ ⟶ ≈
---
--- More specific concepts are then specified in terms of the simpler
--- ones:
---
---     record IsMonoid {A} (≈ : Rel A) (∙ : Op₂ A) (ε : A) : Set where
---       open FunctionProperties ≈
---       field
---         isSemigroup : IsSemigroup ≈ ∙
---         identity    : Identity ε ∙
---
---     open IsSemigroup isSemigroup public
---
--- Note here that `open IsSemigroup isSemigroup public` ensures that the
--- fields of the isSemigroup record can be accessed directly; this
--- technique enables the user of an IsMonoid record to use underlying
--- records without having to manually open an entire record hierarchy.
--- This is not always possible, though. Consider the following definition
--- of preorders:
---
---   record IsPreorder {A : Set}
---                     (_≈_ : Rel A) -- The underlying equality.
---                     (_∼_ : Rel A) -- The relation.
---                     : Set where
---     field
---       isEquivalence : IsEquivalence _≈_
---       -- Reflexivity is expressed in terms of an underlying equality:
---       reflexive     : _≈_ ⇒ _∼_
---       trans         : Transitive _∼_
---
---     module Eq = IsEquivalence isEquivalence
---
---     ...
---
--- The Eq module in IsPreorder is not opened publicly, because it
--- contains some fields which clash with fields or other definitions
--- in IsPreorder.
-
--- Records packing up properties with the corresponding operations,
--- sets, etc. are also defined:
---
---   record Semigroup : Set₁ where
---     infixl 7 _∙_
---     infix  4 _≈_
---     field
---       Carrier     : Set
---       _≈_         : Rel Carrier
---       _∙_         : Op₂ Carrier
---       isSemigroup : IsSemigroup _≈_ _∙_
---
---     open IsSemigroup isSemigroup public
---
---     setoid : Setoid
---     setoid = record { isEquivalence = isEquivalence }
---
---   record Monoid : Set₁ where
---     infixl 7 _∙_
---     infix  4 _≈_
---     field
---       Carrier  : Set
---       _≈_      : Rel Carrier
---       _∙_      : Op₂ Carrier
---       ε        : Carrier
---       isMonoid : IsMonoid _≈_ _∙_ ε
---
---     open IsMonoid isMonoid public
---
---     semigroup : Semigroup
---     semigroup = record { isSemigroup = isSemigroup }
---
---     open Semigroup semigroup public using (setoid)
---
--- Note that the Monoid record does not include a Semigroup field.
--- Instead the Monoid /module/ includes a "repackaging function"
--- semigroup which converts a Monoid to a Semigroup.
-
--- The above setup may seem a bit complicated, but we think it makes the
--- library quite easy to work with, while also providing enough
--- flexibility.
+-- Dependently typed formatted printing
+import Text.Printf
 
 ------------------------------------------------------------------------
 -- More documentation
 ------------------------------------------------------------------------
-
--- Examples of how decidability is handled in the library.
-
-import README.Decidability
 
 -- Some examples showing how the case expression can be used.
 
@@ -293,22 +241,6 @@ import README.Nary
 
 import README.Inspect
 
--- Explaining string formats and the behaviour of printf
-
-import README.Text.Printf
-
--- Showcasing the pretty printing module
-
-import README.Text.Pretty
-
--- Explaining how to display tables of strings:
-
-import README.Text.Tabular
-
--- Explaining how to display a tree:
-
-import README.Text.Tree
-
 -- Explaining how to use the automatic solvers
 
 import README.Tactic.MonoidSolver
@@ -318,15 +250,21 @@ import README.Tactic.RingSolver
 
 import README.Foreign.Haskell
 
+-- Explaining string formats and the behaviour of printf
 
-------------------------------------------------------------------------
--- Core modules
-------------------------------------------------------------------------
+import README.Text.Printf
 
--- Some modules have names ending in ".Core". These modules are
--- internal, and have (mostly) been created to avoid mutual recursion
--- between modules. They should not be imported directly; their
--- contents are reexported by other modules.
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
+-- Demonstrating the regular expression matching
+
+import README.Text.Regex
+
+-- Explaining how to display tables of strings:
+
+import README.Text.Tabular
 
 ------------------------------------------------------------------------
 -- All library modules

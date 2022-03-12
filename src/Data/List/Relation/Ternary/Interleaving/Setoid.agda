@@ -11,8 +11,7 @@ open import Relation.Binary using (Setoid)
 module Data.List.Relation.Ternary.Interleaving.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Level using (_⊔_)
-open import Data.List.Base as List using (List; []; _∷_)
-open import Data.List.Relation.Ternary.Interleaving.Properties
+open import Data.List.Base as List using (List)
 import Data.List.Relation.Ternary.Interleaving as General
 open Setoid S renaming (Carrier to A)
 

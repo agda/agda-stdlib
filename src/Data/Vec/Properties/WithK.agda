@@ -23,8 +23,8 @@ module _ {a} {A : Set a} where
   []=-irrelevant : ∀ {n} {xs : Vec A n} {i x} →
                     (p q : xs [ i ]= x) → p ≡ q
   []=-irrelevant here            here             = refl
-  []=-irrelevant (there xs[i]=x) (there xs[i]=x') =
-    P.cong there ([]=-irrelevant xs[i]=x xs[i]=x')
+  []=-irrelevant (there xs[i]=x) (there xs[i]=x′) =
+    P.cong there ([]=-irrelevant xs[i]=x xs[i]=x′)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -60,17 +60,3 @@ foldl-cong : ∀ {a b} {A : Set a}
              foldl B f d xs ≅ foldl C g e xs
 foldl-cong _   d≅e []       = d≅e
 foldl-cong f≅g d≅e (x ∷ xs) = foldl-cong f≅g (f≅g d≅e) xs
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-[]=-irrelevance = []=-irrelevant
-{-# WARNING_ON_USAGE []=-irrelevance
-"Warning: []=-irrelevance was deprecated in v1.0.
-Please use []=-irrelevant instead."
-#-}

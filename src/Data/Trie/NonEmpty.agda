@@ -4,7 +4,7 @@
 -- Non empty trie, basic type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 open import Relation.Binary using (StrictTotalOrder)
 
@@ -27,9 +27,9 @@ open StrictTotalOrder S
   renaming (Carrier to Key)
 
 open import Data.List.Relation.Binary.Equality.Setoid Eq.setoid
-open import Data.AVL.Value hiding (Value)
-open import Data.AVL.Value ≋-setoid using (Value)
-open import Data.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
+open import Data.Tree.AVL.Value hiding (Value)
+open import Data.Tree.AVL.Value ≋-setoid using (Value)
+open import Data.Tree.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
 open Value
 
 ------------------------------------------------------------------------
@@ -125,8 +125,8 @@ toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
   where
 
   fromVal    = [_] ∘′ -,_
-  fromTries⁺ = concatMap (uncurry λ k → List⁺.map (Prod.map (k ∷_) id) ∘′ toList⁺)
-             ∘′ Tree⁺.toList⁺
+  fromTrie⁺  = λ (k , v) → List⁺.map (Prod.map (k ∷_) id) (toList⁺ v)
+  fromTries⁺ = concatMap fromTrie⁺ ∘′ Tree⁺.toList⁺
 
 ------------------------------------------------------------------------
 -- Modification

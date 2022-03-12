@@ -28,7 +28,7 @@ import Relation.Binary.HeterogeneousEquality.Core as Core
 
 private
   variable
-    a b c p ℓ : Level
+    a b c p r ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -72,14 +72,18 @@ trans refl eq = eq
 subst : Substitutive {A = A} (λ x y → x ≅ y) ℓ
 subst P refl p = p
 
-subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≅ y → u ≅ v → x ∼ u → y ∼ v
-subst₂ _ refl refl p = p
+subst₂ : ∀ (_∼_ : REL A B r) {x y u v} → x ≅ y → u ≅ v → x ∼ u → y ∼ v
+subst₂ _∼_ refl refl z = z
 
-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≅ y) z →
+subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≅ y) (z : P x) →
                   subst P eq z ≅ z
 subst-removable P refl z = refl
 
-≡-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≡ y) z →
+subst₂-removable : ∀ (_∼_ : REL A B r) {x y u v} (eq₁ : x ≅ y) (eq₂ : u ≅ v) (z : x ∼ u) →
+                   subst₂ _∼_ eq₁ eq₂ z ≅ z
+subst₂-removable _∼_ refl refl z = refl
+
+≡-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≡ y) (z : P x) →
                     P.subst P eq z ≅ z
 ≡-subst-removable P refl z = refl
 
@@ -96,7 +100,7 @@ cong₂ : ∀ {A : Set a} {B : A → Set b} {C : ∀ x → B x → Set c} {x y u
 cong₂ f refl refl = refl
 
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ (λ x y → x ≅ y)
-resp₂ _∼_ = subst⟶resp₂ _∼_ subst
+resp₂ _∼_ = subst⇒resp₂ _∼_ subst
 
 module _ {I : Set ℓ} (A : I → Set a) {B : {k : I} → A k → Set b} where
 
@@ -278,51 +282,3 @@ inspect f x = [ refl ]
 
 -- f x y with g x | inspect g x
 -- f x y | c z | [ eq ] = ...
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-proof-irrelevance = ≅-irrelevant
-{-# WARNING_ON_USAGE proof-irrelevance
-"Warning: proof-irrelevance was deprecated in v0.15.
-Please use ≅-irrelevant instead."
-#-}
-
--- Version 1.0
-
-≅-irrelevance = ≅-irrelevant
-{-# WARNING_ON_USAGE ≅-irrelevance
-"Warning: ≅-irrelevance was deprecated in v1.0.
-Please use ≅-irrelevant instead."
-#-}
-≅-heterogeneous-irrelevance = ≅-heterogeneous-irrelevant
-{-# WARNING_ON_USAGE ≅-heterogeneous-irrelevance
-"Warning: ≅-heterogeneous-irrelevance was deprecated in v1.0.
-Please use ≅-heterogeneous-irrelevant instead."
-#-}
-≅-heterogeneous-irrelevanceˡ = ≅-heterogeneous-irrelevantˡ
-{-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceˡ
-"Warning: ≅-heterogeneous-irrelevanceˡ was deprecated in v1.0.
-Please use ≅-heterogeneous-irrelevantˡ instead."
-#-}
-≅-heterogeneous-irrelevanceʳ = ≅-heterogeneous-irrelevantʳ
-{-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceʳ
-"Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v1.0.
-Please use ≅-heterogeneous-irrelevantʳ instead."
-#-}
-Extensionality = Ext.Extensionality
-{-# WARNING_ON_USAGE Extensionality
-"Warning: Extensionality was deprecated in v1.0.
-Please use Extensionality from `Axiom.Extensionality.Heterogeneous` instead."
-#-}
-≡-ext-to-≅-ext = Ext.≡-ext⇒≅-ext
-{-# WARNING_ON_USAGE ≡-ext-to-≅-ext
-"Warning: ≡-ext-to-≅-ext was deprecated in v1.0.
-Please use ≡-ext⇒≅-ext from `Axiom.Extensionality.Heterogeneous` instead."
-#-}

@@ -9,7 +9,7 @@
 module Data.Nat.InfinitelyOften where
 
 open import Category.Monad using (RawMonad)
-open import Level using (0ℓ)
+open import Level using (Level; 0ℓ)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
 open import Data.Nat.Properties
@@ -22,14 +22,20 @@ open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
 open import Relation.Unary using (Pred; _∪_; _⊆_)
 open RawMonad (¬¬-Monad {p = 0ℓ})
 
+private
+  variable
+    ℓ : Level
+
+infixr 1 _∪-Fin_
+
 -- Only true finitely often.
 
-Fin : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
+Fin : Pred ℕ ℓ → Set ℓ
 Fin P = ∃ λ i → ∀ j → i ≤ j → ¬ P j
 
 -- A non-constructive definition of "true infinitely often".
 
-Inf : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
+Inf : Pred ℕ ℓ → Set ℓ
 Inf P = ¬ Fin P
 
 -- Fin is preserved by binary sums.
@@ -65,7 +71,7 @@ map P⊆Q ¬fin = ¬fin ∘ Prod.map id (λ fin j i≤j → fin j i≤j ∘ P⊆
 
 -- Inf is upwards closed.
 
-up : ∀ {ℓ P} n → Inf {ℓ} P → Inf (P ∘ _+_ n)
+up : ∀ {P} n → Inf {ℓ} P → Inf (P ∘ _+_ n)
 up     zero    = id
 up {P = P} (suc n) = up n ∘ up₁
   where
@@ -77,7 +83,7 @@ up {P = P} (suc n) = up n ∘ up₁
 
 -- A witness.
 
-witness : ∀ {ℓ P} → Inf {ℓ} P → ¬ ¬ ∃ P
+witness : ∀ {P} → Inf {ℓ} P → ¬ ¬ ∃ P
 witness ¬fin ¬p = ¬fin (0 , λ i _ Pi → ¬p (i , Pi))
 
 -- Two different witnesses.

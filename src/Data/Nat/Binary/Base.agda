@@ -4,20 +4,22 @@
 -- Natural numbers represented in binary.
 ------------------------------------------------------------------------
 
--- This module aims to create an alternative formulation of ℕ that is
--- still reasonably computationally efficient without having to call out
--- to Haskell.
+-- This module contains an alternative formulation of ℕ that is
+-- still reasonably computationally efficient without having to use
+-- built-in functions.
 
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Binary.Base where
 
 open import Algebra.Core using (Op₂)
+open import Data.Bool.Base using (if_then_else_)
 open import Data.Nat.Base as ℕ using (ℕ)
+open import Data.Nat.DivMod using (_%_ ; _/_)
 open import Data.Sum.Base using (_⊎_)
-open import Function using (_on_)
+open import Function.Base using (_on_)
 open import Level using (0ℓ)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Nullary using (¬_)
 
@@ -32,7 +34,7 @@ data ℕᵇ : Set where
 ------------------------------------------------------------------------
 -- Ordering relations
 
-infix 4 _<_ _>_ _≤_ _≮_ _≯_ _≰_ _≱_
+infix 4 _<_ _>_ _≤_ _≥_ _≮_ _≯_ _≰_ _≱_
 
 data _<_ : Rel ℕᵇ 0ℓ  where
   0<even    : ∀ {x} → zero < 2[1+ x ]
@@ -112,10 +114,22 @@ toℕ zero     =  0
 toℕ 2[1+ x ] =  2 ℕ.* (ℕ.suc (toℕ x))
 toℕ 1+[2 x ] =  ℕ.suc (2 ℕ.* (toℕ x))
 
--- Costs O(n), could be improved using `_/_` and `_%_`
 fromℕ : ℕ → ℕᵇ
-fromℕ 0         = zero
-fromℕ (ℕ.suc n) = suc (fromℕ n)
+fromℕ n = helper n n
+  module fromℕ where
+  helper : ℕ → ℕ → ℕᵇ
+  helper 0 _ = zero
+  helper (ℕ.suc n) (ℕ.suc w) =
+    if (n % 2 ℕ.≡ᵇ 0)
+      then 1+[2 helper (n / 2) w ]
+      else 2[1+ helper (n / 2) w ]
+  -- Impossible case
+  helper _ 0 = zero
+
+-- An alternative slower definition
+fromℕ' : ℕ → ℕᵇ
+fromℕ' 0 = zero
+fromℕ' (ℕ.suc n) = suc (fromℕ' n)
 
 -- An alternative ordering lifted from ℕ
 

@@ -1,9 +1,14 @@
 {-# LANGUAGE PatternGuards #-}
+{-# LANGUAGE PatternSynonyms #-}
 
 import Control.Applicative
 import Control.Monad
+import Control.Monad.Except
 
 import qualified Data.List as List
+import qualified Data.List.NonEmpty as List1
+import Data.List.NonEmpty ( pattern (:|) )
+import Data.Maybe
 
 import System.Directory
 import System.Environment
@@ -24,26 +29,50 @@ srcDir         = "src"
 
 unsafeModules :: [FilePath]
 unsafeModules = map modToFile
-  [ "Codata.Musical.Cofin"
-  , "Codata.Musical.Colist"
+  [ "Codata.Musical.Colist"
+  , "Codata.Musical.Colist.Base"
+  , "Codata.Musical.Colist.Properties"
+  , "Codata.Musical.Colist.Bisimilarity"
+  , "Codata.Musical.Colist.Relation.Unary.All"
+  , "Codata.Musical.Colist.Relation.Unary.All.Properties"
+  , "Codata.Musical.Colist.Relation.Unary.Any"
+  , "Codata.Musical.Colist.Relation.Unary.Any.Properties"
   , "Codata.Musical.Colist.Infinite-merge"
-  , "Codata.Musical.Conat"
   , "Codata.Musical.Costring"
   , "Codata.Musical.Covec"
-  , "Codata.Musical.M"
+  , "Codata.Musical.Conversion"
   , "Codata.Musical.Stream"
   , "Debug.Trace"
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
   , "Foreign.Haskell.Either"
   , "Foreign.Haskell.Maybe"
+  , "Foreign.Haskell.List.NonEmpty"
   , "Foreign.Haskell.Pair"
   , "IO"
+  , "IO.Base"
+  , "IO.Infinite"
+  , "IO.Finite"
   , "IO.Primitive"
+  , "IO.Primitive.Infinite"
+  , "IO.Primitive.Finite"
   , "Relation.Binary.PropositionalEquality.TrustMe"
+  , "System.Clock"
+  , "System.Clock.Primitive"
+  , "System.Directory"
+  , "System.Directory.Primitive"
+  , "System.Environment"
+  , "System.Environment.Primitive"
+  , "System.Exit"
+  , "System.Exit.Primitive"
+  , "System.FilePath.Posix"
+  , "System.FilePath.Posix.Primitive"
+  , "System.Process"
+  , "System.Process.Primitive"
+  , "Test.Golden"
   , "Text.Pretty.Core"
   , "Text.Pretty"
-  ] where
+  ] ++ sizedTypesModules
 
 isUnsafeModule :: FilePath -> Bool
 isUnsafeModule fp =
@@ -62,6 +91,8 @@ withKModules = map modToFile
   , "Data.Star.Pointer"
   , "Data.Star.Vec"
   , "Data.String.Unsafe"
+  , "Reflection.AnnotatedAST"
+  , "Reflection.AnnotatedAST.Free"
   , "Relation.Binary.HeterogeneousEquality"
   , "Relation.Binary.HeterogeneousEquality.Core"
   , "Relation.Binary.HeterogeneousEquality.Quotients.Examples"
@@ -69,6 +100,7 @@ withKModules = map modToFile
   , "Relation.Binary.PropositionalEquality.TrustMe"
   , "Text.Pretty.Core"
   , "Text.Pretty"
+  , "Text.Regex.String.Unsafe"
   ]
 
 isWithKModule :: FilePath -> Bool
@@ -78,6 +110,56 @@ isWithKModule =
   -- to `isWithKModule`.
   \ fp -> unqualifiedModuleName fp == "WithK"
        || fp `elem` withKModules
+
+sizedTypesModules :: [FilePath]
+sizedTypesModules = map modToFile
+  [ "Codata.Sized.Cofin"
+  , "Codata.Sized.Cofin.Literals"
+  , "Codata.Sized.Colist"
+  , "Codata.Sized.Colist.Bisimilarity"
+  , "Codata.Sized.Colist.Categorical"
+  , "Codata.Sized.Colist.Properties"
+  , "Codata.Sized.Conat"
+  , "Codata.Sized.Conat.Bisimilarity"
+  , "Codata.Sized.Conat.Literals"
+  , "Codata.Sized.Conat.Properties"
+  , "Codata.Sized.Covec"
+  , "Codata.Sized.Covec.Bisimilarity"
+  , "Codata.Sized.Covec.Categorical"
+  , "Codata.Sized.Covec.Instances"
+  , "Codata.Sized.Covec.Properties"
+  , "Codata.Sized.Cowriter"
+  , "Codata.Sized.Cowriter.Bisimilarity"
+  , "Codata.Sized.Delay"
+  , "Codata.Sized.Delay.Bisimilarity"
+  , "Codata.Sized.Delay.Categorical"
+  , "Codata.Sized.Delay.Properties"
+  , "Codata.Sized.M"
+  , "Codata.Sized.M.Bisimilarity"
+  , "Codata.Sized.M.Properties"
+  , "Codata.Sized.Stream"
+  , "Codata.Sized.Stream.Bisimilarity"
+  , "Codata.Sized.Stream.Categorical"
+  , "Codata.Sized.Stream.Instances"
+  , "Codata.Sized.Stream.Properties"
+  , "Codata.Sized.Thunk"
+  , "Data.Container.Fixpoints.Sized"
+  , "Data.W.Sized"
+  , "Data.Nat.PseudoRandom.LCG.Unsafe"
+  , "Data.Tree.Binary.Show"
+  , "Data.Tree.Rose"
+  , "Data.Tree.Rose.Properties"
+  , "Data.Tree.Rose.Show"
+  , "Data.Trie"
+  , "Data.Trie.NonEmpty"
+  , "Relation.Unary.Sized"
+  , "Size"
+  , "Text.Tree.Linear"
+  ]
+
+isSizedTypesModule :: FilePath -> Bool
+isSizedTypesModule =
+  \ fp -> fp `elem` sizedTypesModules
 
 unqualifiedModuleName :: FilePath -> String
 unqualifiedModuleName = dropExtension . takeFileName
@@ -92,6 +174,8 @@ isLibraryModule f =
 ---------------------------------------------------------------------------
 -- Analysing library files
 
+type Exc = Except String
+
 -- | Extracting the header.
 
 -- It needs to have the form:
@@ -101,45 +185,53 @@ isLibraryModule f =
 -- -- Description of the module
 -- ------------------------------------------------------------------------
 
-extractHeader :: FilePath -> [String] -> [String]
+extractHeader :: FilePath -> [String] -> Exc [String]
 extractHeader mod = extract
   where
   delimiter = all (== '-')
 
+  extract :: [String] -> Exc [String]
   extract (d1 : "-- The Agda standard library" : "--" : ss)
     | delimiter d1
     , (info, d2 : rest) <- span ("-- " `List.isPrefixOf`) ss
     , delimiter d2
-    = info
-  extract (d1@(_:_) : _)
+    = pure $ info
+  extract (d1@(c:cs) : _)
     | not (delimiter d1)
-    , last d1 == '\r'
-    = error $ mod ++ " contains \\r, probably due to git misconfiguration; maybe set autocrf to input?"
-  extract _ = error $ unwords [ mod ++ " is malformed."
-                              , "It needs to have a module header."
-                              , "Please see other existing files or consult HACKING.md."
-                              ]
+      -- Andreas, issue #1510: there is a haunting of Prelude.last, so use List1.last instead.
+      -- See https://gitlab.haskell.org/ghc/ghc/-/issues/19917.
+      -- Update: The haunting is also resolved by 'throwError' instead of 'error',
+      -- but still I dislike Prelude.last.
+    , List1.last (c :| cs) == '\r'
+    = throwError $ unwords
+      [ mod
+      , "contains \\r, probably due to git misconfiguration;"
+      , "maybe set autocrf to input?"
+      ]
+  extract _ = throwError $ unwords
+      [ mod
+      , "is malformed."
+      , "It needs to have a module header."
+      , "Please see other existing files or consult HACKING.md."
+      ]
 
--- | A crude classifier looking for lines containing options & trying to guess
---   whether the safe file is using either @--guardedness@ or @--sized-types@
+-- | A crude classifier looking for lines containing options
 
-data Status = Deprecated | Unsafe | Safe | SafeGuardedness | SafeSizedTypes
+data Status = Deprecated | Unsafe | Safe
   deriving (Eq)
 
-classify :: FilePath -> [String] -> [String] -> Status
+classify :: FilePath -> [String] -> [String] -> Exc Status
 classify fp hd ls
   -- We start with sanity checks
-  | isUnsafe && safe          = error $ fp ++ contradiction "unsafe" "safe"
-  | not (isUnsafe || safe)    = error $ fp ++ uncategorized "unsafe" "safe"
-  | isWithK && withoutK       = error $ fp ++ contradiction "as relying on K" "without-K"
-  | isWithK && not withK      = error $ fp ++ missingWithK
-  | not (isWithK || withoutK) = error $ fp ++ uncategorized "as relying on K" "without-K"
+  | isUnsafe && safe          = throwError $ fp ++ contradiction "unsafe" "safe"
+  | not (isUnsafe || safe)    = throwError $ fp ++ uncategorized "unsafe" "safe"
+  | isWithK && withoutK       = throwError $ fp ++ contradiction "as relying on K" "without-K"
+  | isWithK && not withK      = throwError $ fp ++ missingWithK
+  | not (isWithK || withoutK) = throwError $ fp ++ uncategorized "as relying on K" "without-K"
   -- And then perform the actual classification
-  | deprecated                = Deprecated
-  | isUnsafe                  = Unsafe
-  | guardedness               = SafeGuardedness
-  | sizedtypes                = SafeSizedTypes
-  | safe                      = Safe
+  | deprecated                = pure $ Deprecated
+  | isUnsafe                  = pure $ Unsafe
+  | safe                      = pure $ Safe
   -- We know that @not (isUnsafe || safe)@, all cases are covered
   | otherwise                 = error "IMPOSSIBLE"
 
@@ -150,21 +242,19 @@ classify fp hd ls
     isUnsafe = isUnsafeModule fp
 
     -- based on detected OPTIONS
-    guardedness = option "--guardedness"
-    sizedtypes  = option "--sized-types"
     safe        = option "--safe"
     withK       = option "--with-K"
     withoutK    = option "--without-K"
 
     -- based on detected comment in header
     deprecated  = let detect = List.isSubsequenceOf "This module is DEPRECATED."
-                  in not $ null $ filter detect hd
+                  in any detect hd
 
     -- GA 2019-02-24: note that we do not reprocess the whole module for every
     -- option check: the shared @options@ definition ensures we only inspect a
     -- handful of lines (at most one, ideally)
     option str = let detect = List.isSubsequenceOf ["{-#", "OPTIONS", str, "#-}"]
-                  in not $ null $ filter detect options
+                  in any detect options
     options    = words <$> filter (List.isInfixOf "OPTIONS") ls
 
     -- formatting error messages
@@ -186,32 +276,31 @@ data LibraryFile = LibraryFile
 analyse :: FilePath -> IO LibraryFile
 analyse fp = do
   ls <- lines <$> readFileUTF8 fp
-  let hd = extractHeader fp ls
+  hd <- runExc $ extractHeader fp ls
+  cl <- runExc $ classify fp hd ls
   return $ LibraryFile
     { filepath   = fp
     , header     = hd
-    , status     = classify fp hd ls
+    , status     = cl
     }
 
 checkFilePaths :: String -> [FilePath] -> IO ()
 checkFilePaths cat fps = forM_ fps $ \ fp -> do
   b <- doesFileExist fp
-  if b
-    then pure ()
-    else error $ fp ++ " is listed as " ++ cat ++ " but does not exist."
+  unless b $
+    die $ fp ++ " is listed as " ++ cat ++ " but does not exist."
 
 ---------------------------------------------------------------------------
 -- Collecting all non-Core library files, analysing them and generating
 -- 4 files:
 -- Everything.agda                 all the modules
--- EverythingSafe.agda             all the safe modules (may be incompatible)
--- EverythingSafeGuardedness.agda  all the safe modules using --guardedness
--- EverythingSafeSizedTypes.agda   all the safe modules using --sized-types
+-- EverythingSafe.agda             all the safe modules
 
 main = do
   args <- getArgs
-  case args of
-    [] -> return ()
+  includeDeprecated <- case args of
+    [] -> return False
+    ["--include-deprecated"] -> return True
     _  -> hPutStr stderr usage >> exitFailure
 
   checkFilePaths "unsafe" unsafeModules
@@ -222,37 +311,23 @@ main = do
                find always
                     (extension ==? ".agda" ||? extension ==? ".lagda")
                     srcDir
-  libraryfiles <- filter ((Deprecated /=) . status) <$> mapM analyse modules
+  libraryfiles <- (if includeDeprecated then id
+    else (filter ((Deprecated /=) . status) <$>)) (mapM analyse modules)
 
   let mkModule str = "module " ++ str ++ " where"
 
   writeFileUTF8 (allOutputFile ++ ".agda") $
     unlines [ header
+            , "{-# OPTIONS --rewriting --guardedness --sized-types #-}\n"
             , mkModule allOutputFile
             , format libraryfiles
             ]
 
   writeFileUTF8 (safeOutputFile ++ ".agda") $
     unlines [ header
-            , "{-# OPTIONS --guardedness --sized-types #-}\n"
+            , "{-# OPTIONS --safe --guardedness #-}\n"
             , mkModule safeOutputFile
             , format $ filter ((Unsafe /=) . status) libraryfiles
-            ]
-
-  let safeGuardednessOutputFile = safeOutputFile ++ "Guardedness"
-  writeFileUTF8 (safeGuardednessOutputFile ++ ".agda") $
-    unlines [ header
-            , "{-# OPTIONS --safe --guardedness #-}\n"
-            , mkModule safeGuardednessOutputFile
-            , format $ filter ((SafeGuardedness ==) . status) libraryfiles
-            ]
-
-  let safeSizedTypesOutputFile = safeOutputFile ++ "SizedTypes"
-  writeFileUTF8 (safeSizedTypesOutputFile ++ ".agda") $
-    unlines [ header
-            , "{-# OPTIONS --safe --sized-types #-}\n"
-            , mkModule safeSizedTypesOutputFile
-            , format $ filter ((SafeSizedTypes ==) . status) libraryfiles
             ]
 
 -- | Usage info.
@@ -275,7 +350,7 @@ usage = unlines
 -- | Formats the extracted module information.
 
 format :: [LibraryFile] -> String
-format = unlines . concat . map fmt
+format = unlines . concatMap fmt
   where
   fmt lf = "" : header lf ++ ["import " ++ fileToMod (filepath lf)]
 
@@ -310,3 +385,8 @@ writeFileUTF8 :: FilePath -> String -> IO ()
 writeFileUTF8 f s = withFile f WriteMode $ \h -> do
   hSetEncoding h utf8
   hPutStr h s
+
+-- | Turning exceptions into fatal errors.
+
+runExc :: Exc a -> IO a
+runExc = either die return . runExcept

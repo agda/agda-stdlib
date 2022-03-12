@@ -29,6 +29,19 @@ open Setoid S
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
-open import Relation.Binary.Reasoning.PartialSetoid partialSetoid public
-open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans public
-  using (_∎)
+-- open import Relation.Binary.Reasoning.PartialSetoid partialSetoid public
+open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans as Base public
+  hiding (step-∼)
+
+infixr 2 step-≈ step-≈˘
+
+-- A step using an equality
+
+step-≈ = Base.step-∼
+syntax step-≈ x y≈z x≈y = x ≈⟨ x≈y ⟩ y≈z
+
+-- A step using a symmetric equality
+
+step-≈˘ : ∀ x {y z} → y IsRelatedTo z → y ≈ x → x IsRelatedTo z
+step-≈˘ x y∼z y≈x = x ≈⟨ sym y≈x ⟩ y∼z
+syntax step-≈˘ x y≈z y≈x = x ≈˘⟨ y≈x ⟩ y≈z

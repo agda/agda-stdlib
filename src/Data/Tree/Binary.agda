@@ -80,7 +80,7 @@ module Suffix where
 module Leaves where
 
   toDiffList : Tree N L → DiffList L
-  toDiffList (leaf x) = [ x ]
+  toDiffList (leaf x)     = [ x ]
   toDiffList (node l m r) = toDiffList l ++ toDiffList r
 
   toList : Tree N L → List L

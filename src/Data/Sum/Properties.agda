@@ -11,10 +11,12 @@ module Data.Sum.Properties where
 open import Level
 open import Data.Sum.Base
 open import Function
+open import Function.Bundles using (mk↔′)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′)
+
 
 private
   variable
@@ -44,6 +46,9 @@ module _ (dec₁ : Decidable {A = A} {B = A} _≡_)
 swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
 swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]
 
+swap-↔ : (A ⊎ B) ↔ (B ⊎ A)
+swap-↔ = mk↔′ swap swap swap-involutive swap-involutive
+
 map-id : map {A = A} {B = B} id id ≗ id
 map-id (inj₁ _) = refl
 map-id (inj₂ _) = refl
@@ -70,6 +75,18 @@ map₁₂-commute : {f : A → B} {g : C → D} →
                 map₁ f ∘ map₂ g ≗ map₂ g ∘ map₁ f
 map₁₂-commute (inj₁ _) = refl
 map₁₂-commute (inj₂ _) = refl
+
+map-assocˡ : (f : A → C) (g : B → D) (h : C → F) →
+  map (map f g) h ∘ assocˡ ≗ assocˡ ∘ map f (map g h)
+map-assocˡ _ _ _ (inj₁       x ) = refl
+map-assocˡ _ _ _ (inj₂ (inj₁ y)) = refl
+map-assocˡ _ _ _ (inj₂ (inj₂ z)) = refl
+
+map-assocʳ : (f : A → C) (g : B → D) (h : C → F) →
+  map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
+map-assocʳ _ _ _ (inj₁ (inj₁ x)) = refl
+map-assocʳ _ _ _ (inj₁ (inj₂ y)) = refl
+map-assocʳ _ _ _ (inj₂       z ) = refl
 
 [,]-cong : {f f′ : A → B} {g g′ : C → B} →
            f ≗ f′ → g ≗ g′ →

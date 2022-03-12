@@ -66,7 +66,6 @@ open TotalOrderProperties public
   ; ≤∧≉⇒<
   ; <⇒≱
   ; ≤⇒≯
-  ; ≰⇒>
   )
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_
@@ -80,20 +79,17 @@ open TotalOrderProperties public
 open StrictTotalOrder <-strictTotalOrder public
   using () renaming (compare to <-compare)
 
+------------------------------------------------------------------------
+-- _≰_ - the negated order
+
+open TotalOrderProperties public
+  using
+  ( _≰_
+  ; ≰-respʳ-≈
+  ; ≰-respˡ-≈
+  ; ≰⇒>
+  ; ≰⇒≥
+  )
+
 ≮⇒≥ : ∀ {x y} → ¬ (x < y) → y ≤ x
 ≮⇒≥ = ToStrict.≮⇒≥ Eq.sym _≟_ reflexive total
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.2
-
-strictTotalOrder = <-strictTotalOrder
-{-# WARNING_ON_USAGE strictTotalOrder
-"Warning: strictTotalOrder was deprecated in v1.2.
-Please use <-strictTotalOrder instead."
-#-}

@@ -9,27 +9,91 @@
 module Relation.Binary.Construct.Closure.Transitive where
 
 open import Function.Base
-open import Function.Equivalence as Equiv using (_⇔_)
+open import Function.Bundles using (_⇔_; mk⇔)
+open import Induction.WellFounded
 open import Level
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
+
+private
+  variable
+    a ℓ ℓ₁ ℓ₂ : Level
+    A B : Set a
 
 ------------------------------------------------------------------------
--- Transitive closure
+-- Definition
+
+infixr 5 _∷_
+infix  4 TransClosure
+
+data TransClosure {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
+  [_] : ∀ {x y} (x∼y : x ∼ y) → TransClosure _∼_ x y
+  _∷_ : ∀ {x y z} (x∼y : x ∼ y) (y∼⁺z : TransClosure _∼_ y z) → TransClosure _∼_ x z
+
+syntax TransClosure R x y = x ⟨ R ⟩⁺ y
+
+------------------------------------------------------------------------
+-- Operations
+
+module _ {_∼_ : Rel A ℓ} where
+  private
+    _∼⁺_ = TransClosure _∼_
+
+  _∷ʳ_ : ∀ {x y z} → (x∼⁺y : x ∼⁺ y) (y∼z : y ∼ z) → x ∼⁺ z
+  [ x∼y ]      ∷ʳ y∼z = x∼y ∷ [ y∼z ]
+  (x∼y ∷ x∼⁺y) ∷ʳ y∼z = x∼y ∷ (x∼⁺y ∷ʳ y∼z)
+
+  infixr 5 _++_
+  _++_ : ∀ {x y z} → x ∼⁺ y → y ∼⁺ z → x ∼⁺ z
+  [ x∼y ]      ++ y∼⁺z = x∼y ∷ y∼⁺z
+  (x∼y ∷ y∼⁺z) ++ z∼⁺u = x∼y ∷ (y∼⁺z ++ z∼⁺u)
+
+------------------------------------------------------------------------
+-- Properties
+
+module _ (_∼_ : Rel A ℓ) where
+  private
+    _∼⁺_ = TransClosure _∼_
+
+  reflexive : Reflexive _∼_ → Reflexive _∼⁺_
+  reflexive refl = [ refl ]
+
+  symmetric : Symmetric _∼_ → Symmetric _∼⁺_
+  symmetric sym [ x∼y ]      = [ sym x∼y ]
+  symmetric sym (x∼y ∷ y∼⁺z) = symmetric sym y∼⁺z ∷ʳ sym x∼y
+
+  transitive : Transitive _∼⁺_
+  transitive = _++_
+
+  wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
+  wellFounded wf = λ x → acc (accessible′ (wf x))
+    where
+    downwardsClosed : ∀ {x y} → Acc _∼⁺_ y → x ∼ y → Acc _∼⁺_ x
+    downwardsClosed (acc rec) x∼y = acc (λ z z∼x → rec z (z∼x ∷ʳ x∼y))
+
+    accessible′ : ∀ {x} → Acc _∼_ x → WfRec _∼⁺_ (Acc _∼⁺_) x
+    accessible′ (acc rec) y [ y∼x ]      = acc (accessible′ (rec y y∼x))
+    accessible′ acc[x]    y (y∼z ∷ z∼⁺x) =
+      downwardsClosed (accessible′ acc[x] _ z∼⁺x) y∼z
+
+
+
+------------------------------------------------------------------------
+-- Alternative definition of transitive closure
 
 infix 4 Plus
 
 syntax Plus R x y = x [ R ]⁺ y
 
-data Plus {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
+data Plus {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
   [_]     : ∀ {x y} (x∼y : x ∼ y) → x [ _∼_ ]⁺ y
   _∼⁺⟨_⟩_ : ∀ x {y z} (x∼⁺y : x [ _∼_ ]⁺ y) (y∼⁺z : y [ _∼_ ]⁺ z) →
             x [ _∼_ ]⁺ z
 
-module _ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} where
+module _ {_∼_ : Rel A ℓ} where
 
  []-injective : ∀ {x y p q} → (x [ _∼_ ]⁺ y ∋ [ p ]) ≡ [ q ] → p ≡ q
- []-injective refl = refl
+ []-injective P.refl = P.refl
 
  -- See also ∼⁺⟨⟩-injectiveˡ and ∼⁺⟨⟩-injectiveʳ in
  -- Relation.Binary.Construct.Closure.Transitive.WithK.
@@ -41,8 +105,7 @@ module _ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} where
 --     y  ∼⁺⟨ lemma₂ ⟩∎
 --     z  ∎
 
-finally : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} x y →
-          x [ _∼_ ]⁺ y → x [ _∼_ ]⁺ y
+finally : ∀ {_∼_ : Rel A ℓ} x y → x [ _∼_ ]⁺ y → x [ _∼_ ]⁺ y
 finally _ _ = id
 
 syntax finally x y x∼⁺y = x ∼⁺⟨ x∼⁺y ⟩∎ y ∎
@@ -52,44 +115,35 @@ infix  3 finally
 
 -- Map.
 
-map : ∀ {a a′ ℓ ℓ′} {A : Set a} {A′ : Set a′}
-        {_R_ : Rel A ℓ} {_R′_ : Rel A′ ℓ′} {f : A → A′} →
-      _R_ =[ f ]⇒ _R′_ → Plus _R_ =[ f ]⇒ Plus _R′_
-map R⇒R′ [ xRy ]             = [ R⇒R′ xRy ]
-map R⇒R′ (x ∼⁺⟨ xR⁺z ⟩ zR⁺y) =
-  _ ∼⁺⟨ map R⇒R′ xR⁺z ⟩ map R⇒R′ zR⁺y
+map : {_R₁_ : Rel A ℓ} {_R₂_ : Rel B ℓ₂} {f : A → B} →
+      _R₁_ =[ f ]⇒ _R₂_ → Plus _R₁_ =[ f ]⇒ Plus _R₂_
+map R₁⇒R₂ [ xRy ]             = [ R₁⇒R₂ xRy ]
+map R₁⇒R₂ (x ∼⁺⟨ xR⁺z ⟩ zR⁺y) =
+  _ ∼⁺⟨ map R₁⇒R₂ xR⁺z ⟩ map R₁⇒R₂ zR⁺y
 
-------------------------------------------------------------------------
--- Alternative definition of transitive closure
-
--- A generalisation of Data.List.Nonempty.List⁺.
-
-infixr 5 _∷_ _++_
-infix  4 Plus′
-
-syntax Plus′ R x y = x ⟨ R ⟩⁺ y
-
-data Plus′ {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
-  [_] : ∀ {x y} (x∼y : x ∼ y) → x ⟨ _∼_ ⟩⁺ y
-  _∷_ : ∀ {x y z} (x∼y : x ∼ y) (y∼⁺z : y ⟨ _∼_ ⟩⁺ z) → x ⟨ _∼_ ⟩⁺ z
-
--- Transitivity.
-
-_++_ : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} {x y z} →
-       x ⟨ _∼_ ⟩⁺ y → y ⟨ _∼_ ⟩⁺ z → x ⟨ _∼_ ⟩⁺ z
-[ x∼y ]      ++ y∼⁺z = x∼y ∷ y∼⁺z
-(x∼y ∷ y∼⁺z) ++ z∼⁺u = x∼y ∷ (y∼⁺z ++ z∼⁺u)
-
--- Plus and Plus′ are equivalent.
-
-equivalent : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} {x y} →
-             Plus _∼_ x y ⇔ Plus′ _∼_ x y
-equivalent {_∼_ = _∼_} = Equiv.equivalence complete sound
+-- Plus and TransClosure are equivalent.
+equivalent : ∀ {_∼_ : Rel A ℓ} {x y} →
+             Plus _∼_ x y ⇔ TransClosure _∼_ x y
+equivalent {_∼_ = _∼_} = mk⇔ complete sound
   where
-  complete : Plus _∼_ ⇒ Plus′ _∼_
+  complete : Plus _∼_ ⇒ TransClosure _∼_
   complete [ x∼y ]             = [ x∼y ]
   complete (x ∼⁺⟨ x∼⁺y ⟩ y∼⁺z) = complete x∼⁺y ++ complete y∼⁺z
 
-  sound : Plus′ _∼_ ⇒ Plus _∼_
+  sound : TransClosure _∼_ ⇒ Plus _∼_
   sound [ x∼y ]      = [ x∼y ]
   sound (x∼y ∷ y∼⁺z) = _ ∼⁺⟨ [ x∼y ] ⟩ sound y∼⁺z
+
+------------------------------------------------------------------------
+-- Deprecations
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- v1.5
+
+Plus′ = TransClosure
+{-# WARNING_ON_USAGE Plus′
+"Warning: Plus′ was deprecated in v1.5.
+Please use TransClosure instead."
+#-}

@@ -16,7 +16,7 @@ open import Category.Monad using (RawMonad)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties
-open import Function
+open import Function hiding (Morphism)
 
 ------------------------------------------------------------------------
 -- Functor and applicative
@@ -30,6 +30,12 @@ applicative : RawApplicative (λ (A : Set a) → Vec A n)
 applicative = record
   { pure = replicate
   ; _⊛_  = Vec._⊛_
+  }
+
+monad : RawMonad (λ (A : Set a) → Vec A n)
+monad = record
+  { return = replicate
+  ; _>>=_ = DiagonalBind._>>=_
   }
 
 ------------------------------------------------------------------------

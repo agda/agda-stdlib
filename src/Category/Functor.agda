@@ -10,7 +10,7 @@
 
 module Category.Functor where
 
-open import Function
+open import Function hiding (Morphism)
 open import Level
 
 open import Relation.Binary.PropositionalEquality

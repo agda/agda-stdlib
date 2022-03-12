@@ -4,6 +4,8 @@
 -- A simple example of a program using the foreign function interface
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness #-}
+
 module README.Foreign.Haskell where
 
 -- In order to be considered safe by Agda, the standard library cannot
@@ -32,11 +34,11 @@ private
     a : Level
     A : Set a
 
--- Here we use the FFI version of Maybe and Pair.
+-- Here we use the FFI version of Pair.
 
 postulate
-  primUncons    : List A → FFI.Maybe (FFI.Pair A (List A))
-  primCatMaybes : List (FFI.Maybe A) → List A
+  primUncons    : List A → Maybe (FFI.Pair A (List A))
+  primCatMaybes : List (Maybe A) → List A
   primTestChar  : Char → Bool
   primIntEq     : Int → Int → Bool
 
@@ -53,21 +55,19 @@ postulate
 
 {-# COMPILE GHC primIntEq = (==) #-}
 
--- We however want to use the notion of Maybe and Pair internal to
--- the standard library. For this we use `coerce` to take use back
--- to the types we are used to.
+-- We however want to use the notion of Pair internal to the standard library.
+-- For this we use `coerce` to take use back to the types we are used to.
 
--- The typeclass mechanism uses the coercion rules for Maybe and Pair,
--- as well as the knowledge that natural numbers are represented as
--- integers.
--- We additionally benefit from the congruence rules for List, Char,
+-- The typeclass mechanism uses the coercion rules for Pair, as well as the
+-- knowledge that natural numbers are represented as integers.
+-- We additionally benefit from the congruence rules for List, Maybe, Char,
 -- Bool, and a reflexivity principle for variable A.
 
 uncons : List A → Maybe (A × List A)
 uncons = coerce primUncons
 
 catMaybes : List (Maybe A) → List A
-catMaybes = coerce primCatMaybes
+catMaybes = primCatMaybes
 
 testChar : Char → Bool
 testChar = coerce primTestChar
@@ -83,16 +83,16 @@ eqNat = coerce primIntEq
 
 open import IO
 open import Codata.Musical.Notation
-open import Data.String.Base
+open import Data.String.Base using (toList; fromList; unlines; _++_)
 open import Relation.Nullary.Negation
 
 -- example program using uncons, catMaybes, and testChar
 
-main = run $
-  ♯ readFiniteFile "README/Foreign/Haskell.agda" {- read this file -} >>= λ f →
-  ♯ let chars   = toList f in
-    let cleanup = catMaybes ∘ List.map (λ c → if testChar c then just c else nothing) in
-    let cleaned = dropWhile ('\n' ≟_) $ cleanup chars in
+main = run $ do
+  content ← readFiniteFile "README/Foreign/Haskell.agda"
+  let chars = toList content
+  let cleanup = catMaybes ∘ List.map (λ c → if testChar c then just c else nothing)
+  let cleaned = dropWhile ('\n' ≟_) $ cleanup chars
   case uncons cleaned of λ where
     nothing         → putStrLn "I cannot believe this file is filed with dashes only!"
     (just (c , cs)) → putStrLn $ unlines

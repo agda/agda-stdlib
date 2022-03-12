@@ -26,7 +26,7 @@ erase : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≡ y
 erase _ = trustMe
 
 -- A "postulate with a reduction": postulate[ a ↦ b ] a evaluates to b,
--- while postulate[ a ↦ b ] a' gets stuck if a' is not definitionally
+-- while postulate[ a ↦ b ] a′ gets stuck if a′ is not definitionally
 -- equal to a. This can be used to define a postulate of type (x : A) → B x
 -- by only specifying the behaviour at B t for some t : A. Introduced in
 --
@@ -36,17 +36,5 @@ erase _ = trustMe
 
 postulate[_↦_] : ∀ {a b} {A : Set a}{B : A → Set b} →
                   (t : A) → B t → (x : A) → B x
-postulate[ a ↦ b ] a' with trustMe {x = a} {a'}
+postulate[ a ↦ b ] a′ with trustMe {x = a} {a′}
 postulate[ a ↦ b ] .a | refl = b
-
-
-------------------------------------------------------------------------
--- DEPRECATION
-------------------------------------------------------------------------
-
--- Version 0.18
-
-{-# WARNING_ON_USAGE erase
-"Warning: erase was deprecated in v0.18.
-Please use the safe function ≡-erase defined in Relation.Binary.PropositionalEquality.WithK instead."
-#-}

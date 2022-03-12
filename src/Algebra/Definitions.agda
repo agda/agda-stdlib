@@ -10,6 +10,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core
+open import Relation.Nullary using (¬_)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -68,6 +69,19 @@ RightInverse e _⁻¹ _∙_ = ∀ x → (x ∙ (x ⁻¹)) ≈ e
 Inverse : A → Op₁ A → Op₂ A → Set _
 Inverse e ⁻¹ ∙ = (LeftInverse e ⁻¹) ∙ × (RightInverse e ⁻¹ ∙)
 
+-- For structures in which not every element has an inverse (e.g. Fields)
+LeftInvertible : A → Op₂ A → A → Set _
+LeftInvertible e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e
+
+RightInvertible : A → Op₂ A → A → Set _
+RightInvertible e _∙_ x = ∃[ x⁻¹ ] (x ∙ x⁻¹) ≈ e
+
+-- NB: this is not quite the same as
+-- LeftInvertible e ∙ x × RightInvertible e ∙ x
+-- since the left and right inverses have to coincide.
+Invertible : A → Op₂ A → A → Set _
+Invertible e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e × (x ∙ x⁻¹) ≈ e
+
 LeftConical : A → Op₂ A → Set _
 LeftConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → x ≈ e
 
@@ -118,5 +132,32 @@ RightCancellative _•_ = ∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z
 Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
+AlmostLeftCancellative : A → Op₂ A → Set _
+AlmostLeftCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+
+AlmostRightCancellative : A → Op₂ A → Set _
+AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+
+AlmostCancellative : A → Op₂ A → Set _
+AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
+
 Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
+
+LeftDividesˡ : Op₂ A → Op₂ A → Set _
+LeftDividesˡ _∙_  _\\_ = ∀ x y → (x ∙ (x \\ y)) ≈ y
+
+LeftDividesʳ : Op₂ A → Op₂ A → Set _
+LeftDividesʳ _∙_ _\\_ = ∀ x y → (x \\ (x ∙ y)) ≈ y
+
+RightDividesˡ : Op₂ A → Op₂ A → Set _
+RightDividesˡ _∙_ _//_ = ∀ x y → ((y // x) ∙ x) ≈ y
+
+RightDividesʳ : Op₂ A → Op₂ A → Set _
+RightDividesʳ _∙_ _//_ = ∀ x y → ((y ∙ x) // x) ≈ y
+
+LeftDivides : Op₂ A → Op₂ A → Set _
+LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
+
+RightDivides : Op₂ A → Op₂ A → Set _
+RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)

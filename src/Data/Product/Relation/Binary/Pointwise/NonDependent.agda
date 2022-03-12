@@ -94,12 +94,12 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
     _≈_ = Pointwise _≈₁_ _≈₂_
 
     resp¹ : ∀ {x} → (x ∼_) Respects _≈_
-    resp¹ y≈y' x∼y = proj₁ resp₁ (proj₁ y≈y') (proj₁ x∼y) ,
-                     proj₁ resp₂ (proj₂ y≈y') (proj₂ x∼y)
+    resp¹ y≈y′ x∼y = proj₁ resp₁ (proj₁ y≈y′) (proj₁ x∼y) ,
+                     proj₁ resp₂ (proj₂ y≈y′) (proj₂ x∼y)
 
     resp² : ∀ {y} → (_∼ y) Respects _≈_
-    resp² x≈x' x∼y = proj₂ resp₁ (proj₁ x≈x') (proj₁ x∼y) ,
-                     proj₂ resp₂ (proj₂ x≈x') (proj₂ x∼y)
+    resp² x≈x′ x∼y = proj₂ resp₁ (proj₁ x≈x′) (proj₁ x∼y) ,
+                     proj₂ resp₂ (proj₂ x≈x′) (proj₂ x∼y)
 
   ×-total : ∀ {_∼₁_ _∼₂_} → Symmetric _∼₁_ →
     Total _∼₁_ → Total _∼₂_ →
@@ -244,118 +244,3 @@ module _ {a b} {A : Set a} {B : Set b} where
       ; right-inverse-of = λ _ → P.refl
       }
     }
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-infixr 2 _×-Rel_
-_×-Rel_ = Pointwise
-{-# WARNING_ON_USAGE _×-Rel_
-"Warning: _×-Rel_ was deprecated in v0.15.
-Please use Pointwise instead."
-#-}
-Rel↔≡                     = Pointwise-≡↔≡
-{-# WARNING_ON_USAGE Rel↔≡
-"Warning: Rel↔≡ was deprecated in v0.15.
-Please use Pointwise-≡↔≡ instead."
-#-}
-_×-reflexive_             = ×-reflexive
-{-# WARNING_ON_USAGE _×-reflexive_
-"Warning: _×-reflexive_ was deprecated in v0.15.
-Please use ×-reflexive instead."
-#-}
-_×-refl_                  = ×-refl
-{-# WARNING_ON_USAGE _×-refl_
-"Warning: _×-refl_ was deprecated in v0.15.
-Please use ×-refl instead."
-#-}
-_×-symmetric_             = ×-symmetric
-{-# WARNING_ON_USAGE _×-symmetric_
-"Warning: _×-symmetric_ was deprecated in v0.15.
-Please use ×-symmetric instead."
-#-}
-_×-transitive_            = ×-transitive
-{-# WARNING_ON_USAGE _×-transitive_
-"Warning: _×-transitive_ was deprecated in v0.15.
-Please use ×-transitive instead."
-#-}
-_×-antisymmetric_         = ×-antisymmetric
-{-# WARNING_ON_USAGE _×-antisymmetric_
-"Warning: _×-antisymmetric_ was deprecated in v0.15.
-Please use ×-antisymmetric instead."
-#-}
-_×-≈-respects₂_           = ×-respects₂
-{-# WARNING_ON_USAGE _×-≈-respects₂_
-"Warning: _×-≈-respects₂_ was deprecated in v0.15.
-Please use ×-respects₂ instead."
-#-}
-_×-decidable_             = ×-decidable
-{-# WARNING_ON_USAGE _×-decidable_
-"Warning: _×-decidable_ was deprecated in v0.15.
-Please use ×-decidable instead."
-#-}
-_×-isEquivalence_         = ×-isEquivalence
-{-# WARNING_ON_USAGE _×-isEquivalence_
-"Warning: _×-isEquivalence_ was deprecated in v0.15.
-Please use ×-isEquivalence instead."
-#-}
-_×-isDecEquivalence_      = ×-isDecEquivalence
-{-# WARNING_ON_USAGE _×-isDecEquivalence_
-"Warning: _×-isDecEquivalence_ was deprecated in v0.15.
-Please use ×-isDecEquivalence instead."
-#-}
-_×-isPreorder_            = ×-isPreorder
-{-# WARNING_ON_USAGE _×-isPreorder_
-"Warning: _×-isPreorder_ was deprecated in v0.15.
-Please use ×-isPreorder instead."
-#-}
-_×-isPartialOrder_        = ×-isPartialOrder
-{-# WARNING_ON_USAGE _×-isPartialOrder_
-"Warning: _×-isPartialOrder_ was deprecated in v0.15.
-Please use ×-isPartialOrder instead."
-#-}
-_×-isStrictPartialOrder_  = ×-isStrictPartialOrder
-{-# WARNING_ON_USAGE _×-isStrictPartialOrder_
-"Warning: _×-isStrictPartialOrder_ was deprecated in v0.15.
-Please use ×-isStrictPartialOrder instead."
-#-}
-_×-preorder_              = ×-preorder
-{-# WARNING_ON_USAGE _×-preorder_
-"Warning: _×-preorder_ was deprecated in v0.15.
-Please use ×-preorder instead."
-#-}
-_×-setoid_                = ×-setoid
-{-# WARNING_ON_USAGE _×-setoid_
-"Warning: _×-setoid_ was deprecated in v0.15.
-Please use ×-setoid instead."
-#-}
-_×-decSetoid_             = ×-decSetoid
-{-# WARNING_ON_USAGE _×-decSetoid_
-"Warning: _×-decSetoid_ was deprecated in v0.15.
-Please use ×-decSetoid instead."
-#-}
-_×-poset_                 = ×-poset
-{-# WARNING_ON_USAGE _×-poset_
-"Warning: _×-poset_ was deprecated in v0.15.
-Please use ×-poset instead."
-#-}
-_×-strictPartialOrder_    = ×-strictPartialOrder
-{-# WARNING_ON_USAGE _×-strictPartialOrder_
-"Warning: _×-strictPartialOrder_ was deprecated in v0.15.
-Please use ×-strictPartialOrder instead."
-#-}
-_×-≟_                     = ≡-dec
-{-# WARNING_ON_USAGE _×-≟_
-"Warning: _×-≟_ was deprecated in v0.15.
-Please use ≡-dec from Data.Product.Properties instead."
-#-}
-≡?×≡?⇒≡?                  = ≡-dec
-{-# WARNING_ON_USAGE ≡?×≡?⇒≡?
-"Warning: ≡?×≡?⇒≡? was deprecated in v1.1.
-Please use ≡-dec from Data.Product.Properties instead."
-#-}

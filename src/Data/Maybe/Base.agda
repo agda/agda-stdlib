@@ -29,10 +29,8 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-data Maybe (A : Set a) : Set a where
-  nothing : Maybe A
-  just    : (x : A) → Maybe A
-
+open import Agda.Builtin.Maybe public
+  using (Maybe; just; nothing)
 
 ------------------------------------------------------------------------
 -- Some operations
@@ -105,6 +103,11 @@ just a  >>= f = f a
 _<∣>_ : Maybe A → Maybe A → Maybe A
 just x  <∣> my = just x
 nothing <∣> my = my
+
+-- Just when the boolean is true
+
+when : Bool → A → Maybe A
+when b c = map (const c) (boolToMaybe b)
 
 ------------------------------------------------------------------------
 -- Aligning and zipping

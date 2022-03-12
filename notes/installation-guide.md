@@ -1,19 +1,21 @@
 Installation instructions
 =========================
 
-Use version v1.3 of the standard library with Agda 2.6.1.
+Note: the full story on installing Agda libraries can be found at [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
+
+Use version v1.7 of the standard library with Agda 2.6.2.
 
 1. Navigate to a suitable directory `$HERE` (replace appropriately) where
    you would like to install the library.
 
-2. Download the tarball of v1.3 of the standard library. This can either be
+2. Download the tarball of v1.7 of the standard library. This can either be
    done manually by visiting the Github repository for the library, or via the
    command line as follows:
    ```
-   wget -O agda-stdlib.tar https://github.com/agda/agda-stdlib/archive/v1.3.tar.gz
+   wget -O agda-stdlib.tar https://github.com/agda/agda-stdlib/archive/v1.7.tar.gz
    ```
    Note that you can replace `wget` with other popular tools such as `curl` and that
-   you can replace `1.3` with any other version of the library you desire.
+   you can replace `1.7` with any other version of the library you desire.
 
 3. Extract the standard library from the tarball. Again this can either be
    done manually or via the command line as follows:
@@ -24,30 +26,36 @@ Use version v1.3 of the standard library with Agda 2.6.1.
 4. [ OPTIONAL ] If using [cabal](https://www.haskell.org/cabal/) then run
    the commands to install via cabal:
    ```
-   cd agda-stdlib-1.3
+   cd agda-stdlib-1.7
    cabal install
    ```
 
-5. Register the standard library with Agda's package system by adding
+5. Locate the file `$HOME/.agda/libraries` where `$HOME` on Ubuntu/MacOS
+   is an environment variable that points to your home directory. The
+   value of the environment variable can be found by running `echo $HOME`.
+
+   Note that the `.agda` directory and the `libraries` file within it,
+   may not exist and you may have to create them.
+
+6. Register the standard library with Agda's package system by adding
    the following line to `$HOME/.agda/libraries`:
    ```
-   $HERE/agda-stdlib-1.3/standard-library.agda-lib
+   $HERE/agda-stdlib-1.7/standard-library.agda-lib
    ```
 
-6. [ OPTIONAL ] To use the standard library in your project `$PROJECT`,
-   put a file `$PROJECT.agda-lib` file in the project root containing:
-   ```
-   depend: standard-library
-   include: $DIRS
-   ```
-   where `$DIRS` is a list of directories where Agda
-   searches for modules, for instance `.` (just the project root).
+Now, the standard library is ready to be used either:
 
-7. [ OPTIONAL ] If you want to refer to the standard library in all your
-   projects, add the following line to `$HOME/.agda/defaults`
-   ```
-   standard-library
-   ```
+- in your project `$PROJECT`, by creating a file
+  `$PROJECT.agda-lib` in the project's root containing:
+  ```
+  depend: standard-library
+  include: $DIRS
+  ```
+  where `$DIRS` is a list of directories where Agda
+  searches for modules, for instance `.` (just the project's root).
 
-Find the full story about installing Agda libraries at
-[readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
+- in all your projects, by adding the following line to
+  `$HOME/.agda/defaults`
+  ```
+  standard-library
+  ```

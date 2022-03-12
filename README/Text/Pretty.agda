@@ -4,6 +4,8 @@
 -- Examples of pretty printing
 ------------------------------------------------------------------------
 
+{-# OPTIONS --sized-types #-}
+
 module README.Text.Pretty where
 
 open import Size

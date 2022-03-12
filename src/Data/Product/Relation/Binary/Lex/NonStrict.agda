@@ -101,7 +101,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
     irrefl₁ = Conv.<-irrefl _≈₁_ _≤₁_
 
     asym₁ : Asymmetric (Conv._<_ _≈₁_ _≤₁_)
-    asym₁ = trans∧irr⟶asym {_≈_ = _≈₁_}
+    asym₁ = trans∧irr⇒asym {_≈_ = _≈₁_}
                            ≈-refl₁ (Conv.<-trans _ _ po₁) irrefl₁
 
   ×-respects₂ : IsEquivalence _≈₁_ →
@@ -175,42 +175,3 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
 ×-decTotalOrder t₁ t₂ = record
   { isDecTotalOrder = ×-isDecTotalOrder O₁.isDecTotalOrder O₂.isDecTotalOrder
   } where module O₁ = DecTotalOrder t₁; module O₂ = DecTotalOrder t₂
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-_×-isPartialOrder_  = ×-isPartialOrder
-{-# WARNING_ON_USAGE _×-isPartialOrder_
-"Warning: _×-isPartialOrder_ was deprecated in v0.15.
-Please use ×-isPartialOrder instead."
-#-}
-_×-isDecTotalOrder_ = ×-isDecTotalOrder
-{-# WARNING_ON_USAGE _×-isDecTotalOrder_
-"Warning: _×-isDecTotalOrder_ was deprecated in v0.15.
-Please use ×-isDecTotalOrder instead."
-#-}
-_×-poset_           = ×-poset
-{-# WARNING_ON_USAGE _×-poset_
-"Warning: _×-poset_ was deprecated in v0.15.
-Please use ×-poset instead."
-#-}
-_×-totalOrder_      = ×-totalOrder
-{-# WARNING_ON_USAGE _×-totalOrder_
-"Warning: _×-totalOrder_ was deprecated in v0.15.
-Please use ×-totalOrder instead."
-#-}
-_×-decTotalOrder_   = ×-decTotalOrder
-{-# WARNING_ON_USAGE _×-decTotalOrder_
-"Warning: _×-decTotalOrder_ was deprecated in v0.15.
-Please use ×-decTotalOrder instead."
-#-}
-×-≈-respects₂       = ×-respects₂
-{-# WARNING_ON_USAGE ×-≈-respects₂
-"Warning: ×-≈-respects₂ was deprecated in v0.15.
-Please use ×-respects₂ instead."
-#-}

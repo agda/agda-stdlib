@@ -4,7 +4,7 @@
 -- The free monad construction on indexed containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Indexed.FreeMonad where
 
@@ -28,7 +28,7 @@ infix  9 _⋆_
 
 _⋆C_ : ∀ {i o c r} {I : Set i} {O : Set o} →
        Container I O c r → Pred O c → Container I O _ _
-C ⋆C X = const X ⊎ C
+C ⋆C X = const X ⊎′ C
 
 _⋆_ : ∀ {ℓ} {O : Set ℓ} → Container O O ℓ ℓ → Pt O ℓ
 C ⋆ X = μ (C ⋆C X)

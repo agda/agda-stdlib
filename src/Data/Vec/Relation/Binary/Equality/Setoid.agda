@@ -15,7 +15,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as PW
   using (Pointwise)
-open import Function
+open import Function.Base
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -67,6 +67,11 @@ open PW public using (++⁺ ; ++⁻ ; ++ˡ⁻; ++ʳ⁻)
 ++-identityʳ : ∀ {n} (xs : Vec A n) → xs ++ [] ≋ xs
 ++-identityʳ []       = []
 ++-identityʳ (x ∷ xs) = refl ∷ ++-identityʳ xs
+
+++-assoc : ∀ {n m k} (xs : Vec A n) (ys : Vec A m) (zs : Vec A k) →
+             (xs ++ ys) ++ zs ≋ xs ++ (ys ++ zs)
+++-assoc [] ys zs = ≋-refl
+++-assoc (x ∷ xs) ys zs = refl ∷ ++-assoc xs ys zs
 
 map-++-commute : ∀ {b m n} {B : Set b}
                    (f : B → A) (xs : Vec B m) {ys : Vec B n} →

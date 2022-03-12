@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated names
+{-# OPTIONS --warn=noUserWarning #-}
+
 open import Relation.Binary
 
 module Function.Endomorphism.Setoid {c e} (S : Setoid c e) where

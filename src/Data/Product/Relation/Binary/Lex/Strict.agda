@@ -16,7 +16,7 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
 open import Data.Empty
-open import Function
+open import Function.Base
 open import Induction.WellFounded
 open import Level
 open import Relation.Nullary
@@ -78,7 +78,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
   ×-asymmetric sym₁ resp₁ asym₁ asym₂ = asym
     where
     irrefl₁ : Irreflexive _≈₁_ _<₁_
-    irrefl₁ = asym⟶irr resp₁ sym₁ asym₁
+    irrefl₁ = asym⇒irr resp₁ sym₁ asym₁
 
     asym : Asymmetric _<ₗₑₓ_
     asym (inj₁ x₁<y₁) (inj₁ y₁<x₁) = asym₁ x₁<y₁ y₁<x₁
@@ -144,16 +144,16 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
     open IsEquivalence eq₁
 
     respʳ : _<ₗₑₓ_ Respectsʳ _≋_
-    respʳ y≈y' (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y') x₁<y₁)
-    respʳ y≈y' (inj₂ x≈<y)  =
-      inj₂ ( trans (proj₁ x≈<y) (proj₁ y≈y')
-           , proj₁ resp₂ (proj₂ y≈y') (proj₂ x≈<y) )
+    respʳ y≈y′ (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y′) x₁<y₁)
+    respʳ y≈y′ (inj₂ x≈<y)  =
+      inj₂ ( trans (proj₁ x≈<y) (proj₁ y≈y′)
+           , proj₁ resp₂ (proj₂ y≈y′) (proj₂ x≈<y) )
 
     respˡ : _<ₗₑₓ_ Respectsˡ _≋_
-    respˡ x≈x' (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x') x₁<y₁)
-    respˡ x≈x' (inj₂ x≈<y)  =
-      inj₂ ( trans (sym $ proj₁ x≈x') (proj₁ x≈<y)
-           , proj₂ resp₂ (proj₂ x≈x') (proj₂ x≈<y) )
+    respˡ x≈x′ (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x′) x₁<y₁)
+    respˡ x≈x′ (inj₂ x≈<y)  =
+      inj₂ ( trans (sym $ proj₁ x≈x′) (proj₁ x≈<y)
+           , proj₂ resp₂ (proj₂ x≈x′) (proj₂ x≈<y) )
 
   ×-compare : Symmetric _≈₁_ →
               Trichotomous _≈₁_ _<₁_ → Trichotomous _≈₂_ _<₂_ →
@@ -286,53 +286,3 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
   { isStrictTotalOrder = ×-isStrictTotalOrder
       (isStrictTotalOrder s₁) (isStrictTotalOrder s₂)
   } where open StrictTotalOrder
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-_×-irreflexive_ = ×-irreflexive
-{-# WARNING_ON_USAGE _×-irreflexive_
-"Warning: _×-irreflexive_ was deprecated in v0.15.
-Please use ×-irreflexive instead."
-#-}
-_×-isPreorder_           = ×-isPreorder
-{-# WARNING_ON_USAGE _×-isPreorder_
-"Warning: _×-isPreorder_ was deprecated in v0.15.
-Please use ×-isPreorder instead."
-#-}
-_×-isStrictPartialOrder_ = ×-isStrictPartialOrder
-{-# WARNING_ON_USAGE _×-isStrictPartialOrder_
-"Warning: _×-isStrictPartialOrder_ was deprecated in v0.15.
-Please use ×-isStrictPartialOrder instead."
-#-}
-_×-isStrictTotalOrder_   = ×-isStrictTotalOrder
-{-# WARNING_ON_USAGE _×-isStrictTotalOrder_
-"Warning: _×-isStrictTotalOrder_ was deprecated in v0.15.
-Please use ×-isStrictTotalOrder instead."
-#-}
-_×-preorder_             = ×-preorder
-{-# WARNING_ON_USAGE _×-preorder_
-"Warning: _×-preorder_ was deprecated in v0.15.
-Please use ×-preorder instead."
-#-}
-_×-strictPartialOrder_   = ×-strictPartialOrder
-{-# WARNING_ON_USAGE _×-strictPartialOrder_
-"Warning: _×-strictPartialOrder_ was deprecated in v0.15.
-Please use ×-strictPartialOrder instead."
-#-}
-_×-strictTotalOrder_     = ×-strictTotalOrder
-{-# WARNING_ON_USAGE _×-strictTotalOrder_
-"Warning: _×-strictTotalOrder_ was deprecated in v0.15.
-Please use ×-strictTotalOrder instead."
-#-}
-×-≈-respects₂            = ×-respects₂
-{-# WARNING_ON_USAGE ×-≈-respects₂
-"Warning: ×-≈-respects₂ was deprecated in v0.15.
-Please use ×-respects₂ instead."
-#-}

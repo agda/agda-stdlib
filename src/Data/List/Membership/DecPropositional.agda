@@ -17,5 +17,5 @@ module Data.List.Membership.DecPropositional
 
 open import Data.List.Membership.Propositional {A = A} public
 open import Data.List.Membership.DecSetoid (decSetoid _≟_) public
-  using (_∈?_)
+  using (_∈?_; _∉?_)
 

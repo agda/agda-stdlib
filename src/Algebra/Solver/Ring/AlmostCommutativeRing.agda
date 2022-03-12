@@ -14,7 +14,7 @@ open import Algebra.Structures
 open import Algebra.Definitions
 import Algebra.Morphism as Morphism
 import Algebra.Morphism.Definitions as MorphismDefinitions
-open import Function
+open import Function hiding (Morphism)
 open import Level
 open import Relation.Binary
 
@@ -124,7 +124,7 @@ fromCommutativeRing CR = record
   { isAlmostCommutativeRing = record
       { isCommutativeSemiring = isCommutativeSemiring
       ; -‿cong                = -‿cong
-      ; -‿*-distribˡ          = -‿*-distribˡ
+      ; -‿*-distribˡ          = λ x y → sym (-‿distribˡ-* x y)
       ; -‿+-comm              = ⁻¹-∙-comm
       }
   }

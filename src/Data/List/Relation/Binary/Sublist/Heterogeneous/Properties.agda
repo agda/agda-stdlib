@@ -24,18 +24,17 @@ open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
 open import Data.Nat.Base using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃₂; _×_; _,_; proj₂; uncurry)
+open import Data.Product using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
 
 open import Function.Base
-open import Function.Bijection   using (_⤖_; bijection)
-open import Function.Equivalence using (_⇔_ ; equivalence)
+open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
 
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Negation using (¬?)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------
@@ -313,10 +312,10 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a as b bs} where
 
   ∷⁻¹ : R a b → Sublist R as bs ⇔ Sublist R (a ∷ as) (b ∷ bs)
-  ∷⁻¹ r = equivalence (r ∷_) ∷⁻
+  ∷⁻¹ r = mk⇔ (r ∷_) ∷⁻
 
   ∷ʳ⁻¹ : ¬ R a b → Sublist R (a ∷ as) bs ⇔ Sublist R (a ∷ as) (b ∷ bs)
-  ∷ʳ⁻¹ ¬r = equivalence (_ ∷ʳ_) (∷ʳ⁻ ¬r)
+  ∷ʳ⁻¹ ¬r = mk⇔ (_ ∷ʳ_) (∷ʳ⁻ ¬r)
 
 ------------------------------------------------------------------------
 -- Irrelevant special case
@@ -347,7 +346,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toAny∘fromAny≗id (there p) = P.cong there (toAny∘fromAny≗id p)
 
   Sublist-[x]-bijection : ∀ {x xs} → (Sublist R [ x ] xs) ⤖ (Any (R x) xs)
-  Sublist-[x]-bijection = bijection toAny fromAny toAny-injective toAny∘fromAny≗id
+  Sublist-[x]-bijection = mk⤖ (toAny-injective , < fromAny , toAny∘fromAny≗id >)
 
 ------------------------------------------------------------------------
 -- Relational properties

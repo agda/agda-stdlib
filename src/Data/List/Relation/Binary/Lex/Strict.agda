@@ -13,7 +13,7 @@ module Data.List.Relation.Binary.Lex.Strict where
 
 open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤; tt)
-open import Function using (_∘_; id)
+open import Function.Base using (_∘_; id)
 open import Data.Product using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.List.Base using (List; []; _∷_)
@@ -24,17 +24,18 @@ open import Relation.Binary.Consequences
 open import Data.List.Relation.Binary.Pointwise as Pointwise
    using (Pointwise; []; _∷_; head; tail)
 
-open import Data.List.Relation.Binary.Lex.Core as Core public
-  using (base; halt; this; next; ¬≤-this; ¬≤-next)
+import Data.List.Relation.Binary.Lex as Core
+
+----------------------------------------------------------------------
+-- Re-exporting core definitions
+
+open Core public
+  using (Lex-<; Lex-≤; base; halt; this; next; ¬≤-this; ¬≤-next)
 
 ----------------------------------------------------------------------
 -- Strict lexicographic ordering.
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where
-
-  Lex-< : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
-          Rel (List A) (a ⊔ ℓ₁ ⊔ ℓ₂)
-  Lex-< = Core.Lex ⊥
 
   -- Properties
 
@@ -44,8 +45,11 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
       _≋_ = Pointwise _≈_
       _<_ = Lex-< _≈_ _≺_
 
+    xs≮[] : ∀ xs → ¬ xs < []
+    xs≮[] _ (base ())
+
     ¬[]<[] : ¬ [] < []
-    ¬[]<[] (base ())
+    ¬[]<[] = xs≮[] []
 
     <-irreflexive : Irreflexive _≈_ _≺_ → Irreflexive _≋_ _<_
     <-irreflexive irr (x≈y ∷ xs≋ys) (this x<y)     = irr x≈y x<y
@@ -57,7 +61,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     <-asymmetric sym resp as = asym
       where
       irrefl : Irreflexive _≈_ _≺_
-      irrefl = asym⟶irr resp sym as
+      irrefl = asym⇒irr resp sym as
 
       asym : Asymmetric _<_
       asym (base bot)       _                = bot
@@ -133,10 +137,6 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
-  Lex-≤ : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
-          Rel (List A) (a ⊔ ℓ₁ ⊔ ℓ₂)
-  Lex-≤ = Core.Lex ⊤
-
   -- Properties
 
   ≤-reflexive : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
@@ -196,6 +196,14 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
       }
       where open IsStrictPartialOrder spo
 
+    ≤-isDecPartialOrder : IsStrictTotalOrder _≈_ _≺_ →
+                          IsDecPartialOrder _≋_ _≤_
+    ≤-isDecPartialOrder sto = record
+      { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
+      ; _≟_            = Pointwise.decidable _≟_
+      ; _≤?_           = ≤-decidable _≟_ _<?_
+      } where open IsStrictTotalOrder sto
+
     ≤-isTotalOrder : IsStrictTotalOrder _≈_ _≺_ → IsTotalOrder _≋_ _≤_
     ≤-isTotalOrder sto = record
       { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
@@ -221,6 +229,13 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 ≤-partialOrder spo = record
   { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
   } where open StrictPartialOrder spo
+
+≤-decPoset : ∀ {a ℓ₁ ℓ₂} → StrictTotalOrder a ℓ₁ ℓ₂ →
+             DecPoset _ _ _
+≤-decPoset sto = record
+  { isDecPartialOrder = ≤-isDecPartialOrder isStrictTotalOrder
+  } where open StrictTotalOrder sto
+
 
 ≤-decTotalOrder : ∀ {a ℓ₁ ℓ₂} → StrictTotalOrder a ℓ₁ ℓ₂ →
                   DecTotalOrder _ _ _

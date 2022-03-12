@@ -11,7 +11,6 @@ module Relation.Binary.Indexed.Heterogeneous.Construct.At where
 
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
-  hiding (IsEquivalence; Setoid)
 
 ------------------------------------------------------------------------
 -- Structures

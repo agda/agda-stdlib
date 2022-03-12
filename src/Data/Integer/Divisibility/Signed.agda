@@ -42,51 +42,51 @@ open _∣_ using (quotient) public
 -- Conversion between signed and unsigned divisibility
 
 ∣ᵤ⇒∣ : ∀ {k i} → k ∣ᵤ i → k ∣ i
-∣ᵤ⇒∣ {k} {i} (divides 0 eq) = divides (+ 0) (∣n∣≡0⇒n≡0 eq)
-∣ᵤ⇒∣ {k} {i} (divides q@(ℕ.suc q') eq) with k ≟ + 0
-... | yes refl = divides (+ 0) (∣n∣≡0⇒n≡0 (trans eq (ℕ.*-zeroʳ q)))
-... | no ¬k≠0  = divides ((S._*_ on sign) i k ◃ q) (◃-≡ sign-eq abs-eq) where
+∣ᵤ⇒∣ {k} {i} (divides 0           eq) = divides (+ 0) (∣i∣≡0⇒i≡0 eq)
+∣ᵤ⇒∣ {k} {i} (divides q@(ℕ.suc _) eq) with k ≟ +0
+... | yes refl = divides +0 (∣i∣≡0⇒i≡0 (trans eq (ℕ.*-zeroʳ q)))
+... | no  neq  = divides (sign i S.* sign k ◃ q) (◃-cong sign-eq abs-eq)
+  where
+  ikq = sign i S.* sign k ◃ q
 
-  k'   = ℕ.suc (ℕ.pred ∣ k ∣)
-  ikq' = sign i S.* sign k ◃ ℕ.suc q'
+  *-nonZero : ∀ m n .{{_ : ℕ.NonZero m}} .{{_ : ℕ.NonZero n}} → ℕ.NonZero (m ℕ.* n)
+  *-nonZero (ℕ.suc _) (ℕ.suc _) = _
 
-  sign-eq : sign i ≡ sign (((S._*_ on sign) i k ◃ q) * k)
+  ◃-nonZero : ∀ s n .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
+  ◃-nonZero S.- (ℕ.suc _) = _
+  ◃-nonZero S.+ (ℕ.suc _) = _
+
+  ikq≢0 : NonZero ikq
+  ikq≢0 = ◃-nonZero (sign i S.* sign k) q
+
+  instance
+    ikq*∣k∣≢0 : ℕ.NonZero (∣ ikq ∣ ℕ.* ∣ k ∣)
+    ikq*∣k∣≢0 = *-nonZero ∣ ikq ∣ ∣ k ∣ {{ikq≢0}} {{≢-nonZero neq}}
+
+  sign-eq : sign i ≡ sign (ikq * k)
   sign-eq = sym $ begin
-    sign (((S._*_ on sign) i k ◃ ℕ.suc q') * k)
-      ≡⟨ cong (λ m → sign (sign ikq' S.* sign k ◃ ∣ ikq' ∣ ℕ.* m))
-              (sym (ℕ.suc[pred[n]]≡n (¬k≠0 ∘ ∣n∣≡0⇒n≡0))) ⟩
-    sign (sign ikq' S.* sign k ◃ ∣ ikq' ∣ ℕ.* k')
-      ≡⟨ cong (λ m → sign (sign ikq' S.* sign k ◃ m ℕ.* k'))
-              (abs-◃ (sign i S.* sign k) (ℕ.suc q')) ⟩
-    sign (sign ikq' S.* sign k ◃ _)
-      ≡⟨ sign-◃ (sign ikq' S.* sign k) (ℕ.pred ∣ k ∣ ℕ.+ q' ℕ.* k') ⟩
-    sign ikq' S.* sign k
-      ≡⟨ cong (S._* sign k) (sign-◃ (sign i S.* sign k) q') ⟩
-    sign i S.* sign k S.* sign k
-        ≡⟨ SProp.*-assoc (sign i) (sign k) (sign k) ⟩
-    sign i S.* (sign k S.* sign k)
-      ≡⟨ cong (sign i S.*_) (SProp.s*s≡+ (sign k)) ⟩
-    sign i S.* S.+
-      ≡⟨ SProp.*-identityʳ (sign i) ⟩
-    sign i
-      ∎ where open ≡-Reasoning
+    sign (ikq * k)                  ≡⟨ sign-◃ (sign ikq S.* sign k) (∣ ikq ∣ ℕ.* ∣ k ∣) ⟩
+    sign ikq S.* sign k             ≡⟨ cong (S._* sign k) (sign-◃ (sign i S.* sign k) q) ⟩
+    (sign i S.* sign k) S.* sign k  ≡⟨ SProp.*-assoc (sign i) (sign k) (sign k) ⟩
+    sign i S.* (sign k S.* sign k)  ≡⟨ cong (sign i S.*_) (SProp.s*s≡+ (sign k)) ⟩
+    sign i S.* S.+                  ≡⟨ SProp.*-identityʳ (sign i) ⟩
+    sign i                          ∎
+    where open ≡-Reasoning
 
-  abs-eq : ∣ i ∣ ≡ ∣ ((S._*_ on sign) i k ◃ q) * k ∣
+  abs-eq : ∣ i ∣ ≡ ∣ ikq * k ∣
   abs-eq = sym $ begin
-    ∣ ((S._*_ on sign) i k ◃ ℕ.suc q') * k ∣
-      ≡⟨ abs-◃ (sign ikq' S.* sign k) (∣ ikq' ∣ ℕ.* ∣ k ∣) ⟩
-    ∣ ikq' ∣ ℕ.* ∣ k ∣
-      ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ (sign i S.* sign k) (ℕ.suc q')) ⟩
-    ℕ.suc q' ℕ.* ∣ k ∣
-      ≡⟨ sym eq ⟩
-    ∣ i ∣
-      ∎ where open ≡-Reasoning
+    ∣ ikq * k ∣        ≡⟨ ∣i*j∣≡∣i∣*∣j∣ ikq k ⟩
+    ∣ ikq ∣ ℕ.* ∣ k ∣  ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ (sign i S.* sign k) q) ⟩
+    q ℕ.* ∣ k ∣        ≡⟨ sym eq ⟩
+    ∣ i ∣              ∎
+    where open ≡-Reasoning
 
 ∣⇒∣ᵤ : ∀ {k i} → k ∣ i → k ∣ᵤ i
 ∣⇒∣ᵤ {k} {i} (divides q eq) = divides ∣ q ∣ $′ begin
   ∣ i ∣           ≡⟨ cong ∣_∣ eq ⟩
   ∣ q * k ∣       ≡⟨ abs-*-commute q k ⟩
-  ∣ q ∣ ℕ.* ∣ k ∣ ∎ where open ≡-Reasoning
+  ∣ q ∣ ℕ.* ∣ k ∣ ∎
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _∣_ is a preorder
@@ -127,11 +127,13 @@ module ∣-Reasoning where
 ------------------------------------------------------------------------
 -- Other properties of _∣_
 
+infix 4 _∣?_
+
 _∣?_ : Decidable _∣_
 k ∣? m = DEC.map′ ∣ᵤ⇒∣ ∣⇒∣ᵤ (∣ k ∣ ℕ.∣? ∣ m ∣)
 
-0∣⇒≡0 : ∀ {m} → + 0 ∣ m → m ≡ + 0
-0∣⇒≡0 0|m = ∣n∣≡0⇒n≡0 (ℕ.0∣⇒≡0 (∣⇒∣ᵤ 0|m))
+0∣⇒≡0 : ∀ {m} → 0ℤ ∣ m → m ≡ 0ℤ
+0∣⇒≡0 0|m = ∣i∣≡0⇒i≡0 (ℕ.0∣⇒≡0 (∣⇒∣ᵤ 0|m))
 
 m∣∣m∣ : ∀ {m} → m ∣ (+ ∣ m ∣)
 m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
@@ -146,7 +148,7 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
 ∣m⇒∣-m : ∀ {i m} → i ∣ m → i ∣ - m
 ∣m⇒∣-m {i} {m} i∣m = ∣ᵤ⇒∣ $′ begin
   ∣ i ∣   ∣⟨ ∣⇒∣ᵤ i∣m ⟩
-  ∣ m ∣   ≡⟨ sym (∣-n∣≡∣n∣ m) ⟩
+  ∣ m ∣   ≡⟨ sym (∣-i∣≡∣i∣ m) ⟩
   ∣ - m ∣ ∎
   where open ℕ.∣-Reasoning
 
@@ -164,9 +166,7 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
   where open ∣-Reasoning
 
 ∣m+n∣n⇒∣m : ∀ {i m n} → i ∣ m + n → i ∣ n → i ∣ m
-∣m+n∣n⇒∣m {i} {m} {n} i|m+n i|n
-  rewrite +-comm m n
-        = ∣m+n∣m⇒∣n i|m+n i|n
+∣m+n∣n⇒∣m {m = m} {n} i|m+n i|n rewrite +-comm m n = ∣m+n∣m⇒∣n i|m+n i|n
 
 ∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
 ∣n⇒∣m*n {i} m {n} (divides q eq) = divides (m * q) $′ begin
@@ -176,18 +176,17 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
   where open ≡-Reasoning
 
 ∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
-∣m⇒∣m*n {i} {m} n i|m
-  rewrite *-comm m n
-        = ∣n⇒∣m*n {i} n {m} i|m
+∣m⇒∣m*n {m = m} n i|m rewrite *-comm m n = ∣n⇒∣m*n n i|m
 
 *-monoʳ-∣ : ∀ k → (k *_) Preserves _∣_ ⟶ _∣_
-*-monoʳ-∣ k i∣j = ∣ᵤ⇒∣ (Unsigned.*-monoʳ-∣ k (∣⇒∣ᵤ i∣j))
+*-monoʳ-∣ k = ∣ᵤ⇒∣ ∘ Unsigned.*-monoʳ-∣ k ∘ ∣⇒∣ᵤ
 
 *-monoˡ-∣ : ∀ k → (_* k) Preserves _∣_ ⟶ _∣_
-*-monoˡ-∣ k {i} {j} i∣j = ∣ᵤ⇒∣ (Unsigned.*-monoˡ-∣ k {i} {j} (∣⇒∣ᵤ i∣j))
+*-monoˡ-∣ k {i} {j} = ∣ᵤ⇒∣ ∘ Unsigned.*-monoˡ-∣ k {i} {j} ∘ ∣⇒∣ᵤ
 
-*-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
-*-cancelˡ-∣ k k≢0 = ∣ᵤ⇒∣ ∘ Unsigned.*-cancelˡ-∣ k k≢0 ∘ ∣⇒∣ᵤ
+*-cancelˡ-∣ : ∀ k {i j} .{{_ : NonZero k}} → k * i ∣ k * j → i ∣ j
+*-cancelˡ-∣ k = ∣ᵤ⇒∣ ∘ Unsigned.*-cancelˡ-∣ k ∘ ∣⇒∣ᵤ
 
-*-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
-*-cancelʳ-∣ k {i} {j} k≢0 = ∣ᵤ⇒∣ ∘′ Unsigned.*-cancelʳ-∣ k {i} {j} k≢0 ∘′ ∣⇒∣ᵤ
+*-cancelʳ-∣ : ∀ k {i j} .{{_ : NonZero k}} → i * k ∣ j * k → i ∣ j
+*-cancelʳ-∣ k {i} {j} = ∣ᵤ⇒∣ ∘′ Unsigned.*-cancelʳ-∣ k {i} {j} ∘′ ∣⇒∣ᵤ
+

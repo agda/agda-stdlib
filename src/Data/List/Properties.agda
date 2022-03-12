@@ -17,12 +17,15 @@ import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ; inject₁)
 open import Data.List.Base as List
+open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base
+open import Data.Nat.Divisibility
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
+import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function
@@ -105,6 +108,12 @@ length-map f (x ∷ xs) = cong suc (length-map f xs)
 map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose []       = refl
 map-compose (x ∷ xs) = cong (_ ∷_) (map-compose xs)
+
+map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
+map-injective finj {[]} {[]} eq = refl
+map-injective finj {x ∷ xs} {y ∷ ys} eq =
+  let fx≡fy , fxs≡fys = ∷-injective eq in
+  cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
 
 ------------------------------------------------------------------------
 -- mapMaybe
@@ -279,13 +288,13 @@ module _ (f : A → A → B) where
 
 module _ (f : A → B → C) where
 
-  zipWith-identityˡ : ∀ xs → zipWith f [] xs ≡ []
-  zipWith-identityˡ []       = refl
-  zipWith-identityˡ (x ∷ xs) = refl
+  zipWith-zeroˡ : ∀ xs → zipWith f [] xs ≡ []
+  zipWith-zeroˡ []       = refl
+  zipWith-zeroˡ (x ∷ xs) = refl
 
-  zipWith-identityʳ : ∀ xs → zipWith f xs [] ≡ []
-  zipWith-identityʳ []       = refl
-  zipWith-identityʳ (x ∷ xs) = refl
+  zipWith-zeroʳ : ∀ xs → zipWith f xs [] ≡ []
+  zipWith-zeroʳ []       = refl
+  zipWith-zeroʳ (x ∷ xs) = refl
 
   length-zipWith : ∀ xs ys →
                    length (zipWith f xs ys) ≡ length xs ⊓ length ys
@@ -490,6 +499,22 @@ concat-map {f = f} xss = begin
   foldr (λ ys → map f ys ++_) [] xss         ≡⟨ sym (foldr-fusion (map f) [] (map-++-commute f) xss) ⟩
   map f (concat xss)                         ∎
 
+concat-++ : (xss yss : List (List A)) → concat xss ++ concat yss ≡ concat (xss ++ yss)
+concat-++ [] yss = refl
+concat-++ ([] ∷ xss) yss = concat-++ xss yss
+concat-++ ((x ∷ xs) ∷ xss) yss = cong (x ∷_) (concat-++ (xs ∷ xss) yss)
+
+concat-concat : concat {A = A} ∘ map concat ≗ concat ∘ concat
+concat-concat [] = refl
+concat-concat (xss ∷ xsss) = begin
+  concat (map concat (xss ∷ xsss))   ≡⟨ cong (concat xss ++_) (concat-concat xsss) ⟩
+  concat xss ++ concat (concat xsss) ≡⟨ concat-++ xss (concat xsss) ⟩
+  concat (concat (xss ∷ xsss))       ∎
+
+concat-[-] : concat {A = A} ∘ map [_] ≗ id
+concat-[-] [] = refl
+concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
+
 ------------------------------------------------------------------------
 -- sum
 
@@ -499,6 +524,13 @@ sum-++-commute (x ∷ xs) ys = begin
   x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++-commute xs ys) ⟩
   x + (sum xs + sum ys)  ≡⟨ sym (+-assoc x _ _) ⟩
   (x + sum xs) + sum ys  ∎
+
+------------------------------------------------------------------------
+-- product
+
+∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
+∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
+∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
 
 ------------------------------------------------------------------------
 -- replicate
@@ -712,7 +744,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-some : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
   filter-some {x ∷ xs} (here px)   with P? x
-  ... | true because _ = s≤s z≤n
+  ... | true because _ = z<s
   ... | no         ¬px = contradiction px ¬px
   filter-some {x ∷ xs} (there pxs) with does (P? x)
   ... | true  = ≤-step (filter-some pxs)
@@ -795,6 +827,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
   partition-defn (x ∷ xs) with does (P? x)
   ...  | true  = cong (Prod.map (x ∷_) id) (partition-defn xs)
   ...  | false = cong (Prod.map id (x ∷_)) (partition-defn xs)
+
+  length-partition : ∀ xs → (let (ys , zs) = partition P? xs) →
+                     length ys ≤ length xs × length zs ≤ length xs
+  length-partition []       = z≤n , z≤n
+  length-partition (x ∷ xs) with does (P? x) | length-partition xs
+  ...  | true  | rec = Prod.map s≤s ≤-step rec
+  ...  | false | rec = Prod.map ≤-step s≤s rec
 
 ------------------------------------------------------------------------
 -- _ʳ++_
@@ -907,6 +946,11 @@ reverse-involutive xs = begin
   xs ++ []              ≡⟨ ++-identityʳ xs ⟩
   xs                    ∎
 
+-- reverse is injective.
+
+reverse-injective : ∀ {xs ys : List A} → reverse xs ≡ reverse ys → xs ≡ ys
+reverse-injective = subst₂ _≡_ (reverse-involutive _) (reverse-involutive _) ∘ cong reverse
+
 -- reverse preserves length.
 
 length-reverse : ∀ (xs : List A) → length (reverse xs) ≡ length xs
@@ -949,7 +993,8 @@ module _ {x y : A} where
   ∷ʳ-injectiveʳ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
   ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
-
+∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
+∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
 
 ------------------------------------------------------------------------
 -- DEPRECATED
@@ -957,104 +1002,16 @@ module _ {x y : A} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.15
+-- Version 2.0
 
-gfilter-just      = mapMaybe-just
-{-# WARNING_ON_USAGE gfilter-just
-"Warning: gfilter-just was deprecated in v0.15.
-Please use mapMaybe-just instead."
-#-}
-gfilter-nothing   = mapMaybe-nothing
-{-# WARNING_ON_USAGE gfilter-nothing
-"Warning: gfilter-nothing was deprecated in v0.15.
-Please use mapMaybe-nothing instead."
-#-}
-gfilter-concatMap = mapMaybe-concatMap
-{-# WARNING_ON_USAGE gfilter-concatMap
-"Warning: gfilter-concatMap was deprecated in v0.15.
-Please use mapMaybe-concatMap instead."
-#-}
-length-gfilter    = length-mapMaybe
-{-# WARNING_ON_USAGE length-gfilter
-"Warning: length-gfilter was deprecated in v0.15.
-Please use length-mapMaybe instead."
-#-}
-right-identity-unique = ++-identityʳ-unique
-{-# WARNING_ON_USAGE right-identity-unique
-"Warning: right-identity-unique was deprecated in v0.15.
-Please use ++-identityʳ-unique instead."
-#-}
-left-identity-unique  = ++-identityˡ-unique
-{-# WARNING_ON_USAGE left-identity-unique
-"Warning: left-identity-unique was deprecated in v0.15.
-Please use ++-identityˡ-unique instead."
+zipWith-identityˡ = zipWith-zeroˡ
+{-# WARNING_ON_USAGE zipWith-identityˡ
+"Warning: zipWith-identityˡ was deprecated in v2.0.
+Please use zipWith-zeroˡ instead."
 #-}
 
--- Version 0.16
-
-module _ (p : A → Bool) where
-
-  boolTakeWhile++boolDropWhile : ∀ xs → boolTakeWhile p xs ++ boolDropWhile p xs ≡ xs
-  boolTakeWhile++boolDropWhile []       = refl
-  boolTakeWhile++boolDropWhile (x ∷ xs) with p x
-  ... | true  = cong (x ∷_) (boolTakeWhile++boolDropWhile xs)
-  ... | false = refl
-  {-# WARNING_ON_USAGE boolTakeWhile++boolDropWhile
-  "Warning: boolTakeWhile and boolDropWhile were deprecated in v0.16.
-  Please use takeWhile and dropWhile instead."
-  #-}
-  boolSpan-defn : boolSpan p ≗ < boolTakeWhile p , boolDropWhile p >
-  boolSpan-defn []       = refl
-  boolSpan-defn (x ∷ xs) with p x
-  ... | true  = cong (Prod.map (x ∷_) id) (boolSpan-defn xs)
-  ... | false = refl
-  {-# WARNING_ON_USAGE boolSpan-defn
-  "Warning: boolSpan, boolTakeWhile and boolDropWhile were deprecated in v0.16.
-  Please use span, takeWhile and dropWhile instead."
-  #-}
-  length-boolFilter : ∀ xs → length (boolFilter p xs) ≤ length xs
-  length-boolFilter xs =
-    length-mapMaybe (λ x → if p x then just x else nothing) xs
-  {-# WARNING_ON_USAGE length-boolFilter
-  "Warning: boolFilter was deprecated in v0.16.
-  Please use filter instead."
-  #-}
-  boolPartition-defn : boolPartition p ≗ < boolFilter p , boolFilter (not ∘ p) >
-  boolPartition-defn []       = refl
-  boolPartition-defn (x ∷ xs) with p x
-  ...  | true  = cong (Prod.map (x ∷_) id) (boolPartition-defn xs)
-  ...  | false = cong (Prod.map id (x ∷_)) (boolPartition-defn xs)
-  {-# WARNING_ON_USAGE boolPartition-defn
-  "Warning: boolPartition and boolFilter were deprecated in v0.16.
-  Please use partition and filter instead."
-  #-}
-
-module _ (P : A → Set p) (P? : Decidable P) where
-
-  boolFilter-filters : ∀ xs → All P (boolFilter (isYes ∘ P?) xs)
-  boolFilter-filters []       = []
-  boolFilter-filters (x ∷ xs) with P? x
-  ... | true  because [px] = invert [px] ∷ boolFilter-filters xs
-  ... | false because  _   = boolFilter-filters xs
-  {-# WARNING_ON_USAGE boolFilter-filters
-  "Warning: boolFilter was deprecated in v0.16.
-  Please use filter instead."
-  #-}
-
--- Version 0.17
-
-idIsFold  = id-is-foldr
-{-# WARNING_ON_USAGE idIsFold
-"Warning: idIsFold was deprecated in v0.17.
-Please use id-is-foldr instead."
-#-}
-++IsFold  = ++-is-foldr
-{-# WARNING_ON_USAGE ++IsFold
-"Warning: ++IsFold was deprecated in v0.17.
-Please use ++-is-foldr instead."
-#-}
-mapIsFold = map-is-foldr
-{-# WARNING_ON_USAGE mapIsFold
-"Warning: mapIsFold was deprecated in v0.17.
-Please use map-is-foldr instead."
+zipWith-identityʳ = zipWith-zeroʳ
+{-# WARNING_ON_USAGE zipWith-identityʳ
+"Warning: zipWith-identityʳ was deprecated in v2.0.
+Please use zipWith-zeroʳ instead."
 #-}

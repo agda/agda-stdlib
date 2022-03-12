@@ -4,7 +4,7 @@
 -- Automatic solvers for equations over naturals
 ------------------------------------------------------------------------
 
--- See README.Nat for examples of how to use this solver
+-- See README.Tactic.RingSolver for examples of how to use this solver
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -27,7 +27,7 @@ import Tactic.RingSolver.Core.AlmostCommutativeRing as ACR
 -- containing _+_ and _*_
 
 ring : ACR.AlmostCommutativeRing 0ℓ 0ℓ
-ring = ACR.fromCommutativeSemiring *-+-commutativeSemiring
+ring = ACR.fromCommutativeSemiring +-*-commutativeSemiring
   λ { zero → just refl; _ → nothing }
 
 macro

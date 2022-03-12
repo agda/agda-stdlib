@@ -1,12 +1,17 @@
 Style guide for the standard library
 ====================================
 
-This is very much a work-in-progress and is not exhaustive. Furthermore many of
+This is very much a work-in-progress and is not exhaustive. Furthermore, many of
 these are aspirations, and may be violated in certain parts of the library.
 It is hoped that at some point a linter will be developed for Agda which will
 automate most of this.
 
 ## File structure
+
+* The standard library uses a standard line length of 72 characters. Please
+  try to stay within this limit. Having said that this is the most violated
+  rule in the style-guide and it is recognised that it is not always possible
+  to achieve whilst using meaningful names.
 
 #### Indentation
 
@@ -31,18 +36,63 @@ automate most of this.
   should always go at the end of the line rather than the beginning of the
   next line.
 
+#### Empty lines
+
+* All module headers and standard term definitions should have a single
+  empty line after them.
+
+* There should be _two_ empty lines between adjacent record or module definitions
+  in order to better distinguish the end of the record or module, as they will
+  already be using single empty lines between internal definitions.
+
+* For example:
+  ```agda
+  module Test1 where
+
+    def1 : ...
+    def1 = ...
+
+    def2 : ...
+    def2 = ...
+
+
+  module Test2 where
+
+    record Record1 : Set where
+      field
+        field1 : ...
+
+      aux1 : ...
+      aux1 = ...
+
+      aux2 : ...
+      aux2 = ...
+
+
+   record Record2 : Set where
+     field
+       field2 : ...
+
+
+   record1 : Record1
+   record1 = { field1 = ... }
+
+   record2 : Record2
+   record2 = { field2 = ... }
+  ```
+
 #### Modules
 
-* As a rule of thumb there should only be one named module per file. Anonymous
+* As a rule of thumb, there should only be one named module per file. Anonymous
   modules are fine, but named internal modules should either be opened publicly
   immediately or split out into a separate file.
 
 * Module parameters should be put on a single line if they fit.
 
-* Otherwise they should be spread out over multiple lines, each indented by two
-  spaces. If they can be grouped logically by line then it is fine to do so,
-  otherwise, a line each is probably clearest. The `where` keyword should be placed
-  on an  additional line of code at the end. For example:
+* Otherwise, they should be spread out over multiple lines, each indented by two
+  spaces. If they can be grouped logically by line, then it is fine to do so.
+  Otherwise, a line each is probably clearest. The `where` keyword should be placed
+  on an additional line of code at the end. For example:
   ```agda
   module Relation.Binary.Reasoning.Base.Single
     {a ℓ} {A : Set a} (_∼_ : Rel A ℓ)
@@ -89,7 +139,7 @@ automate most of this.
 
 * Re-exporting terms from a module using the `public` modifier
   should *not* be done in the list of imports as it is very hard to spot.
-  Instead the best approach is often to rename the import and then open it
+  Instead, the best approach is often to rename the import and then open it
   publicly later in the file in a more obvious fashion, e.g.
   ```agda
   -- Import list
@@ -119,7 +169,7 @@ automate most of this.
 
 * The `:` for each field should be aligned.
 
-* If defining multiple records back to back then there should be a double
+* If defining multiple records back-to-back then there should be a double
   empty line between each record.
 
 #### Layout of record instances
@@ -208,10 +258,10 @@ line of code, indented by two spaces.
   non-trivial, then chances are that someone will want to reuse it at some
   point!
 
-* Instead private blocks should only be used to prevent temporary terms and
+* Instead, private blocks should only be used to prevent temporary terms and
   records that are defined for convenience from being exported by the module.
 
-* The mutual block is considered obselete. Please use the standard approach
+* The mutual block is considered obsolete. Please use the standard approach
   of placing the type signatures of the mutually recursive functions before
   their definitions.
 
@@ -245,15 +295,44 @@ line of code, indented by two spaces.
   function arguments and therefore should not be prepended to function
   arguments.
 
+#### Comments
+
+* Comments should be placed above a term rather than on the same line, e.g.
+  ```agda
+  -- Multiplication of two elements
+  _*_ : A → A → A
+  _*_ = ...
+  ```
+  rather than:
+  ```agda
+  _*_ : A → A → A -- Multiplication of two elements
+  _*_ = ...
+  ```
+
+* Files can be separated into different logical parts using comments of
+  the following style, where the header is 72 characters wide:
+  ```agda
+  ------------------------------------------------------------------------
+  -- <Title>
+  ```
+  Use sentence case in the title: `Rounding functions`, not `Rounding Functions` or `ROUNDING FUNCTIONS`.
+
 #### Other
 
 * The `with` syntax is preferred over the use of `case` from the `Function`
-  module.
+  module. The `|` should not be aligned with the `with` statement, i.e.
+  ```agda
+  filter p (x ∷ xs) with p x
+  ... | true  = x ∷ filter p xs
+  ... | false = filter p xs
+  ```
+  instead of
+  ```agda
+  filter p (x ∷ xs) with p x
+  ...                  | true  = x ∷ filter p xs
+  ...                  | false = filter p xs
+  ```
 
-* The standard library uses a standard line length of 72 characters. Please
-  try to stay within this limit. Having said that this is the most violated
-  rule in the style-guide and it is recognised that it is not always possible
-  to achieve whilst maintaining meaningful names.
 
 ## Types
 
@@ -266,10 +345,26 @@ line of code, indented by two spaces.
 * If there are lots of implicit arguments that are common to a collection
   of proofs they should be extracted by using an anonymous module.
 
-* Implicit of type `Level` and `Set` can be generalized using the keyword
-  `variable`. At the moment the policy is *not* to generalize over any other
-  types to minimize the amount of information that users have to keep in
-  their head concurrently.
+#### Variables
+
+* `Level` and `Set`s can always be generalized using the keyword `variable`.
+
+* A file may only declare variables of other types if those types are used
+  in the definition of the main type that the file concerns itself with.
+  At the moment the policy is *not* to generalize over any other types to
+  minimize the amount of information that users have to keep in their head
+  concurrently.
+
+* Example 1: the main type in `Data.List.Properties` is `List A` where `A : Set a`.
+  Therefore it may declare variables over `Level`, `Set a`, `A`, `List A`. It may
+  not declare variables, for example, over predicates (e.g. `P : Pred A p`) as
+  predicates are not used in the definition of `List`, even though they are used
+  in many list functions such as `filter`.
+
+* Example 2: the main type in `Data.List.Relation.Unary.All` is `All P xs` where
+  `A : Set a`, `P : Pred A p`, `xs : List A`. It therefore may declare variables
+  over `Level`, `Set a`, `A`, `List A`, `Pred A p`. It may not declare, for example,
+  variables of type `Rel` or `Vec`.
 
 ## Naming conventions
 
@@ -324,7 +419,7 @@ word within a compound word is capitalized except for the first word.
 * Preconditions and postconditions should be combined using the symbols
   `∨` and `∧` (e.g. `m*n≡0⇒m≡0∨n≡0`)
 
-* Try to avoid the need for bracketing, but if necessary use square
+* Try to avoid the need for bracketing, but if necessary, use square
   brackets (e.g. `[m∸n]⊓[n∸m]≡0`)
 
 * When naming proofs, the variables should occur in alphabetical order,
@@ -350,21 +445,32 @@ word within a compound word is capitalized except for the first word.
 
 #### Functions and relations over specific datatypes
 
-* When defining a new relation over a datatype
-  (e.g. `Data.List.Relation.Binary.Pointwise`)
-  it is often common to define how to introduce and eliminate that
-  relation over various simple functions (e.g. `map`) over that datatype:
-  ```agda
-  map⁺ : Pointwise (λ a b → R (f a) (g b)) as bs →
-                 Pointwise R (map f as) (map g bs)
+* When defining a new relation `P` over a datatype `X` in a `Data.X.Relation` module,
+  it is often common to define how to introduce and eliminate that relation
+  with respect to various functions. Suppose you have a function `f`, then
+  - `f⁺` is a lemma of the form `Precondition -> P(f)`
+  - `f⁻` is a lemma of the form `P(f) -> Postcondition`
+  The logic behind the name is that `⁺` makes f appear in the conclusion while
+  `⁻` makes it disappear from the hypothesis.
 
-  map⁻ : Pointwise R (map f as) (map g bs) →
-                 Pointwise (λ a b → R (f a) (g b)) as bs
+  For example, in `Data.List.Relation.Binary.Pointwise` we have `map⁺` to show
+  how the `map` function may be introduced and `map⁻` to show how it may be
+  eliminated:
+  ```agda
+  map⁺ : Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
+  map⁻ : Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
   ```
-  Such elimination and introduction proofs are called the name of the
-  function superscripted with either a `+` or `-` accordingly.
 
 #### Keywords
 
 * If the name of something clashes with a keyword in Agda, then convention
   is to place angular brackets around the name, e.g. `⟨set⟩` and `⟨module⟩`.
+
+#### Reflected syntax
+
+* When using reflection, the name of anything of type `Term` should be preceded
+  by a backtick. For example ```List : Term → Term`` would be the function
+  constructing the reflection of the `List` type.
+
+* The names of patterns for reflected syntax are also *appended* with an
+  additional backtick.

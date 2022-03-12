@@ -10,7 +10,7 @@ open import Relation.Binary
 
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
-open import Function using (_∘_; id; flip)
+open import Function.Base using (_∘_; id; flip)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
 open import Data.List.Relation.Unary.Any
@@ -53,17 +53,3 @@ module _ {p} {P : Pred A p} where
 
   lose : P Respects _≈_ →  ∀ {x xs} → x ∈ xs → P x → Any P xs
   lose resp x∈xs px = map (flip resp px) x∈xs
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.16
-
-map-with-∈ = mapWith∈
-{-# WARNING_ON_USAGE map-with-∈
-"Warning: map-with-∈ was deprecated in v0.16.
-Please use mapWith∈ instead."
-#-}

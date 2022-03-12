@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some algebraic structures (not packed up with sets, operations,
--- etc.)
+-- Some algebraic structures (not packed up with sets, operations, etc.)
 ------------------------------------------------------------------------
 
 -- The contents of this module should be accessed via `Algebra`, unless
@@ -47,6 +46,22 @@ record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   ∙-congʳ y≈z = ∙-cong y≈z refl
 
 
+record IsCommutativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma : IsMagma ∙
+    comm    : Commutative ∙
+
+  open IsMagma isMagma public
+
+
+record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma : IsMagma ∙
+    sel     : Selective ∙
+
+  open IsMagma isMagma public
+
+
 record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isMagma : IsMagma ∙
@@ -70,27 +85,29 @@ record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsSemigroup isSemigroup public
 
-
-record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isBand : IsBand ∧
-    comm   : Commutative ∧
-
-  open IsBand isBand public
-    renaming (∙-cong to ∧-cong; ∙-congˡ to ∧-congˡ; ∙-congʳ to ∧-congʳ)
-
-
-record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isMagma : IsMagma ∙
-    sel     : Selective ∙
-
-  open IsMagma isMagma public
-
+  isCommutativeMagma : IsCommutativeMagma ∙
+  isCommutativeMagma = record
+    { isMagma = isMagma
+    ; comm    = comm
+    }
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 ------------------------------------------------------------------------
+
+record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isMagma  : IsMagma ∙
+    identity : Identity ε ∙
+
+  open IsMagma isMagma public
+
+  identityˡ : LeftIdentity ε ∙
+  identityˡ = proj₁ identity
+
+  identityʳ : RightIdentity ε ∙
+  identityʳ = proj₂ identity
+
 
 record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -104,6 +121,12 @@ record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
+
+  isUnitalMagma : IsUnitalMagma ∙ ε
+  isUnitalMagma = record
+    { isMagma  = isMagma
+    ; identity = identity
+    }
 
 
 record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
@@ -119,6 +142,9 @@ record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     ; comm        = comm
     }
 
+  open IsCommutativeSemigroup isCommutativeSemigroup public
+    using (isCommutativeMagma)
+
 
 record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
                                      (ε : A) : Set (a ⊔ ℓ) where
@@ -128,22 +154,48 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
 
   open IsCommutativeMonoid isCommutativeMonoid public
 
-
--- Idempotent commutative monoids are also known as bounded lattices.
--- Note that the BoundedLattice necessarily uses the notation inherited
--- from monoids rather than lattices.
-
-IsBoundedLattice = IsIdempotentCommutativeMonoid
-
-module IsBoundedLattice {∙ : Op₂ A}
-                        {ε : A}
-                        (isIdemCommMonoid : IsIdempotentCommutativeMonoid ∙ ε) =
-       IsIdempotentCommutativeMonoid isIdemCommMonoid
+  isBand : IsBand ∙
+  isBand = record { isSemigroup = isSemigroup ; idem = idem }
 
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------
+
+record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma  : IsMagma _∙_
+    inverse   : Inverse ε _⁻¹ _∙_
+    ⁻¹-cong   : Congruent₁ _⁻¹
+
+  open IsMagma isMagma public
+
+  inverseˡ : LeftInverse ε _⁻¹ _∙_
+  inverseˡ = proj₁ inverse
+
+  inverseʳ : RightInverse ε _⁻¹ _∙_
+  inverseʳ = proj₂ inverse
+
+
+record IsInvertibleUnitalMagma (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+  field
+    isInvertibleMagma : IsInvertibleMagma _∙_  ε ⁻¹
+    identity          : Identity ε _∙_
+
+  open IsInvertibleMagma isInvertibleMagma public
+
+  identityˡ : LeftIdentity ε _∙_
+  identityˡ = proj₁ identity
+
+  identityʳ : RightIdentity ε _∙_
+  identityʳ = proj₂ identity
+
+  isUnitalMagma : IsUnitalMagma _∙_  ε
+  isUnitalMagma = record
+    { isMagma  = isMagma
+    ; identity = identity
+    }
+
 
 record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
@@ -171,6 +223,19 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   uniqueʳ-⁻¹ = Consequences.assoc+id+invˡ⇒invʳ-unique
                 setoid ∙-cong assoc identity inverseˡ
 
+  isInvertibleMagma : IsInvertibleMagma _∙_ ε _⁻¹
+  isInvertibleMagma = record
+    { isMagma = isMagma
+    ; inverse = inverse
+    ; ⁻¹-cong = ⁻¹-cong
+    }
+
+  isInvertibleUnitalMagma : IsInvertibleUnitalMagma _∙_ ε _⁻¹
+  isInvertibleUnitalMagma = record
+    { isInvertibleMagma = isInvertibleMagma
+    ; identity = identity
+    }
+
 
 record IsAbelianGroup (∙ : Op₂ A)
                       (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
@@ -187,64 +252,8 @@ record IsAbelianGroup (∙ : Op₂ A)
     }
 
   open IsCommutativeMonoid isCommutativeMonoid public
-    using (isCommutativeSemigroup)
+    using (isCommutativeMagma; isCommutativeSemigroup)
 
-
-------------------------------------------------------------------------
--- Structures with 2 binary operations
-------------------------------------------------------------------------
-
--- Note that `IsLattice` is not defined in terms of `IsSemilattice`
--- because the idempotence laws of ∨ and ∧ can be derived from the
--- absorption laws, which makes the corresponding "idem" fields
--- redundant.  The derived idempotence laws are stated and proved in
--- `Algebra.Properties.Lattice` along with the fact that every lattice
--- consists of two semilattices.
-
-record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isEquivalence : IsEquivalence _≈_
-    ∨-comm        : Commutative ∨
-    ∨-assoc       : Associative ∨
-    ∨-cong        : Congruent₂ ∨
-    ∧-comm        : Commutative ∧
-    ∧-assoc       : Associative ∧
-    ∧-cong        : Congruent₂ ∧
-    absorptive    : Absorptive ∨ ∧
-
-  open IsEquivalence isEquivalence public
-
-  ∨-absorbs-∧ : ∨ Absorbs ∧
-  ∨-absorbs-∧ = proj₁ absorptive
-
-  ∧-absorbs-∨ : ∧ Absorbs ∨
-  ∧-absorbs-∨ = proj₂ absorptive
-
-  ∧-congˡ : LeftCongruent ∧
-  ∧-congˡ y≈z = ∧-cong refl y≈z
-
-  ∧-congʳ : RightCongruent ∧
-  ∧-congʳ y≈z = ∧-cong y≈z refl
-
-  ∨-congˡ : LeftCongruent ∨
-  ∨-congˡ y≈z = ∨-cong refl y≈z
-
-  ∨-congʳ : RightCongruent ∨
-  ∨-congʳ y≈z = ∨-cong y≈z refl
-
-
-record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isLattice    : IsLattice ∨ ∧
-    ∨-distribʳ-∧ : ∨ DistributesOverʳ ∧
-
-  open IsLattice isLattice public
-
-  ∨-∧-distribʳ = ∨-distribʳ-∧
-  {-# WARNING_ON_USAGE ∨-∧-distribʳ
-  "Warning: ∨-∧-distribʳ was deprecated in v1.1.
-  Please use ∨-distribʳ-∧ instead."
-  #-}
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations & 1 element
@@ -253,47 +262,79 @@ record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
 record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   field
     +-isMonoid    : IsMonoid + 0#
-    *-isSemigroup : IsSemigroup *
+    *-cong        : Congruent₂ *
+    *-assoc       : Associative *
     distribʳ      : * DistributesOverʳ +
     zeroˡ         : LeftZero 0# *
 
   open IsMonoid +-isMonoid public
     renaming
-    ( assoc       to +-assoc
-    ; ∙-cong      to +-cong
-    ; ∙-congˡ     to +-congˡ
-    ; ∙-congʳ     to +-congʳ
-    ; identity    to +-identity
-    ; identityˡ   to +-identityˡ
-    ; identityʳ   to +-identityʳ
-    ; isMagma     to +-isMagma
-    ; isSemigroup to +-isSemigroup
+    ( assoc         to +-assoc
+    ; ∙-cong        to +-cong
+    ; ∙-congˡ       to +-congˡ
+    ; ∙-congʳ       to +-congʳ
+    ; identity      to +-identity
+    ; identityˡ     to +-identityˡ
+    ; identityʳ     to +-identityʳ
+    ; isMagma       to +-isMagma
+    ; isUnitalMagma to +-isUnitalMagma
+    ; isSemigroup   to +-isSemigroup
     )
 
-  open IsSemigroup *-isSemigroup public
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  open IsMagma *-isMagma public
     using ()
     renaming
-    ( assoc    to *-assoc
-    ; ∙-cong   to *-cong
-    ; ∙-congˡ  to *-congˡ
+    ( ∙-congˡ  to *-congˡ
     ; ∙-congʳ  to *-congʳ
-    ; isMagma  to *-isMagma
     )
 
 
 record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   field
     +-isCommutativeMonoid : IsCommutativeMonoid + 0#
-    *-isSemigroup         : IsSemigroup *
+    *-cong                : Congruent₂ *
+    *-assoc               : Associative *
     distrib               : * DistributesOver +
     zero                  : Zero 0# *
 
   open IsCommutativeMonoid +-isCommutativeMonoid public
-    using ()
+    using (isEquivalence)
     renaming
     ( comm                   to +-comm
     ; isMonoid               to +-isMonoid
+    ; isCommutativeMagma     to +-isCommutativeMagma
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
+    )
+
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  open IsMagma *-isMagma public
+    using ()
+    renaming
+    ( ∙-congˡ to *-congˡ
+    ; ∙-congʳ to *-congʳ
     )
 
   zeroˡ : LeftZero 0# *
@@ -305,14 +346,11 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   isNearSemiring : IsNearSemiring + * 0#
   isNearSemiring = record
     { +-isMonoid    = +-isMonoid
-    ; *-isSemigroup = *-isSemigroup
+    ; *-cong        = *-cong
+    ; *-assoc       = *-assoc
     ; distribʳ      = proj₂ distrib
     ; zeroˡ         = zeroˡ
     }
-
-  open IsNearSemiring isNearSemiring public
-    hiding (+-isMonoid; zeroˡ)
-
 
 record IsCommutativeSemiringWithoutOne
          (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
@@ -322,6 +360,14 @@ record IsCommutativeSemiringWithoutOne
 
   open IsSemiringWithoutOne isSemiringWithoutOne public
 
+  *-isCommutativeSemigroup : IsCommutativeSemigroup *
+  *-isCommutativeSemigroup = record
+    { isSemigroup = *-isSemigroup
+    ; comm        = *-comm
+    }
+
+  open IsCommutativeSemigroup *-isCommutativeSemigroup public
+    using () renaming (isCommutativeMagma to *-isCommutativeMagma)
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations & 2 elements
@@ -333,7 +379,9 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     -- Note that these structures do have an additive unit, but this
     -- unit does not necessarily annihilate multiplication.
     +-isCommutativeMonoid : IsCommutativeMonoid + 0#
-    *-isMonoid            : IsMonoid * 1#
+    *-cong                : Congruent₂ *
+    *-assoc               : Associative *
+    *-identity            : Identity 1# *
     distrib               : * DistributesOver +
 
   distribˡ : * DistributesOverˡ +
@@ -355,21 +403,36 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     ; isMagma                to +-isMagma
     ; isSemigroup            to +-isSemigroup
     ; isMonoid               to +-isMonoid
+    ; isUnitalMagma          to +-isUnitalMagma
+    ; isCommutativeMagma     to +-isCommutativeMagma
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
+
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  *-isMonoid : IsMonoid * 1#
+  *-isMonoid = record
+    { isSemigroup = *-isSemigroup
+    ; identity    = *-identity
+    }
 
   open IsMonoid *-isMonoid public
     using ()
     renaming
-    ( assoc       to *-assoc
-    ; ∙-cong      to *-cong
-    ; ∙-congˡ     to *-congˡ
+    ( ∙-congˡ     to *-congˡ
     ; ∙-congʳ     to *-congʳ
-    ; identity    to *-identity
     ; identityˡ   to *-identityˡ
     ; identityʳ   to *-identityʳ
-    ; isMagma     to *-isMagma
-    ; isSemigroup to *-isSemigroup
     )
 
 
@@ -385,7 +448,8 @@ record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   isSemiringWithoutOne : IsSemiringWithoutOne + * 0#
   isSemiringWithoutOne = record
     { +-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *-isSemigroup         = *-isSemigroup
+    ; *-cong                = *-cong
+    ; *-assoc               = *-assoc
     ; distrib               = distrib
     ; zero                  = zero
     }
@@ -412,11 +476,11 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; *-comm = *-comm
     }
 
-  *-isCommutativeSemigroup : IsCommutativeSemigroup *
-  *-isCommutativeSemigroup = record
-    { isSemigroup = *-isSemigroup
-    ; comm        = *-comm
-    }
+  open IsCommutativeSemiringWithoutOne isCommutativeSemiringWithoutOne public
+    using
+    ( *-isCommutativeMagma
+    ; *-isCommutativeSemigroup
+    )
 
   *-isCommutativeMonoid : IsCommutativeMonoid * 1#
   *-isCommutativeMonoid = record
@@ -425,6 +489,90 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     }
 
 
+record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
+    *-cancelˡ-nonZero     : AlmostLeftCancellative 0# *
+
+  open IsCommutativeSemiring isCommutativeSemiring public
+
+
+record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiring  : IsSemiring + * 0# 1#
+    +-idem      : Idempotent +
+
+  open IsSemiring isSemiring public
+
+------------------------------------------------------------------------
+-- Structures with 2 binary operations, 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isAbelianGroup : IsAbelianGroup + 0# -_
+    *-cong           : Congruent₂ *
+    *-assoc          : Associative *
+    distrib          : * DistributesOver +
+    zero             : Zero 0# *
+
+  open IsAbelianGroup +-isAbelianGroup public
+    renaming
+    ( assoc                   to +-assoc
+    ; ∙-cong                  to +-cong
+    ; ∙-congˡ                 to +-congˡ
+    ; ∙-congʳ                 to +-congʳ
+    ; identity                to +-identity
+    ; identityˡ               to +-identityˡ
+    ; identityʳ               to +-identityʳ
+    ; inverse                 to -‿inverse
+    ; inverseˡ                to -‿inverseˡ
+    ; inverseʳ                to -‿inverseʳ
+    ; ⁻¹-cong                 to -‿cong
+    ; comm                    to +-comm
+    ; isMagma                 to +-isMagma
+    ; isSemigroup             to +-isSemigroup
+    ; isMonoid                to +-isMonoid
+    ; isUnitalMagma           to +-isUnitalMagma
+    ; isCommutativeMagma      to +-isCommutativeMagma
+    ; isCommutativeMonoid     to +-isCommutativeMonoid
+    ; isCommutativeSemigroup  to +-isCommutativeSemigroup
+    ; isInvertibleMagma       to +-isInvertibleMagma
+    ; isInvertibleUnitalMagma to +-isInvertibleUnitalMagma
+    ; isGroup                 to +-isGroup
+    )
+
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  zeroˡ : LeftZero 0# *
+  zeroˡ = proj₁ zero
+
+  zeroʳ : RightZero 0# *
+  zeroʳ = proj₂ zero
+
+  distribˡ : * DistributesOverˡ +
+  distribˡ = proj₁ distrib
+
+  distribʳ : * DistributesOverʳ +
+  distribʳ = proj₂ distrib
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  open IsMagma *-isMagma public
+    using ()
+    renaming
+    ( ∙-congˡ  to *-congˡ
+    ; ∙-congʳ  to *-congʳ
+    )
+
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------
@@ -432,44 +580,63 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     +-isAbelianGroup : IsAbelianGroup + 0# -_
-    *-isMonoid       : IsMonoid * 1#
+    *-cong           : Congruent₂ *
+    *-assoc          : Associative *
+    *-identity       : Identity 1# *
     distrib          : * DistributesOver +
     zero             : Zero 0# *
 
   open IsAbelianGroup +-isAbelianGroup public
     renaming
-    ( assoc                  to +-assoc
-    ; ∙-cong                 to +-cong
-    ; ∙-congˡ                to +-congˡ
-    ; ∙-congʳ                to +-congʳ
-    ; identity               to +-identity
-    ; identityˡ              to +-identityˡ
-    ; identityʳ              to +-identityʳ
-    ; inverse                to -‿inverse
-    ; inverseˡ               to -‿inverseˡ
-    ; inverseʳ               to -‿inverseʳ
-    ; ⁻¹-cong                to -‿cong
-    ; comm                   to +-comm
-    ; isMagma                to +-isMagma
-    ; isSemigroup            to +-isSemigroup
-    ; isMonoid               to +-isMonoid
-    ; isCommutativeMonoid    to +-isCommutativeMonoid
-    ; isCommutativeSemigroup to +-isCommutativeSemigroup
-    ; isGroup                to +-isGroup
+    ( assoc                   to +-assoc
+    ; ∙-cong                  to +-cong
+    ; ∙-congˡ                 to +-congˡ
+    ; ∙-congʳ                 to +-congʳ
+    ; identity                to +-identity
+    ; identityˡ               to +-identityˡ
+    ; identityʳ               to +-identityʳ
+    ; inverse                 to -‿inverse
+    ; inverseˡ                to -‿inverseˡ
+    ; inverseʳ                to -‿inverseʳ
+    ; ⁻¹-cong                 to -‿cong
+    ; comm                    to +-comm
+    ; isMagma                 to +-isMagma
+    ; isSemigroup             to +-isSemigroup
+    ; isMonoid                to +-isMonoid
+    ; isUnitalMagma           to +-isUnitalMagma
+    ; isCommutativeMagma      to +-isCommutativeMagma
+    ; isCommutativeMonoid     to +-isCommutativeMonoid
+    ; isCommutativeSemigroup  to +-isCommutativeSemigroup
+    ; isInvertibleMagma       to +-isInvertibleMagma
+    ; isInvertibleUnitalMagma to +-isInvertibleUnitalMagma
+    ; isGroup                 to +-isGroup
     )
+
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  *-isMonoid : IsMonoid * 1#
+  *-isMonoid = record
+    { isSemigroup = *-isSemigroup
+    ; identity    = *-identity
+    }
 
   open IsMonoid *-isMonoid public
     using ()
     renaming
-    ( assoc       to *-assoc
-    ; ∙-cong      to *-cong
-    ; ∙-congˡ     to *-congˡ
+    ( ∙-congˡ     to *-congˡ
     ; ∙-congʳ     to *-congʳ
-    ; identity    to *-identity
     ; identityˡ   to *-identityˡ
     ; identityʳ   to *-identityʳ
-    ; isMagma     to *-isMagma
-    ; isSemigroup to *-isSemigroup
     )
 
   zeroˡ : LeftZero 0# *
@@ -482,7 +649,9 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     : IsSemiringWithoutAnnihilatingZero + * 0# 1#
   isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *-isMonoid            = *-isMonoid
+    ; *-cong                = *-cong
+    ; *-assoc               = *-assoc
+    ; *-identity            = *-identity
     ; distrib               = distrib
     }
 
@@ -505,12 +674,6 @@ record IsCommutativeRing
 
   open IsRing isRing public
 
-  *-isCommutativeMonoid : IsCommutativeMonoid * 1#
-  *-isCommutativeMonoid =  record
-    { isMonoid = *-isMonoid
-    ; comm     = *-comm
-    }
-
   isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
   isCommutativeSemiring = record
     { isSemiring = isSemiring
@@ -518,15 +681,61 @@ record IsCommutativeRing
     }
 
   open IsCommutativeSemiring isCommutativeSemiring public
-    using ( isCommutativeSemiringWithoutOne )
+    using
+    ( isCommutativeSemiringWithoutOne
+    ; *-isCommutativeMagma
+    ; *-isCommutativeSemigroup
+    ; *-isCommutativeMonoid
+    )
 
+------------------------------------------------------------------------
+-- Structures with 3 binary operations
+------------------------------------------------------------------------
 
-record IsBooleanAlgebra
-         (∨ ∧ : Op₂ A) (¬ : Op₁ A) (⊤ ⊥ : A) : Set (a ⊔ ℓ) where
+record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isDistributiveLattice : IsDistributiveLattice ∨ ∧
-    ∨-complementʳ         : RightInverse ⊤ ¬ ∨
-    ∧-complementʳ         : RightInverse ⊥ ¬ ∧
-    ¬-cong                : Congruent₁ ¬
+    isMagma       : IsMagma ∙
+    \\-cong       : Congruent₂ \\
+    //-cong       : Congruent₂ //
+    leftDivides   : LeftDivides ∙ \\
+    rightDivides  : RightDivides ∙ //
 
-  open IsDistributiveLattice isDistributiveLattice public
+  open IsMagma isMagma public
+
+  \\-congˡ : LeftCongruent \\
+  \\-congˡ y≈z = \\-cong refl y≈z
+
+  \\-congʳ : RightCongruent \\
+  \\-congʳ y≈z = \\-cong y≈z refl
+
+  //-congˡ : LeftCongruent //
+  //-congˡ y≈z = //-cong refl y≈z
+
+  //-congʳ : RightCongruent //
+  //-congʳ y≈z = //-cong y≈z refl
+
+  leftDividesˡ : LeftDividesˡ ∙ \\
+  leftDividesˡ = proj₁ leftDivides
+
+  leftDividesʳ : LeftDividesʳ ∙ \\
+  leftDividesʳ = proj₂ leftDivides
+
+  rightDividesˡ : RightDividesˡ ∙ //
+  rightDividesˡ = proj₁ rightDivides
+
+  rightDividesʳ : RightDividesʳ ∙ //
+  rightDividesʳ = proj₂ rightDivides
+
+
+record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isQuasigroup : IsQuasigroup ∙ \\ //
+    identity     : Identity ε ∙
+
+  open IsQuasigroup isQuasigroup public
+
+  identityˡ : LeftIdentity ε ∙
+  identityˡ = proj₁ identity
+
+  identityʳ : RightIdentity ε ∙
+  identityʳ = proj₂ identity

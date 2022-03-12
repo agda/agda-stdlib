@@ -16,20 +16,21 @@ open import Data.Bool.Base as Bool
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product as Prod using (_×_; _,_)
+open import Data.Product as Prod using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Function.Base using (id; _∘_ ; _∘′_; const; flip)
+open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary using (does)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Negation.Core using (¬?)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
+import Relation.Binary.Definitions as B
 
 private
   variable
-    a b c p : Level
+    a b c p ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -51,7 +52,7 @@ mapMaybe : (A → Maybe B) → List A → List B
 mapMaybe p []       = []
 mapMaybe p (x ∷ xs) with p x
 ... | just y  = y ∷ mapMaybe p xs
-... | nothing =     mapMaybe p xs
+... | nothing = mapMaybe p xs
 
 infixr 5 _++_
 
@@ -68,6 +69,13 @@ intercalate : List A → List (List A) → List A
 intercalate xs []         = []
 intercalate xs (ys ∷ [])  = ys
 intercalate xs (ys ∷ yss) = ys ++ xs ++ intercalate xs yss
+
+cartesianProductWith : (A → B → C) → List A → List B → List C
+cartesianProductWith f []       _  = []
+cartesianProductWith f (x ∷ xs) ys = map (f x) ys ++ cartesianProductWith f xs ys
+
+cartesianProduct : List A → List B → List (A × B)
+cartesianProduct = cartesianProductWith _,_
 
 ------------------------------------------------------------------------
 -- Aligning and zipping
@@ -109,6 +117,13 @@ unzip = unzipWith id
 
 partitionSums : List (A ⊎ B) → List A × List B
 partitionSums = partitionSumsWith id
+
+merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
+merge R? []       ys       = ys
+merge R? xs       []       = xs
+merge R? (x ∷ xs) (y ∷ ys) = if does (R? x y)
+  then x ∷ merge R? xs (y ∷ ys)
+  else y ∷ merge R? (x ∷ xs) ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -193,7 +208,7 @@ applyUpTo f zero    = []
 applyUpTo f (suc n) = f zero ∷ applyUpTo (f ∘ suc) n
 
 applyDownFrom : (ℕ → A) → ℕ → List A
-applyDownFrom f zero = []
+applyDownFrom f zero    = []
 applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
 
 tabulate : ∀ {n} (f : Fin n → A) → List A
@@ -215,15 +230,58 @@ downFrom = applyDownFrom id
 allFin : ∀ n → List (Fin n)
 allFin n = tabulate id
 
--- Other
-
 unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
          ∀ {n} → P n → List A
 unfold P f {n = zero}  s = []
 unfold P f {n = suc n} s with f s
 ... | nothing       = []
-... | just (x , s') = x ∷ unfold P f s'
+... | just (x , s′) = x ∷ unfold P f s′
+
+------------------------------------------------------------------------
+-- Operations for reversing lists
+
+reverseAcc : List A → List A → List A
+reverseAcc = foldl (flip _∷_)
+
+reverse : List A → List A
+reverse = reverseAcc []
+
+-- "Reverse append" xs ʳ++ ys = reverse xs ++ ys
+
+infixr 5 _ʳ++_
+
+_ʳ++_ : List A → List A → List A
+_ʳ++_ = flip reverseAcc
+
+-- Snoc: Cons, but from the right.
+
+infixl 6 _∷ʳ_
+
+_∷ʳ_ : List A → A → List A
+xs ∷ʳ x = xs ++ [ x ]
+
+
+
+-- Backwards initialisation
+
+infixl 5 _∷ʳ′_
+
+data InitLast {A : Set a} : List A → Set a where
+  []    : InitLast []
+  _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+
+initLast : (xs : List A) → InitLast xs
+initLast []               = []
+initLast (x ∷ xs)         with initLast xs
+... | []       = [] ∷ʳ′ x
+... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
+
+-- uncons, but from the right
+unsnoc : List A → Maybe (List A × A)
+unsnoc as with initLast as
+... | []       = nothing
+... | xs ∷ʳ′ x = just (xs , x)
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
@@ -245,6 +303,11 @@ tail : List A → Maybe (List A)
 tail []       = nothing
 tail (_ ∷ xs) = just xs
 
+last : List A → Maybe A
+last []       = nothing
+last (x ∷ []) = just x
+last (_ ∷ xs) = last xs
+
 take : ℕ → List A → List A
 take zero    xs       = []
 take (suc n) []       = []
@@ -255,55 +318,117 @@ drop zero    xs       = xs
 drop (suc n) []       = []
 drop (suc n) (x ∷ xs) = drop n xs
 
-splitAt : ℕ → List A → (List A × List A)
+splitAt : ℕ → List A → List A × List A
 splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
-splitAt (suc n) (x ∷ xs) with splitAt n xs
-... | (ys , zs) = (x ∷ ys , zs)
+splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
+
+-- The following are functions which split a list up using boolean
+-- predicates. However, in practice they are difficult to use and
+-- prove properties about, and are mainly provided for advanced use
+-- cases where one wants to minimise dependencies. In most cases
+-- you probably want to use the versions defined below based on
+-- decidable predicates. e.g. use `takeWhile (_≤? 10) xs`
+-- instead of `takeWhileᵇ (_≤ᵇ 10) xs`
+
+takeWhileᵇ : (A → Bool) → List A → List A
+takeWhileᵇ p []       = []
+takeWhileᵇ p (x ∷ xs) = if p x then x ∷ takeWhileᵇ p xs else []
+
+dropWhileᵇ : (A → Bool) → List A → List A
+dropWhileᵇ p []       = []
+dropWhileᵇ p (x ∷ xs) = if p x then dropWhileᵇ p xs else x ∷ xs
+
+filterᵇ : (A → Bool) → List A → List A
+filterᵇ p []       = []
+filterᵇ p (x ∷ xs) = if p x then x ∷ filterᵇ p xs else filterᵇ p xs
+
+partitionᵇ : (A → Bool) → List A → List A × List A
+partitionᵇ p []       = ([] , [])
+partitionᵇ p (x ∷ xs) = (if p x then Prod.map₁ else Prod.map₂′) (x ∷_) (partitionᵇ p xs)
+
+spanᵇ : (A → Bool) → List A → List A × List A
+spanᵇ p []       = ([] , [])
+spanᵇ p (x ∷ xs) = if p x
+  then Prod.map₁ (x ∷_) (spanᵇ p xs)
+  else ([] , x ∷ xs)
+
+breakᵇ : (A → Bool) → List A → List A × List A
+breakᵇ p = spanᵇ (not ∘ p)
+
+linesByᵇ : (A → Bool) → List A → List (List A)
+linesByᵇ {A = A} p = go nothing
+  where
+  go : Maybe (List A) → List A → List (List A)
+  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  go acc (c ∷ cs) with p c
+  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
+  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+
+wordsByᵇ : (A → Bool) → List A → List (List A)
+wordsByᵇ {A = A} p = go []
+  where
+  cons : List A → List (List A) → List (List A)
+  cons [] ass = ass
+  cons as ass = reverse as ∷ ass
+
+  go : List A → List A → List (List A)
+  go acc []       = cons acc []
+  go acc (c ∷ cs) with p c
+  ... | true  = cons acc (go [] cs)
+  ... | false = go (c ∷ acc) cs
+
+derunᵇ : (A → A → Bool) → List A → List A
+derunᵇ r []           = []
+derunᵇ r (x ∷ [])     = x ∷ []
+derunᵇ r (x ∷ y ∷ xs) = if r x y
+  then derunᵇ r (y ∷ xs)
+  else x ∷ derunᵇ r (y ∷ xs)
+
+deduplicateᵇ : (A → A → Bool) → List A → List A
+deduplicateᵇ r [] = []
+deduplicateᵇ r (x ∷ xs) = x ∷ filterᵇ (not ∘ r x) (deduplicateᵇ r xs)
+
+-- Equivalent functions that use a decidable predicate instead of a
+-- boolean function.
 
 takeWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
-takeWhile P? []       = []
-takeWhile P? (x ∷ xs) with does (P? x)
-... | true  = x ∷ takeWhile P? xs
-... | false = []
+takeWhile P? = takeWhileᵇ (does ∘ P?)
 
 dropWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
-dropWhile P? []       = []
-dropWhile P? (x ∷ xs) with does (P? x)
-... | true  = dropWhile P? xs
-... | false = x ∷ xs
+dropWhile P? = dropWhileᵇ (does ∘ P?)
 
 filter : ∀ {P : Pred A p} → Decidable P → List A → List A
-filter P? [] = []
-filter P? (x ∷ xs) with does (P? x)
-... | false = filter P? xs
-... | true  = x ∷ filter P? xs
+filter P? = filterᵇ (does ∘ P?)
 
 partition : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-partition P? []       = ([] , [])
-partition P? (x ∷ xs) with does (P? x) | partition P? xs
-... | true  | (ys , zs) = (x ∷ ys , zs)
-... | false | (ys , zs) = (ys , x ∷ zs)
+partition P? = partitionᵇ (does ∘ P?)
 
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-span P? []       = ([] , [])
-span P? (x ∷ xs) with does (P? x)
-... | true  = Prod.map (x ∷_) id (span P? xs)
-... | false = ([] , x ∷ xs)
+span P? = spanᵇ (does ∘ P?)
 
 break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-break P? = span (∁? P?)
+break P? = breakᵇ (does ∘ P?)
+
+-- The predicate `P` represents the notion of newline character for the
+-- type `A`. It is used to split the input list into a list of lines.
+-- Some lines may be empty if the input contains at least two
+-- consecutive newline characters.
+linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+linesBy P? = linesByᵇ (does ∘ P?)
+
+-- The predicate `P` represents the notion of space character for the
+-- type `A`. It is used to split the input list into a list of words.
+-- All the words are non empty and the output does not contain any space
+-- characters.
+wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+wordsBy P? = wordsByᵇ (does ∘ P?)
 
 derun : ∀ {R : Rel A p} → B.Decidable R → List A → List A
-derun R? [] = []
-derun R? (x ∷ []) = x ∷ []
-derun R? (x ∷ y ∷ xs) with does (R? x y) | derun R? (y ∷ xs)
-... | true  | ys = ys
-... | false | ys = x ∷ ys
+derun R? = derunᵇ (does ∘₂ R?)
 
 deduplicate : ∀ {R : Rel A p} → B.Decidable R → List A → List A
-deduplicate R? [] = []
-deduplicate R? (x ∷ xs) = x ∷ filter (¬? ∘ R? x) (deduplicate R? xs)
+deduplicate R? = deduplicateᵇ (does ∘₂ R?)
 
 ------------------------------------------------------------------------
 -- Actions on single elements
@@ -322,28 +447,6 @@ _─_ : (xs : List A) → Fin (length xs) → List A
 (x ∷ xs) ─ suc k = x ∷ (xs ─ k)
 
 ------------------------------------------------------------------------
--- Operations for reversing lists
-
-reverseAcc : List A → List A → List A
-reverseAcc = foldl (flip _∷_)
-
-reverse : List A → List A
-reverse = reverseAcc []
-
--- "Reverse append" xs ʳ++ ys = reverse xs ++ ys
-
-infixr 5 _ʳ++_
-
-_ʳ++_ : List A → List A → List A
-_ʳ++_ = flip reverseAcc
-
--- Snoc.
-
-infixl 6 _∷ʳ_
-
-_∷ʳ_ : List A → A → List A
-xs ∷ʳ x = xs ++ [ x ]
-
 -- Conditional versions of cons and snoc
 
 infixr 5 _?∷_
@@ -355,65 +458,18 @@ _∷ʳ?_ : List A → Maybe A → List A
 xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
 
 
--- Backwards initialisation
-
-infixl 5 _∷ʳ'_
-
-data InitLast {A : Set a} : List A → Set a where
-  []    : InitLast []
-  _∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
-
-initLast : (xs : List A) → InitLast xs
-initLast []               = []
-initLast (x ∷ xs)         with initLast xs
-... | []       = [] ∷ʳ' x
-... | ys ∷ʳ' y = (x ∷ ys) ∷ʳ' y
-
 ------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
---
--- Note that the `boolX` functions are not given warnings as they are
--- used by other deprecated proofs throughout the library.
 
--- Version 0.15
+-- Version 1.4
 
-gfilter = mapMaybe
-{-# WARNING_ON_USAGE gfilter
-"Warning: gfilter was deprecated in v0.15.
-Please use mapMaybe instead."
+infixl 5 _∷ʳ'_
+_∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+_∷ʳ'_ = InitLast._∷ʳ′_
+{-# WARNING_ON_USAGE _∷ʳ'_
+"Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
+Please use _∷ʳ′_ (ending in a prime) instead."
 #-}
-
-boolFilter : (A → Bool) → List A → List A
-boolFilter p = mapMaybe (λ x → if p x then just x else nothing)
-
-boolPartition : (A → Bool) → List A → (List A × List A)
-boolPartition p []       = ([] , [])
-boolPartition p (x ∷ xs) with p x | boolPartition p xs
-... | true  | (ys , zs) = (x ∷ ys , zs)
-... | false | (ys , zs) = (ys , x ∷ zs)
-
--- Version 0.16
-
-boolTakeWhile : (A → Bool) → List A → List A
-boolTakeWhile p []       = []
-boolTakeWhile p (x ∷ xs) with p x
-... | true  = x ∷ boolTakeWhile p xs
-... | false = []
-
-boolDropWhile : (A → Bool) → List A → List A
-boolDropWhile p []       = []
-boolDropWhile p (x ∷ xs) with p x
-... | true  = boolDropWhile p xs
-... | false = x ∷ xs
-
-boolSpan : (A → Bool) → List A → (List A × List A)
-boolSpan p []       = ([] , [])
-boolSpan p (x ∷ xs) with p x
-... | true  = Prod.map (x ∷_) id (boolSpan p xs)
-... | false = ([] , x ∷ xs)
-
-boolBreak : (A → Bool) → List A → (List A × List A)
-boolBreak p = boolSpan (not ∘ p)
