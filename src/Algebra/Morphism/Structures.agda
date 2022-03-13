@@ -361,14 +361,12 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
   open RawRingWithoutOne R₁ renaming
     ( Carrier to A; _≈_ to _≈₁_
     ; _*_ to _*₁_
-    ; -_ to -₁_
     ; *-rawMagma to *-rawMagma₁
     ; +-rawGroup to +-rawGroup₁)
 
   open RawRingWithoutOne R₂ renaming
     ( Carrier to B; _≈_ to _≈₂_
     ; _*_ to _*₂_
-    ; -_ to -₂_
     ; *-rawMagma to *-rawMagma₂
     ; +-rawGroup to +-rawGroup₂)
 
