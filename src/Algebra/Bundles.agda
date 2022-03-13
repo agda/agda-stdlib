@@ -803,10 +803,10 @@ record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
     ; ε   = 0#
     ; _⁻¹ = -_
     }
-  
+
   open RawGroup +-rawGroup public
     using (_≉_) renaming (rawMagma to +-rawMagma; rawMonoid to +-rawMonoid)
-  
+
   *-rawMagma : RawMagma c ℓ
   *-rawMagma = record
     { _≈_ = _≈_
