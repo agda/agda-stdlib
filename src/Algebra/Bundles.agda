@@ -783,6 +783,36 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
+record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier           : Set c
+    _≈_               : Rel Carrier ℓ
+    _+_               : Op₂ Carrier
+    _*_               : Op₂ Carrier
+    -_                : Op₁ Carrier
+    0#                : Carrier
+
+  +-rawGroup : RawGroup c ℓ
+  +-rawGroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _+_
+    ; ε   = 0#
+    ; _⁻¹ = -_
+    }
+  
+  open RawGroup +-rawGroup public
+    using (_≉_) renaming (rawMagma to +-rawMagma; rawMonoid to +-rawMonoid)
+  
+  *-rawMagma : RawMagma c ℓ
+  *-rawMagma = record
+    { _≈_ = _≈_
+    ; _∙_ = _*_
+    }
+
 
 record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
