@@ -62,10 +62,10 @@ permutation = mk↔′
 
 infixl 5 _⟨$⟩ʳ_ _⟨$⟩ˡ_
 _⟨$⟩ʳ_ : Permutation m n → Fin m → Fin n
-_⟨$⟩ʳ_ = Inverse.f
+_⟨$⟩ʳ_ = Inverse.to
 
 _⟨$⟩ˡ_ : Permutation m n → Fin n → Fin m
-_⟨$⟩ˡ_ = Inverse.f⁻¹
+_⟨$⟩ˡ_ = Inverse.from
 
 inverseˡ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ˡ (π ⟨$⟩ʳ i) ≡ i
 inverseˡ π = Inverse.inverseʳ π _
@@ -197,8 +197,10 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
   inverseʳ′ : Inverseʳ _≡_ _≡_ to from
   inverseʳ′ k with i ≟ k
   ... | yes i≡k rewrite proj₂ (dec-yes (j ≟ j) refl) = i≡k
-  ... | no  i≢k with dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)
-  ... | j≢punchInⱼπʳpunchOuti≢k , p rewrite p = begin
+  ... | no  i≢k
+    with j≢punchInⱼπʳpunchOuti≢k ← punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym
+    rewrite dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) j≢punchInⱼπʳpunchOuti≢k
+    = begin
     punchIn i (π ⟨$⟩ˡ punchOut j≢punchInⱼπʳpunchOuti≢k)                    ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-cong j refl) ⟩
     punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-punchIn j) ⟩
     punchIn i (π ⟨$⟩ˡ (π ⟨$⟩ʳ punchOut i≢k))                              ≡⟨ cong (punchIn i) (inverseˡ π) ⟩
@@ -208,9 +210,11 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
   inverseˡ′ : Inverseˡ _≡_ _≡_ to from
   inverseˡ′ k with j ≟ k
   ... | yes j≡k rewrite proj₂ (dec-yes (i ≟ i) refl) = j≡k
-  ... | no  j≢k with dec-no (i ≟ punchIn i (π ⟨$⟩ˡ punchOut j≢k)) (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)
-  ... | i≢punchInᵢπˡpunchOutj≢k , p rewrite p = begin
-    punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)                   ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
+  ... | no  j≢k
+    with i≢punchInᵢπˡpunchOutj≢k ← punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym
+    rewrite dec-no (i ≟ punchIn i (π ⟨$⟩ˡ punchOut j≢k)) i≢punchInᵢπˡpunchOutj≢k
+    = begin
+    punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)                    ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
     punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
     punchIn j (π ⟨$⟩ʳ (π ⟨$⟩ˡ punchOut j≢k))                               ≡⟨ cong (punchIn j) (inverseʳ π) ⟩
     punchIn j (punchOut j≢k)                                               ≡⟨ punchIn-punchOut j≢k ⟩

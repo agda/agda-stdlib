@@ -8,12 +8,14 @@
 
 module Relation.Unary.Properties where
 
+open import Agda.Builtin.Equality using (refl)
+
 open import Data.Product as Product using (_×_; _,_; swap; proj₁; zip′)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
 open import Level
 open import Relation.Binary.Core as Binary
-open import Relation.Binary.Definitions hiding (Decidable; Universal)
+open import Relation.Binary.Definitions hiding (Decidable; Universal; Irrelevant)
 open import Relation.Unary
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Product using (_×-dec_)
@@ -227,3 +229,12 @@ _⊎?_ P? Q? (inj₂ b) = Q? b
 
 _~? : {P : Pred (A × B) ℓ} → Decidable P → Decidable (P ~)
 _~? P? = P? ∘ swap
+
+----------------------------------------------------------------------
+-- Irrelevant properties
+
+U-irrelevant : Irrelevant {A = A} U
+U-irrelevant a b = refl
+
+∁-irrelevant : (P : Pred A ℓ) → Irrelevant (∁ P)
+∁-irrelevant P a b = refl

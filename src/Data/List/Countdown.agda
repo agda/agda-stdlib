@@ -125,11 +125,11 @@ record _⊕_ (counted : List Elem) (n : ℕ) : Set where
 
 empty : ∀ {n} → Injection D.setoid (PropEq.setoid (Fin n)) → [] ⊕ n
 empty inj =
-  record { kind      = inj₂ ∘ f
+  record { kind      = inj₂ ∘ to
          ; injective = λ {x} {y} {i} eq₁ eq₂ → injective (begin
-             f x ≡⟨ inj₂-injective eq₁ ⟩
-             i   ≡⟨ PropEq.sym $ inj₂-injective eq₂ ⟩
-             f y ∎)
+             to x ≡⟨ inj₂-injective eq₁ ⟩
+             i    ≡⟨ PropEq.sym $ inj₂-injective eq₂ ⟩
+             to y ∎)
          }
   where open Injection inj
 
@@ -138,8 +138,8 @@ empty inj =
 emptyFromList : (counted : List Elem) → (∀ x → x ∈ counted) →
                 [] ⊕ length counted
 emptyFromList counted complete = empty record
-  { f = λ x → first-index x (complete x)
-  ; cong = first-index-cong (complete _) (complete _)
+  { to        = λ x → first-index x (complete x)
+  ; cong      = first-index-cong (complete _) (complete _)
   ; injective = first-index-injective (complete _) (complete _)
   }
 

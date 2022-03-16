@@ -90,7 +90,6 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
-
 ### Refactoring of algebraic lattice hierarchy
 
 * In order to improve modularity and consistency with `Relation.Binary.Lattice`,
@@ -148,10 +147,10 @@ Non-backwards compatible changes
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
   which can be used to indicate meet/join-ness of the original structures.
 
-#### Switch to new function hierarchy
+#### Function hierarchy
 
-* Various modules have changed the types of some definitions to use the new
-  function hierachy:
+* The switch to the new function hierarchy is complete and the following definitions
+  now use the new definitions instead of the old ones:
   * `Data.Fin.Properties`
     * `∀-cons-⇔`
     * `⊎⇔∃`
@@ -207,6 +206,9 @@ Non-backwards compatible changes
     * `equivalent`
   * `Relation.Nullary.Decidable`
     * `map`
+
+* The names of the fields in the records of the new hierarchy have been
+  changed from `f`, `g`, `cong₁`, `cong₂` to `to`, `from`, `to-cong`, `from-cong`.
 
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
@@ -385,6 +387,31 @@ Non-backwards compatible changes
   * `IsSemiringWithoutOne*` and `isSemiringWithoutOne*`
   * `IsSemiringWithoutAnnihilatingZero*` and `isSemiringWithoutAnnihilatingZero*`
   * `IsRing*` and `isRing*`
+
+### Proof-irrelevant empty type
+
+* The definition of ⊥ has been changed to
+  ```agda
+  private
+    data Empty : Set where
+
+  ⊥ : Set
+  ⊥ = Irrelevant Empty
+  ```
+  in order to make ⊥ proof irrelevant. Any two proofs of `⊥` or of a negated
+  statements are now *judgementally* equal to each other.
+
+* Consequently we have modified the following definitions:
+  + In `Relation.Nullary.Decidable.Core`, the type of `dec-no` has changed
+    ```agda
+    dec-no : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
+      ↦ dec-no : (p? : Dec P) (¬p : ¬ P) → p? ≡ no ¬p
+    ```
+  + In `Relation.Binary.PropositionalEquality`, the type of `≢-≟-identity` has changed
+    ```agda
+    ≢-≟-identity : x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
+      ↦ ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
+    ```
 
 ### Other
 
@@ -609,7 +636,7 @@ Deprecated names
   *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
   *-cancelˡ-<-neg  ↦  *-cancelˡ-<-nonPos
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
-  
+
   ^-semigroup-morphism ↦ ^-isMagmaHomomorphism
   ^-monoid-morphism    ↦ ^-isMonoidHomomorphism
   ```
@@ -715,6 +742,11 @@ Deprecated names
   invIsPreorder ↦ converse-isPreorder
   invPreorder   ↦ converse-preorder
   ```
+
+### Renamed Data.Erased to Data.Irrelevant
+
+* This fixes the fact we had picked the wrong name originally. The erased modality
+  corresponds to @0 whereas the irrelevance one corresponds to `.`.
 
 New modules
 -----------
@@ -1037,7 +1069,7 @@ Other minor changes
   combine-injective  : combine i j ≡ combine k l → i ≡ k × j ≡ l
   combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
   combine-monoˡ-<    :  i < j → combine i k < combine j l
-  
+
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
 
   i<1+i              : i < suc i
@@ -1081,7 +1113,7 @@ Other minor changes
   derunᵇ       : (A → A → Bool) → List A → List A
   deduplicateᵇ : (A → A → Bool) → List A → List A
   ```
-  
+
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
   ```agda
   xs≮[] : ¬ xs < []
@@ -1261,9 +1293,9 @@ Other minor changes
 * Added new functions in `Data.String.Base`:
   ```agda
   wordsByᵇ : (Char → Bool) → String → List String
-  linesByᵇ : (Char → Bool) → String → List String 
+  linesByᵇ : (Char → Bool) → String → List String
   ```
-  
+
 * Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
@@ -1504,6 +1536,9 @@ Other minor changes
   ≐′-trans : Trans _≐′_ _≐′_ _≐′_
   ≐⇒≐′ : _≐_ ⇒ _≐′_
   ≐′⇒≐ : _≐′_ ⇒ _≐_
+
+  U-irrelevant : Irrelevant {A = A} U
+  ∁-irrelevant : (P : Pred A ℓ) → Irrelevant (∁ P)
   ```
 
 * Generalised proofs in `Relation.Unary.Properties`:
@@ -1521,7 +1556,7 @@ Other minor changes
   ```
   record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   ```
-  
+
 * Added new definitions in `Relation.Binary.Structures`:
   ```
   record IsApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where

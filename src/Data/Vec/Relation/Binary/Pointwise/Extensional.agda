@@ -158,9 +158,9 @@ module _ {_∼_ : Rel A ℓ} where
   ∙⁺⇒⁺∙ : ∀ {n} {xs ys : Vec A n} → Reflexive _∼_ →
           Pointwise (Plus _∼_) xs ys → Plus (Pointwise _∼_) xs ys
   ∙⁺⇒⁺∙ rfl =
-    Plus.map (Equivalence.g equivalent) ∘
+    Plus.map (Equivalence.from equivalent) ∘
     helper ∘
-    Equivalence.f equivalent
+    Equivalence.to equivalent
     where
     helper : ∀ {n} {xs ys : Vec A n} →
              IPointwise (Plus _∼_) xs ys → Plus (IPointwise _∼_) xs ys
@@ -209,6 +209,7 @@ private
          Pointwise (Plus _R_) xs ys →
          Plus (Pointwise _R_) xs ys)
   counterexample ∙⁺⇒⁺∙ =
-    ¬ix⁺∙jz (Equivalence.f Plus.equivalent
-              (Plus.map (Equivalence.f equivalent)
-                (∙⁺⇒⁺∙ (Equivalence.g equivalent ix∙⁺jz))))
+    ¬ix⁺∙jz (Equivalence.to Plus.equivalent
+              (Plus.map (Equivalence.to equivalent)
+                (∙⁺⇒⁺∙ (Equivalence.from equivalent ix∙⁺jz))))
+
