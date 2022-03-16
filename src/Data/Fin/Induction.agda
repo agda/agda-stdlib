@@ -8,7 +8,7 @@
 
 open import Data.Fin.Base
 open import Data.Fin.Properties
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; _∸_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_)
 import Data.Nat.Induction as ℕ
 import Data.Nat.Properties as ℕ
 open import Induction
@@ -46,15 +46,15 @@ open WF public using (Acc; acc)
   induct : ∀ {i} → Acc _<_ i → P i
   induct {zero}  _         = P₀
   induct {suc i} (acc rec) = Pᵢ⇒Pᵢ₊₁ i (induct (rec (inject₁ i) i<i+1))
-    where i<i+1 = s≤s (ℕ.≤-reflexive (toℕ-inject₁ i))
+    where i<i+1 = ℕ<⇒inject₁< (i<1+i i)
 
 ------------------------------------------------------------------------
 -- Induction over _>_
 
 private
   acc-map : ∀ {x : Fin n} → Acc ℕ._<_ (n ∸ toℕ x) → Acc _>_ x
-  acc-map {n} (acc rs) = acc (λ y y>x →
-    acc-map (rs (n ∸ toℕ y) (ℕ.∸-monoʳ-< y>x (toℕ≤n y))))
+  acc-map {n} (acc rs) = acc λ y y>x →
+    acc-map (rs (n ∸ toℕ y) (ℕ.∸-monoʳ-< y>x (toℕ≤n y)))
 
 >-wellFounded : WellFounded {A = Fin n} _>_
 >-wellFounded {n} x = acc-map (ℕ.<-wellFounded (n ∸ toℕ x))
@@ -69,7 +69,7 @@ private
   induct {i} (acc rec) with n ℕ.≟ toℕ i
   ... | yes n≡i = subst P (toℕ-injective (trans (toℕ-fromℕ n) n≡i)) Pₙ
   ... | no  n≢i = subst P (inject₁-lower₁ i n≢i) (Pᵢ₊₁⇒Pᵢ _ Pᵢ₊₁)
-    where Pᵢ₊₁ = induct (rec _ (s≤s (ℕ.≤-reflexive (sym (toℕ-lower₁ i n≢i)))))
+    where Pᵢ₊₁ = induct (rec _ (ℕ.≤-reflexive (cong suc (sym (toℕ-lower₁ i n≢i)))))
 
 ------------------------------------------------------------------------
 -- Induction over _≺_

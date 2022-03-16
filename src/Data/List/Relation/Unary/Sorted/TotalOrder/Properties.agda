@@ -17,7 +17,7 @@ import Data.List.Relation.Unary.Linked.Properties as Linked
 open import Data.List.Relation.Unary.Sorted.TotalOrder hiding (head)
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Maybe.Relation.Binary.Connected using (Connected; just)
-open import Data.Nat.Base using (ℕ; zero; suc; _<_; z≤n; s≤s)
+open import Data.Nat.Base using (ℕ; zero; suc; _<_)
 open import Level using (Level)
 open import Relation.Binary hiding (Decidable)
 import Relation.Binary.Properties.TotalOrder as TotalOrderProperties

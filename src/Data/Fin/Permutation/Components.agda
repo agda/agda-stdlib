@@ -77,7 +77,8 @@ reverse-involutive = opposite-involutive
 Please use opposite-involutive from Data.Fin.Properties instead."
 #-}
 
-reverse-suc = opposite-suc
+reverse-suc : ∀ {n} {i : Fin n} → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
+reverse-suc {i = i} = opposite-suc i
 {-# WARNING_ON_USAGE reverse
 "Warning: reverse-suc was deprecated in v2.0.
 Please use opposite-suc from Data.Fin.Properties instead."

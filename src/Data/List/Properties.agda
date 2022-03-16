@@ -744,7 +744,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-some : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
   filter-some {x ∷ xs} (here px)   with P? x
-  ... | true because _ = s≤s z≤n
+  ... | true because _ = z<s
   ... | no         ¬px = contradiction px ¬px
   filter-some {x ∷ xs} (there pxs) with does (P? x)
   ... | true  = ≤-step (filter-some pxs)
@@ -993,6 +993,8 @@ module _ {x y : A} where
   ∷ʳ-injectiveʳ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
   ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
+∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
+∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
 
 ------------------------------------------------------------------------
 -- DEPRECATED

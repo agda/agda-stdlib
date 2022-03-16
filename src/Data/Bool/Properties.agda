@@ -608,7 +608,7 @@ xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
 xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
-xor-∧-commutativeRing = commutativeRing
+xor-∧-commutativeRing = ⊕-∧-commutativeRing
   where
   open BooleanAlgebraProperties ∨-∧-booleanAlgebra
   open XorRing _xor_ xor-is-ok
@@ -675,17 +675,3 @@ push-function-into-if : ∀ (f : A → B) x {y z} →
                         f (if x then y else z) ≡ (if x then f y else f z)
 push-function-into-if _ true  = refl
 push-function-into-if _ false = refl
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-T-irrelevance = T-irrelevant
-{-# WARNING_ON_USAGE T-irrelevance
-"Warning: T-irrelevance was deprecated in v1.0.
-Please use T-irrelevant instead."
-#-}

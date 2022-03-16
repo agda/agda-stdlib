@@ -6,8 +6,6 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary hiding (Decidable)
-
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
@@ -28,6 +26,7 @@ open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable) renaming (_⊆_ to _⋐_)
+open import Relation.Binary hiding (Decidable)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 open Setoid using (Carrier)
@@ -119,7 +118,6 @@ module ⊆-Reasoning (S : Setoid a ℓ) where
 
   open Base public
     hiding (step-∼; step-≈; step-≈˘)
-    renaming (_≈⟨⟩_ to _≋⟨⟩_)
 
   infixr 2 step-⊆ step-≋ step-≋˘
   infix 1 step-∈

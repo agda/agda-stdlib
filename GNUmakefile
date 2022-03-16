@@ -1,6 +1,7 @@
 AGDA_EXEC ?= agda
-RTS_OPTIONS=+RTS -M4.0G -H3.5G -A128M -RTS
-AGDA=$(AGDA_EXEC) $(RTS_OPTIONS)
+AGDA_OPTIONS=-Werror
+AGDA_RTS_OPTIONS=+RTS -M4.0G -H3.5G -A128M -RTS
+AGDA=$(AGDA_EXEC) $(AGDA_OPTIONS) $(AGDA_RTS_OPTIONS)
 
 # Before running `make test` the `fix-whitespace` program should
 # be installed:

@@ -166,6 +166,7 @@ record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a 
   field
     isMagma  : IsMagma _∙_
     inverse   : Inverse ε _⁻¹ _∙_
+    ⁻¹-cong   : Congruent₁ _⁻¹
 
   open IsMagma isMagma public
 
@@ -226,6 +227,7 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   isInvertibleMagma = record
     { isMagma = isMagma
     ; inverse = inverse
+    ; ⁻¹-cong = ⁻¹-cong
     }
 
   isInvertibleUnitalMagma : IsInvertibleUnitalMagma _∙_ ε _⁻¹
@@ -493,6 +495,14 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
     *-cancelˡ-nonZero     : AlmostLeftCancellative 0# *
 
   open IsCommutativeSemiring isCommutativeSemiring public
+
+
+record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiring  : IsSemiring + * 0# 1#
+    +-idem      : Idempotent +
+
+  open IsSemiring isSemiring public
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 1 element

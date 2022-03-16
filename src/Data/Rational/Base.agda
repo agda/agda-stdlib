@@ -9,31 +9,21 @@
 module Data.Rational.Base where
 
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
-open import Function.Base using (id)
 open import Data.Integer.Base as ℤ using (ℤ; +_; +0; +[1+_]; -[1+_])
-import Data.Integer.GCD as ℤ
-import Data.Integer.DivMod as ℤ
 open import Data.Nat.GCD
-open import Data.Nat.Divisibility as ℕDiv using (divides; 0∣⇒≡0)
 open import Data.Nat.Coprimality as C
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
-import Data.Nat.DivMod as ℕ
 open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ)
-open import Data.Product
-open import Data.Sign using (Sign)
 open import Data.Sum.Base using (inj₂)
+open import Function.Base using (id)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_; recompute)
-open import Relation.Nullary.Decidable
-  using (False; fromWitness; fromWitnessFalse; toWitnessFalse)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; refl; subst; cong; cong₂; module ≡-Reasoning)
-
-open ≡-Reasoning
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl)
 
 ------------------------------------------------------------------------
 -- Rational numbers in reduced form. Note that there is exactly one
@@ -250,7 +240,7 @@ p ⊓ q = if p ≤ᵇ q then p else q
 
 -- Floor (round towards -∞)
 floor : ℚ → ℤ
-floor p = (↥ p) ℤ.div (↧ p)
+floor p = ↥ p ℤ./ ↧ p
 
 -- Ceiling (round towards +∞)
 ceiling : ℚ → ℤ

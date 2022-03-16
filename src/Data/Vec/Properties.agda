@@ -13,7 +13,8 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
-open import Data.Nat.Properties using (+-assoc; ≤-step)
+open import Data.Nat.Properties
+  using (+-assoc; ≤-step; ≤-refl; ≤-trans)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -152,6 +153,42 @@ take-drop-id (suc m) (x ∷ xs) = begin
     x ∷ xs
   ∎
 
+--------------------------------------------------------------------------------
+-- truncate
+
+truncate-refl : (xs : Vec A n) → truncate ≤-refl xs ≡ xs
+truncate-refl []       = refl
+truncate-refl (x ∷ xs) = cong (x ∷_) (truncate-refl xs)
+
+truncate-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
+                 truncate (≤-trans m≤n n≤p) xs ≡ truncate m≤n (truncate n≤p xs)
+truncate-trans z≤n       n≤p       xs = refl
+truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
+
+--------------------------------------------------------------------------------
+-- pad
+
+padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
+padRight-refl a []       = refl
+padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
+
+padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate a ≡ padRight m≤n a (replicate a)
+padRight-replicate z≤n       a = refl
+padRight-replicate (s≤s m≤n) a = cong (a ∷_) (padRight-replicate m≤n a)
+
+padRight-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A m) →
+            padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
+padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
+padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
+
+--------------------------------------------------------------------------------
+-- truncate and padRight together
+
+truncate-padRight : (m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+                    truncate m≤n (padRight m≤n a xs) ≡ xs
+truncate-padRight z≤n       a []       = refl
+truncate-padRight (s≤s m≤n) a (x ∷ xs) = cong (x ∷_) (truncate-padRight m≤n a xs)
+
 ------------------------------------------------------------------------
 -- lookup
 
@@ -182,7 +219,7 @@ lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m
                       lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
 lookup-inject≤-take (suc m) m≤m+n zero (x ∷ xs)
   rewrite unfold-take m x xs = refl
-lookup-inject≤-take (suc (suc m)) m≤m+n (suc zero) (x ∷ y ∷ xs)
+lookup-inject≤-take (suc (suc m)) (s≤s m≤m+n) (suc zero) (x ∷ y ∷ xs)
   rewrite unfold-take (suc m) x (y ∷ xs) | unfold-take m y xs = refl
 lookup-inject≤-take (suc (suc m)) (s≤s (s≤s m≤m+n)) (suc (suc i)) (x ∷ y ∷ xs)
   rewrite unfold-take (suc m) x (y ∷ xs) | unfold-take m y xs = lookup-inject≤-take m m≤m+n i xs
@@ -419,9 +456,8 @@ map-⊛ f g (x ∷ xs) = cong (f x (g x) ∷_) (map-⊛ f g xs)
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
               lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
-lookup-++-< (x ∷ xs) ys zero    (s≤s z≤n)       = refl
-lookup-++-< (x ∷ xs) ys (suc i) (s≤s (s≤s i<m)) =
-  lookup-++-< xs ys i (s≤s i<m)
+lookup-++-< (x ∷ xs) ys zero    z<s       = refl
+lookup-++-< (x ∷ xs) ys (suc i) (s<s i<m) = lookup-++-< xs ys i i<m
 
 lookup-++-≥ : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i≥m : toℕ i ≥ m) →
@@ -1007,19 +1043,6 @@ toList∘fromList (x List.∷ xs) = cong (x List.∷_) (toList∘fromList xs)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.1
-
-lookup-++-inject+ = lookup-++ˡ
-{-# WARNING_ON_USAGE lookup-++-inject+
-"Warning: lookup-++-inject+ was deprecated in v1.1.
-Please use lookup-++ˡ instead."
-#-}
-lookup-++-+′ = lookup-++ʳ
-{-# WARNING_ON_USAGE lookup-++-+′
-"Warning: lookup-++-+′ was deprecated in v1.1.
-Please use lookup-++ʳ instead."
-#-}
-
 -- Version 2.0
 
 []≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
@@ -1039,4 +1062,3 @@ sum-++-commute = sum-++
 "Warning: sum-++-commute was deprecated in v2.0.
 Please use sum-++ instead."
 #-}
-

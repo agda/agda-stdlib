@@ -10,7 +10,7 @@
 module README.Data.Default where
 
 open import Data.Default
-open import Data.Nat.Base
+open import Data.Nat.Base hiding (_!)
 open import Relation.Binary.PropositionalEquality
 
 -- An argument of type `WithDefault {a} {A} x` is an argument of type
