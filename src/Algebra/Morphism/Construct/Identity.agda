@@ -16,6 +16,8 @@ open import Algebra.Morphism.Structures
         ; module NearSemiringMorphisms
         ; module SemiringMorphisms
         ; module RingMorphisms
+        ; module QuasigroupMorphisms
+        ; module LoopMorphisms
         )
 open import Data.Product using (_,_)
 open import Function.Base using (id)
@@ -150,5 +152,49 @@ module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
   isRingIsomorphism : IsRingIsomorphism id
   isRingIsomorphism = record
     { isRingMonomorphism = isRingMonomorphism
+    ; surjective = _, refl
+    }
+
+module _ (Q : RawQuasigroup c ℓ) (open RawQuasigroup Q) (refl : Reflexive _≈_) where
+  open QuasigroupMorphisms Q Q
+
+  isQuasigroupHomomorphism : IsQuasigroupHomomorphism id
+  isQuasigroupHomomorphism = record
+    { isRelHomomorphism = isRelHomomorphism _
+    ; ∙-homo            = λ _ _ → refl
+    ; \\-homo            = λ _ _ → refl
+    ; //-homo            = λ _ _ → refl
+    }
+
+  isQuasigroupMonomorphism : IsQuasigroupMonomorphism id
+  isQuasigroupMonomorphism = record
+    { isQuasigroupHomomorphism = isQuasigroupHomomorphism
+    ; injective = id
+    }
+
+  isQuasigroupIsomorphism : IsQuasigroupIsomorphism id
+  isQuasigroupIsomorphism = record
+    { isQuasigroupMonomorphism = isQuasigroupMonomorphism
+    ; surjective = _, refl
+    }
+
+module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
+  open LoopMorphisms L L
+
+  isLoopHomomorphism : IsLoopHomomorphism id
+  isLoopHomomorphism = record
+    { isQuasigroupHomomorphism = isQuasigroupHomomorphism _ refl
+    ; ε-homo = refl
+    }
+
+  isLoopMonomorphism : IsLoopMonomorphism id
+  isLoopMonomorphism = record
+    { isLoopHomomorphism = isLoopHomomorphism
+    ; injective = id
+    }
+
+  isLoopIsomorphism : IsLoopIsomorphism id
+  isLoopIsomorphism = record
+    { isLoopMonomorphism = isLoopMonomorphism
     ; surjective = _, refl
     }
