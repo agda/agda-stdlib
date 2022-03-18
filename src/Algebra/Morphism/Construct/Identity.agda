@@ -29,6 +29,9 @@ private
   variable
     c ℓ : Level
 
+------------------------------------------------------------------------
+-- Magmas
+
 module _ (M : RawMagma c ℓ) (open RawMagma M) (refl : Reflexive _≈_) where
   open MagmaMorphisms M M
 
@@ -49,6 +52,9 @@ module _ (M : RawMagma c ℓ) (open RawMagma M) (refl : Reflexive _≈_) where
     { isMagmaMonomorphism = isMagmaMonomorphism
     ; surjective = _, refl
     }
+
+------------------------------------------------------------------------
+-- Monoids
 
 module _ (M : RawMonoid c ℓ) (open RawMonoid M) (refl : Reflexive _≈_) where
   open MonoidMorphisms M M
@@ -71,6 +77,9 @@ module _ (M : RawMonoid c ℓ) (open RawMonoid M) (refl : Reflexive _≈_) where
     ; surjective = _, refl
     }
 
+------------------------------------------------------------------------
+-- Groups
+
 module _ (G : RawGroup c ℓ) (open RawGroup G) (refl : Reflexive _≈_) where
   open GroupMorphisms G G
 
@@ -91,6 +100,9 @@ module _ (G : RawGroup c ℓ) (open RawGroup G) (refl : Reflexive _≈_) where
     { isGroupMonomorphism = isGroupMonomorphism
     ; surjective = _, refl
     }
+
+------------------------------------------------------------------------
+-- Near semirings
 
 module _ (R : RawNearSemiring c ℓ) (open RawNearSemiring R) (refl : Reflexive _≈_) where
   open NearSemiringMorphisms R R
@@ -113,6 +125,9 @@ module _ (R : RawNearSemiring c ℓ) (open RawNearSemiring R) (refl : Reflexive 
     ; surjective = _, refl
     }
 
+------------------------------------------------------------------------
+-- Semirings
+
 module _ (R : RawSemiring c ℓ) (open RawSemiring R) (refl : Reflexive _≈_) where
   open SemiringMorphisms R R
 
@@ -134,6 +149,9 @@ module _ (R : RawSemiring c ℓ) (open RawSemiring R) (refl : Reflexive _≈_) w
     ; surjective = _, refl
     }
 
+------------------------------------------------------------------------
+-- Rings
+
 module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
   open RingMorphisms R R
 
@@ -154,6 +172,9 @@ module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
     { isRingMonomorphism = isRingMonomorphism
     ; surjective = _, refl
     }
+
+------------------------------------------------------------------------
+-- Quasigroup
 
 module _ (Q : RawQuasigroup c ℓ) (open RawQuasigroup Q) (refl : Reflexive _≈_) where
   open QuasigroupMorphisms Q Q
@@ -177,6 +198,9 @@ module _ (Q : RawQuasigroup c ℓ) (open RawQuasigroup Q) (refl : Reflexive _≈
     { isQuasigroupMonomorphism = isQuasigroupMonomorphism
     ; surjective = _, refl
     }
+
+------------------------------------------------------------------------
+-- Loop
 
 module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
   open LoopMorphisms L L
