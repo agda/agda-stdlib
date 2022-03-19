@@ -780,6 +780,44 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawSemiring
     )
 
+record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isQuasiring   : IsQuasiring _≈_ _+_ _*_ 0# 1#
+
+  open IsQuasiring isQuasiring public
+
+  +-monoid : Monoid _ _
+  +-monoid = record { isMonoid = +-isMonoid }
+
+  open Monoid +-monoid public
+    using (_≉_) renaming
+    ( rawMagma    to  +-rawMagma
+    ; magma       to  +-magma
+    ; semigroup   to  +-semigroup
+    ; unitalMagma to  +-unitalMagma
+    ; rawMonoid   to  +-rawMonoid
+    )
+
+  *-monoid : Monoid _ _
+  *-monoid = record { isMonoid = *-isMonoid }
+
+  open Monoid *-monoid public
+    using () renaming
+    ( rawMagma  to *-rawMagma
+    ; magma     to *-magma
+    ; semigroup to *-semigroup
+    ; rawMonoid to *-rawMonoid
+    )
+
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
@@ -848,6 +886,31 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------
+
+record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    -_            : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isNearring    : IsNearring _≈_ _+_ _*_ 0# 1# -_
+
+  open IsNearring isNearring public
+
+  quasiring : Quasiring _ _
+  quasiring = record { isQuasiring = isQuasiring }
+
+  open Quasiring quasiring public
+    using
+    (_≉_; +-rawMagma; +-magma; +-unitalMagma; +-semigroup; +-monoid; +-rawMonoid
+    ;*-rawMagma; *-magma; *-semigroup; *-monoid
+    )
 
 -- A raw ring is a ring without any laws.
 

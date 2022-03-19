@@ -926,6 +926,8 @@ Other minor changes
   record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ))
   record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) 
   record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ))
+  record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -1009,6 +1011,8 @@ Other minor changes
   record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ)
   record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   ```
   and the existing record `IsLattice` now provides
   ```
