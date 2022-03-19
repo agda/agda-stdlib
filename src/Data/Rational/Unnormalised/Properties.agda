@@ -19,7 +19,6 @@ open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver renaming (module +-*-Solver to ℕ-solver)
-open import Data.Unit using (tt)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
@@ -516,7 +515,7 @@ module ≤-Reasoning where
 -- Properties of sign predicates
 
 positive⁻¹ : ∀ p → .{{Positive p}} → p > 0ℚᵘ
-positive⁻¹ (mkℚᵘ +[1+ n ] _) = *<* (ℤ.+<+ (ℕ.s≤s ℕ.z≤n))
+positive⁻¹ (mkℚᵘ +[1+ n ] _) = *<* (ℤ.+<+ ℕ.z<s)
 
 nonNegative⁻¹ : ∀ p → .{{NonNegative p}} → p ≥ 0ℚᵘ
 nonNegative⁻¹ (mkℚᵘ +0       _) = *≤* (ℤ.+≤+ ℕ.z≤n)
@@ -1331,7 +1330,9 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-isRing : IsRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
 +-*-isRing = record
   { +-isAbelianGroup = +-0-isAbelianGroup
-  ; *-isMonoid       = *-1-isMonoid
+  ; *-cong           = *-cong
+  ; *-assoc          = *-assoc
+  ; *-identity       = *-identity
   ; distrib          = *-distrib-+
   ; zero             = *-zero
   }

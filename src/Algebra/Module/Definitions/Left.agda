@@ -22,6 +22,7 @@ open import Data.Product
 -- Binary operations
 
 open import Algebra.Core
+open import Algebra.Module.Core
 
 ------------------------------------------------------------------------
 -- Properties of operations

@@ -178,7 +178,13 @@ n∣m*n*o m o = ∣-trans (n∣m*n m) (m∣m*n o)
 ∣m⇒∣m*n {i} {m} n (divides q refl) = ∣-trans (n∣m*n q) (m∣m*n n)
 
 ∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
-∣n⇒∣m*n {i} m {n} i∣n = subst (i ∣_) (*-comm n m) (∣m⇒∣m*n m i∣n)
+∣n⇒∣m*n m {n} rewrite *-comm m n = ∣m⇒∣m*n m
+
+m*n∣⇒m∣ : ∀ {i} m n → m * n ∣ i → m ∣ i
+m*n∣⇒m∣ m n (divides q refl) = ∣n⇒∣m*n q (m∣m*n n)
+
+m*n∣⇒n∣ : ∀ {i} m n → m * n ∣ i → n ∣ i
+m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
 *-monoʳ-∣ : ∀ {i j} k → i ∣ j → k * i ∣ k * j
 *-monoʳ-∣ {i} {j} k (divides q refl) = divides q $ begin-equality
@@ -262,6 +268,16 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
   o         ∎
   where open ∣-Reasoning
 
+m/n/o≡m/[n*o] : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} → n * o ∣ m →
+                ((m / n) / o) ≡ (m / (n * o)) {{m*n≢0 n o}}
+m/n/o≡m/[n*o] m n@(suc _) o@(suc _) n*o∣m = *-cancelˡ-≡ (n * o) (begin-equality
+  (n * o) * (m / n / o)   ≡⟨ *-assoc n o _ ⟩
+  n * (o * (m / n / o))   ≡⟨ cong (n *_) (m*[n/m]≡n (m*n∣o⇒n∣o/m n o n*o∣m)) ⟩
+  n * (m / n)             ≡⟨ m*[n/m]≡n (m*n∣⇒m∣ n o n*o∣m) ⟩
+  m                       ≡˘⟨ m*[n/m]≡n n*o∣m ⟩
+  (n * o) * (m / (n * o)) ∎)
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
 
@@ -286,23 +302,11 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
   where open ≤-Reasoning; ad/n = a * d / n
 
 ------------------------------------------------------------------------
--- DEPRECATED - please use new names as continuing support for the old
--- names is not guaranteed.
+-- Properties of _∣_ and !_
 
--- Version 1.1
-
-poset = ∣-poset
-{-# WARNING_ON_USAGE poset
-"Warning: poset was deprecated in v1.1.
-Please use ∣-poset instead."
-#-}
-*-cong = *-monoʳ-∣
-{-# WARNING_ON_USAGE *-cong
-"Warning: *-cong was deprecated in v1.1.
-Please use *-monoʳ-∣ instead."
-#-}
-/-cong = *-cancelˡ-∣
-{-# WARNING_ON_USAGE /-cong
-"Warning: /-cong was deprecated in v1.1.
-Please use *-cancelˡ-∣ instead."
-#-}
+m≤n⇒m!∣n! : ∀ {m n} → m ≤ n → m ! ∣ n !
+m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
+  where
+  help : ∀ {m n} → m ≤′ n → m ! ∣ n !
+  help {m} {n}     ≤′-refl        = ∣-refl
+  help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)

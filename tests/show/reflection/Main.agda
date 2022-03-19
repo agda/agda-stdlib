@@ -8,7 +8,7 @@ open import Data.Unit.Base using (⊤)
 open import Function.Base using (_$_; id)
 
 open import Reflection using (TC; Term; getType; getDefinition)
-open import Reflection.Show
+open import Reflection.AST.Show
 
 macro
   runTC : TC String → Term → TC ⊤
@@ -19,7 +19,7 @@ macro
 open import IO.Base hiding (_<$>_)
 open import IO.Finite
 
-open import Reflection.TypeChecking.Monad.Syntax using (_<$>_)
+open import Reflection.TCM.Syntax using (_<$>_)
 
 main : Main
 main = run $ do

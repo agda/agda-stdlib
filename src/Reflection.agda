@@ -8,69 +8,13 @@
 
 module Reflection where
 
-import Agda.Builtin.Reflection as Builtin
-
 ------------------------------------------------------------------------
--- Names, Metas, and Literals re-exported publicly
+-- Re-export contents publicly
 
-open import Reflection.Abstraction as Abstraction public
-  using (Abs; abs)
-open import Reflection.Argument as Argument public
-  using (Arg; arg; Args; vArg; hArg; iArg; defaultModality)
-open import Reflection.Definition as Definition  public
-  using (Definition)
-open import Reflection.Meta as Meta public
-  using (Meta)
-open import Reflection.Name as Name public
-  using (Name; Names)
-open import Reflection.Literal as Literal public
-  using (Literal)
-open import Reflection.Pattern as Pattern public
-  using (Pattern)
-open import Reflection.Term as Term public
-  using (Term; Type; Clause; Clauses; Sort)
-
-import Reflection.Argument.Modality as Modality
-import Reflection.Argument.Quantity as Quantity
-import Reflection.Argument.Relevance as Relevance
-import Reflection.Argument.Visibility as Visibility
-import Reflection.Argument.Information as Information
-
-open Definition.Definition public
-open Information.ArgInfo public
-open Literal.Literal public
-open Modality.Modality public
-open Quantity.Quantity public
-open Relevance.Relevance public
-open Term.Term public
-open Visibility.Visibility public
-
-------------------------------------------------------------------------
--- Fixity
-
-open Builtin public
-  using (non-assoc; related; unrelated; fixity)
-  renaming
-  ( left-assoc      to assocˡ
-  ; right-assoc     to assocʳ
-  ; primQNameFixity to getFixity
-  )
-
-------------------------------------------------------------------------
--- Type checking monad
-
-open import Reflection.TypeChecking.Monad public
-
--- Standard monad operators
-
-open import Reflection.TypeChecking.Monad.Syntax public
+open import Reflection.AST public
+open import Reflection.TCM public
+open import Reflection.TCM.Syntax public
   using (_>>=_; _>>_)
-
-------------------------------------------------------------------------
--- Show
-
-open import Reflection.Show public
-
 
 
 ------------------------------------------------------------------------
@@ -79,13 +23,19 @@ open import Reflection.Show public
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.1
-
-returnTC = return
-{-# WARNING_ON_USAGE returnTC
-"Warning: returnTC was deprecated in v1.1.
-Please use return instead."
-#-}
+import Reflection.AST.Abstraction as Abstraction
+import Reflection.AST.Argument as Argument
+import Reflection.AST.Definition as Definition
+import Reflection.AST.Meta as Meta
+import Reflection.AST.Name as Name
+import Reflection.AST.Literal as Literal
+import Reflection.AST.Pattern as Pattern
+import Reflection.AST.Term as Term
+import Reflection.AST.Argument.Modality as Modality
+import Reflection.AST.Argument.Quantity as Quantity
+import Reflection.AST.Argument.Relevance as Relevance
+import Reflection.AST.Argument.Visibility as Visibility
+import Reflection.AST.Argument.Information as Information
 
 -- Version 1.3
 

@@ -72,6 +72,25 @@ rawRing R S = record
   ; 1#      = R.1# , S.1#
   } where module R = RawRing R; module S = RawRing S
 
+rawQuasigroup : RawQuasigroup a ℓ₁ → RawQuasigroup b ℓ₂ → RawQuasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+rawQuasigroup M N = record
+  { Carrier = M.Carrier × N.Carrier
+  ; _≈_     = Pointwise M._≈_ N._≈_
+  ; _∙_     = zip M._∙_ N._∙_
+  ; _\\_    = zip M._\\_ N._\\_
+  ; _//_    = zip M._//_ N._//_
+  } where module M = RawQuasigroup M; module N = RawQuasigroup N
+
+rawLoop : RawLoop a ℓ₁ → RawLoop b ℓ₂ → RawLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+rawLoop M N = record
+  { Carrier = M.Carrier × N.Carrier
+  ; _≈_     = Pointwise M._≈_ N._≈_
+  ; _∙_     = zip M._∙_ N._∙_
+  ; _\\_    = zip M._\\_ N._\\_
+  ; _//_    = zip M._//_ N._//_
+  ; ε       = M.ε , N.ε
+  } where module M = RawLoop M; module N = RawLoop N
+
 ------------------------------------------------------------------------
 -- Bundles
 
@@ -111,6 +130,16 @@ commutativeSemigroup G H = record
     }
   } where module G = CommutativeSemigroup G; module H = CommutativeSemigroup H
 
+unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ → UnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+unitalMagma M N = record
+  { ε = M.ε , N.ε
+  ; isUnitalMagma = record
+    { isMagma = Magma.isMagma (magma M.magma N.magma)
+    ; identity = (M.identityˡ , N.identityˡ <*>_)
+               , (M.identityʳ , N.identityʳ <*>_)
+    }
+  } where module M = UnitalMagma M; module N = UnitalMagma N
+
 monoid : Monoid a ℓ₁ → Monoid b ℓ₂ → Monoid (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 monoid M N = record
   { ε = M.ε , N.ε
@@ -144,6 +173,27 @@ idempotentCommutativeMonoid M N = record
   module M = IdempotentCommutativeMonoid M
   module N = IdempotentCommutativeMonoid N
 
+invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ → InvertibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+invertibleMagma M N = record
+  { _⁻¹ = map M._⁻¹ N._⁻¹
+  ; isInvertibleMagma = record
+    { isMagma = Magma.isMagma (magma M.magma N.magma)
+    ; inverse = (λ x → (M.inverseˡ , N.inverseˡ) <*> x)
+                , (λ x → (M.inverseʳ , N.inverseʳ) <*> x)
+    ; ⁻¹-cong = map M.⁻¹-cong N.⁻¹-cong
+    }
+  } where module M = InvertibleMagma M; module N = InvertibleMagma N
+
+invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ → InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+invertibleUnitalMagma M N = record
+  { ε = M.ε , N.ε
+  ; isInvertibleUnitalMagma = record
+    { isInvertibleMagma = InvertibleMagma.isInvertibleMagma (invertibleMagma M.invertibleMagma N.invertibleMagma)
+    ; identity = (M.identityˡ , N.identityˡ <*>_)
+               , (M.identityʳ , N.identityʳ <*>_)
+    }
+  } where module M = InvertibleUnitalMagma M; module N = InvertibleUnitalMagma N
+
 group : Group a ℓ₁ → Group b ℓ₂ → Group (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 group G H = record
   { _⁻¹ = map G._⁻¹ H._⁻¹
@@ -172,7 +222,10 @@ semiringWithoutAnnihilatingZero R S = record
       { +-isCommutativeMonoid = CommutativeMonoid.isCommutativeMonoid
                                   (commutativeMonoid R.+-commutativeMonoid
                                                      S.+-commutativeMonoid)
-      ; *-isMonoid = Monoid.isMonoid (monoid R.*-monoid S.*-monoid)
+      ; *-cong = zip R.*-cong S.*-cong
+      ; *-assoc = λ x y z → (R.*-assoc , S.*-assoc) <*> x <*> y <*> z
+      ; *-identity = (R.*-identityˡ , S.*-identityˡ <*>_)
+                   , (R.*-identityʳ , S.*-identityʳ <*>_)
       ; distrib    = (λ x y z → (R.distribˡ , S.distribˡ) <*> x <*> y <*> z)
                    , (λ x y z → (R.distribʳ , S.distribʳ) <*> x <*> y <*> z)
       }
@@ -203,12 +256,22 @@ commutativeSemiring R S = record
       }
   } where module R = CommutativeSemiring R;  module S = CommutativeSemiring S
 
+kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+kleeneAlgebra K L = record
+  { isKleeneAlgebra = record
+      { isSemiring = Semiring.isSemiring (semiring K.semiring L.semiring)
+      ; +-idem = λ x → (K.+-idem , L.+-idem) <*> x
+      }
+  } where module K = KleeneAlgebra K;  module L = KleeneAlgebra L
+
 ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 ring R S = record
   { -_     = uncurry (λ x y → R.-_ x , S.-_ y)
   ; isRing = record
       { +-isAbelianGroup = AbelianGroup.isAbelianGroup A
-      ; *-isMonoid       = Semiring.*-isMonoid Semi
+      ; *-cong           = Semiring.*-cong Semi
+      ; *-assoc          = Semiring.*-assoc Semi
+      ; *-identity       = Semiring.*-identity Semi
       ; distrib          = Semiring.distrib Semi
       ; zero             = Semiring.zero Semi
       }
@@ -227,3 +290,26 @@ commutativeRing R S = record
       ; *-comm = λ x y → (R.*-comm , S.*-comm) <*> x <*> y
       }
   } where module R = CommutativeRing R; module S = CommutativeRing S
+
+quasigroup : Quasigroup a ℓ₁ → Quasigroup b ℓ₂ → Quasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+quasigroup M N = record
+  { _\\_    = zip M._\\_ N._\\_
+  ; _//_    = zip M._//_ N._//_
+  ; isQuasigroup = record
+    { isMagma = Magma.isMagma (magma M.magma N.magma)
+    ; \\-cong = zip M.\\-cong N.\\-cong
+    ; //-cong = zip M.//-cong N.//-cong
+    ; leftDivides = (λ x y → M.leftDividesˡ , N.leftDividesˡ <*> x <*> y) , (λ x y → M.leftDividesʳ , N.leftDividesʳ <*> x <*> y)
+    ; rightDivides = (λ x y → M.rightDividesˡ , N.rightDividesˡ <*> x <*> y) , (λ x y → M.rightDividesʳ , N.rightDividesʳ <*> x <*> y)
+    }
+  } where module M = Quasigroup M; module N = Quasigroup N
+
+loop : Loop a ℓ₁ → Loop b ℓ₂ → Loop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+loop M N = record
+  { ε = M.ε , N.ε
+  ; isLoop = record
+    { isQuasigroup = Quasigroup.isQuasigroup (quasigroup M.quasigroup N.quasigroup)
+    ; identity = (M.identityˡ , N.identityˡ <*>_)
+               , (M.identityʳ , N.identityʳ <*>_)
+    }
+  } where module M = Loop M; module N = Loop N

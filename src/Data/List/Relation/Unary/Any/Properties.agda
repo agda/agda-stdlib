@@ -22,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties.Core
   using (Any↔; find∘map; map∘find; lose∘find)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; ≤-step)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
@@ -482,15 +482,15 @@ cartesianProduct⁻ = cartesianProductWith⁻ _,_ id
 -- applyUpTo
 
 applyUpTo⁺ : ∀ f {i n} → P (f i) → i < n → Any P (applyUpTo f n)
-applyUpTo⁺ _ p (s≤s z≤n)       = here p
-applyUpTo⁺ f p (s≤s (s≤s i<n)) =
-  there (applyUpTo⁺ (f ∘ suc) p (s≤s i<n))
+applyUpTo⁺ _ p z<s       = here p
+applyUpTo⁺ f p (s<s i<n@(s≤s _)) =
+  there (applyUpTo⁺ (f ∘ suc) p i<n)
 
 applyUpTo⁻ : ∀ f {n} → Any P (applyUpTo f n) →
              ∃ λ i → i < n × P (f i)
-applyUpTo⁻ f {suc n} (here p)  = zero , s≤s z≤n , p
+applyUpTo⁻ f {suc n} (here p)  = zero , z<s , p
 applyUpTo⁻ f {suc n} (there p) with applyUpTo⁻ (f ∘ suc) p
-... | i , i<n , q = suc i , s≤s i<n , q
+... | i , i<n , q = suc i , s<s i<n , q
 
 ------------------------------------------------------------------------
 -- applyDownFrom

@@ -29,7 +29,7 @@ open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Coprimality as C using (Coprime; coprime?)
-open import Data.Nat.Divisibility hiding (/-cong)
+open import Data.Nat.Divisibility
 import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
 open import Data.Product using (proj₁; proj₂; _×_; _,_; uncurry)
@@ -244,22 +244,22 @@ normalize-coprime {n} {d-1} c = begin
     d/1≢0 = ℕ.≢-nonZero (subst (_≢ 0) (sym (ℕ.n/1≡n d)) λ())
 
 ↥-normalize : ∀ i n .{{_ : ℕ.NonZero n}} → ↥ (normalize i n) ℤ.* gcd (+ i) (+ n) ≡ + i
-↥-normalize i n {{n≢0}} = begin
-  ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ ((n ℕ./ g) {{g≢0}})) ⟩
+↥-normalize i n = begin
+  ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ (n ℕ./ g)) ⟩
   + i/g     ℤ.* + g          ≡⟨⟩
-  S.+ ◃ i/g ℕ.* g            ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m {{g≢0}} (ℕ.gcd[m,n]∣m i n)) ⟩
+  S.+ ◃ i/g ℕ.* g            ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
   S.+ ◃ i                    ≡⟨ ℤ.+◃n≡+n i ⟩
   + i                        ∎
   where
   open ≡-Reasoning
   g     = ℕ.gcd i n
-  g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 i n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{n≢0}} {{g≢0}})
+  instance g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 i n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{gcd≢0 = g≢0}})
   i/g = (i ℕ./ g) {{g≢0}}
 
 ↧-normalize : ∀ i n .{{_ : ℕ.NonZero n}} → ↧ (normalize i n) ℤ.* gcd (+ i) (+ n) ≡ + n
-↧-normalize i n {{n≢0}} = begin
-  ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ ((n ℕ./ g) {{g≢0}})) ⟩
+↧-normalize i n = begin
+  ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ (n ℕ./ g)) ⟩
   + (n ℕ./ g)       ℤ.* + g  ≡⟨⟩
   S.+ ◃ n ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
   S.+ ◃ n                    ≡⟨ ℤ.+◃n≡+n n ⟩
@@ -267,40 +267,40 @@ normalize-coprime {n} {d-1} c = begin
   where
   open ≡-Reasoning
   g = ℕ.gcd i n
-  instance g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0   i n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{n≢0}} {{g≢0}})
+  instance g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0   i n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{gcd≢0 = g≢0}})
 
 normalize-cong : ∀ {m₁ n₁ m₂ n₂} .{{_ : ℕ.NonZero n₁}} .{{_ : ℕ.NonZero n₂}} →
                  m₁ ≡ m₂ → n₁ ≡ n₂ → normalize m₁ n₁ ≡ normalize m₂ n₂
-normalize-cong {m} {n} {{n₁≢0}} {{n₂≢0}} refl refl =
+normalize-cong {m} {n} refl refl =
   mkℚ+-cong (ℕ./-congʳ {n = g} refl) (ℕ./-congʳ {n = g} refl)
   where
   g = ℕ.gcd m n
   instance
-    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n₂≢0)))
-    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n₁≢0}} {{g≢0}})
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
 normalize-nonNeg : ∀ m n .{{_ : ℕ.NonZero n}} → NonNegative (normalize m n)
-normalize-nonNeg m n {{n≢0}} = mkℚ+-nonNeg ((m ℕ./ g) {{g≢0}}) ((n ℕ./ g) {{g≢0}})
+normalize-nonNeg m n = mkℚ+-nonNeg (m ℕ./ g) (n ℕ./ g)
   where
   g = ℕ.gcd m n
   instance
-    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
 normalize-pos : ∀ m n .{{_ : ℕ.NonZero n}} .{{_ : ℕ.NonZero m}} → Positive (normalize m n)
-normalize-pos m n {{n≢0}} {{m≢0}} = mkℚ+-pos (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n)
+normalize-pos m n = mkℚ+-pos (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n)
   where
   g = ℕ.gcd m n
   instance
-    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
-    m/g≢0 = ℕ.≢-nonZero (ℕ.m/gcd[m,n]≢0 m n {{m≢0}} {{g≢0}})
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
+    m/g≢0 = ℕ.≢-nonZero (ℕ.m/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
 normalize-injective-≃ : ∀ m n c d {{_ : ℕ.NonZero c}} {{_ : ℕ.NonZero d}} →
                         normalize m c ≡ normalize n d →
                         m ℕ.* d ≡ n ℕ.* c
-normalize-injective-≃ m n c d {{c≢0}} {{d≢0}} eq = ℕ./-cancelʳ-≡
+normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
   md∣gcd[m,c]gcd[n,d]
   nc∣gcd[m,c]gcd[n,d]
   (begin
@@ -321,14 +321,14 @@ normalize-injective-≃ m n c d {{c≢0}} {{d≢0}} eq = ℕ./-cancelʳ-≡
   nc∣gcd[n,d]gcd[m,c] = *-pres-∣ gcd[n,d]∣n gcd[m,c]∣c
   nc∣gcd[m,c]gcd[n,d] = subst (_∣ n ℕ.* c) (ℕ.*-comm gcd[n,d] gcd[m,c]) nc∣gcd[n,d]gcd[m,c]
 
-  gcd[m,c]≢0′          = ℕ.gcd[m,n]≢0 m c (inj₂ (ℕ.≢-nonZero⁻¹ c≢0))
-  gcd[n,d]≢0′          = ℕ.gcd[m,n]≢0 n d (inj₂ (ℕ.≢-nonZero⁻¹ d≢0))
+  gcd[m,c]≢0′          = ℕ.gcd[m,n]≢0 m c (inj₂ (ℕ.≢-nonZero⁻¹ c))
+  gcd[n,d]≢0′          = ℕ.gcd[m,n]≢0 n d (inj₂ (ℕ.≢-nonZero⁻¹ d))
   gcd[m,c]*gcd[n,d]≢0′ = Sum.[ gcd[m,c]≢0′ , gcd[n,d]≢0′ ] ∘ ℕ.m*n≡0⇒m≡0∨n≡0 _
   instance
     gcd[m,c]≢0   = ℕ.≢-nonZero gcd[m,c]≢0′
     gcd[n,d]≢0   = ℕ.≢-nonZero gcd[n,d]≢0′
-    c/gcd[m,c]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m c {{c≢0}} {{gcd[m,c]≢0}})
-    d/gcd[n,d]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 n d {{d≢0}} {{gcd[n,d]≢0}})
+    c/gcd[m,c]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m c {{gcd≢0 = gcd[m,c]≢0}})
+    d/gcd[n,d]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 n d {{gcd≢0 = gcd[n,d]≢0}})
     gcd[m,c]*gcd[n,d]≢0 = ℕ.≢-nonZero gcd[m,c]*gcd[n,d]≢0′
     gcd[n,d]*gcd[m,c]≢0 = ℕ.≢-nonZero (subst (_≢ 0) (ℕ.*-comm gcd[m,c] gcd[n,d]) gcd[m,c]*gcd[n,d]≢0′)
 
@@ -372,7 +372,7 @@ normalize-injective-≃ m n c d {{c≢0}} {{d≢0}} eq = ℕ./-cancelʳ-≡
 0/n≡0 n@(suc n-1) {{n≢0}} = mkℚ+-cong {{n/n≢0}} {c₂ = 0-cop-1} (ℕ.0/n≡0 (ℕ.gcd 0 n)) (ℕ.n/n≡1 n)
   where
   0-cop-1 = C.sym (C.1-coprimeTo 0)
-  n/n≢0   = ℕ.>-nonZero (subst (ℕ._> 0) (sym (ℕ.n/n≡1 n)) (ℕ.s≤s ℕ.z≤n))
+  n/n≢0   = ℕ.>-nonZero (subst (ℕ._> 0) (sym (ℕ.n/n≡1 n)) (ℕ.z<s))
 
 /-cong : ∀ {p₁ q₁ p₂ q₂} .{{_ : ℕ.NonZero q₁}} .{{_ : ℕ.NonZero q₂}} →
          p₁ ≡ p₂ → q₁ ≡ q₂ → p₁ / q₁ ≡ p₂ / q₂
@@ -721,13 +721,13 @@ neg<pos p q = toℚᵘ-cancel-< (ℚᵘ.neg<pos (toℚᵘ p) (toℚᵘ q))
 -- Properties of -_ and _≤_/_<_
 
 neg-antimono-< : -_ Preserves _<_ ⟶ _>_
-neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ -[1+ _ ] _ _} (*<* (ℤ.-<- n<m)) = *<* (ℤ.+<+ (ℕ.s≤s n<m))
-neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ +0       _ _} (*<* ℤ.-<+)       = *<* (ℤ.+<+ (ℕ.s≤s ℕ.z≤n))
+neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ -[1+ _ ] _ _} (*<* (ℤ.-<- n<m)) = *<* (ℤ.+<+ (ℕ.s<s n<m))
+neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ +0       _ _} (*<* ℤ.-<+)       = *<* (ℤ.+<+ ℕ.z<s)
 neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ +[1+ _ ] _ _} (*<* ℤ.-<+)       = *<* ℤ.-<+
 neg-antimono-< {mkℚ +0       _ _} {mkℚ +0       _ _} (*<* (ℤ.+<+ m<n)) = *<* (ℤ.+<+ m<n)
 neg-antimono-< {mkℚ +0       _ _} {mkℚ +[1+ _ ] _ _} (*<* (ℤ.+<+ m<n)) = *<* ℤ.-<+
 neg-antimono-< {mkℚ +[1+ _ ] _ _} {mkℚ +0       _ _} (*<* (ℤ.+<+ ()))
-neg-antimono-< {mkℚ +[1+ _ ] _ _} {mkℚ +[1+ _ ] _ _} (*<* (ℤ.+<+ (ℕ.s≤s m<n))) = *<* (ℤ.-<- m<n)
+neg-antimono-< {mkℚ +[1+ _ ] _ _} {mkℚ +[1+ _ ] _ _} (*<* (ℤ.+<+ (ℕ.s<s m<n))) = *<* (ℤ.-<- m<n)
 
 neg-antimono-≤ : -_ Preserves _≤_ ⟶ _≥_
 neg-antimono-≤ {mkℚ -[1+ _ ] _ _} {mkℚ -[1+ _ ] _ _} (*≤* (ℤ.-≤- n≤m)) = *≤* (ℤ.+≤+ (ℕ.s≤s n≤m))
@@ -1670,14 +1670,6 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.0
-
-≤-irrelevance = ≤-irrelevant
-{-# WARNING_ON_USAGE ≤-irrelevance
-"Warning: ≤-irrelevance was deprecated in v1.0.
-Please use ≤-irrelevant instead."
-#-}
 
 -- Version 2.0
 

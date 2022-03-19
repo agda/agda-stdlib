@@ -12,7 +12,7 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
-open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (lookup)
 open import Data.List.Properties as Listₚ using (partition-defn)
 open import Data.List.Membership.Propositional
@@ -29,7 +29,7 @@ open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
-open import Data.Nat.Base using (zero; suc; z≤n; s≤s; _<_)
+open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
@@ -524,15 +524,15 @@ all-takeWhile P? (x ∷ xs) with P? x
 
 applyUpTo⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyUpTo f n)
 applyUpTo⁺₁ f zero    Pf = []
-applyUpTo⁺₁ f (suc n) Pf = Pf (s≤s z≤n) ∷ applyUpTo⁺₁ (f ∘ suc) n (Pf ∘ s≤s)
+applyUpTo⁺₁ f (suc n) Pf = Pf z<s ∷ applyUpTo⁺₁ (f ∘ suc) n (Pf ∘ s<s)
 
 applyUpTo⁺₂ : ∀ f n → (∀ i → P (f i)) → All P (applyUpTo f n)
 applyUpTo⁺₂ f n Pf = applyUpTo⁺₁ f n (λ _ → Pf _)
 
 applyUpTo⁻ : ∀ f n → All P (applyUpTo f n) → ∀ {i} → i < n → P (f i)
-applyUpTo⁻ f (suc n) (px ∷ _)   (s≤s z≤n)       = px
-applyUpTo⁻ f (suc n) (_  ∷ pxs) (s≤s (s≤s i<n)) =
-  applyUpTo⁻ (f ∘ suc) n pxs (s≤s i<n)
+applyUpTo⁻ f (suc n) (px ∷ _)   z<s       = px
+applyUpTo⁻ f (suc n) (_  ∷ pxs) (s<s i<n@(s≤s _)) =
+  applyUpTo⁻ (f ∘ suc) n pxs i<n
 
 ------------------------------------------------------------------------
 -- upTo
@@ -556,12 +556,12 @@ applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)
 tabulate⁺ : ∀ {n} {f : Fin n → A} →
             (∀ i → P (f i)) → All P (tabulate f)
 tabulate⁺ {n = zero}  Pf = []
-tabulate⁺ {n = suc n} Pf = Pf fzero ∷ tabulate⁺ (Pf ∘ fsuc)
+tabulate⁺ {n = suc _} Pf = Pf zero ∷ tabulate⁺ (Pf ∘ suc)
 
 tabulate⁻ : ∀ {n} {f : Fin n → A} →
             All P (tabulate f) → (∀ i → P (f i))
-tabulate⁻ {n = suc n} (px ∷ _) fzero    = px
-tabulate⁻ {n = suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
+tabulate⁻ (px ∷ _) zero    = px
+tabulate⁻ (_ ∷ pf) (suc i) = tabulate⁻ pf i
 
 ------------------------------------------------------------------------
 -- remove
@@ -741,19 +741,6 @@ module _ (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.0
-
-filter⁺₁ = all-filter
-{-# WARNING_ON_USAGE filter⁺₁
-"Warning: filter⁺₁ was deprecated in v1.0.
-Please use all-filter instead."
-#-}
-filter⁺₂ = filter⁺
-{-# WARNING_ON_USAGE filter⁺₂
-"Warning: filter⁺₂ was deprecated in v1.0.
-Please use filter⁺ instead."
-#-}
 
 -- Version 1.3
 

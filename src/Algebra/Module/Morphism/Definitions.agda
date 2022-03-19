@@ -15,7 +15,7 @@ module Algebra.Module.Morphism.Definitions
   {ℓ} (_≈_ : Rel B ℓ) -- The equality relation over the codomain
   where
 
-open import Algebra.Core
+open import Algebra.Module.Core
 open import Algebra.Morphism.Definitions A B _≈_ public
 
 Homomorphicₗ : (A → B) → Opₗ R A → Opₗ R B → Set _

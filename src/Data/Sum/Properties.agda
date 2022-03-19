@@ -11,10 +11,12 @@ module Data.Sum.Properties where
 open import Level
 open import Data.Sum.Base
 open import Function
+open import Function.Bundles using (mk↔′)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′)
+
 
 private
   variable
@@ -43,6 +45,9 @@ module _ (dec₁ : Decidable {A = A} {B = A} _≡_)
 
 swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
 swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]
+
+swap-↔ : (A ⊎ B) ↔ (B ⊎ A)
+swap-↔ = mk↔′ swap swap swap-involutive swap-involutive
 
 map-id : map {A = A} {B = B} id id ≗ id
 map-id (inj₁ _) = refl
