@@ -51,10 +51,10 @@
 <a id="1398" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a> <a id="1404" href="Data.Bool.Properties.html#1294" class="Function Operator">≟</a> <a id="1406" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a>  <a id="1412" class="Symbol">=</a> <a id="1414" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a> <a id="1417" class="Symbol">λ()</a>
 
 <a id="≡-setoid"></a><a id="1422" href="Data.Bool.Properties.html#1422" class="Function">≡-setoid</a> <a id="1431" class="Symbol">:</a> <a id="1433" href="Relation.Binary.Bundles.html#1009" class="Record">Setoid</a> <a id="1440" href="Level.html#512" class="Function">0ℓ</a> <a id="1443" href="Level.html#512" class="Function">0ℓ</a>
-<a id="1446" href="Data.Bool.Properties.html#1422" class="Function">≡-setoid</a> <a id="1455" class="Symbol">=</a> <a id="1457" href="Relation.Binary.PropositionalEquality.Properties.html#5606" class="Function">setoid</a> <a id="1464" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a>
+<a id="1446" href="Data.Bool.Properties.html#1422" class="Function">≡-setoid</a> <a id="1455" class="Symbol">=</a> <a id="1457" href="Relation.Binary.PropositionalEquality.Properties.html#5390" class="Function">setoid</a> <a id="1464" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a>
 
 <a id="≡-decSetoid"></a><a id="1470" href="Data.Bool.Properties.html#1470" class="Function">≡-decSetoid</a> <a id="1482" class="Symbol">:</a> <a id="1484" href="Relation.Binary.Bundles.html#1391" class="Record">DecSetoid</a> <a id="1494" href="Level.html#512" class="Function">0ℓ</a> <a id="1497" href="Level.html#512" class="Function">0ℓ</a>
-<a id="1500" href="Data.Bool.Properties.html#1470" class="Function">≡-decSetoid</a> <a id="1512" class="Symbol">=</a> <a id="1514" href="Relation.Binary.PropositionalEquality.Properties.html#5737" class="Function">decSetoid</a> <a id="1524" href="Data.Bool.Properties.html#1294" class="Function Operator">_≟_</a>
+<a id="1500" href="Data.Bool.Properties.html#1470" class="Function">≡-decSetoid</a> <a id="1512" class="Symbol">=</a> <a id="1514" href="Relation.Binary.PropositionalEquality.Properties.html#5521" class="Function">decSetoid</a> <a id="1524" href="Data.Bool.Properties.html#1294" class="Function Operator">_≟_</a>
 
 <a id="1529" class="Comment">------------------------------------------------------------------------</a>
 <a id="1602" class="Comment">-- Properties of _≤_</a>
@@ -102,7 +102,7 @@
 
 <a id="≤-isPreorder"></a><a id="2393" href="Data.Bool.Properties.html#2393" class="Function">≤-isPreorder</a> <a id="2406" class="Symbol">:</a> <a id="2408" href="Relation.Binary.Structures.html#2163" class="Record">IsPreorder</a> <a id="2419" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="2423" href="Data.Bool.Base.html#672" class="Datatype Operator">_≤_</a>
 <a id="2427" href="Data.Bool.Properties.html#2393" class="Function">≤-isPreorder</a> <a id="2440" class="Symbol">=</a> <a id="2442" class="Keyword">record</a>
-  <a id="2451" class="Symbol">{</a> <a id="2453" href="Relation.Binary.Structures.html#2228" class="Field">isEquivalence</a> <a id="2467" class="Symbol">=</a> <a id="2469" href="Relation.Binary.PropositionalEquality.Properties.html#5061" class="Function">isEquivalence</a>
+  <a id="2451" class="Symbol">{</a> <a id="2453" href="Relation.Binary.Structures.html#2228" class="Field">isEquivalence</a> <a id="2467" class="Symbol">=</a> <a id="2469" href="Relation.Binary.PropositionalEquality.Properties.html#5112" class="Function">isEquivalence</a>
   <a id="2485" class="Symbol">;</a> <a id="2487" href="Relation.Binary.Structures.html#2331" class="Field">reflexive</a>     <a id="2501" class="Symbol">=</a> <a id="2503" href="Data.Bool.Properties.html#1650" class="Function">≤-reflexive</a>
   <a id="2517" class="Symbol">;</a> <a id="2519" href="Relation.Binary.Structures.html#2361" class="Field">trans</a>         <a id="2533" class="Symbol">=</a> <a id="2535" href="Data.Bool.Properties.html#1748" class="Function">≤-trans</a>
   <a id="2545" class="Symbol">}</a>
@@ -191,7 +191,7 @@
 
 <a id="&lt;-isStrictPartialOrder"></a><a id="4175" href="Data.Bool.Properties.html#4175" class="Function">&lt;-isStrictPartialOrder</a> <a id="4198" class="Symbol">:</a> <a id="4200" href="Relation.Binary.Structures.html#3950" class="Record">IsStrictPartialOrder</a> <a id="4221" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="4225" href="Data.Bool.Base.html#751" class="Datatype Operator">_&lt;_</a>
 <a id="4229" href="Data.Bool.Properties.html#4175" class="Function">&lt;-isStrictPartialOrder</a> <a id="4252" class="Symbol">=</a> <a id="4254" class="Keyword">record</a>
-  <a id="4263" class="Symbol">{</a> <a id="4265" href="Relation.Binary.Structures.html#4025" class="Field">isEquivalence</a> <a id="4279" class="Symbol">=</a> <a id="4281" href="Relation.Binary.PropositionalEquality.Properties.html#5061" class="Function">isEquivalence</a>
+  <a id="4263" class="Symbol">{</a> <a id="4265" href="Relation.Binary.Structures.html#4025" class="Field">isEquivalence</a> <a id="4279" class="Symbol">=</a> <a id="4281" href="Relation.Binary.PropositionalEquality.Properties.html#5112" class="Function">isEquivalence</a>
   <a id="4297" class="Symbol">;</a> <a id="4299" href="Relation.Binary.Structures.html#4059" class="Field">irrefl</a>        <a id="4313" class="Symbol">=</a> <a id="4315" href="Data.Bool.Properties.html#3480" class="Function">&lt;-irrefl</a>
   <a id="4326" class="Symbol">;</a> <a id="4328" href="Relation.Binary.Structures.html#4099" class="Field">trans</a>         <a id="4342" class="Symbol">=</a> <a id="4344" href="Data.Bool.Properties.html#3568" class="Function">&lt;-trans</a>
   <a id="4354" class="Symbol">;</a> <a id="4356" href="Relation.Binary.Structures.html#4134" class="Field">&lt;-resp-≈</a>      <a id="4370" class="Symbol">=</a> <a id="4372" href="Data.Bool.Properties.html#4030" class="Function">&lt;-resp₂-≡</a>
@@ -199,7 +199,7 @@
 
 <a id="&lt;-isStrictTotalOrder"></a><a id="4387" href="Data.Bool.Properties.html#4387" class="Function">&lt;-isStrictTotalOrder</a> <a id="4408" class="Symbol">:</a> <a id="4410" href="Relation.Binary.Structures.html#6402" class="Record">IsStrictTotalOrder</a> <a id="4429" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="4433" href="Data.Bool.Base.html#751" class="Datatype Operator">_&lt;_</a>
 <a id="4437" href="Data.Bool.Properties.html#4387" class="Function">&lt;-isStrictTotalOrder</a> <a id="4458" class="Symbol">=</a> <a id="4460" class="Keyword">record</a>
-  <a id="4469" class="Symbol">{</a> <a id="4471" href="Relation.Binary.Structures.html#6475" class="Field">isEquivalence</a> <a id="4485" class="Symbol">=</a> <a id="4487" href="Relation.Binary.PropositionalEquality.Properties.html#5061" class="Function">isEquivalence</a>
+  <a id="4469" class="Symbol">{</a> <a id="4471" href="Relation.Binary.Structures.html#6475" class="Field">isEquivalence</a> <a id="4485" class="Symbol">=</a> <a id="4487" href="Relation.Binary.PropositionalEquality.Properties.html#5112" class="Function">isEquivalence</a>
   <a id="4503" class="Symbol">;</a> <a id="4505" href="Relation.Binary.Structures.html#6509" class="Field">trans</a>         <a id="4519" class="Symbol">=</a> <a id="4521" href="Data.Bool.Properties.html#3568" class="Function">&lt;-trans</a>
   <a id="4531" class="Symbol">;</a> <a id="4533" href="Relation.Binary.Structures.html#6544" class="Field">compare</a>       <a id="4547" class="Symbol">=</a> <a id="4549" href="Data.Bool.Properties.html#3715" class="Function">&lt;-cmp</a>
   <a id="4557" class="Symbol">}</a>
@@ -269,7 +269,7 @@
 
 <a id="∨-isMagma"></a><a id="5917" href="Data.Bool.Properties.html#5917" class="Function">∨-isMagma</a> <a id="5927" class="Symbol">:</a> <a id="5929" href="Algebra.Structures.html#1117" class="Record">IsMagma</a> <a id="5937" href="Data.Bool.Base.html#1044" class="Function Operator">_∨_</a>
 <a id="5941" href="Data.Bool.Properties.html#5917" class="Function">∨-isMagma</a> <a id="5951" class="Symbol">=</a> <a id="5953" class="Keyword">record</a>
-  <a id="5962" class="Symbol">{</a> <a id="5964" href="Algebra.Structures.html#1169" class="Field">isEquivalence</a> <a id="5978" class="Symbol">=</a> <a id="5980" href="Relation.Binary.PropositionalEquality.Properties.html#5061" class="Function">isEquivalence</a>
+  <a id="5962" class="Symbol">{</a> <a id="5964" href="Algebra.Structures.html#1169" class="Field">isEquivalence</a> <a id="5978" class="Symbol">=</a> <a id="5980" href="Relation.Binary.PropositionalEquality.Properties.html#5112" class="Function">isEquivalence</a>
   <a id="5996" class="Symbol">;</a> <a id="5998" href="Algebra.Structures.html#1207" class="Field">∙-cong</a>        <a id="6012" class="Symbol">=</a> <a id="6014" href="Relation.Binary.PropositionalEquality.Core.html#1367" class="Function">cong₂</a> <a id="6020" href="Data.Bool.Base.html#1044" class="Function Operator">_∨_</a>
   <a id="6026" class="Symbol">}</a>
 
@@ -432,7 +432,7 @@
 
 <a id="∧-isMagma"></a><a id="9557" href="Data.Bool.Properties.html#9557" class="Function">∧-isMagma</a> <a id="9567" class="Symbol">:</a> <a id="9569" href="Algebra.Structures.html#1117" class="Record">IsMagma</a> <a id="9577" href="Data.Bool.Base.html#986" class="Function Operator">_∧_</a>
 <a id="9581" href="Data.Bool.Properties.html#9557" class="Function">∧-isMagma</a> <a id="9591" class="Symbol">=</a> <a id="9593" class="Keyword">record</a>
-  <a id="9602" class="Symbol">{</a> <a id="9604" href="Algebra.Structures.html#1169" class="Field">isEquivalence</a> <a id="9618" class="Symbol">=</a> <a id="9620" href="Relation.Binary.PropositionalEquality.Properties.html#5061" class="Function">isEquivalence</a>
+  <a id="9602" class="Symbol">{</a> <a id="9604" href="Algebra.Structures.html#1169" class="Field">isEquivalence</a> <a id="9618" class="Symbol">=</a> <a id="9620" href="Relation.Binary.PropositionalEquality.Properties.html#5112" class="Function">isEquivalence</a>
   <a id="9636" class="Symbol">;</a> <a id="9638" href="Algebra.Structures.html#1207" class="Field">∙-cong</a>        <a id="9652" class="Symbol">=</a> <a id="9654" href="Relation.Binary.PropositionalEquality.Core.html#1367" class="Function">cong₂</a> <a id="9660" href="Data.Bool.Base.html#986" class="Function Operator">_∧_</a>
   <a id="9666" class="Symbol">}</a>
 
@@ -561,7 +561,7 @@
 
 <a id="∨-∧-isLattice"></a><a id="12530" href="Data.Bool.Properties.html#12530" class="Function">∨-∧-isLattice</a> <a id="12544" class="Symbol">:</a> <a id="12546" href="Algebra.Lattice.Structures.html#4004" class="Record">IsLattice</a> <a id="12556" href="Data.Bool.Base.html#1044" class="Function Operator">_∨_</a> <a id="12560" href="Data.Bool.Base.html#986" class="Function Operator">_∧_</a>
 <a id="12564" href="Data.Bool.Properties.html#12530" class="Function">∨-∧-isLattice</a> <a id="12578" class="Symbol">=</a> <a id="12580" class="Keyword">record</a>
-  <a id="12589" class="Symbol">{</a> <a id="12591" href="Algebra.Lattice.Structures.html#4060" class="Field">isEquivalence</a> <a id="12605" class="Symbol">=</a> <a id="12607" href="Relation.Binary.PropositionalEquality.Properties.html#5061" class="Function">isEquivalence</a>
+  <a id="12589" class="Symbol">{</a> <a id="12591" href="Algebra.Lattice.Structures.html#4060" class="Field">isEquivalence</a> <a id="12605" class="Symbol">=</a> <a id="12607" href="Relation.Binary.PropositionalEquality.Properties.html#5112" class="Function">isEquivalence</a>
   <a id="12623" class="Symbol">;</a> <a id="12625" href="Algebra.Lattice.Structures.html#4098" class="Field">∨-comm</a>        <a id="12639" class="Symbol">=</a> <a id="12641" href="Data.Bool.Properties.html#5006" class="Function">∨-comm</a>
   <a id="12650" class="Symbol">;</a> <a id="12652" href="Algebra.Lattice.Structures.html#4132" class="Field">∨-assoc</a>       <a id="12666" class="Symbol">=</a> <a id="12668" href="Data.Bool.Properties.html#4929" class="Function">∨-assoc</a>
   <a id="12678" class="Symbol">;</a> <a id="12680" href="Algebra.Lattice.Structures.html#4166" class="Field">∨-cong</a>        <a id="12694" class="Symbol">=</a> <a id="12696" href="Relation.Binary.PropositionalEquality.Core.html#1367" class="Function">cong₂</a> <a id="12702" href="Data.Bool.Base.html#1044" class="Function Operator">_∨_</a>
