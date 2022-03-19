@@ -60,9 +60,6 @@ private
 ¬Fin0 : ¬ Fin 0
 ¬Fin0 ()
 
-0≢1+n : {k : ℕ} (x : Fin k) → Fin.zero ≢ Fin.suc x
-0≢1+n x ()
-
 ------------------------------------------------------------------------
 -- Bundles
 
@@ -75,6 +72,9 @@ private
 ------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
+
+0≢1+n : zero ≢ Fin.suc i
+0≢1+n ()
 
 suc-injective : Fin.suc i ≡ suc j → i ≡ j
 suc-injective refl = refl
@@ -856,18 +856,18 @@ pinch-mono-≤ 0F      {suc j} {suc k} (s≤s j≤k) = j≤k
 pinch-mono-≤ (suc i) {0F}    {k}     0≤n       = z≤n
 pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
 
-pinch-injective : {k : ℕ} {x : Fin k} {y z : Fin (ℕ.suc k)} →
-                  suc x ≢ y → suc x ≢ z → pinch x y ≡ pinch x z → y ≡ z
-pinch-injective {x = x}     {zero}  {zero}  _     _     _  = refl
-pinch-injective {x = zero}  {zero}  {suc z} _     1+x≢z eq =
-  contradiction (cong suc eq) 1+x≢z
-pinch-injective {x = zero}  {suc y} {zero}  1+x≢y _     eq =
-  contradiction (cong suc (sym eq)) 1+x≢y
-pinch-injective {x = zero}  {suc y} {suc z} _     _     eq =
+pinch-injective : ∀ {i : Fin n} {j k : Fin (ℕ.suc n)} →
+                  suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
+pinch-injective {i = i}     {zero}  {zero}  _     _     _  = refl
+pinch-injective {i = zero}  {zero}  {suc k} _     1+i≢k eq =
+  contradiction (cong suc eq) 1+i≢k
+pinch-injective {i = zero}  {suc j} {zero}  1+i≢j _     eq =
+  contradiction (cong suc (sym eq)) 1+i≢j
+pinch-injective {i = zero}  {suc j} {suc k} _     _     eq =
   cong suc eq
-pinch-injective {x = suc x} {suc y} {suc z} 1+x≢y 1+x≢z eq =
+pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
   cong suc
-    (pinch-injective (1+x≢y ∘ cong suc) (1+x≢z ∘ cong suc)
+    (pinch-injective (1+i≢j ∘ cong suc) (1+i≢k ∘ cong suc)
       (suc-injective eq))
 
 ------------------------------------------------------------------------
@@ -945,6 +945,10 @@ private
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
 ¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
 
+------------------------------------------------------------------------
+-- Properties of functions to and from Fin
+------------------------------------------------------------------------
+
 -- The pigeonhole principle.
 
 pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
@@ -956,32 +960,28 @@ pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
   suc i , suc j , i≢j ∘ suc-injective ,
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
+injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
+injective⇒≤ {zero}  {_}     {f} _   = z≤n
+injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
+injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
+  suc-injective (inj (punchOut-injective
+    (contraInjective _≡_ _≡_ inj 0≢1+n)
+    (contraInjective _≡_ _≡_ inj 0≢1+n) eq))))
+
+<⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
+<⇒notInjective n<m inj = ℕₚ.≤⇒≯ (injective⇒≤ inj) n<m
+
+ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
+ℕ→Fin-notInjective f inj = ℕₚ.<-irrefl refl
+  (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
+
 -- Cantor-Schröder-Bernstein for finite sets
 
-injective⇒≤ : ∀ {k l} {f : Fin k → Fin l} →
-              Injective _≡_ _≡_ f → k ℕ.≤ l
-injective⇒≤ {ℕ.zero}  {l}       {f} _   = z≤n
-injective⇒≤ {ℕ.suc k} {ℕ.zero}  {f} _   = contradiction (f zero) ¬Fin0
-injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} inj =
-  s≤s (injective⇒≤ (λ eq → suc-injective (inj (punchOut-injective
-    (contraInjective _≡_ _≡_ inj (0≢1+n _))
-    (contraInjective _≡_ _≡_ inj (0≢1+n _)) eq))))
-
-<⇒notInjective : {k l : ℕ} {f : Fin k → Fin l} →
-                 l ℕ.< k → ¬ (Injective _≡_ _≡_ f)
-<⇒notInjective H K = ℕₚ.≤⇒≯ (injective⇒≤ K) H
-
-ℕ→Fin-notInjective : {k : ℕ} (f : ℕ → Fin k) → ¬ (Injective _≡_ _≡_ f)
-ℕ→Fin-notInjective f inj =
-  ℕₚ.<-irrefl refl
-    (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
-
-cantor-schröder-bernstein : {k l : ℕ} {f : Fin k → Fin l}
-                            {g : Fin l → Fin k} →
+cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} →
                             Injective _≡_ _≡_ f → Injective _≡_ _≡_ g →
-                            k ≡ l
-cantor-schröder-bernstein f-inj g-inj =
-  ℕₚ.≤-antisym (injective⇒≤ f-inj) (injective⇒≤ g-inj)
+                            m ≡ n
+cantor-schröder-bernstein f-inj g-inj = ℕₚ.≤-antisym
+  (injective⇒≤ f-inj) (injective⇒≤ g-inj)
 
 ------------------------------------------------------------------------
 -- Categorical
