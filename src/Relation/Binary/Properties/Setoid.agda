@@ -7,9 +7,9 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Data.Product using (_,_)
-open import Function.Base using (_∘_; _$_; flip)
+open import Function.Base using (_∘_; id; _$_; flip)
 open import Relation.Nullary using (¬_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
@@ -18,18 +18,46 @@ open Setoid S
 
 
 ------------------------------------------------------------------------------
--- Every setoid is a preorder with respect to propositional equality
+-- Every setoid is a preorder and partial order with respect to propositional
+-- equality
 
 isPreorder : IsPreorder _≡_ _≈_
 isPreorder = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = record
+    { refl  = P.refl
+    ; sym   = P.sym
+    ; trans = P.trans
+    }
   ; reflexive     = reflexive
   ; trans         = trans
+  }
+
+≈-isPreorder : IsPreorder _≈_ _≈_
+≈-isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = id
+  ; trans         = trans
+  }
+
+≈-isPartialOrder : IsPartialOrder _≈_ _≈_
+≈-isPartialOrder = record
+  { isPreorder = ≈-isPreorder
+  ; antisym    = λ i≈j _ → i≈j
   }
 
 preorder : Preorder a a ℓ
 preorder = record
   { isPreorder = isPreorder
+  }
+
+≈-preorder : Preorder a ℓ ℓ
+≈-preorder = record
+  { isPreorder = ≈-isPreorder
+  }
+
+≈-poset : Poset a ℓ ℓ
+≈-poset = record
+  { isPartialOrder = ≈-isPartialOrder
   }
 
 ------------------------------------------------------------------------------
