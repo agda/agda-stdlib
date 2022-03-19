@@ -15,6 +15,7 @@ module Relation.Binary.PropositionalEquality.Properties where
 open import Function.Base using (id; _∘_)
 open import Level
 open import Relation.Binary
+import Relation.Binary.Properties.Setoid as Setoid
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Unary using (Pred)
 
@@ -155,22 +156,6 @@ isDecEquivalence _≟_ = record
   ; _≟_           = _≟_
   }
 
-isPreorder : IsPreorder {A = A} _≡_ _≡_
-isPreorder = record
-  { isEquivalence = isEquivalence
-  ; reflexive     = id
-  ; trans         = trans
-  }
-
-isPartialOrder : IsPartialOrder {A = A} _≡_ _≡_
-isPartialOrder = record
-  { isPreorder = isPreorder
-  ; antisym    = λ eq _ → eq
-  }
-
-------------------------------------------------------------------------
--- Bundles for equality as a binary relation
-
 setoid : Set a → Setoid _ _
 setoid A = record
   { Carrier       = A
@@ -178,24 +163,23 @@ setoid A = record
   ; isEquivalence = isEquivalence
   }
 
-decSetoid : Decidable {A = A} _≡_ → DecSetoid _ _
+decSetoid : DecidableEquality A → DecSetoid _ _
 decSetoid _≟_ = record
   { _≈_              = _≡_
   ; isDecEquivalence = isDecEquivalence _≟_
   }
 
+------------------------------------------------------------------------
+-- Bundles for equality as a binary relation
+
+isPreorder : IsPreorder {A = A} _≡_ _≡_
+isPreorder = Setoid.≈-isPreorder (setoid _)
+
+isPartialOrder : IsPartialOrder {A = A} _≡_ _≡_
+isPartialOrder = Setoid.≈-isPartialOrder (setoid _)
+
 preorder : Set a → Preorder _ _ _
-preorder A = record
-  { Carrier    = A
-  ; _≈_        = _≡_
-  ; _∼_        = _≡_
-  ; isPreorder = isPreorder
-  }
+preorder A = Setoid.≈-preorder (setoid A)
 
 poset : Set a → Poset _ _ _
-poset A = record
-  { Carrier        = A
-  ; _≈_            = _≡_
-  ; _≤_            = _≡_
-  ; isPartialOrder = isPartialOrder
-  }
+poset A = Setoid.≈-poset (setoid A)

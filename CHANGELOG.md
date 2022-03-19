@@ -1386,6 +1386,15 @@ Other minor changes
   ⊆-trans : Trans _⊆_ _⊆_ _⊆_
   ```
 
+* Added new proofs in `Relation.Binary.Properties.Setoid`:
+  ```
+  ≈-isPreorder     : IsPreorder _≈_ _≈_
+  ≈-isPartialOrder : IsPartialOrder _≈_ _≈_
+  
+  ≈-preorder : Preorder a ℓ ℓ
+  ≈-poset    : Poset a ℓ ℓ
+  ```
+
 * Added new operations in `Relation.Binary.PropositionalEquality.Properties`:
   ```
   J       : (B : (y : A) → x ≡ y → Set b) (p : x ≡ y) → B x refl → B y p
