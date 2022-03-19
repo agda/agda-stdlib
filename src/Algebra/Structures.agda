@@ -504,6 +504,56 @@ record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 
   open IsSemiring isSemiring public
 
+record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isMonoid    : IsMonoid + 0#
+    *-cong        : Congruent₂ *
+    *-assoc       : Associative *
+    *-identity    : Identity 1# *
+    distrib       : * DistributesOver +
+    zero          : Zero 0# *
+
+  open IsMonoid +-isMonoid public
+    renaming
+    ( assoc         to +-assoc
+    ; ∙-cong        to +-cong
+    ; ∙-congˡ       to +-congˡ
+    ; ∙-congʳ       to +-congʳ
+    ; identity      to +-identity
+    ; identityˡ     to +-identityˡ
+    ; identityʳ     to +-identityʳ
+    ; isMagma       to +-isMagma
+    ; isUnitalMagma to +-isUnitalMagma
+    ; isSemigroup   to +-isSemigroup
+    )
+
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  *-isMonoid : IsMonoid * 1#
+  *-isMonoid = record
+    { isSemigroup = *-isSemigroup
+    ; identity    = *-identity
+    }
+
+  open IsMonoid *-isMonoid public
+    using ()
+    renaming
+    ( ∙-congˡ     to *-congˡ
+    ; ∙-congʳ     to *-congʳ
+    ; identityˡ   to *-identityˡ
+    ; identityʳ   to *-identityʳ
+    )
+
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
@@ -576,6 +626,20 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------
+
+record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+  field
+    isQuasiring : IsQuasiring + * 0# 1#
+    +-inverse   : Inverse 0# _⁻¹ +
+    ⁻¹-cong     : Congruent₁ _⁻¹
+
+  open IsQuasiring isQuasiring public
+
+  +-inverseˡ : LeftInverse 0# _⁻¹ +
+  +-inverseˡ = proj₁ +-inverse
+
+  +-inverseʳ : RightInverse 0# _⁻¹ +
+  +-inverseʳ = proj₂ +-inverse
 
 record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
