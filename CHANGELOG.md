@@ -1053,9 +1053,12 @@ Other minor changes
   remove-insert  : remove i (insert i j π) ≈ π
   ```
 
-* Added new proofs and `Inverse` bundles in `Data.Fin.Properties`:
+* Added new proofs in `Data.Fin.Properties`:
   ```
   1↔⊤                : Fin 1 ↔ ⊤
+  
+  0≢1+n              : zero ≢ suc i
+  
   ↑ˡ-injective       : i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
   ↑ʳ-injective       : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
   finTofun-funToFin  : funToFin ∘ finToFun ≗ id
@@ -1075,8 +1078,14 @@ Other minor changes
   combine-monoˡ-<    :  i < j → combine i k < combine j l
 
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
-
+  pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
+				  
   i<1+i              : i < suc i
+  
+  injective⇒≤               : ∀ {f : Fin m → Fin n} → Injective f → m ℕ.≤ n
+  <⇒notInjective            : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective f)
+  ℕ→Fin-notInjective        : ∀ (f : ℕ → Fin n) → ¬ (Injective f)
+  cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} → Injective f → Injective g → m ≡ n
   ```
 
 * Added new functions in `Data.Integer.Base`:
