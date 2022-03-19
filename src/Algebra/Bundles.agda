@@ -821,6 +821,7 @@ record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
+
 record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
   infixl 7 _*_
