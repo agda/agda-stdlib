@@ -961,7 +961,7 @@ pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
 injective⇒≤ : ∀ {k l} {f : Fin k → Fin l} →
               Injective _≡_ _≡_ f → k ℕ.≤ l
 injective⇒≤ {ℕ.zero}  {l}       {f} _   = z≤n
-injective⇒≤ {ℕ.suc k} {ℕ.zero}  {f} _   = contradiction (f zero) ¬Fin0 
+injective⇒≤ {ℕ.suc k} {ℕ.zero}  {f} _   = contradiction (f zero) ¬Fin0
 injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} inj =
   s≤s (injective⇒≤ (λ eq → suc-injective (inj (punchOut-injective
     (contraInjective _≡_ _≡_ inj (0≢1+n _))
