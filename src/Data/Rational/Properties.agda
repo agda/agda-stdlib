@@ -29,7 +29,7 @@ open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Coprimality as C using (Coprime; coprime?)
-open import Data.Nat.Divisibility hiding (/-cong)
+open import Data.Nat.Divisibility
 import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
 open import Data.Product using (proj₁; proj₂; _×_; _,_; uncurry)
@@ -372,7 +372,7 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
 0/n≡0 n@(suc n-1) {{n≢0}} = mkℚ+-cong {{n/n≢0}} {c₂ = 0-cop-1} (ℕ.0/n≡0 (ℕ.gcd 0 n)) (ℕ.n/n≡1 n)
   where
   0-cop-1 = C.sym (C.1-coprimeTo 0)
-  n/n≢0   = ℕ.>-nonZero (subst (ℕ._> 0) (sym (ℕ.n/n≡1 n)) (ℕ.s≤s ℕ.z≤n))
+  n/n≢0   = ℕ.>-nonZero (subst (ℕ._> 0) (sym (ℕ.n/n≡1 n)) (ℕ.z<s))
 
 /-cong : ∀ {p₁ q₁ p₂ q₂} .{{_ : ℕ.NonZero q₁}} .{{_ : ℕ.NonZero q₂}} →
          p₁ ≡ p₂ → q₁ ≡ q₂ → p₁ / q₁ ≡ p₂ / q₂
@@ -721,13 +721,13 @@ neg<pos p q = toℚᵘ-cancel-< (ℚᵘ.neg<pos (toℚᵘ p) (toℚᵘ q))
 -- Properties of -_ and _≤_/_<_
 
 neg-antimono-< : -_ Preserves _<_ ⟶ _>_
-neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ -[1+ _ ] _ _} (*<* (ℤ.-<- n<m)) = *<* (ℤ.+<+ (ℕ.s≤s n<m))
-neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ +0       _ _} (*<* ℤ.-<+)       = *<* (ℤ.+<+ (ℕ.s≤s ℕ.z≤n))
+neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ -[1+ _ ] _ _} (*<* (ℤ.-<- n<m)) = *<* (ℤ.+<+ (ℕ.s<s n<m))
+neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ +0       _ _} (*<* ℤ.-<+)       = *<* (ℤ.+<+ ℕ.z<s)
 neg-antimono-< {mkℚ -[1+ _ ] _ _} {mkℚ +[1+ _ ] _ _} (*<* ℤ.-<+)       = *<* ℤ.-<+
 neg-antimono-< {mkℚ +0       _ _} {mkℚ +0       _ _} (*<* (ℤ.+<+ m<n)) = *<* (ℤ.+<+ m<n)
 neg-antimono-< {mkℚ +0       _ _} {mkℚ +[1+ _ ] _ _} (*<* (ℤ.+<+ m<n)) = *<* ℤ.-<+
 neg-antimono-< {mkℚ +[1+ _ ] _ _} {mkℚ +0       _ _} (*<* (ℤ.+<+ ()))
-neg-antimono-< {mkℚ +[1+ _ ] _ _} {mkℚ +[1+ _ ] _ _} (*<* (ℤ.+<+ (ℕ.s≤s m<n))) = *<* (ℤ.-<- m<n)
+neg-antimono-< {mkℚ +[1+ _ ] _ _} {mkℚ +[1+ _ ] _ _} (*<* (ℤ.+<+ (ℕ.s<s m<n))) = *<* (ℤ.-<- m<n)
 
 neg-antimono-≤ : -_ Preserves _≤_ ⟶ _≥_
 neg-antimono-≤ {mkℚ -[1+ _ ] _ _} {mkℚ -[1+ _ ] _ _} (*≤* (ℤ.-≤- n≤m)) = *≤* (ℤ.+≤+ (ℕ.s≤s n≤m))
@@ -1670,14 +1670,6 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.0
-
-≤-irrelevance = ≤-irrelevant
-{-# WARNING_ON_USAGE ≤-irrelevance
-"Warning: ≤-irrelevance was deprecated in v1.0.
-Please use ≤-irrelevant instead."
-#-}
 
 -- Version 2.0
 

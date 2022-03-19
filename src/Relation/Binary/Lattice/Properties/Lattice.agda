@@ -96,7 +96,7 @@ collapse₂ {x} {y} ∨≤∧ = antisym
 
 ∧-∨-isLattice : IsLattice _≈_ (flip _≤_) _∧_ _∨_
 ∧-∨-isLattice = record
-  { isPartialOrder = invIsPartialOrder
+  { isPartialOrder = ≥-isPartialOrder
   ; supremum       = infimum
   ; infimum        = supremum
   }

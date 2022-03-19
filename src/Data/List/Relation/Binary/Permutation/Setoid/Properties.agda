@@ -115,7 +115,7 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 ------------------------------------------------------------------------
 
 0<steps : ∀ {xs ys} (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
-0<steps (refl _)             = s≤s z≤n
+0<steps (refl _)             = z<s
 0<steps (prep eq xs↭ys)      = ≤-step (0<steps xs↭ys)
 0<steps (swap eq₁ eq₂ xs↭ys) = ≤-step (0<steps xs↭ys)
 0<steps (trans xs↭ys xs↭ys₁) =

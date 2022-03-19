@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Refinement type: a value together with an erased proof.
+-- Refinement type: a value together with a proof irrelevant witness.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -9,9 +9,9 @@
 module Data.Refinement where
 
 open import Level
-open import Data.Erased as Erased using (Erased)
+open import Data.Irrelevant as Irrelevant using (Irrelevant)
 open import Function.Base
-open import Relation.Unary
+open import Relation.Unary using (IUniversal; _⇒_; _⊢_)
 
 private
   variable
@@ -22,7 +22,7 @@ private
 record Refinement {a p} (A : Set a) (P : A → Set p) : Set (a ⊔ p) where
   constructor _,_
   field value : A
-        proof : Erased (P value)
+        proof : Irrelevant (P value)
 open Refinement public
 
 -- The syntax declaration below is meant to mimick set comprehension.
@@ -37,7 +37,7 @@ module _ {P : A → Set p} {Q : B → Set q} where
 
   map : (f : A → B) → ∀[ P ⇒ f ⊢ Q ] →
         [ a ∈ A ∣ P a ] → [ b ∈ B ∣ Q b ]
-  map f prf (a , p) = f a , Erased.map prf p
+  map f prf (a , p) = f a , Irrelevant.map prf p
 
 module _ {P : A → Set p} {Q : A → Set q} where
 

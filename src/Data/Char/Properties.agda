@@ -5,7 +5,6 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
-{-# OPTIONS -WnoUserWarning #-}
 
 module Data.Char.Properties where
 
@@ -183,29 +182,7 @@ _≤?_ = Reflₚ.decidable <-cmp
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.1
-
-toNat-injective = toℕ-injective
-{-# WARNING_ON_USAGE toℕ-injective
-"Warning: toNat-injective was deprecated in v1.1.
-Please use toℕ-injective instead."
-#-}
-
-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
-{-# WARNING_ON_USAGE strictTotalOrder
-"Warning: strictTotalOrder was deprecated in v1.1.
-Please use <-strictTotalOrder-≈ instead."
-#-}
-
 -- Version 1.5
-
-infix 4 _≈?_
-_≈?_ : Decidable _≈_
-x ≈? y = toℕ x ℕₚ.≟ toℕ y
-{-# WARNING_ON_USAGE _≈?_
-"Warning: _≈?_ was deprecated in v1.5.
-Please use _≟_ instead."
-#-}
 
 ≈-refl : Reflexive _≈_
 ≈-refl = refl
@@ -235,40 +212,45 @@ Please use Propositional Equality's trans instead."
 Please use Propositional Equality's subst instead."
 #-}
 
+infix 4 _≈?_
+_≈?_ : Decidable _≈_
+x ≈? y = toℕ x ℕₚ.≟ toℕ y
+
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
-  { refl  = λ {i} → refl
-  ; sym   = λ {i j} → ≈-sym {i} {j}
-  ; trans = λ {i j k} → ≈-trans {i} {j} {k}
+  { refl  = refl
+  ; sym   = sym
+  ; trans = trans
   }
-{-# WARNING_ON_USAGE ≈-isEquivalence
-"Warning: ≈-isEquivalence was deprecated in v1.5.
-Please use Propositional Equality's isEquivalence instead."
-#-}
-
 ≈-setoid : Setoid _ _
 ≈-setoid = record
   { isEquivalence = ≈-isEquivalence
   }
-{-# WARNING_ON_USAGE ≈-setoid
-"Warning: ≈-setoid was deprecated in v1.5.
-Please use Propositional Equality's setoid instead."
-#-}
-
 ≈-isDecEquivalence : IsDecEquivalence _≈_
 ≈-isDecEquivalence = record
   { isEquivalence = ≈-isEquivalence
   ; _≟_           = _≈?_
   }
-{-# WARNING_ON_USAGE ≈-isDecEquivalence
-"Warning: ≈-isDecEquivalence was deprecated in v1.5.
-Please use Propositional Equality's isDecEquivalence instead."
-#-}
-
 ≈-decSetoid : DecSetoid _ _
 ≈-decSetoid = record
   { isDecEquivalence = ≈-isDecEquivalence
   }
+{-# WARNING_ON_USAGE _≈?_
+"Warning: _≈?_ was deprecated in v1.5.
+Please use _≟_ instead."
+#-}
+{-# WARNING_ON_USAGE ≈-isEquivalence
+"Warning: ≈-isEquivalence was deprecated in v1.5.
+Please use Propositional Equality's isEquivalence instead."
+#-}
+{-# WARNING_ON_USAGE ≈-setoid
+"Warning: ≈-setoid was deprecated in v1.5.
+Please use Propositional Equality's setoid instead."
+#-}
+{-# WARNING_ON_USAGE ≈-isDecEquivalence
+"Warning: ≈-isDecEquivalence was deprecated in v1.5.
+Please use Propositional Equality's isDecEquivalence instead."
+#-}
 {-# WARNING_ON_USAGE ≈-decSetoid
 "Warning: ≈-decSetoid was deprecated in v1.5.
 Please use Propositional Equality's decSetoid instead."

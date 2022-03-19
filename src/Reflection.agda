@@ -37,14 +37,6 @@ import Reflection.AST.Argument.Relevance as Relevance
 import Reflection.AST.Argument.Visibility as Visibility
 import Reflection.AST.Argument.Information as Information
 
--- Version 1.1
-
-returnTC = return
-{-# WARNING_ON_USAGE returnTC
-"Warning: returnTC was deprecated in v1.1.
-Please use return instead."
-#-}
-
 -- Version 1.3
 
 Arg-info = Information.ArgInfo

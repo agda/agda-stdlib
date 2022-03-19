@@ -34,11 +34,6 @@ open AbelianGroupProperties +-abelianGroup public
   ; inverseˡ-unique  to +-inverseˡ-unique
   ; inverseʳ-unique  to +-inverseʳ-unique
   ; ⁻¹-∙-comm        to -‿+-comm
-  -- DEPRECATED
-  ; left-identity-unique  to +-left-identity-unique
-  ; right-identity-unique to +-right-identity-unique
-  ; left-inverse-unique   to +-left-inverse-unique
-  ; right-inverse-unique  to +-right-inverse-unique
   )
 
 ------------------------------------------------------------------------
@@ -65,27 +60,3 @@ open AbelianGroupProperties +-abelianGroup public
   - (x * y) + x * 0#             ≈⟨ +-congˡ $ zeroʳ _ ⟩
   - (x * y) + 0#                 ≈⟨ +-identityʳ _ ⟩
   - (x * y)                      ∎
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
--‿*-distribˡ : ∀ x y → - x * y ≈ - (x * y)
--‿*-distribˡ x y = sym (-‿distribˡ-* x y)
-{-# WARNING_ON_USAGE -‿*-distribˡ
-"Warning: -‿*-distribˡ was deprecated in v1.1.
-Please use -‿distribˡ-* instead.
-NOTE: the equality is flipped so you will need sym (-‿distribˡ-* ...)."
-#-}
--‿*-distribʳ : ∀ x y → x * - y ≈ - (x * y)
--‿*-distribʳ x y = sym (-‿distribʳ-* x y)
-{-# WARNING_ON_USAGE -‿*-distribʳ
-"Warning: -‿*-distribʳ was deprecated in v1.1.
-Please use -‿distribʳ-* instead.
-NOTE: the equality is flipped so you will need sym (-‿distribʳ-* ...)."
-#-}

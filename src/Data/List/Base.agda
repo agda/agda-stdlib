@@ -16,10 +16,10 @@ open import Data.Bool.Base as Bool
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product as Prod using (_×_; _,_)
+open import Data.Product as Prod using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Function.Base using (id; _∘_ ; _∘′_; const; flip)
+open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary using (does)
 open import Relation.Nullary.Negation.Core using (¬?)
@@ -52,7 +52,7 @@ mapMaybe : (A → Maybe B) → List A → List B
 mapMaybe p []       = []
 mapMaybe p (x ∷ xs) with p x
 ... | just y  = y ∷ mapMaybe p xs
-... | nothing =     mapMaybe p xs
+... | nothing = mapMaybe p xs
 
 infixr 5 _++_
 
@@ -239,6 +239,51 @@ unfold P f {n = suc n} s with f s
 ... | just (x , s′) = x ∷ unfold P f s′
 
 ------------------------------------------------------------------------
+-- Operations for reversing lists
+
+reverseAcc : List A → List A → List A
+reverseAcc = foldl (flip _∷_)
+
+reverse : List A → List A
+reverse = reverseAcc []
+
+-- "Reverse append" xs ʳ++ ys = reverse xs ++ ys
+
+infixr 5 _ʳ++_
+
+_ʳ++_ : List A → List A → List A
+_ʳ++_ = flip reverseAcc
+
+-- Snoc: Cons, but from the right.
+
+infixl 6 _∷ʳ_
+
+_∷ʳ_ : List A → A → List A
+xs ∷ʳ x = xs ++ [ x ]
+
+
+
+-- Backwards initialisation
+
+infixl 5 _∷ʳ′_
+
+data InitLast {A : Set a} : List A → Set a where
+  []    : InitLast []
+  _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+
+initLast : (xs : List A) → InitLast xs
+initLast []               = []
+initLast (x ∷ xs)         with initLast xs
+... | []       = [] ∷ʳ′ x
+... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
+
+-- uncons, but from the right
+unsnoc : List A → Maybe (List A × A)
+unsnoc as with initLast as
+... | []       = nothing
+... | xs ∷ʳ′ x = just (xs , x)
+
+------------------------------------------------------------------------
 -- Operations for deconstructing lists
 
 -- Note that although the following three combinators can be useful for
@@ -273,55 +318,117 @@ drop zero    xs       = xs
 drop (suc n) []       = []
 drop (suc n) (x ∷ xs) = drop n xs
 
-splitAt : ℕ → List A → (List A × List A)
+splitAt : ℕ → List A → List A × List A
 splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
-splitAt (suc n) (x ∷ xs) with splitAt n xs
-... | (ys , zs) = (x ∷ ys , zs)
+splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
+
+-- The following are functions which split a list up using boolean
+-- predicates. However, in practice they are difficult to use and
+-- prove properties about, and are mainly provided for advanced use
+-- cases where one wants to minimise dependencies. In most cases
+-- you probably want to use the versions defined below based on
+-- decidable predicates. e.g. use `takeWhile (_≤? 10) xs`
+-- instead of `takeWhileᵇ (_≤ᵇ 10) xs`
+
+takeWhileᵇ : (A → Bool) → List A → List A
+takeWhileᵇ p []       = []
+takeWhileᵇ p (x ∷ xs) = if p x then x ∷ takeWhileᵇ p xs else []
+
+dropWhileᵇ : (A → Bool) → List A → List A
+dropWhileᵇ p []       = []
+dropWhileᵇ p (x ∷ xs) = if p x then dropWhileᵇ p xs else x ∷ xs
+
+filterᵇ : (A → Bool) → List A → List A
+filterᵇ p []       = []
+filterᵇ p (x ∷ xs) = if p x then x ∷ filterᵇ p xs else filterᵇ p xs
+
+partitionᵇ : (A → Bool) → List A → List A × List A
+partitionᵇ p []       = ([] , [])
+partitionᵇ p (x ∷ xs) = (if p x then Prod.map₁ else Prod.map₂′) (x ∷_) (partitionᵇ p xs)
+
+spanᵇ : (A → Bool) → List A → List A × List A
+spanᵇ p []       = ([] , [])
+spanᵇ p (x ∷ xs) = if p x
+  then Prod.map₁ (x ∷_) (spanᵇ p xs)
+  else ([] , x ∷ xs)
+
+breakᵇ : (A → Bool) → List A → List A × List A
+breakᵇ p = spanᵇ (not ∘ p)
+
+linesByᵇ : (A → Bool) → List A → List (List A)
+linesByᵇ {A = A} p = go nothing
+  where
+  go : Maybe (List A) → List A → List (List A)
+  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  go acc (c ∷ cs) with p c
+  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
+  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+
+wordsByᵇ : (A → Bool) → List A → List (List A)
+wordsByᵇ {A = A} p = go []
+  where
+  cons : List A → List (List A) → List (List A)
+  cons [] ass = ass
+  cons as ass = reverse as ∷ ass
+
+  go : List A → List A → List (List A)
+  go acc []       = cons acc []
+  go acc (c ∷ cs) with p c
+  ... | true  = cons acc (go [] cs)
+  ... | false = go (c ∷ acc) cs
+
+derunᵇ : (A → A → Bool) → List A → List A
+derunᵇ r []           = []
+derunᵇ r (x ∷ [])     = x ∷ []
+derunᵇ r (x ∷ y ∷ xs) = if r x y
+  then derunᵇ r (y ∷ xs)
+  else x ∷ derunᵇ r (y ∷ xs)
+
+deduplicateᵇ : (A → A → Bool) → List A → List A
+deduplicateᵇ r [] = []
+deduplicateᵇ r (x ∷ xs) = x ∷ filterᵇ (not ∘ r x) (deduplicateᵇ r xs)
+
+-- Equivalent functions that use a decidable predicate instead of a
+-- boolean function.
 
 takeWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
-takeWhile P? []       = []
-takeWhile P? (x ∷ xs) with does (P? x)
-... | true  = x ∷ takeWhile P? xs
-... | false = []
+takeWhile P? = takeWhileᵇ (does ∘ P?)
 
 dropWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
-dropWhile P? []       = []
-dropWhile P? (x ∷ xs) with does (P? x)
-... | true  = dropWhile P? xs
-... | false = x ∷ xs
+dropWhile P? = dropWhileᵇ (does ∘ P?)
 
 filter : ∀ {P : Pred A p} → Decidable P → List A → List A
-filter P? [] = []
-filter P? (x ∷ xs) with does (P? x)
-... | false = filter P? xs
-... | true  = x ∷ filter P? xs
+filter P? = filterᵇ (does ∘ P?)
 
 partition : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-partition P? []       = ([] , [])
-partition P? (x ∷ xs) with does (P? x) | partition P? xs
-... | true  | (ys , zs) = (x ∷ ys , zs)
-... | false | (ys , zs) = (ys , x ∷ zs)
+partition P? = partitionᵇ (does ∘ P?)
 
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-span P? []       = ([] , [])
-span P? (x ∷ xs) with does (P? x)
-... | true  = Prod.map (x ∷_) id (span P? xs)
-... | false = ([] , x ∷ xs)
+span P? = spanᵇ (does ∘ P?)
 
 break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-break P? = span (∁? P?)
+break P? = breakᵇ (does ∘ P?)
+
+-- The predicate `P` represents the notion of newline character for the
+-- type `A`. It is used to split the input list into a list of lines.
+-- Some lines may be empty if the input contains at least two
+-- consecutive newline characters.
+linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+linesBy P? = linesByᵇ (does ∘ P?)
+
+-- The predicate `P` represents the notion of space character for the
+-- type `A`. It is used to split the input list into a list of words.
+-- All the words are non empty and the output does not contain any space
+-- characters.
+wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+wordsBy P? = wordsByᵇ (does ∘ P?)
 
 derun : ∀ {R : Rel A p} → B.Decidable R → List A → List A
-derun R? [] = []
-derun R? (x ∷ []) = x ∷ []
-derun R? (x ∷ y ∷ xs) with does (R? x y) | derun R? (y ∷ xs)
-... | true  | ys = ys
-... | false | ys = x ∷ ys
+derun R? = derunᵇ (does ∘₂ R?)
 
 deduplicate : ∀ {R : Rel A p} → B.Decidable R → List A → List A
-deduplicate R? [] = []
-deduplicate R? (x ∷ xs) = x ∷ filter (¬? ∘ R? x) (deduplicate R? xs)
+deduplicate R? = deduplicateᵇ (does ∘₂ R?)
 
 ------------------------------------------------------------------------
 -- Actions on single elements
@@ -340,28 +447,6 @@ _─_ : (xs : List A) → Fin (length xs) → List A
 (x ∷ xs) ─ suc k = x ∷ (xs ─ k)
 
 ------------------------------------------------------------------------
--- Operations for reversing lists
-
-reverseAcc : List A → List A → List A
-reverseAcc = foldl (flip _∷_)
-
-reverse : List A → List A
-reverse = reverseAcc []
-
--- "Reverse append" xs ʳ++ ys = reverse xs ++ ys
-
-infixr 5 _ʳ++_
-
-_ʳ++_ : List A → List A → List A
-_ʳ++_ = flip reverseAcc
-
--- Snoc: Cons, but from the right.
-
-infixl 6 _∷ʳ_
-
-_∷ʳ_ : List A → A → List A
-xs ∷ʳ x = xs ++ [ x ]
-
 -- Conditional versions of cons and snoc
 
 infixr 5 _?∷_
@@ -372,59 +457,6 @@ infixl 6 _∷ʳ?_
 _∷ʳ?_ : List A → Maybe A → List A
 xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
 
-
--- Backwards initialisation
-
-infixl 5 _∷ʳ′_
-
-data InitLast {A : Set a} : List A → Set a where
-  []    : InitLast []
-  _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
-
-initLast : (xs : List A) → InitLast xs
-initLast []               = []
-initLast (x ∷ xs)         with initLast xs
-... | []       = [] ∷ʳ′ x
-... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
-
--- uncons, but from the right
-unsnoc : List A → Maybe (List A × A)
-unsnoc as with initLast as
-... | []       = nothing
-... | xs ∷ʳ′ x = just (xs , x)
-
-------------------------------------------------------------------------
--- Splitting a list
-
--- The predicate `P` represents the notion of newline character for the type `A`
--- It is used to split the input list into a list of lines. Some lines may be
--- empty if the input contains at least two consecutive newline characters.
-
-linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
-linesBy {A = A} P? = go nothing where
-
-  go : Maybe (List A) → List A → List (List A)
-  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
-  go acc (c ∷ cs) with does (P? c)
-  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
-  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
-
--- The predicate `P` represents the notion of space character for the type `A`.
--- It is used to split the input list into a list of words. All the words are
--- non empty and the output does not contain any space characters.
-
-wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
-wordsBy {A = A} P? = go [] where
-
-  cons : List A → List (List A) → List (List A)
-  cons [] ass = ass
-  cons as ass = reverse as ∷ ass
-
-  go : List A → List A → List (List A)
-  go acc []       = cons acc []
-  go acc (c ∷ cs) with does (P? c)
-  ... | true  = cons acc (go [] cs)
-  ... | false = go (c ∷ acc) cs
 
 ------------------------------------------------------------------------
 -- DEPRECATED

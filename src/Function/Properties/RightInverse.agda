@@ -25,9 +25,9 @@ private
 
 RightInverse⇒Surjection : RightInverse S T → Surjection T S
 RightInverse⇒Surjection I = record
-  { f          = g
-  ; cong       = cong₂
-  ; surjective = λ a → f a , inverseʳ a
+  { to         = from
+  ; cong       = from-cong
+  ; surjective = λ a → to a , inverseʳ a
   } where open RightInverse I
 
 ↪⇒↠ : B ↪ A → A ↠ B

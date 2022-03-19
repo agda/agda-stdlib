@@ -40,8 +40,8 @@ private
          Extensionality a c → Extensionality b d →
          A ↔ B → C ↔ D → (A → C) ↔ (B → D)
 →-cong-↔ extAC extBD A↔B C↔D = mk↔′
-  (λ h → C↔D.f   ∘ h ∘ A↔B.f⁻¹)
-  (λ g → C↔D.f⁻¹ ∘ g ∘ A↔B.f  )
+  (λ h → C↔D.to   ∘ h ∘ A↔B.from)
+  (λ g → C↔D.from ∘ g ∘ A↔B.to  )
   (λ h → extBD λ x → trans (C↔D.inverseˡ _) (cong h (A↔B.inverseˡ x)))
   (λ g → extAC λ x → trans (C↔D.inverseʳ _) (cong g (A↔B.inverseʳ x)))
   where module A↔B = Inverse A↔B; module C↔D = Inverse C↔D

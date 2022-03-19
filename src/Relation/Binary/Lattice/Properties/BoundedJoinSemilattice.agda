@@ -40,7 +40,7 @@ identity = identityˡ , identityʳ
 dualIsBoundedMeetSemilattice : IsBoundedMeetSemilattice _≈_ (flip _≤_) _∨_ ⊥
 dualIsBoundedMeetSemilattice = record
   { isMeetSemilattice = record
-    { isPartialOrder  = invIsPartialOrder
+    { isPartialOrder  = ≥-isPartialOrder
     ; infimum         = supremum
     }
   ; maximum           = minimum

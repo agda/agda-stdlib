@@ -56,17 +56,17 @@ trans = Composition.bijection
 
 Bijection⇒Inverse : Bijection S T → Inverse S T
 Bijection⇒Inverse {S = S} {T = T} b = record
-  { f     = f
-  ; f⁻¹   = f⁻
-  ; cong₁ = cong
-  ; cong₂ = λ {x} {y} x≈y → injective (begin
-      f (f⁻ x)  ≈⟨ f∘f⁻ x ⟩
-      x         ≈⟨ x≈y ⟩
-      y         ≈˘⟨ f∘f⁻ y ⟩
-      f (f⁻ y)  ∎)
-  ; inverse = f∘f⁻ , injective ∘ f∘f⁻ ∘ f
+  { to        = to
+  ; from      = to⁻
+  ; to-cong   = cong
+  ; from-cong = λ {x} {y} x≈y → injective (begin
+      to (to⁻ x) ≈⟨ to∘to⁻ x ⟩
+      x          ≈⟨ x≈y ⟩
+      y          ≈˘⟨ to∘to⁻ y ⟩
+      to (to⁻ y) ∎)
+  ; inverse = to∘to⁻ , injective ∘ to∘to⁻ ∘ to
   }
-  where open SetoidReasoning T; open Bijection b; f∘f⁻ = proj₂ ∘ surjective
+  where open SetoidReasoning T; open Bijection b; to∘to⁻ = proj₂ ∘ surjective
 
 Bijection⇒Equivalence : Bijection T S → Equivalence T S
 Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse
@@ -76,4 +76,3 @@ Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse
 
 ⤖⇒⇔ : A ⤖ B → A ⇔ B
 ⤖⇒⇔ = Bijection⇒Equivalence
-

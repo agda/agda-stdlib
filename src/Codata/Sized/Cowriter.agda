@@ -6,9 +6,6 @@
 
 {-# OPTIONS --without-K --sized-types #-}
 
--- Disabled to prevent warnings from BoundedVec
-{-# OPTIONS --warn=noUserWarning #-}
-
 module Codata.Sized.Cowriter where
 
 open import Size
@@ -115,31 +112,3 @@ unfold : ∀ {i} → (X → (W × X) ⊎ A) → X → Cowriter W A i
 unfold next seed with next seed
 ... | inj₁ (w , seed′) = w ∷ λ where .force → unfold next seed′
 ... | inj₂ a           = [ a ]
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.3
-
-open import Data.BoundedVec as BVec using (BoundedVec)
-
-splitAt′ : ∀ (n : ℕ) → Cowriter W A ∞ → (Vec W n × Cowriter W A ∞) ⊎ (BoundedVec W n × A)
-splitAt′ zero    cw       = inj₁ ([] , cw)
-splitAt′ (suc n) [ a ]    = inj₂ (BVec.[] , a)
-splitAt′ (suc n) (w ∷ cw) = Sum.map (Prod.map₁ (w ∷_)) (Prod.map₁ (w BVec.∷_))
-                         $ splitAt′ n (cw .force)
-{-# WARNING_ON_USAGE splitAt′
-"Warning: splitAt′ (and Data.BoundedVec) was deprecated in v1.3.
-Please use splitAt (and Data.Vec.Bounded) instead."
-#-}
-
-take′ : ∀ (n : ℕ) → Cowriter W A ∞ → Vec W n ⊎ (BoundedVec W n × A)
-take′ n = Sum.map₁ Prod.proj₁ ∘′ splitAt′ n
-{-# WARNING_ON_USAGE take′
-"Warning: take′ (and Data.BoundedVec) was deprecated in v1.3.
-Please use take (and Data.Vec.Bounded) instead."
-#-}

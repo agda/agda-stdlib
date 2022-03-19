@@ -113,34 +113,10 @@ cong-≡id {f = f} {x} f≡id =
   f≡id (f x)                                     ∎
   where open ≡-Reasoning; fx≡x = f≡id x; f²x≡x = f≡id (f x)
 
-module _ (_≟_ : Decidable {A = A} _≡_) {x y : A} where
+module _ (_≟_ : DecidableEquality A) {x y : A} where
 
   ≡-≟-identity : (eq : x ≡ y) → x ≟ y ≡ yes eq
   ≡-≟-identity eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
 
-  ≢-≟-identity : x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
-  ≢-≟-identity ¬eq = dec-no (x ≟ y) ¬eq
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-Extensionality = Ext.Extensionality
-{-# WARNING_ON_USAGE Extensionality
-"Warning: Extensionality was deprecated in v1.0.
-Please use Extensionality from `Axiom.Extensionality.Propositional` instead."
-#-}
-extensionality-for-lower-levels = Ext.lower-extensionality
-{-# WARNING_ON_USAGE extensionality-for-lower-levels
-"Warning: extensionality-for-lower-levels was deprecated in v1.0.
-Please use lower-extensionality from `Axiom.Extensionality.Propositional` instead."
-#-}
-∀-extensionality = Ext.∀-extensionality
-{-# WARNING_ON_USAGE ∀-extensionality
-"Warning: ∀-extensionality was deprecated in v1.0.
-Please use ∀-extensionality from `Axiom.Extensionality.Propositional` instead."
-#-}
+  ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
+  ≢-≟-identity = dec-no (x ≟ y)

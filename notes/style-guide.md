@@ -261,7 +261,7 @@ line of code, indented by two spaces.
 * Instead, private blocks should only be used to prevent temporary terms and
   records that are defined for convenience from being exported by the module.
 
-* The mutual block is considered obselete. Please use the standard approach
+* The mutual block is considered obsolete. Please use the standard approach
   of placing the type signatures of the mutually recursive functions before
   their definitions.
 

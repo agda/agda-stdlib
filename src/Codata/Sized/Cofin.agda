@@ -14,7 +14,7 @@ open import Codata.Sized.Conat as Conat
   using (Conat; zero; suc; infinity; _ℕ<_; sℕ≤s; _ℕ≤infinity)
 open import Codata.Sized.Conat.Bisimilarity as Bisim using (_⊢_≲_ ; s≲s)
 open import Data.Nat.Base
-open import Data.Fin.Base as Fin hiding (fromℕ; fromℕ≤; fromℕ<; toℕ)
+open import Data.Fin.Base as Fin hiding (fromℕ; fromℕ<; toℕ)
 open import Function.Base using (_∋_)
 open import Relation.Binary.PropositionalEquality
 
