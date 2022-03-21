@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Maybe.Effectful</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An effectful view of Maybe</a>
+<a id="136" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="210" class="Symbol">{-#</a> <a id="214" class="Keyword">OPTIONS</a> <a id="222" class="Pragma">--without-K</a> <a id="234" class="Pragma">--safe</a> <a id="241" class="Symbol">#-}</a>
+
+<a id="246" class="Keyword">module</a> <a id="253" href="Data.Maybe.Effectful.html" class="Module">Data.Maybe.Effectful</a> <a id="274" class="Keyword">where</a>
+
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Level.html" class="Module">Level</a>
+<a id="299" class="Keyword">open</a> <a id="304" class="Keyword">import</a> <a id="311" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a>
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Effect.Functor.html" class="Module">Effect.Functor</a>
+<a id="354" class="Keyword">open</a> <a id="359" class="Keyword">import</a> <a id="366" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
+<a id="385" class="Keyword">open</a> <a id="390" class="Keyword">import</a> <a id="397" href="Effect.Monad.html" class="Module">Effect.Monad</a>
+<a id="410" class="Keyword">import</a> <a id="417" href="Function.Identity.Effectful.html" class="Module">Function.Identity.Effectful</a> <a id="445" class="Symbol">as</a> <a id="448" class="Module">Id</a>
+<a id="451" class="Keyword">open</a> <a id="456" class="Keyword">import</a> <a id="463" href="Function.html" class="Module">Function</a>
+
+<a id="473" class="Keyword">private</a>
+  <a id="483" class="Keyword">variable</a>
+    <a id="496" href="Data.Maybe.Effectful.html#496" class="Generalizable">a</a> <a id="498" href="Data.Maybe.Effectful.html#498" class="Generalizable">b</a> <a id="500" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a> <a id="502" href="Data.Maybe.Effectful.html#502" class="Generalizable">m</a> <a id="504" class="Symbol">:</a> <a id="506" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="516" href="Data.Maybe.Effectful.html#516" class="Generalizable">A</a> <a id="518" class="Symbol">:</a> <a id="520" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="524" href="Data.Maybe.Effectful.html#496" class="Generalizable">a</a>
+    <a id="530" href="Data.Maybe.Effectful.html#530" class="Generalizable">B</a> <a id="532" class="Symbol">:</a> <a id="534" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="538" href="Data.Maybe.Effectful.html#498" class="Generalizable">b</a>
+
+<a id="541" class="Comment">------------------------------------------------------------------------</a>
+<a id="614" class="Comment">-- Maybe applicative functor</a>
+
+<a id="functor"></a><a id="644" href="Data.Maybe.Effectful.html#644" class="Function">functor</a> <a id="652" class="Symbol">:</a> <a id="654" href="Effect.Functor.html#497" class="Record">RawFunctor</a> <a id="665" class="Symbol">{</a><a id="666" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="667" class="Symbol">}</a> <a id="669" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a>
+<a id="675" href="Data.Maybe.Effectful.html#644" class="Function">functor</a> <a id="683" class="Symbol">=</a> <a id="685" class="Keyword">record</a>
+  <a id="694" class="Symbol">{</a> <a id="696" href="Effect.Functor.html#606" class="Field Operator">_&lt;$&gt;_</a> <a id="702" class="Symbol">=</a> <a id="704" href="Data.Maybe.Base.html#2020" class="Function">map</a>
+  <a id="710" class="Symbol">}</a>
+
+<a id="applicative"></a><a id="713" href="Data.Maybe.Effectful.html#713" class="Function">applicative</a> <a id="725" class="Symbol">:</a> <a id="727" href="Effect.Applicative.html#490" class="Function">RawApplicative</a> <a id="742" class="Symbol">{</a><a id="743" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="744" class="Symbol">}</a> <a id="746" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a>
+<a id="752" href="Data.Maybe.Effectful.html#713" class="Function">applicative</a> <a id="764" class="Symbol">=</a> <a id="766" class="Keyword">record</a>
+  <a id="775" class="Symbol">{</a> <a id="777" href="Effect.Applicative.Indexed.html#999" class="Field">pure</a> <a id="782" class="Symbol">=</a> <a id="784" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a>
+  <a id="791" class="Symbol">;</a> <a id="793" href="Effect.Applicative.Indexed.html#1030" class="Field Operator">_⊛_</a>  <a id="798" class="Symbol">=</a> <a id="800" href="Data.Maybe.Base.html#1362" class="Function">maybe</a> <a id="806" href="Data.Maybe.Base.html#2020" class="Function">map</a> <a id="810" class="Symbol">(</a><a id="811" href="Function.Base.html#716" class="Function">const</a> <a id="817" href="Agda.Builtin.Maybe.html#195" class="InductiveConstructor">nothing</a><a id="824" class="Symbol">)</a>
+  <a id="828" class="Symbol">}</a>
+
+<a id="applicativeZero"></a><a id="831" href="Data.Maybe.Effectful.html#831" class="Function">applicativeZero</a> <a id="847" class="Symbol">:</a> <a id="849" href="Effect.Applicative.html#721" class="Function">RawApplicativeZero</a> <a id="868" class="Symbol">{</a><a id="869" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="870" class="Symbol">}</a> <a id="872" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a>
+<a id="878" href="Data.Maybe.Effectful.html#831" class="Function">applicativeZero</a> <a id="894" class="Symbol">=</a> <a id="896" class="Keyword">record</a>
+  <a id="905" class="Symbol">{</a> <a id="907" href="Effect.Applicative.Indexed.html#1914" class="Field">applicative</a> <a id="919" class="Symbol">=</a> <a id="921" href="Data.Maybe.Effectful.html#713" class="Function">applicative</a>
+  <a id="935" class="Symbol">;</a> <a id="937" href="Effect.Applicative.Indexed.html#1950" class="Field">∅</a>           <a id="949" class="Symbol">=</a> <a id="951" href="Agda.Builtin.Maybe.html#195" class="InductiveConstructor">nothing</a>
+  <a id="961" class="Symbol">}</a>
+
+<a id="alternative"></a><a id="964" href="Data.Maybe.Effectful.html#964" class="Function">alternative</a> <a id="976" class="Symbol">:</a> <a id="978" href="Effect.Applicative.html#982" class="Function">RawAlternative</a> <a id="993" class="Symbol">{</a><a id="994" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="995" class="Symbol">}</a> <a id="997" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a>
+<a id="1003" href="Data.Maybe.Effectful.html#964" class="Function">alternative</a> <a id="1015" class="Symbol">=</a> <a id="1017" class="Keyword">record</a>
+  <a id="1026" class="Symbol">{</a> <a id="1028" href="Effect.Applicative.Indexed.html#2262" class="Field">applicativeZero</a> <a id="1044" class="Symbol">=</a> <a id="1046" href="Data.Maybe.Effectful.html#831" class="Function">applicativeZero</a>
+  <a id="1064" class="Symbol">;</a> <a id="1066" href="Effect.Applicative.Indexed.html#2306" class="Field Operator">_∣_</a>             <a id="1082" class="Symbol">=</a> <a id="1084" href="Data.Maybe.Base.html#2335" class="Function Operator">_&lt;∣&gt;_</a>
+  <a id="1092" class="Symbol">}</a>
+
+<a id="1095" class="Comment">------------------------------------------------------------------------</a>
+<a id="1168" class="Comment">-- Maybe monad transformer</a>
+
+<a id="monadT"></a><a id="1196" href="Data.Maybe.Effectful.html#1196" class="Function">monadT</a> <a id="1203" class="Symbol">:</a> <a id="1205" href="Effect.Monad.html#523" class="Function">RawMonadT</a> <a id="1215" class="Symbol">{</a><a id="1216" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="1217" class="Symbol">}</a> <a id="1219" class="Symbol">(</a><a id="1220" href="Function.Base.html#3637" class="Function Operator">_∘′</a> <a id="1224" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a><a id="1229" class="Symbol">)</a>
+<a id="1231" href="Data.Maybe.Effectful.html#1196" class="Function">monadT</a> <a id="1238" href="Data.Maybe.Effectful.html#1238" class="Bound">M</a> <a id="1240" class="Symbol">=</a> <a id="1242" class="Keyword">record</a>
+  <a id="1251" class="Symbol">{</a> <a id="1253" href="Effect.Monad.Indexed.html#640" class="Field">return</a> <a id="1260" class="Symbol">=</a> <a id="1262" href="Effect.Monad.Indexed.html#640" class="Field">M.return</a> <a id="1271" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="1273" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a>
+  <a id="1280" class="Symbol">;</a> <a id="1282" href="Effect.Monad.Indexed.html#673" class="Field Operator">_&gt;&gt;=_</a>  <a id="1289" class="Symbol">=</a> <a id="1291" class="Symbol">λ</a> <a id="1293" href="Data.Maybe.Effectful.html#1293" class="Bound">m</a> <a id="1295" href="Data.Maybe.Effectful.html#1295" class="Bound">f</a> <a id="1297" class="Symbol">→</a> <a id="1299" href="Data.Maybe.Effectful.html#1293" class="Bound">m</a> <a id="1301" href="Effect.Monad.Indexed.html#673" class="Field Operator">M.&gt;&gt;=</a> <a id="1307" href="Data.Maybe.Base.html#1362" class="Function">maybe</a> <a id="1313" href="Data.Maybe.Effectful.html#1295" class="Bound">f</a> <a id="1315" class="Symbol">(</a><a id="1316" href="Effect.Monad.Indexed.html#640" class="Field">M.return</a> <a id="1325" href="Agda.Builtin.Maybe.html#195" class="InductiveConstructor">nothing</a><a id="1332" class="Symbol">)</a>
+  <a id="1336" class="Symbol">}</a>
+  <a id="1340" class="Keyword">where</a> <a id="1346" class="Keyword">module</a> <a id="1353" href="Data.Maybe.Effectful.html#1353" class="Module">M</a> <a id="1355" class="Symbol">=</a> <a id="1357" href="Effect.Monad.html#828" class="Module">RawMonad</a> <a id="1366" href="Data.Maybe.Effectful.html#1238" class="Bound">M</a>
+
+<a id="1369" class="Comment">------------------------------------------------------------------------</a>
+<a id="1442" class="Comment">-- Maybe monad</a>
+
+<a id="monad"></a><a id="1458" href="Data.Maybe.Effectful.html#1458" class="Function">monad</a> <a id="1464" class="Symbol">:</a> <a id="1466" href="Effect.Monad.html#444" class="Function">RawMonad</a> <a id="1475" class="Symbol">{</a><a id="1476" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="1477" class="Symbol">}</a> <a id="1479" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a>
+<a id="1485" href="Data.Maybe.Effectful.html#1458" class="Function">monad</a> <a id="1491" class="Symbol">=</a> <a id="1493" href="Data.Maybe.Effectful.html#1196" class="Function">monadT</a> <a id="1500" href="Function.Identity.Effectful.html#640" class="Function">Id.monad</a>
+
+<a id="monadZero"></a><a id="1510" href="Data.Maybe.Effectful.html#1510" class="Function">monadZero</a> <a id="1520" class="Symbol">:</a> <a id="1522" href="Effect.Monad.html#639" class="Function">RawMonadZero</a> <a id="1535" class="Symbol">{</a><a id="1536" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="1537" class="Symbol">}</a> <a id="1539" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a>
+<a id="1545" href="Data.Maybe.Effectful.html#1510" class="Function">monadZero</a> <a id="1555" class="Symbol">=</a> <a id="1557" class="Keyword">record</a>
+  <a id="1566" class="Symbol">{</a> <a id="1568" href="Effect.Monad.Indexed.html#1543" class="Field">monad</a>           <a id="1584" class="Symbol">=</a> <a id="1586" href="Data.Maybe.Effectful.html#1458" class="Function">monad</a>
+  <a id="1594" class="Symbol">;</a> <a id="1596" href="Effect.Monad.Indexed.html#1577" class="Field">applicativeZero</a> <a id="1612" class="Symbol">=</a> <a id="1614" href="Data.Maybe.Effectful.html#831" class="Function">applicativeZero</a>
+  <a id="1632" class="Symbol">}</a>
+
+<a id="monadPlus"></a><a id="1635" href="Data.Maybe.Effectful.html#1635" class="Function">monadPlus</a> <a id="1645" class="Symbol">:</a> <a id="1647" href="Effect.Monad.html#730" class="Function">RawMonadPlus</a> <a id="1660" class="Symbol">{</a><a id="1661" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="1662" class="Symbol">}</a> <a id="1664" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a>
+<a id="1670" href="Data.Maybe.Effectful.html#1635" class="Function">monadPlus</a> <a id="1680" class="Symbol">{</a><a id="1681" href="Data.Maybe.Effectful.html#1681" class="Bound">f</a><a id="1682" class="Symbol">}</a> <a id="1684" class="Symbol">=</a> <a id="1686" class="Keyword">record</a>
+  <a id="1695" class="Symbol">{</a> <a id="1697" href="Effect.Monad.Indexed.html#1793" class="Field">monad</a>       <a id="1709" class="Symbol">=</a> <a id="1711" href="Data.Maybe.Effectful.html#1458" class="Function">monad</a>
+  <a id="1719" class="Symbol">;</a> <a id="1721" href="Effect.Monad.Indexed.html#1823" class="Field">alternative</a> <a id="1733" class="Symbol">=</a> <a id="1735" href="Data.Maybe.Effectful.html#964" class="Function">alternative</a>
+  <a id="1749" class="Symbol">}</a>
+
+<a id="1752" class="Comment">------------------------------------------------------------------------</a>
+<a id="1825" class="Comment">-- Get access to other monadic functions</a>
+
+<a id="1867" class="Keyword">module</a> <a id="TraversableA"></a><a id="1874" href="Data.Maybe.Effectful.html#1874" class="Module">TraversableA</a> <a id="1887" class="Symbol">{</a><a id="1888" href="Data.Maybe.Effectful.html#1888" class="Bound">F</a><a id="1889" class="Symbol">}</a> <a id="1891" class="Symbol">(</a><a id="1892" href="Data.Maybe.Effectful.html#1892" class="Bound">App</a> <a id="1896" class="Symbol">:</a> <a id="1898" href="Effect.Applicative.html#490" class="Function">RawApplicative</a> <a id="1913" class="Symbol">{</a><a id="1914" href="Data.Maybe.Effectful.html#500" class="Generalizable">f</a><a id="1915" class="Symbol">}</a> <a id="1917" href="Data.Maybe.Effectful.html#1888" class="Bound">F</a><a id="1918" class="Symbol">)</a> <a id="1920" class="Keyword">where</a>
+
+  <a id="1929" class="Keyword">open</a> <a id="1934" href="Effect.Applicative.html#598" class="Module">RawApplicative</a> <a id="1949" href="Data.Maybe.Effectful.html#1892" class="Bound">App</a>
+
+  <a id="TraversableA.sequenceA"></a><a id="1956" href="Data.Maybe.Effectful.html#1956" class="Function">sequenceA</a> <a id="1966" class="Symbol">:</a> <a id="1968" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a> <a id="1974" class="Symbol">(</a><a id="1975" href="Data.Maybe.Effectful.html#1888" class="Bound">F</a> <a id="1977" href="Data.Maybe.Effectful.html#516" class="Generalizable">A</a><a id="1978" class="Symbol">)</a> <a id="1980" class="Symbol">→</a> <a id="1982" href="Data.Maybe.Effectful.html#1888" class="Bound">F</a> <a id="1984" class="Symbol">(</a><a id="1985" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a> <a id="1991" href="Data.Maybe.Effectful.html#516" class="Generalizable">A</a><a id="1992" class="Symbol">)</a>
+  <a id="1996" href="Data.Maybe.Effectful.html#1956" class="Function">sequenceA</a> <a id="2006" href="Agda.Builtin.Maybe.html#195" class="InductiveConstructor">nothing</a>  <a id="2015" class="Symbol">=</a> <a id="2017" href="Effect.Applicative.Indexed.html#999" class="Field">pure</a> <a id="2022" href="Agda.Builtin.Maybe.html#195" class="InductiveConstructor">nothing</a>
+  <a id="2032" href="Data.Maybe.Effectful.html#1956" class="Function">sequenceA</a> <a id="2042" class="Symbol">(</a><a id="2043" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="2048" href="Data.Maybe.Effectful.html#2048" class="Bound">x</a><a id="2049" class="Symbol">)</a> <a id="2051" class="Symbol">=</a> <a id="2053" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="2058" href="Effect.Functor.html#606" class="Function Operator">&lt;$&gt;</a> <a id="2062" href="Data.Maybe.Effectful.html#2048" class="Bound">x</a>
+
+  <a id="TraversableA.mapA"></a><a id="2067" href="Data.Maybe.Effectful.html#2067" class="Function">mapA</a> <a id="2072" class="Symbol">:</a> <a id="2074" class="Symbol">(</a><a id="2075" href="Data.Maybe.Effectful.html#516" class="Generalizable">A</a> <a id="2077" class="Symbol">→</a> <a id="2079" href="Data.Maybe.Effectful.html#1888" class="Bound">F</a> <a id="2081" href="Data.Maybe.Effectful.html#530" class="Generalizable">B</a><a id="2082" class="Symbol">)</a> <a id="2084" class="Symbol">→</a> <a id="2086" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a> <a id="2092" href="Data.Maybe.Effectful.html#516" class="Generalizable">A</a> <a id="2094" class="Symbol">→</a> <a id="2096" href="Data.Maybe.Effectful.html#1888" class="Bound">F</a> <a id="2098" class="Symbol">(</a><a id="2099" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a> <a id="2105" href="Data.Maybe.Effectful.html#530" class="Generalizable">B</a><a id="2106" class="Symbol">)</a>
+  <a id="2110" href="Data.Maybe.Effectful.html#2067" class="Function">mapA</a> <a id="2115" href="Data.Maybe.Effectful.html#2115" class="Bound">f</a> <a id="2117" class="Symbol">=</a> <a id="2119" href="Data.Maybe.Effectful.html#1956" class="Function">sequenceA</a> <a id="2129" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="2131" href="Data.Maybe.Base.html#2020" class="Function">map</a> <a id="2135" href="Data.Maybe.Effectful.html#2115" class="Bound">f</a>
+
+  <a id="TraversableA.forA"></a><a id="2140" href="Data.Maybe.Effectful.html#2140" class="Function">forA</a> <a id="2145" class="Symbol">:</a> <a id="2147" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a> <a id="2153" href="Data.Maybe.Effectful.html#516" class="Generalizable">A</a> <a id="2155" class="Symbol">→</a> <a id="2157" class="Symbol">(</a><a id="2158" href="Data.Maybe.Effectful.html#516" class="Generalizable">A</a> <a id="2160" class="Symbol">→</a> <a id="2162" href="Data.Maybe.Effectful.html#1888" class="Bound">F</a> <a id="2164" href="Data.Maybe.Effectful.html#530" class="Generalizable">B</a><a id="2165" class="Symbol">)</a> <a id="2167" class="Symbol">→</a> <a id="2169" href="Data.Maybe.Effectful.html#1888" class="Bound">F</a> <a id="2171" class="Symbol">(</a><a id="2172" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a> <a id="2178" href="Data.Maybe.Effectful.html#530" class="Generalizable">B</a><a id="2179" class="Symbol">)</a>
+  <a id="2183" href="Data.Maybe.Effectful.html#2140" class="Function">forA</a> <a id="2188" class="Symbol">=</a> <a id="2190" href="Function.Base.html#1629" class="Function">flip</a> <a id="2195" href="Data.Maybe.Effectful.html#2067" class="Function">mapA</a>
+
+<a id="2201" class="Keyword">module</a> <a id="TraversableM"></a><a id="2208" href="Data.Maybe.Effectful.html#2208" class="Module">TraversableM</a> <a id="2221" class="Symbol">{</a><a id="2222" href="Data.Maybe.Effectful.html#2222" class="Bound">M</a><a id="2223" class="Symbol">}</a> <a id="2225" class="Symbol">(</a><a id="2226" href="Data.Maybe.Effectful.html#2226" class="Bound">Mon</a> <a id="2230" class="Symbol">:</a> <a id="2232" href="Effect.Monad.html#444" class="Function">RawMonad</a> <a id="2241" class="Symbol">{</a><a id="2242" href="Data.Maybe.Effectful.html#502" class="Generalizable">m</a><a id="2243" class="Symbol">}</a> <a id="2245" href="Data.Maybe.Effectful.html#2222" class="Bound">M</a><a id="2246" class="Symbol">)</a> <a id="2248" class="Keyword">where</a>
+
+  <a id="2257" class="Keyword">open</a> <a id="2262" href="Effect.Monad.html#828" class="Module">RawMonad</a> <a id="2271" href="Data.Maybe.Effectful.html#2226" class="Bound">Mon</a>
+
+  <a id="2278" class="Keyword">open</a> <a id="2283" href="Data.Maybe.Effectful.html#1874" class="Module">TraversableA</a> <a id="2296" href="Effect.Monad.Indexed.html#1137" class="Function">rawIApplicative</a> <a id="2312" class="Keyword">public</a>
+    <a id="2323" class="Keyword">renaming</a>
+    <a id="2336" class="Symbol">(</a> <a id="2338" href="Data.Maybe.Effectful.html#1956" class="Function">sequenceA</a> <a id="2348" class="Symbol">to</a> <a id="2351" class="Function">sequenceM</a>
+    <a id="2365" class="Symbol">;</a> <a id="2367" href="Data.Maybe.Effectful.html#2067" class="Function">mapA</a>      <a id="2377" class="Symbol">to</a> <a id="2380" class="Function">mapM</a>
+    <a id="2389" class="Symbol">;</a> <a id="2391" href="Data.Maybe.Effectful.html#2140" class="Function">forA</a>      <a id="2401" class="Symbol">to</a> <a id="2404" class="Function">forM</a>
+    <a id="2413" class="Symbol">)</a>
+</pre></body></html>
