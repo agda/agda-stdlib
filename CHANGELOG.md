@@ -1863,3 +1863,9 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   iterate : (A → A) → A → ℕ → A
   iterate-is-fold : ∀ (z : A) s m → fold z s m ≡ iterate s z m
   ```
+
+* Added new proofs to `Function.Properties.Inverse`:
+  ```agda
+  Inverse⇒Injection : Inverse S T → Injection S T
+  ↔⇒↣ : A ↔ B → A ↣ B
+  ```
