@@ -11,13 +11,12 @@ open import Relation.Binary hiding (Decidable)
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
-open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
 open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
-open import Data.List.Categorical
+open import Data.List.Effectful
 open import Data.List.Relation.Unary.Any using (Any)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
@@ -28,6 +27,7 @@ import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permuta
 open import Data.Nat using (ℕ; _≤_)
 import Data.Product as Prod
 import Data.Sum.Base as Sum
+open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; _$_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)

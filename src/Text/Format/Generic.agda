@@ -12,7 +12,7 @@ open import Data.Maybe.Base using (Maybe)
 module Text.Format.Generic where
 
 open import Level using (0ℓ)
-open import Category.Applicative
+open import Effect.Applicative
 open import Data.List.Base as List
 open import Data.Maybe as Maybe
 open import Data.Nat.Base
@@ -20,7 +20,7 @@ open import Data.Product
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base
 open import Data.String.Base
-import Data.Sum.Categorical.Left as Sumₗ
+import Data.Sum.Effectful.Left as Sumₗ
 open import Function
 open import Function.Nary.NonDependent using (0ℓs; Sets)
 open import Function.Strict

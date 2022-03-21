@@ -14,15 +14,15 @@ module Algebra.Lattice.Properties.BooleanAlgebra.Expression
 
 open BooleanAlgebra B
 
-open import Category.Applicative
-import Category.Applicative.Indexed as Applicative
-open import Category.Monad
+open import Effect.Applicative
+import Effect.Applicative.Indexed as Applicative
+open import Effect.Monad
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
-import Data.Vec.Categorical as VecCat
-import Function.Identity.Categorical as IdCat
+import Data.Vec.Effectful as VecCat
+import Function.Identity.Effectful as IdCat
 open import Data.Vec.Properties using (lookup-map)
 open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
   using (Pointwise; ext)

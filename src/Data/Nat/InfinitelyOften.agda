@@ -8,7 +8,7 @@
 
 module Data.Nat.InfinitelyOften where
 
-open import Category.Monad using (RawMonad)
+open import Effect.Monad using (RawMonad)
 open import Level using (Level; 0ℓ)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base

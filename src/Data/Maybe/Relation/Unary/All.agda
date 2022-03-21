@@ -8,8 +8,8 @@
 
 module Data.Maybe.Relation.Unary.All where
 
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Applicative
+open import Effect.Monad
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Data.Product as Prod using (_,_)

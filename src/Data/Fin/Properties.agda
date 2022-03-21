@@ -11,8 +11,8 @@ module Data.Fin.Properties where
 
 open import Axiom.Extensionality.Propositional
 open import Algebra.Definitions using (Involutive)
-open import Category.Applicative using (RawApplicative)
-open import Category.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
@@ -984,7 +984,7 @@ cantor-schröder-bernstein f-inj g-inj = ℕₚ.≤-antisym
   (injective⇒≤ f-inj) (injective⇒≤ g-inj)
 
 ------------------------------------------------------------------------
--- Categorical
+-- Effectful
 ------------------------------------------------------------------------
 
 module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where

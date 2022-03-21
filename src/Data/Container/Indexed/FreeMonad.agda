@@ -10,7 +10,7 @@ module Data.Container.Indexed.FreeMonad where
 
 open import Level
 open import Function hiding (const)
-open import Category.Monad.Predicate
+open import Effect.Monad.Predicate
 open import Data.Container.Indexed
 open import Data.Container.Indexed.Combinator hiding (id; _∘_)
 open import Data.Empty

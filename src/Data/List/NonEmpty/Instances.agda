@@ -8,7 +8,7 @@
 
 module Data.List.NonEmpty.Instances where
 
-open import Data.List.NonEmpty.Categorical
+open import Data.List.NonEmpty.Effectful
 
 instance
   nonEmptyListFunctor = functor

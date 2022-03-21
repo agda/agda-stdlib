@@ -12,9 +12,9 @@ open import Data.Bool.Base using (_∧_)
 open import Data.Char.Base as Char using (Char)
 open import Data.Digit using (showDigit; toDigits; toNatDigits)
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.List.Categorical using (module TraversableA)
+open import Data.List.Effectful using (module TraversableA)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; _<∣>_; when)
-import Data.Maybe.Categorical as Maybe
+import Data.Maybe.Effectful as Maybe
 open import Data.Nat
 open import Data.Product using (proj₁)
 open import Data.String as String using (String)

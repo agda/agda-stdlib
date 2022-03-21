@@ -9,7 +9,7 @@
 module Data.List.NonEmpty where
 
 open import Level using (Level)
-open import Category.Monad
+open import Effect.Monad
 open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Bool.Properties
 open import Data.List.Base as List using (List; []; _∷_)

@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Category.Applicative using (RawApplicative)
+open import Effect.Applicative using (RawApplicative)
 
 module Reflection.AST.Traversal
   {F : Set → Set} (AppF : RawApplicative F) where

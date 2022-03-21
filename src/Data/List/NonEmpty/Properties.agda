@@ -8,18 +8,17 @@
 
 module Data.List.NonEmpty.Properties where
 
-open import Category.Monad
+open import Effect.Monad
 open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Maybe.Properties using (just-injective)
 open import Data.Bool using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
-open import Data.List.Categorical using () renaming (monad to listMonad)
-open import Data.List.NonEmpty.Categorical using () renaming (monad to list⁺Monad)
+open import Data.List.Effectful using () renaming (monad to listMonad)
+open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty
 open import Data.List.NonEmpty.Relation.Unary.All
 open import Data.List.Relation.Unary.All using ([]; _∷_) renaming (All to ListAll)
-import Data.List.Relation.Unary.All using (All; []; _∷_)
 import Data.List.Properties as List
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Unary.All using (inj₁; inj₂)

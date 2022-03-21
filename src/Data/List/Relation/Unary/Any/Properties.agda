@@ -8,14 +8,13 @@
 
 module Data.List.Relation.Unary.Any.Properties where
 
-open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
-open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List
 open import Data.List.Properties using (ʳ++-defn)
-open import Data.List.Categorical using (monad)
+open import Data.List.Effectful using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties.Core
@@ -34,6 +33,7 @@ open import Data.Product.Function.NonDependent.Propositional
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
+open import Effect.Monad
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
@@ -512,12 +512,12 @@ module _ {P : A → Set p} where
 -- tabulate
 
 tabulate⁺ : ∀ {n} {f : Fin n → A} i → P (f i) → Any P (tabulate f)
-tabulate⁺ fzero    p = here p
-tabulate⁺ (fsuc i) p = there (tabulate⁺ i p)
+tabulate⁺ zero    p = here p
+tabulate⁺ (suc i) p = there (tabulate⁺ i p)
 
 tabulate⁻ : ∀ {n} {f : Fin n → A} → Any P (tabulate f) → ∃ λ i → P (f i)
-tabulate⁻ {n = suc n} (here p)   = fzero , p
-tabulate⁻ {n = suc n} (there p) = Prod.map fsuc id (tabulate⁻ p)
+tabulate⁻ {n = suc _} (here p)  = zero , p
+tabulate⁻ {n = suc _} (there p) = Prod.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- filter
