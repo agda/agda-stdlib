@@ -783,6 +783,9 @@ Non-backwards compatible changes
     ```
 
 
+* In `Data.Fin.Permutation.Transposition.List`, the transpositions are now restricted
+  to being pairs of distinct elements.
+
 Major improvements
 ------------------
 
