@@ -263,3 +263,85 @@ module _ {R₁ : RawRing a ℓ₁}
     { isRingMonomorphism = isRingMonomorphism F.isRingMonomorphism G.isRingMonomorphism
     ; surjective         = Func.surjective (_≈_ R₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
     } where module F = IsRingIsomorphism f-iso; module G = IsRingIsomorphism g-iso
+
+------------------------------------------------------------------------
+-- Quasigroup
+
+module _ {Q₁ : RawQuasigroup a ℓ₁}
+         {Q₂ : RawQuasigroup b ℓ₂}
+         {Q₃ : RawQuasigroup c ℓ₃}
+         (open RawQuasigroup)
+         (≈₃-trans : Transitive (_≈_ Q₃))
+         {f : Carrier Q₁ → Carrier Q₂}
+         {g : Carrier Q₂ → Carrier Q₃}
+         where
+
+
+  isQuasigroupHomomorphism
+    : IsQuasigroupHomomorphism Q₁ Q₂ f
+    → IsQuasigroupHomomorphism Q₂ Q₃ g
+    → IsQuasigroupHomomorphism Q₁ Q₃ (g ∘ f)
+  isQuasigroupHomomorphism f-homo g-homo = record
+    { isRelHomomorphism = isRelHomomorphism F.isRelHomomorphism G.isRelHomomorphism
+    ; ∙-homo              = λ x y → ≈₃-trans (G.⟦⟧-cong ( F.∙-homo x y )) ( G.∙-homo (f x) (f y) )
+    ; \\-homo              = λ x y → ≈₃-trans (G.⟦⟧-cong ( F.\\-homo x y )) ( G.\\-homo (f x) (f y) )
+    ; //-homo              = λ x y → ≈₃-trans (G.⟦⟧-cong ( F.//-homo x y )) ( G.//-homo (f x) (f y) )
+    } where module F = IsQuasigroupHomomorphism f-homo; module G = IsQuasigroupHomomorphism g-homo
+
+  isQuasigroupMonomorphism
+    : IsQuasigroupMonomorphism Q₁ Q₂ f
+    → IsQuasigroupMonomorphism Q₂ Q₃ g
+    → IsQuasigroupMonomorphism Q₁ Q₃ (g ∘ f)
+  isQuasigroupMonomorphism f-mono g-mono = record
+    { isQuasigroupHomomorphism = isQuasigroupHomomorphism F.isQuasigroupHomomorphism G.isQuasigroupHomomorphism
+    ; injective = F.injective ∘ G.injective
+    } where module F = IsQuasigroupMonomorphism f-mono;  module G = IsQuasigroupMonomorphism g-mono
+
+  isQuasigroupIsomorphism
+    : IsQuasigroupIsomorphism Q₁ Q₂ f
+    → IsQuasigroupIsomorphism Q₂ Q₃ g
+    → IsQuasigroupIsomorphism Q₁ Q₃ (g ∘ f)
+  isQuasigroupIsomorphism f-iso g-iso = record
+    { isQuasigroupMonomorphism = isQuasigroupMonomorphism F.isQuasigroupMonomorphism G.isQuasigroupMonomorphism
+    ; surjective               = Func.surjective (_≈_ Q₁) (_≈_ Q₂) (_≈_ Q₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsQuasigroupIsomorphism f-iso; module G = IsQuasigroupIsomorphism g-iso
+
+------------------------------------------------------------------------
+-- Loop
+
+module _ {L₁ : RawLoop a ℓ₁}
+         {L₂ : RawLoop b ℓ₂}
+         {L₃ : RawLoop c ℓ₃}
+         (open RawLoop)
+         (≈₃-trans : Transitive (_≈_ L₃))
+         {f : Carrier L₁ → Carrier L₂}
+         {g : Carrier L₂ → Carrier L₃}
+         where
+
+
+  isLoopHomomorphism
+    : IsLoopHomomorphism L₁ L₂ f
+    → IsLoopHomomorphism L₂ L₃ g
+    → IsLoopHomomorphism L₁ L₃ (g ∘ f)
+  isLoopHomomorphism f-homo g-homo = record
+    { isQuasigroupHomomorphism = isQuasigroupHomomorphism ≈₃-trans F.isQuasigroupHomomorphism G.isQuasigroupHomomorphism
+    ; ε-homo              = ≈₃-trans (G.⟦⟧-cong F.ε-homo) G.ε-homo
+    } where module F = IsLoopHomomorphism f-homo; module G = IsLoopHomomorphism g-homo
+
+  isLoopMonomorphism
+    : IsLoopMonomorphism L₁ L₂ f
+    → IsLoopMonomorphism L₂ L₃ g
+    → IsLoopMonomorphism L₁ L₃ (g ∘ f)
+  isLoopMonomorphism f-mono g-mono = record
+    { isLoopHomomorphism = isLoopHomomorphism F.isLoopHomomorphism G.isLoopHomomorphism
+    ; injective = F.injective ∘ G.injective
+    } where module F = IsLoopMonomorphism f-mono;  module G = IsLoopMonomorphism g-mono
+
+  isLoopIsomorphism
+    : IsLoopIsomorphism L₁ L₂ f
+    → IsLoopIsomorphism L₂ L₃ g
+    → IsLoopIsomorphism L₁ L₃ (g ∘ f)
+  isLoopIsomorphism f-iso g-iso = record
+    { isLoopMonomorphism = isLoopMonomorphism F.isLoopMonomorphism G.isLoopMonomorphism
+    ; surjective               = Func.surjective (_≈_ L₁) (_≈_ L₂) (_≈_ L₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsLoopIsomorphism f-iso; module G = IsLoopIsomorphism g-iso

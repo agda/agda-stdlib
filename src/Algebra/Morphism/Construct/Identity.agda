@@ -16,6 +16,8 @@ open import Algebra.Morphism.Structures
         ; module NearSemiringMorphisms
         ; module SemiringMorphisms
         ; module RingMorphisms
+        ; module QuasigroupMorphisms
+        ; module LoopMorphisms
         )
 open import Data.Product using (_,_)
 open import Function.Base using (id)
@@ -26,6 +28,9 @@ open import Relation.Binary.Definitions using (Reflexive)
 private
   variable
     c ℓ : Level
+
+------------------------------------------------------------------------
+-- Magmas
 
 module _ (M : RawMagma c ℓ) (open RawMagma M) (refl : Reflexive _≈_) where
   open MagmaMorphisms M M
@@ -48,6 +53,9 @@ module _ (M : RawMagma c ℓ) (open RawMagma M) (refl : Reflexive _≈_) where
     ; surjective = _, refl
     }
 
+------------------------------------------------------------------------
+-- Monoids
+
 module _ (M : RawMonoid c ℓ) (open RawMonoid M) (refl : Reflexive _≈_) where
   open MonoidMorphisms M M
 
@@ -68,6 +76,9 @@ module _ (M : RawMonoid c ℓ) (open RawMonoid M) (refl : Reflexive _≈_) where
     { isMonoidMonomorphism = isMonoidMonomorphism
     ; surjective = _, refl
     }
+
+------------------------------------------------------------------------
+-- Groups
 
 module _ (G : RawGroup c ℓ) (open RawGroup G) (refl : Reflexive _≈_) where
   open GroupMorphisms G G
@@ -90,6 +101,9 @@ module _ (G : RawGroup c ℓ) (open RawGroup G) (refl : Reflexive _≈_) where
     ; surjective = _, refl
     }
 
+------------------------------------------------------------------------
+-- Near semirings
+
 module _ (R : RawNearSemiring c ℓ) (open RawNearSemiring R) (refl : Reflexive _≈_) where
   open NearSemiringMorphisms R R
 
@@ -110,6 +124,9 @@ module _ (R : RawNearSemiring c ℓ) (open RawNearSemiring R) (refl : Reflexive 
     { isNearSemiringMonomorphism = isNearSemiringMonomorphism
     ; surjective = _, refl
     }
+
+------------------------------------------------------------------------
+-- Semirings
 
 module _ (R : RawSemiring c ℓ) (open RawSemiring R) (refl : Reflexive _≈_) where
   open SemiringMorphisms R R
@@ -132,6 +149,9 @@ module _ (R : RawSemiring c ℓ) (open RawSemiring R) (refl : Reflexive _≈_) w
     ; surjective = _, refl
     }
 
+------------------------------------------------------------------------
+-- Rings
+
 module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
   open RingMorphisms R R
 
@@ -150,5 +170,55 @@ module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
   isRingIsomorphism : IsRingIsomorphism id
   isRingIsomorphism = record
     { isRingMonomorphism = isRingMonomorphism
+    ; surjective = _, refl
+    }
+
+------------------------------------------------------------------------
+-- Quasigroup
+
+module _ (Q : RawQuasigroup c ℓ) (open RawQuasigroup Q) (refl : Reflexive _≈_) where
+  open QuasigroupMorphisms Q Q
+
+  isQuasigroupHomomorphism : IsQuasigroupHomomorphism id
+  isQuasigroupHomomorphism = record
+    { isRelHomomorphism = isRelHomomorphism _
+    ; ∙-homo            = λ _ _ → refl
+    ; \\-homo            = λ _ _ → refl
+    ; //-homo            = λ _ _ → refl
+    }
+
+  isQuasigroupMonomorphism : IsQuasigroupMonomorphism id
+  isQuasigroupMonomorphism = record
+    { isQuasigroupHomomorphism = isQuasigroupHomomorphism
+    ; injective = id
+    }
+
+  isQuasigroupIsomorphism : IsQuasigroupIsomorphism id
+  isQuasigroupIsomorphism = record
+    { isQuasigroupMonomorphism = isQuasigroupMonomorphism
+    ; surjective = _, refl
+    }
+
+------------------------------------------------------------------------
+-- Loop
+
+module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
+  open LoopMorphisms L L
+
+  isLoopHomomorphism : IsLoopHomomorphism id
+  isLoopHomomorphism = record
+    { isQuasigroupHomomorphism = isQuasigroupHomomorphism _ refl
+    ; ε-homo = refl
+    }
+
+  isLoopMonomorphism : IsLoopMonomorphism id
+  isLoopMonomorphism = record
+    { isLoopHomomorphism = isLoopHomomorphism
+    ; injective = id
+    }
+
+  isLoopIsomorphism : IsLoopIsomorphism id
+  isLoopIsomorphism = record
+    { isLoopMonomorphism = isLoopMonomorphism
     ; surjective = _, refl
     }
