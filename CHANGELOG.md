@@ -1866,6 +1866,7 @@ Other minor changes
 * Added new definitions and proofs in `Data.Fin.Permutation`:
   ```agda
   insert         : Fin (suc m) → Fin (suc n) → Permutation m n → Permutation (suc m) (suc n)
+  transpose-self-inverse : transpose i j ≈ transpose j i
   insert-punchIn : insert i j π ⟨$⟩ʳ punchIn i k ≡ punchIn j (π ⟨$⟩ʳ k)
   insert-remove  : insert i (π ⟨$⟩ʳ i) (remove i π) ≈ π
   remove-insert  : remove i (insert i j π) ≈ π
@@ -1916,6 +1917,12 @@ Other minor changes
   cast-is-id    : cast eq k ≡ k
   subst-is-cast : subst Fin eq k ≡ cast eq k
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+  ```
+
+* Added new proofs in `Data.Fin.Permutation.Transposition.List`:
+  ```agda
+  eval-++ : eval (xs ++ ys) ≈ eval xs ∘ₚ eval ys
+  eval-reverse : eval (reverse xs) ≈ flip (eval xs)
   ```
 
 * Added new functions in `Data.Integer.Base`:

@@ -29,11 +29,10 @@ open ≡-Reasoning
 -- 'tranpose i j' swaps the places of 'i' and 'j'.
 
 transpose : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-transpose i j k with does (k ≟ i)
-... | true  = j
-... | false with does (k ≟ j)
-...   | true  = i
-...   | false = k
+transpose i j k with does (k ≟ i) | does (k ≟ j)
+... | true | _ = j
+... | false | true = i
+... | false | false = k
 
 --------------------------------------------------------------------------------
 --  Properties
