@@ -23,8 +23,8 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function
 import Function.Equality as FunS
 open import Data.Empty
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Applicative
+open import Effect.Monad
 open import Level
 
 infix  5 ¬¬_

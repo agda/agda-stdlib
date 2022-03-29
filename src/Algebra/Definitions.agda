@@ -69,6 +69,19 @@ RightInverse e _⁻¹ _∙_ = ∀ x → (x ∙ (x ⁻¹)) ≈ e
 Inverse : A → Op₁ A → Op₂ A → Set _
 Inverse e ⁻¹ ∙ = (LeftInverse e ⁻¹) ∙ × (RightInverse e ⁻¹ ∙)
 
+-- For structures in which not every element has an inverse (e.g. Fields)
+LeftInvertible : A → Op₂ A → A → Set _
+LeftInvertible e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e
+
+RightInvertible : A → Op₂ A → A → Set _
+RightInvertible e _∙_ x = ∃[ x⁻¹ ] (x ∙ x⁻¹) ≈ e
+
+-- NB: this is not quite the same as
+-- LeftInvertible e ∙ x × RightInvertible e ∙ x
+-- since the left and right inverses have to coincide.
+Invertible : A → Op₂ A → A → Set _
+Invertible e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e × (x ∙ x⁻¹) ≈ e
+
 LeftConical : A → Op₂ A → Set _
 LeftConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → x ≈ e
 

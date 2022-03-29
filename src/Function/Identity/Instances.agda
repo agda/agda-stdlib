@@ -8,7 +8,7 @@
 
 module Function.Identity.Instances where
 
-open import Function.Identity.Categorical
+open import Function.Identity.Effectful
 
 instance
   identityFunctor = functor

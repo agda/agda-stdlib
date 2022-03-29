@@ -16,16 +16,15 @@ open import Data.Product
 private
   variable
     a b : Level
-    A : Set a
-    B : Set b
+    A B : Set a
 
 ------------------------------------------------------------------------
 -- Conversion functions
 
 ↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ s = mk↪ {f = proj₁ ∘ surjective} {g = f} (proj₂ ∘ surjective)
+↠⇒↪ s = mk↪ {to = proj₁ ∘ surjective} {from = to} (proj₂ ∘ surjective)
   where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
-↠⇒⇔ s = mk⇔ f (proj₁ ∘ surjective)
+↠⇒⇔ s = mk⇔ to (proj₁ ∘ surjective)
   where open Surjection s

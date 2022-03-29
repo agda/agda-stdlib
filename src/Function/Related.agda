@@ -86,17 +86,17 @@ A ∼[ surjection          ] B = Surjection  (P.setoid A) (P.setoid B)
 A ∼[ bijection           ] B = Inverse     (P.setoid A) (P.setoid B)
 
 toRelated : {K : Kind} → A R.∼[ K ] B → A ∼[ K ] B
-toRelated {K = implication}         rel = B.Func.f rel
-toRelated {K = reverse-implication} rel = lam (B.Func.f rel)
-toRelated {K = equivalence}         rel = Eq.equivalence (B.Equivalence.f rel) (B.Equivalence.g rel)
-toRelated {K = injection}           rel = Inj.injection (B.Injection.f rel) (B.Injection.injective rel)
-toRelated {K = reverse-injection}   rel = lam (Inj.injection (B.Injection.f rel) (B.Injection.injective rel))
+toRelated {K = implication}         rel = B.Func.to rel
+toRelated {K = reverse-implication} rel = lam (B.Func.to rel)
+toRelated {K = equivalence}         rel = Eq.equivalence (B.Equivalence.to rel) (B.Equivalence.from rel)
+toRelated {K = injection}           rel = Inj.injection (B.Injection.to rel) (B.Injection.injective rel)
+toRelated {K = reverse-injection}   rel = lam (Inj.injection (B.Injection.to rel) (B.Injection.injective rel))
 toRelated {K = left-inverse}        rel =
-  LeftInv.leftInverse (B.RightInverse.f rel) (B.RightInverse.g rel) (B.RightInverse.inverseʳ rel)
+  LeftInv.leftInverse (B.RightInverse.to rel) (B.RightInverse.from rel) (B.RightInverse.inverseʳ rel)
 toRelated {K = surjection}          rel with B.Surjection.surjective rel
-... | surj = Surj.surjection (B.Surjection.f rel) (proj₁ ∘ surj) (proj₂ ∘ surj)
+... | surj = Surj.surjection (B.Surjection.to rel) (proj₁ ∘ surj) (proj₂ ∘ surj)
 toRelated {K = bijection}           rel with B.Bijection.bijective rel
-... | (inj , surj) = Inv.inverse (B.Bijection.f rel) (proj₁ ∘ surj) (inj ∘ proj₂ ∘ surj ∘ (B.Bijection.f rel)) (proj₂ ∘ surj)
+... | (inj , surj) = Inv.inverse (B.Bijection.to rel) (proj₁ ∘ surj) (inj ∘ proj₂ ∘ surj ∘ (B.Bijection.to rel)) (proj₂ ∘ surj)
 
 fromRelated : {K : Kind} → A ∼[ K ] B → A R.∼[ K ] B
 fromRelated {K = implication}         rel = B.mk⟶ rel
@@ -105,9 +105,9 @@ fromRelated {K = equivalence}         record { to = to ; from = from } = B.mk⇔
 fromRelated {K = injection}           rel = B.mk↣ (Inj.Injection.injective rel)
 fromRelated {K = reverse-injection}   (lam app-↢) = B.mk↣ (Inj.Injection.injective app-↢)
 fromRelated {K = left-inverse}        record { to = to ; from = from ; left-inverse-of = left-inverse-of } =
-  B.mk↪ {f = to ⟨$⟩_} {g = from ⟨$⟩_} left-inverse-of
+  B.mk↪ {to = to ⟨$⟩_} {from = from ⟨$⟩_} left-inverse-of
 fromRelated {K = surjection}          record { to = to ; surjective = surjective } with surjective
-... | record { from = from ; right-inverse-of = right-inverse-of } = B.mk↠ {f = to ⟨$⟩_} < from ⟨$⟩_ , right-inverse-of >
+... | record { from = from ; right-inverse-of = right-inverse-of } = B.mk↠ {to = to ⟨$⟩_} < from ⟨$⟩_ , right-inverse-of >
 fromRelated {K = bijection}           record { to = to ; from = from ; inverse-of = inverse-of } with inverse-of
 ... | record { left-inverse-of = left-inverse-of ; right-inverse-of = right-inverse-of } = B.mk⤖
   ((λ {x y} h → P.subst₂ P._≡_ (left-inverse-of x) (left-inverse-of y) (P.cong (from ⟨$⟩_) h)) ,

@@ -18,7 +18,7 @@ open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
-open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Nat.Base using (zero; suc; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; ≤-pred; ≤-step)
 open import Data.Maybe.Relation.Binary.Connected
   using (Connected; just; nothing; just-nothing; nothing-just)
@@ -102,7 +102,7 @@ module _ {R : Rel A ℓ} where
   applyUpTo⁺₁ f zero          Rf = []
   applyUpTo⁺₁ f (suc zero)    Rf = [-]
   applyUpTo⁺₁ f (suc (suc n)) Rf =
-    Rf (s≤s (s≤s z≤n)) ∷ (applyUpTo⁺₁ (f ∘ suc) (suc n) (Rf ∘ s≤s))
+    Rf (s<s z<s) ∷ (applyUpTo⁺₁ (f ∘ suc) (suc n) (Rf ∘ s<s))
 
   applyUpTo⁺₂ : ∀ f n → (∀ i → R (f i) (f (suc i))) →
                 Linked R (applyUpTo f n)

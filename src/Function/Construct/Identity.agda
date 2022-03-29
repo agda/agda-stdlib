@@ -86,14 +86,14 @@ module _ {_≈_ : Rel A ℓ} (isEq : B.IsEquivalence _≈_) where
   isLeftInverse : IsLeftInverse id id
   isLeftInverse = record
     { isCongruent = isCongruent
-    ; cong₂       = id
+    ; from-cong   = id
     ; inverseˡ    = inverseˡ _≈_ refl
     }
 
   isRightInverse : IsRightInverse id id
   isRightInverse = record
     { isCongruent = isCongruent
-    ; cong₂       = id
+    ; from-cong   = id
     ; inverseʳ    = inverseʳ _≈_ refl
     }
 
@@ -112,64 +112,64 @@ module _ (S : Setoid a ℓ) where
 
   function : Func S S
   function = record
-    { f    = id
+    { to   = id
     ; cong = id
     }
 
   injection : Injection S S
   injection = record
-    { f         = id
+    { to        = id
     ; cong      = id
     ; injective = injective _≈_
     }
 
   surjection : Surjection S S
   surjection = record
-    { f          = id
+    { to         = id
     ; cong       = id
     ; surjective = surjective _≈_ refl
     }
 
   bijection : Bijection S S
   bijection = record
-    { f         = id
+    { to        = id
     ; cong      = id
     ; bijective = bijective _≈_ refl
     }
 
   equivalence : Equivalence S S
   equivalence = record
-    { f     = id
-    ; g     = id
-    ; cong₁ = id
-    ; cong₂ = id
+    { to        = id
+    ; from      = id
+    ; to-cong   = id
+    ; from-cong = id
     }
 
   leftInverse : LeftInverse S S
   leftInverse = record
-    { f        = id
-    ; g        = id
-    ; cong₁    = id
-    ; cong₂    = id
-    ; inverseˡ = inverseˡ _≈_ refl
+    { to        = id
+    ; from      = id
+    ; to-cong   = id
+    ; from-cong = id
+    ; inverseˡ  = inverseˡ _≈_ refl
     }
 
   rightInverse : RightInverse S S
   rightInverse = record
-    { f        = id
-    ; g        = id
-    ; cong₁    = id
-    ; cong₂    = id
-    ; inverseʳ = inverseʳ _≈_ refl
+    { to        = id
+    ; from      = id
+    ; to-cong   = id
+    ; from-cong = id
+    ; inverseʳ  = inverseʳ _≈_ refl
     }
 
   inverse : Inverse S S
   inverse = record
-    { f       = id
-    ; f⁻¹     = id
-    ; cong₁   = id
-    ; cong₂   = id
-    ; inverse = inverseᵇ _≈_ refl
+    { to        = id
+    ; from      = id
+    ; to-cong   = id
+    ; from-cong = id
+    ; inverse   = inverseᵇ _≈_ refl
     }
 
 ------------------------------------------------------------------------

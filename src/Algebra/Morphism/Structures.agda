@@ -353,6 +353,91 @@ module SemiringMorphisms (R₁ : RawSemiring a ℓ₁) (R₂ : RawSemiring b ℓ
       }
 
 ------------------------------------------------------------------------
+-- Morphisms over ringWithoutOne-like structures
+------------------------------------------------------------------------
+
+module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRingWithoutOne b ℓ₂) where
+
+  open RawRingWithoutOne R₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; _*_ to _*₁_
+    ; *-rawMagma to *-rawMagma₁
+    ; +-rawGroup to +-rawGroup₁)
+
+  open RawRingWithoutOne R₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; _*_ to _*₂_
+    ; *-rawMagma to *-rawMagma₂
+    ; +-rawGroup to +-rawGroup₂)
+
+  module + = GroupMorphisms  +-rawGroup₁  +-rawGroup₂
+  module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
+
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+
+  record IsRingWithoutOneHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      +-isGroupHomomorphism : +.IsGroupHomomorphism ⟦_⟧
+      *-homo : Homomorphic₂ ⟦_⟧ _*₁_ _*₂_
+
+    open +.IsGroupHomomorphism +-isGroupHomomorphism public
+      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism)
+
+    *-isMagmaHomomorphism : *.IsMagmaHomomorphism ⟦_⟧
+    *-isMagmaHomomorphism = record
+      { isRelHomomorphism = isRelHomomorphism
+      ; homo = *-homo
+      }
+
+  record IsRingWithoutOneMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism ⟦_⟧
+      injective                    : Injective ⟦_⟧
+
+    open IsRingWithoutOneHomomorphism isRingWithoutOneHomomorphism public
+
+    +-isGroupMonomorphism : +.IsGroupMonomorphism ⟦_⟧
+    +-isGroupMonomorphism = record
+      { isGroupHomomorphism = +-isGroupHomomorphism
+      ; injective            = injective
+      }
+
+    open +.IsGroupMonomorphism +-isGroupMonomorphism public
+      using (isRelMonomorphism)
+      renaming (isMagmaMonomorphism to +-isMagmaMonomorphsm; isMonoidMonomorphism to +-isMonoidMonomorphism)
+
+    *-isMagmaMonomorphism : *.IsMagmaMonomorphism ⟦_⟧
+    *-isMagmaMonomorphism = record
+      { isMagmaHomomorphism = *-isMagmaHomomorphism
+      ; injective           = injective
+      }
+
+  record IsRingWithoutOneIsoMorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isRingWithoutOneMonomorphism : IsRingWithoutOneMonomorphism ⟦_⟧
+      surjective                   : Surjective ⟦_⟧
+
+    open IsRingWithoutOneMonomorphism isRingWithoutOneMonomorphism public
+
+    +-isGroupIsomorphism   : +.IsGroupIsomorphism ⟦_⟧
+    +-isGroupIsomorphism  = record
+      { isGroupMonomorphism = +-isGroupMonomorphism
+      ; surjective           = surjective
+      }
+
+    open +.IsGroupIsomorphism +-isGroupIsomorphism public
+      using (isRelIsomorphism)
+      renaming (isMagmaIsomorphism to +-isMagmaIsomorphism; isMonoidIsomorphism to +-isMonoidIsomorphism)
+
+    *-isMagmaIsomorphism : *.IsMagmaIsomorphism ⟦_⟧
+    *-isMagmaIsomorphism = record
+      { isMagmaMonomorphism = *-isMagmaMonomorphism
+      ; surjective          = surjective
+      }
+
+
+------------------------------------------------------------------------
 -- Morphisms over ring-like structures
 ------------------------------------------------------------------------
 

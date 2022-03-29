@@ -13,6 +13,8 @@ open import Function.Definitions
 open import Level
 open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation.Core using (contraposition)
 
 private
   variable
@@ -44,3 +46,11 @@ module _ (From : Setoid a ℓ₁) {≈₂ : Rel B ℓ₂} where
   inverseᵇ⇒bijective : ∀ {f f⁻¹} → Congruent ≈₂ ≈₁ f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Bijective ≈₁ ≈₂ f
   inverseᵇ⇒bijective cong₂ (invˡ , invʳ) =
     (inverseʳ⇒injective cong₂ invʳ , inverseˡ⇒surjective ≈₁ ≈₂ invˡ)
+
+module _
+  {f : A → B} (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
+  where
+
+  contraInjective : Injective _≈₁_ _≈₂_ f →
+                    ∀ {x y} → ¬ (x ≈₁ y) → ¬ (f x ≈₂ f y)
+  contraInjective inj p = contraposition inj p

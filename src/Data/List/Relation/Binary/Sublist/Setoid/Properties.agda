@@ -22,7 +22,7 @@ import Data.List.Membership.Setoid as SetoidMembership
 open import Data.List.Relation.Unary.Any using (Any)
 
 import Data.Maybe.Relation.Unary.All as Maybe
-open import Data.Nat.Base using (_≤_; _≥_; z≤n; s≤s)
+open import Data.Nat.Base using (_≤_; _≥_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (∃; _,_; proj₂)
 

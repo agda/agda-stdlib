@@ -34,7 +34,7 @@ open import Relation.Nullary.Decidable.Core public
 -- Maps
 
 map : P ⇔ Q → Dec P → Dec Q
-map P⇔Q = map′ f g
+map P⇔Q = map′ to from
   where open Equivalence P⇔Q
 
 module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
@@ -51,7 +51,7 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
 
   via-injection : Decidable _≈B_ → Decidable _≈A_
   via-injection dec x y =
-    map′ injective cong (dec (f x) (f y))
+    map′ injective cong (dec (to x) (to y))
 
 ------------------------------------------------------------------------
 -- A lemma relating True and Dec

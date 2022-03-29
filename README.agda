@@ -64,10 +64,6 @@ module README where
 
 import README.Axiom
 
--- • Category
---     Category theory-inspired idioms used to structure functional
---     programs (functors and monads, for instance).
-
 -- • Codata
 --     Coinductive data types and properties. There are two different
 --     approaches taken. The `Codata.Sized` folder contains the new more
@@ -76,6 +72,10 @@ import README.Axiom
 
 -- • Data
 --     Data types and properties.
+
+-- • Effect
+--     Category theory-inspired idioms used to structure functional
+--     programs (functors and monads, for instance).
 
 import README.Data
 
@@ -162,9 +162,9 @@ import Codata.Sized.Colist -- Colists.
 
 -- • Some types used to structure computations
 
-import Category.Functor      -- Functors.
-import Category.Applicative  -- Applicative functors.
-import Category.Monad        -- Monads.
+import Effect.Functor      -- Functors.
+import Effect.Applicative  -- Applicative functors.
+import Effect.Monad        -- Monads.
 
 -- • Equality
 

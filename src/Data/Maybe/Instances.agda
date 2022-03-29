@@ -8,7 +8,7 @@
 
 module Data.Maybe.Instances where
 
-open import Data.Maybe.Categorical
+open import Data.Maybe.Effectful
 
 instance
   maybeFunctor = functor

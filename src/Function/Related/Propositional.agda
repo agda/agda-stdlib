@@ -74,8 +74,8 @@ Related k A B = A ∼[ k ] B
 -- The bijective equality implies any kind of relatedness.
 
 ⤖⇒ : A ∼[ bijection ] B → A ∼[ k ] B
-⤖⇒ {k = implication}        = mk⟶ ∘ Bijection.f
-⤖⇒ {k = reverseImplication} = mk⟶ ∘ Inverse.f⁻¹ ∘ ⤖⇒↔
+⤖⇒ {k = implication}        = mk⟶ ∘ Bijection.to
+⤖⇒ {k = reverseImplication} = mk⟶ ∘ Inverse.from ∘ ⤖⇒↔
 ⤖⇒ {k = equivalence}        = ⤖⇒⇔
 ⤖⇒ {k = injection}          = Bijection.injection
 ⤖⇒ {k = reverseInjection}   = Bijection.injection ∘ ↔⇒⤖ ∘ Symmetry.inverse ∘ ⤖⇒↔
@@ -129,12 +129,12 @@ data ForwardKind : Set where
 -- The function.
 
 ⇒→ : ∀ {k} → A ∼[ ⌊ k ⌋→ ] B → A → B
-⇒→ {k = implication} = Func.f
-⇒→ {k = equivalence} = Equivalence.f
-⇒→ {k = injection}   = Injection.f
-⇒→ {k = leftInverse} = RightInverse.f
-⇒→ {k = surjection}  = Surjection.f
-⇒→ {k = bijection}   = Bijection.f
+⇒→ {k = implication} = Func.to
+⇒→ {k = equivalence} = Equivalence.to
+⇒→ {k = injection}   = Injection.to
+⇒→ {k = leftInverse} = RightInverse.to
+⇒→ {k = surjection}  = Surjection.to
+⇒→ {k = bijection}   = Bijection.to
 
 -- Kinds whose interpretation include a function which "goes backwards".
 
@@ -159,12 +159,12 @@ data BackwardKind : Set where
 -- The function.
 
 ⇒← : ∀ {k} → A ∼[ ⌊ k ⌋← ] B → B → A
-⇒← {k = reverseImplication} = Func.f
-⇒← {k = equivalence}        = Equivalence.g
-⇒← {k = reverseInjection}   = Injection.f
-⇒← {k = leftInverse}        = RightInverse.g
-⇒← {k = surjection}         = RightInverse.f ∘ ↠⇒↪
-⇒← {k = bijection}          = Inverse.f⁻¹ ∘ ⤖⇒↔
+⇒← {k = reverseImplication} = Func.to
+⇒← {k = equivalence}        = Equivalence.from
+⇒← {k = reverseInjection}   = Injection.to
+⇒← {k = leftInverse}        = RightInverse.from
+⇒← {k = surjection}         = RightInverse.to ∘ ↠⇒↪
+⇒← {k = bijection}          = Inverse.from ∘ ⤖⇒↔
 
 -- Kinds whose interpretation include functions going in both
 -- directions.
