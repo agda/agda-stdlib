@@ -103,20 +103,18 @@ module _ {ℓ} where
 ------------------------------------------------------------------------
 -- Well-foundedness of other (strict) partial orders on Fin
 
--- Every (strict) partial order over `Fin n' is well-founded, provided
--- the underlying equality is decidable.
+module _ {n e} {_≈_ : Rel (Fin n) e} where
 
-module StrictWf {n e r} {_≈_ : Rel (Fin n) e} {_⊏_ : Rel (Fin n) r}
-                (_≈?_  : Decidable _≈_)
-                (isSPO : IsStrictPartialOrder _≈_ _⊏_) where
+  -- Every (strict) partial order over `Fin n' is well-founded.
 
   -- Intuition: there cannot be any infinite descending chains simply
   -- because Fin n has only finitely many inhabitants.  Thus any chain
   -- of length > n must have a cycle (which is forbidden by
   -- irreflexivity).
 
-  ⊏-wellFounded : WellFounded _⊏_
-  ⊏-wellFounded i = go n i pigeon where
+  spo-wellFounded : ∀ {r} {_⊏_ : Rel (Fin n) r} →
+                    IsStrictPartialOrder _≈_ _⊏_ → WellFounded _⊏_
+  spo-wellFounded {_} {_⊏_} isSPO i = go n i pigeon where
 
     module ⊏ = IsStrictPartialOrder isSPO
 
@@ -133,40 +131,23 @@ module StrictWf {n e r} {_≈_ : Rel (Fin n) e} {_⊏_ : Rel (Fin n) r}
       let xs[i₁]⊏xs[i₁] = ⊏.<-respʳ-≈ (⊏.Eq.reflexive xs[i₁]≡xs[i₂]) xs[i₁]⊏xs[i₂] in
       contradiction xs[i₁]⊏xs[i₁] (⊏.irrefl ⊏.Eq.refl)
 
-module Wf {n e r} {_≈_ : Rel (Fin n) e} {_⊑_ : Rel (Fin n) r}
-          (_≈?_  : Decidable _≈_)
-          (isPO : IsPartialOrder _≈_ _⊑_) where
+  po-wellFounded : ∀ {r} {_⊑_ : Rel (Fin n) r} →
+                   IsPartialOrder _≈_ _⊑_ → WellFounded (ToStrict._<_ _≈_ _⊑_)
+  po-wellFounded isPO =
+    spo-wellFounded (ToStrict.<-isStrictPartialOrder _≈_ _ isPO)
 
-  open StrictWf _≈?_ (ToStrict.<-isStrictPartialOrder _≈_ _⊑_ isPO) public
-    using (⊏-wellFounded)
+  -- The inverse order is also well-founded, i.e. every (strict)
+  -- partial order is also Noetherian.
 
--- The inverse order is also well-founded, i.e. every (strict) partial
--- order is also Noetherian.
+  spo-noetherian : ∀ {r} {_⊏_ : Rel (Fin n) r} →
+                   IsStrictPartialOrder _≈_ _⊏_ → WellFounded (flip _⊏_)
+  spo-noetherian isSPO = spo-wellFounded >-isStrictPartialOrder
+    where
+      spo : StrictPartialOrder _ _ _
+      spo = record { isStrictPartialOrder = isSPO }
+      open SPO spo using (_>_; >-isStrictPartialOrder)
 
-module StrictNoetherian {n e r} {_≈_ : Rel (Fin n) e} {_⊏_ : Rel (Fin n) r}
-                        (_≈?_  : Decidable _≈_)
-                        (isSPO : IsStrictPartialOrder _≈_ _⊏_) where
-
-  spo : StrictPartialOrder _ _ _
-  spo = record { isStrictPartialOrder = isSPO }
-  open SPO spo using (_>_; >-isStrictPartialOrder)
-  open StrictWf _≈?_ >-isStrictPartialOrder public
-    using () renaming (⊏-wellFounded to ⊏-noetherian)
-
-module Noetherian {n e r} {_≈_ : Rel (Fin n) e} {_⊑_ : Rel (Fin n) r}
-                  (_≈?_  : Decidable _≈_)
-                  (isPO : IsPartialOrder _≈_ _⊑_) where
-
-  open StrictNoetherian _≈?_ (ToStrict.<-isStrictPartialOrder _≈_ _⊑_ isPO)
-    public using (⊏-noetherian)
-
--- A special case: every strict partial order over `Fin n' is
--- well-founded and noetherian if the underlying equality is just _≡_.
-
-module _ {n r} {_⊏_ : Rel (Fin n) r} where
-
-  spo-wellFounded : IsStrictPartialOrder _≡_ _⊏_ → WellFounded _⊏_
-  spo-wellFounded spo = StrictWf.⊏-wellFounded _≟_ spo
-
-  spo-noetherian : IsStrictPartialOrder _≡_ _⊏_ → WellFounded (flip _⊏_)
-  spo-noetherian spo = StrictNoetherian.⊏-noetherian _≟_ spo
+  po-noetherian : ∀ {r} {_⊑_ : Rel (Fin n) r} → IsPartialOrder _≈_ _⊑_ →
+                  WellFounded (flip (ToStrict._<_ _≈_ _⊑_))
+  po-noetherian isPO =
+    spo-noetherian (ToStrict.<-isStrictPartialOrder _≈_ _ isPO)
