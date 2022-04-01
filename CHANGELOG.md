@@ -61,13 +61,13 @@ Non-backwards compatible changes
 #### Moved `Category` modules to `Effect`
 
 * As observed by Wen Kokke in Issue #1636, it no longer really makes sense
-  to group the modules which correspond to the variety of concepts of 
-  (effectful) type constructor arising in functional programming (esp. in haskell) 
+  to group the modules which correspond to the variety of concepts of
+  (effectful) type constructor arising in functional programming (esp. in haskell)
   such as `Monad`, `Applicative`, `Functor`, etc, under `Category.*`, as this
   obstructs the importing of the `agda-categories` development into the Standard Library,
   and moreover needlessly restricts the applicability of categorical concepts to this
   (highly specific) mode of use. Correspondingly, modules grouped under `*.Categorical.*`
-  which exploited these structures for effectful programming have been renamed `*.Effectful`.  
+  which exploited these structures for effectful programming have been renamed `*.Effectful`.
 
 ### Improvements to pretty printing and regexes
 
@@ -458,7 +458,7 @@ Non-backwards compatible changes
 
 * The functions `split`, `flatten` and `flatten-split` have been removed from
   `Data.List.NonEmpty`. In their place `groupSeqs` and `ungroupSeqs`
-  have been added to `Data.List.NonEmpty.Base` which morally perform the same 
+  have been added to `Data.List.NonEmpty.Base` which morally perform the same
   operations but without computing the accompanying proofs. The proofs can be
   found in `Data.List.NonEmpty.Properties` under the names `groupSeqs-groups`
   and `ungroupSeqs` and `groupSeqs`.
@@ -588,6 +588,7 @@ Deprecated names
   splitAt-inject+  ↦ splitAt-↑ˡ m i n
   splitAt-raise    ↦ splitAt-↑ʳ
   Fin0↔⊥           ↦ 0↔⊥
+  eq?              ↦ inj⇒≟
   ```
 
 * In `Data.Fin.Permutation.Components`:
@@ -935,7 +936,7 @@ Other minor changes
   record RawLoop  c ℓ : Set (suc (c ⊔ ℓ))
   record Loop  c ℓ : Set (suc (c ⊔ ℓ))
   record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ))
-  record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) 
+  record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ))
   record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ))
   record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
   record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -984,7 +985,7 @@ Other minor changes
                           InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   quasigroup : Quasigroup a ℓ₁ → Quasigroup b ℓ₂ → Quasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   loop : Loop a ℓ₁ → Loop b ℓ₂ → Loop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → 
+  kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ →
                   KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
@@ -1068,12 +1069,18 @@ Other minor changes
   remove-insert  : remove i (insert i j π) ≈ π
   ```
 
+* In `Data.Fin.Properties`:
+  the proof that an injection from a type `A` into `Fin n` induces a
+  decision procedure for `_≡_` on `A` has been generalized to other
+  equivalences over `A` (i.e. to arbitrary setoids), and renamed from
+  `eq?` to the more descriptive `inj⇒≟` and `inj⇒decSetoid`.
+
 * Added new proofs in `Data.Fin.Properties`:
   ```
   1↔⊤                : Fin 1 ↔ ⊤
-  
+
   0≢1+n              : zero ≢ suc i
-  
+
   ↑ˡ-injective       : i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
   ↑ʳ-injective       : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
   finTofun-funToFin  : funToFin ∘ finToFun ≗ id
@@ -1094,9 +1101,9 @@ Other minor changes
 
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
-				  
+
   i<1+i              : i < suc i
-  
+
   injective⇒≤               : ∀ {f : Fin m → Fin n} → Injective f → m ℕ.≤ n
   <⇒notInjective            : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective f)
   ℕ→Fin-notInjective        : ∀ (f : ℕ → Fin n) → ¬ (Injective f)
@@ -1502,6 +1509,18 @@ Other minor changes
   _⋆     : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
   ```
 
+* Added new proofs to `Relation.Binary.Lattice.Properties.{Join,Meet}Semilattice`:
+  ```agda
+  ≈-dec⇒≤-dec : Decidable _≈_ → Decidable _≤_
+  ≈-dec⇒isDecPartialOrder : Decidable _≈_ → IsDecPartialOrder _≈_ _≤_
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.Poset`:
+  ```agda
+  ≤-dec⇒≈-dec : Decidable _≤_ → Decidable _≈_
+  ≤-dec⇒isDecPartialOrder : Decidable _≤_ → IsDecPartialOrder _≈_ _≤_
+  ```
+
 * Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
   ```
   subst-application′ : subst Q eq (f x p) ≡ f y (subst P eq p)
@@ -1578,7 +1597,7 @@ Other minor changes
   ```
   ≈-isPreorder     : IsPreorder _≈_ _≈_
   ≈-isPartialOrder : IsPartialOrder _≈_ _≈_
-  
+
   ≈-preorder : Preorder a ℓ ℓ
   ≈-poset    : Poset a ℓ ℓ
   ```
@@ -1613,7 +1632,7 @@ Other minor changes
   dcong₂  : (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂ → f x₁ y₁ ≡ f x₂ y₂
   dsubst₂ : (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂ → C x₁ y₁ → C x₂ y₂
   ddcong₂ : (p : x₁ ≡ x₂) (q : subst B p y₁ ≡ y₂) → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
-  
+
   isPartialOrder : IsPartialOrder _≡_ _≡_
   poset          : Set a → Poset _ _ _
   ```
