@@ -21,10 +21,10 @@ open import Induction
 open import Induction.WellFounded as WF
 open import Level using (Level)
 open import Relation.Binary using (Rel; Decidable; IsPartialOrder; IsStrictPartialOrder; StrictPartialOrder)
+import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.Flip as Flip
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
 import Relation.Binary.Construct.On as On
-import Relation.Binary.Properties.StrictPartialOrder as SPO
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
@@ -103,7 +103,7 @@ module _ {ℓ} where
 ------------------------------------------------------------------------
 -- Well-foundedness of other (strict) partial orders on Fin
 
-module _ {n e} {_≈_ : Rel (Fin n) e} where
+module _ {_≈_ : Rel (Fin n) ℓ} where
 
   -- Every (strict) partial order over `Fin n' is well-founded.
 
@@ -141,11 +141,7 @@ module _ {n e} {_≈_ : Rel (Fin n) e} where
 
   spo-noetherian : ∀ {r} {_⊏_ : Rel (Fin n) r} →
                    IsStrictPartialOrder _≈_ _⊏_ → WellFounded (flip _⊏_)
-  spo-noetherian isSPO = spo-wellFounded >-isStrictPartialOrder
-    where
-      spo : StrictPartialOrder _ _ _
-      spo = record { isStrictPartialOrder = isSPO }
-      open SPO spo using (_>_; >-isStrictPartialOrder)
+  spo-noetherian isSPO = spo-wellFounded (Converse.isStrictPartialOrder isSPO)
 
   po-noetherian : ∀ {r} {_⊑_ : Rel (Fin n) r} → IsPartialOrder _≈_ _⊑_ →
                   WellFounded (flip (ToStrict._<_ _≈_ _⊑_))

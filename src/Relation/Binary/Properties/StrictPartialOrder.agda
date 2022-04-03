@@ -11,14 +11,31 @@ open import Relation.Binary
 module Relation.Binary.Properties.StrictPartialOrder
        {s₁ s₂ s₃} (SPO : StrictPartialOrder s₁ s₂ s₃) where
 
-open import Data.Product using (_,_)
-open import Function using (flip; _∘_)
-private module SPO = Relation.Binary.StrictPartialOrder SPO
-open SPO hiding (Carrier; _≈_; trans; isEquivalence; module Eq)
-open import Relation.Binary.Construct.StrictToNonStrict SPO._≈_ _<_
+import Relation.Binary.Construct.Converse as Converse
+import Relation.Binary.Construct.StrictToNonStrict
+
+open Relation.Binary.StrictPartialOrder SPO
+
+------------------------------------------------------------------------
+-- The inverse relation is also a strict partial order.
+
+>-strictPartialOrder : StrictPartialOrder s₁ s₂ s₃
+>-strictPartialOrder = Converse.strictPartialOrder SPO
+
+open StrictPartialOrder >-strictPartialOrder public
+  using ()
+  renaming
+  ( _<_                  to _>_
+  ; irrefl               to >-irrefl
+  ; trans                to >-trans
+  ; <-resp-≈             to >-resp-≈
+  ; isStrictPartialOrder to >-isStrictPartialOrder
+  )
 
 ------------------------------------------------------------------------
 -- Strict partial orders can be converted to posets
+
+open Relation.Binary.Construct.StrictToNonStrict _≈_ _<_
 
 poset : Poset _ _ _
 poset = record
@@ -26,30 +43,3 @@ poset = record
   }
 
 open Poset poset public
-
-------------------------------------------------------------------------
--- The inverse relation is also a strict partial order.
-
-infix 4 _>_
-
-_>_ : Rel Carrier s₃
-x > y = y < x
-
->-isStrictPartialOrder : IsStrictPartialOrder _≈_ _>_
->-isStrictPartialOrder = record
-  { isEquivalence = isEquivalence
-  ; irrefl        = irrefl ∘ Eq.sym
-  ; trans         = flip SPO.trans
-  ; <-resp-≈      = <-respˡ-≈ , <-respʳ-≈
-  }
-
->-strictPartialOrder : StrictPartialOrder s₁ s₂ s₃
->-strictPartialOrder = record { isStrictPartialOrder = >-isStrictPartialOrder }
-
-open StrictPartialOrder >-strictPartialOrder public
-  using ()
-  renaming
-  ( irrefl   to >-irrefl
-  ; trans    to >-trans
-  ; <-resp-≈ to >-resp-≈
-  )

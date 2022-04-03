@@ -490,9 +490,9 @@ Non-backwards compatible changes
   * `fold-pull`
 
 * In `Data.Fin.Properties`:
-  + the `i` argument to `opposite-suc` has been made explicit
-  + `pigeonhole` has been strenghtened: wlog, we return a proof that `i < j` rather
-    than a mere `i ≢ j`.
+  + the `i` argument to `opposite-suc` has been made explicit;
+  + `pigeonhole` has been strengthened: wlog, we return a proof that
+    `i < j` rather than a mere `i ≢ j`.
 
 Major improvements
 ------------------
@@ -1061,12 +1061,25 @@ Other minor changes
   execState : State s a → s → s
   ```
 
+* Added new proofs in `Data.Bool.Properties`:
+  ```agda
+  <-wellFounded : WellFounded _<_
+  ```
+
 * Added new functions in `Data.Fin.Base`:
   ```
   finToFun  : Fin (m ^ n) → (Fin n → Fin m)
   funToFin  : (Fin m → Fin n) → Fin (n ^ m)
   quotient  : Fin (m * n) → Fin m
   remainder : Fin (m * n) → Fin n
+  ```
+
+* Added new proofs in `Data.Fin.Induction`:
+  every (strict) partial order is well-founded and Noetherian.
+
+  ```agda
+  spo-wellFounded : ∀ {r} {_⊏_ : Rel (Fin n) r} → IsStrictPartialOrder _≈_ _⊏_ → WellFounded _⊏_
+  spo-noetherian  : ∀ {r} {_⊏_ : Rel (Fin n) r} → IsStrictPartialOrder _≈_ _⊏_ → WellFounded (flip _⊏_)
   ```
 
 * Added new definitions and proofs in `Data.Fin.Permutation`:
@@ -1099,7 +1112,7 @@ Other minor changes
   combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
   combine-injective  : combine i j ≡ combine k l → i ≡ k × j ≡ l
   combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
-  combine-monoˡ-<    :  i < j → combine i k < combine j l
+  combine-monoˡ-<    : i < j → combine i k < combine j l
 
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
@@ -1509,6 +1522,11 @@ Other minor changes
   return : _⟶_ ⇒ SymClosure _⟶_
   join   : SymClosure (SymClosure _⟶_) ⇒ SymClosure _⟶_
   _⋆     : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
+  ```
+
+* Added new proofs in `Relation.Binary.Properties.StrictPartialOrder`:
+  ```agda
+  >-strictPartialOrder : StrictPartialOrder s₁ s₂ s₃
   ```
 
 * Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:

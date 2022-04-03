@@ -53,15 +53,13 @@ module _ (trans : Transitive R) where
 ------------------------------------------------------------------------
 -- map
 
-module _ {R : Rel A ℓ} {f : B → A} where
+map⁺ : ∀ {f : B → A} {xs} → Linked (R on f) {n} xs → Linked R (map f xs)
+map⁺ []                  = []
+map⁺ [-]                 = [-]
+map⁺ (Rxy ∷ [-])         = Rxy ∷ [-]
+map⁺ (Rxy ∷ Rxs@(_ ∷ _)) = Rxy ∷ map⁺ Rxs
 
-  map⁺ : ∀ {xs} → Linked (R on f) {n} xs → Linked R (map f xs)
-  map⁺ []                  = []
-  map⁺ [-]                 = [-]
-  map⁺ (Rxy ∷ [-])         = Rxy ∷ [-]
-  map⁺ (Rxy ∷ Rxs@(_ ∷ _)) = Rxy ∷ map⁺ Rxs
-
-  map⁻ : ∀ {xs} → Linked R {n} (map f xs) → Linked (R on f) xs
-  map⁻ {xs = []}        []           = []
-  map⁻ {xs = x ∷ []}    [-]          = [-]
-  map⁻ {xs = x ∷ _ ∷ _} (Rxy ∷ Rxs)  = Rxy ∷ map⁻ Rxs
+map⁻ : ∀ {f : B → A} {xs} → Linked R {n} (map f xs) → Linked (R on f) xs
+map⁻ {xs = []}        []           = []
+map⁻ {xs = x ∷ []}    [-]          = [-]
+map⁻ {xs = x ∷ _ ∷ _} (Rxy ∷ Rxs)  = Rxy ∷ map⁻ Rxs
