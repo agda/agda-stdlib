@@ -223,6 +223,45 @@ module _
     ; surjective             = Func.surjective (_≈_ R₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
     } where module F = IsSemiringIsomorphism f-iso; module G = IsSemiringIsomorphism g-iso
 
+------------------------------------------------------------------------
+-- RingWithoutOne
+
+module _ {R₁ : RawRingWithoutOne a ℓ₁}
+         {R₂ : RawRingWithoutOne b ℓ₂}
+         {R₃ : RawRingWithoutOne c ℓ₃}
+         (open RawRingWithoutOne)
+         (≈₃-trans : Transitive (_≈_ R₃))
+         {f : Carrier R₁ → Carrier R₂}
+         {g : Carrier R₂ → Carrier R₃}
+         where
+
+
+  isRingWithoutOneHomomorphism
+    : IsRingWithoutOneHomomorphism R₁ R₂ f
+    → IsRingWithoutOneHomomorphism R₂ R₃ g
+    → IsRingWithoutOneHomomorphism R₁ R₃ (g ∘ f)
+  isRingWithoutOneHomomorphism f-homo g-homo = record
+    { +-isGroupHomomorphism = isGroupHomomorphism ≈₃-trans F.+-isGroupHomomorphism G.+-isGroupHomomorphism
+    ; *-homo                 = λ x y → ≈₃-trans (G.⟦⟧-cong (F.*-homo x y)) (G.*-homo (f x) (f y))
+    } where module F = IsRingWithoutOneHomomorphism f-homo; module G = IsRingWithoutOneHomomorphism g-homo
+
+  isRingWithoutOneMonomorphism
+    : IsRingWithoutOneMonomorphism R₁ R₂ f
+    → IsRingWithoutOneMonomorphism R₂ R₃ g
+    → IsRingWithoutOneMonomorphism R₁ R₃ (g ∘ f)
+  isRingWithoutOneMonomorphism f-mono g-mono = record
+    { isRingWithoutOneHomomorphism = isRingWithoutOneHomomorphism F.isRingWithoutOneHomomorphism G.isRingWithoutOneHomomorphism
+    ; injective = F.injective ∘ G.injective
+    } where module F = IsRingWithoutOneMonomorphism f-mono;  module G = IsRingWithoutOneMonomorphism g-mono
+
+  isRingWithoutOneIsoMorphism
+    : IsRingWithoutOneIsoMorphism R₁ R₂ f
+    → IsRingWithoutOneIsoMorphism R₂ R₃ g
+    → IsRingWithoutOneIsoMorphism R₁ R₃ (g ∘ f)
+  isRingWithoutOneIsoMorphism f-iso g-iso = record
+    { isRingWithoutOneMonomorphism = isRingWithoutOneMonomorphism F.isRingWithoutOneMonomorphism G.isRingWithoutOneMonomorphism
+    ; surjective         = Func.surjective (_≈_ R₁) (_≈_ R₂) (_≈_ R₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsRingWithoutOneIsoMorphism f-iso; module G = IsRingWithoutOneIsoMorphism g-iso
 
 ------------------------------------------------------------------------
 -- Rings
@@ -345,3 +384,4 @@ module _ {L₁ : RawLoop a ℓ₁}
     { isLoopMonomorphism = isLoopMonomorphism F.isLoopMonomorphism G.isLoopMonomorphism
     ; surjective               = Func.surjective (_≈_ L₁) (_≈_ L₂) (_≈_ L₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
     } where module F = IsLoopIsomorphism f-iso; module G = IsLoopIsomorphism g-iso
+
