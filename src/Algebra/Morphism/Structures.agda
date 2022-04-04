@@ -370,8 +370,9 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
     ; *-rawMagma to *-rawMagma₂
     ; +-rawGroup to +-rawGroup₂)
 
-  module + = GroupMorphisms  +-rawGroup₁  +-rawGroup₂
-  module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
+  private
+    module + = GroupMorphisms  +-rawGroup₁  +-rawGroup₂
+    module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
 
   open MorphismDefinitions A B _≈₂_
   open FunctionDefinitions _≈₁_ _≈₂_
@@ -701,6 +702,7 @@ open MonoidMorphisms public
 open GroupMorphisms public
 open NearSemiringMorphisms public
 open SemiringMorphisms public
+open RingWithoutOneMorphisms public
 open RingMorphisms public
 open QuasigroupMorphisms public
 open LoopMorphisms public

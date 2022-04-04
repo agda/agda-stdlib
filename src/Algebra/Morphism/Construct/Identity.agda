@@ -15,6 +15,7 @@ open import Algebra.Morphism.Structures
         ; module GroupMorphisms
         ; module NearSemiringMorphisms
         ; module SemiringMorphisms
+        ; module RingWithoutOneMorphisms
         ; module RingMorphisms
         ; module QuasigroupMorphisms
         ; module LoopMorphisms
@@ -150,6 +151,30 @@ module _ (R : RawSemiring c ℓ) (open RawSemiring R) (refl : Reflexive _≈_) w
     }
 
 ------------------------------------------------------------------------
+-- RingWithoutOne
+
+module _ (R : RawRingWithoutOne c ℓ) (open RawRingWithoutOne R) (refl : Reflexive _≈_) where
+  open RingWithoutOneMorphisms R R
+
+  isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism id
+  isRingWithoutOneHomomorphism = record
+    { +-isGroupHomomorphism  = isGroupHomomorphism _ refl
+    ; *-homo                 = λ _ _ → refl
+    }
+
+  isRingWithoutOneMonomorphism : IsRingWithoutOneMonomorphism id
+  isRingWithoutOneMonomorphism = record
+    { isRingWithoutOneHomomorphism = isRingWithoutOneHomomorphism
+    ; injective = id
+    }
+
+  isRingWithoutOneIsoMorphism : IsRingWithoutOneIsoMorphism id
+  isRingWithoutOneIsoMorphism = record
+    { isRingWithoutOneMonomorphism = isRingWithoutOneMonomorphism
+    ; surjective = _, refl
+    }
+
+------------------------------------------------------------------------
 -- Rings
 
 module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
@@ -222,3 +247,4 @@ module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
     { isLoopMonomorphism = isLoopMonomorphism
     ; surjective = _, refl
     }
+
