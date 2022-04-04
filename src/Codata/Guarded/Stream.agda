@@ -114,13 +114,13 @@ _⁺++_ : List⁺ A → Stream A → Stream A
 (x ∷ xs) ⁺++ ys = x ∷ xs ++ ys
 
 concat : Stream (List⁺ A) → Stream A
-concat {A = A} = λ s → [] ++concat s -- Here using λ so that _++concat_ doesn't take an extra argument
+concat {A = A} = ++-concat []
   module Concat where
-    _++concat_ : List A → Stream (List⁺ A) → Stream A
-    _++concat_ [] s .head = s .head .List⁺.head
-    _++concat_ [] s .tail = s .head .List⁺.tail ++concat s .tail
-    _++concat_ (x ∷ xs) s .head = x
-    _++concat_ (x ∷ xs) s .tail = xs ++concat s
+    ++-concat : List A → Stream (List⁺ A) → Stream A
+    ++-concat [] s .head = s .head .List⁺.head
+    ++-concat [] s .tail = ++-concat (s .head .List⁺.tail) (s .tail)
+    ++-concat (x ∷ xs) s .head = x
+    ++-concat (x ∷ xs) s .tail = ++-concat xs s
 
 cycle : List⁺ A → Stream A
 cycle = concat ∘′ repeat

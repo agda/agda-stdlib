@@ -13,7 +13,7 @@ open import Codata.Guarded.Stream.Relation.Binary.Pointwise
   as B using (_≈_; head; tail; module ≈-Reasoning)
 
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.List.NonEmpty as List⁺ using (_∷_)
+open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
 import Data.Nat.GeneralisedArithmetic as ℕ
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
@@ -54,15 +54,15 @@ cong-zipWith : ∀ (f : A → B → C) {as bs cs ds} → as ≈ bs → cs ≈ ds
 cong-zipWith f as≈bs cs≈ds .head = cong₂ f (as≈bs .head) (cs≈ds .head)
 cong-zipWith f as≈bs cs≈ds .tail = cong-zipWith f (as≈bs .tail) (cs≈ds .tail)
 
-cong-concat : {ass bss : Stream (List⁺.List⁺ A)} → ass ≈ bss → concat ass ≈ concat bss
-cong-concat ass≈bss = cong-++concat [] ass≈bss
+cong-concat : {ass bss : Stream (List⁺ A)} → ass ≈ bss → concat ass ≈ concat bss
+cong-concat ass≈bss = cong-++-concat [] ass≈bss
   where
     open Concat
-    cong-++concat : ∀ (as : List A) {ass bss} → ass ≈ bss → as ++concat ass ≈ as ++concat bss
-    cong-++concat [] ass≈bss .head = cong List⁺.head (ass≈bss .head)
-    cong-++concat [] ass≈bss .tail rewrite ass≈bss .head = cong-++concat _ (ass≈bss .tail)
-    cong-++concat (a ∷ as) ass≈bss .head = P.refl
-    cong-++concat (a ∷ as) ass≈bss .tail = cong-++concat as ass≈bss
+    cong-++-concat : ∀ (as : List A) {ass bss} → ass ≈ bss → ++-concat as ass ≈ ++-concat as bss
+    cong-++-concat [] ass≈bss .head = cong List⁺.head (ass≈bss .head)
+    cong-++-concat [] ass≈bss .tail rewrite ass≈bss .head = cong-++-concat _ (ass≈bss .tail)
+    cong-++-concat (a ∷ as) ass≈bss .head = P.refl
+    cong-++-concat (a ∷ as) ass≈bss .tail = cong-++-concat as ass≈bss
 
 cong-interleave : {as bs cs ds : Stream A} → as ≈ bs → cs ≈ ds →
                   interleave as cs ≈ interleave bs ds
@@ -162,22 +162,22 @@ map-interleave f as bs .head = P.refl
 map-interleave f as bs .tail = map-interleave f bs (as .tail)
 
 map-concat : ∀ (f : A → B) ass → map f (concat ass) ≈ concat (map (List⁺.map f) ass)
-map-concat f ass = map-++concat [] ass
+map-concat f ass = map-++-concat [] ass
   where
     open Concat
-    map-++concat : ∀ acc ass → map f (acc ++concat ass) ≈ List.map f acc ++concat map (List⁺.map f) ass
-    map-++concat [] ass .head = P.refl
-    map-++concat [] ass .tail = map-++concat (ass .head .List⁺.tail) (ass .tail)
-    map-++concat (a ∷ as) ass .head = P.refl
-    map-++concat (a ∷ as) ass .tail = map-++concat as ass
+    map-++-concat : ∀ acc ass → map f (++-concat acc ass) ≈ ++-concat (List.map f acc) (map (List⁺.map f) ass)
+    map-++-concat [] ass .head = P.refl
+    map-++-concat [] ass .tail = map-++-concat (ass .head .List⁺.tail) (ass .tail)
+    map-++-concat (a ∷ as) ass .head = P.refl
+    map-++-concat (a ∷ as) ass .tail = map-++-concat as ass
 
 map-cycle : ∀ (f : A → B) as → map f (cycle as) ≈ cycle (List⁺.map f as)
 map-cycle f as = run
-  (map f (cycle as) ≡⟨⟩
-  map f (concat (repeat as)) ≈⟨ map-concat f (repeat as) ⟩
+  (map f (cycle as)                      ≡⟨⟩
+  map f (concat (repeat as))             ≈⟨ map-concat f (repeat as) ⟩
   concat (map (List⁺.map f) (repeat as)) ≈⟨ cong-concat (map-repeat (List⁺.map f) as) ⟩
-  concat (repeat (List⁺.map f as)) ≡⟨⟩
-  cycle (List⁺.map f as) ∎)
+  concat (repeat (List⁺.map f as))       ≡⟨⟩
+  cycle (List⁺.map f as)                 ∎)
   where open ≈-Reasoning
 
 ------------------------------------------------------------------------
@@ -212,11 +212,20 @@ lookup-tabulate (suc n) f = lookup-tabulate n (f ∘′ suc)
 lookup-transpose : ∀ n (ass : List (Stream A)) → lookup n (transpose ass) ≡ List.map (lookup n) ass
 lookup-transpose n [] = lookup-repeat n []
 lookup-transpose n (as ∷ ass) = begin
-  lookup n (transpose (as ∷ ass)) ≡⟨⟩
+  lookup n (transpose (as ∷ ass))           ≡⟨⟩
   lookup n (zipWith _∷_ as (transpose ass)) ≡⟨ lookup-zipWith n _∷_ as (transpose ass) ⟩
-  lookup n as ∷ lookup n (transpose ass) ≡⟨ cong (lookup n as ∷_) (lookup-transpose n ass) ⟩
-  lookup n as ∷ List.map (lookup n) ass ≡⟨⟩
-  List.map (lookup n) (as ∷ ass) ∎
+  lookup n as ∷ lookup n (transpose ass)    ≡⟨ cong (lookup n as ∷_) (lookup-transpose n ass) ⟩
+  lookup n as ∷ List.map (lookup n) ass     ≡⟨⟩
+  List.map (lookup n) (as ∷ ass)            ∎
+  where open P.≡-Reasoning
+
+lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) → lookup n (transpose⁺ ass) ≡ List⁺.map (lookup n) ass
+lookup-transpose⁺ n (as ∷ ass) = begin
+  lookup n (transpose⁺ (as ∷ ass))          ≡⟨⟩
+  lookup n (zipWith _∷_ as (transpose ass)) ≡⟨ lookup-zipWith n _∷_ as (transpose ass) ⟩
+  lookup n as ∷ lookup n (transpose ass)    ≡⟨ cong (lookup n as ∷_) (lookup-transpose n ass) ⟩
+  lookup n as ∷ List.map (lookup n) ass     ≡⟨⟩
+  List⁺.map (lookup n) (as ∷ ass)           ∎
   where open P.≡-Reasoning
 
 lookup-tails : ∀ n (as : Stream A) → lookup n (tails as) ≈ ℕ.iterate tail as n
