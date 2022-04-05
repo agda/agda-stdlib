@@ -87,6 +87,31 @@ Any-resp-↭ (trans p p₁) wit                 = Any-resp-↭ p₁ (Any-resp-�
 ∈-resp-↭ : ∀ {x : A} → (x ∈_) Respects _↭_
 ∈-resp-↭ = Any-resp-↭
 
+Any-resp-[σ⁻¹∘σ] : {xs ys : List A} {P : Pred A p} →
+                   (σ : xs ↭ ys) →
+                   (ix : Any P xs) →
+                   Any-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+Any-resp-[σ⁻¹∘σ] refl          ix               = refl
+Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (there (here _)) = refl
+Any-resp-[σ⁻¹∘σ] (trans σ₁ σ₂) ix
+  rewrite Any-resp-[σ⁻¹∘σ] σ₂ (Any-resp-↭ σ₁ ix)
+  rewrite Any-resp-[σ⁻¹∘σ] σ₁ ix
+  = refl
+Any-resp-[σ⁻¹∘σ] (prep _ σ)    (there ix)
+  rewrite Any-resp-[σ⁻¹∘σ] σ ix
+  = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
+  rewrite Any-resp-[σ⁻¹∘σ] σ ix
+  = refl
+
+∈-resp-[σ⁻¹∘σ] : {xs ys : List A} {x : A} →
+                 (σ : xs ↭ ys) →
+                 (ix : x ∈ xs) →
+                 ∈-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+∈-resp-[σ⁻¹∘σ] = Any-resp-[σ⁻¹∘σ]
+
 ------------------------------------------------------------------------
 -- map
 
