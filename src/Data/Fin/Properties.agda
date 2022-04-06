@@ -951,13 +951,13 @@ private
 
 -- The pigeonhole principle.
 
-pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
+pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × f i ≡ f j
 pigeonhole z<s               f = contradiction (f zero) λ()
 pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
-... | yes (j , f₀≡fⱼ) = zero , suc j , (λ()) , f₀≡fⱼ
+... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
 ... | no  f₀≢fₖ with pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
-...   | (i , j , i≢j , fᵢ≡fⱼ) =
-  suc i , suc j , i≢j ∘ suc-injective ,
+...   | (i , j , i<j , fᵢ≡fⱼ) =
+  suc i , suc j , s<s i<j ,
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
 injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n

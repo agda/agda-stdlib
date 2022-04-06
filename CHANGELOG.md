@@ -489,7 +489,16 @@ Non-backwards compatible changes
   * `fold-*`
   * `fold-pull`
 
-* In `Data.Fin.Properties` the `i` argument to `opposite-suc` has been made explicit.
+* In `Data.Fin.Properties`:
+  + the `i` argument to `opposite-suc` has been made explicit;
+  + `pigeonhole` has been strengthened: wlog, we return a proof that
+    `i < j` rather than a mere `i ≢ j`.
+
+* In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
+  * `cycle`
+  * `interleave⁺`
+  * `cantor`
+  Furthermore, the direction of interleaving of `cantor` has changed. Precisely, suppose `pair` is the cantor pairing function, then `lookup (pair i j) (cantor xss)` according to the old definition corresponds to `lookup (pair j i) (cantor xss)` according to the new definition. For a concrete example see the one included at the end of the module.
 
 Major improvements
 ------------------
@@ -918,6 +927,16 @@ New modules
   -‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
   -‿distribʳ-* : ∀ x y → - (x * y) ≈ x * - y
   ```
+* An implementation of M-types with `--guardedness` flag:
+  ```
+  Codata.Guarded.M
+  ```
+
+* Port of `Linked` to `Vec`:
+  ```
+  Data.Vec.Relation.Unary.Linked
+  Data.Vec.Relation.Unary.Linked.Properties
+  ```
 
 
 Other minor changes
@@ -1053,12 +1072,25 @@ Other minor changes
   execState : State s a → s → s
   ```
 
+* Added new proofs in `Data.Bool.Properties`:
+  ```agda
+  <-wellFounded : WellFounded _<_
+  ```
+
 * Added new functions in `Data.Fin.Base`:
   ```
   finToFun  : Fin (m ^ n) → (Fin n → Fin m)
   funToFin  : (Fin m → Fin n) → Fin (n ^ m)
   quotient  : Fin (m * n) → Fin m
   remainder : Fin (m * n) → Fin n
+  ```
+
+* Added new proofs in `Data.Fin.Induction`:
+  every (strict) partial order is well-founded and Noetherian.
+
+  ```agda
+  spo-wellFounded : ∀ {r} {_⊏_ : Rel (Fin n) r} → IsStrictPartialOrder _≈_ _⊏_ → WellFounded _⊏_
+  spo-noetherian  : ∀ {r} {_⊏_ : Rel (Fin n) r} → IsStrictPartialOrder _≈_ _⊏_ → WellFounded (flip _⊏_)
   ```
 
 * Added new definitions and proofs in `Data.Fin.Permutation`:
@@ -1097,7 +1129,7 @@ Other minor changes
   combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
   combine-injective  : combine i j ≡ combine k l → i ≡ k × j ≡ l
   combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
-  combine-monoˡ-<    :  i < j → combine i k < combine j l
+  combine-monoˡ-<    : i < j → combine i k < combine j l
 
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
@@ -1521,6 +1553,11 @@ Other minor changes
   ≤-dec⇒isDecPartialOrder : Decidable _≤_ → IsDecPartialOrder _≈_ _≤_
   ```
 
+* Added new proofs in `Relation.Binary.Properties.StrictPartialOrder`:
+  ```agda
+  >-strictPartialOrder : StrictPartialOrder s₁ s₂ s₃
+  ```
+
 * Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
   ```
   subst-application′ : subst Q eq (f x p) ≡ f y (subst P eq p)
@@ -1641,6 +1678,21 @@ Other minor changes
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool
+  ```
+
+* Added new functions in `Codata.Guarded.Stream`:
+  ```
+  transpose : List (Stream A) → Stream (List A)
+  transpose⁺ : List⁺ (Stream A) → Stream (List⁺ A)
+  concat : Stream (List⁺ A) → Stream A
+  ```
+
+* Added new proofs in `Codata.Guarded.Stream.Properties`:
+  ```
+  cong-concat : {ass bss : Stream (List⁺.List⁺ A)} → ass ≈ bss → concat ass ≈ concat bss
+  map-concat : ∀ (f : A → B) ass → map f (concat ass) ≈ concat (map (List⁺.map f) ass)
+  lookup-transpose : ∀ n (ass : List (Stream A)) → lookup n (transpose ass) ≡ List.map (lookup n) ass
+  lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) → lookup n (transpose⁺ ass) ≡ List⁺.map (lookup n) ass
   ```
 
 NonZero/Positive/Negative changes
