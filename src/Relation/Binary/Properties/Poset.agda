@@ -9,7 +9,8 @@
 open import Function.Base using (flip; _∘_)
 open import Relation.Binary
 import Relation.Binary.Consequences as Consequences
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 
 module Relation.Binary.Properties.Poset
    {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
@@ -102,6 +103,22 @@ open StrictPartialOrder <-strictPartialOrder public
 
 ≤⇒≯ : ∀ {x y} → x ≤ y → ¬ (y < x)
 ≤⇒≯ = ToStrict.≤⇒≯ antisym
+
+------------------------------------------------------------------------
+-- If ≤ is decidable then so is ≈
+
+≤-dec⇒≈-dec : Decidable _≤_ → Decidable _≈_
+≤-dec⇒≈-dec _≤?_ x y with x ≤? y | y ≤? x
+... | yes x≤y | yes y≤x = yes (antisym x≤y y≤x)
+... | yes x≤y | no  y≰x = no λ x≈y → contradiction (reflexive (Eq.sym x≈y)) y≰x
+... | no  x≰y | _       = no λ x≈y → contradiction (reflexive x≈y) x≰y
+
+≤-dec⇒isDecPartialOrder : Decidable _≤_ → IsDecPartialOrder _≈_ _≤_
+≤-dec⇒isDecPartialOrder _≤?_ = record
+  { isPartialOrder = isPartialOrder
+  ; _≟_            = ≤-dec⇒≈-dec _≤?_
+  ; _≤?_           = _≤?_
+  }
 
 ------------------------------------------------------------------------
 -- Other properties

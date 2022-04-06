@@ -20,8 +20,13 @@ open import Data.Product
 open import Function.Base using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
+open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary.Negation using (contraposition)
 
 import Relation.Binary.Reasoning.PartialOrder as PoR
+
+------------------------------------------------------------------------
+-- Algebraic properties
 
 -- The join operation is monotonic.
 
@@ -88,6 +93,7 @@ isAlgSemilattice = record
 algSemilattice : Alg.Semilattice c ℓ₁
 algSemilattice = record { isSemilattice = isAlgSemilattice }
 
+------------------------------------------------------------------------
 -- The dual construction is a meet semilattice.
 
 dualIsMeetSemilattice : IsMeetSemilattice _≈_ (flip _≤_) _∨_
@@ -100,4 +106,19 @@ dualMeetSemilattice : MeetSemilattice c ℓ₁ ℓ₂
 dualMeetSemilattice = record
   { _∧_               = _∨_
   ; isMeetSemilattice = dualIsMeetSemilattice
+  }
+
+------------------------------------------------------------------------
+-- If ≈ is decidable then so is ≤
+
+≈-dec⇒≤-dec : Decidable _≈_ → Decidable _≤_
+≈-dec⇒≤-dec _≟_ x y with (x ∨ y) ≟ y
+... | yes x∨y≈y = yes (trans (x≤x∨y x y) (reflexive x∨y≈y))
+... | no  x∨y≉y = no (contraposition x≤y⇒x∨y≈y x∨y≉y)
+
+≈-dec⇒isDecPartialOrder : Decidable _≈_ → IsDecPartialOrder _≈_ _≤_
+≈-dec⇒isDecPartialOrder _≟_ = record
+  { isPartialOrder = isPartialOrder
+  ; _≟_            = _≟_
+  ; _≤?_           = ≈-dec⇒≤-dec _≟_
   }

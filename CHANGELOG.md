@@ -597,6 +597,7 @@ Deprecated names
   splitAt-inject+  ↦ splitAt-↑ˡ m i n
   splitAt-raise    ↦ splitAt-↑ʳ
   Fin0↔⊥           ↦ 0↔⊥
+  eq?              ↦ inj⇒≟
   ```
 
 * In `Data.Fin.Permutation.Components`:
@@ -1100,6 +1101,12 @@ Other minor changes
   remove-insert  : remove i (insert i j π) ≈ π
   ```
 
+* In `Data.Fin.Properties`:
+  the proof that an injection from a type `A` into `Fin n` induces a
+  decision procedure for `_≡_` on `A` has been generalized to other
+  equivalences over `A` (i.e. to arbitrary setoids), and renamed from
+  `eq?` to the more descriptive `inj⇒≟` and `inj⇒decSetoid`.
+
 * Added new proofs in `Data.Fin.Properties`:
   ```
   1↔⊤                : Fin 1 ↔ ⊤
@@ -1532,6 +1539,18 @@ Other minor changes
   return : _⟶_ ⇒ SymClosure _⟶_
   join   : SymClosure (SymClosure _⟶_) ⇒ SymClosure _⟶_
   _⋆     : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
+  ```
+
+* Added new proofs to `Relation.Binary.Lattice.Properties.{Join,Meet}Semilattice`:
+  ```agda
+  ≈-dec⇒≤-dec : Decidable _≈_ → Decidable _≤_
+  ≈-dec⇒isDecPartialOrder : Decidable _≈_ → IsDecPartialOrder _≈_ _≤_
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.Poset`:
+  ```agda
+  ≤-dec⇒≈-dec : Decidable _≤_ → Decidable _≈_
+  ≤-dec⇒isDecPartialOrder : Decidable _≤_ → IsDecPartialOrder _≈_ _≤_
   ```
 
 * Added new proofs in `Relation.Binary.Properties.StrictPartialOrder`:
