@@ -491,6 +491,12 @@ Non-backwards compatible changes
 
 * In `Data.Fin.Properties` the `i` argument to `opposite-suc` has been made explicit.
 
+* In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
+  * `cycle`
+  * `interleave⁺`
+  * `cantor`
+  Furthermore, the direction of interleaving of `cantor` has changed. Precisely, suppose `pair` is the cantor pairing function, then `lookup (pair i j) (cantor xss)` according to the old definition corresponds to `lookup (pair j i) (cantor xss)` according to the new definition. For a concrete example see the one included at the end of the module.
+
 Major improvements
 ------------------
 
@@ -916,6 +922,10 @@ New modules
   ```
   -‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
   -‿distribʳ-* : ∀ x y → - (x * y) ≈ x * - y
+  ```
+* An implementation of M-types with `--guardedness` flag:
+  ```
+  Codata.Guarded.M
   ```
 
 
@@ -1622,6 +1632,21 @@ Other minor changes
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool
+  ```
+
+* Added new functions in `Codata.Guarded.Stream`:
+  ```
+  transpose : List (Stream A) → Stream (List A)
+  transpose⁺ : List⁺ (Stream A) → Stream (List⁺ A)
+  concat : Stream (List⁺ A) → Stream A
+  ```
+
+* Added new proofs in `Codata.Guarded.Stream.Properties`:
+  ```
+  cong-concat : {ass bss : Stream (List⁺.List⁺ A)} → ass ≈ bss → concat ass ≈ concat bss
+  map-concat : ∀ (f : A → B) ass → map f (concat ass) ≈ concat (map (List⁺.map f) ass)
+  lookup-transpose : ∀ n (ass : List (Stream A)) → lookup n (transpose ass) ≡ List.map (lookup n) ass
+  lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) → lookup n (transpose⁺ ass) ≡ List⁺.map (lookup n) ass
   ```
 
 NonZero/Positive/Negative changes
