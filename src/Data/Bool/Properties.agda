@@ -19,6 +19,7 @@ open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
+open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality hiding ([_])
@@ -185,6 +186,12 @@ true  <? _     = no  (λ())
 
 <-irrelevant : Irrelevant _<_
 <-irrelevant f<t f<t = refl
+
+<-wellFounded : WellFounded _<_
+<-wellFounded _ = acc <-acc
+  where
+    <-acc : ∀ {x} y → y < x → Acc _<_ y
+    <-acc false f<t = acc (λ _ → λ())
 
 -- Structures
 
