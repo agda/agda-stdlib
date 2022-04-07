@@ -1142,6 +1142,8 @@ Other minor changes
   cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} → Injective f → Injective g → m ≡ n
   ```
 
+* Changed the fixity of `Data.Fin.Substitution.TermSubst._/Var_`.
+
 * Added new functions in `Data.Integer.Base`:
   ```
   _^_ : ℤ → ℕ → ℤ

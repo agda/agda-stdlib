@@ -160,7 +160,7 @@ record TermSubst (T : Pred ℕ 0ℓ) : Set₁ where
   varLift : Lift Fin T
   varLift = record { simple = VarSubst.simple; lift = var }
 
-  infix 8 _/Var_
+  infixl 8 _/Var_
 
   _/Var_ : ∀ {m n} → T m → Sub Fin m n → T n
   _/Var_ = app varLift
