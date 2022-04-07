@@ -543,3 +543,69 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
     T.weaken t₁ T./ (T.sub t₂) ≡⟨ weaken-∷ t₁ ⟩
     t₁ T./ T.id                ≡⟨ id-vanishes t₁ ⟩
     t₁                         ∎
+
+  -- Lemmas relating renamings to substitutions.
+
+  map-var≡ :
+    ∀ {m n} {ρ₁ : Sub Fin m n} {ρ₂ : Sub T m n} {f : Fin m → Fin n} →
+    (∀ x → lookup ρ₁ x ≡ f x) →
+    (∀ x → lookup ρ₂ x ≡ T.var (f x)) →
+    map T.var ρ₁ ≡ ρ₂
+  map-var≡ {ρ₁ = ρ₁} {ρ₂ = ρ₂} {f = f} hyp₁ hyp₂ = extensionality λ x →
+    lookup (map T.var ρ₁) x  ≡⟨ VecProp.lookup-map x _ ρ₁ ⟩
+    T.var (lookup ρ₁ x)      ≡⟨ cong T.var $ hyp₁ x ⟩
+    T.var (f x)              ≡⟨ sym $ hyp₂ x ⟩
+    lookup ρ₂ x              ∎
+
+  wk≡wk : ∀ {n} → map T.var VarSubst.wk ≡ T.wk {n = n}
+  wk≡wk = map-var≡ VarLemmas.lookup-wk lookup-wk
+
+  id≡id : ∀ {n} → map T.var VarSubst.id ≡ T.id {n = n}
+  id≡id = map-var≡ VarLemmas.lookup-id lookup-id
+
+  sub≡sub :
+    ∀ {n} {x : Fin n} →
+    map T.var (VarSubst.sub x) ≡ T.sub (T.var x)
+  sub≡sub = cong (_ ∷_) id≡id
+
+  ↑≡↑ :
+    ∀ {m n} {ρ : Sub Fin m n} →
+    map T.var (ρ VarSubst.↑) ≡ map T.var ρ T.↑
+  ↑≡↑ {ρ = ρ} = map-var≡
+    (VarLemmas.lookup-↑⋆ (lookup ρ) (λ _ → refl) 1)
+    (lookup-↑⋆ (lookup ρ) (λ _ → VecProp.lookup-map _ _ ρ) 1)
+
+  /Var≡/ :
+    ∀ {m n} {ρ : Sub Fin m n} {t} →
+    t /Var ρ ≡ t T./ map T.var ρ
+  /Var≡/ {ρ = ρ} {t = t} =
+    /✶-↑✶ (ε ▻ ρ) (ε ▻ map T.var ρ)
+      (λ k x →
+         T.var x /Var ρ VarSubst.↑⋆ k        ≡⟨ app-var ⟩
+         T.var (lookup (ρ VarSubst.↑⋆ k) x)  ≡⟨ cong T.var $ VarLemmas.lookup-↑⋆ _ (λ _ → refl) k _ ⟩
+         T.var (lift k (VarSubst._/ ρ) x)    ≡⟨ sym $ lookup-↑⋆ _ (λ _ → VecProp.lookup-map _ _ ρ) k _ ⟩
+         lookup (map T.var ρ T.↑⋆ k) x       ≡⟨ sym app-var ⟩
+         T.var x T./ map T.var ρ T.↑⋆ k      ∎)
+      zero t
+
+  sub-renaming-commutes :
+    ∀ {m n t x} {ρ : Sub T m n} →
+    t /Var VarSubst.sub x T./ ρ ≡
+    t T./ ρ T.↑ T./ T.sub (lookup ρ x)
+  sub-renaming-commutes {t = t} {x = x} {ρ = ρ} =
+    t /Var VarSubst.sub x T./ ρ             ≡⟨ cong (T._/ ρ) /Var≡/ ⟩
+    t T./ map T.var (VarSubst.sub x) T./ ρ  ≡⟨ cong (λ ρ′ → t T./ ρ′ T./ ρ) sub≡sub ⟩
+    t T./ T.sub (T.var x) T./ ρ             ≡⟨ sub-commutes _ ⟩
+    t T./ ρ T.↑ T./ T.sub (T.var x T./ ρ)   ≡⟨ cong (λ t′ → t T./ ρ T.↑ T./ T.sub t′) app-var ⟩
+    t T./ ρ T.↑ T./ T.sub (lookup ρ x)      ∎
+
+  sub-commutes-with-renaming :
+    ∀ {m n} {t t′} {ρ : Sub Fin m n} →
+    t T./ T.sub t′ /Var ρ ≡
+    t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)
+  sub-commutes-with-renaming {t = t} {t′ = t′} {ρ = ρ} =
+    t T./ T.sub t′ /Var ρ                                          ≡⟨ /Var≡/ ⟩
+    t T./ T.sub t′ T./ map T.var ρ                                 ≡⟨ sub-commutes _ ⟩
+    t T./ map T.var ρ T.↑ T./ T.sub (t′ T./ map T.var ρ)           ≡⟨ sym $ cong (λ ρ′ → t T./ ρ′ T./ T.sub (t′ T./ map T.var ρ)) ↑≡↑ ⟩
+    t T./ map T.var (ρ VarSubst.↑) T./ T.sub (t′ T./ map T.var ρ)  ≡⟨ sym $ cong₂ (λ t ρ → t T./ T.sub ρ) /Var≡/ /Var≡/ ⟩
+    t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)                      ∎
