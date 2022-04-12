@@ -1186,6 +1186,12 @@ Other minor changes
   xs≮[] : ¬ xs < []
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  Any-resp-[σ⁻¹∘σ] : (σ : xs ↭ ys) → (ix : Any P xs) → Any-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+  ∈-resp-[σ⁻¹∘σ]   : (σ : xs ↭ ys) → (ix : x ∈ xs)   → ∈-resp-↭   (trans σ (↭-sym σ)) ix ≡ ix
+  ```
+
 * Added new functions in `Data.List.Relation.Unary.All`:
   ```
   decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
