@@ -12,3 +12,4 @@ module Algebra.Ordered where
 
 open import Algebra.Ordered.Structures public
 open import Algebra.Ordered.Bundles public
+open import Algebra.Ordered.Residuated public
