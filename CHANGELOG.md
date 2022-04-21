@@ -786,6 +786,11 @@ New modules
   Relation.Binary.Properties.ApartnessRelation
   ```
 
+* Algebraic structures obtained by flipping their binary operations:
+  ```
+  Algebra.Construct.Flip.Op
+  ```
+
 * Morphisms between module-like algebraic structures:
   ```
   Algebra.Module.Morphism.Construct.Composition
