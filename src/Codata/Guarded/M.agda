@@ -20,7 +20,7 @@ record M {s p} (C : Container s p) : Set (s ⊔ p) where
   constructor inf
 
   open Container C
-  
+
   field
     head : Shape
     tail : Position head → M C
