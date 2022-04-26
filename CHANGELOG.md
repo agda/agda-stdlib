@@ -1269,6 +1269,16 @@ Other minor changes
 
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
+
+  +-isPomagma               : IsPomagma _+_
+  +-isPosemigroup           : IsPosemigroup _+_
+  +-0-isPomonoid            : IsPomonoid _+_ 0
+  +-0-isCommutativePomonoid : IsCommutativePomonoid _+_ 0
+  +-0-commutativePomonoid   : CommutativePomonoid 0ℓ 0ℓ 0ℓ
+  +-*-isPosemiring          : IsPosemiring _+_ _*_ 0 1
+  *-1-isCommutativePomonoid : IsCommutativePomonoid _*_ 1
+  +-*-posemiring            : Posemiring 0ℓ 0ℓ 0ℓ
+  *-1-commutativePomonoid   : CommutativePomonoid 0ℓ 0ℓ 0ℓ
   ```
 
 * Added new functions in `Data.Nat`:
