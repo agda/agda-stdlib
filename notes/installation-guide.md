@@ -3,7 +3,7 @@ Installation instructions
 
 Note: the full story on installing Agda libraries can be found at [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
 
-Use version v1.7.1 of the standard library with Agda 2.6.2.1 or 2.6.2.
+Use version v1.7.1 of the standard library with Agda 2.6.2.2, 2.6.2.1, or 2.6.2.
 
 1. Navigate to a suitable directory `$HERE` (replace appropriately) where
    you would like to install the library.
