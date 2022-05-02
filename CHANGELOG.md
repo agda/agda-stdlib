@@ -805,6 +805,13 @@ New modules
   Algebra.Morphism.Construct.Identity
   ```
 
+* Ordered algebraic structures (pomonoids, posemigroups, etc.)
+  ```
+  Algebra.Ordered
+  Algebra.Ordered.Bundles
+  Algebra.Ordered.Structures
+  ```
+
 * 'Optimised' tail-recursive exponentiation properties:
   ```
   Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
@@ -1554,8 +1561,16 @@ Other minor changes
 
 * Added new proofs to `Relation.Binary.Lattice.Properties.{Join,Meet}Semilattice`:
   ```agda
+  isPosemigroup : IsPosemigroup _≈_ _≤_ _∨_
+  posemigroup : Posemigroup c ℓ₁ ℓ₂
   ≈-dec⇒≤-dec : Decidable _≈_ → Decidable _≤_
   ≈-dec⇒isDecPartialOrder : Decidable _≈_ → IsDecPartialOrder _≈_ _≤_
+  ```
+
+* Added new proofs to `Relation.Binary.Lattice.Properties.Bounded{Join,Meet}Semilattice`:
+  ```agda
+  isCommutativePomonoid : IsCommutativePomonoid _≈_ _≤_ _∨_ ⊥
+  commutativePomonoid : CommutativePomonoid c ℓ₁ ℓ₂
   ```
 
 * Added new proofs to `Relation.Binary.Properties.Poset`:
@@ -1654,6 +1669,14 @@ Other minor changes
   ```
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
+  
+  Monotonic₁         _≤_ _⊑_ f     = f Preserves _≤_ ⟶ _⊑_
+  Antitonic₁         _≤_ _⊑_ f     = f Preserves (flip _≤_) ⟶ _⊑_
+  Monotonic₂         _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ _⊑_ ⟶ _≼_
+  MonotonicAntitonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ (flip _⊑_) ⟶ _≼_
+  AntitonicMonotonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ _⊑_ ⟶ _≼_
+  Antitonic₂         _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ (flip _⊑_) ⟶ _≼_
+  Adjoint            _≤_ _⊑_ f g   = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y → f x ⊑ y)
   ```
 
 * Added new definitions in `Relation.Binary.Bundles`:
@@ -1671,6 +1694,9 @@ Other minor changes
   sym⇒¬-sym       : Symmetric _∼_ → Symmetric _≁_
   cotrans⇒¬-trans : Cotransitive _∼_ → Transitive _≁_
   irrefl⇒¬-refl   : Reflexive _≈_ → Irreflexive _≈_ _∼_ →  Reflexive _≁_
+  mono₂⇒cong₂     : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
+                    f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
+                    f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
   ```
 
 * Added new operations in `Relation.Binary.PropositionalEquality.Properties`:
