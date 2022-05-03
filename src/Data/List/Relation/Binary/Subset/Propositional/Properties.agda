@@ -23,6 +23,7 @@ open import Data.List.Membership.Propositional.Properties
 import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
 open import Data.List.Relation.Binary.Subset.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional
+  using (_↭_; ↭-sym; ↭-isEquivalence)
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 open import Data.Nat using (ℕ; _≤_)
 import Data.Product as Prod
@@ -36,8 +37,8 @@ open import Level using (Level)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary using (_⇒_; _Respects_)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality as ≡
+  using (_≡_; _≗_; isEquivalence; subst; resp; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 private
@@ -54,7 +55,7 @@ private
 ------------------------------------------------------------------------
 
 ⊆-reflexive : _≡_ {A = List A} ⇒ _⊆_
-⊆-reflexive refl = id
+⊆-reflexive ≡.refl = id
 
 ⊆-refl : Reflexive {A = List A} _⊆_
 ⊆-refl x∈xs = x∈xs

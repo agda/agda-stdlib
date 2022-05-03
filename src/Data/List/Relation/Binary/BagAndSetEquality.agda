@@ -40,7 +40,7 @@ open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as EqR
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl)
+  using (_≡_; _≢_; _≗_)
 open import Relation.Nullary
 open import Data.List.Membership.Propositional.Properties
 
@@ -115,7 +115,7 @@ module ⊆-Reasoning where
 module _ {a k} {A : Set a} {x y : A} {xs ys} where
 
   ∷-cong : x ≡ y → xs ∼[ k ] ys → x ∷ xs ∼[ k ] y ∷ ys
-  ∷-cong refl xs≈ys {y} =
+  ∷-cong P.refl xs≈ys {y} =
     y ∈ x ∷ xs        ↔⟨ SK-sym $ ∷↔ (y ≡_) ⟩
     (y ≡ x ⊎ y ∈ xs)  ∼⟨ (y ≡ x ∎) ⊎-cong xs≈ys ⟩
     (y ≡ x ⊎ y ∈ ys)  ↔⟨ ∷↔ (y ≡_) ⟩
@@ -244,8 +244,8 @@ commutativeMonoid {a} k A = record
 
 empty-unique : ∀ {k a} {A : Set a} {xs : List A} →
                xs ∼[ ⌊ k ⌋→ ] [] → xs ≡ []
-empty-unique {xs = []}    _    = refl
-empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
+empty-unique {xs = []}    _    = P.refl
+empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here P.refl)
 ... | ()
 
 -- _++_ is idempotent (under set equality).
@@ -278,7 +278,7 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
   (fs ⊛ (xs₁ ++ xs₂)) ∼[ bag ] (fs ⊛ xs₁) ++ (fs ⊛ xs₂)
 ⊛-left-distributive {B = B} fs xs₁ xs₂ = begin
   fs ⊛ (xs₁ ++ xs₂)                         ≡⟨⟩
-  (fs >>= λ f → xs₁ ++ xs₂ >>= return ∘ f)  ≡⟨ (MP.cong (refl {x = fs}) λ f →
+  (fs >>= λ f → xs₁ ++ xs₂ >>= return ∘ f)  ≡⟨ (MP.cong (P.refl {x = fs}) λ f →
                                                 MP.right-distributive xs₁ xs₂ (return ∘ f)) ⟩
   (fs >>= λ f → (xs₁ >>= return ∘ f) ++
                 (xs₂ >>= return ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
@@ -297,7 +297,7 @@ private
   ¬-drop-cons : ∀ {a} {A : Set a} {x : A} →
     ¬ (∀ {xs ys} → x ∷ xs ∼[ set ] x ∷ ys → xs ∼[ set ] ys)
   ¬-drop-cons {x = x} drop-cons
-    with FE.Equivalence.to x∼[] ⟨$⟩ here refl
+    with FE.Equivalence.to x∼[] ⟨$⟩ here P.refl
     where
     x,x≈x :  (x ∷ x ∷ []) ∼[ set ] [ x ]
     x,x≈x = ++-idempotent [ x ]
@@ -336,8 +336,8 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
     (z ≡ x ⊎ z ∈ xs)                   ↔⟨ K-refl ⊎-cong ∈-index xs ⟩
     (z ≡ x ⊎ ∃ λ i → z ≡ lookup xs i)  ↔⟨ SK-sym $ inverse (λ { (zero , p) → inj₁ p; (suc i , p) → inj₂ (i , p) })
                                                           (λ { (inj₁ p) → zero , p; (inj₂ (i , p)) → suc i , p })
-                                                          (λ { (zero , _) → refl; (suc _ , _) → refl })
-                                                          (λ { (inj₁ _) → refl; (inj₂ _) → refl }) ⟩
+                                                          (λ { (zero , _) → P.refl; (suc _ , _) → P.refl })
+                                                          (λ { (inj₁ _) → P.refl; (inj₂ _) → P.refl }) ⟩
     (∃ λ i → z ≡ lookup (x ∷ xs) i)    ∎
     where
     open Related.EquationalReasoning
@@ -359,7 +359,7 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
   Fin-length xs =
     (∃ λ z → z ∈ xs)                   ↔⟨ Σ.cong K-refl (∈-index xs) ⟩
     (∃ λ z → ∃ λ i → z ≡ lookup xs i)  ↔⟨ ∃∃↔∃∃ _ ⟩
-    (∃ λ i → ∃ λ z → z ≡ lookup xs i)  ↔⟨ Σ.cong K-refl (inverse _ (λ _ → _ , refl) (λ { (_ , refl) → refl }) (λ _ → refl)) ⟩
+    (∃ λ i → ∃ λ z → z ≡ lookup xs i)  ↔⟨ Σ.cong K-refl (inverse _ (λ _ → _ , P.refl) (λ { (_ , P.refl) → P.refl }) (const P.refl)) ⟩
     (Fin (length xs) × ⊤)              ↔⟨ ×-identityʳ _ _ ⟩
     Fin (length xs)                    ∎
     where
@@ -410,8 +410,8 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
         (from (Fin-length xs) ⟨$⟩ (to (Fin-length xs) ⟨$⟩ (z , p))))
     lemma z p with to (Fin-length xs) ⟨$⟩ (z , p)
                  | left-inverse-of (Fin-length xs) (z , p)
-    lemma .(lookup xs i) .(from (∈-index xs) ⟨$⟩ (i , refl)) | i | refl =
-      refl
+    lemma .(lookup xs i) .(from (∈-index xs) ⟨$⟩ (i , P.refl)) | i | P.refl =
+      P.refl
 
   -- Bag equivalence isomorphisms preserve index equality. Note that
   -- this means that, even if the underlying equality is proof
@@ -435,7 +435,7 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
   -- The old inspect idiom.
 
   inspect : ∀ {a} {A : Set a} (x : A) → ∃ (x ≡_)
-  inspect x = x , refl
+  inspect x = x , P.refl
 
   -- A function is "well-behaved" if any "left" element which is the
   -- image of a "right" element is in turn not mapped to another
@@ -548,7 +548,7 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
                                                                                to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟩
     index-of {xs = x ∷ xs} (to (∷↔ _) ⟨$⟩ (from (∼→⊎↔⊎ inv) ⟨$⟩ inj₁ q))  ≡⟨ P.cong index-of $
                                                                                right-inverse-of (∷↔ _) (from inv ⟨$⟩ here q) ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) ⟨$⟩ here q)                   ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
+    index-of {xs = x ∷ xs} (to (SK-sym inv) ⟨$⟩ here q)                   ≡⟨ index-equality-preserved (SK-sym inv) P.refl ⟩
     index-of {xs = x ∷ xs} (to (SK-sym inv) ⟨$⟩ here p)                   ≡⟨ P.cong index-of $ P.sym $
                                                                                right-inverse-of (∷↔ _) (from inv ⟨$⟩ here p) ⟩
     index-of {xs = x ∷ xs} (to (∷↔ _) ⟨$⟩ (from (∼→⊎↔⊎ inv) ⟨$⟩ inj₁ p))  ≡⟨ P.cong (index-of ∘ (to (∷↔ (_ ≡_)) ⟨$⟩_)) $
@@ -578,15 +578,15 @@ module _ {a} {A : Set a} where
     from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
 
     from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-    from∘to refl          v∈xs                 = refl
-    from∘to (prep _ _)    (here refl)          = refl
-    from∘to (prep _ p)    (there v∈xs)         = P.cong there (from∘to p v∈xs)
-    from∘to (swap x y p)  (here refl)          = refl
-    from∘to (swap x y p)  (there (here refl))  = refl
-    from∘to (swap x y p)  (there (there v∈xs)) = P.cong (there ∘ there) (from∘to p v∈xs)
+    from∘to refl          v∈xs                   = P.refl
+    from∘to (prep _ _)    (here P.refl)          = P.refl
+    from∘to (prep _ p)    (there v∈xs)           = P.cong there (from∘to p v∈xs)
+    from∘to (swap x y p)  (here P.refl)          = P.refl
+    from∘to (swap x y p)  (there (here P.refl))  = P.refl
+    from∘to (swap x y p)  (there (there v∈xs))   = P.cong (there ∘ there) (from∘to p v∈xs)
     from∘to (trans p₁ p₂) v∈xs
       rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
-            | from∘to p₁ v∈xs                  = refl
+            | from∘to p₁ v∈xs                  = P.refl
 
     to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
     to∘from p with from∘to (↭-sym p)
@@ -594,7 +594,7 @@ module _ {a} {A : Set a} where
 
   ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
   ∼bag⇒↭ {[]} eq with empty-unique {A = A} (Inv.sym eq)
-  ... | refl = refl
+  ... | P.refl = refl
   ∼bag⇒↭ {x ∷ xs} eq with ∈-∃++ (to ⟨$⟩ (here P.refl))
     where open Inv.Inverse (eq {x})
   ... | zs₁ , zs₂ , p rewrite p = begin

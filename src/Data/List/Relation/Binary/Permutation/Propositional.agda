@@ -10,41 +10,38 @@ module Data.List.Relation.Binary.Permutation.Propositional
   {a} {A : Set a} where
 
 open import Data.List.Base using (List; []; _∷_)
+import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
-------------------------------------------------------------------------
--- An inductive definition of permutation
 
--- Note that one would expect that this would be defined in terms of
--- `Permutation.Setoid`. This is not currently the case as it involves
--- adding in a bunch of trivial `_≡_` proofs to the constructors which
--- a) adds noise and b) prevents easy access to the variables `x`, `y`.
--- This may be changed in future when a better solution is found.
+------------------------------------------------------------------------
+-- Definition
 
 infix 3 _↭_
 
-data _↭_ : Rel (List A) a where
-  refl  : ∀ {xs}        → xs ↭ xs
-  prep  : ∀ {xs ys} x   → xs ↭ ys → x ∷ xs ↭ x ∷ ys
-  swap  : ∀ {xs ys} x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
-  trans : ∀ {xs ys zs}  → xs ↭ ys → ys ↭ zs → xs ↭ zs
+_↭_ : Rel (List A) a
+_↭_ = Homogeneous.Permutation _≡_ _≡_
+
+pattern refl = Homogeneous.refl Eq.refl
+pattern prep x tl = Homogeneous.prep {x = x} Eq.refl tl
+pattern swap x y tl = Homogeneous.swap {x = x} {y = y} Eq.refl Eq.refl tl
+
+open Homogeneous public
+  using (trans)
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
 
 ↭-reflexive : _≡_ ⇒ _↭_
-↭-reflexive refl = refl
+↭-reflexive Eq.refl = refl
 
 ↭-refl : Reflexive _↭_
 ↭-refl = refl
 
 ↭-sym : ∀ {xs ys} → xs ↭ ys → ys ↭ xs
-↭-sym refl                = refl
-↭-sym (prep x xs↭ys)      = prep x (↭-sym xs↭ys)
-↭-sym (swap x y xs↭ys)    = swap y x (↭-sym xs↭ys)
-↭-sym (trans xs↭ys ys↭zs) = trans (↭-sym ys↭zs) (↭-sym xs↭ys)
+↭-sym = Homogeneous.sym Eq.sym Eq.sym
 
 -- A smart version of trans that avoids unnecessary `refl`s (see #1113).
 ↭-trans : Transitive _↭_

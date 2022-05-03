@@ -13,7 +13,7 @@ module Data.List.Relation.Binary.Permutation.Setoid
 
 open import Data.List.Base using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
-import Data.List.Relation.Binary.Pointwise as Pointwise
+open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Equality.Setoid S
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Level using (_⊔_)
@@ -33,7 +33,7 @@ open Homogeneous public
 infix 3 _↭_
 
 _↭_ : Rel (List A) (a ⊔ ℓ)
-_↭_ = Homogeneous.Permutation _≈_
+_↭_ = Homogeneous.Permutation (Pointwise _≈_) _≈_
 
 ------------------------------------------------------------------------
 -- Constructor aliases
@@ -66,16 +66,22 @@ steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 ↭-refl = ↭-reflexive refl
 
 ↭-sym : Symmetric _↭_
-↭-sym = Homogeneous.sym Eq.sym
+↭-sym = Homogeneous.sym (Pointwise.symmetric Eq.sym) Eq.sym
 
 ↭-trans : Transitive _↭_
 ↭-trans = trans
 
 ↭-isEquivalence : IsEquivalence _↭_
-↭-isEquivalence = Homogeneous.isEquivalence Eq.refl Eq.sym
+↭-isEquivalence = Homogeneous.isEquivalence
+  (Pointwise.refl Eq.refl)
+  (Pointwise.symmetric Eq.sym)
+  Eq.sym
 
 ↭-setoid : Setoid _ _
-↭-setoid = Homogeneous.setoid {R = _≈_} Eq.refl Eq.sym
+↭-setoid = Homogeneous.setoid {PR = Pointwise _≈_} {R = _≈_}
+  (Pointwise.refl Eq.refl)
+  (Pointwise.symmetric Eq.sym)
+  Eq.sym
 
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs
