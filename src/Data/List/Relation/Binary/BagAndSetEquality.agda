@@ -23,6 +23,7 @@ open import Data.List.Membership.Propositional.Properties
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
+  using (_↭_; ↭-refl; ↭-sym; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
 open import Data.Product.Base as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
@@ -53,6 +54,7 @@ private
     A B : Set a
     x y : A
     ws xs ys zs : List A
+
 
 ------------------------------------------------------------------------
 -- Definitions
@@ -142,8 +144,8 @@ module _ {k} {f g : A → B} {xs ys} where
     helper y = mk↔ₛ′
       (λ x≡fy → ≡.trans x≡fy (        f≗g y))
       (λ x≡gy → ≡.trans x≡gy (≡.sym $ f≗g y))
-      (λ { ≡.refl → ≡.trans-symˡ (f≗g y) })
-      λ { ≡.refl → ≡.trans-symʳ (f≗g y) }
+      (λ { refl → ≡.trans-symˡ (f≗g y) })
+      λ { refl → ≡.trans-symʳ (f≗g y) }
 
 ------------------------------------------------------------------------
 -- _++_
@@ -282,7 +284,6 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
                                                 MP.right-distributive xs₁ xs₂ (pure ∘ f)) ⟩
   (fs >>= λ f → (xs₁ >>= pure ∘ f) ++
                 (xs₂ >>= pure ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
-
   (fs >>= λ f → xs₁ >>= pure ∘ f) ++
   (fs >>= λ f → xs₂ >>= pure ∘ f)         ≡⟨ ≡.cong₂ _++_ (Applicative.unfold-⊛ fs xs₁) (Applicative.unfold-⊛ fs xs₂) ⟨
 
@@ -296,7 +297,8 @@ private
 
   ¬-drop-cons : ∀ {x : A} →
     ¬ (∀ {xs ys} → x ∷ xs ∼[ set ] x ∷ ys → xs ∼[ set ] ys)
-  ¬-drop-cons {x = x} drop-cons with Equivalence.to x∼[] (here refl)
+  ¬-drop-cons {x = x} drop-cons
+    with Equivalence.to x∼[] (here refl)
     where
     x,x≈x :  (x ∷ x ∷ []) ∼[ set ] [ x ]
     x,x≈x = ++-idempotent [ x ]
@@ -357,7 +359,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     (∃ λ z → z ∈ xs)                   ↔⟨ Σ.cong K-refl (∈-index xs) ⟩
     (∃ λ z → ∃ λ i → z ≡ lookup xs i)  ↔⟨ ∃∃↔∃∃ _ ⟩
     (∃ λ i → ∃ λ z → z ≡ lookup xs i)  ↔⟨ Σ.cong K-refl (mk↔ₛ′ _ (λ _ → _ , refl) (λ _ → refl) (λ { (_ , refl) → refl })) ⟩
-    (Fin (length xs) × ⊤)              ↔⟨ ×-identityʳ _ _ ⟩
+   (Fin (length xs) × ⊤)              ↔⟨ ×-identityʳ _ _ ⟩
     Fin (length xs)                    ∎
     where
     open Related.EquationalReasoning
@@ -571,15 +573,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
 
   from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-  from∘to refl          v∈xs                 = refl
-  from∘to (prep _ _)    (here refl)          = refl
-  from∘to (prep _ p)    (there v∈xs)         = ≡.cong there (from∘to p v∈xs)
-  from∘to (swap x y p)  (here refl)          = refl
-  from∘to (swap x y p)  (there (here refl))  = refl
-  from∘to (swap x y p)  (there (there v∈xs)) = ≡.cong (there ∘ there) (from∘to p v∈xs)
-  from∘to (trans p₁ p₂) v∈xs
-    rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
-          | from∘to p₁ v∈xs                  = refl
+  from∘to = Any-resp-[σ⁻¹∘σ]
 
   to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
   to∘from p with from∘to (↭-sym p)
@@ -587,8 +581,8 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
 ∼bag⇒↭ {A = A} {[]} eq with empty-unique (↔-sym eq)
-... | refl = refl
-∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl))
+... | refl = ↭-refl
+∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here refl))
 ... | zs₁ , zs₂ , p rewrite p = begin
   x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
   x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩

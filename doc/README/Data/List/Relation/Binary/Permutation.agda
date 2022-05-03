@@ -9,8 +9,6 @@ module README.Data.List.Relation.Binary.Permutation where
 open import Algebra.Structures using (IsCommutativeMonoid)
 open import Data.List.Base
 open import Data.Nat using (ℕ; _+_)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; sym; cong; setoid)
 
 ------------------------------------------------------------------------
 -- Permutations

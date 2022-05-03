@@ -19,16 +19,16 @@ module Data.List.Relation.Binary.Permutation.Setoid
 
 open import Data.List.Base using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
-import Data.List.Relation.Binary.Pointwise.Properties as Pointwise using (refl)
-open import Data.List.Relation.Binary.Equality.Setoid S
+open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Equality.Setoid S using (_≋_; ≋-refl; ≋-sym)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
-private
-  module Eq = Setoid S
-open Eq using (_≈_) renaming (Carrier to A)
+open Setoid S
+  using (_≈_) 
+  renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym ; trans to ≈-trans)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -39,7 +39,7 @@ open Homogeneous public
 infix 3 _↭_
 
 _↭_ : Rel (List A) (a ⊔ ℓ)
-_↭_ = Homogeneous.Permutation _≈_
+_↭_ = Homogeneous.Permutation _≋_ _≈_
 
 ------------------------------------------------------------------------
 -- Constructor aliases
@@ -48,10 +48,10 @@ _↭_ = Homogeneous.Permutation _≈_
 -- swapped or prepended are propositionally equal
 
 ↭-prep : ∀ x {xs ys} → xs ↭ ys → x ∷ xs ↭ x ∷ ys
-↭-prep x xs↭ys = prep Eq.refl xs↭ys
+↭-prep x xs↭ys = prep ≈-refl xs↭ys
 
 ↭-swap : ∀ x y {xs ys} → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
-↭-swap x y xs↭ys = swap Eq.refl Eq.refl xs↭ys
+↭-swap x y xs↭ys = swap ≈-refl ≈-refl xs↭ys
 
 ------------------------------------------------------------------------
 -- Functions over permutations
@@ -65,23 +65,26 @@ steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
 
-↭-reflexive : _≡_ ⇒ _↭_
-↭-reflexive refl = refl (Pointwise.refl Eq.refl)
+↭-pointwise : _≋_ ⇒ _↭_
+↭-pointwise = refl
 
 ↭-refl : Reflexive _↭_
-↭-refl = ↭-reflexive refl
+↭-refl = ↭-pointwise ≋-refl
+
+↭-reflexive : _≡_ ⇒ _↭_
+↭-reflexive refl = ↭-refl
 
 ↭-sym : Symmetric _↭_
-↭-sym = Homogeneous.sym Eq.sym
+↭-sym = Homogeneous.sym ≋-sym ≈-sym
 
 ↭-trans : Transitive _↭_
-↭-trans = trans
+↭-trans = Homogeneous.trans
 
 ↭-isEquivalence : IsEquivalence _↭_
-↭-isEquivalence = Homogeneous.isEquivalence Eq.refl Eq.sym
+↭-isEquivalence = Homogeneous.isEquivalence ≋-refl ≋-sym ≈-sym
 
 ↭-setoid : Setoid _ _
-↭-setoid = Homogeneous.setoid {R = _≈_} Eq.refl Eq.sym
+↭-setoid = Homogeneous.setoid {PR = Pointwise _≈_} {R = _≈_} ≋-refl ≋-sym ≈-sym
 
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs
@@ -95,7 +98,7 @@ module PermutationReasoning where
     renaming (≈-go to ↭-go)
 
   open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym public
-  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ (↭-go ∘′ refl) ≋-sym public
+  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ (↭-go ∘′ ↭-pointwise) ≋-sym public
 
   -- Some extra combinators that allow us to skip certain elements
 
@@ -104,12 +107,12 @@ module PermutationReasoning where
   -- Skip reasoning on the first element
   step-prep : ∀ x xs {ys zs : List A} → (x ∷ ys) IsRelatedTo zs →
               xs ↭ ys → (x ∷ xs) IsRelatedTo zs
-  step-prep x xs rel xs↭ys = relTo (trans (prep Eq.refl xs↭ys) (begin rel))
+  step-prep x xs rel xs↭ys = ↭-go (↭-prep x xs↭ys) rel
 
   -- Skip reasoning about the first two elements
   step-swap : ∀ x y xs {ys zs : List A} → (y ∷ x ∷ ys) IsRelatedTo zs →
               xs ↭ ys → (x ∷ y ∷ xs) IsRelatedTo zs
-  step-swap x y xs rel xs↭ys = relTo (trans (swap Eq.refl Eq.refl xs↭ys) (begin rel))
+  step-swap x y xs rel xs↭ys = ↭-go (↭-swap x y xs↭ys) rel
 
   syntax step-prep x xs y↭z x↭y = x ∷ xs <⟨ x↭y ⟩ y↭z
   syntax step-swap x y xs y↭z x↭y = x ∷ y ∷ xs <<⟨ x↭y ⟩ y↭z

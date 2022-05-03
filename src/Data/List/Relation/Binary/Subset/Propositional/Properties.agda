@@ -24,6 +24,7 @@ open import Data.List.Membership.Propositional.Properties
 import Data.List.Relation.Binary.Subset.Setoid.Properties as Subset
 open import Data.List.Relation.Binary.Subset.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional
+  using (_↭_; ↭-sym; ↭-isEquivalence)
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 open import Data.Nat using (ℕ; _≤_)
 import Data.Product.Base as Product
@@ -36,8 +37,8 @@ open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality as ≡
+  using (_≡_; _≗_; isEquivalence; resp; refl; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 
 private
@@ -117,10 +118,10 @@ module ⊆-Reasoning (A : Set a) where
 ------------------------------------------------------------------------
 
 Any-resp-⊆ : ∀ {P : Pred A p} → (Any P) Respects _⊆_
-Any-resp-⊆ = Subset.Any-resp-⊆ (setoid _) (subst _)
+Any-resp-⊆ = Subset.Any-resp-⊆ (setoid _) (resp _)
 
 All-resp-⊇ : ∀ {P : Pred A p} → (All P) Respects _⊇_
-All-resp-⊇ = Subset.All-resp-⊇ (setoid _) (subst _)
+All-resp-⊇ = Subset.All-resp-⊇ (setoid _) (resp _)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
