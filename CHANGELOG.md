@@ -18,7 +18,6 @@ Highlights
 
 * Improved the `solve` tactic in `Tactic.RingSolver` to work in a much
   wider range of situations.
-
 Bug-fixes
 ---------
 
@@ -1274,11 +1273,17 @@ Other minor changes
   +-isPosemigroup           : IsPosemigroup _+_
   +-0-isPomonoid            : IsPomonoid _+_ 0
   +-0-isCommutativePomonoid : IsCommutativePomonoid _+_ 0
+
   +-0-commutativePomonoid   : CommutativePomonoid 0ℓ 0ℓ 0ℓ
-  +-*-isPosemiring          : IsPosemiring _+_ _*_ 0 1
+
+  *-isPomagma               : IsPomagma _≤_ _*_
+  *-isPosemigroup           : IsPosemigroup _≤_ _*_
+  *-1-isPomonoid            : IsPomonoid _≤_ _*_ 1
   *-1-isCommutativePomonoid : IsCommutativePomonoid _*_ 1
-  +-*-posemiring            : Posemiring 0ℓ 0ℓ 0ℓ
+  +-*-isPosemiring          : IsPosemiring _+_ _*_ 0 1
+  
   *-1-commutativePomonoid   : CommutativePomonoid 0ℓ 0ℓ 0ℓ
+  +-*-posemiring            : Posemiring 0ℓ 0ℓ 0ℓ
   ```
 
 * Added new functions in `Data.Nat`:

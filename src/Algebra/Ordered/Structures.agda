@@ -13,9 +13,9 @@
 open import Relation.Binary.Core using (Rel; _⇒_)
 
 module Algebra.Ordered.Structures
-  {a ℓ₁ ℓ₂} {A : Set a}  -- The underlying set
-  (_≈_ : Rel A ℓ₁)       -- The underlying equality relation
-  (_≤_ : Rel A ℓ₂)       -- The order
+  {a}  {A : Set a}     -- The underlying set
+  {ℓ₁} (_≈_ : Rel A ℓ₁) -- The underlying equality relation
+  {ℓ₂} (_≤_ : Rel A ℓ₂) -- The order
   where
 
 open import Algebra.Core

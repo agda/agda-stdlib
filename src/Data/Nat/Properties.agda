@@ -13,13 +13,13 @@ module Data.Nat.Properties where
 
 open import Axiom.UniquenessOfIdentityProofs
 open import Algebra.Bundles
-open import Algebra.Ordered.Bundles
 open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
+open import Algebra.Ordered.Bundles
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Empty using (⊥)
@@ -45,7 +45,7 @@ open import Algebra.Definitions {A = ℕ} _≡_
 open import Algebra.Definitions
   using (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.Structures {A = ℕ} _≡_
-import Algebra.Ordered.Structures as OrderedStructures
+open import Algebra.Ordered.Structures {A = ℕ} _≡_
 
 ------------------------------------------------------------------------
 -- Properties of NonZero
@@ -540,6 +540,107 @@ open ≤-Reasoning
 +-cancel-≡ = +-cancelˡ-≡ , +-cancelʳ-≡
 
 ------------------------------------------------------------------------
+-- Structures
+
++-isMagma : IsMagma _+_
++-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _+_
+  }
+
++-isSemigroup : IsSemigroup _+_
++-isSemigroup = record
+  { isMagma = +-isMagma
+  ; assoc   = +-assoc
+  }
+
++-isCommutativeSemigroup : IsCommutativeSemigroup _+_
++-isCommutativeSemigroup = record
+  { isSemigroup = +-isSemigroup
+  ; comm        = +-comm
+  }
+
++-0-isMonoid : IsMonoid _+_ 0
++-0-isMonoid = record
+  { isSemigroup = +-isSemigroup
+  ; identity    = +-identity
+  }
+
++-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0
++-0-isCommutativeMonoid = record
+  { isMonoid = +-0-isMonoid
+  ; comm     = +-comm
+  }
+
+------------------------------------------------------------------------
+-- Raw bundles
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0
+  }
+
+------------------------------------------------------------------------
+-- Bundles
+
++-magma : Magma 0ℓ 0ℓ
++-magma = record
+  { isMagma = +-isMagma
+  }
+
++-semigroup : Semigroup 0ℓ 0ℓ
++-semigroup = record
+  { isSemigroup = +-isSemigroup
+  }
+
++-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
++-commutativeSemigroup = record
+  { isCommutativeSemigroup = +-isCommutativeSemigroup
+  }
+
++-0-monoid : Monoid 0ℓ 0ℓ
++-0-monoid = record
+  { isMonoid = +-0-isMonoid
+  }
+
++-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
++-0-commutativeMonoid = record
+  { isCommutativeMonoid = +-0-isCommutativeMonoid
+  }
+
+------------------------------------------------------------------------
+-- Other properties of _+_ and _≡_
+
+m≢1+m+n : ∀ m {n} → m ≢ suc (m + n)
+m≢1+m+n (suc m) eq = m≢1+m+n m (cong pred eq)
+
+m≢1+n+m : ∀ m {n} → m ≢ suc (n + m)
+m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
+
+m+1+n≢m : ∀ m {n} → m + suc n ≢ m
+m+1+n≢m (suc m) = (m+1+n≢m m) ∘ suc-injective
+
+m+1+n≢n : ∀ m {n} → m + suc n ≢ n
+m+1+n≢n m {n} rewrite +-suc m n = ≢-sym (m≢1+n+m n)
+
+m+1+n≢0 : ∀ m {n} → m + suc n ≢ 0
+m+1+n≢0 m {n} rewrite +-suc m n = λ()
+
+m+n≡0⇒m≡0 : ∀ m {n} → m + n ≡ 0 → m ≡ 0
+m+n≡0⇒m≡0 zero eq = refl
+
+m+n≡0⇒n≡0 : ∀ m {n} → m + n ≡ 0 → n ≡ 0
+m+n≡0⇒n≡0 m {n} m+n≡0 = m+n≡0⇒m≡0 n (trans (+-comm n m) (m+n≡0))
+
+------------------------------------------------------------------------
 -- Properties of _+_ and _≤_/_<_
 
 +-cancelˡ-≤ : LeftCancellative _≤_ _+_
@@ -630,105 +731,39 @@ m+n≮m : ∀ m n → m + n ≮ m
 m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
 ------------------------------------------------------------------------
--- Structures
+-- Ordered structures for _+_ and _≤_
 
-open OrderedStructures _≡_ _≤_
-
-+-isPomagma : IsPomagma _+_
++-isPomagma : IsPomagma _≤_ _+_
 +-isPomagma = record
   { isPartialOrder = ≤-isPartialOrder
   ; mono           = +-mono-≤
   }
 
-+-isPosemigroup : IsPosemigroup _+_
++-isPosemigroup : IsPosemigroup _≤_ _+_
 +-isPosemigroup = record
   { isPomagma = +-isPomagma
   ; assoc     = +-assoc
   }
 
-+-0-isPomonoid : IsPomonoid _+_ 0
++-0-isPomonoid : IsPomonoid _≤_ _+_ 0
 +-0-isPomonoid = record
   { isPosemigroup = +-isPosemigroup
   ; identity      = +-identity
   }
 
-+-0-isCommutativePomonoid : IsCommutativePomonoid _+_ 0
++-0-isCommutativePomonoid : IsCommutativePomonoid _≤_ _+_ 0
 +-0-isCommutativePomonoid = record
   { isPomonoid = +-0-isPomonoid
   ; comm       = +-comm
   }
 
-open IsCommutativePomonoid +-0-isCommutativePomonoid public using ()
-  renaming
-  ( isMagma                to +-isMagma
-  ; isSemigroup            to +-isSemigroup
-  ; isCommutativeSemigroup to +-isCommutativeSemigroup
-  ; isMonoid               to +-0-isMonoid
-  ; isCommutativeMonoid    to +-0-isCommutativeMonoid
-  )
-
 ------------------------------------------------------------------------
--- Raw bundles
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  }
-
-+-0-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-0-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0
-  }
-
-------------------------------------------------------------------------
--- Bundles
+-- Ordered bundles for _+_ and _≤_
 
 +-0-commutativePomonoid : CommutativePomonoid 0ℓ 0ℓ 0ℓ
 +-0-commutativePomonoid = record
   { isCommutativePomonoid = +-0-isCommutativePomonoid
   }
-
-open CommutativePomonoid +-0-commutativePomonoid public using () renaming
-  ( magma                to +-magma
-  ; pomagma              to +-pomagma
-  ; semigroup            to +-semigroup
-  ; posemigroup          to +-posemigroup
-  ; commutativeSemigroup to +-commutativeSemigroup
-  ; monoid               to +-0-monoid
-  ; pomonoid             to +-0-pomonoid
-  ; commutativeMonoid    to +-0-commutativeMonoid
-  )
-
-∸-magma : Magma 0ℓ 0ℓ
-∸-magma = magma _∸_
-
-------------------------------------------------------------------------
--- Other properties of _+_ and _≡_
-
-m≢1+m+n : ∀ m {n} → m ≢ suc (m + n)
-m≢1+m+n (suc m) eq = m≢1+m+n m (cong pred eq)
-
-m≢1+n+m : ∀ m {n} → m ≢ suc (n + m)
-m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
-
-m+1+n≢m : ∀ m {n} → m + suc n ≢ m
-m+1+n≢m (suc m) = (m+1+n≢m m) ∘ suc-injective
-
-m+1+n≢n : ∀ m {n} → m + suc n ≢ n
-m+1+n≢n m {n} rewrite +-suc m n = ≢-sym (m≢1+n+m n)
-
-m+1+n≢0 : ∀ m {n} → m + suc n ≢ 0
-m+1+n≢0 m {n} rewrite +-suc m n = λ()
-
-m+n≡0⇒m≡0 : ∀ m {n} → m + n ≡ 0 → m ≡ 0
-m+n≡0⇒m≡0 zero eq = refl
-
-m+n≡0⇒n≡0 : ∀ m {n} → m + n ≡ 0 → n ≡ 0
-m+n≡0⇒n≡0 m {n} m+n≡0 = m+n≡0⇒m≡0 n (trans (+-comm n m) (m+n≡0))
-
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -802,6 +837,146 @@ m+n≡0⇒n≡0 m {n} m+n≡0 = m+n≡0⇒m≡0 n (trans (+-comm n m) (m+n≡0))
   suc m * (n * o)     ∎
 
 ------------------------------------------------------------------------
+-- Structures
+
+*-isMagma : IsMagma _*_
+*-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _*_
+  }
+
+*-isSemigroup : IsSemigroup _*_
+*-isSemigroup = record
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
+  }
+
+*-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+*-isCommutativeSemigroup = record
+  { isSemigroup = *-isSemigroup
+  ; comm        = *-comm
+  }
+
+*-1-isMonoid : IsMonoid _*_ 1
+*-1-isMonoid = record
+  { isSemigroup = *-isSemigroup
+  ; identity    = *-identity
+  }
+
+*-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1
+*-1-isCommutativeMonoid = record
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
+  }
+
++-*-isSemiring : IsSemiring _+_ _*_ 0 1
++-*-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = +-0-isCommutativeMonoid
+    ; *-cong                = cong₂ _*_
+    ; *-assoc               = *-assoc
+    ; *-identity            = *-identity
+    ; distrib               = *-distrib-+
+    }
+  ; zero = *-zero
+  }
+
++-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
++-*-isCommutativeSemiring = record
+  { isSemiring = +-*-isSemiring
+  ; *-comm     = *-comm
+  }
+
+------------------------------------------------------------------------
+-- Bundles
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε   = 1
+  }
+
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
+  }
+
+*-semigroup : Semigroup 0ℓ 0ℓ
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
+  }
+
+*-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+*-commutativeSemigroup = record
+  { isCommutativeSemigroup = *-isCommutativeSemigroup
+  }
+
+*-1-monoid : Monoid 0ℓ 0ℓ
+*-1-monoid = record
+  { isMonoid = *-1-isMonoid
+  }
+
+*-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+*-1-commutativeMonoid = record
+  { isCommutativeMonoid = *-1-isCommutativeMonoid
+  }
+
++-*-semiring : Semiring 0ℓ 0ℓ
++-*-semiring = record
+  { isSemiring = +-*-isSemiring
+  }
+
++-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
++-*-commutativeSemiring = record
+  { isCommutativeSemiring = +-*-isCommutativeSemiring
+  }
+
+------------------------------------------------------------------------
+-- Other properties of _*_ and _≡_
+
+*-cancelʳ-≡ : ∀ m n {o} .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
+*-cancelʳ-≡ zero    zero    {suc o} eq = refl
+*-cancelʳ-≡ (suc m) (suc n) {suc o} eq =
+  cong suc (*-cancelʳ-≡ m n (+-cancelˡ-≡ (suc o) eq))
+
+*-cancelˡ-≡ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
+*-cancelˡ-≡ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n
+
+m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
+m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
+m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
+
+m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+m*n≢0 (suc m) (suc n) = _
+
+m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+m*n≡0⇒m≡0 zero (suc _) eq = refl
+
+m*n≡1⇒m≡1 : ∀ m n → m * n ≡ 1 → m ≡ 1
+m*n≡1⇒m≡1 (suc zero)    n          _  = refl
+m*n≡1⇒m≡1 (suc (suc m)) (suc zero) ()
+m*n≡1⇒m≡1 (suc (suc m)) zero       eq =
+  contradiction (trans (sym $ *-zeroʳ m) eq) λ()
+
+m*n≡1⇒n≡1 : ∀ m n → m * n ≡ 1 → n ≡ 1
+m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
+
+[m*n]*[o*p]≡[m*o]*[n*p] : ∀ m n o p → (m * n) * (o * p) ≡ (m * o) * (n * p)
+[m*n]*[o*p]≡[m*o]*[n*p] m n o p = begin-equality
+  (m * n) * (o * p) ≡⟨  *-assoc m n (o * p) ⟩
+  m * (n * (o * p)) ≡⟨  cong (m *_) (x∙yz≈y∙xz n o p) ⟩
+  m * (o * (n * p)) ≡˘⟨ *-assoc m o (n * p) ⟩
+  (m * o) * (n * p) ∎
+  where open CommSemigroupProperties *-commutativeSemigroup
+
+------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_
 
 *-cancelʳ-≤ : ∀ m n o .{{_ : NonZero o}} → m * o ≤ n * o → m ≤ n
@@ -868,9 +1043,33 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
 *-cancel-< = *-cancelˡ-< , *-cancelʳ-<
 
 ------------------------------------------------------------------------
--- Structures
+-- Ordered structures for _*_ and _≤_
 
-+-*-isPosemiring : IsPosemiring _+_ _*_ 0 1
+*-isPomagma : IsPomagma _≤_ _*_
+*-isPomagma = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; mono           = *-mono-≤
+  }
+
+*-isPosemigroup : IsPosemigroup _≤_ _*_
+*-isPosemigroup = record
+  { isPomagma = *-isPomagma
+  ; assoc     = *-assoc
+  }
+
+*-1-isPomonoid : IsPomonoid _≤_ _*_ 1
+*-1-isPomonoid = record
+  { isPosemigroup = *-isPosemigroup
+  ; identity      = *-identity
+  }
+
+*-1-isCommutativePomonoid : IsCommutativePomonoid _≤_ _*_ 1
+*-1-isCommutativePomonoid = record
+  { isPomonoid = *-1-isPomonoid
+  ; comm       = *-comm
+  }
+
++-*-isPosemiring : IsPosemiring _≤_ _+_ _*_ 0 1
 +-*-isPosemiring = record
   { +-isCommutativePomonoid = +-0-isCommutativePomonoid
   ; *-mono                  = *-mono-≤
@@ -880,124 +1079,18 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   ; zero                    = *-zero
   }
 
-open IsPosemiring +-*-isPosemiring public
-  using
-  ( *-isMagma
-  ; *-isSemigroup
-  ; *-isPomagma
-  ; *-isPosemigroup
-  )
-  renaming
-  ( *-isMonoid              to *-1-isMonoid
-  ; *-isPomonoid            to *-1-isPomonoid
-  ; isSemiring              to +-*-isSemiring
-  )
-
-*-1-isCommutativePomonoid : IsCommutativePomonoid _*_ 1
-*-1-isCommutativePomonoid = record
-  { isPomonoid = *-1-isPomonoid
-  ; comm       = *-comm
-  }
-
-+-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
-+-*-isCommutativeSemiring = record
-  { isSemiring = +-*-isSemiring
-  ; *-comm     = *-comm
-  }
-
 ------------------------------------------------------------------------
--- Raw bundles
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1
-  }
-
-------------------------------------------------------------------------
--- Bundles
-
-+-*-posemiring : Posemiring 0ℓ 0ℓ 0ℓ
-+-*-posemiring = record
-  { isPosemiring = +-*-isPosemiring
-  }
-
-open Posemiring +-*-posemiring public
-  using
-  ( *-magma
-  ; *-pomagma
-  ; *-semigroup
-  ; *-posemigroup
-  ; *-isPomagma
-  ; *-isPosemigroup
-  )
-  renaming
-  ( *-monoid                to *-1-monoid
-  ; *-pomonoid              to *-1-pomonoid
-  ; semiring                to +-*-semiring
-  )
+-- Ordered bundles for _*_ and _≤_
 
 *-1-commutativePomonoid : CommutativePomonoid 0ℓ 0ℓ 0ℓ
 *-1-commutativePomonoid = record
   { isCommutativePomonoid = *-1-isCommutativePomonoid
   }
 
-open CommutativePomonoid *-1-commutativePomonoid public using () renaming
-  ( isCommutativeSemigroup to *-isCommutativeSemigroup
-  ; commutativeSemigroup   to *-commutativeSemigroup
-  ; isCommutativeMonoid    to *-1-isCommutativeMonoid
-  ; commutativeMonoid      to *-1-commutativeMonoid
-  )
-
-+-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
-+-*-commutativeSemiring = record
-  { isCommutativeSemiring = +-*-isCommutativeSemiring
++-*-posemiring : Posemiring 0ℓ 0ℓ 0ℓ
++-*-posemiring = record
+  { isPosemiring = +-*-isPosemiring
   }
-
-------------------------------------------------------------------------
--- Other properties of _*_ and _≡_
-
-*-cancelʳ-≡ : ∀ m n {o} .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
-*-cancelʳ-≡ zero    zero    {suc o} eq = refl
-*-cancelʳ-≡ (suc m) (suc n) {suc o} eq =
-  cong suc (*-cancelʳ-≡ m n (+-cancelˡ-≡ (suc o) eq))
-
-*-cancelˡ-≡ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
-*-cancelˡ-≡ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n
-
-m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
-m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
-m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
-
-m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
-m*n≢0 (suc m) (suc n) = _
-
-m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
-m*n≡0⇒m≡0 zero (suc _) eq = refl
-
-m*n≡1⇒m≡1 : ∀ m n → m * n ≡ 1 → m ≡ 1
-m*n≡1⇒m≡1 (suc zero)    n          _  = refl
-m*n≡1⇒m≡1 (suc (suc m)) (suc zero) ()
-m*n≡1⇒m≡1 (suc (suc m)) zero       eq =
-  contradiction (trans (sym $ *-zeroʳ m) eq) λ()
-
-m*n≡1⇒n≡1 : ∀ m n → m * n ≡ 1 → n ≡ 1
-m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
-
-[m*n]*[o*p]≡[m*o]*[n*p] : ∀ m n o p → (m * n) * (o * p) ≡ (m * o) * (n * p)
-[m*n]*[o*p]≡[m*o]*[n*p] m n o p = begin-equality
-  (m * n) * (o * p) ≡⟨  *-assoc m n (o * p) ⟩
-  m * (n * (o * p)) ≡⟨  cong (m *_) (x∙yz≈y∙xz n o p) ⟩
-  m * (o * (n * p)) ≡˘⟨ *-assoc m o (n * p) ⟩
-  (m * o) * (n * p) ∎
-  where open CommSemigroupProperties *-commutativeSemigroup
 
 ------------------------------------------------------------------------
 -- Properties of _^_
@@ -1437,6 +1530,9 @@ m⊓n≤m+n m n with ⊓-sel m n
 n∸n≡0 : ∀ n → n ∸ n ≡ 0
 n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
+
+∸-magma : Magma 0ℓ 0ℓ
+∸-magma = magma _∸_
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and pred
