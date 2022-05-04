@@ -243,12 +243,9 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
 ++-comm : Commutative {A = List A} _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys         ↭⟨ prep x (++-comm xs ys) ⟩
-  x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
-  (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (shift x ys [])) ⟩
-  (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
-  ys ++ ([ x ] ++ xs)  ≡⟨⟩
-  ys ++ (x ∷ xs)       ∎
+  x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
+  x ∷ ys ++ xs   ↭˘⟨ shift x ys xs ⟩
+  ys ++ (x ∷ xs) ∎
 
 ++-isMagma : IsMagma {A = List A} _↭_ _++_
 ++-isMagma = record
