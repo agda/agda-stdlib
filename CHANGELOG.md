@@ -500,6 +500,14 @@ Non-backwards compatible changes
   * `cantor`
   Furthermore, the direction of interleaving of `cantor` has changed. Precisely, suppose `pair` is the cantor pairing function, then `lookup (pair i j) (cantor xss)` according to the old definition corresponds to `lookup (pair j i) (cantor xss)` according to the new definition. For a concrete example see the one included at the end of the module.
 
+* In `Data.List.Relation.Binary.Permutation.Homogeneous`, the explicit use of `Pointwise`
+  has been removed in favour of an additional relation on lists. This enables us to keep
+  using `Pointwise _≈_` in the setoid case but use the more convenient `_≡_` instead in
+  the propositional one.
+  Correspondingly, `Data.List.Relation.Binary.Permutation.Propositional` has been refactored
+  as an instance of the generic data structure.
+
+
 Major improvements
 ------------------
 
@@ -1669,7 +1677,7 @@ Other minor changes
   ```
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
-  
+
   Monotonic₁         _≤_ _⊑_ f     = f Preserves _≤_ ⟶ _⊑_
   Antitonic₁         _≤_ _⊑_ f     = f Preserves (flip _≤_) ⟶ _⊑_
   Monotonic₂         _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ _⊑_ ⟶ _≼_
