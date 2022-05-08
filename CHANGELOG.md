@@ -950,6 +950,12 @@ New modules
   Data.Vec.Relation.Unary.Linked.Properties
   ```
 
+* Proofs of some axioms of linearity:
+  ```
+  Algebra.Module.Properties
+  Algebra.Module.Morphism.Linear.Core
+  Algebra.Module.Morphism.Linear.Properties
+  ```
 
 Other minor changes
 -------------------
