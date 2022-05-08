@@ -14,5 +14,4 @@ open import Algebra.Module.Structures public
 open import Algebra.Module.Structures.Biased public
 open import Algebra.Module.Bundles public
 open import Algebra.Module.Definitions public
-open import Algebra.Module.Properties public
 
