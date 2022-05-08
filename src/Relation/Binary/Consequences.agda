@@ -98,6 +98,13 @@ module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃}
     (antimono (reflexive (sym p≈q)))
     (antimono (reflexive p≈q))
 
+  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
+                f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
+                f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
+  mono₂⇒cong₂ sym reflexive antisym mono x≈y u≈v = antisym
+    (mono (reflexive x≈y) (reflexive u≈v))
+    (mono (reflexive (sym x≈y)) (reflexive (sym u≈v)))
+
 ------------------------------------------------------------------------
 -- Proofs for strict orders
 
