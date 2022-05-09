@@ -83,7 +83,7 @@ module _
       )
 
     open CommutativeRing ring public
-      using () renaming
+      using (_*_) renaming
       ( Carrier to S
       ; 0#      to 𝟘
       ; 1#      to 𝟙

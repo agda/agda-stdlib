@@ -4,16 +4,14 @@
 -- Properties of linear maps.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Module.Morphism.Linear.Properties where
 
 open import Agda.Builtin.Sigma
 open import Algebra                             using (CommutativeRing)
--- open import Algebra.Lattice.Properties.BooleanAlgebra using (¬-involutive)
 open import Algebra.Module                      using (Module)
 open import Algebra.Module.Morphism.Linear.Core
-open import Axiom.Extensionality.Propositional  using (Extensionality)
 open import Data.List
 open import Data.Product   using (Σ; _,_; ∃; Σ-syntax; ∃-syntax; _×_)
 open import Function       using (_↔_; mk↔; id; const)
@@ -27,10 +25,6 @@ private
     ring           : CommutativeRing r ℓr
     modA modB      : Module ring m ℓm
   
-postulate
-  extensionality  : Extensionality ℓ₁ ℓ₂
-  -- ≡-involutive    : ∀ {A : Set ℓ₁} → {x y : A} → ¬ (x ≢ y) → x ≡ y
-
 module _ (lm : LinMap modA modB) where
 
   open LinMap lm

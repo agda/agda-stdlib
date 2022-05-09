@@ -10,15 +10,18 @@ module Data.VectorSpace.Core where
 
 import Relation.Binary.Reasoning.Setoid as Reasoning
 
-open import Algebra          using (CommutativeRing)
-open import Algebra.Module   using (Module)
-open import Data.List        using (List; foldl)
-open import Level            using (Level; _⊔_; suc)
+open import Algebra                             using (CommutativeRing)
+open import Algebra.Module                      using (Module)
+open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
+open import Algebra.Module.Morphism.Linear      using (LinMap)
+open import Data.List                           using (List; foldl)
+open import Level                               using (Level; _⊔_; suc)
 
 module _
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
-  (mod       : Module ring m ℓm)
+  {mod       : Module ring r ℓr}
+  (lm        : LinMap mod ⟨module⟩)
   where
 
   vs = suc (ℓr ⊔ ℓm ⊔ m ⊔ r)
@@ -26,34 +29,31 @@ module _
 
     constructor mkVS
 
-    open Module mod public
-      using () renaming
-      ( Carrierᴹ  to T
-      ; _+ᴹ_      to _+ᵀ_
-      ; _*ₗ_      to _·_
-      ; _≈ᴹ_      to _≈ᵀ_
-      ; ≈ᴹ-setoid to ≈-setoid
-      ; 0ᴹ        to 𝟘
+    open LinMap lm public
+      using (S; _*_; f; begin_; _∎; sym) renaming
+      ( A    to T
+      ; _+ᴬ_ to _+ᵀ_
+      ; _·ᴬ_ to _·_
+      ; _≈ᴬ_ to _≈ᵀ_
+      ; 0ᴬ   to 0ᵀ
+      ; _+ᴮ_ to _+_
+      ; _≈ᴮ_ to _≈_
+      ; _≉ᴮ_ to _≉_
+      ; 0ᴮ   to 𝟘
       )
-
-    open CommutativeRing ring public
-      using () renaming
-      ( Carrier to A
-      ; _+_     to _+ᴬ_
-      ; _*_     to _*ᴬ_
-      ; _≈_     to _≈ᴬ_
-      )
-
-    open Reasoning ≈-setoid public
-
+    infixr 2 step-≈
+    step-≈ = LinMap.step-≈
+    syntax step-≈ x y≈z x≈y = x ≈⟨ x≈y ⟩ y≈z
+    
     infix 7 _∘_
     field
       basisSet    : List T
-      _∘_         : T → T → A
-      comm-∘      : ∀ {a b : T} → a ∘ b ≈ᴬ b ∘ a
-      ∘-distrib-+ : ∀ {a b c : T} → a ∘ (b +ᵀ c) ≈ᴬ (a ∘ b) +ᴬ (a ∘ c)
-      ∘-comm-·    : ∀ {s : A} {a b : T} → a ∘ (s · b) ≈ᴬ s *ᴬ (a ∘ b)
-      orthonormal : ∀ {f : T → A} → {x : T} →
+      _∘_         : T → T → S
+      comm-∘      : ∀ {a b : T} → a ∘ b ≈ b ∘ a
+      ∘-distrib-+ : ∀ {a b c : T} → a ∘ (b +ᵀ c) ≈ (a ∘ b) + (a ∘ c)
+      ∘-comm-·    : ∀ {s : S} {a b : T} → a ∘ (s · b) ≈ s * (a ∘ b)
+      orthonormal : ∀ {x : T} →
                     ( foldl (λ acc v → acc +ᵀ (f v) · v)
-                            𝟘 basisSet
-                    ) ∘ x ≈ᴬ f x
+                            0ᵀ basisSet
+                    ) ∘ x ≈ f x
+
