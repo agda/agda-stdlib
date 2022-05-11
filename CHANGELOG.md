@@ -952,9 +952,9 @@ New modules
 
 * Proofs of some axioms of linearity:
   ```
-  Algebra.Module.Properties
-  Algebra.Module.Morphism.Linear.Core
+  Algebra.Module.Bundles
   Algebra.Module.Morphism.Linear.Properties
+  Algebra.Module.Properties
   ```
 
 Other minor changes
