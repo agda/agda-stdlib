@@ -306,6 +306,39 @@ Non-backwards compatible changes
   ∣↥p∣≢0⇒p≄0 : ∀ p → ℤ.∣ (↥ p) ∣ ≢0 → p ≠ 0ℚᵘ
   ```
 
+### Change in reduction behaviour of rationals
+
+* Currently arithmetic expressions involving rationals (both normalised and 
+  unnormalised) undergo disastorous exponential normalisation. For example, 
+  `p + q` would often be normalised by Agda to 
+  `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While the normalised form
+  of `p + q + r + s + t + u + v` would be ~700 lines long. This behaviour
+  often chokes both type-checking and the display of the expressions in the IDE.
+
+* To avoid this expansion and make non-trivial reasoning about rationals actually feasible:
+  1. the records `ℚᵘ` and `ℚ` have both had the `no-eta-equality` flag enabled
+  2. definition of arithmetic operations have trivial pattern matching added to
+     prevent them reducing, e.g.
+     ```agda
+     p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
+     ```
+     has been changed to
+     ```
+     p@record{} + q@record{} = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
+     ```
+
+* As a consequence of this, some proofs that relied on this reduction behaviour
+  or on eta-equality may no longer go through. There are several ways to fix this:
+  1. The principled way is to not rely on this reduction behaviour in the first place. 
+	 The `Properties` files for rational numbers have been greatly expanded in `v1.7` 
+	 and `v2.0`, and we believe most proofs should be able to be built up from existing
+	 proofs contained within these files.
+  2. Alternatively, annotating any rational arguments to a proof with either
+	 `@record{}` or `@(mkℚ _ _ _)` should restore the old reduction behaviour for any
+	 terms involving those parameters.
+  3. Finally, if the above approaches are not viable then you may be forced to explicitly
+	 use `cong` combined with a lemma that proves the old reduction behaviour.
+
 ### Change in the definition of `Prime`
 
 * The definition of `Prime` in `Data.Nat.Primality` was:
@@ -1306,6 +1339,9 @@ Other minor changes
 
 * Added new definitions and proofs in `Data.Rational.Properties`:
   ```agda
+  ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
+  ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
+  
   +-*-rawNearSemiring                 : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring                     : RawSemiring 0ℓ 0ℓ
   toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
