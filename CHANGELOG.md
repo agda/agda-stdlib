@@ -42,6 +42,10 @@ Bug-fixes
 
 * In `Algebra.Definitions.RawSemiring` the record `prime` add `p∤1 : p ∤ 1#` to the field.
 
+* In `Data.List.Relation.Ternary.Appending.Setoid` we re-export specialised versions of
+  the constructors using the setoid's carrier set. Prior to that, the constructor were
+  re-exported in their full generality which would lead to unsolved meta variables at
+  their use sites.
 
 Non-backwards compatible changes
 --------------------------------
@@ -1669,7 +1673,7 @@ Other minor changes
   ```
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
-  
+
   Monotonic₁         _≤_ _⊑_ f     = f Preserves _≤_ ⟶ _⊑_
   Antitonic₁         _≤_ _⊑_ f     = f Preserves (flip _≤_) ⟶ _⊑_
   Monotonic₂         _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ _⊑_ ⟶ _≼_
