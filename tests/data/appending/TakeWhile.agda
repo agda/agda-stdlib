@@ -9,10 +9,16 @@ open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_; ref
 open import Data.List.Relation.Ternary.Appending.Propositional
 open import Data.Product using (_×_; proj₁)
 open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
+import Data.Nat
 open import Relation.Unary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Nullary.Product
+
+-- Original bug reported in #1765 by James Wood
+_ : Appending (3 ∷ []) (2 ∷ []) (3 ∷ 2 ∷ [])
+_ = P.refl ∷ []++ P.refl ∷ []
+
 
 variable
   a p : Level
