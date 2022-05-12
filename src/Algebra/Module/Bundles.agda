@@ -30,6 +30,7 @@ open import Algebra.Core
 open import Algebra.Module.Core
 open import Algebra.Module.Structures
 open import Algebra.Module.Definitions
+open import Algebra.Properties.Group
 open import Function.Base
 open import Level
 open import Relation.Binary
@@ -333,3 +334,7 @@ record Module (commutativeRing : CommutativeRing r ℓr) m ℓm
   semimodule = record { isSemimodule = isSemimodule }
 
   open Semimodule semimodule public using (*ₗ-comm; *ᵣ-comm)
+
+  -ᴹ‿involutive : {x : Carrierᴹ} → -ᴹ (-ᴹ x) ≈ᴹ x
+  -ᴹ‿involutive {x = x} = ⁻¹-involutive +ᴹ-group x
+

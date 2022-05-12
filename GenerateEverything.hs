@@ -29,8 +29,7 @@ srcDir         = "src"
 
 unsafeModules :: [FilePath]
 unsafeModules = map modToFile
-  [ "Algebra.Module.Morphism.Linear.Properties"
-  , "Codata.Musical.Colist"
+  [ "Codata.Musical.Colist"
   , "Codata.Musical.Colist.Base"
   , "Codata.Musical.Colist.Properties"
   , "Codata.Musical.Colist.Bisimilarity"
