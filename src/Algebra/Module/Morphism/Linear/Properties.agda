@@ -50,7 +50,7 @@ open Module modA
   ; ≈ᴹ-sym         to symᴬ
   ; leftSemimodule to leftSemimoduleᴬ
   )
-open Properties leftSemimoduleᴬ public
+open Properties leftSemimoduleᴬ
   using () renaming
   ( non-zeroʳ to non-zeroʳᴬ
   ; non-zeroˡ to non-zeroˡᴬ
@@ -75,18 +75,18 @@ open Module modB
   ; ≈ᴹ-sym         to symᴮ
   ; leftSemimodule to leftSemimoduleᴮ
   )
-open Properties leftSemimoduleᴮ public
+open Properties leftSemimoduleᴮ
   using () renaming
   ( non-zeroʳ to non-zeroʳᴮ
   ; non-zeroˡ to non-zeroˡᴮ
   )
-open CommutativeRing ring public
-  using () renaming
+open CommutativeRing ring
+  using (_≈_; _*_; _+_) renaming
   ( Carrier to S
   ; 0#      to 𝟘
   ; 1#      to 𝟙
   )
-open module Reasoningᴬ = Reasoning ≈ᴬ-setoid public
+open module Reasoningᴬ = Reasoning ≈ᴬ-setoid
   using () renaming
   ( begin_ to beginᴬ_
   ; _∎     to _∎ᴬ
@@ -94,7 +94,7 @@ open module Reasoningᴬ = Reasoning ≈ᴬ-setoid public
 infixr 2 step-≈ᴬ
 step-≈ᴬ = Reasoningᴬ.step-≈
 syntax step-≈ᴬ x y≈z x≈y = x ≈ᴬ⟨ x≈y ⟩ y≈z
-open module Reasoningᴮ = Reasoning ≈ᴮ-setoid public
+open module Reasoningᴮ = Reasoning ≈ᴮ-setoid
 open Function.Definitions _≈ᴬ_ _≈ᴮ_
 
 _≉ᴬ_ : A → A → Set ℓm
@@ -123,7 +123,7 @@ module _
     ⟦ x ⟧  ≈⟨ ⟦⟧-cong x≈𝟘 ⟩
     ⟦ 0ᴬ ⟧ ≈⟨ f𝟘≈𝟘 {x = x} ⟩
     0ᴮ ∎
-           
+
   fx≉𝟘→x≉𝟘 : {x : A} → ⟦ x ⟧ ≉ᴮ 0ᴮ → x ≉ᴬ 0ᴬ
   fx≉𝟘→x≉𝟘 = contraposition x≈𝟘→fx≈𝟘
 
@@ -173,7 +173,7 @@ module _
       where
       ¬x≉𝟘 : ¬ (x ≉ᴬ 0ᴬ)
       ¬x≉𝟘 = λ x≉𝟘 → zero-unique ((s , y) , (s·x≈y , fy≉𝟘)) x≉𝟘 fx≈𝟘
-  
+
     -- A non-trivial linear function is injective.
     inj-lm : {x y : A} →
       Σ[ (s , z) ∈ S × A ] ((s ·ᴬ (x +ᴬ -ᴬ y) ≈ᴬ z) × (⟦ z ⟧ ≉ᴮ 0ᴮ)) →
