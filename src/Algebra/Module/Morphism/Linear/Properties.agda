@@ -123,7 +123,7 @@ module _
     ⟦ x ⟧  ≈⟨ ⟦⟧-cong x≈𝟘 ⟩
     ⟦ 0ᴬ ⟧ ≈⟨ f𝟘≈𝟘 {x = x} ⟩
     0ᴮ ∎
-           
+
   fx≉𝟘→x≉𝟘 : {x : A} → ⟦ x ⟧ ≉ᴮ 0ᴮ → x ≉ᴬ 0ᴬ
   fx≉𝟘→x≉𝟘 = contraposition x≈𝟘→fx≈𝟘
 
@@ -173,7 +173,7 @@ module _
       where
       ¬x≉𝟘 : ¬ (x ≉ᴬ 0ᴬ)
       ¬x≉𝟘 = λ x≉𝟘 → zero-unique ((s , y) , (s·x≈y , fy≉𝟘)) x≉𝟘 fx≈𝟘
-  
+
     -- A non-trivial linear function is injective.
     inj-lm : {x y : A} →
       Σ[ (s , z) ∈ S × A ] ((s ·ᴬ (x +ᴬ -ᴬ y) ≈ᴬ z) × (⟦ z ⟧ ≉ᴮ 0ᴮ)) →
