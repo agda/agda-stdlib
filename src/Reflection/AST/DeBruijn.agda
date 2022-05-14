@@ -10,7 +10,9 @@ module Reflection.AST.DeBruijn where
 
 open import Data.Bool.Base using (Bool; true; false; _∨_; if_then_else_)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc; _+_; _∸_; _<ᵇ_; _≡ᵇ_)
-open import Data.List.Base using (List; []; _∷_; _++_)
+open import Data.List.Base using (List; []; _∷_; _++_; foldr; reverse; map)
+open import Data.Product using (_×_; _,_)
+open import Data.String as String using (String)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 import Data.Maybe.Effectful as Maybe
 import Function.Identity.Effectful as Identity
@@ -53,6 +55,16 @@ module _ where
   weakenClauses : (by : ℕ) → Clauses → Clauses
   weakenClauses = weakenFrom′ traverseClauses 0
 
+-- Apply Weakening to substitute under lambdas
+
+prependLams : List (String × Visibility) → Term → Term
+prependLams xs t = foldr (λ {(s , v) t → lam v (abs s t)}) t (reverse xs)
+
+prependHLams : List String → Term → Term
+prependHLams vs = prependLams (map (_, hidden) vs)
+
+prependVLams : List String → Term → Term
+prependVLams vs = prependLams (map (_, visible) vs)
 
 ------------------------------------------------------------------------
 -- η-expansion

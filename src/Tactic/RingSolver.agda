@@ -27,6 +27,7 @@ open import Reflection.AST.Argument
 open import Reflection.AST.Term as Term
 open import Reflection.AST.AlphaEquality
 open import Reflection.AST.Name as Name
+open import Reflection.AST.DeBruijn using (prependVLams; prependHLams)
 open import Reflection.TCM.Syntax
 open import Data.Nat.Reflection
 open import Data.List.Reflection
