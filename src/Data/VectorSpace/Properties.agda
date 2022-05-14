@@ -19,18 +19,22 @@ module Data.VectorSpace.Properties
   where
 
 -- import Relation.Binary.Reasoning.Setoid          as Reasoning
-import Algebra.Module.Morphism.Structures        as MorphismStructures
+import Algebra.Module.Morphism.Structures as MorphismStructures
 -- import Algebra.Module.Properties                 as ModProps
+import Relation.Binary.Reasoning.Setoid   as Reasoning
 
 open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
 open import Algebra.Module.Morphism.Linear.Properties mod ⟨module⟩
-open import Data.List                           using (foldl)
+open import Function      using (_$_)
+open import Data.List     using (foldl; List; []; _∷_; _∷ʳ_)
 open import Data.Product
   using (Σ; _,_; ∃; Σ-syntax; ∃-syntax; _×_)
 
 open CommutativeRing ring
-  using (_+_; _*_; _≈_) renaming
+  using (_+_; _*_; _≈_; setoid; sym; refl)
+  renaming
   ( Carrier to S
+  ; 0#      to 𝟘
   )
 open Module mod
   using () renaming
@@ -43,6 +47,7 @@ open Module mod
   ; +ᴹ-comm        to +ᵀ-comm
   ; +ᴹ-congˡ       to +ᵀ-congˡ
   ; +ᴹ-congʳ       to +ᵀ-congʳ
+  ; +ᴹ-identityˡ   to +ᵀ-identityˡ
   ; *ₗ-zeroˡ       to ·ᵀ-zeroˡ
   ; -ᴹ‿cong        to -ᵀ‿cong
   ; -ᴹ‿inverseʳ    to -ᵀ‿inverseʳ
@@ -54,6 +59,25 @@ open Module mod
   )
 open MorphismStructures.ModuleMorphisms mod ⟨module⟩
 open VectorSpace vs
+open Reasoning setoid
+
+p : (x : S) → (xs : List S) → foldl _+_ (𝟘 + x) xs ≈ foldl _+_ 𝟘 (x ∷ xs)
+p x []        = refl
+p x (x₁ ∷ xs) = refl
+
+∘-distrib-foldl-acc : ∀ (a : T) → (f : T → T) → (bs : List T) →
+                      a ∘ foldl (λ acc b → acc +ᵀ f b) 0ᵀ bs ≈
+                      foldl (λ acc b → acc + a ∘ f b) 𝟘 bs
+∘-distrib-foldl-acc a f bs with bs
+... | []     = ∘-idʳ
+... | x ∷ xs = begin
+  a ∘ foldl (λ acc b → acc +ᵀ f b) (0ᵀ +ᵀ f x) xs
+    ≈⟨ ∘-congˡ (Function.Func.cong (record { to = λ x₁ → ? ; cong = {!!} }) +ᵀ-identityˡ) ⟩
+  a ∘ foldl (λ acc b → acc +ᵀ f b) (f x) xs         ≈⟨ {!!} ⟩
+  a ∘ (f x +ᵀ foldl (λ acc b → acc +ᵀ f b) 0ᵀ xs)   ≈⟨ {!!} ⟩
+  a ∘ f x + a ∘ foldl (λ acc b → acc +ᵀ f b) 0ᵀ xs  ≈⟨ {!!} ⟩
+  a ∘ f x + foldl (λ acc b → acc + a ∘ f b) 𝟘 xs    ≈⟨ {!!} ⟩
+  foldl (λ acc b → acc + a ∘ f b) (𝟘 + a ∘ f x) xs ∎
 
 -- properties predicated upon a linear map from tensor to scalar
 module _
@@ -73,11 +97,13 @@ module _
   --   a ≈ (a ∘ b₀) · b₀ + (a ∘ b₁) · b₁            ≈⟨ generalize ⟩
   --   a ≈ foldl (λ acc b → acc + (a ∘ b)·b) 0 basisSet
 
-  T⊸S≈b∘ : ∀ {a : T} {s : S} {f : T → S} {_ : IsModuleHomomorphism f} →
-           ( foldl (λ acc b → acc +ᵀ (f b) · b)
-                   0ᵀ basisSet
-           ) ∘ a ≈ f a
-  T⊸S≈b∘ = {!!}
+  T⊸S≈v∘ : ∀ {a : T} →
+           ⟦ a ⟧ ≈ ( foldl (λ acc b → acc +ᵀ ⟦ b ⟧ · b)
+                           0ᵀ basisSet
+                   ) ∘ a
+  T⊸S≈v∘ {a = a} = sym $ begin
+    (foldl (λ acc b → acc +ᵀ ⟦ b ⟧ · b) 0ᵀ basisSet) ∘ a ≈⟨ {!!} ⟩
+    ⟦ a ⟧ ∎
 
   -- x·z≈y·z→x≈y : {x y : T} → Σ[ y ∈ T ] f y ≉ 𝟘 →
   --   (∀ {z : T} → x ∘ z ≈ y ∘ z) → x ≈ᵀ y

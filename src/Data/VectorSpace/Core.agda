@@ -25,6 +25,7 @@ module _
   open CommutativeRing ring
     using (_+_; _*_; _≈_) renaming
     ( Carrier  to S     -- "S" for scalar.
+    ; 0#       to 𝟘
     )
   open Module mod
     using () renaming
@@ -44,6 +45,10 @@ module _
       comm-∘        : ∀ {a b : T} → a ∘ b ≈ b ∘ a
       ∘-distrib-+   : ∀ {a b c : T} → a ∘ (b +ᵀ c) ≈ (a ∘ b) + (a ∘ c)
       ∘-comm-·      : ∀ {s : S} {a b : T} → a ∘ (s · b) ≈ s * (a ∘ b)
+      ∘-congˡ       : ∀ {a b c} → b ≈ᵀ c → a ∘ b ≈ a ∘ c
+      ∘-congʳ       : ∀ {a b c} → b ≈ᵀ c → b ∘ a ≈ c ∘ a  -- Prove.
+      ∘-idˡ         : ∀ {a : T} → 0ᵀ ∘ a ≈ 𝟘
+      ∘-idʳ         : ∀ {a : T} → a ∘ 0ᵀ ≈ 𝟘
       basisSet      : List T
       basisComplete : ∀ {a : T} →
                       a ≈ᵀ foldl (λ acc b → acc +ᵀ (a ∘ b) · b) 0ᵀ basisSet
