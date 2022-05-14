@@ -86,15 +86,15 @@ open CommutativeRing ring
   ; 0#      to 𝟘
   ; 1#      to 𝟙
   )
-open module Reasoningᴬ = Reasoning ≈ᴬ-setoid
-  using () renaming
-  ( begin_ to beginᴬ_
-  ; _∎     to _∎ᴬ
-  )
-infixr 2 step-≈ᴬ
-step-≈ᴬ = Reasoningᴬ.step-≈
-syntax step-≈ᴬ x y≈z x≈y = x ≈ᴬ⟨ x≈y ⟩ y≈z
-open module Reasoningᴮ = Reasoning ≈ᴮ-setoid
+-- open module Reasoningᴬ = Reasoning ≈ᴬ-setoid
+--   using () renaming
+--   ( begin_ to beginᴬ_
+--   ; _∎     to _∎ᴬ
+--   )
+-- infixr 2 step-≈ᴬ
+-- step-≈ᴬ = Reasoningᴬ.step-≈
+-- syntax step-≈ᴬ x y≈z x≈y = x ≈ᴬ⟨ x≈y ⟩ y≈z
+-- open module Reasoningᴮ = Reasoning ≈ᴮ-setoid
 open Function.Definitions _≈ᴬ_ _≈ᴮ_
 
 _≉ᴬ_ : A → A → Set ℓm
@@ -109,6 +109,7 @@ module _
   where
 
   open IsModuleHomomorphism isModuleHomomorphism
+  -- open Reasoning ≈ᴮ-setoid
 
   -- f(x) ≈ 0 iff x ≈ 0, for linear non-trivial f
   f𝟘≈𝟘 : {x : A} → ⟦ 0ᴬ ⟧ ≈ᴮ 0ᴮ
@@ -117,12 +118,14 @@ module _
     ⟦ (𝟘 ·ᴬ x) ⟧ ≈⟨ *ₗ-homo 𝟘 x ⟩
     𝟘 ·ᴮ ⟦ x ⟧   ≈⟨ ·ᴮ-zeroˡ ⟦ x ⟧ ⟩
     0ᴮ ∎
+    where open Reasoning ≈ᴮ-setoid
 
   x≈𝟘→fx≈𝟘 : {x : A} → x ≈ᴬ 0ᴬ → ⟦ x ⟧ ≈ᴮ 0ᴮ
   x≈𝟘→fx≈𝟘 {x = x} x≈𝟘 = begin
     ⟦ x ⟧  ≈⟨ ⟦⟧-cong x≈𝟘 ⟩
     ⟦ 0ᴬ ⟧ ≈⟨ f𝟘≈𝟘 {x = x} ⟩
     0ᴮ ∎
+    where open Reasoning ≈ᴮ-setoid
 
   fx≉𝟘→x≉𝟘 : {x : A} → ⟦ x ⟧ ≉ᴮ 0ᴮ → x ≉ᴬ 0ᴬ
   fx≉𝟘→x≉𝟘 = contraposition x≈𝟘→fx≈𝟘
@@ -133,7 +136,9 @@ module _
     x ≉ᴬ 0ᴬ → ⟦ x ⟧ ≉ᴮ 0ᴮ
   zero-unique {x = x} ((s , y) , (s·x≈y , fy≉𝟘)) x≉𝟘 =
     non-zeroʳᴮ s·fx≉𝟘
+    -- where
     where
+    open Reasoning ≈ᴮ-setoid
     y≉𝟘     : y ≉ᴬ 0ᴬ
     y≉𝟘     = fx≉𝟘→x≉𝟘 fy≉𝟘
     fs·x≈fy : ⟦ (s ·ᴬ x) ⟧ ≈ᴮ ⟦ y ⟧
@@ -159,6 +164,7 @@ module _
     ⟦ (x +ᴬ (-ᴬ x)) ⟧   ≈⟨ ⟦⟧-cong (-ᴬ‿inverseʳ x) ⟩
     ⟦ 0ᴬ ⟧              ≈⟨ f𝟘≈𝟘 {x = x} ⟩
     0ᴮ ∎
+    where open Reasoning ≈ᴮ-setoid
 
   f-x≈-fx : {x : A} → ⟦ (-ᴬ x) ⟧ ≈ᴮ -ᴮ ⟦ x ⟧
   f-x≈-fx {x = x} = uniqueʳ‿-ᴮ ⟦ x ⟧ ⟦ -ᴬ x ⟧ fx+f-x≈𝟘
@@ -175,32 +181,47 @@ module _
       ¬x≉𝟘 = λ x≉𝟘 → zero-unique ((s , y) , (s·x≈y , fy≉𝟘)) x≉𝟘 fx≈𝟘
 
     -- A non-trivial linear function is injective.
+    fx-fy≈𝟘 : {x y : A} {fx≈fy : ⟦ x ⟧ ≈ᴮ ⟦ y ⟧} → ⟦ x ⟧ +ᴮ (-ᴮ ⟦ y ⟧) ≈ᴮ 0ᴮ
+    fx-fy≈𝟘 {x = x} {y = y} {fx≈fy = fx≈fy} = begin
+      ⟦ x ⟧ +ᴮ (-ᴮ ⟦ y ⟧) ≈⟨ +ᴮ-congˡ (-ᴮ‿cong (symᴮ fx≈fy)) ⟩
+      ⟦ x ⟧ +ᴮ (-ᴮ ⟦ x ⟧) ≈⟨ -ᴮ‿inverseʳ (⟦ x ⟧) ⟩
+      0ᴮ ∎
+      where open Reasoning ≈ᴮ-setoid
+
+    fx-y≈𝟘 : {x y : A} {fx≈fy : ⟦ x ⟧ ≈ᴮ ⟦ y ⟧} → ⟦ (x +ᴬ (-ᴬ y)) ⟧ ≈ᴮ 0ᴮ
+    fx-y≈𝟘 {x = x} {y = y} {fx≈fy = fx≈fy} = begin
+      ⟦ x +ᴬ (-ᴬ y) ⟧     ≈⟨ +ᴹ-homo x (-ᴬ y) ⟩
+      ⟦ x ⟧ +ᴮ ⟦ -ᴬ y ⟧   ≈⟨ +ᴮ-congˡ f-x≈-fx ⟩
+      ⟦ x ⟧ +ᴮ (-ᴮ ⟦ y ⟧) ≈⟨ fx-fy≈𝟘 {fx≈fy = fx≈fy} ⟩
+      0ᴮ ∎
+      where open Reasoning ≈ᴮ-setoid
+
     inj-lm : {x y : A} →
       Σ[ (s , z) ∈ S × A ] ((s ·ᴬ (x +ᴬ -ᴬ y) ≈ᴬ z) × (⟦ z ⟧ ≉ᴮ 0ᴮ)) →
       ⟦ x ⟧ ≈ᴮ ⟦ y ⟧ → x ≈ᴬ y
     inj-lm {x = x} {y = y} ((s , z) , (s·[x-y]≈z , fz≉𝟘)) fx≈fy =
-      beginᴬ
-      x         ≈ᴬ⟨ x≈--y ⟩
-      -ᴬ (-ᴬ y) ≈ᴬ⟨ -ᴬ‿involutive ⟩
-      y ∎ᴬ
+      -- beginᴬ
+      -- x         ≈ᴬ⟨ x≈--y ⟩
+      -- -ᴬ (-ᴬ y) ≈ᴬ⟨ -ᴬ‿involutive ⟩
+      -- y ∎ᴬ
+      begin
+      x         ≈⟨ x≈--y ⟩
+      -ᴬ (-ᴬ y) ≈⟨ -ᴬ‿involutive ⟩
+      y ∎
       where
-      fx-fy≈𝟘 : ⟦ x ⟧ +ᴮ (-ᴮ ⟦ y ⟧) ≈ᴮ 0ᴮ
-      fx-fy≈𝟘 = begin
-        ⟦ x ⟧ +ᴮ (-ᴮ ⟦ y ⟧) ≈⟨ +ᴮ-congˡ (-ᴮ‿cong (symᴮ fx≈fy)) ⟩
-        ⟦ x ⟧ +ᴮ (-ᴮ ⟦ x ⟧) ≈⟨ -ᴮ‿inverseʳ (⟦ x ⟧) ⟩
-        0ᴮ ∎
-      fx-y≈𝟘 : ⟦ (x +ᴬ (-ᴬ y)) ⟧ ≈ᴮ 0ᴮ
-      fx-y≈𝟘 = begin
-        ⟦ x +ᴬ (-ᴬ y) ⟧     ≈⟨ +ᴹ-homo x (-ᴬ y) ⟩
-        ⟦ x ⟧ +ᴮ ⟦ -ᴬ y ⟧   ≈⟨ +ᴮ-congˡ f-x≈-fx ⟩
-        ⟦ x ⟧ +ᴮ (-ᴮ ⟦ y ⟧) ≈⟨ fx-fy≈𝟘 ⟩
-        0ᴮ ∎
+      open Reasoning ≈ᴬ-setoid
       x-y≈𝟘 : x +ᴬ (-ᴬ y) ≈ᴬ 0ᴬ
-      x-y≈𝟘 = fx≈𝟘⇒x≈𝟘 {x = x +ᴬ (-ᴬ y)} ((s , z) , s·[x-y]≈z , fz≉𝟘) fx-y≈𝟘
+      x-y≈𝟘 = fx≈𝟘⇒x≈𝟘 {x = x +ᴬ (-ᴬ y)}
+                        ((s , z) , s·[x-y]≈z , fz≉𝟘)
+                        (fx-y≈𝟘 {fx≈fy = fx≈fy})
       x≈--y : x ≈ᴬ -ᴬ (-ᴬ y)
       x≈--y = uniqueʳ‿-ᴬ (-ᴬ y) x
-        ( beginᴬ
-          -ᴬ y +ᴬ x ≈ᴬ⟨ +ᴬ-comm (-ᴬ y) x ⟩
-          x +ᴬ -ᴬ y ≈ᴬ⟨ x-y≈𝟘 ⟩
-          0ᴬ ∎ᴬ
+        -- ( beginᴬ
+        --   -ᴬ y +ᴬ x ≈ᴬ⟨ +ᴬ-comm (-ᴬ y) x ⟩
+        --   x +ᴬ -ᴬ y ≈ᴬ⟨ x-y≈𝟘 ⟩
+        --   0ᴬ ∎ᴬ
+        ( begin
+          -ᴬ y +ᴬ x ≈⟨ +ᴬ-comm (-ᴬ y) x ⟩
+          x +ᴬ -ᴬ y ≈⟨ x-y≈𝟘 ⟩
+          0ᴬ ∎
         )
