@@ -27,6 +27,7 @@ module Algebra.Module.Bundles where
 
 open import Algebra.Bundles
 open import Algebra.Core
+open import Algebra.Definitions using (Involutive)
 open import Algebra.Module.Core
 open import Algebra.Module.Structures
 open import Algebra.Module.Definitions
@@ -34,6 +35,7 @@ open import Algebra.Properties.Group
 open import Function.Base
 open import Level
 open import Relation.Binary
+open import Relation.Nullary    using (¬_)
 import Relation.Binary.Reasoning.Setoid as SetR
 
 private
@@ -59,6 +61,10 @@ record LeftSemimodule (semiring : Semiring r ℓr) m ℓm
     _*ₗ_ : Opₗ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
     isLeftSemimodule : IsLeftSemimodule semiring _≈ᴹ_ _+ᴹ_ 0ᴹ _*ₗ_
+
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
 
   open IsLeftSemimodule isLeftSemimodule public
 
@@ -92,6 +98,10 @@ record LeftModule (ring : Ring r ℓr) m ℓm : Set (r ⊔ ℓr ⊔ suc (m ⊔ �
     0ᴹ : Carrierᴹ
     -ᴹ_ : Op₁ Carrierᴹ
     isLeftModule : IsLeftModule ring _≈ᴹ_ _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_
+
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
 
   open IsLeftModule isLeftModule public
 
@@ -128,6 +138,10 @@ record RightSemimodule (semiring : Semiring r ℓr) m ℓm
     0ᴹ : Carrierᴹ
     isRightSemimodule : IsRightSemimodule semiring _≈ᴹ_ _+ᴹ_ 0ᴹ _*ᵣ_
 
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
+
   open IsRightSemimodule isRightSemimodule public
 
   +ᴹ-commutativeMonoid : CommutativeMonoid m ℓm
@@ -160,6 +174,10 @@ record RightModule (ring : Ring r ℓr) m ℓm : Set (r ⊔ ℓr ⊔ suc (m ⊔ 
     0ᴹ : Carrierᴹ
     -ᴹ_ : Op₁ Carrierᴹ
     isRightModule : IsRightModule ring _≈ᴹ_ _+ᴹ_ 0ᴹ -ᴹ_ _*ᵣ_
+
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
 
   open IsRightModule isRightModule public
 
@@ -199,6 +217,10 @@ record Bisemimodule (R-semiring : Semiring r ℓr) (S-semiring : Semiring s ℓs
     0ᴹ : Carrierᴹ
     isBisemimodule : IsBisemimodule R-semiring S-semiring _≈ᴹ_ _+ᴹ_ 0ᴹ _*ₗ_ _*ᵣ_
 
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
+
   open IsBisemimodule isBisemimodule public
 
   leftSemimodule : LeftSemimodule R-semiring m ℓm
@@ -230,6 +252,10 @@ record Bimodule (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) m ℓm
     0ᴹ : Carrierᴹ
     -ᴹ_ : Op₁ Carrierᴹ
     isBimodule : IsBimodule R-ring S-ring _≈ᴹ_ _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
+
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
 
   open IsBimodule isBimodule public
 
@@ -270,6 +296,10 @@ record Semimodule (commutativeSemiring : CommutativeSemiring r ℓr) m ℓm
     _*ᵣ_ : Opᵣ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
     isSemimodule : IsSemimodule commutativeSemiring _≈ᴹ_ _+ᴹ_ 0ᴹ _*ₗ_ _*ᵣ_
+
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
 
   open IsSemimodule isSemimodule public
 
@@ -320,6 +350,10 @@ record Module (commutativeRing : CommutativeRing r ℓr) m ℓm
     -ᴹ_ : Op₁ Carrierᴹ
     isModule : IsModule commutativeRing _≈ᴹ_ _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
 
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
+
   open IsModule isModule public
 
   bimodule : Bimodule ring ring m ℓm
@@ -335,6 +369,5 @@ record Module (commutativeRing : CommutativeRing r ℓr) m ℓm
 
   open Semimodule semimodule public using (*ₗ-comm; *ᵣ-comm)
 
-  -ᴹ‿involutive : {x : Carrierᴹ} → -ᴹ (-ᴹ x) ≈ᴹ x
-  -ᴹ‿involutive {x = x} = ⁻¹-involutive +ᴹ-group x
-
+  -ᴹ-involutive : Involutive _≈ᴹ_ -ᴹ_
+  -ᴹ-involutive = ⁻¹-involutive +ᴹ-group

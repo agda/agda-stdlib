@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of scaling.
+-- Properties of modules.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -15,43 +15,33 @@ module Algebra.Module.Properties
   (lsmod : LeftSemimodule semiring m ℓm)
   where
 
-open import Relation.Nullary       using (¬_)
+open import Relation.Nullary          using (¬_)
+open import Relation.Nullary.Negation using (contraposition)
 
 open LeftSemimodule lsmod
-  using (*ₗ-zeroˡ; *ₗ-zeroʳ; ≈ᴹ-setoid; _≈ᴹ_; *ₗ-congˡ; *ₗ-congʳ)
-  renaming
-  ( Carrierᴹ to M
-  ; _*ₗ_     to _·_
-  ; 0ᴹ       to 𝟘
-  )
-infix 3 _≉ᴹ_
-_≉ᴹ_ : M → M → Set ℓm
-x ≉ᴹ y = ¬ (x ≈ᴹ y)
+  using ( *ₗ-zeroˡ; *ₗ-zeroʳ; ≈ᴹ-setoid; *ₗ-congˡ; *ₗ-congʳ
+        ; _*ₗ_; 0ᴹ; _≈ᴹ_; _≉ᴹ_)
+  renaming (Carrierᴹ to M)
 
 open Semiring semiring
-  using (_≉_) renaming
-  ( Carrier to R
-  ; 0#      to 0ᴿ
-  )
+  using (_≈_; _≉_; 0#) renaming (Carrier to R)
 
 open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
 
-non-zeroˡ : {s : R} {v : M} → s · v ≉ᴹ 𝟘 → s ≉ 0ᴿ
-non-zeroˡ {s = s} {v = v} s·v≉𝟘 = λ { s≈0ᴿ →
-  let s·v≈𝟘 : s  · v ≈ᴹ 𝟘
-      s·v≈𝟘 = begin
-              s  · v ≈⟨ *ₗ-congʳ s≈0ᴿ ⟩
-              0ᴿ · v ≈⟨ *ₗ-zeroˡ v ⟩
-              𝟘 ∎
-   in s·v≉𝟘 s·v≈𝟘
-  }
+s≈𝟘⇒s*v≈𝟘 : ∀ {s} {v} → s ≈ 0# → s *ₗ v ≈ᴹ 0ᴹ
+s≈𝟘⇒s*v≈𝟘 {s} {v} s≈𝟘 = begin
+  s  *ₗ v ≈⟨ *ₗ-congʳ s≈𝟘 ⟩
+  0# *ₗ v ≈⟨ *ₗ-zeroˡ v ⟩
+  0ᴹ      ∎
 
-non-zeroʳ : {s : R} {v : M} → s · v ≉ᴹ 𝟘 → v ≉ᴹ 𝟘
-non-zeroʳ {s = s} {v = v} s·v≉𝟘 = λ { v≈𝟘 →
-  let s·v≈𝟘 : s · v ≈ᴹ 𝟘
-      s·v≈𝟘 = begin
-              s · v ≈⟨ *ₗ-congˡ v≈𝟘 ⟩
-              s · 𝟘 ≈⟨ *ₗ-zeroʳ s ⟩
-              𝟘 ∎
-   in s·v≉𝟘 s·v≈𝟘
-  }
+v≈𝟘⇒s*v≈𝟘 : ∀ {s} {v} → v ≈ᴹ 0ᴹ → s *ₗ v ≈ᴹ 0ᴹ
+v≈𝟘⇒s*v≈𝟘 {s} {v} v≈𝟘 = begin
+  s *ₗ v  ≈⟨ *ₗ-congˡ v≈𝟘 ⟩
+  s *ₗ 0ᴹ ≈⟨ *ₗ-zeroʳ s ⟩
+  0ᴹ      ∎
+
+non-zeroˡ : ∀ {s} {v} → s *ₗ v ≉ᴹ 0ᴹ → s ≉ 0#
+non-zeroˡ = contraposition s≈𝟘⇒s*v≈𝟘
+
+non-zeroʳ : ∀ {s} {v} → s *ₗ v ≉ᴹ 0ᴹ → v ≉ᴹ 0ᴹ
+non-zeroʳ = contraposition v≈𝟘⇒s*v≈𝟘
