@@ -107,7 +107,8 @@ module _ (ext : ∀ {a b} {A : Set a} {B₁ B₂ : A → Set b} {f₁ : ∀ a �
      lift₂-conv : (p : compat₂) → ∀ a a′ → lift₂ p (Qu₁.abs a) (Qu₂.abs a′) ≅ f a a′
      lift₂-conv p a a′ = begin
        lift₂ p (Qu₁.abs a) (Qu₂.abs a′)
-          ≅⟨ cong (_$ (Qu₂.abs a′)) (Qu₁.lift-conv (Lift₂.g p) (ext ∘ Lift₂.g-ext p) a) ⟩
+          ≅⟨ cong {x = lift₂ p _} (_$ (Qu₂.abs a′))
+               (Qu₁.lift-conv (Lift₂.g p) (ext ∘ Lift₂.g-ext p) a) ⟩
        Lift₂.g p a (Qu₂.abs a′)
           ≡⟨⟩
        Qu₂.lift (B (Qu₁.abs a)) (f a) (p S₁.refl) (Qu₂.abs a′)

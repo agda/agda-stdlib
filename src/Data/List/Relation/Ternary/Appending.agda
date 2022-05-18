@@ -53,4 +53,4 @@ break : Appending L R as bs cs → ∃₂ λ cs₁ cs₂ →
 break ([]++ rs) = -, -, (refl , [] , rs)
 break (l ∷ lrs) =
   let (_ , _ , eq , ls , rs) = break lrs in
-  -, -, (cong (_ ∷_) eq , l ∷ ls , rs)
+  _ , _ , cong (_ ∷_) eq , l Pointwise.∷ ls , rs

@@ -139,8 +139,8 @@ record Poly n where
 
 data FlatPoly where
   Κ : Carrier → FlatPoly zero
-  ⅀ : ∀ {n} (xs : Coeff n +) {xn : Normalised xs} → FlatPoly (suc n)
-
+  ⅀ : ∀ {n} (xs : Coeff n +) {xn : Normalised {i = n} xs} →
+      FlatPoly (suc n)
 
 Coeff n = PowInd (NonZero n)
 
