@@ -952,7 +952,6 @@ New modules
 
 * Proofs of some axioms of linearity:
   ```
-  Algebra.Module.Bundles
   Algebra.Module.Morphism.Linear.Properties
   Algebra.Module.Properties
   ```
@@ -1044,6 +1043,11 @@ Other minor changes
   ```agda
   _^[_]*_ : A → ℕ → A → A
   _^ᵗ_     : A → ℕ → A
+  ```
+
+* Added new proofs to `Algebra.Module.Bundles`:
+  ```
+  -ᴹ-involutive : Involutive _≈ᴹ_ -ᴹ_
   ```
 
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
