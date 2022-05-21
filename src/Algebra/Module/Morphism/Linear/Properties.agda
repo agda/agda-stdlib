@@ -11,9 +11,10 @@ open import Algebra.Module            using (Module)
 open import Level                     using (Level; _⊔_)
 
 module Algebra.Module.Morphism.Linear.Properties
-  {r ℓr m ℓm : Level}
-  {ring      : CommutativeRing r ℓr}
-  (modA modB  : Module ring m ℓm)
+  {r ℓr m ℓm n ℓn : Level}
+  {ring           : CommutativeRing r ℓr}
+  (modA           : Module ring m ℓm)
+  (modB           : Module ring n ℓn)
   where
 
 import Algebra.Module.Properties          as Properties
@@ -55,7 +56,8 @@ open Function.Definitions A._≈ᴹ_ B._≈ᴹ_
 _≉ᴬ_ : A → A → Set ℓm
 x ≉ᴬ y = ¬ (x A.≈ᴹ y)
 
-_≉ᴮ_ : B → B → Set ℓm
+-- _≉ᴮ_ : B → B → Set ℓm
+_≉ᴮ_ : B → B → Set ℓn
 x ≉ᴮ y = ¬ (x B.≈ᴹ y)
 
 module _

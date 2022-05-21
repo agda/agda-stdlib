@@ -12,7 +12,9 @@
 module Data.List.Properties where
 
 open import Algebra.Bundles
-open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
+open import Algebra.Core using (Op₂)
+open import Algebra.Definitions as AlgebraicDefinitions
+  using (Involutive; _DistributesOverˡ_)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ; inject₁)
@@ -29,8 +31,9 @@ import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function
+open import Function.Consequences
 open import Level using (Level)
-open import Relation.Binary as B using (DecidableEquality)
+open import Relation.Binary as B using (DecidableEquality; Setoid)
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
 open import Relation.Binary as B using (Rel)
@@ -46,13 +49,13 @@ open ≡-Reasoning
 
 private
   variable
-    a b c d e p : Level
+    a b c d e p ℓ₁ ℓ₂ ℓ₃ : Level
     A : Set a
     B : Set b
     C : Set c
     D : Set d
     E : Set e
-
+    
 -----------------------------------------------------------------------
 -- _∷_
 
@@ -489,6 +492,44 @@ foldl-∷ʳ : ∀ (f : A → B → A) x y ys →
 foldl-∷ʳ f x y []       = refl
 foldl-∷ʳ f x y (z ∷ ys) = foldl-∷ʳ f (f x z) y ys
 
+module _
+  (To : Setoid b ℓ₂)
+  (_≈₁_ : Rel A ℓ₁)
+  where
+
+  open Setoid To using (reflexive) renaming (Carrier to B; _≈_ to _≈₂_)
+
+  foldl-cong₁ : ∀ {f} {x₁ x₂} → Congruent₂ _≈₁_ _≈₂_ _≈₁_ f →
+                x₁ ≈₁ x₂ → ∀ xs → foldl f x₁ xs ≈₁ foldl f x₂ xs
+  foldl-cong₁ f-cong₂ x₁≈x₂ []       = x₁≈x₂
+  foldl-cong₁ f-cong₂ x₁≈x₂ (x ∷ xs) =
+    foldl-cong₁ f-cong₂ (f-cong₂ x₁≈x₂ (reflexive refl)) xs
+
+module _
+  (From : Setoid a ℓ₁)
+  (_≈₂_ : Rel B ℓ₂)
+  where
+
+  open Setoid From using (reflexive) renaming (Carrier to T; _≈_ to _≈₁_)
+
+  foldl-∷ : ∀ {f ε} {x : B} (xs) → foldl f (f ε x) xs ≈₁ foldl f ε (x ∷ xs)
+  foldl-∷ {f} {ε} {x} []       = reflexive refl
+  foldl-∷ {f} {ε} {x} (x₁ ∷ xs) = foldl-∷ xs
+
+  foldl-distrib : {_∙_ f : Op₂ T} {a x₀ : T} →
+                  Congruent₂ _≈₁_ _≈₁_ _≈₁_ f →
+                  (_≈₁_ DistributesOverˡ _∙_) f → (xs : List T) →
+                  a ∙ foldl f x₀ xs ≈₁ foldl f (a ∙ x₀) (map (a ∙_) xs)
+  foldl-distrib f-cong₂ ∙-distrib-f [] = reflexive refl
+  foldl-distrib {_∙_} {f} {a} {x₀} f-cong₂ ∙-distrib-f (x ∷ xs) = begin₁
+    a ∙ foldl f (f x₀ x) xs
+      ≈⟨ foldl-distrib {x₀ = f x₀ x} f-cong₂ ∙-distrib-f xs ⟩
+    foldl f (a ∙ (f x₀ x)) (map (a ∙_) xs)
+      ≈⟨ foldl-cong₁ From _≈₁_
+                    f-cong₂ (∙-distrib-f a x₀ x) (map (a ∙_) xs) ⟩
+    foldl f (f (a ∙ x₀) (a ∙ x)) (map (_∙_ a) xs) ∎₁
+    where open EqR From renaming (begin_ to begin₁_; _∎ to _∎₁)
+    
 ------------------------------------------------------------------------
 -- concat
 

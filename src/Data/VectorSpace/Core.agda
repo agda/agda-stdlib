@@ -17,39 +17,34 @@ open import Data.List      using (List; foldl)
 open import Level          using (Level; _⊔_; suc)
 
 module _
-  {r ℓr : Level}
+  {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
-  (mod       : Module ring r ℓr)
+  -- (mod       : Module ring r ℓr)
+  (mod       : Module ring m ℓm)
   where
 
-  open CommutativeRing ring
-    using (_+_; _*_; _≈_) renaming
-    ( Carrier  to S     -- "S" for scalar.
-    ; 0#       to 𝟘
-    )
-  open Module mod
-    using () renaming
-    ( Carrierᴹ to T     -- "T" for tensor.
-    ; _+ᴹ_     to _+ᵀ_
-    ; _*ₗ_     to _·_
-    ; _≈ᴹ_     to _≈ᵀ_
-    ; 0ᴹ       to 0ᵀ
-    )
+  open CommutativeRing ring renaming (Carrier  to S)  -- "S" for scalar.
+  open Module          mod  renaming (Carrierᴹ to T)  -- "T" for tensor.
     
-  record VectorSpace : Set (suc (ℓr ⊔ r)) where
+  -- record VectorSpace : Set (suc (ℓr ⊔ r)) where
+  record VectorSpace : Set (suc (ℓr ⊔ r ⊔ ℓm ⊔ m)) where
 
     constructor mkVS
-    infix 7 _∘_
+    infix 7 _∙_
     field
-      _∘_           : T → T → S
-      comm-∘        : ∀ {a b : T} → a ∘ b ≈ b ∘ a
-      ∘-distrib-+   : ∀ {a b c : T} → a ∘ (b +ᵀ c) ≈ (a ∘ b) + (a ∘ c)
-      ∘-comm-·      : ∀ {s : S} {a b : T} → a ∘ (s · b) ≈ s * (a ∘ b)
-      ∘-congˡ       : ∀ {a b c} → b ≈ᵀ c → a ∘ b ≈ a ∘ c
-      ∘-congʳ       : ∀ {a b c} → b ≈ᵀ c → b ∘ a ≈ c ∘ a  -- Prove.
-      ∘-idˡ         : ∀ {a : T} → 0ᵀ ∘ a ≈ 𝟘
-      ∘-idʳ         : ∀ {a : T} → a ∘ 0ᵀ ≈ 𝟘
+      _∙_           : T → T → S
       basisSet      : List T
       basisComplete : ∀ {a : T} →
-                      a ≈ᵀ foldl (λ acc b → acc +ᵀ (a ∘ b) · b) 0ᵀ basisSet
+                      a ≈ᴹ foldl (λ acc b → acc +ᴹ (a ∙ b) *ₗ b) 0ᴹ basisSet
+      -- ToDo: Can these be unified, by using one of the
+      -- existing algebraic structures?
+      -- I'm only finding things that are predicated upon: `A → A → A`, or
+      -- `A → B`; nothing for: `A → A → B`.
+      comm-∙        : ∀ {a b : T} → a ∙ b ≈ b ∙ a
+      ∙-distrib-+   : ∀ {a b c : T} → a ∙ (b +ᴹ c) ≈ (a ∙ b) + (a ∙ c)
+      ∙-comm-*ₗ     : ∀ {s : S} {a b : T} → a ∙ (s *ₗ b) ≈ s * (a ∙ b)
+      ∙-congˡ       : ∀ {a b c} → b ≈ᴹ c → a ∙ b ≈ a ∙ c
+      ∙-congʳ       : ∀ {a b c} → b ≈ᴹ c → b ∙ a ≈ c ∙ a  -- Prove.
+      ∙-idˡ         : ∀ {a : T} → 0ᴹ ∙ a ≈ 0#
+      ∙-idʳ         : ∀ {a : T} → a ∙ 0ᴹ ≈ 0#              -- Prove.
 
