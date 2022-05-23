@@ -165,6 +165,26 @@ record Prosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   semiring : Semiring c ℓ₁
   semiring = record { isSemiring = isSemiring }
 
+record Prokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infixl 7 _*_
+  infixl 6 _+_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ₁
+    _≤_           : Rel Carrier ℓ₂
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    ⁻*            : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isProkleenealgebra : IsProkleenealgebra _≈_ _≤_ _+_ _*_ ⁻* 0# 1#
+
+  open IsProkleenealgebra isProkleenealgebra public
+
+  kleenealgebra : KleeneAlgebra c ℓ₁
+  kleenealgebra = record { isKleeneAlgebra = isKleeneAlgebra }
+
 ------------------------------------------------------------------------
 -- Bundles of partially ordered structures
 
@@ -344,3 +364,25 @@ record Posemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   prosemiring = record { isProsemiring = isProsemiring }
 
   open Prosemiring prosemiring public using (semiring)
+
+record Pokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infixl 7 _*_
+  infixl 6 _+_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ₁
+    _≤_           : Rel Carrier ℓ₂
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    ⁻*            : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isPokleenealgebra : IsPokleenealgebra _≈_ _≤_ _+_ _*_ ⁻* 0# 1#
+
+  open IsPokleenealgebra isPokleenealgebra public
+
+  prokleenealgebra : Prokleenealgebra c ℓ₁ ℓ₂
+  prokleenealgebra = record { isProkleenealgebra = isProkleenealgebra }
+
+  open Prokleenealgebra prokleenealgebra public using (kleenealgebra)

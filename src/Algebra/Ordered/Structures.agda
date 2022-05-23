@@ -172,8 +172,8 @@ record IsProkleenealgebra (+ ∙ : Op₂ A) (⁻* : Op₁ A) (0# 1# : A) : Set (
     +-idem         : Idempotent +
     star           :  Star 1# ∙ ⁻*
 
-  open IsProsemiring isProsemiring public 
-  
+  open IsProsemiring isProsemiring public
+
   isKleeneAlgebra : IsKleeneAlgebra + ∙ 0# 1#
   isKleeneAlgebra = record { isSemiring = isSemiring ; +-idem = +-idem }
 
@@ -317,7 +317,7 @@ record IsPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) 
     ; isSemigroup    to *-isSemigroup
     ; isProsemigroup to *-isProsemigroup
     ; isPosemigroup  to *-isPosemigroup
-    ; igitsMonoid       to *-isMonoid
+    ; isMonoid       to *-isMonoid
     ; isPromonoid    to *-isPromonoid
     )
 
@@ -337,9 +337,15 @@ record IsPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) 
 
 record IsPokleenealgebra (+ ∙ : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isPoSemiring  : IsPoSemiring + ∙ 0# 1#
+    isPosemiring  : IsPosemiring + ∙ 0# 1#
     +-idem      : Idempotent +
     star        : Star 1# ∙ ⁻*
 
-  open IsPoSemiring isPoSemiring public
- 
+  open IsPosemiring isPosemiring public
+
+  isProkleenealgebra : IsProkleenealgebra + ∙ ⁻* 0# 1#
+  isProkleenealgebra = record { isProsemiring = isProsemiring ; +-idem = +-idem ; star = star }
+
+  open IsProkleenealgebra isProkleenealgebra public
+    using (isKleeneAlgebra; +-idem; star)
+
