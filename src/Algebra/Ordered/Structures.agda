@@ -166,6 +166,19 @@ record IsProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 
   open IsSemiring isSemiring public using (distribˡ; distribʳ; zeroˡ; zeroʳ)
 
+record IsProkleenealgebra (+ ∙ : Op₂ A) (⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isProsemiring  : IsProsemiring + ∙ 0# 1#
+    +-idem         : Idempotent +
+    star           :  Star 1# ∙ ⁻*
+
+  open IsProsemiring isProsemiring public 
+  
+  isKleeneAlgebra : IsKleeneAlgebra + ∙ 0# 1#
+  isKleeneAlgebra = record { isSemiring = isSemiring ; +-idem = +-idem }
+
+  open IsKleeneAlgebra isKleeneAlgebra public using ( +-idem)
+
 ------------------------------------------------------------------------
 -- Partially ordered structures
 
@@ -304,7 +317,7 @@ record IsPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) 
     ; isSemigroup    to *-isSemigroup
     ; isProsemigroup to *-isProsemigroup
     ; isPosemigroup  to *-isPosemigroup
-    ; isMonoid       to *-isMonoid
+    ; igitsMonoid       to *-isMonoid
     ; isPromonoid    to *-isPromonoid
     )
 
@@ -321,3 +334,12 @@ record IsPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) 
 
   open IsProsemiring isProsemiring public
     using (isSemiring; distribˡ; distribʳ; zeroˡ; zeroʳ)
+
+record IsPokleenealgebra (+ ∙ : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isPoSemiring  : IsPoSemiring + ∙ 0# 1#
+    +-idem      : Idempotent +
+    star        : Star 1# ∙ ⁻*
+
+  open IsPoSemiring isPoSemiring public
+ 
