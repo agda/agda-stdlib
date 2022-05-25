@@ -19,7 +19,6 @@ open import Level          using (Level; _⊔_; suc)
 module _
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
-  -- (mod       : Module ring r ℓr)
   (mod       : Module ring m ℓm)
   where
 
@@ -40,7 +39,7 @@ module _
       -- existing algebraic structures?
       -- I'm only finding things that are predicated upon: `A → A → A`, or
       -- `A → B`; nothing for: `A → A → B`.
-      comm-∙        : ∀ {a b : T} → a ∙ b ≈ b ∙ a
+      ∙-comm        : ∀ {a b : T} → a ∙ b ≈ b ∙ a
       ∙-distrib-+   : ∀ {a b c : T} → a ∙ (b +ᴹ c) ≈ (a ∙ b) + (a ∙ c)
       ∙-comm-*ₗ     : ∀ {s : S} {a b : T} → a ∙ (s *ₗ b) ≈ s * (a ∙ b)
       ∙-congˡ       : ∀ {a b c} → b ≈ᴹ c → a ∙ b ≈ a ∙ c

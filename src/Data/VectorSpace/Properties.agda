@@ -7,7 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra
-  using (CommutativeRing; Congruent₁; Congruent₂)
+  using (CommutativeRing; Congruent₁; Congruent₂; Op₁; Op₂)
 open import Algebra.Module        using (Module)
 open import Data.VectorSpace.Core using (VectorSpace)
 open import Level                 using (Level; _⊔_; suc)
@@ -21,22 +21,25 @@ module Data.VectorSpace.Properties
 
 -- import Algebra.Module.Properties                 as ModuleProperties
 import Relation.Binary.PropositionalEquality     as Eq
-import Relation.Binary.Reasoning.Setoid          as Reasoning
+-- import Relation.Binary.Reasoning.Setoid          as Reasoning
 
 open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
 -- open import Algebra.Module.Morphism.Linear.Properties mod ⟨module⟩
 import Algebra.Module.Morphism.Structures as MorphismStructures
 open MorphismStructures.ModuleMorphisms mod ⟨module⟩
--- open import Function using ()
+open import Function
 -- open import Function.Consequences -- using (∘-cong₂)      -- using (_$_)
--- open import Data.List     -- using (foldl; List; []; _∷_; _∷ʳ_)
-open import Data.Product
+open import Data.List     -- using (foldl; List; []; _∷_; _∷ʳ_)
+open import Data.List.Properties using (foldl-cong₁)
+open import Data.Product hiding (map)
   -- using (Σ; _,_; ∃; Σ-syntax; ∃-syntax; _×_)
 -- open import Relation.Binary.PropositionalEquality using (cong₂)
+open import Relation.Binary.Reasoning.MultiSetoid
 
 open VectorSpace vs
 open CommutativeRing ring
   -- using (_+_; _*_; _≈_; setoid; sym; refl; 0#)
+  using (_+_; _*_; _≈_; setoid; sym; 0#; +-congˡ; +-congʳ; +-comm)
   renaming (Carrier to S)
 module T = Module mod
 open T -- using (_*ₗ_)
@@ -44,20 +47,81 @@ open T -- using (_*ₗ_)
 
 -- open MorphismStructures.ModuleMorphisms mod ⟨module⟩
 
+private
+  variable
+    a b c : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
+-- Some consequences of certain `VectorSpace` property fields.
+v∙g[x]+y-cong₂ : {g : T → T} {v x w : T} {y z : S} →
+                   Congruent _≈ᴹ_ _≈ᴹ_ g → x ≈ᴹ w → y ≈ z →
+                   v ∙ g x + y ≈ v ∙ g w + z
+v∙g[x]+y-cong₂ {g} {v} {x} {w} {y} {z} g-cong x≈w y≈z = begin⟨ setoid ⟩
+  v ∙ g x + y ≈⟨ +-congʳ (∙-congˡ (g-cong x≈w)) ⟩
+  v ∙ g w + y ≈⟨ +-congˡ y≈z ⟩
+  v ∙ g w + z ∎
+  -- where open Reasoning setoid
+
+-- Properties of left folds used only by vector spaces.
+foldl-homo : {v x₀ : T} {g : T → T} → Congruent _≈ᴹ_ _≈ᴹ_ g →
+             (xs : List T) →
+             v ∙ foldl (flip (_+ᴹ_ ∘ g)) x₀ xs
+               ≈ foldl (flip (_+_ ∘ (v ∙_) ∘ g)) (v ∙ x₀) xs
+foldl-homo _ [] = ∙-congˡ (≈ᴹ-reflexive Eq.refl)
+foldl-homo {v} {x₀} {g} g-cong (x ∷ xs) = begin⟨ setoid ⟩
+  v ∙ foldl (flip (_+ᴹ_ ∘ g)) (g x +ᴹ x₀) xs
+    ≈⟨ foldl-homo {x₀ = g x +ᴹ x₀} g-cong xs ⟩
+  foldl (flip (_+_ ∘ (v ∙_) ∘ g)) (v ∙ (g x +ᴹ x₀)) xs
+    ≈⟨ foldl-cong₁ ≈ᴹ-setoid _≈_ (flip (v∙g[x]+y-cong₂ g-cong)) ∙-distrib-+ xs ⟩
+  foldl (flip (_+_ ∘ (v ∙_) ∘ g)) (v ∙ g x + v ∙ x₀) xs ∎
+  where
+  -- open Reasoning setoid
+  
 -- Properties predicated upon a linear map from tensor to scalar.
 module _
   {f : T → S}
   (isModuleHomomorphism : IsModuleHomomorphism f)
+  (f-cong : Congruent _≈ᴹ_ _≈_ f)
   where
 
   open IsModuleHomomorphism isModuleHomomorphism
-
+  
   -- Any linear map from T to S is equivalent to an inner product with
   -- some vector, v.
   T⊸S≈v∙ : ∀ {a} → ∃[ v ] f a ≈ v ∙ a
-  T⊸S≈v∙ = {!!}
+  T⊸S≈v∙ {a} =
+    ( v
+    , sym (begin⟨ setoid ⟩
+        v ∙ a ≈⟨ ∙-comm ⟩
+        a ∙ v ≈⟨ foldl-homo g-cong basisSet ⟩
+        foldl (flip (_+_ ∘ (a ∙_) ∘ g)) (a ∙ 0ᴹ) basisSet
+          ≈⟨ foldl-cong₁ ≈ᴹ-setoid _≈_ (flip (v∙g[x]+y-cong₂ g-cong)) ∙-idʳ basisSet ⟩
+        foldl (flip (_+_ ∘ (a ∙_) ∘ g)) 0# basisSet                       ≡⟨⟩
+        foldl (flip (_+_ ∘ (a ∙_) ∘ uncurry _*ₗ_ ∘ (f Λ id))) 0# basisSet ≡⟨⟩
+        foldl (λ acc b → a ∙ (f b *ₗ b) + acc) 0# basisSet
+          ≈⟨ {!!} ⟩
+        foldl (λ acc b → acc + a ∙ (f b *ₗ b)) 0# basisSet
+          ≈⟨ {!!} ⟩
+        f a   ∎)
+    )
+    where
+    -- open Reasoning setoid
+    _Λ_ : ∀ {A B C} → (A → B) → (A → C) → A → B × C
+    f Λ g = λ x → (f x , g x)
+    g : Op₁ T
+    g = uncurry _*ₗ_ ∘ (f Λ id)
+    v = foldl (flip (_+ᴹ_ ∘ g)) 0ᴹ basisSet
+    g-cong : Congruent _≈ᴹ_ _≈ᴹ_ g
+    g-cong {x} {y} x≈y = begin⟨ ≈ᴹ-setoid ⟩
+      g x ≡⟨⟩
+      f x *ₗ x ≈⟨ *ₗ-congʳ (f-cong x≈y) ⟩
+      f y *ₗ x ≈⟨ *ₗ-congˡ x≈y ⟩
+      f y *ₗ y ≡⟨⟩
+      g y ∎
 
-  --          f a ≈ ( foldl (λ acc b → acc T.+ᴹ ⟦ b ⟧ *ₗ b)
+--          f a ≈ ( foldl (λ acc b → acc T.+ᴹ ⟦ b ⟧ *ₗ b)
   --                          T.0ᴹ basisSet
   --                  ) ∙ a
   -- T⊸S≈v∙ {a = a} = sym $ begin

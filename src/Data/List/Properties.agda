@@ -492,18 +492,33 @@ foldl-∷ʳ : ∀ (f : A → B → A) x y ys →
 foldl-∷ʳ f x y []       = refl
 foldl-∷ʳ f x y (z ∷ ys) = foldl-∷ʳ f (f x z) y ys
 
+foldl-cong : ∀ {f g : A → B → A} {d e : A} →
+             (∀ x y → f x y ≡ g x y) → d ≡ e →
+             foldl f d ≗ foldl g e
+foldl-cong f≗g refl []      = refl
+-- foldl-cong f≗g d≡e (x ∷ xs) rewrite foldl-cong f≗g d≡e xs = f≗g x _
+foldl-cong f≗g d≡e (x ∷ xs) rewrite foldl-cong f≗g d≡e xs = ?
+
 module _
   (To : Setoid b ℓ₂)
   (_≈₁_ : Rel A ℓ₁)
   where
 
-  open Setoid To using (reflexive) renaming (Carrier to B; _≈_ to _≈₂_)
+  open Setoid To using (reflexive) renaming (Carrier to S; _≈_ to _≈₂_)
+  open EqR    To                   renaming (begin_ to begin₂_; _∎ to _∎₂)
 
   foldl-cong₁ : ∀ {f} {x₁ x₂} → Congruent₂ _≈₁_ _≈₂_ _≈₁_ f →
                 x₁ ≈₁ x₂ → ∀ xs → foldl f x₁ xs ≈₁ foldl f x₂ xs
   foldl-cong₁ f-cong₂ x₁≈x₂ []       = x₁≈x₂
   foldl-cong₁ f-cong₂ x₁≈x₂ (x ∷ xs) =
     foldl-cong₁ f-cong₂ (f-cong₂ x₁≈x₂ (reflexive refl)) xs
+
+  foldl-cong₁′ : ∀ {f} {x₁ x₂} → Congruent₂ _≈₂_ _≈₂_ _≈₂_ f →
+                x₁ ≈₂ x₂ → ∀ xs → foldl f x₁ xs ≈₂ foldl f x₂ xs
+  foldl-cong₁′ f-cong₂ x₁≈x₂ []       = x₁≈x₂
+  foldl-cong₁′ f-cong₂ x₁≈x₂ (x ∷ xs) =
+    foldl-cong₁′ f-cong₂ (f-cong₂ x₁≈x₂ (reflexive refl)) xs
+
 
 module _
   (From : Setoid a ℓ₁)
