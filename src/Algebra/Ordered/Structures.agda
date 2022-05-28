@@ -344,6 +344,6 @@ record IsPoidempotentSemiring (+ ∙ : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ 
   isProidempotentsemiring : IsProidempotentsemiring + ∙ 0# 1#
   isProidempotentsemiring = record { isProsemiring = isProsemiring ; +-idem = +-idem }
 
-  open IsProidempotentsemiring isProidempotentsemiring public 
+  open IsProidempotentsemiring isProidempotentsemiring public
     using (isIdempotentSemiring; +-idem)
 

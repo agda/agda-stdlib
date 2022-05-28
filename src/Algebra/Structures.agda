@@ -500,7 +500,7 @@ record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isSemiring     : IsSemiring + * 0# 1#
     +-idem         : Idempotent +
-  
+
   open IsSemiring isSemiring public
 
 record IsKleeneAlgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
@@ -810,4 +810,4 @@ record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
- 
+
