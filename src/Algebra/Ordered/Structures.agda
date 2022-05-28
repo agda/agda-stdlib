@@ -166,18 +166,17 @@ record IsProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 
   open IsSemiring isSemiring public using (distribˡ; distribʳ; zeroˡ; zeroʳ)
 
-record IsProkleenealgebra (+ ∙ : Op₂ A) (⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsProidempotentsemiring (+ ∙ : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isProsemiring  : IsProsemiring + ∙ 0# 1#
     +-idem         : Idempotent +
-    star           :  Star 1# ∙ ⁻*
 
   open IsProsemiring isProsemiring public
 
-  isKleeneAlgebra : IsKleeneAlgebra + ∙ 0# 1#
-  isKleeneAlgebra = record { isSemiring = isSemiring ; +-idem = +-idem }
+  isIdempotentSemiring : IsIdempotentSemiring + ∙ 0# 1#
+  isIdempotentSemiring = record { isSemiring = isSemiring ; +-idem = +-idem }
 
-  open IsKleeneAlgebra isKleeneAlgebra public using ( +-idem)
+  open IsIdempotentSemiring isIdempotentSemiring public using (+-idem)
 
 ------------------------------------------------------------------------
 -- Partially ordered structures
@@ -335,17 +334,16 @@ record IsPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) 
   open IsProsemiring isProsemiring public
     using (isSemiring; distribˡ; distribʳ; zeroˡ; zeroʳ)
 
-record IsPokleenealgebra (+ ∙ : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsPoidempotentSemiring (+ ∙ : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isPosemiring  : IsPosemiring + ∙ 0# 1#
     +-idem      : Idempotent +
-    star        : Star 1# ∙ ⁻*
 
   open IsPosemiring isPosemiring public
 
-  isProkleenealgebra : IsProkleenealgebra + ∙ ⁻* 0# 1#
-  isProkleenealgebra = record { isProsemiring = isProsemiring ; +-idem = +-idem ; star = star }
+  isProidempotentsemiring : IsProidempotentsemiring + ∙ 0# 1#
+  isProidempotentsemiring = record { isProsemiring = isProsemiring ; +-idem = +-idem }
 
-  open IsProkleenealgebra isProkleenealgebra public
-    using (isKleeneAlgebra; +-idem; star)
+  open IsProidempotentsemiring isProidempotentsemiring public 
+    using (isIdempotentSemiring; +-idem)
 
