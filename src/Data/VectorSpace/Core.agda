@@ -13,8 +13,21 @@ module Data.VectorSpace.Core where
 
 open import Algebra        using (CommutativeRing)
 open import Algebra.Module using (Module)
-open import Data.List      using (List; foldl)
+open import Data.List      using (List; foldl; foldr)
+open import Data.Product
+open import Function
 open import Level          using (Level; _⊔_; suc)
+
+private
+  variable
+    a b c : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
+-- ToDo: Does this already exist somewhere?
+_Λ_ : (A → B) → (A → C) → A → B × C
+f Λ g = λ x → (f x , g x)
 
 module _
   {r ℓr m ℓm : Level}
@@ -24,8 +37,7 @@ module _
 
   open CommutativeRing ring renaming (Carrier  to S)  -- "S" for scalar.
   open Module          mod  renaming (Carrierᴹ to T)  -- "T" for tensor.
-    
-  -- record VectorSpace : Set (suc (ℓr ⊔ r)) where
+
   record VectorSpace : Set (suc (ℓr ⊔ r ⊔ ℓm ⊔ m)) where
 
     constructor mkVS
@@ -34,7 +46,10 @@ module _
       _∙_           : T → T → S
       basisSet      : List T
       basisComplete : ∀ {a : T} →
-                      a ≈ᴹ foldl (λ acc b → acc +ᴹ (a ∙ b) *ₗ b) 0ᴹ basisSet
+                      a ≈ᴹ foldr ( _+ᴹ_
+                                 ∘ (uncurry _*ₗ_)
+                                 ∘ (a ∙_) Λ id
+                                 ) 0ᴹ basisSet
       -- ToDo: Can these be unified, by using one of the
       -- existing algebraic structures?
       -- I'm only finding things that are predicated upon: `A → A → A`, or
