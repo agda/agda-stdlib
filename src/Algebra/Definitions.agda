@@ -162,5 +162,8 @@ LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
 RightDivides : Op₂ A → Op₂ A → Set _
 RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)
 
-Star : A → Op₂ A → Op₁ A → Set _
-Star e _∙_ _⁻* = ∀ x → (x ⁻*) ≈ ((e ∙ x) ∙ (x ⁻*))
+StarMakeRight : A → Op₂ A → Op₂ A → Op₁ A → Set _
+StarMakeRight e _+_ _∙_ _⁻* = ∀ x → (e + (x ∙ (x ⁻*))) ≈ (x ⁻*)
+
+StarMakeLeft : A → Op₂ A → Op₂ A → Op₁ A → Set _
+StarMakeLeft e _+_ _∙_ _⁻* = ∀ x →  (e + ((x ⁻*) ∙ x)) ≈ (x ⁻*)

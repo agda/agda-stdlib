@@ -750,20 +750,20 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _≉_
     )
 
-record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
+record IdempotentSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_
   infix  4 _≈_
   field
-    Carrier               : Set c
-    _≈_                   : Rel Carrier ℓ
-    _+_                   : Op₂ Carrier
-    _*_                   : Op₂ Carrier
-    0#                    : Carrier
-    1#                    : Carrier
-    isKleeneAlgebra       : IsKleeneAlgebra _≈_ _+_ _*_ 0# 1#
+    Carrier                : Set c
+    _≈_                    : Rel Carrier ℓ
+    _+_                    : Op₂ Carrier
+    _*_                    : Op₂ Carrier
+    0#                     : Carrier
+    1#                     : Carrier
+    isIdempotentSemiring   : IsIdempotentSemiring _≈_ _+_ _*_ 0# 1#
 
-  open IsKleeneAlgebra isKleeneAlgebra public
+  open IsIdempotentSemiring isIdempotentSemiring public
 
   semiring : Semiring _ _
   semiring = record { isSemiring = isSemiring }
@@ -778,6 +778,37 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     ; nearSemiring; semiringWithoutOne
     ; semiringWithoutAnnihilatingZero
     ; rawSemiring
+    )
+
+record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier               : Set c
+    _≈_                   : Rel Carrier ℓ
+    _+_                   : Op₂ Carrier
+    _*_                   : Op₂ Carrier
+    _⁻*                   : Op₁ Carrier
+    0#                    : Carrier
+    1#                    : Carrier
+    isKleeneAlgebra       : IsKleeneAlgebra _≈_ _+_ _*_ _⁻* 0# 1#
+
+  open IsKleeneAlgebra isKleeneAlgebra public
+
+  idempotentSemiring : IdempotentSemiring _ _
+  idempotentSemiring = record { isIdempotentSemiring = isIdempotentSemiring }
+
+  open IdempotentSemiring idempotentSemiring public
+    using
+    ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-commutativeMagma
+    ; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma; *-magma; *-semigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero
+    ; rawSemiring; semiring
     )
 
 record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
