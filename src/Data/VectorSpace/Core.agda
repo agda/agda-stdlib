@@ -25,10 +25,6 @@ private
     B : Set b
     C : Set c
 
--- ToDo: Does this already exist somewhere?
-_Λ_ : (A → B) → (A → C) → A → B × C
-f Λ g = λ x → (f x , g x)
-
 module _
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
@@ -48,7 +44,7 @@ module _
       basisComplete : ∀ {a : T} →
                       a ≈ᴹ foldr ( _+ᴹ_
                                  ∘ (uncurry _*ₗ_)
-                                 ∘ (a ∙_) Λ id
+                                 ∘ < (a ∙_) , id >
                                  ) 0ᴹ basisSet
       -- ToDo: Can these be unified, by using one of the
       -- existing algebraic structures?

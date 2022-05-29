@@ -48,11 +48,6 @@ private
     C : Set c
 
 ------------------------------------------------------------------------
--- Utility
--- _Λ_ : (A → B) → (A → C) → A → B × C
--- f Λ g = λ x → (f x , g x)
-
-------------------------------------------------------------------------
 -- Pointwise equality for equivalence.
 -- (Copied from `Relation.Binary.PropositionalEquality` and modified.)
 infix 4 _≗_
@@ -96,8 +91,8 @@ module _
   open IsModuleHomomorphism isModuleHomomorphism
 
   foldr-homo : (g : T → S) → (xs : List T) →
-               f (foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ g Λ id) 0ᴹ xs) ≈
-                 foldr (_+_ ∘ (uncurry _*_) ∘ g Λ f) 0# xs
+               f (foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < g , id >) 0ᴹ xs) ≈
+                 foldr (_+_ ∘ (uncurry _*_) ∘ < g , f >) 0# xs
   foldr-homo g []       = f0≈0 isModuleHomomorphism
   foldr-homo g (x ∷ xs) = begin⟨ setoid ⟩
     f (h x (foldr h 0ᴹ xs))
@@ -106,10 +101,10 @@ module _
       ≈⟨ +-congʳ (*ₗ-homo (g x) x) ⟩
     g x * f x + f (foldr h 0ᴹ xs)
       ≈⟨ +-congˡ (foldr-homo g xs) ⟩
-    g x * f x + (foldr (_+_ ∘ uncurry _*_ ∘ g Λ f) 0# xs)
+    g x * f x + (foldr (_+_ ∘ uncurry _*_ ∘ < g , f >) 0# xs)
       ∎
     where
-    h = _+ᴹ_ ∘ uncurry _*ₗ_ ∘ g Λ id
+    h = _+ᴹ_ ∘ uncurry _*ₗ_ ∘ < g , id >
 
   -- Any linear map from T to S is equivalent to an inner product with
   -- some vector, v.
@@ -121,22 +116,22 @@ module _
         a ∙ v ≈⟨ foldr-homo-∙ g-cong basisSet ⟩
         foldr (_+_ ∘ (a ∙_) ∘ g) (a ∙ 0ᴹ) basisSet
           ≈⟨ foldr-cong (λ {y≈z _ → +-congˡ y≈z}) ∙-idʳ basisSet ⟩
-        foldr (_+_ ∘ (a ∙_) ∘ (uncurry _*ₗ_) ∘ (f Λ id)) 0# basisSet
+        foldr (_+_ ∘ (a ∙_) ∘ (uncurry _*ₗ_) ∘ < f , id >) 0# basisSet
           ≈⟨ foldr-cong (λ y≈z _ → +-cong ∙-comm-*ₗ y≈z)
                         (reflexive Eq.refl) basisSet ⟩
-        foldr (_+_ ∘ (uncurry _*_) ∘ (f Λ (a ∙_))) 0# basisSet
+        foldr (_+_ ∘ (uncurry _*_) ∘ < f , (a ∙_) >) 0# basisSet
           ≈⟨ foldr-cong (λ y≈z x → +-cong (*-comm (f x) (a ∙ x)) y≈z)
                         (reflexive Eq.refl) basisSet ⟩
-        foldr (_+_ ∘ (uncurry _*_) ∘ ((a ∙_) Λ f)) 0# basisSet
+        foldr (_+_ ∘ (uncurry _*_) ∘ < (a ∙_) , f >) 0# basisSet
           ≈⟨ sym (foldr-homo (a ∙_) basisSet) ⟩
-        f (foldr (_+ᴹ_ ∘ (uncurry _*ₗ_) ∘ (a ∙_) Λ id) 0ᴹ basisSet)
+        f (foldr (_+ᴹ_ ∘ (uncurry _*ₗ_) ∘ < (a ∙_) , id >) 0ᴹ basisSet)
           ≈⟨ ⟦⟧-cong (Setoid.sym ≈ᴹ-setoid (basisComplete)) ⟩
         f a
           ∎)
     )
     where
     g : Op₁ T
-    g = uncurry _*ₗ_ ∘ (f Λ id)
+    g = uncurry _*ₗ_ ∘ < f , id >
     v = foldr (_+ᴹ_ ∘ g) 0ᴹ basisSet
     g-cong : Congruent _≈ᴹ_ _≈ᴹ_ g
     g-cong {x} {y} x≈y = begin⟨ ≈ᴹ-setoid ⟩
