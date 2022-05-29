@@ -42,24 +42,16 @@ module _
 
   open IsModuleHomomorphism isModuleHomomorphism
 
-  -- f(x) ≈ 0 iff x ≈ 0, for linear non-trivial f
-  f0≈0 : f A.0ᴹ B.≈ᴹ B.0ᴹ
-  f0≈0 = begin⟨ B.≈ᴹ-setoid ⟩
-    f A.0ᴹ           ≈⟨ ⟦⟧-cong (A.≈ᴹ-sym (A.*ₗ-zeroˡ A.0ᴹ)) ⟩
-    f (0# A.*ₗ A.0ᴹ) ≈⟨ *ₗ-homo 0# A.0ᴹ ⟩
-    0# B.*ₗ f A.0ᴹ   ≈⟨ B.*ₗ-zeroˡ (f A.0ᴹ) ⟩
-    B.0ᴹ             ∎
-
   x≈0⇒fx≈0 : ∀ {x} → x A.≈ᴹ A.0ᴹ → f x B.≈ᴹ B.0ᴹ
   x≈0⇒fx≈0 {x} x≈0 = begin⟨ B.≈ᴹ-setoid ⟩
     f x    ≈⟨ ⟦⟧-cong x≈0 ⟩
-    f A.0ᴹ ≈⟨ f0≈0 ⟩
+    f A.0ᴹ ≈⟨ 0ᴹ-homo ⟩
     B.0ᴹ   ∎
 
   fx≉0⇒x≉0 : ∀ {x} → f x B.≉ᴹ B.0ᴹ → x A.≉ᴹ A.0ᴹ
   fx≉0⇒x≉0 = contraposition x≈0⇒fx≈0
 
-  -- Zero is a unique output of linear map ≉ `const 0`.
+  -- Zero is a unique output of non-trivial (i.e. - ≉ `const 0`) linear map.
   zero-unique : ∀ {x} →
                 Σ[ (s , y) ∈ S × A ] ((s A.*ₗ x A.≈ᴹ y) × (f y B.≉ᴹ B.0ᴹ)) →
                 x A.≉ᴹ A.0ᴹ → f x B.≉ᴹ B.0ᴹ
@@ -82,11 +74,25 @@ module _
   fx+f[-x]≈0 {x} = begin⟨ B.≈ᴹ-setoid ⟩
     f x B.+ᴹ f (A.-ᴹ x) ≈⟨ B.≈ᴹ-sym (+ᴹ-homo x (A.-ᴹ x)) ⟩
     f (x A.+ᴹ (A.-ᴹ x)) ≈⟨ ⟦⟧-cong (A.-ᴹ‿inverseʳ x) ⟩
-    f A.0ᴹ              ≈⟨ f0≈0 ⟩
+    f A.0ᴹ              ≈⟨ 0ᴹ-homo ⟩
     B.0ᴹ                ∎
 
   f[-x]≈-fx : ∀ {x} → f (A.-ᴹ x) B.≈ᴹ B.-ᴹ f x
   f[-x]≈-fx {x} = B.uniqueʳ‿-ᴹ (f x) (f (A.-ᴹ x)) fx+f[-x]≈0
+
+  -- A non-trivial linear function is injective.
+  fx-fy≈0 : ∀ {x y} → f x B.≈ᴹ f y → f x B.+ᴹ (B.-ᴹ f y) B.≈ᴹ B.0ᴹ
+  fx-fy≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
+    f x B.+ᴹ (B.-ᴹ f y) ≈⟨ B.+ᴹ-congˡ (B.-ᴹ‿cong (B.≈ᴹ-sym fx≈fy)) ⟩
+    f x B.+ᴹ (B.-ᴹ f x) ≈⟨ B.-ᴹ‿inverseʳ (f x) ⟩
+    B.0ᴹ                ∎
+
+  fx-y≈0 : ∀ {x y} → f x B.≈ᴹ f y → f (x A.+ᴹ (A.-ᴹ y)) B.≈ᴹ B.0ᴹ
+  fx-y≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
+    f (x A.+ᴹ (A.-ᴹ y)) ≈⟨ +ᴹ-homo x (A.-ᴹ y) ⟩
+    f x B.+ᴹ f (A.-ᴹ y) ≈⟨ B.+ᴹ-congˡ f[-x]≈-fx ⟩
+    f x B.+ᴹ (B.-ᴹ f y) ≈⟨ fx-fy≈0 fx≈fy ⟩
+    B.0ᴹ                ∎
 
   module _ {dne : DoubleNegationElimination _} where
 
@@ -98,21 +104,7 @@ module _
       where
       ¬x≉0 : ¬ (x A.≉ᴹ A.0ᴹ)
       ¬x≉0 = λ x≉0 → zero-unique ((s , y) , (s·x≈y , fy≉0)) x≉0 fx≈0
-
-    -- A non-trivial linear function is injective.
-    fx-fy≈0 : ∀ {x y} → f x B.≈ᴹ f y → f x B.+ᴹ (B.-ᴹ f y) B.≈ᴹ B.0ᴹ
-    fx-fy≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
-      f x B.+ᴹ (B.-ᴹ f y) ≈⟨ B.+ᴹ-congˡ (B.-ᴹ‿cong (B.≈ᴹ-sym fx≈fy)) ⟩
-      f x B.+ᴹ (B.-ᴹ f x) ≈⟨ B.-ᴹ‿inverseʳ (f x) ⟩
-      B.0ᴹ                ∎
-
-    fx-y≈0 : ∀ {x y} → f x B.≈ᴹ f y → f (x A.+ᴹ (A.-ᴹ y)) B.≈ᴹ B.0ᴹ
-    fx-y≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
-      f (x A.+ᴹ (A.-ᴹ y)) ≈⟨ +ᴹ-homo x (A.-ᴹ y) ⟩
-      f x B.+ᴹ f (A.-ᴹ y) ≈⟨ B.+ᴹ-congˡ f[-x]≈-fx ⟩
-      f x B.+ᴹ (B.-ᴹ f y) ≈⟨ fx-fy≈0 fx≈fy ⟩
-      B.0ᴹ                ∎
-
+        
     inj-lm : ∀ {x y} →
       Σ[ (s , z) ∈ S × A ] ( (s A.*ₗ (x A.+ᴹ A.-ᴹ y) A.≈ᴹ z)
                            × (f z B.≉ᴹ B.0ᴹ)) →
