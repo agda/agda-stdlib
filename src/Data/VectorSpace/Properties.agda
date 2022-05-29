@@ -25,6 +25,7 @@ import Relation.Binary.Reasoning.Setoid      as Reasoning
 
 open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
 open import Algebra.Module.Morphism.Linear.Properties mod ⟨module⟩
+open import Axiom.DoubleNegationElimination
 open import Data.List
 open import Data.Product                        hiding (map)
 open import Function
@@ -34,7 +35,7 @@ open import Relation.Binary.Reasoning.MultiSetoid
 
 open CommutativeRing ring
   using ( _+_; _*_; _≈_; setoid; sym; 0#; +-congˡ; +-congʳ; +-cong
-        ; +-comm; reflexive; *-comm)
+        ; +-comm; reflexive; *-comm; _≉_)
   renaming (Carrier to S)
 open Module mod renaming (Carrierᴹ to T)
 open MorphismStructures.ModuleMorphisms mod ⟨module⟩
@@ -85,15 +86,16 @@ foldr-homo-∙ {v} {x₀} {g} g-cong (x ∷ xs) = begin⟨ setoid ⟩
 -- Properties predicated upon a linear map from tensor to scalar.
 module _
   {f : T → S}
-  (isModuleHomomorphism : IsModuleHomomorphism f)
+  {dne : DoubleNegationElimination ℓm}
+  (isModHomo : IsModuleHomomorphism f)
   where
 
-  open IsModuleHomomorphism isModuleHomomorphism
+  open IsModuleHomomorphism isModHomo
 
   foldr-homo : (g : T → S) → (xs : List T) →
                f (foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < g , id >) 0ᴹ xs) ≈
                  foldr (_+_ ∘ (uncurry _*_) ∘ < g , f >) 0# xs
-  foldr-homo g []       = f0≈0 isModuleHomomorphism
+  foldr-homo g []       = 0ᴹ-homo
   foldr-homo g (x ∷ xs) = begin⟨ setoid ⟩
     f (h x (foldr h 0ᴹ xs))
       ≈⟨ +ᴹ-homo (g x *ₗ x) (foldr h 0ᴹ xs) ⟩
@@ -141,20 +143,27 @@ module _
       f y *ₗ y ≡⟨⟩
       g y ∎
 
-  -- ToDo: Is this next proof to solve, or uneeded scrap?
-  -- x·z≈y·z→x≈y : {x y : T} → Σ[ y ∈ T ] f y ≉ 0# →
-  --   (∀ {z : T} → x ∙ z ≈ y ∙ z) → x ≈ᵀ y
-  -- x·z≈y·z→x≈y {x = x} {y = y} Σ[y]fy≉𝟘 x∙z≈y∙z =
-  --   let z = foldl (λ acc v → acc T.+ᴹ f v *ₗ v) T.0ᴹ basisSet
-  --       -- x·z≈y·z = x∙z≈y∙z {z}
-  --       z·x≈y·z : z ∙ x ≈ y ∙ z
-  --       -- z·x≈y·z = step-≈ (z ∙ x) x·z≈y·z comm-∙
-  --       -- z·x≈y·z = step-≈ (z ∙ x) x∙z≈y∙z {z} comm-∙
-  --       z·x≈y·z = begin (z ∙ x) ≈⟨ comm-∙ ⟩ x∙z≈y∙z {z} ∎
-  --       z·x≈z·y : z ∙ x ≈ z ∙ y
-  --       z·x≈z·y = sym (step-≈ (z ∙ y) (sym z·x≈y·z) comm-∙)
-  --       fx≈z·y : f x ≈ z ∙ y
-  --       fx≈z·y = step-≈ (f x) z·x≈z·y (sym orthonormal)
-  --       fx≈fy : f x ≈ f y
-  --       fx≈fy = sym (step-≈ (f y) (sym fx≈z·y) (sym orthonormal))
-  --    in inj-lm Σ[y]fy≉𝟘 fx≈fy
+  -- Inner product extensional equivalence.
+  x·z≈y·z→x≈y : ∀ {x y} →
+                 Σ[ (s , z) ∈ S × T ]
+                   ((s *ₗ (x +ᴹ -ᴹ y) ≈ᴹ z) × (f z ≉ 0#)) →
+                 (∀ {z} → x ∙ z ≈ y ∙ z) → x ≈ᴹ y
+  x·z≈y·z→x≈y {x} {y} Σ[y]fy≉𝟘 x∙z≈y∙z = inj-lm isModHomo {dne} Σ[y]fy≉𝟘 fx≈fy
+    where
+    zˣ,f[x]≈zˣ∙x : ∃[ v ] f x ≈ v ∙ x
+    zˣ,f[x]≈zˣ∙x = T⊸S≈v∙ {x}
+    zˣ        = proj₁ zˣ,f[x]≈zˣ∙x
+    f[x]≈zˣ∙x = proj₂ zˣ,f[x]≈zˣ∙x
+    zʸ,f[y]≈zʸ∙y : ∃[ v ] f y ≈ v ∙ y
+    zʸ,f[y]≈zʸ∙y = T⊸S≈v∙ {y}
+    zʸ        = proj₁ zʸ,f[y]≈zʸ∙y
+    f[y]≈zʸ∙y = proj₂ zʸ,f[y]≈zʸ∙y
+    fx≈fy : f x ≈ f y
+    fx≈fy = begin⟨ setoid ⟩
+      f x     ≈⟨ f[x]≈zˣ∙x ⟩
+      zˣ ∙ x  ≈⟨ ∙-comm ⟩
+      x  ∙ zˣ ≈⟨ x∙z≈y∙z ⟩
+      y  ∙ zˣ ≈⟨ ∙-comm ⟩
+      zˣ ∙ y  ≈⟨ ∙-congʳ (≈ᴹ-reflexive Eq.refl) ⟩
+      zʸ ∙ y  ≈⟨ sym f[y]≈zʸ∙y ⟩
+      f y     ∎
