@@ -165,7 +165,7 @@ record Prosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   semiring : Semiring c ℓ₁
   semiring = record { isSemiring = isSemiring }
 
-record Proidempotentsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+record IdempotentProsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
   infixl 7 _*_
   infixl 6 _+_
@@ -177,12 +177,33 @@ record Proidempotentsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
     _*_           : Op₂ Carrier
     0#            : Carrier
     1#            : Carrier
-    isProidempotentsemiring : IsProidempotentsemiring _≈_ _≤_ _+_ _*_ 0# 1#
+    isIdempotentProsemiring : IsIdempotentProsemiring _≈_ _≤_ _+_ _*_ 0# 1#
 
-  open IsProidempotentsemiring isProidempotentsemiring public
+  open IsIdempotentProsemiring isIdempotentProsemiring public
 
   idempotentSemiring : IdempotentSemiring c ℓ₁
   idempotentSemiring = record { isIdempotentSemiring = isIdempotentSemiring }
+
+record Prokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infix  8 _⁻*
+  infixl 7 _*_
+  infixl 6 _+_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ₁
+    _≤_           : Rel Carrier ℓ₂
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    _⁻*           : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isProkleenealgebra : IsProkleenealgebra _≈_ _≤_ _+_ _*_ _⁻* 0# 1#
+
+  open IsProkleenealgebra isProkleenealgebra public
+
+  kleeneAlgebra : KleeneAlgebra c ℓ₁
+  kleeneAlgebra = record { isKleeneAlgebra = isKleeneAlgebra }
 
 ------------------------------------------------------------------------
 -- Bundles of partially ordered structures
@@ -364,7 +385,7 @@ record Posemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open Prosemiring prosemiring public using (semiring)
 
-record Poidempotentsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+record IdempotentPosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
   infixl 7 _*_
   infixl 6 _+_
@@ -376,11 +397,34 @@ record Poidempotentsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)
     _*_           : Op₂ Carrier
     0#            : Carrier
     1#            : Carrier
-    isPoidempotentsemiring : IsPoidempotentSemiring _≈_ _≤_ _+_ _*_ 0# 1#
+    isIdempotentPosemiring : IsIdempotentPosemiring _≈_ _≤_ _+_ _*_ 0# 1#
 
-  open IsPoidempotentSemiring isPoidempotentsemiring public
+  open IsIdempotentPosemiring isIdempotentPosemiring public
 
-  proidempotentsemiring : Proidempotentsemiring c ℓ₁ ℓ₂
-  proidempotentsemiring = record { isProidempotentsemiring = isProidempotentsemiring }
+  idempotentProsemiring : IdempotentProsemiring c ℓ₁ ℓ₂
+  idempotentProsemiring = record { isIdempotentProsemiring = isIdempotentProsemiring }
 
-  open Proidempotentsemiring proidempotentsemiring public using (idempotentSemiring)
+  open IdempotentProsemiring idempotentProsemiring public using (idempotentSemiring; +-idem)
+
+record Pokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infix  8 _⁻*
+  infixl 7 _*_
+  infixl 6 _+_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ₁
+    _≤_           : Rel Carrier ℓ₂
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    _⁻*           : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isPokleenealgebra : IsPokleenealgebra _≈_ _≤_ _+_ _*_ _⁻* 0# 1#
+
+  open IsPokleenealgebra isPokleenealgebra public
+
+  prokleenealgebra : Prokleenealgebra c ℓ₁ ℓ₂
+  prokleenealgebra = record { isProkleenealgebra = isProkleenealgebra }
+
+  open Prokleenealgebra prokleenealgebra public using (starMakeLeft; starMakeRight; leftInduction; rightInduction)

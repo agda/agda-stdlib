@@ -167,3 +167,9 @@ StarMakeRight e _+_ _∙_ _⁻* = ∀ x → (e + (x ∙ (x ⁻*))) ≈ (x ⁻*)
 
 StarMakeLeft : A → Op₂ A → Op₂ A → Op₁ A → Set _
 StarMakeLeft e _+_ _∙_ _⁻* = ∀ x →  (e + ((x ⁻*) ∙ x)) ≈ (x ⁻*)
+
+LeftInduction : Op₂ A → Op₂ A → Op₁ A → Set _
+LeftInduction _+_ _∙_ _⁻* = ∀ a b x → (b + (a ∙ x)) ≈ x → ((a ⁻*) ∙ b) ≈ x
+
+RightInduction : Op₂ A → Op₂ A → Op₁ A → Set _
+RightInduction _+_ _∙_ _⁻* = ∀ a b x → (b + (x ∙ a)) ≈ x → (b ∙ (a ⁻*)) ≈ x

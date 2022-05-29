@@ -781,6 +781,7 @@ record IdempotentSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     )
 
 record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 _⁻*
   infixl 7 _*_
   infixl 6 _+_
   infix  4 _≈_

@@ -508,6 +508,8 @@ record IsKleeneAlgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a �
     isIdempotentSemiring    : IsIdempotentSemiring + * 0# 1#
     starMakeLeft            : StarMakeLeft 1# + * ⁻*
     starMakeRight           : StarMakeRight 1# + * ⁻*
+    rightInduction          : RightInduction + * ⁻*
+    leftInduction           : LeftInduction + * ⁻*
 
   open IsIdempotentSemiring isIdempotentSemiring public
 

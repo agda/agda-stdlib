@@ -166,17 +166,38 @@ record IsProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 
   open IsSemiring isSemiring public using (distribˡ; distribʳ; zeroˡ; zeroʳ)
 
-record IsProidempotentsemiring (+ ∙ : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsIdempotentProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isProsemiring  : IsProsemiring + ∙ 0# 1#
+    isProsemiring  : IsProsemiring + * 0# 1#
     +-idem         : Idempotent +
 
   open IsProsemiring isProsemiring public
 
-  isIdempotentSemiring : IsIdempotentSemiring + ∙ 0# 1#
+  isIdempotentSemiring : IsIdempotentSemiring + * 0# 1#
   isIdempotentSemiring = record { isSemiring = isSemiring ; +-idem = +-idem }
 
   open IsIdempotentSemiring isIdempotentSemiring public using (+-idem)
+
+record IsProkleenealgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isIdempotentProsemiring : IsIdempotentProsemiring + * 0# 1#
+    starMakeLeft            : StarMakeLeft 1# + * ⁻*
+    starMakeRight           : StarMakeRight 1# + * ⁻*
+    rightInduction          : RightInduction + * ⁻*
+    leftInduction           : LeftInduction + * ⁻*
+
+  open IsIdempotentProsemiring isIdempotentProsemiring public
+
+  isKleeneAlgebra : IsKleeneAlgebra + * ⁻* 0# 1#
+  isKleeneAlgebra = record
+    { isIdempotentSemiring = isIdempotentSemiring
+    ; starMakeLeft = starMakeLeft
+    ; starMakeRight = starMakeRight
+    ; rightInduction = rightInduction
+    ; leftInduction  = leftInduction
+    }
+
+  open IsKleeneAlgebra isKleeneAlgebra public using (starMakeLeft; starMakeRight; rightInduction; leftInduction)
 
 ------------------------------------------------------------------------
 -- Partially ordered structures
@@ -334,16 +355,38 @@ record IsPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) 
   open IsProsemiring isProsemiring public
     using (isSemiring; distribˡ; distribʳ; zeroˡ; zeroʳ)
 
-record IsPoidempotentSemiring (+ ∙ : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsIdempotentPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isPosemiring  : IsPosemiring + ∙ 0# 1#
+    isPosemiring  : IsPosemiring + * 0# 1#
     +-idem      : Idempotent +
 
   open IsPosemiring isPosemiring public
 
-  isProidempotentsemiring : IsProidempotentsemiring + ∙ 0# 1#
-  isProidempotentsemiring = record { isProsemiring = isProsemiring ; +-idem = +-idem }
+  isIdempotentProsemiring : IsIdempotentProsemiring + * 0# 1#
+  isIdempotentProsemiring = record { isProsemiring = isProsemiring ; +-idem = +-idem }
 
-  open IsProidempotentsemiring isProidempotentsemiring public
+  open IsIdempotentProsemiring isIdempotentProsemiring public
     using (isIdempotentSemiring; +-idem)
+
+record IsPokleenealgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isIdempotentPosemiring  : IsIdempotentPosemiring + * 0# 1#
+    starMakeLeft            : StarMakeLeft 1# + * ⁻*
+    starMakeRight           : StarMakeRight 1# + * ⁻*
+    rightInduction          : RightInduction + * ⁻*
+    leftInduction           : LeftInduction + * ⁻*
+
+  open IsIdempotentPosemiring isIdempotentPosemiring public
+
+  isProkleenealgebra : IsProkleenealgebra + * ⁻* 0# 1#
+  isProkleenealgebra = record
+    { isIdempotentProsemiring = isIdempotentProsemiring
+    ; starMakeLeft = starMakeLeft
+    ; starMakeRight = starMakeRight
+    ; rightInduction = rightInduction
+    ; leftInduction  = leftInduction
+    }
+
+  open IsProkleenealgebra isProkleenealgebra public
+    using (isKleeneAlgebra; starMakeLeft; starMakeRight; leftInduction; rightInduction)
 
