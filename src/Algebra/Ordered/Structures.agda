@@ -191,10 +191,10 @@ record IsProkleenealgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a
   isKleeneAlgebra : IsKleeneAlgebra + * ⁻* 0# 1#
   isKleeneAlgebra = record
     { isIdempotentSemiring = isIdempotentSemiring
-    ; starMakeLeft = starMakeLeft
-    ; starMakeRight = starMakeRight
-    ; rightInduction = rightInduction
-    ; leftInduction  = leftInduction
+    ; starMakeLeft         = starMakeLeft
+    ; starMakeRight        = starMakeRight
+    ; rightInduction       = rightInduction
+    ; leftInduction        = leftInduction
     }
 
   open IsKleeneAlgebra isKleeneAlgebra public using (starMakeLeft; starMakeRight; rightInduction; leftInduction)
@@ -381,10 +381,10 @@ record IsPokleenealgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a 
   isProkleenealgebra : IsProkleenealgebra + * ⁻* 0# 1#
   isProkleenealgebra = record
     { isIdempotentProsemiring = isIdempotentProsemiring
-    ; starMakeLeft = starMakeLeft
-    ; starMakeRight = starMakeRight
-    ; rightInduction = rightInduction
-    ; leftInduction  = leftInduction
+    ; starMakeLeft            = starMakeLeft
+    ; starMakeRight           = starMakeRight
+    ; rightInduction          = rightInduction
+    ; leftInduction           = leftInduction
     }
 
   open IsProkleenealgebra isProkleenealgebra public
