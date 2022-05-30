@@ -32,16 +32,16 @@ module _
   where
 
   open CommutativeRing ring renaming (Carrier  to S)  -- "S" for scalar.
-  open Module          mod  renaming (Carrierᴹ to T)  -- "T" for tensor.
+  open Module          mod  renaming (Carrierᴹ to V)  -- "V" for vector.
 
   record VectorSpace : Set (suc (ℓr ⊔ r ⊔ ℓm ⊔ m)) where
 
     constructor mkVS
     infix 7 _∙_
     field
-      _∙_           : T → T → S
-      basisSet      : List T
-      basisComplete : ∀ {a : T} →
+      _∙_           : V → V → S
+      basisSet      : List V
+      basisComplete : ∀ {a : V} →
                       a ≈ᴹ foldr ( _+ᴹ_
                                  ∘ (uncurry _*ₗ_)
                                  ∘ < (a ∙_) , id >
@@ -50,11 +50,11 @@ module _
       -- existing algebraic structures?
       -- I'm only finding things that are predicated upon: `A → A → A`, or
       -- `A → B`; nothing for: `A → A → B`.
-      ∙-comm        : ∀ {a b : T} → a ∙ b ≈ b ∙ a
-      ∙-distrib-+   : ∀ {a b c : T} → a ∙ (b +ᴹ c) ≈ (a ∙ b) + (a ∙ c)
-      ∙-comm-*ₗ     : ∀ {s : S} {a b : T} → a ∙ (s *ₗ b) ≈ s * (a ∙ b)
+      ∙-comm        : ∀ {a b : V} → a ∙ b ≈ b ∙ a
+      ∙-distrib-+   : ∀ {a b c : V} → a ∙ (b +ᴹ c) ≈ (a ∙ b) + (a ∙ c)
+      ∙-comm-*ₗ     : ∀ {s : S} {a b : V} → a ∙ (s *ₗ b) ≈ s * (a ∙ b)
       ∙-congˡ       : ∀ {a b c} → b ≈ᴹ c → a ∙ b ≈ a ∙ c
       ∙-congʳ       : ∀ {a b c} → b ≈ᴹ c → b ∙ a ≈ c ∙ a  -- Prove.
-      ∙-idˡ         : ∀ {a : T} → 0ᴹ ∙ a ≈ 0#
-      ∙-idʳ         : ∀ {a : T} → a ∙ 0ᴹ ≈ 0#              -- Prove.
+      ∙-idˡ         : ∀ {a : V} → 0ᴹ ∙ a ≈ 0#
+      ∙-idʳ         : ∀ {a : V} → a ∙ 0ᴹ ≈ 0#              -- Prove.
 
