@@ -97,7 +97,7 @@ jobs:
       # downloading ghc and cabal and rebuilding Agda if absolutely necessary
       # i.e. if we change either the version of Agda, ghc, or cabal that we want
       # to use for the build.
-      - name: Cache cabal packages
+      - name: Cache ~/.cabal directories
         uses: actions/cache@v2
         id: cache-cabal
         with:
