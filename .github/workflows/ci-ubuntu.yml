@@ -124,6 +124,9 @@ jobs:
       - name: Cabal update
         run: cabal update
 
+      - name: Install alex
+        run: ${{ env.CABAL_INSTALL }} alex
+
       - name: Download and install Agda from github
         if: steps.cache-cabal.outputs.cache-hit != 'true'
         run: |
