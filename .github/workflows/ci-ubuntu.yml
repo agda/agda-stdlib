@@ -48,7 +48,8 @@ on:
 env:
   GHC_VERSION: 8.10.7
   CABAL_VERSION: 3.6.2.0
-  CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
+  CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
+  # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
   AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -i src/
 
 jobs:
