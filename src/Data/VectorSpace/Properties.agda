@@ -33,12 +33,6 @@ open import Function.Equivalence                using (⇔-setoid)
 open import Relation.Binary                     hiding (_⇔_)
 open import Relation.Binary.Reasoning.MultiSetoid
 
-open CommutativeRing ring
-  using ( _+_; _*_; _≈_; setoid; sym; 0#; +-congˡ; +-congʳ; +-cong
-        ; +-comm; reflexive; *-comm; _≉_)
-  renaming (Carrier to S)
-open Module mod renaming (Carrierᴹ to V)
-open MorphismStructures.ModuleMorphisms mod ⟨module⟩
 open VectorSpace vs
 
 private
@@ -47,24 +41,6 @@ private
     A : Set a
     B : Set b
     C : Set c
-
-------------------------------------------------------------------------
--- Pointwise equality for equivalence.
--- (Copied from `Relation.Binary.PropositionalEquality` and modified.)
-infix 4 _≗_
-
--- Note: `x` is kept explicit, to allow `C-c C-c` on list args, below.
-_≗_ : (f g : A → S) → Set _
-f ≗ g = ∀ x → f x ≈ g x
-
-≗-refl : Reflexive _≗_
-≗-refl x = Setoid.refl setoid
-
-≗-sym : Symmetric _≗_
-≗-sym f≗g x = Setoid.sym setoid (f≗g x)
-
-≗-trans : Transitive _≗_
-≗-trans f≗g g≗h x = Setoid.trans setoid (f≗g x) (g≗h x)
 
 ------------------------------------------------------------------------
 -- Some consequences of certain `VectorSpace` property fields.
@@ -93,49 +69,14 @@ foldr-homo-∙ {v} {x₀} {g} g-cong (x ∷ xs) = begin⟨ setoid ⟩
   v ∙ g x + v ∙ foldr (_+ᴹ_ ∘ g) x₀ xs       ≈⟨ +-congˡ (foldr-homo-∙ g-cong xs) ⟩
   foldr (_+_ ∘ (v ∙_) ∘ g) (v ∙ x₀) (x ∷ xs) ∎
 
-record LinMap : Set (m ⊔ r ⊔ ℓr ⊔ ℓm) where
-  constructor mkLM
-  field
-    f    : V → S
-    homo : IsModuleHomomorphism f
+-- Proofs predicated upon a `VectorSpace.LinMap` instance.
+module _ (lm : LinMap) where
 
-lm-setoid : Setoid _ _
-lm-setoid = record
-  { Carrier = LinMap
-  ; _≈_     = _≗_ on LinMap.f
-  ; isEquivalence = record
-      { refl  = ≗-refl
-      ; sym   = ≗-sym
-      ; trans = ≗-trans
-      }
-  }
+  open LinMap lm
   
--- Properties predicated upon a linear map from tensor to scalar.
-module _
-  {f : V → S}
-  {dne : DoubleNegationElimination ℓm}
-  (isModHomo : IsModuleHomomorphism f)
-  where
-
-  open IsModuleHomomorphism isModHomo
-
-  ----------------------------------------------------------------------
-  -- Equivalent vector generator.
-  g : Op₁ V
-  g = uncurry _*ₗ_ ∘ < f , id >
-  v : V
-  v = foldr (_+ᴹ_ ∘ g) 0ᴹ basisSet
-  g-cong : Congruent _≈ᴹ_ _≈ᴹ_ g
-  g-cong {x} {y} x≈y = begin⟨ ≈ᴹ-setoid ⟩
-    g x ≡⟨⟩
-    f x *ₗ x ≈⟨ *ₗ-congʳ (⟦⟧-cong x≈y) ⟩
-    f y *ₗ x ≈⟨ *ₗ-congˡ x≈y ⟩
-    f y *ₗ y ≡⟨⟩
-    g y ∎
-
   foldr-homo : (g : V → S) → (xs : List V) →
                f (foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < g , id >) 0ᴹ xs) ≈
-                 foldr (_+_ ∘ (uncurry _*_) ∘ < g , f >) 0# xs
+                 foldr (_+_ ∘ uncurry _*_ ∘ < g , f >) 0# xs
   foldr-homo g []       = 0ᴹ-homo
   foldr-homo g (x ∷ xs) = begin⟨ setoid ⟩
     f (h x (foldr h 0ᴹ xs))
@@ -149,11 +90,42 @@ module _
     where
     h = _+ᴹ_ ∘ uncurry _*ₗ_ ∘ < g , id >
 
+  vSum : List V → V
+  vSum xs = foldr _+ᴹ_ 0ᴹ xs
+
+  fScale : V → V
+  fScale = uncurry _*ₗ_ ∘ < f , id >
+
+  fScale-distrib-+ᴹ : ∀ u v → fScale (u +ᴹ v) ≈ᴹ fScale u +ᴹ fScale v
+  fScale-distrib-+ᴹ u v = begin⟨ ≈ᴹ-setoid ⟩
+    fScale (u +ᴹ v)                      ≡⟨⟩
+    f (u +ᴹ v)  *ₗ (u +ᴹ v)              ≈⟨ {!!} ⟩
+    (f u + f v) *ₗ (u +ᴹ v)              ≈⟨ {!!} ⟩
+    (f u + f v) *ₗ u +ᴹ (f u + f v) *ₗ v ≈⟨ {!!} ⟩
+    -- Shoot! I don't think `fScale` actually distributes over `_+ᴹ_`. :(
+    f u *ₗ u +ᴹ f v *ₗ v                 ≡⟨⟩
+    fScale u +ᴹ fScale v                 ∎
+    
+  foldr-homo′ : ∀ (xs) →
+               foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f , id >) 0ᴹ xs
+               ≈ᴹ f (vSum xs) *ₗ vSum xs
+  foldr-homo′ []       = Setoid.sym ≈ᴹ-setoid (begin⟨ ≈ᴹ-setoid ⟩
+    f (vSum []) *ₗ vSum [] ≡⟨⟩
+    f 0ᴹ *ₗ 0ᴹ             ≈⟨ *ₗ-congʳ 0ᴹ-homo ⟩
+    0#   *ₗ 0ᴹ             ≈⟨ *ₗ-zeroʳ 0# ⟩
+    0ᴹ ∎)
+  foldr-homo′ (x ∷ xs) = begin⟨ ≈ᴹ-setoid ⟩
+    f x *ₗ x +ᴹ foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f , id >) 0ᴹ xs
+      ≈⟨ +ᴹ-congˡ (foldr-homo′ xs) ⟩
+    (fScale x) +ᴹ (fScale (vSum xs))
+      ≈⟨ {!!} ⟩
+    f (vSum (x ∷ xs)) *ₗ vSum (x ∷ xs) ∎
+    
   f≈v∙ : ∀ {a} → f a ≈ v ∙ a
   f≈v∙ {a} = sym (begin⟨ setoid ⟩
     v ∙ a ≈⟨ ∙-comm ⟩
-    a ∙ v ≈⟨ foldr-homo-∙ g-cong basisSet ⟩
-    foldr (_+_ ∘ (a ∙_) ∘ g) (a ∙ 0ᴹ) basisSet
+    a ∙ v ≈⟨ foldr-homo-∙ (vscale-cong f ⟦⟧-cong) basisSet ⟩
+    foldr (_+_ ∘ (a ∙_) ∘ vscale f) (a ∙ 0ᴹ) basisSet
       ≈⟨ foldr-cong (λ {y≈z _ → +-congˡ y≈z}) ∙-idʳ basisSet ⟩
     foldr (_+_ ∘ (a ∙_) ∘ (uncurry _*ₗ_) ∘ < f , id >) 0# basisSet
       ≈⟨ foldr-cong (λ y≈z _ → +-cong ∙-comm-*ₗ y≈z)
@@ -168,11 +140,11 @@ module _
     f a ∎)
 
   -- Inner product extensional equivalence.
-  x·z≈y·z→x≈y : ∀ {x y} →
+  x·z≈y·z⇒x≈y : ∀ {x y} → DoubleNegationElimination ℓm →
                  Σ[ (s , z) ∈ S × V ]
                    ((s *ₗ (x +ᴹ -ᴹ y) ≈ᴹ z) × (f z ≉ 0#)) →
                  (∀ {z} → x ∙ z ≈ y ∙ z) → x ≈ᴹ y
-  x·z≈y·z→x≈y {x} {y} Σ[z]fz≉𝟘 x∙z≈y∙z = inj-lm isModHomo {dne} Σ[z]fz≉𝟘 fx≈fy
+  x·z≈y·z⇒x≈y {x} {y} dne Σ[z]fz≉𝟘 x∙z≈y∙z = inj-lm homo {dne} Σ[z]fz≉𝟘 fx≈fy
     where
     fx≈fy : f x ≈ f y
     fx≈fy = begin⟨ setoid ⟩
@@ -183,10 +155,53 @@ module _
       v ∙ y ≈⟨ sym (f≈v∙ {y}) ⟩
       f y   ∎
 
-  -- Isomorphism 1: (V ⊸ S) ↔ V
-  V⊸S↔V : Inverse {!!} ≈ᴹ-setoid  -- LinMap ↔ V
-  V⊸S↔V =  {!!}
+u∙-homo : ∀ {u} → IsModuleHomomorphism (u ∙_)
+u∙-homo = record
+  { isBimoduleHomomorphism = record
+      { +ᴹ-isGroupHomomorphism = record
+          { isMonoidHomomorphism = record
+              { isMagmaHomomorphism = record
+                  { isRelHomomorphism = record
+                      { cong = ∙-congˡ
+                      }
+                  ; homo = λ x y → ∙-distrib-+
+                  }
+              ; ε-homo = ∙-idʳ
+              }
+          ; ⁻¹-homo = λ x → ∙-homo-⁻¹
+          }
+      ; *ₗ-homo = λ r x → ∙-comm-*ₗ
+      ; *ᵣ-homo = λ r x → ∙-comm-*ᵣ
+      }
+  }
+
+vgen-cong : ∀ f₁ f₂ (xs : List V) →
+            foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f₁ , id >) 0ᴹ xs
+            ≈ᴹ foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f₂ , id >) 0ᴹ xs
+vgen-cong f₁ f₂ [] = Setoid.reflexive ≈ᴹ-setoid Eq.refl
+vgen-cong f₁ f₂ (x ∷ xs) = {!!}
+
+v-cong : ∀ {lm₁ lm₂} → lm₁ ≈ᴸ lm₂ → LinMap.v lm₁ ≈ᴹ LinMap.v lm₂
+v-cong {lm₁} {lm₂} lm₁≈lm₂ = begin⟨ ≈ᴹ-setoid ⟩
+  LinMap.v lm₁                                          ≡⟨⟩
+  foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f₁ , id >) 0ᴹ basisSet ≈⟨ fold[f₁]≈fold[f₂] ⟩
+  foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f₂ , id >) 0ᴹ basisSet ≡⟨⟩
+  LinMap.v lm₂                                          ∎
+  where
+  f₁ = LinMap.f lm₁
+  f₂ = LinMap.f lm₂
+  fold[f₁]≈fold[f₂] = {!!}
   
+-- Isomorphism 1: (V ⊸ S) ↔ V
+V⊸S↔V : Inverse lm-setoid ≈ᴹ-setoid
+V⊸S↔V = record
+  { to        = λ lm → LinMap.v lm
+  ; from      = λ u  → mkLM (u ∙_) u∙-homo
+  ; to-cong   = λ {lm₁≈lm₂ → {! ≈ᴹ-setoid.cong!}}
+  ; from-cong = {!!}
+  ; inverse   = {!!}
+  }
+  -- where
   -- a⊸§→a : {V : Set ℓ₁} {A : Set ℓ₁}
   --          ⦃ _ : Ring V ⦄ ⦃ _ : Ring A ⦄
   --          ⦃ _ : Scalable T A ⦄
