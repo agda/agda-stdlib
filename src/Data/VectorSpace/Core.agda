@@ -45,6 +45,9 @@ record VectorSpace
   vscale : (V → S) → V → V
   vscale f = uncurry _*ₗ_ ∘ < f , id >
 
+  vgen : (V → S) → List V → V
+  vgen f = foldr (_+ᴹ_ ∘ vscale f) 0ᴹ
+  
   infix 7 _∙_
   field
     _∙_           : V → V → S
@@ -108,9 +111,6 @@ record VectorSpace
 
     open IsModuleHomomorphism homo public
 
-    vgen : (V → S) → List V → V
-    vgen f = foldr (_+ᴹ_ ∘ vscale f) 0ᴹ
-  
     -- Equivalent vector generator.
     v : V
     v = vgen f basisSet

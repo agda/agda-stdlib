@@ -74,9 +74,10 @@ module _ (lm : LinMap) where
 
   open LinMap lm
   
-  foldr-homo : (g : V → S) → (xs : List V) →
-               f (foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < g , id >) 0ᴹ xs) ≈
-                 foldr (_+_ ∘ uncurry _*_ ∘ < g , f >) 0# xs
+  vred : (V → S) → List V → S
+  vred g = foldr (_+_ ∘ uncurry _*_ ∘ < g , f >) 0#
+  
+  foldr-homo : (g : V → S) → (xs : List V) → f (vgen g xs) ≈ vred g xs
   foldr-homo g []       = 0ᴹ-homo
   foldr-homo g (x ∷ xs) = begin⟨ setoid ⟩
     f (h x (foldr h 0ᴹ xs))
@@ -85,47 +86,48 @@ module _ (lm : LinMap) where
       ≈⟨ +-congʳ (*ₗ-homo (g x) x) ⟩
     g x * f x + f (foldr h 0ᴹ xs)
       ≈⟨ +-congˡ (foldr-homo g xs) ⟩
-    g x * f x + (foldr (_+_ ∘ uncurry _*_ ∘ < g , f >) 0# xs)
+    g x * f x + vred g xs
       ∎
     where
-    h = _+ᴹ_ ∘ uncurry _*ₗ_ ∘ < g , id >
+    h = _+ᴹ_ ∘ vscale g
 
   vSum : List V → V
   vSum xs = foldr _+ᴹ_ 0ᴹ xs
 
   fScale : V → V
-  fScale = uncurry _*ₗ_ ∘ < f , id >
+  fScale = vscale f
 
-  fScale-distrib-+ᴹ : ∀ u v → fScale (u +ᴹ v) ≈ᴹ fScale u +ᴹ fScale v
-  fScale-distrib-+ᴹ u v = begin⟨ ≈ᴹ-setoid ⟩
-    fScale (u +ᴹ v)                      ≡⟨⟩
-    f (u +ᴹ v)  *ₗ (u +ᴹ v)              ≈⟨ {!!} ⟩
-    (f u + f v) *ₗ (u +ᴹ v)              ≈⟨ {!!} ⟩
-    (f u + f v) *ₗ u +ᴹ (f u + f v) *ₗ v ≈⟨ {!!} ⟩
-    -- Shoot! I don't think `fScale` actually distributes over `_+ᴹ_`. :(
-    f u *ₗ u +ᴹ f v *ₗ v                 ≡⟨⟩
-    fScale u +ᴹ fScale v                 ∎
+  fGen : List V → V
+  fGen = vgen f
+  
+  -- fScale-distrib-+ᴹ : ∀ u v → fScale (u +ᴹ v) ≈ᴹ fScale u +ᴹ fScale v
+  -- fScale-distrib-+ᴹ u v = begin⟨ ≈ᴹ-setoid ⟩
+  --   fScale (u +ᴹ v)                      ≡⟨⟩
+  --   f (u +ᴹ v)  *ₗ (u +ᴹ v)              ≈⟨ {!!} ⟩
+  --   (f u + f v) *ₗ (u +ᴹ v)              ≈⟨ {!!} ⟩
+  --   (f u + f v) *ₗ u +ᴹ (f u + f v) *ₗ v ≈⟨ {!!} ⟩
+  --   -- Shoot! I don't think `fScale` actually distributes over `_+ᴹ_`. :(
+  --   f u *ₗ u +ᴹ f v *ₗ v                 ≡⟨⟩
+  --   fScale u +ᴹ fScale v                 ∎
     
-  foldr-homo′ : ∀ (xs) →
-               foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f , id >) 0ᴹ xs
-               ≈ᴹ f (vSum xs) *ₗ vSum xs
+  foldr-homo′ : ∀ (xs) → fGen xs ≈ᴹ fScale (vSum xs)
   foldr-homo′ []       = Setoid.sym ≈ᴹ-setoid (begin⟨ ≈ᴹ-setoid ⟩
     f (vSum []) *ₗ vSum [] ≡⟨⟩
     f 0ᴹ *ₗ 0ᴹ             ≈⟨ *ₗ-congʳ 0ᴹ-homo ⟩
     0#   *ₗ 0ᴹ             ≈⟨ *ₗ-zeroʳ 0# ⟩
     0ᴹ ∎)
   foldr-homo′ (x ∷ xs) = begin⟨ ≈ᴹ-setoid ⟩
-    f x *ₗ x +ᴹ foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f , id >) 0ᴹ xs
+    fScale x +ᴹ fGen xs
       ≈⟨ +ᴹ-congˡ (foldr-homo′ xs) ⟩
-    (fScale x) +ᴹ (fScale (vSum xs))
+    fScale x +ᴹ fScale (vSum xs)
       ≈⟨ {!!} ⟩
-    f (vSum (x ∷ xs)) *ₗ vSum (x ∷ xs) ∎
+    fScale (vSum (x ∷ xs)) ∎
     
   f≈v∙ : ∀ {a} → f a ≈ v ∙ a
   f≈v∙ {a} = sym (begin⟨ setoid ⟩
     v ∙ a ≈⟨ ∙-comm ⟩
     a ∙ v ≈⟨ foldr-homo-∙ (vscale-cong f ⟦⟧-cong) basisSet ⟩
-    foldr (_+_ ∘ (a ∙_) ∘ vscale f) (a ∙ 0ᴹ) basisSet
+    foldr (_+_ ∘ (a ∙_) ∘ fScale) (a ∙ 0ᴹ) basisSet
       ≈⟨ foldr-cong (λ {y≈z _ → +-congˡ y≈z}) ∙-idʳ basisSet ⟩
     foldr (_+_ ∘ (a ∙_) ∘ (uncurry _*ₗ_) ∘ < f , id >) 0# basisSet
       ≈⟨ foldr-cong (λ y≈z _ → +-cong ∙-comm-*ₗ y≈z)
@@ -175,22 +177,17 @@ u∙-homo = record
       }
   }
 
-vgen-cong : ∀ f₁ f₂ (xs : List V) →
-            foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f₁ , id >) 0ᴹ xs
-            ≈ᴹ foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f₂ , id >) 0ᴹ xs
-vgen-cong f₁ f₂ [] = Setoid.reflexive ≈ᴹ-setoid Eq.refl
-vgen-cong f₁ f₂ (x ∷ xs) = {!!}
+vgen-cong : ∀ {f₁ f₂} → f₁ ≗ f₂ → ∀ xs → vgen f₁ xs ≈ᴹ vgen f₂ xs
+vgen-cong {f₁} {f₂} f₁≗f₂ []       = Setoid.reflexive ≈ᴹ-setoid Eq.refl
+vgen-cong {f₁} {f₂} f₁≗f₂ (x ∷ xs) = begin⟨ ≈ᴹ-setoid ⟩
+  f₁ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congʳ (*ₗ-congʳ (f₁≗f₂ x)) ⟩
+  f₂ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congˡ (vgen-cong f₁≗f₂ xs) ⟩
+  f₂ x *ₗ x +ᴹ vgen f₂ xs ∎
 
 v-cong : ∀ {lm₁ lm₂} → lm₁ ≈ᴸ lm₂ → LinMap.v lm₁ ≈ᴹ LinMap.v lm₂
 v-cong {lm₁} {lm₂} lm₁≈lm₂ = begin⟨ ≈ᴹ-setoid ⟩
-  LinMap.v lm₁                                          ≡⟨⟩
-  foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f₁ , id >) 0ᴹ basisSet ≈⟨ fold[f₁]≈fold[f₂] ⟩
-  foldr (_+ᴹ_ ∘ uncurry _*ₗ_ ∘ < f₂ , id >) 0ᴹ basisSet ≡⟨⟩
-  LinMap.v lm₂                                          ∎
-  where
-  f₁ = LinMap.f lm₁
-  f₂ = LinMap.f lm₂
-  fold[f₁]≈fold[f₂] = {!!}
+  LinMap.v lm₁ ≈⟨ vgen-cong lm₁≈lm₂ basisSet ⟩
+  LinMap.v lm₂ ∎
   
 -- Isomorphism 1: (V ⊸ S) ↔ V
 V⊸S↔V : Inverse lm-setoid ≈ᴹ-setoid
@@ -201,58 +198,3 @@ V⊸S↔V = record
   ; from-cong = {!!}
   ; inverse   = {!!}
   }
-  -- where
-  -- a⊸§→a : {V : Set ℓ₁} {A : Set ℓ₁}
-  --          ⦃ _ : Ring V ⦄ ⦃ _ : Ring A ⦄
-  --          ⦃ _ : Scalable T A ⦄
-  --          ⦃ _ : VectorSpace T A ⦄
-  --          ------------------------------
-  --       → LinMap T A {A} → T
-  -- a⊸§→a = λ { lm → foldl (λ acc v →
-  --                      acc + (LinMap.f lm v) · v) 𝟘 basisSet }
-
-  -- a⊸§←a : {T : Set ℓ₁} {A : Set ℓ₁}
-  --          ⦃ _ : Ring T ⦄ ⦃ _ : Ring A ⦄
-  --          ⦃ _ : Scalable T A ⦄
-  --          ⦃ _ : VectorSpace T A ⦄
-  --          --------------------------------------
-  --       → T → LinMap T A {A}
-  -- a⊸§←a = λ { a → mkLM (a ⊙_) ⊙-distrib-+ ⊙-comm-· }
-
-  -- a⊸§↔a : {T : Set ℓ₁} {A : Set ℓ₁}
-  --          ⦃ _ : Ring T ⦄ ⦃ _ : Ring A ⦄
-  --          ⦃ _ : Scalable T A ⦄ ⦃ _ : ScalableCont T A ⦄
-  --          ⦃ _ : VectorSpace T A ⦄ ⦃ _ : LinMap T A ⦄
-  --       → Σ[ y ∈ T ] f y ≢ 𝟘
-  --          ---------------------------------------------
-  --       → (LinMap T A) ↔ T
-  -- a⊸§↔a Σ[y]fy≢𝟘 =
-  --   mk↔ {f = a⊸§→a} {f⁻¹ = a⊸§←a}
-  --       ( (λ {x → begin
-  --                   a⊸§→a (a⊸§←a x)
-  --                 ≡⟨⟩
-  --                   a⊸§→a (mkLM (x ⊙_) ⊙-distrib-+ ⊙-comm-·)
-  --                 ≡⟨⟩
-  --                   foldl (λ acc v → acc + (x ⊙ v) · v) 𝟘 basisSet
-  --                 ≡⟨ x·z≡y·z→x≡y Σ[y]fy≢𝟘 orthonormal ⟩
-  --                   x
-  --                 ∎})
-  --       , λ {lm → begin
-  --                     a⊸§←a (a⊸§→a lm)
-  --                   ≡⟨⟩
-  --                     a⊸§←a (foldl (λ acc v →
-  --                                      acc + (LinMap.f lm v) · v) 𝟘 basisSet)
-  --                   ≡⟨⟩
-  --                     mkLM ( foldl ( λ acc v →
-  --                                      acc + (LinMap.f lm v) · v
-  --                                  ) 𝟘 basisSet
-  --                            ⊙_
-  --                          ) ⊙-distrib-+ ⊙-comm-·
-  --                   ≡⟨ ⊸≡ ( extensionality
-  --                             ( λ x → orthonormal {f = LinMap.f lm} {x = x} )
-  --                         )
-  --                    ⟩
-  --                     lm
-  --                   ∎}
-  --       )
-
