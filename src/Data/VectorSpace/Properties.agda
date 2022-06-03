@@ -19,18 +19,14 @@ module Data.VectorSpace.Properties
   (vs   : VectorSpace mod)
   where
 
-import Algebra.Module.Morphism.Structures    as MorphismStructures
-import Relation.Binary.PropositionalEquality as Eq
-import Relation.Binary.Reasoning.Setoid      as Reasoning
-
 open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
 open import Algebra.Module.Morphism.Linear.Properties mod ⟨module⟩
 open import Axiom.DoubleNegationElimination
 open import Data.List
 open import Data.Product                        hiding (map)
 open import Function
-open import Function.Equivalence                using (⇔-setoid)
 open import Relation.Binary                     hiding (_⇔_)
+import      Relation.Binary.PropositionalEquality as Eq
 open import Relation.Binary.Reasoning.MultiSetoid
 
 open VectorSpace vs
@@ -100,29 +96,6 @@ module _ (lm : LinMap) where
   fGen : List V → V
   fGen = vgen f
   
-  -- fScale-distrib-+ᴹ : ∀ u v → fScale (u +ᴹ v) ≈ᴹ fScale u +ᴹ fScale v
-  -- fScale-distrib-+ᴹ u v = begin⟨ ≈ᴹ-setoid ⟩
-  --   fScale (u +ᴹ v)                      ≡⟨⟩
-  --   f (u +ᴹ v)  *ₗ (u +ᴹ v)              ≈⟨ {!!} ⟩
-  --   (f u + f v) *ₗ (u +ᴹ v)              ≈⟨ {!!} ⟩
-  --   (f u + f v) *ₗ u +ᴹ (f u + f v) *ₗ v ≈⟨ {!!} ⟩
-  --   -- Shoot! I don't think `fScale` actually distributes over `_+ᴹ_`. :(
-  --   f u *ₗ u +ᴹ f v *ₗ v                 ≡⟨⟩
-  --   fScale u +ᴹ fScale v                 ∎
-    
-  foldr-homo′ : ∀ (xs) → fGen xs ≈ᴹ fScale (vSum xs)
-  foldr-homo′ []       = Setoid.sym ≈ᴹ-setoid (begin⟨ ≈ᴹ-setoid ⟩
-    f (vSum []) *ₗ vSum [] ≡⟨⟩
-    f 0ᴹ *ₗ 0ᴹ             ≈⟨ *ₗ-congʳ 0ᴹ-homo ⟩
-    0#   *ₗ 0ᴹ             ≈⟨ *ₗ-zeroʳ 0# ⟩
-    0ᴹ ∎)
-  foldr-homo′ (x ∷ xs) = begin⟨ ≈ᴹ-setoid ⟩
-    fScale x +ᴹ fGen xs
-      ≈⟨ +ᴹ-congˡ (foldr-homo′ xs) ⟩
-    fScale x +ᴹ fScale (vSum xs)
-      ≈⟨ {!!} ⟩
-    fScale (vSum (x ∷ xs)) ∎
-    
   f≈v∙ : ∀ {a} → f a ≈ v ∙ a
   f≈v∙ {a} = sym (begin⟨ setoid ⟩
     v ∙ a ≈⟨ ∙-comm ⟩
@@ -194,7 +167,13 @@ V⊸S↔V : Inverse lm-setoid ≈ᴹ-setoid
 V⊸S↔V = record
   { to        = λ lm → LinMap.v lm
   ; from      = λ u  → mkLM (u ∙_) u∙-homo
-  ; to-cong   = λ {lm₁≈lm₂ → {! ≈ᴹ-setoid.cong!}}
-  ; from-cong = {!!}
-  ; inverse   = {!!}
+  ; to-cong   = λ {lm₁≈lm₂ → v-cong lm₁≈lm₂}
+  ; from-cong = λ z x → ∙-congʳ z
+  ; inverse   = (λ v → begin⟨ ≈ᴹ-setoid ⟩
+                     foldr (_+ᴹ_ ∘ vscale (v ∙_)) 0ᴹ basisSet
+                       ≈⟨ Setoid.sym ≈ᴹ-setoid basisComplete ⟩
+                     v ∎ )
+                , λ lm x → begin⟨ setoid ⟩
+                      LinMap.v lm ∙ x ≈⟨ sym (f≈v∙ lm) ⟩
+                      LinMap.f lm x   ∎
   }
