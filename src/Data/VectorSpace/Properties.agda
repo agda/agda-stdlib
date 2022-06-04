@@ -157,20 +157,20 @@ vgen-cong {f₁} {f₂} f₁≗f₂ (x ∷ xs) = begin⟨ ≈ᴹ-setoid ⟩
   f₂ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congˡ (vgen-cong f₁≗f₂ xs) ⟩
   f₂ x *ₗ x +ᴹ vgen f₂ xs ∎
 
-v-cong : ∀ {lm₁ lm₂} → lm₁ ≈ᴸ lm₂ → LinMap.v lm₁ ≈ᴹ LinMap.v lm₂
-v-cong {lm₁} {lm₂} lm₁≈lm₂ = begin⟨ ≈ᴹ-setoid ⟩
-  LinMap.v lm₁ ≈⟨ vgen-cong lm₁≈lm₂ basisSet ⟩
-  LinMap.v lm₂ ∎
+v-cong : ∀ {f₁ f₂} → f₁ ≗ f₂ → vgen f₁ basisSet ≈ᴹ vgen f₂ basisSet
+v-cong {f₁} {f₂} f₁≗f₂ = begin⟨ ≈ᴹ-setoid ⟩
+  vgen f₁ basisSet ≈⟨ vgen-cong f₁≗f₂ basisSet ⟩
+  vgen f₂ basisSet ∎
   
 -- Isomorphism 1: (V ⊸ S) ↔ V
 V⊸S↔V : Inverse lm-setoid ≈ᴹ-setoid
 V⊸S↔V = record
-  { to        = λ lm → LinMap.v lm
+  { to        = LinMap.v
   ; from      = λ u  → mkLM (u ∙_) u∙-homo
-  ; to-cong   = λ {lm₁≈lm₂ → v-cong lm₁≈lm₂}
+  ; to-cong   = v-cong
   ; from-cong = λ z x → ∙-congʳ z
   ; inverse   = (λ v → begin⟨ ≈ᴹ-setoid ⟩
-                     foldr (_+ᴹ_ ∘ vscale (v ∙_)) 0ᴹ basisSet
+                     vgen (v ∙_) basisSet
                        ≈⟨ Setoid.sym ≈ᴹ-setoid basisComplete ⟩
                      v ∎ )
                 , λ lm x → begin⟨ setoid ⟩

@@ -53,7 +53,8 @@ record VectorSpace
     _∙_           : V → V → S
     basisSet      : List V
     basisComplete : ∀ {a : V} →
-                    a ≈ᴹ foldr ( _+ᴹ_ ∘ vscale (a ∙_)) 0ᴹ basisSet
+                    -- a ≈ᴹ foldr ( _+ᴹ_ ∘ vscale (a ∙_)) 0ᴹ basisSet
+                    a ≈ᴹ vgen (a ∙_) basisSet
 
     -- ToDo: Can these be unified, by using one of the
     -- existing algebraic structures?
