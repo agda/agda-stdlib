@@ -150,24 +150,19 @@ u∙-homo = record
       }
   }
 
-vgen-cong : ∀ {f₁ f₂} → f₁ ≗ f₂ → ∀ xs → vgen f₁ xs ≈ᴹ vgen f₂ xs
-vgen-cong {f₁} {f₂} f₁≗f₂ []       = Setoid.reflexive ≈ᴹ-setoid Eq.refl
-vgen-cong {f₁} {f₂} f₁≗f₂ (x ∷ xs) = begin⟨ ≈ᴹ-setoid ⟩
+vgen-cong : ∀ {f₁ f₂} → ∀ xs → f₁ ≗ f₂ → vgen f₁ xs ≈ᴹ vgen f₂ xs
+vgen-cong {f₁} {f₂} []       f₁≗f₂ = Setoid.reflexive ≈ᴹ-setoid Eq.refl
+vgen-cong {f₁} {f₂} (x ∷ xs) f₁≗f₂ = begin⟨ ≈ᴹ-setoid ⟩
   f₁ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congʳ (*ₗ-congʳ (f₁≗f₂ x)) ⟩
-  f₂ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congˡ (vgen-cong f₁≗f₂ xs) ⟩
+  f₂ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congˡ (vgen-cong xs f₁≗f₂) ⟩
   f₂ x *ₗ x +ᴹ vgen f₂ xs ∎
 
-v-cong : ∀ {f₁ f₂} → f₁ ≗ f₂ → vgen f₁ basisSet ≈ᴹ vgen f₂ basisSet
-v-cong {f₁} {f₂} f₁≗f₂ = begin⟨ ≈ᴹ-setoid ⟩
-  vgen f₁ basisSet ≈⟨ vgen-cong f₁≗f₂ basisSet ⟩
-  vgen f₂ basisSet ∎
-  
 -- Isomorphism 1: (V ⊸ S) ↔ V
 V⊸S↔V : Inverse lm-setoid ≈ᴹ-setoid
 V⊸S↔V = record
   { to        = LinMap.v
   ; from      = λ u  → mkLM (u ∙_) u∙-homo
-  ; to-cong   = v-cong
+  ; to-cong   = vgen-cong basisSet
   ; from-cong = λ z x → ∙-congʳ z
   ; inverse   = (λ v → begin⟨ ≈ᴹ-setoid ⟩
                      vgen (v ∙_) basisSet
