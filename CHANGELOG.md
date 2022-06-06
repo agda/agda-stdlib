@@ -1772,6 +1772,8 @@ Other minor changes
   lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) → lookup n (transpose⁺ ass) ≡ List⁺.map (lookup n) ass
   ```
 
+* Made `Map` public in `Data.Tree.AVL.IndexedMap`
+
 NonZero/Positive/Negative changes
 ---------------------------------
 
