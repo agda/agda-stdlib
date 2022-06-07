@@ -34,28 +34,28 @@ record LinMap : Set (r ⊔ ℓr ⊔ m ⊔ ℓm ⊔ n ⊔ ℓn) where
     homo : IsModuleHomomorphism modA modB f
   open IsModuleHomomorphism homo public
   
-infix 4 _≗_
+  infix 4 _≗_
 
-_≗_ : (f g : A → B) → Set (ℓn ⊔ m)
-(f ≗ g) = ∀ x → f x B.≈ᴹ g x
+  _≗_ : (f g : A → B) → Set (ℓn ⊔ m)
+  (f ≗ g) = ∀ x → f x B.≈ᴹ g x
 
-≗-refl : Reflexive _≗_
-≗-refl x = Setoid.refl B.≈ᴹ-setoid
+  ≗-refl : Reflexive _≗_
+  ≗-refl x = Setoid.refl B.≈ᴹ-setoid
 
-≗-sym : Symmetric _≗_
-≗-sym f≗g x = Setoid.sym B.≈ᴹ-setoid (f≗g x)
+  ≗-sym : Symmetric _≗_
+  ≗-sym f≗g x = Setoid.sym B.≈ᴹ-setoid (f≗g x)
 
-≗-trans : Transitive _≗_
-≗-trans f≗g g≗h x = Setoid.trans B.≈ᴹ-setoid (f≗g x) (g≗h x)
+  ≗-trans : Transitive _≗_
+  ≗-trans f≗g g≗h x = Setoid.trans B.≈ᴹ-setoid (f≗g x) (g≗h x)
 
 ≈ᴸ-setoid : LinMap → Setoid (r ⊔ ℓr ⊔ m ⊔ ℓm ⊔ n ⊔ ℓn) (m ⊔ ℓn)
-≈ᴸ-setoid _ = record
+≈ᴸ-setoid lm = record
   { Carrier = LinMap
-  ; _≈_     = _≗_ on LinMap.f
+  ; _≈_     = (LinMap._≗_ lm) on (LinMap.f)
   ; isEquivalence = record
-      { refl  = ≗-refl
-      ; sym   = ≗-sym
-      ; trans = ≗-trans
+      { refl  = LinMap.≗-refl lm
+      ; sym   = LinMap.≗-sym lm
+      ; trans = LinMap.≗-trans lm
       }
   }
 
