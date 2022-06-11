@@ -1008,6 +1008,14 @@ Other minor changes
   record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ))
   record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
   record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
+  record IdempotentMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record AlternateMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record FlexibleMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record MedialMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record SemimedialMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record LeftBolLoop c ℓ : Set (suc (c ⊔ ℓ))
+  record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ))
+  record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -1069,6 +1077,16 @@ Other minor changes
   LeftInvertible  e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e
   RightInvertible e _∙_ x = ∃[ x⁻¹ ] (x ∙ x⁻¹) ≈ e
   Invertible      e _∙_ x = ∃[ x⁻¹ ] ((x⁻¹ ∙ x) ≈ e) × ((x ∙ x⁻¹) ≈ e)
+  Alternativeˡ _∙_ = ∀ x y  →  ((x ∙ x) ∙ y) ≈ (x ∙ (y ∙ y))
+  Alternativeʳ _∙_ = ∀ x y → (x ∙ (y ∙ y)) ≈ ((x ∙ y) ∙ y)
+  Alternative _∙_ = (Alternativeˡ _∙_ ) × ( Alternativeʳ _∙_)
+  Flexible _∙_ = ∀ x y → ((x ∙ y) ∙ x) ≈ (x ∙ (y ∙ x))
+  Medial _∙_ = ∀ x y u z → ((x ∙ y) ∙ (u ∙ z)) ≈ ((x ∙ u) ∙ (y ∙ z))
+  LeftSemimedial _∙_ = ∀ x y z → ((x ∙ x) ∙ (y ∙ z)) ≈ ((x ∙ y) ∙ (x ∙ z))
+  RightSemimedial _∙_ = ∀ x y z → ((y ∙ z) ∙ (x ∙ x)) ≈ ((y ∙ x) ∙ (z ∙ x))
+  Semimedial _∙_ = (LeftSemimedial _∙_) × (RightSemimedial _∙_)
+  LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ z)) ∙ z )
+  RightBol _∙_ = ∀ x y z → (((z ∙ x) ∙ y) ∙ x) ≈ (z ∙ ((x ∙ y) ∙ x))
   ```
 
 * Added new functions to `Algebra.Definitions.RawSemiring`:
@@ -1091,8 +1109,16 @@ Other minor changes
   record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ)
   record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
-  record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
-  record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+  record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsIdempotentMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsAlternateMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsFlexibleMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsMedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsSemimedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsLeftBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
+  record IsRightBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) 
+  record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
