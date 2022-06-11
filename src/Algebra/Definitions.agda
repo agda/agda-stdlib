@@ -162,14 +162,14 @@ LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
 RightDivides : Op₂ A → Op₂ A → Set _
 RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)
 
-StarMakeRight : A → Op₂ A → Op₂ A → Op₁ A → Set _
-StarMakeRight e _+_ _∙_ _⁻* = ∀ x → (e + (x ∙ (x ⁻*))) ≈ (x ⁻*)
+StarRightExpansion : A → Op₂ A → Op₂ A → Op₁ A → Set _
+StarRightExpansion e _+_ _∙_ _⁻* = ∀ x → (e + (x ∙ (x ⁻*))) ≈ (x ⁻*)
 
-StarMakeLeft : A → Op₂ A → Op₂ A → Op₁ A → Set _
-StarMakeLeft e _+_ _∙_ _⁻* = ∀ x →  (e + ((x ⁻*) ∙ x)) ≈ (x ⁻*)
+StarLeftExpansion : A → Op₂ A → Op₂ A → Op₁ A → Set _
+StarLeftExpansion e _+_ _∙_ _⁻* = ∀ x →  (e + ((x ⁻*) ∙ x)) ≈ (x ⁻*)
 
-LeftInduction : Op₂ A → Op₂ A → Op₁ A → Set _
-LeftInduction _+_ _∙_ _⁻* = ∀ a b x → (b + (a ∙ x)) ≈ x → ((a ⁻*) ∙ b) ≈ x
+LeftFixedPoint : Op₂ A → Op₂ A → Op₁ A → Set _
+LeftFixedPoint _+_ _∙_ _⁻* = ∀ a b x → (b + (a ∙ x)) ≈ x → ((a ⁻*) ∙ b) ≈ x
 
-RightInduction : Op₂ A → Op₂ A → Op₁ A → Set _
-RightInduction _+_ _∙_ _⁻* = ∀ a b x → (b + (x ∙ a)) ≈ x → (b ∙ (a ⁻*)) ≈ x
+RightFixedPoint : Op₂ A → Op₂ A → Op₁ A → Set _
+RightFixedPoint _+_ _∙_ _⁻* = ∀ a b x → (b + (x ∙ a)) ≈ x → (b ∙ (a ⁻*)) ≈ x

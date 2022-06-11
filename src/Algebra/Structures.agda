@@ -506,10 +506,10 @@ record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 record IsKleeneAlgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isIdempotentSemiring    : IsIdempotentSemiring + * 0# 1#
-    starMakeLeft            : StarMakeLeft 1# + * ⁻*
-    starMakeRight           : StarMakeRight 1# + * ⁻*
-    rightInduction          : RightInduction + * ⁻*
-    leftInduction           : LeftInduction + * ⁻*
+    starLeftExpansion       : StarLeftExpansion 1# + * ⁻*
+    starRightExpansion      : StarRightExpansion 1# + * ⁻*
+    leftFixedPoint          : LeftFixedPoint + * ⁻*
+    rightFixedPoint         : RightFixedPoint + * ⁻*
 
   open IsIdempotentSemiring isIdempotentSemiring public
 

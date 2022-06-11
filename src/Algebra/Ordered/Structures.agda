@@ -166,6 +166,8 @@ record IsProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 
   open IsSemiring isSemiring public using (distribˡ; distribʳ; zeroˡ; zeroʳ)
 
+-- Preordered IdempotentSemiring (IdempotentProsemiring)
+
 record IsIdempotentProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isProsemiring  : IsProsemiring + * 0# 1#
@@ -178,26 +180,28 @@ record IsIdempotentProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ �
 
   open IsIdempotentSemiring isIdempotentSemiring public using (+-idem)
 
+-- Preordered KleeneAlgebra (prokleenealgebra)
+
 record IsProkleenealgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isIdempotentProsemiring : IsIdempotentProsemiring + * 0# 1#
-    starMakeLeft            : StarMakeLeft 1# + * ⁻*
-    starMakeRight           : StarMakeRight 1# + * ⁻*
-    rightInduction          : RightInduction + * ⁻*
-    leftInduction           : LeftInduction + * ⁻*
+    starLeftExpansion       : StarLeftExpansion 1# + * ⁻*
+    starRightExpansion      : StarRightExpansion 1# + * ⁻*
+    leftFixedPoint          : LeftFixedPoint + * ⁻*
+    rightFixedPoint         : RightFixedPoint + * ⁻*
 
   open IsIdempotentProsemiring isIdempotentProsemiring public
 
   isKleeneAlgebra : IsKleeneAlgebra + * ⁻* 0# 1#
   isKleeneAlgebra = record
     { isIdempotentSemiring = isIdempotentSemiring
-    ; starMakeLeft         = starMakeLeft
-    ; starMakeRight        = starMakeRight
-    ; rightInduction       = rightInduction
-    ; leftInduction        = leftInduction
+    ; starLeftExpansion    = starLeftExpansion
+    ; starRightExpansion   = starRightExpansion
+    ; leftFixedPoint       = leftFixedPoint
+    ; rightFixedPoint      = rightFixedPoint
     }
 
-  open IsKleeneAlgebra isKleeneAlgebra public using (starMakeLeft; starMakeRight; rightInduction; leftInduction)
+  open IsKleeneAlgebra isKleeneAlgebra public using (starLeftExpansion; starRightExpansion; leftFixedPoint; rightFixedPoint)
 
 ------------------------------------------------------------------------
 -- Partially ordered structures
@@ -355,6 +359,8 @@ record IsPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) 
   open IsProsemiring isProsemiring public
     using (isSemiring; distribˡ; distribʳ; zeroˡ; zeroʳ)
 
+-- Partially ordered idempotentSemiring (IdempotentPosemiring)
+
 record IsIdempotentPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isPosemiring  : IsPosemiring + * 0# 1#
@@ -368,25 +374,27 @@ record IsIdempotentPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ �
   open IsIdempotentProsemiring isIdempotentProsemiring public
     using (isIdempotentSemiring; +-idem)
 
+-- Partially ordered KleeneAlgebra (Pokleenealgebra)
+
 record IsPokleenealgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isIdempotentPosemiring  : IsIdempotentPosemiring + * 0# 1#
-    starMakeLeft            : StarMakeLeft 1# + * ⁻*
-    starMakeRight           : StarMakeRight 1# + * ⁻*
-    rightInduction          : RightInduction + * ⁻*
-    leftInduction           : LeftInduction + * ⁻*
+    starLeftExpansion       : StarLeftExpansion 1# + * ⁻*
+    starRightExpansion      : StarRightExpansion 1# + * ⁻*
+    leftFixedPoint          : LeftFixedPoint + * ⁻*
+    rightFixedPoint          : RightFixedPoint + * ⁻*
 
   open IsIdempotentPosemiring isIdempotentPosemiring public
 
   isProkleenealgebra : IsProkleenealgebra + * ⁻* 0# 1#
   isProkleenealgebra = record
     { isIdempotentProsemiring = isIdempotentProsemiring
-    ; starMakeLeft            = starMakeLeft
-    ; starMakeRight           = starMakeRight
-    ; rightInduction          = rightInduction
-    ; leftInduction           = leftInduction
+    ; starLeftExpansion       = starLeftExpansion
+    ; starRightExpansion      = starRightExpansion
+    ; leftFixedPoint          = leftFixedPoint
+    ; rightFixedPoint         = rightFixedPoint
     }
 
   open IsProkleenealgebra isProkleenealgebra public
-    using (isKleeneAlgebra; starMakeLeft; starMakeRight; leftInduction; rightInduction)
+    using (isKleeneAlgebra; starLeftExpansion; starRightExpansion; leftFixedPoint; rightFixedPoint)
 

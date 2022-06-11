@@ -165,6 +165,8 @@ record Prosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   semiring : Semiring c ℓ₁
   semiring = record { isSemiring = isSemiring }
 
+-- Preordered IdempotentSemiring (IdempotentProsemiring)
+
 record IdempotentProsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
   infixl 7 _*_
@@ -183,6 +185,8 @@ record IdempotentProsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
 
   idempotentSemiring : IdempotentSemiring c ℓ₁
   idempotentSemiring = record { isIdempotentSemiring = isIdempotentSemiring }
+
+-- Preordered KleeneAlgebra (prokleenealgebra)
 
 record Prokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
@@ -385,6 +389,8 @@ record Posemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open Prosemiring prosemiring public using (semiring)
 
+-- Partially ordered idempotentSemiring (IdempotentPosemiring)
+
 record IdempotentPosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
   infixl 7 _*_
@@ -405,6 +411,8 @@ record IdempotentPosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)
   idempotentProsemiring = record { isIdempotentProsemiring = isIdempotentProsemiring }
 
   open IdempotentProsemiring idempotentProsemiring public using (idempotentSemiring; +-idem)
+
+-- Partially ordered KleeneAlgebra (Pokleenealgebra)
 
 record Pokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
@@ -427,4 +435,4 @@ record Pokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) whe
   prokleenealgebra : Prokleenealgebra c ℓ₁ ℓ₂
   prokleenealgebra = record { isProkleenealgebra = isProkleenealgebra }
 
-  open Prokleenealgebra prokleenealgebra public using (starMakeLeft; starMakeRight; leftInduction; rightInduction)
+  open Prokleenealgebra prokleenealgebra public using (starLeftExpansion; starRightExpansion; leftFixedPoint; rightFixedPoint)
