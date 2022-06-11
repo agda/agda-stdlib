@@ -14,22 +14,25 @@ open import Level                 using (Level; _⊔_; suc)
 
 module Data.VectorSpace.Properties
   {r ℓr m ℓm : Level}
-  {ring : CommutativeRing r ℓr}
-  {mod  : Module ring m ℓm}
-  (vs   : VectorSpace mod)
+  {ring      : CommutativeRing r ℓr}
+  {mod       : Module ring m ℓm}
+  (vs        : VectorSpace mod)
   where
 
 open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
-open import Algebra.Module.Morphism.Linear.Properties mod ⟨module⟩
+open import Algebra.Module.Morphism.Bundles
+import      Algebra.Module.Morphism.Properties     as MorphismProperties
 open import Axiom.DoubleNegationElimination
 open import Data.List
-open import Data.Product                        hiding (map)
+open import Data.Product
 open import Function
-open import Relation.Binary                     hiding (_⇔_)
-import      Relation.Binary.PropositionalEquality as Eq
+open import Relation.Binary
+import      Relation.Binary.ExtensionalEquivalence as ExtEq
+import      Relation.Binary.PropositionalEquality  as Eq
 open import Relation.Binary.Reasoning.MultiSetoid
 
 open VectorSpace vs
+open ExtEq       setoid
 
 private
   variable
@@ -53,7 +56,7 @@ foldr-cong : ∀ {f g : V → S → S} {d e : S} →
              foldr f d ≗ foldr g e
 foldr-cong f≈g d≈e []       = d≈e
 foldr-cong f≈g d≈e (x ∷ xs) = f≈g (foldr-cong f≈g d≈e xs) x
-
+  
 -- ToDo: Rewrite in terms of `foldr-homo`, below.
 foldr-homo-∙ : {v x₀ : V} {g : V → V} → Congruent _≈ᴹ_ _≈ᴹ_ g →
                (xs : List V) →
@@ -65,10 +68,12 @@ foldr-homo-∙ {v} {x₀} {g} g-cong (x ∷ xs) = begin⟨ setoid ⟩
   v ∙ g x + v ∙ foldr (_+ᴹ_ ∘ g) x₀ xs       ≈⟨ +-congˡ (foldr-homo-∙ g-cong xs) ⟩
   foldr (_+_ ∘ (v ∙_) ∘ g) (v ∙ x₀) (x ∷ xs) ∎
 
--- Proofs predicated upon a `VectorSpace.LinMap` instance.
-module _ (lm : LinMap) where
+------------------------------------------------------------------------
+-- Properties of linear maps from vectors to their underlying scalars.
+module _ (lm : LinearMap mod ⟨module⟩) where
 
-  open LinMap lm
+  open LinearMap lm
+  open MorphismProperties.LinearMapProperties lm
   
   vred : (V → S) → List V → S
   vred g = foldr (_+_ ∘ uncurry _*_ ∘ < g , f >) 0#
@@ -96,10 +101,10 @@ module _ (lm : LinMap) where
   fGen : List V → V
   fGen = vgen f
   
-  f≈v∙ : ∀ {a} → f a ≈ v ∙ a
+  f≈v∙ : ∀ {a} → f a ≈ v lm ∙ a
   f≈v∙ {a} = sym (begin⟨ setoid ⟩
-    v ∙ a ≈⟨ ∙-comm ⟩
-    a ∙ v ≈⟨ foldr-homo-∙ (vscale-cong f ⟦⟧-cong) basisSet ⟩
+    v′ ∙ a ≈⟨ ∙-comm ⟩
+    a ∙ v′ ≈⟨ foldr-homo-∙ (vscale-cong f ⟦⟧-cong) basisSet ⟩
     foldr (_+_ ∘ (a ∙_) ∘ fScale) (a ∙ 0ᴹ) basisSet
       ≈⟨ foldr-cong (λ {y≈z _ → +-congˡ y≈z}) ∙-idʳ basisSet ⟩
     foldr (_+_ ∘ (a ∙_) ∘ (uncurry _*ₗ_) ∘ < f , id >) 0# basisSet
@@ -113,23 +118,26 @@ module _ (lm : LinMap) where
     f (foldr (_+ᴹ_ ∘ (uncurry _*ₗ_) ∘ < (a ∙_) , id >) 0ᴹ basisSet)
       ≈⟨ ⟦⟧-cong (Setoid.sym ≈ᴹ-setoid (basisComplete)) ⟩
     f a ∎)
-
+    where
+    v′ = v lm
+    
   -- Inner product extensional equivalence.
   x·z≈y·z⇒x≈y : ∀ {x y} → DoubleNegationElimination ℓm →
                  Σ[ (s , z) ∈ S × V ]
                    ((s *ₗ (x +ᴹ -ᴹ y) ≈ᴹ z) × (f z ≉ 0#)) →
                  (∀ {z} → x ∙ z ≈ y ∙ z) → x ≈ᴹ y
-  x·z≈y·z⇒x≈y {x} {y} dne Σ[z]fz≉𝟘 x∙z≈y∙z = inj-lm homo {dne} Σ[z]fz≉𝟘 fx≈fy
+  x·z≈y·z⇒x≈y {x} {y} dne Σ[z]fz≉𝟘 x∙z≈y∙z = fx≈fy⇒x≈y {dne} Σ[z]fz≉𝟘 fx≈fy
     where
+    v′ = v lm
     fx≈fy : f x ≈ f y
     fx≈fy = begin⟨ setoid ⟩
       f x   ≈⟨ f≈v∙ {x} ⟩
-      v ∙ x ≈⟨ ∙-comm ⟩
-      x ∙ v ≈⟨ x∙z≈y∙z ⟩
-      y ∙ v ≈⟨ ∙-comm ⟩
-      v ∙ y ≈⟨ sym (f≈v∙ {y}) ⟩
+      v′ ∙ x ≈⟨ ∙-comm ⟩
+      x ∙ v′ ≈⟨ x∙z≈y∙z ⟩
+      y ∙ v′ ≈⟨ ∙-comm ⟩
+      v′ ∙ y ≈⟨ sym (f≈v∙ {y}) ⟩
       f y   ∎
-
+    
 u∙-homo : ∀ {u} → IsModuleHomomorphism (u ∙_)
 u∙-homo = record
   { isBimoduleHomomorphism = record
@@ -158,9 +166,9 @@ vgen-cong {f₁} {f₂} (x ∷ xs) f₁≗f₂ = begin⟨ ≈ᴹ-setoid ⟩
   f₂ x *ₗ x +ᴹ vgen f₂ xs ∎
 
 -- Isomorphism 1: (V ⊸ S) ↔ V
-V⊸S↔V : Inverse lm-setoid ≈ᴹ-setoid
+V⊸S↔V : Inverse (≈ᴸ-setoid mod ⟨module⟩) ≈ᴹ-setoid
 V⊸S↔V = record
-  { to        = LinMap.v
+  { to        = v
   ; from      = λ u  → mkLM (u ∙_) u∙-homo
   ; to-cong   = vgen-cong basisSet
   ; from-cong = λ z x → ∙-congʳ z
@@ -169,6 +177,6 @@ V⊸S↔V = record
                        ≈⟨ Setoid.sym ≈ᴹ-setoid basisComplete ⟩
                      v ∎ )
                 , λ lm x → begin⟨ setoid ⟩
-                      LinMap.v lm ∙ x ≈⟨ sym (f≈v∙ lm) ⟩
-                      LinMap.f lm x   ∎
+                      v lm ∙ x ≈⟨ sym (f≈v∙ lm) ⟩
+                      LinearMap.f lm x   ∎
   }

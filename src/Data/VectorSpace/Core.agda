@@ -11,16 +11,18 @@
 
 module Data.VectorSpace.Core where
 
-import Algebra.Module.Morphism.Structures    as MorphismStructures
+import Algebra.Module.Morphism.Structures as MorphismStructures
 
 open import Algebra        using (CommutativeRing)
 open import Algebra.Module using (Module)
 open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
+open import Algebra.Module.Morphism.Bundles
 open import Data.List      using (List; foldr)
 open import Data.Product
 open import Function
 open import Level          using (Level; _⊔_; suc)
 open import Relation.Binary
+open import Relation.Binary.ExtensionalEquivalence
 open import Relation.Binary.Reasoning.MultiSetoid
 
 private
@@ -53,7 +55,6 @@ record VectorSpace
     _∙_           : V → V → S
     basisSet      : List V
     basisComplete : ∀ {a : V} →
-                    -- a ≈ᴹ foldr ( _+ᴹ_ ∘ vscale (a ∙_)) 0ᴹ basisSet
                     a ≈ᴹ vgen (a ∙_) basisSet
 
     -- ToDo: Can these be unified, by using one of the
@@ -70,24 +71,7 @@ record VectorSpace
     ∙-idʳ       : ∀ {a}       → a ∙ 0ᴹ ≈ 0#                    -- Prove.
     ∙-homo-⁻¹    : ∀ {a b}     → a ∙ (-ᴹ b) ≈ - (a ∙ b)
     
-  ------------------------------------------------------------------------
-  -- Pointwise equivalence over the underlying scalar field.
-  -- (Copied from `Relation.Binary.PropositionalEquality` and modified.)
-  -- Note: `x` is kept explicit, to allow `C-c C-c` on list args, in:
-  --       `Properties`, etc.
-  infix 4 _≗_
-
-  _≗_ : (f g : A → S) → Set _
-  f ≗ g = ∀ x → f x ≈ g x
-
-  -- And over the module.
-  infix 4 _≗ᴹ_
-
-  _≗ᴹ_ : (f g : V → V) → Set _
-  f ≗ᴹ g = ∀ x → f x ≈ᴹ g x
-
-  vscale-cong : ∀ f → Congruent _≈ᴹ_ _≈_ f →
-                Congruent _≈ᴹ_ _≈ᴹ_ (vscale f)
+  vscale-cong : ∀ f → Congruent _≈ᴹ_ _≈_ f → Congruent _≈ᴹ_ _≈ᴹ_ (vscale f)
   vscale-cong f f-cong {x} {y} x≈y = begin⟨ ≈ᴹ-setoid ⟩
     vscale f x ≡⟨⟩
     f x *ₗ x   ≈⟨ *ₗ-congʳ (f-cong x≈y) ⟩
@@ -95,47 +79,15 @@ record VectorSpace
     f y *ₗ y   ≡⟨⟩
     vscale f y ∎
 
-  vscale-congᴹ : ∀ {f g} → f ≗ g →
-                 vscale f ≗ᴹ vscale g
-  vscale-congᴹ {f} {g} f≗g = λ x → begin⟨ ≈ᴹ-setoid ⟩
-    f x *ₗ x ≈⟨ *ₗ-congʳ (f≗g x) ⟩
-    g x *ₗ x ∎
-
   ------------------------------------------------------------------------
   -- Linear maps from vectors to scalars.
-  record LinMap : Set (m ⊔ r ⊔ ℓr ⊔ ℓm) where
+  V⊸S = LinearMap mod ⟨module⟩
+  
+  -- Equivalent vector generator.
+  v : V⊸S → V
+  v lm = vgen (LinearMap.f lm) basisSet
 
-    constructor mkLM
-    field
-      f    : V → S
-      homo : IsModuleHomomorphism f
-
-    open IsModuleHomomorphism homo public
-
-    -- Equivalent vector generator.
-    v : V
-    v = vgen f basisSet
-
-  ≗-refl : Reflexive _≗_
-  ≗-refl x = Setoid.refl setoid
-
-  ≗-sym : Symmetric _≗_
-  ≗-sym f≗g x = Setoid.sym setoid (f≗g x)
-
-  ≗-trans : Transitive _≗_
-  ≗-trans f≗g g≗h x = Setoid.trans setoid (f≗g x) (g≗h x)
-
-  lm-setoid : Setoid _ _
-  lm-setoid = record
-    { Carrier = LinMap
-    ; _≈_     = _≗_ on LinMap.f
-    ; isEquivalence = record
-        { refl  = ≗-refl
-        ; sym   = ≗-sym
-        ; trans = ≗-trans
-        }
-    }
-  open Setoid lm-setoid using () renaming
+  open Setoid (≈ᴸ-setoid mod ⟨module⟩) using () renaming
     ( _≈_ to _≈ᴸ_
     ; _≉_ to _≉ᴸ_
     ) public
