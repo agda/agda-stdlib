@@ -1062,6 +1062,11 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
 m^n≢0 : ∀ m n .{{_ : NonZero m}} → NonZero (m ^ n)
 m^n≢0 m n = ≢-nonZero (≢-nonZero⁻¹ m ∘′ m^n≡0⇒m≡0 m n)
 
+2^r>0 : ∀ (r : ℕ) → 2 ^ r > 0
+2^r>0 zero = s≤s z≤n
+2^r>0 (suc r) with 2^r>0 r
+... | rr = ≤-trans rr (m≤m+n (2 ^ r) ((2 ^ r) + zero))
+
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_
 ------------------------------------------------------------------------
@@ -1883,12 +1888,24 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 ⌊n/2⌋<n zero    = z<s
 ⌊n/2⌋<n (suc n) = s<s (s≤s (⌊n/2⌋≤n n))
 
+a≡⌊a+a/2⌋ : ∀ {a} → a ≡ ⌊ (a + a) /2⌋
+a≡⌊a+a/2⌋ {zero}        = refl
+a≡⌊a+a/2⌋ {suc zero}    = refl
+a≡⌊a+a/2⌋ {suc (suc a)} =
+  cong suc (trans a≡⌊a+a/2⌋ (cong ⌊_/2⌋ (sym (+-suc a (suc a)))))
+
 ⌈n/2⌉≤n : ∀ n → ⌈ n /2⌉ ≤ n
 ⌈n/2⌉≤n zero    = z≤n
 ⌈n/2⌉≤n (suc n) = s≤s (⌊n/2⌋≤n n)
 
 ⌈n/2⌉<n : ∀ n → ⌈ suc (suc n) /2⌉ < suc (suc n)
 ⌈n/2⌉<n n = s<s (⌊n/2⌋<n n)
+
+a≡⌈a+a/2⌉ : ∀ {a} → a ≡ ⌈ (a + a) /2⌉
+a≡⌈a+a/2⌉ {zero}        = refl
+a≡⌈a+a/2⌉ {suc zero}    = refl
+a≡⌈a+a/2⌉ {suc (suc a)} =
+  cong suc (trans a≡⌈a+a/2⌉ (cong ⌈_/2⌉ (sym (+-suc a (suc a)))))
 
 ------------------------------------------------------------------------
 -- Properties of !_
