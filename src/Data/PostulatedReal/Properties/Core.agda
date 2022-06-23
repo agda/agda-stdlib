@@ -377,24 +377,180 @@ postulate
 ------------------------------------------------------------------------
 -- Properties of _+_ and _<_
 
--- +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
--- +-mono-<-≤ {x} {y} {z} {w} (*<* x≤y x≢y) z≤w with z ≟ w
--- ... | yes z≡w = *<* (+-mono-≤ x≤y z≤w) $ λ x+z≡y+w → {! x+z≢y+w ?  !}
--- ... | yes z≢w = *<* (+-mono-≤ x≤y z≤w) $ {!   !}
++-monoˡ-< : ∀ z → (_+ z) Preserves _<_ ⟶ _<_
++-monoˡ-< z {x} {y} x<y = *<* (+-monoˡ-≤ z (<⇒≤ x<y)) λ x+z≡y+z →
+  (<⇒≢ x<y) $ begin
+  x           ≡˘⟨ +-identityʳ x ⟩
+  x + 0ℝ      ≡˘⟨ (cong (x +_) $ +-inverseʳ z) ⟩
+  x + (z - z) ≡˘⟨ +-assoc x z (- z) ⟩
+  (x + z) - z ≡⟨ (cong (_- z) $ x+z≡y+z) ⟩
+  (y + z) - z ≡⟨ +-assoc y z (- z) ⟩
+  y + (z - z) ≡⟨ (cong (y +_) $ +-inverseʳ z) ⟩
+  y + 0ℝ      ≡⟨ +-identityʳ y ⟩
+  y           ∎
+  where open ≡-Reasoning
 
--- +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
--- +-mono-≤-< {x} {y} {z} {w} x≤y z<w rewrite +-comm x z | +-comm y w =
---   +-mono-<-≤ z<w x≤y
++-monoʳ-< : ∀ z → (z +_) Preserves _<_ ⟶ _<_
++-monoʳ-< z {x} {y} rewrite +-comm z x | +-comm z y = +-monoˡ-< z
 
--- +-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
--- +-mono-< {x} {y} {z} {w} x<y z<w = <-trans (+-mono-<-≤ x<y (≤-refl {z}))
---   (+-mono-≤-< (≤-refl {y}) z<w)
++-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
++-mono-< {_} {y} {z} x<y z<w = <-trans (+-monoˡ-< z x<y)
+  (+-monoʳ-< y z<w)
 
--- +-monoˡ-< : ∀ z → (_+ z) Preserves _<_ ⟶ _<_
--- +-monoˡ-< z x<y = +-mono-<-≤ x<y (≤-refl {z})
++-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
++-mono-<-≤ {_} {y} {z} x<y z≤w = <-≤-trans (+-monoˡ-< z x<y)
+  (+-monoʳ-≤ y z≤w)
 
--- +-monoʳ-< : ∀ z → (_+_ z) Preserves _<_ ⟶ _<_
--- +-monoʳ-< z x<y = +-mono-≤-< (≤-refl {z}) x<y
++-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
++-mono-≤-< {x} {y} {z} {w} x≤y z<w rewrite +-comm x z | +-comm y w =
+  +-mono-<-≤ z<w x≤y
+
+------------------------------------------------------------------------
+-- Properties of _*_
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Raw bundles
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε   = 1ℝ
+  }
+
+------------------------------------------------------------------------
+-- Algebraic properties
+
+postulate
+  *-assoc         : Associative _*_
+  *-comm          : Commutative _*_
+  *-identityˡ     : LeftIdentity 1ℝ _*_
+  *-distribˡ-+    : _*_ DistributesOverˡ _+_
+  *-neg-identityˡ : (x : ℝ) → -1ℝ * x ≡ - x
+
+*-identityʳ : RightIdentity 1ℝ _*_
+*-identityʳ x rewrite *-comm x 1ℝ = *-identityˡ x
+
+*-identity : Identity 1ℝ _*_
+*-identity = *-identityˡ , *-identityʳ
+
+*-distribʳ-+ : _*_ DistributesOverʳ _+_
+*-distribʳ-+ x y z rewrite *-comm (y + z) x | *-comm y x | *-comm z x =
+      *-distribˡ-+ x y z
+
+*-distrib-+ : _*_ DistributesOver _+_
+*-distrib-+ = *-distribˡ-+ , *-distribʳ-+
+
+*-zeroˡ : LeftZero 0ℝ _*_
+*-zeroˡ x = begin
+  0ℝ * x               ≡⟨ cong (_* x) (sym (+-inverseʳ 1ℝ)) ⟩
+  (1ℝ + -1ℝ) * x       ≡⟨ *-distribʳ-+ x 1ℝ -1ℝ ⟩
+  (1ℝ * x) + (-1ℝ * x) ≡⟨ cong₂ _+_ (*-identityˡ x) (*-neg-identityˡ x) ⟩
+  x + (- x)            ≡⟨ +-inverseʳ x ⟩
+  0ℝ                   ∎
+  where open ≡-Reasoning
+
+*-zeroʳ : RightZero 0ℝ _*_
+*-zeroʳ x rewrite *-comm x 0ℝ = *-zeroˡ x
+
+*-zero : Zero 0ℝ _*_
+*-zero = *-zeroˡ , *-zeroʳ
+
+*-neg-identityʳ : (x : ℝ) → x * -1ℝ ≡ - x
+*-neg-identityʳ x = trans (*-comm x -1ℝ) (*-neg-identityˡ x)
+
+
+postulate
+  *-inverseˡ : ∀ x .⦃ _ : NonZero x  ⦄ → (1/ x) * x ≡ 1ℝ
+
+*-inverseʳ : ∀ x .⦃ _ : NonZero x ⦄ → x * (1/ x) ≡ 1ℝ
+*-inverseʳ x = trans (*-comm x (1/ x)) (*-inverseˡ x)
+
+------------------------------------------------------------------------
+-- Structures
+
+*-isMagma : IsMagma _*_
+*-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        =  cong₂ _*_
+  }
+
+*-isSemigroup : IsSemigroup _*_
+*-isSemigroup = record
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
+  }
+
+*-1-isMonoid : IsMonoid _*_ 1ℝ
+*-1-isMonoid = record
+  { isSemigroup = *-isSemigroup
+  ; identity    = *-identityˡ , *-identityʳ
+  }
+
+*-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℝ
+*-1-isCommutativeMonoid = record
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
+  }
+
++-*-isRing : IsRing _+_ _*_ -_ 0ℝ 1ℝ
++-*-isRing = record
+  { +-isAbelianGroup = +-0-isAbelianGroup
+  ; *-cong           = *-1-isMonoid .IsMonoid.∙-cong
+  ; *-assoc          = *-1-isMonoid .IsMonoid.assoc
+  ; *-identity       = *-1-isMonoid .IsMonoid.identity
+  ; distrib          = *-distribˡ-+ , *-distribʳ-+
+  ; zero             = *-zeroˡ , *-zeroʳ
+  }
+
++-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℝ 1ℝ
++-*-isCommutativeRing = record
+  { isRing = +-*-isRing
+  ; *-comm = *-comm
+  }
+
+------------------------------------------------------------------------
+-- Packages
+
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
+  }
+
+*-semigroup : Semigroup 0ℓ 0ℓ
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
+  }
+
+*-1-monoid : Monoid 0ℓ 0ℓ
+*-1-monoid = record
+  { isMonoid = *-1-isMonoid
+  }
+
+*-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+*-1-commutativeMonoid = record
+  { isCommutativeMonoid = *-1-isCommutativeMonoid
+  }
+
++-*-ring : Ring 0ℓ 0ℓ
++-*-ring = record
+  { isRing = +-*-isRing
+  }
+
++-*-commutativeRing : CommutativeRing 0ℓ 0ℓ
++-*-commutativeRing = record
+  { isCommutativeRing = +-*-isCommutativeRing
+  }
+
+
+
 
 
 
