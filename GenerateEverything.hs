@@ -42,6 +42,8 @@ unsafeModules = map modToFile
   , "Codata.Musical.Covec"
   , "Codata.Musical.Conversion"
   , "Codata.Musical.Stream"
+  , "Data.PostulatedReal.Base"
+  , "Data.PostulatedReal.Propertis.Core"
   , "Debug.Trace"
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
