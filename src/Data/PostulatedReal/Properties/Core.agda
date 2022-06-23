@@ -9,14 +9,19 @@
 
 module Data.PostulatedReal.Properties.Core where
 
+open import Algebra.Bundles
 open import Function.Base using (_$_)
 open import Data.PostulatedReal.Base
+open import Data.Product using (_,_)
 open import Data.Sum.Base
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
+
+open import Algebra.Definitions {A = ℝ} _≡_
+open import Algebra.Structures  {A = ℝ} _≡_
 
 private
   variable
@@ -140,51 +145,268 @@ infix 4 _<?_
 postulate
   _<?_ : Decidable _<_
 
--- <-cmp : Trichotomous _≡_ _<_
--- <-cmp p q with ℤ.<-cmp (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
--- ... | tri< < ≢ ≯ = tri< (*<* <)        (≢ ∘ ≡⇒≃) (≯ ∘ drop-*<*)
--- ... | tri≈ ≮ ≡ ≯ = tri≈ (≮ ∘ drop-*<*) (≃⇒≡ ≡)   (≯ ∘ drop-*<*)
--- ... | tri> ≮ ≢ > = tri> (≮ ∘ drop-*<*) (≢ ∘ ≡⇒≃) (*<* >)
+<-cmp : Trichotomous _≡_ _<_
+<-cmp x y with x ≟ y
+... | yes x≡y = tri≈ (λ x<y → contradiction x≡y $ <⇒≢ x<y) x≡y
+                     λ y<x → contradiction x≡y $ ≢-sym $ <⇒≢ y<x
+... | no  x≢y with ≤-total x y
+... | inj₁ x≤y = tri< (*<* x≤y x≢y) x≢y λ { (*<* y≤x _) →
+  contradiction (≤-antisym x≤y y≤x) x≢y }
+... | inj₂ x≥y = tri> (λ { (*<* x≤y _) → contradiction
+  (≤-antisym x≤y x≥y) x≢y }) x≢y (*<* x≥y $ ≢-sym x≢y)
 
--- <-irrelevant : Irrelevant _<_
--- <-irrelevant (*<* p<q₁) (*<* p<q₂) = cong *<* (ℤ.<-irrelevant p<q₁ p<q₂)
+<-respʳ-≡ : _<_ Respectsʳ _≡_
+<-respʳ-≡ = subst (_ <_)
 
--- <-respʳ-≡ : _<_ Respectsʳ _≡_
--- <-respʳ-≡ = subst (_ <_)
+<-respˡ-≡ : _<_ Respectsˡ _≡_
+<-respˡ-≡ = subst (_< _)
 
--- <-respˡ-≡ : _<_ Respectsˡ _≡_
--- <-respˡ-≡ = subst (_< _)
+<-resp-≡ : _<_ Respects₂ _≡_
+<-resp-≡ = <-respʳ-≡ , <-respˡ-≡
 
--- <-resp-≡ : _<_ Respects₂ _≡_
--- <-resp-≡ = <-respʳ-≡ , <-respˡ-≡
+------------------------------------------------------------------------
+-- Structures
 
--- ------------------------------------------------------------------------
--- -- Structures
+<-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+<-isStrictPartialOrder = record
+  { isEquivalence = isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = <-trans
+  ; <-resp-≈      = <-resp-≡
+  }
 
--- <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
--- <-isStrictPartialOrder = record
---   { isEquivalence = isEquivalence
---   ; irrefl        = <-irrefl
---   ; trans         = <-trans
---   ; <-resp-≈      = <-resp-≡
---   }
+<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+<-isStrictTotalOrder = record
+  { isEquivalence = isEquivalence
+  ; trans         = <-trans
+  ; compare       = <-cmp
+  }
 
--- <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
--- <-isStrictTotalOrder = record
---   { isEquivalence = isEquivalence
---   ; trans         = <-trans
---   ; compare       = <-cmp
---   }
+------------------------------------------------------------------------
+-- Bundles
 
--- ------------------------------------------------------------------------
--- -- Bundles
+<-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+<-strictPartialOrder = record
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  }
 
--- <-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
--- <-strictPartialOrder = record
---   { isStrictPartialOrder = <-isStrictPartialOrder
---   }
+<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+<-strictTotalOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  }
 
--- <-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
--- <-strictTotalOrder = record
---   { isStrictTotalOrder = <-isStrictTotalOrder
---   }
+------------------------------------------------------------------------
+-- A specialised module for reasoning about the _≤_ and _<_ relations
+------------------------------------------------------------------------
+
+module ≤-Reasoning where
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-≤-trans
+    ≤-<-trans
+    public
+    hiding (step-≈; step-≈˘)
+
+------------------------------------------------------------------------
+-- Properties of _+_
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Raw bundles
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-rawMonoid : RawMonoid 0ℓ 0ℓ
++-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0ℝ
+  }
+
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0ℝ
+  ; _⁻¹ = -_
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0#  = 0ℝ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0#  = 0ℝ
+  ; 1#  = 1ℝ
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_  = -_
+  ; 0#  = 0ℝ
+  ; 1#  = 1ℝ
+  }
+
+------------------------------------------------------------------------
+-- Algebraic properties
+
+postulate
+  +-assoc     : Associative _+_
+  +-comm      : Commutative _+_
+  +-identityˡ : LeftIdentity 0ℝ _+_
+  +-inverseʳ  : RightInverse 0ℝ -_ _+_
+
++-identityʳ : RightIdentity 0ℝ _+_
++-identityʳ x rewrite +-comm x 0ℝ = +-identityˡ x
+
++-identity : Identity 0ℝ _+_
++-identity = +-identityˡ , +-identityʳ
+
++-inverseˡ : LeftInverse 0ℝ -_ _+_
++-inverseˡ x rewrite +-comm (- x) x = +-inverseʳ x
+
++-inverse : Inverse 0ℝ -_ _+_
++-inverse = +-inverseˡ , +-inverseʳ
+
+-‿cong : Congruent₁ (-_)
+-‿cong = cong (-_)
+
+------------------------------------------------------------------------
+-- Structures
+
++-isMagma : IsMagma _+_
++-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        =  cong₂ _+_
+  }
+
++-isSemigroup : IsSemigroup _+_
++-isSemigroup = record
+  { isMagma = +-isMagma
+  ; assoc   = +-assoc
+  }
+
++-0-isMonoid : IsMonoid _+_ 0ℝ
++-0-isMonoid = record
+  { isSemigroup = +-isSemigroup
+  ; identity    = +-identityˡ , +-identityʳ
+  }
+
++-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0ℝ
++-0-isCommutativeMonoid = record
+  { isMonoid = +-0-isMonoid
+  ; comm   = +-comm
+  }
+
++-0-isGroup : IsGroup _+_ 0ℝ (-_)
++-0-isGroup = record
+  { isMonoid = +-0-isMonoid
+  ; inverse  = +-inverseˡ , +-inverseʳ
+  ; ⁻¹-cong  = -‿cong
+  }
+
++-0-isAbelianGroup : IsAbelianGroup _+_ 0ℝ (-_)
++-0-isAbelianGroup = record
+  { isGroup = +-0-isGroup
+  ; comm    = +-comm
+  }
+
+------------------------------------------------------------------------
+-- Packages
+
++-magma : Magma 0ℓ 0ℓ
++-magma = record
+  { isMagma = +-isMagma
+  }
+
++-semigroup : Semigroup 0ℓ 0ℓ
++-semigroup = record
+  { isSemigroup = +-isSemigroup
+  }
+
++-0-monoid : Monoid 0ℓ 0ℓ
++-0-monoid = record
+  { isMonoid = +-0-isMonoid
+  }
+
++-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
++-0-commutativeMonoid = record
+  { isCommutativeMonoid = +-0-isCommutativeMonoid
+  }
+
++-0-group : Group 0ℓ 0ℓ
++-0-group = record
+  { isGroup = +-0-isGroup
+  }
+
++-0-abelianGroup : AbelianGroup 0ℓ 0ℓ
++-0-abelianGroup = record
+  { isAbelianGroup = +-0-isAbelianGroup
+  }
+
+------------------------------------------------------------------------
+-- Properties of _+_ and _≤_
+
+postulate
+  +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+
++-monoˡ-≤ : ∀ z → (_+ z) Preserves _≤_ ⟶ _≤_
++-monoˡ-≤ z x≤y = +-mono-≤ x≤y (≤-refl {z})
+
++-monoʳ-≤ : ∀ z → (_+_ z) Preserves _≤_ ⟶ _≤_
++-monoʳ-≤ z x≤y = +-mono-≤ (≤-refl {z}) x≤y
+
+------------------------------------------------------------------------
+-- Properties of _+_ and _<_
+
+-- +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+-- +-mono-<-≤ {x} {y} {z} {w} (*<* x≤y x≢y) z≤w with z ≟ w
+-- ... | yes z≡w = *<* (+-mono-≤ x≤y z≤w) $ λ x+z≡y+w → {! x+z≢y+w ?  !}
+-- ... | yes z≢w = *<* (+-mono-≤ x≤y z≤w) $ {!   !}
+
+-- +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
+-- +-mono-≤-< {x} {y} {z} {w} x≤y z<w rewrite +-comm x z | +-comm y w =
+--   +-mono-<-≤ z<w x≤y
+
+-- +-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+-- +-mono-< {x} {y} {z} {w} x<y z<w = <-trans (+-mono-<-≤ x<y (≤-refl {z}))
+--   (+-mono-≤-< (≤-refl {y}) z<w)
+
+-- +-monoˡ-< : ∀ z → (_+ z) Preserves _<_ ⟶ _<_
+-- +-monoˡ-< z x<y = +-mono-<-≤ x<y (≤-refl {z})
+
+-- +-monoʳ-< : ∀ z → (_+_ z) Preserves _<_ ⟶ _<_
+-- +-monoʳ-< z x<y = +-mono-≤-< (≤-refl {z}) x<y
+
+
+
+
+
+-- TODO (waiting Ring for -‿injective)
+------------------------------------------------------------------------
+-- Properties of -_ and _≤_/_<_
+
+-- neg-antimono-< : -_ Preserves _<_ ⟶ _>_
+-- neg-antimono-< {x} {y} (*<* x≤y x≢y) with ≤-total (- x) (- y)
+-- ... | inj₁ -x≤-y = {!   !}
+-- ... | inj₂ -x≥-y = *<* -x≥-y $ λ -y≡-x → x≢y $ sym $ -‿injective -y≡-x
+
+-- neg-antimono-≤ : -_ Preserves _≤_ ⟶ _≥_
