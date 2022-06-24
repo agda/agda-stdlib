@@ -42,6 +42,7 @@ unsafeModules = map modToFile
   , "Codata.Musical.Covec"
   , "Codata.Musical.Conversion"
   , "Codata.Musical.Stream"
+  , "Data.PostulatedReal"
   , "Data.PostulatedReal.Base"
   , "Data.PostulatedReal.Propertis.Core"
   , "Debug.Trace"

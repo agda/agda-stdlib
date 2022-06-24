@@ -26,7 +26,7 @@ open import Algebra.Structures  {A = ℝ} _≡_
 
 private
   variable
-    x y z : ℝ
+    x y z w : ℝ
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -60,6 +60,11 @@ nonNeg∧nonZero⇒pos x ⦃ p ⦄ ⦃ q ⦄
   with NonNegative.nonNegative p | NonZero.nonZero q
 ... | 0≤x | x≢0 = positive $ *<* 0≤x (≢-sym x≢0)
 
+nonPos∧nonZero⇒neg : ∀ x → ⦃ NonPositive x ⦄ → ⦃ NonZero x ⦄ → Negative x
+nonPos∧nonZero⇒neg x ⦃ p ⦄ ⦃ q ⦄
+  with NonPositive.nonPositive p | NonZero.nonZero q
+... | x≤0 | x≢0 = negative $ *<* x≤0 x≢0
+
 pos⇒nonZero : ∀ x → ⦃ Positive x ⦄ → NonZero x
 pos⇒nonZero x ⦃ p ⦄ with Positive.positive p
 ... | *<* _ 0≢x = ≢-nonZero $ ≢-sym 0≢x
@@ -76,10 +81,19 @@ neg⇒nonZero x ⦃ p ⦄ with Negative.negative p
 -- Relational properties
 
 postulate
+  0≤1       : 0ℝ ≤ 1ℝ
   ≤-refl    : Reflexive _≤_
   ≤-antisym : Antisymmetric _≡_ _≤_
   ≤-trans   : Transitive _≤_
   ≤-total   : Total _≤_
+
+infix 4 _≤?_
+_≤?_ : Decidable _≤_
+x ≤? y with ≤-total x y
+... | inj₁ x≤y = yes x≤y
+... | inj₂ x≥y with x ≟ y
+... | yes refl = yes ≤-refl
+... | no  x≢y  = no λ x≤y → contradiction (≤-antisym x≤y x≥y) x≢y
 
 ≤-reflexive : _≡_ ⇒ _≤_
 ≤-reflexive refl = ≤-refl
@@ -167,9 +181,12 @@ postulate
 <-trans x<y = ≤-<-trans (<⇒≤ x<y)
 
 infix 4 _<?_
-
-postulate
-  _<?_ : Decidable _<_
+_<?_ : Decidable _<_
+x <? y with x ≟ y
+... | yes x≡y = no λ { (*<* _ x≢y) → contradiction x≡y x≢y }
+... | no  x≢y with x ≤? y
+... | yes x≤y = yes $ *<* x≤y x≢y
+... | no  x≰y = no λ { (*<* x≤y _) → x≰y x≤y }
 
 <-cmp : Trichotomous _≡_ _<_
 <-cmp x y with x ≟ y
@@ -314,6 +331,18 @@ postulate
 
 -‿cong : Congruent₁ (-_)
 -‿cong = cong (-_)
+
+-x≢0 : {x : ℝ} → x ≢ 0ℝ → - x ≢ 0ℝ
+-x≢0 {x} p -x≡0 = p $ begin
+  x       ≡˘⟨ +-identityʳ x ⟩
+  x + 0ℝ  ≡˘⟨ cong (_+_ x) -x≡0 ⟩
+  x + - x ≡⟨ +-inverseʳ x ⟩
+  0ℝ      ∎
+  where open ≡-Reasoning
+
+instance
+  -x-nonZero : .⦃ _ : NonZero x ⦄ → NonZero (- x)
+  -x-nonZero {x} = ≢-nonZero $ -x≢0 (≢-nonZero⁻¹ x)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -474,6 +503,21 @@ postulate
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
+*-assoc-middle : ∀ x y z w → ((x * y) * (z * w)) ≡ (x * (y * z)) * w
+*-assoc-middle x y z w = begin
+  (x * y) * (z * w) ≡˘⟨ *-assoc (x * y) z w ⟩
+  ((x * y) * z) * w ≡⟨ cong (_* w) (*-assoc x y z) ⟩
+  (x * (y * z)) * w ∎
+  where open ≡-Reasoning
+
+*-comm-middle : ∀ x y z w → (x * y) * (z * w) ≡ (x * z) * (y * w)
+*-comm-middle x y z w = begin
+  (x * y) * (z * w) ≡⟨ *-assoc-middle x y z w ⟩
+  (x * (y * z)) * w ≡⟨ cong (λ y → (x * y) * w) (*-comm y z) ⟩
+  (x * (z * y)) * w ≡˘⟨ *-assoc-middle x z y w ⟩
+  (x * z) * (y * w) ∎
+  where open ≡-Reasoning
+
 *-zeroˡ : LeftZero 0ℝ _*_
 *-zeroˡ x = begin
   0ℝ * x               ≡⟨ cong (_* x) (sym (+-inverseʳ 1ℝ)) ⟩
@@ -492,12 +536,30 @@ postulate
 *-neg-identityʳ : (x : ℝ) → x * -1ℝ ≡ - x
 *-neg-identityʳ x = trans (*-comm x -1ℝ) (*-neg-identityˡ x)
 
-
 postulate
   *-inverseˡ : ∀ x .⦃ _ : NonZero x  ⦄ → (1/ x) * x ≡ 1ℝ
 
 *-inverseʳ : ∀ x .⦃ _ : NonZero x ⦄ → x * (1/ x) ≡ 1ℝ
 *-inverseʳ x = trans (*-comm x (1/ x)) (*-inverseˡ x)
+
+*-cancelˡ : ∀ x .⦃ _ : NonZero x ⦄ {y z} → x * y ≡ x * z → y ≡ z
+*-cancelˡ x {y} {z} xy≡xz = begin
+              y  ≡⟨ helper y ⟩
+  1/ x * (x * y) ≡⟨ cong (1/ x *_) xy≡xz ⟩
+  1/ x * (x * z) ≡˘⟨ helper z ⟩
+              z  ∎
+  where
+  open ≡-Reasoning
+  helper : ∀ y → y ≡ 1/ x * (x * y)
+  helper y = sym $ begin
+    1/ x * (x * y) ≡˘⟨ *-assoc (1/ x) x y ⟩
+    (1/ x * x) * y ≡⟨ (cong (_* y) $ *-inverseˡ x) ⟩
+    1ℝ * y         ≡⟨ *-identityˡ y ⟩
+    y              ∎
+
+*-cancelʳ : ∀ x .⦃ _ : NonZero x ⦄ {y z} → y * x ≡ z * x → y ≡ z
+*-cancelʳ x {y} {z} yx≡zx rewrite *-comm x y | *-comm z x =
+  *-cancelˡ x $ trans (*-comm x y) yx≡zx
 
 ------------------------------------------------------------------------
 -- Structures
@@ -586,6 +648,13 @@ open Algebra.Properties.Ring record
   ; isRing = +-*-isRing
   } public
 
+-1² : -1ℝ * -1ℝ ≡ 1ℝ
+-1² rewrite sym $ -‿distribʳ-* -1ℝ 1ℝ | *-identityʳ -1ℝ = -‿involutive 1ℝ
+
+*-cancel-neg : (x y : ℝ) → - x * - y ≡ x * y
+*-cancel-neg x y rewrite sym (*-neg-identityˡ x) | sym (*-neg-identityˡ y)
+  | *-comm-middle -1ℝ x -1ℝ y | -1² = *-identityˡ (x * y)
+
 ------------------------------------------------------------------------
 -- Properties of -_ and _≤_/_<_
 
@@ -608,6 +677,15 @@ neg-antimono-< : -_ Preserves _<_ ⟶ _>_
 neg-antimono-< {x} {y} (*<* x≤y x≢y) = *<* (neg-antimono-≤ x≤y)
   λ -y≡-x → x≢y $ sym $ -‿injective -y≡-x
 
+neg-cancel-≤ : ∀ {x y} → - x ≤ - y → y ≤ x
+neg-cancel-≤ {x} {y} -x≤-y = begin
+  y     ≡˘⟨ -‿involutive y ⟩
+  - - y ≤⟨ neg-antimono-≤ -x≤-y ⟩
+  - - x ≡⟨ -‿involutive x ⟩
+  x     ∎
+  where
+  open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
 
@@ -619,13 +697,11 @@ postulate
   *-monoʳ-≤-nonNeg z
 
 *-monoʳ-≤-nonPos : ∀ z .⦃ _ : NonPositive z ⦄ → (_* z) Preserves _≤_ ⟶ _≥_
-*-monoʳ-≤-nonPos z ⦃ p ⦄ {x} {y} x≤y = begin
-  y * z       ≡˘⟨ -‿involutive (y * z) ⟩
-  - - (y * z) ≡⟨ (cong (-_) $ -‿distribʳ-* y z) ⟩
-  - (y * - z) ≤⟨ neg-antimono-≤ (*-monoʳ-≤-nonNeg (- z) ⦃ q p ⦄ x≤y) ⟩
-  - (x * - z) ≡˘⟨ (cong (-_) $ -‿distribʳ-* x z) ⟩
-  - - (x * z) ≡⟨ -‿involutive (x * z) ⟩
-  x * z       ∎
+*-monoʳ-≤-nonPos z ⦃ p ⦄ {x} {y} x≤y = neg-cancel-≤ $ begin
+  - (x * z) ≡⟨ -‿distribʳ-* x z ⟩
+  x * - z   ≤⟨ *-monoʳ-≤-nonNeg (- z) ⦃ q p ⦄ x≤y ⟩
+  y * - z   ≡˘⟨ -‿distribʳ-* y z ⟩
+  - (y * z) ∎
   where
   open ≤-Reasoning
   q : NonPositive z → NonNegative (- z)
@@ -638,28 +714,237 @@ postulate
 *-monoˡ-≤-nonPos z {x} {y} rewrite *-comm z x | *-comm z y =
   *-monoʳ-≤-nonPos z
 
+*-cancelʳ-≤-pos : ∀ z .⦃ _ : Positive z ⦄ → x * z ≤ y * z → x ≤ y
+*-cancelʳ-≤-pos {x} {y} z xz≤yz with ≤-total x y
+... | inj₁ x≤y = x≤y
+... | inj₂ x≥y with ≤-antisym xz≤yz $ *-monoʳ-≤-nonNeg z
+  ⦃ pos⇒nonNeg z ⦄ x≥y
+... | xz≡yz = ≤-reflexive $ *-cancelʳ z ⦃ pos⇒nonZero z ⦄ xz≡yz
+
+*-cancelˡ-≤-pos : ∀ z .⦃ _ : Positive z ⦄ → z * x ≤ z * y → x ≤ y
+*-cancelˡ-≤-pos {x} {y} z rewrite *-comm z x | *-comm z y = *-cancelʳ-≤-pos z
+
 *-cancelʳ-≤-neg : ∀ z .⦃ _ : Negative z ⦄ → x * z ≤ y * z → x ≥ y
-*-cancelʳ-≤-neg {x} {y} z ⦃ p ⦄ xz≤yz = begin
-  y             ≡˘⟨ *-identityʳ y ⟩
-  y * 1ℝ        ≡˘⟨ (cong (y *_) $ *-inverseʳ z ⦃ z-nonZero p ⦄) ⟩
-  y * (z * 1/z) ≡˘⟨ *-assoc y z 1/z ⟩
-  (y * z) * 1/z ≤⟨ *-monoʳ-≤-nonPos 1/z ⦃ {!   !} ⦄ xz≤yz ⟩
-  (x * z) * 1/z ≡⟨ *-assoc x z 1/z ⟩
-  x * (z * 1/z) ≡⟨ (cong (x *_) $ *-inverseʳ z ⦃ z-nonZero p ⦄) ⟩
-  x * 1ℝ        ≡⟨ *-identityʳ x ⟩
-  x             ∎
+*-cancelʳ-≤-neg {x} {y} z ⦃ p ⦄ xz≤yz = neg-cancel-≤ $
+  *-cancelʳ-≤-pos (- z) ⦃ q p ⦄ $ begin
+  - x * - z    ≡˘⟨ -‿distribˡ-* x (- z) ⟩
+  - (x * - z)  ≡˘⟨ -‿cong (-‿distribʳ-* x z) ⟩
+  - - (x * z)  ≡⟨ -‿involutive (x * z) ⟩
+  x * z        ≤⟨ xz≤yz ⟩
+  y * z        ≡˘⟨ -‿involutive (y * z) ⟩
+  - - (y * z)  ≡⟨ -‿cong (-‿distribʳ-* y z) ⟩
+  - (y * - z)  ≡⟨ -‿distribˡ-* y (- z) ⟩
+  - y * - z    ∎
   where
   open ≤-Reasoning
-  z-nonZero : Negative z → NonZero z
-  z-nonZero p = neg⇒nonZero _ ⦃ p ⦄
-  1/z = (1/ z) ⦃ z-nonZero p ⦄
+  q : Negative z → Positive (- z)
+  q p with Negative.negative p
+  ... | *<* z≤0 z≢0 = positive $ *<* (begin
+    0ℝ   ≡⟨ trans (sym $ *-zeroˡ (- 1ℝ)) (*-neg-identityʳ 0ℝ) ⟩
+    - 0ℝ ≤⟨ neg-antimono-≤ z≤0 ⟩
+    - z  ∎) (≢-sym $ -x≢0 $ z≢0)
 
 *-cancelˡ-≤-neg : ∀ z .⦃ _ : Negative z ⦄ → z * x ≤ z * y → x ≥ y
 *-cancelˡ-≤-neg {x} {y} z rewrite *-comm z x | *-comm z y =
   *-cancelʳ-≤-neg z
 
+------------------------------------------------------------------------
+-- Properties of _*_ and _<_
 
+*-monoˡ-<-pos : ∀ z .⦃ _ : Positive z ⦄ → (z *_) Preserves _<_ ⟶ _<_
+*-monoˡ-<-pos z (*<* x≤y x≢y) = *<*
+  (*-monoˡ-≤-nonNeg z ⦃ pos⇒nonNeg z ⦄ x≤y)
+  λ zx≡zy → contradiction (*-cancelˡ z ⦃ pos⇒nonZero z ⦄ zx≡zy) x≢y
 
+*-monoʳ-<-pos : ∀ z .⦃ _ : Positive z ⦄ → (_* z) Preserves _<_ ⟶ _<_
+*-monoʳ-<-pos z {x} {y} rewrite *-comm x z | *-comm y z = *-monoˡ-<-pos z
 
+*-cancelˡ-<-nonNeg : ∀ z .⦃ _ : NonNegative z ⦄ → ∀ {x y} → z * x < z * y → x < y
+*-cancelˡ-<-nonNeg z ⦃ p ⦄ {x} {y} (*<* zx≤zy zx≢zy) with z ≟ 0ℝ
+... | yes refl = contradiction (trans (*-zeroˡ x) (sym $ *-zeroˡ y)) zx≢zy
+... | no  z≢0  = *<*
+  (*-cancelˡ-≤-pos z ⦃ nonNeg∧nonZero⇒pos _ ⦃ p ⦄ ⦃ ≢-nonZero z≢0 ⦄ ⦄ zx≤zy)
+  λ x≡y → contradiction (cong (z *_) x≡y) zx≢zy
+
+*-cancelʳ-<-nonNeg : ∀ z .⦃ _ : NonNegative z ⦄ → ∀ {x y} → x * z < y * z → x < y
+*-cancelʳ-<-nonNeg z {x} {y} rewrite *-comm x z | *-comm y z = *-cancelˡ-<-nonNeg z
+
+*-monoˡ-<-neg : ∀ z .⦃ _ : Negative z ⦄ → (z *_) Preserves _<_ ⟶ _>_
+*-monoˡ-<-neg z (*<* x≤y x≢y) = *<*
+  (*-monoˡ-≤-nonPos z ⦃ neg⇒nonPos z ⦄ x≤y)
+  λ zy≡zx → contradiction (*-cancelˡ z ⦃ neg⇒nonZero z ⦄ $ sym zy≡zx) x≢y
+
+*-monoʳ-<-neg : ∀ z .⦃ _ : Negative z ⦄ → (_* z) Preserves _<_ ⟶ _>_
+*-monoʳ-<-neg z {x} {y} rewrite *-comm x z | *-comm y z = *-monoˡ-<-neg z
+
+*-cancelˡ-<-nonPos : ∀ z .⦃ _ : NonPositive z ⦄ → z * x < z * y → x > y
+*-cancelˡ-<-nonPos {x} {y} z ⦃ p ⦄ (*<* zx≤zy zx≢zy) with z ≟ 0ℝ
+... | yes refl = contradiction (trans (*-zeroˡ x) (sym $ *-zeroˡ y)) zx≢zy
+... | no  z≢0  = *<*
+  (*-cancelˡ-≤-neg z ⦃ nonPos∧nonZero⇒neg _ ⦃ p ⦄ ⦃ ≢-nonZero z≢0 ⦄ ⦄ zx≤zy)
+  λ y≡x → contradiction (cong (z *_) $ sym y≡x) zx≢zy
+
+*-cancelʳ-<-nonPos : ∀ z .⦃ _ : NonPositive z ⦄ → x * z < y * z → x > y
+*-cancelʳ-<-nonPos {x} {y} z rewrite *-comm x z | *-comm y z =
+  *-cancelˡ-<-nonPos z
+
+------------------------------------------------------------------------
+-- Properties of 1/_
+------------------------------------------------------------------------
+
+1/1 : 1/ 1ℝ ≡ 1ℝ
+1/1 rewrite sym $ *-identityˡ (1/ 1ℝ) = *-inverseʳ 1ℝ
+
+1/x≢0 : {x : ℝ} → (p : x ≢ 0ℝ) → (1/ x) ⦃ ≢-nonZero p ⦄ ≢ 0ℝ
+1/x≢0 {x} p 1/x≡0 = p $ begin
+  x            ≡˘⟨ *-identityʳ x ⟩
+  x * 1ℝ       ≡˘⟨ cong (_*_ x) (*-inverseʳ x) ⟩
+  x * (x / x)  ≡⟨ cong (λ y → x * (x * y)) 1/x≡0 ⟩
+  x * (x * 0ℝ) ≡⟨ cong (_*_ x) (*-zeroʳ x) ⟩
+  x * 0ℝ       ≡⟨ *-zeroʳ x ⟩
+  0ℝ ∎
+  where
+  open ≡-Reasoning
+  instance _ = ≢-nonZero p
+
+nonZero⇒1/nonZero : ∀ x .⦃ _ : NonZero x ⦄ → NonZero (1/ x)
+nonZero⇒1/nonZero x = ≢-nonZero $ 1/x≢0 (≢-nonZero⁻¹ x)
+
+1/-involutive : ∀ x .⦃ _ : NonZero x ⦄ → (1/(1/ x)) ⦃ nonZero⇒1/nonZero x ⦄ ≡ x
+1/-involutive x = begin
+  1/(1/ x)
+    ≡˘⟨ *-identityˡ (1/(1/ x)) ⟩
+  1ℝ * 1/(1/ x)
+    ≡˘⟨ (cong (_* 1/(1/ x)) $ *-inverseʳ (1/ x)) ⟩
+  1/ x * 1/(1/ x) * 1/(1/ x)
+    ≡˘⟨ *-identityˡ (1/ x * 1/(1/ x) * 1/(1/ x)) ⟩
+  1ℝ * (1/ x * 1/(1/ x) * 1/(1/ x))
+    ≡˘⟨ ((cong (_* (1/ x * 1/(1/ x) * 1/(1/ x))) $ *-inverseʳ x )) ⟩
+  (x * 1/ x) * (1/ x * 1/(1/ x) * 1/(1/ x))
+    ≡⟨ *-assoc x (1/ x) (1/ x * 1/(1/ x) * 1/(1/ x)) ⟩
+  x * (1/ x * (1/ x * 1/(1/ x) * 1/(1/ x)))
+    ≡⟨ (cong (λ y → x * (1/ x * y)) $ *-assoc (1/ x) (1/(1/ x)) (1/(1/ x))) ⟩
+  x * (1/ x * (1/ x * (1/(1/ x) * 1/(1/ x))))
+    ≡˘⟨ (cong (_*_ x) $ *-assoc (1/ x) (1/ x) (1/(1/ x) * 1/(1/ x))) ⟩
+  x * ((1/ x * 1/ x) * (1/(1/ x) * 1/(1/ x)))
+    ≡⟨ (cong (_*_ x) $ *-comm-middle (1/ x) (1/ x) (1/(1/ x)) (1/(1/ x))) ⟩
+  x * ((1/ x * 1/(1/ x)) * (1/ x * 1/(1/ x)))
+    ≡⟨ ((cong (_*_ x) $ cong₂ _*_ (*-inverseʳ (1/ x)) (*-inverseʳ (1/ x)))) ⟩
+  x * (1ℝ * 1ℝ)
+    ≡⟨ trans (cong (_*_ x) $ *-identityʳ 1ℝ) (*-identityʳ x) ⟩
+  x ∎
+  where
+  open ≡-Reasoning
+  instance _ = nonZero⇒1/nonZero x
+
+x*y≡0 : ∀ x y → x * y ≡ 0ℝ → x ≡ 0ℝ ⊎ y ≡ 0ℝ
+x*y≡0 x y xy≡0 with x ≟ 0ℝ
+... | yes x≡0 = inj₁ x≡0
+... | no  x≢0   with y ≟ 0ℝ
+... | yes y≡0 = inj₂ y≡0
+... | no  y≢0   = contradiction (begin
+    y                ≡˘⟨ *-identityˡ y ⟩
+    1ℝ * y           ≡˘⟨ cong (_* y) (*-inverseʳ x) ⟩
+    (x / x) * y     ≡⟨ *-assoc x (1/ x) y ⟩
+    x * (1/ x * y)  ≡⟨ cong (_*_ x) (*-comm (1/ x) y) ⟩
+    x * (y * 1/ x)  ≡˘⟨ *-assoc x y (1/ x) ⟩
+    x * y * 1/ x    ≡⟨ cong (_* 1/ x) xy≡0 ⟩
+    0ℝ * 1/ x       ≡⟨ *-zeroˡ (1/ x) ⟩
+    0ℝ ∎) y≢0
+  where
+  open ≡-Reasoning
+  instance _ = ≢-nonZero x≢0
+
+x*y≢0 : x ≢ 0ℝ → y ≢ 0ℝ → x * y ≢ 0ℝ
+x*y≢0 {x} {y} p q xy≡0 with x*y≡0 x y xy≡0
+... | inj₁ x≡0 = p x≡0
+... | inj₂ y≡0 = q y≡0
+
+x*y-nonZero : ∀ x y .⦃ _ : NonZero x ⦄ .⦃ _ : NonZero y ⦄ → NonZero (x * y)
+x*y-nonZero x y = ≢-nonZero $
+  x*y≢0 (≢-nonZero⁻¹ x) (≢-nonZero⁻¹ y)
+
+1/-distrib-* : ∀ x y .⦃ _ : NonZero x ⦄ .⦃ _ : NonZero y ⦄ →
+  (1/(x * y)) ⦃ x*y-nonZero x y ⦄ ≡ 1/ x * 1/ y
+1/-distrib-* x y = sym $ begin
+    1/ x * 1/ y
+      ≡˘⟨ *-identityʳ (1/ x * 1/ y) ⟩
+    1/ x * 1/ y * 1ℝ
+      ≡˘⟨ cong (_*_ (1/ x * 1/ y)) (*-inverseʳ (x * y) ⦃ _ ⦄) ⟩
+    1/ x * 1/ y * ((x * y) * 1/ (x * y))
+      ≡˘⟨ *-assoc (1/ x * 1/ y) (x * y) (1/ (x * y)) ⟩
+    (1/ x * 1/ y * (x * y)) * (1/ (x * y))
+      ≡⟨ cong (_* (1/ (x * y))) (*-comm-middle (1/ x) (1/ y) x y) ⟩
+    (1/ x * x) * (1/ y * y) * 1/ (x * y)
+      ≡⟨ cong₂ (λ a b → a * b * 1/ (x * y)) (*-inverseˡ x) (*-inverseˡ y) ⟩
+    1ℝ * 1ℝ * 1/ (x * y)
+      ≡⟨ cong (_* 1/ (x * y) ) (*-identityˡ 1ℝ) ⟩
+    1ℝ * 1/ (x * y)
+      ≡⟨ *-identityˡ (1/ (x * y)) ⟩
+    1/ (x * y) ∎
+    where
+    open ≡-Reasoning
+    instance _ = x*y-nonZero x y
+
+private
+  1/pos-neg-helper : .⦃ _ : NonZero x ⦄ → x * 0ℝ ≤ x * 1/ x
+  1/pos-neg-helper {x} = begin
+    x * 0ℝ   ≡⟨ *-zeroʳ x ⟩
+    0ℝ       ≤⟨ 0≤1 ⟩
+    1ℝ       ≡˘⟨ *-inverseʳ x ⟩
+    x * 1/ x ∎
+    where open ≤-Reasoning
+
+1/pos⇒pos : ∀ x ⦃ _ : Positive x ⦄ → Positive ((1/ x) ⦃ pos⇒nonZero x ⦄)
+1/pos⇒pos x ⦃ p ⦄ with Positive.positive p
+... | *<* 0≤x 0≢x = positive $ *<* help (≢-sym $ 1/x≢0 $ ≢-sym 0≢x)
+  where
+  instance _ = pos⇒nonZero x
+  help : 0ℝ ≤ (1/ x)
+  help = *-cancelˡ-≤-pos x 1/pos-neg-helper
+
+1/neg⇒neg : ∀ x ⦃ _ : Negative x ⦄ → Negative ((1/ x) ⦃ neg⇒nonZero x ⦄)
+1/neg⇒neg x ⦃ p ⦄ with Negative.negative p
+... | *<* x≤0 x≢0 = negative $ *<* help (1/x≢0 x≢0)
+  where
+  instance _ = neg⇒nonZero x
+  help : (1/ x) ≤ 0ℝ
+  help = *-cancelˡ-≤-neg x 1/pos-neg-helper
+
+pos⇒1/pos : ∀ x .⦃ _ : NonZero x ⦄ ⦃ _ : Positive (1/ x) ⦄ → Positive x
+pos⇒1/pos x = subst Positive (1/-involutive x) (1/pos⇒pos (1/ x))
+
+neg⇒1/neg : ∀ x .⦃ _ : NonZero x ⦄ ⦃ _ : Negative (1/ x) ⦄ → Negative x
+neg⇒1/neg x = subst Negative (1/-involutive x) (1/neg⇒neg (1/ x))
+
+------------------------------------------------------------------------
+-- Properties of _/_
+------------------------------------------------------------------------
+
+/-mul : (x y z w : ℝ) .⦃ _ : NonZero y ⦄ .⦃ _ : NonZero w ⦄ →
+  (x / y) * (z / w) ≡ ((x * z) / (y * w)) ⦃ x*y-nonZero y w ⦄
+/-mul x y z w = begin
+  (x / y) * (z / w)         ≡⟨ *-comm-middle x (1/ y) z (1/ w) ⟩
+  (x * z) * (1/ y * 1/ w)   ≡˘⟨ cong (_*_ (x * z))  (1/-distrib-* y w) ⟩
+  ((x * z) / (y * w)) ⦃ x*y-nonZero y w ⦄ ∎
+  where open ≡-Reasoning
+
+x/1 : ∀ x → x / 1ℝ ≡ x
+x/1 x rewrite 1/1 = *-identityʳ x
+
+/-simplˡ : ∀ x y z .⦃ _ : NonZero x ⦄ .⦃ _ : NonZero z ⦄ →
+  ((x * y) / (x * z))  ⦃ x*y-nonZero x z ⦄ ≡ y / z
+/-simplˡ x y z ⦃ p ⦄ rewrite sym (/-mul x x y z) | *-inverseʳ x ⦃ p ⦄ =
+  *-identityˡ (y / z)
+
+/-simplʳ : ∀ x y z .⦃ _ : NonZero x ⦄ .⦃ q : NonZero z ⦄ →
+  ((y * x) / (z * x))  ⦃ x*y-nonZero z x ⦄ ≡ y / z
+/-simplʳ x y z ⦃ p ⦄ rewrite sym (/-mul y z x x) | *-inverseʳ x ⦃ p ⦄ =
+  *-identityʳ (y / z)
+
+/-coef : ∀ x y z .⦃ _ : NonZero z ⦄ → x * y / z ≡ (x * y) / z
+/-coef x y z ⦃ p ⦄ rewrite sym (x/1 x) | /-mul x 1ℝ y z ⦃ 1-nonZero ⦄ ⦃ p ⦄
+  | x/1 x | 1/-distrib-* 1ℝ z ⦃ 1-nonZero ⦄ ⦃ p ⦄ | 1/1
+  | *-identityˡ (1/ z) = refl
 
 
