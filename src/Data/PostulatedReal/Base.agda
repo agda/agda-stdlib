@@ -55,6 +55,18 @@ x ≯ y = ¬ (x > y)
 record NonZero (x : ℝ) : Set where
   field nonZero : x ≢ 0ℝ
 
+record Positive (x : ℝ) : Set where
+  field positive : x > 0ℝ
+
+record Negative (x : ℝ) : Set where
+  field negative : x < 0ℝ
+
+record NonPositive (x : ℝ) : Set where
+  field nonPositive : x ≤ 0ℝ
+
+record NonNegative (x : ℝ) : Set where
+  field nonNegative : x ≥ 0ℝ
+
 -- Instances
 
 instance
@@ -72,10 +84,34 @@ instance
 >-nonZero : ∀ {x} → x > 0ℝ → NonZero x
 >-nonZero (*<* _ 0≢x) = record {nonZero = ≢-sym 0≢x}
 
+positive : ∀ {x} → x > 0ℝ → Positive x
+positive x>0 = record {positive = x>0}
+
+negative : ∀ {x} → x < 0ℝ → Negative x
+negative x<0 = record {negative = x<0}
+
+nonPositive : ∀ {x} → x ≤ 0ℝ → NonPositive x
+nonPositive x≤0 = record {nonPositive = x≤0}
+
+nonNegative : ∀ {x} → x ≥ 0ℝ → NonNegative x
+nonNegative x≥0 = record {nonNegative = x≥0}
+
 -- Destructors
 
-≢-nonZero⁻¹ : ∀ x → .{{NonZero x}} → x ≢ 0ℝ
+≢-nonZero⁻¹ : ∀ x → .⦃ NonZero x ⦄ → x ≢ 0ℝ
 ≢-nonZero⁻¹ _ ⦃ p ⦄ x≡0 = ⊥-elim (NonZero.nonZero p x≡0)
+
+-- positive⁻¹ : ∀ x → .⦃ Positive x ⦄ → x > 0ℝ
+-- positive⁻¹ _ ⦃ p ⦄ = {!   !}
+
+-- negative⁻¹ : ∀ x → .⦃ Negative x ⦄ → x < 0ℝ
+-- negative⁻¹ _ ⦃ p ⦄ = {!   !}
+
+-- nonPositive⁻¹ : ∀ x → .⦃ NonPositive x ⦄ → x ≤ 0ℝ
+-- nonPositive⁻¹ _ ⦃ p ⦄ = {!   !}
+
+-- nonNegative⁻¹ : ∀ x → .⦃ NonNegative x ⦄ → x ≥ 0ℝ
+-- nonNegative⁻¹ _ ⦃ p ⦄ = {!   !}
 
 ------------------------------------------------------------------------------
 -- Operations on reals

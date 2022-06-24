@@ -10,6 +10,7 @@
 module Data.PostulatedReal.Properties.Core where
 
 open import Algebra.Bundles
+import Algebra.Properties.Ring
 open import Function.Base using (_$_)
 open import Data.PostulatedReal.Base
 open import Data.Product using (_,_)
@@ -41,6 +42,31 @@ postulate
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
+
+------------------------------------------------------------------------
+-- Basic properties of sign predicates
+------------------------------------------------------------------------
+
+pos⇒nonNeg : ∀ x → ⦃ Positive x ⦄ → NonNegative x
+pos⇒nonNeg x ⦃ p ⦄ with Positive.positive p
+... | *<* 0≤x _ = nonNegative 0≤x
+
+neg⇒nonPos : ∀ x → ⦃ Negative x ⦄ → NonPositive x
+neg⇒nonPos x ⦃ p ⦄ with Negative.negative p
+... | *<* x≤0 + = nonPositive x≤0
+
+nonNeg∧nonZero⇒pos : ∀ x → ⦃ NonNegative x ⦄ → ⦃ NonZero x ⦄ → Positive x
+nonNeg∧nonZero⇒pos x ⦃ p ⦄ ⦃ q ⦄
+  with NonNegative.nonNegative p | NonZero.nonZero q
+... | 0≤x | x≢0 = positive $ *<* 0≤x (≢-sym x≢0)
+
+pos⇒nonZero : ∀ x → ⦃ Positive x ⦄ → NonZero x
+pos⇒nonZero x ⦃ p ⦄ with Positive.positive p
+... | *<* _ 0≢x = ≢-nonZero $ ≢-sym 0≢x
+
+neg⇒nonZero : ∀ x → ⦃ Negative x ⦄ → NonZero x
+neg⇒nonZero x ⦃ p ⦄ with Negative.negative p
+... | *<* _ x≢0 = ≢-nonZero $ x≢0
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -549,20 +575,91 @@ postulate
   { isCommutativeRing = +-*-isCommutativeRing
   }
 
+open Algebra.Properties.Ring record
+  { Carrier = ℝ
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0ℝ
+  ; 1# = 1ℝ
+  ; isRing = +-*-isRing
+  } public
 
-
-
-
-
-
-
--- TODO (waiting Ring for -‿injective)
 ------------------------------------------------------------------------
 -- Properties of -_ and _≤_/_<_
 
--- neg-antimono-< : -_ Preserves _<_ ⟶ _>_
--- neg-antimono-< {x} {y} (*<* x≤y x≢y) with ≤-total (- x) (- y)
--- ... | inj₁ -x≤-y = {!   !}
--- ... | inj₂ -x≥-y = *<* -x≥-y $ λ -y≡-x → x≢y $ sym $ -‿injective -y≡-x
+neg-antimono-≤ : -_ Preserves _≤_ ⟶ _≥_
+neg-antimono-≤ {x} {y} x≤y = begin
+  - y           ≡˘⟨ +-identityʳ (- y) ⟩
+  - y + 0ℝ      ≤⟨ +-monoʳ-≤ (- y) 0≤y-x ⟩
+  - y + (y - x) ≡˘⟨ +-assoc (- y) y (- x) ⟩
+  (- y + y) - x ≡⟨ (cong (_- x) $ +-inverseˡ y) ⟩
+  0ℝ - x        ≡⟨ +-identityˡ (- x) ⟩
+  - x           ∎
+  where
+  open ≤-Reasoning
+  0≤y-x = begin
+    0ℝ    ≡˘⟨ +-inverseʳ x ⟩
+    x - x ≤⟨ +-monoˡ-≤ (- x) x≤y ⟩
+    y - x ∎
 
--- neg-antimono-≤ : -_ Preserves _≤_ ⟶ _≥_
+neg-antimono-< : -_ Preserves _<_ ⟶ _>_
+neg-antimono-< {x} {y} (*<* x≤y x≢y) = *<* (neg-antimono-≤ x≤y)
+  λ -y≡-x → x≢y $ sym $ -‿injective -y≡-x
+
+------------------------------------------------------------------------
+-- Properties of _*_ and _≤_
+
+postulate
+  *-monoʳ-≤-nonNeg : ∀ z .⦃ _ : NonNegative z ⦄ → (_* z) Preserves _≤_ ⟶ _≤_
+
+*-monoˡ-≤-nonNeg : ∀ z .⦃ _ : NonNegative z ⦄ → (z *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-nonNeg z {x} {y} rewrite *-comm z x | *-comm z y =
+  *-monoʳ-≤-nonNeg z
+
+*-monoʳ-≤-nonPos : ∀ z .⦃ _ : NonPositive z ⦄ → (_* z) Preserves _≤_ ⟶ _≥_
+*-monoʳ-≤-nonPos z ⦃ p ⦄ {x} {y} x≤y = begin
+  y * z       ≡˘⟨ -‿involutive (y * z) ⟩
+  - - (y * z) ≡⟨ (cong (-_) $ -‿distribʳ-* y z) ⟩
+  - (y * - z) ≤⟨ neg-antimono-≤ (*-monoʳ-≤-nonNeg (- z) ⦃ q p ⦄ x≤y) ⟩
+  - (x * - z) ≡˘⟨ (cong (-_) $ -‿distribʳ-* x z) ⟩
+  - - (x * z) ≡⟨ -‿involutive (x * z) ⟩
+  x * z       ∎
+  where
+  open ≤-Reasoning
+  q : NonPositive z → NonNegative (- z)
+  q p = nonNegative $ begin
+    0ℝ   ≡⟨ trans (sym $ *-zeroˡ (- 1ℝ)) (*-neg-identityʳ 0ℝ) ⟩
+    - 0ℝ ≤⟨ neg-antimono-≤ (NonPositive.nonPositive p) ⟩
+    - z  ∎
+
+*-monoˡ-≤-nonPos : ∀ z .⦃ _ : NonPositive z ⦄ → (z *_) Preserves _≤_ ⟶ _≥_
+*-monoˡ-≤-nonPos z {x} {y} rewrite *-comm z x | *-comm z y =
+  *-monoʳ-≤-nonPos z
+
+*-cancelʳ-≤-neg : ∀ z .⦃ _ : Negative z ⦄ → x * z ≤ y * z → x ≥ y
+*-cancelʳ-≤-neg {x} {y} z ⦃ p ⦄ xz≤yz = begin
+  y             ≡˘⟨ *-identityʳ y ⟩
+  y * 1ℝ        ≡˘⟨ (cong (y *_) $ *-inverseʳ z ⦃ z-nonZero p ⦄) ⟩
+  y * (z * 1/z) ≡˘⟨ *-assoc y z 1/z ⟩
+  (y * z) * 1/z ≤⟨ *-monoʳ-≤-nonPos 1/z ⦃ {!   !} ⦄ xz≤yz ⟩
+  (x * z) * 1/z ≡⟨ *-assoc x z 1/z ⟩
+  x * (z * 1/z) ≡⟨ (cong (x *_) $ *-inverseʳ z ⦃ z-nonZero p ⦄) ⟩
+  x * 1ℝ        ≡⟨ *-identityʳ x ⟩
+  x             ∎
+  where
+  open ≤-Reasoning
+  z-nonZero : Negative z → NonZero z
+  z-nonZero p = neg⇒nonZero _ ⦃ p ⦄
+  1/z = (1/ z) ⦃ z-nonZero p ⦄
+
+*-cancelˡ-≤-neg : ∀ z .⦃ _ : Negative z ⦄ → z * x ≤ z * y → x ≥ y
+*-cancelˡ-≤-neg {x} {y} z rewrite *-comm z x | *-comm z y =
+  *-cancelʳ-≤-neg z
+
+
+
+
+
+
