@@ -101,17 +101,17 @@ nonNegative x≥0 = record {nonNegative = x≥0}
 ≢-nonZero⁻¹ : ∀ x → .⦃ NonZero x ⦄ → x ≢ 0ℝ
 ≢-nonZero⁻¹ _ ⦃ p ⦄ x≡0 = ⊥-elim (NonZero.nonZero p x≡0)
 
--- positive⁻¹ : ∀ x → .⦃ Positive x ⦄ → x > 0ℝ
--- positive⁻¹ _ ⦃ p ⦄ = {!   !}
+positive⁻¹ : ∀ x → ⦃ Positive x ⦄ → x > 0ℝ
+positive⁻¹ _ ⦃ p ⦄ = Positive.positive p
 
--- negative⁻¹ : ∀ x → .⦃ Negative x ⦄ → x < 0ℝ
--- negative⁻¹ _ ⦃ p ⦄ = {!   !}
+negative⁻¹ : ∀ x → ⦃ Negative x ⦄ → x < 0ℝ
+negative⁻¹ _ ⦃ p ⦄ = Negative.negative p
 
--- nonPositive⁻¹ : ∀ x → .⦃ NonPositive x ⦄ → x ≤ 0ℝ
--- nonPositive⁻¹ _ ⦃ p ⦄ = {!   !}
+nonPositive⁻¹ : ∀ x → ⦃ NonPositive x ⦄ → x ≤ 0ℝ
+nonPositive⁻¹ _ ⦃ p ⦄ = NonPositive.nonPositive p
 
--- nonNegative⁻¹ : ∀ x → .⦃ NonNegative x ⦄ → x ≥ 0ℝ
--- nonNegative⁻¹ _ ⦃ p ⦄ = {!   !}
+nonNegative⁻¹ : ∀ x → ⦃ NonNegative x ⦄ → x ≥ 0ℝ
+nonNegative⁻¹ _ ⦃ p ⦄ = NonNegative.nonNegative p
 
 ------------------------------------------------------------------------------
 -- Operations on reals

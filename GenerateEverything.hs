@@ -44,6 +44,7 @@ unsafeModules = map modToFile
   , "Codata.Musical.Stream"
   , "Data.PostulatedReal"
   , "Data.PostulatedReal.Base"
+  , "Data.PostulatedReal.Propertis"
   , "Data.PostulatedReal.Propertis.Core"
   , "Debug.Trace"
   , "Foreign.Haskell"

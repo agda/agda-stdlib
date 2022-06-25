@@ -11,7 +11,7 @@ module Data.PostulatedReal.Properties.Core where
 
 open import Algebra.Bundles
 import Algebra.Properties.Ring
-open import Function.Base using (_$_)
+open import Function.Base using (_$_; _∘_)
 open import Data.PostulatedReal.Base
 open import Data.Product using (_,_)
 open import Data.Sum.Base
@@ -332,13 +332,24 @@ postulate
 -‿cong : Congruent₁ (-_)
 -‿cong = cong (-_)
 
--x≢0 : {x : ℝ} → x ≢ 0ℝ → - x ≢ 0ℝ
--x≢0 {x} p -x≡0 = p $ begin
+-x≡0⇒x≡0 : - x ≡ 0ℝ → x ≡ 0ℝ
+-x≡0⇒x≡0 {x} -x≡0 = begin
   x       ≡˘⟨ +-identityʳ x ⟩
-  x + 0ℝ  ≡˘⟨ cong (_+_ x) -x≡0 ⟩
+  x + 0ℝ  ≡˘⟨ cong (x +_) -x≡0 ⟩
   x + - x ≡⟨ +-inverseʳ x ⟩
   0ℝ      ∎
   where open ≡-Reasoning
+
+x≡0⇒-x≡0 : x ≡ 0ℝ → - x ≡ 0ℝ
+x≡0⇒-x≡0 {x} x≡0 = begin
+  - x      ≡˘⟨ +-identityʳ (- x) ⟩
+  - x + 0ℝ ≡˘⟨ cong (- x +_) x≡0 ⟩
+  - x + x  ≡⟨ +-inverseˡ x ⟩
+  0ℝ       ∎
+  where open ≡-Reasoning
+
+-x≢0 : x ≢ 0ℝ → - x ≢ 0ℝ
+-x≢0 p = p ∘ -x≡0⇒x≡0
 
 instance
   -x-nonZero : .⦃ _ : NonZero x ⦄ → NonZero (- x)
@@ -459,6 +470,28 @@ postulate
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
 +-mono-≤-< {x} {y} {z} {w} x≤y z<w rewrite +-comm x z | +-comm y w =
   +-mono-<-≤ z<w x≤y
+
+x+x≡0⇒x≡0 : x + x ≡ 0ℝ → x ≡ 0ℝ
+x+x≡0⇒x≡0 {x} x+x≡0 with x ≟ 0ℝ
+... | yes x≡0 = x≡0
+... | no  x≢0 with x ≤? 0ℝ
+... | yes x≤0 = let
+  x<0 = *<* x≤0 x≢0
+  x+x<0+0 = +-mono-< x<0 x<0
+  x+x≢0 = λ x+x≡0 → <⇒≢ x+x<0+0 $ trans x+x≡0 (sym $ +-identityˡ 0ℝ)
+  in contradiction x+x≡0 x+x≢0
+... | no  x≰0 = let
+  x>0 = ≰⇒> x≰0
+  x+x>0+0 = +-mono-< x>0 x>0
+  x+x≢0 = λ x+x≡0 → <⇒≢ x+x>0+0 $ sym $ trans x+x≡0 (sym $ +-identityˡ 0ℝ)
+  in contradiction x+x≡0 x+x≢0
+
+-x≡x⇒x≡0 : - x ≡ x → x ≡ 0ℝ
+-x≡x⇒x≡0 {x} -x≡x = x+x≡0⇒x≡0 $ begin
+  x + x ≡˘⟨ cong (x +_) -x≡x ⟩
+  x - x ≡⟨ +-inverseʳ x ⟩
+  0ℝ    ∎
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -686,6 +719,30 @@ neg-cancel-≤ {x} {y} -x≤-y = begin
   where
   open ≤-Reasoning
 
+-x≥0⇒x≤0 : - x ≥ 0ℝ → x ≤ 0ℝ
+-x≥0⇒x≤0 {x} -x≥0 = neg-cancel-≤ $ ≤-trans (≤-reflexive $ -0#≈0#) -x≥0
+
+-x≤0⇒x≥0 : - x ≤ 0ℝ → x ≥ 0ℝ
+-x≤0⇒x≥0 {x} -x≤0 = neg-cancel-≤ $ ≤-trans -x≤0 (≤-reflexive $ sym -0#≈0#)
+
+x≥0⇒-x≤0 : x ≥ 0ℝ → - x ≤ 0ℝ
+x≥0⇒-x≤0 {x} x≥0 = ≤-trans (neg-antimono-≤ x≥0) (≤-reflexive -0#≈0#)
+
+x≤0⇒-x≥0 : x ≤ 0ℝ → - x ≥ 0ℝ
+x≤0⇒-x≥0 {x} x≤0 = ≤-trans (≤-reflexive $ sym -0#≈0#) (neg-antimono-≤ x≤0)
+
+x≥0∧-x≥0⇒x≡0 : x ≥ 0ℝ → - x ≥ 0ℝ → x ≡ 0ℝ
+x≥0∧-x≥0⇒x≡0 {x} x≥0 -x≥0 = ≤-antisym (-x≥0⇒x≤0 -x≥0) x≥0
+
+x≤0∧-x≤0⇒x≡0 : x ≤ 0ℝ → - x ≤ 0ℝ → x ≡ 0ℝ
+x≤0∧-x≤0⇒x≡0 {x} x≤0 -x≤0 = ≤-antisym x≤0 (-x≤0⇒x≥0 -x≤0)
+
+x≥0⇒-x≤x : x ≥ 0ℝ → - x ≤ x
+x≥0⇒-x≤x x≥0 = ≤-trans (x≥0⇒-x≤0 x≥0) x≥0
+
+x≤0⇒-x≥x : x ≤ 0ℝ → - x ≥ x
+x≤0⇒-x≥x x≤0 = ≤-trans x≤0 (x≤0⇒-x≥0 x≤0)
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
 
@@ -747,6 +804,30 @@ postulate
 *-cancelˡ-≤-neg : ∀ z .⦃ _ : Negative z ⦄ → z * x ≤ z * y → x ≥ y
 *-cancelˡ-≤-neg {x} {y} z rewrite *-comm z x | *-comm z y =
   *-cancelʳ-≤-neg z
+
+*-mono-≥0 : x ≥ 0ℝ → y ≥ 0ℝ → x * y ≥ 0ℝ
+*-mono-≥0 {x} {y} x≥0 y≥0 = begin
+  0ℝ     ≡˘⟨ *-zeroʳ x ⟩
+  x * 0ℝ ≤⟨ *-monoˡ-≤-nonNeg x ⦃ nonNegative x≥0 ⦄ y≥0 ⟩
+  x * y  ∎
+  where open ≤-Reasoning
+
+*-mono-≤0 : x ≤ 0ℝ → y ≤ 0ℝ → x * y ≥ 0ℝ
+*-mono-≤0 {x} {y} x≤0 y≤0 = begin
+  0ℝ     ≡˘⟨ *-zeroʳ x ⟩
+  x * 0ℝ ≤⟨ *-monoˡ-≤-nonPos x ⦃ nonPositive x≤0 ⦄ y≤0 ⟩
+  x * y  ∎
+  where open ≤-Reasoning
+
+*-mono-≥0-≤0 : x ≥ 0ℝ → y ≤ 0ℝ → x * y ≤ 0ℝ
+*-mono-≥0-≤0 {x} {y} x≥0 y≤0 = begin
+  x * y  ≤⟨ *-monoˡ-≤-nonNeg x ⦃ nonNegative x≥0 ⦄ y≤0 ⟩
+  x * 0ℝ ≡⟨ *-zeroʳ x ⟩
+  0ℝ     ∎
+  where open ≤-Reasoning
+
+*-mono-≤0-≥0 : x ≤ 0ℝ → y ≥ 0ℝ → x * y ≤ 0ℝ
+*-mono-≤0-≥0 {x} {y} x≤0 y≥0 rewrite *-comm x y = *-mono-≥0-≤0 y≥0 x≤0
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
