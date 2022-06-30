@@ -1,17 +1,19 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of postulated Real numbers
+-- Properties of parametrized Real numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
-module Data.PostulatedReal.Properties where
+open import Data.ParametrizedReal.Interface using (Reals)
+
+module Data.ParametrizedReal.Properties (RealInterface : Reals) where
 
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
-open import Data.PostulatedReal
+open import Data.ParametrizedReal RealInterface hiding (_≟_; _≤?_; _<?_)
 open import Data.Sum
 open import Function.Base
 open import Relation.Binary
@@ -22,7 +24,7 @@ open import Relation.Nullary.Negation using (contradiction)
 ------------------------------------------------------------------------
 -- Publicly re-export contents of core module and queries
 
-open import Data.PostulatedReal.Properties.Core public
+open import Data.ParametrizedReal.Properties.Core RealInterface public
 
 private
   variable

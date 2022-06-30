@@ -1,71 +1,24 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Postulated Real numbers
+-- ParametrizedReal numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
-module Data.PostulatedReal.Base where
+open import Data.ParametrizedReal.Interface
+
+module Data.ParametrizedReal.Base (RealInterface : Reals) where
 
 open import Data.Empty.Irrelevant
-open import Level using (0ℓ)
-open import Relation.Binary.Core using (Rel)
-open import Relation.Nullary using (¬_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; ≢-sym)
 
-postulate
-  ℝ     : Set
-  0ℝ 1ℝ : ℝ
-  1≢0   : 1ℝ ≢ 0ℝ
-
-------------------------------------------------------------------------
--- Ordering of reals
-
-infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≱_ _≮_ _≯_
-
-postulate
-  _≤_ : Rel ℝ 0ℓ
-
-data _<_ : Rel ℝ 0ℓ where
-  *<* : ∀ {x y} → x ≤ y → x ≢ y → x < y
-
-_≥_ : Rel ℝ 0ℓ
-x ≥ y = y ≤ x
-
-_>_ : Rel ℝ 0ℓ
-x > y = y < x
-
-_≰_ : Rel ℝ 0ℓ
-x ≰ y = ¬ (x ≤ y)
-
-_≱_ : Rel ℝ 0ℓ
-x ≱ y = ¬ (x ≥ y)
-
-_≮_ : Rel ℝ 0ℓ
-x ≮ y = ¬ (x < y)
-
-_≯_ : Rel ℝ 0ℓ
-x ≯ y = ¬ (x > y)
+open RealsCore (Reals.core RealInterface) public
+open RealsOps (Reals.ops RealInterface) using (_+_; -_; _*_; 1/_) public
 
 ------------------------------------------------------------------------
 -- Simple predicates
-
-record NonZero (x : ℝ) : Set where
-  field nonZero : x ≢ 0ℝ
-
-record Positive (x : ℝ) : Set where
-  field positive : x > 0ℝ
-
-record Negative (x : ℝ) : Set where
-  field negative : x < 0ℝ
-
-record NonPositive (x : ℝ) : Set where
-  field nonPositive : x ≤ 0ℝ
-
-record NonNegative (x : ℝ) : Set where
-  field nonNegative : x ≥ 0ℝ
 
 -- Instances
 
@@ -113,18 +66,8 @@ nonPositive⁻¹ _ ⦃ p ⦄ = NonPositive.nonPositive p
 nonNegative⁻¹ : ∀ x → ⦃ NonNegative x ⦄ → x ≥ 0ℝ
 nonNegative⁻¹ _ ⦃ p ⦄ = NonNegative.nonNegative p
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Operations on reals
-
-infix  8 -_ 1/_
-infixl 7 _*_ _/_
-infixl 6 _-_ _+_
-
-postulate
-  _+_ : ℝ → ℝ → ℝ
-  -_  : ℝ → ℝ
-  _*_ : ℝ → ℝ → ℝ
-  1/_ : (x : ℝ) .⦃ _ : NonZero x ⦄ → ℝ
 
 _-_ : ℝ → ℝ → ℝ
 x - y = x + (- y)
@@ -132,7 +75,7 @@ x - y = x + (- y)
 _/_ : ℝ → (y : ℝ) .⦃ _ : NonZero y ⦄ → ℝ
 x / y = x * 1/ y
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some constants
 
 -1ℝ : ℝ

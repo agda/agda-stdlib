@@ -1,20 +1,22 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Postulated Real numbers
+-- Parametrized Real numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
-module Data.PostulatedReal where
+open import Data.ParametrizedReal.Interface using (Reals)
+
+module Data.ParametrizedReal (RealInterface : Reals) where
 
 open import Relation.Nullary using (yes; no)
 
 ------------------------------------------------------------------------
 -- Publicly re-export contents of core module and queries
 
-open import Data.PostulatedReal.Base public
-open import Data.PostulatedReal.Properties.Core public
+open import Data.ParametrizedReal.Base RealInterface public
+open import Data.ParametrizedReal.Properties.Core RealInterface public
   using (_≟_; _≤?_; _<?_)
 
 infixl 7 _⊓_

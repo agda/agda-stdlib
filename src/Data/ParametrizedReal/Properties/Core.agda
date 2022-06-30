@@ -5,14 +5,16 @@
 ------------------------------------------------------------------------
 
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
-module Data.PostulatedReal.Properties.Core where
+open import Data.ParametrizedReal.Interface
+
+module Data.ParametrizedReal.Properties.Core (RealInterface : Reals) where
 
 open import Algebra.Bundles
 import Algebra.Properties.Ring
 open import Function.Base using (_$_; _∘_)
-open import Data.PostulatedReal.Base
+open import Data.ParametrizedReal.Base RealInterface
 open import Data.Product using (_,_)
 open import Data.Sum.Base
 open import Level using (0ℓ)
@@ -20,6 +22,8 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
+
+open RealsOps (Reals.ops RealInterface) hiding (_+_; -_; _*_; 1/_) public
 
 open import Algebra.Definitions {A = ℝ} _≡_
 open import Algebra.Structures  {A = ℝ} _≡_
@@ -31,11 +35,6 @@ private
 ------------------------------------------------------------------------
 -- Propositional equality
 ------------------------------------------------------------------------
-
-infix 4 _≟_
-
-postulate
-  _≟_ : DecidableEquality ℝ
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ℝ
@@ -53,7 +52,7 @@ pos⇒nonNeg x ⦃ p ⦄ with Positive.positive p
 
 neg⇒nonPos : ∀ x → ⦃ Negative x ⦄ → NonPositive x
 neg⇒nonPos x ⦃ p ⦄ with Negative.negative p
-... | *<* x≤0 + = nonPositive x≤0
+... | *<* x≤0 _ = nonPositive x≤0
 
 nonNeg∧nonZero⇒pos : ∀ x → ⦃ NonNegative x ⦄ → ⦃ NonZero x ⦄ → Positive x
 nonNeg∧nonZero⇒pos x ⦃ p ⦄ ⦃ q ⦄
@@ -79,13 +78,6 @@ neg⇒nonZero x ⦃ p ⦄ with Negative.negative p
 
 ------------------------------------------------------------------------
 -- Relational properties
-
-postulate
-  0≤1       : 0ℝ ≤ 1ℝ
-  ≤-refl    : Reflexive _≤_
-  ≤-antisym : Antisymmetric _≡_ _≤_
-  ≤-trans   : Transitive _≤_
-  ≤-total   : Total _≤_
 
 infix 4 _≤?_
 _≤?_ : Decidable _≤_
@@ -311,20 +303,14 @@ module ≤-Reasoning where
 ------------------------------------------------------------------------
 -- Algebraic properties
 
-postulate
-  +-assoc     : Associative _+_
-  +-comm      : Commutative _+_
-  +-identityˡ : LeftIdentity 0ℝ _+_
-  +-inverseʳ  : RightInverse 0ℝ -_ _+_
-
 +-identityʳ : RightIdentity 0ℝ _+_
 +-identityʳ x rewrite +-comm x 0ℝ = +-identityˡ x
 
 +-identity : Identity 0ℝ _+_
 +-identity = +-identityˡ , +-identityʳ
 
-+-inverseˡ : LeftInverse 0ℝ -_ _+_
-+-inverseˡ x rewrite +-comm (- x) x = +-inverseʳ x
++-inverseʳ : RightInverse 0ℝ -_ _+_
++-inverseʳ x rewrite +-comm x (- x) = +-inverseˡ x
 
 +-inverse : Inverse 0ℝ -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
@@ -431,9 +417,6 @@ instance
 ------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
 
-postulate
-  +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-
 +-monoˡ-≤ : ∀ z → (_+ z) Preserves _≤_ ⟶ _≤_
 +-monoˡ-≤ z x≤y = +-mono-≤ x≤y (≤-refl {z})
 
@@ -516,13 +499,6 @@ x+x≡0⇒x≡0 {x} x+x≡0 with x ≟ 0ℝ
 ------------------------------------------------------------------------
 -- Algebraic properties
 
-postulate
-  *-assoc         : Associative _*_
-  *-comm          : Commutative _*_
-  *-identityˡ     : LeftIdentity 1ℝ _*_
-  *-distribˡ-+    : _*_ DistributesOverˡ _+_
-  *-neg-identityˡ : (x : ℝ) → -1ℝ * x ≡ - x
-
 *-identityʳ : RightIdentity 1ℝ _*_
 *-identityʳ x rewrite *-comm x 1ℝ = *-identityˡ x
 
@@ -568,9 +544,6 @@ postulate
 
 *-neg-identityʳ : (x : ℝ) → x * -1ℝ ≡ - x
 *-neg-identityʳ x = trans (*-comm x -1ℝ) (*-neg-identityˡ x)
-
-postulate
-  *-inverseˡ : ∀ x .⦃ _ : NonZero x  ⦄ → (1/ x) * x ≡ 1ℝ
 
 *-inverseʳ : ∀ x .⦃ _ : NonZero x ⦄ → x * (1/ x) ≡ 1ℝ
 *-inverseʳ x = trans (*-comm x (1/ x)) (*-inverseˡ x)
@@ -745,9 +718,6 @@ x≤0⇒-x≥x x≤0 = ≤-trans x≤0 (x≤0⇒-x≥0 x≤0)
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
-
-postulate
-  *-monoʳ-≤-nonNeg : ∀ z .⦃ _ : NonNegative z ⦄ → (_* z) Preserves _≤_ ⟶ _≤_
 
 *-monoˡ-≤-nonNeg : ∀ z .⦃ _ : NonNegative z ⦄ → (z *_) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-nonNeg z {x} {y} rewrite *-comm z x | *-comm z y =
