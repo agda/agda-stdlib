@@ -30,6 +30,12 @@ open import Relation.Binary.PropositionalEquality.Core
 -- way to represent every rational number.
 
 record ℚ : Set where
+  -- We add "no-eta-equality; pattern" to the record to stop Agda
+  -- automatically unfolding rationals when arithmetic operations are
+  -- applied to them (see definition of operators below and Issue #1753
+  -- for details).
+  no-eta-equality; pattern
+
   constructor mkℚ
   field
     numerator     : ℤ
@@ -178,25 +184,28 @@ NonNegative p = ℚᵘ.NonNegative (toℚᵘ p)
 ≢-nonZero {mkℚ +0       (suc d) c} p≢0 = contradiction (λ {i} → C.recompute c {i}) ¬0-coprimeTo-2+
 
 >-nonZero : ∀ {p} → p > 0ℚ → NonZero p
->-nonZero {p} (*<* p<q) = ℚᵘ.>-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)
+>-nonZero {p@(mkℚ _ _ _)} (*<* p<q) = ℚᵘ.>-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)
 
 <-nonZero : ∀ {p} → p < 0ℚ → NonZero p
-<-nonZero {p} (*<* p<q) = ℚᵘ.<-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)
+<-nonZero {p@(mkℚ _ _ _)} (*<* p<q) = ℚᵘ.<-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)
 
 positive : ∀ {p} → p > 0ℚ → Positive p
-positive {p} (*<* p<q) = ℚᵘ.positive {toℚᵘ p} (ℚᵘ.*<* p<q)
+positive {p@(mkℚ _ _ _)} (*<* p<q) = ℚᵘ.positive {toℚᵘ p} (ℚᵘ.*<* p<q)
 
 negative : ∀ {p} → p < 0ℚ → Negative p
-negative {p} (*<* p<q) = ℚᵘ.negative {toℚᵘ p} (ℚᵘ.*<* p<q)
+negative {p@(mkℚ _ _ _)} (*<* p<q) = ℚᵘ.negative {toℚᵘ p} (ℚᵘ.*<* p<q)
 
 nonPositive : ∀ {p} → p ≤ 0ℚ → NonPositive p
-nonPositive {p} (*≤* p≤q) = ℚᵘ.nonPositive {toℚᵘ p} (ℚᵘ.*≤* p≤q)
+nonPositive {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonPositive {toℚᵘ p} (ℚᵘ.*≤* p≤q)
 
 nonNegative : ∀ {p} → p ≥ 0ℚ → NonNegative p
-nonNegative {p} (*≤* p≤q) = ℚᵘ.nonNegative {toℚᵘ p} (ℚᵘ.*≤* p≤q)
+nonNegative {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonNegative {toℚᵘ p} (ℚᵘ.*≤* p≤q)
 
 ------------------------------------------------------------------------------
 -- Operations on rationals
+
+-- For explanation of the `@record{}` annotations see notes in the equivalent
+-- place in `Data.Rational.Unnormalised.Base`.
 
 infix  8 -_ 1/_
 infixl 7 _*_ _÷_ _⊓_
@@ -204,15 +213,15 @@ infixl 6 _-_ _+_ _⊔_
 
 -- addition
 _+_ : ℚ → ℚ → ℚ
-p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
+p@record{} + q@record{} = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- multiplication
 _*_ : ℚ → ℚ → ℚ
-p * q = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
+p@record{} * q@record{} = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- subtraction
 _-_ : ℚ → ℚ → ℚ
-p - q = p + (- q)
+p@record{} - q@record{} = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
 1/_ : (p : ℚ) → .{{_ : NonZero p}} → ℚ
@@ -221,15 +230,15 @@ p - q = p + (- q)
 
 -- division: requires a proof that the denominator is not zero
 _÷_ : (p q : ℚ) → .{{_ : NonZero q}} → ℚ
-p ÷ q = p * (1/ q)
+p@record{} ÷ q@record{} = p * (1/ q)
 
 -- max
 _⊔_ : (p q : ℚ) → ℚ
-p ⊔ q = if p ≤ᵇ q then q else p
+p@record{} ⊔ q@record{} = if p ≤ᵇ q then q else p
 
 -- min
 _⊓_ : (p q : ℚ) → ℚ
-p ⊓ q = if p ≤ᵇ q then p else q
+p@record{} ⊓ q@record{} = if p ≤ᵇ q then p else q
 
 -- absolute value
 ∣_∣ : ℚ → ℚ
@@ -240,11 +249,11 @@ p ⊓ q = if p ≤ᵇ q then p else q
 
 -- Floor (round towards -∞)
 floor : ℚ → ℤ
-floor p = ↥ p ℤ./ ↧ p
+floor p@record{} = ↥ p ℤ./ ↧ p
 
 -- Ceiling (round towards +∞)
 ceiling : ℚ → ℤ
-ceiling p = ℤ.- floor (- p)
+ceiling p@record{} = ℤ.- floor (- p)
 
 -- Truncate  (round towards 0)
 truncate : ℚ → ℤ
@@ -260,7 +269,7 @@ round p with p ≤ᵇ 0ℚ
 
 -- Fractional part (remainder after floor)
 fracPart : ℚ → ℚ
-fracPart p = ∣ p - truncate p / 1 ∣
+fracPart p@record{} = ∣ p - truncate p / 1 ∣
 
 -- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [ ] truncate
 syntax floor p = ⌊ p ⌋

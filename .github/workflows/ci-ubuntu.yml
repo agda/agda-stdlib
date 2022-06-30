@@ -46,8 +46,8 @@ on:
 ########################################################################
 
 env:
-  GHC_VERSION: 8.6.5
-  CABAL_VERSION: 3.2.0.0
+  GHC_VERSION: 8.10.7
+  CABAL_VERSION: 3.6.2.0
   CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
   AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -i src/
@@ -97,7 +97,7 @@ jobs:
       # downloading ghc and cabal and rebuilding Agda if absolutely necessary
       # i.e. if we change either the version of Agda, ghc, or cabal that we want
       # to use for the build.
-      - name: Cache cabal packages
+      - name: Cache ~/.cabal directories
         uses: actions/cache@v2
         id: cache-cabal
         with:
@@ -105,7 +105,8 @@ jobs:
             ~/.cabal/packages
             ~/.cabal/store
             ~/.cabal/bin
-          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}
+            ~/.cabal/share
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}-cache
 
 ########################################################################
 ## INSTALLATION STEPS
@@ -113,7 +114,7 @@ jobs:
 
       - name: Install cabal
         if: steps.cache-cabal.outputs.cache-hit != 'true'
-        uses: actions/setup-haskell@v1.1.3
+        uses: haskell/actions/setup@v1
         with:
           ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}
@@ -123,6 +124,11 @@ jobs:
 
       - name: Cabal update
         run: cabal update
+
+      - name: Install alex & happy
+        run: |
+          ${{ env.CABAL_INSTALL }} alex
+          ${{ env.CABAL_INSTALL }} happy
 
       - name: Download and install Agda from github
         if: steps.cache-cabal.outputs.cache-hit != 'true'

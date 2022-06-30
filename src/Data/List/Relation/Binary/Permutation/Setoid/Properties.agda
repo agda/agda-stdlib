@@ -197,12 +197,9 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-comm : Commutative _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys         <⟨ ++-comm xs ys ⟩
-  x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
-  (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (↭-shift ys [])) ⟩
-  (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
-  ys ++ ([ x ] ++ xs)  ≡⟨⟩
-  ys ++ (x ∷ xs)       ∎
+  x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
+  x ∷ ys ++ xs   ↭˘⟨ ↭-shift ys xs ⟩
+  ys ++ (x ∷ xs) ∎
 
 -- Structures
 
