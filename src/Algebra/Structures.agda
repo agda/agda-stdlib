@@ -60,12 +60,18 @@ record IsIdempotentMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsMagma isMagma public
 
-record IsAlternateMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+record IsAlternativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isMagma  : IsMagma ∙
     alter    : Alternative ∙
 
   open IsMagma isMagma public
+
+  leftAlternative : LeftAlternative ∙
+  leftAlternative = proj₁ alter
+
+  rightAlternative : RightAlternative ∙
+  rightAlternative = proj₂ alter
 
 record IsFlexibleMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -83,8 +89,8 @@ record IsMedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
 record IsSemimedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isMagma : IsMagma ∙
-    semiMedial  : Semimedial ∙
+    isMagma    : IsMagma ∙
+    semiMedial : Semimedial ∙
 
   open IsMagma isMagma public
 

@@ -162,14 +162,14 @@ LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
 RightDivides : Op₂ A → Op₂ A → Set _
 RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)
 
-Alternativeˡ : Op₂ A → Set _
-Alternativeˡ _∙_ = ∀ x y  →  ((x ∙ x) ∙ y) ≈ (x ∙ (y ∙ y))
+LeftAlternative : Op₂ A → Set _
+LeftAlternative _∙_ = ∀ x y  →  ((x ∙ x) ∙ y) ≈ (x ∙ (y ∙ y))
 
-Alternativeʳ : Op₂ A → Set _
-Alternativeʳ _∙_ = ∀ x y → (x ∙ (y ∙ y)) ≈ ((x ∙ y) ∙ y)
+RightAlternative : Op₂ A → Set _
+RightAlternative _∙_ = ∀ x y → (x ∙ (y ∙ y)) ≈ ((x ∙ y) ∙ y)
 
 Alternative : Op₂ A → Set _
-Alternative _∙_ = (Alternativeˡ _∙_ ) × ( Alternativeʳ _∙_)
+Alternative _∙_ = (LeftAlternative _∙_ ) × (RightAlternative _∙_)
 
 Flexible : Op₂ A → Set _
 Flexible _∙_ = ∀ x y → ((x ∙ y) ∙ x) ≈ (x ∙ (y ∙ x))

@@ -103,16 +103,16 @@ record IdempotentMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   open Magma magma public
     using (rawMagma)
 
-record AlternateMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+record AlternativeMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
     _∙_     : Op₂ Carrier
-    isAlternateMagma  : IsAlternateMagma _≈_ _∙_
+    isAlternativeMagma  : IsAlternativeMagma _≈_ _∙_
 
-  open IsAlternateMagma isAlternateMagma public
+  open IsAlternativeMagma isAlternativeMagma public
 
   magma : Magma c ℓ
   magma = record { isMagma = isMagma }
