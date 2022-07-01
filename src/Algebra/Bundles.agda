@@ -781,19 +781,19 @@ record IdempotentSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     )
 
 record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 _⁻*
-  infixl 7 _*_
+  infix  8 _*
+  infixl 7 _∙_
   infixl 6 _+_
   infix  4 _≈_
   field
     Carrier               : Set c
     _≈_                   : Rel Carrier ℓ
     _+_                   : Op₂ Carrier
-    _*_                   : Op₂ Carrier
-    _⁻*                   : Op₁ Carrier
+    _∙_                   : Op₂ Carrier
+    _*                    : Op₁ Carrier
     0#                    : Carrier
     1#                    : Carrier
-    isKleeneAlgebra       : IsKleeneAlgebra _≈_ _+_ _*_ _⁻* 0# 1#
+    isKleeneAlgebra       : IsKleeneAlgebra _≈_ _+_ _∙_ _* 0# 1#
 
   open IsKleeneAlgebra isKleeneAlgebra public
 

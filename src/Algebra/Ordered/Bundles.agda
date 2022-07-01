@@ -186,25 +186,25 @@ record IdempotentProsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
   idempotentSemiring : IdempotentSemiring c ℓ₁
   idempotentSemiring = record { isIdempotentSemiring = isIdempotentSemiring }
 
--- Preordered KleeneAlgebra (prokleenealgebra)
+-- Preordered KleeneAlgebra (proKleeneAlgebra)
 
-record Prokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+record ProKleeneAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
-  infix  8 _⁻*
-  infixl 7 _*_
+  infix  8 _*
+  infixl 7 _∙_
   infixl 6 _+_
   field
     Carrier       : Set c
     _≈_           : Rel Carrier ℓ₁
     _≤_           : Rel Carrier ℓ₂
     _+_           : Op₂ Carrier
-    _*_           : Op₂ Carrier
-    _⁻*           : Op₁ Carrier
+    _∙_           : Op₂ Carrier
+    _*            : Op₁ Carrier
     0#            : Carrier
     1#            : Carrier
-    isProkleenealgebra : IsProkleenealgebra _≈_ _≤_ _+_ _*_ _⁻* 0# 1#
+    isProKleeneAlgebra : IsProKleeneAlgebra _≈_ _≤_ _+_ _∙_ _* 0# 1#
 
-  open IsProkleenealgebra isProkleenealgebra public
+  open IsProKleeneAlgebra isProKleeneAlgebra public
 
   kleeneAlgebra : KleeneAlgebra c ℓ₁
   kleeneAlgebra = record { isKleeneAlgebra = isKleeneAlgebra }
@@ -412,27 +412,27 @@ record IdempotentPosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)
 
   open IdempotentProsemiring idempotentProsemiring public using (idempotentSemiring; +-idem)
 
--- Partially ordered KleeneAlgebra (Pokleenealgebra)
+-- Partially ordered KleeneAlgebra (PoKleeneAlgebra)
 
-record Pokleenealgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+record PoKleeneAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
-  infix  8 _⁻*
-  infixl 7 _*_
+  infix  8 _*
+  infixl 7 _∙_
   infixl 6 _+_
   field
     Carrier       : Set c
     _≈_           : Rel Carrier ℓ₁
     _≤_           : Rel Carrier ℓ₂
     _+_           : Op₂ Carrier
-    _*_           : Op₂ Carrier
-    _⁻*           : Op₁ Carrier
+    _∙_           : Op₂ Carrier
+    _*            : Op₁ Carrier
     0#            : Carrier
     1#            : Carrier
-    isPokleenealgebra : IsPokleenealgebra _≈_ _≤_ _+_ _*_ _⁻* 0# 1#
+    isPoKleeneAlgebra : IsPoKleeneAlgebra _≈_ _≤_ _+_ _∙_ _* 0# 1#
 
-  open IsPokleenealgebra isPokleenealgebra public
+  open IsPoKleeneAlgebra isPoKleeneAlgebra public
 
-  prokleenealgebra : Prokleenealgebra c ℓ₁ ℓ₂
-  prokleenealgebra = record { isProkleenealgebra = isProkleenealgebra }
+  proKleeneAlgebra : ProKleeneAlgebra c ℓ₁ ℓ₂
+  proKleeneAlgebra = record { isProKleeneAlgebra = isProKleeneAlgebra }
 
-  open Prokleenealgebra prokleenealgebra public using (starLeftExpansion; starRightExpansion; leftFixedPoint; rightFixedPoint)
+  open ProKleeneAlgebra proKleeneAlgebra public using (starExpansion; fixedPoint)

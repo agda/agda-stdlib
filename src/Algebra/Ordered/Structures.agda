@@ -180,28 +180,24 @@ record IsIdempotentProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ �
 
   open IsIdempotentSemiring isIdempotentSemiring public using (+-idem)
 
--- Preordered KleeneAlgebra (prokleenealgebra)
+-- Preordered KleeneAlgebra (proKleeneAlgebra)
 
-record IsProkleenealgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsProKleeneAlgebra (+ ∙ : Op₂ A) ( * : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isIdempotentProsemiring : IsIdempotentProsemiring + * 0# 1#
-    starLeftExpansion       : StarLeftExpansion 1# + * ⁻*
-    starRightExpansion      : StarRightExpansion 1# + * ⁻*
-    leftFixedPoint          : LeftFixedPoint + * ⁻*
-    rightFixedPoint         : RightFixedPoint + * ⁻*
+    isIdempotentProsemiring : IsIdempotentProsemiring + ∙ 0# 1#
+    starExpansion           : StarExpansion 1# + ∙ *
+    fixedPoint              : FixedPoint + ∙ *
 
   open IsIdempotentProsemiring isIdempotentProsemiring public
 
-  isKleeneAlgebra : IsKleeneAlgebra + * ⁻* 0# 1#
+  isKleeneAlgebra : IsKleeneAlgebra + ∙ * 0# 1#
   isKleeneAlgebra = record
     { isIdempotentSemiring = isIdempotentSemiring
-    ; starLeftExpansion    = starLeftExpansion
-    ; starRightExpansion   = starRightExpansion
-    ; leftFixedPoint       = leftFixedPoint
-    ; rightFixedPoint      = rightFixedPoint
+    ; starExpansion        = starExpansion
+    ; fixedPoint           = fixedPoint
     }
 
-  open IsKleeneAlgebra isKleeneAlgebra public using (starLeftExpansion; starRightExpansion; leftFixedPoint; rightFixedPoint)
+  open IsKleeneAlgebra isKleeneAlgebra public using (starExpansion; fixedPoint)
 
 ------------------------------------------------------------------------
 -- Partially ordered structures
@@ -374,27 +370,23 @@ record IsIdempotentPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ �
   open IsIdempotentProsemiring isIdempotentProsemiring public
     using (isIdempotentSemiring; +-idem)
 
--- Partially ordered KleeneAlgebra (Pokleenealgebra)
+-- Partially ordered KleeneAlgebra (PoKleeneAlgebra)
 
-record IsPokleenealgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsPoKleeneAlgebra (+ ∙ : Op₂ A) ( * : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isIdempotentPosemiring  : IsIdempotentPosemiring + * 0# 1#
-    starLeftExpansion       : StarLeftExpansion 1# + * ⁻*
-    starRightExpansion      : StarRightExpansion 1# + * ⁻*
-    leftFixedPoint          : LeftFixedPoint + * ⁻*
-    rightFixedPoint          : RightFixedPoint + * ⁻*
+    isIdempotentPosemiring  : IsIdempotentPosemiring + ∙ 0# 1#
+    starExpansion           : StarExpansion 1# + ∙ *
+    fixedPoint              : FixedPoint + ∙ *
 
   open IsIdempotentPosemiring isIdempotentPosemiring public
 
-  isProkleenealgebra : IsProkleenealgebra + * ⁻* 0# 1#
-  isProkleenealgebra = record
+  isProKleeneAlgebra : IsProKleeneAlgebra + ∙ * 0# 1#
+  isProKleeneAlgebra = record
     { isIdempotentProsemiring = isIdempotentProsemiring
-    ; starLeftExpansion       = starLeftExpansion
-    ; starRightExpansion      = starRightExpansion
-    ; leftFixedPoint          = leftFixedPoint
-    ; rightFixedPoint         = rightFixedPoint
+    ; starExpansion           = starExpansion
+    ; fixedPoint              = fixedPoint
     }
 
-  open IsProkleenealgebra isProkleenealgebra public
-    using (isKleeneAlgebra; starLeftExpansion; starRightExpansion; leftFixedPoint; rightFixedPoint)
+  open IsProKleeneAlgebra isProKleeneAlgebra public
+    using (isKleeneAlgebra; starExpansion; fixedPoint)
 
