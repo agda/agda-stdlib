@@ -75,8 +75,8 @@ module _ (Core : RealsCore) where
 
   record RealsOps : Set where
     infix  8 -_ 1/_
-    infixl 7 _*_ _/_
-    infixl 6 _-_ _+_
+    infixl 7 _*_
+    infixl 6 _+_
     infix 4 _≟_
 
     field

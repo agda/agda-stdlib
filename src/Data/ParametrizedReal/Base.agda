@@ -69,6 +69,9 @@ nonNegative⁻¹ _ ⦃ p ⦄ = NonNegative.nonNegative p
 ------------------------------------------------------------------------
 -- Operations on reals
 
+infixl 7 _/_
+infixl 6 _-_
+
 _-_ : ℝ → ℝ → ℝ
 x - y = x + (- y)
 

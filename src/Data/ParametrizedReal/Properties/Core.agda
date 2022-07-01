@@ -998,4 +998,3 @@ x/1 x rewrite 1/1 = *-identityʳ x
   | x/1 x | 1/-distrib-* 1ℝ z ⦃ 1-nonZero ⦄ ⦃ p ⦄ | 1/1
   | *-identityˡ (1/ z) = refl
 
-
