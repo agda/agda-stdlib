@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Library for (Generalized) Inference Systems                
+-- Library for (Generalized) Inference Systems
 -- Inductive interpretation and induction principle
 ------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ module Data.InfSys.Induction {𝓁} where
 
   {- Inductive Interpretation -}
 
-  data Ind⟦_⟧ (is : IS {𝓁c} {𝓁p} {𝓁n} U) : 
+  data Ind⟦_⟧ (is : IS {𝓁c} {𝓁p} {𝓁n} U) :
     U → Set (𝓁 ⊔ 𝓁c ⊔ 𝓁p ⊔ 𝓁n) where
     fold : ∀{u} → ISF[ is ] Ind⟦ is ⟧ u → Ind⟦ is ⟧ u
 
@@ -36,25 +36,25 @@ module Data.InfSys.Induction {𝓁} where
            (S : U → Set 𝓁') →            -- specification
            ISClosed is S →               -- S is closed
            Ind⟦ is ⟧ ⊆ S
-  ind[ is ] S cl (fold (rn , c , refl , pr)) = 
+  ind[ is ] S cl (fold (rn , c , refl , pr)) =
     cl rn c λ i → ind[ is ] S cl (pr i)
 
   {- Apply Rule -}
-  
-  apply-ind : {is : IS {𝓁c} {𝓁p} {𝓁n} U} → 
-              (rn : is .Names) → 
+
+  apply-ind : {is : IS {𝓁c} {𝓁p} {𝓁n} U} →
+              (rn : is .Names) →
               RClosed (is .rules rn) Ind⟦ is ⟧
-  apply-ind {is = is} rn = 
-    prefix⇒closed 
-      (is .rules rn) {P = Ind⟦ _ ⟧} 
+  apply-ind {is = is} rn =
+    prefix⇒closed
+      (is .rules rn) {P = Ind⟦ _ ⟧}
       λ{(c , refl , pr) → fold (rn , c , refl , pr)}
 
   {- Postfix - Prefix -}
 
-  ind-postfix : {is : IS {𝓁c} {𝓁p} {𝓁n} U} → 
+  ind-postfix : {is : IS {𝓁c} {𝓁p} {𝓁n} U} →
                 Ind⟦ is ⟧ ⊆ ISF[ is ] Ind⟦ is ⟧
   ind-postfix (fold x) = x
 
-  ind-prefix : {is : IS {𝓁c} {𝓁p} {𝓁n} U} → 
+  ind-prefix : {is : IS {𝓁c} {𝓁p} {𝓁n} U} →
                ISF[ is ] Ind⟦ is ⟧ ⊆ Ind⟦ is ⟧
   ind-prefix x = fold x

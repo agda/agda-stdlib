@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Library for (Generalized) Inference Systems                
+-- Library for (Generalized) Inference Systems
 -- Definitions of Metarules and Inference Systems
 ------------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ open import Agda.Builtin.Equality
 open import Data.Fin using (Fin)
 open import Data.Product
 open import Data.Sum
-open import Data.Vec using (Vec; fromList; length) 
+open import Data.Vec using (Vec; fromList; length)
   renaming (lookup to get)
 open import Level
 open import Relation.Unary using (_⊆_)
@@ -19,16 +19,16 @@ open import Relation.Unary using (_⊆_)
 module Data.InfSys.Base {𝓁} where
 
   private
-    variable 
+    variable
       𝓁c 𝓁p 𝓁n : Level
       U : Set 𝓁
-    
-  record MetaRule (U : Set 𝓁) : Set (𝓁 ⊔ suc 𝓁c ⊔ suc 𝓁p) where 
-    field 
+
+  record MetaRule (U : Set 𝓁) : Set (𝓁 ⊔ suc 𝓁c ⊔ suc 𝓁p) where
+    field
       Ctx    : Set 𝓁c
-      Pos    : Ctx → Set 𝓁p 
+      Pos    : Ctx → Set 𝓁p
       prems  : (c : Ctx) → Pos c → U
-      conclu : Ctx → U 
+      conclu : Ctx → U
 
     addSideCond : ∀{𝓁'} → (U → Set 𝓁') → MetaRule U
     (addSideCond P) .Ctx = Σ[ c ∈ Ctx ] P (conclu c)
@@ -59,8 +59,8 @@ module Data.InfSys.Base {𝓁} where
 
   record IS (U : Set 𝓁) : Set (𝓁 ⊔ suc 𝓁c ⊔ suc 𝓁p ⊔ suc 𝓁n) where
     field
-      Names : Set 𝓁n            
-      rules : Names → MetaRule {𝓁c} {𝓁p} U 
+      Names : Set 𝓁n
+      rules : Names → MetaRule {𝓁c} {𝓁p} U
 
     ISF[_] : ∀{𝓁'} → (U → Set 𝓁') → (U → Set _)
     ISF[_] P u = Σ[ rn ∈ Names ] RF[ rules rn ] P u
@@ -70,12 +70,12 @@ module Data.InfSys.Base {𝓁} where
 
   open IS
 
-  _∪_ : ∀ {𝓁n'} → IS {𝓁c} {𝓁p} {𝓁n} U → 
+  _∪_ : ∀ {𝓁n'} → IS {𝓁c} {𝓁p} {𝓁n} U →
         IS {_} {_} {𝓁n'} U → IS {_} {_} {𝓁n ⊔ 𝓁n'} U
   (is1 ∪ is2) .Names = (is1 .Names) ⊎ (is2 .Names)
   (is1 ∪ is2) .rules = [ is1 .rules , is2 .rules ]
 
-  _⊓_ : ∀ {𝓁'} → IS {𝓁c} {𝓁p} {𝓁n} U → 
+  _⊓_ : ∀ {𝓁'} → IS {𝓁c} {𝓁p} {𝓁n} U →
         (U → Set 𝓁') → IS {𝓁c ⊔ 𝓁'} {_} {_} U
   (is ⊓ P) .Names = is .Names
   (is ⊓ P) .rules rn = addSideCond (is .rules rn) P
@@ -92,4 +92,4 @@ module Data.InfSys.Base {𝓁} where
   prefix⇒closed : (m : MetaRule {𝓁c} {𝓁p} U) →
                   ∀ {𝓁'} {P : U → Set 𝓁'} →
                   RF[ m ] P ⊆ P → RClosed m {𝓁'} P
-  prefix⇒closed _ prf c pr = prf (c , refl , pr) 
+  prefix⇒closed _ prf c pr = prf (c , refl , pr)

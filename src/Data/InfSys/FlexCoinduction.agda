@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Library for (Generalized) Inference Systems                
+-- Library for (Generalized) Inference Systems
 -- Interpretation generate by corules
 -- Bounded coinduction principle
 ------------------------------------------------------------------------
@@ -29,14 +29,14 @@ module Data.InfSys.FlexCoinduction {𝓁} where
 
   {- Generalized inference systems -}
 
-  FCoInd⟦_,_⟧ : (I : IS {𝓁c} {𝓁p} {𝓁n} U) → 
-                (C : IS {𝓁c} {𝓁p} {𝓁n'} U) → 
+  FCoInd⟦_,_⟧ : (I : IS {𝓁c} {𝓁p} {𝓁n} U) →
+                (C : IS {𝓁c} {𝓁p} {𝓁n'} U) →
                 U → Set _
   FCoInd⟦ I , C ⟧ = CoInd⟦ I ⊓ Ind⟦ I ∪ C ⟧ ⟧
 
   {- Bounded Coinduction Principle -}
 
-  bdc-lem : ∀ {𝓁''} →  
+  bdc-lem : ∀ {𝓁''} →
             (I : IS {𝓁c} {𝓁p} {𝓁n} U) →
             (S : U → Set 𝓁') →
             (Q : U → Set 𝓁'') →
@@ -48,11 +48,11 @@ module Data.InfSys.FlexCoinduction {𝓁} where
 
   bounded-coind[_,_] : (I : IS {𝓁c} {𝓁p} {𝓁n} U) →
                        (C : IS {𝓁c} {𝓁p} {𝓁n'} U) →
-                       (S : U → Set 𝓁') →                  
+                       (S : U → Set 𝓁') →
                        S ⊆ Ind⟦ I ∪ C ⟧ → -- S is bounded w.r.t. I ∪ C
                        S ⊆ ISF[ I ] S →   -- S is consistent w.r.t. I
                        S ⊆ FCoInd⟦ I , C ⟧
-  bounded-coind[ I , C ] S bd cn Su = 
+  bounded-coind[ I , C ] S bd cn Su =
     coind[ I ⊓ Ind⟦ I ∪ C ⟧ ] S (bdc-lem I S Ind⟦ I ∪ C ⟧ bd cn) Su
 
   {- Get Ind from FCoInd -}
@@ -67,14 +67,14 @@ module Data.InfSys.FlexCoinduction {𝓁} where
 
   apply-fcoind : {is : IS {𝓁c} {𝓁p} {𝓁n} U}
                  {cois : IS {𝓁c} {𝓁p} {𝓁n'} U} →
-                 (rn : is .Names) → 
+                 (rn : is .Names) →
                  RClosed (is .rules rn) FCoInd⟦ is , cois ⟧
-  apply-fcoind rn c pr = 
-    apply-coind rn (c , apply-ind (inj₁ rn) c 
+  apply-fcoind rn c pr =
+    apply-coind rn (c , apply-ind (inj₁ rn) c
       λ i → fcoind-to-ind (pr i)) pr
 
   {- Postfix - Prefix -}
-  
+
   fcoind-postfix : {is : IS {𝓁c} {𝓁p} {𝓁n} U}
                    {cois : IS {𝓁c} {𝓁p} {𝓁n'} U} →
                    FCoInd⟦ is , cois ⟧ ⊆ ISF[ is ] FCoInd⟦ is , cois ⟧

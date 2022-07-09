@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Library for (Generalized) Inference Systems                
+-- Library for (Generalized) Inference Systems
 -- Equivalence between sized types and coinductive records
 ------------------------------------------------------------------------
 
@@ -26,16 +26,16 @@ module Data.InfSys.Equivalence {𝓁} where
     variable
       U : Set 𝓁
       𝓁c 𝓁p 𝓁n : Level
-  
+
   {- Equivalence CoInd and SCoInd -}
 
-  coind-size : {is : IS {𝓁c} {𝓁p} {𝓁n} U} → 
+  coind-size : {is : IS {𝓁c} {𝓁p} {𝓁n} U} →
                CoInd⟦ is ⟧ ⊆ λ u → ∀ {i} → SCoInd⟦ is ⟧ u i
   coind-size p-coind with CoInd⟦_⟧.unfold p-coind
-  ... | rn , c , refl , pr = 
+  ... | rn , c , refl , pr =
     sfold (rn , c , refl , λ i → λ where .force → coind-size (pr i))
 
-  size-coind : {is : IS {𝓁c} {𝓁p} {𝓁n} U} → 
+  size-coind : {is : IS {𝓁c} {𝓁p} {𝓁n} U} →
                (λ u → ∀ {i} → SCoInd⟦ is ⟧ u i) ⊆ CoInd⟦ is ⟧
-  size-coind {is = is} p-scoind = 
+  size-coind {is = is} p-scoind =
     coind[ is ] (λ u → ∀ {j} → SCoInd⟦ is ⟧ u j) scoind-postfix p-scoind
