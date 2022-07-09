@@ -72,6 +72,11 @@ unsafeModules = map modToFile
   , "Test.Golden"
   , "Text.Pretty.Core"
   , "Text.Pretty"
+  , "Data.InfSys.Container"
+  , "Data.InfSys.Equivalence"
+  , "Data.InfSys.SCoinduction"
+  , "Data.InfSys.FlexSCoinduction"
+  , "Data.SInfSys"
   ] ++ sizedTypesModules
 
 isUnsafeModule :: FilePath -> Bool

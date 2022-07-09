@@ -6,6 +6,8 @@ The library has been tested using Agda 2.6.2.
 Highlights
 ----------
 
+* Library for (Generalized) Inference Systems in Data
+
 * A golden testing library in `Test.Golden`. This allows you to run a set
   of tests and make sure their output matches an expected `golden` value.
   The test runner has many options: filtering tests by name, dumping the
