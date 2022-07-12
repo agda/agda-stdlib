@@ -578,6 +578,8 @@ Deprecated modules
 
 * The module `Data.Nat.Properties.Core` has been deprecated, and its one entry moved to `Data.Nat.Properties`
 
+### Moving `Algebra.Module.Morphism.Linear.Properties` to `Algebra.Module.Morphism.Properties`
+
 Deprecated names
 ----------------
 
@@ -954,6 +956,26 @@ New modules
   ```
   Algebra.Module.Morphism.Linear.Properties
   Algebra.Module.Properties
+  ```
+
+* Useful bundles of morphisms between `Module` and friends:
+  ```
+  Algebra.Module.Morphism.Bundles
+  ```
+
+* Support for abstract vector spaces:
+  ```
+  Data.VectorSpace.Core
+  ```
+
+* Properties of abstract vector spaces:
+  ```
+  Data.VectorSpace.Properties
+  ```
+
+* Extensional equivalence
+  ```
+  Relation.Binary.ExtensionalEquivalence
   ```
 
 Other minor changes
@@ -1741,6 +1763,26 @@ Other minor changes
   lookup-transpose : ∀ n (ass : List (Stream A)) → lookup n (transpose ass) ≡ List.map (lookup n) ass
   lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) → lookup n (transpose⁺ ass) ≡ List⁺.map (lookup n) ass
   ```
+
+* Added new proofs in `Function.Consequences`:
+```
+∘-cong : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
+         Congruent ≈₁ ≈₁ f → Congruent ≈₁ ≈₂ g → Congruent ≈₁ ≈₂ (g ∘ f)
+∘-cong₂ : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
+          Congruent ≈₁ ≈₁ f → Congruent₂ ≈₁ ≈₁ ≈₂ g → Congruent₂ ≈₁ ≈₁ ≈₂ (g ∘ f)
+flip-cong₂ : ∀ {f} → Congruent₂ ≈₁ ≈₁ ≈₂ f → Congruent₂ ≈₁ ≈₁ ≈₂ (flip f)
+```
+
+* Added new definitions in `Function.Definitions`:
+```
+Congruent₂′ : (A → B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+Congruent₂′ f = ∀ {x y w z} → x ≈₁ y → w ≈₂ z → f x w ≈₁ f y z
+∘-cong : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
+         Congruent ≈₁ ≈₁ f → Congruent ≈₁ ≈₂ g → Congruent ≈₁ ≈₂ (g ∘ f)
+∘-cong₂ : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
+          Congruent ≈₁ ≈₁ f → Congruent₂ ≈₁ ≈₁ ≈₂ g → Congruent₂ ≈₁ ≈₁ ≈₂ (g ∘ f)
+flip-cong₂ : ∀ {f} → Congruent₂ ≈₁ ≈₁ ≈₂ f → Congruent₂ ≈₁ ≈₁ ≈₂ (flip f)
+```
 
 NonZero/Positive/Negative changes
 ---------------------------------

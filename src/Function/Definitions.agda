@@ -28,15 +28,11 @@ open import Level using (_⊔_)
 Congruent : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 Congruent f = ∀ {x y} → x ≈₁ y →  f x ≈₂ f y
 
--- Congruent₂ : (A → A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
--- Congruent₂ f = ∀ {x y w z} → x ≈₁ y → w ≈₁ z → f x w ≈₂ f y z
 Congruent₂′ : (A → B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
 Congruent₂′ f = ∀ {x y w z} → x ≈₁ y → w ≈₂ z → f x w ≈₁ f y z
 module _ {c ℓ₃} {C : Set c} (_≈₃_ : Rel C ℓ₃) where
   Congruent₂ : (A → B → C) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃)
   Congruent₂ f = ∀ {x y w z} → x ≈₁ y → w ≈₂ z → f x w ≈₃ f y z
--- Congruent₂ : (A → B → C) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃)
--- Congruent₂ f = ∀ {x y w z} → x ≈₁ y → w ≈₂ z → f x w ≈₃ f y z
 
 Injective : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y

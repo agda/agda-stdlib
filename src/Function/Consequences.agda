@@ -63,14 +63,12 @@ module _
 
 ∘-cong₂ : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
           Congruent ≈₁ ≈₁ f → Congruent₂ ≈₁ ≈₁ ≈₂ g → Congruent₂ ≈₁ ≈₁ ≈₂ (g ∘ f)
-          -- Congruent ≈₁ ≈₁ f → Congruent₂ ≈₁ ≈₂ g → Congruent₂ ≈₁ ≈₂ (g ∘ f)
 ∘-cong₂ f-cong g-cong₂ = g-cong₂ ∘ f-cong
 
 module _ (To : Setoid b ℓ₂) {≈₁ : Rel A ℓ₁} where
 
   open Setoid To using () renaming (Carrier to B; _≈_ to ≈₂)
 
-  -- flip-cong₂ : ∀ {f} → Congruent₂ ≈₁ ≈₂ f → Congruent₂ ≈₁ ≈₂ (flip f)
   flip-cong₂ : ∀ {f} → Congruent₂ ≈₁ ≈₁ ≈₂ f → Congruent₂ ≈₁ ≈₁ ≈₂ (flip f)
   flip-cong₂ {f} f-cong₂ {x} {y} {w} {z} x≈y w≈z = begin
     flip f x w ≡⟨⟩
