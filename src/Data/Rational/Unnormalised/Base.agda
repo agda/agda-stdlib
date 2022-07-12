@@ -33,6 +33,12 @@ open import Relation.Binary.PropositionalEquality.Core
 -- into the normalised rationals.
 
 record ℚᵘ : Set where
+  -- We add "no-eta-equality; pattern" to the record to stop Agda
+  -- automatically unfolding rationals when arithmetic operations are
+  -- applied to them (see definition of operators below and Issue #1753
+  -- for details).
+  no-eta-equality; pattern
+
   constructor mkℚᵘ
   field
     numerator     : ℤ
@@ -186,6 +192,22 @@ nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _
 ------------------------------------------------------------------------------
 -- Operations on rationals
 
+-- Explanation for `@record{}` everywhere: combined with no-eta-equality on
+-- the record definition of ℚᵘ above, these annotations prevent the operations
+-- from automatically expanding unless their arguments are explicitly pattern
+-- matched on.
+--
+-- For example prior to their addition, `p + q` would often be normalised by
+-- Agda to `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While in this
+-- small example this isn't a big problem, it leads to an exponential blowup
+-- when you have large arithmetic expressions which would often choke
+-- both type-checking and the display code. For example, the normalised
+-- form of `p + q + r + s + t + u` would be ~300 lines long.
+--
+-- This is fundementally a problem with Agda, so if over-eager normalisation
+-- is ever fixed in Agda (e.g. with glued representation of terms) these
+-- annotations can be removed.
+
 infix  8 -_ 1/_
 infixl 7 _*_ _÷_ _⊓_
 infixl 6 _-_ _+_ _⊔_
@@ -198,12 +220,12 @@ infixl 6 _-_ _+_ _⊔_
 -- addition
 
 _+_ : ℚᵘ → ℚᵘ → ℚᵘ
-p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
+p@record{} + q@record{} = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- multiplication
 
 _*_ : ℚᵘ → ℚᵘ → ℚᵘ
-p * q = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
+p@record{} * q@record{} = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- subtraction
 
@@ -219,15 +241,15 @@ p - q = p + (- q)
 -- division: requires a proof that the denominator is not zero
 
 _÷_ : (p q : ℚᵘ) → .{{_ : NonZero q}} → ℚᵘ
-p ÷ q = p * (1/ q)
+p@record{} ÷ q@record{} = p * (1/ q)
 
 -- max
 _⊔_ : (p q : ℚᵘ) → ℚᵘ
-p ⊔ q = if p ≤ᵇ q then q else p
+p@record{} ⊔ q@record{} = if p ≤ᵇ q then q else p
 
 -- min
 _⊓_ : (p q : ℚᵘ) → ℚᵘ
-p ⊓ q = if p ≤ᵇ q then p else q
+p@record{} ⊓ q@record{} = if p ≤ᵇ q then p else q
 
 -- absolute value
 ∣_∣ : ℚᵘ → ℚᵘ
@@ -238,11 +260,11 @@ p ⊓ q = if p ≤ᵇ q then p else q
 
 -- Floor (round towards -∞)
 floor : ℚᵘ → ℤ
-floor p = ↥ p ℤ./ ↧ p
+floor p@record{} = ↥ p ℤ./ ↧ p
 
 -- Ceiling (round towards +∞)
 ceiling : ℚᵘ → ℤ
-ceiling p = ℤ.- floor (- p)
+ceiling p@record{} = ℤ.- floor (- p)
 
 -- Truncate  (round towards 0)
 truncate : ℚᵘ → ℤ
@@ -258,7 +280,7 @@ round p with p ≤ᵇ 0ℚᵘ
 
 -- Fractional part (remainder after floor)
 fracPart : ℚᵘ → ℚᵘ
-fracPart p = ∣ p - truncate p / 1 ∣
+fracPart p@record{} = ∣ p - truncate p / 1 ∣
 
 -- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [ ] truncate
 syntax floor    p = ⌊ p ⌋

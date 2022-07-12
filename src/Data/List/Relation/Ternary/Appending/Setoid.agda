@@ -26,5 +26,5 @@ Appending = General.Appending _≈_ _≈_
 ------------------------------------------------------------------------
 -- Re-export the basic combinators
 
-open General public
+open General {A = A} {A} {A} public
   hiding (Appending)

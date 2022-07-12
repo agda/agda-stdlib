@@ -42,6 +42,10 @@ Bug-fixes
 
 * In `Algebra.Definitions.RawSemiring` the record `prime` add `p∤1 : p ∤ 1#` to the field.
 
+* In `Data.List.Relation.Ternary.Appending.Setoid` we re-export specialised versions of
+  the constructors using the setoid's carrier set. Prior to that, the constructor were
+  re-exported in their full generality which would lead to unsolved meta variables at
+  their use sites.
 
 Non-backwards compatible changes
 --------------------------------
@@ -305,6 +309,39 @@ Non-backwards compatible changes
   p≄0⇒∣↥p∣≢0 : ∀ p → p ≠ 0ℚᵘ → ℤ.∣ (↥ p) ∣ ≢0
   ∣↥p∣≢0⇒p≄0 : ∀ p → ℤ.∣ (↥ p) ∣ ≢0 → p ≠ 0ℚᵘ
   ```
+
+### Change in reduction behaviour of rationals
+
+* Currently arithmetic expressions involving rationals (both normalised and 
+  unnormalised) undergo disastorous exponential normalisation. For example, 
+  `p + q` would often be normalised by Agda to 
+  `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While the normalised form
+  of `p + q + r + s + t + u + v` would be ~700 lines long. This behaviour
+  often chokes both type-checking and the display of the expressions in the IDE.
+
+* To avoid this expansion and make non-trivial reasoning about rationals actually feasible:
+  1. the records `ℚᵘ` and `ℚ` have both had the `no-eta-equality` flag enabled
+  2. definition of arithmetic operations have trivial pattern matching added to
+     prevent them reducing, e.g.
+     ```agda
+     p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
+     ```
+     has been changed to
+     ```
+     p@record{} + q@record{} = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
+     ```
+
+* As a consequence of this, some proofs that relied on this reduction behaviour
+  or on eta-equality may no longer go through. There are several ways to fix this:
+  1. The principled way is to not rely on this reduction behaviour in the first place. 
+	 The `Properties` files for rational numbers have been greatly expanded in `v1.7` 
+	 and `v2.0`, and we believe most proofs should be able to be built up from existing
+	 proofs contained within these files.
+  2. Alternatively, annotating any rational arguments to a proof with either
+	 `@record{}` or `@(mkℚ _ _ _)` should restore the old reduction behaviour for any
+	 terms involving those parameters.
+  3. Finally, if the above approaches are not viable then you may be forced to explicitly
+	 use `cong` combined with a lemma that proves the old reduction behaviour.
 
 ### Change in the definition of `Prime`
 
@@ -1301,6 +1338,8 @@ Other minor changes
 
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
+
+  n≤1⇒n≡0∨n≡1 : ∀ {n : ℕ} → n ≤ 1 → n ≡ 0 ⊎ n ≡ 1
   ```
 
 * Added new functions in `Data.Nat`:
@@ -1338,6 +1377,9 @@ Other minor changes
 
 * Added new definitions and proofs in `Data.Rational.Properties`:
   ```agda
+  ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
+  ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
+  
   +-*-rawNearSemiring                 : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring                     : RawSemiring 0ℓ 0ℓ
   toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
@@ -1701,7 +1743,7 @@ Other minor changes
   ```
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
-  
+
   Monotonic₁         _≤_ _⊑_ f     = f Preserves _≤_ ⟶ _⊑_
   Antitonic₁         _≤_ _⊑_ f     = f Preserves (flip _≤_) ⟶ _⊑_
   Monotonic₂         _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ _⊑_ ⟶ _≼_
@@ -1763,6 +1805,15 @@ Other minor changes
   lookup-transpose : ∀ n (ass : List (Stream A)) → lookup n (transpose ass) ≡ List.map (lookup n) ass
   lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) → lookup n (transpose⁺ ass) ≡ List⁺.map (lookup n) ass
   ```
+
+* Added new corollaries in `Data.List.Membership.Setoid.Properties`:
+  ```
+  ∈-++⁺∘++⁻ : ∀ {v} xs {ys} (p : v ∈ xs ++ ys) → [ ∈-++⁺ˡ , ∈-++⁺ʳ xs ]′ (∈-++⁻ xs p) ≡ p
+  ∈-++⁻∘++⁺ : ∀ {v} xs {ys} (p : v ∈ xs ⊎ v ∈ ys) → ∈-++⁻ xs ([ ∈-++⁺ˡ , ∈-++⁺ʳ xs ]′ p) ≡ p
+  ∈-++↔ : ∀ {v xs ys} → (v ∈ xs ⊎ v ∈ ys) ↔ v ∈ xs ++ ys
+  ∈-++-comm : ∀ {v} xs ys → v ∈ xs ++ ys → v ∈ ys ++ xs
+  ∈-++-comm∘++-comm : ∀ {v} xs {ys} (p : v ∈ xs ++ ys) → ∈-++-comm ys xs (∈-++-comm xs ys p) ≡ p
+  ∈-++↔++ : ∀ {v} xs ys → v ∈ xs ++ ys ↔ v ∈ ys ++ xs
 
 * Added new proofs in `Function.Consequences`:
   ```
