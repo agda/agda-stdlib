@@ -16,7 +16,7 @@ import Data.Fin.Permutation.Components as PC
 open import Data.List as L using (List; []; _∷_; _++_; map)
 import Data.List.Properties as L
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Product using (Σ-syntax; ∃-syntax; _×_; _,_)
+open import Data.Product using (∃₂; _×_; _,_)
 open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; sym; trans; cong; module ≡-Reasoning)
@@ -36,7 +36,7 @@ private
 -- leaving the rest in place).
 
 TranspositionList : ℕ → Set
-TranspositionList n = List (Σ[ i ∈ Fin n ] ∃[ j ] i ≢ j)
+TranspositionList n = List (∃₂ λ (i j : Fin n) → i ≢ j)
 
 ------------------------------------------------------------------------
 -- Operations on transposition lists
