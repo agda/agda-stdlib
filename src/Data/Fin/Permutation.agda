@@ -223,8 +223,8 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
 ------------------------------------------------------------------------
 -- Other properties
 
-transpose-self-inverse : ∀ (i j : Fin n) → transpose i j ≈ transpose j i
-transpose-self-inverse i j k with k ≟ i | k ≟ j
+transpose-comm : ∀ (i j : Fin n) → transpose i j ≈ transpose j i
+transpose-comm i j k with k ≟ i | k ≟ j
 ... | no ¬p | no ¬q = refl
 ... | no ¬p | yes q = refl
 ... | yes p | no ¬q = refl

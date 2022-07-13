@@ -1866,7 +1866,7 @@ Other minor changes
 * Added new definitions and proofs in `Data.Fin.Permutation`:
   ```agda
   insert         : Fin (suc m) → Fin (suc n) → Permutation m n → Permutation (suc m) (suc n)
-  transpose-self-inverse : transpose i j ≈ transpose j i
+  transpose-comm : transpose i j ≈ transpose j i
   insert-punchIn : insert i j π ⟨$⟩ʳ punchIn i k ≡ punchIn j (π ⟨$⟩ʳ k)
   insert-remove  : insert i (π ⟨$⟩ʳ i) (remove i π) ≈ π
   remove-insert  : remove i (insert i j π) ≈ π

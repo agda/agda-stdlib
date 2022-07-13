@@ -93,6 +93,6 @@ eval-reverse (x@(a , b , _) ∷ xs) i = begin
   eval (L.reverse (x ∷ xs))            ⟨$⟩ʳ i ≡⟨ cong (λ p → eval p ⟨$⟩ʳ i) (L.unfold-reverse x xs) ⟩
   eval (L.reverse xs L.∷ʳ x)           ⟨$⟩ʳ i ≡⟨ eval-++ (L.reverse xs) L.[ x ] i ⟩
   eval (L.reverse xs) ∘ₚ transpose a b ⟨$⟩ʳ i ≡⟨ cong (transpose a b ⟨$⟩ʳ_) (eval-reverse xs i) ⟩
-  flip (eval xs) ∘ₚ transpose a b      ⟨$⟩ʳ i ≡⟨ transpose-self-inverse a b (flip (eval xs) ⟨$⟩ʳ i) ⟩
+  flip (eval xs) ∘ₚ transpose a b      ⟨$⟩ʳ i ≡⟨ transpose-comm a b (flip (eval xs) ⟨$⟩ʳ i) ⟩
   flip (eval xs) ∘ₚ transpose b a      ⟨$⟩ʳ i ∎
 
