@@ -42,7 +42,7 @@ TranspositionList n = List (∃₂ λ (i j : Fin n) → i ≢ j)
 -- Operations on transposition lists
 
 lift₀ : TranspositionList n → TranspositionList (suc n)
-lift₀ xs = map (λ (i , j , i≢j) → (suc i , suc j , λ si≡sj → i≢j (suc-injective si≡sj))) xs
+lift₀ xs = map (λ (i , j , i≢j) → (suc i , suc j , i≢j ∘ suc-injective)) xs
 
 eval : TranspositionList n → Permutation′ n
 eval []             = id
