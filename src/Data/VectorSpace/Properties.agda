@@ -56,7 +56,7 @@ foldr-cong : ∀ {f g : V → S → S} {d e : S} →
              foldr f d ≗ foldr g e
 foldr-cong f≈g d≈e []       = d≈e
 foldr-cong f≈g d≈e (x ∷ xs) = f≈g (foldr-cong f≈g d≈e xs) x
-  
+
 -- ToDo: Rewrite in terms of `foldr-homo`, below.
 foldr-homo-∙ : {v x₀ : V} {g : V → V} → Congruent _≈ᴹ_ _≈ᴹ_ g →
                (xs : List V) →
@@ -74,10 +74,10 @@ module _ (lm : LinearMap mod ⟨module⟩) where
 
   open LinearMap lm
   open MorphismProperties.LinearMapProperties lm
-  
+
   vred : (V → S) → List V → S
   vred g = foldr (_+_ ∘ uncurry _*_ ∘ < g , f >) 0#
-  
+
   foldr-homo : (g : V → S) → (xs : List V) → f (vgen g xs) ≈ vred g xs
   foldr-homo g []       = 0ᴹ-homo
   foldr-homo g (x ∷ xs) = begin⟨ setoid ⟩
@@ -100,7 +100,7 @@ module _ (lm : LinearMap mod ⟨module⟩) where
 
   fGen : List V → V
   fGen = vgen f
-  
+
   f≈v∙ : ∀ {a} → f a ≈ v lm ∙ a
   f≈v∙ {a} = sym (begin⟨ setoid ⟩
     v′ ∙ a ≈⟨ ∙-comm ⟩
@@ -120,7 +120,7 @@ module _ (lm : LinearMap mod ⟨module⟩) where
     f a ∎)
     where
     v′ = v lm
-    
+
   -- Inner product extensional equivalence.
   x·z≈y·z⇒x≈y : ∀ {x y} → DoubleNegationElimination ℓm →
                  Σ[ (s , z) ∈ S × V ]
@@ -137,7 +137,7 @@ module _ (lm : LinearMap mod ⟨module⟩) where
       y ∙ v′ ≈⟨ ∙-comm ⟩
       v′ ∙ y ≈⟨ sym (f≈v∙ {y}) ⟩
       f y   ∎
-    
+
 u∙-homo : ∀ {u} → IsModuleHomomorphism (u ∙_)
 u∙-homo = record
   { isBimoduleHomomorphism = record

@@ -19,7 +19,7 @@ private
   variable
     a : Level
     A : Set a
-    
+
 open Setoid B-setoid renaming (Carrier to B)
 
 infix 4 _≗_

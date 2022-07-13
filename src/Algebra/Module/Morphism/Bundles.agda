@@ -21,7 +21,7 @@ module _
   (modA           : Module ring m ℓm)
   (modB           : Module ring n ℓn)
   where
-  
+
   open Module modA renaming (Carrierᴹ to A)
   open Module modB renaming (Carrierᴹ to B)
 
@@ -33,7 +33,7 @@ module _
       f    : A → B
       homo : IsModuleHomomorphism modA modB f
     open IsModuleHomomorphism homo public
-  
+
   ≈ᴸ-setoid : Setoid (r ⊔ ℓr ⊔ m ⊔ ℓm ⊔ n ⊔ ℓn) (m ⊔ ℓn)
   ≈ᴸ-setoid = record
     { Carrier       = LinearMap

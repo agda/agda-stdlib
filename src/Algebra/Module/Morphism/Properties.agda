@@ -101,7 +101,7 @@ module LinearMapProperties
       where
       ¬x≉0 : ¬ (x A.≉ᴹ A.0ᴹ)
       ¬x≉0 = λ x≉0 → x≉0⇒fx≉0 ((s , y) , (s·x≈y , fy≉0)) x≉0 fx≈0
-        
+
     fx≈fy⇒x≈y : ∀ {x y} →
                 Σ[ (s , z) ∈ S × A ] ( (s A.*ₗ (x A.+ᴹ A.-ᴹ y) A.≈ᴹ z)
                                      × (f z B.≉ᴹ B.0ᴹ)

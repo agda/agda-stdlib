@@ -49,7 +49,7 @@ record VectorSpace
 
   vgen : (V → S) → List V → V
   vgen f = foldr (_+ᴹ_ ∘ vscale f) 0ᴹ
-  
+
   infix 7 _∙_
   field
     _∙_           : V → V → S
@@ -70,7 +70,7 @@ record VectorSpace
     ∙-idˡ       : ∀ {a}       → 0ᴹ ∙ a ≈ 0#
     ∙-idʳ       : ∀ {a}       → a ∙ 0ᴹ ≈ 0#                    -- Prove.
     ∙-homo-⁻¹    : ∀ {a b}     → a ∙ (-ᴹ b) ≈ - (a ∙ b)
-    
+
   vscale-cong : ∀ f → Congruent _≈ᴹ_ _≈_ f → Congruent _≈ᴹ_ _≈ᴹ_ (vscale f)
   vscale-cong f f-cong {x} {y} x≈y = begin⟨ ≈ᴹ-setoid ⟩
     vscale f x ≡⟨⟩
@@ -82,7 +82,7 @@ record VectorSpace
   ------------------------------------------------------------------------
   -- Linear maps from vectors to scalars.
   V⊸S = LinearMap mod ⟨module⟩
-  
+
   -- Equivalent vector generator.
   v : V⊸S → V
   v lm = vgen (LinearMap.f lm) basisSet
@@ -91,4 +91,4 @@ record VectorSpace
     ( _≈_ to _≈ᴸ_
     ; _≉_ to _≉ᴸ_
     ) public
-  
+
