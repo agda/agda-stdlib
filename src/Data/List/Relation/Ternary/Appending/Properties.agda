@@ -25,7 +25,7 @@ private
     C : Set c
     C′ : Set c′
     L : REL A C l
-    R : REL A B r
+    R : REL B C r
     as : List A
     bs : List B
     cs : List C

@@ -11,27 +11,26 @@ module Data.List.Relation.Ternary.Appending.Propositional
   where
 
 open import Data.List.Base as List using (List; []; _∷_)
+open import Data.Product using (_,_)
+
 import Data.List.Properties as Listₚ
 import Data.List.Relation.Binary.Pointwise as Pw
-import Data.List.Relation.Ternary.Appending.Setoid as General
-open import Data.Product using (_,_)
+
 open import Relation.Binary.PropositionalEquality
   using (_≡_; setoid; refl; trans; cong₂; module ≡-Reasoning)
 
+import Data.List.Relation.Ternary.Appending.Setoid (setoid A) as General
 import Data.List.Relation.Ternary.Appending.Setoid.Properties (setoid A)
   as Appendingₚ
 
 ------------------------------------------------------------------------
 -- Re-export the basic combinators
 
-open General (setoid A) public
-  hiding (Appending; _++_; break)
+open General public
+  hiding (_++_; break)
 
 ------------------------------------------------------------------------
 -- Definition
-
-Appending : List A → List A → List A → Set a
-Appending = General.Appending (setoid A)
 
 _++_ : (as bs : List A) → Appending as bs (as List.++ bs)
 as ++ bs = Pw.≡⇒Pointwise-≡ refl General.++ Pw.≡⇒Pointwise-≡ refl
