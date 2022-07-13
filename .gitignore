@@ -11,6 +11,8 @@
 *.vim
 *~
 .*.swp
+.#*
+\#*
 ./_build/*
 .DS_Store
 .vscode/*
