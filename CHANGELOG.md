@@ -786,6 +786,15 @@ Non-backwards compatible changes
 * In `Data.Fin.Permutation.Transposition.List`, the transpositions are now restricted
   to being pairs of distinct elements.
 
+  Previously:
+  ```agda
+  TranspositionList n = List (Fin n × Fin n)
+  ```
+  Now:
+  ```agda
+  TranspositionList n = List (∃₂ λ (i j : Fin n) → i ≢ j)
+  ```
+
 Major improvements
 ------------------
 
