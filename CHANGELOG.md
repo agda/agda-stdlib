@@ -809,6 +809,11 @@ Deprecated names
 New modules
 -----------
 
+* Algebraic structures when freely adding an identity element:
+```
+  Algebra.Construct.Add.Identity
+```
+
 * Operations for module-like algebraic structures:
   ```
   Algebra.Module.Core
@@ -990,6 +995,11 @@ New modules
 
 Other minor changes
 -------------------
+
+* Added new proof to `Data.Maybe.Properties`
+```agda
+    <∣>-idem : Idempotent _<∣>_
+```
 
 * The module `Algebra` now publicly re-exports the contents of
   `Algebra.Structures.Biased`.
