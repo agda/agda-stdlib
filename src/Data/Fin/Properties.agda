@@ -34,7 +34,7 @@ open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
 open import Function.Consequences using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
-open import Function.Properties.Inverse using (↔-isEquivalence)
+open import Function.Properties.Inverse using (↔-isEquivalence; ↔refl; ↔sym; ↔trans)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
@@ -682,13 +682,11 @@ combine-surjective {m} {n} i with remQuot {m} n i | P.inspect (remQuot {m} n) i
   (uncurry remQuot-combine)
   (combine-remQuot {m} n)
 
-private module ↔ {ℓ} = IsEquivalence (↔-isEquivalence {ℓ})
-
-v↔Fin : ∀ m n → Fin (m ^ n) ↔ Fin m ^v n
-v↔Fin m 0 = ↔.trans 1↔⊤ (↔.sym ⊤↔⊤*)
-v↔Fin m 1 = subst (λ x → Fin x ↔ Fin m)
-  (trans (sym (ℕₚ.+-comm m zero)) (ℕₚ.*-comm 1 m)) ↔.refl
-v↔Fin m (suc (suc n)) = ↔.trans (*↔× {m = m}) (×-cong ↔.refl (v↔Fin _ _))
+Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m ^ n) ↔ Fin m ^v n
+Fin[m^n]↔Fin[m]^n m 0 = ↔trans 1↔⊤ (↔sym ⊤↔⊤*)
+Fin[m^n]↔Fin[m]^n m 1 = subst (λ x → Fin x ↔ Fin m)
+  (trans (sym (ℕₚ.+-comm m zero)) (ℕₚ.*-comm 1 m)) ↔refl
+Fin[m^n]↔Fin[m]^n m (suc (suc n)) = ↔trans (*↔× {m = m}) (×-cong ↔refl (Fin[m^n]↔Fin[m]^n _ _))
 
 ------------------------------------------------------------------------
 -- fin→fun
