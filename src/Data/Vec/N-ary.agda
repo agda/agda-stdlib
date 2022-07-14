@@ -180,9 +180,8 @@ module _ (ext : ∀ {a b} → Extensionality a b) where
   Vec↔N-ary : ∀ n → (Vec A n → B) ↔ N-ary n A B
   Vec↔N-ary zero = mk↔′ (λ vxs → vxs []) (flip constᵣ) (λ _ → refl)
     (λ vxs → ext λ where [] → refl)
-  Vec↔N-ary (suc n) with Vec↔N-ary n
-  ... | vec↔ = mk↔′ (λ vxs x → to λ xs → vxs (x ∷ xs))
+  Vec↔N-ary (suc n) = let open Inverse (Vec↔N-ary n) in
+    mk↔′ (λ vxs x → to λ xs → vxs (x ∷ xs))
     (λ any xs → from (any (head xs)) (tail xs))
     (λ any → ext λ x → inverseˡ _)
     (λ vxs → ext λ where (x ∷ xs) → cong (λ f → f xs) (inverseʳ (λ ys → vxs (x ∷ ys))))
-    where open Inverse vec↔
