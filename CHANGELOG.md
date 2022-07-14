@@ -312,9 +312,9 @@ Non-backwards compatible changes
 
 ### Change in reduction behaviour of rationals
 
-* Currently arithmetic expressions involving rationals (both normalised and 
-  unnormalised) undergo disastorous exponential normalisation. For example, 
-  `p + q` would often be normalised by Agda to 
+* Currently arithmetic expressions involving rationals (both normalised and
+  unnormalised) undergo disastorous exponential normalisation. For example,
+  `p + q` would often be normalised by Agda to
   `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While the normalised form
   of `p + q + r + s + t + u + v` would be ~700 lines long. This behaviour
   often chokes both type-checking and the display of the expressions in the IDE.
@@ -333,8 +333,8 @@ Non-backwards compatible changes
 
 * As a consequence of this, some proofs that relied on this reduction behaviour
   or on eta-equality may no longer go through. There are several ways to fix this:
-  1. The principled way is to not rely on this reduction behaviour in the first place. 
-	 The `Properties` files for rational numbers have been greatly expanded in `v1.7` 
+  1. The principled way is to not rely on this reduction behaviour in the first place.
+	 The `Properties` files for rational numbers have been greatly expanded in `v1.7`
 	 and `v2.0`, and we believe most proofs should be able to be built up from existing
 	 proofs contained within these files.
   2. Alternatively, annotating any rational arguments to a proof with either
@@ -1347,7 +1347,7 @@ Other minor changes
   ```agda
   ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
   ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
-  
+
   +-*-rawNearSemiring                 : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring                     : RawSemiring 0ℓ 0ℓ
   toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
@@ -2028,4 +2028,35 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   Inverse⇒Injection : Inverse S T → Injection S T
   ↔⇒↣ : A ↔ B → A ↣ B
+  ```
+
+* Added new isomorphisms to `Data/Fin/Properties`:
+  ```agda
+  2↔Bool : Fin 2 ↔ Bool
+  Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m ^ n) ↔ Fin m Vec.^ n
+  ```
+
+* Added new isomorphisms to `Data/Unit/Polymorphic/Properties`:
+  ```agda
+  ⊤↔⊤* : ⊤ {ℓ} ↔ ⊤*
+  ```
+
+* Added new isomorphisms to `Data/Vec/N-ary`:
+  ```agda
+  Vec↔N-ary : ∀ n → (Vec A n → B) ↔ N-ary n A B
+  ```
+
+* Added new isomorphisms to `Data/Vec/Recursive`:
+  ```agda
+  lift↔ : {A B : Set a} → ∀ n → A ↔ B → A ^ n ↔ B ^ n
+  ```
+
+* Added new functions to `Function/Properties/Inverse`:
+  ```agda
+  ↔refl ↔sym ↔trans
+  ```
+
+* Added new isomorphisms to `Function/Properties/Inverse`:
+  ```agda
+  ↔Fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```
