@@ -166,7 +166,7 @@ lift↔ (2+ n) AB = ×-cong AB (lift↔ _ AB)
 Vec↔^ : ∀ n → Vec A n ↔ (A ^ n)
 Vec↔^ 0 = mk↔ ((λ _ → refl) , λ where Vec.[] → refl)
 Vec↔^ 1 = mk↔′ Vec.head Vec.[_] (λ _ → refl) (λ where (x ∷ Vec.[]) → refl)
-Vec↔^ {A = A} (2+ n) with Vec↔^ {A = A} (suc n)
+Vec↔^ (2+ n) with Vec↔^ (suc n)
 ... | vec↔ =  mk↔′ (λ where (x ∷ xs) → x , to xs) (λ (x , xs) → x ∷ from xs)
   (λ _ → cong (_ ,_) (inverseˡ _)) (λ where (x ∷ _) → cong (x ∷_) (inverseʳ _))
   where open Inverse vec↔
