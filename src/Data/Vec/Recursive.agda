@@ -21,6 +21,7 @@ open import Data.Nat.Base as Nat using (ℕ; zero; suc)
 open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.Unit.Base using (tt)
 open import Data.Unit.Polymorphic.Base using (⊤)
@@ -28,6 +29,8 @@ open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function
 open import Relation.Unary
 open import Agda.Builtin.Equality using (_≡_)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Function.Properties.Inverse using (↔-isEquivalence)
 
 private
   variable
@@ -148,3 +151,10 @@ zip = zipWith _,_
 
 unzip : ∀ n → (A × B) ^ n → A ^ n × B ^ n
 unzip = unzipWith id
+
+private module ↔ {ℓ} = IsEquivalence (↔-isEquivalence {ℓ})
+
+lift↔ : {A B : Set a} → ∀ n → A ↔ B → A ^ n ↔ B ^ n
+lift↔ 0 AB = ↔.refl
+lift↔ 1 AB = AB
+lift↔ (2+ n) AB = ×-cong AB (lift↔ _ AB)
