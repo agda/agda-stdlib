@@ -17,7 +17,6 @@
 module Data.Vec.Recursive where
 
 open import Level using (Level; lift)
-open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Function.Bundles using (mk↔′)
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔refl)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc)
