@@ -312,9 +312,9 @@ Non-backwards compatible changes
 
 ### Change in reduction behaviour of rationals
 
-* Currently arithmetic expressions involving rationals (both normalised and
-  unnormalised) undergo disastorous exponential normalisation. For example,
-  `p + q` would often be normalised by Agda to
+* Currently arithmetic expressions involving rationals (both normalised and 
+  unnormalised) undergo disastorous exponential normalisation. For example, 
+  `p + q` would often be normalised by Agda to 
   `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While the normalised form
   of `p + q + r + s + t + u + v` would be ~700 lines long. This behaviour
   often chokes both type-checking and the display of the expressions in the IDE.
@@ -333,8 +333,8 @@ Non-backwards compatible changes
 
 * As a consequence of this, some proofs that relied on this reduction behaviour
   or on eta-equality may no longer go through. There are several ways to fix this:
-  1. The principled way is to not rely on this reduction behaviour in the first place.
-	 The `Properties` files for rational numbers have been greatly expanded in `v1.7`
+  1. The principled way is to not rely on this reduction behaviour in the first place. 
+	 The `Properties` files for rational numbers have been greatly expanded in `v1.7` 
 	 and `v2.0`, and we believe most proofs should be able to be built up from existing
 	 proofs contained within these files.
   2. Alternatively, annotating any rational arguments to a proof with either
