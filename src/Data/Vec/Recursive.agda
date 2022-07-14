@@ -17,6 +17,9 @@
 module Data.Vec.Recursive where
 
 open import Level using (Level; lift)
+open import Axiom.Extensionality.Propositional using (Extensionality)
+open import Function.Bundles using (mk↔′)
+open import Function.Properties.Inverse using (↔-isEquivalence)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc)
 open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
@@ -26,11 +29,12 @@ open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.Unit.Base using (tt)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
+open import Data.Vec.N-ary using (N-ary)
 open import Function
 open import Relation.Unary
-open import Agda.Builtin.Equality using (_≡_)
+open import Agda.Builtin.Equality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (cong)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Function.Properties.Inverse using (↔-isEquivalence)
 
 private
   variable
@@ -158,3 +162,11 @@ lift↔ : {A B : Set a} → ∀ n → A ↔ B → A ^ n ↔ B ^ n
 lift↔ 0 AB = ↔.refl
 lift↔ 1 AB = AB
 lift↔ (2+ n) AB = ×-cong AB (lift↔ _ AB)
+
+Vec↔^ : ∀ n → Vec A n ↔ (A ^ n)
+Vec↔^ 0 = mk↔ ((λ _ → refl) , λ where Vec.[] → refl)
+Vec↔^ 1 = mk↔′ Vec.head Vec.[_] (λ _ → refl) (λ where (x ∷ Vec.[]) → refl)
+Vec↔^ {A = A} (2+ n) with Vec↔^ {A = A} (suc n)
+... | vec↔ =  mk↔′ (λ where (x ∷ xs) → x , to xs) (λ (x , xs) → x ∷ from xs)
+  (λ _ → cong (_ ,_) (inverseˡ _)) (λ where (x ∷ _) → cong (x ∷_) (inverseʳ _))
+  where open Inverse vec↔
