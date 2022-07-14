@@ -48,6 +48,9 @@ isEquivalence = record
   ; trans = Composition.inverse
   }
 
+open module ↔ {ℓ} = IsEquivalence (↔-isEquivalence {ℓ})
+  renaming (refl to ↔refl; sym to ↔sym; trans to ↔trans) public
+
 ------------------------------------------------------------------------
 -- Conversion functions
 
