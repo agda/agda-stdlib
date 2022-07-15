@@ -136,9 +136,7 @@ xy∙z≈zx∙y x y z =  trans (xy∙z≈z∙xy x y z) (sym (assoc z x y))
 ------------------------------------------------------------------------------
 -- commutative semigroup has Jordan identity
 xy∙xx≈x∙yxx : ∀ x y → (x ∙ y) ∙ (x ∙ x) ≈ x ∙ (y ∙ (x ∙ x))
-xy∙xx≈x∙yxx x y = begin
-  (x ∙ y) ∙ (x ∙ x) ≈⟨ assoc x y ((x ∙ x)) ⟩
-  x ∙ (y ∙ (x ∙ x)) ∎
+xy∙xx≈x∙yxx x y = assoc x y ((x ∙ x))
 
 ------------------------------------------------------------------------------
 -- commutative semigroup is left semiMedial
