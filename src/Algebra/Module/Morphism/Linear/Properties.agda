@@ -41,6 +41,12 @@ module _
 
   open IsModuleHomomorphism isModuleHomomorphism
 
+  NonTrivial : A → Set (r Level.⊔ m Level.⊔ ℓm)
+  NonTrivial x = (∃₂ λ s y → ((s A.*ₗ x A.≈ᴹ y) × (f y B.≉ᴹ B.0ᴹ)))
+  -- NonTrivial x = Σ[ (s , y) ∈ S × A ] ( (s A.*ₗ x A.≈ᴹ y)
+  --                                     × (f y B.≉ᴹ B.0ᴹ)
+  --                                     )
+
   x≈0⇒fx≈0 : ∀ {x} → x A.≈ᴹ A.0ᴹ → f x B.≈ᴹ B.0ᴹ
   x≈0⇒fx≈0 {x} x≈0 = begin⟨ B.≈ᴹ-setoid ⟩
     f x    ≈⟨ ⟦⟧-cong x≈0 ⟩
@@ -51,14 +57,10 @@ module _
   fx≉0⇒x≉0 = contraposition x≈0⇒fx≈0
 
   -- Zero is a unique output of non-trivial (i.e. - ≉ `const 0`) linear map.
-  zero-unique : ∀ {x} →
-                Σ[ (s , y) ∈ S × A ] ((s A.*ₗ x A.≈ᴹ y) × (f y B.≉ᴹ B.0ᴹ)) →
-                x A.≉ᴹ A.0ᴹ → f x B.≉ᴹ B.0ᴹ
-  zero-unique {x} ((s , y) , (s·x≈y , fy≉0)) x≉0 =
+  zero-unique : ∀ {x} → NonTrivial x → x A.≉ᴹ A.0ᴹ → f x B.≉ᴹ B.0ᴹ
+  zero-unique {x} (s , y , s·x≈y , fy≉0) x≉0 =
     PB.s*v≉0⇒v≉0 s·fx≉0
     where
-    y≉0     : y A.≉ᴹ A.0ᴹ
-    y≉0     = fx≉0⇒x≉0 fy≉0
     s·fx≉0  : (s B.*ₗ f x) B.≉ᴹ B.0ᴹ
     s·fx≉0 s·fx≈0 =
       fy≉0 ( begin⟨ B.≈ᴹ-setoid ⟩
@@ -80,44 +82,39 @@ module _
   f[-x]≈-fx {x} = B.uniqueʳ‿-ᴹ (f x) (f (A.-ᴹ x)) fx+f[-x]≈0
 
   -- A non-trivial linear function is injective.
-  fx-fy≈0 : ∀ {x y} → f x B.≈ᴹ f y → f x B.+ᴹ (B.-ᴹ f y) B.≈ᴹ B.0ᴹ
-  fx-fy≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
+  fx≈fy⇒fx-fy≈0 : ∀ {x y} → f x B.≈ᴹ f y → f x B.+ᴹ (B.-ᴹ f y) B.≈ᴹ B.0ᴹ
+  fx≈fy⇒fx-fy≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
     f x B.+ᴹ (B.-ᴹ f y) ≈⟨ B.+ᴹ-congˡ (B.-ᴹ‿cong (B.≈ᴹ-sym fx≈fy)) ⟩
     f x B.+ᴹ (B.-ᴹ f x) ≈⟨ B.-ᴹ‿inverseʳ (f x) ⟩
     B.0ᴹ                ∎
 
-  fx-y≈0 : ∀ {x y} → f x B.≈ᴹ f y → f (x A.+ᴹ (A.-ᴹ y)) B.≈ᴹ B.0ᴹ
-  fx-y≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
+  fx≈fy⇒f[x-y]≈0 : ∀ {x y} → f x B.≈ᴹ f y → f (x A.+ᴹ (A.-ᴹ y)) B.≈ᴹ B.0ᴹ
+  fx≈fy⇒f[x-y]≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
     f (x A.+ᴹ (A.-ᴹ y)) ≈⟨ +ᴹ-homo x (A.-ᴹ y) ⟩
     f x B.+ᴹ f (A.-ᴹ y) ≈⟨ B.+ᴹ-congˡ f[-x]≈-fx ⟩
-    f x B.+ᴹ (B.-ᴹ f y) ≈⟨ fx-fy≈0 fx≈fy ⟩
+    f x B.+ᴹ (B.-ᴹ f y) ≈⟨ fx≈fy⇒fx-fy≈0 fx≈fy ⟩
     B.0ᴹ                ∎
 
   module _ {dne : DoubleNegationElimination _} where
 
-    fx≈0⇒x≈0 : ∀ {x} →
-      Σ[ (s , y) ∈ S × A ] ((s A.*ₗ x A.≈ᴹ y) × (f y B.≉ᴹ B.0ᴹ)) →
-      f x B.≈ᴹ B.0ᴹ → x A.≈ᴹ A.0ᴹ
-    fx≈0⇒x≈0 {x} ((s , y) , (s·x≈y , fy≉0)) fx≈0 =
+    fx≈0⇒x≈0 : ∀ {x} → NonTrivial x → f x B.≈ᴹ B.0ᴹ → x A.≈ᴹ A.0ᴹ
+    fx≈0⇒x≈0 {x} (s , y , s·x≈y , fy≉0) fx≈0 =
       dne ¬x≉0
       where
       ¬x≉0 : ¬ (x A.≉ᴹ A.0ᴹ)
-      ¬x≉0 = λ x≉0 → zero-unique ((s , y) , (s·x≈y , fy≉0)) x≉0 fx≈0
+      ¬x≉0 = λ x≉0 → zero-unique (s , y , s·x≈y , fy≉0) x≉0 fx≈0
 
     inj-lm : ∀ {x y} →
-      Σ[ (s , z) ∈ S × A ] ( (s A.*ₗ (x A.+ᴹ A.-ᴹ y) A.≈ᴹ z)
-                           × (f z B.≉ᴹ B.0ᴹ)) →
-      f x B.≈ᴹ f y → x A.≈ᴹ y
-    inj-lm {x} {y} ((s , z) , (s·[x-y]≈z , fz≉0)) fx≈fy =
+             (∃₂ λ s z → ((s A.*ₗ (x A.+ᴹ A.-ᴹ y) A.≈ᴹ z) × (f z B.≉ᴹ B.0ᴹ))) →
+             f x B.≈ᴹ f y → x A.≈ᴹ y
+    inj-lm {x} {y} (s , z , s·[x-y]≈z , fz≉0) fx≈fy =
       begin⟨ A.≈ᴹ-setoid ⟩
       x             ≈⟨ x≈--y ⟩
       A.-ᴹ (A.-ᴹ y) ≈⟨ PA.-ᴹ-involutive y ⟩
       y             ∎
       where
       x-y≈0 : x A.+ᴹ (A.-ᴹ y) A.≈ᴹ A.0ᴹ
-      x-y≈0 = fx≈0⇒x≈0 {x = x A.+ᴹ (A.-ᴹ y)}
-                        ((s , z) , s·[x-y]≈z , fz≉0)
-                        (fx-y≈0 fx≈fy)
+      x-y≈0 = fx≈0⇒x≈0 (s , z , s·[x-y]≈z , fz≉0) (fx≈fy⇒f[x-y]≈0 fx≈fy)
       x≈--y : x A.≈ᴹ A.-ᴹ (A.-ᴹ y)
       x≈--y = A.uniqueʳ‿-ᴹ (A.-ᴹ y) x
         ( begin⟨ A.≈ᴹ-setoid ⟩
