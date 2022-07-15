@@ -2048,7 +2048,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new isomorphisms to `Data.Vec.Recursive`:
   ```agda
-  lift↔ : {A B : Set a} → ∀ n → A ↔ B → A ^ n ↔ B ^ n
+  lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
   ```
 
 * Added new functions to `Function.Properties.Inverse`:
