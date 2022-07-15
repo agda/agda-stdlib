@@ -50,7 +50,7 @@ isEquivalence = record
   }
 
 open module ↔ {ℓ} = IsEquivalence (↔-isEquivalence {ℓ})
-  renaming (refl to ↔refl; sym to ↔sym; trans to ↔trans) public
+  renaming (refl to ↔-refl; sym to ↔-sym; trans to ↔-trans) public
 
 ------------------------------------------------------------------------
 -- Conversion functions
@@ -88,8 +88,8 @@ Inverse⇒Equivalence I = record
 
 module _ (ext : ∀ {a b} → Extensionality a b) where
 
-  ↔Fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
-  ↔Fun A↔B C↔D = mk↔′
+  ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
+  ↔-fun A↔B C↔D = mk↔′
     (λ a→c b → to C↔D (a→c (from A↔B b)))
     (λ b→d a → from C↔D (b→d (to A↔B a)))
     (λ b→d → ext λ _ → P.trans (inverseˡ C↔D _ ) (P.cong b→d (inverseˡ A↔B _)))

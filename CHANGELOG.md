@@ -2030,33 +2030,33 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ↔⇒↣ : A ↔ B → A ↣ B
   ```
 
-* Added new isomorphisms to `Data/Fin/Properties`:
+* Added new isomorphisms to `Data.Fin.Properties`:
   ```agda
   2↔Bool : Fin 2 ↔ Bool
   Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m ^ n) ↔ Fin m Vec.^ n
   ```
 
-* Added new isomorphisms to `Data/Unit/Polymorphic/Properties`:
+* Added new isomorphisms to `Data.Unit.Polymorphic.Properties`:
   ```agda
   ⊤↔⊤* : ⊤ {ℓ} ↔ ⊤*
   ```
 
-* Added new isomorphisms to `Data/Vec/N-ary`:
+* Added new isomorphisms to `Data.Vec.N-ary`:
   ```agda
   Vec↔N-ary : ∀ n → (Vec A n → B) ↔ N-ary n A B
   ```
 
-* Added new isomorphisms to `Data/Vec/Recursive`:
+* Added new isomorphisms to `Data.Vec.Recursive`:
   ```agda
   lift↔ : {A B : Set a} → ∀ n → A ↔ B → A ^ n ↔ B ^ n
   ```
 
-* Added new functions to `Function/Properties/Inverse`:
+* Added new functions to `Function.Properties.Inverse`:
   ```agda
-  ↔refl ↔sym ↔trans
+  ↔-refl ↔-sym ↔-trans
   ```
 
-* Added new isomorphisms to `Function/Properties/Inverse`:
+* Added new isomorphisms to `Function.Properties.Inverse`:
   ```agda
-  ↔Fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
+  ↔-Fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```

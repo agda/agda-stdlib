@@ -18,7 +18,7 @@ module Data.Vec.Recursive where
 
 open import Level using (Level; lift)
 open import Function.Bundles using (mk↔′)
-open import Function.Properties.Inverse using (↔-isEquivalence; ↔refl)
+open import Function.Properties.Inverse using (↔-isEquivalence)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc)
 open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
@@ -31,8 +31,7 @@ open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Data.Vec.N-ary using (N-ary)
 open import Function
 open import Relation.Unary
-open import Agda.Builtin.Equality using (_≡_; refl)
-open import Relation.Binary.PropositionalEquality.Core using (cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.Structures using (IsEquivalence)
 
 private
@@ -155,7 +154,7 @@ zip = zipWith _,_
 unzip : ∀ n → (A × B) ^ n → A ^ n × B ^ n
 unzip = unzipWith id
 
-lift↔ : {A B : Set a} → ∀ n → A ↔ B → A ^ n ↔ B ^ n
-lift↔ 0 A↔B = ↔refl
+lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
+lift↔ 0 A↔B = mk↔ ((λ { [] → refl }) , (λ{ [] → refl }))
 lift↔ 1 A↔B = A↔B
 lift↔ (2+ n) A↔B = ×-cong A↔B (lift↔ _ A↔B)
