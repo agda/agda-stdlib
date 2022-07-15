@@ -2058,5 +2058,5 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new isomorphisms to `Function.Properties.Inverse`:
   ```agda
-  ↔-Fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
+  ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```
