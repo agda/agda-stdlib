@@ -989,7 +989,7 @@ New modules
 
 * Proofs of some axioms of linearity:
   ```
-  Algebra.Module.Morphism.Linear.Properties
+  Algebra.Module.Morphism.ModuleHomomorphism
   Algebra.Module.Properties
   ```
 

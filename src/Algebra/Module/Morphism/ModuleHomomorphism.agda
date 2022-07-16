@@ -6,18 +6,18 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+import Algebra.Module.Properties            as ModuleProperties
+import Algebra.Module.Morphism.Structures   as MorphismStructures
+
 open import Algebra                   using (CommutativeRing)
 open import Algebra.Module            using (Module)
 open import Level                     using (Level)
 
-module Algebra.Module.Morphism.Linear.Properties
+module Algebra.Module.Morphism.ModuleHomomorphism
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
   (modA modB  : Module ring m ℓm)
   where
-
-import Algebra.Module.Properties            as ModuleProperties
-import Algebra.Module.Morphism.Structures   as MorphismStructures
 
 open import Axiom.DoubleNegationElimination
 open import Data.Product
@@ -41,11 +41,11 @@ module _
 
   open IsModuleHomomorphism isModuleHomomorphism
 
+  -- Some of the lemmas below only hold for continously scalable,
+  -- non-trivial functions, i.e., f x = f (s y) and f ≠ const 0.
+  -- This is a handy abbreviation for that rather verbose term.
   NonTrivial : A → Set (r Level.⊔ m Level.⊔ ℓm)
-  NonTrivial x = (∃₂ λ s y → ((s A.*ₗ x A.≈ᴹ y) × (f y B.≉ᴹ B.0ᴹ)))
-  -- NonTrivial x = Σ[ (s , y) ∈ S × A ] ( (s A.*ₗ x A.≈ᴹ y)
-  --                                     × (f y B.≉ᴹ B.0ᴹ)
-  --                                     )
+  NonTrivial x = ∃₂ λ s y → (s A.*ₗ x A.≈ᴹ y) × (f y B.≉ᴹ B.0ᴹ)
 
   x≈0⇒fx≈0 : ∀ {x} → x A.≈ᴹ A.0ᴹ → f x B.≈ᴹ B.0ᴹ
   x≈0⇒fx≈0 {x} x≈0 = begin⟨ B.≈ᴹ-setoid ⟩
@@ -57,29 +57,25 @@ module _
   fx≉0⇒x≉0 = contraposition x≈0⇒fx≈0
 
   -- Zero is a unique output of non-trivial (i.e. - ≉ `const 0`) linear map.
-  zero-unique : ∀ {x} → NonTrivial x → x A.≉ᴹ A.0ᴹ → f x B.≉ᴹ B.0ᴹ
-  zero-unique {x} (s , y , s·x≈y , fy≉0) x≉0 =
-    PB.s*v≉0⇒v≉0 s·fx≉0
-    where
-    s·fx≉0  : (s B.*ₗ f x) B.≉ᴹ B.0ᴹ
-    s·fx≉0 s·fx≈0 =
-      fy≉0 ( begin⟨ B.≈ᴹ-setoid ⟩
-             f y          ≈⟨ ⟦⟧-cong (A.≈ᴹ-sym s·x≈y) ⟩
-             f (s A.*ₗ x) ≈⟨ *ₗ-homo s x ⟩
-             s B.*ₗ f x   ≈⟨ s·fx≈0 ⟩
-             B.0ᴹ         ∎
-           )
+  x≉0⇒f[x]≉0 : ∀ {x} → NonTrivial x → x A.≉ᴹ A.0ᴹ → f x B.≉ᴹ B.0ᴹ
+  x≉0⇒f[x]≉0 {x} (s , y , s·x≈y , fy≉0) x≉0 =
+    PB.s*v≉0⇒v≉0 ( λ s·fx≈0 → fy≉0 ( begin⟨ B.≈ᴹ-setoid ⟩
+                     f y          ≈⟨ ⟦⟧-cong (A.≈ᴹ-sym s·x≈y) ⟩
+                     f (s A.*ₗ x) ≈⟨ *ₗ-homo s x ⟩
+                     s B.*ₗ f x   ≈⟨ s·fx≈0 ⟩
+                     B.0ᴹ         ∎ )
+                 )
 
   -- f is odd (i.e. - f (-x) ≈ - (f x)).
-  fx+f[-x]≈0 : ∀ {x} → f x B.+ᴹ f (A.-ᴹ x) B.≈ᴹ B.0ᴹ
-  fx+f[-x]≈0 {x} = begin⟨ B.≈ᴹ-setoid ⟩
+  fx+f[-x]≈0 : (x : A) → f x B.+ᴹ f (A.-ᴹ x) B.≈ᴹ B.0ᴹ
+  fx+f[-x]≈0 x = begin⟨ B.≈ᴹ-setoid ⟩
     f x B.+ᴹ f (A.-ᴹ x) ≈⟨ B.≈ᴹ-sym (+ᴹ-homo x (A.-ᴹ x)) ⟩
     f (x A.+ᴹ (A.-ᴹ x)) ≈⟨ ⟦⟧-cong (A.-ᴹ‿inverseʳ x) ⟩
     f A.0ᴹ              ≈⟨ 0ᴹ-homo ⟩
     B.0ᴹ                ∎
 
-  f[-x]≈-fx : ∀ {x} → f (A.-ᴹ x) B.≈ᴹ B.-ᴹ f x
-  f[-x]≈-fx {x} = B.uniqueʳ‿-ᴹ (f x) (f (A.-ᴹ x)) fx+f[-x]≈0
+  f[-x]≈-fx : (x : A) → f (A.-ᴹ x) B.≈ᴹ B.-ᴹ f x
+  f[-x]≈-fx x = B.uniqueʳ‿-ᴹ (f x) (f (A.-ᴹ x)) (fx+f[-x]≈0 x)
 
   -- A non-trivial linear function is injective.
   fx≈fy⇒fx-fy≈0 : ∀ {x y} → f x B.≈ᴹ f y → f x B.+ᴹ (B.-ᴹ f y) B.≈ᴹ B.0ᴹ
@@ -91,7 +87,7 @@ module _
   fx≈fy⇒f[x-y]≈0 : ∀ {x y} → f x B.≈ᴹ f y → f (x A.+ᴹ (A.-ᴹ y)) B.≈ᴹ B.0ᴹ
   fx≈fy⇒f[x-y]≈0 {x} {y} fx≈fy = begin⟨ B.≈ᴹ-setoid ⟩
     f (x A.+ᴹ (A.-ᴹ y)) ≈⟨ +ᴹ-homo x (A.-ᴹ y) ⟩
-    f x B.+ᴹ f (A.-ᴹ y) ≈⟨ B.+ᴹ-congˡ f[-x]≈-fx ⟩
+    f x B.+ᴹ f (A.-ᴹ y) ≈⟨ B.+ᴹ-congˡ (f[-x]≈-fx y) ⟩
     f x B.+ᴹ (B.-ᴹ f y) ≈⟨ fx≈fy⇒fx-fy≈0 fx≈fy ⟩
     B.0ᴹ                ∎
 
@@ -102,7 +98,7 @@ module _
       dne ¬x≉0
       where
       ¬x≉0 : ¬ (x A.≉ᴹ A.0ᴹ)
-      ¬x≉0 = λ x≉0 → zero-unique (s , y , s·x≈y , fy≉0) x≉0 fx≈0
+      ¬x≉0 = λ x≉0 → x≉0⇒f[x]≉0 (s , y , s·x≈y , fy≉0) x≉0 fx≈0
 
     inj-lm : ∀ {x y} →
              (∃₂ λ s z → ((s A.*ₗ (x A.+ᴹ A.-ᴹ y) A.≈ᴹ z) × (f z B.≉ᴹ B.0ᴹ))) →
