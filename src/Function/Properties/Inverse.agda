@@ -49,7 +49,7 @@ isEquivalence = record
   ; trans = Composition.inverse
   }
 
-open module ↔ {ℓ} = IsEquivalence (↔-isEquivalence {ℓ})
+open module ↔ {ℓ} = IsEquivalence (↔-isEquivalence {ℓ}) using ()
   renaming (refl to ↔-refl; sym to ↔-sym; trans to ↔-trans) public
 
 ------------------------------------------------------------------------
