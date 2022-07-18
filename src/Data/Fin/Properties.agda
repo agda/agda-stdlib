@@ -21,20 +21,17 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; 
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
-open import Data.Unit.Polymorphic.Properties using (⊤↔⊤*)
 open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
-import Data.Vec.Recursive as Vec
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
 open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
 open import Function.Consequences using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
-open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
@@ -681,12 +678,6 @@ combine-surjective {m} {n} i with remQuot {m} n i | P.inspect (remQuot {m} n) i
 *↔× {m} {n} = mk↔′ (remQuot {m} n) (uncurry combine)
   (uncurry remQuot-combine)
   (combine-remQuot {m} n)
-
-Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m ^ n) ↔ Fin m Vec.^ n
-Fin[m^n]↔Fin[m]^n m 0 = ↔-trans 1↔⊤ (↔-sym ⊤↔⊤*)
-Fin[m^n]↔Fin[m]^n m 1 = subst (λ x → Fin x ↔ Fin m)
-  (trans (sym (ℕₚ.+-comm m zero)) (ℕₚ.*-comm 1 m)) ↔-refl
-Fin[m^n]↔Fin[m]^n m (suc (suc n)) = ↔-trans (*↔× {m = m}) (×-cong ↔-refl (Fin[m^n]↔Fin[m]^n _ _))
 
 ------------------------------------------------------------------------
 -- fin→fun

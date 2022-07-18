@@ -2030,10 +2030,9 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ↔⇒↣ : A ↔ B → A ↣ B
   ```
 
-* Added new isomorphisms to `Data.Fin.Properties`:
+* Added a new isomorphism to `Data.Fin.Properties`:
   ```agda
   2↔Bool : Fin 2 ↔ Bool
-  Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m ^ n) ↔ Fin m Vec.^ n
   ```
 
 * Added new isomorphisms to `Data.Unit.Polymorphic.Properties`:
@@ -2049,6 +2048,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added new isomorphisms to `Data.Vec.Recursive`:
   ```agda
   lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
+  Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m ^ n) ↔ Fin m Vec.^ n
   ```
 
 * Added new functions to `Function.Properties.Inverse`:
