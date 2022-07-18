@@ -1477,6 +1477,8 @@ Other minor changes
     map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
   ```
 
+* Made `Map` public in `Data.Tree.AVL.IndexedMap`
+
 * Added new definitions in `Data.Vec.Base`:
   ```agda
   truncate : m ≤ n → Vec A n → Vec A m
