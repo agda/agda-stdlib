@@ -1521,7 +1521,10 @@ Other minor changes
   map-reverse  : map f (reverse xs) ≡ reverse (map f xs)
   map-ʳ++      : map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
 
+  lookup-concat : lookup (concat xss) (combine i j) ≡ lookup (lookup xss i) j
+
   ⊛-is->>=    : fs ⊛ xs ≡ fs >>= flip map xs
+  lookup-⊛*   : lookup (fs ⊛* xs) (combine i j) ≡ (lookup fs i $ lookup xs j)
   ++-is-foldr : xs ++ ys ≡ foldr ((Vec A) ∘ (_+ n)) _∷_ ys xs
   []≔-++-↑ʳ   : (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
   unfold-ʳ++  : xs ʳ++ ys ≡ reverse xs ++ ys
