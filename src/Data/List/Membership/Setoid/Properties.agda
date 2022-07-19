@@ -22,8 +22,9 @@ open import Data.Nat.Base using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_$_; flip; _∘_; id)
+open import Function.Inverse using (_↔_)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -162,6 +163,27 @@ module _ (S : Setoid c ℓ) where
 
   ∈-++⁻ : ∀ {v} xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Any.++⁻
+
+  ∈-++⁺∘++⁻ : ∀ {v} xs {ys} (p : v ∈ xs ++ ys) →
+              [ ∈-++⁺ˡ , ∈-++⁺ʳ xs ]′ (∈-++⁻ xs p) ≡ p
+  ∈-++⁺∘++⁻ = Any.++⁺∘++⁻
+
+  ∈-++⁻∘++⁺ : ∀ {v} xs {ys} (p : v ∈ xs ⊎ v ∈ ys) →
+              ∈-++⁻ xs ([ ∈-++⁺ˡ , ∈-++⁺ʳ xs ]′ p) ≡ p
+  ∈-++⁻∘++⁺ = Any.++⁻∘++⁺
+
+  ∈-++↔ : ∀ {v xs ys} → (v ∈ xs ⊎ v ∈ ys) ↔ v ∈ xs ++ ys
+  ∈-++↔ = Any.++↔
+
+  ∈-++-comm : ∀ {v} xs ys → v ∈ xs ++ ys → v ∈ ys ++ xs
+  ∈-++-comm = Any.++-comm
+
+  ∈-++-comm∘++-comm : ∀ {v} xs {ys} (p : v ∈ xs ++ ys) →
+                      ∈-++-comm ys xs (∈-++-comm xs ys p) ≡ p
+  ∈-++-comm∘++-comm = Any.++-comm∘++-comm
+
+  ∈-++↔++ : ∀ {v} xs ys → v ∈ xs ++ ys ↔ v ∈ ys ++ xs
+  ∈-++↔++ = Any.++↔++
 
   ∈-insert : ∀ xs {ys v w} → v ≈ w → v ∈ xs ++ [ w ] ++ ys
   ∈-insert xs = Any.++-insert xs

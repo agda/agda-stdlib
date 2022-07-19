@@ -114,6 +114,10 @@ module _ {A : Set a} where
   <∣>-identity : Identity nothing _<∣>_
   <∣>-identity = <∣>-identityˡ , <∣>-identityʳ
 
+  <∣>-idem : Idempotent _<∣>_
+  <∣>-idem (just x) = refl
+  <∣>-idem nothing = refl
+
 module _ (A : Set a) where
 
   open Structures {A = Maybe A} _≡_
