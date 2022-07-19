@@ -86,6 +86,91 @@ record CommutativeMagma c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Magma magma public using (rawMagma)
 
+record IdempotentMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    isIdempotentMagma  : IsIdempotentMagma _≈_ _∙_
+
+  open IsIdempotentMagma isIdempotentMagma public
+
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (rawMagma)
+
+record AlternativeMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    isAlternativeMagma  : IsAlternativeMagma _≈_ _∙_
+
+  open IsAlternativeMagma isAlternativeMagma public
+
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (rawMagma)
+
+record FlexibleMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    isFlexibleMagma  : IsFlexibleMagma _≈_ _∙_
+
+  open IsFlexibleMagma isFlexibleMagma public
+
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (rawMagma)
+
+record MedialMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    isMedialMagma  : IsMedialMagma _≈_ _∙_
+
+  open IsMedialMagma isMedialMagma public
+
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (rawMagma)
+
+record SemimedialMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    isSemimedialMagma  : IsSemimedialMagma _≈_ _∙_
+
+  open IsSemimedialMagma isSemimedialMagma public
+
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (rawMagma)
+
 
 record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -1163,3 +1248,57 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Quasigroup quasigroup public
     using (_≉_; ∙-rawMagma; \\-rawMagma; //-rawMagma)
+
+record LeftBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
+    ε       : Carrier
+    isLeftBolLoop : IsLeftBolLoop  _≈_ _∙_ _\\_ _//_ ε
+
+  open IsLeftBolLoop isLeftBolLoop public
+
+  loop : Loop _ _
+  loop = record { isLoop = isLoop }
+
+  open Loop loop public
+    using (quasigroup)
+
+record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
+    ε       : Carrier
+    isRightBolLoop : IsRightBolLoop  _≈_ _∙_ _\\_ _//_ ε
+
+  open IsRightBolLoop isRightBolLoop public
+
+  loop : Loop _ _
+  loop = record { isLoop = isLoop }
+
+  open Loop loop public
+    using (quasigroup)
+
+record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ)) where
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
+    ε       : Carrier
+    isMoufangLoop : IsMoufangLoop  _≈_ _∙_ _\\_ _//_ ε
+
+  open IsMoufangLoop isMoufangLoop public
+
+  leftBolLoop : LeftBolLoop _ _
+  leftBolLoop = record { isLeftBolLoop = isLeftBolLoop }
+
+  open LeftBolLoop leftBolLoop public
+    using (loop)
