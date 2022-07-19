@@ -19,6 +19,8 @@ Highlights
 * Improved the `solve` tactic in `Tactic.RingSolver` to work in a much
   wider range of situations.
 
+- Added `⌊log₂_⌋` and `⌈log₂_⌉` on Natural Numbers.
+
 Bug-fixes
 ---------
 
@@ -986,7 +988,10 @@ New modules
   Data.Vec.Relation.Unary.Linked
   Data.Vec.Relation.Unary.Linked.Properties
   ```
+* Added Logarithm base 2 on Natural Numbers:
 
+  Data.Nat.Logarithm.Core
+  Data.Nat.Logarithm
 
 Other minor changes
 -------------------
@@ -1306,6 +1311,13 @@ Other minor changes
 
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
+
+  n≤1⇒n≡0∨n≡1 : ∀ {n : ℕ} → n ≤ 1 → n ≡ 0 ⊎ n ≡ 1
+
+  2^r>0 : ∀ (r : ℕ) → 2 ^ r > 0
+
+  a≡⌊a+a/2⌋ : ∀ {a} → a ≡ ⌊ (a + a) /2⌋
+  a≡⌈a+a/2⌉ : ∀ {a} → a ≡ ⌈ (a + a) /2⌉
   ```
 
 * Added new functions in `Data.Nat`:
