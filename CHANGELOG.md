@@ -833,7 +833,8 @@ New modules
   Algebra.Module.Morphism.Construct.Composition
   Algebra.Module.Morphism.Construct.Identity
   Algebra.Module.Morphism.Definitions
-  Algebra.Module.Morphism.Structures
+  Algebra.Module.Morphism.Structures  
+  Algebra.Module.Properties
   ```
 
 * Identity morphisms and composition of morphisms between algebraic structures:
@@ -1080,11 +1081,6 @@ Other minor changes
   ```agda
   _^[_]*_ : A → ℕ → A → A
   _^ᵗ_     : A → ℕ → A
-  ```
-
-* Added new proofs to `Algebra.Module.Bundles`:
-  ```
-  -ᴹ-involutive : Involutive _≈ᴹ_ -ᴹ_
   ```
 
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
