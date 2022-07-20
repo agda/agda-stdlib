@@ -52,7 +52,8 @@ private
   open module AVL =
     Data.Tree.AVL (record { isStrictTotalOrder = isStrictTotalOrder })
     using () renaming (Tree to Map′)
-  Map = Map′ (AVL.MkValue (Value ∘ proj₁) (subst Value ∘′ cong proj₁))
+
+Map = Map′ (AVL.MkValue (Value ∘ proj₁) (subst Value ∘′ cong proj₁))
 
 -- Repackaged functions.
 

@@ -53,6 +53,52 @@ record IsCommutativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsMagma isMagma public
 
+record IsIdempotentMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma : IsMagma ∙
+    idem    : Idempotent ∙
+
+  open IsMagma isMagma public
+
+record IsAlternativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma  : IsMagma ∙
+    alter    : Alternative ∙
+
+  open IsMagma isMagma public
+
+  leftAlternative : LeftAlternative ∙
+  leftAlternative = proj₁ alter
+
+  rightAlternative : RightAlternative ∙
+  rightAlternative = proj₂ alter
+
+record IsFlexibleMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma  : IsMagma ∙
+    flex     : Flexible ∙
+
+  open IsMagma isMagma public
+
+record IsMedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma : IsMagma ∙
+    medial  : Medial ∙
+
+  open IsMagma isMagma public
+
+record IsSemimedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma    : IsMagma ∙
+    semiMedial : Semimedial ∙
+
+  open IsMagma isMagma public
+
+  leftSemimedial : LeftSemimedial ∙
+  leftSemimedial = proj₁ semiMedial
+
+  rightSemimedial : RightSemimedial ∙
+  rightSemimedial = proj₂ semiMedial
 
 record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -803,3 +849,24 @@ record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
+
+record IsLeftBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isLoop  : IsLoop ∙ \\ //  ε
+    leftBol : LeftBol ∙
+
+  open IsLoop isLoop public
+
+record IsRightBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isLoop   : IsLoop ∙ \\ //  ε
+    rightBol : RightBol ∙
+
+  open IsLoop isLoop public
+
+record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isLeftBolLoop  : IsLeftBolLoop ∙ \\ //  ε
+    rightBol       : RightBol ∙
+
+  open IsLeftBolLoop isLeftBolLoop public

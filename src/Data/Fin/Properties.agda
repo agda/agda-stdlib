@@ -23,6 +23,7 @@ open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
 open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
+open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_; flip)
@@ -68,6 +69,10 @@ private
 
 1↔⊤ : Fin 1 ↔ ⊤
 1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
+
+2↔Bool : Fin 2 ↔ Bool
+2↔Bool = mk↔′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
+  (λ { false → refl ; true → refl }) (λ { 0F → refl ; 1F → refl })
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
