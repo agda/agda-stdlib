@@ -10,7 +10,10 @@
 module Data.Unit.Polymorphic.Properties where
 
 open import Level
+open import Function.Bundles using (_↔_; mk↔)
+open import Data.Product using (_,_)
 open import Data.Sum.Base using (inj₁)
+open import Data.Unit.Base renaming (⊤ to ⊤*)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Relation.Nullary
 open import Relation.Binary
@@ -96,3 +99,6 @@ _ ≟ _ = yes refl
 ≡-decTotalOrder ℓ = record
   { isDecTotalOrder = ≡-isDecTotalOrder ℓ
   }
+
+⊤↔⊤* : ⊤ {ℓ} ↔ ⊤*
+⊤↔⊤* = mk↔ ((λ _ → refl) , (λ _ → refl))

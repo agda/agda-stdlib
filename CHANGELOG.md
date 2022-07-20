@@ -840,7 +840,8 @@ New modules
   Algebra.Module.Morphism.Construct.Composition
   Algebra.Module.Morphism.Construct.Identity
   Algebra.Module.Morphism.Definitions
-  Algebra.Module.Morphism.Structures
+  Algebra.Module.Morphism.Structures  
+  Algebra.Module.Properties
   ```
 
 * Identity morphisms and composition of morphisms between algebraic structures:
@@ -994,9 +995,16 @@ New modules
   Data.Vec.Relation.Unary.Linked.Properties
   ```
 * Added Logarithm base 2 on Natural Numbers:
-
+  ```
   Data.Nat.Logarithm.Core
   Data.Nat.Logarithm
+  ```
+
+* Proofs of some axioms of linearity:
+  ```
+  Algebra.Module.Morphism.ModuleHomomorphism
+  Algebra.Module.Properties
+  ```
 
 Other minor changes
 -------------------
@@ -1393,7 +1401,7 @@ Other minor changes
   ```agda
   ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
   ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
-  
+
   +-*-rawNearSemiring                 : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring                     : RawSemiring 0ℓ 0ℓ
   toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
@@ -2076,4 +2084,37 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   Inverse⇒Injection : Inverse S T → Injection S T
   ↔⇒↣ : A ↔ B → A ↣ B
+  ```
+
+* Added a new isomorphism to `Data.Fin.Properties`:
+  ```agda
+  2↔Bool : Fin 2 ↔ Bool
+  ```
+
+* Added new isomorphisms to `Data.Unit.Polymorphic.Properties`:
+  ```agda
+  ⊤↔⊤* : ⊤ {ℓ} ↔ ⊤*
+  ```
+
+* Added new isomorphisms to `Data.Vec.N-ary`:
+  ```agda
+  Vec↔N-ary : ∀ n → (Vec A n → B) ↔ N-ary n A B
+  ```
+
+* Added new isomorphisms to `Data.Vec.Recursive`:
+  ```agda
+  lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
+  Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m ^ n) ↔ Fin m Vec.^ n
+  ```
+
+* Added new functions to `Function.Properties.Inverse`:
+  ```agda
+  ↔-refl  : Reflexive _↔_
+  ↔-sym   : Symmetric _↔_
+  ↔-trans : Transitive _↔_
+  ```
+
+* Added new isomorphisms to `Function.Properties.Inverse`:
+  ```agda
+  ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```
