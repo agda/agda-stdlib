@@ -2067,3 +2067,15 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   Inverse⇒Injection : Inverse S T → Injection S T
   ↔⇒↣ : A ↔ B → A ↣ B
   ```
+
+* Added new inequality definition in `Data.Fin.Base`:
+  ```agda
+  data _≤′_ : Rel (Fin n) 0ℓ
+    ≤′-refl : i ≤′ i
+    í ≤′ inject₁ j → i ≤′ suc j
+  _<′_ : Rel (Fin n) 0ℓ
+  pattern <′-base          = ≤′-refl
+  pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+  _≥′_ : Rel (Fin n) 0ℓ
+  _>′_ : Rel (Fin n) 0ℓ
+  ```
