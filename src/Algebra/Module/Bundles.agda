@@ -27,12 +27,15 @@ module Algebra.Module.Bundles where
 
 open import Algebra.Bundles
 open import Algebra.Core
+open import Algebra.Definitions using (Involutive)
 open import Algebra.Module.Core
 open import Algebra.Module.Structures
 open import Algebra.Module.Definitions
+open import Algebra.Properties.Group
 open import Function.Base
 open import Level
 open import Relation.Binary
+open import Relation.Nullary    using (¬_)
 import Relation.Binary.Reasoning.Setoid as SetR
 
 private
@@ -58,6 +61,10 @@ record LeftSemimodule (semiring : Semiring r ℓr) m ℓm
     _*ₗ_ : Opₗ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
     isLeftSemimodule : IsLeftSemimodule semiring _≈ᴹ_ _+ᴹ_ 0ᴹ _*ₗ_
+
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
 
   open IsLeftSemimodule isLeftSemimodule public
 
@@ -99,7 +106,7 @@ record LeftModule (ring : Ring r ℓr) m ℓm : Set (r ⊔ ℓr ⊔ suc (m ⊔ �
 
   open LeftSemimodule leftSemimodule public
     using ( +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma
-          ; +ᴹ-rawMagma; +ᴹ-rawMonoid)
+          ; +ᴹ-rawMagma; +ᴹ-rawMonoid; _≉ᴹ_)
 
   +ᴹ-abelianGroup : AbelianGroup m ℓm
   +ᴹ-abelianGroup = record { isAbelianGroup = +ᴹ-isAbelianGroup }
@@ -126,6 +133,10 @@ record RightSemimodule (semiring : Semiring r ℓr) m ℓm
     _*ᵣ_ : Opᵣ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
     isRightSemimodule : IsRightSemimodule semiring _≈ᴹ_ _+ᴹ_ 0ᴹ _*ᵣ_
+
+  infix 4 _≉ᴹ_
+  _≉ᴹ_ : Rel Carrierᴹ _
+  a ≉ᴹ b = ¬ (a ≈ᴹ b)
 
   open IsRightSemimodule isRightSemimodule public
 
@@ -167,7 +178,7 @@ record RightModule (ring : Ring r ℓr) m ℓm : Set (r ⊔ ℓr ⊔ suc (m ⊔ 
 
   open RightSemimodule rightSemimodule public
     using ( +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma
-          ; +ᴹ-rawMagma; +ᴹ-rawMonoid)
+          ; +ᴹ-rawMagma; +ᴹ-rawMonoid; _≉ᴹ_)
 
   +ᴹ-abelianGroup : AbelianGroup m ℓm
   +ᴹ-abelianGroup = record { isAbelianGroup = +ᴹ-isAbelianGroup }
@@ -208,7 +219,7 @@ record Bisemimodule (R-semiring : Semiring r ℓr) (S-semiring : Semiring s ℓs
 
   open LeftSemimodule leftSemimodule public
     using ( +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma; +ᴹ-rawMagma
-          ; +ᴹ-rawMonoid)
+          ; +ᴹ-rawMonoid; _≉ᴹ_)
 
 record Bimodule (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) m ℓm
                 : Set (r ⊔ s ⊔ ℓr ⊔ ℓs ⊔ suc (m ⊔ ℓm)) where
@@ -240,7 +251,8 @@ record Bimodule (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) m ℓm
 
   open LeftModule leftModule public
     using ( +ᴹ-abelianGroup; +ᴹ-commutativeMonoid; +ᴹ-group; +ᴹ-monoid
-          ; +ᴹ-semigroup; +ᴹ-magma; +ᴹ-rawMagma; +ᴹ-rawMonoid; +ᴹ-rawGroup)
+          ; +ᴹ-semigroup; +ᴹ-magma; +ᴹ-rawMagma; +ᴹ-rawMonoid; +ᴹ-rawGroup
+          ; _≉ᴹ_)
 
   bisemimodule : Bisemimodule R.semiring S.semiring m ℓm
   bisemimodule = record { isBisemimodule = isBisemimodule }
@@ -282,7 +294,7 @@ record Semimodule (commutativeSemiring : CommutativeSemiring r ℓr) m ℓm
   open Bisemimodule bisemimodule public
     using ( leftSemimodule; rightSemimodule
           ; +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma
-          ; +ᴹ-rawMagma; +ᴹ-rawMonoid)
+          ; +ᴹ-rawMagma; +ᴹ-rawMonoid; _≉ᴹ_)
 
   open SetR ≈ᴹ-setoid
 
@@ -315,8 +327,8 @@ record Module (commutativeRing : CommutativeRing r ℓr) m ℓm
     _+ᴹ_ : Op₂ Carrierᴹ
     _*ₗ_ : Opₗ Carrier Carrierᴹ
     _*ᵣ_ : Opᵣ Carrier Carrierᴹ
-    0ᴹ : Carrierᴹ
-    -ᴹ_ : Op₁ Carrierᴹ
+    0ᴹ   : Carrierᴹ
+    -ᴹ_  : Op₁ Carrierᴹ
     isModule : IsModule commutativeRing _≈ᴹ_ _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
 
   open IsModule isModule public
@@ -327,7 +339,8 @@ record Module (commutativeRing : CommutativeRing r ℓr) m ℓm
   open Bimodule bimodule public
     using ( leftModule; rightModule; leftSemimodule; rightSemimodule
           ; +ᴹ-abelianGroup; +ᴹ-group; +ᴹ-commutativeMonoid; +ᴹ-monoid
-          ; +ᴹ-semigroup; +ᴹ-magma ; +ᴹ-rawMonoid; +ᴹ-rawMagma; +ᴹ-rawGroup)
+          ; +ᴹ-semigroup; +ᴹ-magma ; +ᴹ-rawMonoid; +ᴹ-rawMagma
+          ; +ᴹ-rawGroup; _≉ᴹ_)
 
   semimodule : Semimodule commutativeSemiring m ℓm
   semimodule = record { isSemimodule = isSemimodule }

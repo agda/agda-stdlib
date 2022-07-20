@@ -838,7 +838,8 @@ New modules
   Algebra.Module.Morphism.Construct.Composition
   Algebra.Module.Morphism.Construct.Identity
   Algebra.Module.Morphism.Definitions
-  Algebra.Module.Morphism.Structures
+  Algebra.Module.Morphism.Structures  
+  Algebra.Module.Properties
   ```
 
 * Identity morphisms and composition of morphisms between algebraic structures:
@@ -992,6 +993,11 @@ New modules
   Data.Vec.Relation.Unary.Linked.Properties
   ```
 
+* Proofs of some axioms of linearity:
+  ```
+  Algebra.Module.Morphism.ModuleHomomorphism
+  Algebra.Module.Properties
+  ```
 
 Other minor changes
 -------------------
