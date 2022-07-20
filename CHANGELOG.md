@@ -2075,7 +2075,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
     í ≤′ inject₁ j → i ≤′ suc j
   _<′_ : Rel (Fin n) 0ℓ
   pattern <′-base          = ≤′-refl
-  pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+  pattern <′-step {j} i<′j = ≤′-step {j} i<′j
   _≥′_ : Rel (Fin n) 0ℓ
   _>′_ : Rel (Fin n) 0ℓ
   ```

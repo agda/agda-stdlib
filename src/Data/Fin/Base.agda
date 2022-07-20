@@ -303,18 +303,18 @@ data _≤′_ : Rel (Fin n) 0ℓ  where
   ≤′-step : ∀ {i} {j : Fin n} (i≤′j : i ≤′ inject₁ j) → i ≤′ suc j
 
 _<′_ : Rel (Fin n) 0ℓ
-m <′ n = suc m ≤′ inject₁ n
+i <′ j = suc i ≤′ inject₁ j
 
 -- Smart constructors of _<′_
 
 pattern <′-base          = ≤′-refl
-pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+pattern <′-step {j} i<′j = ≤′-step {j} i<′j
 
 _≥′_ : Rel (Fin n) 0ℓ
-m ≥′ n = n ≤′ m
+i ≥′ j = j ≤′ i
 
 _>′_ : Rel (Fin n) 0ℓ
-m >′ n = n <′ m
+i >′ j = j <′ i
 
 ------------------------------------------------------------------------
 -- An ordering view.
