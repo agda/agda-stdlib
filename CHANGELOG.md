@@ -1348,12 +1348,12 @@ Other minor changes
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
 
-  n≤1⇒n≡0∨n≡1 : ∀ {n : ℕ} → n ≤ 1 → n ≡ 0 ⊎ n ≡ 1
+  n≤1⇒n≡0∨n≡1 : n ≤ 1 → n ≡ 0 ⊎ n ≡ 1
 
-  2^r>0 : ∀ (r : ℕ) → 2 ^ r > 0
+  2^n>0 : 2 ^ n > 0
 
-  a≡⌊a+a/2⌋ : ∀ {a} → a ≡ ⌊ (a + a) /2⌋
-  a≡⌈a+a/2⌉ : ∀ {a} → a ≡ ⌈ (a + a) /2⌉
+  n≡⌊n+n/2⌋ : n ≡ ⌊ n + n /2⌋
+  n≡⌈n+n/2⌉ : n ≡ ⌈ n + n /2⌉
   ```
 
 * Added new functions in `Data.Nat`:
