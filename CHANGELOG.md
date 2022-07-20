@@ -1118,11 +1118,6 @@ Other minor changes
   _^ᵗ_     : A → ℕ → A
   ```
 
-* Added new proofs to `Algebra.Module.Bundles`:
-  ```
-  -ᴹ-involutive : Involutive _≈ᴹ_ -ᴹ_
-  ```
-
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
   ```
   interchange : Interchangable _∙_ _∙_
