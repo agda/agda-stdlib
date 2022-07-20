@@ -292,6 +292,31 @@ data _≺_ : ℕ → ℕ → Set where
   _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
 
 ------------------------------------------------------------------------
+-- Alternative definition of _≤_
+
+-- The following definition of _≤_ is more suitable for well-founded
+
+infix 4 _≤′_ _<′_ _≥′_ _>′_
+
+data _≤′_ : Rel (Fin n) 0ℓ  where
+  ≤′-refl : ∀ {i : Fin n}                             → i ≤′ i
+  ≤′-step : ∀ {i} {j : Fin n} (i≤′j : i ≤′ inject₁ j) → i ≤′ suc j
+
+_<′_ : Rel (Fin n) 0ℓ
+m <′ n = suc m ≤′ inject₁ n
+
+-- Smart constructors of _<′_
+
+pattern <′-base          = ≤′-refl
+pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+
+_≥′_ : Rel (Fin n) 0ℓ
+m ≥′ n = n ≤′ m
+
+_>′_ : Rel (Fin n) 0ℓ
+m >′ n = n <′ m
+
+------------------------------------------------------------------------
 -- An ordering view.
 
 data Ordering {n : ℕ} : Fin n → Fin n → Set where
