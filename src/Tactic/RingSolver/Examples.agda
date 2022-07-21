@@ -56,3 +56,16 @@ module GenericExamples {r s} (R : CommutativeRing r s) where
   nope : ∀ x y → (x + y) * (x - y) ≡ (x * x) - (y * y)
   nope = solve-∀ RAsAlmostCRing
   -}
+
+module SolverCanOnlyUseNames {r s} (R : CommutativeRing r s) where
+  RAsAlmostCRing = fromCommutativeRing R (λ _ → nothing)
+  open AlmostCommutativeRing RAsAlmostCRing
+
+  {-
+  nope : ∀ x y → x + y ≈ y + x
+  nope = solve-∀ (fromCommutativeRing R (λ _ → nothing))
+  -}
+
+  {-
+    to make this work, one has to lift deBruijn indices in the expression defining the ring
+  -}
