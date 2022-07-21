@@ -4,7 +4,7 @@
 -- Automatic solvers for equations over integers
 ------------------------------------------------------------------------
 
--- See README.Integer for examples of how to use this solver
+-- See README.Data.Integer for examples of how to use this solver
 
 {-# OPTIONS --without-K --safe #-}
 
