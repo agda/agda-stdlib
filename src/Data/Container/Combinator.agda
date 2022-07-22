@@ -104,7 +104,7 @@ const[ X ]⟶ C = Π X (F.const C)
 -- indexed sum.)
 
 module _ {s₁ s₂ p} (C₁ : Container s₁ p) (C₂ : Container s₂ p) where
-  
+
   infixr 1 _⊎_
 
   _⊎_ : Container (s₁ ⊔ s₂) p
