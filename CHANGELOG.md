@@ -1840,6 +1840,34 @@ Other minor changes
   ∈-++↔++ : ∀ {v} xs ys → v ∈ xs ++ ys ↔ v ∈ ys ++ xs
   ```
 
+* Exposed container combinator conversion functions from `Data.Container.Combinator.Properties` separate from their correctness proofs in `Data.Container.Combinator`:
+  ```
+  to-id      : ∀ {s p x} {X : Set x} → F.id X → ⟦ id {s} {p} ⟧ X
+  from-id    : ∀ {s p x} {X : Set x} → ⟦ id {s} {p} ⟧ X → F.id X
+  to-const   : ∀ {s p y} (X : Set s) {Y : Set y} → X → ⟦ const {p = p} X ⟧ Y
+  from-const : ∀ {s p y} (X : Set s) {Y : Set y} → ⟦ const {p = p} X ⟧ Y → X
+  to-_∘_     : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) →
+               ∀ {x} {X : Set x} → ⟦ C₁ ⟧ (⟦ C₂ ⟧ X) → ⟦ C₁ ∘ C₂ ⟧ X
+  from-_∘_   : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) →
+               ∀ {x} {X : Set x} → ⟦ C₁ ∘ C₂ ⟧ X → ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)
+  to-_×_     : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) →
+               ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X P.× ⟦ C₂ ⟧ X → ⟦ C₁ × C₂ ⟧ X
+  from-_×_   : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) →
+               ∀ {x} {X : Set x} → ⟦ C₁ × C₂ ⟧ X → ⟦ C₁ ⟧ X P.× ⟦ C₂ ⟧ X
+  to-Π       : ∀ {i s p} (I : Set i) (Cᵢ : I → Container s p) →
+               ∀ {x} {X : Set x} → (∀ i → ⟦ Cᵢ i ⟧ X) → ⟦ Π I Cᵢ ⟧ X
+  from-Π     : ∀ {i s p} (I : Set i) (Cᵢ : I → Container s p) →
+               ∀ {x} {X : Set x} → ⟦ Π I Cᵢ ⟧ X → ∀ i → ⟦ Cᵢ i ⟧ X
+  to-_⊎_     : ∀ {s₁ s₂ p} (C₁ : Container s₁ p) (C₂ : Container s₂ p) →
+               ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X S.⊎ ⟦ C₂ ⟧ X → ⟦ C₁ ⊎ C₂ ⟧ X
+  from-_⊎_   : ∀ {s₁ s₂ p} (C₁ : Container s₁ p) (C₂ : Container s₂ p) →
+               ∀ {x} {X : Set x} → ⟦ C₁ ⊎ C₂ ⟧ X → ⟦ C₁ ⟧ X S.⊎ ⟦ C₂ ⟧ X
+  to-Σ       : ∀ {i s p} (I : Set i) (C : I → Container s p) →
+               ∀ {x} {X : Set x} → (∃ λ i → ⟦ C i ⟧ X) → ⟦ Σ I C ⟧ X
+  from-Σ     : ∀ {i s p} (I : Set i) (C : I → Container s p) →
+               ∀ {x} {X : Set x} → ⟦ Σ I C ⟧ X → ∃ λ i → ⟦ C i ⟧ X
+  ```
+
 NonZero/Positive/Negative changes
 ---------------------------------
 
