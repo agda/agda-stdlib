@@ -53,7 +53,7 @@ module LinearMapProperties
                 Σ[ (s , y) ∈ S × A ] ((s A.*ₗ x A.≈ᴹ y) × (f y B.≉ᴹ B.0ᴹ)) →
                 x A.≉ᴹ A.0ᴹ → f x B.≉ᴹ B.0ᴹ
   x≉0⇒fx≉0 {x} ((s , y) , (s·x≈y , fy≉0)) x≉0 =
-    PB.s*v≉0⇒v≉0 s·fx≉0
+    PB.x*y≉0⇒y≉0 s·fx≉0
     where
     y≉0     : y A.≉ᴹ A.0ᴹ
     y≉0     = fx≉0⇒x≉0 fy≉0

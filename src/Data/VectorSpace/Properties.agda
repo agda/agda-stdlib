@@ -21,14 +21,14 @@ module Data.VectorSpace.Properties
 
 open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
 open import Algebra.Module.Morphism.Bundles
-import      Algebra.Module.Morphism.Properties     as MorphismProperties
+import      Algebra.Module.Morphism.ModuleHomomorphism as ModHomo
 open import Axiom.DoubleNegationElimination
 open import Data.List
 open import Data.Product
 open import Function
 open import Relation.Binary
-import      Relation.Binary.ExtensionalEquivalence as ExtEq
-import      Relation.Binary.PropositionalEquality  as Eq
+import      Relation.Binary.ExtensionalEquivalence     as ExtEq
+import      Relation.Binary.PropositionalEquality      as Eq
 open import Relation.Binary.Reasoning.MultiSetoid
 
 open VectorSpace vs
@@ -57,7 +57,6 @@ foldr-cong : ∀ {f g : V → S → S} {d e : S} →
 foldr-cong f≈g d≈e []       = d≈e
 foldr-cong f≈g d≈e (x ∷ xs) = f≈g (foldr-cong f≈g d≈e xs) x
 
--- ToDo: Rewrite in terms of `foldr-homo`, below.
 foldr-homo-∙ : {v x₀ : V} {g : V → V} → Congruent _≈ᴹ_ _≈ᴹ_ g →
                (xs : List V) →
                v ∙ foldr (_+ᴹ_ ∘ g) x₀ xs ≈
@@ -73,7 +72,7 @@ foldr-homo-∙ {v} {x₀} {g} g-cong (x ∷ xs) = begin⟨ setoid ⟩
 module _ (lm : LinearMap mod ⟨module⟩) where
 
   open LinearMap lm
-  open MorphismProperties.LinearMapProperties lm
+  open ModHomo   mod ⟨module⟩ (LinearMap.homo lm)
 
   vred : (V → S) → List V → S
   vred g = foldr (_+_ ∘ uncurry _*_ ∘ < g , f >) 0#
@@ -123,8 +122,7 @@ module _ (lm : LinearMap mod ⟨module⟩) where
 
   -- Inner product extensional equivalence.
   x·z≈y·z⇒x≈y : ∀ {x y} → DoubleNegationElimination ℓm →
-                 Σ[ (s , z) ∈ S × V ]
-                   ((s *ₗ (x +ᴹ -ᴹ y) ≈ᴹ z) × (f z ≉ 0#)) →
+                 ∃₂ (λ s z → ((s *ₗ (x +ᴹ -ᴹ y) ≈ᴹ z) × (f z ≉ 0#))) →
                  (∀ {z} → x ∙ z ≈ y ∙ z) → x ≈ᴹ y
   x·z≈y·z⇒x≈y {x} {y} dne Σ[z]fz≉𝟘 x∙z≈y∙z = fx≈fy⇒x≈y {dne} Σ[z]fz≉𝟘 fx≈fy
     where

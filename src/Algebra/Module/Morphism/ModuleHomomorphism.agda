@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of linear maps.
+-- Properties of module homomorphisms
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -14,9 +14,10 @@ open import Algebra.Module            using (Module)
 open import Level                     using (Level)
 
 module Algebra.Module.Morphism.ModuleHomomorphism
-  {r ℓr m ℓm : Level}
-  {ring      : CommutativeRing r ℓr}
-  (modA modB  : Module ring m ℓm)
+  {r ℓr m ℓm n ℓn : Level}
+  {ring : CommutativeRing r ℓr}
+  (modA : Module ring m ℓm)
+  (modB : Module ring n ℓn)
   (open Module modA using () renaming (Carrierᴹ to A))
   (open Module modB using () renaming (Carrierᴹ to B))
   {f : A → B}
@@ -41,7 +42,7 @@ open IsModuleHomomorphism isModuleHomomorphism
 -- Some of the lemmas below only hold for continously scalable,
 -- non-trivial functions, i.e., f x = f (s y) and f ≠ const 0.
 -- This is a handy abbreviation for that rather verbose term.
-NonTrivial : A → Set (r Level.⊔ m Level.⊔ ℓm)
+NonTrivial : A → Set (r Level.⊔ m Level.⊔ ℓm Level.⊔ ℓn)
 NonTrivial x = ∃₂ λ s y → (s A.*ₗ x A.≈ᴹ y) × (f y B.≉ᴹ B.0ᴹ)
 
 x≈0⇒fx≈0 : ∀ {x} → x A.≈ᴹ A.0ᴹ → f x B.≈ᴹ B.0ᴹ
@@ -97,10 +98,10 @@ module _ {dne : DoubleNegationElimination _} where
     ¬x≉0 : ¬ (x A.≉ᴹ A.0ᴹ)
     ¬x≉0 = λ x≉0 → x≉0⇒f[x]≉0 (s , y , s·x≈y , fy≉0) x≉0 fx≈0
 
-  inj-lm : ∀ {x y} →
+  fx≈fy⇒x≈y : ∀ {x y} →
            (∃₂ λ s z → ((s A.*ₗ (x A.+ᴹ A.-ᴹ y) A.≈ᴹ z) × (f z B.≉ᴹ B.0ᴹ))) →
            f x B.≈ᴹ f y → x A.≈ᴹ y
-  inj-lm {x} {y} (s , z , s·[x-y]≈z , fz≉0) fx≈fy =
+  fx≈fy⇒x≈y {x} {y} (s , z , s·[x-y]≈z , fz≉0) fx≈fy =
     begin⟨ A.≈ᴹ-setoid ⟩
     x             ≈⟨ x≈--y ⟩
     A.-ᴹ (A.-ᴹ y) ≈⟨ PA.-ᴹ-involutive y ⟩
