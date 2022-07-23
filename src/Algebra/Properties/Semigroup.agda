@@ -11,18 +11,19 @@ open import Algebra using (Semigroup)
 module Algebra.Properties.Semigroup {a ℓ} (S : Semigroup a ℓ) where
 
 open Semigroup S
+open import Algebra.Definitions _≈_
 
 x∙yz≈xy∙z : ∀ x y z → x ∙ (y ∙ z) ≈ (x ∙ y) ∙ z
 x∙yz≈xy∙z x y z = sym (assoc x y z)
 
 -- semigroup is LeftAlternative
-leftAlternative : ∀ x y → (x ∙ x) ∙ y ≈ x ∙ (x ∙ y)
+leftAlternative : LeftAlternative _∙_
 leftAlternative x y = assoc x x y
 
 -- semigroup is RightAlternative
-rightAlternative : ∀ x y → x ∙ (y ∙ y) ≈ (x ∙ y) ∙ y
+rightAlternative : RightAlternative _∙_
 rightAlternative x y = sym (assoc x y y)
 
 -- semigroup is Flexible
-flexible : ∀ x y → (x ∙ y) ∙ x ≈ x ∙ (y ∙ x)
+flexible : Flexible _∙_
 flexible x y = assoc x y x

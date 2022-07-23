@@ -142,7 +142,7 @@ xy∙xx≈x∙yxx x y = assoc x y ((x ∙ x))
 ------------------------------------------------------------------------------
 -- commutative semigroup is left/right/middle semiMedial
 
-leftSemimedial : ∀ x y z → (x ∙ x) ∙ (y ∙ z) ≈ (x ∙ y) ∙ (x ∙ z)
+leftSemimedial : LeftSemimedial _∙_
 leftSemimedial x y z = begin
   (x ∙ x) ∙ (y ∙ z) ≈⟨ assoc x x (y ∙ z) ⟩
   x ∙ (x ∙ (y ∙ z)) ≈⟨ ∙-congˡ (sym (assoc x y z)) ⟩
@@ -151,7 +151,7 @@ leftSemimedial x y z = begin
   x ∙ (y ∙ (x ∙ z)) ≈⟨ sym (assoc x y ((x ∙ z))) ⟩
   (x ∙ y) ∙ (x ∙ z) ∎
 
-rightSemimedial : ∀ x y z → (y ∙ z) ∙ (x ∙ x) ≈ (y ∙ x) ∙ (z ∙ x)
+rightSemimedial : RightSemimedial _∙_
 rightSemimedial x y z = begin
   (y ∙ z) ∙ (x ∙ x) ≈⟨ assoc y z (x ∙ x) ⟩
   y ∙ (z ∙ (x ∙ x)) ≈⟨ ∙-congˡ (sym (assoc z x x)) ⟩

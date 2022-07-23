@@ -1109,15 +1109,15 @@ Other minor changes
   ```
   interchange : Interchangable _∙_ _∙_
   xy∙xx≈x∙yxx : ∀ x y → (x ∙ y) ∙ (x ∙ x) ≈ x ∙ (y ∙ (x ∙ x))
-  leftSemimedial : ∀ x y z → (x ∙ x) ∙ (y ∙ z) ≈ (x ∙ y) ∙ (x ∙ z)
-  rightSemimedial : ∀ x y z → (y ∙ z) ∙ (x ∙ x) ≈ (y ∙ x) ∙ (z ∙ x)
+  leftSemimedial : LeftSemimedial _∙_
+  rightSemimedial : RightSemimedial _∙_
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
   ```
 * Added new proofs to `Algebra.Properties.Semigroup`:
   ```
-  leftAlternative : ∀ x y → (x ∙ x) ∙ y ≈ x ∙ (x ∙ y)
-  rightAlternative : ∀ x y → x ∙ (y ∙ y) ≈ (x ∙ y) ∙ y
-  flexible : ∀ x y → (x ∙ y) ∙ x ≈ x ∙ (y ∙ x)
+  leftAlternative : LeftAlternative _∙_
+  rightAlternative : RightAlternative _∙_
+  flexible : Flexible _∙_
   ```
 
 * Added new definitions to `Algebra.Structures`:
