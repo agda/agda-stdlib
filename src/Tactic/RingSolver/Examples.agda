@@ -24,12 +24,6 @@ module IntegerExamples where
   ℤAsCRing : CommutativeRing _ _
   ℤAsCRing = record
                { Carrier = ℤ
-               ; _≈_ = _
-               ; _+_ = _
-               ; _*_ = _
-               ; -_ = _
-               ; 0# = _
-               ; 1# = _
                ; isCommutativeRing = +-*-isCommutativeRing
                }
 
