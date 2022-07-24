@@ -58,7 +58,7 @@ module _ where
 -- Apply Weakening to substitute under lambdas
 
 prependLams : List (String × Visibility) → Term → Term
-prependLams xs t = foldr (λ {(s , v) t → lam v (abs s t)}) t (reverse xs)
+prependLams xs t = foldr (λ (s , v) t → lam v (abs s t)) t (reverse xs)
 
 prependHLams : List String → Term → Term
 prependHLams vs = prependLams (map (_, hidden) vs)
