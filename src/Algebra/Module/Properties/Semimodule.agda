@@ -21,20 +21,20 @@ open Semimodule          semimod
 open import Relation.Nullary.Negation using (contraposition)
 open import Relation.Binary.Reasoning.Setoid ≈ᴹ-setoid
 
-s≈0⇒s*v≈0 : ∀ {s} {v} → s ≈ 0# → s *ₗ v ≈ᴹ 0ᴹ
-s≈0⇒s*v≈0 {s} {v} s≈0 = begin
-  s  *ₗ v ≈⟨ *ₗ-congʳ s≈0 ⟩
-  0# *ₗ v ≈⟨ *ₗ-zeroˡ v ⟩
+x≈0⇒x*y≈0 : ∀ {x y} → x ≈ 0# → x *ₗ y ≈ᴹ 0ᴹ
+x≈0⇒x*y≈0 {x} {y} x≈0 = begin
+  x  *ₗ y ≈⟨ *ₗ-congʳ x≈0 ⟩
+  0# *ₗ y ≈⟨ *ₗ-zeroˡ y ⟩
   0ᴹ      ∎
 
-v≈0⇒s*v≈0 : ∀ {s} {v} → v ≈ᴹ 0ᴹ → s *ₗ v ≈ᴹ 0ᴹ
-v≈0⇒s*v≈0 {s} {v} v≈0 = begin
-  s *ₗ v  ≈⟨ *ₗ-congˡ v≈0 ⟩
-  s *ₗ 0ᴹ ≈⟨ *ₗ-zeroʳ s ⟩
+y≈0⇒x*y≈0 : ∀ {x y} → y ≈ᴹ 0ᴹ → x *ₗ y ≈ᴹ 0ᴹ
+y≈0⇒x*y≈0 {x} {y} y≈0 = begin
+  x *ₗ y  ≈⟨ *ₗ-congˡ y≈0 ⟩
+  x *ₗ 0ᴹ ≈⟨ *ₗ-zeroʳ x ⟩
   0ᴹ      ∎
 
-s*v≉0⇒s≉0 : ∀ {s} {v} → s *ₗ v ≉ᴹ 0ᴹ → s ≉ 0#
-s*v≉0⇒s≉0 = contraposition s≈0⇒s*v≈0
+x*y≉0⇒x≉0 : ∀ {x y} → x *ₗ y ≉ᴹ 0ᴹ → x ≉ 0#
+x*y≉0⇒x≉0 = contraposition x≈0⇒x*y≈0
 
-s*v≉0⇒v≉0 : ∀ {s} {v} → s *ₗ v ≉ᴹ 0ᴹ → v ≉ᴹ 0ᴹ
-s*v≉0⇒v≉0 = contraposition v≈0⇒s*v≈0
+x*y≉0⇒y≉0 : ∀ {x y} → x *ₗ y ≉ᴹ 0ᴹ → y ≉ᴹ 0ᴹ
+x*y≉0⇒y≉0 = contraposition y≈0⇒x*y≈0

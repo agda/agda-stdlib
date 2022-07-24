@@ -8,6 +8,8 @@
 
 module Data.Vec.N-ary where
 
+open import Axiom.Extensionality.Propositional using (Extensionality)
+open import Function.Bundles using (_↔_; Inverse; mk↔′)
 open import Data.Nat.Base hiding (_⊔_)
 open import Data.Product as Prod
 open import Data.Vec.Base
@@ -172,3 +174,14 @@ Eqʰ-to-Eq : ∀ n (_∼_ : REL B C ℓ) {f : N-ary n A B} {g : N-ary n A C} →
             Eqʰ n _∼_ f g → Eq n _∼_ f g
 Eqʰ-to-Eq zero    _∼_ eq = eq
 Eqʰ-to-Eq (suc n) _∼_ eq = λ _ → Eqʰ-to-Eq n _∼_ eq
+
+module _ (ext : ∀ {a b} → Extensionality a b) where
+
+  Vec↔N-ary : ∀ n → (Vec A n → B) ↔ N-ary n A B
+  Vec↔N-ary zero = mk↔′ (λ vxs → vxs []) (flip constᵣ) (λ _ → refl)
+    (λ vxs → ext λ where [] → refl)
+  Vec↔N-ary (suc n) = let open Inverse (Vec↔N-ary n) in
+    mk↔′ (λ vxs x → to λ xs → vxs (x ∷ xs))
+    (λ any xs → from (any (head xs)) (tail xs))
+    (λ any → ext λ x → inverseˡ _)
+    (λ vxs → ext λ where (x ∷ xs) → cong (λ f → f xs) (inverseʳ (λ ys → vxs (x ∷ ys))))
