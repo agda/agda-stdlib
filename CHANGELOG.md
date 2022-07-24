@@ -1842,30 +1842,20 @@ Other minor changes
 
 * Exposed container combinator conversion functions from `Data.Container.Combinator.Properties` separate from their correctness proofs in `Data.Container.Combinator`:
   ```
-  to-id      : ∀ {s p x} {X : Set x} → F.id X → ⟦ id {s} {p} ⟧ X
-  from-id    : ∀ {s p x} {X : Set x} → ⟦ id {s} {p} ⟧ X → F.id X
-  to-const   : ∀ {s p y} (X : Set s) {Y : Set y} → X → ⟦ const {p = p} X ⟧ Y
-  from-const : ∀ {s p y} (X : Set s) {Y : Set y} → ⟦ const {p = p} X ⟧ Y → X
-  to-_∘_     : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) →
-               ∀ {x} {X : Set x} → ⟦ C₁ ⟧ (⟦ C₂ ⟧ X) → ⟦ C₁ ∘ C₂ ⟧ X
-  from-_∘_   : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) →
-               ∀ {x} {X : Set x} → ⟦ C₁ ∘ C₂ ⟧ X → ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)
-  to-_×_     : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) →
-               ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X P.× ⟦ C₂ ⟧ X → ⟦ C₁ × C₂ ⟧ X
-  from-_×_   : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) →
-               ∀ {x} {X : Set x} → ⟦ C₁ × C₂ ⟧ X → ⟦ C₁ ⟧ X P.× ⟦ C₂ ⟧ X
-  to-Π       : ∀ {i s p} (I : Set i) (Cᵢ : I → Container s p) →
-               ∀ {x} {X : Set x} → (∀ i → ⟦ Cᵢ i ⟧ X) → ⟦ Π I Cᵢ ⟧ X
-  from-Π     : ∀ {i s p} (I : Set i) (Cᵢ : I → Container s p) →
-               ∀ {x} {X : Set x} → ⟦ Π I Cᵢ ⟧ X → ∀ i → ⟦ Cᵢ i ⟧ X
-  to-_⊎_     : ∀ {s₁ s₂ p} (C₁ : Container s₁ p) (C₂ : Container s₂ p) →
-               ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X S.⊎ ⟦ C₂ ⟧ X → ⟦ C₁ ⊎ C₂ ⟧ X
-  from-_⊎_   : ∀ {s₁ s₂ p} (C₁ : Container s₁ p) (C₂ : Container s₂ p) →
-               ∀ {x} {X : Set x} → ⟦ C₁ ⊎ C₂ ⟧ X → ⟦ C₁ ⟧ X S.⊎ ⟦ C₂ ⟧ X
-  to-Σ       : ∀ {i s p} (I : Set i) (C : I → Container s p) →
-               ∀ {x} {X : Set x} → (∃ λ i → ⟦ C i ⟧ X) → ⟦ Σ I C ⟧ X
-  from-Σ     : ∀ {i s p} (I : Set i) (C : I → Container s p) →
-               ∀ {x} {X : Set x} → ⟦ Σ I C ⟧ X → ∃ λ i → ⟦ C i ⟧ X
+  to-id      : F.id A → ⟦ id ⟧ A
+  from-id    : ⟦ id ⟧ A → F.id A
+  to-const   : (A : Set s) → A → ⟦ const A ⟧ B
+  from-const : (A : Set s) → ⟦ const A ⟧ B → A
+  to-_∘_     : (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) → ⟦ C₁ ⟧ (⟦ C₂ ⟧ A) → ⟦ C₁ ∘ C₂ ⟧ A
+  from-_∘_   : (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) → ⟦ C₁ ∘ C₂ ⟧ A → ⟦ C₁ ⟧ (⟦ C₂ ⟧ A)
+  to-_×_     : (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) → ⟦ C₁ ⟧ A P.× ⟦ C₂ ⟧ A → ⟦ C₁ × C₂ ⟧ A
+  from-_×_   : (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) → ⟦ C₁ × C₂ ⟧ A → ⟦ C₁ ⟧ A P.× ⟦ C₂ ⟧ A
+  to-Π       : (I : Set i) (Cᵢ : I → Container s p) → (∀ i → ⟦ Cᵢ i ⟧ A) → ⟦ Π I Cᵢ ⟧ A
+  from-Π     : (I : Set i) (Cᵢ : I → Container s p) → ⟦ Π I Cᵢ ⟧ A → ∀ i → ⟦ Cᵢ i ⟧ A
+  to-_⊎_     : (C₁ : Container s₁ p) (C₂ : Container s₂ p) → ⟦ C₁ ⟧ A S.⊎ ⟦ C₂ ⟧ A → ⟦ C₁ ⊎ C₂ ⟧ A
+  from-_⊎_   : (C₁ : Container s₁ p) (C₂ : Container s₂ p) → ⟦ C₁ ⊎ C₂ ⟧ A → ⟦ C₁ ⟧ A S.⊎ ⟦ C₂ ⟧ A
+  to-Σ       : (I : Set i) (C : I → Container s p) → (∃ λ i → ⟦ C i ⟧ A) → ⟦ Σ I C ⟧ A
+  from-Σ     : (I : Set i) (C : I → Container s p) → ⟦ Σ I C ⟧ A → ∃ λ i → ⟦ C i ⟧ A
   ```
 
 NonZero/Positive/Negative changes
