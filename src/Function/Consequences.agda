@@ -9,7 +9,6 @@
 module Function.Consequences where
 
 open import Data.Product
-open import Function using (_∘_; flip)
 open import Function.Definitions
 open import Level
 open import Relation.Binary
@@ -55,24 +54,3 @@ module _
   contraInjective : Injective _≈₁_ _≈₂_ f →
                     ∀ {x y} → ¬ (x ≈₁ y) → ¬ (f x ≈₂ f y)
   contraInjective inj p = contraposition inj p
-
-∘-cong : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
-          Congruent ≈₁ ≈₁ f → Congruent ≈₁ ≈₂ g → Congruent ≈₁ ≈₂ (g ∘ f)
-∘-cong f-cong g-cong = g-cong ∘ f-cong
--- ∘-cong = flip _∘_  -- Yields implicit/explicit function type error.
-
-∘-cong₂ : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
-          Congruent ≈₁ ≈₁ f → Congruent₂ ≈₁ ≈₁ ≈₂ g → Congruent₂ ≈₁ ≈₁ ≈₂ (g ∘ f)
-∘-cong₂ f-cong g-cong₂ = g-cong₂ ∘ f-cong
-
-module _ (To : Setoid b ℓ₂) {≈₁ : Rel A ℓ₁} where
-
-  open Setoid To using () renaming (Carrier to B; _≈_ to ≈₂)
-
-  flip-cong₂ : ∀ {f} → Congruent₂ ≈₁ ≈₁ ≈₂ f → Congruent₂ ≈₁ ≈₁ ≈₂ (flip f)
-  flip-cong₂ {f} f-cong₂ {x} {y} {w} {z} x≈y w≈z = begin
-    flip f x w ≡⟨⟩
-    f w x      ≈⟨ f-cong₂ w≈z x≈y ⟩
-    f z y      ≡⟨⟩
-    flip f y z ∎
-    where open SetoidReasoning To

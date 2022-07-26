@@ -87,8 +87,8 @@ record VectorSpace
   v : V⊸S → V
   v lm = vgen (LinearMap.f lm) basisSet
 
-  open Setoid (≈ᴸ-setoid mod ⟨module⟩) using () renaming
+  open Setoid (≈ᴸ-setoid mod ⟨module⟩) public using () renaming
     ( _≈_ to _≈ᴸ_
     ; _≉_ to _≉ᴸ_
-    ) public
+    )
 
