@@ -1,15 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Abstract vector spaces.
---
--- A "vector space" is a Module with a commutative, homomorphic inner
--- product and a complete set of building blocks for mapping the space.
+-- Some bundles of linear algebraic structures.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.VectorSpace.Core where
+module Algebra.Linear.Bundles where
 
 import Algebra.Module.Morphism.Structures as MorphismStructures
 
@@ -32,6 +29,10 @@ private
     B : Set b
     C : Set c
 
+-- Abstract vector spaces.
+--
+-- A "vector space" is a Module with a commutative, homomorphic inner
+-- product and a complete set of building blocks for mapping the space.
 record VectorSpace
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}

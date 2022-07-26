@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of vector spaces.
+-- Properties of linear algebraic structures.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -9,10 +9,10 @@
 open import Algebra
   using (CommutativeRing; Congruent₁; Congruent₂; Op₁; Op₂)
 open import Algebra.Module        using (Module)
-open import Data.VectorSpace.Core
+open import Algebra.Linear.Bundles
 open import Level                 using (Level; _⊔_; suc)
 
-module Data.VectorSpace.Properties
+module Algebra.Linear.Properties
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
   {mod       : Module ring m ℓm}

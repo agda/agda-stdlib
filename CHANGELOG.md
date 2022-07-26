@@ -1015,12 +1015,12 @@ New modules
 
 * Support for abstract vector spaces:
   ```
-  Data.VectorSpace.Core
+  Algebra.Linear.Bundles
   ```
 
 * Properties of abstract vector spaces:
   ```
-  Data.VectorSpace.Properties
+  Algebra.Linear.Properties
   ```
 
 * Extensional equivalence
@@ -1860,21 +1860,6 @@ Other minor changes
   ∈-++-comm : ∀ {v} xs ys → v ∈ xs ++ ys → v ∈ ys ++ xs
   ∈-++-comm∘++-comm : ∀ {v} xs {ys} (p : v ∈ xs ++ ys) → ∈-++-comm ys xs (∈-++-comm xs ys p) ≡ p
   ∈-++↔++ : ∀ {v} xs ys → v ∈ xs ++ ys ↔ v ∈ ys ++ xs
-
-* Added new proofs in `Function.Consequences`:
-  ```
-  ∘-cong : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
-           Congruent ≈₁ ≈₁ f → Congruent ≈₁ ≈₂ g → Congruent ≈₁ ≈₂ (g ∘ f)
-  ∘-cong₂ : ∀ {f} {g} {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} →
-            Congruent ≈₁ ≈₁ f → Congruent₂ ≈₁ ≈₁ ≈₂ g → Congruent₂ ≈₁ ≈₁ ≈₂ (g ∘ f)
-  flip-cong₂ : ∀ {f} → Congruent₂ ≈₁ ≈₁ ≈₂ f → Congruent₂ ≈₁ ≈₁ ≈₂ (flip f)
-  ```
-
-* Added new definitions in `Function.Definitions`:
-  ```
-  Congruent₂′ : (A → B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
-  Congruent₂′ f = ∀ {x y w z} → x ≈₁ y → w ≈₂ z → f x w ≈₁ f y z
-  ```
 
 NonZero/Positive/Negative changes
 ---------------------------------

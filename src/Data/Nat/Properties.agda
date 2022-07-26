@@ -1068,7 +1068,7 @@ m^n≢0 m n = ≢-nonZero (≢-nonZero⁻¹ m ∘′ m^n≡0⇒m≡0 m n)
 
 2^n>0 : ∀ (n : ℕ) → 2 ^ n > 0
 2^n>0 zero = s≤s z≤n
-2^n>0 (suc n) = ≤-trans (2^n>0 n) (m≤m+n (2 ^ n) ((2 ^ n) + zero))
+2^n>0 (suc n) = ≤-trans (2^n>0 n) (m≤m+n (2 ^ n) ((2 ^ n) + zero)) 
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_
