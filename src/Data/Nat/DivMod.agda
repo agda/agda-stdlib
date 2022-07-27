@@ -339,7 +339,7 @@ m/n/o≡m/[n*o] m n o = begin-equality
   m / n / o                             ≡⟨ /-congˡ {o = o} (/-congˡ (m≡m%n+[m/n]*n m n*o)) ⟩
   (m % n*o + m / n*o * n*o) / n / o     ≡⟨ /-congˡ (+-distrib-/-∣ʳ (m % n*o) lem₁) ⟩
   (m % n*o / n + m / n*o * n*o / n) / o ≡⟨ cong (λ # → (m % n*o / n + #) / o) lem₂ ⟩
-  (m % n*o / n + m / n*o * o) / o       ≡⟨ +-distrib-/-∣ʳ (m % n*o / n) {!!} ⟩ -- (n∣m*n (m / n*o)) ⟩
+  (m % n*o / n + m / n*o * o) / o       ≡⟨ +-distrib-/-∣ʳ (m % n*o / n) (divides (m / n*o) refl) ⟩
   m % n*o / n / o + m / n*o * o / o     ≡⟨ cong (m % n*o / n / o +_) (m*n/n≡m (m / n*o) o) ⟩
   m % n*o / n / o + m / n*o             ≡⟨ cong (_+ m / n*o) (m<n⇒m/n≡0 (m<n*o⇒m/o<n {n = o} lem₃)) ⟩
   m / n*o                               ∎
