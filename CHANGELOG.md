@@ -1015,11 +1015,8 @@ New modules
 
 * Support for abstract vector spaces:
   ```
+  Algebra.Linear
   Algebra.Linear.Bundles
-  ```
-
-* Properties of abstract vector spaces:
-  ```
   Algebra.Linear.Properties
   ```
 
