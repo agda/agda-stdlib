@@ -1491,6 +1491,10 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 ∸-monoʳ-≤ : ∀ {m n} o → m ≤ n → o ∸ m ≥ o ∸ n
 ∸-monoʳ-≤ _ m≤n = ∸-mono ≤-refl m≤n
 
+∸-monoˡ-< : ∀ {m n o} → m < o → n ≤ m → m ∸ n < o ∸ n
+∸-monoˡ-< {m}     {zero}  {o}     m<o       n≤m       = m<o
+∸-monoˡ-< {suc m} {suc n} {suc o} (s≤s m<o) (s≤s n≤m) = ∸-monoˡ-< m<o n≤m
+
 ∸-monoʳ-< : ∀ {m n o} → o < n → n ≤ m → m ∸ n < m ∸ o
 ∸-monoʳ-< {n = suc n} {zero}  (s≤s o<n) (s≤s n<m) = s≤s (m∸n≤m _ n)
 ∸-monoʳ-< {n = suc n} {suc o} (s≤s o<n) (s≤s n<m) = ∸-monoʳ-< o<n n<m
@@ -2262,4 +2266,3 @@ suc[pred[n]]≡n {suc n} _   = refl
 {-# WARNING_ON_USAGE suc[pred[n]]≡n
 "Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments"
 #-}
-
