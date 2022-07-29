@@ -416,6 +416,36 @@ m%n*o≡m*o%[n*o] m n o ⦃ _ ⦄ ⦃ n*o≢0 ⦄ = begin-equality
     o * m / (n * o) ≡⟨ /-congˡ (*-comm o m) ⟩
     m * o / (n * o) ∎
 
+[m*n+o]%[p*n]≡[m*n]%[p*n]+o : ∀ m {n o} p → ⦃ _ : NonZero (p * n) ⦄ → o < n →
+                              (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
+[m*n+o]%[p*n]≡[m*n]%[p*n]+o m {n} {o} (suc p) ⦃ p*n≢0 ⦄ o<n = begin-equality
+  (mn + o) % pn           ≡⟨ %-distribˡ-+ mn o pn ⟩
+  (mn % pn + o % pn) % pn ≡⟨ cong (λ # → (mn % pn + #) % pn) (m<n⇒m%n≡m lem₁) ⟩
+  (mn % pn + o) % pn      ≡⟨ m<n⇒m%n≡m lem₃ ⟩
+  mn % pn + o             ∎
+  where
+  mn = m * n
+  pn = suc p * n
+
+  lem₁ : o < pn
+  lem₁ = begin-strict
+    o           ≡˘⟨ +-identityʳ o ⟩
+    o + 0       ≤⟨ *-monoˡ-≤ o {y = suc p} (s≤s z≤n) ⟩
+    (suc p) * o <⟨ *-monoʳ-< (suc p) o<n ⟩
+    pn          ∎
+
+  lem₂ : mn % pn ≤ p * n
+  lem₂ = begin
+    mn % pn         ≡˘⟨ m%n*o≡m*o%[n*o] m (suc p) n ⟩
+    (m % suc p) * n ≤⟨ *-monoˡ-≤ n (m<1+n⇒m≤n (m%n<n m (suc p))) ⟩
+    p * n           ∎
+
+  lem₃ : mn % pn + o < pn
+  lem₃ = begin-strict
+    mn % pn + o <⟨ +-mono-≤-< lem₂ o<n ⟩
+    p * n + n   ≡⟨ +-comm (p * n) n ⟩
+    pn          ∎
+
 ------------------------------------------------------------------------
 --  A specification of integer division.
 
