@@ -72,3 +72,13 @@ x0≈0 x = zeroʳ x
   - 1# * x  ≈⟨ sym (-‿distribˡ-* 1# x ) ⟩
   - (1# * x) ≈⟨ -‿cong ( *-identityˡ x ) ⟩
   - x ∎
+
+-‿distrib-+ : ∀ x y → - (x + y) ≈ - x + (- y)
+-‿distrib-+ x y = begin
+  - (x + y) ≈⟨ sym (*-identityˡ _) ⟩
+  1# * - (x + y) ≈⟨ sym ( -‿distribʳ-* _ _) ⟩
+  - (1# * (x + y) ) ≈⟨ -‿distribˡ-* _ _ ⟩
+  (- 1#) * (x + y) ≈⟨ (distribˡ _ _ _) ⟩
+  (- 1# * x) + (- 1# * y) ≈⟨ +-cong (-1*x≈x _) (-1*x≈x _) ⟩
+  - x + (- y) ∎
+
