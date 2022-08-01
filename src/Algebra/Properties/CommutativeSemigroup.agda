@@ -132,3 +132,39 @@ xy∙z≈yz∙x x y z =  trans (xy∙z≈y∙zx x y z) (sym (assoc y z x))
 
 xy∙z≈zx∙y :  ∀ x y z → (x ∙ y) ∙ z ≈ (z ∙ x) ∙ y
 xy∙z≈zx∙y x y z =  trans (xy∙z≈z∙xy x y z) (sym (assoc z x y))
+
+------------------------------------------------------------------------------
+-- commutative semigroup has Jordan identity
+
+xy∙xx≈x∙yxx : ∀ x y → (x ∙ y) ∙ (x ∙ x) ≈ x ∙ (y ∙ (x ∙ x))
+xy∙xx≈x∙yxx x y = assoc x y ((x ∙ x))
+
+------------------------------------------------------------------------------
+-- commutative semigroup is left/right/middle semiMedial
+
+leftSemimedial : LeftSemimedial _∙_
+leftSemimedial x y z = begin
+  (x ∙ x) ∙ (y ∙ z) ≈⟨ assoc x x (y ∙ z) ⟩
+  x ∙ (x ∙ (y ∙ z)) ≈⟨ ∙-congˡ (sym (assoc x y z)) ⟩
+  x ∙ ((x ∙ y) ∙ z) ≈⟨ ∙-congˡ (∙-congʳ (comm x y)) ⟩
+  x ∙ ((y ∙ x) ∙ z) ≈⟨ ∙-congˡ (assoc y x z) ⟩
+  x ∙ (y ∙ (x ∙ z)) ≈⟨ sym (assoc x y ((x ∙ z))) ⟩
+  (x ∙ y) ∙ (x ∙ z) ∎
+
+rightSemimedial : RightSemimedial _∙_
+rightSemimedial x y z = begin
+  (y ∙ z) ∙ (x ∙ x) ≈⟨ assoc y z (x ∙ x) ⟩
+  y ∙ (z ∙ (x ∙ x)) ≈⟨ ∙-congˡ (sym (assoc z x x)) ⟩
+  y ∙ ((z ∙ x) ∙ x) ≈⟨ ∙-congˡ (∙-congʳ (comm z x)) ⟩
+  y ∙ ((x ∙ z) ∙ x) ≈⟨ ∙-congˡ (assoc x z x) ⟩
+  y ∙ (x ∙ (z ∙ x)) ≈⟨ sym (assoc y x ((z ∙ x))) ⟩
+  (y ∙ x) ∙ (z ∙ x) ∎
+
+middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
+middleSemimedial x y z = begin
+  (x ∙ y) ∙ (z ∙ x) ≈⟨ assoc x y ((z ∙ x)) ⟩
+  x ∙ (y ∙ (z ∙ x)) ≈⟨ ∙-congˡ (sym (assoc y z x)) ⟩
+  x ∙ ((y ∙ z) ∙ x) ≈⟨ ∙-congˡ (∙-congʳ (comm y z)) ⟩
+  x ∙ ((z ∙ y) ∙ x) ≈⟨ ∙-congˡ ( assoc z y x) ⟩
+  x ∙ (z ∙ (y ∙ x)) ≈⟨ sym (assoc x z ((y ∙ x))) ⟩
+  (x ∙ z) ∙ (y ∙ x) ∎
