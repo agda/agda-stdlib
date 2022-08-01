@@ -190,19 +190,19 @@ record IdempotentProsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
 
 record ProKleeneAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
-  infix  8 _*
-  infixl 7 _∙_
+  infix  8 _⋆
+  infixl 7 _*_
   infixl 6 _+_
   field
     Carrier       : Set c
     _≈_           : Rel Carrier ℓ₁
     _≤_           : Rel Carrier ℓ₂
     _+_           : Op₂ Carrier
-    _∙_           : Op₂ Carrier
-    _*            : Op₁ Carrier
+    _*_           : Op₂ Carrier
+    _⋆            : Op₁ Carrier
     0#            : Carrier
     1#            : Carrier
-    isProKleeneAlgebra : IsProKleeneAlgebra _≈_ _≤_ _+_ _∙_ _* 0# 1#
+    isProKleeneAlgebra : IsProKleeneAlgebra _≈_ _≤_ _+_ _*_ _⋆ 0# 1#
 
   open IsProKleeneAlgebra isProKleeneAlgebra public
 
@@ -416,23 +416,23 @@ record IdempotentPosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)
 
 record PoKleeneAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
-  infix  8 _*
-  infixl 7 _∙_
+  infix  8 _⋆
+  infixl 7 _*_
   infixl 6 _+_
   field
     Carrier       : Set c
     _≈_           : Rel Carrier ℓ₁
     _≤_           : Rel Carrier ℓ₂
     _+_           : Op₂ Carrier
-    _∙_           : Op₂ Carrier
-    _*            : Op₁ Carrier
+    _*_           : Op₂ Carrier
+    _⋆            : Op₁ Carrier
     0#            : Carrier
     1#            : Carrier
-    isPoKleeneAlgebra : IsPoKleeneAlgebra _≈_ _≤_ _+_ _∙_ _* 0# 1#
+    isPoKleeneAlgebra : IsPoKleeneAlgebra _≈_ _≤_ _+_ _*_ _⋆ 0# 1#
 
   open IsPoKleeneAlgebra isPoKleeneAlgebra public
 
   proKleeneAlgebra : ProKleeneAlgebra c ℓ₁ ℓ₂
   proKleeneAlgebra = record { isProKleeneAlgebra = isProKleeneAlgebra }
 
-  open ProKleeneAlgebra proKleeneAlgebra public using (starExpansion; fixedPoint)
+  open ProKleeneAlgebra proKleeneAlgebra public using (starExpansive; starDestructive)

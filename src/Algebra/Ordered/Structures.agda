@@ -182,22 +182,22 @@ record IsIdempotentProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ �
 
 -- Preordered KleeneAlgebra (proKleeneAlgebra)
 
-record IsProKleeneAlgebra (+ ∙ : Op₂ A) ( * : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsProKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isIdempotentProsemiring : IsIdempotentProsemiring + ∙ 0# 1#
-    starExpansion           : StarExpansion 1# + ∙ *
-    fixedPoint              : FixedPoint + ∙ *
+    isIdempotentProsemiring : IsIdempotentProsemiring + * 0# 1#
+    starExpansive           : StarExpansive 1# + * ⋆
+    starDestructive         : StarDestructive + * ⋆
 
   open IsIdempotentProsemiring isIdempotentProsemiring public
 
-  isKleeneAlgebra : IsKleeneAlgebra + ∙ * 0# 1#
+  isKleeneAlgebra : IsKleeneAlgebra + * ⋆ 0# 1#
   isKleeneAlgebra = record
     { isIdempotentSemiring = isIdempotentSemiring
-    ; starExpansion        = starExpansion
-    ; fixedPoint           = fixedPoint
+    ; starExpansive        = starExpansive
+    ; starDestructive      = starDestructive
     }
 
-  open IsKleeneAlgebra isKleeneAlgebra public using (starExpansion; fixedPoint)
+  open IsKleeneAlgebra isKleeneAlgebra public using (starExpansive; starDestructive)
 
 ------------------------------------------------------------------------
 -- Partially ordered structures
@@ -372,21 +372,21 @@ record IsIdempotentPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ �
 
 -- Partially ordered KleeneAlgebra (PoKleeneAlgebra)
 
-record IsPoKleeneAlgebra (+ ∙ : Op₂ A) ( * : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsPoKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isIdempotentPosemiring  : IsIdempotentPosemiring + ∙ 0# 1#
-    starExpansion           : StarExpansion 1# + ∙ *
-    fixedPoint              : FixedPoint + ∙ *
+    isIdempotentPosemiring  : IsIdempotentPosemiring + * 0# 1#
+    starExpansive           : StarExpansive 1# + * ⋆
+    starDestructive         : StarDestructive + * ⋆
 
   open IsIdempotentPosemiring isIdempotentPosemiring public
 
-  isProKleeneAlgebra : IsProKleeneAlgebra + ∙ * 0# 1#
+  isProKleeneAlgebra : IsProKleeneAlgebra + * ⋆ 0# 1#
   isProKleeneAlgebra = record
     { isIdempotentProsemiring = isIdempotentProsemiring
-    ; starExpansion           = starExpansion
-    ; fixedPoint              = fixedPoint
+    ; starExpansive           = starExpansive
+    ; starDestructive         = starDestructive
     }
 
   open IsProKleeneAlgebra isProKleeneAlgebra public
-    using (isKleeneAlgebra; starExpansion; fixedPoint)
+    using (isKleeneAlgebra; starExpansive; starDestructive)
 
