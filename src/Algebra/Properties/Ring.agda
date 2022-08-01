@@ -60,3 +60,15 @@ open AbelianGroupProperties +-abelianGroup public
   - (x * y) + x * 0#             ≈⟨ +-congˡ $ zeroʳ _ ⟩
   - (x * y) + 0#                 ≈⟨ +-identityʳ _ ⟩
   - (x * y)                      ∎
+
+0x≈0 : ∀ x → 0# * x ≈ 0#
+0x≈0 x = zeroˡ x
+
+x0≈0 : ∀ x → x * 0# ≈ 0#
+x0≈0 x = zeroʳ x 
+
+-1*x≈x : ∀ x → - 1# * x ≈ - x 
+-1*x≈x x = begin 
+  - 1# * x  ≈⟨ sym (-‿distribˡ-* 1# x ) ⟩
+  - (1# * x) ≈⟨ -‿cong ( *-identityˡ x ) ⟩
+  - x ∎
