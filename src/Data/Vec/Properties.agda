@@ -486,6 +486,13 @@ lookup-splitAt (suc m) (x ∷ xs) ys (suc i) = trans
   (sym ([,]-map-commute (Fin.splitAt m i)))
 
 ------------------------------------------------------------------------
+-- concat
+
+lookup-concat : ∀ (xss : Vec (Vec A m) n) i j → lookup (concat xss) (Fin.combine i j) ≡ lookup (lookup xss i) j
+lookup-concat (xs ∷ xss) zero j = lookup-++ˡ xs (concat xss) j
+lookup-concat (xs ∷ xss) (suc i) j = trans (lookup-++ʳ xs (concat xss) (Fin.combine i j)) (lookup-concat xss i j)
+
+------------------------------------------------------------------------
 -- zipWith
 
 module _ {f : A → A → A} where
@@ -683,6 +690,14 @@ zipWith-is-⊛ f (x ∷ xs) (y ∷ ys) = cong (_ ∷_) (zipWith-is-⊛ f xs ys)
   diagonal (map (flip map xs) fs)                  ≡⟨⟩
   diagonal (map (tail ∘ flip map (x ∷ xs)) fs)     ≡⟨ cong diagonal (map-∘ _ _ _) ⟩
   diagonal (map tail (map (flip map (x ∷ xs)) fs)) ∎
+
+------------------------------------------------------------------------
+-- _⊛*_
+
+lookup-⊛* : ∀ (fs : Vec (A → B) m) (xs : Vec A n) i j →
+            lookup (fs ⊛* xs) (Fin.combine i j) ≡ (lookup fs i $ lookup xs j)
+lookup-⊛* (f ∷ fs) xs zero j = trans (lookup-++ˡ (map f xs) _ j) (lookup-map j f xs)
+lookup-⊛* (f ∷ fs) xs (suc i) j = trans (lookup-++ʳ (map f xs) _ (Fin.combine i j)) (lookup-⊛* fs xs i j)
 
 ------------------------------------------------------------------------
 -- foldl

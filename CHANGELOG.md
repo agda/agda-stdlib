@@ -19,6 +19,8 @@ Highlights
 * Improved the `solve` tactic in `Tactic.RingSolver` to work in a much
   wider range of situations.
 
+- Added `⌊log₂_⌋` and `⌈log₂_⌉` on Natural Numbers.
+
 Bug-fixes
 ---------
 
@@ -809,6 +811,11 @@ Deprecated names
 New modules
 -----------
 
+* Algebraic structures when freely adding an identity element:
+```
+  Algebra.Construct.Add.Identity
+```
+
 * Operations for module-like algebraic structures:
   ```
   Algebra.Module.Core
@@ -833,7 +840,8 @@ New modules
   Algebra.Module.Morphism.Construct.Composition
   Algebra.Module.Morphism.Construct.Identity
   Algebra.Module.Morphism.Definitions
-  Algebra.Module.Morphism.Structures
+  Algebra.Module.Morphism.Structures  
+  Algebra.Module.Properties
   ```
 
 * Identity morphisms and composition of morphisms between algebraic structures:
@@ -986,10 +994,25 @@ New modules
   Data.Vec.Relation.Unary.Linked
   Data.Vec.Relation.Unary.Linked.Properties
   ```
+* Added Logarithm base 2 on Natural Numbers:
+  ```
+  Data.Nat.Logarithm.Core
+  Data.Nat.Logarithm
+  ```
 
+* Proofs of some axioms of linearity:
+  ```
+  Algebra.Module.Morphism.ModuleHomomorphism
+  Algebra.Module.Properties
+  ```
 
 Other minor changes
 -------------------
+
+* Added new proof to `Data.Maybe.Properties`
+```agda
+    <∣>-idem : Idempotent _<∣>_
+```
 
 * The module `Algebra` now publicly re-exports the contents of
   `Algebra.Structures.Biased`.
@@ -1009,6 +1032,14 @@ Other minor changes
   record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ))
   record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
   record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
+  record IdempotentMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record AlternateMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record FlexibleMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record MedialMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record SemimedialMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record LeftBolLoop c ℓ : Set (suc (c ⊔ ℓ))
+  record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ))
+  record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -1074,6 +1105,16 @@ Other minor changes
   StarLeftExpansion e _+_ _∙_ _⁻* = ∀ x →  (e + ((x ⁻*) ∙ x)) ≈ (x ⁻*)
   LeftFixedPoint _+_ _∙_ _⁻* = ∀ a b x → (b + (a ∙ x)) ≈ x → ((a ⁻*) ∙ b) ≈ x
   RightFixedPoint _+_ _∙_ _⁻* = ∀ a b x → (b + (x ∙ a)) ≈ x → (b ∙ (a ⁻*)) ≈ x
+  LeftAlternative _∙_ = ∀ x y  →  ((x ∙ x) ∙ y) ≈ (x ∙ (y ∙ y))
+  RightAlternative _∙_ = ∀ x y → (x ∙ (y ∙ y)) ≈ ((x ∙ y) ∙ y)
+  Alternative _∙_ = (LeftAlternative _∙_ ) × (RightAlternative _∙_)
+  Flexible _∙_ = ∀ x y → ((x ∙ y) ∙ x) ≈ (x ∙ (y ∙ x))
+  Medial _∙_ = ∀ x y u z → ((x ∙ y) ∙ (u ∙ z)) ≈ ((x ∙ u) ∙ (y ∙ z))
+  LeftSemimedial _∙_ = ∀ x y z → ((x ∙ x) ∙ (y ∙ z)) ≈ ((x ∙ y) ∙ (x ∙ z))
+  RightSemimedial _∙_ = ∀ x y z → ((y ∙ z) ∙ (x ∙ x)) ≈ ((y ∙ x) ∙ (z ∙ x))
+  Semimedial _∙_ = (LeftSemimedial _∙_) × (RightSemimedial _∙_)
+  LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ z)) ∙ z )
+  RightBol _∙_ = ∀ x y z → (((z ∙ x) ∙ y) ∙ x) ≈ (z ∙ ((x ∙ y) ∙ x))
   ```
 
 * Added new functions to `Algebra.Definitions.RawSemiring`:
@@ -1099,6 +1140,17 @@ Other minor changes
   record IsKleeneAlgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
   record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+  record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsIdempotentMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsAlternateMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsFlexibleMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsMedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsSemimedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsLeftBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
+  record IsRightBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) 
+  record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -1312,6 +1364,13 @@ Other minor changes
 
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
+
+  n≤1⇒n≡0∨n≡1 : n ≤ 1 → n ≡ 0 ⊎ n ≡ 1
+
+  2^n>0 : 2 ^ n > 0
+
+  n≡⌊n+n/2⌋ : n ≡ ⌊ n + n /2⌋
+  n≡⌈n+n/2⌉ : n ≡ ⌈ n + n /2⌉
   ```
 
 * Added new functions in `Data.Nat`:
@@ -1351,7 +1410,7 @@ Other minor changes
   ```agda
   ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
   ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
-  
+
   +-*-rawNearSemiring                 : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring                     : RawSemiring 0ℓ 0ℓ
   toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
@@ -1445,6 +1504,8 @@ Other minor changes
     map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
   ```
 
+* Made `Map` public in `Data.Tree.AVL.IndexedMap`
+
 * Added new definitions in `Data.Vec.Base`:
   ```agda
   truncate : m ≤ n → Vec A n → Vec A m
@@ -1487,7 +1548,10 @@ Other minor changes
   map-reverse  : map f (reverse xs) ≡ reverse (map f xs)
   map-ʳ++      : map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
 
+  lookup-concat : lookup (concat xss) (combine i j) ≡ lookup (lookup xss i) j
+
   ⊛-is->>=    : fs ⊛ xs ≡ fs >>= flip map xs
+  lookup-⊛*   : lookup (fs ⊛* xs) (combine i j) ≡ (lookup fs i $ lookup xs j)
   ++-is-foldr : xs ++ ys ≡ foldr ((Vec A) ∘ (_+ n)) _∷_ ys xs
   []≔-++-↑ʳ   : (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
   unfold-ʳ++  : xs ʳ++ ys ≡ reverse xs ++ ys
@@ -1778,6 +1842,16 @@ Other minor changes
   lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) → lookup n (transpose⁺ ass) ≡ List⁺.map (lookup n) ass
   ```
 
+* Added new corollaries in `Data.List.Membership.Setoid.Properties`:
+  ```
+  ∈-++⁺∘++⁻ : ∀ {v} xs {ys} (p : v ∈ xs ++ ys) → [ ∈-++⁺ˡ , ∈-++⁺ʳ xs ]′ (∈-++⁻ xs p) ≡ p
+  ∈-++⁻∘++⁺ : ∀ {v} xs {ys} (p : v ∈ xs ⊎ v ∈ ys) → ∈-++⁻ xs ([ ∈-++⁺ˡ , ∈-++⁺ʳ xs ]′ p) ≡ p
+  ∈-++↔ : ∀ {v xs ys} → (v ∈ xs ⊎ v ∈ ys) ↔ v ∈ xs ++ ys
+  ∈-++-comm : ∀ {v} xs ys → v ∈ xs ++ ys → v ∈ ys ++ xs
+  ∈-++-comm∘++-comm : ∀ {v} xs {ys} (p : v ∈ xs ++ ys) → ∈-++-comm ys xs (∈-++-comm xs ys p) ≡ p
+  ∈-++↔++ : ∀ {v} xs ys → v ∈ xs ++ ys ↔ v ∈ ys ++ xs
+  ```
+
 NonZero/Positive/Negative changes
 ---------------------------------
 
@@ -2022,4 +2096,37 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   Inverse⇒Injection : Inverse S T → Injection S T
   ↔⇒↣ : A ↔ B → A ↣ B
+  ```
+
+* Added a new isomorphism to `Data.Fin.Properties`:
+  ```agda
+  2↔Bool : Fin 2 ↔ Bool
+  ```
+
+* Added new isomorphisms to `Data.Unit.Polymorphic.Properties`:
+  ```agda
+  ⊤↔⊤* : ⊤ {ℓ} ↔ ⊤*
+  ```
+
+* Added new isomorphisms to `Data.Vec.N-ary`:
+  ```agda
+  Vec↔N-ary : ∀ n → (Vec A n → B) ↔ N-ary n A B
+  ```
+
+* Added new isomorphisms to `Data.Vec.Recursive`:
+  ```agda
+  lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
+  Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m ^ n) ↔ Fin m Vec.^ n
+  ```
+
+* Added new functions to `Function.Properties.Inverse`:
+  ```agda
+  ↔-refl  : Reflexive _↔_
+  ↔-sym   : Symmetric _↔_
+  ↔-trans : Transitive _↔_
+  ```
+
+* Added new isomorphisms to `Function.Properties.Inverse`:
+  ```agda
+  ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```
