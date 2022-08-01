@@ -179,6 +179,7 @@ StarRightDestructive _+_ _∙_ _* = ∀ a b x → (b + (x ∙ a)) ≈ x → (b �
 
 StarDestructive : Op₂ A → Op₂ A → Op₁ A → Set _
 StarDestructive _+_ _∙_ _* = (StarLeftDestructive _+_ _∙_ _*) × (StarRightDestructive _+_ _∙_ _*)
+
 LeftAlternative : Op₂ A → Set _
 LeftAlternative _∙_ = ∀ x y  →  ((x ∙ x) ∙ y) ≈ (x ∙ (x ∙ y))
 
