@@ -1133,6 +1133,14 @@ Other minor changes
   flexible : Flexible _∙_
   ```
 
+* Added new proofs to `Algebra.Properties.Ring`:
+  ```
+  0x≈0 : ∀ x → 0# * x ≈ 0#
+  x0≈0 : ∀ x → x * 0# ≈ 0#
+  -1*x≈x : ∀ x → - 1# * x ≈ - x
+  -‿distrib-+ : ∀ x y → - (x + y) ≈ - x + (- y)
+  ```
+
 * Added new definitions to `Algebra.Structures`:
   ```agda
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
