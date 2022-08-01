@@ -1137,12 +1137,9 @@ Other minor changes
   record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ)
   record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
-  record IsKleeneAlgebra (+ * : Op₂ A) ( ⁻* : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
   record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
-  record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
-  record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
-  record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   record IsIdempotentMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   record IsAlternateMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   record IsFlexibleMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
