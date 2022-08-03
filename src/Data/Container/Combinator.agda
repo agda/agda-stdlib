@@ -57,11 +57,11 @@ module _ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s�
   _∘_ .Shape    = ⟦ C₁ ⟧ (Shape C₂)
   _∘_ .Position = ◇ C₁ (Position C₂)
 
-  to-_∘_ : ∀ {a} {A : Set a} → ⟦ C₁ ⟧ (⟦ C₂ ⟧ A) → ⟦ _∘_ ⟧ A
-  to-_∘_ (s , f) = ((s , proj₁ F.∘ f) , P.uncurry (proj₂ F.∘ f) F.∘′ ◇.proof)
+  to-∘ : ∀ {a} {A : Set a} → ⟦ C₁ ⟧ (⟦ C₂ ⟧ A) → ⟦ _∘_ ⟧ A
+  to-∘ (s , f) = ((s , proj₁ F.∘ f) , P.uncurry (proj₂ F.∘ f) F.∘′ ◇.proof)
 
-  from-_∘_ : ∀ {a} {A : Set a} → ⟦ _∘_ ⟧ A → ⟦ C₁ ⟧ (⟦ C₂ ⟧ A)
-  from-_∘_ ((s , f) , g) = (s , < f , P.curry (g F.∘′ any) >)
+  from-∘ : ∀ {a} {A : Set a} → ⟦ _∘_ ⟧ A → ⟦ C₁ ⟧ (⟦ C₂ ⟧ A)
+  from-∘ ((s , f) , g) = (s , < f , P.curry (g F.∘′ any) >)
 
 -- Product. (Note that, up to isomorphism, this is a special case of
 -- indexed product.)
@@ -72,11 +72,11 @@ module _ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s�
   _×_ .Shape    = Shape C₁ P.× Shape C₂
   _×_ .Position = P.uncurry λ s₁ s₂ → (Position C₁ s₁) S.⊎ (Position C₂ s₂)
 
-  to-_×_ : ∀ {a} {A : Set a} → ⟦ C₁ ⟧ A P.× ⟦ C₂ ⟧ A → ⟦ _×_ ⟧ A
-  to-_×_ ((s₁ , f₁) , (s₂ , f₂)) = ((s₁ , s₂) , [ f₁ , f₂ ]′)
+  to-× : ∀ {a} {A : Set a} → ⟦ C₁ ⟧ A P.× ⟦ C₂ ⟧ A → ⟦ _×_ ⟧ A
+  to-× ((s₁ , f₁) , (s₂ , f₂)) = ((s₁ , s₂) , [ f₁ , f₂ ]′)
 
-  from-_×_ : ∀ {a} {A : Set a} → ⟦ _×_ ⟧ A → ⟦ C₁ ⟧ A P.× ⟦ C₂ ⟧ A
-  from-_×_ ((s₁ , s₂) , f) = ((s₁ , f F.∘ S.inj₁) , (s₂ , f F.∘ S.inj₂))
+  from-× : ∀ {a} {A : Set a} → ⟦ _×_ ⟧ A → ⟦ C₁ ⟧ A P.× ⟦ C₂ ⟧ A
+  from-× ((s₁ , s₂) , f) = ((s₁ , f F.∘ S.inj₁) , (s₂ , f F.∘ S.inj₂))
 
 -- Indexed product.
 
@@ -111,12 +111,12 @@ module _ {s₁ s₂ p} (C₁ : Container s₁ p) (C₂ : Container s₂ p) where
   _⊎_ .Shape    = (Shape C₁ S.⊎ Shape C₂)
   _⊎_ .Position = [ Position C₁ , Position C₂ ]′
 
-  to-_⊎_ : ∀ {a} {A : Set a} → ⟦ C₁ ⟧ A S.⊎ ⟦ C₂ ⟧ A → ⟦ _⊎_ ⟧ A
-  to-_⊎_ = [ P.map S.inj₁ F.id , P.map S.inj₂ F.id ]′
+  to-⊎ : ∀ {a} {A : Set a} → ⟦ C₁ ⟧ A S.⊎ ⟦ C₂ ⟧ A → ⟦ _⊎_ ⟧ A
+  to-⊎ = [ P.map S.inj₁ F.id , P.map S.inj₂ F.id ]′
 
-  from-_⊎_ : ∀ {a} {A : Set a} → ⟦ _⊎_ ⟧ A → ⟦ C₁ ⟧ A S.⊎ ⟦ C₂ ⟧ A
-  from-_⊎_ (S.inj₁ s₁ , f) = S.inj₁ (s₁ , f)
-  from-_⊎_ (S.inj₂ s₂ , f) = S.inj₂ (s₂ , f)
+  from-⊎ : ∀ {a} {A : Set a} → ⟦ _⊎_ ⟧ A → ⟦ C₁ ⟧ A S.⊎ ⟦ C₂ ⟧ A
+  from-⊎ (S.inj₁ s₁ , f) = S.inj₁ (s₁ , f)
+  from-⊎ (S.inj₂ s₂ , f) = S.inj₂ (s₂ , f)
 
 -- Indexed sum.
 

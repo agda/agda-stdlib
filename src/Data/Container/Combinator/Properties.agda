@@ -40,15 +40,15 @@ module Constant (ext : ∀ {ℓ ℓ′} → Extensionality ℓ ℓ′) where
 module Composition {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) where
 
   correct : ∀ {x} {X : Set x} → ⟦ C₁ ∘ C₂ ⟧ X ↔ (⟦ C₁ ⟧ F.∘ ⟦ C₂ ⟧) X
-  correct {X = X} = inverse (from- C₁ ∘ C₂) (to- C₁ ∘ C₂) (λ _ → P.refl) (λ _ → P.refl)
+  correct {X = X} = inverse (from-∘ C₁ C₂) (to-∘ C₁ C₂) (λ _ → P.refl) (λ _ → P.refl)
 
 module Product (ext : ∀ {ℓ ℓ′} → Extensionality ℓ ℓ′)
        {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) where
 
   correct : ∀ {x} {X : Set x} →  ⟦ C₁ × C₂ ⟧ X ↔ (⟦ C₁ ⟧ X Prod.× ⟦ C₂ ⟧ X)
-  correct {X = X} = inverse (from- C₁ × C₂) (to- C₁ × C₂) from∘to (λ _ → P.refl)
+  correct {X = X} = inverse (from-× C₁ C₂) (to-× C₁ C₂) from∘to (λ _ → P.refl)
     where
-    from∘to : (to- C₁ × C₂) F.∘ (from- C₁ × C₂) ≗ F.id
+    from∘to : (to-× C₁ C₂) F.∘ (from-× C₁ C₂) ≗ F.id
     from∘to (s , f) =
       P.cong (s ,_) (ext [ (λ _ → P.refl) , (λ _ → P.refl) ])
 
@@ -60,13 +60,13 @@ module IndexedProduct {i s p} {I : Set i} (Cᵢ : I → Container s p) where
 module Sum {s₁ s₂ p} (C₁ : Container s₁ p) (C₂ : Container s₂ p) where
 
   correct : ∀ {x} {X : Set x} → ⟦ C₁ ⊎ C₂ ⟧ X ↔ (⟦ C₁ ⟧ X S.⊎ ⟦ C₂ ⟧ X)
-  correct {X = X} = inverse (from- C₁ ⊎ C₂) (to- C₁ ⊎ C₂) from∘to to∘from
+  correct {X = X} = inverse (from-⊎ C₁ C₂) (to-⊎ C₁ C₂) from∘to to∘from
     where
-    from∘to : (to- C₁ ⊎ C₂) F.∘ (from- C₁ ⊎ C₂) ≗ F.id
+    from∘to : (to-⊎ C₁ C₂) F.∘ (from-⊎ C₁ C₂) ≗ F.id
     from∘to (inj₁ s₁ , f) = P.refl
     from∘to (inj₂ s₂ , f) = P.refl
 
-    to∘from : (from- C₁ ⊎ C₂) F.∘ (to- C₁ ⊎ C₂) ≗ F.id
+    to∘from : (from-⊎ C₁ C₂) F.∘ (to-⊎ C₁ C₂) ≗ F.id
     to∘from = [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
 module IndexedSum {i s p} {I : Set i} (C : I → Container s p) where
