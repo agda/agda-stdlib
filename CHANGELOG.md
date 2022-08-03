@@ -1130,6 +1130,7 @@ Other minor changes
   ```
   leftAlternative : LeftAlternative _∙_
   rightAlternative : RightAlternative _∙_
+  alternative : Alternative _∙_
   flexible : Flexible _∙_
   ```
 
@@ -1150,7 +1151,7 @@ Other minor changes
   record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   record IsIdempotentMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
-  record IsAlternateMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  record IsAlternativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   record IsFlexibleMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   record IsMedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   record IsSemimedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
