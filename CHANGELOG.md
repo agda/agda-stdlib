@@ -1141,6 +1141,16 @@ Other minor changes
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
   ```
   interchange : Interchangable _∙_ _∙_
+  xy∙xx≈x∙yxx : ∀ x y → (x ∙ y) ∙ (x ∙ x) ≈ x ∙ (y ∙ (x ∙ x))
+  leftSemimedial : LeftSemimedial _∙_
+  rightSemimedial : RightSemimedial _∙_
+  middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
+  ```
+* Added new proofs to `Algebra.Properties.Semigroup`:
+  ```
+  leftAlternative : LeftAlternative _∙_
+  rightAlternative : RightAlternative _∙_
+  flexible : Flexible _∙_
   ```
 
 * Added new definitions to `Algebra.Structures`:
@@ -1559,7 +1569,10 @@ Other minor changes
   map-reverse  : map f (reverse xs) ≡ reverse (map f xs)
   map-ʳ++      : map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
 
+  lookup-concat : lookup (concat xss) (combine i j) ≡ lookup (lookup xss i) j
+
   ⊛-is->>=    : fs ⊛ xs ≡ fs >>= flip map xs
+  lookup-⊛*   : lookup (fs ⊛* xs) (combine i j) ≡ (lookup fs i $ lookup xs j)
   ++-is-foldr : xs ++ ys ≡ foldr ((Vec A) ∘ (_+ n)) _∷_ ys xs
   []≔-++-↑ʳ   : (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
   unfold-ʳ++  : xs ʳ++ ys ≡ reverse xs ++ ys
