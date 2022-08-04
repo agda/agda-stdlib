@@ -13,7 +13,7 @@ open import Algebra.Module.Morphism.Structures
 open import Function
 open import Level                     using (Level; suc; _⊔_)
 open import Relation.Binary
-import Relation.Binary.ExtensionalEquivalence as ExtEq
+import Function.Relation.Binary.Equality as ExtEq
 
 module _
   {r ℓr m ℓm n ℓn : Level}

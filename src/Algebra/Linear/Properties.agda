@@ -22,27 +22,39 @@ module Algebra.Linear.Properties
 open import Algebra.Module.Construct.TensorUnit using (⟨module⟩)
 open import Algebra.Module.Morphism.Bundles
 import      Algebra.Module.Morphism.ModuleHomomorphism as ModHomo
+import      Algebra.Module.Morphism.Structures as MorphismStructures
 open import Axiom.DoubleNegationElimination
 open import Data.List
 open import Data.Product
 open import Function
 open import Relation.Binary
-import      Relation.Binary.ExtensionalEquivalence     as ExtEq
+import      Function.Relation.Binary.Equality          as ExtEq
 import      Relation.Binary.PropositionalEquality      as Eq
 open import Relation.Binary.Reasoning.MultiSetoid
 
-open VectorSpace vs
-open ExtEq       setoid
-
-private
-  variable
-    a b c : Level
-    A : Set a
-    B : Set b
-    C : Set c
+open VectorSpace                        vs
+open ExtEq                              setoid
+open MorphismStructures.ModuleMorphisms mod ⟨module⟩
 
 ------------------------------------------------------------------------
--- Some consequences of certain `VectorSpace` property fields.
+-- Congruency of `IsBasis` helper functions.
+vscale-cong : ∀ f → Congruent _≈ᴹ_ _≈_ f → Congruent _≈ᴹ_ _≈ᴹ_ (vscale f)
+vscale-cong f f-cong {x} {y} x≈y = begin⟨ ≈ᴹ-setoid ⟩
+  vscale f x ≡⟨⟩
+  f x *ₗ x   ≈⟨ *ₗ-congʳ (f-cong x≈y) ⟩
+  f y *ₗ x   ≈⟨ *ₗ-congˡ x≈y ⟩
+  f y *ₗ y   ≡⟨⟩
+  vscale f y ∎
+
+vgen-cong : ∀ {f₁ f₂} → ∀ xs → f₁ ≗ f₂ → vgen f₁ xs ≈ᴹ vgen f₂ xs
+vgen-cong {f₁} {f₂} []       f₁≗f₂ = Setoid.reflexive ≈ᴹ-setoid Eq.refl
+vgen-cong {f₁} {f₂} (x ∷ xs) f₁≗f₂ = begin⟨ ≈ᴹ-setoid ⟩
+  f₁ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congʳ (*ₗ-congʳ (f₁≗f₂ x)) ⟩
+  f₂ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congˡ (vgen-cong xs f₁≗f₂) ⟩
+  f₂ x *ₗ x +ᴹ vgen f₂ xs ∎
+
+------------------------------------------------------------------------
+-- Some consequences of `VectorSpace` inner product properties.
 v∙g[x]+y-cong₂ : {g : V → V} {v x w : V} {y z : S} →
                  Congruent _≈ᴹ_ _≈ᴹ_ g → x ≈ᴹ w → y ≈ z →
                  v ∙ g x + y ≈ v ∙ g w + z
@@ -66,6 +78,26 @@ foldr-homo-∙ {v} {x₀} {g} g-cong (x ∷ xs) = begin⟨ setoid ⟩
   v ∙ (g x +ᴹ foldr (_+ᴹ_ ∘ g) x₀ xs)        ≈⟨ ∙-distrib-+ ⟩
   v ∙ g x + v ∙ foldr (_+ᴹ_ ∘ g) x₀ xs       ≈⟨ +-congˡ (foldr-homo-∙ g-cong xs) ⟩
   foldr (_+_ ∘ (v ∙_) ∘ g) (v ∙ x₀) (x ∷ xs) ∎
+
+u∙-homo : ∀ {u} → IsModuleHomomorphism (u ∙_)
+u∙-homo = record
+  { isBimoduleHomomorphism = record
+      { +ᴹ-isGroupHomomorphism = record
+          { isMonoidHomomorphism = record
+              { isMagmaHomomorphism = record
+                  { isRelHomomorphism = record
+                      { cong = ∙-congˡ
+                      }
+                  ; homo = λ x y → ∙-distrib-+
+                  }
+              ; ε-homo = ∙-idʳ
+              }
+          ; ⁻¹-homo = λ x → ∙-homo-⁻¹
+          }
+      ; *ₗ-homo = λ r x → ∙-comm-*ₗ
+      ; *ᵣ-homo = λ r x → ∙-comm-*ᵣ
+      }
+  }
 
 ------------------------------------------------------------------------
 -- Properties of linear maps from vectors to their underlying scalars.
@@ -135,33 +167,6 @@ module _ (lm : LinearMap mod ⟨module⟩) where
       y ∙ v′ ≈⟨ ∙-comm ⟩
       v′ ∙ y ≈⟨ sym (f≈v∙ {y}) ⟩
       f y   ∎
-
-u∙-homo : ∀ {u} → IsModuleHomomorphism (u ∙_)
-u∙-homo = record
-  { isBimoduleHomomorphism = record
-      { +ᴹ-isGroupHomomorphism = record
-          { isMonoidHomomorphism = record
-              { isMagmaHomomorphism = record
-                  { isRelHomomorphism = record
-                      { cong = ∙-congˡ
-                      }
-                  ; homo = λ x y → ∙-distrib-+
-                  }
-              ; ε-homo = ∙-idʳ
-              }
-          ; ⁻¹-homo = λ x → ∙-homo-⁻¹
-          }
-      ; *ₗ-homo = λ r x → ∙-comm-*ₗ
-      ; *ᵣ-homo = λ r x → ∙-comm-*ᵣ
-      }
-  }
-
-vgen-cong : ∀ {f₁ f₂} → ∀ xs → f₁ ≗ f₂ → vgen f₁ xs ≈ᴹ vgen f₂ xs
-vgen-cong {f₁} {f₂} []       f₁≗f₂ = Setoid.reflexive ≈ᴹ-setoid Eq.refl
-vgen-cong {f₁} {f₂} (x ∷ xs) f₁≗f₂ = begin⟨ ≈ᴹ-setoid ⟩
-  f₁ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congʳ (*ₗ-congʳ (f₁≗f₂ x)) ⟩
-  f₂ x *ₗ x +ᴹ vgen f₁ xs ≈⟨ +ᴹ-congˡ (vgen-cong xs f₁≗f₂) ⟩
-  f₂ x *ₗ x +ᴹ vgen f₂ xs ∎
 
 -- Isomorphism 1: (V ⊸ S) ↔ V
 V⊸S↔V : Inverse (≈ᴸ-setoid mod ⟨module⟩) ≈ᴹ-setoid
