@@ -12,7 +12,7 @@ open import Algebra.Module        using (Module)
 open import Algebra.Linear.Bundles
 open import Level                 using (Level; _⊔_; suc)
 
-module Algebra.Linear.Properties
+module Algebra.Linear.Properties.VectorSpace
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
   {mod       : Module ring m ℓm}

@@ -1016,13 +1016,14 @@ New modules
 * Support for abstract vector spaces:
   ```
   Algebra.Linear
+  Algebra.Linear.Structures
   Algebra.Linear.Bundles
-  Algebra.Linear.Properties
+  Algebra.Linear.Properties.VectorSpace
   ```
 
 * Extensional equivalence
   ```
-  Relation.Binary.ExtensionalEquivalence
+  Function.Relation.Binary.Equality
   ```
 
 Other minor changes
