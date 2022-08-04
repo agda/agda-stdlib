@@ -37,7 +37,7 @@ record VectorSpace
 
   open IsBasis       isBasis       public
   open IsVectorSpace isVectorSpace public
-  
+
   -- Linear maps from vectors to scalars.
   V⊸S = LinearMap mod ⟨module⟩
 

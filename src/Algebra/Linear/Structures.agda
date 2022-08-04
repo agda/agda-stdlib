@@ -20,7 +20,7 @@ module _
   {ring      : CommutativeRing r ℓr}
   (mod       : Module ring m ℓm)
   where
-  
+
   open CommutativeRing ring renaming (Carrier  to S)
   open Module          mod  renaming (Carrierᴹ to V)
 
@@ -50,7 +50,7 @@ module _
     where
 
     open IsBasis isBasis
-    
+
     field
       ∙-comm      : ∀ {a b}     → a ∙ b ≈ b ∙ a
       ∙-distrib-+ : ∀ {a b c}   → a ∙ (b +ᴹ c)    ≈ (a ∙ b) + (a ∙ c)
