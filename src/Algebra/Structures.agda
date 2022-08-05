@@ -557,17 +557,17 @@ record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ 
 
   open IsIdempotentSemiring isIdempotentSemiring public
 
-  starLeftExpansive : StarLeftExpansive 1# + * ⋆
-  starLeftExpansive = proj₁ starExpansive
+  starExpansiveˡ : StarLeftExpansive 1# + * ⋆
+  starExpansiveˡ = proj₁ starExpansive
 
-  starRightExpansive : StarRightExpansive 1# + * ⋆
-  starRightExpansive = proj₂ starExpansive
+  starExpansiveʳ : StarRightExpansive 1# + * ⋆
+  starExpansiveʳ = proj₂ starExpansive
 
-  starLeftDestructive : StarLeftDestructive + * ⋆
-  starLeftDestructive = proj₁ starDestructive
+  starDestructiveˡ : StarLeftDestructive + * ⋆
+  starDestructiveˡ = proj₁ starDestructive
 
-  starRightDestructive : StarRightDestructive + * ⋆
-  starRightDestructive = proj₂ starDestructive
+  starDestructiveʳ : StarRightDestructive + * ⋆
+  starDestructiveʳ = proj₂ starDestructive
 
 record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
