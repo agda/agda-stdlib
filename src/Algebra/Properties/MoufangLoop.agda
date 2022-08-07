@@ -15,22 +15,22 @@ open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Data.Product
 
-leftAlternative : LeftBol _∙_ → LeftAlternative _∙_
-leftAlternative eq x y  = begin
-  ((x ∙ x) ∙ y)         ≈⟨ ∙-congʳ (∙-congˡ (sym (identityˡ x))) ⟩
-  ((x ∙ (ε ∙ x)) ∙ y)   ≈⟨ sym (eq x ε y) ⟩
+leftAlternative : LeftAlternative _∙_
+leftAlternative x y = begin
+  ((x ∙ x) ∙ y) ≈⟨ ∙-congʳ (∙-congˡ (sym (identityˡ x))) ⟩
+  ((x ∙ (ε ∙ x)) ∙ y) ≈⟨ sym (leftBol x ε y) ⟩
   (x ∙ (ε ∙ (x ∙ y)))   ≈⟨ ∙-congˡ (identityˡ ((x ∙ y))) ⟩
   (x ∙ (x ∙ y))         ∎
 
-rightAlternative : RightBol _∙_ → RightAlternative _∙_
-rightAlternative eq x y = begin
+rightAlternative : RightAlternative _∙_
+rightAlternative x y = begin
   (x ∙ (y ∙ y))         ≈⟨ ∙-congˡ(∙-congʳ(sym (identityʳ y))) ⟩
-  (x ∙ ((y ∙ ε) ∙ y))   ≈⟨ sym( eq y ε x ) ⟩
+  (x ∙ ((y ∙ ε) ∙ y))   ≈⟨ sym (rightBol y ε x) ⟩
   (((x ∙ y) ∙ ε ) ∙ y)  ≈⟨ ∙-congʳ (identityʳ ((x ∙ y))) ⟩
   ((x ∙ y) ∙ y)         ∎
 
-alternative : LeftBol _∙_ → RightBol _∙_ → Alternative _∙_
-alternative x y = (leftAlternative x) , rightAlternative y
+alternative : Alternative _∙_
+alternative = leftAlternative , rightAlternative
 
 z∙xzy≈zxz∙y : ∀ x y z → (z ∙ (x ∙ (z ∙ y))) ≈ (((z ∙ x) ∙ z) ∙ y)
 z∙xzy≈zxz∙y x y z = sym (begin
