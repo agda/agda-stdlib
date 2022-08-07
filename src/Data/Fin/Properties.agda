@@ -456,6 +456,10 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 ℕ<⇒inject₁< : ∀ {i : Fin (ℕ.suc n)} {j : Fin n} → j < i → inject₁ j < i
 ℕ<⇒inject₁< {i = suc i} (s≤s j≤i) = ≤̄⇒inject₁< j≤i
 
+≤-inj→suc : i ≤ inject₁ j → i ≤ suc j
+≤-inj→suc {i = zero} i≤j = z≤n
+≤-inj→suc {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.≤-step (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
+
 ------------------------------------------------------------------------
 -- lower₁
 ------------------------------------------------------------------------

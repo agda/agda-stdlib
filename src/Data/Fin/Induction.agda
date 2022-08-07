@@ -8,8 +8,8 @@
 
 open import Data.Fin.Base
 open import Data.Fin.Properties
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_)
-open import Data.Nat.Properties using (n<1+n)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_; s≤s)
+open import Data.Nat.Properties using (n<1+n; ≤⇒≯)
 import Data.Nat.Induction as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Product using (_,_)
@@ -58,6 +58,20 @@ open WF public using (Acc; acc)
   induct {zero}  _         = P₀
   induct {suc i} (acc rec) = Pᵢ⇒Pᵢ₊₁ i (induct (rec (inject₁ i) i<i+1))
     where i<i+1 = ℕ<⇒inject₁< (i<1+i i)
+
+≤-Induction : {k : Fin (ℕ.suc n)} (P : ∀ p → k ≤ p → Set ℓ)
+  (pk : P k ≤-refl)
+  (ps : ∀ {m k≤m} → P (inject₁ m) k≤m → P (suc m) (≤-inj→suc k≤m))
+  → ∀ {m} k≤m → P m k≤m
+≤-Induction {k = k} P pk ps {m} = induct (<-wellFounded m) (compare' k m)
+  where
+  induct : ∀ {m} → Acc _<_ m → Ordering' k m → ∀ k≤m → P m k≤m
+  induct {suc m} (acc rs) (less (s≤s k≤m)) _ = subst (P (suc m))
+    (≤-irrelevant _ _) (ps finB) where
+    finB = induct (rs _ (s≤s (subst (ℕ._≤ toℕ m) (sym $ toℕ-inject₁ m) ≤-refl)))
+      (compare' k $ inject₁ m) (subst (toℕ k ℕ.≤_) (sym $ toℕ-inject₁ m) k≤m)
+  induct (acc rs) equal k≤m = subst (P k) (≤-irrelevant _ _) pk
+  induct (acc rs) (greater k>sm) k≤m with () ← ≤⇒≯ k≤m k>sm
 
 ------------------------------------------------------------------------
 -- Induction over _>_
