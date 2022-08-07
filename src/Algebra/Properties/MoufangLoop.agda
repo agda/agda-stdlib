@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Some derivable properties
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (MoufangLoop)
