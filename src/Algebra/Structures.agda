@@ -868,5 +868,6 @@ record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
     isLeftBolLoop  : IsLeftBolLoop ∙ \\ //  ε
     rightBol       : RightBol ∙
+    flex           : Flexible ∙
 
   open IsLeftBolLoop isLeftBolLoop public
