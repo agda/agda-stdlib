@@ -310,6 +310,19 @@ compare (suc i) (suc j) with compare i j
 ... | greater greatest least = greater (suc greatest) (suc least)
 ... | equal   i              = equal   (suc i)
 
+data Ordering' (i : Fin n) : Fin n → Set where
+  less    : ∀ {j} → i < j → Ordering' i j
+  equal   : Ordering' i i
+  greater : ∀ {j} → i > j  → Ordering' i j
+
+compare' : (i j : Fin n) → Ordering' i j
+compare' zero zero = equal
+compare' zero (suc j) = less (s≤s z≤n)
+compare' (suc i) zero = greater (s≤s z≤n)
+compare' (suc i) (suc j) with compare' i j
+... | less p<q = less (s≤s p<q)
+... | equal = equal
+... | greater p>q = greater (s≤s p>q)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
