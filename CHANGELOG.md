@@ -1039,7 +1039,7 @@ Other minor changes
   record LeftBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ))
-  record Nearring c ℓ : Set (suc (c ⊔ ℓ))
+  record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
