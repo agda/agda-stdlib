@@ -16,11 +16,11 @@ open import Relation.Binary.Reasoning.Setoid setoid
 open import Data.Product
 
 leftAlternative : LeftAlternative _∙_
-leftAlternative x y = begin
-  ((x ∙ x) ∙ y) ≈⟨ ∙-congʳ (∙-congˡ (sym (identityˡ x))) ⟩
+leftAlternative x y   = begin
+  ((x ∙ x) ∙ y)       ≈⟨ ∙-congʳ (∙-congˡ (sym (identityˡ x))) ⟩
   ((x ∙ (ε ∙ x)) ∙ y) ≈⟨ sym (leftBol x ε y) ⟩
-  (x ∙ (ε ∙ (x ∙ y)))   ≈⟨ ∙-congˡ (identityˡ ((x ∙ y))) ⟩
-  (x ∙ (x ∙ y))         ∎
+  (x ∙ (ε ∙ (x ∙ y))) ≈⟨ ∙-congˡ (identityˡ ((x ∙ y))) ⟩
+  (x ∙ (x ∙ y))       ∎
 
 rightAlternative : RightAlternative _∙_
 rightAlternative x y = begin
