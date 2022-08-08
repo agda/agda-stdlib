@@ -2155,3 +2155,26 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```
+
+* Added new data to `Data.Fin.Base`
+  ```agda
+  data Ordering' (i : Fin n) : Fin n → Set
+  ```
+
+* Added new function to `Data.Fin.Base`
+  ```agda
+  compare' : (i j : Fin n) → Ordering' i j
+  ```
+
+* Added new function to `Data.Fin.Properties`
+  ```agda
+  ≤-inj→suc : i ≤ inject₁ j → i ≤ suc j
+  ```
+
+* Added new function to `Data.Fin.Induction`
+  ```agda
+  ≤-Induction : {k : Fin (suc n)} (P : ∀ {p} → k ≤ p → Set ℓ)
+    (pk : P ≤-refl)
+    (ps : ∀ {m k≤m} → P {inject₁ m} k≤m → P (≤-inj→suc k≤m))
+    → ∀ {m} k≤m → P {m} k≤m
+  ```
