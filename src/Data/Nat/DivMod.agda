@@ -82,9 +82,9 @@ m≤n⇒[n∸m]%m≡n%m {m} {n} m≤n = begin-equality
   (n ∸ m + m) % m ≡⟨ cong (_% m) (m∸n+n≡m m≤n) ⟩
   n % m           ∎
 
-m*n≤o⇒[o∸m*n]%n≡o%n : ∀ {m n o} .⦃ _ : NonZero n ⦄ → m * n ≤ o →
+m*n≤o⇒[o∸m*n]%n≡o%n : ∀ m {n o} .⦃ _ : NonZero n ⦄ → m * n ≤ o →
                       (o ∸ m * n) % n ≡ o % n
-m*n≤o⇒[o∸m*n]%n≡o%n {m} {n} {o} m*n≤o = begin-equality
+m*n≤o⇒[o∸m*n]%n≡o%n m {n} {o} m*n≤o = begin-equality
   (o ∸ m * n) % n         ≡˘⟨ [m+kn]%n≡m%n (o ∸ m * n) m n ⟩
   (o ∸ m * n + m * n) % n ≡⟨ cong (_% n) (m∸n+n≡m m*n≤o) ⟩
   o % n                   ∎
@@ -94,7 +94,7 @@ m∣n⇒o%n%m≡o%m : ∀ m n o .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ �
 m∣n⇒o%n%m≡o%m m n o (divides p refl) = begin-equality
   o % pm % m               ≡⟨ %-congˡ (m%n≡m∸m/n*n o pm) ⟩
   (o ∸ o / pm * pm) % m    ≡˘⟨ cong (λ # → (o ∸ #) % m) (*-assoc (o / pm) p m) ⟩
-  (o ∸ o / pm * p * m) % m ≡⟨ m*n≤o⇒[o∸m*n]%n≡o%n {m = o / pm * p} lem ⟩
+  (o ∸ o / pm * p * m) % m ≡⟨ m*n≤o⇒[o∸m*n]%n≡o%n (o / pm * p) lem ⟩
   o % m                    ∎
   where
   pm = p * m
