@@ -14,6 +14,7 @@ open import Function
 open import Level                     using (Level; suc; _⊔_)
 open import Relation.Binary
 import Function.Relation.Binary.Equality as ExtEq
+-- import Function.Relation.Binary.Equality2 as ExtEq
 
 module _
   {r ℓr m ℓm n ℓn : Level}
@@ -32,6 +33,7 @@ module _
     field
       f    : A → B
       homo : IsModuleHomomorphism modA modB f
+
     open IsModuleHomomorphism homo public
 
   ≈ᴸ-setoid : Setoid (r ⊔ ℓr ⊔ m ⊔ ℓm ⊔ n ⊔ ℓn) (m ⊔ ℓn)
@@ -45,3 +47,4 @@ module _
         }
     }
     where open ExtEq (Module.≈ᴹ-setoid modB)
+    -- where open ExtEq (Module.≈ᴹ-setoid modA) (Module.≈ᴹ-setoid modB)

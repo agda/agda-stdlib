@@ -8,12 +8,12 @@
 
 module Algebra.Linear.Structures where
 
-open import Algebra                             using (CommutativeRing)
-open import Algebra.Module                      using (Module)
-open import Data.List                           using (List; foldr)
+open import Algebra        using (CommutativeRing)
+open import Algebra.Module using (Module)
+open import Data.List      using (List; foldr)
 open import Data.Product
 open import Function
-open import Level                               using (Level; _⊔_; suc)
+open import Level          using (Level; _⊔_; suc)
 
 module _
   {r ℓr m ℓm : Level}
@@ -26,30 +26,24 @@ module _
 
   -- A set of "vectors" forms a basis for a space iff it is complete
   -- under some inner product.
-  record IsBasis : Set (suc (ℓm ⊔ m ⊔ r)) where
+  record BasisFor (_∙_ : V → V → S) : Set (suc (ℓm ⊔ m ⊔ r)) where
 
+    -- Scale a vector according to some reduction function.
     vscale : (V → S) → V → V
     vscale f = uncurry _*ₗ_ ∘ < f , id >
 
+    -- Generate a vector from the basis, according to some reduction function.
     vgen : (V → S) → List V → V
     vgen f = foldr (_+ᴹ_ ∘ vscale f) 0ᴹ
 
-    infix 7 _∙_
     field
-      _∙_           : V → V → S
-      basisSet      : List V                     -- ToDo: List => Foldable Functor
-      basisComplete : ∀ {a : V} →
-                      a ≈ᴹ vgen (a ∙_) basisSet
+      basisSet      : List V  -- ToDo: List => Foldable Functor
+      basisComplete : ∀ {a : V} → a ≈ᴹ vgen (a ∙_) basisSet
 
 
-  -- The space mapped (i.e. - represented) by a basis constitutes a
-  -- vector space iff the inner product has certain properties.
-  record IsVectorSpace
-    (isBasis : IsBasis)
-    : Set (suc (ℓm ⊔ ℓr ⊔ m ⊔ r))
-    where
-
-    open IsBasis isBasis
+  -- A vector space is characterized by an inner product that
+  -- satisfies certain properties.
+  record IsVectorSpace (_∙_ : V → V → S) : Set (suc (ℓm ⊔ ℓr ⊔ m ⊔ r)) where
 
     field
       ∙-comm      : ∀ {a b}     → a ∙ b ≈ b ∙ a

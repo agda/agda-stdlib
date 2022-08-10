@@ -31,19 +31,23 @@ record VectorSpace
   open CommutativeRing ring renaming (Carrier  to S)   public
   open Module          mod  renaming (Carrierᴹ to V)   public
 
-  field
-    isBasis       : IsBasis mod
-    isVectorSpace : IsVectorSpace mod isBasis
+  infix 7 _∙_
 
-  open IsBasis       isBasis       public
+  field
+    _∙_ : V → V → S
+    basisFor      : BasisFor      mod _∙_
+    isVectorSpace : IsVectorSpace mod _∙_
+
+  open BasisFor      basisFor      public
   open IsVectorSpace isVectorSpace public
 
   -- Linear maps from vectors to scalars.
   V⊸S = LinearMap mod ⟨module⟩
 
-  -- Equivalent vector generator.
-  v : V⊸S → V
-  v lm = vgen (LinearMap.f lm) basisSet
+  -- Every linear map from a vector to a scalar is equivalent to a vector.
+  -- (This is proved in `Isomorphism 1` in `Algebra.Linear.Properties.VectorSpace`.)
+  lmToVec : V⊸S → V
+  lmToVec lm = vgen (LinearMap.f lm) basisSet
 
   open Setoid (≈ᴸ-setoid mod ⟨module⟩) public using () renaming
     ( _≈_ to _≈ᴸ_

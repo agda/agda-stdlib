@@ -28,13 +28,16 @@ open import Data.List
 open import Data.Product
 open import Function
 open import Relation.Binary
-import      Function.Relation.Binary.Equality          as ExtEq
 import      Relation.Binary.PropositionalEquality      as Eq
 open import Relation.Binary.Reasoning.MultiSetoid
 
 open VectorSpace                        vs
-open ExtEq                              setoid
 open MorphismStructures.ModuleMorphisms mod ⟨module⟩
+
+import Function.Relation.Binary.Equality as ExtEq
+open ExtEq setoid
+-- import Function.Relation.Binary.Equality2 as ExtEq
+-- open ExtEq ≈ᴹ-setoid setoid
 
 ------------------------------------------------------------------------
 -- Congruency of `IsBasis` helper functions.
@@ -132,7 +135,7 @@ module _ (lm : LinearMap mod ⟨module⟩) where
   fGen : List V → V
   fGen = vgen f
 
-  f≈v∙ : ∀ {a} → f a ≈ v lm ∙ a
+  f≈v∙ : ∀ {a} → f a ≈ lmToVec lm ∙ a
   f≈v∙ {a} = sym (begin⟨ setoid ⟩
     v′ ∙ a ≈⟨ ∙-comm ⟩
     a ∙ v′ ≈⟨ foldr-homo-∙ (vscale-cong f ⟦⟧-cong) basisSet ⟩
@@ -150,7 +153,7 @@ module _ (lm : LinearMap mod ⟨module⟩) where
       ≈⟨ ⟦⟧-cong (Setoid.sym ≈ᴹ-setoid (basisComplete)) ⟩
     f a ∎)
     where
-    v′ = v lm
+    v′ = lmToVec lm
 
   -- Inner product extensional equivalence.
   x·z≈y·z⇒x≈y : ∀ {x y} → DoubleNegationElimination ℓm →
@@ -158,7 +161,7 @@ module _ (lm : LinearMap mod ⟨module⟩) where
                  (∀ {z} → x ∙ z ≈ y ∙ z) → x ≈ᴹ y
   x·z≈y·z⇒x≈y {x} {y} dne Σ[z]fz≉𝟘 x∙z≈y∙z = fx≈fy⇒x≈y {dne} Σ[z]fz≉𝟘 fx≈fy
     where
-    v′ = v lm
+    v′ = lmToVec lm
     fx≈fy : f x ≈ f y
     fx≈fy = begin⟨ setoid ⟩
       f x   ≈⟨ f≈v∙ {x} ⟩
@@ -171,15 +174,18 @@ module _ (lm : LinearMap mod ⟨module⟩) where
 -- Isomorphism 1: (V ⊸ S) ↔ V
 V⊸S↔V : Inverse (≈ᴸ-setoid mod ⟨module⟩) ≈ᴹ-setoid
 V⊸S↔V = record
-  { to        = v
+  { to        = lmToVec
   ; from      = λ u  → mkLM (u ∙_) u∙-homo
   ; to-cong   = vgen-cong basisSet
   ; from-cong = λ z x → ∙-congʳ z
-  ; inverse   = (λ v → begin⟨ ≈ᴹ-setoid ⟩
-                     vgen (v ∙_) basisSet
-                       ≈⟨ Setoid.sym ≈ᴹ-setoid basisComplete ⟩
-                     v ∎ )
-                , λ lm x → begin⟨ setoid ⟩
-                      v lm ∙ x ≈⟨ sym (f≈v∙ lm) ⟩
-                      LinearMap.f lm x   ∎
+  ; inverse   = fwd , rev
   }
+  where
+  fwd : Inverseˡ _≈ᴸ_ _≈ᴹ_ lmToVec (λ u → mkLM (u ∙_) u∙-homo)
+  fwd v = begin⟨ ≈ᴹ-setoid ⟩
+    vgen (v ∙_) basisSet ≈⟨ Setoid.sym ≈ᴹ-setoid basisComplete ⟩
+    v                    ∎
+  rev : Inverseʳ _≈ᴸ_ _≈ᴹ_ lmToVec (λ u → mkLM (u ∙_) u∙-homo)
+  rev lm x = begin⟨ setoid ⟩
+    lmToVec lm ∙ x           ≈⟨ sym (f≈v∙ lm) ⟩
+    LinearMap.f lm x   ∎
