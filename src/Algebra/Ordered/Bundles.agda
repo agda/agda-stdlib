@@ -165,6 +165,50 @@ record Prosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   semiring : Semiring c ℓ₁
   semiring = record { isSemiring = isSemiring }
 
+-- Preordered IdempotentSemiring (IdempotentProsemiring)
+
+record IdempotentProsemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infixl 7 _*_
+  infixl 6 _+_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ₁
+    _≤_           : Rel Carrier ℓ₂
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isIdempotentProsemiring : IsIdempotentProsemiring _≈_ _≤_ _+_ _*_ 0# 1#
+
+  open IsIdempotentProsemiring isIdempotentProsemiring public
+
+  idempotentSemiring : IdempotentSemiring c ℓ₁
+  idempotentSemiring = record { isIdempotentSemiring = isIdempotentSemiring }
+
+-- Preordered KleeneAlgebra (proKleeneAlgebra)
+
+record ProKleeneAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infix  8 _⋆
+  infixl 7 _*_
+  infixl 6 _+_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ₁
+    _≤_           : Rel Carrier ℓ₂
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    _⋆            : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isProKleeneAlgebra : IsProKleeneAlgebra _≈_ _≤_ _+_ _*_ _⋆ 0# 1#
+
+  open IsProKleeneAlgebra isProKleeneAlgebra public
+
+  kleeneAlgebra : KleeneAlgebra c ℓ₁
+  kleeneAlgebra = record { isKleeneAlgebra = isKleeneAlgebra }
+
 ------------------------------------------------------------------------
 -- Bundles of partially ordered structures
 
@@ -344,3 +388,51 @@ record Posemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   prosemiring = record { isProsemiring = isProsemiring }
 
   open Prosemiring prosemiring public using (semiring)
+
+-- Partially ordered idempotentSemiring (IdempotentPosemiring)
+
+record IdempotentPosemiring c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infixl 7 _*_
+  infixl 6 _+_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ₁
+    _≤_           : Rel Carrier ℓ₂
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isIdempotentPosemiring : IsIdempotentPosemiring _≈_ _≤_ _+_ _*_ 0# 1#
+
+  open IsIdempotentPosemiring isIdempotentPosemiring public
+
+  idempotentProsemiring : IdempotentProsemiring c ℓ₁ ℓ₂
+  idempotentProsemiring = record { isIdempotentProsemiring = isIdempotentProsemiring }
+
+  open IdempotentProsemiring idempotentProsemiring public using (idempotentSemiring; +-idem)
+
+-- Partially ordered KleeneAlgebra (PoKleeneAlgebra)
+
+record PoKleeneAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infix  8 _⋆
+  infixl 7 _*_
+  infixl 6 _+_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ₁
+    _≤_           : Rel Carrier ℓ₂
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    _⋆            : Op₁ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isPoKleeneAlgebra : IsPoKleeneAlgebra _≈_ _≤_ _+_ _*_ _⋆ 0# 1#
+
+  open IsPoKleeneAlgebra isPoKleeneAlgebra public
+
+  proKleeneAlgebra : ProKleeneAlgebra c ℓ₁ ℓ₂
+  proKleeneAlgebra = record { isProKleeneAlgebra = isProKleeneAlgebra }
+
+  open ProKleeneAlgebra proKleeneAlgebra public using (starExpansive; starDestructive)
