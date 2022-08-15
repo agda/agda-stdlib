@@ -1001,6 +1001,15 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   n + m-1 * n ≡⟨⟩
   m * n       ∎
 
+m<n⇒m<n*o : ∀ {m n} o .{{_ : NonZero o}} → m < n → m < n * o
+m<n⇒m<n*o {m} {n} o m<n = <-transˡ m<n (m≤m*n n o)
+
+m<n⇒m<o*n : ∀ {m n} o .{{_ : NonZero o}} → m < n → m < o * n
+m<n⇒m<o*n {m} {n} o m<n = begin-strict
+  m     <⟨ m<n⇒m<n*o o m<n ⟩
+  n * o ≡⟨ *-comm n o ⟩
+  o * n ∎
+
 *-cancelʳ-< : RightCancellative _<_ _*_
 *-cancelʳ-< {zero}  zero    (suc o) _     = 0<1+n
 *-cancelʳ-< {suc m} zero    (suc o) _     = 0<1+n
