@@ -348,9 +348,9 @@ m<n*o⇒m/o<n {m} {suc n} {o} m<n*o with m <? o
   m / o ∸ 1 ∸ n         ≡⟨ ∸-+-assoc (m / o) 1 n ⟩
   m / o ∸ suc n         ∎
 
-m/n/o≡m/[n*o] : ∀ m n o .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄
+m/n/o≡m/[n*o]-nsa : ∀ m n o .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄
                 .⦃ _ : NonZero (n * o) ⦄ → m / n / o ≡ m / (n * o)
-m/n/o≡m/[n*o] m n o = begin-equality
+m/n/o≡m/[n*o]-nsa m n o = begin-equality
   m / n / o                             ≡⟨ /-congˡ {o = o} (/-congˡ (m≡m%n+[m/n]*n m n*o)) ⟩
   (m % n*o + m / n*o * n*o) / n / o     ≡⟨ /-congˡ (+-distrib-/-∣ʳ (m % n*o) lem₁) ⟩
   (m % n*o / n + m / n*o * n*o / n) / o ≡⟨ cong (λ # → (m % n*o / n + #) / o) lem₂ ⟩
@@ -407,7 +407,7 @@ m%[n*o]/o≡m/o%n m n o ⦃ _ ⦄ ⦃ _ ⦄ ⦃ n*o≢0 ⦄ = begin-equality
   (m ∸ (m / (n * o) * (n * o))) / o ≡˘⟨ cong (λ # → (m ∸ #) / o) (*-assoc (m / (n * o)) n o) ⟩
   (m ∸ (m / (n * o) * n * o)) / o   ≡⟨ [m∸n*o]/o≡m/o∸n m (m / (n * o) * n) o ⟩
   m / o ∸ m / (n * o) * n           ≡⟨ cong (λ # → m / o ∸ # * n) (/-congʳ (*-comm n o)) ⟩
-  m / o ∸ m / (o * n) * n           ≡˘⟨ cong (λ # → m / o ∸ # * n) (m/n/o≡m/[n*o] m o n ) ⟩
+  m / o ∸ m / (o * n) * n           ≡˘⟨ cong (λ # → m / o ∸ # * n) (m/n/o≡m/[n*o]-nsa m o n ) ⟩
   m / o ∸ m / o / n * n             ≡˘⟨ m%n≡m∸m/n*n (m / o) n ⟩
   m / o % n                         ∎
   where instance o*n≢0 = subst NonZero (*-comm n o) n*o≢0
@@ -424,7 +424,7 @@ m%n*o≡m*o%[n*o] m n o ⦃ _ ⦄ ⦃ n*o≢0 ⦄ = begin-equality
 
 [m*n+o]%[p*n]≡[m*n]%[p*n]+o : ∀ m {n o} p ⦃ _ : NonZero (p * n) ⦄ → o < n →
                               (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
-[m*n+o]%[p*n]≡[m*n]%[p*n]+o m {n} {o} p@(suc p∸1) ⦃ p*n≢0 ⦄ o<n = begin-equality
+[m*n+o]%[p*n]≡[m*n]%[p*n]+o m {n} {o} p@(suc p-1) ⦃ p*n≢0 ⦄ o<n = begin-equality
   (mn + o) % pn           ≡⟨ %-distribˡ-+ mn o pn ⟩
   (mn % pn + o % pn) % pn ≡⟨ cong (λ # → (mn % pn + #) % pn) (m<n⇒m%n≡m lem₁) ⟩
   (mn % pn + o) % pn      ≡⟨ m<n⇒m%n≡m lem₃ ⟩
@@ -440,16 +440,16 @@ m%n*o≡m*o%[n*o] m n o ⦃ _ ⦄ ⦃ n*o≢0 ⦄ = begin-equality
     p * o <⟨ *-monoʳ-< p o<n ⟩
     pn    ∎
 
-  lem₂ : mn % pn ≤ p∸1 * n
+  lem₂ : mn % pn ≤ p-1 * n
   lem₂ = begin
     mn % pn     ≡˘⟨ m%n*o≡m*o%[n*o] m p n ⟩
     (m % p) * n ≤⟨ *-monoˡ-≤ n (m<1+n⇒m≤n (m%n<n m p)) ⟩
-    p∸1 * n     ∎
+    p-1 * n     ∎
 
   lem₃ : mn % pn + o < pn
   lem₃ = begin-strict
     mn % pn + o <⟨ +-mono-≤-< lem₂ o<n ⟩
-    p∸1 * n + n ≡⟨ +-comm (p∸1 * n) n ⟩
+    p-1 * n + n ≡⟨ +-comm (p-1 * n) n ⟩
     pn          ∎
 
 ------------------------------------------------------------------------
