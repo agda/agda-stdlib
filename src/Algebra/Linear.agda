@@ -8,4 +8,5 @@
 
 module Algebra.Linear where
 
-open import Algebra.Linear.Bundles public
+open import Algebra.Linear.Bundles    public
+open import Algebra.Linear.Structures public

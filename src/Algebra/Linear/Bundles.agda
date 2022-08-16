@@ -35,22 +35,38 @@ record VectorSpace
 
   field
     _∙_ : V → V → S
-    basisFor      : BasisFor      mod _∙_
     isVectorSpace : IsVectorSpace mod _∙_
 
-  open BasisFor      basisFor      public
   open IsVectorSpace isVectorSpace public
 
+  open Setoid (≈ᴸ-setoid mod ⟨module⟩) public using () renaming
+    ( _≈_ to _≈ᴸ_
+    ; _≉_ to _≉ᴸ_
+    )
+
+record Basis
+  {r ℓr m ℓm   : Level}
+  {ring        : CommutativeRing r ℓr}
+  {mod         : Module ring m ℓm}
+  (vectorSpace : VectorSpace mod)
+  : Set (suc (r ⊔ m ⊔ ℓm))
+  where
+
+  constructor mkBasis
+
+  open VectorSpace vectorSpace public
+
+  field
+    basisFor : BasisFor mod _∙_
+
+  open BasisFor basisFor public
+
   -- Linear maps from vectors to scalars.
+  V⊸S : Set (r ⊔ ℓr ⊔ m ⊔ ℓm)
   V⊸S = LinearMap mod ⟨module⟩
 
   -- Every linear map from a vector to a scalar is equivalent to a vector.
   -- (This is proved in `Isomorphism 1` in `Algebra.Linear.Properties.VectorSpace`.)
   lmToVec : V⊸S → V
   lmToVec lm = vgen (LinearMap.f lm) basisSet
-
-  open Setoid (≈ᴸ-setoid mod ⟨module⟩) public using () renaming
-    ( _≈_ to _≈ᴸ_
-    ; _≉_ to _≉ᴸ_
-    )
 

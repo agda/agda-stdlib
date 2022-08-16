@@ -49,10 +49,10 @@ module _
       ∙-comm      : ∀ {a b}     → a ∙ b ≈ b ∙ a
       ∙-distrib-+ : ∀ {a b c}   → a ∙ (b +ᴹ c)    ≈ (a ∙ b) + (a ∙ c)
       ∙-comm-*ₗ   : ∀ {s} {a b} → a ∙ (s *ₗ b)    ≈ s * (a ∙ b)
-      ∙-comm-*ᵣ   : ∀ {s} {a b} → a ∙ (b *ᵣ s)    ≈ (a ∙ b) * s  -- Prove.
+      ∙-comm-*ᵣ   : ∀ {s} {a b} → a ∙ (b *ᵣ s)    ≈ (a ∙ b) * s
       ∙-congˡ     : ∀ {a b c}   → b ≈ᴹ c → a ∙ b ≈ a ∙ c
-      ∙-congʳ     : ∀ {a b c}   → b ≈ᴹ c → b ∙ a ≈ c ∙ a        -- Prove.
+      ∙-congʳ     : ∀ {a b c}   → b ≈ᴹ c → b ∙ a ≈ c ∙ a
       ∙-idˡ       : ∀ {a}       → 0ᴹ ∙ a ≈ 0#
-      ∙-idʳ       : ∀ {a}       → a ∙ 0ᴹ ≈ 0#                    -- Prove.
+      ∙-idʳ       : ∀ {a}       → a ∙ 0ᴹ ≈ 0#
       ∙-homo-⁻¹    : ∀ {a b}     → a ∙ (-ᴹ b) ≈ - (a ∙ b)
 
