@@ -692,6 +692,52 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
 -- Structures with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------
 
+record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isAbelianGroup : IsAbelianGroup + 0# -_
+    *-cong           : Congruent₂ *
+    identity         : Identity 1# *
+    distrib          : * DistributesOver +
+    zero             : Zero 0# *
+
+  open IsAbelianGroup +-isAbelianGroup public
+    renaming
+    ( assoc                   to +-assoc
+    ; ∙-cong                  to +-cong
+    ; ∙-congˡ                 to +-congˡ
+    ; ∙-congʳ                 to +-congʳ
+    ; identity                to +-identity
+    ; identityˡ               to +-identityˡ
+    ; identityʳ               to +-identityʳ
+    ; inverse                 to -‿inverse
+    ; inverseˡ                to -‿inverseˡ
+    ; inverseʳ                to -‿inverseʳ
+    ; ⁻¹-cong                 to -‿cong
+    ; comm                    to +-comm
+    ; isMagma                 to +-isMagma
+    ; isSemigroup             to +-isSemigroup
+    ; isMonoid                to +-isMonoid
+    ; isUnitalMagma           to +-isUnitalMagma
+    ; isCommutativeMagma      to +-isCommutativeMagma
+    ; isCommutativeMonoid     to +-isCommutativeMonoid
+    ; isCommutativeSemigroup  to +-isCommutativeSemigroup
+    ; isInvertibleMagma       to +-isInvertibleMagma
+    ; isInvertibleUnitalMagma to +-isInvertibleUnitalMagma
+    ; isGroup                 to +-isGroup
+    )
+
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-identityˡ : LeftIdentity 1# *
+  *-identityˡ = proj₁ identity
+
+  *-identityʳ : RightIdentity 1# *
+  *-identityʳ = proj₂ identity
+
 record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
     isQuasiring : IsQuasiring + * 0# 1#
