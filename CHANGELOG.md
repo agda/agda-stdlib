@@ -539,6 +539,9 @@ Non-backwards compatible changes
   * `cantor`
   Furthermore, the direction of interleaving of `cantor` has changed. Precisely, suppose `pair` is the cantor pairing function, then `lookup (pair i j) (cantor xss)` according to the old definition corresponds to `lookup (pair j i) (cantor xss)` according to the new definition. For a concrete example see the one included at the end of the module.
 
+* Removed `m/n/o≡m/[n*o]` from `Data.Nat.Divisibility` and added a more general
+  `m/n/o≡m/[n*o]` to `Data.Nat.DivMod` that doesn't require `n * o ∣ m`.
+
 Major improvements
 ------------------
 
@@ -1386,6 +1389,10 @@ Other minor changes
 
   n≡⌊n+n/2⌋ : n ≡ ⌊ n + n /2⌋
   n≡⌈n+n/2⌉ : n ≡ ⌈ n + n /2⌉
+
+  m<n⇒m<n*o : .{{_ : NonZero o}} → m < n → m < n * o
+  m<n⇒m<o*n : .{{_ : NonZero o}} → m < n → m < o * n
+  ∸-monoˡ-< : m < o → n ≤ m → m ∸ n < o ∸ n
   ```
 
 * Added new functions in `Data.Nat`:
@@ -1395,8 +1402,24 @@ Other minor changes
 
 * Added new proofs in `Data.Nat.DivMod`:
   ```agda
-  m%n≤n          : .{{_ : NonZero n}} → m % n ≤ n
+  m%n≤n           : .{{_ : NonZero n}} → m % n ≤ n
   m*n/m!≡n/[m∸1]! : .{{_ : NonZero m}} → m * n / m ! ≡ n / (pred m) !
+
+  %-congˡ             : .⦃ _ : NonZero o ⦄ → m ≡ n → m % o ≡ n % o
+  %-congʳ             : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ≡ n → o % m ≡ o % n
+  m≤n⇒[n∸m]%m≡n%m     : .⦃ _ : NonZero m ⦄ → m ≤ n → (n ∸ m) % m ≡ n % m
+  m*n≤o⇒[o∸m*n]%n≡o%n : .⦃ _ : NonZero n ⦄ → m * n ≤ o → (o ∸ m * n) % n ≡ o % n
+  m∣n⇒o%n%m≡o%m       : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ∣ n → o % n % m ≡ o % m
+  m<n⇒m%n≡m           : .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
+  m*n/o*n≡m/o         : .⦃ _ : NonZero o ⦄ ⦃ _ : NonZero (o * n) ⦄ → m * n / (o * n) ≡ m / o
+  m<n*o⇒m/o<n         : .⦃ _ : NonZero o ⦄ → m < n * o → m / o < n
+  [m∸n]/n≡m/n∸1       : .⦃ _ : NonZero n ⦄ → (m ∸ n) / n ≡ pred (m / n)
+  [m∸n*o]/o≡m/o∸n     : .⦃ _ : NonZero o ⦄ → (m ∸ n * o) / o ≡ m / o ∸ n
+  m/n/o≡m/[n*o]       : .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄ .⦃ _ : NonZero (n * o) ⦄ → m / n / o ≡ m / (n * o)
+  m%[n*o]/o≡m/o%n     : .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄ ⦃ _ : NonZero (n * o) ⦄ → m % (n * o) / o ≡ m / o % n
+  m%n*o≡m*o%[n*o]     : .⦃ _ : NonZero n ⦄ ⦃ _ : NonZero (n * o) ⦄ → m % n * o ≡ m * o % (n * o)
+
+  [m*n+o]%[p*n]≡[m*n]%[p*n]+o : ⦃ _ : NonZero (p * n) ⦄ → o < n → (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
   ```
 
 * Added new proofs in `Data.Nat.Divisibility`:
