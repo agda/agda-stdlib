@@ -13,7 +13,6 @@ module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
-open import Data.Nat.Properties using (<-irrefl)
 open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
@@ -21,7 +20,6 @@ open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
 open import Relation.Binary.Core
-open import Relation.Binary.Definitions using (Trichotomous; Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous using (IRel)
 
@@ -242,10 +240,6 @@ pred : Fin n → Fin n
 pred zero    = zero
 pred (suc i) = inject₁ i
 
-pred' : Fin (suc (suc n)) → Fin (suc n)
-pred' zero = zero
-pred' (suc i) = i
-
 -- opposite "i" = "n - i" (i.e. the additive inverse).
 
 opposite : Fin n → Fin n
@@ -315,6 +309,7 @@ compare (suc i) (suc j) with compare i j
 ... | less    greatest least = less    (suc greatest) (suc least)
 ... | greater greatest least = greater (suc greatest) (suc least)
 ... | equal   i              = equal   (suc i)
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
