@@ -2156,14 +2156,14 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```
 
-* Added new data to `Data.Fin.Base`
+* Added new set to `Data.Fin.Base`
   ```agda
-  data Ordering' (i : Fin n) : Fin n → Set
+  Ordering' : (i j : Fin n) → Set
   ```
 
 * Added new function to `Data.Fin.Base`
   ```agda
-  compare' : (i j : Fin n) → Ordering' i j
+  compare' : ∀ {n} → Trichotomous _≡_ (_<_ {n})
   ```
 
 * Added new function to `Data.Fin.Properties`
