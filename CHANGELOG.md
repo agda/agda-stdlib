@@ -2156,16 +2156,6 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```
 
-* Added new set to `Data.Fin.Base`
-  ```agda
-  Ordering' : (i j : Fin n) → Set
-  ```
-
-* Added new function to `Data.Fin.Base`
-  ```agda
-  compare' : ∀ {n} → Trichotomous _≡_ (_<_ {n})
-  ```
-
 * Added new function to `Data.Fin.Properties`
   ```agda
   i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j

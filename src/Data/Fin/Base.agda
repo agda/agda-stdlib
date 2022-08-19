@@ -316,19 +316,6 @@ compare (suc i) (suc j) with compare i j
 ... | greater greatest least = greater (suc greatest) (suc least)
 ... | equal   i              = equal   (suc i)
 
-
-Ordering' : (i j : Fin n) → Set
-Ordering' i j = Tri (i < j) (i ≡ j) (i > j)
-
-compare' : ∀ {n} → Trichotomous _≡_ (_<_ {n})
-compare' zero zero = tri≈ (<-irrefl refl) refl (<-irrefl refl)
-compare' zero (suc j) = tri< (s≤s z≤n) (λ ()) λ ()
-compare' (suc i) zero = tri> (λ ()) (λ ()) (s≤s z≤n)
-compare' {suc (suc _)} (suc i) (suc j) with compare' i j
-... | tri<  p<q p≢q ¬p>q = tri< (s≤s p<q) (λ sp≡sq → p≢q (cong pred' sp≡sq)) λ { (s≤s p>q) → ¬p>q p>q }
-... | tri≈ ¬p<q p≡q ¬p>q = tri≈ (λ { (s≤s p<q) → ¬p<q p<q }) (cong suc p≡q)  λ { (s≤s p>q) → ¬p>q p>q }
-... | tri> ¬p<q p≢q  p>q = tri> (λ { (s≤s p<q) → ¬p<q p<q }) (λ sp≡sq → p≢q (cong pred' sp≡sq)) (s≤s p>q)
-
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
