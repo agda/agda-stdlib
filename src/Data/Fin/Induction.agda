@@ -25,6 +25,7 @@ import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.Flip as Flip
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
 import Relation.Binary.Construct.On as On
+open import Relation.Binary.Definitions using (Trichotomous; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
@@ -66,12 +67,12 @@ open WF public using (Acc; acc)
 ≤-Induction P {i} Pi Pᵢ⇒Pᵢ₊₁ {j} j≥i = induct (<-wellFounded _) (compare' i j) j≥i
   where
   induct : ∀ {j} → Acc _<_ j → Ordering' i j → j ≥ i → P j
-  induct {suc j} (acc rs) (less (s≤s i≤j)) _ = Pᵢ⇒Pᵢ₊₁ finB
+  induct {suc j} (acc rs) (tri< (s≤s i≤j) _ _) _ = Pᵢ⇒Pᵢ₊₁ finB
     where
     finB = induct (rs _ (s≤s (subst (ℕ._≤ toℕ j) (sym $ toℕ-inject₁ j) ≤-refl)))
       (compare' i $ inject₁ j) (subst (toℕ i ℕ.≤_) (sym $ toℕ-inject₁ j) i≤j)
-  induct (acc rs) equal i≤j = Pi
-  induct (acc rs) (greater i>sj) i≤j with () ← ≤⇒≯ i≤j i>sj
+  induct (acc rs) (tri≈ _ refl _) i≤j = Pi
+  induct (acc rs) (tri> _ _ i>sj) i≤j with () ← ≤⇒≯ i≤j i>sj
 
 ------------------------------------------------------------------------
 -- Induction over _>_

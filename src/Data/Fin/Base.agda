@@ -13,6 +13,7 @@ module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
+open import Data.Nat.Properties using (<-irrefl)
 open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
@@ -20,6 +21,7 @@ open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
 open import Relation.Binary.Core
+open import Relation.Binary.Definitions using (Trichotomous; Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous using (IRel)
 
@@ -240,6 +242,10 @@ pred : Fin n → Fin n
 pred zero    = zero
 pred (suc i) = inject₁ i
 
+pred' : Fin (suc (suc n)) → Fin (suc n)
+pred' zero = zero
+pred' (suc i) = i
+
 -- opposite "i" = "n - i" (i.e. the additive inverse).
 
 opposite : Fin n → Fin n
@@ -310,19 +316,18 @@ compare (suc i) (suc j) with compare i j
 ... | greater greatest least = greater (suc greatest) (suc least)
 ... | equal   i              = equal   (suc i)
 
-data Ordering' (i : Fin n) : Fin n → Set where
-  less    : ∀ {j} → i < j → Ordering' i j
-  equal   : Ordering' i i
-  greater : ∀ {j} → i > j  → Ordering' i j
 
-compare' : (i j : Fin n) → Ordering' i j
-compare' zero zero = equal
-compare' zero (suc j) = less (s≤s z≤n)
-compare' (suc i) zero = greater (s≤s z≤n)
-compare' (suc i) (suc j) with compare' i j
-... | less p<q = less (s≤s p<q)
-... | equal = equal
-... | greater p>q = greater (s≤s p>q)
+Ordering' : (i j : Fin n) → Set
+Ordering' i j = Tri (i < j) (i ≡ j) (i > j)
+
+compare' : ∀ {n} → Trichotomous _≡_ (_<_ {n})
+compare' zero zero = tri≈ (<-irrefl refl) refl (<-irrefl refl)
+compare' zero (suc j) = tri< (s≤s z≤n) (λ ()) λ ()
+compare' (suc i) zero = tri> (λ ()) (λ ()) (s≤s z≤n)
+compare' {suc (suc _)} (suc i) (suc j) with compare' i j
+... | tri<  p<q p≢q ¬p>q = tri< (s≤s p<q) (λ sp≡sq → p≢q (cong pred' sp≡sq)) λ { (s≤s p>q) → ¬p>q p>q }
+... | tri≈ ¬p<q p≡q ¬p>q = tri≈ (λ { (s≤s p<q) → ¬p<q p<q }) (cong suc p≡q)  λ { (s≤s p>q) → ¬p>q p>q }
+... | tri> ¬p<q p≢q  p>q = tri> (λ { (s≤s p<q) → ¬p<q p<q }) (λ sp≡sq → p≢q (cong pred' sp≡sq)) (s≤s p>q)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
