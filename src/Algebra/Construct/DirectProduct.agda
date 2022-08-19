@@ -256,13 +256,13 @@ commutativeSemiring R S = record
       }
   } where module R = CommutativeSemiring R;  module S = CommutativeSemiring S
 
-kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-kleeneAlgebra K L = record
-  { isKleeneAlgebra = record
+idempotentSemiring : IdempotentSemiring a ℓ₁ → IdempotentSemiring b ℓ₂ → IdempotentSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+idempotentSemiring K L = record
+  { isIdempotentSemiring = record
       { isSemiring = Semiring.isSemiring (semiring K.semiring L.semiring)
       ; +-idem = λ x → (K.+-idem , L.+-idem) <*> x
       }
-  } where module K = KleeneAlgebra K;  module L = KleeneAlgebra L
+  } where module K = IdempotentSemiring K;  module L = IdempotentSemiring L
 
 ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 ring R S = record
