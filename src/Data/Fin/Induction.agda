@@ -59,18 +59,18 @@ open WF public using (Acc; acc)
   induct {suc i} (acc rec) = Pᵢ⇒Pᵢ₊₁ i (induct (rec (inject₁ i) i<i+1))
     where i<i+1 = ℕ<⇒inject₁< (i<1+i i)
 
-≤-Induction : {i : Fin (suc n)} (P : ∀ {j} → i ≤ j → Set ℓ) →
-              P ≤-refl →
-              (∀ {j i≤j} → P {inject₁ j} i≤j → P (≤-inj→suc i≤j)) →
-              ∀ {j} i≤j → P {j} i≤j
-≤-Induction {i = i} P Pi≡i Pᵢ⇒Pᵢ₊₁ = induct (<-wellFounded _) (compare' i _)
+≤-Induction : ∀ (P : Pred (Fin (suc n)) ℓ) {i} →
+              P i →
+              (∀ {i} → P (inject₁ i) → P (suc i)) →
+              ∀ {j} → j ≥ i → P j
+≤-Induction P {i} Pi Pᵢ⇒Pᵢ₊₁ {j} j≥i = induct (<-wellFounded _) (compare' i j) j≥i
   where
-  induct : ∀ {j} → Acc _<_ j → Ordering' i j → ∀ i≤j → P {j} i≤j
-  induct {suc j} (acc rs) (less (s≤s i≤j)) _ = subst P (≤-irrelevant _ _) (Pᵢ⇒Pᵢ₊₁ finB)
+  induct : ∀ {j} → Acc _<_ j → Ordering' i j → j ≥ i → P j
+  induct {suc j} (acc rs) (less (s≤s i≤j)) _ = Pᵢ⇒Pᵢ₊₁ finB
     where
     finB = induct (rs _ (s≤s (subst (ℕ._≤ toℕ j) (sym $ toℕ-inject₁ j) ≤-refl)))
       (compare' i $ inject₁ j) (subst (toℕ i ℕ.≤_) (sym $ toℕ-inject₁ j) i≤j)
-  induct (acc rs) equal i≤j = subst P (≤-irrelevant _ _) Pi≡i
+  induct (acc rs) equal i≤j = Pi
   induct (acc rs) (greater i>sj) i≤j with () ← ≤⇒≯ i≤j i>sj
 
 ------------------------------------------------------------------------
