@@ -2168,13 +2168,13 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new function to `Data.Fin.Properties`
   ```agda
-  ≤-inj→suc : i ≤ inject₁ j → i ≤ suc j
+  i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
   ```
 
 * Added new function to `Data.Fin.Induction`
   ```agda
-  ≤-Induction : {k : Fin (suc n)} (P : ∀ {p} → k ≤ p → Set ℓ)
-    (pk : P ≤-refl)
-    (ps : ∀ {m k≤m} → P {inject₁ m} k≤m → P (≤-inj→suc k≤m))
-    → ∀ {m} k≤m → P {m} k≤m
+  ≤-Induction : ∀ (P : Pred (Fin (suc n)) ℓ) {i} →
+                P i →
+                (∀ {i} → P (inject₁ i) → P (suc i)) →
+                ∀ {j} → j ≥ i → P j
   ```
