@@ -1247,7 +1247,7 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   open RawQuasigroup rawQuasigroup public
-    using (_≈_; //-rawMagma; \\-rawMagma; ∙-rawMagma)
+    using (//-rawMagma; \\-rawMagma; ∙-rawMagma)
 
 record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -1285,7 +1285,7 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
     _\\_    : Op₂ Carrier
     _//_    : Op₂ Carrier
     ε       : Carrier
-    isLoop : IsLoop  _≈_ _∙_ _\\_ _//_ ε
+    isLoop  : IsLoop  _≈_ _∙_ _\\_ _//_ ε
 
   open IsLoop isLoop public
 
