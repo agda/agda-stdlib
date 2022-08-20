@@ -17,17 +17,17 @@ open import Data.Product
 
 cancelˡ : LeftCancellative _∙_
 cancelˡ x {y} {z} eq = begin
-  y ≈⟨ sym( leftDividesʳ x y) ⟩
-  x \\ (x ∙ y) ≈⟨ \\-congˡ eq ⟩
-  x \\ (x ∙ z) ≈⟨ leftDividesʳ x z ⟩
-  z ∎
+  y             ≈⟨ sym( leftDividesʳ x y) ⟩
+  x \\ (x ∙ y)  ≈⟨ \\-congˡ eq ⟩
+  x \\ (x ∙ z)  ≈⟨ leftDividesʳ x z ⟩
+  z             ∎
 
 cancelʳ : RightCancellative _∙_
 cancelʳ {x} y z eq = begin
-  y ≈⟨ sym( rightDividesʳ x y) ⟩
-  (y ∙ x) // x ≈⟨ //-congʳ eq ⟩
-  (z ∙ x) // x ≈⟨ rightDividesʳ x z ⟩
-  z ∎
+  y             ≈⟨ sym( rightDividesʳ x y) ⟩
+  (y ∙ x) // x  ≈⟨ //-congʳ eq ⟩
+  (z ∙ x) // x  ≈⟨ rightDividesʳ x z ⟩
+  z             ∎
 
 cancel : Cancellative _∙_
 cancel = cancelˡ , cancelʳ
