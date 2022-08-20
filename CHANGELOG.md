@@ -1009,6 +1009,11 @@ New modules
   Algebra.Module.Properties
   ```
 
+* Properties of Quasigroup
+  ```
+  Algebra.Properties.Quasigroup
+  ```
+  
 Other minor changes
 -------------------
 
