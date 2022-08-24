@@ -1305,6 +1305,10 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_; ∙-rawMagma; \\-rawMagma; //-rawMagma)
 
 record LeftBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
@@ -1323,6 +1327,10 @@ record LeftBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
     using (quasigroup)
 
 record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
@@ -1341,6 +1349,10 @@ record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
     using (quasigroup)
 
 record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
@@ -1360,6 +1372,10 @@ record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
   field
     Carrier         : Set c
     _≈_             : Rel Carrier ℓ
