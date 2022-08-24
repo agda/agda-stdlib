@@ -24,7 +24,7 @@ alternativeʳ : RightAlternative _∙_
 alternativeʳ x y = sym (assoc x y y)
 
 alternative : Alternative _∙_
-alternative = leftAlternative , rightAlternative
+alternative = alternativeˡ , alternativeʳ
 
 flexible : Flexible _∙_
 flexible x y = assoc x y x
