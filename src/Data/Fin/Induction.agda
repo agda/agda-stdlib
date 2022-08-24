@@ -60,19 +60,20 @@ open WF public using (Acc; acc)
   induct {suc i} (acc rec) = Pᵢ⇒Pᵢ₊₁ i (induct (rec (inject₁ i) i<i+1))
     where i<i+1 = ℕ<⇒inject₁< (i<1+i i)
 
-≤-Induction : ∀ (P : Pred (Fin (suc n)) ℓ) {i} →
+<-weakInduction-arbitraryStart : ∀ (P : Pred (Fin (suc n)) ℓ) {i} →
               P i →
               (∀ {i} → P (inject₁ i) → P (suc i)) →
               ∀ {j} → j ≥ i → P j
-≤-Induction P {i} Pi Pᵢ⇒Pᵢ₊₁ {j} j≥i = induct (<-wellFounded _) (<-cmp i j) j≥i
+<-weakInduction-arbitraryStart P {i} Pi Pᵢ⇒Pᵢ₊₁ {j} j≥i = induct (<-wellFounded _) (<-cmp i j) j≥i
   where
   induct : ∀ {j} → Acc _<_ j → Tri (i < j) (i ≡ j) (i > j) → j ≥ i → P j
-  induct {suc j} (acc rs) (tri< (s≤s i≤j) _ _) _ = Pᵢ⇒Pᵢ₊₁ finB
-    where
-    finB = induct (rs _ (s≤s (subst (ℕ._≤ toℕ j) (sym $ toℕ-inject₁ j) ≤-refl)))
-      (<-cmp i $ inject₁ j) (subst (toℕ i ℕ.≤_) (sym $ toℕ-inject₁ j) i≤j)
   induct (acc rs) (tri≈ _ refl _) i≤j = Pi
   induct (acc rs) (tri> _ _ i>sj) i≤j with () ← ≤⇒≯ i≤j i>sj
+  induct {suc j} (acc rs) (tri< (s≤s i≤j) _ _) _ = Pᵢ⇒Pᵢ₊₁ P[1+j]
+    where
+    toℕj≡toℕinjJ = sym $ toℕ-inject₁ j
+    P[1+j] = induct (rs _ (s≤s (subst (ℕ._≤ toℕ j) toℕj≡toℕinjJ ≤-refl)))
+      (<-cmp i $ inject₁ j) (subst (toℕ i ℕ.≤_) toℕj≡toℕinjJ i≤j)
 
 ------------------------------------------------------------------------
 -- Induction over _>_
