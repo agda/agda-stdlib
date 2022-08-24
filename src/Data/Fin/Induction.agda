@@ -49,17 +49,6 @@ open WF public using (Acc; acc)
 <-wellFounded : WellFounded {A = Fin n} _<_
 <-wellFounded = On.wellFounded toℕ ℕ.<-wellFounded
 
-<-weakInduction : (P : Pred (Fin (suc n)) ℓ) →
-                  P zero →
-                  (∀ i → P (inject₁ i) → P (suc i)) →
-                  ∀ i → P i
-<-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁ i = induct (<-wellFounded i)
-  where
-  induct : ∀ {i} → Acc _<_ i → P i
-  induct {zero}  _         = P₀
-  induct {suc i} (acc rec) = Pᵢ⇒Pᵢ₊₁ i (induct (rec (inject₁ i) i<i+1))
-    where i<i+1 = ℕ<⇒inject₁< (i<1+i i)
-
 <-weakInduction-arbitraryStart : ∀ (P : Pred (Fin (suc n)) ℓ) {i} →
                                  P i →
                                  (∀ {i} → P (inject₁ i) → P (suc i)) →
@@ -74,6 +63,13 @@ open WF public using (Acc; acc)
     toℕj≡toℕinjJ = sym $ toℕ-inject₁ j
     P[1+j] = induct (rs _ (s≤s (subst (ℕ._≤ toℕ j) toℕj≡toℕinjJ ≤-refl)))
       (<-cmp i $ inject₁ j) (subst (toℕ i ℕ.≤_) toℕj≡toℕinjJ i≤j)
+
+<-weakInduction : (P : Pred (Fin (suc n)) ℓ) →
+                  P zero →
+                  (∀ i → P (inject₁ i) → P (suc i)) →
+                  ∀ i → P i
+<-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁ i = <-weakInduction-arbitraryStart P P₀ (Pᵢ⇒Pᵢ₊₁ _) ℕ.z≤n
+
 
 ------------------------------------------------------------------------
 -- Induction over _>_
