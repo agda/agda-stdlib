@@ -1412,6 +1412,9 @@ Other minor changes
   ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
   ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
 
+  _≥?_ : Decidable _≥_
+  _>?_ : Decidable _>_
+
   +-*-rawNearSemiring                 : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring                     : RawSemiring 0ℓ 0ℓ
   toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
@@ -1436,6 +1439,9 @@ Other minor changes
   +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
 
   ≰⇒≥ : _≰_ ⇒ _≥_
+
+  _≥?_ : Decidable _≥_
+  _>?_ : Decidable _>_
 
   *-mono-≤-nonNeg   : .{{_ : NonNegative p}} .{{_ : NonNegative r}} → p ≤ q → r ≤ s → p * r ≤ q * s
   *-mono-<-nonNeg   : .{{_ : NonNegative p}} .{{_ : NonNegative r}} → p < q → r < s → p * r < q * s
