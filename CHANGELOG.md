@@ -1096,6 +1096,16 @@ Other minor changes
   loop : Loop a ℓ₁ → Loop b ℓ₂ → Loop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   idempotentSemiring : IdempotentSemiring a ℓ₁ → IdempotentSemiring b ℓ₂ → 
                        IdempotentSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  idempotentMagma : IdempotentMagma a ℓ₁ → IdempotentMagma b ℓ₂ →
+                    IdempotentMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  alternativeMagma : AlternativeMagma a ℓ₁ → AlternativeMagma b ℓ₂ → 
+                     AlternativeMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  flexibleMagma : FlexibleMagma a ℓ₁ → FlexibleMagma b ℓ₂ → 
+                  FlexibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  medialMagma : MedialMagma a ℓ₁ → MedialMagma b ℓ₂ → MedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  semimedialMagma : SemimedialMagma a ℓ₁ → SemimedialMagma b ℓ₂ → 
+                    SemimedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
 * Added new definition to `Algebra.Definitions`:
