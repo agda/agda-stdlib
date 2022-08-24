@@ -1357,3 +1357,22 @@ record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open LeftBolLoop leftBolLoop public
     using (loop)
+
+
+record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
+  field
+    Carrier         : Set c
+    _≈_             : Rel Carrier ℓ
+    _∙_             : Op₂ Carrier
+    _\\_            : Op₂ Carrier
+    _//_            : Op₂ Carrier
+    ε               : Carrier
+    isMiddleBolLoop : IsMiddleBolLoop  _≈_ _∙_ _\\_ _//_ ε
+
+  open IsMiddleBolLoop isMiddleBolLoop public
+
+  loop : Loop _ _
+  loop = record { isLoop = isLoop }
+
+  open Loop loop public
+    using (quasigroup)
