@@ -94,11 +94,11 @@ record IsSemimedialMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsMagma isMagma public
 
-  leftSemimedial : LeftSemimedial ∙
-  leftSemimedial = proj₁ semiMedial
+  semimedialˡ : LeftSemimedial ∙
+  semimedialˡ = proj₁ semiMedial
 
-  rightSemimedial : RightSemimedial ∙
-  rightSemimedial = proj₂ semiMedial
+  semimedialʳ : RightSemimedial ∙
+  semimedialʳ = proj₂ semiMedial
 
 record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
