@@ -539,6 +539,9 @@ Non-backwards compatible changes
   * `cantor`
   Furthermore, the direction of interleaving of `cantor` has changed. Precisely, suppose `pair` is the cantor pairing function, then `lookup (pair i j) (cantor xss)` according to the old definition corresponds to `lookup (pair j i) (cantor xss)` according to the new definition. For a concrete example see the one included at the end of the module.
 
+* Removed `m/n/o≡m/[n*o]` from `Data.Nat.Divisibility` and added a more general
+  `m/n/o≡m/[n*o]` to `Data.Nat.DivMod` that doesn't require `n * o ∣ m`.
+
 Major improvements
 ------------------
 
@@ -1031,6 +1034,7 @@ Other minor changes
   record RawLoop  c ℓ : Set (suc (c ⊔ ℓ))
   record Loop  c ℓ : Set (suc (c ⊔ ℓ))
   record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ))
+  record IdempotentSemiring c ℓ : Set (suc (c ⊔ ℓ))
   record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ))
   record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ))
   record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -1043,6 +1047,7 @@ Other minor changes
   record LeftBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ))
+  record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -1088,8 +1093,18 @@ Other minor changes
                           InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   quasigroup : Quasigroup a ℓ₁ → Quasigroup b ℓ₂ → Quasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   loop : Loop a ℓ₁ → Loop b ℓ₂ → Loop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ →
-                  KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  idempotentSemiring : IdempotentSemiring a ℓ₁ → IdempotentSemiring b ℓ₂ → 
+                       IdempotentSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  idempotentMagma : IdempotentMagma a ℓ₁ → IdempotentMagma b ℓ₂ →
+                    IdempotentMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  alternativeMagma : AlternativeMagma a ℓ₁ → AlternativeMagma b ℓ₂ → 
+                     AlternativeMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  flexibleMagma : FlexibleMagma a ℓ₁ → FlexibleMagma b ℓ₂ → 
+                  FlexibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  medialMagma : MedialMagma a ℓ₁ → MedialMagma b ℓ₂ → MedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  semimedialMagma : SemimedialMagma a ℓ₁ → SemimedialMagma b ℓ₂ → 
+                    SemimedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
 * Added new definition to `Algebra.Definitions`:
@@ -1104,6 +1119,12 @@ Other minor changes
   LeftInvertible  e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e
   RightInvertible e _∙_ x = ∃[ x⁻¹ ] (x ∙ x⁻¹) ≈ e
   Invertible      e _∙_ x = ∃[ x⁻¹ ] ((x⁻¹ ∙ x) ≈ e) × ((x ∙ x⁻¹) ≈ e)
+  StarRightExpansive e _+_ _∙_ _⁻* = ∀ x → (e + (x ∙ (x ⁻*))) ≈ (x ⁻*)
+  StarLeftExpansive e _+_ _∙_ _⁻* = ∀ x →  (e + ((x ⁻*) ∙ x)) ≈ (x ⁻*)
+  StarExpansive e _+_ _∙_ _* = (StarLeftExpansive e _+_ _∙_ _*) × (StarRightExpansive e _+_ _∙_ _*)
+  StarLeftDestructive _+_ _∙_ _* = ∀ a b x → (b + (a ∙ x)) ≈ x → ((a *) ∙ b) ≈ x
+  StarRightDestructive _+_ _∙_ _* = ∀ a b x → (b + (x ∙ a)) ≈ x → (b ∙ (a *)) ≈ x
+  StarDestructive _+_ _∙_ _* = (StarLeftDestructive _+_ _∙_ _*) × (StarRightDestructive _+_ _∙_ _*)
   LeftAlternative _∙_ = ∀ x y  →  ((x ∙ x) ∙ y) ≈ (x ∙ (y ∙ y))
   RightAlternative _∙_ = ∀ x y → (x ∙ (y ∙ y)) ≈ ((x ∙ y) ∙ y)
   Alternative _∙_ = (LeftAlternative _∙_ ) × (RightAlternative _∙_)
@@ -1151,9 +1172,10 @@ Other minor changes
   record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ)
   record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ)
-  record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
-  record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
-  record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   record IsIdempotentMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   record IsAlternativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   record IsFlexibleMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
@@ -1162,6 +1184,7 @@ Other minor changes
   record IsLeftBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsRightBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) 
   record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
+  record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -1382,6 +1405,10 @@ Other minor changes
 
   n≡⌊n+n/2⌋ : n ≡ ⌊ n + n /2⌋
   n≡⌈n+n/2⌉ : n ≡ ⌈ n + n /2⌉
+
+  m<n⇒m<n*o : .{{_ : NonZero o}} → m < n → m < n * o
+  m<n⇒m<o*n : .{{_ : NonZero o}} → m < n → m < o * n
+  ∸-monoˡ-< : m < o → n ≤ m → m ∸ n < o ∸ n
   ```
 
 * Added new functions in `Data.Nat`:
@@ -1391,8 +1418,24 @@ Other minor changes
 
 * Added new proofs in `Data.Nat.DivMod`:
   ```agda
-  m%n≤n          : .{{_ : NonZero n}} → m % n ≤ n
+  m%n≤n           : .{{_ : NonZero n}} → m % n ≤ n
   m*n/m!≡n/[m∸1]! : .{{_ : NonZero m}} → m * n / m ! ≡ n / (pred m) !
+
+  %-congˡ             : .⦃ _ : NonZero o ⦄ → m ≡ n → m % o ≡ n % o
+  %-congʳ             : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ≡ n → o % m ≡ o % n
+  m≤n⇒[n∸m]%m≡n%m     : .⦃ _ : NonZero m ⦄ → m ≤ n → (n ∸ m) % m ≡ n % m
+  m*n≤o⇒[o∸m*n]%n≡o%n : .⦃ _ : NonZero n ⦄ → m * n ≤ o → (o ∸ m * n) % n ≡ o % n
+  m∣n⇒o%n%m≡o%m       : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ∣ n → o % n % m ≡ o % m
+  m<n⇒m%n≡m           : .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
+  m*n/o*n≡m/o         : .⦃ _ : NonZero o ⦄ ⦃ _ : NonZero (o * n) ⦄ → m * n / (o * n) ≡ m / o
+  m<n*o⇒m/o<n         : .⦃ _ : NonZero o ⦄ → m < n * o → m / o < n
+  [m∸n]/n≡m/n∸1       : .⦃ _ : NonZero n ⦄ → (m ∸ n) / n ≡ pred (m / n)
+  [m∸n*o]/o≡m/o∸n     : .⦃ _ : NonZero o ⦄ → (m ∸ n * o) / o ≡ m / o ∸ n
+  m/n/o≡m/[n*o]       : .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄ .⦃ _ : NonZero (n * o) ⦄ → m / n / o ≡ m / (n * o)
+  m%[n*o]/o≡m/o%n     : .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄ ⦃ _ : NonZero (n * o) ⦄ → m % (n * o) / o ≡ m / o % n
+  m%n*o≡m*o%[n*o]     : .⦃ _ : NonZero n ⦄ ⦃ _ : NonZero (n * o) ⦄ → m % n * o ≡ m * o % (n * o)
+
+  [m*n+o]%[p*n]≡[m*n]%[p*n]+o : ⦃ _ : NonZero (p * n) ⦄ → o < n → (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
   ```
 
 * Added new proofs in `Data.Nat.Divisibility`:
