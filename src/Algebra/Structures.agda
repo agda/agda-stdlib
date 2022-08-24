@@ -67,11 +67,11 @@ record IsAlternativeMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsMagma isMagma public
 
-  leftAlternative : LeftAlternative ∙
-  leftAlternative = proj₁ alter
+  alternativeˡ : LeftAlternative ∙
+  alternativeˡ = proj₁ alter
 
-  rightAlternative : RightAlternative ∙
-  rightAlternative = proj₂ alter
+  alternativeʳ : RightAlternative ∙
+  alternativeʳ = proj₂ alter
 
 record IsFlexibleMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field

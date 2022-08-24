@@ -117,8 +117,8 @@ alternativeMagma : AlternativeMagma a ℓ₁ → AlternativeMagma b ℓ₂ → A
 alternativeMagma G H = record
   { isAlternativeMagma = record
     { isMagma = Magma.isMagma (magma G.magma H.magma)
-    ; alter = (λ x y → G.leftAlternative , H.leftAlternative <*> x <*> y)
-            , (λ x y → G.rightAlternative , H.rightAlternative <*> x <*> y)
+    ; alter = (λ x y → G.alternativeˡ , H.alternativeˡ <*> x <*> y)
+            , (λ x y → G.alternativeʳ , H.alternativeʳ <*> x <*> y)
     }
   } where module G = AlternativeMagma G; module H = AlternativeMagma H
 
