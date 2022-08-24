@@ -142,8 +142,8 @@ semimedialMagma : SemimedialMagma a ℓ₁ → SemimedialMagma b ℓ₂ → Semi
 semimedialMagma G H = record
   { isSemimedialMagma = record
     { isMagma = Magma.isMagma (magma G.magma H.magma)
-    ; semiMedial = (λ x y z → G.leftSemimedial , H.leftSemimedial <*> x <*> y <*> z)
-                 , ((λ x y z → G.rightSemimedial , H.rightSemimedial <*> x <*> y <*> z))
+    ; semiMedial = (λ x y z → G.semimedialˡ , H.semimedialˡ <*> x <*> y <*> z)
+                 , ((λ x y z → G.semimedialʳ , H.semimedialʳ <*> x <*> y <*> z))
     }
   } where module G = SemimedialMagma G; module H = SemimedialMagma H
 
