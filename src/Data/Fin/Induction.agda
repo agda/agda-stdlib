@@ -49,16 +49,16 @@ open WF public using (Acc; acc)
 <-wellFounded : WellFounded {A = Fin n} _<_
 <-wellFounded = On.wellFounded toℕ ℕ.<-wellFounded
 
-<-weakInduction-arbitraryStart : ∀ (P : Pred (Fin (suc n)) ℓ) {i} →
-                                 P i →
-                                 (∀ {i} → P (inject₁ i) → P (suc i)) →
-                                 ∀ {j} → j ≥ i → P j
-<-weakInduction-arbitraryStart P {i} Pi Pᵢ⇒Pᵢ₊₁ {j} j≥i = induct (<-wellFounded _) (<-cmp i j) j≥i
+<-weakInduction-startingFrom : ∀ (P : Pred (Fin (suc n)) ℓ) →
+                               ∀ {i} → P i →
+                               (∀ j → P (inject₁ j) → P (suc j)) →
+                               ∀ {j} → j ≥ i → P j
+<-weakInduction-startingFrom P {i} Pi Pᵢ⇒Pᵢ₊₁ {j} j≥i = induct (<-wellFounded _) (<-cmp i j) j≥i
   where
   induct : ∀ {j} → Acc _<_ j → Tri (i < j) (i ≡ j) (i > j) → j ≥ i → P j
   induct (acc rs) (tri≈ _ refl _) i≤j = Pi
   induct (acc rs) (tri> _ _ i>sj) i≤j with () ← ≤⇒≯ i≤j i>sj
-  induct {suc j} (acc rs) (tri< (s≤s i≤j) _ _) _ = Pᵢ⇒Pᵢ₊₁ P[1+j]
+  induct {suc j} (acc rs) (tri< (s≤s i≤j) _ _) _ = Pᵢ⇒Pᵢ₊₁ j P[1+j]
     where
     toℕj≡toℕinjJ = sym $ toℕ-inject₁ j
     P[1+j] = induct (rs _ (s≤s (subst (ℕ._≤ toℕ j) toℕj≡toℕinjJ ≤-refl)))
@@ -68,7 +68,7 @@ open WF public using (Acc; acc)
                   P zero →
                   (∀ i → P (inject₁ i) → P (suc i)) →
                   ∀ i → P i
-<-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁ i = <-weakInduction-arbitraryStart P P₀ (Pᵢ⇒Pᵢ₊₁ _) ℕ.z≤n
+<-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁ i = <-weakInduction-startingFrom P P₀ Pᵢ⇒Pᵢ₊₁ ℕ.z≤n
 
 
 ------------------------------------------------------------------------

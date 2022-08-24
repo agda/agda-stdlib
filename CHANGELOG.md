@@ -2206,8 +2206,5 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new function to `Data.Fin.Induction`
   ```agda
-  <-weakInduction-arbitraryStart : ∀ (P : Pred (Fin (suc n)) ℓ) {i} →
-                                     P i →
-                                     (∀ {i} → P (inject₁ i) → P (suc i)) →
-                                     ∀ {j} → j ≥ i → P j
+  <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
