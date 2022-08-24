@@ -61,9 +61,9 @@ open WF public using (Acc; acc)
     where i<i+1 = ℕ<⇒inject₁< (i<1+i i)
 
 <-weakInduction-arbitraryStart : ∀ (P : Pred (Fin (suc n)) ℓ) {i} →
-              P i →
-              (∀ {i} → P (inject₁ i) → P (suc i)) →
-              ∀ {j} → j ≥ i → P j
+                                 P i →
+                                 (∀ {i} → P (inject₁ i) → P (suc i)) →
+                                 ∀ {j} → j ≥ i → P j
 <-weakInduction-arbitraryStart P {i} Pi Pᵢ⇒Pᵢ₊₁ {j} j≥i = induct (<-wellFounded _) (<-cmp i j) j≥i
   where
   induct : ∀ {j} → Acc _<_ j → Tri (i < j) (i ≡ j) (i > j) → j ≥ i → P j
