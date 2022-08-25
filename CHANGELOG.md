@@ -1008,6 +1008,10 @@ New modules
   Algebra.Module.Morphism.ModuleHomomorphism
   Algebra.Module.Properties
   ```
+* Properties of MoufangLoop
+  ```
+  Algebra.Properties.MoufangLoop
+  ```
 
 * Properties of Quasigroup
   ```
