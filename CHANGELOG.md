@@ -1013,6 +1013,11 @@ New modules
   Algebra.Properties.MoufangLoop
   ```
 
+* Properties of Quasigroup
+  ```
+  Algebra.Properties.Quasigroup
+  ```
+  
 Other minor changes
 -------------------
 
