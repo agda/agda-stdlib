@@ -205,7 +205,10 @@ Semimedial : Op₂ A → Set _
 Semimedial _∙_ = (LeftSemimedial _∙_) × (RightSemimedial _∙_)
 
 LeftBol : Op₂ A → Set _
-LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ z)) ∙ z )
+LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ x)) ∙ z )
 
 RightBol : Op₂ A → Set _
 RightBol _∙_ = ∀ x y z → (((z ∙ x) ∙ y) ∙ x) ≈ (z ∙ ((x ∙ y) ∙ x))
+
+Identical : Op₂ A → Set _
+Identical _∙_ = ∀ x y z → ((z ∙ x) ∙ (y ∙ z)) ≈ (z ∙ ((x ∙ y) ∙ z))
