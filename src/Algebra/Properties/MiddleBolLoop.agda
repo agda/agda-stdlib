@@ -45,6 +45,12 @@ y≈xz x y z eq = begin
   x \\ (x ∙ y) ≈⟨ \\-congˡ eq ⟩
   x \\ z ∎
 
+x≈z/y : ∀ x y z → x ∙ y ≈ z → x ≈ z // y
+x≈z/y x y z eq = begin
+  x ≈⟨ sym (rightDividesʳ y x) ⟩
+  (x ∙ y) // y ≈⟨ //-congʳ eq ⟩
+  z // y ∎
+
 xyx\x≈y\x : ∀ x y → x ∙ ((y ∙ x) \\ x) ≈ y \\ x
 xyx\x≈y\x x y = begin
   x ∙ ((y ∙ x) \\ x)  ≈⟨ middleBol x y x ⟩
