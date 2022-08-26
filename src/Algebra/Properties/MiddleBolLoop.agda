@@ -39,8 +39,8 @@ x/ε≈x x = begin
  (x // ε) ∙ ε ≈⟨ rightDividesˡ ε x ⟩
  x ∎
 
-y≈xz : ∀ x y z → x ∙ y ≈ z → y ≈ x \\ z
-y≈xz x y z eq = begin
+y≈x\z : ∀ x y z → x ∙ y ≈ z → y ≈ x \\ z
+y≈x\z x y z eq = begin
   y ≈⟨ sym (leftDividesʳ x y) ⟩
   x \\ (x ∙ y) ≈⟨ \\-congˡ eq ⟩
   x \\ z ∎
