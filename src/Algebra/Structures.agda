@@ -23,7 +23,9 @@ open import Algebra.Core
 open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product using (_,_; proj₁; proj₂)
+open import Function.Base using (flip; λ-)
 open import Level using (_⊔_)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation
@@ -797,6 +799,16 @@ record IsCommutativeRing
     ; *-isCommutativeSemigroup
     ; *-isCommutativeMonoid
     )
+
+record IsField
+         (+ _*_ : Op₂ A) (- : Op₁ A) (0# 1# : A)
+         (_⁻¹_ : (x : A) → (x ≢ 0#) → A)
+         : Set (a ⊔ ℓ) where
+  field
+    isCommutativeRing : IsCommutativeRing + _*_ - 0# 1#
+    *-inverse         : (x : A) → (p : x ≢ 0#) → (x * (x ⁻¹ p)) ≈ 1#
+
+  open IsCommutativeRing isCommutativeRing public
 
 ------------------------------------------------------------------------
 -- Structures with 3 binary operations
