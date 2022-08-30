@@ -1370,7 +1370,6 @@ record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ)) where
   open LeftBolLoop leftBolLoop public
     using (loop)
 
-
 record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infixl 7 _\\_
