@@ -498,9 +498,13 @@ private
 ≤-total : Total _≤_
 ≤-total p q = [ inj₁ ∘ *≤* , inj₂ ∘ *≤* ]′ (ℤ.≤-total (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p))
 
-infix 4 _≤?_
+infix 4 _≤?_ _≥?_
+
 _≤?_ : Decidable _≤_
 p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
+
+_≥?_ : Decidable _≥_
+_≥?_ = flip _≤?_
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant (*≤* p≤q₁) (*≤* p≤q₂) = cong *≤* (ℤ.≤-irrelevant p≤q₁ p≤q₂)
@@ -641,10 +645,13 @@ toℚᵘ-isOrderMonomorphism-< = record
 <-trans : Transitive _<_
 <-trans p<q = ≤-<-trans (<⇒≤ p<q)
 
-infix 4 _<?_
+infix 4 _<?_ _>?_
 
 _<?_ : Decidable _<_
 p <? q = Dec.map′ *<* drop-*<* ((↥ p ℤ.* ↧ q) ℤ.<? (↥ q ℤ.* ↧ p))
+
+_>?_ : Decidable _>_
+_>?_ = flip _<?_
 
 <-cmp : Trichotomous _≡_ _<_
 <-cmp p q with ℤ.<-cmp (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
