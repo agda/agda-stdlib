@@ -1477,6 +1477,9 @@ Other minor changes
   ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
   ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
 
+  _≥?_ : Decidable _≥_
+  _>?_ : Decidable _>_
+
   +-*-rawNearSemiring                 : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring                     : RawSemiring 0ℓ 0ℓ
   toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
@@ -1501,6 +1504,9 @@ Other minor changes
   +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
 
   ≰⇒≥ : _≰_ ⇒ _≥_
+
+  _≥?_ : Decidable _≥_
+  _>?_ : Decidable _>_
 
   *-mono-≤-nonNeg   : .{{_ : NonNegative p}} .{{_ : NonNegative r}} → p ≤ q → r ≤ s → p * r ≤ q * s
   *-mono-<-nonNeg   : .{{_ : NonNegative p}} .{{_ : NonNegative r}} → p < q → r < s → p * r < q * s
@@ -1707,6 +1713,7 @@ Other minor changes
 
   whenJust  : Maybe A → (A → IO ⊤) → IO ⊤
   untilJust : IO (Maybe A) → IO A
+  untilRight : (A → IO (A ⊎ B)) → A → IO B
   ```
 
 * Added new functions in `Reflection.AST.Term`:
@@ -2213,4 +2220,14 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added new isomorphisms to `Function.Properties.Inverse`:
   ```agda
   ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
+  ```
+
+* Added new function to `Data.Fin.Properties`
+  ```agda
+  i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
+  ```
+
+* Added new function to `Data.Fin.Induction`
+  ```agda
+  <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
