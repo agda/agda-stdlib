@@ -1706,6 +1706,7 @@ Other minor changes
 
   whenJust  : Maybe A → (A → IO ⊤) → IO ⊤
   untilJust : IO (Maybe A) → IO A
+  untilRight : (A → IO (A ⊎ B)) → A → IO B
   ```
 
 * Added new functions in `Reflection.AST.Term`:
