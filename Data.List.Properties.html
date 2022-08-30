@@ -215,16 +215,16 @@
     <a id="7743" class="Symbol">;</a> <a id="7745" href="Algebra.Structures.html#1207" class="Field">∙-cong</a>        <a id="7759" class="Symbol">=</a> <a id="7761" href="Relation.Binary.PropositionalEquality.Core.html#1367" class="Function">cong₂</a> <a id="7767" href="Data.List.Base.html#1825" class="Function Operator">_++_</a>
     <a id="7776" class="Symbol">}</a>
 
-  <a id="7781" href="Data.List.Properties.html#7781" class="Function">++-isSemigroup</a> <a id="7796" class="Symbol">:</a> <a id="7798" href="Algebra.Structures.html#2817" class="Record">IsSemigroup</a> <a id="7810" href="Data.List.Base.html#1825" class="Function Operator">_++_</a>
+  <a id="7781" href="Data.List.Properties.html#7781" class="Function">++-isSemigroup</a> <a id="7796" class="Symbol">:</a> <a id="7798" href="Algebra.Structures.html#2789" class="Record">IsSemigroup</a> <a id="7810" href="Data.List.Base.html#1825" class="Function Operator">_++_</a>
   <a id="7817" href="Data.List.Properties.html#7781" class="Function">++-isSemigroup</a> <a id="7832" class="Symbol">=</a> <a id="7834" class="Keyword">record</a>
-    <a id="7845" class="Symbol">{</a> <a id="7847" href="Algebra.Structures.html#2873" class="Field">isMagma</a> <a id="7855" class="Symbol">=</a> <a id="7857" href="Data.List.Properties.html#7655" class="Function">++-isMagma</a>
-    <a id="7872" class="Symbol">;</a> <a id="7874" href="Algebra.Structures.html#2897" class="Field">assoc</a>   <a id="7882" class="Symbol">=</a> <a id="7884" href="Data.List.Properties.html#5518" class="Function">++-assoc</a>
+    <a id="7845" class="Symbol">{</a> <a id="7847" href="Algebra.Structures.html#2845" class="Field">isMagma</a> <a id="7855" class="Symbol">=</a> <a id="7857" href="Data.List.Properties.html#7655" class="Function">++-isMagma</a>
+    <a id="7872" class="Symbol">;</a> <a id="7874" href="Algebra.Structures.html#2869" class="Field">assoc</a>   <a id="7882" class="Symbol">=</a> <a id="7884" href="Data.List.Properties.html#5518" class="Function">++-assoc</a>
     <a id="7897" class="Symbol">}</a>
 
-  <a id="7902" href="Data.List.Properties.html#7902" class="Function">++-isMonoid</a> <a id="7914" class="Symbol">:</a> <a id="7916" href="Algebra.Structures.html#3894" class="Record">IsMonoid</a> <a id="7925" href="Data.List.Base.html#1825" class="Function Operator">_++_</a> <a id="7930" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>
+  <a id="7902" href="Data.List.Properties.html#7902" class="Function">++-isMonoid</a> <a id="7914" class="Symbol">:</a> <a id="7916" href="Algebra.Structures.html#3866" class="Record">IsMonoid</a> <a id="7925" href="Data.List.Base.html#1825" class="Function Operator">_++_</a> <a id="7930" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>
   <a id="7935" href="Data.List.Properties.html#7902" class="Function">++-isMonoid</a> <a id="7947" class="Symbol">=</a> <a id="7949" class="Keyword">record</a>
-    <a id="7960" class="Symbol">{</a> <a id="7962" href="Algebra.Structures.html#3955" class="Field">isSemigroup</a> <a id="7974" class="Symbol">=</a> <a id="7976" href="Data.List.Properties.html#7781" class="Function">++-isSemigroup</a>
-    <a id="7995" class="Symbol">;</a> <a id="7997" href="Algebra.Structures.html#3987" class="Field">identity</a>    <a id="8009" class="Symbol">=</a> <a id="8011" href="Data.List.Properties.html#5833" class="Function">++-identity</a>
+    <a id="7960" class="Symbol">{</a> <a id="7962" href="Algebra.Structures.html#3927" class="Field">isSemigroup</a> <a id="7974" class="Symbol">=</a> <a id="7976" href="Data.List.Properties.html#7781" class="Function">++-isSemigroup</a>
+    <a id="7995" class="Symbol">;</a> <a id="7997" href="Algebra.Structures.html#3959" class="Field">identity</a>    <a id="8009" class="Symbol">=</a> <a id="8011" href="Data.List.Properties.html#5833" class="Function">++-identity</a>
     <a id="8027" class="Symbol">}</a>
 
 <a id="8030" class="Keyword">module</a> <a id="8037" href="Data.List.Properties.html#8037" class="Module">_</a> <a id="8039" class="Symbol">(</a><a id="8040" href="Data.List.Properties.html#8040" class="Bound">A</a> <a id="8042" class="Symbol">:</a> <a id="8044" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="8048" href="Data.List.Properties.html#2003" class="Generalizable">a</a><a id="8049" class="Symbol">)</a> <a id="8051" class="Keyword">where</a>
