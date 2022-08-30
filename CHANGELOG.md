@@ -2214,3 +2214,13 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
   ```
+
+* Added new function to `Data.Fin.Properties`
+  ```agda
+  i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
+  ```
+
+* Added new function to `Data.Fin.Induction`
+  ```agda
+  <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
+  ```
