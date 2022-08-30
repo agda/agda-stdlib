@@ -168,17 +168,10 @@ Non-backwards compatible changes
 
 * The switch to the new function hierarchy is complete and the following definitions
   now use the new definitions instead of the old ones:
-  * `Algebra.Lattice.Bundles`
   * `Algebra.Lattice.Properties.BooleanAlgebra`
   * `Algebra.Properties.CommutativeMonoid.Sum`
   * `Algebra.Properties.Lattice`
     * `replace-equality`
-  * --`Data.Bool.Properties`
-    * --`⇔→≡`
-    * --`T-≡`
-    * --`T-not-≡`
-    * --`T-∧`
-    * --`T-∨`
   * `Data.Fin.Properties`
     * `∀-cons-⇔`
     * `⊎⇔∃`
