@@ -117,8 +117,8 @@ alternativeMagma : AlternativeMagma a ℓ₁ → AlternativeMagma b ℓ₂ → A
 alternativeMagma G H = record
   { isAlternativeMagma = record
     { isMagma = Magma.isMagma (magma G.magma H.magma)
-    ; alter = (λ x y → G.leftAlternative , H.leftAlternative <*> x <*> y)
-            , (λ x y → G.rightAlternative , H.rightAlternative <*> x <*> y)
+    ; alter = (λ x y → G.alternativeˡ , H.alternativeˡ <*> x <*> y)
+            , (λ x y → G.alternativeʳ , H.alternativeʳ <*> x <*> y)
     }
   } where module G = AlternativeMagma G; module H = AlternativeMagma H
 
@@ -142,8 +142,8 @@ semimedialMagma : SemimedialMagma a ℓ₁ → SemimedialMagma b ℓ₂ → Semi
 semimedialMagma G H = record
   { isSemimedialMagma = record
     { isMagma = Magma.isMagma (magma G.magma H.magma)
-    ; semiMedial = (λ x y z → G.leftSemimedial , H.leftSemimedial <*> x <*> y <*> z)
-                 , ((λ x y z → G.rightSemimedial , H.rightSemimedial <*> x <*> y <*> z))
+    ; semiMedial = (λ x y z → G.semimedialˡ , H.semimedialˡ <*> x <*> y <*> z)
+                 , ((λ x y z → G.semimedialʳ , H.semimedialʳ <*> x <*> y <*> z))
     }
   } where module G = SemimedialMagma G; module H = SemimedialMagma H
 
