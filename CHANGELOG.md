@@ -168,6 +168,10 @@ Non-backwards compatible changes
 
 * The switch to the new function hierarchy is complete and the following definitions
   now use the new definitions instead of the old ones:
+  * `Algebra.Lattice.Properties.BooleanAlgebra`
+  * `Algebra.Properties.CommutativeMonoid.Sum`
+  * `Algebra.Properties.Lattice`
+    * `replace-equality`
   * `Data.Fin.Properties`
     * `∀-cons-⇔`
     * `⊎⇔∃`
@@ -186,6 +190,7 @@ Non-backwards compatible changes
     * `empty`
   * `Data.List.Fresh.Relation.Unary.Any`
     * `⊎⇔Any`
+  * `Data.List.NonEmpty`
   * `Data.List.Relation.Binary.Lex`
     * `[]<[]-⇔`
     * `∷<∷-⇔`
@@ -197,6 +202,7 @@ Non-backwards compatible changes
     * `∷⁻¹`
     * `∷ʳ⁻¹`
     * `[x]⊆xs⤖x∈xs`
+  * `Data.List.Relation.Unary.Grouped.Properties`
   * `Data.Maybe.Relation.Binary.Connected`
     * `just-equivalence`
   * `Data.Maybe.Relation.Binary.Pointwise`
@@ -209,6 +215,9 @@ Non-backwards compatible changes
     * `m%n≡0⇔n∣m`
   * `Data.Nat.Properties`
     * `eq?`
+  * `Data.Vec.N-ary`
+    * `uncurry-∀ⁿ`
+    * `uncurry-∃ⁿ`
   * `Data.Vec.Relation.Binary.Lex.Core`
     * `P⇔[]<[]`
     * `∷<∷-⇔`
@@ -217,10 +226,14 @@ Non-backwards compatible changes
     * `Pointwise-≡↔≡`
   * `Data.Vec.Relation.Binary.Pointwise.Inductive`
     * `Pointwise-≡↔≡`
+  * `Effect.Monad.Partiality`
+    * `correct`
   * `Relation.Binary.Construct.Closure.Reflexive.Properties`
     * `⊎⇔Refl`
   * `Relation.Binary.Construct.Closure.Transitive`
     * `equivalent`
+  * `Relation.Binary.Reflection`
+    * `solve₁`
   * `Relation.Nullary.Decidable`
     * `map`
 

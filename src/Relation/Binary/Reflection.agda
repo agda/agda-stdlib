@@ -11,8 +11,7 @@ open import Data.Fin.Base
 open import Data.Nat.Base
 open import Data.Vec.Base as Vec
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (module Equivalence)
+open import Function.Bundles using (module Equivalence)
 open import Level
 open import Relation.Binary
 import Relation.Binary.PropositionalEquality as P
@@ -91,7 +90,7 @@ solve₁ : ∀ n (f : N-ary n (Expr n) (Expr n × Expr n)) →
                  ⟦ proj₁ (close n f) ⇓⟧ ρ ≈ ⟦ proj₂ (close n f) ⇓⟧ ρ →
                  ⟦ proj₁ (close n f)  ⟧ ρ ≈ ⟦ proj₂ (close n f)  ⟧ ρ)
 solve₁ n f =
-  Equivalence.from (uncurry-∀ⁿ n) ⟨$⟩ λ ρ →
+  Equivalence.from (uncurry-∀ⁿ n) λ ρ →
     P.subst id (P.sym (left-inverse (λ _ → _ ≈ _ → _ ≈ _) ρ))
       (prove ρ (proj₁ (close n f)) (proj₂ (close n f)))
 

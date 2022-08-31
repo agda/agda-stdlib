@@ -10,8 +10,7 @@
 open import Algebra.Lattice.Bundles
 open import Relation.Binary
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (_⇔_; module Equivalence)
+open import Function.Bundles using (module Equivalence; _⇔_)
 open import Data.Product using (_,_; swap)
 
 module Algebra.Properties.Lattice {l₁ l₂} (L : Lattice l₁ l₂) where
@@ -39,18 +38,18 @@ replace-equality : {_≈′_ : Rel Carrier l₂} →
 replace-equality {_≈′_} ≈⇔≈′ = record
   { isLattice = record
     { isEquivalence = record
-      { refl  = to ⟨$⟩ refl
-      ; sym   = λ x≈y → to ⟨$⟩ sym (from ⟨$⟩ x≈y)
-      ; trans = λ x≈y y≈z → to ⟨$⟩ trans (from ⟨$⟩ x≈y) (from ⟨$⟩ y≈z)
+      { refl  = to refl
+      ; sym   = λ x≈y → to (sym (from x≈y))
+      ; trans = λ x≈y y≈z → to (trans (from x≈y) (from y≈z))
       }
-    ; ∨-comm     = λ x y → to ⟨$⟩ ∨-comm x y
-    ; ∨-assoc    = λ x y z → to ⟨$⟩ ∨-assoc x y z
-    ; ∨-cong     = λ x≈y u≈v → to ⟨$⟩ ∨-cong (from ⟨$⟩ x≈y) (from ⟨$⟩ u≈v)
-    ; ∧-comm     = λ x y → to ⟨$⟩ ∧-comm x y
-    ; ∧-assoc    = λ x y z → to ⟨$⟩ ∧-assoc x y z
-    ; ∧-cong     = λ x≈y u≈v → to ⟨$⟩ ∧-cong (from ⟨$⟩ x≈y) (from ⟨$⟩ u≈v)
-    ; absorptive = (λ x y → to ⟨$⟩ ∨-absorbs-∧ x y)
-                 , (λ x y → to ⟨$⟩ ∧-absorbs-∨ x y)
+    ; ∨-comm     = λ x y → to (∨-comm x y)
+    ; ∨-assoc    = λ x y z → to (∨-assoc x y z)
+    ; ∨-cong     = λ x≈y u≈v → to (∨-cong (from x≈y) (from u≈v))
+    ; ∧-comm     = λ x y → to (∧-comm x y)
+    ; ∧-assoc    = λ x y z → to (∧-assoc x y z)
+    ; ∧-cong     = λ x≈y u≈v → to (∧-cong (from x≈y) (from u≈v))
+    ; absorptive = (λ x y → to (∨-absorbs-∧ x y))
+                 , (λ x y → to (∧-absorbs-∨ x y))
     }
   } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
 {-# WARNING_ON_USAGE replace-equality
