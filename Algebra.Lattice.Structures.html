@@ -32,10 +32,10 @@
 
 <a id="1045" class="Keyword">record</a> <a id="IsSemilattice"></a><a id="1052" href="Algebra.Lattice.Structures.html#1052" class="Record">IsSemilattice</a> <a id="1066" class="Symbol">(</a><a id="1067" href="Algebra.Lattice.Structures.html#1067" class="Bound">∙</a> <a id="1069" class="Symbol">:</a> <a id="1071" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="1075" href="Algebra.Lattice.Structures.html#761" class="Bound">A</a><a id="1076" class="Symbol">)</a> <a id="1078" class="Symbol">:</a> <a id="1080" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="1084" class="Symbol">(</a><a id="1085" href="Algebra.Lattice.Structures.html#755" class="Bound">a</a> <a id="1087" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="1089" href="Algebra.Lattice.Structures.html#757" class="Bound">ℓ</a><a id="1090" class="Symbol">)</a> <a id="1092" class="Keyword">where</a>
   <a id="1100" class="Keyword">field</a>
-    <a id="IsSemilattice.isBand"></a><a id="1110" href="Algebra.Lattice.Structures.html#1110" class="Field">isBand</a> <a id="1117" class="Symbol">:</a> <a id="1119" href="Algebra.Structures.html#2961" class="Record">IsBand</a> <a id="1126" href="Algebra.Lattice.Structures.html#1067" class="Bound">∙</a>
+    <a id="IsSemilattice.isBand"></a><a id="1110" href="Algebra.Lattice.Structures.html#1110" class="Field">isBand</a> <a id="1117" class="Symbol">:</a> <a id="1119" href="Algebra.Structures.html#2933" class="Record">IsBand</a> <a id="1126" href="Algebra.Lattice.Structures.html#1067" class="Bound">∙</a>
     <a id="IsSemilattice.comm"></a><a id="1132" href="Algebra.Lattice.Structures.html#1132" class="Field">comm</a>   <a id="1139" class="Symbol">:</a> <a id="1141" href="Algebra.Definitions.html#1195" class="Function">Commutative</a> <a id="1153" href="Algebra.Lattice.Structures.html#1067" class="Bound">∙</a>
 
-  <a id="1158" class="Keyword">open</a> <a id="1163" href="Algebra.Structures.html#2961" class="Module">IsBand</a> <a id="1170" href="Algebra.Lattice.Structures.html#1110" class="Field">isBand</a> <a id="1177" class="Keyword">public</a>
+  <a id="1158" class="Keyword">open</a> <a id="1163" href="Algebra.Structures.html#2933" class="Module">IsBand</a> <a id="1170" href="Algebra.Lattice.Structures.html#1110" class="Field">isBand</a> <a id="1177" class="Keyword">public</a>
     <a id="1188" class="Keyword">renaming</a>
     <a id="1201" class="Symbol">(</a> <a id="1203" href="Algebra.Structures.html#1207" class="Function">∙-cong</a>  <a id="1211" class="Symbol">to</a> <a id="1214" class="Function">∧-cong</a>
     <a id="1225" class="Symbol">;</a> <a id="1227" href="Algebra.Structures.html#1357" class="Function">∙-congˡ</a> <a id="1235" class="Symbol">to</a> <a id="1238" class="Function">∧-congˡ</a>
@@ -67,15 +67,15 @@
 
 <a id="1980" class="Comment">-- A bounded semi-lattice is the same thing as an idempotent commutative</a>
 <a id="2053" class="Comment">-- monoid.</a>
-<a id="IsBoundedSemilattice"></a><a id="2064" href="Algebra.Lattice.Structures.html#2064" class="Function">IsBoundedSemilattice</a> <a id="2085" class="Symbol">=</a> <a id="2087" href="Algebra.Structures.html#4713" class="Record">IsIdempotentCommutativeMonoid</a>
+<a id="IsBoundedSemilattice"></a><a id="2064" href="Algebra.Lattice.Structures.html#2064" class="Function">IsBoundedSemilattice</a> <a id="2085" class="Symbol">=</a> <a id="2087" href="Algebra.Structures.html#4685" class="Record">IsIdempotentCommutativeMonoid</a>
 <a id="2117" class="Keyword">module</a> <a id="IsBoundedSemilattice"></a><a id="2124" href="Algebra.Lattice.Structures.html#2124" class="Module">IsBoundedSemilattice</a> <a id="2145" class="Symbol">{</a><a id="2146" href="Algebra.Lattice.Structures.html#2146" class="Bound">∙</a> <a id="2148" href="Algebra.Lattice.Structures.html#2148" class="Bound">ε</a><a id="2149" class="Symbol">}</a> <a id="2151" class="Symbol">(</a><a id="2152" href="Algebra.Lattice.Structures.html#2152" class="Bound">L</a> <a id="2154" class="Symbol">:</a> <a id="2156" href="Algebra.Lattice.Structures.html#2064" class="Function">IsBoundedSemilattice</a> <a id="2177" href="Algebra.Lattice.Structures.html#2146" class="Bound">∙</a> <a id="2179" href="Algebra.Lattice.Structures.html#2148" class="Bound">ε</a><a id="2180" class="Symbol">)</a> <a id="2182" class="Keyword">where</a>
 
-  <a id="2191" class="Keyword">open</a> <a id="2196" href="Algebra.Structures.html#4713" class="Module">IsIdempotentCommutativeMonoid</a> <a id="2226" href="Algebra.Lattice.Structures.html#2152" class="Bound">L</a> <a id="2228" class="Keyword">public</a>
+  <a id="2191" class="Keyword">open</a> <a id="2196" href="Algebra.Structures.html#4685" class="Module">IsIdempotentCommutativeMonoid</a> <a id="2226" href="Algebra.Lattice.Structures.html#2152" class="Bound">L</a> <a id="2228" class="Keyword">public</a>
 
   <a id="IsBoundedSemilattice.isSemilattice"></a><a id="2238" href="Algebra.Lattice.Structures.html#2238" class="Function">isSemilattice</a> <a id="2252" class="Symbol">:</a> <a id="2254" href="Algebra.Lattice.Structures.html#1052" class="Record">IsSemilattice</a> <a id="2268" href="Algebra.Lattice.Structures.html#2146" class="Bound">∙</a>
   <a id="2272" href="Algebra.Lattice.Structures.html#2238" class="Function">isSemilattice</a> <a id="2286" class="Symbol">=</a> <a id="2288" class="Keyword">record</a>
-    <a id="2299" class="Symbol">{</a> <a id="2301" href="Algebra.Lattice.Structures.html#1110" class="Field">isBand</a> <a id="2308" class="Symbol">=</a> <a id="2310" href="Algebra.Structures.html#4975" class="Function">isBand</a>
-    <a id="2321" class="Symbol">;</a> <a id="2323" href="Algebra.Lattice.Structures.html#1132" class="Field">comm</a>   <a id="2330" class="Symbol">=</a> <a id="2332" href="Algebra.Structures.html#4404" class="Function">comm</a>
+    <a id="2299" class="Symbol">{</a> <a id="2301" href="Algebra.Lattice.Structures.html#1110" class="Field">isBand</a> <a id="2308" class="Symbol">=</a> <a id="2310" href="Algebra.Structures.html#4947" class="Function">isBand</a>
+    <a id="2321" class="Symbol">;</a> <a id="2323" href="Algebra.Lattice.Structures.html#1132" class="Field">comm</a>   <a id="2330" class="Symbol">=</a> <a id="2332" href="Algebra.Structures.html#4376" class="Function">comm</a>
     <a id="2341" class="Symbol">}</a>
 
 
@@ -86,7 +86,7 @@
   <a id="2549" class="Keyword">where</a>
 
   <a id="2558" class="Keyword">open</a> <a id="2563" href="Algebra.Lattice.Structures.html#2124" class="Module">IsBoundedSemilattice</a> <a id="2584" href="Algebra.Lattice.Structures.html#2513" class="Bound">L</a> <a id="2586" class="Keyword">public</a>
-    <a id="2597" class="Keyword">using</a> <a id="2603" class="Symbol">(</a><a id="2604" href="Algebra.Structures.html#3987" class="Function">identity</a><a id="2612" class="Symbol">;</a> <a id="2614" href="Algebra.Structures.html#4056" class="Function">identityˡ</a><a id="2623" class="Symbol">;</a> <a id="2625" href="Algebra.Structures.html#4117" class="Function">identityʳ</a><a id="2634" class="Symbol">)</a>
+    <a id="2597" class="Keyword">using</a> <a id="2603" class="Symbol">(</a><a id="2604" href="Algebra.Structures.html#3959" class="Function">identity</a><a id="2612" class="Symbol">;</a> <a id="2614" href="Algebra.Structures.html#4028" class="Function">identityˡ</a><a id="2623" class="Symbol">;</a> <a id="2625" href="Algebra.Structures.html#4089" class="Function">identityʳ</a><a id="2634" class="Symbol">)</a>
     <a id="2640" class="Keyword">renaming</a> <a id="2649" class="Symbol">(</a><a id="2650" href="Algebra.Lattice.Structures.html#2238" class="Function">isSemilattice</a> <a id="2664" class="Symbol">to</a> <a id="2667" class="Function">isMeetSemilattice</a><a id="2684" class="Symbol">)</a>
 
   <a id="2689" class="Keyword">open</a> <a id="2694" href="Algebra.Lattice.Structures.html#1389" class="Module">IsMeetSemilattice</a> <a id="2712" href="Algebra.Lattice.Structures.html#2667" class="Function">isMeetSemilattice</a> <a id="2730" class="Keyword">public</a>
@@ -99,7 +99,7 @@
   <a id="2943" class="Keyword">where</a>
 
   <a id="2952" class="Keyword">open</a> <a id="2957" href="Algebra.Lattice.Structures.html#2124" class="Module">IsBoundedSemilattice</a> <a id="2978" href="Algebra.Lattice.Structures.html#2907" class="Bound">L</a> <a id="2980" class="Keyword">public</a>
-    <a id="2991" class="Keyword">using</a> <a id="2997" class="Symbol">(</a><a id="2998" href="Algebra.Structures.html#3987" class="Function">identity</a><a id="3006" class="Symbol">;</a> <a id="3008" href="Algebra.Structures.html#4056" class="Function">identityˡ</a><a id="3017" class="Symbol">;</a> <a id="3019" href="Algebra.Structures.html#4117" class="Function">identityʳ</a><a id="3028" class="Symbol">)</a>
+    <a id="2991" class="Keyword">using</a> <a id="2997" class="Symbol">(</a><a id="2998" href="Algebra.Structures.html#3959" class="Function">identity</a><a id="3006" class="Symbol">;</a> <a id="3008" href="Algebra.Structures.html#4028" class="Function">identityˡ</a><a id="3017" class="Symbol">;</a> <a id="3019" href="Algebra.Structures.html#4089" class="Function">identityʳ</a><a id="3028" class="Symbol">)</a>
     <a id="3034" class="Keyword">renaming</a> <a id="3043" class="Symbol">(</a><a id="3044" href="Algebra.Lattice.Structures.html#2238" class="Function">isSemilattice</a> <a id="3058" class="Symbol">to</a> <a id="3061" class="Function">isJoinSemilattice</a><a id="3078" class="Symbol">)</a>
 
   <a id="3083" class="Keyword">open</a> <a id="3088" href="Algebra.Lattice.Structures.html#1678" class="Module">IsJoinSemilattice</a> <a id="3106" href="Algebra.Lattice.Structures.html#3061" class="Function">isJoinSemilattice</a> <a id="3124" class="Keyword">public</a>
