@@ -225,21 +225,21 @@ module _ (p : A → Bool) {xs ys} where
     _⟨$⟩_ (Equivalence.from Any.any⇔)
 
 ------------------------------------------------------------------------
--- map-with-∈
+-- mapWith∈
 
 module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
          {ys : List A} {g : ∀ {x} → x ∈ ys → B}
          where
 
-  map-with-∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
+  mapWith∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
                 mapWith∈ xs f ⊆ mapWith∈ ys g
-  map-with-∈⁺ xs⊆ys f≈g {x} =
-    _⟨$⟩_ (Inverse.to Any.map-with-∈↔) ∘
+  mapWith∈⁺ xs⊆ys f≈g {x} =
+    _⟨$⟩_ (Inverse.to Any.mapWith∈↔) ∘
     Prod.map₂ (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
       x               ≡⟨ x≡fx∈xs ⟩
       f x∈xs          ≡⟨ f≈g x∈xs ⟩
       g (xs⊆ys x∈xs)  ∎)) ∘
-    _⟨$⟩_ (Inverse.from Any.map-with-∈↔)
+    _⟨$⟩_ (Inverse.from Any.mapWith∈↔)
     where open ≡-Reasoning
 
 ------------------------------------------------------------------------
@@ -305,10 +305,10 @@ any-mono = any⁺
 "Warning: any-mono was deprecated in v1.5.
 Please use any⁺ instead."
 #-}
-map-with-∈-mono = map-with-∈⁺
+map-with-∈-mono = mapWith∈⁺
 {-# WARNING_ON_USAGE map-with-∈-mono
 "Warning: map-with-∈-mono was deprecated in v1.5.
-Please use map-with-∈⁺ instead."
+Please use mapWith∈⁺ instead."
 #-}
 filter⁺ = filter-⊆
 {-# WARNING_ON_USAGE filter⁺
