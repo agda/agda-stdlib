@@ -14,42 +14,8 @@ open MiddleBolLoop M
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Data.Product
-
-x/x≈ε : ∀ x → x // x ≈ ε
-x/x≈ε x = begin
-  x // x ≈⟨ //-congʳ (sym (identityˡ x)) ⟩
-  (ε ∙ x) // x ≈⟨ rightDividesʳ x ε ⟩
-  ε ∎
-
-x\x≈ε : ∀ x → x \\ x ≈ ε
-x\x≈ε x = begin
-  x \\ x ≈⟨ \\-congˡ (sym (identityʳ x )) ⟩
-  x \\ (x ∙ ε) ≈⟨ leftDividesʳ x ε ⟩
-  ε ∎
-
-ε\x≈x : ∀ x → ε \\ x ≈ x
-ε\x≈x x = begin
-  ε \\ x ≈⟨ sym (identityˡ (ε \\ x)) ⟩
-  ε ∙ (ε \\ x) ≈⟨ leftDividesˡ ε x ⟩
-  x ∎
-
-x/ε≈x : ∀ x → x // ε ≈ x
-x/ε≈x x = begin
- x // ε ≈⟨ sym (identityʳ (x // ε)) ⟩
- (x // ε) ∙ ε ≈⟨ rightDividesˡ ε x ⟩
- x ∎
-
-y≈x\z : ∀ x y z → x ∙ y ≈ z → y ≈ x \\ z
-y≈x\z x y z eq = begin
-  y ≈⟨ sym (leftDividesʳ x y) ⟩
-  x \\ (x ∙ y) ≈⟨ \\-congˡ eq ⟩
-  x \\ z ∎
-
-x≈z/y : ∀ x y z → x ∙ y ≈ z → x ≈ z // y
-x≈z/y x y z eq = begin
-  x ≈⟨ sym (rightDividesʳ y x) ⟩
-  (x ∙ y) // y ≈⟨ //-congʳ eq ⟩
-  z // y ∎
+import Algebra.Properties.Loop as LoopProperties
+open LoopProperties loop public
 
 xyx\x≈y\x : ∀ x y → x ∙ ((y ∙ x) \\ x) ≈ y \\ x
 xyx\x≈y\x x y = begin

@@ -1022,6 +1022,11 @@ New modules
   ```
   Algebra.Properties.MiddleBolLoop
   ```
+
+* Properties of Loop
+  ```
+  Algebra.Properties.Loop
+  ```
   
 Other minor changes
 -------------------
