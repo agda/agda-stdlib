@@ -30,7 +30,7 @@ import Data.List.Membership.Propositional as PropMembership
 import Data.List.Membership.DecPropositional as DecPropMembership
 
 -- For example if we want to reason about membership for `List ℕ`
--- then you would use the `DecSetoidMembership` as we use
+-- then you would use the `DecPropMembership` as we use
 -- propositional equality over `ℕ` and it is also decidable. Therefore
 -- the module `DecPropMembership` should be opened as follows:
 
