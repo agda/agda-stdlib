@@ -34,12 +34,12 @@ cancel = cancelˡ , cancelʳ
 
 y≈x\z : ∀ x y z → x ∙ y ≈ z → y ≈ x \\ z
 y≈x\z x y z eq = begin
-  y ≈⟨ sym (leftDividesʳ x y) ⟩
+  y            ≈⟨ sym (leftDividesʳ x y) ⟩
   x \\ (x ∙ y) ≈⟨ \\-congˡ eq ⟩
-  x \\ z ∎
+  x \\ z       ∎
 
 x≈z/y : ∀ x y z → x ∙ y ≈ z → x ≈ z // y
 x≈z/y x y z eq = begin
-  x ≈⟨ sym (rightDividesʳ y x) ⟩
+  x            ≈⟨ sym (rightDividesʳ y x) ⟩
   (x ∙ y) // y ≈⟨ //-congʳ eq ⟩
-  z // y ∎
+  z // y       ∎

@@ -18,21 +18,21 @@ open import Algebra.Properties.Quasigroup
 
 x/x≈ε : ∀ x → x // x ≈ ε
 x/x≈ε x = begin
-  x // x ≈⟨ //-congʳ (sym (identityˡ x)) ⟩
+  x // x       ≈⟨ //-congʳ (sym (identityˡ x)) ⟩
   (ε ∙ x) // x ≈⟨ rightDividesʳ x ε ⟩
-  ε ∎
+  ε            ∎
 
 x\x≈ε : ∀ x → x \\ x ≈ ε
 x\x≈ε x = begin
-  x \\ x ≈⟨ \\-congˡ (sym (identityʳ x )) ⟩
+  x \\ x       ≈⟨ \\-congˡ (sym (identityʳ x )) ⟩
   x \\ (x ∙ ε) ≈⟨ leftDividesʳ x ε ⟩
-  ε ∎
+  ε            ∎
 
 ε\x≈x : ∀ x → ε \\ x ≈ x
 ε\x≈x x = begin
-  ε \\ x ≈⟨ sym (identityˡ (ε \\ x)) ⟩
+  ε \\ x       ≈⟨ sym (identityˡ (ε \\ x)) ⟩
   ε ∙ (ε \\ x) ≈⟨ leftDividesˡ ε x ⟩
-  x ∎
+  x            ∎
 
 x/ε≈x : ∀ x → x // ε ≈ x
 x/ε≈x x = begin
