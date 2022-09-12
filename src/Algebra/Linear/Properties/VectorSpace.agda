@@ -41,7 +41,15 @@ open ExtEq setoid
 -- open ExtEq ≈ᴹ-setoid setoid
 
 ------------------------------------------------------------------------
--- Congruency of `IsBasis` helper functions.
+-- Scale a vector according to some reduction function.
+vscale : (V → S) → V → V
+vscale f = uncurry _*ₗ_ ∘ < f , id >
+
+-- Accumulate a list of vectors, according to some reduction function.
+vgen : (V → S) → List V → V
+vgen f = foldr (_+ᴹ_ ∘ vscale f) 0ᴹ
+
+-- Congruency of `IsBasisOver` helper functions.
 vscale-cong : ∀ f → Congruent _≈ᴹ_ _≈_ f → Congruent _≈ᴹ_ _≈ᴹ_ (vscale f)
 vscale-cong f f-cong {x} {y} x≈y = begin⟨ ≈ᴹ-setoid ⟩
   vscale f x ≡⟨⟩
@@ -59,6 +67,12 @@ vgen-cong {f₁} {f₂} (x ∷ xs) f₁≗f₂ = begin⟨ ≈ᴹ-setoid ⟩
 
 ------------------------------------------------------------------------
 -- Some consequences of `VectorSpace` inner product properties.
+foldr-cong : ∀ {f g : V → S → S} {d e : S} →
+             (∀ {y z} → y ≈ z → ∀ x → f x y ≈ g x z) → d ≈ e →
+             foldr f d ≗ foldr g e
+foldr-cong f≈g d≈e []       = d≈e
+foldr-cong f≈g d≈e (x ∷ xs) = f≈g (foldr-cong f≈g d≈e xs) x
+
 v∙g[x]+y-cong₂ : {g : V → V} → Congruent _≈ᴹ_ _≈ᴹ_ g →
                  {v x w : V} {y z : S} → x ≈ᴹ w → y ≈ z →
                  v ∙ g x + y ≈ v ∙ g w + z
@@ -67,12 +81,7 @@ v∙g[x]+y-cong₂ {g} g-cong {v} {x} {w} {y} {z} x≈w y≈z = begin⟨ setoid 
   v ∙ g w + y ≈⟨ +-congˡ y≈z ⟩
   v ∙ g w + z ∎
 
-foldr-cong : ∀ {f g : V → S → S} {d e : S} →
-             (∀ {y z} → y ≈ z → ∀ x → f x y ≈ g x z) → d ≈ e →
-             foldr f d ≗ foldr g e
-foldr-cong f≈g d≈e []       = d≈e
-foldr-cong f≈g d≈e (x ∷ xs) = f≈g (foldr-cong f≈g d≈e xs) x
-
+-- sum ∘ map?
 foldr-homo-∙ : {g : V → V} → Congruent _≈ᴹ_ _≈ᴹ_ g →
                {v x₀ : V} (xs : List V) →
                v ∙ foldr (_+ᴹ_ ∘ g) x₀ xs ≈

@@ -802,11 +802,16 @@ record IsCommutativeRing
 
 record IsField
          (+ _*_ : Op₂ A) (- : Op₁ A) (0# 1# : A)
-         (_⁻¹_ : (x : A) → (x ≢ 0#) → A)
+         (_⁻¹ : (x : A) → {x ≢ 0#} → A)
          : Set (a ⊔ ℓ) where
+
+  infixl 7 _/_
+  _/_ : (x y : A) → {y ≢ 0#} → A
+  (x / y) {p} = x * ((y ⁻¹) {p})
+
   field
     isCommutativeRing : IsCommutativeRing + _*_ - 0# 1#
-    *-inverse         : (x : A) → (p : x ≢ 0#) → (x * (x ⁻¹ p)) ≈ 1#
+    *-inverse         : {x : A} → (p : x ≢ 0#) → (x * ((x ⁻¹) {p})) ≈ 1#
 
   open IsCommutativeRing isCommutativeRing public
 

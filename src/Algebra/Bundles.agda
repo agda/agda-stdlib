@@ -17,6 +17,7 @@ open import Relation.Binary
 open import Function.Base
 import Relation.Nullary as N
 open import Level
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation
@@ -1124,6 +1125,28 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semiringWithoutAnnihilatingZero; semiring
     ; commutativeSemiringWithoutOne
     )
+
+record Field c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  9 _⁻¹
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _+_     : Op₂ Carrier
+    _*_     : Op₂ Carrier
+    -_      : Op₁ Carrier
+    0#      : Carrier
+    1#      : Carrier
+    _⁻¹      : (x : Carrier) → {x ≢ 0#} → Carrier
+    isField : IsField _≈_ _+_ _*_ -_ 0# 1# _⁻¹
+
+  open IsField isField public
+
+  ring : CommutativeRing c ℓ
+  ring = record { isCommutativeRing = isCommutativeRing }
 
 ------------------------------------------------------------------------
 -- Bundles with 3 binary operations

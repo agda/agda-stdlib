@@ -29,6 +29,12 @@ Homomorphic₁ ⟦_⟧ ∙_ ∘_ = ∀ x → ⟦ ∙ x ⟧ ≈ (∘ ⟦ x ⟧)
 Homomorphic₂ : (A → B) → Op₂ A → Op₂ B → Set _
 Homomorphic₂ ⟦_⟧ _∙_ _∘_ = ∀ x y → ⟦ x ∙ y ⟧ ≈ (⟦ x ⟧ ∘ ⟦ y ⟧)
 
+Homomorphic₂′ : Op₂ B → Op₁ B → Set _
+Homomorphic₂′ _∙_ ∘_ = ∀ x y → ((∘ x) ∙ y) ≈ (∘ (x ∙ y))
+
+Homomorphic₂′′ : Op₂ B → Op₁ B → Set _
+Homomorphic₂′′ _∙_ ∘_ = ∀ x y → (x ∙ (∘ y)) ≈ (∘ (x ∙ y))
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
