@@ -36,6 +36,6 @@ x\x≈ε x = begin
 
 x/ε≈x : ∀ x → x // ε ≈ x
 x/ε≈x x = begin
- x // ε ≈⟨ sym (identityʳ (x // ε)) ⟩
+ x // ε       ≈⟨ sym (identityʳ (x // ε)) ⟩
  (x // ε) ∙ ε ≈⟨ rightDividesˡ ε x ⟩
- x ∎
+ x            ∎
