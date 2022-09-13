@@ -1115,6 +1115,19 @@ m≥n⇒m⊓n≡n {suc m} {suc n} (s≤s m≤n) = cong suc (m≥n⇒m⊓n≡n m�
   }
 
 ------------------------------------------------------------------------
+-- Equality to their counterparts defined in terms of primitive operations
+
+⊔≡⊔′ : ∀ m n → m ⊔ n ≡ m ⊔′ n
+⊔≡⊔′ m n with m <ᵇ n in eq
+... | false = m≥n⇒m⊔n≡m (≮⇒≥ (λ m<n → subst T eq (<⇒<ᵇ m<n)))
+... | true  = m≤n⇒m⊔n≡n (<⇒≤ (<ᵇ⇒< m n (subst T (sym eq) _)))
+
+⊓≡⊓′ : ∀ m n → m ⊓ n ≡ m ⊓′ n
+⊓≡⊓′ m n with m <ᵇ n in eq
+... | false = m≥n⇒m⊓n≡n (≮⇒≥ (λ m<n → subst T eq (<⇒<ᵇ m<n)))
+... | true  = m≤n⇒m⊓n≡m (<⇒≤ (<ᵇ⇒< m n (subst T (sym eq) _)))
+
+------------------------------------------------------------------------
 -- Derived properties of _⊓_ and _⊔_
 
 private
@@ -1711,6 +1724,11 @@ m≤n⇒∣n-m∣≡n∸m {_} {zero}  z≤n       = refl
 m≤n⇒∣n-m∣≡n∸m {_} {suc m} z≤n       = refl
 m≤n⇒∣n-m∣≡n∸m {_} {_}     (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m m≤n
 
+m≤n⇒∣m-n∣≡n∸m : ∀ {m n} → m ≤ n → ∣ m - n ∣ ≡ n ∸ m
+m≤n⇒∣m-n∣≡n∸m {_} {zero}  z≤n       = refl
+m≤n⇒∣m-n∣≡n∸m {_} {suc n} z≤n       = refl
+m≤n⇒∣m-n∣≡n∸m {_} {_}     (s≤s m≤n) = m≤n⇒∣m-n∣≡n∸m m≤n
+
 ∣m-n∣≡m∸n⇒n≤m : ∀ {m n} → ∣ m - n ∣ ≡ m ∸ n → n ≤ m
 ∣m-n∣≡m∸n⇒n≤m {zero}  {zero}  eq = z≤n
 ∣m-n∣≡m∸n⇒n≤m {suc m} {zero}  eq = z≤n
@@ -1811,6 +1829,11 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
   ∣ x - y ∣ + ∣ y - 0 ∣ ∎
   where open ≤-Reasoning
 ∣-∣-triangle (suc x) (suc y) (suc z) = ∣-∣-triangle x y z
+
+∣-∣≡∣-∣′ : ∀ m n → ∣ m - n ∣ ≡ ∣ m - n ∣′
+∣-∣≡∣-∣′ m n with m <ᵇ n in eq
+... | false = m≤n⇒∣n-m∣≡n∸m {n} {m} (≮⇒≥ (λ m<n → subst T eq (<⇒<ᵇ m<n)))
+... | true  = m≤n⇒∣m-n∣≡n∸m {m} {n} (<⇒≤ (<ᵇ⇒< m n (subst T (sym eq) _)))
 
 ------------------------------------------------------------------------
 -- Metric structures

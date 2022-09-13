@@ -148,12 +148,28 @@ zero  ⊔ n     = n
 suc m ⊔ zero  = suc m
 suc m ⊔ suc n = suc (m ⊔ n)
 
+-- Max defined in terms of primitive operations.
+-- This is much faster than `_⊔_` but harder to reason about. For proofs
+-- involving this function, convert it to `_⊔_` with `Data.Nat.Properties.⊔≡⊔‵`.
+_⊔′_ : ℕ → ℕ → ℕ
+m ⊔′ n with m <ᵇ n
+... | false = m
+... | true  = n
+
 -- Min.
 
 _⊓_ : ℕ → ℕ → ℕ
 zero  ⊓ n     = zero
 suc m ⊓ zero  = zero
 suc m ⊓ suc n = suc (m ⊓ n)
+
+-- Min defined in terms of primitive operations.
+-- This is much faster than `_⊓_` but harder to reason about. For proofs
+-- involving this function, convert it to `_⊓_` wtih `Data.Nat.properties.⊓≡⊓′`.
+_⊓′_ : ℕ → ℕ → ℕ
+m ⊓′ n with m <ᵇ n
+... | false = n
+... | true  = m
 
 -- Division by 2, rounded downwards.
 
@@ -179,6 +195,15 @@ x ^ suc n = x * x ^ n
 ∣ zero  - y     ∣ = y
 ∣ x     - zero  ∣ = x
 ∣ suc x - suc y ∣ = ∣ x - y ∣
+
+-- Distance in terms of primitive operations.
+-- This is much faster than `∣_-_∣` but harder to reason about. For proofs
+-- involving this function, convert it to `∣_-_∣` with
+-- `Data.Nat.Properties.∣-∣≡∣-∣′`.
+∣_-_∣′ : ℕ → ℕ → ℕ
+∣ x - y ∣′ with x <ᵇ y
+... | false = x ∸ y
+... | true  = y ∸ x
 
 -- Division
 -- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
