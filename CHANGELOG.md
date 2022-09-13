@@ -49,6 +49,12 @@ Bug-fixes
   re-exported in their full generality which would lead to unsolved meta variables at
   their use sites.
 
+* In `Data.Container.FreeMonad`, we give a direct definition of `_⋆_` as an inductive
+  type rather than encoding it as an instance of `μ`. This ensures Agda notices that
+  `C ⋆ X` is strictly positive in `X` which in turn allows us to use the free monad
+  when defining auxiliary (co)inductive types (cf. the `Tap` example in
+  `README.Data.Container.FreeMonad`).
+
 Non-backwards compatible changes
 --------------------------------
 
