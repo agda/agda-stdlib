@@ -1666,6 +1666,11 @@ Other minor changes
   xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
   ```
 
+* Added new functions in `Data.Vec.Relation.Unary.Any`:
+  ```
+  lookup : Any P xs → A
+  ```
+
 * Added new functions in `Data.Vec.Relation.Unary.All`:
   ```
   decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
