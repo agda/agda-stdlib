@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.PropertiesNEW where
+module Data.List.Properties where
 
 open import Algebra.Bundles
 open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
@@ -19,7 +19,6 @@ open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ; inject₁)
 open import Data.List.Base as List
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
-  renaming (tabulate to All-local)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base
@@ -80,33 +79,27 @@ module _ {x y : A} {xs ys : List A} where
 ------------------------------------------------------------------------
 -- map
 
-map-id-local : ∀ {f : A → A} {xs} → All (λ x → f x ≡ x) xs → map f xs ≡ xs
-map-id-local []           = refl
-map-id-local (fx≡x ∷ pxs) = cong₂ _∷_ fx≡x (map-id-local pxs)
-
 map-id : map id ≗ id {A = List A}
 map-id []       = refl
 map-id (x ∷ xs) = cong (x ∷_) (map-id xs)
 
-map-id' : map id ≗ id {A = List A}
-map-id' xs = map-id-local (All-local λ _ → refl)
+map-id-local : ∀ {f : A → A} {xs} → All (λ x → f x ≡ x) xs → map f xs ≡ xs
+map-id-local []           = refl
+map-id-local (fx≡x ∷ pxs) = cong₂ _∷_ fx≡x (map-id-local pxs)
 
 map-++ : ∀ (f : A → B) xs ys →
                  map f (xs ++ ys) ≡ map f xs ++ map f ys
 map-++ f []       ys = refl
 map-++ f (x ∷ xs) ys = cong (f x ∷_) (map-++ f xs ys)
 
-map-cong-local : ∀ {f g : A → B} {xs} →
-            All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
-map-cong-local []                = refl
-map-cong-local (fx≡gx ∷ fxs≡gxs) = cong₂ _∷_ fx≡gx (map-cong-local fxs≡gxs)
-
 map-cong : ∀ {f g : A → B} → f ≗ g → map f ≗ map g
 map-cong f≗g []       = refl
 map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (map-cong f≗g xs)
 
-map-cong' : ∀ {f g : A → B} → f ≗ g → map f ≗ map g
-map-cong' f≗g xs = map-cong-local (All-local λ _ → f≗g _)
+map-cong-local : ∀ {f g : A → B} {xs} →
+            All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
+map-cong-local []                = refl
+map-cong-local (fx≡gx ∷ fxs≡gxs) = cong₂ _∷_ fx≡gx (map-cong-local fxs≡gxs)
 
 length-map : ∀ (f : A → B) xs → length (map f xs) ≡ length xs
 length-map f []       = refl
