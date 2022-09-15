@@ -532,8 +532,8 @@ open ≤-Reasoning
   n + suc m   ∎
 
 +-cancelˡ-≡ : LeftCancellative _≡_ _+_
-+-cancelˡ-≡ zero    eq = eq
-+-cancelˡ-≡ (suc m) eq = +-cancelˡ-≡ m (cong pred eq)
++-cancelˡ-≡ zero    _ _ eq = eq
++-cancelˡ-≡ (suc m) _ _ eq = +-cancelˡ-≡ m _ _ (cong pred eq)
 
 +-cancelʳ-≡ : RightCancellative _≡_ _+_
 +-cancelʳ-≡ = comm+cancelˡ⇒cancelʳ +-comm +-cancelˡ-≡
@@ -650,21 +650,21 @@ m+n≡0⇒n≡0 m {n} m+n≡0 = m+n≡0⇒m≡0 n (trans (+-comm n m) (m+n≡0))
 -- Properties of _+_ and _≤_/_<_
 
 +-cancelˡ-≤ : LeftCancellative _≤_ _+_
-+-cancelˡ-≤ zero    le       = le
-+-cancelˡ-≤ (suc m) (s≤s le) = +-cancelˡ-≤ m le
++-cancelˡ-≤ zero    _ _ le       = le
++-cancelˡ-≤ (suc m) _ _ (s≤s le) = +-cancelˡ-≤ m _ _ le
 
 +-cancelʳ-≤ : RightCancellative _≤_ _+_
-+-cancelʳ-≤ {m} n o le =
-  +-cancelˡ-≤ m (subst₂ _≤_ (+-comm n m) (+-comm o m) le)
++-cancelʳ-≤ m n o le =
+  +-cancelˡ-≤ m _ _ (subst₂ _≤_ (+-comm n m) (+-comm o m) le)
 
 +-cancel-≤ : Cancellative _≤_ _+_
 +-cancel-≤ = +-cancelˡ-≤ , +-cancelʳ-≤
 
 +-cancelˡ-< : LeftCancellative _<_ _+_
-+-cancelˡ-< m {n} {o} = +-cancelˡ-≤ m ∘ subst (_≤ m + o) (sym (+-suc m n))
++-cancelˡ-< m n o = +-cancelˡ-≤ m (suc n) o ∘ subst (_≤ m + o) (sym (+-suc m n))
 
 +-cancelʳ-< : RightCancellative _<_ _+_
-+-cancelʳ-< n o n+m<o+m = +-cancelʳ-≤ (suc n) o n+m<o+m
++-cancelʳ-< m n o n+m<o+m = +-cancelʳ-≤ m (suc n) o n+m<o+m
 
 +-cancel-< : Cancellative _<_ _+_
 +-cancel-< = +-cancelˡ-< , +-cancelʳ-<
@@ -915,7 +915,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 *-cancelʳ-≡ : ∀ m n {o} .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
 *-cancelʳ-≡ zero    zero    {suc o} eq = refl
 *-cancelʳ-≡ (suc m) (suc n) {suc o} eq =
-  cong suc (*-cancelʳ-≡ m n (+-cancelˡ-≡ (suc o) eq))
+  cong suc (*-cancelʳ-≡ m n (+-cancelˡ-≡ (suc o) (m * suc o) (n * suc o) eq))
 
 *-cancelˡ-≡ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
 *-cancelˡ-≡ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n
@@ -953,7 +953,7 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 *-cancelʳ-≤ : ∀ m n o .{{_ : NonZero o}} → m * o ≤ n * o → m ≤ n
 *-cancelʳ-≤ zero    _       (suc o) _  = z≤n
 *-cancelʳ-≤ (suc m) (suc n) (suc o) le =
-  s≤s (*-cancelʳ-≤ m n (suc o) (+-cancelˡ-≤ (suc o) le))
+  s≤s (*-cancelʳ-≤ m n (suc o) (+-cancelˡ-≤ _ _ _ le))
 
 *-cancelˡ-≤ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≤ o * n → m ≤ n
 *-cancelˡ-≤ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≤ m n o
@@ -1011,13 +1011,13 @@ m<n⇒m<o*n {m} {n} o m<n = begin-strict
   o * n ∎
 
 *-cancelʳ-< : RightCancellative _<_ _*_
-*-cancelʳ-< {zero}  zero    (suc o) _     = 0<1+n
-*-cancelʳ-< {suc m} zero    (suc o) _     = 0<1+n
-*-cancelʳ-< {m}     (suc n) (suc o) nm<om =
-  s≤s (*-cancelʳ-< n o (+-cancelˡ-< m nm<om))
+*-cancelʳ-< zero    zero    (suc o) _     = 0<1+n
+*-cancelʳ-< (suc m) zero    (suc o) _     = 0<1+n
+*-cancelʳ-< m       (suc n) (suc o) nm<om =
+  s≤s (*-cancelʳ-< m n o (+-cancelˡ-< m _ _ nm<om))
 
 *-cancelˡ-< : LeftCancellative _<_ _*_
-*-cancelˡ-< x {y} {z} rewrite *-comm x y | *-comm x z = *-cancelʳ-< y z
+*-cancelˡ-< x y z rewrite *-comm x y | *-comm x z = *-cancelʳ-< x y z
 
 *-cancel-< : Cancellative _<_ _*_
 *-cancel-< = *-cancelˡ-< , *-cancelʳ-<
@@ -2071,7 +2071,7 @@ _>″?_ = flip _<″?_
 ≤″-irrelevant : Irrelevant _≤″_
 ≤″-irrelevant {m} (less-than-or-equal eq₁)
                   (less-than-or-equal eq₂)
-  with +-cancelˡ-≡ m (trans eq₁ (sym eq₂))
+  with +-cancelˡ-≡ m _ _ (trans eq₁ (sym eq₂))
 ... | refl = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
 
 <″-irrelevant : Irrelevant _<″_

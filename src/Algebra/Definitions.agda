@@ -124,19 +124,19 @@ Involutive : Op₁ A → Set _
 Involutive f = ∀ x → f (f x) ≈ x
 
 LeftCancellative : Op₂ A → Set _
-LeftCancellative _•_ = ∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z
+LeftCancellative _•_ = ∀ x y z → (x • y) ≈ (x • z) → y ≈ z
 
 RightCancellative : Op₂ A → Set _
-RightCancellative _•_ = ∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z
+RightCancellative _•_ = ∀ x y z → (y • x) ≈ (z • x) → y ≈ z
 
 Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
 AlmostLeftCancellative : A → Op₂ A → Set _
-AlmostLeftCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+AlmostLeftCancellative e _•_ = ∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
 
 AlmostRightCancellative : A → Op₂ A → Set _
-AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+AlmostRightCancellative e _•_ = ∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
 
 AlmostCancellative : A → Op₂ A → Set _
 AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_

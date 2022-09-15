@@ -222,7 +222,7 @@ m/n≤m m n = *-cancelʳ-≤ (m / n) m n (begin
   m * n       ∎)
 
 m/n<m : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero n}} → n ≥ 2 → m / n < m
-m/n<m m n n≥2 = *-cancelʳ-< (m / n) m (begin-strict
+m/n<m m n n≥2 = *-cancelʳ-< _ (m / n) m (begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
   m           <⟨ m<m*n m n n≥2 ⟩
   m * n       ∎)
