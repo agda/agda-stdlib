@@ -60,7 +60,7 @@ toList->>= : ∀ (f : A → List⁺ B) (xs : List⁺ A) →
              (toList xs ⋆>>= toList ∘ f) ≡ toList (xs >>= f)
 toList->>= f (x ∷ xs) = begin
   List.concat (List.map (toList ∘ f) (x ∷ xs))
-    ≡⟨ cong List.concat $ List.map-compose {g = toList} (x ∷ xs) ⟩
+    ≡⟨ cong List.concat $ List.map-∘ {g = toList} (x ∷ xs) ⟩
   List.concat (List.map toList (List.map f (x ∷ xs)))
     ∎
 
@@ -110,8 +110,8 @@ length-map f (_ ∷ xs) = cong suc (List.length-map f xs)
 map-cong : ∀ {f g : A → B} → f ≗ g → map f ≗ map g
 map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 
-map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
-map-compose (x ∷ xs) = cong (_ ∷_) (List.map-compose xs)
+map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
+map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
 
 ------------------------------------------------------------------------
 -- groupSeqs
@@ -141,4 +141,18 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | false | []         | hyp = cong (x ∷_) hyp
   ... | false | inj₁ _ ∷ _ | hyp = cong (x ∷_) hyp
   ... | false | inj₂ _ ∷ _ | hyp = cong (x ∷_) hyp
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-compose = map-∘
+{-# WARNING_ON_USAGE map-compose
+"Warning: map-compose was deprecated in v2.0.
+Please use map-∘ instead."
+#-}
 
