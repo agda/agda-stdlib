@@ -96,10 +96,10 @@ drop-+-++⁺ : ∀ (xs : List A) ys → drop+ (List.length xs) (xs ++⁺ ys) ≡
 drop-+-++⁺ []       ys = refl
 drop-+-++⁺ (x ∷ xs) ys = drop-+-++⁺ xs ys
 
-map-++⁺-commute : ∀ (f : A → B) xs ys →
+map-++⁺ : ∀ (f : A → B) xs ys →
                   map f (xs ++⁺ ys) ≡ List.map f xs ++⁺ map f ys
-map-++⁺-commute f [] ys       = refl
-map-++⁺-commute f (x ∷ xs) ys = cong (λ zs → f x ∷ toList zs) (map-++⁺-commute f xs ys)
+map-++⁺ f [] ys       = refl
+map-++⁺ f (x ∷ xs) ys = cong (λ zs → f x ∷ toList zs) (map-++⁺ f xs ys)
 
 ------------------------------------------------------------------------
 -- map
@@ -154,5 +154,11 @@ map-compose = map-∘
 {-# WARNING_ON_USAGE map-compose
 "Warning: map-compose was deprecated in v2.0.
 Please use map-∘ instead."
+#-}
+
+map-++⁺-commute = map-++⁺
+{-# WARNING_ON_USAGE map-++⁺-commute
+"Warning: map-++⁺-commute was deprecated in v2.0.
+Please use map-++⁺ instead."
 #-}
 
