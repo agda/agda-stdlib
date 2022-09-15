@@ -170,4 +170,3 @@ toList-foldr-commute = toList-foldr
 "Warning: toList-foldr-commute was deprecated in v2.0.
 Please use toList-foldr instead."
 #-}
-

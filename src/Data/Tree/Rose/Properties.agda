@@ -66,4 +66,3 @@ map-compose = map-∘
 "Warning: map-compose was deprecated in v2.0.
 Please use map-∘ instead."
 #-}
-
