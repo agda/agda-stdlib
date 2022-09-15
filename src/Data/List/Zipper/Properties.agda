@@ -46,12 +46,12 @@ module _ {a} {A : Set a} where
 
  -- Applying reverse does correspond to reversing the represented list
 
- toList-reverse-commute : (zp : Zipper A) → toList (reverse zp) ≡ List.reverse (toList zp)
- toList-reverse-commute (mkZipper ctx val) = begin
+ toList-reverse : (zp : Zipper A) → toList (reverse zp) ≡ List.reverse (toList zp)
+ toList-reverse (mkZipper ctx val) = begin
    List.reverse val List.++ ctx
      ≡⟨ cong (List.reverse val List.++_) (sym (reverse-involutive ctx)) ⟩
    List.reverse val List.++ List.reverse (List.reverse ctx)
-     ≡⟨ sym (reverse-++-commute (List.reverse ctx) val) ⟩
+     ≡⟨ sym (reverse-++ (List.reverse ctx) val) ⟩
    List.reverse (List.reverse ctx List.++ val)
      ∎
 
@@ -61,10 +61,10 @@ module _ {a} {A : Set a} where
 
  -- _ˡ++_ properties
 
- toList-ˡ++-commute : ∀ xs (zp : Zipper A) → toList (xs ˡ++ zp) ≡ xs List.++ toList zp
- toList-ˡ++-commute xs (mkZipper ctx val) = begin
+ toList-ˡ++ : ∀ xs (zp : Zipper A) → toList (xs ˡ++ zp) ≡ xs List.++ toList zp
+ toList-ˡ++ xs (mkZipper ctx val) = begin
    List.reverse (ctx List.++ List.reverse xs) List.++ val
-     ≡⟨ cong (List._++ _) (reverse-++-commute ctx (List.reverse xs)) ⟩
+     ≡⟨ cong (List._++ _) (reverse-++ ctx (List.reverse xs)) ⟩
    (List.reverse (List.reverse xs) List.++ List.reverse ctx) List.++ val
      ≡⟨ ++-assoc (List.reverse (List.reverse xs)) (List.reverse ctx) val ⟩
    List.reverse (List.reverse xs) List.++ List.reverse ctx List.++ val
@@ -77,7 +77,7 @@ module _ {a} {A : Set a} where
    (ctx List.++ List.reverse ys) List.++ List.reverse xs
      ≡⟨ ++-assoc ctx _ _ ⟩
    ctx List.++ List.reverse ys List.++ List.reverse xs
-     ≡⟨ cong (ctx List.++_) (sym (reverse-++-commute xs ys)) ⟩
+     ≡⟨ cong (ctx List.++_) (sym (reverse-++ xs ys)) ⟩
    ctx List.++ List.reverse (xs List.++ ys)
      ∎
 
@@ -88,7 +88,7 @@ module _ {a} {A : Set a} where
    List.reverse xs List.++ List.reverse ys List.++ ctx
      ≡⟨ sym (++-assoc (List.reverse xs) (List.reverse ys) ctx) ⟩
    (List.reverse xs List.++ List.reverse ys) List.++ ctx
-     ≡⟨ cong (List._++ ctx) (sym (reverse-++-commute ys xs)) ⟩
+     ≡⟨ cong (List._++ ctx) (sym (reverse-++ ys xs)) ⟩
    List.reverse (ys List.++ xs) List.++ ctx
      ∎
 
@@ -99,8 +99,8 @@ module _ {a} {A : Set a} where
 
  -- _++ʳ_ properties
 
- toList-++ʳ-commute : ∀ (zp : Zipper A) xs → toList (zp ++ʳ xs) ≡ toList zp List.++ xs
- toList-++ʳ-commute (mkZipper ctx val) xs = begin
+ toList-++ʳ : ∀ (zp : Zipper A) xs → toList (zp ++ʳ xs) ≡ toList zp List.++ xs
+ toList-++ʳ (mkZipper ctx val) xs = begin
    List.reverse ctx List.++ val List.++ xs
      ≡⟨ sym (++-assoc (List.reverse ctx) val xs) ⟩
    (List.reverse ctx List.++ val) List.++ xs
@@ -115,20 +115,59 @@ module _ {a} {A : Set a} where
 
 module _ {a b} {A : Set a} {B : Set b} where
 
- toList-map-commute : ∀ (f : A → B) zp → toList (map f zp) ≡ List.map f (toList zp)
- toList-map-commute f zp@(mkZipper ctx val) = begin
+ toList-map : ∀ (f : A → B) zp → toList (map f zp) ≡ List.map f (toList zp)
+ toList-map f zp@(mkZipper ctx val) = begin
    List.reverse (List.map f ctx) List.++ List.map f val
-     ≡⟨ cong (List._++ _) (sym (reverse-map-commute f ctx)) ⟩
+     ≡⟨ cong (List._++ _) (sym (reverse-map f ctx)) ⟩
    List.map f (List.reverse ctx) List.++ List.map f val
-     ≡⟨ sym (map-++-commute f (List.reverse ctx) val) ⟩
+     ≡⟨ sym (map-++ f (List.reverse ctx) val) ⟩
    List.map f (List.reverse ctx List.++ val)
      ∎
 
- toList-foldr-commute : ∀ (c : A → B → B) n zp → foldr c n zp ≡ List.foldr c n (toList zp)
- toList-foldr-commute c n (mkZipper ctx val) = begin
+ toList-foldr : ∀ (c : A → B → B) n zp → foldr c n zp ≡ List.foldr c n (toList zp)
+ toList-foldr c n (mkZipper ctx val) = begin
    List.foldl (flip c) (List.foldr c n val) ctx
      ≡⟨ sym (reverse-foldr c (List.foldr c n val) ctx) ⟩
    List.foldr c (List.foldr c n val) (List.reverse ctx)
      ≡⟨ sym (foldr-++ c n (List.reverse ctx) val) ⟩
    List.foldr c n (List.reverse ctx List.++ val)
      ∎
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+toList-reverse-commute = toList-reverse
+{-# WARNING_ON_USAGE toList-reverse-commute
+"Warning: toList-reverse-commute was deprecated in v2.0.
+Please use toList-reverse instead."
+#-}
+
+toList-ˡ++-commute = toList-ˡ++
+{-# WARNING_ON_USAGE toList-ˡ++-commute
+"Warning: toList-ˡ++-commute was deprecated in v2.0.
+Please use toList-ˡ++ instead."
+#-}
+
+toList-++ʳ-commute = toList-++ʳ
+{-# WARNING_ON_USAGE toList-++ʳ-commute
+"Warning: toList-++ʳ-commute was deprecated in v2.0.
+Please use toList-++ʳ instead."
+#-}
+
+toList-map-commute = toList-map
+{-# WARNING_ON_USAGE toList-map-commute
+"Warning: toList-map-commute was deprecated in v2.0.
+Please use toList-map instead."
+#-}
+
+toList-foldr-commute = toList-foldr
+{-# WARNING_ON_USAGE toList-foldr-commute
+"Warning: toList-foldr-commute was deprecated in v2.0.
+Please use toList-foldr instead."
+#-}
+

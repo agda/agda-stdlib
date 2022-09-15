@@ -927,9 +927,9 @@ unfold-reverse x xs = ʳ++-defn xs
 
 -- reverse is an involution with respect to append.
 
-reverse-++-commute : (xs ys : List A) →
+reverse-++ : (xs ys : List A) →
                      reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
-reverse-++-commute xs ys = begin
+reverse-++ xs ys = begin
   reverse (xs ++ ys)         ≡⟨⟩
   (xs ++ ys) ʳ++ []          ≡⟨ ʳ++-++ xs ⟩
   ys ʳ++ xs ʳ++ []           ≡⟨⟩
@@ -960,8 +960,8 @@ length-reverse xs = begin
   length xs + 0         ≡⟨ +-identityʳ _ ⟩
   length xs             ∎
 
-reverse-map-commute : (f : A → B) → map f ∘ reverse ≗ reverse ∘ map f
-reverse-map-commute f xs = begin
+reverse-map : (f : A → B) → map f ∘ reverse ≗ reverse ∘ map f
+reverse-map f xs = begin
   map f (reverse xs) ≡⟨⟩
   map f (xs ʳ++ [])  ≡⟨ map-ʳ++ f xs ⟩
   map f xs ʳ++ []    ≡⟨⟩
@@ -1032,6 +1032,18 @@ sum-++-commute = sum-++
 {-# WARNING_ON_USAGE sum-++-commute
 "Warning: map-++-commute was deprecated in v2.0.
 Please use map-++ instead."
+#-}
+
+reverse-map-commute = reverse-map
+{-# WARNING_ON_USAGE reverse-map-commute
+"Warning: reverse-map-commute was deprecated in v2.0.
+Please use reverse-map instead."
+#-}
+
+reverse-++-commute = reverse-++
+{-# WARNING_ON_USAGE reverse-++-commute
+"Warning: reverse-++-commute was deprecated in v2.0.
+Please use reverse-++ instead."
 #-}
 
 zipWith-identityˡ = zipWith-zeroˡ
