@@ -719,8 +719,51 @@ Deprecated names
 
 * In `Data.List.Properties`:
   ```agda
+  map-id₂         ↦  map-id-local
+  map-cong₂       ↦  map-cong-local
+  map-compose     ↦  map-∘
+
+  map-++-commute       ↦  map-++
+  sum-++-commute       ↦  sum-++
+  reverse-map-commute  ↦  reverse-map
+  reverse-++-commute   ↦  reverse-++
+
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  map-compose     ↦  map-∘
+
+  map-++⁺-commute ↦  map-++⁺
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  updateAt-id-relative      ↦  updateAt-id-local
+  updateAt-compose-relative ↦  updateAt-∘-local
+  updateAt-compose          ↦  updateAt-∘
+  updateAt-cong-relative    ↦  updateAt-cong-local
+  ```
+
+* In `Data.List.Zipper.Properties`:
+  ```agda
+  toList-reverse-commute ↦  toList-reverse
+  toList-ˡ++-commute     ↦  toList-ˡ++
+  toList-++ʳ-commute     ↦  toList-++ʳ
+  toList-map-commute    ↦  toList-map
+  toList-foldr-commute  ↦  toList-foldr
+  ```
+
+* In `Data.Maybe.Properties`:
+  ```agda
+  map-id₂     ↦  map-id-local
+  map-cong₂   ↦  map-cong-local
+
+  map-compose    ↦  map-∘
+
+  map-<∣>-commute ↦  map-<∣>
   ```
 
 * In `Data.Nat.Properties`:
@@ -758,8 +801,20 @@ Deprecated names
   negative<positive     ↦ neg<pos
   ```
 
+* In `Data.Tree.Rose.Properties`:
+  ```agda
+  map-compose     ↦  map-∘
+  ```
+
 * In `Data.Vec.Properties`:
   ```
+  updateAt-id-relative      ↦  updateAt-id-local
+  updateAt-compose-relative ↦  updateAt-∘-local
+  updateAt-compose          ↦  updateAt-∘
+  updateAt-cong-relative    ↦  updateAt-cong-local
+
+  []%=-compose    ↦  []%=-∘
+
   []≔-++-inject+  ↦ []≔-++-↑ˡ
   []≔-++-raise    ↦ []≔-++-↑ʳ
   idIsFold        ↦ id-is-foldr
@@ -772,6 +827,14 @@ Deprecated names
   to
   ```
   zipWith-comm : ∀ {f : A → B → C} {g : B → A → C}  (comm : ∀ x y → f x y ≡ g y x) (xs : Vec A n) ys → zipWith f xs ys ≡ zipWith g ys xs
+  ```
+
+* In `Data.Vec.Functional.Properties`:
+  ```
+  updateAt-id-relative      ↦  updateAt-id-local
+  updateAt-compose-relative ↦  updateAt-∘-local
+  updateAt-compose          ↦  updateAt-∘
+  updateAt-cong-relative    ↦  updateAt-cong-local
   ```
 
 * In `Function.Construct.Composition`:
