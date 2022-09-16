@@ -1599,7 +1599,7 @@ abs-*-commute i j = abs-◃ _ _
 *-cancelʳ-≡ : ∀ i j k .{{_ : NonZero k}} → i * k ≡ j * k → i ≡ j
 *-cancelʳ-≡ i j k eq with sign-cong′ eq
 ... | inj₁ s[ik]≡s[jk] = ◃-cong
-  (𝕊ₚ.*-cancelʳ-≡ {sign k} (sign i) (sign j) s[ik]≡s[jk])
+  (𝕊ₚ.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
   (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ (abs-cong eq))
 ... | inj₂ (∣ik∣≡0 , ∣jk∣≡0) = trans
   (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣ik∣≡0))
@@ -1785,10 +1785,10 @@ neg-distribʳ-* i j = begin
 *-monoʳ-<-pos i {j} {k} rewrite *-comm j i | *-comm k i = *-monoˡ-<-pos i
 
 *-cancelˡ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → k * i < k * j → i < j
-*-cancelˡ-<-nonNeg {+ i}       {+ j}       (+ n) leq = +<+ (ℕ.*-cancelˡ-< n (+◃-cancel-< leq))
+*-cancelˡ-<-nonNeg {+ i}       {+ j}       (+ n) leq = +<+ (ℕ.*-cancelˡ-< n _ _ (+◃-cancel-< leq))
 *-cancelˡ-<-nonNeg {+ i}       { -[1+ j ]} (+ n) leq = contradiction leq +◃≮-◃
 *-cancelˡ-<-nonNeg { -[1+ i ]} {+ j}       (+ n)leq = -<+
-*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (ℕ.≤-pred (ℕ.*-cancelˡ-< n (neg◃-cancel-< leq)))
+*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (ℕ.≤-pred (ℕ.*-cancelˡ-< n _ _ (neg◃-cancel-< leq)))
 
 *-cancelʳ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → i * k < j * k → i < j
 *-cancelʳ-<-nonNeg {i} {j} k rewrite *-comm i k | *-comm j k = *-cancelˡ-<-nonNeg k
