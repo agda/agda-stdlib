@@ -837,6 +837,11 @@ Deprecated names
   updateAt-cong-relative    ↦  updateAt-cong-local
   ```
 
+* In `Data.Vec.Relation.Binary.Equality.Setoid`:
+  ```agda
+  map-++-commute ↦  map-++
+  ```
+
 * In `Function.Construct.Composition`:
   ```
   _∘-⟶_   ↦   _⟶-∘_
