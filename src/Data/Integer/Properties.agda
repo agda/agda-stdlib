@@ -1600,7 +1600,7 @@ abs-*-commute i j = abs-◃ _ _
 *-cancelʳ-≡ i j k eq with sign-cong′ eq
 ... | inj₁ s[ik]≡s[jk] = ◃-cong
   (𝕊ₚ.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
-  (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ (abs-cong eq))
+  (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ _ (abs-cong eq))
 ... | inj₂ (∣ik∣≡0 , ∣jk∣≡0) = trans
   (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣ik∣≡0))
   (sym (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣jk∣≡0)))
