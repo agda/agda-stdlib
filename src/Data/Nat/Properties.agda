@@ -912,13 +912,13 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≡_
 
-*-cancelʳ-≡ : ∀ m n {o} .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
-*-cancelʳ-≡ zero    zero    {suc o} eq = refl
-*-cancelʳ-≡ (suc m) (suc n) {suc o} eq =
-  cong suc (*-cancelʳ-≡ m n (+-cancelˡ-≡ (suc o) (m * suc o) (n * suc o) eq))
+*-cancelʳ-≡ : ∀ m n o .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
+*-cancelʳ-≡ zero    zero    (suc o) eq = refl
+*-cancelʳ-≡ (suc m) (suc n) (suc o) eq =
+  cong suc (*-cancelʳ-≡ m n (suc o) (+-cancelˡ-≡ (suc o) (m * suc o) (n * suc o) eq))
 
-*-cancelˡ-≡ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
-*-cancelˡ-≡ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n
+*-cancelˡ-≡ : ∀ m n o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
+*-cancelˡ-≡ m n o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n o
 
 m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl

@@ -179,7 +179,7 @@ toℕ-injective : Injective _≡_ _≡_ toℕ
 toℕ-injective {zero}     {zero}     _               =  refl
 toℕ-injective {2[1+ x ]} {2[1+ y ]} 2[1+xN]≡2[1+yN] =  cong 2[1+_] x≡y
   where
-  1+xN≡1+yN = ℕₚ.*-cancelˡ-≡ {ℕ.suc _} {ℕ.suc _} 2 2[1+xN]≡2[1+yN]
+  1+xN≡1+yN = ℕₚ.*-cancelˡ-≡ (ℕ.suc _) (ℕ.suc _) 2 2[1+xN]≡2[1+yN]
   xN≡yN     = cong ℕ.pred 1+xN≡1+yN
   x≡y       = toℕ-injective xN≡yN
 
@@ -192,7 +192,7 @@ toℕ-injective {1+[2 x ]} {2[1+ y ]} 1+2xN≡2[1+yN] =
 toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   where
   2xN≡2yN = cong ℕ.pred 1+2xN≡1+2yN
-  xN≡yN   = ℕₚ.*-cancelˡ-≡ 2 2xN≡2yN
+  xN≡yN   = ℕₚ.*-cancelˡ-≡ _ _ 2 2xN≡2yN
   x≡y     = toℕ-injective xN≡yN
 
 toℕ-surjective : Surjective _≡_ toℕ
