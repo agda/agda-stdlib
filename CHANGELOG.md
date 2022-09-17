@@ -801,6 +801,22 @@ Deprecated names
   negative<positive     ↦ neg<pos
   ```
 
+* In `Data.Sum.Properties`:
+  ```agda
+  [,]-∘-distr      ↦  [,]-∘
+  [,]-map-commute  ↦  [,]-map
+  ```
+
+* In `Data.Tree.Binary.Zipper.Properties`:
+  ```
+  toTree-#nodes-commute   ↦  toTree-#nodes
+  toTree-#leaves-commute  ↦  toTree-#leaves
+  toTree-map-commute      ↦  toTree-map
+  toTree-foldr-commute    ↦  toTree-foldr
+  toTree-⟪⟫ˡ-commute      ↦  toTree--⟪⟫ˡ
+  toTree-⟪⟫ʳ-commute      ↦  toTree-⟪⟫ʳ
+  ```
+
 * In `Data.Tree.Rose.Properties`:
   ```agda
   map-compose     ↦  map-∘
@@ -835,6 +851,11 @@ Deprecated names
   updateAt-compose-relative ↦  updateAt-∘-local
   updateAt-compose          ↦  updateAt-∘
   updateAt-cong-relative    ↦  updateAt-cong-local
+  ```
+
+* In `Data.Vec.Recursive.Properties`:
+  ```
+  append-cons-commute  ↦  append-cons
   ```
 
 * In `Data.Vec.Relation.Binary.Equality.Setoid`:

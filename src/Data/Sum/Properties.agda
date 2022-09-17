@@ -127,15 +127,14 @@ map₂-cong g≗g′ = [,-]-cong ((cong inj₂) ∘ g≗g′)
 
 -- Version 2.0
 
-[,]-map-commute = [,]-map
-{-# WARNING_ON_USAGE [,]-map-commute
-"Warning: [,]-map-commute was deprecated in v2.0.
-Please use [,]-map instead."
-#-}
-
 [,]-∘-distr = [,]-∘
 {-# WARNING_ON_USAGE [,]-∘-distr
 "Warning: [,]-∘-distr was deprecated in v2.0.
 Please use [,]-∘ instead."
 #-}
 
+[,]-map-commute = [,]-map
+{-# WARNING_ON_USAGE [,]-map-commute
+"Warning: [,]-map-commute was deprecated in v2.0.
+Please use [,]-map instead."
+#-}
