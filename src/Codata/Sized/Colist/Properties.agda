@@ -45,15 +45,15 @@ private
 ------------------------------------------------------------------------
 -- Functor laws
 
-map-identity : ∀ (as : Colist A ∞) → i ⊢ map id as ≈ as
-map-identity []       = []
-map-identity (a ∷ as) = Eq.refl ∷ λ where .force → map-identity (as .force)
+map-id : ∀ (as : Colist A ∞) → i ⊢ map id as ≈ as
+map-id []       = []
+map-id (a ∷ as) = Eq.refl ∷ λ where .force → map-id (as .force)
 
-map-map-fusion : ∀ (f : A → B) (g : B → C) as {i} →
+map-∘ : ∀ (f : A → B) (g : B → C) as {i} →
                  i ⊢ map g (map f as) ≈ map (g ∘ f) as
-map-map-fusion f g []       = []
-map-map-fusion f g (a ∷ as) =
-  Eq.refl ∷ λ where .force → map-map-fusion f g (as .force)
+map-∘ f g []       = []
+map-∘ f g (a ∷ as) =
+  Eq.refl ∷ λ where .force → map-∘ f g (as .force)
 
 ------------------------------------------------------------------------
 -- Relation to Cowriter
@@ -161,8 +161,8 @@ module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
 
 map-alignWith : ∀ (f : C → D) (al : These A B → C) as bs →
                 i ⊢ map f (alignWith al as bs) ≈ alignWith (f ∘ al) as bs
-map-alignWith f al []         bs       = map-map-fusion (al ∘′ that) f bs
-map-alignWith f al as@(_ ∷ _) []       = map-map-fusion (al ∘′ this) f as
+map-alignWith f al []         bs       = map-∘ (al ∘′ that) f bs
+map-alignWith f al as@(_ ∷ _) []       = map-∘ (al ∘′ this) f as
 map-alignWith f al (a ∷ as)   (b ∷ bs) =
   Eq.refl ∷ λ where .force → map-alignWith f al (as .force) (bs .force)
 
@@ -331,3 +331,23 @@ map-fromStream : ∀ (f : A → B) as →
                  i ⊢ map f (fromStream as) ≈ fromStream (Stream.map f as)
 map-fromStream f (a ∷ as) =
   Eq.refl ∷ λ where .force → map-fromStream f (as .force)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-identity = map-id
+{-# WARNING_ON_USAGE map-identity
+"Warning: map-identity was deprecated in v2.0.
+Please use map-id instead."
+#-}
+
+map-map-fusion = map-∘
+{-# WARNING_ON_USAGE map-map-fusion
+"Warning: map-map-fusion was deprecated in v2.0.
+Please use map-∘ instead."
+#-}

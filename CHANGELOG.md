@@ -642,6 +642,12 @@ Deprecated names
   map-fusion    ↦  map-∘
   ```
 
+* In `Codata.Sized.Covec.Properties`:
+  ```agda
+  map-identity   ↦  map-id
+  map-mapfusion  ↦  map-∘
+  ```
+
 * In `Codata.Sized.Stream.Properties`:
   ```agda
   map-identity   ↦  map-id
