@@ -636,6 +636,12 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Codata.Guarded.Stream.Properties`:
+  ```agda
+  map-identity  ↦  map-id
+  map-fusion    ↦  map-∘
+  ```
+
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
   for the 'left', resp. 'right' injection of a Fin m into a 'larger' type,
   `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the
