@@ -109,10 +109,7 @@ updateAt-cong-local (suc i) xs eq (suc j) = updateAt-cong-local i (tail xs) eq j
 
 updateAt-cong : ∀ {n} (i : Fin n) {f g : A → A} →
                 f ≗ g → (xs : Vector A n) → updateAt i f xs ≗ updateAt i g xs
-updateAt-cong zero    eq xs zero    = eq (xs zero)
-updateAt-cong zero    eq xs (suc j) = refl
-updateAt-cong (suc i) eq xs zero    = refl
-updateAt-cong (suc i) eq xs (suc j) = updateAt-cong i eq (tail xs) j
+updateAt-cong i eq xs = updateAt-cong-local i xs (eq (xs i))
 
 -- The order of updates at different indices i ≢ j does not matter.
 
