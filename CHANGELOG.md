@@ -1224,13 +1224,6 @@ Other minor changes
   record IsRingWithoutOneIsoMorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
-* Added new functions in `Category.Monad.State`:
-  ```
-  runState  : State s a → s → a × s
-  evalState : State s a → s → a
-  execState : State s a → s → s
-  ```
-
 * Added new proofs in `Data.Bool.Properties`:
   ```agda
   <-wellFounded : WellFounded _<_
@@ -1674,6 +1667,13 @@ Other minor changes
 * Added vector associativity proof to  `Data.Vec.Relation.Binary.Equality.Setoid`:
   ```
   ++-assoc : (xs ++ ys) ++ zs ≋ xs ++ (ys ++ zs)
+  ```
+
+* Added new functions in `Effect.Monad.State`:
+  ```
+  runState  : State s a → s → a × s
+  evalState : State s a → s → a
+  execState : State s a → s → s
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
