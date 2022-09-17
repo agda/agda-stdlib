@@ -555,6 +555,22 @@ Non-backwards compatible changes
 * Removed `m/n/o≡m/[n*o]` from `Data.Nat.Divisibility` and added a more general
   `m/n/o≡m/[n*o]` to `Data.Nat.DivMod` that doesn't require `n * o ∣ m`.
 
+* Updated `Data.Vec.Relation.Unary.All` to match the conventions adopted in
+  the equivalent `List` module.
+  * Moved & renamed from `Data.Vec.Relation.Unary.All`
+    to `Data.Vec.Relation.Unary.All.Properties`:
+    ```
+    lookup ↦ lookup⁺
+    tabulate ↦ lookup⁻
+    ```
+  * Added the following new definitions to `Data.Vec.Relation.Unary.All`:
+    ```
+    lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
+    lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
+    lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
+    lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
+    ```
+
 Major improvements
 ------------------
 
@@ -1664,6 +1680,11 @@ Other minor changes
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:
   ```agda
   xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
+  ```
+
+* Added new functions in `Data.Vec.Relation.Unary.Any`:
+  ```
+  lookup : Any P xs → A
   ```
 
 * Added new functions in `Data.Vec.Relation.Unary.All`:
