@@ -642,16 +642,29 @@ Deprecated names
   map-fusion    ↦  map-∘
   ```
 
+* In `Codata.Sized.Colist.Properties`:
+  ```agda
+  map-identity   ↦  map-id
+  map-map-fusion  ↦  map-∘
+  ```
+
 * In `Codata.Sized.Covec.Properties`:
   ```agda
   map-identity   ↦  map-id
-  map-mapfusion  ↦  map-∘
+  map-map-fusion  ↦  map-∘
+  ```
+
+* In `Codata.Sized.Delay.Properties`:
+  ```agda
+  map-identity      ↦  map-id
+  map-map-fusion    ↦  map-∘
+  map-unfold-fusion  ↦  map-unfold
   ```
 
 * In `Codata.Sized.Stream.Properties`:
   ```agda
   map-identity   ↦  map-id
-  map-mapfusion  ↦  map-∘
+  map-map-fusion  ↦  map-∘
   ```
 
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
@@ -1341,6 +1354,11 @@ Other minor changes
   runState  : State s a → s → a × s
   evalState : State s a → s → a
   execState : State s a → s → s
+  ```
+
+* Added new proofs in `Codata.Sized.Delay.Properties`:
+  ```agda
+  map-id : i ⊢ map id da ≈ da
   ```
 
 * Added new proofs in `Data.Bool.Properties`:
