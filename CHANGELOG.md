@@ -661,6 +661,11 @@ Deprecated names
   map-unfold-fusion  ↦  map-unfold
   ```
 
+* In `Codata.Sized.M.Properties`:
+  ```agda
+  map-compose  ↦  map-∘
+  ```
+
 * In `Codata.Sized.Stream.Properties`:
   ```agda
   map-identity   ↦  map-id
