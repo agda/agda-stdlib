@@ -1949,6 +1949,12 @@ Other minor changes
   from-Σ     : (I : Set i) (C : I → Container s p) → ⟦ Σ I C ⟧ A → ∃ λ i → ⟦ C i ⟧ A
   ```
 
+* Added a non-dependent version of `Function.Base.flip` due to an issue noted in
+  Pull Request #1812:
+  ```agda
+  flip′ : (A → B → C) → (B → A → C)
+  ```
+
 NonZero/Positive/Negative changes
 ---------------------------------
 
