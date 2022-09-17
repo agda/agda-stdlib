@@ -53,17 +53,17 @@ map-id : map {A = A} {B = B} id id ≗ id
 map-id (inj₁ _) = refl
 map-id (inj₂ _) = refl
 
-[,]-∘-distr : (f : A → B)
+[,]-∘ : (f : A → B)
               {g : C → A} {h : D → A} →
               f ∘ [ g , h ] ≗ [ f ∘ g , f ∘ h ]
-[,]-∘-distr _ (inj₁ _) = refl
-[,]-∘-distr _ (inj₂ _) = refl
+[,]-∘ _ (inj₁ _) = refl
+[,]-∘ _ (inj₂ _) = refl
 
-[,]-map-commute : {f : A → B}  {g : C → D}
-                  {f′ : B → E} {g′ : D → E} →
-                  [ f′ , g′ ] ∘ map f g ≗ [ f′ ∘ f , g′ ∘ g ]
-[,]-map-commute (inj₁ _) = refl
-[,]-map-commute (inj₂ _) = refl
+[,]-map : {f : A → B}  {g : C → D}
+          {f′ : B → E} {g′ : D → E} →
+          [ f′ , g′ ] ∘ map f g ≗ [ f′ ∘ f , g′ ∘ g ]
+[,]-map (inj₁ _) = refl
+[,]-map (inj₂ _) = refl
 
 map-commute : {f : A → B}  {g : C → D}
               {f′ : B → E} {g′ : D → F} →
@@ -118,3 +118,24 @@ map₂-cong : {g g′ : C → D} →
             g ≗ g′ →
             map₂ {A = A} g ≗ map₂ g′
 map₂-cong g≗g′ = [,-]-cong ((cong inj₂) ∘ g≗g′)
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+[,]-map-commute = [,]-map
+{-# WARNING_ON_USAGE [,]-map-commute
+"Warning: [,]-map-commute was deprecated in v2.0.
+Please use [,]-map instead."
+#-}
+
+[,]-∘-distr = [,]-∘
+{-# WARNING_ON_USAGE [,]-∘-distr
+"Warning: [,]-∘-distr was deprecated in v2.0.
+Please use [,]-∘ instead."
+#-}
+

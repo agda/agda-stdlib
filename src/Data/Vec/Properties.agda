@@ -18,7 +18,7 @@ open import Data.Nat.Properties
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
-open import Data.Sum.Properties using ([,]-map-commute)
+open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Function.Base
 open import Function.Inverse using (_↔_; inverse)
@@ -482,7 +482,7 @@ lookup-splitAt zero    []       ys i       = refl
 lookup-splitAt (suc m) (x ∷ xs) ys zero    = refl
 lookup-splitAt (suc m) (x ∷ xs) ys (suc i) = trans
   (lookup-splitAt m xs ys i)
-  (sym ([,]-map-commute (Fin.splitAt m i)))
+  (sym ([,]-map (Fin.splitAt m i)))
 
 ------------------------------------------------------------------------
 -- concat
