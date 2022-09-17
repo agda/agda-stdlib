@@ -642,6 +642,12 @@ Deprecated names
   map-fusion    ↦  map-∘
   ```
 
+* In `Codata.Sized.Stream.Properties`:
+  ```agda
+  map-identity   ↦  map-id
+  map-mapfusion  ↦  map-∘
+  ```
+
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
   for the 'left', resp. 'right' injection of a Fin m into a 'larger' type,
   `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the
