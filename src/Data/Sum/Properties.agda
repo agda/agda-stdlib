@@ -65,16 +65,16 @@ map-id (inj₂ _) = refl
 [,]-map (inj₁ _) = refl
 [,]-map (inj₂ _) = refl
 
-map-commute : {f : A → B}  {g : C → D}
+map-map : {f : A → B}  {g : C → D}
               {f′ : B → E} {g′ : D → F} →
               map f′ g′ ∘ map f g ≗ map (f′ ∘ f) (g′ ∘ g)
-map-commute (inj₁ _) = refl
-map-commute (inj₂ _) = refl
+map-map (inj₁ _) = refl
+map-map (inj₂ _) = refl
 
-map₁₂-commute : {f : A → B} {g : C → D} →
+map₁₂-map₂₁ : {f : A → B} {g : C → D} →
                 map₁ f ∘ map₂ g ≗ map₂ g ∘ map₁ f
-map₁₂-commute (inj₁ _) = refl
-map₁₂-commute (inj₂ _) = refl
+map₁₂-map₂₁ (inj₁ _) = refl
+map₁₂-map₂₁ (inj₂ _) = refl
 
 map-assocˡ : (f : A → C) (g : B → D) (h : C → F) →
   map (map f g) h ∘ assocˡ ≗ assocˡ ∘ map f (map g h)
@@ -137,4 +137,16 @@ Please use [,]-∘ instead."
 {-# WARNING_ON_USAGE [,]-map-commute
 "Warning: [,]-map-commute was deprecated in v2.0.
 Please use [,]-map instead."
+#-}
+
+map-commute = map-map
+{-# WARNING_ON_USAGE map-commute
+"Warning: map-commute was deprecated in v2.0.
+Please use map-map instead."
+#-}
+
+map₁₂-commute = map₁₂-map₂₁
+{-# WARNING_ON_USAGE map₁₂-commute
+"Warning: map₁₂-commute was deprecated in v2.0.
+Please use map₁₂-map₂₁ instead."
 #-}

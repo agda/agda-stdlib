@@ -805,6 +805,8 @@ Deprecated names
   ```agda
   [,]-∘-distr      ↦  [,]-∘
   [,]-map-commute  ↦  [,]-map
+  map-commute      ↦  map-map
+  map₁₂-commute    ↦  map₁₂-map₂₁
   ```
 
 * In `Data.Tree.Binary.Zipper.Properties`:
