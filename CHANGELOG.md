@@ -853,7 +853,10 @@ Deprecated names
   updateAt-compose-relative ↦  updateAt-∘-local
   updateAt-compose          ↦  updateAt-∘
   updateAt-cong-relative    ↦  updateAt-cong-local
+
+  map-updateAt              ↦  map-updateAt-local
   ```
+  NB. This last one is complicated by the *addition* of a 'global' property `map-updateAt`
 
 * In `Data.Vec.Recursive.Properties`:
   ```
@@ -1750,6 +1753,11 @@ Other minor changes
   reverse-injective  : reverse xs ≡ reverse ys → xs ≡ ys
 
   transpose-replicate : transpose (replicate xs) ≡ map replicate xs
+  ```
+
+* Added new proofs in `Data.Vec.Functional.Properties`:
+  ```
+  map-updateAt : f ∘ g ≗ h ∘ f → map f (updateAt i g xs) ≗ updateAt i h (map f xs)
   ```
 
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:

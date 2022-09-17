@@ -140,14 +140,20 @@ lookup-map : ∀ {n} (i : Fin n) (f : A → B) (xs : Vector A n) →
              map f xs i ≡ f (xs i)
 lookup-map i f xs = refl
 
-map-updateAt : ∀ {n} {f : A → B} {g : A → A} {h : B → B}
+map-updateAt-local : ∀ {n} {f : A → B} {g : A → A} {h : B → B}
+                     (xs : Vector A n) (i : Fin n) →
+                     f (g (xs i)) ≡ h (f (xs i)) →
+                     map f (updateAt i g xs) ≗ updateAt i h (map f xs)
+map-updateAt-local {n = suc n}       {f = f} xs zero    eq zero    = eq
+map-updateAt-local {n = suc n}       {f = f} xs zero    eq (suc j) = refl
+map-updateAt-local {n = suc (suc n)} {f = f} xs (suc i) eq zero    = refl
+map-updateAt-local {n = suc (suc n)} {f = f} xs (suc i) eq (suc j) = map-updateAt-local {f = f} (tail xs) i eq j
+
+map-updateAt : ∀ {n} {f : A → B} {g : A → A} {h : B → B} →
+               f ∘ g ≗ h ∘ f →
                (xs : Vector A n) (i : Fin n) →
-               f (g (xs i)) ≡ h (f (xs i)) →
                map f (updateAt i g xs) ≗ updateAt i h (map f xs)
-map-updateAt {n = suc n}       {f = f} xs zero    eq zero    = eq
-map-updateAt {n = suc n}       {f = f} xs zero    eq (suc j) = refl
-map-updateAt {n = suc (suc n)} {f = f} xs (suc i) eq zero    = refl
-map-updateAt {n = suc (suc n)} {f = f} xs (suc i) eq (suc j) = map-updateAt {f = f} (tail xs) i eq j
+map-updateAt {f = f} {g = g} f∘g≗h∘f xs i = map-updateAt-local {f = f} {g = g} xs i (f∘g≗h∘f (xs i))
 
 ------------------------------------------------------------------------
 -- _++_
