@@ -13,23 +13,27 @@ open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-open import Data.Vec.Relation.Unary.Any using (Any; here; there)
+open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
+open import Data.Vec.Membership.Propositional renaming (_∈_ to _∈ₚ_)
+import Data.Vec.Membership.Setoid as SetoidMembership
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Unary
+open import Relation.Unary hiding (_∈_)
+open import Relation.Binary using (Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P using (subst)
 
 private
   variable
-    a b c p q r : Level
+    a b c p q r ℓ : Level
     A : Set a
     B : Set b
     C : Set c
     P : Pred A p
     Q : Pred A q
+    R : Pred A r
     n : ℕ
     x : A
     xs : Vec A n
@@ -59,14 +63,6 @@ reduce f (px ∷ pxs) = f px ∷ reduce f pxs
 uncons : All P (x ∷ xs) → P x × All P xs
 uncons = < head , tail >
 
-lookup : (i : Fin n) → All P xs → P (Vec.lookup xs i)
-lookup zero    (px ∷ pxs) = px
-lookup (suc i) (px ∷ pxs) = lookup i pxs
-
-tabulate : (∀ i → P (Vec.lookup xs i)) → All P xs
-tabulate {xs = []}    pxs = []
-tabulate {xs = _ ∷ _} pxs = pxs zero ∷ tabulate (pxs ∘ suc)
-
 map : P ⊆ Q → All P ⊆ All Q {n}
 map g []         = []
 map g (px ∷ pxs) = g px ∷ map g pxs
@@ -88,6 +84,26 @@ module _ {P : Pred A p} {Q : Pred B q} {R : Pred C r} where
   zipWith _⊕_ {xs = []}     {[]}     []         []         = []
   zipWith _⊕_ {xs = x ∷ xs} {y ∷ ys} (px ∷ pxs) (qy ∷ qys) =
     px ⊕ qy ∷ zipWith _⊕_ pxs qys
+
+------------------------------------------------------------------------
+-- Generalised lookup based on a proof of Any
+
+lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
+lookupAny (px ∷ pxs) (here qx) = px , qx
+lookupAny (px ∷ pxs) (there i) = lookupAny pxs i
+
+lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
+lookupWith f pxs i = Prod.uncurry f (lookupAny pxs i)
+
+lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
+lookup pxs = lookupWith (λ { px P.refl → px }) pxs
+
+module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
+  open Setoid S renaming (sym to sym₁)
+  open SetoidMembership S
+
+  lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
+  lookupₛ resp pxs = lookupWith (λ py x=y → resp (sym₁ x=y) py) pxs
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All

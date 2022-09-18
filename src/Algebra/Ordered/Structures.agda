@@ -166,6 +166,39 @@ record IsProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 
   open IsSemiring isSemiring public using (distribˡ; distribʳ; zeroˡ; zeroʳ)
 
+-- Preordered IdempotentSemiring (IdempotentProsemiring)
+
+record IsIdempotentProsemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isProsemiring  : IsProsemiring + * 0# 1#
+    +-idem         : Idempotent +
+
+  open IsProsemiring isProsemiring public
+
+  isIdempotentSemiring : IsIdempotentSemiring + * 0# 1#
+  isIdempotentSemiring = record { isSemiring = isSemiring ; +-idem = +-idem }
+
+  open IsIdempotentSemiring isIdempotentSemiring public using (+-idem)
+
+-- Preordered KleeneAlgebra (proKleeneAlgebra)
+
+record IsProKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isIdempotentProsemiring : IsIdempotentProsemiring + * 0# 1#
+    starExpansive           : StarExpansive 1# + * ⋆
+    starDestructive         : StarDestructive + * ⋆
+
+  open IsIdempotentProsemiring isIdempotentProsemiring public
+
+  isKleeneAlgebra : IsKleeneAlgebra + * ⋆ 0# 1#
+  isKleeneAlgebra = record
+    { isIdempotentSemiring = isIdempotentSemiring
+    ; starExpansive        = starExpansive
+    ; starDestructive      = starDestructive
+    }
+
+  open IsKleeneAlgebra isKleeneAlgebra public using (starExpansive; starDestructive)
+
 ------------------------------------------------------------------------
 -- Partially ordered structures
 
@@ -321,3 +354,39 @@ record IsPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) 
 
   open IsProsemiring isProsemiring public
     using (isSemiring; distribˡ; distribʳ; zeroˡ; zeroʳ)
+
+-- Partially ordered idempotentSemiring (IdempotentPosemiring)
+
+record IsIdempotentPosemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isPosemiring  : IsPosemiring + * 0# 1#
+    +-idem      : Idempotent +
+
+  open IsPosemiring isPosemiring public
+
+  isIdempotentProsemiring : IsIdempotentProsemiring + * 0# 1#
+  isIdempotentProsemiring = record { isProsemiring = isProsemiring ; +-idem = +-idem }
+
+  open IsIdempotentProsemiring isIdempotentProsemiring public
+    using (isIdempotentSemiring; +-idem)
+
+-- Partially ordered KleeneAlgebra (PoKleeneAlgebra)
+
+record IsPoKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isIdempotentPosemiring  : IsIdempotentPosemiring + * 0# 1#
+    starExpansive           : StarExpansive 1# + * ⋆
+    starDestructive         : StarDestructive + * ⋆
+
+  open IsIdempotentPosemiring isIdempotentPosemiring public
+
+  isProKleeneAlgebra : IsProKleeneAlgebra + * ⋆ 0# 1#
+  isProKleeneAlgebra = record
+    { isIdempotentProsemiring = isIdempotentProsemiring
+    ; starExpansive           = starExpansive
+    ; starDestructive         = starDestructive
+    }
+
+  open IsProKleeneAlgebra isProKleeneAlgebra public
+    using (isKleeneAlgebra; starExpansive; starDestructive)
+

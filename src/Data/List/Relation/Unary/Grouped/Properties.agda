@@ -15,7 +15,6 @@ import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
 open import Data.List.Relation.Unary.Grouped
 open import Function using (_∘_; _⇔_; Equivalence)
-open import Function.Equality using (_⟨$⟩_)
 open import Relation.Binary as B using (REL; Rel)
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary using (¬_; does; yes; no)

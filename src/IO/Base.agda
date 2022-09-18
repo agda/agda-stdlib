@@ -12,6 +12,7 @@ open import Level
 open import Codata.Musical.Notation
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 import Agda.Builtin.Unit as Unit0
 open import Data.Unit.Polymorphic.Base
 open import Function.Base using (_∘′_; const; flip)
@@ -128,3 +129,8 @@ untilJust : IO (Maybe A) → IO A
 untilJust m = bind (♯ m) λ where
   nothing  → ♯ untilJust m
   (just a) → ♯ return a
+
+untilRight : {A B : Set a} → (A → IO (A ⊎ B)) → A → IO B
+untilRight f x = bind (♯ f x) λ where
+  (inj₁ x′) → ♯ untilRight f x′
+  (inj₂ y) → ♯ return y
