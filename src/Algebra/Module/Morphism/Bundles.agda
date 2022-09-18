@@ -7,14 +7,13 @@
 
 module Algebra.Module.Morphism.Bundles where
 
-open import Algebra                   using (CommutativeRing)
-open import Algebra.Module            using (Module)
+open import Algebra        using (CommutativeRing)
+open import Algebra.Module using (Module)
 open import Algebra.Module.Morphism.Structures
 open import Function
-open import Level                     using (Level; suc; _⊔_)
+import      Function.Relation.Binary.Equality as ExtEq
+open import Level          using (Level; suc; _⊔_)
 open import Relation.Binary
-import Function.Relation.Binary.Equality as ExtEq
--- import Function.Relation.Binary.Equality2 as ExtEq
 
 module _
   {r ℓr m ℓm n ℓn : Level}
@@ -23,12 +22,12 @@ module _
   (modB           : Module ring n ℓn)
   where
 
-  open Module modA renaming (Carrierᴹ to A)
-  open Module modB renaming (Carrierᴹ to B)
-
   record LinearMap : Set (r ⊔ ℓr ⊔ m ⊔ ℓm ⊔ n ⊔ ℓn) where
 
     constructor mkLM
+
+    open Module modA renaming (Carrierᴹ to A)
+    open Module modB renaming (Carrierᴹ to B)
 
     field
       f    : A → B
@@ -36,8 +35,8 @@ module _
 
     open IsModuleHomomorphism homo public
 
-  ≈ᴸ-setoid : Setoid (r ⊔ ℓr ⊔ m ⊔ ℓm ⊔ n ⊔ ℓn) (m ⊔ ℓn)
-  ≈ᴸ-setoid = record
+  ≈ᴸᴹ-setoid : Setoid (r ⊔ ℓr ⊔ m ⊔ ℓm ⊔ n ⊔ ℓn) (m ⊔ ℓn)
+  ≈ᴸᴹ-setoid = record
     { Carrier       = LinearMap
     ; _≈_           = _≗_ on LinearMap.f
     ; isEquivalence = record
@@ -47,4 +46,3 @@ module _
         }
     }
     where open ExtEq (Module.≈ᴹ-setoid modB)
-    -- where open ExtEq (Module.≈ᴹ-setoid modA) (Module.≈ᴹ-setoid modB)

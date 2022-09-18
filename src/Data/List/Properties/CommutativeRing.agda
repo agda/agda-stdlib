@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- List-related properties over a Setoid
+-- List-related properties over a CommutativeRing
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -50,7 +50,7 @@ ring′ = record { isRing = isRing }
 
 open PropGroup group
 open PropRing  ring′
-    
+
 _+ᴸ_ : List S → List S → List S
 _+ᴸ_ xs ys = zipWith _+_ xs ys
 
@@ -132,7 +132,7 @@ zipWith-comm-map {f} {g} {[]}     {y ∷ ys} _        = ≋-refl
 zipWith-comm-map {f} {g} {x ∷ xs} {[]}     _        = ≋-refl
 zipWith-comm-map {f} {g} {x ∷ xs} {y ∷ ys} f-homo-g =
   f-homo-g x y ∷′ zipWith-comm-map f-homo-g
-                   
+
 zipWith-comm-map′ : {f : Op₂ S} {g : Op₁ S} {xs ys : List S} →
                    Homomorphic₂′′ S S _≈_ f g →
                    zipWith f xs (map g ys) ≋ map g (zipWith f xs ys)
@@ -141,7 +141,7 @@ zipWith-comm-map′ {f} {g} {[]}     {y ∷ ys} _        = ≋-refl
 zipWith-comm-map′ {f} {g} {x ∷ xs} {[]}     _        = ≋-refl
 zipWith-comm-map′ {f} {g} {x ∷ xs} {y ∷ ys} f-homo-g =
   f-homo-g x y ∷′ zipWith-comm-map′ f-homo-g
-  
+
 --------------------------------------------------------------------
 -- Distributivities
 

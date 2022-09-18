@@ -8,7 +8,7 @@
 
 module Algebra.Linear.Structures where
 
-open import Algebra                      using (CommutativeRing; Field)
+open import Algebra using (CommutativeRing; Field; Op₂)
 open import Algebra.Construct.NaturalChoice.Base using (MinOperator)
 open import Algebra.Module               using (Module)
 open import Algebra.Morphism.Definitions
@@ -19,6 +19,7 @@ open import Data.List.Relation.Unary.All using (All)
 open import Data.Nat.Properties
   using (⊓-operator; ≤-reflexive)
 open import Data.Product                 hiding (map)
+open import Function                     using (_∘_; id)
 open import Level                        using (Level; _⊔_; suc)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_; _≢_)
 open import Relation.Binary.Reasoning.MultiSetoid
@@ -35,18 +36,16 @@ module _
   (open Field fld renaming (Carrier to S))  -- "S" for scalar.
   (mod       : Module ring m ℓm)            -- `ring` comes from `fld`.
   where
-  
-  open Module mod renaming (Carrierᴹ to V)  -- "V" for vector.
+
   open ExtEq setoid
+  open ListEq setoid using (_≋_; ≋-refl; ≋-setoid; ≋-sym)
+    renaming ( _∷_  to _∷′_ )
+  open Module mod renaming (Carrierᴹ to V)  -- "V" for vector.
   open import Algebra.Definitions _≈_
     using ( Congruent₂; Commutative ; RightIdentity; LeftIdentity
           ; RightZero ; LeftZero; _DistributesOverˡ_
           )
   open import Data.List.Properties.CommutativeRing ring
-
-  -- Accumulate a list of vectors, scaled by a list of scalars.
-  vacc : List S → List V → V
-  vacc ss vs = foldr _+ᴹ_ 0ᴹ (zipWith (_*ₗ_) ss vs)
 
   -- A set of "vectors" forms a basis for a space iff:
   --   1. it _spans_ the space, and
@@ -58,6 +57,10 @@ module _
   --
   -- ToDo: List => Foldable Functor
   record IsBasis : Set (suc (ℓm ⊔ ℓr ⊔ r ⊔ m)) where
+
+    -- Accumulate a list of vectors, scaled by a list of scalars.
+    vacc : List S → List V → V
+    vacc ss vs = foldr _+ᴹ_ 0ᴹ (zipWith (_*ₗ_) ss vs)
 
     field
       basisSet         : List V
@@ -89,7 +92,15 @@ module _
       basis : IsBasis
 
     open IsBasis basis public
-    
+
+    -- Scale a vector according to some reduction function.
+    vscale : (V → S) → V → V
+    vscale f = uncurry _*ₗ_ ∘ < f , id >
+
+    -- Accumulate a list of vectors, according to some reduction function.
+    vgen : (V → S) → List V → V
+    vgen f = foldr (_+ᴹ_ ∘ vscale f) 0ᴹ
+
   -- An _Inner Product Space_ is a vector space augmented with a function
   -- that takes two vectors and returns a scalar.
   record IsInnerProductSpace (f : V → V → S) : Set (suc (ℓm ⊔ ℓr ⊔ m ⊔ r)) where
@@ -98,19 +109,32 @@ module _
       isVectorSpace : IsVectorSpace
 
     open IsVectorSpace isVectorSpace public
-    
+
   -- I'm coining the term _Dot Product Space_ to imply an
   -- `IsInnerProductSpace` in which the inner product is the standard
   -- "dot product". This requires that the underlying `Module` be
   -- _Representable_ (i.e. - have an associated _indexing_ function).
   -- Here, we capture this constraint by requiring a homomorphic `toList` function.
-  record IsDotProductSpace (toList : V → List S) : Set (suc (ℓm ⊔ ℓr ⊔ m ⊔ r)) where
+  --
+  -- Furthermore, I'm going to require that the basis of a `DotProductSpace`
+  -- be orthonormal, because that seems the proper and usual thing to do.
+  -- (It's not really a narrowing of the scope in any way, since a
+  -- non-orthonormal basis can easily be converted to an orthonormal
+  -- equivalent with the same span.)
+  record IsDotProductSpace
+    (toList : V → List S) : Set (suc (ℓm ⊔ ℓr ⊔ m ⊔ r)) where
 
-    open ListEq setoid using (_≋_; ≋-refl; ≋-setoid; ≋-sym)
-      renaming ( _∷_  to _∷′_ )
-    
+    _∙_ : V → V → S
+    _∙_ u v = foldr _+_ 0# (zipWith _*_ (toList u) (toList v))
+
     field
       isVectorSpace  : IsVectorSpace
+      basisOrthonorm : ∀ {v : V} →
+                       v ≈ᴹ IsVectorSpace.vgen isVectorSpace
+                              (v ∙_)
+                              (IsBasis.basisSet
+                                 (IsVectorSpace.basis isVectorSpace)
+                              )
       cardinality    : ℕ.ℕ
       toList-len     : ∀ {v} → length (toList v) ≡ cardinality
       toList-homo-+  : {u v : V} →
@@ -123,18 +147,21 @@ module _
                        toList (v *ᵣ s) ≋ map (_* s) (toList v)
       toList-cong    : ∀ {u v} → u ≈ᴹ v → toList u ≋ toList v
       toList-zero    : toList 0ᴹ ≋ replicate cardinality 0#
-      
-    _∙_ : V → V → S
-    _∙_ u v = foldr _+_ 0# (zipWith _*_ (toList u) (toList v))
+
+    len[u]≡len[v] : ∀ {u v} → length (toList u) ≡ length (toList v)
+    len[u]≡len[v] {u} {v} = PE.begin
+      length (toList u) PE.≡⟨ toList-len ⟩
+      cardinality       PE.≡⟨ Eq.sym toList-len ⟩
+      length (toList v) PE.∎
 
     isInnerProductSpace : IsInnerProductSpace _∙_
     isInnerProductSpace = record {isVectorSpace = isVectorSpace}
-    
+
     open IsInnerProductSpace isInnerProductSpace public
 
     --------------------------------------------------------------------
     -- Properties of the Dot Product
-    
+
     ∙-comm : ∀ {u v} → u ∙ v ≈ v ∙ u
     ∙-comm {u} {v} = begin⟨ setoid ⟩
       u ∙ v                               ≡⟨⟩
@@ -186,7 +213,7 @@ module _
         length a′ ℕ.⊓ length c′    PE.≡⟨ Eq.sym (length-zipWith _*_ a′ c′) ⟩
         length (zipWith _*_ a′ c′) PE.≡⟨⟩
         length a*c                PE.∎
-      
+
     ∙-comm-*ₗ : ∀ {s a b} → a ∙ (s *ₗ b) ≈ s * (a ∙ b)
     ∙-comm-*ₗ {s} {a} {b} = begin⟨ setoid ⟩
       a ∙ (s *ₗ b)
@@ -218,7 +245,7 @@ module _
         s * (y * x) ≈⟨ *-cong refl (*-comm y x) ⟩
         s * (x * y) ∎
 
-      
+
     ∙-comm-*ᵣ : ∀ {s a b} → a ∙ (b *ᵣ s) ≈ (a ∙ b) * s
     ∙-comm-*ᵣ {s} {a} {b} = begin⟨ setoid ⟩
       a ∙ (b *ᵣ s)
@@ -246,13 +273,6 @@ module _
       *-homo : Homomorphic₂′′ S S _≈_ _*_ (_* s)
       *-homo x y = sym (*-assoc x y s)
 
-      -- I was hoping that this might work, but alas no postulate in the
-      -- standard library that `b *ᵣ s` must equal `s *ₗ b`. :(
-      -- a ∙ (b *ᵣ s) ≈⟨ ∙-congˡ (≈ᴹ-sym {!!}) ⟩
-      -- a ∙ (s *ₗ b) ≈⟨ ∙-comm-*ₗ ⟩
-      -- s * (a ∙ b)  ≈⟨ *-comm s (a ∙ b) ⟩
-      -- (a ∙ b) * s  ∎
-    
     ∙-congˡ : ∀ {a b c} → b ≈ᴹ c → a ∙ b ≈ a ∙ c
     ∙-congˡ {a} {b} {c} b≈c = begin⟨ setoid ⟩
       a ∙ b
@@ -269,7 +289,7 @@ module _
       c′ = toList c
       a*b = zipWith _*_ a′ b′
       a*c = zipWith _*_ a′ c′
-    
+
     ∙-congʳ : ∀ {a b c} → b ≈ᴹ c → b ∙ a ≈ c ∙ a
     ∙-congʳ {a} {b} {c} b≈c = begin⟨ setoid ⟩
       b ∙ a ≈⟨ ∙-comm ⟩
@@ -298,7 +318,7 @@ module _
       where
       a′     = toList a
       len[a] = length a′
-      
+
     ∙-idʳ : ∀ {a} → a ∙ 0ᴹ ≈ 0#
     ∙-idʳ {a} = begin⟨ setoid ⟩
       a ∙ 0ᴹ ≈⟨ ∙-comm ⟩
