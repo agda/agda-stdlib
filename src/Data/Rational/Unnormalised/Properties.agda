@@ -26,7 +26,7 @@ open import Data.Rational.Unnormalised.Base
 open import Data.Product using (_,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
-open import Function.Base using (_on_; _$_; _∘_)
+open import Function.Base using (_on_; _$_; _∘_; flip)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
@@ -209,9 +209,13 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
 ≤-resp₂-≃ : _≤_ Respects₂ _≃_
 ≤-resp₂-≃ = ≤-respʳ-≃ , ≤-respˡ-≃
 
-infix 4 _≤?_
+infix 4 _≤?_ _≥?_
+
 _≤?_ : Decidable _≤_
 p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
+
+_≥?_ : Decidable _≥_
+_≥?_ = flip _≤?_
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant (*≤* p≤q₁) (*≤* p≤q₂) = cong *≤* (ℤ.≤-irrelevant p≤q₁ p≤q₂)
@@ -408,9 +412,13 @@ drop-*<* (*<* pq<qp) = pq<qp
 ... | tri≈ x≮y x≈y x≯y = tri≈ (x≮y ∘ drop-*<*) (*≡* x≈y) (x≯y ∘ drop-*<*)
 ... | tri> x≮y x≉y x>y = tri> (x≮y ∘ drop-*<*) (x≉y ∘ drop-*≡*) (*<* x>y)
 
-infix 4 _<?_
+infix 4 _<?_ _>?_
+
 _<?_ : Decidable _<_
 p <? q = Dec.map′ *<* drop-*<* (↥ p ℤ.* ↧ q ℤ.<? ↥ q ℤ.* ↧ p)
+
+_>?_ : Decidable _>_
+_>?_ = flip _<?_
 
 <-irrelevant : Irrelevant _<_
 <-irrelevant (*<* p<q₁) (*<* p<q₂) = cong *<* (ℤ.<-irrelevant p<q₁ p<q₂)

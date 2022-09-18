@@ -8,8 +8,8 @@
 
 open import Data.Fin.Base
 open import Data.Fin.Properties
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_)
-open import Data.Nat.Properties using (n<1+n)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_; s≤s)
+open import Data.Nat.Properties using (n<1+n; ≤⇒≯)
 import Data.Nat.Induction as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Product using (_,_)
@@ -25,6 +25,7 @@ import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.Flip as Flip
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
 import Relation.Binary.Construct.On as On
+open import Relation.Binary.Definitions using (Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
@@ -48,16 +49,27 @@ open WF public using (Acc; acc)
 <-wellFounded : WellFounded {A = Fin n} _<_
 <-wellFounded = On.wellFounded toℕ ℕ.<-wellFounded
 
+<-weakInduction-startingFrom : ∀ (P : Pred (Fin (suc n)) ℓ) →
+                               ∀ {i} → P i →
+                               (∀ j → P (inject₁ j) → P (suc j)) →
+                               ∀ {j} → j ≥ i → P j
+<-weakInduction-startingFrom P {i} Pi Pᵢ⇒Pᵢ₊₁ {j} j≥i = induct (<-wellFounded _) (<-cmp i j) j≥i
+  where
+  induct : ∀ {j} → Acc _<_ j → Tri (i < j) (i ≡ j) (i > j) → j ≥ i → P j
+  induct (acc rs) (tri≈ _ refl _) i≤j = Pi
+  induct (acc rs) (tri> _ _ i>sj) i≤j with () ← ≤⇒≯ i≤j i>sj
+  induct {suc j} (acc rs) (tri< (s≤s i≤j) _ _) _ = Pᵢ⇒Pᵢ₊₁ j P[1+j]
+    where
+    toℕj≡toℕinjJ = sym $ toℕ-inject₁ j
+    P[1+j] = induct (rs _ (s≤s (subst (ℕ._≤ toℕ j) toℕj≡toℕinjJ ≤-refl)))
+      (<-cmp i $ inject₁ j) (subst (toℕ i ℕ.≤_) toℕj≡toℕinjJ i≤j)
+
 <-weakInduction : (P : Pred (Fin (suc n)) ℓ) →
                   P zero →
                   (∀ i → P (inject₁ i) → P (suc i)) →
                   ∀ i → P i
-<-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁ i = induct (<-wellFounded i)
-  where
-  induct : ∀ {i} → Acc _<_ i → P i
-  induct {zero}  _         = P₀
-  induct {suc i} (acc rec) = Pᵢ⇒Pᵢ₊₁ i (induct (rec (inject₁ i) i<i+1))
-    where i<i+1 = ℕ<⇒inject₁< (i<1+i i)
+<-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁ i = <-weakInduction-startingFrom P P₀ Pᵢ⇒Pᵢ₊₁ ℕ.z≤n
+
 
 ------------------------------------------------------------------------
 -- Induction over _>_
