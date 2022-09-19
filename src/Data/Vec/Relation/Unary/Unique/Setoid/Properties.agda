@@ -8,7 +8,7 @@
 
 module Data.Vec.Relation.Unary.Unique.Setoid.Properties where
 
-open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Fin.Base using (zero; suc)
 open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 import Data.Vec.Relation.Unary.All.Properties as Allₚ
@@ -58,8 +58,8 @@ module _ (S : Setoid a ℓ) where
 
   open Setoid S renaming (Carrier to A)
 
-  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → f i ≈ f j → i ≡ j) →
-              Unique S (tabulate f)
+  tabulate⁺ : ∀ {n} {f} → (∀ {i j} → f i ≈ f j → i ≡ j) →
+              Unique S (tabulate {n = n} f)
   tabulate⁺ f-inj = AllPairsₚ.tabulate⁺ (_∘ f-inj)
 
 ------------------------------------------------------------------------
