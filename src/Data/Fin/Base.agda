@@ -43,6 +43,11 @@ data Fin : ℕ → Set where
 NZzero : .{{ℕ.NonZero n}} → Fin n
 NZzero {n = suc n} = zero
 
+-- uniform successor
+
+NZsuc : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
+NZsuc {n = suc n} = suc
+
 -- NonZero predicate
 
 isZero : (i : Fin (suc n)) → Bool
@@ -169,6 +174,9 @@ inject₁ : Fin n → Fin (suc n)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
+NZinject₁ : .{{_ : ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
+NZinject₁ {n = suc n} = inject₁
+
 inject≤ : Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    _        = zero
 inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
@@ -178,10 +186,10 @@ inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
 lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
 lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
 lower₁ {suc n} zero    _  = zero
-lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
+lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
-NZlower₁ : .{{ℕ.NonZero n}} → (i : Fin n) → (ℕ.pred n) ≢ toℕ i → Fin (ℕ.pred n)
-NZlower₁ {n = suc n} i = lower₁ i
+NZlower₁ : .{{ℕ.NonZero n}} → (i : Fin n) → n ≢ suc (toℕ i) → Fin (ℕ.pred n)
+NZlower₁ {n = suc n} i ne = lower₁ i (ne ∘ cong suc)
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ (i : Fin n) → Fin′ (suc i)

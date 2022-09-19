@@ -203,7 +203,7 @@ fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 ≤fromℕ : ∀ (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
 ≤fromℕ i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ _)) (toℕ≤pred[n] i)
 
-NZ≤fromℕ : ∀ .{{_ : ℕ.NonZero n}} (i : Fin n) → i ≤ fromℕ (ℕ.pred n)
+NZ≤fromℕ : .{{_ : ℕ.NonZero n}} (i : Fin n) → i ≤ fromℕ (ℕ.pred n)
 NZ≤fromℕ {n = suc n} i = ≤fromℕ i
 
 ------------------------------------------------------------------------
@@ -491,6 +491,11 @@ inject₁-lower₁ {suc n} zero     _       = refl
 inject₁-lower₁ {suc n} (suc i)  n+1≢i+1 =
   cong suc (inject₁-lower₁ i  (n+1≢i+1 ∘ cong suc))
 
+NZinject₁-lower₁ : .{{_ : ℕ.NonZero n}} →
+                   ∀ (i : Fin n) (n≢i+1 : n ≢ suc (toℕ i)) →
+                   NZinject₁ (NZlower₁ i n≢i+1) ≡ i
+NZinject₁-lower₁ {n = suc n} i n≢i+1 = inject₁-lower₁ i (n≢i+1 ∘ cong suc)
+
 lower₁-inject₁′ : ∀ (i : Fin n) (n≢i : n ≢ toℕ (inject₁ i)) →
                   lower₁ (inject₁ i) n≢i ≡ i
 lower₁-inject₁′ zero    _       = refl
@@ -508,9 +513,19 @@ lower₁-irrelevant {suc n} zero     _   _ = refl
 lower₁-irrelevant {suc n} (suc i)  _   _ =
   cong suc (lower₁-irrelevant i _ _)
 
+NZlower₁-irrelevant : .{{_ : ℕ.NonZero n}} →
+                      ∀ (i : Fin n) (n≢i₁+1 n≢i₂+1 : n ≢ suc (toℕ i)) →
+                      NZlower₁ i n≢i₁+1 ≡ NZlower₁ i n≢i₂+1
+NZlower₁-irrelevant {n = suc n} i n≢i₁+1 n≢i₂+1 = lower₁-irrelevant i (n≢i₁+1 ∘ cong suc) (n≢i₂+1 ∘ cong suc)
+
 inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (ℕ.suc n)} →
                   (n≢j : n ≢ toℕ j) → inject₁ i ≡ j → lower₁ j n≢j ≡ i
 inject₁≡⇒lower₁≡ n≢j i≡j = inject₁-injective (trans (inject₁-lower₁ _ n≢j) (sym i≡j))
+
+NZinject₁≡⇒lower₁≡ : .{{_ : ℕ.NonZero n}} →
+                      ∀ {i : Fin (ℕ.pred n)} {j : Fin n} →
+                      (n≢j+1 : n ≢ suc (toℕ j)) → NZinject₁ i ≡ j → NZlower₁ j n≢j+1 ≡ i
+NZinject₁≡⇒lower₁≡ {n = suc n} n≢j+1 = inject₁≡⇒lower₁≡ (n≢j+1 ∘ cong suc)
 
 ------------------------------------------------------------------------
 -- inject≤
@@ -545,7 +560,7 @@ pred< : ∀ (i : Fin (suc n)) → i ≢ zero → pred i < i
 pred< zero    i≢0 = contradiction refl i≢0
 pred< (suc i) _   = ≤̄⇒inject₁< ℕₚ.≤-refl
 
-NZpred< : ∀ .{{_ : ℕ.NonZero n}} (i : Fin n) → i ≢ NZzero → pred i < i
+NZpred< : ∀ .{{_ : ℕ.NonZero n}} → (i : Fin n) → i ≢ NZzero → pred i < i
 NZpred< {n = suc n} i = pred< i
 
 ------------------------------------------------------------------------
@@ -821,6 +836,11 @@ punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
 punchOut-cong {suc n} (suc i) {zero}  {zero}   _ = refl
 punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i ∘ suc-injective
 
+NZpunchOut-cong : .{{_ : ℕ.NonZero n}} →
+                  ∀ (i : Fin n) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} →
+                  j ≡ k → NZpunchOut i≢j ≡ NZpunchOut i≢k
+NZpunchOut-cong {n = suc n} = punchOut-cong
+
 -- An alternative to 'punchOut-cong' in the which the new inequality argument is
 -- specific. Useful for enabling the omission of that argument during equational
 -- reasoning.
@@ -828,6 +848,11 @@ punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i 
 punchOut-cong′ : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
                  punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
 punchOut-cong′ i q = punchOut-cong i q
+
+NZpunchOut-cong′ : .{{_ : ℕ.NonZero n}} →
+                  ∀ (i : Fin n) {j k} {p : i ≢ j} (q : j ≡ k) →
+                  NZpunchOut p ≡ NZpunchOut (p ∘ sym ∘ trans q ∘ sym)
+NZpunchOut-cong′ {n = suc n} = punchOut-cong′
 
 punchOut-injective : ∀ {i j k : Fin (suc n)}
                      (i≢j : i ≢ j) (i≢k : i ≢ k) →
@@ -839,6 +864,12 @@ punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
   cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
 
+NZpunchOut-injective : .{{_ : ℕ.NonZero n}} →
+                       ∀ {i j k : Fin n}
+                       (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                       NZpunchOut i≢j ≡ NZpunchOut i≢k → j ≡ k
+NZpunchOut-injective {n = suc n} = punchOut-injective
+
 punchIn-punchOut : ∀ {i j : Fin (suc n)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
 punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
@@ -846,6 +877,11 @@ punchIn-punchOut {_}     {zero}   {suc j} _   = refl
 punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
   cong suc (punchIn-punchOut (i≢j ∘ cong suc))
+
+NZpunchIn-punchOut : .{{_ : ℕ.NonZero n}} →
+                     ∀ {i j : Fin n} (i≢j : i ≢ j) →
+                     NZpunchIn i (NZpunchOut i≢j) ≡ j
+NZpunchIn-punchOut {n = suc n} = punchIn-punchOut
 
 punchOut-punchIn : ∀ i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
 punchOut-punchIn zero    {j}     = refl
@@ -885,6 +921,11 @@ pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
   cong suc
     (pinch-injective (1+i≢j ∘ cong suc) (1+i≢k ∘ cong suc)
       (suc-injective eq))
+
+NZpinch-injective : .{{_ : ℕ.NonZero n}} → 
+                    ∀ {i : Fin (ℕ.pred n)} {j k : Fin n} →
+                    NZsuc i ≢ j → NZsuc i ≢ k → NZpinch i j ≡ NZpinch i k → j ≡ k
+NZpinch-injective {n = suc n} = pinch-injective
 
 ------------------------------------------------------------------------
 -- Quantification
