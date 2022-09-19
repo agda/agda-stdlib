@@ -15,7 +15,6 @@ import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
 open import Data.Fin.Base using (zero; suc; _<_)
---open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (ℕ; NonZero; zero; suc)
 open import Data.Nat.Properties using (<-pred)
 open import Level using (Level)
