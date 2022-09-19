@@ -14,10 +14,10 @@ open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
-open import Data.Fin.Base using (Fin; zero; suc; _<_)
-open import Data.Fin.Properties using (suc-injective)
-open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Nat.Properties using (<-pred) -- ≤-refl; ≤-pred; ≤-step)
+open import Data.Fin.Base using (zero; suc; _<_)
+--open import Data.Fin.Properties using (suc-injective)
+open import Data.Nat.Base using (ℕ; NonZero; zero; suc)
+open import Data.Nat.Properties using (<-pred)
 open import Level using (Level)
 open import Function.Base using (_∘_; flip; _on_)
 open import Relation.Binary using (Rel; Transitive; DecSetoid)
@@ -44,7 +44,12 @@ module _ (trans : Transitive R) where
   Linked⇒All Rvx [-]         = Rvx ∷ []
   Linked⇒All Rvx (Rxy ∷ Rxs) = Rvx ∷ Linked⇒All (trans Rvx Rxy) Rxs
 
-  lookup : ∀ {i j : Fin n} {xs} → i < j →
+  NZLinked⇒All : .{{nz : NonZero n}} →
+                  ∀ {v} {xs : Vec _ n} → R v (NZhead {{nz}} xs) →
+                  Linked R xs → All (R v) xs
+  NZLinked⇒All {n = suc n} = Linked⇒All {n = n}
+
+  lookup : ∀ {i j} {xs : Vec _ n} → i < j →
            Linked R xs → R (Vec.lookup xs i) (Vec.lookup xs j)
   lookup {i = zero}  {j = suc j} i<j (rx ∷ rxs) = Allₚ.lookup⁺ j (Linked⇒All rx rxs)
   lookup {i = suc i} {j = suc j} i<j (_  ∷ rxs) = lookup (<-pred i<j) rxs
