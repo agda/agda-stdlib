@@ -12,7 +12,7 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
-open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Fin.Base using (zero; suc)
 open import Data.List.Base as List hiding (lookup)
 open import Data.List.Properties as Listₚ using (partition-defn)
 open import Data.List.Membership.Propositional
@@ -553,13 +553,11 @@ applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)
 ------------------------------------------------------------------------
 -- tabulate
 
-tabulate⁺ : ∀ {n} {f : Fin n → A} →
-            (∀ i → P (f i)) → All P (tabulate f)
+tabulate⁺ : ∀ {n} {f} → (∀ i → P (f i)) → All P (tabulate {n = n} f)
 tabulate⁺ {n = zero}  Pf = []
 tabulate⁺ {n = suc _} Pf = Pf zero ∷ tabulate⁺ (Pf ∘ suc)
 
-tabulate⁻ : ∀ {n} {f : Fin n → A} →
-            All P (tabulate f) → (∀ i → P (f i))
+tabulate⁻ : ∀ {n} {f} → All P (tabulate {n = n} f) → (∀ i → P (f i))
 tabulate⁻ (px ∷ _) zero    = px
 tabulate⁻ (_ ∷ pf) (suc i) = tabulate⁻ pf i
 
