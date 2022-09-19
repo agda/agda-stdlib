@@ -17,7 +17,7 @@ module Data.Vec.Functional where
 
 open import Data.Fin.Base hiding (NonZero; pred)
 open import Data.List.Base as L using (List)
-open import Data.Nat.Base as ℕ using (ℕ; NonZero; zero; suc; pred)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero; pred)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Base as V using (Vec)

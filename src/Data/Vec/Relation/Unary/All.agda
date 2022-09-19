@@ -8,7 +8,7 @@
 
 module Data.Vec.Relation.Unary.All where
 
-open import Data.Nat.Base using (ℕ; NonZero; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
 open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)

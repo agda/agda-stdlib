@@ -8,7 +8,7 @@
 
 module Data.Nat.DivMod.WithK where
 
-open import Data.Nat using (ℕ; NonZero; _+_; _*_; _≟_; zero; suc)
+open import Data.Nat using (ℕ; NonZero; _+_; _*_; _≟_)
 open import Data.Nat.DivMod hiding (_mod_; _divMod_)
 open import Data.Nat.Properties using (≤⇒≤″)
 open import Data.Nat.WithK
