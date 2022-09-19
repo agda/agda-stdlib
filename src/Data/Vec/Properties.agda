@@ -1030,7 +1030,7 @@ insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
 NZinsert-punchIn : .{{_ : NonZero n}} →
                    (xs : Vec A (pred n)) (i : Fin n) (v : A) (j : Fin (pred n)) →
                    lookup (NZinsert xs i v) (Fin.NZpunchIn i j) ≡ lookup xs j
-NZinsert-punchIn {n = suc n} = insert-punchIn                   
+NZinsert-punchIn {n = suc n} = insert-punchIn
 
 remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
                   lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j

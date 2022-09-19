@@ -922,7 +922,7 @@ pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
     (pinch-injective (1+i≢j ∘ cong suc) (1+i≢k ∘ cong suc)
       (suc-injective eq))
 
-NZpinch-injective : .{{_ : ℕ.NonZero n}} → 
+NZpinch-injective : .{{_ : ℕ.NonZero n}} →
                     ∀ {i : Fin (ℕ.pred n)} {j k : Fin n} →
                     NZsuc i ≢ j → NZsuc i ≢ k → NZpinch i j ≡ NZpinch i k → j ≡ k
 NZpinch-injective {n = suc n} = pinch-injective

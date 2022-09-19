@@ -301,6 +301,13 @@ _ℕ-ℕ_ : (n : ℕ) → Fin (suc n) → ℕ
 n     ℕ-ℕ zero   = n
 suc n ℕ-ℕ suc i  = n ℕ-ℕ i
 
+-- n ℕ-suc "i" = n ∸ (suc i)
+
+infixl 6 _ℕ-suc_
+
+_ℕ-suc_ : (n : ℕ) → Fin n → ℕ
+suc n ℕ-suc i = n ℕ-ℕ i
+
 -- pred "i" = "pred i".
 
 pred : Fin n → Fin n
