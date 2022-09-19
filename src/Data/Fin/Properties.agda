@@ -25,7 +25,8 @@ open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; pro
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
-open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
+open import Data.Sum.Properties
+  renaming ([,]-map-commute to [,]-map; [,]-∘-distr to [,]-∘)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
 open import Function.Definitions using (Injective)
@@ -201,6 +202,9 @@ fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
 ≤fromℕ : ∀ (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
 ≤fromℕ i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ _)) (toℕ≤pred[n] i)
+
+NZ≤fromℕ : ∀ .{{_ : ℕ.NonZero n}} (i : Fin n) → i ≤ fromℕ (ℕ.pred n)
+NZ≤fromℕ {n = suc n} i = ≤fromℕ i
 
 ------------------------------------------------------------------------
 -- fromℕ<
@@ -541,6 +545,9 @@ pred< : ∀ (i : Fin (suc n)) → i ≢ zero → pred i < i
 pred< zero    i≢0 = contradiction refl i≢0
 pred< (suc i) _   = ≤̄⇒inject₁< ℕₚ.≤-refl
 
+NZpred< : ∀ .{{_ : ℕ.NonZero n}} (i : Fin n) → i ≢ NZzero → pred i < i
+NZpred< {n = suc n} i = pred< i
+
 ------------------------------------------------------------------------
 -- splitAt
 ------------------------------------------------------------------------
@@ -563,8 +570,8 @@ join-splitAt : ∀ m n i → join m n (splitAt m i) ≡ i
 join-splitAt zero    n i       = refl
 join-splitAt (suc m) n zero    = refl
 join-splitAt (suc m) n (suc i) = begin
-  [ _↑ˡ n , (suc m) ↑ʳ_ ]′ (splitAt (suc m) (suc i)) ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
+  [ _↑ˡ n , (suc m) ↑ʳ_ ]′ (splitAt (suc m) (suc i)) ≡⟨ [,]-map (splitAt m i) ⟩
+  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡˘⟨ [,]-∘ suc (splitAt m i) ⟩
   suc ([ _↑ˡ n , m ↑ʳ_ ]′ (splitAt m i))             ≡⟨ cong suc (join-splitAt m n i) ⟩
   suc i                                                         ∎
   where open ≡-Reasoning
