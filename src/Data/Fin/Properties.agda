@@ -799,6 +799,10 @@ toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 -- _ℕ-ℕ_
 ------------------------------------------------------------------------
 
+ℕ-ℕ≡toℕ‿ℕ- : ∀ n i → n ℕ-ℕ i ≡ toℕ (n ℕ- i)
+ℕ-ℕ≡toℕ‿ℕ- n       zero    = sym (toℕ-fromℕ n)
+ℕ-ℕ≡toℕ‿ℕ- (suc n) (suc i) = ℕ-ℕ≡toℕ‿ℕ- n i
+
 nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ.≤ n
 nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
 nℕ-ℕi≤n (suc n) (suc i)  = begin
