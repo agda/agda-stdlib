@@ -75,7 +75,7 @@ suc-injective refl = refl
 -- backend erases proofs.
 
 infix 4 _≟_
-_≟_ : Decidable {A = ℕ} _≡_
+_≟_ : DecidableEquality ℕ
 m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 
 ≡-irrelevant : Irrelevant {A = ℕ} _≡_
@@ -2137,7 +2137,7 @@ _>‴?_ = flip _<‴?_
 -- If there is an injection from a type to ℕ, then the type has
 -- decidable equality.
 
-eq? : ∀ {a} {A : Set a} → A ↣ ℕ → Decidable {A = A} _≡_
+eq? : ∀ {a} {A : Set a} → A ↣ ℕ → DecidableEquality A
 eq? inj = via-injection inj _≟_
 
 -- It's possible to decide existential and universal predicates up to
