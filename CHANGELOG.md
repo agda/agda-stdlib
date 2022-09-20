@@ -84,6 +84,21 @@ Non-backwards compatible changes
   * Moved raw bundles From `Data.Rational.Properties` to `Data.Rational.Base`
   * Moved raw bundles From `Data.Rational.Unnormalised.Properties` to `Data.Rational.Unnormalised.Base`
 
+#### Moved the definition of RawX from `Algebra.Bundles` to `Algebra.Bundles.Raw`
+
+* A new module `Algebra.Bundles.Raw` containing the definitions of the raw bundles
+  can be imported at much lower cost from `Data.X.Base`.
+  The following definitions have been moved:
+  * `RawMagma`
+  * `RawMonoid`
+  * `RawGroup`
+  * `RawNearSemiring`
+  * `RawSemiring`
+  * `RawRingWithoutOne`
+  * `RawRing`
+  * `RawQuasigroup`
+  * `RawLoop`
+
 ### Improvements to pretty printing and regexes
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This

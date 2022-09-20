@@ -11,6 +11,7 @@
 
 module Algebra.Bundles where
 
+open import Algebra.Bundles.Raw public
 open import Algebra.Core
 open import Algebra.Structures
 open import Relation.Binary
@@ -21,19 +22,6 @@ open import Level
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation
 ------------------------------------------------------------------------
-
-record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _∙_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-
-  infix 4 _≉_
-  _≉_ : Rel Carrier _
-  x ≉ y = N.¬ (x ≈ y)
-
 
 record Magma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -232,27 +220,6 @@ record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
 -- Bundles with 1 binary operation & 1 element
 ------------------------------------------------------------------------
 
--- A raw monoid is a monoid without any laws.
-
-record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _∙_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-    ε       : Carrier
-
-  rawMagma : RawMagma c ℓ
-  rawMagma = record
-    { _≈_ = _≈_
-    ; _∙_ = _∙_
-    }
-
-  open RawMagma rawMagma public
-    using (_≉_)
-
-
 record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
@@ -359,28 +326,6 @@ module BoundedLattice {c ℓ} (idemCommMonoid : IdempotentCommutativeMonoid c �
 -- Bundles with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
-record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 _⁻¹
-  infixl 7 _∙_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-    ε       : Carrier
-    _⁻¹     : Op₁ Carrier
-
-  rawMonoid : RawMonoid c ℓ
-  rawMonoid = record
-    { _≈_ = _≈_
-    ; _∙_ = _∙_
-    ; ε   = ε
-    }
-
-  open RawMonoid rawMonoid public
-    using (_≉_; rawMagma)
-
-
 record InvertibleMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
@@ -486,34 +431,6 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations & 1 element
 ------------------------------------------------------------------------
-
-record RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _*_
-  infixl 6 _+_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _+_     : Op₂ Carrier
-    _*_     : Op₂ Carrier
-    0#      : Carrier
-
-  +-rawMonoid : RawMonoid c ℓ
-  +-rawMonoid = record
-    { _≈_ = _≈_
-    ; _∙_ = _+_
-    ;  ε  = 0#
-    }
-
-  open RawMonoid +-rawMonoid public
-    using (_≉_) renaming (rawMagma to +-rawMagma)
-
-  *-rawMagma : RawMagma c ℓ
-  *-rawMagma = record
-    { _≈_ = _≈_
-    ; _∙_ = _*_
-    }
-
 
 record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
@@ -625,37 +542,6 @@ record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations & 2 elements
 ------------------------------------------------------------------------
-
-record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _*_
-  infixl 6 _+_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _+_     : Op₂ Carrier
-    _*_     : Op₂ Carrier
-    0#      : Carrier
-    1#      : Carrier
-
-  rawNearSemiring : RawNearSemiring c ℓ
-  rawNearSemiring = record
-    { _≈_ = _≈_
-    ; _+_ = _+_
-    ; _*_ = _*_
-    ; 0#  = 0#
-    }
-
-  open RawNearSemiring rawNearSemiring public
-    using (_≉_; +-rawMonoid; +-rawMagma; *-rawMagma)
-
-  *-rawMonoid : RawMonoid c ℓ
-  *-rawMonoid = record
-    { _≈_ = _≈_
-    ; _∙_ = _*_
-    ; ε   = 1#
-    }
-
 
 record SemiringWithoutAnnihilatingZero c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
@@ -939,37 +825,6 @@ record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
 -- Bundles with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
-record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 -_
-  infixl 7 _*_
-  infixl 6 _+_
-  infix  4 _≈_
-  field
-    Carrier           : Set c
-    _≈_               : Rel Carrier ℓ
-    _+_               : Op₂ Carrier
-    _*_               : Op₂ Carrier
-    -_                : Op₁ Carrier
-    0#                : Carrier
-
-  +-rawGroup : RawGroup c ℓ
-  +-rawGroup = record
-    { _≈_ = _≈_
-    ; _∙_ = _+_
-    ; ε   = 0#
-    ; _⁻¹ = -_
-    }
-
-  open RawGroup +-rawGroup public
-    using (_≉_) renaming (rawMagma to +-rawMagma; rawMonoid to +-rawMonoid)
-
-  *-rawMagma : RawMagma c ℓ
-  *-rawMagma = record
-    { _≈_ = _≈_
-    ; _∙_ = _*_
-    }
-
-
 record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
   infixl 7 _*_
@@ -1052,46 +907,6 @@ record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
     (_≉_; +-rawMagma; +-magma; +-unitalMagma; +-semigroup; +-monoid; +-rawMonoid
     ;*-rawMagma; *-magma; *-semigroup; *-monoid
     )
-
--- A raw ring is a ring without any laws.
-
-record RawRing c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 -_
-  infixl 7 _*_
-  infixl 6 _+_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _+_     : Op₂ Carrier
-    _*_     : Op₂ Carrier
-    -_      : Op₁ Carrier
-    0#      : Carrier
-    1#      : Carrier
-
-  rawSemiring : RawSemiring c ℓ
-  rawSemiring = record
-    { _≈_ = _≈_
-    ; _+_ = _+_
-    ; _*_ = _*_
-    ; 0#  = 0#
-    ; 1#  = 1#
-    }
-
-  open RawSemiring rawSemiring public
-    using
-    ( _≉_
-    ; +-rawMagma; +-rawMonoid
-    ; *-rawMagma; *-rawMonoid
-    )
-
-  +-rawGroup : RawGroup c ℓ
-  +-rawGroup = record
-    { _≈_ = _≈_
-    ; _∙_ = _+_
-    ; ε   = 0#
-    ; _⁻¹ = -_
-    }
 
 
 record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -1184,39 +999,6 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
 -- Bundles with 3 binary operations
 ------------------------------------------------------------------------
 
-record RawQuasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _∙_
-  infixl 7 _\\_
-  infixl 7 _//_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-    _\\_    : Op₂ Carrier
-    _//_    : Op₂ Carrier
-
-  ∙-rawMagma : RawMagma c ℓ
-  ∙-rawMagma = record
-    { _≈_ = _≈_
-    ; _∙_ = _∙_
-    }
-
-  \\-rawMagma : RawMagma c ℓ
-  \\-rawMagma = record
-    { _≈_ = _≈_
-    ; _∙_ = _\\_
-    }
-
-  //-rawMagma : RawMagma c ℓ
-  //-rawMagma = record
-    { _≈_ = _≈_
-    ; _∙_ = _//_
-    }
-
-  open RawMagma \\-rawMagma public
-    using (_≉_)
-
 record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infixl 7 _\\_
@@ -1248,30 +1030,6 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open RawQuasigroup rawQuasigroup public
     using (//-rawMagma; \\-rawMagma; ∙-rawMagma)
-
-record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _∙_
-  infixl 7 _\\_
-  infixl 7 _//_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-    _\\_    : Op₂ Carrier
-    _//_    : Op₂ Carrier
-    ε       : Carrier
-
-  rawQuasigroup : RawQuasigroup c ℓ
-  rawQuasigroup = record
-    { _≈_ = _≈_
-    ; _∙_ = _∙_
-    ; _\\_ = _\\_
-    ; _//_ = _//_
-    }
-
-  open RawQuasigroup rawQuasigroup public
-    using (_≉_ ; ∙-rawMagma; \\-rawMagma; //-rawMagma)
 
 record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_

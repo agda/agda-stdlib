@@ -11,7 +11,7 @@
 
 module Data.Nat.Base where
 
-open import Algebra.Bundles using (RawMagma; RawMonoid)
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)

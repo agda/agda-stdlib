@@ -12,7 +12,7 @@
 
 module Data.Nat.Binary.Base where
 
-open import Algebra.Bundles using (RawMagma; RawMonoid)
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Algebra.Core using (Op₂)
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Nat.Base as ℕ using (ℕ)
