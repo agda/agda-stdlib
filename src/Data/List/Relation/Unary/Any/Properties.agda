@@ -723,3 +723,19 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ x → Any (λ y → P x × Q y) ys) xs  ↔⟨ ⊗↔ ⟩
   Any (P ⟨×⟩ Q) (xs ⊗ ys)                  ∎
   where open Related.EquationalReasoning
+
+map-with-∈⁺ = mapWith∈⁺
+{-# WARNING_ON_USAGE map-with-∈⁺
+"Warning: map-with-∈⁺ was deprecated in v2.0.
+Please use mapWith∈⁺ instead."
+#-}
+map-with-∈⁻ = mapWith∈⁻
+{-# WARNING_ON_USAGE map-with-∈⁻
+"Warning: map-with-∈⁻ was deprecated in v2.0.
+Please use mapWith∈⁻ instead."
+#-}
+map-with-∈↔ = mapWith∈↔
+{-# WARNING_ON_USAGE map-with-∈↔
+"Warning: map-with-∈↔ was deprecated in v2.0.
+Please use mapWith∈↔ instead."
+#-}

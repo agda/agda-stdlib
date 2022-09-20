@@ -310,6 +310,11 @@ map-with-∈-mono = mapWith∈⁺
 "Warning: map-with-∈-mono was deprecated in v1.5.
 Please use mapWith∈⁺ instead."
 #-}
+map-with-∈⁺ = mapWith∈⁺
+{-# WARNING_ON_USAGE map-with-∈⁺
+"Warning: map-with-∈⁺ was deprecated in v2.0.
+Please use mapWith∈⁺ instead."
+#-}
 filter⁺ = filter-⊆
 {-# WARNING_ON_USAGE filter⁺
 "Warning: filter⁺ was deprecated in v1.5.
