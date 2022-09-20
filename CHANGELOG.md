@@ -49,6 +49,8 @@ Bug-fixes
   re-exported in their full generality which would lead to unsolved meta variables at
   their use sites.
 
+* In `Data.Maybe.Base` the fixity declaration of `_<∣>_` was missing. This has been fixed.
+
 Non-backwards compatible changes
 --------------------------------
 

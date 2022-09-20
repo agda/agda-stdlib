@@ -100,6 +100,7 @@ just a  >>= f = f a
 
 -- Alternative: <∣>
 
+infixr 6 _<∣>_
 _<∣>_ : Maybe A → Maybe A → Maybe A
 just x  <∣> my = just x
 nothing <∣> my = my
