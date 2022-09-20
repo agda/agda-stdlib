@@ -21,11 +21,20 @@ open import Data.Nat.Base public
 
 open import Data.Nat.Properties public
   using
-  ( _≟_
+  -- key values
+  ( nonZero?
+  -- equalities
+  ; _≟_ ; eq?
+  -- standard orders & their relationship
   ; _≤?_ ; _≥?_ ; _<?_ ; _>?_
+  ; ≤-<-connex ; ≥->-connex ; <-≤-connex ; >-≥-connex
+  ; <-cmp
+  -- alternative definitions of the orders
   ; _≤′?_; _≥′?_; _<′?_; _>′?_
   ; _≤″?_; _<″?_; _≥″?_; _>″?_
   ; _<‴?_; _≤‴?_; _≥‴?_; _>‴?_
+  -- bounded predicates
+  ; anyUpTo? ; allUpTo?
   )
 
 ------------------------------------------------------------------------
