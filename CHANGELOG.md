@@ -49,6 +49,8 @@ Bug-fixes
   re-exported in their full generality which would lead to unsolved meta variables at
   their use sites.
 
+* In `Data.Maybe.Base` the fixity declaration of `_<∣>_` was missing. This has been fixed.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -1383,6 +1385,8 @@ Other minor changes
 
   pattern <′-base          = ≤′-refl
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+
+  _! : ℕ → ℕ
   ```
 
 
@@ -1438,9 +1442,17 @@ Other minor changes
   ∸-monoˡ-< : m < o → n ≤ m → m ∸ n < o ∸ n
   ```
 
-* Added new functions in `Data.Nat`:
+* Re-exported additional functions from `Data.Nat`:
   ```agda
-  _! : ℕ → ℕ
+  nonZero? : Decidable NonZero
+  eq? : A ↣ ℕ → DecidableEquality A
+  ≤-<-connex : Connex _≤_ _<_
+  ≥->-connex : Connex _≥_ _>_
+  <-≤-connex : Connex _<_ _≤_
+  >-≥-connex : Connex _>_ _≥_
+  <-cmp : Trichotomous _≡_ _<_
+  anyUpTo? : (P? : Decidable P) → ∀ v → Dec (∃ λ n → n < v × P n)
+  allUpTo? : (P? : Decidable P) → ∀ v → Dec (∀ {n} → n < v → P n)
   ```
 
 * Added new proofs in `Data.Nat.DivMod`:
