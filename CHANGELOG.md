@@ -562,14 +562,27 @@ Non-backwards compatible changes
   depend on the container value) second.
   This affects modules:
     ```
-    Data.Vec.Relation.Unary.All
     Codata.Guarded.Stream
     Codata.Guarded.Stream.Relation.Binary.Pointwise
     Codata.Musical.Colist.Base
     Codata.Musical.Colist.Relation.Unary.Any.Properties
+    Codata.Musical.Covec
     Codata.Musical.Stream
     Codata.Sized.Colist
+    Codata.Sized.Covec
     Codata.Sized.Stream
+    Data.Vec.Relation.Unary.All
+    Data.Star.Environment
+    Data.Star.Pointer
+    Data.Star.Vec
+    Data.Trie
+    Data.Trie.NonEmpty
+    Data.Tree.AVL
+    Data.Tree.AVL.Indexed
+    Data.Tree.AVL.Map
+    Data.Tree.AVL.NonEmpty
+    Tactic.RingSolver
+    Tactic.RingSolver.Core.NatSet
     ```
   * Moved & renamed from `Data.Vec.Relation.Unary.All`
     to `Data.Vec.Relation.Unary.All.Properties`:
@@ -582,9 +595,6 @@ Non-backwards compatible changes
     ```
     lookup ↦ lookup⁺
     ```
-  * Additionally the arguments of `lookup⁺` are now flipped so that it abides
-    by the convention of taking the container first and the index to lookup
-    second.
   * Added the following new definitions to `Data.Vec.Relation.Unary.All`:
     ```
     lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)

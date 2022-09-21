@@ -340,7 +340,7 @@ constructSolution `ring opTerms variables `lhs `rhs = do
   numVars = List.length variables
 
   varMap : VarMap
-  varMap i = Maybe.map (λ x → `I `ring numVars (toFinTerm x)) (lookup i variables)
+  varMap i = Maybe.map (λ x → `I `ring numVars (toFinTerm x)) (lookup variables i)
 
   ρ : Term
   ρ = curriedTerm variables
