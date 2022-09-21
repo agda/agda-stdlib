@@ -84,7 +84,7 @@ Non-backwards compatible changes
   * Moved raw bundles From `Data.Rational.Properties` to `Data.Rational.Base`
   * Moved raw bundles From `Data.Rational.Unnormalised.Properties` to `Data.Rational.Unnormalised.Base`
 
-#### Moved the definition of RawX from `Algebra.Bundles` to `Algebra.Bundles.Raw`
+#### Moved the definition of RawX from `Algebra.X.Bundles` to `Algebra.X.Bundles.Raw`
 
 * A new module `Algebra.Bundles.Raw` containing the definitions of the raw bundles
   can be imported at much lower cost from `Data.X.Base`.
@@ -98,6 +98,8 @@ Non-backwards compatible changes
   * `RawRing`
   * `RawQuasigroup`
   * `RawLoop`
+* A new module `Algebra.Lattice.Bundles.Raw` is also introduced.
+  * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
 
 ### Improvements to pretty printing and regexes
 

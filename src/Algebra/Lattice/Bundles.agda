@@ -18,6 +18,7 @@ module Algebra.Lattice.Bundles where
 open import Algebra.Core
 open import Algebra.Bundles
 open import Algebra.Structures
+open import Algebra.Lattice.Bundles.Raw public
 open import Algebra.Lattice.Structures
 open import Level using (suc; _⊔_)
 open import Relation.Binary
@@ -132,26 +133,6 @@ record BoundedJoinSemilattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open BoundedSemilattice boundedSemilattice public
     using (rawMagma; magma; semigroup; band; semilattice)
-
-
-record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infixr 6 _∨_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∧_     : Op₂ Carrier
-    _∨_     : Op₂ Carrier
-
-  ∨-rawMagma : RawMagma c ℓ
-  ∨-rawMagma = record { _≈_ = _≈_; _∙_ = _∨_ }
-
-  ∧-rawMagma : RawMagma c ℓ
-  ∧-rawMagma = record { _≈_ = _≈_; _∙_ = _∧_ }
-
-  open RawMagma ∨-rawMagma public
-    using (_≉_)
 
 
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
