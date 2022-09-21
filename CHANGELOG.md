@@ -557,14 +557,34 @@ Non-backwards compatible changes
 * Removed `m/n/o≡m/[n*o]` from `Data.Nat.Divisibility` and added a more general
   `m/n/o≡m/[n*o]` to `Data.Nat.DivMod` that doesn't require `n * o ∣ m`.
 
-* Updated `Data.Vec.Relation.Unary.All` to match the conventions adopted in
-  the equivalent `List` module.
+* Updated `lookup` functions (and variants) to match the conventions adopted in the
+  `List` module i.e. `lookup` takes its container first and the index (whose type may
+  depend on the container value) second.
+  This affects modules:
+    ```
+    Data.Vec.Relation.Unary.All
+    Codata.Guarded.Stream
+    Codata.Guarded.Stream.Relation.Binary.Pointwise
+    Codata.Musical.Colist.Base
+    Codata.Musical.Colist.Relation.Unary.Any.Properties
+    Codata.Musical.Stream
+    Codata.Sized.Colist
+    Codata.Sized.Stream
+    ```
   * Moved & renamed from `Data.Vec.Relation.Unary.All`
     to `Data.Vec.Relation.Unary.All.Properties`:
     ```
     lookup ↦ lookup⁺
     tabulate ↦ lookup⁻
     ```
+  * Renamed in `Data.Vec.Relation.Unary.Linked.Properties`
+    and `Codata.Guarded.Stream.Relation.Binary.Pointwise`:
+    ```
+    lookup ↦ lookup⁺
+    ```
+  * Additionally the arguments of `lookup⁺` are now flipped so that it abides
+    by the convention of taking the container first and the index to lookup
+    second.
   * Added the following new definitions to `Data.Vec.Relation.Unary.All`:
     ```
     lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)

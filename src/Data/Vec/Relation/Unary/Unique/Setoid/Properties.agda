@@ -71,6 +71,6 @@ module _ (S : Setoid a ℓ) where
 
   lookup-injective : ∀ {n xs} → Unique S {n} xs → ∀ i j → lookup xs i ≈ lookup xs j → i ≡ j
   lookup-injective (px ∷ pxs) zero zero eq = P.refl
-  lookup-injective (px ∷ pxs) zero (suc j) eq = contradiction eq (Allₚ.lookup⁺ j px)
-  lookup-injective (px ∷ pxs) (suc i) zero eq = contradiction (sym eq) (Allₚ.lookup⁺ i px)
+  lookup-injective (px ∷ pxs) zero (suc j) eq = contradiction eq (Allₚ.lookup⁺ px j)
+  lookup-injective (px ∷ pxs) (suc i) zero eq = contradiction (sym eq) (Allₚ.lookup⁺ px i)
   lookup-injective (px ∷ pxs) (suc i) (suc j) eq = P.cong suc (lookup-injective pxs i j eq)

@@ -65,12 +65,12 @@ nats = tabulate id
 ------------------------------------------------------------------------
 -- Lookup
 
-lookup : ℕ → Stream A → A
-lookup zero = head
-lookup (suc n) = lookup n ∘′ tail
+lookup : Stream A → ℕ → A
+lookup xs zero    = head xs
+lookup xs (suc n) = lookup (tail xs) n
 
 _[_] : Stream A → ℕ → A
-_[_] = flip lookup
+_[_] = lookup
 
 ------------------------------------------------------------------------
 -- Transforming streams
