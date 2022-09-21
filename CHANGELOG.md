@@ -581,6 +581,7 @@ Non-backwards compatible changes
     Data.Tree.AVL.Indexed
     Data.Tree.AVL.Map
     Data.Tree.AVL.NonEmpty
+    Data.Vec.Recursive
     Tactic.RingSolver
     Tactic.RingSolver.Core.NatSet
     ```
