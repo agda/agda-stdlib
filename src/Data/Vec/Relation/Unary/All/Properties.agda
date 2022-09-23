@@ -37,9 +37,9 @@ private
 ------------------------------------------------------------------------
 -- lookup
 
-lookup⁺ : (i : Fin n) → All P xs → P (Vec.lookup xs i)
-lookup⁺ zero    (px ∷ pxs) = px
-lookup⁺ (suc i) (px ∷ pxs) = lookup⁺ i pxs
+lookup⁺ : All P xs → (i : Fin n) → P (Vec.lookup xs i)
+lookup⁺ (px ∷ _)  zero    = px
+lookup⁺ (_ ∷ pxs) (suc i) = lookup⁺ pxs i
 
 lookup⁻ : (∀ i → P (Vec.lookup xs i)) → All P xs
 lookup⁻ {xs = []}    pxs = []

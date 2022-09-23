@@ -70,8 +70,8 @@ module _ {v} {V : Value v} where
   delete : Key → Tree V → Tree V
   delete k (tree t) = tree $′ proj₂ $ Indexed.delete k t ⊥⁺<[ k ]<⊤⁺
 
-  lookup : (k : Key) → Tree V → Maybe (Val k)
-  lookup k (tree t) = Indexed.lookup k t ⊥⁺<[ k ]<⊤⁺
+  lookup : Tree V → (k : Key) → Maybe (Val k)
+  lookup (tree t) k = Indexed.lookup t k ⊥⁺<[ k ]<⊤⁺
 
 module _ {v w} {V : Value v} {W : Value w} where
 
@@ -90,7 +90,7 @@ module _ {v} {V : Value v} where
 
   infix 4 _∈?_
   _∈?_ : Key → Tree V → Bool
-  k ∈? t = is-just (lookup k t)
+  k ∈? t = is-just (lookup t k)
 
   headTail : Tree V → Maybe (K& V × Tree V)
   headTail (tree (Indexed.leaf _)) = nothing
@@ -160,7 +160,7 @@ module _ {v w x} {V : Value v} {W : Value w} {X : Value x} where
   intersectionWith f t₁ t₂ = foldr cons empty t₁ where
 
     cons :  ∀ {k} → Val k → Tree X → Tree X
-    cons {k} v = case lookup k t₂ of λ where
+    cons {k} v = case lookup t₂ k of λ where
       nothing  → id
       (just w) → insert k (f v w)
 

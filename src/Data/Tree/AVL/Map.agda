@@ -57,7 +57,7 @@ insertWith = AVL.insertWith
 delete : Key → Map V → Map V
 delete = AVL.delete
 
-lookup : Key → Map V → Maybe V
+lookup : Map V → Key → Maybe V
 lookup = AVL.lookup
 
 map : (V → W) → Map V → Map W
