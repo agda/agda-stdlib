@@ -15,7 +15,7 @@ open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product as Prod hiding (map)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
 open import Relation.Binary as B hiding (Rel; _⇔_)
 import Relation.Binary.Properties.Setoid as SetoidProperties
@@ -875,7 +875,7 @@ module AlternativeEquality {a ℓ} where
   -- equivalence).
 
   correct : ∀ {S k x y} → RelP S k x y ⇔ Rel (Eq S) k x y
-  correct = equivalence sound complete
+  correct = mk⇔ sound complete
 
 ------------------------------------------------------------------------
 -- Another lemma

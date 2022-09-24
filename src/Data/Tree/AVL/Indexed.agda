@@ -240,11 +240,11 @@ module _ {v} {V : Value v} where
   -- Looks up a key. Logarithmic in the size of the tree (assuming
   -- constant-time comparisons).
 
-  lookup : ∀ {l u h} (k : Key) → Tree V l u h → l < k < u → Maybe (Val k)
-  lookup k (leaf _) l<k<u = nothing
-  lookup k (node (k′ , v) lk′ k′u _) (l<k , k<u) with compare k′ k
-  ... | tri< k′<k _ _ = lookup k k′u ([ k′<k ]ᴿ , k<u)
-  ... | tri> _ _ k′>k = lookup k lk′ (l<k , [ k′>k ]ᴿ)
+  lookup : ∀ {l u h} → Tree V l u h → (k : Key) → l < k < u → Maybe (Val k)
+  lookup (leaf _) k l<k<u = nothing
+  lookup (node (k′ , v) lk′ k′u _) k (l<k , k<u) with compare k′ k
+  ... | tri< k′<k _ _ = lookup k′u k ([ k′<k ]ᴿ , k<u)
+  ... | tri> _ _ k′>k = lookup lk′ k (l<k , [ k′>k ]ᴿ)
   ... | tri≈ _ k′≡k _ = just (V≈ k′≡k v)
 
   -- Converts the tree to an ordered list. Linear in the size of the

@@ -6,6 +6,30 @@ Hopefully this guide should make it easy to do so! Feel free to ask any
 questions on the Agda mailing list. Before you start please read the
 [style-guide](https://github.com/agda/agda-stdlib/blob/master/notes/style-guide.md).
 
+What is an acceptable contribution?
+===================================
+
+- The contribution should be useful in a diverse set of areas.
+
+- The bar for accepting contributions that use the FFI to depend on external
+  (i.e. Haskell, JavaScript) packages is much higher.
+
+- If the same concept already exists in the library, there needs to be a *very* good
+  reason to add a different formalisation.
+
+- There should be evidence that the code works. Usually this will be proofs, but sometimes
+  for purely computational contributions this will involve adding tests.
+
+- It should use the minimal set of Agda features, i.e. it should normally use
+  the Agda option pragmas `--without-K` and `--safe`, with the occasional use of
+  `--with-K`, `--sized`, `--guardedness` in certain situations.
+
+In general, if something is in a general undergraduate Computer Science or Mathematics
+textbook it is probably (!) contributable.
+
+Setup
+=====
+
 The typical workflow when contributing to the standard library's repository
 is to interact with two remote versions of the repository:
 

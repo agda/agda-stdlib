@@ -139,7 +139,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
     pigeon : (xs : Vec (Fin n) n) → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_
     pigeon xs i∷xs↑ =
       let (i₁ , i₂ , i₁<i₂ , xs[i₁]≡xs[i₂]) = pigeonhole (n<1+n n) (Vec.lookup (i ∷ xs)) in
-      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup (Flip.transitive _⊏_ ⊏.trans) {xs = i ∷ xs} i₁<i₂ i∷xs↑ in
+      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Flip.transitive _⊏_ ⊏.trans) {xs = i ∷ xs} i∷xs↑ i₁<i₂ in
       let xs[i₁]⊏xs[i₁] = ⊏.<-respʳ-≈ (⊏.Eq.reflexive xs[i₁]≡xs[i₂]) xs[i₁]⊏xs[i₂] in
       contradiction xs[i₁]⊏xs[i₁] (⊏.irrefl ⊏.Eq.refl)
 
