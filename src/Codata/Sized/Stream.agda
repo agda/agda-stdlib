@@ -65,9 +65,9 @@ head (x ∷ xs) = x
 tail : {j : Size< i} → Stream A i → Stream A j
 tail (x ∷ xs) = xs .force
 
-lookup : ℕ → Stream A ∞ → A
-lookup zero    xs = head xs
-lookup (suc k) xs = lookup k (tail xs)
+lookup : Stream A ∞ → ℕ → A
+lookup xs zero    = head xs
+lookup xs (suc k) = lookup (tail xs) k
 
 ------------------------------------------------------------------------
 -- Transforming streams
@@ -137,7 +137,7 @@ interleave⁺ xss =
 -- then we would never reach any of the second elements in the streams.
 
 -- Here we use Cantor's zig zag function to explore the plane defined by
--- the function `(i,j) ↦ lookup j (lookup i xss)‵ mapping coordinates to
+-- the function `(i,j) ↦ lookup (lookup xss i) j‵ mapping coordinates to
 -- values in a way that guarantees that any point is reached in a finite
 -- amount of time. The definition is taken from the paper:
 -- Applications of Applicative Proof Search by Liam O'Connor

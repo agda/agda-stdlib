@@ -10,9 +10,8 @@
 
 module Effect.Monad where
 
-open import Function
 open import Effect.Monad.Indexed
-open import Data.Unit
+open import Data.Unit.Base
 open import Level
 
 private

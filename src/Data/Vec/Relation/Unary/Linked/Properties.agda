@@ -9,7 +9,7 @@
 module Data.Vec.Relation.Unary.Linked.Properties where
 
 open import Data.Bool.Base using (true; false)
-open import Data.Vec.Base as Vec hiding (lookup)
+open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.Linked as Linked
@@ -44,10 +44,11 @@ module _ (trans : Transitive R) where
   Linked⇒All Rvx [-]         = Rvx ∷ []
   Linked⇒All Rvx (Rxy ∷ Rxs) = Rvx ∷ Linked⇒All (trans Rvx Rxy) Rxs
 
-  lookup : ∀ {i j : Fin n} {xs} → i < j →
-           Linked R xs → R (Vec.lookup xs i) (Vec.lookup xs j)
-  lookup {i = zero}  {j = suc j} i<j (rx ∷ rxs) = Allₚ.lookup⁺ j (Linked⇒All rx rxs)
-  lookup {i = suc i} {j = suc j} i<j (_  ∷ rxs) = lookup (<-pred i<j) rxs
+  lookup⁺ : ∀ {i j : Fin n} {xs} →
+           Linked R xs → i < j →
+           R (lookup xs i) (lookup xs j)
+  lookup⁺ {i = zero}  {j = suc j} (rx ∷ rxs) i<j = Allₚ.lookup⁺ (Linked⇒All rx rxs) j
+  lookup⁺ {i = suc i} {j = suc j} (_  ∷ rxs) i<j = lookup⁺ rxs (<-pred i<j)
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for vec operations

@@ -145,14 +145,14 @@ module _ {t} (L : Lexer t) where
       -- if we are supposed to break on this character, we do
       (true , m)  → push acc $ maybe′ _∷_ id m $ start cs
       -- otherwise we see whether it leads to a recognized keyword
-      (false , _) → case lookupValue (c ∷ []) toks of λ where
+      (false , _) → case lookupValue toks (c ∷ []) of λ where
         -- if so we can forget about the current accumulator and
         -- restart the tokenizer on the rest of the input
         (just tok) → tok ∷ start cs
         -- otherwise we record the character we read in the accumulator,
         -- compute the derivative of the map of keyword candidates and
         -- keep going with the rest of the input
-        nothing    → loop (c ∷ acc) (lookupTrie c toks) cs
+        nothing    → loop (c ∷ acc) (lookupTrie toks c) cs
 
     -- Grab the accumulator and, unless it is empty, push it on top of
     -- the decoded list of tokens

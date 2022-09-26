@@ -65,8 +65,8 @@ module _ {v} {V : Value v} where
   delete k (tree {0}     t) | Indexed.0# , t′ = nothing
   delete k (tree {suc h} t) | Indexed.0# , t′ = just (tree t′)
 
-  lookup : (k : Key) → Tree⁺ V → Maybe (Val k)
-  lookup k (tree t) = Indexed.lookup k t ⊥⁺<[ k ]<⊤⁺
+  lookup : Tree⁺ V → (k : Key) → Maybe (Val k)
+  lookup (tree t) k = Indexed.lookup t k ⊥⁺<[ k ]<⊤⁺
 
 module _ {v w} {V : Value v} {W : Value w} where
 
