@@ -11,13 +11,22 @@
 
 module Algebra.Bundles where
 
-open import Algebra.Bundles.Raw public
+import Algebra.Bundles.Raw as Raw
 open import Algebra.Core
 open import Algebra.Structures
 open import Relation.Binary
 open import Function.Base
 import Relation.Nullary as N
 open import Level
+
+------------------------------------------------------------------------
+-- Re-export definitions of 'raw' bundles
+
+open Raw public
+  using (RawMagma; RawMonoid; RawGroup
+        ; RawNearSemiring; RawSemiring
+        ; RawRingWithoutOne; RawRing
+        ; RawQuasigroup; RawLoop)
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation

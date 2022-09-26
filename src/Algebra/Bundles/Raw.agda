@@ -9,11 +9,9 @@
 module Algebra.Bundles.Raw where
 
 open import Algebra.Core
-open import Algebra.Structures
-open import Relation.Binary
-open import Function.Base
-import Relation.Nullary as N
-open import Level
+open import Relation.Binary.Core using (Rel)
+open import Level using (suc; _⊔_)
+open import Relation.Nullary using (¬_)
 
 ------------------------------------------------------------------------
 -- Raw bundles with 1 binary operation
@@ -29,7 +27,7 @@ record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
 
   infix 4 _≉_
   _≉_ : Rel Carrier _
-  x ≉ y = N.¬ (x ≈ y)
+  x ≉ y = ¬ (x ≈ y)
 
 ------------------------------------------------------------------------
 -- Raw bundles with 1 binary operation & 1 element

@@ -9,11 +9,9 @@
 module Algebra.Lattice.Bundles.Raw where
 
 open import Algebra.Core
-open import Algebra.Bundles
-open import Algebra.Structures
-open import Algebra.Lattice.Structures
+open import Algebra.Bundles.Raw using (RawMagma)
 open import Level using (suc; _⊔_)
-open import Relation.Binary
+open import Relation.Binary using (Rel)
 
 record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_

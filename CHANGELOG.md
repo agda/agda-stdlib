@@ -75,32 +75,6 @@ Non-backwards compatible changes
   (highly specific) mode of use. Correspondingly, modules grouped under `*.Categorical.*`
   which exploited these structures for effectful programming have been renamed `*.Effectful`.
 
-#### Moved raw bundles from Data.X.Properties to Data.X.Base
-
-* As mentioned by MatthewDaggitt in Issue #1755, Raw bundles defined in Data.X.Properties
-  should be defined in Data.X.Base as they don't require any properties.
-  * Moved raw bundles From `Data.Nat.Properties` to `Data.Nat.Base`
-  * Moved raw bundles From `Data.Nat.Binary.Properties` to `Data.Nat.Binary.Base`
-  * Moved raw bundles From `Data.Rational.Properties` to `Data.Rational.Base`
-  * Moved raw bundles From `Data.Rational.Unnormalised.Properties` to `Data.Rational.Unnormalised.Base`
-
-#### Moved the definition of RawX from `Algebra.X.Bundles` to `Algebra.X.Bundles.Raw`
-
-* A new module `Algebra.Bundles.Raw` containing the definitions of the raw bundles
-  can be imported at much lower cost from `Data.X.Base`.
-  The following definitions have been moved:
-  * `RawMagma`
-  * `RawMonoid`
-  * `RawGroup`
-  * `RawNearSemiring`
-  * `RawSemiring`
-  * `RawRingWithoutOne`
-  * `RawRing`
-  * `RawQuasigroup`
-  * `RawLoop`
-* A new module `Algebra.Lattice.Bundles.Raw` is also introduced.
-  * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
-
 ### Improvements to pretty printing and regexes
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
@@ -608,6 +582,32 @@ Major improvements
 
 * Beneficieries of this change include `Data.Rational.Unnormalised.Base` whose
   dependencies are now significantly smaller.
+
+### Moved raw bundles from Data.X.Properties to Data.X.Base
+
+* As mentioned by MatthewDaggitt in Issue #1755, Raw bundles defined in Data.X.Properties
+  should be defined in Data.X.Base as they don't require any properties.
+  * Moved raw bundles From `Data.Nat.Properties` to `Data.Nat.Base`
+  * Moved raw bundles From `Data.Nat.Binary.Properties` to `Data.Nat.Binary.Base`
+  * Moved raw bundles From `Data.Rational.Properties` to `Data.Rational.Base`
+  * Moved raw bundles From `Data.Rational.Unnormalised.Properties` to `Data.Rational.Unnormalised.Base`
+
+### Moved the definition of RawX from `Algebra.X.Bundles` to `Algebra.X.Bundles.Raw`
+
+* A new module `Algebra.Bundles.Raw` containing the definitions of the raw bundles
+  can be imported at much lower cost from `Data.X.Base`.
+  The following definitions have been moved:
+  * `RawMagma`
+  * `RawMonoid`
+  * `RawGroup`
+  * `RawNearSemiring`
+  * `RawSemiring`
+  * `RawRingWithoutOne`
+  * `RawRing`
+  * `RawQuasigroup`
+  * `RawLoop`
+* A new module `Algebra.Lattice.Bundles.Raw` is also introduced.
+  * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
 
 Deprecated modules
 ------------------

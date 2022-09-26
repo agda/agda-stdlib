@@ -18,10 +18,20 @@ module Algebra.Lattice.Bundles where
 open import Algebra.Core
 open import Algebra.Bundles
 open import Algebra.Structures
-open import Algebra.Lattice.Bundles.Raw public
+import Algebra.Lattice.Bundles.Raw as Raw
 open import Algebra.Lattice.Structures
 open import Level using (suc; _⊔_)
 open import Relation.Binary
+
+------------------------------------------------------------------------
+-- Re-export definitions of 'raw' bundles
+
+open Raw public
+  using (RawLattice)
+
+------------------------------------------------------------------------
+-- Bundles
+------------------------------------------------------------------------
 
 record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∙_
