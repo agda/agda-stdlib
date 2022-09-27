@@ -155,7 +155,7 @@ module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
 
   sequenceA : All (F ∘′ P) ⊆ F ∘′ All P
   sequenceA []       = pure []
-  sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
+  sequenceA (x ∷ xs) = _∷_ <$> x <*> sequenceA xs
 
   mapA : ∀ {Q : Pred A q} → (Q ⊆ F ∘′ P) → All Q ⊆ (F ∘′ All P)
   mapA f = sequenceA ∘′ map f
@@ -168,7 +168,7 @@ module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
          (Mon : RawMonad M)
          where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
   sequenceM = sequenceA p App

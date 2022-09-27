@@ -23,7 +23,6 @@ private
 record RawFunctor (F : Set ℓ → Set ℓ′) : Set (suc ℓ ⊔ ℓ′) where
   infixl 4 _<$>_ _<$_
   infixl 1 _<&>_
-
   field
     _<$>_ : (A → B) → F A → F B
 

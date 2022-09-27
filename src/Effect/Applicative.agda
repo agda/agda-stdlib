@@ -11,31 +11,63 @@
 
 module Effect.Applicative where
 
+open import Effect.Functor using (RawFunctor)
+open import Function.Base using (const; flip; _∘′_)
 open import Level using (Level; suc; _⊔_)
-open import Data.Unit
-open import Effect.Applicative.Indexed
 
 private
   variable
     f : Level
+    A B : Set f
+------------------------------------------------------------------------
+-- The type of raw applicatives
 
-RawApplicative : (Set f → Set f) → Set (suc f)
-RawApplicative F = RawIApplicative {I = ⊤} λ _ _ → F
+record RawApplicative (F : Set f → Set f) : Set (suc f) where
+  infixl 4 _<*>_ _<*_ _*>_
+  field
+    rawFunctor : RawFunctor F
+    pure : A → F A
+    _<*>_ : F (A → B) → F A → F B
 
-module RawApplicative {F : Set f → Set f}
-                      (app : RawApplicative F) where
-  open RawIApplicative app public
+  open RawFunctor rawFunctor public
 
-RawApplicativeZero : (Set f → Set f) → Set (suc f)
-RawApplicativeZero F = RawIApplicativeZero {I = ⊤} (λ _ _ → F)
+  _<*_ : F A → F B → F A
+  a <* b = const <$> a <*> b
 
-module RawApplicativeZero {F : Set f → Set f}
-                          (app : RawApplicativeZero F) where
-  open RawIApplicativeZero app public
+  _*>_ : F A → F B → F B
+  a *> b = flip const <$> a <*> b
 
-RawAlternative : (Set f → Set f) → Set _
-RawAlternative F = RawIAlternative {I = ⊤} (λ _ _ → F)
+module _ where
 
-module RawAlternative {F : Set f → Set f}
-                      (app : RawAlternative F) where
-  open RawIAlternative app public
+  open RawApplicative
+  open RawFunctor
+
+  -- Smart constructor
+  mkRawApplicative :
+    {F : Set f → Set f} →
+    (pure : ∀ {A} → A → F A) →
+    (app : ∀ {A B} → F (A → B) → F A → F B) →
+    RawApplicative F
+  mkRawApplicative pure app .rawFunctor ._<$>_ = app ∘′ pure
+  mkRawApplicative pure app .pure = pure
+  mkRawApplicative pure app ._<*>_ = app
+
+------------------------------------------------------------------------
+-- The type of raw applicatives with a zero
+
+record RawApplicativeZero (F : Set f → Set f) : Set (suc f) where
+  field
+    rawApplicative : RawApplicative F
+    empty : F A
+
+  open RawApplicative rawApplicative public
+
+------------------------------------------------------------------------
+-- The type of raw alternative applicatives
+
+record RawAlternative (F : Set f → Set f) : Set (suc f) where
+  field
+    rawApplicativeZero : RawApplicativeZero F
+    _<|>_ : F A → F A → F A
+
+  open RawApplicativeZero rawApplicativeZero public

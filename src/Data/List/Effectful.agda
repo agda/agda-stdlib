@@ -14,33 +14,34 @@ open import Data.List.Properties
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Function
+open import Function.Base
+open import Level
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl)
 open P.≡-Reasoning
 
+private
+  variable
+    ℓ : Level
+
 ------------------------------------------------------------------------
 -- List applicative functor
 
-functor : ∀ {ℓ} → RawFunctor {ℓ} List
+functor : RawFunctor {ℓ} List
 functor = record { _<$>_ = map }
 
-applicative : ∀ {ℓ} → RawApplicative {ℓ} List
+applicative : RawApplicative {ℓ} List
 applicative = record
-  { pure = [_]
-  ; _⊛_  = λ fs as → concatMap (λ f → map f as) fs
+  { rawFunctor = functor
+  ; pure = [_]
+  ; _<*>_  = λ fs as → concatMap (flip map as) fs
   }
 
-applicativeZero : ∀ {ℓ} → RawApplicativeZero {ℓ} List
-applicativeZero = record
-  { applicative = applicative
-  ; ∅           = []
-  }
-
-alternative : ∀ {ℓ} → RawAlternative {ℓ} List
+alternative : RawAlternative {ℓ} List
 alternative = record
-  { applicativeZero = applicativeZero
-  ; _∣_             = _++_
+  { rawApplicative = applicative
+  ; empty = []
+  ; _<|>_ = _++_
   }
 
 ------------------------------------------------------------------------
@@ -48,20 +49,8 @@ alternative = record
 
 monad : ∀ {ℓ} → RawMonad {ℓ} List
 monad = record
-  { return = [_]
+  { rawApplicative = applicative
   ; _>>=_  = flip concatMap
-  }
-
-monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
-monadZero = record
-  { monad           = monad
-  ; applicativeZero = applicativeZero
-  }
-
-monadPlus : ∀ {ℓ} → RawMonadPlus {ℓ} List
-monadPlus = record
-  { monad = monad
-  ; alternative = alternative
   }
 
 ------------------------------------------------------------------------
@@ -73,7 +62,7 @@ module TraversableA {f F} (App : RawApplicative {f} F) where
 
   sequenceA : ∀ {A} → List (F A) → F (List A)
   sequenceA []       = pure []
-  sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
+  sequenceA (x ∷ xs) = _∷_ <$> x <*> sequenceA xs
 
   mapA : ∀ {a} {A : Set a} {B} → (A → F B) → List A → F (List B)
   mapA f = sequenceA ∘ map f
@@ -85,7 +74,7 @@ module TraversableM {m M} (Mon : RawMonad {m} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
@@ -96,14 +85,15 @@ module TraversableM {m M} (Mon : RawMonad {m} M) where
 -- List monad transformer
 
 monadT : ∀ {ℓ} → RawMonadT {ℓ} (_∘′ List)
-monadT M = record
-  { return = pure ∘′ [_]
-  ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM f as
+monadT {ℓ} {F} M = record
+  { lift = [_] <$>_
+  ; rawMonad = mkRawMonad (F ∘′ List) (pure ∘′ [_]) (λ mas f → mas >>= λ as → concat <$> mapM f as)
   } where open RawMonad M; open TraversableM M
 
 ------------------------------------------------------------------------
 -- The list monad.
 
+{-
 private
   open module LMP {ℓ} = RawMonadPlus (monadPlus {ℓ = ℓ})
 
@@ -267,3 +257,4 @@ module Applicative where
     (pam fs (λ f → f x))             ≡⟨ P.sym $ MP.left-identity (λ f → f x) (pam fs) ⟩
     (return (λ f → f x) >>= pam fs)  ≡⟨⟩
     return (λ f → f x) ⊛ fs          ∎
+-}
