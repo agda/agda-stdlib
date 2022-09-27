@@ -8,7 +8,7 @@
 
 module Data.Vec.Relation.Unary.All.Properties where
 
-open import Data.Nat.Base using (zero; suc; _+_)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
@@ -29,82 +29,89 @@ private
     a b p q : Level
     A : Set a
     B : Set b
+    P : Pred A p
+    Q : Pred B q
+    m n : ℕ
+    xs : Vec A n
+
+------------------------------------------------------------------------
+-- lookup
+
+lookup⁺ : All P xs → (i : Fin n) → P (Vec.lookup xs i)
+lookup⁺ (px ∷ _)  zero    = px
+lookup⁺ (_ ∷ pxs) (suc i) = lookup⁺ pxs i
+
+lookup⁻ : (∀ i → P (Vec.lookup xs i)) → All P xs
+lookup⁻ {xs = []}    pxs = []
+lookup⁻ {xs = _ ∷ _} pxs = pxs zero ∷ lookup⁻ (pxs ∘ suc)
 
 ------------------------------------------------------------------------
 -- map
 
-module _ {P : Pred B p} {f : A → B} where
+map⁺ : {f : A → B} → All (P ∘ f) xs → All P (map f xs)
+map⁺ []         = []
+map⁺ (px ∷ pxs) = px ∷ map⁺ pxs
 
-  map⁺ : ∀ {n} {xs : Vec A n} → All (P ∘ f) xs → All P (map f xs)
-  map⁺ []         = []
-  map⁺ (px ∷ pxs) = px ∷ map⁺ pxs
-
-  map⁻ : ∀ {n} {xs : Vec A n} → All P (map f xs) → All (P ∘ f) xs
-  map⁻ {xs = []}    []       = []
-  map⁻ {xs = _ ∷ _} (px ∷ pxs) = px ∷ map⁻ pxs
+map⁻ : {f : A → B} → All P (map f xs) → All (P ∘ f) xs
+map⁻ {xs = []}    []       = []
+map⁻ {xs = _ ∷ _} (px ∷ pxs) = px ∷ map⁻ pxs
 
 -- A variant of All.map
 
-module _ {f : A → B} {P : Pred A p} {Q : Pred B q} where
-
-  gmap : ∀ {n} → P ⋐ Q ∘ f → All P {n} ⋐ All Q {n} ∘ map f
-  gmap g = map⁺ ∘ All.map g
+gmap : {f : A → B} → P ⋐ Q ∘ f → All P {n} ⋐ All Q {n} ∘ map f
+gmap g = map⁺ ∘ All.map g
 
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {n} {P : Pred A p} where
+++⁺ : {xs : Vec A m} {ys : Vec A n} →
+      All P xs → All P ys → All P (xs ++ ys)
+++⁺ []         pys = pys
+++⁺ (px ∷ pxs) pys = px ∷ ++⁺ pxs pys
 
-  ++⁺ : ∀ {m} {xs : Vec A m} {ys : Vec A n} →
-        All P xs → All P ys → All P (xs ++ ys)
-  ++⁺ []         pys = pys
-  ++⁺ (px ∷ pxs) pys = px ∷ ++⁺ pxs pys
+++ˡ⁻ : (xs : Vec A m) {ys : Vec A n} →
+       All P (xs ++ ys) → All P xs
+++ˡ⁻ []       _          = []
+++ˡ⁻ (x ∷ xs) (px ∷ pxs) = px ∷ ++ˡ⁻ xs pxs
 
-  ++ˡ⁻ : ∀ {m} (xs : Vec A m) {ys : Vec A n} →
-         All P (xs ++ ys) → All P xs
-  ++ˡ⁻ []       _          = []
-  ++ˡ⁻ (x ∷ xs) (px ∷ pxs) = px ∷ ++ˡ⁻ xs pxs
+++ʳ⁻ : (xs : Vec A m) {ys : Vec A n} →
+       All P (xs ++ ys) → All P ys
+++ʳ⁻ []       pys        = pys
+++ʳ⁻ (x ∷ xs) (px ∷ pxs) = ++ʳ⁻ xs pxs
 
-  ++ʳ⁻ : ∀ {m} (xs : Vec A m) {ys : Vec A n} →
-         All P (xs ++ ys) → All P ys
-  ++ʳ⁻ []       pys        = pys
-  ++ʳ⁻ (x ∷ xs) (px ∷ pxs) = ++ʳ⁻ xs pxs
+++⁻ : (xs : Vec A m) {ys : Vec A n} →
+      All P (xs ++ ys) → All P xs × All P ys
+++⁻ []       p          = [] , p
+++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map₁ (px ∷_) (++⁻ _ pxs)
 
-  ++⁻ : ∀ {m} (xs : Vec A m) {ys : Vec A n} →
-        All P (xs ++ ys) → All P xs × All P ys
-  ++⁻ []       p          = [] , p
-  ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map₁ (px ∷_) (++⁻ _ pxs)
+++⁺∘++⁻ : (xs : Vec A m) {ys : Vec A n} →
+          (p : All P (xs ++ ys)) →
+          uncurry′ ++⁺ (++⁻ xs p) ≡ p
+++⁺∘++⁻ []       p          = refl
+++⁺∘++⁻ (x ∷ xs) (px ∷ pxs) = cong (px ∷_) (++⁺∘++⁻ xs pxs)
 
-  ++⁺∘++⁻ : ∀ {m} (xs : Vec A m) {ys : Vec A n} →
-            (p : All P (xs ++ ys)) →
-            uncurry′ ++⁺ (++⁻ xs p) ≡ p
-  ++⁺∘++⁻ []       p          = refl
-  ++⁺∘++⁻ (x ∷ xs) (px ∷ pxs) = cong (px ∷_) (++⁺∘++⁻ xs pxs)
+++⁻∘++⁺ : {xs : Vec A m} {ys : Vec A n} →
+          (p : All P xs × All P ys) →
+          ++⁻ xs (uncurry ++⁺ p) ≡ p
+++⁻∘++⁺ ([]       , pys) = refl
+++⁻∘++⁺ (px ∷ pxs , pys) rewrite ++⁻∘++⁺ (pxs , pys) = refl
 
-  ++⁻∘++⁺ : ∀ {m} {xs : Vec A m} {ys : Vec A n} →
-            (p : All P xs × All P ys) →
-            ++⁻ xs (uncurry ++⁺ p) ≡ p
-  ++⁻∘++⁺ ([]       , pys) = refl
-  ++⁻∘++⁺ (px ∷ pxs , pys) rewrite ++⁻∘++⁺ (pxs , pys) = refl
-
-  ++↔ : ∀ {m} {xs : Vec A m} {ys : Vec A n} →
-        (All P xs × All P ys) ↔ All P (xs ++ ys)
-  ++↔ {xs = xs} = inverse (uncurry ++⁺) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
+++↔ : {xs : Vec A m} {ys : Vec A n} →
+      (All P xs × All P ys) ↔ All P (xs ++ ys)
+++↔ {xs = xs} = inverse (uncurry ++⁺) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
 
 ------------------------------------------------------------------------
 -- concat
 
-module _ {m} {P : Pred A p} where
+concat⁺ : {xss : Vec (Vec A m) n} →
+          All (All P) xss → All P (concat xss)
+concat⁺ []           = []
+concat⁺ (pxs ∷ pxss) = ++⁺ pxs (concat⁺ pxss)
 
-  concat⁺ : ∀ {n} {xss : Vec (Vec A m) n} →
-            All (All P) xss → All P (concat xss)
-  concat⁺ []           = []
-  concat⁺ (pxs ∷ pxss) = ++⁺ pxs (concat⁺ pxss)
-
-  concat⁻ : ∀ {n} (xss : Vec (Vec A m) n) →
-            All P (concat xss) → All (All P) xss
-  concat⁻ []         []   = []
-  concat⁻ (xs ∷ xss) pxss = ++ˡ⁻ xs pxss ∷ concat⁻ xss (++ʳ⁻ xs pxss)
+concat⁻ : (xss : Vec (Vec A m) n) →
+          All P (concat xss) → All (All P) xss
+concat⁻ []         []   = []
+concat⁻ (xs ∷ xss) pxss = ++ˡ⁻ xs pxss ∷ concat⁻ xss (++ʳ⁻ xs pxss)
 
 ------------------------------------------------------------------------
 -- swap
@@ -139,17 +146,15 @@ module _ {P : A → Set p} where
 ------------------------------------------------------------------------
 -- take and drop
 
-module _ {P : A → Set p} where
+drop⁺ : ∀ m {xs} → All P {m + n} xs → All P {n} (drop m xs)
+drop⁺ zero pxs = pxs
+drop⁺ (suc m) {x ∷ xs} (px ∷ pxs)
+  rewrite Vecₚ.unfold-drop m x xs = drop⁺ m pxs
 
-  drop⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {n} (drop m xs)
-  drop⁺ zero pxs = pxs
-  drop⁺ (suc m) {x ∷ xs} (px ∷ pxs)
-    rewrite Vecₚ.unfold-drop m x xs = drop⁺ m pxs
-
-  take⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
-  take⁺ zero pxs = []
-  take⁺ (suc m) {x ∷ xs} (px ∷ pxs)
-    rewrite Vecₚ.unfold-take m x xs = px ∷ take⁺ m pxs
+take⁺ : ∀ m {xs} → All P {m + n} xs → All P {m} (take m xs)
+take⁺ zero pxs = []
+take⁺ (suc m) {x ∷ xs} (px ∷ pxs)
+  rewrite Vecₚ.unfold-take m x xs = px ∷ take⁺ m pxs
 
 ------------------------------------------------------------------------
 -- toList

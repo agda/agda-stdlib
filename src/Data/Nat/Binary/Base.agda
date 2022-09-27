@@ -15,12 +15,11 @@ module Data.Nat.Binary.Base where
 open import Algebra.Core using (Op₂)
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Nat.Base as ℕ using (ℕ)
-open import Data.Nat.DivMod using (_%_ ; _/_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Nullary using (¬_)
 
 ------------------------------------------------------------------------
@@ -120,9 +119,9 @@ fromℕ n = helper n n
   helper : ℕ → ℕ → ℕᵇ
   helper 0 _ = zero
   helper (ℕ.suc n) (ℕ.suc w) =
-    if (n % 2 ℕ.≡ᵇ 0)
-      then 1+[2 helper (n / 2) w ]
-      else 2[1+ helper (n / 2) w ]
+    if (n ℕ.% 2 ℕ.≡ᵇ 0)
+      then 1+[2 helper (n ℕ./ 2) w ]
+      else 2[1+ helper (n ℕ./ 2) w ]
   -- Impossible case
   helper _ 0 = zero
 

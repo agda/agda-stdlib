@@ -16,95 +16,98 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Product using (_,_)
 open import Function.Base using (_∋_)
+open import Level using (Level)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+
+private
+  variable
+    a b : Level
+    A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
 -- The type
 
 infixr 5 _∷_
-data Covec {a} (A : Set a) : Coℕ → Set a where
+data Covec (A : Set a) : Coℕ → Set a where
   []  : Covec A zero
   _∷_ : ∀ {n} (x : A) (xs : ∞ (Covec A (♭ n))) → Covec A (suc n)
 
-module _ {a} {A : Set a} where
+∷-injectiveˡ : ∀ {a b} {n} {as bs} → (Covec A (suc n) ∋ a ∷ as) ≡ b ∷ bs → a ≡ b
+∷-injectiveˡ P.refl = P.refl
 
- ∷-injectiveˡ : ∀ {a b} {n} {as bs} → (Covec A (suc n) ∋ a ∷ as) ≡ b ∷ bs → a ≡ b
- ∷-injectiveˡ P.refl = P.refl
-
- ∷-injectiveʳ : ∀ {a b} {n} {as bs} → (Covec A (suc n) ∋ a ∷ as) ≡ b ∷ bs → as ≡ bs
- ∷-injectiveʳ P.refl = P.refl
+∷-injectiveʳ : ∀ {a b} {n} {as bs} → (Covec A (suc n) ∋ a ∷ as) ≡ b ∷ bs → as ≡ bs
+∷-injectiveʳ P.refl = P.refl
 
 ------------------------------------------------------------------------
 -- Some operations
 
-map : ∀ {a b} {A : Set a} {B : Set b} {n} → (A → B) → Covec A n → Covec B n
+map : ∀ {n} → (A → B) → Covec A n → Covec B n
 map f []       = []
 map f (x ∷ xs) = f x ∷ ♯ map f (♭ xs)
 
-module _ {a} {A : Set a} where
+fromVec : ∀ {n} → Vec A n → Covec A (Coℕ.fromℕ n)
+fromVec []       = []
+fromVec (x ∷ xs) = x ∷ ♯ fromVec xs
 
- fromVec : ∀ {n} → Vec A n → Covec A (Coℕ.fromℕ n)
- fromVec []       = []
- fromVec (x ∷ xs) = x ∷ ♯ fromVec xs
+fromColist : (xs : Colist A) → Covec A (Colist.length xs)
+fromColist []       = []
+fromColist (x ∷ xs) = x ∷ ♯ fromColist (♭ xs)
 
- fromColist : (xs : Colist A) → Covec A (Colist.length xs)
- fromColist []       = []
- fromColist (x ∷ xs) = x ∷ ♯ fromColist (♭ xs)
+take : ∀ m {n} → Covec A (m + n) → Covec A m
+take zero    xs       = []
+take (suc n) (x ∷ xs) = x ∷ ♯ take (♭ n) (♭ xs)
 
- take : ∀ m {n} → Covec A (m + n) → Covec A m
- take zero    xs       = []
- take (suc n) (x ∷ xs) = x ∷ ♯ take (♭ n) (♭ xs)
+drop : ∀ m {n} → Covec A (Coℕ.fromℕ m + n) → Covec A n
+drop zero    xs       = xs
+drop (suc n) (x ∷ xs) = drop n (♭ xs)
 
- drop : ∀ m {n} → Covec A (Coℕ.fromℕ m + n) → Covec A n
- drop zero    xs       = xs
- drop (suc n) (x ∷ xs) = drop n (♭ xs)
+replicate : ∀ n → A → Covec A n
+replicate zero    x = []
+replicate (suc n) x = x ∷ ♯ replicate (♭ n) x
 
- replicate : ∀ n → A → Covec A n
- replicate zero    x = []
- replicate (suc n) x = x ∷ ♯ replicate (♭ n) x
+lookup : ∀ {n} → Covec A n → Cofin n → A
+lookup (x ∷ xs) zero    = x
+lookup (x ∷ xs) (suc n) = lookup (♭ xs) n
 
- lookup : ∀ {n} → Cofin n → Covec A n → A
- lookup zero    (x ∷ xs) = x
- lookup (suc n) (x ∷ xs) = lookup n (♭ xs)
+infixr 5 _++_
 
- infixr 5 _++_
+_++_ : ∀ {m n} → Covec A m → Covec A n → Covec A (m + n)
+[]       ++ ys = ys
+(x ∷ xs) ++ ys = x ∷ ♯ (♭ xs ++ ys)
 
- _++_ : ∀ {m n} → Covec A m → Covec A n → Covec A (m + n)
- []       ++ ys = ys
- (x ∷ xs) ++ ys = x ∷ ♯ (♭ xs ++ ys)
-
- [_] : A → Covec A (suc (♯ zero))
- [ x ] = x ∷ ♯ []
+[_] : A → Covec A (suc (♯ zero))
+[ x ] = x ∷ ♯ []
 
 ------------------------------------------------------------------------
 -- Equality and other relations
 
 -- xs ≈ ys means that xs and ys are equal.
 
- infix 4 _≈_
+infix 4 _≈_
 
- data _≈_ : ∀ {n} (xs ys : Covec A n) → Set a where
-   []  : [] ≈ []
-   _∷_ : ∀ {n} x {xs ys}
-         (xs≈ : ∞ (♭ xs ≈ ♭ ys)) → _≈_ {n = suc n} (x ∷ xs) (x ∷ ys)
+data _≈_ {A : Set a} : ∀ {n} (xs ys : Covec A n) → Set a where
+  []  : [] ≈ []
+  _∷_ : ∀ {n} x {xs ys}
+        (xs≈ : ∞ (♭ xs ≈ ♭ ys)) → _≈_ {n = suc n} (x ∷ xs) (x ∷ ys)
 
 -- x ∈ xs means that x is a member of xs.
 
- infix 4 _∈_
+infix 4 _∈_
 
- data _∈_ : ∀ {n} → A → Covec A n → Set a where
-   here  : ∀ {n x  } {xs}                   → _∈_ {n = suc n} x (x ∷ xs)
-   there : ∀ {n x y} {xs} (x∈xs : x ∈ ♭ xs) → _∈_ {n = suc n} x (y ∷ xs)
+data _∈_ {A : Set a} : ∀ {n} → A → Covec A n → Set a where
+  here  : ∀ {n x  } {xs}                   → _∈_ {n = suc n} x (x ∷ xs)
+  there : ∀ {n x y} {xs} (x∈xs : x ∈ ♭ xs) → _∈_ {n = suc n} x (y ∷ xs)
 
 -- xs ⊑ ys means that xs is a prefix of ys.
 
- infix 4 _⊑_
+infix 4 _⊑_
 
- data _⊑_ : ∀ {m n} → Covec A m → Covec A n → Set a where
-   []  : ∀ {n} {ys : Covec A n} → [] ⊑ ys
-   _∷_ : ∀ {m n} x {xs ys} (p : ∞ (♭ xs ⊑ ♭ ys)) →
-         _⊑_ {m = suc m} {suc n} (x ∷ xs) (x ∷ ys)
+data _⊑_ {A : Set a} : ∀ {m n} → Covec A m → Covec A n → Set a where
+  []  : ∀ {n} {ys : Covec A n} → [] ⊑ ys
+  _∷_ : ∀ {m n} x {xs ys} (p : ∞ (♭ xs ⊑ ♭ ys)) →
+        _⊑_ {m = suc m} {suc n} (x ∷ xs) (x ∷ ys)
 
 ------------------------------------------------------------------------
 -- Some proofs
@@ -163,10 +166,10 @@ poset A n = record
   antisym []       [] = []
   antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
-map-cong : ∀ {a b} {A : Set a} {B : Set b} {n} (f : A → B) → _≈_ {n = n} =[ map f ]⇒ _≈_
+map-cong : ∀ {n} (f : A → B) → _≈_ {n = n} =[ map f ]⇒ _≈_
 map-cong f []        = []
 map-cong f (x ∷ xs≈) = f x ∷ ♯ map-cong f (♭ xs≈)
 
-take-⊑ : ∀ {a} {A : Set a} m {n} (xs : Covec A (m + n)) → take m xs ⊑ xs
+take-⊑ : ∀ m {n} (xs : Covec A (m + n)) → take m xs ⊑ xs
 take-⊑ zero    xs       = []
 take-⊑ (suc n) (x ∷ xs) = x ∷ ♯ take-⊑ (♭ n) (♭ xs)

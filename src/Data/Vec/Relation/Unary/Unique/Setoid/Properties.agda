@@ -11,6 +11,7 @@ module Data.Vec.Relation.Unary.Unique.Setoid.Properties where
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
+import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.Vec.Relation.Unary.Unique.Setoid
 import Data.Vec.Relation.Unary.AllPairs.Properties as AllPairsₚ
@@ -70,6 +71,6 @@ module _ (S : Setoid a ℓ) where
 
   lookup-injective : ∀ {n xs} → Unique S {n} xs → ∀ i j → lookup xs i ≈ lookup xs j → i ≡ j
   lookup-injective (px ∷ pxs) zero zero eq = P.refl
-  lookup-injective (px ∷ pxs) zero (suc j) eq = contradiction eq (All.lookup j px)
-  lookup-injective (px ∷ pxs) (suc i) zero eq = contradiction (sym eq) (All.lookup i px)
+  lookup-injective (px ∷ pxs) zero (suc j) eq = contradiction eq (Allₚ.lookup⁺ px j)
+  lookup-injective (px ∷ pxs) (suc i) zero eq = contradiction (sym eq) (Allₚ.lookup⁺ px i)
   lookup-injective (px ∷ pxs) (suc i) (suc j) eq = P.cong suc (lookup-injective pxs i j eq)

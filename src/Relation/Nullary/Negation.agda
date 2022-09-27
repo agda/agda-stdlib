@@ -13,7 +13,7 @@ open import Data.Bool.Base using (Bool; false; true; if_then_else_; not)
 open import Data.Empty
 open import Data.Product as Prod
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
-open import Function
+open import Function.Base
 open import Level
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
