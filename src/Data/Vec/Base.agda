@@ -53,14 +53,8 @@ length {n = n} _ = n
 head : Vec A (1 + n) → A
 head (x ∷ xs) = x
 
-NZhead : .{{_ : NonZero n}} → Vec A n → A
-NZhead {n = suc n} = head
-
 tail : Vec A (1 + n) → Vec A n
 tail (x ∷ xs) = xs
-
-NZtail : .{{_ : NonZero n}} → Vec A n → Vec A (pred n)
-NZtail {n = suc n} = tail
 
 lookup : Vec A n → Fin n → A
 lookup (x ∷ xs) zero    = x
@@ -74,15 +68,9 @@ insert : Vec A n → Fin (suc n) → A → Vec A (suc n)
 insert xs       zero     v = v ∷ xs
 insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
 
-NZinsert : .{{_ : NonZero n}} → Vec A (pred n) → Fin n → A → Vec A n
-NZinsert {n = suc n} = insert
-
 remove : Vec A (suc n) → Fin (suc n) → Vec A n
 remove (_ ∷ xs)     zero     = xs
 remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
-
-NZremove : .{{_ : NonZero n}} → Vec A n → Fin n → Vec A (pred n)
-NZremove {n = suc n} = remove
 
 updateAt : Fin n → (A → A) → Vec A n → Vec A n
 updateAt zero    f (x ∷ xs) = f x ∷ xs
@@ -295,10 +283,6 @@ split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
 uncons : Vec A (suc n) → A × Vec A n
 uncons (x ∷ xs) = x , xs
 
-NZuncons : .{{_ : NonZero n}} →
-           Vec A n → A × Vec A (pred n)
-NZuncons {n = suc n} = uncons
-
 ------------------------------------------------------------------------
 -- Operations involving ≤
 
@@ -357,15 +341,9 @@ init : Vec A (1 + n) → Vec A n
 init xs with initLast xs
 ... | (ys , y , refl) = ys
 
-NZinit : ∀ .{{_ : NonZero n}} → (xs : Vec A n) → Vec A (pred n)
-NZinit {n = suc n} = init
-
 last : Vec A (1 + n) → A
 last xs with initLast xs
 ... | (ys , y , refl) = y
-
-NZlast : ∀ .{{_ : NonZero n}} → (xs : Vec A n) → A
-NZlast {n = suc n} = last
 
 ------------------------------------------------------------------------
 -- Other operations
