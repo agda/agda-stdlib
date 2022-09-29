@@ -11,6 +11,7 @@
 
 module Data.Fin.Base where
 
+open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
 open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
@@ -18,6 +19,7 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
@@ -35,6 +37,62 @@ private
 data Fin : ℕ → Set where
   zero : Fin (suc n)
   suc  : (i : Fin n) → Fin (suc n)
+
+-- uniform zero
+
+NZzero : .{{ℕ.NonZero n}} → Fin n
+NZzero {n = suc n} = zero
+
+-- uniform successor
+
+NZsuc : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
+NZsuc {n = suc n} = suc
+
+-- NonZero predicate
+
+isZero : (i : Fin (suc n)) → Bool
+isZero zero    = true
+isZero (suc i) = false
+
+-- uniform version
+
+NZisZero : (i : Fin n) → Bool
+NZisZero {n = zero} ()
+NZisZero {n = suc n} i = isZero {n} i
+
+record NonZero (i : Fin n) : Set where
+  field
+    nonZero : T (not (NZisZero i))
+
+-- Instances
+
+instance
+  nonZero : ∀ {i} → NonZero {suc n} (suc i)
+  nonZero = _
+
+-- Constructors
+
+≢-nonZero : ∀ {{_ : ℕ.NonZero n}} {i} → i ≢ NZzero → NonZero {n} i
+≢-nonZero {i = zero}  0≢0 = contradiction refl 0≢0
+≢-nonZero {i = suc i} i≢0 = _
+
+-- Destructors
+
+≢-nonZero⁻¹ : ∀ {{_ : ℕ.NonZero n}} i → .{{NonZero {n} i}} → i ≢ NZzero
+≢-nonZero⁻¹ (suc i) ()
+
+-- Bool-valued equality
+
+infix  4 _=ᵇ_ _NZ=ᵇ_
+
+_=ᵇ_ : ∀ {n} (i j : Fin (suc n)) → Bool
+zero  =ᵇ zero  = true
+_=ᵇ_ {n = suc n} (suc i) (suc j) = _=ᵇ_ {n = n} i j
+_     =ᵇ _     = false
+
+_NZ=ᵇ_ : ∀ {n} (i j : Fin n) → Bool
+_NZ=ᵇ_ {n = zero} () ()
+_NZ=ᵇ_ {n = suc n} = _=ᵇ_ {n = n}
 
 -- A conversion: toℕ "i" = i.
 
@@ -109,9 +167,15 @@ inject! : ∀ {i : Fin (suc n)} → Fin′ i → Fin n
 inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
+NZinject! : .{{_ : ℕ.NonZero n}} → {i : Fin n} → Fin′ i → Fin (ℕ.pred n)
+NZinject! {n = suc n} = inject!
+
 inject₁ : Fin n → Fin (suc n)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
+
+NZinject₁ : .{{_ : ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
+NZinject₁ {n = suc n} = inject₁
 
 inject≤ : Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    _        = zero
@@ -122,7 +186,10 @@ inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
 lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
 lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
 lower₁ {suc n} zero    _  = zero
-lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
+lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
+
+NZlower₁ : .{{ℕ.NonZero n}} → (i : Fin n) → n ≢ suc (toℕ i) → Fin (ℕ.pred n)
+NZlower₁ {n = suc n} i ne = lower₁ i (ne ∘ cong suc)
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ (i : Fin n) → Fin′ (suc i)
@@ -234,6 +301,13 @@ _ℕ-ℕ_ : (n : ℕ) → Fin (suc n) → ℕ
 n     ℕ-ℕ zero   = n
 suc n ℕ-ℕ suc i  = n ℕ-ℕ i
 
+-- n ℕ-suc "i" = n ∸ (suc i)
+
+infixl 6 _ℕ-suc_
+
+_ℕ-suc_ : (n : ℕ) → Fin n → ℕ
+suc n ℕ-suc i = n ℕ-ℕ i
+
 -- pred "i" = "pred i".
 
 pred : Fin n → Fin n
@@ -256,6 +330,9 @@ punchOut {_}     {zero}   {suc j} _   = j
 punchOut {suc _} {suc i}  {zero}  _   = zero
 punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
 
+NZpunchOut : .{{ℕ.NonZero n}} → {i j : Fin n} → i ≢ j → Fin (ℕ.pred n)
+NZpunchOut {n = suc n} = punchOut
+
 -- The function f(i,j) = if j≥i then j+1 else j
 
 punchIn : Fin (suc n) → Fin n → Fin (suc n)
@@ -263,12 +340,18 @@ punchIn zero    j       = suc j
 punchIn (suc i) zero    = zero
 punchIn (suc i) (suc j) = suc (punchIn i j)
 
+NZpunchIn : .{{ℕ.NonZero n}} → Fin n → Fin (ℕ.pred n) → Fin n
+NZpunchIn {n = suc n} = punchIn
+
 -- The function f(i,j) such that f(i,j) = if j≤i then j else j-1
 
 pinch : Fin n → Fin (suc n) → Fin n
 pinch {suc n} _       zero    = zero
 pinch {suc n} zero    (suc j) = j
 pinch {suc n} (suc i) (suc j) = suc (pinch i j)
+
+NZpinch : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n → Fin (ℕ.pred n)
+NZpinch {n = suc n} = pinch
 
 ------------------------------------------------------------------------
 -- Order relations

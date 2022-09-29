@@ -8,7 +8,6 @@
 
 module Data.Vec.Relation.Unary.Unique.Propositional.Properties where
 
-open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs)
@@ -57,7 +56,7 @@ module _ {A : Set a} where
 
 module _ {A : Set a} where
 
-  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → f i ≡ f j → i ≡ j) → Unique (tabulate f)
+  tabulate⁺ : ∀ {n} {f} → (∀ {i j} → f i ≡ f j → i ≡ j) → Unique (tabulate {n = n} f)
   tabulate⁺ = Setoid.tabulate⁺ (setoid A)
 
 ------------------------------------------------------------------------

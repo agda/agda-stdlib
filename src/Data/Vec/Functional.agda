@@ -15,9 +15,9 @@
 
 module Data.Vec.Functional where
 
-open import Data.Fin.Base
+open import Data.Fin.Base hiding (NonZero; pred)
 open import Data.List.Base as L using (List)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero; pred)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Base as V using (Vec)
@@ -72,11 +72,20 @@ length {n = n} _ = n
 head : ∀ {n} → Vector A (suc n) → A
 head xs = xs zero
 
+NZhead : ∀ {n} {{_ : NonZero n}} → Vector A n → A
+NZhead {n = suc n} = head
+
 tail : ∀ {n} → Vector A (suc n) → Vector A n
 tail xs = xs ∘ suc
 
+NZtail : ∀ {n} {{_ : NonZero n}} → Vector A n → Vector A (pred n)
+NZtail {n = suc n} = tail
+
 uncons : ∀ {n} → Vector A (suc n) → A × Vector A n
 uncons xs = head xs , tail xs
+
+NZuncons : ∀ {n} {{_ : NonZero n}} → Vector A n → A × Vector A (pred n)
+NZuncons {n = suc n} = uncons
 
 replicate : ∀ {n} → A → Vector A n
 replicate = const
@@ -87,8 +96,14 @@ insert {n = n}     xs zero    v (suc j) = xs j
 insert {n = suc n} xs (suc i) v zero    = head xs
 insert {n = suc n} xs (suc i) v (suc j) = insert (tail xs) i v j
 
+NZinsert : ∀ {n} {{_ : NonZero n}} → Vector A (pred n) → Fin n → A → Vector A n
+NZinsert {n = suc n} = insert
+
 remove : ∀ {n} → Fin (suc n) → Vector A (suc n) → Vector A n
 remove i t = t ∘ punchIn i
+
+NZremove : ∀ {n} {{_ : NonZero n}} → Fin n → Vector A n → Vector A (pred n)
+NZremove {n = suc n} i t = t ∘ NZpunchIn i
 
 updateAt : ∀ {n} → Fin n → (A → A) → Vector A n → Vector A n
 updateAt {n = suc n} zero    f xs zero    = f (head xs)
@@ -149,8 +164,14 @@ reverse xs = xs ∘ opposite
 init : ∀ {n} → Vector A (suc n) → Vector A n
 init xs = xs ∘ inject₁
 
+NZinit : ∀ {n} {{_ : NonZero n}} → Vector A n → Vector A (pred n)
+NZinit {n = suc n} = init
+
 last : ∀ {n} → Vector A (suc n) → A
 last {n = n} xs = xs (fromℕ n)
+
+NZlast : ∀ {n} {{_ : NonZero n}} → Vector A n → A
+NZlast {n = suc n} = last
 
 transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
 transpose = flip

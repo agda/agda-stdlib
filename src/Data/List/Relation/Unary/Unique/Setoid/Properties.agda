@@ -8,7 +8,6 @@
 
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
-open import Data.Fin.Base using (Fin)
 open import Data.List.Base
 open import Data.List.Membership.Setoid.Properties
 open import Data.List.Relation.Binary.Disjoint.Setoid
@@ -20,7 +19,7 @@ open import Data.List.Relation.Unary.Unique.Setoid
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
-open import Data.Nat.Base
+open import Data.Nat.Base using (_<_)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
 open import Relation.Binary using (Rel; Setoid)
@@ -144,8 +143,8 @@ module _ (S : Setoid a ℓ) where
 
   open Setoid S renaming (Carrier to A)
 
-  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → f i ≈ f j → i ≡ j) →
-              Unique S (tabulate f)
+  tabulate⁺ : ∀ {n} {f} → (∀ {i j} → f i ≈ f j → i ≡ j) →
+              Unique S (tabulate {n = n} f)
   tabulate⁺ f-inj = AllPairs.tabulate⁺ (_∘ f-inj)
 
 ------------------------------------------------------------------------

@@ -15,9 +15,8 @@ import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
 open import Data.Fin.Base using (Fin; zero; suc; _<_)
-open import Data.Fin.Properties using (suc-injective)
-open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Nat.Properties using (<-pred) -- ≤-refl; ≤-pred; ≤-step)
+open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
+open import Data.Nat.Properties using (<-pred)
 open import Level using (Level)
 open import Function.Base using (_∘_; flip; _on_)
 open import Relation.Binary using (Rel; Transitive; DecSetoid)
@@ -43,6 +42,11 @@ module _ (trans : Transitive R) where
                Linked R xs → All (R v) xs
   Linked⇒All Rvx [-]         = Rvx ∷ []
   Linked⇒All Rvx (Rxy ∷ Rxs) = Rvx ∷ Linked⇒All (trans Rvx Rxy) Rxs
+
+  NZLinked⇒All : .{{nz : NonZero n}} →
+                  ∀ {v} {xs : Vec _ n} → R v (NZhead {{nz}} xs) →
+                  Linked R xs → All (R v) xs
+  NZLinked⇒All {n = suc n} = Linked⇒All {n = n}
 
   lookup⁺ : ∀ {i j : Fin n} {xs} →
            Linked R xs → i < j →

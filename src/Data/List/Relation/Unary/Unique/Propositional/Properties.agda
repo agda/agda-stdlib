@@ -8,14 +8,13 @@
 
 module Data.List.Relation.Unary.Unique.Propositional.Properties where
 
-open import Data.Fin.Base using (Fin)
 open import Data.List.Base
 open import Data.List.Relation.Binary.Disjoint.Propositional
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Unique.Propositional
 import Data.List.Relation.Unary.Unique.Setoid.Properties as Setoid
-open import Data.Nat.Base
+open import Data.Nat.Base using (_<_)
 open import Data.Nat.Properties using (<⇒≢)
 open import Data.Product using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡⇒≡×≡)
@@ -132,8 +131,8 @@ downFrom⁺ n = applyDownFrom⁺₁ id n (λ j<i _ → <⇒≢ j<i ∘ sym)
 
 module _ {A : Set a} where
 
-  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → f i ≡ f j → i ≡ j) →
-              Unique (tabulate f)
+  tabulate⁺ : ∀ {n} {f} → (∀ {i j} → f i ≡ f j → i ≡ j) →
+              Unique (tabulate {n = n} f)
   tabulate⁺ = Setoid.tabulate⁺ (setoid A)
 
 ------------------------------------------------------------------------

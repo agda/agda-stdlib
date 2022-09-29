@@ -8,8 +8,7 @@
 
 module Data.Vec.Relation.Unary.All where
 
-open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
 open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
@@ -53,8 +52,15 @@ data All {A : Set a} (P : Pred A p) : Vec A n → Set (p ⊔ a) where
 head : All P (x ∷ xs) → P x
 head (px ∷ pxs) = px
 
+NZhead : .{{nz : NonZero n}} → All P xs → P (Vec.NZhead {{nz}} xs)
+NZhead {n = suc n} pxs@(_ ∷ _) = head pxs
+
 tail : All P (x ∷ xs) → All P xs
 tail (px ∷ pxs) = pxs
+
+NZtail : .{{nz : NonZero n}} →
+         All P xs → All P (Vec.NZtail {{nz}} xs)
+NZtail {n = suc n} pxs@(_ ∷ _) = tail pxs
 
 reduce : (f : ∀ {x} → P x → B) → ∀ {n} {xs : Vec A n} → All P xs → Vec B n
 reduce f []         = []
@@ -62,6 +68,10 @@ reduce f (px ∷ pxs) = f px ∷ reduce f pxs
 
 uncons : All P (x ∷ xs) → P x × All P xs
 uncons = < head , tail >
+
+NZuncons : .{{nz : NonZero n}} →
+           All P xs → P (Vec.NZhead {{nz}} xs) × All P (Vec.NZtail {{nz}} xs)
+NZuncons = < NZhead , NZtail >
 
 map : P ⊆ Q → All P ⊆ All Q {n}
 map g []         = []

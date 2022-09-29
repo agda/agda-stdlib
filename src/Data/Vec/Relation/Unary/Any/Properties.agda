@@ -9,7 +9,7 @@
 module Data.Vec.Relation.Unary.Any.Properties where
 
 open import Data.Nat.Base using (suc; zero)
-open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Fin.Base using (zero; suc)
 open import Data.Empty using (⊥)
 open import Data.List.Base using ([]; _∷_)
 import Data.List.Relation.Unary.Any as List
@@ -357,14 +357,13 @@ module _ {P : Pred A p} where
 
 module _ {P : Pred A p} where
 
-  tabulate⁺ : ∀ {n} {f : Fin n → A} i → P (f i) → Any P (tabulate f)
+  tabulate⁺ : ∀ {n} {f} i → P (f i) → Any P (tabulate {n = n} f)
   tabulate⁺ zero    p = here p
   tabulate⁺ (suc i) p = there (tabulate⁺ i p)
 
-  tabulate⁻ : ∀ {n} {f : Fin n → A} →
-              Any P (tabulate f) → ∃ λ i → P (f i)
-  tabulate⁻ {suc n} (here p)  = zero , p
-  tabulate⁻ {suc n} (there p) = Prod.map suc id (tabulate⁻ p)
+  tabulate⁻ : ∀ {n} {f} → Any P (tabulate {n = n} f) → ∃ λ i → P (f i)
+  tabulate⁻ (here p)  = zero , p
+  tabulate⁻ (there p) = Prod.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- mapWith∈
