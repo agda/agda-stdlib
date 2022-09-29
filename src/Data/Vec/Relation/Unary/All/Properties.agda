@@ -9,7 +9,7 @@
 module Data.Vec.Relation.Unary.All.Properties where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Fin.Base using (zero; suc)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -37,7 +37,7 @@ private
 ------------------------------------------------------------------------
 -- lookup
 
-lookup⁺ : All P xs → (i : Fin n) → P (Vec.lookup xs i)
+lookup⁺ : All P xs → ∀ i → P (Vec.lookup xs i)
 lookup⁺ (px ∷ _)  zero    = px
 lookup⁺ (_ ∷ pxs) (suc i) = lookup⁺ pxs i
 
