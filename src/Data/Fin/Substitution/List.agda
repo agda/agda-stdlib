@@ -39,7 +39,7 @@ appLemmas = record
       ts             ∎
   ; /-⊙ = λ {_ _ _ ρ₁ ρ₂} ts → begin
       ts // ρ₁ ⊙ ρ₂               ≡⟨ map-cong L./-⊙ ts ⟩
-      map (λ σ → σ / ρ₁ / ρ₂) ts  ≡⟨ map-compose ts ⟩
+      map (λ σ → σ / ρ₁ / ρ₂) ts  ≡⟨ map-∘ ts ⟩
       ts // ρ₁ // ρ₂              ∎
   }
 

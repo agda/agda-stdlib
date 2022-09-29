@@ -83,31 +83,31 @@ map-id : map id ≗ id {A = List A}
 map-id []       = refl
 map-id (x ∷ xs) = cong (x ∷_) (map-id xs)
 
-map-id₂ : ∀ {f : A → A} {xs} → All (λ x → f x ≡ x) xs → map f xs ≡ xs
-map-id₂ []           = refl
-map-id₂ (fx≡x ∷ pxs) = cong₂ _∷_ fx≡x (map-id₂ pxs)
+map-id-local : ∀ {f : A → A} {xs} → All (λ x → f x ≡ x) xs → map f xs ≡ xs
+map-id-local []           = refl
+map-id-local (fx≡x ∷ pxs) = cong₂ _∷_ fx≡x (map-id-local pxs)
 
-map-++-commute : ∀ (f : A → B) xs ys →
+map-++ : ∀ (f : A → B) xs ys →
                  map f (xs ++ ys) ≡ map f xs ++ map f ys
-map-++-commute f []       ys = refl
-map-++-commute f (x ∷ xs) ys = cong (f x ∷_) (map-++-commute f xs ys)
+map-++ f []       ys = refl
+map-++ f (x ∷ xs) ys = cong (f x ∷_) (map-++ f xs ys)
 
 map-cong : ∀ {f g : A → B} → f ≗ g → map f ≗ map g
 map-cong f≗g []       = refl
 map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (map-cong f≗g xs)
 
-map-cong₂ : ∀ {f g : A → B} {xs} →
+map-cong-local : ∀ {f g : A → B} {xs} →
             All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
-map-cong₂ []                = refl
-map-cong₂ (fx≡gx ∷ fxs≡gxs) = cong₂ _∷_ fx≡gx (map-cong₂ fxs≡gxs)
+map-cong-local []                = refl
+map-cong-local (fx≡gx ∷ fxs≡gxs) = cong₂ _∷_ fx≡gx (map-cong-local fxs≡gxs)
 
 length-map : ∀ (f : A → B) xs → length (map f xs) ≡ length xs
 length-map f []       = refl
 length-map f (x ∷ xs) = cong suc (length-map f xs)
 
-map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
-map-compose []       = refl
-map-compose (x ∷ xs) = cong (_ ∷_) (map-compose xs)
+map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
+map-∘ []       = refl
+map-∘ (x ∷ xs) = cong (_ ∷_) (map-∘ xs)
 
 map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
 map-injective finj {[]} {[]} eq = refl
@@ -260,16 +260,16 @@ module _ {f g : These A B → C} where
   alignWith-map : (g : D → A) (h : E → B) →
                   ∀ xs ys → alignWith f (map g xs) (map h ys) ≡
                             alignWith (f ∘′ These.map g h) xs ys
-  alignWith-map g h []         ys     = sym (map-compose ys)
-  alignWith-map g h xs@(_ ∷ _) []     = sym (map-compose xs)
+  alignWith-map g h []         ys     = sym (map-∘ ys)
+  alignWith-map g h xs@(_ ∷ _) []     = sym (map-∘ xs)
   alignWith-map g h (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ refl (alignWith-map g h xs ys)
 
   map-alignWith : ∀ (g : C → D) → ∀ xs ys →
                   map g (alignWith f xs ys) ≡
                   alignWith (g ∘′ f) xs ys
-  map-alignWith g []         ys     = sym (map-compose ys)
-  map-alignWith g xs@(_ ∷ _) []     = sym (map-compose xs)
+  map-alignWith g []         ys     = sym (map-∘ ys)
+  map-alignWith g xs@(_ ∷ _) []     = sym (map-∘ xs)
   map-alignWith g (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ refl (map-alignWith g xs ys)
 
@@ -496,7 +496,7 @@ concat-map : ∀ {f : A → B} → concat ∘ map (map f) ≗ map f ∘ concat
 concat-map {f = f} xss = begin
   concat (map (map f) xss)                   ≡⟨ cong concat (map-is-foldr xss) ⟩
   concat (foldr (λ xs → map f xs ∷_) [] xss) ≡⟨ foldr-fusion concat [] (λ _ _ → refl) xss ⟩
-  foldr (λ ys → map f ys ++_) [] xss         ≡⟨ sym (foldr-fusion (map f) [] (map-++-commute f) xss) ⟩
+  foldr (λ ys → map f ys ++_) [] xss         ≡⟨ sym (foldr-fusion (map f) [] (map-++ f) xss) ⟩
   map f (concat xss)                         ∎
 
 concat-++ : (xss yss : List (List A)) → concat xss ++ concat yss ≡ concat (xss ++ yss)
@@ -518,10 +518,10 @@ concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
 ------------------------------------------------------------------------
 -- sum
 
-sum-++-commute : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys
-sum-++-commute []       ys = refl
-sum-++-commute (x ∷ xs) ys = begin
-  x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++-commute xs ys) ⟩
+sum-++ : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys
+sum-++ []       ys = refl
+sum-++ (x ∷ xs) ys = begin
+  x + sum (xs ++ ys)     ≡⟨ cong (x +_) (sum-++ xs ys) ⟩
   x + (sum xs + sum ys)  ≡⟨ sym (+-assoc x _ _) ⟩
   (x + sum xs) + sum ys  ∎
 
@@ -564,7 +564,7 @@ scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
    map (foldl f (f e x)) (inits xs)
  ≡⟨ refl ⟩
    map (foldl f e ∘ (x ∷_)) (inits xs)
- ≡⟨ map-compose (inits xs) ⟩
+ ≡⟨ map-∘ (inits xs) ⟩
    map (foldl f e) (map (x ∷_) (inits xs))
  ∎)
 
@@ -927,9 +927,9 @@ unfold-reverse x xs = ʳ++-defn xs
 
 -- reverse is an involution with respect to append.
 
-reverse-++-commute : (xs ys : List A) →
+reverse-++ : (xs ys : List A) →
                      reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
-reverse-++-commute xs ys = begin
+reverse-++ xs ys = begin
   reverse (xs ++ ys)         ≡⟨⟩
   (xs ++ ys) ʳ++ []          ≡⟨ ʳ++-++ xs ⟩
   ys ʳ++ xs ʳ++ []           ≡⟨⟩
@@ -960,8 +960,8 @@ length-reverse xs = begin
   length xs + 0         ≡⟨ +-identityʳ _ ⟩
   length xs             ∎
 
-reverse-map-commute : (f : A → B) → map f ∘ reverse ≗ reverse ∘ map f
-reverse-map-commute f xs = begin
+reverse-map : (f : A → B) → map f ∘ reverse ≗ reverse ∘ map f
+reverse-map f xs = begin
   map f (reverse xs) ≡⟨⟩
   map f (xs ʳ++ [])  ≡⟨ map-ʳ++ f xs ⟩
   map f xs ʳ++ []    ≡⟨⟩
@@ -1003,6 +1003,48 @@ module _ {x y : A} where
 -- not guaranteed.
 
 -- Version 2.0
+
+map-id₂ = map-id-local
+{-# WARNING_ON_USAGE map-id₂
+"Warning: map-id₂ was deprecated in v2.0.
+Please use map-id-local instead."
+#-}
+
+map-cong₂ = map-cong-local
+{-# WARNING_ON_USAGE map-id₂
+"Warning: map-cong₂ was deprecated in v2.0.
+Please use map-cong-local instead."
+#-}
+
+map-compose = map-∘
+{-# WARNING_ON_USAGE map-compose
+"Warning: map-compose was deprecated in v2.0.
+Please use map-∘ instead."
+#-}
+
+map-++-commute = map-++
+{-# WARNING_ON_USAGE map-++-commute
+"Warning: map-++-commute was deprecated in v2.0.
+Please use map-++ instead."
+#-}
+
+sum-++-commute = sum-++
+{-# WARNING_ON_USAGE sum-++-commute
+"Warning: map-++-commute was deprecated in v2.0.
+Please use map-++ instead."
+#-}
+
+reverse-map-commute = reverse-map
+{-# WARNING_ON_USAGE reverse-map-commute
+"Warning: reverse-map-commute was deprecated in v2.0.
+Please use reverse-map instead."
+#-}
+
+reverse-++-commute = reverse-++
+{-# WARNING_ON_USAGE reverse-++-commute
+"Warning: reverse-++-commute was deprecated in v2.0.
+Please use reverse-++ instead."
+#-}
 
 zipWith-identityˡ = zipWith-zeroˡ
 {-# WARNING_ON_USAGE zipWith-identityˡ
