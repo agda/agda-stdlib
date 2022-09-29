@@ -7,6 +7,12 @@
 -- The contents of this module should be accessed via `Algebra`, unless
 -- you want to parameterise it via the equality relation.
 
+-- Note that very few of the element arguments are made implicit here,
+-- as we do not assume that the Agda can infer either the right or left
+-- argument of the binary operators. This is despite the fact that the
+-- library defines most of its concrete operators (e.g. in
+-- `Data.Nat.Base`) as being left-biased.
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core
