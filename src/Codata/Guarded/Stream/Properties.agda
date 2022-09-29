@@ -33,8 +33,8 @@ private
 ------------------------------------------------------------------------
 -- Congruence
 
-cong-lookup : ∀ n {as bs : Stream A} → as ≈ bs → lookup n as ≡ lookup n bs
-cong-lookup = B.lookup
+cong-lookup : ∀ {as bs : Stream A} → as ≈ bs → ∀ n → lookup as n ≡ lookup bs n
+cong-lookup = B.lookup⁺
 
 cong-take : ∀ n {as bs : Stream A} → as ≈ bs → take n as ≡ take n bs
 cong-take zero    as≈bs = P.refl
@@ -76,7 +76,7 @@ cong-chunksOf n as≈bs .tail = cong-chunksOf n (cong-drop n as≈bs)
 ------------------------------------------------------------------------
 -- Properties of repeat
 
-lookup-repeat : ∀ n (a : A) → lookup n (repeat a) ≡ a
+lookup-repeat : ∀ n (a : A) → lookup (repeat a) n ≡ a
 lookup-repeat zero    a = P.refl
 lookup-repeat (suc n) a = lookup-repeat n a
 
@@ -183,70 +183,72 @@ map-cycle f as = run
 ------------------------------------------------------------------------
 -- Properties of lookup
 
-lookup-drop : ∀ m n (as : Stream A) → lookup n (drop m as) ≡ lookup (m + n) as
-lookup-drop zero    n as = P.refl
-lookup-drop (suc m) n as = lookup-drop m n (as .tail)
+lookup-drop : ∀ m (as : Stream A) n → lookup (drop m as) n ≡ lookup as (m + n)
+lookup-drop zero    as n = P.refl
+lookup-drop (suc m) as n = lookup-drop m (as .tail) n
 
-lookup-map : ∀ n (f : A → B) as → lookup n (map f as) ≡ f (lookup n as)
+lookup-map : ∀ n (f : A → B) as → lookup (map f as) n ≡ f (lookup as n)
 lookup-map zero    f as = P.refl
 lookup-map (suc n) f as = lookup-map n f (as . tail)
 
-lookup-iterate : ∀ n f (x : A) → lookup n (iterate f x) ≡ ℕ.iterate f x n
+lookup-iterate : ∀ n f (x : A) → lookup (iterate f x) n ≡ ℕ.iterate f x n
 lookup-iterate zero    f x = P.refl
 lookup-iterate (suc n) f x = lookup-iterate n f (f x)
 
 lookup-zipWith : ∀ n (f : A → B → C) as bs →
-                 lookup n (zipWith f as bs) ≡ f (lookup n as) (lookup n bs)
+                 lookup (zipWith f as bs) n ≡ f (lookup as n) (lookup bs n)
 lookup-zipWith zero f as bs = P.refl
 lookup-zipWith (suc n) f as bs = lookup-zipWith n f (as .tail) (bs .tail)
 
 lookup-unfold : ∀ n (f : A → A × B) a →
-                lookup n (unfold f a) ≡ proj₂ (f (ℕ.iterate (proj₁ ∘′ f) a n))
+                lookup (unfold f a) n ≡ proj₂ (f (ℕ.iterate (proj₁ ∘′ f) a n))
 lookup-unfold zero    f a = P.refl
 lookup-unfold (suc n) f a = lookup-unfold n f (proj₁ (f a))
 
-lookup-tabulate : ∀ n (f : ℕ → A) → lookup n (tabulate f) ≡ f n
+lookup-tabulate : ∀ n (f : ℕ → A) → lookup (tabulate f) n ≡ f n
 lookup-tabulate zero f = P.refl
 lookup-tabulate (suc n) f = lookup-tabulate n (f ∘′ suc)
 
-lookup-transpose : ∀ n (ass : List (Stream A)) → lookup n (transpose ass) ≡ List.map (lookup n) ass
+lookup-transpose : ∀ n (ass : List (Stream A)) →
+                   lookup (transpose ass) n ≡ List.map (flip lookup n) ass
 lookup-transpose n [] = lookup-repeat n []
 lookup-transpose n (as ∷ ass) = begin
-  lookup n (transpose (as ∷ ass))           ≡⟨⟩
-  lookup n (zipWith _∷_ as (transpose ass)) ≡⟨ lookup-zipWith n _∷_ as (transpose ass) ⟩
-  lookup n as ∷ lookup n (transpose ass)    ≡⟨ cong (lookup n as ∷_) (lookup-transpose n ass) ⟩
-  lookup n as ∷ List.map (lookup n) ass     ≡⟨⟩
-  List.map (lookup n) (as ∷ ass)            ∎
+  lookup (transpose (as ∷ ass)) n            ≡⟨⟩
+  lookup (zipWith _∷_ as (transpose ass)) n  ≡⟨ lookup-zipWith n _∷_ as (transpose ass) ⟩
+  lookup as n ∷ lookup (transpose ass) n     ≡⟨ cong (lookup as n ∷_) (lookup-transpose n ass) ⟩
+  lookup as n ∷ List.map (flip lookup n) ass ≡⟨⟩
+  List.map (flip lookup n) (as ∷ ass)        ∎
   where open P.≡-Reasoning
 
-lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) → lookup n (transpose⁺ ass) ≡ List⁺.map (lookup n) ass
+lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) →
+                    lookup (transpose⁺ ass) n ≡ List⁺.map (flip lookup n) ass
 lookup-transpose⁺ n (as ∷ ass) = begin
-  lookup n (transpose⁺ (as ∷ ass))          ≡⟨⟩
-  lookup n (zipWith _∷_ as (transpose ass)) ≡⟨ lookup-zipWith n _∷_ as (transpose ass) ⟩
-  lookup n as ∷ lookup n (transpose ass)    ≡⟨ cong (lookup n as ∷_) (lookup-transpose n ass) ⟩
-  lookup n as ∷ List.map (lookup n) ass     ≡⟨⟩
-  List⁺.map (lookup n) (as ∷ ass)           ∎
+  lookup (transpose⁺ (as ∷ ass))          n  ≡⟨⟩
+  lookup (zipWith _∷_ as (transpose ass)) n  ≡⟨ lookup-zipWith n _∷_ as (transpose ass) ⟩
+  lookup as n ∷ lookup (transpose ass) n     ≡⟨ cong (lookup as n ∷_) (lookup-transpose n ass) ⟩
+  lookup as n ∷ List.map (flip lookup n) ass ≡⟨⟩
+  List⁺.map (flip lookup n) (as ∷ ass)       ∎
   where open P.≡-Reasoning
 
-lookup-tails : ∀ n (as : Stream A) → lookup n (tails as) ≈ ℕ.iterate tail as n
+lookup-tails : ∀ n (as : Stream A) → lookup (tails as) n ≈ ℕ.iterate tail as n
 lookup-tails zero    as = B.refl
 lookup-tails (suc n) as = lookup-tails n (as .tail)
 
-lookup-evens : ∀ n (as : Stream A) → lookup n (evens as) ≡ lookup (n * 2) as
+lookup-evens : ∀ n (as : Stream A) → lookup (evens as) n ≡ lookup as (n * 2)
 lookup-evens zero    as = P.refl
 lookup-evens (suc n) as = lookup-evens n (as .tail .tail)
 
-lookup-odds : ∀ n (as : Stream A) → lookup n (odds as) ≡ lookup (suc (n * 2)) as
+lookup-odds : ∀ n (as : Stream A) → lookup (odds as) n ≡ lookup as (suc (n * 2))
 lookup-odds zero    as = P.refl
 lookup-odds (suc n) as = lookup-odds n (as .tail .tail)
 
 lookup-interleave-even : ∀ n (as bs : Stream A) →
-                         lookup (n * 2) (interleave as bs) ≡ lookup n as
+                         lookup (interleave as bs) (n * 2) ≡ lookup as n
 lookup-interleave-even zero    as bs = P.refl
 lookup-interleave-even (suc n) as bs = lookup-interleave-even n (as .tail) (bs .tail)
 
 lookup-interleave-odd : ∀ n (as bs : Stream A) →
-                        lookup (suc (n * 2)) (interleave as bs) ≡ lookup n bs
+                        lookup (interleave as bs) (suc (n * 2)) ≡ lookup bs n
 lookup-interleave-odd zero    as bs = P.refl
 lookup-interleave-odd (suc n) as bs = lookup-interleave-odd n (as .tail) (bs .tail)
 

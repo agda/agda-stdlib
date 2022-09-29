@@ -97,7 +97,7 @@ map-replicate f zero    a = []
 map-replicate f (suc n) a =
   Eq.refl ∷ λ where .force → map-replicate f (n .force) a
 
-lookup-replicate : ∀ k n (a : A) → All (a ≡_) (lookup k (replicate n a))
+lookup-replicate : ∀ k n (a : A) → All (a ≡_) (lookup (replicate n a) k)
 lookup-replicate k zero          a = nothing
 lookup-replicate zero    (suc n) a = just Eq.refl
 lookup-replicate (suc k) (suc n) a = lookup-replicate k (n .force) a

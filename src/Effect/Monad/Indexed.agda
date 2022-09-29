@@ -11,7 +11,7 @@
 module Effect.Monad.Indexed where
 
 open import Effect.Applicative.Indexed
-open import Function
+open import Function.Base
 open import Level
 
 private

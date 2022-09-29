@@ -37,7 +37,7 @@ private
 ------------------------------------------------------------------------
 -- repeat
 
-lookup-repeat-identity : (n : ℕ) (a : A) → lookup n (repeat a) ≡ a
+lookup-repeat-identity : (n : ℕ) (a : A) → lookup (repeat a) n ≡ a
 lookup-repeat-identity zero    a = P.refl
 lookup-repeat-identity (suc n) a = lookup-repeat-identity n a
 
@@ -109,11 +109,11 @@ splitAt-map (suc n) f (x ∷ xs) =
 ------------------------------------------------------------------------
 -- iterate
 
-lookup-iterate-identity : ∀ n f (a : A) → lookup n (iterate f a) ≡ fold a f n
+lookup-iterate-identity : ∀ n f (a : A) → lookup (iterate f a) n ≡ fold a f n
 lookup-iterate-identity zero     f a = P.refl
 lookup-iterate-identity (suc n)  f a = begin
-  lookup (suc n) (iterate f a) ≡⟨⟩
-  lookup n (iterate f (f a))   ≡⟨ lookup-iterate-identity n f (f a) ⟩
+  lookup (iterate f a) (suc n) ≡⟨⟩
+  lookup (iterate f (f a)) n   ≡⟨ lookup-iterate-identity n f (f a) ⟩
   fold (f a) f n               ≡⟨ fold-pull a f (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
   f (fold a f n)               ≡⟨⟩
   fold a f (suc n)             ∎ where open P.≡-Reasoning

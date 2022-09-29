@@ -12,12 +12,11 @@ open import Level using (Level)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
 open import Function.Base
-open import Function.Equality    using (_⟨$⟩_; module Π)
-open import Function using (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔′)
+open import Function.Bundles using (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔′)
 open import Relation.Binary      using (Setoid; module Setoid; Decidable)
 open import Relation.Nullary
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Binary.PropositionalEquality using (cong′)
+open import Relation.Binary.PropositionalEquality.Core using (cong′)
 
 private
   variable

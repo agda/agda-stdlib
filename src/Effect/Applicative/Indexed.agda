@@ -13,9 +13,9 @@ module Effect.Applicative.Indexed where
 
 open import Effect.Functor using (RawFunctor)
 open import Data.Product using (_×_; _,_)
-open import Function hiding (Morphism)
+open import Function.Base
 open import Level
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable
