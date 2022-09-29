@@ -789,8 +789,8 @@ nℕ-ℕi≤n (suc n) (suc i)  = begin
   suc n    ∎
   where open ℕₚ.≤-Reasoning
 
-nℕ-suci≤n : ∀ n i → n ℕ-suc i ℕ.< n
-nℕ-suci≤n (suc n) i = s<s (nℕ-ℕi≤n n i)
+nℕ-suci<n : ∀ n i → n ℕ-suc i ℕ.< n
+nℕ-suci<n (suc n) i = s<s (nℕ-ℕi≤n n i)
 
 ------------------------------------------------------------------------
 -- punchIn
