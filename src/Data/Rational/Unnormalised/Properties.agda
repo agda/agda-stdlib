@@ -507,6 +507,7 @@ module ≤-Reasoning where
     <-≤-trans
     ≤-<-trans
     public
+    renaming (step-≈ to step-≃; step-≈˘ to step-≃˘)
 
 ------------------------------------------------------------------------
 -- Properties of ↥_/↧_
