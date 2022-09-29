@@ -145,7 +145,7 @@ mkℚ+-pos (suc n) (suc d) = _
     (C.sym (C.recompute c₁)) $
     divides ℤ.∣ n₂ ∣ $ begin
       ℤ.∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ cong ℤ.∣_∣ eq ⟩
-      ℤ.∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ ℤ.abs-*-commute n₂ (+ suc d₁) ⟩
+      ℤ.∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ ℤ.abs-* n₂ (+ suc d₁) ⟩
       ℤ.∣ n₂ ∣ ℕ.* suc d₁    ∎
 
   1+d₂∣1+d₁ : suc d₂ ∣ suc d₁
@@ -153,7 +153,7 @@ mkℚ+-pos (suc n) (suc d) = _
     (C.sym (C.recompute c₂)) $
     divides ℤ.∣ n₁ ∣ (begin
       ℤ.∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ℤ.∣_∣ (sym eq) ⟩
-      ℤ.∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
+      ℤ.∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-* n₁ (+ suc d₂) ⟩
       ℤ.∣ n₁ ∣ ℕ.* suc d₂    ∎)
 
   helper : mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂
