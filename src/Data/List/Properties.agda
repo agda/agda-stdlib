@@ -183,18 +183,18 @@ module _ {A : Set a} where
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ []   ) eq | ()
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ _ ∷ _) eq | ()
 
-  ++-cancelˡ : ∀ xs {ys zs : List A} → xs ++ ys ≡ xs ++ zs → ys ≡ zs
-  ++-cancelˡ []       ys≡zs             = ys≡zs
-  ++-cancelˡ (x ∷ xs) x∷xs++ys≡x∷xs++zs = ++-cancelˡ xs (∷-injectiveʳ x∷xs++ys≡x∷xs++zs)
+  ++-cancelˡ : LeftCancellative _++_
+  ++-cancelˡ []       _ _ ys≡zs             = ys≡zs
+  ++-cancelˡ (x ∷ xs) _ _ x∷xs++ys≡x∷xs++zs = ++-cancelˡ xs _ _ (∷-injectiveʳ x∷xs++ys≡x∷xs++zs)
 
-  ++-cancelʳ : ∀ {xs : List A} ys zs → ys ++ xs ≡ zs ++ xs → ys ≡ zs
-  ++-cancelʳ {_}  []       []       _             = refl
-  ++-cancelʳ {xs} []       (z ∷ zs) eq =
+  ++-cancelʳ : RightCancellative _++_
+  ++-cancelʳ _  []       []       _             = refl
+  ++-cancelʳ xs []       (z ∷ zs) eq =
     contradiction (trans (cong length eq) (length-++ (z ∷ zs))) (m≢1+n+m (length xs))
-  ++-cancelʳ {xs} (y ∷ ys) []       eq =
+  ++-cancelʳ xs (y ∷ ys) []       eq =
     contradiction (trans (sym (length-++ (y ∷ ys))) (cong length eq)) (m≢1+n+m (length xs) ∘ sym)
-  ++-cancelʳ {_}  (y ∷ ys) (z ∷ zs) eq =
-    cong₂ _∷_ (∷-injectiveˡ eq) (++-cancelʳ ys zs (∷-injectiveʳ eq))
+  ++-cancelʳ _  (y ∷ ys) (z ∷ zs) eq =
+    cong₂ _∷_ (∷-injectiveˡ eq) (++-cancelʳ _ ys zs (∷-injectiveʳ eq))
 
   ++-cancel : Cancellative _++_
   ++-cancel = ++-cancelˡ , ++-cancelʳ
