@@ -1599,6 +1599,7 @@ Other minor changes
 
   pattern <′-base          = ≤′-refl
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+  pattern m<′n⇒m<′1+n      = ≤′-step
 
   _! : ℕ → ℕ
   ```
