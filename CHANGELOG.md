@@ -1259,6 +1259,11 @@ New modules
   Algebra.Properties.Quasigroup
   ```
 
+* Some n-ary functions manipulating lists
+  ```
+  Data.List.Nary.NonDependent
+  ```
+
 Other minor changes
 -------------------
 
@@ -1760,6 +1765,12 @@ Other minor changes
   pos⊓pos⇒pos          : .{{_ : Positive p}}    .{{_ : Positive q}}    → Positive (p ⊓ q)
   pos⊔pos⇒pos          : .{{_ : Positive p}}    .{{_ : Positive q}}    → Positive (p ⊔ q)
   1/nonZero⇒nonZero    : .{{_ : NonZero p}} → NonZero (1/ p)
+  ```
+
+* Added new functions to `Data.Product.Nary.NonDependent`:
+  ```agda
+  zipWith : (∀ k → Projₙ as k → Projₙ bs k → Projₙ cs k) →
+            Product n as → Product n bs → Product n cs
   ```
 
 * Added new proof to `Data.Product.Properties`:
