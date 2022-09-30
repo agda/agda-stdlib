@@ -1836,6 +1836,8 @@ Other minor changes
   diagonal           : Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : Vec A n → (A → Vec B n) → Vec B n
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
+
+  cast : .(eq : m ≡ n) → Vec A m → Vec A n
   ```
 
 * Added new instance in `Data.Vec.Categorical`:
@@ -1894,6 +1896,15 @@ Other minor changes
   reverse-injective  : reverse xs ≡ reverse ys → xs ≡ ys
 
   transpose-replicate : transpose (replicate xs) ≡ map replicate xs
+
+  toList-cast   : toList (cast eq xs) ≡ toList xs
+  cast-is-id    : cast eq xs ≡ xs
+  cast-is-subst : cast eq xs ≡ subst (Vec A) eq xs
+  cast-trans    : cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
+  map-cast      : map f (cast eq xs) ≡ cast eq (map f xs)
+  lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
+  lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
+  lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
   ```
 
 * Added new proofs in `Data.Vec.Functional.Properties`:

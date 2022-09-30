@@ -257,7 +257,7 @@ toℕ-cast {n = suc n} eq zero    = refl
 toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
 
 cast-is-id : .(eq : m ≡ m) (k : Fin m) → cast eq k ≡ k
-cast-is-id eq zero = refl
+cast-is-id eq zero    = refl
 cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
 
 cast-is-subst : (eq : m ≡ n) (k : Fin m) → cast eq k ≡ subst Fin eq k
