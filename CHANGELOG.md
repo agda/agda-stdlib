@@ -370,15 +370,15 @@ Non-backwards compatible changes
 
 * The definitions of the types for cancellativity in `Algebra.Definitions` previously
   made some of their arguments implicit. This was under the assumption that the operators were
-  defined by pattern matching on the left argument so that Agda could always infer the 
+  defined by pattern matching on the left argument so that Agda could always infer the
   argument on the RHS.
-  
+
 * Although many of the operators defined in the library follow this convention, this is not
   always true and cannot be assumed in user's code.
-  
+
 * Therefore the definitions have been changed as follows to make all their arguments explicit:
-  - `LeftCancellative _•_` 
-	- From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z` 
+  - `LeftCancellative _•_`
+	- From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z`
 	- To: `∀ x y z → (x • y) ≈ (x • z) → y ≈ z`
 
   - `RightCancellative _•_`
@@ -394,10 +394,10 @@ Non-backwards compatible changes
 	- To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
 
 * Correspondingly some proofs of the above types will need additional arguments passed explicitly.
-  Instances can easily be fixed by adding additional underscores, e.g. 
+  Instances can easily be fixed by adding additional underscores, e.g.
   - `∙-cancelˡ x` to `∙-cancelˡ x _ _`
   - `∙-cancelʳ y z` to `∙-cancelʳ _ y z`
-  
+
 ### Change in the definition of `Prime`
 
 * The definition of `Prime` in `Data.Nat.Primality` was:
