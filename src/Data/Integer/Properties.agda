@@ -1287,9 +1287,9 @@ i<j⇒i≤pred[j] {_} { -[1+ n ]} (-<- n<m) = -≤- n<m
 
 ≤-step-neg : i ≤ j → pred i ≤ j
 ≤-step-neg -≤+               = -≤+
-≤-step-neg (-≤- n≤m)         = -≤- (ℕ.≤-step n≤m)
+≤-step-neg (-≤- n≤m)         = -≤- (ℕ.m≤n⇒m≤1+n n≤m)
 ≤-step-neg (+≤+ z≤n)         = -≤+
-≤-step-neg (+≤+ (s≤s m≤n)) = +≤+ (ℕ.≤-step m≤n)
+≤-step-neg (+≤+ (s≤s m≤n)) = +≤+ (ℕ.m≤n⇒m≤1+n m≤n)
 
 pred-mono : pred Preserves _≤_ ⟶ _≤_
 pred-mono (-≤+ {n = 0})     = -≤- z≤n

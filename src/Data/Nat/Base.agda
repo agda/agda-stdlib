@@ -210,6 +210,8 @@ data _≤′_ (m : ℕ) : ℕ → Set where
   ≤′-refl :                         m ≤′ m
   ≤′-step : ∀ {n} (m≤′n : m ≤′ n) → m ≤′ suc n
 
+pattern m≤′n⇒m≤′1+n = ≤′-step
+
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
 

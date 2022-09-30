@@ -17,7 +17,7 @@ open import Data.Vec.Relation.Unary.Linked as Linked
 open import Data.Fin.Base using (Fin; zero; suc; _<_)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Nat.Properties using (<-pred) -- ≤-refl; ≤-pred; ≤-step)
+open import Data.Nat.Properties using (<-pred)
 open import Level using (Level)
 open import Function.Base using (_∘_; flip; _on_)
 open import Relation.Binary using (Rel; Transitive; DecSetoid)

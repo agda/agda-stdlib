@@ -14,7 +14,7 @@ open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ; _↑ˡ_;
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties
-  using (+-assoc; ≤-step; ≤-refl; ≤-trans)
+  using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -1003,7 +1003,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   count≤n []       = z≤n
   count≤n (x ∷ xs) with does (P? x)
   ... | true  = s≤s (count≤n xs)
-  ... | false = ≤-step (count≤n xs)
+  ... | false = m≤n⇒m≤1+n (count≤n xs)
 
 ------------------------------------------------------------------------
 -- insert

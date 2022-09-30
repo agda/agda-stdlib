@@ -23,7 +23,7 @@ open import Data.Maybe.Base using (just)
 open import Relation.Nullary using (does)
 open import Data.Nat using (_<_; _>_; z<s; s<s)
 open import Data.Nat.Induction
-open import Data.Nat.Properties using (≤-step)
+open import Data.Nat.Properties using (m<n⇒m<1+n)
 open import Data.Product as Prod using (_,_)
 open import Function.Base using (_∘_)
 open import Relation.Binary using (DecTotalOrder)
@@ -51,7 +51,7 @@ private
   length-mergePairs : ∀ xs ys xss → length (mergePairs (xs ∷ ys ∷ xss)) < length (xs ∷ ys ∷ xss)
   length-mergePairs _ _ []              = s<s z<s
   length-mergePairs _ _ (xss ∷ [])      = s<s (s<s z<s)
-  length-mergePairs _ _ (xs ∷ ys ∷ xss) = s<s (≤-step (length-mergePairs xs ys xss))
+  length-mergePairs _ _ (xs ∷ ys ∷ xss) = s<s (m<n⇒m<1+n (length-mergePairs xs ys xss))
 
 mergeAll : (xss : List (List A)) → Acc _<_ (length xss) → List A
 mergeAll []        _               = []

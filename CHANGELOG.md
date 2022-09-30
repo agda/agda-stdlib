@@ -903,6 +903,10 @@ Deprecated names
 * In `Data.Nat.Properties`:
   ```
   suc[pred[n]]≡n  ↦  suc-pred
+  ≤-step          ↦  m≤n⇒m≤1+n
+  ≤-stepsˡ        ↦  m≤n⇒m≤o+n
+  ≤-stepsʳ        ↦  m≤n⇒m≤n+o
+  <-step          ↦  m<n⇒m<1+n
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:
