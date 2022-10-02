@@ -260,8 +260,8 @@ cast-is-id : .(eq : m ≡ m) (k : Fin m) → cast eq k ≡ k
 cast-is-id eq zero    = refl
 cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
 
-cast-is-subst : (eq : m ≡ n) (k : Fin m) → cast eq k ≡ subst Fin eq k
-cast-is-subst refl k = cast-is-id refl k
+subst-is-cast : (eq : m ≡ n) (k : Fin m) → subst Fin eq k ≡ cast eq k
+subst-is-cast refl k = sym (cast-is-id refl k)
 
 cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (k : Fin m) →
              cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k

@@ -1522,7 +1522,7 @@ Other minor changes
   cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} → Injective f → Injective g → m ≡ n
 
   cast-is-id    : cast eq k ≡ k
-  cast-is-subst : cast eq k ≡ subst Fin eq k
+  subst-is-cast : subst Fin eq k ≡ cast eq k
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
   ```
 
@@ -1899,7 +1899,7 @@ Other minor changes
 
   toList-cast   : toList (cast eq xs) ≡ toList xs
   cast-is-id    : cast eq xs ≡ xs
-  cast-is-subst : cast eq xs ≡ subst (Vec A) eq xs
+  subst-is-cast : subst (Vec A) eq xs ≡ cast eq xs
   cast-trans    : cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
   map-cast      : map f (cast eq xs) ≡ cast eq (map f xs)
   lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i

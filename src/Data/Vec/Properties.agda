@@ -398,8 +398,8 @@ cast-is-id : .(eq : m ≡ m) (xs : Vec A m) → cast eq xs ≡ xs
 cast-is-id eq []       = refl
 cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (ℕₚ.suc-injective eq) xs)
 
-cast-is-subst : (eq : m ≡ n) (xs : Vec A m) → cast eq xs ≡ subst (Vec A) eq xs
-cast-is-subst refl xs = cast-is-id refl xs
+subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
+subst-is-cast refl xs = sym (cast-is-id refl xs)
 
 cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
