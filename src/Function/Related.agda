@@ -350,6 +350,11 @@ module EquationalReasoning where
 
   infix  3 _∎
   infixr 2 _∼⟨_⟩_ _↔⟨_⟩_ _↔⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_
+  infix  1 begin_
+
+  begin_ : ∀ {k x y} {X : Set x} {Y : Set y} →
+           X ∼[ k ] Y → X ∼[ k ] Y
+  begin_ x∼y = x∼y
 
   _∼⟨_⟩_ : ∀ {k x y z} (X : Set x) {Y : Set y} {Z : Set z} →
            X ∼[ k ] Y → Y ∼[ k ] Z → X ∼[ k ] Z

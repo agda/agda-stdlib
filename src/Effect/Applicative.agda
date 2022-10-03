@@ -14,14 +14,15 @@ module Effect.Applicative where
 open import Data.Product using (_×_; _,_)
 open import Effect.Choice using (RawChoice)
 open import Effect.Empty using (RawEmpty)
-open import Effect.Functor using (RawFunctor)
+open import Effect.Functor as Fun using (RawFunctor)
 open import Function.Base using (const; flip; _∘′_)
 open import Level using (Level; suc; _⊔_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable
     f : Level
-    A B : Set f
+    A B C : Set f
 ------------------------------------------------------------------------
 -- The type of raw applicatives
 
@@ -42,6 +43,12 @@ record RawApplicative (F : Set f → Set f) : Set (suc f) where
   _*>_ : F A → F B → F B
   a *> b = flip const <$> a <*> b
 
+  zipWith : (A → B → C) → F A → F B → F C
+  zipWith f x y = f <$> x <*> y
+
+  zip : F A → F B → F (A × B)
+  zip = zipWith _,_
+
   -- backwards compatibility: unicode variants
   _⊛_ : F (A → B) → F A → F B
   _⊛_ = _<*>_
@@ -53,7 +60,7 @@ record RawApplicative (F : Set f → Set f) : Set (suc f) where
   _⊛>_ = _*>_
 
   _⊗_ : F A → F B → F (A × B)
-  fa ⊗ fb = _,_ <$> fa <*> fb
+  _⊗_ = zip
 
 module _ where
 
@@ -89,3 +96,25 @@ record RawAlternative (F : Set f → Set f) : Set (suc f) where
     rawChoice : RawChoice F
 
   open RawApplicativeZero rawApplicativeZero public
+
+
+------------------------------------------------------------------------
+-- The type of applicative morphisms
+
+record Morphism {F₁ F₂ : Set f → Set f}
+                (A₁ : RawApplicative F₁)
+                (A₂ : RawApplicative F₂) : Set (suc f) where
+  module A₁ = RawApplicative A₁
+  module A₂ = RawApplicative A₂
+  field
+    functorMorphism : Fun.Morphism A₁.rawFunctor A₂.rawFunctor
+
+  open Fun.Morphism functorMorphism public
+
+  field
+    op-pure : (x : A) → op (A₁.pure x) ≡ A₂.pure x
+    op-<*>  : (f : F₁ (A → B)) (x : F₁ A) →
+              op (f A₁.⊛ x) ≡ (op f A₂.⊛ op x)
+
+  -- backwards compatibility: unicode variants
+  op-⊛ = op-<*>

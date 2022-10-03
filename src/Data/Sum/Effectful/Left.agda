@@ -11,11 +11,12 @@ open import Level
 module Data.Sum.Effectful.Left {a} (A : Set a) (b : Level) where
 
 open import Data.Sum.Base
+open import Effect.Choice
+open import Effect.Empty
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-import Function.Identity.Effectful as Id
-open import Function
+open import Function.Base
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
 -- B are "lifted" to a copy of B at a higher universe level (a ⊔ b). See the
@@ -32,19 +33,44 @@ functor = record { _<$>_ = map₂ }
 
 applicative : RawApplicative Sumₗ
 applicative = record
-  { pure = inj₂
-  ; _⊛_ = [ const ∘ inj₁ , map₂ ]′
+  { rawFunctor = functor
+  ; pure = inj₂
+  ; _<*>_ = [ const ∘ inj₁ , map₂ ]′
+  }
+
+empty : A → RawEmpty Sumₗ
+empty a = record { empty = inj₁ a }
+
+choice : RawChoice Sumₗ
+choice = record { _<|>_ = [ flip const , const ∘ inj₂ ]′ }
+
+applicativeZero : A → RawApplicativeZero Sumₗ
+applicativeZero a = record
+  { rawApplicative = applicative
+  ; rawEmpty = empty a
+  }
+
+alternative : A → RawAlternative Sumₗ
+alternative a = record
+  { rawApplicativeZero = applicativeZero a
+  ; rawChoice = choice
+  }
+
+monad : RawMonad Sumₗ
+monad = record
+  { rawApplicative = applicative
+  ; _>>=_ = [ const ∘′ inj₁ , _|>′_ ]′
   }
 
 -- The monad instance also requires some mucking about with universe levels.
 monadT : RawMonadT (_∘′ Sumₗ)
-monadT M = record
-  { return = M.pure ∘ inj₂
-  ; _>>=_  = λ ma f → ma M.>>= [ M.pure ∘′ inj₁ , f ]′
+monadT {M = F} M = record
+  { lift = inj₂ M.<$>_
+  ; rawMonad = mkRawMonad
+                 (F ∘′ Sumₗ)
+                 (M.pure ∘ inj₂)
+                 (λ ma f → ma M.>>= [ M.pure ∘′ inj₁ , f ]′)
   } where module M = RawMonad M
-
-monad : RawMonad Sumₗ
-monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -67,10 +93,9 @@ module TraversableM {M} (Mon : RawMonad {a ⊔ b} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
     ; forA      to forM
     )
-

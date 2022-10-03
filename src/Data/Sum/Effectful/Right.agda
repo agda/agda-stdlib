@@ -10,12 +10,14 @@ open import Level
 
 module Data.Sum.Effectful.Right (a : Level) {b} (B : Set b) where
 
+open import Algebra.Bundles using (RawMonoid)
 open import Data.Sum.Base
+open import Effect.Choice
+open import Effect.Empty
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Function
-import Function.Identity.Effectful as Id
+open import Function.Base
 
 Sumᵣ : Set (a ⊔ b) → Set (a ⊔ b)
 Sumᵣ A = A ⊎ B
@@ -23,20 +25,57 @@ Sumᵣ A = A ⊎ B
 functor : RawFunctor Sumᵣ
 functor = record { _<$>_ = map₁ }
 
+empty : B → RawEmpty Sumᵣ
+empty b = record { empty = inj₂ b }
+
+choice : RawChoice Sumᵣ
+choice = record { _<|>_ = [ const ∘′ inj₁ , flip const ]′ }
+
 applicative : RawApplicative Sumᵣ
 applicative = record
-  { pure = inj₁
-  ; _⊛_ = [ map₁ , const ∘ inj₂ ]′
+  { rawFunctor = functor
+  ; pure = inj₁
+  ; _<*>_ = [ map₁ , const ∘ inj₂ ]′
+  }
+
+applicativeZero : B → RawApplicativeZero Sumᵣ
+applicativeZero b = record
+  { rawApplicative = applicative
+  ; rawEmpty = empty b
+  }
+
+alternative : B → RawAlternative Sumᵣ
+alternative b = record
+  { rawApplicativeZero = applicativeZero b
+  ; rawChoice = choice
+  }
+
+monad : RawMonad Sumᵣ
+monad = record
+  { rawApplicative = applicative
+  ; _>>=_ = [ _|>′_ , const ∘′ inj₂ ]′
+  }
+
+monadZero : B → RawMonadZero Sumᵣ
+monadZero b = record
+  { rawMonad = monad
+  ; rawEmpty = empty b
+  }
+
+monadPlus : B → RawMonadPlus Sumᵣ
+monadPlus b = record
+  { rawMonadZero = monadZero b
+  ; rawChoice = choice
   }
 
 monadT : RawMonadT (_∘′ Sumᵣ)
-monadT M = record
-  { return = M.pure ∘′ inj₁
-  ; _>>=_  = λ ma f → ma M.>>= [ f , M.pure ∘′ inj₂ ]′
+monadT {M = F} M = record
+  { lift = inj₁ M.<$>_
+  ; rawMonad = mkRawMonad
+                 (F ∘′ Sumᵣ)
+                 (M.pure ∘′ inj₁)
+                 (λ ma f → ma M.>>= [ f , M.pure ∘′ inj₂ ]′)
   } where module M = RawMonad M
-
-monad : RawMonad Sumᵣ
-monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -59,10 +98,9 @@ module TraversableM {M} (Mon : RawMonad {a ⊔ b} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
     ; forA      to forM
     )
-

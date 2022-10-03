@@ -530,7 +530,7 @@ concatMap-map g f xs
   = cong concat
       {x = map g (map f xs)}
       {y = map (g ∘′ f) xs}
-      (sym $ map-compose xs)
+      (sym $ map-∘ xs)
 
 map-concatMap : (f : B → C) (g : A → List B) →
                 map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
@@ -543,7 +543,7 @@ map-concatMap f g xs = begin
     ≡⟨ cong concat
          {x = map (map f) (map g xs)}
          {y = map (map f ∘′ g) xs}
-         (sym $ map-compose xs) ⟩
+         (sym $ map-∘ xs) ⟩
   concat (map (map f ∘′ g) xs)
     ≡⟨⟩
   concatMap (map f ∘′ g) xs

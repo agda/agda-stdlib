@@ -11,10 +11,9 @@ module Data.Vec.Effectful {a n} where
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties
-open import Effect.Applicative using (RawApplicative)
-open import Effect.Applicative.Indexed using (Morphism)
+open import Effect.Applicative as App using (RawApplicative)
 open import Effect.Functor as Fun using (RawFunctor)
-open import Effect.Monad using (RawMonad)
+open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)
 import Function.Identity.Effectful as Id
 open import Function hiding (Morphism)
 
@@ -28,13 +27,14 @@ functor = record
 
 applicative : RawApplicative (λ (A : Set a) → Vec A n)
 applicative = record
-  { pure = replicate
-  ; _⊛_  = Vec._⊛_
+  { rawFunctor = functor
+  ; pure = replicate
+  ; _<*>_  = Vec._⊛_
   }
 
 monad : RawMonad (λ (A : Set a) → Vec A n)
 monad = record
-  { return = replicate
+  { rawApplicative = applicative
   ; _>>=_ = DiagonalBind._>>=_
   }
 
@@ -59,12 +59,22 @@ module TraversableM {m M} (Mon : RawMonad {m} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
     ; forA      to forM
     )
+
+monadT : RawMonadT (_∘′ (λ (A : Set a) → Vec A n))
+monadT {M = F} M = record
+  { lift = replicate <$>_
+  ; rawMonad = mkRawMonad _
+                 (M.pure ∘′ replicate)
+                 (λ mx f → do x ← mx
+                              bs ← mapM f x
+                              pure (DiagonalBind.join bs))
+  } where open module M = RawMonad M; open TraversableM M
 
 ------------------------------------------------------------------------
 -- Other
@@ -79,9 +89,9 @@ lookup-functor-morphism i = record
 
 -- lookup is an applicative functor morphism.
 
-lookup-morphism : (i : Fin n) → Morphism applicative Id.applicative
+lookup-morphism : (i : Fin n) → App.Morphism applicative Id.applicative
 lookup-morphism i = record
-  { op      = flip lookup i
+  { functorMorphism = lookup-functor-morphism i
   ; op-pure = lookup-replicate i
-  ; op-⊛    = lookup-⊛ i
+  ; op-<*> = lookup-⊛ i
   }

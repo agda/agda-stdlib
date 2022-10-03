@@ -185,6 +185,9 @@ module DiagonalBind where
   _>>=_ : Vec A n → (A → Vec B n) → Vec B n
   xs >>= f = diagonal (map f xs)
 
+  join : Vec (Vec A n) n → Vec A n
+  join = _>>= id
+
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
 
