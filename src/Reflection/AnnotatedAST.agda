@@ -308,7 +308,7 @@ _⊗_ : AnnotationFun Ann₁ → AnnotationFun Ann₂ → AnnotationFun (λ t �
 
 module Traverse {M : Set → Set} (appl : RawApplicative M) where
 
-  open RawApplicative appl renaming (_⊛_ to _<*>_)
+  open RawApplicative appl
 
   module _ (apply? : ∀ {u} {t : ⟦ u ⟧} → Ann t → Bool)
            (action : ∀ {u} {t : ⟦ u ⟧} → Annotated Ann t → M ⟦ u ⟧) where

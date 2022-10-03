@@ -69,13 +69,13 @@ module _ where
 
   -- Smart constructor
   mkRawApplicative :
-    {F : Set f → Set f} →
+    (F : Set f → Set f) →
     (pure : ∀ {A} → A → F A) →
     (app : ∀ {A B} → F (A → B) → F A → F B) →
     RawApplicative F
-  mkRawApplicative pure app .rawFunctor ._<$>_ = app ∘′ pure
-  mkRawApplicative pure app .pure = pure
-  mkRawApplicative pure app ._<*>_ = app
+  mkRawApplicative F pure app .rawFunctor ._<$>_ = app ∘′ pure
+  mkRawApplicative F pure app .pure = pure
+  mkRawApplicative F pure app ._<*>_ = app
 
 ------------------------------------------------------------------------
 -- The type of raw applicatives with a zero

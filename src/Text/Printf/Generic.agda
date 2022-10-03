@@ -17,9 +17,9 @@ open import Data.Product hiding (map)
 open import Data.Product.Nary.NonDependent
 open import Data.String.Base
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Data.Unit using (⊤)
+open import Data.Unit.Base using (⊤)
 open import Function.Nary.NonDependent
-open import Function
+open import Function.Base
 
 open import Text.Format.Generic
 

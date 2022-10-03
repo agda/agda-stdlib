@@ -6,157 +6,163 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+open import Level
+
 module Effect.Monad.State where
 
-open import Effect.Applicative.Indexed
+open import Data.Product using (_×_; _,_; map₂; proj₁; proj₂)
+open import Data.Unit.Polymorphic.Base
+open import Effect.Choice
+open import Effect.Empty
+open import Effect.Functor
+open import Effect.Applicative
 open import Effect.Monad
+open import Function.Base
 open import Function.Identity.Effectful as Id using (Identity)
-open import Effect.Monad.Indexed
-open import Data.Product
-open import Data.Unit
-open import Function
-open import Level
 
 private
   variable
-    i f : Level
-    I : Set i
-
-------------------------------------------------------------------------
--- Indexed state
-
-IStateT : (I → Set f) → (Set f → Set f) → IFun I f
-IStateT S M i j A = S i → M (A × S j)
-
-------------------------------------------------------------------------
--- Indexed state applicative
-
-StateTIApplicative : ∀ (S : I → Set f) {M} →
-                     RawMonad M → RawIApplicative (IStateT S M)
-StateTIApplicative S Mon = record
-  { pure = λ a s → return (a , s)
-  ; _⊛_  = λ f t s → do
-     (f′ , s′)  ← f s
-     (t′ , s′′) ← t s′
-     return (f′ t′ , s′′)
-  } where open RawMonad Mon
-
-StateTIApplicativeZero : ∀ (S : I → Set f) {M} →
-                         RawMonadZero M → RawIApplicativeZero (IStateT S M)
-StateTIApplicativeZero S Mon = record
-  { applicative = StateTIApplicative S monad
-  ; ∅           = const ∅
-  } where open RawMonadZero Mon
-
-StateTIAlternative : ∀ (S : I → Set f) {M} →
-                     RawMonadPlus M → RawIAlternative (IStateT S M)
-StateTIAlternative S Mon = record
-  { applicativeZero = StateTIApplicativeZero S monadZero
-  ; _∣_             = λ m n s → m s ∣ n s
-  } where open RawMonadPlus Mon
-
-------------------------------------------------------------------------
--- Indexed state monad
-
-StateTIMonad : ∀ (S : I → Set f) {M} → RawMonad M → RawIMonad (IStateT S M)
-StateTIMonad S Mon = record
-  { return = λ x s → return (x , s)
-  ; _>>=_  = λ m f s → m s >>= uncurry f
-  } where open RawMonad Mon
-
-StateTIMonadZero : ∀ (S : I → Set f) {M} →
-                   RawMonadZero M → RawIMonadZero (IStateT S M)
-StateTIMonadZero S Mon = record
-  { monad           = StateTIMonad S (RawMonadZero.monad Mon)
-  ; applicativeZero = StateTIApplicativeZero S Mon
-  } where open RawMonadZero Mon
-
-StateTIMonadPlus : ∀ (S : I → Set f) {M} →
-                   RawMonadPlus M → RawIMonadPlus (IStateT S M)
-StateTIMonadPlus S Mon = record
-  { monad       = StateTIMonad S monad
-  ; alternative = StateTIAlternative S Mon
-  } where open RawMonadPlus Mon
+    ℓ s : Level
+    A B I : Set ℓ
+    S S₁ S₂ : Set s
+    M : Set s → Set s
 
 ------------------------------------------------------------------------
 -- State monad operations
 
-record RawIMonadState {I : Set i} (S : I → Set f)
-                      (M : IFun I f) : Set (i ⊔ suc f) where
+record RawMonadState
+       (S : Set s)
+       (M : Set s → Set s)
+       : Set (suc s) where
   field
-    monad : RawIMonad M
-    get   : ∀ {i} → M i i (S i)
-    put   : ∀ {i j} → S j → M i j (Lift f ⊤)
+    rawMonad : RawMonad M
+    get : M S
+    put : S → M ⊤
 
-  open RawIMonad monad public
+  open RawMonad rawMonad public
 
-  modify : ∀ {i j} → (S i → S j) → M i j (Lift f ⊤)
-  modify f = get >>= put ∘ f
-
-StateTIMonadState : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
-                    RawMonad M → RawIMonadState S (IStateT S M)
-StateTIMonadState S Mon = record
-  { monad = StateTIMonad S Mon
-  ; get   = λ s   → return (s , s)
-  ; put   = λ s _ → return (_ , s)
-  }
-  where open RawIMonad Mon
+  modify : (S → S) → M ⊤
+  modify f = get >>= put ∘′ f
 
 ------------------------------------------------------------------------
--- Ordinary state monads
+-- State transformer
 
-RawMonadState : Set f → (Set f → Set f) → Set (suc f)
-RawMonadState S M = RawIMonadState {I = ⊤} (λ _ → S) (λ _ _ → M)
+module StateT where
 
-module RawMonadState {S : Set f} {M : Set f → Set f}
-                     (Mon : RawMonadState S M) where
-  open RawIMonadState Mon public
+  record StateT
+         (S : Set s)
+         (M : Set s → Set s)
+         (A : Set s)
+         : Set s where
+    constructor mkStateT
+    field runStateT : S → M (S × A)
 
-StateT : Set f → (Set f → Set f) → Set f → Set f
-StateT S M = IStateT {I = ⊤} (λ _ → S) M _ _
+  functor : RawFunctor M → RawFunctor (StateT S M)
+  functor M = record
+    { _<$>_ = λ f ma → mkStateT (λ s → map₂ f <$> StateT.runStateT ma s)
+    } where open RawFunctor M
 
-StateTMonad : ∀ (S : Set f) {M} → RawMonad M → RawMonad (StateT S M)
-StateTMonad S = StateTIMonad (λ _ → S)
+  applicative : RawMonad M → RawApplicative (StateT S M)
+  applicative M = record
+    { rawFunctor = functor rawFunctor
+    ; pure = λ a → mkStateT (pure ∘′ (_, a))
+    ; _<*>_ = λ mf mx → mkStateT $ λ s →
+                do (s , f) ← StateT.runStateT mf s
+                   (s , x) ← StateT.runStateT mx s
+                   pure (s , f x)
+    } where open RawMonad M
 
-StateTMonadZero : ∀ (S : Set f) {M} →
-                  RawMonadZero M → RawMonadZero (StateT S M)
-StateTMonadZero S = StateTIMonadZero (λ _ → S)
+  empty : RawEmpty M → RawEmpty (StateT S M)
+  empty M = record
+    { empty = mkStateT (const (RawEmpty.empty M))
+    }
 
-StateTMonadPlus : ∀ (S : Set f) {M} →
-                  RawMonadPlus M → RawMonadPlus (StateT S M)
-StateTMonadPlus S = StateTIMonadPlus (λ _ → S)
+  choice : RawChoice M → RawChoice (StateT S M)
+  choice M = record
+    { _<|>_ = λ ma₁ ma₂ → mkStateT $ λ s →
+              StateT.runStateT ma₁ s
+              <|> StateT.runStateT ma₂ s
+    } where open RawChoice M
 
-StateTMonadState : ∀ (S : Set f) {M} →
-                   RawMonad M → RawMonadState S (StateT S M)
-StateTMonadState S = StateTIMonadState (λ _ → S)
+  applicativeZero : RawMonadZero M → RawApplicativeZero (StateT S M)
+  applicativeZero M = record
+    { rawApplicative = applicative (RawMonadZero.rawMonad M)
+    ; rawEmpty = empty (RawMonadZero.rawEmpty M)
+    }
 
-State : Set f → Set f → Set f
-State S = StateT S Identity
+  alternative : RawMonadPlus M → RawAlternative (StateT S M)
+  alternative M = record
+    { rawApplicativeZero = applicativeZero rawMonadZero
+    ; rawChoice = choice rawChoice
+    } where open RawMonadPlus M
 
-StateMonad : (S : Set f) → RawMonad (State S)
-StateMonad S = StateTMonad S Id.monad
+  monad : RawMonad M → RawMonad (StateT S M)
+  monad M = record
+    { rawApplicative = applicative M
+    ; _>>=_ = λ ma f → mkStateT $ λ r →
+                do (s , a) ← StateT.runStateT ma r
+                   StateT.runStateT (f a) r
+    } where open RawMonad M
 
-StateMonadState : (S : Set f) → RawMonadState S (State S)
-StateMonadState S = StateTMonadState S Id.monad
+  monadZero : RawMonadZero M → RawMonadZero (StateT S M)
+  monadZero M = record
+    { rawMonad = monad (RawMonadZero.rawMonad M)
+    ; rawEmpty = empty (RawMonadZero.rawEmpty M)
+    }
 
-LiftMonadState : ∀ {S₁} (S₂ : Set f) {M} →
-                 RawMonadState S₁ M →
-                 RawMonadState S₁ (StateT S₂ M)
-LiftMonadState S₂ Mon = record
-  { monad = StateTIMonad (λ _ → S₂) monad
-  ; get   = λ s → get >>= λ x → return (x , s)
-  ; put   = λ s′ s → put s′ >> return (_ , s)
-  }
-  where open RawIMonadState Mon
+  monadPlus : RawMonadPlus M → RawMonadPlus (StateT S M)
+  monadPlus M = record
+    { rawMonadZero = monadZero rawMonadZero
+    ; rawChoice = choice rawChoice
+    } where open RawMonadPlus M
 
-------------------------------------------------------------------------
--- Issue 526
+  monadT : RawMonadT (StateT S)
+  monadT M = record
+    { lift = λ ma → mkStateT (λ s → (s ,_) <$> ma)
+    ; rawMonad = monad M
+    } where open RawMonad M
 
-runState : {s a : Set f} → State s a → s → a × s
-runState = id
+  monadState : RawMonad M → RawMonadState S (StateT S M)
+  monadState M = record
+    { rawMonad = monad M
+    ; get = mkStateT (λ s → pure (s , s))
+    ; put = λ s → mkStateT (λ _ → pure (s , _))
+    } where open RawMonad M
 
-evalState : {s a : Set f} → State s a → s → a
-evalState ma s = proj₁ (runState ma s)
+  LiftMonadState : RawMonadState S₁ M →
+                   RawMonadState S₁ (StateT S₂ M)
+  LiftMonadState Mon = record
+    { rawMonad = monad rawMonad
+    ; get   = mkStateT (λ s₂ → get >>= λ s₁ → pure (s₂ , s₁))
+    ; put   = λ s₁ → mkStateT (λ s₂ → (s₂ , _) <$ put s₁)
+    }
+    where open RawMonadState Mon
 
-execState : {s a : Set f} → State s a → s → s
-execState ma s = proj₂ (runState ma s)
+
+module State where
+
+  open StateT using (StateT)
+
+  State : (S : Set s) (A : Set s) → Set s
+  State S = StateT S Identity
+
+  functor : RawFunctor (State S)
+  functor = StateT.functor Id.functor
+
+  applicative : RawApplicative (State S)
+  applicative = StateT.applicative Id.monad
+
+  monad : RawMonad (State S)
+  monad = StateT.monad Id.monad
+
+  monadState : RawMonadState S (State S)
+  monadState = StateT.monadState Id.monad
+
+  runState : State S A → S → S × A
+  runState = StateT.runStateT
+
+  evalState : State S A → S → A
+  evalState ma s = proj₂ (runState ma s)
+
+  execState : State S A → S → S
+  execState ma s = proj₁ (runState ma s)

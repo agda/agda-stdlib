@@ -60,7 +60,7 @@ module _ where
     (bind : ∀ {A B} → F A → (A → F B) → F B) →
     RawMonad F
   mkRawMonad F pure _>>=_ .rawApplicative =
-    mkRawApplicative pure $′ λ mf mx → do
+    mkRawApplicative _ pure $′ λ mf mx → do
       f ← mf
       x ← mx
       pure (f x)
