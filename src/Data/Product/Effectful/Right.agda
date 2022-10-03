@@ -21,7 +21,7 @@ module Data.Product.Effectful.Right
 open import Data.Product
 import Data.Product.Effectful.Right.Base as Base
 open import Effect.Applicative using (RawApplicative)
-open import Effect.Monad using (RawMonad; RawMonadT)
+open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)
 open import Function.Base using (id; flip; _∘_; _∘′_)
 import Function.Identity.Effectful as Id
 
@@ -37,18 +37,24 @@ open Base Carrier a public
 
 applicative : RawApplicative Productᵣ
 applicative = record
-  { pure = _, ε
-  ; _⊛_  = zip id _∙_
+  { rawFunctor = functor
+  ; pure = _, ε
+  ; _<*>_  = zip id _∙_
+  }
+
+monad : RawMonad Productᵣ
+monad = record
+  { rawApplicative = applicative
+  ; _>>=_ = uncurry λ a w₁ f → map₂ (w₁ ∙_) (f a)
   }
 
 monadT : RawMonadT (_∘′ Productᵣ)
 monadT M = record
-  { return = pure ∘′ (_, ε)
-  ; _>>=_  = λ ma f → ma >>= uncurry λ x b → map₂ (b ∙_) <$> f x
+  { lift = (_, ε) <$>_
+  ; rawMonad = mkRawMonad _
+                 (pure ∘′ (_, ε))
+                 (λ ma f → ma >>= uncurry λ x b → map₂ (b ∙_) <$> f x)
   } where open RawMonad M
-
-monad : RawMonad Productᵣ
-monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -70,7 +76,7 @@ module TraversableM {M} (Mon : RawMonad {a ⊔ b} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM

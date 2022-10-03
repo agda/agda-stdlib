@@ -10,12 +10,9 @@ open import Level
 
 module Effect.Monad.Reader {r} (R : Set r) (a : Level) where
 
-open import Function
-open import Function.Identity.Effectful as Id using (Identity)
-open import Effect.Applicative.Indexed
-open import Effect.Monad.Indexed
 open import Effect.Monad
-open import Data.Unit
+open import Function.Base
+open import Function.Identity.Effectful as Id using (Identity)
 
 private
   variable
@@ -23,111 +20,68 @@ private
     A B I : Set ℓ
 
 ------------------------------------------------------------------------
--- Indexed reader
+-- Reader
 
-IReaderT : IFun I (r ⊔ a) → IFun I (r ⊔ a)
-IReaderT M i j A = R → M i j A
-
-module _ {M : IFun I (r ⊔ a)} where
-
-  ------------------------------------------------------------------------
-  -- Indexed reader applicative
-
-  ReaderTIApplicative : RawIApplicative M → RawIApplicative (IReaderT M)
-  ReaderTIApplicative App = record
-    { pure = λ x r → pure x
-    ; _⊛_ = λ m n r → m r ⊛ n r
-    } where open RawIApplicative App
-
-  ReaderTIApplicativeZero : RawIApplicativeZero M →
-                            RawIApplicativeZero (IReaderT M)
-  ReaderTIApplicativeZero App = record
-    { applicative = ReaderTIApplicative applicative
-    ; ∅ = const ∅
-    } where open RawIApplicativeZero App
-
-  ReaderTIAlternative : RawIAlternative M → RawIAlternative (IReaderT M)
-  ReaderTIAlternative Alt = record
-    { applicativeZero = ReaderTIApplicativeZero applicativeZero
-    ; _∣_ = λ m n r → m r ∣ n r
-    } where open RawIAlternative Alt
-
-  ------------------------------------------------------------------------
-  -- Indexed reader monad
-
-  ReaderTIMonad : RawIMonad M → RawIMonad (IReaderT M)
-  ReaderTIMonad Mon = record
-    { return = λ x r → return x
-    ; _>>=_ = λ m f r → m r >>= flip f r
-    } where open RawIMonad Mon
-
-  ReaderTIMonadZero : RawIMonadZero M → RawIMonadZero (IReaderT M)
-  ReaderTIMonadZero Mon = record
-    { monad = ReaderTIMonad monad
-    ; applicativeZero = ReaderTIApplicativeZero applicativeZero
-    } where open RawIMonadZero Mon
-
-  ReaderTIMonadPlus : RawIMonadPlus M → RawIMonadPlus (IReaderT M)
-  ReaderTIMonadPlus Mon = record
-    { monad = ReaderTIMonad monad
-    ; alternative = ReaderTIAlternative alternative
-    } where open RawIMonadPlus Mon
-
-------------------------------------------------------------------------
--- Reader monad operations
-
-record RawIMonadReader {I : Set ℓ} (M : IFun I (r ⊔ a))
-                       : Set (ℓ ⊔ suc (r ⊔ a)) where
+record RawMonadReader (M : Set (r ⊔ a) → Set (r ⊔ a)) : Set (suc (r ⊔ a)) where
   field
-    monad  : RawIMonad M
-    reader : ∀ {i} → (R → A) → M i i A
-    local  : ∀ {i j} → (R → R) → M i j A → M i j A
+    rawMonad : RawMonad M
+    reader : (R → A) → M A
+    local  : (R → R) → M A → M A
 
-  open RawIMonad monad public
-
-  ask : ∀ {i} → M i i (Lift (r ⊔ a) R)
+  ask : M (Lift a R)
   ask = reader lift
 
-  asks : ∀ {i} → (R → A) → M i i A
-  asks = reader
+------------------------------------------------------------------------
+-- Reader transformer
 
-ReaderTIMonadReader : {I : Set ℓ} {M : IFun I (r ⊔ a)} →
-                      RawIMonad M → RawIMonadReader (IReaderT M)
-ReaderTIMonadReader Mon = record
-  { monad = ReaderTIMonad Mon
-  ; reader = λ f r → return (f r)
-  ; local = λ f m → m ∘ f
-  } where open RawIMonad Mon
+record ReaderT
+       (M : Set (r ⊔ a) → Set (r ⊔ a))
+       (A : Set (r ⊔ a))
+       : Set (r ⊔ a) where
+  constructor mkReaderT
+  field runReaderT : R → M A
+
+rawMonadT : RawMonadT ReaderT
+rawMonadT M = record
+  { lift = mkReaderT ∘′ const
+  ; rawMonad = mkRawMonad _
+                 (mkReaderT ∘′ const ∘′ pure)
+                 λ ma f → mkReaderT $ λ r →
+                    do a ← ReaderT.runReaderT ma r
+                       b ← ReaderT.runReaderT (f a) r
+                       pure b
+  } where open RawMonad M
+
+rawMonadReaderT : ∀ {M} → RawMonad M → RawMonadReader (ReaderT M)
+rawMonadReaderT M = record
+  { rawMonad = RawMonadTd.rawMonad (rawMonadT M)
+  ; reader = λ f → mkReaderT (pure ∘′ f)
+  ; local = λ f ma → mkReaderT (ReaderT.runReaderT ma ∘′ f)
+  } where open RawMonad M
+
+rawMonadZeroT : ∀ {M} → RawMonadZero M → RawMonadZero (ReaderT M)
+rawMonadZeroT M = record
+  { rawMonad = RawMonadTd.rawMonad (rawMonadT rawMonad)
+  ; rawEmpty = record { empty = mkReaderT (const empty) }
+  } where open RawMonadZero M
+
+rawMonadPlusT : ∀ {M} → RawMonadPlus M → RawMonadPlus (ReaderT M)
+rawMonadPlusT M = record
+  { rawMonadZero = rawMonadZeroT rawMonadZero
+  ; rawChoice = record { _<|>_ = λ ma₁ ma₂ → mkReaderT $ λ r →
+                                 ReaderT.runReaderT ma₁ r
+                                 <|> ReaderT.runReaderT ma₂ r
+                       }
+  } where open RawMonadPlus M
 
 ------------------------------------------------------------------------
--- Ordinary reader monads
-
-RawMonadReader : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set (suc (r ⊔ a))
-RawMonadReader M = RawIMonadReader {I = ⊤} (λ _ _ → M)
-
-module RawMonadReader {M} (Mon : RawMonadReader M) where
-  open RawIMonadReader Mon public
-
-ReaderT : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set _ → Set _
-ReaderT M = IReaderT {I = ⊤} (λ _ _ → M) _ _
-
-ReaderTMonad : ∀ {M} → RawMonad M → RawMonad (ReaderT M)
-ReaderTMonad = ReaderTIMonad
-
-ReaderTMonadReader : ∀ {M} → RawMonad M → RawMonadReader (ReaderT M)
-ReaderTMonadReader = ReaderTIMonadReader
-
-ReaderTMonadZero : ∀ {M} → RawMonadZero M → RawMonadZero (ReaderT M)
-ReaderTMonadZero = ReaderTIMonadZero
-
-ReaderTMonadPlus : ∀ {M} → RawMonadPlus M → RawMonadPlus (ReaderT M)
-ReaderTMonadPlus = ReaderTIMonadPlus
+-- Ordinary reader monad
 
 Reader : Set (r ⊔ a) → Set (r ⊔ a)
 Reader = ReaderT Identity
 
-ReaderMonad : RawMonad Reader
-ReaderMonad = ReaderTIMonad Id.monad
+rawMonad : RawMonad Reader
+rawMonad = RawMonadTd.rawMonad (rawMonadT Id.monad)
 
-ReaderMonadReader : RawMonadReader Reader
-ReaderMonadReader = ReaderTIMonadReader Id.monad
+rawMonadReader : RawMonadReader Reader
+rawMonadReader = rawMonadReaderT Id.monad

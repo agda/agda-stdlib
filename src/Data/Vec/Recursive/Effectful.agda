@@ -24,8 +24,9 @@ functor n = record { _<$>_ = λ f → map f n }
 
 applicative : ∀ {ℓ} n → RawApplicative {ℓ} (_^ n)
 applicative n = record
-  { pure = replicate n
-  ; _⊛_  = ap n
+  { rawFunctor = functor n
+  ; pure = replicate n
+  ; _<*>_  = ap n
   }
 
 ------------------------------------------------------------------------
@@ -48,7 +49,7 @@ module _ {f F} (App : RawApplicative {f} F) where
 
 module _ {m M} (Mon : RawMonad {m} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : ∀ {n A} → M A ^ n → M (A ^ n)
   sequenceM = sequenceA App

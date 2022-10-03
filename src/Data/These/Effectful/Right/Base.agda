@@ -49,7 +49,7 @@ module _ {F} (App : RawApplicative {a ⊔ b} F) where
 
 module _ {M} (Mon : RawMonad {a ⊔ b} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : ∀ {A} → Theseᵣ (M A) → M (Theseᵣ A)
   sequenceM = sequenceA App

@@ -21,7 +21,7 @@ module Data.Product.Effectful.Left
 open import Data.Product
 import Data.Product.Effectful.Left.Base as Base
 open import Effect.Applicative using (RawApplicative)
-open import Effect.Monad using (RawMonad; RawMonadT)
+open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)
 open import Function.Base using (id; flip; _∘_; _∘′_)
 import Function.Identity.Effectful as Id
 
@@ -37,19 +37,25 @@ open Base Carrier b public
 
 applicative : RawApplicative Productₗ
 applicative = record
-  { pure = ε ,_
-  ; _⊛_  = zip _∙_ id
+  { rawFunctor = functor
+  ; pure = ε ,_
+  ; _<*>_  = zip _∙_ id
+  }
+
+monad : RawMonad Productₗ
+monad = record
+  { rawApplicative = applicative
+  ; _>>=_ = uncurry λ w₁ a f → map₁ (w₁ ∙_) (f a)
   }
 
 -- The monad instance also requires some mucking about with universe levels.
 monadT : RawMonadT (_∘′ Productₗ)
 monadT M = record
-  { return = pure ∘′ (ε ,_)
-  ; _>>=_  = λ ma f → ma >>= uncurry λ a x → map₁ (a ∙_) <$> f x
+  { lift = (ε ,_) <$>_
+  ; rawMonad = mkRawMonad _
+                 (pure ∘′ (ε ,_))
+                 (λ ma f → ma >>= uncurry λ a x → map₁ (a ∙_) <$> f x)
   } where open RawMonad M
-
-monad : RawMonad Productₗ
-monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -71,7 +77,7 @@ module TraversableM {M} (Mon : RawMonad {a ⊔ b} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM

@@ -28,8 +28,9 @@ functor = record
 
 applicative : ∀ {f} → RawApplicative {f} List⁺
 applicative = record
-  { pure = [_]
-  ; _⊛_  = λ fs as → concatMap (λ f → map f as) fs
+  { rawFunctor = functor
+  ; pure = [_]
+  ; _<*>_  = λ fs as → concatMap (λ f → map f as) fs
   }
 
 ------------------------------------------------------------------------
@@ -37,7 +38,7 @@ applicative = record
 
 monad : ∀ {f} → RawMonad {f} List⁺
 monad = record
-  { return = [_]
+  { rawApplicative = applicative
   ; _>>=_  = flip concatMap
   }
 
@@ -75,7 +76,7 @@ module TraversableM {m M} (Mon : RawMonad {m} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
@@ -87,6 +88,8 @@ module TraversableM {m M} (Mon : RawMonad {m} M) where
 
 monadT : ∀ {f} → RawMonadT {f} (_∘′ List⁺)
 monadT M = record
-  { return = pure ∘′ [_]
-  ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM f as
+  { lift = [_] <$>_
+  ; rawMonad = mkRawMonad _
+                 (pure ∘′ [_])
+                 (λ mas f → mas >>= λ as → concat <$> mapM f as)
   } where open RawMonad M; open TraversableM M
