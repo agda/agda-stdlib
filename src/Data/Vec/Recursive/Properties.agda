@@ -37,10 +37,10 @@ tail-cons-identity : ∀ n a (as : A ^ n) → tail n (cons n a as) ≡ as
 tail-cons-identity 0       a as = P.refl
 tail-cons-identity (suc n) a as = P.refl
 
-append-cons-commute : ∀ m n a (xs : A ^ m) ys →
+append-cons : ∀ m n a (xs : A ^ m) ys →
   append (suc m) n (cons m a xs) ys ≡ cons (m + n) a (append m n xs ys)
-append-cons-commute 0       n a xs ys = P.refl
-append-cons-commute (suc m) n a xs ys = P.refl
+append-cons 0       n a xs ys = P.refl
+append-cons (suc m) n a xs ys = P.refl
 
 append-splitAt-identity : ∀ m n (as : A ^ (m + n)) → uncurry (append m n) (splitAt m n as) ≡ as
 append-splitAt-identity 0       n as = P.refl
@@ -48,7 +48,7 @@ append-splitAt-identity (suc m) n as = begin
   let x         = head (m + n) as in
   let (xs , ys) = splitAt m n (tail (m + n) as) in
   append (suc m) n (cons m (head (m + n) as) xs) ys
-    ≡⟨ append-cons-commute m n x xs ys ⟩
+    ≡⟨ append-cons m n x xs ys ⟩
   cons (m + n) x (append m n xs ys)
     ≡⟨ P.cong (cons (m + n) x) (append-splitAt-identity m n (tail (m + n) as)) ⟩
   cons (m + n) x (tail (m + n) as)
@@ -83,3 +83,17 @@ toVec∘fromVec {n = suc n} (x Vec.∷ xs) = begin
 
 ↔Vec : ∀ n → A ^ n ↔ Vec A n
 ↔Vec n = inverse (toVec n) fromVec (fromVec∘toVec n) toVec∘fromVec
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+append-cons-commute = append-cons
+{-# WARNING_ON_USAGE append-cons-commute
+"Warning: append-cons-commute was deprecated in v2.0.
+Please use append-cons instead."
+#-}

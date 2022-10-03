@@ -49,6 +49,12 @@ Bug-fixes
   re-exported in their full generality which would lead to unsolved meta variables at
   their use sites.
 
+* In `Data.Container.FreeMonad`, we give a direct definition of `_⋆_` as an inductive
+  type rather than encoding it as an instance of `μ`. This ensures Agda notices that
+  `C ⋆ X` is strictly positive in `X` which in turn allows us to use the free monad
+  when defining auxiliary (co)inductive types (cf. the `Tap` example in
+  `README.Data.Container.FreeMonad`).
+
 * In `Data.Maybe.Base` the fixity declaration of `_<∣>_` was missing. This has been fixed.
 
 Non-backwards compatible changes
@@ -360,6 +366,38 @@ Non-backwards compatible changes
   3. Finally, if the above approaches are not viable then you may be forced to explicitly
 	 use `cong` combined with a lemma that proves the old reduction behaviour.
 
+### Change to the definition of `LeftCancellative` and `RightCancellative`
+
+* The definitions of the types for cancellativity in `Algebra.Definitions` previously
+  made some of their arguments implicit. This was under the assumption that the operators were
+  defined by pattern matching on the left argument so that Agda could always infer the 
+  argument on the RHS.
+  
+* Although many of the operators defined in the library follow this convention, this is not
+  always true and cannot be assumed in user's code.
+  
+* Therefore the definitions have been changed as follows to make all their arguments explicit:
+  - `LeftCancellative _•_` 
+	- From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z` 
+	- To: `∀ x y z → (x • y) ≈ (x • z) → y ≈ z`
+
+  - `RightCancellative _•_`
+    - From: `∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z`
+	- To: `∀ x y z → (y • x) ≈ (z • x) → y ≈ z`
+
+  - `AlmostLeftCancellative e _•_`
+    - From: `∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
+	- To: `∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
+
+  - `AlmostRightCancellative e _•_`
+	- From: `∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+	- To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+
+* Correspondingly some proofs of the above types will need additional arguments passed explicitly.
+  Instances can easily be fixed by adding additional underscores, e.g. 
+  - `∙-cancelˡ x` to `∙-cancelˡ x _ _`
+  - `∙-cancelʳ y z` to `∙-cancelʳ _ y z`
+  
 ### Change in the definition of `Prime`
 
 * The definition of `Prime` in `Data.Nat.Primality` was:
@@ -685,6 +723,42 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Codata.Guarded.Stream.Properties`:
+  ```agda
+  map-identity  ↦  map-id
+  map-fusion    ↦  map-∘
+  ```
+
+* In `Codata.Sized.Colist.Properties`:
+  ```agda
+  map-identity   ↦  map-id
+  map-map-fusion  ↦  map-∘
+  ```
+
+* In `Codata.Sized.Covec.Properties`:
+  ```agda
+  map-identity   ↦  map-id
+  map-map-fusion  ↦  map-∘
+  ```
+
+* In `Codata.Sized.Delay.Properties`:
+  ```agda
+  map-identity      ↦  map-id
+  map-map-fusion    ↦  map-∘
+  map-unfold-fusion  ↦  map-unfold
+  ```
+
+* In `Codata.Sized.M.Properties`:
+  ```agda
+  map-compose  ↦  map-∘
+  ```
+
+* In `Codata.Sized.Stream.Properties`:
+  ```agda
+  map-identity   ↦  map-id
+  map-map-fusion  ↦  map-∘
+  ```
+
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
   for the 'left', resp. 'right' injection of a Fin m into a 'larger' type,
   `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the
@@ -768,9 +842,51 @@ Deprecated names
 
 * In `Data.List.Properties`:
   ```agda
+  map-id₂         ↦  map-id-local
+  map-cong₂       ↦  map-cong-local
+  map-compose     ↦  map-∘
+
+  map-++-commute       ↦  map-++
+  sum-++-commute       ↦  sum-++
+  reverse-map-commute  ↦  reverse-map
+  reverse-++-commute   ↦  reverse-++
+
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
   ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  map-compose     ↦  map-∘
+
+  map-++⁺-commute ↦  map-++⁺
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  updateAt-id-relative      ↦  updateAt-id-local
+  updateAt-compose-relative ↦  updateAt-∘-local
+  updateAt-compose          ↦  updateAt-∘
+  updateAt-cong-relative    ↦  updateAt-cong-local
+  ```
+
+* In `Data.List.Zipper.Properties`:
+  ```agda
+  toList-reverse-commute ↦  toList-reverse
+  toList-ˡ++-commute     ↦  toList-ˡ++
+  toList-++ʳ-commute     ↦  toList-++ʳ
+  toList-map-commute    ↦  toList-map
+  toList-foldr-commute  ↦  toList-foldr
+  ```
+
+* In `Data.Maybe.Properties`:
+  ```agda
+  map-id₂     ↦  map-id-local
+  map-cong₂   ↦  map-cong-local
+
+  map-compose    ↦  map-∘
+
+  map-<∣>-commute ↦  map-<∣>
 
 * In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
   ```
@@ -819,8 +935,38 @@ Deprecated names
   negative<positive     ↦ neg<pos
   ```
 
+* In `Data.Sum.Properties`:
+  ```agda
+  [,]-∘-distr      ↦  [,]-∘
+  [,]-map-commute  ↦  [,]-map
+  map-commute      ↦  map-map
+  map₁₂-commute    ↦  map₁₂-map₂₁
+  ```
+
+* In `Data.Tree.Binary.Zipper.Properties`:
+  ```
+  toTree-#nodes-commute   ↦  toTree-#nodes
+  toTree-#leaves-commute  ↦  toTree-#leaves
+  toTree-map-commute      ↦  toTree-map
+  toTree-foldr-commute    ↦  toTree-foldr
+  toTree-⟪⟫ˡ-commute      ↦  toTree--⟪⟫ˡ
+  toTree-⟪⟫ʳ-commute      ↦  toTree-⟪⟫ʳ
+  ```
+
+* In `Data.Tree.Rose.Properties`:
+  ```agda
+  map-compose     ↦  map-∘
+  ```
+
 * In `Data.Vec.Properties`:
   ```
+  updateAt-id-relative      ↦  updateAt-id-local
+  updateAt-compose-relative ↦  updateAt-∘-local
+  updateAt-compose          ↦  updateAt-∘
+  updateAt-cong-relative    ↦  updateAt-cong-local
+
+  []%=-compose    ↦  []%=-∘
+
   []≔-++-inject+  ↦ []≔-++-↑ˡ
   []≔-++-raise    ↦ []≔-++-↑ʳ
   idIsFold        ↦ id-is-foldr
@@ -833,6 +979,27 @@ Deprecated names
   to
   ```
   zipWith-comm : ∀ {f : A → B → C} {g : B → A → C}  (comm : ∀ x y → f x y ≡ g y x) (xs : Vec A n) ys → zipWith f xs ys ≡ zipWith g ys xs
+  ```
+
+* In `Data.Vec.Functional.Properties`:
+  ```
+  updateAt-id-relative      ↦  updateAt-id-local
+  updateAt-compose-relative ↦  updateAt-∘-local
+  updateAt-compose          ↦  updateAt-∘
+  updateAt-cong-relative    ↦  updateAt-cong-local
+
+  map-updateAt              ↦  map-updateAt-local
+  ```
+  NB. This last one is complicated by the *addition* of a 'global' property `map-updateAt`
+
+* In `Data.Vec.Recursive.Properties`:
+  ```
+  append-cons-commute  ↦  append-cons
+  ```
+
+* In `Data.Vec.Relation.Binary.Equality.Setoid`:
+  ```agda
+  map-++-commute ↦  map-++
   ```
 
 * In `Function.Construct.Composition`:
@@ -1723,6 +1890,11 @@ Other minor changes
   reverse-injective  : reverse xs ≡ reverse ys → xs ≡ ys
 
   transpose-replicate : transpose (replicate xs) ≡ map replicate xs
+  ```
+
+* Added new proofs in `Data.Vec.Functional.Properties`:
+  ```
+  map-updateAt : f ∘ g ≗ h ∘ f → map f (updateAt i g xs) ≗ updateAt i h (map f xs)
   ```
 
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:

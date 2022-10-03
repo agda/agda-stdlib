@@ -222,7 +222,7 @@ m/n≤m m n = *-cancelʳ-≤ (m / n) m n (begin
   m * n       ∎)
 
 m/n<m : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero n}} → n ≥ 2 → m / n < m
-m/n<m m n n≥2 = *-cancelʳ-< (m / n) m (begin-strict
+m/n<m m n n≥2 = *-cancelʳ-< _ (m / n) m (begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
   m           <⟨ m<m*n m n n≥2 ⟩
   m * n       ∎)
@@ -390,7 +390,7 @@ m/n/o≡m/[n*o] m n o = begin-equality
 
 /-*-interchange : ∀ {m n o p} .{{_ : NonZero o}} .{{_ : NonZero p}} .{{_ : NonZero (o * p)}} →
                   o ∣ m → p ∣ n → (m * n) / (o * p) ≡ (m / o) * (n / p)
-/-*-interchange {m} {n} {o@(suc _)} {p@(suc _)} o∣m p∣n = *-cancelˡ-≡ (o * p) (begin-equality
+/-*-interchange {m} {n} {o@(suc _)} {p@(suc _)} o∣m p∣n = *-cancelˡ-≡ _ _ (o * p) (begin-equality
   (o * p) * ((m * n) / (o * p)) ≡⟨  m*[n/m]≡n (*-pres-∣ o∣m p∣n) ⟩
   m * n                         ≡˘⟨ cong₂ _*_ (m*[n/m]≡n o∣m) (m*[n/m]≡n p∣n) ⟩
   (o * (m / o)) * (p * (n / p)) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] o (m / o) p (n / p) ⟩

@@ -244,7 +244,7 @@ a*n[divₕ]n≡a acc (suc a) n = begin-equality
   acc + divₕ 0 (k + j) n j       ≡⟨ cong (acc +_) (divₕ-offsetEq _ n j _ (m≤n+m j k) ≤-refl case) ⟩
   acc + divₕ 0 (k + j) n (k + j) ∎
   where
-  case = inj₂′ (refl , +-cancelˡ-≤ (suc k) leq , m≤n+m j k)
+  case = inj₂′ (refl , +-cancelˡ-≤ (suc k) _ _ leq , m≤n+m j k)
 
 divₕ-mono-≤ : ∀ {acc} k {m n o p} → m ≤ n → p ≤ o → divₕ acc (k + o) m o ≤ divₕ acc (k + p) n p
 divₕ-mono-≤ {acc} k {0} {n} {_} {p} z≤n p≤o = acc≤divₕ[acc] (k + p) n p
