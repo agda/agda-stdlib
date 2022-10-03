@@ -11,6 +11,9 @@
 
 module Effect.Applicative where
 
+open import Data.Product using (_×_; _,_)
+open import Effect.Choice using (RawChoice)
+open import Effect.Empty using (RawEmpty)
 open import Effect.Functor using (RawFunctor)
 open import Function.Base using (const; flip; _∘′_)
 open import Level using (Level; suc; _⊔_)
@@ -24,6 +27,8 @@ private
 
 record RawApplicative (F : Set f → Set f) : Set (suc f) where
   infixl 4 _<*>_ _<*_ _*>_
+  infixl 4 _⊛_ _<⊛_ _⊛>_
+  infix  4 _⊗_
   field
     rawFunctor : RawFunctor F
     pure : A → F A
@@ -36,6 +41,19 @@ record RawApplicative (F : Set f → Set f) : Set (suc f) where
 
   _*>_ : F A → F B → F B
   a *> b = flip const <$> a <*> b
+
+  -- backwards compatibility: unicode variants
+  _⊛_ : F (A → B) → F A → F B
+  _⊛_ = _<*>_
+
+  _<⊛_ : F A → F B → F A
+  _<⊛_ = _<*_
+
+  _⊛>_ : F A → F B → F B
+  _⊛>_ = _*>_
+
+  _⊗_ : F A → F B → F (A × B)
+  fa ⊗ fb = _,_ <$> fa <*> fb
 
 module _ where
 
@@ -58,7 +76,7 @@ module _ where
 record RawApplicativeZero (F : Set f → Set f) : Set (suc f) where
   field
     rawApplicative : RawApplicative F
-    empty : F A
+    rawEmpty : RawEmpty F
 
   open RawApplicative rawApplicative public
 
@@ -68,6 +86,6 @@ record RawApplicativeZero (F : Set f → Set f) : Set (suc f) where
 record RawAlternative (F : Set f → Set f) : Set (suc f) where
   field
     rawApplicativeZero : RawApplicativeZero F
-    _<|>_ : F A → F A → F A
+    rawChoice : RawChoice F
 
   open RawApplicativeZero rawApplicativeZero public

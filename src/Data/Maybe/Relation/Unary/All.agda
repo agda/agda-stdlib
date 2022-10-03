@@ -88,7 +88,7 @@ module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
 module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
          (Mon : RawMonad {a ⊔ p} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
   sequenceM = sequenceA p App

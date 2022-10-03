@@ -24,13 +24,14 @@ functor = record
 
 applicative : RawApplicative Identity
 applicative = record
-  { pure = id
-  ; _⊛_  = id
+  { rawFunctor = functor
+  ; pure = id
+  ; _<*>_  = id
   }
 
 monad : RawMonad Identity
 monad = record
-  { return = id
+  { rawApplicative = applicative
   ; _>>=_  = _|>′_
   }
 

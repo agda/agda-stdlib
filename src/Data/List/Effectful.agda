@@ -11,6 +11,8 @@ module Data.List.Effectful where
 open import Data.Bool.Base using (false; true)
 open import Data.List.Base
 open import Data.List.Properties
+open import Effect.Choice
+open import Effect.Empty
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
@@ -37,11 +39,22 @@ applicative = record
   ; _<*>_  = λ fs as → concatMap (flip map as) fs
   }
 
+empty : RawEmpty {ℓ} List
+empty = record { empty = [] }
+
+choice : RawChoice {ℓ} List
+choice = record { _<|>_ = _++_ }
+
+applicativeZero : RawApplicativeZero {ℓ} List
+applicativeZero = record
+  { rawApplicative = applicative
+  ; rawEmpty = empty
+  }
+
 alternative : RawAlternative {ℓ} List
 alternative = record
-  { rawApplicative = applicative
-  ; empty = []
-  ; _<|>_ = _++_
+  { rawApplicativeZero = applicativeZero
+  ; rawChoice = choice
   }
 
 ------------------------------------------------------------------------
@@ -51,6 +64,18 @@ monad : ∀ {ℓ} → RawMonad {ℓ} List
 monad = record
   { rawApplicative = applicative
   ; _>>=_  = flip concatMap
+  }
+
+monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
+monadZero = record
+  { rawMonad = monad
+  ; rawEmpty = empty
+  }
+
+monadPlus : ∀ {ℓ} → RawMonadPlus {ℓ} List
+monadPlus = record
+  { rawMonadZero = monadZero
+  ; rawChoice  = choice
   }
 
 ------------------------------------------------------------------------
@@ -93,18 +118,17 @@ monadT {ℓ} {F} M = record
 ------------------------------------------------------------------------
 -- The list monad.
 
-{-
 private
   open module LMP {ℓ} = RawMonadPlus (monadPlus {ℓ = ℓ})
 
 module MonadProperties where
 
   left-identity : ∀ {ℓ} {A B : Set ℓ} (x : A) (f : A → List B) →
-                  (return x >>= f) ≡ f x
+                  (pure x >>= f) ≡ f x
   left-identity x f = ++-identityʳ (f x)
 
   right-identity : ∀ {ℓ} {A : Set ℓ} (xs : List A) →
-                   (xs >>= return) ≡ xs
+                   (xs >>= pure) ≡ xs
   right-identity []       = refl
   right-identity (x ∷ xs) = P.cong (x ∷_) (right-identity xs)
 
@@ -119,7 +143,7 @@ module MonadProperties where
   private
 
     not-left-distributive :
-      let xs = true ∷ false ∷ []; f = return; g = return in
+      let xs = true ∷ false ∷ []; f = pure; g = pure in
       (xs >>= λ x → f x ∣ g x) ≢ ((xs >>= f) ∣ (xs >>= g))
     not-left-distributive ()
 
@@ -161,11 +185,11 @@ module Applicative where
     -- A variant of flip map.
 
     pam : ∀ {ℓ} {A B : Set ℓ} → List A → (A → B) → List B
-    pam xs f = xs >>= return ∘ f
+    pam xs f = xs >>= pure ∘ f
 
   -- ∅ is a left zero for _⊛_.
 
-  left-zero : ∀ {ℓ} {A B : Set ℓ} (xs : List A) → (∅ ⊛ xs) ≡ ∅ {A = B}
+  left-zero : ∀ {ℓ} {A B : Set ℓ} → (xs : List A) → (∅ ⊛ xs) ≡ ∅ {A = B}
   left-zero xs = begin
     ∅ ⊛ xs          ≡⟨⟩
     (∅ >>= pam xs)  ≡⟨ MonadProperties.left-zero (pam xs) ⟩
@@ -173,22 +197,39 @@ module Applicative where
 
   -- ∅ is a right zero for _⊛_.
 
-  right-zero : ∀ {ℓ} {A B : Set ℓ} (fs : List (A → B)) → (fs ⊛ ∅) ≡ ∅
+  right-zero : ∀ {ℓ} {A B : Set ℓ} → (fs : List (A → B)) → (fs ⊛ ∅) ≡ ∅
   right-zero {ℓ} fs = begin
     fs ⊛ ∅            ≡⟨⟩
     (fs >>= pam ∅)    ≡⟨ (MP.cong (refl {x = fs}) λ f →
-                          MP.left-zero (return ∘ f)) ⟩
+                          MP.left-zero (pure ∘ f)) ⟩
     (fs >>= λ _ → ∅)  ≡⟨ MP.right-zero fs ⟩
     ∅                 ∎
+
+  unfold-<$> : ∀ {ℓ} {A B : Set ℓ} → (f : A → B) (as : List A) →
+               (f <$> as) ≡ (pure f ⊛ as)
+  unfold-<$> f as = P.sym (++-identityʳ (f <$> as))
+
+  -- _⊛_ unfolds to binds.
+  unfold-⊛ : ∀ {ℓ} {A B : Set ℓ} → (fs : List (A → B)) (as : List A) →
+             (fs ⊛ as) ≡ (fs >>= pam as)
+  unfold-⊛ fs as = begin
+    fs ⊛ as
+      ≡˘⟨ concatMap-cong (λ f → P.cong (map f) (concatMap-pure as)) fs ⟩
+    concatMap (λ f → map f (concatMap pure as)) fs
+      ≡⟨ concatMap-cong (λ f → map-concatMap f pure as) fs ⟩
+    concatMap (λ f → concatMap (λ x → pure (f x)) as) fs
+      ≡⟨⟩
+    (fs >>= pam as)
+      ∎
 
   -- _⊛_ distributes over _∣_ from the right.
 
   right-distributive : ∀ {ℓ} {A B : Set ℓ} (fs₁ fs₂ : List (A → B)) xs →
                        ((fs₁ ∣ fs₂) ⊛ xs) ≡ (fs₁ ⊛ xs ∣ fs₂ ⊛ xs)
   right-distributive fs₁ fs₂ xs = begin
-    (fs₁ ∣ fs₂) ⊛ xs                     ≡⟨⟩
+    (fs₁ ∣ fs₂) ⊛ xs                     ≡⟨ unfold-⊛ (fs₁ ∣ fs₂) xs ⟩
     (fs₁ ∣ fs₂ >>= pam xs)               ≡⟨ MonadProperties.right-distributive fs₁ fs₂ (pam xs) ⟩
-    (fs₁ >>= pam xs) ∣ (fs₂ >>= pam xs)  ≡⟨⟩
+    (fs₁ >>= pam xs) ∣ (fs₂ >>= pam xs)  ≡˘⟨ P.cong₂ _∣_ (unfold-⊛ fs₁ xs) (unfold-⊛ fs₂ xs) ⟩
     (fs₁ ⊛ xs ∣ fs₂ ⊛ xs)                ∎
 
   -- _⊛_ does not distribute over _∣_ from the left.
@@ -202,12 +243,12 @@ module Applicative where
 
   -- Applicative functor laws.
 
-  identity : ∀ {a} {A : Set a} (xs : List A) → (return id ⊛ xs) ≡ xs
+  identity : ∀ {a} {A : Set a} (xs : List A) → (pure id ⊛ xs) ≡ xs
   identity xs = begin
-    return id ⊛ xs          ≡⟨⟩
-    (return id >>= pam xs)  ≡⟨ MonadProperties.left-identity id (pam xs) ⟩
-    (xs >>= return)         ≡⟨ MonadProperties.right-identity xs ⟩
-    xs                      ∎
+    pure id ⊛ xs          ≡⟨ unfold-⊛ (pure id) xs ⟩
+    (pure id >>= pam xs)  ≡⟨ MonadProperties.left-identity id (pam xs) ⟩
+    (xs >>= pure)         ≡⟨ MonadProperties.right-identity xs ⟩
+    xs                    ∎
 
   private
 
@@ -215,46 +256,58 @@ module Applicative where
                 (xs : List A) (f : A → B) (fs : B → List C) →
                 (pam xs f >>= fs) ≡ (xs >>= λ x → fs (f x))
     pam-lemma xs f fs = begin
-      (pam xs f >>= fs)                   ≡⟨ P.sym $ MP.associative xs (return ∘ f) fs ⟩
-      (xs >>= λ x → return (f x) >>= fs)  ≡⟨ MP.cong (refl {x = xs}) (λ x → MP.left-identity (f x) fs) ⟩
-      (xs >>= λ x → fs (f x))             ∎
+      (pam xs f >>= fs)                 ≡˘⟨ MP.associative xs (pure ∘ f) fs ⟩
+      (xs >>= λ x → pure (f x) >>= fs)  ≡⟨ MP.cong (refl {x = xs}) (λ x → MP.left-identity (f x) fs) ⟩
+      (xs >>= λ x → fs (f x))           ∎
 
   composition : ∀ {ℓ} {A B C : Set ℓ}
                 (fs : List (B → C)) (gs : List (A → B)) xs →
-                (return _∘′_ ⊛ fs ⊛ gs ⊛ xs) ≡ (fs ⊛ (gs ⊛ xs))
+                (pure _∘′_ ⊛ fs ⊛ gs ⊛ xs) ≡ (fs ⊛ (gs ⊛ xs))
   composition {ℓ} fs gs xs = begin
-    return _∘′_ ⊛ fs ⊛ gs ⊛ xs                      ≡⟨⟩
-    (return _∘′_ >>= pam fs >>= pam gs >>= pam xs)  ≡⟨ MP.cong (MP.cong (MP.left-identity _∘′_ (pam fs))
-                                                                              (λ f → refl {x = pam gs f}))
-                                                                  (λ fg → refl {x = pam xs fg}) ⟩
-    (pam fs _∘′_ >>= pam gs >>= pam xs)             ≡⟨ MP.cong (pam-lemma fs _∘′_ (pam gs)) (λ _ → refl) ⟩
-    ((fs >>= λ f → pam gs (f ∘′_)) >>= pam xs)      ≡⟨ P.sym $ MP.associative fs (λ f → pam gs (_∘′_ f)) (pam xs) ⟩
-    (fs >>= λ f → pam gs (f ∘′_) >>= pam xs)        ≡⟨ (MP.cong (refl {x = fs}) λ f →
-                                                        pam-lemma gs (f ∘′_) (pam xs)) ⟩
-    (fs >>= λ f → gs >>= λ g → pam xs (f ∘′ g))     ≡⟨ (MP.cong (refl {x = fs}) λ f →
-                                                        MP.cong (refl {x = gs}) λ g →
-                                                        P.sym $ pam-lemma xs g (return ∘ f)) ⟩
-    (fs >>= λ f → gs >>= λ g → pam (pam xs g) f)    ≡⟨ (MP.cong (refl {x = fs}) λ f →
-                                                        MP.associative gs (pam xs) (return ∘ f)) ⟩
-    (fs >>= pam (gs >>= pam xs))                    ≡⟨⟩
-    fs ⊛ (gs ⊛ xs)                                  ∎
+    pure _∘′_ ⊛ fs ⊛ gs ⊛ xs
+      ≡⟨ unfold-⊛ (pure _∘′_ ⊛ fs ⊛ gs) xs ⟩
+    (pure _∘′_ ⊛ fs ⊛ gs >>= pam xs)
+      ≡⟨ P.cong (_>>= pam xs) (unfold-⊛ (pure _∘′_ ⊛ fs) gs) ⟩
+    (pure _∘′_ ⊛ fs >>= pam gs >>= pam xs)
+      ≡⟨ P.cong (λ h → h >>= pam gs >>= pam xs) (unfold-⊛ (pure _∘′_) fs) ⟩
+    (pure _∘′_ >>= pam fs >>= pam gs >>= pam xs)
+      ≡⟨ MP.cong (MP.cong (MP.left-identity _∘′_ (pam fs))
+                 (λ f → refl {x = pam gs f}))
+                 (λ fg → refl {x = pam xs fg}) ⟩
+    (pam fs _∘′_ >>= pam gs >>= pam xs)
+      ≡⟨ MP.cong (pam-lemma fs _∘′_ (pam gs)) (λ _ → refl) ⟩
+    ((fs >>= λ f → pam gs (f ∘′_)) >>= pam xs)
+      ≡˘⟨ MP.associative fs (λ f → pam gs (_∘′_ f)) (pam xs) ⟩
+    (fs >>= λ f → pam gs (f ∘′_) >>= pam xs)
+      ≡⟨ MP.cong (refl {x = fs}) (λ f → pam-lemma gs (f ∘′_) (pam xs)) ⟩
+    (fs >>= λ f → gs >>= λ g → pam xs (f ∘′ g))
+      ≡⟨ (MP.cong (refl {x = fs}) λ f →
+         MP.cong (refl {x = gs}) λ g →
+         P.sym $ pam-lemma xs g (pure ∘ f)) ⟩
+    (fs >>= λ f → gs >>= λ g → pam (pam xs g) f)
+      ≡⟨ MP.cong (refl {x = fs}) (λ f → MP.associative gs (pam xs) (pure ∘ f)) ⟩
+    (fs >>= pam (gs >>= pam xs))
+      ≡˘⟨ unfold-⊛ fs (gs >>= pam xs) ⟩
+    fs ⊛ (gs >>= pam xs)
+      ≡˘⟨ P.cong (fs ⊛_) (unfold-⊛ gs xs) ⟩
+    fs ⊛ (gs ⊛ xs)
+      ∎
 
   homomorphism : ∀ {ℓ} {A B : Set ℓ} (f : A → B) x →
-                 (return f ⊛ return x) ≡ return (f x)
+                 (pure f ⊛ pure x) ≡ pure (f x)
   homomorphism f x = begin
-    return f ⊛ return x            ≡⟨⟩
-    (return f >>= pam (return x))  ≡⟨ MP.left-identity f (pam (return x)) ⟩
-    pam (return x) f               ≡⟨ MP.left-identity x (return ∘ f) ⟩
-    return (f x)                   ∎
+    pure f ⊛ pure x            ≡⟨⟩
+    (pure f >>= pam (pure x))  ≡⟨ MP.left-identity f (pam (pure x)) ⟩
+    pam (pure x) f             ≡⟨ MP.left-identity x (pure ∘ f) ⟩
+    pure (f x)                 ∎
 
   interchange : ∀ {ℓ} {A B : Set ℓ} (fs : List (A → B)) {x} →
-                (fs ⊛ return x) ≡ (return (λ f → f x) ⊛ fs)
+                (fs ⊛ pure x) ≡ (pure (_$′ x) ⊛ fs)
   interchange fs {x} = begin
-    fs ⊛ return x                    ≡⟨⟩
-    (fs >>= pam (return x))          ≡⟨ (MP.cong (refl {x = fs}) λ f →
-                                         MP.left-identity x (return ∘ f)) ⟩
-    (fs >>= λ f → return (f x))      ≡⟨⟩
-    (pam fs (λ f → f x))             ≡⟨ P.sym $ MP.left-identity (λ f → f x) (pam fs) ⟩
-    (return (λ f → f x) >>= pam fs)  ≡⟨⟩
-    return (λ f → f x) ⊛ fs          ∎
--}
+    fs ⊛ pure x                ≡⟨⟩
+    (fs >>= pam (pure x))      ≡⟨ (MP.cong (refl {x = fs}) λ f →
+                                      MP.left-identity x (pure ∘ f)) ⟩
+    (fs >>= λ f → pure (f x))  ≡⟨⟩
+    (pam fs (_$′ x))           ≡⟨ P.sym $ MP.left-identity (_$′ x) (pam fs) ⟩
+    (pure (_$′ x) >>= pam fs)  ≡˘⟨ unfold-⊛ (pure (_$′ x)) fs ⟩
+    pure (_$′ x) ⊛ fs          ∎

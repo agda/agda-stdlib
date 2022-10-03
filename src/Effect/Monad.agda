@@ -10,6 +10,8 @@
 
 module Effect.Monad where
 
+open import Effect.Choice
+open import Effect.Empty
 open import Effect.Applicative
 open import Function.Base using (flip; _$′_)
 open import Level using (Level; suc)
@@ -70,18 +72,33 @@ module _ where
 record RawMonadZero (F : Set f → Set f) : Set (suc f) where
   field
     rawMonad : RawMonad F
-    empty : F A
+    rawEmpty : RawEmpty F
 
   open RawMonad rawMonad public
+  open RawEmpty rawEmpty public
 
   rawApplicativeZero : RawApplicativeZero F
   rawApplicativeZero = record
     { rawApplicative = rawApplicative
-    ; empty = empty
+    ; rawEmpty = rawEmpty
     }
 
 ------------------------------------------------------------------------
 -- The type of raw monadplus
+
+record RawMonadPlus (F : Set f → Set f) : Set (suc f) where
+  field
+    rawMonadZero : RawMonadZero F
+    rawChoice    : RawChoice F
+
+  open RawMonadZero rawMonadZero public
+  open RawChoice rawChoice public
+
+  rawAlternative : RawAlternative F
+  rawAlternative = record
+    { rawApplicativeZero = rawApplicativeZero
+    ; rawChoice = rawChoice
+    }
 
 ------------------------------------------------------------------------
 -- The type of raw monad transformer

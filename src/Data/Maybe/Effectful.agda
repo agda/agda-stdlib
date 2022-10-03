@@ -10,11 +10,15 @@ module Data.Maybe.Effectful where
 
 open import Level
 open import Data.Maybe.Base
+
+open import Effect.Choice
+open import Effect.Empty
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
+
 import Function.Identity.Effectful as Id
-open import Function
+open import Function.Base
 
 private
   variable
@@ -32,48 +36,60 @@ functor = record
 
 applicative : RawApplicative {f} Maybe
 applicative = record
-  { pure = just
-  ; _⊛_  = maybe map (const nothing)
+  { rawFunctor = functor
+  ; pure       = just
+  ; _<*>_      = maybe map (const nothing)
   }
+
+empty : RawEmpty {f} Maybe
+empty = record { empty = nothing }
+
+choice : RawChoice {f} Maybe
+choice = record { _<|>_ = _<∣>_ }
 
 applicativeZero : RawApplicativeZero {f} Maybe
 applicativeZero = record
-  { applicative = applicative
-  ; ∅           = nothing
+  { rawApplicative = applicative
+  ; rawEmpty       = empty
   }
 
 alternative : RawAlternative {f} Maybe
 alternative = record
-  { applicativeZero = applicativeZero
-  ; _∣_             = _<∣>_
+  { rawApplicativeZero = applicativeZero
+  ; rawChoice          = choice
   }
 
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
 monadT : RawMonadT {f} (_∘′ Maybe)
-monadT M = record
-  { return = M.return ∘ just
-  ; _>>=_  = λ m f → m M.>>= maybe f (M.return nothing)
-  }
-  where module M = RawMonad M
+monadT {M = F} M = record
+  { lift = just M.<$>_
+  ; rawMonad = mkRawMonad
+                 (F ∘′ Maybe)
+                 (M.pure ∘′ just)
+                 (λ m f → m M.>>= maybe f (M.pure nothing))
+  } where module M = RawMonad M
 
 ------------------------------------------------------------------------
 -- Maybe monad
 
 monad : RawMonad {f} Maybe
-monad = monadT Id.monad
+monad = record
+  { rawApplicative = applicative
+  ; _>>=_ = _>>=_
+  }
 
 monadZero : RawMonadZero {f} Maybe
 monadZero = record
-  { monad           = monad
-  ; applicativeZero = applicativeZero
+  { rawMonad = monad
+  ; rawEmpty = empty
   }
 
 monadPlus : RawMonadPlus {f} Maybe
 monadPlus {f} = record
-  { monad       = monad
-  ; alternative = alternative
+  { rawMonadZero = monadZero
+  ; rawChoice    = choice
   }
 
 ------------------------------------------------------------------------
@@ -97,7 +113,7 @@ module TraversableM {M} (Mon : RawMonad {m} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
