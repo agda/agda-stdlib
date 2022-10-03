@@ -9,6 +9,7 @@
 
 module Effect.Monad.Reader.Transformer where
 
+open import Algebra using (RawMonoid)
 open import Effect.Choice
 open import Effect.Empty
 open import Effect.Functor
@@ -115,7 +116,20 @@ liftReaderT MRead = record
   ; local = λ f mx → mkReaderT (λ r₂ → local f (runReaderT mx r₂))
   } where open RawMonadReader MRead
 
-open import Data.Product using (_,_)
+open import Data.Product using (_×_; _,_)
+open import Effect.Monad.Writer.Transformer.Base
+
+liftWriterT : (MR : RawMonoid r g) →
+              RawFunctor M →
+              RawMonadReader R M →
+              RawMonadReader R (WriterT MR M)
+liftWriterT MR M MRead = record
+  { reader = λ k → mkWriterT λ w → ((w ,_) <$> reader k)
+  ; local = λ f mx → mkWriterT λ w → (local f (runWriterT mx w))
+  } where open RawMonadReader MRead
+          open RawFunctor M
+          open RawMonoid MR
+
 open import Effect.Monad.State.Transformer.Base
 
 liftStateT : RawFunctor M →

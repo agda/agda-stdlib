@@ -10,6 +10,7 @@ open import Level using (Level; suc; _⊔_)
 
 module Effect.Monad.State.Transformer where
 
+open import Algebra using (RawMonoid)
 open import Data.Product using (_×_; _,_; map₂; proj₁; proj₂)
 open import Data.Unit.Polymorphic.Base
 open import Effect.Choice
@@ -136,3 +137,16 @@ liftReaderT Mon = record
   { gets   = λ f → mkReaderT (const (gets f))
   ; modify = λ f → mkReaderT (const (modify f))
   } where open RawMonadState Mon
+
+open import Effect.Monad.Writer.Transformer.Base
+
+liftWriterT : (MS : RawMonoid s f) →
+              RawFunctor M →
+              RawMonadState S M →
+              RawMonadState S (WriterT MS M)
+liftWriterT MS M Mon = record
+  { gets   = λ f → mkWriterT λ w → (gets ((w ,_) ∘′ f))
+  ; modify = λ f → mkWriterT λ w → (const (w , tt) <$> modify f)
+  } where open RawMonadState Mon
+          open RawFunctor M
+          open RawMonoid MS
