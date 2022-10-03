@@ -1597,9 +1597,8 @@ Other minor changes
   pattern z<s {n}         = s≤s (z≤n {n})
   pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
 
-  pattern <′-base          = ≤′-refl
-  pattern <′-step {n} m<′n = ≤′-step {n} m<′n
-  pattern m<′n⇒m<′1+n      = ≤′-step
+  pattern n<′1+n           = ≤′-refl
+  pattern m<′n⇒m<′1+n m<′n = ≤′-step {n} m<′n
 
   _! : ℕ → ℕ
   ```

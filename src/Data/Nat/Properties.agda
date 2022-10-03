@@ -1967,25 +1967,25 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 ------------------------------------------------------------------------
 
 z<′s : ∀ {n} → zero <′ suc n
-z<′s {zero}  = <′-base
-z<′s {suc n} = <′-step (z<′s {n})
+z<′s {zero}  = n<′1+n
+z<′s {suc n} = m<′n⇒m<′1+n (z<′s {n})
 
 s<′s : ∀ {m n} → m <′ n → suc m <′ suc n
-s<′s <′-base        = <′-base
-s<′s (<′-step m<′n) = <′-step (s<′s m<′n)
+s<′s n<′1+n             = n<′1+n
+s<′s (m<′n⇒m<′1+n m<′n) = m<′n⇒m<′1+n (s<′s m<′n)
 
 <⇒<′ : ∀ {m n} → m < n → m <′ n
 <⇒<′ z<s               = z<′s
 <⇒<′ (s<s m<n@(s≤s _)) = s<′s (<⇒<′ m<n)
 
 <′⇒< : ∀ {m n} → m <′ n → m < n
-<′⇒< <′-base        = n<1+n _
-<′⇒< (<′-step m<′n) = m<n⇒m<1+n (<′⇒< m<′n)
+<′⇒< n<′1+n             = n<1+n _
+<′⇒< (m<′n⇒m<′1+n m<′n) = m<n⇒m<1+n (<′⇒< m<′n)
 
 m<1+n⇒m<n∨m≡n′ : ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
 m<1+n⇒m<n∨m≡n′ m<n with <⇒<′ m<n
-... | <′-base      = inj₂ refl
-... | <′-step m<′n = inj₁ (<′⇒< m<′n)
+... | n<′1+n           = inj₂ refl
+... | m<′n⇒m<′1+n m<′n = inj₁ (<′⇒< m<′n)
 
 ------------------------------------------------------------------------
 -- Other properties of _≤′_ and _<′_
