@@ -134,13 +134,13 @@ map-const : (a : A) (bs : Stream B) → map (const a) bs ≈ repeat a
 map-const a bs .head = P.refl
 map-const a bs .tail = map-const a (bs .tail)
 
-map-identity : (as : Stream A) → map id as ≈ as
-map-identity as .head = P.refl
-map-identity as .tail = map-identity (as .tail)
+map-id : (as : Stream A) → map id as ≈ as
+map-id as .head = P.refl
+map-id as .tail = map-id (as .tail)
 
-map-fusion : ∀ (g : B → C) (f : A → B) as → map g (map f as) ≈ map (g ∘′ f) as
-map-fusion g f as .head = P.refl
-map-fusion g f as .tail = map-fusion g f (as .tail)
+map-∘ : ∀ (g : B → C) (f : A → B) as → map g (map f as) ≈ map (g ∘′ f) as
+map-∘ g f as .head = P.refl
+map-∘ g f as .tail = map-∘ g f (as .tail)
 
 map-unfold : ∀ (g : B → C) (f : A → A × B) a →
              map g (unfold f a) ≈ unfold (Prod.map₂ g ∘′ f) a
@@ -311,3 +311,23 @@ interleave-evens-odds : (as : Stream A) → interleave (evens as) (odds as) ≈ 
 interleave-evens-odds as .head       = P.refl
 interleave-evens-odds as .tail .head = P.refl
 interleave-evens-odds as .tail .tail = interleave-evens-odds (as .tail .tail)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-identity = map-id
+{-# WARNING_ON_USAGE map-identity
+"Warning: map-identity was deprecated in v2.0.
+Please use map-id instead."
+#-}
+
+map-fusion = map-∘
+{-# WARNING_ON_USAGE map-fusion
+"Warning: map-fusion was deprecated in v2.0.
+Please use map-∘ instead."
+#-}

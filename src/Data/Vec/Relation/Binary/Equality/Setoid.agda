@@ -73,11 +73,11 @@ open PW public using (++⁺ ; ++⁻ ; ++ˡ⁻; ++ʳ⁻)
 ++-assoc [] ys zs = ≋-refl
 ++-assoc (x ∷ xs) ys zs = refl ∷ ++-assoc xs ys zs
 
-map-++-commute : ∀ {b m n} {B : Set b}
+map-++ : ∀ {b m n} {B : Set b}
                    (f : B → A) (xs : Vec B m) {ys : Vec B n} →
                    map f (xs ++ ys) ≋ map f xs ++ map f ys
-map-++-commute f []       = ≋-refl
-map-++-commute f (x ∷ xs) = refl ∷ map-++-commute f xs
+map-++ f []       = ≋-refl
+map-++ f (x ∷ xs) = refl ∷ map-++ f xs
 
 ------------------------------------------------------------------------
 -- concat
@@ -92,3 +92,17 @@ replicate-shiftʳ : ∀ {m} n x (xs : Vec A m) →
                   replicate {n = 1 + n} x ++      xs
 replicate-shiftʳ zero    x xs = ≋-refl
 replicate-shiftʳ (suc n) x xs = refl ∷ (replicate-shiftʳ n x xs)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-++-commute = map-++
+{-# WARNING_ON_USAGE map-++-commute
+"Warning: map-++-commute was deprecated in v2.0.
+Please use map-++ instead."
+#-}

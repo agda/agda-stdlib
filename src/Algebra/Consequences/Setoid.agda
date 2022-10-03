@@ -34,14 +34,14 @@ open import Algebra.Consequences.Base public
 module _ {_•_ : Op₂ A} (comm : Commutative _•_) where
 
   comm+cancelˡ⇒cancelʳ : LeftCancellative _•_ → RightCancellative _•_
-  comm+cancelˡ⇒cancelʳ cancelˡ {x} y z eq = cancelˡ x $ begin
+  comm+cancelˡ⇒cancelʳ cancelˡ x y z eq = cancelˡ x y z $ begin
     x • y ≈⟨ comm x y ⟩
     y • x ≈⟨ eq ⟩
     z • x ≈⟨ comm z x ⟩
     x • z ∎
 
   comm+cancelʳ⇒cancelˡ : RightCancellative _•_ → LeftCancellative _•_
-  comm+cancelʳ⇒cancelˡ cancelʳ x {y} {z} eq = cancelʳ y z $ begin
+  comm+cancelʳ⇒cancelˡ cancelʳ x y z eq = cancelʳ x y z $ begin
     y • x ≈⟨ comm y x ⟩
     x • y ≈⟨ eq ⟩
     x • z ≈⟨ comm x z ⟩
@@ -90,8 +90,8 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
 
   comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _•_ →
                                      AlmostRightCancellative e _•_
-  comm+almostCancelˡ⇒almostCancelʳ cancelˡ-nonZero {x} y z x≉e yx≈zx =
-    cancelˡ-nonZero y z x≉e $ begin
+  comm+almostCancelˡ⇒almostCancelʳ cancelˡ-nonZero x y z x≉e yx≈zx =
+    cancelˡ-nonZero x y z x≉e $ begin
       x • y ≈⟨ comm x y ⟩
       y • x ≈⟨ yx≈zx ⟩
       z • x ≈⟨ comm z x ⟩
@@ -99,8 +99,8 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
 
   comm+almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _•_ →
                                      AlmostLeftCancellative e _•_
-  comm+almostCancelʳ⇒almostCancelˡ cancelʳ-nonZero {x} y z x≉e xy≈xz =
-    cancelʳ-nonZero y z x≉e $ begin
+  comm+almostCancelʳ⇒almostCancelˡ cancelʳ-nonZero x y z x≉e xy≈xz =
+    cancelʳ-nonZero x y z x≉e $ begin
       y • x ≈⟨ comm y x ⟩
       x • y ≈⟨ xy≈xz ⟩
       x • z ≈⟨ comm x z ⟩

@@ -16,14 +16,14 @@ open import Relation.Binary.Reasoning.Setoid setoid
 open import Data.Product
 
 cancelˡ : LeftCancellative _∙_
-cancelˡ x {y} {z} eq = begin
+cancelˡ x y z eq = begin
   y             ≈⟨ sym( leftDividesʳ x y) ⟩
   x \\ (x ∙ y)  ≈⟨ \\-congˡ eq ⟩
   x \\ (x ∙ z)  ≈⟨ leftDividesʳ x z ⟩
   z             ∎
 
 cancelʳ : RightCancellative _∙_
-cancelʳ {x} y z eq = begin
+cancelʳ x y z eq = begin
   y             ≈⟨ sym( rightDividesʳ x y) ⟩
   (y ∙ x) // x  ≈⟨ //-congʳ eq ⟩
   (z ∙ x) // x  ≈⟨ rightDividesʳ x z ⟩
