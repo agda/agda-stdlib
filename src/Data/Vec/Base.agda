@@ -16,7 +16,7 @@ open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 
@@ -92,6 +92,10 @@ xs [ i ]≔ y = xs [ i ]%= const y
 
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
+
+cast : .(eq : m ≡ n) → Vec A m → Vec A n
+cast {n = zero}  eq []       = []
+cast {n = suc _} eq (x ∷ xs) = x ∷ cast (cong pred eq) xs
 
 map : (A → B) → Vec A n → Vec B n
 map f []       = []
