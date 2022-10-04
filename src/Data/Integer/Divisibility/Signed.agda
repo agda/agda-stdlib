@@ -84,7 +84,7 @@ open _∣_ using (quotient) public
 ∣⇒∣ᵤ : ∀ {k i} → k ∣ i → k ∣ᵤ i
 ∣⇒∣ᵤ {k} {i} (divides q eq) = divides ∣ q ∣ $′ begin
   ∣ i ∣           ≡⟨ cong ∣_∣ eq ⟩
-  ∣ q * k ∣       ≡⟨ abs-*-commute q k ⟩
+  ∣ q * k ∣       ≡⟨ abs-* q k ⟩
   ∣ q ∣ ℕ.* ∣ k ∣ ∎
   where open ≡-Reasoning
 
@@ -189,4 +189,3 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
 
 *-cancelʳ-∣ : ∀ k {i j} .{{_ : NonZero k}} → i * k ∣ j * k → i ∣ j
 *-cancelʳ-∣ k {i} {j} = ∣ᵤ⇒∣ ∘′ Unsigned.*-cancelʳ-∣ k {i} {j} ∘′ ∣⇒∣ᵤ
-

@@ -642,6 +642,7 @@ Non-backwards compatible changes
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
 
+
 Major improvements
 ------------------
 
@@ -838,8 +839,12 @@ Deprecated names
 
   ^-semigroup-morphism ↦ ^-isMagmaHomomorphism
   ^-monoid-morphism    ↦ ^-isMonoidHomomorphism
+  
+  pos-distrib-* ↦ pos-*
+  pos-+-commute ↦ pos-+
+  abs-*-commute ↦ abs-*
   ```
-
+  
 * In `Data.List.Properties`:
   ```agda
   map-id₂         ↦  map-id-local
