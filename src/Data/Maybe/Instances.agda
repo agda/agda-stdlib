@@ -9,6 +9,7 @@
 module Data.Maybe.Instances where
 
 open import Data.Maybe.Effectful
+open import Data.Maybe.Effectful.Transformer using (monadT)
 
 instance
   maybeFunctor = functor

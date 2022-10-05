@@ -36,7 +36,7 @@ applicative : RawApplicative {ℓ} List
 applicative = record
   { rawFunctor = functor
   ; pure = [_]
-  ; _<*>_  = λ fs as → concatMap (flip map as) fs
+  ; _<*>_  = ap
   }
 
 empty : RawEmpty {ℓ} List
@@ -105,15 +105,6 @@ module TraversableM {m M} (Mon : RawMonad {m} M) where
     ; mapA      to mapM
     ; forA      to forM
     )
-
-------------------------------------------------------------------------
--- List monad transformer
-
-monadT : ∀ {ℓ} → RawMonadT {ℓ} (_∘′ List)
-monadT {ℓ} {F} M = record
-  { lift = [_] <$>_
-  ; rawMonad = mkRawMonad (F ∘′ List) (pure ∘′ [_]) (λ mas f → mas >>= λ as → concat <$> mapM f as)
-  } where open RawMonad M; open TraversableM M
 
 ------------------------------------------------------------------------
 -- The list monad.

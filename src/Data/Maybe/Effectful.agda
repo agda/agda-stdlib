@@ -60,18 +60,6 @@ alternative = record
   }
 
 ------------------------------------------------------------------------
--- Maybe monad transformer
-
-monadT : RawMonadT {f} (_∘′ Maybe)
-monadT {M = F} M = record
-  { lift = just M.<$>_
-  ; rawMonad = mkRawMonad
-                 (F ∘′ Maybe)
-                 (M.pure ∘′ just)
-                 (λ m f → m M.>>= maybe f (M.pure nothing))
-  } where module M = RawMonad M
-
-------------------------------------------------------------------------
 -- Maybe monad
 
 monad : RawMonad {f} Maybe
@@ -91,9 +79,6 @@ monadPlus {f} = record
   { rawMonadZero = monadZero
   ; rawChoice    = choice
   }
-
-------------------------------------------------------------------------
--- Get access to other monadic functions
 
 module TraversableA {F} (App : RawApplicative {f} F) where
 

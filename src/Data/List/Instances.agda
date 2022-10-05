@@ -10,6 +10,7 @@ module Data.List.Instances where
 
 open import Data.List.Base
 open import Data.List.Effectful
+open import Data.List.Effectful.Transformer using (monadT)
 open import Data.List.Properties
   using (≡-dec)
 open import Data.List.Relation.Binary.Pointwise

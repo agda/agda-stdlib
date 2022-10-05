@@ -142,6 +142,9 @@ concat = foldr _++_ []
 concatMap : (A → List B) → List A → List B
 concatMap f = concat ∘ map f
 
+ap : List (A → B) → List A → List B
+ap fs as = concatMap (flip map as) fs
+
 null : List A → Bool
 null []       = true
 null (x ∷ xs) = false
