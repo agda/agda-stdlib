@@ -10,9 +10,9 @@ open import Test.Golden
 
 dataTests : TestPool
 dataTests = mkTestPool "Data structures"
-  $ "colist"
+  $ "appending"
+  ∷ "colist"
   ∷ "list"
-  ∷ "appending"
   ∷ "rational"
   ∷ "rational-unnormalised"
   ∷ "trie"

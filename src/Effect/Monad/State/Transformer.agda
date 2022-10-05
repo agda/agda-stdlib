@@ -101,9 +101,9 @@ alternative M = record
 monad : RawMonad M → RawMonad (StateT S M)
 monad M = record
   { rawApplicative = applicative M
-  ; _>>=_ = λ ma f → mkStateT $ λ r →
-              do (s , a) ← StateT.runStateT ma r
-                 StateT.runStateT (f a) r
+  ; _>>=_ = λ ma f → mkStateT $ λ s →
+              do (s , a) ← StateT.runStateT ma s
+                 StateT.runStateT (f a) s
   } where open RawMonad M
 
 monadZero : RawMonadZero M → RawMonadZero (StateT S M)

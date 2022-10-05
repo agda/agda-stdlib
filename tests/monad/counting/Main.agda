@@ -67,6 +67,6 @@ main = run $
             {{monadReader _ _ (State.monad IO.monad)}}
             {{liftMonadState}}
             {{liftMonadIO}} in
-  let v = runReaderT u "First :" in
+  let v = runReaderT u "First: " in
   let w = evalStateT IO.functor v 0 in
   w
