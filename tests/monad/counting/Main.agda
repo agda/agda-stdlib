@@ -34,7 +34,7 @@ step f = do
   modify f
   lift str ← ask
   n ← get
-  let msg = str ++ show 3 -- n
+  let msg = str ++ show n
   liftIO (putStrLn msg)
 
 script : ∀ {M} →
