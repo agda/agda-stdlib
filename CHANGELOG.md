@@ -366,6 +366,38 @@ Non-backwards compatible changes
   3. Finally, if the above approaches are not viable then you may be forced to explicitly
 	 use `cong` combined with a lemma that proves the old reduction behaviour.
 
+### Change to the definition of `LeftCancellative` and `RightCancellative`
+
+* The definitions of the types for cancellativity in `Algebra.Definitions` previously
+  made some of their arguments implicit. This was under the assumption that the operators were
+  defined by pattern matching on the left argument so that Agda could always infer the
+  argument on the RHS.
+
+* Although many of the operators defined in the library follow this convention, this is not
+  always true and cannot be assumed in user's code.
+
+* Therefore the definitions have been changed as follows to make all their arguments explicit:
+  - `LeftCancellative _•_`
+	- From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z`
+	- To: `∀ x y z → (x • y) ≈ (x • z) → y ≈ z`
+
+  - `RightCancellative _•_`
+    - From: `∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z`
+	- To: `∀ x y z → (y • x) ≈ (z • x) → y ≈ z`
+
+  - `AlmostLeftCancellative e _•_`
+    - From: `∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
+	- To: `∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
+
+  - `AlmostRightCancellative e _•_`
+	- From: `∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+	- To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+
+* Correspondingly some proofs of the above types will need additional arguments passed explicitly.
+  Instances can easily be fixed by adding additional underscores, e.g.
+  - `∙-cancelˡ x` to `∙-cancelˡ x _ _`
+  - `∙-cancelʳ y z` to `∙-cancelʳ _ y z`
+
 ### Change in the definition of `Prime`
 
 * The definition of `Prime` in `Data.Nat.Primality` was:
@@ -610,6 +642,7 @@ Non-backwards compatible changes
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
 
+
 Major improvements
 ------------------
 
@@ -806,8 +839,12 @@ Deprecated names
 
   ^-semigroup-morphism ↦ ^-isMagmaHomomorphism
   ^-monoid-morphism    ↦ ^-isMonoidHomomorphism
+  
+  pos-distrib-* ↦ pos-*
+  pos-+-commute ↦ pos-+
+  abs-*-commute ↦ abs-*
   ```
-
+  
 * In `Data.List.Properties`:
   ```agda
   map-id₂         ↦  map-id-local
@@ -1493,6 +1530,10 @@ Other minor changes
   <⇒notInjective            : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective f)
   ℕ→Fin-notInjective        : ∀ (f : ℕ → Fin n) → ¬ (Injective f)
   cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} → Injective f → Injective g → m ≡ n
+
+  cast-is-id    : cast eq k ≡ k
+  subst-is-cast : subst Fin eq k ≡ cast eq k
+  cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
   ```
 
 * Added new functions in `Data.Integer.Base`:
@@ -1805,6 +1846,8 @@ Other minor changes
   diagonal           : Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : Vec A n → (A → Vec B n) → Vec B n
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
+
+  cast : .(eq : m ≡ n) → Vec A m → Vec A n
   ```
 
 * Added new instance in `Data.Vec.Categorical`:
@@ -1863,6 +1906,15 @@ Other minor changes
   reverse-injective  : reverse xs ≡ reverse ys → xs ≡ ys
 
   transpose-replicate : transpose (replicate xs) ≡ map replicate xs
+
+  toList-cast   : toList (cast eq xs) ≡ toList xs
+  cast-is-id    : cast eq xs ≡ xs
+  subst-is-cast : subst (Vec A) eq xs ≡ cast eq xs
+  cast-trans    : cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
+  map-cast      : map f (cast eq xs) ≡ cast eq (map f xs)
+  lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
+  lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
+  lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
   ```
 
 * Added new proofs in `Data.Vec.Functional.Properties`:

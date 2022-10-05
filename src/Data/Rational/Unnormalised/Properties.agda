@@ -1151,7 +1151,7 @@ neg-distribʳ-* p@record{} q@record{} =
   (ℤ.+ p ℤ.* q) ℤ.* (↧ (q / r))                   ≡⟨  cong ((ℤ.+ p ℤ.* q) ℤ.*_) (↧[n/d]≡d q r) ⟩
   (ℤ.+ p ℤ.* q) ℤ.* ℤ.+ r                         ≡⟨  xy∙z≈y∙xz (ℤ.+ p) q (ℤ.+ r) ⟩
   (q ℤ.* (ℤ.+ p ℤ.* ℤ.+ r))                       ≡˘⟨ cong (ℤ._* (ℤ.+ p ℤ.* ℤ.+ r)) (↥[n/d]≡n q r) ⟩
-  (↥ (q / r)) ℤ.* (ℤ.+ p ℤ.* ℤ.+ r)               ≡⟨  cong (↥ (q / r) ℤ.*_) (ℤ.pos-distrib-* p r) ⟩
+  (↥ (q / r)) ℤ.* (ℤ.+ p ℤ.* ℤ.+ r)               ≡˘⟨  cong (↥ (q / r) ℤ.*_) (ℤ.pos-* p r) ⟩
   (↥ (q / r)) ℤ.* (ℤ.+ (p ℕ.* r))                 ≡˘⟨ cong (↥ (q / r) ℤ.*_) (↧[n/d]≡d (ℤ.+ p ℤ.* q) (p ℕ.* r)) ⟩
   (↥ (q / r)) ℤ.* (↧ ((ℤ.+ p ℤ.* q) / (p ℕ.* r))) ∎)
   where open ℤ.≤-Reasoning
@@ -1205,9 +1205,9 @@ private
 *-monoˡ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → (_* r) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-nonNeg r@(mkℚᵘ (ℤ.+ n) _) {p@record{}} {q@record{}} (*≤* x<y) = *≤* $ begin
   ↥ p ℤ.* ↥ r ℤ.* (↧ q   ℤ.* ↧ r)  ≡⟨  reorder₂ (↥ p) _ _ _ ⟩
-  l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨  cong (l₁ ℤ.*_) (ℤ.pos-distrib-* n _) ⟩
+  l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡˘⟨  cong (l₁ ℤ.*_) (ℤ.pos-* n _) ⟩
   l₁          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≤⟨  ℤ.*-monoʳ-≤-nonNeg (ℤ.+ (n ℕ.* ↧ₙ r)) x<y ⟩
-  l₂          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≡˘⟨ cong (l₂ ℤ.*_) (ℤ.pos-distrib-* n _) ⟩
+  l₂          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≡⟨ cong (l₂ ℤ.*_) (ℤ.pos-* n _) ⟩
   l₂          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨  reorder₂ (↥ q) _ _ _ ⟩
   ↥ q ℤ.* ↥ r ℤ.* (↧ p   ℤ.* ↧ r)  ∎
   where open ℤ.≤-Reasoning; l₁ = ↥ p ℤ.* ↧ q ; l₂ = ↥ q ℤ.* ↧ p
@@ -1775,7 +1775,7 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
     ∣m∣n≡∣mn∣ : ∀ m n → ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ n ≡ ℤ.+ ℤ.∣ m ℤ.* ℤ.+ n ∣
     ∣m∣n≡∣mn∣ m n = begin-equality
       ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ n                        ≡⟨⟩
-      ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ ℤ.∣ ℤ.+ n ∣              ≡⟨ ℤ.pos-distrib-* ℤ.∣ m ∣ ℤ.∣ ℤ.+ n ∣ ⟩
+      ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ ℤ.∣ ℤ.+ n ∣              ≡˘⟨ ℤ.pos-* ℤ.∣ m ∣ ℤ.∣ ℤ.+ n ∣ ⟩
       ℤ.+ (ℤ.∣ m ∣ ℕ.* n)                          ≡⟨⟩
       ℤ.+ (ℤ.∣ m ∣ ℕ.* ℤ.∣ ℤ.+ n ∣)                ≡˘⟨ cong ℤ.+_ (ℤ.∣i*j∣≡∣i∣*∣j∣ m (ℤ.+ n)) ⟩
       ℤ.+ (ℤ.∣ m ℤ.* ℤ.+ n ∣)                      ∎
@@ -1796,7 +1796,7 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
   ∣ p * q ∣                                           ≡⟨⟩
   ∣ (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q) ∣                 ≡⟨⟩
   ℤ.+ ℤ.∣ ↥ p ℤ.* ↥ q ∣ / (↧ₙ p ℕ.* ↧ₙ q)             ≡⟨ cong (λ h → ℤ.+ h / ((↧ₙ p) ℕ.* (↧ₙ q))) (ℤ.∣i*j∣≡∣i∣*∣j∣ (↥ p) (↥ q)) ⟩
-  ℤ.+ (ℤ.∣ ↥ p ∣ ℕ.* ℤ.∣ ↥ q ∣) / (↧ₙ p ℕ.* ↧ₙ q)     ≡˘⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.pos-distrib-* ℤ.∣ ↥ p ∣ ℤ.∣ ↥ q ∣) ⟩
+  ℤ.+ (ℤ.∣ ↥ p ∣ ℕ.* ℤ.∣ ↥ q ∣) / (↧ₙ p ℕ.* ↧ₙ q)     ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.pos-* ℤ.∣ ↥ p ∣ ℤ.∣ ↥ q ∣) ⟩
   (ℤ.+ ℤ.∣ ↥ p ∣ ℤ.* ℤ.+ ℤ.∣ ↥ q ∣) / (↧ₙ p ℕ.* ↧ₙ q) ≡⟨⟩
   (ℤ.+ ℤ.∣ ↥ p ∣ / ↧ₙ p) * (ℤ.+ ℤ.∣ ↥ q ∣ / ↧ₙ q)     ≡⟨⟩
   ∣ p ∣ * ∣ q ∣                                       ∎

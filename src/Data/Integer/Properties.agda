@@ -986,9 +986,9 @@ distribʳ-⊖-+-neg m n o = begin
 ------------------------------------------------------------------------
 -- Properties of _+_ and +_/-_.
 
-pos-+-commute : ℕtoℤ.Homomorphic₂ +_ ℕ._+_ _+_
-pos-+-commute zero    n = refl
-pos-+-commute (suc m) n = cong sucℤ (pos-+-commute m n)
+pos-+ : ℕtoℤ.Homomorphic₂ +_ ℕ._+_ _+_
+pos-+ zero    n = refl
+pos-+ (suc m) n = cong sucℤ (pos-+ m n)
 
 neg-distrib-+ : ∀ i j → - (i + j) ≡ (- i) + (- j)
 neg-distrib-+ +0        +0        = refl
@@ -1593,14 +1593,14 @@ private
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≡_
 
-abs-*-commute : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
-abs-*-commute i j = abs-◃ _ _
+abs-* : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
+abs-* i j = abs-◃ _ _
 
 *-cancelʳ-≡ : ∀ i j k .{{_ : NonZero k}} → i * k ≡ j * k → i ≡ j
 *-cancelʳ-≡ i j k eq with sign-cong′ eq
 ... | inj₁ s[ik]≡s[jk] = ◃-cong
-  (𝕊ₚ.*-cancelʳ-≡ {sign k} (sign i) (sign j) s[ik]≡s[jk])
-  (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ (abs-cong eq))
+  (𝕊ₚ.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
+  (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ _ (abs-cong eq))
 ... | inj₂ (∣ik∣≡0 , ∣jk∣≡0) = trans
   (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣ik∣≡0))
   (sym (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣jk∣≡0)))
@@ -1684,10 +1684,10 @@ i^n≡0⇒i≡0 i (suc n) eq = [ id , i^n≡0⇒i≡0 i n ]′ (i*j≡0⇒i≡0�
 ------------------------------------------------------------------------
 -- Properties of _*_ and +_/-_
 
-pos-distrib-* : ∀ m n → (+ m) * (+ n) ≡ + (m ℕ.* n)
-pos-distrib-* zero    n       = refl
-pos-distrib-* (suc m) zero    = pos-distrib-* m zero
-pos-distrib-* (suc m) (suc n) = refl
+pos-* : ℕtoℤ.Homomorphic₂ +_ ℕ._*_ _*_
+pos-* zero    n       = refl
+pos-* (suc m) zero    = pos-* m zero
+pos-* (suc m) (suc n) = refl
 
 neg-distribˡ-* : ∀ i j → - (i * j) ≡ (- i) * j
 neg-distribˡ-* i j = begin
@@ -1785,10 +1785,10 @@ neg-distribʳ-* i j = begin
 *-monoʳ-<-pos i {j} {k} rewrite *-comm j i | *-comm k i = *-monoˡ-<-pos i
 
 *-cancelˡ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → k * i < k * j → i < j
-*-cancelˡ-<-nonNeg {+ i}       {+ j}       (+ n) leq = +<+ (ℕ.*-cancelˡ-< n (+◃-cancel-< leq))
+*-cancelˡ-<-nonNeg {+ i}       {+ j}       (+ n) leq = +<+ (ℕ.*-cancelˡ-< n _ _ (+◃-cancel-< leq))
 *-cancelˡ-<-nonNeg {+ i}       { -[1+ j ]} (+ n) leq = contradiction leq +◃≮-◃
 *-cancelˡ-<-nonNeg { -[1+ i ]} {+ j}       (+ n)leq = -<+
-*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (ℕ.≤-pred (ℕ.*-cancelˡ-< n (neg◃-cancel-< leq)))
+*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (ℕ.≤-pred (ℕ.*-cancelˡ-< n _ _ (neg◃-cancel-< leq)))
 
 *-cancelʳ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → i * k < j * k → i < j
 *-cancelʳ-<-nonNeg {i} {j} k rewrite *-comm i k | *-comm j k = *-cancelˡ-<-nonNeg k
@@ -2348,4 +2348,22 @@ Please use *-monoˡ-≤-nonPos instead."
 {-# WARNING_ON_USAGE *-monoʳ-≤-neg
 "Warning: *-monoʳ-≤-neg was deprecated in v2.0
 Please use *-monoʳ-≤-nonPos instead."
+#-}
+pos-+-commute : ℕtoℤ.Homomorphic₂ +_ ℕ._+_ _+_
+pos-+-commute = pos-+
+{-# WARNING_ON_USAGE pos-+-commute
+"Warning: pos-+-commute was deprecated in v2.0
+Please use pos-+ instead."
+#-}
+abs-*-commute : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
+abs-*-commute = abs-*
+{-# WARNING_ON_USAGE abs-*-commute
+"Warning: abs-*-commute was deprecated in v2.0
+Please use abs-* instead."
+#-}
+pos-distrib-* : ∀ m n → (+ m) * (+ n) ≡ + (m ℕ.* n)
+pos-distrib-* m n = sym (pos-* m n)
+{-# WARNING_ON_USAGE pos-distrib-*
+"Warning: pos-distrib-* was deprecated in v2.0
+Please use pos-* instead."
 #-}

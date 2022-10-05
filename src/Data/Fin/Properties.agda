@@ -249,12 +249,25 @@ toℕ-fromℕ<″ {m} {n} m<n = begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- cast
+-- Properties of cast
 ------------------------------------------------------------------------
 
 toℕ-cast : ∀ .(eq : m ≡ n) (k : Fin m) → toℕ (cast eq k) ≡ toℕ k
 toℕ-cast {n = suc n} eq zero    = refl
 toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
+
+cast-is-id : .(eq : m ≡ m) (k : Fin m) → cast eq k ≡ k
+cast-is-id eq zero    = refl
+cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
+
+subst-is-cast : (eq : m ≡ n) (k : Fin m) → subst Fin eq k ≡ cast eq k
+subst-is-cast refl k = sym (cast-is-id refl k)
+
+cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (k : Fin m) →
+             cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ zero = refl
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
+  cong suc (cast-trans (ℕₚ.suc-injective eq₁) (ℕₚ.suc-injective eq₂) k)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -654,7 +667,7 @@ combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ with <-cmp i k
 combine-injectiveʳ : ∀ (i : Fin m) (j : Fin n) (k : Fin m) (l : Fin n) →
                      combine i j ≡ combine k l → j ≡ l
 combine-injectiveʳ {m} {n} i j k l cᵢⱼ≡cₖₗ with combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ
-... | refl = toℕ-injective (ℕₚ.+-cancelˡ-≡ (n ℕ.* toℕ i) (begin
+... | refl = toℕ-injective (ℕₚ.+-cancelˡ-≡ (n ℕ.* toℕ i) _ _ (begin
   n ℕ.* toℕ i ℕ.+ toℕ j ≡˘⟨ toℕ-combine i j ⟩
   toℕ (combine i j)     ≡⟨ cong toℕ cᵢⱼ≡cₖₗ ⟩
   toℕ (combine i l)     ≡⟨ toℕ-combine i l ⟩

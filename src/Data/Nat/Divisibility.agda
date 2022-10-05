@@ -199,7 +199,7 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
 *-cancelˡ-∣ : ∀ {i j} k .{{_ : NonZero k}} → k * i ∣ k * j → i ∣ j
 *-cancelˡ-∣ {i} {j} k@(suc _) (divides q eq) =
-  divides q $ *-cancelʳ-≡ j (q * i) $ begin-equality
+  divides q $ *-cancelʳ-≡ j (q * i) _ $ begin-equality
     j * k        ≡⟨ *-comm j k ⟩
     k * j        ≡⟨ eq ⟩
     q * (k * i)  ≡⟨ cong (q *_) (*-comm k i) ⟩
