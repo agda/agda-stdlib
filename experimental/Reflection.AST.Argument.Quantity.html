@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Reflection.AST.Argument.Quantity</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Argument quantities used in the reflection machinery</a>
+<a id="162" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="236" class="Symbol">{-#</a> <a id="240" class="Keyword">OPTIONS</a> <a id="248" class="Pragma">--without-K</a> <a id="260" class="Pragma">--safe</a> <a id="267" class="Symbol">#-}</a>
+
+<a id="272" class="Keyword">module</a> <a id="279" href="Reflection.AST.Argument.Quantity.html" class="Module">Reflection.AST.Argument.Quantity</a> <a id="312" class="Keyword">where</a>
+
+<a id="319" class="Keyword">open</a> <a id="324" class="Keyword">import</a> <a id="331" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="348" class="Keyword">open</a> <a id="353" class="Keyword">import</a> <a id="360" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="376" class="Keyword">open</a> <a id="381" class="Keyword">import</a> <a id="388" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="427" class="Comment">------------------------------------------------------------------------</a>
+<a id="500" class="Comment">-- Re-exporting the builtins publicly</a>
+
+<a id="539" class="Keyword">open</a> <a id="544" class="Keyword">import</a> <a id="551" href="Agda.Builtin.Reflection.html" class="Module">Agda.Builtin.Reflection</a> <a id="575" class="Keyword">public</a> <a id="582" class="Keyword">using</a> <a id="588" class="Symbol">(</a><a id="589" href="Agda.Builtin.Reflection.html#3208" class="Datatype">Quantity</a><a id="597" class="Symbol">)</a>
+<a id="599" class="Keyword">open</a> <a id="604" href="Agda.Builtin.Reflection.html#3208" class="Module">Quantity</a> <a id="613" class="Keyword">public</a>
+
+<a id="621" class="Comment">------------------------------------------------------------------------</a>
+<a id="694" class="Comment">-- Decidable equality</a>
+
+<a id="_≟_"></a><a id="717" href="Reflection.AST.Argument.Quantity.html#717" class="Function Operator">_≟_</a> <a id="721" class="Symbol">:</a> <a id="723" href="Relation.Binary.Definitions.html#6143" class="Function">DecidableEquality</a> <a id="741" href="Agda.Builtin.Reflection.html#3208" class="Datatype">Quantity</a>
+<a id="750" href="Agda.Builtin.Reflection.html#3242" class="InductiveConstructor">quantity-ω</a> <a id="761" href="Reflection.AST.Argument.Quantity.html#717" class="Function Operator">≟</a> <a id="763" href="Agda.Builtin.Reflection.html#3242" class="InductiveConstructor">quantity-ω</a> <a id="774" class="Symbol">=</a> <a id="776" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a> <a id="780" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="785" href="Agda.Builtin.Reflection.html#3231" class="InductiveConstructor">quantity-0</a> <a id="796" href="Reflection.AST.Argument.Quantity.html#717" class="Function Operator">≟</a> <a id="798" href="Agda.Builtin.Reflection.html#3231" class="InductiveConstructor">quantity-0</a> <a id="809" class="Symbol">=</a> <a id="811" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a> <a id="815" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="820" href="Agda.Builtin.Reflection.html#3242" class="InductiveConstructor">quantity-ω</a> <a id="831" href="Reflection.AST.Argument.Quantity.html#717" class="Function Operator">≟</a> <a id="833" href="Agda.Builtin.Reflection.html#3231" class="InductiveConstructor">quantity-0</a> <a id="844" class="Symbol">=</a> <a id="846" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a> <a id="849" class="Symbol">λ()</a>
+<a id="853" href="Agda.Builtin.Reflection.html#3231" class="InductiveConstructor">quantity-0</a> <a id="864" href="Reflection.AST.Argument.Quantity.html#717" class="Function Operator">≟</a> <a id="866" href="Agda.Builtin.Reflection.html#3242" class="InductiveConstructor">quantity-ω</a> <a id="877" class="Symbol">=</a> <a id="879" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a> <a id="882" class="Symbol">λ()</a>
+</pre></body></html>

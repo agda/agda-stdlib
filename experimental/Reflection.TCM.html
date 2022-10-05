@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Reflection.TCM</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The TC (Type Checking) monad</a>
+<a id="138" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="212" class="Symbol">{-#</a> <a id="216" class="Keyword">OPTIONS</a> <a id="224" class="Pragma">--without-K</a> <a id="236" class="Pragma">--safe</a> <a id="243" class="Symbol">#-}</a>
+
+<a id="248" class="Keyword">module</a> <a id="255" href="Reflection.TCM.html" class="Module">Reflection.TCM</a> <a id="270" class="Keyword">where</a>
+
+<a id="277" class="Keyword">open</a> <a id="282" class="Keyword">import</a> <a id="289" href="Reflection.AST.Term.html" class="Module">Reflection.AST.Term</a>
+<a id="309" class="Keyword">import</a> <a id="316" href="Agda.Builtin.Reflection.html" class="Module">Agda.Builtin.Reflection</a> <a id="340" class="Symbol">as</a> <a id="343" class="Module">Builtin</a>
+<a id="351" class="Keyword">import</a> <a id="358" href="Reflection.TCM.Format.html" class="Module">Reflection.TCM.Format</a> <a id="380" class="Symbol">as</a> <a id="383" class="Module">Format</a>
+
+<a id="391" class="Comment">------------------------------------------------------------------------</a>
+<a id="464" class="Comment">-- Type errors</a>
+
+<a id="480" class="Keyword">open</a> <a id="485" href="Agda.Builtin.Reflection.html" class="Module">Builtin</a> <a id="493" class="Keyword">public</a>
+  <a id="502" class="Keyword">using</a> <a id="508" class="Symbol">(</a><a id="509" href="Agda.Builtin.Reflection.html#7893" class="Datatype">ErrorPart</a><a id="518" class="Symbol">;</a> <a id="520" href="Agda.Builtin.Reflection.html#7917" class="InductiveConstructor">strErr</a><a id="526" class="Symbol">;</a> <a id="528" href="Agda.Builtin.Reflection.html#7948" class="InductiveConstructor">termErr</a><a id="535" class="Symbol">;</a> <a id="537" href="Agda.Builtin.Reflection.html#7977" class="InductiveConstructor">nameErr</a><a id="544" class="Symbol">)</a>
+
+<a id="547" class="Comment">------------------------------------------------------------------------</a>
+<a id="620" class="Comment">-- The monad</a>
+
+<a id="634" class="Keyword">open</a> <a id="639" href="Agda.Builtin.Reflection.html" class="Module">Builtin</a> <a id="647" class="Keyword">public</a>
+  <a id="656" class="Keyword">using</a>
+  <a id="664" class="Symbol">(</a> <a id="666" href="Agda.Builtin.Reflection.html#8218" class="Postulate">TC</a><a id="668" class="Symbol">;</a> <a id="670" href="Agda.Builtin.Reflection.html#8311" class="Postulate">bindTC</a><a id="676" class="Symbol">;</a> <a id="678" href="Agda.Builtin.Reflection.html#8391" class="Postulate">unify</a><a id="683" class="Symbol">;</a> <a id="685" href="Agda.Builtin.Reflection.html#8431" class="Postulate">typeError</a><a id="694" class="Symbol">;</a> <a id="696" href="Agda.Builtin.Reflection.html#8494" class="Postulate">inferType</a><a id="705" class="Symbol">;</a> <a id="707" href="Agda.Builtin.Reflection.html#8530" class="Postulate">checkType</a>
+  <a id="719" class="Symbol">;</a> <a id="721" href="Agda.Builtin.Reflection.html#8573" class="Postulate">normalise</a><a id="730" class="Symbol">;</a> <a id="732" href="Agda.Builtin.Reflection.html#8609" class="Postulate">reduce</a>
+  <a id="741" class="Symbol">;</a> <a id="743" href="Agda.Builtin.Reflection.html#8645" class="Postulate">catchTC</a><a id="750" class="Symbol">;</a> <a id="752" href="Agda.Builtin.Reflection.html#8705" class="Postulate">quoteTC</a><a id="759" class="Symbol">;</a> <a id="761" href="Agda.Builtin.Reflection.html#8758" class="Postulate">unquoteTC</a>
+  <a id="773" class="Symbol">;</a> <a id="775" href="Agda.Builtin.Reflection.html#8859" class="Postulate">getContext</a><a id="785" class="Symbol">;</a> <a id="787" href="Agda.Builtin.Reflection.html#8901" class="Postulate">extendContext</a><a id="800" class="Symbol">;</a> <a id="802" href="Agda.Builtin.Reflection.html#8965" class="Postulate">inContext</a><a id="811" class="Symbol">;</a> <a id="813" href="Agda.Builtin.Reflection.html#9036" class="Postulate">freshName</a>
+  <a id="825" class="Symbol">;</a> <a id="827" href="Agda.Builtin.Reflection.html#9074" class="Postulate">declareDef</a><a id="837" class="Symbol">;</a> <a id="839" href="Agda.Builtin.Reflection.html#9118" class="Postulate">declarePostulate</a><a id="855" class="Symbol">;</a> <a id="857" href="Agda.Builtin.Reflection.html#9162" class="Postulate">defineFun</a><a id="866" class="Symbol">;</a> <a id="868" href="Agda.Builtin.Reflection.html#9209" class="Postulate">getType</a><a id="875" class="Symbol">;</a> <a id="877" href="Agda.Builtin.Reflection.html#9245" class="Postulate">getDefinition</a>
+  <a id="893" class="Symbol">;</a> <a id="895" href="Agda.Builtin.Reflection.html#9287" class="Postulate">blockOnMeta</a><a id="906" class="Symbol">;</a> <a id="908" href="Agda.Builtin.Reflection.html#9340" class="Postulate">commitTC</a><a id="916" class="Symbol">;</a> <a id="918" href="Agda.Builtin.Reflection.html#9366" class="Postulate">isMacro</a><a id="925" class="Symbol">;</a> <a id="927" href="Agda.Builtin.Reflection.html#9555" class="Postulate">withNormalisation</a>
+  <a id="947" class="Symbol">;</a> <a id="949" href="Agda.Builtin.Reflection.html#9929" class="Postulate">debugPrint</a><a id="959" class="Symbol">;</a> <a id="961" href="Agda.Builtin.Reflection.html#10373" class="Postulate">noConstraints</a><a id="974" class="Symbol">;</a> <a id="976" href="Agda.Builtin.Reflection.html#10600" class="Postulate">runSpeculative</a><a id="990" class="Symbol">)</a>
+  <a id="994" class="Keyword">renaming</a> <a id="1003" class="Symbol">(</a><a id="1004" href="Agda.Builtin.Reflection.html#8261" class="Postulate">returnTC</a> <a id="1013" class="Symbol">to</a> <a id="1016" class="Postulate">return</a><a id="1022" class="Symbol">)</a>
+
+<a id="1025" class="Keyword">open</a> <a id="1030" href="Reflection.TCM.Format.html" class="Module">Format</a> <a id="1037" class="Keyword">public</a>
+  <a id="1046" class="Keyword">using</a> <a id="1052" class="Symbol">(</a><a id="1053" href="Reflection.TCM.Format.html#2583" class="Function">typeErrorFmt</a><a id="1065" class="Symbol">;</a> <a id="1067" href="Reflection.TCM.Format.html#2717" class="Function">debugPrintFmt</a><a id="1080" class="Symbol">;</a> <a id="1082" href="Reflection.TCM.Format.html#2936" class="Function">errorPartFmt</a><a id="1094" class="Symbol">)</a>
+
+<a id="1097" class="Comment">------------------------------------------------------------------------</a>
+<a id="1170" class="Comment">-- Utility functions</a>
+
+<a id="newMeta"></a><a id="1192" href="Reflection.TCM.html#1192" class="Function">newMeta</a> <a id="1200" class="Symbol">:</a> <a id="1202" href="Agda.Builtin.Reflection.html#4759" class="Function">Type</a> <a id="1207" class="Symbol">→</a> <a id="1209" href="Agda.Builtin.Reflection.html#8218" class="Postulate">TC</a> <a id="1212" href="Agda.Builtin.Reflection.html#4688" class="Datatype">Term</a>
+<a id="1217" href="Reflection.TCM.html#1192" class="Function">newMeta</a> <a id="1225" class="Symbol">=</a> <a id="1227" href="Agda.Builtin.Reflection.html#8530" class="Postulate">checkType</a> <a id="1237" href="Agda.Builtin.Reflection.html#5246" class="InductiveConstructor">unknown</a>
+</pre></body></html>

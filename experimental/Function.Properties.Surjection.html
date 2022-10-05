@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Function.Properties.Surjection</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Conversions for surjections</a>
+<a id="137" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="211" class="Symbol">{-#</a> <a id="215" class="Keyword">OPTIONS</a> <a id="223" class="Pragma">--without-K</a> <a id="235" class="Pragma">--safe</a> <a id="242" class="Symbol">#-}</a>
+
+<a id="247" class="Keyword">module</a> <a id="254" href="Function.Properties.Surjection.html" class="Module">Function.Properties.Surjection</a> <a id="285" class="Keyword">where</a>
+
+<a id="292" class="Keyword">open</a> <a id="297" class="Keyword">import</a> <a id="304" href="Function.Base.html" class="Module">Function.Base</a>
+<a id="318" class="Keyword">open</a> <a id="323" class="Keyword">import</a> <a id="330" href="Function.Bundles.html" class="Module">Function.Bundles</a>
+<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Level.html" class="Module">Level</a> <a id="365" class="Keyword">using</a> <a id="371" class="Symbol">(</a><a id="372" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="377" class="Symbol">)</a>
+<a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Data.Product.html" class="Module">Data.Product</a>
+
+<a id="405" class="Keyword">private</a>
+  <a id="415" class="Keyword">variable</a>
+    <a id="428" href="Function.Properties.Surjection.html#428" class="Generalizable">a</a> <a id="430" href="Function.Properties.Surjection.html#430" class="Generalizable">b</a> <a id="432" class="Symbol">:</a> <a id="434" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="444" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a> <a id="446" href="Function.Properties.Surjection.html#446" class="Generalizable">B</a> <a id="448" class="Symbol">:</a> <a id="450" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="454" href="Function.Properties.Surjection.html#428" class="Generalizable">a</a>
+
+<a id="457" class="Comment">------------------------------------------------------------------------</a>
+<a id="530" class="Comment">-- Conversion functions</a>
+
+<a id="↠⇒↪"></a><a id="555" href="Function.Properties.Surjection.html#555" class="Function">↠⇒↪</a> <a id="559" class="Symbol">:</a> <a id="561" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a> <a id="563" href="Function.Bundles.html#8773" class="Function Operator">↠</a> <a id="565" href="Function.Properties.Surjection.html#446" class="Generalizable">B</a> <a id="567" class="Symbol">→</a> <a id="569" href="Function.Properties.Surjection.html#446" class="Generalizable">B</a> <a id="571" href="Function.Bundles.html#9070" class="Function Operator">↪</a> <a id="573" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a>
+<a id="575" href="Function.Properties.Surjection.html#555" class="Function">↠⇒↪</a> <a id="579" href="Function.Properties.Surjection.html#579" class="Bound">s</a> <a id="581" class="Symbol">=</a> <a id="583" href="Function.Bundles.html#10450" class="Function">mk↪</a> <a id="587" class="Symbol">{</a><a id="588" class="Argument">to</a> <a id="591" class="Symbol">=</a> <a id="593" href="Agda.Builtin.Sigma.html#252" class="Field">proj₁</a> <a id="599" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="601" href="Function.Bundles.html#2914" class="Field">surjective</a><a id="611" class="Symbol">}</a> <a id="613" class="Symbol">{</a><a id="614" class="Argument">from</a> <a id="619" class="Symbol">=</a> <a id="621" href="Function.Bundles.html#2845" class="Field">to</a><a id="623" class="Symbol">}</a> <a id="625" class="Symbol">(</a><a id="626" href="Agda.Builtin.Sigma.html#264" class="Field">proj₂</a> <a id="632" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="634" href="Function.Bundles.html#2914" class="Field">surjective</a><a id="644" class="Symbol">)</a>
+  <a id="648" class="Keyword">where</a> <a id="654" class="Keyword">open</a> <a id="659" href="Function.Bundles.html#2788" class="Module">Surjection</a> <a id="670" href="Function.Properties.Surjection.html#579" class="Bound">s</a>
+
+<a id="↠⇒⇔"></a><a id="673" href="Function.Properties.Surjection.html#673" class="Function">↠⇒⇔</a> <a id="677" class="Symbol">:</a> <a id="679" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a> <a id="681" href="Function.Bundles.html#8773" class="Function Operator">↠</a> <a id="683" href="Function.Properties.Surjection.html#446" class="Generalizable">B</a> <a id="685" class="Symbol">→</a> <a id="687" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a> <a id="689" href="Function.Bundles.html#8920" class="Function Operator">⇔</a> <a id="691" href="Function.Properties.Surjection.html#446" class="Generalizable">B</a>
+<a id="693" href="Function.Properties.Surjection.html#673" class="Function">↠⇒⇔</a> <a id="697" href="Function.Properties.Surjection.html#697" class="Bound">s</a> <a id="699" class="Symbol">=</a> <a id="701" href="Function.Bundles.html#10043" class="Function">mk⇔</a> <a id="705" href="Function.Bundles.html#2845" class="Field">to</a> <a id="708" class="Symbol">(</a><a id="709" href="Agda.Builtin.Sigma.html#252" class="Field">proj₁</a> <a id="715" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="717" href="Function.Bundles.html#2914" class="Field">surjective</a><a id="727" class="Symbol">)</a>
+  <a id="731" class="Keyword">where</a> <a id="737" class="Keyword">open</a> <a id="742" href="Function.Bundles.html#2788" class="Module">Surjection</a> <a id="753" href="Function.Properties.Surjection.html#697" class="Bound">s</a>
+</pre></body></html>

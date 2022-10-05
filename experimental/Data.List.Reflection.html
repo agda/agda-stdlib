@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Reflection</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Reflection utilities for List</a>
+<a id="139" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="213" class="Symbol">{-#</a> <a id="217" class="Keyword">OPTIONS</a> <a id="225" class="Pragma">--without-K</a> <a id="237" class="Pragma">--safe</a> <a id="244" class="Symbol">#-}</a>
+
+<a id="249" class="Keyword">module</a> <a id="256" href="Data.List.Reflection.html" class="Module">Data.List.Reflection</a> <a id="277" class="Keyword">where</a>
+
+<a id="284" class="Keyword">open</a> <a id="289" class="Keyword">import</a> <a id="296" href="Data.List.Base.html" class="Module">Data.List.Base</a>
+<a id="311" class="Keyword">open</a> <a id="316" class="Keyword">import</a> <a id="323" href="Reflection.AST.Term.html" class="Module">Reflection.AST.Term</a>
+<a id="343" class="Keyword">open</a> <a id="348" class="Keyword">import</a> <a id="355" href="Reflection.AST.Argument.html" class="Module">Reflection.AST.Argument</a>
+
+<a id="380" class="Comment">------------------------------------------------------------------------</a>
+<a id="453" class="Comment">-- Type</a>
+
+<a id="`List"></a><a id="462" href="Data.List.Reflection.html#462" class="Function">`List</a> <a id="468" class="Symbol">:</a> <a id="470" href="Agda.Builtin.Reflection.html#4688" class="Datatype">Term</a> <a id="475" class="Symbol">→</a> <a id="477" href="Agda.Builtin.Reflection.html#4688" class="Datatype">Term</a>
+<a id="482" href="Data.List.Reflection.html#462" class="Function">`List</a> <a id="488" href="Data.List.Reflection.html#488" class="Bound">`A</a> <a id="491" class="Symbol">=</a> <a id="493" href="Agda.Builtin.Reflection.html#4903" class="InductiveConstructor">def</a> <a id="497" class="Symbol">(</a><a id="498" class="Keyword">quote</a> <a id="504" href="Agda.Builtin.List.html#148" class="Datatype">List</a><a id="508" class="Symbol">)</a> <a id="510" class="Symbol">(</a><a id="511" class="Number">1</a> <a id="513" href="Reflection.AST.Term.html#2832" class="Function Operator">⋯⟅∷⟆</a> <a id="518" href="Data.List.Reflection.html#488" class="Bound">`A</a> <a id="521" href="Reflection.AST.Argument.html#1655" class="InductiveConstructor Operator">⟨∷⟩</a> <a id="525" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a><a id="527" class="Symbol">)</a>
+
+<a id="530" class="Comment">------------------------------------------------------------------------</a>
+<a id="603" class="Comment">-- Constructors</a>
+
+<a id="`[]"></a><a id="620" href="Data.List.Reflection.html#620" class="Function">`[]</a> <a id="624" class="Symbol">:</a> <a id="626" href="Agda.Builtin.Reflection.html#4688" class="Datatype">Term</a>
+<a id="631" href="Data.List.Reflection.html#620" class="Function">`[]</a> <a id="635" class="Symbol">=</a> <a id="637" href="Agda.Builtin.Reflection.html#4846" class="InductiveConstructor">con</a> <a id="641" class="Symbol">(</a><a id="642" class="Keyword">quote</a> <a id="648" href="Agda.Builtin.List.html#185" class="InductiveConstructor">List.[]</a><a id="655" class="Symbol">)</a> <a id="657" class="Symbol">(</a><a id="658" class="Number">2</a> <a id="660" href="Reflection.AST.Term.html#2832" class="Function Operator">⋯⟅∷⟆</a> <a id="665" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a><a id="667" class="Symbol">)</a>
+
+<a id="_`∷_"></a><a id="670" href="Data.List.Reflection.html#670" class="Function Operator">_`∷_</a> <a id="675" class="Symbol">:</a> <a id="677" href="Agda.Builtin.Reflection.html#4688" class="Datatype">Term</a> <a id="682" class="Symbol">→</a> <a id="684" href="Agda.Builtin.Reflection.html#4688" class="Datatype">Term</a> <a id="689" class="Symbol">→</a> <a id="691" href="Agda.Builtin.Reflection.html#4688" class="Datatype">Term</a>
+<a id="696" href="Data.List.Reflection.html#696" class="Bound">x</a> <a id="698" href="Data.List.Reflection.html#670" class="Function Operator">`∷</a> <a id="701" href="Data.List.Reflection.html#701" class="Bound">xs</a> <a id="704" class="Symbol">=</a> <a id="706" href="Agda.Builtin.Reflection.html#4846" class="InductiveConstructor">con</a> <a id="710" class="Symbol">(</a><a id="711" class="Keyword">quote</a> <a id="717" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">List._∷_</a><a id="725" class="Symbol">)</a> <a id="727" class="Symbol">(</a><a id="728" class="Number">2</a> <a id="730" href="Reflection.AST.Term.html#2832" class="Function Operator">⋯⟅∷⟆</a> <a id="735" href="Data.List.Reflection.html#696" class="Bound">x</a> <a id="737" href="Reflection.AST.Argument.html#1655" class="InductiveConstructor Operator">⟨∷⟩</a> <a id="741" href="Data.List.Reflection.html#701" class="Bound">xs</a> <a id="744" href="Reflection.AST.Argument.html#1655" class="InductiveConstructor Operator">⟨∷⟩</a> <a id="748" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a><a id="750" class="Symbol">)</a>
+
+<a id="753" class="Comment">------------------------------------------------------------------------</a>
+<a id="826" class="Comment">-- Patterns</a>
+
+<a id="839" class="Comment">-- Can&#39;t be used on the RHS as the omitted args aren&#39;t inferable</a>
+<a id="904" class="Keyword">pattern</a> <a id="`[]`"></a><a id="912" href="Data.List.Reflection.html#912" class="InductiveConstructor">`[]`</a>       <a id="923" class="Symbol">=</a> <a id="925" class="InductiveConstructor">con</a> <a id="929" class="Symbol">(</a><a id="930" class="Keyword">quote</a> <a id="936" href="Agda.Builtin.List.html#185" class="InductiveConstructor">List.[]</a><a id="943" class="Symbol">)</a>  <a id="946" class="Symbol">_</a>
+<a id="948" class="Keyword">pattern</a> <a id="_`∷`_"></a><a id="956" href="Data.List.Reflection.html#956" class="InductiveConstructor Operator">_`∷`_</a> <a id="962" href="Data.List.Reflection.html#999" class="Bound">x</a> <a id="964" href="Data.List.Reflection.html#1005" class="Bound">xs</a> <a id="967" class="Symbol">=</a> <a id="969" class="InductiveConstructor">con</a> <a id="973" class="Symbol">(</a><a id="974" class="Keyword">quote</a> <a id="980" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">List._∷_</a><a id="988" class="Symbol">)</a> <a id="990" class="Symbol">(_</a> <a id="993" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="995" class="Symbol">_</a> <a id="997" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="999" href="Data.List.Reflection.html#999" class="Bound">x</a> <a id="1001" href="Reflection.AST.Argument.html#1655" class="InductiveConstructor Operator">⟨∷⟩</a> <a id="1005" href="Data.List.Reflection.html#1005" class="Bound">xs</a> <a id="1008" href="Reflection.AST.Argument.html#1655" class="InductiveConstructor Operator">⟨∷⟩</a> <a id="1012" class="Symbol">_)</a>
+
+</pre></body></html>

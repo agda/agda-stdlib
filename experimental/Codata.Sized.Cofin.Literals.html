@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Codata.Sized.Cofin.Literals</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Conat Literals</a>
+<a id="124" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="198" class="Symbol">{-#</a> <a id="202" class="Keyword">OPTIONS</a> <a id="210" class="Pragma">--without-K</a> <a id="222" class="Pragma">--sized-types</a> <a id="236" class="Symbol">#-}</a>
+
+<a id="241" class="Keyword">module</a> <a id="248" href="Codata.Sized.Cofin.Literals.html" class="Module">Codata.Sized.Cofin.Literals</a> <a id="276" class="Keyword">where</a>
+
+<a id="283" class="Keyword">open</a> <a id="288" class="Keyword">import</a> <a id="295" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Agda.Builtin.FromNat.html" class="Module">Agda.Builtin.FromNat</a>
+<a id="342" class="Keyword">open</a> <a id="347" class="Keyword">import</a> <a id="354" href="Codata.Sized.Conat.html" class="Module">Codata.Sized.Conat</a>
+<a id="373" class="Keyword">open</a> <a id="378" class="Keyword">import</a> <a id="385" href="Codata.Sized.Conat.Properties.html" class="Module">Codata.Sized.Conat.Properties</a>
+<a id="415" class="Keyword">open</a> <a id="420" class="Keyword">import</a> <a id="427" href="Codata.Sized.Cofin.html" class="Module">Codata.Sized.Cofin</a>
+<a id="446" class="Keyword">open</a> <a id="451" class="Keyword">import</a> <a id="458" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
+
+<a id="number"></a><a id="486" href="Codata.Sized.Cofin.Literals.html#486" class="Function">number</a> <a id="493" class="Symbol">:</a> <a id="495" class="Symbol">∀</a> <a id="497" href="Codata.Sized.Cofin.Literals.html#497" class="Bound">n</a> <a id="499" class="Symbol">→</a> <a id="501" href="Agda.Builtin.FromNat.html#197" class="Record">Number</a> <a id="508" class="Symbol">(</a><a id="509" href="Codata.Sized.Cofin.html#943" class="Datatype">Cofin</a> <a id="515" href="Codata.Sized.Cofin.Literals.html#497" class="Bound">n</a><a id="516" class="Symbol">)</a>
+<a id="518" href="Codata.Sized.Cofin.Literals.html#486" class="Function">number</a> <a id="525" href="Codata.Sized.Cofin.Literals.html#525" class="Bound">n</a> <a id="527" class="Symbol">=</a> <a id="529" class="Keyword">record</a>
+  <a id="538" class="Symbol">{</a> <a id="540" href="Agda.Builtin.FromNat.html#253" class="Field">Constraint</a> <a id="551" class="Symbol">=</a> <a id="553" class="Symbol">λ</a> <a id="555" href="Codata.Sized.Cofin.Literals.html#555" class="Bound">k</a> <a id="557" class="Symbol">→</a> <a id="559" href="Relation.Nullary.Decidable.Core.html#1365" class="Function">True</a> <a id="564" class="Symbol">(</a><a id="565" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="569" href="Codata.Sized.Cofin.Literals.html#555" class="Bound">k</a> <a id="571" href="Codata.Sized.Conat.Properties.html#794" class="Function Operator">ℕ≤?</a> <a id="575" href="Codata.Sized.Cofin.Literals.html#525" class="Bound">n</a><a id="576" class="Symbol">)</a>
+  <a id="580" class="Symbol">;</a> <a id="582" href="Agda.Builtin.FromNat.html#282" class="Field">fromNat</a>    <a id="593" class="Symbol">=</a> <a id="595" class="Symbol">λ</a> <a id="597" href="Codata.Sized.Cofin.Literals.html#597" class="Bound">n</a> <a id="599" class="Symbol">{{</a><a id="601" href="Codata.Sized.Cofin.Literals.html#601" class="Bound">p</a><a id="602" class="Symbol">}}</a> <a id="605" class="Symbol">→</a> <a id="607" href="Codata.Sized.Cofin.html#1278" class="Function">fromℕ&lt;</a> <a id="614" class="Symbol">(</a><a id="615" href="Relation.Nullary.Decidable.Core.html#1484" class="Function">toWitness</a> <a id="625" href="Codata.Sized.Cofin.Literals.html#601" class="Bound">p</a><a id="626" class="Symbol">)</a>
+  <a id="630" class="Symbol">}</a>
+</pre></body></html>

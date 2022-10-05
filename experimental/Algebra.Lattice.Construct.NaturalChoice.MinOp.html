@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Lattice.Construct.NaturalChoice.MinOp</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties of a min operator derived from a spec over a total</a>
+<a id="171" class="Comment">-- preorder.</a>
+<a id="184" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="258" class="Symbol">{-#</a> <a id="262" class="Keyword">OPTIONS</a> <a id="270" class="Pragma">--without-K</a> <a id="282" class="Pragma">--safe</a> <a id="289" class="Symbol">#-}</a>
+
+<a id="294" class="Keyword">open</a> <a id="299" class="Keyword">import</a> <a id="306" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a>
+<a id="322" class="Keyword">open</a> <a id="327" class="Keyword">import</a> <a id="334" href="Algebra.Lattice.Bundles.html" class="Module">Algebra.Lattice.Bundles</a>
+<a id="358" class="Keyword">open</a> <a id="363" class="Keyword">import</a> <a id="370" href="Algebra.Construct.NaturalChoice.Base.html" class="Module">Algebra.Construct.NaturalChoice.Base</a>
+<a id="407" class="Keyword">open</a> <a id="412" class="Keyword">import</a> <a id="419" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="436" class="Keyword">module</a> <a id="443" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html" class="Module">Algebra.Lattice.Construct.NaturalChoice.MinOp</a>
+  <a id="491" class="Symbol">{</a><a id="492" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#492" class="Bound">a</a> <a id="494" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#494" class="Bound">ℓ₁</a> <a id="497" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#497" class="Bound">ℓ₂</a><a id="499" class="Symbol">}</a> <a id="501" class="Symbol">{</a><a id="502" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#502" class="Bound">O</a> <a id="504" class="Symbol">:</a> <a id="506" href="Relation.Binary.Bundles.html#2375" class="Record">TotalPreorder</a> <a id="520" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#492" class="Bound">a</a> <a id="522" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#494" class="Bound">ℓ₁</a> <a id="525" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#497" class="Bound">ℓ₂</a><a id="527" class="Symbol">}</a> <a id="529" class="Symbol">(</a><a id="530" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#530" class="Bound">minOp</a> <a id="536" class="Symbol">:</a> <a id="538" href="Algebra.Construct.NaturalChoice.Base.html#946" class="Record">MinOperator</a> <a id="550" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#502" class="Bound">O</a><a id="551" class="Symbol">)</a> <a id="553" class="Keyword">where</a>
+
+<a id="560" class="Keyword">open</a> <a id="565" href="Relation.Binary.Bundles.html#2375" class="Module">TotalPreorder</a> <a id="579" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#502" class="Bound">O</a>
+<a id="581" class="Keyword">open</a> <a id="586" href="Algebra.Construct.NaturalChoice.Base.html#946" class="Module">MinOperator</a> <a id="598" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#530" class="Bound">minOp</a>
+
+<a id="605" class="Keyword">open</a> <a id="610" class="Keyword">import</a> <a id="617" href="Algebra.Lattice.Structures.html" class="Module">Algebra.Lattice.Structures</a> <a id="644" href="Relation.Binary.Bundles.html#2487" class="Function Operator">_≈_</a>
+<a id="648" class="Keyword">open</a> <a id="653" class="Keyword">import</a> <a id="660" href="Algebra.Construct.NaturalChoice.MinOp.html" class="Module">Algebra.Construct.NaturalChoice.MinOp</a> <a id="698" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#530" class="Bound">minOp</a>
+
+<a id="705" class="Comment">------------------------------------------------------------------------</a>
+<a id="778" class="Comment">-- Structures</a>
+
+<a id="⊓-isSemilattice"></a><a id="793" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#793" class="Function">⊓-isSemilattice</a> <a id="809" class="Symbol">:</a> <a id="811" href="Algebra.Lattice.Structures.html#1052" class="Record">IsSemilattice</a> <a id="825" href="Algebra.Construct.NaturalChoice.Base.html#1021" class="Field Operator">_⊓_</a>
+<a id="829" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#793" class="Function">⊓-isSemilattice</a> <a id="845" class="Symbol">=</a> <a id="847" class="Keyword">record</a>
+  <a id="856" class="Symbol">{</a> <a id="858" href="Algebra.Lattice.Structures.html#1110" class="Field">isBand</a> <a id="865" class="Symbol">=</a> <a id="867" href="Algebra.Construct.NaturalChoice.MinOp.html#3960" class="Function">⊓-isBand</a>
+  <a id="878" class="Symbol">;</a> <a id="880" href="Algebra.Lattice.Structures.html#1132" class="Field">comm</a>   <a id="887" class="Symbol">=</a> <a id="889" href="Algebra.Construct.NaturalChoice.MinOp.html#1550" class="Function">⊓-comm</a>
+  <a id="898" class="Symbol">}</a>
+
+<a id="901" class="Comment">------------------------------------------------------------------------</a>
+<a id="974" class="Comment">-- Bundles</a>
+
+<a id="⊓-semilattice"></a><a id="986" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#986" class="Function">⊓-semilattice</a> <a id="1000" class="Symbol">:</a> <a id="1002" href="Algebra.Lattice.Bundles.html#792" class="Record">Semilattice</a> <a id="1014" class="Symbol">_</a> <a id="1016" class="Symbol">_</a>
+<a id="1018" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#986" class="Function">⊓-semilattice</a> <a id="1032" class="Symbol">=</a> <a id="1034" class="Keyword">record</a>
+  <a id="1043" class="Symbol">{</a> <a id="1045" href="Algebra.Lattice.Bundles.html#968" class="Field">isSemilattice</a> <a id="1059" class="Symbol">=</a> <a id="1061" href="Algebra.Lattice.Construct.NaturalChoice.MinOp.html#793" class="Function">⊓-isSemilattice</a>
+  <a id="1079" class="Symbol">}</a>
+</pre></body></html>

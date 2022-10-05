@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Codata.Sized.Covec.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for Covec</a>
+<a id="139" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="213" class="Symbol">{-#</a> <a id="217" class="Keyword">OPTIONS</a> <a id="225" class="Pragma">--without-K</a> <a id="237" class="Pragma">--sized-types</a> <a id="251" class="Symbol">#-}</a>
+
+<a id="256" class="Keyword">module</a> <a id="263" href="Codata.Sized.Covec.Instances.html" class="Module">Codata.Sized.Covec.Instances</a> <a id="292" class="Keyword">where</a>
+
+<a id="299" class="Keyword">open</a> <a id="304" class="Keyword">import</a> <a id="311" href="Codata.Sized.Covec.Effectful.html" class="Module">Codata.Sized.Covec.Effectful</a>
+
+<a id="341" class="Keyword">instance</a>
+  <a id="covecFunctor"></a><a id="352" href="Codata.Sized.Covec.Instances.html#352" class="Function">covecFunctor</a> <a id="365" class="Symbol">=</a> <a id="367" href="Codata.Sized.Covec.Effectful.html#417" class="Function">functor</a>
+  <a id="covecApplicative"></a><a id="377" href="Codata.Sized.Covec.Instances.html#377" class="Function">covecApplicative</a> <a id="394" class="Symbol">=</a> <a id="396" href="Codata.Sized.Covec.Effectful.html#508" class="Function">applicative</a>
+</pre></body></html>
