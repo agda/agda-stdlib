@@ -1468,8 +1468,6 @@ Other minor changes
   funToFin  : (Fin m → Fin n) → Fin (n ^ m)
   quotient  : Fin (m * n) → Fin m
   remainder : Fin (m * n) → Fin n
-
-  _ℕ-suc_ : (n : ℕ) → Fin n → ℕ
   ```
 
 * Added new proofs in `Data.Fin.Induction`:
@@ -1519,7 +1517,6 @@ Other minor changes
   combine-monoˡ-<    : i < j → combine i k < combine j l
 
   ℕ-ℕ≡toℕ‿ℕ-         : n ℕ-ℕ i ≡ toℕ (n ℕ- i)
-  nℕ-suci<n          : n ℕ-suc i ℕ.< n
 
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
