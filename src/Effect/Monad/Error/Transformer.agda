@@ -30,11 +30,8 @@ record RawMonadError
        (M : Set (e ⊔ a) → Set (e ⊔ a))
        : Set (suc (e ⊔ a)) where
   field
-    rawMonad : RawMonad M
     throw : E → M A
     catch : M A → (E → M A) → M A
-
-  open RawMonad rawMonad public
 
   during : (E → E) → M A → M A
   during f ma = catch ma (throw ∘′ f)
@@ -49,8 +46,7 @@ module Sumₗ where
 
   monadError : RawMonad M → RawMonadError (SumₗT M)
   monadError M = record
-    { rawMonad = monad M
-    ; throw = mkSumₗT ∘′ pure ∘′ inj₁
+    { throw = mkSumₗT ∘′ pure ∘′ inj₁
     ; catch = λ ma k → mkSumₗT $ do
                          a ← runSumₗT ma
                          [ runSumₗT ∘′ k , pure ∘′ inj₂ ]′ a
@@ -63,8 +59,7 @@ module Sumᵣ where
 
   monadError : RawMonad M → RawMonadError (SumᵣT M)
   monadError M = record
-    { rawMonad = monad M
-    ; throw = mkSumᵣT ∘′ pure ∘′ inj₂
+    { throw = mkSumᵣT ∘′ pure ∘′ inj₂
     ; catch = λ ma k → mkSumᵣT $ do
                          a ← runSumᵣT ma
                          [ pure ∘′ inj₁ , runSumᵣT ∘′ k ]′ a

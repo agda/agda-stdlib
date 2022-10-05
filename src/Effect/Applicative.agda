@@ -21,12 +21,12 @@ open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable
-    f : Level
+    f g : Level
     A B C : Set f
 ------------------------------------------------------------------------
 -- The type of raw applicatives
 
-record RawApplicative (F : Set f → Set f) : Set (suc f) where
+record RawApplicative (F : Set f → Set g) : Set (suc f ⊔ g) where
   infixl 4 _<*>_ _<*_ _*>_
   infixl 4 _⊛_ _<⊛_ _⊛>_
   infix  4 _⊗_
@@ -80,7 +80,7 @@ module _ where
 ------------------------------------------------------------------------
 -- The type of raw applicatives with a zero
 
-record RawApplicativeZero (F : Set f → Set f) : Set (suc f) where
+record RawApplicativeZero (F : Set f → Set g) : Set (suc f ⊔ g) where
   field
     rawApplicative : RawApplicative F
     rawEmpty : RawEmpty F
@@ -90,7 +90,7 @@ record RawApplicativeZero (F : Set f → Set f) : Set (suc f) where
 ------------------------------------------------------------------------
 -- The type of raw alternative applicatives
 
-record RawAlternative (F : Set f → Set f) : Set (suc f) where
+record RawAlternative (F : Set f → Set g) : Set (suc f ⊔ g) where
   field
     rawApplicativeZero : RawApplicativeZero F
     rawChoice : RawChoice F
@@ -101,9 +101,9 @@ record RawAlternative (F : Set f → Set f) : Set (suc f) where
 ------------------------------------------------------------------------
 -- The type of applicative morphisms
 
-record Morphism {F₁ F₂ : Set f → Set f}
+record Morphism {F₁ F₂ : Set f → Set g}
                 (A₁ : RawApplicative F₁)
-                (A₂ : RawApplicative F₂) : Set (suc f) where
+                (A₂ : RawApplicative F₂) : Set (suc f ⊔ g) where
   module A₁ = RawApplicative A₁
   module A₂ = RawApplicative A₂
   field

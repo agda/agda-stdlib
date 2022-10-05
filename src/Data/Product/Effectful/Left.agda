@@ -60,7 +60,7 @@ monadT M = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module TraversableA {F} (App : RawApplicative {a ⊔ b} F) where
+module TraversableA {F} (App : RawApplicative {a ⊔ b} {a ⊔ b} F) where
 
   open RawApplicative App
 
@@ -73,7 +73,7 @@ module TraversableA {F} (App : RawApplicative {a ⊔ b} F) where
   forA : ∀ {A B} → Productₗ A → (A → F B) → F (Productₗ B)
   forA = flip mapA
 
-module TraversableM {M} (Mon : RawMonad {a ⊔ b} M) where
+module TraversableM {M} (Mon : RawMonad {a ⊔ b} {a ⊔ b} M) where
 
   open RawMonad Mon
 

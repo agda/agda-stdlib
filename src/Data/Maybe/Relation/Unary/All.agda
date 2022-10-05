@@ -70,8 +70,8 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 ------------------------------------------------------------------------
 -- Traversable-like functions
 
-module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
-         (App : RawApplicative {a ⊔ p} F) where
+module _ {a f} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
+         (App : RawApplicative {a ⊔ p} {f} F) where
 
   open RawApplicative App
 
@@ -85,8 +85,8 @@ module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
   forA : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forA qxs f = mapA f qxs
 
-module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
-         (Mon : RawMonad {a ⊔ p} M) where
+module _ {a f} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
+         (Mon : RawMonad {a ⊔ p} {f} M) where
 
   private App = RawMonad.rawApplicative Mon
 

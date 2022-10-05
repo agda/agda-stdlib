@@ -41,7 +41,7 @@ monad = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module TraversableA {f F} (App : RawApplicative {f} F) where
+module TraversableA {f g F} (App : RawApplicative {f} {g} F) where
 
   open RawApplicative App
 
@@ -55,7 +55,7 @@ module TraversableA {f F} (App : RawApplicative {f} F) where
   forA : ∀ {a} {A : Set a} {B n} → Vec A n → (A → F B) → F (Vec B n)
   forA = flip mapA
 
-module TraversableM {m M} (Mon : RawMonad {m} M) where
+module TraversableM {m n M} (Mon : RawMonad {m} {n} M) where
 
   open RawMonad Mon
 

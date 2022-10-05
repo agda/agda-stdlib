@@ -29,7 +29,7 @@ open Trans public
 -- Reader monad
 
 Reader : (A : Set (r ⊔ a)) → Set (r ⊔ a)
-Reader = Trans.ReaderT Identity
+Reader = Trans.ReaderT 0ℓ Identity
 
 ------------------------------------------------------------------------
 -- Structure

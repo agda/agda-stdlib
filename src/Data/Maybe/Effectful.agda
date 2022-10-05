@@ -22,7 +22,7 @@ open import Function.Base
 
 private
   variable
-    a b f m : Level
+    a b f g m n : Level
     A : Set a
     B : Set b
 
@@ -80,7 +80,7 @@ monadPlus {f} = record
   ; rawChoice    = choice
   }
 
-module TraversableA {F} (App : RawApplicative {f} F) where
+module TraversableA {F} (App : RawApplicative {f} {g} F) where
 
   open RawApplicative App
 
@@ -94,7 +94,7 @@ module TraversableA {F} (App : RawApplicative {f} F) where
   forA : Maybe A → (A → F B) → F (Maybe B)
   forA = flip mapA
 
-module TraversableM {M} (Mon : RawMonad {m} M) where
+module TraversableM {M} (Mon : RawMonad {m} {n} M) where
 
   open RawMonad Mon
 

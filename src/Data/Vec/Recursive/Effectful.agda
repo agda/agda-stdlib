@@ -32,7 +32,7 @@ applicative n = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module _ {f F} (App : RawApplicative {f} F) where
+module _ {f g F} (App : RawApplicative {f} {g} F) where
 
   open RawApplicative App
 
@@ -47,7 +47,7 @@ module _ {f F} (App : RawApplicative {f} F) where
   forA : ∀ {n a} {A : Set a} {B} → A ^ n → (A → F B) → F (B ^ n)
   forA = flip mapA
 
-module _ {m M} (Mon : RawMonad {m} M) where
+module _ {m n M} (Mon : RawMonad {m} {n} M) where
 
   private App = RawMonad.rawApplicative Mon
 

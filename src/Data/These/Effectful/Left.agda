@@ -41,7 +41,7 @@ applicative = record
   ; _<*>_  = ap
   } where
 
-  ap : ∀ {A B}→ Theseₗ (A → B) → Theseₗ A → Theseₗ B
+  ap : ∀ {A B} → Theseₗ (A → B) → Theseₗ A → Theseₗ B
   ap (this w)    t = this w
   ap (that f)    t = map₂ f t
   ap (these w f) t = map (w ∙_) f t

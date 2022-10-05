@@ -14,17 +14,17 @@ open import Effect.Choice
 open import Effect.Empty
 open import Effect.Applicative
 open import Function.Base using (flip; _$′_)
-open import Level using (Level; suc)
+open import Level using (Level; suc; _⊔_)
 
 private
   variable
-    f : Level
+    f g g₁ g₂ : Level
     A B C : Set f
 
 ------------------------------------------------------------------------
 -- The type of raw monads
 
-record RawMonad (F : Set f → Set f) : Set (suc f) where
+record RawMonad (F : Set f → Set g) : Set (suc f ⊔ g) where
   infixl 1 _>>=_ _>>_ _>=>_
   infixr 1 _=<<_ _<=<_
   field
@@ -39,7 +39,7 @@ record RawMonad (F : Set f → Set f) : Set (suc f) where
   _=<<_ : (A → F B) → F A → F B
   _=<<_ = flip _>>=_
 
-  Kleisli : Set f → Set f → Set f
+  Kleisli : Set f → Set f → Set (f ⊔ g)
   Kleisli A B = A → F B
 
   _>=>_ : Kleisli A B → Kleisli B C → Kleisli A C
@@ -69,7 +69,7 @@ module _ where
 ------------------------------------------------------------------------
 -- The type of raw monads with a zero
 
-record RawMonadZero (F : Set f → Set f) : Set (suc f) where
+record RawMonadZero (F : Set f → Set g) : Set (suc f ⊔ g) where
   field
     rawMonad : RawMonad F
     rawEmpty : RawEmpty F
@@ -86,7 +86,7 @@ record RawMonadZero (F : Set f → Set f) : Set (suc f) where
 ------------------------------------------------------------------------
 -- The type of raw monadplus
 
-record RawMonadPlus (F : Set f → Set f) : Set (suc f) where
+record RawMonadPlus (F : Set f → Set g) : Set (suc f ⊔ g) where
   field
     rawMonadZero : RawMonadZero F
     rawChoice    : RawChoice F
@@ -104,10 +104,10 @@ record RawMonadPlus (F : Set f → Set f) : Set (suc f) where
 -- The type of raw monad transformer
 
 -- F has been RawMonadT'd as TF
-record RawMonadTd (F TF : Set f → Set f) : Set (suc f) where
+record RawMonadTd (F : Set f → Set g₁) (TF : Set f → Set g₂) : Set (suc f ⊔ g₁ ⊔ g₂) where
   field
     lift : F A → TF A
     rawMonad : RawMonad TF
 
-RawMonadT : (T : (Set f → Set f) → (Set f → Set f)) → Set (suc f)
+RawMonadT : (T : (Set f → Set g₁) → (Set f → Set g₂)) → Set (suc f ⊔ suc g₁ ⊔ g₂)
 RawMonadT T = ∀ {M} → RawMonad M → RawMonadTd M (T M)

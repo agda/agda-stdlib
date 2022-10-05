@@ -42,10 +42,10 @@ runState : State S A → S → S × A
 runState = Trans.runStateT
 
 evalState : State S A → S → A
-evalState ma s = proj₂ (runState ma s)
+evalState = Trans.evalStateT Id.functor
 
 execState : State S A → S → S
-execState ma s = proj₁ (runState ma s)
+execState = Trans.execStateT Id.functor
 
 ------------------------------------------------------------------------
 -- Structure

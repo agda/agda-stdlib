@@ -40,12 +40,18 @@ textTests = mkTestPool "Text libraries"
   ∷ "tabular"
   ∷ []
 
+monadTests : TestPool
+monadTests = mkTestPool "Monad transformers"
+  $ "counting"
+  ∷ []
+
 main : Main
 main = run $ ignore $ runner
   $ testPaths "system" systemTests
   ∷ testPaths "show"   showTests
   ∷ testPaths "text"   textTests
   ∷ testPaths "data"   dataTests
+  ∷ testPaths "monad"  monadTests
   ∷ [] where
 
   testPaths : String → TestPool → TestPool

@@ -21,45 +21,40 @@ open import Function.Base
 
 private
   variable
-    ℓ s : Level
+    ℓ f s : Level
     A B I : Set ℓ
     S S₁ S₂ : Set s
-    M : Set s → Set s
+    M : Set s → Set f
 
 ------------------------------------------------------------------------
 -- State monad operations
 
 record RawMonadState
        (S : Set s)
-       (M : Set s → Set s)
-       : Set (suc s) where
+       (M : Set s → Set f)
+       : Set (suc s ⊔ f) where
   field
-    rawMonad : RawMonad M
     get : M S
     put : S → M ⊤
-
-  open RawMonad rawMonad public
-
-  modify : (S → S) → M ⊤
-  modify f = get >>= put ∘′ f
+    modify : (S → S) → M ⊤
 
 ------------------------------------------------------------------------
 -- State monad transformer
 
 record StateT
        (S : Set s)
-       (M : Set s → Set s)
+       (M : Set s → Set f)
        (A : Set s)
-       : Set s where
+       : Set (s ⊔ f) where
   constructor mkStateT
   field runStateT : S → M (S × A)
 open StateT public
 
-evalState : RawFunctor M → StateT S M A → S → M A
-evalState M ma s = let open RawFunctor M in proj₂ <$> runStateT ma s
+evalStateT : RawFunctor M → StateT S M A → S → M A
+evalStateT M ma s = let open RawFunctor M in proj₂ <$> runStateT ma s
 
-execState : RawFunctor M → StateT S M A → S → M S
-execState M ma s = let open RawFunctor M in proj₁ <$> runStateT ma s
+execStateT : RawFunctor M → StateT S M A → S → M S
+execStateT M ma s = let open RawFunctor M in proj₁ <$> runStateT ma s
 
 ------------------------------------------------------------------------
 -- Structure
@@ -126,7 +121,7 @@ monadPlus M = record
 ------------------------------------------------------------------------
 -- State monad transformer specifics
 
-monadT : RawMonadT (StateT S)
+monadT : RawMonadT {f = s} {g₁ = f} {g₂ = s ⊔ f} (StateT S)
 monadT M = record
   { lift = λ ma → mkStateT (λ s → (s ,_) <$> ma)
   ; rawMonad = monad M
@@ -134,16 +129,17 @@ monadT M = record
 
 monadState : RawMonad M → RawMonadState S (StateT S M)
 monadState M = record
-  { rawMonad = monad M
-  ; get = mkStateT (λ s → pure (s , s))
+  { get = mkStateT (λ s → pure (s , s))
   ; put = λ s → mkStateT (λ _ → pure (s , _))
+  ; modify = λ f → mkStateT (λ s → pure (f s , _))
   } where open RawMonad M
 
-LiftMonadState : RawMonadState S₁ M →
+LiftMonadState : RawMonad M →
+                 RawMonadState S₁ M →
                  RawMonadState S₁ (StateT S₂ M)
-LiftMonadState Mon = record
-  { rawMonad = monad rawMonad
-  ; get   = mkStateT (λ s₂ → get >>= λ s₁ → pure (s₂ , s₁))
-  ; put   = λ s₁ → mkStateT (λ s₂ → (s₂ , _) <$ put s₁)
+LiftMonadState M Mon = record
+  { get     = mkStateT (λ s₂ → get >>= λ s₁ → pure (s₂ , s₁))
+  ; put    = λ s₁ → mkStateT (λ s₂ → (s₂ , _) <$ put s₁)
+  ; modify = λ f₁ → mkStateT (λ s₂ → (s₂ ,_) <$> modify f₁)
   }
-  where open RawMonadState Mon
+  where open RawMonad M; open RawMonadState Mon
