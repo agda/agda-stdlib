@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The state monad
+-- The state monad transformer
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

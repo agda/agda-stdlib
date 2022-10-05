@@ -68,15 +68,6 @@ monadPlus b = record
   ; rawChoice = choice
   }
 
-monadT : RawMonadT (_∘′ Sumᵣ)
-monadT {M = F} M = record
-  { lift = inj₁ M.<$>_
-  ; rawMonad = mkRawMonad
-                 (F ∘′ Sumᵣ)
-                 (M.pure ∘′ inj₁)
-                 (λ ma f → ma M.>>= [ f , M.pure ∘′ inj₂ ]′)
-  } where module M = RawMonad M
-
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 

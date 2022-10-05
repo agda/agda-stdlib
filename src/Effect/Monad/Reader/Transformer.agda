@@ -34,6 +34,8 @@ record RawMonadReader
     reader : (R → A) → M A
     local  : (R → R) → M A → M A
 
+  open RawMonad rawMonad public
+
   ask : M (Lift a R)
   ask = reader lift
 

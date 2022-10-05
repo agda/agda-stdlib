@@ -62,16 +62,6 @@ monad = record
   ; _>>=_ = [ const ∘′ inj₁ , _|>′_ ]′
   }
 
--- The monad instance also requires some mucking about with universe levels.
-monadT : RawMonadT (_∘′ Sumₗ)
-monadT {M = F} M = record
-  { lift = inj₂ M.<$>_
-  ; rawMonad = mkRawMonad
-                 (F ∘′ Sumₗ)
-                 (M.pure ∘ inj₂)
-                 (λ ma f → ma M.>>= [ M.pure ∘′ inj₁ , f ]′)
-  } where module M = RawMonad M
-
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
