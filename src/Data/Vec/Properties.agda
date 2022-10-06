@@ -528,8 +528,8 @@ lookup-cast₁ eq (_ ∷ xs) (suc i) =
 
 lookup-cast₂ : .(eq : m ≡ n) (xs : Vec A n) (i : Fin m) →
                lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
-lookup-cast₂ {n = suc _} eq (x ∷ _)  zero    = refl
-lookup-cast₂ {n = suc _} eq (_ ∷ xs) (suc i) =
+lookup-cast₂ eq (x ∷ _)  zero    = refl
+lookup-cast₂ eq (_ ∷ xs) (suc i) =
   lookup-cast₂ (suc-injective eq) xs i
 
 lookup-concat : ∀ (xss : Vec (Vec A m) n) i j →
