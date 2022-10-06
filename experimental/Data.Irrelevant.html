@@ -14,19 +14,19 @@
 
 <a id="484" class="Keyword">module</a> <a id="491" href="Data.Irrelevant.html" class="Module">Data.Irrelevant</a> <a id="507" class="Keyword">where</a>
 
-<a id="514" class="Keyword">open</a> <a id="519" class="Keyword">import</a> <a id="526" href="Level.html" class="Module">Level</a> <a id="532" class="Keyword">using</a> <a id="538" class="Symbol">(</a><a id="539" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="544" class="Symbol">)</a>
+<a id="514" class="Keyword">open</a> <a id="519" class="Keyword">import</a> <a id="526" href="Level.html" class="Module">Level</a> <a id="532" class="Keyword">using</a> <a id="538" class="Symbol">(</a><a id="539" href="Agda.Primitive.html#582" class="Postulate">Level</a><a id="544" class="Symbol">)</a>
 
 <a id="547" class="Keyword">private</a>
   <a id="557" class="Keyword">variable</a>
-    <a id="570" href="Data.Irrelevant.html#570" class="Generalizable">a</a> <a id="572" href="Data.Irrelevant.html#572" class="Generalizable">b</a> <a id="574" href="Data.Irrelevant.html#574" class="Generalizable">c</a> <a id="576" class="Symbol">:</a> <a id="578" href="Agda.Primitive.html#597" class="Postulate">Level</a>
-    <a id="588" href="Data.Irrelevant.html#588" class="Generalizable">A</a> <a id="590" class="Symbol">:</a> <a id="592" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="596" href="Data.Irrelevant.html#570" class="Generalizable">a</a>
-    <a id="602" href="Data.Irrelevant.html#602" class="Generalizable">B</a> <a id="604" class="Symbol">:</a> <a id="606" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="610" href="Data.Irrelevant.html#572" class="Generalizable">b</a>
-    <a id="616" href="Data.Irrelevant.html#616" class="Generalizable">C</a> <a id="618" class="Symbol">:</a> <a id="620" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="624" href="Data.Irrelevant.html#574" class="Generalizable">c</a>
+    <a id="570" href="Data.Irrelevant.html#570" class="Generalizable">a</a> <a id="572" href="Data.Irrelevant.html#572" class="Generalizable">b</a> <a id="574" href="Data.Irrelevant.html#574" class="Generalizable">c</a> <a id="576" class="Symbol">:</a> <a id="578" href="Agda.Primitive.html#582" class="Postulate">Level</a>
+    <a id="588" href="Data.Irrelevant.html#588" class="Generalizable">A</a> <a id="590" class="Symbol">:</a> <a id="592" href="Agda.Primitive.html#311" class="Primitive">Set</a> <a id="596" href="Data.Irrelevant.html#570" class="Generalizable">a</a>
+    <a id="602" href="Data.Irrelevant.html#602" class="Generalizable">B</a> <a id="604" class="Symbol">:</a> <a id="606" href="Agda.Primitive.html#311" class="Primitive">Set</a> <a id="610" href="Data.Irrelevant.html#572" class="Generalizable">b</a>
+    <a id="616" href="Data.Irrelevant.html#616" class="Generalizable">C</a> <a id="618" class="Symbol">:</a> <a id="620" href="Agda.Primitive.html#311" class="Primitive">Set</a> <a id="624" href="Data.Irrelevant.html#574" class="Generalizable">c</a>
 
 <a id="627" class="Comment">------------------------------------------------------------------------</a>
 <a id="700" class="Comment">-- Type</a>
 
-<a id="709" class="Keyword">record</a> <a id="Irrelevant"></a><a id="716" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="727" class="Symbol">(</a><a id="728" href="Data.Irrelevant.html#728" class="Bound">A</a> <a id="730" class="Symbol">:</a> <a id="732" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="736" href="Data.Irrelevant.html#570" class="Generalizable">a</a><a id="737" class="Symbol">)</a> <a id="739" class="Symbol">:</a> <a id="741" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="745" href="Data.Irrelevant.html#736" class="Bound">a</a> <a id="747" class="Keyword">where</a>
+<a id="709" class="Keyword">record</a> <a id="Irrelevant"></a><a id="716" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="727" class="Symbol">(</a><a id="728" href="Data.Irrelevant.html#728" class="Bound">A</a> <a id="730" class="Symbol">:</a> <a id="732" href="Agda.Primitive.html#311" class="Primitive">Set</a> <a id="736" href="Data.Irrelevant.html#570" class="Generalizable">a</a><a id="737" class="Symbol">)</a> <a id="739" class="Symbol">:</a> <a id="741" href="Agda.Primitive.html#311" class="Primitive">Set</a> <a id="745" href="Data.Irrelevant.html#736" class="Bound">a</a> <a id="747" class="Keyword">where</a>
   <a id="755" class="Keyword">constructor</a> <a id="[_]"></a><a id="767" href="Data.Irrelevant.html#767" class="InductiveConstructor Operator">[_]</a>
   <a id="773" class="Keyword">field</a> <a id="779" class="Symbol">.</a><a id="Irrelevant.irrelevant"></a><a id="780" href="Data.Irrelevant.html#780" class="Field">irrelevant</a> <a id="791" class="Symbol">:</a> <a id="793" href="Data.Irrelevant.html#728" class="Bound">A</a>
 <a id="795" class="Keyword">open</a> <a id="800" href="Data.Irrelevant.html#716" class="Module">Irrelevant</a> <a id="811" class="Keyword">public</a>

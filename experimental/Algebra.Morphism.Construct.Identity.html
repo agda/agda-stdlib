@@ -21,15 +21,15 @@
         <a id="635" class="Symbol">;</a> <a id="637" class="Keyword">module</a> <a id="644" href="Algebra.Morphism.Structures.html#18548" class="Module">QuasigroupMorphisms</a>
         <a id="672" class="Symbol">;</a> <a id="674" class="Keyword">module</a> <a id="681" href="Algebra.Morphism.Structures.html#22360" class="Module">LoopMorphisms</a>
         <a id="703" class="Symbol">)</a>
-<a id="705" class="Keyword">open</a> <a id="710" class="Keyword">import</a> <a id="717" href="Data.Product.html" class="Module">Data.Product</a> <a id="730" class="Keyword">using</a> <a id="736" class="Symbol">(</a><a id="737" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,_</a><a id="740" class="Symbol">)</a>
+<a id="705" class="Keyword">open</a> <a id="710" class="Keyword">import</a> <a id="717" href="Data.Product.html" class="Module">Data.Product</a> <a id="730" class="Keyword">using</a> <a id="736" class="Symbol">(</a><a id="737" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,_</a><a id="740" class="Symbol">)</a>
 <a id="742" class="Keyword">open</a> <a id="747" class="Keyword">import</a> <a id="754" href="Function.Base.html" class="Module">Function.Base</a> <a id="768" class="Keyword">using</a> <a id="774" class="Symbol">(</a><a id="775" href="Function.Base.html#695" class="Function">id</a><a id="777" class="Symbol">)</a>
-<a id="779" class="Keyword">open</a> <a id="784" class="Keyword">import</a> <a id="791" href="Level.html" class="Module">Level</a> <a id="797" class="Keyword">using</a> <a id="803" class="Symbol">(</a><a id="804" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="809" class="Symbol">)</a>
+<a id="779" class="Keyword">open</a> <a id="784" class="Keyword">import</a> <a id="791" href="Level.html" class="Module">Level</a> <a id="797" class="Keyword">using</a> <a id="803" class="Symbol">(</a><a id="804" href="Agda.Primitive.html#582" class="Postulate">Level</a><a id="809" class="Symbol">)</a>
 <a id="811" class="Keyword">open</a> <a id="816" class="Keyword">import</a> <a id="823" href="Relation.Binary.Morphism.Construct.Identity.html" class="Module">Relation.Binary.Morphism.Construct.Identity</a> <a id="867" class="Keyword">using</a> <a id="873" class="Symbol">(</a><a id="874" href="Relation.Binary.Morphism.Construct.Identity.html#809" class="Function">isRelHomomorphism</a><a id="891" class="Symbol">)</a>
 <a id="893" class="Keyword">open</a> <a id="898" class="Keyword">import</a> <a id="905" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a> <a id="933" class="Keyword">using</a> <a id="939" class="Symbol">(</a><a id="940" href="Relation.Binary.Definitions.html#1339" class="Function">Reflexive</a><a id="949" class="Symbol">)</a>
 
 <a id="952" class="Keyword">private</a>
   <a id="962" class="Keyword">variable</a>
-    <a id="975" href="Algebra.Morphism.Construct.Identity.html#975" class="Generalizable">c</a> <a id="977" href="Algebra.Morphism.Construct.Identity.html#977" class="Generalizable">ℓ</a> <a id="979" class="Symbol">:</a> <a id="981" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="975" href="Algebra.Morphism.Construct.Identity.html#975" class="Generalizable">c</a> <a id="977" href="Algebra.Morphism.Construct.Identity.html#977" class="Generalizable">ℓ</a> <a id="979" class="Symbol">:</a> <a id="981" href="Agda.Primitive.html#582" class="Postulate">Level</a>
 
 <a id="988" class="Comment">------------------------------------------------------------------------</a>
 <a id="1061" class="Comment">-- Magmas</a>
@@ -52,7 +52,7 @@
   <a id="1500" href="Algebra.Morphism.Construct.Identity.html#1500" class="Function">isMagmaIsomorphism</a> <a id="1519" class="Symbol">:</a> <a id="1521" href="Algebra.Morphism.Structures.html#1785" class="Record">IsMagmaIsomorphism</a> <a id="1540" href="Function.Base.html#695" class="Function">id</a>
   <a id="1545" href="Algebra.Morphism.Construct.Identity.html#1500" class="Function">isMagmaIsomorphism</a> <a id="1564" class="Symbol">=</a> <a id="1566" class="Keyword">record</a>
     <a id="1577" class="Symbol">{</a> <a id="1579" href="Algebra.Morphism.Structures.html#1864" class="Field">isMagmaMonomorphism</a> <a id="1599" class="Symbol">=</a> <a id="1601" href="Algebra.Morphism.Construct.Identity.html#1346" class="Function">isMagmaMonomorphism</a>
-    <a id="1625" class="Symbol">;</a> <a id="1627" href="Algebra.Morphism.Structures.html#1916" class="Field">surjective</a> <a id="1638" class="Symbol">=</a> <a id="1640" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="1643" href="Algebra.Morphism.Construct.Identity.html#1119" class="Bound">refl</a>
+    <a id="1625" class="Symbol">;</a> <a id="1627" href="Algebra.Morphism.Structures.html#1916" class="Field">surjective</a> <a id="1638" class="Symbol">=</a> <a id="1640" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="1643" href="Algebra.Morphism.Construct.Identity.html#1119" class="Bound">refl</a>
     <a id="1652" class="Symbol">}</a>
 
 <a id="1655" class="Comment">------------------------------------------------------------------------</a>
@@ -76,7 +76,7 @@
   <a id="2169" href="Algebra.Morphism.Construct.Identity.html#2169" class="Function">isMonoidIsomorphism</a> <a id="2189" class="Symbol">:</a> <a id="2191" href="Algebra.Morphism.Structures.html#3507" class="Record">IsMonoidIsomorphism</a> <a id="2211" href="Function.Base.html#695" class="Function">id</a>
   <a id="2216" href="Algebra.Morphism.Construct.Identity.html#2169" class="Function">isMonoidIsomorphism</a> <a id="2236" class="Symbol">=</a> <a id="2238" class="Keyword">record</a>
     <a id="2249" class="Symbol">{</a> <a id="2251" href="Algebra.Morphism.Structures.html#3587" class="Field">isMonoidMonomorphism</a> <a id="2272" class="Symbol">=</a> <a id="2274" href="Algebra.Morphism.Construct.Identity.html#2010" class="Function">isMonoidMonomorphism</a>
-    <a id="2299" class="Symbol">;</a> <a id="2301" href="Algebra.Morphism.Structures.html#3641" class="Field">surjective</a> <a id="2312" class="Symbol">=</a> <a id="2314" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="2317" href="Algebra.Morphism.Construct.Identity.html#1789" class="Bound">refl</a>
+    <a id="2299" class="Symbol">;</a> <a id="2301" href="Algebra.Morphism.Structures.html#3641" class="Field">surjective</a> <a id="2312" class="Symbol">=</a> <a id="2314" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="2317" href="Algebra.Morphism.Construct.Identity.html#1789" class="Bound">refl</a>
     <a id="2326" class="Symbol">}</a>
 
 <a id="2329" class="Comment">------------------------------------------------------------------------</a>
@@ -100,7 +100,7 @@
   <a id="2840" href="Algebra.Morphism.Construct.Identity.html#2840" class="Function">isGroupIsomorphism</a> <a id="2859" class="Symbol">:</a> <a id="2861" href="Algebra.Morphism.Structures.html#5492" class="Record">IsGroupIsomorphism</a> <a id="2880" href="Function.Base.html#695" class="Function">id</a>
   <a id="2885" href="Algebra.Morphism.Construct.Identity.html#2840" class="Function">isGroupIsomorphism</a> <a id="2904" class="Symbol">=</a> <a id="2906" class="Keyword">record</a>
     <a id="2917" class="Symbol">{</a> <a id="2919" href="Algebra.Morphism.Structures.html#5571" class="Field">isGroupMonomorphism</a> <a id="2939" class="Symbol">=</a> <a id="2941" href="Algebra.Morphism.Construct.Identity.html#2686" class="Function">isGroupMonomorphism</a>
-    <a id="2965" class="Symbol">;</a> <a id="2967" href="Algebra.Morphism.Structures.html#5623" class="Field">surjective</a> <a id="2978" class="Symbol">=</a> <a id="2980" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="2983" href="Algebra.Morphism.Construct.Identity.html#2460" class="Bound">refl</a>
+    <a id="2965" class="Symbol">;</a> <a id="2967" href="Algebra.Morphism.Structures.html#5623" class="Field">surjective</a> <a id="2978" class="Symbol">=</a> <a id="2980" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="2983" href="Algebra.Morphism.Construct.Identity.html#2460" class="Bound">refl</a>
     <a id="2992" class="Symbol">}</a>
 
 <a id="2995" class="Comment">------------------------------------------------------------------------</a>
@@ -124,7 +124,7 @@
   <a id="3610" href="Algebra.Morphism.Construct.Identity.html#3610" class="Function">isNearSemiringIsomorphism</a> <a id="3636" class="Symbol">:</a> <a id="3638" href="Algebra.Morphism.Structures.html#8132" class="Record">IsNearSemiringIsomorphism</a> <a id="3664" href="Function.Base.html#695" class="Function">id</a>
   <a id="3669" href="Algebra.Morphism.Construct.Identity.html#3610" class="Function">isNearSemiringIsomorphism</a> <a id="3695" class="Symbol">=</a> <a id="3697" class="Keyword">record</a>
     <a id="3708" class="Symbol">{</a> <a id="3710" href="Algebra.Morphism.Structures.html#8218" class="Field">isNearSemiringMonomorphism</a> <a id="3737" class="Symbol">=</a> <a id="3739" href="Algebra.Morphism.Construct.Identity.html#3421" class="Function">isNearSemiringMonomorphism</a>
-    <a id="3770" class="Symbol">;</a> <a id="3772" href="Algebra.Morphism.Structures.html#8284" class="Field">surjective</a> <a id="3783" class="Symbol">=</a> <a id="3785" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="3788" href="Algebra.Morphism.Construct.Identity.html#3148" class="Bound">refl</a>
+    <a id="3770" class="Symbol">;</a> <a id="3772" href="Algebra.Morphism.Structures.html#8284" class="Field">surjective</a> <a id="3783" class="Symbol">=</a> <a id="3785" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="3788" href="Algebra.Morphism.Construct.Identity.html#3148" class="Bound">refl</a>
     <a id="3797" class="Symbol">}</a>
 
 <a id="3800" class="Comment">------------------------------------------------------------------------</a>
@@ -148,7 +148,7 @@
   <a id="4372" href="Algebra.Morphism.Construct.Identity.html#4372" class="Function">isSemiringIsomorphism</a> <a id="4394" class="Symbol">:</a> <a id="4396" href="Algebra.Morphism.Structures.html#10954" class="Record">IsSemiringIsomorphism</a> <a id="4418" href="Function.Base.html#695" class="Function">id</a>
   <a id="4423" href="Algebra.Morphism.Construct.Identity.html#4372" class="Function">isSemiringIsomorphism</a> <a id="4445" class="Symbol">=</a> <a id="4447" class="Keyword">record</a>
     <a id="4458" class="Symbol">{</a> <a id="4460" href="Algebra.Morphism.Structures.html#11036" class="Field">isSemiringMonomorphism</a> <a id="4483" class="Symbol">=</a> <a id="4485" href="Algebra.Morphism.Construct.Identity.html#4203" class="Function">isSemiringMonomorphism</a>
-    <a id="4512" class="Symbol">;</a> <a id="4514" href="Algebra.Morphism.Structures.html#11094" class="Field">surjective</a> <a id="4525" class="Symbol">=</a> <a id="4527" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="4530" href="Algebra.Morphism.Construct.Identity.html#3940" class="Bound">refl</a>
+    <a id="4512" class="Symbol">;</a> <a id="4514" href="Algebra.Morphism.Structures.html#11094" class="Field">surjective</a> <a id="4525" class="Symbol">=</a> <a id="4527" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="4530" href="Algebra.Morphism.Construct.Identity.html#3940" class="Bound">refl</a>
     <a id="4539" class="Symbol">}</a>
 
 <a id="4542" class="Comment">------------------------------------------------------------------------</a>
@@ -172,7 +172,7 @@
   <a id="5178" href="Algebra.Morphism.Construct.Identity.html#5178" class="Function">isRingWithoutOneIsoMorphism</a> <a id="5206" class="Symbol">:</a> <a id="5208" href="Algebra.Morphism.Structures.html#13908" class="Record">IsRingWithoutOneIsoMorphism</a> <a id="5236" href="Function.Base.html#695" class="Function">id</a>
   <a id="5241" href="Algebra.Morphism.Construct.Identity.html#5178" class="Function">isRingWithoutOneIsoMorphism</a> <a id="5269" class="Symbol">=</a> <a id="5271" class="Keyword">record</a>
     <a id="5282" class="Symbol">{</a> <a id="5284" href="Algebra.Morphism.Structures.html#13996" class="Field">isRingWithoutOneMonomorphism</a> <a id="5313" class="Symbol">=</a> <a id="5315" href="Algebra.Morphism.Construct.Identity.html#4979" class="Function">isRingWithoutOneMonomorphism</a>
-    <a id="5348" class="Symbol">;</a> <a id="5350" href="Algebra.Morphism.Structures.html#14066" class="Field">surjective</a> <a id="5361" class="Symbol">=</a> <a id="5363" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="5366" href="Algebra.Morphism.Construct.Identity.html#4699" class="Bound">refl</a>
+    <a id="5348" class="Symbol">;</a> <a id="5350" href="Algebra.Morphism.Structures.html#14066" class="Field">surjective</a> <a id="5361" class="Symbol">=</a> <a id="5363" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="5366" href="Algebra.Morphism.Construct.Identity.html#4699" class="Bound">refl</a>
     <a id="5375" class="Symbol">}</a>
 
 <a id="5378" class="Comment">------------------------------------------------------------------------</a>
@@ -196,7 +196,7 @@
   <a id="5896" href="Algebra.Morphism.Construct.Identity.html#5896" class="Function">isRingIsomorphism</a> <a id="5914" class="Symbol">:</a> <a id="5916" href="Algebra.Morphism.Structures.html#17203" class="Record">IsRingIsomorphism</a> <a id="5934" href="Function.Base.html#695" class="Function">id</a>
   <a id="5939" href="Algebra.Morphism.Construct.Identity.html#5896" class="Function">isRingIsomorphism</a> <a id="5957" class="Symbol">=</a> <a id="5959" class="Keyword">record</a>
     <a id="5970" class="Symbol">{</a> <a id="5972" href="Algebra.Morphism.Structures.html#17281" class="Field">isRingMonomorphism</a> <a id="5991" class="Symbol">=</a> <a id="5993" href="Algebra.Morphism.Construct.Identity.html#5747" class="Function">isRingMonomorphism</a>
-    <a id="6016" class="Symbol">;</a> <a id="6018" href="Algebra.Morphism.Structures.html#17331" class="Field">surjective</a> <a id="6029" class="Symbol">=</a> <a id="6031" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="6034" href="Algebra.Morphism.Construct.Identity.html#5506" class="Bound">refl</a>
+    <a id="6016" class="Symbol">;</a> <a id="6018" href="Algebra.Morphism.Structures.html#17331" class="Field">surjective</a> <a id="6029" class="Symbol">=</a> <a id="6031" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="6034" href="Algebra.Morphism.Construct.Identity.html#5506" class="Bound">refl</a>
     <a id="6043" class="Symbol">}</a>
 
 <a id="6046" class="Comment">------------------------------------------------------------------------</a>
@@ -222,7 +222,7 @@
   <a id="6697" href="Algebra.Morphism.Construct.Identity.html#6697" class="Function">isQuasigroupIsomorphism</a> <a id="6721" class="Symbol">:</a> <a id="6723" href="Algebra.Morphism.Structures.html#21233" class="Record">IsQuasigroupIsomorphism</a> <a id="6747" href="Function.Base.html#695" class="Function">id</a>
   <a id="6752" href="Algebra.Morphism.Construct.Identity.html#6697" class="Function">isQuasigroupIsomorphism</a> <a id="6776" class="Symbol">=</a> <a id="6778" class="Keyword">record</a>
     <a id="6789" class="Symbol">{</a> <a id="6791" href="Algebra.Morphism.Structures.html#21317" class="Field">isQuasigroupMonomorphism</a> <a id="6816" class="Symbol">=</a> <a id="6818" href="Algebra.Morphism.Construct.Identity.html#6518" class="Function">isQuasigroupMonomorphism</a>
-    <a id="6847" class="Symbol">;</a> <a id="6849" href="Algebra.Morphism.Structures.html#21379" class="Field">surjective</a> <a id="6860" class="Symbol">=</a> <a id="6862" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="6865" href="Algebra.Morphism.Construct.Identity.html#6191" class="Bound">refl</a>
+    <a id="6847" class="Symbol">;</a> <a id="6849" href="Algebra.Morphism.Structures.html#21379" class="Field">surjective</a> <a id="6860" class="Symbol">=</a> <a id="6862" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="6865" href="Algebra.Morphism.Construct.Identity.html#6191" class="Bound">refl</a>
     <a id="6874" class="Symbol">}</a>
 
 <a id="6877" class="Comment">------------------------------------------------------------------------</a>
@@ -246,7 +246,7 @@
   <a id="7376" href="Algebra.Morphism.Construct.Identity.html#7376" class="Function">isLoopIsomorphism</a> <a id="7394" class="Symbol">:</a> <a id="7396" href="Algebra.Morphism.Structures.html#23577" class="Record">IsLoopIsomorphism</a> <a id="7414" href="Function.Base.html#695" class="Function">id</a>
   <a id="7419" href="Algebra.Morphism.Construct.Identity.html#7376" class="Function">isLoopIsomorphism</a> <a id="7437" class="Symbol">=</a> <a id="7439" class="Keyword">record</a>
     <a id="7450" class="Symbol">{</a> <a id="7452" href="Algebra.Morphism.Structures.html#23655" class="Field">isLoopMonomorphism</a> <a id="7471" class="Symbol">=</a> <a id="7473" href="Algebra.Morphism.Construct.Identity.html#7227" class="Function">isLoopMonomorphism</a>
-    <a id="7496" class="Symbol">;</a> <a id="7498" href="Algebra.Morphism.Structures.html#23707" class="Field">surjective</a> <a id="7509" class="Symbol">=</a> <a id="7511" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,</a> <a id="7514" href="Algebra.Morphism.Construct.Identity.html#7004" class="Bound">refl</a>
+    <a id="7496" class="Symbol">;</a> <a id="7498" href="Algebra.Morphism.Structures.html#23707" class="Field">surjective</a> <a id="7509" class="Symbol">=</a> <a id="7511" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,</a> <a id="7514" href="Algebra.Morphism.Construct.Identity.html#7004" class="Bound">refl</a>
     <a id="7523" class="Symbol">}</a>
 
 </pre></body></html>
