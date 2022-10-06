@@ -551,11 +551,13 @@ applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)
 ------------------------------------------------------------------------
 -- tabulate
 
-tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ i → P (f i)) → All P (tabulate f)
+tabulate⁺ : ∀ {n} {f : Fin n → A} →
+            (∀ i → P (f i)) → All P (tabulate f)
 tabulate⁺ {n = zero}  Pf = []
 tabulate⁺ {n = suc _} Pf = Pf zero ∷ tabulate⁺ (Pf ∘ suc)
 
-tabulate⁻ : ∀ {n} {f : Fin n → A} → All P (tabulate f) → (∀ i → P (f i))
+tabulate⁻ : ∀ {n} {f : Fin n → A} →
+            All P (tabulate f) → (∀ i → P (f i))
 tabulate⁻ (px ∷ _) zero    = px
 tabulate⁻ (_ ∷ pf) (suc i) = tabulate⁻ pf i
 
