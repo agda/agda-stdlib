@@ -133,11 +133,13 @@ module _ {_~_ : REL A B p} where
 
 module _ {P : A → Set p} where
 
-  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ i → P (f i)) → All P (tabulate f)
+  tabulate⁺ : ∀ {n} {f : Fin n → A} →
+              (∀ i → P (f i)) → All P (tabulate f)
   tabulate⁺ {zero}  Pf = []
   tabulate⁺ {suc n} Pf = Pf zero ∷ tabulate⁺ (Pf ∘ suc)
 
-  tabulate⁻ : ∀ {n} {f : Fin n → A} → All P (tabulate f) → (∀ i → P (f i))
+  tabulate⁻ : ∀ {n} {f : Fin n → A} →
+              All P (tabulate f) → (∀ i → P (f i))
   tabulate⁻ (px ∷ _) zero    = px
   tabulate⁻ (_ ∷ pf) (suc i) = tabulate⁻ pf i
 
