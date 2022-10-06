@@ -68,8 +68,8 @@ cRec = build cRecBuilder
 
 <′-wellFounded n = acc (<′-wellFounded′ n)
 
-<′-wellFounded′ (suc n) n n<′1+n            = <′-wellFounded n
-<′-wellFounded′ (suc n) m (m<′n⇒m<′1+n m<n) = <′-wellFounded′ n m m<n
+<′-wellFounded′ (suc n) n <′-base       = <′-wellFounded n
+<′-wellFounded′ (suc n) m (<′-step m<n) = <′-wellFounded′ n m m<n
 
 module _ {ℓ : Level} where
   open WF.All <′-wellFounded ℓ public

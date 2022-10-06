@@ -210,15 +210,13 @@ data _≤′_ (m : ℕ) : ℕ → Set where
   ≤′-refl :                         m ≤′ m
   ≤′-step : ∀ {n} (m≤′n : m ≤′ n) → m ≤′ suc n
 
-pattern m≤′n⇒m≤′1+n = ≤′-step
-
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
 
 -- Smart constructors of _<′_
 
-pattern n<′1+n               = ≤′-refl
-pattern m<′n⇒m<′1+n {n} m<′n = ≤′-step {n} m<′n
+pattern <′-base          = ≤′-refl
+pattern <′-step {n} m<′n = ≤′-step {n} m<′n
 
 _≥′_ : Rel ℕ 0ℓ
 m ≥′ n = n ≤′ m
