@@ -8,14 +8,14 @@
 
 module Data.Vec.Relation.Unary.Unique.Setoid.Properties where
 
-open import Data.Fin.Base using (zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.Vec.Relation.Unary.Unique.Setoid
 import Data.Vec.Relation.Unary.AllPairs.Properties as AllPairsₚ
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; _+_)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
 open import Relation.Binary using (Rel; Setoid)
@@ -33,8 +33,8 @@ private
 
 module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
 
-  open Setoid S renaming (Carrier to A; _≈_ to _≈₁_)
-  open Setoid R renaming (Carrier to B; _≈_ to _≈₂_)
+  open Setoid S renaming (_≈_ to _≈₁_)
+  open Setoid R renaming (_≈_ to _≈₂_)
 
   map⁺ : ∀ {f} → (∀ {x y} → f x ≈₂ f y → x ≈₁ y) →
          ∀ {n xs} → Unique S {n} xs → Unique R {n} (map f xs)
@@ -58,8 +58,8 @@ module _ (S : Setoid a ℓ) where
 
   open Setoid S renaming (Carrier to A)
 
-  tabulate⁺ : ∀ {n} {f} → (∀ {i j} → f i ≈ f j → i ≡ j) →
-              Unique S (tabulate {n = n} f)
+  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → f i ≈ f j → i ≡ j) →
+              Unique S (tabulate f)
   tabulate⁺ f-inj = AllPairsₚ.tabulate⁺ (_∘ f-inj)
 
 ------------------------------------------------------------------------
@@ -67,7 +67,7 @@ module _ (S : Setoid a ℓ) where
 
 module _ (S : Setoid a ℓ) where
 
-  open Setoid S renaming (Carrier to A)
+  open Setoid S
 
   lookup-injective : ∀ {n xs} → Unique S {n} xs → ∀ i j → lookup xs i ≈ lookup xs j → i ≡ j
   lookup-injective (px ∷ pxs) zero zero eq = P.refl

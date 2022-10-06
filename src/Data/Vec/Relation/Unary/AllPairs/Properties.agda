@@ -14,6 +14,7 @@ open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
 open import Data.Bool.Base using (true; false)
+open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _+_)
 open import Function using (_∘_)
@@ -82,8 +83,8 @@ module _ {R : Rel A ℓ} where
 
 module _ {R : Rel A ℓ} where
 
-  tabulate⁺ : ∀ {n} {f} → (∀ {i j} → i ≢ j → R (f i) (f j)) →
-              AllPairs R (tabulate {n = n} f)
+  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → i ≢ j → R (f i) (f j)) →
+              AllPairs R (tabulate f)
   tabulate⁺ {zero}  fᵢ~fⱼ = []
   tabulate⁺ {suc n} fᵢ~fⱼ =
     Allₚ.tabulate⁺ (λ j → fᵢ~fⱼ λ()) ∷

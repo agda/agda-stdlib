@@ -9,7 +9,7 @@
 module Data.Vec.Relation.Unary.All.Properties where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Fin.Base using (zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -133,11 +133,11 @@ module _ {_~_ : REL A B p} where
 
 module _ {P : A → Set p} where
 
-  tabulate⁺ : ∀ {n} {f} → (∀ i → P (f i)) → All P (tabulate {n = n} f)
+  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ i → P (f i)) → All P (tabulate f)
   tabulate⁺ {zero}  Pf = []
   tabulate⁺ {suc n} Pf = Pf zero ∷ tabulate⁺ (Pf ∘ suc)
 
-  tabulate⁻ : ∀ {n} {f} → All P (tabulate {n = n} f) → (∀ i → P (f i))
+  tabulate⁻ : ∀ {n} {f : Fin n → A} → All P (tabulate f) → (∀ i → P (f i))
   tabulate⁻ (px ∷ _) zero    = px
   tabulate⁻ (_ ∷ pf) (suc i) = tabulate⁻ pf i
 

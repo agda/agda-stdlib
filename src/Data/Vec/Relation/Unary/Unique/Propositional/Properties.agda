@@ -13,6 +13,7 @@ open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.Vec.Relation.Unary.Unique.Propositional
 import Data.Vec.Relation.Unary.Unique.Setoid.Properties as Setoid
+open import Data.Fin.Base using(Fin)
 open import Data.Nat.Base
 open import Data.Nat.Properties using (<⇒≢)
 open import Data.Product using (_×_; _,_)
@@ -56,7 +57,7 @@ module _ {A : Set a} where
 
 module _ {A : Set a} where
 
-  tabulate⁺ : ∀ {n} {f} → (∀ {i j} → f i ≡ f j → i ≡ j) → Unique (tabulate {n = n} f)
+  tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → f i ≡ f j → i ≡ j) → Unique (tabulate f)
   tabulate⁺ = Setoid.tabulate⁺ (setoid A)
 
 ------------------------------------------------------------------------
