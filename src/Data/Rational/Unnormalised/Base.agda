@@ -8,6 +8,7 @@
 
 module Data.Rational.Unnormalised.Base where
 
+open import Algebra.Bundles.Raw
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
@@ -286,3 +287,74 @@ fracPart p@record{} = ∣ p - truncate p / 1 ∣
 syntax floor    p = ⌊ p ⌋
 syntax ceiling  p = ⌈ p ⌉
 syntax truncate p = [ p ]
+
+------------------------------------------------------------------------
+-- Raw bundles for _+_
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≃_
+  ; _∙_ = _+_
+  }
+
++-rawMonoid : RawMonoid 0ℓ 0ℓ
++-rawMonoid = record
+  { _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε   = 0ℚᵘ
+  }
+
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε = 0ℚᵘ
+  ; _⁻¹ = -_
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℚᵘ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
+------------------------------------------------------------------------
+-- Raw bundles for _*_
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≃_
+  ; _∙_ = _*_
+  }
+
+*-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-rawMonoid = record
+  { _≈_ = _≃_
+  ; _∙_ = _*_
+  ; ε   = 1ℚᵘ
+  }

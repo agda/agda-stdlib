@@ -21,7 +21,7 @@ import Data.Product.Properties as Prodₚ
 open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Function
+open import Function.Base using (const; _∘′_; _∘_)
 open import Relation.Nullary
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Binary using (Rel)
@@ -168,6 +168,18 @@ projₙ 1               zero    v        = v
 projₙ (suc n@(suc _)) zero    (v , _)  = v
 projₙ (suc n@(suc _)) (suc k) (_ , vs) = projₙ n k vs
 projₙ 1 (suc ()) v
+
+------------------------------------------------------------------------
+-- zip
+
+zipWith : ∀ n {lsa lsb lsc}
+          {as : Sets n lsa} {bs : Sets n lsb} {cs : Sets n lsc} →
+          (∀ k → Projₙ as k → Projₙ bs k → Projₙ cs k) →
+          Product n as → Product n bs → Product n cs
+zipWith 0               f _        _        = _
+zipWith 1               f v        w        = f zero v w
+zipWith (suc n@(suc _)) f (v , vs) (w , ws) =
+  f zero v w , zipWith n (λ k → f (suc k)) vs ws
 
 ------------------------------------------------------------------------
 -- removal of the k-th component
