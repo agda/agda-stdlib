@@ -11,6 +11,7 @@
 
 module Data.Nat.Base where
 
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
@@ -281,3 +282,19 @@ compare (suc m) (suc n) with compare m n
 ... | less    m k = less (suc m) k
 ... | equal   m   = equal (suc m)
 ... | greater n k = greater (suc n) k
+
+------------------------------------------------------------------------
+-- Raw bundles
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0
+  }

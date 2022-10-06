@@ -18,6 +18,7 @@ open import Data.Nat.Binary.Base
 open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
 open import Data.Nat.DivMod using (_%_; _/_; m/n≤m; +-distrib-/-∣ˡ)
 open import Data.Nat.Divisibility using (∣-refl)
+import Data.Nat.Base as ℕᵇ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
@@ -615,25 +616,7 @@ module ≤-Reasoning = InequalityReasoning
 
 ------------------------------------------------------------------------
 -- Properties of _+_
-------------------------------------------------------------------------
 
-------------------------------------------------------------------------
--- Raw bundles for _+_
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  }
-
-+-0-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-0-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0ᵇ
-  }
-
-------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _+_
 
 toℕ-homo-+ : ∀ x y → toℕ (x + y) ≡ toℕ x ℕ.+ toℕ y
@@ -687,19 +670,19 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
   toℕ 1+[2 x ] ℕ.+ toℕ 1+[2 y ]           ∎
   where open ≡-Reasoning;  m = toℕ x;  n = toℕ y
 
-toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕₚ.+-rawMagma toℕ
+toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕᵇ.+-rawMagma toℕ
 toℕ-isMagmaHomomorphism-+ = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
   ; homo              = toℕ-homo-+
   }
 
-toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
+toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕᵇ.+-0-rawMonoid toℕ
 toℕ-isMonoidHomomorphism-+ = record
   { isMagmaHomomorphism = toℕ-isMagmaHomomorphism-+
   ; ε-homo              = refl
   }
 
-toℕ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
+toℕ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℕᵇ.+-0-rawMonoid toℕ
 toℕ-isMonoidMonomorphism-+ = record
   { isMonoidHomomorphism = toℕ-isMonoidHomomorphism-+
   ; injective            = toℕ-injective
@@ -905,25 +888,7 @@ x≢0⇒x+y≢0 {zero}     _    0≢0 =  contradiction refl 0≢0
 
 ------------------------------------------------------------------------
 -- Properties of _*_
-------------------------------------------------------------------------
 
-------------------------------------------------------------------------
--- Raw bundles for _*_
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1ᵇ
-  }
-
-------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _*_
 
 private  2*ₙ2*ₙ =  (2 ℕ.*_) ∘ (2 ℕ.*_)

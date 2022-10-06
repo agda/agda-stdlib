@@ -671,6 +671,32 @@ Major improvements
 * Beneficieries of this change include `Data.Rational.Unnormalised.Base` whose
   dependencies are now significantly smaller.
 
+### Moved raw bundles from Data.X.Properties to Data.X.Base
+
+* As mentioned by MatthewDaggitt in Issue #1755, Raw bundles defined in Data.X.Properties
+  should be defined in Data.X.Base as they don't require any properties.
+  * Moved raw bundles From `Data.Nat.Properties` to `Data.Nat.Base`
+  * Moved raw bundles From `Data.Nat.Binary.Properties` to `Data.Nat.Binary.Base`
+  * Moved raw bundles From `Data.Rational.Properties` to `Data.Rational.Base`
+  * Moved raw bundles From `Data.Rational.Unnormalised.Properties` to `Data.Rational.Unnormalised.Base`
+
+### Moved the definition of RawX from `Algebra.X.Bundles` to `Algebra.X.Bundles.Raw`
+
+* A new module `Algebra.Bundles.Raw` containing the definitions of the raw bundles
+  can be imported at much lower cost from `Data.X.Base`.
+  The following definitions have been moved:
+  * `RawMagma`
+  * `RawMonoid`
+  * `RawGroup`
+  * `RawNearSemiring`
+  * `RawSemiring`
+  * `RawRingWithoutOne`
+  * `RawRing`
+  * `RawQuasigroup`
+  * `RawLoop`
+* A new module `Algebra.Lattice.Bundles.Raw` is also introduced.
+  * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
+
 Deprecated modules
 ------------------
 
@@ -1268,6 +1294,11 @@ New modules
   Algebra.Properties.Quasigroup
   ```
 
+* Some n-ary functions manipulating lists
+  ```
+  Data.List.Nary.NonDependent
+  ```
+
 Other minor changes
 -------------------
 
@@ -1773,6 +1804,12 @@ Other minor changes
   pos⊓pos⇒pos          : .{{_ : Positive p}}    .{{_ : Positive q}}    → Positive (p ⊓ q)
   pos⊔pos⇒pos          : .{{_ : Positive p}}    .{{_ : Positive q}}    → Positive (p ⊔ q)
   1/nonZero⇒nonZero    : .{{_ : NonZero p}} → NonZero (1/ p)
+  ```
+
+* Added new functions to `Data.Product.Nary.NonDependent`:
+  ```agda
+  zipWith : (∀ k → Projₙ as k → Projₙ bs k → Projₙ cs k) →
+            Product n as → Product n bs → Product n cs
   ```
 
 * Added new proof to `Data.Product.Properties`:
