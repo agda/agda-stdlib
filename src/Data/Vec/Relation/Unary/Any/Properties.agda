@@ -361,7 +361,8 @@ module _ {P : Pred A p} where
   tabulate⁺ zero    p = here p
   tabulate⁺ (suc i) p = there (tabulate⁺ i p)
 
-  tabulate⁻ : ∀ {n} {f : Fin n → A} → Any P (tabulate f) → ∃ λ i → P (f i)
+  tabulate⁻ : ∀ {n} {f : Fin n → A} →
+              Any P (tabulate f) → ∃ λ i → P (f i)
   tabulate⁻ (here p)  = zero , p
   tabulate⁻ (there p) = Prod.map suc id (tabulate⁻ p)
 
