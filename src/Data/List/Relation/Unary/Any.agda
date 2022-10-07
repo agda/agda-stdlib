@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.Any where
 
 open import Data.Empty
-open import Data.Fin.Base
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)

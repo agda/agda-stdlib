@@ -1551,6 +1551,8 @@ Other minor changes
   combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
   combine-monoˡ-<    : i < j → combine i k < combine j l
 
+  ℕ-ℕ≡toℕ‿ℕ-         : n ℕ-ℕ i ≡ toℕ (n ℕ- i)
+
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
 
