@@ -952,6 +952,7 @@ Deprecated names
   ↧[p/q]≡q         ↦  ↧[n/d]≡d
   *-monoˡ-≤-pos    ↦  *-monoˡ-≤-nonNeg
   *-monoʳ-≤-pos    ↦  *-monoʳ-≤-nonNeg
+  ≤-steps          ↦  p≤q⇒p≤r+q
   *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
   *-cancelˡ-<-pos  ↦  *-cancelˡ-<-nonNeg
