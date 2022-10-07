@@ -37,7 +37,7 @@ private
 ------------------------------------------------------------------------
 -- lookup
 
-lookup⁺ : All P xs → (i : Fin n) → P (Vec.lookup xs i)
+lookup⁺ : All P xs → ∀ i → P (Vec.lookup xs i)
 lookup⁺ (px ∷ _)  zero    = px
 lookup⁺ (_ ∷ pxs) (suc i) = lookup⁺ pxs i
 
@@ -140,8 +140,8 @@ module _ {P : A → Set p} where
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               All P (tabulate f) → (∀ i → P (f i))
-  tabulate⁻ {suc n} (px ∷ _) zero    = px
-  tabulate⁻ {suc n} (_ ∷ pf) (suc i) = tabulate⁻ pf i
+  tabulate⁻ (px ∷ _) zero    = px
+  tabulate⁻ (_ ∷ pf) (suc i) = tabulate⁻ pf i
 
 ------------------------------------------------------------------------
 -- take and drop
