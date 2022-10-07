@@ -1034,11 +1034,11 @@ neg-distrib-+ -[1+ m ]  (+   n)   =
   n + j ∎
   where open ≤-Reasoning
 
-≤-steps : ∀ k .{{_ : NonNegative k}} → i ≤ j → i ≤ k + j
-≤-steps (+ n) i≤j = subst (_≤ _) (+-identityˡ _) (+-mono-≤ (+≤+ z≤n) i≤j)
+i≤j⇒i≤k+j : ∀ k .{{_ : NonNegative k}} → i ≤ j → i ≤ k + j
+i≤j⇒i≤k+j (+ n) i≤j = subst (_≤ _) (+-identityˡ _) (+-mono-≤ (+≤+ z≤n) i≤j)
 
 i≤j+i : ∀ i j .{{_ : NonNegative j}} → i ≤ j + i
-i≤j+i i j = ≤-steps j ≤-refl
+i≤j+i i j = i≤j⇒i≤k+j j ≤-refl
 
 i≤i+j : ∀ i j .{{_ : NonNegative j}} → i ≤ i + j
 i≤i+j i j rewrite +-comm i j = i≤j+i i j
@@ -1142,16 +1142,16 @@ i-j≡0⇒i≡j i j i-j≡0 = begin
   0ℤ + j        ≡⟨  +-identityˡ j ⟩
   j             ∎ where open ≡-Reasoning
 
-≤-steps-neg : ∀ k .{{_ : NonNegative k}} → i ≤ j → i - k ≤ j
-≤-steps-neg {i}         +0       i≤j rewrite +-identityʳ i = i≤j
-≤-steps-neg {+ m}       +[1+ n ] i≤j = ≤-trans (m⊖n≤m m (suc n)) i≤j
-≤-steps-neg { -[1+ m ]} +[1+ n ] i≤j = ≤-trans (-≤- (ℕ.≤-trans (ℕ.m≤m+n m n) (ℕ.n≤1+n _))) i≤j
+i≤j⇒i-k≤j : ∀ k .{{_ : NonNegative k}} → i ≤ j → i - k ≤ j
+i≤j⇒i-k≤j {i}         +0       i≤j rewrite +-identityʳ i = i≤j
+i≤j⇒i-k≤j {+ m}       +[1+ n ] i≤j = ≤-trans (m⊖n≤m m (suc n)) i≤j
+i≤j⇒i-k≤j { -[1+ m ]} +[1+ n ] i≤j = ≤-trans (-≤- (ℕ.≤-trans (ℕ.m≤m+n m n) (ℕ.n≤1+n _))) i≤j
 
 i-j≤i : ∀ i j .{{_ : NonNegative j}} → i - j ≤ i
-i-j≤i i j = ≤-steps-neg j ≤-refl
+i-j≤i i j = i≤j⇒i-k≤j j ≤-refl
 
 i≤j⇒i-j≤0 : i ≤ j → i - j ≤ 0ℤ
-i≤j⇒i-j≤0 {_}         {j}         -≤+       = ≤-steps-neg j -≤+
+i≤j⇒i-j≤0 {_}         {j}         -≤+       = i≤j⇒i-k≤j j -≤+
 i≤j⇒i-j≤0 { -[1+ m ]} { -[1+ n ]} (-≤- n≤m) = begin
   suc n ⊖ suc m ≡⟨ [1+m]⊖[1+n]≡m⊖n n m ⟩
   n ⊖ m         ≤⟨ ⊖-monoʳ-≥-≤ n n≤m ⟩
@@ -1196,11 +1196,11 @@ i≤j⇒0≤j-i {i} {j} i≤j = begin
 -- Properties of suc
 ------------------------------------------------------------------------
 
-≤-step : i ≤ j → i ≤ sucℤ j
-≤-step = ≤-steps (+ 1)
+i≤j⇒i≤1+j : i ≤ j → i ≤ sucℤ j
+i≤j⇒i≤1+j = i≤j⇒i≤k+j (+ 1)
 
 i≤suc[i] : ∀ i → i ≤ sucℤ i
-i≤suc[i] i = ≤-steps (+ 1) ≤-refl
+i≤suc[i] i = i≤j+i i (+ 1)
 
 suc-+ : ∀ m n → +[1+ m ] + n ≡ sucℤ (+ m + n)
 suc-+ m (+ n)      = refl
@@ -1285,11 +1285,11 @@ i<j⇒i≤pred[j] {_} { +[1+ n ]} -<+       = -≤+
 i<j⇒i≤pred[j] {_} { +[1+ n ]} (+<+ m<n) = +≤+ (ℕ.≤-pred m<n)
 i<j⇒i≤pred[j] {_} { -[1+ n ]} (-<- n<m) = -≤- n<m
 
-≤-step-neg : i ≤ j → pred i ≤ j
-≤-step-neg -≤+               = -≤+
-≤-step-neg (-≤- n≤m)         = -≤- (ℕ.m≤n⇒m≤1+n n≤m)
-≤-step-neg (+≤+ z≤n)         = -≤+
-≤-step-neg (+≤+ (s≤s m≤n)) = +≤+ (ℕ.m≤n⇒m≤1+n m≤n)
+i≤j⇒pred[i]≤j : i ≤ j → pred i ≤ j
+i≤j⇒pred[i]≤j -≤+               = -≤+
+i≤j⇒pred[i]≤j (-≤- n≤m)         = -≤- (ℕ.m≤n⇒m≤1+n n≤m)
+i≤j⇒pred[i]≤j (+≤+ z≤n)         = -≤+
+i≤j⇒pred[i]≤j (+≤+ (s≤s m≤n)) = +≤+ (ℕ.m≤n⇒m≤1+n m≤n)
 
 pred-mono : pred Preserves _≤_ ⟶ _≤_
 pred-mono (-≤+ {n = 0})     = -≤- z≤n
@@ -2252,6 +2252,26 @@ m-n≡0⇒m≡n = i-j≡0⇒i≡j
 "Warning: m-n≡0⇒m≡n was deprecated in v2.0
 Please use i-j≡0⇒i≡j instead."
 #-}
+≤-steps = i≤j⇒i≤k+j
+{-# WARNING_ON_USAGE ≤-steps
+"Warning: ≤-steps was deprecated in v2.0
+Please use i≤j⇒i≤k+j instead."
+#-}
+≤-steps-neg = i≤j⇒i-k≤j
+{-# WARNING_ON_USAGE ≤-steps-neg
+"Warning: ≤-steps-neg was deprecated in v2.0
+Please use i≤j⇒i-k≤j instead."
+#-}
+≤-step = i≤j⇒i≤1+j
+{-# WARNING_ON_USAGE ≤-step
+"Warning: ≤-step was deprecated in v2.0
+Please use i≤j⇒i≤1+j instead."
+#-}
+≤-step-neg = i≤j⇒pred[i]≤j
+{-# WARNING_ON_USAGE ≤-step-neg
+"Warning: ≤-step-neg was deprecated in v2.0
+Please use i≤j⇒pred[i]≤j instead."
+#-}
 m≤n⇒m-n≤0 = i≤j⇒i-j≤0
 {-# WARNING_ON_USAGE m≤n⇒m-n≤0
 "Warning: m≤n⇒m-n≤0 was deprecated in v2.0
@@ -2308,19 +2328,19 @@ Please use i*j≡0⇒i≡0∨j≡0 instead."
 Please use ∣i*j∣≡∣i∣*∣j∣ instead."
 #-}
 n≤m+n : ∀ n → i ≤ + n + i
-n≤m+n {i} n = ≤-steps (+ n) ≤-refl
+n≤m+n {i} n = i≤j+i i (+ n)
 {-# WARNING_ON_USAGE n≤m+n
 "Warning: n≤m+n was deprecated in v2.0
 Please use i≤j+i instead. Note the change of form of the explicit arguments."
 #-}
 m≤m+n : ∀ n → i ≤ i + + n
-m≤m+n {i} n rewrite +-comm i (+ n) = i≤j+i i (+ n)
+m≤m+n {i} n = i≤i+j i (+ n)
 {-# WARNING_ON_USAGE m≤m+n
 "Warning: m≤m+n was deprecated in v2.0
 Please use i≤i+j instead. Note the change of form of the explicit arguments."
 #-}
 m-n≤m : ∀ i n → i - + n ≤ i
-m-n≤m i n = ≤-steps-neg (+ n) ≤-refl
+m-n≤m i n = i-j≤i (+ n)
 {-# WARNING_ON_USAGE m-n≤m
 "Warning: m-n≤m was deprecated in v2.0
 Please use i-j≤i instead. Note the change of form of the explicit arguments."
