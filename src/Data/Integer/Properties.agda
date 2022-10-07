@@ -2340,7 +2340,7 @@ m≤m+n {i} n = i≤i+j i (+ n)
 Please use i≤i+j instead. Note the change of form of the explicit arguments."
 #-}
 m-n≤m : ∀ i n → i - + n ≤ i
-m-n≤m i n = i-j≤i (+ n)
+m-n≤m i n = i-j≤i i (+ n)
 {-# WARNING_ON_USAGE m-n≤m
 "Warning: m-n≤m was deprecated in v2.0
 Please use i-j≤i instead. Note the change of form of the explicit arguments."
