@@ -786,56 +786,6 @@ private
 ↧-+ : ∀ p q → ↧ (p + q) ℤ.* +-nf p q ≡ ↧+ᵘ p q
 ↧-+ p@record{} q@record{} = ↧-/ (↥+ᵘ p q) (↧ₙ p ℕ.* ↧ₙ q)
 
-------------------------------------------------------------------------
--- Raw bundles
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  }
-
-+-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0ℚ
-  }
-
-+-0-rawGroup : RawGroup 0ℓ 0ℓ
-+-0-rawGroup = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0ℚ
-  ; _⁻¹ = -_
-  }
-
-+-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
-+-*-rawNearSemiring = record
-  { _≈_ = _≡_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0#  = 0ℚ
-  }
-
-+-*-rawSemiring : RawSemiring 0ℓ 0ℓ
-+-*-rawSemiring = record
-  { _≈_ = _≡_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0#  = 0ℚ
-  ; 1#  = 1ℚ
-  }
-
-+-*-rawRing : RawRing 0ℓ 0ℓ
-+-*-rawRing = record
-  { _≈_ = _≡_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; -_  = -_
-  ; 0#  = 0ℚ
-  ; 1#  = 1ℚ
-  }
 
 ------------------------------------------------------------------------
 -- Monomorphic to unnormalised _+_
@@ -1050,22 +1000,6 @@ private
 
 ↧-* : ∀ p q → ↧ (p * q) ℤ.* *-nf p q ≡ ↧ p ℤ.* ↧ q
 ↧-* p@record{} q@record{} = ↧-/ (↥ p ℤ.* ↥ q) (↧ₙ p ℕ.* ↧ₙ q)
-
-------------------------------------------------------------------------
--- Raw bundles
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1ℚ
-  }
 
 ------------------------------------------------------------------------
 -- Monomorphic to unnormalised _*_

@@ -19,7 +19,7 @@ module Data.Vec.Recursive where
 open import Level using (Level; lift)
 open import Function.Bundles using (mk↔′)
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
-open import Data.Nat.Base as Nat using (ℕ; zero; suc)
+open import Data.Nat.Base as Nat using (ℕ; zero; suc; NonZero; pred)
 open import Data.Nat.Properties using (+-comm; *-comm)
 open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
