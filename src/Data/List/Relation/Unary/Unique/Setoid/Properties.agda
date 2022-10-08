@@ -8,7 +8,6 @@
 
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
-open import Data.Fin.Base using (Fin)
 open import Data.List.Base
 open import Data.List.Membership.Setoid.Properties
 open import Data.List.Relation.Binary.Disjoint.Setoid
@@ -20,7 +19,8 @@ open import Data.List.Relation.Unary.Unique.Setoid
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
-open import Data.Nat.Base
+open import Data.Fin.Base using (Fin)
+open import Data.Nat.Base using (_<_)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
 open import Relation.Binary using (Rel; Setoid)
@@ -40,8 +40,8 @@ private
 
 module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
 
-  open Setoid S renaming (Carrier to A; _≈_ to _≈₁_)
-  open Setoid R renaming (Carrier to B; _≈_ to _≈₂_)
+  open Setoid S renaming (_≈_ to _≈₁_)
+  open Setoid R renaming (_≈_ to _≈₂_)
 
   map⁺ : ∀ {f} → (∀ {x y} → f x ≈₂ f y → x ≈₁ y) →
          ∀ {xs} → Unique S xs → Unique R (map f xs)
@@ -152,8 +152,6 @@ module _ (S : Setoid a ℓ) where
 -- filter
 
 module _ (S : Setoid a ℓ) {P : Pred _ p} (P? : Decidable P) where
-
-  open Setoid S renaming (Carrier to A)
 
   filter⁺ : ∀ {xs} → Unique S xs → Unique S (filter P? xs)
   filter⁺ = AllPairs.filter⁺ P?

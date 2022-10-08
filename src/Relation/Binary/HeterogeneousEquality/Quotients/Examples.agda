@@ -29,7 +29,7 @@ infix 10 _∼_
 
 ∼-trans : ∀ {i j k} → i ∼ j → j ∼ k → i ∼ k
 ∼-trans {x₁ , y₁} {x₂ , y₂} {x₃ , y₃} p q =
-  ≡-to-≅ $ +-cancelˡ-≡ y₂ $ ≅-to-≡ $ begin
+  ≡-to-≅ $ +-cancelˡ-≡ y₂ _ _ $ ≅-to-≡ $ begin
   y₂ + (x₁ + y₃) ≡⟨ ≡.sym (+-assoc y₂ x₁ y₃) ⟩
   y₂ + x₁ + y₃   ≡⟨ ≡.cong (_+ y₃) (+-comm y₂ x₁) ⟩
   x₁ + y₂ + y₃   ≅⟨ cong (_+ y₃) p ⟩

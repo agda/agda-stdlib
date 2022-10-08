@@ -11,6 +11,7 @@
 
 module Data.Fin.Base where
 
+open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
 open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
@@ -18,6 +19,7 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
@@ -122,7 +124,7 @@ inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
 lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
 lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
 lower₁ {suc n} zero    _  = zero
-lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
+lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ (i : Fin n) → Fin′ (suc i)
