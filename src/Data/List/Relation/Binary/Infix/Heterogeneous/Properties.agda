@@ -70,7 +70,7 @@ module _ {c t} {C : Set c} {T : REL A C t} where
 
 length-mono : ∀ {as bs} → Infix R as bs → length as ≤ length bs
 length-mono (here pref) = Prefixₚ.length-mono pref
-length-mono (there p)   = ℕₚ.≤-step (length-mono p)
+length-mono (there p)   = ℕₚ.m≤n⇒m≤1+n (length-mono p)
 
 ------------------------------------------------------------------------
 -- As an order

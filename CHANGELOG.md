@@ -826,17 +826,23 @@ Deprecated names
   been made consistent so that `m`, `n` always refer to naturals and
   `i` and `j` always refer to integers:
   ```
+  ≤-steps        ↦  i≤j⇒i≤k+j
+  ≤-step         ↦  i≤j⇒i≤1+j
+
+  ≤-steps-neg    ↦  i≤j⇒i-k≤j
+  ≤-step-neg     ↦  i≤j⇒pred[i]≤j
+
   n≮n            ↦  i≮i
-  ∣n∣≡0⇒n≡0      ↦  ∣i∣≡0⇒i≡0
-  ∣-n∣≡∣n∣       ↦  ∣-i∣≡∣i∣
-  0≤n⇒+∣n∣≡n     ↦  0≤i⇒+∣i∣≡i
-  +∣n∣≡n⇒0≤n     ↦  +∣i∣≡i⇒0≤i
-  +∣n∣≡n⊎+∣n∣≡-n ↦  +∣i∣≡i⊎+∣i∣≡-i
-  ∣m+n∣≤∣m∣+∣n∣  ↦  ∣i+j∣≤∣i∣+∣j∣
-  ∣m-n∣≤∣m∣+∣n∣  ↦  ∣i-j∣≤∣i∣+∣j∣
-  signₙ◃∣n∣≡n    ↦  signᵢ◃∣i∣≡i
+  ∣n∣≡0⇒n≡0       ↦  ∣i∣≡0⇒i≡0
+  ∣-n∣≡∣n∣         ↦  ∣-i∣≡∣i∣
+  0≤n⇒+∣n∣≡n      ↦  0≤i⇒+∣i∣≡i
+  +∣n∣≡n⇒0≤n      ↦  +∣i∣≡i⇒0≤i
+  +∣n∣≡n⊎+∣n∣≡-n   ↦  +∣i∣≡i⊎+∣i∣≡-i
+  ∣m+n∣≤∣m∣+∣n∣     ↦  ∣i+j∣≤∣i∣+∣j∣
+  ∣m-n∣≤∣m∣+∣n∣     ↦  ∣i-j∣≤∣i∣+∣j∣
+  signₙ◃∣n∣≡n     ↦  signᵢ◃∣i∣≡i
   ◃-≡            ↦  ◃-cong
-  ∣m-n∣≡∣n-m∣    ↦  ∣i-j∣≡∣j-i∣
+  ∣m-n∣≡∣n-m∣      ↦  ∣i-j∣≡∣j-i∣
   m≡n⇒m-n≡0      ↦  i≡j⇒i-j≡0
   m-n≡0⇒m≡n      ↦  i-j≡0⇒i≡j
   m≤n⇒m-n≤0      ↦  i≤j⇒i-j≤0
@@ -849,7 +855,7 @@ Deprecated names
   m<n⇒m≤pred[n]  ↦  i<j⇒i≤pred[j]
   -1*n≡-n        ↦  -1*i≡-i
   m*n≡0⇒m≡0∨n≡0  ↦  i*j≡0⇒i≡0∨j≡0
-  ∣m*n∣≡∣m∣*∣n∣  ↦  ∣i*j∣≡∣i∣*∣j∣
+  ∣m*n∣≡∣m∣*∣n∣     ↦  ∣i*j∣≡∣i∣*∣j∣
   m≤m+n          ↦  i≤i+j
   n≤m+n          ↦  i≤j+i
   m-n≤m          ↦  i≤i-j
@@ -934,6 +940,10 @@ Deprecated names
 * In `Data.Nat.Properties`:
   ```
   suc[pred[n]]≡n  ↦  suc-pred
+  ≤-step          ↦  m≤n⇒m≤1+n
+  ≤-stepsˡ        ↦  m≤n⇒m≤o+n
+  ≤-stepsʳ        ↦  m≤n⇒m≤n+o
+  <-step          ↦  m<n⇒m<1+n
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:
@@ -942,6 +952,7 @@ Deprecated names
   ↧[p/q]≡q         ↦  ↧[n/d]≡d
   *-monoˡ-≤-pos    ↦  *-monoˡ-≤-nonNeg
   *-monoʳ-≤-pos    ↦  *-monoʳ-≤-nonNeg
+  ≤-steps          ↦  p≤q⇒p≤r+q
   *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
   *-cancelˡ-<-pos  ↦  *-cancelˡ-<-nonNeg

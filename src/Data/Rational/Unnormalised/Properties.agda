@@ -745,11 +745,11 @@ private
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 +-mono-≤ {p} {q} {u} {v} p≤q u≤v = ≤-trans (+-monoˡ-≤ u p≤q) (+-monoʳ-≤ q u≤v)
 
-≤-steps : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
-≤-steps {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
+p≤q⇒p≤r+q : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
+p≤q⇒p≤r+q {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
 
 p≤q+p : ∀ p q .{{_ : NonNegative q}} → p ≤ q + p
-p≤q+p p q = ≤-steps q ≤-refl
+p≤q+p p q = p≤q⇒p≤r+q q ≤-refl
 
 p≤p+q : ∀ p q .{{_ : NonNegative q}} → p ≤ p + q
 p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
@@ -1783,6 +1783,11 @@ Please use *-monoʳ-≤-nonNeg instead."
 {-# WARNING_ON_USAGE *-monoˡ-≤-pos
 "Warning: *-monoˡ-≤-nonNeg was deprecated in v2.0.
 Please use *-monoˡ-≤-nonNeg instead."
+#-}
+≤-steps = p≤q⇒p≤r+q
+{-# WARNING_ON_USAGE ≤-steps
+"Warning: ≤-steps was deprecated in v2.0
+Please use p≤q⇒p≤r+q instead."
 #-}
 *-monoˡ-≤-neg : ∀ r → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-neg r@(mkℚᵘ -[1+ _ ] _) _ = *-monoˡ-≤-nonPos r

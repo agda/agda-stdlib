@@ -255,12 +255,12 @@ s≤s-injective refl = refl
 ≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
 ≤-pred (s≤s m≤n) = m≤n
 
-≤-step : ∀ {m n} → m ≤ n → m ≤ 1 + n
-≤-step z≤n       = z≤n
-≤-step (s≤s m≤n) = s≤s (≤-step m≤n)
+m≤n⇒m≤1+n : ∀ {m n} → m ≤ n → m ≤ 1 + n
+m≤n⇒m≤1+n z≤n       = z≤n
+m≤n⇒m≤1+n (s≤s m≤n) = s≤s (m≤n⇒m≤1+n m≤n)
 
 n≤1+n : ∀ n → n ≤ 1 + n
-n≤1+n _ = ≤-step ≤-refl
+n≤1+n _ = m≤n⇒m≤1+n ≤-refl
 
 1+n≰n : ∀ {n} → 1 + n ≰ n
 1+n≰n (s≤s 1+n≤n) = 1+n≰n 1+n≤n
@@ -417,9 +417,9 @@ s<s-injective refl = refl
 <-pred : ∀ {m n} → suc m < suc n → m < n
 <-pred (s<s m<n) = m<n
 
-<-step : ∀ {m n} → m < n → m < 1 + n
-<-step z<s               = z<s
-<-step (s<s m<n@(s≤s _)) = s<s (<-step m<n)
+m<n⇒m<1+n : ∀ {m n} → m < n → m < 1 + n
+m<n⇒m<1+n z<s               = z<s
+m<n⇒m<1+n (s<s m<n@(s≤s _)) = s<s (m<n⇒m<1+n m<n)
 
 n≮0 : ∀ {n} → n ≮ 0
 n≮0 ()
@@ -450,7 +450,7 @@ m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
 
 m<n⇒m≤1+n : ∀ {m n} → m < n → m ≤ suc n
-m<n⇒m≤1+n = ≤-step ∘ <⇒≤
+m<n⇒m≤1+n = m≤n⇒m≤1+n ∘ <⇒≤
 
 m<1+n⇒m<n∨m≡n :  ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
 m<1+n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
@@ -653,12 +653,12 @@ m+n≡0⇒n≡0 m {n} m+n≡0 = m+n≡0⇒m≡0 n (trans (+-comm n m) (m+n≡0))
 +-cancel-< : Cancellative _<_ _+_
 +-cancel-< = +-cancelˡ-< , +-cancelʳ-<
 
-≤-stepsˡ : ∀ {m n} o → m ≤ n → m ≤ o + n
-≤-stepsˡ zero    m≤n = m≤n
-≤-stepsˡ (suc o) m≤n = ≤-step (≤-stepsˡ o m≤n)
+m≤n⇒m≤o+n : ∀ {m n} o → m ≤ n → m ≤ o + n
+m≤n⇒m≤o+n zero    m≤n = m≤n
+m≤n⇒m≤o+n (suc o) m≤n = m≤n⇒m≤1+n (m≤n⇒m≤o+n o m≤n)
 
-≤-stepsʳ : ∀ {m n} o → m ≤ n → m ≤ n + o
-≤-stepsʳ {m} o m≤n = subst (m ≤_) (+-comm o _) (≤-stepsˡ o m≤n)
+m≤n⇒m≤n+o : ∀ {m n} o → m ≤ n → m ≤ n + o
+m≤n⇒m≤n+o {m} o m≤n = subst (m ≤_) (+-comm o _) (m≤n⇒m≤o+n o m≤n)
 
 m≤m+n : ∀ m n → m ≤ m + n
 m≤m+n zero    n = z≤n
@@ -686,7 +686,7 @@ m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 +-monoʳ-≤ n m≤o = +-mono-≤ (≤-refl {n}) m≤o
 
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-+-mono-<-≤ {_} {suc n} z<s               o≤p = s≤s (≤-stepsˡ n o≤p)
++-mono-<-≤ {_} {suc n} z<s               o≤p = s≤s (m≤n⇒m≤o+n n o≤p)
 +-mono-<-≤ {_} {_}     (s<s m<n@(s≤s _)) o≤p = s≤s (+-mono-<-≤ m<n o≤p)
 
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
@@ -715,7 +715,7 @@ m<n+m m {n} n>0 rewrite +-comm n m = m<m+n m n>0
 
 m+n≮n : ∀ m n → m + n ≮ n
 m+n≮n zero    n                   = n≮n n
-m+n≮n (suc m) (suc n) (s<s m+n<n) = m+n≮n m (suc n) (<-step m+n<n)
+m+n≮n (suc m) (suc n) (s<s m+n<n) = m+n≮n m (suc n) (m<n⇒m<1+n m+n<n)
 
 m+n≮m : ∀ m n → m + n ≮ m
 m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
@@ -1534,7 +1534,7 @@ m>n⇒m∸n≢0 {n = suc n} (s≤s m>n) = m>n⇒m∸n≢0 m>n
 
 m≤n⇒n∸m≤n : ∀ {m n} → m ≤ n → n ∸ m ≤ n
 m≤n⇒n∸m≤n z≤n       = ≤-refl
-m≤n⇒n∸m≤n (s≤s m≤n) = ≤-step (m≤n⇒n∸m≤n m≤n)
+m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
 
 ---------------------------------------------------------------
 -- Properties of _∸_ and _+_
@@ -1663,7 +1663,7 @@ pred[n]≤n {suc n} = n≤1+n n
 
 ≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
 ≤pred⇒≤ {m} {zero}  le = le
-≤pred⇒≤ {m} {suc n} le = ≤-step le
+≤pred⇒≤ {m} {suc n} le = m≤n⇒m≤1+n le
 
 ≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
 ≤⇒pred≤ {zero}  le = le
@@ -1719,7 +1719,7 @@ m∸n≤∣m-n∣ m n with ≤-total m n
 ∣m-n∣≤m⊔n : ∀ m n → ∣ m - n ∣ ≤ m ⊔ n
 ∣m-n∣≤m⊔n zero    m       = ≤-refl
 ∣m-n∣≤m⊔n (suc m) zero    = ≤-refl
-∣m-n∣≤m⊔n (suc m) (suc n) = ≤-step (∣m-n∣≤m⊔n m n)
+∣m-n∣≤m⊔n (suc m) (suc n) = m≤n⇒m≤1+n (∣m-n∣≤m⊔n m n)
 
 ∣-∣-identityˡ : LeftIdentity 0 ∣_-_∣
 ∣-∣-identityˡ x = refl
@@ -1882,7 +1882,7 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 ⌊n/2⌋≤n : ∀ n → ⌊ n /2⌋ ≤ n
 ⌊n/2⌋≤n zero          = z≤n
 ⌊n/2⌋≤n (suc zero)    = z≤n
-⌊n/2⌋≤n (suc (suc n)) = s≤s (≤-step (⌊n/2⌋≤n n))
+⌊n/2⌋≤n (suc (suc n)) = s≤s (m≤n⇒m≤1+n (⌊n/2⌋≤n n))
 
 ⌊n/2⌋<n : ∀ n → ⌊ suc n /2⌋ < suc n
 ⌊n/2⌋<n zero    = z<s
@@ -1937,7 +1937,7 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 
 ≤′⇒≤ : _≤′_ ⇒ _≤_
 ≤′⇒≤ ≤′-refl        = ≤-refl
-≤′⇒≤ (≤′-step m≤′n) = ≤-step (≤′⇒≤ m≤′n)
+≤′⇒≤ (≤′-step m≤′n) = m≤n⇒m≤1+n (≤′⇒≤ m≤′n)
 
 ≤⇒≤′ : _≤_ ⇒ _≤′_
 ≤⇒≤′ z≤n       = z≤′n
@@ -1964,7 +1964,7 @@ s<′s (<′-step m<′n) = <′-step (s<′s m<′n)
 
 <′⇒< : ∀ {m n} → m <′ n → m < n
 <′⇒< <′-base        = n<1+n _
-<′⇒< (<′-step m<′n) = <-step (<′⇒< m<′n)
+<′⇒< (<′-step m<′n) = m<n⇒m<1+n (<′⇒< m<′n)
 
 m<1+n⇒m<n∨m≡n′ : ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
 m<1+n⇒m<n∨m≡n′ m<n with <⇒<′ m<n
@@ -2133,7 +2133,7 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   anyUpTo? zero    = no λ {(_ , () , _)}
   anyUpTo? (suc v) with P? v | anyUpTo? v
   ... | yes Pv | _                  = yes (v , ≤-refl , Pv)
-  ... | _      | yes (n , n<v , Pn) = yes (n , ≤-step n<v , Pn)
+  ... | _      | yes (n , n<v , Pn) = yes (n , m≤n⇒m≤1+n n<v , Pn)
   ... | no ¬Pv | no ¬Pn<v           = no ¬Pn<1+v
     where
     ¬Pn<1+v : ∄ λ n → n < suc v × P n
@@ -2145,7 +2145,7 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   allUpTo? zero    = yes λ()
   allUpTo? (suc v) with P? v | allUpTo? v
   ... | no ¬Pv | _        = no (λ prf → ¬Pv   (prf ≤-refl))
-  ... | _      | no ¬Pn<v = no (λ prf → ¬Pn<v (prf ∘ ≤-step))
+  ... | _      | no ¬Pn<v = no (λ prf → ¬Pn<v (prf ∘ m≤n⇒m≤1+n))
   ... | yes Pn | yes Pn<v = yes Pn<1+v
     where
       Pn<1+v : ∀ {n} → n < suc v → P n
@@ -2258,4 +2258,24 @@ suc[pred[n]]≡n {zero}  0≢0 = contradiction refl 0≢0
 suc[pred[n]]≡n {suc n} _   = refl
 {-# WARNING_ON_USAGE suc[pred[n]]≡n
 "Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments"
+#-}
+
+≤-step = m≤n⇒m≤1+n
+{-# WARNING_ON_USAGE ≤-step
+"Warning: ≤-step was deprecated in v2.0. Please use m≤n⇒m≤1+n instead. "
+#-}
+
+≤-stepsˡ = m≤n⇒m≤o+n
+{-# WARNING_ON_USAGE ≤-stepsˡ
+"Warning: ≤-stepsˡ was deprecated in v2.0. Please use m≤n⇒m≤o+n instead. "
+#-}
+
+≤-stepsʳ = m≤n⇒m≤n+o
+{-# WARNING_ON_USAGE ≤-stepsʳ
+"Warning: ≤-stepsʳ was deprecated in v2.0. Please use m≤n⇒m≤n+o instead. "
+#-}
+
+<-step = m<n⇒m<1+n
+{-# WARNING_ON_USAGE <-step
+"Warning: <-step was deprecated in v2.0. Please use m<n⇒m<1+n instead. "
 #-}
