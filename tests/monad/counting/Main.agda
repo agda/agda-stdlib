@@ -18,6 +18,10 @@ open import Effect.Monad.Reader.Transformer as Reader
 open import Effect.Monad.State.Transformer as State
 open import Effect.Monad.IO
 
+open import IO.Instances
+
+open import Effect.Monad.IO.Instances
+
 open RawMonad {{...}}
 open RawMonadReader {{...}}
 open RawMonadState {{...}}
@@ -55,9 +59,11 @@ liftMonadState = record
   ; modify = λ f → mkReaderT (λ _ → M.modify f)
   } where module M = RawMonadState (monadState IO.monad)
 
+{-
 liftMonadIO : RawMonadIO (ReaderT String _ _ (StateT ℕ IO))
 liftMonadIO = record
   { liftIO = λ io → mkReaderT (λ r → mkStateT (λ s → (s ,_) IO.<$> io)) }
+-}
 
 main : Main
 main = run $
@@ -66,7 +72,7 @@ main = run $
             {{Reader.monad _ _ (State.monad IO.monad)}}
             {{monadReader _ _ (State.monad IO.monad)}}
             {{liftMonadState}}
-            {{liftMonadIO}} in
+            in
   let v = runReaderT u "First: " in
   let w = evalStateT IO.functor v 0 in
   w
