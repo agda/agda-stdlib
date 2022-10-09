@@ -6,7 +6,6 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Fin hiding (_≟_)
 open import Data.List.Base
 open import Data.List.Membership.Setoid.Properties as Membership
 open import Data.List.Relation.Unary.Any using (index)
@@ -85,5 +84,5 @@ module _ (S? : DecSetoid a ℓ₁) where
 module _ (S : Setoid a ℓ₁) where
 
   lookup-surjective : ∀ {xs} → IsEnumeration S xs →
-                      Surjective {A = Fin (length xs)} _≡_ (_≈_ S) (lookup xs)
+                      Surjective _≡_ (_≈_ S) (lookup xs)
   lookup-surjective _∈xs y = index (y ∈xs) , sym S (lookup-index (y ∈xs))

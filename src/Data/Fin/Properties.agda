@@ -25,7 +25,7 @@ open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; pro
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
-open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
+open import Data.Sum.Properties using ([,]-map; [,]-∘)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
 open import Function.Definitions using (Injective)
@@ -163,7 +163,7 @@ toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 
 toℕ≤n : ∀ (i : Fin n) → toℕ i ℕ.≤ n
-toℕ≤n {suc n} i = ℕₚ.≤-step (toℕ≤pred[n] i)
+toℕ≤n {suc n} i = ℕₚ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
 
 toℕ<n : ∀ (i : Fin n) → toℕ i ℕ.< n
 toℕ<n {suc n} i = s≤s (toℕ≤pred[n] i)
@@ -249,12 +249,25 @@ toℕ-fromℕ<″ {m} {n} m<n = begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- cast
+-- Properties of cast
 ------------------------------------------------------------------------
 
 toℕ-cast : ∀ .(eq : m ≡ n) (k : Fin m) → toℕ (cast eq k) ≡ toℕ k
 toℕ-cast {n = suc n} eq zero    = refl
 toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
+
+cast-is-id : .(eq : m ≡ m) (k : Fin m) → cast eq k ≡ k
+cast-is-id eq zero    = refl
+cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
+
+subst-is-cast : (eq : m ≡ n) (k : Fin m) → subst Fin eq k ≡ cast eq k
+subst-is-cast refl k = sym (cast-is-id refl k)
+
+cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (k : Fin m) →
+             cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ zero = refl
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
+  cong suc (cast-trans (ℕₚ.suc-injective eq₁) (ℕₚ.suc-injective eq₂) k)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -458,7 +471,7 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 
 i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
 i≤inject₁[j]⇒i≤1+j {i = zero} i≤j = z≤n
-i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.≤-step (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
+i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
 
 ------------------------------------------------------------------------
 -- lower₁
@@ -563,8 +576,8 @@ join-splitAt : ∀ m n i → join m n (splitAt m i) ≡ i
 join-splitAt zero    n i       = refl
 join-splitAt (suc m) n zero    = refl
 join-splitAt (suc m) n (suc i) = begin
-  [ _↑ˡ n , (suc m) ↑ʳ_ ]′ (splitAt (suc m) (suc i)) ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
+  [ _↑ˡ n , (suc m) ↑ʳ_ ]′ (splitAt (suc m) (suc i)) ≡⟨ [,]-map (splitAt m i) ⟩
+  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡˘⟨ [,]-∘ suc (splitAt m i) ⟩
   suc ([ _↑ˡ n , m ↑ʳ_ ]′ (splitAt m i))             ≡⟨ cong suc (join-splitAt m n i) ⟩
   suc i                                                         ∎
   where open ≡-Reasoning
@@ -654,7 +667,7 @@ combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ with <-cmp i k
 combine-injectiveʳ : ∀ (i : Fin m) (j : Fin n) (k : Fin m) (l : Fin n) →
                      combine i j ≡ combine k l → j ≡ l
 combine-injectiveʳ {m} {n} i j k l cᵢⱼ≡cₖₗ with combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ
-... | refl = toℕ-injective (ℕₚ.+-cancelˡ-≡ (n ℕ.* toℕ i) (begin
+... | refl = toℕ-injective (ℕₚ.+-cancelˡ-≡ (n ℕ.* toℕ i) _ _ (begin
   n ℕ.* toℕ i ℕ.+ toℕ j ≡˘⟨ toℕ-combine i j ⟩
   toℕ (combine i j)     ≡⟨ cong toℕ cᵢⱼ≡cₖₗ ⟩
   toℕ (combine i l)     ≡⟨ toℕ-combine i l ⟩
@@ -776,6 +789,10 @@ toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 ------------------------------------------------------------------------
 -- _ℕ-ℕ_
 ------------------------------------------------------------------------
+
+ℕ-ℕ≡toℕ‿ℕ- : ∀ n i → n ℕ-ℕ i ≡ toℕ (n ℕ- i)
+ℕ-ℕ≡toℕ‿ℕ- n       zero    = sym (toℕ-fromℕ n)
+ℕ-ℕ≡toℕ‿ℕ- (suc n) (suc i) = ℕ-ℕ≡toℕ‿ℕ- n i
 
 nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ.≤ n
 nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl

@@ -10,10 +10,10 @@
 
 module Effect.Functor where
 
-open import Function hiding (Morphism)
+open import Function.Base
 open import Level
 
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
 
 private
   variable

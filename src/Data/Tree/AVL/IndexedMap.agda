@@ -69,8 +69,8 @@ insert k v = AVL.insert (-, k) v
 delete : ∀ {i} → Key i → Map → Map
 delete k = AVL.delete (-, k)
 
-lookup : ∀ {i} → Key i → Map → Maybe (Value i)
-lookup k m = AVL.lookup (-, k) m
+lookup : ∀ {i} → Map → Key i → Maybe (Value i)
+lookup m k = AVL.lookup m (-, k)
 
 infix 4 _∈?_
 

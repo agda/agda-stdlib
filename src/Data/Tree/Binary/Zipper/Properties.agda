@@ -49,8 +49,8 @@ toTree-right-identity (mkZipper ctx (node l m r)) = just refl
 ------------------------------------------------------------------------
 -- Tree-like operations indeed correspond to their counterparts
 
-toTree-#nodes-commute : ∀ (zp : Zipper N L) → #nodes zp ≡ BT.#nodes (toTree zp)
-toTree-#nodes-commute (mkZipper c v) = helper c v
+toTree-#nodes : ∀ (zp : Zipper N L) → #nodes zp ≡ BT.#nodes (toTree zp)
+toTree-#nodes (mkZipper c v) = helper c v
   where
     helper : (cs : List (Crumb N L)) →
              (t : Tree N L) →
@@ -75,8 +75,8 @@ toTree-#nodes-commute (mkZipper c v) = helper c v
       #nodes (mkZipper ctx (node foc m r)) ≡⟨ helper ctx (node foc m r) ⟩
       BT.#nodes (toTree (mkZipper cs foc)) ∎
 
-toTree-#leaves-commute : ∀ (zp : Zipper N L) → #leaves zp ≡ BT.#leaves (toTree zp)
-toTree-#leaves-commute (mkZipper c v) = helper c v
+toTree-#leaves : ∀ (zp : Zipper N L) → #leaves zp ≡ BT.#leaves (toTree zp)
+toTree-#leaves (mkZipper c v) = helper c v
   where
     helper : (cs : List (Crumb N L)) →
              (t : Tree N L) →
@@ -98,8 +98,8 @@ toTree-#leaves-commute (mkZipper c v) = helper c v
       #leaves (mkZipper ctx (node foc m r)) ≡⟨ helper ctx (node foc m r) ⟩
       BT.#leaves (toTree (mkZipper cs foc)) ∎
 
-toTree-map-commute : ∀ (f : N → N₁) (g : L → L₁) zp → toTree (map f g zp) ≡ BT.map f g (toTree zp)
-toTree-map-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
+toTree-map : ∀ (f : N → N₁) (g : L → L₁) zp → toTree (map f g zp) ≡ BT.map f g (toTree zp)
+toTree-map {N = N} {L = L} f g (mkZipper c v) = helper c v
   where
     helper : (cs : List (Crumb N L)) →
              (t : Tree N L) →
@@ -108,8 +108,8 @@ toTree-map-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
 
-toTree-foldr-commute : ∀ (f : A → N → A → A) (g : L → A) zp → foldr f g zp ≡ BT.foldr f g (toTree zp)
-toTree-foldr-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
+toTree-foldr : ∀ (f : A → N → A → A) (g : L → A) zp → foldr f g zp ≡ BT.foldr f g (toTree zp)
+toTree-foldr {N = N} {L = L} f g (mkZipper c v) = helper c v
   where
     helper : (cs : List (Crumb N L)) →
              (t : Tree N L) →
@@ -123,8 +123,8 @@ toTree-foldr-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
 
 -- _⟪_⟫ˡ_ properties
 
-toTree-⟪⟫ˡ-commute : ∀ l m (zp : Zipper N L) → toTree (l ⟪ m ⟫ˡ zp) ≡ node l m (toTree zp)
-toTree-⟪⟫ˡ-commute {N = N} {L = L} l m (mkZipper c v) = helper c v
+toTree-⟪⟫ˡ : ∀ l m (zp : Zipper N L) → toTree (l ⟪ m ⟫ˡ zp) ≡ node l m (toTree zp)
+toTree-⟪⟫ˡ {N = N} {L = L} l m (mkZipper c v) = helper c v
   where
     helper : (cs : List (Crumb N L)) →
              (t : Tree N L) →
@@ -135,8 +135,8 @@ toTree-⟪⟫ˡ-commute {N = N} {L = L} l m (mkZipper c v) = helper c v
 
 -- _⟪_⟫ʳ_ properties
 
-toTree-⟪⟫ʳ-commute : ∀ (zp : Zipper N L) m r → toTree (zp ⟪ m ⟫ʳ r) ≡ node (toTree zp) m r
-toTree-⟪⟫ʳ-commute {N = N} {L = L} (mkZipper c v) m r = helper c v
+toTree-⟪⟫ʳ : ∀ (zp : Zipper N L) m r → toTree (zp ⟪ m ⟫ʳ r) ≡ node (toTree zp) m r
+toTree-⟪⟫ʳ {N = N} {L = L} (mkZipper c v) m r = helper c v
   where
     helper : (cs : List (Crumb N L)) →
              (t : Tree N L) →
@@ -144,3 +144,47 @@ toTree-⟪⟫ʳ-commute {N = N} {L = L} (mkZipper c v) m r = helper c v
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+toTree-#nodes-commute = toTree-#nodes
+{-# WARNING_ON_USAGE toTree-#nodes-commute
+"Warning: toTree-#nodes-commute was deprecated in v2.0.
+Please use toTree-#nodes instead."
+#-}
+
+toTree-#leaves-commute = toTree-#leaves
+{-# WARNING_ON_USAGE toTree-#leaves-commute
+"Warning: toTree-#leaves-commute was deprecated in v2.0.
+Please use toTree-#leaves instead."
+#-}
+
+toTree-map-commute = toTree-map
+{-# WARNING_ON_USAGE toTree-map-commute
+"Warning: toTree-map-commute was deprecated in v2.0.
+Please use toTree-map instead."
+#-}
+
+toTree-foldr-commute = toTree-foldr
+{-# WARNING_ON_USAGE toTree-foldr-commute
+"Warning: toTree-foldr-commute was deprecated in v2.0.
+Please use toTree-foldr instead."
+#-}
+
+toTree-⟪⟫ˡ-commute = toTree-⟪⟫ˡ
+{-# WARNING_ON_USAGE toTree-⟪⟫ˡ-commute
+"Warning: toTree-⟪⟫ˡ-commute was deprecated in v2.0.
+Please use toTree-⟪⟫ˡ instead."
+#-}
+
+toTree-⟪⟫ʳ-commute = toTree-⟪⟫ʳ
+{-# WARNING_ON_USAGE toTree-⟪⟫ʳ-commute
+"Warning: toTree-⟪⟫ʳ-commute was deprecated in v2.0.
+Please use toTree-⟪⟫ʳ instead."
+#-}

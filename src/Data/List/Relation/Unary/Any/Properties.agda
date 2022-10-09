@@ -22,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties.Core
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
 open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
-open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; ≤-step)
+open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product as Prod
@@ -506,7 +506,7 @@ module _ {P : A → Set p} where
                    ∃ λ i → i < n × P (f i)
   applyDownFrom⁻ f {suc n} (here p)  = n , ≤-refl , p
   applyDownFrom⁻ f {suc n} (there p) with applyDownFrom⁻ f p
-  ... | i , i<n , pf = i , ≤-step i<n , pf
+  ... | i , i<n , pf = i , m<n⇒m<1+n i<n , pf
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -580,38 +580,38 @@ module _ {R : A → A → Set r} (R? : B.Decidable R) where
   deduplicate⁻ {xs = x ∷ _} (there pxs!) = there (deduplicate⁻ (filter⁻ (¬? ∘ R? x) pxs!))
 
 ------------------------------------------------------------------------
--- map-with-∈.
+-- mapWith∈.
 
 module _ {P : B → Set p} where
 
-  map-with-∈⁺ : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B) →
+  mapWith∈⁺ : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B) →
                 (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
                 Any P (mapWith∈ xs f)
-  map-with-∈⁺ f (_ , here refl  , p) = here p
-  map-with-∈⁺ f (_ , there x∈xs , p) =
-    there $ map-with-∈⁺ (f ∘ there) (_ , x∈xs , p)
+  mapWith∈⁺ f (_ , here refl  , p) = here p
+  mapWith∈⁺ f (_ , there x∈xs , p) =
+    there $ mapWith∈⁺ (f ∘ there) (_ , x∈xs , p)
 
-  map-with-∈⁻ : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B) →
+  mapWith∈⁻ : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B) →
                 Any P (mapWith∈ xs f) →
                 ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)
-  map-with-∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
-  map-with-∈⁻ (y ∷ xs) f (there p) =
-    Prod.map₂ (Prod.map there id) $ map-with-∈⁻ xs (f ∘ there) p
+  mapWith∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
+  mapWith∈⁻ (y ∷ xs) f (there p) =
+    Prod.map₂ (Prod.map there id) $ mapWith∈⁻ xs (f ∘ there) p
 
-  map-with-∈↔ : ∀ {xs : List A} {f : ∀ {x} → x ∈ xs → B} →
+  mapWith∈↔ : ∀ {xs : List A} {f : ∀ {x} → x ∈ xs → B} →
                 (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (mapWith∈ xs f)
-  map-with-∈↔ = inverse (map-with-∈⁺ _) (map-with-∈⁻ _ _) (from∘to _) (to∘from _ _)
+  mapWith∈↔ = inverse (mapWith∈⁺ _) (mapWith∈⁻ _ _) (from∘to _) (to∘from _ _)
     where
     from∘to : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B)
               (p : ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
-              map-with-∈⁻ xs f (map-with-∈⁺ f p) ≡ p
+              mapWith∈⁻ xs f (mapWith∈⁺ f p) ≡ p
     from∘to f (_ , here refl  , p) = refl
     from∘to f (_ , there x∈xs , p)
       rewrite from∘to (f ∘ there) (_ , x∈xs , p) = refl
 
     to∘from : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B)
               (p : Any P (mapWith∈ xs f)) →
-              map-with-∈⁺ f (map-with-∈⁻ xs f p) ≡ p
+              mapWith∈⁺ f (mapWith∈⁻ xs f p) ≡ p
     to∘from (y ∷ xs) f (here  p) = refl
     to∘from (y ∷ xs) f (there p) =
       P.cong there $ to∘from xs (f ∘ there) p
@@ -723,3 +723,19 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ x → Any (λ y → P x × Q y) ys) xs  ↔⟨ ⊗↔ ⟩
   Any (P ⟨×⟩ Q) (xs ⊗ ys)                  ∎
   where open Related.EquationalReasoning
+
+map-with-∈⁺ = mapWith∈⁺
+{-# WARNING_ON_USAGE map-with-∈⁺
+"Warning: map-with-∈⁺ was deprecated in v2.0.
+Please use mapWith∈⁺ instead."
+#-}
+map-with-∈⁻ = mapWith∈⁻
+{-# WARNING_ON_USAGE map-with-∈⁻
+"Warning: map-with-∈⁻ was deprecated in v2.0.
+Please use mapWith∈⁻ instead."
+#-}
+map-with-∈↔ = mapWith∈↔
+{-# WARNING_ON_USAGE map-with-∈↔
+"Warning: map-with-∈↔ was deprecated in v2.0.
+Please use mapWith∈↔ instead."
+#-}

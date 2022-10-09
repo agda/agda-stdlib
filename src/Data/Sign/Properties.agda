@@ -82,14 +82,14 @@ s*s≡+ - = refl
 *-assoc - - - = refl
 
 *-cancelʳ-≡ : RightCancellative _*_
-*-cancelʳ-≡ - - _  = refl
-*-cancelʳ-≡ - + eq = ⊥-elim (s≢opposite[s] _ $ sym eq)
-*-cancelʳ-≡ + - eq = ⊥-elim (s≢opposite[s] _ eq)
-*-cancelʳ-≡ + + _  = refl
+*-cancelʳ-≡ _ - - _  = refl
+*-cancelʳ-≡ _ - + eq = ⊥-elim (s≢opposite[s] _ $ sym eq)
+*-cancelʳ-≡ _ + - eq = ⊥-elim (s≢opposite[s] _ eq)
+*-cancelʳ-≡ _ + + _  = refl
 
 *-cancelˡ-≡ : LeftCancellative _*_
-*-cancelˡ-≡ - eq = opposite-injective eq
-*-cancelˡ-≡ + eq = eq
+*-cancelˡ-≡ - _ _ eq = opposite-injective eq
+*-cancelˡ-≡ + _ _ eq = eq
 
 *-cancel-≡ : Cancellative _*_
 *-cancel-≡ = *-cancelˡ-≡ , *-cancelʳ-≡

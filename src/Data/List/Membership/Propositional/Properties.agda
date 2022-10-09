@@ -361,7 +361,7 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
     ∈-if-not-i i≢j = not-x (i≢j ∘ f-inj ∘ trans fᵢ≡x ∘ sym)
 
     lemma : ∀ {k j} → i ≤ j → ¬ (i ≤ k) → suc j ≢ k
-    lemma i≤j i≰1+j refl = i≰1+j (≤-step i≤j)
+    lemma i≤j i≰1+j refl = i≰1+j (m≤n⇒m≤1+n i≤j)
 
     f′ⱼ∈xs : ∀ j → f′ j ∈ xs
     f′ⱼ∈xs j with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)

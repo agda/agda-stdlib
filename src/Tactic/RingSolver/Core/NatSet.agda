@@ -80,8 +80,8 @@ delete x xs = para f (const []) xs x
   f y ys c x         | ℕ.greater y k = y ∷ c k
 
 -- Returns the position of the element, if it's present.
-lookup : ℕ → NatSet → Maybe ℕ
-lookup x xs = List.foldr f (const (const nothing)) xs x 0
+lookup : NatSet → ℕ → Maybe ℕ
+lookup xs x = List.foldr f (const (const nothing)) xs x 0
   where
   f : ℕ → (ℕ → ℕ → Maybe ℕ) → ℕ → ℕ → Maybe ℕ
   f y ys x i with ℕ.compare x y
@@ -91,7 +91,7 @@ lookup x xs = List.foldr f (const (const nothing)) xs x 0
 
 
 member : ℕ → NatSet → Bool
-member x = Maybe.is-just ∘ lookup x
+member x xs = Maybe.is-just (lookup xs x)
 
 fromList : List ℕ → NatSet
 fromList = List.foldr insert []
@@ -106,7 +106,7 @@ private
   example₁ : fromList (4 ∷ 3 ∷ 1 ∷ 0 ∷ 2 ∷ []) ≡ (0 ∷ 0 ∷ 0 ∷ 0 ∷ 0 ∷ [])
   example₁ = refl
 
-  example₂ : lookup 3 (fromList (4 ∷ 3 ∷ 1 ∷ 0 ∷ 2 ∷ [])) ≡ just 3
+  example₂ : lookup (fromList (4 ∷ 3 ∷ 1 ∷ 0 ∷ 2 ∷ [])) 3 ≡ just 3
   example₂ = refl
 
   example₃ : toList (fromList (4 ∷ 3 ∷ 1 ∷ 0 ∷ 2 ∷ [])) ≡ (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ [])

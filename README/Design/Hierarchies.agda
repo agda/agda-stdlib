@@ -42,6 +42,7 @@ private
 -- all four of which are publicly re-exported by `X` itself.
 --
 -- Additionally a hierarchy `X` may contain additional files
+--   ∙ X.Bundles.Raw
 --   ∙ X.Consequences
 --   ∙ X.Constructs
 --   ∙ X.Properties
@@ -251,6 +252,33 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Other hierarchy modules
 ------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- X.Bundles.Raw
+
+-- Sometimes it is useful to have the bundles without any accompanying
+-- laws. These correspond more or less to what the definitions would
+-- be in non-dependently typed languages like Haskell.
+
+-- Each bundle thereofre has a corresponding raw bundle that only
+-- include the laws but not the operations.
+
+record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+
+record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    ε       : Carrier
 
 ------------------------------------------------------------------------
 -- X.Consequences

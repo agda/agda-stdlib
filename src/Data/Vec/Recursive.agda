@@ -19,7 +19,7 @@ module Data.Vec.Recursive where
 open import Level using (Level; lift)
 open import Function.Bundles using (mk↔′)
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
-open import Data.Nat.Base as Nat using (ℕ; zero; suc)
+open import Data.Nat.Base as Nat using (ℕ; zero; suc; NonZero; pred)
 open import Data.Nat.Properties using (+-comm; *-comm)
 open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
@@ -87,9 +87,9 @@ toVec : Π[ (A ^_) ⇒ Vec A ]
 toVec 0       as = Vec.[]
 toVec (suc n) as = head n as ∷ toVec n (tail n as)
 
-lookup : ∀ {n} (k : Fin n) → A ^ n → A
-lookup zero        = head _
-lookup (suc {n} k) = lookup k ∘′ tail n
+lookup : ∀ {n} → A ^ n → Fin n → A
+lookup as (zero {n})  = head n as
+lookup as (suc {n} k) = lookup (tail n as) k
 
 replicate : ∀ n → A → A ^ n
 replicate n a = fromVec (Vec.replicate a)

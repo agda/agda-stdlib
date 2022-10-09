@@ -145,7 +145,7 @@ mkℚ+-pos (suc n) (suc d) = _
     (C.sym (C.recompute c₁)) $
     divides ℤ.∣ n₂ ∣ $ begin
       ℤ.∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ cong ℤ.∣_∣ eq ⟩
-      ℤ.∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ ℤ.abs-*-commute n₂ (+ suc d₁) ⟩
+      ℤ.∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ ℤ.abs-* n₂ (+ suc d₁) ⟩
       ℤ.∣ n₂ ∣ ℕ.* suc d₁    ∎
 
   1+d₂∣1+d₁ : suc d₂ ∣ suc d₁
@@ -153,7 +153,7 @@ mkℚ+-pos (suc n) (suc d) = _
     (C.sym (C.recompute c₂)) $
     divides ℤ.∣ n₁ ∣ (begin
       ℤ.∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ℤ.∣_∣ (sym eq) ⟩
-      ℤ.∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
+      ℤ.∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-* n₁ (+ suc d₂) ⟩
       ℤ.∣ n₁ ∣ ℕ.* suc d₂    ∎)
 
   helper : mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂
@@ -786,56 +786,6 @@ private
 ↧-+ : ∀ p q → ↧ (p + q) ℤ.* +-nf p q ≡ ↧+ᵘ p q
 ↧-+ p@record{} q@record{} = ↧-/ (↥+ᵘ p q) (↧ₙ p ℕ.* ↧ₙ q)
 
-------------------------------------------------------------------------
--- Raw bundles
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  }
-
-+-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0ℚ
-  }
-
-+-0-rawGroup : RawGroup 0ℓ 0ℓ
-+-0-rawGroup = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0ℚ
-  ; _⁻¹ = -_
-  }
-
-+-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
-+-*-rawNearSemiring = record
-  { _≈_ = _≡_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0#  = 0ℚ
-  }
-
-+-*-rawSemiring : RawSemiring 0ℓ 0ℓ
-+-*-rawSemiring = record
-  { _≈_ = _≡_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0#  = 0ℚ
-  ; 1#  = 1ℚ
-  }
-
-+-*-rawRing : RawRing 0ℓ 0ℓ
-+-*-rawRing = record
-  { _≈_ = _≡_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; -_  = -_
-  ; 0#  = 0ℚ
-  ; 1#  = 1ℚ
-  }
 
 ------------------------------------------------------------------------
 -- Monomorphic to unnormalised _+_
@@ -1050,22 +1000,6 @@ private
 
 ↧-* : ∀ p q → ↧ (p * q) ℤ.* *-nf p q ≡ ↧ p ℤ.* ↧ q
 ↧-* p@record{} q@record{} = ↧-/ (↥ p ℤ.* ↥ q) (↧ₙ p ℕ.* ↧ₙ q)
-
-------------------------------------------------------------------------
--- Raw bundles
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1ℚ
-  }
 
 ------------------------------------------------------------------------
 -- Monomorphic to unnormalised _*_

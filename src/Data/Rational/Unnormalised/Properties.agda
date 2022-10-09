@@ -567,61 +567,6 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
--- Raw bundles
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≃_
-  ; _∙_ = _+_
-  }
-
-+-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-rawMonoid = record
-  { _≈_ = _≃_
-  ; _∙_ = _+_
-  ; ε   = 0ℚᵘ
-  }
-
-+-0-rawGroup : RawGroup 0ℓ 0ℓ
-+-0-rawGroup = record
-  { Carrier = ℚᵘ
-  ; _≈_ = _≃_
-  ; _∙_ = _+_
-  ; ε = 0ℚᵘ
-  ; _⁻¹ = -_
-  }
-
-+-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
-+-*-rawNearSemiring = record
-  { Carrier = ℚᵘ
-  ; _≈_ = _≃_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0# = 0ℚᵘ
-  }
-
-+-*-rawSemiring : RawSemiring 0ℓ 0ℓ
-+-*-rawSemiring = record
-  { Carrier = ℚᵘ
-  ; _≈_ = _≃_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0# = 0ℚᵘ
-  ; 1# = 1ℚᵘ
-  }
-
-+-*-rawRing : RawRing 0ℓ 0ℓ
-+-*-rawRing = record
-  { Carrier = ℚᵘ
-  ; _≈_ = _≃_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; -_ = -_
-  ; 0# = 0ℚᵘ
-  ; 1# = 1ℚᵘ
-  }
-
-------------------------------------------------------------------------
 -- Algebraic properties
 
 -- Congruence
@@ -800,11 +745,11 @@ private
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 +-mono-≤ {p} {q} {u} {v} p≤q u≤v = ≤-trans (+-monoˡ-≤ u p≤q) (+-monoʳ-≤ q u≤v)
 
-≤-steps : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
-≤-steps {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
+p≤q⇒p≤r+q : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
+p≤q⇒p≤r+q {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
 
 p≤q+p : ∀ p q .{{_ : NonNegative q}} → p ≤ q + p
-p≤q+p p q = ≤-steps q ≤-refl
+p≤q+p p q = p≤q⇒p≤r+q q ≤-refl
 
 p≤p+q : ∀ p q .{{_ : NonNegative q}} → p ≤ p + q
 p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
@@ -1002,22 +947,6 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
--- Raw bundles
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≃_
-  ; _∙_ = _*_
-  }
-
-*-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-rawMonoid = record
-  { _≈_ = _≃_
-  ; _∙_ = _*_
-  ; ε   = 1ℚᵘ
-  }
-
-------------------------------------------------------------------------
 -- Algebraic properties
 
 *-cong : Congruent₂ _≃_ _*_
@@ -1151,7 +1080,7 @@ neg-distribʳ-* p@record{} q@record{} =
   (ℤ.+ p ℤ.* q) ℤ.* (↧ (q / r))                   ≡⟨  cong ((ℤ.+ p ℤ.* q) ℤ.*_) (↧[n/d]≡d q r) ⟩
   (ℤ.+ p ℤ.* q) ℤ.* ℤ.+ r                         ≡⟨  xy∙z≈y∙xz (ℤ.+ p) q (ℤ.+ r) ⟩
   (q ℤ.* (ℤ.+ p ℤ.* ℤ.+ r))                       ≡˘⟨ cong (ℤ._* (ℤ.+ p ℤ.* ℤ.+ r)) (↥[n/d]≡n q r) ⟩
-  (↥ (q / r)) ℤ.* (ℤ.+ p ℤ.* ℤ.+ r)               ≡⟨  cong (↥ (q / r) ℤ.*_) (ℤ.pos-distrib-* p r) ⟩
+  (↥ (q / r)) ℤ.* (ℤ.+ p ℤ.* ℤ.+ r)               ≡˘⟨  cong (↥ (q / r) ℤ.*_) (ℤ.pos-* p r) ⟩
   (↥ (q / r)) ℤ.* (ℤ.+ (p ℕ.* r))                 ≡˘⟨ cong (↥ (q / r) ℤ.*_) (↧[n/d]≡d (ℤ.+ p ℤ.* q) (p ℕ.* r)) ⟩
   (↥ (q / r)) ℤ.* (↧ ((ℤ.+ p ℤ.* q) / (p ℕ.* r))) ∎)
   where open ℤ.≤-Reasoning
@@ -1205,9 +1134,9 @@ private
 *-monoˡ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → (_* r) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-nonNeg r@(mkℚᵘ (ℤ.+ n) _) {p@record{}} {q@record{}} (*≤* x<y) = *≤* $ begin
   ↥ p ℤ.* ↥ r ℤ.* (↧ q   ℤ.* ↧ r)  ≡⟨  reorder₂ (↥ p) _ _ _ ⟩
-  l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨  cong (l₁ ℤ.*_) (ℤ.pos-distrib-* n _) ⟩
+  l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡˘⟨  cong (l₁ ℤ.*_) (ℤ.pos-* n _) ⟩
   l₁          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≤⟨  ℤ.*-monoʳ-≤-nonNeg (ℤ.+ (n ℕ.* ↧ₙ r)) x<y ⟩
-  l₂          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≡˘⟨ cong (l₂ ℤ.*_) (ℤ.pos-distrib-* n _) ⟩
+  l₂          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≡⟨ cong (l₂ ℤ.*_) (ℤ.pos-* n _) ⟩
   l₂          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨  reorder₂ (↥ q) _ _ _ ⟩
   ↥ q ℤ.* ↥ r ℤ.* (↧ p   ℤ.* ↧ r)  ∎
   where open ℤ.≤-Reasoning; l₁ = ↥ p ℤ.* ↧ q ; l₂ = ↥ q ℤ.* ↧ p
@@ -1775,7 +1704,7 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
     ∣m∣n≡∣mn∣ : ∀ m n → ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ n ≡ ℤ.+ ℤ.∣ m ℤ.* ℤ.+ n ∣
     ∣m∣n≡∣mn∣ m n = begin-equality
       ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ n                        ≡⟨⟩
-      ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ ℤ.∣ ℤ.+ n ∣              ≡⟨ ℤ.pos-distrib-* ℤ.∣ m ∣ ℤ.∣ ℤ.+ n ∣ ⟩
+      ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ ℤ.∣ ℤ.+ n ∣              ≡˘⟨ ℤ.pos-* ℤ.∣ m ∣ ℤ.∣ ℤ.+ n ∣ ⟩
       ℤ.+ (ℤ.∣ m ∣ ℕ.* n)                          ≡⟨⟩
       ℤ.+ (ℤ.∣ m ∣ ℕ.* ℤ.∣ ℤ.+ n ∣)                ≡˘⟨ cong ℤ.+_ (ℤ.∣i*j∣≡∣i∣*∣j∣ m (ℤ.+ n)) ⟩
       ℤ.+ (ℤ.∣ m ℤ.* ℤ.+ n ∣)                      ∎
@@ -1796,7 +1725,7 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
   ∣ p * q ∣                                           ≡⟨⟩
   ∣ (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q) ∣                 ≡⟨⟩
   ℤ.+ ℤ.∣ ↥ p ℤ.* ↥ q ∣ / (↧ₙ p ℕ.* ↧ₙ q)             ≡⟨ cong (λ h → ℤ.+ h / ((↧ₙ p) ℕ.* (↧ₙ q))) (ℤ.∣i*j∣≡∣i∣*∣j∣ (↥ p) (↥ q)) ⟩
-  ℤ.+ (ℤ.∣ ↥ p ∣ ℕ.* ℤ.∣ ↥ q ∣) / (↧ₙ p ℕ.* ↧ₙ q)     ≡˘⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.pos-distrib-* ℤ.∣ ↥ p ∣ ℤ.∣ ↥ q ∣) ⟩
+  ℤ.+ (ℤ.∣ ↥ p ∣ ℕ.* ℤ.∣ ↥ q ∣) / (↧ₙ p ℕ.* ↧ₙ q)     ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.pos-* ℤ.∣ ↥ p ∣ ℤ.∣ ↥ q ∣) ⟩
   (ℤ.+ ℤ.∣ ↥ p ∣ ℤ.* ℤ.+ ℤ.∣ ↥ q ∣) / (↧ₙ p ℕ.* ↧ₙ q) ≡⟨⟩
   (ℤ.+ ℤ.∣ ↥ p ∣ / ↧ₙ p) * (ℤ.+ ℤ.∣ ↥ q ∣ / ↧ₙ q)     ≡⟨⟩
   ∣ p ∣ * ∣ q ∣                                       ∎
@@ -1854,6 +1783,11 @@ Please use *-monoʳ-≤-nonNeg instead."
 {-# WARNING_ON_USAGE *-monoˡ-≤-pos
 "Warning: *-monoˡ-≤-nonNeg was deprecated in v2.0.
 Please use *-monoˡ-≤-nonNeg instead."
+#-}
+≤-steps = p≤q⇒p≤r+q
+{-# WARNING_ON_USAGE ≤-steps
+"Warning: ≤-steps was deprecated in v2.0
+Please use p≤q⇒p≤r+q instead."
 #-}
 *-monoˡ-≤-neg : ∀ r → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-neg r@(mkℚᵘ -[1+ _ ] _) _ = *-monoˡ-≤-nonPos r
