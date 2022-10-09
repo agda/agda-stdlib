@@ -1999,6 +1999,13 @@ Other minor changes
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
   ```
 
+* Added new functions in `Data.Vec.Recursive` for `{{NonZero n}}`:
+  ```
+  uncons′ : A ^ n → A × A ^ (pred n)
+  head′   : A ^ n → A
+  tail′   : A ^ n → A ^ (pred n)
+  ```
+
 * Added new proofs in `Data.Vec.Functional.Properties`:
   ```
   map-updateAt : f ∘ g ≗ h ∘ f → map f (updateAt i g xs) ≗ updateAt i h (map f xs)

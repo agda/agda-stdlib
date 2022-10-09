@@ -74,11 +74,20 @@ uncons : ∀ n → A ^ suc n → A × A ^ n
 uncons 0        a        = a , lift tt
 uncons (suc n)  (a , as) = a , as
 
+uncons′ : ∀ n → .{{_ : NonZero n}} → A ^ n → A × A ^ (pred n)
+uncons′ (suc n) = uncons n
+
 head : ∀ n → A ^ suc n → A
 head n as = proj₁ (uncons n as)
 
+head′ : ∀ n → .{{_ : NonZero n}} → A ^ n → A
+head′ (suc n) = head n
+
 tail : ∀ n → A ^ suc n → A ^ n
 tail n as = proj₂ (uncons n as)
+
+tail′ : ∀ n → .{{_ : NonZero n}} → A ^ n → A ^ (pred n)
+tail′ (suc n) = tail n
 
 fromVec : ∀[ Vec A ⇒ (A ^_) ]
 fromVec = Vec.foldr (_ ^_) (cons _) _
