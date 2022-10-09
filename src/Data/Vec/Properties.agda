@@ -11,7 +11,7 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin
-  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_; punchIn; punchIn′; punchOut; punchOut′)
+  using (Fin; zero; suc; toℕ; _↑ˡ_; _↑ʳ_; combine)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties
@@ -534,12 +534,12 @@ lookup-cast₂ eq (_ ∷ xs) (suc i) =
   lookup-cast₂ (suc-injective eq) xs i
 
 lookup-concat : ∀ (xss : Vec (Vec A m) n) i j →
-                lookup (concat xss) (Fin.combine i j) ≡ lookup (lookup xss i) j
+                lookup (concat xss) (combine i j) ≡ lookup (lookup xss i) j
 lookup-concat (xs ∷ xss) zero j = lookup-++ˡ xs (concat xss) j
 lookup-concat (xs ∷ xss) (suc i) j = begin
-  lookup (concat (xs ∷ xss)) (Fin.combine (suc i) j)
-    ≡⟨ lookup-++ʳ xs (concat xss) (Fin.combine i j) ⟩
-  lookup (concat xss) (Fin.combine i j)
+  lookup (concat (xs ∷ xss)) (combine (suc i) j)
+    ≡⟨ lookup-++ʳ xs (concat xss) (combine i j) ⟩
+  lookup (concat xss) (combine i j)
     ≡⟨ lookup-concat xss i j ⟩
   lookup (lookup (xs ∷ xss) (suc i)) j
     ∎ where open ≡-Reasoning
@@ -747,9 +747,9 @@ zipWith-is-⊛ f (x ∷ xs) (y ∷ ys) = cong (_ ∷_) (zipWith-is-⊛ f xs ys)
 -- _⊛*_
 
 lookup-⊛* : ∀ (fs : Vec (A → B) m) (xs : Vec A n) i j →
-            lookup (fs ⊛* xs) (Fin.combine i j) ≡ (lookup fs i $ lookup xs j)
+            lookup (fs ⊛* xs) (combine i j) ≡ (lookup fs i $ lookup xs j)
 lookup-⊛* (f ∷ fs) xs zero j = trans (lookup-++ˡ (map f xs) _ j) (lookup-map j f xs)
-lookup-⊛* (f ∷ fs) xs (suc i) j = trans (lookup-++ʳ (map f xs) _ (Fin.combine i j)) (lookup-⊛* fs xs i j)
+lookup-⊛* (f ∷ fs) xs (suc i) j = trans (lookup-++ʳ (map f xs) _ (combine i j)) (lookup-⊛* fs xs i j)
 
 ------------------------------------------------------------------------
 -- foldl
