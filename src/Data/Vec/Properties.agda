@@ -10,7 +10,8 @@ module Data.Vec.Properties where
 
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
+open import Data.Fin.Base as Fin
+  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_; punchIn; punchIn′; punchOut; punchOut′)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties
@@ -1065,6 +1066,11 @@ insert-lookup : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
 insert-lookup xs       zero     v = refl
 insert-lookup (x ∷ xs) (suc i)  v = insert-lookup xs i v
 
+insert-lookup′ : .{{_ : NonZero n}} →
+                (xs : Vec A (pred n)) (i : Fin n) (v : A) →
+                lookup (insert′ xs i v) i ≡ v
+insert-lookup′ {n = suc n} = insert-lookup
+
 insert-punchIn : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) (j : Fin n) →
                  lookup (insert xs i v) (Fin.punchIn i j) ≡ lookup xs j
 insert-punchIn xs       zero     v j       = refl
@@ -1084,6 +1090,11 @@ remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
 remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
   remove-punchOut (y ∷ xs) (i≢j ∘ cong suc)
 
+remove-punchOut′ : .{{_ : NonZero n}} →
+                  ∀ (xs : Vec A n) {i} {j} (i≢j : i ≢ j) →
+                  lookup (remove′ xs i) (Fin.punchOut′ i≢j) ≡ lookup xs j
+remove-punchOut′ {n = suc n} = remove-punchOut
+
 ------------------------------------------------------------------------
 -- remove
 
@@ -1094,11 +1105,21 @@ remove-insert (x ∷ xs)     (suc zero)     v = refl
 remove-insert (x ∷ y ∷ xs) (suc (suc i))  v =
   cong (x ∷_) (remove-insert (y ∷ xs) (suc i) v)
 
+remove-insert′ : .{{_ : NonZero n}} →
+                (xs : Vec A (pred n)) (i : Fin n) (v : A) →
+                remove′ (insert′ xs i v) i ≡ xs
+remove-insert′ {n = suc n} = remove-insert
+
 insert-remove : ∀ (xs : Vec A (suc n)) (i : Fin (suc n)) →
                 insert (remove xs i) i (lookup xs i) ≡ xs
 insert-remove (x ∷ xs)     zero     = refl
 insert-remove (x ∷ y ∷ xs) (suc i)  =
   cong (x ∷_) (insert-remove (y ∷ xs) i)
+
+insert-remove′ : .{{_ : NonZero n}} →
+                (xs : Vec A n) (i : Fin n) →
+                insert′ (remove′ xs i) i (lookup xs i) ≡ xs
+insert-remove′ {n = suc n} = insert-remove
 
 ------------------------------------------------------------------------
 -- Conversion function

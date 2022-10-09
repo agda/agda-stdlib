@@ -133,6 +133,9 @@ inject! : ∀ {i : Fin (suc n)} → Fin′ i → Fin n
 inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
+inject!′ : .{{ℕ.NonZero n}} → {i : Fin n} → Fin′ i → Fin (ℕ.pred n)
+inject!′ {n = suc n} = inject!
+
 inject₁ : Fin n → Fin (suc n)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)

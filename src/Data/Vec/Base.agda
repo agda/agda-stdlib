@@ -53,8 +53,14 @@ length {n = n} _ = n
 head : Vec A (1 + n) → A
 head (x ∷ xs) = x
 
+head′ : .{{_ : NonZero n}} → Vec A n → A
+head′ {n = suc n} = head
+
 tail : Vec A (1 + n) → Vec A n
 tail (x ∷ xs) = xs
+
+tail′ : .{{_ : NonZero n}} → Vec A n → Vec A (pred n)
+tail′ {n = suc n} = tail
 
 lookup : Vec A n → Fin n → A
 lookup (x ∷ xs) zero    = x
@@ -75,6 +81,10 @@ insert′ {n = suc n} = insert
 remove : Vec A (suc n) → Fin (suc n) → Vec A n
 remove (_ ∷ xs)     zero     = xs
 remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
+
+remove′ : .{{_ : NonZero n}} →
+         Vec A n → Fin n → Vec A (pred n)
+remove′ {n = suc n} = remove
 
 updateAt : Fin n → (A → A) → Vec A n → Vec A n
 updateAt zero    f (x ∷ xs) = f x ∷ xs
@@ -291,6 +301,9 @@ split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
 uncons : Vec A (suc n) → A × Vec A n
 uncons (x ∷ xs) = x , xs
 
+uncons′ : .{{NonZero n}} → Vec A n → A × Vec A (pred n)
+uncons′ {n = suc n} = uncons
+
 ------------------------------------------------------------------------
 -- Operations involving ≤
 
@@ -349,9 +362,15 @@ init : Vec A (1 + n) → Vec A n
 init xs with initLast xs
 ... | (ys , y , refl) = ys
 
+init′ : .{{NonZero n}} → (xs : Vec A n) → Vec A (pred n)
+init′ {n = suc n} = init
+
 last : Vec A (1 + n) → A
 last xs with initLast xs
 ... | (ys , y , refl) = y
+
+last′ : .{{NonZero n}} → (xs : Vec A n) → A
+last′ {n = suc n} = last
 
 ------------------------------------------------------------------------
 -- Other operations

@@ -1517,10 +1517,10 @@ Other minor changes
   ```
   zero′     : Fin n
   suc'     : Fin (ℕ.pred n) → Fin n
+  inject!′  : {i : Fin n} → Fin′ i → Fin (ℕ.pred n)
   inject₁′  : Fin (ℕ.pred n) → Fin n
   lower₁′   : (i : Fin n) → n ≢ suc (toℕ i) → Fin (ℕ.pred n)
-	punchOut′ :
-	{i j : Fin n} → i ≢ j → Fin (ℕ.pred n)
+  punchOut′ : {i j : Fin n} → i ≢ j → Fin (ℕ.pred n)
   punchIn′  : Fin n → Fin (ℕ.pred n) → Fin n
   pinch′    : Fin (ℕ.pred n) → Fin n → Fin (ℕ.pred n)
   ```	
@@ -1588,7 +1588,7 @@ Other minor changes
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
   ```
 
-  Additionally primed functionality as in `Data.Fin.Base`:
+  Additionally properties of the primed functionality as in `Data.Fin.Base`:
   ```
   inject₁-lower₁′ : (n≢i+1 : n ≢ suc (toℕ i)) →
                    inject₁′ (lower₁′ i n≢i+1) ≡ i
@@ -1929,7 +1929,16 @@ Other minor changes
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
+  ```
+  And for `{{NonZero n}}` as per issue 1686
+  ```
+  head′   : Vec A n → A
+  tail′   : Vec A n → A ^ (pred n)
   insert′ : Vec A (pred n) → Fin n → A → Vec A n
+  remove′ : Vec A n → Fin n → Vec A (pred n)
+  uncons′ : Vec A n → A × Vec A (pred n)
+  init′   : (xs : Vec A n) → Vec A (pred n)
+  last′   : (xs : Vec A n) → A
   ```
 
 * Added new instance in `Data.Vec.Categorical`:
@@ -1998,7 +2007,14 @@ Other minor changes
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
   ```
+  And for `{{NonZero n}}`:
+  ```
+  insert-lookup′ : (xs : Vec A (pred n)) (i : Fin n) (v : A) →
+                  lookup (insert′ xs i v) i ≡ v
+  insert-punchIn′ : (xs : Vec A (pred n)) (i : Fin n) (v : A) (j : Fin (pred n)) →
+                   lookup (insert′ xs i v) (Fin.punchIn′ i j) ≡ lookup xs j
 
+  ```
 * Added new functions in `Data.Vec.Recursive` for `{{NonZero n}}`:
   ```
   uncons′ : A ^ n → A × A ^ (pred n)
