@@ -68,6 +68,10 @@ insert : Vec A n → Fin (suc n) → A → Vec A (suc n)
 insert xs       zero     v = v ∷ xs
 insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
 
+insert′ : .{{_ : NonZero n}} →
+         Vec A (pred n) → Fin n → A → Vec A n
+insert′ {n = suc n} = insert
+
 remove : Vec A (suc n) → Fin (suc n) → Vec A n
 remove (_ ∷ xs)     zero     = xs
 remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i

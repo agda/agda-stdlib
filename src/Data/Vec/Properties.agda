@@ -1071,6 +1071,11 @@ insert-punchIn xs       zero     v j       = refl
 insert-punchIn (x ∷ xs) (suc i)  v zero    = refl
 insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
 
+insert-punchIn′ : .{{_ : NonZero n}} →
+                 (xs : Vec A (pred n)) (i : Fin n) (v : A) (j : Fin (pred n)) →
+                 lookup (insert′ xs i v) (Fin.punchIn′ i j) ≡ lookup xs j
+insert-punchIn′ {n = suc n} = insert-punchIn
+
 remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
                   lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
 remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j

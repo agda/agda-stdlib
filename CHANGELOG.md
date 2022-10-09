@@ -1929,6 +1929,7 @@ Other minor changes
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
+  insert′ : Vec A (pred n) → Fin n → A → Vec A n
   ```
 
 * Added new instance in `Data.Vec.Categorical`:
