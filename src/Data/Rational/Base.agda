@@ -222,7 +222,7 @@ p@record{} * q@record{} = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- subtraction
 _-_ : ℚ → ℚ → ℚ
-p@record{} - q@record{} = p + (- q)
+p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
 1/_ : (p : ℚ) → .{{_ : NonZero p}} → ℚ
@@ -231,7 +231,7 @@ p@record{} - q@record{} = p + (- q)
 
 -- division: requires a proof that the denominator is not zero
 _÷_ : (p q : ℚ) → .{{_ : NonZero q}} → ℚ
-p@record{} ÷ q@record{} = p * (1/ q)
+p ÷ q = p * (1/ q)
 
 -- max
 _⊔_ : (p q : ℚ) → ℚ
