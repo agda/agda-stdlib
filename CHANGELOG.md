@@ -1940,9 +1940,9 @@ Other minor changes
   ```
   head′   : Vec A n → A
   tail′   : Vec A n → A ^ (pred n)
+  uncons′ : Vec A n → A × Vec A (pred n)
   insert′ : Vec A (pred n) → Fin n → A → Vec A n
   remove′ : Vec A n → Fin n → Vec A (pred n)
-  uncons′ : Vec A n → A × Vec A (pred n)
   init′   : (xs : Vec A n) → Vec A (pred n)
   last′   : (xs : Vec A n) → A
   ```
@@ -1954,7 +1954,13 @@ Other minor changes
 
 * Added new functions in `Data.Vec.Functional` for `{{NonZero n}}`:
   ```
-  remove′ : Vec A n → Fin n → Vec A (pred n)
+  head′   : Vector A n → A
+  tail′   : Vector A n → A ^ (pred n)
+  uncons′ : Vector A n → A × Vector A (pred n)
+  insert′ : Vector A (pred n) → Fin n → A → Vector A n
+  remove′ : Vector A n → Fin n → Vector A (pred n)
+  init′   : (xs : Vector A n) → Vector A (pred n)
+  last′   : (xs : Vector A n) → A
   ```
 
 * Added new proofs in `Data.Vec.Properties`:

@@ -15,7 +15,7 @@
 
 module Data.Vec.Functional where
 
-open import Data.Fin.Base
+open import Data.Fin.Base hiding (pred)
 open import Data.List.Base as L using (List)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero; pred)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
@@ -72,11 +72,20 @@ length {n = n} _ = n
 head : ∀ {n} → Vector A (suc n) → A
 head xs = xs zero
 
+head′ : ∀ {n} {{_ : NonZero n}} → Vector A n → A
+head′ {n = suc n} = head
+
 tail : ∀ {n} → Vector A (suc n) → Vector A n
 tail xs = xs ∘ suc
 
+tail′ : ∀ {n} {{_ : NonZero n}} → Vector A n → Vector A (pred n)
+tail′ {n = suc n} = tail
+
 uncons : ∀ {n} → Vector A (suc n) → A × Vector A n
 uncons xs = head xs , tail xs
+
+uncons′ : ∀ {n} {{_ : NonZero n}} → Vector A n → A × Vector A (pred n)
+uncons′ {n = suc n} = uncons
 
 replicate : ∀ {n} → A → Vector A n
 replicate = const
@@ -91,7 +100,7 @@ remove : ∀ {n} → Fin (suc n) → Vector A (suc n) → Vector A n
 remove i t = t ∘ punchIn i
 
 remove′ : ∀ {n} .{{_ : NonZero n}} →
-         Fin n → Vector A n → Vector A (ℕ.pred n)
+         Fin n → Vector A n → Vector A (pred n)
 remove′ {n = suc n} i t = t ∘ punchIn′ i
 
 updateAt : ∀ {n} → Fin n → (A → A) → Vector A n → Vector A n
@@ -153,8 +162,14 @@ reverse xs = xs ∘ opposite
 init : ∀ {n} → Vector A (suc n) → Vector A n
 init xs = xs ∘ inject₁
 
+init′ : ∀ {n} {{_ : NonZero n}} → Vector A n → Vector A (pred n)
+init′ {n = suc n} = init
+
 last : ∀ {n} → Vector A (suc n) → A
 last {n = n} xs = xs (fromℕ n)
+
+last′ : ∀ {n} {{_ : NonZero n}} → Vector A n → A
+last′ {n = suc n} = last
 
 transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
 transpose = flip
