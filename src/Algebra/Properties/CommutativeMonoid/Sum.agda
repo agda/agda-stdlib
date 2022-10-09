@@ -59,6 +59,9 @@ sum-remove {suc n} {suc i}  xs = begin
   ∑t = sum t
   ∑t′ = sum (remove i t)
 
+sum-remove′ : ∀ {n} {{_ : NonZero n}} {i : Fin n} t → sum t ≈ t i + sum (remove′ i t)
+sum-remove′ {n = suc n} = sum-remove
+
 -- The '∑' operator distributes over addition.
 ∑-distrib-+ : ∀ {n} (f g : Vector Carrier n) → ∑[ i < n ] (f i + g i) ≈ ∑[ i < n ] f i + ∑[ i < n ] g i
 ∑-distrib-+ {zero}  f g = sym (+-identityˡ _)

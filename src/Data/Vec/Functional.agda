@@ -90,6 +90,10 @@ insert {n = suc n} xs (suc i) v (suc j) = insert (tail xs) i v j
 remove : ∀ {n} → Fin (suc n) → Vector A (suc n) → Vector A n
 remove i t = t ∘ punchIn i
 
+remove′ : ∀ {n} .{{_ : NonZero n}} →
+         Fin n → Vector A n → Vector A (ℕ.pred n)
+remove′ {n = suc n} i t = t ∘ punchIn′ i
+
 updateAt : ∀ {n} → Fin n → (A → A) → Vector A n → Vector A n
 updateAt {n = suc n} zero    f xs zero    = f (head xs)
 updateAt {n = suc n} zero    f xs (suc j) = xs (suc j)

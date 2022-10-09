@@ -1438,12 +1438,18 @@ Other minor changes
 
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
   ```
+  sum-remove′ : ∀ {n} {{_ : NonZero n}} {i : Fin n} t → sum t ≈ t i + sum (remove′ i t)
+  ```
+
+* Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
+  ```
   interchange : Interchangable _∙_ _∙_
   xy∙xx≈x∙yxx : ∀ x y → (x ∙ y) ∙ (x ∙ x) ≈ x ∙ (y ∙ (x ∙ x))
   leftSemimedial : LeftSemimedial _∙_
   rightSemimedial : RightSemimedial _∙_
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
   ```
+
 * Added new proofs to `Algebra.Properties.Semigroup`:
   ```
   leftAlternative : LeftAlternative _∙_
@@ -1944,6 +1950,11 @@ Other minor changes
 * Added new instance in `Data.Vec.Categorical`:
   ```agda
   monad : RawMonad (λ (A : Set a) → Vec A n)
+  ```
+
+* Added new functions in `Data.Vec.Functional` for `{{NonZero n}}`:
+  ```
+  remove′ : Vec A n → Fin n → Vec A (pred n)
   ```
 
 * Added new proofs in `Data.Vec.Properties`:
