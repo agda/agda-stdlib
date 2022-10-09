@@ -145,7 +145,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
   inverseʳ′ : Inverseʳ _≡_ _≡_ to from
   inverseʳ′ j = begin
     from (to j)                                                      ≡⟨⟩
-    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut _)) ⟩
+    punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong-eq i (cong πˡ (punchIn-punchOut _)) ⟩
     punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _  ≡⟨ punchOut-cong i (inverseˡ π) ⟩
     punchOut {i = i} {punchIn i j}                                _  ≡⟨ punchOut-punchIn i ⟩
     j                                                                ∎
@@ -153,7 +153,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
   inverseˡ′ : Inverseˡ _≡_ _≡_ to from
   inverseˡ′ j = begin
     to (from j)                                                       ≡⟨⟩
-    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _  ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
+    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _  ≡⟨ punchOut-cong-eq (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
     punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _  ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
     punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
     j                                                                 ∎

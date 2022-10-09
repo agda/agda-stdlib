@@ -1513,7 +1513,7 @@ Other minor changes
   ```
   
   Additionally, as per issue #1686, primed functionality in cases
-  the Fin index n is NonZero: 
+  where the `Fin` index `n` is `NonZero`: 
   ```
   zero′     : Fin n
   suc'     : Fin (ℕ.pred n) → Fin n
@@ -1587,6 +1587,29 @@ Other minor changes
   subst-is-cast : subst Fin eq k ≡ cast eq k
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
   ```
+
+  Additionally primed functionality as in `Data.Fin.Base`:
+  ```
+  inject₁-lower₁′ : (n≢i+1 : n ≢ suc (toℕ i)) →
+                   inject₁′ (lower₁′ i n≢i+1) ≡ i
+  lower₁-irrelevant′ : (n≢i₁+1 n≢i₂+1 : n ≢ suc (toℕ i)) →
+                       lower₁′ i n≢i₁+1 ≡ lower₁′ i n≢i₂+1
+  inject₁≡⇒lower₁≡′ : (n≢j+1 : n ≢ suc (toℕ j)) → inject₁′ i ≡ j → lower₁′ j n≢j+1 ≡ i
+  pred<′ : (i : Fin n) → i ≢ zero′ → pred i < i
+  punchOut-cong′ : {i≢j : i ≢ j} {i≢k : i ≢ k} →
+                  j ≡ k → punchOut′ i≢j ≡ punchOut′ i≢k
+  punchOut-injective′ : (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                       punchOut′ i≢j ≡ punchOut′ i≢k → j ≡ k
+  punchIn-punchOut′ : {i j : Fin n} (i≢j : i ≢ j) →
+                     punchIn′ i (punchOut′ i≢j) ≡ j
+
+  pinch-injective′ : {i : Fin (ℕ.pred n)} {j k : Fin n} →
+                     suc′ i ≢ j → suc′ i ≢ k → pinch′ i j ≡ pinch′ i k → j ≡ k
+  ```
+
+  NB Adding `punchOut-cong′` for the sake of uniformity with the 'primed' naming scheme
+  for  `NonZero` instances, entailed renaming the old `punchOut-cong′` to `punchOut-cong-eq`,
+  with knock-on effect in two places in `Data.Fin.Permutation`
 
 * Added new functions in `Data.Integer.Base`:
   ```
