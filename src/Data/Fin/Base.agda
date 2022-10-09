@@ -7,6 +7,7 @@
 -- Note that elements of Fin n can be seen as natural numbers in the
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Base where
@@ -37,6 +38,27 @@ private
 data Fin : ℕ → Set where
   zero : Fin (suc n)
   suc  : (i : Fin n) → Fin (suc n)
+
+------------------------------------------------------------------------
+-- Much of the power of dependently-typed programming comes from the
+-- ability of pattern-matching over inhomogeneous telescopes of types
+-- to discriminate aruments to functions in sharper ways.
+
+-- The Fin type exemplifies this behaviour, but at the cost of not always
+-- being able to know in a function defintion which case one is in by virtue
+-- of an explicit constructor (ℕ.suc) symbol occurring in the type. So
+-- (issue #1686) we also consider constructors and functions defined over
+-- homogeneous telescopes of the form  {n} (i : Fin n) subject to n being
+-- ℕ.NonZero, to be instantiated at any cal-site by instance inference.
+-- This additional functionality will be systematically marked by use of a prime \'.
+
+-- homogeneous constructors
+
+zero′ : .{{ℕ.NonZero n}} → Fin n
+zero′ {n = suc n} = zero
+
+suc′ : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
+suc′ {n = suc n} = suc
 
 -- A conversion: toℕ "i" = i.
 
@@ -115,16 +137,23 @@ inject₁ : Fin n → Fin (suc n)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
+inject₁′ : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
+inject₁′ {n = suc n} = inject₁
+
 inject≤ : Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    _        = zero
 inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
 
 -- lower₁ "i" _ = "i".
 
-lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
+lower₁ : (i : Fin (suc n)) → n ≢ toℕ i → Fin n
 lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
 lower₁ {suc n} zero    _  = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
+
+lower₁′ : .{{ℕ.NonZero n}} →
+          (i : Fin n) → n ≢ suc (toℕ i) → Fin (ℕ.pred n)
+lower₁′ {n = suc n} i ne = lower₁ i (ne ∘ cong suc)
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ (i : Fin n) → Fin′ (suc i)
@@ -258,6 +287,10 @@ punchOut {_}     {zero}   {suc j} _   = j
 punchOut {suc _} {suc i}  {zero}  _   = zero
 punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
 
+punchOut′ : .{{ℕ.NonZero n}} →
+           {i j : Fin n} → i ≢ j → Fin (ℕ.pred n)
+punchOut′ {n = suc n} = punchOut
+
 -- The function f(i,j) = if j≥i then j+1 else j
 
 punchIn : Fin (suc n) → Fin n → Fin (suc n)
@@ -265,12 +298,20 @@ punchIn zero    j       = suc j
 punchIn (suc i) zero    = zero
 punchIn (suc i) (suc j) = suc (punchIn i j)
 
+punchIn′ : .{{ℕ.NonZero n}} →
+          Fin n → Fin (ℕ.pred n) → Fin n
+punchIn′ {n = suc n} = punchIn
+
 -- The function f(i,j) such that f(i,j) = if j≤i then j else j-1
 
 pinch : Fin n → Fin (suc n) → Fin n
 pinch {suc n} _       zero    = zero
 pinch {suc n} zero    (suc j) = j
 pinch {suc n} (suc i) (suc j) = suc (pinch i j)
+
+pinch′ : .{{ℕ.NonZero n}} →
+        Fin (ℕ.pred n) → Fin n → Fin (ℕ.pred n)
+pinch′ {n = suc n} = pinch
 
 ------------------------------------------------------------------------
 -- Order relations
