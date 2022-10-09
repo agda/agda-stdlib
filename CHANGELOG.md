@@ -1511,6 +1511,19 @@ Other minor changes
   quotient  : Fin (m * n) → Fin m
   remainder : Fin (m * n) → Fin n
   ```
+  
+  Additionally, as per issue #1686, primed functionality in cases
+  the Fin index n is NonZero: 
+  ```
+  zero′     : Fin n
+  suc'     : Fin (ℕ.pred n) → Fin n
+  inject₁′  : Fin (ℕ.pred n) → Fin n
+  lower₁′   : (i : Fin n) → n ≢ suc (toℕ i) → Fin (ℕ.pred n)
+	punchOut′ :
+	{i j : Fin n} → i ≢ j → Fin (ℕ.pred n)
+  punchIn′  : Fin n → Fin (ℕ.pred n) → Fin n
+  pinch′    : Fin (ℕ.pred n) → Fin n → Fin (ℕ.pred n)
+  ```	
 
 * Added new proofs in `Data.Fin.Induction`:
   every (strict) partial order is well-founded and Noetherian.
