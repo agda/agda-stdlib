@@ -1,0 +1,2 @@
+name: counting
+include: ../../../src/ .

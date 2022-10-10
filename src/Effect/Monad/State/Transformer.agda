@@ -113,8 +113,7 @@ monadT M = record
 
 monadState : RawMonad M → RawMonadState S (StateT S M)
 monadState M = record
-  { get = mkStateT (λ s → pure (s , s))
-  ; put = λ s → mkStateT (λ _ → pure (s , _))
+  { gets   = λ f → mkStateT (λ s → pure (s , f s))
   ; modify = λ f → mkStateT (λ s → pure (f s , _))
   } where open RawMonad M
 
@@ -125,8 +124,7 @@ liftStateT : RawMonad M →
              RawMonadState S₁ M →
              RawMonadState S₁ (StateT S₂ M)
 liftStateT M Mon = record
-  { get    = lift get
-  ; put    = λ s₁ → lift (put s₁)
+  { gets   = λ f₁ → lift (gets f₁)
   ; modify = λ f₁ → lift (modify f₁)
   } where open RawMonadTd (monadT M) using (lift); open RawMonadState Mon
 
@@ -135,7 +133,6 @@ open import Effect.Monad.Reader.Transformer.Base
 liftReaderT : RawMonadState S₁ M →
               RawMonadState S₁ (ReaderT S₂ M)
 liftReaderT Mon = record
-  { get    = mkReaderT (const get)
-  ; put    = λ s → mkReaderT (const (put s))
+  { gets   = λ f → mkReaderT (const (gets f))
   ; modify = λ f → mkReaderT (const (modify f))
   } where open RawMonadState Mon

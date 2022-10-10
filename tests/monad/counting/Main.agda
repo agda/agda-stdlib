@@ -1,4 +1,4 @@
-{-# OPTIONS --guardedness --sized-types #-}
+{-# OPTIONS --guardedness #-}
 
 module Main where
 

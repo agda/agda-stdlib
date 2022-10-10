@@ -43,6 +43,7 @@ textTests = mkTestPool "Text libraries"
 monadTests : TestPool
 monadTests = mkTestPool "Monad transformers"
   $ "counting"
+  ∷ "fibonacci"
   ∷ []
 
 main : Main

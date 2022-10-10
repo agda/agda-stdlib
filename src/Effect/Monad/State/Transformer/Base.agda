@@ -6,12 +6,13 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Level using (Level; suc; _⊔_)
 
 module Effect.Monad.State.Transformer.Base where
 
 open import Data.Product using (_×_; proj₁; proj₂)
 open import Data.Unit.Polymorphic.Base using (⊤)
+open import Function.Base using (_∘′_; const; id)
+open import Level using (Level; suc; _⊔_)
 
 open import Effect.Functor
 
@@ -30,9 +31,11 @@ record RawMonadState
        (M : Set s → Set f)
        : Set (suc s ⊔ f) where
   field
-    get : M S
-    put : S → M ⊤
+    gets   : (S → A) → M A
     modify : (S → S) → M ⊤
+
+  put = modify ∘′ const
+  get = gets id
 
 ------------------------------------------------------------------------
 -- State monad transformer

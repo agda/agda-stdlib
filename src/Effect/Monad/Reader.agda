@@ -15,7 +15,7 @@ open import Effect.Empty
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Function.Identity.Effectful as Id using (Identity)
+open import Effect.Monad.Identity as Id using (Identity; runIdentity)
 open import Level using (Level)
 
 import Effect.Monad.Reader.Transformer as Trans
@@ -23,7 +23,7 @@ import Effect.Monad.Reader.Transformer as Trans
 private
   variable
     r : Level
-    R : Set r
+    R A : Set r
 
 ------------------------------------------------------------------------
 -- Re-export the monad reader operations
@@ -36,6 +36,9 @@ open Trans public
 
 Reader : (R A : Set r) → Set r
 Reader R = Trans.ReaderT R Identity
+
+runReader : Reader R A → R → A
+runReader mr r = runIdentity (Trans.runReaderT mr r)
 
 ------------------------------------------------------------------------
 -- Structure

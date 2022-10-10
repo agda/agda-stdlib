@@ -10,10 +10,13 @@
 
 module Effect.Monad where
 
+open import Data.Bool.Base using (Bool; true; false; not)
+open import Data.Unit.Polymorphic.Base using (⊤)
+
 open import Effect.Choice
 open import Effect.Empty
 open import Effect.Applicative
-open import Function.Base using (flip; _$′_)
+open import Function.Base using (flip; _$′_; _∘′_)
 open import Level using (Level; suc; _⊔_)
 
 private
@@ -47,6 +50,13 @@ record RawMonad (F : Set f → Set g) : Set (suc f ⊔ g) where
 
   _<=<_ : Kleisli B C → Kleisli A B → Kleisli A C
   _<=<_ = flip _>=>_
+
+  when : Bool → F ⊤ → F ⊤
+  when true m = m
+  when false m = pure _
+
+  unless : Bool → F ⊤ → F ⊤
+  unless = when ∘′ not
 
 -- Smart constructor
 module _ where
