@@ -1649,6 +1649,9 @@ Other minor changes
   pattern <′-base          = ≤′-refl
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
 
+  _⊔′_ : ℕ → ℕ → ℕ
+  _⊓′_ : ℕ → ℕ → ℕ
+  ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
   ```
 
@@ -1703,6 +1706,12 @@ Other minor changes
   m<n⇒m<n*o : .{{_ : NonZero o}} → m < n → m < n * o
   m<n⇒m<o*n : .{{_ : NonZero o}} → m < n → m < o * n
   ∸-monoˡ-< : m < o → n ≤ m → m ∸ n < o ∸ n
+
+  m≤n⇒∣m-n∣≡n∸m : m ≤ n → ∣ m - n ∣ ≡ n ∸ m
+
+  ⊔≡⊔′ : m ⊔ n ≡ m ⊔′ n
+  ⊓≡⊓′ : m ⊓ n ≡ m ⊓′ n
+  ∣-∣≡∣-∣′ : ∣ m - n ∣ ≡ ∣ m - n ∣′
   ```
 
 * Re-exported additional functions from `Data.Nat`:
