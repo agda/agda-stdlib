@@ -109,5 +109,7 @@ record RawMonadTd (F : Set f → Set g₁) (TF : Set f → Set g₂) : Set (suc 
     lift : F A → TF A
     rawMonad : RawMonad TF
 
+  open RawMonad rawMonad public
+
 RawMonadT : (T : (Set f → Set g₁) → (Set f → Set g₂)) → Set (suc f ⊔ suc g₁ ⊔ g₂)
 RawMonadT T = ∀ {M} → RawMonad M → RawMonadTd M (T M)

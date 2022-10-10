@@ -15,8 +15,6 @@ open import Function.Base
 open import IO.Base using (IO)
 open import Effect.Functor
 open import Effect.Monad
-open import Effect.Monad.Reader.Transformer as ReaderT
-open import Effect.Monad.State.Transformer as StateT
 
 private
   variable
@@ -39,12 +37,16 @@ record RawMonadIO
 monadIO : RawMonadIO {f} IO
 monadIO = record { liftIO = id }
 
-monadIOStateT : ∀ {S} → RawFunctor M → RawMonadIO M → RawMonadIO (StateT S M)
-monadIOStateT {S} M MIO = record
+open import Effect.Monad.State.Transformer.Base using (StateT; mkStateT)
+
+liftStateT : ∀ {S} → RawFunctor M → RawMonadIO M → RawMonadIO (StateT S M)
+liftStateT M MIO = record
   { liftIO = λ io → mkStateT (λ s → (s ,_) <$> liftIO io)
   } where open RawFunctor M; open RawMonadIO MIO
 
-monadIOReaderT : ∀ {R} → RawMonadIO M → RawMonadIO (ReaderT R _ _ M)
-monadIOReaderT MIO = record
+open import Effect.Monad.Reader.Transformer.Base using (ReaderT; mkReaderT)
+
+liftReaderT : ∀ {R} → RawMonadIO M → RawMonadIO (ReaderT R M)
+liftReaderT MIO = record
   { liftIO = λ io → mkReaderT (λ r → liftIO io)
   } where open RawMonadIO MIO

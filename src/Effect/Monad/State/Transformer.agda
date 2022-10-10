@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Level
+open import Level using (Level; suc; _⊔_)
 
 module Effect.Monad.State.Transformer where
 
@@ -19,42 +19,26 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Function.Base
 
+open import Effect.Monad.Reader.Transformer using (RawMonadReader)
+
 private
   variable
-    ℓ f s : Level
-    A B I : Set ℓ
+    f s : Level
+    A B : Set s
     S S₁ S₂ : Set s
     M : Set s → Set f
 
 ------------------------------------------------------------------------
--- State monad operations
+-- Re-export the basic type and definitions
 
-record RawMonadState
-       (S : Set s)
-       (M : Set s → Set f)
-       : Set (suc s ⊔ f) where
-  field
-    get : M S
-    put : S → M ⊤
-    modify : (S → S) → M ⊤
-
-------------------------------------------------------------------------
--- State monad transformer
-
-record StateT
-       (S : Set s)
-       (M : Set s → Set f)
-       (A : Set s)
-       : Set (s ⊔ f) where
-  constructor mkStateT
-  field runStateT : S → M (S × A)
-open StateT public
-
-evalStateT : RawFunctor M → StateT S M A → S → M A
-evalStateT M ma s = let open RawFunctor M in proj₂ <$> runStateT ma s
-
-execStateT : RawFunctor M → StateT S M A → S → M S
-execStateT M ma s = let open RawFunctor M in proj₁ <$> runStateT ma s
+open import Effect.Monad.State.Transformer.Base public
+  using ( RawMonadState
+        ; StateT
+        ; mkStateT
+        ; runStateT
+        ; evalStateT
+        ; execStateT
+        )
 
 ------------------------------------------------------------------------
 -- Structure
@@ -134,12 +118,24 @@ monadState M = record
   ; modify = λ f → mkStateT (λ s → pure (f s , _))
   } where open RawMonad M
 
-LiftMonadState : RawMonad M →
-                 RawMonadState S₁ M →
-                 RawMonadState S₁ (StateT S₂ M)
-LiftMonadState M Mon = record
-  { get     = mkStateT (λ s₂ → get >>= λ s₁ → pure (s₂ , s₁))
-  ; put    = λ s₁ → mkStateT (λ s₂ → (s₂ , _) <$ put s₁)
-  ; modify = λ f₁ → mkStateT (λ s₂ → (s₂ ,_) <$> modify f₁)
-  }
-  where open RawMonad M; open RawMonadState Mon
+------------------------------------------------------------------------
+-- State monad transformer specifics
+
+liftStateT : RawMonad M →
+             RawMonadState S₁ M →
+             RawMonadState S₁ (StateT S₂ M)
+liftStateT M Mon = record
+  { get    = lift get
+  ; put    = λ s₁ → lift (put s₁)
+  ; modify = λ f₁ → lift (modify f₁)
+  } where open RawMonadTd (monadT M) using (lift); open RawMonadState Mon
+
+open import Effect.Monad.Reader.Transformer.Base
+
+liftReaderT : RawMonadState S₁ M →
+              RawMonadState S₁ (ReaderT S₂ M)
+liftReaderT Mon = record
+  { get    = mkReaderT (const get)
+  ; put    = λ s → mkReaderT (const (put s))
+  ; modify = λ f → mkReaderT (const (modify f))
+  } where open RawMonadState Mon

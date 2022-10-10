@@ -15,8 +15,8 @@ open import Effect.Empty
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
+open import Effect.Monad.Identity as Id using (Identity; runIdentity)
 open import Function.Base
-open import Function.Identity.Effectful as Id using (Identity)
 open import Level
 
 import Effect.Monad.State.Transformer as Trans
@@ -39,13 +39,13 @@ State : (S : Set s) (A : Set s) → Set s
 State S = Trans.StateT S Identity
 
 runState : State S A → S → S × A
-runState = Trans.runStateT
+runState ma s = runIdentity (Trans.runStateT ma s)
 
 evalState : State S A → S → A
-evalState = Trans.evalStateT Id.functor
+evalState ma s = runIdentity (Trans.evalStateT Id.functor ma s)
 
 execState : State S A → S → S
-execState = Trans.execStateT Id.functor
+execState ma s = runIdentity (Trans.execStateT Id.functor ma s)
 
 ------------------------------------------------------------------------
 -- Structure

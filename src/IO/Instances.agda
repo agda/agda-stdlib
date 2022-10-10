@@ -6,6 +6,8 @@
 
 {-# OPTIONS --without-K --guardedness #-}
 
+module IO.Instances where
+
 open import IO.Base
 open import Effect.Functor
 open import Effect.Applicative

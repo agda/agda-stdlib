@@ -8,16 +8,22 @@
 
 open import Level
 
-module Effect.Monad.Reader {r} (R : Set r) (a : Level) where
+module Effect.Monad.Reader where
 
 open import Effect.Choice
 open import Effect.Empty
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Function.Identity.Effectful as Id using (Identity)
+open import Effect.Monad.Identity as Id using (Identity)
+open import Level using (Level)
 
-import Effect.Monad.Reader.Transformer R a as Trans
+import Effect.Monad.Reader.Transformer as Trans
+
+private
+  variable
+    r : Level
+    R : Set r
 
 ------------------------------------------------------------------------
 -- Re-export the monad reader operations
@@ -28,23 +34,23 @@ open Trans public
 ------------------------------------------------------------------------
 -- Reader monad
 
-Reader : (A : Set (r ⊔ a)) → Set (r ⊔ a)
-Reader = Trans.ReaderT 0ℓ Identity
+Reader : (R A : Set r) → Set r
+Reader R = Trans.ReaderT R Identity
 
 ------------------------------------------------------------------------
 -- Structure
 
-functor : RawFunctor Reader
+functor : RawFunctor (Reader R)
 functor = Trans.functor Id.functor
 
-applicative : RawApplicative Reader
+applicative : RawApplicative (Reader R)
 applicative = Trans.applicative Id.applicative
 
-monad : RawMonad Reader
+monad : RawMonad (Reader R)
 monad = Trans.monad Id.monad
 
 ------------------------------------------------------------------------
 -- Reader monad specifics
 
-monadReader : RawMonadReader Reader
+monadReader : RawMonadReader R (Reader R)
 monadReader = Trans.monadReader Id.monad

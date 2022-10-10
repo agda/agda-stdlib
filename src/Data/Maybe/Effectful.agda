@@ -17,7 +17,6 @@ open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
 
-import Function.Identity.Effectful as Id
 open import Function.Base
 
 private

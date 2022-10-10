@@ -12,5 +12,5 @@ open import Effect.Monad.IO
 
 instance
   ioMonadIO = monadIO
-  stateTMonadIO = λ {s} {S} {M} {{m}} {{mio}} → monadIOStateT {s} {S} {M} m mio
-  readerTMonadIO = λ {r} {R} {a} {M} {{mio}} → monadIOReaderT  {r} {R} {a} {M} mio
+  stateTMonadIO = λ {s} {S} {M} {{m}} {{mio}} → liftStateT {s} {S} {M} m mio
+  readerTMonadIO = λ {r} {R} {M} {{mio}} → liftReaderT  {r} {R} {M} mio
