@@ -15,7 +15,7 @@ open import Effect.Empty
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Effect.Monad.Identity as Id using (Identity)
+open import Function.Identity.Effectful as Id using (Identity)
 open import Level using (Level)
 
 import Effect.Monad.Reader.Transformer as Trans

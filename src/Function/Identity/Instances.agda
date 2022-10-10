@@ -6,9 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Effect.Monad.Identity.Instances where
+module Function.Identity.Instances where
 
-open import Effect.Monad.Identity
+open import Function.Identity.Effectful
 
 instance
   identityFunctor = functor
