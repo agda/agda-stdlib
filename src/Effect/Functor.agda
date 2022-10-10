@@ -10,10 +10,11 @@
 
 module Effect.Functor where
 
-open import Function.Base
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Function.Base using (const; flip)
 open import Level
 
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
@@ -31,6 +32,9 @@ record RawFunctor (F : Set ℓ → Set ℓ′) : Set (suc ℓ ⊔ ℓ′) where
 
   _<&>_ : F A → (A → B) → F B
   _<&>_ = flip _<$>_
+
+  ignore : F A → F ⊤
+  ignore = _ <$_
 
 -- A functor morphism from F₁ to F₂ is an operation op such that
 -- op (F₁ f x) ≡ F₂ f (op x)

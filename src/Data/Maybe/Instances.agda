@@ -9,9 +9,10 @@
 module Data.Maybe.Instances where
 
 open import Data.Maybe.Effectful
-open import Data.Maybe.Effectful.Transformer using (monadT)
+import Data.Maybe.Effectful.Transformer as Trans
 
 instance
+  -- Maybe
   maybeFunctor = functor
   maybeApplicative = applicative
   maybeApplicativeZero = applicativeZero
@@ -19,4 +20,8 @@ instance
   maybeMonad = monad
   maybeMonadZero = monadZero
   maybeMonadPlus = monadPlus
-  maybeMonadT = λ {ℓ} {M} {{inst}} → monadT {ℓ} {M} inst
+  -- MaybeT
+  maybeTFunctor = λ {ℓ} {M} {{inst}} → Trans.functor {ℓ} {M} inst
+  maybeTApplicative = λ {ℓ} {M} {{inst}} → Trans.applicative {ℓ} {M} inst
+  maybeTMonad = λ {ℓ} {M} {{inst}} → Trans.monad {ℓ} {M} inst
+  maybeTMonadT = λ {ℓ} {M} {{inst}} → Trans.monadT {ℓ} {M} inst

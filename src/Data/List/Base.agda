@@ -54,6 +54,9 @@ mapMaybe p (x ∷ xs) with p x
 ... | just y  = y ∷ mapMaybe p xs
 ... | nothing = mapMaybe p xs
 
+catMaybes : List (Maybe A) → List A
+catMaybes = mapMaybe id
+
 infixr 5 _++_
 
 _++_ : List A → List A → List A

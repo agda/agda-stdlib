@@ -1,2 +1,2 @@
-name: fibonacci
+name: pythagorean
 include: ../../../src/ .

@@ -10,7 +10,7 @@ module Data.List.Instances where
 
 open import Data.List.Base
 open import Data.List.Effectful
-open import Data.List.Effectful.Transformer using (monadT)
+import Data.List.Effectful.Transformer as Trans
 open import Data.List.Properties
   using (≡-dec)
 open import Data.List.Relation.Binary.Pointwise
@@ -30,6 +30,7 @@ private
     A : Set a
 
 instance
+  -- List
   listFunctor = functor
   listApplicative = applicative
   listApplicativeZero = applicativeZero
@@ -37,7 +38,11 @@ instance
   listMonad = monad
   listMonadZero = monadZero
   listMonadPlus = monadPlus
-  listMonadT = λ {ℓ} {M} {{inst}} → monadT {ℓ} {M} inst
+  -- ListT
+  listTFunctor = λ {ℓ} {M} {{inst}} → Trans.functor {ℓ} {M} inst
+  listTApplicative = λ {ℓ} {M} {{inst}} → Trans.applicative {ℓ} {M} inst
+  listTMonad = λ {ℓ} {M} {{inst}} → Trans.monad {ℓ} {M} inst
+  listTMonadT = λ {ℓ} {M} {{inst}} → Trans.monadT {ℓ} {M} inst
 
   List-≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = List A} _≡_
   List-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_)
