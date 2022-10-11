@@ -22,15 +22,13 @@ open import Function.Base
 
 private
   variable
-    a b f m : Level
-    A : Set a
-    B : Set b
-    M : Set f → Set f
+    f g : Level
+    M : Set f → Set g
 
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
-record MaybeT (M : Set f → Set f) (A : Set f) : Set f where
+record MaybeT (M : Set f → Set g) (A : Set f) : Set g where
   constructor mkMaybeT
   field runMaybeT : M (Maybe A)
 open MaybeT public
@@ -58,7 +56,7 @@ monad M = record
               maybe (runMaybeT ∘′ f) (pure nothing) a
   } where open RawMonad M
 
-monadT : RawMonadT {f} MaybeT
+monadT : RawMonadT {f} {g} MaybeT
 monadT {M = F} M = record
   { lift = mkMaybeT ∘′ (just <$>_)
   ; rawMonad = monad M

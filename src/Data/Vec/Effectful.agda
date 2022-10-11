@@ -6,8 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Vec.Effectful {a n} where
+module Data.Vec.Effectful where
 
+open import Data.Nat.Base using (ℕ)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties
@@ -16,6 +17,13 @@ open import Effect.Functor as Fun using (RawFunctor)
 open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)
 import Function.Identity.Effectful as Id
 open import Function hiding (Morphism)
+open import Level using (Level)
+
+private
+  variable
+    a : Level
+    A : Set a
+    n : ℕ
 
 ------------------------------------------------------------------------
 -- Functor and applicative
@@ -66,22 +74,12 @@ module TraversableM {m n M} (Mon : RawMonad {m} {n} M) where
     ; forA      to forM
     )
 
-monadT : RawMonadT (_∘′ (λ (A : Set a) → Vec A n))
-monadT {M = F} M = record
-  { lift = replicate <$>_
-  ; rawMonad = mkRawMonad _
-                 (M.pure ∘′ replicate)
-                 (λ mx f → do x ← mx
-                              bs ← mapM f x
-                              pure (DiagonalBind.join bs))
-  } where open module M = RawMonad M; open TraversableM M
-
 ------------------------------------------------------------------------
 -- Other
 
 -- lookup is a functor morphism from Vec to Identity.
 
-lookup-functor-morphism : (i : Fin n) → Fun.Morphism functor Id.functor
+lookup-functor-morphism : (i : Fin n) → Fun.Morphism (functor {a}) Id.functor
 lookup-functor-morphism i = record
   { op     = flip lookup i
   ; op-<$> = lookup-map i
@@ -89,7 +87,7 @@ lookup-functor-morphism i = record
 
 -- lookup is an applicative functor morphism.
 
-lookup-morphism : (i : Fin n) → App.Morphism applicative Id.applicative
+lookup-morphism : (i : Fin n) → App.Morphism (applicative {a}) Id.applicative
 lookup-morphism i = record
   { functorMorphism = lookup-functor-morphism i
   ; op-pure = lookup-replicate i

@@ -19,15 +19,13 @@ import Data.List.Effectful as List
 
 private
   variable
-    a b f : Level
-    A : Set a
-    B : Set b
-    M : Set f → Set f
+    f g : Level
+    M : Set f → Set g
 
 ------------------------------------------------------------------------
 -- List monad transformer
 
-record ListT (M : Set f → Set f) (A : Set f) : Set f where
+record ListT (M : Set f → Set g) (A : Set f) : Set g where
   constructor mkListT
   field runListT : M (List A)
 open ListT public
@@ -52,7 +50,7 @@ monad M = record
                        List.concat <$> mapM (runListT ∘′ f) as
   } where open RawMonad M; open List.TraversableM M
 
-monadT : RawMonadT {f} ListT
+monadT : RawMonadT {f} {g} ListT
 monadT M = record
   { lift = mkListT ∘′ (List.[_] <$>_)
   ; rawMonad = monad M

@@ -10,7 +10,7 @@ module Data.List.NonEmpty.Effectful where
 
 open import Agda.Builtin.List
 import Data.List.Effectful as List
-open import Data.List.NonEmpty
+open import Data.List.NonEmpty.Base
 open import Data.Product using (uncurry)
 open import Effect.Functor
 open import Effect.Applicative
@@ -30,7 +30,7 @@ applicative : ∀ {f} → RawApplicative {f} List⁺
 applicative = record
   { rawFunctor = functor
   ; pure = [_]
-  ; _<*>_  = λ fs as → concatMap (λ f → map f as) fs
+  ; _<*>_  = ap
   }
 
 ------------------------------------------------------------------------
@@ -82,14 +82,3 @@ module TraversableM {m n M} (Mon : RawMonad {m} {n} M) where
     ; mapA      to mapM
     ; forA      to forM
     )
-
-------------------------------------------------------------------------
--- List⁺ monad transformer
-
-monadT : ∀ {f} → RawMonadT {f} (_∘′ List⁺)
-monadT M = record
-  { lift = [_] <$>_
-  ; rawMonad = mkRawMonad _
-                 (pure ∘′ [_])
-                 (λ mas f → mas >>= λ as → concat <$> mapM f as)
-  } where open RawMonad M; open TraversableM M

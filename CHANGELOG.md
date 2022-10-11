@@ -564,9 +564,11 @@ Non-backwards compatible changes
 * New modules:
   ```
   Data.List.Effectful.Transformer
+  Data.List.NonEmpty.Effectful.Transformer
   Data.Maybe.Effectful.Transformer
   Data.Sum.Effectful.Left.Transformer
   Data.Sum.Effectful.Right.Transformer
+  Data.Vec.Effectful.Transformer
   Effect.Empty
   Effect.Choice
   Effect.Monad.Error.Transformer
