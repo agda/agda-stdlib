@@ -52,8 +52,14 @@ data All {A : Set a} (P : Pred A p) : Vec A n → Set (p ⊔ a) where
 head : All P (x ∷ xs) → P x
 head (px ∷ pxs) = px
 
+head′ : .{{_ : NonZero n}} → All P xs → P (Vec.head′ {n = n} xs)
+head′ {n = suc _} pxs@(_ ∷ _) = head pxs
+
 tail : All P (x ∷ xs) → All P xs
 tail (px ∷ pxs) = pxs
+
+tail′ : .{{_ : NonZero n}} → All P xs → All P (Vec.tail′ {n = n} xs)
+tail′ {n = suc _} pxs@(_ ∷ _) = tail pxs
 
 reduce : (f : ∀ {x} → P x → B) → ∀ {n} {xs : Vec A n} → All P xs → Vec B n
 reduce f []         = []
@@ -61,6 +67,10 @@ reduce f (px ∷ pxs) = f px ∷ reduce f pxs
 
 uncons : All P (x ∷ xs) → P x × All P xs
 uncons = < head , tail >
+
+uncons′ : .{{_ : NonZero n}} →
+          All P xs → P (Vec.head′ {n = n} xs) × All P (Vec.tail′ {n = n} xs)
+uncons′ = < head′ , tail′ >
 
 map : P ⊆ Q → All P ⊆ All Q {n}
 map g []         = []

@@ -43,6 +43,11 @@ module _ (trans : Transitive R) where
   Linked⇒All Rvx [-]         = Rvx ∷ []
   Linked⇒All Rvx (Rxy ∷ Rxs) = Rvx ∷ Linked⇒All (trans Rvx Rxy) Rxs
 
+  Linked⇒All′ : .{{_ : NonZero n}} →
+                ∀ {v} {xs : Vec _ n} → R v (head′ xs) →
+                Linked R xs → All (R v) xs
+  Linked⇒All′ {n = suc n} = Linked⇒All {n = n}
+
   lookup⁺ : ∀ {i j} {xs : Vec _ n} →
            Linked R xs → i < j →
            R (lookup xs i) (lookup xs j)

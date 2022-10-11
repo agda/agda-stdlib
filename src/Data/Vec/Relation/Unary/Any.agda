@@ -44,10 +44,18 @@ head : ∀ {x} → ¬ Any P xs → Any P (x ∷ xs) → P x
 head ¬pxs (here px)   = px
 head ¬pxs (there pxs) = contradiction pxs ¬pxs
 
+head′ : .{{_ : NonZero n}} →
+        ¬ Any P (Vec.tail′ {n = n} xs) → Any P xs → P (Vec.head′ {n = n} xs)
+head′ {n = suc _} {xs = _ ∷ _} ¬pxs = head ¬pxs
+
 -- If the head does not satisfy the predicate, then the tail will.
 tail : ∀ {x} → ¬ P x → Any P (x ∷ xs) → Any P xs
 tail ¬px (here  px)  = ⊥-elim (¬px px)
 tail ¬px (there pxs) = pxs
+
+tail′ : .{{_ : NonZero n}} →
+        ¬ P (Vec.head′ {n = n} xs) → Any P xs → Any P (Vec.tail′ {n = n} xs)
+tail′ {n = suc _} {xs = _ ∷ _} ¬px = tail ¬px
 
 -- Convert back and forth with sum
 toSum : ∀ {x} → Any P (x ∷ xs) → P x ⊎ Any P xs
