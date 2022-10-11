@@ -22,7 +22,7 @@ open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility
+open import Data.Nat.Divisibility using (_∣_; divides; ∣n⇒∣m*n)
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
 import Data.Product.Relation.Unary.All as Prod using (All)
@@ -622,10 +622,10 @@ tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
 tabulate-lookup []       = refl
 tabulate-lookup (x ∷ xs) = cong (_ ∷_) (tabulate-lookup xs)
 
-length-tabulate : ∀ {n} → (f : Fin n → A) →
+length-tabulate : ∀ {n} (f : Fin n → A) →
                   length (tabulate f) ≡ n
 length-tabulate {n = zero} f = refl
-length-tabulate {n = suc n} f = cong suc (length-tabulate (λ z → f (suc z)))
+length-tabulate {n = suc n} f = cong suc (length-tabulate (f ∘ suc))
 
 lookup-tabulate : ∀ {n} → (f : Fin n → A) →
                   ∀ i → let i′ = cast (sym (length-tabulate f)) i
