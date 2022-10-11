@@ -45,6 +45,7 @@ monadTests = mkTestPool "Monad transformers"
   $ "counting"
   ∷ "fibonacci"
   ∷ "pythagorean"
+  ∷ "tcm"
   ∷ []
 
 reflectionTests : TestPool
