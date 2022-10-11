@@ -65,7 +65,7 @@ applicativeZero : RawApplicativeZero M → RawApplicativeZero (ReaderT R M)
 applicativeZero M = record
   { rawApplicative = applicative rawApplicative
   ; rawEmpty = empty rawEmpty
-  } where open RawApplicativeZero M
+  } where open RawApplicativeZero M using (rawApplicative; rawEmpty)
 
 alternative : RawAlternative M → RawAlternative (ReaderT R M)
 alternative M = record
