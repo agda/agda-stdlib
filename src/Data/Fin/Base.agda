@@ -55,10 +55,10 @@ data Fin : ℕ → Set where
 -- homogeneous constructors
 
 zero′ : .{{ℕ.NonZero n}} → Fin n
-zero′ {n = suc n} = zero
+zero′ {n = suc _} = zero
 
 suc′ : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
-suc′ {n = suc n} = suc
+suc′ {n = suc _} = suc
 
 -- A conversion: toℕ "i" = i.
 
@@ -134,14 +134,14 @@ inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
 inject!′ : .{{ℕ.NonZero n}} → {i : Fin n} → Fin′ i → Fin (ℕ.pred n)
-inject!′ {n = suc n} = inject!
+inject!′ {n = suc _} = inject!
 
 inject₁ : Fin n → Fin (suc n)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
 inject₁′ : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
-inject₁′ {n = suc n} = inject₁
+inject₁′ {n = suc _} = inject₁
 
 inject≤ : Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    _        = zero
@@ -156,7 +156,7 @@ lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
 lower₁′ : .{{ℕ.NonZero n}} →
           (i : Fin n) → n ≢ suc (toℕ i) → Fin (ℕ.pred n)
-lower₁′ {n = suc n} i ne = lower₁ i (ne ∘ cong suc)
+lower₁′ {n = suc _} i ne = lower₁ i (ne ∘ cong suc)
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ (i : Fin n) → Fin′ (suc i)
@@ -292,7 +292,7 @@ punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
 
 punchOut′ : .{{ℕ.NonZero n}} →
            {i j : Fin n} → i ≢ j → Fin (ℕ.pred n)
-punchOut′ {n = suc n} = punchOut
+punchOut′ {n = suc _} = punchOut
 
 -- The function f(i,j) = if j≥i then j+1 else j
 
@@ -303,7 +303,7 @@ punchIn (suc i) (suc j) = suc (punchIn i j)
 
 punchIn′ : .{{ℕ.NonZero n}} →
           Fin n → Fin (ℕ.pred n) → Fin n
-punchIn′ {n = suc n} = punchIn
+punchIn′ {n = suc _} = punchIn
 
 -- The function f(i,j) such that f(i,j) = if j≤i then j else j-1
 
@@ -314,7 +314,7 @@ pinch {suc n} (suc i) (suc j) = suc (pinch i j)
 
 pinch′ : .{{ℕ.NonZero n}} →
         Fin (ℕ.pred n) → Fin n → Fin (ℕ.pred n)
-pinch′ {n = suc n} = pinch
+pinch′ {n = suc _} = pinch
 
 ------------------------------------------------------------------------
 -- Order relations
