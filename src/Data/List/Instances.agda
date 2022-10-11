@@ -39,10 +39,10 @@ instance
   listMonadZero = monadZero
   listMonadPlus = monadPlus
   -- ListT
-  listTFunctor = λ {ℓ} {M} {{inst}} → Trans.functor {ℓ} {M} inst
-  listTApplicative = λ {ℓ} {M} {{inst}} → Trans.applicative {ℓ} {M} inst
-  listTMonad = λ {ℓ} {M} {{inst}} → Trans.monad {ℓ} {M} inst
-  listTMonadT = λ {ℓ} {M} {{inst}} → Trans.monadT {ℓ} {M} inst
+  listTFunctor = λ {f} {g} {M} {{inst}} → Trans.functor {f} {g} {M} inst
+  listTApplicative = λ {f} {g} {M} {{inst}} → Trans.applicative {f} {g} {M} inst
+  listTMonad = λ {f} {g} {M} {{inst}} → Trans.monad {f} {g} {M} inst
+  listTMonadT = λ {f} {g} {M} {{inst}} → Trans.monadT {f} {g} {M} inst
 
   List-≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = List A} _≡_
   List-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_)
