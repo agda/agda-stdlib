@@ -47,13 +47,19 @@ monadTests = mkTestPool "Monad transformers"
   ∷ "pythagorean"
   ∷ []
 
+reflectionTests : TestPool
+reflectionTests = mkTestPool "Reflection machinery"
+  $ "assumption"
+  ∷ []
+
 main : Main
 main = run $ ignore $ runner
-  $ testPaths "system" systemTests
-  ∷ testPaths "show"   showTests
-  ∷ testPaths "text"   textTests
-  ∷ testPaths "data"   dataTests
-  ∷ testPaths "monad"  monadTests
+  $ testPaths "data"          dataTests
+  ∷ testPaths "monad"         monadTests
+  ∷ testPaths "reflection"    reflectionTests
+  ∷ testPaths "show"          showTests
+  ∷ testPaths "system"        systemTests
+  ∷ testPaths "text"          textTests
   ∷ [] where
 
   testPaths : String → TestPool → TestPool
