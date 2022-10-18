@@ -10,6 +10,7 @@ module Data.Float.Base where
 
 open import Relation.Binary.Core using (Rel)
 import Data.Word.Base as Word
+import Data.Maybe.Relation.Binary.Pointwise as Maybe
 open import Function.Base using (_on_)
 open import Agda.Builtin.Equality
 
@@ -65,4 +66,4 @@ open import Agda.Builtin.Float public
   )
 
 _≈_ : Rel Float _
-_≈_ = Word._≈_ on toWord
+_≈_ = Maybe.Pointwise Word._≈_ on toWord

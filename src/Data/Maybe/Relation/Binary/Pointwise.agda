@@ -55,6 +55,10 @@ module _ {a r} {A : Set a} {R : Rel A r} where
   reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
   reflexive reflexive P.refl = refl (reflexive P.refl)
 
+  injective : R ⇒ _≡_ → Pointwise R ⇒ _≡_
+  injective R-inj (just e) = P.cong just (R-inj e)
+  injective R-inj nothing  = P.refl
+
 module _ {a b r₁ r₂} {A : Set a} {B : Set b}
          {R : REL A B r₁} {S : REL B A r₂} where
 

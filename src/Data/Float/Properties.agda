@@ -10,6 +10,7 @@ module Data.Float.Properties where
 
 open import Data.Bool.Base as Bool using (Bool)
 open import Data.Float.Base
+import Data.Maybe.Relation.Binary.Pointwise as Maybe
 import Data.Word.Base as Word
 import Data.Word.Properties as Wₚ
 open import Relation.Nullary.Decidable as RN using (map′)
@@ -28,26 +29,26 @@ open import Agda.Builtin.Float.Properties
 -- Properties of _≈_
 
 ≈⇒≡ : _≈_ ⇒ _≡_
-≈⇒≡ eq = toWord-injective _ _  (Wₚ.≈⇒≡ eq)
+≈⇒≡ eq = toWord-injective _ _ (Maybe.injective Wₚ.≈⇒≡ eq)
 
 ≈-reflexive : _≡_ ⇒ _≈_
-≈-reflexive eq = Wₚ.≈-reflexive (cong toWord eq)
+≈-reflexive eq = Maybe.reflexive Wₚ.≈-reflexive (cong toWord eq)
 
 ≈-refl : Reflexive _≈_
-≈-refl = refl
+≈-refl = Maybe.refl refl
 
 ≈-sym : Symmetric _≈_
-≈-sym = sym
+≈-sym = Maybe.sym sym
 
 ≈-trans : Transitive _≈_
-≈-trans = trans
+≈-trans = Maybe.trans trans
 
 ≈-subst : ∀ {ℓ} → Substitutive _≈_ ℓ
 ≈-subst P x≈y p = subst P (≈⇒≡ x≈y) p
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-_≈?_ = On.decidable toWord Word._≈_ Wₚ._≈?_
+_≈?_ = On.decidable toWord (Maybe.Pointwise Word._≈_) (Maybe.dec Wₚ._≈?_)
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
