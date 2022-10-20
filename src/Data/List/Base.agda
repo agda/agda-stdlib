@@ -54,6 +54,9 @@ mapMaybe p (x ∷ xs) with p x
 ... | just y  = y ∷ mapMaybe p xs
 ... | nothing = mapMaybe p xs
 
+catMaybes : List (Maybe A) → List A
+catMaybes = mapMaybe id
+
 infixr 5 _++_
 
 _++_ : List A → List A → List A
@@ -141,6 +144,9 @@ concat = foldr _++_ []
 
 concatMap : (A → List B) → List A → List B
 concatMap f = concat ∘ map f
+
+ap : List (A → B) → List A → List B
+ap fs as = concatMap (flip map as) fs
 
 null : List A → Bool
 null []       = true

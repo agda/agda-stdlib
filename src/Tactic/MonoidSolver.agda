@@ -186,7 +186,7 @@ findMonoidNames : Term → TC MonoidNames
 findMonoidNames mon = do
   ∙-altName ← normalise (def (quote Monoid._∙_) (2 ⋯⟅∷⟆ mon ⟨∷⟩ []))
   ε-altName ← normalise (def (quote Monoid.ε)   (2 ⋯⟅∷⟆ mon ⟨∷⟩ []))
-  return record
+  pure record
     { is-∙ = buildMatcher (quote Monoid._∙_) (getName ∙-altName)
     ; is-ε = buildMatcher (quote Monoid.ε)   (getName ε-altName)
     }
@@ -260,7 +260,7 @@ solve-macro : Term → Term → TC _
 solve-macro mon hole = do
   hole′ ← inferType hole >>= normalise
   names ← findMonoidNames mon
-  just (lhs , rhs) ← return (getArgs hole′)
+  just (lhs , rhs) ← pure (getArgs hole′)
     where nothing → typeError (termErr hole′ ∷ [])
   let soln = constructSoln mon names lhs rhs
   unify hole soln

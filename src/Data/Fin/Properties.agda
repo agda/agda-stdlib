@@ -1020,7 +1020,7 @@ module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
   sequence : ∀ {n} {P : Pred (Fin n) f} →
              (∀ i → F (P i)) → F (∀ i → P i)
   sequence {zero}  ∀iPi = pure λ()
-  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero ⊛ sequence (∀iPi ∘ suc)
+  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
 
 module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 

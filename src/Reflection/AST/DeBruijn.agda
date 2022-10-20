@@ -14,7 +14,7 @@ open import Data.List.Base using (List; []; _∷_; _++_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 import Data.Maybe.Effectful as Maybe
 import Function.Identity.Effectful as Identity
-open import Effect.Applicative using (RawApplicative)
+open import Effect.Applicative using (RawApplicative; mkRawApplicative)
 
 open import Reflection
 open import Reflection.AST.Argument.Visibility using (Visibility)
@@ -117,8 +117,7 @@ module _ where
 
   private
     anyApplicative : RawApplicative (λ _ → Bool)
-    anyApplicative .RawApplicative.pure _ = false
-    anyApplicative .RawApplicative._⊛_    = _∨_
+    anyApplicative = mkRawApplicative _ (λ _ → false)  _∨_
 
   open Traverse anyApplicative
 

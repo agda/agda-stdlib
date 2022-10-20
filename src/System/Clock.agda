@@ -68,7 +68,7 @@ open Time public
 getTime : Clock → IO Time
 getTime c = do
   (a , b) ← lift (Prim.getTime c)
-  return $ mkTime a b
+  pure $ mkTime a b
 
 ------------------------------------------------------------------------
 -- Measuring time periods
@@ -89,7 +89,7 @@ time io = do
   start ← lift! $ getTime realTime
   a     ← io
   end   ← lift! $ getTime realTime
-  return $ mkTimed a $ diff (lower start) (lower end)
+  pure $ mkTimed a $ diff (lower start) (lower end)
 
 time′ : IO {0ℓ} A → IO Time
 time′ io = Timed.time <$> time io
