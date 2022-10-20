@@ -93,4 +93,4 @@ twoDifferentWitnesses
 twoDifferentWitnesses inf =
   witness inf                     >>= λ w₁ →
   witness (up (1 + proj₁ w₁) inf) >>= λ w₂ →
-  return (_ , _ , m≢1+m+n (proj₁ w₁) , proj₂ w₁ , proj₂ w₂)
+  pure (_ , _ , m≢1+m+n (proj₁ w₁) , proj₂ w₁ , proj₂ w₂)

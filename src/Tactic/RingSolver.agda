@@ -19,7 +19,7 @@ open import Data.Bool.Base             using (Bool; if_then_else_; true; false)
 open import Data.Unit.Base             using (⊤)
 open import Data.String.Base as String using (String; _++_; parens)
 open import Data.Product               using (_,_; proj₁)
-open import Function
+open import Function.Base
 open import Relation.Nullary.Decidable
 
 open import Reflection
@@ -180,11 +180,11 @@ module RingSolverReflection (ring : Term) (numberOfVariables : ℕ) where
       -- Other definitions the underlying implementation of the ring's fields
       convert (def nm          xs) = convertUnknownName nm xs
       -- Variables
-      convert v@(var x _)          = return $ fromMaybe (`Κ v) (varMap x)
+      convert v@(var x _)          = pure $ fromMaybe (`Κ v) (varMap x)
       -- Special case to recognise "suc" for naturals
       convert (`suc x)             = convertSuc x
       -- Otherwise we're forced to treat it as a constant
-      convert t                    = return $ `Κ t
+      convert t                    = pure $ `Κ t
 
       -- Application of a ring operator often doesn't have a type as
       -- simple as "Carrier → Carrier → Carrier": there may be hidden
@@ -194,31 +194,31 @@ module RingSolverReflection (ring : Term) (numberOfVariables : ℕ) where
       convertOp₂ nm (x ⟨∷⟩ y ⟨∷⟩ []) = do
         x' ← convert x
         y' ← convert y
-        return (nm $ᵉ (x' ⟨∷⟩ y' ⟨∷⟩ []))
+        pure (nm $ᵉ (x' ⟨∷⟩ y' ⟨∷⟩ []))
       convertOp₂ nm (x ∷ xs)         = convertOp₂ nm xs
-      convertOp₂ _  _                = return unknown
+      convertOp₂ _  _                = pure unknown
 
       convertOp₁ : Name → Args Term → TC Term
       convertOp₁ nm (x ⟨∷⟩ []) = do
         x' ← convert x
-        return (nm $ᵉ (x' ⟨∷⟩ []))
+        pure (nm $ᵉ (x' ⟨∷⟩ []))
       convertOp₁ nm (x ∷ xs)   = convertOp₁ nm xs
-      convertOp₁ _  _          = return unknown
+      convertOp₁ _  _          = pure unknown
 
       convertExp : Args Term → TC Term
       convertExp (x ⟨∷⟩ y ⟨∷⟩ []) = do
         x' ← convert x
-        return (quote _⊛_ $ᵉ (x' ⟨∷⟩ y ⟨∷⟩ []))
+        pure (quote _⊛_ $ᵉ (x' ⟨∷⟩ y ⟨∷⟩ []))
       convertExp (x ∷ xs)         = convertExp xs
-      convertExp _                = return unknown
+      convertExp _                = pure unknown
 
       convertSub : Args Term → TC Term
       convertSub (x ⟨∷⟩ y ⟨∷⟩ []) = do
         x'  ← convert x
         -y' ← convertOp₁ (quote (⊝_)) (y ⟨∷⟩ [])
-        return (quote _⊕_ $ᵉ x' ⟨∷⟩ -y' ⟨∷⟩ [])
+        pure (quote _⊕_ $ᵉ x' ⟨∷⟩ -y' ⟨∷⟩ [])
       convertSub (x ∷ xs)         = convertSub xs
-      convertSub _                = return unknown
+      convertSub _                = pure unknown
 
       convertUnknownName : Name → Args Term → TC Term
       convertUnknownName nm xs = do
@@ -228,10 +228,10 @@ module RingSolverReflection (ring : Term) (numberOfVariables : ℕ) where
             if (nameTerm =α= neg) then convertOp₁ (quote ⊝_)  xs else
               if (nameTerm =α= pow) then convertExp             xs else
                 if (nameTerm =α= sub) then convertSub            xs else
-                  return (`Κ (def nm xs))
+                  pure (`Κ (def nm xs))
 
       convertSuc : Term → TC Term
-      convertSuc x = do x' ← convert x; return (quote _⊕_ $ᵉ (`Κ (toTerm 1) ⟨∷⟩ x' ⟨∷⟩ []))
+      convertSuc x = do x' ← convert x; pure (quote _⊕_ $ᵉ (`Κ (toTerm 1) ⟨∷⟩ x' ⟨∷⟩ []))
 
 ------------------------------------------------------------------------
 -- Macros
@@ -260,7 +260,7 @@ constructCallToSolver `ring opNames variables `lhs `rhs = do
   `lhsExpr ← conv `lhs
   `rhsExpr ← conv `rhs
 
-  return $ `solver `ring numVars
+  pure $ `solver `ring numVars
                     (prependVLams variables (_`⊜_ `ring numVars `lhsExpr `rhsExpr))
                     (prependHLams variables (`refl `ring))
   where
@@ -335,7 +335,7 @@ constructSolution : Term → RingOperatorTerms → NatSet → Term → Term → 
 constructSolution `ring opTerms variables `lhs `rhs = do
   `lhsExpr ← conv `lhs
   `rhsExpr ← conv `rhs
-  return $ `trans `ring (`sym `ring `lhsExpr) `rhsExpr
+  pure $ `trans `ring (`sym `ring `lhsExpr) `rhsExpr
   where
   numVars = List.length variables
 
@@ -347,7 +347,7 @@ constructSolution `ring opTerms variables `lhs `rhs = do
 
   conv = λ t → do
     t' ← convertTerm `ring numVars opTerms varMap t
-    return $ `correct `ring numVars t' ρ
+    pure $ `correct `ring numVars t' ρ
 
 -- Use this macro when you want to solve something *under* a lambda. For example:
 -- say you have a long proof, and you just want the solver to deal with an
