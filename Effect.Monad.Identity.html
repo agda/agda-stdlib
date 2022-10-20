@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Effect.Monad.Identity</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An effectful view of the identity function</a>
+<a id="152" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--without-K</a> <a id="250" class="Pragma">--safe</a> <a id="257" class="Symbol">#-}</a>
+
+<a id="262" class="Keyword">module</a> <a id="269" href="Effect.Monad.Identity.html" class="Module">Effect.Monad.Identity</a> <a id="291" class="Keyword">where</a>
+
+<a id="298" class="Keyword">open</a> <a id="303" class="Keyword">import</a> <a id="310" href="Effect.Functor.html" class="Module">Effect.Functor</a>
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
+<a id="356" class="Keyword">open</a> <a id="361" class="Keyword">import</a> <a id="368" href="Effect.Monad.html" class="Module">Effect.Monad</a>
+<a id="381" class="Keyword">open</a> <a id="386" class="Keyword">import</a> <a id="393" href="Effect.Comonad.html" class="Module">Effect.Comonad</a>
+<a id="408" class="Keyword">open</a> <a id="413" class="Keyword">import</a> <a id="420" href="Function.Base.html" class="Module">Function.Base</a> <a id="434" class="Keyword">using</a> <a id="440" class="Symbol">(</a><a id="441" href="Function.Base.html#695" class="Function">id</a><a id="443" class="Symbol">;</a> <a id="445" href="Function.Base.html#3637" class="Function Operator">_∘′_</a><a id="449" class="Symbol">;</a> <a id="451" href="Function.Base.html#3930" class="Function Operator">_|&gt;′_</a><a id="456" class="Symbol">;</a> <a id="458" href="Function.Base.html#3850" class="Function Operator">_$′_</a><a id="462" class="Symbol">;</a> <a id="464" href="Function.Base.html#1629" class="Function">flip</a><a id="468" class="Symbol">)</a>
+<a id="470" class="Keyword">open</a> <a id="475" class="Keyword">import</a> <a id="482" href="Level.html" class="Module">Level</a>
+
+<a id="489" class="Keyword">private</a>
+  <a id="499" class="Keyword">variable</a>
+    <a id="512" href="Effect.Monad.Identity.html#512" class="Generalizable">a</a> <a id="514" class="Symbol">:</a> <a id="516" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+
+<a id="523" class="Keyword">record</a> <a id="Identity"></a><a id="530" href="Effect.Monad.Identity.html#530" class="Record">Identity</a> <a id="539" class="Symbol">(</a><a id="540" href="Effect.Monad.Identity.html#540" class="Bound">A</a> <a id="542" class="Symbol">:</a> <a id="544" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="548" href="Effect.Monad.Identity.html#512" class="Generalizable">a</a><a id="549" class="Symbol">)</a> <a id="551" class="Symbol">:</a> <a id="553" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="557" href="Effect.Monad.Identity.html#548" class="Bound">a</a> <a id="559" class="Keyword">where</a>
+  <a id="567" class="Keyword">constructor</a> <a id="mkIdentity"></a><a id="579" href="Effect.Monad.Identity.html#579" class="InductiveConstructor">mkIdentity</a>
+  <a id="592" class="Keyword">field</a> <a id="Identity.runIdentity"></a><a id="598" href="Effect.Monad.Identity.html#598" class="Field">runIdentity</a> <a id="610" class="Symbol">:</a> <a id="612" href="Effect.Monad.Identity.html#540" class="Bound">A</a>
+<a id="614" class="Keyword">open</a> <a id="619" href="Effect.Monad.Identity.html#530" class="Module">Identity</a> <a id="628" class="Keyword">public</a>
+
+<a id="functor"></a><a id="636" href="Effect.Monad.Identity.html#636" class="Function">functor</a> <a id="644" class="Symbol">:</a> <a id="646" href="Effect.Functor.html#570" class="Record">RawFunctor</a> <a id="657" class="Symbol">{</a><a id="658" href="Effect.Monad.Identity.html#512" class="Generalizable">a</a><a id="659" class="Symbol">}</a> <a id="661" href="Effect.Monad.Identity.html#530" class="Record">Identity</a>
+<a id="670" href="Effect.Monad.Identity.html#636" class="Function">functor</a> <a id="678" class="Symbol">=</a> <a id="680" class="Keyword">record</a>
+  <a id="689" class="Symbol">{</a> <a id="691" href="Effect.Functor.html#678" class="Field Operator">_&lt;$&gt;_</a> <a id="697" class="Symbol">=</a> <a id="699" class="Symbol">λ</a> <a id="701" href="Effect.Monad.Identity.html#701" class="Bound">f</a> <a id="703" href="Effect.Monad.Identity.html#703" class="Bound">a</a> <a id="705" class="Symbol">→</a> <a id="707" href="Effect.Monad.Identity.html#579" class="InductiveConstructor">mkIdentity</a> <a id="718" class="Symbol">(</a><a id="719" href="Effect.Monad.Identity.html#701" class="Bound">f</a> <a id="721" class="Symbol">(</a><a id="722" href="Effect.Monad.Identity.html#598" class="Field">runIdentity</a> <a id="734" href="Effect.Monad.Identity.html#703" class="Bound">a</a><a id="735" class="Symbol">))</a>
+  <a id="740" class="Symbol">}</a>
+
+<a id="applicative"></a><a id="743" href="Effect.Monad.Identity.html#743" class="Function">applicative</a> <a id="755" class="Symbol">:</a> <a id="757" href="Effect.Applicative.html#970" class="Record">RawApplicative</a> <a id="772" class="Symbol">{</a><a id="773" href="Effect.Monad.Identity.html#512" class="Generalizable">a</a><a id="774" class="Symbol">}</a> <a id="776" href="Effect.Monad.Identity.html#530" class="Record">Identity</a>
+<a id="785" href="Effect.Monad.Identity.html#743" class="Function">applicative</a> <a id="797" class="Symbol">=</a> <a id="799" class="Keyword">record</a>
+  <a id="808" class="Symbol">{</a> <a id="810" href="Effect.Applicative.html#1108" class="Field">rawFunctor</a> <a id="821" class="Symbol">=</a> <a id="823" href="Effect.Monad.Identity.html#636" class="Function">functor</a>
+  <a id="833" class="Symbol">;</a> <a id="835" href="Effect.Applicative.html#1138" class="Field">pure</a> <a id="840" class="Symbol">=</a> <a id="842" href="Effect.Monad.Identity.html#579" class="InductiveConstructor">mkIdentity</a>
+  <a id="855" class="Symbol">;</a> <a id="857" href="Effect.Applicative.html#1157" class="Field Operator">_&lt;*&gt;_</a>  <a id="864" class="Symbol">=</a> <a id="866" class="Symbol">λ</a> <a id="868" href="Effect.Monad.Identity.html#868" class="Bound">f</a> <a id="870" href="Effect.Monad.Identity.html#870" class="Bound">a</a> <a id="872" class="Symbol">→</a> <a id="874" href="Effect.Monad.Identity.html#579" class="InductiveConstructor">mkIdentity</a> <a id="885" class="Symbol">(</a><a id="886" href="Effect.Monad.Identity.html#598" class="Field">runIdentity</a> <a id="898" href="Effect.Monad.Identity.html#868" class="Bound">f</a> <a id="900" href="Function.Base.html#3850" class="Function Operator">$′</a> <a id="903" href="Effect.Monad.Identity.html#598" class="Field">runIdentity</a> <a id="915" href="Effect.Monad.Identity.html#870" class="Bound">a</a><a id="916" class="Symbol">)</a>
+  <a id="920" class="Symbol">}</a>
+
+<a id="monad"></a><a id="923" href="Effect.Monad.Identity.html#923" class="Function">monad</a> <a id="929" class="Symbol">:</a> <a id="931" href="Effect.Monad.html#766" class="Record">RawMonad</a> <a id="940" class="Symbol">{</a><a id="941" href="Effect.Monad.Identity.html#512" class="Generalizable">a</a><a id="942" class="Symbol">}</a> <a id="944" href="Effect.Monad.Identity.html#530" class="Record">Identity</a>
+<a id="953" href="Effect.Monad.Identity.html#923" class="Function">monad</a> <a id="959" class="Symbol">=</a> <a id="961" class="Keyword">record</a>
+  <a id="970" class="Symbol">{</a> <a id="972" href="Effect.Monad.html#882" class="Field">rawApplicative</a> <a id="987" class="Symbol">=</a> <a id="989" href="Effect.Monad.Identity.html#743" class="Function">applicative</a>
+  <a id="1003" class="Symbol">;</a> <a id="1005" href="Effect.Monad.html#920" class="Field Operator">_&gt;&gt;=_</a>  <a id="1012" class="Symbol">=</a> <a id="1014" href="Function.Base.html#3930" class="Function Operator">_|&gt;′_</a> <a id="1020" href="Function.Base.html#3637" class="Function Operator">∘′</a> <a id="1023" href="Effect.Monad.Identity.html#598" class="Field">runIdentity</a>
+  <a id="1037" class="Symbol">}</a>
+
+<a id="comonad"></a><a id="1040" href="Effect.Monad.Identity.html#1040" class="Function">comonad</a> <a id="1048" class="Symbol">:</a> <a id="1050" href="Effect.Comonad.html#448" class="Record">RawComonad</a> <a id="1061" class="Symbol">{</a><a id="1062" href="Effect.Monad.Identity.html#512" class="Generalizable">a</a><a id="1063" class="Symbol">}</a> <a id="1065" href="Effect.Monad.Identity.html#530" class="Record">Identity</a>
+<a id="1074" href="Effect.Monad.Identity.html#1040" class="Function">comonad</a> <a id="1082" class="Symbol">=</a> <a id="1084" class="Keyword">record</a>
+  <a id="1093" class="Symbol">{</a> <a id="1095" href="Effect.Comonad.html#559" class="Field">extract</a> <a id="1103" class="Symbol">=</a> <a id="1105" href="Effect.Monad.Identity.html#598" class="Field">runIdentity</a>
+  <a id="1119" class="Symbol">;</a> <a id="1121" href="Effect.Comonad.html#581" class="Field">extend</a>  <a id="1129" class="Symbol">=</a> <a id="1131" class="Symbol">λ</a> <a id="1133" href="Effect.Monad.Identity.html#1133" class="Bound">f</a> <a id="1135" href="Effect.Monad.Identity.html#1135" class="Bound">a</a> <a id="1137" class="Symbol">→</a> <a id="1139" href="Effect.Monad.Identity.html#579" class="InductiveConstructor">mkIdentity</a> <a id="1150" class="Symbol">(</a><a id="1151" href="Effect.Monad.Identity.html#1133" class="Bound">f</a> <a id="1153" href="Effect.Monad.Identity.html#1135" class="Bound">a</a><a id="1154" class="Symbol">)</a>
+  <a id="1158" class="Symbol">}</a>
+</pre></body></html>

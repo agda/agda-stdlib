@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>IO.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for IO</a>
+<a id="136" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="210" class="Symbol">{-#</a> <a id="214" class="Keyword">OPTIONS</a> <a id="222" class="Pragma">--without-K</a> <a id="234" class="Pragma">--guardedness</a> <a id="248" class="Symbol">#-}</a>
+
+<a id="253" class="Keyword">module</a> <a id="260" href="IO.Instances.html" class="Module">IO.Instances</a> <a id="273" class="Keyword">where</a>
+
+<a id="280" class="Keyword">open</a> <a id="285" class="Keyword">import</a> <a id="292" href="IO.Base.html" class="Module">IO.Base</a>
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Effect.Functor.html" class="Module">Effect.Functor</a>
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
+<a id="358" class="Keyword">open</a> <a id="363" class="Keyword">import</a> <a id="370" href="Effect.Monad.html" class="Module">Effect.Monad</a>
+<a id="383" class="Keyword">open</a> <a id="388" class="Keyword">import</a> <a id="395" href="IO.Effectful.html" class="Module">IO.Effectful</a>
+
+<a id="409" class="Keyword">instance</a>
+  <a id="ioFunctor"></a><a id="420" href="IO.Instances.html#420" class="Function">ioFunctor</a> <a id="430" class="Symbol">=</a> <a id="432" href="IO.Effectful.html#521" class="Function">functor</a>
+  <a id="ioApplicative"></a><a id="442" href="IO.Instances.html#442" class="Function">ioApplicative</a> <a id="456" class="Symbol">=</a> <a id="458" href="IO.Effectful.html#585" class="Function">applicative</a>
+  <a id="ioMonad"></a><a id="472" href="IO.Instances.html#472" class="Function">ioMonad</a> <a id="480" class="Symbol">=</a> <a id="482" href="IO.Effectful.html#706" class="Function">monad</a>
+</pre></body></html>

@@ -60,46 +60,46 @@
 <a id="2264" class="Keyword">open</a> <a id="2269" class="Keyword">import</a> <a id="2276" href="Level.html" class="Module">Level</a> <a id="2282" class="Keyword">using</a> <a id="2288" class="Symbol">(</a><a id="2289" href="Level.html#512" class="Function">0ℓ</a><a id="2291" class="Symbol">)</a>
 <a id="2293" class="Keyword">open</a> <a id="2298" class="Keyword">import</a> <a id="2305" href="IO.html" class="Module">IO</a>
 
-<a id="main"></a><a id="2309" href="README.Debug.Trace.html#2309" class="Function">main</a> <a id="2314" class="Symbol">:</a> <a id="2316" href="IO.Base.html#3014" class="Function">Main</a>
+<a id="main"></a><a id="2309" href="README.Debug.Trace.html#2309" class="Function">main</a> <a id="2314" class="Symbol">:</a> <a id="2316" href="IO.Base.html#2969" class="Function">Main</a>
 <a id="2321" href="README.Debug.Trace.html#2309" class="Function">main</a> <a id="2326" class="Symbol">=</a>
   <a id="2330" class="Keyword">let</a> <a id="2334" href="README.Debug.Trace.html#2334" class="Bound">r</a> <a id="2336" class="Symbol">=</a> <a id="2338" href="Debug.Trace.html#476" class="Postulate">trace</a> <a id="2344" class="String">&quot;Call to div&quot;</a> <a id="2358" class="Symbol">(</a><a id="2359" href="README.Debug.Trace.html#1536" class="Function">div</a> <a id="2363" class="Number">4</a> <a id="2365" class="Number">2</a><a id="2366" class="Symbol">)</a>
       <a id="2374" href="README.Debug.Trace.html#2374" class="Bound">j</a> <a id="2376" class="Symbol">=</a> <a id="2378" class="Symbol">λ</a> <a id="2380" href="README.Debug.Trace.html#2380" class="Bound">n</a> <a id="2382" class="Symbol">→</a> <a id="2384" href="Debug.Trace.html#476" class="Postulate">trace</a> <a id="2390" class="String">&quot;Forcing the result wrapped in just.&quot;</a> <a id="2428" class="Symbol">(</a><a id="2429" href="IO.Finite.html#1497" class="Function">putStrLn</a> <a id="2438" class="Symbol">(</a><a id="2439" href="Data.Nat.Show.html#1924" class="Function">show</a> <a id="2444" href="README.Debug.Trace.html#2380" class="Bound">n</a><a id="2445" class="Symbol">))</a> <a id="2448" class="Keyword">in</a>
-  <a id="2453" href="IO.Base.html#2703" class="Function">run</a> <a id="2457" class="Symbol">(</a><a id="2458" href="Data.Maybe.Base.html#1554" class="Function">maybe′</a> <a id="2465" href="README.Debug.Trace.html#2374" class="Bound">j</a> <a id="2467" class="Symbol">(</a><a id="2468" href="IO.Base.html#1242" class="InductiveConstructor">return</a> <a id="2475" class="Symbol">_)</a> <a id="2478" href="README.Debug.Trace.html#2334" class="Bound">r</a><a id="2479" class="Symbol">)</a>
+  <a id="2453" href="IO.Base.html#2660" class="Function">run</a> <a id="2457" class="Symbol">(</a><a id="2458" href="Data.Maybe.Base.html#1554" class="Function">maybe′</a> <a id="2465" href="README.Debug.Trace.html#2374" class="Bound">j</a> <a id="2467" class="Symbol">(</a><a id="2468" href="IO.Base.html#1240" class="InductiveConstructor">pure</a> <a id="2473" class="Symbol">_)</a> <a id="2476" href="README.Debug.Trace.html#2334" class="Bound">r</a><a id="2477" class="Symbol">)</a>
 
-<a id="2482" class="Comment">-- We get the following trace where we can see that checking that the</a>
-<a id="2552" class="Comment">-- maybe-solution is just-headed does not force the natural number. Once forced,</a>
-<a id="2633" class="Comment">-- we observe that we indeed build a big thunk on go&#39;s second argument (all the</a>
-<a id="2713" class="Comment">-- recursive calls happen first and then we force the thunks one by one).</a>
+<a id="2480" class="Comment">-- We get the following trace where we can see that checking that the</a>
+<a id="2550" class="Comment">-- maybe-solution is just-headed does not force the natural number. Once forced,</a>
+<a id="2631" class="Comment">-- we observe that we indeed build a big thunk on go&#39;s second argument (all the</a>
+<a id="2711" class="Comment">-- recursive calls happen first and then we force the thunks one by one).</a>
 
-<a id="2788" class="Comment">-- Call to div</a>
-<a id="2803" class="Comment">-- Forcing the result wrapped in just.</a>
-<a id="2842" class="Comment">-- Recursive call for step 3</a>
-<a id="2871" class="Comment">-- Recursive call for step 2</a>
-<a id="2900" class="Comment">-- Recursive call for step 1</a>
-<a id="2929" class="Comment">-- Recursive call for step 0</a>
-<a id="2958" class="Comment">-- Thunk for step 0 forced</a>
-<a id="2985" class="Comment">-- Thunk for step 1 forced</a>
-<a id="3012" class="Comment">-- Thunk for step 2 forced</a>
-<a id="3039" class="Comment">-- Thunk for step 3 forced</a>
-<a id="3066" class="Comment">-- Invariant: 0 should be zero.</a>
-<a id="3098" class="Comment">-- 4</a>
+<a id="2786" class="Comment">-- Call to div</a>
+<a id="2801" class="Comment">-- Forcing the result wrapped in just.</a>
+<a id="2840" class="Comment">-- Recursive call for step 3</a>
+<a id="2869" class="Comment">-- Recursive call for step 2</a>
+<a id="2898" class="Comment">-- Recursive call for step 1</a>
+<a id="2927" class="Comment">-- Recursive call for step 0</a>
+<a id="2956" class="Comment">-- Thunk for step 0 forced</a>
+<a id="2983" class="Comment">-- Thunk for step 1 forced</a>
+<a id="3010" class="Comment">-- Thunk for step 2 forced</a>
+<a id="3037" class="Comment">-- Thunk for step 3 forced</a>
+<a id="3064" class="Comment">-- Invariant: 0 should be zero.</a>
+<a id="3096" class="Comment">-- 4</a>
 
-<a id="3104" class="Comment">-- We also notice that the result is incorrect: 4/2 is 2 and not 4. We quickly</a>
-<a id="3183" class="Comment">-- notice that (div m (suc n)) will perform m recursive calls no matter what.</a>
-<a id="3261" class="Comment">-- And at each call it will put add 1. We can fix this bug by adding a new first</a>
-<a id="3342" class="Comment">-- equation to go:</a>
+<a id="3102" class="Comment">-- We also notice that the result is incorrect: 4/2 is 2 and not 4. We quickly</a>
+<a id="3181" class="Comment">-- notice that (div m (suc n)) will perform m recursive calls no matter what.</a>
+<a id="3259" class="Comment">-- And at each call it will put add 1. We can fix this bug by adding a new first</a>
+<a id="3340" class="Comment">-- equation to go:</a>
 
-<a id="3362" class="Comment">-- go fuel zero = zero</a>
+<a id="3360" class="Comment">-- go fuel zero = zero</a>
 
-<a id="3386" class="Comment">-- Running the example again we observe that because we now need to check</a>
-<a id="3460" class="Comment">-- whether go&#39;s second argument is zero, the function is more strict: we see</a>
-<a id="3537" class="Comment">-- that recursive calls and thunk forcings are interleaved.</a>
+<a id="3384" class="Comment">-- Running the example again we observe that because we now need to check</a>
+<a id="3458" class="Comment">-- whether go&#39;s second argument is zero, the function is more strict: we see</a>
+<a id="3535" class="Comment">-- that recursive calls and thunk forcings are interleaved.</a>
 
-<a id="3598" class="Comment">-- Call to div</a>
-<a id="3613" class="Comment">-- Forcing the result wrapped in just.</a>
-<a id="3652" class="Comment">-- Recursive call for step 3</a>
-<a id="3681" class="Comment">-- Thunk for step 3 forced</a>
-<a id="3708" class="Comment">-- Recursive call for step 2</a>
-<a id="3737" class="Comment">-- Thunk for step 2 forced</a>
-<a id="3764" class="Comment">-- 2</a>
+<a id="3596" class="Comment">-- Call to div</a>
+<a id="3611" class="Comment">-- Forcing the result wrapped in just.</a>
+<a id="3650" class="Comment">-- Recursive call for step 3</a>
+<a id="3679" class="Comment">-- Thunk for step 3 forced</a>
+<a id="3706" class="Comment">-- Recursive call for step 2</a>
+<a id="3735" class="Comment">-- Thunk for step 2 forced</a>
+<a id="3762" class="Comment">-- 2</a>
 </pre></body></html>

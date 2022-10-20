@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>IO.Effectful</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An effectful view of IO</a>
+<a id="133" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="207" class="Symbol">{-#</a> <a id="211" class="Keyword">OPTIONS</a> <a id="219" class="Pragma">--without-K</a> <a id="231" class="Pragma">--guardedness</a> <a id="245" class="Symbol">#-}</a>
+
+<a id="250" class="Keyword">module</a> <a id="257" href="IO.Effectful.html" class="Module">IO.Effectful</a> <a id="270" class="Keyword">where</a>
+
+<a id="277" class="Keyword">open</a> <a id="282" class="Keyword">import</a> <a id="289" href="Level.html" class="Module">Level</a>
+<a id="295" class="Keyword">open</a> <a id="300" class="Keyword">import</a> <a id="307" href="Effect.Functor.html" class="Module">Effect.Functor</a>
+<a id="322" class="Keyword">open</a> <a id="327" class="Keyword">import</a> <a id="334" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
+<a id="353" class="Keyword">open</a> <a id="358" class="Keyword">import</a> <a id="365" href="Effect.Monad.html" class="Module">Effect.Monad</a>
+
+<a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="IO.Base.html" class="Module">IO.Base</a>
+
+<a id="400" class="Keyword">private</a>
+  <a id="410" class="Keyword">variable</a>
+    <a id="423" href="IO.Effectful.html#423" class="Generalizable">f</a> <a id="425" class="Symbol">:</a> <a id="427" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+
+<a id="434" class="Comment">------------------------------------------------------------------------</a>
+<a id="507" class="Comment">-- Structure</a>
+
+<a id="functor"></a><a id="521" href="IO.Effectful.html#521" class="Function">functor</a> <a id="529" class="Symbol">:</a> <a id="531" href="Effect.Functor.html#570" class="Record">RawFunctor</a> <a id="542" class="Symbol">{</a><a id="543" href="IO.Effectful.html#423" class="Generalizable">f</a><a id="544" class="Symbol">}</a> <a id="546" href="IO.Base.html#1171" class="Datatype">IO</a>
+<a id="549" href="IO.Effectful.html#521" class="Function">functor</a> <a id="557" class="Symbol">=</a> <a id="559" class="Keyword">record</a> <a id="566" class="Symbol">{</a> <a id="568" href="Effect.Functor.html#678" class="Field Operator">_&lt;$&gt;_</a> <a id="574" class="Symbol">=</a> <a id="576" href="IO.Base.html#1964" class="Function Operator">_&lt;$&gt;_</a> <a id="582" class="Symbol">}</a>
+
+<a id="applicative"></a><a id="585" href="IO.Effectful.html#585" class="Function">applicative</a> <a id="597" class="Symbol">:</a> <a id="599" href="Effect.Applicative.html#970" class="Record">RawApplicative</a> <a id="614" class="Symbol">{</a><a id="615" href="IO.Effectful.html#423" class="Generalizable">f</a><a id="616" class="Symbol">}</a> <a id="618" href="IO.Base.html#1171" class="Datatype">IO</a>
+<a id="621" href="IO.Effectful.html#585" class="Function">applicative</a> <a id="633" class="Symbol">=</a> <a id="635" class="Keyword">record</a>
+  <a id="644" class="Symbol">{</a> <a id="646" href="Effect.Applicative.html#1108" class="Field">rawFunctor</a> <a id="657" class="Symbol">=</a> <a id="659" href="IO.Effectful.html#521" class="Function">functor</a>
+  <a id="669" class="Symbol">;</a> <a id="671" href="Effect.Applicative.html#1138" class="Field">pure</a> <a id="676" class="Symbol">=</a> <a id="678" href="IO.Base.html#1240" class="InductiveConstructor">pure</a>
+  <a id="685" class="Symbol">;</a> <a id="687" href="Effect.Applicative.html#1157" class="Field Operator">_&lt;*&gt;_</a> <a id="693" class="Symbol">=</a> <a id="695" href="IO.Base.html#1861" class="Function Operator">_&lt;*&gt;_</a>
+  <a id="703" class="Symbol">}</a>
+
+<a id="monad"></a><a id="706" href="IO.Effectful.html#706" class="Function">monad</a> <a id="712" class="Symbol">:</a> <a id="714" href="Effect.Monad.html#766" class="Record">RawMonad</a> <a id="723" class="Symbol">{</a><a id="724" href="IO.Effectful.html#423" class="Generalizable">f</a><a id="725" class="Symbol">}</a> <a id="727" href="IO.Base.html#1171" class="Datatype">IO</a>
+<a id="730" href="IO.Effectful.html#706" class="Function">monad</a> <a id="736" class="Symbol">=</a> <a id="738" class="Keyword">record</a>
+  <a id="747" class="Symbol">{</a> <a id="749" href="Effect.Monad.html#882" class="Field">rawApplicative</a> <a id="764" class="Symbol">=</a> <a id="766" href="IO.Effectful.html#585" class="Function">applicative</a>
+  <a id="780" class="Symbol">;</a> <a id="782" href="Effect.Monad.html#920" class="Field Operator">_&gt;&gt;=_</a> <a id="788" class="Symbol">=</a> <a id="790" href="IO.Base.html#2075" class="Function Operator">_&gt;&gt;=_</a>
+  <a id="798" class="Symbol">}</a>
+</pre></body></html>
