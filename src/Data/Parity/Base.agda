@@ -46,12 +46,12 @@ _*_ : Parity → Parity → Parity
 1ℙ * p = p
 
 ------------------------------------------------------------------------
--- Homomorphism from Parity to Sign: here, or somehwre else?
+-- Homomorphism from Parity to Sign: here, or somewhere else?
 
 ℙto𝕊 : Parity → Sign
-ℙto𝕊 0ℙ = 0𝕊
-ℙto𝕊 1ℙ = 1𝕊
+ℙto𝕊 0ℙ = 1𝕊
+ℙto𝕊 1ℙ = 0𝕊
 
 𝕊toℙ : Sign → Parity
-𝕊toℙ 0𝕊 = 0ℙ
-𝕊toℙ 1𝕊 = 1ℙ
+𝕊toℙ 0𝕊 = 1ℙ
+𝕊toℙ 1𝕊 = 0ℙ
