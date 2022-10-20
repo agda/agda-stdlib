@@ -1,0 +1,2 @@
+IO.Base.Main
+Π ({a} : Agda.Primitive.Level) (Π (_ : Agda.Builtin.String.String) (IO.Base.IO {var 1} (Data.Unit.Polymorphic.Base.⊤ {var 1})))

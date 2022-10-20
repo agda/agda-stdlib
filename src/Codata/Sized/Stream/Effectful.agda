@@ -20,8 +20,9 @@ functor = record { _<$>_ = λ f → map f }
 
 applicative : ∀ {ℓ i} → RawApplicative {ℓ} (λ A → Stream A i)
 applicative = record
-  { pure = repeat
-  ; _⊛_  = ap
+  { rawFunctor = functor
+  ; pure = repeat
+  ; _<*>_  = ap
   }
 
 comonad : ∀ {ℓ} → RawComonad {ℓ} (λ A → Stream A _)

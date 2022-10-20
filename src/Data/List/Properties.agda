@@ -516,6 +516,40 @@ concat-[-] [] = refl
 concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
 
 ------------------------------------------------------------------------
+-- concatMap
+
+concatMap-cong : ∀ {f g : A → List B} → f ≗ g → concatMap f ≗ concatMap g
+concatMap-cong eq xs = cong concat (map-cong eq xs)
+
+concatMap-pure : concatMap {A = A} [_] ≗ id
+concatMap-pure = concat-[-]
+
+concatMap-map : (g : B → List C) → (f : A → B) → (xs : List A) →
+                concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
+concatMap-map g f xs
+  = cong concat
+      {x = map g (map f xs)}
+      {y = map (g ∘′ f) xs}
+      (sym $ map-∘ xs)
+
+map-concatMap : (f : B → C) (g : A → List B) →
+                map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
+map-concatMap f g xs = begin
+  map f (concatMap g xs)
+    ≡⟨⟩
+  map f (concat (map g xs))
+    ≡˘⟨ concat-map (map g xs) ⟩
+  concat (map (map f) (map g xs))
+    ≡⟨ cong concat
+         {x = map (map f) (map g xs)}
+         {y = map (map f ∘′ g) xs}
+         (sym $ map-∘ xs) ⟩
+  concat (map (map f ∘′ g) xs)
+    ≡⟨⟩
+  concatMap (map f ∘′ g) xs
+    ∎
+
+------------------------------------------------------------------------
 -- sum
 
 sum-++ : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys

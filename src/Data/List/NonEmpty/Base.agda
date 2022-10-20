@@ -141,6 +141,9 @@ concat (xs ∷ xss) = xs ⁺++ List.concat (List.map toList xss)
 concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
 concatMap f = concat ∘′ map f
 
+ap : List⁺ (A → B) → List⁺ A → List⁺ B
+ap fs as = concatMap (λ f → map f as) fs
+
 -- Reverse
 
 reverse : List⁺ A → List⁺ A
