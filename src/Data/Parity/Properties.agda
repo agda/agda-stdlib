@@ -66,6 +66,28 @@ opposite-injective {p} {q} eq = begin
   q ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
+-- opposite and _+_
+
+p+opposite[p]≡1ℙ : ∀ p → p + opposite p ≡ 1ℙ
+p+opposite[p]≡1ℙ 0ℙ = refl
+p+opposite[p]≡1ℙ 1ℙ = refl
+
+opposite[p]+p≡1ℙ : ∀ p → opposite p + p ≡ 1ℙ
+opposite[p]+p≡1ℙ 0ℙ = refl
+opposite[p]+p≡1ℙ 1ℙ = refl
+
+------------------------------------------------------------------------
+-- opposite and _*_
+
+p*opposite[p]≡0ℙ : ∀ p → p * opposite p ≡ 0ℙ
+p*opposite[p]≡0ℙ 0ℙ = refl
+p*opposite[p]≡0ℙ 1ℙ = refl
+
+opposite[p]*p≡0ℙ : ∀ p → opposite p * p ≡ 0ℙ
+opposite[p]*p≡0ℙ 0ℙ = refl
+opposite[p]*p≡0ℙ 1ℙ = refl
+
+------------------------------------------------------------------------
 -- _+_
 
 -- Algebraic properties of _+_
@@ -199,17 +221,6 @@ p+p≡0ℙ 1ℙ = refl
 +-0-abelianGroup = record
   { isAbelianGroup = +-0-isAbelianGroup
   }
-
-------------------------------------------------------------------------
--- Other properties of _+_
-
-p+opposite[p]≡1ℙ : ∀ p → p + opposite p ≡ 1ℙ
-p+opposite[p]≡1ℙ 0ℙ = refl
-p+opposite[p]≡1ℙ 1ℙ = refl
-
-opposite[p]+p≡1ℙ : ∀ p → opposite p + p ≡ 1ℙ
-opposite[p]+p≡1ℙ 0ℙ = refl
-opposite[p]+p≡1ℙ 1ℙ = refl
 
 ------------------------------------------------------------------------
 -- _*_
@@ -389,41 +400,16 @@ opposite[p]+p≡1ℙ 1ℙ = refl
   }
 
 ------------------------------------------------------------------------
+-- relating Parity and Sign -- where should this go?
 
--- Other properties of _*_
+{- TODO!!!
+   show that ℙto𝕊/𝕊toℙ form an Abelian group isomorphism
+   between (ℙ, _+_, 0ℙ) and  (𝕊, _*_, 1𝕊)    -}
 
-p*opposite[p]≡0ℙ : ∀ p → p * opposite p ≡ 0ℙ
-p*opposite[p]≡0ℙ 0ℙ = refl
-p*opposite[p]≡0ℙ 1ℙ = refl
+------------------------------------------------------------------------
+-- relating Nat and Parity -- where should this go?
 
-opposite[p]*p≡0ℙ : ∀ p → opposite p * p ≡ 0ℙ
-opposite[p]*p≡0ℙ 0ℙ = refl
-opposite[p]*p≡0ℙ 1ℙ = refl
-
--- relating Parity and Sign
-
-{-
-homoₚₛ-semigroup-morphism : IsSemigroupHomomorphism homoₚₛ
-homoₚₛ-semigroup-morphism = record
-  { ⟦⟧-cong = ?
-  ; ∙-homo  = ?
-  }
-
-homoₚₛ-monoid-morphism : IsMonoidHomomorphism homoₚₛ
-homoₚₛ-monoid-morphism = record
-  { sm-homo = homoₚₛ-semigroup-morphism
-  ; ε-homo  = refl
-  }
-
-^-isMagmaHomomorphism : ∀ i → Morphism.IsMagmaHomomorphism ℕ.+-rawMagma *-rawMagma (i ^_)
-^-isMagmaHomomorphism i = record
-  { isRelHomomorphism = record { cong = cong (i ^_) }
-  ; homo              = ^-distribˡ-+-* i
-  }
-
-^-isMonoidHomomorphism : ∀ i → Morphism.IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
-^-isMonoidHomomorphism i = record
-  { isMagmaHomomorphism = ^-isMagmaHomomorphism i
-  ; ε-homo              = refl
-  }
+{- TODO!!!
+   show that ℕtoℙ is a commutative semiring homomorphism
+   between (ℕ, _+_, 0ℕ _*_, 1ℕ) and  (ℙ, _+_, 0ℙ, _*_, 1ℙ)
 -}
