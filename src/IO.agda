@@ -36,16 +36,16 @@ module Colist where
   open import Codata.Musical.Colist.Base
 
   sequence : Colist (IO A) → IO (Colist A)
-  sequence []       = return []
+  sequence []       = pure []
   sequence (c ∷ cs) = bind (♯ c)               λ x  → ♯
                       bind (♯ sequence (♭ cs)) λ xs → ♯
-                      return (x ∷ ♯ xs)
+                      pure (x ∷ ♯ xs)
 
   -- The reason for not defining sequence′ in terms of sequence is
   -- efficiency (the unused results could cause unnecessary memory use).
 
   sequence′ : Colist (IO A) → IO ⊤
-  sequence′ []       = return _
+  sequence′ []       = pure _
   sequence′ (c ∷ cs) = seq (♯ c) (♯ sequence′ (♭ cs))
 
   mapM : (A → IO B) → Colist A → IO (Colist B)
@@ -72,7 +72,7 @@ module List where
   -- efficiency (the unused results could cause unnecessary memory use).
 
   sequence′ : List (IO A) → IO ⊤
-  sequence′ []       = return _
+  sequence′ []       = pure _
   sequence′ (c ∷ cs) = c >> sequence′ cs
 
   mapM : (A → IO B) → List A → IO (List B)

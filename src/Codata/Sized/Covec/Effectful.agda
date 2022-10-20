@@ -18,6 +18,7 @@ functor = record { _<$>_ = map }
 
 applicative : ∀ {ℓ i n} → RawApplicative {ℓ} (λ A → Covec A n i)
 applicative = record
-  { pure = replicate _
-  ; _⊛_  = ap
+  { rawFunctor = functor
+  ; pure = replicate _
+  ; _<*>_  = ap
   }
