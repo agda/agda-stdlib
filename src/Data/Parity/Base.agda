@@ -8,7 +8,7 @@
 
 module Data.Parity.Base where
 
-open import Data.Sign.Base as Sign using (Sign; +; -)
+open import Data.Sign.Base as Sign using (Sign) renaming (+ to 0𝕊; - to 1𝕊)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -17,8 +17,8 @@ data Parity : Set where
   eve : Parity
   odd : Parity
 
-pattern 0ₚ = eve
-pattern 1ₚ = odd
+pattern 0ℙ = eve
+pattern 1ℙ = odd
 
 ------------------------------------------------------------------------
 -- Operations
@@ -26,27 +26,31 @@ pattern 1ₚ = odd
 -- The opposite parity.
 
 opposite : Parity → Parity
-opposite 1ₚ = 0ₚ
-opposite 0ₚ = 1ₚ
+opposite 1ℙ = 0ℙ
+opposite 0ℙ = 1ℙ
 
 -- Addition.
 
 infixl 7 _+_
 
 _+_ : Parity → Parity → Parity
-0ₚ + p = p
-1ₚ + p = opposite p
+0ℙ + p = p
+1ℙ + p = opposite p
 
 -- Multiplication.
 
 infixl 7 _*_
 
 _*_ : Parity → Parity → Parity
-0ₚ * p = 0ₚ
-1ₚ * p = p
+0ℙ * p = 0ℙ
+1ℙ * p = p
 
 -- Homomorphism from Parity to Sign
 
-homoₚₛ : Parity → Sign
-homoₚₛ 0ₚ = +
-homoₚₛ 1ₚ = -
+ℙto𝕊 : Parity → Sign
+ℙto𝕊 0ℙ = 0𝕊
+ℙto𝕊 1ℙ = 1𝕊
+
+𝕊toℙ : Sign → Parity
+𝕊toℙ 0𝕊 = 0ℙ
+𝕊toℙ 1𝕊 = 1ℙ
