@@ -8,7 +8,7 @@
 
 module Data.Parity.Base where
 
-open import Data.Sign.Base as Sign using (Sign) renaming (+ to 0𝕊; - to 1𝕊)
+open import Data.Sign.Base as Sign using (Sign) renaming (+ to 1𝕊; - to 0𝕊)
 
 ------------------------------------------------------------------------
 -- Definition
