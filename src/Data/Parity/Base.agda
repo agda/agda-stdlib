@@ -8,7 +8,7 @@
 
 module Data.Parity.Base where
 
-open import Data.Sign.Base as Sign using (Sign) renaming (+ to 1𝕊; - to 0𝕊)
+open import Data.Sign.Base using (Sign; +; -)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -49,9 +49,9 @@ _*_ : Parity → Parity → Parity
 -- Homomorphism from Parity to Sign: here, or somewhere else?
 
 ℙto𝕊 : Parity → Sign
-ℙto𝕊 0ℙ = 1𝕊
-ℙto𝕊 1ℙ = 0𝕊
+ℙto𝕊 0ℙ = +
+ℙto𝕊 1ℙ = -
 
 𝕊toℙ : Sign → Parity
-𝕊toℙ 0𝕊 = 1ℙ
-𝕊toℙ 1𝕊 = 0ℙ
+𝕊toℙ + = 0ℙ
+𝕊toℙ - = 1ℙ
