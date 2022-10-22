@@ -4,7 +4,7 @@
 -- An example of how to use `Wrap` to help term inference.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Data.Wrap where
 

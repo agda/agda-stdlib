@@ -4,7 +4,7 @@
 -- The unit type and the total relation on unit
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Agda.Builtin.Equality using (_≡_)
 

@@ -4,7 +4,7 @@
 -- Decomposition of permutations into a list of transpositions.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Permutation.Transposition.List where
 

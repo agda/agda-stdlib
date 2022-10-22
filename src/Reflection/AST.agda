@@ -4,7 +4,7 @@
 -- The reflected abstract syntax tree
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST where
 
@@ -57,4 +57,3 @@ open Builtin public
   ; right-assoc     to assocʳ
   ; primQNameFixity to getFixity
   )
-

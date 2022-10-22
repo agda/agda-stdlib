@@ -4,7 +4,7 @@
 -- Coinductive lists where all elements satisfy a predicate
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Relation.Unary.All.Properties where
 

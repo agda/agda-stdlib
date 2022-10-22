@@ -7,7 +7,7 @@
 -- is crucial to use smart constructors.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Preorder)
 

@@ -4,7 +4,7 @@
 -- An effectful view of List⁺
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.NonEmpty.Effectful where
 

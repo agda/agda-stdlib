@@ -7,7 +7,7 @@
 -- The definitions of lexicographic orderings used here is suitable if
 -- the argument order is a (non-strict) partial order.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Binary.Lex.NonStrict where
 

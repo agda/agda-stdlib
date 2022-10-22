@@ -4,7 +4,7 @@
 -- Additional properties for setoids
 ------------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Product using (_,_)
 open import Function.Base using (_∘_; id; _$_; flip)

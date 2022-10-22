@@ -4,7 +4,7 @@
 -- Bisimilarity for Colists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Colist.Bisimilarity where
 

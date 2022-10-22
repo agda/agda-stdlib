@@ -6,7 +6,7 @@
 -- This module has a readme file: README.Data.Wrap
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Wrap where
 

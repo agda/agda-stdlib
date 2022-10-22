@@ -4,7 +4,7 @@
 -- Primality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Primality where
 
@@ -142,4 +142,3 @@ private
   -- Example: 6 is composite
   6-is-composite : Composite 6
   6-is-composite = from-yes (composite? 6)
-

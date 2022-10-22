@@ -4,7 +4,7 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; IsStrictTotalOrder; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; subst)

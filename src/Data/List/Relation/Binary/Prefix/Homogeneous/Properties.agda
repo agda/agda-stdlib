@@ -4,7 +4,7 @@
 -- Properties of the homogeneous prefix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Prefix.Homogeneous.Properties where
 

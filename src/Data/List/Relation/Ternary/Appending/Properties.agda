@@ -4,7 +4,7 @@
 -- Properties of the generalised view of appending two lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Ternary.Appending.Properties where
 

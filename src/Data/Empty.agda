@@ -4,7 +4,7 @@
 -- Empty type, judgementally proof irrelevant
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Empty where
 

@@ -4,7 +4,7 @@
 -- Typeclass instances for Identity
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Identity.Instances where
 

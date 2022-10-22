@@ -7,7 +7,7 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Lattice`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Lattice.Bundles where
 
@@ -225,4 +225,3 @@ record BooleanAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wher
 
   open HeytingAlgebra heytingAlgebra public
     hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥)
-

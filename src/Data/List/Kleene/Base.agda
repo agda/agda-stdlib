@@ -4,7 +4,7 @@
 -- Lists, based on the Kleene star and plus, basic types and operations.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Kleene.Base where
 
