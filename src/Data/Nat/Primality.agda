@@ -57,9 +57,9 @@ composite? n@(suc (suc _)) = Dec.map′
   (anyUpTo? (λ d → 2 ≤? d ×-dec d ∣? n) n)
 
 prime? : Decidable Prime
-prime? 0                 = no λ()
-prime? 1                 = no λ()
-prime? n@(suc (suc n-2)) = Dec.map′
+prime? 0               = no λ()
+prime? 1               = no λ()
+prime? n@(suc (suc _)) = Dec.map′
   (λ f {d} → flip (f {d}))
   (λ f {d} → flip (f {d}))
   (allUpTo? (λ d → 2 ≤? d →-dec ¬? (d ∣? n)) n)
@@ -76,7 +76,7 @@ composite⇒¬prime {suc (suc _)} (d , 2≤d , d<n , d∣n) n-prime =
   ¬n-composite (d , 2≤d , d<n , d∣n)
 
 prime⇒¬composite : Prime n → ¬ Composite n
-prime⇒¬composite {n@(suc (suc _))} n-prime (d , 2≤d , d<n , d∣n) =
+prime⇒¬composite {suc (suc _)} n-prime (d , 2≤d , d<n , d∣n) =
   n-prime 2≤d d<n d∣n
 
 -- note that this has to recompute the factor!
