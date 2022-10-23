@@ -129,8 +129,8 @@ euclidsLemma m n {p@(suc (suc _))} p-prime p∣m*n = result
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(suc (suc _)) g _ with d ≟ p
   ...   | yes refl = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p  = contradiction (GCD.gcd∣n g) (p-prime (s≤s (s≤s z≤n)) d<p)
-    where d<p = flip ≤∧≢⇒< d≢p (∣⇒≤ (GCD.gcd∣n g))
+  ...   | no  d≢p  = contradiction (GCD.gcd∣n g) (p-prime 2≤d d<p)
+    where 2≤d = s≤s (s≤s z≤n); d<p = flip ≤∧≢⇒< d≢p (∣⇒≤ (GCD.gcd∣n g))
 
 private
 
