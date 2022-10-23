@@ -962,9 +962,9 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
   +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) m<o)
 
 *-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
-*-monoʳ-< (suc zero)    m<o@(s≤s _) = +-mono-≤ m<o z≤n
-*-monoʳ-< (suc (suc n)) m<o@(s≤s _) =
-  +-mono-≤ m<o (<⇒≤ (*-monoʳ-< (suc n) m<o))
+*-monoʳ-< (suc zero)      m<o@(s≤s _) = +-mono-≤ m<o z≤n
+*-monoʳ-< (suc n@(suc _)) m<o@(s≤s _) =
+  +-mono-≤ m<o (<⇒≤ (*-monoʳ-< n m<o))
 
 m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
 m≤m*n m n@(suc _) = begin
@@ -1914,8 +1914,8 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 n≡⌊n+n/2⌋ : ∀ n → n ≡ ⌊ n + n /2⌋
 n≡⌊n+n/2⌋ zero          = refl
 n≡⌊n+n/2⌋ (suc zero)    = refl
-n≡⌊n+n/2⌋ (suc (suc n)) =
-  cong suc (trans (n≡⌊n+n/2⌋ _) (cong ⌊_/2⌋ (sym (+-suc n (suc n)))))
+n≡⌊n+n/2⌋ (suc n′@(suc n)) =
+  cong suc (trans (n≡⌊n+n/2⌋ _) (cong ⌊_/2⌋ (sym (+-suc n n′))))
 
 ⌈n/2⌉≤n : ∀ n → ⌈ n /2⌉ ≤ n
 ⌈n/2⌉≤n zero    = z≤n
@@ -1925,10 +1925,10 @@ n≡⌊n+n/2⌋ (suc (suc n)) =
 ⌈n/2⌉<n n = s<s (⌊n/2⌋<n n)
 
 n≡⌈n+n/2⌉ : ∀ n → n ≡ ⌈ n + n /2⌉
-n≡⌈n+n/2⌉ zero          = refl
-n≡⌈n+n/2⌉ (suc zero)    = refl
-n≡⌈n+n/2⌉ (suc (suc n)) =
-  cong suc (trans (n≡⌈n+n/2⌉ _) (cong ⌈_/2⌉ (sym (+-suc n (suc n)))))
+n≡⌈n+n/2⌉ zero            = refl
+n≡⌈n+n/2⌉ (suc zero)      = refl
+n≡⌈n+n/2⌉ (suc n′@(suc n)) =
+  cong suc (trans (n≡⌈n+n/2⌉ _) (cong ⌈_/2⌉ (sym (+-suc n n′))))
 
 ------------------------------------------------------------------------
 -- Properties of !_
