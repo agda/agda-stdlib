@@ -83,9 +83,9 @@ fromDigits {base} (d ∷ ds) = toℕ d + fromDigits ds * base
 
 toDigits : (base : ℕ) {base≥2 : True (2 ≤? base)} (n : ℕ) →
            ∃ λ (ds : Expansion base) → fromDigits ds ≡ n
-toDigits (suc (suc k)) n = <′-rec Pred helper n
+toDigits base@(suc (suc k)) n = <′-rec Pred helper n
   where
-  base = suc (suc k)
+  
   Pred = λ n → ∃ λ ds → fromDigits ds ≡ n
 
   cons : ∀ {m} (r : Digit base) → Pred m → Pred (toℕ r + m * base)
@@ -110,7 +110,7 @@ toDigits (suc (suc k)) n = <′-rec Pred helper n
   helper n                       rec with n divMod base
   helper .(toℕ r + 0     * base) rec | result zero    r refl = ([ r ] , refl)
   helper .(toℕ r + suc x * base) rec | result (suc x) r refl =
-    cons r (rec (suc x) (lem (pred (suc x)) k (toℕ r)))
+    cons r (rec (suc x) (lem x k (toℕ r)))
 
 ------------------------------------------------------------------------
 -- Showing digits
