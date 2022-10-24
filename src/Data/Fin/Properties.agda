@@ -5,7 +5,7 @@
 -- properties (or other properties not available in Data.Fin)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Properties where
 

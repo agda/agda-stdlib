@@ -4,7 +4,7 @@
 -- Properties of lists made up entirely of decidably unique elements
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.List
 import Data.List.Relation.Unary.Unique.DecSetoid.Properties as Setoid

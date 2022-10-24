@@ -4,7 +4,7 @@
 -- Properties of Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Rational.Properties where
 

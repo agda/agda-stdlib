@@ -10,7 +10,7 @@
 -- The contents of this module should be accessed via `Algebra.Lattice`,
 -- unless you want to parameterise it via the equality relation.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
 open import Algebra.Consequences.Setoid

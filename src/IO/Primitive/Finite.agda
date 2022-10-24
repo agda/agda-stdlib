@@ -5,7 +5,7 @@
 -- Everything is assumed to be finite
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module IO.Primitive.Finite where
 

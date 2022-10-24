@@ -5,7 +5,7 @@
 -- preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Lattice.Construct.NaturalChoice.MinOp as MinOp

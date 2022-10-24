@@ -4,7 +4,7 @@
 -- A non-empty fresh list
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Fresh.NonEmpty where
 

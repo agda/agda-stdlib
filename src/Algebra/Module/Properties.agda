@@ -4,7 +4,7 @@
 -- Properties of modules.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra                using (CommutativeRing; Involutive)
 open import Algebra.Module.Bundles using (Module)

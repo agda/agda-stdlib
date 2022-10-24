@@ -4,7 +4,7 @@
 -- An effectful view of the Sum type (Right-biased)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 
@@ -65,4 +65,3 @@ module TraversableM {M} (Mon : RawMonad {a ⊔ b} M) where
     ; mapA      to mapM
     ; forA      to forM
     )
-

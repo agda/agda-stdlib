@@ -4,7 +4,7 @@
 -- Properties of semimodules.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra                using (CommutativeSemiring)
 open import Algebra.Module.Bundles using (Semimodule)

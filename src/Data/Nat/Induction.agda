@@ -4,7 +4,7 @@
 -- Various forms of induction for natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Induction where
 
@@ -109,4 +109,3 @@ module _ {ℓ : Level} where
              ; wfRec        to <-rec
              )
     hiding (wfRec-builder)
-

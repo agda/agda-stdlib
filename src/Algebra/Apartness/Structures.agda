@@ -4,7 +4,7 @@
 -- Algebraic structures with an apartness relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Relation.Binary.Core using (Rel)

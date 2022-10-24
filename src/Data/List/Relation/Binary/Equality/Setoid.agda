@@ -4,7 +4,7 @@
 -- Pointwise equality over lists parameterised by a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core using (Op₂)
 open import Relation.Binary using (Setoid)

@@ -4,7 +4,7 @@
 -- Universal lifting of predicates over Vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Unary.All where
 

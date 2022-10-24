@@ -4,7 +4,7 @@
 -- Properties satisfied by Heyting Algebra
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 

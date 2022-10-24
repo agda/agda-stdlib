@@ -4,7 +4,7 @@
 -- Properties of the membership predicate for fresh lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Setoid)
 

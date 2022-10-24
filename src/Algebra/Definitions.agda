@@ -13,7 +13,7 @@
 -- library defines most of its concrete operators (e.g. in
 -- `Data.Nat.Base`) as being left-biased.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core
 open import Relation.Nullary using (¬_)

@@ -5,7 +5,7 @@
 -- equations over rings.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Tactic.RingSolver where
 

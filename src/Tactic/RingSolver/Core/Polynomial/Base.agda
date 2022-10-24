@@ -41,7 +41,7 @@
 -- convenient to simply use ℕ. We use _≤′_ instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 

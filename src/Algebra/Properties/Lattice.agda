@@ -5,7 +5,7 @@
 -- `Algebra.Lattice.Properties.Lattice` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice.Bundles
 open import Relation.Binary

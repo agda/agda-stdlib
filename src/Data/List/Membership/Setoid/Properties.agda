@@ -4,7 +4,7 @@
 -- Properties related to setoid list membership
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Membership.Setoid.Properties where
 

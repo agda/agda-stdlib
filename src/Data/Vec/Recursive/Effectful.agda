@@ -4,7 +4,7 @@
 -- An effectful view of vectors defined by recursion
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Recursive.Effectful where
 

@@ -4,7 +4,7 @@
 -- Implications of nullary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Implication where
 

@@ -4,7 +4,7 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --cubical-compatible --safe --guardedness #-}
 
 module Codata.Guarded.M where
 

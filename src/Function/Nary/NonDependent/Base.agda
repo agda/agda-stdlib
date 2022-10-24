@@ -4,7 +4,7 @@
 -- Heterogeneous N-ary Functions: basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Nary.NonDependent.Base where
 

@@ -4,7 +4,7 @@
 -- Typeclass instances for sums
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Sum.Instances where
 

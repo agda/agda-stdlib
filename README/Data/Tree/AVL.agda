@@ -4,7 +4,7 @@
 -- Some examples showing how the AVL tree module can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Data.Tree.AVL where
 

@@ -4,7 +4,7 @@
 -- Some basic properties of Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 
@@ -66,4 +66,3 @@ open AbelianGroupProperties +-abelianGroup public
   - 1# * x    ≈⟨ sym (-‿distribˡ-* 1# x ) ⟩
   - (1# * x)  ≈⟨ -‿cong ( *-identityˡ x ) ⟩
   - x         ∎
-

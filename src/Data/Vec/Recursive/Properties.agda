@@ -4,7 +4,7 @@
 -- Properties of n-ary products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Recursive.Properties where
 

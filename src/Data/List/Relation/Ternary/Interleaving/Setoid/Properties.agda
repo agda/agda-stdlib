@@ -4,7 +4,7 @@
 -- Properties of interleaving using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Setoid)
 

@@ -4,7 +4,7 @@
 -- Properties satisfied by posets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Function.Base using (flip; _∘_)
 open import Relation.Binary

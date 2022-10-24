@@ -4,7 +4,7 @@
 -- Properties of lists which contain every element of a given type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin hiding (_≟_)
 open import Data.List.Base

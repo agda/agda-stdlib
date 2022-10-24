@@ -4,7 +4,7 @@
 -- Exponentiation defined over a semiring as repeated multiplication
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)

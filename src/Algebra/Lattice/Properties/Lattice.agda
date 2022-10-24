@@ -4,7 +4,7 @@
 -- Some derivable properties of lattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice.Bundles
 import Algebra.Lattice.Properties.Semilattice as SemilatticeProperties

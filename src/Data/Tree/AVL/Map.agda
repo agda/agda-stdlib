@@ -6,7 +6,7 @@
 -- between the key and value types.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (StrictTotalOrder)
 

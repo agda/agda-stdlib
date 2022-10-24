@@ -21,7 +21,7 @@ What is an acceptable contribution?
   for purely computational contributions this will involve adding tests.
 
 - It should use the minimal set of Agda features, i.e. it should normally use
-  the Agda option pragmas `--without-K` and `--safe`, with the occasional use of
+  the Agda option pragmas `--cubical-compatible` and `--safe`, with the occasional use of
   `--with-K`, `--sized`, `--guardedness` in certain situations.
 
 In general, if something is in a general undergraduate Computer Science or Mathematics
@@ -137,11 +137,12 @@ proper header, and a brief description of what the module is for, e.g.
 ------------------------------------------------------------------------
 ```
 
-If possible, each module should use the options `--safe` and `--without-K`. You
-can achieve this by placing the following pragma under the header and before
-any other line of code (including the module name):
+If possible, each module should use the options `--safe` and
+`--cubical-compatible`. You can achieve this by placing the following
+pragma under the header and before any other line of code (including
+the module name):
 ```
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 ```
 
 If a module cannot be made safe or needs the `--with-K` option then it should be

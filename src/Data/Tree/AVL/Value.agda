@@ -5,7 +5,7 @@
 -- Values must respect the underlying equivalence on keys
 -----------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Setoid; _Respects_)
 

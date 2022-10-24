@@ -4,7 +4,7 @@
 -- The identity morphism for module-like algebraic structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Algebra.Module.Morphism.Construct.Identity where
 

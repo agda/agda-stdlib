@@ -8,7 +8,7 @@
 
 -- The contents of this module should be accessed via `Algebra.Order`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Ordered.Bundles where
 

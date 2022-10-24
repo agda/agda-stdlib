@@ -4,7 +4,7 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Musical.M where
 

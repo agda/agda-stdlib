@@ -4,7 +4,7 @@
 -- Homomorphism proofs for addition over polynomials
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 

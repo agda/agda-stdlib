@@ -5,7 +5,7 @@
 --   This file is meant to be imported qualified.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Properties.Inverse where
 
