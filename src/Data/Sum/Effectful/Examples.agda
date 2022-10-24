@@ -35,16 +35,16 @@ private
 
     open RawMonad   Sₗ.monad
 
-    -- Now, let's show that "return" is a unit for >>=. We use Lift in exactly
+    -- Now, let's show that "pure" is a unit for >>=. We use Lift in exactly
     -- the same way as above. The data (x : B) then needs to be "lifted" to
     -- this new type (Lift B).
-    returnUnitL : ∀ {x : B} {f : Lift a B → A ⊎ (Lift a B)}
-                  → ((return (lift x)) >>= f) ≡ f (lift x)
-    returnUnitL = refl
+    pureUnitL : ∀ {x : B} {f : Lift a B → A ⊎ (Lift a B)}
+                  → (pure (lift x) >>= f) ≡ f (lift x)
+    pureUnitL = refl
 
-    returnUnitR : (x : A ⊎ (Lift a B)) → (x >>= return) ≡ x
-    returnUnitR (inj₁ _) = refl
-    returnUnitR (inj₂ _) = refl
+    pureUnitR : (x : A ⊎ (Lift a B)) → (x >>= pure) ≡ x
+    pureUnitR (inj₁ _) = refl
+    pureUnitR (inj₂ _) = refl
 
     -- And another (limited version of a) monad law...
     bindCompose : ∀ {f g : Lift a B → A ⊎ (Lift a B)}

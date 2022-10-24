@@ -57,11 +57,11 @@ DContTIMonadDCont : ∀ (K : I → Set f) {M} →
                     RawMonad M → RawIMonadDCont K (DContT K M)
 DContTIMonadDCont K Mon = record
   { monad = DContTIMonad K Mon
-  ; reset = λ e k → e return >>= k
-  ; shift = λ e k → e (λ a k′ → (k a) >>= k′) return
+  ; reset = λ e k → e pure >>= k
+  ; shift = λ e k → e (λ a k′ → (k a) >>= k′) pure
   }
   where
-  open RawIMonad Mon
+  open RawMonad Mon
 
 DContIMonadDCont : (K : I → Set f) → RawIMonadDCont K (DCont K)
 DContIMonadDCont K = DContTIMonadDCont K Id.monad

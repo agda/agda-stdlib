@@ -30,7 +30,7 @@ open Builtin public
   ; declareDef; declarePostulate; defineFun; getType; getDefinition
   ; blockOnMeta; commitTC; isMacro; withNormalisation
   ; debugPrint; noConstraints; runSpeculative)
-  renaming (returnTC to return)
+  renaming (returnTC to pure)
 
 open Format public
   using (typeErrorFmt; debugPrintFmt; errorPartFmt)

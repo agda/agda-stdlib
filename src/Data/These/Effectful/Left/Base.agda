@@ -32,7 +32,7 @@ functor = record { _<$>_ = map₂ }
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module _ {F} (App : RawApplicative {a ⊔ b} F) where
+module _ {F} (App : RawApplicative {a ⊔ b} {a ⊔ b} F) where
 
   open RawApplicative App
 
@@ -47,9 +47,9 @@ module _ {F} (App : RawApplicative {a ⊔ b} F) where
   forA : ∀ {A B} → Theseₗ A → (A → F B) → F (Theseₗ B)
   forA = flip mapA
 
-module _ {M} (Mon : RawMonad {a ⊔ b} M) where
+module _ {M} (Mon : RawMonad {a ⊔ b} {a ⊔ b} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : ∀ {A} → Theseₗ (M A) → M (Theseₗ A)
   sequenceM = sequenceA App
