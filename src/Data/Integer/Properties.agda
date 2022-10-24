@@ -1539,12 +1539,6 @@ private
 ------------------------------------------------------------------------
 -- Bundles
 
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record { _≈_ = _≡_ ; _∙_ = _*_ }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _*_ ; ε = 1ℤ }
-
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record
   { isMagma = *-isMagma
