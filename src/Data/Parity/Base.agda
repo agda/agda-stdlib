@@ -14,11 +14,8 @@ open import Data.Sign.Base using (Sign; +; -)
 -- Definition
 
 data Parity : Set where
-  eve : Parity
-  odd : Parity
-
-pattern 0ℙ = eve
-pattern 1ℙ = odd
+  0ℙ : Parity
+  1ℙ : Parity
 
 ------------------------------------------------------------------------
 -- Operations
