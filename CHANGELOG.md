@@ -1727,6 +1727,9 @@ Other minor changes
   concatMap-pure : concatMap [_] ≗ id
   concatMap-map  : concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
   map-concatMap  : map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
+
+  length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-rawMagma length
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
