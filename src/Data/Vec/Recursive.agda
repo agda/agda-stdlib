@@ -57,7 +57,7 @@ pattern [] = lift tt
 
 infix 3 _∈[_]_
 _∈[_]_ : {A : Set a} → A → ∀ n → A ^ n → Set a
-a ∈[ 0    ] as              = ⊥
+a ∈[ 0    ] as               = ⊥
 a ∈[ 1    ] a′               = a ≡ a′
 a ∈[ suc n@(suc _) ] a′ , as = a ≡ a′ ⊎ a ∈[ n ] as
 
