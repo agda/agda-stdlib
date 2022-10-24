@@ -521,12 +521,29 @@ Non-backwards compatible changes
       ↦ ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
     ```
 
+### Reorganisation of the `Relation.Nullary` hierarchy
+
+* It was very difficult to use the `Relation.Nullary` modules, as `Relation.Nullary`
+  contained the basic definitions of negation, decidability etc., and the operations and
+  proofs were smeared over `Relation.Nullary.(Negation/Product/Sum/Implication etc.)`.
+  
+* In order to fix this:
+  - the definition of `Dec` and `recompute` have been moved to `Relation.Nullary.Decidable.Core`
+  - the definition of `Reflects` has been moved to `Relation.Nullary.Reflects`
+  - the definition of `¬_` has been moved to `Relation.Nullary.Negation.Core`
+
+* Backwards compatibility has been maintained, as `Relation.Nullary` still re-exports these publicly.
+
+* In order to facilitate this reorganisation `¬?` and `¬-reflects` have been moved from
+  `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core` and 
+  `Relation.Nullary.Reflects` respectively.
+
 ### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
 
 * The unindexed versions are not defined in terms of the named versions anymore
 
 * The `RawApplicative` and `RawMonad` type classes have been relaxed so that the underlying
-  functors do not need to their domain and codomain to live at the same Set level.
+  functors do not need their domain and codomain to live at the same Set level.
   This is needed for level-increasing functors like `IO : Set l → Set (suc l)`.
 
 * `RawApplicative` is now `RawFunctor + pure + _<*>_` and `RawMonad` is now
@@ -656,6 +673,8 @@ Non-backwards compatible changes
   + the `i` argument to `opposite-suc` has been made explicit;
   + `pigeonhole` has been strengthened: wlog, we return a proof that
     `i < j` rather than a mere `i ≢ j`.
+
+* In `Data.Sum.Base` the definitions `fromDec` and `toDec` have been moved to `Data.Sum`.
 
 * In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
   * `cycle`
@@ -1245,6 +1264,11 @@ New modules
   Data.Nat.Combinatorics.Spec
   ```
 
+* New base module for `Data.Product` containing only the basic definitions.
+  ```
+  Data.Product.Base
+  ```
+  
 * Reflection utilities for some specific types:
   ```
   Data.List.Reflection

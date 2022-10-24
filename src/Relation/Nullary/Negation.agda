@@ -15,7 +15,7 @@ open import Data.Product as Prod
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary.Negation.Core
 open import Relation.Nullary.Decidable
 open import Relation.Unary
 
@@ -44,6 +44,26 @@ decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
 
 ¬-drop-Dec : Dec (¬ ¬ P) → Dec (¬ P)
 ¬-drop-Dec ¬¬p? = map′ negated-stable contradiction (¬? ¬¬p?)
+
+------------------------------------------------------------------------
+-- Quantifier juggling
+
+module _ {P : A → Set p} where
+
+  ∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
+  ∃⟶¬∀¬ = flip uncurry
+
+  ∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
+  ∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
+
+  ¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
+  ¬∃⟶∀¬ = curry
+
+  ∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
+  ∀¬⟶¬∃ = uncurry
+
+  ∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
+  ∃¬⟶¬∀ = flip ∀⟶¬∃¬
 
 ------------------------------------------------------------------------
 -- Double Negation

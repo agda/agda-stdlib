@@ -9,13 +9,12 @@
 module Relation.Nullary.Negation.Core where
 
 open import Data.Bool.Base using (not)
-open import Data.Empty
-open import Data.Product
+open import Data.Empty hiding (⊥-elim)
+open import Data.Empty.Irrelevant
+open import Data.Product.Base
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
-open import Relation.Nullary
-open import Relation.Unary using (Pred)
 
 private
   variable
@@ -24,6 +23,14 @@ private
     P : Set p
     Q : Set q
     Whatever : Set w
+
+------------------------------------------------------------------------
+-- Negation.
+
+infix 3 ¬_
+
+¬_ : ∀ {ℓ} → Set ℓ → Set ℓ
+¬ P = P → ⊥
 
 ------------------------------------------------------------------------
 -- Uses of negation
@@ -43,36 +50,6 @@ contraposition f ¬q p = contradiction (f p) ¬q
 private
   note : (P → ¬ Q) → Q → ¬ P
   note = flip
-
--- If we can decide P, then we can decide its negation.
-
-¬-reflects : ∀ {b} → Reflects P b → Reflects (¬ P) (not b)
-¬-reflects (ofʸ  p) = ofⁿ (_$ p)
-¬-reflects (ofⁿ ¬p) = ofʸ ¬p
-
-¬? : Dec P → Dec (¬ P)
-does  (¬? p?) = not (does p?)
-proof (¬? p?) = ¬-reflects (proof p?)
-
-------------------------------------------------------------------------
--- Quantifier juggling
-
-module _ {P : Pred A p} where
-
-  ∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
-  ∃⟶¬∀¬ = flip uncurry
-
-  ∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
-  ∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
-
-  ¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
-  ¬∃⟶∀¬ = curry
-
-  ∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
-  ∀¬⟶¬∃ = uncurry
-
-  ∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
-  ∃¬⟶¬∀ = flip ∀⟶¬∃¬
 
 ------------------------------------------------------------------------
 -- Double-negation
