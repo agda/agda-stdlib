@@ -163,7 +163,7 @@ toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 
 toℕ≤n : ∀ (i : Fin n) → toℕ i ℕ.≤ n
-toℕ≤n {suc n} i = ℕₚ.≤-step (toℕ≤pred[n] i)
+toℕ≤n {suc n} i = ℕₚ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
 
 toℕ<n : ∀ (i : Fin n) → toℕ i ℕ.< n
 toℕ<n {suc n} i = s≤s (toℕ≤pred[n] i)
@@ -249,12 +249,25 @@ toℕ-fromℕ<″ {m} {n} m<n = begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- cast
+-- Properties of cast
 ------------------------------------------------------------------------
 
 toℕ-cast : ∀ .(eq : m ≡ n) (k : Fin m) → toℕ (cast eq k) ≡ toℕ k
 toℕ-cast {n = suc n} eq zero    = refl
 toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
+
+cast-is-id : .(eq : m ≡ m) (k : Fin m) → cast eq k ≡ k
+cast-is-id eq zero    = refl
+cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
+
+subst-is-cast : (eq : m ≡ n) (k : Fin m) → subst Fin eq k ≡ cast eq k
+subst-is-cast refl k = sym (cast-is-id refl k)
+
+cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (k : Fin m) →
+             cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ zero = refl
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
+  cong suc (cast-trans (ℕₚ.suc-injective eq₁) (ℕₚ.suc-injective eq₂) k)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -458,7 +471,7 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 
 i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
 i≤inject₁[j]⇒i≤1+j {i = zero} i≤j = z≤n
-i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.≤-step (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
+i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
 
 ------------------------------------------------------------------------
 -- lower₁
@@ -777,6 +790,10 @@ toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 -- _ℕ-ℕ_
 ------------------------------------------------------------------------
 
+ℕ-ℕ≡toℕ‿ℕ- : ∀ n i → n ℕ-ℕ i ≡ toℕ (n ℕ- i)
+ℕ-ℕ≡toℕ‿ℕ- n       zero    = sym (toℕ-fromℕ n)
+ℕ-ℕ≡toℕ‿ℕ- (suc n) (suc i) = ℕ-ℕ≡toℕ‿ℕ- n i
+
 nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ.≤ n
 nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
 nℕ-ℕi≤n (suc n) (suc i)  = begin
@@ -1003,7 +1020,7 @@ module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
   sequence : ∀ {n} {P : Pred (Fin n) f} →
              (∀ i → F (P i)) → F (∀ i → P i)
   sequence {zero}  ∀iPi = pure λ()
-  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero ⊛ sequence (∀iPi ∘ suc)
+  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
 
 module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 

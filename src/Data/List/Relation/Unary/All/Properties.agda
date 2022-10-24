@@ -30,7 +30,7 @@ open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
-open import Data.Nat.Properties using (≤-refl; ≤-step)
+open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
@@ -543,7 +543,7 @@ all-upTo n = applyUpTo⁺₁ id n id
 
 applyDownFrom⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
 applyDownFrom⁺₁ f zero    Pf = []
-applyDownFrom⁺₁ f (suc n) Pf = Pf ≤-refl ∷ applyDownFrom⁺₁ f n (Pf ∘ ≤-step)
+applyDownFrom⁺₁ f (suc n) Pf = Pf ≤-refl ∷ applyDownFrom⁺₁ f n (Pf ∘ m≤n⇒m≤1+n)
 
 applyDownFrom⁺₂ : ∀ f n → (∀ i → P (f i)) → All P (applyDownFrom f n)
 applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)

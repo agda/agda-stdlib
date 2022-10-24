@@ -14,7 +14,7 @@ open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List
 open import Data.List.Properties using (ʳ++-defn)
-open import Data.List.Effectful using (monad)
+open import Data.List.Effectful as Listₑ using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties.Core
@@ -22,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties.Core
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
 open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
-open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; ≤-step)
+open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product as Prod
@@ -506,7 +506,7 @@ module _ {P : A → Set p} where
                    ∃ λ i → i < n × P (f i)
   applyDownFrom⁻ f {suc n} (here p)  = n , ≤-refl , p
   applyDownFrom⁻ f {suc n} (there p) with applyDownFrom⁻ f p
-  ... | i , i<n , pf = i , ≤-step i<n , pf
+  ... | i , i<n , pf = i , m<n⇒m<1+n i<n , pf
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -641,24 +641,24 @@ reverse⁻ ps with reverseAcc⁻ [] _ ps
 ... | inj₂ ps' = ps'
 
 ------------------------------------------------------------------------
--- return
+-- pure
 
 module _ {P : A → Set p} where
 
-  return⁺ : P x → Any P (return x)
-  return⁺ = here
+  pure⁺ : P x → Any P (pure x)
+  pure⁺ = here
 
-  return⁻ : Any P (return x) → P x
-  return⁻ (here p) = p
+  pure⁻ : Any P (pure x) → P x
+  pure⁻ (here p) = p
 
-  return⁺∘return⁻ : (p : Any P (return x)) → return⁺ (return⁻ p) ≡ p
-  return⁺∘return⁻ (here p) = refl
+  pure⁺∘pure⁻ : (p : Any P (pure x)) → pure⁺ (pure⁻ p) ≡ p
+  pure⁺∘pure⁻ (here p) = refl
 
-  return⁻∘return⁺ : (p : P x) → return⁻ (return⁺ p) ≡ p
-  return⁻∘return⁺ p = refl
+  pure⁻∘pure⁺ : (p : P x) → pure⁻ (pure⁺ p) ≡ p
+  pure⁻∘pure⁺ p = refl
 
-  return↔ : P x ↔ Any P (return x)
-  return↔ = inverse return⁺ return⁻ return⁻∘return⁺ return⁺∘return⁻
+  pure↔ : P x ↔ Any P (pure x)
+  pure↔ = inverse pure⁺ pure⁻ pure⁻∘pure⁺ pure⁺∘pure⁻
 
 ------------------------------------------------------------------------
 -- _∷_
@@ -667,7 +667,7 @@ module _ (P : Pred A p) where
 
   ∷↔ : (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
   ∷↔ {x = x} {xs} =
-    (P x         ⊎ Any P xs)  ↔⟨ return↔ {P = P} ⊎-cong (Any P xs ∎) ⟩
+    (P x         ⊎ Any P xs)  ↔⟨ pure↔ {P = P} ⊎-cong (Any P xs ∎) ⟩
     (Any P [ x ] ⊎ Any P xs)  ↔⟨ ++↔ {P = P} {xs = [ x ]} ⟩
     Any P (x ∷ xs)            ∎
     where open Related.EquationalReasoning
@@ -690,10 +690,11 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
 ⊛↔ : ∀ {P : B → Set ℓ} {fs : List (A → B)} {xs : List A} →
      Any (λ f → Any (P ∘ f) xs) fs ↔ Any P (fs ⊛ xs)
 ⊛↔ {P = P} {fs} {xs} =
-  Any (λ f → Any (P ∘ f) xs) fs               ↔⟨ Any-cong (λ _ → Any-cong (λ _ → return↔) (_ ∎)) (_ ∎) ⟩
-  Any (λ f → Any (Any P ∘ return ∘ f) xs) fs  ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
-  Any (λ f → Any P (xs >>= return ∘ f)) fs    ↔⟨ >>=↔ ⟩
-  Any P (fs ⊛ xs)                             ∎
+  Any (λ f → Any (P ∘ f) xs) fs                ↔⟨ Any-cong (λ _ → Any-cong (λ _ → pure↔) (_ ∎)) (_ ∎) ⟩
+  Any (λ f → Any (Any P ∘ pure ∘ f) xs) fs     ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
+  Any (λ f → Any P (xs >>= pure ∘ f)) fs       ↔⟨ >>=↔ ⟩
+  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡˘⟨ P.cong (Any P) (Listₑ.Applicative.unfold-⊛ fs xs) ⟩
+  Any P (fs ⊛ xs)                              ∎
   where open Related.EquationalReasoning
 
 -- An alternative introduction rule for _⊛_
@@ -710,10 +711,11 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
 ⊗↔ : {P : A × B → Set ℓ} {xs : List A} {ys : List B} →
      Any (λ x → Any (λ y → P (x , y)) ys) xs ↔ Any P (xs ⊗ ys)
 ⊗↔ {P = P} {xs} {ys} =
-  Any (λ x → Any (λ y → P (x , y)) ys) xs                             ↔⟨ return↔ ⟩
-  Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (return _,_)  ↔⟨ ⊛↔ ⟩
-  Any (λ x, → Any (P ∘ x,) ys) (_,_ <$> xs)                           ↔⟨ ⊛↔ ⟩
-  Any P (xs ⊗ ys)                                                     ∎
+  Any (λ x → Any (λ y → P (x , y)) ys) xs                           ↔⟨ pure↔ ⟩
+  Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (pure _,_)  ↔⟨ ⊛↔ ⟩
+  Any (λ x, → Any (P ∘ x,) ys) (pure _,_ ⊛ xs)                      ↔⟨ ⊛↔ ⟩
+  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡˘⟨ P.cong (Any P ∘′ (_⊛ ys)) (Listₑ.Applicative.unfold-<$> _,_ xs) ⟩
+  Any P (xs ⊗ ys)                                                   ∎
   where open Related.EquationalReasoning
 
 ⊗↔′ : {P : A → Set ℓ} {Q : B → Set ℓ} {xs : List A} {ys : List B} →

@@ -119,7 +119,7 @@ private
 
 ¬¬-pull : ∀ {p} (F : PropF p) {P} →
           ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P
-¬¬-pull = sequence rawIApplicative
+¬¬-pull = sequence rawApplicative
                    (λ f → f lower)
                    (λ f g → g (λ x → ⊥-elim (f x (λ y → g (λ _ → y)))))
 

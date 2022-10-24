@@ -63,7 +63,7 @@ main : Main
 main =
   let r = trace "Call to div" (div 4 2)
       j = λ n → trace "Forcing the result wrapped in just." (putStrLn (show n)) in
-  run (maybe′ j (return _) r)
+  run (maybe′ j (pure _) r)
 
 -- We get the following trace where we can see that checking that the
 -- maybe-solution is just-headed does not force the natural number. Once forced,

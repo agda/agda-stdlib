@@ -105,5 +105,5 @@ open import Data.Unit.Polymorphic.Base
 -- Whether a colist is finite is semi decidable: just let the user wait until
 -- you reach the end!
 isFinite : ∀ {a} {A : Set a} → Colist A → IO Bool
-isFinite []       = return true
-isFinite (x ∷ xs) = seq (♯ return tt) (♯ isFinite (♭ xs))
+isFinite []       = pure true
+isFinite (x ∷ xs) = seq (♯ pure tt) (♯ isFinite (♭ xs))

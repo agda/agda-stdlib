@@ -101,7 +101,7 @@ naturality {x = x} {x≡y = refl} f≡g =
 
 cong-≡id : ∀ {f : A → A} {x : A} (f≡id : ∀ x → f x ≡ x) →
            cong f (f≡id x) ≡ f≡id (f x)
-cong-≡id {f = f} {x} f≡id =
+cong-≡id {f = f} {x} f≡id = begin
   cong f fx≡x                                    ≡⟨ sym (trans-reflʳ _) ⟩
   trans (cong f fx≡x) refl                       ≡⟨ cong (trans _) (sym (trans-symʳ fx≡x)) ⟩
   trans (cong f fx≡x) (trans fx≡x (sym fx≡x))    ≡⟨ sym (trans-assoc (cong f fx≡x)) ⟩

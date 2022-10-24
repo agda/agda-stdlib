@@ -45,23 +45,29 @@ decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
 ¬-drop-Dec : Dec (¬ ¬ P) → Dec (¬ P)
 ¬-drop-Dec ¬¬p? = map′ negated-stable contradiction (¬? ¬¬p?)
 
+------------------------------------------------------------------------
+-- Double Negation
+
+DoubleNegation : Set p → Set p
+DoubleNegation P = ¬ ¬ P
+
 -- Double-negation is a monad (if we assume that all elements of ¬ ¬ P
 -- are equal).
 
-¬¬-Monad : RawMonad (λ (P : Set p) → ¬ ¬ P)
-¬¬-Monad = record
-  { return = contradiction
-  ; _>>=_  = λ x f → negated-stable (¬¬-map f x)
-  }
+¬¬-Monad : RawMonad {p} DoubleNegation
+¬¬-Monad = mkRawMonad
+  DoubleNegation
+  contradiction
+  (λ x f → negated-stable (¬¬-map f x))
 
-¬¬-push : ∀ {P : Set p} {Q : P → Set q} →
-          ¬ ¬ ((x : P) → Q x) → (x : P) → ¬ ¬ Q x
+¬¬-push : {Q : P → Set q} →
+          DoubleNegation Π[ Q ] → Π[ DoubleNegation ∘ Q ]
 ¬¬-push ¬¬P⟶Q P ¬Q = ¬¬P⟶Q (λ P⟶Q → ¬Q (P⟶Q P))
 
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).
 
-excluded-middle : ¬ ¬ Dec P
+excluded-middle : DoubleNegation (Dec P)
 excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
 
 -- If Whatever is instantiated with ¬ ¬ something, then this function
@@ -73,14 +79,14 @@ excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
 -- that case this function can be used (with Whatever instantiated to
 -- ⊥).
 
-call/cc : ((P → Whatever) → ¬ ¬ P) → ¬ ¬ P
+call/cc : ((P → Whatever) → DoubleNegation P) → DoubleNegation P
 call/cc hyp ¬p = hyp (λ p → ⊥-elim (¬p p)) ¬p
 
 -- The "independence of premise" rule, in the double-negation monad.
 -- It is assumed that the index set (Q) is inhabited.
 
-independence-of-premise : ∀ {P : Set p} {Q : Set q} {R : Q → Set r} →
-                          Q → (P → Σ Q R) → ¬ ¬ (Σ[ x ∈ Q ] (P → R x))
+independence-of-premise : {R : Q → Set r} →
+                          Q → (P → Σ Q R) → DoubleNegation (Σ[ x ∈ Q ] (P → R x))
 independence-of-premise {P = P} q f = ¬¬-map helper excluded-middle
   where
   helper : Dec P → _
@@ -89,7 +95,7 @@ independence-of-premise {P = P} q f = ¬¬-map helper excluded-middle
 
 -- The independence of premise rule for binary sums.
 
-independence-of-premise-⊎ : (P → Q ⊎ R) → ¬ ¬ ((P → Q) ⊎ (P → R))
+independence-of-premise-⊎ : (P → Q ⊎ R) → DoubleNegation ((P → Q) ⊎ (P → R))
 independence-of-premise-⊎ {P = P} f = ¬¬-map helper excluded-middle
   where
   helper : Dec P → _
@@ -102,8 +108,8 @@ private
   -- independence-of-premise (for simplicity it is assumed that Q and
   -- R have the same type here):
 
-  corollary : {P : Set p} {Q R : Set q} →
-              (P → Q ⊎ R) → ¬ ¬ ((P → Q) ⊎ (P → R))
+  corollary : {Q R : Set q} →
+              (P → Q ⊎ R) → DoubleNegation ((P → Q) ⊎ (P → R))
   corollary {P = P} {Q} {R} f =
     ¬¬-map helper (independence-of-premise
                      true ([ _,_ true , _,_ false ] ∘′ f))

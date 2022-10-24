@@ -36,9 +36,9 @@ open ℕᵈ public using (divides)
 
 *-monoʳ-∣ : ∀ k → (k *_) Preserves _∣_ ⟶ _∣_
 *-monoʳ-∣ k {i} {j} i∣j = begin
-  ∣ k * i ∣       ≡⟨ abs-*-commute k i ⟩
+  ∣ k * i ∣       ≡⟨ abs-* k i ⟩
   ∣ k ∣ ℕ.* ∣ i ∣ ∣⟨ ℕᵈ.*-monoʳ-∣ ∣ k ∣ i∣j ⟩
-  ∣ k ∣ ℕ.* ∣ j ∣ ≡⟨ sym (abs-*-commute k j) ⟩
+  ∣ k ∣ ℕ.* ∣ j ∣ ≡⟨ sym (abs-* k j) ⟩
   ∣ k * j ∣       ∎
   where open ℕᵈ.∣-Reasoning
 
@@ -47,9 +47,9 @@ open ℕᵈ public using (divides)
 
 *-cancelˡ-∣ : ∀ k {i j} .{{_ : NonZero k}} → k * i ∣ k * j → i ∣ j
 *-cancelˡ-∣ k {i} {j} k*i∣k*j = ℕᵈ.*-cancelˡ-∣ ∣ k ∣ $ begin
-  ∣ k ∣ ℕ.* ∣ i ∣  ≡⟨ sym (abs-*-commute k i) ⟩
+  ∣ k ∣ ℕ.* ∣ i ∣  ≡⟨ sym (abs-* k i) ⟩
   ∣ k * i ∣        ∣⟨ k*i∣k*j ⟩
-  ∣ k * j ∣        ≡⟨ abs-*-commute k j ⟩
+  ∣ k * j ∣        ≡⟨ abs-* k j ⟩
   ∣ k ∣ ℕ.* ∣ j ∣  ∎
   where open ℕᵈ.∣-Reasoning
 

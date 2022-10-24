@@ -8,12 +8,12 @@
 
 module Data.Vec.Relation.Unary.Unique.Propositional.Properties where
 
-open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.Vec.Relation.Unary.Unique.Propositional
 import Data.Vec.Relation.Unary.Unique.Setoid.Properties as Setoid
+open import Data.Fin.Base using(Fin)
 open import Data.Nat.Base
 open import Data.Nat.Properties using (<⇒≢)
 open import Data.Product using (_×_; _,_)

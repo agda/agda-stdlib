@@ -15,7 +15,7 @@ open import Algebra.Bundles
 open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
-open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ; inject₁)
+open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ)
 open import Data.List.Base as List
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
@@ -139,7 +139,7 @@ module _ (f : A → Maybe B) where
   length-mapMaybe []       = z≤n
   length-mapMaybe (x ∷ xs) with f x
   ... | just y  = s≤s (length-mapMaybe xs)
-  ... | nothing = ≤-step (length-mapMaybe xs)
+  ... | nothing = m≤n⇒m≤1+n (length-mapMaybe xs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -516,6 +516,40 @@ concat-[-] [] = refl
 concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
 
 ------------------------------------------------------------------------
+-- concatMap
+
+concatMap-cong : ∀ {f g : A → List B} → f ≗ g → concatMap f ≗ concatMap g
+concatMap-cong eq xs = cong concat (map-cong eq xs)
+
+concatMap-pure : concatMap {A = A} [_] ≗ id
+concatMap-pure = concat-[-]
+
+concatMap-map : (g : B → List C) → (f : A → B) → (xs : List A) →
+                concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
+concatMap-map g f xs
+  = cong concat
+      {x = map g (map f xs)}
+      {y = map (g ∘′ f) xs}
+      (sym $ map-∘ xs)
+
+map-concatMap : (f : B → C) (g : A → List B) →
+                map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
+map-concatMap f g xs = begin
+  map f (concatMap g xs)
+    ≡⟨⟩
+  map f (concat (map g xs))
+    ≡˘⟨ concat-map (map g xs) ⟩
+  concat (map (map f) (map g xs))
+    ≡⟨ cong concat
+         {x = map (map f) (map g xs)}
+         {y = map (map f ∘′ g) xs}
+         (sym $ map-∘ xs) ⟩
+  concat (map (map f ∘′ g) xs)
+    ≡⟨⟩
+  concatMap (map f ∘′ g) xs
+    ∎
+
+------------------------------------------------------------------------
 -- sum
 
 sum-++ : ∀ xs ys → sum (xs ++ ys) ≡ sum xs + sum ys
@@ -725,7 +759,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   length-filter : ∀ xs → length (filter P? xs) ≤ length xs
   length-filter []       = z≤n
   length-filter (x ∷ xs) with does (P? x)
-  ... | false = ≤-step (length-filter xs)
+  ... | false = m≤n⇒m≤1+n (length-filter xs)
   ... | true  = s≤s (length-filter xs)
 
   filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
@@ -739,7 +773,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | false because _ = s≤s (length-filter xs)
   ... | yes          px = contradiction px ¬px
   filter-notAll (x ∷ xs) (there any) with does (P? x)
-  ... | false = ≤-step (filter-notAll xs any)
+  ... | false = m≤n⇒m≤1+n (filter-notAll xs any)
   ... | true  = s≤s (filter-notAll xs any)
 
   filter-some : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
@@ -747,7 +781,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | true because _ = z<s
   ... | no         ¬px = contradiction px ¬px
   filter-some {x ∷ xs} (there pxs) with does (P? x)
-  ... | true  = ≤-step (filter-some pxs)
+  ... | true  = m≤n⇒m≤1+n (filter-some pxs)
   ... | false = filter-some pxs
 
   filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
@@ -794,7 +828,7 @@ module _ {R : Rel A p} (R? : B.Decidable R) where
   length-derun [] = ≤-refl
   length-derun (x ∷ []) = ≤-refl
   length-derun (x ∷ y ∷ xs) with does (R? x y) | length-derun (y ∷ xs)
-  ... | true  | r = ≤-step r
+  ... | true  | r = m≤n⇒m≤1+n r
   ... | false | r = s≤s r
 
   length-deduplicate : ∀ xs → length (deduplicate R? xs) ≤ length xs
@@ -832,8 +866,8 @@ module _ {P : Pred A p} (P? : Decidable P) where
                      length ys ≤ length xs × length zs ≤ length xs
   length-partition []       = z≤n , z≤n
   length-partition (x ∷ xs) with does (P? x) | length-partition xs
-  ...  | true  | rec = Prod.map s≤s ≤-step rec
-  ...  | false | rec = Prod.map ≤-step s≤s rec
+  ...  | true  | rec = Prod.map s≤s m≤n⇒m≤1+n rec
+  ...  | false | rec = Prod.map m≤n⇒m≤1+n s≤s rec
 
 ------------------------------------------------------------------------
 -- _ʳ++_
