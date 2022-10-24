@@ -944,8 +944,8 @@ distribʳ-⊖-+-neg m n o = begin
   ; ⁻¹-cong  = cong (-_)
   }
 
-+-isAbelianGroup : IsAbelianGroup _+_ +0 (-_)
-+-isAbelianGroup = record
++-0-isAbelianGroup : IsAbelianGroup _+_ +0 (-_)
++-0-isAbelianGroup = record
   { isGroup = +-0-isGroup
   ; comm    = +-comm
   }
@@ -980,7 +980,7 @@ distribʳ-⊖-+-neg m n o = begin
 
 +-0-abelianGroup : AbelianGroup 0ℓ 0ℓ
 +-0-abelianGroup = record
-  { isAbelianGroup = +-isAbelianGroup
+  { isAbelianGroup = +-0-isAbelianGroup
   }
 
 ------------------------------------------------------------------------
@@ -1522,7 +1522,7 @@ private
 
 +-*-isRing : IsRing _+_ _*_ -_ 0ℤ 1ℤ
 +-*-isRing = record
-  { +-isAbelianGroup = +-isAbelianGroup
+  { +-isAbelianGroup = +-0-isAbelianGroup
   ; *-cong           = cong₂ _*_
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
