@@ -76,7 +76,7 @@ composite⇒¬prime {suc (suc _)} (d , 2≤d , d<n , d∣n) n-prime =
   ¬n-composite (d , 2≤d , d<n , d∣n)
 
 prime⇒¬composite : Prime n → ¬ Composite n
-prime⇒¬composite {suc (suc _)} n-prime (d , 2≤d , d<n , d∣n) =
+prime⇒¬composite {n@suc (suc _)} n-prime (d , 2≤d , d<n , d∣n) =
   n-prime 2≤d d<n d∣n
 
 -- note that this has to recompute the factor!
