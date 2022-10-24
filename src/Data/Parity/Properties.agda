@@ -64,7 +64,7 @@ p≢pᵒ 0ℙ ()
 
 ᵒ-injective : ∀ {p q} → p ᵒ ≡ q ᵒ → p ≡ q
 ᵒ-injective {p} {q} eq = begin
-  p      ≡⟨ ᵒ-inverts eq ⟩
+  p       ≡⟨ ᵒ-inverts eq ⟩
   (q ᵒ) ᵒ ≡⟨ ᵒ-involutive q ⟩
   q       ∎ where open ≡-Reasoning
 
