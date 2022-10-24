@@ -16,7 +16,7 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base
 open import Level
 open import Relation.Nullary.Negation.Core
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core
 open import Relation.Unary
 
 private
@@ -32,18 +32,6 @@ private
 -- Re-export public definitions
 
 open import Relation.Nullary.Negation.Core public
-
-------------------------------------------------------------------------
--- Other properties
-
--- Decidable predicates are stable.
-
-decidable-stable : Dec P → Stable P
-decidable-stable (yes p) ¬¬p = p
-decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
-
-¬-drop-Dec : Dec (¬ ¬ P) → Dec (¬ P)
-¬-drop-Dec ¬¬p? = map′ negated-stable contradiction (¬? ¬¬p?)
 
 ------------------------------------------------------------------------
 -- Quantifier juggling
@@ -68,9 +56,6 @@ module _ {P : A → Set p} where
 ------------------------------------------------------------------------
 -- Double Negation
 
-DoubleNegation : Set p → Set p
-DoubleNegation P = ¬ ¬ P
-
 -- Double-negation is a monad (if we assume that all elements of ¬ ¬ P
 -- are equal).
 
@@ -83,12 +68,6 @@ DoubleNegation P = ¬ ¬ P
 ¬¬-push : {Q : P → Set q} →
           DoubleNegation Π[ Q ] → Π[ DoubleNegation ∘ Q ]
 ¬¬-push ¬¬P⟶Q P ¬Q = ¬¬P⟶Q (λ P⟶Q → ¬Q (P⟶Q P))
-
--- A double-negation-translated variant of excluded middle (or: every
--- nullary relation is decidable in the double-negation monad).
-
-excluded-middle : DoubleNegation (Dec P)
-excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
 
 -- If Whatever is instantiated with ¬ ¬ something, then this function
 -- is call with current continuation in the double-negation monad, or,

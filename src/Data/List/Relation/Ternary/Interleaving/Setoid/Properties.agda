@@ -15,7 +15,7 @@ open import Data.List.Base using (List; []; _∷_; filter; _++_)
 open import Data.Bool.Base using (true; false)
 open import Relation.Unary using (Decidable)
 open import Relation.Nullary using (does)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Decidable using (¬?)
 open import Function
 
 open import Data.List.Relation.Binary.Equality.Setoid S using (≋-refl)

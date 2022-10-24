@@ -534,9 +534,11 @@ Non-backwards compatible changes
 
 * Backwards compatibility has been maintained, as `Relation.Nullary` still re-exports these publicly.
 
-* In order to facilitate this reorganisation `¬?` and `¬-reflects` have been moved from
-  `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core` and 
-  `Relation.Nullary.Reflects` respectively.
+* In order to facilitate this reorganisation the following breaking moves have occured:
+  - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
+  - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
+  - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation` 
+	to `Relation.Nullary.Decidable`.
 
 ### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
 

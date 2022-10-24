@@ -28,9 +28,16 @@ private
 -- Negation.
 
 infix 3 ¬_
-
-¬_ : ∀ {ℓ} → Set ℓ → Set ℓ
+¬_ : Set a → Set a
 ¬ P = P → ⊥
+
+-- Double-negation
+DoubleNegation : Set p → Set p
+DoubleNegation P = ¬ ¬ P
+
+-- Stability under double-negation.
+Stable : Set p → Set p
+Stable P = ¬ ¬ P → P
 
 ------------------------------------------------------------------------
 -- Uses of negation
@@ -46,28 +53,17 @@ contraposition : (P → Q) → ¬ Q → ¬ P
 contraposition f ¬q p = contradiction (f p) ¬q
 
 -- Note also the following use of flip:
-
 private
   note : (P → ¬ Q) → Q → ¬ P
   note = flip
 
-------------------------------------------------------------------------
--- Double-negation
-
-¬¬-map : (P → Q) → ¬ ¬ P → ¬ ¬ Q
-¬¬-map f = contraposition (contraposition f)
-
--- Stability under double-negation.
-
-Stable : Set p → Set p
-Stable P = ¬ ¬ P → P
-
 -- Everything is stable in the double-negation monad.
-
 stable : ¬ ¬ Stable P
 stable ¬[¬¬p→p] = ¬[¬¬p→p] (λ ¬¬p → ⊥-elim (¬¬p (¬[¬¬p→p] ∘ const)))
 
 -- Negated predicates are stable.
-
 negated-stable : Stable (¬ P)
 negated-stable ¬¬¬P P = ¬¬¬P (λ ¬P → ¬P P)
+
+¬¬-map : (P → Q) → ¬ ¬ P → ¬ ¬ Q
+¬¬-map f = contraposition (contraposition f)

@@ -143,3 +143,21 @@ map′ : (P → Q) → (Q → P) → Dec P → Dec Q
 does  (map′ P→Q Q→P p?)                   = does p?
 proof (map′ P→Q Q→P (true  because  [p])) = ofʸ (P→Q (invert [p]))
 proof (map′ P→Q Q→P (false because [¬p])) = ofⁿ (invert [¬p] ∘ Q→P)
+
+------------------------------------------------------------------------
+-- Relationship with double-negation
+
+-- Decidable predicates are stable.
+
+decidable-stable : Dec P → Stable P
+decidable-stable (yes p) ¬¬p = p
+decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
+
+¬-drop-Dec : Dec (¬ ¬ P) → Dec (¬ P)
+¬-drop-Dec ¬¬p? = map′ negated-stable contradiction (¬? ¬¬p?)
+
+-- A double-negation-translated variant of excluded middle (or: every
+-- nullary relation is decidable in the double-negation monad).
+
+excluded-middle : DoubleNegation (Dec P)
+excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))

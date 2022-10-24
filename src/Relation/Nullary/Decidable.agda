@@ -9,22 +9,23 @@
 module Relation.Nullary.Decidable where
 
 open import Level using (Level)
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.Empty using (⊥-elim)
-open import Data.Product using (∃; _,_)
+open import Data.Product as Prod hiding (map)
+open import Data.Sum.Base as Sum hiding (map)
 open import Function.Base
 open import Function.Bundles using
   (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔′)
 open import Relation.Binary using (Setoid; module Setoid; Decidable)
 open import Relation.Nullary
+open import Relation.Nullary.Negation
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong′)
 
 private
   variable
-    p q : Level
-    P : Set p
-    Q : Set q
+    p q r : Level
+    P Q R : Set p
 
 ------------------------------------------------------------------------
 -- Re-exporting the core definitions
