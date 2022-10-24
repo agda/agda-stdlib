@@ -8,7 +8,7 @@
 
 module Data.Parity.Base where
 
-open import Algebra.Bundles
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
 open import Data.Sign.Base using (Sign; +; -)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality
