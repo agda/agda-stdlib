@@ -1169,9 +1169,9 @@ New modules
 -----------
 
 * Algebraic structures when freely adding an identity element:
-```
+  ```
   Algebra.Construct.Add.Identity
-```
+  ```
 
 * Operations for module-like algebraic structures:
   ```
@@ -1381,9 +1381,9 @@ Other minor changes
 -------------------
 
 * Added new proof to `Data.Maybe.Properties`
-```agda
+  ```agda
     <∣>-idem : Idempotent _<∣>_
-```
+  ```
 
 * The module `Algebra` now publicly re-exports the contents of
   `Algebra.Structures.Biased`.
@@ -1507,16 +1507,20 @@ Other minor changes
   _^ᵗ_     : A → ℕ → A
   ```
 
+* `Algebra.Properties.Magma.Divisibility` now re-exports operations 
+  `_∣ˡ_`, `_∤ˡ_`, `_∣ʳ_`, `_∤ʳ_` from `Algebra.Definitions.Magma`.
+
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
-  ```
+  ```agda
   interchange : Interchangable _∙_ _∙_
   xy∙xx≈x∙yxx : ∀ x y → (x ∙ y) ∙ (x ∙ x) ≈ x ∙ (y ∙ (x ∙ x))
   leftSemimedial : LeftSemimedial _∙_
   rightSemimedial : RightSemimedial _∙_
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
   ```
+
 * Added new proofs to `Algebra.Properties.Semigroup`:
-  ```
+  ```agda
   leftAlternative : LeftAlternative _∙_
   rightAlternative : RightAlternative _∙_
   alternative : Alternative _∙_
@@ -1524,7 +1528,7 @@ Other minor changes
   ```
 
 * Added new proofs to `Algebra.Properties.Ring`:
-  ```
+  ```agda
   -1*x≈-x : ∀ x → - 1# * x ≈ - x
   ```
 
