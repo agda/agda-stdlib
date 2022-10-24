@@ -180,8 +180,8 @@ p+p≡0ℙ 1ℙ = refl
   ; identity    = +-identity
   }
 
-+-monoid : Monoid 0ℓ 0ℓ
-+-monoid = record
++-0-monoid : Monoid 0ℓ 0ℓ
++-0-monoid = record
   { isMonoid = +-0-isMonoid
   }
 
@@ -191,8 +191,8 @@ p+p≡0ℙ 1ℙ = refl
    ; comm = +-comm
    }
 
-+-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
-+-commutativeMonoid = record
++-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
++-0-commutativeMonoid = record
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
@@ -274,7 +274,7 @@ p+p≡0ℙ 1ℙ = refl
 *-identity = *-identityˡ  , *-identityʳ
 
 ------------------------------------------------------------------------
--- Bundles
+-- Structures and Bundles
 
 *-isMagma : IsMagma _*_
 *-isMagma = record
@@ -315,8 +315,8 @@ p+p≡0ℙ 1ℙ = refl
   ; identity    = *-identity
   }
 
-*-monoid : Monoid 0ℓ 0ℓ
-*-monoid = record
+*-1-monoid : Monoid 0ℓ 0ℓ
+*-1-monoid = record
   { isMonoid = *-1-isMonoid
   }
 
@@ -325,11 +325,6 @@ p+p≡0ℙ 1ℙ = refl
    { isMonoid = *-1-isMonoid
    ; comm = *-comm
    }
-
-*-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
-*-commutativeMonoid = record
-  { isCommutativeMonoid = *-1-isCommutativeMonoid
-  }
 
 *-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 *-1-commutativeMonoid = record
