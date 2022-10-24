@@ -54,13 +54,11 @@ _*_ : Parity → Parity → Parity
 +-0-rawMonoid : RawMonoid 0ℓ 0ℓ
 +-0-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _+_ ; ε = 0ℙ }
 
-
 *-rawMagma : RawMagma 0ℓ 0ℓ
 *-rawMagma = record { _≈_ = _≡_ ; _∙_ = _*_ }
 
 *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
 *-1-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _*_ ; ε = 1ℙ }
-
 
 +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
 +-*-rawNearSemiring = record
