@@ -16,7 +16,7 @@ private
   variable
     a b c ℓ : Level
     A B : Set a
-    
+
 ------------------------------------------------------------------------
 -- Definition of dependent products
 

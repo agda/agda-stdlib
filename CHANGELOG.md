@@ -539,6 +539,7 @@ Non-backwards compatible changes
   - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
   - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation` 
 	to `Relation.Nullary.Decidable`.
+  - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
 
 ### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
 
