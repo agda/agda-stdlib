@@ -15,7 +15,7 @@ open import Data.Product using (_,_)
 open import Data.Sign as Sign using (Sign)
 open import Function hiding (Inverse)
 open import Level using (0ℓ)
-open import Relation.Binary using (Decidable; DecidableEquality; Setoid; DecSetoid)
+open import Relation.Binary using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 
@@ -44,6 +44,9 @@ _≟_ : DecidableEquality Parity
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
+
+≡-isDecEquivalence : IsDecEquivalence _≡_
+≡-isDecEquivalence = isDecEquivalence _≟_
 
 ------------------------------------------------------------------------
 -- _ᵒ
