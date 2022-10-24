@@ -45,10 +45,10 @@ _*_ : Parity → Parity → Parity
 ------------------------------------------------------------------------
 -- Homomorphism from Parity to Sign: here, or somewhere else?
 
-ℙto𝕊 : Parity → Sign
-ℙto𝕊 0ℙ = +
-ℙto𝕊 1ℙ = -
+toSign : Parity → Sign
+toSign 0ℙ = +
+toSign 1ℙ = -
 
-𝕊toℙ : Sign → Parity
-𝕊toℙ + = 0ℙ
-𝕊toℙ - = 1ℙ
+fromSign : Sign → Parity
+fromSign + = 0ℙ
+fromSign - = 1ℙ
