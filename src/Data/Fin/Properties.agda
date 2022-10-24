@@ -1121,6 +1121,8 @@ eq? = inj⇒≟
 "Warning: eq? was deprecated in v2.0.
 Please use inj⇒≟ instead."
 #-}
+------------------------------------------------------------------------
+-- deprecated properties of deprecated _≺_
 
 private
   ≺⇒< : _≺_ ⇒ ℕ._<_
@@ -1139,5 +1141,4 @@ Please use <⇒<′ instead."
 "Warning: <′⇒≺ was deprecated in v2.0.
 Please use <′⇒< instead."
 #-}
-
 
