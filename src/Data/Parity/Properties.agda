@@ -55,16 +55,16 @@ p≢pᵒ : ∀ p → p ≢ p ᵒ
 p≢pᵒ 1ℙ ()
 p≢pᵒ 0ℙ ()
 
-ᵒ-inverts : ∀ {p q} → p ᵒ ≡ q → p ≡ q ᵒ
+ᵒ-inverts : ∀ {p q} → p ᵒ ≡ q → q ᵒ ≡ p
 ᵒ-inverts { 1ℙ } { 0ℙ } refl = refl
 ᵒ-inverts { 0ℙ } { 1ℙ } refl = refl
 
 ᵒ-involutive : ∀ p → (p ᵒ) ᵒ ≡ p
-ᵒ-involutive p = sym (ᵒ-inverts refl)
+ᵒ-involutive p = ᵒ-inverts refl
 
 ᵒ-injective : ∀ {p q} → p ᵒ ≡ q ᵒ → p ≡ q
 ᵒ-injective {p} {q} eq = begin
-  p       ≡⟨ ᵒ-inverts eq ⟩
+  p       ≡⟨ sym (ᵒ-inverts eq) ⟩
   (q ᵒ) ᵒ ≡⟨ ᵒ-involutive q ⟩
   q       ∎ where open ≡-Reasoning
 
