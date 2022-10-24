@@ -518,6 +518,9 @@ Non-backwards compatible changes
 
 ### Other
 
+* In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
+  the `--without-K` flag now use the `--cubical-compatible` flag instead.
+
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
   have been made implicit.
 
