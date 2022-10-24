@@ -8,7 +8,10 @@
 
 module Data.Parity.Base where
 
+open import Algebra.Bundles
 open import Data.Sign.Base using (Sign; +; -)
+open import Level using (0ℓ)
+open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
 -- Definition
@@ -41,6 +44,43 @@ infixl 7 _*_
 _*_ : Parity → Parity → Parity
 0ℙ * p = 0ℙ
 1ℙ * p = p
+
+------------------------------------------------------------------------
+-- Raw Bundles
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record { _≈_ = _≡_ ; _∙_ = _+_ }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _+_ ; ε = 0ℙ }
+
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record { _≈_ = _≡_ ; _∙_ = _*_ }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _*_ ; ε = 1ℙ }
+
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℙ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℙ
+  ; 1# = 1ℙ
+  }
+
 
 ------------------------------------------------------------------------
 -- Homomorphism from Parity to Sign: here, or somewhere else?
