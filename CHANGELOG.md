@@ -1245,6 +1245,14 @@ New modules
   Data.Nat.Combinatorics.Spec
   ```
 
+* A small library defining parity and its algebra:
+  ```
+  Data.Parity
+  Data.Parity.Base
+  Data.Parity.Instances
+  Data.Parity.Properties
+  ```
+
 * Reflection utilities for some specific types:
   ```
   Data.List.Reflection
@@ -1739,6 +1747,8 @@ Other minor changes
   _⊓′_ : ℕ → ℕ → ℕ
   ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
+
+  parity : ℕ → Parity
   ```
 
 
