@@ -1115,6 +1115,31 @@ Deprecated names
   map-++-commute ↦  map-++
   ```
 
+* In `Data.Vec.Relation.Unary.All`:
+  for `{{NonZero n}}`, as per issue #1686
+
+  ```agda
+  head′ : All P xs → P (Vec.head′ {n = n} xs)
+  tail′ : All P xs → All P (Vec.tail′ {n = n} xs)
+  uncons′ : All P xs → P (Vec.head′ {n = n} xs) × All P (Vec.tail′ {n = n} xs)
+  ```
+
+* In `Data.Vec.Relation.Unary.Any`:
+  for `{{NonZero n}}`, as per issue #1686
+
+  ```agda
+  head′ : ¬ Any P (Vec.tail′ {n = n} xs) → Any P xs → P (Vec.head′ {n = n} xs)
+  tail′ : ¬ P (Vec.head′ {n = n} xs) → Any P xs → Any P (Vec.tail′ {n = n} xs)
+  ```
+
+* In `Data.Vec.Relation.Unary.Linked.Properties`:
+  for `{{NonZero n}}`, as per issue #1686
+
+  ```agda
+  Linked⇒All′ : ∀ {v} {xs : Vec _ n} → R v (head′ xs) →
+                Linked R xs → All (R v) xs
+  ```
+
 * In `Function.Construct.Composition`:
   ```
   _∘-⟶_   ↦   _⟶-∘_
