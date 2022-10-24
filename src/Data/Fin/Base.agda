@@ -332,8 +332,32 @@ NB argument order has been flipped:
 the left-hand argument is the Fin m
 the right-hand is the Nat index increment."
 #-}
+
+------------------------------------------------------------------------
+-- _≺_
 data _≺_ : ℕ → ℕ → Set where
   _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
+
+------------------------------------------------------------------------
+-- properties of _≺_
+-- introduce new proofs, actually simplified compared to original
+-- so that Data.Fin.Properties doesn't mention the constructor
+
+private
+
+  z≺s : ∀ {n} → zero ≺ suc n
+  z≺s = _ ≻toℕ zero
+
+  s≺s : ∀ {m n} → m ≺ n → suc m ≺ suc n
+  s≺s (n ≻toℕ i) = (suc n) ≻toℕ (suc i)
+
+-- new lemma, nowhere else used except to define deprecated property later
+
+<⇒≺ : ℕ._<_ ⇒ _≺_
+<⇒≺ {zero}  {n@(suc _)} z<s      = z≺s
+<⇒≺ {suc m} {n@(suc _)} (s<s lt) = s≺s (<⇒≺ lt)
+
+-- now do the deprecation!
 
 {-# WARNING_ON_USAGE _≺_
 "Warning: _≺_ was deprecated in v2.0.

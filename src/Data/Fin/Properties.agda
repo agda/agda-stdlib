@@ -166,7 +166,7 @@ toℕ≤n : ∀ (i : Fin n) → toℕ i ℕ.≤ n
 toℕ≤n {suc n} i = ℕₚ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
 
 toℕ<n : ∀ (i : Fin n) → toℕ i ℕ.< n
-toℕ<n {suc n} i = s≤s (toℕ≤pred[n] i)
+toℕ<n {suc n} i = s<s (toℕ≤pred[n] i)
 
 -- A simpler implementation of toℕ≤pred[n],
 -- however, with a different reduction behavior.
@@ -1121,15 +1121,10 @@ eq? = inj⇒≟
 "Warning: eq? was deprecated in v2.0.
 Please use inj⇒≟ instead."
 #-}
-private
 
+private
   ≺⇒< : _≺_ ⇒ ℕ._<_
   ≺⇒< (n ≻toℕ i) = toℕ<n i
-
-  <⇒≺ : ℕ._<_ ⇒ _≺_
-  <⇒≺ {zero}  {n@(suc _)} z<s      = n ≻toℕ zero
-  <⇒≺ {suc m} {n@(suc _)} (s<s lt) with <⇒≺ lt
-  ... | n ≻toℕ i = (suc n) ≻toℕ (suc i)
 
 ≺⇒<′ : _≺_ ⇒ ℕ._<′_
 ≺⇒<′ lt = ℕₚ.<⇒<′ (≺⇒< lt)
