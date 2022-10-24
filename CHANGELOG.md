@@ -1694,7 +1694,7 @@ Other minor changes
   catMaybes : List (Maybe A) → List A
   ap : List (A → B) → List A → List B
   ++-rawMagma : Set a → RawMagma a _
-  ++-rawMonoid : Set a → RawMonoid a _
+  ++-[]-rawMonoid : Set a → RawMonoid a _
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
