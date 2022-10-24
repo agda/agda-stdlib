@@ -62,8 +62,8 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 
 ×-homo-+ : ∀ c m n → (m ℕ.+ n) × c ≈ m × c + n × c
 ×-homo-+ c m n = begin
-  (m ℕ.+ n) ×  c  ≈˘⟨ ×ᵤ≈× (m ℕ.+ n) c ⟩
-  (m ℕ.+ n) ×ᵤ c  ≈⟨ U.×-homo-+ c m n ⟩
+  (m ℕ.+ n) ×  c   ≈˘⟨ ×ᵤ≈× (m ℕ.+ n) c ⟩
+  (m ℕ.+ n) ×ᵤ c   ≈⟨ U.×-homo-+ c m n ⟩
   m ×ᵤ c + n ×ᵤ c  ≈⟨ +-cong (×ᵤ≈× m c) (×ᵤ≈× n c) ⟩
   m ×  c + n ×  c  ∎
 
