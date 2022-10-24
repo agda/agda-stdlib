@@ -325,10 +325,17 @@ compare (suc m) (suc n) with compare m n
   }
 
 *-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record { _≈_ = _≡_ ; _∙_ = _*_ }
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
 
 *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _*_ ; ε = 1 }
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε = 1
+  }
 
 +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
 +-*-rawNearSemiring = record
