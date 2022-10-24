@@ -1689,10 +1689,12 @@ Other minor changes
   deduplicateᵇ : (A → A → Bool) → List A → List A
   ```
 
-* Added new functions to `Data.List.Base`:
+* Added new functions and definitions to `Data.List.Base`:
   ```agda
   catMaybes : List (Maybe A) → List A
   ap : List (A → B) → List A → List B
+  ++-rawMagma : Set a → RawMagma a _
+  ++-rawMonoid : Set a → RawMonoid a _
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
