@@ -22,9 +22,9 @@ data Parity : Set where
 
 -- The opposite parity.
 
-opposite : Parity → Parity
-opposite 1ℙ = 0ℙ
-opposite 0ℙ = 1ℙ
+_ᵒ : Parity → Parity
+1ℙ ᵒ = 0ℙ
+0ℙ ᵒ = 1ℙ
 
 -- Addition.
 
@@ -32,7 +32,7 @@ infixl 7 _+_
 
 _+_ : Parity → Parity → Parity
 0ℙ + p = p
-1ℙ + p = opposite p
+1ℙ + p = p ᵒ
 
 -- Multiplication.
 

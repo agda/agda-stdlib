@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some properties about signs
+-- Some properties about parities
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -10,82 +10,82 @@ module Data.Parity.Properties where
 
 open import Algebra.Bundles
 open import Data.Empty
-open import Data.Parity.Base renaming (Parity to ℙ)
+open import Data.Parity.Base
 open import Data.Product using (_,_)
-open import Data.Sign as Sign using () renaming (Sign to 𝕊; + to 0𝕊; - to 1𝕊)
+open import Data.Sign as Sign using (Sign)
 open import Function hiding (Inverse)
 open import Level using (0ℓ)
-open import Relation.Binary using (Decidable; Setoid; DecSetoid)
+open import Relation.Binary using (Decidable; DecidableEquality; Setoid; DecSetoid)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 
-open import Algebra.Structures {A = ℙ} _≡_
-open import Algebra.Definitions {A = ℙ} _≡_
+open import Algebra.Structures {A = Parity} _≡_
+open import Algebra.Definitions {A = Parity} _≡_
 
 open import Algebra.Consequences.Propositional using (comm+distrˡ⇒distrʳ)
 open import Algebra.Morphism
 
-module ℙto𝕊 = Algebra.Morphism.Definitions ℙ 𝕊 _≡_
-module 𝕊toℙ = Algebra.Morphism.Definitions 𝕊 ℙ _≡_
+module ℙto𝕊 = Algebra.Morphism.Definitions Parity Sign _≡_
+module 𝕊toℙ = Algebra.Morphism.Definitions Sign Parity _≡_
 
 ------------------------------------------------------------------------
 -- Equality
 
 infix 4 _≟_
 
-_≟_ : Decidable {A = ℙ} _≡_
+_≟_ : DecidableEquality Parity
 1ℙ ≟ 1ℙ = yes refl
 1ℙ ≟ 0ℙ = no λ()
 0ℙ ≟ 1ℙ = no λ()
 0ℙ ≟ 0ℙ = yes refl
 
 ≡-setoid : Setoid 0ℓ 0ℓ
-≡-setoid = setoid ℙ
+≡-setoid = setoid Parity
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
 
 ------------------------------------------------------------------------
--- opposite
+-- _ᵒ
 
-p≢opposite[p] : ∀ p → p ≢ opposite p
-p≢opposite[p] 1ℙ ()
-p≢opposite[p] 0ℙ ()
+p≢pᵒ : ∀ p → p ≢ p ᵒ
+p≢pᵒ 1ℙ ()
+p≢pᵒ 0ℙ ()
 
-opposite-inverts : ∀ {p q} → opposite p ≡ q → p ≡ opposite q
-opposite-inverts { 1ℙ } { 0ℙ } refl = refl
-opposite-inverts { 0ℙ } { 1ℙ } refl = refl
+ᵒ-inverts : ∀ {p q} → p ᵒ ≡ q → p ≡ q ᵒ
+ᵒ-inverts { 1ℙ } { 0ℙ } refl = refl
+ᵒ-inverts { 0ℙ } { 1ℙ } refl = refl
 
-opposite-involutive : ∀ p → opposite (opposite p) ≡ p
-opposite-involutive p = sym (opposite-inverts refl)
+ᵒ-involutive : ∀ p → (p ᵒ) ᵒ ≡ p
+ᵒ-involutive p = sym (ᵒ-inverts refl)
 
-opposite-injective : ∀ {p q} → opposite p ≡ opposite q → p ≡ q
-opposite-injective {p} {q} eq = begin
-  p ≡⟨ opposite-inverts eq ⟩
-  opposite (opposite q) ≡⟨ opposite-involutive q ⟩
-  q ∎ where open ≡-Reasoning
+ᵒ-injective : ∀ {p q} → p ᵒ ≡ q ᵒ → p ≡ q
+ᵒ-injective {p} {q} eq = begin
+  p      ≡⟨ ᵒ-inverts eq ⟩
+  (q ᵒ) ᵒ ≡⟨ ᵒ-involutive q ⟩
+  q       ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- opposite and _+_
 
-p+opposite[p]≡1ℙ : ∀ p → p + opposite p ≡ 1ℙ
-p+opposite[p]≡1ℙ 0ℙ = refl
-p+opposite[p]≡1ℙ 1ℙ = refl
+p+pᵒ≡1ℙ : ∀ p → p + p ᵒ ≡ 1ℙ
+p+pᵒ≡1ℙ 0ℙ = refl
+p+pᵒ≡1ℙ 1ℙ = refl
 
-opposite[p]+p≡1ℙ : ∀ p → opposite p + p ≡ 1ℙ
-opposite[p]+p≡1ℙ 0ℙ = refl
-opposite[p]+p≡1ℙ 1ℙ = refl
+pᵒ+p≡1ℙ : ∀ p → p ᵒ + p ≡ 1ℙ
+pᵒ+p≡1ℙ 0ℙ = refl
+pᵒ+p≡1ℙ 1ℙ = refl
 
 ------------------------------------------------------------------------
 -- opposite and _*_
 
-p*opposite[p]≡0ℙ : ∀ p → p * opposite p ≡ 0ℙ
-p*opposite[p]≡0ℙ 0ℙ = refl
-p*opposite[p]≡0ℙ 1ℙ = refl
+p*pᵒ≡0ℙ : ∀ p → p * p ᵒ ≡ 0ℙ
+p*pᵒ≡0ℙ 0ℙ = refl
+p*pᵒ≡0ℙ 1ℙ = refl
 
-opposite[p]*p≡0ℙ : ∀ p → opposite p * p ≡ 0ℙ
-opposite[p]*p≡0ℙ 0ℙ = refl
-opposite[p]*p≡0ℙ 1ℙ = refl
+pᵒ*p≡0ℙ : ∀ p → p ᵒ * p ≡ 0ℙ
+pᵒ*p≡0ℙ 0ℙ = refl
+pᵒ*p≡0ℙ 1ℙ = refl
 
 ------------------------------------------------------------------------
 -- _+_
@@ -121,12 +121,12 @@ p+p≡0ℙ 1ℙ = refl
 
 +-cancelʳ-≡ : RightCancellative _+_
 +-cancelʳ-≡ _ 1ℙ 1ℙ _  = refl
-+-cancelʳ-≡ _ 1ℙ 0ℙ eq = ⊥-elim (p≢opposite[p] _ $ sym eq)
-+-cancelʳ-≡ _ 0ℙ 1ℙ eq = ⊥-elim (p≢opposite[p] _ eq)
++-cancelʳ-≡ _ 1ℙ 0ℙ eq = ⊥-elim (p≢pᵒ _ $ sym eq)
++-cancelʳ-≡ _ 0ℙ 1ℙ eq = ⊥-elim (p≢pᵒ _ eq)
 +-cancelʳ-≡ _ 0ℙ 0ℙ _  = refl
 
 +-cancelˡ-≡ : LeftCancellative _+_
-+-cancelˡ-≡ 1ℙ _ _ eq = opposite-injective eq
++-cancelˡ-≡ 1ℙ _ _ eq = ᵒ-injective eq
 +-cancelˡ-≡ 0ℙ _ _ eq = eq
 
 +-cancel-≡ : Cancellative _+_
@@ -404,12 +404,12 @@ p+p≡0ℙ 1ℙ = refl
 
 {- TODO!!!
    show that ℙto𝕊/𝕊toℙ form an Abelian group isomorphism
-   between (ℙ, _+_, 0ℙ) and  (𝕊, _*_, 1𝕊)    -}
+   between (Parity, _+_, 0ℙ) and  (𝕊, _*_, 1𝕊)    -}
 
 ------------------------------------------------------------------------
 -- relating Nat and Parity -- where should this go?
 
 {- TODO!!!
    show that ℕtoℙ is a commutative semiring homomorphism
-   between (ℕ, _+_, 0ℕ _*_, 1ℕ) and  (ℙ, _+_, 0ℙ, _*_, 1ℙ)
+   between (ℕ, _+_, 0ℕ _*_, 1ℕ) and  (Parity, _+_, 0ℙ, _*_, 1ℙ)
 -}
