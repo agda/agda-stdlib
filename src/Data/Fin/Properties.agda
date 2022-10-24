@@ -759,27 +759,6 @@ lift-injective f inj (suc k) {suc _} {suc _} eq =
   cong suc (lift-injective f inj k (suc-injective eq))
 
 ------------------------------------------------------------------------
--- _≺_
-------------------------------------------------------------------------
-
-private
-
-  ≺⇒< : _≺_ ⇒ ℕ._<_
-  ≺⇒< (n ≻toℕ i) = toℕ<n i
-
-  <⇒≺ : ℕ._<_ ⇒ _≺_
-  <⇒≺ {zero}  {n@(suc _)} z<s      = n ≻toℕ zero
-  <⇒≺ {suc m} {n@(suc _)} (s<s lt) with <⇒≺ lt
-  ... | n ≻toℕ i = (suc n) ≻toℕ (suc i)
-
-≺⇒<′ : _≺_ ⇒ ℕ._<′_
-≺⇒<′ lt = ℕₚ.<⇒<′ (≺⇒< lt)
-
-<′⇒≺ : ℕ._<′_ ⇒ _≺_
-<′⇒≺ lt = <⇒≺ (ℕₚ.<′⇒< lt)
-
-
-------------------------------------------------------------------------
 -- pred
 ------------------------------------------------------------------------
 
@@ -1142,3 +1121,28 @@ eq? = inj⇒≟
 "Warning: eq? was deprecated in v2.0.
 Please use inj⇒≟ instead."
 #-}
+private
+
+  ≺⇒< : _≺_ ⇒ ℕ._<_
+  ≺⇒< (n ≻toℕ i) = toℕ<n i
+
+  <⇒≺ : ℕ._<_ ⇒ _≺_
+  <⇒≺ {zero}  {n@(suc _)} z<s      = n ≻toℕ zero
+  <⇒≺ {suc m} {n@(suc _)} (s<s lt) with <⇒≺ lt
+  ... | n ≻toℕ i = (suc n) ≻toℕ (suc i)
+
+≺⇒<′ : _≺_ ⇒ ℕ._<′_
+≺⇒<′ lt = ℕₚ.<⇒<′ (≺⇒< lt)
+{-# WARNING_ON_USAGE ≺⇒<′
+"Warning: ≺⇒<′ was deprecated in v2.0.
+Please use <⇒<′ instead."
+#-}
+
+<′⇒≺ : ℕ._<′_ ⇒ _≺_
+<′⇒≺ lt = <⇒≺ (ℕₚ.<′⇒< lt)
+{-# WARNING_ON_USAGE <′⇒≺
+"Warning: <′⇒≺ was deprecated in v2.0.
+Please use <′⇒< instead."
+#-}
+
+
