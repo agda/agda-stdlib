@@ -5,39 +5,39 @@
 <a id="106" class="Comment">-- An effectful view of the identity function</a>
 <a id="152" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--without-K</a> <a id="250" class="Pragma">--safe</a> <a id="257" class="Symbol">#-}</a>
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--cubical-compatible</a> <a id="259" class="Pragma">--safe</a> <a id="266" class="Symbol">#-}</a>
 
-<a id="262" class="Keyword">module</a> <a id="269" href="Function.Identity.Effectful.html" class="Module">Function.Identity.Effectful</a> <a id="297" class="Symbol">{</a><a id="298" href="Function.Identity.Effectful.html#298" class="Bound">ℓ</a><a id="299" class="Symbol">}</a> <a id="301" class="Keyword">where</a>
+<a id="271" class="Keyword">module</a> <a id="278" href="Function.Identity.Effectful.html" class="Module">Function.Identity.Effectful</a> <a id="306" class="Symbol">{</a><a id="307" href="Function.Identity.Effectful.html#307" class="Bound">ℓ</a><a id="308" class="Symbol">}</a> <a id="310" class="Keyword">where</a>
 
-<a id="308" class="Keyword">open</a> <a id="313" class="Keyword">import</a> <a id="320" href="Effect.Functor.html" class="Module">Effect.Functor</a>
-<a id="335" class="Keyword">open</a> <a id="340" class="Keyword">import</a> <a id="347" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
-<a id="366" class="Keyword">open</a> <a id="371" class="Keyword">import</a> <a id="378" href="Effect.Monad.html" class="Module">Effect.Monad</a>
-<a id="391" class="Keyword">open</a> <a id="396" class="Keyword">import</a> <a id="403" href="Effect.Comonad.html" class="Module">Effect.Comonad</a>
-<a id="418" class="Keyword">open</a> <a id="423" class="Keyword">import</a> <a id="430" href="Function.html" class="Module">Function</a>
+<a id="317" class="Keyword">open</a> <a id="322" class="Keyword">import</a> <a id="329" href="Effect.Functor.html" class="Module">Effect.Functor</a>
+<a id="344" class="Keyword">open</a> <a id="349" class="Keyword">import</a> <a id="356" href="Effect.Applicative.html" class="Module">Effect.Applicative</a>
+<a id="375" class="Keyword">open</a> <a id="380" class="Keyword">import</a> <a id="387" href="Effect.Monad.html" class="Module">Effect.Monad</a>
+<a id="400" class="Keyword">open</a> <a id="405" class="Keyword">import</a> <a id="412" href="Effect.Comonad.html" class="Module">Effect.Comonad</a>
+<a id="427" class="Keyword">open</a> <a id="432" class="Keyword">import</a> <a id="439" href="Function.html" class="Module">Function</a>
 
-<a id="Identity"></a><a id="440" href="Function.Identity.Effectful.html#440" class="Function">Identity</a> <a id="449" class="Symbol">:</a> <a id="451" href="Agda.Primitive.html#311" class="Primitive">Set</a> <a id="455" href="Function.Identity.Effectful.html#298" class="Bound">ℓ</a> <a id="457" class="Symbol">→</a> <a id="459" href="Agda.Primitive.html#311" class="Primitive">Set</a> <a id="463" href="Function.Identity.Effectful.html#298" class="Bound">ℓ</a>
-<a id="465" href="Function.Identity.Effectful.html#440" class="Function">Identity</a> <a id="474" href="Function.Identity.Effectful.html#474" class="Bound">A</a> <a id="476" class="Symbol">=</a> <a id="478" href="Function.Identity.Effectful.html#474" class="Bound">A</a>
+<a id="Identity"></a><a id="449" href="Function.Identity.Effectful.html#449" class="Function">Identity</a> <a id="458" class="Symbol">:</a> <a id="460" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="464" href="Function.Identity.Effectful.html#307" class="Bound">ℓ</a> <a id="466" class="Symbol">→</a> <a id="468" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="472" href="Function.Identity.Effectful.html#307" class="Bound">ℓ</a>
+<a id="474" href="Function.Identity.Effectful.html#449" class="Function">Identity</a> <a id="483" href="Function.Identity.Effectful.html#483" class="Bound">A</a> <a id="485" class="Symbol">=</a> <a id="487" href="Function.Identity.Effectful.html#483" class="Bound">A</a>
 
-<a id="functor"></a><a id="481" href="Function.Identity.Effectful.html#481" class="Function">functor</a> <a id="489" class="Symbol">:</a> <a id="491" href="Effect.Functor.html#489" class="Record">RawFunctor</a> <a id="502" href="Function.Identity.Effectful.html#440" class="Function">Identity</a>
-<a id="511" href="Function.Identity.Effectful.html#481" class="Function">functor</a> <a id="519" class="Symbol">=</a> <a id="521" class="Keyword">record</a>
-  <a id="530" class="Symbol">{</a> <a id="532" href="Effect.Functor.html#598" class="Field Operator">_&lt;$&gt;_</a> <a id="538" class="Symbol">=</a> <a id="540" href="Function.Base.html#695" class="Function">id</a>
-  <a id="545" class="Symbol">}</a>
+<a id="functor"></a><a id="490" href="Function.Identity.Effectful.html#490" class="Function">functor</a> <a id="498" class="Symbol">:</a> <a id="500" href="Effect.Functor.html#498" class="Record">RawFunctor</a> <a id="511" href="Function.Identity.Effectful.html#449" class="Function">Identity</a>
+<a id="520" href="Function.Identity.Effectful.html#490" class="Function">functor</a> <a id="528" class="Symbol">=</a> <a id="530" class="Keyword">record</a>
+  <a id="539" class="Symbol">{</a> <a id="541" href="Effect.Functor.html#607" class="Field Operator">_&lt;$&gt;_</a> <a id="547" class="Symbol">=</a> <a id="549" href="Function.Base.html#704" class="Function">id</a>
+  <a id="554" class="Symbol">}</a>
 
-<a id="applicative"></a><a id="548" href="Function.Identity.Effectful.html#548" class="Function">applicative</a> <a id="560" class="Symbol">:</a> <a id="562" href="Effect.Applicative.html#490" class="Function">RawApplicative</a> <a id="577" href="Function.Identity.Effectful.html#440" class="Function">Identity</a>
-<a id="586" href="Function.Identity.Effectful.html#548" class="Function">applicative</a> <a id="598" class="Symbol">=</a> <a id="600" class="Keyword">record</a>
-  <a id="609" class="Symbol">{</a> <a id="611" href="Effect.Applicative.Indexed.html#991" class="Field">pure</a> <a id="616" class="Symbol">=</a> <a id="618" href="Function.Base.html#695" class="Function">id</a>
-  <a id="623" class="Symbol">;</a> <a id="625" href="Effect.Applicative.Indexed.html#1022" class="Field Operator">_⊛_</a>  <a id="630" class="Symbol">=</a> <a id="632" href="Function.Base.html#695" class="Function">id</a>
-  <a id="637" class="Symbol">}</a>
+<a id="applicative"></a><a id="557" href="Function.Identity.Effectful.html#557" class="Function">applicative</a> <a id="569" class="Symbol">:</a> <a id="571" href="Effect.Applicative.html#499" class="Function">RawApplicative</a> <a id="586" href="Function.Identity.Effectful.html#449" class="Function">Identity</a>
+<a id="595" href="Function.Identity.Effectful.html#557" class="Function">applicative</a> <a id="607" class="Symbol">=</a> <a id="609" class="Keyword">record</a>
+  <a id="618" class="Symbol">{</a> <a id="620" href="Effect.Applicative.Indexed.html#1000" class="Field">pure</a> <a id="625" class="Symbol">=</a> <a id="627" href="Function.Base.html#704" class="Function">id</a>
+  <a id="632" class="Symbol">;</a> <a id="634" href="Effect.Applicative.Indexed.html#1031" class="Field Operator">_⊛_</a>  <a id="639" class="Symbol">=</a> <a id="641" href="Function.Base.html#704" class="Function">id</a>
+  <a id="646" class="Symbol">}</a>
 
-<a id="monad"></a><a id="640" href="Function.Identity.Effectful.html#640" class="Function">monad</a> <a id="646" class="Symbol">:</a> <a id="648" href="Effect.Monad.html#428" class="Function">RawMonad</a> <a id="657" href="Function.Identity.Effectful.html#440" class="Function">Identity</a>
-<a id="666" href="Function.Identity.Effectful.html#640" class="Function">monad</a> <a id="672" class="Symbol">=</a> <a id="674" class="Keyword">record</a>
-  <a id="683" class="Symbol">{</a> <a id="685" href="Effect.Monad.Indexed.html#645" class="Field">return</a> <a id="692" class="Symbol">=</a> <a id="694" href="Function.Base.html#695" class="Function">id</a>
-  <a id="699" class="Symbol">;</a> <a id="701" href="Effect.Monad.Indexed.html#678" class="Field Operator">_&gt;&gt;=_</a>  <a id="708" class="Symbol">=</a> <a id="710" href="Function.Base.html#3930" class="Function Operator">_|&gt;′_</a>
-  <a id="718" class="Symbol">}</a>
+<a id="monad"></a><a id="649" href="Function.Identity.Effectful.html#649" class="Function">monad</a> <a id="655" class="Symbol">:</a> <a id="657" href="Effect.Monad.html#437" class="Function">RawMonad</a> <a id="666" href="Function.Identity.Effectful.html#449" class="Function">Identity</a>
+<a id="675" href="Function.Identity.Effectful.html#649" class="Function">monad</a> <a id="681" class="Symbol">=</a> <a id="683" class="Keyword">record</a>
+  <a id="692" class="Symbol">{</a> <a id="694" href="Effect.Monad.Indexed.html#654" class="Field">return</a> <a id="701" class="Symbol">=</a> <a id="703" href="Function.Base.html#704" class="Function">id</a>
+  <a id="708" class="Symbol">;</a> <a id="710" href="Effect.Monad.Indexed.html#687" class="Field Operator">_&gt;&gt;=_</a>  <a id="717" class="Symbol">=</a> <a id="719" href="Function.Base.html#3939" class="Function Operator">_|&gt;′_</a>
+  <a id="727" class="Symbol">}</a>
 
-<a id="comonad"></a><a id="721" href="Function.Identity.Effectful.html#721" class="Function">comonad</a> <a id="729" class="Symbol">:</a> <a id="731" href="Effect.Comonad.html#448" class="Record">RawComonad</a> <a id="742" href="Function.Identity.Effectful.html#440" class="Function">Identity</a>
-<a id="751" href="Function.Identity.Effectful.html#721" class="Function">comonad</a> <a id="759" class="Symbol">=</a> <a id="761" class="Keyword">record</a>
-  <a id="770" class="Symbol">{</a> <a id="772" href="Effect.Comonad.html#559" class="Field">extract</a> <a id="780" class="Symbol">=</a> <a id="782" href="Function.Base.html#695" class="Function">id</a>
-  <a id="787" class="Symbol">;</a> <a id="789" href="Effect.Comonad.html#581" class="Field">extend</a>  <a id="797" class="Symbol">=</a> <a id="799" href="Function.Base.html#695" class="Function">id</a>
-  <a id="804" class="Symbol">}</a>
+<a id="comonad"></a><a id="730" href="Function.Identity.Effectful.html#730" class="Function">comonad</a> <a id="738" class="Symbol">:</a> <a id="740" href="Effect.Comonad.html#457" class="Record">RawComonad</a> <a id="751" href="Function.Identity.Effectful.html#449" class="Function">Identity</a>
+<a id="760" href="Function.Identity.Effectful.html#730" class="Function">comonad</a> <a id="768" class="Symbol">=</a> <a id="770" class="Keyword">record</a>
+  <a id="779" class="Symbol">{</a> <a id="781" href="Effect.Comonad.html#568" class="Field">extract</a> <a id="789" class="Symbol">=</a> <a id="791" href="Function.Base.html#704" class="Function">id</a>
+  <a id="796" class="Symbol">;</a> <a id="798" href="Effect.Comonad.html#590" class="Field">extend</a>  <a id="806" class="Symbol">=</a> <a id="808" href="Function.Base.html#704" class="Function">id</a>
+  <a id="813" class="Symbol">}</a>
 </pre></body></html>
