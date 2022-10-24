@@ -762,13 +762,22 @@ lift-injective f inj (suc k) {suc _} {suc _} eq =
 -- _≺_
 ------------------------------------------------------------------------
 
+private
+
+  ≺⇒< : _≺_ ⇒ ℕ._<_
+  ≺⇒< (n ≻toℕ i) = toℕ<n i
+
+  <⇒≺ : ℕ._<_ ⇒ _≺_
+  <⇒≺ {zero}  {n@(suc _)} z<s      = n ≻toℕ zero
+  <⇒≺ {suc m} {n@(suc _)} (s<s lt) with <⇒≺ lt
+  ... | n ≻toℕ i = (suc n) ≻toℕ (suc i)
+
 ≺⇒<′ : _≺_ ⇒ ℕ._<′_
-≺⇒<′ (n ≻toℕ i) = ℕₚ.≤⇒≤′ (toℕ<n i)
+≺⇒<′ lt = ℕₚ.<⇒<′ (≺⇒< lt)
 
 <′⇒≺ : ℕ._<′_ ⇒ _≺_
-<′⇒≺ {n} ℕ.≤′-refl = subst (_≺ suc n) (toℕ-fromℕ n) (suc n ≻toℕ fromℕ n)
-<′⇒≺ (ℕ.≤′-step m≤′n) with <′⇒≺ m≤′n
-... | n ≻toℕ i = subst (_≺ suc n) (toℕ-inject₁ i) (suc n ≻toℕ _)
+<′⇒≺ lt = <⇒≺ (ℕₚ.<′⇒< lt)
+
 
 ------------------------------------------------------------------------
 -- pred
