@@ -477,9 +477,5 @@ toSign-isGroupIsomorphism = record
 
 
 ------------------------------------------------------------------------
--- relating Nat and Parity -- where should this go?
+-- relating Nat and Parity
 
-{- TODO!!!
-   show that ℕtoℙ is a commutative semiring homomorphism
-   between (ℕ, _+_, 0ℕ _*_, 1ℕ) and  (ℙ, _+_, 0ℙ, _*_, 1ℙ)
--}
