@@ -9,17 +9,20 @@
 module Relation.Nullary.Reflects where
 
 open import Agda.Builtin.Equality
+
 open import Data.Bool.Base
 open import Data.Empty
-open import Level
-open import Function.Base using (_$_)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Level using (Level)
+open import Function.Base using (_$_; _∘_; const)
 
 open import Relation.Nullary.Negation.Core
 
 private
   variable
-    p : Level
-    P : Set p
+    p q : Level
+    P Q : Set p
 
 ------------------------------------------------------------------------
 -- `Reflects` idiom.
@@ -48,15 +51,36 @@ invert : ∀ {b} → Reflects P b → if b then P else ¬ P
 invert (ofʸ  p) = p
 invert (ofⁿ ¬p) = ¬p
 
-
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
 
 -- If we can decide P, then we can decide its negation.
-
 ¬-reflects : ∀ {b} → Reflects P b → Reflects (¬ P) (not b)
 ¬-reflects (ofʸ  p) = ofⁿ (_$ p)
 ¬-reflects (ofⁿ ¬p) = ofʸ ¬p
+
+-- If we can decide P and Q then we can decide their product
+infixr 2 _×-reflects_
+_×-reflects_ : ∀ {a b} → Reflects P a → Reflects Q b →
+               Reflects (P × Q) (a ∧ b)
+ofʸ  p ×-reflects ofʸ  q = ofʸ (p , q)
+ofʸ  p ×-reflects ofⁿ ¬q = ofⁿ (¬q ∘ proj₂)
+ofⁿ ¬p ×-reflects _      = ofⁿ (¬p ∘ proj₁)
+
+
+infixr 1 _⊎-reflects_
+_⊎-reflects_ : ∀ {a b} → Reflects P a → Reflects Q b →
+               Reflects (P ⊎ Q) (a ∨ b)
+ofʸ  p ⊎-reflects      _ = ofʸ (inj₁ p)
+ofⁿ ¬p ⊎-reflects ofʸ  q = ofʸ (inj₂ q)
+ofⁿ ¬p ⊎-reflects ofⁿ ¬q = ofⁿ (¬p ¬-⊎ ¬q)
+
+infixr 2 _→-reflects_
+_→-reflects_ : ∀ {a b} → Reflects P a → Reflects Q b →
+                Reflects (P → Q) (not a ∨ b)
+ofʸ  p →-reflects ofʸ  q = ofʸ (const q)
+ofʸ  p →-reflects ofⁿ ¬q = ofⁿ (¬q ∘ (_$ p))
+ofⁿ ¬p →-reflects _      = ofʸ (⊥-elim ∘ ¬p)
 
 ------------------------------------------------------------------------
 -- Other lemmas

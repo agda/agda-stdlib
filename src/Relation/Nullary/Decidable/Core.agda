@@ -12,11 +12,12 @@
 module Relation.Nullary.Decidable.Core where
 
 open import Level using (Level; Lift)
-open import Data.Bool.Base using (Bool; false; true; not; T)
+open import Data.Bool.Base using (Bool; false; true; not; T; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
 open import Data.Empty using (⊥)
 open import Data.Empty.Irrelevant using (⊥-elim)
-open import Data.Product
+open import Data.Product using (_×_)
+open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Reflects
 open import Relation.Nullary.Negation.Core
@@ -63,9 +64,24 @@ recompute (no ¬p) x = ⊥-elim (¬p x)
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
 
+infixr 1 _⊎-dec_
+infixr 2 _×-dec_ _→-dec_
+
 ¬? : Dec P → Dec (¬ P)
 does  (¬? p?) = not (does p?)
 proof (¬? p?) = ¬-reflects (proof p?)
+
+_×-dec_ : Dec P → Dec Q → Dec (P × Q)
+does  (p? ×-dec q?) = does p? ∧ does q?
+proof (p? ×-dec q?) = proof p? ×-reflects proof q?
+
+_⊎-dec_ : Dec P → Dec Q → Dec (P ⊎ Q)
+does  (p? ⊎-dec q?) = does p? ∨ does q?
+proof (p? ⊎-dec q?) = proof p? ⊎-reflects proof q?
+
+_→-dec_ : Dec P → Dec Q → Dec (P → Q)
+does  (p? →-dec q?) = not (does p?) ∨ does q?
+proof (p? →-dec q?) = proof p? →-reflects proof q?
 
 ------------------------------------------------------------------------
 -- Relationship with booleans

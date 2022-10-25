@@ -8,9 +8,9 @@
 
 module Reflection.AST.Argument.Information where
 
-open import Data.Product
+open import Data.Product.Base
 import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary using (_×-dec_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 

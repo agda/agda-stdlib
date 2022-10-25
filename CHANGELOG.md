@@ -534,6 +534,16 @@ Non-backwards compatible changes
 
 * Backwards compatibility has been maintained, as `Relation.Nullary` still re-exports these publicly.
 
+* The modules:
+  ```
+  Relation.Nullary.Product
+  Relation.Nullary.Sum
+  Relation.Nullary.Implication
+  ```
+  have been deprecated and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`
+  however all their contents is re-exported by `Relation.Nullary` which is the easiest way to access
+  it now.
+  
 * In order to facilitate this reorganisation the following breaking moves have occured:
   - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
   - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.

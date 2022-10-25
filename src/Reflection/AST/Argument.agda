@@ -11,17 +11,16 @@ module Reflection.AST.Argument where
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)
 open import Data.Nat using (ℕ)
+open import Relation.Nullary.Decidable as Dec using (Dec; _×-dec_)
+open import Relation.Binary
+open import Relation.Binary.PropositionalEquality
+open import Level
+
 open import Reflection.AST.Argument.Visibility
 open import Reflection.AST.Argument.Relevance
 open import Reflection.AST.Argument.Quantity
 open import Reflection.AST.Argument.Modality
 open import Reflection.AST.Argument.Information as Information
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
-open import Level
 
 private
   variable

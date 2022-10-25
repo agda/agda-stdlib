@@ -17,15 +17,13 @@ open import Data.Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive using (Pointwise; []; _∷_)
 open import Function.Base using (flip)
 open import Function.Bundles using (_⇔_; mk⇔)
+open import Level using (Level; _⊔_)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; cong)
-open import Relation.Nullary as Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+import Relation.Nullary as Nullary
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_; _⊎-dec_)
 open import Relation.Nullary.Negation
-open import Level using (Level; _⊔_)
 
 private
   variable

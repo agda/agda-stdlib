@@ -16,10 +16,7 @@ open import Relation.Binary.Core as Binary
 open import Relation.Binary.Definitions hiding (Decidable; Universal; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 open import Relation.Unary
-open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
-open import Relation.Nullary.Decidable using (¬?)
+open import Relation.Nullary using (yes; no; _⊎-dec_; _×-dec_; ¬?)
 open import Function.Base using (id; _$_; _∘_)
 
 private

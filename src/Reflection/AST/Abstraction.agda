@@ -12,9 +12,7 @@ open import Data.List.Base as List using (List)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)
 open import Data.String as String using (String)
 open import Level
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable as Dec using (Dec; _×-dec_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 

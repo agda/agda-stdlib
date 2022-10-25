@@ -36,13 +36,10 @@ open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
-open import Relation.Nullary.Decidable as Dec using (map′)
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary
-  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_)
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_; _×-dec_; _⊎-dec_; contradiction)
+open import Relation.Nullary.Reflects
+open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
