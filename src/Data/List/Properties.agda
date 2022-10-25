@@ -242,6 +242,7 @@ module _ (A : Set a) where
     }
 
 module _ (A : Set a) where
+
   length-isMagmaHomomorphism : IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMagmaHomomorphism = record
     { isRelHomomorphism = record
