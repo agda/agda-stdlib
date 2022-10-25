@@ -12,7 +12,7 @@ open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
 open import Data.Sign.Base using (Sign; +; -)
 open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -96,7 +96,7 @@ _*_ : Parity → Parity → Parity
 
 
 ------------------------------------------------------------------------
--- Homomorphism between Parity and Sign
+-- Homomorphisms between Parity and Sign
 
 toSign : Parity → Sign
 toSign 0ℙ = +
