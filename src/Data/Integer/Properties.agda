@@ -2386,3 +2386,6 @@ Please use pos-* instead."
 "Warning: +-isAbelianGroup was deprecated in v2.0
 Please use +-0-isAbelianGroup instead."
 #-}
+{- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Integer.Base public 
+  using (*-rawMagma; *-1-rawMonoid)
