@@ -96,7 +96,7 @@ _*_ : Parity → Parity → Parity
 
 
 ------------------------------------------------------------------------
--- Homomorphism from Parity to Sign: here, or somewhere else?
+-- Homomorphism between Parity and Sign
 
 toSign : Parity → Sign
 toSign 0ℙ = +

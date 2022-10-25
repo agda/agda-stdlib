@@ -386,17 +386,3 @@ p+p≡0ℙ 1ℙ = refl
   { isCommutativeRing = +-*-isCommutativeRing
   }
 
-------------------------------------------------------------------------
--- relating Parity and Sign -- where should this go?
-
-{- TODO!!!
-   show that ℙto𝕊/𝕊toℙ form an Abelian group isomorphism
-   between (Parity, _+_, 0ℙ) and  (𝕊, _*_, 1𝕊)    -}
-
-------------------------------------------------------------------------
--- relating Nat and Parity -- where should this go?
-
-{- TODO!!!
-   show that ℕtoℙ is a commutative semiring homomorphism
-   between (ℕ, _+_, 0ℕ _*_, 1ℕ) and  (Parity, _+_, 0ℙ, _*_, 1ℙ)
--}
