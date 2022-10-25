@@ -9,7 +9,7 @@
 module Data.Parity.Base where
 
 open import Algebra.Bundles.Raw
-  using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
+  using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring)
 open import Data.Sign.Base using (Sign; +; -)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -59,6 +59,14 @@ _*_ : Parity → Parity → Parity
 +-0-rawMonoid = record
   { _≈_ = _≡_
   ; _∙_ = _+_
+  ; ε = 0ℙ
+  }
+
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; _⁻¹ = _⁻¹
   ; ε = 0ℙ
   }
 

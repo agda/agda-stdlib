@@ -12,7 +12,8 @@ open import Algebra.Bundles
 open import Data.Empty
 open import Data.Parity.Base
 open import Data.Product using (_,_)
-open import Data.Sign as Sign using (Sign)
+open import Data.Sign as Sign
+  using (Sign) renaming (+ to 1𝕊; - to -1𝕊)
 open import Function hiding (Inverse)
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -29,6 +30,8 @@ open import Algebra.Morphism
 module ℙto𝕊 = Algebra.Morphism.Definitions Parity Sign _≡_
 module 𝕊toℙ = Algebra.Morphism.Definitions Sign Parity _≡_
 
+open import Algebra.Morphism.Structures
+  using (IsMagmaHomomorphism; IsMonoidHomomorphism; IsGroupHomomorphism)
 ------------------------------------------------------------------------
 -- Equality
 
@@ -386,3 +389,97 @@ p+p≡0ℙ 1ℙ = refl
   { isCommutativeRing = +-*-isCommutativeRing
   }
 
+------------------------------------------------------------------------
+-- relating Parity and Sign
+
++-homo-* : ∀ p q → toSign (p + q) ≡ (toSign p) Sign.* (toSign q)
++-homo-* 0ℙ 0ℙ = refl
++-homo-* 0ℙ 1ℙ = refl
++-homo-* 1ℙ 0ℙ = refl
++-homo-* 1ℙ 1ℙ = refl
+
+⁻¹-homo-opposite : ∀ p → toSign (p ⁻¹) ≡ Sign.opposite (toSign p)
+⁻¹-homo-opposite 0ℙ = refl
+⁻¹-homo-opposite 1ℙ = refl
+
+toSign-inverts-fromSign : ∀ {p s} → toSign p ≡ s → fromSign s ≡ p
+toSign-inverts-fromSign {0ℙ} refl = refl
+toSign-inverts-fromSign {1ℙ} refl = refl
+
+fromSign-inverts-toSign : ∀ {s p} → fromSign s ≡ p → toSign p ≡ s
+fromSign-inverts-toSign { 1𝕊 }  refl = refl
+fromSign-inverts-toSign { -1𝕊 } refl = refl
+
+toSign-injective : Injective _≡_ _≡_ toSign
+toSign-injective {p} {q} eq = begin
+  p                   ≡⟨ sym (toSign-inverts-fromSign {p} refl) ⟩
+  fromSign (toSign p) ≡⟨ cong fromSign eq ⟩
+  fromSign (toSign q) ≡⟨ toSign-inverts-fromSign {q} refl ⟩
+  q ∎ where open ≡-Reasoning
+
+toSign-surjective : Surjective _≡_ _≡_ toSign
+toSign-surjective s = (fromSign s) , fromSign-inverts-toSign {s} refl
+
+toSign-isMagmaHomomorphism : IsMagmaHomomorphism +-rawMagma Sign.*-rawMagma toSign
+toSign-isMagmaHomomorphism = record
+  { isRelHomomorphism = record
+    { cong = cong toSign }
+  ; homo = +-homo-*
+  }
+  
+toSign-isMagmaMonomorphism : IsMagmaMonomorphism +-rawMagma Sign.*-rawMagma toSign
+toSign-isMagmaMonomorphism = record
+  { isMagmaHomomorphism = toSign-isMagmaHomomorphism
+  ; injective = toSign-injective
+  }
+  
+toSign-isMagmaIsomorphism : IsMagmaIsomorphism +-rawMagma Sign.*-rawMagma toSign
+toSign-isMagmaIsomorphism = record
+  { isMagmaMonomorphism = toSign-isMagmaMonomorphism
+  ; surjective = toSign-surjective
+  }
+  
+toSign-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
+toSign-isMonoidHomomorphism = record
+  { isMagmaHomomorphism = toSign-isMagmaHomomorphism
+  ; ε-homo = refl
+  }
+  
+toSign-isMonoidMonomorphism : IsMonoidMonomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
+toSign-isMonoidMonomorphism = record
+  { isMonoidHomomorphism = toSign-isMonoidHomomorphism
+  ; injective = toSign-injective
+  }
+  
+toSign-isMonoidIsomorphism : IsMonoidIsomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
+toSign-isMonoidIsomorphism = record
+  { isMonoidMonomorphism = toSign-isMonoidMonomorphism
+  ; surjective = toSign-surjective
+  }
+  
+toSign-isGroupHomomorphism : IsGroupHomomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
+toSign-isGroupHomomorphism = record
+  { isMonoidHomomorphism = toSign-isMonoidHomomorphism
+  ; ⁻¹-homo = ⁻¹-homo-opposite
+  }
+  
+toSign-isGroupMonomorphism : IsGroupMonomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
+toSign-isGroupMonomorphism = record
+  { isGroupHomomorphism = toSign-isGroupHomomorphism
+  ; injective = toSign-injective
+  }
+  
+toSign-isGroupIsomorphism : IsGroupIsomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
+toSign-isGroupIsomorphism = record
+  { isGroupMonomorphism = toSign-isGroupMonomorphism
+  ; surjective = toSign-surjective
+  }
+
+
+------------------------------------------------------------------------
+-- relating Nat and Parity -- where should this go?
+
+{- TODO!!!
+   show that ℕtoℙ is a commutative semiring homomorphism
+   between (ℕ, _+_, 0ℕ _*_, 1ℕ) and  (ℙ, _+_, 0ℙ, _*_, 1ℙ)
+-}

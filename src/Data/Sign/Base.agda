@@ -8,7 +8,7 @@
 
 module Data.Sign.Base where
 
-open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawGroup)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
@@ -49,6 +49,14 @@ _*_ : Sign → Sign → Sign
 *-1-rawMonoid = record
   { _≈_ = _≡_
   ; _∙_ = _*_
+  ; ε = +
+  }
+
+*-1-rawGroup : RawGroup 0ℓ 0ℓ
+*-1-rawGroup = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; _⁻¹ = opposite
   ; ε = +
   }
 
