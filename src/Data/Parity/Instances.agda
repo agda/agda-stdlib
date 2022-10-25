@@ -9,8 +9,6 @@
 module Data.Parity.Instances where
 
 open import Data.Parity.Properties
-open import Relation.Binary.PropositionalEquality.Properties
-  using (isDecEquivalence)
 
 instance
   Parity-≡-isDecEquivalence = ≡-isDecEquivalence

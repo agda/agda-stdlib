@@ -1947,6 +1947,13 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new definitions to `Data.Sign.Base`:
+  ```agda
+  *-rawMagma : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+  *-1-rawGroup : RawGroup 0ℓ 0ℓ
+  ```
+
 * Added new proofs to `Data.Sign.Properties`:
   ```agda
   *-inverse : Inverse + id _*_
@@ -1958,6 +1965,7 @@ Other minor changes
   *-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
   *-group : Group 0ℓ 0ℓ
   *-abelianGroup : AbelianGroup 0ℓ 0ℓ
+  ≡-isDecEquivalence : IsDecEquivalence _≡_
   ```
 
 * Added new functions in `Data.String.Base`:
