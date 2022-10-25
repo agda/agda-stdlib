@@ -845,19 +845,6 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 ------------------------------------------------------------------------
 -- Bundles
 
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1
-  }
-
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record
   { isMagma = *-isMagma
