@@ -866,6 +866,11 @@ Deprecated names
   raise    ↦  _↑ʳ_
   ```
 
+  Issue #1726: the relation `_≺_` and its single constructor `_≻toℕ_`
+  have been deprecated in favour of their extensional equivalent `_<_`
+  but omitting the inversion principle which pattern matching on `_≻toℕ_`
+  would achieve; this instead is proxied by the property `Data.Fin.Properties.toℕ<`.
+
 * In `Data.Fin.Properties`:
   ```
   toℕ-raise        ↦ toℕ-↑ʳ
@@ -875,6 +880,9 @@ Deprecated names
   Fin0↔⊥           ↦ 0↔⊥
   eq?              ↦ inj⇒≟
   ```
+
+  Likewise under issue #1726: the properties `≺⇒<′` and `<′⇒≺` have been deprecated
+  in favour of their proxy counterparts `<⇒<′` and `<′⇒<`.
 
 * In `Data.Fin.Permutation.Components`:
   ```

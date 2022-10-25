@@ -6,6 +6,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for issue #1726
 
 module Data.Fin.Properties where
 
@@ -1123,8 +1124,21 @@ Please use inj⇒≟ instead."
 #-}
 ------------------------------------------------------------------------
 -- deprecated properties of deprecated _≺_
+-- introduce new proofs, actually simplified compared to original
+-- so that Data.Fin.Properties doesn't mention the constructor
 
 private
+
+  z≺s : ∀ {n} → zero ≺ suc n
+  z≺s = _ ≻toℕ zero
+
+  s≺s : ∀ {m n} → m ≺ n → suc m ≺ suc n
+  s≺s (n ≻toℕ i) = (suc n) ≻toℕ (suc i)
+
+  <⇒≺ : ℕ._<_ ⇒ _≺_
+  <⇒≺ {zero}  z<s      = z≺s
+  <⇒≺ {suc m} (s<s lt) = s≺s (<⇒≺ lt)
+
   ≺⇒< : _≺_ ⇒ ℕ._<_
   ≺⇒< (n ≻toℕ i) = toℕ<n i
 
