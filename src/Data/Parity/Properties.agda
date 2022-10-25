@@ -426,49 +426,49 @@ toSign-isMagmaHomomorphism = record
     { cong = cong toSign }
   ; homo = +-homo-*
   }
-  
+
 toSign-isMagmaMonomorphism : IsMagmaMonomorphism +-rawMagma Sign.*-rawMagma toSign
 toSign-isMagmaMonomorphism = record
   { isMagmaHomomorphism = toSign-isMagmaHomomorphism
   ; injective = toSign-injective
   }
-  
+
 toSign-isMagmaIsomorphism : IsMagmaIsomorphism +-rawMagma Sign.*-rawMagma toSign
 toSign-isMagmaIsomorphism = record
   { isMagmaMonomorphism = toSign-isMagmaMonomorphism
   ; surjective = toSign-surjective
   }
-  
+
 toSign-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
 toSign-isMonoidHomomorphism = record
   { isMagmaHomomorphism = toSign-isMagmaHomomorphism
   ; ε-homo = refl
   }
-  
+
 toSign-isMonoidMonomorphism : IsMonoidMonomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
 toSign-isMonoidMonomorphism = record
   { isMonoidHomomorphism = toSign-isMonoidHomomorphism
   ; injective = toSign-injective
   }
-  
+
 toSign-isMonoidIsomorphism : IsMonoidIsomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
 toSign-isMonoidIsomorphism = record
   { isMonoidMonomorphism = toSign-isMonoidMonomorphism
   ; surjective = toSign-surjective
   }
-  
+
 toSign-isGroupHomomorphism : IsGroupHomomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
 toSign-isGroupHomomorphism = record
   { isMonoidHomomorphism = toSign-isMonoidHomomorphism
   ; ⁻¹-homo = ⁻¹-homo-opposite
   }
-  
+
 toSign-isGroupMonomorphism : IsGroupMonomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
 toSign-isGroupMonomorphism = record
   { isGroupHomomorphism = toSign-isGroupHomomorphism
   ; injective = toSign-injective
   }
-  
+
 toSign-isGroupIsomorphism : IsGroupIsomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
 toSign-isGroupIsomorphism = record
   { isGroupMonomorphism = toSign-isGroupMonomorphism
