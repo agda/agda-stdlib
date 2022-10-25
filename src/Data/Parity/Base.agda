@@ -8,7 +8,8 @@
 
 module Data.Parity.Base where
 
-open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
+open import Algebra.Bundles.Raw
+  using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
 open import Data.Sign.Base using (Sign; +; -)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality
@@ -25,9 +26,9 @@ data Parity : Set where
 
 -- The opposite parity.
 
-_ᵒ : Parity → Parity
-1ℙ ᵒ = 0ℙ
-0ℙ ᵒ = 1ℙ
+_⁻¹ : Parity → Parity
+1ℙ ⁻¹ = 0ℙ
+0ℙ ⁻¹ = 1ℙ
 
 -- Addition.
 
@@ -35,7 +36,7 @@ infixl 7 _+_
 
 _+_ : Parity → Parity → Parity
 0ℙ + p = p
-1ℙ + p = p ᵒ
+1ℙ + p = p ⁻¹
 
 -- Multiplication.
 

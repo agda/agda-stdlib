@@ -15,7 +15,8 @@ open import Data.Product using (_,_)
 open import Data.Sign as Sign using (Sign)
 open import Function hiding (Inverse)
 open import Level using (0ℓ)
-open import Relation.Binary using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
+open import Relation.Binary
+  using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 
@@ -49,46 +50,46 @@ _≟_ : DecidableEquality Parity
 ≡-isDecEquivalence = isDecEquivalence _≟_
 
 ------------------------------------------------------------------------
--- _ᵒ
+-- _⁻¹
 
-p≢pᵒ : ∀ p → p ≢ p ᵒ
-p≢pᵒ 1ℙ ()
-p≢pᵒ 0ℙ ()
+p≢p⁻¹ : ∀ p → p ≢ p ⁻¹
+p≢p⁻¹ 1ℙ ()
+p≢p⁻¹ 0ℙ ()
 
-ᵒ-inverts : ∀ {p q} → p ᵒ ≡ q → q ᵒ ≡ p
-ᵒ-inverts { 1ℙ } { 0ℙ } refl = refl
-ᵒ-inverts { 0ℙ } { 1ℙ } refl = refl
+⁻¹-inverts : ∀ {p q} → p ⁻¹ ≡ q → q ⁻¹ ≡ p
+⁻¹-inverts { 1ℙ } { 0ℙ } refl = refl
+⁻¹-inverts { 0ℙ } { 1ℙ } refl = refl
 
-ᵒ-involutive : ∀ p → (p ᵒ) ᵒ ≡ p
-ᵒ-involutive p = ᵒ-inverts refl
+⁻¹-involutive : ∀ p → (p ⁻¹) ⁻¹ ≡ p
+⁻¹-involutive p = ⁻¹-inverts refl
 
-ᵒ-injective : ∀ {p q} → p ᵒ ≡ q ᵒ → p ≡ q
-ᵒ-injective {p} {q} eq = begin
-  p       ≡⟨ sym (ᵒ-inverts eq) ⟩
-  (q ᵒ) ᵒ ≡⟨ ᵒ-involutive q ⟩
-  q       ∎ where open ≡-Reasoning
-
-------------------------------------------------------------------------
--- ᵒ and _+_
-
-p+pᵒ≡1ℙ : ∀ p → p + p ᵒ ≡ 1ℙ
-p+pᵒ≡1ℙ 0ℙ = refl
-p+pᵒ≡1ℙ 1ℙ = refl
-
-pᵒ+p≡1ℙ : ∀ p → p ᵒ + p ≡ 1ℙ
-pᵒ+p≡1ℙ 0ℙ = refl
-pᵒ+p≡1ℙ 1ℙ = refl
+⁻¹-injective : ∀ {p q} → p ⁻¹ ≡ q ⁻¹ → p ≡ q
+⁻¹-injective {p} {q} eq = begin
+  p         ≡⟨ sym (⁻¹-inverts eq) ⟩
+  (q ⁻¹) ⁻¹ ≡⟨ ⁻¹-involutive q ⟩
+  q         ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- ᵒ and _*_
+-- ⁻¹ and _+_
 
-p*pᵒ≡0ℙ : ∀ p → p * p ᵒ ≡ 0ℙ
-p*pᵒ≡0ℙ 0ℙ = refl
-p*pᵒ≡0ℙ 1ℙ = refl
+p+p⁻¹≡1ℙ : ∀ p → p + p ⁻¹ ≡ 1ℙ
+p+p⁻¹≡1ℙ 0ℙ = refl
+p+p⁻¹≡1ℙ 1ℙ = refl
 
-pᵒ*p≡0ℙ : ∀ p → p ᵒ * p ≡ 0ℙ
-pᵒ*p≡0ℙ 0ℙ = refl
-pᵒ*p≡0ℙ 1ℙ = refl
+p⁻¹+p≡1ℙ : ∀ p → p ⁻¹ + p ≡ 1ℙ
+p⁻¹+p≡1ℙ 0ℙ = refl
+p⁻¹+p≡1ℙ 1ℙ = refl
+
+------------------------------------------------------------------------
+-- ⁻¹ and _*_
+
+p*p⁻¹≡0ℙ : ∀ p → p * p ⁻¹ ≡ 0ℙ
+p*p⁻¹≡0ℙ 0ℙ = refl
+p*p⁻¹≡0ℙ 1ℙ = refl
+
+p⁻¹*p≡0ℙ : ∀ p → p ⁻¹ * p ≡ 0ℙ
+p⁻¹*p≡0ℙ 0ℙ = refl
+p⁻¹*p≡0ℙ 1ℙ = refl
 
 ------------------------------------------------------------------------
 -- _+_
@@ -124,12 +125,12 @@ p+p≡0ℙ 1ℙ = refl
 
 +-cancelʳ-≡ : RightCancellative _+_
 +-cancelʳ-≡ _ 1ℙ 1ℙ _  = refl
-+-cancelʳ-≡ _ 1ℙ 0ℙ eq = ⊥-elim (p≢pᵒ _ $ sym eq)
-+-cancelʳ-≡ _ 0ℙ 1ℙ eq = ⊥-elim (p≢pᵒ _ eq)
++-cancelʳ-≡ _ 1ℙ 0ℙ eq = ⊥-elim (p≢p⁻¹ _ $ sym eq)
++-cancelʳ-≡ _ 0ℙ 1ℙ eq = ⊥-elim (p≢p⁻¹ _ eq)
 +-cancelʳ-≡ _ 0ℙ 0ℙ _  = refl
 
 +-cancelˡ-≡ : LeftCancellative _+_
-+-cancelˡ-≡ 1ℙ _ _ eq = ᵒ-injective eq
++-cancelˡ-≡ 1ℙ _ _ eq = ⁻¹-injective eq
 +-cancelˡ-≡ 0ℙ _ _ eq = eq
 
 +-cancel-≡ : Cancellative _+_
