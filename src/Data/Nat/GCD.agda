@@ -23,7 +23,7 @@ open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; subst; cong)
-open import Relation.Nullary using (Dec)
+open import Relation.Nullary.Decidable using (Dec)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 

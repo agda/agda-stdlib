@@ -18,7 +18,7 @@ open import Function.Base using (_∘₂_)
 open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.Consequences using (sym⇒¬-sym; cotrans⇒¬-trans)
 open import Relation.Binary.Structures using (IsEquivalence; IsApartnessRelation)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 ¬#-isEquivalence : Reflexive _≈_ → IsApartnessRelation _≈_ _#_ →
                    IsEquivalence (¬_ ∘₂ _#_)

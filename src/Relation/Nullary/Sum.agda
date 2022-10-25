@@ -10,7 +10,7 @@ module Relation.Nullary.Sum where
 
 {-# WARNING_ON_IMPORT
 "Relation.Nullary.Sum was deprecated in v2.0.
-Use `Relation.Nullary` instead."
+Use `Relation.Nullary.Decidable` or `Relation.Nullary` instead."
 #-}
 
 open import Relation.Nullary.Negation.Core public using (_¬-⊎_)

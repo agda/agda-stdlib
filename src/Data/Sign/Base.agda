@@ -10,7 +10,7 @@ module Data.Sign.Base where
 
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 
 ------------------------------------------------------------------------
 -- Definition

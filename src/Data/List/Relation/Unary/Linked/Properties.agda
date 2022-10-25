@@ -25,7 +25,7 @@ open import Function.Base using (_∘_; flip; _on_)
 open import Relation.Binary using (Rel; Transitive; DecSetoid)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (yes; no; does)
+open import Relation.Nullary.Decidable using (yes; no; does)
 
 private
   variable

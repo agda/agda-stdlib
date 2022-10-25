@@ -16,7 +16,7 @@ open import Data.List.Relation.Unary.Any
   using (Any; index; map; here; there)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Relation.Unary using (Pred)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 open Setoid S renaming (Carrier to A)
 

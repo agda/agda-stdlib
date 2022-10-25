@@ -22,7 +22,7 @@ open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable using (¬?)
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
