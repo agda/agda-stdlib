@@ -2381,3 +2381,8 @@ pos-distrib-* m n = sym (pos-* m n)
 "Warning: pos-distrib-* was deprecated in v2.0
 Please use pos-* instead."
 #-}
++-isAbelianGroup = +-0-isAbelianGroup
+{-# WARNING_ON_USAGE +-isAbelianGroup
+"Warning: +-isAbelianGroup was deprecated in v2.0
+Please use +-0-isAbelianGroup instead."
+#-}
