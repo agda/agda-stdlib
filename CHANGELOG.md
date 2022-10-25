@@ -1739,6 +1739,13 @@ Other minor changes
   _⊓′_ : ℕ → ℕ → ℕ
   ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
+
+  +-rawMagma          : RawMagma 0ℓ 0ℓ
+  +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
+  *-rawMagma          : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid       : RawMonoid 0ℓ 0ℓ
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
   ```
 
 
