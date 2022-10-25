@@ -11,7 +11,7 @@
 
 module Data.Nat.Base where
 
-open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
@@ -323,3 +323,36 @@ compare (suc m) (suc n) with compare m n
   ; _∙_ = _+_
   ; ε   = 0
   }
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε = 1
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  ; 1# = 1
+  }
+
