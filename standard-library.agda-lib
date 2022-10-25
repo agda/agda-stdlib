@@ -1,2 +1,4 @@
 name: standard-library-1.7.2
 include: src
+flags:
+  --warning=noNoEquivWhenSplitting
