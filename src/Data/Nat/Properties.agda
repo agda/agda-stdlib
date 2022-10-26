@@ -349,10 +349,10 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 <-trans (s≤s i≤j) (s≤s j<k) = s≤s (≤-trans i≤j (≤-trans (n≤1+n _) j<k))
 
 <-transʳ : Trans _≤_ _<_ _<_
-<-transʳ m≤n (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
+<-transʳ m≤n (s<s n≤o) = s≤s (≤-trans m≤n n≤o)
 
 <-transˡ : Trans _<_ _≤_ _<_
-<-transˡ (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
+<-transˡ (s<s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
 -- NB: we use the builtin function `_<ᵇ_` here so that the function
 -- quickly decides which constructor to return. It still takes a
@@ -1047,7 +1047,7 @@ m^n≢0 : ∀ m n .{{_ : NonZero m}} → NonZero (m ^ n)
 m^n≢0 m n = ≢-nonZero (≢-nonZero⁻¹ m ∘′ m^n≡0⇒m≡0 m n)
 
 2^n>0 : ∀ (n : ℕ) → 2 ^ n > 0
-2^n>0 zero = s≤s z≤n
+2^n>0 zero = z<s
 2^n>0 (suc n) = ≤-trans (2^n>0 n) (m≤m+n (2 ^ n) ((2 ^ n) + zero))
 
 ------------------------------------------------------------------------
