@@ -37,9 +37,9 @@ module _ {f g F} (App : RawApplicative {f} {g} F) where
   open RawApplicative App
 
   sequenceA : ∀ {n A} → F A ^ n → F (A ^ n)
-  sequenceA {0}    _          = pure _
-  sequenceA {1}    fa         = fa
-  sequenceA {2+ n} (fa , fas) = _,_ <$> fa ⊛ sequenceA fas
+  sequenceA {0}    _                   = pure _
+  sequenceA {1}    fa                  = fa
+  sequenceA {suc n@(suc _)} (fa , fas) = _,_ <$> fa ⊛ sequenceA fas
 
   mapA : ∀ {n a} {A : Set a} {B} → (A → F B) → A ^ n → F (B ^ n)
   mapA f = sequenceA ∘ map f _
