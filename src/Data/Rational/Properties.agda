@@ -826,13 +826,13 @@ toℚᵘ-isMagmaHomomorphism-+ = record
   ; homo              = toℚᵘ-homo-+
   }
 
-toℚᵘ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-rawMonoid ℚᵘ.+-rawMonoid toℚᵘ
+toℚᵘ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℚᵘ.+-0-rawMonoid toℚᵘ
 toℚᵘ-isMonoidHomomorphism-+ = record
   { isMagmaHomomorphism = toℚᵘ-isMagmaHomomorphism-+
   ; ε-homo              = ℚᵘ.≃-refl
   }
 
-toℚᵘ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-rawMonoid ℚᵘ.+-rawMonoid toℚᵘ
+toℚᵘ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℚᵘ.+-0-rawMonoid toℚᵘ
 toℚᵘ-isMonoidMonomorphism-+ = record
   { isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-+
   ; injective            = toℚᵘ-injective
@@ -1041,13 +1041,13 @@ toℚᵘ-isMagmaHomomorphism-* = record
   ; homo              = toℚᵘ-homo-*
   }
 
-toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℚᵘ.*-1-rawMonoid toℚᵘ
 toℚᵘ-isMonoidHomomorphism-* = record
   { isMagmaHomomorphism = toℚᵘ-isMagmaHomomorphism-*
   ; ε-homo              = ℚᵘ.≃-refl
   }
 
-toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℚᵘ.*-1-rawMonoid toℚᵘ
 toℚᵘ-isMonoidMonomorphism-* = record
   { isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
   ; injective            = toℚᵘ-injective
