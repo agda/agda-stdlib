@@ -6,7 +6,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for issue #1726
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 module Data.Fin.Properties where
 
@@ -1122,10 +1122,6 @@ eq? = inj⇒≟
 "Warning: eq? was deprecated in v2.0.
 Please use inj⇒≟ instead."
 #-}
-------------------------------------------------------------------------
--- deprecated properties of deprecated _≺_
--- introduce new proofs, actually simplified compared to original
--- so that Data.Fin.Properties doesn't mention the constructor
 
 private
 

@@ -332,13 +332,10 @@ NB argument order has been flipped:
 the left-hand argument is the Fin m
 the right-hand is the Nat index increment."
 #-}
-------------------------------------------------------------------------
--- _≺_
 
 data _≺_ : ℕ → ℕ → Set where
   _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
 
--- now do the deprecation!
 {-# WARNING_ON_USAGE _≺_
 "Warning: _≺_ was deprecated in v2.0.
 Please use equivalent relation _<_ instead."

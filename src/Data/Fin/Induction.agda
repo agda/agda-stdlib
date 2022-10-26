@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
-{-# OPTIONS --warn=noUserWarning #-} -- for issue #1726
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 open import Data.Fin.Base
 open import Data.Fin.Properties
@@ -21,7 +21,8 @@ open import Function.Base using (flip; _$_)
 open import Induction
 open import Induction.WellFounded as WF
 open import Level using (Level)
-open import Relation.Binary using (Rel; Decidable; IsPartialOrder; IsStrictPartialOrder; StrictPartialOrder)
+open import Relation.Binary
+  using (Rel; Decidable; IsPartialOrder; IsStrictPartialOrder; StrictPartialOrder)
 import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.Flip as Flip
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
@@ -150,9 +151,6 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
 -- not guaranteed.
 
 -- Version 2.0
-
-------------------------------------------------------------------------
--- Induction over _≺_
 
 ≺-Rec : RecStruct ℕ ℓ ℓ
 ≺-Rec = WfRec _≺_
