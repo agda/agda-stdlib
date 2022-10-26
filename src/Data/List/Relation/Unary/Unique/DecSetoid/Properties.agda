@@ -12,7 +12,7 @@ open import Data.List.Relation.Unary.All.Properties using (all-filter)
 open import Data.List.Relation.Unary.Unique.Setoid.Properties
 open import Level
 open import Relation.Binary using (DecSetoid)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Decidable using (¬?)
 
 module Data.List.Relation.Unary.Unique.DecSetoid.Properties where
 

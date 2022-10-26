@@ -11,28 +11,25 @@ open import Relation.Binary using (Setoid; _⇒_; _Preserves_⟶_)
 module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
 
-open import Level
-
 open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Relation.Unary.Any using (Any)
+import Data.Maybe.Relation.Unary.All as Maybe
+open import Data.Nat.Base using (_≤_; _≥_)
+import Data.Nat.Properties as ℕₚ
+open import Data.Product using (∃; _,_; proj₂)
+open import Function.Base
+open import Function.Bundles using (_⇔_; _⤖_)
+open import Level
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Unary using (Pred; Decidable; Irrelevant)
+open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Decidable using (¬?)
+
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
-open import Data.List.Relation.Unary.Any using (Any)
-
-import Data.Maybe.Relation.Unary.All as Maybe
-open import Data.Nat.Base using (_≤_; _≥_)
-import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃; _,_; proj₂)
-
-open import Function.Base
-open import Function.Bundles using (_⇔_; _⤖_)
-
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
-open import Relation.Unary using (Pred; Decidable; Irrelevant)
-open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation using (¬?)
 
 open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl)
