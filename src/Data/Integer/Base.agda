@@ -12,7 +12,7 @@
 module Data.Integer.Base where
 
 open import Algebra.Bundles.Raw
-  using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring; RawRing)
+  using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s)
 open import Data.Sign.Base as Sign using (Sign)
@@ -304,6 +304,9 @@ i % j = i %ℕ ∣ j ∣
 
 +-0-rawMonoid : RawMonoid 0ℓ 0ℓ
 +-0-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _+_ ; ε = 0ℤ }
+
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record { _≈_ = _≡_ ; _∙_ = _+_ ; _⁻¹ = -_; ε = 0ℤ }
 
 *-rawMagma : RawMagma 0ℓ 0ℓ
 *-rawMagma = record { _≈_ = _≡_ ; _∙_ = _*_ }
