@@ -11,6 +11,7 @@
 
 module Data.List.Base where
 
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
@@ -27,6 +28,7 @@ open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
@@ -463,6 +465,24 @@ infixl 6 _∷ʳ?_
 _∷ʳ?_ : List A → Maybe A → List A
 xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
 
+------------------------------------------------------------------------
+-- Raw algebraic bundles
+
+module _ (A : Set a) where
+  ++-rawMagma : RawMagma a _
+  ++-rawMagma = record
+    { Carrier = List A
+    ; _≈_ = _≡_
+    ; _∙_ = _++_
+    }
+
+  ++-[]-rawMonoid : RawMonoid a _
+  ++-[]-rawMonoid = record
+    { Carrier = List A
+    ; _≈_ = _≡_
+    ; _∙_ = _++_
+    ; ε = []
+    }
 
 ------------------------------------------------------------------------
 -- DEPRECATED

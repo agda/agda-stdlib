@@ -1716,10 +1716,12 @@ Other minor changes
   deduplicateᵇ : (A → A → Bool) → List A → List A
   ```
 
-* Added new functions to `Data.List.Base`:
+* Added new functions and definitions to `Data.List.Base`:
   ```agda
   catMaybes : List (Maybe A) → List A
   ap : List (A → B) → List A → List B
+  ++-rawMagma : Set a → RawMagma a _
+  ++-[]-rawMonoid : Set a → RawMonoid a _
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
@@ -1752,6 +1754,9 @@ Other minor changes
   concatMap-pure : concatMap [_] ≗ id
   concatMap-map  : concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
   map-concatMap  : map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
+
+  length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
