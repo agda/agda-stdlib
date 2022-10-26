@@ -968,6 +968,8 @@ Deprecated names
   pos-distrib-* ↦ pos-*
   pos-+-commute ↦ pos-+
   abs-*-commute ↦ abs-*
+  
+  +-isAbelianGroup ↦ +-0-isAbelianGroup
   ```
   
 * In `Data.List.Properties`:
