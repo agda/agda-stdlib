@@ -521,12 +521,32 @@ Non-backwards compatible changes
       ↦ ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
     ```
 
+### Reorganisation of the `Relation.Nullary` hierarchy
+
+* It was very difficult to use the `Relation.Nullary` modules, as `Relation.Nullary`
+  contained the basic definitions of negation, decidability etc., and the operations and
+  proofs were smeared over `Relation.Nullary.(Negation/Product/Sum/Implication etc.)`.
+  
+* In order to fix this:
+  - the definition of `Dec` and `recompute` have been moved to `Relation.Nullary.Decidable.Core`
+  - the definition of `Reflects` has been moved to `Relation.Nullary.Reflects`
+  - the definition of `¬_` has been moved to `Relation.Nullary.Negation.Core`
+
+* Backwards compatibility has been maintained, as `Relation.Nullary` still re-exports these publicly.
+
+* In order to facilitate this reorganisation the following breaking moves have occured:
+  - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
+  - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
+  - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation` 
+	to `Relation.Nullary.Decidable`.
+  - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
+
 ### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
 
 * The unindexed versions are not defined in terms of the named versions anymore
 
 * The `RawApplicative` and `RawMonad` type classes have been relaxed so that the underlying
-  functors do not need to their domain and codomain to live at the same Set level.
+  functors do not need their domain and codomain to live at the same Set level.
   This is needed for level-increasing functors like `IO : Set l → Set (suc l)`.
 
 * `RawApplicative` is now `RawFunctor + pure + _<*>_` and `RawMonad` is now
@@ -656,6 +676,8 @@ Non-backwards compatible changes
   + the `i` argument to `opposite-suc` has been made explicit;
   + `pigeonhole` has been strengthened: wlog, we return a proof that
     `i < j` rather than a mere `i ≢ j`.
+
+* In `Data.Sum.Base` the definitions `fromDec` and `toDec` have been moved to `Data.Sum`.
 
 * In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
   * `cycle`
@@ -946,6 +968,8 @@ Deprecated names
   pos-distrib-* ↦ pos-*
   pos-+-commute ↦ pos-+
   abs-*-commute ↦ abs-*
+  
+  +-isAbelianGroup ↦ +-0-isAbelianGroup
   ```
   
 * In `Data.List.Properties`:
@@ -1251,6 +1275,11 @@ New modules
   Data.Parity.Base
   Data.Parity.Instances
   Data.Parity.Properties
+  ```
+
+* New base module for `Data.Product` containing only the basic definitions.
+  ```
+  Data.Product.Base
   ```
 
 * Reflection utilities for some specific types:
@@ -1697,10 +1726,12 @@ Other minor changes
   deduplicateᵇ : (A → A → Bool) → List A → List A
   ```
 
-* Added new functions to `Data.List.Base`:
+* Added new functions and definitions to `Data.List.Base`:
   ```agda
   catMaybes : List (Maybe A) → List A
   ap : List (A → B) → List A → List B
+  ++-rawMagma : Set a → RawMagma a _
+  ++-[]-rawMonoid : Set a → RawMonoid a _
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
@@ -1733,6 +1764,9 @@ Other minor changes
   concatMap-pure : concatMap [_] ≗ id
   concatMap-map  : concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
   map-concatMap  : map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
+
+  length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
