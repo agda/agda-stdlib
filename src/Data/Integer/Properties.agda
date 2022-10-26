@@ -944,8 +944,8 @@ distribʳ-⊖-+-neg m n o = begin
   ; ⁻¹-cong  = cong (-_)
   }
 
-+-isAbelianGroup : IsAbelianGroup _+_ +0 (-_)
-+-isAbelianGroup = record
++-0-isAbelianGroup : IsAbelianGroup _+_ +0 (-_)
++-0-isAbelianGroup = record
   { isGroup = +-0-isGroup
   ; comm    = +-comm
   }
@@ -980,7 +980,7 @@ distribʳ-⊖-+-neg m n o = begin
 
 +-0-abelianGroup : AbelianGroup 0ℓ 0ℓ
 +-0-abelianGroup = record
-  { isAbelianGroup = +-isAbelianGroup
+  { isAbelianGroup = +-0-isAbelianGroup
   }
 
 ------------------------------------------------------------------------
@@ -1522,7 +1522,7 @@ private
 
 +-*-isRing : IsRing _+_ _*_ -_ 0ℤ 1ℤ
 +-*-isRing = record
-  { +-isAbelianGroup = +-isAbelianGroup
+  { +-isAbelianGroup = +-0-isAbelianGroup
   ; *-cong           = cong₂ _*_
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
@@ -1538,12 +1538,6 @@ private
 
 ------------------------------------------------------------------------
 -- Bundles
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record { _≈_ = _≡_ ; _∙_ = _*_ }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _*_ ; ε = 1ℤ }
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record
@@ -2387,3 +2381,11 @@ pos-distrib-* m n = sym (pos-* m n)
 "Warning: pos-distrib-* was deprecated in v2.0
 Please use pos-* instead."
 #-}
++-isAbelianGroup = +-0-isAbelianGroup
+{-# WARNING_ON_USAGE +-isAbelianGroup
+"Warning: +-isAbelianGroup was deprecated in v2.0
+Please use +-0-isAbelianGroup instead."
+#-}
+{- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Integer.Base public
+  using (*-rawMagma; *-1-rawMonoid)

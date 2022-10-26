@@ -18,8 +18,8 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_$_)
 
 open import Relation.Nullary using (¬_; Dec; yes; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Negation using (contradiction; ¬?)
+open import Relation.Nullary.Decidable using (map′; ¬?)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
 
