@@ -297,8 +297,8 @@ syntax truncate p = [ p ]
   ; _∙_ = _+_
   }
 
-+-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-rawMonoid = record
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
   { _≈_ = _≃_
   ; _∙_ = _+_
   ; ε   = 0ℚᵘ
@@ -352,9 +352,28 @@ syntax truncate p = [ p ]
   ; _∙_ = _*_
   }
 
-*-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-rawMonoid = record
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
   { _≈_ = _≃_
   ; _∙_ = _*_
   ; ε   = 1ℚᵘ
   }
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
++-rawMonoid = +-0-rawMonoid
+{-# WARNING_ON_USAGE +-rawMonoid
+"Warning: +-rawMonoid was deprecated in v2.0
+Please use +-0-rawMonoid instead."
+#-}
+*-rawMonoid = *-1-rawMonoid
+{-# WARNING_ON_USAGE *-rawMonoid
+"Warning: *-rawMonoid was deprecated in v2.0
+Please use *-1-rawMonoid instead."
+#-}
