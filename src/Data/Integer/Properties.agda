@@ -725,8 +725,8 @@ m⊖1+n<m (suc m) (suc n) = begin-strict
 0⊖m≤+ (suc m) = -≤+
 
 sign-⊖-< : m ℕ.< n → sign (m ⊖ n) ≡ Sign.-
-sign-⊖-< {zero}          (ℕ.s≤s z≤n) = refl
-sign-⊖-< {suc m} {suc n} (ℕ.s≤s m<n) = begin
+sign-⊖-< {zero}          (ℕ.z<s) = refl
+sign-⊖-< {suc m} {suc n} (ℕ.s<s m<n) = begin
   sign (suc m ⊖ suc n) ≡⟨ cong sign ([1+m]⊖[1+n]≡m⊖n m n) ⟩
   sign (m ⊖ n)         ≡⟨ sign-⊖-< m<n ⟩
   Sign.-               ∎ where open ≡-Reasoning
