@@ -31,8 +31,7 @@ open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
 
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
-open import Relation.Nullary.Negation using (¬?)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (¬?)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

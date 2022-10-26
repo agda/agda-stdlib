@@ -31,7 +31,8 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Unary as U using (Decidable; Pred)
 open import Relation.Nullary using (¬_; does; _because_; yes; no)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Negation using (¬?; contradiction)
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable using (¬?)
 open Setoid using (Carrier)
 
 private
