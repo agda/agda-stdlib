@@ -571,8 +571,8 @@ abs-cong {s} {m} {t} {n} eq = begin
 
 neg◃-cancel-< : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
 neg◃-cancel-< {zero}  {zero}  (+<+ ())
-neg◃-cancel-< {suc m} {zero}  -<+       = s≤s z≤n
-neg◃-cancel-< {suc m} {suc n} (-<- n<m) = s≤s n<m
+neg◃-cancel-< {suc m} {zero}  -<+       = z<s
+neg◃-cancel-< {suc m} {suc n} (-<- n<m) = s<s n<m
 
 -◃<+◃ : ∀ m n .{{_ : ℕ.NonZero m}} → Sign.- ◃ m < Sign.+ ◃ n
 -◃<+◃ (suc _) zero    = -<+
