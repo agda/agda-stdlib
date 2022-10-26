@@ -5,6 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Properties where
 
@@ -1687,8 +1688,7 @@ negative<positive {p} {q} p<0 q>0 = neg<pos p q {{p<0}} {{q>0}}
 "Warning: negative<positive was deprecated in v2.0.
 Please use neg<pos instead."
 #-}
-
 {- issue1865/issue1755: raw bundles have moved to `Data.X.Base` -}
 open Data.Rational.Base public
-  using (+-rawMagma; +-rawMonoid; +-0-rawGroup; *-rawMagma; *-rawMonoid;
-  +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
+  using (+-rawMagma; +-0-rawGroup; *-rawMagma; +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
+  renaming (+-0-rawMonoid to +-rawMonoid; *-1-rawMonoid to *-rawMonoid)
