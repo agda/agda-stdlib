@@ -1499,3 +1499,9 @@ Please use +-*-semiring instead."
 "Warning: *-+-commutativeSemiring was deprecated in v1.4.
 Please use +-*-commutativeSemiring instead."
 #-}
+
+-- Version 2.0
+
+{- issue1858/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Nat.Binary.Base public
+  using (+-rawMagma; +-0-rawMonoid; *-rawMagma; *-1-rawMonoid)
