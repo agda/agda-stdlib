@@ -68,7 +68,7 @@ prime? n@(suc (suc _)) = Dec.map′
 -- Relationships between compositeness and primality
 
 composite⇒¬prime : Composite n → ¬ Prime n
-composite⇒¬prime {suc (suc _)} (d , 2≤d , d<n , d∣n) n-prime =
+composite⇒¬prime {n@(suc (suc _))} (d , 2≤d , d<n , d∣n) n-prime =
   n-prime 2≤d d<n d∣n
 
 ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
@@ -76,7 +76,7 @@ composite⇒¬prime {suc (suc _)} (d , 2≤d , d<n , d∣n) n-prime =
   ¬n-composite (d , 2≤d , d<n , d∣n)
 
 prime⇒¬composite : Prime n → ¬ Composite n
-prime⇒¬composite {n@suc (suc _)} n-prime (d , 2≤d , d<n , d∣n) =
+prime⇒¬composite {n@(suc (suc _))} n-prime (d , 2≤d , d<n , d∣n) =
   n-prime 2≤d d<n d∣n
 
 -- note that this has to recompute the factor!
