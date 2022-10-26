@@ -85,7 +85,7 @@ toDigits : (base : ℕ) {base≥2 : True (2 ≤? base)} (n : ℕ) →
            ∃ λ (ds : Expansion base) → fromDigits ds ≡ n
 toDigits base@(suc (suc k)) n = <′-rec Pred helper n
   where
-  
+
   Pred = λ n → ∃ λ ds → fromDigits ds ≡ n
 
   cons : ∀ {m} (r : Digit base) → Pred m → Pred (toℕ r + m * base)
