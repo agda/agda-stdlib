@@ -12,7 +12,9 @@ open import Agda.Builtin.Equality
 open import Data.Bool.Base
 open import Data.Empty
 open import Level
-open import Relation.Nullary
+open import Function.Base using (_$_)
+
+open import Relation.Nullary.Negation.Core
 
 private
   variable
@@ -20,7 +22,17 @@ private
     P : Set p
 
 ------------------------------------------------------------------------
+-- `Reflects` idiom.
+
+-- The truth value of P is reflected by a boolean value.
 -- `Reflects P b` is equivalent to `if b then P else ¬ P`.
+
+data Reflects {p} (P : Set p) : Bool → Set p where
+  ofʸ : ( p :   P) → Reflects P true
+  ofⁿ : (¬p : ¬ P) → Reflects P false
+
+------------------------------------------------------------------------
+-- Constructors and destructors
 
 -- These lemmas are intended to be used mostly when `b` is a value, so
 -- that the `if` expressions have already been evaluated away.
@@ -35,6 +47,16 @@ of {b = true }  p = ofʸ p
 invert : ∀ {b} → Reflects P b → if b then P else ¬ P
 invert (ofʸ  p) = p
 invert (ofⁿ ¬p) = ¬p
+
+
+------------------------------------------------------------------------
+-- Interaction with negation, product, sums etc.
+
+-- If we can decide P, then we can decide its negation.
+
+¬-reflects : ∀ {b} → Reflects P b → Reflects (¬ P) (not b)
+¬-reflects (ofʸ  p) = ofⁿ (_$ p)
+¬-reflects (ofⁿ ¬p) = ofʸ ¬p
 
 ------------------------------------------------------------------------
 -- Other lemmas

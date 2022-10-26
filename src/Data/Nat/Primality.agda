@@ -17,10 +17,10 @@ open import Data.Product
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (flip; _∘_; _∘′_)
 open import Relation.Nullary using (yes; no; ¬_)
-open import Relation.Nullary.Decidable as Dec using (from-yes)
+open import Relation.Nullary.Decidable as Dec using (from-yes; ¬?; decidable-stable)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Implication using (_→-dec_)
-open import Relation.Nullary.Negation using (¬?; contradiction; decidable-stable)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Decidable)
 open import Relation.Binary.PropositionalEquality using (refl; sym; cong; subst)
 

@@ -16,7 +16,7 @@ open import Level using (Level; _⊔_)
 open import Data.Product using (∃)
 
 open import Relation.Nullary using (yes ; no)
-open import Relation.Nullary.Decidable.Core
+open import Relation.Nullary.Decidable
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
