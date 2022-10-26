@@ -476,6 +476,3 @@ toSign-isGroupIsomorphism = record
   }
 
 
-------------------------------------------------------------------------
--- relating Nat and Parity
-
