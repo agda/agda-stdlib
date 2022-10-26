@@ -312,7 +312,7 @@ m<n*o⇒m/o<n : ∀ {m n o} .⦃ _ : NonZero o ⦄ → m < n * o → m / o < n
 m<n*o⇒m/o<n {m} {suc n} {o} m<n*o with m <? o
 ... | yes m<o = begin-strict
   m / o ≡⟨ m<n⇒m/n≡0 m<o ⟩
-  0     <⟨ s≤s z≤n ⟩
+  0     <⟨ z<s ⟩
   suc n ∎
 ... | no m≮o = begin-strict
   m / o             ≡⟨ m/n≡1+[m∸n]/n (≮⇒≥ m≮o) ⟩
