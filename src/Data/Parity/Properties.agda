@@ -32,7 +32,6 @@ module 𝕊toℙ = Algebra.Morphism.Definitions Sign Parity _≡_
 
 open import Algebra.Morphism.Structures
   using (IsMagmaHomomorphism; IsMonoidHomomorphism; IsGroupHomomorphism)
-
 ------------------------------------------------------------------------
 -- Equality
 
