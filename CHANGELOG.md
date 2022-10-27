@@ -1425,6 +1425,15 @@ New modules
   ```
   Algebra.Properties.Quasigroup
   ```
+  
+* Properties of MiddleBolLoop
+  ```
+  Algebra.Properties.MiddleBolLoop
+  ```
+
+* Properties of Loop
+  ```
+  Algebra.Properties.Loop
 
 * Some n-ary functions manipulating lists
   ```
@@ -1466,6 +1475,7 @@ Other minor changes
   record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ))
   record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ))
+  record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -1553,6 +1563,7 @@ Other minor changes
   Semimedial _∙_ = (LeftSemimedial _∙_) × (RightSemimedial _∙_)
   LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ z)) ∙ z )
   RightBol _∙_ = ∀ x y z → (((z ∙ x) ∙ y) ∙ x) ≈ (z ∙ ((x ∙ y) ∙ x))
+  MiddleBol _∙_ _\\_ _//_ = ∀ x y z → (x ∙ ((y ∙ z) \\ x)) ≈ ((x // z) ∙ (y \\ x))
   ```
 
 * Added new functions to `Algebra.Definitions.RawSemiring`:
@@ -1609,6 +1620,7 @@ Other minor changes
   record IsRightBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsMiddleBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
