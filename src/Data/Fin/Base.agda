@@ -49,15 +49,15 @@ data Fin : ℕ → Set where
 -- of an explicit constructor (ℕ.suc) symbol occurring in the type. So
 -- (issue #1686) we also consider constructors and functions defined over
 -- homogeneous telescopes of the form  {n} (i : Fin n) subject to n being
--- ℕ.NonZero, to be instantiated at any cal-site by instance inference.
+-- NonZero, to be instantiated at any cal-site by instance inference.
 -- This additional functionality will be systematically marked by use of a prime \'.
 
 -- homogeneous constructors
 
-zero′ : .{{ℕ.NonZero n}} → Fin n
+zero′ : .{{NonZero n}} → Fin n
 zero′ {n = suc _} = zero
 
-suc′ : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
+suc′ : .{{NonZero n}} → Fin (ℕ.pred n) → Fin n
 suc′ {n = suc _} = suc
 
 -- A conversion: toℕ "i" = i.
@@ -133,14 +133,14 @@ inject! : ∀ {i : Fin (suc n)} → Fin′ i → Fin n
 inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
-inject!′ : .{{ℕ.NonZero n}} → {i : Fin n} → Fin′ i → Fin (ℕ.pred n)
+inject!′ : .{{NonZero n}} → {i : Fin n} → Fin′ i → Fin (ℕ.pred n)
 inject!′ {n = suc _} = inject!
 
 inject₁ : Fin n → Fin (suc n)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
-inject₁′ : .{{ℕ.NonZero n}} → Fin (ℕ.pred n) → Fin n
+inject₁′ : .{{NonZero n}} → Fin (ℕ.pred n) → Fin n
 inject₁′ {n = suc _} = inject₁
 
 inject≤ : Fin m → m ℕ.≤ n → Fin n
@@ -154,7 +154,7 @@ lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
 lower₁ {suc n} zero    _  = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
-lower₁′ : .{{ℕ.NonZero n}} →
+lower₁′ : .{{NonZero n}} →
           (i : Fin n) → n ≢ suc (toℕ i) → Fin (ℕ.pred n)
 lower₁′ {n = suc _} i ne = lower₁ i (ne ∘ cong suc)
 
@@ -296,7 +296,7 @@ punchOut {_}     {zero}   {suc j} _   = j
 punchOut {suc _} {suc i}  {zero}  _   = zero
 punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
 
-punchOut′ : .{{ℕ.NonZero n}} →
+punchOut′ : .{{NonZero n}} →
            {i j : Fin n} → i ≢ j → Fin (ℕ.pred n)
 punchOut′ {n = suc _} = punchOut
 
@@ -307,7 +307,7 @@ punchIn zero    j       = suc j
 punchIn (suc i) zero    = zero
 punchIn (suc i) (suc j) = suc (punchIn i j)
 
-punchIn′ : .{{ℕ.NonZero n}} →
+punchIn′ : .{{NonZero n}} →
           Fin n → Fin (ℕ.pred n) → Fin n
 punchIn′ {n = suc _} = punchIn
 
@@ -318,7 +318,7 @@ pinch {suc n} _       zero    = zero
 pinch {suc n} zero    (suc j) = j
 pinch {suc n} (suc i) (suc j) = suc (pinch i j)
 
-pinch′ : .{{ℕ.NonZero n}} →
+pinch′ : .{{NonZero n}} →
         Fin (ℕ.pred n) → Fin n → Fin (ℕ.pred n)
 pinch′ {n = suc _} = pinch
 
