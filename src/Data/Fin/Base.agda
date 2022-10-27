@@ -14,7 +14,7 @@ module Data.Fin.Base where
 
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥-elim)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero; z≤n; s≤s; z<s; s<s; _^_)
 open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
@@ -254,19 +254,25 @@ suc i - suc j  = i - j
 
 -- m ℕ- "i" = "m ∸ i".
 
-infixl 6 _ℕ-_
+infixl 6 _ℕ-_ _ℕ-′_
 
 _ℕ-_ : (n : ℕ) (j : Fin (suc n)) → Fin (suc n ℕ.∸ toℕ j)
 n     ℕ- zero   = fromℕ n
 suc n ℕ- suc i  = n ℕ- i
 
+_ℕ-′_ : (n : ℕ) {{_ : NonZero n}} (j : Fin n) → Fin (n ℕ.∸ toℕ j)
+(suc n) ℕ-′ i = n ℕ- i
+
 -- m ℕ-ℕ "i" = m ∸ i.
 
-infixl 6 _ℕ-ℕ_
+infixl 6 _ℕ-ℕ_ _ℕ-ℕ′_
 
 _ℕ-ℕ_ : (n : ℕ) → Fin (suc n) → ℕ
 n     ℕ-ℕ zero   = n
 suc n ℕ-ℕ suc i  = n ℕ-ℕ i
+
+_ℕ-ℕ′_ : (n : ℕ) {{_ : NonZero n}} → Fin n → ℕ
+suc n ℕ-ℕ′ i  = n ℕ-ℕ i
 
 -- pred "i" = "pred i".
 

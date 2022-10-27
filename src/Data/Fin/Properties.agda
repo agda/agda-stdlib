@@ -17,7 +17,7 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; _∸_; _^_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero; s≤s; z≤n; z<s; s<s; _∸_; _^_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
@@ -199,10 +199,10 @@ fromℕ-toℕ : ∀ (i : Fin n) → fromℕ (toℕ i) ≡ strengthen i
 fromℕ-toℕ zero    = refl
 fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
-≤fromℕ : ∀ (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
+≤fromℕ : ∀ (i : Fin (suc n)) → i ≤ fromℕ n
 ≤fromℕ i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ _)) (toℕ≤pred[n] i)
 
-≤fromℕ′ : .{{ℕ.NonZero n}} →
+≤fromℕ′ : .{{NonZero n}} →
           (i : Fin n) → i ≤ fromℕ (ℕ.pred n)
 ≤fromℕ′ {n = suc n} i = ≤fromℕ i
 
@@ -470,7 +470,7 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 ≤̄⇒inject₁< : i ≤ j → inject₁ i < suc j
 ≤̄⇒inject₁< {i = i} i≤j rewrite sym (toℕ-inject₁ i) = s<s i≤j
 
-ℕ<⇒inject₁< : ∀ {i : Fin (ℕ.suc n)} {j : Fin n} → j < i → inject₁ j < i
+ℕ<⇒inject₁< : ∀ {i : Fin (suc n)} {j : Fin n} → j < i → inject₁ j < i
 ℕ<⇒inject₁< {i = suc i} (s≤s j≤i) = ≤̄⇒inject₁< j≤i
 
 i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
@@ -482,9 +482,9 @@ i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ
 ------------------------------------------------------------------------
 
 toℕ-lower₁ : ∀ i (p : n ≢ toℕ i) → toℕ (lower₁ i p) ≡ toℕ i
-toℕ-lower₁ {ℕ.zero}  zero    p = contradiction refl p
-toℕ-lower₁ {ℕ.suc m} zero    p = refl
-toℕ-lower₁ {ℕ.suc m} (suc i) p = cong ℕ.suc (toℕ-lower₁ i (p ∘ cong ℕ.suc))
+toℕ-lower₁ {zero}  zero    p = contradiction refl p
+toℕ-lower₁ {suc m} zero    p = refl
+toℕ-lower₁ {suc m} (suc i) p = cong suc (toℕ-lower₁ i (p ∘ cong suc))
 
 lower₁-injective : ∀ {n≢i : n ≢ toℕ i} {n≢j : n ≢ toℕ j} →
                    lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
@@ -504,7 +504,7 @@ inject₁-lower₁ {suc n} zero     _       = refl
 inject₁-lower₁ {suc n} (suc i)  n+1≢i+1 =
   cong suc (inject₁-lower₁ i  (n+1≢i+1 ∘ cong suc))
 
-inject₁-lower₁′ : .{{_ : ℕ.NonZero n}} →
+inject₁-lower₁′ : .{{_ : NonZero n}} →
                   (i : Fin n) (n≢i+1 : n ≢ suc (toℕ i)) →
                   inject₁′ (lower₁′ i n≢i+1) ≡ i
 inject₁-lower₁′ {n = suc n} i n≢i+1 = inject₁-lower₁ i (n≢i+1 ∘ cong suc)
@@ -526,17 +526,17 @@ lower₁-irrelevant {suc n} zero     _   _ = refl
 lower₁-irrelevant {suc n} (suc i)  _   _ =
   cong suc (lower₁-irrelevant i _ _)
 
-lower₁-irrelevant′ : .{{_ : ℕ.NonZero n}} →
+lower₁-irrelevant′ : .{{_ : NonZero n}} →
                     (i : Fin n) (n≢i₁+1 n≢i₂+1 : n ≢ suc (toℕ i)) →
                     lower₁′ i n≢i₁+1 ≡ lower₁′ i n≢i₂+1
 lower₁-irrelevant′ {n = suc n} i n≢i₁+1 n≢i₂+1 =
   lower₁-irrelevant i (n≢i₁+1 ∘ cong suc) (n≢i₂+1 ∘ cong suc)
 
-inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (ℕ.suc n)} →
+inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (suc n)} →
                   (n≢j : n ≢ toℕ j) → inject₁ i ≡ j → lower₁ j n≢j ≡ i
 inject₁≡⇒lower₁≡ n≢j i≡j = inject₁-injective (trans (inject₁-lower₁ _ n≢j) (sym i≡j))
 
-inject₁≡⇒lower₁≡′ : .{{_ : ℕ.NonZero n}} →
+inject₁≡⇒lower₁≡′ : .{{_ : NonZero n}} →
                      {i : Fin (ℕ.pred n)} {j : Fin n} →
                      (n≢j+1 : n ≢ suc (toℕ j)) → inject₁′ i ≡ j → lower₁′ j n≢j+1 ≡ i
 inject₁≡⇒lower₁≡′ {n = suc n} n≢j+1 = inject₁≡⇒lower₁≡ (n≢j+1 ∘ cong suc)
@@ -574,7 +574,7 @@ pred< : ∀ (i : Fin (suc n)) → i ≢ zero → pred i < i
 pred< zero    i≢0 = contradiction refl i≢0
 pred< (suc i) _   = ≤̄⇒inject₁< ℕₚ.≤-refl
 
-pred<′ : .{{_ : ℕ.NonZero n}} →
+pred<′ : .{{_ : NonZero n}} →
         (i : Fin n) → i ≢ zero′ → pred i < i
 pred<′ {n = suc n} i = pred< i
 
@@ -855,7 +855,7 @@ punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
 punchOut-cong {suc n} (suc i) {zero}  {zero}   _ = refl
 punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i ∘ suc-injective
 
-punchOut-cong′ : .{{_ : ℕ.NonZero n}} →
+punchOut-cong′ : .{{_ : NonZero n}} →
                  ∀ (i : Fin n) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} →
                  j ≡ k → punchOut′ i≢j ≡ punchOut′ i≢k
 punchOut-cong′ {n = suc n} = punchOut-cong
@@ -868,7 +868,7 @@ punchOut-cong-eq : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
                  punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
 punchOut-cong-eq i q = punchOut-cong i q
 
-punchOut-cong-eq′ : .{{_ : ℕ.NonZero n}} →
+punchOut-cong-eq′ : .{{_ : NonZero n}} →
                    ∀ (i : Fin n) {j k} {p : i ≢ j} (q : j ≡ k) →
                    punchOut′ p ≡ punchOut′ (p ∘ sym ∘ trans q ∘ sym)
 punchOut-cong-eq′ {n = suc n} = punchOut-cong-eq
@@ -883,7 +883,7 @@ punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
   cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
 
-punchOut-injective′ : .{{_ : ℕ.NonZero n}} →
+punchOut-injective′ : .{{_ : NonZero n}} →
                      {i j k : Fin n} (i≢j : i ≢ j) (i≢k : i ≢ k) →
                      punchOut′ i≢j ≡ punchOut′ i≢k → j ≡ k
 punchOut-injective′ {n = suc n} = punchOut-injective
@@ -896,7 +896,7 @@ punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
   cong suc (punchIn-punchOut (i≢j ∘ cong suc))
 
-punchIn-punchOut′ : .{{_ : ℕ.NonZero n}} →
+punchIn-punchOut′ : .{{_ : NonZero n}} →
                    {i j : Fin n} (i≢j : i ≢ j) →
                    punchIn′ i (punchOut′ i≢j) ≡ j
 punchIn-punchOut′ {n = suc n} = punchIn-punchOut
@@ -926,7 +926,7 @@ pinch-mono-≤ 0F      {suc j} {suc k} (s≤s j≤k) = j≤k
 pinch-mono-≤ (suc i) {0F}    {k}     0≤n       = z≤n
 pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
 
-pinch-injective : ∀ {i : Fin n} {j k : Fin (ℕ.suc n)} →
+pinch-injective : ∀ {i : Fin n} {j k : Fin (suc n)} →
                   suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
 pinch-injective {i = i}     {zero}  {zero}  _     _     _  = refl
 pinch-injective {i = zero}  {zero}  {suc k} _     1+i≢k eq =
@@ -940,7 +940,7 @@ pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
     (pinch-injective (1+i≢j ∘ cong suc) (1+i≢k ∘ cong suc)
       (suc-injective eq))
 
-pinch-injective′ : .{{_ : ℕ.NonZero n}} →
+pinch-injective′ : .{{_ : NonZero n}} →
                   {i : Fin (ℕ.pred n)} {j k : Fin n} →
                   suc′ i ≢ j → suc′ i ≢ k → pinch′ i j ≡ pinch′ i k → j ≡ k
 pinch-injective′ {n = suc n} = pinch-injective

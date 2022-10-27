@@ -1659,10 +1659,12 @@ Other minor changes
   where the `Fin` index `n` is `NonZero`: 
   ```
   zero′     : Fin n
-  suc'     : Fin (ℕ.pred n) → Fin n
+  suc'      : Fin (ℕ.pred n) → Fin n
   inject!′  : {i : Fin n} → Fin′ i → Fin (ℕ.pred n)
   inject₁′  : Fin (ℕ.pred n) → Fin n
   lower₁′   : (i : Fin n) → n ≢ suc (toℕ i) → Fin (ℕ.pred n)
+  _ℕ-′_     : (j : Fin n) → Fin (n ℕ.∸ toℕ j)
+  _ℕ-ℕ′_    : Fin n → ℕ
   punchOut′ : {i j : Fin n} → i ≢ j → Fin (ℕ.pred n)
   punchIn′  : Fin n → Fin (ℕ.pred n) → Fin n
   pinch′    : Fin (ℕ.pred n) → Fin n → Fin (ℕ.pred n)
