@@ -1,4 +1,4 @@
 name: standard-library-2.0
 include: src
 flags:
-  --warning=noNoEquivWhenSplitting
+  --warning=noUnsupportedIndexedMatch
