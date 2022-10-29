@@ -367,7 +367,6 @@ loop M N = record
     }
   } where module M = Loop M; module N = Loop N
 
-
 leftBolLoop : LeftBolLoop a ℓ₁ → LeftBolLoop b ℓ₂ → LeftBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 leftBolLoop M N = record
   { isLeftBolLoop = record
