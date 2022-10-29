@@ -366,3 +366,37 @@ loop M N = record
                , (M.identityʳ , N.identityʳ <*>_)
     }
   } where module M = Loop M; module N = Loop N
+
+
+leftBolLoop : LeftBolLoop a ℓ₁ → LeftBolLoop b ℓ₂ → LeftBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+leftBolLoop M N = record
+  { isLeftBolLoop = record
+    { isLoop = Loop.isLoop (loop M.loop N.loop)
+    ; leftBol = λ x y z → M.leftBol , N.leftBol <*> x <*> y <*> z
+    }
+  } where module M = LeftBolLoop M; module N = LeftBolLoop N
+
+rightBolLoop : RightBolLoop a ℓ₁ → RightBolLoop b ℓ₂ → RightBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+rightBolLoop M N = record
+  { isRightBolLoop = record
+    { isLoop = Loop.isLoop (loop M.loop N.loop)
+    ; rightBol = λ x y z → M.rightBol , N.rightBol <*> x <*> y <*> z
+    }
+  } where module M = RightBolLoop M; module N = RightBolLoop N
+
+middleBolLoop : MiddleBolLoop a ℓ₁ → MiddleBolLoop b ℓ₂ → MiddleBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+middleBolLoop M N = record
+  { isMiddleBolLoop = record
+    { isLoop = Loop.isLoop (loop M.loop N.loop)
+    ; middleBol = λ x y z → M.middleBol , N.middleBol <*> x <*> y <*> z
+    }
+  } where module M = MiddleBolLoop M; module N = MiddleBolLoop N
+
+moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+moufangLoop M N = record
+  { isMoufangLoop = record
+    { isLeftBolLoop = LeftBolLoop.isLeftBolLoop (leftBolLoop M.leftBolLoop N.leftBolLoop)
+    ; rightBol = λ x y z → M.rightBol , N.rightBol <*> x <*> y <*> z
+    ; identical = λ x y z → M.identical , N.identical <*> x <*> y <*> z
+    }
+  } where module M = MoufangLoop M; module N = MoufangLoop N
