@@ -17,8 +17,8 @@ open import Function
 open import Data.Product
 
 0⋆≈1 : 0# ⋆ ≈ 1#
-0⋆≈1 = begin 
-  0# ⋆ ≈⟨ sym (starExpansiveˡ 0#) ⟩ 
+0⋆≈1 = begin
+  0# ⋆           ≈⟨ sym (starExpansiveˡ 0#) ⟩
   1# + 0# ⋆ * 0# ≈⟨ +-congˡ ( zeroʳ (0# ⋆)) ⟩
-  1# + 0# ≈⟨ +-identityʳ 1# ⟩
-  1# ∎
+  1# + 0#        ≈⟨ +-identityʳ 1# ⟩
+  1#             ∎
