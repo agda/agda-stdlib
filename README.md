@@ -59,11 +59,11 @@ Most of the library can be type-checked using the `--safe` flag. Please consult
 [GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L23)
 for a full list of modules that use unsafe features.
 
-#### The `--without-k` flag
+#### The `--cubical-compatible` flag
 
-Most of the library can be type-checked using the `--without-k` flag. Please consult
+Most of the library can be type-checked using the `--cubical-compatible` flag. Please consult
 [GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L74)
-for a full list of modules that use axiom K.
+for a full list of modules that use axiom K and are therefore incompatible.
 
 ## Contributing to the library
 
