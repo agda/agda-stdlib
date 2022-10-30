@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations over Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin.Base
 open import Data.Nat.Base

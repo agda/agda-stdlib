@@ -4,7 +4,7 @@
 -- Alternative definition of divisibility without using modulus.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Divisibility.Signed where
 

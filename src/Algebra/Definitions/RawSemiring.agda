@@ -4,7 +4,7 @@
 -- Basic auxiliary definitions for semiring-like structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (RawSemiring)
 open import Data.Sum.Base using (_⊎_)

@@ -4,7 +4,7 @@
 -- Properties of the unit type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecation warnings for _≤_
 {-# OPTIONS --warn=noUserWarning #-}

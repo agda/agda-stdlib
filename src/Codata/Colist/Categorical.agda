@@ -4,7 +4,7 @@
 -- A categorical view of Colist
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Colist.Categorical where
 

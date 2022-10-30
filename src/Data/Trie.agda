@@ -7,7 +7,7 @@
 -- See README.Data.Trie.NonDependent for an example of using a trie to
 -- build a lexer.
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 open import Relation.Binary using (Rel; StrictTotalOrder)
 

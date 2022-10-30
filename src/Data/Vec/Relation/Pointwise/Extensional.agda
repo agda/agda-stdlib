@@ -5,7 +5,7 @@
 -- Data.Vec.Relation.Binary.Pointwise.Extensional directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Pointwise.Extensional where
 

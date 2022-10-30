@@ -4,7 +4,7 @@
 -- A categorical view of Covec
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Covec.Categorical where
 

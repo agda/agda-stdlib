@@ -5,7 +5,7 @@
 -- instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.N-ary.Categorical where
 

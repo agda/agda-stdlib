@@ -7,7 +7,7 @@
 -- See README.Data.Integer for examples of how to use and reason about
 -- integers.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}

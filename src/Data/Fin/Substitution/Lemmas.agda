@@ -4,7 +4,7 @@
 -- Substitution lemmas
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Substitution.Lemmas where
 

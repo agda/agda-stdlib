@@ -6,7 +6,7 @@
 -- module directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Star.Properties where
 

@@ -4,7 +4,7 @@
 -- Containers, based on the work of Abbott and others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (Level; _⊔_)
 open import Data.W using (W)

@@ -4,7 +4,7 @@
 -- This module is DEPRECATED. Please use `Data.Nat.Binary` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Bin.Properties where
 

@@ -7,7 +7,7 @@
 -- For more general transformations between algebraic structures see
 -- `Algebra.Morphisms`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Product as Prod
 open import Relation.Binary.Core

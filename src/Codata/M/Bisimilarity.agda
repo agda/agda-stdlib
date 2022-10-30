@@ -4,7 +4,7 @@
 -- Bisimilarity for M-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.M.Bisimilarity where
 

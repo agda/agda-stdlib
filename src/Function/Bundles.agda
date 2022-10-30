@@ -15,7 +15,7 @@
 -- other library hierarchies, as this would duplicate the equality
 -- axioms.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Bundles where
 

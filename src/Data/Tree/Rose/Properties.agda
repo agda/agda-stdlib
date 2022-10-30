@@ -4,7 +4,7 @@
 -- Properties of rose trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Data.Tree.Rose.Properties where
 

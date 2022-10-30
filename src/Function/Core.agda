@@ -6,7 +6,7 @@
 
 -- The contents of this file should usually be accessed from `Function`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Core where
 

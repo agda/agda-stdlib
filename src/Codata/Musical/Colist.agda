@@ -4,7 +4,7 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 -- Disabled to prevent warnings from BoundedVec
 {-# OPTIONS --warn=noUserWarning #-}

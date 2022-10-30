@@ -4,7 +4,7 @@
 -- Core definitions for metrics over ℚ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Rational.Base
 open import Function using (const)

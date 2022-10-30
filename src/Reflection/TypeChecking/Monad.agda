@@ -4,7 +4,7 @@
 -- The TC (Type Checking) monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.TypeChecking.Monad where
 

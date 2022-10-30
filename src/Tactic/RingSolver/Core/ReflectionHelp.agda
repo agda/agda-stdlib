@@ -4,7 +4,7 @@
 -- Helper reflection functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Tactic.RingSolver.Core.ReflectionHelp where
 

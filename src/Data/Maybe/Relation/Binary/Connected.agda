@@ -4,7 +4,7 @@
 -- Lifting a relation such that `nothing` is also related to `just`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Binary.Connected where
 

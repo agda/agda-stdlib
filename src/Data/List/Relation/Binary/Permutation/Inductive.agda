@@ -5,7 +5,7 @@
 -- Data.List.Relation.Binary.Permutation.Propositional directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Inductive where
 

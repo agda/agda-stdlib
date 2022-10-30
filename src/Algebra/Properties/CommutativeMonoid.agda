@@ -4,7 +4,7 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecated Table
 {-# OPTIONS --warn=noUserWarning #-}

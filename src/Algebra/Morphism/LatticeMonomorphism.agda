@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Structures
 open import Algebra.Definitions

@@ -4,7 +4,7 @@
 -- IO only involving finite objects
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module IO.Finite where
 

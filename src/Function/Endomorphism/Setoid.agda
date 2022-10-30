@@ -4,7 +4,7 @@
 -- Endomorphisms on a Setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}

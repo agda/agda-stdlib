@@ -4,7 +4,7 @@
 -- AVL trees where the stored values may depend on their key
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (StrictTotalOrder)
 

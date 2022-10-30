@@ -4,7 +4,7 @@
 -- Miscellanous information about the system environment
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module System.Environment where
 

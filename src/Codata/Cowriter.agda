@@ -4,7 +4,7 @@
 -- The Cowriter type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 -- Disabled to prevent warnings from BoundedVec
 {-# OPTIONS --warn=noUserWarning #-}

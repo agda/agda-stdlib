@@ -21,7 +21,7 @@
 --     right-scaling coincide.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Bundles where
 

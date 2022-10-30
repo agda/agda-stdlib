@@ -5,7 +5,7 @@
 -- Data.Vec.Relation.Unary.All.Properties directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.All.Properties where
 

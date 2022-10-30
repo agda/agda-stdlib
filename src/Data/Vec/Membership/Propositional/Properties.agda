@@ -4,7 +4,7 @@
 -- Properties of membership of vectors based on propositional equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Membership.Propositional.Properties where
 

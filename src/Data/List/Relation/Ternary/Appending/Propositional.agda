@@ -4,7 +4,7 @@
 -- Appending of lists using propositional equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Ternary.Appending.Propositional
   {a} {A : Set a}

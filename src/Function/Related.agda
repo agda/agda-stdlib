@@ -5,7 +5,7 @@
 -- such as equivalences, surjections and bijections
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Related where
 

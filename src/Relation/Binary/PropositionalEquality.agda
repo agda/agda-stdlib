@@ -4,7 +4,7 @@
 -- Propositional (intensional) equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.PropositionalEquality where
 

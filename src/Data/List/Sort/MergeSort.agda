@@ -8,7 +8,7 @@
 -- import and use the sorting algorithm from `Data.List.Sort` instead
 -- of this file.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Bool using (true; false)
 open import Data.List.Base

@@ -5,7 +5,7 @@
 -- Data.List.Relation.Binary.Pointwise directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Pointwise where
 

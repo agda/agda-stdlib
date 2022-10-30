@@ -8,7 +8,7 @@
 -- The contents of this module should be accessed via `Algebra`, unless
 -- you want to parameterise it via the equality relation.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 

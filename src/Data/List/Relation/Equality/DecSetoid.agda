@@ -5,7 +5,7 @@
 -- Data.List.Relation.Binary.Equality.DecSetoid directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 

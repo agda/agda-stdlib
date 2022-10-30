@@ -4,7 +4,7 @@
 -- Typeclass instances for _⊥
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --cubical-compatible --safe --guardedness #-}
 
 module Category.Monad.Partiality.Instances where
 

@@ -4,7 +4,7 @@
 -- Basic properties of the function type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Properties where
 

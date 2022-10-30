@@ -6,7 +6,7 @@
 
 -- Vectors of a specified maximum length.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from Data.BoundedVec.Inefficient
 {-# OPTIONS --warn=noUserWarning #-}

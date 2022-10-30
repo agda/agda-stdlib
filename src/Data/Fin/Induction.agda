@@ -4,7 +4,7 @@
 -- Induction over Fin
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin.Base
 open import Data.Fin.Properties

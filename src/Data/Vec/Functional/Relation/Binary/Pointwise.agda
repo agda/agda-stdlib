@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations over Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Binary.Pointwise where
 

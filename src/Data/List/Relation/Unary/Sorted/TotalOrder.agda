@@ -4,7 +4,7 @@
 -- Sorted lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (TotalOrder)
 

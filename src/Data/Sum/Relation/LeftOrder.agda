@@ -5,7 +5,7 @@
 -- Data.Sum.Relation.Binary.LeftOrder directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Sum.Relation.LeftOrder where
 

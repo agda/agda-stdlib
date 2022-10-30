@@ -5,7 +5,7 @@
 -- modules directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Induction.Nat where
 

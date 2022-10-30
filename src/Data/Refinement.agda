@@ -4,7 +4,7 @@
 -- Refinement type: a value together with an erased proof.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Refinement where
 

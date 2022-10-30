@@ -4,7 +4,7 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Unary.All.Properties where
 

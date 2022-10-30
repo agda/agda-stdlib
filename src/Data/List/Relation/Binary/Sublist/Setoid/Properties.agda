@@ -4,7 +4,7 @@
 -- Properties of the setoid sublist relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Setoid; _⇒_; _Preserves_⟶_)
 

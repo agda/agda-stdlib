@@ -6,7 +6,7 @@
 -- directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Inductive.Properties where
 

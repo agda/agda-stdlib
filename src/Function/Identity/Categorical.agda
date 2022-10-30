@@ -4,7 +4,7 @@
 -- A categorical view of the identity function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Identity.Categorical {ℓ} where
 

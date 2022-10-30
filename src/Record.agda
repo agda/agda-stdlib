@@ -4,7 +4,7 @@
 -- This module is DEPRECATED, please use `Data.Record` directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality using (_≡_)

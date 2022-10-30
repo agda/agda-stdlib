@@ -4,7 +4,7 @@
 -- Properties of the Any predicate on colists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Relation.Unary.Any.Properties where
 

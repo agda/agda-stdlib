@@ -4,7 +4,7 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.M where
 

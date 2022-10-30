@@ -4,7 +4,7 @@
 -- Exiting the program.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module System.Exit where
 

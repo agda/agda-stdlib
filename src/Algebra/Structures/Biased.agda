@@ -5,7 +5,7 @@
 -- be given in terms of others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 

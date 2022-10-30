@@ -4,7 +4,7 @@
 -- Some properties imply others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Unary.Consequences where
 

@@ -4,7 +4,7 @@
 -- This module is DEPRECATED. Please use `Data.Nat.Binary` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}

@@ -5,7 +5,7 @@
 -- Data.List.Relation.Binary.Equality.Propositional directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Equality.Propositional where
 

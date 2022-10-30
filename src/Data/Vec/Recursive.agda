@@ -12,7 +12,7 @@
 -- that two vectors of known length are definitionally equal whenever their
 -- elements are.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Recursive where
 

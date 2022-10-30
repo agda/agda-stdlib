@@ -4,7 +4,7 @@
 -- Some properties of reflexive closures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 

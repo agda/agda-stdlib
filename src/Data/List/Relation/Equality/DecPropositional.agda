@@ -5,7 +5,7 @@
 -- Data.List.Relation.Binary.Equality.DecPropositional directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality

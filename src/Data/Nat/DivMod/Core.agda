@@ -4,7 +4,7 @@
 -- Core lemmas for division and modulus operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.DivMod.Core where
 

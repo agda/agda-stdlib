@@ -4,7 +4,7 @@
 -- Properties of operations on the Stream type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Stream.Properties where
 

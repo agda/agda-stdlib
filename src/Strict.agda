@@ -4,7 +4,7 @@
 -- Strictness combinators
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Strict where
 

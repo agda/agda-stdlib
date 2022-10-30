@@ -4,7 +4,7 @@
 -- Properties of a max operator derived from a spec over a total order.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
 open import Algebra.Construct.NaturalChoice.Base

@@ -8,7 +8,7 @@
 -- still reasonably computationally efficient without having to use
 -- built-in functions.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Binary.Base where
 

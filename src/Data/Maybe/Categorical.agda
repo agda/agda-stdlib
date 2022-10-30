@@ -4,7 +4,7 @@
 -- A categorical view of Maybe
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Categorical where
 

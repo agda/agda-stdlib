@@ -4,7 +4,7 @@
 -- Properties of min and max operators specified over a total order
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
 open import Algebra.Bundles

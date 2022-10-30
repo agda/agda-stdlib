@@ -4,7 +4,7 @@
 -- Boolean algebra expressions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 

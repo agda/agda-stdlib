@@ -4,7 +4,7 @@
 -- Some basic properties of Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 

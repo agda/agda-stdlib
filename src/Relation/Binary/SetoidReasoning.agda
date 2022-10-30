@@ -5,7 +5,7 @@
 -- Relation.Binary.Reasoning.MultiSetoid module directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.SetoidReasoning where
 

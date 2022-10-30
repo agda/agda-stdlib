@@ -5,7 +5,7 @@
 -- instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.FunctionProperties.Core where
 

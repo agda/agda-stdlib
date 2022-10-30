@@ -7,7 +7,7 @@
 -- See README.Data.Nat for examples of how to use and reason about
 -- naturals.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Base where
 

@@ -4,7 +4,7 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Bool.Properties where
 

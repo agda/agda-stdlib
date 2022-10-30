@@ -4,7 +4,7 @@
 -- This module is DEPRECATED. Please use `Data.Universe` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Universe where
 

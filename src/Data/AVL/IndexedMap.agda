@@ -4,7 +4,7 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Product as Prod
 open import Relation.Binary

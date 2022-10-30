@@ -4,7 +4,7 @@
 -- The basic code for equational reasoning with a non-reflexive relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions

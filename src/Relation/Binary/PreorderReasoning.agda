@@ -5,7 +5,7 @@
 -- Relation.Binary.Reasoning.Preorder module directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 

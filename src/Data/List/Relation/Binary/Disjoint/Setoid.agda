@@ -4,7 +4,7 @@
 -- Pairs of lists that share no common elements (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 

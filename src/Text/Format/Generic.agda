@@ -4,7 +4,7 @@
 -- Format strings for Printf and Scanf
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Char.Base using (Char)
 open import Data.Maybe.Base using (Maybe)

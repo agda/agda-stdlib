@@ -17,7 +17,7 @@
 -- It is a good alternative to Data.Product.Categorical when the notion
 -- of warnings does not have a neutral element (e.g. List⁺).
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 open import Algebra

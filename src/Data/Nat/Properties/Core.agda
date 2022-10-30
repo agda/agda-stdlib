@@ -4,7 +4,7 @@
 -- ≤-pred definition so as to not cause dependency problems.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Properties.Core where
 

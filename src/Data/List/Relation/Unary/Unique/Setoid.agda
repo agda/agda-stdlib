@@ -4,7 +4,7 @@
 -- Lists made up entirely of unique elements (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Setoid)
 open import Relation.Nullary using (¬_)

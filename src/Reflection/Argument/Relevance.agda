@@ -4,7 +4,7 @@
 -- Argument relevance used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.Argument.Relevance where
 

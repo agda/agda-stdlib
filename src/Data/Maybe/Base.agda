@@ -6,7 +6,7 @@
 
 -- The definitions in this file are reexported by Data.Maybe.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Base where
 

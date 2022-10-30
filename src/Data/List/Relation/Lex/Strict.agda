@@ -5,7 +5,7 @@
 -- Data.List.Relation.Binary.Lex.Strict directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Lex.Strict where
 

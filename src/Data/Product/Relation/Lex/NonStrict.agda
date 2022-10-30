@@ -5,7 +5,7 @@
 -- Data.Product.Relation.Binary.Lex.NonStrict directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Relation.Lex.NonStrict where
 

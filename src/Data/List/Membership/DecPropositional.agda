@@ -4,7 +4,7 @@
 -- Decidable propositional membership over lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality using (_≡_; decSetoid)

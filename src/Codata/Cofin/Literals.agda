@@ -4,7 +4,7 @@
 -- Conat Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Cofin.Literals where
 

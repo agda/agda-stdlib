@@ -5,7 +5,7 @@
 -- Data.Vec.Relation.Binary.Equality.Setoid directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 

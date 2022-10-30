@@ -7,7 +7,7 @@
 -- See README.Data.Nat for some examples showing how this module can be
 -- used.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Properties where
 

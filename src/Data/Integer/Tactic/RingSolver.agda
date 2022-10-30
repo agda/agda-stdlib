@@ -6,7 +6,7 @@
 
 -- See README.Integer for examples of how to use this solver
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Tactic.RingSolver where
 
