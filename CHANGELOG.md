@@ -898,6 +898,24 @@ Deprecated names
   raise    ↦  _↑ʳ_
   ```
 
+  Issue #1726: the relation `_≺_` and its single constructor `_≻toℕ_`
+  have been deprecated in favour of their extensional equivalent `_<_`
+  but omitting the inversion principle which pattern matching on `_≻toℕ_`
+  would achieve; this instead is proxied by the property `Data.Fin.Properties.toℕ<`.
+
+* In `Data.Fin.Induction`:
+  ```
+  ≺-Rec 
+  ≺-wellFounded
+  ≺-recBuilder
+  ≺-rec
+  ```
+
+  As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
+  associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
+  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  least of all those counterparts... the type confusion would be intolerable. 
+
 * In `Data.Fin.Properties`:
   ```
   toℕ-raise        ↦ toℕ-↑ʳ
@@ -907,6 +925,9 @@ Deprecated names
   Fin0↔⊥           ↦ 0↔⊥
   eq?              ↦ inj⇒≟
   ```
+
+  Likewise under issue #1726: the properties `≺⇒<′` and `<′⇒≺` have been deprecated
+  in favour of their proxy counterparts `<⇒<′` and `<′⇒<`.
 
 * In `Data.Fin.Permutation.Components`:
   ```
@@ -1279,11 +1300,19 @@ New modules
   Data.Nat.Combinatorics.Spec
   ```
 
+* A small library defining parity and its algebra:
+  ```
+  Data.Parity
+  Data.Parity.Base
+  Data.Parity.Instances
+  Data.Parity.Properties
+  ```
+
 * New base module for `Data.Product` containing only the basic definitions.
   ```
   Data.Product.Base
   ```
-  
+
 * Reflection utilities for some specific types:
   ```
   Data.List.Reflection
@@ -1410,6 +1439,15 @@ New modules
   ```
   Algebra.Properties.Quasigroup
   ```
+  
+* Properties of MiddleBolLoop
+  ```
+  Algebra.Properties.MiddleBolLoop
+  ```
+
+* Properties of Loop
+  ```
+  Algebra.Properties.Loop
 
 * Some n-ary functions manipulating lists
   ```
@@ -1451,6 +1489,7 @@ Other minor changes
   record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ))
   record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ))
+  record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -1538,6 +1577,7 @@ Other minor changes
   Semimedial _∙_ = (LeftSemimedial _∙_) × (RightSemimedial _∙_)
   LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ z)) ∙ z )
   RightBol _∙_ = ∀ x y z → (((z ∙ x) ∙ y) ∙ x) ≈ (z ∙ ((x ∙ y) ∙ x))
+  MiddleBol _∙_ _\\_ _//_ = ∀ x y z → (x ∙ ((y ∙ z) \\ x)) ≈ ((x // z) ∙ (y \\ x))
   ```
 
 * Added new functions to `Algebra.Definitions.RawSemiring`:
@@ -1592,6 +1632,7 @@ Other minor changes
   record IsRightBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsMiddleBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -1783,6 +1824,8 @@ Other minor changes
   _⊓′_ : ℕ → ℕ → ℕ
   ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
+
+  parity : ℕ → Parity
 
   +-rawMagma          : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
@@ -1981,6 +2024,13 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new definitions to `Data.Sign.Base`:
+  ```agda
+  *-rawMagma : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+  *-1-rawGroup : RawGroup 0ℓ 0ℓ
+  ```
+
 * Added new proofs to `Data.Sign.Properties`:
   ```agda
   *-inverse : Inverse + id _*_
@@ -1992,6 +2042,7 @@ Other minor changes
   *-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
   *-group : Group 0ℓ 0ℓ
   *-abelianGroup : AbelianGroup 0ℓ 0ℓ
+  ≡-isDecEquivalence : IsDecEquivalence _≡_
   ```
 
 * Added new functions in `Data.String.Base`:

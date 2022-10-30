@@ -290,9 +290,6 @@ _>_ : IRel Fin 0ℓ
 i > j = toℕ i ℕ.> toℕ j
 
 
-data _≺_ : ℕ → ℕ → Set where
-  _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
-
 ------------------------------------------------------------------------
 -- An ordering view.
 
@@ -334,4 +331,16 @@ Please use _↑ˡ_ instead.
 NB argument order has been flipped:
 the left-hand argument is the Fin m
 the right-hand is the Nat index increment."
+#-}
+
+data _≺_ : ℕ → ℕ → Set where
+  _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
+
+{-# WARNING_ON_USAGE _≺_
+"Warning: _≺_ was deprecated in v2.0.
+Please use equivalent relation _<_ instead."
+#-}
+{-# WARNING_ON_USAGE _≻toℕ_
+"Warning: _≻toℕ_ was deprecated in v2.0.
+Please use toℕ<n from Data.Fin.Properties instead."
 #-}
