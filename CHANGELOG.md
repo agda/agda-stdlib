@@ -1290,11 +1290,19 @@ New modules
   Data.Nat.Combinatorics.Spec
   ```
 
+* A small library defining parity and its algebra:
+  ```
+  Data.Parity
+  Data.Parity.Base
+  Data.Parity.Instances
+  Data.Parity.Properties
+  ```
+
 * New base module for `Data.Product` containing only the basic definitions.
   ```
   Data.Product.Base
   ```
-  
+
 * Reflection utilities for some specific types:
   ```
   Data.List.Reflection
@@ -1807,6 +1815,8 @@ Other minor changes
   ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
 
+  parity : ℕ → Parity
+
   +-rawMagma          : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
   *-rawMagma          : RawMagma 0ℓ 0ℓ
@@ -2004,6 +2014,13 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new definitions to `Data.Sign.Base`:
+  ```agda
+  *-rawMagma : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+  *-1-rawGroup : RawGroup 0ℓ 0ℓ
+  ```
+
 * Added new proofs to `Data.Sign.Properties`:
   ```agda
   *-inverse : Inverse + id _*_
@@ -2015,6 +2032,7 @@ Other minor changes
   *-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
   *-group : Group 0ℓ 0ℓ
   *-abelianGroup : AbelianGroup 0ℓ 0ℓ
+  ≡-isDecEquivalence : IsDecEquivalence _≡_
   ```
 
 * Added new functions in `Data.String.Base`:

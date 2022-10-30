@@ -14,7 +14,8 @@ open import Data.Sign.Base
 open import Data.Product using (_,_)
 open import Function hiding (Inverse)
 open import Level using (0ℓ)
-open import Relation.Binary using (Decidable; Setoid; DecSetoid)
+open import Relation.Binary
+  using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 
@@ -26,7 +27,7 @@ open import Algebra.Definitions {A = Sign} _≡_
 
 infix 4 _≟_
 
-_≟_ : Decidable {A = Sign} _≡_
+_≟_ : DecidableEquality Sign
 - ≟ - = yes refl
 - ≟ + = no λ()
 + ≟ - = no λ()
@@ -37,6 +38,9 @@ _≟_ : Decidable {A = Sign} _≡_
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
+
+≡-isDecEquivalence : IsDecEquivalence _≡_
+≡-isDecEquivalence = isDecEquivalence _≟_
 
 ------------------------------------------------------------------------
 -- opposite

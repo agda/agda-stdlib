@@ -13,6 +13,7 @@ module Data.Nat.Base where
 
 open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
 open import Data.Bool.Base using (Bool; true; false; T; not)
+open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -171,6 +172,13 @@ _⊓′_ : ℕ → ℕ → ℕ
 m ⊓′ n with m <ᵇ n
 ... | false = n
 ... | true  = m
+
+-- Parity
+
+parity : ℕ → Parity
+parity 0             = 0ℙ
+parity 1             = 1ℙ
+parity (suc (suc n)) = parity n
 
 -- Division by 2, rounded downwards.
 
