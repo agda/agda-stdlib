@@ -93,21 +93,21 @@ zero-unique z x = zeroˡ-unique z z (proj₂ x z)
 
 x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
 x≈0 x eq = begin
-  x ≈⟨ sym(+-identityʳ x) ⟩
-  x + 0# ≈⟨ +-congˡ (sym (-‿inverseʳ x)) ⟩
-  x + (x - x) ≈⟨ sym (+-assoc x x (- x)) ⟩
-  x + x - x ≈⟨ +-congʳ(eq) ⟩
-  x - x ≈⟨ -‿inverseʳ x ⟩
-  0# ∎
+  x            ≈⟨ sym(+-identityʳ x) ⟩
+  x + 0#       ≈⟨ +-congˡ (sym (-‿inverseʳ x)) ⟩
+  x + (x - x)  ≈⟨ sym (+-assoc x x (- x)) ⟩
+  x + x - x    ≈⟨ +-congʳ(eq) ⟩
+  x - x        ≈⟨ -‿inverseʳ x ⟩
+  0#           ∎
 
 xy-z≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
 xy-z≈xy-xz x y z = begin
-  x * (y - z) ≈⟨ distribˡ x y (- z) ⟩
-  x * y + x * - z ≈⟨ +-congˡ (sym (-‿distribʳ-* x z)) ⟩
-  x * y - x * z ∎
+  x * (y - z)      ≈⟨ distribˡ x y (- z) ⟩
+  x * y + x * - z  ≈⟨ +-congˡ (sym (-‿distribʳ-* x z)) ⟩
+  x * y - x * z    ∎
 
 y-zx≈yx-zx : ∀ x y z → (y - z) * x ≈ (y * x) - (z * x)
 y-zx≈yx-zx x y z = begin
-  (y - z) * x  ≈⟨ distribʳ x y (- z) ⟩
-  y * x + - z * x ≈⟨ +-congˡ (sym (-‿distribˡ-* z x)) ⟩
-  y * x - z * x ∎
+  (y - z) * x      ≈⟨ distribʳ x y (- z) ⟩
+  y * x + - z * x  ≈⟨ +-congˡ (sym (-‿distribˡ-* z x)) ⟩
+  y * x - z * x    ∎
