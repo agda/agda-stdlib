@@ -305,7 +305,7 @@ i % j = i %ℕ ∣ j ∣
 +-0-rawMonoid : RawMonoid 0ℓ 0ℓ
 +-0-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _+_ ; ε = 0ℤ }
 
-+-0-rawGroup : RawGroup 0ℓ 0ℓ
+-0-rawGroup : RawGroup 0ℓ 0ℓ
 +-0-rawGroup = record { _≈_ = _≡_ ; _∙_ = _+_ ; _⁻¹ = -_; ε = 0ℤ }
 
 *-rawMagma : RawMagma 0ℓ 0ℓ

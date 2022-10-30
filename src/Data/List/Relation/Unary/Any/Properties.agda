@@ -46,7 +46,8 @@ open import Relation.Binary.PropositionalEquality as P
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ; yes; no)
-open import Relation.Nullary.Negation using (contradiction; ¬?; decidable-stable)
+open import Relation.Nullary.Decidable using (¬?; decidable-stable)
+open import Relation.Nullary.Negation using (contradiction)
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})

@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Instances for signs
+-- Instances for parities
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Sign.Instances where
+module Data.Parity.Instances where
 
-open import Data.Sign.Properties
+open import Data.Parity.Properties
 
 instance
-  Sign-≡-isDecEquivalence = ≡-isDecEquivalence
+  Parity-≡-isDecEquivalence = ≡-isDecEquivalence
