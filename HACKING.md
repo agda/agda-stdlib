@@ -71,11 +71,11 @@ How to make changes
    ------------------------------------------------------------------------
    ```
 
-   If possible, each module should use the options `--safe` and `--without-K`. You
+   If possible, each module should use the options `--safe` and `--cubical-compatible`. You
    can achieve this by placing the following pragma under the header and before
    any other line of code (including the module name):
    ```
-   {-# OPTIONS --without-K --safe #-}
+   {-# OPTIONS --cubical-compatible --safe #-}
    ```
 
    If a module cannot be made safe or needs the `--with-K` option then it should be

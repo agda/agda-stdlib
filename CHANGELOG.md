@@ -1,6 +1,9 @@
-Version 1.7.1
+Version 1.7.2
 =============
 
-The library has been tested using Agda 2.6.2.
+The library has been tested using Agda 2.6.3.
 
-* The only change over v1.7 is that the library's Cabal file is now compatible with GHC 9.2.
+* In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
+  the `--without-K` flag now use the `--cubical-compatible` flag instead.
+  
+* Updated the code using `primFloatToWord64` - the library API has remained unchanged.
