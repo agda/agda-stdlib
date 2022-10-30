@@ -9,7 +9,7 @@
 
 <a id="225" class="Keyword">module</a> <a id="232" href="Data.Sign.Base.html" class="Module">Data.Sign.Base</a> <a id="247" class="Keyword">where</a>
 
-<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Algebra.Bundles.Raw.html" class="Module">Algebra.Bundles.Raw</a> <a id="286" class="Keyword">using</a> <a id="292" class="Symbol">(</a><a id="293" href="Algebra.Bundles.Raw.html#621" class="Record">RawMagma</a><a id="301" class="Symbol">;</a> <a id="303" href="Algebra.Bundles.Raw.html#1082" class="Record">RawMonoid</a><a id="312" class="Symbol">;</a> <a id="314" href="Algebra.Bundles.Raw.html#1615" class="Record">RawGroup</a><a id="322" class="Symbol">)</a>
+<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Algebra.Bundles.Raw.html" class="Module">Algebra.Bundles.Raw</a> <a id="286" class="Keyword">using</a> <a id="292" class="Symbol">(</a><a id="293" href="Algebra.Bundles.Raw.html#630" class="Record">RawMagma</a><a id="301" class="Symbol">;</a> <a id="303" href="Algebra.Bundles.Raw.html#1091" class="Record">RawMonoid</a><a id="312" class="Symbol">;</a> <a id="314" href="Algebra.Bundles.Raw.html#1624" class="Record">RawGroup</a><a id="322" class="Symbol">)</a>
 <a id="324" class="Keyword">open</a> <a id="329" class="Keyword">import</a> <a id="336" href="Level.html" class="Module">Level</a> <a id="342" class="Keyword">using</a> <a id="348" class="Symbol">(</a><a id="349" href="Level.html#512" class="Function">0ℓ</a><a id="351" class="Symbol">)</a>
 <a id="353" class="Keyword">open</a> <a id="358" class="Keyword">import</a> <a id="365" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="403" class="Keyword">using</a> <a id="409" class="Symbol">(</a><a id="410" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="413" class="Symbol">)</a>
 
@@ -40,25 +40,25 @@
 <a id="809" class="Comment">------------------------------------------------------------------------</a>
 <a id="882" class="Comment">-- Raw Bundles</a>
 
-<a id="*-rawMagma"></a><a id="898" href="Data.Sign.Base.html#898" class="Function">*-rawMagma</a> <a id="909" class="Symbol">:</a> <a id="911" href="Algebra.Bundles.Raw.html#621" class="Record">RawMagma</a> <a id="920" href="Level.html#512" class="Function">0ℓ</a> <a id="923" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-rawMagma"></a><a id="898" href="Data.Sign.Base.html#898" class="Function">*-rawMagma</a> <a id="909" class="Symbol">:</a> <a id="911" href="Algebra.Bundles.Raw.html#630" class="Record">RawMagma</a> <a id="920" href="Level.html#512" class="Function">0ℓ</a> <a id="923" href="Level.html#512" class="Function">0ℓ</a>
 <a id="926" href="Data.Sign.Base.html#898" class="Function">*-rawMagma</a> <a id="937" class="Symbol">=</a> <a id="939" class="Keyword">record</a>
-  <a id="948" class="Symbol">{</a> <a id="950" href="Algebra.Bundles.Raw.html#722" class="Field Operator">_≈_</a> <a id="954" class="Symbol">=</a> <a id="956" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
-  <a id="962" class="Symbol">;</a> <a id="964" href="Algebra.Bundles.Raw.html#750" class="Field Operator">_∙_</a> <a id="968" class="Symbol">=</a> <a id="970" href="Data.Sign.Base.html#750" class="Function Operator">_*_</a>
+  <a id="948" class="Symbol">{</a> <a id="950" href="Algebra.Bundles.Raw.html#731" class="Field Operator">_≈_</a> <a id="954" class="Symbol">=</a> <a id="956" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+  <a id="962" class="Symbol">;</a> <a id="964" href="Algebra.Bundles.Raw.html#759" class="Field Operator">_∙_</a> <a id="968" class="Symbol">=</a> <a id="970" href="Data.Sign.Base.html#750" class="Function Operator">_*_</a>
   <a id="976" class="Symbol">}</a>
 
-<a id="*-1-rawMonoid"></a><a id="979" href="Data.Sign.Base.html#979" class="Function">*-1-rawMonoid</a> <a id="993" class="Symbol">:</a> <a id="995" href="Algebra.Bundles.Raw.html#1082" class="Record">RawMonoid</a> <a id="1005" href="Level.html#512" class="Function">0ℓ</a> <a id="1008" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-1-rawMonoid"></a><a id="979" href="Data.Sign.Base.html#979" class="Function">*-1-rawMonoid</a> <a id="993" class="Symbol">:</a> <a id="995" href="Algebra.Bundles.Raw.html#1091" class="Record">RawMonoid</a> <a id="1005" href="Level.html#512" class="Function">0ℓ</a> <a id="1008" href="Level.html#512" class="Function">0ℓ</a>
 <a id="1011" href="Data.Sign.Base.html#979" class="Function">*-1-rawMonoid</a> <a id="1025" class="Symbol">=</a> <a id="1027" class="Keyword">record</a>
-  <a id="1036" class="Symbol">{</a> <a id="1038" href="Algebra.Bundles.Raw.html#1184" class="Field Operator">_≈_</a> <a id="1042" class="Symbol">=</a> <a id="1044" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
-  <a id="1050" class="Symbol">;</a> <a id="1052" href="Algebra.Bundles.Raw.html#1212" class="Field Operator">_∙_</a> <a id="1056" class="Symbol">=</a> <a id="1058" href="Data.Sign.Base.html#750" class="Function Operator">_*_</a>
-  <a id="1064" class="Symbol">;</a> <a id="1066" href="Algebra.Bundles.Raw.html#1238" class="Field">ε</a> <a id="1068" class="Symbol">=</a> <a id="1070" href="Data.Sign.Base.html#539" class="InductiveConstructor">+</a>
+  <a id="1036" class="Symbol">{</a> <a id="1038" href="Algebra.Bundles.Raw.html#1193" class="Field Operator">_≈_</a> <a id="1042" class="Symbol">=</a> <a id="1044" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+  <a id="1050" class="Symbol">;</a> <a id="1052" href="Algebra.Bundles.Raw.html#1221" class="Field Operator">_∙_</a> <a id="1056" class="Symbol">=</a> <a id="1058" href="Data.Sign.Base.html#750" class="Function Operator">_*_</a>
+  <a id="1064" class="Symbol">;</a> <a id="1066" href="Algebra.Bundles.Raw.html#1247" class="Field">ε</a> <a id="1068" class="Symbol">=</a> <a id="1070" href="Data.Sign.Base.html#539" class="InductiveConstructor">+</a>
   <a id="1074" class="Symbol">}</a>
 
-<a id="*-1-rawGroup"></a><a id="1077" href="Data.Sign.Base.html#1077" class="Function">*-1-rawGroup</a> <a id="1090" class="Symbol">:</a> <a id="1092" href="Algebra.Bundles.Raw.html#1615" class="Record">RawGroup</a> <a id="1101" href="Level.html#512" class="Function">0ℓ</a> <a id="1104" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-1-rawGroup"></a><a id="1077" href="Data.Sign.Base.html#1077" class="Function">*-1-rawGroup</a> <a id="1090" class="Symbol">:</a> <a id="1092" href="Algebra.Bundles.Raw.html#1624" class="Record">RawGroup</a> <a id="1101" href="Level.html#512" class="Function">0ℓ</a> <a id="1104" href="Level.html#512" class="Function">0ℓ</a>
 <a id="1107" href="Data.Sign.Base.html#1077" class="Function">*-1-rawGroup</a> <a id="1120" class="Symbol">=</a> <a id="1122" class="Keyword">record</a>
-  <a id="1131" class="Symbol">{</a> <a id="1133" href="Algebra.Bundles.Raw.html#1731" class="Field Operator">_≈_</a> <a id="1137" class="Symbol">=</a> <a id="1139" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
-  <a id="1145" class="Symbol">;</a> <a id="1147" href="Algebra.Bundles.Raw.html#1759" class="Field Operator">_∙_</a> <a id="1151" class="Symbol">=</a> <a id="1153" href="Data.Sign.Base.html#750" class="Function Operator">_*_</a>
-  <a id="1159" class="Symbol">;</a> <a id="1161" href="Algebra.Bundles.Raw.html#1807" class="Field Operator">_⁻¹</a> <a id="1165" class="Symbol">=</a> <a id="1167" href="Data.Sign.Base.html#660" class="Function">opposite</a>
-  <a id="1178" class="Symbol">;</a> <a id="1180" href="Algebra.Bundles.Raw.html#1785" class="Field">ε</a> <a id="1182" class="Symbol">=</a> <a id="1184" href="Data.Sign.Base.html#539" class="InductiveConstructor">+</a>
+  <a id="1131" class="Symbol">{</a> <a id="1133" href="Algebra.Bundles.Raw.html#1740" class="Field Operator">_≈_</a> <a id="1137" class="Symbol">=</a> <a id="1139" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+  <a id="1145" class="Symbol">;</a> <a id="1147" href="Algebra.Bundles.Raw.html#1768" class="Field Operator">_∙_</a> <a id="1151" class="Symbol">=</a> <a id="1153" href="Data.Sign.Base.html#750" class="Function Operator">_*_</a>
+  <a id="1159" class="Symbol">;</a> <a id="1161" href="Algebra.Bundles.Raw.html#1816" class="Field Operator">_⁻¹</a> <a id="1165" class="Symbol">=</a> <a id="1167" href="Data.Sign.Base.html#660" class="Function">opposite</a>
+  <a id="1178" class="Symbol">;</a> <a id="1180" href="Algebra.Bundles.Raw.html#1794" class="Field">ε</a> <a id="1182" class="Symbol">=</a> <a id="1184" href="Data.Sign.Base.html#539" class="InductiveConstructor">+</a>
   <a id="1188" class="Symbol">}</a>
 
 </pre></body></html>
