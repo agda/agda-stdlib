@@ -888,6 +888,24 @@ Deprecated names
   raise    ↦  _↑ʳ_
   ```
 
+  Issue #1726: the relation `_≺_` and its single constructor `_≻toℕ_`
+  have been deprecated in favour of their extensional equivalent `_<_`
+  but omitting the inversion principle which pattern matching on `_≻toℕ_`
+  would achieve; this instead is proxied by the property `Data.Fin.Properties.toℕ<`.
+
+* In `Data.Fin.Induction`:
+  ```
+  ≺-Rec 
+  ≺-wellFounded
+  ≺-recBuilder
+  ≺-rec
+  ```
+
+  As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
+  associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
+  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  least of all those counterparts... the type confusion would be intolerable. 
+
 * In `Data.Fin.Properties`:
   ```
   toℕ-raise        ↦ toℕ-↑ʳ
@@ -897,6 +915,9 @@ Deprecated names
   Fin0↔⊥           ↦ 0↔⊥
   eq?              ↦ inj⇒≟
   ```
+
+  Likewise under issue #1726: the properties `≺⇒<′` and `<′⇒≺` have been deprecated
+  in favour of their proxy counterparts `<⇒<′` and `<′⇒<`.
 
 * In `Data.Fin.Permutation.Components`:
   ```
