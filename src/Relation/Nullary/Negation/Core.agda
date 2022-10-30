@@ -9,10 +9,10 @@
 module Relation.Nullary.Negation.Core where
 
 open import Data.Bool.Base using (not)
-open import Data.Empty hiding (⊥-elim)
-open import Data.Empty.Irrelevant
-open import Data.Product.Base
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Empty using (⊥)
+open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
 
@@ -38,6 +38,13 @@ DoubleNegation P = ¬ ¬ P
 -- Stability under double-negation.
 Stable : Set p → Set p
 Stable P = ¬ ¬ P → P
+
+------------------------------------------------------------------------
+-- Relationship to product and sum
+
+infixr 1 _¬-⊎_
+_¬-⊎_ : ¬ P → ¬ Q → ¬ (P ⊎ Q)
+_¬-⊎_ = [_,_]
 
 ------------------------------------------------------------------------
 -- Uses of negation

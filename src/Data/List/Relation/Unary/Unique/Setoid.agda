@@ -7,7 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Rel; Setoid)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 module Data.List.Relation.Unary.Unique.Setoid {a ℓ} (S : Setoid a ℓ) where
 

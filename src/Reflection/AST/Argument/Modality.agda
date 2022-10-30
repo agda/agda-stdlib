@@ -8,10 +8,9 @@
 
 module Reflection.AST.Argument.Modality where
 
-open import Data.Product
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Binary
+open import Data.Product.Base
+open import Relation.Nullary.Decidable as Dec using (_×-dec_)
+open import Relation.Binary using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
 
 open import Reflection.AST.Argument.Relevance as Relevance using (Relevance)

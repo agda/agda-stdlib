@@ -15,7 +15,7 @@ open import Data.List.Base using (List)
 open import Data.List.Membership.Setoid S using (_∈_)
 open import Function.Base using (flip)
 open import Level using (_⊔_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 open Setoid S renaming (Carrier to A)
 

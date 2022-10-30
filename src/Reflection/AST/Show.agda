@@ -19,7 +19,7 @@ import Data.Nat.Show as ℕ
 open import Data.Product using (_×_; _,_)
 open import Data.String as String
 import Data.Word as Word
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Function.Base using (id; _∘′_; case_of_)
 
 open import Reflection.AST.Abstraction hiding (map)

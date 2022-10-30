@@ -14,7 +14,7 @@ open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel)

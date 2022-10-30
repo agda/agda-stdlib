@@ -17,7 +17,7 @@ open import Level using (0ℓ)
 open import Relation.Binary
   using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 
 open import Algebra.Structures {A = Sign} _≡_
 open import Algebra.Definitions {A = Sign} _≡_

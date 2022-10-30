@@ -16,9 +16,7 @@ import Data.Product.Properties as Product
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.String as String using (String)
 open import Function.Base using (_∘_)
-open import Relation.Nullary
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
@@ -168,7 +166,7 @@ arg i a ≟-ArgType arg i′ a′ = unArg-dec (a ≟ a′)
 _≟-Telescope_ : DecidableEquality Telescope
 [] ≟-Telescope [] = yes refl
 ((x , t) ∷ tel) ≟-Telescope ((x′ , t′) ∷ tel′) = Lₚ.∷-dec
-  (map′ (uncurry (cong₂ _,_)) Product.,-injective ((x String.≟ x′) ×-dec (t ≟-ArgTerm t′)))
+  (Dec.map′ (uncurry (cong₂ _,_)) Product.,-injective ((x String.≟ x′) ×-dec (t ≟-ArgTerm t′)))
   (tel ≟-Telescope tel′)
 [] ≟-Telescope (_ ∷ _) = no λ ()
 (_ ∷ _) ≟-Telescope [] = no λ ()

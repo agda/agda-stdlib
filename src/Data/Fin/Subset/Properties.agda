@@ -32,10 +32,8 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (Dec; yes; no)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary using (Pred; Decidable; Satisfiable)
 
 private

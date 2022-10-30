@@ -19,7 +19,7 @@ open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Function using (_$_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (False; toWitnessFalse)
 
 import Algebra.Properties.CommutativeSemigroup *-commutativeSemigroup as *-CS

@@ -16,8 +16,7 @@ open import Data.Product using (_×_; <_,_>; uncurry)
 open import Data.String as String using (String; _<+>_; intersperse; braces)
 open import Function.Base using (_∘′_)
 open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no)
 open import Relation.Binary using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
 

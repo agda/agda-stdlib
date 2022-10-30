@@ -11,7 +11,7 @@
 
 module Data.Product.Relation.Binary.Lex.Strict where
 
-open import Data.Product
+open import Data.Product.Base
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
@@ -19,9 +19,7 @@ open import Data.Empty
 open import Function.Base
 open import Induction.WellFounded
 open import Level
-open import Relation.Nullary
-open import Relation.Nullary.Product
-open import Relation.Nullary.Sum
+open import Relation.Nullary.Decidable
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)

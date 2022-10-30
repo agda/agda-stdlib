@@ -52,12 +52,9 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
-open import Relation.Nullary using (¬_; yes; no; recompute)
 open import Relation.Nullary.Decidable as Dec
-  using (True; False; fromWitness; fromWitnessFalse; toWitnessFalse)
-open import Relation.Nullary.Negation using (contradiction; contraposition)
-open import Relation.Nullary.Decidable as Dec using (True; fromWitness; map′)
-open import Relation.Nullary.Product using (_×-dec_)
+  using (True; False; fromWitness; fromWitnessFalse; toWitnessFalse; yes; no; recompute; map′; _×-dec_)
+open import Relation.Nullary.Negation using (¬_; contradiction; contraposition)
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_

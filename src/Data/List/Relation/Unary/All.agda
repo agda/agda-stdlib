@@ -22,7 +22,6 @@ open import Function
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary using (Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P

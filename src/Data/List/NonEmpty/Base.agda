@@ -23,7 +23,7 @@ open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Unary using (Pred; Decidable; U; ∅)
 open import Relation.Unary.Properties using (U?; ∅?)
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 
 private
   variable
