@@ -475,4 +475,3 @@ toSign-isGroupIsomorphism = record
   ; surjective = toSign-surjective
   }
 
-
