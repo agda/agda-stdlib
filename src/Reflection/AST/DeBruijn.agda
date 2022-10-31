@@ -8,9 +8,9 @@
 
 module Reflection.AST.DeBruijn where
 
-open import Data.Bool.Base using (Bool; true; false; _∨_; if_then_else_)
-open import Data.Nat.Base as Nat using (ℕ; zero; suc; _+_; _∸_; _<ᵇ_; _≡ᵇ_)
-open import Data.List.Base using (List; []; _∷_; _++_)
+open import Data.Bool.Base  using (Bool; true; false; _∨_; if_then_else_)
+open import Data.Nat.Base   using (ℕ; zero; suc; _+_; _∸_; _<ᵇ_; _≡ᵇ_)
+open import Data.List.Base  using (List; []; _∷_; _++_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 import Data.Maybe.Effectful as Maybe
 import Function.Identity.Effectful as Identity

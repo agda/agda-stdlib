@@ -8,10 +8,10 @@
 
 module Reflection.AST.Argument.Modality where
 
-open import Data.Product.Base
-open import Relation.Nullary.Decidable as Dec using (_×-dec_)
-open import Relation.Binary using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality
+open import Data.Product.Base                     using (_×_; <_,_>; uncurry)
+open import Relation.Nullary.Decidable            using (map′; _×-dec_)
+open import Relation.Binary                       using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
 
 open import Reflection.AST.Argument.Relevance as Relevance using (Relevance)
 open import Reflection.AST.Argument.Quantity as Quantity using (Quantity)
@@ -50,7 +50,7 @@ modality-injective = < modality-injective₁ , modality-injective₂ >
 
 _≟_ : DecidableEquality Modality
 modality r q ≟ modality r′ q′ =
-  Dec.map′
+  map′
     (uncurry (cong₂ modality))
     modality-injective
     (r Relevance.≟ r′ ×-dec q Quantity.≟ q′)
