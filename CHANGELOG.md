@@ -1557,6 +1557,7 @@ Other minor changes
   leftSemimedial : LeftSemimedial _∙_
   rightSemimedial : RightSemimedial _∙_
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
+  semimedial : Semimedial _∙_
   ```
 
 * Added new proofs to `Algebra.Properties.Semigroup`:
