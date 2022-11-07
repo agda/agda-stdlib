@@ -5,6 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Properties where
 
@@ -822,13 +823,13 @@ toℚᵘ-isMagmaHomomorphism-+ = record
   ; homo              = toℚᵘ-homo-+
   }
 
-toℚᵘ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-rawMonoid ℚᵘ.+-rawMonoid toℚᵘ
+toℚᵘ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℚᵘ.+-0-rawMonoid toℚᵘ
 toℚᵘ-isMonoidHomomorphism-+ = record
   { isMagmaHomomorphism = toℚᵘ-isMagmaHomomorphism-+
   ; ε-homo              = ℚᵘ.≃-refl
   }
 
-toℚᵘ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-rawMonoid ℚᵘ.+-rawMonoid toℚᵘ
+toℚᵘ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℚᵘ.+-0-rawMonoid toℚᵘ
 toℚᵘ-isMonoidMonomorphism-+ = record
   { isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-+
   ; injective            = toℚᵘ-injective
@@ -1037,13 +1038,13 @@ toℚᵘ-isMagmaHomomorphism-* = record
   ; homo              = toℚᵘ-homo-*
   }
 
-toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℚᵘ.*-1-rawMonoid toℚᵘ
 toℚᵘ-isMonoidHomomorphism-* = record
   { isMagmaHomomorphism = toℚᵘ-isMagmaHomomorphism-*
   ; ε-homo              = ℚᵘ.≃-refl
   }
 
-toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℚᵘ.*-1-rawMonoid toℚᵘ
 toℚᵘ-isMonoidMonomorphism-* = record
   { isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
   ; injective            = toℚᵘ-injective
@@ -1684,3 +1685,7 @@ negative<positive {p} {q} p<0 q>0 = neg<pos p q {{p<0}} {{q>0}}
 "Warning: negative<positive was deprecated in v2.0.
 Please use neg<pos instead."
 #-}
+{- issue1865/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Rational.Base public
+  using (+-rawMagma; +-0-rawGroup; *-rawMagma; +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
+  renaming (+-0-rawMonoid to +-rawMonoid; *-1-rawMonoid to *-rawMonoid)

@@ -2289,3 +2289,7 @@ suc[pred[n]]≡n {suc n} _   = refl
 {-# WARNING_ON_USAGE <-step
 "Warning: <-step was deprecated in v2.0. Please use m<n⇒m<1+n instead. "
 #-}
+
+{- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Nat.Base public
+  using (*-rawMagma; *-1-rawMonoid)

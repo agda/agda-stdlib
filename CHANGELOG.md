@@ -1089,6 +1089,12 @@ Deprecated names
   negative<positive     ↦ neg<pos
   ```
 
+* In `Data.Rational.Base`:
+  ```
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
+  ```
+
 * In `Data.Rational.Properties`:
   ```
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
@@ -1101,6 +1107,12 @@ Deprecated names
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
 
   negative<positive     ↦ neg<pos
+  ```
+
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
   ```
 
 * In `Data.Sum.Properties`:
@@ -1742,7 +1754,12 @@ Other minor changes
 * Added new functions in `Data.Integer.Base`:
   ```
   _^_ : ℤ → ℕ → ℤ
-  ```
+ 
+  +-0-rawGroup  : Rawgroup 0ℓ 0ℓ
+
+  *-rawMagma    : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+ ```
 
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
@@ -1756,9 +1773,6 @@ Other minor changes
   ^-zeroˡ        : 1 ^ n ≡ 1
   ^-*-assoc      : (i ^ m) ^ n ≡ i ^ (m ℕ.* n)
   ^-distribˡ-+-* : i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
-
-  *-rawMagma    : RawMagma 0ℓ 0ℓ
-  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
 
   ^-isMagmaHomomorphism  : IsMagmaHomomorphism  ℕ.+-rawMagma    *-rawMagma    (i ^_)
   ^-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
@@ -1843,7 +1857,7 @@ Other minor changes
   _! : ℕ → ℕ
 
   parity : ℕ → Parity
-
+  
   +-rawMagma          : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
   *-rawMagma          : RawMagma 0ℓ 0ℓ
