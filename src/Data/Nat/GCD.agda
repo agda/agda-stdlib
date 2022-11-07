@@ -27,6 +27,9 @@ open import Relation.Nullary.Decidable using (Dec)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
+open import Algebra.Definitions {A = ℕ} _≡_ as Algebra
+  using (Associative; Commutative; LeftIdentity; RightIdentity; LeftZero; RightZero; Zero)
+
 ------------------------------------------------------------------------
 -- Definition
 
@@ -103,10 +106,61 @@ gcd[m,n]≡0⇒n≡0 : ∀ m {n} → gcd m n ≡ 0 → n ≡ 0
 gcd[m,n]≡0⇒n≡0 m {zero}  eq = P.refl
 gcd[m,n]≡0⇒n≡0 m {suc n} eq = contradiction eq (gcd[m,n]≢0 m (suc n) (inj₂ λ()))
 
-gcd-comm : ∀ m n → gcd m n ≡ gcd n m
+gcd-comm : Commutative gcd
 gcd-comm m n = ∣-antisym
   (gcd-greatest (gcd[m,n]∣n m n) (gcd[m,n]∣m m n))
   (gcd-greatest (gcd[m,n]∣n n m) (gcd[m,n]∣m n m))
+
+gcd-assoc : Associative gcd
+gcd-assoc m n p = ∣-antisym
+  (gcd-greatest gcd[gcd[m,n],p]|m (gcd-greatest gcd[gcd[m,n],p]∣n gcd[gcd[m,n],p]∣p))
+  (gcd-greatest (gcd-greatest gcd[m,gcd[n,p]]∣m gcd[m,gcd[n,p]]∣n) gcd[m,gcd[n,p]]∣p)
+  where
+    open ∣-Reasoning
+    gcd[gcd[m,n],p]|m = begin
+      gcd (gcd m n) p ∣⟨ gcd[m,n]∣m (gcd m n) p ⟩
+      gcd m n         ∣⟨ gcd[m,n]∣m m n ⟩
+      m               ∎
+    gcd[gcd[m,n],p]∣n = begin
+      gcd (gcd m n) p ∣⟨ gcd[m,n]∣m (gcd m n) p ⟩
+      gcd m n         ∣⟨ gcd[m,n]∣n m n ⟩
+      n               ∎
+    gcd[gcd[m,n],p]∣p = gcd[m,n]∣n (gcd m n) p
+    gcd[m,gcd[n,p]]∣m = gcd[m,n]∣m m (gcd n p)
+    gcd[m,gcd[n,p]]∣n = begin
+      gcd m (gcd n p) ∣⟨ gcd[m,n]∣n m (gcd n p) ⟩
+      gcd n p         ∣⟨ gcd[m,n]∣m n p ⟩
+      n               ∎
+    gcd[m,gcd[n,p]]∣p = begin
+      gcd m (gcd n p) ∣⟨ gcd[m,n]∣n m (gcd n p) ⟩
+      gcd n p         ∣⟨ gcd[m,n]∣n n p ⟩
+      p               ∎
+
+gcd-identityˡ : LeftIdentity 0 gcd
+gcd-identityˡ zero = P.refl
+gcd-identityˡ (suc _) = P.refl
+
+gcd-identityʳ : RightIdentity 0 gcd
+gcd-identityʳ zero = P.refl
+gcd-identityʳ (suc _) = P.refl
+
+gcd-identity : Algebra.Identity 0 gcd
+gcd-identity = gcd-identityˡ , gcd-identityʳ
+
+gcd-zeroˡ : LeftZero 1 gcd
+gcd-zeroˡ n = ∣-antisym gcd[1,n]∣1 1∣gcd[1,n]
+  where
+    gcd[1,n]∣1 = gcd[m,n]∣m 1 n
+    1∣gcd[1,n] = 1∣ gcd 1 n
+
+gcd-zeroʳ : RightZero 1 gcd
+gcd-zeroʳ n = ∣-antisym gcd[n,1]∣1 1∣gcd[n,1]
+  where
+    gcd[n,1]∣1 = gcd[m,n]∣n n 1
+    1∣gcd[n,1] = 1∣ gcd n 1
+
+gcd-zero : Zero 1 gcd
+gcd-zero = gcd-zeroˡ , gcd-zeroʳ
 
 gcd-universality : ∀ {m n g} →
                    (∀ {d} → d ∣ m × d ∣ n → d ∣ g) →

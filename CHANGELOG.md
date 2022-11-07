@@ -1764,6 +1764,14 @@ Other minor changes
   ^-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
   ```
 
+* Added new proofs in `Data.Integer.GCD`:
+  ```agda
+  gcd-assoc : Associative gcd
+  gcd-zeroˡ : LeftZero 1ℤ gcd
+  gcd-zeroʳ : RightZero 1ℤ gcd
+  gcd-zero  : Zero 1ℤ gcd
+  ```
+
 * Added new functions in `Data.List`:
   ```agda
   takeWhileᵇ   : (A → Bool) → List A → List A
@@ -1945,6 +1953,17 @@ Other minor changes
   m*n∣⇒n∣       : m * n ∣ i → n ∣ i
   m≤n⇒m!∣n!     : m ≤ n → m ! ∣ n !
   m/n/o≡m/[n*o] : .{{NonZero n}} .{{NonZero o}} → n * o ∣ m → (m / n) / o ≡ m / (n * o)
+  ```
+
+* Added new proofs in `Data.Nat.GCD`:
+  ```agda
+  gcd-assoc     : Associative gcd
+  gcd-identityˡ : LeftIdentity 0 gcd
+  gcd-identityʳ : RightIdentity 0 gcd
+  gcd-identity  : Identity 0 gcd
+  gcd-zeroˡ     : LeftZero 1 gcd
+  gcd-zeroʳ     : RightZero 1 gcd
+  gcd-zero      : Zero 1 gcd
   ```
 
 * Added new patterns in `Data.Nat.Reflection`:
