@@ -10,63 +10,67 @@ module Data.Sum.Function.Propositional where
 
 open import Data.Sum.Base
 open import Data.Sum.Function.Setoid
-open import Data.Sum.Relation.Binary.Pointwise using (Pointwise-≡↔≡)
-open import Function.Equivalence as Eq using (_⇔_; module Equivalence)
-open import Function.Injection as Inj using (_↣_; module Injection)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-open import Function.LeftInverse as LeftInv
-  using (_↞_; _LeftInverseOf_; module LeftInverse)
-open import Function.Related
-open import Function.Surjection as Surj using (_↠_; module Surjection)
+open import Data.Sum.Relation.Binary.Pointwise using (Pointwise-≡↔≡; _⊎ₛ_)
+open import Function.Construct.Composition as Compose
+open import Function.Related.Propositional
+open import Function
+open import Function.Properties.Inverse as Inv
+open import Level using (Level; _⊔_)
+open import Relation.Binary using (REL; Setoid)
+open import Relation.Binary.PropositionalEquality using (setoid)
+
+private
+  variable
+    a b c d : Level
+    A B C D : Set a
+
+
+------------------------------------------------------------------------
+-- Helper lemma
+
+private
+  liftViaInverse : {R : ∀ {a b ℓ₁ ℓ₂} → REL (Setoid a ℓ₁) (Setoid b ℓ₂) (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)} →
+                   (∀ {a b c ℓ₁ ℓ₂ ℓ₃} {S : Setoid a ℓ₁} {T : Setoid b ℓ₂} {U : Setoid c ℓ₃} → R S T → R T U → R S U) →
+                   (∀ {a b ℓ₁ ℓ₂} {S : Setoid a ℓ₁} {T : Setoid b ℓ₂} → Inverse S T → R S T) →
+                   (R (setoid A) (setoid C) → R (setoid B) (setoid D) → R (setoid A ⊎ₛ setoid B) (setoid C ⊎ₛ setoid D)) →
+                   R (setoid A) (setoid C) → R (setoid B) (setoid D) →
+                   R (setoid (A ⊎ B)) (setoid (C ⊎ D))
+  liftViaInverse trans inv⇒R lift RAC RBD =
+    Inv.transportVia trans inv⇒R (Inv.sym (Pointwise-≡↔≡ _ _)) (lift RAC RBD) (Pointwise-≡↔≡ _ _)
 
 ------------------------------------------------------------------------
 -- Combinators for various function types
 
-module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
+_⊎-⟶_ : A ⟶ B → C ⟶ D → (A ⊎ C) ⟶ (B ⊎ D)
+_⊎-⟶_ = liftViaInverse Compose.function Inv.toFunction _⊎-function_
 
-  _⊎-⇔_ : A ⇔ B → C ⇔ D → (A ⊎ C) ⇔ (B ⊎ D)
-  _⊎-⇔_ A⇔B C⇔D =
-    Inverse.equivalence (Pointwise-≡↔≡ B D) ⟨∘⟩
-    (A⇔B ⊎-equivalence C⇔D) ⟨∘⟩
-    Eq.sym (Inverse.equivalence (Pointwise-≡↔≡ A C))
-    where open Eq using () renaming (_∘_ to _⟨∘⟩_)
+_⊎-⇔_ : A ⇔ B → C ⇔ D → (A ⊎ C) ⇔ (B ⊎ D)
+_⊎-⇔_ = liftViaInverse Compose.equivalence Inverse⇒Equivalence _⊎-equivalence_
 
-  _⊎-↣_ : A ↣ B → C ↣ D → (A ⊎ C) ↣ (B ⊎ D)
-  _⊎-↣_ A↣B C↣D =
-    Inverse.injection (Pointwise-≡↔≡ B D) ⟨∘⟩
-    (A↣B ⊎-injection C↣D) ⟨∘⟩
-    Inverse.injection (Inv.sym (Pointwise-≡↔≡ A C))
-    where open Inj using () renaming (_∘_ to _⟨∘⟩_)
+_⊎-↣_ : A ↣ B → C ↣ D → (A ⊎ C) ↣ (B ⊎ D)
+_⊎-↣_ = liftViaInverse Compose.injection Inverse⇒Injection _⊎-injection_
 
-  _⊎-↞_ : A ↞ B → C ↞ D → (A ⊎ C) ↞ (B ⊎ D)
-  _⊎-↞_ A↞B C↞D =
-    Inverse.left-inverse (Pointwise-≡↔≡ B D) ⟨∘⟩
-    (A↞B ⊎-left-inverse C↞D) ⟨∘⟩
-    Inverse.left-inverse (Inv.sym (Pointwise-≡↔≡ A C))
-    where open LeftInv using () renaming (_∘_ to _⟨∘⟩_)
+_⊎-↠_ : A ↠ B → C ↠ D → (A ⊎ C) ↠ (B ⊎ D)
+_⊎-↠_ = liftViaInverse Compose.surjection Inverse⇒Surjection _⊎-surjection_
 
-  _⊎-↠_ : A ↠ B → C ↠ D → (A ⊎ C) ↠ (B ⊎ D)
-  _⊎-↠_ A↠B C↠D =
-    Inverse.surjection (Pointwise-≡↔≡ B D) ⟨∘⟩
-    (A↠B ⊎-surjection C↠D) ⟨∘⟩
-    Inverse.surjection (Inv.sym (Pointwise-≡↔≡ A C))
-    where open Surj using () renaming (_∘_ to _⟨∘⟩_)
+_⊎-↩_ : A ↩ B → C ↩ D → (A ⊎ C) ↩ (B ⊎ D)
+_⊎-↩_ = liftViaInverse Compose.leftInverse Inverse.leftInverse _⊎-leftInverse_
 
-  _⊎-↔_ : A ↔ B → C ↔ D → (A ⊎ C) ↔ (B ⊎ D)
-  _⊎-↔_ A↔B C↔D =
-    Pointwise-≡↔≡ B D ⟨∘⟩
-    (A↔B ⊎-inverse C↔D) ⟨∘⟩
-    Inv.sym (Pointwise-≡↔≡ A C)
-    where open Inv using () renaming (_∘_ to _⟨∘⟩_)
+_⊎-↪_ : A ↪ B → C ↪ D → (A ⊎ C) ↪ (B ⊎ D)
+_⊎-↪_ = liftViaInverse Compose.rightInverse Inverse.rightInverse _⊎-rightInverse_
 
-module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
+_⊎-⤖_ : A ⤖ B → C ⤖ D → (A ⊎ C) ⤖ (B ⊎ D)
+_⊎-⤖_ = liftViaInverse Compose.bijection Inverse⇒Bijection _⊎-bijection_
 
-  _⊎-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A ⊎ C) ∼[ k ] (B ⊎ D)
-  _⊎-cong_ {implication}         = map
-  _⊎-cong_ {reverse-implication} = λ f g → lam (map (app-← f) (app-← g))
-  _⊎-cong_ {equivalence}         = _⊎-⇔_
-  _⊎-cong_ {injection}           = _⊎-↣_
-  _⊎-cong_ {reverse-injection}   = λ f g → lam (app-↢ f ⊎-↣ app-↢ g)
-  _⊎-cong_ {left-inverse}        = _⊎-↞_
-  _⊎-cong_ {surjection}          = _⊎-↠_
-  _⊎-cong_ {bijection}           = _⊎-↔_
+_⊎-↔_ : A ↔ B → C ↔ D → (A ⊎ C) ↔ (B ⊎ D)
+_⊎-↔_ = liftViaInverse Compose.inverse id _⊎-inverse_
+
+_⊎-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A ⊎ C) ∼[ k ] (B ⊎ D)
+_⊎-cong_ {k = implication}         = _⊎-⟶_
+_⊎-cong_ {k = reverseImplication}  = _⊎-⟶_
+_⊎-cong_ {k = equivalence}         = _⊎-⇔_
+_⊎-cong_ {k = injection}           = _⊎-↣_
+_⊎-cong_ {k = reverseInjection}    = _⊎-↣_
+_⊎-cong_ {k = leftInverse}         = _⊎-↪_
+_⊎-cong_ {k = surjection}          = _⊎-↠_
+_⊎-cong_ {k = bijection}           = _⊎-↔_

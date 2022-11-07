@@ -17,6 +17,7 @@ open import Function.Injection   as Inj     using (Injection; _↣_)
 open import Function.Inverse     as Inv     using (Inverse; _↔_)
 open import Function.LeftInverse as LeftInv using (LeftInverse)
 open import Function.Surjection  as Surj    using (Surjection)
+import Function.Bundles as New
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
@@ -85,6 +86,11 @@ A ∼[ left-inverse        ] B = LeftInverse (P.setoid A) (P.setoid B)
 A ∼[ surjection          ] B = Surjection  (P.setoid A) (P.setoid B)
 A ∼[ bijection           ] B = Inverse     (P.setoid A) (P.setoid B)
 
+-- A non-infix synonym.
+
+Related : Kind → ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Set ℓ₂ → Set _
+Related k A B = A ∼[ k ] B
+
 toRelated : {K : Kind} → A R.∼[ K ] B → A ∼[ K ] B
 toRelated {K = implication}         rel = B.Func.to rel
 toRelated {K = reverse-implication} rel = lam (B.Func.to rel)
@@ -95,8 +101,8 @@ toRelated {K = left-inverse}        rel =
   LeftInv.leftInverse (B.RightInverse.to rel) (B.RightInverse.from rel) (B.RightInverse.inverseʳ rel)
 toRelated {K = surjection}          rel with B.Surjection.surjective rel
 ... | surj = Surj.surjection (B.Surjection.to rel) (proj₁ ∘ surj) (proj₂ ∘ surj)
-toRelated {K = bijection}           rel with B.Bijection.bijective rel
-... | (inj , surj) = Inv.inverse (B.Bijection.to rel) (proj₁ ∘ surj) (inj ∘ proj₂ ∘ surj ∘ (B.Bijection.to rel)) (proj₂ ∘ surj)
+toRelated {K = bijection}           rel  = Inv.inverse to from inverseʳ inverseˡ
+ where open B.Inverse rel
 
 fromRelated : {K : Kind} → A ∼[ K ] B → A R.∼[ K ] B
 fromRelated {K = implication}         rel = B.mk⟶ rel
@@ -109,14 +115,8 @@ fromRelated {K = left-inverse}        record { to = to ; from = from ; left-inve
 fromRelated {K = surjection}          record { to = to ; surjective = surjective } with surjective
 ... | record { from = from ; right-inverse-of = right-inverse-of } = B.mk↠ {to = to ⟨$⟩_} < from ⟨$⟩_ , right-inverse-of >
 fromRelated {K = bijection}           record { to = to ; from = from ; inverse-of = inverse-of } with inverse-of
-... | record { left-inverse-of = left-inverse-of ; right-inverse-of = right-inverse-of } = B.mk⤖
-  ((λ {x y} h → P.subst₂ P._≡_ (left-inverse-of x) (left-inverse-of y) (P.cong (from ⟨$⟩_) h)) ,
-  < from ⟨$⟩_ , right-inverse-of >)
-
--- A non-infix synonym.
-
-Related : Kind → ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Set ℓ₂ → Set _
-Related k A B = A ∼[ k ] B
+... | record { left-inverse-of = left-inverse-of ; right-inverse-of = right-inverse-of } =
+  B.mk↔ {to = to ⟨$⟩_} {from = from ⟨$⟩_} (right-inverse-of , left-inverse-of)
 
 -- The bijective equality implies any kind of relatedness.
 

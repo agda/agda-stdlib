@@ -179,8 +179,14 @@ Non-backwards compatible changes
 
 #### Function hierarchy
 
-* The switch to the new function hierarchy is complete and the following definitions
-  now use the new definitions instead of the old ones:
+* The switch to the new function hierarchy is complete and the following modules
+  have been completely switched over to use the new definitions:
+  ```
+  Data.Sum.Function.Setoid
+  Data.Sum.Function.Propositional
+  ```
+  
+* Additionally the following proofs now use the new definitions instead of the old ones:
   * `Algebra.Lattice.Properties.BooleanAlgebra`
   * `Algebra.Properties.CommutativeMonoid.Sum`
   * `Algebra.Properties.Lattice`

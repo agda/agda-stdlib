@@ -11,6 +11,7 @@ module Data.Product.Function.Dependent.Setoid where
 
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.Dependent
+open import Level using (Level)
 open import Function.Base
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
 open import Function.Equivalence as Eq
@@ -30,13 +31,18 @@ open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
+private
+  variable
+    i a b : Level
+    I : Set i
+    
 ------------------------------------------------------------------------
 -- Properties related to "relatedness"
 ------------------------------------------------------------------------
 
 private
 
-  subst-cong : ∀ {i a p} {I : Set i} {A : I → Set a}
+  subst-cong : ∀ {p} {A : I → Set a}
                (P : ∀ {i} → A i → A i → Set p) {i i′} {x y : A i}
                (i≡i′ : i ≡ i′) →
                P x y → P (P.subst A i≡i′ x) (P.subst A i≡i′ y)

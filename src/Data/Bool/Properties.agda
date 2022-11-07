@@ -16,9 +16,7 @@ open import Data.Empty
 open import Data.Product
 open import Data.Sum.Base
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence
-  using (_⇔_; equivalence; module Equivalence)
+open import Function.Bundles hiding (LeftInverse; RightInverse; Inverse)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary hiding (_⇔_)
@@ -643,29 +641,29 @@ not-¬ {false} refl ()
 
 ⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
 ⇔→≡ {true } {true }         hyp = refl
-⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
-⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp ⟨$⟩ refl
-⇔→≡ {false} {true } {true } hyp = Equivalence.from hyp ⟨$⟩ refl
-⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
+⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp refl)
+⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp refl
+⇔→≡ {false} {true } {true } hyp = Equivalence.from hyp refl
+⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp refl)
 ⇔→≡ {false} {false}         hyp = refl
 
 T-≡ : ∀ {x} → T x ⇔ x ≡ true
-T-≡ {false} = equivalence (λ ())       (λ ())
-T-≡ {true}  = equivalence (const refl) (const _)
+T-≡ {false} = mk⇔ (λ ())       (λ ())
+T-≡ {true}  = mk⇔ (const refl) (const _)
 
 T-not-≡ : ∀ {x} → T (not x) ⇔ x ≡ false
-T-not-≡ {false} = equivalence (const refl) (const _)
-T-not-≡ {true}  = equivalence (λ ())       (λ ())
+T-not-≡ {false} = mk⇔ (const refl) (const _)
+T-not-≡ {true}  = mk⇔ (λ ())       (λ ())
 
 T-∧ : ∀ {x y} → T (x ∧ y) ⇔ (T x × T y)
-T-∧ {true}  {true}  = equivalence (const (_ , _)) (const _)
-T-∧ {true}  {false} = equivalence (λ ())          proj₂
-T-∧ {false} {_}     = equivalence (λ ())          proj₁
+T-∧ {true}  {true}  = mk⇔ (const (_ , _)) (const _)
+T-∧ {true}  {false} = mk⇔ (λ ())          proj₂
+T-∧ {false} {_}     = mk⇔ (λ ())          proj₁
 
 T-∨ : ∀ {x y} → T (x ∨ y) ⇔ (T x ⊎ T y)
-T-∨ {true}  {_}     = equivalence inj₁ (const _)
-T-∨ {false} {true}  = equivalence inj₂ (const _)
-T-∨ {false} {false} = equivalence inj₁ [ id , id ]
+T-∨ {true}  {_}     = mk⇔ inj₁ (const _)
+T-∨ {false} {true}  = mk⇔ inj₂ (const _)
+T-∨ {false} {false} = mk⇔ inj₁ [ id , id ]
 
 T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
