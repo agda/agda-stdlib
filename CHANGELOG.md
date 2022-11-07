@@ -1829,6 +1829,8 @@ Other minor changes
   ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
 
+  parity : ℕ → Parity
+  
   +-rawMagma          : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
   *-rawMagma          : RawMagma 0ℓ 0ℓ
