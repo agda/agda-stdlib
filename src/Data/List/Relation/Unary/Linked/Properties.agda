@@ -97,10 +97,10 @@ module _ {R : Rel A ℓ} where
 
   applyUpTo⁺₁ : ∀ f n → (∀ {i} → suc i < n → R (f i) (f (suc i))) →
                 Linked R (applyUpTo f n)
-  applyUpTo⁺₁ f zero          Rf = []
-  applyUpTo⁺₁ f (suc zero)    Rf = [-]
-  applyUpTo⁺₁ f (suc (suc n)) Rf =
-    Rf (s<s z<s) ∷ (applyUpTo⁺₁ (f ∘ suc) (suc n) (Rf ∘ s<s))
+  applyUpTo⁺₁ f 0               Rf = []
+  applyUpTo⁺₁ f 1               Rf = [-]
+  applyUpTo⁺₁ f (suc n@(suc _)) Rf =
+    Rf (s<s z<s) ∷ (applyUpTo⁺₁ (f ∘ suc) n (Rf ∘ s<s))
 
   applyUpTo⁺₂ : ∀ f n → (∀ i → R (f i) (f (suc i))) →
                 Linked R (applyUpTo f n)
@@ -113,10 +113,10 @@ module _ {R : Rel A ℓ} where
 
   applyDownFrom⁺₁ : ∀ f n → (∀ {i} → suc i < n → R (f (suc i)) (f i)) →
                     Linked R (applyDownFrom f n)
-  applyDownFrom⁺₁ f zero          Rf = []
-  applyDownFrom⁺₁ f (suc zero)    Rf = [-]
-  applyDownFrom⁺₁ f (suc (suc n)) Rf =
-    Rf ≤-refl ∷ applyDownFrom⁺₁ f (suc n) (Rf ∘ m≤n⇒m≤1+n)
+  applyDownFrom⁺₁ f 0               Rf = []
+  applyDownFrom⁺₁ f 1               Rf = [-]
+  applyDownFrom⁺₁ f (suc n@(suc _)) Rf =
+    Rf ≤-refl ∷ applyDownFrom⁺₁ f n (Rf ∘ m≤n⇒m≤1+n)
 
   applyDownFrom⁺₂ : ∀ f n → (∀ i → R (f (suc i)) (f i)) →
                     Linked R (applyDownFrom f n)

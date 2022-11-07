@@ -56,9 +56,9 @@ composite? n@(suc (suc _)) = Dec.map′
   (anyUpTo? (λ d → 2 ≤? d ×-dec d ∣? n) n)
 
 prime? : Decidable Prime
-prime? 0                 = no λ()
-prime? 1                 = no λ()
-prime? n@(suc (suc n-2)) = Dec.map′
+prime? 0               = no λ()
+prime? 1               = no λ()
+prime? n@(suc (suc _)) = Dec.map′
   (λ f {d} → flip (f {d}))
   (λ f {d} → flip (f {d}))
   (allUpTo? (λ d → 2 ≤? d →-dec ¬? (d ∣? n)) n)
@@ -67,7 +67,7 @@ prime? n@(suc (suc n-2)) = Dec.map′
 -- Relationships between compositeness and primality
 
 composite⇒¬prime : Composite n → ¬ Prime n
-composite⇒¬prime {suc (suc _)} (d , 2≤d , d<n , d∣n) n-prime =
+composite⇒¬prime {n@(suc (suc _))} (d , 2≤d , d<n , d∣n) n-prime =
   n-prime 2≤d d<n d∣n
 
 ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
@@ -128,8 +128,8 @@ euclidsLemma m n {p@(suc (suc _))} p-prime p∣m*n = result
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(suc (suc _)) g _ with d ≟ p
   ...   | yes refl = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p  = contradiction (GCD.gcd∣n g) (p-prime (s≤s (s≤s z≤n)) d<p)
-    where d<p = flip ≤∧≢⇒< d≢p (∣⇒≤ (GCD.gcd∣n g))
+  ...   | no  d≢p  = contradiction (GCD.gcd∣n g) (p-prime 2≤d d<p)
+    where 2≤d = s≤s (s≤s z≤n); d<p = flip ≤∧≢⇒< d≢p (∣⇒≤ (GCD.gcd∣n g))
 
 private
 

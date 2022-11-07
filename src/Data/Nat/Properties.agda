@@ -349,10 +349,10 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 <-trans (s≤s i≤j) (s≤s j<k) = s≤s (≤-trans i≤j (≤-trans (n≤1+n _) j<k))
 
 <-transʳ : Trans _≤_ _<_ _<_
-<-transʳ m≤n (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
+<-transʳ m≤n (s<s n≤o) = s≤s (≤-trans m≤n n≤o)
 
 <-transˡ : Trans _<_ _≤_ _<_
-<-transˡ (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
+<-transˡ (s<s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
 -- NB: we use the builtin function `_<ᵇ_` here so that the function
 -- quickly decides which constructor to return. It still takes a
@@ -949,9 +949,9 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
   +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) m<o)
 
 *-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
-*-monoʳ-< (suc zero)    m<o@(s≤s _) = +-mono-≤ m<o z≤n
-*-monoʳ-< (suc (suc n)) m<o@(s≤s _) =
-  +-mono-≤ m<o (<⇒≤ (*-monoʳ-< (suc n) m<o))
+*-monoʳ-< (suc zero)      m<o@(s≤s _) = +-mono-≤ m<o z≤n
+*-monoʳ-< (suc n@(suc _)) m<o@(s≤s _) =
+  +-mono-≤ m<o (<⇒≤ (*-monoʳ-< n m<o))
 
 m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
 m≤m*n m n@(suc _) = begin
@@ -1047,7 +1047,7 @@ m^n≢0 : ∀ m n .{{_ : NonZero m}} → NonZero (m ^ n)
 m^n≢0 m n = ≢-nonZero (≢-nonZero⁻¹ m ∘′ m^n≡0⇒m≡0 m n)
 
 2^n>0 : ∀ (n : ℕ) → 2 ^ n > 0
-2^n>0 zero = s≤s z≤n
+2^n>0 zero = z<s
 2^n>0 (suc n) = ≤-trans (2^n>0 n) (m≤m+n (2 ^ n) ((2 ^ n) + zero))
 
 ------------------------------------------------------------------------
@@ -1901,8 +1901,8 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 n≡⌊n+n/2⌋ : ∀ n → n ≡ ⌊ n + n /2⌋
 n≡⌊n+n/2⌋ zero          = refl
 n≡⌊n+n/2⌋ (suc zero)    = refl
-n≡⌊n+n/2⌋ (suc (suc n)) =
-  cong suc (trans (n≡⌊n+n/2⌋ _) (cong ⌊_/2⌋ (sym (+-suc n (suc n)))))
+n≡⌊n+n/2⌋ (suc n′@(suc n)) =
+  cong suc (trans (n≡⌊n+n/2⌋ _) (cong ⌊_/2⌋ (sym (+-suc n n′))))
 
 ⌈n/2⌉≤n : ∀ n → ⌈ n /2⌉ ≤ n
 ⌈n/2⌉≤n zero    = z≤n
@@ -1912,10 +1912,10 @@ n≡⌊n+n/2⌋ (suc (suc n)) =
 ⌈n/2⌉<n n = s<s (⌊n/2⌋<n n)
 
 n≡⌈n+n/2⌉ : ∀ n → n ≡ ⌈ n + n /2⌉
-n≡⌈n+n/2⌉ zero          = refl
-n≡⌈n+n/2⌉ (suc zero)    = refl
-n≡⌈n+n/2⌉ (suc (suc n)) =
-  cong suc (trans (n≡⌈n+n/2⌉ _) (cong ⌈_/2⌉ (sym (+-suc n (suc n)))))
+n≡⌈n+n/2⌉ zero            = refl
+n≡⌈n+n/2⌉ (suc zero)      = refl
+n≡⌈n+n/2⌉ (suc n′@(suc n)) =
+  cong suc (trans (n≡⌈n+n/2⌉ _) (cong ⌈_/2⌉ (sym (+-suc n n′))))
 
 ------------------------------------------------------------------------
 -- Properties of !_

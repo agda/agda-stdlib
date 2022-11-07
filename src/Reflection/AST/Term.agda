@@ -69,14 +69,14 @@ getName _            = nothing
 
 -- "n ⋯⟨∷⟩ xs" prepends "n" visible unknown arguments to the list of
 -- arguments. Useful when constructing the list of arguments for a
--- function with initial inferable arguments.
+-- function with initial inferrable arguments.
 infixr 5 _⋯⟨∷⟩_
 _⋯⟨∷⟩_ : ℕ → Args Term → Args Term
 zero  ⋯⟨∷⟩ xs = xs
 suc i ⋯⟨∷⟩ xs = unknown ⟨∷⟩ (i ⋯⟨∷⟩ xs)
 {-# INLINE _⋯⟨∷⟩_ #-}
 
--- "n ⋯⟨∷⟩ xs" prepends "n" hidden unknown arguments to the list of
+-- "n ⋯⟅∷⟆ xs" prepends "n" hidden unknown arguments to the list of
 -- arguments. Useful when constructing the list of arguments for a
 -- function with initial implicit arguments.
 infixr 5 _⋯⟅∷⟆_
