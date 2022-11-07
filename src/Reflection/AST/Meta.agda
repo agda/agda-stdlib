@@ -8,12 +8,12 @@
 
 module Reflection.AST.Meta where
 
-import Data.Nat.Properties as ℕₚ
-open import Function
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Binary
+import Data.Nat.Properties as ℕₚ                using (_≟_)
+open import Function                             using (_on_)
+open import Relation.Nullary.Decidable           using (map′)
+open import Relation.Binary                      using (Rel; Decidable; DecidableEquality)
 import Relation.Binary.Construct.On as On
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality using (_≡_; cong)
 
 open import Agda.Builtin.Reflection public
   using (Meta) renaming (primMetaToNat to toℕ; primMetaEquality to _≡ᵇ_)

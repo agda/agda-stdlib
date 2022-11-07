@@ -8,12 +8,11 @@
 
 module Reflection.AST.Argument where
 
-open import Data.List.Base as List using (List; []; _∷_)
-open import Data.Product using (_×_; _,_; uncurry; <_,_>)
-open import Data.Nat using (ℕ)
-open import Relation.Nullary.Decidable as Dec using (Dec; _×-dec_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Data.List.Base as List                using (List; []; _∷_)
+open import Data.Product                          using (_×_; <_,_>; uncurry)
+open import Relation.Nullary.Decidable            using (Dec; map′; _×-dec_)
+open import Relation.Binary                       using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
 open import Level
 
 open import Reflection.AST.Argument.Visibility
@@ -88,7 +87,7 @@ unArg (arg i a) = a
 
 unArg-dec : {arg1 arg2 : Arg A} → Dec (unArg arg1 ≡ unArg arg2) → Dec (arg1 ≡ arg2)
 unArg-dec {arg1 = arg i x} {arg j y} arg1≟arg2 =
-  Dec.map′ (uncurry (cong₂ arg)) arg-injective (i Information.≟ j ×-dec arg1≟arg2)
+  map′ (uncurry (cong₂ arg)) arg-injective (i Information.≟ j ×-dec arg1≟arg2)
 
 ≡-dec : DecidableEquality A → DecidableEquality (Arg A)
 ≡-dec _≟_ x y = unArg-dec (unArg x ≟ unArg y)
