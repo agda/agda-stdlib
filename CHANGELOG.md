@@ -1571,9 +1571,9 @@ Other minor changes
 * Added new proofs to `Algebra.Properties.Ring`:
   ```agda
   -1*x≈-x : ∀ x → - 1# * x ≈ - x
-  x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
-  xy-z≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
-  y-zx≈yx-zx : ∀ x y z → (y - z) * x ≈ (y * x) - (z * x)
+  x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
+  x[y-z]≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
+  [y-z]x≈yx-zx : ∀ x y z → (y - z) * x ≈ (y * x) - (z * x)
   ```
 
 * Added new definitions to `Algebra.Structures`:
