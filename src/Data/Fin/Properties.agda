@@ -6,6 +6,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 module Data.Fin.Properties where
 
@@ -36,13 +37,10 @@ open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
-open import Relation.Nullary.Decidable as Dec using (map′)
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary
-  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_)
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_; _×-dec_; _⊎-dec_; contradiction)
+open import Relation.Nullary.Reflects
+open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
@@ -166,7 +164,7 @@ toℕ≤n : ∀ (i : Fin n) → toℕ i ℕ.≤ n
 toℕ≤n {suc n} i = ℕₚ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
 
 toℕ<n : ∀ (i : Fin n) → toℕ i ℕ.< n
-toℕ<n {suc n} i = s≤s (toℕ≤pred[n] i)
+toℕ<n {suc n} i = s<s (toℕ≤pred[n] i)
 
 -- A simpler implementation of toℕ≤pred[n],
 -- however, with a different reduction behavior.
@@ -759,18 +757,6 @@ lift-injective f inj (suc k) {suc _} {suc _} eq =
   cong suc (lift-injective f inj k (suc-injective eq))
 
 ------------------------------------------------------------------------
--- _≺_
-------------------------------------------------------------------------
-
-≺⇒<′ : _≺_ ⇒ ℕ._<′_
-≺⇒<′ (n ≻toℕ i) = ℕₚ.≤⇒≤′ (toℕ<n i)
-
-<′⇒≺ : ℕ._<′_ ⇒ _≺_
-<′⇒≺ {n} ℕ.≤′-refl = subst (_≺ suc n) (toℕ-fromℕ n) (suc n ≻toℕ fromℕ n)
-<′⇒≺ (ℕ.≤′-step m≤′n) with <′⇒≺ m≤′n
-... | n ≻toℕ i = subst (_≺ suc n) (toℕ-inject₁ i) (suc n ≻toℕ _)
-
-------------------------------------------------------------------------
 -- pred
 ------------------------------------------------------------------------
 
@@ -1133,3 +1119,33 @@ eq? = inj⇒≟
 "Warning: eq? was deprecated in v2.0.
 Please use inj⇒≟ instead."
 #-}
+
+private
+
+  z≺s : ∀ {n} → zero ≺ suc n
+  z≺s = _ ≻toℕ zero
+
+  s≺s : ∀ {m n} → m ≺ n → suc m ≺ suc n
+  s≺s (n ≻toℕ i) = (suc n) ≻toℕ (suc i)
+
+  <⇒≺ : ℕ._<_ ⇒ _≺_
+  <⇒≺ {zero}  z<s      = z≺s
+  <⇒≺ {suc m} (s<s lt) = s≺s (<⇒≺ lt)
+
+  ≺⇒< : _≺_ ⇒ ℕ._<_
+  ≺⇒< (n ≻toℕ i) = toℕ<n i
+
+≺⇒<′ : _≺_ ⇒ ℕ._<′_
+≺⇒<′ lt = ℕₚ.<⇒<′ (≺⇒< lt)
+{-# WARNING_ON_USAGE ≺⇒<′
+"Warning: ≺⇒<′ was deprecated in v2.0.
+Please use <⇒<′ instead."
+#-}
+
+<′⇒≺ : ℕ._<′_ ⇒ _≺_
+<′⇒≺ lt = <⇒≺ (ℕₚ.<′⇒< lt)
+{-# WARNING_ON_USAGE <′⇒≺
+"Warning: <′⇒≺ was deprecated in v2.0.
+Please use <′⇒< instead."
+#-}
+

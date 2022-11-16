@@ -22,7 +22,7 @@ open import Algebra.Definitions _≈_ using (Invertible)
 open import Algebra.Structures _≈_ using (IsCommutativeRing)
 open import Relation.Binary.Structures using (IsEquivalence; IsApartnessRelation)
 open import Relation.Binary.Definitions using (Tight)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 import Relation.Binary.Properties.ApartnessRelation as AR
 
 

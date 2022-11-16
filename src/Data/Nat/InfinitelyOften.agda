@@ -17,7 +17,7 @@ open import Data.Product as Prod hiding (map)
 open import Data.Sum hiding (map)
 open import Function
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
 open import Relation.Unary using (Pred; _∪_; _⊆_)
 open RawMonad (¬¬-Monad {p = 0ℓ})

@@ -25,8 +25,7 @@ open import Function.LeftInverse as LeftInv
 open import Function.Related
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product
+open import Relation.Nullary.Decidable using (_×-dec_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 

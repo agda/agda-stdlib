@@ -19,7 +19,7 @@ import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Poset poset as PosetProperties
 open import Relation.Binary.Consequences
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 
 ------------------------------------------------------------------------

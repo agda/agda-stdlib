@@ -13,6 +13,7 @@ module Data.List.Properties where
 
 open import Algebra.Bundles
 open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
+open import Algebra.Morphism.Structures using (IsMagmaHomomorphism; IsMonoidHomomorphism)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ)
@@ -35,10 +36,8 @@ import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
 open import Relation.Binary as B using (Rel)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no)
-open import Relation.Nullary.Negation using (contradiction; ¬?)
-open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋)
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
+open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -238,6 +237,22 @@ module _ (A : Set a) where
   ++-monoid = record
     { Carrier  = List A
     ; isMonoid = ++-isMonoid
+    }
+
+module _ (A : Set a) where
+
+  length-isMagmaHomomorphism : IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMagmaHomomorphism = record
+    { isRelHomomorphism = record
+      { cong = cong length
+      }
+    ; homo = λ xs ys → length-++ xs {ys}
+    }
+
+  length-isMonoidHomomorphism : IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+  length-isMonoidHomomorphism = record
+    { isMagmaHomomorphism = length-isMagmaHomomorphism
+    ; ε-homo = refl
     }
 
 ------------------------------------------------------------------------

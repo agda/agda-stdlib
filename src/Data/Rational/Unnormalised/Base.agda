@@ -14,7 +14,7 @@ open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel)
@@ -297,8 +297,8 @@ syntax truncate p = [ p ]
   ; _∙_ = _+_
   }
 
-+-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-rawMonoid = record
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
   { _≈_ = _≃_
   ; _∙_ = _+_
   ; ε   = 0ℚᵘ
@@ -352,9 +352,28 @@ syntax truncate p = [ p ]
   ; _∙_ = _*_
   }
 
-*-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-rawMonoid = record
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
   { _≈_ = _≃_
   ; _∙_ = _*_
   ; ε   = 1ℚᵘ
   }
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
++-rawMonoid = +-0-rawMonoid
+{-# WARNING_ON_USAGE +-rawMonoid
+"Warning: +-rawMonoid was deprecated in v2.0
+Please use +-0-rawMonoid instead."
+#-}
+*-rawMonoid = *-1-rawMonoid
+{-# WARNING_ON_USAGE *-rawMonoid
+"Warning: *-rawMonoid was deprecated in v2.0
+Please use *-1-rawMonoid instead."
+#-}

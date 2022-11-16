@@ -11,57 +11,24 @@
 module Relation.Nullary where
 
 open import Agda.Builtin.Equality
-open import Agda.Builtin.Bool
-
-open import Data.Empty hiding (⊥-elim)
-open import Data.Empty.Irrelevant
-open import Level
 
 ------------------------------------------------------------------------
--- Negation.
+-- Re-exports
 
-infix 3 ¬_
-infix 2 _because_
+open import Relation.Nullary.Negation.Core public using
+  ( ¬_; _¬-⊎_
+  ; contradiction; contradiction₂; contraposition
+  )
 
-¬_ : ∀ {ℓ} → Set ℓ → Set ℓ
-¬ P = P → ⊥
+open import Relation.Nullary.Reflects public using
+  ( Reflects; ofʸ; ofⁿ
+  ; _×-reflects_; _⊎-reflects_; _→-reflects_
+  )
 
-------------------------------------------------------------------------
--- `Reflects` idiom.
-
--- The truth value of P is reflected by a boolean value.
-
-data Reflects {p} (P : Set p) : Bool → Set p where
-  ofʸ : ( p :   P) → Reflects P true
-  ofⁿ : (¬p : ¬ P) → Reflects P false
-
-------------------------------------------------------------------------
--- Decidability.
-
--- Decidability proofs have two parts: the `does` term which contains
--- the boolean result and the `proof` term which contains a proof that
--- reflects the boolean result. This definition allows the boolean
--- part of the decision procedure to compute independently from the
--- proof. This leads to better computational behaviour when we only care
--- about the result and not the proof. See README.Decidability for
--- further details.
-
-record Dec {p} (P : Set p) : Set p where
-  constructor _because_
-  field
-    does  : Bool
-    proof : Reflects P does
-
-open Dec public
-
-pattern yes p =  true because ofʸ  p
-pattern no ¬p = false because ofⁿ ¬p
-
--- Given an irrelevant proof of a decidable type, a proof can
--- be recomputed and subsequently used in relevant contexts.
-recompute : ∀ {a} {A : Set a} → Dec A → .A → A
-recompute (yes x) _ = x
-recompute (no ¬p) x = ⊥-elim (¬p x)
+open import Relation.Nullary.Decidable.Core public using
+  ( Dec; does; proof; yes; no; _because_; recompute
+  ; ¬?; _×-dec_; _⊎-dec_; _→-dec_
+  )
 
 ------------------------------------------------------------------------
 -- Irrelevant types

@@ -11,13 +11,14 @@
 
 module Data.Nat.Base where
 
-open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
 open import Data.Bool.Base using (Bool; true; false; T; not)
+open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
@@ -172,6 +173,13 @@ m ⊓′ n with m <ᵇ n
 ... | false = n
 ... | true  = m
 
+-- Parity
+
+parity : ℕ → Parity
+parity 0             = 0ℙ
+parity 1             = 1ℙ
+parity (suc (suc n)) = parity n
+
 -- Division by 2, rounded downwards.
 
 ⌊_/2⌋ : ℕ → ℕ
@@ -323,3 +331,36 @@ compare (suc m) (suc n) with compare m n
   ; _∙_ = _+_
   ; ε   = 0
   }
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε = 1
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  ; 1# = 1
+  }
+

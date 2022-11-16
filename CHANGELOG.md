@@ -521,12 +521,42 @@ Non-backwards compatible changes
       ↦ ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
     ```
 
+### Reorganisation of the `Relation.Nullary` hierarchy
+
+* It was very difficult to use the `Relation.Nullary` modules, as `Relation.Nullary`
+  contained the basic definitions of negation, decidability etc., and the operations and
+  proofs were smeared over `Relation.Nullary.(Negation/Product/Sum/Implication etc.)`.
+  
+* In order to fix this:
+  - the definition of `Dec` and `recompute` have been moved to `Relation.Nullary.Decidable.Core`
+  - the definition of `Reflects` has been moved to `Relation.Nullary.Reflects`
+  - the definition of `¬_` has been moved to `Relation.Nullary.Negation.Core`
+
+* Backwards compatibility has been maintained, as `Relation.Nullary` still re-exports these publicly.
+
+* The modules:
+  ```
+  Relation.Nullary.Product
+  Relation.Nullary.Sum
+  Relation.Nullary.Implication
+  ```
+  have been deprecated and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`
+  however all their contents is re-exported by `Relation.Nullary` which is the easiest way to access
+  it now.
+  
+* In order to facilitate this reorganisation the following breaking moves have occured:
+  - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
+  - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
+  - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation` 
+	to `Relation.Nullary.Decidable`.
+  - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
+
 ### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
 
 * The unindexed versions are not defined in terms of the named versions anymore
 
 * The `RawApplicative` and `RawMonad` type classes have been relaxed so that the underlying
-  functors do not need to their domain and codomain to live at the same Set level.
+  functors do not need their domain and codomain to live at the same Set level.
   This is needed for level-increasing functors like `IO : Set l → Set (suc l)`.
 
 * `RawApplicative` is now `RawFunctor + pure + _<*>_` and `RawMonad` is now
@@ -656,6 +686,8 @@ Non-backwards compatible changes
   + the `i` argument to `opposite-suc` has been made explicit;
   + `pigeonhole` has been strengthened: wlog, we return a proof that
     `i < j` rather than a mere `i ≢ j`.
+
+* In `Data.Sum.Base` the definitions `fromDec` and `toDec` have been moved to `Data.Sum`.
 
 * In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
   * `cycle`
@@ -866,6 +898,24 @@ Deprecated names
   raise    ↦  _↑ʳ_
   ```
 
+  Issue #1726: the relation `_≺_` and its single constructor `_≻toℕ_`
+  have been deprecated in favour of their extensional equivalent `_<_`
+  but omitting the inversion principle which pattern matching on `_≻toℕ_`
+  would achieve; this instead is proxied by the property `Data.Fin.Properties.toℕ<`.
+
+* In `Data.Fin.Induction`:
+  ```
+  ≺-Rec 
+  ≺-wellFounded
+  ≺-recBuilder
+  ≺-rec
+  ```
+
+  As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
+  associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
+  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  least of all those counterparts... the type confusion would be intolerable. 
+
 * In `Data.Fin.Properties`:
   ```
   toℕ-raise        ↦ toℕ-↑ʳ
@@ -875,6 +925,9 @@ Deprecated names
   Fin0↔⊥           ↦ 0↔⊥
   eq?              ↦ inj⇒≟
   ```
+
+  Likewise under issue #1726: the properties `≺⇒<′` and `<′⇒≺` have been deprecated
+  in favour of their proxy counterparts `<⇒<′` and `<′⇒<`.
 
 * In `Data.Fin.Permutation.Components`:
   ```
@@ -946,6 +999,8 @@ Deprecated names
   pos-distrib-* ↦ pos-*
   pos-+-commute ↦ pos-+
   abs-*-commute ↦ abs-*
+  
+  +-isAbelianGroup ↦ +-0-isAbelianGroup
   ```
   
 * In `Data.List.Properties`:
@@ -1034,6 +1089,12 @@ Deprecated names
   negative<positive     ↦ neg<pos
   ```
 
+* In `Data.Rational.Base`:
+  ```
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
+  ```
+
 * In `Data.Rational.Properties`:
   ```
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
@@ -1046,6 +1107,12 @@ Deprecated names
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
 
   negative<positive     ↦ neg<pos
+  ```
+
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
   ```
 
 * In `Data.Sum.Properties`:
@@ -1245,6 +1312,19 @@ New modules
   Data.Nat.Combinatorics.Spec
   ```
 
+* A small library defining parity and its algebra:
+  ```
+  Data.Parity
+  Data.Parity.Base
+  Data.Parity.Instances
+  Data.Parity.Properties
+  ```
+
+* New base module for `Data.Product` containing only the basic definitions.
+  ```
+  Data.Product.Base
+  ```
+
 * Reflection utilities for some specific types:
   ```
   Data.List.Reflection
@@ -1371,12 +1451,26 @@ New modules
   ```
   Algebra.Properties.Quasigroup
   ```
+  
+* Properties of MiddleBolLoop
+  ```
+  Algebra.Properties.MiddleBolLoop
+  ```
+
+* Properties of Loop
+  ```
+  Algebra.Properties.Loop
+  ```
 
 * Some n-ary functions manipulating lists
   ```
   Data.List.Nary.NonDependent
   ```
 
+* Properties of KleeneAlgebra
+  ```
+  Algebra.Properties.KleeneAlgebra
+  ```
 Other minor changes
 -------------------
 
@@ -1412,6 +1506,7 @@ Other minor changes
   record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ))
   record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ))
+  record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -1469,6 +1564,10 @@ Other minor changes
   semimedialMagma : SemimedialMagma a ℓ₁ → SemimedialMagma b ℓ₂ →
                     SemimedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  leftBolLoop : LeftBolLoop a ℓ₁ → LeftBolLoop b ℓ₂ → LeftBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rightBolLoop : RightBolLoop a ℓ₁ → RightBolLoop b ℓ₂ → RightBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  middleBolLoop : MiddleBolLoop a ℓ₁ → MiddleBolLoop b ℓ₂ → MiddleBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
 * Added new definition to `Algebra.Definitions`:
@@ -1499,6 +1598,7 @@ Other minor changes
   Semimedial _∙_ = (LeftSemimedial _∙_) × (RightSemimedial _∙_)
   LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ z)) ∙ z )
   RightBol _∙_ = ∀ x y z → (((z ∙ x) ∙ y) ∙ x) ≈ (z ∙ ((x ∙ y) ∙ x))
+  MiddleBol _∙_ _\\_ _//_ = ∀ x y z → (x ∙ ((y ∙ z) \\ x)) ≈ ((x // z) ∙ (y \\ x))
   ```
 
 * Added new functions to `Algebra.Definitions.RawSemiring`:
@@ -1553,6 +1653,7 @@ Other minor changes
   record IsRightBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsMiddleBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -1653,7 +1754,12 @@ Other minor changes
 * Added new functions in `Data.Integer.Base`:
   ```
   _^_ : ℤ → ℕ → ℤ
-  ```
+ 
+  +-0-rawGroup  : Rawgroup 0ℓ 0ℓ
+
+  *-rawMagma    : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+ ```
 
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
@@ -1668,11 +1774,16 @@ Other minor changes
   ^-*-assoc      : (i ^ m) ^ n ≡ i ^ (m ℕ.* n)
   ^-distribˡ-+-* : i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
 
-  *-rawMagma    : RawMagma 0ℓ 0ℓ
-  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-
   ^-isMagmaHomomorphism  : IsMagmaHomomorphism  ℕ.+-rawMagma    *-rawMagma    (i ^_)
   ^-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
+  ```
+
+* Added new proofs in `Data.Integer.GCD`:
+  ```agda
+  gcd-assoc : Associative gcd
+  gcd-zeroˡ : LeftZero 1ℤ gcd
+  gcd-zeroʳ : RightZero 1ℤ gcd
+  gcd-zero  : Zero 1ℤ gcd
   ```
 
 * Added new functions in `Data.List`:
@@ -1689,10 +1800,12 @@ Other minor changes
   deduplicateᵇ : (A → A → Bool) → List A → List A
   ```
 
-* Added new functions to `Data.List.Base`:
+* Added new functions and definitions to `Data.List.Base`:
   ```agda
   catMaybes : List (Maybe A) → List A
   ap : List (A → B) → List A → List B
+  ++-rawMagma : Set a → RawMagma a _
+  ++-[]-rawMonoid : Set a → RawMonoid a _
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
@@ -1725,6 +1838,9 @@ Other minor changes
   concatMap-pure : concatMap [_] ≗ id
   concatMap-map  : concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
   map-concatMap  : map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
+
+  length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -1739,6 +1855,15 @@ Other minor changes
   _⊓′_ : ℕ → ℕ → ℕ
   ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
+
+  parity : ℕ → Parity
+  
+  +-rawMagma          : RawMagma 0ℓ 0ℓ
+  +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
+  *-rawMagma          : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid       : RawMonoid 0ℓ 0ℓ
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
   ```
 
 
@@ -1844,6 +1969,17 @@ Other minor changes
   m/n/o≡m/[n*o] : .{{NonZero n}} .{{NonZero o}} → n * o ∣ m → (m / n) / o ≡ m / (n * o)
   ```
 
+* Added new proofs in `Data.Nat.GCD`:
+  ```agda
+  gcd-assoc     : Associative gcd
+  gcd-identityˡ : LeftIdentity 0 gcd
+  gcd-identityʳ : RightIdentity 0 gcd
+  gcd-identity  : Identity 0 gcd
+  gcd-zeroˡ     : LeftZero 1 gcd
+  gcd-zeroʳ     : RightZero 1 gcd
+  gcd-zero      : Zero 1 gcd
+  ```
+
 * Added new patterns in `Data.Nat.Reflection`:
   ```agda
   pattern `ℕ     = def (quote ℕ) []
@@ -1930,6 +2066,13 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new definitions to `Data.Sign.Base`:
+  ```agda
+  *-rawMagma : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+  *-1-rawGroup : RawGroup 0ℓ 0ℓ
+  ```
+
 * Added new proofs to `Data.Sign.Properties`:
   ```agda
   *-inverse : Inverse + id _*_
@@ -1941,6 +2084,7 @@ Other minor changes
   *-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
   *-group : Group 0ℓ 0ℓ
   *-abelianGroup : AbelianGroup 0ℓ 0ℓ
+  ≡-isDecEquivalence : IsDecEquivalence _≡_
   ```
 
 * Added new functions in `Data.String.Base`:

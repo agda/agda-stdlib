@@ -16,7 +16,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -215,6 +215,9 @@ LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ x)) �
 
 RightBol : Op₂ A → Set _
 RightBol _∙_ = ∀ x y z → (((z ∙ x) ∙ y) ∙ x) ≈ (z ∙ ((x ∙ y) ∙ x))
+
+MiddleBol : Op₂ A → Op₂ A  → Op₂ A  → Set _
+MiddleBol _∙_ _\\_ _//_ = ∀ x y z → (x ∙ ((y ∙ z) \\ x)) ≈ ((x // z) ∙ (y \\ x))
 
 Identical : Op₂ A → Set _
 Identical _∙_ = ∀ x y z → ((z ∙ x) ∙ (y ∙ z)) ≈ (z ∙ ((x ∙ y) ∙ z))

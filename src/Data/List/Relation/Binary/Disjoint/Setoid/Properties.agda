@@ -17,7 +17,7 @@ open import Data.List.Relation.Unary.Any.Properties using (++⁻)
 open import Data.Product using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 ------------------------------------------------------------------------
 -- Relational properties

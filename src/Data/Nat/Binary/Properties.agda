@@ -983,19 +983,19 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
     |y|+1+|x|≤cnt = subst (ℕ._≤ cnt) eq |x|+1+|y|≤cnt
 
 
-toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕₚ.*-rawMagma toℕ
+toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕᵇ.*-rawMagma toℕ
 toℕ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
   ; homo              = toℕ-homo-*
   }
 
-toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
+toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕᵇ.*-1-rawMonoid toℕ
 toℕ-isMonoidHomomorphism-* = record
   { isMagmaHomomorphism = toℕ-isMagmaHomomorphism-*
   ; ε-homo              = refl
   }
 
-toℕ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
+toℕ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℕᵇ.*-1-rawMonoid toℕ
 toℕ-isMonoidMonomorphism-* = record
   { isMonoidHomomorphism = toℕ-isMonoidHomomorphism-*
   ; injective            = toℕ-injective
@@ -1499,3 +1499,9 @@ Please use +-*-semiring instead."
 "Warning: *-+-commutativeSemiring was deprecated in v1.4.
 Please use +-*-commutativeSemiring instead."
 #-}
+
+-- Version 2.0
+
+{- issue1858/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Nat.Binary.Base public
+  using (+-rawMagma; +-0-rawMonoid; *-rawMagma; *-1-rawMonoid)

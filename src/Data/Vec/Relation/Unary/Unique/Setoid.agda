@@ -16,7 +16,7 @@ open import Data.Vec.Base
 import Data.Vec.Relation.Unary.AllPairs as AllPairsM
 open import Level using (_⊔_)
 open import Relation.Unary using (Pred)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 
 ------------------------------------------------------------------------

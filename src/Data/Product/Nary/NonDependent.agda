@@ -22,8 +22,7 @@ open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function.Base using (const; _∘′_; _∘_)
-open import Relation.Nullary
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable using (Dec; yes; no; _×-dec_)
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
 
@@ -75,14 +74,14 @@ Equalₙ = Allₙ _≡_
 -- equivalence of Product and Product⊤
 
 toProduct : ∀ n {ls} {as : Sets n ls} → Product⊤ n as → Product n as
-toProduct 0             _        = _
-toProduct 1             (v , _)  = v
-toProduct (suc (suc n)) (v , vs) = v , toProduct _ vs
+toProduct 0               _        = _
+toProduct 1               (v , _)  = v
+toProduct (suc n@(suc _)) (v , vs) = v , toProduct n vs
 
 toProduct⊤ : ∀ n {ls} {as : Sets n ls} → Product n as → Product⊤ n as
-toProduct⊤ 0             _        = _
-toProduct⊤ 1             v        = v , _
-toProduct⊤ (suc (suc n)) (v , vs) = v , toProduct⊤ _ vs
+toProduct⊤ 0               _        = _
+toProduct⊤ 1               v        = v , _
+toProduct⊤ (suc n@(suc _)) (v , vs) = v , toProduct⊤ n vs
 
 ------------------------------------------------------------------------
 -- (un)curry
@@ -217,10 +216,10 @@ Insertₙ {zero} _ (suc ()) _
 
 insertₙ : ∀ n {ls l⁺} {as : Sets n ls} {a⁺ : Set l⁺} k (v⁺ : a⁺) →
           Product n as → Product (suc n) (Insertₙ as k a⁺)
-insertₙ 0             zero    v⁺ vs       = v⁺
-insertₙ (suc n)       zero    v⁺ vs       = v⁺ , vs
-insertₙ 1             (suc k) v⁺ vs       = vs , insertₙ 0 k v⁺ _
-insertₙ (suc (suc n)) (suc k) v⁺ (v , vs) = v , insertₙ _ k v⁺ vs
+insertₙ 0               zero    v⁺ vs       = v⁺
+insertₙ (suc n)         zero    v⁺ vs       = v⁺ , vs
+insertₙ 1               (suc k) v⁺ vs       = vs , insertₙ 0 k v⁺ _
+insertₙ (suc n@(suc _)) (suc k) v⁺ (v , vs) = v , insertₙ n k v⁺ vs
 insertₙ 0 (suc ()) _ _
 
 ------------------------------------------------------------------------
@@ -236,9 +235,9 @@ Updateₙ (a , as) (suc k) aᵘ = a , Updateₙ as k aᵘ
 
 updateₙ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : _ → Set lᵘ} (f : ∀ v → aᵘ v)
           (vs : Product n as) → Product n (Updateₙ as k (aᵘ (projₙ n k vs)))
-updateₙ 1             zero    f v        = f v
-updateₙ (suc (suc _)) zero    f (v , vs) = f v , vs
-updateₙ (suc (suc _)) (suc k) f (v , vs) = v , updateₙ _ k f vs
+updateₙ 1               zero    f v        = f v
+updateₙ (suc (suc _))   zero    f (v , vs) = f v , vs
+updateₙ (suc n@(suc _)) (suc k) f (v , vs) = v , updateₙ n k f vs
 updateₙ 1 (suc ()) _ _
 
 updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ as k → aᵘ) →
