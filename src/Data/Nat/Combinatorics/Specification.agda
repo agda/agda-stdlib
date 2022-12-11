@@ -19,7 +19,7 @@ open import Data.Nat.Combinatorics.Base
 open import Data.Sum using (inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; trans; _≢_)
-open import Relation.Nullary using (yes; no; does)
+open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality
   using (subst; refl; sym; cong; cong₂)

@@ -22,7 +22,7 @@ open import Level using (Level)
 open import Relation.Binary hiding (Decidable)
 import Relation.Binary.Properties.TotalOrder as TotalOrderProperties
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 private
   variable
     a b p ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level

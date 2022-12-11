@@ -26,7 +26,7 @@ open import Level using (Level)
 open import Relation.Binary using (Rel; Setoid)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contraposition)
 
 private

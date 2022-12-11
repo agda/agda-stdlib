@@ -5,6 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 open import Data.Fin.Base
 open import Data.Fin.Properties
@@ -20,14 +21,15 @@ open import Function.Base using (flip; _$_)
 open import Induction
 open import Induction.WellFounded as WF
 open import Level using (Level)
-open import Relation.Binary using (Rel; Decidable; IsPartialOrder; IsStrictPartialOrder; StrictPartialOrder)
+open import Relation.Binary
+  using (Rel; Decidable; IsPartialOrder; IsStrictPartialOrder; StrictPartialOrder)
 import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.Flip as Flip
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.Definitions using (Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
@@ -95,24 +97,6 @@ private
     where Pᵢ₊₁ = induct (rec _ (ℕ.≤-reflexive (cong suc (sym (toℕ-lower₁ i n≢i)))))
 
 ------------------------------------------------------------------------
--- Induction over _≺_
-
-≺-Rec : RecStruct ℕ ℓ ℓ
-≺-Rec = WfRec _≺_
-
-≺-wellFounded : WellFounded _≺_
-≺-wellFounded = Subrelation.wellFounded ≺⇒<′ ℕ.<′-wellFounded
-
-module _ {ℓ} where
-  open WF.All ≺-wellFounded ℓ public
-    renaming
-    ( wfRecBuilder to ≺-recBuilder
-    ; wfRec        to ≺-rec
-    )
-    hiding (wfRec-builder)
-
-
-------------------------------------------------------------------------
 -- Well-foundedness of other (strict) partial orders on Fin
 
 module _ {_≈_ : Rel (Fin n) ℓ} where
@@ -159,3 +143,43 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
                   WellFounded (flip (ToStrict._<_ _≈_ _⊑_))
   po-noetherian isPO =
     spo-noetherian (ToStrict.<-isStrictPartialOrder _≈_ _ isPO)
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+≺-Rec : RecStruct ℕ ℓ ℓ
+≺-Rec = WfRec _≺_
+
+≺-wellFounded : WellFounded _≺_
+≺-wellFounded = Subrelation.wellFounded ≺⇒<′ ℕ.<′-wellFounded
+
+module _ {ℓ} where
+  open WF.All ≺-wellFounded ℓ public
+    renaming
+    ( wfRecBuilder to ≺-recBuilder
+    ; wfRec        to ≺-rec
+    )
+    hiding (wfRec-builder)
+
+{-# WARNING_ON_USAGE ≺-Rec
+"Warning: ≺-Rec was deprecated in v2.0.
+Please use <-Rec instead."
+#-}
+{-# WARNING_ON_USAGE ≺-wellFounded
+"Warning: ≺-wellFounded was deprecated in v2.0.
+Please use <-wellFounded instead."
+#-}
+{-# WARNING_ON_USAGE ≺-recBuilder
+"Warning: ≺-recBuilder was deprecated in v2.0.
+Please use <-recBuilder instead."
+#-}
+{-# WARNING_ON_USAGE ≺-rec
+"Warning: ≺-rec was deprecated in v2.0.
+Please use <-rec instead."
+#-}
+

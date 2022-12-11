@@ -96,7 +96,7 @@ open import Data.Unit.Base using (⊤)
 
 open import Function.Base using (id; _$_; case_of_)
 
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 
 open import Codata.Musical.Notation using (♯_)
 open import IO

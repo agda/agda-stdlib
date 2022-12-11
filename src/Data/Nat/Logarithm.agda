@@ -29,6 +29,9 @@ open import Relation.Binary.PropositionalEquality using (_≡_)
 ------------------------------------------------------------------------
 -- Properties of ⌊log₂_⌋
 
+⌊log₂⌋-mono-≤ : ∀ {m n} → m ≤ n → ⌊log₂ m ⌋ ≤ ⌊log₂ n ⌋
+⌊log₂⌋-mono-≤ p = ⌊log2⌋-mono-≤ p
+
 ⌊log₂⌊n/2⌋⌋≡⌊log₂n⌋∸1 : ∀ n → ⌊log₂ ⌊ n /2⌋ ⌋ ≡ ⌊log₂ n ⌋ ∸ 1
 ⌊log₂⌊n/2⌋⌋≡⌊log₂n⌋∸1 n = ⌊log2⌋⌊n/2⌋≡⌊log2⌋n∸1 n
 

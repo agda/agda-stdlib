@@ -31,7 +31,7 @@ private variable ℓ : Level
 -- The types for which `P` or `¬P` holds is called `Dec P` in the
 -- standard library (short for `Decidable`).
 
-open import Relation.Nullary using (Dec)
+open import Relation.Nullary.Decidable using (Dec)
 
 -- The type of the proof of saying that excluded middle holds for
 -- all types at universe level ℓ is therefore:

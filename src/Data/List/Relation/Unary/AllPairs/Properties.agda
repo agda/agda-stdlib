@@ -22,7 +22,7 @@ open import Level using (Level)
 open import Relation.Binary using (Rel; DecSetoid)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 
 private
   variable

@@ -16,7 +16,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set

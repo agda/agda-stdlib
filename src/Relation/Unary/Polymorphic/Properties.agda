@@ -11,7 +11,7 @@ module Relation.Unary.Polymorphic.Properties where
 
 open import Level using (Level)
 open import Relation.Binary.Definitions hiding (Decidable; Universal)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Unary hiding (∅; U)
 open import Relation.Unary.Polymorphic
 open import Data.Unit.Polymorphic.Base using (tt)

@@ -21,7 +21,7 @@ open import Level using (Level)
 
 open import Relation.Binary using (_Respects_; tri<; tri≈; tri>)
 open import Relation.Unary using (Pred)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 
 open import Data.Tree.AVL.Indexed sto as AVL

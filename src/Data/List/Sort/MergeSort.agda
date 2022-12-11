@@ -20,14 +20,14 @@ import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Perm
 open import Data.Maybe.Base using (just)
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 open import Data.Nat using (_<_; _>_; z<s; s<s)
 open import Data.Nat.Induction
 open import Data.Nat.Properties using (m<n⇒m<1+n)
 open import Data.Product as Prod using (_,_)
 open import Function.Base using (_∘_)
 open import Relation.Binary using (DecTotalOrder)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 module Data.List.Sort.MergeSort
   {a ℓ₁ ℓ₂} (O : DecTotalOrder a ℓ₁ ℓ₂) where

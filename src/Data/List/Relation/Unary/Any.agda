@@ -14,10 +14,9 @@ open import Data.List.Base as List using (List; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary using (¬_; yes; no; _⊎-dec_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary hiding (_∈_)
 
 private

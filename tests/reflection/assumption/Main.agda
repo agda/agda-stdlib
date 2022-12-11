@@ -16,7 +16,7 @@ open import Reflection.AST.Literal hiding (_≟_)
 open import Reflection.AST.Argument using (Arg; unArg; arg)
 open import Reflection.AST.DeBruijn
 open import Reflection.AST.Show
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 
 open import Effect.Monad
 open RawMonad {{...}}

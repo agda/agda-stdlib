@@ -18,7 +18,7 @@ open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
 open import Relation.Binary.Core
@@ -290,9 +290,6 @@ _>_ : IRel Fin 0ℓ
 i > j = toℕ i ℕ.> toℕ j
 
 
-data _≺_ : ℕ → ℕ → Set where
-  _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
-
 ------------------------------------------------------------------------
 -- An ordering view.
 
@@ -334,4 +331,16 @@ Please use _↑ˡ_ instead.
 NB argument order has been flipped:
 the left-hand argument is the Fin m
 the right-hand is the Nat index increment."
+#-}
+
+data _≺_ : ℕ → ℕ → Set where
+  _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
+
+{-# WARNING_ON_USAGE _≺_
+"Warning: _≺_ was deprecated in v2.0.
+Please use equivalent relation _<_ instead."
+#-}
+{-# WARNING_ON_USAGE _≻toℕ_
+"Warning: _≻toℕ_ was deprecated in v2.0.
+Please use toℕ<n from Data.Fin.Properties instead."
 #-}

@@ -534,6 +534,16 @@ Non-backwards compatible changes
 
 * Backwards compatibility has been maintained, as `Relation.Nullary` still re-exports these publicly.
 
+* The modules:
+  ```
+  Relation.Nullary.Product
+  Relation.Nullary.Sum
+  Relation.Nullary.Implication
+  ```
+  have been deprecated and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`
+  however all their contents is re-exported by `Relation.Nullary` which is the easiest way to access
+  it now.
+  
 * In order to facilitate this reorganisation the following breaking moves have occured:
   - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
   - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
@@ -888,6 +898,24 @@ Deprecated names
   raise    ↦  _↑ʳ_
   ```
 
+  Issue #1726: the relation `_≺_` and its single constructor `_≻toℕ_`
+  have been deprecated in favour of their extensional equivalent `_<_`
+  but omitting the inversion principle which pattern matching on `_≻toℕ_`
+  would achieve; this instead is proxied by the property `Data.Fin.Properties.toℕ<`.
+
+* In `Data.Fin.Induction`:
+  ```
+  ≺-Rec 
+  ≺-wellFounded
+  ≺-recBuilder
+  ≺-rec
+  ```
+
+  As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
+  associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
+  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  least of all those counterparts... the type confusion would be intolerable. 
+
 * In `Data.Fin.Properties`:
   ```
   toℕ-raise        ↦ toℕ-↑ʳ
@@ -897,6 +925,9 @@ Deprecated names
   Fin0↔⊥           ↦ 0↔⊥
   eq?              ↦ inj⇒≟
   ```
+
+  Likewise under issue #1726: the properties `≺⇒<′` and `<′⇒≺` have been deprecated
+  in favour of their proxy counterparts `<⇒<′` and `<′⇒<`.
 
 * In `Data.Fin.Permutation.Components`:
   ```
@@ -1058,6 +1089,12 @@ Deprecated names
   negative<positive     ↦ neg<pos
   ```
 
+* In `Data.Rational.Base`:
+  ```
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
+  ```
+
 * In `Data.Rational.Properties`:
   ```
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
@@ -1070,6 +1107,12 @@ Deprecated names
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
 
   negative<positive     ↦ neg<pos
+  ```
+
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
   ```
 
 * In `Data.Sum.Properties`:
@@ -1269,11 +1312,19 @@ New modules
   Data.Nat.Combinatorics.Spec
   ```
 
+* A small library defining parity and its algebra:
+  ```
+  Data.Parity
+  Data.Parity.Base
+  Data.Parity.Instances
+  Data.Parity.Properties
+  ```
+
 * New base module for `Data.Product` containing only the basic definitions.
   ```
   Data.Product.Base
   ```
-  
+
 * Reflection utilities for some specific types:
   ```
   Data.List.Reflection
@@ -1409,12 +1460,17 @@ New modules
 * Properties of Loop
   ```
   Algebra.Properties.Loop
+  ```
 
 * Some n-ary functions manipulating lists
   ```
   Data.List.Nary.NonDependent
   ```
 
+* Properties of KleeneAlgebra
+  ```
+  Algebra.Properties.KleeneAlgebra
+  ```
 Other minor changes
 -------------------
 
@@ -1508,6 +1564,10 @@ Other minor changes
   semimedialMagma : SemimedialMagma a ℓ₁ → SemimedialMagma b ℓ₂ →
                     SemimedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  leftBolLoop : LeftBolLoop a ℓ₁ → LeftBolLoop b ℓ₂ → LeftBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rightBolLoop : RightBolLoop a ℓ₁ → RightBolLoop b ℓ₂ → RightBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  middleBolLoop : MiddleBolLoop a ℓ₁ → MiddleBolLoop b ℓ₂ → MiddleBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
 * Added new definition to `Algebra.Definitions`:
@@ -1698,7 +1758,12 @@ Other minor changes
 * Added new functions in `Data.Integer.Base`:
   ```
   _^_ : ℤ → ℕ → ℤ
-  ```
+ 
+  +-0-rawGroup  : Rawgroup 0ℓ 0ℓ
+
+  *-rawMagma    : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+ ```
 
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
@@ -1713,11 +1778,16 @@ Other minor changes
   ^-*-assoc      : (i ^ m) ^ n ≡ i ^ (m ℕ.* n)
   ^-distribˡ-+-* : i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
 
-  *-rawMagma    : RawMagma 0ℓ 0ℓ
-  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-
   ^-isMagmaHomomorphism  : IsMagmaHomomorphism  ℕ.+-rawMagma    *-rawMagma    (i ^_)
   ^-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
+  ```
+
+* Added new proofs in `Data.Integer.GCD`:
+  ```agda
+  gcd-assoc : Associative gcd
+  gcd-zeroˡ : LeftZero 1ℤ gcd
+  gcd-zeroʳ : RightZero 1ℤ gcd
+  gcd-zero  : Zero 1ℤ gcd
   ```
 
 * Added new functions in `Data.List`:
@@ -1790,6 +1860,8 @@ Other minor changes
   ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
 
+  parity : ℕ → Parity
+  
   +-rawMagma          : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
   *-rawMagma          : RawMagma 0ℓ 0ℓ
@@ -1901,6 +1973,17 @@ Other minor changes
   m/n/o≡m/[n*o] : .{{NonZero n}} .{{NonZero o}} → n * o ∣ m → (m / n) / o ≡ m / (n * o)
   ```
 
+* Added new proofs in `Data.Nat.GCD`:
+  ```agda
+  gcd-assoc     : Associative gcd
+  gcd-identityˡ : LeftIdentity 0 gcd
+  gcd-identityʳ : RightIdentity 0 gcd
+  gcd-identity  : Identity 0 gcd
+  gcd-zeroˡ     : LeftZero 1 gcd
+  gcd-zeroʳ     : RightZero 1 gcd
+  gcd-zero      : Zero 1 gcd
+  ```
+
 * Added new patterns in `Data.Nat.Reflection`:
   ```agda
   pattern `ℕ     = def (quote ℕ) []
@@ -1987,6 +2070,13 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new definitions to `Data.Sign.Base`:
+  ```agda
+  *-rawMagma : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+  *-1-rawGroup : RawGroup 0ℓ 0ℓ
+  ```
+
 * Added new proofs to `Data.Sign.Properties`:
   ```agda
   *-inverse : Inverse + id _*_
@@ -1998,6 +2088,7 @@ Other minor changes
   *-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
   *-group : Group 0ℓ 0ℓ
   *-abelianGroup : AbelianGroup 0ℓ 0ℓ
+  ≡-isDecEquivalence : IsDecEquivalence _≡_
   ```
 
 * Added new functions in `Data.String.Base`:
