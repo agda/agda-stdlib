@@ -25,50 +25,50 @@ open import Relation.Binary.Reasoning.Setoid setoid
 1+x⋆≈x⋆ x = sym (begin
   x ⋆                   ≈⟨ sym (starExpansiveʳ x) ⟩ 
   1# + x * x ⋆          ≈⟨ +-congʳ (sym (+-idem 1#)) ⟩ 
-  (1# + 1#) + x * x ⋆   ≈⟨ +-assoc _ _ _ ⟩ 
+  1# + 1# + x * x ⋆     ≈⟨ +-assoc 1# 1# ((x * x ⋆ )) ⟩ 
   1# + (1# + x * x ⋆)   ≈⟨ +-congˡ (starExpansiveʳ x) ⟩  
   1# + x ⋆              ∎)
 
 x⋆+xx⋆≈x⋆ : ∀ x → x ⋆ + x * x ⋆ ≈ x ⋆ 
 x⋆+xx⋆≈x⋆ x = begin
   x ⋆ + x * x ⋆         ≈⟨ +-congʳ (sym (1+x⋆≈x⋆ x)) ⟩
-  1# + x ⋆ + x * x ⋆    ≈⟨ +-congʳ (+-comm _ _) ⟩
-  x ⋆ + 1# + x * x ⋆    ≈⟨ +-assoc _ _ _ ⟩
+  1# + x ⋆ + x * x ⋆    ≈⟨ +-congʳ (+-comm 1# ((x ⋆))) ⟩
+  x ⋆ + 1# + x * x ⋆    ≈⟨ +-assoc ((x ⋆)) 1# ((x * x ⋆ )) ⟩
   x ⋆ + (1# + x * x ⋆)  ≈⟨ +-congˡ (starExpansiveʳ x) ⟩ 
-  x ⋆ + x ⋆             ≈⟨ +-idem _ ⟩ 
+  x ⋆ + x ⋆             ≈⟨ +-idem (x ⋆) ⟩ 
   x ⋆                   ∎
 
 x⋆+x⋆x≈x⋆ : ∀ x → x ⋆ + x ⋆ * x ≈ x ⋆ 
 x⋆+x⋆x≈x⋆ x = begin
   x ⋆ + x ⋆ * x         ≈⟨ +-congʳ (sym (1+x⋆≈x⋆ x)) ⟩ 
-  1# + x ⋆ + x ⋆ * x    ≈⟨ +-congʳ (+-comm _ _) ⟩ 
-  x ⋆ + 1# + x ⋆ * x    ≈⟨ +-assoc _ _ _ ⟩ 
+  1# + x ⋆ + x ⋆ * x    ≈⟨ +-congʳ (+-comm 1# (x ⋆)) ⟩ 
+  x ⋆ + 1# + x ⋆ * x    ≈⟨ +-assoc (x ⋆) 1# (x ⋆ * x) ⟩ 
   x ⋆ + (1# + x ⋆ * x)  ≈⟨ +-congˡ (starExpansiveˡ x) ⟩  
-  x ⋆ + x ⋆             ≈⟨ +-idem _ ⟩ 
+  x ⋆ + x ⋆             ≈⟨ +-idem (x ⋆) ⟩ 
   x ⋆                   ∎
 
 x+x⋆≈x⋆ : ∀ x → x + x ⋆ ≈ x ⋆ 
 x+x⋆≈x⋆ x = begin
   x + x ⋆                  ≈⟨ +-congˡ (sym (starExpansiveʳ x)) ⟩ 
   x + (1# + x * x ⋆)       ≈⟨ +-congʳ (sym (*-identityʳ x)) ⟩ 
-  x * 1# + (1# + x * x ⋆)  ≈⟨ sym (+-assoc _ _ _) ⟩ 
-  x * 1# + 1# + x * x ⋆    ≈⟨ +-congʳ (+-comm _ _) ⟩ 
-  1# + x * 1# + x * x ⋆    ≈⟨ +-assoc _ _ _ ⟩ 
-  1# + (x * 1# + x * x ⋆)  ≈⟨ +-congˡ (sym (distribˡ _ _ _)) ⟩ 
-  1# + x * (1# + x ⋆)      ≈⟨ +-congˡ (*-congˡ (1+x⋆≈x⋆ _)) ⟩ 
-  1# + x * x ⋆             ≈⟨ (starExpansiveʳ _) ⟩ 
+  x * 1# + (1# + x * x ⋆)  ≈⟨ sym (+-assoc (x * 1#) 1# (x * x ⋆)) ⟩ 
+  x * 1# + 1# + x * x ⋆    ≈⟨ +-congʳ (+-comm (x * 1#) 1#) ⟩ 
+  1# + x * 1# + x * x ⋆    ≈⟨ +-assoc 1# (x * 1#) (x * x ⋆) ⟩ 
+  1# + (x * 1# + x * x ⋆)  ≈⟨ +-congˡ (sym (distribˡ x 1# ((x ⋆)))) ⟩ 
+  1# + x * (1# + x ⋆)      ≈⟨ +-congˡ (*-congˡ (1+x⋆≈x⋆ x)) ⟩ 
+  1# + x * x ⋆             ≈⟨ (starExpansiveʳ x) ⟩ 
   x ⋆                      ∎ 
 
 1+x+x⋆≈x⋆ : ∀ x → 1# + x + x ⋆ ≈ x ⋆
 1+x+x⋆≈x⋆ x = begin
-  1# + x + x ⋆    ≈⟨ +-assoc _ _ _ ⟩ 
+  1# + x + x ⋆    ≈⟨ +-assoc 1# x (x ⋆) ⟩ 
   1# + (x + x ⋆)  ≈⟨ +-congˡ (x+x⋆≈x⋆ x) ⟩ 
-  1# + x ⋆        ≈⟨ 1+x⋆≈x⋆ _ ⟩
+  1# + x ⋆        ≈⟨ 1+x⋆≈x⋆ x ⟩
   x ⋆             ∎
 
 0+x+x⋆≈x⋆ : ∀ x → 0# + x + x ⋆ ≈ x ⋆
 0+x+x⋆≈x⋆ x = begin
-  0# + x + x ⋆    ≈⟨ +-assoc _ _ _ ⟩ 
-  0# + (x + x ⋆)  ≈⟨ +-identityˡ _ ⟩ 
+  0# + x + x ⋆    ≈⟨ +-assoc 0# x (x ⋆) ⟩ 
+  0# + (x + x ⋆)  ≈⟨ +-identityˡ ((x + x ⋆)) ⟩ 
   (x + x ⋆)       ≈⟨ x+x⋆≈x⋆ x ⟩ 
   x ⋆             ∎
