@@ -107,4 +107,7 @@ x≈y⇒1+xy⋆≈y⋆ x y eq = begin
   y ⋆           ∎
 
 x≈y⇒x⋆≈y⋆ : ∀ x y → x ≈ y → x ⋆ ≈ y ⋆
-x≈y⇒x⋆≈y⋆ x y eq = trans ( sym (*-identityʳ (x ⋆)) ) (starDestructiveˡ x 1# (y ⋆) (x≈y⇒1+xy⋆≈y⋆ x y eq))
+x≈y⇒x⋆≈y⋆ x y eq = begin
+  x ⋆       ≈⟨ sym (*-identityʳ (x ⋆)) ⟩
+  x ⋆ * 1#  ≈⟨ (starDestructiveˡ x 1# (y ⋆) (x≈y⇒1+xy⋆≈y⋆ x y eq)) ⟩
+  y ⋆       ∎
