@@ -114,25 +114,16 @@ x≈y⇒x⋆≈y⋆ x y eq = begin
 
 ax≈xb⇒x+axb⋆≈xb⋆ : ∀ x a b → a * x ≈ x * b → x + a * (x * b ⋆) ≈ x * b ⋆
 ax≈xb⇒x+axb⋆≈xb⋆ x a b eq = begin
-  x + a * (x * b ⋆)       ≈⟨ +-congˡ (sym(*-assoc a x (b ⋆))) ⟩ 
-  x + a * x * b ⋆         ≈⟨ +-congʳ (sym (*-identityʳ x)) ⟩ 
-  x * 1# + a * x * b ⋆    ≈⟨ +-congˡ (*-congʳ (eq)) ⟩ 
-  x * 1# + x * b * b ⋆    ≈⟨ +-congˡ (*-assoc x b (b ⋆) ) ⟩ 
+  x + a * (x * b ⋆)       ≈⟨ +-congˡ (sym(*-assoc a x (b ⋆))) ⟩
+  x + a * x * b ⋆         ≈⟨ +-congʳ (sym (*-identityʳ x)) ⟩
+  x * 1# + a * x * b ⋆    ≈⟨ +-congˡ (*-congʳ (eq)) ⟩
+  x * 1# + x * b * b ⋆    ≈⟨ +-congˡ (*-assoc x b (b ⋆) ) ⟩
   x * 1# + x * (b * b ⋆)  ≈⟨ sym (distribˡ x 1# (b * b ⋆)) ⟩
-  x * (1# + b * b ⋆)      ≈⟨ *-congˡ (starExpansiveʳ b) ⟩ 
+  x * (1# + b * b ⋆)      ≈⟨ *-congˡ (starExpansiveʳ b) ⟩
   x * b ⋆                 ∎
 
-ax≈xb⇒a⋆x≈xb⋆ : ∀ x a b → a * x ≈ x * b → a ⋆ * x ≈ x * b ⋆ 
+ax≈xb⇒a⋆x≈xb⋆ : ∀ x a b → a * x ≈ x * b → a ⋆ * x ≈ x * b ⋆
 ax≈xb⇒a⋆x≈xb⋆ x a b eq = starDestructiveˡ a x ((x * b ⋆)) (ax≈xb⇒x+axb⋆≈xb⋆ x a b eq)
 
 [xy]⋆x≈x[yx]⋆ : ∀ x y → (x * y) ⋆ * x ≈ x * (y * x) ⋆
 [xy]⋆x≈x[yx]⋆ x y = ax≈xb⇒a⋆x≈xb⋆ x (x * y) (y * x) (*-assoc x y x)
-
-temp : ∀ x y → (x + y) ⋆ ≈ (x + y) ⋆ * ((x + y)*(x + y) ⋆) ⋆
-temp x y = {!   !}
-
-temp2 : ∀ x y → ((x + y) * (x + y) ⋆) ⋆ + (x + y) * (x ⋆ * (y * x ⋆) ⋆) ≈ x ⋆ * (y * x ⋆) ⋆
-temp2 = {!   !}
-
-test : ∀ x y → (x + y) ⋆ ≈ x ⋆ * (y * x ⋆) ⋆ 
-test x y = trans (temp x y) (starDestructiveˡ {!   !} {!   !} {!   !} {!   !})
