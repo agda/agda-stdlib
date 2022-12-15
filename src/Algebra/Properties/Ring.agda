@@ -70,13 +70,7 @@ open AbelianGroupProperties +-abelianGroup public
   - x         ∎
 
 x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
-x+x≈x⇒x≈0 x eq = begin
-  x            ≈⟨ sym(+-identityʳ x) ⟩
-  x + 0#       ≈⟨ +-congˡ (sym (-‿inverseʳ x)) ⟩
-  x + (x - x)  ≈⟨ sym (+-assoc x x (- x)) ⟩
-  x + x - x    ≈⟨ +-congʳ(eq) ⟩
-  x - x        ≈⟨ -‿inverseʳ x ⟩
-  0#           ∎
+x+x≈x⇒x≈0 x eq = +-identityˡ-unique x x eq
 
 x[y-z]≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
 x[y-z]≈xy-xz x y z = begin
