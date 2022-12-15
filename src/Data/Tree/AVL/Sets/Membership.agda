@@ -4,7 +4,7 @@
 -- Membership relation for AVL sets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (StrictTotalOrder)
 

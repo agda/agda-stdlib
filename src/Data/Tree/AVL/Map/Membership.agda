@@ -4,7 +4,7 @@
 -- Membership relation for AVL Maps
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 open import Relation.Binary using (StrictTotalOrder)
 
 module Data.Tree.AVL.Map.Membership
