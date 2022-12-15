@@ -23,7 +23,6 @@ open import Function.Base as F
 open import Level using (Level; _⊔_)
 
 open import Relation.Binary using (_Respects_; tri<; tri≈; tri>)
-open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 open import Relation.Binary.PropositionalEquality using (_≡_) renaming (refl to ≡-refl)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
@@ -32,6 +31,8 @@ open import Relation.Unary using (Pred; _∩_)
 open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
 open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (_≉_; sym; trans)
+
+open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 
 import Relation.Binary.Reasoning.StrictPartialOrder as <-Reasoning
 
