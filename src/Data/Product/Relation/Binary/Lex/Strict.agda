@@ -17,12 +17,13 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
 open import Data.Empty
 open import Function.Base
+open import Induction
 open import Induction.WellFounded
 open import Level
 open import Relation.Nullary.Decidable
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as _≡_ using (_≡_; refl)
 
 private
   variable
@@ -134,24 +135,27 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
     antisym (inj₂ x≈≤y)  (inj₂ y≈≤x)  =
       proj₁ x≈≤y , antisym₂ (proj₂ x≈≤y) (proj₂ y≈≤x)
 
+  ×-respectsʳ : Transitive _≈₁_ →
+                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ →
+                _<ₗₑₓ_ Respectsʳ _≋_
+  ×-respectsʳ trans resp₁ resp₂ y≈y' (inj₁ x₁<y₁) = inj₁ (resp₁ (proj₁ y≈y') x₁<y₁)
+  ×-respectsʳ trans resp₁ resp₂ y≈y' (inj₂ x≈<y)  = inj₂ (trans (proj₁ x≈<y) (proj₁ y≈y')
+                                                       , (resp₂ (proj₂ y≈y') (proj₂ x≈<y)))
+  ×-respectsˡ : IsEquivalence _≈₁_ →
+                _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ →
+                _<ₗₑₓ_ Respectsˡ _≋_
+  ×-respectsˡ eq₁ resp₁ resp₂ x≈x' (inj₁ x₁<y₁) = inj₁ (resp₁ (proj₁ x≈x') x₁<y₁)
+  ×-respectsˡ eq₁ resp₁ resp₂ x≈x' (inj₂ x≈<y)  = inj₂ (trans (sym $ proj₁ x≈x') (proj₁ x≈<y)
+                                                     , (resp₂ (proj₂ x≈x') (proj₂ x≈<y)))
+    where open IsEquivalence eq₁
+
   ×-respects₂ : IsEquivalence _≈₁_ →
                 _<₁_ Respects₂ _≈₁_ → _<₂_ Respects₂ _≈₂_ →
                 _<ₗₑₓ_ Respects₂ _≋_
-  ×-respects₂ eq₁ resp₁ resp₂ = respʳ , respˡ
+  ×-respects₂ eq₁ resp₁ resp₂ = ×-respectsʳ trans (proj₁ resp₁) (proj₁ resp₂)
+                              , ×-respectsˡ eq₁ (proj₂ resp₁) (proj₂ resp₂)
     where
     open IsEquivalence eq₁
-
-    respʳ : _<ₗₑₓ_ Respectsʳ _≋_
-    respʳ y≈y′ (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y′) x₁<y₁)
-    respʳ y≈y′ (inj₂ x≈<y)  =
-      inj₂ ( trans (proj₁ x≈<y) (proj₁ y≈y′)
-           , proj₁ resp₂ (proj₂ y≈y′) (proj₂ x≈<y) )
-
-    respˡ : _<ₗₑₓ_ Respectsˡ _≋_
-    respˡ x≈x′ (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x′) x₁<y₁)
-    respˡ x≈x′ (inj₂ x≈<y)  =
-      inj₂ ( trans (sym $ proj₁ x≈x′) (proj₁ x≈<y)
-           , proj₂ resp₂ (proj₂ x≈x′) (proj₂ x≈<y) )
 
   ×-compare : Symmetric _≈₁_ →
               Trichotomous _≈₁_ _<₁_ → Trichotomous _≈₂_ _<₂_ →
@@ -179,13 +183,11 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
          (x₁≈y₁ , x₂≈y₂)
          [ x₁≯y₁ , x₂≯y₂ ∘ proj₂ ]
 
-module _ {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel B ℓ₂} where
-
-  -- Currently only proven for propositional equality
-  -- (unsure how to satisfy the termination checker for arbitrary equalities)
+module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
 
   private
     _<ₗₑₓ_ = ×-Lex _≡_ _<₁_ _<₂_
+    _<ₗₑₓ'_ = ×-Lex _≈₁_ _<₁_ _<₂_
 
   ×-wellFounded : WellFounded _<₁_ →
                   WellFounded _<₂_ →
@@ -200,6 +202,24 @@ module _ {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel B ℓ₂} where
     ×-acc acc₁ (acc rec₂) (u , v) (inj₂ (refl , v<y))
       = acc (×-acc acc₁ (rec₂ v v<y))
 
+  ×-wellFounded' : IsEquivalence _≈₁_ →
+                   _<₁_ Respectsʳ _≈₁_ →
+                   WellFounded _<₁_ →
+                   WellFounded _<₂_ →
+                   WellFounded _<ₗₑₓ'_
+  ×-wellFounded' eq₁ resp wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
+    where
+    open IsEquivalence eq₁
+    ×-acc : ∀ {x y} →
+            Acc _<₁_ x → Acc _<₂_ y →
+            WfRec _<ₗₑₓ'_ (Acc _<ₗₑₓ'_) (x , y)
+    ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
+      = acc (×-acc (rec₁ u u<x) (wf₂ v))
+    ×-acc {x₁} acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
+      = Acc-resp-≈ (Pointwise.×-symmetric {_∼₁_ = _≈₁_} {_∼₂_ = _≡_ }  sym _≡_.sym)
+                   (×-respectsʳ {_≈₁_ = _≈₁_} {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (_≡_.respʳ _<₂_))
+                   (sym u≈x , _≡_.refl)
+                   (acc (×-acc acc₁ (rec₂ v v<y)))
 ------------------------------------------------------------------------
 -- Collections of properties which are preserved by ×-Lex.
 
