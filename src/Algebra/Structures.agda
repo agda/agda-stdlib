@@ -340,7 +340,7 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     }
 
   open IsMagma *-isMagma public
-    using ()
+    using (isEquivalence ; ∙-cong)
     renaming
     ( ∙-congˡ  to *-congˡ
     ; ∙-congʳ  to *-congʳ
@@ -611,7 +611,7 @@ record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     }
 
   open IsMonoid *-isMonoid public
-    using ()
+    using (isMagma ; isSemigroup)
     renaming
     ( ∙-congˡ     to *-congˡ
     ; ∙-congʳ     to *-congʳ
@@ -681,8 +681,8 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
     ; assoc   = *-assoc
     }
 
-  open IsMagma *-isMagma public
-    using ()
+  open IsSemigroup *-isSemigroup public
+    using (isMagma ; assoc)
     renaming
     ( ∙-congˡ  to *-congˡ
     ; ∙-congʳ  to *-congʳ
@@ -731,6 +731,9 @@ record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a 
     { isEquivalence = isEquivalence
     ; ∙-cong        = *-cong
     }
+
+  open IsMagma *-isMagma public
+    using (isEquivalence ; ∙-cong)
 
   *-identityˡ : LeftIdentity 1# *
   *-identityˡ = proj₁ identity
@@ -806,7 +809,7 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     }
 
   open IsMonoid *-isMonoid public
-    using ()
+    using (isMagma ; isSemigroup)
     renaming
     ( ∙-congˡ     to *-congˡ
     ; ∙-congʳ     to *-congʳ
@@ -937,9 +940,19 @@ record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   open IsLeftBolLoop isLeftBolLoop public
 
+  isRightBolLoop : IsRightBolLoop ∙ \\ // ε
+  isRightBolLoop = record
+    { isLoop = isLoop
+    ; rightBol = rightBol
+    }
+
+  open IsRightBolLoop isRightBolLoop public
+    using (isLoop ; rightBol)
+
 record IsMiddleBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
     isLoop    : IsLoop ∙ \\ //  ε
     middleBol : MiddleBol ∙ \\ //
 
   open IsLoop isLoop public
+ 
