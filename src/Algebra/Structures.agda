@@ -947,7 +947,7 @@ record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     }
 
   open IsRightBolLoop isRightBolLoop public
-    using (isLoop ; rightBol)
+    using ()
 
 record IsMiddleBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
