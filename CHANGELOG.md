@@ -1393,6 +1393,8 @@ New modules
   ```
   Tactic.Cong
   ```
+  
+* `case-bash!` tactic for pattern matching on all arguments, then trying `refl`.
 
 * Various system types and primitives:
   ```
