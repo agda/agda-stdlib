@@ -1617,6 +1617,7 @@ Other minor changes
   leftSemimedial : LeftSemimedial _∙_
   rightSemimedial : RightSemimedial _∙_
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
+  semimedial : Semimedial _∙_
   ```
 
 * Added new proofs to `Algebra.Properties.Semigroup`:
@@ -1630,6 +1631,9 @@ Other minor changes
 * Added new proofs to `Algebra.Properties.Ring`:
   ```agda
   -1*x≈-x : ∀ x → - 1# * x ≈ - x
+  x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
+  x[y-z]≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
+  [y-z]x≈yx-zx : ∀ x y z → (y - z) * x ≈ (y * x) - (z * x)
   ```
 
 * Added new definitions to `Algebra.Structures`:
