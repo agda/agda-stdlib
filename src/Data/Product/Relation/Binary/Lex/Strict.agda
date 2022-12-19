@@ -140,21 +140,20 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
   ×-respectsʳ trans resp₁ resp₂ y≈y' (inj₁ x₁<y₁) = inj₁ (resp₁ (proj₁ y≈y') x₁<y₁)
   ×-respectsʳ trans resp₁ resp₂ y≈y' (inj₂ x≈<y)  = inj₂ (trans (proj₁ x≈<y) (proj₁ y≈y')
                                                        , (resp₂ (proj₂ y≈y') (proj₂ x≈<y)))
-  ×-respectsˡ : IsEquivalence _≈₁_ →
+  ×-respectsˡ : IsPartialEquivalence _≈₁_ →
                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ →
                 _<ₗₑₓ_ Respectsˡ _≋_
   ×-respectsˡ eq₁ resp₁ resp₂ x≈x' (inj₁ x₁<y₁) = inj₁ (resp₁ (proj₁ x≈x') x₁<y₁)
   ×-respectsˡ eq₁ resp₁ resp₂ x≈x' (inj₂ x≈<y)  = inj₂ (trans (sym $ proj₁ x≈x') (proj₁ x≈<y)
                                                      , (resp₂ (proj₂ x≈x') (proj₂ x≈<y)))
-    where open IsEquivalence eq₁
+    where open IsPartialEquivalence eq₁
 
   ×-respects₂ : IsEquivalence _≈₁_ →
                 _<₁_ Respects₂ _≈₁_ → _<₂_ Respects₂ _≈₂_ →
                 _<ₗₑₓ_ Respects₂ _≋_
   ×-respects₂ eq₁ resp₁ resp₂ = ×-respectsʳ trans (proj₁ resp₁) (proj₁ resp₂)
-                              , ×-respectsˡ eq₁ (proj₂ resp₁) (proj₂ resp₂)
-    where
-    open IsEquivalence eq₁
+                              , ×-respectsˡ isPartialEquivalence (proj₂ resp₁) (proj₂ resp₂)
+    where open IsEquivalence eq₁
 
   ×-compare : Symmetric _≈₁_ →
               Trichotomous _≈₁_ _<₁_ → Trichotomous _≈₂_ _<₂_ →
@@ -201,14 +200,14 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
     ×-acc acc₁ (acc rec₂) (u , v) (inj₂ (refl , v<y))
       = acc (×-acc acc₁ (rec₂ v v<y))
 
-  ×-wellFounded' : IsEquivalence _≈₁_ →
+  ×-wellFounded' : IsPartialEquivalence _≈₁_ →
                    _<₁_ Respectsʳ _≈₁_ →
                    WellFounded _<₁_ →
                    WellFounded _<₂_ →
                    WellFounded _<ₗₑₓ'_
   ×-wellFounded' eq₁ resp wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
     where
-    open IsEquivalence eq₁
+    open IsPartialEquivalence eq₁
     ×-acc : ∀ {x y} →
             Acc _<₁_ x → Acc _<₂_ y →
             WfRec _<ₗₑₓ'_ (Acc _<ₗₑₓ'_) (x , y)
@@ -216,7 +215,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
       = acc (×-acc (rec₁ u u<x) (wf₂ v))
     ×-acc {x₁} acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
       = Acc-resp-≈ (Pointwise.×-symmetric {_∼₁_ = _≈₁_} {_∼₂_ = _≡_ }  sym _≡_.sym)
-                   (×-respectsʳ {_≈₁_ = _≈₁_} {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (_≡_.respʳ _<₂_))
+                   (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (_≡_.respʳ _<₂_))
                    (sym u≈x , _≡_.refl)
                    (acc (×-acc acc₁ (rec₂ v v<y)))
 ------------------------------------------------------------------------
