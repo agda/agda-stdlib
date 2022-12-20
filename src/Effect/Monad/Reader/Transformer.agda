@@ -128,7 +128,6 @@ liftWriterT MR M MRead = record
   ; local = λ f mx → mkWriterT λ w → (local f (runWriterT mx w))
   } where open RawMonadReader MRead
           open RawFunctor M
-          open RawMonoid MR
 
 open import Effect.Monad.State.Transformer.Base
 

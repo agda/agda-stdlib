@@ -149,4 +149,3 @@ liftWriterT MS M Mon = record
   ; modify = λ f → mkWriterT λ w → (const (w , tt) <$> modify f)
   } where open RawMonadState Mon
           open RawFunctor M
-          open RawMonoid MS
