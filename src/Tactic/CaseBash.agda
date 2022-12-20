@@ -58,13 +58,13 @@ layer xs yss = cartesianProductWith _∷_ xs yss
 gather-visible-data-args : Term → TC (List (List Name))
 gather-visible-data-args (pi a@(vArg (def nm _)) (abs x b)) = do
   defn ← getDefinition nm
-  css ← extendContext x a $ gather-visible-data-args b
-  return $ case defn of λ where
+  css ← extendContext a $ gather-visible-data-args b
+  pure $ case defn of λ where
     (data-type _ cs) → layer cs css
     _ → css
 gather-visible-data-args (pi a (abs x b)) =
-  extendContext x a $ gather-visible-data-args b
-gather-visible-data-args _ = return []
+  extendContext a $ gather-visible-data-args b
+gather-visible-data-args _ = pure []
 
 -- Construct a pattern for a constructor type
 -- by creating pattern variables for all visible constructor
@@ -87,15 +87,15 @@ mk-cons-patterns (nm ∷ nms) tele n = do
   con-tp ← getType nm
   let (tele , con-pats , n) = mk-con-pattern con-tp tele n
   (tele , pats) ← mk-cons-patterns nms tele n
-  return (tele , (vArg (Pattern.con nm con-pats) ∷ pats))
+  pure (tele , (vArg (Pattern.con nm con-pats) ∷ pats))
 mk-cons-patterns [] tele n =
-  return (tele , [])
+  pure (tele , [])
 
 -- Construct a clause for a list of contructor names.
 mk-case-bash-clause : List Name → TC Clause
 mk-case-bash-clause cs = do
   (tele , pats) ← mk-cons-patterns cs [] 0
-  return $ Clause.clause (reverse tele) pats (con (quote refl) [])
+  pure $ Clause.clause (reverse tele) pats (con (quote refl) [])
 
 macro
   case-bash! : Term → TC ⊤
