@@ -12,15 +12,14 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Properties using (just-injective)
 open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product as Prod using (∃; ∃-syntax; Σ-syntax; _×_; _,_; proj₁; proj₂)
+open import Data.Product as Prod using (∃; ∃-syntax; _×_; _,_; proj₁; proj₂)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base as F
-open import Level using (Level; _⊔_)
+open import Level using (Level)
 
 open import Relation.Binary using (_Respects_; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality using (_≡_) renaming (refl to ≡-refl)
