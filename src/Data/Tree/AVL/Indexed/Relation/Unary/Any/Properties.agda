@@ -61,13 +61,13 @@ lookup-bounded {t = node kv lk ku bal} (left p)  =
 lookup-bounded {t = node kv lk ku bal} (right p) =
   Prod.map₁ (trans⁺ _ (ordered lk)) (lookup-bounded p)
 
-rebuild : {t : Tree V l u n} (p : Any P t) → Q (Any.lookup p) → Any Q t
-rebuild (here _)  q = here q
-rebuild (left p)  q = left (rebuild p q)
-rebuild (right p) q = right (rebuild p q)
+lookup-rebuild : {t : Tree V l u n} (p : Any P t) → Q (Any.lookup p) → Any Q t
+lookup-rebuild (here _)  q = here q
+lookup-rebuild (left p)  q = left (lookup-rebuild p q)
+lookup-rebuild (right p) q = right (lookup-rebuild p q)
 
-rebuild-accum : {t : Tree V l u n} (p : Any P t) → Q (Any.lookup p) → Any (Q ∩ P) t
-rebuild-accum p q = rebuild p (q , lookup-result p)
+lookup-rebuild-accum : {t : Tree V l u n} (p : Any P t) → Q (Any.lookup p) → Any (Q ∩ P) t
+lookup-rebuild-accum p q = lookup-rebuild p (q , lookup-result p)
 
 joinˡ⁺-here⁺ : ∀ {l u hˡ hʳ h} →
              (kv : K& V) →
@@ -233,15 +233,17 @@ module _ {V : Value v} where
 
   singleton⁺ : {P : Pred (K& V) p} →
                (k : Key) →
-               (v : Val k) → {l<k<u : l < k < u} →
+               (v : Val k) →
+               (l<k<u : l < k < u) →
                P (k , v) → Any P (singleton k v l<k<u)
-  singleton⁺ k v Pkv = here Pkv
+  singleton⁺ k v l<k<u Pkv = here Pkv
 
   singleton⁻ : {P : Pred (K& V) p} →
                (k : Key) →
-               (v : Val k) → {l<k<u : l < k < u} →
+               (v : Val k) →
+               (l<k<u : l < k < u) →
                Any P (singleton k v l<k<u) → P (k , v)
-  singleton⁻ k v (here Pkv) = Pkv
+  singleton⁻ k v l<k<u (here Pkv) = Pkv
 
   ------------------------------------------------------------------------
   -- insert
@@ -367,7 +369,7 @@ module _ {V : Value v} where
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri< k<k′ k≉k′ _
         with joinˡ⁺⁻ kv′ (insert k v l (l<k , [ k<k′ ]ᴿ)) r bal p
     ... | inj₁ p        = inj₂ (here (k≉k′ , p))
-    ... | inj₂ (inj₂ p) = inj₂ (right (rebuild-accum p k≉p))
+    ... | inj₂ (inj₂ p) = inj₂ (right (lookup-rebuild-accum p k≉p))
       where
       k′<p = [<]-injective (proj₁ (lookup-bounded p))
       k≉p = λ k≈p → irrefl k≈p (<-trans k<k′ k′<p)
@@ -375,19 +377,19 @@ module _ {V : Value v} where
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri> _ k≉k′ k′<k
         with joinʳ⁺⁻ kv′ l (insert k v r ([ k′<k ]ᴿ , k<u)) bal p
     ... | inj₁ p        = inj₂ (here (k≉k′ , p))
-    ... | inj₂ (inj₁ p) = inj₂ (left (rebuild-accum p k≉p))
+    ... | inj₂ (inj₁ p) = inj₂ (left (lookup-rebuild-accum p k≉p))
       where
       p<k′ = [<]-injective (proj₂ (lookup-bounded p))
       k≉p = λ k≈p → irrefl (sym k≈p) (<-trans p<k′ k′<k)
     ... | inj₂ (inj₂ p) = Sum.map₂ (λ q → right q) (insert⁻ r ([ k′<k ]ᴿ , k<u) p)
     insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri≈ _ k≈k′ _
         with p
-    ... | left p  = inj₂ (left (rebuild-accum p k≉p))
+    ... | left p  = inj₂ (left (lookup-rebuild-accum p k≉p))
       where
       p<k′ = [<]-injective (proj₂ (lookup-bounded p))
       k≉p = λ k≈p → irrefl (trans (sym k≈p) k≈k′) p<k′
     ... | here p  = inj₁ (P-Resp k≈k′ p)
-    ... | right p = inj₂ (right (rebuild-accum p k≉p))
+    ... | right p = inj₂ (right (lookup-rebuild-accum p k≉p))
       where
       k′<p = [<]-injective (proj₁ (lookup-bounded p))
       k≉p = λ k≈p → irrefl (trans (sym k≈k′) k≈p) k′<p

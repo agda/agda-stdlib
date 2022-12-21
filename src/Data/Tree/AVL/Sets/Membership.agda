@@ -24,7 +24,7 @@ open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to A)
 open import Data.Tree.AVL.Sets strictTotalOrder
-import Data.Tree.AVL.Map.Membership strictTotalOrder as Map
+open import Data.Tree.AVL.Map.Membership.Propositional strictTotalOrder as Map using (_∈ₖᵥ_)
 open import Data.Tree.AVL.Map.Relation.Unary.Any strictTotalOrder as Mapₚ
 
 private
@@ -43,57 +43,57 @@ x ∈ s = Any ((x ≈_) ∘ proj₁) s
 _∉_ : A → ⟨Set⟩ → Set _
 x ∉ s = ¬ x ∈ s
 
-∈toMap : x ∈ s → (x , tt) Map.∈ s
+∈toMap : x ∈ s → (x , tt) ∈ₖᵥ s
 ∈toMap = Mapₚ.map (_, refl)
 
-∈fromMap : (x , tt) Map.∈ s → x ∈ s
+∈fromMap : (x , tt) ∈ₖᵥ s → x ∈ s
 ∈fromMap = Mapₚ.map proj₁
 
 ------------------------------------------------------------------------
 -- empty
 
 ∈-empty : x ∉ empty
-∈-empty = Map.∈-empty ∘ ∈toMap
+∈-empty = Map.∈ₖᵥ-empty ∘ ∈toMap
 
 ------------------------------------------------------------------------
 -- singleton
 
 ∈-singleton⁺ : x ∈ singleton x
-∈-singleton⁺ = ∈fromMap Map.∈-singleton⁺
+∈-singleton⁺ = ∈fromMap Map.∈ₖᵥ-singleton⁺
 
 ∈-singleton⁻ : x ∈ singleton y → x ≈ y
-∈-singleton⁻ p = proj₁ (Map.∈-singleton⁻ (∈toMap p))
+∈-singleton⁻ p = proj₁ (Map.∈ₖᵥ-singleton⁻ (∈toMap p))
 
 ------------------------------------------------------------------------
 -- insert
 
 ∈-insert⁺ : x ∈ s → x ∈ insert y s
 ∈-insert⁺ {x = x} {s = s} {y = y} x∈s with x ≟ y
-... | yes x≈y = ∈fromMap (Map.∈-Respectsˡ (Eq.sym x≈y , refl) Map.∈-insert⁺⁺)
-... | no x≉y = ∈fromMap (Map.∈-insert⁺ x≉y (∈toMap x∈s))
+... | yes x≈y = ∈fromMap (Map.∈ₖᵥ-Respectsˡ (Eq.sym x≈y , refl) Map.∈ₖᵥ-insert⁺⁺)
+... | no x≉y = ∈fromMap (Map.∈ₖᵥ-insert⁺ x≉y (∈toMap x∈s))
 
 ∈-insert⁺⁺ : x ∈ insert x s
-∈-insert⁺⁺ = ∈fromMap Map.∈-insert⁺⁺
+∈-insert⁺⁺ = ∈fromMap Map.∈ₖᵥ-insert⁺⁺
 
 ∈-insert⁻ : x ∈ insert y s → x ≈ y ⊎ x ∈ s
-∈-insert⁻ = Sum.map proj₁ (∈fromMap ∘ proj₂) ∘ Map.∈-insert⁻ ∘ ∈toMap
+∈-insert⁻ = Sum.map proj₁ (∈fromMap ∘ proj₂) ∘ Map.∈ₖᵥ-insert⁻ ∘ ∈toMap
 
 ------------------------------------------------------------------------
--- ∈?
+-- member
 
-∈-∈? : x ∈ s → (x ∈? s) ≡ true
-∈-∈? = Map.∈-∈? ∘′ ∈toMap
+∈-member : x ∈ s → member x s ≡ true
+∈-member = Map.∈ₖᵥ-member ∘′ ∈toMap
 
-∉-∈? : x ∉ s → (x ∈? s) ≡ false
-∉-∈? x∉s = Map.∉-∈? (const (x∉s ∘ ∈fromMap))
+∉-member : x ∉ s → member x s ≡ false
+∉-member x∉s = Map.∉ₖᵥ-member (const (x∉s ∘ ∈fromMap))
 
-∈?-∈ : (x ∈? s) ≡ true → x ∈ s
-∈?-∈ = ∈fromMap ∘′ proj₂ ∘′ Map.∈?-∈
+member-∈ : member x s ≡ true → x ∈ s
+member-∈ = ∈fromMap ∘′ proj₂ ∘′ Map.member-∈ₖᵥ
 
-∈?-∉ : (x ∈? s) ≡ false → x ∉ s
-∈?-∉ p = Map.∈?-∉ p tt ∘ ∈toMap
+member-∉ : member x s ≡ false → x ∉ s
+member-∉ p = Map.member-∉ₖᵥ p tt ∘ ∈toMap
 
-∈?-Reflects-∈ : Reflects (x ∈ s) (x ∈? s)
-∈?-Reflects-∈ {x = x} {s = s} with x ∈? s in eq
-... | true = Reflects.ofʸ (∈?-∈ eq)
-... | false = Reflects.ofⁿ (∈?-∉ eq)
+member-Reflects-∈ : Reflects (x ∈ s) (member x s)
+member-Reflects-∈ {x = x} {s = s} with member x s in eq
+... | true = Reflects.ofʸ (member-∈ eq)
+... | false = Reflects.ofⁿ (member-∉ eq)

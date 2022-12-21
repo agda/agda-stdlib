@@ -1,13 +1,14 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Membership relation for AVL Maps
+-- Membership relation for AVL Maps identifying values up to
+-- propositional equality.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 open import Relation.Binary using (StrictTotalOrder)
 
-module Data.Tree.AVL.Map.Membership
+module Data.Tree.AVL.Map.Membership.Propositional
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
@@ -47,7 +48,7 @@ private
     x x′ y y′ : V
     kx : Key × V
 
-infix 4 _∈_
+infix 4 _∈ₖᵥ_
 
 private
   Is : Rel (Key × V) _
@@ -60,45 +61,45 @@ private
   Is-sym {x = x} {y = y} = ×-symmetric sym ≡-sym {x} {y}
 
 ------------------------------------------------------------------------
--- Membership: ∈
+-- Membership: ∈ₖᵥ
 
-_∈_ : Key × V → Map V → Set _
-kx ∈ m = Any (Is kx) m
+_∈ₖᵥ_ : Key × V → Map V → Set _
+kx ∈ₖᵥ m = Any (Is kx) m
 
-_∉_ : Key × V → Map V → Set _
-kx ∉ m = ¬ kx ∈ m
+_∉ₖᵥ_ : Key × V → Map V → Set _
+kx ∉ₖᵥ m = ¬ kx ∈ₖᵥ m
 
-∈-Respectsˡ : _∈_ {V = V} Respectsˡ Is
-∈-Respectsˡ x~y = Any.map (Is-trans (Is-sym x~y))
+∈ₖᵥ-Respectsˡ : _∈ₖᵥ_ {V = V} Respectsˡ Is
+∈ₖᵥ-Respectsˡ x~y = Any.map (Is-trans (Is-sym x~y))
 
-∈-empty : kx ∉ empty
-∈-empty (tree ())
+∈ₖᵥ-empty : kx ∉ₖᵥ empty
+∈ₖᵥ-empty (tree ())
 
 ------------------------------------------------------------------------
 -- singleton
 
-∈-singleton⁺ : (k , x) ∈ singleton k x
-∈-singleton⁺ = tree (IAnyₚ.singleton⁺ _ _ (refl , ≡-refl))
+∈ₖᵥ-singleton⁺ : (k , x) ∈ₖᵥ singleton k x
+∈ₖᵥ-singleton⁺ = tree (IAnyₚ.singleton⁺ _ _ _ (refl , ≡-refl))
 
-∈-singleton⁻ : (k , x) ∈ singleton k′ x′ → k ≈ k′ × x ≡ x′
-∈-singleton⁻ (tree p) = IAnyₚ.singleton⁻ _ _ p
+∈ₖᵥ-singleton⁻ : (k , x) ∈ₖᵥ singleton k′ x′ → k ≈ k′ × x ≡ x′
+∈ₖᵥ-singleton⁻ (tree p) = IAnyₚ.singleton⁻ _ _ _ p
 
 private
-  ≈-lookup : (p : (k , x) ∈ m) → k ≈ Any.lookupKey p
+  ≈-lookup : (p : (k , x) ∈ₖᵥ m) → k ≈ Any.lookupKey p
   ≈-lookup (tree p) = proj₁ (IAnyₚ.lookup-result p)
 
 ------------------------------------------------------------------------
 -- insert
 
-∈-insert⁺ : k ≉ k′ → (k , x) ∈ m → (k , x) ∈ insert k′ x′ m
-∈-insert⁺ {k′ = k′} {m = m@(tree t)} k≉k′ (tree p) =
+∈ₖᵥ-insert⁺ : k ≉ k′ → (k , x) ∈ₖᵥ m → (k , x) ∈ₖᵥ insert k′ x′ m
+∈ₖᵥ-insert⁺ {k′ = k′} {m = m@(tree t)} k≉k′ (tree p) =
   tree (IAnyₚ.insert⁺ _ _ _ (⊥⁺<[ _ ]<⊤⁺) p k′≉key-p)
   where
   k′≉key-p : k′ ≉ Any.lookupKey (tree p)
   k′≉key-p k′≈key-p = k≉k′ (Eq.trans (≈-lookup (tree p)) (Eq.sym k′≈key-p))
 
-∈-insert⁺⁺ : (k , x) ∈ insert k x m
-∈-insert⁺⁺ {k = k} {m = tree t} with IAny.any? ((k ≟_) ∘ key) t
+∈ₖᵥ-insert⁺⁺ : (k , x) ∈ₖᵥ insert k x m
+∈ₖᵥ-insert⁺⁺ {k = k} {m = tree t} with IAny.any? ((k ≟_) ∘ key) t
 ... | yes k∈ = tree (IAnyₚ.Any-insert-just _ _ _ _ (λ k′ → _, ≡-refl) k∈)
 ... | no ¬k∈ = tree (IAnyₚ.Any-insert-nothing _ _ _ _ (refl , ≡-refl) ¬k∈)
 
@@ -106,8 +107,8 @@ private
   Is-Resp : ∀ {kv k k′ v} → k ≈ k′ → Is {V = V} kv (k′ , v) → Is kv (k , v)
   Is-Resp = (λ{ k′≈l (k≈l , x≡) → (trans k≈l (sym k′≈l) , x≡)})
 
-∈-insert⁻ : (k , x) ∈ insert k′ x′ m → (k ≈ k′ × x ≡ x′) ⊎ (k ≉ k′ × (k , x) ∈ m)
-∈-insert⁻ {m = tree t} (tree kx∈insert)
+∈ₖᵥ-insert⁻ : (k , x) ∈ₖᵥ insert k′ x′ m → (k ≈ k′ × x ≡ x′) ⊎ (k ≉ k′ × (k , x) ∈ₖᵥ m)
+∈ₖᵥ-insert⁻ {m = tree t} (tree kx∈insert)
     with IAnyₚ.insert⁻ Is-Resp _ _ t (⊥⁺<[ _ ]<⊤⁺) kx∈insert
 ... | inj₁ p = inj₁ p
 ... | inj₂ p = let k′≉p , k≈p , _ = IAnyₚ.lookup-result p
@@ -117,43 +118,43 @@ private
 ------------------------------------------------------------------------
 -- lookup
 
-∈-lookup⁺ : (k , x) ∈ m → lookup m k ≡ just x
-∈-lookup⁺ {k = k} {m = tree t} (tree kx∈m)
+∈ₖᵥ-lookup⁺ : (k , x) ∈ₖᵥ m → lookup m k ≡ just x
+∈ₖᵥ-lookup⁺ {k = k} {m = tree t} (tree kx∈m)
     with IAnyₚ.lookup⁺ t k (⊥⁺<[ _ ]<⊤⁺) kx∈m | IAnyₚ.lookup-result kx∈m
 ... | inj₁ p≉k        | k≈p , x≡p = contradiction (sym k≈p) p≉k
 ... | inj₂ (p≈k , eq) | k≈p , x≡p = ≡-trans eq (cong just (≡-sym x≡p))
 
-∈-lookup⁻ : lookup m k ≡ just x → (k , x) ∈ m
-∈-lookup⁻ {m = tree t} {k = k} {x = x} eq
+∈ₖᵥ-lookup⁻ : lookup m k ≡ just x → (k , x) ∈ₖᵥ m
+∈ₖᵥ-lookup⁻ {m = tree t} {k = k} {x = x} eq
   = tree (IAny.map (Prod.map sym ≡-sym) (IAnyₚ.lookup⁻ t k x (⊥⁺<[ _ ]<⊤⁺) eq))
 
-∈-lookup-nothing⁺ : (∀ x → (k , x) ∉ m) → lookup m k ≡ nothing
-∈-lookup-nothing⁺ {k = k} {m = m@(tree t)} k∉m with lookup m k in eq
+∈ₖᵥ-lookup-nothing⁺ : (∀ x → (k , x) ∉ₖᵥ m) → lookup m k ≡ nothing
+∈ₖᵥ-lookup-nothing⁺ {k = k} {m = m@(tree t)} k∉m with lookup m k in eq
 ... | nothing = ≡-refl
-... | just x = contradiction (∈-lookup⁻ eq) (k∉m x)
+... | just x = contradiction (∈ₖᵥ-lookup⁻ eq) (k∉m x)
 
-∈-lookup-nothing⁻ : lookup m k ≡ nothing → (k , x) ∉ m
-∈-lookup-nothing⁻ eq kx∈m with ≡-trans (≡-sym eq) (∈-lookup⁺ kx∈m)
+∈ₖᵥ-lookup-nothing⁻ : lookup m k ≡ nothing → (k , x) ∉ₖᵥ m
+∈ₖᵥ-lookup-nothing⁻ eq kx∈m with ≡-trans (≡-sym eq) (∈ₖᵥ-lookup⁺ kx∈m)
 ... | ()
 
 ------------------------------------------------------------------------
--- ∈?
+-- member
 
-∈-∈? : (k , x) ∈ m → (k ∈? m) ≡ true
-∈-∈? = cong is-just ∘ ∈-lookup⁺
+∈ₖᵥ-member : (k , x) ∈ₖᵥ m → member k m ≡ true
+∈ₖᵥ-member = cong is-just ∘ ∈ₖᵥ-lookup⁺
 
-∉-∈? : (∀ x → (k , x) ∉ m) → (k ∈? m) ≡ false
-∉-∈? = cong is-just ∘ ∈-lookup-nothing⁺
+∉ₖᵥ-member : (∀ x → (k , x) ∉ₖᵥ m) → member k m ≡ false
+∉ₖᵥ-member = cong is-just ∘ ∈ₖᵥ-lookup-nothing⁺
 
-∈?-∈ : (k ∈? m) ≡ true → ∃[ x ] (k , x) ∈ m
-∈?-∈ {k = k} {m = m} ≡true with lookup m k in eq
-... | just x = x , ∈-lookup⁻ eq
+member-∈ₖᵥ : member k m ≡ true → ∃[ x ] (k , x) ∈ₖᵥ m
+member-∈ₖᵥ {k = k} {m = m} ≡true with lookup m k in eq
+... | just x = x , ∈ₖᵥ-lookup⁻ eq
 
-∈?-∉ : (k ∈? m) ≡ false → ∀ x → (k , x) ∉ m
-∈?-∉ {k = k} {m = m} ≡false x with lookup m k in eq
-... | nothing = ∈-lookup-nothing⁻ eq
+member-∉ₖᵥ : member k m ≡ false → ∀ x → (k , x) ∉ₖᵥ m
+member-∉ₖᵥ {k = k} {m = m} ≡false x with lookup m k in eq
+... | nothing = ∈ₖᵥ-lookup-nothing⁻ eq
 
-∈?-Reflects-∈ : Reflects (∃[ x ] (k , x) ∈ m) (k ∈? m)
-∈?-Reflects-∈ {k = k} {m = m} with lookup m k in eq
-... | just x = Reflects.ofʸ (x , ∈-lookup⁻ eq)
-... | nothing = Reflects.ofⁿ (∈-lookup-nothing⁻ eq ∘ proj₂)
+member-Reflects-∈ₖᵥ : Reflects (∃[ x ] (k , x) ∈ₖᵥ m) (member k m)
+member-Reflects-∈ₖᵥ {k = k} {m = m} with lookup m k in eq
+... | just x = Reflects.ofʸ (x , ∈ₖᵥ-lookup⁻ eq)
+... | nothing = Reflects.ofⁿ (∈ₖᵥ-lookup-nothing⁻ eq ∘ proj₂)
