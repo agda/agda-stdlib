@@ -8,14 +8,17 @@
 
 module Data.Parity.HomomorphismNatParity where
 
-open import Data.Empty
 open import Data.Nat.Base
+  using (zero; suc; _+_; _*_; parity
+  ; +-rawMagma; +-0-rawMonoid
+  ; +-*-rawNearSemiring; +-*-rawSemiring)
 open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ; _⁻¹)
   renaming (_+_ to _+ℙ_; _*_ to _*ℙ_
   ; +-rawMagma to ℙ+-rawMagma; +-0-rawMonoid to ℙ+-0-rawMonoid
   ; +-*-rawNearSemiring to ℙ+-*-rawNearSemiring; +-*-rawSemiring to ℙ+-*-rawSemiring)
 open import Data.Parity.Properties using (⁻¹-inverts)
 open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; sym; cong; cong₂; module ≡-Reasoning)
 
 open import Algebra.Morphism.Structures
   using (IsMagmaHomomorphism; IsMonoidHomomorphism
