@@ -6,6 +6,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary using (StrictTotalOrder)
 
 module Data.Tree.AVL.Map.Membership.Propositional
