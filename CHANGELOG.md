@@ -591,6 +591,15 @@ Non-backwards compatible changes
   This is needed because `MonadState S M` does not pack a `Monad M` instance anymore
   and so we cannot define `modify f` as `get >>= λ s → put (f s)`.
 
+* `MonadWriter 𝕎 M` is defined similarly:
+   ```agda
+   writer : W × A → M A
+   listen : M A → M (W × A)
+   pass   : M ((W → W) × A) → M A
+   ```
+   with `tell` defined as a derived notion.
+   Note that `𝕎` is a `RawMonoid`, not a `Set` and `W` is the carrier of the monoid.
+
 * New modules:
   ```
   Data.List.Effectful.Transformer
@@ -613,6 +622,11 @@ Non-backwards compatible changes
   Effect.Monad.State.Instances
   Effect.Monad.State.Transformer
   Effect.Monad.State.Transformer.Base
+  Effect.Monad.Writer
+  Effect.Monad.Writer.Indexed
+  Effect.Monad.Writer.Instances
+  Effect.Monad.Writer.Transformer
+  Effect.Monad.Writer.Transformer.Base
   IO.Effectful
   IO.Instances
   ```
