@@ -525,7 +525,7 @@ suc-homo-⁻¹ (suc n) = ⁻¹-inverts (suc-homo-⁻¹ n)
     lemma 1ℙ 1ℙ = refl
 
 ------------------------------------------------------------------------
--- parity is a Semiring homomorphism from ℕ to ℙ
+-- parity is a Semiring homomorphism from Nat to Parity
 
 parity-isMagmaHomomorphism : IsMagmaHomomorphism ℕ.+-rawMagma ℙ.+-rawMagma parity
 parity-isMagmaHomomorphism = record
