@@ -487,7 +487,7 @@ suc-homo-⁻¹ (suc n) = ⁻¹-inverts (suc-homo-⁻¹ n)
 +-homo-+      : ∀ m n → parity (m ℕ.+ n) ≡ parity m ℙ.+ parity n
 +-homo-+ zero    n = refl
 +-homo-+ (suc m) n = begin
-  parity (suc m ℕ.+ n)        ≡⟨ suc-+-homo-⁻¹ m n ⟩
+  parity (suc m ℕ.+ n)         ≡⟨ suc-+-homo-⁻¹ m n ⟩
   (parity m) ⁻¹ ℙ.+ parity n   ≡⟨ cong (ℙ._+ parity n) (suc-homo-⁻¹ (suc m)) ⟩
   parity (suc m) ℙ.+ parity n  ∎
   where
