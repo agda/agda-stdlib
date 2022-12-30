@@ -23,7 +23,7 @@ open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Function.Base using (_$_; flip; _∘_; id)
+open import Function.Base using (_$_; flip; _∘_; _∘′_; id)
 open import Function.Inverse using (_↔_)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
@@ -122,6 +122,15 @@ module _ (S : Setoid c ℓ) where
                     length (mapWith∈ xs f) ≡ length xs
   length-mapWith∈ []       = P.refl
   length-mapWith∈ (x ∷ xs) = P.cong suc (length-mapWith∈ xs)
+  
+  mapWith∈-id : ∀ xs → mapWith∈ xs (λ {x} _ → x) ≡ xs
+  mapWith∈-id [] = P.refl
+  mapWith∈-id (x ∷ xs) rewrite mapWith∈-id xs = P.refl
+
+  map∘mapWith∈ : ∀ {a b} {A : Set a} {B : Set b} xs (f : ∀ {x} → x ∈ xs → A) (g : A → B) →
+                 map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  map∘mapWith∈ [] f g = P.refl
+  map∘mapWith∈ (x ∷ xs) f g rewrite map∘mapWith∈ xs (f ∘ there) g = P.refl
 
 ------------------------------------------------------------------------
 -- map
