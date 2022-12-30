@@ -15,9 +15,11 @@ open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; module ≡-Reasoning)
 
 open import Algebra.Morphism.Structures
+{-
+open import Algebra.Morphism.Structures
   using (IsMagmaHomomorphism; IsMonoidHomomorphism
   ; IsNearSemiringHomomorphism; IsSemiringHomomorphism)
-
+-}
 ------------------------------------------------------------------------
 -- relating Nat and Parity
 
