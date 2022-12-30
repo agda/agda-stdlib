@@ -495,10 +495,10 @@ suc-homo-⁻¹ (suc n) = ⁻¹-inverts (suc-homo-⁻¹ n)
     suc-+-homo-⁻¹ : ∀ m n → parity (suc m ℕ.+ n) ≡ (parity m) ⁻¹ ℙ.+ parity n
     suc-+-homo-⁻¹ zero    n = sym (suc-homo-⁻¹ (suc n))
     suc-+-homo-⁻¹ (suc m) n = begin
-      parity (suc (suc m) ℕ.+ n)        ≡⟨⟩
-      parity (m ℕ.+ n)                  ≡⟨ +-homo-+ m n ⟩
-      parity m ℙ.+ parity n              ≡⟨ cong (ℙ._+ parity n) (sym (suc-homo-⁻¹ m)) ⟩
-      (parity (suc m)) ⁻¹ ℙ.+ (parity n) ∎
+      parity (suc (suc m) ℕ.+ n)       ≡⟨⟩
+      parity (m ℕ.+ n)                 ≡⟨ +-homo-+ m n ⟩
+      parity m ℙ.+ parity n             ≡⟨ cong (ℙ._+ parity n) (sym (suc-homo-⁻¹ m)) ⟩
+      (parity (suc m)) ⁻¹ ℙ.+ parity n  ∎
 
 -- parity is a _*_ homomorphism
 
@@ -509,8 +509,8 @@ suc-homo-⁻¹ (suc n) = ⁻¹-inverts (suc-homo-⁻¹ n)
   parity (n ℕ.+ m ℕ.* n)    ≡⟨ +-homo-+ n (m ℕ.* n) ⟩
   q ℙ.+ parity (m ℕ.* n)     ≡⟨ cong (q ℙ.+_) (*-homo-* m n) ⟩
   q ℙ.+ (p ℙ.* q)             ≡⟨ lemma p q ⟩
-  ((p ⁻¹) ℙ.* q)              ≡⟨⟩
-  ((parity m) ⁻¹ ℙ.* q)       ≡⟨ cong (ℙ._* q) (suc-homo-⁻¹ (suc m)) ⟩
+  (p ⁻¹) ℙ.* q                ≡⟨⟩
+  (parity m) ⁻¹ ℙ.* q         ≡⟨ cong (ℙ._* q) (suc-homo-⁻¹ (suc m)) ⟩
   parity (suc m) ℙ.* q        ≡⟨⟩
   parity (suc m) ℙ.* parity n ∎
   where
