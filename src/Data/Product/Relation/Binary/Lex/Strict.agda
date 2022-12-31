@@ -140,19 +140,19 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
   ×-respectsʳ trans resp₁ resp₂ y≈y' (inj₁ x₁<y₁) = inj₁ (resp₁ (proj₁ y≈y') x₁<y₁)
   ×-respectsʳ trans resp₁ resp₂ y≈y' (inj₂ x≈<y)  = inj₂ (trans (proj₁ x≈<y) (proj₁ y≈y')
                                                        , (resp₂ (proj₂ y≈y') (proj₂ x≈<y)))
-  ×-respectsˡ : IsPartialEquivalence _≈₁_ →
+
+  ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ →
                 _<ₗₑₓ_ Respectsˡ _≋_
-  ×-respectsˡ eq₁ resp₁ resp₂ x≈x' (inj₁ x₁<y₁) = inj₁ (resp₁ (proj₁ x≈x') x₁<y₁)
-  ×-respectsˡ eq₁ resp₁ resp₂ x≈x' (inj₂ x≈<y)  = inj₂ (trans (sym $ proj₁ x≈x') (proj₁ x≈<y)
-                                                     , (resp₂ (proj₂ x≈x') (proj₂ x≈<y)))
-    where open IsPartialEquivalence eq₁
+  ×-respectsˡ sym trans resp₁ resp₂ x≈x' (inj₁ x₁<y₁) = inj₁ (resp₁ (proj₁ x≈x') x₁<y₁)
+  ×-respectsˡ sym trans resp₁ resp₂ x≈x' (inj₂ x≈<y)  = inj₂ (trans (sym $ proj₁ x≈x') (proj₁ x≈<y)
+                                                           , (resp₂ (proj₂ x≈x') (proj₂ x≈<y)))
 
   ×-respects₂ : IsEquivalence _≈₁_ →
                 _<₁_ Respects₂ _≈₁_ → _<₂_ Respects₂ _≈₂_ →
                 _<ₗₑₓ_ Respects₂ _≋_
   ×-respects₂ eq₁ resp₁ resp₂ = ×-respectsʳ trans (proj₁ resp₁) (proj₁ resp₂)
-                              , ×-respectsˡ isPartialEquivalence (proj₂ resp₁) (proj₂ resp₂)
+                              , ×-respectsˡ sym trans (proj₂ resp₁) (proj₂ resp₂)
     where open IsEquivalence eq₁
 
   ×-compare : Symmetric _≈₁_ →
@@ -181,7 +181,30 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
          (x₁≈y₁ , x₂≈y₂)
          [ x₁≯y₁ , x₂≯y₂ ∘ proj₂ ]
 
-module _ {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
+module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
+
+  private
+    _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
+
+  ×-wellFounded' : Symmetric _≈₁_ → Transitive _≈₁_ →
+                   _<₁_ Respectsʳ _≈₁_ →
+                   WellFounded _<₁_ →
+                   WellFounded _<₂_ →
+                   WellFounded _<ₗₑₓ_
+  ×-wellFounded' sym trans resp wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
+    where
+    ×-acc : ∀ {x y} →
+            Acc _<₁_ x → Acc _<₂_ y →
+            WfRec _<ₗₑₓ_ (Acc _<ₗₑₓ_) (x , y)
+    ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
+      = acc (×-acc (rec₁ u u<x) (wf₂ v))
+    ×-acc {x₁} acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
+      = Acc-resp-≈ (Pointwise.×-symmetric {_∼₁_ = _≈₁_} {_∼₂_ = _≡_ } sym ≡.sym)
+                   (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (≡.respʳ _<₂_))
+                   (sym u≈x , _≡_.refl)
+                   (acc (×-acc acc₁ (rec₂ v v<y)))
+
+module _ {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel B ℓ₂} where
 
   private
     _<ₗₑₓ_ = ×-Lex _≡_ _<₁_ _<₂_
@@ -189,39 +212,7 @@ module _ {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
   ×-wellFounded : WellFounded _<₁_ →
                   WellFounded _<₂_ →
                   WellFounded _<ₗₑₓ_
-  ×-wellFounded wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
-    where
-    ×-acc : ∀ {x y} →
-            Acc _<₁_ x → Acc _<₂_ y →
-            WfRec _<ₗₑₓ_ (Acc _<ₗₑₓ_) (x , y)
-    ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
-      = acc (×-acc (rec₁ u u<x) (wf₂ v))
-    ×-acc acc₁ (acc rec₂) (u , v) (inj₂ (refl , v<y))
-      = acc (×-acc acc₁ (rec₂ v v<y))
-
-module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
-
-  private
-    _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
-
-  ×-wellFounded' : IsPartialEquivalence _≈₁_ →
-                   _<₁_ Respectsʳ _≈₁_ →
-                   WellFounded _<₁_ →
-                   WellFounded _<₂_ →
-                   WellFounded _<ₗₑₓ_
-  ×-wellFounded' eq₁ resp wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
-    where
-    open IsPartialEquivalence eq₁
-    ×-acc : ∀ {x y} →
-            Acc _<₁_ x → Acc _<₂_ y →
-            WfRec _<ₗₑₓ_ (Acc _<ₗₑₓ_) (x , y)
-    ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
-      = acc (×-acc (rec₁ u u<x) (wf₂ v))
-    ×-acc {x₁} acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
-      = Acc-resp-≈ (Pointwise.×-symmetric {_∼₁_ = _≈₁_} {_∼₂_ = _≡_ }  sym ≡.sym)
-                   (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (≡.respʳ _<₂_))
-                   (sym u≈x , _≡_.refl)
-                   (acc (×-acc acc₁ (rec₂ v v<y)))
+  ×-wellFounded = ×-wellFounded' ≡.sym ≡.trans (≡.respʳ _<₁_)
 
 ------------------------------------------------------------------------
 -- Collections of properties which are preserved by ×-Lex.
