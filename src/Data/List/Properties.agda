@@ -260,21 +260,24 @@ module _ (A : Set a) where
 
 module _ (f : A → B → C) where
 
-  cartesianProductWith-zeroˡ : ∀ ys → cartesianProductWith f [] ys ≡ []
+  private
+    prod = cartesianProductWith f
+
+  cartesianProductWith-zeroˡ : ∀ ys → prod [] ys ≡ []
   cartesianProductWith-zeroˡ _ = refl
 
-  cartesianProductWith-zeroʳ : ∀ xs → cartesianProductWith f xs [] ≡ []
+  cartesianProductWith-zeroʳ : ∀ xs → prod xs [] ≡ []
   cartesianProductWith-zeroʳ []       = refl
   cartesianProductWith-zeroʳ (x ∷ xs) = cartesianProductWith-zeroʳ xs
 
-  cartesianProductWith-distribʳ-++ : ∀ xs ys zs → cartesianProductWith f (xs ++ ys) zs ≡ cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
+  cartesianProductWith-distribʳ-++ : ∀ xs ys zs → prod (xs ++ ys) zs ≡ prod xs zs ++ prod ys zs
   cartesianProductWith-distribʳ-++ []       ys zs = refl
   cartesianProductWith-distribʳ-++ (x ∷ xs) ys zs = begin
-    cartesianProductWith f (x ∷ xs ++ ys) zs ≡⟨⟩
-    map (f x) zs ++ cartesianProductWith f (xs ++ ys) zs ≡⟨ cong (map (f x) zs ++_) (cartesianProductWith-distribʳ-++ xs ys zs) ⟩
-    map (f x) zs ++ cartesianProductWith f xs zs ++ cartesianProductWith f ys zs ≡˘⟨ ++-assoc (map (f x) zs) (cartesianProductWith f xs zs) (cartesianProductWith f ys zs) ⟩
-    (map (f x) zs ++ cartesianProductWith f xs zs) ++ cartesianProductWith f ys zs ≡⟨⟩
-    cartesianProductWith f (x ∷ xs) zs ++ cartesianProductWith f ys zs ∎
+    prod (x ∷ xs ++ ys) zs ≡⟨⟩
+    map (f x) zs ++ prod (xs ++ ys) zs ≡⟨ cong (map (f x) zs ++_) (cartesianProductWith-distribʳ-++ xs ys zs) ⟩
+    map (f x) zs ++ prod xs zs ++ prod ys zs ≡˘⟨ ++-assoc (map (f x) zs) (prod xs zs) (prod ys zs) ⟩
+    (map (f x) zs ++ prod xs zs) ++ prod ys zs ≡⟨⟩
+    prod (x ∷ xs) zs ++ prod ys zs ∎
 
 ------------------------------------------------------------------------
 -- alignWith
