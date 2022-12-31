@@ -22,7 +22,7 @@ open import Level
 open import Relation.Nullary.Decidable
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.PropositionalEquality as _≡_ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; refl)
 
 private
   variable
@@ -181,11 +181,10 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
          (x₁≈y₁ , x₂≈y₂)
          [ x₁≯y₁ , x₂≯y₂ ∘ proj₂ ]
 
-module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
+module _ {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
 
   private
     _<ₗₑₓ_ = ×-Lex _≡_ _<₁_ _<₂_
-    _<ₗₑₓ'_ = ×-Lex _≈₁_ _<₁_ _<₂_
 
   ×-wellFounded : WellFounded _<₁_ →
                   WellFounded _<₂_ →
@@ -200,24 +199,30 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
     ×-acc acc₁ (acc rec₂) (u , v) (inj₂ (refl , v<y))
       = acc (×-acc acc₁ (rec₂ v v<y))
 
+module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
+
+  private
+    _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
+
   ×-wellFounded' : IsPartialEquivalence _≈₁_ →
                    _<₁_ Respectsʳ _≈₁_ →
                    WellFounded _<₁_ →
                    WellFounded _<₂_ →
-                   WellFounded _<ₗₑₓ'_
+                   WellFounded _<ₗₑₓ_
   ×-wellFounded' eq₁ resp wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
     where
     open IsPartialEquivalence eq₁
     ×-acc : ∀ {x y} →
             Acc _<₁_ x → Acc _<₂_ y →
-            WfRec _<ₗₑₓ'_ (Acc _<ₗₑₓ'_) (x , y)
+            WfRec _<ₗₑₓ_ (Acc _<ₗₑₓ_) (x , y)
     ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
       = acc (×-acc (rec₁ u u<x) (wf₂ v))
     ×-acc {x₁} acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
-      = Acc-resp-≈ (Pointwise.×-symmetric {_∼₁_ = _≈₁_} {_∼₂_ = _≡_ }  sym _≡_.sym)
-                   (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (_≡_.respʳ _<₂_))
+      = Acc-resp-≈ (Pointwise.×-symmetric {_∼₁_ = _≈₁_} {_∼₂_ = _≡_ }  sym ≡.sym)
+                   (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (≡.respʳ _<₂_))
                    (sym u≈x , _≡_.refl)
                    (acc (×-acc acc₁ (rec₂ v v<y)))
+
 ------------------------------------------------------------------------
 -- Collections of properties which are preserved by ×-Lex.
 

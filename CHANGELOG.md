@@ -2066,6 +2066,12 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
+  ```agda
+  ×-wellFounded' : IsPartialEquivalence _≈₁_ → _<₁_ Respectsʳ _≈₁_ → 
+                   WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
+  ```
+
 * Added new definitions to `Data.Sign.Base`:
   ```agda
   *-rawMagma : RawMagma 0ℓ 0ℓ
