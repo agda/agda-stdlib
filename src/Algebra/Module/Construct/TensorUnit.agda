@@ -77,6 +77,7 @@ semimodule : {R : CommutativeSemiring c ℓ} → Semimodule R c ℓ
 semimodule {R = commutativeSemiring} = record
   { isSemimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule bisemimodule
+    ; *ₗ-*ᵣ-comm = λ x m → *-comm x m
     }
   } where open CommutativeSemiring commutativeSemiring
 
@@ -113,5 +114,6 @@ bimodule {R = ring} = record
 ⟨module⟩ {R = commutativeRing} = record
   { isModule = record
     { isBimodule = Bimodule.isBimodule bimodule
+    ; *ₗ-*ᵣ-comm = λ x m → *-comm x m
     }
   } where open CommutativeRing commutativeRing
