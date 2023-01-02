@@ -171,6 +171,7 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr)
                       : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     field
       isBisemimodule : IsBisemimodule semiring semiring ≈ᴹ +ᴹ 0ᴹ *ₗ *ᵣ
+      *ₗ-*ᵣ-comm : ∀ x m → ≈ᴹ (*ₗ x m) (*ᵣ m x)
 
     open IsBisemimodule isBisemimodule public
 
@@ -285,8 +286,9 @@ module _ (commutativeRing : CommutativeRing r ℓr)
   record IsModule (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     field
       isBimodule : IsBimodule ring ring ≈ᴹ +ᴹ 0ᴹ -ᴹ *ₗ *ᵣ
+      *ₗ-*ᵣ-comm : ∀ x m → ≈ᴹ (*ₗ x m) (*ᵣ m x)
 
     open IsBimodule isBimodule public
 
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ *ₗ *ᵣ
-    isSemimodule = record { isBisemimodule = isBisemimodule }
+    isSemimodule = record { isBisemimodule = isBisemimodule; *ₗ-*ᵣ-comm = *ₗ-*ᵣ-comm }
