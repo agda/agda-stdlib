@@ -47,6 +47,9 @@ Bug-fixes
 * Add module `Algebra.Module` that re-exports the contents of
   `Algebra.Module.(Definitions/Structures/Bundles)`
 
+* Various module-like bundles in `Algebra.Module.Bundles` were missing a fixity
+  declaration for `_*ᵣ_`. This has been fixed.
+
 * In `Algebra.Definitions.RawSemiring` the record `prime` add `p∤1 : p ∤ 1#` to the field.
 
 * In `Data.List.Relation.Ternary.Appending.Setoid` we re-export specialised versions of
