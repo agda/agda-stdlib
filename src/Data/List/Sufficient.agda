@@ -26,7 +26,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 data Sufficient : (xs : List A) → Set a where
 
   suff-acc : ∀ {xs} →
-             (suff_ih : ∀ {a} {prefix suffix} → xs ≡ a ∷ (prefix ++ suffix) →
+             (suff_ih : ∀ {a} {prefix suffix} → xs ≡ a ∷ prefix ++ suffix →
                         Sufficient suffix) →
              Sufficient xs
 
@@ -43,7 +43,7 @@ module Constructors where
   ∷⁺ {xs = xs} suff-xs@(suff-acc acc) = suff-acc λ { refl → suf _ refl }
     where suf : ∀ prefix {suffix} → xs ≡ prefix ++ suffix → Sufficient suffix
           suf []           refl = suff-xs
-          suf (a ∷ prefix) eq   = acc eq
+          suf (_ ∷ _) eq   = acc eq
 
 ------------------------------------------------------------------------
 -- Sufficient view covering property
