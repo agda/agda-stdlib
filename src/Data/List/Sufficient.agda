@@ -6,7 +6,7 @@
 --
 -- Useful for termination arguments for function definitions
 -- which provably consume a non-empty (but otherwise arbitrary) prefix
--- *without* having to resort to ancillary WF inductions on length etc.
+-- *without* having to resort to ancillary WF induction on length etc.
 -- e.g. lexers, parsers etc.
 --
 -- Credited by Conor McBride as originally due to James McKinna
