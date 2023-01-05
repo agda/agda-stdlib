@@ -53,6 +53,14 @@ module _ (≈ : Rel A ℓ) (∙ : Op₂ A) where
   inverse : Inverse ≈ ε ⁻¹ ∙ → Inverse ≈ ε ⁻¹ (flip ∙)
   inverse inv = Prod.swap inv
 
+  zero : Zero ≈ ε ∙ → Zero ≈ ε (flip ∙)
+  zero zer = Prod.swap zer
+
+  module _ (+ : Op₂ A) where
+
+    distributes : (≈ DistributesOver ∙) + → (≈ DistributesOver (flip ∙)) +
+    distributes distrib = Prod.swap distrib
+
 ------------------------------------------------------------------------
 -- Structures
 
@@ -162,6 +170,23 @@ module _ {≈ : Rel A ℓ} {∙ : Op₂ A} where
     ; comm    = commutative ≈ ∙ g.comm
     }
     where module g = IsAbelianGroup g
+
+module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
+
+  isRing : IsRing ≈ + * - 0# 1# → IsRing ≈ + (flip *) - 0# 1#
+  isRing r = record
+    { +-isAbelianGroup = r-isAbelianGroup
+    ; *-cong = preserves₂ ≈ ≈ ≈ r.*-cong
+    ; *-assoc = associative ≈ * sym r.*-assoc
+    ; *-identity = identity ≈ * r.*-identity
+    ; distrib = distributes ≈ * + r.distrib
+    ; zero = zero ≈ * r.zero
+    }
+    where
+      module r = IsRing r
+      r-isAbelianGroup = r.+-isAbelianGroup
+      open IsAbelianGroup r-isAbelianGroup using (sym)
+
 
 ------------------------------------------------------------------------
 -- Bundles
