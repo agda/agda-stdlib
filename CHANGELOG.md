@@ -1322,6 +1322,11 @@ New modules
   Data.List.Fresh.NonEmpty
   ```
 
+* A small library defining a structurally inductive view of lists:
+  ```
+  Data.List.Sufficient
+  ```
+
 * Combinations and permutations for ℕ.
   ```
   Data.Nat.Combinatorics
