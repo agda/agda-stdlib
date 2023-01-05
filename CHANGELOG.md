@@ -1587,6 +1587,13 @@ Other minor changes
   moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
+* Added new proofs to `Algebra.Construct.Flip.Op`:
+  ```agda
+  zero : Zero ≈ ε ∙ → Zero ≈ ε (flip ∙)
+  distributes : (≈ DistributesOver ∙) + → (≈ DistributesOver (flip ∙)) +
+  isRing : IsRing ≈ + * - 0# 1# → IsRing ≈ + (flip *) - 0# 1#
+  ```
+
 * Added new definition to `Algebra.Definitions`:
   ```agda
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
