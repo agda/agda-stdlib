@@ -18,11 +18,6 @@ module Data.List.Sufficient {a} {A : Set a} where
 open import Data.List.Base using (List; []; _∷_; _++_)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
-private
-  variable
-    x : A
-    xs : List A
-
 
 ------------------------------------------------------------------------
 -- Sufficient view
@@ -30,27 +25,32 @@ private
 data Sufficient : (xs : List A) → Set a where
 
   suff-acc : ∀ {xs} →
-             (suff_ih : ∀ {a} {pre suff} → xs ≡ a ∷ (pre ++ suff) →
-                        Sufficient suff) →
+             (suff_ih : ∀ {a} {prefix suffix} → xs ≡ a ∷ (prefix ++ suffix) →
+                        Sufficient suffix) →
              Sufficient xs
 
 
 ------------------------------------------------------------------------
--- Sufficient properties: constructors
+-- Sufficient properties: constructors (typically not for export)
 
-[]⁺ : Sufficient []
-[]⁺ = suff-acc λ ()
+module Constructors where
 
-∷⁺ : Sufficient xs → Sufficient (x ∷ xs)
-∷⁺ {xs = xs} suff-xs@(suff-acc acc) = suff-acc λ { refl → suf _ refl }
-  where
-    suf : ∀ pre {suff} → xs ≡ pre ++ suff → Sufficient suff
-    suf []        refl = suff-xs
-    suf (a ∷ pre) eq   = acc eq
+  []⁺ : Sufficient []
+  []⁺ = suff-acc λ ()
+
+  ∷⁺ : ∀ {x} {xs} → Sufficient xs → Sufficient (x ∷ xs)
+  ∷⁺ {xs = xs} suff-xs@(suff-acc acc) = suff-acc λ { refl → suf _ refl }
+    where suf : ∀ prefix {suffix} → xs ≡ prefix ++ suffix → Sufficient suffix
+          suf []           refl = suff-xs
+          suf (a ∷ prefix) eq   = acc eq
 
 ------------------------------------------------------------------------
 -- Sufficient view covering property
 
-sufficient : (xs : List A) → Sufficient xs
-sufficient []       = []⁺
-sufficient (x ∷ xs) = ∷⁺ (sufficient xs)
+module _ where
+
+  open Constructors
+
+  sufficient : (xs : List A) → Sufficient xs
+  sufficient []       = []⁺
+  sufficient (x ∷ xs) = ∷⁺ (sufficient xs)
