@@ -16,34 +16,51 @@
 
 module Data.List.Sufficient {a} {A : Set a} where
 
-open import Data.List.Base using (List; []; _∷_; _++_)
+open import Level using (_⊔_)
+open import Data.List.Base using (List; []; _∷_; [_]; _++_)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
+------------------------------------------------------------------------
+-- Sufficient builder
+
+suffAcc : ∀ {b} (B :  List A → Set b) (xs : List A) → Set (a ⊔ b)
+suffAcc B xs = ∀ {a} {prefix} suffix → xs ≡ a ∷ prefix ++ suffix → B suffix
 
 ------------------------------------------------------------------------
 -- Sufficient view
 
 data Sufficient : (xs : List A) → Set a where
 
-  suff-acc : ∀ {xs} →
-             (suff_ih : ∀ {a} {prefix suffix} → xs ≡ a ∷ prefix ++ suffix →
-                        Sufficient suffix) →
-             Sufficient xs
+  acc : ∀ {xs} (ih : suffAcc Sufficient xs) → Sufficient xs
 
 
 ------------------------------------------------------------------------
--- Sufficient properties: constructors (typically not for export)
+-- Sufficient properties
+
+-- constructors (typically not for export)
 
 module Constructors where
 
   []⁺ : Sufficient []
-  []⁺ = suff-acc λ ()
+  []⁺ = acc λ _ ()
 
   ∷⁺ : ∀ {x} {xs} → Sufficient xs → Sufficient (x ∷ xs)
-  ∷⁺ {xs = xs} suff-xs@(suff-acc acc) = suff-acc λ { refl → suf _ refl }
+  ∷⁺ {xs = xs} suff-xs@(acc hyp) = acc λ { _ refl → suf _ refl }
     where suf : ∀ prefix {suffix} → xs ≡ prefix ++ suffix → Sufficient suffix
-          suf []           refl = suff-xs
-          suf (_ ∷ _) eq   = acc eq
+          suf []               refl = suff-xs
+          suf (_ ∷ _) {suffix} eq   = hyp suffix eq
+
+-- destructors
+
+module Destructors where
+
+  ++⁻ : ∀ xs {ys} → Sufficient (xs ++ ys) → Sufficient ys
+  ++⁻ []            suff-ys   = suff-ys
+  ++⁻ (x ∷ xs) {ys} (acc hyp) = hyp ys refl
+
+  ∷⁻ : ∀ {x} {xs} → Sufficient (x ∷ xs) → Sufficient xs
+  ∷⁻ {x} = ++⁻ [ x ]
+
 
 ------------------------------------------------------------------------
 -- Sufficient view covering property
@@ -55,3 +72,17 @@ module _ where
   sufficient : (xs : List A) → Sufficient xs
   sufficient []       = []⁺
   sufficient (x ∷ xs) = ∷⁺ (sufficient xs)
+
+------------------------------------------------------------------------
+-- Recursion on the sufficient view
+
+module _ {b} (B : List A → Set b) where
+
+  suffRec : ∀ {zs} (rec : ∀ {ys} (ih : suffAcc B ys) → B ys) → B zs
+  suffRec  {zs} = suffRec′ (sufficient zs)
+    where
+      suffRec′ : ∀ {zs} → Sufficient zs →
+                 (rec : ∀ {ys} (ih : suffAcc B ys) → B ys) →
+                 B zs
+      suffRec′ (acc hyp) rec = rec (λ xs eq → suffRec′ (hyp xs eq) rec)
+
