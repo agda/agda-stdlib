@@ -46,9 +46,10 @@ module Constructors where
 
   ∷⁺ : ∀ {x} {xs} → Sufficient xs → Sufficient (x ∷ xs)
   ∷⁺ {xs = xs} suff-xs@(acc hyp) = acc λ { _ refl → suf _ refl }
-    where suf : ∀ prefix {suffix} → xs ≡ prefix ++ suffix → Sufficient suffix
-          suf []               refl = suff-xs
-          suf (_ ∷ _) {suffix} eq   = hyp suffix eq
+    where
+      suf : ∀ prefix {suffix} → xs ≡ prefix ++ suffix → Sufficient suffix
+      suf []               refl = suff-xs
+      suf (_ ∷ _) {suffix} eq   = hyp suffix eq
 
 -- destructors
 
