@@ -23,6 +23,9 @@ private
   variable
     r s ℓr ℓs : Level
 
+------------------------------------------------------------------------
+-- gather all the functionality in one place
+
 private module ℤero where
 
   infix  4 _≈_
@@ -33,6 +36,15 @@ private module ℤero where
   _ ≈ _ = ⊤
 
 open ℤero
+
+------------------------------------------------------------------------
+-- Raw bundles NOT YET IMPLEMENTED issue #1828
+{-
+rawModule : RawModule c ℓ
+rawModule = record { Carrier = Carrier ; _≈_ = _≈_ }
+-}
+------------------------------------------------------------------------
+-- Bundles
 
 leftSemimodule : {R : Semiring r ℓr} → LeftSemimodule R c ℓ
 leftSemimodule = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }

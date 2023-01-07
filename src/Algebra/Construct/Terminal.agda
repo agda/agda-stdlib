@@ -18,6 +18,9 @@ open import Algebra.Bundles
 open import Data.Unit.Polymorphic
 open import Relation.Binary.Core using (Rel)
 
+------------------------------------------------------------------------
+-- gather all the functionality in one place
+
 private module 𝕆ne where
 
   infix  4 _≈_

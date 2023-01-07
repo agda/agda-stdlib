@@ -23,6 +23,10 @@ open import Algebra.Bundles.Raw
   using (RawMagma)
 open import Algebra.Bundles
   using (Magma; Semigroup; Band)
+
+------------------------------------------------------------------------
+-- re-export those algebras which are both initial and terminal
+
 open import Algebra.Construct.Terminal public
   hiding (rawMagma; magma; semigroup; band)
 
