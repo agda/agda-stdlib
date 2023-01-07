@@ -35,9 +35,6 @@ open import Algebra.Construct.Terminal public
 
 -- Version 2.0
 
-------------------------------------------------------------------------
--- Raw bundles
-
 rawMagma : RawMagma c ℓ
 rawMagma = Algebra.Construct.Terminal.rawMagma
 
@@ -45,9 +42,6 @@ rawMagma = Algebra.Construct.Terminal.rawMagma
 "Warning: rawMagma was deprecated in v2.0.
 Please use Algebra.Construct.Terminal.rawMagma instead."
 #-}
-
-------------------------------------------------------------------------
--- Bundles
 
 magma : Magma c ℓ
 magma = Algebra.Construct.Terminal.magma

@@ -17,56 +17,44 @@ module Algebra.Module.Construct.Zero {c ℓ : Level} where
 open import Algebra.Bundles
 open import Algebra.Module.Bundles
 open import Data.Unit.Polymorphic
+open import Relation.Binary.Core using (Rel)
 
 private
   variable
     r s ℓr ℓs : Level
 
+private module ℤero where
+
+  infix  4 _≈_
+  Carrier : Set c
+  _≈_     : Rel Carrier ℓ
+
+  Carrier = ⊤
+  _ ≈ _ = ⊤
+
+open ℤero
+
 leftSemimodule : {R : Semiring r ℓr} → LeftSemimodule R c ℓ
-leftSemimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+leftSemimodule = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }
 
 rightSemimodule : {S : Semiring s ℓs} → RightSemimodule S c ℓ
-rightSemimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+rightSemimodule = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }
 
 bisemimodule :
   {R : Semiring r ℓr} {S : Semiring s ℓs} → Bisemimodule R S c ℓ
-bisemimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+bisemimodule = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }
 
 semimodule : {R : CommutativeSemiring r ℓr} → Semimodule R c ℓ
-semimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+semimodule = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }
 
 leftModule : {R : Ring r ℓr} → LeftModule R c ℓ
-leftModule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+leftModule = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }
 
 rightModule : {S : Ring s ℓs} → RightModule S c ℓ
-rightModule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+rightModule = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }
 
 bimodule : {R : Ring r ℓr} {S : Ring s ℓs} → Bimodule R S c ℓ
-bimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+bimodule = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }
 
 ⟨module⟩ : {R : CommutativeRing r ℓr} → Module R c ℓ
-⟨module⟩ = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+⟨module⟩ = record { Carrierᴹ = Carrier ; _≈ᴹ_ = _≈_ }
