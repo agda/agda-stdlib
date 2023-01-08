@@ -24,7 +24,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 -- Sufficient builder
 
 suffAcc : ∀ {b} (B :  List A → Set b) (xs : List A) → Set (a ⊔ b)
-suffAcc B xs = ∀ {a} {prefix} suffix → xs ≡ a ∷ prefix ++ suffix → B suffix
+suffAcc B xs = ∀ {x} {prefix} suffix → xs ≡ x ∷ prefix ++ suffix → B suffix
 
 ------------------------------------------------------------------------
 -- Sufficient view
@@ -46,9 +46,10 @@ module Constructors where
 
   ∷⁺ : ∀ {x} {xs} → Sufficient xs → Sufficient (x ∷ xs)
   ∷⁺ {xs = xs} suff-xs@(acc hyp) = acc λ { _ refl → suf _ refl }
-    where suf : ∀ prefix {suffix} → xs ≡ prefix ++ suffix → Sufficient suffix
-          suf []               refl = suff-xs
-          suf (_ ∷ _) {suffix} eq   = hyp suffix eq
+    where
+      suf : ∀ prefix {suffix} → xs ≡ prefix ++ suffix → Sufficient suffix
+      suf []               refl = suff-xs
+      suf (_ ∷ _) {suffix} eq   = hyp suffix eq
 
 -- destructors
 
@@ -78,11 +79,9 @@ module _ where
 
 module _ {b} (B : List A → Set b) where
 
-  suffRec : ∀ {zs} (rec : ∀ {ys} (ih : suffAcc B ys) → B ys) → B zs
-  suffRec  {zs} = suffRec′ (sufficient zs)
+  suffRec : (rec : ∀ ys → (ih : suffAcc B ys) → B ys) → ∀ zs → B zs
+  suffRec rec zs = suffRec′ (sufficient zs)
     where
-      suffRec′ : ∀ {zs} → Sufficient zs →
-                 (rec : ∀ {ys} (ih : suffAcc B ys) → B ys) →
-                 B zs
-      suffRec′ (acc hyp) rec = rec (λ xs eq → suffRec′ (hyp xs eq) rec)
+      suffRec′ : ∀ {zs} → Sufficient zs → B zs
+      suffRec′ {zs} (acc hyp) = rec zs (λ xs eq → suffRec′ (hyp xs eq))
 
