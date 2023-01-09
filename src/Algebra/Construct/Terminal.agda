@@ -26,7 +26,7 @@ private module 𝕆ne where
   infix  4 _≈_
   Carrier : Set c
   Carrier = ⊤
-  
+
   _≈_     : Rel Carrier ℓ
   _ ≈ _ = ⊤
 
