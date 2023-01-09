@@ -187,7 +187,7 @@ module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
   open Str ≈
   open ∙-Properties ≈ *
   open *-Properties ≈ * +
-  
+
   isRing : IsRing + * - 0# 1# → IsRing + (flip *) - 0# 1#
   isRing r = record
     { +-isAbelianGroup = r.+-isAbelianGroup
