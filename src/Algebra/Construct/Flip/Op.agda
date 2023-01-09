@@ -9,7 +9,10 @@
 
 module Algebra.Construct.Flip.Op where
 
-open import Algebra
+open import Algebra.Core
+open import Algebra.Bundles
+import Algebra.Definitions as Def
+import Algebra.Structures as Str
 import Data.Product as Prod
 import Data.Sum as Sum
 open import Function.Base using (flip)
@@ -33,135 +36,170 @@ preserves₂ : (∼ ≈ ≋ : Rel A ℓ) →
              ∙ Preserves₂ ∼ ⟶ ≈ ⟶ ≋ → (flip ∙) Preserves₂ ≈ ⟶ ∼ ⟶ ≋
 preserves₂ _ _ _ pres = flip pres
 
-module _ (≈ : Rel A ℓ) (∙ : Op₂ A) where
+module ∙-Properties (≈ : Rel A ℓ) (∙ : Op₂ A) where
 
-  associative : Symmetric ≈ → Associative ≈ ∙ → Associative ≈ (flip ∙)
+  open Def ≈
+
+  associative : Symmetric ≈ → Associative ∙ → Associative (flip ∙)
   associative sym assoc x y z = sym (assoc z y x)
 
-  identity : Identity ≈ ε ∙ → Identity ≈ ε (flip ∙)
+  identity : Identity ε ∙ → Identity ε (flip ∙)
   identity id = Prod.swap id
 
-  commutative : Commutative ≈ ∙ → Commutative ≈ (flip ∙)
+  commutative : Commutative ∙ → Commutative (flip ∙)
   commutative comm = flip comm
 
-  selective : Selective ≈ ∙ → Selective ≈ (flip ∙)
+  selective : Selective ∙ → Selective (flip ∙)
   selective sel x y = Sum.swap (sel y x)
 
-  idempotent : Idempotent ≈ ∙ → Idempotent ≈ (flip ∙)
+  idempotent : Idempotent ∙ → Idempotent (flip ∙)
   idempotent idem = idem
 
-  inverse : Inverse ≈ ε ⁻¹ ∙ → Inverse ≈ ε ⁻¹ (flip ∙)
+  inverse : Inverse ε ⁻¹ ∙ → Inverse ε ⁻¹ (flip ∙)
   inverse inv = Prod.swap inv
+
+  zero : Zero ε ∙ → Zero ε (flip ∙)
+  zero zer = Prod.swap zer
+
+module *-Properties (≈ : Rel A ℓ) (* + : Op₂ A) where
+
+  open Def ≈
+
+  distributes : * DistributesOver + → (flip *) DistributesOver +
+  distributes distrib = Prod.swap distrib
 
 ------------------------------------------------------------------------
 -- Structures
 
 module _ {≈ : Rel A ℓ} {∙ : Op₂ A} where
 
-  isMagma : IsMagma ≈ ∙ → IsMagma ≈ (flip ∙)
+  open Def ≈
+  open Str ≈
+  open ∙-Properties ≈ ∙
+
+  isMagma : IsMagma ∙ → IsMagma (flip ∙)
   isMagma m = record
     { isEquivalence = isEquivalence
     ; ∙-cong        = preserves₂ ≈ ≈ ≈ ∙-cong
     }
     where open IsMagma m
 
-  isSelectiveMagma : IsSelectiveMagma ≈ ∙ → IsSelectiveMagma ≈ (flip ∙)
+  isSelectiveMagma : IsSelectiveMagma ∙ → IsSelectiveMagma (flip ∙)
   isSelectiveMagma m = record
     { isMagma = isMagma m.isMagma
-    ; sel     = selective ≈ ∙ m.sel
+    ; sel     = selective m.sel
     }
     where module m = IsSelectiveMagma m
 
-  isCommutativeMagma : IsCommutativeMagma ≈ ∙ → IsCommutativeMagma ≈ (flip ∙)
+  isCommutativeMagma : IsCommutativeMagma ∙ → IsCommutativeMagma (flip ∙)
   isCommutativeMagma m = record
     { isMagma = isMagma m.isMagma
-    ; comm    = commutative ≈ ∙ m.comm
+    ; comm    = commutative m.comm
     }
     where module m = IsCommutativeMagma m
 
-  isSemigroup : IsSemigroup ≈ ∙ → IsSemigroup ≈ (flip ∙)
+  isSemigroup : IsSemigroup ∙ → IsSemigroup (flip ∙)
   isSemigroup s = record
     { isMagma = isMagma s.isMagma
-    ; assoc   = associative ≈ ∙ s.sym s.assoc
+    ; assoc   = associative s.sym s.assoc
     }
     where module s = IsSemigroup s
 
-  isBand : IsBand ≈ ∙ → IsBand ≈ (flip ∙)
+  isBand : IsBand ∙ → IsBand (flip ∙)
   isBand b = record
     { isSemigroup = isSemigroup b.isSemigroup
     ; idem        = b.idem
     }
     where module b = IsBand b
 
-  isCommutativeSemigroup : IsCommutativeSemigroup ≈ ∙ →
-                           IsCommutativeSemigroup ≈ (flip ∙)
+  isCommutativeSemigroup : IsCommutativeSemigroup ∙ →
+                           IsCommutativeSemigroup (flip ∙)
   isCommutativeSemigroup s = record
     { isSemigroup = isSemigroup s.isSemigroup
-    ; comm        = commutative ≈ ∙ s.comm
+    ; comm        = commutative s.comm
     }
     where module s = IsCommutativeSemigroup s
 
-  isUnitalMagma : IsUnitalMagma ≈ ∙ ε → IsUnitalMagma ≈ (flip ∙) ε
+  isUnitalMagma : IsUnitalMagma ∙ ε → IsUnitalMagma (flip ∙) ε
   isUnitalMagma m = record
     { isMagma  = isMagma m.isMagma
-    ; identity = identity ≈ ∙ m.identity
+    ; identity = identity m.identity
     }
     where module m = IsUnitalMagma m
 
-  isMonoid : IsMonoid ≈ ∙ ε → IsMonoid ≈ (flip ∙) ε
+  isMonoid : IsMonoid ∙ ε → IsMonoid (flip ∙) ε
   isMonoid m = record
     { isSemigroup = isSemigroup m.isSemigroup
-    ; identity    = identity ≈ ∙ m.identity
+    ; identity    = identity m.identity
     }
     where module m = IsMonoid m
 
-  isCommutativeMonoid : IsCommutativeMonoid ≈ ∙ ε →
-                        IsCommutativeMonoid ≈ (flip ∙) ε
+  isCommutativeMonoid : IsCommutativeMonoid ∙ ε →
+                        IsCommutativeMonoid (flip ∙) ε
   isCommutativeMonoid m = record
     { isMonoid = isMonoid m.isMonoid
-    ; comm     = commutative ≈ ∙ m.comm
+    ; comm     = commutative m.comm
     }
     where module m = IsCommutativeMonoid m
 
-  isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ≈ ∙ ε →
-                                  IsIdempotentCommutativeMonoid ≈ (flip ∙) ε
+  isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε →
+                                  IsIdempotentCommutativeMonoid (flip ∙) ε
   isIdempotentCommutativeMonoid m = record
     { isCommutativeMonoid = isCommutativeMonoid m.isCommutativeMonoid
-    ; idem                = idempotent ≈ ∙ m.idem
+    ; idem                = idempotent m.idem
     }
     where module m = IsIdempotentCommutativeMonoid m
 
-  isInvertibleMagma : IsInvertibleMagma ≈ ∙ ε ⁻¹ →
-                      IsInvertibleMagma ≈ (flip ∙) ε ⁻¹
+  isInvertibleMagma : IsInvertibleMagma ∙ ε ⁻¹ →
+                      IsInvertibleMagma (flip ∙) ε ⁻¹
   isInvertibleMagma m = record
     { isMagma = isMagma m.isMagma
-    ; inverse = inverse ≈ ∙ m.inverse
+    ; inverse = inverse m.inverse
     ; ⁻¹-cong = m.⁻¹-cong
     }
     where module m = IsInvertibleMagma m
 
-  isInvertibleUnitalMagma : IsInvertibleUnitalMagma ≈ ∙ ε ⁻¹ →
-                            IsInvertibleUnitalMagma ≈ (flip ∙) ε ⁻¹
+  isInvertibleUnitalMagma : IsInvertibleUnitalMagma ∙ ε ⁻¹ →
+                            IsInvertibleUnitalMagma (flip ∙) ε ⁻¹
   isInvertibleUnitalMagma m = record
     { isInvertibleMagma = isInvertibleMagma m.isInvertibleMagma
-    ; identity          = identity ≈ ∙ m.identity
+    ; identity          = identity m.identity
     }
     where module m = IsInvertibleUnitalMagma m
 
-  isGroup : IsGroup ≈ ∙ ε ⁻¹ → IsGroup ≈ (flip ∙) ε ⁻¹
+  isGroup : IsGroup ∙ ε ⁻¹ → IsGroup (flip ∙) ε ⁻¹
   isGroup g = record
     { isMonoid = isMonoid g.isMonoid
-    ; inverse  = inverse ≈ ∙ g.inverse
+    ; inverse  = inverse g.inverse
     ; ⁻¹-cong  = g.⁻¹-cong
     }
     where module g = IsGroup g
 
-  isAbelianGroup : IsAbelianGroup ≈ ∙ ε ⁻¹ → IsAbelianGroup ≈ (flip ∙) ε ⁻¹
+  isAbelianGroup : IsAbelianGroup ∙ ε ⁻¹ → IsAbelianGroup (flip ∙) ε ⁻¹
   isAbelianGroup g = record
     { isGroup = isGroup g.isGroup
-    ; comm    = commutative ≈ ∙ g.comm
+    ; comm    = commutative g.comm
     }
     where module g = IsAbelianGroup g
+
+module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
+
+  open Str ≈
+  open ∙-Properties ≈ *
+  open *-Properties ≈ * +
+
+  isRing : IsRing + * - 0# 1# → IsRing + (flip *) - 0# 1#
+  isRing r = record
+    { +-isAbelianGroup = r.+-isAbelianGroup
+    ; *-cong = preserves₂ ≈ ≈ ≈ r.*-cong
+    ; *-assoc = associative r.sym r.*-assoc
+    ; *-identity = identity r.*-identity
+    ; distrib = distributes r.distrib
+    ; zero = zero r.zero
+    }
+    where
+      module r = IsRing r
+
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -239,3 +277,8 @@ group g = record { isGroup = isGroup g.isGroup }
 abelianGroup : AbelianGroup a ℓ → AbelianGroup a ℓ
 abelianGroup g = record { isAbelianGroup = isAbelianGroup g.isAbelianGroup }
   where module g = AbelianGroup g
+
+ring : Ring a ℓ → Ring a ℓ
+ring r = record { isRing = isRing r.isRing }
+  where module r = Ring r
+
