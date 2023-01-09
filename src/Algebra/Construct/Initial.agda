@@ -38,12 +38,14 @@ private module ℤero where
 
   infixl 7 _∙_
   infix  4 _≈_
-  Carrier : Set c
-  _≈_     : Rel Carrier ℓ
-  _∙_     : Op₂ Carrier
 
+  Carrier : Set c
   Carrier = ⊥
+
+  _≈_     : Rel Carrier ℓ
   _≈_ ()
+
+  _∙_     : Op₂ Carrier
   _∙_ ()
 
   refl : Reflexive _≈_
@@ -55,20 +57,8 @@ private module ℤero where
   trans : Transitive _≈_
   trans {i = ()}
 
-  isEquivalence : IsEquivalence _≈_
-  isEquivalence = record { refl = refl ; sym = sym ; trans = trans }
-
   ∙-cong : Congruent₂ _≈_ _∙_
   ∙-cong {x = ()}
-
-  isMagma : IsMagma _≈_ _∙_
-  isMagma = record { isEquivalence = isEquivalence ; ∙-cong = ∙-cong }
-
-  isSemigroup : IsSemigroup _≈_ _∙_
-  isSemigroup = record { isMagma = isMagma ; assoc = λ () }
-
-  isBand : IsBand _≈_ _∙_
-  isBand = record { isSemigroup = isSemigroup ; idem = λ () }
 
 open ℤero
 
@@ -79,14 +69,29 @@ rawMagma : RawMagma c ℓ
 rawMagma = record { Carrier = Carrier ; _≈_ = _≈_ ; _∙_ = _∙_ }
 
 ------------------------------------------------------------------------
+-- Structures
+
+isEquivalence : IsEquivalence _≈_
+isEquivalence = record { refl = refl ; sym = sym ; trans = trans }
+
+isMagma : IsMagma _≈_ _∙_
+isMagma = record { isEquivalence = isEquivalence ; ∙-cong = ∙-cong }
+
+isSemigroup : IsSemigroup _≈_ _∙_
+isSemigroup = record { isMagma = isMagma ; assoc = λ () }
+
+isBand : IsBand _≈_ _∙_
+isBand = record { isSemigroup = isSemigroup ; idem = λ () }
+
+------------------------------------------------------------------------
 -- Bundles
 
 magma : Magma c ℓ
-magma = record { Carrier = Carrier ; _≈_ = _≈_ ; _∙_ = _∙_ ; isMagma = isMagma }
+magma = record { isMagma = isMagma }
 
 semigroup : Semigroup c ℓ
-semigroup = record { Carrier = Carrier ; _≈_ = _≈_ ; _∙_ = _∙_ ; isSemigroup = isSemigroup }
+semigroup = record { isSemigroup = isSemigroup }
 
 band : Band c ℓ
-band = record { Carrier = Carrier ; _≈_ = _≈_ ; _∙_ = _∙_ ; isBand = isBand }
+band = record { isBand = isBand }
 
