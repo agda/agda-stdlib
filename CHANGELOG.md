@@ -2087,6 +2087,16 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
+  ```agda
+  ×-respectsʳ : Transitive _≈₁_ →
+                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_ 
+  ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
+                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_ 
+  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ → 
+                   WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
+  ```
+
 * Added new definitions to `Data.Sign.Base`:
   ```agda
   *-rawMagma : RawMagma 0ℓ 0ℓ
