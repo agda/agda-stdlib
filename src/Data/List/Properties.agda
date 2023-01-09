@@ -256,6 +256,30 @@ module _ (A : Set a) where
     }
 
 ------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ (f : A → B → C) where
+
+  private
+    prod = cartesianProductWith f
+
+  cartesianProductWith-zeroˡ : ∀ ys → prod [] ys ≡ []
+  cartesianProductWith-zeroˡ _ = refl
+
+  cartesianProductWith-zeroʳ : ∀ xs → prod xs [] ≡ []
+  cartesianProductWith-zeroʳ []       = refl
+  cartesianProductWith-zeroʳ (x ∷ xs) = cartesianProductWith-zeroʳ xs
+
+  cartesianProductWith-distribʳ-++ : ∀ xs ys zs → prod (xs ++ ys) zs ≡ prod xs zs ++ prod ys zs
+  cartesianProductWith-distribʳ-++ []       ys zs = refl
+  cartesianProductWith-distribʳ-++ (x ∷ xs) ys zs = begin
+    prod (x ∷ xs ++ ys) zs ≡⟨⟩
+    map (f x) zs ++ prod (xs ++ ys) zs ≡⟨ cong (map (f x) zs ++_) (cartesianProductWith-distribʳ-++ xs ys zs) ⟩
+    map (f x) zs ++ prod xs zs ++ prod ys zs ≡˘⟨ ++-assoc (map (f x) zs) (prod xs zs) (prod ys zs) ⟩
+    (map (f x) zs ++ prod xs zs) ++ prod ys zs ≡⟨⟩
+    prod (x ∷ xs) zs ++ prod ys zs ∎
+
+------------------------------------------------------------------------
 -- alignWith
 
 module _ {f g : These A B → C} where
@@ -462,6 +486,10 @@ foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
 foldr-∷ʳ f x y []       = refl
 foldr-∷ʳ f x y (z ∷ ys) = cong (f z) (foldr-∷ʳ f x y ys)
 
+foldr-map : ∀ (f : A → B → B) (g : C → A) x xs → foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
+foldr-map f g x []       = refl
+foldr-map f g x (y ∷ xs) = cong (f (g y)) (foldr-map f g x xs)
+
 -- Interaction with predicates
 
 module _ {P : Pred A p} {f : A → A → A} where
@@ -503,6 +531,10 @@ foldl-∷ʳ : ∀ (f : A → B → A) x y ys →
            foldl f x (ys ∷ʳ y) ≡ f (foldl f x ys) y
 foldl-∷ʳ f x y []       = refl
 foldl-∷ʳ f x y (z ∷ ys) = foldl-∷ʳ f (f x z) y ys
+
+foldl-map : ∀ (f : A → B → A) (g : C → B) x xs → foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
+foldl-map f g x []       = refl
+foldl-map f g x (y ∷ xs) = foldl-map f g (f x (g y)) xs
 
 ------------------------------------------------------------------------
 -- concat

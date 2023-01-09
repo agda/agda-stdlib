@@ -2545,6 +2545,16 @@ Other minor changes
   flip′ : (A → B → C) → (B → A → C)
   ```
 
+* Added new proofs to `Data.List.Properties`
+  ```agda
+  cartesianProductWith-zeroˡ       : cartesianProductWith f [] ys ≡ []
+  cartesianProductWith-zeroʳ       : cartesianProductWith f xs [] ≡ []
+  cartesianProductWith-distribʳ-++ : cartesianProductWith f (xs ++ ys) zs ≡
+                                     cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
+  foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
+  foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
+  ```
+
 NonZero/Positive/Negative changes
 ---------------------------------
 
