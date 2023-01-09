@@ -19,15 +19,15 @@ open import Data.Unit.Polymorphic
 open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------
--- gather all the functionality in one place
+-- Gather all the functionality in one place
 
 private module 𝕆ne where
 
   infix  4 _≈_
   Carrier : Set c
-  _≈_     : Rel Carrier ℓ
-
   Carrier = ⊤
+  
+  _≈_     : Rel Carrier ℓ
   _ ≈ _ = ⊤
 
 open 𝕆ne
