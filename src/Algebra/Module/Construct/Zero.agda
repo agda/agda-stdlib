@@ -30,9 +30,9 @@ private module ℤero where
 
   infix  4 _≈_
   Carrier : Set c
-  _≈_     : Rel Carrier ℓ
-
   Carrier = ⊤
+
+  _≈_     : Rel Carrier ℓ
   _ ≈ _ = ⊤
 
 open ℤero
