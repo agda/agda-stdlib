@@ -594,6 +594,15 @@ Non-backwards compatible changes
   This is needed because `MonadState S M` does not pack a `Monad M` instance anymore
   and so we cannot define `modify f` as `get >>= λ s → put (f s)`.
 
+* `MonadWriter 𝕎 M` is defined similarly:
+   ```agda
+   writer : W × A → M A
+   listen : M A → M (W × A)
+   pass   : M ((W → W) × A) → M A
+   ```
+   with `tell` defined as a derived notion.
+   Note that `𝕎` is a `RawMonoid`, not a `Set` and `W` is the carrier of the monoid.
+
 * New modules:
   ```
   Data.List.Effectful.Transformer
@@ -616,6 +625,11 @@ Non-backwards compatible changes
   Effect.Monad.State.Instances
   Effect.Monad.State.Transformer
   Effect.Monad.State.Transformer.Base
+  Effect.Monad.Writer
+  Effect.Monad.Writer.Indexed
+  Effect.Monad.Writer.Instances
+  Effect.Monad.Writer.Transformer
+  Effect.Monad.Writer.Transformer.Base
   IO.Effectful
   IO.Instances
   ```
@@ -1992,17 +2006,6 @@ Other minor changes
   pattern `ℕ     = def (quote ℕ) []
   pattern `zero  = con (quote ℕ.zero) []
   pattern `suc x = con (quote ℕ.suc) (x ⟨∷⟩ [])
-  ```
-
-* Added new proofs in `Data.Parity.Properties`:
-  ```agda
-  suc-homo-⁻¹ : (parity (suc n)) ⁻¹ ≡ parity n
-  +-homo-+    : parity (m ℕ.+ n) ≡ parity m ℙ.+ parity n
-  *-homo-*    : parity (m ℕ.* n) ≡ parity m ℙ.* parity n
-  parity-isMagmaHomomorphism : IsMagmaHomomorphism ℕ.+-rawMagma ℙ.+-rawMagma parity
-  parity-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid ℙ.+-0-rawMonoid parity
-  parity-isNearSemiringHomomorphism : IsNearSemiringHomomorphism ℕ.+-*-rawNearSemiring ℙ.+-*-rawNearSemiring parity
-  parity-isSemiringHomomorphism : IsSemiringHomomorphism ℕ.+-*-rawSemiring ℙ.+-*-rawSemiring parity
   ```
 
 * Added new rounding functions in `Data.Rational.Base`:

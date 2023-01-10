@@ -21,14 +21,14 @@ private
   variable
     f ℓ : Level
     A B : Set ℓ
-    M : Set f → Set f
+    M : Set f → Set ℓ
 
 ------------------------------------------------------------------------
 -- Error monad operations
 
 record RawMonadError
-       (M : Set (e ⊔ a) → Set (e ⊔ a))
-       : Set (suc (e ⊔ a)) where
+       (M : Set (e ⊔ a) → Set ℓ)
+       : Set (suc (e ⊔ a) ⊔ ℓ) where
   field
     throw : E → M A
     catch : M A → (E → M A) → M A
