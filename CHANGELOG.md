@@ -1602,7 +1602,9 @@ Other minor changes
   zero : Zero ≈ ε ∙ → Zero ≈ ε (flip ∙)
   distributes : (≈ DistributesOver ∙) + → (≈ DistributesOver (flip ∙)) +
   isRing : IsRing ≈ + * - 0# 1# → IsRing ≈ + (flip *) - 0# 1#
+  isCommutativeRing : IsCommutativeRing ≈ + * - 0# 1# → IsCommutativeRing ≈ + (flip *) - 0# 1#
   ring : Ring a ℓ → Ring a ℓ
+  commutativeRing : CommutativeRing a ℓ → CommutativeRing a ℓ
   ```
 
 * Added new definition to `Algebra.Definitions`:
