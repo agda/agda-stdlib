@@ -66,7 +66,7 @@ module Destructors where
 ------------------------------------------------------------------------
 -- Sufficient view covering property
 
-module _ where
+module View where
 
   open Constructors
 
@@ -82,6 +82,7 @@ module _ {b} (B : List A → Set b) where
   suffRec : (rec : ∀ ys → (ih : suffAcc B ys) → B ys) → ∀ zs → B zs
   suffRec rec zs = suffRec′ (sufficient zs)
     where
+      open View
       suffRec′ : ∀ {zs} → Sufficient zs → B zs
       suffRec′ {zs} (acc hyp) = rec zs (λ xs eq → suffRec′ (hyp xs eq))
 
