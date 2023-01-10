@@ -200,14 +200,6 @@ module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
     where
       module r = IsRing r
 
-  isCommutativeRing : IsCommutativeRing + * - 0# 1# → IsCommutativeRing + (flip *) - 0# 1#
-  isCommutativeRing r = record
-    { isRing = isRing r.isRing
-    ; *-comm = commutative r.*-comm
-    }
-    where
-      module r = IsCommutativeRing r
-
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -289,8 +281,4 @@ abelianGroup g = record { isAbelianGroup = isAbelianGroup g.isAbelianGroup }
 ring : Ring a ℓ → Ring a ℓ
 ring r = record { isRing = isRing r.isRing }
   where module r = Ring r
-
-commutativeRing : CommutativeRing a ℓ → CommutativeRing a ℓ
-commutativeRing r = record { isCommutativeRing = isCommutativeRing r.isCommutativeRing }
-  where module r = CommutativeRing r
 
