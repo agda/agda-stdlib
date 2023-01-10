@@ -13,7 +13,7 @@ open import Data.Empty
 open import Data.Nat.Base as ℕ using (zero; suc; parity)
 open import Data.Parity.Base as ℙ using (Parity; 0ℙ; 1ℙ; _⁻¹; toSign; fromSign)
 open import Data.Product using (_,_)
-open import Data.Sign.Base as 𝕊 renaming (+ to 1𝕊; - to -1𝕊)
+open import Data.Sign.Base as 𝕊
 open import Function hiding (Inverse)
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -404,8 +404,8 @@ toSign-inverts-fromSign {0ℙ} refl = refl
 toSign-inverts-fromSign {1ℙ} refl = refl
 
 fromSign-inverts-toSign : ∀ {s p} → fromSign s ≡ p → toSign p ≡ s
-fromSign-inverts-toSign { 1𝕊 }  refl = refl
-fromSign-inverts-toSign { -1𝕊 } refl = refl
+fromSign-inverts-toSign { + }  refl = refl
+fromSign-inverts-toSign { - } refl = refl
 
 toSign-injective : Injective _≡_ _≡_ toSign
 toSign-injective {p} {q} eq = begin

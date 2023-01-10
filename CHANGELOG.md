@@ -47,9 +47,6 @@ Bug-fixes
 * Add module `Algebra.Module` that re-exports the contents of
   `Algebra.Module.(Definitions/Structures/Bundles)`
 
-* Various module-like bundles in `Algebra.Module.Bundles` were missing a fixity
-  declaration for `_*ᵣ_`. This has been fixed.
-
 * In `Algebra.Definitions.RawSemiring` the record `prime` add `p∤1 : p ∤ 1#` to the field.
 
 * In `Data.List.Relation.Ternary.Appending.Setoid` we re-export specialised versions of
@@ -2084,16 +2081,6 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
-* Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
-  ```agda
-  ×-respectsʳ : Transitive _≈₁_ →
-                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_ 
-  ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
-                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_ 
-  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ → 
-                   WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
-  ```
-
 * Added new definitions to `Data.Sign.Base`:
   ```agda
   *-rawMagma : RawMagma 0ℓ 0ℓ
@@ -2540,16 +2527,6 @@ Other minor changes
   Pull Request #1812:
   ```agda
   flip′ : (A → B → C) → (B → A → C)
-  ```
-
-* Added new proofs to `Data.List.Properties`
-  ```agda
-  cartesianProductWith-zeroˡ       : cartesianProductWith f [] ys ≡ []
-  cartesianProductWith-zeroʳ       : cartesianProductWith f xs [] ≡ []
-  cartesianProductWith-distribʳ-++ : cartesianProductWith f (xs ++ ys) zs ≡
-                                     cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
-  foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
-  foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
 
 NonZero/Positive/Negative changes
