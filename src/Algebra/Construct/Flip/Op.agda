@@ -281,4 +281,3 @@ abelianGroup g = record { isAbelianGroup = isAbelianGroup g.isAbelianGroup }
 ring : Ring a ℓ → Ring a ℓ
 ring r = record { isRing = isRing r.isRing }
   where module r = Ring r
-
