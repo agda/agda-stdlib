@@ -1850,13 +1850,13 @@ Other minor changes
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:
   ```agda
   mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
-  map∘mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
   ```
 
 * Added new proofs to `Data.List.Membership.Setoid.Properties`:
   ```agda
   mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
-  map∘mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
   ```
 
 * Add new proofs in `Data.List.Properties`:
