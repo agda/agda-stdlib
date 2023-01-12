@@ -10,7 +10,7 @@ module Data.Sign.Base where
 
 open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawGroup)
 open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Definition
