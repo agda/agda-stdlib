@@ -130,7 +130,7 @@ module _ (S : Setoid c ℓ) where
   map-mapWith∈ : ∀ {a b} {A : Set a} {B : Set b} →
                  ∀ xs (f : ∀ {x} → x ∈ xs → A) (g : A → B) →
                  map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
-  map-mapWith∈ [] f g       = P.refl
+  map-mapWith∈ []       f g = P.refl
   map-mapWith∈ (x ∷ xs) f g = P.cong (_ ∷_) (map-mapWith∈ xs (f ∘ there) g)
 
 ------------------------------------------------------------------------
