@@ -125,13 +125,13 @@ module _ (S : Setoid c ℓ) where
   
   mapWith∈-id : ∀ xs → mapWith∈ xs (λ {x} _ → x) ≡ xs
   mapWith∈-id []       = P.refl
-  mapWith∈-id (x ∷ xs) = P.cong (_∷_ x) (mapWith∈-id xs)
+  mapWith∈-id (x ∷ xs) = P.cong (x ∷_) (mapWith∈-id xs)
 
   map-mapWith∈ : ∀ {a b} {A : Set a} {B : Set b} →
                  ∀ xs (f : ∀ {x} → x ∈ xs → A) (g : A → B) →
                  map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
   map-mapWith∈ [] f g       = P.refl
-  map-mapWith∈ (x ∷ xs) f g = P.cong ((_∷_ ∘ g ∘ f ∘ here) refl) (map-mapWith∈ xs (f ∘ there) g)
+  map-mapWith∈ (x ∷ xs) f g = P.cong (_ ∷_) (map-mapWith∈ xs (f ∘ there) g)
 
 ------------------------------------------------------------------------
 -- map
