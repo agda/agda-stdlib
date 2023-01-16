@@ -1585,6 +1585,11 @@ Other minor changes
   rightBolLoop : RightBolLoop a ℓ₁ → RightBolLoop b ℓ₂ → RightBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   middleBolLoop : MiddleBolLoop a ℓ₁ → MiddleBolLoop b ℓ₂ → MiddleBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rawRingWithoutOne : RawRingWithoutOne a ℓ₁ → RawRingWithoutOne b ℓ₂ → RawRingWithoutOne (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  ringWithoutOne : RingWithoutOne a ℓ₁ → RingWithoutOne b ℓ₂ → RingWithoutOne (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  nonAssociativeRing : NonAssociativeRing a ℓ₁ → NonAssociativeRing b ℓ₂ → NonAssociativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  quasiring : Quasiring a ℓ₁ → Quasiring b ℓ₂ → Quasiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  nearring : Nearring a ℓ₁ → Nearring b ℓ₂ → Nearring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
 * Added new definition to `Algebra.Definitions`:
