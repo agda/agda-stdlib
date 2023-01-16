@@ -12,7 +12,7 @@ open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring)
 open import Data.Sign.Base using (Sign; +; -)
 open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Definition
