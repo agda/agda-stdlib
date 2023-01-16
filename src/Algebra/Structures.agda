@@ -700,7 +700,11 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
     }
 
   open IsSemigroup *-isSemigroup public
-    using (∙-cong ; assoc)
+    using ()
+    renaming
+    ( ∙-congˡ   to *-congˡ
+    ; ∙-congʳ   to *-congʳ
+    )
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 2 elements
@@ -771,7 +775,11 @@ record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a 
     }
 
   open IsUnitalMagma *-isUnitalMagma public
-    using(identityˡ; identityʳ)
+    using ()
+    renaming
+    ( ∙-congˡ   to *-congˡ
+    ; ∙-congʳ   to *-congʳ
+    )
 
 record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
