@@ -10,28 +10,25 @@ module Data.Parity.Properties where
 
 open import Algebra.Bundles
 open import Data.Empty
-open import Data.Parity.Base
+open import Data.Nat.Base as ℕ using (zero; suc; parity)
+open import Data.Parity.Base as ℙ using (Parity; 0ℙ; 1ℙ; _⁻¹; toSign; fromSign)
 open import Data.Product using (_,_)
-open import Data.Sign as Sign
-  using (Sign) renaming (+ to 1𝕊; - to -1𝕊)
+open import Data.Sign.Base as 𝕊
 open import Function hiding (Inverse)
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
 open import Relation.Binary.PropositionalEquality
+  using (_≡_; _≢_; refl; sym; cong; cong₂; module ≡-Reasoning
+        ; setoid; isEquivalence; decSetoid; isDecEquivalence)
 open import Relation.Nullary using (yes; no)
 
 open import Algebra.Structures {A = Parity} _≡_
 open import Algebra.Definitions {A = Parity} _≡_
 
 open import Algebra.Consequences.Propositional using (comm+distrˡ⇒distrʳ)
-open import Algebra.Morphism
-
-module ℙto𝕊 = Algebra.Morphism.Definitions Parity Sign _≡_
-module 𝕊toℙ = Algebra.Morphism.Definitions Sign Parity _≡_
-
 open import Algebra.Morphism.Structures
-  using (IsMagmaHomomorphism; IsMonoidHomomorphism; IsGroupHomomorphism)
+
 ------------------------------------------------------------------------
 -- Equality
 
@@ -75,22 +72,22 @@ p≢p⁻¹ 0ℙ ()
 ------------------------------------------------------------------------
 -- ⁻¹ and _+_
 
-p+p⁻¹≡1ℙ : ∀ p → p + p ⁻¹ ≡ 1ℙ
+p+p⁻¹≡1ℙ : ∀ p → p ℙ.+ p ⁻¹ ≡ 1ℙ
 p+p⁻¹≡1ℙ 0ℙ = refl
 p+p⁻¹≡1ℙ 1ℙ = refl
 
-p⁻¹+p≡1ℙ : ∀ p → p ⁻¹ + p ≡ 1ℙ
+p⁻¹+p≡1ℙ : ∀ p → p ⁻¹ ℙ.+ p ≡ 1ℙ
 p⁻¹+p≡1ℙ 0ℙ = refl
 p⁻¹+p≡1ℙ 1ℙ = refl
 
 ------------------------------------------------------------------------
 -- ⁻¹ and _*_
 
-p*p⁻¹≡0ℙ : ∀ p → p * p ⁻¹ ≡ 0ℙ
+p*p⁻¹≡0ℙ : ∀ p → p ℙ.* p ⁻¹ ≡ 0ℙ
 p*p⁻¹≡0ℙ 0ℙ = refl
 p*p⁻¹≡0ℙ 1ℙ = refl
 
-p⁻¹*p≡0ℙ : ∀ p → p ⁻¹ * p ≡ 0ℙ
+p⁻¹*p≡0ℙ : ∀ p → p ⁻¹ ℙ.* p ≡ 0ℙ
 p⁻¹*p≡0ℙ 0ℙ = refl
 p⁻¹*p≡0ℙ 1ℙ = refl
 
@@ -99,56 +96,56 @@ p⁻¹*p≡0ℙ 1ℙ = refl
 
 -- Algebraic properties of _+_
 
-p+p≡0ℙ : ∀ p → p + p ≡ 0ℙ
+p+p≡0ℙ : ∀ p → p ℙ.+ p ≡ 0ℙ
 p+p≡0ℙ 0ℙ = refl
 p+p≡0ℙ 1ℙ = refl
 
-+-identityˡ : LeftIdentity 0ℙ _+_
++-identityˡ : LeftIdentity 0ℙ ℙ._+_
 +-identityˡ _ = refl
 
-+-identityʳ : RightIdentity 0ℙ _+_
++-identityʳ : RightIdentity 0ℙ ℙ._+_
 +-identityʳ 1ℙ = refl
 +-identityʳ 0ℙ = refl
 
-+-identity : Identity 0ℙ _+_
++-identity : Identity 0ℙ ℙ._+_
 +-identity = +-identityˡ  , +-identityʳ
 
-+-comm : Commutative _+_
++-comm : Commutative ℙ._+_
 +-comm 0ℙ 0ℙ = refl
 +-comm 0ℙ 1ℙ = refl
 +-comm 1ℙ 0ℙ = refl
 +-comm 1ℙ 1ℙ = refl
 
-+-assoc : Associative _+_
++-assoc : Associative ℙ._+_
 +-assoc 0ℙ 0ℙ _ = refl
 +-assoc 0ℙ 1ℙ _ = refl
 +-assoc 1ℙ 0ℙ _ = refl
 +-assoc 1ℙ 1ℙ 0ℙ = refl
 +-assoc 1ℙ 1ℙ 1ℙ = refl
 
-+-cancelʳ-≡ : RightCancellative _+_
++-cancelʳ-≡ : RightCancellative ℙ._+_
 +-cancelʳ-≡ _ 1ℙ 1ℙ _  = refl
 +-cancelʳ-≡ _ 1ℙ 0ℙ eq = ⊥-elim (p≢p⁻¹ _ $ sym eq)
 +-cancelʳ-≡ _ 0ℙ 1ℙ eq = ⊥-elim (p≢p⁻¹ _ eq)
 +-cancelʳ-≡ _ 0ℙ 0ℙ _  = refl
 
-+-cancelˡ-≡ : LeftCancellative _+_
++-cancelˡ-≡ : LeftCancellative ℙ._+_
 +-cancelˡ-≡ 1ℙ _ _ eq = ⁻¹-injective eq
 +-cancelˡ-≡ 0ℙ _ _ eq = eq
 
-+-cancel-≡ : Cancellative _+_
++-cancel-≡ : Cancellative ℙ._+_
 +-cancel-≡ = +-cancelˡ-≡ , +-cancelʳ-≡
 
-+-inverse : Inverse 0ℙ id _+_
++-inverse : Inverse 0ℙ id ℙ._+_
 +-inverse = p+p≡0ℙ , p+p≡0ℙ
 
 ------------------------------------------------------------------------
 -- Bundles
 
-+-isMagma : IsMagma _+_
++-isMagma : IsMagma ℙ._+_
 +-isMagma = record
   { isEquivalence = isEquivalence
-  ; ∙-cong        = cong₂ _+_
+  ; ∙-cong        = cong₂ ℙ._+_
   }
 
 +-magma : Magma 0ℓ 0ℓ
@@ -156,7 +153,7 @@ p+p≡0ℙ 1ℙ = refl
   { isMagma = +-isMagma
   }
 
-+-isSemigroup : IsSemigroup _+_
++-isSemigroup : IsSemigroup ℙ._+_
 +-isSemigroup = record
   { isMagma = +-isMagma
   ; assoc   = +-assoc
@@ -167,7 +164,7 @@ p+p≡0ℙ 1ℙ = refl
   { isSemigroup = +-isSemigroup
   }
 
-+-isCommutativeSemigroup : IsCommutativeSemigroup _+_
++-isCommutativeSemigroup : IsCommutativeSemigroup ℙ._+_
 +-isCommutativeSemigroup = record
   { isSemigroup = +-isSemigroup
   ; comm = +-comm
@@ -178,7 +175,7 @@ p+p≡0ℙ 1ℙ = refl
   { isCommutativeSemigroup = +-isCommutativeSemigroup
   }
 
-+-0-isMonoid : IsMonoid _+_ 0ℙ
++-0-isMonoid : IsMonoid ℙ._+_ 0ℙ
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
   ; identity    = +-identity
@@ -189,7 +186,7 @@ p+p≡0ℙ 1ℙ = refl
   { isMonoid = +-0-isMonoid
   }
 
-+-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0ℙ
++-0-isCommutativeMonoid : IsCommutativeMonoid ℙ._+_ 0ℙ
 +-0-isCommutativeMonoid = record
    { isMonoid = +-0-isMonoid
    ; comm = +-comm
@@ -200,7 +197,7 @@ p+p≡0ℙ 1ℙ = refl
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
-+-0-isGroup : IsGroup _+_ 0ℙ id
++-0-isGroup : IsGroup ℙ._+_ 0ℙ id
 +-0-isGroup = record
   { isMonoid = +-0-isMonoid
   ; inverse = +-inverse
@@ -212,7 +209,7 @@ p+p≡0ℙ 1ℙ = refl
   { isGroup = +-0-isGroup
   }
 
-+-0-isAbelianGroup : IsAbelianGroup _+_ 0ℙ id
++-0-isAbelianGroup : IsAbelianGroup ℙ._+_ 0ℙ id
 +-0-isAbelianGroup = record
   { isGroup = +-0-isGroup
   ; comm = +-comm
@@ -228,62 +225,62 @@ p+p≡0ℙ 1ℙ = refl
 
 -- Algebraic properties of _*_
 
-*-idem : Idempotent _*_
+*-idem : Idempotent ℙ._*_
 *-idem 0ℙ = refl
 *-idem 1ℙ = refl
 
-*-comm : Commutative _*_
+*-comm : Commutative ℙ._*_
 *-comm 0ℙ 0ℙ = refl
 *-comm 0ℙ 1ℙ = refl
 *-comm 1ℙ 0ℙ = refl
 *-comm 1ℙ 1ℙ = refl
 
-*-assoc : Associative _*_
+*-assoc : Associative ℙ._*_
 *-assoc 0ℙ 0ℙ _ = refl
 *-assoc 0ℙ 1ℙ _ = refl
 *-assoc 1ℙ 0ℙ _ = refl
 *-assoc 1ℙ 1ℙ 0ℙ = refl
 *-assoc 1ℙ 1ℙ 1ℙ = refl
 
-*-distribˡ-+ : _*_ DistributesOverˡ _+_
+*-distribˡ-+ : ℙ._*_ DistributesOverˡ ℙ._+_
 *-distribˡ-+ 0ℙ q r = refl
 *-distribˡ-+ 1ℙ 0ℙ 0ℙ = refl
 *-distribˡ-+ 1ℙ 0ℙ 1ℙ = refl
 *-distribˡ-+ 1ℙ 1ℙ 0ℙ = refl
 *-distribˡ-+ 1ℙ 1ℙ 1ℙ = refl
 
-*-distribʳ-+ : _*_ DistributesOverʳ _+_
+*-distribʳ-+ : ℙ._*_ DistributesOverʳ ℙ._+_
 *-distribʳ-+ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-+
 
-*-distrib-+ : _*_ DistributesOver _+_
+*-distrib-+ : ℙ._*_ DistributesOver ℙ._+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
-*-zeroˡ : LeftZero 0ℙ _*_
+*-zeroˡ : LeftZero 0ℙ ℙ._*_
 *-zeroˡ p = refl
 
-*-zeroʳ : RightZero 0ℙ _*_
+*-zeroʳ : RightZero 0ℙ ℙ._*_
 *-zeroʳ p = *-comm p 0ℙ
 
-*-zero : Zero 0ℙ _*_
+*-zero : Zero 0ℙ ℙ._*_
 *-zero = *-zeroˡ , *-zeroʳ
 
-*-identityˡ : LeftIdentity 1ℙ _*_
+*-identityˡ : LeftIdentity 1ℙ ℙ._*_
 *-identityˡ _ = refl
 
-*-identityʳ : RightIdentity 1ℙ _*_
+*-identityʳ : RightIdentity 1ℙ ℙ._*_
 *-identityʳ 1ℙ = refl
 *-identityʳ 0ℙ = refl
 
-*-identity : Identity 1ℙ _*_
+*-identity : Identity 1ℙ ℙ._*_
 *-identity = *-identityˡ  , *-identityʳ
 
 ------------------------------------------------------------------------
 -- Structures and Bundles
 
-*-isMagma : IsMagma _*_
+*-isMagma : IsMagma ℙ._*_
 *-isMagma = record
   { isEquivalence = isEquivalence
-  ; ∙-cong        = cong₂ _*_
+  ; ∙-cong        = cong₂ ℙ._*_
   }
 
 *-magma : Magma 0ℓ 0ℓ
@@ -291,7 +288,7 @@ p+p≡0ℙ 1ℙ = refl
   { isMagma = *-isMagma
   }
 
-*-isSemigroup : IsSemigroup _*_
+*-isSemigroup : IsSemigroup ℙ._*_
 *-isSemigroup = record
   { isMagma = *-isMagma
   ; assoc   = *-assoc
@@ -302,7 +299,7 @@ p+p≡0ℙ 1ℙ = refl
   { isSemigroup = *-isSemigroup
   }
 
-*-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+*-isCommutativeSemigroup : IsCommutativeSemigroup ℙ._*_
 *-isCommutativeSemigroup = record
   { isSemigroup = *-isSemigroup
   ; comm = *-comm
@@ -313,7 +310,7 @@ p+p≡0ℙ 1ℙ = refl
   { isCommutativeSemigroup = *-isCommutativeSemigroup
   }
 
-*-1-isMonoid : IsMonoid _*_ 1ℙ
+*-1-isMonoid : IsMonoid ℙ._*_ 1ℙ
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
   ; identity    = *-identity
@@ -324,7 +321,7 @@ p+p≡0ℙ 1ℙ = refl
   { isMonoid = *-1-isMonoid
   }
 
-*-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℙ
+*-1-isCommutativeMonoid : IsCommutativeMonoid ℙ._*_ 1ℙ
 *-1-isCommutativeMonoid = record
    { isMonoid = *-1-isMonoid
    ; comm = *-comm
@@ -335,11 +332,11 @@ p+p≡0ℙ 1ℙ = refl
   { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
-+-*-isSemiring : IsSemiring _+_ _*_ 0ℙ 1ℙ
++-*-isSemiring : IsSemiring ℙ._+_ ℙ._*_ 0ℙ 1ℙ
 +-*-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-    ; *-cong = cong₂ _*_
+    ; *-cong = cong₂ ℙ._*_
     ; *-assoc = *-assoc
     ; *-identity = *-identity
     ; distrib = *-distrib-+
@@ -352,7 +349,7 @@ p+p≡0ℙ 1ℙ = refl
   { isSemiring = +-*-isSemiring
   }
 
-+-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0ℙ 1ℙ
++-*-isCommutativeSemiring : IsCommutativeSemiring ℙ._+_ ℙ._*_ 0ℙ 1ℙ
 +-*-isCommutativeSemiring = record
   { isSemiring = +-*-isSemiring
   ; *-comm = *-comm
@@ -363,10 +360,10 @@ p+p≡0ℙ 1ℙ = refl
   { isCommutativeSemiring = +-*-isCommutativeSemiring
   }
 
-+-*-isRing : IsRing _+_ _*_ id 0ℙ 1ℙ
++-*-isRing : IsRing ℙ._+_ ℙ._*_ id 0ℙ 1ℙ
 +-*-isRing = record
   { +-isAbelianGroup = +-0-isAbelianGroup
-  ; *-cong           = cong₂ _*_
+  ; *-cong           = cong₂ ℙ._*_
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
@@ -378,7 +375,7 @@ p+p≡0ℙ 1ℙ = refl
   { isRing = +-*-isRing
   }
 
-+-*-isCommutativeRing : IsCommutativeRing _+_ _*_ id 0ℙ 1ℙ
++-*-isCommutativeRing : IsCommutativeRing ℙ._+_ ℙ._*_ id 0ℙ 1ℙ
 +-*-isCommutativeRing = record
   { isRing = +-*-isRing
   ; *-comm = *-comm
@@ -392,13 +389,13 @@ p+p≡0ℙ 1ℙ = refl
 ------------------------------------------------------------------------
 -- relating Parity and Sign
 
-+-homo-* : ∀ p q → toSign (p + q) ≡ (toSign p) Sign.* (toSign q)
++-homo-* : ∀ p q → toSign (p ℙ.+ q) ≡ (toSign p) 𝕊.* (toSign q)
 +-homo-* 0ℙ 0ℙ = refl
 +-homo-* 0ℙ 1ℙ = refl
 +-homo-* 1ℙ 0ℙ = refl
 +-homo-* 1ℙ 1ℙ = refl
 
-⁻¹-homo-opposite : ∀ p → toSign (p ⁻¹) ≡ Sign.opposite (toSign p)
+⁻¹-homo-opposite : ∀ p → toSign (p ⁻¹) ≡ 𝕊.opposite (toSign p)
 ⁻¹-homo-opposite 0ℙ = refl
 ⁻¹-homo-opposite 1ℙ = refl
 
@@ -407,8 +404,8 @@ toSign-inverts-fromSign {0ℙ} refl = refl
 toSign-inverts-fromSign {1ℙ} refl = refl
 
 fromSign-inverts-toSign : ∀ {s p} → fromSign s ≡ p → toSign p ≡ s
-fromSign-inverts-toSign { 1𝕊 }  refl = refl
-fromSign-inverts-toSign { -1𝕊 } refl = refl
+fromSign-inverts-toSign { + }  refl = refl
+fromSign-inverts-toSign { - } refl = refl
 
 toSign-injective : Injective _≡_ _≡_ toSign
 toSign-injective {p} {q} eq = begin
@@ -420,58 +417,137 @@ toSign-injective {p} {q} eq = begin
 toSign-surjective : Surjective _≡_ _≡_ toSign
 toSign-surjective s = (fromSign s) , fromSign-inverts-toSign {s} refl
 
-toSign-isMagmaHomomorphism : IsMagmaHomomorphism +-rawMagma Sign.*-rawMagma toSign
+toSign-isMagmaHomomorphism : IsMagmaHomomorphism ℙ.+-rawMagma 𝕊.*-rawMagma toSign
 toSign-isMagmaHomomorphism = record
   { isRelHomomorphism = record
     { cong = cong toSign }
   ; homo = +-homo-*
   }
 
-toSign-isMagmaMonomorphism : IsMagmaMonomorphism +-rawMagma Sign.*-rawMagma toSign
+toSign-isMagmaMonomorphism : IsMagmaMonomorphism ℙ.+-rawMagma 𝕊.*-rawMagma toSign
 toSign-isMagmaMonomorphism = record
   { isMagmaHomomorphism = toSign-isMagmaHomomorphism
   ; injective = toSign-injective
   }
 
-toSign-isMagmaIsomorphism : IsMagmaIsomorphism +-rawMagma Sign.*-rawMagma toSign
+toSign-isMagmaIsomorphism : IsMagmaIsomorphism ℙ.+-rawMagma 𝕊.*-rawMagma toSign
 toSign-isMagmaIsomorphism = record
   { isMagmaMonomorphism = toSign-isMagmaMonomorphism
   ; surjective = toSign-surjective
   }
 
-toSign-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
+toSign-isMonoidHomomorphism : IsMonoidHomomorphism ℙ.+-0-rawMonoid 𝕊.*-1-rawMonoid toSign
 toSign-isMonoidHomomorphism = record
   { isMagmaHomomorphism = toSign-isMagmaHomomorphism
   ; ε-homo = refl
   }
 
-toSign-isMonoidMonomorphism : IsMonoidMonomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
+toSign-isMonoidMonomorphism : IsMonoidMonomorphism ℙ.+-0-rawMonoid 𝕊.*-1-rawMonoid toSign
 toSign-isMonoidMonomorphism = record
   { isMonoidHomomorphism = toSign-isMonoidHomomorphism
   ; injective = toSign-injective
   }
 
-toSign-isMonoidIsomorphism : IsMonoidIsomorphism +-0-rawMonoid Sign.*-1-rawMonoid toSign
+toSign-isMonoidIsomorphism : IsMonoidIsomorphism ℙ.+-0-rawMonoid 𝕊.*-1-rawMonoid toSign
 toSign-isMonoidIsomorphism = record
   { isMonoidMonomorphism = toSign-isMonoidMonomorphism
   ; surjective = toSign-surjective
   }
 
-toSign-isGroupHomomorphism : IsGroupHomomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
+toSign-isGroupHomomorphism : IsGroupHomomorphism ℙ.+-0-rawGroup 𝕊.*-1-rawGroup toSign
 toSign-isGroupHomomorphism = record
   { isMonoidHomomorphism = toSign-isMonoidHomomorphism
   ; ⁻¹-homo = ⁻¹-homo-opposite
   }
 
-toSign-isGroupMonomorphism : IsGroupMonomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
+toSign-isGroupMonomorphism : IsGroupMonomorphism ℙ.+-0-rawGroup 𝕊.*-1-rawGroup toSign
 toSign-isGroupMonomorphism = record
   { isGroupHomomorphism = toSign-isGroupHomomorphism
   ; injective = toSign-injective
   }
 
-toSign-isGroupIsomorphism : IsGroupIsomorphism +-0-rawGroup Sign.*-1-rawGroup toSign
+toSign-isGroupIsomorphism : IsGroupIsomorphism ℙ.+-0-rawGroup 𝕊.*-1-rawGroup toSign
 toSign-isGroupIsomorphism = record
   { isGroupMonomorphism = toSign-isGroupMonomorphism
   ; surjective = toSign-surjective
   }
 
+
+------------------------------------------------------------------------
+-- relating Nat and Parity
+
+-- successor and (_⁻¹)
+
+suc-homo-⁻¹ : ∀ n → (parity (suc n)) ⁻¹ ≡ parity n
+suc-homo-⁻¹ zero    = refl
+suc-homo-⁻¹ (suc n) = ⁻¹-inverts (suc-homo-⁻¹ n)
+
+-- parity is a _+_ homomorphism
+
++-homo-+      : ∀ m n → parity (m ℕ.+ n) ≡ parity m ℙ.+ parity n
++-homo-+ zero    n = refl
++-homo-+ (suc m) n = begin
+  parity (suc m ℕ.+ n)         ≡⟨ suc-+-homo-⁻¹ m n ⟩
+  (parity m) ⁻¹ ℙ.+ parity n   ≡⟨ cong (ℙ._+ parity n) (suc-homo-⁻¹ (suc m)) ⟩
+  parity (suc m) ℙ.+ parity n  ∎
+  where
+    open ≡-Reasoning
+    suc-+-homo-⁻¹ : ∀ m n → parity (suc m ℕ.+ n) ≡ (parity m) ⁻¹ ℙ.+ parity n
+    suc-+-homo-⁻¹ zero    n = sym (suc-homo-⁻¹ (suc n))
+    suc-+-homo-⁻¹ (suc m) n = begin
+      parity (suc (suc m) ℕ.+ n)        ≡⟨⟩
+      parity (m ℕ.+ n)                  ≡⟨ +-homo-+ m n ⟩
+      parity m ℙ.+ parity n             ≡⟨ cong (ℙ._+ parity n) (sym (suc-homo-⁻¹ m)) ⟩
+      (parity (suc m)) ⁻¹ ℙ.+ parity n  ∎
+
+-- parity is a _*_ homomorphism
+
+*-homo-*      : ∀ m n → parity (m ℕ.* n) ≡ parity m ℙ.* parity n
+*-homo-* zero    n = refl
+*-homo-* (suc m) n = begin
+  parity (suc m ℕ.* n)        ≡⟨⟩
+  parity (n ℕ.+ m ℕ.* n)      ≡⟨ +-homo-+ n (m ℕ.* n) ⟩
+  q ℙ.+ parity (m ℕ.* n)      ≡⟨ cong (q ℙ.+_) (*-homo-* m n) ⟩
+  q ℙ.+ (p ℙ.* q)             ≡⟨ lemma p q ⟩
+  (p ⁻¹) ℙ.* q                ≡⟨⟩
+  (parity m) ⁻¹ ℙ.* q         ≡⟨ cong (ℙ._* q) (suc-homo-⁻¹ (suc m)) ⟩
+  parity (suc m) ℙ.* q        ≡⟨⟩
+  parity (suc m) ℙ.* parity n ∎
+  where
+    open ≡-Reasoning
+    p = parity m
+    q = parity n
+    -- this lemma simplifies things a lot
+    lemma : ∀ p q → q ℙ.+ (p ℙ.* q) ≡ (p ⁻¹) ℙ.* q
+    lemma 0ℙ 0ℙ = refl
+    lemma 0ℙ 1ℙ = refl
+    lemma 1ℙ 0ℙ = refl
+    lemma 1ℙ 1ℙ = refl
+
+------------------------------------------------------------------------
+-- parity is a Semiring homomorphism from Nat to Parity
+
+parity-isMagmaHomomorphism : IsMagmaHomomorphism ℕ.+-rawMagma ℙ.+-rawMagma parity
+parity-isMagmaHomomorphism = record
+  { isRelHomomorphism = record
+    { cong = cong parity }
+  ; homo = +-homo-+
+  }
+
+parity-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid ℙ.+-0-rawMonoid parity
+parity-isMonoidHomomorphism = record
+  { isMagmaHomomorphism = parity-isMagmaHomomorphism
+  ; ε-homo = refl
+  }
+
+parity-isNearSemiringHomomorphism : IsNearSemiringHomomorphism ℕ.+-*-rawNearSemiring ℙ.+-*-rawNearSemiring parity
+parity-isNearSemiringHomomorphism = record
+  { +-isMonoidHomomorphism = parity-isMonoidHomomorphism
+  ; *-homo = *-homo-*
+  }
+
+parity-isSemiringHomomorphism : IsSemiringHomomorphism ℕ.+-*-rawSemiring ℙ.+-*-rawSemiring parity
+parity-isSemiringHomomorphism = record
+  { isNearSemiringHomomorphism = parity-isNearSemiringHomomorphism
+  ; 1#-homo = refl
+  }

@@ -2008,6 +2008,17 @@ Other minor changes
   pattern `suc x = con (quote ℕ.suc) (x ⟨∷⟩ [])
   ```
 
+* Added new proofs in `Data.Parity.Properties`:
+  ```agda
+  suc-homo-⁻¹ : (parity (suc n)) ⁻¹ ≡ parity n
+  +-homo-+    : parity (m ℕ.+ n) ≡ parity m ℙ.+ parity n
+  *-homo-*    : parity (m ℕ.* n) ≡ parity m ℙ.* parity n
+  parity-isMagmaHomomorphism : IsMagmaHomomorphism ℕ.+-rawMagma ℙ.+-rawMagma parity
+  parity-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid ℙ.+-0-rawMonoid parity
+  parity-isNearSemiringHomomorphism : IsNearSemiringHomomorphism ℕ.+-*-rawNearSemiring ℙ.+-*-rawNearSemiring parity
+  parity-isSemiringHomomorphism : IsSemiringHomomorphism ℕ.+-*-rawSemiring ℙ.+-*-rawSemiring parity
+  ```
+
 * Added new rounding functions in `Data.Rational.Base`:
   ```agda
   floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚ → ℤ
