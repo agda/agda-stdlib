@@ -896,7 +896,7 @@ record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   *-unitalMagma = record { isUnitalMagma = *-isUnitalMagma}
 
   open UnitalMagma *-unitalMagma public
-    using (identity)
+    using () renaming (magma to *-magma; identity to *-identity)
 
 record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
