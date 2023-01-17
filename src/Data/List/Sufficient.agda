@@ -14,7 +14,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Sufficient {a} {A : Set a} where
+module Data.List.Sufficient where
 
 open import Level using (Level; _⊔_)
 open import Data.List.Base using (List; []; _∷_; [_]; _++_)
@@ -23,21 +23,21 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 private
   variable
 
-    --a : Level
-    --A : Set a
+    a b : Level
+    A : Set a
     x : A
     xs : List A
 
 ------------------------------------------------------------------------
 -- Sufficient builder
 
-suffAcc : ∀ {b} (B :  List A → Set b) (xs : List A) → Set (a ⊔ b)
+suffAcc : {A : Set a} (B :  List A → Set b) (xs : List A) → Set (a ⊔ b)
 suffAcc B xs = ∀ {x} {prefix} suffix → xs ≡ x ∷ prefix ++ suffix → B suffix
 
 ------------------------------------------------------------------------
 -- Sufficient view
 
-data Sufficient : (xs : List A) → Set a where
+data Sufficient {A : Set a} : (xs : List A) → Set a where
 
   acc : ∀ {xs} (ih : suffAcc Sufficient xs) → Sufficient xs
 
@@ -49,7 +49,7 @@ data Sufficient : (xs : List A) → Set a where
 
 module Constructors where
 
-  []⁺ : Sufficient []
+  []⁺ : Sufficient {A = A} []
   []⁺ = acc λ _ ()
 
   ∷⁺ : Sufficient xs → Sufficient (x ∷ xs)
@@ -63,12 +63,12 @@ module Constructors where
 
 module Destructors where
 
-  ++⁻ : ∀ xs {ys} → Sufficient (xs ++ ys) → Sufficient ys
+  ++⁻ : ∀ xs {ys : List A} → Sufficient (xs ++ ys) → Sufficient ys
   ++⁻ []            suff-ys   = suff-ys
   ++⁻ (x ∷ xs) {ys} (acc hyp) = hyp ys refl
 
-  ∷⁻ : ∀ {x} {xs} → Sufficient (x ∷ xs) → Sufficient xs
-  ∷⁻ {x} = ++⁻ [ x ]
+  ∷⁻ : Sufficient (x ∷ xs) → Sufficient xs
+  ∷⁻ {x = x} = ++⁻ [ x ]
 
 
 ------------------------------------------------------------------------
@@ -85,7 +85,7 @@ module View where
 ------------------------------------------------------------------------
 -- Recursion on the sufficient view
 
-module _ {b} (B : List A → Set b) where
+module _ (B : List A → Set b) where
 
   suffRec : (rec : ∀ ys → (ih : suffAcc B ys) → B ys) → ∀ zs → B zs
   suffRec rec zs = suffRec′ (sufficient zs)
