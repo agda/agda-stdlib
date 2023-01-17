@@ -16,9 +16,17 @@
 
 module Data.List.Sufficient {a} {A : Set a} where
 
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Data.List.Base using (List; []; _∷_; [_]; _++_)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+
+private
+  variable
+
+    --a : Level
+    --A : Set a
+    x : A
+    xs : List A
 
 ------------------------------------------------------------------------
 -- Sufficient builder
@@ -37,18 +45,18 @@ data Sufficient : (xs : List A) → Set a where
 ------------------------------------------------------------------------
 -- Sufficient properties
 
--- constructors (typically not for export)
+-- constructors
 
 module Constructors where
 
   []⁺ : Sufficient []
   []⁺ = acc λ _ ()
 
-  ∷⁺ : ∀ {x} {xs} → Sufficient xs → Sufficient (x ∷ xs)
-  ∷⁺ {xs = xs} suff-xs@(acc hyp) = acc λ { _ refl → suf _ refl }
+  ∷⁺ : Sufficient xs → Sufficient (x ∷ xs)
+  ∷⁺ {xs = xs} suffices@(acc hyp) = acc λ { _ refl → suf _ refl }
     where
       suf : ∀ prefix {suffix} → xs ≡ prefix ++ suffix → Sufficient suffix
-      suf []               refl = suff-xs
+      suf []               refl = suffices
       suf (_ ∷ _) {suffix} eq   = hyp suffix eq
 
 -- destructors
@@ -66,7 +74,7 @@ module Destructors where
 ------------------------------------------------------------------------
 -- Sufficient view covering property
 
-module _ where
+module View where
 
   open Constructors
 
@@ -82,6 +90,7 @@ module _ {b} (B : List A → Set b) where
   suffRec : (rec : ∀ ys → (ih : suffAcc B ys) → B ys) → ∀ zs → B zs
   suffRec rec zs = suffRec′ (sufficient zs)
     where
+      open View
       suffRec′ : ∀ {zs} → Sufficient zs → B zs
       suffRec′ {zs} (acc hyp) = rec zs (λ xs eq → suffRec′ (hyp xs eq))
 
