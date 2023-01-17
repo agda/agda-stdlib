@@ -1140,6 +1140,26 @@ Deprecated names
   map₁₂-commute    ↦  map₁₂-map₂₁
   ```
 
+* In `Data.Tree.AVL`:
+  ```
+  _∈?_ ↦ member
+  ```
+
+* In `Data.Tree.AVL.IndexedMap`:
+  ```
+  _∈?_ ↦ member
+  ```
+
+* In `Data.Tree.AVL.Map`:
+  ```
+  _∈?_ ↦ member
+  ```
+
+* In `Data.Tree.AVL.Sets`:
+  ```
+  _∈?_ ↦ member
+  ```
+
 * In `Data.Tree.Binary.Zipper.Properties`:
   ```
   toTree-#nodes-commute   ↦  toTree-#nodes
@@ -1361,6 +1381,14 @@ New modules
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
+  ```
+
+* Membership relations for maps and sets
+  ```
+  Data.Tree.AVL.Map.Membership.Propositional
+  Data.Tree.AVL.Map.Membership.Propositional.Properties
+  Data.Tree.AVL.Sets.Membership
+  Data.Tree.AVL.Sets.Membership.Properties
   ```
 
 * Properties of bijections:
