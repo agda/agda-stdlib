@@ -14,7 +14,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Sufficient where
+module Data.List.Relation.Unary.Sufficient where
 
 open import Level using (Level; _⊔_)
 open import Data.List.Base using (List; []; _∷_; [_]; _++_)
