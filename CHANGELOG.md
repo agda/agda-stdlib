@@ -1324,7 +1324,7 @@ New modules
 
 * A small library defining a structurally inductive view of lists:
   ```
-  Data.List.Sufficient
+  Data.List.Relation.Unary.Sufficient
   ```
 
 * Combinations and permutations for ℕ.
