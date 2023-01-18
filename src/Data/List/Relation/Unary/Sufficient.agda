@@ -63,9 +63,12 @@ module Constructors where
 
 module Destructors where
 
+  acc-inverse : ∀ ys → Sufficient (x ∷ xs ++ ys) → Sufficient ys
+  acc-inverse ys (acc hyp) = hyp ys refl
+
   ++⁻ : ∀ xs {ys : List A} → Sufficient (xs ++ ys) → Sufficient ys
-  ++⁻ []            suff-ys   = suff-ys
-  ++⁻ (x ∷ xs) {ys} (acc hyp) = hyp ys refl
+  ++⁻ []            suffices = suffices
+  ++⁻ (x ∷ xs) {ys} suffices = acc-inverse ys suffices
 
   ∷⁻ : Sufficient (x ∷ xs) → Sufficient xs
   ∷⁻ {x = x} = ++⁻ [ x ]
@@ -85,12 +88,13 @@ module View where
 ------------------------------------------------------------------------
 -- Recursion on the sufficient view
 
-module _ (B : List A → Set b) where
+module _ (B : List A → Set b) (rec : ∀ ys → (ih : suffAcc B ys) → B ys)
+  where
 
-  suffRec : (rec : ∀ ys → (ih : suffAcc B ys) → B ys) → ∀ zs → B zs
-  suffRec rec zs = suffRec′ (sufficient zs)
-    where
-      open View
-      suffRec′ : ∀ {zs} → Sufficient zs → B zs
-      suffRec′ {zs} (acc hyp) = rec zs (λ xs eq → suffRec′ (hyp xs eq))
+  open View
 
+  suffRec′ : ∀ {zs} → Sufficient zs → B zs
+  suffRec′ {zs} (acc hyp) = rec zs (λ xs eq → suffRec′ (hyp xs eq))
+
+  suffRec : ∀ zs → B zs
+  suffRec zs = suffRec′ (sufficient zs)
