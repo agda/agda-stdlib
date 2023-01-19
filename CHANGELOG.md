@@ -653,7 +653,7 @@ Non-backwards compatible changes
   previous implementation using the sum type `a ⟶ b ⊎ b ⟶ a`.
 
 * In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
-  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
+  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redesigned to
   build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
   `IsSemiringHomomorphism` respectively, adding a single property at each step.
   This means that they no longer need to have two separate proofs of
@@ -1140,26 +1140,6 @@ Deprecated names
   map₁₂-commute    ↦  map₁₂-map₂₁
   ```
 
-* In `Data.Tree.AVL`:
-  ```
-  _∈?_ ↦ member
-  ```
-
-* In `Data.Tree.AVL.IndexedMap`:
-  ```
-  _∈?_ ↦ member
-  ```
-
-* In `Data.Tree.AVL.Map`:
-  ```
-  _∈?_ ↦ member
-  ```
-
-* In `Data.Tree.AVL.Sets`:
-  ```
-  _∈?_ ↦ member
-  ```
-
 * In `Data.Tree.Binary.Zipper.Properties`:
   ```
   toTree-#nodes-commute   ↦  toTree-#nodes
@@ -1342,11 +1322,6 @@ New modules
   Data.List.Fresh.NonEmpty
   ```
 
-* A small library defining a structurally inductive view of lists:
-  ```
-  Data.List.Relation.Unary.Sufficient
-  ```
-
 * Combinations and permutations for ℕ.
   ```
   Data.Nat.Combinatorics
@@ -1386,14 +1361,6 @@ New modules
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
-  ```
-
-* Membership relations for maps and sets
-  ```
-  Data.Tree.AVL.Map.Membership.Propositional
-  Data.Tree.AVL.Map.Membership.Propositional.Properties
-  Data.Tree.AVL.Sets.Membership
-  Data.Tree.AVL.Sets.Membership.Properties
   ```
 
 * Properties of bijections:
@@ -1619,6 +1586,14 @@ Other minor changes
   middleBolLoop : MiddleBolLoop a ℓ₁ → MiddleBolLoop b ℓ₂ → MiddleBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
+
+* Added new functions and proofs to `Algebra.Construct.Flip.Op`:
+  ```agda
+  zero : Zero ≈ ε ∙ → Zero ≈ ε (flip ∙)
+  distributes : (≈ DistributesOver ∙) + → (≈ DistributesOver (flip ∙)) +
+  isRing : IsRing ≈ + * - 0# 1# → IsRing ≈ + (flip *) - 0# 1#
+  ring : Ring a ℓ → Ring a ℓ
+  ```
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
@@ -1883,18 +1858,6 @@ Other minor changes
   decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
   ```
 
-* Added new proofs to `Data.List.Membership.Propositional.Properties`:
-  ```agda
-  mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
-  map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
-  ```
-
-* Added new proofs to `Data.List.Membership.Setoid.Properties`:
-  ```agda
-  mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
-  map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
-  ```
-
 * Add new proofs in `Data.List.Properties`:
   ```agda
   ∈⇒∣product : n ∈ ns → n ∣ product ns
@@ -2053,17 +2016,6 @@ Other minor changes
   pattern `suc x = con (quote ℕ.suc) (x ⟨∷⟩ [])
   ```
 
-* Added new proofs in `Data.Parity.Properties`:
-  ```agda
-  suc-homo-⁻¹ : (parity (suc n)) ⁻¹ ≡ parity n
-  +-homo-+    : parity (m ℕ.+ n) ≡ parity m ℙ.+ parity n
-  *-homo-*    : parity (m ℕ.* n) ≡ parity m ℙ.* parity n
-  parity-isMagmaHomomorphism : IsMagmaHomomorphism ℕ.+-rawMagma ℙ.+-rawMagma parity
-  parity-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid ℙ.+-0-rawMonoid parity
-  parity-isNearSemiringHomomorphism : IsNearSemiringHomomorphism ℕ.+-*-rawNearSemiring ℙ.+-*-rawNearSemiring parity
-  parity-isSemiringHomomorphism : IsSemiringHomomorphism ℕ.+-*-rawSemiring ℙ.+-*-rawSemiring parity
-  ```
-
 * Added new rounding functions in `Data.Rational.Base`:
   ```agda
   floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚ → ℤ
@@ -2141,16 +2093,6 @@ Other minor changes
   Σ-≡,≡←≡ : p₁ ≡ p₂ → (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) → subst B p (proj₂ p₁) ≡ proj₂ p₂)
   ×-≡,≡→≡ : (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
-  ```
-
-* Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
-  ```agda
-  ×-respectsʳ : Transitive _≈₁_ →
-                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_ 
-  ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
-                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_ 
-  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ → 
-                   WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
   ```
 
 * Added new definitions to `Data.Sign.Base`:
@@ -2599,16 +2541,6 @@ Other minor changes
   Pull Request #1812:
   ```agda
   flip′ : (A → B → C) → (B → A → C)
-  ```
-
-* Added new proofs to `Data.List.Properties`
-  ```agda
-  cartesianProductWith-zeroˡ       : cartesianProductWith f [] ys ≡ []
-  cartesianProductWith-zeroʳ       : cartesianProductWith f xs [] ≡ []
-  cartesianProductWith-distribʳ-++ : cartesianProductWith f (xs ++ ys) zs ≡
-                                     cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
-  foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
-  foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
 
 NonZero/Positive/Negative changes
