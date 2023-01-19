@@ -182,11 +182,98 @@ module _ {≈ : Rel A ℓ} {∙ : Op₂ A} where
     }
     where module g = IsAbelianGroup g
 
+module _ {≈ : Rel A ℓ} {+ * : Op₂ A} {0# 1# : A} where
+
+  open Str ≈
+  open ∙-Properties ≈ *
+  open *-Properties ≈ * +
+
+  isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero + * 0# 1# →
+                                      IsSemiringWithoutAnnihilatingZero + (flip *) 0# 1#
+  isSemiringWithoutAnnihilatingZero r = record
+    { +-isCommutativeMonoid = r.+-isCommutativeMonoid
+    ; *-cong = preserves₂ ≈ ≈ ≈ r.*-cong
+    ; *-assoc = associative r.sym r.*-assoc
+    ; *-identity = identity r.*-identity
+    ; distrib = distributes r.distrib
+    }
+    where module r = IsSemiringWithoutAnnihilatingZero r
+
+  isSemiring : IsSemiring + * 0# 1# → IsSemiring + (flip *) 0# 1#
+  isSemiring r = record
+    { isSemiringWithoutAnnihilatingZero = isSemiringWithoutAnnihilatingZero r.isSemiringWithoutAnnihilatingZero
+    ; zero = zero r.zero
+    }
+    where module r = IsSemiring r
+
+  isCommutativeSemiring : IsCommutativeSemiring + * 0# 1# →
+                          IsCommutativeSemiring + (flip *) 0# 1#
+  isCommutativeSemiring r = record
+    { isSemiring = isSemiring r.isSemiring
+    ; *-comm = commutative r.*-comm
+    }
+    where module r = IsCommutativeSemiring r
+
+  isIdempotentSemiring : IsIdempotentSemiring + * 0# 1# →
+                         IsIdempotentSemiring + (flip *) 0# 1#
+  isIdempotentSemiring r = record
+    { isSemiring = isSemiring r.isSemiring
+    ; +-idem = r.+-idem
+    }
+    where module r = IsIdempotentSemiring r
+
+  isQuasiring : IsQuasiring + * 0# 1# → IsQuasiring + (flip *) 0# 1#
+  isQuasiring r = record
+    { +-isMonoid = r.+-isMonoid
+    ; *-cong = preserves₂ ≈ ≈ ≈ r.*-cong
+    ; *-assoc = associative r.sym r.*-assoc
+    ; *-identity = identity r.*-identity
+    ; distrib = distributes r.distrib
+    ; zero = zero r.zero
+    }
+    where module r = IsQuasiring r
+
+module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# : A} where
+
+  open Str ≈
+  open ∙-Properties ≈ *
+  open *-Properties ≈ * +
+
+  isRingWithoutOne : IsRingWithoutOne + * - 0# → IsRingWithoutOne + (flip *) - 0#
+  isRingWithoutOne r = record
+    { +-isAbelianGroup = r.+-isAbelianGroup
+    ; *-cong = preserves₂ ≈ ≈ ≈ r.*-cong
+    ; *-assoc = associative r.sym r.*-assoc
+    ; distrib = distributes r.distrib
+    ; zero = zero r.zero
+    }
+    where module r = IsRingWithoutOne r
+
 module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
 
   open Str ≈
   open ∙-Properties ≈ *
   open *-Properties ≈ * +
+
+  isNonAssociativeRing : IsNonAssociativeRing + * - 0# 1# →
+                         IsNonAssociativeRing + (flip *) - 0# 1#
+  isNonAssociativeRing r = record
+    { +-isAbelianGroup = r.+-isAbelianGroup
+    ; *-cong = preserves₂ ≈ ≈ ≈ r.*-cong
+    --; *-assoc = associative r.sym r.*-assoc
+    ; identity = identity r.identity
+    ; distrib = distributes r.distrib
+    ; zero = zero r.zero
+    }
+    where module r = IsNonAssociativeRing r
+
+  isNearring : IsNearring + * 0# 1# - → IsNearring + (flip *) 0# 1# -
+  isNearring r = record
+    { isQuasiring = isQuasiring r.isQuasiring -- 
+    ; +-inverse = r.+-inverse
+    ; ⁻¹-cong = r.⁻¹-cong
+    }
+    where module r = IsNearring r
 
   isRing : IsRing + * - 0# 1# → IsRing + (flip *) - 0# 1#
   isRing r = record
@@ -198,6 +285,14 @@ module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
     ; zero = zero r.zero
     }
     where module r = IsRing r
+
+  isCommutativeRing : IsCommutativeRing + * - 0# 1# →
+                      IsCommutativeRing + (flip *) - 0# 1#
+  isCommutativeRing r = record
+    { isRing = isRing r.isRing
+    ; *-comm = commutative r.*-comm
+    }
+    where module r = IsCommutativeRing r
 
 
 ------------------------------------------------------------------------
@@ -277,7 +372,47 @@ abelianGroup : AbelianGroup a ℓ → AbelianGroup a ℓ
 abelianGroup g = record { isAbelianGroup = isAbelianGroup g.isAbelianGroup }
   where module g = AbelianGroup g
 
+semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ →
+                                  SemiringWithoutAnnihilatingZero a ℓ
+semiringWithoutAnnihilatingZero r = record
+  { isSemiringWithoutAnnihilatingZero = isSemiringWithoutAnnihilatingZero r.isSemiringWithoutAnnihilatingZero }
+  where module r = SemiringWithoutAnnihilatingZero r
+
+semiring : Semiring a ℓ → Semiring a ℓ
+semiring r = record { isSemiring = isSemiring r.isSemiring }
+  where module r = Semiring r
+
+commutativeSemiring : CommutativeSemiring a ℓ → CommutativeSemiring a ℓ
+commutativeSemiring r = record
+  { isCommutativeSemiring = isCommutativeSemiring r.isCommutativeSemiring }
+  where module r = CommutativeSemiring r
+
+idempotentSemiring : IdempotentSemiring a ℓ → IdempotentSemiring a ℓ
+idempotentSemiring r = record
+  { isIdempotentSemiring = isIdempotentSemiring r.isIdempotentSemiring }
+  where module r = IdempotentSemiring r
+
+quasiring : Quasiring a ℓ → Quasiring a ℓ
+quasiring r = record { isQuasiring = isQuasiring r.isQuasiring }
+  where module r = Quasiring r
+
+ringWithoutOne : RingWithoutOne a ℓ → RingWithoutOne a ℓ
+ringWithoutOne r = record { isRingWithoutOne = isRingWithoutOne r.isRingWithoutOne }
+  where module r = RingWithoutOne r
+
+nonAssociativeRing : NonAssociativeRing a ℓ → NonAssociativeRing a ℓ
+nonAssociativeRing r = record
+  { isNonAssociativeRing = isNonAssociativeRing r.isNonAssociativeRing }
+  where module r = NonAssociativeRing r
+
+nearring : Nearring a ℓ → Nearring a ℓ
+nearring r = record { isNearring = isNearring r.isNearring }
+  where module r = Nearring r
+
 ring : Ring a ℓ → Ring a ℓ
 ring r = record { isRing = isRing r.isRing }
   where module r = Ring r
 
+commutativeRing : CommutativeRing a ℓ → CommutativeRing a ℓ
+commutativeRing r = record { isCommutativeRing = isCommutativeRing r.isCommutativeRing }
+  where module r = CommutativeRing r
