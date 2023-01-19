@@ -1883,6 +1883,18 @@ Other minor changes
   decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
   ```
 
+* Added new proofs to `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
+  map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  ```
+
+* Added new proofs to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
+  map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  ```
+
 * Add new proofs in `Data.List.Properties`:
   ```agda
   ∈⇒∣product : n ∈ ns → n ∣ product ns

@@ -80,6 +80,13 @@ mapWith∈≗map : ∀ (f : A → B) xs → mapWith∈ xs (λ {x} _ → f x) ≡
 mapWith∈≗map f xs =
   ≋⇒≡ (Membershipₛ.mapWith∈≗map (P.setoid _) (P.setoid _) f xs)
 
+mapWith∈-id : (xs : List A) → mapWith∈ xs (λ {x} _ → x) ≡ xs
+mapWith∈-id = Membershipₛ.mapWith∈-id (P.setoid _)
+
+map-mapWith∈ : (xs : List A) (f : ∀ {x} → x ∈ xs → B) (g : B → C) →
+               map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+map-mapWith∈ = Membershipₛ.map-mapWith∈ (P.setoid _)
+
 ------------------------------------------------------------------------
 -- map
 
