@@ -197,8 +197,7 @@ module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
     ; distrib = distributes r.distrib
     ; zero = zero r.zero
     }
-    where
-      module r = IsRing r
+    where module r = IsRing r
 
 
 ------------------------------------------------------------------------
