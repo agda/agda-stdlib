@@ -260,7 +260,6 @@ module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
   isNonAssociativeRing r = record
     { +-isAbelianGroup = r.+-isAbelianGroup
     ; *-cong = preserves₂ ≈ ≈ ≈ r.*-cong
-    --; *-assoc = associative r.sym r.*-assoc
     ; identity = identity r.identity
     ; distrib = distributes r.distrib
     ; zero = zero r.zero
