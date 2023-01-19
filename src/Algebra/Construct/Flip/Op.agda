@@ -269,7 +269,7 @@ module _ {≈ : Rel A ℓ} {+ * : Op₂ A} { - : Op₁ A} {0# 1# : A} where
 
   isNearring : IsNearring + * 0# 1# - → IsNearring + (flip *) 0# 1# -
   isNearring r = record
-    { isQuasiring = isQuasiring r.isQuasiring --
+    { isQuasiring = isQuasiring r.isQuasiring
     ; +-inverse = r.+-inverse
     ; ⁻¹-cong = r.⁻¹-cong
     }
