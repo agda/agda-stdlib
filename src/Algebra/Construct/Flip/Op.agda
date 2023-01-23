@@ -13,6 +13,7 @@ open import Algebra.Core
 open import Algebra.Bundles
 import Algebra.Definitions as Def
 import Algebra.Structures as Str
+import Algebra.Consequences.Setoid as Consequences
 import Data.Product as Prod
 import Data.Sum as Sum
 open import Function.Base using (flip)
@@ -214,6 +215,14 @@ module _ {≈ : Rel A ℓ} {+ * : Op₂ A} {0# 1# : A} where
     }
     where module r = IsCommutativeSemiring r
 
+  isCancellativeCommutativeSemiring : IsCancellativeCommutativeSemiring + * 0# 1# →
+                                      IsCancellativeCommutativeSemiring + (flip *) 0# 1#
+  isCancellativeCommutativeSemiring r = record
+    { isCommutativeSemiring = isCommutativeSemiring r.isCommutativeSemiring
+    ; *-cancelˡ-nonZero = Consequences.comm+almostCancelˡ⇒almostCancelʳ r.setoid r.*-comm r.*-cancelˡ-nonZero
+    }
+    where module r = IsCancellativeCommutativeSemiring r
+
   isIdempotentSemiring : IsIdempotentSemiring + * 0# 1# →
                          IsIdempotentSemiring + (flip *) 0# 1#
   isIdempotentSemiring r = record
@@ -385,6 +394,12 @@ commutativeSemiring : CommutativeSemiring a ℓ → CommutativeSemiring a ℓ
 commutativeSemiring r = record
   { isCommutativeSemiring = isCommutativeSemiring r.isCommutativeSemiring }
   where module r = CommutativeSemiring r
+
+cancellativeCommutativeSemiring : CancellativeCommutativeSemiring a ℓ →
+                                  CancellativeCommutativeSemiring a ℓ
+cancellativeCommutativeSemiring r = record
+  { isCancellativeCommutativeSemiring = isCancellativeCommutativeSemiring r.isCancellativeCommutativeSemiring }
+  where module r = CancellativeCommutativeSemiring r
 
 idempotentSemiring : IdempotentSemiring a ℓ → IdempotentSemiring a ℓ
 idempotentSemiring r = record

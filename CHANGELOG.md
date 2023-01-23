@@ -1629,6 +1629,8 @@ Other minor changes
   isSemiring : IsSemiring + * 0# 1# → IsSemiring + (flip *) 0# 1#
   isCommutativeSemiring : IsCommutativeSemiring + * 0# 1# →
                           IsCommutativeSemiring + (flip *) 0# 1#
+  isCancellativeCommutativeSemiring : IsCancellativeCommutativeSemiring + * 0# 1# →
+                                      IsCancellativeCommutativeSemiring + (flip *) 0# 1#
   isIdempotentSemiring : IsIdempotentSemiring + * 0# 1# →
                          IsIdempotentSemiring + (flip *) 0# 1#
   isQuasiring : IsQuasiring + * 0# 1# → IsQuasiring + (flip *) 0# 1#
@@ -1642,6 +1644,8 @@ Other minor changes
   semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ →
                                     SemiringWithoutAnnihilatingZero a ℓ
   commutativeSemiring : CommutativeSemiring a ℓ → CommutativeSemiring a ℓ
+  cancellativeCommutativeSemiring : CancellativeCommutativeSemiring a ℓ →
+                                  CancellativeCommutativeSemiring a ℓ
   idempotentSemiring : IdempotentSemiring a ℓ → IdempotentSemiring a ℓ
   quasiring : Quasiring a ℓ → Quasiring a ℓ
   ringWithoutOne : RingWithoutOne a ℓ → RingWithoutOne a ℓ
