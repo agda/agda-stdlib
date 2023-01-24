@@ -1565,8 +1565,22 @@ Other minor changes
   ```
   and their corresponding algebraic subbundles.
 
+* Added new proofs to `Algebra.Consequences.Base`:
+  ```agda
+  reflexive+selfinverse⇒involutive : Reflexive _≈_ →
+                                     SelfInverse _≈_ f →
+                                     Involutive _≈_ f
+  ```
+
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
+  involutive⇒surjective  : Involutive f  → Surjective f
+  selfinverse⇒congruent  : SelfInverse f → Congruent f
+  selfinverse⇒inverseᵇ   : SelfInverse f → Inverseᵇ f f
+  selfinverse⇒surjective : SelfInverse f → Surjective f
+  selfinverse⇒injective  : SelfInverse f → Injective f
+  selfinverse⇒bijective  : SelfInverse f → Bijective f
+
   comm+idˡ⇒id              : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
   comm+idʳ⇒id              : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
   comm+zeˡ⇒ze              : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
@@ -1622,6 +1636,8 @@ Other minor changes
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
+  SelfInverse : Op₁ A → Set _
+  
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
   LeftDividesʳ  : Op₂ A → Op₂ A → Set _
   RightDividesˡ : Op₂ A → Op₂ A → Set _

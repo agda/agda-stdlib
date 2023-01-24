@@ -17,6 +17,7 @@ open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Function.Base using (_$_)
+import Function.Definitions as FunDefs
 import Relation.Binary.Consequences as Bin
 open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
@@ -27,6 +28,44 @@ open import Relation.Unary using (Pred)
 -- Export base lemmas that don't require the setoid
 
 open import Algebra.Consequences.Base public
+
+------------------------------------------------------------------------
+-- Involutive/SelfInverse functions
+
+module _ {f : Op₁ A} (inv : Involutive f) where
+
+  open FunDefs _≈_ _≈_
+
+  involutive⇒surjective : Surjective f
+  involutive⇒surjective y = f y , inv y
+
+module _ {f : Op₁ A} (self : SelfInverse f) where
+
+  inv : Involutive f
+  inv = reflexive+selfinverse⇒involutive _≈_ refl self
+
+  open FunDefs _≈_ _≈_
+
+  selfinverse⇒congruent : Congruent f
+  selfinverse⇒congruent {x} {y} x≈y = sym (self (begin
+    f (f x) ≈⟨ inv x ⟩
+    x       ≈⟨ x≈y ⟩
+    y       ∎))
+
+  selfinverse⇒inverseᵇ : Inverseᵇ f f
+  selfinverse⇒inverseᵇ = inv , inv
+
+  selfinverse⇒surjective : Surjective f
+  selfinverse⇒surjective = involutive⇒surjective inv
+
+  selfinverse⇒injective : Injective f
+  selfinverse⇒injective {x} {y} x≈y = begin
+    x       ≈˘⟨ self x≈y ⟩
+    f (f y) ≈⟨ inv y ⟩
+    y       ∎
+
+  selfinverse⇒bijective : Bijective f
+  selfinverse⇒bijective = selfinverse⇒injective , selfinverse⇒surjective
 
 ------------------------------------------------------------------------
 -- Magma-like structures
