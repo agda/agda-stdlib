@@ -802,6 +802,16 @@ punchIn-injective (suc i) (suc j) (suc k) ↑j+1≡↑k+1 =
 punchInᵢ≢i : ∀ i (j : Fin n) → punchIn i j ≢ i
 punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 
+punchIn-mono-≤ : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
+punchIn-mono-≤ zero    _        _      j≤k       = s≤s j≤k
+punchIn-mono-≤ (suc _) zero    _       z≤n       = z≤n
+punchIn-mono-≤ (suc i) (suc j) (suc k) (s≤s j≤k) = s≤s (punchIn-mono-≤ i j k j≤k)
+
+punchIn-cancel-≤ : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
+punchIn-cancel-≤ zero    _       _       (s≤s j≤k)   = j≤k
+punchIn-cancel-≤ (suc _) zero    _       z≤n         = z≤n
+punchIn-cancel-≤ (suc i) (suc j) (suc k) (s≤s ↑j≤↑k) = s≤s (punchIn-cancel-≤ i j k ↑j≤↑k)
+
 ------------------------------------------------------------------------
 -- punchOut
 ------------------------------------------------------------------------
