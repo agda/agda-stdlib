@@ -835,6 +835,22 @@ punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
   cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
 
+punchOut-mono-≤ : ∀ {i j k : Fin (suc n)} (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                  j ≤ k → punchOut i≢j ≤ punchOut i≢k
+punchOut-mono-≤ {_    } {zero } {zero } {_    } 0≢0 _   z≤n       = contradiction refl 0≢0
+punchOut-mono-≤ {_    } {zero } {suc j} {suc k} _   _   (s≤s j≤k) = j≤k
+punchOut-mono-≤ {suc _} {suc i} {zero } {_    } _   _   z≤n       = z≤n
+punchOut-mono-≤ {suc _} {suc i} {suc j} {suc k} i≢j i≢k (s≤s j≤k) = s≤s (punchOut-mono-≤ (i≢j ∘ cong suc) (i≢k ∘ cong suc) j≤k)
+
+punchOut-cancel-≤ : ∀ {i j k : Fin (suc n)} (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                    punchOut i≢j ≤ punchOut i≢k → j ≤ k
+punchOut-cancel-≤ {_    } {zero } {zero } {_    } i≢j i≢k pⱼ≤pₖ       = contradiction refl i≢j
+punchOut-cancel-≤ {_    } {zero } {suc j} {zero } i≢j i≢k pⱼ≤pₖ       = contradiction refl i≢k
+punchOut-cancel-≤ {suc _} {zero } {suc j} {suc k} i≢j i≢k pⱼ≤pₖ       = s≤s pⱼ≤pₖ
+punchOut-cancel-≤ {_    } {suc i} {zero } {_    } i≢j i≢k pⱼ≤pₖ       = z≤n
+punchOut-cancel-≤ {suc n} {suc i} {suc j} {zero } i≢j i≢k ()
+punchOut-cancel-≤ {suc n} {suc i} {suc j} {suc k} i≢j i≢k (s≤s pⱼ≤pₖ) = s≤s (punchOut-cancel-≤ (i≢j ∘ cong suc) (i≢k ∘ cong suc) pⱼ≤pₖ)
+
 punchIn-punchOut : ∀ {i j : Fin (suc n)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
 punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
