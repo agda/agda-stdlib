@@ -21,6 +21,8 @@ open import Relation.Nullary.Decidable using (yes; no)
 
 open import Algebra.Structures {A = Sign} _≡_
 open import Algebra.Definitions {A = Sign} _≡_
+open import Algebra.Consequences.Propositional
+  using (selfinverse⇒involutive; selfinverse⇒injective)
 
 ------------------------------------------------------------------------
 -- Equality
@@ -45,13 +47,25 @@ _≟_ : DecidableEquality Sign
 ------------------------------------------------------------------------
 -- opposite
 
+-- Algebraic properties of opposite
+
+opposite-self-inverse : SelfInverse opposite
+opposite-self-inverse { - } { + } refl = refl
+opposite-self-inverse { + } { - } refl = refl
+
+opposite-involutive : Involutive opposite
+opposite-involutive = selfinverse⇒involutive opposite-self-inverse
+
+opposite-injective : Injective _≡_ _≡_ opposite
+opposite-injective = selfinverse⇒injective opposite-self-inverse
+
+
+------------------------------------------------------------------------
+-- other properties of opposite
+
 s≢opposite[s] : ∀ s → s ≢ opposite s
 s≢opposite[s] - ()
 s≢opposite[s] + ()
-
-opposite-injective : ∀ {s t} → opposite s ≡ opposite t → s ≡ t
-opposite-injective { - } { - } refl = refl
-opposite-injective { + } { + } refl = refl
 
 ------------------------------------------------------------------------
 -- _*_

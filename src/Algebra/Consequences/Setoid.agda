@@ -41,8 +41,12 @@ module _ {f : Op₁ A} (inv : Involutive f) where
 
 module _ {f : Op₁ A} (self : SelfInverse f) where
 
-  inv : Involutive f
-  inv = reflexive+selfinverse⇒involutive _≈_ refl self
+  selfinverse⇒involutive : Involutive f
+  selfinverse⇒involutive = reflexive+selfinverse⇒involutive _≈_ refl self
+
+  private
+
+    inv = selfinverse⇒involutive
 
   open FunDefs _≈_ _≈_
 

@@ -1575,6 +1575,7 @@ Other minor changes
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
   involutive⇒surjective  : Involutive f  → Surjective f
+  selfinverse⇒involutive : SelfInverse f → Involutive f
   selfinverse⇒congruent  : SelfInverse f → Congruent f
   selfinverse⇒inverseᵇ   : SelfInverse f → Inverseᵇ f f
   selfinverse⇒surjective : SelfInverse f → Surjective f
