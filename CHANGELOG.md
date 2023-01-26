@@ -344,7 +344,7 @@ Non-backwards compatible changes
 ### Change in reduction behaviour of rationals
 
 * Currently arithmetic expressions involving rationals (both normalised and
-  unnormalised) undergo disastorous exponential normalisation. For example,
+  unnormalised) undergo disastrous exponential normalisation. For example,
   `p + q` would often be normalised by Agda to
   `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While the normalised form
   of `p + q + r + s + t + u + v` would be ~700 lines long. This behaviour
@@ -676,6 +676,22 @@ Non-backwards compatible changes
 * The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
+
+* The names of the (in)equational reasoning combinators defined in the internal
+  modules `Data.Rational(.Unnormalised).Properties.≤-Reasoning` have been renamed
+  (issue #1437) to conform with the defined setoid equality `_≃_` on `Rational`s:
+  ```agda
+  step-≈  ↦  step-≃
+  step-≃˘ ↦  step-≃˘
+  ```
+  with corresponding associated syntax:
+  ```agda
+  _≈⟨_⟩_  ↦  _≃⟨_⟩_
+  _≈˘⟨_⟩_ ↦  _≃˘⟨_⟩_
+  ```
+  NB. It is not possible to rename or deprecate `syntax` declarations, so Agda will
+  only issue a "Could not parse the application `begin ...` when scope checking"
+  warning if the old combinators are used. 
 
 * The types of the proofs `pos⇒1/pos`/`1/pos⇒pos` and `neg⇒1/neg`/`1/neg⇒neg` in
   `Data.Rational(.Unnormalised).Properties` have been switched, as the previous
