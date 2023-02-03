@@ -25,8 +25,8 @@ module _ {ℓ} {_•_ : Op₂ A} (_≈_ : Rel A ℓ) where
 
 module _ {ℓ} {f : Op₁ A} (_≈_ : Rel A ℓ) where
 
-  reflexive+selfinverse⇒involutive : Reflexive _≈_ →
+  reflexive+selfInverse⇒involutive : Reflexive _≈_ →
                                      SelfInverse _≈_ f →
                                      Involutive _≈_ f
-  reflexive+selfinverse⇒involutive refl inv _ = inv refl
+  reflexive+selfInverse⇒involutive refl inv _ = inv refl
 

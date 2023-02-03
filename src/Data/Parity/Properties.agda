@@ -26,7 +26,7 @@ open import Relation.Nullary using (yes; no)
 open import Algebra.Structures {A = Parity} _≡_
 open import Algebra.Definitions {A = Parity} _≡_
 open import Algebra.Consequences.Propositional
-  using (selfinverse⇒involutive; selfinverse⇒injective; comm+distrˡ⇒distrʳ)
+  using (selfInverse⇒involutive; selfInverse⇒injective; comm+distrˡ⇒distrʳ)
 open import Algebra.Morphism.Structures
 
 ------------------------------------------------------------------------
@@ -54,15 +54,15 @@ _≟_ : DecidableEquality Parity
 
 -- Algebraic properties of _⁻¹
 
-⁻¹-self-inverse : SelfInverse _⁻¹
-⁻¹-self-inverse { 1ℙ } { 0ℙ } refl = refl
-⁻¹-self-inverse { 0ℙ } { 1ℙ } refl = refl
+⁻¹-selfInverse : SelfInverse _⁻¹
+⁻¹-selfInverse { 1ℙ } { 0ℙ } refl = refl
+⁻¹-selfInverse { 0ℙ } { 1ℙ } refl = refl
 
 ⁻¹-involutive : Involutive _⁻¹
-⁻¹-involutive = selfinverse⇒involutive ⁻¹-self-inverse
+⁻¹-involutive = selfInverse⇒involutive ⁻¹-selfInverse
 
 ⁻¹-injective : Injective _≡_ _≡_ _⁻¹
-⁻¹-injective = selfinverse⇒injective ⁻¹-self-inverse
+⁻¹-injective = selfInverse⇒injective ⁻¹-selfInverse
 
 ------------------------------------------------------------------------
 -- other properties of _⁻¹
@@ -482,7 +482,7 @@ toSign-isGroupIsomorphism = record
 
 suc-homo-⁻¹ : ∀ n → (parity (suc n)) ⁻¹ ≡ parity n
 suc-homo-⁻¹ zero    = refl
-suc-homo-⁻¹ (suc n) = ⁻¹-self-inverse (suc-homo-⁻¹ n)
+suc-homo-⁻¹ (suc n) = ⁻¹-selfInverse (suc-homo-⁻¹ n)
 
 -- parity is a _+_ homomorphism
 

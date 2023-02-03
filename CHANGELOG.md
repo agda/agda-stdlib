@@ -1567,7 +1567,7 @@ Other minor changes
 
 * Added new proofs to `Algebra.Consequences.Base`:
   ```agda
-  reflexive+selfinverse⇒involutive : Reflexive _≈_ →
+  reflexive+selfInverse⇒involutive : Reflexive _≈_ →
                                      SelfInverse _≈_ f →
                                      Involutive _≈_ f
   ```
@@ -1575,12 +1575,12 @@ Other minor changes
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
   involutive⇒surjective  : Involutive f  → Surjective f
-  selfinverse⇒involutive : SelfInverse f → Involutive f
-  selfinverse⇒congruent  : SelfInverse f → Congruent f
-  selfinverse⇒inverseᵇ   : SelfInverse f → Inverseᵇ f f
-  selfinverse⇒surjective : SelfInverse f → Surjective f
-  selfinverse⇒injective  : SelfInverse f → Injective f
-  selfinverse⇒bijective  : SelfInverse f → Bijective f
+  selfInverse⇒involutive : SelfInverse f → Involutive f
+  selfInverse⇒congruent  : SelfInverse f → Congruent f
+  selfInverse⇒inverseᵇ   : SelfInverse f → Inverseᵇ f f
+  selfInverse⇒surjective : SelfInverse f → Surjective f
+  selfInverse⇒injective  : SelfInverse f → Injective f
+  selfInverse⇒bijective  : SelfInverse f → Bijective f
 
   comm+idˡ⇒id              : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
   comm+idʳ⇒id              : Commutative _•_ → RightIdentity e _•_ → Identity e _•_

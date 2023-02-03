@@ -41,35 +41,35 @@ module _ {f : Op₁ A} (inv : Involutive f) where
 
 module _ {f : Op₁ A} (self : SelfInverse f) where
 
-  selfinverse⇒involutive : Involutive f
-  selfinverse⇒involutive = reflexive+selfinverse⇒involutive _≈_ refl self
+  selfInverse⇒involutive : Involutive f
+  selfInverse⇒involutive = reflexive+selfInverse⇒involutive _≈_ refl self
 
   private
 
-    inv = selfinverse⇒involutive
+    inv = selfInverse⇒involutive
 
   open FunDefs _≈_ _≈_
 
-  selfinverse⇒congruent : Congruent f
-  selfinverse⇒congruent {x} {y} x≈y = sym (self (begin
+  selfInverse⇒congruent : Congruent f
+  selfInverse⇒congruent {x} {y} x≈y = sym (self (begin
     f (f x) ≈⟨ inv x ⟩
     x       ≈⟨ x≈y ⟩
     y       ∎))
 
-  selfinverse⇒inverseᵇ : Inverseᵇ f f
-  selfinverse⇒inverseᵇ = inv , inv
+  selfInverse⇒inverseᵇ : Inverseᵇ f f
+  selfInverse⇒inverseᵇ = inv , inv
 
-  selfinverse⇒surjective : Surjective f
-  selfinverse⇒surjective = involutive⇒surjective inv
+  selfInverse⇒surjective : Surjective f
+  selfInverse⇒surjective = involutive⇒surjective inv
 
-  selfinverse⇒injective : Injective f
-  selfinverse⇒injective {x} {y} x≈y = begin
+  selfInverse⇒injective : Injective f
+  selfInverse⇒injective {x} {y} x≈y = begin
     x       ≈˘⟨ self x≈y ⟩
     f (f y) ≈⟨ inv y ⟩
     y       ∎
 
-  selfinverse⇒bijective : Bijective f
-  selfinverse⇒bijective = selfinverse⇒injective , selfinverse⇒surjective
+  selfInverse⇒bijective : Bijective f
+  selfInverse⇒bijective = selfInverse⇒injective , selfInverse⇒surjective
 
 ------------------------------------------------------------------------
 -- Magma-like structures
