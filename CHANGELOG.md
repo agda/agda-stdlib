@@ -2200,11 +2200,11 @@ Other minor changes
 
 * Adden new proof in `Data.Sum.Relation.Binary.LeftOrder` :
   ```
-  ⊎-<-WellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
+  ⊎-<-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
   ```
 * Adden new proof in `Data.Sum.Relation.Binary.Pointwise` :
   ```
-  ⊎-WellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
+  ⊎-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
   ```
 
 * Made `Map` public in `Data.Tree.AVL.IndexedMap`
