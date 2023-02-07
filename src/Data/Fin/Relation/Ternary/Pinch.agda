@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The 'punchOut view' of the function `punchOut` defined on finite sets
+-- The '`Pinch` view' of the function `pinch` defined on finite sets
 ------------------------------------------------------------------------
 
 -- This example of a "view of a function via its graph relation" is inspired
