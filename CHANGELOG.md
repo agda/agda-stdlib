@@ -1402,6 +1402,11 @@ New modules
   Data.Default
   ```
 
+* A small library defining a structurally inductive view of `Fin (suc n)`:
+  ```
+  Data.Fin.Relation.Unary.Top
+  ```
+
 * A small library for a non-empty fresh list:
   ```
   Data.List.Fresh.NonEmpty

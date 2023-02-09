@@ -1,0 +1,194 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- The 'top' view of Fin
+------------------------------------------------------------------------
+--
+-- This is an example of a view of (elements of) a datatype,
+-- here i : Fin (suc n), which exhibits every such i as
+-- * either, i = fromℕ n
+-- * or, i = inject₁ j for a unique j : Fin n
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
+module Data.Fin.Relation.Unary.Top where
+
+open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Nat.Base as Nat
+open import Data.Fin.Base as Fin
+  using (Fin; zero; suc; toℕ; fromℕ; fromℕ<; inject₁)
+open import Data.Fin.Properties as Fin
+  using (suc-injective; inject₁-injective; toℕ-fromℕ; toℕ<n; toℕ-inject₁; inject₁ℕ<)
+open import Relation.Binary.PropositionalEquality
+
+
+------------------------------------------------------------------------
+-- The View itself, considered as a unary relation on Fin (suc n)
+
+-- First, a lemma not in Data.Fin.Properties,
+-- but which establishes disjointness of the
+-- (interpretations of the) constructors of the View
+
+top≢inject₁ : ∀ {n} (j : Fin n) → fromℕ n ≢ inject₁ j
+top≢inject₁ (suc j) eq = top≢inject₁ j (suc-injective eq)
+
+data View {n} : (i : Fin (suc n)) → Set where
+
+  top :                View (fromℕ n)
+  inj : (j : Fin n) → View (inject₁ j)
+
+-- The view covering function, witnessing soundness of the view
+
+view : ∀ {n} i → View {n} i
+view {n = zero}  zero = top
+view {n = suc _} zero = inj _
+view {n = suc n} (suc i) with view {n} i
+... | top   = top
+... | inj j = inj (suc j)
+
+-- Interpretation of the view constructors
+
+⟦_⟧ : ∀ {n} {i} → View {n} i → Fin (suc n)
+⟦ top ⟧   = fromℕ _
+⟦ inj j ⟧ = inject₁ j
+
+-- Completeness of the view
+
+view-complete : ∀ {n} {i} (v : View {n} i) → ⟦ v ⟧ ≡ i
+view-complete top     = refl
+view-complete (inj j) = refl
+
+-- 'Computational' behaviour of the covering function
+view-top : ∀ n → view {n} (fromℕ n) ≡ top
+view-top zero    = refl
+view-top (suc n) rewrite view-top n = refl
+
+view-inj : ∀ {n} j → view {n} (inject₁ j) ≡ inj j
+view-inj zero       = refl
+view-inj (suc j) rewrite view-inj j = refl
+
+------------------------------------------------------------------------
+-- Experimental
+--
+-- Because we work --without-K, Agda's unifier will complains about
+-- attempts to match `refl` against hypotheses of the form `view {n] i ≡ v`
+-- or gets stuck trying to solve unification problems of the form
+--    (inferred index ≟ expected index)
+-- even when these problems are provably solvable.
+--
+-- So these two predicates on values of the view define concepts
+-- extensionally equivalent to the assertions
+-- `view {n] i ≡ top` and `view {n] i ≡ inj j`
+--
+-- But such assertions can only ever have a unique (irrelevant) proof
+-- so we introduce instances to witness them, themselves given by
+-- the functions `view-top` and `view-inj` defined above
+
+module Instances {n} where
+
+  data IsTop : ∀ {i} → View {n} i → Set where
+
+    top : IsTop top
+
+  instance
+
+    top⁺ : IsTop {i = fromℕ n} (view (fromℕ n))
+    top⁺ rewrite view-top n = top
+
+  data IsInj : ∀ {i} → View {n} i → Set where
+
+    inj : ∀ j → IsInj (inj j)
+
+  instance
+
+    inj⁺ : ∀ {j} → IsInj (view (inject₁ j))
+    inj⁺ {j} rewrite view-inj j = inj j
+
+    inject₁≡⁺ : ∀ {i} {j} {eq : inject₁ i ≡ j} → IsInj (view j)
+    inject₁≡⁺ {eq = refl} = inj⁺
+
+    inj≢n : ∀ {i} {n≢i : n ≢ toℕ (inject₁ i)} → IsInj (view {n} i)
+    inj≢n {i} {n≢i} with view i
+    ... | top   = ⊥-elim (n≢i (begin
+      n                         ≡˘⟨ toℕ-fromℕ n ⟩
+      toℕ (fromℕ n)           ≡˘⟨ toℕ-inject₁ (fromℕ n) ⟩
+      toℕ (inject₁ (fromℕ n)) ∎)) where open ≡-Reasoning
+    ... | inj j = inj j
+
+open Instances
+
+------------------------------------------------------------------------
+-- As a corollary, we obtain two useful properties, which are
+-- witnessed by, but can also serve as proxy replacements for,
+-- the corresponding properties in `Data.Fin.Properties`
+
+module _ {n} where
+
+  view-top-toℕ : ∀ i → .{{IsTop (view i)}} → toℕ i ≡ n
+  view-top-toℕ i with top ← view i = toℕ-fromℕ n
+
+  view-inj-toℕ< : ∀ i → .{{IsInj (view i)}} → toℕ i < n
+  view-inj-toℕ< i with inj j ← view i = inject₁ℕ< j
+
+------------------------------------------------------------------------
+-- Examples
+
+private module Examples {n} where
+
+-- Reimplementation of the function `lower₁` and its properties
+
+-- Definition
+{-
+lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
+lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
+lower₁ {suc n} zero    _  = zero
+lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
+-}
+
+  lower₁ : (i : Fin (suc n)) → .{{IsInj (view {n} i)}} → Fin n
+  lower₁ i with inj j ← view i = j
+
+-- Properties
+{-
+toℕ-lower₁ : ∀ i (p : n ≢ toℕ i) → toℕ (lower₁ i p) ≡ toℕ i
+
+lower₁-injective : ∀ {n≢i : n ≢ toℕ i} {n≢j : n ≢ toℕ j} →
+                   lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
+inject₁-lower₁ : ∀ (i : Fin (suc n)) (n≢i : n ≢ toℕ i) →
+                 inject₁ (lower₁ i n≢i) ≡ i
+lower₁-inject₁′ : ∀ (i : Fin n) (n≢i : n ≢ toℕ (inject₁ i)) →
+                  lower₁ (inject₁ i) n≢i ≡ i
+lower₁-inject₁ : ∀ (i : Fin n) →
+                 lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
+lower₁-inject₁ i = lower₁-inject₁′ i (toℕ-inject₁-≢ i)
+lower₁-irrelevant : ∀ (i : Fin (suc n)) (n≢i₁ n≢i₂ : n ≢ toℕ i) →
+                    lower₁ i n≢i₁ ≡ lower₁ i n≢i₂
+inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (ℕ.suc n)} →
+                  (n≢j : n ≢ toℕ j) → inject₁ i ≡ j → lower₁ j n≢j ≡ i
+-}
+
+  lower₁-irrelevant : (i : Fin (suc n)) .{{ii₁ ii₂ : IsInj (view {n} i)}} →
+                      lower₁ i {{ii₁}} ≡ lower₁ i {{ii₂}}
+  lower₁-irrelevant i with inj ii ← view i = refl
+
+  toℕ-lower₁ : (i : Fin (suc n)) .{{ii : IsInj (view {n} i)}} →
+                toℕ (lower₁ i {{ii}}) ≡ toℕ i
+  toℕ-lower₁ i with inj j ← view i = sym (toℕ-inject₁ j)
+
+  lower₁-injective : (i j : Fin (suc n)) →
+                     .{{ii : IsInj (view {n} i)}} →
+                     .{{jj : IsInj (view {n} j)}} →
+                     lower₁ i {{ii}} ≡ lower₁ j {{jj}} → i ≡ j
+  lower₁-injective i j with inj ii ← view i | inj jj ← view j = cong inject₁
+
+  inject₁-lower₁ : (i : Fin (suc n)) .{{ii : IsInj (view {n} i)}} →
+                   inject₁ (lower₁ i {{ii}}) ≡ i
+  inject₁-lower₁ i with inj ii ← view i = refl
+
+  lower₁-inject₁ : (j : Fin n) → lower₁ (inject₁ j) {{inj⁺}} ≡ j
+  lower₁-inject₁ j rewrite view-inj j = refl
+
+  inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (suc n)} (eq : inject₁ i ≡ j) →
+                       lower₁ j {{inject₁≡⁺ {eq = eq}}} ≡ i
+  inject₁≡⇒lower₁≡ refl = lower₁-inject₁ _
