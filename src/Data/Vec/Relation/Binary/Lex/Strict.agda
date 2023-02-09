@@ -18,7 +18,7 @@ open import Data.Nat.Base using (ℕ; suc)
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Lex.Strict
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Vec.Base using (Vec; []; _∷_)
+open import Data.Vec.Base using (Vec; []; _∷_; uncons)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
   using (Pointwise; []; _∷_; head; tail)
 open import Function.Base using (id; _on_; _∘_)
@@ -131,15 +131,12 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     <-wellFounded {0}     [] = acc λ ys ys<[] → ⊥-elim (xs≮[] ys ys<[])
     <-wellFounded {suc n} xs = Subrelation.wellFounded foo bar xs
       where
-        f : Vec A (suc n) → A × Vec A n
-        f (x ∷ xs) = x , xs
-
-        foo : {xs ys : Vec A (suc n)} → xs < ys → (×-Lex _≈_ _≺_ _<_ on f) xs ys
+        foo : {xs ys : Vec A (suc n)} → xs < ys → (×-Lex _≈_ _≺_ _<_ on uncons) xs ys
         foo {x ∷ xs} {y ∷ ys} (this x<y _) = inj₁ x<y
         foo {x ∷ xs} {y ∷ ys} (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
 
-        bar : WellFounded (×-Lex _≈_ _≺_ _<_ on f)
-        bar = On.wellFounded f (×-wellFounded' ≈-sym ≈-trans ≺-respʳ ≺-wf <-wellFounded)
+        bar : WellFounded (×-Lex _≈_ _≺_ _<_ on uncons)
+        bar = On.wellFounded uncons (×-wellFounded' ≈-sym ≈-trans ≺-respʳ ≺-wf <-wellFounded)
 
 ----------------------------------------------------------------------
 -- Structures
