@@ -144,7 +144,7 @@ private module Examples {n} where
 -- Similarly, we can redefine certain operations in `Data.Fin.Base`,
 -- together with their corresponding properties in `Data.Fin.Properties`
 
--- Here: the reimplementation of the function `lower₁` and its properties,
+-- First: the reimplementation of the function `lower₁` and its properties,
 -- specified as a partial inverse to `inject₁`, defined on the domain given
 -- by `n ≢ toℕ i`, equivalently `i ≢ from ℕ n`, ie `IsInj {n} (view i)`
 
