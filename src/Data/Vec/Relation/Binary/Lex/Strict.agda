@@ -26,7 +26,7 @@ open import Induction.WellFounded
 open import Relation.Nullary using (yes; no; ¬_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.Construct.On as On using ()
+open import Relation.Binary.Construct.On as On using (wellFounded)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Level using (Level; _⊔_)
 
@@ -133,9 +133,11 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
       where
         f : Vec A (suc n) → A × Vec A n
         f (x ∷ xs) = x , xs
+
         foo : {xs ys : Vec A (suc n)} → xs < ys → (×-Lex _≈_ _≺_ _<_ on f) xs ys
         foo {x ∷ xs} {y ∷ ys} (this x<y _) = inj₁ x<y
         foo {x ∷ xs} {y ∷ ys} (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
+
         bar : WellFounded (×-Lex _≈_ _≺_ _<_ on f)
         bar = On.wellFounded f (×-wellFounded' ≈-sym ≈-trans ≺-respʳ ≺-wf <-wellFounded)
 
