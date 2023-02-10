@@ -129,14 +129,14 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
     <-wellFounded : ∀ {n} → WellFounded (_<_ {n})
     <-wellFounded {0}     [] = acc λ ys ys<[] → ⊥-elim (xs≮[] ys ys<[])
-    <-wellFounded {suc n} xs = Subrelation.wellFounded foo bar xs
+    <-wellFounded {suc n} xs = Subrelation.wellFounded <⇒uncons-Lex uncons-Lex-wellFounded xs
       where
-        foo : {xs ys : Vec A (suc n)} → xs < ys → (×-Lex _≈_ _≺_ _<_ on uncons) xs ys
-        foo {x ∷ xs} {y ∷ ys} (this x<y _) = inj₁ x<y
-        foo {x ∷ xs} {y ∷ ys} (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
+        <⇒uncons-Lex : {xs ys : Vec A (suc n)} → xs < ys → (×-Lex _≈_ _≺_ _<_ on uncons) xs ys
+        <⇒uncons-Lex {x ∷ xs} {y ∷ ys} (this x<y _) = inj₁ x<y
+        <⇒uncons-Lex {x ∷ xs} {y ∷ ys} (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
 
-        bar : WellFounded (×-Lex _≈_ _≺_ _<_ on uncons)
-        bar = On.wellFounded uncons (×-wellFounded' ≈-sym ≈-trans ≺-respʳ ≺-wf <-wellFounded)
+        uncons-Lex-wellFounded : WellFounded (×-Lex _≈_ _≺_ _<_ on uncons)
+        uncons-Lex-wellFounded = On.wellFounded uncons (×-wellFounded' ≈-sym ≈-trans ≺-respʳ ≺-wf <-wellFounded)
 
 ----------------------------------------------------------------------
 -- Structures
