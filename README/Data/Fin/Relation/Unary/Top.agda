@@ -36,7 +36,7 @@ private
 -- * pattern matching of the form `... inj j ← view {n} i` ensures that
 --   `i ≟ inject₁ j`, and hence that `j` is, *definitionally*, an image
 --   under a hypothetical inverse to `inject₁`;
--- 
+--
 -- * such patterns are irrefutable *precisely* when `i` is in the codomain
 --   of `inject₁`, which by property `fromℕ≢inject₁`, is equivalent to the
 --   condition `i ≢ fromℕ n`, or again equivalently, `toℕ i ≢ n`, each
