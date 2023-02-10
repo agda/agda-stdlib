@@ -1918,6 +1918,8 @@ Other minor changes
   cast-is-id    : cast eq k ≡ k
   subst-is-cast : subst Fin eq k ≡ cast eq k
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+
+  fromℕ≢inject₁      : (j : Fin n) → fromℕ n ≢ inject₁ j
   ```
 
 * Added new functions in `Data.Integer.Base`:
