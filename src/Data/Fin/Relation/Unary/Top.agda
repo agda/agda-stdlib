@@ -28,15 +28,6 @@ private
 ------------------------------------------------------------------------
 -- The View, considered as a unary relation on Fin (suc n)
 
--- First, a lemma not in `Data.Fin.Properties`,
--- but which establishes disjointness of the
--- (interpretations of the) constructors of the View
-
-top≢inject₁ : ∀ (j : Fin n) → fromℕ n ≢ inject₁ j
-top≢inject₁ (suc j) eq = top≢inject₁ j (suc-injective eq)
-
--- The View, itself
-
 data View : (i : Fin (suc n)) → Set where
 
   top :                View (fromℕ n)
@@ -45,8 +36,8 @@ data View : (i : Fin (suc n)) → Set where
 -- The view covering function, witnessing soundness of the view
 
 view : ∀ {n} i → View {n} i
-view {n = zero}  zero = top
-view {n = suc _} zero = inj _
+view {n = zero}  zero    = top
+view {n = suc _} zero    = inj _
 view {n = suc n} (suc i) with view {n} i
 ... | top   = top
 ... | inj j = inj (suc j)
@@ -64,6 +55,7 @@ view-complete top     = refl
 view-complete (inj j) = refl
 
 -- 'Computational' behaviour of the covering function
+
 view-top : ∀ n → view {n} (fromℕ n) ≡ top
 view-top zero    = refl
 view-top (suc n) rewrite view-top n = refl
@@ -87,8 +79,8 @@ view-inj (suc j) rewrite view-inj j = refl
 -- `view {n] i ≡ top` and `view {n] i ≡ inj j`
 --
 -- But such assertions can only ever have a unique (irrelevant) proof
--- so we introduce instances to witness them, themselves given by
--- the functions `view-top` and `view-inj` defined above
+-- so we introduce instances to witness them, themselves given in
+-- terms of the functions `view-top` and `view-inj` defined above
 
 module Instances {n} where
 
@@ -121,7 +113,7 @@ module Instances {n} where
       toℕ (inject₁ (fromℕ n)) ∎)) where open ≡-Reasoning
     ... | inj j = inj j
 
-open Instances
+open Instances public
 
 ------------------------------------------------------------------------
 -- As a corollary, we obtain two useful properties, which are
@@ -136,122 +128,3 @@ module _ {n} where
   view-inj-toℕ< : ∀ i → .{{IsInj (view i)}} → toℕ i < n
   view-inj-toℕ< i with inj j ← view i = inject₁ℕ< j
 
-------------------------------------------------------------------------
--- Examples
-
-private module Examples {n} where
-
--- Similarly, we can redefine certain operations in `Data.Fin.Base`,
--- together with their corresponding properties in `Data.Fin.Properties`
-
--- First: the reimplementation of the function `lower₁` and its properties,
--- specified as a partial inverse to `inject₁`, defined on the domain given
--- by `n ≢ toℕ i`, equivalently `i ≢ from ℕ n`, ie `IsInj {n} (view i)`
-
--- Definition
-{-
-lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
-lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
-lower₁ {suc n} zero    _  = zero
-lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
--}
-
-  lower₁ : (i : Fin (suc n)) → .{{IsInj (view {n} i)}} → Fin n
-  lower₁ i with inj j ← view i = j -- the view *inverts* inject₁
-
--- Properties
-{-
-toℕ-lower₁ : ∀ i (p : n ≢ toℕ i) → toℕ (lower₁ i p) ≡ toℕ i
-
-lower₁-injective : ∀ {n≢i : n ≢ toℕ i} {n≢j : n ≢ toℕ j} →
-                   lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
-inject₁-lower₁ : ∀ (i : Fin (suc n)) (n≢i : n ≢ toℕ i) →
-                 inject₁ (lower₁ i n≢i) ≡ i
-lower₁-inject₁′ : ∀ (i : Fin n) (n≢i : n ≢ toℕ (inject₁ i)) →
-                  lower₁ (inject₁ i) n≢i ≡ i
-lower₁-inject₁ : ∀ (i : Fin n) →
-                 lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
-lower₁-inject₁ i = lower₁-inject₁′ i (toℕ-inject₁-≢ i)
-lower₁-irrelevant : ∀ (i : Fin (suc n)) (n≢i₁ n≢i₂ : n ≢ toℕ i) →
-                    lower₁ i n≢i₁ ≡ lower₁ i n≢i₂
-inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (ℕ.suc n)} →
-                  (n≢j : n ≢ toℕ j) → inject₁ i ≡ j → lower₁ j n≢j ≡ i
--}
-
-  lower₁-irrelevant : (i : Fin (suc n)) .{{ii₁ ii₂ : IsInj (view {n} i)}} →
-                      lower₁ i {{ii₁}} ≡ lower₁ i {{ii₂}}
-  lower₁-irrelevant i with inj ii ← view i = refl
-
-  toℕ-lower₁ : (i : Fin (suc n)) .{{ii : IsInj (view {n} i)}} →
-                toℕ (lower₁ i {{ii}}) ≡ toℕ i
-  toℕ-lower₁ i with inj j ← view i = sym (toℕ-inject₁ j)
-
-  lower₁-injective : (i j : Fin (suc n)) →
-                     .{{ii : IsInj (view {n} i)}} →
-                     .{{jj : IsInj (view {n} j)}} →
-                     lower₁ i {{ii}} ≡ lower₁ j {{jj}} → i ≡ j
-  lower₁-injective i j with inj ii ← view i | inj jj ← view j = cong inject₁
-
-  inject₁-lower₁ : (i : Fin (suc n)) .{{ii : IsInj (view {n} i)}} →
-                   inject₁ (lower₁ i {{ii}}) ≡ i
-  inject₁-lower₁ i with inj ii ← view i = refl
-
-  lower₁-inject₁ : (j : Fin n) → lower₁ (inject₁ j) {{inj⁺}} ≡ j
-  lower₁-inject₁ j rewrite view-inj j = refl
-
-  inject₁≡⇒lower₁≡ : ∀ {i : Fin n} {j : Fin (suc n)} (eq : inject₁ i ≡ j) →
-                       lower₁ j {{inject₁≡⁺ {eq = eq}}} ≡ i
-  inject₁≡⇒lower₁≡ refl = lower₁-inject₁ _
-
--- Second: the reimplementation of the function `opposite` and its properties,
-
--- Definition
-{-
-  opposite : Fin n → Fin n
-  opposite {suc n} zero    = fromℕ n
-  opposite {suc n} (suc i) = inject₁ (opposite i)
--}
-
-  opposite : ∀ {n} → Fin n → Fin n
-  opposite {n = suc n} i with view i
-  ... | top   = zero
-  ... | inj j = suc (opposite {n} j)
-
--- Properties
-
-  opposite-zero≡top : ∀ n → opposite {suc n} zero ≡ fromℕ n
-  opposite-zero≡top zero    = refl
-  opposite-zero≡top (suc n) = cong suc (opposite-zero≡top n)
-
-  opposite-top≡zero : ∀ n → opposite {suc n} (fromℕ n) ≡ zero
-  opposite-top≡zero n rewrite view-top n = refl
-
-  opposite-suc≡inject₁-opposite : ∀ {n} (j : Fin n) →
-                                  opposite (suc j) ≡ inject₁ (opposite j)
-  opposite-suc≡inject₁-opposite {suc n} i with view i
-  ... | top   = refl
-  ... | inj j = cong suc (opposite-suc≡inject₁-opposite {n} j)
-
-  opposite-involutive : ∀ {n} (j : Fin n) → opposite (opposite j) ≡ j
-  opposite-involutive {suc n} zero
-    rewrite opposite-zero≡top n
-          | view-top n            = refl
-  opposite-involutive {suc n} (suc i)
-    rewrite opposite-suc≡inject₁-opposite i
-          | view-inj (opposite i) = cong suc (opposite-involutive i)
-
-  opposite-suc : (j : Fin n) → toℕ (opposite (suc j)) ≡ toℕ (opposite j)
-  opposite-suc j = begin
-    toℕ (opposite (suc j))      ≡⟨ cong toℕ (opposite-suc≡inject₁-opposite j) ⟩
-    toℕ (inject₁ (opposite j))  ≡⟨ toℕ-inject₁ (opposite j) ⟩
-    toℕ (opposite j) ∎
-    where open ≡-Reasoning
-
-  opposite-prop : ∀ {n} (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
-  opposite-prop {suc n} i with view i
-  ... | top   rewrite toℕ-fromℕ n | n∸n≡0 n = refl
-  ... | inj j = begin
-    suc (toℕ (opposite j)) ≡⟨ cong suc (opposite-prop j) ⟩
-    suc (n ∸ suc (toℕ j)) ≡˘⟨ +-∸-assoc 1 {n} {suc (toℕ j)} (toℕ<n j) ⟩
-    n ∸ toℕ j             ≡˘⟨ cong (n ∸_) (toℕ-inject₁ j) ⟩
-    n ∸ toℕ (inject₁ j)   ∎ where open ≡-Reasoning
