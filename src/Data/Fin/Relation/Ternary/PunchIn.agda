@@ -31,7 +31,16 @@ private
 -- function definition; recursive calls are represented by inductive premises
 
 data View : ∀ {n} (i : Fin (suc n)) (j : Fin n) (k : Fin (suc n)) → Set where
+{-
 
+-- `punchIn` is the function f(i,j) = if j≥i then j+1 else j
+
+punchIn : Fin (suc n) → Fin n → Fin (suc n)
+punchIn zero    j       = suc j
+punchIn (suc i) zero    = zero
+punchIn (suc i) (suc j) = suc (punchIn i j)
+
+-}
   zero-suc : ∀ {n} (j : Fin n)                   → View zero j (suc j)
   suc-zero : ∀ {n} (i : Fin (suc n))             → View (suc i) zero zero
   suc-suc  : ∀ {n} {i} {j} {k} → View {n} i j k → View (suc i) (suc j) (suc k)

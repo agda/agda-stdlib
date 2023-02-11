@@ -32,7 +32,17 @@ private
 -- function definition; recursive calls are represented by inductive premises
 
 data View : ∀ {n} (i j : Fin (suc n)) (k : Fin n) → Set where
+{-
 
+-- `punchOut` is the function f(i,j) = if j>i then j-1 else j
+
+punchOut : ∀ {i j : Fin (suc n)} → i ≢ j → Fin n
+punchOut {_}     {zero}   {zero}  i≢j = ⊥-elim (i≢j refl)
+punchOut {_}     {zero}   {suc j} _   = j
+punchOut {suc _} {suc i}  {zero}  _   = zero
+punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
+
+-}
   zero-suc : ∀ {n} (j : Fin n)                   → View zero (suc j) j
   suc-zero : ∀ {n} (i : Fin (suc n))             → View (suc i) zero zero
   suc-suc  : ∀ {n} {i} {j} {k} → View {n} i j k → View (suc i) (suc j) (suc k)
@@ -73,16 +83,16 @@ view-complete (suc-suc v)  = cong suc (view-complete v)
 ------------------------------------------------------------------------
 -- Properties of the function, derived from properties of the View
 
-view-cong : ∀ {i j k} {p q} →
-                 View {n} i j p → View {n} i k q → j ≡ k → p ≡ q
+view-cong : ∀ {i j k} {p q} → View {n} i j p → View {n} i k q →
+            j ≡ k → p ≡ q
 view-cong v w refl = aux v w where
   aux : ∀ {i j} {p q} → View {n} i j p → View {n} i j q → p ≡ q
   aux (zero-suc _) (zero-suc _) = refl
   aux (suc-zero i) (suc-zero i) = refl
   aux (suc-suc v)  (suc-suc w)  = cong suc (aux v w)
 
-view-injective : ∀ {i j k} {p q} →
-                 View {n} i j p → View {n} i k q → p ≡ q → j ≡ k
+view-injective : ∀ {i j k} {p q} → View {n} i j p → View {n} i k q →
+                 p ≡ q → j ≡ k
 view-injective v w refl = aux v w where
   aux : ∀ {i j k} {r} → View {n} i j r → View {n} i k r → j ≡ k
   aux (zero-suc _) (zero-suc _) = refl
