@@ -17,8 +17,14 @@ open import Data.Fin.Base using (Fin; zero; suc; toℕ; _≤_; _<_; pinch)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; ∣_-_∣)
 open import Data.Nat.Properties using (≤-refl; <⇒≤; ∣n-n∣≡0)
+open import Data.Product using (_,_; ∃)
 open import Function.Base using (id; _∘_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
+
+private
+  variable
+    n : ℕ
+
 
 ------------------------------------------------------------------------
 -- The View, considered as a ternary relation
@@ -38,7 +44,7 @@ view   (suc i) (suc j) = suc-suc (view i j)
 
 -- The View is complete
 
-view-complete : ∀ {n} {i j} {k} (v : View {n} i j k) → k ≡ pinch i j
+view-complete : ∀ {n} {i j} {k} (v : View {n} i j k) → pinch i j ≡ k
 view-complete (any-zero i) = refl
 view-complete (zero-suc j) = refl
 view-complete (suc-suc v)  = cong suc (view-complete v)
@@ -46,43 +52,45 @@ view-complete (suc-suc v)  = cong suc (view-complete v)
 ------------------------------------------------------------------------
 -- Properties of the function, derived from properties of the View
 
-{- pinch-mono≤ -}
-j≤k⇒view-j≤view-k : ∀ {n} {i} {j k} {p q} → View {n} i j p → View {n} i k q →
-                     j ≤ k → p ≤ q
-j≤k⇒view-j≤view-k (any-zero _) _            _         = z≤n
-j≤k⇒view-j≤view-k (zero-suc _) (zero-suc _) (s≤s j≤k) = j≤k
-j≤k⇒view-j≤view-k (suc-suc v)  (suc-suc w)  (s≤s j≤k) = s≤s (j≤k⇒view-j≤view-k v w j≤k)
+view-surjective : ∀ (i k : Fin n) → ∃ λ j → View i j k
+view-surjective zero    k       = suc k , zero-suc k
+view-surjective (suc i) zero    = zero , any-zero (suc i)
+view-surjective (suc i) (suc k) with j , v ← view-surjective i k = suc j , suc-suc v
 
-pinch-mono≤ : ∀ {n} (i : Fin n) {j k} →
-                j ≤ k → pinch i j ≤ pinch i k
-pinch-mono≤ i {j} {k} = j≤k⇒view-j≤view-k (view i j) (view i k)
+view-injective : ∀ {i j k} {p q} → View {n} i j p → View {n} i k q →
+                 suc i ≢ j → suc i ≢ k → p ≡ q → j ≡ k
+view-injective v w [i+1]≢j [i+1]≢k refl = aux v w [i+1]≢j [i+1]≢k where
+  aux : ∀ {i j k} {r} → View {n} i j r → View {n} i k r →
+        suc i ≢ j → suc i ≢ k → j ≡ k
+  aux (any-zero _) (any-zero _)     [i+1]≢j [i+1]≢k = refl
+  aux (any-zero _) (zero-suc .zero) [i+1]≢j [i+1]≢k with () ← [i+1]≢k refl
+  aux (zero-suc _) (any-zero .zero) [i+1]≢j [i+1]≢k with () ← [i+1]≢j refl
+  aux (zero-suc _) (zero-suc _)     [i+1]≢j [i+1]≢k = refl
+  aux (suc-suc v)  (suc-suc w)      [i+1]≢j [i+1]≢k
+    = cong suc (aux v w ([i+1]≢j ∘ cong suc) ([i+1]≢k ∘ cong suc))
 
-{- pinch-cancel< -}
-view-j<view-k⇒j<k : ∀ {n} {i j k} {p q} → View {n} i j p → View {n} i k q →
-                     p < q → j < k
-view-j<view-k⇒j<k (any-zero _) (zero-suc _) _         = z<s
-view-j<view-k⇒j<k (any-zero _) (suc-suc _)  _         = z<s
-view-j<view-k⇒j<k (zero-suc _) (zero-suc _) p<q       = s<s p<q
-view-j<view-k⇒j<k (suc-suc v)  (suc-suc w)  (s<s p<q) = s<s (view-j<view-k⇒j<k v w p<q)
+view-mono-≤ : ∀ {i} {j k} {p q} → View {n} i j p → View {n} i k q →
+              j ≤ k → p ≤ q
+view-mono-≤ (any-zero _) _            _         = z≤n
+view-mono-≤ (zero-suc _) (zero-suc _) (s≤s j≤k) = j≤k
+view-mono-≤ (suc-suc v)  (suc-suc w)  (s≤s j≤k) = s≤s (view-mono-≤ v w j≤k)
 
-pinch-cancel< : ∀ {n} (i : Fin (suc n)) {j k} →
-                  (pinch i j < pinch i k) → j < k
-pinch-cancel< i {j} {k} = view-j<view-k⇒j<k (view i j) (view i k)
+view-cancel-< : ∀ {i j k} {p q} → View {n} i j p → View {n} i k q →
+                p < q → j < k
+view-cancel-< (any-zero _) (zero-suc _) _         = z<s
+view-cancel-< (any-zero _) (suc-suc _)  _         = z<s
+view-cancel-< (zero-suc _) (zero-suc _) p<q       = s<s p<q
+view-cancel-< (suc-suc v)  (suc-suc w)  (s<s p<q) = s<s (view-cancel-< v w p<q)
 
-{- pinch-cancel≡ -}
-view-j≡view-k⇒∣j-k∣≤1 : ∀ {n} {i j k} {p q} → View {n} i j p → View {n} i k q →
+view-j≡view-k⇒∣j-k∣≤1 : ∀ {i j k} {p q} → View {n} i j p → View {n} i k q →
                         p ≡ q → ∣ (toℕ j) - (toℕ k)∣ Nat.≤ 1
-view-j≡view-k⇒∣j-k∣≤1 v w refl = helper v w
+view-j≡view-k⇒∣j-k∣≤1 v w refl = aux v w
   where
-    helper : ∀ {n} {i j k} {r} → View {n} i j r → View {n} i k r →
-             ∣ (toℕ j) - (toℕ k) ∣ Nat.≤ 1
-    helper (any-zero _)    (any-zero _)    = z≤n
-    helper (any-zero zero) (zero-suc zero) = ≤-refl
-    helper (zero-suc zero) (any-zero zero) = ≤-refl
-    helper (zero-suc j)    (zero-suc j) rewrite ∣n-n∣≡0 (toℕ j) = z≤n
-    helper (suc-suc v)     (suc-suc w) = helper v w
-
-pinch-cancel≡ : ∀ {n} (i : Fin n) {j k} →
-                (pinch i j ≡ pinch i k) → ∣ (toℕ j) - (toℕ k) ∣ Nat.≤ 1
-pinch-cancel≡ i {j} {k} = view-j≡view-k⇒∣j-k∣≤1 (view i j) (view i k)
+    aux : ∀ {n} {i j k} {r} → View {n} i j r → View {n} i k r →
+          ∣ (toℕ j) - (toℕ k) ∣ Nat.≤ 1
+    aux (any-zero _)    (any-zero _)    = z≤n
+    aux (any-zero zero) (zero-suc zero) = ≤-refl
+    aux (zero-suc zero) (any-zero zero) = ≤-refl
+    aux (zero-suc j)    (zero-suc j) rewrite ∣n-n∣≡0 (toℕ j) = z≤n
+    aux (suc-suc v)     (suc-suc w) = aux v w
 

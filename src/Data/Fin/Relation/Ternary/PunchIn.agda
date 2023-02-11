@@ -50,7 +50,7 @@ view (suc i) (suc j) = suc-suc (view i j)
 
 -- The View is complete
 
-view-complete : ∀ {i j} {k} (v : View {n} i j k) → k ≡ punchIn i j
+view-complete : ∀ {i j} {k} (v : View {n} i j k) → punchIn i j ≡ k
 view-complete (zero-suc j) = refl
 view-complete (suc-zero i) = refl
 view-complete (suc-suc v)  = cong suc (view-complete v)

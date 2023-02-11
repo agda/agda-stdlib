@@ -18,6 +18,8 @@ module README.Data.Fin.Relation.Ternary.PunchIn where
 open import Data.Nat.Base using (ℕ; suc)
 open import Data.Fin.Base using (Fin; zero; suc; _≤_; punchIn)
 open import Data.Fin.Relation.Ternary.PunchIn
+open import Function.Definitions using (Injective)
+open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality using (_≡_; _≢_)
 
 private
@@ -30,15 +32,13 @@ private
 punchInᵢ≢i : ∀ i (j : Fin n) → punchIn i j ≢ i
 punchInᵢ≢i i j = view-codomain (view i j)
 
-punchIn-injective : ∀ i (j k : Fin n) →
-                    punchIn i j ≡ punchIn i k → j ≡ k
-punchIn-injective i j k = view-injective (view i j) (view i k)
+punchIn-injective : ∀ (i : Fin (suc n)) → Injective _≡_ _≡_ (punchIn i)
+punchIn-injective i {j} {k} = view-injective (view i j) (view i k)
 
-punchIn-mono≤ : ∀ (i : Fin (suc n)) {j k} →
-                j ≤ k → punchIn i j ≤ punchIn i k
-punchIn-mono≤ i {j} {k} = view-mono-≤ (view i j) (view i k)
+punchIn-mono-≤ : ∀ (i : Fin (suc n)) → (punchIn i) Preserves _≤_ ⟶ _≤_
+punchIn-mono-≤ i {j} {k} = view-mono-≤ (view i j) (view i k)
 
-punchIn-cancel≤ : ∀ (i : Fin (suc n)) {j k} →
+punchIn-cancel-≤ : ∀ (i : Fin (suc n)) {j k} →
                   (punchIn i j ≤ punchIn i k) → j ≤ k
-punchIn-cancel≤ i {j} {k} = view-cancel-≤ (view i j) (view i k)
+punchIn-cancel-≤ i {j} {k} = view-cancel-≤ (view i j) (view i k)
 

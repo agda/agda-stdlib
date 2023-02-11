@@ -3,9 +3,11 @@
 --
 -- The '`PunchOut` view of the function `punchOut` defined on finite sets
 ------------------------------------------------------------------------
-
--- This example of a 'view of a function via its graph relation' is inspired
--- by Nathan van Doorn's recent PR#1913.
+--
+-- This is an example of a view of a function defined over a datatype,
+-- such that the recursion and call-pattern(s) of the function are
+-- precisely mirrored in the constructors of the view type,
+-- ie that we 'view the function via its graph relation'
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -13,6 +15,7 @@ module Data.Fin.Relation.Ternary.PunchOut where
 
 open import Data.Fin.Base using (Fin; zero; suc; _≤_; punchOut)
 open import Data.Fin.Properties using (suc-injective)
+open import Data.Fin.Relation.Ternary.PunchIn as PunchIn using ()
 open import Data.Nat.Base using (ℕ; zero; suc; z≤n; s≤s)
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
@@ -49,13 +52,29 @@ view {n = suc _} {i = suc i} {j = suc j} d = suc-suc (view (d ∘ (cong suc)))
 
 -- The View is complete
 
-view-complete : ∀ {i j} {k} (v : View {n} i j k) → k ≡ punchOut (view-domain v)
+view-complete : ∀ {i j} {k} (v : View {n} i j k) → punchOut (view-domain v) ≡ k
 view-complete (zero-suc j) = refl
 view-complete (suc-zero i) = refl
 view-complete (suc-suc v)  = cong suc (view-complete v)
 
 ------------------------------------------------------------------------
 -- Properties of the function, derived from properties of the View
+
+view-cong : ∀ {i j k} {p q} →
+                 View {n} i j p → View {n} i k q → j ≡ k → p ≡ q
+view-cong v w refl = aux v w where
+  aux : ∀ {i j} {p q} → View {n} i j p → View {n} i j q → p ≡ q
+  aux (zero-suc _) (zero-suc _) = refl
+  aux (suc-zero i) (suc-zero i) = refl
+  aux (suc-suc v)  (suc-suc w)  = cong suc (aux v w)
+
+view-injective : ∀ {i j k} {p q} →
+                 View {n} i j p → View {n} i k q → p ≡ q → j ≡ k
+view-injective v w refl = aux v w where
+  aux : ∀ {i j k} {r} → View {n} i j r → View {n} i k r → j ≡ k
+  aux (zero-suc _) (zero-suc _) = refl
+  aux (suc-zero i) (suc-zero i) = refl
+  aux (suc-suc v)  (suc-suc w)  = cong suc (aux v w)
 
 view-mono-≤ : ∀ {i j k} {p q} → View {n} i j p → View {n} i k q →
               j ≤ k → p ≤ q
@@ -69,3 +88,14 @@ view-cancel-≤ (zero-suc j) (zero-suc k)  p≤q       = s≤s p≤q
 view-cancel-≤ (suc-zero i) _             _         = z≤n
 view-cancel-≤ (suc-suc vj) (suc-suc vk)  (s≤s p≤q) = s≤s (view-cancel-≤ vj vk p≤q)
 
+-- PunchOut.View and PunchIn.View are mutual converses
+
+view-view⁻¹ : ∀ {i j} {k} → View {n} i j k → PunchIn.View {n} i k j
+view-view⁻¹ (zero-suc _) = PunchIn.zero-suc _
+view-view⁻¹ (suc-zero i) = PunchIn.suc-zero i
+view-view⁻¹ (suc-suc v)  = PunchIn.suc-suc (view-view⁻¹ v)
+
+view⁻¹-view : ∀ {i j} {k} → PunchIn.View {n} i k j → View {n} i j k
+view⁻¹-view (PunchIn.zero-suc _) = zero-suc _
+view⁻¹-view (PunchIn.suc-zero i) = suc-zero i
+view⁻¹-view (PunchIn.suc-suc v)  = suc-suc (view⁻¹-view v)
