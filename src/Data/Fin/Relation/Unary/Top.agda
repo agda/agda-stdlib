@@ -84,11 +84,11 @@ module Instances {n} where
 
   private
 
-    lemma : toℕ (inject₁ (fromℕ n)) ≡ n
-    lemma = begin
+    lemma : n ≡ toℕ (inject₁ (fromℕ n))
+    lemma = sym (begin
       toℕ (inject₁ (fromℕ n)) ≡⟨ toℕ-inject₁ (fromℕ n) ⟩
       toℕ (fromℕ n)           ≡⟨ toℕ-fromℕ n ⟩
-      n                         ∎ where open ≡-Reasoning
+      n                         ∎) where open ≡-Reasoning
 
   data IsTop : ∀ {i} → View {n} i → Set where
 
@@ -113,7 +113,7 @@ module Instances {n} where
 
     inject₁≢n⁺ : ∀ {i} {n≢i : n ≢ toℕ (inject₁ i)} → IsInj (view {n} i)
     inject₁≢n⁺ {i} {n≢i} with view i
-    ... | top with () ← n≢i (sym lemma)
+    ... | top with () ← n≢i lemma
     ... | inj j = inj j
 
 open Instances
