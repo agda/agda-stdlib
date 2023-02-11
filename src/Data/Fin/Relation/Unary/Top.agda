@@ -13,7 +13,6 @@
 
 module Data.Fin.Relation.Unary.Top where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base using (ℕ; zero; suc; _<_)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Properties as Fin
@@ -83,6 +82,14 @@ view-inj (suc j) rewrite view-inj j = refl
 
 module Instances {n} where
 
+  private
+
+    lemma : toℕ (inject₁ (fromℕ n)) ≡ n
+    lemma = begin
+      toℕ (inject₁ (fromℕ n)) ≡⟨ toℕ-inject₁ (fromℕ n) ⟩
+      toℕ (fromℕ n)           ≡⟨ toℕ-fromℕ n ⟩
+      n                         ∎ where open ≡-Reasoning
+
   data IsTop : ∀ {i} → View {n} i → Set where
 
     top : IsTop top
@@ -106,10 +113,7 @@ module Instances {n} where
 
     inject₁≢n⁺ : ∀ {i} {n≢i : n ≢ toℕ (inject₁ i)} → IsInj (view {n} i)
     inject₁≢n⁺ {i} {n≢i} with view i
-    ... | top   = ⊥-elim (n≢i (begin
-      n                         ≡˘⟨ toℕ-fromℕ n ⟩
-      toℕ (fromℕ n)           ≡˘⟨ toℕ-inject₁ (fromℕ n) ⟩
-      toℕ (inject₁ (fromℕ n)) ∎)) where open ≡-Reasoning
+    ... | top with () ← n≢i (sym lemma)
     ... | inj j = inj j
 
 open Instances
