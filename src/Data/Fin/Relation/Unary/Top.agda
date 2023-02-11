@@ -17,7 +17,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base using (ℕ; zero; suc; _<_)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Properties as Fin
-  using (toℕ-fromℕ; toℕ<n; toℕ-inject₁; inject₁ℕ<)
+  using (toℕ-fromℕ; toℕ-inject₁; inject₁ℕ<)
 open import Relation.Binary.PropositionalEquality
 
 private
