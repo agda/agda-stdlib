@@ -8,7 +8,7 @@
 -- precisely mirrored in the constructors of the view type
 --
 -- Using this view, we can exhibit the corresponding properties of
--- the function `punchIn` defined in `Data.Fin.Properties`
+-- the function `punchOut` defined in `Data.Fin.Properties`
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

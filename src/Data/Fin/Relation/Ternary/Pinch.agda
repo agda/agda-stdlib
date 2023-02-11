@@ -29,6 +29,9 @@ private
 ------------------------------------------------------------------------
 -- The View, considered as a ternary relation
 
+-- Each constructor corresponds to a particular call-pattern in the original
+-- function definition; recursive calls are represented by inductive premises
+
 data View : ∀ {n} (i : Fin n) (j : Fin (suc n)) (k : Fin n) → Set where
 
   any-zero : ∀ {n} (i : Fin (suc n))             → View i zero zero
@@ -37,14 +40,24 @@ data View : ∀ {n} (i : Fin n) (j : Fin (suc n)) (k : Fin n) → Set where
 
 -- The View is sound, ie covers all telescopes (satisfying the always-true precondition)
 
+-- The recursion/pattern analysis of the original definition of `pinch`
+-- (which is responsible for showing termination in the first place)
+-- is then exactly replicated in the definition of the covering function `view`;
+-- thus that definitional pattern analysis is encapsulated once and for all
+
 view : ∀ {n} i j → View {n} i j (pinch i j)
 view {suc _} i zero    = any-zero i
 view   zero    (suc j) = zero-suc j
 view   (suc i) (suc j) = suc-suc (view i j)
 
+-- Interpretation of the view: the original function itself
+
+⟦_⟧ : ∀ {i j} {k} .(v : View {n} i j k) → Fin n
+⟦_⟧ {n = n} {i} {j} {k} _ = pinch i j
+
 -- The View is complete
 
-view-complete : ∀ {n} {i j} {k} (v : View {n} i j k) → pinch i j ≡ k
+view-complete : ∀ {n} {i j} {k} (v : View {n} i j k) → ⟦ v ⟧ ≡ k
 view-complete (any-zero i) = refl
 view-complete (zero-suc j) = refl
 view-complete (suc-suc v)  = cong suc (view-complete v)

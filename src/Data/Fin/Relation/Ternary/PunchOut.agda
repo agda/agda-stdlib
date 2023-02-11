@@ -28,6 +28,9 @@ private
 ------------------------------------------------------------------------
 -- The View, considered as a ternary relation
 
+-- Each constructor corresponds to a particular call-pattern in the original
+-- function definition; recursive calls are represented by inductive premises
+
 data View : ∀ {n} (i j : Fin (suc n)) (k : Fin n) → Set where
 
   zero-suc : ∀ {n} (j : Fin n)                   → View zero (suc j) j
@@ -44,15 +47,25 @@ view-domain (suc-suc v) = (view-domain v) ∘ suc-injective
 
 -- The View is sound, ie covers all telescopes satisfying that precondition
 
+-- The recursion/pattern analysis of the original definition of `punchOut`
+-- (which is responsible for showing termination in the first place)
+-- is then exactly replicated in the definition of the covering function `view`;
+-- thus that definitional pattern analysis is encapsulated once and for all
+
 view : ∀ {n} {i j} (d : Domain i j) → View {n} i j (punchOut d)
 view             {i = zero}  {j = zero}  d with () ← d refl
 view             {i = zero}  {j = suc j} d = zero-suc j
 view {n = suc _} {i = suc i} {j = zero}  d = suc-zero i
 view {n = suc _} {i = suc i} {j = suc j} d = suc-suc (view (d ∘ (cong suc)))
 
+-- Interpretation of the view: the original function itself
+
+⟦_⟧ : ∀ {i j} {k} (v : View {n} i j k) → Fin n
+⟦ v ⟧ = punchOut (view-domain v)
+
 -- The View is complete
 
-view-complete : ∀ {i j} {k} (v : View {n} i j k) → punchOut (view-domain v) ≡ k
+view-complete : ∀ {i j} {k} (v : View {n} i j k) → ⟦ v ⟧ ≡ k
 view-complete (zero-suc j) = refl
 view-complete (suc-zero i) = refl
 view-complete (suc-suc v)  = cong suc (view-complete v)
