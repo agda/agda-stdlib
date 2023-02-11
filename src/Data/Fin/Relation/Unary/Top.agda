@@ -119,11 +119,9 @@ open Instances public
 -- witnessed by, but can also serve as proxy replacements for,
 -- the corresponding properties in `Data.Fin.Properties`
 
-module _ {n} where
+view-top-toℕ : ∀ i → .{{IsTop (view i)}} → toℕ i ≡ n
+view-top-toℕ {n = n} i with top ← view i = toℕ-fromℕ n
 
-  view-top-toℕ : ∀ i → .{{IsTop (view i)}} → toℕ i ≡ n
-  view-top-toℕ i with top ← view i = toℕ-fromℕ n
-
-  view-inj-toℕ< : ∀ i → .{{IsInj (view i)}} → toℕ i < n
-  view-inj-toℕ< i with inj j ← view i = inject₁ℕ< j
+view-inj-toℕ< : ∀ i → .{{IsInj (view i)}} → toℕ i < n
+view-inj-toℕ< i with inj j ← view i = inject₁ℕ< j
 
