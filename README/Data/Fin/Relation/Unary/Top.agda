@@ -27,6 +27,8 @@ private
   variable
     n : ℕ
 
+open Instances
+
 ------------------------------------------------------------------------
 -- Inverting inject₁
 

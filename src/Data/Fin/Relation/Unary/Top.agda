@@ -112,7 +112,7 @@ module Instances {n} where
       toℕ (inject₁ (fromℕ n)) ∎)) where open ≡-Reasoning
     ... | inj j = inj j
 
-open Instances public
+open Instances
 
 ------------------------------------------------------------------------
 -- As a corollary, we obtain two useful properties, which are
