@@ -5,15 +5,15 @@
 --
 -- This is an example of a view of a function defined over a datatype,
 -- such that the recursion and call-pattern(s) of the function are
--- precisely mirrored inthe ocnstructors of the view type
+-- precisely mirrored in the constructors of the view type
 --
 -- Using this view, we can exhibit the corresponding properties of the function
--- deifned in `Data.Fin.Properties`
+-- defined in `Data.Fin.Properties`
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.Data.Fin.Relation.Ternary.PunchInView where
+module README.Data.Fin.Relation.Ternary.PunchIn where
 
 open import Data.Nat.Base using (ℕ; suc)
 open import Data.Fin.Base using (Fin; zero; suc; _≤_; punchIn)
