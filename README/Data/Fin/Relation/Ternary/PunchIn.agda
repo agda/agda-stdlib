@@ -7,8 +7,8 @@
 -- such that the recursion and call-pattern(s) of the function are
 -- precisely mirrored in the constructors of the view type
 --
--- Using this view, we can exhibit the corresponding properties of the function
--- defined in `Data.Fin.Properties`
+-- Using this view, we can exhibit the corresponding properties of
+-- the function `punchIn` defined in `Data.Fin.Properties`
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

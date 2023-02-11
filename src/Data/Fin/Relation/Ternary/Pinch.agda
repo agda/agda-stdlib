@@ -3,9 +3,11 @@
 --
 -- The '`Pinch` view' of the function `pinch` defined on finite sets
 ------------------------------------------------------------------------
-
--- This example of a "view of a function via its graph relation" is inspired
--- by Nathan van Doorn's recent PR#1913.
+--
+-- This is an example of a view of a function defined over a datatype,
+-- such that the recursion and call-pattern(s) of the function are
+-- precisely mirrored in the constructors of the view type,
+-- ie that we 'view the function via its graph relation'
 
 {-# OPTIONS --without-K --safe #-}
 
