@@ -50,7 +50,7 @@ nPn≡n! n = begin-equality
 
 nP1≡n : ∀ n → n P 1 ≡ n
 nP1≡n zero    = k>n⇒nPk≡0 (z<s {n = zero})
-nP1≡n (suc n) = begin-equality 
+nP1≡n (suc n) = begin-equality
   (suc n) P 1        ≡⟨ nPk≡n!/[n∸k]! (s≤s (z≤n {n})) ⟩
   (suc n) ! / n !    ≡⟨ m*n/n≡m (suc n) (n !) ⟩
   suc n              ∎
@@ -150,7 +150,7 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
     ≡⟨⟩
   suc n ! / (suc k ! * (suc n ∸ suc k) !)
     ≡˘⟨ nCk≡n!/k![n-k]! [k+1]≤[n+1] ⟩
-  suc n C suc k ∎ 
+  suc n C suc k ∎
   where
     k≤n : k ≤ n
     k≤n = <⇒≤ k<n
@@ -163,22 +163,22 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
 
     [n-k]                   = n ∸ k
     [n-k-1]                 = n ∸ suc k
-    
+
     [n-k-1]+1≡[n-k]         : suc [n-k-1] ≡ [n-k]
     [n-k-1]+1≡[n-k]         = [m-n-1]+1≡[m-n] k<n
-    
+
     n!                      = n !
     k!                      = k !
     [k+1]!                  = (suc k) !
     [n-k]!                  = [n-k] !
     [n-k-1]!                = [n-k-1] !
 
-    [n-k]*[n-k-1]!≡[n-k]!   : [n-k] * [n-k-1]! ≡ [n-k]! 
+    [n-k]*[n-k-1]!≡[n-k]!   : [n-k] * [n-k-1]! ≡ [n-k]!
     [n-k]*[n-k-1]!≡[n-k]!   = begin-equality
       [n-k] * [n-k-1]!          ≡˘⟨ cong (_* [n-k-1]!) [n-k-1]+1≡[n-k] ⟩
       (suc [n-k-1]) * [n-k-1]!  ≡⟨ cong _! [n-k-1]+1≡[n-k] ⟩
       [n-k]!                    ∎
-      
+
     d[k]                    = k! * [n-k]!
     [k+1]*d[k]              = (suc k) * d[k]
     d[k+1]                  = [k+1]! * [n-k-1]!
@@ -187,7 +187,7 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
     n!/[n-k]*d[k+1]         = n ! / [n-k]*d[k+1]
     [n-k]*n!/[n-k]*d[k+1]   = [n-k] * n! / [n-k]*d[k+1]
     [n-k]*n!/[k+1]*d[k]     = [n-k] * n! / [k+1]*d[k]
-    
+
     [n-k]*d[k+1]≡[k+1]*d[k] : [n-k]*d[k+1] ≡ [k+1]*d[k]
     [n-k]*d[k+1]≡[k+1]*d[k] = begin-equality
       [n-k]*d[k+1]
