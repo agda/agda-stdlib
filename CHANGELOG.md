@@ -1977,11 +1977,14 @@ Other minor changes
   <-step        : m < n → m < 1 + n
   m<1+n⇒m<n∨m≡n : m < suc n → m < n ⊎ m ≡ n
 
+  n<ᵇ1+n : ∀ n → (n <ᵇ suc n) ≡ true
+
   z<′s : zero <′ suc n
   s<′s : m <′ n → suc m <′ suc n
   <⇒<′ : m < n → m <′ n
   <′⇒< : m <′ n → m < n
 
+  1!≡1    : 1 ! ≡ 1
   1≤n!    : 1 ≤ n !
   _!≢0    : NonZero (n !)
   _!*_!≢0 : NonZero (m ! * n !)
@@ -2018,6 +2021,18 @@ Other minor changes
   <-cmp : Trichotomous _≡_ _<_
   anyUpTo? : (P? : Decidable P) → ∀ v → Dec (∃ λ n → n < v × P n)
   allUpTo? : (P? : Decidable P) → ∀ v → Dec (∀ {n} → n < v → P n)
+  ```
+
+* Added new proofs in `Data.Nat.Combinatorics`:
+  ```agda
+  nP1≡n                   : n P 1 ≡ n
+  nC1≡n                   : n C 1 ≡ n
+  nCk+nC[k+1]≡[n+1]C[k+1] : n C k + n C (suc k) ≡ suc n C suc k
+  ```
+
+* Added new proofs in `Data.Nat.Combinatorics.Specification`:
+  ```agda
+  k![n∸k]!∣n! : k ≤ n →  k ! * (n ∸ k) ! ∣ n !
   ```
 
 * Added new proofs in `Data.Nat.DivMod`:
