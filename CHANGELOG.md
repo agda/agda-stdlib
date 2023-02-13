@@ -1694,6 +1694,11 @@ Other minor changes
   flexible : Flexible _∙_
   ```
 
+* Added new proof to `Algebra.Properties.Semiring.Exp`:
+  ```agda
+  y*x^m*y^n≈x^m*y^[n+1] : (x * y ≈ y * x) → y * (x ^ m * y ^ n) ≈ x ^ m * y ^ suc n
+  ```
+
 * Added new proofs to `Algebra.Properties.Ring`:
   ```agda
   -1*x≈-x : ∀ x → - 1# * x ≈ - x
