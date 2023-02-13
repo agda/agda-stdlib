@@ -31,6 +31,7 @@ open Monoid M
 open import Data.Vec.Functional.Relation.Binary.Equality.Setoid setoid
 open import Algebra.Properties.Monoid.Mult M
 open import Algebra.Definitions _≈_
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Definition
@@ -70,3 +71,21 @@ sum-replicate-idem idem n = trans (sum-replicate n) (×-idem idem n)
 sum-replicate-zero : ∀ n → sum {n} (replicate 0#) ≈ 0#
 sum-replicate-zero zero    = refl
 sum-replicate-zero (suc n) = sum-replicate-idem (+-identityˡ 0#) (suc n)
+
+------------------------------------------------------------------------
+-- When summing over a `Vector`, we can pull out last element
+
+sum-init : ∀ {n} (t : Vector Carrier (suc n)) → sum t ≈ sum (init t) + last t
+sum-init {zero} t  = begin
+  t₀ + 0# ≈⟨ +-identityʳ t₀ ⟩
+  t₀      ≈˘⟨ +-identityˡ t₀ ⟩
+  0# + t₀ ∎ where t₀ = t zero
+sum-init {suc n} t = begin
+  t₀ + ∑t             ≈⟨ +-congˡ (sum-init (tail t)) ⟩
+  t₀ + (∑t′ + tₗ)     ≈˘⟨ +-assoc _ _ _ ⟩
+  (t₀ + ∑t′) + tₗ     ∎
+  where
+    t₀ = head t
+    tₗ = last t
+    ∑t = sum (tail t)
+    ∑t′ = sum (tail (init t))
