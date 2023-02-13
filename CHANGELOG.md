@@ -1685,6 +1685,10 @@ Other minor changes
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
   semimedial : Semimedial _∙_
   ```
+* Added new proofs to `Algebra.Properties.Monoid`:
+  ```agda
+  sum-init : ∀ {n} (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
+  ```
 
 * Added new proofs to `Algebra.Properties.Semigroup`:
   ```agda
