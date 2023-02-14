@@ -35,7 +35,7 @@ open import Algebra.Definitions.RawSemiring rawSemiring public
 ^-cong x≈y u≡v = Mult.×-cong u≡v x≈y
 
 ^-congʳ : ∀ x → (x ^_) Preserves _≡_ ⟶ _≈_
-^-congʳ x u≡v = ^-cong refl u≡v
+^-congʳ x = Mult.×-congˡ
 
 -- xᵐ⁺ⁿ ≈ xᵐxⁿ
 ^-homo-* : ∀ x m n → x ^ (m ℕ.+ n) ≈ (x ^ m) * (x ^ n)
