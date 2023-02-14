@@ -1577,6 +1577,12 @@ New modules
   Algebra.Properties.Loop
   ```
 
+* Properties of (Commutative)Semiring: the Binomial Theorem
+  ```
+  Algebra.Properties.CommutativeSemiring.Binomial
+  Algebra.Properties.Semiring.Binomial
+  ```
+
 * Some n-ary functions manipulating lists
   ```
   Data.List.Nary.NonDependent
