@@ -50,12 +50,12 @@ nPn≡n! n = begin-equality
 
 nP1≡n : ∀ n → n P 1 ≡ n
 nP1≡n zero    = k>n⇒nPk≡0 (z<s {n = zero})
-nP1≡n (suc n) = begin-equality
-  (suc n) P 1        ≡⟨ nPk≡n!/[n∸k]! (s≤s (z≤n {n})) ⟩
-  (suc n) ! / n !    ≡⟨ m*n/n≡m (suc n) (n !) ⟩
-  suc n              ∎
+nP1≡n n@(suc n-1) = begin-equality
+  n P 1        ≡⟨ nPk≡n!/[n∸k]! (s≤s (z≤n {n-1})) ⟩
+  n ! / n-1 !  ≡⟨ m*n/n≡m n (n-1 !) ⟩
+  n            ∎
   where instance
-    _ = n !≢0
+    _ = n-1 !≢0
 
 ------------------------------------------------------------------------
 -- Properties of _C_
@@ -152,14 +152,14 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
     ≡˘⟨ nCk≡n!/k![n-k]! [k+1]≤[n+1] ⟩
   suc n C suc k ∎
   where
-    k≤n : k ≤ n
-    k≤n = <⇒≤ k<n
+    k≤n                     : k ≤ n
+    k≤n                     = <⇒≤ k<n
 
-    [k+1]≤[n+1] : suc k ≤ suc n
-    [k+1]≤[n+1] = s≤s k≤n
+    [k+1]≤[n+1]             : suc k ≤ suc n
+    [k+1]≤[n+1]             = s≤s k≤n
 
-    [k+1]+[n-k]≡[n+1] : (suc k) + (n ∸ k) ≡ suc n
-    [k+1]+[n-k]≡[n+1] = m+[n∸m]≡n {suc k} [k+1]≤[n+1]
+    [k+1]+[n-k]≡[n+1]       : (suc k) + (n ∸ k) ≡ suc n
+    [k+1]+[n-k]≡[n+1]       = m+[n∸m]≡n {suc k} [k+1]≤[n+1]
 
     [n-k]                   = n ∸ k
     [n-k-1]                 = n ∸ suc k
@@ -175,9 +175,11 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
 
     [n-k]*[n-k-1]!≡[n-k]!   : [n-k] * [n-k-1]! ≡ [n-k]!
     [n-k]*[n-k-1]!≡[n-k]!   = begin-equality
-      [n-k] * [n-k-1]!          ≡˘⟨ cong (_* [n-k-1]!) [n-k-1]+1≡[n-k] ⟩
-      (suc [n-k-1]) * [n-k-1]!  ≡⟨ cong _! [n-k-1]+1≡[n-k] ⟩
-      [n-k]!                    ∎
+      [n-k] * [n-k-1]!
+        ≡˘⟨ cong (_* [n-k-1]!) [n-k-1]+1≡[n-k] ⟩
+      (suc [n-k-1]) * [n-k-1]!
+        ≡⟨ cong _! [n-k-1]+1≡[n-k] ⟩
+      [n-k]!                ∎
 
     d[k]                    = k! * [n-k]!
     [k+1]*d[k]              = (suc k) * d[k]
@@ -196,8 +198,8 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
         ≡⟨ *-assoc (suc k) k! ([n-k] * [n-k-1]!) ⟩
       (suc k) * (k! * ([n-k] * [n-k-1]!))
         ≡⟨ cong ((suc k) *_) (cong (k! *_) [n-k]*[n-k-1]!≡[n-k]!) ⟩
-      [k+1]*d[k]
-        ∎ where open CommSemigroupProperties *-commutativeSemigroup
+      [k+1]*d[k]             ∎
+      where open CommSemigroupProperties *-commutativeSemigroup
 
     instance
       [k+1]!*[n-k]!≢0 = (suc k) !* [n-k] !≢0
