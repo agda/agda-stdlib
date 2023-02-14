@@ -1685,7 +1685,7 @@ Other minor changes
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
   semimedial : Semimedial _∙_
   ```
-* Added new proofs to `Algebra.Properties.Monoid`:
+* Added new proof to `Algebra.Properties.Monoid.Sum`:
   ```agda
   sum-init : ∀ {n} (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
   ```
@@ -1701,6 +1701,13 @@ Other minor changes
 * Added new proof to `Algebra.Properties.Semiring.Exp`:
   ```agda
   y*x^m*y^n≈x^m*y^[n+1] : (x * y ≈ y * x) → y * (x ^ m * y ^ n) ≈ x ^ m * y ^ suc n
+  ```
+
+* Added new proofs to `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  1×-identityʳ : 1 × x ≈ x
+  ×-comm-*     : x * (n × y) ≈ n × (x * y)
+  ×-assoc-*    : (n × x) * y ≈ n × (x * y)
   ```
 
 * Added new proofs to `Algebra.Properties.Ring`:
