@@ -16,15 +16,20 @@
 
 module README.Data.Fin.Relation.Unary.Top where
 
-open import Data.Nat.Base using (ℕ; zero; suc; _∸_)
-open import Data.Nat.Properties using (n∸n≡0; +-∸-assoc)
-open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁)
+open import Data.Nat.Base using (ℕ; zero; suc; _∸_; _≤_)
+open import Data.Nat.Properties using (n∸n≡0; +-∸-assoc; ≤-reflexive)
+open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁; _>_)
 open import Data.Fin.Properties using (toℕ-fromℕ; toℕ<n; toℕ-inject₁)
+open import Data.Fin.Induction hiding (>-weakInduction)
 open import Data.Fin.Relation.Unary.Top
+open import Induction.WellFounded as WF
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Unary using (Pred)
 
 private
   variable
+    ℓ : Level
     n : ℕ
 
 open Instances
@@ -126,3 +131,21 @@ opposite-prop {suc n} i with view i
   n ∸ toℕ j              ≡˘⟨ cong (n ∸_) (toℕ-inject₁ j) ⟩
   n ∸ toℕ (inject₁ j)    ∎ where open ≡-Reasoning
 
+------------------------------------------------------------------------
+-- Reimplementation of `Data.Fin.Induction.>-weakInduction`
+
+open WF using (Acc; acc)
+
+>-weakInduction : (P : Pred (Fin (suc n)) ℓ) →
+                  P (fromℕ n) →
+                  (∀ i → P (suc i) → P (inject₁ i)) →
+                  ∀ i → P i
+>-weakInduction {n = n} P Pₙ Pᵢ₊₁⇒Pᵢ i = induct (>-wellFounded i)
+  where
+  induct : ∀ {i} → Acc _>_ i → P i
+  induct {i} (acc rec) with view i
+  ... | top = Pₙ
+  ... | inj j = Pᵢ₊₁⇒Pᵢ j (induct (rec _ inject₁[j]+1≤[j+1]))
+    where
+    inject₁[j]+1≤[j+1] : suc (toℕ (inject₁ j)) Data.Nat.Base.≤ toℕ (suc j)
+    inject₁[j]+1≤[j+1] = Data.Nat.Properties.≤-reflexive (toℕ-inject₁ (suc j))
