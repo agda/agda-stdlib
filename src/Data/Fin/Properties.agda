@@ -562,9 +562,19 @@ splitAt-↑ˡ : ∀ m i n → splitAt m (i ↑ˡ n) ≡ inj₁ i
 splitAt-↑ˡ (suc m) zero    n = refl
 splitAt-↑ˡ (suc m) (suc i) n rewrite splitAt-↑ˡ m i n = refl
 
+splitAt-↑ˡ⁻¹ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
+splitAt-↑ˡ⁻¹ {suc m} {n} {0F} {.0F} refl = refl
+splitAt-↑ˡ⁻¹ {suc m} {n} {suc i} {j} eq with splitAt m i in EQ
+... | inj₁ k with refl ← eq = cong suc (splitAt-↑ˡ⁻¹ {i = i} {j = k} EQ)
+
 splitAt-↑ʳ : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
 splitAt-↑ʳ zero    n i = refl
 splitAt-↑ʳ (suc m) n i rewrite splitAt-↑ʳ m n i = refl
+
+splitAt-↑ʳ⁻¹ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
+splitAt-↑ʳ⁻¹ {zero}  {n} {i} {j} refl = refl
+splitAt-↑ʳ⁻¹ {suc m} {n} {suc i} {j} eq with splitAt m i in EQ
+... | inj₂ k with refl ← eq = cong suc (splitAt-↑ʳ⁻¹ {i = i} {j = k} EQ)
 
 splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
 splitAt-join m n (inj₁ x) = splitAt-↑ˡ m x n
@@ -677,7 +687,7 @@ combine-injective : ∀ (i : Fin m) (j : Fin n) (k : Fin m) (l : Fin n) →
 combine-injective i j k l cᵢⱼ≡cₖₗ =
   combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ ,
   combine-injectiveʳ i j k l cᵢⱼ≡cₖₗ
-
+{-
 combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine j k ≡ i
 combine-surjective {m} {n} i with remQuot {m} n i | P.inspect (remQuot {m} n) i
 ... | j , k | P.[ eq ] = j , k , (begin
@@ -685,6 +695,13 @@ combine-surjective {m} {n} i with remQuot {m} n i | P.inspect (remQuot {m} n) i
   uncurry combine (remQuot {m} n i) ≡⟨ combine-remQuot {m} n i ⟩
   i                                 ∎)
   where open ≡-Reasoning
+-}
+combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine {m} {n} j k ≡ i
+combine-surjective {m = suc m} {n} i with splitAt n i in eq
+... | inj₁ j rewrite (splitAt-↑ˡ _ j (m ℕ.* n))
+    = zero , j , splitAt-↑ˡ⁻¹ eq
+... | inj₂ k with (j₁ , k₁ , refl) ← combine-surjective {m} {n} k
+    = suc j₁ , k₁ , splitAt-↑ʳ⁻¹ eq
 
 ------------------------------------------------------------------------
 -- Bundles
