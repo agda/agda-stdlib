@@ -101,9 +101,8 @@ nC1≡n : ∀ n → n C 1 ≡ n
 nC1≡n zero    = refl
 nC1≡n n@(suc n-1) = begin-equality
   n C 1          ≡⟨ nCk≡nPk/k!  (s≤s (z≤n {n-1})) ⟩
-  (n P 1) / 1 !  ≡⟨ /-congˡ {o = 1 !} (nP1≡n n) ⟩
-  n / 1 !        ≡⟨ /-congʳ {m = n} 1!≡1 ⟩
-  n / 1          ≡⟨ n/1≡n n ⟩
+  (n P 1) / 1 !  ≡⟨ n/1≡n (n P 1) ⟩
+  n P 1          ≡⟨ nP1≡n n ⟩
   n              ∎
 
 

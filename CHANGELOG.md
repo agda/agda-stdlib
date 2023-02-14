@@ -1984,7 +1984,6 @@ Other minor changes
   <⇒<′ : m < n → m <′ n
   <′⇒< : m <′ n → m < n
 
-  1!≡1    : 1 ! ≡ 1
   1≤n!    : 1 ≤ n !
   _!≢0    : NonZero (n !)
   _!*_!≢0 : NonZero (m ! * n !)
