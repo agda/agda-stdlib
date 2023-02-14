@@ -15,7 +15,7 @@ import Data.Nat.Properties as ℕ
 module Algebra.Properties.Semiring.Exp
   {a ℓ} (S : Semiring a ℓ) where
 
-open Semiring S renaming (zero to *-zero)
+open Semiring S
 open import Relation.Binary.Reasoning.Setoid setoid
 import Algebra.Properties.Monoid.Mult *-monoid as Mult
 
@@ -33,6 +33,9 @@ open import Algebra.Definitions.RawSemiring rawSemiring public
 
 ^-cong : _^_ Preserves₂ _≈_ ⟶ _≡_ ⟶ _≈_
 ^-cong x≈y u≡v = Mult.×-cong u≡v x≈y
+
+^-congʳ : ∀ x → (x ^_) Preserves _≡_ ⟶ _≈_
+^-congʳ x u≡v = ^-cong refl u≡v
 
 -- xᵐ⁺ⁿ ≈ xᵐxⁿ
 ^-homo-* : ∀ x m n → x ^ (m ℕ.+ n) ≈ (x ^ m) * (x ^ n)
