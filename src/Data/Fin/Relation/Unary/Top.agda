@@ -25,6 +25,11 @@ private
 ------------------------------------------------------------------------
 -- The View, considered as a unary relation on Fin (suc n)
 
+-- NB `Data.Fin.Properties.fromℕ≢inject₁` establishes that the following
+-- inductively defined family on `Fin (suc n)` has constructors which
+-- target *disjoint* instances of the family; and hence the interpretations
+-- of the View constructors will also be disjoint
+
 data View : (i : Fin (suc n)) → Set where
 
   top :                View (fromℕ n)
