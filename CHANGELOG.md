@@ -600,6 +600,16 @@ Additions to existing modules
   HomoProduct  n A = HomoProduct′ n (const A)
   ```
 
+* In `Data.Sum.Relation.Binary.LeftOrder` :
+  ```agda
+  ⊎-<-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
+  ```
+
+* in `Data.Sum.Relation.Binary.Pointwise` :
+  ```agda
+  ⊎-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
+  ```
+
 * In `Data.Vec.Properties`:
   ```agda
   toList-injective : .(m=n : m ≡ n) → (xs : Vec A m) (ys : Vec A n) → toList xs ≡ toList ys → xs ≈[ m=n ] ys
@@ -652,6 +662,7 @@ Additions to existing modules
   ```
 
 * In `Relation.Nullary.Decidable.Core`:
+>>>>>>> da073f171 (Wellfounded proof for sum relations (#1920))
   ```agda
   ⊤-dec : Dec ⊤
   ⊥-dec : Dec ⊥
