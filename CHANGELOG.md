@@ -391,6 +391,68 @@ Additions to existing modules
   ```
 
 * In `Data.Fin.Properties`:
+  the proof that an injection from a type `A` into `Fin n` induces a
+  decision procedure for `_≡_` on `A` has been generalized to other
+  equivalences over `A` (i.e. to arbitrary setoids), and renamed from
+  `eq?` to the more descriptive `inj⇒≟` and `inj⇒decSetoid`.
+
+* Added new proofs in `Data.Fin.Properties`:
+  ```
+  1↔⊤                : Fin 1 ↔ ⊤
+
+  0≢1+n              : zero ≢ suc i
+
+  ↑ˡ-injective       : i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
+  ↑ʳ-injective       : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
+  finTofun-funToFin  : funToFin ∘ finToFun ≗ id
+  funTofin-funToFun  : finToFun (funToFin f) ≗ f
+  ^↔→                : Extensionality _ _ → Fin (m ^ n) ↔ (Fin n → Fin m)
+
+  toℕ-mono-<         : i < j → toℕ i ℕ.< toℕ j
+  toℕ-mono-≤         : i ≤ j → toℕ i ℕ.≤ toℕ j
+  toℕ-cancel-≤       : toℕ i ℕ.≤ toℕ j → i ≤ j
+  toℕ-cancel-<       : toℕ i ℕ.< toℕ j → i < j
+
+  toℕ-combine        : toℕ (combine i j) ≡ k ℕ.* toℕ i ℕ.+ toℕ j
+  combine-injectiveˡ : combine i j ≡ combine k l → i ≡ k
+  combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
+  combine-injective  : combine i j ≡ combine k l → i ≡ k × j ≡ l
+  combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
+  combine-monoˡ-<    : i < j → combine i k < combine j l
+
+  ℕ-ℕ≡toℕ‿ℕ-         : n ℕ-ℕ i ≡ toℕ (n ℕ- i)
+
+  punchIn-mono-≤     : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
+  punchIn-cancel-≤   : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
+  punchOut-mono-≤    : (i≢j : i ≢ j) (i≢k : i ≢ k) → j ≤ k → punchOut i≢j ≤ punchOut i≢k
+  punchOut-cancel-≤  : (i≢j : i ≢ j) (i≢k : i ≢ k) → punchOut i≢j ≤ punchOut i≢k → j ≤ k
+
+  lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
+  pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
+
+  i<1+i              : i < suc i
+
+  injective⇒≤               : ∀ {f : Fin m → Fin n} → Injective f → m ℕ.≤ n
+  <⇒notInjective            : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective f)
+  ℕ→Fin-notInjective        : ∀ (f : ℕ → Fin n) → ¬ (Injective f)
+  cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} → Injective f → Injective g → m ≡ n
+
+  cast-is-id    : cast eq k ≡ k
+  subst-is-cast : subst Fin eq k ≡ cast eq k
+  cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+  ```
+
+* Added new functions in `Data.Integer.Base`:
+  ```
+  _^_ : ℤ → ℕ → ℤ
+ 
+  +-0-rawGroup  : Rawgroup 0ℓ 0ℓ
+
+  *-rawMagma    : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+ ```
+
+* Added new proofs in `Data.Integer.Properties`:
   ```agda
   cast-involutive       : .(eq₁ : m ≡ n) .(eq₂ : n ≡ m) → ∀ k → cast eq₁ (cast eq₂ k) ≡ k
   inject!-injective     : Injective _≡_ _≡_ inject!
