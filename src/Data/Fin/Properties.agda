@@ -562,19 +562,19 @@ splitAt-↑ˡ : ∀ m i n → splitAt m (i ↑ˡ n) ≡ inj₁ i
 splitAt-↑ˡ (suc m) zero    n = refl
 splitAt-↑ˡ (suc m) (suc i) n rewrite splitAt-↑ˡ m i n = refl
 
-splitAt-↑ˡ⁻¹ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
-splitAt-↑ˡ⁻¹ {suc m} {n} {0F} {.0F} refl = refl
-splitAt-↑ˡ⁻¹ {suc m} {n} {suc i} {j} eq with splitAt m i in EQ
-... | inj₁ k with refl ← eq = cong suc (splitAt-↑ˡ⁻¹ {i = i} {j = k} EQ)
+splitAt⁻¹-↑ˡ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
+splitAt⁻¹-↑ˡ {suc m} {n} {0F} {.0F} refl = refl
+splitAt⁻¹-↑ˡ {suc m} {n} {suc i} {j} eq with splitAt m i in EQ
+... | inj₁ k with refl ← eq = cong suc (splitAt⁻¹-↑ˡ {i = i} {j = k} EQ)
 
 splitAt-↑ʳ : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
 splitAt-↑ʳ zero    n i = refl
 splitAt-↑ʳ (suc m) n i rewrite splitAt-↑ʳ m n i = refl
 
-splitAt-↑ʳ⁻¹ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
-splitAt-↑ʳ⁻¹ {zero}  {n} {i} {j} refl = refl
-splitAt-↑ʳ⁻¹ {suc m} {n} {suc i} {j} eq with splitAt m i in EQ
-... | inj₂ k with refl ← eq = cong suc (splitAt-↑ʳ⁻¹ {i = i} {j = k} EQ)
+splitAt⁻¹-↑ʳ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
+splitAt⁻¹-↑ʳ {zero}  {n} {i} {j} refl = refl
+splitAt⁻¹-↑ʳ {suc m} {n} {suc i} {j} eq with splitAt m i in EQ
+... | inj₂ k with refl ← eq = cong suc (splitAt⁻¹-↑ʳ {i = i} {j = k} EQ)
 
 splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
 splitAt-join m n (inj₁ x) = splitAt-↑ˡ m x n
@@ -688,27 +688,20 @@ combine-injective i j k l cᵢⱼ≡cₖₗ =
   combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ ,
   combine-injectiveʳ i j k l cᵢⱼ≡cₖₗ
 
-{-
--- [agda issue #6507](https://github.com/agda/agda/issues/6507)
---
--- The use of `with remQuot {m} n i in eq` causes Agda to signal
--- "Panic: uncaught pattern violation"
--- even *before* attempting to decompose the pattern variable `p`
-
 combine-surjectiveOLD : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine j k ≡ i
 combine-surjectiveOLD {m} {n} i with remQuot {m} n i in eq
-... | p = {!j , k , (begin
+... | j , k = j , k , (begin
   combine j k                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
   uncurry combine (remQuot {m} n i) ≡⟨ combine-remQuot {m} n i ⟩
-  i                                 ∎)!}
+  i                                 ∎)
   where open ≡-Reasoning
--}
+
 combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine {m} {n} j k ≡ i
 combine-surjective {m = suc m} {n} i with splitAt n i in eq
 ... | inj₁ j rewrite (splitAt-↑ˡ _ j (m ℕ.* n))
-    = zero , j , splitAt-↑ˡ⁻¹ eq
+    = zero , j , splitAt⁻¹-↑ˡ eq
 ... | inj₂ k with (j₁ , k₁ , refl) ← combine-surjective {m} {n} k
-    = suc j₁ , k₁ , splitAt-↑ʳ⁻¹ eq
+    = suc j₁ , k₁ , splitAt⁻¹-↑ʳ eq
 
 ------------------------------------------------------------------------
 -- Bundles

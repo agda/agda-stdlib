@@ -1797,6 +1797,9 @@ Other minor changes
   toℕ-cancel-≤       : toℕ i ℕ.≤ toℕ j → i ≤ j
   toℕ-cancel-<       : toℕ i ℕ.< toℕ j → i < j
 
+  splitAt⁻¹-↑ˡ       : splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
+  splitAt⁻¹-↑ʳ       : splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
+
   toℕ-combine        : toℕ (combine i j) ≡ k ℕ.* toℕ i ℕ.+ toℕ j
   combine-injectiveˡ : combine i j ≡ combine k l → i ≡ k
   combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
