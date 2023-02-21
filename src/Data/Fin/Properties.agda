@@ -688,19 +688,19 @@ combine-injective i j k l cᵢⱼ≡cₖₗ =
   combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ ,
   combine-injectiveʳ i j k l cᵢⱼ≡cₖₗ
 
-combine-surjectiveOLD : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine j k ≡ i
-combine-surjectiveOLD {m} {n} i with remQuot {m} n i in eq
+combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine j k ≡ i
+combine-surjective {m} {n} i with remQuot {m} n i in eq
 ... | j , k = j , k , (begin
   combine j k                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
   uncurry combine (remQuot {m} n i) ≡⟨ combine-remQuot {m} n i ⟩
   i                                 ∎)
   where open ≡-Reasoning
 
-combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine {m} {n} j k ≡ i
-combine-surjective {m = suc m} {n} i with splitAt n i in eq
+combine-surjectiveNEW : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine {m} {n} j k ≡ i
+combine-surjectiveNEW {m = suc m} {n} i with splitAt n i in eq
 ... | inj₁ j rewrite (splitAt-↑ˡ _ j (m ℕ.* n))
     = zero , j , splitAt⁻¹-↑ˡ eq
-... | inj₂ k with (j₁ , k₁ , refl) ← combine-surjective {m} {n} k
+... | inj₂ k with (j₁ , k₁ , refl) ← combine-surjectiveNEW {m} {n} k
     = suc j₁ , k₁ , splitAt⁻¹-↑ʳ eq
 
 ------------------------------------------------------------------------
