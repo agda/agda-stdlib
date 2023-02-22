@@ -1,7 +1,7 @@
 Version 2.0-dev
 ===============
 
-The library has been tested using Agda 2.6.2.
+The library has been tested using Agda 2.6.2.2.
 
 Highlights
 ----------

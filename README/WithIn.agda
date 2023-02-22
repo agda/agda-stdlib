@@ -76,7 +76,7 @@ plus-eq-with-in m n with m + n in eq
 
 -- NB. What has been lost? the new syntax binds `eq` once and for all,
 -- whereas the old `with ... inspect` syntax allowed pattern-matching on
--- *different names* for the equation in each possible branch after a `with`. 
+-- *different names* for the equation in each possible branch after a `with`.
 
 ------------------------------------------------------------------------
 -- Understanding the implementation of `with ... in ...`
