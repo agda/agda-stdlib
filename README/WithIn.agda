@@ -1,13 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Explaining how to use the inspect idiom and elaborating on the way
--- it is implemented in the standard library.
+-- Explaining how to use the `with ... in ...` idiom.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.Inspect where
+module README.WithIn where
 
 open import Data.Nat.Base
 open import Data.Nat.Properties
@@ -15,7 +14,7 @@ open import Data.Product
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
--- Using inspect
+-- Using `with ... in ...`
 
 -- We start with the definition of a (silly) predicate: `Plus m n p` states
 -- that `m + n` is equal to `p` in a rather convoluted way. Crucially, it
@@ -60,8 +59,8 @@ plus-eq-+ (suc m) n      = refl
 -- when we would have wanted a more precise type of the form:
 -- `plus-eq-aux : ∀ m n p → m + n ≡ p → Plus-eq m n p`.
 
--- This is where we can use `inspect`. By using `with f x | inspect f x`,
--- we get both a `y` which is the result of `f x` and a proof that `f x ≡ y`.
+-- This is where we can use `with ... in ...`. By using `with f x in eq`, we get
+-- *both* a `y` which is the result of `f x` *and* a proof `eq` that `f x ≡ y`.
 -- Splitting on the result of `m + n`, we get two cases:
 
 -- 1. `m ≡ 0 × n ≡ 0` under the assumption that `m + n ≡ zero`
@@ -70,18 +69,20 @@ plus-eq-+ (suc m) n      = refl
 -- The first one can be discharged using lemmas from Data.Nat.Properties and
 -- the second one is trivial.
 
-plus-eq-with : ∀ m n → Plus-eq m n (m + n)
-plus-eq-with m n with m + n | inspect (m +_) n
-... | zero  | [ m+n≡0   ] = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
-... | suc p | [ m+n≡1+p ] = m+n≡1+p
+plus-eq-with-in : ∀ m n → Plus-eq m n (m + n)
+plus-eq-with-in m n with m + n in eq
+... | zero  = m+n≡0⇒m≡0 m eq , m+n≡0⇒n≡0 m eq
+... | suc p = eq
 
+-- NB. What has been lost? the new syntax binds `eq` once and for all,
+-- whereas the old `with ... inspect` syntax allowed pattern-matching on
+-- *different names* for the equation in each possible branch after a `with`. 
 
 ------------------------------------------------------------------------
--- Understanding the implementation of inspect
+-- Understanding the implementation of `with ... in ...`
 
--- So why is it that we have to go through the record type `Reveal_·_is_`
--- and the ̀inspect` function? The fact is: we don't have to if we write
--- our own auxiliary lemma:
+-- What happens if we try to avoid use of the ̀with ... in ...` syntax?
+-- The fact is: we don't have to if we write our own auxiliary lemma:
 
 plus-eq-aux : ∀ m n → Plus-eq m n (m + n)
 plus-eq-aux m n = aux m n (m + n) refl where
@@ -90,43 +91,19 @@ plus-eq-aux m n = aux m n (m + n) refl where
   aux m n zero    m+n≡0   = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
   aux m n (suc p) m+n≡1+p = m+n≡1+p
 
--- The problem is that when we write ̀with f x | pr`, `with` decides to call `y`
--- the result `f x` and to replace *all* of the occurences of `f x` in the type
--- of `pr` with `y`. That is to say that if we were to write:
+-- NB. Here we can choose alternative names in each branch of `aux`
+-- for the proof of the auxiliary hypothesis `m + n ≡ p`
 
--- plus-eq-naïve : ∀ m n → Plus-eq m n (m + n)
--- plus-eq-naïve m n with m + n | refl {x = m + n}
--- ... | p | eq = {!!}
+-- We could likewise emulate the general behaviour of `with ... in ...`
+-- using an auxiliary function as follows, using the `with p ← ...` syntax
+-- to bind the subexpression `m + n` to (pattern) variable `p`:
 
--- then `with` would abstract `m + n` as `p` on *both* sides of the equality
--- proven by `refl` thus giving us the following goal with an extra, useless,
--- assumption:
+plus-eq-with-in-aux : ∀ m n → Plus-eq m n (m + n)
+plus-eq-with-in-aux m n with p ← m + n in eq = aux m n p eq where
 
--- 1. `Plus-eq m n p` under the assumption that `p ≡ p`
+  aux : ∀ m n p → m + n ≡ p → Plus-eq m n p
+  aux m n zero    m+n≡0   = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
+  aux m n (suc p) m+n≡1+p = m+n≡1+p
 
--- So how does `inspect` work? The standard library uses a more general version
--- of the following type and function:
-
-record MyReveal_·_is_ (f : ℕ → ℕ) (x y : ℕ) : Set where
-  constructor [_]
-  field eq : f x ≡ y
-
-my-inspect : ∀ f n → MyReveal f · n is (f n)
-my-inspect f n = [ refl ]
-
--- Given that `inspect` has the type `∀ f n → Reveal f · n is (f n)`, when we
--- write `with f n | inspect f n`, the only `f n` that can be abstracted in the
--- type of `inspect f n` is the third argument to `Reveal_·_is_`.
-
--- That is to say that the auxiliary definition generated looks like this:
-
-plus-eq-reveal : ∀ m n → Plus-eq m n (m + n)
-plus-eq-reveal m n = aux m n (m + n) (my-inspect (m +_) n) where
-
-  aux : ∀ m n p → MyReveal (m +_) · n is p → Plus-eq m n p
-  aux m n zero    [ m+n≡0   ] = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
-  aux m n (suc p) [ m+n≡1+p ] = m+n≡1+p
-
--- At the cost of having to unwrap the constructor `[_]` around the equality
--- we care about, we can keep relying on `with` and avoid having to roll out
--- handwritten auxiliary definitions.
+-- That is, more or less, what the Agda-generated definition corresponding to
+-- `plus-eq-with-in` would look like.
