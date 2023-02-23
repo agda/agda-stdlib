@@ -26,13 +26,13 @@ open import Relation.Binary using (Rel; Reflexive; Symmetric; Transitive; IsEqui
 
 
 ------------------------------------------------------------------------
--- re-export those algebras which are also terminal
+-- Re-export those algebras which are also terminal
 
 open import Algebra.Construct.Terminal {c} {ℓ} public
   hiding (rawMagma; magma; semigroup; band)
 
 ------------------------------------------------------------------------
--- gather all the functionality in one place
+-- Gather all the functionality in one place
 
 private module ℤero where
 
