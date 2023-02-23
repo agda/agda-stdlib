@@ -48,23 +48,25 @@ open import Algebra.Definitions.RawSemiring rawSemiring public
 ------------------------------------------------------------------------
 -- A lemma using commutativity, needed for the Binomial Theorem
 
-module _ {x} {y} (x*y≈y*x : x * y ≈ y * x) where
-
-  y*x^m*y^n≈x^m*y^[n+1] : ∀ m n → y * (x ^ m * y ^ n) ≈ x ^ m * y ^ suc n
-  y*x^m*y^n≈x^m*y^[n+1] zero    n = begin
-    y * (x ^ ℕ.zero * y ^ n)  ≡⟨⟩
-    y * (1# * y ^ n)           ≈⟨ *-congˡ (*-identityˡ (y ^ n)) ⟩
-    y * (y ^ n)                ≡⟨⟩
-    y ^ (suc n)                ≈˘⟨ *-identityˡ (y ^ suc n) ⟩
-    1# * y ^ (suc n)           ≡⟨⟩
-    x ^ ℕ.zero * y ^ (suc n)  ∎
-  y*x^m*y^n≈x^m*y^[n+1] (suc m) n = begin
-    y * (x ^ suc m * y ^ n)    ≡⟨⟩
-    y * ((x * x ^ m) * y ^ n)  ≈⟨ *-congˡ (*-assoc x (x ^ m) (y ^ n)) ⟩
-    y * (x * (x ^ m * y ^ n))  ≈˘⟨ *-assoc y x (x ^ m * y ^ n) ⟩
-    y * x * (x ^ m * y ^ n)    ≈˘⟨ *-congʳ {- here -} x*y≈y*x ⟩
-    x * y * (x ^ m * y ^ n)    ≈⟨ *-assoc x y _ ⟩
-    x * (y * (x ^ m * y ^ n))  ≈⟨ *-congˡ (y*x^m*y^n≈x^m*y^[n+1] m n) ⟩
-    x * (x ^ m * y ^ suc n)    ≈˘⟨ *-assoc x (x ^ m) (y ^ suc n) ⟩
-    (x * x ^ m) * y ^ suc n    ≡⟨⟩
-    x ^ suc m * y ^ suc n      ∎
+y*x^m*y^n≈x^m*y^[n+1] : ∀ {x} {y} (x*y≈y*x : x * y ≈ y * x) →
+                        ∀ m n → y * (x ^ m * y ^ n) ≈ x ^ m * y ^ suc n
+y*x^m*y^n≈x^m*y^[n+1] {x} {y} x*y≈y*x = helper
+  where
+    helper : ∀ m n → y * (x ^ m * y ^ n) ≈ x ^ m * y ^ suc n
+    helper zero    n = begin
+      y * (x ^ ℕ.zero * y ^ n)  ≡⟨⟩
+      y * (1# * y ^ n)          ≈⟨ *-congˡ (*-identityˡ (y ^ n)) ⟩
+      y * (y ^ n)               ≡⟨⟩
+      y ^ (suc n)               ≈˘⟨ *-identityˡ (y ^ suc n) ⟩
+      1# * y ^ (suc n)          ≡⟨⟩
+      x ^ ℕ.zero * y ^ (suc n)  ∎
+    helper (suc m) n = begin
+      y * (x ^ suc m * y ^ n)    ≡⟨⟩
+      y * ((x * x ^ m) * y ^ n)  ≈⟨ *-congˡ (*-assoc x (x ^ m) (y ^ n)) ⟩
+      y * (x * (x ^ m * y ^ n))  ≈˘⟨ *-assoc y x (x ^ m * y ^ n) ⟩
+      y * x * (x ^ m * y ^ n)    ≈˘⟨ *-congʳ x*y≈y*x ⟩
+      x * y * (x ^ m * y ^ n)    ≈⟨ *-assoc x y _ ⟩
+      x * (y * (x ^ m * y ^ n))  ≈⟨ *-congˡ (helper m n) ⟩
+      x * (x ^ m * y ^ suc n)    ≈˘⟨ *-assoc x (x ^ m) (y ^ suc n) ⟩
+      (x * x ^ m) * y ^ suc n    ≡⟨⟩
+      x ^ suc m * y ^ suc n      ∎
