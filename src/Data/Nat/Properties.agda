@@ -121,6 +121,10 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 <ᵇ-reflects-< : ∀ m n → Reflects (m < n) (m <ᵇ n)
 <ᵇ-reflects-< m n = fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
 
+n<ᵇ1+n : ∀ n → (n <ᵇ suc n) ≡ true
+n<ᵇ1+n zero = refl
+n<ᵇ1+n (suc n) = n<ᵇ1+n n
+
 ------------------------------------------------------------------------
 -- Properties of _≤ᵇ_
 ------------------------------------------------------------------------
@@ -1558,6 +1562,9 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
   (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
   m + (n ∸ o)          ∎
 
+[m-n-1]+1≡[m-n] : ∀ {m n} (n<m : n < m) → suc (m ∸ suc n) ≡ m ∸ n
+[m-n-1]+1≡[m-n] n<m = sym (+-∸-assoc 1 n<m)
+
 m≤n+m∸n : ∀ m n → m ≤ n + (m ∸ n)
 m≤n+m∸n zero    n       = z≤n
 m≤n+m∸n (suc m) zero    = ≤-refl
@@ -1918,7 +1925,7 @@ n≡⌈n+n/2⌉ (suc n′@(suc n)) =
   cong suc (trans (n≡⌈n+n/2⌉ _) (cong ⌈_/2⌉ (sym (+-suc n n′))))
 
 ------------------------------------------------------------------------
--- Properties of !_
+-- Properties of _!
 
 1≤n! : ∀ n → 1 ≤ n !
 1≤n! zero    = ≤-refl
