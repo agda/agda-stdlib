@@ -1692,7 +1692,7 @@ Other minor changes
 
 * Added new proof to `Algebra.Properties.Monoid.Sum`:
   ```agda
-  sum-init : ∀ {n} (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
+  sum-init-last : ∀ {n} (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
   ```
 
 * Added new proofs to `Algebra.Properties.Semigroup`:
