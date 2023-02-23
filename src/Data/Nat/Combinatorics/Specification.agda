@@ -98,7 +98,6 @@ k!∣nP′k n@{suc n-1} k@{suc k-1} k≤n@(s≤s k-1≤n-1) with k-1 ≟ n-1
   (subst (k ! ∣_) (nP′k≡n!/[n∸k]! k≤n) (k!∣nP′k k≤n))
   where instance _ = (n ∸ k) !≢0
 
-
 ------------------------------------------------------------------------
 -- Properties of _P_
 
