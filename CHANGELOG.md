@@ -2064,14 +2064,10 @@ Other minor changes
 
 * Added new proofs in `Data.Nat.Combinatorics`:
   ```agda
+  k![n∸k]!∣n!              : k ≤ n →  k ! * (n ∸ k) ! ∣ n !
   nP1≡n                   : n P 1 ≡ n
   nC1≡n                   : n C 1 ≡ n
   nCk+nC[k+1]≡[n+1]C[k+1] : n C k + n C (suc k) ≡ suc n C suc k
-  ```
-
-* Added new proofs in `Data.Nat.Combinatorics.Specification`:
-  ```agda
-  k![n∸k]!∣n! : k ≤ n →  k ! * (n ∸ k) ! ∣ n !
   ```
 
 * Added new proofs in `Data.Nat.DivMod`:

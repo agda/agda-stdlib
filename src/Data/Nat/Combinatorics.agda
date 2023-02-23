@@ -36,7 +36,7 @@ open Base public
 -- Properties of _P_
 
 open Specification public
-  using (nPk≡n!/[n∸k]!; k>n⇒nPk≡0; [n∸k]!k!∣n!; k![n∸k]!∣n!)
+  using (nPk≡n!/[n∸k]!; k>n⇒nPk≡0; [n∸k]!k!∣n!)
 
 nPn≡n! : ∀ n → n P n ≡ n !
 nPn≡n! n = begin-equality
@@ -108,6 +108,9 @@ nC1≡n n@(suc n-1) = begin-equality
 
 ------------------------------------------------------------------------
 -- Arithmetic of (n C k)
+
+k![n∸k]!∣n! : ∀ {n k} → k ≤ n →  k ! * (n ∸ k) ! ∣ n !
+k![n∸k]!∣n! {n} {k} k≤n = subst (_∣ n !) (*-comm ((n ∸ k) !) (k !)) ([n∸k]!k!∣n! k≤n)
 
 nCk+nC[k+1]≡[n+1]C[k+1] : ∀ n k → n C k + n C (suc k) ≡ suc n C suc k
 nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
