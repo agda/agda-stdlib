@@ -12,7 +12,7 @@ open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
-open import Relation.Binary.Definitions
+open import Relation.Binary.Definitions 
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; subst)
 
@@ -49,11 +49,11 @@ nPn≡n! n = begin-equality
     _ = (n ∸ n) !≢0
 
 nP1≡n : ∀ n → n P 1 ≡ n
-nP1≡n zero    = k>n⇒nPk≡0 (z<s {n = zero})
+nP1≡n zero        = refl
 nP1≡n n@(suc n-1) = begin-equality
-  n P 1        ≡⟨ nPk≡n!/[n∸k]! (s≤s (z≤n {n-1})) ⟩
-  n ! / n-1 !  ≡⟨ m*n/n≡m n (n-1 !) ⟩
-  n            ∎
+  n P 1          ≡⟨ nPk≡n!/[n∸k]! (s≤s (z≤n {n-1})) ⟩
+  n ! / n-1 !    ≡⟨ m*n/n≡m n (n-1 !) ⟩
+  n              ∎
   where instance
     _ = n-1 !≢0
 
@@ -109,7 +109,51 @@ nC1≡n n@(suc n-1) = begin-equality
 ------------------------------------------------------------------------
 -- Arithmetic of (n C k)
 
-k![n∸k]!∣n! : ∀ {n k} → k ≤ n →  k ! * (n ∸ k) ! ∣ n !
+module _ {n k} (k<n : k < n) where
+
+  private
+
+    [n-k]            = n ∸ k
+    [n-k-1]          = n ∸ suc k
+
+    [n-k]!           = [n-k] !
+    [n-k-1]!         = [n-k-1] !
+  
+    [n-k]≡1+[n-k-1]  : [n-k] ≡ suc [n-k-1]
+    [n-k]≡1+[n-k-1]  = +-∸-assoc 1 k<n
+
+
+  [n-k]*[n-k-1]!≡[n-k]! : [n-k] * [n-k-1]! ≡ [n-k]!
+  [n-k]*[n-k-1]!≡[n-k]! = begin-equality
+      [n-k] * [n-k-1]!
+        ≡⟨ cong (_* [n-k-1]!) [n-k]≡1+[n-k-1] ⟩
+      (suc [n-k-1]) * [n-k-1]!
+        ≡˘⟨ cong _! [n-k]≡1+[n-k-1] ⟩
+      [n-k]!                ∎
+
+  private
+
+    n!           = n !
+    k!           = k !
+    [k+1]!       = (suc k) !
+
+    d[k]         = k! * [n-k]!
+    [k+1]*d[k]   = (suc k) * d[k]
+    d[k+1]       = [k+1]! * [n-k-1]!
+    [n-k]*d[k+1] = [n-k] * d[k+1]
+
+  [n-k]*d[k+1]≡[k+1]*d[k] : [n-k]*d[k+1] ≡ [k+1]*d[k]
+  [n-k]*d[k+1]≡[k+1]*d[k] = begin-equality
+    [n-k]*d[k+1]
+      ≡⟨ x∙yz≈y∙xz [n-k] [k+1]! [n-k-1]! ⟩
+    [k+1]! * ([n-k] * [n-k-1]!)
+      ≡⟨ *-assoc (suc k) k! ([n-k] * [n-k-1]!) ⟩
+    (suc k) * (k! * ([n-k] * [n-k-1]!))
+       ≡⟨ cong ((suc k) *_) (cong (k! *_) [n-k]*[n-k-1]!≡[n-k]!) ⟩
+    [k+1]*d[k]             ∎
+    where open CommSemigroupProperties *-commutativeSemigroup
+
+k![n∸k]!∣n! : ∀ {n k} → k ≤ n → k ! * (n ∸ k) ! ∣ n !
 k![n∸k]!∣n! {n} {k} k≤n = subst (_∣ n !) (*-comm ((n ∸ k) !) (k !)) ([n∸k]!k!∣n! k≤n)
 
 nCk+nC[k+1]≡[n+1]C[k+1] : ∀ n k → n C k + n C (suc k) ≡ suc n C suc k
@@ -139,7 +183,7 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
   n! / d[k] + _
     ≡˘⟨ cong (_+ [n-k]*n!/[n-k]*d[k+1]) (m*n/m*o≡n/o (suc k) n! d[k]) ⟩
   (suc k * n!) / [k+1]*d[k] + _
-    ≡⟨ cong (((suc k * n!) / [k+1]*d[k]) +_) (/-congʳ [n-k]*d[k+1]≡[k+1]*d[k]) ⟩
+    ≡⟨ cong (((suc k * n!) / [k+1]*d[k]) +_) (/-congʳ ([n-k]*d[k+1]≡[k+1]*d[k] k<n)) ⟩
   (suc k * n!) / [k+1]*d[k] + ((n ∸ k) * n! / [k+1]*d[k])
     ≡˘⟨ +-distrib-/-∣ˡ _ (*-monoʳ-∣ (suc k) (k![n∸k]!∣n! k≤n)) ⟩
   ((suc k) * n! + (n ∸ k) * n!) / [k+1]*d[k]
@@ -166,42 +210,19 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
     [n-k]                   = n ∸ k
     [n-k-1]                 = n ∸ suc k
 
-    [n-k-1]+1≡[n-k]         : suc [n-k-1] ≡ [n-k]
-    [n-k-1]+1≡[n-k]         = [m-n-1]+1≡[m-n] k<n
-
     n!                      = n !
     k!                      = k !
     [k+1]!                  = (suc k) !
     [n-k]!                  = [n-k] !
     [n-k-1]!                = [n-k-1] !
 
-    [n-k]*[n-k-1]!≡[n-k]!   : [n-k] * [n-k-1]! ≡ [n-k]!
-    [n-k]*[n-k-1]!≡[n-k]!   = begin-equality
-      [n-k] * [n-k-1]!
-        ≡˘⟨ cong (_* [n-k-1]!) [n-k-1]+1≡[n-k] ⟩
-      (suc [n-k-1]) * [n-k-1]!
-        ≡⟨ cong _! [n-k-1]+1≡[n-k] ⟩
-      [n-k]!                ∎
-
     d[k]                    = k! * [n-k]!
     [k+1]*d[k]              = (suc k) * d[k]
     d[k+1]                  = [k+1]! * [n-k-1]!
-    [n-k]*d[k]              = [n-k] * d[k]
     [n-k]*d[k+1]            = [n-k] * d[k+1]
     n!/[n-k]*d[k+1]         = n ! / [n-k]*d[k+1]
     [n-k]*n!/[n-k]*d[k+1]   = [n-k] * n! / [n-k]*d[k+1]
     [n-k]*n!/[k+1]*d[k]     = [n-k] * n! / [k+1]*d[k]
-
-    [n-k]*d[k+1]≡[k+1]*d[k] : [n-k]*d[k+1] ≡ [k+1]*d[k]
-    [n-k]*d[k+1]≡[k+1]*d[k] = begin-equality
-      [n-k]*d[k+1]
-        ≡⟨ x∙yz≈y∙xz [n-k] [k+1]! [n-k-1]! ⟩
-      [k+1]! * ([n-k] * [n-k-1]!)
-        ≡⟨ *-assoc (suc k) k! ([n-k] * [n-k-1]!) ⟩
-      (suc k) * (k! * ([n-k] * [n-k-1]!))
-        ≡⟨ cong ((suc k) *_) (cong (k! *_) [n-k]*[n-k-1]!≡[n-k]!) ⟩
-      [k+1]*d[k]             ∎
-      where open CommSemigroupProperties *-commutativeSemigroup
 
     instance
       [k+1]!*[n-k]!≢0 = (suc k) !* [n-k] !≢0
@@ -209,5 +230,4 @@ nCk+nC[k+1]≡[n+1]C[k+1] n k with <-cmp k n
       d[k+1]≢0        = (suc k) !* (n ∸ suc k) !≢0
       [k+1]*d[k]≢0    = m*n≢0 (suc k) d[k]
       [n-k]≢0         = ≢-nonZero (m>n⇒m∸n≢0 k<n)
-      [n-k]*d[k]≢0    = m*n≢0 [n-k] d[k]
       [n-k]*d[k+1]≢0  = m*n≢0 [n-k] d[k+1]

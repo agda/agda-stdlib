@@ -2069,8 +2069,6 @@ Other minor changes
   <-step        : m < n → m < 1 + n
   m<1+n⇒m<n∨m≡n : m < suc n → m < n ⊎ m ≡ n
 
-  n<ᵇ1+n : ∀ n → (n <ᵇ suc n) ≡ true
-
   z<′s : zero <′ suc n
   s<′s : m <′ n → suc m <′ suc n
   <⇒<′ : m < n → m <′ n
@@ -2116,7 +2114,9 @@ Other minor changes
 
 * Added new proofs in `Data.Nat.Combinatorics`:
   ```agda
-  k![n∸k]!∣n!              : k ≤ n →  k ! * (n ∸ k) ! ∣ n !
+  [n-k]*[n-k-1]!≡[n-k]!   : k < n → (n ∸ k) * (n ∸ suc k) ! ≡ (n ∸ k) !
+  [n-k]*d[k+1]≡[k+1]*d[k] : k < n → (n ∸ k) * ((suc k) ! * (n ∸ suc k) !) ≡ (suc k) * (k ! * (n ∸ k) !)
+  k![n∸k]!∣n!              : k ≤ n → k ! * (n ∸ k) ! ∣ n !
   nP1≡n                   : n P 1 ≡ n
   nC1≡n                   : n C 1 ≡ n
   nCk+nC[k+1]≡[n+1]C[k+1] : n C k + n C (suc k) ≡ suc n C suc k
