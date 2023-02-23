@@ -21,7 +21,7 @@ open import Relation.Binary.Core using (Rel)
 ------------------------------------------------------------------------
 -- Gather all the functionality in one place
 
-private module 𝕆ne where
+module 𝕆ne where
 
   infix  4 _≈_
   Carrier : Set c
@@ -30,59 +30,57 @@ private module 𝕆ne where
   _≈_     : Rel Carrier ℓ
   _ ≈ _ = ⊤
 
-open 𝕆ne
-
 ------------------------------------------------------------------------
 -- Raw bundles
 
 rawMagma : RawMagma c ℓ
-rawMagma = record { Carrier = Carrier ; _≈_ = _≈_ }
+rawMagma = record { 𝕆ne }
 
 rawMonoid : RawMonoid c ℓ
-rawMonoid = record { Carrier = Carrier ; _≈_ = _≈_ }
+rawMonoid = record { 𝕆ne }
 
 rawGroup : RawGroup c ℓ
-rawGroup = record { Carrier = Carrier ; _≈_ = _≈_ }
+rawGroup = record { 𝕆ne }
 
 rawSemiring : RawSemiring c ℓ
-rawSemiring = record { Carrier = Carrier ; _≈_ = _≈_ }
+rawSemiring = record { 𝕆ne }
 
 rawRing : RawRing c ℓ
-rawRing = record { Carrier = Carrier ; _≈_ = _≈_ }
+rawRing = record { 𝕆ne }
 
 ------------------------------------------------------------------------
 -- Bundles
 
 magma : Magma c ℓ
-magma = record { Carrier = Carrier ; _≈_ = _≈_ }
+magma = record { 𝕆ne }
 
 semigroup : Semigroup c ℓ
-semigroup = record { Carrier = Carrier ; _≈_ = _≈_ }
+semigroup = record { 𝕆ne }
 
 band : Band c ℓ
-band = record { Carrier = Carrier ; _≈_ = _≈_ }
+band = record { 𝕆ne }
 
 commutativeSemigroup : CommutativeSemigroup c ℓ
-commutativeSemigroup = record { Carrier = Carrier ; _≈_ = _≈_ }
+commutativeSemigroup = record { 𝕆ne }
 
 monoid : Monoid c ℓ
-monoid = record { Carrier = Carrier ; _≈_ = _≈_ }
+monoid = record { 𝕆ne }
 
 commutativeMonoid : CommutativeMonoid c ℓ
-commutativeMonoid = record { Carrier = Carrier ; _≈_ = _≈_ }
+commutativeMonoid = record { 𝕆ne }
 
 idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ
-idempotentCommutativeMonoid = record { Carrier = Carrier ; _≈_ = _≈_ }
+idempotentCommutativeMonoid = record { 𝕆ne }
 
 group : Group c ℓ
-group = record { Carrier = Carrier ; _≈_ = _≈_ }
+group = record { 𝕆ne }
 
 abelianGroup : AbelianGroup c ℓ
-abelianGroup = record { Carrier = Carrier ; _≈_ = _≈_ }
+abelianGroup = record { 𝕆ne }
 
 semiring : Semiring c ℓ
-semiring = record { Carrier = Carrier ; _≈_ = _≈_ }
+semiring = record { 𝕆ne }
 
 ring : Ring c ℓ
-ring = record { Carrier = Carrier ; _≈_ = _≈_ }
+ring = record { 𝕆ne }
 

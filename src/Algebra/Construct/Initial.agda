@@ -34,7 +34,7 @@ open import Algebra.Construct.Terminal {c} {ℓ} public
 ------------------------------------------------------------------------
 -- Gather all the functionality in one place
 
-private module ℤero where
+module ℤero where
 
   infixl 7 _∙_
   infix  4 _≈_
@@ -66,13 +66,13 @@ open ℤero
 -- Raw bundles
 
 rawMagma : RawMagma c ℓ
-rawMagma = record { Carrier = Carrier ; _≈_ = _≈_ ; _∙_ = _∙_ }
+rawMagma = record { ℤero }
 
 ------------------------------------------------------------------------
 -- Structures
 
 isEquivalence : IsEquivalence _≈_
-isEquivalence = record { refl = refl ; sym = sym ; trans = trans }
+isEquivalence = record { ℤero }
 
 isMagma : IsMagma _≈_ _∙_
 isMagma = record { isEquivalence = isEquivalence ; ∙-cong = ∙-cong }
