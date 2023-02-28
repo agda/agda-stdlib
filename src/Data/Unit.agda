@@ -8,8 +8,6 @@
 
 module Data.Unit where
 
-import Relation.Binary.PropositionalEquality as PropEq
-
 ------------------------------------------------------------------------
 -- Re-export contents of base module
 

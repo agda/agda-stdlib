@@ -2,13 +2,15 @@
 -- The Agda standard library
 --
 -- Instances of algebraic structures where the carrier is ⊤.
--- In mathematics, this is usually called 0.
+-- In mathematics, this is usually called 0 (1 in the case of Group).
 --
 -- From monoids up, these are are zero-objects – i.e, both the initial
 -- and the terminal object in the relevant category.
--- For structures without an identity element, we can't necessarily
--- produce a homomorphism out of 0, because there is an instance of such
--- a structure with an empty Carrier.
+--
+-- For structures without an identity element, the terminal algebra is
+-- *not*  initial, because there is an instance of such a structure
+-- with an empty Carrier. Accordingly, such definitions are now deprecated
+-- in favour of those defined in `Algebra.Construct.Terminal`.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -17,47 +19,51 @@ open import Level using (Level)
 
 module Algebra.Construct.Zero {c ℓ : Level} where
 
+open import Algebra.Bundles.Raw
+  using (RawMagma)
 open import Algebra.Bundles
-open import Data.Unit.Polymorphic
+  using (Magma; Semigroup; Band)
 
 ------------------------------------------------------------------------
--- Raw bundles
+-- Re-export those algebras which are both initial and terminal
+
+open import Algebra.Construct.Terminal public
+  hiding (rawMagma; magma; semigroup; band)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new definitions re-exported from
+-- `Algebra.Construct.Terminal` as continuing support for the below is
+-- not guaranteed.
+
+-- Version 2.0
 
 rawMagma : RawMagma c ℓ
-rawMagma = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
+rawMagma = Algebra.Construct.Terminal.rawMagma
 
-rawMonoid : RawMonoid c ℓ
-rawMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-rawGroup : RawGroup c ℓ
-rawGroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-------------------------------------------------------------------------
--- Bundles
+{-# WARNING_ON_USAGE rawMagma
+"Warning: rawMagma was deprecated in v2.0.
+Please use Algebra.Construct.Terminal.rawMagma instead."
+#-}
 
 magma : Magma c ℓ
-magma = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
+magma = Algebra.Construct.Terminal.magma
+{-# WARNING_ON_USAGE magma
+"Warning: magma was deprecated in v2.0.
+Please use Algebra.Construct.Terminal.magma instead."
+#-}
 
 semigroup : Semigroup c ℓ
-semigroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
+semigroup = Algebra.Construct.Terminal.semigroup
+{-# WARNING_ON_USAGE semigroup
+"Warning: semigroup was deprecated in v2.0.
+Please use Algebra.Construct.Terminal.semigroup instead."
+#-}
 
 band : Band c ℓ
-band = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-commutativeSemigroup : CommutativeSemigroup c ℓ
-commutativeSemigroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-monoid : Monoid c ℓ
-monoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-commutativeMonoid : CommutativeMonoid c ℓ
-commutativeMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ
-idempotentCommutativeMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-group : Group c ℓ
-group = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-abelianGroup : AbelianGroup c ℓ
-abelianGroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
+band = Algebra.Construct.Terminal.band
+{-# WARNING_ON_USAGE semigroup
+"Warning: semigroup was deprecated in v2.0.
+Please use Algebra.Construct.Terminal.semigroup instead."
+#-}

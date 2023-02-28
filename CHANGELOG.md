@@ -605,6 +605,8 @@ Non-backwards compatible changes
 
 * New modules:
   ```
+  Algebra.Construct.Initial
+  Algebra.Construct.Terminal
   Data.List.Effectful.Transformer
   Data.List.NonEmpty.Effectful.Transformer
   Data.Maybe.Effectful.Transformer
@@ -885,6 +887,14 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Construct.Zero`:
+  ```agda
+  rawMagma   ↦  Algebra.Construct.Terminal.rawMagma
+  magma      ↦  Algebra.Construct.Terminal.magma
+  semigroup  ↦  Algebra.Construct.Terminal.semigroup
+  band       ↦  Algebra.Construct.Terminal.band
+  ```
 
 * In `Codata.Guarded.Stream.Properties`:
   ```agda
