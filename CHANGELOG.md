@@ -2390,7 +2390,13 @@ Other minor changes
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:
   ```agda
   xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
-  ```
+  <-respectsˡ : IsPartialEquivalence _≈_ → _≺_ Respectsˡ _≈_ →
+                ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
+  <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
+                ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
+  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ → 
+                  ∀ {n} → WellFounded (_<_ {n})
+```
 
 * Added new functions in `Data.Vec.Relation.Unary.Any`:
   ```
