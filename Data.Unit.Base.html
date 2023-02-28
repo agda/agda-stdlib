@@ -7,19 +7,17 @@
 
 <a id="228" class="Symbol">{-#</a> <a id="232" class="Keyword">OPTIONS</a> <a id="240" class="Pragma">--without-K</a> <a id="252" class="Pragma">--safe</a> <a id="259" class="Symbol">#-}</a>
 
-<a id="264" class="Keyword">open</a> <a id="269" class="Keyword">import</a> <a id="276" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a> <a id="298" class="Keyword">using</a> <a id="304" class="Symbol">(</a><a id="305" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="308" class="Symbol">)</a>
+<a id="264" class="Keyword">module</a> <a id="271" href="Data.Unit.Base.html" class="Module">Data.Unit.Base</a> <a id="286" class="Keyword">where</a>
 
-<a id="311" class="Keyword">module</a> <a id="318" href="Data.Unit.Base.html" class="Module">Data.Unit.Base</a> <a id="333" class="Keyword">where</a>
+<a id="293" class="Comment">------------------------------------------------------------------------</a>
+<a id="366" class="Comment">-- A unit type defined as a record type</a>
 
-<a id="340" class="Comment">------------------------------------------------------------------------</a>
-<a id="413" class="Comment">-- A unit type defined as a record type</a>
+<a id="407" class="Comment">-- Note that by default the unit type is not universe polymorphic as it</a>
+<a id="479" class="Comment">-- often results in unsolved metas. See `Data.Unit.Polymorphic` for a</a>
+<a id="549" class="Comment">-- universe polymorphic variant.</a>
 
-<a id="454" class="Comment">-- Note that by default the unit type is not universe polymorphic as it</a>
-<a id="526" class="Comment">-- often results in unsolved metas. See `Data.Unit.Polymorphic` for a</a>
-<a id="596" class="Comment">-- universe polymorphic variant.</a>
+<a id="583" class="Comment">-- Note also that the name of this type is &quot;\top&quot;, not T.</a>
 
-<a id="630" class="Comment">-- Note also that the name of this type is &quot;\top&quot;, not T.</a>
-
-<a id="689" class="Keyword">open</a> <a id="694" class="Keyword">import</a> <a id="701" href="Agda.Builtin.Unit.html" class="Module">Agda.Builtin.Unit</a> <a id="719" class="Keyword">public</a>
-  <a id="728" class="Keyword">using</a> <a id="734" class="Symbol">(</a><a id="735" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a><a id="736" class="Symbol">;</a> <a id="738" href="Agda.Builtin.Unit.html#201" class="InductiveConstructor">tt</a><a id="740" class="Symbol">)</a>
+<a id="642" class="Keyword">open</a> <a id="647" class="Keyword">import</a> <a id="654" href="Agda.Builtin.Unit.html" class="Module">Agda.Builtin.Unit</a> <a id="672" class="Keyword">public</a>
+  <a id="681" class="Keyword">using</a> <a id="687" class="Symbol">(</a><a id="688" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a><a id="689" class="Symbol">;</a> <a id="691" href="Agda.Builtin.Unit.html#201" class="InductiveConstructor">tt</a><a id="693" class="Symbol">)</a>
 </pre></body></html>
