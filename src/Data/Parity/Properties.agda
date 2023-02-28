@@ -25,8 +25,8 @@ open import Relation.Nullary using (yes; no)
 
 open import Algebra.Structures {A = Parity} _≡_
 open import Algebra.Definitions {A = Parity} _≡_
-
-open import Algebra.Consequences.Propositional using (comm+distrˡ⇒distrʳ)
+open import Algebra.Consequences.Propositional
+  using (selfInverse⇒involutive; selfInverse⇒injective; comm+distrˡ⇒distrʳ)
 open import Algebra.Morphism.Structures
 
 ------------------------------------------------------------------------
@@ -52,22 +52,24 @@ _≟_ : DecidableEquality Parity
 ------------------------------------------------------------------------
 -- _⁻¹
 
+-- Algebraic properties of _⁻¹
+
+⁻¹-selfInverse : SelfInverse _⁻¹
+⁻¹-selfInverse { 1ℙ } { 0ℙ } refl = refl
+⁻¹-selfInverse { 0ℙ } { 1ℙ } refl = refl
+
+⁻¹-involutive : Involutive _⁻¹
+⁻¹-involutive = selfInverse⇒involutive ⁻¹-selfInverse
+
+⁻¹-injective : Injective _≡_ _≡_ _⁻¹
+⁻¹-injective = selfInverse⇒injective ⁻¹-selfInverse
+
+------------------------------------------------------------------------
+-- other properties of _⁻¹
+
 p≢p⁻¹ : ∀ p → p ≢ p ⁻¹
 p≢p⁻¹ 1ℙ ()
 p≢p⁻¹ 0ℙ ()
-
-⁻¹-inverts : ∀ {p q} → p ⁻¹ ≡ q → q ⁻¹ ≡ p
-⁻¹-inverts { 1ℙ } { 0ℙ } refl = refl
-⁻¹-inverts { 0ℙ } { 1ℙ } refl = refl
-
-⁻¹-involutive : ∀ p → (p ⁻¹) ⁻¹ ≡ p
-⁻¹-involutive p = ⁻¹-inverts refl
-
-⁻¹-injective : ∀ {p q} → p ⁻¹ ≡ q ⁻¹ → p ≡ q
-⁻¹-injective {p} {q} eq = begin
-  p         ≡⟨ sym (⁻¹-inverts eq) ⟩
-  (q ⁻¹) ⁻¹ ≡⟨ ⁻¹-involutive q ⟩
-  q         ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- ⁻¹ and _+_
@@ -480,7 +482,7 @@ toSign-isGroupIsomorphism = record
 
 suc-homo-⁻¹ : ∀ n → (parity (suc n)) ⁻¹ ≡ parity n
 suc-homo-⁻¹ zero    = refl
-suc-homo-⁻¹ (suc n) = ⁻¹-inverts (suc-homo-⁻¹ n)
+suc-homo-⁻¹ (suc n) = ⁻¹-selfInverse (suc-homo-⁻¹ n)
 
 -- parity is a _+_ homomorphism
 

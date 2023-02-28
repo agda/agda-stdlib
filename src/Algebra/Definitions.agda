@@ -126,6 +126,9 @@ _∙_ Absorbs _∘_ = ∀ x y → (x ∙ (x ∘ y)) ≈ x
 Absorptive : Op₂ A → Op₂ A → Set _
 Absorptive ∙ ∘ = (∙ Absorbs ∘) × (∘ Absorbs ∙)
 
+SelfInverse : Op₁ A → Set _
+SelfInverse f = ∀ {x y} → f x ≈ y → f y ≈ x
+
 Involutive : Op₁ A → Set _
 Involutive f = ∀ x → f (f x) ≈ x
 
