@@ -9,7 +9,6 @@
 module Data.Vec.Relation.Binary.Pointwise.Extensional where
 
 open import Data.Fin.Base using (zero; suc)
-open import Data.Nat.Base using (zero; suc)
 open import Data.Vec.Base as Vec hiding ([_]; head; tail; map)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Inductive
   using ([]; _∷_)
@@ -73,8 +72,8 @@ module _ {_∼_ : REL A B ℓ} where
 
   extensional⇒inductive : ∀ {n} {xs : Vec A n} {ys : Vec B n} →
                            Pointwise _∼_ xs ys → IPointwise _∼_ xs ys
-  extensional⇒inductive {zero} {[]}       {[]}      xs∼ys = []
-  extensional⇒inductive {suc n} {x ∷ xs} {y ∷ ys} xs∼ys =
+  extensional⇒inductive {xs = []}       {[]}   xs∼ys = []
+  extensional⇒inductive {xs = x ∷ xs} {y ∷ ys} xs∼ys =
     (head xs∼ys) ∷ extensional⇒inductive (tail xs∼ys)
 
   inductive⇒extensional : ∀ {n} {xs : Vec A n} {ys : Vec B n} →

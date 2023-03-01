@@ -349,7 +349,12 @@ K-preorder k ℓ = record { isPreorder = K-isPreorder k ℓ }
 module EquationalReasoning where
 
   infix  3 _∎
-  infixr 2 _∼⟨_⟩_ _↔⟨_⟩_ _↔⟨⟩_ _≡⟨_⟩_
+  infixr 2 _∼⟨_⟩_ _↔⟨_⟩_ _↔⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_
+  infix  1 begin_
+
+  begin_ : ∀ {k x y} {X : Set x} {Y : Set y} →
+           X ∼[ k ] Y → X ∼[ k ] Y
+  begin_ x∼y = x∼y
 
   _∼⟨_⟩_ : ∀ {k x y z} (X : Set x) {Y : Set y} {Z : Set z} →
            X ∼[ k ] Y → Y ∼[ k ] Z → X ∼[ k ] Z
@@ -364,6 +369,10 @@ module EquationalReasoning where
   _↔⟨⟩_ : ∀ {k x y} (X : Set x) {Y : Set y} →
           X ∼[ k ] Y → X ∼[ k ] Y
   X ↔⟨⟩ X⇔Y = X⇔Y
+
+  _≡˘⟨_⟩_ : ∀ {k ℓ z} (X : Set ℓ) {Y : Set ℓ} {Z : Set z} →
+            Y ≡ X → Y ∼[ k ] Z → X ∼[ k ] Z
+  X ≡˘⟨ Y≡X ⟩ Y⇔Z = X ∼⟨ ≡⇒ (P.sym Y≡X) ⟩ Y⇔Z
 
   _≡⟨_⟩_ : ∀ {k ℓ z} (X : Set ℓ) {Y : Set ℓ} {Z : Set z} →
            X ≡ Y → Y ∼[ k ] Z → X ∼[ k ] Z

@@ -8,9 +8,8 @@
 
 module Data.Vec.Functional.Relation.Unary.All.Properties where
 
-open import Data.Fin.Base
-open import Data.Fin.Properties
-open import Data.Nat.Base
+open import Data.Fin.Base using (zero; suc; _↑ˡ_; _↑ʳ_; splitAt)
+open import Data.Fin.Properties using (splitAt-↑ˡ; splitAt-↑ʳ)
 open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
@@ -38,7 +37,7 @@ module _ {P : Pred A p} {Q : Pred B q} {f : A → B} where
 ------------------------------------------------------------------------
 -- replicate
 
-module _ {P : Pred A p} {x : A} {n : ℕ} where
+module _ {P : Pred A p} {x : A} {n} where
 
   replicate⁺ : P x → All P (replicate {n = n} x)
   replicate⁺ = const
@@ -87,14 +86,14 @@ tail⁺ P ps = ps ∘ suc
 ------------------------------------------------------------------------
 -- ++
 
-module _ (P : Pred A p) {m n : ℕ} {xs : Vector A m} {ys : Vector A n} where
+module _ (P : Pred A p) {m n} {xs : Vector A m} {ys : Vector A n} where
 
   ++⁺ : All P xs → All P ys → All P (xs ++ ys)
   ++⁺ pxs pys i with splitAt m i
   ... | inj₁ i′ = pxs i′
   ... | inj₂ j′ = pys j′
 
-module _ (P : Pred A p) {m n : ℕ} (xs : Vector A m) {ys : Vector A n} where
+module _ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} where
 
   ++⁻ˡ : All P (xs ++ ys) → All P xs
   ++⁻ˡ ps i with ps (i ↑ˡ n)

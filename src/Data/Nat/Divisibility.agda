@@ -17,7 +17,7 @@ open import Data.Unit using (tt)
 open import Function.Base
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable as Dec using (False)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary

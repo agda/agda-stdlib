@@ -23,7 +23,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives

@@ -14,7 +14,7 @@ open import Function
 open import Function.Bundles using (mk↔′)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′)
 
 

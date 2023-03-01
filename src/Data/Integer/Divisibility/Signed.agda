@@ -24,7 +24,7 @@ open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 import Relation.Nullary.Decidable as DEC
 
 ------------------------------------------------------------------------

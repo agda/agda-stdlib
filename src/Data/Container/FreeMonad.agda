@@ -117,11 +117,38 @@ impure (c , r) >>= f = impure (c , λ v → r v >>= f)
 ------------------------------------------------------------------------
 -- Structure
 
-rawFunctor : RawFunctor (_⋆_ {x = x} C)
-rawFunctor = record { _<$>_ = _<$>_ }
+functor : RawFunctor (_⋆_ {x = x} C)
+functor = record { _<$>_ = _<$>_ }
 
-rawApplicative : {C : Container s p} → RawApplicative (_⋆_ {x = x ⊔ s ⊔ p} C)
-rawApplicative = record { pure = pure ; _⊛_ = _<*>_ }
+applicative : {C : Container s p} → RawApplicative (_⋆_ {x = x ⊔ s ⊔ p} C)
+applicative = record
+  { rawFunctor = functor
+  ; pure = pure
+  ; _<*>_ = _<*>_ }
 
-rawMonad : {C : Container s p} → RawMonad (_⋆_ {x = x ⊔ s ⊔ p} C)
-rawMonad = record { return = pure ; _>>=_ = _>>=_ }
+monad : {C : Container s p} → RawMonad (_⋆_ {x = x ⊔ s ⊔ p} C)
+monad {x = x} = record
+  { rawApplicative = applicative {x = x}
+  ; _>>=_ = _>>=_
+  }
+
+------------------------------------------------------------------------
+-- DEPRECATIONS
+
+rawFunctor = functor
+{-# WARNING_ON_USAGE rawFunctor
+"Warning: all rawFunctor deprecated in v2.0.
+Please use functor instead."
+#-}
+
+rawApplicative = applicative
+{-# WARNING_ON_USAGE rawApplicative
+"Warning: rawApplicative was deprecated in v2.0.
+Please use applicative instead."
+#-}
+
+rawMonad = monad
+{-# WARNING_ON_USAGE rawMonad
+"Warning: rawMonad was deprecated in v2.0.
+Please use monad instead."
+#-}

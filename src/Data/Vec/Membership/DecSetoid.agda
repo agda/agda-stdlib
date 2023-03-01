@@ -12,7 +12,7 @@ module Data.Vec.Membership.DecSetoid {c ℓ} (DS : DecSetoid c ℓ) where
 
 open import Data.Vec.Base using (Vec)
 open import Data.Vec.Relation.Unary.Any using (any?)
-open import Relation.Nullary using (Dec)
+open import Relation.Nullary.Decidable using (Dec)
 open DecSetoid DS renaming (Carrier to A)
 
 ------------------------------------------------------------------------

@@ -9,13 +9,12 @@
 module Relation.Nullary.Negation.Core where
 
 open import Data.Bool.Base using (not)
-open import Data.Empty
-open import Data.Product
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Empty using (⊥)
+open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
-open import Relation.Nullary
-open import Relation.Unary using (Pred)
 
 private
   variable
@@ -24,6 +23,28 @@ private
     P : Set p
     Q : Set q
     Whatever : Set w
+
+------------------------------------------------------------------------
+-- Negation.
+
+infix 3 ¬_
+¬_ : Set a → Set a
+¬ P = P → ⊥
+
+-- Double-negation
+DoubleNegation : Set p → Set p
+DoubleNegation P = ¬ ¬ P
+
+-- Stability under double-negation.
+Stable : Set p → Set p
+Stable P = ¬ ¬ P → P
+
+------------------------------------------------------------------------
+-- Relationship to product and sum
+
+infixr 1 _¬-⊎_
+_¬-⊎_ : ¬ P → ¬ Q → ¬ (P ⊎ Q)
+_¬-⊎_ = [_,_]
 
 ------------------------------------------------------------------------
 -- Uses of negation
@@ -39,58 +60,17 @@ contraposition : (P → Q) → ¬ Q → ¬ P
 contraposition f ¬q p = contradiction (f p) ¬q
 
 -- Note also the following use of flip:
-
 private
   note : (P → ¬ Q) → Q → ¬ P
   note = flip
 
--- If we can decide P, then we can decide its negation.
-
-¬-reflects : ∀ {b} → Reflects P b → Reflects (¬ P) (not b)
-¬-reflects (ofʸ  p) = ofⁿ (_$ p)
-¬-reflects (ofⁿ ¬p) = ofʸ ¬p
-
-¬? : Dec P → Dec (¬ P)
-does  (¬? p?) = not (does p?)
-proof (¬? p?) = ¬-reflects (proof p?)
-
-------------------------------------------------------------------------
--- Quantifier juggling
-
-module _ {P : Pred A p} where
-
-  ∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
-  ∃⟶¬∀¬ = flip uncurry
-
-  ∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
-  ∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
-
-  ¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
-  ¬∃⟶∀¬ = curry
-
-  ∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
-  ∀¬⟶¬∃ = uncurry
-
-  ∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
-  ∃¬⟶¬∀ = flip ∀⟶¬∃¬
-
-------------------------------------------------------------------------
--- Double-negation
-
-¬¬-map : (P → Q) → ¬ ¬ P → ¬ ¬ Q
-¬¬-map f = contraposition (contraposition f)
-
--- Stability under double-negation.
-
-Stable : Set p → Set p
-Stable P = ¬ ¬ P → P
-
 -- Everything is stable in the double-negation monad.
-
 stable : ¬ ¬ Stable P
 stable ¬[¬¬p→p] = ¬[¬¬p→p] (λ ¬¬p → ⊥-elim (¬¬p (¬[¬¬p→p] ∘ const)))
 
 -- Negated predicates are stable.
-
 negated-stable : Stable (¬ P)
 negated-stable ¬¬¬P P = ¬¬¬P (λ ¬P → ¬P P)
+
+¬¬-map : (P → Q) → ¬ ¬ P → ¬ ¬ Q
+¬¬-map f = contraposition (contraposition f)

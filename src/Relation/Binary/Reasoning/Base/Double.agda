@@ -21,7 +21,7 @@ open import Level using (Level; _⊔_; Lift; lift)
 open import Function.Base using (case_of_; id)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Nullary.Decidable using (True; toWitness)
 
 open IsPreorder isPreorder

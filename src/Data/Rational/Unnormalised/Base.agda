@@ -8,12 +8,13 @@
 
 module Data.Rational.Unnormalised.Base where
 
+open import Algebra.Bundles.Raw
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel)
@@ -286,3 +287,93 @@ fracPart p@record{} = ∣ p - truncate p / 1 ∣
 syntax floor    p = ⌊ p ⌋
 syntax ceiling  p = ⌈ p ⌉
 syntax truncate p = [ p ]
+
+------------------------------------------------------------------------
+-- Raw bundles for _+_
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≃_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε   = 0ℚᵘ
+  }
+
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε = 0ℚᵘ
+  ; _⁻¹ = -_
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℚᵘ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
+------------------------------------------------------------------------
+-- Raw bundles for _*_
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≃_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≃_
+  ; _∙_ = _*_
+  ; ε   = 1ℚᵘ
+  }
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
++-rawMonoid = +-0-rawMonoid
+{-# WARNING_ON_USAGE +-rawMonoid
+"Warning: +-rawMonoid was deprecated in v2.0
+Please use +-0-rawMonoid instead."
+#-}
+*-rawMonoid = *-1-rawMonoid
+{-# WARNING_ON_USAGE *-rawMonoid
+"Warning: *-rawMonoid was deprecated in v2.0
+Please use *-1-rawMonoid instead."
+#-}

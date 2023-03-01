@@ -11,7 +11,7 @@ open import Relation.Binary
 module Data.List.Relation.Binary.Disjoint.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Level using (_⊔_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Function.Base using (_∘_)
 open import Data.List.Base using (List; []; [_]; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)

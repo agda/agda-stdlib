@@ -23,9 +23,8 @@ open import Function.Base
 open import Level using (Level)
 open import Relation.Binary as B
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (Dec; does; yes; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable
+  using (Dec; does; yes; no; map′; _×-dec_)
 
 import Data.Fin.Properties as Finₚ
 

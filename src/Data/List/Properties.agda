@@ -13,9 +13,10 @@ module Data.List.Properties where
 
 open import Algebra.Bundles
 open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
+open import Algebra.Morphism.Structures using (IsMagmaHomomorphism; IsMonoidHomomorphism)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
-open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ; inject₁)
+open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ)
 open import Data.List.Base as List
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
@@ -35,10 +36,8 @@ import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
 open import Relation.Binary as B using (Rel)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no)
-open import Relation.Nullary.Negation using (contradiction; ¬?)
-open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋)
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
+open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -139,7 +138,7 @@ module _ (f : A → Maybe B) where
   length-mapMaybe []       = z≤n
   length-mapMaybe (x ∷ xs) with f x
   ... | just y  = s≤s (length-mapMaybe xs)
-  ... | nothing = ≤-step (length-mapMaybe xs)
+  ... | nothing = m≤n⇒m≤1+n (length-mapMaybe xs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -239,6 +238,46 @@ module _ (A : Set a) where
     { Carrier  = List A
     ; isMonoid = ++-isMonoid
     }
+
+module _ (A : Set a) where
+
+  length-isMagmaHomomorphism : IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMagmaHomomorphism = record
+    { isRelHomomorphism = record
+      { cong = cong length
+      }
+    ; homo = λ xs ys → length-++ xs {ys}
+    }
+
+  length-isMonoidHomomorphism : IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+  length-isMonoidHomomorphism = record
+    { isMagmaHomomorphism = length-isMagmaHomomorphism
+    ; ε-homo = refl
+    }
+
+------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ (f : A → B → C) where
+
+  private
+    prod = cartesianProductWith f
+
+  cartesianProductWith-zeroˡ : ∀ ys → prod [] ys ≡ []
+  cartesianProductWith-zeroˡ _ = refl
+
+  cartesianProductWith-zeroʳ : ∀ xs → prod xs [] ≡ []
+  cartesianProductWith-zeroʳ []       = refl
+  cartesianProductWith-zeroʳ (x ∷ xs) = cartesianProductWith-zeroʳ xs
+
+  cartesianProductWith-distribʳ-++ : ∀ xs ys zs → prod (xs ++ ys) zs ≡ prod xs zs ++ prod ys zs
+  cartesianProductWith-distribʳ-++ []       ys zs = refl
+  cartesianProductWith-distribʳ-++ (x ∷ xs) ys zs = begin
+    prod (x ∷ xs ++ ys) zs ≡⟨⟩
+    map (f x) zs ++ prod (xs ++ ys) zs ≡⟨ cong (map (f x) zs ++_) (cartesianProductWith-distribʳ-++ xs ys zs) ⟩
+    map (f x) zs ++ prod xs zs ++ prod ys zs ≡˘⟨ ++-assoc (map (f x) zs) (prod xs zs) (prod ys zs) ⟩
+    (map (f x) zs ++ prod xs zs) ++ prod ys zs ≡⟨⟩
+    prod (x ∷ xs) zs ++ prod ys zs ∎
 
 ------------------------------------------------------------------------
 -- alignWith
@@ -447,6 +486,10 @@ foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
 foldr-∷ʳ f x y []       = refl
 foldr-∷ʳ f x y (z ∷ ys) = cong (f z) (foldr-∷ʳ f x y ys)
 
+foldr-map : ∀ (f : A → B → B) (g : C → A) x xs → foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
+foldr-map f g x []       = refl
+foldr-map f g x (y ∷ xs) = cong (f (g y)) (foldr-map f g x xs)
+
 -- Interaction with predicates
 
 module _ {P : Pred A p} {f : A → A → A} where
@@ -489,6 +532,10 @@ foldl-∷ʳ : ∀ (f : A → B → A) x y ys →
 foldl-∷ʳ f x y []       = refl
 foldl-∷ʳ f x y (z ∷ ys) = foldl-∷ʳ f (f x z) y ys
 
+foldl-map : ∀ (f : A → B → A) (g : C → B) x xs → foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
+foldl-map f g x []       = refl
+foldl-map f g x (y ∷ xs) = foldl-map f g (f x (g y)) xs
+
 ------------------------------------------------------------------------
 -- concat
 
@@ -514,6 +561,40 @@ concat-concat (xss ∷ xsss) = begin
 concat-[-] : concat {A = A} ∘ map [_] ≗ id
 concat-[-] [] = refl
 concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
+
+------------------------------------------------------------------------
+-- concatMap
+
+concatMap-cong : ∀ {f g : A → List B} → f ≗ g → concatMap f ≗ concatMap g
+concatMap-cong eq xs = cong concat (map-cong eq xs)
+
+concatMap-pure : concatMap {A = A} [_] ≗ id
+concatMap-pure = concat-[-]
+
+concatMap-map : (g : B → List C) → (f : A → B) → (xs : List A) →
+                concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
+concatMap-map g f xs
+  = cong concat
+      {x = map g (map f xs)}
+      {y = map (g ∘′ f) xs}
+      (sym $ map-∘ xs)
+
+map-concatMap : (f : B → C) (g : A → List B) →
+                map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
+map-concatMap f g xs = begin
+  map f (concatMap g xs)
+    ≡⟨⟩
+  map f (concat (map g xs))
+    ≡˘⟨ concat-map (map g xs) ⟩
+  concat (map (map f) (map g xs))
+    ≡⟨ cong concat
+         {x = map (map f) (map g xs)}
+         {y = map (map f ∘′ g) xs}
+         (sym $ map-∘ xs) ⟩
+  concat (map (map f ∘′ g) xs)
+    ≡⟨⟩
+  concatMap (map f ∘′ g) xs
+    ∎
 
 ------------------------------------------------------------------------
 -- sum
@@ -725,7 +806,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   length-filter : ∀ xs → length (filter P? xs) ≤ length xs
   length-filter []       = z≤n
   length-filter (x ∷ xs) with does (P? x)
-  ... | false = ≤-step (length-filter xs)
+  ... | false = m≤n⇒m≤1+n (length-filter xs)
   ... | true  = s≤s (length-filter xs)
 
   filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
@@ -739,7 +820,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | false because _ = s≤s (length-filter xs)
   ... | yes          px = contradiction px ¬px
   filter-notAll (x ∷ xs) (there any) with does (P? x)
-  ... | false = ≤-step (filter-notAll xs any)
+  ... | false = m≤n⇒m≤1+n (filter-notAll xs any)
   ... | true  = s≤s (filter-notAll xs any)
 
   filter-some : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
@@ -747,7 +828,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | true because _ = z<s
   ... | no         ¬px = contradiction px ¬px
   filter-some {x ∷ xs} (there pxs) with does (P? x)
-  ... | true  = ≤-step (filter-some pxs)
+  ... | true  = m≤n⇒m≤1+n (filter-some pxs)
   ... | false = filter-some pxs
 
   filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
@@ -794,7 +875,7 @@ module _ {R : Rel A p} (R? : B.Decidable R) where
   length-derun [] = ≤-refl
   length-derun (x ∷ []) = ≤-refl
   length-derun (x ∷ y ∷ xs) with does (R? x y) | length-derun (y ∷ xs)
-  ... | true  | r = ≤-step r
+  ... | true  | r = m≤n⇒m≤1+n r
   ... | false | r = s≤s r
 
   length-deduplicate : ∀ xs → length (deduplicate R? xs) ≤ length xs
@@ -832,8 +913,8 @@ module _ {P : Pred A p} (P? : Decidable P) where
                      length ys ≤ length xs × length zs ≤ length xs
   length-partition []       = z≤n , z≤n
   length-partition (x ∷ xs) with does (P? x) | length-partition xs
-  ...  | true  | rec = Prod.map s≤s ≤-step rec
-  ...  | false | rec = Prod.map ≤-step s≤s rec
+  ...  | true  | rec = Prod.map s≤s m≤n⇒m≤1+n rec
+  ...  | false | rec = Prod.map m≤n⇒m≤1+n s≤s rec
 
 ------------------------------------------------------------------------
 -- _ʳ++_

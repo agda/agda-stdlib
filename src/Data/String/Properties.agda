@@ -15,7 +15,7 @@ import Data.List.Relation.Binary.Pointwise as Pointwise
 import Data.List.Relation.Binary.Lex.Strict as StrictLex
 open import Data.String.Base
 open import Function.Base
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core

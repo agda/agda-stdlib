@@ -255,7 +255,7 @@ poly-map f = para (map₁ f)
 -- a list that was already pattern-matched on, the recursive call
 -- does not strictly decrease the size of its argument.
 --
--- Interestingly, if --without-K is turned off, we don't need the
+-- Interestingly, if --cubical-compatible is turned off, we don't need the
 -- helper function ⊞-coeffs; we could pattern match on _⊞_ directly.
 --
 -- _⊞_ {zero} (lift x) (lift y) = lift (x + y)

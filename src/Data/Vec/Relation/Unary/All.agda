@@ -8,8 +8,7 @@
 
 module Data.Vec.Relation.Unary.All where
 
-open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
 open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
@@ -18,9 +17,7 @@ open import Data.Vec.Membership.Propositional renaming (_∈_ to _∈ₚ_)
 import Data.Vec.Membership.Setoid as SetoidMembership
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary using (Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P using (subst)

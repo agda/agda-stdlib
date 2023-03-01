@@ -12,7 +12,7 @@ open import Data.Product using (_×_; _,_; swap; map; uncurry′)
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary using (does; yes; no)
+open import Relation.Nullary.Decidable using (does; yes; no)
 open import Relation.Nullary.Negation
   using (contradiction; contradiction₂)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning

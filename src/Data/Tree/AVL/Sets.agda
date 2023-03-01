@@ -50,10 +50,8 @@ insert k = AVL.insert k _
 delete : A → ⟨Set⟩ → ⟨Set⟩
 delete = AVL.delete
 
-infix 4 _∈?_
-
-_∈?_ : A → ⟨Set⟩ → Bool
-_∈?_ = AVL._∈?_
+member : A → ⟨Set⟩ → Bool
+member = AVL.member
 
 headTail : ⟨Set⟩ → Maybe (A × ⟨Set⟩)
 headTail s = Maybe.map (Prod.map₁ proj₁) (AVL.headTail s)
@@ -87,3 +85,20 @@ intersection = AVL.intersection
 
 intersections : List ⟨Set⟩ → ⟨Set⟩
 intersections = AVL.intersections
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infixl 4 _∈?_
+_∈?_ : A → ⟨Set⟩ → Bool
+_∈?_ = member
+{-# WARNING_ON_USAGE _∈?_
+"Warning: _∈?_ was deprecated in v2.0.
+Please use member instead."
+#-}

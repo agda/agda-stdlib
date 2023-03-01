@@ -9,8 +9,6 @@
 module Data.Sign.Instances where
 
 open import Data.Sign.Properties
-open import Relation.Binary.PropositionalEquality.Properties
-  using (isDecEquivalence)
 
 instance
-  Sign-≡-isDecEquivalence = isDecEquivalence _≟_
+  Sign-≡-isDecEquivalence = ≡-isDecEquivalence

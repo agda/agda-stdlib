@@ -18,7 +18,8 @@ open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
 open import Level
 open import Relation.Binary.Core
-open import Relation.Nullary using (Dec; ¬_)
+open import Relation.Nullary.Decidable.Core using (Dec)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable

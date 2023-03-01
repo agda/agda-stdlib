@@ -36,6 +36,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
+open import Relation.Nullary.Decidable using (excluded-middle)
 open import Relation.Unary using (Pred)
 
 private

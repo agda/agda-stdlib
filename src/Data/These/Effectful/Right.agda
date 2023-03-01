@@ -35,8 +35,9 @@ module _ {a b} {A : Set a} {B : Set b} where
 
 applicative : RawApplicative Theseᵣ
 applicative = record
-  { pure = this
-  ; _⊛_  = ap
+  { rawFunctor = functor
+  ; pure = this
+  ; _<*>_  = ap
   } where
 
   ap : ∀ {A B}→ Theseᵣ (A → B) → Theseᵣ A → Theseᵣ B
@@ -46,7 +47,7 @@ applicative = record
 
 monad : RawMonad Theseᵣ
 monad = record
-  { return = this
+  { rawApplicative = applicative
   ; _>>=_  = bind
   } where
 

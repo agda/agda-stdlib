@@ -5,7 +5,7 @@
 -- properties (or other properties not available in Data.Fin)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 module Data.Fin.Properties where
 
@@ -36,13 +36,10 @@ open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
-open import Relation.Nullary.Decidable as Dec using (map′)
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary
-  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_)
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_; _×-dec_; _⊎-dec_; contradiction)
+open import Relation.Nullary.Reflects
+open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
@@ -163,10 +160,10 @@ toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 
 toℕ≤n : ∀ (i : Fin n) → toℕ i ℕ.≤ n
-toℕ≤n {suc n} i = ℕₚ.≤-step (toℕ≤pred[n] i)
+toℕ≤n {suc n} i = ℕₚ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
 
 toℕ<n : ∀ (i : Fin n) → toℕ i ℕ.< n
-toℕ<n {suc n} i = s≤s (toℕ≤pred[n] i)
+toℕ<n {suc n} i = s<s (toℕ≤pred[n] i)
 
 -- A simpler implementation of toℕ≤pred[n],
 -- however, with a different reduction behavior.
@@ -471,7 +468,7 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 
 i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
 i≤inject₁[j]⇒i≤1+j {i = zero} i≤j = z≤n
-i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.≤-step (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
+i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
 
 ------------------------------------------------------------------------
 -- lower₁
@@ -759,18 +756,6 @@ lift-injective f inj (suc k) {suc _} {suc _} eq =
   cong suc (lift-injective f inj k (suc-injective eq))
 
 ------------------------------------------------------------------------
--- _≺_
-------------------------------------------------------------------------
-
-≺⇒<′ : _≺_ ⇒ ℕ._<′_
-≺⇒<′ (n ≻toℕ i) = ℕₚ.≤⇒≤′ (toℕ<n i)
-
-<′⇒≺ : ℕ._<′_ ⇒ _≺_
-<′⇒≺ {n} ℕ.≤′-refl = subst (_≺ suc n) (toℕ-fromℕ n) (suc n ≻toℕ fromℕ n)
-<′⇒≺ (ℕ.≤′-step m≤′n) with <′⇒≺ m≤′n
-... | n ≻toℕ i = subst (_≺ suc n) (toℕ-inject₁ i) (suc n ≻toℕ _)
-
-------------------------------------------------------------------------
 -- pred
 ------------------------------------------------------------------------
 
@@ -789,6 +774,10 @@ toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 ------------------------------------------------------------------------
 -- _ℕ-ℕ_
 ------------------------------------------------------------------------
+
+ℕ-ℕ≡toℕ‿ℕ- : ∀ n i → n ℕ-ℕ i ≡ toℕ (n ℕ- i)
+ℕ-ℕ≡toℕ‿ℕ- n       zero    = sym (toℕ-fromℕ n)
+ℕ-ℕ≡toℕ‿ℕ- (suc n) (suc i) = ℕ-ℕ≡toℕ‿ℕ- n i
 
 nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ.≤ n
 nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
@@ -811,6 +800,16 @@ punchIn-injective (suc i) (suc j) (suc k) ↑j+1≡↑k+1 =
 
 punchInᵢ≢i : ∀ i (j : Fin n) → punchIn i j ≢ i
 punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
+
+punchIn-mono-≤ : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
+punchIn-mono-≤ zero    _        _      j≤k       = s≤s j≤k
+punchIn-mono-≤ (suc _) zero    _       z≤n       = z≤n
+punchIn-mono-≤ (suc i) (suc j) (suc k) (s≤s j≤k) = s≤s (punchIn-mono-≤ i j k j≤k)
+
+punchIn-cancel-≤ : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
+punchIn-cancel-≤ zero    _       _       (s≤s j≤k)   = j≤k
+punchIn-cancel-≤ (suc _) zero    _       z≤n         = z≤n
+punchIn-cancel-≤ (suc i) (suc j) (suc k) (s≤s ↑j≤↑k) = s≤s (punchIn-cancel-≤ i j k ↑j≤↑k)
 
 ------------------------------------------------------------------------
 -- punchOut
@@ -844,6 +843,22 @@ punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong s
 punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
   cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
+
+punchOut-mono-≤ : ∀ {i j k : Fin (suc n)} (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                  j ≤ k → punchOut i≢j ≤ punchOut i≢k
+punchOut-mono-≤ {_    } {zero } {zero } {_    } 0≢0 _   z≤n       = contradiction refl 0≢0
+punchOut-mono-≤ {_    } {zero } {suc _} {suc _} _   _   (s≤s j≤k) = j≤k
+punchOut-mono-≤ {suc _} {suc _} {zero } {_    } _   _   z≤n       = z≤n
+punchOut-mono-≤ {suc _} {suc _} {suc _} {suc _} i≢j i≢k (s≤s j≤k) = s≤s (punchOut-mono-≤ (i≢j ∘ cong suc) (i≢k ∘ cong suc) j≤k)
+
+punchOut-cancel-≤ : ∀ {i j k : Fin (suc n)} (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                    punchOut i≢j ≤ punchOut i≢k → j ≤ k
+punchOut-cancel-≤ {_    } {zero } {zero } {_    } 0≢0 _   _           = contradiction refl 0≢0
+punchOut-cancel-≤ {_    } {zero } {suc _} {zero } _   0≢0 _           = contradiction refl 0≢0
+punchOut-cancel-≤ {suc _} {zero } {suc _} {suc _} _   _   pⱼ≤pₖ       = s≤s pⱼ≤pₖ
+punchOut-cancel-≤ {_    } {suc _} {zero } {_    } _   _   _           = z≤n
+punchOut-cancel-≤ {suc _} {suc _} {suc _} {zero } _   _   ()
+punchOut-cancel-≤ {suc _} {suc _} {suc _} {suc _} i≢j i≢k (s≤s pⱼ≤pₖ) = s≤s (punchOut-cancel-≤ (i≢j ∘ cong suc) (i≢k ∘ cong suc) pⱼ≤pₖ)
 
 punchIn-punchOut : ∀ {i j : Fin (suc n)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
@@ -1016,7 +1031,7 @@ module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
   sequence : ∀ {n} {P : Pred (Fin n) f} →
              (∀ i → F (P i)) → F (∀ i → P i)
   sequence {zero}  ∀iPi = pure λ()
-  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero ⊛ sequence (∀iPi ∘ suc)
+  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
 
 module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 
@@ -1129,3 +1144,33 @@ eq? = inj⇒≟
 "Warning: eq? was deprecated in v2.0.
 Please use inj⇒≟ instead."
 #-}
+
+private
+
+  z≺s : ∀ {n} → zero ≺ suc n
+  z≺s = _ ≻toℕ zero
+
+  s≺s : ∀ {m n} → m ≺ n → suc m ≺ suc n
+  s≺s (n ≻toℕ i) = (suc n) ≻toℕ (suc i)
+
+  <⇒≺ : ℕ._<_ ⇒ _≺_
+  <⇒≺ {zero}  z<s      = z≺s
+  <⇒≺ {suc m} (s<s lt) = s≺s (<⇒≺ lt)
+
+  ≺⇒< : _≺_ ⇒ ℕ._<_
+  ≺⇒< (n ≻toℕ i) = toℕ<n i
+
+≺⇒<′ : _≺_ ⇒ ℕ._<′_
+≺⇒<′ lt = ℕₚ.<⇒<′ (≺⇒< lt)
+{-# WARNING_ON_USAGE ≺⇒<′
+"Warning: ≺⇒<′ was deprecated in v2.0.
+Please use <⇒<′ instead."
+#-}
+
+<′⇒≺ : ℕ._<′_ ⇒ _≺_
+<′⇒≺ lt = <⇒≺ (ℕₚ.<′⇒< lt)
+{-# WARNING_ON_USAGE <′⇒≺
+"Warning: <′⇒≺ was deprecated in v2.0.
+Please use <′⇒< instead."
+#-}
+

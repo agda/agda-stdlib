@@ -11,6 +11,8 @@
 
 module Data.Integer.Base where
 
+open import Algebra.Bundles.Raw
+  using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s)
 open import Data.Sign.Base as Sign using (Sign)
@@ -18,8 +20,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
-open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred)
 
 infix  8 -_
@@ -293,3 +294,52 @@ _%ℕ_ : (dividend : ℤ) (divisor : ℕ) .{{_ : ℕ.NonZero divisor}} → ℕ
 
 _%_ : (dividend divisor : ℤ) .{{_ : NonZero divisor}} → ℕ
 i % j = i %ℕ ∣ j ∣
+
+------------------------------------------------------------------------
+-- Bundles
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record { _≈_ = _≡_ ; _∙_ = _+_ }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _+_ ; ε = 0ℤ }
+
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record { _≈_ = _≡_ ; _∙_ = _+_ ; _⁻¹ = -_; ε = 0ℤ }
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record { _≈_ = _≡_ ; _∙_ = _*_ }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _*_ ; ε = 1ℤ }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℤ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℤ
+  ; 1# = 1ℤ
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0ℤ
+  ; 1# = 1ℤ
+  }
+

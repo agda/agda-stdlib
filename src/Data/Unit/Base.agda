@@ -6,8 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Agda.Builtin.Equality using (_≡_)
-
 module Data.Unit.Base where
 
 ------------------------------------------------------------------------

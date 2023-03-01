@@ -1,17 +1,14 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Typeclass instances for Identity
+-- Instances for parities
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Function.Identity.Instances where
+module Data.Parity.Instances where
 
-open import Function.Identity.Effectful
+open import Data.Parity.Properties
 
 instance
-  identityFunctor = functor
-  identityApplicative = applicative
-  identityMonad = monad
-  identityComonad = comonad
+  Parity-≡-isDecEquivalence = ≡-isDecEquivalence

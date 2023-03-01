@@ -11,6 +11,7 @@
 
 module Data.List.Base where
 
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
@@ -21,12 +22,11 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)
 open import Level using (Level)
-open import Relation.Nullary using (does)
-open import Relation.Nullary.Negation.Core using (¬?)
+open import Relation.Nullary.Decidable.Core using (does; ¬?)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Unary.Properties using (∁?)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
@@ -53,6 +53,9 @@ mapMaybe p []       = []
 mapMaybe p (x ∷ xs) with p x
 ... | just y  = y ∷ mapMaybe p xs
 ... | nothing = mapMaybe p xs
+
+catMaybes : List (Maybe A) → List A
+catMaybes = mapMaybe id
 
 infixr 5 _++_
 
@@ -141,6 +144,9 @@ concat = foldr _++_ []
 
 concatMap : (A → List B) → List A → List B
 concatMap f = concat ∘ map f
+
+ap : List (A → B) → List A → List B
+ap fs as = concatMap (flip map as) fs
 
 null : List A → Bool
 null []       = true
@@ -457,6 +463,24 @@ infixl 6 _∷ʳ?_
 _∷ʳ?_ : List A → Maybe A → List A
 xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
 
+------------------------------------------------------------------------
+-- Raw algebraic bundles
+
+module _ (A : Set a) where
+  ++-rawMagma : RawMagma a _
+  ++-rawMagma = record
+    { Carrier = List A
+    ; _≈_ = _≡_
+    ; _∙_ = _++_
+    }
+
+  ++-[]-rawMonoid : RawMonoid a _
+  ++-[]-rawMonoid = record
+    { Carrier = List A
+    ; _≈_ = _≡_
+    ; _∙_ = _++_
+    ; ε = []
+    }
 
 ------------------------------------------------------------------------
 -- DEPRECATED

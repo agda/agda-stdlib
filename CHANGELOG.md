@@ -19,7 +19,12 @@ Highlights
 * Improved the `solve` tactic in `Tactic.RingSolver` to work in a much
   wider range of situations.
 
-- Added `⌊log₂_⌋` and `⌈log₂_⌉` on Natural Numbers.
+* Added `⌊log₂_⌋` and `⌈log₂_⌉` on Natural Numbers.
+
+* A massive refactoring of the unindexed Functor/Applicative/Monad hierarchy
+  and the MonadReader / MonadState type classes. These are now usable with
+  instance arguments as demonstrated in the tests/monad examples.
+
 
 Bug-fixes
 ---------
@@ -41,6 +46,9 @@ Bug-fixes
 
 * Add module `Algebra.Module` that re-exports the contents of
   `Algebra.Module.(Definitions/Structures/Bundles)`
+
+* Various module-like bundles in `Algebra.Module.Bundles` were missing a fixity
+  declaration for `_*ᵣ_`. This has been fixed.
 
 * In `Algebra.Definitions.RawSemiring` the record `prime` add `p∤1 : p ∤ 1#` to the field.
 
@@ -336,7 +344,7 @@ Non-backwards compatible changes
 ### Change in reduction behaviour of rationals
 
 * Currently arithmetic expressions involving rationals (both normalised and
-  unnormalised) undergo disastorous exponential normalisation. For example,
+  unnormalised) undergo disastrous exponential normalisation. For example,
   `p + q` would often be normalised by Agda to
   `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While the normalised form
   of `p + q + r + s + t + u + v` would be ~700 lines long. This behaviour
@@ -516,6 +524,118 @@ Non-backwards compatible changes
       ↦ ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
     ```
 
+### Reorganisation of the `Relation.Nullary` hierarchy
+
+* It was very difficult to use the `Relation.Nullary` modules, as `Relation.Nullary`
+  contained the basic definitions of negation, decidability etc., and the operations and
+  proofs were smeared over `Relation.Nullary.(Negation/Product/Sum/Implication etc.)`.
+  
+* In order to fix this:
+  - the definition of `Dec` and `recompute` have been moved to `Relation.Nullary.Decidable.Core`
+  - the definition of `Reflects` has been moved to `Relation.Nullary.Reflects`
+  - the definition of `¬_` has been moved to `Relation.Nullary.Negation.Core`
+
+* Backwards compatibility has been maintained, as `Relation.Nullary` still re-exports these publicly.
+
+* The modules:
+  ```
+  Relation.Nullary.Product
+  Relation.Nullary.Sum
+  Relation.Nullary.Implication
+  ```
+  have been deprecated and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`
+  however all their contents is re-exported by `Relation.Nullary` which is the easiest way to access
+  it now.
+  
+* In order to facilitate this reorganisation the following breaking moves have occured:
+  - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
+  - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
+  - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation` 
+	to `Relation.Nullary.Decidable`.
+  - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
+
+### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
+
+* The unindexed versions are not defined in terms of the named versions anymore
+
+* The `RawApplicative` and `RawMonad` type classes have been relaxed so that the underlying
+  functors do not need their domain and codomain to live at the same Set level.
+  This is needed for level-increasing functors like `IO : Set l → Set (suc l)`.
+
+* `RawApplicative` is now `RawFunctor + pure + _<*>_` and `RawMonad` is now
+  `RawApplicative` + `_>>=_` and so `return` is not used anywhere anymore.
+  This fixes the conflict with `case_return_of` (#356)
+  This reorganisation means in particular that the functor/applicative of a monad
+  are not computed using `_>>=_`. This may break proofs.
+
+* We now have `RawEmpty` and `RawChoice` respectively packing `empty : M A` and
+  `(<|>) : M A → M A → M A`. `RawApplicativeZero`, `RawAlternative`, `RawMonadZero`,
+  `RawMonadPlus` are all defined in terms of these.
+
+* `MonadT T` now returns a `MonadTd` record that packs both a proof that the
+  `Monad M` transformed by `T` is a monad and that we can `lift` a computation
+  `M A` to a trasnformed computation `T M A`.
+
+* The monad transformer are not mere aliases anymore, they are record-wrapped
+  which allows constraints such as `MonadIO (StateT S (ReaderT R IO))` to be
+  discharged by instance arguments.
+
+* The mtl-style type classes (`MonadState`, `MonadReader`) do not contain a proof
+  that the underlying functor is a `Monad` anymore. This ensures we do not have
+  conflicting `Monad M` instances from a pair of `MonadState S M` & `MonadReader R M`
+  constraints.
+
+* `MonadState S M` is now defined in terms of
+  ```agda
+  gets : (S → A) → M A
+  modify : (S → S) → M ⊤
+  ```
+  with `get` and `put` defined as derived notions.
+  This is needed because `MonadState S M` does not pack a `Monad M` instance anymore
+  and so we cannot define `modify f` as `get >>= λ s → put (f s)`.
+
+* `MonadWriter 𝕎 M` is defined similarly:
+   ```agda
+   writer : W × A → M A
+   listen : M A → M (W × A)
+   pass   : M ((W → W) × A) → M A
+   ```
+   with `tell` defined as a derived notion.
+   Note that `𝕎` is a `RawMonoid`, not a `Set` and `W` is the carrier of the monoid.
+
+* New modules:
+  ```
+  Algebra.Construct.Initial
+  Algebra.Construct.Terminal
+  Data.List.Effectful.Transformer
+  Data.List.NonEmpty.Effectful.Transformer
+  Data.Maybe.Effectful.Transformer
+  Data.Sum.Effectful.Left.Transformer
+  Data.Sum.Effectful.Right.Transformer
+  Data.Vec.Effectful.Transformer
+  Effect.Empty
+  Effect.Choice
+  Effect.Monad.Error.Transformer
+  Effect.Monad.Identity
+  Effect.Monad.IO
+  Effect.Monad.IO.Instances
+  Effect.Monad.Reader.Indexed
+  Effect.Monad.Reader.Instances
+  Effect.Monad.Reader.Transformer
+  Effect.Monad.Reader.Transformer.Base
+  Effect.Monad.State.Indexed
+  Effect.Monad.State.Instances
+  Effect.Monad.State.Transformer
+  Effect.Monad.State.Transformer.Base
+  Effect.Monad.Writer
+  Effect.Monad.Writer.Indexed
+  Effect.Monad.Writer.Instances
+  Effect.Monad.Writer.Transformer
+  Effect.Monad.Writer.Transformer.Base
+  IO.Effectful
+  IO.Instances
+  ```
+
 ### Other
 
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
@@ -562,6 +682,22 @@ Non-backwards compatible changes
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
 
+* The names of the (in)equational reasoning combinators defined in the internal
+  modules `Data.Rational(.Unnormalised).Properties.≤-Reasoning` have been renamed
+  (issue #1437) to conform with the defined setoid equality `_≃_` on `Rational`s:
+  ```agda
+  step-≈  ↦  step-≃
+  step-≃˘ ↦  step-≃˘
+  ```
+  with corresponding associated syntax:
+  ```agda
+  _≈⟨_⟩_  ↦  _≃⟨_⟩_
+  _≈˘⟨_⟩_ ↦  _≃˘⟨_⟩_
+  ```
+  NB. It is not possible to rename or deprecate `syntax` declarations, so Agda will
+  only issue a "Could not parse the application `begin ...` when scope checking"
+  warning if the old combinators are used. 
+
 * The types of the proofs `pos⇒1/pos`/`1/pos⇒pos` and `neg⇒1/neg`/`1/neg⇒neg` in
   `Data.Rational(.Unnormalised).Properties` have been switched, as the previous
   naming scheme didn't correctly generalise to e.g. `pos+pos⇒pos`. For example
@@ -588,6 +724,8 @@ Non-backwards compatible changes
   + the `i` argument to `opposite-suc` has been made explicit;
   + `pigeonhole` has been strengthened: wlog, we return a proof that
     `i < j` rather than a mere `i ≢ j`.
+
+* In `Data.Sum.Base` the definitions `fromDec` and `toDec` have been moved to `Data.Sum`.
 
 * In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
   * `cycle`
@@ -674,6 +812,32 @@ Major improvements
 * Beneficieries of this change include `Data.Rational.Unnormalised.Base` whose
   dependencies are now significantly smaller.
 
+### Moved raw bundles from Data.X.Properties to Data.X.Base
+
+* As mentioned by MatthewDaggitt in Issue #1755, Raw bundles defined in Data.X.Properties
+  should be defined in Data.X.Base as they don't require any properties.
+  * Moved raw bundles From `Data.Nat.Properties` to `Data.Nat.Base`
+  * Moved raw bundles From `Data.Nat.Binary.Properties` to `Data.Nat.Binary.Base`
+  * Moved raw bundles From `Data.Rational.Properties` to `Data.Rational.Base`
+  * Moved raw bundles From `Data.Rational.Unnormalised.Properties` to `Data.Rational.Unnormalised.Base`
+
+### Moved the definition of RawX from `Algebra.X.Bundles` to `Algebra.X.Bundles.Raw`
+
+* A new module `Algebra.Bundles.Raw` containing the definitions of the raw bundles
+  can be imported at much lower cost from `Data.X.Base`.
+  The following definitions have been moved:
+  * `RawMagma`
+  * `RawMonoid`
+  * `RawGroup`
+  * `RawNearSemiring`
+  * `RawSemiring`
+  * `RawRingWithoutOne`
+  * `RawRing`
+  * `RawQuasigroup`
+  * `RawLoop`
+* A new module `Algebra.Lattice.Bundles.Raw` is also introduced.
+  * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
+
 Deprecated modules
 ------------------
 
@@ -727,6 +891,14 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Construct.Zero`:
+  ```agda
+  rawMagma   ↦  Algebra.Construct.Terminal.rawMagma
+  magma      ↦  Algebra.Construct.Terminal.magma
+  semigroup  ↦  Algebra.Construct.Terminal.semigroup
+  band       ↦  Algebra.Construct.Terminal.band
+  ```
+
 * In `Codata.Guarded.Stream.Properties`:
   ```agda
   map-identity  ↦  map-id
@@ -772,6 +944,24 @@ Deprecated names
   raise    ↦  _↑ʳ_
   ```
 
+  Issue #1726: the relation `_≺_` and its single constructor `_≻toℕ_`
+  have been deprecated in favour of their extensional equivalent `_<_`
+  but omitting the inversion principle which pattern matching on `_≻toℕ_`
+  would achieve; this instead is proxied by the property `Data.Fin.Properties.toℕ<`.
+
+* In `Data.Fin.Induction`:
+  ```
+  ≺-Rec 
+  ≺-wellFounded
+  ≺-recBuilder
+  ≺-rec
+  ```
+
+  As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
+  associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
+  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  least of all those counterparts... the type confusion would be intolerable. 
+
 * In `Data.Fin.Properties`:
   ```
   toℕ-raise        ↦ toℕ-↑ʳ
@@ -781,6 +971,9 @@ Deprecated names
   Fin0↔⊥           ↦ 0↔⊥
   eq?              ↦ inj⇒≟
   ```
+
+  Likewise under issue #1726: the properties `≺⇒<′` and `<′⇒≺` have been deprecated
+  in favour of their proxy counterparts `<⇒<′` and `<′⇒<`.
 
 * In `Data.Fin.Permutation.Components`:
   ```
@@ -803,17 +996,23 @@ Deprecated names
   been made consistent so that `m`, `n` always refer to naturals and
   `i` and `j` always refer to integers:
   ```
+  ≤-steps        ↦  i≤j⇒i≤k+j
+  ≤-step         ↦  i≤j⇒i≤1+j
+
+  ≤-steps-neg    ↦  i≤j⇒i-k≤j
+  ≤-step-neg     ↦  i≤j⇒pred[i]≤j
+
   n≮n            ↦  i≮i
-  ∣n∣≡0⇒n≡0      ↦  ∣i∣≡0⇒i≡0
-  ∣-n∣≡∣n∣       ↦  ∣-i∣≡∣i∣
-  0≤n⇒+∣n∣≡n     ↦  0≤i⇒+∣i∣≡i
-  +∣n∣≡n⇒0≤n     ↦  +∣i∣≡i⇒0≤i
-  +∣n∣≡n⊎+∣n∣≡-n ↦  +∣i∣≡i⊎+∣i∣≡-i
-  ∣m+n∣≤∣m∣+∣n∣  ↦  ∣i+j∣≤∣i∣+∣j∣
-  ∣m-n∣≤∣m∣+∣n∣  ↦  ∣i-j∣≤∣i∣+∣j∣
-  signₙ◃∣n∣≡n    ↦  signᵢ◃∣i∣≡i
+  ∣n∣≡0⇒n≡0       ↦  ∣i∣≡0⇒i≡0
+  ∣-n∣≡∣n∣         ↦  ∣-i∣≡∣i∣
+  0≤n⇒+∣n∣≡n      ↦  0≤i⇒+∣i∣≡i
+  +∣n∣≡n⇒0≤n      ↦  +∣i∣≡i⇒0≤i
+  +∣n∣≡n⊎+∣n∣≡-n   ↦  +∣i∣≡i⊎+∣i∣≡-i
+  ∣m+n∣≤∣m∣+∣n∣     ↦  ∣i+j∣≤∣i∣+∣j∣
+  ∣m-n∣≤∣m∣+∣n∣     ↦  ∣i-j∣≤∣i∣+∣j∣
+  signₙ◃∣n∣≡n     ↦  signᵢ◃∣i∣≡i
   ◃-≡            ↦  ◃-cong
-  ∣m-n∣≡∣n-m∣    ↦  ∣i-j∣≡∣j-i∣
+  ∣m-n∣≡∣n-m∣      ↦  ∣i-j∣≡∣j-i∣
   m≡n⇒m-n≡0      ↦  i≡j⇒i-j≡0
   m-n≡0⇒m≡n      ↦  i-j≡0⇒i≡j
   m≤n⇒m-n≤0      ↦  i≤j⇒i-j≤0
@@ -826,7 +1025,7 @@ Deprecated names
   m<n⇒m≤pred[n]  ↦  i<j⇒i≤pred[j]
   -1*n≡-n        ↦  -1*i≡-i
   m*n≡0⇒m≡0∨n≡0  ↦  i*j≡0⇒i≡0∨j≡0
-  ∣m*n∣≡∣m∣*∣n∣  ↦  ∣i*j∣≡∣i∣*∣j∣
+  ∣m*n∣≡∣m∣*∣n∣     ↦  ∣i*j∣≡∣i∣*∣j∣
   m≤m+n          ↦  i≤i+j
   n≤m+n          ↦  i≤j+i
   m-n≤m          ↦  i≤i-j
@@ -846,6 +1045,8 @@ Deprecated names
   pos-distrib-* ↦ pos-*
   pos-+-commute ↦ pos-+
   abs-*-commute ↦ abs-*
+  
+  +-isAbelianGroup ↦ +-0-isAbelianGroup
   ```
   
 * In `Data.List.Properties`:
@@ -911,6 +1112,10 @@ Deprecated names
 * In `Data.Nat.Properties`:
   ```
   suc[pred[n]]≡n  ↦  suc-pred
+  ≤-step          ↦  m≤n⇒m≤1+n
+  ≤-stepsˡ        ↦  m≤n⇒m≤o+n
+  ≤-stepsʳ        ↦  m≤n⇒m≤n+o
+  <-step          ↦  m<n⇒m<1+n
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:
@@ -919,6 +1124,7 @@ Deprecated names
   ↧[p/q]≡q         ↦  ↧[n/d]≡d
   *-monoˡ-≤-pos    ↦  *-monoˡ-≤-nonNeg
   *-monoʳ-≤-pos    ↦  *-monoʳ-≤-nonNeg
+  ≤-steps          ↦  p≤q⇒p≤r+q
   *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
   *-cancelˡ-<-pos  ↦  *-cancelˡ-<-nonNeg
@@ -927,6 +1133,12 @@ Deprecated names
   positive⇒nonNegative  ↦ pos⇒nonNeg
   negative⇒nonPositive  ↦ neg⇒nonPos
   negative<positive     ↦ neg<pos
+  ```
+
+* In `Data.Rational.Base`:
+  ```
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
   ```
 
 * In `Data.Rational.Properties`:
@@ -943,12 +1155,38 @@ Deprecated names
   negative<positive     ↦ neg<pos
   ```
 
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
+  ```
+
 * In `Data.Sum.Properties`:
   ```agda
   [,]-∘-distr      ↦  [,]-∘
   [,]-map-commute  ↦  [,]-map
   map-commute      ↦  map-map
   map₁₂-commute    ↦  map₁₂-map₂₁
+  ```
+
+* In `Data.Tree.AVL`:
+  ```
+  _∈?_ ↦ member
+  ```
+
+* In `Data.Tree.AVL.IndexedMap`:
+  ```
+  _∈?_ ↦ member
+  ```
+
+* In `Data.Tree.AVL.Map`:
+  ```
+  _∈?_ ↦ member
+  ```
+
+* In `Data.Tree.AVL.Sets`:
+  ```
+  _∈?_ ↦ member
   ```
 
 * In `Data.Tree.Binary.Zipper.Properties`:
@@ -1064,9 +1302,9 @@ New modules
 -----------
 
 * Algebraic structures when freely adding an identity element:
-```
+  ```
   Algebra.Construct.Add.Identity
-```
+  ```
 
 * Operations for module-like algebraic structures:
   ```
@@ -1133,11 +1371,29 @@ New modules
   Data.List.Fresh.NonEmpty
   ```
 
+* A small library defining a structurally inductive view of lists:
+  ```
+  Data.List.Relation.Unary.Sufficient
+  ```
+
 * Combinations and permutations for ℕ.
   ```
   Data.Nat.Combinatorics
   Data.Nat.Combinatorics.Base
   Data.Nat.Combinatorics.Spec
+  ```
+
+* A small library defining parity and its algebra:
+  ```
+  Data.Parity
+  Data.Parity.Base
+  Data.Parity.Instances
+  Data.Parity.Properties
+  ```
+
+* New base module for `Data.Product` containing only the basic definitions.
+  ```
+  Data.Product.Base
   ```
 
 * Reflection utilities for some specific types:
@@ -1159,6 +1415,14 @@ New modules
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
+  ```
+
+* Membership relations for maps and sets
+  ```
+  Data.Tree.AVL.Map.Membership.Propositional
+  Data.Tree.AVL.Map.Membership.Propositional.Properties
+  Data.Tree.AVL.Sets.Membership
+  Data.Tree.AVL.Sets.Membership.Properties
   ```
 
 * Properties of bijections:
@@ -1266,14 +1530,33 @@ New modules
   ```
   Algebra.Properties.Quasigroup
   ```
+  
+* Properties of MiddleBolLoop
+  ```
+  Algebra.Properties.MiddleBolLoop
+  ```
 
+* Properties of Loop
+  ```
+  Algebra.Properties.Loop
+  ```
+
+* Some n-ary functions manipulating lists
+  ```
+  Data.List.Nary.NonDependent
+  ```
+
+* Properties of KleeneAlgebra
+  ```
+  Algebra.Properties.KleeneAlgebra
+  ```
 Other minor changes
 -------------------
 
 * Added new proof to `Data.Maybe.Properties`
-```agda
+  ```agda
     <∣>-idem : Idempotent _<∣>_
-```
+  ```
 
 * The module `Algebra` now publicly re-exports the contents of
   `Algebra.Structures.Biased`.
@@ -1302,6 +1585,7 @@ Other minor changes
   record RightBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   record MoufangLoop c ℓ : Set (suc (c ⊔ ℓ))
   record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ))
+  record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -1310,8 +1594,23 @@ Other minor changes
   ```
   and their corresponding algebraic subbundles.
 
+* Added new proofs to `Algebra.Consequences.Base`:
+  ```agda
+  reflexive+selfInverse⇒involutive : Reflexive _≈_ →
+                                     SelfInverse _≈_ f →
+                                     Involutive _≈_ f
+  ```
+
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
+  involutive⇒surjective  : Involutive f  → Surjective f
+  selfInverse⇒involutive : SelfInverse f → Involutive f
+  selfInverse⇒congruent  : SelfInverse f → Congruent f
+  selfInverse⇒inverseᵇ   : SelfInverse f → Inverseᵇ f f
+  selfInverse⇒surjective : SelfInverse f → Surjective f
+  selfInverse⇒injective  : SelfInverse f → Injective f
+  selfInverse⇒bijective  : SelfInverse f → Bijective f
+
   comm+idˡ⇒id              : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
   comm+idʳ⇒id              : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
   comm+zeˡ⇒ze              : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
@@ -1359,10 +1658,51 @@ Other minor changes
   semimedialMagma : SemimedialMagma a ℓ₁ → SemimedialMagma b ℓ₂ →
                     SemimedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  leftBolLoop : LeftBolLoop a ℓ₁ → LeftBolLoop b ℓ₂ → LeftBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rightBolLoop : RightBolLoop a ℓ₁ → RightBolLoop b ℓ₂ → RightBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  middleBolLoop : MiddleBolLoop a ℓ₁ → MiddleBolLoop b ℓ₂ → MiddleBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
+
+* Added new functions and proofs to `Algebra.Construct.Flip.Op`:
+  ```agda
+  zero : Zero ≈ ε ∙ → Zero ≈ ε (flip ∙)
+  distributes : (≈ DistributesOver ∙) + → (≈ DistributesOver (flip ∙)) +
+  isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero + * 0# 1# →
+                                      IsSemiringWithoutAnnihilatingZero + (flip *) 0# 1#
+  isSemiring : IsSemiring + * 0# 1# → IsSemiring + (flip *) 0# 1#
+  isCommutativeSemiring : IsCommutativeSemiring + * 0# 1# →
+                          IsCommutativeSemiring + (flip *) 0# 1#
+  isCancellativeCommutativeSemiring : IsCancellativeCommutativeSemiring + * 0# 1# →
+                                      IsCancellativeCommutativeSemiring + (flip *) 0# 1#
+  isIdempotentSemiring : IsIdempotentSemiring + * 0# 1# →
+                         IsIdempotentSemiring + (flip *) 0# 1#
+  isQuasiring : IsQuasiring + * 0# 1# → IsQuasiring + (flip *) 0# 1#
+  isRingWithoutOne : IsRingWithoutOne + * - 0# → IsRingWithoutOne + (flip *) - 0#
+  isNonAssociativeRing : IsNonAssociativeRing + * - 0# 1# →
+                         IsNonAssociativeRing + (flip *) - 0# 1#
+  isRing : IsRing ≈ + * - 0# 1# → IsRing ≈ + (flip *) - 0# 1#
+  isNearring : IsNearring + * 0# 1# - → IsNearring + (flip *) 0# 1# -
+  isCommutativeRing : IsCommutativeRing + * - 0# 1# →
+                      IsCommutativeRing + (flip *) - 0# 1#
+  semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ →
+                                    SemiringWithoutAnnihilatingZero a ℓ
+  commutativeSemiring : CommutativeSemiring a ℓ → CommutativeSemiring a ℓ
+  cancellativeCommutativeSemiring : CancellativeCommutativeSemiring a ℓ →
+                                  CancellativeCommutativeSemiring a ℓ
+  idempotentSemiring : IdempotentSemiring a ℓ → IdempotentSemiring a ℓ
+  quasiring : Quasiring a ℓ → Quasiring a ℓ
+  ringWithoutOne : RingWithoutOne a ℓ → RingWithoutOne a ℓ
+  nonAssociativeRing : NonAssociativeRing a ℓ → NonAssociativeRing a ℓ
+  nearring : Nearring a ℓ → Nearring a ℓ
+  ring : Ring a ℓ → Ring a ℓ
+  commutativeRing : CommutativeRing a ℓ → CommutativeRing a ℓ
+  ```
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
+  SelfInverse : Op₁ A → Set _
+  
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
   LeftDividesʳ  : Op₂ A → Op₂ A → Set _
   RightDividesˡ : Op₂ A → Op₂ A → Set _
@@ -1389,6 +1729,7 @@ Other minor changes
   Semimedial _∙_ = (LeftSemimedial _∙_) × (RightSemimedial _∙_)
   LeftBol _∙_ = ∀ x y z → (x ∙ (y ∙ (x ∙ z))) ≈ ((x ∙ (y ∙ z)) ∙ z )
   RightBol _∙_ = ∀ x y z → (((z ∙ x) ∙ y) ∙ x) ≈ (z ∙ ((x ∙ y) ∙ x))
+  MiddleBol _∙_ _\\_ _//_ = ∀ x y z → (x ∙ ((y ∙ z) \\ x)) ≈ ((x // z) ∙ (y \\ x))
   ```
 
 * Added new functions to `Algebra.Definitions.RawSemiring`:
@@ -1397,25 +1738,55 @@ Other minor changes
   _^ᵗ_     : A → ℕ → A
   ```
 
+* `Algebra.Properties.Magma.Divisibility` now re-exports operations 
+  `_∣ˡ_`, `_∤ˡ_`, `_∣ʳ_`, `_∤ʳ_` from `Algebra.Definitions.Magma`.
+
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
-  ```
+  ```agda
   interchange : Interchangable _∙_ _∙_
   xy∙xx≈x∙yxx : ∀ x y → (x ∙ y) ∙ (x ∙ x) ≈ x ∙ (y ∙ (x ∙ x))
   leftSemimedial : LeftSemimedial _∙_
   rightSemimedial : RightSemimedial _∙_
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
+  semimedial : Semimedial _∙_
   ```
+* Added new proof to `Algebra.Properties.Monoid.Mult`:
+  ```agda
+  ×-congˡ : ∀ {x} → (_× x) Preserves _≡_ ⟶ _≈_
+  ```
+
+* Added new proof to `Algebra.Properties.Monoid.Sum`:
+  ```agda
+  sum-init-last : ∀ {n} (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
+  ```
+
 * Added new proofs to `Algebra.Properties.Semigroup`:
-  ```
+  ```agda
   leftAlternative : LeftAlternative _∙_
   rightAlternative : RightAlternative _∙_
   alternative : Alternative _∙_
   flexible : Flexible _∙_
   ```
 
-* Added new proofs to `Algebra.Properties.Ring`:
+* Added new proofs to `Algebra.Properties.Semiring.Exp`:
+  ```agda
+  ^-congʳ               : (x ^_) Preserves _≡_ ⟶ _≈_
+  y*x^m*y^n≈x^m*y^[n+1] : (x * y ≈ y * x) → y * (x ^ m * y ^ n) ≈ x ^ m * y ^ suc n
   ```
+
+* Added new proofs to `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  1×-identityʳ : 1 × x ≈ x
+  ×-comm-*    : x * (n × y) ≈ n × (x * y)
+  ×-assoc-*   : (n × x) * y ≈ n × (x * y)
+  ```
+
+* Added new proofs to `Algebra.Properties.Ring`:
+  ```agda
   -1*x≈-x : ∀ x → - 1# * x ≈ - x
+  x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
+  x[y-z]≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
+  [y-z]x≈yx-zx : ∀ x y z → (y - z) * x ≈ (y * x) - (z * x)
   ```
 
 * Added new definitions to `Algebra.Structures`:
@@ -1439,6 +1810,7 @@ Other minor changes
   record IsRightBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsMiddleBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -1519,6 +1891,13 @@ Other minor changes
   combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
   combine-monoˡ-<    : i < j → combine i k < combine j l
 
+  ℕ-ℕ≡toℕ‿ℕ-         : n ℕ-ℕ i ≡ toℕ (n ℕ- i)
+
+  punchIn-mono-≤     : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
+  punchIn-cancel-≤   : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
+  punchOut-mono-≤    : (i≢j : i ≢ j) (i≢k : i ≢ k) → j ≤ k → punchOut i≢j ≤ punchOut i≢k
+  punchOut-cancel-≤  : (i≢j : i ≢ j) (i≢k : i ≢ k) → punchOut i≢j ≤ punchOut i≢k → j ≤ k
+
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
 
@@ -1537,7 +1916,12 @@ Other minor changes
 * Added new functions in `Data.Integer.Base`:
   ```
   _^_ : ℤ → ℕ → ℤ
-  ```
+ 
+  +-0-rawGroup  : Rawgroup 0ℓ 0ℓ
+
+  *-rawMagma    : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+ ```
 
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
@@ -1552,11 +1936,16 @@ Other minor changes
   ^-*-assoc      : (i ^ m) ^ n ≡ i ^ (m ℕ.* n)
   ^-distribˡ-+-* : i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
 
-  *-rawMagma    : RawMagma 0ℓ 0ℓ
-  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-
   ^-isMagmaHomomorphism  : IsMagmaHomomorphism  ℕ.+-rawMagma    *-rawMagma    (i ^_)
   ^-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
+  ```
+
+* Added new proofs in `Data.Integer.GCD`:
+  ```agda
+  gcd-assoc : Associative gcd
+  gcd-zeroˡ : LeftZero 1ℤ gcd
+  gcd-zeroʳ : RightZero 1ℤ gcd
+  gcd-zero  : Zero 1ℤ gcd
   ```
 
 * Added new functions in `Data.List`:
@@ -1571,6 +1960,14 @@ Other minor changes
   wordsByᵇ     : (A → Bool) → List A → List (List A)
   derunᵇ       : (A → A → Bool) → List A → List A
   deduplicateᵇ : (A → A → Bool) → List A → List A
+  ```
+
+* Added new functions and definitions to `Data.List.Base`:
+  ```agda
+  catMaybes : List (Maybe A) → List A
+  ap : List (A → B) → List A → List B
+  ++-rawMagma : Set a → RawMagma a _
+  ++-[]-rawMonoid : Set a → RawMonoid a _
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
@@ -1594,10 +1991,30 @@ Other minor changes
   decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
   ```
 
+* Added new proofs to `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
+  map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  ```
+
+* Added new proofs to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
+  map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  ```
+
 * Add new proofs in `Data.List.Properties`:
   ```agda
   ∈⇒∣product : n ∈ ns → n ∣ product ns
   ∷ʳ-++ : xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
+
+  concatMap-cong : f ≗ g → concatMap f ≗ concatMap g
+  concatMap-pure : concatMap [_] ≗ id
+  concatMap-map  : concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
+  map-concatMap  : map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
+
+  length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -1608,7 +2025,19 @@ Other minor changes
   pattern <′-base          = ≤′-refl
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
 
+  _⊔′_ : ℕ → ℕ → ℕ
+  _⊓′_ : ℕ → ℕ → ℕ
+  ∣_-_∣′ : ℕ → ℕ → ℕ
   _! : ℕ → ℕ
+
+  parity : ℕ → Parity
+  
+  +-rawMagma          : RawMagma 0ℓ 0ℓ
+  +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
+  *-rawMagma          : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid       : RawMonoid 0ℓ 0ℓ
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
   ```
 
 
@@ -1662,6 +2091,12 @@ Other minor changes
   m<n⇒m<n*o : .{{_ : NonZero o}} → m < n → m < n * o
   m<n⇒m<o*n : .{{_ : NonZero o}} → m < n → m < o * n
   ∸-monoˡ-< : m < o → n ≤ m → m ∸ n < o ∸ n
+
+  m≤n⇒∣m-n∣≡n∸m : m ≤ n → ∣ m - n ∣ ≡ n ∸ m
+
+  ⊔≡⊔′ : m ⊔ n ≡ m ⊔′ n
+  ⊓≡⊓′ : m ⊓ n ≡ m ⊓′ n
+  ∣-∣≡∣-∣′ : ∣ m - n ∣ ≡ ∣ m - n ∣′
   ```
 
 * Re-exported additional functions from `Data.Nat`:
@@ -1708,11 +2143,33 @@ Other minor changes
   m/n/o≡m/[n*o] : .{{NonZero n}} .{{NonZero o}} → n * o ∣ m → (m / n) / o ≡ m / (n * o)
   ```
 
+* Added new proofs in `Data.Nat.GCD`:
+  ```agda
+  gcd-assoc     : Associative gcd
+  gcd-identityˡ : LeftIdentity 0 gcd
+  gcd-identityʳ : RightIdentity 0 gcd
+  gcd-identity  : Identity 0 gcd
+  gcd-zeroˡ     : LeftZero 1 gcd
+  gcd-zeroʳ     : RightZero 1 gcd
+  gcd-zero      : Zero 1 gcd
+  ```
+
 * Added new patterns in `Data.Nat.Reflection`:
   ```agda
   pattern `ℕ     = def (quote ℕ) []
   pattern `zero  = con (quote ℕ.zero) []
   pattern `suc x = con (quote ℕ.suc) (x ⟨∷⟩ [])
+  ```
+
+* Added new proofs in `Data.Parity.Properties`:
+  ```agda
+  suc-homo-⁻¹ : (parity (suc n)) ⁻¹ ≡ parity n
+  +-homo-+    : parity (m ℕ.+ n) ≡ parity m ℙ.+ parity n
+  *-homo-*    : parity (m ℕ.* n) ≡ parity m ℙ.* parity n
+  parity-isMagmaHomomorphism : IsMagmaHomomorphism ℕ.+-rawMagma ℙ.+-rawMagma parity
+  parity-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid ℙ.+-0-rawMonoid parity
+  parity-isNearSemiringHomomorphism : IsNearSemiringHomomorphism ℕ.+-*-rawNearSemiring ℙ.+-*-rawNearSemiring parity
+  parity-isSemiringHomomorphism : IsSemiringHomomorphism ℕ.+-*-rawSemiring ℙ.+-*-rawSemiring parity
   ```
 
 * Added new rounding functions in `Data.Rational.Base`:
@@ -1774,6 +2231,12 @@ Other minor changes
   1/nonZero⇒nonZero    : .{{_ : NonZero p}} → NonZero (1/ p)
   ```
 
+* Added new functions to `Data.Product.Nary.NonDependent`:
+  ```agda
+  zipWith : (∀ k → Projₙ as k → Projₙ bs k → Projₙ cs k) →
+            Product n as → Product n bs → Product n cs
+  ```
+
 * Added new proof to `Data.Product.Properties`:
   ```agda
   map-cong : f ≗ g → h ≗ i → map f h ≗ map g i
@@ -1788,6 +2251,23 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
+  ```agda
+  ×-respectsʳ : Transitive _≈₁_ →
+                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_ 
+  ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
+                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_ 
+  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ → 
+                   WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
+  ```
+
+* Added new definitions to `Data.Sign.Base`:
+  ```agda
+  *-rawMagma : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+  *-1-rawGroup : RawGroup 0ℓ 0ℓ
+  ```
+
 * Added new proofs to `Data.Sign.Properties`:
   ```agda
   *-inverse : Inverse + id _*_
@@ -1799,6 +2279,7 @@ Other minor changes
   *-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
   *-group : Group 0ℓ 0ℓ
   *-abelianGroup : AbelianGroup 0ℓ 0ℓ
+  ≡-isDecEquivalence : IsDecEquivalence _≡_
   ```
 
 * Added new functions in `Data.String.Base`:
@@ -1825,6 +2306,15 @@ Other minor changes
     map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
   ```
 
+* Adden new proof in `Data.Sum.Relation.Binary.LeftOrder` :
+  ```
+  ⊎-<-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
+  ```
+* Adden new proof in `Data.Sum.Relation.Binary.Pointwise` :
+  ```
+  ⊎-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
+  ```
+
 * Made `Map` public in `Data.Tree.AVL.IndexedMap`
 
 * Added new definitions in `Data.Vec.Base`:
@@ -1843,6 +2333,8 @@ Other minor changes
 
   diagonal           : Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : Vec A n → (A → Vec B n) → Vec B n
+  join               : Vec (Vec A n) n → Vec A n
+
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
@@ -1923,7 +2415,13 @@ Other minor changes
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:
   ```agda
   xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
-  ```
+  <-respectsˡ : IsPartialEquivalence _≈_ → _≺_ Respectsˡ _≈_ →
+                ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
+  <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
+                ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
+  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ → 
+                  ∀ {n} → WellFounded (_<_ {n})
+```
 
 * Added new functions in `Data.Vec.Relation.Unary.Any`:
   ```
@@ -2224,6 +2722,16 @@ Other minor changes
   Pull Request #1812:
   ```agda
   flip′ : (A → B → C) → (B → A → C)
+  ```
+
+* Added new proofs to `Data.List.Properties`
+  ```agda
+  cartesianProductWith-zeroˡ       : cartesianProductWith f [] ys ≡ []
+  cartesianProductWith-zeroʳ       : cartesianProductWith f xs [] ≡ []
+  cartesianProductWith-distribʳ-++ : cartesianProductWith f (xs ++ ys) zs ≡
+                                     cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
+  foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
+  foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
 
 NonZero/Positive/Negative changes

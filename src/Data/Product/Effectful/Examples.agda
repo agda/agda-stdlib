@@ -45,15 +45,15 @@ private
 
   open RawMonad monad
 
-  -- Now, let's show that "return" is a unit for >>=. We use Lift in exactly
+  -- Now, let's show that "pure" is a unit for >>=. We use Lift in exactly
   -- the same way as above. The data (x : B) then needs to be "lifted" to
   -- this new type (Lift B).
-  returnUnitL : ∀ {x : B} {f : Lift a B → A.Carrier × Lift a B} →
-                ((return (lift x)) >>= f) ≈ f (lift x)
-  returnUnitL = A.identityˡ _ , refl
+  pureUnitL : ∀ {x : B} {f : Lift a B → A.Carrier × Lift a B} →
+                (pure (lift x) >>= f) ≈ f (lift x)
+  pureUnitL = A.identityˡ _ , refl
 
-  returnUnitR : {x : A.Carrier × Lift a B} → (x >>= return) ≈ x
-  returnUnitR = A.identityʳ _ , refl
+  pureUnitR : {x : A.Carrier × Lift a B} → (x >>= pure) ≈ x
+  pureUnitR = A.identityʳ _ , refl
 
   -- And another (limited version of a) monad law...
   bindCompose : ∀ {f g : Lift a B → A.Carrier × Lift a B} →

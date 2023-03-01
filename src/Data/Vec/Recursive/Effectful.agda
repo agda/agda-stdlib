@@ -24,21 +24,22 @@ functor n = record { _<$>_ = λ f → map f n }
 
 applicative : ∀ {ℓ} n → RawApplicative {ℓ} (_^ n)
 applicative n = record
-  { pure = replicate n
-  ; _⊛_  = ap n
+  { rawFunctor = functor n
+  ; pure = replicate n
+  ; _<*>_  = ap n
   }
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module _ {f F} (App : RawApplicative {f} F) where
+module _ {f g F} (App : RawApplicative {f} {g} F) where
 
   open RawApplicative App
 
   sequenceA : ∀ {n A} → F A ^ n → F (A ^ n)
-  sequenceA {0}    _          = pure _
-  sequenceA {1}    fa         = fa
-  sequenceA {2+ n} (fa , fas) = _,_ <$> fa ⊛ sequenceA fas
+  sequenceA {0}    _                 = pure _
+  sequenceA {1}    fa                = fa
+  sequenceA {suc (suc _)} (fa , fas) = _,_ <$> fa ⊛ sequenceA fas
 
   mapA : ∀ {n a} {A : Set a} {B} → (A → F B) → A ^ n → F (B ^ n)
   mapA f = sequenceA ∘ map f _
@@ -46,9 +47,9 @@ module _ {f F} (App : RawApplicative {f} F) where
   forA : ∀ {n a} {A : Set a} {B} → A ^ n → (A → F B) → F (B ^ n)
   forA = flip mapA
 
-module _ {m M} (Mon : RawMonad {m} M) where
+module _ {m n M} (Mon : RawMonad {m} {n} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : ∀ {n A} → M A ^ n → M (A ^ n)
   sequenceM = sequenceA App

@@ -13,7 +13,7 @@ open import Function.Definitions
 open import Level
 open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation.Core using (contraposition)
 
 private

@@ -17,7 +17,7 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -188,6 +188,9 @@ module DiagonalBind where
 
   _>>=_ : Vec A n → (A → Vec B n) → Vec B n
   xs >>= f = diagonal (map f xs)
+
+  join : Vec (Vec A n) n → Vec A n
+  join = _>>= id
 
 ------------------------------------------------------------------------
 -- Operations for reducing vectors

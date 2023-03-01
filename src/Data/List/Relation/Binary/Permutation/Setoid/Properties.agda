@@ -14,7 +14,6 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
 
 open import Algebra
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; head; tail)
@@ -39,7 +38,7 @@ open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_; inspect)
-open import Relation.Nullary using (yes; no; does)
+open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 
 private
@@ -116,8 +115,8 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 
 0<steps : ∀ {xs ys} (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
 0<steps (refl _)             = z<s
-0<steps (prep eq xs↭ys)      = ≤-step (0<steps xs↭ys)
-0<steps (swap eq₁ eq₂ xs↭ys) = ≤-step (0<steps xs↭ys)
+0<steps (prep eq xs↭ys)      = m<n⇒m<1+n (0<steps xs↭ys)
+0<steps (swap eq₁ eq₂ xs↭ys) = m<n⇒m<1+n (0<steps xs↭ys)
 0<steps (trans xs↭ys xs↭ys₁) =
   <-transˡ (0<steps xs↭ys) (m≤m+n (steps xs↭ys) (steps xs↭ys₁))
 

@@ -10,7 +10,7 @@ module Relation.Unary.Indexed  where
 
 open import Data.Product using (∃; _×_)
 open import Level
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 IPred : ∀ {i a} {I : Set i} → (I → Set a) → (ℓ : Level) → Set _
 IPred A ℓ = ∀ {i} → A i → Set ℓ

@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra using (Ring)
 
 module Algebra.Properties.Ring {r₁ r₂} (R : Ring r₁ r₂) where
 
@@ -15,6 +15,8 @@ open Ring R
 import Algebra.Properties.AbelianGroup as AbelianGroupProperties
 open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
+open import Algebra.Definitions _≈_
+open import Data.Product
 
 ------------------------------------------------------------------------
 -- Export properties of abelian groups
@@ -66,3 +68,18 @@ open AbelianGroupProperties +-abelianGroup public
   - 1# * x    ≈⟨ sym (-‿distribˡ-* 1# x ) ⟩
   - (1# * x)  ≈⟨ -‿cong ( *-identityˡ x ) ⟩
   - x         ∎
+
+x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
+x+x≈x⇒x≈0 x eq = +-identityˡ-unique x x eq
+
+x[y-z]≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
+x[y-z]≈xy-xz x y z = begin
+  x * (y - z)      ≈⟨ distribˡ x y (- z) ⟩
+  x * y + x * - z  ≈⟨ +-congˡ (sym (-‿distribʳ-* x z)) ⟩
+  x * y - x * z    ∎
+
+[y-z]x≈yx-zx : ∀ x y z → (y - z) * x ≈ (y * x) - (z * x)
+[y-z]x≈yx-zx x y z = begin
+  (y - z) * x      ≈⟨ distribʳ x y (- z) ⟩
+  y * x + - z * x  ≈⟨ +-congˡ (sym (-‿distribˡ-* z x)) ⟩
+  y * x - z * x    ∎

@@ -15,8 +15,8 @@ open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product using (∃)
 
-open import Relation.Nullary using (yes ; no)
-open import Relation.Nullary.Decidable.Core
+open import Relation.Nullary.Decidable using (yes; no)
+open import Relation.Nullary.Decidable
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
@@ -101,7 +101,7 @@ naturality {x = x} {x≡y = refl} f≡g =
 
 cong-≡id : ∀ {f : A → A} {x : A} (f≡id : ∀ x → f x ≡ x) →
            cong f (f≡id x) ≡ f≡id (f x)
-cong-≡id {f = f} {x} f≡id =
+cong-≡id {f = f} {x} f≡id = begin
   cong f fx≡x                                    ≡⟨ sym (trans-reflʳ _) ⟩
   trans (cong f fx≡x) refl                       ≡⟨ cong (trans _) (sym (trans-symʳ fx≡x)) ⟩
   trans (cong f fx≡x) (trans fx≡x (sym fx≡x))    ≡⟨ sym (trans-assoc (cong f fx≡x)) ⟩

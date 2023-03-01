@@ -17,10 +17,8 @@ import Data.Nat.Properties as ℕₚ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (case_of_; _$′_)
 
-open import Relation.Nullary using (¬_; yes; no; does)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎-dec_)
+open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary using (REL; _⇒_; Decidable; Trans; Antisym)
 open import Relation.Binary.PropositionalEquality using (_≢_; refl; cong)
@@ -70,7 +68,7 @@ module _ {c t} {C : Set c} {T : REL A C t} where
 
 length-mono : ∀ {as bs} → Infix R as bs → length as ≤ length bs
 length-mono (here pref) = Prefixₚ.length-mono pref
-length-mono (there p)   = ℕₚ.≤-step (length-mono p)
+length-mono (there p)   = ℕₚ.m≤n⇒m≤1+n (length-mono p)
 
 ------------------------------------------------------------------------
 -- As an order

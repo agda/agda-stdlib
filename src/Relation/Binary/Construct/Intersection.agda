@@ -8,13 +8,12 @@
 
 module Relation.Binary.Construct.Intersection where
 
-open import Data.Product
+open import Data.Product.Base
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
-open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable using (yes; no; _×-dec_)
 
 private
   variable

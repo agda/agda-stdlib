@@ -8,8 +8,8 @@
 
 module Data.Vec.Functional.Relation.Unary.Any where
 
-open import Data.Fin.Base
-open import Data.Fin.Properties
+open import Data.Fin.Base using (zero; suc)
+open import Data.Fin.Properties using (any?)
 open import Data.Nat.Base
 open import Data.Product as Σ using (Σ; ∃; _×_; _,_; proj₁; proj₂)
 open import Data.Vec.Functional as VF hiding (map)

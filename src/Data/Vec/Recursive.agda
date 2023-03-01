@@ -19,7 +19,7 @@ module Data.Vec.Recursive where
 open import Level using (Level; lift)
 open import Function.Bundles using (mk↔′)
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
-open import Data.Nat.Base as Nat using (ℕ; zero; suc)
+open import Data.Nat.Base as Nat using (ℕ; zero; suc; NonZero; pred)
 open import Data.Nat.Properties using (+-comm; *-comm)
 open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
@@ -47,21 +47,19 @@ private
 -- Types and patterns
 ------------------------------------------------------------------------
 
-pattern 2+_ n = suc (suc n)
-
 infix 8 _^_
 _^_ : Set a → ℕ → Set a
 A ^ 0    = ⊤
 A ^ 1    = A
-A ^ 2+ n = A × A ^ suc n
+A ^ (suc n@(suc _)) = A × A ^ n
 
 pattern [] = lift tt
 
 infix 3 _∈[_]_
 _∈[_]_ : {A : Set a} → A → ∀ n → A ^ n → Set a
-a ∈[ 0    ] as      = ⊥
-a ∈[ 1    ] a′      = a ≡ a′
-a ∈[ 2+ n ] a′ , as = a ≡ a′ ⊎ a ∈[ suc n ] as
+a ∈[ 0    ] as               = ⊥
+a ∈[ 1    ] a′               = a ≡ a′
+a ∈[ suc n@(suc _) ] a′ , as = a ≡ a′ ⊎ a ∈[ n ] as
 
 -- Basic operations
 ------------------------------------------------------------------------
@@ -98,9 +96,9 @@ tabulate : ∀ n → (Fin n → A) → A ^ n
 tabulate n f = fromVec (Vec.tabulate f)
 
 append : ∀ m n → A ^ m → A ^ n → A ^ (m Nat.+ n)
-append 0      n xs       ys = ys
-append 1      n x        ys = cons n x ys
-append (2+ m) n (x , xs) ys = x , append (suc m) n xs ys
+append 0               n xs       ys = ys
+append 1               n x        ys = cons n x ys
+append (suc m@(suc _)) n (x , xs) ys = x , append m n xs ys
 
 splitAt : ∀ m n → A ^ (m Nat.+ n) → A ^ m × A ^ n
 splitAt 0       n xs = [] , xs
@@ -115,28 +113,28 @@ splitAt (suc m) n xs =
 map : (A → B) → ∀ n → A ^ n → B ^ n
 map f 0      as       = lift tt
 map f 1      a        = f a
-map f (2+ n) (a , as) = f a , map f (suc n) as
+map f (suc n@(suc _)) (a , as) = f a , map f n as
 
 ap : ∀ n → (A → B) ^ n → A ^ n → B ^ n
 ap 0      fs       ts       = []
 ap 1      f        t        = f t
-ap (2+ n) (f , fs) (t , ts) = f t , ap (suc n) fs ts
+ap (suc n@(suc _)) (f , fs) (t , ts) = f t , ap n fs ts
 
 module _ {P : ℕ → Set p} where
 
-  foldr : P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (2+ n)) →
+  foldr : P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (suc (suc n))) →
           ∀ n → A ^ n → P n
   foldr p0 p1 p2+ 0      as       = p0
   foldr p0 p1 p2+ 1      a        = p1 a
-  foldr p0 p1 p2+ (2+ n) (a , as) = p2+ n a (foldr p0 p1 p2+ (suc n) as)
+  foldr p0 p1 p2+ (suc n′@(suc n)) (a , as) = p2+ n a (foldr p0 p1 p2+ n′ as)
 
 foldl : (P : ℕ → Set p) →
-        P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (2+ n)) →
+        P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (suc (suc n))) →
         ∀ n → A ^ n → P n
 foldl P p0 p1 p2+ 0      as       = p0
 foldl P p0 p1 p2+ 1      a        = p1 a
-foldl P p0 p1 p2+ (2+ n) (a , as) = let p1′ = p1 a in
-  foldl (P ∘′ suc) p1′ (λ a → p2+ 0 a p1′) (p2+ ∘ suc) (suc n) as
+foldl P p0 p1 p2+ (suc n@(suc _)) (a , as) = let p1′ = p1 a in
+  foldl (P ∘′ suc) p1′ (λ a → p2+ 0 a p1′) (p2+ ∘ suc) n as
 
 reverse : ∀ n → A ^ n → A ^ n
 reverse = foldl (_ ^_) [] id (λ n → _,_)
@@ -144,12 +142,12 @@ reverse = foldl (_ ^_) [] id (λ n → _,_)
 zipWith : (A → B → C) → ∀ n → A ^ n → B ^ n → C ^ n
 zipWith f 0      as       bs       = []
 zipWith f 1      a        b        = f a b
-zipWith f (2+ n) (a , as) (b , bs) = f a b , zipWith f (suc n) as bs
+zipWith f ((suc n@(suc _))) (a , as) (b , bs) = f a b , zipWith f n as bs
 
 unzipWith : (A → B × C) → ∀ n → A ^ n → B ^ n × C ^ n
-unzipWith f 0      as       = [] , []
-unzipWith f 1      a        = f a
-unzipWith f (2+ n) (a , as) = Prod.zip _,_ _,_ (f a) (unzipWith f (suc n) as)
+unzipWith f 0               as       = [] , []
+unzipWith f 1               a        = f a
+unzipWith f (suc n@(suc _)) (a , as) = Prod.zip _,_ _,_ (f a) (unzipWith f n as)
 
 zip : ∀ n → A ^ n → B ^ n → (A × B) ^ n
 zip = zipWith _,_
@@ -158,9 +156,9 @@ unzip : ∀ n → (A × B) ^ n → A ^ n × B ^ n
 unzip = unzipWith id
 
 lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
-lift↔ 0 A↔B = mk↔ ((λ { [] → refl }) , (λ{ [] → refl }))
-lift↔ 1 A↔B = A↔B
-lift↔ (2+ n) A↔B = ×-cong A↔B (lift↔ _ A↔B)
+lift↔ 0               A↔B = mk↔ ((λ { [] → refl }) , (λ{ [] → refl }))
+lift↔ 1               A↔B = A↔B
+lift↔ (suc n@(suc _)) A↔B = ×-cong A↔B (lift↔ n A↔B)
 
 Fin[m^n]↔Fin[m]^n : ∀ m n → Fin (m Nat.^ n) ↔ Fin m ^ n
 Fin[m^n]↔Fin[m]^n m 0 = ↔-trans 1↔⊤ (↔-sym ⊤↔⊤*)

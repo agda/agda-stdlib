@@ -14,9 +14,7 @@ open import Function
 open import Level using (Level)
 open import Relation.Binary using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Product
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no)
 
 private
   variable

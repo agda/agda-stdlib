@@ -20,7 +20,7 @@ module Relation.Binary.Morphism.RelMonomorphism
   where
 
 open import Data.Sum.Base as Sum
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable
 
 open IsRelMonomorphism isMonomorphism

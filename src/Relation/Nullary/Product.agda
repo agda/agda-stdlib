@@ -1,37 +1,17 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Products of nullary relations
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Product where
 
-open import Data.Bool.Base
-open import Data.Product
-open import Function.Base using (_∘_)
-open import Level
-open import Relation.Nullary.Reflects
-open import Relation.Nullary
+{-# WARNING_ON_IMPORT
+"Relation.Nullary.Product was deprecated in v2.0.
+Use `Relation.Nullary.Decidable` or `Relation.Nullary` instead."
+#-}
 
-private
-  variable
-    p q : Level
-    P : Set p
-    Q : Set q
-
-------------------------------------------------------------------------
--- Some properties which are preserved by _×_.
-
-infixr 2 _×-reflects_ _×-dec_
-
-_×-reflects_ : ∀ {bp bq} → Reflects P bp → Reflects Q bq →
-                           Reflects (P × Q) (bp ∧ bq)
-ofʸ  p ×-reflects ofʸ  q = ofʸ (p , q)
-ofʸ  p ×-reflects ofⁿ ¬q = ofⁿ (¬q ∘ proj₂)
-ofⁿ ¬p ×-reflects _      = ofⁿ (¬p ∘ proj₁)
-
-_×-dec_ : Dec P → Dec Q → Dec (P × Q)
-does  (p? ×-dec q?) = does p? ∧ does q?
-proof (p? ×-dec q?) = proof p? ×-reflects proof q?
+open import Relation.Nullary.Decidable.Core public using (_×-dec_)
+open import Relation.Nullary.Reflects public using (_×-reflects_)

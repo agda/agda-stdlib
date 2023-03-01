@@ -15,7 +15,7 @@ open import Data.Product using (∃)
 open import Function.Metric.Core using (DistanceFunction)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 private
   variable

@@ -31,8 +31,7 @@ open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
 
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
-open import Relation.Nullary.Negation using (¬?)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (¬?)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -58,7 +57,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   length-mono-≤ : ∀ {as bs} → Sublist R as bs → length as ≤ length bs
   length-mono-≤ []        = z≤n
-  length-mono-≤ (y ∷ʳ rs) = ℕₚ.≤-step (length-mono-≤ rs)
+  length-mono-≤ (y ∷ʳ rs) = ℕₚ.m≤n⇒m≤1+n (length-mono-≤ rs)
   length-mono-≤ (r ∷ rs)  = s≤s (length-mono-≤ rs)
 
 ------------------------------------------------------------------------
@@ -219,7 +218,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
           Sublist R (drop m as) (drop n bs)
   drop⁺ {m} z≤n       rs        = drop-Sublist m rs
   drop⁺     (s≤s m≥n) []        = []
-  drop⁺     (s≤s m≥n) (y ∷ʳ rs) = drop⁺ (ℕₚ.≤-step m≥n) rs
+  drop⁺     (s≤s m≥n) (y ∷ʳ rs) = drop⁺ (ℕₚ.m≤n⇒m≤1+n m≥n) rs
   drop⁺     (s≤s m≥n) (r ∷ rs)  = drop⁺ m≥n rs
 
   drop⁺-≥ : ∀ {m n as bs} → m ≥ n → Pointwise R as bs →

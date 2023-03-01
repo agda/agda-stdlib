@@ -23,23 +23,24 @@ open import Data.Unit
 ⌊log2⌋ : ∀ n → Acc _<_ n → ℕ
 ⌊log2⌋ 0          _        = 0
 ⌊log2⌋ 1          _        = 0
-⌊log2⌋ n@(suc n₀) (acc rs) = 1 + ⌊log2⌋ ⌊ n /2⌋ (rs _ (⌊n/2⌋<n n₀))
+⌊log2⌋ (suc n′@(suc n)) (acc rs) = 1 + ⌊log2⌋ (suc ⌊ n /2⌋) (rs _ (⌊n/2⌋<n n′))
+
 
 -- Ceil version
 
 ⌈log2⌉ : ∀ n → Acc _<_ n → ℕ
 ⌈log2⌉ 0                _        = 0
 ⌈log2⌉ 1                _        = 0
-⌈log2⌉ n@(suc (suc n₀)) (acc rs) = 1 + ⌈log2⌉ ⌈ n /2⌉ (rs _ (⌈n/2⌉<n n₀))
+⌈log2⌉ (suc (suc n)) (acc rs) = 1 + ⌈log2⌉ (suc ⌈ n /2⌉) (rs _ (⌈n/2⌉<n n))
 
 ------------------------------------------------------------------------
 -- Properties of ⌊log2⌋
 
 ⌊log2⌋-acc-irrelevant : ∀ a {acc acc'} → ⌊log2⌋ a acc ≡ ⌊log2⌋ a acc'
-⌊log2⌋-acc-irrelevant zero          {_}      {_}       = refl
-⌊log2⌋-acc-irrelevant (suc zero)    {_}      {_}       = refl
-⌊log2⌋-acc-irrelevant (suc (suc a)) {acc rs} {acc rs'} =
-  cong suc (⌊log2⌋-acc-irrelevant (suc ⌊ a /2⌋))
+⌊log2⌋-acc-irrelevant 0            {_}      {_}       = refl
+⌊log2⌋-acc-irrelevant 1            {_}      {_}       = refl
+⌊log2⌋-acc-irrelevant (suc (suc n)) {acc rs} {acc rs'} =
+  cong suc (⌊log2⌋-acc-irrelevant (suc ⌊ n /2⌋))
 
 ⌊log2⌋-cong-irr : ∀ {a b} {acc acc'} → (p : a ≡ b) →
                 ⌊log2⌋ a acc ≡ ⌊log2⌋ b acc'
@@ -53,8 +54,8 @@ open import Data.Unit
 
 ⌊log2⌋⌊n/2⌋≡⌊log2⌋n∸1 : ∀ n {acc} {acc'} →
                         ⌊log2⌋ ⌊ n /2⌋ acc ≡ ⌊log2⌋ n acc' ∸ 1
-⌊log2⌋⌊n/2⌋≡⌊log2⌋n∸1 zero          {_}      {_}       = refl
-⌊log2⌋⌊n/2⌋≡⌊log2⌋n∸1 (suc zero)    {_}      {_}       = refl
+⌊log2⌋⌊n/2⌋≡⌊log2⌋n∸1 0             {_}      {_}       = refl
+⌊log2⌋⌊n/2⌋≡⌊log2⌋n∸1 1             {_}      {_}       = refl
 ⌊log2⌋⌊n/2⌋≡⌊log2⌋n∸1 (suc (suc n)) {acc rs} {acc rs'} =
   ⌊log2⌋-acc-irrelevant (suc ⌊ n /2⌋)
 

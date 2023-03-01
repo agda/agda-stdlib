@@ -76,7 +76,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   length-mono : ∀ {as bs} → Suffix R as bs → length as ≤ length bs
   length-mono (here rs)   = ≤-reflexive (Pointwise-length rs)
-  length-mono (there suf) = ≤-step (length-mono suf)
+  length-mono (there suf) = m≤n⇒m≤1+n (length-mono suf)
 
   S[as][bs]⇒∣as∣≢1+∣bs∣ : ∀ {as bs} → Suffix R as bs →
                           length as ≢ suc (length bs)

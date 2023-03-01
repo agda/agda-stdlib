@@ -5,6 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Unnormalised.Properties where
 
@@ -499,14 +500,24 @@ _>?_ = flip _<?_
 ------------------------------------------------------------------------
 
 module ≤-Reasoning where
-  open import Relation.Binary.Reasoning.Base.Triple
+  import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
     <-trans
     <-resp-≃
     <⇒≤
     <-≤-trans
     ≤-<-trans
-    public
+    as Triple
+  open Triple public hiding (step-≈; step-≈˘)
+
+  infixr 2 step-≃ step-≃˘
+
+  step-≃  = Triple.step-≈
+  step-≃˘ = Triple.step-≈˘
+
+  syntax step-≃  x y∼z x≃y = x ≃⟨  x≃y ⟩ y∼z
+  syntax step-≃˘ x y∼z y≃x = x ≃˘⟨ y≃x ⟩ y∼z
+
 
 ------------------------------------------------------------------------
 -- Properties of ↥_/↧_
@@ -565,61 +576,6 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 ------------------------------------------------------------------------
 -- Properties of _+_
 ------------------------------------------------------------------------
-
-------------------------------------------------------------------------
--- Raw bundles
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≃_
-  ; _∙_ = _+_
-  }
-
-+-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-rawMonoid = record
-  { _≈_ = _≃_
-  ; _∙_ = _+_
-  ; ε   = 0ℚᵘ
-  }
-
-+-0-rawGroup : RawGroup 0ℓ 0ℓ
-+-0-rawGroup = record
-  { Carrier = ℚᵘ
-  ; _≈_ = _≃_
-  ; _∙_ = _+_
-  ; ε = 0ℚᵘ
-  ; _⁻¹ = -_
-  }
-
-+-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
-+-*-rawNearSemiring = record
-  { Carrier = ℚᵘ
-  ; _≈_ = _≃_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0# = 0ℚᵘ
-  }
-
-+-*-rawSemiring : RawSemiring 0ℓ 0ℓ
-+-*-rawSemiring = record
-  { Carrier = ℚᵘ
-  ; _≈_ = _≃_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0# = 0ℚᵘ
-  ; 1# = 1ℚᵘ
-  }
-
-+-*-rawRing : RawRing 0ℓ 0ℓ
-+-*-rawRing = record
-  { Carrier = ℚᵘ
-  ; _≈_ = _≃_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; -_ = -_
-  ; 0# = 0ℚᵘ
-  ; 1# = 1ℚᵘ
-  }
 
 ------------------------------------------------------------------------
 -- Algebraic properties
@@ -730,22 +686,22 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 
 +-cancelˡ : ∀ {r p q} → r + p ≃ r + q → p ≃ q
 +-cancelˡ {r} {p} {q} r+p≃r+q = begin-equality
-  p            ≈˘⟨ +-identityʳ p ⟩
-  p + 0ℚᵘ      ≈˘⟨ +-congʳ p (+-inverseʳ r) ⟩
-  p + (r - r)  ≈˘⟨ +-assoc p r (- r) ⟩
-  (p + r) - r  ≈⟨ +-congˡ (- r) (+-comm p r) ⟩
-  (r + p) - r  ≈⟨ +-congˡ (- r) r+p≃r+q ⟩
-  (r + q) - r  ≈⟨ +-congˡ (- r) (+-comm r q) ⟩
-  (q + r) - r  ≈⟨ +-assoc q r (- r) ⟩
-  q + (r - r)  ≈⟨ +-congʳ q (+-inverseʳ r) ⟩
-  q + 0ℚᵘ      ≈⟨ +-identityʳ q ⟩
+  p            ≃˘⟨ +-identityʳ p ⟩
+  p + 0ℚᵘ      ≃˘⟨ +-congʳ p (+-inverseʳ r) ⟩
+  p + (r - r)  ≃˘⟨ +-assoc p r (- r) ⟩
+  (p + r) - r  ≃⟨ +-congˡ (- r) (+-comm p r) ⟩
+  (r + p) - r  ≃⟨ +-congˡ (- r) r+p≃r+q ⟩
+  (r + q) - r  ≃⟨ +-congˡ (- r) (+-comm r q) ⟩
+  (q + r) - r  ≃⟨ +-assoc q r (- r) ⟩
+  q + (r - r)  ≃⟨ +-congʳ q (+-inverseʳ r) ⟩
+  q + 0ℚᵘ      ≃⟨ +-identityʳ q ⟩
   q            ∎ where open ≤-Reasoning
 
 +-cancelʳ : ∀ {r p q} → p + r ≃ q + r → p ≃ q
 +-cancelʳ {r} {p} {q} p+r≃q+r = +-cancelˡ {r} $ begin-equality
-  r + p ≈⟨ +-comm r p ⟩
-  p + r ≈⟨ p+r≃q+r ⟩
-  q + r ≈⟨ +-comm q r ⟩
+  r + p ≃⟨ +-comm r p ⟩
+  p + r ≃⟨ p+r≃q+r ⟩
+  q + r ≃⟨ +-comm q r ⟩
   r + q ∎ where open ≤-Reasoning
 
 p+p≃0⇒p≃0 : ∀ p → p + p ≃ 0ℚᵘ → p ≃ 0ℚᵘ
@@ -765,8 +721,8 @@ neg-distrib-+ p@record{} q@record{} = ↥↧≡⇒≡ (begin
 
 p≃-p⇒p≃0 : ∀ p → p ≃ - p → p ≃ 0ℚᵘ
 p≃-p⇒p≃0 p p≃-p = p+p≃0⇒p≃0 p (begin-equality
-  p + p  ≈⟨ +-congʳ p p≃-p ⟩
-  p - p  ≈⟨ +-inverseʳ p ⟩
+  p + p  ≃⟨ +-congʳ p p≃-p ⟩
+  p - p  ≃⟨ +-inverseʳ p ⟩
   0ℚᵘ    ∎)
   where open ≤-Reasoning
 
@@ -800,11 +756,11 @@ private
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 +-mono-≤ {p} {q} {u} {v} p≤q u≤v = ≤-trans (+-monoˡ-≤ u p≤q) (+-monoʳ-≤ q u≤v)
 
-≤-steps : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
-≤-steps {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
+p≤q⇒p≤r+q : ∀ r .{{_ : NonNegative r}} → p ≤ q → p ≤ r + q
+p≤q⇒p≤r+q {p} {q} r p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r) p≤q)
 
 p≤q+p : ∀ p q .{{_ : NonNegative q}} → p ≤ q + p
-p≤q+p p q = ≤-steps q ≤-refl
+p≤q+p p q = p≤q⇒p≤r+q q ≤-refl
 
 p≤p+q : ∀ p q .{{_ : NonNegative q}} → p ≤ p + q
 p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
@@ -855,24 +811,24 @@ nonNeg+nonNeg⇒nonNeg p q = nonNegative
 
 +-minus-telescope : ∀ p q r → (p - q) + (q - r) ≃ p - r
 +-minus-telescope p q r = begin-equality
-  (p - q) + (q - r)   ≈⟨ ≃-sym (+-assoc (p - q) q (- r)) ⟩
-  (p - q) + q - r     ≈⟨ +-congˡ (- r) (+-assoc p (- q) q) ⟩
-  (p + (- q + q)) - r ≈⟨ +-congˡ (- r) (+-congʳ p (+-inverseˡ q)) ⟩
-  (p + 0ℚᵘ) - r       ≈⟨ +-congˡ (- r) (+-identityʳ p) ⟩
+  (p - q) + (q - r)   ≃⟨ ≃-sym (+-assoc (p - q) q (- r)) ⟩
+  (p - q) + q - r     ≃⟨ +-congˡ (- r) (+-assoc p (- q) q) ⟩
+  (p + (- q + q)) - r ≃⟨ +-congˡ (- r) (+-congʳ p (+-inverseˡ q)) ⟩
+  (p + 0ℚᵘ) - r       ≃⟨ +-congˡ (- r) (+-identityʳ p) ⟩
   p - r               ∎ where open ≤-Reasoning
 
 p≃q⇒p-q≃0 : ∀ p q → p ≃ q → p - q ≃ 0ℚᵘ
 p≃q⇒p-q≃0 p q p≃q = begin-equality
-  p - q ≈⟨ +-congˡ (- q) p≃q ⟩
-  q - q ≈⟨ +-inverseʳ q ⟩
+  p - q ≃⟨ +-congˡ (- q) p≃q ⟩
+  q - q ≃⟨ +-inverseʳ q ⟩
   0ℚᵘ   ∎ where open ≤-Reasoning
 
 p-q≃0⇒p≃q : ∀ p q → p - q ≃ 0ℚᵘ → p ≃ q
 p-q≃0⇒p≃q p q p-q≃0 = begin-equality
   p             ≡˘⟨ +-identityʳ-≡ p ⟩
-  p + 0ℚᵘ       ≈⟨ +-congʳ p (≃-sym (+-inverseˡ q)) ⟩
+  p + 0ℚᵘ       ≃⟨ +-congʳ p (≃-sym (+-inverseˡ q)) ⟩
   p + (- q + q) ≡˘⟨ +-assoc-≡ p (- q) q ⟩
-  (p - q) + q   ≈⟨ +-congˡ q p-q≃0 ⟩
+  (p - q) + q   ≃⟨ +-congˡ q p-q≃0 ⟩
   0ℚᵘ + q       ≡⟨ +-identityˡ-≡ q ⟩
   q             ∎ where open ≤-Reasoning
 
@@ -897,13 +853,13 @@ neg-cancel-≤ {p@record{}} {q@record{}} (*≤* -↥p↧q≤-↥q↧p) = *≤* $
 p≤q⇒p-q≤0 : ∀ {p q} → p ≤ q → p - q ≤ 0ℚᵘ
 p≤q⇒p-q≤0 {p} {q} p≤q = begin
   p - q ≤⟨ +-monoˡ-≤ (- q) p≤q ⟩
-  q - q ≈⟨ +-inverseʳ q ⟩
+  q - q ≃⟨ +-inverseʳ q ⟩
   0ℚᵘ   ∎ where open ≤-Reasoning
 
 p-q≤0⇒p≤q : ∀ {p q} → p - q ≤ 0ℚᵘ → p ≤ q
 p-q≤0⇒p≤q {p} {q} p-q≤0 = begin
   p             ≡˘⟨ +-identityʳ-≡ p ⟩
-  p + 0ℚᵘ       ≈⟨ +-congʳ p (≃-sym (+-inverseˡ q)) ⟩
+  p + 0ℚᵘ       ≃⟨ +-congʳ p (≃-sym (+-inverseˡ q)) ⟩
   p + (- q + q) ≡˘⟨ +-assoc-≡ p (- q) q ⟩
   (p - q) + q   ≤⟨ +-monoˡ-≤ q p-q≤0 ⟩
   0ℚᵘ + q       ≡⟨ +-identityˡ-≡ q ⟩
@@ -911,7 +867,7 @@ p-q≤0⇒p≤q {p} {q} p-q≤0 = begin
 
 p≤q⇒0≤q-p : ∀ {p q} → p ≤ q → 0ℚᵘ ≤ q - p
 p≤q⇒0≤q-p {p} {q} p≤q = begin
-  0ℚᵘ   ≈⟨ ≃-sym (+-inverseʳ p) ⟩
+  0ℚᵘ   ≃⟨ ≃-sym (+-inverseʳ p) ⟩
   p - p ≤⟨ +-monoˡ-≤ (- p) p≤q ⟩
   q - p ∎ where open ≤-Reasoning
 
@@ -920,7 +876,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
   p             ≡˘⟨ +-identityˡ-≡ p ⟩
   0ℚᵘ + p       ≤⟨ +-monoˡ-≤ p 0≤p-q ⟩
   q - p + p     ≡⟨ +-assoc-≡ q (- p) p ⟩
-  q + (- p + p) ≈⟨ +-congʳ q (+-inverseˡ p) ⟩
+  q + (- p + p) ≃⟨ +-congʳ q (+-inverseˡ p) ⟩
   q + 0ℚᵘ       ≡⟨ +-identityʳ-≡ q ⟩
   q             ∎ where open ≤-Reasoning
 
@@ -1000,22 +956,6 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 ------------------------------------------------------------------------
 -- Properties of _*_
 ------------------------------------------------------------------------
-
-------------------------------------------------------------------------
--- Raw bundles
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≃_
-  ; _∙_ = _*_
-  }
-
-*-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-rawMonoid = record
-  { _≈_ = _≃_
-  ; _∙_ = _*_
-  ; ε   = 1ℚᵘ
-  }
 
 ------------------------------------------------------------------------
 -- Algebraic properties
@@ -1189,13 +1129,13 @@ private
 
 *-cancelʳ-≤-neg : ∀ r .{{_ : Negative r}} → p * r ≤ q * r → q ≤ p
 *-cancelʳ-≤-neg {p} {q} r@(mkℚᵘ -[1+ _ ] _) pr≤qr = neg-cancel-≤ (*-cancelʳ-≤-pos (- r) (begin
-  - p * - r    ≈˘⟨ neg-distribˡ-* p (- r) ⟩
-  - (p * - r)  ≈˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
-  - - (p * r)  ≈⟨ neg-involutive (p * r) ⟩
+  - p * - r    ≃˘⟨ neg-distribˡ-* p (- r) ⟩
+  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - - (p * r)  ≃⟨ neg-involutive (p * r) ⟩
   p * r        ≤⟨ pr≤qr ⟩
-  q * r        ≈˘⟨ neg-involutive (q * r) ⟩
-  - - (q * r)  ≈⟨ -‿cong (neg-distribʳ-* q r) ⟩
-  - (q * - r)  ≈⟨ neg-distribˡ-* q (- r) ⟩
+  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  - - (q * r)  ≃⟨ -‿cong (neg-distribʳ-* q r) ⟩
+  - (q * - r)  ≃⟨ neg-distribˡ-* q (- r) ⟩
   - q * - r    ∎))
   where open ≤-Reasoning
 
@@ -1225,11 +1165,11 @@ private
 
 *-monoˡ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → (_* r) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-nonPos r {p} {q} p≤q = begin
-  q * r        ≈˘⟨ neg-involutive (q * r) ⟩
-  - - (q * r)  ≈⟨  -‿cong (neg-distribʳ-* q r) ⟩
+  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  - - (q * r)  ≃⟨  -‿cong (neg-distribʳ-* q r) ⟩
   - (q * - r)  ≤⟨  neg-mono-≤ (*-monoˡ-≤-nonNeg (- r) {{ -r≥0}} p≤q) ⟩
-  - (p * - r)  ≈˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
-  - - (p * r)  ≈⟨  neg-involutive (p * r) ⟩
+  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - - (p * r)  ≃⟨  neg-involutive (p * r) ⟩
   p * r        ∎
   where open ≤-Reasoning; -r≥0 = nonNegative (neg-mono-≤ (nonPositive⁻¹ r))
 
@@ -1270,11 +1210,11 @@ private
 
 *-monoˡ-<-neg : ∀ r .{{_ :  Negative r}} → (_* r) Preserves _<_ ⟶ _>_
 *-monoˡ-<-neg r {p} {q} p<q = begin-strict
-  q * r        ≈˘⟨ neg-involutive (q * r) ⟩
-  - - (q * r)  ≈⟨ -‿cong (neg-distribʳ-* q r) ⟩
+  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  - - (q * r)  ≃⟨ -‿cong (neg-distribʳ-* q r) ⟩
   - (q * - r)  <⟨ neg-mono-< (*-monoˡ-<-pos (- r) {{ -r>0}} p<q) ⟩
-  - (p * - r)  ≈˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
-  - - (p * r)  ≈⟨ neg-involutive (p * r) ⟩
+  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - - (p * r)  ≃⟨ neg-involutive (p * r) ⟩
   p * r        ∎
   where open ≤-Reasoning; -r>0 = positive (neg-mono-< (negative⁻¹ r))
 
@@ -1284,9 +1224,9 @@ private
 *-cancelˡ-<-nonPos : ∀ r .{{_ : NonPositive r}} → r * p < r * q → q < p
 *-cancelˡ-<-nonPos {p} {q} r rp<rq =
   *-cancelˡ-<-nonNeg (- r) {{ -r≥0}} $ begin-strict
-    - r * q    ≈˘⟨ neg-distribˡ-* r q ⟩
+    - r * q    ≃˘⟨ neg-distribˡ-* r q ⟩
     - (r * q)  <⟨ neg-mono-< rp<rq ⟩
-    - (r * p)  ≈⟨ neg-distribˡ-* r p ⟩
+    - (r * p)  ≃⟨ neg-distribˡ-* r p ⟩
     - r * p    ∎
   where open ≤-Reasoning; -r≥0 = nonNegative (neg-mono-≤ (nonPositive⁻¹ r))
 
@@ -1427,12 +1367,12 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
 1/-antimono-≤-pos : ∀ {p q} .{{_ : Positive p}} .{{_ : Positive q}} →
                     p ≤ q → (1/ q) {{pos⇒nonZero q}} ≤ (1/ p) {{pos⇒nonZero p}}
 1/-antimono-≤-pos {p} {q} p≤q = begin
-  1/q              ≈˘⟨ *-identityˡ 1/q ⟩
-  1ℚᵘ * 1/q        ≈˘⟨ *-congʳ (*-inverseˡ p) ⟩
+  1/q              ≃˘⟨ *-identityˡ 1/q ⟩
+  1ℚᵘ * 1/q        ≃˘⟨ *-congʳ (*-inverseˡ p) ⟩
   (1/p * p) * 1/q  ≤⟨  *-monoˡ-≤-nonNeg 1/q (*-monoʳ-≤-nonNeg 1/p p≤q) ⟩
-  (1/p * q) * 1/q  ≈⟨  *-assoc 1/p q 1/q ⟩
-  1/p * (q * 1/q)  ≈⟨  *-congˡ {1/p} (*-inverseʳ q) ⟩
-  1/p * 1ℚᵘ        ≈⟨  *-identityʳ (1/p) ⟩
+  (1/p * q) * 1/q  ≃⟨  *-assoc 1/p q 1/q ⟩
+  1/p * (q * 1/q)  ≃⟨  *-congˡ {1/p} (*-inverseʳ q) ⟩
+  1/p * 1ℚᵘ        ≃⟨  *-identityʳ (1/p) ⟩
   1/p              ∎
   where
   open ≤-Reasoning
@@ -1855,6 +1795,11 @@ Please use *-monoʳ-≤-nonNeg instead."
 "Warning: *-monoˡ-≤-nonNeg was deprecated in v2.0.
 Please use *-monoˡ-≤-nonNeg instead."
 #-}
+≤-steps = p≤q⇒p≤r+q
+{-# WARNING_ON_USAGE ≤-steps
+"Warning: ≤-steps was deprecated in v2.0
+Please use p≤q⇒p≤r+q instead."
+#-}
 *-monoˡ-≤-neg : ∀ r → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-neg r@(mkℚᵘ -[1+ _ ] _) _ = *-monoˡ-≤-nonPos r
 {-# WARNING_ON_USAGE *-monoˡ-≤-neg
@@ -1909,3 +1854,8 @@ negative<positive {p} {q} p<0 q>0 = neg<pos p q {{p<0}} {{q>0}}
 "Warning: negative<positive was deprecated in v2.0.
 Please use neg<pos instead."
 #-}
+
+{- issue1865/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Rational.Unnormalised.Base public
+  using (+-rawMagma; +-0-rawGroup; *-rawMagma; +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
+  renaming (+-0-rawMonoid to +-rawMonoid; *-1-rawMonoid to *-rawMonoid)

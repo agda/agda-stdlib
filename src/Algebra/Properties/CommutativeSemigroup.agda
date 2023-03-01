@@ -16,6 +16,7 @@ open CommutativeSemigroup CS
 
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
+open import Data.Product
 
 ------------------------------------------------------------------------------
 -- Re-export the contents of semigroup
@@ -168,3 +169,6 @@ middleSemimedial x y z = begin
   x ∙ ((z ∙ y) ∙ x) ≈⟨ ∙-congˡ ( assoc z y x) ⟩
   x ∙ (z ∙ (y ∙ x)) ≈⟨ sym (assoc x z ((y ∙ x))) ⟩
   (x ∙ z) ∙ (y ∙ x) ∎
+
+semimedial : Semimedial _∙_
+semimedial = semimedialˡ , semimedialʳ

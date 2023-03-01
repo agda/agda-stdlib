@@ -26,7 +26,7 @@ open import Function.Base
 open import Function.Inverse using (_↔_; inverse)
   renaming (_∘_ to _∘↔_; id to id↔)
 open import Level using (Level)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
@@ -363,8 +363,8 @@ module _ {P : Pred A p} where
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               Any P (tabulate f) → ∃ λ i → P (f i)
-  tabulate⁻ {suc n} (here p)  = zero , p
-  tabulate⁻ {suc n} (there p) = Prod.map suc id (tabulate⁻ p)
+  tabulate⁻ (here p)  = zero , p
+  tabulate⁻ (there p) = Prod.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- mapWith∈

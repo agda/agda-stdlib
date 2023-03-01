@@ -14,8 +14,8 @@ open import Data.Product
 open import Data.Sum.Base using (_⊎_; [_,_])
 open import Function.Base
 open import Level
-open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Nullary.Decidable.Core using (True)
+open import Relation.Nullary.Decidable.Core using (Dec; True)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private

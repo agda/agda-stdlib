@@ -24,9 +24,8 @@ open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_$_; _∘′_)
 open import Function.Nary.NonDependent
-open import Relation.Nullary using (¬_; Dec; yes; no; _because_)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _because_; _×-dec_)
 import Relation.Unary as Unary
 open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)
 

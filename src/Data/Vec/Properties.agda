@@ -10,11 +10,11 @@ module Data.Vec.Properties where
 
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ; _↑ˡ_; _↑ʳ_)
+open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
-open import Data.Nat.Properties as ℕₚ
-  using (+-assoc; ≤-step; ≤-refl; ≤-trans)
+open import Data.Nat.Properties
+  using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans; suc-injective)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -27,9 +27,7 @@ open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (Dec; does; yes; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable using (Dec; does; yes; no; _×-dec_; map′)
 open import Relation.Nullary.Negation using (contradiction)
 
 open ≡-Reasoning
@@ -396,7 +394,7 @@ toList-cast {n = suc _} eq (x ∷ xs) =
 
 cast-is-id : .(eq : m ≡ m) (xs : Vec A m) → cast eq xs ≡ xs
 cast-is-id eq []       = refl
-cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (ℕₚ.suc-injective eq) xs)
+cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
@@ -405,7 +403,7 @@ cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
 cast-trans {m = zero}  {n = zero}  {o = zero}  eq₁ eq₂ [] = refl
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (x ∷ xs) =
-  cong (x ∷_) (cast-trans (ℕₚ.suc-injective eq₁) (ℕₚ.suc-injective eq₂) xs)
+  cong (x ∷_) (cast-trans (suc-injective eq₁) (suc-injective eq₂) xs)
 
 ------------------------------------------------------------------------
 -- map
@@ -422,7 +420,7 @@ map-cast : (f : A → B) .(eq : m ≡ n) (xs : Vec A m) →
            map f (cast eq xs) ≡ cast eq (map f xs)
 map-cast {n = zero}  f eq []       = refl
 map-cast {n = suc _} f eq (x ∷ xs)
-  = cong (f x ∷_) (map-cast f (ℕₚ.suc-injective eq) xs)
+  = cong (f x ∷_) (map-cast f (suc-injective eq) xs)
 
 map-++ : ∀ (f : A → B) (xs : Vec A m) (ys : Vec A n) →
          map f (xs ++ ys) ≡ map f xs ++ map f ys
@@ -518,19 +516,19 @@ lookup-cast : .(eq : m ≡ n) (xs : Vec A m) (i : Fin m) →
               lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
 lookup-cast {n = suc _} eq (x ∷ _)  zero    = refl
 lookup-cast {n = suc _} eq (_ ∷ xs) (suc i) =
-  lookup-cast (ℕₚ.suc-injective eq) xs i
+  lookup-cast (suc-injective eq) xs i
 
 lookup-cast₁ : .(eq : m ≡ n) (xs : Vec A m) (i : Fin n) →
                lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
 lookup-cast₁ eq (x ∷ _)  zero    = refl
 lookup-cast₁ eq (_ ∷ xs) (suc i) =
-  lookup-cast₁ (ℕₚ.suc-injective eq) xs i
+  lookup-cast₁ (suc-injective eq) xs i
 
 lookup-cast₂ : .(eq : m ≡ n) (xs : Vec A n) (i : Fin m) →
                lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
-lookup-cast₂ {n = suc _} eq (x ∷ _)  zero    = refl
-lookup-cast₂ {n = suc _} eq (_ ∷ xs) (suc i) =
-  lookup-cast₂ (ℕₚ.suc-injective eq) xs i
+lookup-cast₂ eq (x ∷ _)  zero    = refl
+lookup-cast₂ eq (_ ∷ xs) (suc i) =
+  lookup-cast₂ (suc-injective eq) xs i
 
 lookup-concat : ∀ (xss : Vec (Vec A m) n) i j →
                 lookup (concat xss) (Fin.combine i j) ≡ lookup (lookup xss i) j
@@ -1055,7 +1053,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   count≤n []       = z≤n
   count≤n (x ∷ xs) with does (P? x)
   ... | true  = s≤s (count≤n xs)
-  ... | false = ≤-step (count≤n xs)
+  ... | false = m≤n⇒m≤1+n (count≤n xs)
 
 ------------------------------------------------------------------------
 -- insert

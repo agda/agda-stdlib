@@ -9,16 +9,14 @@
 module Data.Vec.Relation.Unary.Any {a} {A : Set a} where
 
 open import Data.Empty
-open import Data.Fin.Base
-open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Base as Vec using (Vec; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Nullary.Decidable as Dec using (yes; no; _⊎-dec_)
 open import Relation.Unary
 
 private

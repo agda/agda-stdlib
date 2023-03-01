@@ -49,7 +49,7 @@ prog =
   put (suc n) >>
   pure true
   where
-  open RawMonad rawMonad using (_>>_)
+  open RawMonad monad using (_>>_)
 
 runState : {S X : Set} → State S ⋆ X → (S → X ⟨×⟩ S)
 runState (pure x)                = λ s → x , s
@@ -103,7 +103,7 @@ module _ {C : Container 0ℓ 0ℓ} {A : Set 0ℓ} where
 -- example of a tap.
 
 natsFrom : ∀ {i} → State ℕ ⋆ Tap (State ℕ) ℕ i
-natsFrom = let open RawMonad rawMonad using (_>>_) in do
+natsFrom = let open RawMonad monad using (_>>_) in do
   n ← get
   put (suc n)
   pure (n ∷ λ where .force → natsFrom)

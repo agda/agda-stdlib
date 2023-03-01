@@ -12,6 +12,7 @@
 
 module Data.Nat.Binary.Base where
 
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Algebra.Core using (Op₂)
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Nat.Base as ℕ using (ℕ)
@@ -20,7 +21,7 @@ open import Function.Base using (_on_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -159,3 +160,35 @@ size 1+[2 x ] = ℕ.suc (size x)
 7ᵇ = suc 6ᵇ
 8ᵇ = suc 7ᵇ
 9ᵇ = suc 8ᵇ
+
+------------------------------------------------------------------------
+-- Raw bundles for _+_
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0ᵇ
+  }
+
+------------------------------------------------------------------------
+-- Raw bundles for _*_
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε   = 1ᵇ
+  }

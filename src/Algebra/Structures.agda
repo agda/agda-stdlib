@@ -936,3 +936,10 @@ record IsMoufangLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     identical      : Identical ∙
 
   open IsLeftBolLoop isLeftBolLoop public
+
+record IsMiddleBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isLoop    : IsLoop ∙ \\ //  ε
+    middleBol : MiddleBol ∙ \\ //
+
+  open IsLoop isLoop public

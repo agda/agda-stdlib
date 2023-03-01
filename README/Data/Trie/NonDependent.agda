@@ -63,7 +63,7 @@ open import Data.These       as These
 open import Function.Base using (case_of_; _$_; _∘′_; id; _on_)
 open import Relation.Nary
 open import Relation.Binary using (Rel)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Decidable using (¬?)
 
 open import Data.Trie Char.<-strictTotalOrder
 open import Data.Tree.AVL.Value
