@@ -5,35 +5,35 @@
 <a id="106" class="Comment">-- Empty type, judgementally proof irrelevant</a>
 <a id="152" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--without-K</a> <a id="250" class="Pragma">--safe</a> <a id="257" class="Symbol">#-}</a>
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--cubical-compatible</a> <a id="259" class="Pragma">--safe</a> <a id="266" class="Symbol">#-}</a>
 
-<a id="262" class="Keyword">module</a> <a id="269" href="Data.Empty.html" class="Module">Data.Empty</a> <a id="280" class="Keyword">where</a>
+<a id="271" class="Keyword">module</a> <a id="278" href="Data.Empty.html" class="Module">Data.Empty</a> <a id="289" class="Keyword">where</a>
 
-<a id="287" class="Keyword">open</a> <a id="292" class="Keyword">import</a> <a id="299" href="Data.Irrelevant.html" class="Module">Data.Irrelevant</a> <a id="315" class="Keyword">using</a> <a id="321" class="Symbol">(</a><a id="322" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a><a id="332" class="Symbol">)</a>
+<a id="296" class="Keyword">open</a> <a id="301" class="Keyword">import</a> <a id="308" href="Data.Irrelevant.html" class="Module">Data.Irrelevant</a> <a id="324" class="Keyword">using</a> <a id="330" class="Symbol">(</a><a id="331" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a><a id="341" class="Symbol">)</a>
 
-<a id="335" class="Comment">------------------------------------------------------------------------</a>
-<a id="408" class="Comment">-- Definition</a>
+<a id="344" class="Comment">------------------------------------------------------------------------</a>
+<a id="417" class="Comment">-- Definition</a>
 
-<a id="423" class="Comment">-- Note that by default the empty type is not universe polymorphic as it</a>
-<a id="496" class="Comment">-- often results in unsolved metas. See `Data.Empty.Polymorphic` for a</a>
-<a id="567" class="Comment">-- universe polymorphic variant.</a>
+<a id="432" class="Comment">-- Note that by default the empty type is not universe polymorphic as it</a>
+<a id="505" class="Comment">-- often results in unsolved metas. See `Data.Empty.Polymorphic` for a</a>
+<a id="576" class="Comment">-- universe polymorphic variant.</a>
 
-<a id="601" class="Keyword">private</a>
-  <a id="611" class="Keyword">data</a> <a id="Empty"></a><a id="616" href="Data.Empty.html#616" class="Datatype">Empty</a> <a id="622" class="Symbol">:</a> <a id="624" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="628" class="Keyword">where</a>
+<a id="610" class="Keyword">private</a>
+  <a id="620" class="Keyword">data</a> <a id="Empty"></a><a id="625" href="Data.Empty.html#625" class="Datatype">Empty</a> <a id="631" class="Symbol">:</a> <a id="633" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="637" class="Keyword">where</a>
 
-<a id="635" class="Comment">-- ⊥ is defined via Data.Irrelevant (a record with a single irrelevant field)</a>
-<a id="713" class="Comment">-- so that Agda can judgementally declare that all proofs of ⊥ are equal</a>
-<a id="786" class="Comment">-- to each other. In particular this means that all functions returning a</a>
-<a id="860" class="Comment">-- proof of ⊥ are equal.</a>
+<a id="644" class="Comment">-- ⊥ is defined via Data.Irrelevant (a record with a single irrelevant field)</a>
+<a id="722" class="Comment">-- so that Agda can judgementally declare that all proofs of ⊥ are equal</a>
+<a id="795" class="Comment">-- to each other. In particular this means that all functions returning a</a>
+<a id="869" class="Comment">-- proof of ⊥ are equal.</a>
 
-<a id="⊥"></a><a id="886" href="Data.Empty.html#886" class="Function">⊥</a> <a id="888" class="Symbol">:</a> <a id="890" href="Agda.Primitive.html#326" class="Primitive">Set</a>
-<a id="894" href="Data.Empty.html#886" class="Function">⊥</a> <a id="896" class="Symbol">=</a> <a id="898" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="909" href="Data.Empty.html#616" class="Datatype">Empty</a>
+<a id="⊥"></a><a id="895" href="Data.Empty.html#895" class="Function">⊥</a> <a id="897" class="Symbol">:</a> <a id="899" href="Agda.Primitive.html#320" class="Primitive">Set</a>
+<a id="903" href="Data.Empty.html#895" class="Function">⊥</a> <a id="905" class="Symbol">=</a> <a id="907" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a> <a id="918" href="Data.Empty.html#625" class="Datatype">Empty</a>
 
-<a id="916" class="Symbol">{-#</a> <a id="920" class="Keyword">DISPLAY</a> <a id="928" href="Data.Irrelevant.html#716" class="Record">Irrelevant</a> <a id="939" href="Data.Empty.html#939" class="Bound">Empty</a> <a id="945" class="Pragma">=</a> <a id="947" href="Data.Empty.html#886" class="Function">⊥</a> <a id="949" class="Symbol">#-}</a>
+<a id="925" class="Symbol">{-#</a> <a id="929" class="Keyword">DISPLAY</a> <a id="937" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a> <a id="948" href="Data.Empty.html#948" class="Bound">Empty</a> <a id="954" class="Pragma">=</a> <a id="956" href="Data.Empty.html#895" class="Function">⊥</a> <a id="958" class="Symbol">#-}</a>
 
-<a id="954" class="Comment">------------------------------------------------------------------------</a>
-<a id="1027" class="Comment">-- Functions</a>
+<a id="963" class="Comment">------------------------------------------------------------------------</a>
+<a id="1036" class="Comment">-- Functions</a>
 
-<a id="⊥-elim"></a><a id="1041" href="Data.Empty.html#1041" class="Function">⊥-elim</a> <a id="1048" class="Symbol">:</a> <a id="1050" class="Symbol">∀</a> <a id="1052" class="Symbol">{</a><a id="1053" href="Data.Empty.html#1053" class="Bound">w</a><a id="1054" class="Symbol">}</a> <a id="1056" class="Symbol">{</a><a id="1057" href="Data.Empty.html#1057" class="Bound">Whatever</a> <a id="1066" class="Symbol">:</a> <a id="1068" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="1072" href="Data.Empty.html#1053" class="Bound">w</a><a id="1073" class="Symbol">}</a> <a id="1075" class="Symbol">→</a> <a id="1077" href="Data.Empty.html#886" class="Function">⊥</a> <a id="1079" class="Symbol">→</a> <a id="1081" href="Data.Empty.html#1057" class="Bound">Whatever</a>
-<a id="1090" href="Data.Empty.html#1041" class="Function">⊥-elim</a> <a id="1097" class="Symbol">()</a>
+<a id="⊥-elim"></a><a id="1050" href="Data.Empty.html#1050" class="Function">⊥-elim</a> <a id="1057" class="Symbol">:</a> <a id="1059" class="Symbol">∀</a> <a id="1061" class="Symbol">{</a><a id="1062" href="Data.Empty.html#1062" class="Bound">w</a><a id="1063" class="Symbol">}</a> <a id="1065" class="Symbol">{</a><a id="1066" href="Data.Empty.html#1066" class="Bound">Whatever</a> <a id="1075" class="Symbol">:</a> <a id="1077" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="1081" href="Data.Empty.html#1062" class="Bound">w</a><a id="1082" class="Symbol">}</a> <a id="1084" class="Symbol">→</a> <a id="1086" href="Data.Empty.html#895" class="Function">⊥</a> <a id="1088" class="Symbol">→</a> <a id="1090" href="Data.Empty.html#1066" class="Bound">Whatever</a>
+<a id="1099" href="Data.Empty.html#1050" class="Function">⊥-elim</a> <a id="1106" class="Symbol">()</a>
 </pre></body></html>

@@ -5,23 +5,23 @@
 <a id="106" class="Comment">-- Some derivable properties</a>
 <a id="135" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="209" class="Symbol">{-#</a> <a id="213" class="Keyword">OPTIONS</a> <a id="221" class="Pragma">--without-K</a> <a id="233" class="Pragma">--safe</a> <a id="240" class="Symbol">#-}</a>
+<a id="209" class="Symbol">{-#</a> <a id="213" class="Keyword">OPTIONS</a> <a id="221" class="Pragma">--cubical-compatible</a> <a id="242" class="Pragma">--safe</a> <a id="249" class="Symbol">#-}</a>
 
-<a id="245" class="Keyword">open</a> <a id="250" class="Keyword">import</a> <a id="257" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a>
+<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a>
 
-<a id="274" class="Keyword">module</a> <a id="281" href="Algebra.Properties.CommutativeMonoid.html" class="Module">Algebra.Properties.CommutativeMonoid</a>
-  <a id="320" class="Symbol">{</a><a id="321" href="Algebra.Properties.CommutativeMonoid.html#321" class="Bound">g₁</a> <a id="324" href="Algebra.Properties.CommutativeMonoid.html#324" class="Bound">g₂</a><a id="326" class="Symbol">}</a> <a id="328" class="Symbol">(</a><a id="329" href="Algebra.Properties.CommutativeMonoid.html#329" class="Bound">M</a> <a id="331" class="Symbol">:</a> <a id="333" href="Algebra.Bundles.html#6578" class="Record">CommutativeMonoid</a> <a id="351" href="Algebra.Properties.CommutativeMonoid.html#321" class="Bound">g₁</a> <a id="354" href="Algebra.Properties.CommutativeMonoid.html#324" class="Bound">g₂</a><a id="356" class="Symbol">)</a> <a id="358" class="Keyword">where</a>
+<a id="283" class="Keyword">module</a> <a id="290" href="Algebra.Properties.CommutativeMonoid.html" class="Module">Algebra.Properties.CommutativeMonoid</a>
+  <a id="329" class="Symbol">{</a><a id="330" href="Algebra.Properties.CommutativeMonoid.html#330" class="Bound">g₁</a> <a id="333" href="Algebra.Properties.CommutativeMonoid.html#333" class="Bound">g₂</a><a id="335" class="Symbol">}</a> <a id="337" class="Symbol">(</a><a id="338" href="Algebra.Properties.CommutativeMonoid.html#338" class="Bound">M</a> <a id="340" class="Symbol">:</a> <a id="342" href="Algebra.Bundles.html#6587" class="Record">CommutativeMonoid</a> <a id="360" href="Algebra.Properties.CommutativeMonoid.html#330" class="Bound">g₁</a> <a id="363" href="Algebra.Properties.CommutativeMonoid.html#333" class="Bound">g₂</a><a id="365" class="Symbol">)</a> <a id="367" class="Keyword">where</a>
 
-<a id="365" class="Keyword">open</a> <a id="370" href="Algebra.Bundles.html#6578" class="Module">CommutativeMonoid</a> <a id="388" href="Algebra.Properties.CommutativeMonoid.html#329" class="Bound">M</a>
-  <a id="392" class="Keyword">renaming</a>
-  <a id="403" class="Symbol">(</a> <a id="405" href="Algebra.Bundles.html#6778" class="Field">ε</a>         <a id="415" class="Symbol">to</a> <a id="418" class="Field">0#</a>
-  <a id="423" class="Symbol">;</a> <a id="425" href="Algebra.Bundles.html#6740" class="Field Operator">_∙_</a>       <a id="435" class="Symbol">to</a> <a id="438" class="Field Operator">_+_</a>
-  <a id="444" class="Symbol">;</a> <a id="446" href="Algebra.Structures.html#1207" class="Function">∙-cong</a>    <a id="456" class="Symbol">to</a> <a id="459" class="Function">+-cong</a>
-  <a id="468" class="Symbol">;</a> <a id="470" href="Algebra.Structures.html#1357" class="Function">∙-congˡ</a>   <a id="480" class="Symbol">to</a> <a id="483" class="Function">+-congˡ</a>
-  <a id="493" class="Symbol">;</a> <a id="495" href="Algebra.Structures.html#1418" class="Function">∙-congʳ</a>   <a id="505" class="Symbol">to</a> <a id="508" class="Function">+-congʳ</a>
-  <a id="518" class="Symbol">;</a> <a id="520" href="Algebra.Structures.html#4028" class="Function">identityˡ</a> <a id="530" class="Symbol">to</a> <a id="533" class="Function">+-identityˡ</a>
-  <a id="547" class="Symbol">;</a> <a id="549" href="Algebra.Structures.html#4089" class="Function">identityʳ</a> <a id="559" class="Symbol">to</a> <a id="562" class="Function">+-identityʳ</a>
-  <a id="576" class="Symbol">;</a> <a id="578" href="Algebra.Structures.html#2869" class="Function">assoc</a>     <a id="588" class="Symbol">to</a> <a id="591" class="Function">+-assoc</a>
-  <a id="601" class="Symbol">;</a> <a id="603" href="Algebra.Structures.html#4376" class="Function">comm</a>      <a id="613" class="Symbol">to</a> <a id="616" class="Function">+-comm</a>
-  <a id="625" class="Symbol">)</a>
+<a id="374" class="Keyword">open</a> <a id="379" href="Algebra.Bundles.html#6587" class="Module">CommutativeMonoid</a> <a id="397" href="Algebra.Properties.CommutativeMonoid.html#338" class="Bound">M</a>
+  <a id="401" class="Keyword">renaming</a>
+  <a id="412" class="Symbol">(</a> <a id="414" href="Algebra.Bundles.html#6787" class="Field">ε</a>         <a id="424" class="Symbol">to</a> <a id="427" class="Field">0#</a>
+  <a id="432" class="Symbol">;</a> <a id="434" href="Algebra.Bundles.html#6749" class="Field Operator">_∙_</a>       <a id="444" class="Symbol">to</a> <a id="447" class="Field Operator">_+_</a>
+  <a id="453" class="Symbol">;</a> <a id="455" href="Algebra.Structures.html#1216" class="Function">∙-cong</a>    <a id="465" class="Symbol">to</a> <a id="468" class="Function">+-cong</a>
+  <a id="477" class="Symbol">;</a> <a id="479" href="Algebra.Structures.html#1366" class="Function">∙-congˡ</a>   <a id="489" class="Symbol">to</a> <a id="492" class="Function">+-congˡ</a>
+  <a id="502" class="Symbol">;</a> <a id="504" href="Algebra.Structures.html#1427" class="Function">∙-congʳ</a>   <a id="514" class="Symbol">to</a> <a id="517" class="Function">+-congʳ</a>
+  <a id="527" class="Symbol">;</a> <a id="529" href="Algebra.Structures.html#4037" class="Function">identityˡ</a> <a id="539" class="Symbol">to</a> <a id="542" class="Function">+-identityˡ</a>
+  <a id="556" class="Symbol">;</a> <a id="558" href="Algebra.Structures.html#4098" class="Function">identityʳ</a> <a id="568" class="Symbol">to</a> <a id="571" class="Function">+-identityʳ</a>
+  <a id="585" class="Symbol">;</a> <a id="587" href="Algebra.Structures.html#2878" class="Function">assoc</a>     <a id="597" class="Symbol">to</a> <a id="600" class="Function">+-assoc</a>
+  <a id="610" class="Symbol">;</a> <a id="612" href="Algebra.Structures.html#4385" class="Function">comm</a>      <a id="622" class="Symbol">to</a> <a id="625" class="Function">+-comm</a>
+  <a id="634" class="Symbol">)</a>
 </pre></body></html>
