@@ -4,7 +4,7 @@
 -- The Cowriter type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Cowriter where
 

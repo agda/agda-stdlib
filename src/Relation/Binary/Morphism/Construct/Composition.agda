@@ -4,7 +4,7 @@
 -- The composition of morphisms between binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Function.Base using (_∘_)
 open import Function.Construct.Composition using (surjective)

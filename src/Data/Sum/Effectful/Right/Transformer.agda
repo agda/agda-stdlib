@@ -4,7 +4,7 @@
 -- An effectful view of the Sum type (Right-biased)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 

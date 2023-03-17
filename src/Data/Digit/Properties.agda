@@ -4,7 +4,7 @@
 -- Properties of digits and digit expansions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Digit
 import Data.Char.Properties as Charₚ

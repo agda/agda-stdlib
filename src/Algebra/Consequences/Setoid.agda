@@ -5,7 +5,7 @@
 -- commutativity, when the underlying relation is a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
 

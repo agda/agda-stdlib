@@ -4,7 +4,7 @@
 -- The composition of morphisms between algebraic structures.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Algebra.Morphism.Construct.Composition where
 
@@ -384,4 +384,3 @@ module _ {L₁ : RawLoop a ℓ₁}
     { isLoopMonomorphism = isLoopMonomorphism F.isLoopMonomorphism G.isLoopMonomorphism
     ; surjective               = Func.surjective (_≈_ L₁) (_≈_ L₂) (_≈_ L₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
     } where module F = IsLoopIsomorphism f-iso; module G = IsLoopIsomorphism g-iso
-

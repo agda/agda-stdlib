@@ -4,7 +4,7 @@
 -- Relationships between properties of functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Consequences where
 

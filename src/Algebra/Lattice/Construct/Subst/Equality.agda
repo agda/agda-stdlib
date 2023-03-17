@@ -7,7 +7,7 @@
 -- For more general transformations between algebraic lattice structures
 -- see `Algebra.Lattice.Morphisms`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions

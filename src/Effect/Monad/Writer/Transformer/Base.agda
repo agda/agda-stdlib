@@ -4,7 +4,7 @@
 -- Basic type and definition of the writer monad transformer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Writer.Transformer.Base where
 

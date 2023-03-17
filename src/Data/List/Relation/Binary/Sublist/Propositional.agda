@@ -5,7 +5,7 @@
 -- known as Order Preserving Embeddings (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Sublist.Propositional
   {a} {A : Set a} where

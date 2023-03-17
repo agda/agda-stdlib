@@ -11,7 +11,7 @@
 -- data-types, which is more suitable for reasoning about vectors that
 -- will grow or shrink in size.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional where
 

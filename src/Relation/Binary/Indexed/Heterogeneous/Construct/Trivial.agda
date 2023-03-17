@@ -4,7 +4,7 @@
 -- Creates trivially indexed records from their non-indexed counterpart.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   {i} {I : Set i} where

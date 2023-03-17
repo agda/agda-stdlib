@@ -4,7 +4,7 @@
 -- Finite summations over a monoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)

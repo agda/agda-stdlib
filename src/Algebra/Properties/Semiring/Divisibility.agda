@@ -4,7 +4,7 @@
 -- Properties of divisibility over semirings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Semiring)
 import Algebra.Properties.Monoid.Divisibility as MonoidDivisibility

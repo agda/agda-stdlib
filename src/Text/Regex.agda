@@ -8,7 +8,7 @@
 -- Regular Expressions in Agda
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (DecPoset)
 

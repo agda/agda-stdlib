@@ -5,7 +5,7 @@
 -- it is implemented in the standard library.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Inspect where
 

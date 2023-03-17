@@ -7,7 +7,7 @@
 -- Relation.Nullary.Decidable
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Decidable.Core where
 

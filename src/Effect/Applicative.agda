@@ -7,7 +7,7 @@
 -- Note that currently the applicative functor laws are not included
 -- here.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Applicative where
 

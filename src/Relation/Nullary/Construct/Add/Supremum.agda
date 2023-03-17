@@ -4,7 +4,7 @@
 -- Notation for freely adding a supremum to any set
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Construct.Add.Supremum where
 

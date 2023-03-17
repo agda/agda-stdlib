@@ -4,7 +4,7 @@
 -- Logarithm base 2 core definitions and properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Logarithm.Core where
 

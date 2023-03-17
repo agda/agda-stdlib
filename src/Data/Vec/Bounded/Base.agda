@@ -4,7 +4,7 @@
 -- Bounded vectors, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Bounded.Base where
 

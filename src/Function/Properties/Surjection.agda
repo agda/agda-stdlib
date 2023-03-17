@@ -4,7 +4,7 @@
 -- Conversions for surjections
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Properties.Surjection where
 

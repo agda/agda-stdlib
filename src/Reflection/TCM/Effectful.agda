@@ -4,7 +4,7 @@
 -- Typeclass instances for TC
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.TCM.Effectful where
 

@@ -5,7 +5,7 @@
 -- Defines Decidable Equality and Decidable Ordering as well
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Unit.Polymorphic.Properties where
 

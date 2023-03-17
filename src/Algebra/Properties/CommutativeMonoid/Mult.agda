@@ -4,7 +4,7 @@
 -- Multiplication over a monoid (i.e. repeated addition)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)

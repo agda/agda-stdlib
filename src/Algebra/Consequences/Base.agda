@@ -5,7 +5,7 @@
 -- commutativity) that don't require the equality relation to be a setoid.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Consequences.Base
   {a} {A : Set a} where

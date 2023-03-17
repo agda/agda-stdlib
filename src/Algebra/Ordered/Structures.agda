@@ -8,7 +8,7 @@
 -- The contents of this module should be accessed via
 -- `Algebra.Ordered`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 
@@ -389,4 +389,3 @@ record IsPoKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a �
 
   open IsProKleeneAlgebra isProKleeneAlgebra public
     using (isKleeneAlgebra; starExpansive; starDestructive)
-

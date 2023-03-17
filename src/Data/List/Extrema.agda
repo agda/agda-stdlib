@@ -4,7 +4,7 @@
 -- Finding the maximum/minimum values in a list
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (TotalOrder; Setoid)
 

@@ -4,7 +4,7 @@
 -- The identity morphism for algebraic structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Algebra.Morphism.Construct.Identity where
 
@@ -247,4 +247,3 @@ module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
     { isLoopMonomorphism = isLoopMonomorphism
     ; surjective = _, refl
     }
-

@@ -8,7 +8,7 @@
 -- general metric spaces cannot be reused as it is impossible to
 -- constrain the image set to ℚ.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Rational.Base hiding (_⊔_)
 open import Function using (const)

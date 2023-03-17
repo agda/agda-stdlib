@@ -4,7 +4,7 @@
 -- Choosing between elements based on the result of applying a function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Algebra.Lattice

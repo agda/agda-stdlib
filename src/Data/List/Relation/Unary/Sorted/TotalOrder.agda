@@ -4,7 +4,7 @@
 -- Sorted lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (TotalOrder)
 
@@ -47,4 +47,3 @@ irrelevant = Linked.irrelevant
 
 satisfiable : U.Satisfiable Sorted
 satisfiable = Linked.satisfiable
-

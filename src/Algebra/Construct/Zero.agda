@@ -13,7 +13,7 @@
 -- in favour of those defined in `Algebra.Construct.Terminal`.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (Level)
 
