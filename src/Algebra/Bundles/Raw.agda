@@ -285,3 +285,33 @@ record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open RawQuasigroup rawQuasigroup public
     using (_≉_ ; ∙-rawMagma; \\-rawMagma; //-rawMagma)
+
+record RawKleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 _⋆
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier               : Set c
+    _≈_                   : Rel Carrier ℓ
+    _+_                   : Op₂ Carrier
+    _*_                   : Op₂ Carrier
+    _⋆                    : Op₁ Carrier
+    0#                    : Carrier
+    1#                    : Carrier
+
+  rawSemiring : RawSemiring c ℓ
+  rawSemiring = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
+  open RawSemiring rawSemiring public
+    using
+    ( _≉_
+    ; +-rawMagma; +-rawMonoid
+    ; *-rawMagma; *-rawMonoid
+    )
