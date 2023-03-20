@@ -1046,6 +1046,24 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
 m^n≢0 : ∀ m n .{{_ : NonZero m}} → NonZero (m ^ n)
 m^n≢0 m n = ≢-nonZero (≢-nonZero⁻¹ m ∘′ m^n≡0⇒m≡0 m n)
 
+^-monoˡ-≤ : ∀ n → (_^ n) Preserves _≤_ ⟶ _≤_
+^-monoˡ-≤ zero m≤o = s≤s z≤n
+^-monoˡ-≤ (suc n) {m} {o} m≤o = *-mono-≤ m≤o (^-monoˡ-≤ n m≤o)
+
+^-monoʳ-≤ : ∀ m .{{_ : NonZero m}} → (m ^_) Preserves _≤_ ⟶ _≤_
+^-monoʳ-≤ m {n} {o} z≤n = n≢0⇒n>0 (≢-nonZero⁻¹ (m ^ o) {{m^n≢0 m o}})
+^-monoʳ-≤ m (s≤s n≤o) = *-monoʳ-≤ m (^-monoʳ-≤ m n≤o)
+
+^-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_^ n) Preserves _<_ ⟶ _<_
+^-monoˡ-< (suc zero) m<o = *-monoˡ-< 1 m<o
+^-monoˡ-< (suc (suc n)) m<o = *-mono-< m<o (^-monoˡ-< (suc n) m<o)
+
+^-monoʳ-< : ∀ m → 1 < m → (m ^_) Preserves _<_ ⟶ _<_
+^-monoʳ-< m 1<m {.zero} {suc o} z<s =
+  *-mono-≤ 1<m (n≢0⇒n>0 (≢-nonZero⁻¹ (m ^ o) {{(m^n≢0 m o {{>-nonZero (<-trans z<s 1<m)}})}}))
+^-monoʳ-< m 1<m {suc n} (s<s n≤o) =
+  *-monoʳ-< m {{ >-nonZero (<-trans z<s 1<m) }} (^-monoʳ-< m 1<m n≤o)
+
 2^n>0 : ∀ (n : ℕ) → 2 ^ n > 0
 2^n>0 zero = z<s
 2^n>0 (suc n) = ≤-trans (2^n>0 n) (m≤m+n (2 ^ n) ((2 ^ n) + zero))
