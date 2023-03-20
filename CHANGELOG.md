@@ -2083,6 +2083,11 @@ Other minor changes
 
   n≤1⇒n≡0∨n≡1 : n ≤ 1 → n ≡ 0 ⊎ n ≡ 1
 
+  ^-monoˡ-≤ : ∀ n → (_^ n) Preserves _≤_ ⟶ _≤_
+  ^-monoʳ-≤ : ∀ m .{{_ : NonZero m}} → (m ^_) Preserves _≤_ ⟶ _≤_
+  ^-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_^ n) Preserves _<_ ⟶ _<_
+  ^-monoʳ-< : ∀ m → 1 < m → (m ^_) Preserves _<_ ⟶ _<_
+
   2^n>0 : 2 ^ n > 0
 
   n≡⌊n+n/2⌋ : n ≡ ⌊ n + n /2⌋
