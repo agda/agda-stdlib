@@ -1049,9 +1049,6 @@ m^n≢0 m n = ≢-nonZero (≢-nonZero⁻¹ m ∘′ m^n≡0⇒m≡0 m n)
 m^n>0 : ∀ m .{{_ : NonZero m}} n → m ^ n > 0
 m^n>0 m n = >-nonZero⁻¹ (m ^ n) {{m^n≢0 m n}}
 
-2^n>0 : ∀ (n : ℕ) → 2 ^ n > 0
-2^n>0 = m^n>0 2
-
 ^-monoˡ-≤ : ∀ n → (_^ n) Preserves _≤_ ⟶ _≤_
 ^-monoˡ-≤ zero m≤o = s≤s z≤n
 ^-monoˡ-≤ (suc n) m≤o = *-mono-≤ m≤o (^-monoˡ-≤ n m≤o)
