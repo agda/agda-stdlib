@@ -1158,3 +1158,25 @@ record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Loop loop public
     using (quasigroup)
+
+record Field c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    -_      : Op₁ Carrier
+    _+_     : Op₂ Carrier
+    _*_     : Op₂ Carrier
+    0#      : Carrier
+    1#      : Carrier
+    inv     : (p : Carrier) (p≉0 : N.¬ (p ≈ 0#)) → Carrier
+    isField : IsField _≈_ _+_ _*_ -_ 0# 1# inv
+
+  open IsField isField public
+
+  commutativeRing : CommutativeRing _ _
+  commutativeRing = record { isCommutativeRing = isCommutativeRing }

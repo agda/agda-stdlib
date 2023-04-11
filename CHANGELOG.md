@@ -3027,3 +3027,34 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
+
+* Added structure isField in `Algebra.Structures`
+```agda
+record IsField (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
+  (inv : (p : A) (p≉0 : ¬ (p ≈ 0#)) → A) : Set (a ⊔ ℓ)
+
+  field
+    isCommutativeRing : IsCommutativeRing  + * -_ 0# 1#
+    hasInverse        : (x : A) (x≭0 : ¬ x ≈ 0#) → * x (inv x x≭0) ≈ 1#
+    0≢1               : 0# ≉ 1#
+```
+
+* Added bundle Field in `Algebra.Bundles`
+```agda
+record Field c ℓ : Set (suc (c ⊔ ℓ))
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    -_      : Op₁ Carrier
+    _+_     : Op₂ Carrier
+    _*_     : Op₂ Carrier
+    0#      : Carrier
+    1#      : Carrier
+    inv     : (p : Carrier) (p≉0 : p ≉ 0#) → Carrier
+    isField : IsField _≈_ _+_ _*_ -_ 0# 1# inv
+```

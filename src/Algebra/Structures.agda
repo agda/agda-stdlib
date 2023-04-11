@@ -10,6 +10,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Nullary using (¬_)
 
 module Algebra.Structures
   {a ℓ} {A : Set a}  -- The underlying set
@@ -943,3 +944,20 @@ record IsMiddleBolLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     middleBol : MiddleBol ∙ \\ //
 
   open IsLoop isLoop public
+
+record IsField (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
+  (inv : (p : A) (p≉0 : ¬ (p ≈ 0#)) → A) : Set (a ⊔ ℓ) where
+
+  infix 4 _≉_
+  _≉_ : Rel A _
+  x ≉ y = ¬ (x ≈ y)
+
+  field
+    isCommutativeRing : IsCommutativeRing  + * -_ 0# 1#
+    hasInverse        : (x : A) (x≭0 : ¬ x ≈ 0#) → * x (inv x x≭0) ≈ 1#
+    0≢1               : 0# ≉ 1#
+
+  open IsCommutativeRing isCommutativeRing
+
+  div : (p q : A) → q ≉ 0# → A
+  div p q q≉0 = * p (inv q q≉0)
