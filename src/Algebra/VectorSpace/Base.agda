@@ -1,4 +1,11 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Base of Vector Space
+------------------------------------------------------------------------
+
 {-# OPTIONS --cubical-compatible --safe #-}
+
 open import Level
 open import Data.Product
 open import Relation.Unary
