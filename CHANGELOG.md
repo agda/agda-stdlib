@@ -3028,7 +3028,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
 
-* Added new data structure `VectorSpace` in `Algebra.VectorSpace`
+* Added new data structure `VectorSpace` in `Algebra.VectorSpace.Base`
 ```agda
 record isVectorSpace (VS : Pred Carrierᴹ ℓ) : Set (m ⊔ r ⊔ ℓ)
   +-closed     : (x∈VS : x ∈ VS) (y∈VS : y ∈ VS) → x +ᴹ y ∈ VS
