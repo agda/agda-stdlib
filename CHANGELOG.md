@@ -2040,6 +2040,10 @@ Other minor changes
   +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
   ```
 
+* Added a new proof to `Data.Nat.Binary.Properties`:
+  ```agda
+  suc-injective : Injective _≡_ _≡_ suc
+  ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
   ```agda

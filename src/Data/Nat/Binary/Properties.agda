@@ -1309,6 +1309,18 @@ double-suc x = begin
 -- Properties of suc
 ------------------------------------------------------------------------
 
+suc≢0 : suc x ≢ zero
+suc≢0 {zero}     ()
+suc≢0 {2[1+ _ ]} ()
+suc≢0 {1+[2 _ ]} ()
+
+suc-injective : Injective _≡_ _≡_ suc
+suc-injective {zero} {zero} p = refl
+suc-injective {zero} {2[1+ y ]} p = contradiction 1+[2 p ]-injective (suc≢0 ∘ sym)
+suc-injective {2[1+ x ]} {zero} p = contradiction 1+[2 p ]-injective suc≢0
+suc-injective {2[1+ x ]} {2[1+ y ]} p = cong 2[1+_] (suc-injective 1+[2 p ]-injective)
+suc-injective {1+[2 x ]} {1+[2 y ]} refl = refl
+
 2[1+_]-double-suc : 2[1+_] ≗ double ∘ suc
 2[1+_]-double-suc zero     = refl
 2[1+_]-double-suc 2[1+ x ] = cong 2[1+_] (2[1+_]-double-suc x)
@@ -1324,11 +1336,6 @@ double-suc x = begin
   suc (double (suc 2x))   ≡⟨ cong (suc ∘ double) (sym (1+[2_]-suc-double x)) ⟩
   suc (double 1+[2 x ])   ∎
   where open ≡-Reasoning;  2x = double x
-
-suc≢0 : suc x ≢ zero
-suc≢0 {zero}     ()
-suc≢0 {2[1+ _ ]} ()
-suc≢0 {1+[2 _ ]} ()
 
 x+suc[y]≡suc[x]+y : ∀ x y → x + suc y ≡ suc x + y
 x+suc[y]≡suc[x]+y x y = begin
