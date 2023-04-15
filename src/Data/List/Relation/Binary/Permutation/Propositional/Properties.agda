@@ -342,3 +342,21 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
     (x ∷ xs) ++ y ∷ ys       ≡˘⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟩
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
+
+------------------------------------------------------------------------
+-- foldr of Commutative Monoid
+
+module _ {c ℓ} (cmonoid : CommutativeMonoid c ℓ) where
+  open module CM = CommutativeMonoid cmonoid
+  import Relation.Binary.Reasoning.Setoid setoid as S
+  open import Algebra.Solver.CommutativeMonoid cmonoid
+
+  foldr-cmonoid : ∀ {xs ys} → xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
+  foldr-cmonoid _↭_.refl = CM.refl
+  foldr-cmonoid (prep x xs↭xs) = ∙-congˡ (foldr-cmonoid xs↭xs)
+  foldr-cmonoid (swap {xs} {ys} x y xs↭ys) = S.begin
+    (x ∙ (y ∙ foldr _∙_ ε xs)) S.≈⟨ ∙-congˡ (∙-congˡ (foldr-cmonoid xs↭ys)) ⟩
+    (x ∙ (y ∙ foldr _∙_ ε ys))
+      S.≈⟨ solve 3 (λ x y ys → (x ⊕ y ⊕ ys) , (y ⊕ x ⊕ ys)) CM.refl x y (foldr _∙_ ε ys) ⟩
+    (y ∙ (x ∙ foldr _∙_ ε ys)) S.∎
+  foldr-cmonoid (_↭_.trans {xs} {ys} {zs} xs↭ys ys↭zs) = CM.trans (foldr-cmonoid xs↭ys) (foldr-cmonoid ys↭zs)
