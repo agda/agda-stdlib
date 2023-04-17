@@ -147,8 +147,8 @@ magma n = record
   { isMagma = isMagma {n}
   }
 
-semiGroup : ℕ → Semigroup _ _
-semiGroup n = record
+semigroup : ℕ → Semigroup _ _
+semigroup n = record
   { isSemigroup = isSemigroup {n}
   }
 
