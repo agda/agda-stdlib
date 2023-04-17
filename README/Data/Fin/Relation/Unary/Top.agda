@@ -12,7 +12,7 @@
 -- together with their corresponding properties in `Data.Fin.Properties`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Data.Fin.Relation.Unary.Top where
 

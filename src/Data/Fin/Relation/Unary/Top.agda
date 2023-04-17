@@ -9,7 +9,7 @@
 -- * or, i = inject₁ j for a unique j : Fin n
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Relation.Unary.Top where
 
