@@ -56,7 +56,7 @@ open Instances
 inject₁⁻¹ : (i : Fin (suc n)) → .{{IsInj (view {n} i)}} → Fin n
 inject₁⁻¹ i with inj j ← view i = j
 
--- Properties, by analogy with those for `lower₁` in `Data.Fin.Properties
+-- Properties, by analogy with those for `lower₁` in `Data.Fin.Properties`
 
 inject₁⁻¹-irrelevant : (i : Fin (suc n)) .{{ii₁ ii₂ : IsInj (view {n} i)}} →
                        inject₁⁻¹ i {{ii₁}} ≡ inject₁⁻¹ i {{ii₂}}
@@ -147,5 +147,5 @@ open WF using (Acc; acc)
   ... | top = Pₙ
   ... | inj j = Pᵢ₊₁⇒Pᵢ j (induct (rec _ inject₁[j]+1≤[j+1]))
     where
-    inject₁[j]+1≤[j+1] : suc (toℕ (inject₁ j)) Data.Nat.Base.≤ toℕ (suc j)
-    inject₁[j]+1≤[j+1] = Data.Nat.Properties.≤-reflexive (toℕ-inject₁ (suc j))
+    inject₁[j]+1≤[j+1] : suc (toℕ (inject₁ j)) ≤ toℕ (suc j)
+    inject₁[j]+1≤[j+1] = ≤-reflexive (toℕ-inject₁ (suc j))
