@@ -122,7 +122,7 @@ module _ (S : Setoid c ℓ) where
                     length (mapWith∈ xs f) ≡ length xs
   length-mapWith∈ []       = P.refl
   length-mapWith∈ (x ∷ xs) = P.cong suc (length-mapWith∈ xs)
-  
+
   mapWith∈-id : ∀ xs → mapWith∈ xs (λ {x} _ → x) ≡ xs
   mapWith∈-id []       = P.refl
   mapWith∈-id (x ∷ xs) = P.cong (x ∷_) (mapWith∈-id xs)
