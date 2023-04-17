@@ -2030,6 +2030,11 @@ Other minor changes
   nCk+nC[k+1]≡[n+1]C[k+1] : n C k + n C (suc k) ≡ suc n C suc k
   ```
 
+* Added new proofs in `Data.Nat.Combinatorics.Specification`:
+  ```agda
+  k![n∸k]!∣n! : k ≤ n →  k ! * (n ∸ k) ! ∣ n !
+  ```
+
 * Added new proofs in `Data.Nat.DivMod`:
   ```agda
   m%n≤n           : .{{_ : NonZero n}} → m % n ≤ n
