@@ -28,19 +28,17 @@ private variable
 open Ring ring
 open VecSetoid setoid
 
-VC = Vector Carrier
-
-_≈ᴹ_ : Rel (VC n) ℓ
+_≈ᴹ_ : Rel (Vector Carrier n) ℓ
 _≈ᴹ_ = _≋_
 
-_+ᴹ_ : Op₂ $ VC n
+_+ᴹ_ : Op₂ $ Vector Carrier n
 _+ᴹ_ = zipWith _+_
 
-0ᴹ : VC n
+0ᴹ : Vector Carrier n
 0ᴹ = replicate 0#
 
--ᴹ_ : Op₁ $ VC n
+-ᴹ_ : Op₁ $ Vector Carrier n
 -ᴹ_ = map $ -_
 
-_*ₗ_ : Opₗ Carrier (VC n)
+_*ₗ_ : Opₗ Carrier (Vector Carrier n)
 _*ₗ_ r = map (r *_)
