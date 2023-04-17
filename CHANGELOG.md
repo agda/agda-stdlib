@@ -2224,15 +2224,6 @@ Other minor changes
     map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
   ```
 
-* Adden new proof in `Data.Sum.Relation.Binary.LeftOrder` :
-  ```
-  ⊎-<-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
-  ```
-* Adden new proof in `Data.Sum.Relation.Binary.Pointwise` :
-  ```
-  ⊎-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
-  ```
-
 * Made `Map` public in `Data.Tree.AVL.IndexedMap`
 
 * Added new definitions in `Data.Vec.Base`:
