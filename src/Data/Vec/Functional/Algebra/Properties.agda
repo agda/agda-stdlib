@@ -38,31 +38,31 @@ open module LD {n} = LeftDefs Carrier (_≈ᴹ_ {n}) using (Congruent)
 -- Algebraic properties of _+ᴹ_ -ᴹ_ _*ₗ_
 
 +ᴹ-cong : Congruent₂ (_+ᴹ_ {n})
-+ᴹ-cong x≈y u≈v _ = +-cong (x≈y _) (u≈v _)
++ᴹ-cong x≈y u≈v i = +-cong (x≈y i) (u≈v i)
 
 +ᴹ-assoc : Associative (_+ᴹ_ {n})
-+ᴹ-assoc _ _ _ _ = +-assoc _ _ _
++ᴹ-assoc xs ys zs i = +-assoc (xs i) (ys i) (zs i)
 
 +ᴹ-comm : Commutative (_+ᴹ_ {n})
-+ᴹ-comm _ _ _ = +-comm _ _
++ᴹ-comm xs ys i = +-comm (xs i) (ys i)
 
 +ᴹ-identityˡ : LeftIdentity (0ᴹ {n}) _+ᴹ_
-+ᴹ-identityˡ _ _ = +-identityˡ _
++ᴹ-identityˡ xs i = +-identityˡ (xs i)
 
 +ᴹ-identityʳ : RightIdentity (0ᴹ {n}) _+ᴹ_
-+ᴹ-identityʳ _ _ = +-identityʳ _
++ᴹ-identityʳ xs is = +-identityʳ (xs is)
 
 +ᴹ-identity : Identity (0ᴹ {n}) _+ᴹ_
 +ᴹ-identity = +ᴹ-identityˡ , +ᴹ-identityʳ
 
 -ᴹ‿cong : Congruent₁ (-ᴹ_ {n})
--ᴹ‿cong f _ = -‿cong (f _)
+-ᴹ‿cong xs i = -‿cong (xs i)
 
 -ᴹ‿inverseˡ : AD'.LeftInverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
--ᴹ‿inverseˡ _ _ = -‿inverseˡ _
+-ᴹ‿inverseˡ xs i = -‿inverseˡ (xs i)
 
 -ᴹ‿inverseʳ : AD'.RightInverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
--ᴹ‿inverseʳ _ _ = -‿inverseʳ _
+-ᴹ‿inverseʳ xs i = -‿inverseʳ (xs i)
 
 -ᴹ‿inverse : AD'.Inverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
 -ᴹ‿inverse = -ᴹ‿inverseˡ , -ᴹ‿inverseʳ
@@ -71,22 +71,22 @@ open module LD {n} = LeftDefs Carrier (_≈ᴹ_ {n}) using (Congruent)
 *ₗ-cong x≈y u≈v i = *-cong x≈y (u≈v i)
 
 *ₗ-zeroˡ : LD.LeftZero SR.0# (0ᴹ {n}) _*ₗ_
-*ₗ-zeroˡ f i = zeroˡ (f i)
+*ₗ-zeroˡ xs i = zeroˡ (xs i)
 
 *ₗ-distribʳ : _*ₗ_ LD.DistributesOverʳ SR._+_ ⟶ (_+ᴹ_ {n})
-*ₗ-distribʳ _ _ _ _ = distribʳ _ _ _
+*ₗ-distribʳ xs m n i = distribʳ (xs i) m n
 
 *ₗ-identityˡ : LD.LeftIdentity SR.1# (_*ₗ_ {n})
-*ₗ-identityˡ _ _ = *-identityˡ _
+*ₗ-identityˡ xs i = *-identityˡ (xs i)
 
 *ₗ-assoc : LD.Associative SR._*_ (_*ₗ_ {n})
-*ₗ-assoc _ _ _ _ = *-assoc _ _ _
+*ₗ-assoc m n xs i = *-assoc m n (xs i)
 
 *ₗ-zeroʳ : LD.RightZero (0ᴹ {n}) _*ₗ_
-*ₗ-zeroʳ _ _ = zeroʳ _
+*ₗ-zeroʳ m _ = zeroʳ m
 
 *ₗ-distribˡ : _*ₗ_ LD.DistributesOverˡ (_+ᴹ_ {n})
-*ₗ-distribˡ _ _ _ _ = distribˡ _ _ _
+*ₗ-distribˡ m xs ys i = distribˡ m (xs i) (ys i)
 
 ------------------------------------------------------------------------
 -- Structures
