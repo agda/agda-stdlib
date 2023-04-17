@@ -3030,11 +3030,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Vec.Functional.Algebra.Base`
 ```agda
-  _≈ᴹ_ : Rel (VC n) ℓ
-  _+ᴹ_ : Op₂ $ VC n
-  0ᴹ : VC n
-  -ᴹ_ : Op₁ $ VC n
-  _*ₗ_ : Opₗ Carrier (VC n)
+  _≈ᴹ_ : Rel (Vector Carrier n) ℓ
+  _+ᴹ_ : Op₂ $ Vector Carrier n
+  0ᴹ : Vector Carrier n
+  -ᴹ_ : Op₁ $ Vector Carrier n
+  _*ₗ_ : Opₗ Carrier (Vector Carrier n)
 ```
 
 * Added algebraic properties in `Data.Vec.Functional.Algebra.Properties`
@@ -3072,7 +3072,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added bundles in `Data.Vec.Functional.Algebra.Properties`
 ```agda
   magma : ℕ → Magma _ _
-  semiGroup : ℕ → Semigroup _ _
+  semigroup : ℕ → Semigroup _ _
   monoid : ℕ → Monoid _ _
   commutativeMonoid : ℕ → CommutativeMonoid _ _
   leftSemimodule : ℕ → LeftSemimodule _ _ _
