@@ -42,3 +42,6 @@ _+ᴹ_ = zipWith _+_
 
 _*ₗ_ : Opₗ Carrier (Vector Carrier n)
 _*ₗ_ r = map (r *_)
+
+_*ᵣ_ : Opᵣ Carrier (Vector Carrier n)
+xs *ᵣ r = map (_* r) xs

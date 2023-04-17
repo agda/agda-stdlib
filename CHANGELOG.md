@@ -3056,17 +3056,34 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   *ₗ-assoc : LD.Associative SR._*_ (_*ₗ_ {n})
   *ₗ-zeroʳ : LD.RightZero (0ᴹ {n}) _*ₗ_
   *ₗ-distribˡ : _*ₗ_ LD.DistributesOverˡ (_+ᴹ_ {n})
+  *ᵣ-cong : RD.Congruent SR._≈_ (_*ᵣ_ {n})
+  *ᵣ-distribˡ : _*ᵣ_ RD.DistributesOverˡ SR._+_ ⟶ (_+ᴹ_ {n})
+  *ᵣ-zeroˡ : RD.LeftZero (0ᴹ {n}) _*ᵣ_
+  *ᵣ-identityʳ : RD.RightIdentity SR.1# (_*ᵣ_ {n})
+  *ᵣ-assoc : RD.Associative SR._*_ (_*ᵣ_ {n})
+  *ᵣ-zeroʳ : RD.RightZero SR.0# (0ᴹ {n}) _*ᵣ_
+  *ᵣ-distribʳ : _*ᵣ_ RD.DistributesOverʳ (_+ᴹ_ {n})
+  *ₗ-*ᵣ-assoc : BD.Associative (_*ₗ_ {n}) _*ᵣ_
 ```
 
 * Added structures in `Data.Vec.Functional.Algebra.Properties`
 ```agda
   isMagma : IsMagma (_+ᴹ_ {n})
+  isCommutativeMagma : IsCommutativeMagma (_+ᴹ_ {n})
   isSemigroup : IsSemigroup (_+ᴹ_ {n})
+  isCommutativeSemigroup : IsCommutativeSemigroup (_+ᴹ_ {n})
   isMonoid : IsMonoid (_+ᴹ_ {n}) 0ᴹ
   isCommutativeMonoid : IsCommutativeMonoid (_+ᴹ_ {n}) 0ᴹ
+  isGroup : IsGroup (_+ᴹ_ {n}) 0ᴹ -ᴹ_
+  isAbelianGroup : IsAbelianGroup (_+ᴹ_ {n}) 0ᴹ -ᴹ_
   isPreleftSemimodule : IsPreleftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
   isLeftSemimodule : IsLeftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
   isLeftModule : IsLeftModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_
+  isPrerightSemimodule : IsPrerightSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ᵣ_
+  isRightSemimodule : IsRightSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ᵣ_
+  isBisemimodule : IsBisemimodule semiring semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_ _*ᵣ_
+  isRightModule : IsRightModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ᵣ_
+  isBimodule : IsBimodule ring ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
 ```
 
 * Added bundles in `Data.Vec.Functional.Algebra.Properties`
@@ -3077,4 +3094,9 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   commutativeMonoid : ℕ → CommutativeMonoid _ _
   leftSemimodule : ℕ → LeftSemimodule _ _ _
   leftModule : ℕ → LeftModule _ _ _
+  commutativeMagma : ℕ → CommutativeMagma _ _
+  group : ℕ → Group _ _
+  bisemimodule : ℕ → Bisemimodule _ _ _ _
+  rightModule : ℕ → RightModule _ _ _
+  bimodule : ℕ → Bimodule _ _ _ _
 ```
