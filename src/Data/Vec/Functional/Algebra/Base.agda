@@ -20,12 +20,12 @@ import Algebra.Definitions as AD
 import Algebra.Structures as AS
 
 module Data.Vec.Functional.Algebra.Base
-  {c ℓ} (ring : Ring c ℓ) where
+  {c ℓ} (cring : CommutativeRing c ℓ) where
 
 private variable
   n : ℕ
 
-open Ring ring
+open CommutativeRing cring
 open VecSetoid setoid
 
 _≈ᴹ_ : Rel (Vector Carrier n) ℓ

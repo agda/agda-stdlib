@@ -21,14 +21,14 @@ import Algebra.Structures as AS
 import Data.Vec.Functional.Algebra.Base as VFA
 
 module Data.Vec.Functional.Algebra.Properties
-  {c ℓ} (ring : Ring c ℓ) where
+  {c ℓ} (cring : CommutativeRing c ℓ) where
 
 private variable
   n : ℕ
 
-open Ring ring
+open CommutativeRing cring
 open VecSetoid setoid
-open VFA ring
+open VFA cring
 module SR = Semiring semiring
 open module AD' {n} = AD (_≈ᴹ_ {n})
 open module AS' {n} = AS (_≈ᴹ_ {n})
@@ -229,6 +229,9 @@ isLeftModule = record
   ; -ᴹ‿inverse = -ᴹ‿inverse
   }
 
+isModule : IsModule cring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
+isModule = record { isBimodule = isBimodule }
+
 ------------------------------------------------------------------------
 -- Bundles
 
@@ -290,4 +293,9 @@ rightModule n = record
 bimodule : ℕ → Bimodule _ _ _ _
 bimodule n = record
   { isBimodule = isBimodule {n}
+  }
+
+module' : ℕ → Module _ _ _
+module' n = record
+  { isModule = isModule {n}
   }

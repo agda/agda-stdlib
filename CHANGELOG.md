@@ -3084,6 +3084,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   isBisemimodule : IsBisemimodule semiring semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_ _*ᵣ_
   isRightModule : IsRightModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ᵣ_
   isBimodule : IsBimodule ring ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
+  isModule : IsModule cring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
 ```
 
 * Added bundles in `Data.Vec.Functional.Algebra.Properties`
@@ -3099,4 +3100,5 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   bisemimodule : ℕ → Bisemimodule _ _ _ _
   rightModule : ℕ → RightModule _ _ _
   bimodule : ℕ → Bimodule _ _ _ _
+module' : ℕ → Module _ _ _
 ```
