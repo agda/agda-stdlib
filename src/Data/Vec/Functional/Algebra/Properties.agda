@@ -230,7 +230,9 @@ isLeftModule = record
   }
 
 isModule : IsModule cring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
-isModule = record { isBimodule = isBimodule }
+isModule = record
+  { isBimodule = isBimodule
+  }
 
 ------------------------------------------------------------------------
 -- Bundles
