@@ -1,3 +1,11 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Some Vector-related module properties
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
 open import Function using (_$_)
 open import Data.Product hiding (map)
 open import Data.Nat using (ℕ)
@@ -10,6 +18,7 @@ open import Relation.Binary
 import Data.Vec.Functional.Relation.Binary.Equality.Setoid as VecSetoid
 import Algebra.Definitions as AD
 import Algebra.Structures as AS
+import Data.Vec.Functional.Algebra.Base as VFA
 
 module Data.Vec.Functional.Algebra.Properties
   {c ℓ} (ring : Ring c ℓ) where
@@ -18,29 +27,15 @@ private variable
   n : ℕ
 
 open Ring ring
-module SR = Semiring semiring
 open VecSetoid setoid
-
-VC = Vector Carrier
-
-_≈ᴹ_ : Rel (VC n) ℓ
-_≈ᴹ_ = _≋_
-
+open VFA ring
+module SR = Semiring semiring
 open module AD' {n} = AD (_≈ᴹ_ {n})
 open module AS' {n} = AS (_≈ᴹ_ {n})
 open module LD {n} = LeftDefs Carrier (_≈ᴹ_ {n}) using (Congruent)
 
-_+ᴹ_ : Op₂ $ VC n
-_+ᴹ_ = zipWith _+_
-
-0ᴹ : VC n
-0ᴹ = replicate 0#
-
--ᴹ_ : Op₁ $ VC n
--ᴹ_ = map $ -_
-
-_*ₗ_ : Opₗ Carrier (VC n)
-_*ₗ_ r = map (r *_)
+------------------------------------------------------------------------
+-- Algebraic properties of _+ᴹ_ -ᴹ_ _*ₗ_
 
 +ᴹ-cong : Congruent₂ (_+ᴹ_ {n})
 +ᴹ-cong x≈y u≈v _ = +-cong (x≈y _) (u≈v _)
@@ -93,6 +88,9 @@ _*ₗ_ r = map (r *_)
 *ₗ-distribˡ : _*ₗ_ LD.DistributesOverˡ (_+ᴹ_ {n})
 *ₗ-distribˡ _ _ _ _ = distribˡ _ _ _
 
+------------------------------------------------------------------------
+-- Structures
+
 isMagma : IsMagma (_+ᴹ_ {n})
 isMagma = record
   { isEquivalence = ≋-isEquivalence _
@@ -140,6 +138,9 @@ isLeftModule = record
   ; -ᴹ‿cong = -ᴹ‿cong
   ; -ᴹ‿inverse = -ᴹ‿inverse
   }
+
+------------------------------------------------------------------------
+-- Bundles
 
 magma : ℕ → Magma _ _
 magma n = record
