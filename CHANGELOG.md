@@ -3027,3 +3027,54 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
+
+* In `Data.Vec.Functional.Algebra.Base`
+```agda
+  _≈ᴹ_ : Rel (VC n) ℓ
+  _+ᴹ_ : Op₂ $ VC n
+  0ᴹ : VC n
+  -ᴹ_ : Op₁ $ VC n
+  _*ₗ_ : Opₗ Carrier (VC n)
+```
+
+* Added algebraic properties in `Data.Vec.Functional.Algebra.Properties`
+```agda
+  +ᴹ-cong : Congruent₂ (_+ᴹ_ {n})
+  +ᴹ-assoc : Associative (_+ᴹ_ {n})
+  +ᴹ-comm : Commutative (_+ᴹ_ {n})
+  +ᴹ-identityˡ : LeftIdentity (0ᴹ {n}) _+ᴹ_
+  +ᴹ-identityʳ : RightIdentity (0ᴹ {n}) _+ᴹ_
+  +ᴹ-identity : Identity (0ᴹ {n}) _+ᴹ_
+  -ᴹ‿cong : Congruent₁ (-ᴹ_ {n})
+  -ᴹ‿inverseˡ : AD'.LeftInverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  -ᴹ‿inverseʳ : AD'.RightInverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  -ᴹ‿inverse : AD'.Inverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  *ₗ-cong : Congruent SR._≈_ (_*ₗ_ {n})
+  *ₗ-zeroˡ : LD.LeftZero SR.0# (0ᴹ {n}) _*ₗ_
+  *ₗ-distribʳ : _*ₗ_ LD.DistributesOverʳ SR._+_ ⟶ (_+ᴹ_ {n})
+  *ₗ-identityˡ : LD.LeftIdentity SR.1# (_*ₗ_ {n})
+  *ₗ-assoc : LD.Associative SR._*_ (_*ₗ_ {n})
+  *ₗ-zeroʳ : LD.RightZero (0ᴹ {n}) _*ₗ_
+  *ₗ-distribˡ : _*ₗ_ LD.DistributesOverˡ (_+ᴹ_ {n})
+```
+
+* Added structures in `Data.Vec.Functional.Algebra.Properties`
+```agda
+  isMagma : IsMagma (_+ᴹ_ {n})
+  isSemigroup : IsSemigroup (_+ᴹ_ {n})
+  isMonoid : IsMonoid (_+ᴹ_ {n}) 0ᴹ
+  isCommutativeMonoid : IsCommutativeMonoid (_+ᴹ_ {n}) 0ᴹ
+  isPreleftSemimodule : IsPreleftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
+  isLeftSemimodule : IsLeftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
+  isLeftModule : IsLeftModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_
+```
+
+* Added bundles in `Data.Vec.Functional.Algebra.Properties`
+```agda
+  magma : ℕ → Magma _ _
+  semiGroup : ℕ → Semigroup _ _
+  monoid : ℕ → Monoid _ _
+  commutativeMonoid : ℕ → CommutativeMonoid _ _
+  leftSemimodule : ℕ → LeftSemimodule _ _ _
+  leftModule : ℕ → LeftModule _ _ _
+```
