@@ -366,4 +366,4 @@ module _ {c ℓ} (cmonoid : CommutativeMonoid c ℓ) where
     fε = foldr _∙_ ε
     fεxs = fε xs
     fεys = foldr _∙_ ε ys
-  foldr-commMonoid (_↭_.trans {xs} {ys} {zs} xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)
+  foldr-commMonoid (_↭_.trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)
