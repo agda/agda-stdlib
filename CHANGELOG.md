@@ -3100,5 +3100,5 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   bisemimodule : ℕ → Bisemimodule _ _ _ _
   rightModule : ℕ → RightModule _ _ _
   bimodule : ℕ → Bimodule _ _ _ _
-module' : ℕ → Module _ _ _
+  module' : ℕ → Module _ _ _
 ```

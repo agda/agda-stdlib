@@ -34,8 +34,14 @@ _≈ᴹ_ = _≋_
 _+ᴹ_ : Op₂ $ Vector Carrier n
 _+ᴹ_ = zipWith _+_
 
+_*ᴹ_ : Op₂ $ Vector Carrier n
+_*ᴹ_ = zipWith _*_
+
 0ᴹ : Vector Carrier n
 0ᴹ = replicate 0#
+
+1ᴹ : Vector Carrier n
+1ᴹ = replicate 1#
 
 -ᴹ_ : Op₁ $ Vector Carrier n
 -ᴹ_ = map $ -_

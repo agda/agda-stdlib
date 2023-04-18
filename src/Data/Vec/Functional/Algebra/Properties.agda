@@ -42,8 +42,14 @@ module BD {n} = BiDefs Carrier Carrier (_≈ᴹ_ {n})
 +ᴹ-cong : Congruent₂ (_+ᴹ_ {n})
 +ᴹ-cong x≈y u≈v i = +-cong (x≈y i) (u≈v i)
 
+*ᴹ-cong : Congruent₂ (_*ᴹ_ {n})
+*ᴹ-cong x≈y u≈v i = *-cong (x≈y i) (u≈v i)
+
 +ᴹ-assoc : Associative (_+ᴹ_ {n})
 +ᴹ-assoc xs ys zs i = +-assoc (xs i) (ys i) (zs i)
+
+*ᴹ-assoc : Associative (_*ᴹ_ {n})
+*ᴹ-assoc xs ys zs i = *-assoc (xs i) (ys i) (zs i)
 
 +ᴹ-comm : Commutative (_+ᴹ_ {n})
 +ᴹ-comm xs ys i = +-comm (xs i) (ys i)
@@ -51,11 +57,20 @@ module BD {n} = BiDefs Carrier Carrier (_≈ᴹ_ {n})
 +ᴹ-identityˡ : LeftIdentity (0ᴹ {n}) _+ᴹ_
 +ᴹ-identityˡ xs i = +-identityˡ (xs i)
 
+*ᴹ-identityˡ : LeftIdentity (1ᴹ {n}) _*ᴹ_
+*ᴹ-identityˡ xs i = *-identityˡ (xs i)
+
 +ᴹ-identityʳ : RightIdentity (0ᴹ {n}) _+ᴹ_
 +ᴹ-identityʳ xs is = +-identityʳ (xs is)
 
+*ᴹ-identityʳ : RightIdentity (1ᴹ {n}) _*ᴹ_
+*ᴹ-identityʳ xs is = *-identityʳ (xs is)
+
 +ᴹ-identity : Identity (0ᴹ {n}) _+ᴹ_
 +ᴹ-identity = +ᴹ-identityˡ , +ᴹ-identityʳ
+
+*ᴹ-identity : Identity (1ᴹ {n}) _*ᴹ_
+*ᴹ-identity = *ᴹ-identityˡ , *ᴹ-identityʳ
 
 -ᴹ‿cong : Congruent₁ (-ᴹ_ {n})
 -ᴹ‿cong xs i = -‿cong (xs i)
@@ -113,6 +128,24 @@ module BD {n} = BiDefs Carrier Carrier (_≈ᴹ_ {n})
 
 *ₗ-*ᵣ-assoc : BD.Associative (_*ₗ_ {n}) _*ᵣ_
 *ₗ-*ᵣ-assoc m xs n i = *-assoc m (xs i) n
+
+*ᴹ-zeroˡ : AD'.LeftZero (0ᴹ {n}) _*ᴹ_
+*ᴹ-zeroˡ xs i = zeroˡ (xs i)
+
+*ᴹ-zeroʳ : AD'.RightZero (0ᴹ {n}) _*ᴹ_
+*ᴹ-zeroʳ xs i = zeroʳ (xs i)
+
+*ᴹ-zero : AD'.Zero (0ᴹ {n}) _*ᴹ_
+*ᴹ-zero = *ᴹ-zeroˡ , *ᴹ-zeroʳ
+
+*ᴹ-+ᴹ-distribˡ : (_*ᴹ_ {n}) AD'.DistributesOverˡ _+ᴹ_
+*ᴹ-+ᴹ-distribˡ xs ys zs i = distribˡ (xs i) (ys i) (zs i)
+
+*ᴹ-+ᴹ-distribʳ : (_*ᴹ_ {n}) AD'.DistributesOverʳ _+ᴹ_
+*ᴹ-+ᴹ-distribʳ xs ys zs i = distribʳ (xs i) (ys i) (zs i)
+
+*ᴹ-+ᴹ-distrib : (_*ᴹ_ {n}) AD'.DistributesOver _+ᴹ_
+*ᴹ-+ᴹ-distrib = *ᴹ-+ᴹ-distribˡ , *ᴹ-+ᴹ-distribʳ
 
 ------------------------------------------------------------------------
 -- Structures
@@ -232,6 +265,16 @@ isLeftModule = record
 isModule : IsModule cring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
 isModule = record
   { isBimodule = isBimodule
+  }
+
++ᴹ-*-isRing : IsRing (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
++ᴹ-*-isRing = record
+  { +-isAbelianGroup = isAbelianGroup
+  ; *-cong = *ᴹ-cong
+  ; *-assoc = *ᴹ-assoc
+  ; *-identity = *ᴹ-identity
+  ; distrib = *ᴹ-+ᴹ-distrib
+  ; zero = *ᴹ-zero
   }
 
 ------------------------------------------------------------------------
