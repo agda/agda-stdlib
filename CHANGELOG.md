@@ -1800,6 +1800,12 @@ Other minor changes
 * Added new proofs in `Data.Bool.Properties`:
   ```agda
   <-wellFounded : WellFounded _<_
+  ∨-conicalˡ : LeftConical false _∨_
+  ∨-conicalʳ : RightConical false _∨_
+  ∨-conical : Conical false _∨_
+  ∧-conicalˡ : LeftConical true _∧_
+  ∧-conicalʳ : RightConical true _∧_
+  ∧-conical : Conical true _∧_
   ```
 
 * Added new functions in `Data.Fin.Base`:
