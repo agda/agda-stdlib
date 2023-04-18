@@ -3030,5 +3030,5 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
-  foldr-cmonoid : xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
+  foldr-commMonoid : xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
   ```
