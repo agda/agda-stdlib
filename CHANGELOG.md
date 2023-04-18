@@ -3040,16 +3040,22 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added algebraic properties in `Data.Vec.Functional.Algebra.Properties`
 ```agda
   +ᴹ-cong : Congruent₂ (_+ᴹ_ {n})
+  *ᴹ-cong : Congruent₂ (_*ᴹ_ {n})
   +ᴹ-assoc : Associative (_+ᴹ_ {n})
+  *ᴹ-assoc : Associative (_*ᴹ_ {n})
   +ᴹ-comm : Commutative (_+ᴹ_ {n})
+  *ᴹ-comm : Commutative (_*ᴹ_ {n})
   +ᴹ-identityˡ : LeftIdentity (0ᴹ {n}) _+ᴹ_
+  *ᴹ-identityˡ : LeftIdentity (1ᴹ {n}) _*ᴹ_
   +ᴹ-identityʳ : RightIdentity (0ᴹ {n}) _+ᴹ_
+  *ᴹ-identityʳ : RightIdentity (1ᴹ {n}) _*ᴹ_
   +ᴹ-identity : Identity (0ᴹ {n}) _+ᴹ_
+  *ᴹ-identity : Identity (1ᴹ {n}) _*ᴹ_
   -ᴹ‿cong : Congruent₁ (-ᴹ_ {n})
   -ᴹ‿inverseˡ : AD'.LeftInverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
   -ᴹ‿inverseʳ : AD'.RightInverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
   -ᴹ‿inverse : AD'.Inverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
-  *ₗ-cong : Congruent SR._≈_ (_*ₗ_ {n})
+  *ₗ-cong : LD.Congruent SR._≈_ (_*ₗ_ {n})
   *ₗ-zeroˡ : LD.LeftZero SR.0# (0ᴹ {n}) _*ₗ_
   *ₗ-distribʳ : _*ₗ_ LD.DistributesOverʳ SR._+_ ⟶ (_+ᴹ_ {n})
   *ₗ-identityˡ : LD.LeftIdentity SR.1# (_*ₗ_ {n})
@@ -3064,41 +3070,70 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   *ᵣ-zeroʳ : RD.RightZero SR.0# (0ᴹ {n}) _*ᵣ_
   *ᵣ-distribʳ : _*ᵣ_ RD.DistributesOverʳ (_+ᴹ_ {n})
   *ₗ-*ᵣ-assoc : BD.Associative (_*ₗ_ {n}) _*ᵣ_
+  *ᴹ-zeroˡ : AD'.LeftZero (0ᴹ {n}) _*ᴹ_
+  *ᴹ-zeroʳ : AD'.RightZero (0ᴹ {n}) _*ᴹ_
+  *ᴹ-zero : AD'.Zero (0ᴹ {n}) _*ᴹ_
+  *ᴹ-+ᴹ-distribˡ : (_*ᴹ_ {n}) AD'.DistributesOverˡ _+ᴹ_
+  *ᴹ-+ᴹ-distribʳ : (_*ᴹ_ {n}) AD'.DistributesOverʳ _+ᴹ_
+  *ᴹ-+ᴹ-distrib : (_*ᴹ_ {n}) AD'.DistributesOver _+ᴹ_
 ```
 
 * Added structures in `Data.Vec.Functional.Algebra.Properties`
 ```agda
   isMagma : IsMagma (_+ᴹ_ {n})
+  *ᴹ-isMagma : IsMagma (_*ᴹ_ {n})
   isCommutativeMagma : IsCommutativeMagma (_+ᴹ_ {n})
   isSemigroup : IsSemigroup (_+ᴹ_ {n})
+  *ᴹ-isSemigroup : IsSemigroup (_*ᴹ_ {n})
   isCommutativeSemigroup : IsCommutativeSemigroup (_+ᴹ_ {n})
   isMonoid : IsMonoid (_+ᴹ_ {n}) 0ᴹ
+  *ᴹ-isMonoid : IsMonoid (_*ᴹ_ {n}) 1ᴹ
   isCommutativeMonoid : IsCommutativeMonoid (_+ᴹ_ {n}) 0ᴹ
   isGroup : IsGroup (_+ᴹ_ {n}) 0ᴹ -ᴹ_
   isAbelianGroup : IsAbelianGroup (_+ᴹ_ {n}) 0ᴹ -ᴹ_
   isPreleftSemimodule : IsPreleftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
-  isLeftSemimodule : IsLeftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
-  isLeftModule : IsLeftModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_
   isPrerightSemimodule : IsPrerightSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ᵣ_
   isRightSemimodule : IsRightSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ᵣ_
   isBisemimodule : IsBisemimodule semiring semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_ _*ᵣ_
   isRightModule : IsRightModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ᵣ_
   isBimodule : IsBimodule ring ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
+  isLeftSemimodule : IsLeftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
+  isLeftModule : IsLeftModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_
   isModule : IsModule cring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
+  +ᴹ-*-isNearSemiring : IsNearSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
+  +ᴹ-*-isSemiringWithoutOne : IsSemiringWithoutOne (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
+  +ᴹ-*-isCommutativeSemiringWithoutOne : IsCommutativeSemiringWithoutOne (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
+  +ᴹ-*-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isSemiring : IsSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isCommutativeSemiring : IsCommutativeSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isRingWithoutOne : IsRingWithoutOne (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ
+  +ᴹ-*-isRing : IsRing (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isCommutativeRing : IsCommutativeRing (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
 ```
 
 * Added bundles in `Data.Vec.Functional.Algebra.Properties`
 ```agda
   magma : ℕ → Magma _ _
+  *ᴹ-magma : ℕ → Magma _ _
+  commutativeMagma : ℕ → CommutativeMagma _ _
   semigroup : ℕ → Semigroup _ _
+  *ᴹ-semigroup : ℕ → Semigroup _ _
+  commutativeSemigroup : ℕ → CommutativeSemigroup _ _
   monoid : ℕ → Monoid _ _
+  *ᴹ-monoid : ℕ → Monoid _ _
   commutativeMonoid : ℕ → CommutativeMonoid _ _
+  group : ℕ → Group _ _
   leftSemimodule : ℕ → LeftSemimodule _ _ _
   leftModule : ℕ → LeftModule _ _ _
-  commutativeMagma : ℕ → CommutativeMagma _ _
-  group : ℕ → Group _ _
   bisemimodule : ℕ → Bisemimodule _ _ _ _
   rightModule : ℕ → RightModule _ _ _
   bimodule : ℕ → Bimodule _ _ _ _
   module' : ℕ → Module _ _ _
+  +ᴹ-*-nearSemiring : ℕ → NearSemiring _ _
+  +ᴹ-*-semiringWithoutOne : ℕ → SemiringWithoutOne _ _
+  +ᴹ-*-commutativeSemiringWithoutOne : ℕ → CommutativeSemiringWithoutOne _ _
+  +ᴹ-*-semiringWithoutAnnihilatingZero : ℕ → SemiringWithoutAnnihilatingZero _ _
+  +ᴹ-*-semiring : ℕ → Semiring _ _
+  +ᴹ-*-commutativeSemiring : ℕ → CommutativeSemiring _ _
+  +ᴹ-*-ringWithoutOne : ℕ → RingWithoutOne _ _
 ```

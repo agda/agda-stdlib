@@ -54,6 +54,9 @@ module BD {n} = BiDefs Carrier Carrier (_≈ᴹ_ {n})
 +ᴹ-comm : Commutative (_+ᴹ_ {n})
 +ᴹ-comm xs ys i = +-comm (xs i) (ys i)
 
+*ᴹ-comm : Commutative (_*ᴹ_ {n})
+*ᴹ-comm xs ys i = *-comm (xs i) (ys i)
+
 +ᴹ-identityˡ : LeftIdentity (0ᴹ {n}) _+ᴹ_
 +ᴹ-identityˡ xs i = +-identityˡ (xs i)
 
@@ -156,6 +159,12 @@ isMagma = record
   ; ∙-cong = +ᴹ-cong
   }
 
+*ᴹ-isMagma : IsMagma (_*ᴹ_ {n})
+*ᴹ-isMagma = record
+  { isEquivalence = ≋-isEquivalence _
+  ; ∙-cong = *ᴹ-cong
+  }
+
 isCommutativeMagma : IsCommutativeMagma (_+ᴹ_ {n})
 isCommutativeMagma = record
   { isMagma = isMagma
@@ -168,6 +177,12 @@ isSemigroup = record
   ; assoc = +ᴹ-assoc
   }
 
+*ᴹ-isSemigroup : IsSemigroup (_*ᴹ_ {n})
+*ᴹ-isSemigroup = record
+  { isMagma = *ᴹ-isMagma
+  ; assoc = *ᴹ-assoc
+  }
+
 isCommutativeSemigroup : IsCommutativeSemigroup (_+ᴹ_ {n})
 isCommutativeSemigroup = record
   { isSemigroup = isSemigroup
@@ -178,6 +193,12 @@ isMonoid : IsMonoid (_+ᴹ_ {n}) 0ᴹ
 isMonoid = record
   { isSemigroup = isSemigroup
   ; identity = +ᴹ-identity
+  }
+
+*ᴹ-isMonoid : IsMonoid (_*ᴹ_ {n}) 1ᴹ
+*ᴹ-isMonoid = record
+  { isSemigroup = *ᴹ-isSemigroup
+  ; identity = *ᴹ-identity
   }
 
 isCommutativeMonoid : IsCommutativeMonoid (_+ᴹ_ {n}) 0ᴹ
@@ -267,6 +288,60 @@ isModule = record
   { isBimodule = isBimodule
   }
 
++ᴹ-*-isNearSemiring : IsNearSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
++ᴹ-*-isNearSemiring = record
+  { +-isMonoid = isMonoid
+  ; *-cong = *ᴹ-cong
+  ; *-assoc = *ᴹ-assoc
+  ; distribʳ = *ᴹ-+ᴹ-distribʳ
+  ; zeroˡ = *ᴹ-zeroˡ
+  }
+
++ᴹ-*-isSemiringWithoutOne : IsSemiringWithoutOne (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
++ᴹ-*-isSemiringWithoutOne = record
+  { +-isCommutativeMonoid = isCommutativeMonoid
+  ; *-cong = *ᴹ-cong
+  ; *-assoc = *ᴹ-assoc
+  ; distrib = *ᴹ-+ᴹ-distrib
+  ; zero = *ᴹ-zero
+  }
+
++ᴹ-*-isCommutativeSemiringWithoutOne : IsCommutativeSemiringWithoutOne (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
++ᴹ-*-isCommutativeSemiringWithoutOne = record
+  {isSemiringWithoutOne = +ᴹ-*-isSemiringWithoutOne
+  ; *-comm = *ᴹ-comm
+  }
+
++ᴹ-*-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
++ᴹ-*-isSemiringWithoutAnnihilatingZero = record
+  { +-isCommutativeMonoid = isCommutativeMonoid
+  ; *-cong = *ᴹ-cong
+  ; *-assoc = *ᴹ-assoc
+  ; *-identity = *ᴹ-identity
+  ; distrib = *ᴹ-+ᴹ-distrib
+  }
+
++ᴹ-*-isSemiring : IsSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
++ᴹ-*-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = +ᴹ-*-isSemiringWithoutAnnihilatingZero
+  ; zero = *ᴹ-zero
+  }
+
++ᴹ-*-isCommutativeSemiring : IsCommutativeSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
++ᴹ-*-isCommutativeSemiring = record
+  { isSemiring = +ᴹ-*-isSemiring
+  ; *-comm = *ᴹ-comm
+  }
+
++ᴹ-*-isRingWithoutOne : IsRingWithoutOne (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ
++ᴹ-*-isRingWithoutOne = record
+  { +-isAbelianGroup = isAbelianGroup
+  ; *-cong = *ᴹ-cong
+  ; *-assoc = *ᴹ-assoc
+  ; distrib = *ᴹ-+ᴹ-distrib
+  ; zero = *ᴹ-zero
+  }
+
 +ᴹ-*-isRing : IsRing (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
 +ᴹ-*-isRing = record
   { +-isAbelianGroup = isAbelianGroup
@@ -277,12 +352,23 @@ isModule = record
   ; zero = *ᴹ-zero
   }
 
++ᴹ-*-isCommutativeRing : IsCommutativeRing (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
++ᴹ-*-isCommutativeRing = record
+  { isRing = +ᴹ-*-isRing
+  ; *-comm = *ᴹ-comm
+  }
+
 ------------------------------------------------------------------------
 -- Bundles
 
 magma : ℕ → Magma _ _
 magma n = record
   { isMagma = isMagma {n}
+  }
+
+*ᴹ-magma : ℕ → Magma _ _
+*ᴹ-magma n = record
+  { isMagma = *ᴹ-isMagma {n}
   }
 
 commutativeMagma : ℕ → CommutativeMagma _ _
@@ -295,6 +381,11 @@ semigroup n = record
   { isSemigroup = isSemigroup {n}
   }
 
+*ᴹ-semigroup : ℕ → Semigroup _ _
+*ᴹ-semigroup n = record
+  { isSemigroup = *ᴹ-isSemigroup {n}
+  }
+
 commutativeSemigroup : ℕ → CommutativeSemigroup _ _
 commutativeSemigroup n = record
   { isCommutativeSemigroup = isCommutativeSemigroup {n}
@@ -303,6 +394,11 @@ commutativeSemigroup n = record
 monoid : ℕ → Monoid _ _
 monoid n = record
   { isMonoid = isMonoid {n}
+  }
+
+*ᴹ-monoid : ℕ → Monoid _ _
+*ᴹ-monoid n = record
+  { isMonoid = *ᴹ-isMonoid {n}
   }
 
 commutativeMonoid : ℕ → CommutativeMonoid _ _
@@ -343,4 +439,39 @@ bimodule n = record
 module' : ℕ → Module _ _ _
 module' n = record
   { isModule = isModule {n}
+  }
+
++ᴹ-*-nearSemiring : ℕ → NearSemiring _ _
++ᴹ-*-nearSemiring n = record
+  { isNearSemiring = +ᴹ-*-isNearSemiring {n}
+  }
+
++ᴹ-*-semiringWithoutOne : ℕ → SemiringWithoutOne _ _
++ᴹ-*-semiringWithoutOne n = record
+  { isSemiringWithoutOne = +ᴹ-*-isSemiringWithoutOne {n}
+  }
+
++ᴹ-*-commutativeSemiringWithoutOne : ℕ → CommutativeSemiringWithoutOne _ _
++ᴹ-*-commutativeSemiringWithoutOne n = record
+  { isCommutativeSemiringWithoutOne = +ᴹ-*-isCommutativeSemiringWithoutOne {n}
+  }
+
++ᴹ-*-semiringWithoutAnnihilatingZero : ℕ → SemiringWithoutAnnihilatingZero _ _
++ᴹ-*-semiringWithoutAnnihilatingZero n = record
+  { isSemiringWithoutAnnihilatingZero = +ᴹ-*-isSemiringWithoutAnnihilatingZero {n}
+  }
+
++ᴹ-*-semiring : ℕ → Semiring _ _
++ᴹ-*-semiring n = record
+  { isSemiring = +ᴹ-*-isSemiring {n}
+  }
+
++ᴹ-*-commutativeSemiring : ℕ → CommutativeSemiring _ _
++ᴹ-*-commutativeSemiring n = record
+  { isCommutativeSemiring = +ᴹ-*-isCommutativeSemiring {n}
+  }
+
++ᴹ-*-ringWithoutOne : ℕ → RingWithoutOne _ _
++ᴹ-*-ringWithoutOne n = record
+  { isRingWithoutOne = +ᴹ-*-isRingWithoutOne {n}
   }
