@@ -11,6 +11,7 @@ module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 open import Algebra.Bundles
 open import Algebra.Definitions
 open import Algebra.Structures
+import Algebra.Properties.CommutativeMonoid as ACM
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat using (suc)
 open import Data.Product using (-,_; proj₂)
@@ -30,6 +31,7 @@ open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
+import Relation.Binary.Reasoning.Setoid as RelSetoid
 open import Relation.Nullary
 
 open PermutationReasoning
@@ -348,15 +350,20 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
 
 module _ {c ℓ} (cmonoid : CommutativeMonoid c ℓ) where
   open module CM = CommutativeMonoid cmonoid
-  import Relation.Binary.Reasoning.Setoid setoid as S
-  open import Algebra.Solver.CommutativeMonoid cmonoid
+  module S = RelSetoid setoid
+  open ACM cmonoid
 
-  foldr-cmonoid : ∀ {xs ys} → xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
-  foldr-cmonoid _↭_.refl = CM.refl
-  foldr-cmonoid (prep x xs↭xs) = ∙-congˡ (foldr-cmonoid xs↭xs)
-  foldr-cmonoid (swap {xs} {ys} x y xs↭ys) = S.begin
-    (x ∙ (y ∙ foldr _∙_ ε xs)) S.≈⟨ ∙-congˡ (∙-congˡ (foldr-cmonoid xs↭ys)) ⟩
-    (x ∙ (y ∙ foldr _∙_ ε ys))
-      S.≈⟨ solve 3 (λ x y ys → (x ⊕ y ⊕ ys) , (y ⊕ x ⊕ ys)) CM.refl x y (foldr _∙_ ε ys) ⟩
-    (y ∙ (x ∙ foldr _∙_ ε ys)) S.∎
-  foldr-cmonoid (_↭_.trans {xs} {ys} {zs} xs↭ys ys↭zs) = CM.trans (foldr-cmonoid xs↭ys) (foldr-cmonoid ys↭zs)
+  foldr-commMonoid : ∀ {xs ys} → xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
+  foldr-commMonoid _↭_.refl = CM.refl
+  foldr-commMonoid (prep x xs↭xs) = ∙-congˡ (foldr-commMonoid xs↭xs)
+  foldr-commMonoid (swap {xs} {ys} x y xs↭ys) = S.begin
+    x ∙ (y ∙ fεxs)  S.≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
+    x ∙ (y ∙ fεys) S.≈˘⟨ assoc x y fεys ⟩
+    x ∙ y ∙ fεys    S.≈⟨ ∙-congʳ (comm x y) ⟩
+    y ∙ x ∙ fεys    S.≈⟨ assoc y x fεys ⟩
+    y ∙ (x ∙ fεys)   S.∎
+    where
+    fε = foldr _∙_ ε
+    fεxs = fε xs
+    fεys = foldr _∙_ ε ys
+  foldr-commMonoid (_↭_.trans {xs} {ys} {zs} xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)
