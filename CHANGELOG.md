@@ -88,8 +88,7 @@ Non-backwards compatible changes
   such as `Monad`, `Applicative`, `Functor`, etc, under `Category.*`, as this
   obstructs the importing of the `agda-categories` development into the Standard Library,
   and moreover needlessly restricts the applicability of categorical concepts to this
-  (highly specific) mode of use. Correspondingly, modules grouped under `*.Categorical.*`
-  which exploited these structures for effectful programming have been renamed `*.Effectful`.
+  (highly specific) mode of use. Correspondingly, client modules grouped under `*.Categorical.*` which exploit such structure for effectful programming have been renamed `*.Effectful`, with the originals being deprecated.
 
 ### Improvements to pretty printing and regexes
 
@@ -869,6 +868,43 @@ Deprecated modules
   Algebra.Properties.BooleanAlgebra            ↦ Algebra.Lattice.Properties.BooleanAlgebra
   Algebra.Properties.BooleanAlgebra.Expression ↦ Algebra.Lattice.Properties.BooleanAlgebra.Expression
   Algebra.Morphism.LatticeMonomorphism         ↦ Algebra.Lattice.Morphism.LatticeMonomorphism
+  ```
+
+### Moving `*.Catgeorical.*` files
+
+* As discussed above the following files have been moved:
+  ```agda
+  Codata.Sized.Colist.Categorical            ↦ Codata.Sized.Colist.Effectful
+  Codata.Sized.Covec.Categorical             ↦ Codata.Sized.Covec.Effectful
+  Codata.Sized.Delay.Categorical             ↦ Codata.Sized.Delay.Effectful
+  Codata.Sized.Stream.Categorical            ↦ Codata.Sized.Stream.Effectful
+  Data.List.Categorical                      ↦ Data.List.Effectful
+  Data.List.Categorical.Transformer          ↦ Data.List.Effectful.Transformer
+  Data.List.NonEmpty.Categorical             ↦ Data.List.NonEmpty.Effectful
+  Data.List.NonEmpty.Categorical.Transformer ↦ Data.List.NonEmpty.Effectful.Transformer
+  Data.Maybe.Categorical                     ↦ Data.Maybe.Effectful
+  Data.Maybe.Categorical.Transformer         ↦ Data.Maybe.Effectful.Transformer
+  Data.Product.Categorical.Examples          ↦ Data.Product.Effectful.Examples
+  Data.Product.Categorical.Left              ↦ Data.Product.Effectful.Left
+  Data.Product.Categorical.Left.Base         ↦ Data.Product.Effectful.Left.Base
+  Data.Product.Categorical.Right             ↦ Data.Product.Effectful.Right
+  Data.Product.Categorical.Right.Base        ↦ Data.Product.Effectful.Right.Base
+  Data.Sum.Categorical.Examples              ↦ Data.Sum.Effectful.Examples
+  Data.Sum.Categorical.Left                  ↦ Data.Sum.Effectful.Left
+  Data.Sum.Categorical.Left.Transformer      ↦ Data.Sum.Effectful.Left.Transformer
+  Data.Sum.Categorical.Right                 ↦ Data.Sum.Effectful.Right
+  Data.Sum.Categorical.Right.Transformer     ↦ Data.Sum.Effectful.Right.Transformer
+  Data.These.Categorical.Examples            ↦ Data.These.Effectful.Examples
+  Data.These.Categorical.Left                ↦ Data.These.Effectful.Left
+  Data.These.Categorical.Left.Base           ↦ Data.These.Effectful.Left.Base
+  Data.These.Categorical.Right               ↦ Data.These.Effectful.Right
+  Data.These.Categorical.Right.Base          ↦ Data.These.Effectful.Right.Base
+  Data.Vec.Categorical                       ↦ Data.Vec.Effectful
+  Data.Vec.Categorical.Transformer           ↦ Data.Vec.Effectful.Transformer
+  Data.Vec.Recursive.Categorical             ↦ Data.Vec.Recursive.Effectful
+  Function.Identity.Categorical              ↦ Function.Identity.Effectful
+  IO.Categorical                             ↦ IO.Effectful
+  Reflection.TCM.Categorical                 ↦ Reflection.TCM.Effectful
   ```
 
 ### Moving `Relation.Binary.Properties.XLattice` files
