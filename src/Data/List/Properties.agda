@@ -497,8 +497,8 @@ module _ {P : Pred A p} {f : A → A → A} where
   foldr-forcesᵇ : (∀ x y → P (f x y) → P x × P y) →
                   ∀ e xs → P (foldr f e xs) → All P xs
   foldr-forcesᵇ _      _ []       _     = []
-  foldr-forcesᵇ forces _ (x ∷ xs) Pfold with forces _ _ Pfold
-  ... | (px , pfxs) = px ∷ foldr-forcesᵇ forces _ xs pfxs
+  foldr-forcesᵇ forces _ (x ∷ xs) Pfold =
+    let px , pfxs = forces _ _ Pfold in px ∷ foldr-forcesᵇ forces _ xs pfxs
 
   foldr-preservesᵇ : (∀ {x y} → P x → P y → P (f x y)) →
                      ∀ {e xs} → P e → All P xs → P (foldr f e xs)
@@ -627,11 +627,10 @@ scanr-defn : ∀ (f : A → B → B) (e : B) →
              scanr f e ≗ map (foldr f e) ∘ tails
 scanr-defn f e []             = refl
 scanr-defn f e (x ∷ [])       = refl
-scanr-defn f e (x ∷ y ∷ xs)
-  with scanr f e (y ∷ xs) | scanr-defn f e (y ∷ xs)
-... | []     | ()
-... | z ∷ zs | eq with ∷-injective eq
-...   | z≡fy⦇f⦈xs , _ = cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
+scanr-defn f e (x ∷ y∷xs@(_ ∷ _))
+  with eq ← scanr-defn f e y∷xs
+  with z ∷ zs ← scanr f e y∷xs
+  = let z≡fy⦇f⦈xs , _ = ∷-injective eq in cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
 
 ------------------------------------------------------------------------
 -- scanl
@@ -778,8 +777,7 @@ take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
 splitAt-defn : ∀ n → splitAt {A = A} n ≗ < take n , drop n >
 splitAt-defn zero    xs       = refl
 splitAt-defn (suc n) []       = refl
-splitAt-defn (suc n) (x ∷ xs) with splitAt n xs | splitAt-defn n xs
-... | (ys , zs) | ih = cong (Prod.map (x ∷_) id) ih
+splitAt-defn (suc n) (x ∷ xs) = cong (Prod.map (x ∷_) id) (splitAt-defn n xs)
 
 ------------------------------------------------------------------------
 -- takeWhile, dropWhile, and span
@@ -912,9 +910,9 @@ module _ {P : Pred A p} (P? : Decidable P) where
   length-partition : ∀ xs → (let (ys , zs) = partition P? xs) →
                      length ys ≤ length xs × length zs ≤ length xs
   length-partition []       = z≤n , z≤n
-  length-partition (x ∷ xs) with does (P? x) | length-partition xs
-  ...  | true  | rec = Prod.map s≤s m≤n⇒m≤1+n rec
-  ...  | false | rec = Prod.map m≤n⇒m≤1+n s≤s rec
+  length-partition (x ∷ xs) with does (P? x)
+  ...  | true  = Prod.map s≤s m≤n⇒m≤1+n (length-partition xs)
+  ...  | false = Prod.map m≤n⇒m≤1+n s≤s (length-partition xs)
 
 ------------------------------------------------------------------------
 -- _ʳ++_
