@@ -427,6 +427,28 @@ Non-backwards compatible changes
   Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
   ```
 
+### Change in the definition of `_≤″_`
+
+* The definition of `_≤″_` in `Data.Nat.Base` was previously:
+  ```agda
+  ```
+  which introduced a spurious additional definition, when this is in fact, modulo
+  field names and implicit/explicit qualifiers, equivalent to the definition of left-
+  divisibility, `_∣ˡ_` for the `RawMagma` structure of `_+_`. Since the addition of
+  raw bundles to `Data.X.Base`, this definition can now be made directly. Knock-on
+  consequences include the need to retain the old constructor name, now introduced
+  as a pattern synonym, and deprecation of (a function equiavlent to) the former
+  field name/projection function `proof`. 
+
+* Accordingly, the definition has been
+  changed to:
+  ```agda
+  _≤″_ : (m n : ℕ)  → Set
+  _≤″_ = _∣ˡ_ +-rawMagma
+
+  pattern less-than-or-equal {k} proof = k , proof
+  ```
+
 ### Renaming of `Reflection` modules
 
 * Under the `Reflection` module, there were various impending name clashes
@@ -1107,6 +1129,11 @@ Deprecated names
   map-with-∈⁺  ↦  mapWith∈⁺
   map-with-∈⁻  ↦  mapWith∈⁻
   map-with-∈↔  ↦  mapWith∈↔
+  ```
+
+* In `Data.Nat.Base`:
+  ```
+  _≤″_.proof ↦  proj₂
   ```
 
 * In `Data.Nat.Properties`:

@@ -371,7 +371,7 @@ compare (suc m) (suc n) with compare m n
 
 -- Version 2.0
 
-proof : ∀ {m n} (le : m ≤″ n) → m + (proj₁ le) ≡ n
+proof : ∀ {m n} (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
 proof (less-than-or-equal {k} prf) = prf
 {-# WARNING_ON_USAGE proof
 "Warning: _≤″_.proof was deprecated in v2.0. Please use pattern-matching instead. Note that the definition of _≤″_ has changed"
