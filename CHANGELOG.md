@@ -427,10 +427,15 @@ Non-backwards compatible changes
   Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
   ```
 
-### Change in the definition of `_≤″_`
+### Change in the definition of `_≤″_` (issue #1919)
 
 * The definition of `_≤″_` in `Data.Nat.Base` was previously:
   ```agda
+  record _≤″_ (m n : ℕ) : Set where
+    constructor less-than-or-equal
+    field
+      {k}   : ℕ
+      proof : m + k ≡ n
   ```
   which introduced a spurious additional definition, when this is in fact, modulo
   field names and implicit/explicit qualifiers, equivalent to the definition of left-
@@ -440,8 +445,7 @@ Non-backwards compatible changes
   as a pattern synonym, and deprecation of (a function equiavlent to) the former
   field name/projection function `proof`. 
 
-* Accordingly, the definition has been
-  changed to:
+* Accordingly, the definition has been changed to:
   ```agda
   _≤″_ : (m n : ℕ)  → Set
   _≤″_ = _∣ˡ_ +-rawMagma
