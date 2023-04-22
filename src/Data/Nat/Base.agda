@@ -310,16 +310,6 @@ m >′ n = n <′ m
 -- Another alternative definition of _≤_
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
-{-
-
-record _≤″_ (m n : ℕ) : Set where
-  constructor less-than-or-equal
-  field
-    {k}   : ℕ
-    proof : m + k ≡ n
-
--}
-
 _≤″_ : (m n : ℕ)  → Set
 _≤″_ = _∣ˡ_ +-rawMagma
 
@@ -333,6 +323,7 @@ m ≥″ n = n ≤″ m
 
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
+
 ------------------------------------------------------------------------
 -- Another alternative definition of _≤_
 
@@ -370,6 +361,7 @@ compare (suc m) (suc n) with compare m n
 ... | less    m k = less (suc m) k
 ... | equal   m   = equal (suc m)
 ... | greater n k = greater (suc n) k
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
