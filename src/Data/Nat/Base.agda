@@ -15,7 +15,6 @@ open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; Raw
 open import Algebra.Definitions.RawMagma using (_∣ˡ_)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
-open import Data.Product.Base using (_,_; proj₁)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -371,7 +370,16 @@ compare (suc m) (suc n) with compare m n
 ... | equal   m   = equal (suc m)
 ... | greater n k = greater (suc n) k
 
-{-
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
 proof : ∀ {m n} (le : m ≤″ n) → m + (_≤″_.k le) ≡ n
 proof le = _≤″_.proof le
--}
+{-# WARNING_ON_USAGE proof
+"Warning: _≤″_.proof was deprecated in v2.0. Please use pattern-matching instead. Note that the definition of _≤″_ has changed"
+#-}
