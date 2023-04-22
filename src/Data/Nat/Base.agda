@@ -12,8 +12,10 @@
 module Data.Nat.Base where
 
 open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
+open import Algebra.Definitions.RawMagma using (_∣ˡ_)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
+open import Data.Product.Base using (_,_; proj₁)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -120,10 +122,58 @@ instance
 >-nonZero⁻¹ (suc n) = z<s
 
 ------------------------------------------------------------------------
--- Arithmetic
+-- Raw bundles
 
 open import Agda.Builtin.Nat public
   using (_+_; _*_) renaming (_-_ to _∸_)
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0
+  }
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε = 1
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  ; 1# = 1
+  }
+
+------------------------------------------------------------------------
+-- Arithmetic
 
 open import Agda.Builtin.Nat
   using (div-helper; mod-helper)
@@ -258,6 +308,7 @@ m >′ n = n <′ m
 
 ------------------------------------------------------------------------
 -- Another alternative definition of _≤_
+infix 4 _≤″_ _<″_ _≥″_ _>″_
 
 record _≤″_ (m n : ℕ) : Set where
   constructor less-than-or-equal
@@ -265,7 +316,14 @@ record _≤″_ (m n : ℕ) : Set where
     {k}   : ℕ
     proof : m + k ≡ n
 
-infix 4 _≤″_ _<″_ _≥″_ _>″_
+{-
+
+_≤″_ : (m n : ℕ)  → Set
+_≤″_ = _∣ˡ_ +-rawMagma
+
+pattern less-than-or-equal {k} proof = k , proof
+
+-}
 
 _<″_ : Rel ℕ 0ℓ
 m <″ n = suc m ≤″ n
@@ -275,7 +333,6 @@ m ≥″ n = n ≤″ m
 
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
-
 ------------------------------------------------------------------------
 -- Another alternative definition of _≤_
 
@@ -314,51 +371,7 @@ compare (suc m) (suc n) with compare m n
 ... | equal   m   = equal (suc m)
 ... | greater n k = greater (suc n) k
 
-------------------------------------------------------------------------
--- Raw bundles
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  }
-
-+-0-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-0-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0
-  }
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε = 1
-  }
-
-+-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
-+-*-rawNearSemiring = record
-  { Carrier = _
-  ; _≈_ = _≡_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0# = 0
-  }
-
-+-*-rawSemiring : RawSemiring 0ℓ 0ℓ
-+-*-rawSemiring = record
-  { Carrier = _
-  ; _≈_ = _≡_
-  ; _+_ = _+_
-  ; _*_ = _*_
-  ; 0# = 0
-  ; 1# = 1
-  }
-
+{-
+proof : ∀ {m n} (le : m ≤″ n) → m + (_≤″_.k le) ≡ n
+proof le = _≤″_.proof le
+-}

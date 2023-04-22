@@ -2098,8 +2098,8 @@ _>″?_ = flip _<″?_
 
 ≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
 ≤‴⇒≤″ {m = m} ≤‴-refl     = less-than-or-equal {k = 0} (+-identityʳ m)
-≤‴⇒≤″ {m = m} (≤‴-step x) = less-than-or-equal (trans (+-suc m _) (_≤″_.proof ind)) where
-  ind = ≤‴⇒≤″ x
+≤‴⇒≤″ {m = m} (≤‴-step x) with less-than-or-equal proof ← ≤‴⇒≤″ x
+  = less-than-or-equal (trans (+-suc m _) proof)
 
 m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
 m≤‴m+k {m} {k = zero} refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
