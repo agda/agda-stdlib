@@ -15,6 +15,7 @@ open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; Raw
 open import Algebra.Definitions.RawMagma using (_∣ˡ_)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
+open import Data.Product.Base using (_,_; proj₁)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -309,20 +310,20 @@ m >′ n = n <′ m
 -- Another alternative definition of _≤_
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
+{-
+
 record _≤″_ (m n : ℕ) : Set where
   constructor less-than-or-equal
   field
     {k}   : ℕ
     proof : m + k ≡ n
 
-{-
+-}
 
 _≤″_ : (m n : ℕ)  → Set
 _≤″_ = _∣ˡ_ +-rawMagma
 
 pattern less-than-or-equal {k} proof = k , proof
-
--}
 
 _<″_ : Rel ℕ 0ℓ
 m <″ n = suc m ≤″ n
@@ -378,8 +379,8 @@ compare (suc m) (suc n) with compare m n
 
 -- Version 2.0
 
-proof : ∀ {m n} (le : m ≤″ n) → m + (_≤″_.k le) ≡ n
-proof le = _≤″_.proof le
+proof : ∀ {m n} (le : m ≤″ n) → m + (proj₁ le) ≡ n
+proof (less-than-or-equal {k} prf) = prf
 {-# WARNING_ON_USAGE proof
 "Warning: _≤″_.proof was deprecated in v2.0. Please use pattern-matching instead. Note that the definition of _≤″_ has changed"
 #-}
