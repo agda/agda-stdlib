@@ -1474,7 +1474,19 @@ pred[m∸n]≡m∸[1+n] zero (suc n)    = refl
 pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 
 ------------------------------------------------------------------------
+-- Properties of _∸_ and suc
+
+m≤n⇒[1+m]m∸n≡1+[m∸n] : ∀ {m n} → m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+m≤n⇒[1+m]m∸n≡1+[m∸n] z≤n                                       = refl
+m≤n⇒[1+m]m∸n≡1+[m∸n] (s≤s le) rewrite m≤n⇒[1+m]m∸n≡1+[m∸n] le = refl
+
+------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
+
+m+n≤p⇒m≤p∸n : ∀ m n p → m + n ≤ p → m ≤ p ∸ n
+m+n≤p⇒m≤p∸n zero    n p       le                 = z≤n 
+m+n≤p⇒m≤p∸n (suc m) n (suc p) (s≤s le)
+  rewrite m≤n⇒[1+m]m∸n≡1+[m∸n] (m+n≤o⇒n≤o m le) = s≤s (m+n≤p⇒m≤p∸n m n p le)
 
 m∸n≤m : ∀ m n → m ∸ n ≤ m
 m∸n≤m n       zero    = ≤-refl
