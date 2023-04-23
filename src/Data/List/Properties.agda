@@ -905,16 +905,16 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   partition-defn : partition P? ≗ < filter P? , filter (∁? P?) >
   partition-defn []       = refl
-  partition-defn (x ∷ xs) with rec ← partition-defn xs with does (P? x)
-  ...  | true  = cong (Prod.map (x ∷_) id) rec
-  ...  | false = cong (Prod.map id (x ∷_)) rec
+  partition-defn (x ∷ xs) with does (P? x)
+  ...  | true  = cong (Prod.map (x ∷_) id) (partition-defn xs)
+  ...  | false = cong (Prod.map id (x ∷_)) (partition-defn xs)
 
   length-partition : ∀ xs → (let (ys , zs) = partition P? xs) →
                      length ys ≤ length xs × length zs ≤ length xs
   length-partition []       = z≤n , z≤n
-  length-partition (x ∷ xs) with rec ← length-partition xs with does (P? x) 
-  ...  | true  = Prod.map s≤s m≤n⇒m≤1+n rec
-  ...  | false = Prod.map m≤n⇒m≤1+n s≤s rec
+  length-partition (x ∷ xs) with does (P? x) | length-partition xs
+  ...  | true  | rec = Prod.map s≤s m≤n⇒m≤1+n rec
+  ...  | false | rec = Prod.map m≤n⇒m≤1+n s≤s rec
 
 ------------------------------------------------------------------------
 -- _ʳ++_
