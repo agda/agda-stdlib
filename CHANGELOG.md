@@ -442,7 +442,7 @@ Non-backwards compatible changes
   divisibility, `_∣ˡ_` for the `RawMagma` structure of `_+_`. Since the addition of
   raw bundles to `Data.X.Base`, this definition can now be made directly. Knock-on
   consequences include the need to retain the old constructor name, now introduced
-  as a pattern synonym, and deprecation of (a function equivalent to) the former
+  as a pattern synonym, and deprecation of (a function equiavlent to) the former
   field name/projection function `proof`. 
 
 * Accordingly, the definition has been changed to:
