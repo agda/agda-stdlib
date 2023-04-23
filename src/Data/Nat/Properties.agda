@@ -1464,6 +1464,10 @@ n∸n≡0 : ∀ n → n ∸ n ≡ 0
 n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
 
+m≤n⇒[1+m]∸n≡1+[m∸n] : ∀ {m n} → m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
+m≤n⇒[1+m]∸n≡1+[m∸n] z≤n                                      = refl
+m≤n⇒[1+m]∸n≡1+[m∸n] (s≤s le) rewrite m≤n⇒[1+m]∸n≡1+[m∸n] le = refl
+
 ------------------------------------------------------------------------
 -- Properties of _∸_ and pred
 
@@ -1472,17 +1476,6 @@ pred[m∸n]≡m∸[1+n] zero    zero    = refl
 pred[m∸n]≡m∸[1+n] (suc m) zero    = refl
 pred[m∸n]≡m∸[1+n] zero (suc n)    = refl
 pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
-
-------------------------------------------------------------------------
--- Properties of _∸_ and zero, suc
-
-0∸n≡n :  ∀ n → 0 ∸ n ≡ 0
-0∸n≡n zero    = refl
-0∸n≡n (suc _) = refl
-
-m≤n⇒[1+m]∸n≡1+[m∸n] : ∀ {m n} → m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
-m≤n⇒[1+m]∸n≡1+[m∸n] z≤n                                       = refl
-m≤n⇒[1+m]∸n≡1+[m∸n] (s≤s le) rewrite m≤n⇒[1+m]∸n≡1+[m∸n] le = refl
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
