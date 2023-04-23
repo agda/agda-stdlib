@@ -698,7 +698,7 @@ combine-surjective {m} {n} i with remQuot {m} n i in eq
 
 combine-surjectiveNEW : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine {m} {n} j k ≡ i
 combine-surjectiveNEW {m = suc m} {n} i with splitAt n i in eq
-... | inj₁ j rewrite (splitAt-↑ˡ _ j (m ℕ.* n))
+... | inj₁ j rewrite splitAt-↑ˡ _ j (m ℕ.* n)
     = zero , j , splitAt⁻¹-↑ˡ eq
 ... | inj₂ k with (j₁ , k₁ , refl) ← combine-surjectiveNEW {m} {n} k
     = suc j₁ , k₁ , splitAt⁻¹-↑ʳ eq
