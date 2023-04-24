@@ -1464,10 +1464,6 @@ n∸n≡0 : ∀ n → n ∸ n ≡ 0
 n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
 
-m≤n⇒[1+m]∸n≡1+[m∸n] : ∀ {m n} → m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
-m≤n⇒[1+m]∸n≡1+[m∸n] z≤n                                     = refl
-m≤n⇒[1+m]∸n≡1+[m∸n] (s≤s le) rewrite m≤n⇒[1+m]∸n≡1+[m∸n] le = refl
-
 ------------------------------------------------------------------------
 -- Properties of _∸_ and pred
 
@@ -1479,15 +1475,6 @@ pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
-
-m+n≤o⇒m≤o∸n : ∀ m n o → m + n ≤ o → m ≤ o ∸ n
-m+n≤o⇒m≤o∸n zero    n o       le               = z≤n
-m+n≤o⇒m≤o∸n (suc m) n (suc o) (s≤s le)
-  rewrite m≤n⇒[1+m]∸n≡1+[m∸n] (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m n o le)
-
-m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
-m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
-m≤o∸n⇒m+n≤o m {suc n} (s≤s n≤o) le rewrite +-suc m n = s≤s (m≤o∸n⇒m+n≤o m n≤o le)
 
 m∸n≤m : ∀ m n → m ∸ n ≤ m
 m∸n≤m n       zero    = ≤-refl
@@ -1585,6 +1572,15 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
   suc (m + n) ∸ suc o  ≡⟨⟩
   (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
   m + (n ∸ o)          ∎
+
+m+n≤o⇒m≤o∸n : ∀ m n o → m + n ≤ o → m ≤ o ∸ n
+m+n≤o⇒m≤o∸n zero    n o       le       = z≤n
+m+n≤o⇒m≤o∸n (suc m) n (suc o) (s≤s le)
+  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m n o le)
+
+m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
+m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
+m≤o∸n⇒m+n≤o m {suc n} (s≤s n≤o) le rewrite +-suc m n = s≤s (m≤o∸n⇒m+n≤o m n≤o le)
 
 m≤n+m∸n : ∀ m n → m ≤ n + (m ∸ n)
 m≤n+m∸n zero    n       = z≤n
