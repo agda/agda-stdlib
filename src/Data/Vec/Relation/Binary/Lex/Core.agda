@@ -4,7 +4,7 @@
 -- Lexicographic ordering of same-length vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Binary.Lex.Core {a} {A : Set a} where
 
@@ -150,4 +150,3 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     irrelevant (this x≺y m≡n)     (next x≈y xs<ys₂)  = contradiction x≺y (≺-irrefl x≈y)
     irrelevant (next x≈y xs<ys₁)  (this x≺y m≡n)     = contradiction x≺y (≺-irrefl x≈y)
     irrelevant (next x≈y₁ xs<ys₁) (next x≈y₂ xs<ys₂) rewrite ≈-irrel x≈y₁ x≈y₂ | irrelevant xs<ys₁ xs<ys₂ = refl
-

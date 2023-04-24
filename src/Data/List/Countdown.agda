@@ -5,7 +5,7 @@
 -- of elements /not/ in a given list
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (0ℓ)
 open import Relation.Binary

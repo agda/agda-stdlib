@@ -4,7 +4,7 @@
 -- Properties of Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --warn=noUserWarning #-} -- for +-rawMonoid, *-rawMonoid (issue #1865, #1844, #1755)
 
 module Data.Rational.Properties where

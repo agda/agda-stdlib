@@ -13,7 +13,7 @@
 -- library defines most of its concrete operators (e.g. in
 -- `Data.Nat.Base`) as being left-biased.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core
 open import Relation.Nullary.Negation using (¬_)
@@ -125,6 +125,9 @@ _∙_ Absorbs _∘_ = ∀ x y → (x ∙ (x ∘ y)) ≈ x
 
 Absorptive : Op₂ A → Op₂ A → Set _
 Absorptive ∙ ∘ = (∙ Absorbs ∘) × (∘ Absorbs ∙)
+
+SelfInverse : Op₁ A → Set _
+SelfInverse f = ∀ {x y} → f x ≈ y → f y ≈ x
 
 Involutive : Op₁ A → Set _
 Involutive f = ∀ x → f (f x) ≈ x

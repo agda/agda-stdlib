@@ -4,7 +4,7 @@
 -- The IO monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 open import Level
 

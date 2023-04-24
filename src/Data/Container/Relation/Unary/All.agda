@@ -4,7 +4,7 @@
 -- All (□) for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Relation.Unary.All where
 

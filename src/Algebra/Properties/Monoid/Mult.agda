@@ -4,7 +4,7 @@
 -- Multiplication over a monoid (i.e. repeated addition)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
@@ -45,6 +45,9 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 
 ×-cong : _×_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
 ×-cong {n} P.refl x≈x′ = ×-congʳ n x≈x′
+
+×-congˡ : ∀ {x} → (_× x) Preserves _≡_ ⟶ _≈_
+×-congˡ m≡n = ×-cong m≡n refl
 
 -- _×_ is homomorphic with respect to _ℕ+_/_+_.
 

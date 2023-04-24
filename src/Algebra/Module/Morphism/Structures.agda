@@ -3,7 +3,7 @@
 --
 -- Morphisms between module-like algebraic structures
 ------------------------------------------------------------------------
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Morphism.Structures where
 

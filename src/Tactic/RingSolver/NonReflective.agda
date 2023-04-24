@@ -8,7 +8,7 @@
 -- You'll probably want to use `Tactic.RingSolver` instead which uses
 -- reflection to automatically extract the equation.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
 

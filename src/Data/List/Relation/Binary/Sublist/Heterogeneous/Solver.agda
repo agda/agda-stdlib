@@ -4,7 +4,7 @@
 -- A solver for proving that one list is a sublist of the other.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Reflexive; Decidable)
 

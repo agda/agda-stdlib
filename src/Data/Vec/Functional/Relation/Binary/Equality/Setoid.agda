@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations over Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Functional as VF hiding (map)

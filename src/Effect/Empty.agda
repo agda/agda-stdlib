@@ -4,7 +4,7 @@
 -- Empty values (e.g. [] for List, nothing for Maybe)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Empty where
 

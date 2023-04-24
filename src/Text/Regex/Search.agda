@@ -4,7 +4,7 @@
 -- Regular expressions: search algorithms
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (DecPoset)
 

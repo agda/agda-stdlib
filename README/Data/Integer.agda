@@ -5,7 +5,7 @@
 -- operations and properties are defined, and how they can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module README.Data.Integer where
 

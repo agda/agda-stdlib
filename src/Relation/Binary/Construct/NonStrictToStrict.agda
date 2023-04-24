@@ -4,7 +4,7 @@
 -- Conversion of _≤_ to _<_
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 

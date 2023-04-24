@@ -4,7 +4,7 @@
 -- Explaining how to use the `with ... in ...` idiom.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.WithIn where
 

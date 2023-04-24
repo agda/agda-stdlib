@@ -4,7 +4,7 @@
 -- Instances for the reader monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Reader.Instances where
 

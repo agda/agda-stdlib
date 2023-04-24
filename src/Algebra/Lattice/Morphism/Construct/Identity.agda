@@ -4,7 +4,7 @@
 -- The identity morphism for algebraic lattice structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Algebra.Lattice.Morphism.Construct.Identity where
 

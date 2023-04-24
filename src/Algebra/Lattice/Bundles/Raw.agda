@@ -4,7 +4,7 @@
 -- Definitions of 'raw' bundles
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Lattice.Bundles.Raw where
 

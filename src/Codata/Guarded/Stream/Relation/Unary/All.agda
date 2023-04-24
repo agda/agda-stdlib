@@ -4,7 +4,7 @@
 -- Streams where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Guarded.Stream.Relation.Unary.All where
 

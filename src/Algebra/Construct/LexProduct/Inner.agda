@@ -4,7 +4,7 @@
 -- Properties of the inner lexicographic product of two operators.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Bool.Base using (false; true)

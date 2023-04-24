@@ -4,7 +4,7 @@
 -- The free monad construction on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.FreeMonad where
 

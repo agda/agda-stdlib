@@ -7,7 +7,7 @@
 -- Relation.Binary.PropositionalEquality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.PropositionalEquality.Core where
 

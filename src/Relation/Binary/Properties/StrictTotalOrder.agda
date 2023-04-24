@@ -4,7 +4,7 @@
 -- Properties satisfied by strict partial orders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 

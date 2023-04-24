@@ -4,7 +4,7 @@
 -- Format strings for Printf and Scanf
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Text.Format.Generic where
 

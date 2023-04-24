@@ -4,7 +4,7 @@
 -- The writer monad transformer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 
 module Effect.Monad.Writer.Transformer where

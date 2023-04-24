@@ -11,7 +11,7 @@
 -- if they are normalised. Note also that Agda can do the
 -- normalisation for you.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Induction where
 

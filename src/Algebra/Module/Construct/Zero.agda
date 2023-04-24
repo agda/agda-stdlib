@@ -8,7 +8,7 @@
 -- from/to M.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 
@@ -17,56 +17,56 @@ module Algebra.Module.Construct.Zero {c ℓ : Level} where
 open import Algebra.Bundles
 open import Algebra.Module.Bundles
 open import Data.Unit.Polymorphic
+open import Relation.Binary.Core using (Rel)
 
 private
   variable
     r s ℓr ℓs : Level
 
+------------------------------------------------------------------------
+-- gather all the functionality in one place
+
+module ℤero where
+
+  infix  4 _≈ᴹ_
+  Carrierᴹ : Set c
+  Carrierᴹ = ⊤
+
+  _≈ᴹ_     : Rel Carrierᴹ ℓ
+  _ ≈ᴹ _ = ⊤
+
+open ℤero
+
+------------------------------------------------------------------------
+-- Raw bundles NOT YET IMPLEMENTED issue #1828
+{-
+rawModule : RawModule c ℓ
+rawModule = record { ℤero }
+-}
+------------------------------------------------------------------------
+-- Bundles
+
 leftSemimodule : {R : Semiring r ℓr} → LeftSemimodule R c ℓ
-leftSemimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+leftSemimodule = record { ℤero }
 
 rightSemimodule : {S : Semiring s ℓs} → RightSemimodule S c ℓ
-rightSemimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+rightSemimodule = record { ℤero }
 
 bisemimodule :
   {R : Semiring r ℓr} {S : Semiring s ℓs} → Bisemimodule R S c ℓ
-bisemimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+bisemimodule = record { ℤero }
 
 semimodule : {R : CommutativeSemiring r ℓr} → Semimodule R c ℓ
-semimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+semimodule = record { ℤero }
 
 leftModule : {R : Ring r ℓr} → LeftModule R c ℓ
-leftModule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+leftModule = record { ℤero }
 
 rightModule : {S : Ring s ℓs} → RightModule S c ℓ
-rightModule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+rightModule = record { ℤero }
 
 bimodule : {R : Ring r ℓr} {S : Ring s ℓs} → Bimodule R S c ℓ
-bimodule = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+bimodule = record { ℤero }
 
 ⟨module⟩ : {R : CommutativeRing r ℓr} → Module R c ℓ
-⟨module⟩ = record
-  { Carrierᴹ = ⊤
-  ; _≈ᴹ_ = λ _ _ → ⊤
-  }
+⟨module⟩ = record { ℤero }

@@ -11,7 +11,7 @@
 
 -- The contents of this module should be accessed via `Algebra.Lattice`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Lattice.Bundles where
 

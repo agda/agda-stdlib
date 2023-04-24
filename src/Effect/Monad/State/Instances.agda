@@ -4,7 +4,7 @@
 -- Instances for the state monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.State.Instances where
 

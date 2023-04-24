@@ -4,7 +4,7 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Bool.Properties where
 
@@ -273,6 +273,15 @@ true  <? _     = no  (λ())
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
 
+∨-conicalˡ : LeftConical false _∨_
+∨-conicalˡ false false _ = refl
+
+∨-conicalʳ : RightConical false _∨_
+∨-conicalʳ false false _ = refl
+
+∨-conical : Conical false _∨_
+∨-conical = ∨-conicalˡ , ∨-conicalʳ
+
 ∨-isMagma : IsMagma _∨_
 ∨-isMagma = record
   { isEquivalence = isEquivalence
@@ -396,6 +405,15 @@ true  <? _     = no  (λ())
 ∧-sel : Selective _∧_
 ∧-sel false y = inj₁ refl
 ∧-sel true y  = inj₂ refl
+
+∧-conicalˡ : LeftConical true _∧_
+∧-conicalˡ true true _ = refl
+
+∧-conicalʳ : RightConical true _∧_
+∧-conicalʳ true true _ = refl
+
+∧-conical : Conical true _∧_
+∧-conical = ∧-conicalˡ , ∧-conicalʳ
 
 ∧-distribˡ-∨ : _∧_ DistributesOverˡ _∨_
 ∧-distribˡ-∨ true  y z = refl

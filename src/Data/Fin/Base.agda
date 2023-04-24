@@ -7,7 +7,7 @@
 -- Note that elements of Fin n can be seen as natural numbers in the
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Base where
 

@@ -8,7 +8,7 @@
 -- `Any-cong` in `Data.Any.Properties` which relies on `Any↔` in this
 -- file.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Membership.Propositional.Properties.Core where
 

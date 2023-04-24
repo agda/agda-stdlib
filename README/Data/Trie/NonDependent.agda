@@ -4,7 +4,7 @@
 -- Example use case for a trie: a wee generic lexer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module README.Data.Trie.NonDependent where
 

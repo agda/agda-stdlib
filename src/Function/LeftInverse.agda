@@ -4,7 +4,7 @@
 -- Left inverses
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Note: use of the standard function hierarchy is encouraged. The
 -- module `Function` re-exports `Inverseˡ`, `IsLeftInverse` and

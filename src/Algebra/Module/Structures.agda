@@ -4,7 +4,7 @@
 -- Some algebraic structures defined over some other structure
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 

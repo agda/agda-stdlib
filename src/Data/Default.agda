@@ -5,7 +5,7 @@
 -- if the argument is not passed explicitly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Default where
 

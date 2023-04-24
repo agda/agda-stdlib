@@ -4,7 +4,7 @@
 -- Properties of permutations using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary as B hiding (Decidable)
 

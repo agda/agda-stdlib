@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Algebra.Lattice
@@ -121,4 +121,3 @@ isDistributiveLattice isDL = isDistributiveLatticeʳʲᵐ (record
   { isLattice     = isLattice L.isLattice
   ; ∨-distribʳ-∧  = distribʳ  L.isLattice L.∨-distribʳ-∧
   }) where module L = IsDistributiveLattice isDL
-

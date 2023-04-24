@@ -4,7 +4,7 @@
 -- Definitions of the lexicographic product of two operators.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Bool using (true; false)

@@ -4,7 +4,7 @@
 -- Logarithm base 2 core definitions and properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Logarithm.Core where
 
@@ -72,7 +72,7 @@ open import Data.Unit
 ⌊log2⌋2^n≡n : ∀ n {acc} → ⌊log2⌋ (2 ^ n) acc ≡ n
 ⌊log2⌋2^n≡n zero    = refl
 ⌊log2⌋2^n≡n (suc n) = begin
-  ⌊log2⌋ ((2 ^ n) + ((2 ^ n) + zero)) _ ≡⟨ ⌊log2⌋2*b≡1+⌊log2⌋b (2 ^ n) {{>-nonZero (2^n>0 n)}} ⟩
+  ⌊log2⌋ ((2 ^ n) + ((2 ^ n) + zero)) _ ≡⟨ ⌊log2⌋2*b≡1+⌊log2⌋b (2 ^ n) {{m^n≢0 2 n}} ⟩
   1 + ⌊log2⌋ (2 ^ n) (<-wellFounded _)  ≡⟨ cong suc (⌊log2⌋2^n≡n n) ⟩
   suc n                                 ∎
   where open ≡-Reasoning
@@ -116,7 +116,7 @@ open import Data.Unit
 ⌈log2⌉2^n≡n : ∀ n {acc} → ⌈log2⌉ (2 ^ n) acc ≡ n
 ⌈log2⌉2^n≡n zero    = refl
 ⌈log2⌉2^n≡n (suc n) = begin
-  ⌈log2⌉ ((2 ^ n) + ((2 ^ n) + zero)) _ ≡⟨ ⌈log2⌉2*n≡1+⌈log2⌉n (2 ^ n) {{>-nonZero (2^n>0 n)}} ⟩
+  ⌈log2⌉ ((2 ^ n) + ((2 ^ n) + zero)) _ ≡⟨ ⌈log2⌉2*n≡1+⌈log2⌉n (2 ^ n) {{m^n≢0 2 n}} ⟩
   1 + ⌈log2⌉ (2 ^ n) (<-wellFounded _)  ≡⟨ cong suc (⌈log2⌉2^n≡n n) ⟩
   suc n                                 ∎
   where open ≡-Reasoning

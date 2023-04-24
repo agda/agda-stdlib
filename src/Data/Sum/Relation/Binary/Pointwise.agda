@@ -4,14 +4,13 @@
 -- Pointwise sum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Sum.Relation.Binary.Pointwise where
 
 open import Data.Product using (_,_)
 open import Data.Sum.Base as Sum
 open import Data.Sum.Properties
-open import Induction.WellFounded
 open import Level using (_⊔_)
 open import Function.Base using (_∘_; id)
 open import Function.Inverse using (Inverse)
@@ -74,19 +73,6 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₂ y) = no λ()
   ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
   ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x ≟₂ y)
-
-  ⊎-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
-  ⊎-wellFounded wf₁ wf₂ x = acc (⊎-acc x)
-    where
-    ⊎-acc₁ : ∀ {x} → Acc ∼₁ x → WfRec (Pointwise ∼₁ ∼₂) (Acc (Pointwise ∼₁ ∼₂)) (inj₁ x)
-    ⊎-acc₁ (acc rec) (inj₁ y) (inj₁ x∼₁y) = acc (⊎-acc₁ (rec y x∼₁y))
-
-    ⊎-acc₂ : ∀ {x} → Acc ∼₂ x → WfRec (Pointwise ∼₁ ∼₂) (Acc (Pointwise ∼₁ ∼₂)) (inj₂ x)
-    ⊎-acc₂ (acc rec) (inj₂ y) (inj₂ x∼₂y) = acc (⊎-acc₂ (rec y x∼₂y))
-    ⊎-acc  : ∀ x → WfRec (Pointwise ∼₁ ∼₂) (Acc (Pointwise ∼₁ ∼₂)) x
-
-    ⊎-acc (inj₁ x) = ⊎-acc₁ (wf₁ x)
-    ⊎-acc (inj₂ x) = ⊎-acc₂ (wf₂ x)
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
          {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}

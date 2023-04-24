@@ -4,7 +4,7 @@
 -- Bisimilarity for the Delay type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Delay.Bisimilarity where
 

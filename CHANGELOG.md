@@ -605,6 +605,8 @@ Non-backwards compatible changes
 
 * New modules:
   ```
+  Algebra.Construct.Initial
+  Algebra.Construct.Terminal
   Data.List.Effectful.Transformer
   Data.List.NonEmpty.Effectful.Transformer
   Data.Maybe.Effectful.Transformer
@@ -635,6 +637,9 @@ Non-backwards compatible changes
   ```
 
 ### Other
+
+* In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
+  the `--without-K` flag now use the `--cubical-compatible` flag instead.
 
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
   have been made implicit.
@@ -885,6 +890,14 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Construct.Zero`:
+  ```agda
+  rawMagma   ↦  Algebra.Construct.Terminal.rawMagma
+  magma      ↦  Algebra.Construct.Terminal.magma
+  semigroup  ↦  Algebra.Construct.Terminal.semigroup
+  band       ↦  Algebra.Construct.Terminal.band
+  ```
 
 * In `Codata.Guarded.Stream.Properties`:
   ```agda
@@ -1590,8 +1603,23 @@ Other minor changes
   ```
   and their corresponding algebraic subbundles.
 
+* Added new proofs to `Algebra.Consequences.Base`:
+  ```agda
+  reflexive+selfInverse⇒involutive : Reflexive _≈_ →
+                                     SelfInverse _≈_ f →
+                                     Involutive _≈_ f
+  ```
+
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
+  involutive⇒surjective  : Involutive f  → Surjective f
+  selfInverse⇒involutive : SelfInverse f → Involutive f
+  selfInverse⇒congruent  : SelfInverse f → Congruent f
+  selfInverse⇒inverseᵇ   : SelfInverse f → Inverseᵇ f f
+  selfInverse⇒surjective : SelfInverse f → Surjective f
+  selfInverse⇒injective  : SelfInverse f → Injective f
+  selfInverse⇒bijective  : SelfInverse f → Bijective f
+
   comm+idˡ⇒id              : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
   comm+idʳ⇒id              : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
   comm+zeˡ⇒ze              : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
@@ -1645,43 +1673,10 @@ Other minor changes
   moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
-* Added new functions and proofs to `Algebra.Construct.Flip.Op`:
-  ```agda
-  zero : Zero ≈ ε ∙ → Zero ≈ ε (flip ∙)
-  distributes : (≈ DistributesOver ∙) + → (≈ DistributesOver (flip ∙)) +
-  isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero + * 0# 1# →
-                                      IsSemiringWithoutAnnihilatingZero + (flip *) 0# 1#
-  isSemiring : IsSemiring + * 0# 1# → IsSemiring + (flip *) 0# 1#
-  isCommutativeSemiring : IsCommutativeSemiring + * 0# 1# →
-                          IsCommutativeSemiring + (flip *) 0# 1#
-  isCancellativeCommutativeSemiring : IsCancellativeCommutativeSemiring + * 0# 1# →
-                                      IsCancellativeCommutativeSemiring + (flip *) 0# 1#
-  isIdempotentSemiring : IsIdempotentSemiring + * 0# 1# →
-                         IsIdempotentSemiring + (flip *) 0# 1#
-  isQuasiring : IsQuasiring + * 0# 1# → IsQuasiring + (flip *) 0# 1#
-  isRingWithoutOne : IsRingWithoutOne + * - 0# → IsRingWithoutOne + (flip *) - 0#
-  isNonAssociativeRing : IsNonAssociativeRing + * - 0# 1# →
-                         IsNonAssociativeRing + (flip *) - 0# 1#
-  isRing : IsRing ≈ + * - 0# 1# → IsRing ≈ + (flip *) - 0# 1#
-  isNearring : IsNearring + * 0# 1# - → IsNearring + (flip *) 0# 1# -
-  isCommutativeRing : IsCommutativeRing + * - 0# 1# →
-                      IsCommutativeRing + (flip *) - 0# 1#
-  semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ →
-                                    SemiringWithoutAnnihilatingZero a ℓ
-  commutativeSemiring : CommutativeSemiring a ℓ → CommutativeSemiring a ℓ
-  cancellativeCommutativeSemiring : CancellativeCommutativeSemiring a ℓ →
-                                  CancellativeCommutativeSemiring a ℓ
-  idempotentSemiring : IdempotentSemiring a ℓ → IdempotentSemiring a ℓ
-  quasiring : Quasiring a ℓ → Quasiring a ℓ
-  ringWithoutOne : RingWithoutOne a ℓ → RingWithoutOne a ℓ
-  nonAssociativeRing : NonAssociativeRing a ℓ → NonAssociativeRing a ℓ
-  nearring : Nearring a ℓ → Nearring a ℓ
-  ring : Ring a ℓ → Ring a ℓ
-  commutativeRing : CommutativeRing a ℓ → CommutativeRing a ℓ
-  ```
-
 * Added new definition to `Algebra.Definitions`:
   ```agda
+  SelfInverse : Op₁ A → Set _
+  
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
   LeftDividesʳ  : Op₂ A → Op₂ A → Set _
   RightDividesˡ : Op₂ A → Op₂ A → Set _
@@ -1729,6 +1724,15 @@ Other minor changes
   middleSemimedial : ∀ x y z → (x ∙ y) ∙ (z ∙ x) ≈ (x ∙ z) ∙ (y ∙ x)
   semimedial : Semimedial _∙_
   ```
+* Added new proof to `Algebra.Properties.Monoid.Mult`:
+  ```agda
+  ×-congˡ : ∀ {x} → (_× x) Preserves _≡_ ⟶ _≈_
+  ```
+
+* Added new proof to `Algebra.Properties.Monoid.Sum`:
+  ```agda
+  sum-init-last : ∀ {n} (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
+  ```
 
 * Added new proofs to `Algebra.Properties.Semigroup`:
   ```agda
@@ -1736,6 +1740,19 @@ Other minor changes
   rightAlternative : RightAlternative _∙_
   alternative : Alternative _∙_
   flexible : Flexible _∙_
+  ```
+
+* Added new proofs to `Algebra.Properties.Semiring.Exp`:
+  ```agda
+  ^-congʳ               : (x ^_) Preserves _≡_ ⟶ _≈_
+  y*x^m*y^n≈x^m*y^[n+1] : (x * y ≈ y * x) → y * (x ^ m * y ^ n) ≈ x ^ m * y ^ suc n
+  ```
+
+* Added new proofs to `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  1×-identityʳ : 1 × x ≈ x
+  ×-comm-*    : x * (n × y) ≈ n × (x * y)
+  ×-assoc-*   : (n × x) * y ≈ n × (x * y)
   ```
 
 * Added new proofs to `Algebra.Properties.Ring`:
@@ -1792,6 +1809,12 @@ Other minor changes
 * Added new proofs in `Data.Bool.Properties`:
   ```agda
   <-wellFounded : WellFounded _<_
+  ∨-conicalˡ : LeftConical false _∨_
+  ∨-conicalʳ : RightConical false _∨_
+  ∨-conical : Conical false _∨_
+  ∧-conicalˡ : LeftConical true _∧_
+  ∧-conicalʳ : RightConical true _∧_
+  ∧-conical : Conical true _∧_
   ```
 
 * Added new functions in `Data.Fin.Base`:
@@ -1852,11 +1875,6 @@ Other minor changes
   combine-monoˡ-<    : i < j → combine i k < combine j l
 
   ℕ-ℕ≡toℕ‿ℕ-         : n ℕ-ℕ i ≡ toℕ (n ℕ- i)
-
-  punchIn-mono-≤     : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
-  punchIn-cancel-≤   : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
-  punchOut-mono-≤    : (i≢j : i ≢ j) (i≢k : i ≢ k) → j ≤ k → punchOut i≢j ≤ punchOut i≢k
-  punchOut-cancel-≤  : (i≢j : i ≢ j) (i≢k : i ≢ k) → punchOut i≢j ≤ punchOut i≢k → j ≤ k
 
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   pinch-injective    : suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
@@ -2000,6 +2018,10 @@ Other minor changes
   +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
   ```
 
+* Added a new proof to `Data.Nat.Binary.Properties`:
+  ```agda
+  suc-injective : Injective _≡_ _≡_ suc
+  ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
   ```agda
@@ -2043,7 +2065,12 @@ Other minor changes
 
   n≤1⇒n≡0∨n≡1 : n ≤ 1 → n ≡ 0 ⊎ n ≡ 1
 
-  2^n>0 : 2 ^ n > 0
+  m^n>0 : ∀ m .{{_ : NonZero m}} n → m ^ n > 0
+
+  ^-monoˡ-≤ : ∀ n → (_^ n) Preserves _≤_ ⟶ _≤_
+  ^-monoʳ-≤ : ∀ m .{{_ : NonZero m}} → (m ^_) Preserves _≤_ ⟶ _≤_
+  ^-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_^ n) Preserves _<_ ⟶ _<_
+  ^-monoʳ-< : ∀ m → 1 < m → (m ^_) Preserves _<_ ⟶ _<_
 
   n≡⌊n+n/2⌋ : n ≡ ⌊ n + n /2⌋
   n≡⌈n+n/2⌉ : n ≡ ⌈ n + n /2⌉
@@ -2070,6 +2097,16 @@ Other minor changes
   <-cmp : Trichotomous _≡_ _<_
   anyUpTo? : (P? : Decidable P) → ∀ v → Dec (∃ λ n → n < v × P n)
   allUpTo? : (P? : Decidable P) → ∀ v → Dec (∀ {n} → n < v → P n)
+  ```
+
+* Added new proofs in `Data.Nat.Combinatorics`:
+  ```agda
+  [n-k]*[n-k-1]!≡[n-k]!   : k < n → (n ∸ k) * (n ∸ suc k) ! ≡ (n ∸ k) !
+  [n-k]*d[k+1]≡[k+1]*d[k] : k < n → (n ∸ k) * ((suc k) ! * (n ∸ suc k) !) ≡ (suc k) * (k ! * (n ∸ k) !)
+  k![n∸k]!∣n!              : k ≤ n → k ! * (n ∸ k) ! ∣ n !
+  nP1≡n                   : n P 1 ≡ n
+  nC1≡n                   : n C 1 ≡ n
+  nCk+nC[k+1]≡[n+1]C[k+1] : n C k + n C (suc k) ≡ suc n C suc k
   ```
 
 * Added new proofs in `Data.Nat.DivMod`:
@@ -2266,15 +2303,6 @@ Other minor changes
     map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
   ```
 
-* Adden new proof in `Data.Sum.Relation.Binary.LeftOrder` :
-  ```
-  ⊎-<-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (∼₁ ⊎-< ∼₂)
-  ```
-* Adden new proof in `Data.Sum.Relation.Binary.Pointwise` :
-  ```
-  ⊎-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
-  ```
-
 * Made `Map` public in `Data.Tree.AVL.IndexedMap`
 
 * Added new definitions in `Data.Vec.Base`:
@@ -2375,7 +2403,13 @@ Other minor changes
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:
   ```agda
   xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
-  ```
+  <-respectsˡ : IsPartialEquivalence _≈_ → _≺_ Respectsˡ _≈_ →
+                ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
+  <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
+                ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
+  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ → 
+                  ∀ {n} → WellFounded (_<_ {n})
+```
 
 * Added new functions in `Data.Vec.Relation.Unary.Any`:
   ```

@@ -4,7 +4,7 @@
 -- "Evaluating" a polynomial, using Horner's method.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 

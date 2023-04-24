@@ -6,7 +6,7 @@
 -- Adapted from Algebra.Solver.CommutativeMonoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 

@@ -6,7 +6,7 @@
 -- commonly known as Order Preserving Embeddings (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
