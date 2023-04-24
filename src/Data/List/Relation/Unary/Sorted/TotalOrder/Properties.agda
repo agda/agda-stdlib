@@ -8,21 +8,29 @@
 
 module Data.List.Relation.Unary.Sorted.TotalOrder.Properties where
 
-open import Data.List.Base
+open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Relation.Unary.All using (All)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_; _∷′_; head′; tail)
 import Data.List.Relation.Unary.Linked.Properties as Linked
 open import Data.List.Relation.Unary.Sorted.TotalOrder hiding (head)
+open import Data.List.Relation.Binary.Sublist.Propositional
+  using (_⊆_; []; _∷ʳ_; _∷_; ⊆-refl)
+open import Data.List.Relation.Binary.Sublist.Propositional.Properties
+  using ([]⊆)
+
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Maybe.Relation.Binary.Connected using (Connected; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _<_)
+
 open import Level using (Level)
 open import Relation.Binary hiding (Decidable)
+import Relation.Binary.PropositionalEquality as ≡
 import Relation.Binary.Properties.TotalOrder as TotalOrderProperties
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable using (yes; no)
+
 private
   variable
     a b p ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
@@ -109,21 +117,42 @@ module _ (DO : DecTotalOrder a ℓ₁ ℓ₂) where
                 Connected _≤_ (just v) (head xs) →
                 Connected _≤_ (just v) (head ys) →
                 Connected _≤_ (just v) (head (merge _≤?_ xs ys))
-    merge-con {xs = []}     {[]}     cxs cys = cys
-    merge-con {xs = []}     {y ∷ ys} cxs cys = cys
+    merge-con {xs = []}              cxs cys = cys
     merge-con {xs = x ∷ xs} {[]}     cxs cys = cxs
     merge-con {xs = x ∷ xs} {y ∷ ys} cxs cys with x ≤? y
     ... | yes x≤y = cxs
     ... | no  x≰y = cys
 
   merge⁺ : ∀ {xs ys} → Sorted O xs → Sorted O ys → Sorted O (merge _≤?_ xs ys)
-  merge⁺ {[]}     {[]}     rxs rys = []
-  merge⁺ {[]}     {x ∷ ys} rxs rys = rys
+  merge⁺ {[]}              rxs rys = rys
   merge⁺ {x ∷ xs} {[]}     rxs rys = rxs
-  merge⁺ {x ∷ xs} {y ∷ ys} rxs rys with x ≤? y |
-    merge⁺ (Linked.tail rxs) rys | merge⁺ rxs (Linked.tail rys)
+  merge⁺ {x ∷ xs} {y ∷ ys} rxs rys
+   with x ≤? y  | merge⁺ (Linked.tail rxs) rys
+                      | merge⁺ rxs (Linked.tail rys)
   ... | yes x≤y | rec | _   = merge-con (head′ rxs)      (just x≤y)  ∷′ rec
   ... | no  x≰y | _   | rec = merge-con (just (≰⇒≥ x≰y)) (head′ rys) ∷′ rec
+
+  merge-is-sublistˡ : ∀ {xs ys} (rxs : Sorted O xs) (rys : Sorted O ys) →
+    xs ⊆ merge _≤?_ xs ys
+  merge-is-sublistˡ {xs = []}     {ys} rxs rys = []⊆ ys
+  merge-is-sublistˡ {xs = x ∷ xs} {[]} rxs rys = ⊆-refl
+  merge-is-sublistˡ {xs = x ∷ xs} {y ∷ ys} rxs rys
+   with x ≤? y   | merge-is-sublistˡ (Linked.tail rxs) rys
+                       | merge-is-sublistˡ rxs (Linked.tail rys)
+  ... | yes x≤y  | rec | _   = ≡.refl ∷ rec
+  ... | no  x≰y  | _   | rec = y ∷ʳ rec
+
+  merge-is-sublistʳ : ∀ {xs ys} (rxs : Sorted O xs) (rys : Sorted O ys) →
+    ys ⊆ merge _≤?_ xs ys
+  merge-is-sublistʳ {xs = []}     {ys} rxs rys =  ⊆-refl
+  merge-is-sublistʳ {xs = x ∷ xs} {[]} rxs rys = []⊆ (merge _≤?_ (x ∷ xs) [])
+  merge-is-sublistʳ {xs = x ∷ xs} {y ∷ ys} rxs rys
+   with x ≤? y   | merge-is-sublistʳ (Linked.tail rxs) rys
+                       | merge-is-sublistʳ rxs (Linked.tail rys)
+  ... | yes x≤y  | rec | _   = x ∷ʳ rec
+  ... | no  x≰y  | _   | rec = ≡.refl ∷ rec
+
+
 
 ------------------------------------------------------------------------
 -- filter

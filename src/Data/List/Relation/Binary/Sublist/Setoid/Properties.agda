@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid; _⇒_; _Preserves_⟶_)
+open import Relation.Binary using (Rel; Setoid; _⇒_; _Preserves_⟶_)
 
 module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
@@ -21,9 +21,10 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable using (¬?)
+open import Relation.Nullary.Decidable using (¬?; yes; no)
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
@@ -35,6 +36,15 @@ open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl)
 open SetoidSublist S hiding (map)
 open SetoidMembership S using (_∈_)
+
+------------------------------------------------------------------------
+-- Least element
+
+module _ where
+
+  []⊆ : ∀ xs → [] ⊆ xs
+  []⊆ [] = []
+  []⊆ (x ∷ xs) = x ∷ʳ []⊆ xs
 
 ------------------------------------------------------------------------
 -- Injectivity of constructors
@@ -202,6 +212,31 @@ module _ {as bs : List A} where
 
   reverse⁻ : reverse as ⊆ reverse bs → as ⊆ bs
   reverse⁻ = HeteroProperties.reverse⁻
+
+------------------------------------------------------------------------
+-- merge
+
+module _ {ℓ′} (_≤_ : Rel A ℓ′) (dto : IsDecTotalOrder _≈_ _≤_)  where
+
+  open IsDecTotalOrder dto using (_≤?_)
+
+  merge-is-sublistˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  merge-is-sublistˡ []       ys = []⊆ ys
+  merge-is-sublistˡ (x ∷ xs) [] = ⊆-refl
+  merge-is-sublistˡ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | merge-is-sublistˡ xs (y ∷ ys)
+                      | merge-is-sublistˡ (x ∷ xs) ys
+  ... | yes x≤y | rec | _   = ≈-refl ∷ rec
+  ... | no  x≰y | _   | rec = y ∷ʳ rec
+
+  merge-is-sublistʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  merge-is-sublistʳ [] ys =  ⊆-refl
+  merge-is-sublistʳ (x ∷ xs) [] = []⊆ (merge _≤?_ (x ∷ xs) [])
+  merge-is-sublistʳ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | merge-is-sublistʳ xs (y ∷ ys)
+                      | merge-is-sublistʳ (x ∷ xs) ys
+  ... | yes x≤y | rec | _   = x ∷ʳ rec
+  ... | no  x≰y | _   | rec = ≈-refl ∷ rec
 
 ------------------------------------------------------------------------
 -- Inversion lemmas
