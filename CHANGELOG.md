@@ -2044,7 +2044,6 @@ Other minor changes
   <⇒<′ : m < n → m <′ n
   <′⇒< : m <′ n → m < n
 
-  m≤n⇒[1+m]∸n≡1+[m∸n] : m ≤ n → suc n ∸ m ≡ suc (n ∸ m)
   m+n≤p⇒m≤p∸n         : m + n ≤ p → m ≤ p ∸ n
   m≤p∸n⇒m+n≤p         : n ≤ p → m ≤ p ∸ n → m + n ≤ p
 
