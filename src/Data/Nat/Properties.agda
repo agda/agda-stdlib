@@ -1480,14 +1480,14 @@ pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
-m+n≤p⇒m≤p∸n : ∀ m n p → m + n ≤ p → m ≤ p ∸ n
-m+n≤p⇒m≤p∸n zero    n p       le               = z≤n
-m+n≤p⇒m≤p∸n (suc m) n (suc p) (s≤s le)
-  rewrite m≤n⇒[1+m]∸n≡1+[m∸n] (m+n≤o⇒n≤o m le) = s≤s (m+n≤p⇒m≤p∸n m n p le)
+m+n≤o⇒m≤o∸n : ∀ m n o → m + n ≤ o → m ≤ o ∸ n
+m+n≤o⇒m≤o∸n zero    n o       le               = z≤n
+m+n≤o⇒m≤o∸n (suc m) n (suc o) (s≤s le)
+  rewrite m≤n⇒[1+m]∸n≡1+[m∸n] (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m n o le)
 
-m≤p∸n⇒m+n≤p : ∀ m {n p} (n≤p : n ≤ p) → m ≤ p ∸ n → m + n ≤ p
-m≤p∸n⇒m+n≤p m         z≤n       le rewrite +-identityʳ m = le
-m≤p∸n⇒m+n≤p m {suc n} (s≤s n≤p) le rewrite +-suc m n = s≤s (m≤p∸n⇒m+n≤p m n≤p le)
+m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
+m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
+m≤o∸n⇒m+n≤o m {suc n} (s≤s n≤o) le rewrite +-suc m n = s≤s (m≤o∸n⇒m+n≤o m n≤o le)
 
 m∸n≤m : ∀ m n → m ∸ n ≤ m
 m∸n≤m n       zero    = ≤-refl
