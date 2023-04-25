@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Unary.Sorted.TotalOrder.Properties where
 
-open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Base
 open import Data.List.Relation.Unary.All using (All)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Linked as Linked
@@ -23,7 +23,6 @@ open import Data.Nat.Base using (ℕ; zero; suc; _<_)
 
 open import Level using (Level)
 open import Relation.Binary hiding (Decidable)
-import Relation.Binary.PropositionalEquality as ≡
 import Relation.Binary.Properties.TotalOrder as TotalOrderProperties
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable using (yes; no)
