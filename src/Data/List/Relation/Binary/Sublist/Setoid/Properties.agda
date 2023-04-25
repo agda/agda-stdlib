@@ -13,6 +13,7 @@ module Data.List.Relation.Binary.Sublist.Setoid.Properties
 
 open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Relation.Unary.Any using (Any)
+open import Data.List.Relation.Binary.Sublist.Heterogeneous using () renaming (minimum to []⊆_)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (_≤_; _≥_)
 import Data.Nat.Properties as ℕₚ
@@ -36,15 +37,6 @@ open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl)
 open SetoidSublist S hiding (map)
 open SetoidMembership S using (_∈_)
-
-------------------------------------------------------------------------
--- Least element
-
-module _ where
-
-  []⊆ : ∀ xs → [] ⊆ xs
-  []⊆ [] = []
-  []⊆ (x ∷ xs) = x ∷ʳ []⊆ xs
 
 ------------------------------------------------------------------------
 -- Injectivity of constructors
