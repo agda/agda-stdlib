@@ -14,11 +14,8 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_; _∷′_; head′; tail)
 import Data.List.Relation.Unary.Linked.Properties as Linked
+import Data.List.Relation.Binary.Sublist.Setoid.Properties as SublistProperties
 open import Data.List.Relation.Unary.Sorted.TotalOrder hiding (head)
-open import Data.List.Relation.Binary.Sublist.Propositional
-  using (_⊆_; []; _∷ʳ_; _∷_; ⊆-refl)
-open import Data.List.Relation.Binary.Sublist.Propositional.Properties
-  using ([]⊆)
 
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Maybe.Relation.Binary.Connected using (Connected; just)
@@ -132,27 +129,14 @@ module _ (DO : DecTotalOrder a ℓ₁ ℓ₂) where
   ... | yes x≤y | rec | _   = merge-con (head′ rxs)      (just x≤y)  ∷′ rec
   ... | no  x≰y | _   | rec = merge-con (just (≰⇒≥ x≰y)) (head′ rys) ∷′ rec
 
-  merge-is-sublistˡ : ∀ {xs ys} (rxs : Sorted O xs) (rys : Sorted O ys) →
-    xs ⊆ merge _≤?_ xs ys
-  merge-is-sublistˡ {xs = []}     {ys} rxs rys = []⊆ ys
-  merge-is-sublistˡ {xs = x ∷ xs} {[]} rxs rys = ⊆-refl
-  merge-is-sublistˡ {xs = x ∷ xs} {y ∷ ys} rxs rys
-   with x ≤? y   | merge-is-sublistˡ (Linked.tail rxs) rys
-                       | merge-is-sublistˡ rxs (Linked.tail rys)
-  ... | yes x≤y  | rec | _   = ≡.refl ∷ rec
-  ... | no  x≰y  | _   | rec = y ∷ʳ rec
+  -- Reexport merge-is-superlistˡʳ
 
-  merge-is-sublistʳ : ∀ {xs ys} (rxs : Sorted O xs) (rys : Sorted O ys) →
-    ys ⊆ merge _≤?_ xs ys
-  merge-is-sublistʳ {xs = []}     {ys} rxs rys =  ⊆-refl
-  merge-is-sublistʳ {xs = x ∷ xs} {[]} rxs rys = []⊆ (merge _≤?_ (x ∷ xs) [])
-  merge-is-sublistʳ {xs = x ∷ xs} {y ∷ ys} rxs rys
-   with x ≤? y   | merge-is-sublistʳ (Linked.tail rxs) rys
-                       | merge-is-sublistʳ rxs (Linked.tail rys)
-  ... | yes x≤y  | rec | _   = x ∷ʳ rec
-  ... | no  x≰y  | _   | rec = ≡.refl ∷ rec
-
-
+  open
+    SublistProperties.Merge
+      (Preorder.Eq.setoid (DecTotalOrder.preorder DO))
+       _≤_
+      (DecTotalOrder.isDecTotalOrder DO)
+    public using (merge-is-superlistˡ; merge-is-superlistʳ)
 
 ------------------------------------------------------------------------
 -- filter

@@ -208,25 +208,25 @@ module _ {as bs : List A} where
 ------------------------------------------------------------------------
 -- merge
 
-module _ {ℓ′} (_≤_ : Rel A ℓ′) (dto : IsDecTotalOrder _≈_ _≤_)  where
+module Merge {ℓ′} (_≤_ : Rel A ℓ′) (dto : IsDecTotalOrder _≈_ _≤_)  where
 
   open IsDecTotalOrder dto using (_≤?_)
 
-  merge-is-sublistˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
-  merge-is-sublistˡ []       ys = []⊆ ys
-  merge-is-sublistˡ (x ∷ xs) [] = ⊆-refl
-  merge-is-sublistˡ (x ∷ xs) (y ∷ ys)
-   with x ≤? y  | merge-is-sublistˡ xs (y ∷ ys)
-                      | merge-is-sublistˡ (x ∷ xs) ys
+  merge-is-superlistˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  merge-is-superlistˡ []       ys = []⊆ ys
+  merge-is-superlistˡ (x ∷ xs) [] = ⊆-refl
+  merge-is-superlistˡ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | merge-is-superlistˡ xs (y ∷ ys)
+                      | merge-is-superlistˡ (x ∷ xs) ys
   ... | yes x≤y | rec | _   = ≈-refl ∷ rec
   ... | no  x≰y | _   | rec = y ∷ʳ rec
 
-  merge-is-sublistʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
-  merge-is-sublistʳ [] ys =  ⊆-refl
-  merge-is-sublistʳ (x ∷ xs) [] = []⊆ (merge _≤?_ (x ∷ xs) [])
-  merge-is-sublistʳ (x ∷ xs) (y ∷ ys)
-   with x ≤? y  | merge-is-sublistʳ xs (y ∷ ys)
-                      | merge-is-sublistʳ (x ∷ xs) ys
+  merge-is-superlistʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  merge-is-superlistʳ [] ys =  ⊆-refl
+  merge-is-superlistʳ (x ∷ xs) [] = []⊆ (merge _≤?_ (x ∷ xs) [])
+  merge-is-superlistʳ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | merge-is-superlistʳ xs (y ∷ ys)
+                      | merge-is-superlistʳ (x ∷ xs) ys
   ... | yes x≤y | rec | _   = x ∷ʳ rec
   ... | no  x≰y | _   | rec = ≈-refl ∷ rec
 
