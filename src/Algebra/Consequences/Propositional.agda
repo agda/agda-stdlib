@@ -24,7 +24,10 @@ import Algebra.Consequences.Setoid (setoid A) as Base
 
 open Base public
   hiding
-  ( assoc+distribʳ+idʳ+invʳ⇒zeˡ
+  ( cong+comm+assoc⇒middleFour
+  ; cong+identity+middleFour⇒assoc
+  ; cong+identity+middleFour⇒comm
+  ; assoc+distribʳ+idʳ+invʳ⇒zeˡ
   ; assoc+distribˡ+idʳ+invʳ⇒zeʳ
   ; assoc+id+invʳ⇒invˡ-unique
   ; assoc+id+invˡ⇒invʳ-unique
@@ -83,12 +86,26 @@ module _ {_•_ _◦_ : Op₂ A} (•-comm : Commutative _•_) where
   comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _◦_) •-comm
 
 ------------------------------------------------------------------------
--- Selectivity
+-- Selectivity and Middle-Four Exchange
 
 module _ {_•_ : Op₂ A} where
 
   sel⇒idem : Selective _•_ → Idempotent _•_
   sel⇒idem = Base.sel⇒idem _≡_
+
+  comm+assoc⇒middleFour : Commutative _•_ → Associative _•_ →
+                           _•_ MiddleFourExchange _•_
+  comm+assoc⇒middleFour = Base.cong+comm+assoc⇒middleFour (cong₂ _•_)
+
+  identity+middleFour⇒assoc : {e : A} → Identity e _•_ →
+                               _•_ MiddleFourExchange _•_ →
+                               Associative _•_
+  identity+middleFour⇒assoc = Base.cong+identity+middleFour⇒assoc (cong₂ _•_)
+
+  identity+middleFour⇒comm : {_+_ : Op₂ A} {e : A} → Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+  identity+middleFour⇒comm = Base.cong+identity+middleFour⇒comm (cong₂ _•_)
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality
