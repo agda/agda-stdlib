@@ -1325,6 +1325,12 @@ New modules
   Algebra.Construct.Flip.Op
   ```
 
+* Algebraic structures obtained as the free thing (for their signature):
+  ```
+  Algebra.Bundles.Free
+  Algebra.Bundles.Free.Magma
+  ```
+
 * Morphisms between module-like algebraic structures:
   ```
   Algebra.Module.Morphism.Construct.Composition
