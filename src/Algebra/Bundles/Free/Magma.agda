@@ -153,7 +153,7 @@ module FreeMagma {c} (A : Set c) where
   freeMagma = record { RawMagma rawFreeMagma ; isMagma = isMagma }
 
 ------------------------------------------------------------------------
--- Eval, as the unique fold ⟦_⟧ over PreFreeMagma A
+-- Eval, as the unique fold ⟦_⟧_ over PreFreeMagma A
 
 module Eval {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) where
 
@@ -165,6 +165,9 @@ module Eval {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) where
   ⟦ var a ⟧ η = η a
   ⟦ s ∙ t ⟧ η = ⟦ s ⟧ η ∙ᴹ ⟦ t ⟧ η
 
+------------------------------------------------------------------------
+-- Any Magma *is* an algebra for the PreFreeMagma Functor
+
 module Alg {m ℓm} (𝓜 : Magma m ℓm) where
 
   open Magma 𝓜 renaming (setoid to setoidᴹ; Carrier to M)
@@ -173,6 +176,9 @@ module Alg {m ℓm} (𝓜 : Magma m ℓm) where
 
   algᴹ : PreFreeMagma M → M
   algᴹ t = ⟦ t ⟧ id
+
+------------------------------------------------------------------------
+-- Properties of ⟦_⟧_
 
 module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) where
 
