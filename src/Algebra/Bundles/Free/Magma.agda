@@ -242,6 +242,21 @@ module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) w
         (h s) ∙ᴹ (h t)         ≈⟨ congᴹ isUnique⟦ s ⟧ᴹ isUnique⟦ t ⟧ᴹ ⟩
         ⟦ s ⟧ᴹ ∙ᴹ (⟦ t ⟧ᴹ)   ∎
 
+-- immediate corollary
+
+module _ {m ℓm} (𝓜 : Magma m ℓm) where
+
+  open Magma 𝓜 renaming (setoid to setoidᴹ; rawMagma to rawMagmaᴹ)
+
+  open Alg 𝓜
+
+  open Magma (FreeMagmaOn.freeMagma setoidᴹ)
+
+  open Properties setoidᴹ 𝓜
+
+  algᴹ-isMagmaHomomorphism : IsMagmaHomomorphism rawMagma rawMagmaᴹ algᴹ
+  algᴹ-isMagmaHomomorphism = isMagmaHomomorphism (record { cong = id })
+
 ------------------------------------------------------------------------
 -- Monad instance: TODO
 
