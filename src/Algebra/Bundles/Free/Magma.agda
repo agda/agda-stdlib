@@ -176,7 +176,7 @@ module Alg {m ℓm} (𝓜 : Magma m ℓm) where
 
 module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) where
 
-  open Setoid 𝓐 renaming (Carrier to A)
+  open Setoid 𝓐 renaming (Carrier to A; _≈_ to _≈ᴬ_)
 
   open Magma 𝓜
     renaming (Carrier to M; _≈_ to _≈ᴹ_; _∙_ to _∙ᴹ_
@@ -189,19 +189,19 @@ module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) w
 
   open FreeMagmaOn 𝓐
   
-  open Magma freeMagma renaming (rawMagma to rawMagmaᴬ; Carrier to FA; _≈_ to _≈ᴬ_)
+  open Magma freeMagma renaming (rawMagma to rawMagmaᴬ; Carrier to FA)
 
-  module _ {η : A → M} (hom-η : IsRelHomomorphism _≈_ _≈ᴹ_ η) where
+  module _ {η : A → M} (hom-η : IsRelHomomorphism _≈ᴬ_ _≈ᴹ_ η) where
 
     open Strs _≈ᴹ_
     open IsMagma isMagmaᴹ renaming (∙-cong to congᴹ)
     open IsRelHomomorphism hom-η renaming (cong to cong-η)
 
-    cong : ∀ {s t} → s ≈ᴬ t → ⟦ s ⟧ η ≈ᴹ ⟦ t ⟧ η
+    cong : ∀ {s t} → s ≈ t → ⟦ s ⟧ η ≈ᴹ ⟦ t ⟧ η
     cong (var r) = cong-η r
     cong (s ∙ t) = congᴹ (cong s) (cong t)
 
-    isRelHomomorphism : IsRelHomomorphism _≈ᴬ_ _≈ᴹ_ (⟦_⟧ η)
+    isRelHomomorphism : IsRelHomomorphism _≈_ _≈ᴹ_ (⟦_⟧ η)
     isRelHomomorphism = record { cong = cong }
 
     isMagmaHomomorphism : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴹ (⟦_⟧ η)
