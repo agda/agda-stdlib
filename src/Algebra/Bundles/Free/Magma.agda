@@ -22,22 +22,38 @@ open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary
   using (Setoid; IsEquivalence; Reflexive; Symmetric; Transitive)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; cong₂) renaming (refl to ≡refl; isEquivalence to ≡isEquivalence)
+  using (_≡_; cong₂) renaming (refl to ≡-refl; isEquivalence to ≡isEquivalence)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+
 
 ------------------------------------------------------------------------
 -- 'pre'-free algebra
 
 infixl 7 _∙_
 
-data PreFreeMagma {c} (A : Set c) : Set c where
+data PreFreeMagma {a} (A : Set a) : Set a where
 
   var : A → PreFreeMagma A
   _∙_ : Op₂ (PreFreeMagma A)
 
-map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → PreFreeMagma A → PreFreeMagma B
-map f (var a) = var (f a)
-map f (s ∙ t) = (map f s) ∙ (map f t)
+module _ {a b} {A : Set a} {B : Set b} where
+
+  map : (A → B) → PreFreeMagma A → PreFreeMagma B
+  map f (var a) = var (f a)
+  map f (s ∙ t) = (map f s) ∙ (map f t)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+
+  map-id : ∀ (t : PreFreeMagma A) → map id t ≡ t
+  map-id (var a) = ≡-refl
+  map-id (s ∙ t) = cong₂ _∙_ (map-id s) (map-id t)
+
+  map-∘ : (g : A → B) → (f : B → C) → ∀ t → map (f ∘ g) t ≡ (map f ∘ map g) t
+  map-∘ g f (var a) = ≡-refl
+  map-∘ g f (s ∙ t) = cong₂ _∙_ (map-∘ g f s) (map-∘ g f t)
+  
+------------------------------------------------------------------------
+-- RawMonad, Monad instances TODO
 
 ------------------------------------------------------------------------
 -- parametrised 'equational' theory over the 'pre'-free algebra
@@ -115,15 +131,15 @@ module FreeMagma {c} (A : Set c) where
   open PreFreeTheory {A = A} _≡_
 
   ≈⇒≡ : ∀ {m n} → m ≈ n → m ≡ n
-  ≈⇒≡ (var ≡refl) = ≡refl
+  ≈⇒≡ (var ≡-refl) = ≡-refl
   ≈⇒≡ (eq₁ ∙ eq₂) = cong₂ _∙_ (≈⇒≡ eq₁) (≈⇒≡ eq₂)
 
   refl : Reflexive _≈_
-  refl {var _} = var ≡refl
+  refl {var _} = var ≡-refl
   refl {_ ∙ _} = refl ∙ refl
 
   ≡⇒≈ : ∀ {m n} → m ≡ n → m ≈ n
-  ≡⇒≈ ≡refl = refl
+  ≡⇒≈ ≡-refl = refl
 
   rawFreeMagma : RawMagma c c
   rawFreeMagma = record { Carrier = Carrier ; _≈_ = _≡_ ; _∙_ = _∙_ }
@@ -172,6 +188,7 @@ module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) w
   open Alg 𝓜
 
   open FreeMagmaOn 𝓐
+  
   open Magma freeMagma renaming (rawMagma to rawMagmaᴬ; Carrier to FA; _≈_ to _≈ᴬ_)
 
   module _ {η : A → M} (var-η : Homomorphic₂ A M _≈_ _≈ᴹ_ η) where
