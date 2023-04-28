@@ -193,25 +193,28 @@ module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) w
 
   module _ {η : A → M} (hom-η : IsRelHomomorphism _≈ᴬ_ _≈ᴹ_ η) where
 
+    ⟦_⟧ᴹ : FA → M
+    ⟦_⟧ᴹ = ⟦_⟧ η
+
     open Strs _≈ᴹ_
     open IsMagma isMagmaᴹ renaming (∙-cong to congᴹ)
     open IsRelHomomorphism hom-η renaming (cong to cong-η)
 
-    cong : ∀ {s t} → s ≈ t → ⟦ s ⟧ η ≈ᴹ ⟦ t ⟧ η
+    cong : ∀ {s t} → s ≈ t → ⟦ s ⟧ᴹ ≈ᴹ ⟦ t ⟧ᴹ
     cong (var r) = cong-η r
     cong (s ∙ t) = congᴹ (cong s) (cong t)
 
-    isRelHomomorphism : IsRelHomomorphism _≈_ _≈ᴹ_ (⟦_⟧ η)
+    isRelHomomorphism : IsRelHomomorphism _≈_ _≈ᴹ_ ⟦_⟧ᴹ
     isRelHomomorphism = record { cong = cong }
 
-    isMagmaHomomorphism : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴹ (⟦_⟧ η)
+    isMagmaHomomorphism : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴹ ⟦_⟧ᴹ
     isMagmaHomomorphism = record { isRelHomomorphism = isRelHomomorphism
                                  ; homo = λ _ _ → reflᴹ
                                  }
 
-    unfold-⟦_⟧ : ∀ t → ⟦ t ⟧ η ≈ᴹ algᴹ (map η t)
-    unfold-⟦ var a ⟧ = reflᴹ
-    unfold-⟦ s ∙ t ⟧ = congᴹ unfold-⟦ s ⟧ unfold-⟦ t ⟧
+    unfold-⟦_⟧ᴹ : ∀ t → ⟦ t ⟧ᴹ ≈ᴹ algᴹ (map η t)
+    unfold-⟦ var a ⟧ᴹ = reflᴹ
+    unfold-⟦ s ∙ t ⟧ᴹ = congᴹ unfold-⟦ s ⟧ᴹ unfold-⟦ t ⟧ᴹ
 
     module _ {h : FA → M} (isHom : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴹ h)
              (h∘var≈ᴹη : ∀ a → h (var a) ≈ᴹ η a) where
@@ -220,12 +223,12 @@ module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) w
 
       open ≈-Reasoning setoidᴹ
 
-      isUnique⟦_⟧ : ∀ t → h t ≈ᴹ ⟦ t ⟧ η
-      isUnique⟦ var a ⟧ = h∘var≈ᴹη a
-      isUnique⟦ s ∙ t ⟧ = begin
+      isUnique⟦_⟧ᴹ : ∀ t → h t ≈ᴹ ⟦ t ⟧ᴹ
+      isUnique⟦ var a ⟧ᴹ = h∘var≈ᴹη a
+      isUnique⟦ s ∙ t ⟧ᴹ = begin
         h (s PreFreeMagma.∙ t) ≈⟨ homo s t ⟩
-        (h s) ∙ᴹ (h t)         ≈⟨ congᴹ isUnique⟦ s ⟧ isUnique⟦ t ⟧ ⟩
-        ⟦ s ⟧ η ∙ᴹ (⟦ t ⟧ η)   ∎
+        (h s) ∙ᴹ (h t)         ≈⟨ congᴹ isUnique⟦ s ⟧ᴹ isUnique⟦ t ⟧ᴹ ⟩
+        ⟦ s ⟧ᴹ ∙ᴹ (⟦ t ⟧ᴹ)   ∎
 
 ------------------------------------------------------------------------
 -- Monad instance: TODO
