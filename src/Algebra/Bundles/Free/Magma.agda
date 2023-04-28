@@ -74,6 +74,49 @@ PreFreeTheorySyntax R = PreFreeMagmaTheory where open PreFreeTheory R
 
 syntax PreFreeTheorySyntax R m n = m ≈[ R ] n
 
+
+------------------------------------------------------------------------
+-- Free algebra on a Set
+{-
+   in the propositional case, we can immediately define the following
+   but how best to organise this under the Algebra.Bundles.Free hierarchy?
+   e.g. should we distinguish Free.Magma.Setoid from Free.Magma.Propositional?
+-}
+
+module FreeMagma {c} (A : Set c) where
+
+  private Carrier = PreFreeMagma A
+
+  _≈_ : Rel Carrier c
+  m ≈ n = m ≈[ _≡_ ] n
+
+  open PreFreeTheory {A = A} _≡_
+
+  ≈⇒≡ : ∀ {m n} → m ≈ n → m ≡ n
+  ≈⇒≡ (var ≡-refl) = ≡-refl
+  ≈⇒≡ (eq₁ ∙ eq₂) = cong₂ _∙_ (≈⇒≡ eq₁) (≈⇒≡ eq₂)
+
+  refl : Reflexive _≈_
+  refl {var _} = var ≡-refl
+  refl {_ ∙ _} = refl ∙ refl
+
+  ≡⇒≈ : ∀ {m n} → m ≡ n → m ≈ n
+  ≡⇒≈ ≡-refl = refl
+
+  rawFreeMagma : RawMagma c c
+  rawFreeMagma = record { Carrier = Carrier ; _≈_ = _≡_ ; _∙_ = _∙_ }
+
+  open Strs {A = Carrier} _≡_
+
+  isMagma : IsMagma _∙_
+  isMagma = record { isEquivalence = ≡-isEquivalence ; ∙-cong = cong₂ _∙_ }
+
+  freeMagma : Magma c c
+  freeMagma = record { RawMagma rawFreeMagma ; isMagma = isMagma }
+
+------------------------------------------------------------------------
+-- Extending to a Setoid
+
 module PreservesEquivalence {c ℓ} {A : Set c} (R : Rel A ℓ) where
 
   open PreFreeTheory R
@@ -114,43 +157,6 @@ module FreeMagmaOn {c ℓ} (S : Setoid c ℓ) where
 
   freeMagma : Magma c (c ⊔ ℓ)
   freeMagma = record { Carrier = PreFreeMagma A; _≈_ = _≈R_ ; _∙_ = _∙_ ; isMagma = isMagma }
-
-{- in the propositional case, we can immediately define the following
-   but how best to organise this under the Algebra.Bundles.Free hierarchy? -}
-
-------------------------------------------------------------------------
--- Free algebra on a Set
-
-module FreeMagma {c} (A : Set c) where
-
-  private Carrier = PreFreeMagma A
-
-  _≈_ : Rel Carrier c
-  m ≈ n = m ≈[ _≡_ ] n
-
-  open PreFreeTheory {A = A} _≡_
-
-  ≈⇒≡ : ∀ {m n} → m ≈ n → m ≡ n
-  ≈⇒≡ (var ≡-refl) = ≡-refl
-  ≈⇒≡ (eq₁ ∙ eq₂) = cong₂ _∙_ (≈⇒≡ eq₁) (≈⇒≡ eq₂)
-
-  refl : Reflexive _≈_
-  refl {var _} = var ≡-refl
-  refl {_ ∙ _} = refl ∙ refl
-
-  ≡⇒≈ : ∀ {m n} → m ≡ n → m ≈ n
-  ≡⇒≈ ≡-refl = refl
-
-  rawFreeMagma : RawMagma c c
-  rawFreeMagma = record { Carrier = Carrier ; _≈_ = _≡_ ; _∙_ = _∙_ }
-
-  open Strs {A = Carrier} _≡_
-
-  isMagma : IsMagma _∙_
-  isMagma = record { isEquivalence = ≡-isEquivalence ; ∙-cong = cong₂ _∙_ }
-
-  freeMagma : Magma c c
-  freeMagma = record { RawMagma rawFreeMagma ; isMagma = isMagma }
 
 ------------------------------------------------------------------------
 -- Eval, as the unique fold ⟦_⟧_ over PreFreeMagma A
