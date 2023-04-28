@@ -16,13 +16,13 @@ open import Algebra.Bundles using (Magma)
 open import Algebra.Bundles.Raw using (RawMagma)
 open import Function.Base using (id; _∘_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Morphism using (Homomorphic₂; IsRelHomomorphism)
+open import Relation.Binary.Morphism using (IsRelHomomorphism)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary
   using (Setoid; IsEquivalence; Reflexive; Symmetric; Transitive)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; cong₂) renaming (refl to ≡-refl; isEquivalence to ≡isEquivalence)
+  using (_≡_; cong₂) renaming (refl to ≡-refl; isEquivalence to ≡-isEquivalence)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 
@@ -53,7 +53,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
   map-∘ g f (s ∙ t) = cong₂ _∙_ (map-∘ g f s) (map-∘ g f t)
   
 ------------------------------------------------------------------------
--- RawMonad, Monad instances TODO
+-- Functor, RawMonad instance: TODO
 
 ------------------------------------------------------------------------
 -- parametrised 'equational' theory over the 'pre'-free algebra
@@ -80,15 +80,15 @@ module PreservesEquivalence {c ℓ} {A : Set c} (R : Rel A ℓ) where
 
   _≈R_ = λ m n → m ≈[ R ] n
 
-  refl : (Reflexive R) → Reflexive _≈R_
+  refl : Reflexive R → Reflexive _≈R_
   refl r {var _} = var r
   refl r {_ ∙ _} = (refl r) ∙ (refl r)
 
-  sym : (Symmetric R) → Symmetric _≈R_
+  sym : Symmetric R → Symmetric _≈R_
   sym s (var r)   = var (s r)
   sym s (r₁ ∙ r₂) = sym s r₁ ∙ sym s r₂
 
-  trans : (Transitive R) → Transitive _≈R_
+  trans : Transitive R → Transitive _≈R_
   trans t (var r)   (var s)   = var (t r s)
   trans t (r₁ ∙ r₂) (s₁ ∙ s₂) = trans t r₁ s₁ ∙ trans t r₂ s₂
 
@@ -147,7 +147,7 @@ module FreeMagma {c} (A : Set c) where
   open Strs {A = Carrier} _≡_
 
   isMagma : IsMagma _∙_
-  isMagma = record { isEquivalence = ≡isEquivalence ; ∙-cong = cong₂ _∙_ }
+  isMagma = record { isEquivalence = ≡-isEquivalence ; ∙-cong = cong₂ _∙_ }
 
   freeMagma : Magma c c
   freeMagma = record { RawMagma rawFreeMagma ; isMagma = isMagma }
@@ -191,13 +191,14 @@ module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) w
   
   open Magma freeMagma renaming (rawMagma to rawMagmaᴬ; Carrier to FA; _≈_ to _≈ᴬ_)
 
-  module _ {η : A → M} (var-η : Homomorphic₂ A M _≈_ _≈ᴹ_ η) where
+  module _ {η : A → M} (hom-η : IsRelHomomorphism _≈_ _≈ᴹ_ η) where
 
     open Strs _≈ᴹ_
     open IsMagma isMagmaᴹ renaming (∙-cong to congᴹ)
+    open IsRelHomomorphism hom-η renaming (cong to cong-η)
 
     cong : ∀ {s t} → s ≈ᴬ t → ⟦ s ⟧ η ≈ᴹ ⟦ t ⟧ η
-    cong (var r) = var-η r
+    cong (var r) = cong-η r
     cong (s ∙ t) = congᴹ (cong s) (cong t)
 
     isRelHomomorphism : IsRelHomomorphism _≈ᴬ_ _≈ᴹ_ (⟦_⟧ η)
@@ -224,4 +225,8 @@ module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) w
       isUnique⟦ s ∙ t ⟧ = begin
         h (s PreFreeMagma.∙ t) ≈⟨ homo s t ⟩
         (h s) ∙ᴹ (h t)         ≈⟨ congᴹ isUnique⟦ s ⟧ isUnique⟦ t ⟧ ⟩
-        ⟦ s ⟧ η ∙ᴹ (⟦ t ⟧ η) ∎
+        ⟦ s ⟧ η ∙ᴹ (⟦ t ⟧ η)   ∎
+
+------------------------------------------------------------------------
+-- Monad instance: TODO
+
