@@ -51,7 +51,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
   map-∘ : (g : A → B) → (f : B → C) → ∀ t → map (f ∘ g) t ≡ (map f ∘ map g) t
   map-∘ g f (var a) = ≡-refl
   map-∘ g f (s ∙ t) = cong₂ _∙_ (map-∘ g f s) (map-∘ g f t)
-  
+
 ------------------------------------------------------------------------
 -- Functor, RawMonad instance: TODO
 
@@ -188,7 +188,7 @@ module Properties {a ℓa m ℓm} (𝓐 : Setoid a ℓa) (𝓜 : Magma m ℓm) w
   open Alg 𝓜
 
   open FreeMagmaOn 𝓐
-  
+
   open Magma freeMagma renaming (rawMagma to rawMagmaᴬ; Carrier to FA)
 
   module _ {η : A → M} (hom-η : IsRelHomomorphism _≈ᴬ_ _≈ᴹ_ η) where
