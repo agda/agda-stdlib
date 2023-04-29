@@ -3001,6 +3001,6 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new functions to `Data.Vec.Relation.Binary.Equality.Setoid`
   ```agda
-  cong-[]≔ : i p → xs ≋ ys → xs [ i ]≔ p ≋ ys [ i ]≔ p
-  map-[]≔ : i (f : B → A) (xs : Vec B n) p → map f xs [ i ]≔ f p ≋ map f (xs [ i ]≔ p)
+  cong-[]≔ : xs ≋ ys → xs [ i ]≔ p ≋ ys [ i ]≔ p
+  map-[]≔  : map f xs [ i ]≔ f p ≋ map f (xs [ i ]≔ p)
   ```
