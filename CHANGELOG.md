@@ -2999,8 +2999,12 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
 
-* Added new functions to `Data.Vec.Relation.Binary.Equality.Setoid`
+* Added new function to `Data.Vec.Relation.Binary.Pointwise.Inductive`
   ```agda
-  cong-[]≔ : xs ≋ ys → xs [ i ]≔ p ≋ ys [ i ]≔ p
+  cong-[_]≔ : Pointwise _∼_ xs ys → Pointwise _∼_ (xs [ i ]≔ p) (ys [ i ]≔ p)
+  ```
+
+* Added new function to `Data.Vec.Relation.Binary.Equality.Setoid`
+  ```agda
   map-[]≔  : map f xs [ i ]≔ f p ≋ map f (xs [ i ]≔ p)
   ```

@@ -53,14 +53,6 @@ open PW public using (length-equal)
 ≋-setoid = PW.setoid S
 
 ------------------------------------------------------------------------
--- cong
-
-cong-[]≔ : ∀ {n} {xs ys : Vec A n} i p → xs ≋ ys
-  → xs [ i ]≔ p ≋ ys [ i ]≔ p
-cong-[]≔ zero _ (_ ∷ eqn) = refl ∷ eqn
-cong-[]≔ (suc i) p (x∼y ∷ eqn) = x∼y ∷ (cong-[]≔ i p eqn)
-
-------------------------------------------------------------------------
 -- map
 
 open PW public using ( map⁺)
