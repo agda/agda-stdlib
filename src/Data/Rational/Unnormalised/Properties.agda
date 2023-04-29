@@ -26,7 +26,7 @@ open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ;
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
-open import Data.Product using (_,_)
+open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
@@ -132,6 +132,12 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
   ; sym     = ≠-symmetric
   ; cotrans = ≠-cotransitive
   }
+
+≠-tight : Tight _≃_ _≠_
+proj₁ (≠-tight p q) ¬p≠q with p ≃? q
+... | yes p≃q = p≃q
+... | no ¬p≃q = ⊥-elim (¬p≠q ¬p≃q)
+proj₂ (≠-tight p q) p≃q p≠q = p≠q p≃q
 
 ≃-setoid : Setoid 0ℓ 0ℓ
 ≃-setoid = record
@@ -1348,7 +1354,7 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
 +-*-isHeytingField = record
   { isHeytingCommutativeRing = +-*-isHeytingCommutativeRing
-  ; tight                    = {!!}
+  ; tight                    = ≠-tight
   }
 
 ------------------------------------------------------------------------
@@ -1382,6 +1388,16 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-commutativeRing : CommutativeRing 0ℓ 0ℓ
 +-*-commutativeRing = record
   { isCommutativeRing = +-*-isCommutativeRing
+  }
+
++-*-heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
++-*-heytingCommutativeRing = record
+  { isHeytingCommutativeRing = +-*-isHeytingCommutativeRing
+  }
+
++-*-heytingField : HeytingField 0ℓ 0ℓ 0ℓ
++-*-heytingField = record
+  { isHeytingField = +-*-isHeytingField
   }
 
 ------------------------------------------------------------------------
