@@ -2998,3 +2998,24 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
+
+* Added new functions to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  0ℚᵘ≠1ℚᵘ : 0ℚᵘ ≠ 1ℚᵘ
+  ≃-≠-irreflexive : Irreflexive _≃_ _≠_
+  ≠-symmetric : Symmetric _≠_
+  ≠-cotransitive : Cotransitive _≠_
+  ≠⇒invertible : p ≠ q → Invertible _≃_ 1ℚᵘ _*_ (p - q)
+  ```
+
+* Added new structures to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  +-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
+  +-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
+  ```
+
+* Added new bundles to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  +-*-heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  +-*-heytingField : HeytingField 0ℓ 0ℓ 0ℓ
+  ```
