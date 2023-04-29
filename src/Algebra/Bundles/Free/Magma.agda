@@ -284,7 +284,7 @@ module FreeMonadFunctor (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
   map = Existence.isMagmaHomomorphism hom-η
 
 ------------------------------------------------------------------------
--- Functoriality of FreeMonadFunctor.map : TODO
+-- Functoriality of FreeMagmaFunctor.map : TODO
 
 ------------------------------------------------------------------------
 -- Monad instance: TODO
