@@ -17,6 +17,21 @@ open import Relation.Nullary.Negation.Core using (¬_)
 -- Raw bundles with 1 binary operation
 ------------------------------------------------------------------------
 
+record RawPointed c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    pt₀     : Carrier
+
+  infix 4 _≉_
+  _≉_ : Rel Carrier _
+  x ≉ y = ¬ (x ≈ y)
+
+------------------------------------------------------------------------
+-- Raw bundles with 1 binary operation
+------------------------------------------------------------------------
+
 record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_

@@ -23,10 +23,30 @@ open import Level
 -- Re-export definitions of 'raw' bundles
 
 open Raw public
-  using (RawMagma; RawMonoid; RawGroup
+  using (RawPointed; RawMagma; RawMonoid; RawGroup
         ; RawNearSemiring; RawSemiring
         ; RawRingWithoutOne; RawRing
         ; RawQuasigroup; RawLoop)
+
+------------------------------------------------------------------------
+-- Bundles with 1 element
+------------------------------------------------------------------------
+
+record Pointed c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  4 _≈_
+  field
+    Carrier   : Set c
+    _≈_       : Rel Carrier ℓ
+    pt₀       : Carrier
+    isPointed : IsPointed _≈_ pt₀
+
+  open IsPointed isPointed public
+
+  rawPointed : RawPointed _ _
+  rawPointed = record { _≈_ = _≈_; pt₀ = pt₀ }
+
+  open RawPointed rawPointed public
+    using (_≉_)
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation

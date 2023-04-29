@@ -835,6 +835,8 @@ Major improvements
   * `RawRing`
   * `RawQuasigroup`
   * `RawLoop`
+* A new definition is also introduced: 
+  *  `RawPointed`
 * A new module `Algebra.Lattice.Bundles.Raw` is also introduced.
   * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
 
@@ -1563,6 +1565,7 @@ Other minor changes
 
 * Added new definitions to `Algebra.Bundles`:
   ```agda
+  record Pointed c ℓ : Set (suc (c ⊔ ℓ))
   record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
   record InvertibleMagma c ℓ : Set (suc (c ⊔ ℓ))
   record InvertibleUnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
@@ -1756,6 +1759,7 @@ Other minor changes
 
 * Added new definitions to `Algebra.Structures`:
   ```agda
+  record IsPointed (e : A) : Set (a ⊔ ℓ)
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   record IsInvertibleUnitalMagma (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
@@ -1786,6 +1790,9 @@ Other minor changes
 
 * Added new records to `Algebra.Morphism.Structures`:
   ```agda
+  record IsPointedHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsPointedMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsPointedIsomorphism  (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   record IsQuasigroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   record IsQuasigroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   record IsQuasigroupIsomorphism  (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)

@@ -26,6 +26,19 @@ open import Data.Product using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
+-- Structures with 1 element
+------------------------------------------------------------------------
+
+record IsPointed (e : A) : Set (a ⊔ ℓ) where
+  field
+    isEquivalence : IsEquivalence _≈_
+
+  open IsEquivalence isEquivalence public
+
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
+
+------------------------------------------------------------------------
 -- Structures with 1 binary operation
 ------------------------------------------------------------------------
 

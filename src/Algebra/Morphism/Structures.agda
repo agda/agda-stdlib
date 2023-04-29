@@ -22,6 +22,55 @@ private
     a b ℓ₁ ℓ₂ : Level
 
 ------------------------------------------------------------------------
+-- Morphisms over pointed structures
+------------------------------------------------------------------------
+
+module PointedMorphisms (P₁ : RawPointed a ℓ₁) (P₂ : RawPointed b ℓ₂) where
+
+  open RawPointed P₁ renaming (Carrier to A; _≈_ to _≈₁_; pt₀ to pt₁)
+  open RawPointed P₂ renaming (Carrier to B; _≈_ to _≈₂_; pt₀ to pt₂)
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+
+
+  record IsPointedHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
+      homo              : Homomorphic₀ ⟦_⟧ pt₁ pt₂
+
+    open IsRelHomomorphism isRelHomomorphism public
+      renaming (cong to ⟦⟧-cong)
+
+  record IsPointedMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isPointedHomomorphism : IsPointedHomomorphism ⟦_⟧
+      injective             : Injective ⟦_⟧
+
+    open IsPointedHomomorphism isPointedHomomorphism public
+
+    isRelMonomorphism : IsRelMonomorphism _≈₁_ _≈₂_ ⟦_⟧
+    isRelMonomorphism = record
+      { isHomomorphism = isRelHomomorphism
+      ; injective      = injective
+      }
+
+
+  record IsPointedIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isPointedMonomorphism : IsPointedMonomorphism ⟦_⟧
+      surjective          : Surjective ⟦_⟧
+
+    open IsPointedMonomorphism isPointedMonomorphism public
+
+    isRelIsomorphism : IsRelIsomorphism _≈₁_ _≈₂_ ⟦_⟧
+    isRelIsomorphism = record
+      { isMonomorphism = isRelMonomorphism
+      ; surjective     = surjective
+      }
+
+
+
+------------------------------------------------------------------------
 -- Morphisms over magma-like structures
 ------------------------------------------------------------------------
 
@@ -697,6 +746,7 @@ module LoopMorphisms (L₁ : RawLoop a ℓ₁) (L₂ : RawLoop b ℓ₂) where
 ------------------------------------------------------------------------
 -- Re-export contents of modules publicly
 
+open PointedMorphisms public
 open MagmaMorphisms public
 open MonoidMorphisms public
 open GroupMorphisms public
