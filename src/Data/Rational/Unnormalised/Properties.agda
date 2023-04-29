@@ -10,12 +10,14 @@
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra
+open import Algebra.Apartness
 open import Algebra.Lattice
 import Algebra.Consequences.Setoid as Consequences
 open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
+open import Data.Empty using (⊥-elim)
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
@@ -36,6 +38,8 @@ open import Relation.Binary
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
+open import Relation.Nullary using (yes; no)
+import Relation.Binary.Reasoning.Setoid as ReasonSetoid
 
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
@@ -94,6 +98,21 @@ drop-*≡* (*≡* eq) = eq
 _≃?_ : Decidable _≃_
 p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
 
+0ℚᵘ≠1ℚᵘ : 0ℚᵘ ≠ 1ℚᵘ
+0ℚᵘ≠1ℚᵘ = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
+
+≃-≠-irreflexive : Irreflexive _≃_ _≠_
+≃-≠-irreflexive x≃y x≠y = x≠y x≃y
+
+≠-symmetric : Symmetric _≠_
+≠-symmetric x≠y y≃x = x≠y (≃-sym y≃x)
+
+≠-cotransitive : Cotransitive _≠_
+≠-cotransitive {x} {y} x≠y z with x ≃? z | z ≃? y
+... | no  x≠z | _       = inj₁ x≠z
+... | yes _   | no z≠y  = inj₂ z≠y
+... | yes x≃z | yes z≃y = ⊥-elim (x≠y (≃-trans x≃z z≃y))
+
 ≃-isEquivalence : IsEquivalence _≃_
 ≃-isEquivalence = record
   { refl  = ≃-refl
@@ -107,6 +126,13 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
   ; _≟_           = _≃?_
   }
 
+≠-isApartnessRelation : IsApartnessRelation _≃_ _≠_
+≠-isApartnessRelation = record
+  { irrefl  = ≃-≠-irreflexive
+  ; sym     = ≠-symmetric
+  ; cotrans = ≠-cotransitive
+  }
+
 ≃-setoid : Setoid 0ℓ 0ℓ
 ≃-setoid = record
   { isEquivalence = ≃-isEquivalence
@@ -116,6 +142,8 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 ≃-decSetoid = record
   { isDecEquivalence = ≃-isDecEquivalence
   }
+
+module ≃-Reasoning = ReasonSetoid ≃-setoid
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -1042,6 +1070,12 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-inverseʳ : ∀ p .{{_ : NonZero p}} → p * 1/ p ≃ 1ℚᵘ
 *-inverseʳ p = ≃-trans (*-comm p (1/ p)) (*-inverseˡ p)
 
+≠⇒invertible : p ≠ q → Invertible _≃_ 1ℚᵘ _*_ (p - q)
+≠⇒invertible {p} {q} p≠q = _ , *-inverseˡ (p - q) , *-inverseʳ (p - q)
+  where instance
+  _ : NonZero (p - q)
+  _ = ≢-nonZero (p≠q ∘ p-q≃0⇒p≃q p q)
+
 *-zeroˡ : LeftZero _≃_ 0ℚᵘ _*_
 *-zeroˡ p@record{} = *≡* refl
 
@@ -1050,6 +1084,18 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 
 *-zero : Zero _≃_ 0ℚᵘ _*_
 *-zero = *-zeroˡ , *-zeroʳ
+
+invertible⇒≠ : Invertible _≃_ 1ℚᵘ _*_ (p - q) → p ≠ q
+invertible⇒≠ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0ℚᵘ≠1ℚᵘ 0≃1
+  where
+  open ≃-Reasoning
+
+  0≃1 : 0ℚᵘ ≃ 1ℚᵘ
+  0≃1 = begin
+   0ℚᵘ             ≈˘⟨ *-zeroˡ 1/p-q ⟩
+   0ℚᵘ * 1/p-q     ≈˘⟨ *-congʳ (p≃q⇒p-q≃0 p q p≃q) ⟩
+   (p - q) * 1/p-q ≈⟨ x*1/x≃1 ⟩
+   1ℚᵘ             ∎
 
 *-distribˡ-+ : _DistributesOverˡ_ _≃_ _*_ _+_
 *-distribˡ-+ p@record{} q@record{} r@record{} =
@@ -1289,6 +1335,20 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-isCommutativeRing = record
   { isRing = +-*-isRing
   ; *-comm = *-comm
+  }
+
++-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isHeytingCommutativeRing = record
+  { isCommutativeRing   = +-*-isCommutativeRing
+  ; isApartnessRelation = ≠-isApartnessRelation
+  ; #⇒invertible        = ≠⇒invertible
+  ; invertible⇒#        = invertible⇒≠
+  }
+
++-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isHeytingField = record
+  { isHeytingCommutativeRing = +-*-isHeytingCommutativeRing
+  ; tight                    = {!!}
   }
 
 ------------------------------------------------------------------------
