@@ -194,7 +194,7 @@ module _ (𝓜 : Magma m ℓm) where
 
 ------------------------------------------------------------------------
 -- Any Magma *is* an algebra for the Syntax Functor
-  
+
   alg : Syntax UM → UM
   alg t = ⟦ t ⟧ id where open Eval setoidᴹ
 
@@ -253,9 +253,9 @@ module _ (𝓜 : Magma m ℓm) where
   alg-isMagmaHomomorphism = Existence.isMagmaHomomorphism (record { cong = id })
 
 ------------------------------------------------------------------------
--- Functoriality of FreeMonad wrt Setoid homomorphisms
+-- Functoriality of FreeMagma wrt Setoid homomorphisms
 
-module FreeMonadFunctor (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
+module FreeMagmaFunctor (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
 
   open Setoid 𝓐  renaming (Carrier to UA; _≈_ to _≈ᴬ_)
   open Setoid 𝓑  renaming (Carrier to UB; _≈_ to _≈ᴮ_)
