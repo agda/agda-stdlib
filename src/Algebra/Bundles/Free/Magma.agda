@@ -90,7 +90,7 @@ module EquationalTheory {A : Set a} (R : Rel A ℓ) where
 
   data _≈_ where
 
-    var : {a b : A} → (R a b) → _≈_ (var a) (var b)
+    var : {a b : A} → (R a b) → var a ≈ var b
     _∙_ : Congruent₂ _∙_
 
   refl : Reflexive R → Reflexive _≈_
