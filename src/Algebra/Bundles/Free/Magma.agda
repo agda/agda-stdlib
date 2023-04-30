@@ -308,7 +308,7 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
   open Magma 𝓜 renaming (rawMagma to M; setoid to setoidᴹ; Carrier to UM; _≈_ to _≈ᴹ_)
   open Magma 𝓝 renaming (rawMagma to N; setoid to setoidᴺ; Carrier to UN; _≈_ to _≈ᴺ_; refl to reflᴺ; trans to transᴺ)
   module _ (𝓗 : SetoidHomomorphism setoidᴹ setoidᴺ) where
-    open SetoidHomomorphism 𝓗
+    open SetoidHomomorphism 𝓗 renaming (isRelHomomorphism to hom-⟦⟧)
     open FreeMagmaFunctor 𝓗
     open FreeMagma setoidᴹ renaming (freeMagma to freeMagmaᴹ; rawMagma to FM; Carrier to UFM)
     algᴹ = alg 𝓜
@@ -328,7 +328,7 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
       k-hom = Compose.isMagmaHomomorphism transᴺ map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism
 
       naturality : ∀ t → h t ≈ᴺ k t
-      naturality = isUnique isRelHomomorphism h-hom k-hom (λ _ → reflᴺ) (λ _ → reflᴺ)
+      naturality = isUnique hom-⟦⟧ h-hom k-hom (λ _ → reflᴺ) (λ _ → reflᴺ)
         where open Properties.Existence.Corollary 𝓝 setoidᴹ
   
 
