@@ -9,11 +9,12 @@
 module Algebra.Bundles.Free.Magma where
 
 open import Algebra.Core
+open import Algebra.Bundles using (Magma)
+open import Algebra.Bundles.Raw using (RawMagma)
 import Algebra.Definitions as Definitions using (Congruent₂)
 import Algebra.Structures as Structures using (IsMagma)
 open import Algebra.Morphism.Structures using (IsMagmaHomomorphism)
-open import Algebra.Bundles using (Magma)
-open import Algebra.Bundles.Raw using (RawMagma)
+import Algebra.Morphism.Construct.Composition as Compose
 open import Effect.Functor
 open import Effect.Monad
 open import Function.Base using (id; _∘_)
@@ -30,13 +31,14 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
-    a ℓa b ℓb c ℓ m ℓm : Level
+    ℓ a ℓa b ℓb c ℓc m ℓm n ℓn : Level
     A : Set a
     B : Set b
     C : Set c
     𝓐 : Setoid a ℓa
     𝓑 : Setoid b ℓb
-
+    𝓒 : Setoid c ℓc
+ 
 ------------------------------------------------------------------------
 -- Syntax: 'pre'-free algebra
 
@@ -244,6 +246,18 @@ module _ (𝓜 : Magma m ℓm) where
           h s ∙ᴹ h t       ≈⟨ congᴹ isUnique⟦ s ⟧ᴹ isUnique⟦ t ⟧ᴹ ⟩
           ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ  ∎ where open IsMagmaHomomorphism isHom
 
+      module Corollary {h k : UFA → UM}
+        (h-isHom : IsMagmaHomomorphism rawMagma rawMagmaᴹ h)
+        (k-isHom : IsMagmaHomomorphism rawMagma rawMagmaᴹ k)
+        (h∘var≈ᴹη : ∀ a → h (var a) ≈ᴹ η a)
+        (k∘var≈ᴹη : ∀ a → k (var a) ≈ᴹ η a) where
+
+        isUnique :  ∀ t → h t ≈ᴹ k t
+        isUnique t = begin h t ≈⟨ hU⟦ t ⟧ᴹ ⟩ ⟦ t ⟧ᴹ ≈˘⟨ kU⟦ t ⟧ᴹ ⟩ k t ∎
+          where
+            open Uniqueness h-isHom h∘var≈ᴹη renaming (isUnique⟦_⟧ᴹ to hU⟦_⟧ᴹ)
+            open Uniqueness k-isHom k∘var≈ᴹη renaming (isUnique⟦_⟧ᴹ to kU⟦_⟧ᴹ)
+
 -- immediate corollary
 
   open FreeMagma setoidᴹ
@@ -272,16 +286,51 @@ module FreeMagmaFunctor (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
 
   open SetoidHomomorphism 𝓗
 
-  private
-    η : UA → UFB
-    η = Syntax.var ∘ ⟦_⟧
+  η : UA → UFB
+  η = Syntax.var ∘ ⟦_⟧
 
-    hom-η : IsRelHomomorphism _≈ᴬ_ _≈ᵀᴮ_ η
-    hom-η = record { cong = EquationalTheory.var ∘ congᴬᴮ }
-      where open IsRelHomomorphism isRelHomomorphism renaming (cong to congᴬᴮ)
+  hom-η : IsRelHomomorphism _≈ᴬ_ _≈ᵀᴮ_ η
+  hom-η = record { cong = EquationalTheory.var ∘ congᴬᴮ }
+    where open IsRelHomomorphism isRelHomomorphism renaming (cong to congᴬᴮ)
 
-  map : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴮ _
-  map = Existence.isMagmaHomomorphism hom-η
+  open Existence
+
+  map : UFA → UFB
+  map = ⟦_⟧ᴹ hom-η
+
+  map-isMagmaHomomorphism : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴮ map
+  map-isMagmaHomomorphism = isMagmaHomomorphism hom-η
+
+------------------------------------------------------------------------
+-- Naturality of alg
+
+module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
+  open Magma 𝓜 renaming (rawMagma to M; setoid to setoidᴹ; Carrier to UM; _≈_ to _≈ᴹ_)
+  open Magma 𝓝 renaming (rawMagma to N; setoid to setoidᴺ; Carrier to UN; _≈_ to _≈ᴺ_; refl to reflᴺ; trans to transᴺ)
+  module _ (𝓗 : SetoidHomomorphism setoidᴹ setoidᴺ) where
+    open SetoidHomomorphism 𝓗
+    open FreeMagmaFunctor 𝓗
+    open FreeMagma setoidᴹ renaming (freeMagma to freeMagmaᴹ; rawMagma to FM; Carrier to UFM)
+    algᴹ = alg 𝓜
+    algᴹ-isMagmaHomomorphism = alg-isMagmaHomomorphism 𝓜
+    algᴺ = alg 𝓝
+    algᴺ-isMagmaHomomorphism = alg-isMagmaHomomorphism 𝓝
+    module _ (hom : IsMagmaHomomorphism M N ⟦_⟧) where
+
+      h k : UFM → UN
+      h = ⟦_⟧ ∘ algᴹ
+      k = algᴺ ∘  map
+
+      h-hom : IsMagmaHomomorphism FM N h
+      h-hom = Compose.isMagmaHomomorphism transᴺ algᴹ-isMagmaHomomorphism hom
+
+      k-hom : IsMagmaHomomorphism FM N k
+      k-hom = Compose.isMagmaHomomorphism transᴺ map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism
+
+      naturality : ∀ t → h t ≈ᴺ k t
+      naturality = isUnique isRelHomomorphism h-hom k-hom (λ _ → reflᴺ) (λ _ → reflᴺ)
+        where open Properties.Existence.Corollary 𝓝 setoidᴹ
+  
 
 ------------------------------------------------------------------------
 -- Functoriality of FreeMagmaFunctor.map : TODO
