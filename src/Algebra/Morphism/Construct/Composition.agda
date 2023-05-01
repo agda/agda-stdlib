@@ -22,6 +22,46 @@ private
     a b c ℓ₁ ℓ₂ ℓ₃ : Level
 
 ------------------------------------------------------------------------
+-- Pointeds
+
+module _ {P₁ : RawPointed a ℓ₁}
+         {P₂ : RawPointed b ℓ₂}
+         {P₃ : RawPointed c ℓ₃}
+         (open RawPointed)
+         (≈₃-trans : Transitive (_≈_ P₃))
+         {f : Carrier P₁ → Carrier P₂}
+         {g : Carrier P₂ → Carrier P₃}
+         where
+
+  isPointedHomomorphism
+    : IsPointedHomomorphism P₁ P₂ f
+    → IsPointedHomomorphism P₂ P₃ g
+    → IsPointedHomomorphism P₁ P₃ (g ∘ f)
+  isPointedHomomorphism f-homo g-homo = record
+    { isRelHomomorphism = isRelHomomorphism F.isRelHomomorphism G.isRelHomomorphism
+    ; homo              = ≈₃-trans (G.⟦⟧-cong F.homo) G.homo
+    } where module F = IsPointedHomomorphism f-homo; module G = IsPointedHomomorphism g-homo
+
+  isPointedMonomorphism
+    : IsPointedMonomorphism P₁ P₂ f
+    → IsPointedMonomorphism P₂ P₃ g
+    → IsPointedMonomorphism P₁ P₃ (g ∘ f)
+  isPointedMonomorphism f-mono g-mono = record
+    { isPointedHomomorphism = isPointedHomomorphism F.isPointedHomomorphism G.isPointedHomomorphism
+    ; injective           = F.injective ∘ G.injective
+    } where module F = IsPointedMonomorphism f-mono; module G = IsPointedMonomorphism g-mono
+
+  isPointedIsomorphism
+    : IsPointedIsomorphism P₁ P₂ f
+    → IsPointedIsomorphism P₂ P₃ g
+    → IsPointedIsomorphism P₁ P₃ (g ∘ f)
+  isPointedIsomorphism f-iso g-iso = record
+    { isPointedMonomorphism = isPointedMonomorphism F.isPointedMonomorphism G.isPointedMonomorphism
+    ; surjective          = Func.surjective (_≈_ P₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsPointedIsomorphism f-iso; module G = IsPointedIsomorphism g-iso
+
+
+------------------------------------------------------------------------
 -- Magmas
 
 module _ {M₁ : RawMagma a ℓ₁}

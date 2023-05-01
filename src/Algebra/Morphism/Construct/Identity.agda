@@ -10,7 +10,8 @@ module Algebra.Morphism.Construct.Identity where
 
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
-  using ( module MagmaMorphisms
+  using ( module PointedMorphisms
+        ; module MagmaMorphisms
         ; module MonoidMorphisms
         ; module GroupMorphisms
         ; module NearSemiringMorphisms
@@ -29,6 +30,30 @@ open import Relation.Binary.Definitions using (Reflexive)
 private
   variable
     c ℓ : Level
+
+------------------------------------------------------------------------
+-- Pointeds
+
+module _ (P : RawPointed c ℓ) (open RawPointed P) (refl : Reflexive _≈_) where
+  open PointedMorphisms P P
+
+  isPointedHomomorphism : IsPointedHomomorphism id
+  isPointedHomomorphism = record
+    { isRelHomomorphism = isRelHomomorphism _
+    ; homo              = refl
+    }
+
+  isPointedMonomorphism : IsPointedMonomorphism id
+  isPointedMonomorphism = record
+    { isPointedHomomorphism = isPointedHomomorphism
+    ; injective = id
+    }
+
+  isPointedIsomorphism : IsPointedIsomorphism id
+  isPointedIsomorphism = record
+    { isPointedMonomorphism = isPointedMonomorphism
+    ; surjective = _, refl
+    }
 
 ------------------------------------------------------------------------
 -- Magmas
