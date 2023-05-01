@@ -20,24 +20,44 @@ open import Effect.Monad
 open import Function.Base using (id; _∘_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Morphism using (IsRelHomomorphism)
-open import Level using (Level; _⊔_)
+open import Level using (Level; suc; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary
   using (Setoid; IsEquivalence; Reflexive; Symmetric; Transitive)
 open import Relation.Binary.Morphism.Bundles using (SetoidHomomorphism)
+import Relation.Binary.Morphism.Construct.Identity as Identity
+import Relation.Binary.Morphism.Construct.Composition as Compose
 open import Relation.Binary.PropositionalEquality
   using (_≡_; cong₂) renaming (refl to ≡-refl; isEquivalence to ≡-isEquivalence)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
-    ℓ a ℓa b ℓb c ℓc m ℓm n ℓn : Level
+    a ℓa b ℓb c ℓ m ℓm n ℓn : Level
     A : Set a
     B : Set b
     C : Set c
-    𝓐 : Setoid a ℓa
-    𝓑 : Setoid b ℓb
-    𝓒 : Setoid c ℓc
+
+------------------------------------------------------------------------
+-- Morphisms between Magmas: belongs in its own place
+-- Algebra.Morphism.Bundles
+-- open import Algebra.Morphism.Bundles using (MagmaHomomorphism)
+------------------------------------------------------------------------
+
+record MagmaHomomorphism (𝓐 : Magma a ℓa) (𝓑 : Magma b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+
+  open Magma 𝓐 renaming (rawMagma to rawMagmaᴬ; setoid to setoidᴬ; Carrier to UA)
+  open Magma 𝓑 renaming (rawMagma to rawMagmaᴮ; setoid to setoidᴮ; Carrier to UB)
+
+  field
+    ⟦_⟧ : UA → UB
+
+    isMagmaHomomorphism : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴮ ⟦_⟧
+
+  open IsMagmaHomomorphism isMagmaHomomorphism public
+
+  setoidHomomorphism : SetoidHomomorphism setoidᴬ setoidᴮ
+  setoidHomomorphism = record { ⟦_⟧ = ⟦_⟧ ; isRelHomomorphism = isRelHomomorphism }
  
 ------------------------------------------------------------------------
 -- Syntax: 'pre'-free algebra
@@ -80,7 +100,7 @@ module Syntax where
 ------------------------------------------------------------------------
 -- parametrised 'equational' theory over the 'pre'-free algebra
 
-module EquationalTheory {A : Set a} (R : Rel A ℓ) where
+module EquationalTheory {A : Set a} (_≈ᴬ_ : Rel A ℓ) where
 
   open Syntax
 
@@ -92,25 +112,28 @@ module EquationalTheory {A : Set a} (R : Rel A ℓ) where
 
   data _≈_ where
 
-    var : {a b : A} → (R a b) → var a ≈ var b
+    var : {a b : A} → a ≈ᴬ b → var a ≈ var b
     _∙_ : Congruent₂ _∙_
 
-  refl : Reflexive R → Reflexive _≈_
+  refl : Reflexive _≈ᴬ_ → Reflexive _≈_
   refl r {var _} = var r
   refl r {_ ∙ _} = (refl r) ∙ (refl r)
 
-  sym : Symmetric R → Symmetric _≈_
-  sym s (var r)   = var (s r)
-  sym s (r₁ ∙ r₂) = sym s r₁ ∙ sym s r₂
+  sym : Symmetric _≈ᴬ_ → Symmetric _≈_
+  sym s (var s₀)  = var (s s₀)
+  sym s (s₁ ∙ s₂) = sym s s₁ ∙ sym s s₂
 
-  trans : Transitive R → Transitive _≈_
-  trans t (var r)   (var s)   = var (t r s)
+  trans : Transitive _≈ᴬ_ → Transitive _≈_
+  trans t (var r₀)  (var s₀)  = var (t r₀ s₀)
   trans t (r₁ ∙ r₂) (s₁ ∙ s₂) = trans t r₁ s₁ ∙ trans t r₂ s₂
 
-  preservesEquivalence : IsEquivalence R → IsEquivalence _≈_
+  preservesEquivalence : IsEquivalence _≈ᴬ_ → IsEquivalence _≈_
   preservesEquivalence isEq = record
     { refl = refl Eq.refl ; sym = sym Eq.sym ; trans = trans Eq.trans }
     where module Eq = IsEquivalence isEq
+
+  varIsRelHomomorphism : IsRelHomomorphism _≈ᴬ_ _≈_ var
+  varIsRelHomomorphism = record { cong = var }
 
 ------------------------------------------------------------------------
 -- Free algebra on a Set
@@ -166,21 +189,19 @@ module FreeMagma (𝓐 : Setoid a ℓa) where
   freeMagma : Magma a (a ⊔ ℓa)
   freeMagma = record { Carrier = Syntax Carrier; _≈_ = _≈ᵀ_ ; _∙_ = _∙_ ; isMagma = isMagma }
 
--- reexport some substructure
+-- re-export some substructure
 
-  open Magma freeMagma public using (rawMagma; Carrier; _≈_)
+  open Magma freeMagma public using (rawMagma; setoid; Carrier; _≈_)
+
+  varSetoidHomomorphism : SetoidHomomorphism 𝓐 setoid
+  varSetoidHomomorphism = record { ⟦_⟧ = var; isRelHomomorphism = varIsRelHomomorphism }
 
 ------------------------------------------------------------------------
 -- Semantics: in terms of concrete Magma instances
 
 module _ (𝓜 : Magma m ℓm) where
 
-  open Magma 𝓜
-    renaming (Carrier to UM; _≈_ to _≈ᴹ_; _∙_ to _∙ᴹ_
-             ; setoid to setoidᴹ; rawMagma to rawMagmaᴹ
-             ; isMagma to isMagmaᴹ)
-  open ≈-Reasoning setoidᴹ
-
+  open Magma 𝓜 renaming (setoid to setoidᴹ; Carrier to UM; _∙_ to _∙ᴹ_)
   open Syntax
 
 ------------------------------------------------------------------------
@@ -196,144 +217,156 @@ module _ (𝓜 : Magma m ℓm) where
 
 ------------------------------------------------------------------------
 -- Any Magma *is* an algebra for the Syntax Functor
-
+  
   alg : Syntax UM → UM
   alg t = ⟦ t ⟧ id where open Eval setoidᴹ
 
 ------------------------------------------------------------------------
--- Properties of ⟦_⟧_
+-- ⟦_⟧_ defines the (unique) lifting of Setoid homomorphisms to Magma homomorphisms
 
-  module Properties {a ℓa} (𝓐 : Setoid a ℓa) where
+module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
+       (𝓗 :  SetoidHomomorphism 𝓐 (Magma.setoid 𝓜)) where
 
-    open Setoid 𝓐 renaming (Carrier to UA; _≈_ to _≈ᴬ_)
+  open Magma 𝓜
+    renaming (Carrier to UM; _≈_ to _≈ᴹ_; _∙_ to _∙ᴹ_
+             ; setoid to setoidᴹ; rawMagma to rawMagmaᴹ
+             ; isMagma to isMagmaᴹ)
+  open ≈-Reasoning setoidᴹ
 
-    open Eval 𝓐 public
+  open Syntax
 
-    open FreeMagma 𝓐 renaming (Carrier to UFA)
+  open Setoid 𝓐 renaming (Carrier to UA; _≈_ to _≈ᴬ_)
 
-    module Existence {η : UA → UM} (hom-η : IsRelHomomorphism _≈ᴬ_ _≈ᴹ_ η) where
+  open Eval 𝓜 𝓐 public
 
-      ⟦_⟧ᴹ : UFA → UM
-      ⟦_⟧ᴹ = ⟦_⟧ η
+  open FreeMagma 𝓐 renaming (setoid to FA; Carrier to UFA)
 
-      open Structures _≈ᴹ_
-      open IsMagma isMagmaᴹ renaming (∙-cong to congᴹ)
-      open IsRelHomomorphism hom-η renaming (cong to cong-η)
+  open SetoidHomomorphism 𝓗 renaming (⟦_⟧ to η; isRelHomomorphism to hom-η) 
 
-      cong-⟦_⟧ : ∀ {s t} → s ≈ t → ⟦ s ⟧ᴹ ≈ᴹ ⟦ t ⟧ᴹ
-      cong-⟦ var r ⟧ = cong-η r
-      cong-⟦ s ∙ t ⟧ = congᴹ cong-⟦ s ⟧ cong-⟦ t ⟧
+  module Existence where
+  
+    ⟦_⟧ᴹ : UFA → UM
+    ⟦_⟧ᴹ = ⟦_⟧ η
 
-      isRelHomomorphism : IsRelHomomorphism _≈_ _≈ᴹ_ ⟦_⟧ᴹ
-      isRelHomomorphism = record { cong = cong-⟦_⟧ }
+    open Structures _≈ᴹ_
+    open IsMagma isMagmaᴹ renaming (∙-cong to congᴹ)
+    open IsRelHomomorphism hom-η renaming (cong to cong-η)
+    
+    private
+      algᴹ = alg 𝓜
 
-      isMagmaHomomorphism : IsMagmaHomomorphism rawMagma rawMagmaᴹ ⟦_⟧ᴹ
-      isMagmaHomomorphism = record { isRelHomomorphism = isRelHomomorphism
-                                   ; homo = λ s t → begin ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ ∎ }
+    unfold-⟦_⟧ᴹ : ∀ t → ⟦ t ⟧ᴹ ≈ᴹ algᴹ (map η t)
+    unfold-⟦ var a ⟧ᴹ = begin η a ∎
+    unfold-⟦ s ∙ t ⟧ᴹ = congᴹ unfold-⟦ s ⟧ᴹ unfold-⟦ t ⟧ᴹ
 
-      unfold-⟦_⟧ᴹ : ∀ t → ⟦ t ⟧ᴹ ≈ᴹ alg (map η t)
-      unfold-⟦ var a ⟧ᴹ = begin η a ∎
-      unfold-⟦ s ∙ t ⟧ᴹ = congᴹ unfold-⟦ s ⟧ᴹ unfold-⟦ t ⟧ᴹ
+    cong-⟦_⟧ : ∀ {s t} → s ≈ t → ⟦ s ⟧ᴹ ≈ᴹ ⟦ t ⟧ᴹ
+    cong-⟦ var r ⟧ = cong-η r
+    cong-⟦ s ∙ t ⟧ = congᴹ cong-⟦ s ⟧ cong-⟦ t ⟧
 
-      module Uniqueness {h : UFA → UM}
-        (isHom : IsMagmaHomomorphism rawMagma rawMagmaᴹ h)
-        (h∘var≈ᴹη : ∀ a → h (var a) ≈ᴹ η a) where
+    isRelHomomorphismᴹ : IsRelHomomorphism _≈_ _≈ᴹ_ ⟦_⟧ᴹ
+    isRelHomomorphismᴹ = record { cong = cong-⟦_⟧ }
 
-        isUnique⟦_⟧ᴹ : ∀ t → h t ≈ᴹ ⟦ t ⟧ᴹ
-        isUnique⟦ var a ⟧ᴹ = h∘var≈ᴹη a
-        isUnique⟦ s ∙ t ⟧ᴹ = begin
-          h (s Syntax.∙ t) ≈⟨ homo s t ⟩
-          h s ∙ᴹ h t       ≈⟨ congᴹ isUnique⟦ s ⟧ᴹ isUnique⟦ t ⟧ᴹ ⟩
-          ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ  ∎ where open IsMagmaHomomorphism isHom
+    setoidHomomorphismᴹ : SetoidHomomorphism FA setoidᴹ
+    setoidHomomorphismᴹ = record { ⟦_⟧ = ⟦_⟧ᴹ ; isRelHomomorphism = isRelHomomorphismᴹ }
 
-      module Corollary {h k : UFA → UM}
-        (h-isHom : IsMagmaHomomorphism rawMagma rawMagmaᴹ h)
-        (k-isHom : IsMagmaHomomorphism rawMagma rawMagmaᴹ k)
-        (h∘var≈ᴹη : ∀ a → h (var a) ≈ᴹ η a)
-        (k∘var≈ᴹη : ∀ a → k (var a) ≈ᴹ η a) where
+    isMagmaHomomorphismᴹ : IsMagmaHomomorphism rawMagma rawMagmaᴹ ⟦_⟧ᴹ
+    isMagmaHomomorphismᴹ = record { isRelHomomorphism = isRelHomomorphismᴹ
+                                  ; homo = λ s t → begin ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ ∎ }
 
-        isUnique :  ∀ t → h t ≈ᴹ k t
-        isUnique t = begin h t ≈⟨ hU⟦ t ⟧ᴹ ⟩ ⟦ t ⟧ᴹ ≈˘⟨ kU⟦ t ⟧ᴹ ⟩ k t ∎
-          where
-            open Uniqueness h-isHom h∘var≈ᴹη renaming (isUnique⟦_⟧ᴹ to hU⟦_⟧ᴹ)
-            open Uniqueness k-isHom k∘var≈ᴹη renaming (isUnique⟦_⟧ᴹ to kU⟦_⟧ᴹ)
+    magmaHomomorphismᴹ : MagmaHomomorphism freeMagma 𝓜
+    magmaHomomorphismᴹ = record { ⟦_⟧ = ⟦_⟧ᴹ
+                               ; isMagmaHomomorphism = isMagmaHomomorphismᴹ }
+
+    record η-MagmaHomomorphism : Set (suc (a ⊔ m ⊔ ℓa ⊔ ℓm)) where
+
+      field
+        magmaHomomorphism : MagmaHomomorphism freeMagma 𝓜
+      open MagmaHomomorphism magmaHomomorphism public renaming (homo to ⟦⟧-homo)
+      field
+        ⟦_⟧∘var≈ᴹη : ∀ a → ⟦ var a ⟧ ≈ᴹ η a
+
+    module Uniqueness (η-magmaHomomorphism : η-MagmaHomomorphism) where
+      
+      open η-MagmaHomomorphism η-magmaHomomorphism
+      
+      isUnique⟦_⟧ᴹ : ∀ t → ⟦ t ⟧ ≈ᴹ ⟦ t ⟧ᴹ
+      isUnique⟦ var a ⟧ᴹ = ⟦ a ⟧∘var≈ᴹη
+      isUnique⟦ s ∙ t ⟧ᴹ = begin
+          ⟦ s Syntax.∙ t ⟧  ≈⟨ ⟦⟧-homo s t ⟩
+          ⟦ s ⟧ ∙ᴹ ⟦ t ⟧    ≈⟨ congᴹ isUnique⟦ s ⟧ᴹ isUnique⟦ t ⟧ᴹ ⟩
+          ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ  ∎
+
+    module Corollary (𝓗 𝓚 : η-MagmaHomomorphism)
+      where
+        open η-MagmaHomomorphism 𝓗 renaming (⟦_⟧ to ⟦_⟧ᴴ)
+        open η-MagmaHomomorphism 𝓚 renaming (⟦_⟧ to ⟦_⟧ᴷ)
+        open Uniqueness 𝓗 renaming (isUnique⟦_⟧ᴹ to isUnique⟦_⟧ᴴ)
+        open Uniqueness 𝓚 renaming (isUnique⟦_⟧ᴹ to isUnique⟦_⟧ᴷ)
+      
+        isUnique⟦_⟧ :  ∀ t → ⟦ t ⟧ᴴ ≈ᴹ ⟦ t ⟧ᴷ
+        isUnique⟦ t ⟧ = begin ⟦ t ⟧ᴴ ≈⟨ isUnique⟦ t ⟧ᴴ ⟩ ⟦ t ⟧ᴹ ≈˘⟨ isUnique⟦ t ⟧ᴷ ⟩ ⟦ t ⟧ᴷ ∎
 
 -- immediate corollary
 
-  open FreeMagma setoidᴹ
-  open Properties setoidᴹ
-
-  alg-isMagmaHomomorphism : IsMagmaHomomorphism rawMagma rawMagmaᴹ alg
-  alg-isMagmaHomomorphism = Existence.isMagmaHomomorphism (record { cong = id })
+module _ (𝓜 : Magma m ℓm) where
+  open Magma 𝓜 renaming (setoid to setoidᴹ)
+  algMagmaHomomorphism : MagmaHomomorphism (FreeMagma.freeMagma setoidᴹ) 𝓜
+  algMagmaHomomorphism = Existence.magmaHomomorphismᴹ
+    where open LeftAdjoint 𝓜 (Identity.setoidHomomorphism setoidᴹ)
+  
 
 ------------------------------------------------------------------------
--- Functoriality of FreeMagma wrt Setoid homomorphisms
+-- Action of FreeMagma on Setoid homomorphisms
 
-module FreeMagmaFunctor (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
+module FreeMagmaFunctor {𝓐 : Setoid a ℓa} {𝓑 : Setoid b ℓb}
+       (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
 
-  open Setoid 𝓐  renaming (Carrier to UA; _≈_ to _≈ᴬ_)
-  open Setoid 𝓑  renaming (Carrier to UB; _≈_ to _≈ᴮ_)
+  open FreeMagma 𝓐 renaming (freeMagma to freeMagmaᴬ)
+  open FreeMagma 𝓑 renaming (freeMagma to freeMagmaᴮ
+                             ; varSetoidHomomorphism to 𝓥ᴮ)
 
-  open FreeMagma 𝓐
-    renaming (freeMagma to freeMagmaᴬ; rawMagma to rawMagmaᴬ
-             ; Carrier to UFA; _≈_ to _≈ᵀᴬ_; isMagma to isMagmaᴬ)
-
-  open FreeMagma 𝓑
-    renaming (freeMagma to freeMagmaᴮ; rawMagma to rawMagmaᴮ
-             ; Carrier to UFB; _≈_ to _≈ᵀᴮ_; isMagma to isMagmaᴮ)
-
-  open Properties freeMagmaᴮ 𝓐
-
-  open SetoidHomomorphism 𝓗
-
-  η : UA → UFB
-  η = Syntax.var ∘ ⟦_⟧
-
-  hom-η : IsRelHomomorphism _≈ᴬ_ _≈ᵀᴮ_ η
-  hom-η = record { cong = EquationalTheory.var ∘ congᴬᴮ }
-    where open IsRelHomomorphism isRelHomomorphism renaming (cong to congᴬᴮ)
-
-  open Existence
-
-  map : UFA → UFB
-  map = ⟦_⟧ᴹ hom-η
-
-  map-isMagmaHomomorphism : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴮ map
-  map-isMagmaHomomorphism = isMagmaHomomorphism hom-η
+  mapMagmaHomomorphism : MagmaHomomorphism freeMagmaᴬ freeMagmaᴮ
+  mapMagmaHomomorphism = Existence.magmaHomomorphismᴹ
+    where open LeftAdjoint freeMagmaᴮ (Compose.setoidHomomorphism 𝓗 𝓥ᴮ)
 
 ------------------------------------------------------------------------
 -- Naturality of alg
 
 module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
-  open Magma 𝓜 renaming (rawMagma to M; setoid to setoidᴹ; Carrier to UM; _≈_ to _≈ᴹ_)
-  open Magma 𝓝 renaming (rawMagma to N; setoid to setoidᴺ; Carrier to UN; _≈_ to _≈ᴺ_; refl to reflᴺ; trans to transᴺ)
-  module _ (𝓗 : SetoidHomomorphism setoidᴹ setoidᴺ) where
-    open SetoidHomomorphism 𝓗 renaming (isRelHomomorphism to hom-⟦⟧)
-    open FreeMagmaFunctor 𝓗
-    open FreeMagma setoidᴹ renaming (freeMagma to freeMagmaᴹ; rawMagma to FM; Carrier to UFM)
-    algᴹ = alg 𝓜
-    algᴹ-isMagmaHomomorphism = alg-isMagmaHomomorphism 𝓜
-    algᴺ = alg 𝓝
-    algᴺ-isMagmaHomomorphism = alg-isMagmaHomomorphism 𝓝
-    module _ (hom : IsMagmaHomomorphism M N ⟦_⟧) where
+  open Magma 𝓜 using () renaming (setoid to setoidᴹ)
+  open Magma 𝓝 using () renaming (_≈_ to _≈ᴺ_; refl to reflᴺ; trans to transᴺ)
 
-      h k : UFM → UN
-      h = ⟦_⟧ ∘ algᴹ
-      k = algᴺ ∘  map
+  module _ (𝓕 : MagmaHomomorphism 𝓜 𝓝) where
+    open MagmaHomomorphism 𝓕 using (⟦_⟧; isMagmaHomomorphism; setoidHomomorphism)
+    open FreeMagmaFunctor setoidHomomorphism using (mapMagmaHomomorphism)
+    open MagmaHomomorphism mapMagmaHomomorphism
+      renaming (⟦_⟧ to map; isMagmaHomomorphism to map-isMagmaHomomorphism; setoidHomomorphism to mapSetoidHomomorphism)
+    open FreeMagma setoidᴹ renaming (freeMagma to freeMagmaᴹ)
+    open LeftAdjoint 𝓝 setoidHomomorphism
+    open MagmaHomomorphism (algMagmaHomomorphism 𝓜)
+      renaming (⟦_⟧ to algᴹ; isMagmaHomomorphism to algᴹ-isMagmaHomomorphism)
+    open MagmaHomomorphism (algMagmaHomomorphism 𝓝)
+      renaming (⟦_⟧ to algᴺ; isMagmaHomomorphism to algᴺ-isMagmaHomomorphism)
 
-      h-hom : IsMagmaHomomorphism FM N h
-      h-hom = Compose.isMagmaHomomorphism transᴺ algᴹ-isMagmaHomomorphism hom
+    H K : MagmaHomomorphism freeMagmaᴹ 𝓝
+    H = record { ⟦_⟧ = ⟦_⟧ ∘ algᴹ
+               ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ algᴹ-isMagmaHomomorphism isMagmaHomomorphism }
 
-      k-hom : IsMagmaHomomorphism FM N k
-      k-hom = Compose.isMagmaHomomorphism transᴺ map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism
+    K = record { ⟦_⟧ = algᴺ ∘  map
+               ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism }
 
-      naturality : ∀ t → h t ≈ᴺ k t
-      naturality = isUnique hom-⟦⟧ h-hom k-hom (λ _ → reflᴺ) (λ _ → reflᴺ)
-        where open Properties.Existence.Corollary 𝓝 setoidᴹ
-  
+    open Existence using (η-MagmaHomomorphism; module Corollary)
+
+    naturality : ∀ t → ⟦ algᴹ t ⟧ ≈ᴺ algᴺ (map t)
+    naturality = Corollary.isUnique⟦_⟧ 𝓗 𝓚
+      where
+        𝓗 𝓚 : η-MagmaHomomorphism
+        𝓗 = record { magmaHomomorphism = H ; ⟦_⟧∘var≈ᴹη = λ _ → reflᴺ }
+        𝓚 = record { magmaHomomorphism = K ; ⟦_⟧∘var≈ᴹη = λ _ → reflᴺ }
+
 
 ------------------------------------------------------------------------
--- Functoriality of FreeMagmaFunctor.map : TODO
+-- Functoriality of FreeMagmaFunctor.map : TODO, by analogy with naturality
 
 ------------------------------------------------------------------------
 -- Monad instance: TODO
