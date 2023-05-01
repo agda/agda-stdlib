@@ -372,7 +372,28 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
 ------------------------------------------------------------------------
 -- Functoriality of FreeMagmaFunctor.map : by analogy with naturality
 
-module Functoriality
+module IdentityLaw (𝓐 : Setoid a ℓa) where
+
+  open FreeMagma 𝓐 renaming (varSetoidHomomorphism to 𝓥)
+  open Setoid setoid renaming (_≈_ to _≈FA_; refl to reflFA; trans to transFA)                             
+
+  Id : MagmaHomomorphism freeMagma freeMagma
+  Id = record
+    { ⟦_⟧ = id
+    ; isMagmaHomomorphism = Identity.isMagmaHomomorphism rawMagma reflFA}
+
+  open FreeMagmaFunctor (Identity.setoidHomomorphism 𝓐)
+  open MagmaHomomorphism mapMagmaHomomorphism renaming (⟦_⟧ to map-Id)
+
+  map-id : ∀ t → map-Id t ≈FA t
+  map-id = Corollary.isUnique⟦_⟧ 𝓘ᴬ 𝓘
+    where
+      open LeftAdjoint.Existence freeMagma 𝓥
+      𝓘ᴬ 𝓘 : η-MagmaHomomorphism
+      𝓘ᴬ = record { magmaHomomorphism = mapMagmaHomomorphism ; ⟦_⟧∘var≈ᴹη = λ _ → reflFA }
+      𝓘 = record { magmaHomomorphism = Id ; ⟦_⟧∘var≈ᴹη = λ _ → reflFA }
+
+module CompositionLaw
   {𝓐 : Setoid a ℓa} {𝓑 : Setoid b ℓb} {𝓒 : Setoid c ℓc}
   (𝓗 : SetoidHomomorphism 𝓐 𝓑) (𝓚 : SetoidHomomorphism 𝓑 𝓒) where
 
