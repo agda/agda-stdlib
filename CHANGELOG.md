@@ -1137,7 +1137,7 @@ Deprecated names
 
 * In `Data.Nat.Base`:
   ```
-  _≤″_.proof ↦  Data.Product.Base.proj₂
+  _≤″_.proof ↦  proj₂
   ```
 
 * In `Data.Nat.Properties`:
