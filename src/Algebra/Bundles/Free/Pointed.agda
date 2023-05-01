@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Definitions of 'pre-free' and 'free' magma
+-- Definitions of 'pre-free' and 'free' pointed setoid
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
