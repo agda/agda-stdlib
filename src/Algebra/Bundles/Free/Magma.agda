@@ -424,6 +424,23 @@ module CompositionLaw
   open MagmaHomomorphism MapAB renaming (⟦_⟧ to mapAB; isMagmaHomomorphism to isMagmaAB)
   open MagmaHomomorphism MapBC renaming (⟦_⟧ to mapBC; isMagmaHomomorphism to isMagmaBC)
 
+  Id : MagmaHomomorphism freeMagmaC freeMagmaC
+  Id = record
+    { ⟦_⟧ = id
+    ; isMagmaHomomorphism = Identity.isMagmaHomomorphism rawMagmaC reflFC}
+
+  open FreeMagmaFunctor (Identity.setoidHomomorphism 𝓒)
+    renaming (mapMagmaHomomorphism to MapCC)
+  open MagmaHomomorphism MapCC renaming (⟦_⟧ to map-Id)
+
+  map-id : ∀ t → map-Id t ≈FC t
+  map-id = Corollary.isUnique⟦_⟧ 𝓘𝓒 𝓘
+    where
+      open LeftAdjoint.Existence freeMagmaC 𝓥
+      𝓘𝓒 𝓘 : η-MagmaHomomorphism
+      𝓘𝓒 = record { magmaHomomorphism = MapCC ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
+      𝓘 = record { magmaHomomorphism = Id ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
+
   MapBC∘MapAB : MagmaHomomorphism freeMagmaA freeMagmaC
   MapBC∘MapAB = record
     { ⟦_⟧ = mapBC ∘ mapAB
