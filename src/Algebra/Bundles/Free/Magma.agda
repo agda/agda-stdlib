@@ -99,6 +99,7 @@ module Syntax where
   syntaxRawMonad : RawMonad (Syntax {a})
   syntaxRawMonad = mkRawMonad Syntax var bind
 
+
 ------------------------------------------------------------------------
 -- parametrised 'equational' theory over the 'pre'-free algebra
 
@@ -137,6 +138,7 @@ module EquationalTheory {A : Set a} (_≈ᴬ_ : Rel A ℓ) where
   varIsRelHomomorphism : IsRelHomomorphism _≈ᴬ_ _≈_ var
   varIsRelHomomorphism = record { cong = var }
 
+
 ------------------------------------------------------------------------
 -- Free algebra on a Set
 {-
@@ -171,6 +173,7 @@ module FreeRawMagma (A : Set a) where
   freeMagma : Magma a a
   freeMagma = record { RawMagma freeRawMagma ; isMagma = isMagma }
 
+
 ------------------------------------------------------------------------
 -- Free algebra on a Setoid
 
@@ -197,6 +200,7 @@ module FreeMagma (𝓐 : Setoid a ℓa) where
 
   varSetoidHomomorphism : SetoidHomomorphism 𝓐 setoid
   varSetoidHomomorphism = record { ⟦_⟧ = var; isRelHomomorphism = varIsRelHomomorphism }
+
 
 ------------------------------------------------------------------------
 -- Semantics: in terms of concrete Magma instances
@@ -233,6 +237,7 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
     renaming (Carrier to UM; _≈_ to _≈ᴹ_; _∙_ to _∙ᴹ_
              ; setoid to setoidᴹ; rawMagma to rawMagmaᴹ
              ; isMagma to isMagmaᴹ)
+
   open ≈-Reasoning setoidᴹ
 
   open Syntax
@@ -315,7 +320,7 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
       isUnique⟦ t ⟧ = begin ⟦ t ⟧ᴴ ≈⟨ isUnique⟦ t ⟧ᴴ ⟩ ⟦ t ⟧ᴹ ≈˘⟨ isUnique⟦ t ⟧ᴷ ⟩ ⟦ t ⟧ᴷ ∎
 
 ------------------------------------------------------------------------
--- immediate corollary: alg is in fact a MagmaHomomorphism
+-- Immediate corollary: alg is in fact a MagmaHomomorphism
 
 module _ (𝓜 : Magma m ℓm) where
   open Magma 𝓜 renaming (setoid to setoidᴹ; _≈_ to _≈ᴹ_; isMagma to isMagmaᴹ)
@@ -380,7 +385,7 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
 module IdentityLaw (𝓐 : Setoid a ℓa) where
 
   open FreeMagma 𝓐 renaming (varSetoidHomomorphism to 𝓥)
-  open Setoid setoid renaming (_≈_ to _≈FA_; refl to reflFA; trans to transFA)                             
+  open Setoid setoid renaming (_≈_ to _≈FA_; refl to reflFA)                             
 
   Id : MagmaHomomorphism freeMagma freeMagma
   Id = record
@@ -431,6 +436,7 @@ module CompositionLaw
       𝓐𝓒 𝓑𝓒∘𝓐𝓑 : η-MagmaHomomorphism
       𝓐𝓒 = record { magmaHomomorphism = MapAC ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
       𝓑𝓒∘𝓐𝓑 = record { magmaHomomorphism = MapBC∘MapAB ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
+
 
 ------------------------------------------------------------------------
 -- Monad instance, etc.: TODO
