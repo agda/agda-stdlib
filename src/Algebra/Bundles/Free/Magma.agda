@@ -245,15 +245,17 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
 
   open SetoidHomomorphism 𝓗 renaming (⟦_⟧ to η; isRelHomomorphism to hom-η) 
 
-  module Existence where
+  private
   
     ⟦_⟧ᴹ : UFA → UM
     ⟦_⟧ᴹ = ⟦_⟧ η
 
-    open Structures _≈ᴹ_
-    open IsMagma isMagmaᴹ renaming (∙-cong to congᴹ)
-    open IsRelHomomorphism hom-η renaming (cong to cong-η)
+  open Structures _≈ᴹ_
+  open IsMagma isMagmaᴹ renaming (∙-cong to congᴹ)
+  open IsRelHomomorphism hom-η renaming (cong to cong-η)
     
+  module Existence where
+  
     private
       algᴹ = alg 𝓜
 
@@ -279,36 +281,41 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
     magmaHomomorphismᴹ = record { ⟦_⟧ = ⟦_⟧ᴹ
                                ; isMagmaHomomorphism = isMagmaHomomorphismᴹ }
 
-    record η-MagmaHomomorphism : Set (suc (a ⊔ m ⊔ ℓa ⊔ ℓm)) where
+  record η-MagmaHomomorphism : Set (suc (a ⊔ m ⊔ ℓa ⊔ ℓm)) where
 
-      field
-        magmaHomomorphism : MagmaHomomorphism freeMagma 𝓜
-      open MagmaHomomorphism magmaHomomorphism public renaming (homo to ⟦⟧-homo)
-      field
-        ⟦_⟧∘var≈ᴹη : ∀ a → ⟦ var a ⟧ ≈ᴹ η a
+    field
+      magmaHomomorphism : MagmaHomomorphism freeMagma 𝓜
+    open MagmaHomomorphism magmaHomomorphism public renaming (homo to ⟦⟧-homo)
+    field
+      ⟦_⟧∘var≈ᴹη : ∀ a → ⟦ var a ⟧ ≈ᴹ η a
 
-    module Uniqueness (η-magmaHomomorphism : η-MagmaHomomorphism) where
+  ⟦⟧ᴹ-η-MagmaHomomorphism : η-MagmaHomomorphism
+  ⟦⟧ᴹ-η-MagmaHomomorphism = record { magmaHomomorphism = Existence.magmaHomomorphismᴹ
+                                   ; ⟦_⟧∘var≈ᴹη = Existence.unfold-⟦_⟧ᴹ ∘ var } 
+  
+  module Uniqueness (η-magmaHomomorphism : η-MagmaHomomorphism) where
       
-      open η-MagmaHomomorphism η-magmaHomomorphism
+    open η-MagmaHomomorphism η-magmaHomomorphism
       
-      isUnique⟦_⟧ᴹ : ∀ t → ⟦ t ⟧ ≈ᴹ ⟦ t ⟧ᴹ
-      isUnique⟦ var a ⟧ᴹ = ⟦ a ⟧∘var≈ᴹη
-      isUnique⟦ s ∙ t ⟧ᴹ = begin
-          ⟦ s Syntax.∙ t ⟧  ≈⟨ ⟦⟧-homo s t ⟩
-          ⟦ s ⟧ ∙ᴹ ⟦ t ⟧    ≈⟨ congᴹ isUnique⟦ s ⟧ᴹ isUnique⟦ t ⟧ᴹ ⟩
-          ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ  ∎
+    isUnique⟦_⟧ᴹ : ∀ t → ⟦ t ⟧ ≈ᴹ ⟦ t ⟧ᴹ
+    isUnique⟦ var a ⟧ᴹ = ⟦ a ⟧∘var≈ᴹη
+    isUnique⟦ s ∙ t ⟧ᴹ = begin
+        ⟦ s Syntax.∙ t ⟧  ≈⟨ ⟦⟧-homo s t ⟩
+        ⟦ s ⟧ ∙ᴹ ⟦ t ⟧    ≈⟨ congᴹ isUnique⟦ s ⟧ᴹ isUnique⟦ t ⟧ᴹ ⟩
+        ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ  ∎
 
-    module Corollary (𝓗 𝓚 : η-MagmaHomomorphism)
-      where
-        open η-MagmaHomomorphism 𝓗 renaming (⟦_⟧ to ⟦_⟧ᴴ)
-        open η-MagmaHomomorphism 𝓚 renaming (⟦_⟧ to ⟦_⟧ᴷ)
-        open Uniqueness 𝓗 renaming (isUnique⟦_⟧ᴹ to isUnique⟦_⟧ᴴ)
-        open Uniqueness 𝓚 renaming (isUnique⟦_⟧ᴹ to isUnique⟦_⟧ᴷ)
+  module Corollary (𝓗 𝓚 : η-MagmaHomomorphism)
+    where
+      open η-MagmaHomomorphism 𝓗 renaming (⟦_⟧ to ⟦_⟧ᴴ)
+      open η-MagmaHomomorphism 𝓚 renaming (⟦_⟧ to ⟦_⟧ᴷ)
+      open Uniqueness 𝓗 renaming (isUnique⟦_⟧ᴹ to isUnique⟦_⟧ᴴ)
+      open Uniqueness 𝓚 renaming (isUnique⟦_⟧ᴹ to isUnique⟦_⟧ᴷ)
       
-        isUnique⟦_⟧ :  ∀ t → ⟦ t ⟧ᴴ ≈ᴹ ⟦ t ⟧ᴷ
-        isUnique⟦ t ⟧ = begin ⟦ t ⟧ᴴ ≈⟨ isUnique⟦ t ⟧ᴴ ⟩ ⟦ t ⟧ᴹ ≈˘⟨ isUnique⟦ t ⟧ᴷ ⟩ ⟦ t ⟧ᴷ ∎
+      isUnique⟦_⟧ :  ∀ t → ⟦ t ⟧ᴴ ≈ᴹ ⟦ t ⟧ᴷ
+      isUnique⟦ t ⟧ = begin ⟦ t ⟧ᴴ ≈⟨ isUnique⟦ t ⟧ᴴ ⟩ ⟦ t ⟧ᴹ ≈˘⟨ isUnique⟦ t ⟧ᴷ ⟩ ⟦ t ⟧ᴷ ∎
 
--- immediate corollary
+------------------------------------------------------------------------
+-- immediate corollary: alg is in fact a MagmaHomomorphism
 
 module _ (𝓜 : Magma m ℓm) where
   open Magma 𝓜 renaming (setoid to setoidᴹ; _≈_ to _≈ᴹ_; isMagma to isMagmaᴹ)
@@ -352,18 +359,16 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
     open MagmaHomomorphism (algMagmaHomomorphism 𝓝)
       renaming (⟦_⟧ to algᴺ; isMagmaHomomorphism to algᴺ-isMagmaHomomorphism)
 
-    H K : MagmaHomomorphism freeMagmaᴹ 𝓝
-    H = record { ⟦_⟧ = ⟦_⟧ ∘ algᴹ
-               ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ algᴹ-isMagmaHomomorphism isMagmaHomomorphism }
-
-    K = record { ⟦_⟧ = algᴺ ∘  map
-               ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism }
-
-    open Existence using (η-MagmaHomomorphism; module Corollary)
-
     naturality : ∀ t → ⟦ algᴹ t ⟧ ≈ᴺ algᴺ (map t)
     naturality = Corollary.isUnique⟦_⟧ 𝓗 𝓚
       where
+        H K : MagmaHomomorphism freeMagmaᴹ 𝓝
+        H = record { ⟦_⟧ = ⟦_⟧ ∘ algᴹ
+            ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ algᴹ-isMagmaHomomorphism isMagmaHomomorphism }
+
+        K = record { ⟦_⟧ = algᴺ ∘  map
+            ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism }
+
         𝓗 𝓚 : η-MagmaHomomorphism
         𝓗 = record { magmaHomomorphism = H ; ⟦_⟧∘var≈ᴹη = λ _ → reflᴺ }
         𝓚 = record { magmaHomomorphism = K ; ⟦_⟧∘var≈ᴹη = λ _ → reflᴺ }
@@ -388,7 +393,7 @@ module IdentityLaw (𝓐 : Setoid a ℓa) where
   map-id : ∀ t → map-Id t ≈FA t
   map-id = Corollary.isUnique⟦_⟧ 𝓘ᴬ 𝓘
     where
-      open LeftAdjoint.Existence freeMagma 𝓥
+      open LeftAdjoint freeMagma 𝓥
       𝓘ᴬ 𝓘 : η-MagmaHomomorphism
       𝓘ᴬ = record { magmaHomomorphism = mapMagmaHomomorphism ; ⟦_⟧∘var≈ᴹη = λ _ → reflFA }
       𝓘 = record { magmaHomomorphism = Id ; ⟦_⟧∘var≈ᴹη = λ _ → reflFA }
@@ -403,7 +408,6 @@ module CompositionLaw
   open FreeMagma 𝓐 renaming (freeMagma to freeMagmaA)
   open FreeMagma 𝓑 renaming (freeMagma to freeMagmaB)
   open FreeMagma 𝓒 renaming (freeMagma to freeMagmaC
-                             ; rawMagma to rawMagmaC
                              ; setoid to setoidFC
                              ; varSetoidHomomorphism to 𝓥)
   open Setoid setoidFC renaming (_≈_ to _≈FC_; refl to reflFC; trans to transFC)                             
@@ -423,11 +427,11 @@ module CompositionLaw
   map-∘ : ∀ t → mapAC t ≈FC mapBC (mapAB t)
   map-∘ = Corollary.isUnique⟦_⟧ 𝓐𝓒 𝓑𝓒∘𝓐𝓑
     where
-      open LeftAdjoint.Existence freeMagmaC 𝓥∘𝓕
+      open LeftAdjoint freeMagmaC 𝓥∘𝓕
       𝓐𝓒 𝓑𝓒∘𝓐𝓑 : η-MagmaHomomorphism
       𝓐𝓒 = record { magmaHomomorphism = MapAC ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
       𝓑𝓒∘𝓐𝓑 = record { magmaHomomorphism = MapBC∘MapAB ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
 
 ------------------------------------------------------------------------
--- Monad instance: TODO
+-- Monad instance, etc.: TODO
 
