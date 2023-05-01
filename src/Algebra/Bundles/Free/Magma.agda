@@ -14,6 +14,7 @@ open import Algebra.Bundles.Raw using (RawMagma)
 import Algebra.Definitions as Definitions using (Congruent₂)
 import Algebra.Structures as Structures using (IsMagma)
 open import Algebra.Morphism.Structures using (IsMagmaHomomorphism)
+import Algebra.Morphism.Construct.Identity as Identity
 import Algebra.Morphism.Construct.Composition as Compose
 open import Effect.Functor
 open import Effect.Monad
@@ -33,10 +34,11 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
-    a ℓa b ℓb c ℓ m ℓm n ℓn : Level
+    ℓ a ℓa b ℓb c ℓc m ℓm n ℓn : Level
     A : Set a
     B : Set b
     C : Set c
+
 
 ------------------------------------------------------------------------
 -- Morphisms between Magmas: belongs in its own place
@@ -309,11 +311,13 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
 -- immediate corollary
 
 module _ (𝓜 : Magma m ℓm) where
-  open Magma 𝓜 renaming (setoid to setoidᴹ)
-  algMagmaHomomorphism : MagmaHomomorphism (FreeMagma.freeMagma setoidᴹ) 𝓜
+  open Magma 𝓜 renaming (setoid to setoidᴹ; _≈_ to _≈ᴹ_; isMagma to isMagmaᴹ)
+  open FreeMagma setoidᴹ
+  
+  algMagmaHomomorphism : MagmaHomomorphism freeMagma 𝓜
   algMagmaHomomorphism = Existence.magmaHomomorphismᴹ
     where open LeftAdjoint 𝓜 (Identity.setoidHomomorphism setoidᴹ)
-  
+
 
 ------------------------------------------------------------------------
 -- Action of FreeMagma on Setoid homomorphisms
@@ -366,7 +370,59 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
 
 
 ------------------------------------------------------------------------
--- Functoriality of FreeMagmaFunctor.map : TODO, by analogy with naturality
+-- Functoriality of FreeMagmaFunctor.map : by analogy with naturality
+
+module Functoriality
+  {𝓐 : Setoid a ℓa} {𝓑 : Setoid b ℓb} {𝓒 : Setoid c ℓc}
+  (𝓗 : SetoidHomomorphism 𝓐 𝓑) (𝓚 : SetoidHomomorphism 𝓑 𝓒) where
+
+  𝓕 : SetoidHomomorphism 𝓐 𝓒
+  𝓕 = Compose.setoidHomomorphism 𝓗 𝓚
+
+  open FreeMagma 𝓐 renaming (freeMagma to freeMagmaA)
+  open FreeMagma 𝓑 renaming (freeMagma to freeMagmaB)
+  open FreeMagma 𝓒 renaming (freeMagma to freeMagmaC
+                             ; rawMagma to rawMagmaC
+                             ; setoid to setoidFC
+                             ; varSetoidHomomorphism to 𝓥)
+  open Setoid setoidFC renaming (_≈_ to _≈FC_; refl to reflFC; trans to transFC)                             
+  𝓥∘𝓕 = Compose.setoidHomomorphism 𝓕 𝓥
+  open FreeMagmaFunctor 𝓕 renaming (mapMagmaHomomorphism to MapAC)
+  open FreeMagmaFunctor 𝓗 renaming (mapMagmaHomomorphism to MapAB)
+  open FreeMagmaFunctor 𝓚 renaming (mapMagmaHomomorphism to MapBC)
+  open MagmaHomomorphism MapAC renaming (⟦_⟧ to mapAC)
+  open MagmaHomomorphism MapAB renaming (⟦_⟧ to mapAB; isMagmaHomomorphism to isMagmaAB)
+  open MagmaHomomorphism MapBC renaming (⟦_⟧ to mapBC; isMagmaHomomorphism to isMagmaBC)
+
+  Id : MagmaHomomorphism freeMagmaC freeMagmaC
+  Id = record
+    { ⟦_⟧ = id
+    ; isMagmaHomomorphism = Identity.isMagmaHomomorphism rawMagmaC reflFC}
+
+  open FreeMagmaFunctor (Identity.setoidHomomorphism 𝓒)
+    renaming (mapMagmaHomomorphism to MapCC)
+  open MagmaHomomorphism MapCC renaming (⟦_⟧ to map-Id)
+
+  map-id : ∀ t → map-Id t ≈FC t
+  map-id = Corollary.isUnique⟦_⟧ 𝓘𝓒 𝓘
+    where
+      open LeftAdjoint.Existence freeMagmaC 𝓥
+      𝓘𝓒 𝓘 : η-MagmaHomomorphism
+      𝓘𝓒 = record { magmaHomomorphism = MapCC ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
+      𝓘 = record { magmaHomomorphism = Id ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
+
+  MapBC∘MapAB : MagmaHomomorphism freeMagmaA freeMagmaC
+  MapBC∘MapAB = record
+    { ⟦_⟧ = mapBC ∘ mapAB
+    ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transFC isMagmaAB isMagmaBC}
+
+  map-∘ : ∀ t → mapAC t ≈FC mapBC (mapAB t)
+  map-∘ = Corollary.isUnique⟦_⟧ 𝓐𝓒 𝓑𝓒∘𝓐𝓑
+    where
+      open LeftAdjoint.Existence freeMagmaC 𝓥∘𝓕
+      𝓐𝓒 𝓑𝓒∘𝓐𝓑 : η-MagmaHomomorphism
+      𝓐𝓒 = record { magmaHomomorphism = MapAC ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
+      𝓑𝓒∘𝓐𝓑 = record { magmaHomomorphism = MapBC∘MapAB ; ⟦_⟧∘var≈ᴹη = λ _ → reflFC }
 
 ------------------------------------------------------------------------
 -- Monad instance: TODO
