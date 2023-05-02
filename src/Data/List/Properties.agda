@@ -872,7 +872,7 @@ module _ {R : Rel A p} (R? : B.Decidable R) where
   length-derun : ∀ xs → length (derun R? xs) ≤ length xs
   length-derun [] = ≤-refl
   length-derun (x ∷ []) = ≤-refl
-  length-derun (x ∷ y ∷ xs) with ih ← length-derun (y ∷ xs) | does (R? x y) 
+  length-derun (x ∷ y ∷ xs) with ih ← length-derun (y ∷ xs) | does (R? x y)
   ... | true  = m≤n⇒m≤1+n ih
   ... | false = s≤s ih
 
