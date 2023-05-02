@@ -1603,14 +1603,14 @@ Other minor changes
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
-  cong+comm+assoc⇒middleFour : Congruent₂ _•_ → Commutative _•_ → Associative _•_ →
-                                _•_ MiddleFourExchange _•_
-  cong+identity+middleFour⇒assoc : Congruent₂ _•_ → Identity e _•_ →
-                                    _•_ MiddleFourExchange _•_ →
-                                    Associative _•_
-  cong+identity+middleFour⇒comm : Congruent₂ _•_ → Identity e _+_ →
-                                   _•_ MiddleFourExchange _+_ →
-                                   Commutative _•_
+  comm+assoc⇒middleFour : Congruent₂ _•_ → Commutative _•_ → Associative _•_ →
+                           _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Congruent₂ _•_ → Identity e _•_ →
+                               _•_ MiddleFourExchange _•_ →
+                               Associative _•_
+  identity+middleFour⇒comm : Congruent₂ _•_ → Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
 
   involutive⇒surjective  : Involutive f  → Surjective f
   selfInverse⇒involutive : SelfInverse f → Involutive f
