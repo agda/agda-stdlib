@@ -280,7 +280,7 @@ module _ (commutativeRing : CommutativeRing r ℓr)
   open CommutativeRing commutativeRing renaming (Carrier to R)
 
   -- An R-module is an R-R-bimodule where R is commutative.
-  -- This means that *ₗ and *ᵣ coincide up to mathematical equality, though it
+  -- We enforce that *ₗ and *ᵣ coincide up to mathematical equality, though it
   -- may be that they do not coincide up to definitional equality.
 
   open SimultaneousBiDefs R ≈ᴹ
