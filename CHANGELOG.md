@@ -2080,6 +2080,9 @@ Other minor changes
   <⇒<′ : m < n → m <′ n
   <′⇒< : m <′ n → m < n
 
+  m+n≤p⇒m≤p∸n         : m + n ≤ p → m ≤ p ∸ n
+  m≤p∸n⇒m+n≤p         : n ≤ p → m ≤ p ∸ n → m + n ≤ p
+
   1≤n!    : 1 ≤ n !
   _!≢0    : NonZero (n !)
   _!*_!≢0 : NonZero (m ! * n !)
