@@ -283,10 +283,12 @@ module _ (commutativeRing : CommutativeRing r ℓr)
   -- This means that *ₗ and *ᵣ coincide up to mathematical equality, though it
   -- may be that they do not coincide up to definitional equality.
 
+  open SimultaneousBiDefs R ≈ᴹ
+
   record IsModule (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     field
       isBimodule : IsBimodule ring ring ≈ᴹ +ᴹ 0ᴹ -ᴹ *ₗ *ᵣ
-      *ₗ-*ᵣ-comm : ∀ x m → ≈ᴹ (*ₗ x m) (*ᵣ m x)
+      *ₗ-*ᵣ-comm : Commutative *ₗ *ᵣ
 
     open IsBimodule isBimodule public
 
