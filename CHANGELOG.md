@@ -782,6 +782,10 @@ Non-backwards compatible changes
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
 
+* `IsModule` now contains an extra law to enforce that left- and right- multiplication coincide:
+  ```
+  *ₗ-*ᵣ-comm : Commutative *ₗ *ᵣ
+  ```
 
 Major improvements
 ------------------
@@ -1345,6 +1349,11 @@ New modules
 * Operations for module-like algebraic structures:
   ```
   Algebra.Module.Core
+  ```
+
+* Definitions for module-like algebraic structures with left- and right- multiplication over the same scalars:
+  ```
+  Algebra.Module.Definitions.Bi.Simultaneous
   ```
 
 * Constructive algebraic structures with apartness relations:
