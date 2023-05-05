@@ -3037,3 +3037,8 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
+
+* Added new function to `Data.List.Relation.Binary.Permutation.Propositional.Properties`
+  ```agda
+  ↭-reverse : (xs : List A) → reverse xs ↭ xs
+  ```
