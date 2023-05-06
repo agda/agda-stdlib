@@ -325,6 +325,18 @@ drop-∷ = drop-mid [] []
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (shift x xs ys)) (++↭ʳ++ xs (x ∷ ys))
 
 ------------------------------------------------------------------------
+-- reverse
+
+↭-reverse : (xs : List A) → reverse xs ↭ xs
+↭-reverse [] = ↭-refl
+↭-reverse (x ∷ xs) = begin
+  reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
+  reverse xs ∷ʳ x ↭˘⟨ ∷↭∷ʳ x (reverse xs) ⟩
+  x ∷ reverse xs   ↭⟨ prep x (↭-reverse xs) ⟩
+  x ∷ xs ∎
+  where open PermutationReasoning
+
+------------------------------------------------------------------------
 -- merge
 
 module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
