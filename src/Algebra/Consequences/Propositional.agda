@@ -86,12 +86,17 @@ module _ {_•_ _◦_ : Op₂ A} (•-comm : Commutative _•_) where
   comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _◦_) •-comm
 
 ------------------------------------------------------------------------
--- Selectivity and Middle-Four Exchange
+-- Selectivity
 
 module _ {_•_ : Op₂ A} where
 
   sel⇒idem : Selective _•_ → Idempotent _•_
   sel⇒idem = Base.sel⇒idem _≡_
+
+------------------------------------------------------------------------
+-- Middle-Four Exchange
+
+module _ {_•_ : Op₂ A} where
 
   comm+assoc⇒middleFour : Commutative _•_ → Associative _•_ →
                            _•_ MiddleFourExchange _•_

@@ -30,7 +30,7 @@ open import Relation.Unary using (Pred)
 open import Algebra.Consequences.Base public
 
 ------------------------------------------------------------------------
--- Congruence and MiddleFourExchange
+-- MiddleFourExchange
 
 module _ {_•_ : Op₂ A} (cong : Congruent₂ _•_) where
 
