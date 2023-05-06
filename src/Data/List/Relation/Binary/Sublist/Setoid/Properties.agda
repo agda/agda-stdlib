@@ -13,7 +13,6 @@ module Data.List.Relation.Binary.Sublist.Setoid.Properties
 
 open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Relation.Unary.Any using (Any)
-open import Data.List.Relation.Binary.Sublist.Heterogeneous using () renaming (minimum to []⊆_)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (_≤_; _≥_)
 import Data.Nat.Properties as ℕₚ
@@ -21,6 +20,7 @@ open import Data.Product using (∃; _,_; proj₂)
 open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
+open import Relation.Binary using () renaming (Decidable to Decidable₂)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
@@ -208,25 +208,23 @@ module _ {as bs : List A} where
 ------------------------------------------------------------------------
 -- merge
 
-module Merge {ℓ′} (_≤_ : Rel A ℓ′) (dto : IsDecTotalOrder _≈_ _≤_)  where
+module _ {ℓ′} {_≤_ : Rel A ℓ′} (_≤?_ : Decidable₂ _≤_) where
 
-  open IsDecTotalOrder dto using (_≤?_)
-
-  merge-is-superlistˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
-  merge-is-superlistˡ []       ys = []⊆ ys
-  merge-is-superlistˡ (x ∷ xs) [] = ⊆-refl
-  merge-is-superlistˡ (x ∷ xs) (y ∷ ys)
-   with x ≤? y  | merge-is-superlistˡ xs (y ∷ ys)
-                      | merge-is-superlistˡ (x ∷ xs) ys
+  ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  ⊆-mergeˡ []       ys = minimum ys
+  ⊆-mergeˡ (x ∷ xs) [] = ⊆-refl
+  ⊆-mergeˡ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | ⊆-mergeˡ xs (y ∷ ys)
+                      | ⊆-mergeˡ (x ∷ xs) ys
   ... | yes x≤y | rec | _   = ≈-refl ∷ rec
   ... | no  x≰y | _   | rec = y ∷ʳ rec
 
-  merge-is-superlistʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
-  merge-is-superlistʳ [] ys =  ⊆-refl
-  merge-is-superlistʳ (x ∷ xs) [] = []⊆ (merge _≤?_ (x ∷ xs) [])
-  merge-is-superlistʳ (x ∷ xs) (y ∷ ys)
-   with x ≤? y  | merge-is-superlistʳ xs (y ∷ ys)
-                      | merge-is-superlistʳ (x ∷ xs) ys
+  ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ⊆-mergeʳ [] ys =  ⊆-refl
+  ⊆-mergeʳ (x ∷ xs) [] = minimum (merge _≤?_ (x ∷ xs) [])
+  ⊆-mergeʳ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | ⊆-mergeʳ xs (y ∷ ys)
+                      | ⊆-mergeʳ (x ∷ xs) ys
   ... | yes x≤y | rec | _   = x ∷ʳ rec
   ... | no  x≰y | _   | rec = ≈-refl ∷ rec
 

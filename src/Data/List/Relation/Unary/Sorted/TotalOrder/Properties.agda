@@ -14,6 +14,7 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_; _∷′_; head′; tail)
 import Data.List.Relation.Unary.Linked.Properties as Linked
+import Data.List.Relation.Binary.Sublist.Setoid as Sublist
 import Data.List.Relation.Binary.Sublist.Setoid.Properties as SublistProperties
 open import Data.List.Relation.Unary.Sorted.TotalOrder hiding (head)
 
@@ -105,7 +106,7 @@ module _ (O : TotalOrder a ℓ₁ ℓ₂) where
 -- merge
 
 module _ (DO : DecTotalOrder a ℓ₁ ℓ₂) where
-  open DecTotalOrder DO renaming (totalOrder to O)
+  open DecTotalOrder DO using (_≤_; _≤?_) renaming (totalOrder to O)
   open TotalOrderProperties O using (≰⇒≥)
 
   private
@@ -128,14 +129,17 @@ module _ (DO : DecTotalOrder a ℓ₁ ℓ₂) where
   ... | yes x≤y | rec | _   = merge-con (head′ rxs)      (just x≤y)  ∷′ rec
   ... | no  x≰y | _   | rec = merge-con (just (≰⇒≥ x≰y)) (head′ rys) ∷′ rec
 
-  -- Reexport merge-is-superlistˡʳ
+  -- Reexport ⊆-mergeˡʳ
 
-  open
-    SublistProperties.Merge
-      (Preorder.Eq.setoid (DecTotalOrder.preorder DO))
-       _≤_
-      (DecTotalOrder.isDecTotalOrder DO)
-    public using (merge-is-superlistˡ; merge-is-superlistʳ)
+  S = Preorder.Eq.setoid (DecTotalOrder.preorder DO)
+  open Sublist S using (_⊆_)
+  module SP = SublistProperties S
+
+  ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  ⊆-mergeˡ = SP.⊆-mergeˡ _≤?_
+
+  ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ⊆-mergeʳ = SP.⊆-mergeʳ _≤?_
 
 ------------------------------------------------------------------------
 -- filter
