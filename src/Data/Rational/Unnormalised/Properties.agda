@@ -39,7 +39,7 @@ import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
 open import Relation.Nullary using (yes; no)
-import Relation.Binary.Reasoning.Setoid as ReasonSetoid
+import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
@@ -98,8 +98,8 @@ drop-*≡* (*≡* eq) = eq
 _≃?_ : Decidable _≃_
 p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
 
-0ℚᵘ≠1ℚᵘ : 0ℚᵘ ≠ 1ℚᵘ
-0ℚᵘ≠1ℚᵘ = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
+0≠1 : 0ℚᵘ ≠ 1ℚᵘ
+0≠1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
 
 ≃-≠-irreflexive : Irreflexive _≃_ _≠_
 ≃-≠-irreflexive x≃y x≠y = x≠y x≃y
@@ -134,9 +134,7 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
   }
 
 ≠-tight : Tight _≃_ _≠_
-proj₁ (≠-tight p q) ¬p≠q with p ≃? q
-... | yes p≃q = p≃q
-... | no ¬p≃q = ⊥-elim (¬p≠q ¬p≃q)
+proj₁ (≠-tight p q) ¬p≠q = Dec.decidable-stable (p ≃? q) ¬p≠q
 proj₂ (≠-tight p q) p≃q p≠q = p≠q p≃q
 
 ≃-setoid : Setoid 0ℓ 0ℓ
@@ -149,7 +147,7 @@ proj₂ (≠-tight p q) p≃q p≠q = p≠q p≃q
   { isDecEquivalence = ≃-isDecEquivalence
   }
 
-module ≃-Reasoning = ReasonSetoid ≃-setoid
+module ≃-Reasoning = SetoidReasoning ≃-setoid
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -1092,16 +1090,12 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-zero = *-zeroˡ , *-zeroʳ
 
 invertible⇒≠ : Invertible _≃_ 1ℚᵘ _*_ (p - q) → p ≠ q
-invertible⇒≠ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0ℚᵘ≠1ℚᵘ 0≃1
-  where
-  open ≃-Reasoning
-
-  0≃1 : 0ℚᵘ ≃ 1ℚᵘ
-  0≃1 = begin
-   0ℚᵘ             ≈˘⟨ *-zeroˡ 1/p-q ⟩
-   0ℚᵘ * 1/p-q     ≈˘⟨ *-congʳ (p≃q⇒p-q≃0 p q p≃q) ⟩
-   (p - q) * 1/p-q ≈⟨ x*1/x≃1 ⟩
-   1ℚᵘ             ∎
+invertible⇒≠ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≠1 (begin
+  0ℚᵘ             ≈˘⟨ *-zeroˡ 1/p-q ⟩
+  0ℚᵘ * 1/p-q     ≈˘⟨ *-congʳ (p≃q⇒p-q≃0 p q p≃q) ⟩
+  (p - q) * 1/p-q ≈⟨ x*1/x≃1 ⟩
+  1ℚᵘ             ∎)
+  where open ≃-Reasoning
 
 *-distribˡ-+ : _DistributesOverˡ_ _≃_ _*_ _+_
 *-distribˡ-+ p@record{} q@record{} r@record{} =

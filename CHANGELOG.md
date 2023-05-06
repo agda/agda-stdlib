@@ -2999,6 +2999,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
 
+* Added new module to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  module ≃-Reasoning = SetoidReasoning ≃-setoid
+  ```
+
 * Added new functions to `Data.Rational.Unnormalised.Properties`
   ```agda
   0ℚᵘ≠1ℚᵘ : 0ℚᵘ ≠ 1ℚᵘ
