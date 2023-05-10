@@ -782,7 +782,7 @@ Non-backwards compatible changes
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
 
-* `IsModule` now contains an extra law to enforce that left- and right- multiplication coincide:
+* `IsSemimodule` and `IsModule` now contain an extra law to enforce that left- and right- multiplication coincide:
   ```
   *ₗ-*ᵣ-comm : Commutative *ₗ *ᵣ
   ```

@@ -164,7 +164,7 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr)
   open CommutativeSemiring commutativeSemiring renaming (Carrier to R)
 
   -- An R-semimodule is an R-R-bisemimodule where R is commutative.
-  -- This means that *ₗ and *ᵣ coincide up to mathematical equality, though it
+  -- We enforce that *ₗ and *ᵣ coincide up to mathematical equality, though it
   -- may be that they do not coincide up to definitional equality.
 
   record IsSemimodule (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M)
