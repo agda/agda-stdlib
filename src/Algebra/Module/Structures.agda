@@ -167,11 +167,13 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr)
   -- We enforce that *ₗ and *ᵣ coincide up to mathematical equality, though it
   -- may be that they do not coincide up to definitional equality.
 
+  open SimultaneousBiDefs R ≈ᴹ
+
   record IsSemimodule (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M)
                       : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     field
       isBisemimodule : IsBisemimodule semiring semiring ≈ᴹ +ᴹ 0ᴹ *ₗ *ᵣ
-      *ₗ-*ᵣ-comm : ∀ x m → ≈ᴹ (*ₗ x m) (*ᵣ m x)
+      *ₗ-*ᵣ-comm : Commutative *ₗ *ᵣ
 
     open IsBisemimodule isBisemimodule public
 
