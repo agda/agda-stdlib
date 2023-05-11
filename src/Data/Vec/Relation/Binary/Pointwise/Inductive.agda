@@ -218,7 +218,7 @@ module _ {_∼_ : REL A B ℓ} where
   tabulate⁻ (_     ∷ f∼g) (suc i) = tabulate⁻ f∼g i
 
 ------------------------------------------------------------------------
--- concat
+-- cong
 
 module _ {_∼_ : Rel A ℓ} (refl : Reflexive _∼_) where
   cong-[_]≔ : ∀ {n} i p {xs} {ys} →
