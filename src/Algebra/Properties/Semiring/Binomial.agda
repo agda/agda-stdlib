@@ -7,11 +7,12 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (Semiring)
+open import Data.Bool.Base using (true; false)
 open import Data.Nat.Base as Nat hiding (_+_; _*_; _^_)
 open import Data.Nat.Combinatorics
   using (_C_; nCn≡1; nC1≡n; nCk+nC[k+1]≡[n+1]C[k+1])
 open import Data.Nat.Properties as Nat
-  using (n<ᵇ1+n; n∸n≡0; [m-n-1]+1≡[m-n])
+  using (<⇒<ᵇ; n<1+n; n∸n≡0; +-∸-assoc)
 open import Data.Fin.Base as Fin
   using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Patterns using (0F)
@@ -22,6 +23,7 @@ open import Data.Fin.Relation.Unary.TopView
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; cong; module ≡-Reasoning)
+  renaming (refl to ≡-refl)
 
 module Algebra.Properties.Semiring.Binomial {a ℓ} (S : Semiring a ℓ) where
 
@@ -105,7 +107,7 @@ module _ (x y : Carrier) where
       ∑[ i < suc n ] (y * term i) + 0#
         ≈⟨ +-cong (sum-cong-≋ lemma₂-inj) lemma₂-top ⟩
       (∑[ i < suc n ] term₂-inj i) + term₂ [n+1]
-        ≈˘⟨ sum-init term₂ ⟩
+        ≈˘⟨ sum-init-last term₂ ⟩
       sum term₂
         ≡⟨⟩
       sum₂  ∎
@@ -128,7 +130,11 @@ module _ (x y : Carrier) where
 
     open Binomial n using (term)
 
-    x*lemma : x * term i ≈ (n C toℕ i) × Binomial.binomial (suc n) (suc i)
+    private
+
+      k = toℕ i
+
+    x*lemma : x * term i ≈ (n C k) × Binomial.binomial (suc n) (suc i)
     x*lemma = begin
       x * term i                                  ≡⟨⟩
       x * ((n C k) × (x ^ k * y ^ (n ∸ k)))       ≈˘⟨ *-congˡ (×-assoc-* (n C k) _ _) ⟩
@@ -139,7 +145,7 @@ module _ (x y : Carrier) where
       (n C k) × Binomial.binomial (suc n) (suc i) ∎
       where
         open ≈-Reasoning
-        k = toℕ i
+        
 
     
 ------------------------------------------------------------------------
@@ -147,13 +153,16 @@ module _ (x y : Carrier) where
 
   module _ (x*y≈y*x : x * y ≈ y * x) where
   
-    module _ (n : ℕ) where 
+    module _ {n : ℕ} (j : Fin n) where 
 
-      open Binomial n using (binomial; term; term₁; term₂)
+      open Binomial n using (binomial; term)
 
-      y*lemma : (j : Fin n) → let i = inject₁ j in
-        y * term (suc j) ≈ (n C toℕ (suc j)) × Binomial.binomial (suc n) (suc i)
-      y*lemma j = begin
+      private
+
+        i = inject₁ j
+
+      y*lemma : y * term (suc j) ≈ (n C toℕ (suc j)) × Binomial.binomial (suc n) (suc i)
+      y*lemma = begin
         y * term (suc j)
           ≈⟨ ×-comm-* nC[j+1] y (binomial (suc j)) ⟩
         nC[j+1] × (y * binomial (suc j))
@@ -168,7 +177,6 @@ module _ (x y : Carrier) where
           ≡⟨⟩
         (n C toℕ (suc j)) × Binomial.binomial (suc n) (suc i) ∎
         where
-          i           = inject₁ j
           k           = toℕ i
           k≡j         : k ≡ toℕ j
           k≡j         = toℕ-inject₁ j
@@ -187,18 +195,29 @@ module _ (x y : Carrier) where
           [n-k]≡[n-j] : [n-k] ≡ [n-j]
           [n-k]≡[n-j] = begin 
             [n-k]       ≡⟨ cong (n ∸_) k≡j ⟩
-            n ∸ toℕ j  ≡˘⟨ [m-n-1]+1≡[m-n] (toℕ<n j) ⟩
+            n ∸ toℕ j  ≡⟨ +-∸-assoc 1 (toℕ<n j) ⟩
             [n-j]       ∎ where open ≡-Reasoning
           open ≈-Reasoning
             
 ------------------------------------------------------------------------
 -- Now, a lemma characterising the sum of the term₁ and term₂ expressions
 
+    module _ n where
+  
       open ≈-Reasoning
 
-      lemma₁₊₂₌ₑₓₚ : ∀ i → term₁ i + term₂ i ≈ Binomial.term (suc n) i
+      open Binomial n using (term; term₁; term₂)
+
+      private
+
+        n<ᵇ1+n : (n Nat.<ᵇ suc n) ≡ true
+        n<ᵇ1+n with n Nat.<ᵇ suc n in eq | <⇒<ᵇ (n<1+n n)
+        ... | true | _ = ≡-refl
+
+
+      term₁+term₂≈term : ∀ i → term₁ i + term₂ i ≈ Binomial.term (suc n) i
       
-      lemma₁₊₂₌ₑₓₚ 0F = begin
+      term₁+term₂≈term 0F = begin
         term₁ 0F + term₂ 0F          ≡⟨⟩
         0# + y * (1 × (1# * y ^ n))  ≈⟨ +-identityˡ _ ⟩
         y * (1 × (1# * y ^ n))       ≈⟨ *-congˡ (+-identityʳ (1# * y ^ n)) ⟩
@@ -209,20 +228,20 @@ module _ (x y : Carrier) where
         1 × (1# * y ^ suc n)         ≡⟨⟩
         Binomial.term (suc n) 0F      ∎
 
-      lemma₁₊₂₌ₑₓₚ (suc i) with view i
+      term₁+term₂≈term (suc i) with view i
       ... | top
       {- remembering that i = fromℕ n, definitionally -}
         rewrite view-top-toℕ i {{Instances.top⁺}}
           | nCn≡1 n
           | n∸n≡0 n
-          | n<ᵇ1+n n
+          | n<ᵇ1+n
           = begin
         x * ((x ^ n * 1#) + 0#) + 0# ≈⟨ +-identityʳ _ ⟩
         x * ((x ^ n * 1#) + 0#)      ≈⟨ *-congˡ (+-identityʳ _) ⟩
         x * (x ^ n * 1#)             ≈˘⟨ *-assoc _ _ _ ⟩
         x * x ^ n * 1#               ≈˘⟨ +-identityʳ _ ⟩
         1 × (x * x ^ n * 1#)         ∎
-
+ 
       ... | inj j
       {- remembering that i = inject₁ j, definitionally -}
           = begin
@@ -273,7 +292,7 @@ module _ (x y : Carrier) where
       (x + y) * expansion                 ≈⟨ distribʳ _ _ _ ⟩
       x * expansion + y * expansion       ≈⟨ +-cong lemma₁ lemma₂ ⟩
       sum₁ + sum₂                         ≈˘⟨ ∑-distrib-+ term₁ term₂ ⟩
-      ∑[ i < suc n ] (term₁ i + term₂ i)  ≈⟨ sum-cong-≋ (lemma₁₊₂₌ₑₓₚ n-1) ⟩
+      ∑[ i < suc n ] (term₁ i + term₂ i)  ≈⟨ sum-cong-≋ (term₁+term₂≈term n-1) ⟩
       ∑[ i < suc n ] Binomial.term n i    ≡⟨⟩
       Binomial.expansion n                ∎
       where
