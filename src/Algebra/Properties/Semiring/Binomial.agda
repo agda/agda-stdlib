@@ -4,10 +4,10 @@
 -- The Binomial Theorem for *-commuting elements in a Semiring
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Semiring)
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (true)
 open import Data.Nat.Base as Nat hiding (_+_; _*_; _^_)
 open import Data.Nat.Combinatorics
   using (_C_; nCn≡1; nC1≡n; nCk+nC[k+1]≡[n+1]C[k+1])
@@ -145,15 +145,15 @@ module _ (x y : Carrier) where
       (n C k) × Binomial.binomial (suc n) (suc i) ∎
       where
         open ≈-Reasoning
-        
 
-    
+
+
 ------------------------------------------------------------------------
 -- Next, a lemma which does require commutativity
 
   module _ (x*y≈y*x : x * y ≈ y * x) where
-  
-    module _ {n : ℕ} (j : Fin n) where 
+
+    module _ {n : ℕ} (j : Fin n) where
 
       open Binomial n using (binomial; term)
 
@@ -180,7 +180,7 @@ module _ (x y : Carrier) where
           k           = toℕ i
           k≡j         : k ≡ toℕ j
           k≡j         = toℕ-inject₁ j
-          
+
           [k+1]       = ℕ.suc k
           [j+1]       = toℕ (suc j)
           [n-k]       = n ∸ k
@@ -191,19 +191,19 @@ module _ (x y : Carrier) where
 
           [k+1]≡[j+1] : [k+1] ≡ [j+1]
           [k+1]≡[j+1] = cong suc k≡j
-          
+
           [n-k]≡[n-j] : [n-k] ≡ [n-j]
-          [n-k]≡[n-j] = begin 
+          [n-k]≡[n-j] = begin
             [n-k]       ≡⟨ cong (n ∸_) k≡j ⟩
             n ∸ toℕ j  ≡⟨ +-∸-assoc 1 (toℕ<n j) ⟩
             [n-j]       ∎ where open ≡-Reasoning
           open ≈-Reasoning
-            
+
 ------------------------------------------------------------------------
 -- Now, a lemma characterising the sum of the term₁ and term₂ expressions
 
     module _ n where
-  
+
       open ≈-Reasoning
 
       open Binomial n using (term; term₁; term₂)
@@ -216,7 +216,7 @@ module _ (x y : Carrier) where
 
 
       term₁+term₂≈term : ∀ i → term₁ i + term₂ i ≈ Binomial.term (suc n) i
-      
+
       term₁+term₂≈term 0F = begin
         term₁ 0F + term₂ 0F          ≡⟨⟩
         0# + y * (1 × (1# * y ^ n))  ≈⟨ +-identityˡ _ ⟩
@@ -241,14 +241,14 @@ module _ (x y : Carrier) where
         x * (x ^ n * 1#)             ≈˘⟨ *-assoc _ _ _ ⟩
         x * x ^ n * 1#               ≈˘⟨ +-identityʳ _ ⟩
         1 × (x * x ^ n * 1#)         ∎
- 
+
       ... | inj j
       {- remembering that i = inject₁ j, definitionally -}
           = begin
         (x * term i) + (y * term (suc j))
           ≈⟨ +-cong (x*lemma i) (y*lemma j) ⟩
         (nCk × [x^k+1]*[y^n-k]) + (nC[j+1] × [x^k+1]*[y^n-k])
-          ≈˘⟨ +-congˡ (×-congˡ nC[k+1]≡nC[j+1]) ⟩  
+          ≈˘⟨ +-congˡ (×-congˡ nC[k+1]≡nC[j+1]) ⟩
         (nCk × [x^k+1]*[y^n-k]) + (nC[k+1] × [x^k+1]*[y^n-k])
           ≈˘⟨ ×-homo-+ [x^k+1]*[y^n-k] nCk nC[k+1] ⟩
         (nCk Nat.+ nC[k+1]) × [x^k+1]*[y^n-k]
@@ -272,9 +272,9 @@ module _ (x y : Carrier) where
 -- Finally, the main result
 
     open ≈-Reasoning
-    
+
     theorem : ∀ n → ((x + y) ^ n) ≈ Binomial.expansion n
-  
+
     theorem zero    = begin
       (x + y) ^ 0                     ≡⟨⟩
       1#                              ≈˘⟨ 1×-identityʳ 1# ⟩

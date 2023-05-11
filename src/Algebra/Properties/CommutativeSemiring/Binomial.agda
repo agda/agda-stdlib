@@ -4,7 +4,7 @@
 -- The Binomial Theorem for Commutative Semirings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles
   using (CommutativeSemiring)
@@ -21,8 +21,4 @@ open Binomial public hiding (theorem)
 
 theorem : ∀ n x y → ((x + y) ^ n) ≈ Binomial.expansion x y n
 theorem n x y = Binomial.theorem x y (*-comm x y) n
-
-
-
-
 
