@@ -3028,7 +3028,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
 
-* In `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
   foldr-commMonoid : xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
   ```
