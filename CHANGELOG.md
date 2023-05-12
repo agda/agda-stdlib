@@ -1305,7 +1305,7 @@ Deprecated names
   both the record type `Reveal_·_is_`
   and its principal mode of use, `inspect`,
   have been deprecated in favour of the new `with ... in ...` syntax.
-  See the documentation of [with-abstraction equality](https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#id16)
+  See the documentation of [with-abstraction equality](https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality)
 
 New modules
 -----------
