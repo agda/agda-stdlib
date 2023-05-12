@@ -79,7 +79,7 @@ module Syntax where
   map f (var a) = var (f a)
   map f (s ∙ t) = (map f s) ∙ (map f t)
 
-  map-id : ∀ (t : Syntax A) → map id t ≡ t
+  map-id : map {A = A} id ≗ id
   map-id (var a) = ≡-refl
   map-id (s ∙ t) = cong₂ _∙_ (map-id s) (map-id t)
 
