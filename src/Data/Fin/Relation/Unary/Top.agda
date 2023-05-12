@@ -78,7 +78,7 @@ view-inj (suc j) rewrite view-inj j = refl
 ------------------------------------------------------------------------
 -- Experimental
 --
--- Because we work --without-K, Agda's unifier will complain about
+-- Because we work without K, Agda's unifier will complain about
 -- attempts to match `refl` against hypotheses of the form
 --    `view {n] i ≡ v`
 -- or gets stuck trying to solve unification problems of the form
