@@ -19,7 +19,7 @@ module README where
 -- and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.2.2.
+-- This version of the library has been tested using Agda 2.6.3.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
