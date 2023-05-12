@@ -83,7 +83,7 @@ module Syntax where
   map-id (var a) = ≡-refl
   map-id (s ∙ t) = cong₂ _∙_ (map-id s) (map-id t)
 
-  map-∘ : (g : A → B) → (f : B → C) → ∀ t → map (f ∘ g) t ≡ (map f ∘ map g) t
+  map-∘ : (g : A → B) → (f : B → C) → map (f ∘ g) ≗ (map f ∘ map g)
   map-∘ g f (var a) = ≡-refl
   map-∘ g f (s ∙ t) = cong₂ _∙_ (map-∘ g f s) (map-∘ g f t)
 
