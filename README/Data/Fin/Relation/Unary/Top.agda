@@ -31,6 +31,8 @@ private
   variable
     ℓ : Level
     n : ℕ
+    i : Fin (suc n)
+    j : Fin n
 
 open Instances
 
@@ -69,7 +71,7 @@ inject₁-inject₁⁻¹ i with inj ii ← view i = refl
 inject₁⁻¹-inject₁ : (j : Fin n) → inject₁⁻¹ (inject₁ j) {{inj⁺}} ≡ j
 inject₁⁻¹-inject₁ j rewrite view-inj j = refl
 
-inject₁≡⇒inject₁⁻¹≡ : ∀ {j : Fin n} {i : Fin (suc n)} (eq : inject₁ j ≡ i) →
+inject₁≡⇒inject₁⁻¹≡ : (eq : inject₁ {n} j ≡ i) →
                        inject₁⁻¹ i {{inject₁≡⁺ {eq = eq}}} ≡ j
 inject₁≡⇒inject₁⁻¹≡ refl = inject₁⁻¹-inject₁ _
 
@@ -88,7 +90,7 @@ toℕ-inject₁⁻¹ i with inj j ← view i = sym (toℕ-inject₁ j)
 
 -- Definition
 
-opposite : ∀ {n} → Fin n → Fin n
+opposite : Fin n → Fin n
 opposite {suc n} i with view i
 ... | top   = zero
 ... | inj j = suc (opposite {n} j)
@@ -102,13 +104,13 @@ opposite-zero≡top (suc n) = cong suc (opposite-zero≡top n)
 opposite-top≡zero : ∀ n → opposite {suc n} (fromℕ n) ≡ zero
 opposite-top≡zero n rewrite view-top n = refl
 
-opposite-suc≡inject₁-opposite : ∀ {n} (j : Fin n) →
+opposite-suc≡inject₁-opposite : (j : Fin n) →
                                 opposite (suc j) ≡ inject₁ (opposite j)
 opposite-suc≡inject₁-opposite {suc n} i with view i
 ... | top   = refl
 ... | inj j = cong suc (opposite-suc≡inject₁-opposite {n} j)
 
-opposite-involutive : ∀ {n} (j : Fin n) → opposite (opposite j) ≡ j
+opposite-involutive : (j : Fin n) → opposite (opposite j) ≡ j
 opposite-involutive {suc n} zero
   rewrite opposite-zero≡top n
         | view-top n            = refl
@@ -122,7 +124,7 @@ opposite-suc j = begin
   toℕ (inject₁ (opposite j))  ≡⟨ toℕ-inject₁ (opposite j) ⟩
   toℕ (opposite j)            ∎ where open ≡-Reasoning
 
-opposite-prop : ∀ {n} (j : Fin n) → toℕ (opposite j) ≡ n ∸ suc (toℕ j)
+opposite-prop : (j : Fin n) → toℕ (opposite j) ≡ n ∸ suc (toℕ j)
 opposite-prop {suc n} i with view i
 ... | top   rewrite toℕ-fromℕ n | n∸n≡0 n = refl
 ... | inj j = begin

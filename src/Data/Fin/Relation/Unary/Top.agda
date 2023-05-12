@@ -17,10 +17,13 @@ open import Data.Nat.Base using (ℕ; zero; suc; _<_)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Properties using (toℕ-fromℕ; toℕ-inject₁; inject₁ℕ<)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary.Negation using (contradiction)
 
 private
   variable
     n : ℕ
+    i : Fin (suc n)
+    j : Fin n
 
 ------------------------------------------------------------------------
 -- The View, considered as a unary relation on Fin (suc n)
@@ -32,12 +35,12 @@ private
 
 data View : (i : Fin (suc n)) → Set where
 
-  top :                View (fromℕ n)
+  top : View (fromℕ n)
   inj : (j : Fin n) → View (inject₁ j)
 
 -- The view covering function, witnessing soundness of the view
 
-view : ∀ {n} i → View {n} i
+view : ∀ i → View {n} i
 view {n = zero}  zero    = top
 view {n = suc _} zero    = inj _
 view {n = suc n} (suc i) with view {n} i
@@ -46,13 +49,13 @@ view {n = suc n} (suc i) with view {n} i
 
 -- Interpretation of the view constructors
 
-⟦_⟧ : ∀ {i} → View {n} i → Fin (suc n)
+⟦_⟧ : View {n} i → Fin (suc n)
 ⟦ top ⟧   = fromℕ _
 ⟦ inj j ⟧ = inject₁ j
 
 -- Completeness of the view
 
-view-complete : ∀ {i} (v : View {n} i) → ⟦ v ⟧ ≡ i
+view-complete : (v : View {n} i) → ⟦ v ⟧ ≡ i
 view-complete top     = refl
 view-complete (inj j) = refl
 
@@ -71,14 +74,14 @@ view-inj (suc j) rewrite view-inj j = refl
 --
 -- Because we work --without-K, Agda's unifier will complain about
 -- attempts to match `refl` against hypotheses of the form
---    `view {n] i ≡ v`
+--    `view {n} i ≡ v`
 -- or gets stuck trying to solve unification problems of the form
 --    (inferred index ≟ expected index)
 -- even when these problems are *provably* solvable.
 --
 -- So the two predicates on values of the view defined below
 -- are extensionally equivalent to the assertions
--- `view {n] i ≡ top` and `view {n] i ≡ inj j`
+-- `view {n} i ≡ top` and `view {n} i ≡ inj j`
 --
 -- But such assertions can only ever have a unique (irrelevant) proof
 -- so we introduce instances to witness them, themselves given in
@@ -86,15 +89,7 @@ view-inj (suc j) rewrite view-inj j = refl
 
 module Instances {n} where
 
-  private
-
-    lemma : n ≡ toℕ (inject₁ (fromℕ n))
-    lemma = sym (begin
-      toℕ (inject₁ (fromℕ n)) ≡⟨ toℕ-inject₁ (fromℕ n) ⟩
-      toℕ (fromℕ n)           ≡⟨ toℕ-fromℕ n ⟩
-      n                         ∎) where open ≡-Reasoning
-
-  data IsTop : ∀ {i} → View {n} i → Set where
+  data IsTop : View {n} i → Set where
 
     top : IsTop top
 
@@ -103,21 +98,28 @@ module Instances {n} where
     top⁺ : IsTop {i = fromℕ n} (view (fromℕ n))
     top⁺ rewrite view-top n = top
 
-  data IsInj : ∀ {i} → View {n} i → Set where
+  data IsInj : View {n} i → Set where
 
     inj : ∀ j → IsInj (inj j)
 
   instance
 
-    inj⁺ : ∀ {j} → IsInj (view (inject₁ j))
+    inj⁺ : IsInj (view (inject₁ j))
     inj⁺ {j} rewrite view-inj j = inj j
 
-    inject₁≡⁺ : ∀ {i} {j} {eq : inject₁ i ≡ j} → IsInj (view j)
+    inject₁≡⁺ : {eq : inject₁ j ≡ i} → IsInj (view i)
     inject₁≡⁺ {eq = refl} = inj⁺
 
-    inject₁≢n⁺ : ∀ {i} {n≢i : n ≢ toℕ (inject₁ i)} → IsInj (view {n} i)
+    inject₁≢n⁺ : {n≢i : n ≢ toℕ (inject₁ i)} → IsInj (view {n} i)
     inject₁≢n⁺ {i} {n≢i} with view i
-    ... | top with () ← n≢i lemma
+    ... | top = contradiction n≡i n≢i
+      where
+        open ≡-Reasoning
+        n≡i : n ≡ toℕ (inject₁ (fromℕ n))
+        n≡i = sym (begin
+          toℕ (inject₁ (fromℕ n)) ≡⟨ toℕ-inject₁ (fromℕ n) ⟩
+          toℕ (fromℕ n)           ≡⟨ toℕ-fromℕ n ⟩
+          n                         ∎)
     ... | inj j = inj j
 
 open Instances
