@@ -3006,7 +3006,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new functions to `Data.Rational.Unnormalised.Properties`
   ```agda
-  0ℚᵘ≠1ℚᵘ : 0ℚᵘ ≠ 1ℚᵘ
+  0≠1 : 0ℚᵘ ≠ 1ℚᵘ
   ≃-≠-irreflexive : Irreflexive _≃_ _≠_
   ≠-symmetric : Symmetric _≠_
   ≠-cotransitive : Cotransitive _≠_
