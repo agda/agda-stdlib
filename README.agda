@@ -262,10 +262,6 @@ import README.Text.Regex
 
 import README.Text.Tabular
 
--- Explaining the `with ... in ...` syntax: use case, equivalent handwritten
--- auxiliary definitions, and implementation details.
-
-import README.WithIn
 
 ------------------------------------------------------------------------
 -- All library modules
