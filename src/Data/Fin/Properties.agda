@@ -564,8 +564,8 @@ splitAt-↑ˡ (suc m) (suc i) n rewrite splitAt-↑ˡ m i n = refl
 
 splitAt⁻¹-↑ˡ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
 splitAt⁻¹-↑ˡ {suc m} {n} {0F} {.0F} refl = refl
-splitAt⁻¹-↑ˡ {suc m} {n} {suc i} {j} eq with splitAt m i in EQ
-... | inj₁ k with refl ← eq = cong suc (splitAt⁻¹-↑ˡ {i = i} {j = k} EQ)
+splitAt⁻¹-↑ˡ {suc m} {n} {suc i} {j} eq with splitAt m i in splitAt[m][i]≡inj₁[j]
+... | inj₁ k with refl ← eq = cong suc (splitAt⁻¹-↑ˡ {i = i} {j = k} splitAt[m][i]≡inj₁[j])
 
 splitAt-↑ʳ : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
 splitAt-↑ʳ zero    n i = refl
@@ -573,8 +573,8 @@ splitAt-↑ʳ (suc m) n i rewrite splitAt-↑ʳ m n i = refl
 
 splitAt⁻¹-↑ʳ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
 splitAt⁻¹-↑ʳ {zero}  {n} {i} {j} refl = refl
-splitAt⁻¹-↑ʳ {suc m} {n} {suc i} {j} eq with splitAt m i in EQ
-... | inj₂ k with refl ← eq = cong suc (splitAt⁻¹-↑ʳ {i = i} {j = k} EQ)
+splitAt⁻¹-↑ʳ {suc m} {n} {suc i} {j} eq with splitAt m i in splitAt[m][i]≡inj₂[k]
+... | inj₂ k with refl ← eq = cong suc (splitAt⁻¹-↑ʳ {i = i} {j = k} splitAt[m][i]≡inj₂[k])
 
 splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
 splitAt-join m n (inj₁ x) = splitAt-↑ˡ m x n
@@ -695,13 +695,6 @@ combine-surjective {m} {n} i with remQuot {m} n i in eq
   uncurry combine (remQuot {m} n i) ≡⟨ combine-remQuot {m} n i ⟩
   i                                 ∎)
   where open ≡-Reasoning
-
-combine-surjectiveNEW : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine {m} {n} j k ≡ i
-combine-surjectiveNEW {m = suc m} {n} i with splitAt n i in eq
-... | inj₁ j rewrite splitAt-↑ˡ _ j (m ℕ.* n)
-    = zero , j , splitAt⁻¹-↑ˡ eq
-... | inj₂ k with (j₁ , k₁ , refl) ← combine-surjectiveNEW {m} {n} k
-    = suc j₁ , k₁ , splitAt⁻¹-↑ʳ eq
 
 ------------------------------------------------------------------------
 -- Bundles
