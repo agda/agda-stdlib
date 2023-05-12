@@ -262,7 +262,7 @@ import README.Text.Regex
 
 import README.Text.Tabular
 
-import README.Inspect
+
 ------------------------------------------------------------------------
 -- All library modules
 ------------------------------------------------------------------------
