@@ -9,7 +9,7 @@
 module README.Inspect where
 
 {-# WARNING_ON_IMPORT
-"README.Inspect was deprecated in v2.0.
+"README.Inspect was deprecated in v2.0."
 #-}
 
 open import Data.Nat.Base
