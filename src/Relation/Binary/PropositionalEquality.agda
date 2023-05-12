@@ -126,10 +126,10 @@ inspect f x = [ refl ]
 
 {-# WARNING_ON_USAGE Reveal_·_is_
 "Warning: Reveal_·_is_ was deprecated in v2.0.
-Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead.
+Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead."
 #-}
 {-# WARNING_ON_USAGE inspect
 "Warning: inspect was deprecated in v2.0.
-Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead.
+Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead."
 #-}
 
