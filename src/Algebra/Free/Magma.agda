@@ -13,6 +13,7 @@ open import Algebra.Bundles using (Magma)
 open import Algebra.Bundles.Raw using (RawMagma)
 import Algebra.Definitions as Definitions using (Congruent₂)
 import Algebra.Structures as Structures using (IsMagma)
+open import Algebra.Morphism.Bundles using (MagmaHomomorphism)
 open import Algebra.Morphism.Structures using (IsMagmaHomomorphism)
 import Algebra.Morphism.Construct.Identity as Identity
 import Algebra.Morphism.Construct.Composition as Compose
@@ -48,18 +49,17 @@ private
 ------------------------------------------------------------------------
 
 record MagmaHomomorphism (𝓐 : Magma a ℓa) (𝓑 : Magma b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
-
-  open Magma 𝓐 renaming (rawMagma to rawMagmaᴬ; setoid to setoidᴬ; Carrier to UA)
-  open Magma 𝓑 renaming (rawMagma to rawMagmaᴮ; setoid to setoidᴮ; Carrier to UB)
+  module A = Magma 𝓐
+  module B = Magma 𝓑
 
   field
-    ⟦_⟧ : UA → UB
+    ⟦_⟧ : A.Carrier → B.Carrier
 
-    isMagmaHomomorphism : IsMagmaHomomorphism rawMagmaᴬ rawMagmaᴮ ⟦_⟧
+    isMagmaHomomorphism : IsMagmaHomomorphism A.rawMagma B.rawMagma ⟦_⟧
 
   open IsMagmaHomomorphism isMagmaHomomorphism public
 
-  setoidHomomorphism : SetoidHomomorphism setoidᴬ setoidᴮ
+  setoidHomomorphism : SetoidHomomorphism A.setoid B.setoid
   setoidHomomorphism = record { ⟦_⟧ = ⟦_⟧ ; isRelHomomorphism = isRelHomomorphism }
 
 ------------------------------------------------------------------------
