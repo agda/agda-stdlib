@@ -81,8 +81,8 @@ map-++ f []       = ≋-refl
 map-++ f (x ∷ xs) = refl ∷ map-++ f xs
 
 map-[]≔ : ∀ {b n} {B : Set b}
-                  (f : B → A) (xs : Vec B n) i p →
-                  map f (xs [ i ]≔ p) ≋ map f xs [ i ]≔ f p
+          (f : B → A) (xs : Vec B n) i p →
+          map f (xs [ i ]≔ p) ≋ map f xs [ i ]≔ f p
 map-[]≔ f (x ∷ xs) zero    p = refl ∷ ≋-refl
 map-[]≔ f (x ∷ xs) (suc i) p = refl ∷ map-[]≔ f xs i p
 
