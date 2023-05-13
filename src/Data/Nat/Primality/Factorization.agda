@@ -93,6 +93,9 @@ factorize (suc (suc n)) = <-rec (λ n′ → ∀ {k} → 2 ≤ n′ → k ≤‴
         quotient k∣n * (2 + k)          ≡˘⟨ _∣_.equality k∣n ⟩
         2 + n                           ∎
 
+------------------------------------------------------------------------
+-- Properties of a factorization
+
 factorization≥1 : ∀ {as} → All Prime as → product as ≥ 1
 factorization≥1 {[]} [] = s≤s z≤n
 factorization≥1 {suc a ∷ as} (pa ∷ asPrime) = *-mono-≤ {1} {1 + a} (s≤s z≤n) (factorization≥1 asPrime)
