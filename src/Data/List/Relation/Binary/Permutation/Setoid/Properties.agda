@@ -496,7 +496,7 @@ module _ {_∙_ : Op₂ A} {ε : A} (isCmonoid : IsCommutativeMonoid _≈_ _∙_
   foldr-commMonoid (prep x≈y xs↭ys) = ∙-cong x≈y (foldr-commMonoid xs↭ys)
   foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = S.begin
     x ∙ (y ∙ foldr _∙_ ε xs)   S.≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
-    x ∙ (y ∙ foldr _∙_ ε ys)  S.≈˘⟨ assoc x y (foldr _∙_ ε ys) ⟩
+    x ∙ (y ∙ foldr _∙_ ε ys)   S.≈˘⟨ assoc x y (foldr _∙_ ε ys) ⟩
     (x ∙ y) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (comm x y) ⟩
     (y ∙ x) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
     (y′ ∙ x′) ∙ foldr _∙_ ε ys S.≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
