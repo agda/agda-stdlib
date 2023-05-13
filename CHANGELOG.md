@@ -3052,6 +3052,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   leftInvertible⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
   rightInvertible⇒# : RightInvertible _≈_ 1# _*_ (x - y) → x # y
   x#0y#0→xy#0 : x # 0# → y # 0# → x * y # 0#
-  #-congʳ : x ≈ y → x # z → y # z
   #-sym : Symmetric _#_
+  #-congʳ : x ≈ y → x # z → y # z
+  #-congˡ : y ≈ z → x # y → x # z
   ```
