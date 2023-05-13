@@ -74,6 +74,9 @@ module Syntax where
     var : A → Syntax A
     _∙_ : Op₂ (Syntax A)
 
+  _∙-cong_ : ∀ {s s′ t t′ : Syntax A} → s ≡ s′ → t ≡ t′ → s ∙ t ≡ s′ ∙ t′
+  _∙-cong_ = cong₂ _∙_
+
 -- Functor instance
 
   map : (A → B) → Syntax A → Syntax B
@@ -82,11 +85,11 @@ module Syntax where
 
   map-id : map {A = A} id ≗ id
   map-id (var a) = ≡-refl
-  map-id (s ∙ t) = cong₂ _∙_ (map-id s) (map-id t)
+  map-id (s ∙ t) = (map-id s) ∙-cong (map-id t)
 
   map-∘ : (g : A → B) → (f : B → C) → map (f ∘ g) ≗ (map f ∘ map g)
   map-∘ g f (var a) = ≡-refl
-  map-∘ g f (s ∙ t) = cong₂ _∙_ (map-∘ g f s) (map-∘ g f t)
+  map-∘ g f (s ∙ t) = (map-∘ g f s) ∙-cong (map-∘ g f t)
 
   syntaxRawFunctor : RawFunctor (Syntax {a})
   syntaxRawFunctor = record { _<$>_ = map }
@@ -161,7 +164,7 @@ module FreeRawMagma (A : Set a) where
 
   ≈⇒≡ : ∀ {m n} → m ≈ n → m ≡ n
   ≈⇒≡ (var ≡-refl) = ≡-refl
-  ≈⇒≡ (eq₁ ∙ eq₂) = cong₂ _∙_ (≈⇒≡ eq₁) (≈⇒≡ eq₂)
+  ≈⇒≡ (eq₁ ∙ eq₂) = (≈⇒≡ eq₁) ∙-cong (≈⇒≡ eq₂)
 
   ≡⇒≈ : ∀ {m n} → m ≡ n → m ≈ n
   ≡⇒≈ ≡-refl = refl ≡-refl
@@ -172,7 +175,7 @@ module FreeRawMagma (A : Set a) where
   open Structures {A = Syntax A} _≡_
 
   isMagma : IsMagma _∙_
-  isMagma = record { isEquivalence = ≡-isEquivalence ; ∙-cong = cong₂ _∙_ }
+  isMagma = record { isEquivalence = ≡-isEquivalence ; ∙-cong = _∙-cong_ }
 
   freeMagma : Magma a a
   freeMagma = record { isMagma = isMagma }
@@ -193,7 +196,10 @@ module FreeMagma (𝓐 : Setoid a ℓa) where
   open Structures _≈ᵀ_
 
   isMagma : IsMagma  _∙_
-  isMagma = record { isEquivalence = isEquivalence isEqᴬ ; ∙-cong = _∙_ }
+  isMagma = record
+            { isEquivalence = isEquivalence isEqᴬ
+            ; ∙-cong = _∙_
+            }
 
   freeMagma : Magma a (a ⊔ ℓa)
   freeMagma = record { isMagma = isMagma }
@@ -203,7 +209,10 @@ module FreeMagma (𝓐 : Setoid a ℓa) where
   open Magma freeMagma public using (rawMagma; setoid; Carrier; _≈_)
 
   varSetoidHomomorphism : SetoidHomomorphism 𝓐 setoid
-  varSetoidHomomorphism = record { ⟦_⟧ = var; isRelHomomorphism = varIsRelHomomorphism }
+  varSetoidHomomorphism = record
+                          { ⟦_⟧ = var
+                          ; isRelHomomorphism = varIsRelHomomorphism
+                          }
 
 
 ------------------------------------------------------------------------
@@ -283,8 +292,10 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
     setoidHomomorphismᴹ = record { ⟦_⟧ = ⟦_⟧ᴹ ; isRelHomomorphism = isRelHomomorphismᴹ }
 
     isMagmaHomomorphismᴹ : IsMagmaHomomorphism rawMagma rawMagmaᴹ ⟦_⟧ᴹ
-    isMagmaHomomorphismᴹ = record { isRelHomomorphism = isRelHomomorphismᴹ
-                                  ; homo = λ s t → begin ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ ∎ }
+    isMagmaHomomorphismᴹ = record
+                           { isRelHomomorphism = isRelHomomorphismᴹ
+                           ; homo = λ s t → begin ⟦ s ⟧ᴹ ∙ᴹ ⟦ t ⟧ᴹ ∎
+                           }
 
     magmaHomomorphismᴹ : MagmaHomomorphism freeMagma 𝓜
     magmaHomomorphismᴹ = record { ⟦_⟧ = ⟦_⟧ᴹ
@@ -299,8 +310,10 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
       ⟦_⟧∘var≈ᴹη : ∀ a → ⟦ var a ⟧ ≈ᴹ η a
 
   ⟦⟧ᴹ-η-MagmaHomomorphism : η-MagmaHomomorphism
-  ⟦⟧ᴹ-η-MagmaHomomorphism = record { magmaHomomorphism = Existence.magmaHomomorphismᴹ
-                                   ; ⟦_⟧∘var≈ᴹη = Existence.unfold-⟦_⟧ᴹ ∘ var } 
+  ⟦⟧ᴹ-η-MagmaHomomorphism = record
+                            { magmaHomomorphism = Existence.magmaHomomorphismᴹ
+                            ; ⟦_⟧∘var≈ᴹη = Existence.unfold-⟦_⟧ᴹ ∘ var
+                            } 
   
   module Uniqueness (η-magmaHomomorphism : η-MagmaHomomorphism) where
       
@@ -372,7 +385,8 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
     naturality = Corollary.isUnique⟦_⟧ 𝓗 𝓚
       where
         H K : MagmaHomomorphism freeMagmaᴹ 𝓝
-        H = record { ⟦_⟧ = ⟦_⟧ ∘ algᴹ
+        H = record
+            { ⟦_⟧ = ⟦_⟧ ∘ algᴹ
             ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ algᴹ-isMagmaHomomorphism isMagmaHomomorphism }
 
         K = record { ⟦_⟧ = algᴺ ∘  map
@@ -393,8 +407,9 @@ module IdentityLaw (𝓐 : Setoid a ℓa) where
 
   Id : MagmaHomomorphism freeMagma freeMagma
   Id = record
-    { ⟦_⟧ = id
-    ; isMagmaHomomorphism = Identity.isMagmaHomomorphism rawMagma reflFA}
+       { ⟦_⟧ = id
+       ; isMagmaHomomorphism = Identity.isMagmaHomomorphism rawMagma reflFA
+       }
 
   open FreeMagmaFunctor (Identity.setoidHomomorphism 𝓐)
   open MagmaHomomorphism mapMagmaHomomorphism renaming (⟦_⟧ to map-Id)
