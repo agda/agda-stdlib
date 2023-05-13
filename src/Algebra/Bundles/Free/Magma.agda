@@ -29,7 +29,7 @@ open import Relation.Binary.Morphism.Bundles using (SetoidHomomorphism)
 import Relation.Binary.Morphism.Construct.Identity as Identity
 import Relation.Binary.Morphism.Construct.Composition as Compose
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; cong₂) renaming (refl to ≡-refl; isEquivalence to ≡-isEquivalence)
+  using (_≡_; _≗_; cong₂) renaming (refl to ≡-refl; isEquivalence to ≡-isEquivalence)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
