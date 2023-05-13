@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Algebra.Bundles.Free.Magma where
+module Algebra.Free.Magma where
 
 open import Algebra.Core
 open import Algebra.Bundles using (Magma)
@@ -113,14 +113,10 @@ module EquationalTheory {A : Set a} (_≈ᴬ_ : Rel A ℓ) where
 
   infix 4 _≈_
 
-  data _≈_ : Rel (Syntax A) (a ⊔ ℓ)
-
-  open Definitions _≈_
-
-  data _≈_ where
+  data _≈_ : Rel (Syntax A) (a ⊔ ℓ) where
 
     var : {a b : A} → a ≈ᴬ b → var a ≈ var b
-    _∙_ : Congruent₂ _∙_
+    _∙_ : Definitions.Congruent₂ _≈_ _∙_
 
   refl : Reflexive _≈ᴬ_ → Reflexive _≈_
   refl r {var _} = var r
@@ -274,10 +270,7 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
 
   module Existence where
 
-    private
-      algᴹ = alg 𝓜
-
-    unfold-⟦_⟧ᴹ : ∀ t → ⟦ t ⟧ᴹ ≈ᴹ algᴹ (map η t)
+    unfold-⟦_⟧ᴹ : ∀ t → ⟦ t ⟧ᴹ ≈ᴹ alg 𝓜 (map η t)
     unfold-⟦ var a ⟧ᴹ = begin η a ∎
     unfold-⟦ s ∙ t ⟧ᴹ = congᴹ unfold-⟦ s ⟧ᴹ unfold-⟦ t ⟧ᴹ
 
@@ -389,8 +382,10 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
             { ⟦_⟧ = ⟦_⟧ ∘ algᴹ
             ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ algᴹ-isMagmaHomomorphism isMagmaHomomorphism }
 
-        K = record { ⟦_⟧ = algᴺ ∘  map
-            ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism }
+        K = record
+            { ⟦_⟧ = algᴺ ∘  map
+            ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transᴺ map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism
+            }
 
         𝓗 𝓚 : η-MagmaHomomorphism
         𝓗 = record { magmaHomomorphism = H ; ⟦_⟧∘var≈ᴹη = λ _ → reflᴺ }
@@ -446,7 +441,8 @@ module CompositionLaw
   MapBC∘MapAB : MagmaHomomorphism freeMagmaA freeMagmaC
   MapBC∘MapAB = record
     { ⟦_⟧ = mapBC ∘ mapAB
-    ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transFC isMagmaAB isMagmaBC}
+    ; isMagmaHomomorphism = Compose.isMagmaHomomorphism transFC isMagmaAB isMagmaBC
+    }
 
   map-∘ : ∀ t → mapAC t ≈FC mapBC (mapAB t)
   map-∘ = Corollary.isUnique⟦_⟧ 𝓐𝓒 𝓑𝓒∘𝓐𝓑
