@@ -40,7 +40,12 @@ private
     A : Set a
     B : Set b
     C : Set c
-
+    𝓐 : Setoid a ℓa
+    𝓑 : Setoid b ℓb
+    𝓒 : Setoid c ℓc
+    𝓜 : Magma m ℓm
+    𝓝 : Magma n ℓn
+  
 
 ------------------------------------------------------------------------
 -- Syntax: 'pre'-free algebra
@@ -334,8 +339,7 @@ module _ (𝓜 : Magma m ℓm) where
 ------------------------------------------------------------------------
 -- Action of FreeMagma on Setoid homomorphisms
 
-module FreeMagmaFunctor {𝓐 : Setoid a ℓa} {𝓑 : Setoid b ℓb}
-       (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
+module FreeMagmaFunctor (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
   private
     module FA = FreeMagma 𝓐
     module FB = FreeMagma 𝓑
@@ -347,39 +351,36 @@ module FreeMagmaFunctor {𝓐 : Setoid a ℓa} {𝓑 : Setoid b ℓb}
 ------------------------------------------------------------------------
 -- Naturality of alg
 
-module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
+module Naturality (𝓕 : MagmaHomomorphism 𝓜 𝓝) where
 
   private 
     module M = Magma 𝓜
     module N = Magma 𝓝
+    module F = MagmaHomomorphism 𝓕
+    module FM = FreeMagma M.setoid
+    module AlgM = MagmaHomomorphism (algMagmaHomomorphism 𝓜)
+    module AlgN = MagmaHomomorphism (algMagmaHomomorphism 𝓝)
+    module Map = MagmaHomomorphism (FreeMagmaFunctor.magmaHomomorphism F.setoidHomomorphism)
 
-  module _ (𝓕 : MagmaHomomorphism 𝓜 𝓝) where
-    open MagmaHomomorphism 𝓕 using (⟦_⟧; isMagmaHomomorphism; setoidHomomorphism)
-    open MagmaHomomorphism (FreeMagmaFunctor.magmaHomomorphism setoidHomomorphism)
-      renaming (⟦_⟧ to map; isMagmaHomomorphism to map-isMagmaHomomorphism; setoidHomomorphism to mapSetoidHomomorphism)
-    open FreeMagma M.setoid renaming (magma to magmaᴹ)
-    open LeftAdjoint 𝓝 setoidHomomorphism
-    open MagmaHomomorphism (algMagmaHomomorphism 𝓜)
-      renaming (⟦_⟧ to algᴹ; isMagmaHomomorphism to algᴹ-isMagmaHomomorphism)
-    open MagmaHomomorphism (algMagmaHomomorphism 𝓝)
-      renaming (⟦_⟧ to algᴺ; isMagmaHomomorphism to algᴺ-isMagmaHomomorphism)
+    H K : MagmaHomomorphism FM.magma 𝓝
+    H = record
+      { ⟦_⟧ = F.⟦_⟧ ∘ AlgM.⟦_⟧
+      ; isMagmaHomomorphism = Compose.isMagmaHomomorphism N.trans AlgM.isMagmaHomomorphism F.isMagmaHomomorphism
+      }
 
-    naturality : ∀ t → ⟦ algᴹ t ⟧ N.≈ algᴺ (map t)
-    naturality = Corollary.isUnique⟦_⟧ 𝓗 𝓚
-      where
-        H K : MagmaHomomorphism magmaᴹ 𝓝
-        H = record
-            { ⟦_⟧ = ⟦_⟧ ∘ algᴹ
-            ; isMagmaHomomorphism = Compose.isMagmaHomomorphism N.trans algᴹ-isMagmaHomomorphism isMagmaHomomorphism }
+    K = record
+      { ⟦_⟧ = AlgN.⟦_⟧ ∘  Map.⟦_⟧
+      ; isMagmaHomomorphism = Compose.isMagmaHomomorphism N.trans Map.isMagmaHomomorphism AlgN.isMagmaHomomorphism
+      }
 
-        K = record
-            { ⟦_⟧ = algᴺ ∘  map
-            ; isMagmaHomomorphism = Compose.isMagmaHomomorphism N.trans map-isMagmaHomomorphism algᴺ-isMagmaHomomorphism
-            }
+  naturality : ∀ t → F.⟦ AlgM.⟦ t ⟧ ⟧ N.≈ AlgN.⟦ Map.⟦ t ⟧ ⟧
+  naturality = Corollary.isUnique⟦_⟧ 𝓗 𝓚
+    where
+      open LeftAdjoint 𝓝 F.setoidHomomorphism
+      𝓗 𝓚 : η-MagmaHomomorphism
+      𝓗 = record { magmaHomomorphism = H ; ⟦_⟧∘var≈η = λ _ → N.refl }
+      𝓚 = record { magmaHomomorphism = K ; ⟦_⟧∘var≈η = λ _ → N.refl }
 
-        𝓗 𝓚 : η-MagmaHomomorphism
-        𝓗 = record { magmaHomomorphism = H ; ⟦_⟧∘var≈η = λ _ → N.refl }
-        𝓚 = record { magmaHomomorphism = K ; ⟦_⟧∘var≈η = λ _ → N.refl }
 
 
 ------------------------------------------------------------------------
@@ -391,56 +392,51 @@ module IdentityLaw (𝓐 : Setoid a ℓa) where
     module A = Setoid 𝓐
     module FA = FreeMagma 𝓐
     module UFA = Setoid FA.setoid
+    module IA = FreeMagmaFunctor (Identity.setoidHomomorphism 𝓐)
+    module MapId = MagmaHomomorphism IA.magmaHomomorphism
 
-  Id : MagmaHomomorphism FA.magma FA.magma
-  Id = record
-       { ⟦_⟧ = id
-       ; isMagmaHomomorphism = Identity.isMagmaHomomorphism FA.rawMagma UFA.refl
-       }
+    Id : MagmaHomomorphism FA.magma FA.magma
+    Id = record
+      { ⟦_⟧ = id
+      ; isMagmaHomomorphism = Identity.isMagmaHomomorphism FA.rawMagma UFA.refl
+      }
 
-  open FreeMagmaFunctor (Identity.setoidHomomorphism 𝓐)
-  open MagmaHomomorphism magmaHomomorphism renaming (⟦_⟧ to map-Id)
-
-  map-id : ∀ t → map-Id t UFA.≈ t
+  map-id : ∀ t → MapId.⟦ t ⟧ UFA.≈ t
   map-id = Corollary.isUnique⟦_⟧ 𝓘ᴬ 𝓘
     where
       open LeftAdjoint FA.magma FA.varSetoidHomomorphism
       𝓘ᴬ 𝓘 : η-MagmaHomomorphism
-      𝓘ᴬ = record { magmaHomomorphism = magmaHomomorphism ; ⟦_⟧∘var≈η = λ _ → UFA.refl }
+      𝓘ᴬ = record { magmaHomomorphism = IA.magmaHomomorphism ; ⟦_⟧∘var≈η = λ _ → UFA.refl }
       𝓘 = record { magmaHomomorphism = Id ; ⟦_⟧∘var≈η = λ _ → UFA.refl }
 
-module CompositionLaw
-  {𝓐 : Setoid a ℓa} {𝓑 : Setoid b ℓb} {𝓒 : Setoid c ℓc}
-  (𝓗 : SetoidHomomorphism 𝓐 𝓑) (𝓚 : SetoidHomomorphism 𝓑 𝓒) where
-
-  𝓕 : SetoidHomomorphism 𝓐 𝓒
-  𝓕 = Compose.setoidHomomorphism 𝓗 𝓚
+module CompositionLaw (𝓗 : SetoidHomomorphism 𝓐 𝓑) (𝓚 : SetoidHomomorphism 𝓑 𝓒) where
 
   private
     module FA = FreeMagma 𝓐
     module FB = FreeMagma 𝓑
     module FC = FreeMagma 𝓒
     module UFC = Setoid FC.setoid
+    Free𝓗 = FreeMagmaFunctor.magmaHomomorphism 𝓗
+    Free𝓚 = FreeMagmaFunctor.magmaHomomorphism 𝓚
+    module MapAB = MagmaHomomorphism Free𝓗
+    module MapBC = MagmaHomomorphism Free𝓚
+    𝓕 : SetoidHomomorphism 𝓐 𝓒
+    𝓕 = Compose.setoidHomomorphism 𝓗 𝓚
+    Free𝓕 = FreeMagmaFunctor.magmaHomomorphism 𝓕
+    module MapAC = MagmaHomomorphism Free𝓕
 
-  open FreeMagmaFunctor 𝓕 renaming (magmaHomomorphism to MapAC)
-  open FreeMagmaFunctor 𝓗 renaming (magmaHomomorphism to MapAB)
-  open FreeMagmaFunctor 𝓚 renaming (magmaHomomorphism to MapBC)
-  open MagmaHomomorphism MapAC renaming (⟦_⟧ to mapAC)
-  open MagmaHomomorphism MapAB renaming (⟦_⟧ to mapAB; isMagmaHomomorphism to isHomAB)
-  open MagmaHomomorphism MapBC renaming (⟦_⟧ to mapBC; isMagmaHomomorphism to isHomBC)
+    MapBC∘MapAB : MagmaHomomorphism FA.magma FC.magma
+    MapBC∘MapAB = record
+      { ⟦_⟧ = MapBC.⟦_⟧ ∘ MapAB.⟦_⟧
+      ; isMagmaHomomorphism = Compose.isMagmaHomomorphism UFC.trans MapAB.isMagmaHomomorphism MapBC.isMagmaHomomorphism
+      }
 
-  MapBC∘MapAB : MagmaHomomorphism FA.magma FC.magma
-  MapBC∘MapAB = record
-    { ⟦_⟧ = mapBC ∘ mapAB
-    ; isMagmaHomomorphism = Compose.isMagmaHomomorphism UFC.trans isHomAB isHomBC
-    }
-
-  map-∘ : ∀ t → mapAC t UFC.≈ mapBC (mapAB t)
+  map-∘ : ∀ t → MapAC.⟦ t ⟧ UFC.≈ MapBC.⟦ MapAB.⟦ t ⟧ ⟧
   map-∘ = Corollary.isUnique⟦_⟧ 𝓐𝓒 𝓑𝓒∘𝓐𝓑
     where
       open LeftAdjoint FC.magma (Compose.setoidHomomorphism 𝓕 FC.varSetoidHomomorphism)
       𝓐𝓒 𝓑𝓒∘𝓐𝓑 : η-MagmaHomomorphism
-      𝓐𝓒 = record { magmaHomomorphism = MapAC ; ⟦_⟧∘var≈η = λ _ → UFC.refl }
+      𝓐𝓒 = record { magmaHomomorphism = Free𝓕 ; ⟦_⟧∘var≈η = λ _ → UFC.refl }
       𝓑𝓒∘𝓐𝓑 = record { magmaHomomorphism = MapBC∘MapAB ; ⟦_⟧∘var≈η = λ _ → UFC.refl }
 
 
