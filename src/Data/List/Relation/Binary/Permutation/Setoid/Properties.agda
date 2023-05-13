@@ -495,14 +495,10 @@ module _ {_∙_ : Op₂ A} {ε : A} (isCmonoid : IsCommutativeMonoid _≈_ _∙_
   foldr-commMonoid (refl (x≈y ∷ xs≈ys)) = ∙-cong x≈y (foldr-commMonoid (Permutation.refl xs≈ys))
   foldr-commMonoid (prep x≈y xs↭ys) = ∙-cong x≈y (foldr-commMonoid xs↭ys)
   foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = S.begin
-    x ∙ (y ∙ fεxs)   S.≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
-    x ∙ (y ∙ fεys)  S.≈˘⟨ assoc x y fεys ⟩
-    (x ∙ y) ∙ fεys   S.≈⟨ ∙-congʳ (comm x y) ⟩
-    (y ∙ x) ∙ fεys   S.≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
-    (y′ ∙ x′) ∙ fεys S.≈⟨ assoc y′ x′ fεys ⟩
-    y′ ∙ (x′ ∙ fεys) S.∎
-    where
-    fε = foldr _∙_ ε
-    fεxs = fε xs
-    fεys = fε ys
+    x ∙ (y ∙ foldr _∙_ ε xs)   S.≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
+    x ∙ (y ∙ foldr _∙_ ε ys)  S.≈˘⟨ assoc x y (foldr _∙_ ε ys) ⟩
+    (x ∙ y) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (comm x y) ⟩
+    (y ∙ x) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
+    (y′ ∙ x′) ∙ foldr _∙_ ε ys S.≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
+    y′ ∙ (x′ ∙ foldr _∙_ ε ys) S.∎
   foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)
