@@ -245,8 +245,8 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
 
   private
 
-    ⟦_⟧ᴹ : FA.Carrier → M.Carrier
-    ⟦_⟧ᴹ = ⟦_⟧ η where open Eval 𝓜 𝓐
+    ⟦_⟧η : FA.Carrier → M.Carrier
+    ⟦_⟧η = ⟦_⟧ η where open Eval 𝓜 𝓐
 
   open Structures M._≈_
   open IsMagma M.isMagma renaming (∙-cong to congᴹ)
@@ -254,24 +254,24 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
 
   module Existence where
 
-    unfold-⟦_⟧ : ∀ t → ⟦ t ⟧ᴹ M.≈ alg 𝓜 (map η t)
+    unfold-⟦_⟧ : ∀ t → ⟦ t ⟧η M.≈ alg 𝓜 (map η t)
     unfold-⟦ var a ⟧ = begin η a ∎
     unfold-⟦ s ∙ t ⟧ = congᴹ unfold-⟦ s ⟧ unfold-⟦ t ⟧
 
-    cong-⟦_⟧ : ∀ {s t} → s FA.≈ t → ⟦ s ⟧ᴹ M.≈ ⟦ t ⟧ᴹ
+    cong-⟦_⟧ : ∀ {s t} → s FA.≈ t → ⟦ s ⟧η M.≈ ⟦ t ⟧η
     cong-⟦ FA.var r ⟧ = cong-η r
     cong-⟦ s FA.∙ t ⟧ = congᴹ cong-⟦ s ⟧ cong-⟦ t ⟧
 
-    isRelHomomorphism : IsRelHomomorphism FA._≈_ M._≈_ ⟦_⟧ᴹ
+    isRelHomomorphism : IsRelHomomorphism FA._≈_ M._≈_ ⟦_⟧η
     isRelHomomorphism = record { cong = cong-⟦_⟧ }
 
     setoidHomomorphism : SetoidHomomorphism FA.setoid M.setoid
     setoidHomomorphism = record
-      { ⟦_⟧ = ⟦_⟧ᴹ
+      { ⟦_⟧ = ⟦_⟧η
       ; isRelHomomorphism = isRelHomomorphism
       }
 
-    isMagmaHomomorphism : IsMagmaHomomorphism FA.rawMagma M.rawMagma ⟦_⟧ᴹ
+    isMagmaHomomorphism : IsMagmaHomomorphism FA.rawMagma M.rawMagma ⟦_⟧η
     isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
       ; homo = λ s t → M.refl
@@ -279,7 +279,7 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
 
     magmaHomomorphism : MagmaHomomorphism FA.magma 𝓜
     magmaHomomorphism = record
-      { ⟦_⟧ = ⟦_⟧ᴹ
+      { ⟦_⟧ = ⟦_⟧η
       ; isMagmaHomomorphism = isMagmaHomomorphism
       }
 
@@ -293,30 +293,30 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
 
   ⟦⟧-η-MagmaHomomorphism : η-MagmaHomomorphism
   ⟦⟧-η-MagmaHomomorphism = record
-                            { magmaHomomorphism = Existence.magmaHomomorphism
-                            ; ⟦_⟧∘var≈η = Existence.unfold-⟦_⟧ ∘ var
-                            }
+    { magmaHomomorphism = Existence.magmaHomomorphism
+    ; ⟦_⟧∘var≈η = Existence.unfold-⟦_⟧ ∘ var
+    }
 
   module Uniqueness (η-magmaHomomorphism : η-MagmaHomomorphism) where
 
     open η-MagmaHomomorphism η-magmaHomomorphism
 
-    isUnique⟦_⟧ : ∀ t → ⟦ t ⟧ M.≈ ⟦ t ⟧ᴹ
+    isUnique⟦_⟧ : ∀ t → ⟦ t ⟧ M.≈ ⟦ t ⟧η
     isUnique⟦ var a ⟧ = ⟦ a ⟧∘var≈η
     isUnique⟦ s ∙ t ⟧ = begin
-        ⟦ s Syntax.∙ t ⟧  ≈⟨ ⟦⟧-homo s t ⟩
-        ⟦ s ⟧ M.∙ ⟦ t ⟧    ≈⟨ congᴹ isUnique⟦ s ⟧ isUnique⟦ t ⟧ ⟩
-        ⟦ s ⟧ᴹ M.∙ ⟦ t ⟧ᴹ  ∎
+      ⟦ s Syntax.∙ t ⟧  ≈⟨ ⟦⟧-homo s t ⟩
+      ⟦ s ⟧ M.∙ ⟦ t ⟧   ≈⟨ congᴹ isUnique⟦ s ⟧ isUnique⟦ t ⟧ ⟩
+      ⟦ s ⟧η M.∙ ⟦ t ⟧η  ∎
 
-  module Corollary (𝓗 𝓚 : η-MagmaHomomorphism)
-    where
-      open η-MagmaHomomorphism 𝓗 renaming (⟦_⟧ to ⟦_⟧ᴴ)
-      open η-MagmaHomomorphism 𝓚 renaming (⟦_⟧ to ⟦_⟧ᴷ)
-      open Uniqueness 𝓗 renaming (isUnique⟦_⟧ to isUnique⟦_⟧ᴴ)
-      open Uniqueness 𝓚 renaming (isUnique⟦_⟧ to isUnique⟦_⟧ᴷ)
+  module Corollary (𝓗 𝓚 : η-MagmaHomomorphism) where
+  
+    open η-MagmaHomomorphism 𝓗 using () renaming (⟦_⟧ to ⟦_⟧ᴴ)
+    open η-MagmaHomomorphism 𝓚 using () renaming (⟦_⟧ to ⟦_⟧ᴷ)
+    open Uniqueness 𝓗 renaming (isUnique⟦_⟧ to isUnique⟦_⟧ᴴ)
+    open Uniqueness 𝓚 renaming (isUnique⟦_⟧ to isUnique⟦_⟧ᴷ)
 
-      isUnique⟦_⟧ :  ∀ t → ⟦ t ⟧ᴴ M.≈ ⟦ t ⟧ᴷ
-      isUnique⟦ t ⟧ = begin ⟦ t ⟧ᴴ ≈⟨ isUnique⟦ t ⟧ᴴ ⟩ ⟦ t ⟧ᴹ ≈˘⟨ isUnique⟦ t ⟧ᴷ ⟩ ⟦ t ⟧ᴷ ∎
+    isUnique⟦_⟧ :  ∀ t → ⟦ t ⟧ᴴ M.≈ ⟦ t ⟧ᴷ
+    isUnique⟦ t ⟧ = begin ⟦ t ⟧ᴴ ≈⟨ isUnique⟦ t ⟧ᴴ ⟩ ⟦ t ⟧η ≈˘⟨ isUnique⟦ t ⟧ᴷ ⟩ ⟦ t ⟧ᴷ ∎
 
 ------------------------------------------------------------------------
 -- Immediate corollary: alg is in fact a MagmaHomomorphism
