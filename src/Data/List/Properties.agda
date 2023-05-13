@@ -75,6 +75,9 @@ module _ {x y : A} {xs ys : List A} where
 ≡-dec _≟_ []       (y ∷ ys) = no λ()
 ≡-dec _≟_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≟ y) (≡-dec _≟_ xs ys)
 
+length[xs]≡0⇒xs≡[] : {xs : List A} → length xs ≡ 0 → xs ≡ []
+length[xs]≡0⇒xs≡[] {xs = []} _ = refl
+
 ------------------------------------------------------------------------
 -- map
 

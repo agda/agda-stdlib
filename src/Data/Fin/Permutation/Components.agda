@@ -8,7 +8,7 @@
 
 module Data.Fin.Permutation.Components where
 
-open import Data.Bool.Base using (Bool; true; false)
+open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Fin.Base
 open import Data.Fin.Properties
 open import Data.Nat.Base as ℕ using (zero; suc; _∸_)
@@ -28,15 +28,31 @@ open ≡-Reasoning
 
 -- 'tranpose i j' swaps the places of 'i' and 'j'.
 
+{-
 transpose : ∀ {n} → Fin n → Fin n → Fin n → Fin n
 transpose i j k with does (k ≟ i) | does (k ≟ j)
 ... | true | _ = j
 ... | false | true = i
 ... | false | false = k
+-}
+
+transpose : ∀ {n} → Fin n → Fin n → Fin n → Fin n
+transpose i j k = if does (k ≟ i)
+  then j
+  else if does (k ≟ j)
+    then i
+    else k
 
 --------------------------------------------------------------------------------
 --  Properties
 --------------------------------------------------------------------------------
+
+transpose-comm : ∀ {n} (i j : Fin  n) → transpose i j ≗ transpose j i
+transpose-comm i j k with k ≟ i | k ≟ j
+... | no  _   | no  _   = refl
+... | no  _   | yes _   = refl
+... | yes _   | no  _   = refl
+... | yes k≡i | yes k≡j = trans (sym k≡j) k≡i
 
 transpose-inverse : ∀ {n} (i j : Fin n) {k} →
                     transpose i j (transpose j i k) ≡ k
@@ -49,6 +65,23 @@ transpose-inverse i j {k} with k ≟ j
                 = sym (invert [k≡i])
 ...   | false because [k≢i] rewrite dec-false (k ≟ i) (invert [k≢i])
                                   | dec-false (k ≟ j) (invert [k≢j]) = refl
+
+transpose-inverse′ : ∀ {n} (i j : Fin n) {k} → transpose i j (transpose i j k) ≡ k
+transpose-inverse′ i j {k} with k ≟ i
+transpose-inverse′ i j {k} | yes k≡i with j ≟ i
+... | yes j≡i = trans j≡i (sym k≡i)
+... | no  j≢i rewrite dec-true (j ≟ j) refl = sym k≡i
+transpose-inverse′ i j {k} | no  k≢i with k ≟ j
+... | yes k≡j rewrite dec-true (i ≟ i) refl = sym k≡j
+... | no  k≢j rewrite dec-false (k ≟ i) k≢i rewrite dec-false (k ≟ j) k≢j = refl
+
+transpose-matchˡ : ∀ {n} (i j : Fin n) → transpose i j i ≡ j
+transpose-matchˡ i j rewrite dec-true (i ≟ i) refl = refl
+
+transpose-matchʳ : ∀ {n} (i j : Fin n) → transpose i j j ≡ i
+transpose-matchʳ i j with j ≟ i
+... | yes j≡i = j≡i
+... | no  j≢i rewrite dec-true (j ≟ j) refl = refl
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
