@@ -3042,3 +3042,16 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   ↭-reverse : (xs : List A) → reverse xs ↭ xs
   ```
+
+* Added new functions to `Algebra.Apartness.Bundles`
+  ```agda
+  leftInv→rightInv : LeftInvertible _≈_ 1# _*_ (x - y) → RightInvertible _≈_ 1# _*_ (x - y)
+  rightInv→leftInv : RightInvertible _≈_ 1# _*_ (x - y) → LeftInvertible _≈_ 1# _*_ (x - y)
+  leftInv→Inv : LeftInvertible _≈_ 1# _*_ (x - y) → Invertible _≈_ 1# _*_ (x - y)
+  rightInv→Inv : RightInvertible _≈_ 1# _*_ (x - y) → Invertible _≈_ 1# _*_ (x - y)
+  leftInvertible⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
+  rightInvertible⇒# : RightInvertible _≈_ 1# _*_ (x - y) → x # y
+  x#0y#0→xy#0 : x # 0# → y # 0# → x * y # 0#
+  #-congʳ : x ≈ y → x # z → y # z
+  #-sym : Symmetric _#_
+  ```
