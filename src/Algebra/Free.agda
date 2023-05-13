@@ -6,6 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Algebra.Bundles.Free where
+module Algebra.Free where
 
-open import Algebra.Bundles.Free.Magma public
+open import Algebra.Free.Magma public

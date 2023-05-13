@@ -43,26 +43,6 @@ private
 
 
 ------------------------------------------------------------------------
--- Morphisms between Magmas: belongs in its own place
--- Algebra.Morphism.Bundles
--- open import Algebra.Morphism.Bundles using (MagmaHomomorphism)
-------------------------------------------------------------------------
-
-record MagmaHomomorphism (𝓐 : Magma a ℓa) (𝓑 : Magma b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
-  module A = Magma 𝓐
-  module B = Magma 𝓑
-
-  field
-    ⟦_⟧ : A.Carrier → B.Carrier
-
-    isMagmaHomomorphism : IsMagmaHomomorphism A.rawMagma B.rawMagma ⟦_⟧
-
-  open IsMagmaHomomorphism isMagmaHomomorphism public
-
-  setoidHomomorphism : SetoidHomomorphism A.setoid B.setoid
-  setoidHomomorphism = record { ⟦_⟧ = ⟦_⟧ ; isRelHomomorphism = isRelHomomorphism }
-
-------------------------------------------------------------------------
 -- Syntax: 'pre'-free algebra
 
 module Syntax where
@@ -166,12 +146,19 @@ module FreeRawMagma (A : Set a) where
   ≡⇒≈ ≡-refl = refl ≡-refl
 
   freeRawMagma : RawMagma a a
-  freeRawMagma = record { Carrier = Syntax A ; _≈_ = _≡_ ; _∙_ = _∙_ }
+  freeRawMagma = record
+    { Carrier = Syntax A
+    ; _≈_ = _≡_
+    ; _∙_ = _∙_
+    }
 
   open Structures {A = Syntax A} _≡_
 
   isMagma : IsMagma _∙_
-  isMagma = record { isEquivalence = ≡-isEquivalence ; ∙-cong = _∙-cong_ }
+  isMagma = record
+    { isEquivalence = ≡-isEquivalence
+    ; ∙-cong = _∙-cong_
+    }
 
   freeMagma : Magma a a
   freeMagma = record { isMagma = isMagma }
@@ -182,33 +169,33 @@ module FreeRawMagma (A : Set a) where
 
 module FreeMagma (𝓐 : Setoid a ℓa) where
 
-  open Setoid 𝓐 renaming (isEquivalence to isEqᴬ; _≈_ to _≈ᴬ_)
+  module A = Setoid 𝓐
 
   open Syntax
 
-  open EquationalTheory _≈ᴬ_ public
-    renaming (_≈_ to _≈ᵀ_) hiding (refl; sym; trans)
+  open EquationalTheory A._≈_ public
+    hiding (refl; sym; trans)
 
-  open Structures _≈ᵀ_
+  open Structures _≈_
 
   isMagma : IsMagma  _∙_
   isMagma = record
-            { isEquivalence = isEquivalence isEqᴬ
-            ; ∙-cong = _∙_
-            }
+    { isEquivalence = isEquivalence A.isEquivalence
+    ; ∙-cong = _∙_
+    }
 
   freeMagma : Magma a (a ⊔ ℓa)
   freeMagma = record { isMagma = isMagma }
 
 -- re-export some substructure
 
-  open Magma freeMagma public using (rawMagma; setoid; Carrier; _≈_)
+  open Magma freeMagma public using (rawMagma; setoid; Carrier)
 
   varSetoidHomomorphism : SetoidHomomorphism 𝓐 setoid
   varSetoidHomomorphism = record
-                          { ⟦_⟧ = var
-                          ; isRelHomomorphism = varIsRelHomomorphism
-                          }
+    { ⟦_⟧ = var
+    ; isRelHomomorphism = varIsRelHomomorphism
+    }
 
 
 ------------------------------------------------------------------------
@@ -216,7 +203,7 @@ module FreeMagma (𝓐 : Setoid a ℓa) where
 
 module _ (𝓜 : Magma m ℓm) where
 
-  open Magma 𝓜 renaming (setoid to setoidᴹ; Carrier to UM; _∙_ to _∙ᴹ_)
+  module M = Magma 𝓜
   open Syntax
 
 ------------------------------------------------------------------------
@@ -224,17 +211,17 @@ module _ (𝓜 : Magma m ℓm) where
 
   module Eval (𝓐 : Setoid a ℓa) where
 
-    open Setoid 𝓐 renaming (Carrier to UA)
+    module A = Setoid 𝓐
 
-    ⟦_⟧_ : Syntax UA → (UA → UM) → UM
+    ⟦_⟧_ : Syntax A.Carrier → (A.Carrier → M.Carrier) → M.Carrier
     ⟦ var a ⟧ η = η a
-    ⟦ s ∙ t ⟧ η = ⟦ s ⟧ η ∙ᴹ ⟦ t ⟧ η
+    ⟦ s ∙ t ⟧ η = ⟦ s ⟧ η M.∙ ⟦ t ⟧ η
 
 ------------------------------------------------------------------------
 -- Any Magma *is* an algebra for the Syntax Functor
 
-  alg : Syntax UM → UM
-  alg t = ⟦ t ⟧ id where open Eval setoidᴹ
+  alg : Syntax M.Carrier → M.Carrier
+  alg t = ⟦ t ⟧ id where open Eval M.setoid
 
 ------------------------------------------------------------------------
 -- ⟦_⟧_ defines the (unique) lifting of Setoid homomorphisms to Magma homomorphisms

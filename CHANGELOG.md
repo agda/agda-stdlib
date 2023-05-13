@@ -1372,8 +1372,8 @@ New modules
 
 * Algebraic structures obtained as the free thing (for their signature):
   ```
-  Algebra.Bundles.Free
-  Algebra.Bundles.Free.Magma
+  Algebra.Free
+  Algebra.Free.Magma
   ```
 
 * Morphisms between module-like algebraic structures:
@@ -1383,6 +1383,11 @@ New modules
   Algebra.Module.Morphism.Definitions
   Algebra.Module.Morphism.Structures
   Algebra.Module.Properties
+  ```
+
+* Bundled morphisms between algebraic structures:
+  ```
+  Algebra.Morphism.Bundles
   ```
 
 * Identity morphisms and composition of morphisms between algebraic structures:
