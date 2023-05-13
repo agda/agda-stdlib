@@ -24,8 +24,9 @@ private
 ------------------------------------------------------------------------
 
 record MagmaHomomorphism (𝓐 : Magma a ℓa) (𝓑 : Magma b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
-  module A = Magma 𝓐
-  module B = Magma 𝓑
+  private
+    module A = Magma 𝓐
+    module B = Magma 𝓑
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
