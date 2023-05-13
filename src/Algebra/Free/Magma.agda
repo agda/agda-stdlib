@@ -340,8 +340,8 @@ module FreeMagmaFunctor {𝓐 : Setoid a ℓa} {𝓑 : Setoid b ℓb}
     module FA = FreeMagma 𝓐
     module FB = FreeMagma 𝓑
   
-  mapMagmaHomomorphism : MagmaHomomorphism FA.magma FB.magma
-  mapMagmaHomomorphism = Existence.magmaHomomorphism
+  magmaHomomorphism : MagmaHomomorphism FA.magma FB.magma
+  magmaHomomorphism = Existence.magmaHomomorphism
     where open LeftAdjoint FB.magma (Compose.setoidHomomorphism 𝓗 FB.varSetoidHomomorphism)
 
 ------------------------------------------------------------------------
@@ -355,8 +355,7 @@ module Naturality {𝓜 : Magma m ℓm} {𝓝 : Magma n ℓn} where
 
   module _ (𝓕 : MagmaHomomorphism 𝓜 𝓝) where
     open MagmaHomomorphism 𝓕 using (⟦_⟧; isMagmaHomomorphism; setoidHomomorphism)
-    open FreeMagmaFunctor setoidHomomorphism using (mapMagmaHomomorphism)
-    open MagmaHomomorphism mapMagmaHomomorphism
+    open MagmaHomomorphism (FreeMagmaFunctor.magmaHomomorphism setoidHomomorphism)
       renaming (⟦_⟧ to map; isMagmaHomomorphism to map-isMagmaHomomorphism; setoidHomomorphism to mapSetoidHomomorphism)
     open FreeMagma M.setoid renaming (magma to magmaᴹ)
     open LeftAdjoint 𝓝 setoidHomomorphism
@@ -400,14 +399,14 @@ module IdentityLaw (𝓐 : Setoid a ℓa) where
        }
 
   open FreeMagmaFunctor (Identity.setoidHomomorphism 𝓐)
-  open MagmaHomomorphism mapMagmaHomomorphism renaming (⟦_⟧ to map-Id)
+  open MagmaHomomorphism magmaHomomorphism renaming (⟦_⟧ to map-Id)
 
   map-id : ∀ t → map-Id t UFA.≈ t
   map-id = Corollary.isUnique⟦_⟧ 𝓘ᴬ 𝓘
     where
       open LeftAdjoint FA.magma FA.varSetoidHomomorphism
       𝓘ᴬ 𝓘 : η-MagmaHomomorphism
-      𝓘ᴬ = record { magmaHomomorphism = mapMagmaHomomorphism ; ⟦_⟧∘var≈η = λ _ → UFA.refl }
+      𝓘ᴬ = record { magmaHomomorphism = magmaHomomorphism ; ⟦_⟧∘var≈η = λ _ → UFA.refl }
       𝓘 = record { magmaHomomorphism = Id ; ⟦_⟧∘var≈η = λ _ → UFA.refl }
 
 module CompositionLaw
@@ -423,9 +422,9 @@ module CompositionLaw
     module FC = FreeMagma 𝓒
     module UFC = Setoid FC.setoid
 
-  open FreeMagmaFunctor 𝓕 renaming (mapMagmaHomomorphism to MapAC)
-  open FreeMagmaFunctor 𝓗 renaming (mapMagmaHomomorphism to MapAB)
-  open FreeMagmaFunctor 𝓚 renaming (mapMagmaHomomorphism to MapBC)
+  open FreeMagmaFunctor 𝓕 renaming (magmaHomomorphism to MapAC)
+  open FreeMagmaFunctor 𝓗 renaming (magmaHomomorphism to MapAB)
+  open FreeMagmaFunctor 𝓚 renaming (magmaHomomorphism to MapBC)
   open MagmaHomomorphism MapAC renaming (⟦_⟧ to mapAC)
   open MagmaHomomorphism MapAB renaming (⟦_⟧ to mapAB; isMagmaHomomorphism to isHomAB)
   open MagmaHomomorphism MapBC renaming (⟦_⟧ to mapBC; isMagmaHomomorphism to isHomBC)
