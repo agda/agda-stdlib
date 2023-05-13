@@ -20,8 +20,8 @@ open import Relation.Nullary.Decidable as Dec
   using (yes; no; from-yes; ¬?; decidable-stable; _×-dec_; _→-dec_)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Decidable)
-open import Relation.Binary.PropositionalEquality
-  using (refl; sym; cong; subst)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; cong; subst)
 
 private
   variable
@@ -141,3 +141,18 @@ private
   -- Example: 6 is composite
   6-is-composite : Composite 6
   6-is-composite = from-yes (composite? 6)
+
+------------------------------------------------------------------------
+-- Other properties
+
+Prime⇒NonZero : Prime n → NonZero n
+Prime⇒NonZero {suc _} _ = _
+
+Composite⇒NonZero : Composite n → NonZero n
+Composite⇒NonZero {suc _} _ = _
+
+-- If m is a factor of prime p, then it is equal to either 1 or p itself
+∣p⇒≡1∨≡p : ∀ m {p} → Prime p → m ∣ p → m ≡ 1 ⊎ m ≡ p
+∣p⇒≡1∨≡p 0 {p} p-prime m∣p = contradiction (0∣⇒≡0 m∣p) λ p≡0 → subst Prime p≡0 p-prime
+∣p⇒≡1∨≡p 1 {p} p-prime m∣p = inj₁ refl
+∣p⇒≡1∨≡p (suc (suc m)) {suc (suc p)} p-prime m∣p = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → p-prime (s≤s (s≤s z≤n)) m<p m∣p)

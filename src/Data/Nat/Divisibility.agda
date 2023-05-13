@@ -300,3 +300,9 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   help : ∀ {m n} → m ≤′ n → m ! ∣ n !
   help {m} {n}     ≤′-refl        = ∣-refl
   help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)
+
+------------------------------------------------------------------------
+-- Properties of quotient
+
+quotient∣n : ∀ {m n} (m∣n : m ∣ n) → quotient m∣n ∣ n
+quotient∣n {m = m} m∣n = divides m (trans (_∣_.equality m∣n) (*-comm (quotient m∣n) m))
