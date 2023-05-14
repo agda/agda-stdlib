@@ -426,18 +426,21 @@ module CompositionLaw (𝓗 : SetoidHomomorphism 𝓐 𝓑) (𝓚 : SetoidHomomo
     module MapAC = MagmaHomomorphism Free𝓕
 
     MapBC∘MapAB : MagmaHomomorphism FA.magma FC.magma
-    MapBC∘MapAB = record
-      { ⟦_⟧ = MapBC.⟦_⟧ ∘ MapAB.⟦_⟧
-      ; isMagmaHomomorphism = Compose.isMagmaHomomorphism UFC.trans MapAB.isMagmaHomomorphism MapBC.isMagmaHomomorphism
-      }
+    MapBC∘MapAB = Compose.magmaHomomorphism Free𝓗 Free𝓚
 
   map-∘ : ∀ t → MapAC.⟦ t ⟧ UFC.≈ MapBC.⟦ MapAB.⟦ t ⟧ ⟧
   map-∘ = Corollary.isUnique⟦_⟧ 𝓐𝓒 𝓑𝓒∘𝓐𝓑
     where
       open LeftAdjoint FC.magma (Compose.setoidHomomorphism 𝓕 FC.varSetoidHomomorphism)
       𝓐𝓒 𝓑𝓒∘𝓐𝓑 : η-MagmaHomomorphism
-      𝓐𝓒 = record { magmaHomomorphism = Free𝓕 ; ⟦_⟧∘var≈η = λ _ → UFC.refl }
-      𝓑𝓒∘𝓐𝓑 = record { magmaHomomorphism = MapBC∘MapAB ; ⟦_⟧∘var≈η = λ _ → UFC.refl }
+      𝓐𝓒 = record
+        { magmaHomomorphism = Free𝓕
+        ; ⟦_⟧∘var≈η = λ _ → UFC.refl
+        }
+      𝓑𝓒∘𝓐𝓑 = record
+        { magmaHomomorphism = MapBC∘MapAB
+        ; ⟦_⟧∘var≈η = λ _ → UFC.refl
+        }
 
 
 ------------------------------------------------------------------------
