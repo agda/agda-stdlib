@@ -34,7 +34,6 @@ private
 -- of the View constructors will also be disjoint
 
 data View : (i : Fin (suc n)) → Set where
-
   top : View (fromℕ n)
   inj : (j : Fin n) → View (inject₁ j)
 
@@ -90,7 +89,6 @@ view-inj (suc j) rewrite view-inj j = refl
 module Instances {n} where
 
   data IsTop : View {n} i → Set where
-
     top : IsTop top
 
   instance
@@ -99,7 +97,6 @@ module Instances {n} where
     top⁺ rewrite view-top n = top
 
   data IsInj : View {n} i → Set where
-
     inj : ∀ j → IsInj (inj j)
 
   instance
