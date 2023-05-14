@@ -396,10 +396,7 @@ module IdentityLaw (𝓐 : Setoid a ℓa) where
     module MapId = MagmaHomomorphism IA.magmaHomomorphism
 
     Id : MagmaHomomorphism FA.magma FA.magma
-    Id = record
-      { ⟦_⟧ = id
-      ; isMagmaHomomorphism = Identity.isMagmaHomomorphism FA.rawMagma UFA.refl
-      }
+    Id = Identity.magmaHomomorphism FA.magma
 
   map-id : ∀ t → MapId.⟦ t ⟧ UFA.≈ t
   map-id = Corollary.isUnique⟦_⟧ 𝓘ᴬ 𝓘
