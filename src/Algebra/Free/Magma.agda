@@ -357,29 +357,25 @@ module Naturality (𝓕 : MagmaHomomorphism 𝓜 𝓝) where
     module M = Magma 𝓜
     module N = Magma 𝓝
     module F = MagmaHomomorphism 𝓕
-    module FM = FreeMagma M.setoid
+    Free𝓕 = FreeMagmaFunctor.magmaHomomorphism (F.setoidHomomorphism)
     module AlgM = MagmaHomomorphism (algMagmaHomomorphism 𝓜)
     module AlgN = MagmaHomomorphism (algMagmaHomomorphism 𝓝)
-    module Map = MagmaHomomorphism (FreeMagmaFunctor.magmaHomomorphism F.setoidHomomorphism)
-
-    H K : MagmaHomomorphism FM.magma 𝓝
-    H = record
-      { ⟦_⟧ = F.⟦_⟧ ∘ AlgM.⟦_⟧
-      ; isMagmaHomomorphism = Compose.isMagmaHomomorphism N.trans AlgM.isMagmaHomomorphism F.isMagmaHomomorphism
-      }
-
-    K = record
-      { ⟦_⟧ = AlgN.⟦_⟧ ∘  Map.⟦_⟧
-      ; isMagmaHomomorphism = Compose.isMagmaHomomorphism N.trans Map.isMagmaHomomorphism AlgN.isMagmaHomomorphism
-      }
+    
+    module Map = MagmaHomomorphism Free𝓕
 
   naturality : ∀ t → F.⟦ AlgM.⟦ t ⟧ ⟧ N.≈ AlgN.⟦ Map.⟦ t ⟧ ⟧
   naturality = Corollary.isUnique⟦_⟧ 𝓗 𝓚
     where
       open LeftAdjoint 𝓝 F.setoidHomomorphism
       𝓗 𝓚 : η-MagmaHomomorphism
-      𝓗 = record { magmaHomomorphism = H ; ⟦_⟧∘var≈η = λ _ → N.refl }
-      𝓚 = record { magmaHomomorphism = K ; ⟦_⟧∘var≈η = λ _ → N.refl }
+      𝓗 = record
+        { magmaHomomorphism = Compose.magmaHomomorphism (algMagmaHomomorphism 𝓜) 𝓕
+        ; ⟦_⟧∘var≈η = λ _ → N.refl
+        }
+      𝓚 = record
+        { magmaHomomorphism = Compose.magmaHomomorphism Free𝓕 (algMagmaHomomorphism 𝓝)
+        ; ⟦_⟧∘var≈η = λ _ → N.refl
+        }
 
 
 
@@ -425,9 +421,6 @@ module CompositionLaw (𝓗 : SetoidHomomorphism 𝓐 𝓑) (𝓚 : SetoidHomomo
     Free𝓕 = FreeMagmaFunctor.magmaHomomorphism 𝓕
     module MapAC = MagmaHomomorphism Free𝓕
 
-    MapBC∘MapAB : MagmaHomomorphism FA.magma FC.magma
-    MapBC∘MapAB = Compose.magmaHomomorphism Free𝓗 Free𝓚
-
   map-∘ : ∀ t → MapAC.⟦ t ⟧ UFC.≈ MapBC.⟦ MapAB.⟦ t ⟧ ⟧
   map-∘ = Corollary.isUnique⟦_⟧ 𝓐𝓒 𝓑𝓒∘𝓐𝓑
     where
@@ -438,7 +431,7 @@ module CompositionLaw (𝓗 : SetoidHomomorphism 𝓐 𝓑) (𝓚 : SetoidHomomo
         ; ⟦_⟧∘var≈η = λ _ → UFC.refl
         }
       𝓑𝓒∘𝓐𝓑 = record
-        { magmaHomomorphism = MapBC∘MapAB
+        { magmaHomomorphism = Compose.magmaHomomorphism Free𝓗 Free𝓚
         ; ⟦_⟧∘var≈η = λ _ → UFC.refl
         }
 
