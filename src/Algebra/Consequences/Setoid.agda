@@ -51,7 +51,7 @@ module _ {_•_ : Op₂ A} (cong : Congruent₂ _•_) where
     (x • y) • z       ≈⟨ cong refl (sym (identityˡ z)) ⟩
     (x • y) • (e • z) ≈⟨ middleFour x y e z ⟩
     (x • e) • (y • z) ≈⟨ cong (identityʳ x) refl ⟩
-    x • (y • z) ∎
+    x • (y • z)       ∎
 
   identity+middleFour⇒comm : {_+_ : Op₂ A} {e : A} → Identity e _+_ →
                               _•_ MiddleFourExchange _+_ →
