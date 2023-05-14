@@ -395,16 +395,19 @@ module IdentityLaw (𝓐 : Setoid a ℓa) where
     module IA = FreeMagmaFunctor (Identity.setoidHomomorphism 𝓐)
     module MapId = MagmaHomomorphism IA.magmaHomomorphism
 
-    Id : MagmaHomomorphism FA.magma FA.magma
-    Id = Identity.magmaHomomorphism FA.magma
-
   map-id : ∀ t → MapId.⟦ t ⟧ UFA.≈ t
   map-id = Corollary.isUnique⟦_⟧ 𝓘ᴬ 𝓘
     where
       open LeftAdjoint FA.magma FA.varSetoidHomomorphism
       𝓘ᴬ 𝓘 : η-MagmaHomomorphism
-      𝓘ᴬ = record { magmaHomomorphism = IA.magmaHomomorphism ; ⟦_⟧∘var≈η = λ _ → UFA.refl }
-      𝓘 = record { magmaHomomorphism = Id ; ⟦_⟧∘var≈η = λ _ → UFA.refl }
+      𝓘ᴬ = record
+            { magmaHomomorphism = IA.magmaHomomorphism
+            ; ⟦_⟧∘var≈η = λ _ → UFA.refl
+            }
+      𝓘 = record
+           { magmaHomomorphism = Identity.magmaHomomorphism _
+           ; ⟦_⟧∘var≈η = λ _ → UFA.refl
+           }
 
 module CompositionLaw (𝓗 : SetoidHomomorphism 𝓐 𝓑) (𝓚 : SetoidHomomorphism 𝓑 𝓒) where
 

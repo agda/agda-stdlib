@@ -250,8 +250,11 @@ module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
     }
 
 ------------------------------------------------------------------------
--- Bundled morphisms between Magmas
+-- Bundled morphisms between algebras
 ------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Magma
 
 module _ (M : Magma c ℓ) where
 
