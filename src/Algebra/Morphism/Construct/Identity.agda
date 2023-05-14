@@ -9,6 +9,7 @@
 module Algebra.Morphism.Construct.Identity where
 
 open import Algebra.Bundles
+open import Algebra.Morphism.Bundles
 open import Algebra.Morphism.Structures
   using ( module MagmaMorphisms
         ; module MonoidMorphisms
@@ -246,4 +247,19 @@ module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
   isLoopIsomorphism = record
     { isLoopMonomorphism = isLoopMonomorphism
     ; surjective = _, refl
+    }
+
+------------------------------------------------------------------------
+-- Bundled morphisms between Magmas
+------------------------------------------------------------------------
+
+module _ (M : Magma c ℓ) where
+
+  open Magma M using (rawMagma; refl)
+  open MagmaMorphisms rawMagma rawMagma
+
+  magmaHomomorphism : MagmaHomomorphism M M
+  magmaHomomorphism = record
+    { ⟦_⟧ = id
+    ; isMagmaHomomorphism = isMagmaHomomorphism rawMagma refl
     }

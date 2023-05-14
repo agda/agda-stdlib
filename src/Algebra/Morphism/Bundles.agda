@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Bundled definitions of homomorphisms between Magmas
+-- Bundled definitions of homomorphisms between algebras
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
