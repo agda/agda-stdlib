@@ -27,8 +27,8 @@ open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; module ≡-Reasoning)
 
--- Core definition
 ------------------------------------------------------------------------
+-- Core definition
 
 record Factorisation (n : ℕ) : Set where
   field
@@ -39,8 +39,8 @@ record Factorisation (n : ℕ) : Set where
 open Factorisation public using (factors)
 open Factorisation
 
--- Finding a factorisation
 ------------------------------------------------------------------------
+-- Finding a factorisation
 
 -- this builds up three important things:
 -- * a proof that every number we've gotten to so far has increasingly higher
