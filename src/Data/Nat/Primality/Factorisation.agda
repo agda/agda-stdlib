@@ -8,23 +8,24 @@
 
 module Data.Nat.Primality.Factorisation where
 
-open import Data.Empty
+open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility
+open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; quotient∣n; ∣-trans; ∣1⇒≡1; divides)
 open import Data.Nat.Properties
-open import Data.Nat.Induction
-open import Data.Nat.Primality
-open import Data.Nat.Rough
-open import Data.Product as Π
-open import Data.List.Base
-open import Data.List.Relation.Unary.All as All
+open import Data.Nat.Induction using (<-Rec; <-rec)
+open import Data.Nat.Primality using (Prime; euclidsLemma; ∣p⇒≡1∨≡p; Prime⇒NonZero)
+open import Data.Nat.Rough using (_Rough_; 2-rough-n; extend-∤; roughn∧∣n⇒prime)
+open import Data.Product as Π using (∃-syntax; _,_; proj₁; proj₂)
+open import Data.List.Base using (List; []; _∷_; product)
+open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Binary.Permutation.Propositional as ↭
-open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-open import Data.Sum.Base
+  using (_↭_; prep; swap; ↭-refl; refl; module PermutationReasoning)
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (productPreserves↭⇒≡; All-resp-↭)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
-open import Relation.Nullary.Decidable
-open import Relation.Nullary.Negation
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Nullary.Decidable using (yes; no)
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; module ≡-Reasoning)
 
 -- Core definition
 ------------------------------------------------------------------------
@@ -149,7 +150,7 @@ factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime)
   step : ∀ {as′} → as ↭ p ∷ as′ → a ∷ as ↭ p ∷ a ∷ as′
   step {as′} as↭p∷as′ = begin
     a ∷ as      ↭⟨ prep a as↭p∷as′ ⟩
-    a ∷ p ∷ as′ ↭⟨ ↭.swap a p refl ⟩
+    a ∷ p ∷ as′ ↭⟨ swap a p refl ⟩
     p ∷ a ∷ as′ ∎ where open PermutationReasoning
 
 ... | inj₁ p∣a with ∣p⇒≡1∨≡p p aPrime p∣a
