@@ -30,7 +30,7 @@ open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl ; cong; cong₂; _≢_)
+  using (_≡_ ; refl ; cong; cong₂; _≢_; module ≡-Reasoning)
 open import Relation.Nullary
 
 private
@@ -373,4 +373,3 @@ productPreserves↭⇒≡ (swap {xs} {ys} x y r) = begin
   (y * x) * product ys ≡⟨ *-assoc y x (product ys) ⟩
   y * (x * product ys) ∎
   where open ≡-Reasoning
-
