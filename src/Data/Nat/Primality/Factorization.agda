@@ -62,7 +62,7 @@ factorize (suc (suc n)) = <-rec (λ n′ → ∀ {k} → 2 ≤ n′ → k ≤‴
   factorizeRec (suc (suc n)) rec (s≤s (s≤s n≤z)) ≤‴-refl k-rough-n = record
     { factors = 2 + n ∷ []
     ; isFactorization = *-identityʳ (2 + n)
-    ; factorsPrime = (λ 2≤d d<n d∣n → rough⇒∤ k-rough-n 2≤d d<n d∣n) ∷ []
+    ; factorsPrime = (λ 2≤d d<n d∣n → k-rough-n 2≤d d<n d∣n) ∷ []
     }
   factorizeRec (suc (suc n)) rec {0} (s≤s (s≤s z≤n)) (≤‴-step (≤‴-step k<n)) k-rough-n = factorizeRec (2 + n) rec (s≤s (s≤s z≤n)) k<n (2-rough-n (2 + n))
   factorizeRec (suc (suc n)) rec {1} (s≤s (s≤s z≤n)) (≤‴-step k<n) k-rough-n = factorizeRec (2 + n) rec (s≤s (s≤s z≤n)) k<n (2-rough-n (2 + n))
@@ -84,7 +84,7 @@ factorize (suc (suc n)) = <-rec (λ n′ → ∀ {k} → 2 ≤ n′ → k ≤‴
       q<n = <-transˡ (m<m*n (quotient k∣n) (2 + k) ⦃ >-nonZero (<-transˡ (s≤s z≤n) 2≤q) ⦄ (s≤s (s≤s z≤n))) (≤-reflexive (sym (_∣_.equality k∣n)))
 
       res : Factorization (quotient k∣n)
-      res = rec (quotient k∣n) q<n {2 + k} 2≤q (≤⇒≤‴ (≮⇒≥ (λ q<k → rough⇒∤ k-rough-n 2≤q q<k (quotient∣n k∣n)))) λ {d} d<k d-prime → k-rough-n d<k d-prime ∘ flip ∣-trans (quotient∣n k∣n)
+      res = rec (quotient k∣n) q<n {2 + k} 2≤q (≤⇒≤‴ (≮⇒≥ (λ q<k → k-rough-n 2≤q q<k (quotient∣n k∣n)))) λ {d} d<k d-prime → k-rough-n d<k d-prime ∘ flip ∣-trans (quotient∣n k∣n)
 
       prop : (2 + k) * product (factors res) ≡ 2 + n
       prop = begin

@@ -42,15 +42,6 @@ b-rough-1 k {.1} (s≤s ()) d<k d∣1 | refl
 reduce-∣ : ∀ {k m n} → k Rough m → n ∣ m → k Rough n
 reduce-∣ k-rough-n n∣m d<k d-prime d∣n = k-rough-n d<k d-prime (∣-trans d∣n n∣m)
 
--- if a number is k-rough, then no number 2 ≤ d < k will divide it, whether prime or not
-rough⇒∤ : ∀ {d k n} → k Rough n → 2 ≤ d → d < k → d ∤ n
-rough⇒∤ {d} {k} {n} k-rough-n = <-rec (λ d′ → 2 ≤ d′ → d′ < k → d′ ∤ n) (rough⇒∤Rec k-rough-n) d
-  where
-    rough⇒∤Rec : ∀ {n k} → k Rough n → ∀ d → <-Rec (λ d′ → 2 ≤ d′ → d′ < k → d′ ∤ n) d → 2 ≤ d → d < k → d ∤ n
-    rough⇒∤Rec {n} {k} k-rough-n (suc (suc d)) rec (s≤s (s≤s z≤n)) d<k with composite? (2 + d)
-    ... | yes (d′ , 2≤d′ , d′<d , d′∣d) = rec d′ d′<d 2≤d′ (<-trans d′<d d<k) ∘ ∣-trans d′∣d
-    ... | no ¬d-composite = k-rough-n {2 + d} (s≤s (s≤s z≤n)) d<k
-
 -- if a number is k-rough, and k divides it, then it must be prime
 roughn∧∣n⇒prime : ∀ {k n} → k Rough n → 2 ≤ k → k ∣ n → Prime k
 roughn∧∣n⇒prime {k = suc (suc k)} {n = n} k-rough-n (s≤s (s≤s z≤n)) k∣n
