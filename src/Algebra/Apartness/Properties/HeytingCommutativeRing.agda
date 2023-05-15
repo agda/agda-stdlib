@@ -16,27 +16,16 @@ open import Data.Product using (_,_; proj₁; proj₂)
 open import Algebra using (CommutativeRing; RightIdentity; Invertible; LeftInvertible; RightInvertible)
 
 open HeytingCommutativeRing HCR
-open CommutativeRing commutativeRing using (ring)
+open CommutativeRing commutativeRing using (ring; *-commutativeMonoid)
 
 open import Algebra.Properties.Ring ring
   using (-0#≈0#; -‿distribˡ-*; -‿distribʳ-*; -‿anti-homo-+; -‿involutive)
 open import Relation.Binary.Definitions using (Symmetric)
 import Relation.Binary.Reasoning.Setoid as ReasonSetoid
+open import Algebra.Properties.CommutativeMonoid *-commutativeMonoid
 
 private variable
   x y z : Carrier
-
-leftInv→rightInv : LeftInvertible _≈_ 1# _*_ x → RightInvertible _≈_ 1# _*_ x
-leftInv→rightInv {x} (x⁻¹ , x⁻¹*x≈1) = x⁻¹ , trans (*-comm x x⁻¹) x⁻¹*x≈1
-
-rightInv→leftInv : RightInvertible _≈_ 1# _*_ x → LeftInvertible _≈_ 1# _*_ x
-rightInv→leftInv {x} (x⁻¹ , x*x⁻¹≈1) = x⁻¹ , trans (*-comm x⁻¹ x) x*x⁻¹≈1
-
-leftInv→Inv : LeftInvertible _≈_ 1# _*_ (x - y) → Invertible _≈_ 1# _*_ (x - y)
-leftInv→Inv left@(x⁻¹ , x⁻¹*x≈1) = x⁻¹ , x⁻¹*x≈1 , leftInv→rightInv left .proj₂
-
-rightInv→Inv : RightInvertible _≈_ 1# _*_ (x - y) → Invertible _≈_ 1# _*_ (x - y)
-rightInv→Inv right@(x⁻¹ , x*x⁻¹≈1) = x⁻¹ , rightInv→leftInv right .proj₂ , x*x⁻¹≈1
 
 leftInvertible⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
 leftInvertible⇒# = invertible⇒# ∘ leftInv→Inv
