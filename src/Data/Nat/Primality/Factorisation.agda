@@ -53,6 +53,7 @@ open Factorisation public using (factors)
 private
   pattern 2+ n = suc (suc n)
   pattern 2≤2+n = s≤s (s≤s z≤n)
+  pattern 1<2+n = 2≤2+n
 
 factorise : ∀ n → .{{NonZero n}} → Factorisation n
 factorise 1 = record
@@ -84,29 +85,49 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
     ; factorsPrime = roughn∧∣n⇒prime k-rough-n 2≤2+n k∣n ∷ Factorisation.factorsPrime res
     }
     where
+
+      q : ℕ
+      q = quotient k∣n
+
       -- we know that k < n, so if q is 0 or 1 then q * k < n
-      2≤q : 2 ≤ quotient k∣n
+      2≤q : 2 ≤ q
       2≤q = ≮⇒≥ (λ q<2 → contradiction (_∣_.equality k∣n) (>⇒≢ (prf (≤-pred q<2)))) where
 
-        prf : quotient k∣n ≤ 1 → k∣n .quotient * 2+ k < 2+ n
-        prf q≤1 = let open ≤-Reasoning in begin-strict
-          k∣n .quotient * 2+ k ≤⟨ *-monoˡ-≤ (2 + k) q≤1 ⟩
-          2 + k + 0            ≡⟨ +-identityʳ (2 + k) ⟩
-          2 + k                <⟨ ≤‴⇒≤ k<n ⟩
-          2 + n                ∎
+        prf : q ≤ 1 → q * 2+ k < 2 + n
+        prf q≤1 = begin-strict
+          q * 2+ k  ≤⟨ *-monoˡ-≤ (2 + k) q≤1 ⟩
+          2 + k + 0 ≡⟨ +-identityʳ (2 + k) ⟩
+          2 + k     <⟨ ≤‴⇒≤ k<n ⟩
+          2 + n     ∎ where open ≤-Reasoning
 
-      q<n : quotient k∣n < 2+ n
-      q<n = <-transˡ (m<m*n (quotient k∣n) (2 + k) ⦃ >-nonZero (<-transˡ (s≤s z≤n) 2≤q) ⦄ 2≤2+n) (≤-reflexive (sym (_∣_.equality k∣n)))
+      0<q : 0 < q
+      0<q = begin-strict
+        0 <⟨ s≤s z≤n ⟩
+        2 ≤⟨ 2≤q ⟩
+        q ∎ where open ≤-Reasoning
 
-      res : Factorisation (quotient k∣n)
-      res = rec (quotient k∣n) q<n {2 + k} 2≤q (≤⇒≤‴ (≮⇒≥ (λ q<k → k-rough-n 2≤q q<k (quotient∣n k∣n)))) λ {d} d<k d-prime → k-rough-n d<k d-prime ∘ flip ∣-trans (quotient∣n k∣n)
+      q<n : q < 2 + n
+      q<n = begin-strict
+        q           <⟨ m<m*n q (2 + k) ⦃ >-nonZero 0<q ⦄ 2≤2+n ⟩
+        q * (2 + k) ≡˘⟨ _∣_.equality k∣n ⟩
+        2 + n       ∎ where open ≤-Reasoning
+
+      q≮2+k : q ≮ 2 + k
+      q≮2+k q<k = k-rough-n 2≤q q<k (quotient∣n k∣n)
+
+      res : Factorisation q
+      res = rec q q<n {2 + k} 2≤q (≤⇒≤‴ (≮⇒≥ q≮2+k))
+          $ λ {d} d<k d-prime → k-rough-n d<k d-prime ∘ flip ∣-trans (quotient∣n k∣n)
 
       prop : (2 + k) * product (factors res) ≡ 2 + n
-      prop = let open ≡-Reasoning in begin
-        (2 + k) * product (factors res) ≡⟨ cong ((2 + k) *_) (Factorisation.isFactorisation res) ⟩
-        (2 + k) * quotient k∣n          ≡⟨ *-comm (2 + k) (quotient k∣n) ⟩
-        quotient k∣n * (2 + k)          ≡˘⟨ _∣_.equality k∣n ⟩
-        2 + n                           ∎
+      prop = begin
+        (2 + k) * product (factors res)
+          ≡⟨ cong ((2 + k) *_) (Factorisation.isFactorisation res) ⟩
+        (2 + k) * q
+          ≡⟨ *-comm (2 + k) q ⟩
+        q * (2 + k)
+          ≡˘⟨ _∣_.equality k∣n ⟩
+        2 + n ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of a factorisation
@@ -117,7 +138,8 @@ factorisation≥1 {suc a ∷ as} (pa ∷ asPrime) = *-mono-≤ {1} {1 + a} (s≤
 
 factorisationPullToFront : ∀ {as} {p} → Prime p → p ∣ product as → All Prime as → ∃[ as′ ] as ↭ (p ∷ as′)
 factorisationPullToFront {[]} {suc (suc p)} pPrime p∣Πas asPrime = contradiction (∣1⇒≡1 p∣Πas) λ ()
-factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime) with euclidsLemma a (product as) pPrime p∣aΠas
+factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime)
+  with euclidsLemma a (product as) pPrime p∣aΠas
 ... | inj₂ p∣Πas = Π.map (a ∷_) (λ as↭p∷as′ → ↭-trans (prep a as↭p∷as′) (↭.swap a p refl)) (factorisationPullToFront pPrime p∣Πas asPrime)
 ... | inj₁ p∣a with ∣p⇒≡1∨≡p p aPrime p∣a
 ...   | inj₁ refl = ⊥-elim pPrime
@@ -125,16 +147,55 @@ factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime) wi
 
 factorisationUnique′ : (as bs : List ℕ) → product as ≡ product bs → All Prime as → All Prime bs → as ↭ bs
 factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = refl
-factorisationUnique′ [] (suc (suc b) ∷ bs) Πas≡Πbs asPrime (bPrime ∷ bsPrime) = contradiction Πas≡Πbs (<⇒≢ (<-transˡ (*-monoˡ-< 1 {1} {2 + b} 2≤2+n) (*-monoʳ-≤ (2 + b) (factorisation≥1 bsPrime))))
-factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime with bs′ , bs↭a∷bs′ ← factorisationPullToFront aPrime (divides (product as) (≡.trans (sym Πas≡Πbs) (*-comm a (product as)))) bsPrime = begin
-    a ∷ as  <⟨ factorisationUnique′ as bs′
-               (*-cancelˡ-≡ (product as) (product bs′) a {{Prime⇒NonZero aPrime}} (≡.trans Πas≡Πbs (productPreserves↭⇒≡ bs↭a∷bs′)))
-               asPrime
-               (All.tail (All-resp-↭ bs↭a∷bs′ bsPrime))
-            ⟩
+factorisationUnique′ [] (suc (suc b) ∷ bs) Πas≡Πbs asPrime (bPrime ∷ bsPrime) =
+  contradiction Πas≡Πbs (<⇒≢ Πas<Πbs) where
+
+  Πas<Πbs : product [] < product (2+ b ∷ bs)
+  Πas<Πbs = begin-strict
+    1                    ≡⟨⟩
+    1       * 1          <⟨ *-monoˡ-< 1 {1} {2 + b} 1<2+n ⟩
+    (2 + b) * 1          ≤⟨ *-monoʳ-≤ (2 + b) (factorisation≥1 bsPrime) ⟩
+    2+ b    * product bs ≡⟨⟩
+    product (2+ b ∷ bs)  ∎ where open ≤-Reasoning
+
+factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = a∷as↭bs where
+
+  a∣Πbs : a ∣ product bs
+  a∣Πbs = divides (product as) $ begin
+    product bs       ≡˘⟨ Πas≡Πbs ⟩
+    product (a ∷ as) ≡⟨⟩
+    a * product as   ≡⟨ *-comm a (product as) ⟩
+    product as * a   ∎ where open ≡-Reasoning
+
+  shuffle : Σ[ bs′ ∈ List ℕ ] bs ↭ a ∷ bs′
+  shuffle = factorisationPullToFront aPrime a∣Πbs bsPrime
+
+  bs′ = proj₁ shuffle
+  bs↭a∷bs′ = proj₂ shuffle
+
+  Πas≡Πbs′ : product as ≡ product bs′
+  Πas≡Πbs′ = *-cancelˡ-≡ (product as) (product bs′) a {{Prime⇒NonZero aPrime}} $ begin
+    a * product as  ≡⟨ Πas≡Πbs ⟩
+    product bs      ≡⟨ productPreserves↭⇒≡ bs↭a∷bs′ ⟩
+    a * product bs′ ∎ where open ≡-Reasoning
+
+  bs′Prime : All Prime bs′
+  bs′Prime = All.tail (All-resp-↭ bs↭a∷bs′ bsPrime)
+
+  a∷as↭bs : a ∷ as ↭ bs
+  a∷as↭bs = begin
+    a ∷ as  <⟨ factorisationUnique′ as bs′ Πas≡Πbs′ asPrime bs′Prime ⟩
     a ∷ bs′ ↭˘⟨ bs↭a∷bs′ ⟩
-    bs      ∎
-  where open PermutationReasoning
+    bs      ∎ where open PermutationReasoning
 
 factorisationUnique : {n : ℕ} (f f′ : Factorisation n) → factors f ↭ factors f′
-factorisationUnique f f′ = factorisationUnique′ (factors f) (factors f′) (≡.trans (Factorisation.isFactorisation f) (sym (Factorisation.isFactorisation f′))) (Factorisation.factorsPrime f) (Factorisation.factorsPrime f′)
+factorisationUnique {n} f f′ =
+  factorisationUnique′ (factors f) (factors f′) Πf≡Πf′ (factorsPrime f) (factorsPrime f′) where
+
+  open Factorisation
+
+  Πf≡Πf′ : product (factors f) ≡ product (factors f′)
+  Πf≡Πf′ = begin
+    product (factors f)  ≡⟨ isFactorisation f ⟩
+    n                    ≡˘⟨ isFactorisation f′ ⟩
+    product (factors f′) ∎ where open ≡-Reasoning
