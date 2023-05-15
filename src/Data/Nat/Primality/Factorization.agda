@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Prime factorization of naturla numbers and its properties
+-- Prime factorization of natural numbers and its properties
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
