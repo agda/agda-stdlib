@@ -26,17 +26,17 @@ import Relation.Binary.Reasoning.Setoid as ReasonSetoid
 private variable
   x y z : Carrier
 
-leftInv→rightInv : LeftInvertible _≈_ 1# _*_ (x - y) → RightInvertible _≈_ 1# _*_ (x - y)
-leftInv→rightInv {x} {y} (x-y⁻¹ , x-y⁻¹*x-y≈1) = x-y⁻¹ , trans (*-comm (x + - y) x-y⁻¹) x-y⁻¹*x-y≈1
+leftInv→rightInv : LeftInvertible _≈_ 1# _*_ x → RightInvertible _≈_ 1# _*_ x
+leftInv→rightInv {x} (x⁻¹ , x⁻¹*x≈1) = x⁻¹ , trans (*-comm x x⁻¹) x⁻¹*x≈1
 
-rightInv→leftInv : RightInvertible _≈_ 1# _*_ (x - y) → LeftInvertible _≈_ 1# _*_ (x - y)
-rightInv→leftInv {x} {y} (x-y⁻¹ , x-y*x-y⁻¹≈1) = x-y⁻¹ , trans (*-comm x-y⁻¹ (x + - y)) x-y*x-y⁻¹≈1
+rightInv→leftInv : RightInvertible _≈_ 1# _*_ x → LeftInvertible _≈_ 1# _*_ x
+rightInv→leftInv {x} (x⁻¹ , x*x⁻¹≈1) = x⁻¹ , trans (*-comm x⁻¹ x) x*x⁻¹≈1
 
 leftInv→Inv : LeftInvertible _≈_ 1# _*_ (x - y) → Invertible _≈_ 1# _*_ (x - y)
-leftInv→Inv left@(x-y⁻¹ , x-y⁻¹*x-y≈1) = x-y⁻¹ , x-y⁻¹*x-y≈1 , leftInv→rightInv left .proj₂
+leftInv→Inv left@(x⁻¹ , x⁻¹*x≈1) = x⁻¹ , x⁻¹*x≈1 , leftInv→rightInv left .proj₂
 
 rightInv→Inv : RightInvertible _≈_ 1# _*_ (x - y) → Invertible _≈_ 1# _*_ (x - y)
-rightInv→Inv right@(x-y⁻¹ , x-y*x-y⁻¹≈1) = x-y⁻¹ , rightInv→leftInv right .proj₂ , x-y*x-y⁻¹≈1
+rightInv→Inv right@(x⁻¹ , x*x⁻¹≈1) = x⁻¹ , rightInv→leftInv right .proj₂ , x*x⁻¹≈1
 
 leftInvertible⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
 leftInvertible⇒# = invertible⇒# ∘ leftInv→Inv
