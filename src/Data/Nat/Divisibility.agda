@@ -305,4 +305,8 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
 -- Properties of quotient
 
 quotient∣n : ∀ {m n} (m∣n : m ∣ n) → quotient m∣n ∣ n
-quotient∣n {m = m} m∣n = divides m (trans (_∣_.equality m∣n) (*-comm (quotient m∣n) m))
+quotient∣n {m = m} {n = n} m∣n = divides m $ begin-equality
+  n                ≡⟨ _∣_.equality m∣n ⟩
+  quotient m∣n * m ≡⟨ *-comm (quotient m∣n) m ⟩
+  m * quotient m∣n ∎
+  where open ≤-Reasoning
