@@ -50,44 +50,59 @@ open Factorisation public using (factors)
 --   encounter a factor, as we can then divide by that factor and continue from
 --   there without termination issues
 
+private
+  pattern 2+ n = suc (suc n)
+  pattern 2≤2+n = s≤s (s≤s z≤n)
+
 factorise : ∀ n → .{{NonZero n}} → Factorisation n
 factorise 1 = record
   { factors = []
   ; isFactorisation = refl
   ; factorsPrime = []
   }
-factorise (suc (suc n)) = <-rec (λ n′ → ∀ {k} → 2 ≤ n′ → k ≤‴ n′ → k Rough n′ → Factorisation n′) factoriseRec (2 + n) {2} (s≤s (s≤s z≤n)) (≤⇒≤‴ (s≤s (s≤s z≤n))) (2-rough-n (2 + n))
+factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+n) (2-rough-n (2 + n))
   where
-  factoriseRec : ∀ n → <-Rec (λ n′ → ∀ {k} → 2 ≤ n′ → k ≤‴ n′ → k Rough n′ → Factorisation n′) n → ∀ {k} → 2 ≤ n → k ≤‴ n → k Rough n → Factorisation n
-  factoriseRec (suc (suc n)) rec (s≤s (s≤s n≤z)) ≤‴-refl k-rough-n = record
+
+  P : ℕ → Set
+  P n′ = ∀ {k} → 2 ≤ n′ → k ≤‴ n′ → k Rough n′ → Factorisation n′
+
+  factoriseRec : ∀ n → <-Rec P n → P n
+  factoriseRec (2+ n) rec (s≤s (s≤s n≤z)) ≤‴-refl k-rough-n = record
     { factors = 2 + n ∷ []
     ; isFactorisation = *-identityʳ (2 + n)
-    ; factorsPrime = (λ 2≤d d<n d∣n → k-rough-n 2≤d d<n d∣n) ∷ []
+    ; factorsPrime = k-rough-n ∷ []
     }
-  factoriseRec (suc (suc n)) rec {0} (s≤s (s≤s z≤n)) (≤‴-step (≤‴-step k<n)) k-rough-n = factoriseRec (2 + n) rec (s≤s (s≤s z≤n)) k<n (2-rough-n (2 + n))
-  factoriseRec (suc (suc n)) rec {1} (s≤s (s≤s z≤n)) (≤‴-step k<n) k-rough-n = factoriseRec (2 + n) rec (s≤s (s≤s z≤n)) k<n (2-rough-n (2 + n))
-  factoriseRec (suc (suc n)) rec {suc (suc k)} (s≤s (s≤s z≤n)) (≤‴-step k<n) k-rough-n with 2 + k ∣? 2 + n
-  ... | no  k∤n = factoriseRec (2 + n) rec {3 + k} (s≤s (s≤s z≤n)) k<n (extend-∤ k-rough-n k∤n)
+  factoriseRec (2+ n) rec {0} 2≤2+n (≤‴-step (≤‴-step k<n)) k-rough-n =
+    factoriseRec (2+ n) rec 2≤2+n k<n (2-rough-n (2+ n))
+  factoriseRec (2+ n) rec {1} 2≤2+n (≤‴-step k<n) k-rough-n =
+    factoriseRec (2+ n) rec 2≤2+n k<n (2-rough-n (2+ n))
+  factoriseRec (2+ n) rec {suc (suc k)} 2≤2+n (≤‴-step k<n) k-rough-n with 2 + k ∣? 2+ n
+  ... | no  k∤n = factoriseRec (2+ n) rec {3 + k} 2≤2+n k<n (extend-∤ k-rough-n k∤n)
   ... | yes k∣n = record
     { factors = 2 + k ∷ Factorisation.factors res
     ; isFactorisation = prop
-    ; factorsPrime = roughn∧∣n⇒prime k-rough-n (s≤s (s≤s z≤n)) k∣n ∷ Factorisation.factorsPrime res
+    ; factorsPrime = roughn∧∣n⇒prime k-rough-n 2≤2+n k∣n ∷ Factorisation.factorsPrime res
     }
     where
-      open ≡-Reasoning
-  
       -- we know that k < n, so if q is 0 or 1 then q * k < n
       2≤q : 2 ≤ quotient k∣n
-      2≤q = ≮⇒≥ λ { (s≤s q≤1) → >⇒≢ (<-transʳ (*-monoˡ-≤ (2 + k) q≤1) (<-transʳ (≤-reflexive (+-identityʳ (2 + k))) (≤‴⇒≤ k<n))) (_∣_.equality k∣n) }
-  
-      q<n : quotient k∣n < 2 + n
-      q<n = <-transˡ (m<m*n (quotient k∣n) (2 + k) ⦃ >-nonZero (<-transˡ (s≤s z≤n) 2≤q) ⦄ (s≤s (s≤s z≤n))) (≤-reflexive (sym (_∣_.equality k∣n)))
+      2≤q = ≮⇒≥ (λ q<2 → contradiction (_∣_.equality k∣n) (>⇒≢ (prf (≤-pred q<2)))) where
+
+        prf : quotient k∣n ≤ 1 → k∣n .quotient * 2+ k < 2+ n
+        prf q≤1 = let open ≤-Reasoning in begin-strict
+          k∣n .quotient * 2+ k ≤⟨ *-monoˡ-≤ (2 + k) q≤1 ⟩
+          2 + k + 0            ≡⟨ +-identityʳ (2 + k) ⟩
+          2 + k                <⟨ ≤‴⇒≤ k<n ⟩
+          2 + n                ∎
+
+      q<n : quotient k∣n < 2+ n
+      q<n = <-transˡ (m<m*n (quotient k∣n) (2 + k) ⦃ >-nonZero (<-transˡ (s≤s z≤n) 2≤q) ⦄ 2≤2+n) (≤-reflexive (sym (_∣_.equality k∣n)))
 
       res : Factorisation (quotient k∣n)
       res = rec (quotient k∣n) q<n {2 + k} 2≤q (≤⇒≤‴ (≮⇒≥ (λ q<k → k-rough-n 2≤q q<k (quotient∣n k∣n)))) λ {d} d<k d-prime → k-rough-n d<k d-prime ∘ flip ∣-trans (quotient∣n k∣n)
 
       prop : (2 + k) * product (factors res) ≡ 2 + n
-      prop = begin
+      prop = let open ≡-Reasoning in begin
         (2 + k) * product (factors res) ≡⟨ cong ((2 + k) *_) (Factorisation.isFactorisation res) ⟩
         (2 + k) * quotient k∣n          ≡⟨ *-comm (2 + k) (quotient k∣n) ⟩
         quotient k∣n * (2 + k)          ≡˘⟨ _∣_.equality k∣n ⟩
@@ -110,7 +125,7 @@ factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime) wi
 
 factorisationUnique′ : (as bs : List ℕ) → product as ≡ product bs → All Prime as → All Prime bs → as ↭ bs
 factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = refl
-factorisationUnique′ [] (suc (suc b) ∷ bs) Πas≡Πbs asPrime (bPrime ∷ bsPrime) = contradiction Πas≡Πbs (<⇒≢ (<-transˡ (*-monoˡ-< 1 {1} {2 + b} (s≤s (s≤s z≤n))) (*-monoʳ-≤ (2 + b) (factorisation≥1 bsPrime))))
+factorisationUnique′ [] (suc (suc b) ∷ bs) Πas≡Πbs asPrime (bPrime ∷ bsPrime) = contradiction Πas≡Πbs (<⇒≢ (<-transˡ (*-monoˡ-< 1 {1} {2 + b} 2≤2+n) (*-monoʳ-≤ (2 + b) (factorisation≥1 bsPrime))))
 factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime with bs′ , bs↭a∷bs′ ← factorisationPullToFront aPrime (divides (product as) (≡.trans (sym Πas≡Πbs) (*-comm a (product as)))) bsPrime = begin
     a ∷ as  <⟨ factorisationUnique′ as bs′
                (*-cancelˡ-≡ (product as) (product bs′) a {{Prime⇒NonZero aPrime}} (≡.trans Πas≡Πbs (productPreserves↭⇒≡ bs↭a∷bs′)))
