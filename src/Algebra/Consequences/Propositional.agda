@@ -99,17 +99,17 @@ module _ {_•_ : Op₂ A} where
 module _ {_•_ : Op₂ A} where
 
   comm+assoc⇒middleFour : Commutative _•_ → Associative _•_ →
-                           _•_ MiddleFourExchange _•_
+                          _•_ MiddleFourExchange _•_
   comm+assoc⇒middleFour = Base.comm+assoc⇒middleFour (cong₂ _•_)
 
   identity+middleFour⇒assoc : {e : A} → Identity e _•_ →
-                               _•_ MiddleFourExchange _•_ →
-                               Associative _•_
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
   identity+middleFour⇒assoc = Base.identity+middleFour⇒assoc (cong₂ _•_)
 
   identity+middleFour⇒comm : {_+_ : Op₂ A} {e : A} → Identity e _+_ →
-                              _•_ MiddleFourExchange _+_ →
-                              Commutative _•_
+                             _•_ MiddleFourExchange _+_ →
+                             Commutative _•_
   identity+middleFour⇒comm = Base.identity+middleFour⇒comm (cong₂ _•_)
 
 ------------------------------------------------------------------------

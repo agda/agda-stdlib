@@ -35,7 +35,7 @@ open import Algebra.Consequences.Base public
 module _ {_•_ : Op₂ A} (cong : Congruent₂ _•_) where
 
   comm+assoc⇒middleFour : Commutative _•_ → Associative _•_ →
-                           _•_ MiddleFourExchange _•_
+                          _•_ MiddleFourExchange _•_
   comm+assoc⇒middleFour comm assoc w x y z = begin
     (w • x) • (y • z) ≈⟨ assoc w x (y • z) ⟩
     w • (x • (y • z)) ≈⟨ cong refl (sym (assoc x y z)) ⟩
@@ -45,8 +45,8 @@ module _ {_•_ : Op₂ A} (cong : Congruent₂ _•_) where
     (w • y) • (x • z) ∎
 
   identity+middleFour⇒assoc : {e : A} → Identity e _•_ →
-                               _•_ MiddleFourExchange _•_ →
-                               Associative _•_
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
   identity+middleFour⇒assoc {e} (identityˡ , identityʳ) middleFour x y z = begin
     (x • y) • z       ≈⟨ cong refl (sym (identityˡ z)) ⟩
     (x • y) • (e • z) ≈⟨ middleFour x y e z ⟩
@@ -54,8 +54,8 @@ module _ {_•_ : Op₂ A} (cong : Congruent₂ _•_) where
     x • (y • z)       ∎
 
   identity+middleFour⇒comm : {_+_ : Op₂ A} {e : A} → Identity e _+_ →
-                              _•_ MiddleFourExchange _+_ →
-                              Commutative _•_
+                             _•_ MiddleFourExchange _+_ →
+                             Commutative _•_
   identity+middleFour⇒comm {_+_} {e} (identityˡ , identityʳ) middleFour x y
     = begin
     x • y             ≈⟨ sym (cong (identityˡ x) (identityʳ y)) ⟩
