@@ -9,7 +9,7 @@
 -- precisely mirrored in the constructors of the view type,
 -- ie that we 'view the function via its graph relation'
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Relation.Ternary.PunchIn where
 

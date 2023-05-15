@@ -11,7 +11,7 @@
 -- the function `punchIn` defined in `Data.Fin.Properties`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Data.Fin.Relation.Ternary.Pinch where
 
