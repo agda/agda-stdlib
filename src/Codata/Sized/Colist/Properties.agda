@@ -144,10 +144,10 @@ module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
 
   scanl-unfold : ∀ nil a → i ⊢ scanl cons nil (unfold alg a)
                              ≈ nil ∷ (λ where .force → unfold alg′ (a , nil))
-  scanl-unfold nil a with alg a | Eq.inspect alg a
-  ... | nothing       | [ eq ] = Eq.refl ∷ λ { .force →
+  scanl-unfold nil a with alg a in eq
+  ... | nothing      = Eq.refl ∷ λ { .force →
     sym (fromEq (unfold-nothing (Maybeₚ.map-nothing eq))) }
-  ... | just (a′ , b) | [ eq ] = Eq.refl ∷ λ { .force → begin
+  ... | just (a′ , b) = Eq.refl ∷ λ { .force → begin
     scanl cons (cons nil b) (unfold alg a′)
      ≈⟨ scanl-unfold (cons nil b) a′ ⟩
     (cons nil b ∷ _)
