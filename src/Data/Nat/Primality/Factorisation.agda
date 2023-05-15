@@ -21,7 +21,7 @@ open import Data.List.Relation.Unary.All as All
 open import Data.List.Relation.Binary.Permutation.Propositional as ↭
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
 open import Data.Sum.Base
-open import Function.Base
+open import Function.Base using (_$_; _∘_; _|>_; flip)
 open import Relation.Nullary.Decidable
 open import Relation.Nullary.Negation
 open import Relation.Binary.PropositionalEquality as ≡
@@ -36,6 +36,7 @@ record Factorisation (n : ℕ) : Set where
     factorsPrime : All Prime factors
 
 open Factorisation public using (factors)
+open Factorisation
 
 -- Finding a factorisation
 ------------------------------------------------------------------------
@@ -80,9 +81,9 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
   factoriseRec (2+ n) rec {suc (suc k)} 2≤2+n (≤‴-step k<n) k-rough-n with 2 + k ∣? 2+ n
   ... | no  k∤n = factoriseRec (2+ n) rec {3 + k} 2≤2+n k<n (extend-∤ k-rough-n k∤n)
   ... | yes k∣n = record
-    { factors = 2 + k ∷ Factorisation.factors res
+    { factors = 2 + k ∷ factors res
     ; isFactorisation = prop
-    ; factorsPrime = roughn∧∣n⇒prime k-rough-n 2≤2+n k∣n ∷ Factorisation.factorsPrime res
+    ; factorsPrime = roughn∧∣n⇒prime k-rough-n 2≤2+n k∣n ∷ factorsPrime res
     }
     where
 
@@ -122,7 +123,7 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
       prop : (2 + k) * product (factors res) ≡ 2 + n
       prop = begin
         (2 + k) * product (factors res)
-          ≡⟨ cong ((2 + k) *_) (Factorisation.isFactorisation res) ⟩
+          ≡⟨ cong ((2 + k) *_) (isFactorisation res) ⟩
         (2 + k) * q
           ≡⟨ *-comm (2 + k) q ⟩
         q * (2 + k)
@@ -140,7 +141,17 @@ factorisationPullToFront : ∀ {as} {p} → Prime p → p ∣ product as → All
 factorisationPullToFront {[]} {suc (suc p)} pPrime p∣Πas asPrime = contradiction (∣1⇒≡1 p∣Πas) λ ()
 factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime)
   with euclidsLemma a (product as) pPrime p∣aΠas
-... | inj₂ p∣Πas = Π.map (a ∷_) (λ as↭p∷as′ → ↭-trans (prep a as↭p∷as′) (↭.swap a p refl)) (factorisationPullToFront pPrime p∣Πas asPrime)
+... | inj₂ p∣Πas = Π.map (a ∷_) step ih where
+
+  ih : ∃[ as′ ] as ↭ (p ∷ as′)
+  ih = factorisationPullToFront pPrime p∣Πas asPrime
+
+  step : ∀ {as′} → as ↭ p ∷ as′ → a ∷ as ↭ p ∷ a ∷ as′
+  step {as′} as↭p∷as′ = begin
+    a ∷ as      ↭⟨ prep a as↭p∷as′ ⟩
+    a ∷ p ∷ as′ ↭⟨ ↭.swap a p refl ⟩
+    p ∷ a ∷ as′ ∎ where open PermutationReasoning
+
 ... | inj₁ p∣a with ∣p⇒≡1∨≡p p aPrime p∣a
 ...   | inj₁ refl = ⊥-elim pPrime
 ...   | inj₂ refl = as , ↭-refl
@@ -167,7 +178,7 @@ factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = 
     a * product as   ≡⟨ *-comm a (product as) ⟩
     product as * a   ∎ where open ≡-Reasoning
 
-  shuffle : Σ[ bs′ ∈ List ℕ ] bs ↭ a ∷ bs′
+  shuffle : ∃[ bs′ ] bs ↭ a ∷ bs′
   shuffle = factorisationPullToFront aPrime a∣Πbs bsPrime
 
   bs′ = proj₁ shuffle
@@ -191,8 +202,6 @@ factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = 
 factorisationUnique : {n : ℕ} (f f′ : Factorisation n) → factors f ↭ factors f′
 factorisationUnique {n} f f′ =
   factorisationUnique′ (factors f) (factors f′) Πf≡Πf′ (factorsPrime f) (factorsPrime f′) where
-
-  open Factorisation
 
   Πf≡Πf′ : product (factors f) ≡ product (factors f′)
   Πf≡Πf′ = begin
