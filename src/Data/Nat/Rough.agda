@@ -12,8 +12,9 @@ open import Data.Nat.Base using (ℕ; suc; _≤_; _<_; z≤n; s≤s; _+_)
 open import Data.Nat.Divisibility using (_∣_; _∤_; ∣-trans; ∣1⇒≡1)
 open import Data.Nat.Induction using (<-rec; <-Rec)
 open import Data.Nat.Primality using (Prime; composite?)
-open import Data.Nat.Properties using (_≟_; <-trans; ≤∧≢⇒<)
+open import Data.Nat.Properties using (_≟_; <-trans; ≤∧≢⇒<; m<1+n⇒m<n∨m≡n)
 open import Data.Product.Base using (_,_)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_; flip)
 open import Relation.Nullary.Decidable.Core using (yes; no)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
@@ -27,11 +28,10 @@ k Rough n = ∀ {d} → 1 < d → d < k → d ∤ n
 2-rough-n n {1} (s≤s ()) 1<2
 2-rough-n n {suc (suc d)} 1<d (s≤s (s≤s ()))
 
--- if a number is k-rough, and it's not a multiple of k, then it's (k+1)-rough
 extend-∤ : ∀ {k n} → k Rough n → k ∤ n → suc k Rough n
-extend-∤ {k = k} k-rough-n k∤n {suc d} 1<d (s≤s d<k) with suc d ≟ k
-... | yes refl = k∤n
-... | no  d≢k  = k-rough-n 1<d (≤∧≢⇒< d<k d≢k)
+extend-∤ k-rough-n k∤n 1<d d<suc[k] with m<1+n⇒m<n∨m≡n d<suc[k]
+... | inj₁ suc[d]≤k = k-rough-n 1<d suc[d]≤k
+... | inj₂ refl = k∤n
 
 -- 1 is always rough
 b-rough-1 : ∀ k → k Rough 1
