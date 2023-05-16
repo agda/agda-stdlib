@@ -4,7 +4,7 @@
 -- Composition of functional properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Construct.Composition where
 

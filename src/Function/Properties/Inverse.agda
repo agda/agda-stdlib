@@ -5,10 +5,11 @@
 --   This file is meant to be imported qualified.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Properties.Inverse where
 
+open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Function.Bundles
 open import Level using (Level)
@@ -24,7 +25,7 @@ import Function.Construct.Composition as Composition
 private
   variable
     a b ℓ ℓ₁ ℓ₂ : Level
-    A B : Set a
+    A B C D : Set a
     S T : Setoid a ℓ
 
 ------------------------------------------------------------------------
@@ -48,8 +49,18 @@ isEquivalence = record
   ; trans = Composition.inverse
   }
 
+open module ↔ {ℓ} = IsEquivalence (↔-isEquivalence {ℓ}) using ()
+  renaming (refl to ↔-refl; sym to ↔-sym; trans to ↔-trans) public
+
 ------------------------------------------------------------------------
 -- Conversion functions
+
+Inverse⇒Injection : Inverse S T → Injection S T
+Inverse⇒Injection {S = S} I = record
+  { to = to
+  ; cong = to-cong
+  ; injective = inverseʳ⇒injective S {f⁻¹ = from} from-cong inverseʳ
+  } where open Inverse I
 
 Inverse⇒Bijection : Inverse S T → Bijection S T
 Inverse⇒Bijection {S = S} I = record
@@ -66,8 +77,21 @@ Inverse⇒Equivalence I = record
   ; from-cong = from-cong
   } where open Inverse I
 
+↔⇒↣ : A ↔ B → A ↣ B
+↔⇒↣ = Inverse⇒Injection
+
 ↔⇒⤖ : A ↔ B → A ⤖ B
 ↔⇒⤖ = Inverse⇒Bijection
 
 ↔⇒⇔ : A ↔ B → A ⇔ B
 ↔⇒⇔ = Inverse⇒Equivalence
+
+module _ (ext : ∀ {a b} → Extensionality a b) where
+
+  ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
+  ↔-fun A↔B C↔D = mk↔′
+    (λ a→c b → to C↔D (a→c (from A↔B b)))
+    (λ b→d a → from C↔D (b→d (to A↔B a)))
+    (λ b→d → ext λ _ → P.trans (inverseˡ C↔D _ ) (P.cong b→d (inverseˡ A↔B _)))
+    (λ a→c → ext λ _ → P.trans (inverseʳ C↔D _ ) (P.cong a→c (inverseʳ A↔B _)))
+    where open Inverse

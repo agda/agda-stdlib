@@ -4,18 +4,17 @@
 -- Properties related to Any
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Any.Properties where
 
-open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
-open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List
 open import Data.List.Properties using (ʳ++-defn)
-open import Data.List.Categorical using (monad)
+open import Data.List.Effectful as Listₑ using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties.Core
@@ -23,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties.Core
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
 open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
-open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; ≤-step)
+open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product as Prod
@@ -34,6 +33,7 @@ open import Data.Product.Function.NonDependent.Propositional
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
+open import Effect.Monad
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
@@ -42,11 +42,12 @@ open import Function.Related as Related using (Kind; Related; SK-sym)
 open import Level using (Level)
 open import Relation.Binary as B hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; inspect)
+  using (_≡_; refl)
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ; yes; no)
-open import Relation.Nullary.Negation using (contradiction; ¬?; decidable-stable)
+open import Relation.Nullary.Decidable using (¬?; decidable-stable)
+open import Relation.Nullary.Negation using (contradiction)
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -171,9 +172,9 @@ any⁺ p (there {x = x} pxs) with p x
 ... | false = any⁺ p pxs
 
 any⁻ : ∀ (p : A → Bool) xs → T (any p xs) → Any (T ∘ p) xs
-any⁻ p (x ∷ xs) px∷xs with p x | inspect p x
-... | true  | P.[ eq ] = here (Equivalence.from T-≡ ⟨$⟩ eq)
-... | false | _        = there (any⁻ p xs px∷xs)
+any⁻ p (x ∷ xs) px∷xs with p x in eq
+... | true  = here (Equivalence.from T-≡ ⟨$⟩ eq)
+... | false = there (any⁻ p xs px∷xs)
 
 any⇔ : ∀ {p : A → Bool} → Any (T ∘ p) xs ⇔ T (any p xs)
 any⇔ = equivalence (any⁺ _) (any⁻ _ _)
@@ -506,18 +507,18 @@ module _ {P : A → Set p} where
                    ∃ λ i → i < n × P (f i)
   applyDownFrom⁻ f {suc n} (here p)  = n , ≤-refl , p
   applyDownFrom⁻ f {suc n} (there p) with applyDownFrom⁻ f p
-  ... | i , i<n , pf = i , ≤-step i<n , pf
+  ... | i , i<n , pf = i , m<n⇒m<1+n i<n , pf
 
 ------------------------------------------------------------------------
 -- tabulate
 
 tabulate⁺ : ∀ {n} {f : Fin n → A} i → P (f i) → Any P (tabulate f)
-tabulate⁺ fzero    p = here p
-tabulate⁺ (fsuc i) p = there (tabulate⁺ i p)
+tabulate⁺ zero    p = here p
+tabulate⁺ (suc i) p = there (tabulate⁺ i p)
 
 tabulate⁻ : ∀ {n} {f : Fin n → A} → Any P (tabulate f) → ∃ λ i → P (f i)
-tabulate⁻ {n = suc n} (here p)   = fzero , p
-tabulate⁻ {n = suc n} (there p) = Prod.map fsuc id (tabulate⁻ p)
+tabulate⁻ {n = suc _} (here p)  = zero , p
+tabulate⁻ {n = suc _} (there p) = Prod.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- filter
@@ -580,38 +581,38 @@ module _ {R : A → A → Set r} (R? : B.Decidable R) where
   deduplicate⁻ {xs = x ∷ _} (there pxs!) = there (deduplicate⁻ (filter⁻ (¬? ∘ R? x) pxs!))
 
 ------------------------------------------------------------------------
--- map-with-∈.
+-- mapWith∈.
 
 module _ {P : B → Set p} where
 
-  map-with-∈⁺ : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B) →
+  mapWith∈⁺ : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B) →
                 (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
                 Any P (mapWith∈ xs f)
-  map-with-∈⁺ f (_ , here refl  , p) = here p
-  map-with-∈⁺ f (_ , there x∈xs , p) =
-    there $ map-with-∈⁺ (f ∘ there) (_ , x∈xs , p)
+  mapWith∈⁺ f (_ , here refl  , p) = here p
+  mapWith∈⁺ f (_ , there x∈xs , p) =
+    there $ mapWith∈⁺ (f ∘ there) (_ , x∈xs , p)
 
-  map-with-∈⁻ : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B) →
+  mapWith∈⁻ : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B) →
                 Any P (mapWith∈ xs f) →
                 ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)
-  map-with-∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
-  map-with-∈⁻ (y ∷ xs) f (there p) =
-    Prod.map₂ (Prod.map there id) $ map-with-∈⁻ xs (f ∘ there) p
+  mapWith∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
+  mapWith∈⁻ (y ∷ xs) f (there p) =
+    Prod.map₂ (Prod.map there id) $ mapWith∈⁻ xs (f ∘ there) p
 
-  map-with-∈↔ : ∀ {xs : List A} {f : ∀ {x} → x ∈ xs → B} →
+  mapWith∈↔ : ∀ {xs : List A} {f : ∀ {x} → x ∈ xs → B} →
                 (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (mapWith∈ xs f)
-  map-with-∈↔ = inverse (map-with-∈⁺ _) (map-with-∈⁻ _ _) (from∘to _) (to∘from _ _)
+  mapWith∈↔ = inverse (mapWith∈⁺ _) (mapWith∈⁻ _ _) (from∘to _) (to∘from _ _)
     where
     from∘to : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B)
               (p : ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
-              map-with-∈⁻ xs f (map-with-∈⁺ f p) ≡ p
+              mapWith∈⁻ xs f (mapWith∈⁺ f p) ≡ p
     from∘to f (_ , here refl  , p) = refl
     from∘to f (_ , there x∈xs , p)
       rewrite from∘to (f ∘ there) (_ , x∈xs , p) = refl
 
     to∘from : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B)
               (p : Any P (mapWith∈ xs f)) →
-              map-with-∈⁺ f (map-with-∈⁻ xs f p) ≡ p
+              mapWith∈⁺ f (mapWith∈⁻ xs f p) ≡ p
     to∘from (y ∷ xs) f (here  p) = refl
     to∘from (y ∷ xs) f (there p) =
       P.cong there $ to∘from xs (f ∘ there) p
@@ -641,24 +642,24 @@ reverse⁻ ps with reverseAcc⁻ [] _ ps
 ... | inj₂ ps' = ps'
 
 ------------------------------------------------------------------------
--- return
+-- pure
 
 module _ {P : A → Set p} where
 
-  return⁺ : P x → Any P (return x)
-  return⁺ = here
+  pure⁺ : P x → Any P (pure x)
+  pure⁺ = here
 
-  return⁻ : Any P (return x) → P x
-  return⁻ (here p) = p
+  pure⁻ : Any P (pure x) → P x
+  pure⁻ (here p) = p
 
-  return⁺∘return⁻ : (p : Any P (return x)) → return⁺ (return⁻ p) ≡ p
-  return⁺∘return⁻ (here p) = refl
+  pure⁺∘pure⁻ : (p : Any P (pure x)) → pure⁺ (pure⁻ p) ≡ p
+  pure⁺∘pure⁻ (here p) = refl
 
-  return⁻∘return⁺ : (p : P x) → return⁻ (return⁺ p) ≡ p
-  return⁻∘return⁺ p = refl
+  pure⁻∘pure⁺ : (p : P x) → pure⁻ (pure⁺ p) ≡ p
+  pure⁻∘pure⁺ p = refl
 
-  return↔ : P x ↔ Any P (return x)
-  return↔ = inverse return⁺ return⁻ return⁻∘return⁺ return⁺∘return⁻
+  pure↔ : P x ↔ Any P (pure x)
+  pure↔ = inverse pure⁺ pure⁻ pure⁻∘pure⁺ pure⁺∘pure⁻
 
 ------------------------------------------------------------------------
 -- _∷_
@@ -667,7 +668,7 @@ module _ (P : Pred A p) where
 
   ∷↔ : (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
   ∷↔ {x = x} {xs} =
-    (P x         ⊎ Any P xs)  ↔⟨ return↔ {P = P} ⊎-cong (Any P xs ∎) ⟩
+    (P x         ⊎ Any P xs)  ↔⟨ pure↔ {P = P} ⊎-cong (Any P xs ∎) ⟩
     (Any P [ x ] ⊎ Any P xs)  ↔⟨ ++↔ {P = P} {xs = [ x ]} ⟩
     Any P (x ∷ xs)            ∎
     where open Related.EquationalReasoning
@@ -690,10 +691,11 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
 ⊛↔ : ∀ {P : B → Set ℓ} {fs : List (A → B)} {xs : List A} →
      Any (λ f → Any (P ∘ f) xs) fs ↔ Any P (fs ⊛ xs)
 ⊛↔ {P = P} {fs} {xs} =
-  Any (λ f → Any (P ∘ f) xs) fs               ↔⟨ Any-cong (λ _ → Any-cong (λ _ → return↔) (_ ∎)) (_ ∎) ⟩
-  Any (λ f → Any (Any P ∘ return ∘ f) xs) fs  ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
-  Any (λ f → Any P (xs >>= return ∘ f)) fs    ↔⟨ >>=↔ ⟩
-  Any P (fs ⊛ xs)                             ∎
+  Any (λ f → Any (P ∘ f) xs) fs                ↔⟨ Any-cong (λ _ → Any-cong (λ _ → pure↔) (_ ∎)) (_ ∎) ⟩
+  Any (λ f → Any (Any P ∘ pure ∘ f) xs) fs     ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
+  Any (λ f → Any P (xs >>= pure ∘ f)) fs       ↔⟨ >>=↔ ⟩
+  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡˘⟨ P.cong (Any P) (Listₑ.Applicative.unfold-⊛ fs xs) ⟩
+  Any P (fs ⊛ xs)                              ∎
   where open Related.EquationalReasoning
 
 -- An alternative introduction rule for _⊛_
@@ -710,10 +712,11 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
 ⊗↔ : {P : A × B → Set ℓ} {xs : List A} {ys : List B} →
      Any (λ x → Any (λ y → P (x , y)) ys) xs ↔ Any P (xs ⊗ ys)
 ⊗↔ {P = P} {xs} {ys} =
-  Any (λ x → Any (λ y → P (x , y)) ys) xs                             ↔⟨ return↔ ⟩
-  Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (return _,_)  ↔⟨ ⊛↔ ⟩
-  Any (λ x, → Any (P ∘ x,) ys) (_,_ <$> xs)                           ↔⟨ ⊛↔ ⟩
-  Any P (xs ⊗ ys)                                                     ∎
+  Any (λ x → Any (λ y → P (x , y)) ys) xs                           ↔⟨ pure↔ ⟩
+  Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (pure _,_)  ↔⟨ ⊛↔ ⟩
+  Any (λ x, → Any (P ∘ x,) ys) (pure _,_ ⊛ xs)                      ↔⟨ ⊛↔ ⟩
+  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡˘⟨ P.cong (Any P ∘′ (_⊛ ys)) (Listₑ.Applicative.unfold-<$> _,_ xs) ⟩
+  Any P (xs ⊗ ys)                                                   ∎
   where open Related.EquationalReasoning
 
 ⊗↔′ : {P : A → Set ℓ} {Q : B → Set ℓ} {xs : List A} {ys : List B} →
@@ -723,3 +726,19 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ x → Any (λ y → P x × Q y) ys) xs  ↔⟨ ⊗↔ ⟩
   Any (P ⟨×⟩ Q) (xs ⊗ ys)                  ∎
   where open Related.EquationalReasoning
+
+map-with-∈⁺ = mapWith∈⁺
+{-# WARNING_ON_USAGE map-with-∈⁺
+"Warning: map-with-∈⁺ was deprecated in v2.0.
+Please use mapWith∈⁺ instead."
+#-}
+map-with-∈⁻ = mapWith∈⁻
+{-# WARNING_ON_USAGE map-with-∈⁻
+"Warning: map-with-∈⁻ was deprecated in v2.0.
+Please use mapWith∈⁻ instead."
+#-}
+map-with-∈↔ = mapWith∈↔
+{-# WARNING_ON_USAGE map-with-∈↔
+"Warning: map-with-∈↔ was deprecated in v2.0.
+Please use mapWith∈↔ instead."
+#-}

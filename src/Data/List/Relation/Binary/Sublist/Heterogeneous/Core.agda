@@ -11,7 +11,7 @@
 -- Parameterized data modules (https://github.com/agda/agda/issues/3210)
 -- may simplify this setup, making this module obsolete.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (REL)
 

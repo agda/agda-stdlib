@@ -4,7 +4,7 @@
 -- Coinductive pointwise lifting of relations to streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Guarded.Stream.Relation.Binary.Pointwise where
 
@@ -34,9 +34,10 @@ record Pointwise (_∼_ : REL A B ℓ) (as : Stream A) (bs : Stream B) : Set ℓ
 
 open Pointwise public
 
-lookup : ∀ n → Pointwise R ⇒ (R on (Stream.lookup n))
-lookup zero    rs = rs .head
-lookup (suc n) rs = lookup n (rs .tail)
+lookup⁺ : ∀ {as bs} → Pointwise R as bs →
+          ∀ n → R (Stream.lookup as n) (Stream.lookup bs n)
+lookup⁺ rs zero    = rs .head
+lookup⁺ rs (suc n) = lookup⁺ (rs .tail) n
 
 map : R ⇒ S → Pointwise R ⇒ Pointwise S
 head (map R⇒S xs) = R⇒S (head xs)

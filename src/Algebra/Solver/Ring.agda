@@ -15,7 +15,7 @@
 -- more equalities it returns, the more expressions the ring solver can
 -- solve.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles
 open import Algebra.Solver.Ring.AlmostCommutativeRing
@@ -40,7 +40,7 @@ open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧′)
 open import Algebra.Properties.Semiring.Exp semiring
 
 open import Relation.Binary
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Binary.Reasoning.Setoid setoid
 import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection

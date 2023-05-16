@@ -4,7 +4,7 @@
 -- Conversions for right inverses
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Properties.RightInverse where
 

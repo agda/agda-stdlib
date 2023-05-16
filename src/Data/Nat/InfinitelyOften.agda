@@ -4,11 +4,11 @@
 -- Definition of and lemmas related to "true infinitely often"
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.InfinitelyOften where
 
-open import Category.Monad using (RawMonad)
+open import Effect.Monad using (RawMonad)
 open import Level using (Level; 0ℓ)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
@@ -17,7 +17,7 @@ open import Data.Product as Prod hiding (map)
 open import Data.Sum hiding (map)
 open import Function
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
 open import Relation.Unary using (Pred; _∪_; _⊆_)
 open RawMonad (¬¬-Monad {p = 0ℓ})
@@ -93,4 +93,4 @@ twoDifferentWitnesses
 twoDifferentWitnesses inf =
   witness inf                     >>= λ w₁ →
   witness (up (1 + proj₁ w₁) inf) >>= λ w₂ →
-  return (_ , _ , m≢1+m+n (proj₁ w₁) , proj₂ w₁ , proj₂ w₂)
+  pure (_ , _ , m≢1+m+n (proj₁ w₁) , proj₂ w₁ , proj₂ w₂)

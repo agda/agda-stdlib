@@ -4,13 +4,13 @@
 -- Properties related to Pointwise
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 
-open import Data.Fin.Base
-open import Data.Fin.Properties
-open import Data.Nat.Base
+open import Data.Fin.Base using (zero; suc; _↑ˡ_; _↑ʳ_; splitAt)
+open import Data.Fin.Properties using (all?; splitAt-↑ˡ; splitAt-↑ʳ)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using () renaming (Pointwise to ×-Pointwise)

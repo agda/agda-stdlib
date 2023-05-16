@@ -4,7 +4,7 @@
 -- Properties satisfied by meet semilattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -35,7 +35,7 @@ dualJoinSemilattice = record
   }
 
 open J dualJoinSemilattice public
-  using (isAlgSemilattice; algSemilattice)
+  using (isAlgSemilattice; algSemilattice; isPosemigroup; posemigroup)
   renaming
     ( ∨-monotonic  to ∧-monotonic
     ; ∨-cong       to ∧-cong
@@ -43,4 +43,17 @@ open J dualJoinSemilattice public
     ; ∨-assoc      to ∧-assoc
     ; ∨-idempotent to ∧-idempotent
     ; x≤y⇒x∨y≈y    to y≤x⇒x∧y≈y
+    ; ≈-dec⇒≤-dec  to ≈-dec⇒≥-dec
     )
+
+-- If ≈ is decidable then so is ≤
+
+≈-dec⇒≤-dec : Decidable _≈_ → Decidable _≤_
+≈-dec⇒≤-dec _≟_ = flip (≈-dec⇒≥-dec _≟_)
+
+≈-dec⇒isDecPartialOrder : Decidable _≈_ → IsDecPartialOrder _≈_ _≤_
+≈-dec⇒isDecPartialOrder _≟_ = record
+  { isPartialOrder = isPartialOrder
+  ; _≟_            = _≟_
+  ; _≤?_           = ≈-dec⇒≤-dec _≟_
+  }

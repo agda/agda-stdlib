@@ -1,13 +1,16 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Explaining how to use the inspect idiom and elaborating on the way
--- it is implemented in the standard library.
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Inspect where
+
+{-# WARNING_ON_IMPORT
+"README.Inspect was deprecated in v2.0."
+#-}
 
 open import Data.Nat.Base
 open import Data.Nat.Properties

@@ -4,7 +4,7 @@
 -- Lexicographic induction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Induction.Lexicographic where
 

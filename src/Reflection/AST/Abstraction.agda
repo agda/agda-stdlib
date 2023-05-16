@@ -4,19 +4,16 @@
 -- Abstractions used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.Abstraction where
 
-open import Data.List.Base as List using (List)
-open import Data.Product using (_×_; _,_; uncurry; <_,_>)
-open import Data.String as String using (String)
+open import Data.Product                          using (_×_; <_,_>; uncurry)
+open import Data.String as String                 using (String)
 open import Level
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary.Decidable            using (Dec; map′; _×-dec_)
+open import Relation.Binary                       using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
 
 private
   variable
@@ -61,7 +58,7 @@ unAbs (abs s a) = a
 
 unAbs-dec : {abs1 abs2 : Abs A} → Dec (unAbs abs1 ≡ unAbs abs2) → Dec (abs1 ≡ abs2)
 unAbs-dec {abs1 = abs s a} {abs t a′} a≟a′ =
-  Dec.map′ (uncurry (cong₂ abs)) abs-injective (s String.≟ t ×-dec a≟a′)
+  map′ (uncurry (cong₂ abs)) abs-injective (s String.≟ t ×-dec a≟a′)
 
 ≡-dec : DecidableEquality A → DecidableEquality (Abs A)
 ≡-dec _≟_ x y = unAbs-dec (unAbs x ≟ unAbs y)

@@ -4,7 +4,7 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Bool.Properties where
 
@@ -19,6 +19,7 @@ open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
+open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality hiding ([_])
@@ -186,6 +187,12 @@ true  <? _     = no  (λ())
 <-irrelevant : Irrelevant _<_
 <-irrelevant f<t f<t = refl
 
+<-wellFounded : WellFounded _<_
+<-wellFounded _ = acc <-acc
+  where
+    <-acc : ∀ {x} y → y < x → Acc _<_ y
+    <-acc false f<t = acc (λ _ → λ())
+
 -- Structures
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
@@ -265,6 +272,15 @@ true  <? _     = no  (λ())
 ∨-sel : Selective _∨_
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
+
+∨-conicalˡ : LeftConical false _∨_
+∨-conicalˡ false false _ = refl
+
+∨-conicalʳ : RightConical false _∨_
+∨-conicalʳ false false _ = refl
+
+∨-conical : Conical false _∨_
+∨-conical = ∨-conicalˡ , ∨-conicalʳ
 
 ∨-isMagma : IsMagma _∨_
 ∨-isMagma = record
@@ -389,6 +405,15 @@ true  <? _     = no  (λ())
 ∧-sel : Selective _∧_
 ∧-sel false y = inj₁ refl
 ∧-sel true y  = inj₂ refl
+
+∧-conicalˡ : LeftConical true _∧_
+∧-conicalˡ true true _ = refl
+
+∧-conicalʳ : RightConical true _∧_
+∧-conicalʳ true true _ = refl
+
+∧-conical : Conical true _∧_
+∧-conical = ∧-conicalˡ , ∧-conicalʳ
 
 ∧-distribˡ-∨ : _∧_ DistributesOverˡ _∨_
 ∧-distribˡ-∨ true  y z = refl

@@ -1,65 +1,17 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Delay
+-- This module is DEPRECATED. Please use
+-- `Codata.Sized.Delay.Effectful` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Delay.Categorical where
 
-open import Codata.Sized.Delay
-open import Function
-open import Category.Functor
-open import Category.Applicative
-open import Category.Monad
-open import Data.These using (leftMost)
+open import Codata.Sized.Delay.Effectful public
 
-functor : ∀ {i ℓ} → RawFunctor {ℓ} (λ A → Delay A i)
-functor = record { _<$>_ = λ f → map f }
-
-module Sequential where
-
-  applicative : ∀ {i ℓ} → RawApplicative {ℓ} (λ A → Delay A i)
-  applicative = record
-    { pure = now
-    ; _⊛_  = λ df da → bind df (λ f → map f da)
-    }
-
-  applicativeZero : ∀ {i ℓ} → RawApplicativeZero {ℓ} (λ A → Delay A i)
-  applicativeZero = record
-    { applicative = applicative
-    ; ∅           = never
-    }
-
-  monad : ∀ {i ℓ} → RawMonad {ℓ} (λ A → Delay A i)
-  monad = record
-    { return = now
-    ; _>>=_  = bind
-    }
-
-  monadZero : ∀ {i ℓ} → RawMonadZero {ℓ} (λ A → Delay A i)
-  monadZero = record
-    { monad           = monad
-    ; applicativeZero = applicativeZero
-    }
-
-module Zippy where
-
-  applicative : ∀ {i ℓ} → RawApplicative {ℓ} (λ A → Delay A i)
-  applicative = record
-    { pure = now
-    ; _⊛_  = zipWith id
-    }
-
-  applicativeZero : ∀ {i ℓ} → RawApplicativeZero {ℓ} (λ A → Delay A i)
-  applicativeZero = record
-    { applicative = applicative
-    ; ∅           = never
-    }
-
-  alternative : ∀ {i ℓ} → RawAlternative {ℓ} (λ A → Delay A i)
-  alternative = record
-    { applicativeZero = applicativeZero
-    ; _∣_             = alignWith leftMost
-    }
+{-# WARNING_ON_IMPORT
+"Codata.Sized.Delay.Categorical was deprecated in v2.0.
+Use Codata.Sized.Delay.Effectful instead."
+#-}

@@ -6,7 +6,7 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Definitions where
 
@@ -18,7 +18,8 @@ open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
 open import Level
 open import Relation.Binary.Core
-open import Relation.Nullary using (Dec; ¬_)
+open import Relation.Nullary.Decidable.Core using (Dec)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
@@ -138,6 +139,29 @@ Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
 
 Tight : Rel A ℓ₁ → Rel A ℓ₂ → Set _
 Tight _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
+
+-- Properties of order morphisms, aka order-preserving maps
+
+Monotonic₁ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
+Monotonic₁ _≤_ _⊑_ f = f Preserves _≤_ ⟶ _⊑_
+
+Antitonic₁ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
+Antitonic₁ _≤_ _⊑_ f = f Preserves (flip _≤_) ⟶ _⊑_
+
+Monotonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+Monotonic₂ _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ _⊑_ ⟶ _≼_
+
+MonotonicAntitonic : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+MonotonicAntitonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ (flip _⊑_) ⟶ _≼_
+
+AntitonicMonotonic : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+AntitonicMonotonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ _⊑_ ⟶ _≼_
+
+Antitonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+Antitonic₂ _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ (flip _⊑_) ⟶ _≼_
+
+Adjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+Adjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y → f x ⊑ y)
 
 -- Unary relations respecting a binary relation.
 

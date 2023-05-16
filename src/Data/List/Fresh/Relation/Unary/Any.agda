@@ -4,7 +4,7 @@
 -- Any predicate transformer for fresh lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Fresh.Relation.Unary.Any where
 
@@ -13,9 +13,8 @@ open import Data.Empty
 open import Data.Product using (∃; _,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Unary  as U
 open import Relation.Binary as B using (Rel)
 

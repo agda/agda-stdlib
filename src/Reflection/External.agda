@@ -4,7 +4,7 @@
 -- Support for system calls as part of reflection
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.External where
 
@@ -77,7 +77,7 @@ unsafeRunCmdTC : CmdSpec → TC Result
 unsafeRunCmdTC c = do
   (exitCode , (stdOut , stdErr))
     ← Builtin.execTC (CmdSpec.name c) (CmdSpec.args c) (CmdSpec.input c)
-  return $ result (toExitCode exitCode) stdOut stdErr
+  pure $ result (toExitCode exitCode) stdOut stdErr
 
 macro
   unsafeRunCmd : CmdSpec → Term → TC ⊤
@@ -113,7 +113,7 @@ runCmdTC c = do
   case Result.exitCode r of λ
     { exitSuccess → do
       debugPrint (debugPrefix ++ ".stderr") 10 (strErr (Result.error r) ∷ [])
-      return $ Result.output r
+      pure $ Result.output r
     ; (exitFailure n) → do
       userError c (Result.output r , Result.error r)
     }

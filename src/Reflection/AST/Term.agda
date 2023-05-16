@@ -4,23 +4,20 @@
 -- Terms used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.Term where
 
-open import Data.List.Base as List hiding (_++_)
-import Data.List.Properties as Lₚ
-open import Data.Nat as ℕ using (ℕ; zero; suc)
-open import Data.Product
-import Data.Product.Properties as Product
-open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.String as String using (String)
-open import Function.Base using (_∘_)
-open import Relation.Nullary
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Decidable as Dec
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Data.List.Base as List  hiding (_++_)
+open import Data.List.Properties    using (∷-dec)
+open import Data.Nat as ℕ          using (ℕ; zero; suc)
+open import Data.Product            using (_×_; _,_; <_,_>; uncurry; map₁)
+open import Data.Product.Properties using (,-injective)
+open import Data.Maybe.Base         using (Maybe; just; nothing)
+open import Data.String as String   using (String)
+open import Relation.Nullary.Decidable            using (map′; _×-dec_; yes; no)
+open import Relation.Binary                       using (Decidable; DecidableEquality)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong₂)
 
 open import Reflection.AST.Abstraction
 open import Reflection.AST.Argument
@@ -72,14 +69,14 @@ getName _            = nothing
 
 -- "n ⋯⟨∷⟩ xs" prepends "n" visible unknown arguments to the list of
 -- arguments. Useful when constructing the list of arguments for a
--- function with initial inferable arguments.
+-- function with initial inferrable arguments.
 infixr 5 _⋯⟨∷⟩_
 _⋯⟨∷⟩_ : ℕ → Args Term → Args Term
 zero  ⋯⟨∷⟩ xs = xs
 suc i ⋯⟨∷⟩ xs = unknown ⟨∷⟩ (i ⋯⟨∷⟩ xs)
 {-# INLINE _⋯⟨∷⟩_ #-}
 
--- "n ⋯⟨∷⟩ xs" prepends "n" hidden unknown arguments to the list of
+-- "n ⋯⟅∷⟆ xs" prepends "n" hidden unknown arguments to the list of
 -- arguments. Useful when constructing the list of arguments for a
 -- function with initial implicit arguments.
 infixr 5 _⋯⟅∷⟆_
@@ -156,29 +153,29 @@ arg i a ≟-ArgTerm arg i′ a′ = unArg-dec (a ≟ a′)
 arg i a ≟-ArgType arg i′ a′ = unArg-dec (a ≟ a′)
 
 []       ≟-Args []       = yes refl
-(x ∷ xs) ≟-Args (y ∷ ys) = Lₚ.∷-dec (x ≟-ArgTerm y) (xs ≟-Args ys)
+(x ∷ xs) ≟-Args (y ∷ ys) = ∷-dec (x ≟-ArgTerm y) (xs ≟-Args ys)
 []       ≟-Args (_ ∷ _)  = no λ()
 (_ ∷ _)  ≟-Args []       = no λ()
 
 []       ≟-Clauses []       = yes refl
-(x ∷ xs) ≟-Clauses (y ∷ ys) = Lₚ.∷-dec (x ≟-Clause y) (xs ≟-Clauses ys)
+(x ∷ xs) ≟-Clauses (y ∷ ys) = ∷-dec (x ≟-Clause y) (xs ≟-Clauses ys)
 []       ≟-Clauses (_ ∷ _)  = no λ()
 (_ ∷ _)  ≟-Clauses []       = no λ()
 
 _≟-Telescope_ : DecidableEquality Telescope
 [] ≟-Telescope [] = yes refl
-((x , t) ∷ tel) ≟-Telescope ((x′ , t′) ∷ tel′) = Lₚ.∷-dec
-  (map′ (uncurry (cong₂ _,_)) Product.,-injective ((x String.≟ x′) ×-dec (t ≟-ArgTerm t′)))
+((x , t) ∷ tel) ≟-Telescope ((x′ , t′) ∷ tel′) = ∷-dec
+  (map′ (uncurry (cong₂ _,_)) ,-injective ((x String.≟ x′) ×-dec (t ≟-ArgTerm t′)))
   (tel ≟-Telescope tel′)
 [] ≟-Telescope (_ ∷ _) = no λ ()
 (_ ∷ _) ≟-Telescope [] = no λ ()
 
 clause tel ps b ≟-Clause clause tel′ ps′ b′ =
-  Dec.map′ (λ (tel≡tel′ , ps≡ps′ , b≡b′) → cong₂ (uncurry clause) (cong₂ _,_ tel≡tel′ ps≡ps′) b≡b′)
+  map′ (λ (tel≡tel′ , ps≡ps′ , b≡b′) → cong₂ (uncurry clause) (cong₂ _,_ tel≡tel′ ps≡ps′) b≡b′)
            clause-injective
            (tel ≟-Telescope tel′ ×-dec ps ≟-Patterns ps′ ×-dec b ≟ b′)
 absurd-clause tel ps ≟-Clause absurd-clause tel′ ps′ =
-  Dec.map′ (uncurry (cong₂ absurd-clause))
+  map′ (uncurry (cong₂ absurd-clause))
            absurd-clause-injective
            (tel ≟-Telescope tel′ ×-dec ps ≟-Patterns ps′)
 clause _ _ _      ≟-Clause absurd-clause _ _ = no λ()
@@ -269,21 +266,21 @@ inf-injective : ∀ {x y} → inf x ≡ inf y → x ≡ y
 inf-injective refl = refl
 
 var x args ≟ var x′ args′ =
-  Dec.map′ (uncurry (cong₂ var)) var-injective (x ℕ.≟ x′ ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ var)) var-injective (x ℕ.≟ x′ ×-dec args ≟-Args args′)
 con c args ≟ con c′ args′ =
-  Dec.map′ (uncurry (cong₂ con)) con-injective (c Name.≟ c′ ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ con)) con-injective (c Name.≟ c′ ×-dec args ≟-Args args′)
 def f args ≟ def f′ args′ =
-  Dec.map′ (uncurry (cong₂ def)) def-injective (f Name.≟ f′ ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ def)) def-injective (f Name.≟ f′ ×-dec args ≟-Args args′)
 meta x args ≟ meta x′ args′ =
-  Dec.map′ (uncurry (cong₂ meta)) meta-injective (x Meta.≟ x′   ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ meta)) meta-injective (x Meta.≟ x′   ×-dec args ≟-Args args′)
 lam v t    ≟ lam v′ t′    =
-  Dec.map′ (uncurry (cong₂ lam)) lam-injective (v Visibility.≟ v′ ×-dec t ≟-AbsTerm t′)
+  map′ (uncurry (cong₂ lam)) lam-injective (v Visibility.≟ v′ ×-dec t ≟-AbsTerm t′)
 pat-lam cs args ≟ pat-lam cs′ args′ =
-  Dec.map′ (uncurry (cong₂ pat-lam)) pat-lam-injective (cs ≟-Clauses cs′ ×-dec args ≟-Args args′)
+  map′ (uncurry (cong₂ pat-lam)) pat-lam-injective (cs ≟-Clauses cs′ ×-dec args ≟-Args args′)
 pi t₁ t₂   ≟ pi t₁′ t₂′   =
-  Dec.map′ (uncurry (cong₂ pi))  pi-injective (t₁ ≟-ArgType t₁′  ×-dec t₂ ≟-AbsType t₂′)
-sort s     ≟ sort s′      = Dec.map′ (cong sort)  sort-injective (s ≟-Sort s′)
-lit l      ≟ lit l′       = Dec.map′ (cong lit)   lit-injective (l Literal.≟ l′)
+  map′ (uncurry (cong₂ pi))  pi-injective (t₁ ≟-ArgType t₁′  ×-dec t₂ ≟-AbsType t₂′)
+sort s     ≟ sort s′      = map′ (cong sort)  sort-injective (s ≟-Sort s′)
+lit l      ≟ lit l′       = map′ (cong lit)   lit-injective (l Literal.≟ l′)
 unknown    ≟ unknown      = yes refl
 
 var x args ≟ con c args′ = no λ()
@@ -377,11 +374,11 @@ lit _       ≟ pat-lam _ _ = no λ()
 meta _ _    ≟ pat-lam _ _ = no λ()
 unknown     ≟ pat-lam _ _ = no λ()
 
-set t   ≟-Sort set t′  = Dec.map′ (cong set) set-injective (t ≟ t′)
-lit n   ≟-Sort lit n′  = Dec.map′ (cong lit) slit-injective (n ℕ.≟ n′)
-prop t   ≟-Sort prop t′  = Dec.map′ (cong prop) prop-injective (t ≟ t′)
-propLit n   ≟-Sort propLit n′  = Dec.map′ (cong propLit) propLit-injective (n ℕ.≟ n′)
-inf n   ≟-Sort inf n′  = Dec.map′ (cong inf) inf-injective (n ℕ.≟ n′)
+set t   ≟-Sort set t′  = map′ (cong set) set-injective (t ≟ t′)
+lit n   ≟-Sort lit n′  = map′ (cong lit) slit-injective (n ℕ.≟ n′)
+prop t   ≟-Sort prop t′  = map′ (cong prop) prop-injective (t ≟ t′)
+propLit n   ≟-Sort propLit n′  = map′ (cong propLit) propLit-injective (n ℕ.≟ n′)
+inf n   ≟-Sort inf n′  = map′ (cong inf) inf-injective (n ℕ.≟ n′)
 unknown ≟-Sort unknown = yes refl
 set _   ≟-Sort lit _   = no λ()
 set _   ≟-Sort prop _   = no λ()
@@ -439,12 +436,12 @@ dot-injective refl = refl
 absurd-injective : ∀ {x y} → absurd x ≡ absurd y → x ≡ y
 absurd-injective refl = refl
 
-con c ps ≟-Pattern con c′ ps′ = Dec.map′ (uncurry (cong₂ con)) pat-con-injective (c Name.≟ c′ ×-dec ps ≟-Patterns ps′)
-var x    ≟-Pattern var x′     = Dec.map′ (cong var) pat-var-injective (x ℕ.≟ x′)
-lit l    ≟-Pattern lit l′     = Dec.map′ (cong lit) pat-lit-injective (l Literal.≟ l′)
-proj a   ≟-Pattern proj a′    = Dec.map′ (cong proj) proj-injective (a Name.≟ a′)
-dot t    ≟-Pattern dot t′     = Dec.map′ (cong dot) dot-injective (t ≟ t′)
-absurd x ≟-Pattern absurd x′  = Dec.map′ (cong absurd) absurd-injective (x ℕ.≟ x′)
+con c ps ≟-Pattern con c′ ps′ = map′ (uncurry (cong₂ con)) pat-con-injective (c Name.≟ c′ ×-dec ps ≟-Patterns ps′)
+var x    ≟-Pattern var x′     = map′ (cong var) pat-var-injective (x ℕ.≟ x′)
+lit l    ≟-Pattern lit l′     = map′ (cong lit) pat-lit-injective (l Literal.≟ l′)
+proj a   ≟-Pattern proj a′    = map′ (cong proj) proj-injective (a Name.≟ a′)
+dot t    ≟-Pattern dot t′     = map′ (cong dot) dot-injective (t ≟ t′)
+absurd x ≟-Pattern absurd x′  = map′ (cong absurd) absurd-injective (x ℕ.≟ x′)
 
 con x x₁ ≟-Pattern dot x₂ = no (λ ())
 con x x₁ ≟-Pattern var x₂ = no (λ ())
@@ -478,7 +475,7 @@ absurd x ≟-Pattern lit x₁ = no (λ ())
 absurd x ≟-Pattern proj x₁ = no (λ ())
 
 []             ≟-Patterns []             = yes refl
-(arg i p ∷ xs) ≟-Patterns (arg j q ∷ ys) = Lₚ.∷-dec (unArg-dec (p ≟-Pattern q)) (xs ≟-Patterns ys)
+(arg i p ∷ xs) ≟-Patterns (arg j q ∷ ys) = ∷-dec (unArg-dec (p ≟-Pattern q)) (xs ≟-Patterns ys)
 
 []      ≟-Patterns (_ ∷ _) = no λ()
 (_ ∷ _) ≟-Patterns []      = no λ()

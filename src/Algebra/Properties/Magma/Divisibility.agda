@@ -4,7 +4,7 @@
 -- Divisibility over magmas
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Magma)
 open import Data.Product using (_×_; _,_; ∃; map; swap)
@@ -18,7 +18,7 @@ open Magma M
 -- Re-export divisibility relations publicly
 
 open import Algebra.Definitions.RawMagma rawMagma public
-  using (_∣_; _∤_; _∣∣_; _∤∤_)
+  using (_∣_; _∤_; _∣∣_; _∤∤_; _∣ˡ_; _∤ˡ_; _∣ʳ_; _∤ʳ_)
 
 ------------------------------------------------------------------------
 -- Properties of divisibility

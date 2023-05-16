@@ -4,11 +4,9 @@
 -- Properties of constructions over unary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Unary.Properties where
-
-open import Agda.Builtin.Equality using (refl)
 
 open import Data.Product as Product using (_×_; _,_; swap; proj₁; zip′)
 open import Data.Sum.Base using (inj₁; inj₂)
@@ -16,11 +14,9 @@ open import Data.Unit.Base using (tt)
 open import Level
 open import Relation.Binary.Core as Binary
 open import Relation.Binary.Definitions hiding (Decidable; Universal; Irrelevant)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 open import Relation.Unary
-open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
-open import Relation.Nullary.Negation.Core using (¬?)
+open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_; ¬?)
 open import Function.Base using (id; _$_; _∘_)
 
 private

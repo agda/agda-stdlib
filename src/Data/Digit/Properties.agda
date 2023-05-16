@@ -4,7 +4,7 @@
 -- Properties of digits and digit expansions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Digit
 import Data.Char.Properties as Charₚ
@@ -15,8 +15,7 @@ open import Data.Product using (_,_; proj₁)
 open import Data.Vec.Relation.Unary.Unique.Propositional using (Unique)
 import Data.Vec.Relation.Unary.Unique.Propositional.Properties as Uniqueₚ
 open import Data.Vec.Relation.Unary.AllPairs using (allPairs?)
-open import Relation.Nullary.Decidable using (True; from-yes)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Decidable using (True; from-yes; ¬?)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 open import Function using (_∘_)
 

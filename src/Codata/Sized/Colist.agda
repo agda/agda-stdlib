@@ -4,7 +4,7 @@
 -- The Colist type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Colist where
 
@@ -72,16 +72,16 @@ _++_ : Colist A i → Colist A i → Colist A i
 []       ++ ys = ys
 (x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
 
-lookup : ℕ → Colist A ∞ → Maybe A
-lookup n       []       = nothing
-lookup zero    (a ∷ as) = just a
-lookup (suc n) (a ∷ as) = lookup n (as .force)
+lookup : Colist A ∞ → ℕ → Maybe A
+lookup []       _       = nothing
+lookup (a ∷ as) zero    = just a
+lookup (a ∷ as) (suc n) = lookup (as .force) n
 
-colookup : Conat i → Colist A i → Delay (Maybe A) i
-colookup n       []       = now nothing
-colookup zero    (a ∷ as) = now (just a)
-colookup (suc n) (a ∷ as) =
-  later λ where .force → colookup (n .force) (as .force)
+colookup : Colist A i → Conat i → Delay (Maybe A) i
+colookup []       _       = now nothing
+colookup (a ∷ as) zero    = now (just a)
+colookup (a ∷ as) (suc n) =
+  later λ where .force → colookup (as .force) (n .force)
 
 take : (n : ℕ) → Colist A ∞ → Vec≤ A n
 take zero    xs       = Vec≤.[]

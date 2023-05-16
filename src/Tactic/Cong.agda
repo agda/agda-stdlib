@@ -20,7 +20,7 @@
 --   ∎
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Tactic.Cong where
 
@@ -96,7 +96,7 @@ private
 
   destructEqualityGoal : Term → TC EqualityGoal
   destructEqualityGoal goal@(def (quote _≡_) (lvl ∷ tp ∷ lhs ∷ rhs ∷ [])) =
-    return $ equals (unArg lvl) (unArg tp) (unArg lhs) (unArg rhs)
+    pure $ equals (unArg lvl) (unArg tp) (unArg lhs) (unArg rhs)
   destructEqualityGoal (meta m args) =
     blockOnMeta m
   destructEqualityGoal goal =
@@ -114,7 +114,7 @@ private
     `A ← quoteTC A
     `x ← quoteTC x
     `y ← quoteTC y
-    return $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
+    pure $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
 
 ----------------------------------------------------------------------
 -- Anti-Unification

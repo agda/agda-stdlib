@@ -4,7 +4,7 @@
 -- Streams where at least one element satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Guarded.Stream.Relation.Unary.Any where
 
@@ -43,5 +43,4 @@ index (here  px ) = zero
 index (there pxs) = suc (index pxs)
 
 lookup : {P : Pred A p} → Any P xs → A
-lookup {xs = xs} p = Stream.lookup (index p) xs
-
+lookup {xs = xs} p = Stream.lookup xs (index p)

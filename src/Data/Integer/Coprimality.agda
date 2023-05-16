@@ -4,7 +4,7 @@
 -- Coprimality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Coprimality where
 
@@ -35,4 +35,4 @@ coprime? x y = ℕ.coprime? ∣ x ∣ ∣ y ∣
 
 coprime-divisor : ∀ i j k → Coprime i j → i ∣ j * k → i ∣ k
 coprime-divisor i j k c eq =
-  ℕ.coprime-divisor c (subst (∣ i ∣ ℕ.∣_ ) (abs-*-commute j k) eq)
+  ℕ.coprime-divisor c (subst (∣ i ∣ ℕ.∣_ ) (abs-* j k) eq)

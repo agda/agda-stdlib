@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
 open import Algebra.Bundles
@@ -79,14 +79,14 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ y ⟧          ∎))
 
   cancelˡ : LeftCancellative _≈₂_ _◦_ → LeftCancellative _≈₁_ _∙_
-  cancelˡ cancelˡ x {y} {z} x∙y≈x∙z = injective (cancelˡ ⟦ x ⟧ (begin
+  cancelˡ cancelˡ x y z x∙y≈x∙z = injective (cancelˡ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
     ⟦ x ⟧ ◦ ⟦ y ⟧  ≈˘⟨ homo x y ⟩
     ⟦ x ∙ y ⟧      ≈⟨  ⟦⟧-cong x∙y≈x∙z ⟩
     ⟦ x ∙ z ⟧      ≈⟨  homo x z ⟩
     ⟦ x ⟧ ◦ ⟦ z ⟧  ∎))
 
   cancelʳ : RightCancellative _≈₂_ _◦_ → RightCancellative _≈₁_ _∙_
-  cancelʳ cancelʳ {x} y z y∙x≈z∙x = injective (cancelʳ ⟦ y ⟧ ⟦ z ⟧ (begin
+  cancelʳ cancelʳ x y z y∙x≈z∙x = injective (cancelʳ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
     ⟦ y ⟧ ◦ ⟦ x ⟧  ≈˘⟨ homo y x ⟩
     ⟦ y ∙ x ⟧      ≈⟨  ⟦⟧-cong y∙x≈z∙x ⟩
     ⟦ z ∙ x ⟧      ≈⟨  homo z x ⟩

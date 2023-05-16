@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous prefix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Prefix.Heterogeneous.Properties where
 
@@ -20,11 +20,10 @@ open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix hiding (Pre
 open import Data.Nat.Base using (ℕ; zero; suc; _≤_; z≤n; s≤s)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; uncurry)
-open import Function
+open import Function.Base
 
-open import Relation.Nullary using (yes; no; ¬_; _because_)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no; _because_)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)

@@ -4,7 +4,7 @@
 -- Core lemmas needed to make list argmin/max functions work
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Trans; TotalOrder; Setoid)
 

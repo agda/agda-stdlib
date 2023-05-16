@@ -8,7 +8,7 @@
 -- See `Data.Nat.Properties` or `Relation.Binary.Reasoning.PartialOrder`
 -- for examples of how to instantiate this module.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
@@ -24,7 +24,7 @@ open import Function.Base using (case_of_; id)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Nullary.Decidable using (True; toWitness)
 
 open IsPreorder isPreorder

@@ -5,7 +5,7 @@
 -- along with some additional definitions.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Membership.Propositional {a} {A : Set a} where
 

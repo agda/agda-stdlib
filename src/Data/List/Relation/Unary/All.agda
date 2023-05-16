@@ -4,12 +4,12 @@
 -- Lists where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.All where
 
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Applicative
+open import Effect.Monad
 open import Data.Empty using (⊥)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -22,7 +22,6 @@ open import Function
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary using (Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P
@@ -155,7 +154,7 @@ module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
 
   sequenceA : All (F ∘′ P) ⊆ F ∘′ All P
   sequenceA []       = pure []
-  sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
+  sequenceA (x ∷ xs) = _∷_ <$> x <*> sequenceA xs
 
   mapA : ∀ {Q : Pred A q} → (Q ⊆ F ∘′ P) → All Q ⊆ (F ∘′ All P)
   mapA f = sequenceA ∘′ map f
@@ -168,7 +167,7 @@ module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
          (Mon : RawMonad M)
          where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
   sequenceM = sequenceA p App

@@ -4,7 +4,7 @@
 -- Regular expressions: basic types and semantics
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Preorder)
 
@@ -18,7 +18,7 @@ open import Data.List.Relation.Unary.Any using (Any)
 open import Data.List.Relation.Unary.All using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.PropositionalEquality

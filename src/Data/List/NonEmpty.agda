@@ -4,12 +4,12 @@
 -- Non-empty lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.NonEmpty where
 
 open import Level using (Level)
-open import Category.Monad
+open import Effect.Monad
 open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Bool.Properties
 open import Data.List.Base as List using (List; []; _∷_)
@@ -21,9 +21,7 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Data.Unit.Base using (tt)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence
-  using () renaming (module Equivalence to Eq)
+open import Function.Bundles using () renaming (module Equivalence to Eq)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_; refl)
 open import Relation.Nullary.Decidable using (isYes)
 

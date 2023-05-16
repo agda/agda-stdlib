@@ -7,7 +7,7 @@
 -- See README.Data.Trie.NonDependent for an example of using a trie to
 -- build a lexer.
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 open import Relation.Binary using (Rel; StrictTotalOrder)
 
@@ -57,17 +57,17 @@ module _ {v} {V : Value v} where
 ------------------------------------------------------------------------
 -- Lookup
 
-  lookup : ∀ ks → Trie V ∞ → Maybe (These (Val ks) (Tries⁺ (eat V ks) ∞))
-  lookup ks t = t Maybe.>>= Trie⁺.lookup ks
+  lookup : Trie V ∞ → ∀ ks → Maybe (These (Val ks) (Tries⁺ (eat V ks) ∞))
+  lookup t ks = t Maybe.>>= λ ts → Trie⁺.lookup ts ks
 
-  lookupValue : ∀ ks → Trie V ∞ → Maybe (Val ks)
-  lookupValue ks t = t Maybe.>>= Trie⁺.lookupValue ks
+  lookupValue : Trie V ∞ → ∀ ks → Maybe (Val ks)
+  lookupValue t ks = t Maybe.>>= λ ts → Trie⁺.lookupValue ts ks
 
-  lookupTries⁺ : ∀ ks → Trie V ∞ → Maybe (Tries⁺ (eat V ks) ∞)
-  lookupTries⁺ ks t = t Maybe.>>= Trie⁺.lookupTries⁺ ks
+  lookupTries⁺ : Trie V ∞ → ∀ ks → Maybe (Tries⁺ (eat V ks) ∞)
+  lookupTries⁺ t ks = t Maybe.>>= λ ts → Trie⁺.lookupTries⁺ ts ks
 
-  lookupTrie : ∀ k → Trie V ∞ → Trie (eat V (k ∷ [])) ∞
-  lookupTrie k t = t Maybe.>>= Trie⁺.lookupTrie⁺ k
+  lookupTrie : Trie V ∞ → ∀ k → Trie (eat V (k ∷ [])) ∞
+  lookupTrie t k = t Maybe.>>= λ ts → Trie⁺.lookupTrie⁺ ts k
 
 ------------------------------------------------------------------------
 -- Construction

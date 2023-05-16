@@ -4,7 +4,7 @@
 -- Properties of operations on M-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.M.Properties where
 
@@ -46,9 +46,9 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 module _ {s₁ s₂ s₃ p₁ p₂ p₃} {C₁ : Container s₁ p₁}
          {C₂ : Container s₂ p₂} {C₃ : Container s₃ p₃} where
 
-  map-compose : ∀ {i} {g : C₂ ⇒ C₃} {f : C₁ ⇒ C₂} c₁ →
+  map-∘ : ∀ {i} {g : C₂ ⇒ C₃} {f : C₁ ⇒ C₂} c₁ →
                 Bisim C₃ i (map (g Mp.∘ f) c₁) (map g $′ map f c₁)
-  map-compose (inf (s , f)) = inf (P.refl , λ where p .force → map-compose (f _ .force))
+  map-∘ (inf (s , f)) = inf (P.refl , λ where p .force → map-∘ (f _ .force))
 
 
 module _ {s₁ s₂ p₁ p₂ s} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
@@ -57,3 +57,17 @@ module _ {s₁ s₂ p₁ p₂ s} {C₁ : Container s₁ p₁} {C₂ : Container 
   map-unfold : ∀ {i} s → Bisim C₂ i (map f (unfold alg s))
                                     (unfold (⟪ f ⟫ ∘′ alg) s)
   map-unfold s = inf (P.refl , λ where p .force → map-unfold _)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-compose = map-∘
+{-# WARNING_ON_USAGE map-compose
+"Warning: map-compose was deprecated in v2.0.
+Please use map-∘ instead."
+#-}

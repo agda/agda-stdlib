@@ -4,12 +4,12 @@
 -- Maybes where all the elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Unary.All where
 
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Applicative
+open import Effect.Monad
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Data.Product as Prod using (_,_)
@@ -70,8 +70,8 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 ------------------------------------------------------------------------
 -- Traversable-like functions
 
-module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
-         (App : RawApplicative {a ⊔ p} F) where
+module _ {a f} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
+         (App : RawApplicative {a ⊔ p} {f} F) where
 
   open RawApplicative App
 
@@ -85,10 +85,10 @@ module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
   forA : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forA qxs f = mapA f qxs
 
-module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
-         (Mon : RawMonad {a ⊔ p} M) where
+module _ {a f} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
+         (Mon : RawMonad {a ⊔ p} {f} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
   sequenceM = sequenceA p App

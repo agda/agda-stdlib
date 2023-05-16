@@ -5,7 +5,7 @@
 -- (packed in records together with sets, operations, etc.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra where
 

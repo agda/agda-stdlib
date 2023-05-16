@@ -4,17 +4,16 @@
 -- Alpha equality over terms
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.AlphaEquality where
 
-open import Data.Bool.Base using (Bool; true; false; _∧_)
-open import Data.List.Base using ([]; _∷_)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _≡ᵇ_)
-open import Data.Product
-open import Relation.Nullary
-open import Relation.Nullary.Decidable
-open import Relation.Binary
+open import Data.Bool.Base             using (Bool; true; false; _∧_)
+open import Data.List.Base             using ([]; _∷_)
+open import Data.Nat.Base as ℕ        using (ℕ; zero; suc; _≡ᵇ_)
+open import Data.Product.Base          using (_,_)
+open import Relation.Nullary.Decidable using (⌊_⌋)
+open import Relation.Binary            using (DecidableEquality)
 
 open import Reflection.AST.Abstraction
 open import Reflection.AST.Argument

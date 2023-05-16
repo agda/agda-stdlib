@@ -4,22 +4,16 @@
 -- Definitions used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.Definition where
 
-open import Data.List.Base using (map)
-import Data.List.Properties as Listₚ
-import Data.Nat.Properties as ℕₚ
-import Data.Nat.Show as NatShow
-open import Data.Product using (_×_; <_,_>; uncurry)
-open import Data.String as String using (String; _<+>_; intersperse; braces)
-open import Function.Base using (_∘′_)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Binary using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality
+import Data.List.Properties as Listₚ              using (≡-dec)
+import Data.Nat.Properties as ℕₚ                 using (_≟_)
+open import Data.Product                          using (_×_; <_,_>; uncurry)
+open import Relation.Nullary.Decidable            using (map′; _×-dec_; yes; no)
+open import Relation.Binary                       using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong₂)
 
 import Reflection.AST.Argument as Arg
 import Reflection.AST.Name     as Name
@@ -67,15 +61,15 @@ constructor′-injective refl = refl
 
 _≟_ : DecidableEquality Definition
 function cs       ≟ function cs′        =
-  Dec.map′ (cong function) function-injective (cs Term.≟-Clauses cs′)
+  map′ (cong function) function-injective (cs Term.≟-Clauses cs′)
 data-type pars cs ≟ data-type pars′ cs′ =
-  Dec.map′ (uncurry (cong₂ data-type)) data-type-injective
+  map′ (uncurry (cong₂ data-type)) data-type-injective
            (pars ℕₚ.≟ pars′ ×-dec Listₚ.≡-dec Name._≟_ cs cs′)
 record′ c fs      ≟ record′ c′ fs′      =
-  Dec.map′ (uncurry (cong₂ record′)) record′-injective
+  map′ (uncurry (cong₂ record′)) record′-injective
            (c Name.≟ c′ ×-dec Listₚ.≡-dec (Arg.≡-dec Name._≟_) fs fs′)
 constructor′ d    ≟ constructor′ d′     =
-  Dec.map′ (cong constructor′) constructor′-injective (d Name.≟ d′)
+  map′ (cong constructor′) constructor′-injective (d Name.≟ d′)
 axiom             ≟ axiom               = yes refl
 primitive′        ≟ primitive′          = yes refl
 

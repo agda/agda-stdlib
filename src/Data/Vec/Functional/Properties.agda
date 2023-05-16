@@ -4,7 +4,7 @@
 -- Some Vector-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Properties where
 
@@ -23,9 +23,8 @@ open import Function.Base
 open import Level using (Level)
 open import Relation.Binary as B
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (Dec; does; yes; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable
+  using (Dec; does; yes; no; map′; _×-dec_)
 
 import Data.Fin.Properties as Finₚ
 
@@ -75,44 +74,41 @@ updateAt-minimal (suc i) (suc j) xs i≢j = updateAt-minimal i j (tail xs) (i≢
 
 -- updateAt i is a monoid morphism from A → A to Vector A n → Vector A n.
 
-updateAt-id-relative : ∀ {n} (i : Fin n) {f : A → A} (xs : Vector A n) →
-                       f (xs i) ≡ xs i →
-                       updateAt i f xs ≗ xs
-updateAt-id-relative zero    xs eq zero    = eq
-updateAt-id-relative zero    xs eq (suc j) = refl
-updateAt-id-relative (suc i) xs eq zero    = refl
-updateAt-id-relative (suc i) xs eq (suc j) = updateAt-id-relative i (tail xs) eq j
+updateAt-id-local : ∀ {n} (i : Fin n) {f : A → A} (xs : Vector A n) →
+                    f (xs i) ≡ xs i →
+                    updateAt i f xs ≗ xs
+updateAt-id-local zero    xs eq zero    = eq
+updateAt-id-local zero    xs eq (suc j) = refl
+updateAt-id-local (suc i) xs eq zero    = refl
+updateAt-id-local (suc i) xs eq (suc j) = updateAt-id-local i (tail xs) eq j
 
 updateAt-id : ∀ {n} (i : Fin n) (xs : Vector A n) →
               updateAt i id xs ≗ xs
-updateAt-id i xs = updateAt-id-relative i xs refl
+updateAt-id i xs = updateAt-id-local i xs refl
 
-updateAt-compose-relative : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vector A n) →
-                            f (g (xs i)) ≡ h (xs i) →
-                            updateAt i f (updateAt i g xs) ≗ updateAt i h xs
-updateAt-compose-relative zero    xs eq zero    = eq
-updateAt-compose-relative zero    xs eq (suc j) = refl
-updateAt-compose-relative (suc i) xs eq zero    = refl
-updateAt-compose-relative (suc i) xs eq (suc j) = updateAt-compose-relative i (tail xs) eq j
+updateAt-∘-local : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vector A n) →
+                   f (g (xs i)) ≡ h (xs i) →
+                   updateAt i f (updateAt i g xs) ≗ updateAt i h xs
+updateAt-∘-local zero    xs eq zero    = eq
+updateAt-∘-local zero    xs eq (suc j) = refl
+updateAt-∘-local (suc i) xs eq zero    = refl
+updateAt-∘-local (suc i) xs eq (suc j) = updateAt-∘-local i (tail xs) eq j
 
-updateAt-compose : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vector A n) →
-                   updateAt i f (updateAt i g xs) ≗ updateAt i (f ∘ g) xs
-updateAt-compose i xs = updateAt-compose-relative i xs refl
+updateAt-∘ : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vector A n) →
+             updateAt i f (updateAt i g xs) ≗ updateAt i (f ∘ g) xs
+updateAt-∘ i xs = updateAt-∘-local i xs refl
 
-updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vector A n) →
-                         f (xs i) ≡ g (xs i) →
-                         updateAt i f xs ≗ updateAt i g xs
-updateAt-cong-relative zero    xs eq zero    = eq
-updateAt-cong-relative zero    xs eq (suc j) = refl
-updateAt-cong-relative (suc i) xs eq zero    = refl
-updateAt-cong-relative (suc i) xs eq (suc j) = updateAt-cong-relative i (tail xs) eq j
+updateAt-cong-local : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vector A n) →
+                      f (xs i) ≡ g (xs i) →
+                      updateAt i f xs ≗ updateAt i g xs
+updateAt-cong-local zero    xs eq zero    = eq
+updateAt-cong-local zero    xs eq (suc j) = refl
+updateAt-cong-local (suc i) xs eq zero    = refl
+updateAt-cong-local (suc i) xs eq (suc j) = updateAt-cong-local i (tail xs) eq j
 
 updateAt-cong : ∀ {n} (i : Fin n) {f g : A → A} →
                 f ≗ g → (xs : Vector A n) → updateAt i f xs ≗ updateAt i g xs
-updateAt-cong zero    eq xs zero    = eq (xs zero)
-updateAt-cong zero    eq xs (suc j) = refl
-updateAt-cong (suc i) eq xs zero    = refl
-updateAt-cong (suc i) eq xs (suc j) = updateAt-cong i eq (tail xs) j
+updateAt-cong i eq xs = updateAt-cong-local i xs (eq (xs i))
 
 -- The order of updates at different indices i ≢ j does not matter.
 
@@ -143,14 +139,20 @@ lookup-map : ∀ {n} (i : Fin n) (f : A → B) (xs : Vector A n) →
              map f xs i ≡ f (xs i)
 lookup-map i f xs = refl
 
-map-updateAt : ∀ {n} {f : A → B} {g : A → A} {h : B → B}
+map-updateAt-local : ∀ {n} {f : A → B} {g : A → A} {h : B → B}
+                     (xs : Vector A n) (i : Fin n) →
+                     f (g (xs i)) ≡ h (f (xs i)) →
+                     map f (updateAt i g xs) ≗ updateAt i h (map f xs)
+map-updateAt-local {n = suc n}       {f = f} xs zero    eq zero    = eq
+map-updateAt-local {n = suc n}       {f = f} xs zero    eq (suc j) = refl
+map-updateAt-local {n = suc (suc n)} {f = f} xs (suc i) eq zero    = refl
+map-updateAt-local {n = suc (suc n)} {f = f} xs (suc i) eq (suc j) = map-updateAt-local {f = f} (tail xs) i eq j
+
+map-updateAt : ∀ {n} {f : A → B} {g : A → A} {h : B → B} →
+               f ∘ g ≗ h ∘ f →
                (xs : Vector A n) (i : Fin n) →
-               f (g (xs i)) ≡ h (f (xs i)) →
                map f (updateAt i g xs) ≗ updateAt i h (map f xs)
-map-updateAt {n = suc n}       {f = f} xs zero    eq zero    = eq
-map-updateAt {n = suc n}       {f = f} xs zero    eq (suc j) = refl
-map-updateAt {n = suc (suc n)} {f = f} xs (suc i) eq zero    = refl
-map-updateAt {n = suc (suc n)} {f = f} xs (suc i) eq (suc j) = map-updateAt {f = f} (tail xs) i eq j
+map-updateAt {f = f} {g = g} f∘g≗h∘f xs i = map-updateAt-local {f = f} {g = g} xs i (f∘g≗h∘f (xs i))
 
 ------------------------------------------------------------------------
 -- _++_
@@ -263,3 +265,35 @@ fromVec∘toVec = Vₚ.lookup∘tabulate
 
 toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
 toList∘fromList = Lₚ.tabulate-lookup
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+updateAt-id-relative = updateAt-id-local
+{-# WARNING_ON_USAGE updateAt-id-relative
+"Warning: updateAt-id-relative was deprecated in v2.0.
+Please use updateAt-id-local instead."
+#-}
+
+updateAt-compose-relative = updateAt-∘-local
+{-# WARNING_ON_USAGE updateAt-compose-relative
+"Warning: updateAt-compose-relative was deprecated in v2.0.
+Please use updateAt-∘-local instead."
+#-}
+
+updateAt-compose = updateAt-∘
+{-# WARNING_ON_USAGE updateAt-compose
+"Warning: updateAt-compose was deprecated in v2.0.
+Please use updateAt-∘ instead."
+#-}
+
+updateAt-cong-relative = updateAt-cong-local
+{-# WARNING_ON_USAGE updateAt-cong-relative
+"Warning: updateAt-cong-relative was deprecated in v2.0.
+Please use updateAt-cong-local instead."
+#-}

@@ -4,7 +4,7 @@
 -- Properties of operations on the Delay type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Delay.Properties where
 
@@ -39,16 +39,20 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
  length-zipWith f (later da)   (later db) =
    suc λ where .force →  length-zipWith f (da .force) (db .force)
 
- map-map-fusion : ∀ (f : A → B) (g : B → C) da {i}  →
-   i ⊢ map g (map f da) ≈ map (g ∘′ f) da
- map-map-fusion f g (now a)    = now Eq.refl
- map-map-fusion f g (later da) = later λ where .force → map-map-fusion f g (da .force)
+ map-id : ∀ da {i} → i ⊢ map (id {A = A}) da ≈ da
+ map-id (now a)    = now Eq.refl
+ map-id (later da) = later λ where .force → map-id (da .force)
 
- map-unfold-fusion : ∀ (f : B → C) n (s : A) {i} →
+ map-∘ : ∀ (f : A → B) (g : B → C) da {i}  →
+   i ⊢ map g (map f da) ≈ map (g ∘′ f) da
+ map-∘ f g (now a)    = now Eq.refl
+ map-∘ f g (later da) = later λ where .force → map-∘ f g (da .force)
+
+ map-unfold : ∀ (f : B → C) n (s : A) {i} →
    i ⊢ map f (unfold n s) ≈ unfold (Sum.map id f ∘′ n) s
- map-unfold-fusion f n s with n s
- ... | Sum.inj₁ s′ = later λ where .force → map-unfold-fusion f n s′
- ... | Sum.inj₂ b  = now Eq.refl
+ map-unfold f n s with n s
+ ... | Sum.inj₁ s′ = later λ where .force → map-unfold f n s′
+ ... | Sum.inj₂ b = now Eq.refl
 
 
 ------------------------------------------------------------------------
@@ -105,3 +109,29 @@ module _ {a} {A B : Set a} where
     Eq.cong (toℕ ∘′ length-⇓) (⇓-unique bind⇓ f⇓)
   bind⇓-length {d = d@(later dt)} {f = f} bind⇓@(later bind'⇓) d⇓@(later r) f⇓ =
     Eq.cong ℕ.suc (bind⇓-length bind'⇓ r f⇓)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-identity = map-id
+{-# WARNING_ON_USAGE map-identity
+"Warning: map-identity was deprecated in v2.0.
+Please use map-id instead."
+#-}
+
+map-map-fusion = map-∘
+{-# WARNING_ON_USAGE map-map-fusion
+"Warning: map-map-fusion was deprecated in v2.0.
+Please use map-∘ instead."
+#-}
+
+map-unfold-fusion = map-unfold
+{-# WARNING_ON_USAGE map-unfold-fusion
+"Warning: map-unfold-fusion was deprecated in v2.0.
+Please use map-unfold instead."
+#-}

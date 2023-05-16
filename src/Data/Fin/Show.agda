@@ -4,7 +4,7 @@
 -- Showing finite numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Show where
 
@@ -14,7 +14,7 @@ open import Data.Nat as ℕ using (ℕ; _≤?_; _<?_)
 import Data.Nat.Show as ℕ
 open import Data.String.Base using (String)
 open import Function.Base
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (True)
 
 show : ∀ {n} → Fin n → String

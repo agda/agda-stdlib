@@ -4,9 +4,9 @@
 -- de Bruijn-aware generic traversal of reflected terms.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Category.Applicative using (RawApplicative)
+open import Effect.Applicative using (RawApplicative)
 
 module Reflection.AST.Traversal
   {F : Set → Set} (AppF : RawApplicative F) where
@@ -16,7 +16,7 @@ open import Data.List    using (List; []; _∷_; _++_; reverse; length)
 open import Data.Product using (_×_; _,_)
 open import Data.String  using (String)
 open import Function     using (_∘_)
-open import Reflection
+open import Reflection   hiding (pure)
 
 open RawApplicative AppF
 

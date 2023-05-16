@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Pointwise where
 
@@ -23,9 +23,7 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Nullary.Negation.Core using (contradiction)
 import Relation.Nullary.Decidable as Dec using (map′)
-open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary renaming (Rel to Rel₂)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

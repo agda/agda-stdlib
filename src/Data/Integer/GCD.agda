@@ -4,7 +4,7 @@
 -- Greatest Common Divisor for integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.GCD where
 
@@ -13,7 +13,11 @@ open import Data.Integer.Divisibility
 open import Data.Integer.Properties
 open import Data.Nat.Base
 import Data.Nat.GCD as ℕ
+open import Data.Product
 open import Relation.Binary.PropositionalEquality
+
+open import Algebra.Definitions {A = ℤ} _≡_ as Algebra
+  using (Associative; Commutative; LeftIdentity; RightIdentity; LeftZero; RightZero; Zero)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -44,5 +48,17 @@ gcd[i,j]≡0⇒i≡0 i j eq = ∣i∣≡0⇒i≡0 (ℕ.gcd[m,n]≡0⇒m≡0 (+-i
 gcd[i,j]≡0⇒j≡0 : ∀ {i j} → gcd i j ≡ 0ℤ → j ≡ 0ℤ
 gcd[i,j]≡0⇒j≡0 {i} eq = ∣i∣≡0⇒i≡0 (ℕ.gcd[m,n]≡0⇒n≡0 ∣ i ∣ (+-injective eq))
 
-gcd-comm : ∀ i j → gcd i j ≡ gcd j i
+gcd-comm : Commutative gcd
 gcd-comm i j = cong (+_) (ℕ.gcd-comm ∣ i ∣ ∣ j ∣)
+
+gcd-assoc : Associative gcd
+gcd-assoc i j k = cong (+_) (ℕ.gcd-assoc ∣ i ∣ ∣ j ∣ (∣ k ∣))
+
+gcd-zeroˡ : LeftZero 1ℤ gcd
+gcd-zeroˡ i = cong (+_) (ℕ.gcd-zeroˡ ∣ i ∣)
+
+gcd-zeroʳ : RightZero 1ℤ gcd
+gcd-zeroʳ i = cong (+_) (ℕ.gcd-zeroʳ ∣ i ∣)
+
+gcd-zero : Zero 1ℤ gcd
+gcd-zero = gcd-zeroˡ , gcd-zeroʳ

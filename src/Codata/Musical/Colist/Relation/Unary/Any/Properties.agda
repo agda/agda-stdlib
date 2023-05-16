@@ -4,7 +4,7 @@
 -- Properties of the Any predicate on colists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Relation.Unary.Any.Properties where
 
@@ -169,7 +169,7 @@ Any-⋎ {P = P} = λ xs → record
 
 -- The position returned by index is guaranteed to be within bounds.
 
-lookup-index : ∀ {xs} (p : Any P xs) → Is-just (lookup (index p) xs)
+lookup-index : ∀ {xs} (p : Any P xs) → Is-just (lookup xs (index p))
 lookup-index (here px) = just _
 lookup-index (there p) = lookup-index p
 

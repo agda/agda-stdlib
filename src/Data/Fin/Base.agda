@@ -7,21 +7,22 @@
 -- Note that elements of Fin n can be seen as natural numbers in the
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Base where
 
+open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
 open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
-open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable.Core using (True; toWitness)
+open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no; True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
-open import Relation.Binary.Indexed.Heterogeneous using (IRel)
+open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
 
 private
   variable
@@ -122,7 +123,7 @@ inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
 lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
 lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
 lower₁ {suc n} zero    _  = zero
-lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
+lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ (i : Fin n) → Fin′ (suc i)
@@ -288,9 +289,6 @@ _>_ : IRel Fin 0ℓ
 i > j = toℕ i ℕ.> toℕ j
 
 
-data _≺_ : ℕ → ℕ → Set where
-  _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
-
 ------------------------------------------------------------------------
 -- An ordering view.
 
@@ -332,4 +330,16 @@ Please use _↑ˡ_ instead.
 NB argument order has been flipped:
 the left-hand argument is the Fin m
 the right-hand is the Nat index increment."
+#-}
+
+data _≺_ : ℕ → ℕ → Set where
+  _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
+
+{-# WARNING_ON_USAGE _≺_
+"Warning: _≺_ was deprecated in v2.0.
+Please use equivalent relation _<_ instead."
+#-}
+{-# WARNING_ON_USAGE _≻toℕ_
+"Warning: _≻toℕ_ was deprecated in v2.0.
+Please use toℕ<n from Data.Fin.Properties instead."
 #-}

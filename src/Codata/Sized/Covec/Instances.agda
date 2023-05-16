@@ -4,11 +4,11 @@
 -- Typeclass instances for Covec
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Covec.Instances where
 
-open import Codata.Sized.Covec.Categorical
+open import Codata.Sized.Covec.Effectful
 
 instance
   covecFunctor = functor

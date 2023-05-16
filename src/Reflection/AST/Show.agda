@@ -7,20 +7,20 @@
 -- Note that Reflection.termErr can also be used directly in tactic
 -- error messages.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.Show where
 
-import Data.Char as Char
-import Data.Float as Float
+import Data.Char as Char   using (show)
+import Data.Float as Float using (show)
 open import Data.List hiding (_++_; intersperse)
-import Data.Nat as ℕ
-import Data.Nat.Show as ℕ
-open import Data.Product using (_×_; _,_)
+import Data.Nat.Show as ℕ using (show)
+open import Data.Product   using (_×_; _,_)
 open import Data.String as String
-import Data.Word as Word
-open import Relation.Nullary using (yes; no)
+  using (String; _++_; intersperse; braces; parens; parensIfSpace; _<+>_)
+import Data.Word as Word   using (toℕ)
 open import Function.Base using (id; _∘′_; case_of_)
+open import Relation.Nullary.Decidable using (yes; no)
 
 open import Reflection.AST.Abstraction hiding (map)
 open import Reflection.AST.Argument hiding (map)

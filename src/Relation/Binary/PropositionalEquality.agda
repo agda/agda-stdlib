@@ -4,7 +4,7 @@
 -- Propositional (intensional) equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.PropositionalEquality where
 
@@ -15,8 +15,8 @@ open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product using (∃)
 
-open import Relation.Nullary using (yes ; no)
-open import Relation.Nullary.Decidable.Core
+open import Relation.Nullary.Decidable using (yes; no)
+open import Relation.Nullary.Decidable
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
@@ -61,24 +61,6 @@ _≗_ {A = A} {B = B} = Setoid._≈_ (A →-setoid B)
 →-to-⟶ = :→-to-Π
 
 ------------------------------------------------------------------------
--- Inspect
-
--- Inspect can be used when you want to pattern match on the result r
--- of some expression e, and you also need to "remember" that r ≡ e.
-
--- See README.Inspect for an explanation of how/why to use this.
-
-record Reveal_·_is_ {A : Set a} {B : A → Set b}
-                    (f : (x : A) → B x) (x : A) (y : B x) :
-                    Set (a ⊔ b) where
-  constructor [_]
-  field eq : f x ≡ y
-
-inspect : ∀ {A : Set a} {B : A → Set b}
-          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
-inspect f x = [ refl ]
-
-------------------------------------------------------------------------
 -- Propositionality
 
 isPropositional : Set a → Set a
@@ -101,7 +83,7 @@ naturality {x = x} {x≡y = refl} f≡g =
 
 cong-≡id : ∀ {f : A → A} {x : A} (f≡id : ∀ x → f x ≡ x) →
            cong f (f≡id x) ≡ f≡id (f x)
-cong-≡id {f = f} {x} f≡id =
+cong-≡id {f = f} {x} f≡id = begin
   cong f fx≡x                                    ≡⟨ sym (trans-reflʳ _) ⟩
   trans (cong f fx≡x) refl                       ≡⟨ cong (trans _) (sym (trans-symʳ fx≡x)) ⟩
   trans (cong f fx≡x) (trans fx≡x (sym fx≡x))    ≡⟨ sym (trans-assoc (cong f fx≡x)) ⟩
@@ -120,3 +102,34 @@ module _ (_≟_ : DecidableEquality A) {x y : A} where
 
   ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
   ≢-≟-identity = dec-no (x ≟ y)
+
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+record Reveal_·_is_ {A : Set a} {B : A → Set b}
+                    (f : (x : A) → B x) (x : A) (y : B x) :
+                    Set (a ⊔ b) where
+  constructor [_]
+  field eq : f x ≡ y
+
+inspect : ∀ {A : Set a} {B : A → Set b}
+          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
+inspect f x = [ refl ]
+
+{-# WARNING_ON_USAGE Reveal_·_is_
+"Warning: Reveal_·_is_ was deprecated in v2.0.
+Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead."
+#-}
+{-# WARNING_ON_USAGE inspect
+"Warning: inspect was deprecated in v2.0.
+Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead."
+#-}
+

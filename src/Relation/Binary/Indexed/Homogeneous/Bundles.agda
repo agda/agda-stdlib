@@ -7,7 +7,7 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Homogeneous`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Indexed.Homogeneous.Bundles where
 
@@ -16,7 +16,7 @@ open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary as B using (_⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Indexed.Homogeneous.Core
 open import Relation.Binary.Indexed.Homogeneous.Structures
 

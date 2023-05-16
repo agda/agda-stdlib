@@ -42,6 +42,6 @@ Env T Γ = All T Γ
 
 -- A safe lookup function for environments.
 
-lookup : ∀ {Γ σ} {T : Ty → Set} → Γ ∋ σ → Env T Γ → T σ
-lookup i ρ with Pointer.lookup i ρ
+lookup : ∀ {Γ σ} {T : Ty → Set} → Env T Γ → Γ ∋ σ → T σ
+lookup ρ i with Pointer.lookup ρ i
 ... | result refl x = x

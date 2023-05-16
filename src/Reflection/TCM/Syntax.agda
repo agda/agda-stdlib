@@ -4,7 +4,7 @@
 -- Monad syntax for the TC monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.TCM.Syntax where
 
@@ -19,10 +19,6 @@ private
 
 ------------------------------------------------------------------------
 -- Monad syntax
-
-pure : A → TC A
-pure = returnTC
-{-# INLINE pure #-}
 
 infixl 3 _<|>_
 _<|>_ : TC A → TC A → TC A

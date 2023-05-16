@@ -4,7 +4,7 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles
 
@@ -39,14 +39,14 @@ private
     x ⁻¹ ∙ (x ∙ y) ∎
 
 ∙-cancelˡ : LeftCancellative _∙_
-∙-cancelˡ x {y} {z} eq = begin
+∙-cancelˡ x y z eq = begin
               y  ≈⟨ right-helper x y ⟩
   x ⁻¹ ∙ (x ∙ y) ≈⟨ ∙-congˡ eq ⟩
   x ⁻¹ ∙ (x ∙ z) ≈˘⟨ right-helper x z ⟩
               z  ∎
 
 ∙-cancelʳ : RightCancellative _∙_
-∙-cancelʳ {x} y z eq = begin
+∙-cancelʳ x y z eq = begin
   y            ≈⟨ left-helper y x ⟩
   y ∙ x ∙ x ⁻¹ ≈⟨ ∙-congʳ eq ⟩
   z ∙ x ∙ x ⁻¹ ≈˘⟨ left-helper z x ⟩
@@ -63,14 +63,14 @@ private
   x                    ∎
 
 ⁻¹-injective : ∀ {x y} → x ⁻¹ ≈ y ⁻¹ → x ≈ y
-⁻¹-injective {x} {y} eq = ∙-cancelʳ x y ( begin
+⁻¹-injective {x} {y} eq = ∙-cancelʳ _ _ _ ( begin
   x ∙ x ⁻¹ ≈⟨ inverseʳ x ⟩
   ε        ≈˘⟨ inverseʳ y ⟩
   y ∙ y ⁻¹ ≈˘⟨ ∙-congˡ eq ⟩
   y ∙ x ⁻¹ ∎ )
 
 ⁻¹-anti-homo-∙ : ∀ x y → (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
-⁻¹-anti-homo-∙ x y = ∙-cancelˡ _ ( begin
+⁻¹-anti-homo-∙ x y = ∙-cancelˡ _ _ _ ( begin
   x ∙ y ∙ (x ∙ y) ⁻¹    ≈⟨ inverseʳ _ ⟩
   ε                     ≈˘⟨ inverseʳ _ ⟩
   x ∙ x ⁻¹              ≈⟨ ∙-congʳ (left-helper x y) ⟩

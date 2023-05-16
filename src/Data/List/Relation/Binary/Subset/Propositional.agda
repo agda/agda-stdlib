@@ -4,7 +4,7 @@
 -- The sublist relation over propositional equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Subset.Propositional
   {a} {A : Set a} where

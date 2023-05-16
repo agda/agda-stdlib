@@ -18,7 +18,7 @@
 -- is recommended for equational reasoning when the underlying equality is
 -- `_≡_`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 

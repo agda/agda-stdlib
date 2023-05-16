@@ -5,7 +5,7 @@
 -- minimum and maximum.
 -----------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
@@ -18,7 +18,7 @@ open import Data.Empty
 open import Data.Unit
 open import Data.Product
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Construct.Add.Extrema
   as AddExtremaToSet using (_±)
 import Relation.Binary.Construct.Add.Extrema.Equality

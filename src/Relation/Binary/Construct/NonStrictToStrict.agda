@@ -4,19 +4,19 @@
 -- Conversion of _≤_ to _<_
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
 module Relation.Binary.Construct.NonStrictToStrict
   {a ℓ₁ ℓ₂} {A : Set a} (_≈_ : Rel A ℓ₁) (_≤_ : Rel A ℓ₂) where
 
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_; flip)
 open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Negation using (contradiction; ¬?)
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable using (¬?; _×-dec_)
 
 private
   _≉_ : Rel A ℓ₁

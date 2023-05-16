@@ -4,7 +4,7 @@
 -- The Covec type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Covec where
 
@@ -17,51 +17,55 @@ open import Codata.Sized.Conat.Properties
 open import Codata.Sized.Cofin as Cofin using (Cofin; zero; suc)
 open import Codata.Sized.Colist as Colist using (Colist ; [] ; _∷_)
 open import Codata.Sized.Stream as Stream using (Stream ; _∷_)
-open import Function.Base using (_∘′_)
+open import Level using (Level)
 
-data Covec {ℓ} (A : Set ℓ) (i : Size) : Conat ∞ → Set ℓ where
+private
+  variable
+    a b : Level
+    A : Set a
+    B : Set b
+
+data Covec (A : Set a) (i : Size) : Conat ∞ → Set a where
   []  : Covec A i zero
   _∷_ : ∀ {n} → A → Thunk (λ i → Covec A i (n .force)) i → Covec A i (suc n)
 
-module _ {ℓ} {A : Set ℓ} where
+head : ∀ {n i} → Covec A i (suc n) → A
+head (x ∷ _) = x
 
- head : ∀ {n i} → Covec A i (suc n) → A
- head (x ∷ _) = x
+tail : ∀ {n} → Covec A ∞ (suc n) → Covec A ∞ (n .force)
+tail (_ ∷ xs) = xs .force
 
- tail : ∀ {n} → Covec A ∞ (suc n) → Covec A ∞ (n .force)
- tail (_ ∷ xs) = xs .force
+lookup : ∀ {n} → Covec A ∞ n → Cofin n → A
+lookup as zero    = head as
+lookup as (suc k) = lookup (tail as) k
 
- lookup : ∀ {n} → Cofin n → Covec A ∞ n → A
- lookup zero    = head
- lookup (suc k) = lookup k ∘′ tail
+replicate : ∀ {i} → (n : Conat ∞) → A → Covec A i n
+replicate zero    a = []
+replicate (suc n) a = a ∷ λ where .force → replicate (n .force) a
 
- replicate : ∀ {i} → (n : Conat ∞) → A → Covec A i n
- replicate zero    a = []
- replicate (suc n) a = a ∷ λ where .force → replicate (n .force) a
+cotake : ∀ {i} → (n : Conat ∞) → Stream A i → Covec A i n
+cotake zero    xs       = []
+cotake (suc n) (x ∷ xs) = x ∷ λ where .force → cotake (n .force) (xs .force)
 
- cotake : ∀ {i} → (n : Conat ∞) → Stream A i → Covec A i n
- cotake zero    xs       = []
- cotake (suc n) (x ∷ xs) = x ∷ λ where .force → cotake (n .force) (xs .force)
+infixr 5 _++_
+_++_ : ∀ {i m n} → Covec A i m → Covec A i n → Covec A i (m + n)
+[]       ++ ys = ys
+(x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
 
- infixr 5 _++_
- _++_ : ∀ {i m n} → Covec A i m → Covec A i n → Covec A i (m + n)
- []       ++ ys = ys
- (x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
+fromColist : ∀ {i} → (xs : Colist A ∞) → Covec A i (Colist.length xs)
+fromColist []       = []
+fromColist (x ∷ xs) = x ∷ λ where .force → fromColist (xs .force)
 
- fromColist : ∀ {i} → (xs : Colist A ∞) → Covec A i (Colist.length xs)
- fromColist []       = []
- fromColist (x ∷ xs) = x ∷ λ where .force → fromColist (xs .force)
+toColist : ∀ {i n} → Covec A i n → Colist A i
+toColist []       = []
+toColist (x ∷ xs) = x ∷ λ where .force → toColist (xs .force)
 
- toColist : ∀ {i n} → Covec A i n → Colist A i
- toColist []       = []
- toColist (x ∷ xs) = x ∷ λ where .force → toColist (xs .force)
+fromStream : ∀ {i} → Stream A i → Covec A i infinity
+fromStream = cotake infinity
 
- fromStream : ∀ {i} → Stream A i → Covec A i infinity
- fromStream = cotake infinity
-
- cast : ∀ {i} {m n} → i ⊢ m ≈ n → Covec A i m → Covec A i n
- cast zero     []       = []
- cast (suc eq) (a ∷ as) = a ∷ λ where .force → cast (eq .force) (as .force)
+cast : ∀ {i} {m n} → i ⊢ m ≈ n → Covec A i m → Covec A i n
+cast zero     []       = []
+cast (suc eq) (a ∷ as) = a ∷ λ where .force → cast (eq .force) (as .force)
 
 module _ {a b} {A : Set a} {B : Set b} where
 

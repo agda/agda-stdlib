@@ -4,7 +4,7 @@
 -- Regular expressions: core properties (only require a Preorder)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Preorder)
 

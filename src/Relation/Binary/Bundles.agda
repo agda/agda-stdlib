@@ -6,12 +6,12 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Bundles where
 
 open import Level
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
 open import Relation.Binary.Structures

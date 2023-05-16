@@ -7,18 +7,18 @@
 -- See README.Data.Nat for examples of how to use and reason about
 -- naturals.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Base where
 
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
 open import Data.Bool.Base using (Bool; true; false; T; not)
+open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
-open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Unary using (Pred)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 ------------------------------------------------------------------------
 -- Types
@@ -148,12 +148,35 @@ zero  ⊔ n     = n
 suc m ⊔ zero  = suc m
 suc m ⊔ suc n = suc (m ⊔ n)
 
+-- Max defined in terms of primitive operations.
+-- This is much faster than `_⊔_` but harder to reason about. For proofs
+-- involving this function, convert it to `_⊔_` with `Data.Nat.Properties.⊔≡⊔‵`.
+_⊔′_ : ℕ → ℕ → ℕ
+m ⊔′ n with m <ᵇ n
+... | false = m
+... | true  = n
+
 -- Min.
 
 _⊓_ : ℕ → ℕ → ℕ
 zero  ⊓ n     = zero
 suc m ⊓ zero  = zero
 suc m ⊓ suc n = suc (m ⊓ n)
+
+-- Min defined in terms of primitive operations.
+-- This is much faster than `_⊓_` but harder to reason about. For proofs
+-- involving this function, convert it to `_⊓_` wtih `Data.Nat.properties.⊓≡⊓′`.
+_⊓′_ : ℕ → ℕ → ℕ
+m ⊓′ n with m <ᵇ n
+... | false = n
+... | true  = m
+
+-- Parity
+
+parity : ℕ → Parity
+parity 0             = 0ℙ
+parity 1             = 1ℙ
+parity (suc (suc n)) = parity n
 
 -- Division by 2, rounded downwards.
 
@@ -179,6 +202,15 @@ x ^ suc n = x * x ^ n
 ∣ zero  - y     ∣ = y
 ∣ x     - zero  ∣ = x
 ∣ suc x - suc y ∣ = ∣ x - y ∣
+
+-- Distance in terms of primitive operations.
+-- This is much faster than `∣_-_∣` but harder to reason about. For proofs
+-- involving this function, convert it to `∣_-_∣` with
+-- `Data.Nat.Properties.∣-∣≡∣-∣′`.
+∣_-_∣′ : ℕ → ℕ → ℕ
+∣ x - y ∣′ with x <ᵇ y
+... | false = x ∸ y
+... | true  = y ∸ x
 
 -- Division
 -- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
@@ -281,3 +313,52 @@ compare (suc m) (suc n) with compare m n
 ... | less    m k = less (suc m) k
 ... | equal   m   = equal (suc m)
 ... | greater n k = greater (suc n) k
+
+------------------------------------------------------------------------
+-- Raw bundles
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0
+  }
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε = 1
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  ; 1# = 1
+  }
+

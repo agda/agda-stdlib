@@ -5,14 +5,15 @@
 -- properties (or other properties not available in Data.Fin)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
 module Data.Fin.Properties where
 
 open import Axiom.Extensionality.Propositional
 open import Algebra.Definitions using (Involutive)
-open import Category.Applicative using (RawApplicative)
-open import Category.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
@@ -23,23 +24,23 @@ open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
 open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
+open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
-open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
+open import Data.Sum.Properties using ([,]-map; [,]-∘)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Function.Bundles using (_↣_; _⇔_; _↔_; mk⇔; mk↔′)
+open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
 open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
+open import Function.Consequences using (contraInjective)
+open import Function.Construct.Composition as Comp hiding (injective)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
-open import Relation.Nullary.Decidable as Dec using (map′)
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary
-  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_)
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_; _×-dec_; _⊎-dec_; contradiction)
+open import Relation.Nullary.Reflects
+open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
@@ -67,9 +68,16 @@ private
 1↔⊤ : Fin 1 ↔ ⊤
 1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
 
+2↔Bool : Fin 2 ↔ Bool
+2↔Bool = mk↔′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
+  (λ { false → refl ; true → refl }) (λ { 0F → refl ; 1F → refl })
+
 ------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
+
+0≢1+n : zero ≢ Fin.suc i
+0≢1+n ()
 
 suc-injective : Fin.suc i ≡ suc j → i ≡ j
 suc-injective refl = refl
@@ -153,10 +161,10 @@ toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 
 toℕ≤n : ∀ (i : Fin n) → toℕ i ℕ.≤ n
-toℕ≤n {suc n} i = ℕₚ.≤-step (toℕ≤pred[n] i)
+toℕ≤n {suc n} i = ℕₚ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
 
 toℕ<n : ∀ (i : Fin n) → toℕ i ℕ.< n
-toℕ<n {suc n} i = s≤s (toℕ≤pred[n] i)
+toℕ<n {suc n} i = s<s (toℕ≤pred[n] i)
 
 -- A simpler implementation of toℕ≤pred[n],
 -- however, with a different reduction behavior.
@@ -239,12 +247,25 @@ toℕ-fromℕ<″ {m} {n} m<n = begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- cast
+-- Properties of cast
 ------------------------------------------------------------------------
 
 toℕ-cast : ∀ .(eq : m ≡ n) (k : Fin m) → toℕ (cast eq k) ≡ toℕ k
 toℕ-cast {n = suc n} eq zero    = refl
 toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
+
+cast-is-id : .(eq : m ≡ m) (k : Fin m) → cast eq k ≡ k
+cast-is-id eq zero    = refl
+cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
+
+subst-is-cast : (eq : m ≡ n) (k : Fin m) → subst Fin eq k ≡ cast eq k
+subst-is-cast refl k = sym (cast-is-id refl k)
+
+cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (k : Fin m) →
+             cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ zero = refl
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
+  cong suc (cast-trans (ℕₚ.suc-injective eq₁) (ℕₚ.suc-injective eq₂) k)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -446,6 +467,10 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 ℕ<⇒inject₁< : ∀ {i : Fin (ℕ.suc n)} {j : Fin n} → j < i → inject₁ j < i
 ℕ<⇒inject₁< {i = suc i} (s≤s j≤i) = ≤̄⇒inject₁< j≤i
 
+i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
+i≤inject₁[j]⇒i≤1+j {i = zero} i≤j = z≤n
+i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
+
 ------------------------------------------------------------------------
 -- lower₁
 ------------------------------------------------------------------------
@@ -537,9 +562,19 @@ splitAt-↑ˡ : ∀ m i n → splitAt m (i ↑ˡ n) ≡ inj₁ i
 splitAt-↑ˡ (suc m) zero    n = refl
 splitAt-↑ˡ (suc m) (suc i) n rewrite splitAt-↑ˡ m i n = refl
 
+splitAt⁻¹-↑ˡ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
+splitAt⁻¹-↑ˡ {suc m} {n} {0F} {.0F} refl = refl
+splitAt⁻¹-↑ˡ {suc m} {n} {suc i} {j} eq with splitAt m i in splitAt[m][i]≡inj₁[j]
+... | inj₁ k with refl ← eq = cong suc (splitAt⁻¹-↑ˡ {i = i} {j = k} splitAt[m][i]≡inj₁[j])
+
 splitAt-↑ʳ : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
 splitAt-↑ʳ zero    n i = refl
 splitAt-↑ʳ (suc m) n i rewrite splitAt-↑ʳ m n i = refl
+
+splitAt⁻¹-↑ʳ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
+splitAt⁻¹-↑ʳ {zero}  {n} {i} {j} refl = refl
+splitAt⁻¹-↑ʳ {suc m} {n} {suc i} {j} eq with splitAt m i in splitAt[m][i]≡inj₂[k]
+... | inj₂ k with refl ← eq = cong suc (splitAt⁻¹-↑ʳ {i = i} {j = k} splitAt[m][i]≡inj₂[k])
 
 splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
 splitAt-join m n (inj₁ x) = splitAt-↑ˡ m x n
@@ -549,8 +584,8 @@ join-splitAt : ∀ m n i → join m n (splitAt m i) ≡ i
 join-splitAt zero    n i       = refl
 join-splitAt (suc m) n zero    = refl
 join-splitAt (suc m) n (suc i) = begin
-  [ _↑ˡ n , (suc m) ↑ʳ_ ]′ (splitAt (suc m) (suc i)) ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
+  [ _↑ˡ n , (suc m) ↑ʳ_ ]′ (splitAt (suc m) (suc i)) ≡⟨ [,]-map (splitAt m i) ⟩
+  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡˘⟨ [,]-∘ suc (splitAt m i) ⟩
   suc ([ _↑ˡ n , m ↑ʳ_ ]′ (splitAt m i))             ≡⟨ cong suc (join-splitAt m n i) ⟩
   suc i                                                         ∎
   where open ≡-Reasoning
@@ -587,13 +622,13 @@ remQuot-combine {suc n} {k} (suc i) j rewrite splitAt-↑ʳ k   (n ℕ.* k) (com
   cong (Data.Product.map₁ suc) (remQuot-combine i j)
 
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
-combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
-... | inj₁ j | P.[ eq ] = begin
+combine-remQuot {suc n} k i with splitAt k i in eq
+... | inj₁ j = begin
   join k (n ℕ.* k) (inj₁ j)      ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i) ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
   i                              ∎
   where open ≡-Reasoning
-... | inj₂ j | P.[ eq ] = begin
+... | inj₂ j = begin
   k ↑ʳ (uncurry combine (remQuot {n} k j)) ≡⟨ cong (k ↑ʳ_) (combine-remQuot {n} k j) ⟩
   join k (n ℕ.* k) (inj₂ j)                ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i)           ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
@@ -640,7 +675,7 @@ combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ with <-cmp i k
 combine-injectiveʳ : ∀ (i : Fin m) (j : Fin n) (k : Fin m) (l : Fin n) →
                      combine i j ≡ combine k l → j ≡ l
 combine-injectiveʳ {m} {n} i j k l cᵢⱼ≡cₖₗ with combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ
-... | refl = toℕ-injective (ℕₚ.+-cancelˡ-≡ (n ℕ.* toℕ i) (begin
+... | refl = toℕ-injective (ℕₚ.+-cancelˡ-≡ (n ℕ.* toℕ i) _ _ (begin
   n ℕ.* toℕ i ℕ.+ toℕ j ≡˘⟨ toℕ-combine i j ⟩
   toℕ (combine i j)     ≡⟨ cong toℕ cᵢⱼ≡cₖₗ ⟩
   toℕ (combine i l)     ≡⟨ toℕ-combine i l ⟩
@@ -654,8 +689,8 @@ combine-injective i j k l cᵢⱼ≡cₖₗ =
   combine-injectiveʳ i j k l cᵢⱼ≡cₖₗ
 
 combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine j k ≡ i
-combine-surjective {m} {n} i with remQuot {m} n i | P.inspect (remQuot {m} n) i
-... | j , k | P.[ eq ] = j , k , (begin
+combine-surjective {m} {n} i with remQuot {m} n i in eq
+... | j , k = j , k , (begin
   combine j k                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
   uncurry combine (remQuot {m} n i) ≡⟨ combine-remQuot {m} n i ⟩
   i                                 ∎)
@@ -732,18 +767,6 @@ lift-injective f inj (suc k) {suc _} {suc _} eq =
   cong suc (lift-injective f inj k (suc-injective eq))
 
 ------------------------------------------------------------------------
--- _≺_
-------------------------------------------------------------------------
-
-≺⇒<′ : _≺_ ⇒ ℕ._<′_
-≺⇒<′ (n ≻toℕ i) = ℕₚ.≤⇒≤′ (toℕ<n i)
-
-<′⇒≺ : ℕ._<′_ ⇒ _≺_
-<′⇒≺ {n} ℕ.≤′-refl = subst (_≺ suc n) (toℕ-fromℕ n) (suc n ≻toℕ fromℕ n)
-<′⇒≺ (ℕ.≤′-step m≤′n) with <′⇒≺ m≤′n
-... | n ≻toℕ i = subst (_≺ suc n) (toℕ-inject₁ i) (suc n ≻toℕ _)
-
-------------------------------------------------------------------------
 -- pred
 ------------------------------------------------------------------------
 
@@ -762,6 +785,10 @@ toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 ------------------------------------------------------------------------
 -- _ℕ-ℕ_
 ------------------------------------------------------------------------
+
+ℕ-ℕ≡toℕ‿ℕ- : ∀ n i → n ℕ-ℕ i ≡ toℕ (n ℕ- i)
+ℕ-ℕ≡toℕ‿ℕ- n       zero    = sym (toℕ-fromℕ n)
+ℕ-ℕ≡toℕ‿ℕ- (suc n) (suc i) = ℕ-ℕ≡toℕ‿ℕ- n i
 
 nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ.≤ n
 nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
@@ -851,6 +878,20 @@ pinch-mono-≤ 0F      {suc j} {suc k} (s≤s j≤k) = j≤k
 pinch-mono-≤ (suc i) {0F}    {k}     0≤n       = z≤n
 pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
 
+pinch-injective : ∀ {i : Fin n} {j k : Fin (ℕ.suc n)} →
+                  suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
+pinch-injective {i = i}     {zero}  {zero}  _     _     _  = refl
+pinch-injective {i = zero}  {zero}  {suc k} _     1+i≢k eq =
+  contradiction (cong suc eq) 1+i≢k
+pinch-injective {i = zero}  {suc j} {zero}  1+i≢j _     eq =
+  contradiction (cong suc (sym eq)) 1+i≢j
+pinch-injective {i = zero}  {suc j} {suc k} _     _     eq =
+  cong suc eq
+pinch-injective {i = suc i} {suc j} {suc k} 1+i≢j 1+i≢k eq =
+  cong suc
+    (pinch-injective (1+i≢j ∘ cong suc) (1+i≢k ∘ cong suc)
+      (suc-injective eq))
+
 ------------------------------------------------------------------------
 -- Quantification
 ------------------------------------------------------------------------
@@ -926,19 +967,46 @@ private
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
 ¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
 
+------------------------------------------------------------------------
+-- Properties of functions to and from Fin
+------------------------------------------------------------------------
+
 -- The pigeonhole principle.
 
-pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
+pigeonhole : m ℕ.< n → (f : Fin n → Fin m) → ∃₂ λ i j → i < j × f i ≡ f j
 pigeonhole z<s               f = contradiction (f zero) λ()
 pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
-... | yes (j , f₀≡fⱼ) = zero , suc j , (λ()) , f₀≡fⱼ
+... | yes (j , f₀≡fⱼ) = zero , suc j , z<s , f₀≡fⱼ
 ... | no  f₀≢fₖ with pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
-...   | (i , j , i≢j , fᵢ≡fⱼ) =
-  suc i , suc j , i≢j ∘ suc-injective ,
+...   | (i , j , i<j , fᵢ≡fⱼ) =
+  suc i , suc j , s<s i<j ,
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
+injective⇒≤ : ∀ {f : Fin m → Fin n} → Injective _≡_ _≡_ f → m ℕ.≤ n
+injective⇒≤ {zero}  {_}     {f} _   = z≤n
+injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
+injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
+  suc-injective (inj (punchOut-injective
+    (contraInjective _≡_ _≡_ inj 0≢1+n)
+    (contraInjective _≡_ _≡_ inj 0≢1+n) eq))))
+
+<⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
+<⇒notInjective n<m inj = ℕₚ.≤⇒≯ (injective⇒≤ inj) n<m
+
+ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
+ℕ→Fin-notInjective f inj = ℕₚ.<-irrefl refl
+  (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
+
+-- Cantor-Schröder-Bernstein for finite sets
+
+cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} →
+                            Injective _≡_ _≡_ f → Injective _≡_ _≡_ g →
+                            m ≡ n
+cantor-schröder-bernstein f-inj g-inj = ℕₚ.≤-antisym
+  (injective⇒≤ f-inj) (injective⇒≤ g-inj)
+
 ------------------------------------------------------------------------
--- Categorical
+-- Effectful
 ------------------------------------------------------------------------
 
 module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
@@ -948,7 +1016,7 @@ module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
   sequence : ∀ {n} {P : Pred (Fin n) f} →
              (∀ i → F (P i)) → F (∀ i → P i)
   sequence {zero}  ∀iPi = pure λ()
-  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero ⊛ sequence (∀iPi ∘ suc)
+  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero <*> sequence (∀iPi ∘ suc)
 
 module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 
@@ -962,8 +1030,19 @@ module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 -- If there is an injection from a type A to a finite set, then the type
 -- has decidable equality.
 
-eq? : A ↣ Fin n → DecidableEquality A
-eq? inj = Dec.via-injection inj _≟_
+module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
+  open Setoid S
+
+  inj⇒≟ : B.Decidable _≈_
+  inj⇒≟ = Dec.via-injection inj _≟_
+
+  inj⇒decSetoid : DecSetoid a ℓ
+  inj⇒decSetoid = record
+    { isDecEquivalence = record
+      { isEquivalence = isEquivalence
+      ; _≟_           = inj⇒≟
+      }
+    }
 
 ------------------------------------------------------------------------
 -- Opposite
@@ -1043,5 +1122,40 @@ Fin0↔⊥ = 0↔⊥
 {-# WARNING_ON_USAGE Fin0↔⊥
 "Warning: Fin0↔⊥ was deprecated in v2.0.
 Please use 0↔⊥ instead."
+#-}
+eq? : A ↣ Fin n → DecidableEquality A
+eq? = inj⇒≟
+{-# WARNING_ON_USAGE eq?
+"Warning: eq? was deprecated in v2.0.
+Please use inj⇒≟ instead."
+#-}
+
+private
+
+  z≺s : ∀ {n} → zero ≺ suc n
+  z≺s = _ ≻toℕ zero
+
+  s≺s : ∀ {m n} → m ≺ n → suc m ≺ suc n
+  s≺s (n ≻toℕ i) = (suc n) ≻toℕ (suc i)
+
+  <⇒≺ : ℕ._<_ ⇒ _≺_
+  <⇒≺ {zero}  z<s      = z≺s
+  <⇒≺ {suc m} (s<s lt) = s≺s (<⇒≺ lt)
+
+  ≺⇒< : _≺_ ⇒ ℕ._<_
+  ≺⇒< (n ≻toℕ i) = toℕ<n i
+
+≺⇒<′ : _≺_ ⇒ ℕ._<′_
+≺⇒<′ lt = ℕₚ.<⇒<′ (≺⇒< lt)
+{-# WARNING_ON_USAGE ≺⇒<′
+"Warning: ≺⇒<′ was deprecated in v2.0.
+Please use <⇒<′ instead."
+#-}
+
+<′⇒≺ : ℕ._<′_ ⇒ _≺_
+<′⇒≺ lt = <⇒≺ (ℕₚ.<′⇒< lt)
+{-# WARNING_ON_USAGE <′⇒≺
+"Warning: <′⇒≺ was deprecated in v2.0.
+Please use <′⇒< instead."
 #-}
 

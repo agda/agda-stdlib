@@ -4,12 +4,12 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist where
 
 open import Level using (Level)
-open import Category.Monad
+open import Effect.Monad
 open import Codata.Musical.Notation
 open import Codata.Musical.Conat using (Coℕ; zero; suc)
 import Codata.Musical.Colist.Properties
@@ -18,8 +18,7 @@ open import Data.Bool.Base using (Bool; true; false)
 open import Data.Empty using (⊥)
 open import Data.Maybe using (Maybe; nothing; just; Is-just)
 open import Data.Maybe.Relation.Unary.Any using (just)
-open import Data.Nat.Base using (ℕ; zero; suc; _≥′_; ≤′-refl; ≤′-step)
-open import Data.Nat.Properties using (s≤′s)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Product as Prod using (∃; _×_; _,_)
@@ -37,6 +36,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
+open import Relation.Nullary.Decidable using (excluded-middle)
 open import Relation.Unary using (Pred)
 
 private

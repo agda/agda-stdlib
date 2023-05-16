@@ -4,16 +4,9 @@
 -- Examples of decision procedures and how to use them
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Design.Decidability where
-
--- Reflects and Dec are defined in Relation.Nullary, and operations on them can
--- be found in Relation.Nullary.Reflects and Relation.Nullary.Decidable.
-
-open import Relation.Nullary as Nullary
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Decidable
 
 open import Data.Bool
 open import Data.List
@@ -25,7 +18,11 @@ open import Data.Unit
 open import Function
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nary
-open import Relation.Nullary.Product
+
+------------------------------------------------------------------------
+-- Reflects
+
+open import Relation.Nullary.Reflects
 
 infix 4 _≟₀_ _≟₁_ _≟₂_
 
@@ -42,6 +39,11 @@ ex₁ n = ofⁿ λ ()
 ex₂ : (b : Bool) → Reflects (T b) b
 ex₂ false = ofⁿ id
 ex₂ true  = ofʸ tt
+
+------------------------------------------------------------------------
+-- Dec
+
+open import Relation.Nullary.Decidable
 
 -- A proof of `Dec P` is a proof of `Reflects P b` for some `b`.
 -- `Dec P` is declared as a record, with fields:

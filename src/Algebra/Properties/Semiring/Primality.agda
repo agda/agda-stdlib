@@ -4,7 +4,7 @@
 -- Some theory for CancellativeCommutativeSemiring.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Semiring)
 open import Data.Sum.Base using (reduce)

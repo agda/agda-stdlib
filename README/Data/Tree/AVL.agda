@@ -4,7 +4,7 @@
 -- Some examples showing how the AVL tree module can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Data.Tree.AVL where
 
@@ -77,10 +77,10 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Data.Bool.Base using (true; false)
 open import Data.Maybe.Base as Maybe using (just; nothing)
 
-q₀ : lookup 2 t₂ ≡ just v₂
+q₀ : lookup t₂ 2 ≡ just v₂
 q₀ = refl
 
-q₁ : lookup 2 t₃ ≡ nothing
+q₁ : lookup t₃ 2 ≡ nothing
 q₁ = refl
 
 q₂ : (3 ∈? t₂) ≡ false

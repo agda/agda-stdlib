@@ -4,7 +4,7 @@
 -- Properties satisfied by decidable total orders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
@@ -16,7 +16,7 @@ open DecTotalOrder DT hiding (trans)
 import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.TotalOrder totalOrder as TotalOrderProperties
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 ------------------------------------------------------------------------
 -- _≥_ - the flipped relation is also a total order

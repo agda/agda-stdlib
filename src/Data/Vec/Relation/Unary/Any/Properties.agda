@@ -4,7 +4,7 @@
 -- Properties of vector's Any
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Unary.Any.Properties where
 
@@ -26,7 +26,7 @@ open import Function.Base
 open import Function.Inverse using (_↔_; inverse)
   renaming (_∘_ to _∘↔_; id to id↔)
 open import Level using (Level)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
@@ -333,12 +333,12 @@ module _ {P : Pred A p} where
 
   concat⁺∘concat⁻ : ∀ {n m} (xss : Vec (Vec A n) m) (p : Any P (concat xss)) →
                    concat⁺ (concat⁻ xss p) ≡ p
-  concat⁺∘concat⁻ (xs ∷ xss) p  with ++⁻ xs p | P.inspect (++⁻ xs) p
-  ... | inj₁ pxs | P.[ p=inj₁ ]
-    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym p=inj₁))
+  concat⁺∘concat⁻ (xs ∷ xss) p  with ++⁻ xs p in eq
+  ... | inj₁ pxs
+    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym eq))
     $ ++⁺∘++⁻ xs p
-  ... | inj₂ pxss | P.[ p=inj₂ ] rewrite concat⁺∘concat⁻ xss pxss
-    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym p=inj₂))
+  ... | inj₂ pxss rewrite concat⁺∘concat⁻ xss pxss
+    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym eq))
     $ ++⁺∘++⁻ xs p
 
   concat⁻∘concat⁺ : ∀ {n m} {xss : Vec (Vec A n) m} (p : Any (Any P) xss) →
@@ -363,8 +363,8 @@ module _ {P : Pred A p} where
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               Any P (tabulate f) → ∃ λ i → P (f i)
-  tabulate⁻ {suc n} (here p)  = zero , p
-  tabulate⁻ {suc n} (there p) = Prod.map suc id (tabulate⁻ p)
+  tabulate⁻ (here p)  = zero , p
+  tabulate⁻ (there p) = Prod.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- mapWith∈

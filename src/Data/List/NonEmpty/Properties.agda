@@ -4,22 +4,21 @@
 -- Properties of non-empty lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.NonEmpty.Properties where
 
-open import Category.Monad
+open import Effect.Monad
 open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Maybe.Properties using (just-injective)
 open import Data.Bool using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
-open import Data.List.Categorical using () renaming (monad to listMonad)
-open import Data.List.NonEmpty.Categorical using () renaming (monad to list⁺Monad)
+open import Data.List.Effectful using () renaming (monad to listMonad)
+open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty
 open import Data.List.NonEmpty.Relation.Unary.All
 open import Data.List.Relation.Unary.All using ([]; _∷_) renaming (All to ListAll)
-import Data.List.Relation.Unary.All using (All; []; _∷_)
 import Data.List.Properties as List
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Unary.All using (inj₁; inj₂)
@@ -61,7 +60,7 @@ toList->>= : ∀ (f : A → List⁺ B) (xs : List⁺ A) →
              (toList xs ⋆>>= toList ∘ f) ≡ toList (xs >>= f)
 toList->>= f (x ∷ xs) = begin
   List.concat (List.map (toList ∘ f) (x ∷ xs))
-    ≡⟨ cong List.concat $ List.map-compose {g = toList} (x ∷ xs) ⟩
+    ≡⟨ cong List.concat $ List.map-∘ {g = toList} (x ∷ xs) ⟩
   List.concat (List.map toList (List.map f (x ∷ xs)))
     ∎
 
@@ -97,10 +96,10 @@ drop-+-++⁺ : ∀ (xs : List A) ys → drop+ (List.length xs) (xs ++⁺ ys) ≡
 drop-+-++⁺ []       ys = refl
 drop-+-++⁺ (x ∷ xs) ys = drop-+-++⁺ xs ys
 
-map-++⁺-commute : ∀ (f : A → B) xs ys →
+map-++⁺ : ∀ (f : A → B) xs ys →
                   map f (xs ++⁺ ys) ≡ List.map f xs ++⁺ map f ys
-map-++⁺-commute f [] ys       = refl
-map-++⁺-commute f (x ∷ xs) ys = cong (λ zs → f x ∷ toList zs) (map-++⁺-commute f xs ys)
+map-++⁺ f [] ys       = refl
+map-++⁺ f (x ∷ xs) ys = cong (λ zs → f x ∷ toList zs) (map-++⁺ f xs ys)
 
 ------------------------------------------------------------------------
 -- map
@@ -111,8 +110,8 @@ length-map f (_ ∷ xs) = cong suc (List.length-map f xs)
 map-cong : ∀ {f g : A → B} → f ≗ g → map f ≗ map g
 map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 
-map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
-map-compose (x ∷ xs) = cong (_ ∷_) (List.map-compose xs)
+map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
+map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
 
 ------------------------------------------------------------------------
 -- groupSeqs
@@ -143,3 +142,22 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | false | inj₁ _ ∷ _ | hyp = cong (x ∷_) hyp
   ... | false | inj₂ _ ∷ _ | hyp = cong (x ∷_) hyp
 
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-compose = map-∘
+{-# WARNING_ON_USAGE map-compose
+"Warning: map-compose was deprecated in v2.0.
+Please use map-∘ instead."
+#-}
+
+map-++⁺-commute = map-++⁺
+{-# WARNING_ON_USAGE map-++⁺-commute
+"Warning: map-++⁺-commute was deprecated in v2.0.
+Please use map-++⁺ instead."
+#-}

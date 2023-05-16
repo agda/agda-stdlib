@@ -4,11 +4,11 @@
 -- Some properties of reflexive closures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Data.Sum.Base as Sum
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Function.Base using (id)
@@ -18,8 +18,6 @@ open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary using (Pred)
 
 private

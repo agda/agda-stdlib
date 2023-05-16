@@ -4,7 +4,7 @@
 -- Strings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.String where
 
@@ -24,7 +24,7 @@ import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 open import Relation.Unary using (Pred; Decidable)
 
 open import Data.List.Membership.DecPropositional Char._≟_

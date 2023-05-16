@@ -4,11 +4,11 @@
 -- Typeclass instances for TC
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.TCM.Instances where
 
-open import Reflection.TCM.Categorical
+open import Reflection.TCM.Effectful
 
 instance
   tcFunctor = functor

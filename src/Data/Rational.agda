@@ -4,7 +4,7 @@
 -- Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Rational where
 
@@ -13,7 +13,7 @@ module Data.Rational where
 
 open import Data.Rational.Base public
 open import Data.Rational.Properties public
-  using (_≟_; _≤?_; _<?_)
+  using (_≟_; _≤?_; _<?_; _≥?_; _>?_)
 
 ------------------------------------------------------------------------
 -- Deprecated

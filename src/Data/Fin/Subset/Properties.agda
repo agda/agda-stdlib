@@ -4,7 +4,7 @@
 -- Some properties about subsets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Subset.Properties where
 
@@ -32,10 +32,8 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (Dec; yes; no)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary using (Pred; Decidable; Satisfiable)
 
 private
@@ -254,7 +252,7 @@ module _ (n : ℕ) where
 p⊆q⇒∣p∣≤∣q∣ : p ⊆ q → ∣ p ∣ ≤ ∣ q ∣
 p⊆q⇒∣p∣≤∣q∣ {p = []}          {[]}          p⊆q = z≤n
 p⊆q⇒∣p∣≤∣q∣ {p = outside ∷ p} {outside ∷ q} p⊆q = p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q)
-p⊆q⇒∣p∣≤∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ℕₚ.≤-step (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q))
+p⊆q⇒∣p∣≤∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ℕₚ.m≤n⇒m≤1+n (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q))
 p⊆q⇒∣p∣≤∣q∣ {p = inside  ∷ p} {outside ∷ q} p⊆q = contradiction (p⊆q here) λ()
 p⊆q⇒∣p∣≤∣q∣ {p = inside  ∷ p} {inside  ∷ q} p⊆q = s≤s (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q))
 

@@ -4,7 +4,7 @@
 -- Some properties about integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Properties where
 
@@ -571,8 +571,8 @@ abs-cong {s} {m} {t} {n} eq = begin
 
 neg◃-cancel-< : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
 neg◃-cancel-< {zero}  {zero}  (+<+ ())
-neg◃-cancel-< {suc m} {zero}  -<+       = s≤s z≤n
-neg◃-cancel-< {suc m} {suc n} (-<- n<m) = s≤s n<m
+neg◃-cancel-< {suc m} {zero}  -<+       = z<s
+neg◃-cancel-< {suc m} {suc n} (-<- n<m) = s<s n<m
 
 -◃<+◃ : ∀ m n .{{_ : ℕ.NonZero m}} → Sign.- ◃ m < Sign.+ ◃ n
 -◃<+◃ (suc _) zero    = -<+
@@ -725,8 +725,8 @@ m⊖1+n<m (suc m) (suc n) = begin-strict
 0⊖m≤+ (suc m) = -≤+
 
 sign-⊖-< : m ℕ.< n → sign (m ⊖ n) ≡ Sign.-
-sign-⊖-< {zero}          (ℕ.s≤s z≤n) = refl
-sign-⊖-< {suc m} {suc n} (ℕ.s≤s m<n) = begin
+sign-⊖-< {zero}          (ℕ.z<s) = refl
+sign-⊖-< {suc m} {suc n} (ℕ.s<s m<n) = begin
   sign (suc m ⊖ suc n) ≡⟨ cong sign ([1+m]⊖[1+n]≡m⊖n m n) ⟩
   sign (m ⊖ n)         ≡⟨ sign-⊖-< m<n ⟩
   Sign.-               ∎ where open ≡-Reasoning
@@ -944,8 +944,8 @@ distribʳ-⊖-+-neg m n o = begin
   ; ⁻¹-cong  = cong (-_)
   }
 
-+-isAbelianGroup : IsAbelianGroup _+_ +0 (-_)
-+-isAbelianGroup = record
++-0-isAbelianGroup : IsAbelianGroup _+_ +0 (-_)
++-0-isAbelianGroup = record
   { isGroup = +-0-isGroup
   ; comm    = +-comm
   }
@@ -980,15 +980,15 @@ distribʳ-⊖-+-neg m n o = begin
 
 +-0-abelianGroup : AbelianGroup 0ℓ 0ℓ
 +-0-abelianGroup = record
-  { isAbelianGroup = +-isAbelianGroup
+  { isAbelianGroup = +-0-isAbelianGroup
   }
 
 ------------------------------------------------------------------------
 -- Properties of _+_ and +_/-_.
 
-pos-+-commute : ℕtoℤ.Homomorphic₂ +_ ℕ._+_ _+_
-pos-+-commute zero    n = refl
-pos-+-commute (suc m) n = cong sucℤ (pos-+-commute m n)
+pos-+ : ℕtoℤ.Homomorphic₂ +_ ℕ._+_ _+_
+pos-+ zero    n = refl
+pos-+ (suc m) n = cong sucℤ (pos-+ m n)
 
 neg-distrib-+ : ∀ i j → - (i + j) ≡ (- i) + (- j)
 neg-distrib-+ +0        +0        = refl
@@ -1034,11 +1034,11 @@ neg-distrib-+ -[1+ m ]  (+   n)   =
   n + j ∎
   where open ≤-Reasoning
 
-≤-steps : ∀ k .{{_ : NonNegative k}} → i ≤ j → i ≤ k + j
-≤-steps (+ n) i≤j = subst (_≤ _) (+-identityˡ _) (+-mono-≤ (+≤+ z≤n) i≤j)
+i≤j⇒i≤k+j : ∀ k .{{_ : NonNegative k}} → i ≤ j → i ≤ k + j
+i≤j⇒i≤k+j (+ n) i≤j = subst (_≤ _) (+-identityˡ _) (+-mono-≤ (+≤+ z≤n) i≤j)
 
 i≤j+i : ∀ i j .{{_ : NonNegative j}} → i ≤ j + i
-i≤j+i i j = ≤-steps j ≤-refl
+i≤j+i i j = i≤j⇒i≤k+j j ≤-refl
 
 i≤i+j : ∀ i j .{{_ : NonNegative j}} → i ≤ i + j
 i≤i+j i j rewrite +-comm i j = i≤j+i i j
@@ -1142,16 +1142,16 @@ i-j≡0⇒i≡j i j i-j≡0 = begin
   0ℤ + j        ≡⟨  +-identityˡ j ⟩
   j             ∎ where open ≡-Reasoning
 
-≤-steps-neg : ∀ k .{{_ : NonNegative k}} → i ≤ j → i - k ≤ j
-≤-steps-neg {i}         +0       i≤j rewrite +-identityʳ i = i≤j
-≤-steps-neg {+ m}       +[1+ n ] i≤j = ≤-trans (m⊖n≤m m (suc n)) i≤j
-≤-steps-neg { -[1+ m ]} +[1+ n ] i≤j = ≤-trans (-≤- (ℕ.≤-trans (ℕ.m≤m+n m n) (ℕ.n≤1+n _))) i≤j
+i≤j⇒i-k≤j : ∀ k .{{_ : NonNegative k}} → i ≤ j → i - k ≤ j
+i≤j⇒i-k≤j {i}         +0       i≤j rewrite +-identityʳ i = i≤j
+i≤j⇒i-k≤j {+ m}       +[1+ n ] i≤j = ≤-trans (m⊖n≤m m (suc n)) i≤j
+i≤j⇒i-k≤j { -[1+ m ]} +[1+ n ] i≤j = ≤-trans (-≤- (ℕ.≤-trans (ℕ.m≤m+n m n) (ℕ.n≤1+n _))) i≤j
 
 i-j≤i : ∀ i j .{{_ : NonNegative j}} → i - j ≤ i
-i-j≤i i j = ≤-steps-neg j ≤-refl
+i-j≤i i j = i≤j⇒i-k≤j j ≤-refl
 
 i≤j⇒i-j≤0 : i ≤ j → i - j ≤ 0ℤ
-i≤j⇒i-j≤0 {_}         {j}         -≤+       = ≤-steps-neg j -≤+
+i≤j⇒i-j≤0 {_}         {j}         -≤+       = i≤j⇒i-k≤j j -≤+
 i≤j⇒i-j≤0 { -[1+ m ]} { -[1+ n ]} (-≤- n≤m) = begin
   suc n ⊖ suc m ≡⟨ [1+m]⊖[1+n]≡m⊖n n m ⟩
   n ⊖ m         ≤⟨ ⊖-monoʳ-≥-≤ n n≤m ⟩
@@ -1196,11 +1196,11 @@ i≤j⇒0≤j-i {i} {j} i≤j = begin
 -- Properties of suc
 ------------------------------------------------------------------------
 
-≤-step : i ≤ j → i ≤ sucℤ j
-≤-step = ≤-steps (+ 1)
+i≤j⇒i≤1+j : i ≤ j → i ≤ sucℤ j
+i≤j⇒i≤1+j = i≤j⇒i≤k+j (+ 1)
 
 i≤suc[i] : ∀ i → i ≤ sucℤ i
-i≤suc[i] i = ≤-steps (+ 1) ≤-refl
+i≤suc[i] i = i≤j+i i (+ 1)
 
 suc-+ : ∀ m n → +[1+ m ] + n ≡ sucℤ (+ m + n)
 suc-+ m (+ n)      = refl
@@ -1285,11 +1285,11 @@ i<j⇒i≤pred[j] {_} { +[1+ n ]} -<+       = -≤+
 i<j⇒i≤pred[j] {_} { +[1+ n ]} (+<+ m<n) = +≤+ (ℕ.≤-pred m<n)
 i<j⇒i≤pred[j] {_} { -[1+ n ]} (-<- n<m) = -≤- n<m
 
-≤-step-neg : i ≤ j → pred i ≤ j
-≤-step-neg -≤+               = -≤+
-≤-step-neg (-≤- n≤m)         = -≤- (ℕ.≤-step n≤m)
-≤-step-neg (+≤+ z≤n)         = -≤+
-≤-step-neg (+≤+ (s≤s m≤n)) = +≤+ (ℕ.≤-step m≤n)
+i≤j⇒pred[i]≤j : i ≤ j → pred i ≤ j
+i≤j⇒pred[i]≤j -≤+               = -≤+
+i≤j⇒pred[i]≤j (-≤- n≤m)         = -≤- (ℕ.m≤n⇒m≤1+n n≤m)
+i≤j⇒pred[i]≤j (+≤+ z≤n)         = -≤+
+i≤j⇒pred[i]≤j (+≤+ (s≤s m≤n)) = +≤+ (ℕ.m≤n⇒m≤1+n m≤n)
 
 pred-mono : pred Preserves _≤_ ⟶ _≤_
 pred-mono (-≤+ {n = 0})     = -≤- z≤n
@@ -1522,7 +1522,7 @@ private
 
 +-*-isRing : IsRing _+_ _*_ -_ 0ℤ 1ℤ
 +-*-isRing = record
-  { +-isAbelianGroup = +-isAbelianGroup
+  { +-isAbelianGroup = +-0-isAbelianGroup
   ; *-cong           = cong₂ _*_
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
@@ -1538,12 +1538,6 @@ private
 
 ------------------------------------------------------------------------
 -- Bundles
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record { _≈_ = _≡_ ; _∙_ = _*_ }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record { _≈_ = _≡_ ; _∙_ = _*_ ; ε = 1ℤ }
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record
@@ -1593,14 +1587,14 @@ private
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≡_
 
-abs-*-commute : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
-abs-*-commute i j = abs-◃ _ _
+abs-* : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
+abs-* i j = abs-◃ _ _
 
 *-cancelʳ-≡ : ∀ i j k .{{_ : NonZero k}} → i * k ≡ j * k → i ≡ j
 *-cancelʳ-≡ i j k eq with sign-cong′ eq
 ... | inj₁ s[ik]≡s[jk] = ◃-cong
-  (𝕊ₚ.*-cancelʳ-≡ {sign k} (sign i) (sign j) s[ik]≡s[jk])
-  (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ (abs-cong eq))
+  (𝕊ₚ.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
+  (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ _ (abs-cong eq))
 ... | inj₂ (∣ik∣≡0 , ∣jk∣≡0) = trans
   (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣ik∣≡0))
   (sym (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣jk∣≡0)))
@@ -1684,10 +1678,10 @@ i^n≡0⇒i≡0 i (suc n) eq = [ id , i^n≡0⇒i≡0 i n ]′ (i*j≡0⇒i≡0�
 ------------------------------------------------------------------------
 -- Properties of _*_ and +_/-_
 
-pos-distrib-* : ∀ m n → (+ m) * (+ n) ≡ + (m ℕ.* n)
-pos-distrib-* zero    n       = refl
-pos-distrib-* (suc m) zero    = pos-distrib-* m zero
-pos-distrib-* (suc m) (suc n) = refl
+pos-* : ℕtoℤ.Homomorphic₂ +_ ℕ._*_ _*_
+pos-* zero    n       = refl
+pos-* (suc m) zero    = pos-* m zero
+pos-* (suc m) (suc n) = refl
 
 neg-distribˡ-* : ∀ i j → - (i * j) ≡ (- i) * j
 neg-distribˡ-* i j = begin
@@ -1785,10 +1779,10 @@ neg-distribʳ-* i j = begin
 *-monoʳ-<-pos i {j} {k} rewrite *-comm j i | *-comm k i = *-monoˡ-<-pos i
 
 *-cancelˡ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → k * i < k * j → i < j
-*-cancelˡ-<-nonNeg {+ i}       {+ j}       (+ n) leq = +<+ (ℕ.*-cancelˡ-< n (+◃-cancel-< leq))
+*-cancelˡ-<-nonNeg {+ i}       {+ j}       (+ n) leq = +<+ (ℕ.*-cancelˡ-< n _ _ (+◃-cancel-< leq))
 *-cancelˡ-<-nonNeg {+ i}       { -[1+ j ]} (+ n) leq = contradiction leq +◃≮-◃
 *-cancelˡ-<-nonNeg { -[1+ i ]} {+ j}       (+ n)leq = -<+
-*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (ℕ.≤-pred (ℕ.*-cancelˡ-< n (neg◃-cancel-< leq)))
+*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (ℕ.≤-pred (ℕ.*-cancelˡ-< n _ _ (neg◃-cancel-< leq)))
 
 *-cancelʳ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → i * k < j * k → i < j
 *-cancelʳ-<-nonNeg {i} {j} k rewrite *-comm i k | *-comm j k = *-cancelˡ-<-nonNeg k
@@ -2252,6 +2246,26 @@ m-n≡0⇒m≡n = i-j≡0⇒i≡j
 "Warning: m-n≡0⇒m≡n was deprecated in v2.0
 Please use i-j≡0⇒i≡j instead."
 #-}
+≤-steps = i≤j⇒i≤k+j
+{-# WARNING_ON_USAGE ≤-steps
+"Warning: ≤-steps was deprecated in v2.0
+Please use i≤j⇒i≤k+j instead."
+#-}
+≤-steps-neg = i≤j⇒i-k≤j
+{-# WARNING_ON_USAGE ≤-steps-neg
+"Warning: ≤-steps-neg was deprecated in v2.0
+Please use i≤j⇒i-k≤j instead."
+#-}
+≤-step = i≤j⇒i≤1+j
+{-# WARNING_ON_USAGE ≤-step
+"Warning: ≤-step was deprecated in v2.0
+Please use i≤j⇒i≤1+j instead."
+#-}
+≤-step-neg = i≤j⇒pred[i]≤j
+{-# WARNING_ON_USAGE ≤-step-neg
+"Warning: ≤-step-neg was deprecated in v2.0
+Please use i≤j⇒pred[i]≤j instead."
+#-}
 m≤n⇒m-n≤0 = i≤j⇒i-j≤0
 {-# WARNING_ON_USAGE m≤n⇒m-n≤0
 "Warning: m≤n⇒m-n≤0 was deprecated in v2.0
@@ -2308,19 +2322,19 @@ Please use i*j≡0⇒i≡0∨j≡0 instead."
 Please use ∣i*j∣≡∣i∣*∣j∣ instead."
 #-}
 n≤m+n : ∀ n → i ≤ + n + i
-n≤m+n {i} n = ≤-steps (+ n) ≤-refl
+n≤m+n {i} n = i≤j+i i (+ n)
 {-# WARNING_ON_USAGE n≤m+n
 "Warning: n≤m+n was deprecated in v2.0
 Please use i≤j+i instead. Note the change of form of the explicit arguments."
 #-}
 m≤m+n : ∀ n → i ≤ i + + n
-m≤m+n {i} n rewrite +-comm i (+ n) = i≤j+i i (+ n)
+m≤m+n {i} n = i≤i+j i (+ n)
 {-# WARNING_ON_USAGE m≤m+n
 "Warning: m≤m+n was deprecated in v2.0
 Please use i≤i+j instead. Note the change of form of the explicit arguments."
 #-}
 m-n≤m : ∀ i n → i - + n ≤ i
-m-n≤m i n = ≤-steps-neg (+ n) ≤-refl
+m-n≤m i n = i-j≤i i (+ n)
 {-# WARNING_ON_USAGE m-n≤m
 "Warning: m-n≤m was deprecated in v2.0
 Please use i-j≤i instead. Note the change of form of the explicit arguments."
@@ -2349,3 +2363,29 @@ Please use *-monoˡ-≤-nonPos instead."
 "Warning: *-monoʳ-≤-neg was deprecated in v2.0
 Please use *-monoʳ-≤-nonPos instead."
 #-}
+pos-+-commute : ℕtoℤ.Homomorphic₂ +_ ℕ._+_ _+_
+pos-+-commute = pos-+
+{-# WARNING_ON_USAGE pos-+-commute
+"Warning: pos-+-commute was deprecated in v2.0
+Please use pos-+ instead."
+#-}
+abs-*-commute : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
+abs-*-commute = abs-*
+{-# WARNING_ON_USAGE abs-*-commute
+"Warning: abs-*-commute was deprecated in v2.0
+Please use abs-* instead."
+#-}
+pos-distrib-* : ∀ m n → (+ m) * (+ n) ≡ + (m ℕ.* n)
+pos-distrib-* m n = sym (pos-* m n)
+{-# WARNING_ON_USAGE pos-distrib-*
+"Warning: pos-distrib-* was deprecated in v2.0
+Please use pos-* instead."
+#-}
++-isAbelianGroup = +-0-isAbelianGroup
+{-# WARNING_ON_USAGE +-isAbelianGroup
+"Warning: +-isAbelianGroup was deprecated in v2.0
+Please use +-0-isAbelianGroup instead."
+#-}
+{- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Integer.Base public
+  using (*-rawMagma; *-1-rawMonoid)

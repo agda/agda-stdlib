@@ -4,7 +4,7 @@
 -- Properties of min and max operators specified over a total preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice.Bundles
 open import Algebra.Construct.NaturalChoice.Base

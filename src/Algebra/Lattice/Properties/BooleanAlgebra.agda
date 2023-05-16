@@ -4,7 +4,7 @@
 -- Some derivable properties of Boolean algebras
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice.Bundles
 
@@ -24,8 +24,7 @@ open import Algebra.Lattice.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (_⇔_; module Equivalence)
+open import Function.Bundles using (_⇔_; module Equivalence)
 open import Data.Product using (_,_)
 
 ------------------------------------------------------------------------

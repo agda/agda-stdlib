@@ -4,14 +4,13 @@
 -- Argument visibility used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.Argument.Visibility where
 
-open import Data.String as String using (String)
-open import Relation.Nullary
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary                      using (yes; no)
+open import Relation.Binary                       using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality using (refl)
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtins publicly

@@ -7,7 +7,7 @@
 -- This module illustrates how Data.Fin.Substitution.Lemmas.AppLemmas
 -- can be used.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin.Substitution.Lemmas
 open import Data.Nat.Base using (ℕ)
@@ -39,7 +39,7 @@ appLemmas = record
       ts             ∎
   ; /-⊙ = λ {_ _ _ ρ₁ ρ₂} ts → begin
       ts // ρ₁ ⊙ ρ₂               ≡⟨ map-cong L./-⊙ ts ⟩
-      map (λ σ → σ / ρ₁ / ρ₂) ts  ≡⟨ map-compose ts ⟩
+      map (λ σ → σ / ρ₁ / ρ₂) ts  ≡⟨ map-∘ ts ⟩
       ts // ρ₁ // ρ₂              ∎
   }
 

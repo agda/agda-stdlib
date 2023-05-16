@@ -4,7 +4,7 @@
 -- Properties related to AllPairs
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.AllPairs.Properties where
 
@@ -16,13 +16,13 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
-open import Data.Nat.Properties using (≤-refl; ≤-step)
+open import Data.Nat.Properties using (≤-refl; m<n⇒m<1+n)
 open import Function.Base using (_∘_; flip)
 open import Level using (Level)
 open import Relation.Binary using (Rel; DecSetoid)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (does)
 
 private
   variable
@@ -104,7 +104,7 @@ module _ {R : Rel A ℓ} where
   applyDownFrom⁺₁ f zero    Rf = []
   applyDownFrom⁺₁ f (suc n) Rf =
     All.applyDownFrom⁺₁ _ n (flip Rf ≤-refl)  ∷
-    applyDownFrom⁺₁ f n (λ j<i i<n → Rf j<i (≤-step i<n))
+    applyDownFrom⁺₁ f n (λ j<i i<n → Rf j<i (m<n⇒m<1+n i<n))
 
   applyDownFrom⁺₂ : ∀ f n → (∀ i j → R (f i) (f j)) → AllPairs R (applyDownFrom f n)
   applyDownFrom⁺₂ f n Rf = applyDownFrom⁺₁ f n (λ _ _ → Rf _ _)

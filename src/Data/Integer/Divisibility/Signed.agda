@@ -4,7 +4,7 @@
 -- Alternative definition of divisibility without using modulus.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Divisibility.Signed where
 
@@ -24,7 +24,7 @@ open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 import Relation.Nullary.Decidable as DEC
 
 ------------------------------------------------------------------------
@@ -84,7 +84,7 @@ open _∣_ using (quotient) public
 ∣⇒∣ᵤ : ∀ {k i} → k ∣ i → k ∣ᵤ i
 ∣⇒∣ᵤ {k} {i} (divides q eq) = divides ∣ q ∣ $′ begin
   ∣ i ∣           ≡⟨ cong ∣_∣ eq ⟩
-  ∣ q * k ∣       ≡⟨ abs-*-commute q k ⟩
+  ∣ q * k ∣       ≡⟨ abs-* q k ⟩
   ∣ q ∣ ℕ.* ∣ k ∣ ∎
   where open ≡-Reasoning
 
@@ -189,4 +189,3 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
 
 *-cancelʳ-∣ : ∀ k {i j} .{{_ : NonZero k}} → i * k ∣ j * k → i ∣ j
 *-cancelʳ-∣ k {i} {j} = ∣ᵤ⇒∣ ∘′ Unsigned.*-cancelʳ-∣ k {i} {j} ∘′ ∣⇒∣ᵤ
-

@@ -4,10 +4,9 @@
 -- Pointwise lifting of relations over Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Fin.Base
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
   using (Pointwise)

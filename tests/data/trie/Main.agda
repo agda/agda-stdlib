@@ -19,7 +19,7 @@ open import Data.These       as These
 open import Function.Base using (case_of_; _$_; _∘′_; id; _on_)
 open import Relation.Nary
 open import Relation.Binary using (Rel)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Decidable using (¬?)
 
 open import Data.Trie Char.<-strictTotalOrder
 open import Data.Tree.AVL.Value
@@ -67,9 +67,9 @@ module _ {t} (L : Lexer t) where
     loop acc toks []         = push acc []
     loop acc toks (c ∷ cs)   = case breaking c of λ where
       (true , m)  → push acc $ maybe′ _∷_ id m $ start cs
-      (false , _) → case lookupValue (c ∷ []) toks of λ where
+      (false , _) → case lookupValue toks (c ∷ []) of λ where
         (just tok) → tok ∷ start cs
-        nothing    → loop (c ∷ acc) (lookupTrie c toks) cs
+        nothing    → loop (c ∷ acc) (lookupTrie toks c) cs
 
     push : List Char → List Tok → List Tok
     push [] ts = ts

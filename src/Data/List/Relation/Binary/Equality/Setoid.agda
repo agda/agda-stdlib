@@ -4,14 +4,14 @@
 -- Pointwise equality over lists parameterised by a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core using (Op₂)
 open import Relation.Binary using (Setoid)
 
 module Data.List.Relation.Binary.Equality.Setoid {a ℓ} (S : Setoid a ℓ) where
 
-open import Data.Fin.Base
+open import Data.Fin.Base using (Fin)
 open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as PW using (Pointwise)
 open import Data.List.Relation.Unary.Unique.Setoid S using (Unique)
@@ -129,13 +129,14 @@ concat⁺ = PW.concat⁺
 ------------------------------------------------------------------------
 -- tabulate
 
-tabulate⁺ : ∀ {n} {f : Fin n → A} {g : Fin n → A} →
-            (∀ i → f i ≈ g i) → tabulate f ≋ tabulate g
-tabulate⁺ = PW.tabulate⁺
+module _ {n} {f g : Fin n → A}
+  where
 
-tabulate⁻ : ∀ {n} {f : Fin n → A} {g : Fin n → A} →
-            tabulate f ≋ tabulate g → (∀ i → f i ≈ g i)
-tabulate⁻ = PW.tabulate⁻
+  tabulate⁺ : (∀ i → f i ≈ g i) → tabulate f ≋ tabulate g
+  tabulate⁺ = PW.tabulate⁺
+
+  tabulate⁻ : tabulate f ≋ tabulate g → (∀ i → f i ≈ g i)
+  tabulate⁻ = PW.tabulate⁻
 
 ------------------------------------------------------------------------
 -- filter

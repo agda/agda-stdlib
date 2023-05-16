@@ -6,7 +6,7 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core
 
@@ -17,7 +17,7 @@ module Relation.Binary.Structures
 
 open import Data.Product using (proj₁; proj₂; _,_)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Definitions

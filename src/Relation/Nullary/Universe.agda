@@ -4,7 +4,7 @@
 -- A universe of proposition functors, along with some properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Universe where
 
@@ -23,8 +23,8 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function
 import Function.Equality as FunS
 open import Data.Empty
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Applicative
+open import Effect.Monad
 open import Level
 
 infix  5 ¬¬_
@@ -119,7 +119,7 @@ private
 
 ¬¬-pull : ∀ {p} (F : PropF p) {P} →
           ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P
-¬¬-pull = sequence rawIApplicative
+¬¬-pull = sequence rawApplicative
                    (λ f → f lower)
                    (λ f g → g (λ x → ⊥-elim (f x (λ y → g (λ _ → y)))))
 

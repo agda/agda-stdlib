@@ -4,7 +4,7 @@
 -- Properties of regular expressions and their semantics
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (DecPoset)
 
@@ -13,15 +13,14 @@ module Text.Regex.Properties {a e r} (P? : DecPoset a e r) where
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Unary.All using (all?)
 open import Data.List.Relation.Unary.Any using (any?)
-open import Data.Product using (_×_; _,_; uncurry)
+open import Data.Product.Base using (_×_; _,_; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_$_)
 
-open import Relation.Nullary using (¬_; Dec; yes; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Negation using (contradiction; ¬?)
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Nullary.Decidable
+  using (Dec; yes; no; map′; ¬?; _×-dec_; _⊎-dec_)
+open import Relation.Nullary.Negation
+  using (¬_; contradiction)
 
 import Relation.Unary  as U
 open import Relation.Binary using (Decidable)

@@ -4,7 +4,7 @@
 -- Properties of the generalised view of appending two lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Ternary.Appending.Properties where
 
@@ -25,7 +25,7 @@ private
     C : Set c
     C′ : Set c′
     L : REL A C l
-    R : REL A B r
+    R : REL B C r
     as : List A
     bs : List B
     cs : List C

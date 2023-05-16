@@ -4,7 +4,7 @@
 -- Properties of infinite streams defined as coinductive records
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Guarded.Stream.Properties where
 
@@ -13,7 +13,7 @@ open import Codata.Guarded.Stream.Relation.Binary.Pointwise
   as B using (_≈_; head; tail; module ≈-Reasoning)
 
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.List.NonEmpty as List⁺ using (_∷_)
+open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
 import Data.Nat.GeneralisedArithmetic as ℕ
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
@@ -33,8 +33,8 @@ private
 ------------------------------------------------------------------------
 -- Congruence
 
-cong-lookup : ∀ n {as bs : Stream A} → as ≈ bs → lookup n as ≡ lookup n bs
-cong-lookup = B.lookup
+cong-lookup : ∀ {as bs : Stream A} → as ≈ bs → ∀ n → lookup as n ≡ lookup bs n
+cong-lookup = B.lookup⁺
 
 cong-take : ∀ n {as bs : Stream A} → as ≈ bs → take n as ≡ take n bs
 cong-take zero    as≈bs = P.refl
@@ -54,6 +54,16 @@ cong-zipWith : ∀ (f : A → B → C) {as bs cs ds} → as ≈ bs → cs ≈ ds
 cong-zipWith f as≈bs cs≈ds .head = cong₂ f (as≈bs .head) (cs≈ds .head)
 cong-zipWith f as≈bs cs≈ds .tail = cong-zipWith f (as≈bs .tail) (cs≈ds .tail)
 
+cong-concat : {ass bss : Stream (List⁺ A)} → ass ≈ bss → concat ass ≈ concat bss
+cong-concat ass≈bss = cong-++-concat [] ass≈bss
+  where
+    open Concat
+    cong-++-concat : ∀ (as : List A) {ass bss} → ass ≈ bss → ++-concat as ass ≈ ++-concat as bss
+    cong-++-concat [] ass≈bss .head = cong List⁺.head (ass≈bss .head)
+    cong-++-concat [] ass≈bss .tail rewrite ass≈bss .head = cong-++-concat _ (ass≈bss .tail)
+    cong-++-concat (a ∷ as) ass≈bss .head = P.refl
+    cong-++-concat (a ∷ as) ass≈bss .tail = cong-++-concat as ass≈bss
+
 cong-interleave : {as bs cs ds : Stream A} → as ≈ bs → cs ≈ ds →
                   interleave as cs ≈ interleave bs ds
 cong-interleave as≈bs cs≈ds .head = as≈bs .head
@@ -66,7 +76,7 @@ cong-chunksOf n as≈bs .tail = cong-chunksOf n (cong-drop n as≈bs)
 ------------------------------------------------------------------------
 -- Properties of repeat
 
-lookup-repeat : ∀ n (a : A) → lookup n (repeat a) ≡ a
+lookup-repeat : ∀ n (a : A) → lookup (repeat a) n ≡ a
 lookup-repeat zero    a = P.refl
 lookup-repeat (suc n) a = lookup-repeat n a
 
@@ -124,13 +134,13 @@ map-const : (a : A) (bs : Stream B) → map (const a) bs ≈ repeat a
 map-const a bs .head = P.refl
 map-const a bs .tail = map-const a (bs .tail)
 
-map-identity : (as : Stream A) → map id as ≈ as
-map-identity as .head = P.refl
-map-identity as .tail = map-identity (as .tail)
+map-id : (as : Stream A) → map id as ≈ as
+map-id as .head = P.refl
+map-id as .tail = map-id (as .tail)
 
-map-fusion : ∀ (g : B → C) (f : A → B) as → map g (map f as) ≈ map (g ∘′ f) as
-map-fusion g f as .head = P.refl
-map-fusion g f as .tail = map-fusion g f (as .tail)
+map-∘ : ∀ (g : B → C) (f : A → B) as → map g (map f as) ≈ map (g ∘′ f) as
+map-∘ g f as .head = P.refl
+map-∘ g f as .tail = map-∘ g f (as .tail)
 
 map-unfold : ∀ (g : B → C) (f : A → A × B) a →
              map g (unfold f a) ≈ unfold (Prod.map₂ g ∘′ f) a
@@ -151,64 +161,94 @@ map-interleave : ∀ (f : A → B) as bs →
 map-interleave f as bs .head = P.refl
 map-interleave f as bs .tail = map-interleave f bs (as .tail)
 
-map-cycle : ∀ (f : A → B) as → map f (cycle as) ≈ cycle (List⁺.map f as)
-map-cycle f (a ∷ as) = go [] where
+map-concat : ∀ (f : A → B) ass → map f (concat ass) ≈ concat (map (List⁺.map f) ass)
+map-concat f ass = map-++-concat [] ass
+  where
+    open Concat
+    map-++-concat : ∀ acc ass → map f (++-concat acc ass) ≈ ++-concat (List.map f acc) (map (List⁺.map f) ass)
+    map-++-concat [] ass .head = P.refl
+    map-++-concat [] ass .tail = map-++-concat (ass .head .List⁺.tail) (ass .tail)
+    map-++-concat (a ∷ as) ass .head = P.refl
+    map-++-concat (a ∷ as) ass .tail = map-++-concat as ass
 
-  open Cycle
-  go : ∀ acc → map f (cycleAux a as acc) ≈ cycleAux (f a) (List.map f as) (List.map f acc)
-  go []       .head = P.refl
-  go []       .tail = go as
-  go (x ∷ xs) .head = P.refl
-  go (x ∷ xs) .tail = go xs
+map-cycle : ∀ (f : A → B) as → map f (cycle as) ≈ cycle (List⁺.map f as)
+map-cycle f as = run
+  (map f (cycle as)                      ≡⟨⟩
+  map f (concat (repeat as))             ≈⟨ map-concat f (repeat as) ⟩
+  concat (map (List⁺.map f) (repeat as)) ≈⟨ cong-concat (map-repeat (List⁺.map f) as) ⟩
+  concat (repeat (List⁺.map f as))       ≡⟨⟩
+  cycle (List⁺.map f as)                 ∎)
+  where open ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of lookup
 
-lookup-drop : ∀ m n (as : Stream A) → lookup n (drop m as) ≡ lookup (m + n) as
-lookup-drop zero    n as = P.refl
-lookup-drop (suc m) n as = lookup-drop m n (as .tail)
+lookup-drop : ∀ m (as : Stream A) n → lookup (drop m as) n ≡ lookup as (m + n)
+lookup-drop zero    as n = P.refl
+lookup-drop (suc m) as n = lookup-drop m (as .tail) n
 
-lookup-map : ∀ n (f : A → B) as → lookup n (map f as) ≡ f (lookup n as)
+lookup-map : ∀ n (f : A → B) as → lookup (map f as) n ≡ f (lookup as n)
 lookup-map zero    f as = P.refl
 lookup-map (suc n) f as = lookup-map n f (as . tail)
 
-lookup-iterate : ∀ n f (x : A) → lookup n (iterate f x) ≡ ℕ.iterate f x n
+lookup-iterate : ∀ n f (x : A) → lookup (iterate f x) n ≡ ℕ.iterate f x n
 lookup-iterate zero    f x = P.refl
 lookup-iterate (suc n) f x = lookup-iterate n f (f x)
 
 lookup-zipWith : ∀ n (f : A → B → C) as bs →
-                 lookup n (zipWith f as bs) ≡ f (lookup n as) (lookup n bs)
+                 lookup (zipWith f as bs) n ≡ f (lookup as n) (lookup bs n)
 lookup-zipWith zero f as bs = P.refl
 lookup-zipWith (suc n) f as bs = lookup-zipWith n f (as .tail) (bs .tail)
 
 lookup-unfold : ∀ n (f : A → A × B) a →
-                lookup n (unfold f a) ≡ proj₂ (f (ℕ.iterate (proj₁ ∘′ f) a n))
+                lookup (unfold f a) n ≡ proj₂ (f (ℕ.iterate (proj₁ ∘′ f) a n))
 lookup-unfold zero    f a = P.refl
 lookup-unfold (suc n) f a = lookup-unfold n f (proj₁ (f a))
 
-lookup-tabulate : ∀ n (f : ℕ → A) → lookup n (tabulate f) ≡ f n
+lookup-tabulate : ∀ n (f : ℕ → A) → lookup (tabulate f) n ≡ f n
 lookup-tabulate zero f = P.refl
 lookup-tabulate (suc n) f = lookup-tabulate n (f ∘′ suc)
 
-lookup-tails : ∀ n (as : Stream A) → lookup n (tails as) ≈ ℕ.iterate tail as n
+lookup-transpose : ∀ n (ass : List (Stream A)) →
+                   lookup (transpose ass) n ≡ List.map (flip lookup n) ass
+lookup-transpose n [] = lookup-repeat n []
+lookup-transpose n (as ∷ ass) = begin
+  lookup (transpose (as ∷ ass)) n            ≡⟨⟩
+  lookup (zipWith _∷_ as (transpose ass)) n  ≡⟨ lookup-zipWith n _∷_ as (transpose ass) ⟩
+  lookup as n ∷ lookup (transpose ass) n     ≡⟨ cong (lookup as n ∷_) (lookup-transpose n ass) ⟩
+  lookup as n ∷ List.map (flip lookup n) ass ≡⟨⟩
+  List.map (flip lookup n) (as ∷ ass)        ∎
+  where open P.≡-Reasoning
+
+lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) →
+                    lookup (transpose⁺ ass) n ≡ List⁺.map (flip lookup n) ass
+lookup-transpose⁺ n (as ∷ ass) = begin
+  lookup (transpose⁺ (as ∷ ass))          n  ≡⟨⟩
+  lookup (zipWith _∷_ as (transpose ass)) n  ≡⟨ lookup-zipWith n _∷_ as (transpose ass) ⟩
+  lookup as n ∷ lookup (transpose ass) n     ≡⟨ cong (lookup as n ∷_) (lookup-transpose n ass) ⟩
+  lookup as n ∷ List.map (flip lookup n) ass ≡⟨⟩
+  List⁺.map (flip lookup n) (as ∷ ass)       ∎
+  where open P.≡-Reasoning
+
+lookup-tails : ∀ n (as : Stream A) → lookup (tails as) n ≈ ℕ.iterate tail as n
 lookup-tails zero    as = B.refl
 lookup-tails (suc n) as = lookup-tails n (as .tail)
 
-lookup-evens : ∀ n (as : Stream A) → lookup n (evens as) ≡ lookup (n * 2) as
+lookup-evens : ∀ n (as : Stream A) → lookup (evens as) n ≡ lookup as (n * 2)
 lookup-evens zero    as = P.refl
 lookup-evens (suc n) as = lookup-evens n (as .tail .tail)
 
-lookup-odds : ∀ n (as : Stream A) → lookup n (odds as) ≡ lookup (suc (n * 2)) as
+lookup-odds : ∀ n (as : Stream A) → lookup (odds as) n ≡ lookup as (suc (n * 2))
 lookup-odds zero    as = P.refl
 lookup-odds (suc n) as = lookup-odds n (as .tail .tail)
 
 lookup-interleave-even : ∀ n (as bs : Stream A) →
-                         lookup (n * 2) (interleave as bs) ≡ lookup n as
+                         lookup (interleave as bs) (n * 2) ≡ lookup as n
 lookup-interleave-even zero    as bs = P.refl
 lookup-interleave-even (suc n) as bs = lookup-interleave-even n (as .tail) (bs .tail)
 
 lookup-interleave-odd : ∀ n (as bs : Stream A) →
-                        lookup (suc (n * 2)) (interleave as bs) ≡ lookup n bs
+                        lookup (interleave as bs) (suc (n * 2)) ≡ lookup bs n
 lookup-interleave-odd zero    as bs = P.refl
 lookup-interleave-odd (suc n) as bs = lookup-interleave-odd n (as .tail) (bs .tail)
 
@@ -271,3 +311,23 @@ interleave-evens-odds : (as : Stream A) → interleave (evens as) (odds as) ≈ 
 interleave-evens-odds as .head       = P.refl
 interleave-evens-odds as .tail .head = P.refl
 interleave-evens-odds as .tail .tail = interleave-evens-odds (as .tail .tail)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-identity = map-id
+{-# WARNING_ON_USAGE map-identity
+"Warning: map-identity was deprecated in v2.0.
+Please use map-id instead."
+#-}
+
+map-fusion = map-∘
+{-# WARNING_ON_USAGE map-fusion
+"Warning: map-fusion was deprecated in v2.0.
+Please use map-∘ instead."
+#-}

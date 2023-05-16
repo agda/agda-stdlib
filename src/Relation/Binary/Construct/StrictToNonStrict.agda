@@ -8,7 +8,7 @@
 -- relation equivalent to the original one (and similarly for
 -- < → ≤ → <).
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
@@ -17,13 +17,12 @@ module Relation.Binary.Construct.StrictToNonStrict
   (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂)
   where
 
-open import Data.Product
+open import Data.Product.Base
 open import Data.Sum.Base
 open import Data.Empty
 open import Function.Base
 open import Relation.Binary.Consequences
-open import Relation.Nullary
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Nullary.Decidable using (_⊎-dec_; yes; no)
 
 ------------------------------------------------------------------------
 -- Conversion

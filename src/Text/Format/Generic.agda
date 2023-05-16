@@ -4,24 +4,22 @@
 -- Format strings for Printf and Scanf
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
-open import Data.Char.Base using (Char)
-open import Data.Maybe.Base using (Maybe)
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Text.Format.Generic where
 
 open import Level using (0ℓ)
-open import Category.Applicative
+open import Effect.Applicative
+open import Data.Char.Base using (Char)
 open import Data.List.Base as List
-open import Data.Maybe as Maybe
+open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base
 open import Data.Product
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base
 open import Data.String.Base
-import Data.Sum.Categorical.Left as Sumₗ
-open import Function
+import Data.Sum.Effectful.Left as Sumₗ
+open import Function.Base
 open import Function.Nary.NonDependent using (0ℓs; Sets)
 open import Function.Strict
 

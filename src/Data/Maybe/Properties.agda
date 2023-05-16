@@ -4,7 +4,7 @@
 -- Maybe-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Properties where
 
@@ -18,7 +18,7 @@ open import Function
 open import Level using (Level)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′)
 
 private
@@ -47,31 +47,31 @@ map-id : map id ≗ id {A = Maybe A}
 map-id (just x) = refl
 map-id nothing  = refl
 
-map-id₂ : ∀ {f : A → A} {mx} → All (λ x → f x ≡ x) mx → map f mx ≡ mx
-map-id₂ (just eq) = cong just eq
-map-id₂ nothing   = refl
+map-id-local : ∀ {f : A → A} {mx} → All (λ x → f x ≡ x) mx → map f mx ≡ mx
+map-id-local (just eq) = cong just eq
+map-id-local nothing   = refl
 
-map-<∣>-commute : ∀ (f : A → B) mx my →
+map-<∣> : ∀ (f : A → B) mx my →
   map f (mx <∣> my) ≡ map f mx <∣> map f my
-map-<∣>-commute f (just x) my = refl
-map-<∣>-commute f nothing  my = refl
+map-<∣> f (just x) my = refl
+map-<∣> f nothing  my = refl
 
 map-cong : {f g : A → B} → f ≗ g → map f ≗ map g
 map-cong f≗g (just x) = cong just (f≗g x)
 map-cong f≗g nothing  = refl
 
-map-cong₂ : ∀ {f g : A → B} {mx} →
+map-cong-local : ∀ {f g : A → B} {mx} →
   All (λ x → f x ≡ g x) mx → map f mx ≡ map g mx
-map-cong₂ (just eq) = cong just eq
-map-cong₂ nothing   = refl
+map-cong-local (just eq) = cong just eq
+map-cong-local nothing   = refl
 
 map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
 map-injective f-inj {nothing} {nothing} p = refl
 map-injective f-inj {just x} {just y} p = cong just (f-inj (just-injective p))
 
-map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
-map-compose (just x) = refl
-map-compose nothing  = refl
+map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
+map-∘ (just x) = refl
+map-∘ nothing  = refl
 
 map-nothing : ∀ {f : A → B} {ma} → ma ≡ nothing → map f ma ≡ nothing
 map-nothing refl = refl
@@ -114,6 +114,10 @@ module _ {A : Set a} where
   <∣>-identity : Identity nothing _<∣>_
   <∣>-identity = <∣>-identityˡ , <∣>-identityʳ
 
+  <∣>-idem : Idempotent _<∣>_
+  <∣>-idem (just x) = refl
+  <∣>-idem nothing = refl
+
 module _ (A : Set a) where
 
   open Structures {A = Maybe A} _≡_
@@ -145,3 +149,35 @@ module _ (A : Set a) where
   <∣>-monoid = record
     { isMonoid = <∣>-isMonoid
     }
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-id₂ = map-id-local
+{-# WARNING_ON_USAGE map-id₂
+"Warning: map-id₂ was deprecated in v2.0.
+Please use map-id-local instead."
+#-}
+
+map-cong₂ = map-cong-local
+{-# WARNING_ON_USAGE map-id₂
+"Warning: map-cong₂ was deprecated in v2.0.
+Please use map-cong-local instead."
+#-}
+
+map-compose = map-∘
+{-# WARNING_ON_USAGE map-compose
+"Warning: map-compose was deprecated in v2.0.
+Please use map-∘ instead."
+#-}
+
+map-<∣>-commute = map-<∣>
+{-# WARNING_ON_USAGE map-<∣>-commute
+"Warning: map-<∣>-commute was deprecated in v2.0.
+Please use map-<∣> instead."
+#-}

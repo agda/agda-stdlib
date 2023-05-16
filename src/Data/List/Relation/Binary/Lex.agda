@@ -4,7 +4,7 @@
 -- Lexicographic ordering of lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Lex where
 
@@ -16,10 +16,9 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_; flip; id)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (_⊔_)
-open import Relation.Nullary using (Dec; yes; no; ¬_)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Decidable as Dec
+  using (Dec; yes; no; _×-dec_; _⊎-dec_)
 open import Relation.Binary hiding (_⇔_)
 open import Data.List.Relation.Binary.Pointwise.Base
    using (Pointwise; []; _∷_; head; tail)

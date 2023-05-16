@@ -11,7 +11,7 @@
 
 -- See README.Data.Tree.AVL for examples of how to use AVL trees.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (StrictTotalOrder)
 
@@ -70,8 +70,8 @@ module _ {v} {V : Value v} where
   delete : Key → Tree V → Tree V
   delete k (tree t) = tree $′ proj₂ $ Indexed.delete k t ⊥⁺<[ k ]<⊤⁺
 
-  lookup : (k : Key) → Tree V → Maybe (Val k)
-  lookup k (tree t) = Indexed.lookup k t ⊥⁺<[ k ]<⊤⁺
+  lookup : Tree V → (k : Key) → Maybe (Val k)
+  lookup (tree t) k = Indexed.lookup t k ⊥⁺<[ k ]<⊤⁺
 
 module _ {v w} {V : Value v} {W : Value w} where
 
@@ -87,10 +87,8 @@ module _ {v} {V : Value v} where
   private
     Val = Value.family V
 
-
-  infix 4 _∈?_
-  _∈?_ : Key → Tree V → Bool
-  k ∈? t = is-just (lookup k t)
+  member : Key → Tree V → Bool
+  member k t = is-just (lookup t k)
 
   headTail : Tree V → Maybe (K& V × Tree V)
   headTail (tree (Indexed.leaf _)) = nothing
@@ -160,7 +158,7 @@ module _ {v w x} {V : Value v} {W : Value w} {X : Value x} where
   intersectionWith f t₁ t₂ = foldr cons empty t₁ where
 
     cons :  ∀ {k} → Val k → Tree X → Tree X
-    cons {k} v = case lookup k t₂ of λ where
+    cons {k} v = case lookup t₂ k of λ where
       nothing  → id
       (just w) → insert k (f v w)
 
@@ -183,3 +181,20 @@ module _ {v} {V : Value v} where
   -- Left-biased.
   intersections : List (Tree V) → Tree V
   intersections = intersectionsWith F.const
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infixl 4 _∈?_
+_∈?_ : ∀ {v} {V : Value v} → Key → Tree V → Bool
+_∈?_ = member
+{-# WARNING_ON_USAGE _∈?_
+"Warning: _∈?_ was deprecated in v2.0.
+Please use member instead."
+#-}

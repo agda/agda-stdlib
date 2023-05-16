@@ -4,12 +4,12 @@
 -- Lists made up entirely of unique elements (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (DecSetoid)
 import Data.List.Relation.Unary.AllPairs as AllPairs
 open import Relation.Unary using (Decidable)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Decidable using (¬?)
 
 module Data.List.Relation.Unary.Unique.DecSetoid
   {a ℓ} (DS : DecSetoid a ℓ) where

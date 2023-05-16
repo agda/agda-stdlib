@@ -8,7 +8,7 @@
 -- module. See `Function.Strict` for strict versions of these
 -- combinators.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Base where
 
@@ -136,6 +136,11 @@ f ∘′ g = _∘_ f g
 
 _∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
 f ∘₂′ g = _∘₂_ f g
+
+-- Flipping order of arguments
+
+flip′ : (A → B → C) → (B → A → C)
+flip′ = flip
 
 -- Application
 

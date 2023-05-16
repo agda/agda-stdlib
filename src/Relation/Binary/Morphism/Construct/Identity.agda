@@ -4,7 +4,7 @@
 -- The identity morphism for binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Product using (_,_)
 open import Function.Base using (id)

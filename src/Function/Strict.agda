@@ -7,7 +7,7 @@
 -- The contents of this module is also accessible via the `Function`
 -- module.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Strict where
 
@@ -20,7 +20,7 @@ private
     a b : Level
     A B : Set a
 
-infixl 0 _!|>′_ _!|>′_
+infixl 0 _!|>_ _!|>′_
 infixr -1 _$!_ _$!′_
 
 ------------------------------------------------------------------------

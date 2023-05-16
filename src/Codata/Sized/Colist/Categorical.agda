@@ -1,23 +1,17 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Colist
+-- This module is DEPRECATED. Please use
+-- `Codata.Sized.Colist.Effectful` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Colist.Categorical where
 
-open import Codata.Sized.Conat using (infinity)
-open import Codata.Sized.Colist
-open import Category.Functor
-open import Category.Applicative
+open import Codata.Sized.Colist.Effectful public
 
-functor : ∀ {ℓ i} → RawFunctor {ℓ} (λ A → Colist A i)
-functor = record { _<$>_ = map }
-
-applicative : ∀ {ℓ i} → RawApplicative {ℓ} (λ A → Colist A i)
-applicative = record
-  { pure = replicate infinity
-  ; _⊛_  = ap
-  }
+{-# WARNING_ON_IMPORT
+"Codata.Sized.Colist.Categorical was deprecated in v2.0.
+Use Codata.Sized.Colist.Effectful instead."
+#-}

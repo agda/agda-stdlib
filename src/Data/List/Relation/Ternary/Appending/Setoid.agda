@@ -4,7 +4,7 @@
 -- Appending of lists using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Setoid)
 
@@ -26,5 +26,5 @@ Appending = General.Appending _≈_ _≈_
 ------------------------------------------------------------------------
 -- Re-export the basic combinators
 
-open General public
+open General {A = A} {A} {A} public
   hiding (Appending)

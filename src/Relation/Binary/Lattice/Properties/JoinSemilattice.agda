@@ -4,7 +4,7 @@
 -- Properties satisfied by join semilattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -16,12 +16,19 @@ open JoinSemilattice J
 import Algebra.Lattice as Alg
 import Algebra.Structures as Alg
 open import Algebra.Definitions _≈_
+open import Algebra.Ordered.Structures using (IsPosemigroup)
+open import Algebra.Ordered.Bundles using (Posemigroup)
 open import Data.Product
 open import Function.Base using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
+open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary.Negation using (contraposition)
 
 import Relation.Binary.Reasoning.PartialOrder as PoR
+
+------------------------------------------------------------------------
+-- Algebraic properties
 
 -- The join operation is monotonic.
 
@@ -88,6 +95,27 @@ isAlgSemilattice = record
 algSemilattice : Alg.Semilattice c ℓ₁
 algSemilattice = record { isSemilattice = isAlgSemilattice }
 
+-- Every semilattice gives rise to a posemigroup
+
+isPosemigroup : IsPosemigroup _≈_ _≤_ _∨_
+isPosemigroup = record
+  { isPomagma        = record
+    { isPartialOrder = isPartialOrder
+    ; mono           = ∨-monotonic
+    }
+  ; assoc            = ∨-assoc
+  }
+
+posemigroup : Posemigroup c ℓ₁ ℓ₂
+posemigroup = record
+  { Carrier           = Carrier
+  ; _≈_               = _≈_
+  ; _≤_               = _≤_
+  ; _∙_               = _∨_
+  ; isPosemigroup     = isPosemigroup
+  }
+
+------------------------------------------------------------------------
 -- The dual construction is a meet semilattice.
 
 dualIsMeetSemilattice : IsMeetSemilattice _≈_ (flip _≤_) _∨_
@@ -100,4 +128,19 @@ dualMeetSemilattice : MeetSemilattice c ℓ₁ ℓ₂
 dualMeetSemilattice = record
   { _∧_               = _∨_
   ; isMeetSemilattice = dualIsMeetSemilattice
+  }
+
+------------------------------------------------------------------------
+-- If ≈ is decidable then so is ≤
+
+≈-dec⇒≤-dec : Decidable _≈_ → Decidable _≤_
+≈-dec⇒≤-dec _≟_ x y with (x ∨ y) ≟ y
+... | yes x∨y≈y = yes (trans (x≤x∨y x y) (reflexive x∨y≈y))
+... | no  x∨y≉y = no (contraposition x≤y⇒x∨y≈y x∨y≉y)
+
+≈-dec⇒isDecPartialOrder : Decidable _≈_ → IsDecPartialOrder _≈_ _≤_
+≈-dec⇒isDecPartialOrder _≟_ = record
+  { isPartialOrder = isPartialOrder
+  ; _≟_            = _≟_
+  ; _≤?_           = ≈-dec⇒≤-dec _≟_
   }

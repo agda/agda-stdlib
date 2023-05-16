@@ -43,6 +43,8 @@ unsafeModules = map modToFile
   , "Codata.Musical.Conversion"
   , "Codata.Musical.Stream"
   , "Debug.Trace"
+  , "Effect.Monad.IO"
+  , "Effect.Monad.IO.Instances"
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
   , "Foreign.Haskell.Either"
@@ -51,7 +53,10 @@ unsafeModules = map modToFile
   , "Foreign.Haskell.Pair"
   , "IO"
   , "IO.Base"
+  , "IO.Categorical"
   , "IO.Infinite"
+  , "IO.Instances"
+  , "IO.Effectful"
   , "IO.Finite"
   , "IO.Primitive"
   , "IO.Primitive.Infinite"
@@ -118,6 +123,7 @@ sizedTypesModules = map modToFile
   , "Codata.Sized.Colist"
   , "Codata.Sized.Colist.Bisimilarity"
   , "Codata.Sized.Colist.Categorical"
+  , "Codata.Sized.Colist.Effectful"
   , "Codata.Sized.Colist.Properties"
   , "Codata.Sized.Conat"
   , "Codata.Sized.Conat.Bisimilarity"
@@ -126,6 +132,7 @@ sizedTypesModules = map modToFile
   , "Codata.Sized.Covec"
   , "Codata.Sized.Covec.Bisimilarity"
   , "Codata.Sized.Covec.Categorical"
+  , "Codata.Sized.Covec.Effectful"
   , "Codata.Sized.Covec.Instances"
   , "Codata.Sized.Covec.Properties"
   , "Codata.Sized.Cowriter"
@@ -133,6 +140,7 @@ sizedTypesModules = map modToFile
   , "Codata.Sized.Delay"
   , "Codata.Sized.Delay.Bisimilarity"
   , "Codata.Sized.Delay.Categorical"
+  , "Codata.Sized.Delay.Effectful"
   , "Codata.Sized.Delay.Properties"
   , "Codata.Sized.M"
   , "Codata.Sized.M.Bisimilarity"
@@ -140,6 +148,7 @@ sizedTypesModules = map modToFile
   , "Codata.Sized.Stream"
   , "Codata.Sized.Stream.Bisimilarity"
   , "Codata.Sized.Stream.Categorical"
+  , "Codata.Sized.Stream.Effectful"
   , "Codata.Sized.Stream.Instances"
   , "Codata.Sized.Stream.Properties"
   , "Codata.Sized.Thunk"
@@ -225,9 +234,9 @@ classify fp hd ls
   -- We start with sanity checks
   | isUnsafe && safe          = throwError $ fp ++ contradiction "unsafe" "safe"
   | not (isUnsafe || safe)    = throwError $ fp ++ uncategorized "unsafe" "safe"
-  | isWithK && withoutK       = throwError $ fp ++ contradiction "as relying on K" "without-K"
+  | isWithK && cubicalC       = throwError $ fp ++ contradiction "as relying on K" "cubical-compatible"
   | isWithK && not withK      = throwError $ fp ++ missingWithK
-  | not (isWithK || withoutK) = throwError $ fp ++ uncategorized "as relying on K" "without-K"
+  | not (isWithK || cubicalC) = throwError $ fp ++ uncategorized "as relying on K" "cubical-compatible"
   -- And then perform the actual classification
   | deprecated                = pure $ Deprecated
   | isUnsafe                  = pure $ Unsafe
@@ -244,7 +253,7 @@ classify fp hd ls
     -- based on detected OPTIONS
     safe        = option "--safe"
     withK       = option "--with-K"
-    withoutK    = option "--without-K"
+    cubicalC    = option "--cubical-compatible"
 
     -- based on detected comment in header
     deprecated  = let detect = List.isSubsequenceOf "This module is DEPRECATED."

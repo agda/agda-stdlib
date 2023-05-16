@@ -4,7 +4,7 @@
 -- Subtraction on Bin and some of its properties.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Binary.Subtraction where
 
@@ -146,7 +146,7 @@ x<y⇒y∸x>0 {x} {y} = toℕ-cancel-< ∘ subst (ℕ._> 0) (sym (toℕ-homo-∸
   where open ≡-Reasoning
 
 x+y∸y≡x : ∀ x y → (x + y) ∸ y ≡ x
-x+y∸y≡x x y = +-cancelʳ-≡ _ x ([x∸y]+y≡x (x≤y+x y x))
+x+y∸y≡x x y = +-cancelʳ-≡ _ _ x ([x∸y]+y≡x (x≤y+x y x))
 
 [x+y]∸x≡y : ∀ x y → (x + y) ∸ x ≡ y
 [x+y]∸x≡y x y = trans (cong (_∸ x) (+-comm x y)) (x+y∸y≡x y x)

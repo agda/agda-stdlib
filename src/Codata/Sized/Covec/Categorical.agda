@@ -1,24 +1,17 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Covec
+-- This module is DEPRECATED. Please use
+-- `Codata.Sized.Covec.Effectful` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Covec.Categorical where
 
-open import Codata.Sized.Conat
-open import Codata.Sized.Covec
+open import Codata.Sized.Covec.Effectful public
 
-open import Category.Functor
-open import Category.Applicative
-
-functor : ∀ {ℓ i n} → RawFunctor {ℓ} (λ A → Covec A n i)
-functor = record { _<$>_ = map }
-
-applicative : ∀ {ℓ i n} → RawApplicative {ℓ} (λ A → Covec A n i)
-applicative = record
-  { pure = replicate _
-  ; _⊛_  = ap
-  }
+{-# WARNING_ON_IMPORT
+"Codata.Sized.Covec.Categorical was deprecated in v2.0.
+Use Codata.Sized.Covec.Effectful instead."
+#-}

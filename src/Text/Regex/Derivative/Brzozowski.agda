@@ -4,7 +4,7 @@
 -- Regular expressions: Brzozowski derivative
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (DecPoset)
 
@@ -15,9 +15,9 @@ open import Data.List.Relation.Binary.Equality.Propositional
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 
 open import Function.Base using (_$_; _∘′_; case_of_)
-open import Relation.Nullary using (Dec; yes; no)
-open import Relation.Nullary.Negation using (contradiction; ¬?)
-open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Decidable using (Dec; yes; no)
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable using (map′; ¬?)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 

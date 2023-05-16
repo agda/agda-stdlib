@@ -12,13 +12,14 @@ module README where
 -- Liang-Ting Chen, Dominique Devriese, Dan Doel, Érdi Gergő,
 -- Zack Grannan, Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu,
 -- Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
--- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
--- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,
--- Noam Zeilberger and other anonymous contributors.
+-- James McKinna, Sergei Meshveliani, Eric Mertens, Darin Morrison,
+-- Guilhem Moulin, Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa,
+-- Nicolas Pouillard, Andrés Sicard-Ramírez, Lex van der Stoep,
+-- Sandro Stucki, Milo Turner, Noam Zeilberger
+-- and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.2.
+-- This version of the library has been tested using Agda 2.6.3.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
@@ -64,10 +65,6 @@ module README where
 
 import README.Axiom
 
--- • Category
---     Category theory-inspired idioms used to structure functional
---     programs (functors and monads, for instance).
-
 -- • Codata
 --     Coinductive data types and properties. There are two different
 --     approaches taken. The `Codata.Sized` folder contains the new more
@@ -76,6 +73,10 @@ import README.Axiom
 
 -- • Data
 --     Data types and properties.
+
+-- • Effect
+--     Category theory-inspired idioms used to structure functional
+--     programs (functors and monads, for instance).
 
 import README.Data
 
@@ -162,9 +163,9 @@ import Codata.Sized.Colist -- Colists.
 
 -- • Some types used to structure computations
 
-import Category.Functor      -- Functors.
-import Category.Applicative  -- Applicative functors.
-import Category.Monad        -- Monads.
+import Effect.Functor      -- Functors.
+import Effect.Applicative  -- Applicative functors.
+import Effect.Monad        -- Monads.
 
 -- • Equality
 
@@ -235,11 +236,6 @@ import README.Debug.Trace
 -- n-ary heterogeneous products
 
 import README.Nary
-
--- Explaining the inspect idiom: use case, equivalent handwritten
--- auxiliary definitions, and implementation details.
-
-import README.Inspect
 
 -- Explaining how to use the automatic solvers
 

@@ -5,7 +5,7 @@
 -- commutativity, when the underlying relation is a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
 
@@ -17,6 +17,7 @@ open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Function.Base using (_$_)
+import Function.Definitions as FunDefs
 import Relation.Binary.Consequences as Bin
 open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
@@ -29,19 +30,61 @@ open import Relation.Unary using (Pred)
 open import Algebra.Consequences.Base public
 
 ------------------------------------------------------------------------
+-- Involutive/SelfInverse functions
+
+module _ {f : Op₁ A} (inv : Involutive f) where
+
+  open FunDefs _≈_ _≈_
+
+  involutive⇒surjective : Surjective f
+  involutive⇒surjective y = f y , inv y
+
+module _ {f : Op₁ A} (self : SelfInverse f) where
+
+  selfInverse⇒involutive : Involutive f
+  selfInverse⇒involutive = reflexive+selfInverse⇒involutive _≈_ refl self
+
+  private
+
+    inv = selfInverse⇒involutive
+
+  open FunDefs _≈_ _≈_
+
+  selfInverse⇒congruent : Congruent f
+  selfInverse⇒congruent {x} {y} x≈y = sym (self (begin
+    f (f x) ≈⟨ inv x ⟩
+    x       ≈⟨ x≈y ⟩
+    y       ∎))
+
+  selfInverse⇒inverseᵇ : Inverseᵇ f f
+  selfInverse⇒inverseᵇ = inv , inv
+
+  selfInverse⇒surjective : Surjective f
+  selfInverse⇒surjective = involutive⇒surjective inv
+
+  selfInverse⇒injective : Injective f
+  selfInverse⇒injective {x} {y} x≈y = begin
+    x       ≈˘⟨ self x≈y ⟩
+    f (f y) ≈⟨ inv y ⟩
+    y       ∎
+
+  selfInverse⇒bijective : Bijective f
+  selfInverse⇒bijective = selfInverse⇒injective , selfInverse⇒surjective
+
+------------------------------------------------------------------------
 -- Magma-like structures
 
 module _ {_•_ : Op₂ A} (comm : Commutative _•_) where
 
   comm+cancelˡ⇒cancelʳ : LeftCancellative _•_ → RightCancellative _•_
-  comm+cancelˡ⇒cancelʳ cancelˡ {x} y z eq = cancelˡ x $ begin
+  comm+cancelˡ⇒cancelʳ cancelˡ x y z eq = cancelˡ x y z $ begin
     x • y ≈⟨ comm x y ⟩
     y • x ≈⟨ eq ⟩
     z • x ≈⟨ comm z x ⟩
     x • z ∎
 
   comm+cancelʳ⇒cancelˡ : RightCancellative _•_ → LeftCancellative _•_
-  comm+cancelʳ⇒cancelˡ cancelʳ x {y} {z} eq = cancelʳ y z $ begin
+  comm+cancelʳ⇒cancelˡ cancelʳ x y z eq = cancelʳ x y z $ begin
     y • x ≈⟨ comm y x ⟩
     x • y ≈⟨ eq ⟩
     x • z ≈⟨ comm x z ⟩
@@ -90,8 +133,8 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
 
   comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _•_ →
                                      AlmostRightCancellative e _•_
-  comm+almostCancelˡ⇒almostCancelʳ cancelˡ-nonZero {x} y z x≉e yx≈zx =
-    cancelˡ-nonZero y z x≉e $ begin
+  comm+almostCancelˡ⇒almostCancelʳ cancelˡ-nonZero x y z x≉e yx≈zx =
+    cancelˡ-nonZero x y z x≉e $ begin
       x • y ≈⟨ comm x y ⟩
       y • x ≈⟨ yx≈zx ⟩
       z • x ≈⟨ comm z x ⟩
@@ -99,8 +142,8 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
 
   comm+almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _•_ →
                                      AlmostLeftCancellative e _•_
-  comm+almostCancelʳ⇒almostCancelˡ cancelʳ-nonZero {x} y z x≉e xy≈xz =
-    cancelʳ-nonZero y z x≉e $ begin
+  comm+almostCancelʳ⇒almostCancelˡ cancelʳ-nonZero x y z x≉e xy≈xz =
+    cancelʳ-nonZero x y z x≉e $ begin
       y • x ≈⟨ comm y x ⟩
       x • y ≈⟨ xy≈xz ⟩
       x • z ≈⟨ comm x z ⟩

@@ -4,7 +4,7 @@
 -- Basic properties of ℕᵇ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Binary.Properties where
 
@@ -18,6 +18,7 @@ open import Data.Nat.Binary.Base
 open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
 open import Data.Nat.DivMod using (_%_; _/_; m/n≤m; +-distrib-/-∣ˡ)
 open import Data.Nat.Divisibility using (∣-refl)
+import Data.Nat.Base as ℕᵇ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
@@ -179,7 +180,7 @@ toℕ-injective : Injective _≡_ _≡_ toℕ
 toℕ-injective {zero}     {zero}     _               =  refl
 toℕ-injective {2[1+ x ]} {2[1+ y ]} 2[1+xN]≡2[1+yN] =  cong 2[1+_] x≡y
   where
-  1+xN≡1+yN = ℕₚ.*-cancelˡ-≡ {ℕ.suc _} {ℕ.suc _} 2 2[1+xN]≡2[1+yN]
+  1+xN≡1+yN = ℕₚ.*-cancelˡ-≡ (ℕ.suc _) (ℕ.suc _) 2 2[1+xN]≡2[1+yN]
   xN≡yN     = cong ℕ.pred 1+xN≡1+yN
   x≡y       = toℕ-injective xN≡yN
 
@@ -192,7 +193,7 @@ toℕ-injective {1+[2 x ]} {2[1+ y ]} 1+2xN≡2[1+yN] =
 toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   where
   2xN≡2yN = cong ℕ.pred 1+2xN≡1+2yN
-  xN≡yN   = ℕₚ.*-cancelˡ-≡ 2 2xN≡2yN
+  xN≡yN   = ℕₚ.*-cancelˡ-≡ _ _ 2 2xN≡2yN
   x≡y     = toℕ-injective xN≡yN
 
 toℕ-surjective : Surjective _≡_ toℕ
@@ -280,7 +281,7 @@ toℕ-mono-< {zero}     {2[1+ _ ]} _               =  ℕₚ.0<1+n
 toℕ-mono-< {zero}     {1+[2 _ ]} _               =  ℕₚ.0<1+n
 toℕ-mono-< {2[1+ x ]} {2[1+ y ]} (even<even x<y) =  begin
   ℕ.suc (2 ℕ.* (ℕ.suc xN))    ≤⟨ ℕₚ.+-monoʳ-≤ 1 (ℕₚ.*-monoʳ-≤ 2 xN<yN) ⟩
-  ℕ.suc (2 ℕ.* yN)            ≤⟨ ℕₚ.≤-step ℕₚ.≤-refl ⟩
+  ℕ.suc (2 ℕ.* yN)            ≤⟨ ℕₚ.n≤1+n _ ⟩
   2 ℕ.+ (2 ℕ.* yN)            ≡⟨ sym (ℕₚ.*-distribˡ-+ 2 1 yN) ⟩
   2 ℕ.* (ℕ.suc yN)            ∎
   where open ℕₚ.≤-Reasoning;  xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
@@ -290,7 +291,7 @@ toℕ-mono-< {1+[2 x ]} {2[1+ y ]} (odd<even (inj₁ x<y)) =   begin
   ℕ.suc (ℕ.suc (2 ℕ.* xN))    ≡⟨⟩
   2 ℕ.+ (2 ℕ.* xN)            ≡⟨ sym (ℕₚ.*-distribˡ-+ 2 1 xN) ⟩
   2 ℕ.* (ℕ.suc xN)            ≤⟨ ℕₚ.*-monoʳ-≤ 2 xN<yN ⟩
-  2 ℕ.* yN                    ≤⟨ ℕₚ.*-monoʳ-≤ 2 (ℕₚ.≤-step ℕₚ.≤-refl) ⟩
+  2 ℕ.* yN                    ≤⟨ ℕₚ.*-monoʳ-≤ 2 (ℕₚ.n≤1+n _) ⟩
   2 ℕ.* (ℕ.suc yN)            ∎
   where open ℕₚ.≤-Reasoning;  xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
 toℕ-mono-< {1+[2 x ]} {2[1+ .x ]} (odd<even (inj₂ refl)) =
@@ -302,17 +303,17 @@ toℕ-cancel-< : ∀ {x y} → toℕ x ℕ.< toℕ y → x < y
 toℕ-cancel-< {zero}     {2[1+ y ]} x<y = 0<even
 toℕ-cancel-< {zero}     {1+[2 y ]} x<y = 0<odd
 toℕ-cancel-< {2[1+ x ]} {2[1+ y ]} x<y =
-  even<even (toℕ-cancel-< (ℕ.≤-pred (ℕₚ.*-cancelˡ-< 2 x<y)))
+  even<even (toℕ-cancel-< (ℕ.≤-pred (ℕₚ.*-cancelˡ-< 2 _ _ x<y)))
 toℕ-cancel-< {2[1+ x ]} {1+[2 y ]} x<y
   rewrite ℕₚ.*-distribˡ-+ 2 1 (toℕ x) =
-  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (ℕₚ.≤-pred x<y))))
+  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (ℕₚ.≤-pred x<y))))
 toℕ-cancel-< {1+[2 x ]} {2[1+ y ]} x<y with toℕ x ℕₚ.≟ toℕ y
 ... | yes x≡y = odd<even (inj₂ (toℕ-injective x≡y))
 ... | no  x≢y
   rewrite ℕₚ.+-suc (toℕ y) (toℕ y ℕ.+ 0) =
-  odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 2 (ℕₚ.+-cancelˡ-≤ 2 x<y)) x≢y)))
+  odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 2 (ℕₚ.+-cancelˡ-≤ 2 _ _ x<y)) x≢y)))
 toℕ-cancel-< {1+[2 x ]} {1+[2 y ]} x<y =
-  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 (ℕ.≤-pred x<y)))
+  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕ.≤-pred x<y)))
 
 fromℕ-cancel-< : ∀ {x y} → fromℕ x < fromℕ y → x ℕ.< y
 fromℕ-cancel-< = subst₂ ℕ._<_ (toℕ-fromℕ _) (toℕ-fromℕ _) ∘ toℕ-mono-<
@@ -615,25 +616,7 @@ module ≤-Reasoning = InequalityReasoning
 
 ------------------------------------------------------------------------
 -- Properties of _+_
-------------------------------------------------------------------------
 
-------------------------------------------------------------------------
--- Raw bundles for _+_
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  }
-
-+-0-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-0-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0ᵇ
-  }
-
-------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _+_
 
 toℕ-homo-+ : ∀ x y → toℕ (x + y) ≡ toℕ x ℕ.+ toℕ y
@@ -687,19 +670,19 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
   toℕ 1+[2 x ] ℕ.+ toℕ 1+[2 y ]           ∎
   where open ≡-Reasoning;  m = toℕ x;  n = toℕ y
 
-toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕₚ.+-rawMagma toℕ
+toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕᵇ.+-rawMagma toℕ
 toℕ-isMagmaHomomorphism-+ = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
   ; homo              = toℕ-homo-+
   }
 
-toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
+toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕᵇ.+-0-rawMonoid toℕ
 toℕ-isMonoidHomomorphism-+ = record
   { isMagmaHomomorphism = toℕ-isMagmaHomomorphism-+
   ; ε-homo              = refl
   }
 
-toℕ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
+toℕ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℕᵇ.+-0-rawMonoid toℕ
 toℕ-isMonoidMonomorphism-+ = record
   { isMonoidHomomorphism = toℕ-isMonoidHomomorphism-+
   ; injective            = toℕ-injective
@@ -905,25 +888,7 @@ x≢0⇒x+y≢0 {zero}     _    0≢0 =  contradiction refl 0≢0
 
 ------------------------------------------------------------------------
 -- Properties of _*_
-------------------------------------------------------------------------
 
-------------------------------------------------------------------------
--- Raw bundles for _*_
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1ᵇ
-  }
-
-------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _*_
 
 private  2*ₙ2*ₙ =  (2 ℕ.*_) ∘ (2 ℕ.*_)
@@ -1018,19 +983,19 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
     |y|+1+|x|≤cnt = subst (ℕ._≤ cnt) eq |x|+1+|y|≤cnt
 
 
-toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕₚ.*-rawMagma toℕ
+toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕᵇ.*-rawMagma toℕ
 toℕ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
   ; homo              = toℕ-homo-*
   }
 
-toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
+toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕᵇ.*-1-rawMonoid toℕ
 toℕ-isMonoidHomomorphism-* = record
   { isMagmaHomomorphism = toℕ-isMagmaHomomorphism-*
   ; ε-homo              = refl
   }
 
-toℕ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
+toℕ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℕᵇ.*-1-rawMonoid toℕ
 toℕ-isMonoidMonomorphism-* = record
   { isMonoidHomomorphism = toℕ-isMonoidHomomorphism-*
   ; injective            = toℕ-injective
@@ -1344,6 +1309,18 @@ double-suc x = begin
 -- Properties of suc
 ------------------------------------------------------------------------
 
+suc≢0 : suc x ≢ zero
+suc≢0 {zero}     ()
+suc≢0 {2[1+ _ ]} ()
+suc≢0 {1+[2 _ ]} ()
+
+suc-injective : Injective _≡_ _≡_ suc
+suc-injective {zero} {zero} p = refl
+suc-injective {zero} {2[1+ y ]} p = contradiction 1+[2 p ]-injective (suc≢0 ∘ sym)
+suc-injective {2[1+ x ]} {zero} p = contradiction 1+[2 p ]-injective suc≢0
+suc-injective {2[1+ x ]} {2[1+ y ]} p = cong 2[1+_] (suc-injective 1+[2 p ]-injective)
+suc-injective {1+[2 x ]} {1+[2 y ]} refl = refl
+
 2[1+_]-double-suc : 2[1+_] ≗ double ∘ suc
 2[1+_]-double-suc zero     = refl
 2[1+_]-double-suc 2[1+ x ] = cong 2[1+_] (2[1+_]-double-suc x)
@@ -1359,11 +1336,6 @@ double-suc x = begin
   suc (double (suc 2x))   ≡⟨ cong (suc ∘ double) (sym (1+[2_]-suc-double x)) ⟩
   suc (double 1+[2 x ])   ∎
   where open ≡-Reasoning;  2x = double x
-
-suc≢0 : suc x ≢ zero
-suc≢0 {zero}     ()
-suc≢0 {2[1+ _ ]} ()
-suc≢0 {1+[2 _ ]} ()
 
 x+suc[y]≡suc[x]+y : ∀ x y → x + suc y ≡ suc x + y
 x+suc[y]≡suc[x]+y x y = begin
@@ -1534,3 +1506,9 @@ Please use +-*-semiring instead."
 "Warning: *-+-commutativeSemiring was deprecated in v1.4.
 Please use +-*-commutativeSemiring instead."
 #-}
+
+-- Version 2.0
+
+{- issue1858/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Nat.Binary.Base public
+  using (+-rawMagma; +-0-rawMonoid; *-rawMagma; *-1-rawMonoid)

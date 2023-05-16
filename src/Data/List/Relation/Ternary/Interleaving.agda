@@ -5,7 +5,7 @@
 -- order-preserving manner
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Ternary.Interleaving where
 
@@ -14,7 +14,7 @@ open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.Product as Prod using (∃; ∃₂; _×_; uncurry; _,_; -,_; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Function
+open import Function.Base
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 

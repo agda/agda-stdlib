@@ -4,7 +4,7 @@
 -- Divisibility
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Divisibility where
 
@@ -17,7 +17,7 @@ open import Data.Unit using (tt)
 open import Function.Base
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable as Dec using (False)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
@@ -199,7 +199,7 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
 *-cancelˡ-∣ : ∀ {i j} k .{{_ : NonZero k}} → k * i ∣ k * j → i ∣ j
 *-cancelˡ-∣ {i} {j} k@(suc _) (divides q eq) =
-  divides q $ *-cancelʳ-≡ j (q * i) $ begin-equality
+  divides q $ *-cancelʳ-≡ j (q * i) _ $ begin-equality
     j * k        ≡⟨ *-comm j k ⟩
     k * j        ≡⟨ eq ⟩
     q * (k * i)  ≡⟨ cong (q *_) (*-comm k i) ⟩
@@ -267,16 +267,6 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
   p         ∣⟨ *-cancelʳ-∣ n pn∣on ⟩
   o         ∎
   where open ∣-Reasoning
-
-m/n/o≡m/[n*o] : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} → n * o ∣ m →
-                ((m / n) / o) ≡ (m / (n * o)) {{m*n≢0 n o}}
-m/n/o≡m/[n*o] m n@(suc _) o@(suc _) n*o∣m = *-cancelˡ-≡ (n * o) (begin-equality
-  (n * o) * (m / n / o)   ≡⟨ *-assoc n o _ ⟩
-  n * (o * (m / n / o))   ≡⟨ cong (n *_) (m*[n/m]≡n (m*n∣o⇒n∣o/m n o n*o∣m)) ⟩
-  n * (m / n)             ≡⟨ m*[n/m]≡n (m*n∣⇒m∣ n o n*o∣m) ⟩
-  m                       ≡˘⟨ m*[n/m]≡n n*o∣m ⟩
-  (n * o) * (m / (n * o)) ∎)
-  where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
