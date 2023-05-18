@@ -6,6 +6,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Data.Vec.Functional.Algebra.Base where
+
+open import Level using (Level)
 open import Function using (_$_)
 open import Data.Product hiding (map)
 open import Data.Nat using (ℕ)
@@ -19,35 +22,40 @@ import Data.Vec.Functional.Relation.Binary.Equality.Setoid as VecSetoid
 import Algebra.Definitions as AD
 import Algebra.Structures as AS
 
-module Data.Vec.Functional.Algebra.Base
-  {c ℓ} (cring : CommutativeRing c ℓ) where
+  -- {c ℓ} (cring : CommutativeRing c ℓ) where
 
 private variable
+  a ℓ : Level
+  A : Set ℓ
   n : ℕ
 
-open CommutativeRing cring
-open VecSetoid setoid
+-- open CommutativeRing cring
+-- open VecSetoid setoid
 
-_≈ᴹ_ : Rel (Vector Carrier n) ℓ
-_≈ᴹ_ = _≋_
+module EqualityVecFunc (S : Setoid a ℓ) where
+  open Setoid S
+  open VecSetoid S
 
-_+ᴹ_ : Op₂ $ Vector Carrier n
-_+ᴹ_ = zipWith _+_
+  _≈ᴹ_ : Rel (Vector Carrier n) ℓ
+  _≈ᴹ_ = _≋_
 
-_*ᴹ_ : Op₂ $ Vector Carrier n
-_*ᴹ_ = zipWith _*_
+_+ᴹ_ : (_+_ : Op₂ A) →  Op₂ $ Vector A n
+_+ᴹ_ _+_ = zipWith _+_
 
-0ᴹ : Vector Carrier n
-0ᴹ = replicate 0#
+_*ᴹ_ : (_*_ : Op₂ A) → Op₂ $ Vector A n
+_*ᴹ_ _*_ = zipWith _*_
 
-1ᴹ : Vector Carrier n
-1ᴹ = replicate 1#
+0ᴹ : A → Vector A n
+0ᴹ 0# = replicate 0#
 
--ᴹ_ : Op₁ $ Vector Carrier n
--ᴹ_ = map $ -_
+1ᴹ : A → Vector A n
+1ᴹ 1# = replicate 1#
 
-_*ₗ_ : Opₗ Carrier (Vector Carrier n)
-_*ₗ_ r = map (r *_)
+-ᴹ_ : Op₁ A → Op₁ $ Vector A n
+-ᴹ_ -_ = map $ -_
 
-_*ᵣ_ : Opᵣ Carrier (Vector Carrier n)
-xs *ᵣ r = map (_* r) xs
+_*ₗ_ : Op₂ A → Opₗ A (Vector A n)
+_*ₗ_ _*_ r = map (r *_)
+
+_*ᵣ_ : Op₂ A → Opᵣ A (Vector A n)
+_*ᵣ_ _*_ xs r = map (_* r) xs
