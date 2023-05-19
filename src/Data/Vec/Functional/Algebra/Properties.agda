@@ -6,47 +6,38 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Data.Vec.Functional.Algebra.Properties where
+
 open import Level using (Level)
-open import Function using (_$_)
+open import Function using (_$_; flip)
 open import Data.Product hiding (map)
 open import Data.Nat using (ℕ)
-open import Data.Fin using (Fin)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.Vec.Functional
 open import Algebra.Core
 open import Algebra.Bundles
 open import Algebra.Module
 open import Relation.Binary
-import Data.Vec.Functional.Relation.Binary.Equality.Setoid as VecSetoid
 open import Algebra.Definitions
-import Algebra.Structures as AS
-import Data.Vec.Functional.Algebra.Base as AB
-
-module Data.Vec.Functional.Algebra.Properties {a ℓ} (S : Setoid a ℓ) where
-  -- {c ℓ} (cring : CommutativeRing c ℓ) where
+open import Algebra.Structures
+open import Data.Vec.Functional.Algebra.Base
+import Data.Vec.Functional.Relation.Binary.Pointwise.Properties as Pointwise
 
 private variable
+  a ℓ : Level
+  A : Set ℓ
   n : ℕ
-
-open Setoid S renaming (Carrier to A)
-open VecSetoid S
-open AB.EqualityVecFunc S
-
--- open CommutativeRing cring
--- open AD
--- module SR = Semiring semiring
--- open module AD' {n} = AD (_≈ᴹ_ setoid {n})
--- open module AS' {n} = AS (_≈ᴹ_ setoid {n})
--- module LD {n} = LeftDefs Carrier (_≈ᴹ_ setoid {n})
--- module RD {n} = RightDefs Carrier (_≈ᴹ_ setoid {n})
--- module BD {n} = BiDefs Carrier Carrier (_≈ᴹ_ setoid {n})
 
 ------------------------------------------------------------------------
 -- Algebraic properties of _+ᴹ_ -ᴹ_ _*ₗ_
 
-module AddProperties (_+_ : Op₂ A) where
-  private
-    _+ᴹ_ : Op₂ $ Vector A n
-    _+ᴹ_ = AB._+ᴹ_ _+_
+module MagmaProperties (rawMagma : RawMagma a ℓ) where
+  open RawMagma rawMagma renaming (_∙_ to _+_)
+  open VecMagma rawMagma
+  open IsEquivalence
+
+  ≈ᴹ-isEquivalence : IsEquivalence _≈_ → IsEquivalence (_≈ᴹ_ {n = n})
+  ≈ᴹ-isEquivalence = flip Pointwise.isEquivalence _
 
   +ᴹ-cong : Congruent₂ _≈_ _+_ → Congruent₂ _≈ᴹ_ (_+ᴹ_ {n = n})
   +ᴹ-cong +-cong x≈y u≈v i = +-cong (x≈y i) (u≈v i)
@@ -57,39 +48,41 @@ module AddProperties (_+_ : Op₂ A) where
   +ᴹ-comm : Commutative _≈_ _+_ → Commutative _≈ᴹ_ (_+ᴹ_ {n})
   +ᴹ-comm +-comm xs ys i = +-comm (xs i) (ys i)
 
-  module ZeroProperties (0# : A) where
-    private
-      0ᴹ : Vector A n
-      0ᴹ = AB.0ᴹ 0#
-
-    +ᴹ-identityˡ : LeftIdentity _≈_ 0# _+_ → LeftIdentity _≈ᴹ_ (0ᴹ {n}) _+ᴹ_
-    +ᴹ-identityˡ +-identityˡ xs i = +-identityˡ (xs i)
-
-    +ᴹ-identityʳ : RightIdentity _≈_ 0# _+_ → RightIdentity _≈ᴹ_ (0ᴹ {n}) _+ᴹ_
-    +ᴹ-identityʳ +-identityʳ xs is = +-identityʳ (xs is)
-
-    +ᴹ-identity : Identity _≈_ 0# _+_ → Identity _≈ᴹ_ (0ᴹ {n}) _+ᴹ_
-    +ᴹ-identity (+-identityˡ , +-identityʳ) = +ᴹ-identityˡ +-identityˡ , +ᴹ-identityʳ +-identityʳ
-
-    module NegativeProperties (-_ : Op₁ A) where
-      private
-        -ᴹ_ : Op₁ $ Vector A n
-        -ᴹ_ = AB.-ᴹ_  -_
-
-      -ᴹ‿inverseˡ : LeftInverse _≈_ 0# -_ _+_ → LeftInverse _≈ᴹ_ (0ᴹ {n}) -ᴹ_ _+ᴹ_
-      -ᴹ‿inverseˡ -‿inverseˡ xs i = -‿inverseˡ (xs i)
-
-      -ᴹ‿inverseʳ : RightInverse _≈_ 0# -_ _+_ → RightInverse _≈ᴹ_ (0ᴹ {n}) -ᴹ_ _+ᴹ_
-      -ᴹ‿inverseʳ -‿inverseʳ xs i = -‿inverseʳ (xs i)
-
-      -ᴹ‿inverse : Inverse _≈_ 0# -_ _+_ → Inverse _≈ᴹ_ (0ᴹ {n}) -ᴹ_ _+ᴹ_
-      -ᴹ‿inverse (-‿inverseˡ , -‿inverseʳ) = -ᴹ‿inverseˡ -‿inverseˡ , -ᴹ‿inverseʳ -‿inverseʳ
+  isMagma : IsMagma _≈_ _+_ → IsMagma _≈ᴹ_ (_+ᴹ_ {n})
+  isMagma isMagma = record
+    { isEquivalence = ≈ᴹ-isEquivalence isEquivalence
+    ; ∙-cong = +ᴹ-cong ∙-cong
+    } where open IsMagma isMagma
 
 
-module NegativeProperties (-_ : Op₁ A) where
-  private
-    -ᴹ_ : Op₁ $ Vector A n
-    -ᴹ_ = AB.-ᴹ_  -_
+module MonoidProperties (rawMonoid : RawMonoid a ℓ) where
+  open RawMonoid rawMonoid renaming (_∙_ to _+_; ε to 0#)
+  open VecMonoid rawMonoid
+  open MagmaProperties rawMagma public
+
+  +ᴹ-identityˡ : LeftIdentity _≈_ 0# _+_ → LeftIdentity _≈ᴹ_ (0ᴹ {n}) _+ᴹ_
+  +ᴹ-identityˡ +-identityˡ xs i = +-identityˡ (xs i)
+
+  +ᴹ-identityʳ : RightIdentity _≈_ 0# _+_ → RightIdentity _≈ᴹ_ (0ᴹ {n}) _+ᴹ_
+  +ᴹ-identityʳ +-identityʳ xs is = +-identityʳ (xs is)
+
+  +ᴹ-identity : Identity _≈_ 0# _+_ → Identity _≈ᴹ_ (0ᴹ {n}) _+ᴹ_
+  +ᴹ-identity (+-identityˡ , +-identityʳ) = +ᴹ-identityˡ +-identityˡ , +ᴹ-identityʳ +-identityʳ
+
+
+module GroupProperties (rawGroup : RawGroup a ℓ) where
+  open RawGroup rawGroup renaming (_∙_ to _+_; ε to 0#; _⁻¹ to -_)
+  open VecGroup rawGroup
+  open MonoidProperties rawMonoid public
+
+  -ᴹ‿inverseˡ : LeftInverse _≈_ 0# -_ _+_ → LeftInverse _≈ᴹ_ (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  -ᴹ‿inverseˡ -‿inverseˡ xs i = -‿inverseˡ (xs i)
+
+  -ᴹ‿inverseʳ : RightInverse _≈_ 0# -_ _+_ → RightInverse _≈ᴹ_ (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  -ᴹ‿inverseʳ -‿inverseʳ xs i = -‿inverseʳ (xs i)
+
+  -ᴹ‿inverse : Inverse _≈_ 0# -_ _+_ → Inverse _≈ᴹ_ (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  -ᴹ‿inverse (-‿inverseˡ , -‿inverseʳ) = -ᴹ‿inverseˡ -‿inverseˡ , -ᴹ‿inverseʳ -‿inverseʳ
 
   -ᴹ‿cong : Congruent₁ _≈_ -_ → Congruent₁ _≈ᴹ_ (-ᴹ_ {n})
   -ᴹ‿cong -‿cong xs i = -‿cong (xs i)
@@ -158,9 +151,9 @@ module NegativeProperties (-_ : Op₁ A) where
 -- *ᴹ-+ᴹ-distrib : (_*ᴹ_ {n}) AD'.DistributesOver _+ᴹ_
 -- *ᴹ-+ᴹ-distrib = *ᴹ-+ᴹ-distribˡ , *ᴹ-+ᴹ-distribʳ
 
-module MultiplicationProperties (_*_ : Op₂ A) where
-  _*ᴹ_ : Op₂ $ Vector A n
-  _*ᴹ_ {n = n} = AB._*ᴹ_ {n = n} _*_
+-- module MultiplicationProperties (_*_ : Op₂ A) where
+--   _*ᴹ_ : Op₂ $ Vector A n
+--   _*ᴹ_ {n = n} = AB._*ᴹ_ {n = n} _*_
 
   -- *ᴹ-cong : Congruent₂ _≈_ _*_ → Congruent₂ _≈ᴹ_ (_*ᴹ_ {n = n})
   -- *ᴹ-cong *-cong x≈y u≈v i = *-cong (x≈y i) (u≈v i)
@@ -172,12 +165,6 @@ module MultiplicationProperties (_*_ : Op₂ A) where
 
 -- ------------------------------------------------------------------------
 -- -- Structures
-
--- isMagma : IsMagma (_+ᴹ_ {n})
--- isMagma = record
---   { isEquivalence = ≋-isEquivalence _
---   ; ∙-cong = +ᴹ-cong
---   }
 
 -- *ᴹ-isMagma : IsMagma (_*ᴹ_ {n})
 -- *ᴹ-isMagma = record
