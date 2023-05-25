@@ -32,8 +32,7 @@ private variable
 -- Algebraic properties of _+ᴹ_ -ᴹ_ _*ₗ_
 
 module MagmaProperties (rawMagma : RawMagma a ℓ) where
-  open RawMagma rawMagma renaming (_∙_ to _+_)
-  open VecMagma rawMagma
+  open VecMagma rawMagma renaming (_∙_ to _+_)
   open IsEquivalence
 
   ≈ᴹ-isEquivalence : IsEquivalence _≈_ → IsEquivalence (_≈ᴹ_ {n = n})
@@ -56,8 +55,7 @@ module MagmaProperties (rawMagma : RawMagma a ℓ) where
 
 
 module MonoidProperties (rawMonoid : RawMonoid a ℓ) where
-  open RawMonoid rawMonoid renaming (_∙_ to _+_; ε to 0#)
-  open VecMonoid rawMonoid
+  open VecMonoid rawMonoid renaming (_∙_ to _+_; ε to 0#)
   open MagmaProperties rawMagma public
 
   +ᴹ-identityˡ : LeftIdentity _≈_ 0# _+_ → LeftIdentity _≈ᴹ_ (0ᴹ {n}) _+ᴹ_
@@ -71,8 +69,7 @@ module MonoidProperties (rawMonoid : RawMonoid a ℓ) where
 
 
 module GroupProperties (rawGroup : RawGroup a ℓ) where
-  open RawGroup rawGroup renaming (_∙_ to _+_; ε to 0#; _⁻¹ to -_)
-  open VecGroup rawGroup
+  open VecGroup rawGroup renaming (_∙_ to _+_; ε to 0#; _⁻¹ to -_)
   open MonoidProperties rawMonoid public
 
   -ᴹ‿inverseˡ : LeftInverse _≈_ 0# -_ _+_ → LeftInverse _≈ᴹ_ (0ᴹ {n}) -ᴹ_ _+ᴹ_
@@ -88,8 +85,16 @@ module GroupProperties (rawGroup : RawGroup a ℓ) where
   -ᴹ‿cong -‿cong xs i = -‿cong (xs i)
 
 
--- *ₗ-cong : LD.Congruent SR._≈_ (_*ₗ_ {n})
--- *ₗ-cong x≈y u≈v i = *-cong x≈y (u≈v i)
+module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
+  open VecSemiring rawSemiring
+  module LD {n} = LeftDefs Carrier (_≈ᴹ_ {n = n})
+
+  *ₗ-cong : Congruent₂ _≈_ _*_ → LD.Congruent _≈_ (_*ₗ_ {n})
+  *ₗ-cong *-cong x≈y u≈v i = *-cong x≈y (u≈v i)
+
+  *ₗ-zeroˡ : LeftZero _≈_ 0# _*_ → LD.LeftZero 0# 0ᴹ (_*ₗ_ {n})
+  *ₗ-zeroˡ zeroˡ xs i = zeroˡ (xs i)
+
 
 -- *ₗ-zeroˡ : LD.LeftZero SR.0# (0ᴹ {n}) _*ₗ_
 -- *ₗ-zeroˡ xs i = zeroˡ (xs i)

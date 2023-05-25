@@ -33,43 +33,43 @@ module VecAddition (_+_ : Op₂ A) where
   _+ᴹ_ = zipWith _+_
 
 module VecMagma (rawMagma : RawMagma a ℓ) where
-  open RawMagma rawMagma
+  open RawMagma rawMagma public
   open VecAddition _∙_ public
   open EqualityVecFunc _≈_ public
 
 module VecMonoid (rawMonoid : RawMonoid a ℓ) where
-  open RawMonoid rawMonoid
+  open RawMonoid rawMonoid using (rawMagma; ε) public
   open VecMagma rawMagma public
 
   0ᴹ : Vector Carrier n
   0ᴹ = replicate ε
 
 module VecGroup (rawGroup : RawGroup a ℓ) where
-  open RawGroup rawGroup
+  open RawGroup rawGroup using (rawMonoid; _⁻¹) public
   open VecMonoid rawMonoid public
 
   -ᴹ_ : Op₁ $ Vector Carrier n
   -ᴹ_ = map $ _⁻¹
 
 module VecNearSemiring (rawNearSemiring : RawNearSemiring a ℓ) where
-  open RawNearSemiring rawNearSemiring
-  open VecMonoid +-rawMonoid public
+  open RawNearSemiring rawNearSemiring using (+-rawMonoid; *-rawMagma) public
+  open VecMonoid +-rawMonoid renaming (ε to 0#; _∙_ to _*_) public
   open VecMagma *-rawMagma public renaming (_+ᴹ_ to _*ᴹ_) using ()
 
 module VecSemiring (rawSemiring : RawSemiring a ℓ) where
-  open RawSemiring rawSemiring
+  open RawSemiring rawSemiring using (rawNearSemiring; 1#) public
   open VecNearSemiring rawNearSemiring public
 
   1ᴹ : Vector Carrier n
   1ᴹ = replicate 1#
 
-  _*ₗ_ : Op₂ A → Opₗ A (Vector A n)
-  _*ₗ_ _*_ r = map (r *_)
+  _*ₗ_ : Opₗ Carrier (Vector Carrier n)
+  _*ₗ_ r = map (r *_)
 
-  _*ᵣ_ : Op₂ A → Opᵣ A (Vector A n)
-  _*ᵣ_ _*_ xs r = map (_* r) xs
+  _*ᵣ_ : Opᵣ Carrier (Vector Carrier n)
+  _*ᵣ_ xs r = map (_* r) xs
 
 module VecRing (rawRing : RawRing a ℓ) where
-  open RawRing rawRing
+  open RawRing rawRing using (+-rawGroup; rawSemiring) public
   open VecGroup +-rawGroup public using (-ᴹ_)
   open VecSemiring rawSemiring public
