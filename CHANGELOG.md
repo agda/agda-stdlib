@@ -1370,6 +1370,12 @@ New modules
   Algebra.Construct.Flip.Op
   ```
 
+* Algebraic structures obtained as the free thing (for their signature):
+  ```
+  Algebra.Free
+  Algebra.Free.Magma
+  ```
+
 * Morphisms between module-like algebraic structures:
   ```
   Algebra.Module.Morphism.Construct.Composition
@@ -1377,6 +1383,11 @@ New modules
   Algebra.Module.Morphism.Definitions
   Algebra.Module.Morphism.Structures
   Algebra.Module.Properties
+  ```
+
+* Bundled morphisms between algebraic structures:
+  ```
+  Algebra.Morphism.Bundles
   ```
 
 * Identity morphisms and composition of morphisms between algebraic structures:

@@ -9,6 +9,7 @@
 module Algebra.Morphism.Construct.Composition where
 
 open import Algebra.Bundles
+open import Algebra.Morphism.Bundles
 open import Algebra.Morphism.Structures
 open import Data.Product
 open import Function.Base using (_∘_)
@@ -384,3 +385,26 @@ module _ {L₁ : RawLoop a ℓ₁}
     { isLoopMonomorphism = isLoopMonomorphism F.isLoopMonomorphism G.isLoopMonomorphism
     ; surjective               = Func.surjective (_≈_ L₁) (_≈_ L₂) (_≈_ L₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
     } where module F = IsLoopIsomorphism f-iso; module G = IsLoopIsomorphism g-iso
+
+------------------------------------------------------------------------
+-- Bundled morphisms between algebras
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Magma
+
+module _ {M₁ : Magma a ℓ₁}
+         {M₂ : Magma b ℓ₂}
+         {M₃ : Magma c ℓ₃}
+         (f : MagmaHomomorphism M₁ M₂)
+         (g : MagmaHomomorphism M₂ M₃)
+         where
+
+  private
+    module F = MagmaHomomorphism f
+    module G = MagmaHomomorphism g
+
+  magmaHomomorphism : MagmaHomomorphism M₁ M₃
+  magmaHomomorphism = record
+    { ⟦_⟧ = G.⟦_⟧ ∘ F.⟦_⟧
+    ; isMagmaHomomorphism = isMagmaHomomorphism (Magma.trans M₃) F.isMagmaHomomorphism G.isMagmaHomomorphism }
