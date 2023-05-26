@@ -32,7 +32,7 @@ private variable
 -- Algebraic properties of _+ᴹ_ -ᴹ_ _*ₗ_
 
 module MagmaProperties (rawMagma : RawMagma a ℓ) where
-  open VecMagma rawMagma renaming (_∙_ to _+_)
+  open VecMagma rawMagma
   open IsEquivalence
   private
     module ≈ = ADefinitions _≈_
@@ -41,107 +41,119 @@ module MagmaProperties (rawMagma : RawMagma a ℓ) where
   ≈ᴹ-isEquivalence : IsEquivalence _≈_ → IsEquivalence (_≈ᴹ_ {n = n})
   ≈ᴹ-isEquivalence = flip Pointwise.isEquivalence _
 
-  +ᴹ-cong : ≈.Congruent₂ _+_ → ≈ᴹ.Congruent₂ (_+ᴹ_ {n = n})
-  +ᴹ-cong +-cong x≈y u≈v i = +-cong (x≈y i) (u≈v i)
+  ∙ᴹ-cong : ≈.Congruent₂ _∙_ → ≈ᴹ.Congruent₂ (_∙ᴹ_ {n = n})
+  ∙ᴹ-cong ∙-cong x≈y u≈v i = ∙-cong (x≈y i) (u≈v i)
 
-  +ᴹ-assoc : ≈.Associative _+_ → ≈ᴹ.Associative (_+ᴹ_ {n})
-  +ᴹ-assoc +-assoc xs ys zs i = +-assoc (xs i) (ys i) (zs i)
+  ∙ᴹ-assoc : ≈.Associative _∙_ → ≈ᴹ.Associative (_∙ᴹ_ {n})
+  ∙ᴹ-assoc ∙-assoc xs ys zs i = ∙-assoc (xs i) (ys i) (zs i)
 
-  +ᴹ-comm : ≈.Commutative _+_ → ≈ᴹ.Commutative (_+ᴹ_ {n})
-  +ᴹ-comm +-comm xs ys i = +-comm (xs i) (ys i)
+  ∙ᴹ-comm : ≈.Commutative _∙_ → ≈ᴹ.Commutative (_∙ᴹ_ {n})
+  ∙ᴹ-comm ∙-comm xs ys i = ∙-comm (xs i) (ys i)
 
 
-  isMagma : IsMagma _≈_ _+_ → IsMagma _≈ᴹ_ (_+ᴹ_ {n})
+  isMagma : IsMagma _≈_ _∙_ → IsMagma _≈ᴹ_ (_∙ᴹ_ {n})
   isMagma isMagma = record
     { isEquivalence = ≈ᴹ-isEquivalence isEquivalence
-    ; ∙-cong = +ᴹ-cong ∙-cong
+    ; ∙-cong = ∙ᴹ-cong ∙-cong
     } where open IsMagma isMagma
 
-  isCommutativeMagma : IsCommutativeMagma _≈_ _+_ → IsCommutativeMagma _≈ᴹ_ (_+ᴹ_ {n})
+  isCommutativeMagma : IsCommutativeMagma _≈_ _∙_ → IsCommutativeMagma _≈ᴹ_ (_∙ᴹ_ {n})
   isCommutativeMagma isCMagma = record
     { isMagma = isMagma CM.isMagma
-    ; comm = +ᴹ-comm CM.comm
+    ; comm = ∙ᴹ-comm CM.comm
     } where module CM = IsCommutativeMagma isCMagma
 
-  isSemigroup : IsSemigroup _≈_ _+_ → IsSemigroup _≈ᴹ_ (_+ᴹ_ {n})
+  isSemigroup : IsSemigroup _≈_ _∙_ → IsSemigroup _≈ᴹ_ (_∙ᴹ_ {n})
   isSemigroup isSemigroup = record
     { isMagma = isMagma SG.isMagma
-    ; assoc = +ᴹ-assoc SG.assoc
+    ; assoc = ∙ᴹ-assoc SG.assoc
     } where module SG = IsSemigroup isSemigroup
 
-  isCommutativeSemigroup : IsCommutativeSemigroup _≈_ _+_ → IsCommutativeSemigroup _≈ᴹ_ (_+ᴹ_ {n})
+  isCommutativeSemigroup : IsCommutativeSemigroup _≈_ _∙_ → IsCommutativeSemigroup _≈ᴹ_ (_∙ᴹ_ {n})
   isCommutativeSemigroup isCommutativeSemigroup = record
     { isSemigroup = isSemigroup SG.isSemigroup
-    ; comm = +ᴹ-comm SG.comm
+    ; comm = ∙ᴹ-comm SG.comm
     } where module SG = IsCommutativeSemigroup isCommutativeSemigroup
 
 
 module MonoidProperties (rawMonoid : RawMonoid a ℓ) where
-  open VecMonoid rawMonoid renaming (_∙_ to _+_; ε to 0#)
+  open VecMonoid rawMonoid
   open MagmaProperties rawMagma public
   private
     module ≈ = ADefinitions _≈_
     module ≈ᴹ {n} = ADefinitions (_≈ᴹ_ {n = n})
 
-  +ᴹ-identityˡ : ≈.LeftIdentity 0# _+_ → ≈ᴹ.LeftIdentity (0ᴹ {n}) _+ᴹ_
-  +ᴹ-identityˡ +-identityˡ xs i = +-identityˡ (xs i)
+  ∙ᴹ-identityˡ : ≈.LeftIdentity ε _∙_ → ≈ᴹ.LeftIdentity (εᴹ {n}) _∙ᴹ_
+  ∙ᴹ-identityˡ ∙-identityˡ xs i = ∙-identityˡ (xs i)
 
-  +ᴹ-identityʳ : ≈.RightIdentity 0# _+_ → ≈ᴹ.RightIdentity (0ᴹ {n}) _+ᴹ_
-  +ᴹ-identityʳ +-identityʳ xs is = +-identityʳ (xs is)
+  ∙ᴹ-identityʳ : ≈.RightIdentity ε _∙_ → ≈ᴹ.RightIdentity (εᴹ {n}) _∙ᴹ_
+  ∙ᴹ-identityʳ ∙-identityʳ xs is = ∙-identityʳ (xs is)
 
-  +ᴹ-identity : ≈.Identity 0# _+_ → ≈ᴹ.Identity (0ᴹ {n}) _+ᴹ_
-  +ᴹ-identity (+-identityˡ , +-identityʳ) = +ᴹ-identityˡ +-identityˡ , +ᴹ-identityʳ +-identityʳ
+  ∙ᴹ-identity : ≈.Identity ε _∙_ → ≈ᴹ.Identity (εᴹ {n}) _∙ᴹ_
+  ∙ᴹ-identity (∙-identityˡ , ∙-identityʳ) = ∙ᴹ-identityˡ ∙-identityˡ , ∙ᴹ-identityʳ ∙-identityʳ
 
 
-  isMonoid : IsMonoid _≈_ _+_ 0# → IsMonoid _≈ᴹ_ (_+ᴹ_ {n}) 0ᴹ
+  isMonoid : IsMonoid _≈_ _∙_ ε → IsMonoid _≈ᴹ_ (_∙ᴹ_ {n}) εᴹ
   isMonoid isMonoid = record
     { isSemigroup = isSemigroup M.isSemigroup
-    ; identity = +ᴹ-identity M.identity
+    ; identity = ∙ᴹ-identity M.identity
     } where module M = IsMonoid isMonoid
 
-  isCommutativeMonoid : IsCommutativeMonoid _≈_ _+_ 0# → IsCommutativeMonoid _≈ᴹ_ (_+ᴹ_ {n}) 0ᴹ
+  isCommutativeMonoid : IsCommutativeMonoid _≈_ _∙_ ε → IsCommutativeMonoid _≈ᴹ_ (_∙ᴹ_ {n}) εᴹ
   isCommutativeMonoid isCommutativeMonoid = record
     { isMonoid = isMonoid CM.isMonoid
-    ; comm = +ᴹ-comm CM.comm
+    ; comm = ∙ᴹ-comm CM.comm
     } where module CM = IsCommutativeMonoid isCommutativeMonoid
 
 
 module GroupProperties (rawGroup : RawGroup a ℓ) where
-  open VecGroup rawGroup renaming (_∙_ to _+_; ε to 0#; _⁻¹ to -_)
+  open VecGroup rawGroup renaming (_⁻¹ to -_)
   open MonoidProperties rawMonoid public
   private
     module ≈ = ADefinitions _≈_
     module ≈ᴹ {n} = ADefinitions (_≈ᴹ_ {n = n})
 
-  -ᴹ‿inverseˡ : ≈.LeftInverse 0# -_ _+_ → ≈ᴹ.LeftInverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  -ᴹ‿inverseˡ : ≈.LeftInverse ε -_ _∙_ → ≈ᴹ.LeftInverse (εᴹ {n}) -ᴹ_ _∙ᴹ_
   -ᴹ‿inverseˡ -‿inverseˡ xs i = -‿inverseˡ (xs i)
 
-  -ᴹ‿inverseʳ : ≈.RightInverse 0# -_ _+_ → ≈ᴹ.RightInverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  -ᴹ‿inverseʳ : ≈.RightInverse ε -_ _∙_ → ≈ᴹ.RightInverse (εᴹ {n}) -ᴹ_ _∙ᴹ_
   -ᴹ‿inverseʳ -‿inverseʳ xs i = -‿inverseʳ (xs i)
 
-  -ᴹ‿inverse : ≈.Inverse 0# -_ _+_ → ≈ᴹ.Inverse (0ᴹ {n}) -ᴹ_ _+ᴹ_
+  -ᴹ‿inverse : ≈.Inverse ε -_ _∙_ → ≈ᴹ.Inverse (εᴹ {n}) -ᴹ_ _∙ᴹ_
   -ᴹ‿inverse (-‿inverseˡ , -‿inverseʳ) = -ᴹ‿inverseˡ -‿inverseˡ , -ᴹ‿inverseʳ -‿inverseʳ
 
   -ᴹ‿cong : ≈.Congruent₁ -_ → ≈ᴹ.Congruent₁ (-ᴹ_ {n})
   -ᴹ‿cong -‿cong xs i = -‿cong (xs i)
 
 
-  isGroup : IsGroup _≈_ _+_ 0# -_ → IsGroup _≈ᴹ_ (_+ᴹ_ {n}) 0ᴹ -ᴹ_
+  isGroup : IsGroup _≈_ _∙_ ε -_ → IsGroup _≈ᴹ_ (_∙ᴹ_ {n}) εᴹ -ᴹ_
   isGroup isGroup = record
     { isMonoid = isMonoid G.isMonoid
     ; inverse = -ᴹ‿inverse G.inverse
     ; ⁻¹-cong = -ᴹ‿cong G.⁻¹-cong
     } where module G = IsGroup isGroup
 
-  isAbelianGroup : IsAbelianGroup _≈_ _+_ 0# -_ → IsAbelianGroup _≈ᴹ_ (_+ᴹ_ {n}) 0ᴹ -ᴹ_
+  isAbelianGroup : IsAbelianGroup _≈_ _∙_ ε -_ → IsAbelianGroup _≈ᴹ_ (_∙ᴹ_ {n}) εᴹ -ᴹ_
   isAbelianGroup isAbelianGroup = record
     { isGroup = isGroup AG.isGroup
-    ; comm = +ᴹ-comm AG.comm
+    ; comm = ∙ᴹ-comm AG.comm
     } where module AG = IsAbelianGroup isAbelianGroup
+
+module VecNearSemiringProperties (rawNearSemiring : RawNearSemiring a ℓ) where
+  open VecNearSemiring rawNearSemiring
+  open MonoidProperties +-rawMonoid public renaming
+    ( ∙ᴹ-comm to +ᴹ-comm
+    ; ∙ᴹ-identity to +ᴹ-identity
+    )
+
 
 module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
   open VecSemiring rawSemiring
-  open MonoidProperties +-rawMonoid public
+  open VecNearSemiringProperties rawNearSemiring public
+  open MonoidProperties *-rawMonoid public using () renaming
+    ( ∙ᴹ-comm to *ᴹ-comm
+    ; ∙ᴹ-identity to *ᴹ-identity
+    )
   private
     module LD≈ = LeftDefs Carrier _≈_
     module RD≈ = RightDefs Carrier _≈_
@@ -164,6 +176,9 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
   *ₗ-identityˡ : ≈.LeftIdentity 1# _*_ → LD.LeftIdentity 1# (_*ₗ_ {n})
   *ₗ-identityˡ *-identityˡ xs i = *-identityˡ (xs i)
 
+  *ᵣ-identityʳ : RD≈.RightIdentity 1# _*_ → RD.RightIdentity 1# (_*ᵣ_ {n})
+  *ᵣ-identityʳ *-identityʳ xs i = *-identityʳ (xs i)
+
   *ₗ-assoc : ≈.Associative _*_ → LD.Associative _*_ (_*ₗ_ {n})
   *ₗ-assoc *-assoc m n xs i = *-assoc m n (xs i)
 
@@ -181,9 +196,6 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
 
   *ᵣ-zeroˡ : RD≈.LeftZero 0# _*_ → RD.LeftZero (0ᴹ {n}) _*ᵣ_
   *ᵣ-zeroˡ zeroˡ xs i = zeroˡ xs
-
-  *ᵣ-identityʳ : RD≈.RightIdentity 1# _*_ → RD.RightIdentity 1# (_*ᵣ_ {n})
-  *ᵣ-identityʳ *-identityʳ xs i = *-identityʳ (xs i)
 
   *ᵣ-assoc : RD≈.Associative _*_ _*_ → RD.Associative _*_ (_*ᵣ_ {n})
   *ᵣ-assoc *-assoc xs m n i = *-assoc (xs i) m n
@@ -220,6 +232,11 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
 
   *ᴹ-assoc : ≈.Associative _*_ → ≈ᴹ.Associative (_*ᴹ_ {n})
   *ᴹ-assoc *-assoc xs ys zs i = *-assoc (xs i) (ys i) (zs i)
+
+module NearSemiringProperties (nearSemiring : NearSemiring a ℓ) where
+  open NearSemiring nearSemiring
+  open VecNearSemiringProperties rawNearSemiring public
+
 
 module SemiringProperties (semiring : Semiring a ℓ) where
   open Semiring semiring
@@ -271,9 +288,8 @@ module SemiringProperties (semiring : Semiring a ℓ) where
 module RingProperties (ring : Ring a ℓ) where
   open Ring ring
   open VecRing rawRing
-  open VecSemiRingProperties rawSemiring
   open Group +-group using (rawGroup)
-  open GroupProperties rawGroup public using (-ᴹ‿cong; -ᴹ‿inverse)
+  open GroupProperties rawGroup public using (-ᴹ‿cong; -ᴹ‿inverse; isAbelianGroup)
   open SemiringProperties semiring public
 
   isRightModule : IsRightModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ᵣ_
@@ -297,6 +313,36 @@ module RingProperties (ring : Ring a ℓ) where
     ; -ᴹ‿inverse = -ᴹ‿inverse -‿inverse
     }
 
+  +ᴹ-*-isRing : IsRing _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isRing = record
+    { +-isAbelianGroup = isAbelianGroup +-isAbelianGroup
+    ; *-cong = *ᴹ-cong *-cong
+    ; *-assoc = *ᴹ-assoc *-assoc
+    ; *-identity = *ᴹ-identity *-identity
+    ; distrib = *ᴹ-+ᴹ-distrib distrib
+    ; zero = *ᴹ-zero (Ring.zero ring)
+    }
+
+module CommutativeRingProperties (commutativeRing : CommutativeRing a ℓ) where
+  open CommutativeRing commutativeRing
+  open VecRing rawRing
+  open RingProperties ring public
+  -- open Group +-group using (rawGroup)
+  -- open GroupProperties rawGroup public using (-ᴹ‿cong; -ᴹ‿inverse)
+  -- open SemiringProperties semiring public
+
+
+  +ᴹ-*-isCommutativeRing : IsCommutativeRing _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isCommutativeRing = record
+    { isRing = +ᴹ-*-isRing
+    ; *-comm = *ᴹ-comm *-comm
+    }
+
+  isModule : IsModule commutativeRing (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
+  isModule = record
+    { isBimodule = isBimodule
+    }
+
 
 -- ------------------------------------------------------------------------
 -- -- Structures
@@ -314,11 +360,6 @@ module RingProperties (ring : Ring a ℓ) where
 --   }
 
 
-
--- isModule : IsModule cring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
--- isModule = record
---   { isBimodule = isBimodule
---   }
 
 -- +ᴹ-*-isNearSemiring : IsNearSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
 -- +ᴹ-*-isNearSemiring = record
@@ -372,22 +413,6 @@ module RingProperties (ring : Ring a ℓ) where
 --   ; *-assoc = *ᴹ-assoc
 --   ; distrib = *ᴹ-+ᴹ-distrib
 --   ; zero = *ᴹ-zero
---   }
-
--- +ᴹ-*-isRing : IsRing (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
--- +ᴹ-*-isRing = record
---   { +-isAbelianGroup = isAbelianGroup
---   ; *-cong = *ᴹ-cong
---   ; *-assoc = *ᴹ-assoc
---   ; *-identity = *ᴹ-identity
---   ; distrib = *ᴹ-+ᴹ-distrib
---   ; zero = *ᴹ-zero
---   }
-
--- +ᴹ-*-isCommutativeRing : IsCommutativeRing (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
--- +ᴹ-*-isCommutativeRing = record
---   { isRing = +ᴹ-*-isRing
---   ; *-comm = *ᴹ-comm
 --   }
 
 -- ------------------------------------------------------------------------
