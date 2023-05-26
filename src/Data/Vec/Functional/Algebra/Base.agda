@@ -53,8 +53,8 @@ module VecGroup (rawGroup : RawGroup a ℓ) where
 
 module VecNearSemiring (rawNearSemiring : RawNearSemiring a ℓ) where
   open RawNearSemiring rawNearSemiring using (+-rawMonoid; *-rawMagma) public
-  open VecMonoid +-rawMonoid renaming (ε to 0#; _∙_ to _*_) public
-  open VecMagma *-rawMagma public renaming (_+ᴹ_ to _*ᴹ_) using ()
+  open VecMonoid +-rawMonoid renaming (ε to 0#; _∙_ to _+_) public
+  open VecMagma *-rawMagma public renaming (_+ᴹ_ to _*ᴹ_; _∙_ to _*_) using ()
 
 module VecSemiring (rawSemiring : RawSemiring a ℓ) where
   open RawSemiring rawSemiring using (rawNearSemiring; 1#) public
