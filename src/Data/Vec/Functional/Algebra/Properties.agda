@@ -224,7 +224,7 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
 module SemiringProperties (semiring : Semiring a ℓ) where
   open Semiring semiring
   open VecSemiring rawSemiring
-  open VecSemiRingProperties rawSemiring
+  open VecSemiRingProperties rawSemiring public
 
   isPreleftSemimodule : IsPreleftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
   isPreleftSemimodule = record
@@ -268,6 +268,36 @@ module SemiringProperties (semiring : Semiring a ℓ) where
     ; isPreleftSemimodule = isPreleftSemimodule
     }
 
+module RingProperties (ring : Ring a ℓ) where
+  open Ring ring
+  open VecRing rawRing
+  open VecSemiRingProperties rawSemiring
+  open Group +-group using (rawGroup)
+  open GroupProperties rawGroup public using (-ᴹ‿cong; -ᴹ‿inverse)
+  open SemiringProperties semiring public
+
+  isRightModule : IsRightModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ᵣ_
+  isRightModule = record
+    { isRightSemimodule = isRightSemimodule
+    ; -ᴹ‿cong = -ᴹ‿cong -‿cong
+    ; -ᴹ‿inverse = -ᴹ‿inverse -‿inverse
+    }
+
+  isBimodule : IsBimodule ring ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
+  isBimodule = record
+    { isBisemimodule = isBisemimodule
+    ; -ᴹ‿cong = -ᴹ‿cong -‿cong
+    ; -ᴹ‿inverse = -ᴹ‿inverse -‿inverse
+    }
+
+  isLeftModule : IsLeftModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_
+  isLeftModule = record
+    { isLeftSemimodule = isLeftSemimodule
+    ; -ᴹ‿cong = -ᴹ‿cong -‿cong
+    ; -ᴹ‿inverse = -ᴹ‿inverse -‿inverse
+    }
+
+
 -- ------------------------------------------------------------------------
 -- -- Structures
 
@@ -284,27 +314,6 @@ module SemiringProperties (semiring : Semiring a ℓ) where
 --   }
 
 
-
--- isRightModule : IsRightModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ᵣ_
--- isRightModule = record
---   { isRightSemimodule = isRightSemimodule
---   ; -ᴹ‿cong = -ᴹ‿cong
---   ; -ᴹ‿inverse = -ᴹ‿inverse
---   }
-
--- isBimodule : IsBimodule ring ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
--- isBimodule = record
---   { isBisemimodule = isBisemimodule
---   ; -ᴹ‿cong = -ᴹ‿cong
---   ; -ᴹ‿inverse = -ᴹ‿inverse
---   }
-
--- isLeftModule : IsLeftModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_
--- isLeftModule = record
---   { isLeftSemimodule = isLeftSemimodule
---   ; -ᴹ‿cong = -ᴹ‿cong
---   ; -ᴹ‿inverse = -ᴹ‿inverse
---   }
 
 -- isModule : IsModule cring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_ _*ᵣ_
 -- isModule = record
