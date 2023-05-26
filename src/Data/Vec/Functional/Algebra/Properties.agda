@@ -141,6 +141,7 @@ module GroupProperties (rawGroup : RawGroup a ℓ) where
 
 module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
   open VecSemiring rawSemiring
+  open MonoidProperties +-rawMonoid public
   private
     module LD≈ = LeftDefs Carrier _≈_
     module RD≈ = RightDefs Carrier _≈_
@@ -220,6 +221,52 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
   *ᴹ-assoc : ≈.Associative _*_ → ≈ᴹ.Associative (_*ᴹ_ {n})
   *ᴹ-assoc *-assoc xs ys zs i = *-assoc (xs i) (ys i) (zs i)
 
+module SemiringProperties (semiring : Semiring a ℓ) where
+  open Semiring semiring
+  open VecSemiring rawSemiring
+  open VecSemiRingProperties rawSemiring
+
+  isPreleftSemimodule : IsPreleftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
+  isPreleftSemimodule = record
+    { *ₗ-cong = *ₗ-cong *-cong
+    ; *ₗ-zeroˡ = *ₗ-zeroˡ zeroˡ
+    ; *ₗ-distribʳ = *ₗ-distribʳ distribʳ
+    ; *ₗ-identityˡ = *ₗ-identityˡ *-identityˡ
+    ; *ₗ-assoc = *ₗ-assoc *-assoc
+    ; *ₗ-zeroʳ = *ₗ-zeroʳ zeroʳ
+    ; *ₗ-distribˡ = *ₗ-distribˡ distribˡ
+    }
+
+  isPrerightSemimodule : IsPrerightSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ᵣ_
+  isPrerightSemimodule = record
+    { *ᵣ-cong = *ᵣ-cong *-cong
+    ; *ᵣ-zeroʳ = *ᵣ-zeroʳ zeroʳ
+    ; *ᵣ-distribˡ = *ᵣ-distribˡ distribˡ
+    ; *ᵣ-identityʳ = *ᵣ-identityʳ *-identityʳ
+    ; *ᵣ-assoc = *ᵣ-assoc *-assoc
+    ; *ᵣ-zeroˡ = *ᵣ-zeroˡ zeroˡ
+    ; *ᵣ-distribʳ = *ᵣ-distribʳ distribʳ
+    }
+
+  isRightSemimodule : IsRightSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ᵣ_
+  isRightSemimodule = record
+    { +ᴹ-isCommutativeMonoid = isCommutativeMonoid +-isCommutativeMonoid
+    ; isPrerightSemimodule = isPrerightSemimodule
+    }
+
+  isBisemimodule : IsBisemimodule semiring semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_ _*ᵣ_
+  isBisemimodule = record
+    { +ᴹ-isCommutativeMonoid = isCommutativeMonoid +-isCommutativeMonoid
+    ; isPreleftSemimodule = isPreleftSemimodule
+    ; isPrerightSemimodule = isPrerightSemimodule
+    ; *ₗ-*ᵣ-assoc = *ₗ-*ᵣ-assoc *-assoc
+    }
+
+  isLeftSemimodule : IsLeftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
+  isLeftSemimodule = record
+    { +ᴹ-isCommutativeMonoid = isCommutativeMonoid +-isCommutativeMonoid
+    ; isPreleftSemimodule = isPreleftSemimodule
+    }
 
 -- ------------------------------------------------------------------------
 -- -- Structures
@@ -238,42 +285,6 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
 
 
 
--- isPreleftSemimodule : IsPreleftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
--- isPreleftSemimodule = record
---   { *ₗ-cong = *ₗ-cong
---   ; *ₗ-zeroˡ = *ₗ-zeroˡ
---   ; *ₗ-distribʳ = *ₗ-distribʳ
---   ; *ₗ-identityˡ = *ₗ-identityˡ
---   ; *ₗ-assoc = *ₗ-assoc
---   ; *ₗ-zeroʳ = *ₗ-zeroʳ
---   ; *ₗ-distribˡ = *ₗ-distribˡ
---   }
-
--- isPrerightSemimodule : IsPrerightSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ᵣ_
--- isPrerightSemimodule = record
---   { *ᵣ-cong = *ᵣ-cong
---   ; *ᵣ-zeroʳ = *ᵣ-zeroʳ
---   ; *ᵣ-distribˡ = *ᵣ-distribˡ
---   ; *ᵣ-identityʳ = *ᵣ-identityʳ
---   ; *ᵣ-assoc = *ᵣ-assoc
---   ; *ᵣ-zeroˡ = *ᵣ-zeroˡ
---   ; *ᵣ-distribʳ = *ᵣ-distribʳ
---   }
-
--- isRightSemimodule : IsRightSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ᵣ_
--- isRightSemimodule = record
---   { +ᴹ-isCommutativeMonoid = isCommutativeMonoid
---   ; isPrerightSemimodule = isPrerightSemimodule
---   }
-
--- isBisemimodule : IsBisemimodule semiring semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_ _*ᵣ_
--- isBisemimodule = record
---   { +ᴹ-isCommutativeMonoid = isCommutativeMonoid
---   ; isPreleftSemimodule = isPreleftSemimodule
---   ; isPrerightSemimodule = isPrerightSemimodule
---   ; *ₗ-*ᵣ-assoc = *ₗ-*ᵣ-assoc
---   }
-
 -- isRightModule : IsRightModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ᵣ_
 -- isRightModule = record
 --   { isRightSemimodule = isRightSemimodule
@@ -286,12 +297,6 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
 --   { isBisemimodule = isBisemimodule
 --   ; -ᴹ‿cong = -ᴹ‿cong
 --   ; -ᴹ‿inverse = -ᴹ‿inverse
---   }
-
--- isLeftSemimodule : IsLeftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
--- isLeftSemimodule = record
---   { +ᴹ-isCommutativeMonoid = isCommutativeMonoid
---   ; isPreleftSemimodule = isPreleftSemimodule
 --   }
 
 -- isLeftModule : IsLeftModule ring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ -ᴹ_ _*ₗ_
