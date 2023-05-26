@@ -126,6 +126,19 @@ module GroupProperties (rawGroup : RawGroup a ℓ) where
   -ᴹ‿cong -‿cong xs i = -‿cong (xs i)
 
 
+  isGroup : IsGroup _≈_ _+_ 0# -_ → IsGroup _≈ᴹ_ (_+ᴹ_ {n}) 0ᴹ -ᴹ_
+  isGroup isGroup = record
+    { isMonoid = isMonoid G.isMonoid
+    ; inverse = -ᴹ‿inverse G.inverse
+    ; ⁻¹-cong = -ᴹ‿cong G.⁻¹-cong
+    } where module G = IsGroup isGroup
+
+  isAbelianGroup : IsAbelianGroup _≈_ _+_ 0# -_ → IsAbelianGroup _≈ᴹ_ (_+ᴹ_ {n}) 0ᴹ -ᴹ_
+  isAbelianGroup isAbelianGroup = record
+    { isGroup = isGroup AG.isGroup
+    ; comm = +ᴹ-comm AG.comm
+    } where module AG = IsAbelianGroup isAbelianGroup
+
 module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
   open VecSemiring rawSemiring
   private
@@ -208,7 +221,6 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
   *ᴹ-assoc *-assoc xs ys zs i = *-assoc (xs i) (ys i) (zs i)
 
 
-
 -- ------------------------------------------------------------------------
 -- -- Structures
 
@@ -224,18 +236,7 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
 --   ; identity = *ᴹ-identity
 --   }
 
--- isGroup : IsGroup (_+ᴹ_ {n}) 0ᴹ -ᴹ_
--- isGroup = record
---   { isMonoid = isMonoid
---   ; inverse = -ᴹ‿inverse
---   ; ⁻¹-cong = -ᴹ‿cong
---   }
 
--- isAbelianGroup : IsAbelianGroup (_+ᴹ_ {n}) 0ᴹ -ᴹ_
--- isAbelianGroup = record
---   { isGroup = isGroup
---   ; comm = +ᴹ-comm
---   }
 
 -- isPreleftSemimodule : IsPreleftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
 -- isPreleftSemimodule = record
