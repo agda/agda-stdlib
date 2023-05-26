@@ -282,10 +282,26 @@ module CommutativeSemiringWithoutOneProperties
     ; *-comm = *ᴹ-comm *-comm
     }
 
+module SemiringWithoutAnnihilatingZeroProperties
+  (semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ) where
+
+  open SemiringWithoutAnnihilatingZero semiringWithoutAnnihilatingZero
+  open VecSemiring rawSemiring
+  open VecSemiRingProperties rawSemiring public
+
+  +ᴹ-*-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = isCommutativeMonoid +-isCommutativeMonoid
+    ; *-cong = *ᴹ-cong *-cong
+    ; *-assoc = *ᴹ-assoc *-assoc
+    ; *-identity = *ᴹ-identity *-identity
+    ; distrib = *ᴹ-+ᴹ-distrib distrib
+    }
+
 module SemiringProperties (semiring : Semiring a ℓ) where
   open Semiring semiring
   open VecSemiring rawSemiring
-  open VecSemiRingProperties rawSemiring public
+  open SemiringWithoutAnnihilatingZeroProperties semiringWithoutAnnihilatingZero public
 
   isPreleftSemimodule : IsPreleftSemimodule semiring (_≈ᴹ_ {n}) _+ᴹ_ 0ᴹ _*ₗ_
   isPreleftSemimodule = record
@@ -327,6 +343,50 @@ module SemiringProperties (semiring : Semiring a ℓ) where
   isLeftSemimodule = record
     { +ᴹ-isCommutativeMonoid = isCommutativeMonoid +-isCommutativeMonoid
     ; isPreleftSemimodule = isPreleftSemimodule
+    }
+
+  +ᴹ-*-isSemiring : IsSemiring _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isSemiring = record
+    { isSemiringWithoutAnnihilatingZero = +ᴹ-*-isSemiringWithoutAnnihilatingZero
+    ; zero = *ᴹ-zero (Semiring.zero semiring)
+    }
+
+module CommutativeSemiringProperties (commutativeSemiring : CommutativeSemiring a ℓ) where
+  open CommutativeSemiring commutativeSemiring
+  open VecSemiring rawSemiring
+  open SemiringProperties semiring
+
+  +ᴹ-*-isCommutativeSemiring : IsCommutativeSemiring _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
+  +ᴹ-*-isCommutativeSemiring = record
+    { isSemiring = +ᴹ-*-isSemiring
+    ; *-comm = *ᴹ-comm *-comm
+    }
+
+module RingWithoutOneProperties (ringWithoutOne : RingWithoutOne a ℓ) where
+  open RingWithoutOne ringWithoutOne
+
+  rawNearSemiring : RawNearSemiring a ℓ
+  rawNearSemiring = record
+    { Carrier = Carrier
+    ; _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0# = 0#
+    }
+
+  open Group +-group renaming (rawGroup to +-rawGroup) using ()
+  open VecGroup +-rawGroup using (-ᴹ_)
+  open GroupProperties +-rawGroup using (isAbelianGroup) public
+  open VecNearSemiring rawNearSemiring
+  open VecNearSemiringProperties rawNearSemiring public
+
+  +ᴹ-*-isRingWithoutOne : IsRingWithoutOne _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ
+  +ᴹ-*-isRingWithoutOne = record
+    { +-isAbelianGroup = isAbelianGroup +-isAbelianGroup
+    ; *-cong = *ᴹ-cong *-cong
+    ; *-assoc = *ᴹ-assoc *-assoc
+    ; distrib = *ᴹ-+ᴹ-distrib distrib
+    ; zero = *ᴹ-zero (RingWithoutOne.zero ringWithoutOne)
     }
 
 module RingProperties (ring : Ring a ℓ) where
@@ -371,10 +431,6 @@ module CommutativeRingProperties (commutativeRing : CommutativeRing a ℓ) where
   open CommutativeRing commutativeRing
   open VecRing rawRing
   open RingProperties ring public
-  -- open Group +-group using (rawGroup)
-  -- open GroupProperties rawGroup public using (-ᴹ‿cong; -ᴹ‿inverse)
-  -- open SemiringProperties semiring public
-
 
   +ᴹ-*-isCommutativeRing : IsCommutativeRing _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ 1ᴹ
   +ᴹ-*-isCommutativeRing = record
@@ -404,36 +460,6 @@ module CommutativeRingProperties (commutativeRing : CommutativeRing a ℓ) where
 --   }
 
 
-
--- +ᴹ-*-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
--- +ᴹ-*-isSemiringWithoutAnnihilatingZero = record
---   { +-isCommutativeMonoid = isCommutativeMonoid
---   ; *-cong = *ᴹ-cong
---   ; *-assoc = *ᴹ-assoc
---   ; *-identity = *ᴹ-identity
---   ; distrib = *ᴹ-+ᴹ-distrib
---   }
-
--- +ᴹ-*-isSemiring : IsSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
--- +ᴹ-*-isSemiring = record
---   { isSemiringWithoutAnnihilatingZero = +ᴹ-*-isSemiringWithoutAnnihilatingZero
---   ; zero = *ᴹ-zero
---   }
-
--- +ᴹ-*-isCommutativeSemiring : IsCommutativeSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
--- +ᴹ-*-isCommutativeSemiring = record
---   { isSemiring = +ᴹ-*-isSemiring
---   ; *-comm = *ᴹ-comm
---   }
-
--- +ᴹ-*-isRingWithoutOne : IsRingWithoutOne (_+ᴹ_ {n}) _*ᴹ_ -ᴹ_ 0ᴹ
--- +ᴹ-*-isRingWithoutOne = record
---   { +-isAbelianGroup = isAbelianGroup
---   ; *-cong = *ᴹ-cong
---   ; *-assoc = *ᴹ-assoc
---   ; distrib = *ᴹ-+ᴹ-distrib
---   ; zero = *ᴹ-zero
---   }
 
 -- ------------------------------------------------------------------------
 -- -- Bundles
