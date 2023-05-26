@@ -50,11 +50,30 @@ module MagmaProperties (rawMagma : RawMagma a ℓ) where
   +ᴹ-comm : ≈.Commutative _+_ → ≈ᴹ.Commutative (_+ᴹ_ {n})
   +ᴹ-comm +-comm xs ys i = +-comm (xs i) (ys i)
 
+
   isMagma : IsMagma _≈_ _+_ → IsMagma _≈ᴹ_ (_+ᴹ_ {n})
   isMagma isMagma = record
     { isEquivalence = ≈ᴹ-isEquivalence isEquivalence
     ; ∙-cong = +ᴹ-cong ∙-cong
     } where open IsMagma isMagma
+
+  isCommutativeMagma : IsCommutativeMagma _≈_ _+_ → IsCommutativeMagma _≈ᴹ_ (_+ᴹ_ {n})
+  isCommutativeMagma isCMagma = record
+    { isMagma = isMagma CM.isMagma
+    ; comm = +ᴹ-comm CM.comm
+    } where module CM = IsCommutativeMagma isCMagma
+
+  isSemigroup : IsSemigroup _≈_ _+_ → IsSemigroup _≈ᴹ_ (_+ᴹ_ {n})
+  isSemigroup isSemigroup = record
+    { isMagma = isMagma SG.isMagma
+    ; assoc = +ᴹ-assoc SG.assoc
+    } where module SG = IsSemigroup isSemigroup
+
+  isCommutativeSemigroup : IsCommutativeSemigroup _≈_ _+_ → IsCommutativeSemigroup _≈ᴹ_ (_+ᴹ_ {n})
+  isCommutativeSemigroup isCommutativeSemigroup = record
+    { isSemigroup = isSemigroup SG.isSemigroup
+    ; comm = +ᴹ-comm SG.comm
+    } where module SG = IsCommutativeSemigroup isCommutativeSemigroup
 
 
 module MonoidProperties (rawMonoid : RawMonoid a ℓ) where
@@ -72,6 +91,19 @@ module MonoidProperties (rawMonoid : RawMonoid a ℓ) where
 
   +ᴹ-identity : ≈.Identity 0# _+_ → ≈ᴹ.Identity (0ᴹ {n}) _+ᴹ_
   +ᴹ-identity (+-identityˡ , +-identityʳ) = +ᴹ-identityˡ +-identityˡ , +ᴹ-identityʳ +-identityʳ
+
+
+  isMonoid : IsMonoid _≈_ _+_ 0# → IsMonoid _≈ᴹ_ (_+ᴹ_ {n}) 0ᴹ
+  isMonoid isMonoid = record
+    { isSemigroup = isSemigroup M.isSemigroup
+    ; identity = +ᴹ-identity M.identity
+    } where module M = IsMonoid isMonoid
+
+  isCommutativeMonoid : IsCommutativeMonoid _≈_ _+_ 0# → IsCommutativeMonoid _≈ᴹ_ (_+ᴹ_ {n}) 0ᴹ
+  isCommutativeMonoid isCommutativeMonoid = record
+    { isMonoid = isMonoid CM.isMonoid
+    ; comm = +ᴹ-comm CM.comm
+    } where module CM = IsCommutativeMonoid isCommutativeMonoid
 
 
 module GroupProperties (rawGroup : RawGroup a ℓ) where
@@ -169,38 +201,16 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
   *ᴹ-+ᴹ-distrib : _*_ ≈.DistributesOver _+_ → (_*ᴹ_ {n}) ≈ᴹ.DistributesOver _+ᴹ_
   *ᴹ-+ᴹ-distrib (*-+-distribˡ , *-+-distribʳ) = *ᴹ-+ᴹ-distribˡ *-+-distribˡ , *ᴹ-+ᴹ-distribʳ *-+-distribʳ
 
--- module MultiplicationProperties (_*_ : Op₂ A) where
---   _*ᴹ_ : Op₂ $ Vector A n
---   _*ᴹ_ {n = n} = AB._*ᴹ_ {n = n} _*_
+  *ᴹ-cong : ≈.Congruent₂ _*_ → ≈ᴹ.Congruent₂ (_*ᴹ_ {n = n})
+  *ᴹ-cong *-cong x≈y u≈v i = *-cong (x≈y i) (u≈v i)
 
-  -- *ᴹ-cong : Congruent₂ _≈_ _*_ → Congruent₂ _≈ᴹ_ (_*ᴹ_ {n = n})
-  -- *ᴹ-cong *-cong x≈y u≈v i = *-cong (x≈y i) (u≈v i)
-
-  -- *ᴹ-assoc : Associative (_*ᴹ_ {n})
-  -- *ᴹ-assoc xs ys zs i = *-assoc (xs i) (ys i) (zs i)
+  *ᴹ-assoc : ≈.Associative _*_ → ≈ᴹ.Associative (_*ᴹ_ {n})
+  *ᴹ-assoc *-assoc xs ys zs i = *-assoc (xs i) (ys i) (zs i)
 
 
 
 -- ------------------------------------------------------------------------
 -- -- Structures
-
--- *ᴹ-isMagma : IsMagma (_*ᴹ_ {n})
--- *ᴹ-isMagma = record
---   { isEquivalence = ≋-isEquivalence _
---   ; ∙-cong = *ᴹ-cong
---   }
-
--- isCommutativeMagma : IsCommutativeMagma (_+ᴹ_ {n})
--- isCommutativeMagma = record
---   { isMagma = isMagma
---   ; comm = +ᴹ-comm
---   }
-
--- isSemigroup : IsSemigroup (_+ᴹ_ {n})
--- isSemigroup = record
---   { isMagma = isMagma
---   ; assoc = +ᴹ-assoc
---   }
 
 -- *ᴹ-isSemigroup : IsSemigroup (_*ᴹ_ {n})
 -- *ᴹ-isSemigroup = record
@@ -208,28 +218,10 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
 --   ; assoc = *ᴹ-assoc
 --   }
 
--- isCommutativeSemigroup : IsCommutativeSemigroup (_+ᴹ_ {n})
--- isCommutativeSemigroup = record
---   { isSemigroup = isSemigroup
---   ; comm = +ᴹ-comm
---   }
-
--- isMonoid : IsMonoid (_+ᴹ_ {n}) 0ᴹ
--- isMonoid = record
---   { isSemigroup = isSemigroup
---   ; identity = +ᴹ-identity
---   }
-
 -- *ᴹ-isMonoid : IsMonoid (_*ᴹ_ {n}) 1ᴹ
 -- *ᴹ-isMonoid = record
 --   { isSemigroup = *ᴹ-isSemigroup
 --   ; identity = *ᴹ-identity
---   }
-
--- isCommutativeMonoid : IsCommutativeMonoid (_+ᴹ_ {n}) 0ᴹ
--- isCommutativeMonoid = record
---   { isMonoid = isMonoid
---   ; comm = +ᴹ-comm
 --   }
 
 -- isGroup : IsGroup (_+ᴹ_ {n}) 0ᴹ -ᴹ_
