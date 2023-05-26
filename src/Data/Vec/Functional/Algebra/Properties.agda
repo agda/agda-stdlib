@@ -141,18 +141,14 @@ module GroupProperties (rawGroup : RawGroup a ℓ) where
 
 module VecNearSemiringProperties (rawNearSemiring : RawNearSemiring a ℓ) where
   open VecNearSemiring rawNearSemiring
+  open MagmaProperties *-rawMagma public using () renaming
+    ( ∙ᴹ-comm to *ᴹ-comm
+    ; ∙ᴹ-assoc to *ᴹ-assoc
+    ; ∙ᴹ-cong to *ᴹ-cong
+    )
   open MonoidProperties +-rawMonoid public renaming
     ( ∙ᴹ-comm to +ᴹ-comm
     ; ∙ᴹ-identity to +ᴹ-identity
-    )
-
-
-module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
-  open VecSemiring rawSemiring
-  open VecNearSemiringProperties rawNearSemiring public
-  open MonoidProperties *-rawMonoid public using () renaming
-    ( ∙ᴹ-comm to *ᴹ-comm
-    ; ∙ᴹ-identity to *ᴹ-identity
     )
   private
     module LD≈ = LeftDefs Carrier _≈_
@@ -172,12 +168,6 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
 
   *ₗ-distribʳ : _*_ ≈.DistributesOverʳ _+_ → _*ₗ_ LD.DistributesOverʳ _+_ ⟶ _+ᴹ_ {n}
   *ₗ-distribʳ distribʳ xs m n i = distribʳ (xs i) m n
-
-  *ₗ-identityˡ : ≈.LeftIdentity 1# _*_ → LD.LeftIdentity 1# (_*ₗ_ {n})
-  *ₗ-identityˡ *-identityˡ xs i = *-identityˡ (xs i)
-
-  *ᵣ-identityʳ : RD≈.RightIdentity 1# _*_ → RD.RightIdentity 1# (_*ᵣ_ {n})
-  *ᵣ-identityʳ *-identityʳ xs i = *-identityʳ (xs i)
 
   *ₗ-assoc : ≈.Associative _*_ → LD.Associative _*_ (_*ₗ_ {n})
   *ₗ-assoc *-assoc m n xs i = *-assoc m n (xs i)
@@ -227,16 +217,70 @@ module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
   *ᴹ-+ᴹ-distrib : _*_ ≈.DistributesOver _+_ → (_*ᴹ_ {n}) ≈ᴹ.DistributesOver _+ᴹ_
   *ᴹ-+ᴹ-distrib (*-+-distribˡ , *-+-distribʳ) = *ᴹ-+ᴹ-distribˡ *-+-distribˡ , *ᴹ-+ᴹ-distribʳ *-+-distribʳ
 
-  *ᴹ-cong : ≈.Congruent₂ _*_ → ≈ᴹ.Congruent₂ (_*ᴹ_ {n = n})
-  *ᴹ-cong *-cong x≈y u≈v i = *-cong (x≈y i) (u≈v i)
 
-  *ᴹ-assoc : ≈.Associative _*_ → ≈ᴹ.Associative (_*ᴹ_ {n})
-  *ᴹ-assoc *-assoc xs ys zs i = *-assoc (xs i) (ys i) (zs i)
+module VecSemiRingProperties (rawSemiring : RawSemiring a ℓ) where
+  open VecSemiring rawSemiring
+  open VecNearSemiringProperties rawNearSemiring public
+  open MonoidProperties *-rawMonoid public using () renaming
+    ( ∙ᴹ-identity to *ᴹ-identity
+    )
+  private
+    module LD≈ = LeftDefs Carrier _≈_
+    module RD≈ = RightDefs Carrier _≈_
+    module BD≈ = BiDefs Carrier Carrier _≈_
+    module LD {n} = LeftDefs Carrier (_≈ᴹ_ {n = n})
+    module RD {n} = RightDefs Carrier (_≈ᴹ_ {n = n})
+    module BD {n} = BiDefs Carrier Carrier (_≈ᴹ_ {n = n})
+    module ≈ = ADefinitions _≈_
+    module ≈ᴹ {n} = ADefinitions (_≈ᴹ_ {n = n})
+
+  *ₗ-identityˡ : ≈.LeftIdentity 1# _*_ → LD.LeftIdentity 1# (_*ₗ_ {n})
+  *ₗ-identityˡ *-identityˡ xs i = *-identityˡ (xs i)
+
+  *ᵣ-identityʳ : RD≈.RightIdentity 1# _*_ → RD.RightIdentity 1# (_*ᵣ_ {n})
+  *ᵣ-identityʳ *-identityʳ xs i = *-identityʳ (xs i)
 
 module NearSemiringProperties (nearSemiring : NearSemiring a ℓ) where
   open NearSemiring nearSemiring
+  open VecNearSemiring rawNearSemiring
   open VecNearSemiringProperties rawNearSemiring public
 
+  +ᴹ-*-isNearSemiring : IsNearSemiring _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
+  +ᴹ-*-isNearSemiring = record
+    { +-isMonoid = isMonoid +-isMonoid
+    ; *-cong = *ᴹ-cong *-cong
+    ; *-assoc = *ᴹ-assoc *-assoc
+    ; distribʳ = *ᴹ-+ᴹ-distribʳ distribʳ
+    ; zeroˡ = *ᴹ-zeroˡ zeroˡ
+    }
+
+module SemiringWithoutOneProperties (semiringWithoutOne : SemiringWithoutOne a ℓ) where
+  open SemiringWithoutOne semiringWithoutOne
+  open VecNearSemiring rawNearSemiring
+  open NearSemiringProperties nearSemiring public
+
+  +ᴹ-*-isSemiringWithoutOne : IsSemiringWithoutOne _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
+  +ᴹ-*-isSemiringWithoutOne = record
+    { +-isCommutativeMonoid = isCommutativeMonoid +-isCommutativeMonoid
+    ; *-cong = *ᴹ-cong *-cong
+    ; *-assoc = *ᴹ-assoc *-assoc
+    ; distrib = *ᴹ-+ᴹ-distrib distrib
+    ; zero = *ᴹ-zero (SemiringWithoutOne.zero semiringWithoutOne)
+    }
+
+
+module CommutativeSemiringWithoutOneProperties
+  (commutativeSemiringWithoutOne : CommutativeSemiringWithoutOne a ℓ) where
+
+  open CommutativeSemiringWithoutOne commutativeSemiringWithoutOne
+  open VecNearSemiring rawNearSemiring
+  open SemiringWithoutOneProperties semiringWithoutOne public
+
+  +ᴹ-*-isCommutativeSemiringWithoutOne : IsCommutativeSemiringWithoutOne _≈ᴹ_ (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
+  +ᴹ-*-isCommutativeSemiringWithoutOne = record
+    {isSemiringWithoutOne = +ᴹ-*-isSemiringWithoutOne
+    ; *-comm = *ᴹ-comm *-comm
+    }
 
 module SemiringProperties (semiring : Semiring a ℓ) where
   open Semiring semiring
@@ -360,30 +404,6 @@ module CommutativeRingProperties (commutativeRing : CommutativeRing a ℓ) where
 --   }
 
 
-
--- +ᴹ-*-isNearSemiring : IsNearSemiring (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
--- +ᴹ-*-isNearSemiring = record
---   { +-isMonoid = isMonoid
---   ; *-cong = *ᴹ-cong
---   ; *-assoc = *ᴹ-assoc
---   ; distribʳ = *ᴹ-+ᴹ-distribʳ
---   ; zeroˡ = *ᴹ-zeroˡ
---   }
-
--- +ᴹ-*-isSemiringWithoutOne : IsSemiringWithoutOne (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
--- +ᴹ-*-isSemiringWithoutOne = record
---   { +-isCommutativeMonoid = isCommutativeMonoid
---   ; *-cong = *ᴹ-cong
---   ; *-assoc = *ᴹ-assoc
---   ; distrib = *ᴹ-+ᴹ-distrib
---   ; zero = *ᴹ-zero
---   }
-
--- +ᴹ-*-isCommutativeSemiringWithoutOne : IsCommutativeSemiringWithoutOne (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ
--- +ᴹ-*-isCommutativeSemiringWithoutOne = record
---   {isSemiringWithoutOne = +ᴹ-*-isSemiringWithoutOne
---   ; *-comm = *ᴹ-comm
---   }
 
 -- +ᴹ-*-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero (_+ᴹ_ {n}) _*ᴹ_ 0ᴹ 1ᴹ
 -- +ᴹ-*-isSemiringWithoutAnnihilatingZero = record
