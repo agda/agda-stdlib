@@ -250,6 +250,11 @@ module MagmaProperties (magma : Magma a ℓ) where
     ; ∙-cong = ∙ᴹ-cong ∙-cong
     }
 
+  ∙ᴹ-magma : ℕ → Magma _ _
+  ∙ᴹ-magma n = record
+    { isMagma = ∙ᴹ-isMagma {n}
+    }
+
 module CommutativeMagmaProperties (commutativeMagma : CommutativeMagma a ℓ) where
   open CommutativeMagma commutativeMagma
   open VecMagma rawMagma
@@ -259,6 +264,11 @@ module CommutativeMagmaProperties (commutativeMagma : CommutativeMagma a ℓ) wh
   ∙ᴹ-isCommutativeMagma = record
     { isMagma = ∙ᴹ-isMagma
     ; comm = ∙ᴹ-comm comm
+    }
+
+  ∙ᴹ-commutativeMagma : ℕ → CommutativeMagma _ _
+  ∙ᴹ-commutativeMagma n = record {
+    isCommutativeMagma = ∙ᴹ-isCommutativeMagma {n}
     }
 
 module SemiRawGroupProperties (semigroup : Semigroup a ℓ) where
@@ -272,6 +282,11 @@ module SemiRawGroupProperties (semigroup : Semigroup a ℓ) where
     ; assoc = ∙ᴹ-assoc assoc
     }
 
+  ∙ᴹ-semigroup : ℕ → Semigroup _ _
+  ∙ᴹ-semigroup n = record
+    { isSemigroup = ∙ᴹ-isSemigroup {n}
+    }
+
 module CommutativeSemigroupProperties (commutativeSemigroup : CommutativeSemigroup a ℓ) where
   open CommutativeSemigroup commutativeSemigroup
   open VecMagma rawMagma
@@ -281,6 +296,11 @@ module CommutativeSemigroupProperties (commutativeSemigroup : CommutativeSemigro
   ∙ᴹ-isCommutativeSemigroup = record
     { isSemigroup = ∙ᴹ-isSemigroup
     ; comm = ∙ᴹ-comm comm
+    }
+
+  ∙ᴹ-commutativeSemigroup : ℕ → CommutativeSemigroup _ _
+  ∙ᴹ-commutativeSemigroup n = record
+    { isCommutativeSemigroup = ∙ᴹ-isCommutativeSemigroup {n}
     }
 
 module MonoidProperties (monoid : Monoid a ℓ) where
@@ -295,6 +315,11 @@ module MonoidProperties (monoid : Monoid a ℓ) where
     ; identity = ∙ᴹ-identity identity
     }
 
+  -- *ᴹ-monoid : ℕ → Monoid _ _
+  -- *ᴹ-monoid n = record
+  --   { isMonoid = *ᴹ-isMonoid {n}
+  --   }
+
 module CommutativeMonoidProperties (commutativeMonoid : CommutativeMonoid a ℓ) where
   open CommutativeMonoid commutativeMonoid
   open VecMonoid rawMonoid
@@ -304,6 +329,11 @@ module CommutativeMonoidProperties (commutativeMonoid : CommutativeMonoid a ℓ)
   ∙ᴹ-isCommutativeMonoid = record
     { isMonoid = ∙ᴹ-isMonoid
     ; comm = ∙ᴹ-comm comm
+    }
+
+  ∙ᴹ-commutativeMonoid : ℕ → CommutativeMonoid _ _
+  ∙ᴹ-commutativeMonoid n = record
+    { isCommutativeMonoid = ∙ᴹ-isCommutativeMonoid {n}
     }
 
 module GroupProperties (group : Group a ℓ) where
@@ -317,6 +347,11 @@ module GroupProperties (group : Group a ℓ) where
     { isMonoid = ∙ᴹ-isMonoid
     ; inverse = -ᴹ‿inverse inverse
     ; ⁻¹-cong = -ᴹ‿cong ⁻¹-cong
+    }
+
+  ∙ᴹ-group : ℕ → Group _ _
+  ∙ᴹ-group n = record
+    { isGroup = ∙ᴹ-isGroup {n}
     }
 
 module AbelianGroupProperties (abelianGroup : AbelianGroup a ℓ) where
@@ -345,6 +380,11 @@ module NearSemiringProperties (nearSemiring : NearSemiring a ℓ) where
     ; zeroˡ = *ᴹ-zeroˡ zeroˡ
     }
 
+  +ᴹ-*-nearSemiring : ℕ → NearSemiring _ _
+  +ᴹ-*-nearSemiring n = record
+    { isNearSemiring = +ᴹ-*-isNearSemiring {n}
+    }
+
 module SemiringWithoutOneProperties (semiringWithoutOne : SemiringWithoutOne a ℓ) where
   open SemiringWithoutOne semiringWithoutOne
   open VecNearSemiring rawNearSemiring
@@ -360,6 +400,11 @@ module SemiringWithoutOneProperties (semiringWithoutOne : SemiringWithoutOne a �
     ; zero = *ᴹ-zero (SemiringWithoutOne.zero semiringWithoutOne)
     }
 
+  +ᴹ-*-semiringWithoutOne : ℕ → SemiringWithoutOne _ _
+  +ᴹ-*-semiringWithoutOne n = record
+    { isSemiringWithoutOne = +ᴹ-*-isSemiringWithoutOne {n}
+    }
+
 
 module CommutativeSemiringWithoutOneProperties
   (commutativeSemiringWithoutOne : CommutativeSemiringWithoutOne a ℓ) where
@@ -372,6 +417,11 @@ module CommutativeSemiringWithoutOneProperties
   +ᴹ-*-isCommutativeSemiringWithoutOne = record
     {isSemiringWithoutOne = +ᴹ-*-isSemiringWithoutOne
     ; *-comm = *ᴹ-comm *-comm
+    }
+
+  +ᴹ-*-commutativeSemiringWithoutOne : ℕ → CommutativeSemiringWithoutOne _ _
+  +ᴹ-*-commutativeSemiringWithoutOne n = record
+    { isCommutativeSemiringWithoutOne = +ᴹ-*-isCommutativeSemiringWithoutOne {n}
     }
 
 module SemiringWithoutAnnihilatingZeroProperties
@@ -389,6 +439,11 @@ module SemiringWithoutAnnihilatingZeroProperties
     ; *-assoc = *ᴹ-assoc *-assoc
     ; *-identity = *ᴹ-identity *-identity
     ; distrib = *ᴹ-+ᴹ-distrib distrib
+    }
+
+  +ᴹ-*-semiringWithoutAnnihilatingZero : ℕ → SemiringWithoutAnnihilatingZero _ _
+  +ᴹ-*-semiringWithoutAnnihilatingZero n = record
+    { isSemiringWithoutAnnihilatingZero = +ᴹ-*-isSemiringWithoutAnnihilatingZero {n}
     }
 
 module SemiringProperties (semiring : Semiring a ℓ) where
@@ -444,6 +499,16 @@ module SemiringProperties (semiring : Semiring a ℓ) where
     ; zero = *ᴹ-zero (Semiring.zero semiring)
     }
 
+  leftSemimodule : ℕ → LeftSemimodule _ _ _
+  leftSemimodule n = record
+    { isLeftSemimodule = isLeftSemimodule {n}
+    }
+
+  +ᴹ-*-semiring : ℕ → Semiring _ _
+  +ᴹ-*-semiring n = record
+    { isSemiring = +ᴹ-*-isSemiring {n}
+    }
+
 module CommutativeSemiringProperties (commutativeSemiring : CommutativeSemiring a ℓ) where
   open CommutativeSemiring commutativeSemiring
   open VecSemiring rawSemiring
@@ -453,6 +518,11 @@ module CommutativeSemiringProperties (commutativeSemiring : CommutativeSemiring 
   +ᴹ-*-isCommutativeSemiring = record
     { isSemiring = +ᴹ-*-isSemiring
     ; *-comm = *ᴹ-comm *-comm
+    }
+
+  +ᴹ-*-commutativeSemiring : ℕ → CommutativeSemiring _ _
+  +ᴹ-*-commutativeSemiring n = record
+    { isCommutativeSemiring = +ᴹ-*-isCommutativeSemiring {n}
     }
 
 module RingWithoutOneProperties (ringWithoutOne : RingWithoutOne a ℓ) where
@@ -480,6 +550,11 @@ module RingWithoutOneProperties (ringWithoutOne : RingWithoutOne a ℓ) where
     ; *-assoc = *ᴹ-assoc *-assoc
     ; distrib = *ᴹ-+ᴹ-distrib distrib
     ; zero = *ᴹ-zero (RingWithoutOne.zero ringWithoutOne)
+    }
+
+  +ᴹ-*-ringWithoutOne : ℕ → RingWithoutOne _ _
+  +ᴹ-*-ringWithoutOne n = record
+    { isRingWithoutOne = +ᴹ-*-isRingWithoutOne {n}
     }
 
 module RingProperties (ring : Ring a ℓ) where
@@ -521,6 +596,26 @@ module RingProperties (ring : Ring a ℓ) where
     ; zero = *ᴹ-zero (Ring.zero ring)
     }
 
+  leftModule : ℕ → LeftModule _ _ _
+  leftModule n = record
+    { isLeftModule = isLeftModule {n}
+    }
+
+  bisemimodule : ℕ → Bisemimodule _ _ _ _
+  bisemimodule n = record
+    { isBisemimodule = isBisemimodule {n}
+    }
+
+  rightModule : ℕ → RightModule _ _ _
+  rightModule n = record
+    { isRightModule = isRightModule {n}
+    }
+
+  bimodule : ℕ → Bimodule _ _ _ _
+  bimodule n = record
+    { isBimodule = isBimodule {n}
+    }
+
 module CommutativeRingProperties (commutativeRing : CommutativeRing a ℓ) where
   open CommutativeRing commutativeRing
   open VecRing rawRing
@@ -537,138 +632,7 @@ module CommutativeRingProperties (commutativeRing : CommutativeRing a ℓ) where
     { isBimodule = isBimodule
     }
 
-
--- ------------------------------------------------------------------------
--- -- Structures
-
--- *ᴹ-isSemigroup : IsSemigroup (_*ᴹ_ {n})
--- *ᴹ-isSemigroup = record
---   { isMagma = *ᴹ-isMagma
---   ; assoc = *ᴹ-assoc
---   }
-
--- *ᴹ-isMonoid : IsMonoid (_*ᴹ_ {n}) 1ᴹ
--- *ᴹ-isMonoid = record
---   { isSemigroup = *ᴹ-isSemigroup
---   ; identity = *ᴹ-identity
---   }
-
-
-
--- ------------------------------------------------------------------------
--- -- Bundles
-
--- magma : ℕ → Magma _ _
--- magma n = record
---   { isMagma = isMagma {n}
---   }
-
--- *ᴹ-magma : ℕ → Magma _ _
--- *ᴹ-magma n = record
---   { isMagma = *ᴹ-isMagma {n}
---   }
-
--- commutativeMagma : ℕ → CommutativeMagma _ _
--- commutativeMagma n = record {
---   isCommutativeMagma = isCommutativeMagma {n}
---   }
-
--- semigroup : ℕ → Semigroup _ _
--- semigroup n = record
---   { isSemigroup = isSemigroup {n}
---   }
-
--- *ᴹ-semigroup : ℕ → Semigroup _ _
--- *ᴹ-semigroup n = record
---   { isSemigroup = *ᴹ-isSemigroup {n}
---   }
-
--- commutativeSemigroup : ℕ → CommutativeSemigroup _ _
--- commutativeSemigroup n = record
---   { isCommutativeSemigroup = isCommutativeSemigroup {n}
---   }
-
--- monoid : ℕ → Monoid _ _
--- monoid n = record
---   { isMonoid = isMonoid {n}
---   }
-
--- *ᴹ-monoid : ℕ → Monoid _ _
--- *ᴹ-monoid n = record
---   { isMonoid = *ᴹ-isMonoid {n}
---   }
-
--- commutativeMonoid : ℕ → CommutativeMonoid _ _
--- commutativeMonoid n = record
---   { isCommutativeMonoid = isCommutativeMonoid {n}
---   }
-
--- group : ℕ → Group _ _
--- group n = record
---   { isGroup = isGroup {n}
---   }
-
--- leftSemimodule : ℕ → LeftSemimodule _ _ _
--- leftSemimodule n = record
---   { isLeftSemimodule = isLeftSemimodule {n}
---   }
-
--- leftModule : ℕ → LeftModule _ _ _
--- leftModule n = record
---   { isLeftModule = isLeftModule {n}
---   }
-
--- bisemimodule : ℕ → Bisemimodule _ _ _ _
--- bisemimodule n = record
---   { isBisemimodule = isBisemimodule {n}
---   }
-
--- rightModule : ℕ → RightModule _ _ _
--- rightModule n = record
---   { isRightModule = isRightModule {n}
---   }
-
--- bimodule : ℕ → Bimodule _ _ _ _
--- bimodule n = record
---   { isBimodule = isBimodule {n}
---   }
-
--- module' : ℕ → Module _ _ _
--- module' n = record
---   { isModule = isModule {n}
---   }
-
--- +ᴹ-*-nearSemiring : ℕ → NearSemiring _ _
--- +ᴹ-*-nearSemiring n = record
---   { isNearSemiring = +ᴹ-*-isNearSemiring {n}
---   }
-
--- +ᴹ-*-semiringWithoutOne : ℕ → SemiringWithoutOne _ _
--- +ᴹ-*-semiringWithoutOne n = record
---   { isSemiringWithoutOne = +ᴹ-*-isSemiringWithoutOne {n}
---   }
-
--- +ᴹ-*-commutativeSemiringWithoutOne : ℕ → CommutativeSemiringWithoutOne _ _
--- +ᴹ-*-commutativeSemiringWithoutOne n = record
---   { isCommutativeSemiringWithoutOne = +ᴹ-*-isCommutativeSemiringWithoutOne {n}
---   }
-
--- +ᴹ-*-semiringWithoutAnnihilatingZero : ℕ → SemiringWithoutAnnihilatingZero _ _
--- +ᴹ-*-semiringWithoutAnnihilatingZero n = record
---   { isSemiringWithoutAnnihilatingZero = +ᴹ-*-isSemiringWithoutAnnihilatingZero {n}
---   }
-
--- +ᴹ-*-semiring : ℕ → Semiring _ _
--- +ᴹ-*-semiring n = record
---   { isSemiring = +ᴹ-*-isSemiring {n}
---   }
-
--- +ᴹ-*-commutativeSemiring : ℕ → CommutativeSemiring _ _
--- +ᴹ-*-commutativeSemiring n = record
---   { isCommutativeSemiring = +ᴹ-*-isCommutativeSemiring {n}
---   }
-
--- +ᴹ-*-ringWithoutOne : ℕ → RingWithoutOne _ _
--- +ᴹ-*-ringWithoutOne n = record
---   { isRingWithoutOne = +ᴹ-*-isRingWithoutOne {n}
---   }
+  module' : ℕ → Module _ _ _
+  module' n = record
+    { isModule = isModule {n}
+    }
