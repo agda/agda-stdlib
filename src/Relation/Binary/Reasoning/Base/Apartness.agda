@@ -11,9 +11,8 @@ open import Relation.Binary
 
 module Relation.Binary.Reasoning.Base.Apartness {a ℓ₁ ℓ₂} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_#_ : Rel A ℓ₂}
-  (#-trans : Transitive _#_)
   (≈-equiv : IsEquivalence _≈_)
-  (#-sym   : Symmetric _#_)
+  (#-trans : Transitive _#_) (#-sym   : Symmetric _#_)
   (#-≈-trans : Trans _#_ _≈_ _#_) (≈-#-trans : Trans _≈_ _#_ _#_)
   where
 
@@ -58,7 +57,7 @@ begin-apartness_ r {s} = extractApartness (toWitness s)
 step-# : ∀ (x : A) {y z} → y IsRelatedTo z → x # y → x IsRelatedTo z
 step-# x nothing  _          = nothing
 step-# x (apartness y#z) x#y = nothing
-step-# x (equals y≈z) x#y    = apartness (#-≈-trans x#y y≈z)
+step-# x (equals    y≈z) x#y = apartness (#-≈-trans x#y y≈z)
 
 step-#˘ : ∀ (x : A) {y z} → y IsRelatedTo z → y # x → x IsRelatedTo z
 step-#˘ x y-z y#x = step-# x y-z (#-sym y#x)
