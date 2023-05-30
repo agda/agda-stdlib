@@ -28,8 +28,10 @@ open Builtin public
   ; catchTC; quoteTC; unquoteTC
   ; getContext; extendContext; inContext; freshName
   ; declareDef; declarePostulate; defineFun; getType; getDefinition
-  ; blockOnMeta; commitTC; isMacro; withNormalisation
-  ; debugPrint; noConstraints; runSpeculative)
+  ; blockTC; commitTC; isMacro; withNormalisation
+  ; debugPrint; noConstraints; runSpeculative
+  ; Blocker ; blockerMeta ; blockAny ; blockAll
+  )
   renaming (returnTC to pure)
 
 open Format public

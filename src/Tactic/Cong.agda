@@ -98,7 +98,7 @@ private
   destructEqualityGoal goal@(def (quote _≡_) (lvl ∷ tp ∷ lhs ∷ rhs ∷ [])) =
     pure $ equals (unArg lvl) (unArg tp) (unArg lhs) (unArg rhs)
   destructEqualityGoal (meta m args) =
-    blockOnMeta m
+    blockTC (blockerMeta m)
   destructEqualityGoal goal =
     notEqualityError goal
 
