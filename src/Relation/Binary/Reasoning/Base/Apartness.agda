@@ -84,12 +84,3 @@ syntax step-≈  x y∼z x≈y = x ≈⟨  x≈y ⟩ y∼z
 syntax step-≈˘ x y∼z y≈x = x ≈˘⟨ y≈x ⟩ y∼z
 syntax step-≡  x y∼z x≡y = x ≡⟨  x≡y ⟩ y∼z
 syntax step-≡˘ x y∼z y≡x = x ≡˘⟨ y≡x ⟩ y∼z
-
-private module _ (a b c d : A) (a≈b : a ≈ b) (b#c : b # c) (c≈d : c ≈ d) where
-
-  _ : a # d
-  _ = begin-apartness
-    a ≈⟨ a≈b ⟩
-    b #⟨ b#c ⟩
-    c ≈⟨ c≈d ⟩
-    d ∎
