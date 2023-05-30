@@ -47,12 +47,26 @@ IsApartness? (equals x≈y)    = no (λ ())
 extractApartness : ∀ {x y} {x#y : x IsRelatedTo y} → IsApartness x#y → x # y
 extractApartness (isApartness x#y) = x#y
 
-infix  1 begin-apartness_
+data IsEquality {x y} : x IsRelatedTo y → Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  isEquality : ∀ x≈y → IsEquality (equals x≈y)
+
+IsEquality? : ∀ {x y} (x≲y : x IsRelatedTo y) → Dec (IsEquality x≲y)
+IsEquality? nothing       = no λ()
+IsEquality? (apartness _) = no λ()
+IsEquality? (equals  x≈y) = yes (isEquality x≈y)
+
+extractEquality : ∀ {x y} {x≲y : x IsRelatedTo y} → IsEquality x≲y → x ≈ y
+extractEquality (isEquality x≈y) = x≈y
+
+infix  1 begin-apartness_ begin-equality_
 infixr 2 step-≈ step-≈˘ step-≡ step-≡˘ step-# step-#˘ _≡⟨⟩_
 infix  3 _∎
 
 begin-apartness_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsApartness? r)} → x # y
-begin-apartness_ r {s} = extractApartness (toWitness s)
+begin-apartness_ _ {s} = extractApartness (toWitness s)
+
+begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
+begin-equality_ _ {s} = extractEquality (toWitness s)
 
 step-# : ∀ (x : A) {y z} → y IsRelatedTo z → x # y → x IsRelatedTo z
 step-# x nothing  _          = nothing
