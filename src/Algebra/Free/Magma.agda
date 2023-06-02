@@ -17,6 +17,7 @@ open import Algebra.Morphism.Bundles using (MagmaHomomorphism)
 open import Algebra.Morphism.Structures using (IsMagmaHomomorphism)
 import Algebra.Morphism.Construct.Identity as Identity
 import Algebra.Morphism.Construct.Composition as Compose
+open import Effect.Applicative
 open import Effect.Functor
 open import Effect.Monad
 open import Function.Base using (id; _∘_)
@@ -76,8 +77,8 @@ module Syntax where
   map-∘ g f (var a) = ≡-refl
   map-∘ g f (s ∙ t) = (map-∘ g f s) ∙-cong (map-∘ g f t)
 
-  syntaxRawFunctor : RawFunctor (Syntax {a})
-  syntaxRawFunctor = record { _<$>_ = map }
+  rawFunctor : RawFunctor (Syntax {a})
+  rawFunctor = record { _<$>_ = map }
 
 -- Monad instance
 
@@ -85,9 +86,13 @@ module Syntax where
   bind (var x) h = h x
   bind (s ∙ t) h = bind s h ∙ bind t h
 
-  syntaxRawMonad : RawMonad (Syntax {a})
-  syntaxRawMonad = mkRawMonad Syntax var bind
+  rawMonad : RawMonad (Syntax {a})
+  rawMonad = mkRawMonad Syntax var bind
 
+-- Applicative instance
+
+  rawApplicative : RawApplicative (Syntax {a})
+  rawApplicative = RawMonad.rawApplicative rawMonad
 
 ------------------------------------------------------------------------
 -- parametrised 'equational' theory over the 'pre'-free algebra
