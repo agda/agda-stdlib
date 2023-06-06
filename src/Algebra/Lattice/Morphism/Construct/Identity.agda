@@ -13,6 +13,7 @@ open import Algebra.Lattice.Morphism.Structures
   using ( module LatticeMorphisms )
 open import Data.Product using (_,_)
 open import Function.Base using (id)
+import Function.Construct.Identity as Id
 open import Level using (Level)
 open import Relation.Binary.Morphism.Construct.Identity using (isRelHomomorphism)
 open import Relation.Binary.Definitions using (Reflexive)
@@ -40,5 +41,5 @@ module _ (L : RawLattice c ℓ) (open RawLattice L) (refl : Reflexive _≈_) whe
   isLatticeIsomorphism : IsLatticeIsomorphism id
   isLatticeIsomorphism = record
     { isLatticeMonomorphism = isLatticeMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }

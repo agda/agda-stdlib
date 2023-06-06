@@ -15,6 +15,7 @@ open import Data.Parity.Base as ℙ using (Parity; 0ℙ; 1ℙ; _⁻¹; toSign; f
 open import Data.Product using (_,_)
 open import Data.Sign.Base as 𝕊
 open import Function hiding (Inverse)
+open import Function.Consequences.Propositional
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
@@ -401,6 +402,14 @@ p+p≡0ℙ 1ℙ = refl
 ⁻¹-homo-opposite 0ℙ = refl
 ⁻¹-homo-opposite 1ℙ = refl
 
+toSign-inverseʳ : Inverseʳ _≡_ _≡_ toSign fromSign
+toSign-inverseʳ {0ℙ} refl = refl
+toSign-inverseʳ {1ℙ} refl = refl
+
+toSign-inverseˡ : Inverseˡ _≡_ _≡_ toSign fromSign
+toSign-inverseˡ { + }  refl = refl
+toSign-inverseˡ { - } refl = refl
+
 toSign-inverts-fromSign : ∀ {p s} → toSign p ≡ s → fromSign s ≡ p
 toSign-inverts-fromSign {0ℙ} refl = refl
 toSign-inverts-fromSign {1ℙ} refl = refl
@@ -410,14 +419,10 @@ fromSign-inverts-toSign { + }  refl = refl
 fromSign-inverts-toSign { - } refl = refl
 
 toSign-injective : Injective _≡_ _≡_ toSign
-toSign-injective {p} {q} eq = begin
-  p                   ≡⟨ sym (toSign-inverts-fromSign {p} refl) ⟩
-  fromSign (toSign p) ≡⟨ cong fromSign eq ⟩
-  fromSign (toSign q) ≡⟨ toSign-inverts-fromSign {q} refl ⟩
-  q ∎ where open ≡-Reasoning
+toSign-injective = inverseʳ⇒injective toSign toSign-inverseʳ
 
 toSign-surjective : Surjective _≡_ _≡_ toSign
-toSign-surjective s = (fromSign s) , fromSign-inverts-toSign {s} refl
+toSign-surjective = inverseˡ⇒surjective toSign-inverseˡ
 
 toSign-isMagmaHomomorphism : IsMagmaHomomorphism ℙ.+-rawMagma 𝕊.*-rawMagma toSign
 toSign-isMagmaHomomorphism = record
@@ -476,7 +481,7 @@ toSign-isGroupIsomorphism = record
 
 
 ------------------------------------------------------------------------
--- relating Nat and Parity
+-- Relating Nat and Parity
 
 -- successor and (_⁻¹)
 

@@ -109,8 +109,8 @@ toℕ-homo-∸ 1+[2 x ] 1+[2 y ] = begin
   where open ≡-Reasoning
 
 fromℕ-homo-∸ : ∀ m n → fromℕ (m ℕ.∸ n) ≡ (fromℕ m) ∸ (fromℕ n)
-fromℕ-homo-∸ = homomorphic₂-inv ∸-magma ℕₚ.∸-magma {toℕ}
-  (cong fromℕ) (toℕ-fromℕ , fromℕ-toℕ) toℕ-homo-∸
+fromℕ-homo-∸ = homomorphic₂-inv ∸-magma ℕₚ.∸-magma
+  (cong fromℕ) toℕ-inverseᵇ toℕ-homo-∸
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_

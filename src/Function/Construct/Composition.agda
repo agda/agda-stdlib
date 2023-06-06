@@ -49,11 +49,11 @@ module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) (≈₃ : Rel C ℓ₃)
 
   inverseˡ : Inverseˡ ≈₁ ≈₂ f f⁻¹ → Inverseˡ ≈₂ ≈₃ g g⁻¹ →
              Inverseˡ ≈₁ ≈₃ (g ∘ f) (f⁻¹ ∘ g⁻¹)
-  inverseˡ f-inv g-inv x y≈gfx = g-inv x (f-inv (g⁻¹ x) y≈gfx)
+  inverseˡ f-inv g-inv = g-inv ∘ f-inv
 
   inverseʳ : Inverseʳ ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₂ ≈₃ g g⁻¹ →
              Inverseʳ ≈₁ ≈₃ (g ∘ f) (f⁻¹ ∘ g⁻¹)
-  inverseʳ f-inv g-inv x y≈gfx = f-inv x (g-inv (f x) y≈gfx)
+  inverseʳ f-inv g-inv = f-inv ∘ g-inv
 
   inverseᵇ : Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Inverseᵇ ≈₂ ≈₃ g g⁻¹ →
              Inverseᵇ ≈₁ ≈₃ (g ∘ f) (f⁻¹ ∘ g⁻¹)

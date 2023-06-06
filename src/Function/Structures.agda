@@ -18,6 +18,7 @@ module Function.Structures {a b ℓ₁ ℓ₂}
 open import Data.Product as Product using (∃; _×_; _,_)
 open import Function.Base
 open import Function.Definitions
+open import Function.Consequences
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
@@ -64,7 +65,7 @@ record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
 
   open IsCongruent isCongruent public
 
-  strictlySurjective : ∀ y → ∃ λ x → f x ≈₂ y
+  strictlySurjective : StrictlySurjective _≈₂_ f
   strictlySurjective x = Product.map₂ (λ v → v Eq₁.refl) (surjective x)
 
 
@@ -101,8 +102,8 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
   open IsCongruent isCongruent public
     renaming (cong to to-cong)
 
-  strictInverseˡ : ∀ x → to (from x) ≈₂ x
-  strictInverseˡ x = inverseˡ x Eq₁.refl
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  strictlyInverseˡ x = inverseˡ Eq₁.refl
 
 
 record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -114,8 +115,8 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
   open IsCongruent isCongruent public
     renaming (cong to cong₁)
 
-  strictInverseʳ : ∀ x → from (to x) ≈₁ x
-  strictInverseʳ x = inverseʳ x Eq₂.refl
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  strictlyInverseʳ x = inverseʳ Eq₂.refl
 
 
 record IsInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -133,7 +134,7 @@ record IsInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ �
     }
 
   open IsRightInverse isRightInverse public
-    using (strictInverseʳ)
+    using (strictlyInverseʳ)
 
   inverse : Inverseᵇ _≈₁_ _≈₂_ to from
   inverse = inverseˡ , inverseʳ

@@ -44,8 +44,8 @@ private
     B : Set b
     C : Set c
 
--- Types and patterns
 ------------------------------------------------------------------------
+-- Types and patterns
 
 infix 8 _^_
 _^_ : Set a → ℕ → Set a
@@ -61,8 +61,8 @@ a ∈[ 0    ] as               = ⊥
 a ∈[ 1    ] a′               = a ≡ a′
 a ∈[ suc n@(suc _) ] a′ , as = a ≡ a′ ⊎ a ∈[ n ] as
 
--- Basic operations
 ------------------------------------------------------------------------
+-- Basic operations
 
 cons : ∀ n → A → A ^ n → A ^ suc n
 cons 0       a _  = a
@@ -106,9 +106,8 @@ splitAt (suc m) n xs =
   let (ys , zs) = splitAt m n (tail (m Nat.+ n) xs) in
   cons m (head (m Nat.+ n) xs) ys , zs
 
-
--- Manipulating N-ary products
 ------------------------------------------------------------------------
+-- Manipulating N-ary products
 
 map : (A → B) → ∀ n → A ^ n → B ^ n
 map f 0      as       = lift tt
@@ -156,7 +155,7 @@ unzip : ∀ n → (A × B) ^ n → A ^ n × B ^ n
 unzip = unzipWith id
 
 lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
-lift↔ 0               A↔B = mk↔ ((λ { [] → refl }) , (λ{ [] → refl }))
+lift↔ 0               A↔B = mk↔′ _ _ (const refl) (const refl)
 lift↔ 1               A↔B = A↔B
 lift↔ (suc n@(suc _)) A↔B = ×-cong A↔B (lift↔ n A↔B)
 

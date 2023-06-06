@@ -12,9 +12,9 @@ open import Function.Bundles
 open import Level using (Level)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (setoid)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Function.Base using (_∘_)
+open import Function.Properties.Surjection using (injective⇒to⁻-cong)
 open import Function.Properties.Inverse using (Inverse⇒Equivalence)
 
 import Function.Construct.Identity as Identity
@@ -55,18 +55,15 @@ trans = Composition.bijection
 -- Conversion functions
 
 Bijection⇒Inverse : Bijection S T → Inverse S T
-Bijection⇒Inverse {S = S} {T = T} b = record
+Bijection⇒Inverse bij = record
   { to        = to
   ; from      = to⁻
   ; to-cong   = cong
-  ; from-cong = λ {x} {y} x≈y → injective (begin
-      to (to⁻ x) ≈⟨ to∘to⁻ x ⟩
-      x          ≈⟨ x≈y ⟩
-      y          ≈˘⟨ to∘to⁻ y ⟩
-      to (to⁻ y) ∎)
-  ; inverse = to∘to⁻ , injective ∘ to∘to⁻ ∘ to
+  ; from-cong = injective⇒to⁻-cong surjection injective
+  ; inverse   = (λ y≈to⁻[x] → Eq₂.trans (cong y≈to⁻[x]) (to∘to⁻ _)) ,
+                (λ y≈to[x] → injective (Eq₂.trans (to∘to⁻ _) y≈to[x]))
   }
-  where open SetoidReasoning T; open Bijection b; to∘to⁻ = proj₂ ∘ surjective
+  where open Bijection bij; to∘to⁻ = proj₂ ∘ strictlySurjective
 
 Bijection⇒Equivalence : Bijection T S → Equivalence T S
 Bijection⇒Equivalence = Inverse⇒Equivalence ∘ Bijection⇒Inverse

@@ -27,27 +27,27 @@ private
 
 module _ (_≈_ : Rel A ℓ) where
 
-  open Definitions _≈_ _≈_
+  open Definitions
 
-  congruent : Congruent id
+  congruent : Congruent _≈_ _≈_ id
   congruent = id
 
-  injective : Injective id
+  injective : Injective _≈_ _≈_ id
   injective = id
 
-  surjective : Surjective id
+  surjective : Surjective _≈_ _≈_ id
   surjective x = x , id
 
-  bijective : Bijective id
+  bijective : Bijective _≈_ _≈_ id
   bijective = injective , surjective
 
-  inverseˡ : Inverseˡ id id
-  inverseˡ x = id
+  inverseˡ : Inverseˡ _≈_ _≈_ id id
+  inverseˡ = id
 
-  inverseʳ : Inverseʳ id id
-  inverseʳ x = id
+  inverseʳ : Inverseʳ _≈_ _≈_ id id
+  inverseʳ = id
 
-  inverseᵇ : Inverseᵇ id id
+  inverseᵇ : Inverseᵇ _≈_ _≈_ id id
   inverseᵇ = inverseˡ , inverseʳ
 
 ------------------------------------------------------------------------

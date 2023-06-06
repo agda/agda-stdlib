@@ -46,9 +46,9 @@ isRelIsomorphism : Transitive ≈₃ →
                    IsRelIsomorphism ≈₁ ≈₂ f →
                    IsRelIsomorphism ≈₂ ≈₃ g →
                    IsRelIsomorphism ≈₁ ≈₃ (g ∘ f)
-isRelIsomorphism {≈₁ = ≈₁} ≈₃-trans m₁ m₂ = record
+isRelIsomorphism  {≈₃ = ≈₃} ≈₃-trans m₁ m₂ = record
   { isMonomorphism = isRelMonomorphism F.isMonomorphism G.isMonomorphism
-  ; surjective     = surjective ≈₁ _ _ ≈₃-trans G.cong F.surjective G.surjective
+  ; surjective     = surjective _ _ ≈₃ F.surjective G.surjective
   } where module F = IsRelIsomorphism m₁; module G = IsRelIsomorphism m₂
 
 ------------------------------------------------------------------------
@@ -103,9 +103,9 @@ isOrderIsomorphism : Transitive ≈₃ →
                      IsOrderIsomorphism ≈₁ ≈₂ ∼₁ ∼₂ f →
                      IsOrderIsomorphism ≈₂ ≈₃ ∼₂ ∼₃ g →
                      IsOrderIsomorphism ≈₁ ≈₃ ∼₁ ∼₃ (g ∘ f)
-isOrderIsomorphism {≈₁ = ≈₁} ≈₃-trans m₁ m₂ = record
+isOrderIsomorphism {≈₃ = ≈₃}  ≈₃-trans m₁ m₂ = record
   { isOrderMonomorphism = isOrderMonomorphism F.isOrderMonomorphism G.isOrderMonomorphism
-  ; surjective          = surjective ≈₁ _ _ ≈₃-trans G.cong F.surjective G.surjective
+  ; surjective          = surjective _ _ ≈₃ F.surjective G.surjective
   } where module F = IsOrderIsomorphism m₁; module G = IsOrderIsomorphism m₂
 
 ------------------------------------------------------------------------

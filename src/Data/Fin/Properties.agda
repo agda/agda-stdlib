@@ -29,9 +29,8 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
-open import Function.Definitions using (Injective)
-open import Function.Definitions.Core2 using (Surjective)
-open import Function.Consequences using (contraInjective)
+open import Function.Definitions using (Injective; Surjective)
+open import Function.Consequences.Propositional using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
@@ -867,10 +866,10 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 -- pinch
 ------------------------------------------------------------------------
 
-pinch-surjective : ∀ (i : Fin n) → Surjective _≡_ (pinch i)
-pinch-surjective _       zero    = zero , refl
-pinch-surjective zero    (suc j) = suc (suc j) , refl
-pinch-surjective (suc i) (suc j) = map suc (cong suc) (pinch-surjective i j)
+pinch-surjective : ∀ (i : Fin n) → Surjective _≡_ _≡_ (pinch i)
+pinch-surjective _       zero    = zero , λ { refl → refl }
+pinch-surjective zero    (suc j) = suc (suc j) , λ { refl → refl }
+pinch-surjective (suc i) (suc j) = map suc (λ {f refl → cong suc (f refl)}) (pinch-surjective i j)
 
 pinch-mono-≤ : ∀ (i : Fin n) → (pinch i) Preserves _≤_ ⟶ _≤_
 pinch-mono-≤ 0F      {0F}    {k}     0≤n       = z≤n
@@ -987,8 +986,8 @@ injective⇒≤ {zero}  {_}     {f} _   = z≤n
 injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
 injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
   suc-injective (inj (punchOut-injective
-    (contraInjective _≡_ _≡_ inj 0≢1+n)
-    (contraInjective _≡_ _≡_ inj 0≢1+n) eq))))
+    (contraInjective inj 0≢1+n)
+    (contraInjective inj 0≢1+n) eq))))
 
 <⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
 <⇒notInjective n<m inj = ℕₚ.≤⇒≯ (injective⇒≤ inj) n<m

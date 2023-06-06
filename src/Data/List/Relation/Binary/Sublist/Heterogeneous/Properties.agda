@@ -28,7 +28,7 @@ open import Data.Product using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
 
 open import Function.Base
 open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
-
+open import Function.Consequences.Propositional using (strictlySurjective⇒surjective)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Decidable as Dec using (¬?)
@@ -345,7 +345,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toAny∘fromAny≗id (there p) = P.cong there (toAny∘fromAny≗id p)
 
   Sublist-[x]-bijection : ∀ {x xs} → (Sublist R [ x ] xs) ⤖ (Any (R x) xs)
-  Sublist-[x]-bijection = mk⤖ (toAny-injective , < fromAny , toAny∘fromAny≗id >)
+  Sublist-[x]-bijection = mk⤖ (toAny-injective , strictlySurjective⇒surjective < fromAny , toAny∘fromAny≗id >)
 
 ------------------------------------------------------------------------
 -- Relational properties

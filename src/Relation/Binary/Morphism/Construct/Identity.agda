@@ -8,6 +8,7 @@
 
 open import Data.Product using (_,_)
 open import Function.Base using (id)
+import Function.Construct.Identity as Id
 open import Level using (Level)
 open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
@@ -29,19 +30,19 @@ module _ (≈ : Rel A ℓ₁) where
 
   isRelHomomorphism : IsRelHomomorphism ≈ ≈ id
   isRelHomomorphism = record
-    { cong = id
+    { cong = Id.congruent ≈
     }
 
   isRelMonomorphism : IsRelMonomorphism ≈ ≈ id
   isRelMonomorphism = record
     { isHomomorphism = isRelHomomorphism
-    ; injective      = id
+    ; injective      = Id.injective ≈
     }
 
   isRelIsomorphism : Reflexive ≈ → IsRelIsomorphism ≈ ≈ id
   isRelIsomorphism refl = record
     { isMonomorphism = isRelMonomorphism
-    ; surjective     = λ y → y , refl
+    ; surjective     = Id.surjective ≈
     }
 
 ------------------------------------------------------------------------
@@ -76,14 +77,14 @@ module _ (≈ : Rel A ℓ₁) (∼ : Rel A ℓ₂) where
   isOrderMonomorphism : IsOrderMonomorphism ≈ ≈ ∼ ∼ id
   isOrderMonomorphism = record
     { isOrderHomomorphism = isOrderHomomorphism
-    ; injective           = id
+    ; injective           = Id.injective ≈
     ; cancel              = id
     }
 
   isOrderIsomorphism : Reflexive ≈ → IsOrderIsomorphism ≈ ≈ ∼ ∼ id
   isOrderIsomorphism refl = record
     { isOrderMonomorphism = isOrderMonomorphism
-    ; surjective          = λ y → y , refl
+    ; surjective          = Id.surjective ≈
     }
 
 ------------------------------------------------------------------------

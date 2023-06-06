@@ -18,14 +18,14 @@ open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (_×ₛ_)
 open import Function
+open import Function.Consequences
 open import Level
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Binary.Properties.Setoid using (respʳ-flip)
 
 module Data.List.Relation.Unary.Enumerates.Setoid.Properties where
 
-open Setoid
 
 private
   variable
@@ -38,7 +38,7 @@ module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (surj : Surjection S T) whe
   open Surjection surj
 
   map⁺ : ∀ {xs} → IsEnumeration S xs → IsEnumeration T (map to xs)
-  map⁺ _∈xs y with surjective y
+  map⁺ _∈xs y with strictlySurjective y
   ... | (x , fx≈y) = ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
 
 ------------------------------------------------------------------------
@@ -82,7 +82,9 @@ module _ (S? : DecSetoid a ℓ₁) where
 -- lookup
 
 module _ (S : Setoid a ℓ₁) where
+  open Setoid S
 
   lookup-surjective : ∀ {xs} → IsEnumeration S xs →
-                      Surjective _≡_ (_≈_ S) (lookup xs)
-  lookup-surjective _∈xs y = index (y ∈xs) , sym S (lookup-index (y ∈xs))
+                      Surjective _≡_ _≈_ (lookup xs)
+  lookup-surjective _∈xs = strictlySurjective⇒surjective
+    trans (λ { P.refl → refl}) (λ y → index (y ∈xs) , sym (lookup-index (y ∈xs)))
