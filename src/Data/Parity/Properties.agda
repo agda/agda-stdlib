@@ -410,14 +410,6 @@ toSign-inverseˡ : Inverseˡ _≡_ _≡_ toSign fromSign
 toSign-inverseˡ { + }  refl = refl
 toSign-inverseˡ { - } refl = refl
 
-toSign-inverts-fromSign : ∀ {p s} → toSign p ≡ s → fromSign s ≡ p
-toSign-inverts-fromSign {0ℙ} refl = refl
-toSign-inverts-fromSign {1ℙ} refl = refl
-
-fromSign-inverts-toSign : ∀ {s p} → fromSign s ≡ p → toSign p ≡ s
-fromSign-inverts-toSign { + }  refl = refl
-fromSign-inverts-toSign { - } refl = refl
-
 toSign-injective : Injective _≡_ _≡_ toSign
 toSign-injective = inverseʳ⇒injective toSign toSign-inverseʳ
 
