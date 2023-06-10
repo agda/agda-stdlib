@@ -3081,12 +3081,12 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`
 
-This is how to use it:
-  ```agda
-  _ : a # d
-  _ = begin-apartness
-    a ≈⟨ a≈b ⟩
-    b #⟨ b#c ⟩
-    c ≈⟨ c≈d ⟩
-    d ∎
-  ```
+  This is how to use it:
+    ```agda
+    _ : a # d
+    _ = begin-apartness
+      a ≈⟨ a≈b ⟩
+      b #⟨ b#c ⟩
+      c ≈⟨ c≈d ⟩
+      d ∎
+    ```
