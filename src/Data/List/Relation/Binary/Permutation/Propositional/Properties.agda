@@ -29,7 +29,7 @@ open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
+  using (_≡_ ; refl ; cong; cong₂; _≢_)
 open import Relation.Nullary
 
 open PermutationReasoning
@@ -323,6 +323,18 @@ drop-∷ = drop-mid [] []
 ++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
 ++↭ʳ++ []       ys = ↭-refl
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (shift x xs ys)) (++↭ʳ++ xs (x ∷ ys))
+
+------------------------------------------------------------------------
+-- reverse
+
+↭-reverse : (xs : List A) → reverse xs ↭ xs
+↭-reverse [] = ↭-refl
+↭-reverse (x ∷ xs) = begin
+  reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
+  reverse xs ∷ʳ x ↭˘⟨ ∷↭∷ʳ x (reverse xs) ⟩
+  x ∷ reverse xs   ↭⟨ prep x (↭-reverse xs) ⟩
+  x ∷ xs ∎
+  where open PermutationReasoning
 
 ------------------------------------------------------------------------
 -- merge

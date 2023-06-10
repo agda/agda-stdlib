@@ -1,7 +1,7 @@
 Version 2.0-dev
 ===============
 
-The library has been tested using Agda 2.6.2.
+The library has been tested using Agda 2.6.3.
 
 Highlights
 ----------
@@ -88,8 +88,7 @@ Non-backwards compatible changes
   such as `Monad`, `Applicative`, `Functor`, etc, under `Category.*`, as this
   obstructs the importing of the `agda-categories` development into the Standard Library,
   and moreover needlessly restricts the applicability of categorical concepts to this
-  (highly specific) mode of use. Correspondingly, modules grouped under `*.Categorical.*`
-  which exploited these structures for effectful programming have been renamed `*.Effectful`.
+  (highly specific) mode of use. Correspondingly, client modules grouped under `*.Categorical.*` which exploit such structure for effectful programming have been renamed `*.Effectful`, with the originals being deprecated.
 
 ### Improvements to pretty printing and regexes
 
@@ -871,6 +870,43 @@ Deprecated modules
   Algebra.Morphism.LatticeMonomorphism         ↦ Algebra.Lattice.Morphism.LatticeMonomorphism
   ```
 
+### Moving `*.Catgeorical.*` files
+
+* As discussed above the following files have been moved:
+  ```agda
+  Codata.Sized.Colist.Categorical            ↦ Codata.Sized.Colist.Effectful
+  Codata.Sized.Covec.Categorical             ↦ Codata.Sized.Covec.Effectful
+  Codata.Sized.Delay.Categorical             ↦ Codata.Sized.Delay.Effectful
+  Codata.Sized.Stream.Categorical            ↦ Codata.Sized.Stream.Effectful
+  Data.List.Categorical                      ↦ Data.List.Effectful
+  Data.List.Categorical.Transformer          ↦ Data.List.Effectful.Transformer
+  Data.List.NonEmpty.Categorical             ↦ Data.List.NonEmpty.Effectful
+  Data.List.NonEmpty.Categorical.Transformer ↦ Data.List.NonEmpty.Effectful.Transformer
+  Data.Maybe.Categorical                     ↦ Data.Maybe.Effectful
+  Data.Maybe.Categorical.Transformer         ↦ Data.Maybe.Effectful.Transformer
+  Data.Product.Categorical.Examples          ↦ Data.Product.Effectful.Examples
+  Data.Product.Categorical.Left              ↦ Data.Product.Effectful.Left
+  Data.Product.Categorical.Left.Base         ↦ Data.Product.Effectful.Left.Base
+  Data.Product.Categorical.Right             ↦ Data.Product.Effectful.Right
+  Data.Product.Categorical.Right.Base        ↦ Data.Product.Effectful.Right.Base
+  Data.Sum.Categorical.Examples              ↦ Data.Sum.Effectful.Examples
+  Data.Sum.Categorical.Left                  ↦ Data.Sum.Effectful.Left
+  Data.Sum.Categorical.Left.Transformer      ↦ Data.Sum.Effectful.Left.Transformer
+  Data.Sum.Categorical.Right                 ↦ Data.Sum.Effectful.Right
+  Data.Sum.Categorical.Right.Transformer     ↦ Data.Sum.Effectful.Right.Transformer
+  Data.These.Categorical.Examples            ↦ Data.These.Effectful.Examples
+  Data.These.Categorical.Left                ↦ Data.These.Effectful.Left
+  Data.These.Categorical.Left.Base           ↦ Data.These.Effectful.Left.Base
+  Data.These.Categorical.Right               ↦ Data.These.Effectful.Right
+  Data.These.Categorical.Right.Base          ↦ Data.These.Effectful.Right.Base
+  Data.Vec.Categorical                       ↦ Data.Vec.Effectful
+  Data.Vec.Categorical.Transformer           ↦ Data.Vec.Effectful.Transformer
+  Data.Vec.Recursive.Categorical             ↦ Data.Vec.Recursive.Effectful
+  Function.Identity.Categorical              ↦ Function.Identity.Effectful
+  IO.Categorical                             ↦ IO.Effectful
+  Reflection.TCM.Categorical                 ↦ Reflection.TCM.Effectful
+  ```
+
 ### Moving `Relation.Binary.Properties.XLattice` files
 
 * The following files have been moved:
@@ -1298,6 +1334,15 @@ Deprecated names
 * This fixes the fact we had picked the wrong name originally. The erased modality
   corresponds to @0 whereas the irrelevance one corresponds to `.`.
 
+### Deprecated `Relation.Binary.PropositionalEquality.inspect`
+    in favour of `with ... in ...` syntax (issue #1580; PRs #1630, #1930)
+
+* In `Relation.Binary.PropositionalEquality`
+  both the record type `Reveal_·_is_`
+  and its principal mode of use, `inspect`,
+  have been deprecated in favour of the new `with ... in ...` syntax.
+  See the documentation of [with-abstraction equality](https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality)
+
 New modules
 -----------
 
@@ -1601,8 +1646,30 @@ Other minor changes
                                      Involutive _≈_ f
   ```
 
+* Added new proofs to `Algebra.Consequences.Propositional`:
+  ```agda
+  comm+assoc⇒middleFour     : Commutative _•_ →
+                              Associative _•_ →
+                              _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒comm  : Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+  ```
+
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
+  comm+assoc⇒middleFour     : Congruent₂ _•_ → Commutative _•_ → Associative _•_ →
+                              _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Congruent₂ _•_ → Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒comm  : Congruent₂ _•_ → Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+
   involutive⇒surjective  : Involutive f  → Surjective f
   selfInverse⇒involutive : SelfInverse f → Involutive f
   selfInverse⇒congruent  : SelfInverse f → Congruent f
@@ -1666,6 +1733,8 @@ Other minor changes
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
+  _MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
+
   SelfInverse : Op₁ A → Set _
   
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
@@ -1855,6 +1924,9 @@ Other minor changes
   toℕ-cancel-≤       : toℕ i ℕ.≤ toℕ j → i ≤ j
   toℕ-cancel-<       : toℕ i ℕ.< toℕ j → i < j
 
+  splitAt⁻¹-↑ˡ       : splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
+  splitAt⁻¹-↑ʳ       : splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
+
   toℕ-combine        : toℕ (combine i j) ≡ k ℕ.* toℕ i ℕ.+ toℕ j
   combine-injectiveˡ : combine i j ≡ combine k l → i ≡ k
   combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
@@ -2043,6 +2115,9 @@ Other minor changes
   s<′s : m <′ n → suc m <′ suc n
   <⇒<′ : m < n → m <′ n
   <′⇒< : m <′ n → m < n
+
+  m+n≤p⇒m≤p∸n         : m + n ≤ p → m ≤ p ∸ n
+  m≤p∸n⇒m+n≤p         : n ≤ p → m ≤ p ∸ n → m + n ≤ p
 
   1≤n!    : 1 ≤ n !
   _!≢0    : NonZero (n !)
@@ -3007,4 +3082,21 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added new function to `Data.Vec.Relation.Binary.Equality.Setoid`
   ```agda
   map-[]≔ : map f (xs [ i ]≔ p) ≋ map f xs [ i ]≔ f p
+  ```
+
+* Added new function to `Data.List.Relation.Binary.Permutation.Propositional.Properties`
+  ```agda
+  ↭-reverse : (xs : List A) → reverse xs ↭ xs
+  ```
+
+* Added new file `Relation.Binary.Reasoning.Base.Apartness`
+
+This is how to use it:
+  ```agda
+  _ : a # d
+  _ = begin-apartness
+    a ≈⟨ a≈b ⟩
+    b #⟨ b#c ⟩
+    c ≈⟨ c≈d ⟩
+    d ∎
   ```
