@@ -3079,6 +3079,13 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ↭-reverse : (xs : List A) → reverse xs ↭ xs
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Setoid.Properties`
+  and `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`.
+  ```agda
+  ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ```
+
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`
 
   This is how to use it:
