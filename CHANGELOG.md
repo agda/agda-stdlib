@@ -528,7 +528,7 @@ Non-backwards compatible changes
 * It was very difficult to use the `Relation.Nullary` modules, as `Relation.Nullary`
   contained the basic definitions of negation, decidability etc., and the operations and
   proofs were smeared over `Relation.Nullary.(Negation/Product/Sum/Implication etc.)`.
-  
+
 * In order to fix this:
   - the definition of `Dec` and `recompute` have been moved to `Relation.Nullary.Decidable.Core`
   - the definition of `Reflects` has been moved to `Relation.Nullary.Reflects`
@@ -545,11 +545,11 @@ Non-backwards compatible changes
   have been deprecated and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`
   however all their contents is re-exported by `Relation.Nullary` which is the easiest way to access
   it now.
-  
+
 * In order to facilitate this reorganisation the following breaking moves have occured:
   - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
   - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
-  - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation` 
+  - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation`
 	to `Relation.Nullary.Decidable`.
   - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
 
@@ -695,7 +695,7 @@ Non-backwards compatible changes
   ```
   NB. It is not possible to rename or deprecate `syntax` declarations, so Agda will
   only issue a "Could not parse the application `begin ...` when scope checking"
-  warning if the old combinators are used. 
+  warning if the old combinators are used.
 
 * The types of the proofs `pos⇒1/pos`/`1/pos⇒pos` and `neg⇒1/neg`/`1/neg⇒neg` in
   `Data.Rational(.Unnormalised).Properties` have been switched, as the previous
@@ -987,7 +987,7 @@ Deprecated names
 
 * In `Data.Fin.Induction`:
   ```
-  ≺-Rec 
+  ≺-Rec
   ≺-wellFounded
   ≺-recBuilder
   ≺-rec
@@ -996,7 +996,7 @@ Deprecated names
   As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
   associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
   But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
-  least of all those counterparts... the type confusion would be intolerable. 
+  least of all those counterparts... the type confusion would be intolerable.
 
 * In `Data.Fin.Properties`:
   ```
@@ -1077,14 +1077,14 @@ Deprecated names
 
   ^-semigroup-morphism ↦ ^-isMagmaHomomorphism
   ^-monoid-morphism    ↦ ^-isMonoidHomomorphism
-  
+
   pos-distrib-* ↦ pos-*
   pos-+-commute ↦ pos-+
   abs-*-commute ↦ abs-*
-  
+
   +-isAbelianGroup ↦ +-0-isAbelianGroup
   ```
-  
+
 * In `Data.List.Properties`:
   ```agda
   map-id₂         ↦  map-id-local
@@ -1575,7 +1575,7 @@ New modules
   ```
   Algebra.Properties.Quasigroup
   ```
-  
+
 * Properties of MiddleBolLoop
   ```
   Algebra.Properties.MiddleBolLoop
@@ -1736,7 +1736,7 @@ Other minor changes
   _MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
 
   SelfInverse : Op₁ A → Set _
-  
+
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
   LeftDividesʳ  : Op₂ A → Op₂ A → Set _
   RightDividesˡ : Op₂ A → Op₂ A → Set _
@@ -1772,7 +1772,7 @@ Other minor changes
   _^ᵗ_     : A → ℕ → A
   ```
 
-* `Algebra.Properties.Magma.Divisibility` now re-exports operations 
+* `Algebra.Properties.Magma.Divisibility` now re-exports operations
   `_∣ˡ_`, `_∤ˡ_`, `_∣ʳ_`, `_∤ʳ_` from `Algebra.Definitions.Magma`.
 
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
@@ -1954,7 +1954,7 @@ Other minor changes
 * Added new functions in `Data.Integer.Base`:
   ```
   _^_ : ℤ → ℕ → ℤ
- 
+
   +-0-rawGroup  : Rawgroup 0ℓ 0ℓ
 
   *-rawMagma    : RawMagma 0ℓ 0ℓ
@@ -2069,7 +2069,7 @@ Other minor changes
   _! : ℕ → ℕ
 
   parity : ℕ → Parity
-  
+
   +-rawMagma          : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
   *-rawMagma          : RawMagma 0ℓ 0ℓ
@@ -2314,10 +2314,10 @@ Other minor changes
 * Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
   ```agda
   ×-respectsʳ : Transitive _≈₁_ →
-                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_ 
+                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_
   ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
-                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_ 
-  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ → 
+                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_
+  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ →
                    WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
   ```
 
@@ -2470,7 +2470,7 @@ Other minor changes
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
   <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
                 ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
-  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ → 
+  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
                   ∀ {n} → WellFounded (_<_ {n})
 ```
 
