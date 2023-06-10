@@ -1646,8 +1646,30 @@ Other minor changes
                                      Involutive _≈_ f
   ```
 
+* Added new proofs to `Algebra.Consequences.Propositional`:
+  ```agda
+  comm+assoc⇒middleFour     : Commutative _•_ →
+                              Associative _•_ →
+                              _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒comm  : Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+  ```
+
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
+  comm+assoc⇒middleFour     : Congruent₂ _•_ → Commutative _•_ → Associative _•_ →
+                              _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Congruent₂ _•_ → Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒comm  : Congruent₂ _•_ → Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+
   involutive⇒surjective  : Involutive f  → Surjective f
   selfInverse⇒involutive : SelfInverse f → Involutive f
   selfInverse⇒congruent  : SelfInverse f → Congruent f
@@ -1711,6 +1733,8 @@ Other minor changes
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
+  _MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
+
   SelfInverse : Op₁ A → Set _
   
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
