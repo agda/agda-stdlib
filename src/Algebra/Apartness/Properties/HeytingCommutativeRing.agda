@@ -42,12 +42,12 @@ x-0≈x x = trans (+-congˡ -0#≈0#) (+-identityʳ x)
   1*[x-0]≈x : 1# * (x - 0#) ≈ x
   1*[x-0]≈x {x} = trans (*-identityˡ (x - 0#)) (x-0≈x x)
 
-private
-  x#0y#0→xy#0-helper : x # 0# → y # 0#
-    → Invertible _≈_ 1# _*_ (x - 0#)
-    → Invertible _≈_ 1# _*_ (y - 0#)
-    → x * y # 0#
-  x#0y#0→xy#0-helper {x} {y} x#0 y#0 (x⁻¹ , x⁻¹*x≈1 , x*x⁻¹≈1) (y⁻¹ , y⁻¹*y≈1 , y*y⁻¹≈1)
+x#0y#0→xy#0 : x # 0# → y # 0# → x * y # 0#
+x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
+  where
+
+  helper : Invertible _≈_ 1# _*_ (x - 0#) → Invertible _≈_ 1# _*_ (y - 0#) → x * y # 0#
+  helper (x⁻¹ , x⁻¹*x≈1 , x*x⁻¹≈1) (y⁻¹ , y⁻¹*y≈1 , y*y⁻¹≈1)
     = invertibleˡ⇒# (y⁻¹ * x⁻¹ , y⁻¹*x⁻¹*x*y≈1)
     where
     open ReasonSetoid setoid
@@ -63,9 +63,6 @@ private
       y⁻¹ * y                     ≈˘⟨ *-congˡ (x-0≈x y) ⟩
       y⁻¹ * (y - 0#)               ≈⟨ y⁻¹*y≈1 ⟩
       1# ∎
-
-x#0y#0→xy#0 : x # 0# → y # 0# → x * y # 0#
-x#0y#0→xy#0 {x} {y} x#0 y#0 = x#0y#0→xy#0-helper x#0 y#0 (#⇒invertible x#0) (#⇒invertible y#0)
 
 #-sym : Symmetric _#_
 #-sym {x} {y} x#y = invertibleˡ⇒# (- x-y⁻¹ , x-y⁻¹*y-x≈1)
@@ -91,9 +88,12 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = x#0y#0→xy#0-helper x#0 y#0 (#⇒invertible x#0
     x-y⁻¹ * (x - y)        ≈⟨ InvX-Y .proj₂ .proj₁ ⟩
     1# ∎
 
-private
-  #-congʳ-helper : x ≈ y → x # z → Invertible _≈_ 1# _*_ (x - z) → y # z
-  #-congʳ-helper {x} {y} {z} x≈y x#z (x-z⁻¹ , x-z⁻¹*x-z≈1# , x-z*x-z⁻¹≈1#)
+#-congʳ : x ≈ y → x # z → y # z
+#-congʳ {x} {y} {z} x≈y x#z = helper (#⇒invertible x#z)
+  where
+
+  helper : Invertible _≈_ 1# _*_ (x - z) → y # z
+  helper (x-z⁻¹ , x-z⁻¹*x-z≈1# , x-z*x-z⁻¹≈1#)
     = invertibleˡ⇒# (x-z⁻¹ , x-z⁻¹*y-z≈1)
     where
     open ReasonSetoid setoid
@@ -103,9 +103,6 @@ private
       x-z⁻¹ * (y - z) ≈˘⟨ *-congˡ (+-congʳ x≈y) ⟩
       x-z⁻¹ * (x - z)  ≈⟨ x-z⁻¹*x-z≈1# ⟩
       1# ∎
-
-#-congʳ : x ≈ y → x # z → y # z
-#-congʳ {x} {y} {z} x≈y x#z = #-congʳ-helper x≈y x#z (#⇒invertible x#z)
 
 #-congˡ : y ≈ z → x # y → x # z
 #-congˡ y≈z x#y = #-sym (#-congʳ y≈z (#-sym x#y))
