@@ -29,14 +29,14 @@ open CommutativeMonoid M
 private variable
   x : Carrier
 
-leftInv→rightInv : LeftInvertible _≈_ 0# _+_ x → RightInvertible _≈_ 0# _+_ x
-leftInv→rightInv {x} (-x , -x+x≈1) = -x , trans (+-comm x -x) -x+x≈1
+invertibleˡ⇒invertibleʳ : LeftInvertible _≈_ 0# _+_ x → RightInvertible _≈_ 0# _+_ x
+invertibleˡ⇒invertibleʳ {x} (-x , -x+x≈1) = -x , trans (+-comm x -x) -x+x≈1
 
-rightInv→leftInv : RightInvertible _≈_ 0# _+_ x → LeftInvertible _≈_ 0# _+_ x
-rightInv→leftInv {x} (-x , x+-x≈1) = -x , trans (+-comm -x x) x+-x≈1
+invertibleʳ⇒invertibleˡ : RightInvertible _≈_ 0# _+_ x → LeftInvertible _≈_ 0# _+_ x
+invertibleʳ⇒invertibleˡ {x} (-x , x+-x≈1) = -x , trans (+-comm -x x) x+-x≈1
 
-leftInv→Inv : LeftInvertible _≈_ 0# _+_ x → Invertible _≈_ 0# _+_ x
-leftInv→Inv left@(-x , -x+x≈1) = -x , -x+x≈1 , leftInv→rightInv left .proj₂
+invertibleˡ⇒invertible : LeftInvertible _≈_ 0# _+_ x → Invertible _≈_ 0# _+_ x
+invertibleˡ⇒invertible left@(-x , -x+x≈1) = -x , -x+x≈1 , invertibleˡ⇒invertibleʳ left .proj₂
 
-rightInv→Inv : RightInvertible _≈_ 0# _+_ x → Invertible _≈_ 0# _+_ x
-rightInv→Inv right@(-x , x+-x≈1) = -x , rightInv→leftInv right .proj₂ , x+-x≈1
+invertibleʳ⇒invertible : RightInvertible _≈_ 0# _+_ x → Invertible _≈_ 0# _+_ x
+invertibleʳ⇒invertible right@(-x , x+-x≈1) = -x , invertibleʳ⇒invertibleˡ right .proj₂ , x+-x≈1

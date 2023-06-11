@@ -3045,18 +3045,18 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new functions to `Algebra.Properties.CommutativeMonoid`
   ```agda
-  leftInv→rightInv : LeftInvertible _≈_ 1# _*_ (x - y) → RightInvertible _≈_ 1# _*_ (x - y)
-  rightInv→leftInv : RightInvertible _≈_ 1# _*_ (x - y) → LeftInvertible _≈_ 1# _*_ (x - y)
-  leftInv→Inv : LeftInvertible _≈_ 1# _*_ (x - y) → Invertible _≈_ 1# _*_ (x - y)
-  rightInv→Inv : RightInvertible _≈_ 1# _*_ (x - y) → Invertible _≈_ 1# _*_ (x - y)
+  invertibleˡ⇒invertibleʳ : LeftInvertible _≈_ 0# _+_ x → RightInvertible _≈_ 0# _+_ x
+  invertibleʳ⇒invertibleˡ : RightInvertible _≈_ 0# _+_ x → LeftInvertible _≈_ 0# _+_ x
+  invertibleˡ⇒invertible  : LeftInvertible _≈_ 0# _+_ x → Invertible _≈_ 0# _+_ x
+  invertibleʳ⇒invertible  : RightInvertible _≈_ 0# _+_ x → Invertible _≈_ 0# _+_ x
   ```
 
 * Added new functions to `Algebra.Apartness.Bundles`
   ```agda
-  leftInvertible⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
-  rightInvertible⇒# : RightInvertible _≈_ 1# _*_ (x - y) → x # y
-  x#0y#0→xy#0 : x # 0# → y # 0# → x * y # 0#
-  #-sym : Symmetric _#_
-  #-congʳ : x ≈ y → x # z → y # z
-  #-congˡ : y ≈ z → x # y → x # z
+  invertibleˡ⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
+  invertibleʳ⇒# : RightInvertible _≈_ 1# _*_ (x - y) → x # y
+  x#0y#0→xy#0   : x # 0# → y # 0# → x * y # 0#
+  #-sym         : Symmetric _#_
+  #-congʳ       : x ≈ y → x # z → y # z
+  #-congˡ       : y ≈ z → x # y → x # z
   ```

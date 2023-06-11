@@ -27,63 +27,48 @@ open import Algebra.Properties.CommutativeMonoid *-commutativeMonoid
 private variable
   x y z : Carrier
 
-leftInvertible⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
-leftInvertible⇒# = invertible⇒# ∘ leftInv→Inv
+invertibleˡ⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
+invertibleˡ⇒# = invertible⇒# ∘ invertibleˡ⇒invertible
 
-rightInvertible⇒# : RightInvertible _≈_ 1# _*_ (x - y) → x # y
-rightInvertible⇒# = invertible⇒# ∘ rightInv→Inv
+invertibleʳ⇒# : RightInvertible _≈_ 1# _*_ (x - y) → x # y
+invertibleʳ⇒# = invertible⇒# ∘ invertibleʳ⇒invertible
 
 x-0≈x : RightIdentity _≈_ 0# _-_
 x-0≈x x = trans (+-congˡ -0#≈0#) (+-identityʳ x)
 
 1#0 : 1# # 0#
-1#0 = leftInvertible⇒# (1# , 1*[x-0]≈x)
+1#0 = invertibleˡ⇒# (1# , 1*[x-0]≈x)
   where
   1*[x-0]≈x : 1# * (x - 0#) ≈ x
   1*[x-0]≈x {x} = trans (*-identityˡ (x - 0#)) (x-0≈x x)
 
+private
+  x#0y#0→xy#0-helper : x # 0# → y # 0#
+    → Invertible _≈_ 1# _*_ (x - 0#)
+    → Invertible _≈_ 1# _*_ (y - 0#)
+    → x * y # 0#
+  x#0y#0→xy#0-helper {x} {y} x#0 y#0 (x⁻¹ , x⁻¹*x≈1 , x*x⁻¹≈1) (y⁻¹ , y⁻¹*y≈1 , y*y⁻¹≈1)
+    = invertibleˡ⇒# (y⁻¹ * x⁻¹ , y⁻¹*x⁻¹*x*y≈1)
+    where
+    open ReasonSetoid setoid
+
+    y⁻¹*x⁻¹*x*y≈1 : y⁻¹ * x⁻¹ * (x * y - 0#) ≈ 1#
+    y⁻¹*x⁻¹*x*y≈1 = begin
+      y⁻¹ * x⁻¹ * (x * y - 0#)     ≈⟨ *-congˡ (x-0≈x (x * y)) ⟩
+      y⁻¹ * x⁻¹ * (x * y)          ≈⟨ *-assoc y⁻¹ x⁻¹ (x * y) ⟩
+      y⁻¹ * (x⁻¹ * (x * y))       ≈˘⟨ *-congˡ (*-assoc x⁻¹ x y) ⟩
+      y⁻¹ * ((x⁻¹ * x) * y)       ≈˘⟨ *-congˡ (*-congʳ (*-congˡ (x-0≈x x))) ⟩
+      y⁻¹ * ((x⁻¹ * (x - 0#)) * y) ≈⟨ *-congˡ (*-congʳ x⁻¹*x≈1) ⟩
+      y⁻¹ * (1# * y)               ≈⟨ *-congˡ (*-identityˡ y) ⟩
+      y⁻¹ * y                     ≈˘⟨ *-congˡ (x-0≈x y) ⟩
+      y⁻¹ * (y - 0#)               ≈⟨ y⁻¹*y≈1 ⟩
+      1# ∎
+
 x#0y#0→xy#0 : x # 0# → y # 0# → x * y # 0#
-x#0y#0→xy#0 {x} {y} x#0 y#0 = leftInvertible⇒# (y⁻¹ * x⁻¹ , y⁻¹*x⁻¹*x*y≈1)
-  where
-  open ReasonSetoid setoid
-
-  InvX : Invertible _≈_ 1# _*_ (x - 0#)
-  InvX = #⇒invertible x#0
-
-  x⁻¹ = InvX .proj₁
-
-  x⁻¹*x≈1 : x⁻¹ * (x - 0#) ≈ 1#
-  x⁻¹*x≈1 = InvX .proj₂ .proj₁
-
-  x*x⁻¹≈1 : (x - 0#) * x⁻¹ ≈ 1#
-  x*x⁻¹≈1 = InvX .proj₂ .proj₂
-
-  InvY : Invertible _≈_ 1# _*_ (y - 0#)
-  InvY = #⇒invertible y#0
-
-  y⁻¹ = InvY .proj₁
-
-  y⁻¹*y≈1 : y⁻¹ * (y - 0#) ≈ 1#
-  y⁻¹*y≈1 = InvY .proj₂ .proj₁
-
-  y*y⁻¹≈1 : (y - 0#) * y⁻¹ ≈ 1#
-  y*y⁻¹≈1 = InvY .proj₂ .proj₂
-
-  y⁻¹*x⁻¹*x*y≈1 : y⁻¹ * x⁻¹ * (x * y - 0#) ≈ 1#
-  y⁻¹*x⁻¹*x*y≈1 = begin
-    y⁻¹ * x⁻¹ * (x * y - 0#)     ≈⟨ *-congˡ (x-0≈x (x * y)) ⟩
-    y⁻¹ * x⁻¹ * (x * y)          ≈⟨ *-assoc y⁻¹ x⁻¹ (x * y) ⟩
-    y⁻¹ * (x⁻¹ * (x * y))       ≈˘⟨ *-congˡ (*-assoc x⁻¹ x y) ⟩
-    y⁻¹ * ((x⁻¹ * x) * y)       ≈˘⟨ *-congˡ (*-congʳ (*-congˡ (x-0≈x x))) ⟩
-    y⁻¹ * ((x⁻¹ * (x - 0#)) * y) ≈⟨ *-congˡ (*-congʳ x⁻¹*x≈1) ⟩
-    y⁻¹ * (1# * y)               ≈⟨ *-congˡ (*-identityˡ y) ⟩
-    y⁻¹ * y                     ≈˘⟨ *-congˡ (x-0≈x y) ⟩
-    y⁻¹ * (y - 0#)               ≈⟨ y⁻¹*y≈1 ⟩
-    1# ∎
-
+x#0y#0→xy#0 {x} {y} x#0 y#0 = x#0y#0→xy#0-helper x#0 y#0 (#⇒invertible x#0) (#⇒invertible y#0)
 
 #-sym : Symmetric _#_
-#-sym {x} {y} x#y = leftInvertible⇒# (- x-y⁻¹ , x-y⁻¹*y-x≈1)
+#-sym {x} {y} x#y = invertibleˡ⇒# (- x-y⁻¹ , x-y⁻¹*y-x≈1)
   where
   open ReasonSetoid setoid
   InvX-Y : Invertible _≈_ 1# _*_ (x - y)
@@ -106,28 +91,21 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = leftInvertible⇒# (y⁻¹ * x⁻¹ , y⁻¹*x�
     x-y⁻¹ * (x - y)        ≈⟨ InvX-Y .proj₂ .proj₁ ⟩
     1# ∎
 
+private
+  #-congʳ-helper : x ≈ y → x # z → Invertible _≈_ 1# _*_ (x - z) → y # z
+  #-congʳ-helper {x} {y} {z} x≈y x#z (x-z⁻¹ , x-z⁻¹*x-z≈1# , x-z*x-z⁻¹≈1#)
+    = invertibleˡ⇒# (x-z⁻¹ , x-z⁻¹*y-z≈1)
+    where
+    open ReasonSetoid setoid
+
+    x-z⁻¹*y-z≈1 : x-z⁻¹ * (y - z) ≈ 1#
+    x-z⁻¹*y-z≈1 = begin
+      x-z⁻¹ * (y - z) ≈˘⟨ *-congˡ (+-congʳ x≈y) ⟩
+      x-z⁻¹ * (x - z)  ≈⟨ x-z⁻¹*x-z≈1# ⟩
+      1# ∎
 
 #-congʳ : x ≈ y → x # z → y # z
-#-congʳ {x} {y} {z} x≈y x#z = leftInvertible⇒# (x-z⁻¹ , x-z⁻¹*y-z≈1)
-  where
-  open ReasonSetoid setoid
-
-  InvXZ : Invertible _≈_ 1# _*_ (x - z)
-  InvXZ = #⇒invertible x#z
-
-  x-z⁻¹ = InvXZ .proj₁
-
-  x-z⁻¹*x-z≈1# : x-z⁻¹ * (x - z) ≈ 1#
-  x-z⁻¹*x-z≈1# = InvXZ .proj₂ .proj₁
-
-  x-z*x-z⁻¹≈1# : (x - z) * x-z⁻¹ ≈ 1#
-  x-z*x-z⁻¹≈1# = InvXZ .proj₂ .proj₂
-
-  x-z⁻¹*y-z≈1 : x-z⁻¹ * (y - z) ≈ 1#
-  x-z⁻¹*y-z≈1 = begin
-    x-z⁻¹ * (y - z) ≈˘⟨ *-congˡ (+-congʳ x≈y) ⟩
-    x-z⁻¹ * (x - z)  ≈⟨ x-z⁻¹*x-z≈1# ⟩
-    1# ∎
+#-congʳ {x} {y} {z} x≈y x#z = #-congʳ-helper x≈y x#z (#⇒invertible x#z)
 
 #-congˡ : y ≈ z → x # y → x # z
 #-congˡ y≈z x#y = #-sym (#-congʳ y≈z (#-sym x#y))
