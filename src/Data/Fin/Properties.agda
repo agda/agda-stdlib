@@ -562,9 +562,19 @@ splitAt-↑ˡ : ∀ m i n → splitAt m (i ↑ˡ n) ≡ inj₁ i
 splitAt-↑ˡ (suc m) zero    n = refl
 splitAt-↑ˡ (suc m) (suc i) n rewrite splitAt-↑ˡ m i n = refl
 
+splitAt⁻¹-↑ˡ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
+splitAt⁻¹-↑ˡ {suc m} {n} {0F} {.0F} refl = refl
+splitAt⁻¹-↑ˡ {suc m} {n} {suc i} {j} eq with splitAt m i in splitAt[m][i]≡inj₁[j]
+... | inj₁ k with refl ← eq = cong suc (splitAt⁻¹-↑ˡ {i = i} {j = k} splitAt[m][i]≡inj₁[j])
+
 splitAt-↑ʳ : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
 splitAt-↑ʳ zero    n i = refl
 splitAt-↑ʳ (suc m) n i rewrite splitAt-↑ʳ m n i = refl
+
+splitAt⁻¹-↑ʳ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
+splitAt⁻¹-↑ʳ {zero}  {n} {i} {j} refl = refl
+splitAt⁻¹-↑ʳ {suc m} {n} {suc i} {j} eq with splitAt m i in splitAt[m][i]≡inj₂[k]
+... | inj₂ k with refl ← eq = cong suc (splitAt⁻¹-↑ʳ {i = i} {j = k} splitAt[m][i]≡inj₂[k])
 
 splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
 splitAt-join m n (inj₁ x) = splitAt-↑ˡ m x n
@@ -612,13 +622,13 @@ remQuot-combine {suc n} {k} (suc i) j rewrite splitAt-↑ʳ k   (n ℕ.* k) (com
   cong (Data.Product.map₁ suc) (remQuot-combine i j)
 
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
-combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
-... | inj₁ j | P.[ eq ] = begin
+combine-remQuot {suc n} k i with splitAt k i in eq
+... | inj₁ j = begin
   join k (n ℕ.* k) (inj₁ j)      ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i) ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
   i                              ∎
   where open ≡-Reasoning
-... | inj₂ j | P.[ eq ] = begin
+... | inj₂ j = begin
   k ↑ʳ (uncurry combine (remQuot {n} k j)) ≡⟨ cong (k ↑ʳ_) (combine-remQuot {n} k j) ⟩
   join k (n ℕ.* k) (inj₂ j)                ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i)           ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
@@ -679,8 +689,8 @@ combine-injective i j k l cᵢⱼ≡cₖₗ =
   combine-injectiveʳ i j k l cᵢⱼ≡cₖₗ
 
 combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine j k ≡ i
-combine-surjective {m} {n} i with remQuot {m} n i | P.inspect (remQuot {m} n) i
-... | j , k | P.[ eq ] = j , k , (begin
+combine-surjective {m} {n} i with remQuot {m} n i in eq
+... | j , k = j , k , (begin
   combine j k                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
   uncurry combine (remQuot {m} n i) ≡⟨ combine-remQuot {m} n i ⟩
   i                                 ∎)

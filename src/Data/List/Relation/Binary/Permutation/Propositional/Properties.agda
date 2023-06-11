@@ -29,7 +29,7 @@ open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
+  using (_≡_ ; refl ; cong; cong₂; _≢_)
 open import Relation.Nullary
 
 open PermutationReasoning

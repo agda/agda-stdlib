@@ -854,9 +854,9 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-idem : filter P? ∘ filter P? ≗ filter P?
   filter-idem []       = refl
-  filter-idem (x ∷ xs) with does (P? x) | inspect does (P? x)
-  ... | false | _                   = filter-idem xs
-  ... | true  | P.[ eq ] rewrite eq = cong (x ∷_) (filter-idem xs)
+  filter-idem (x ∷ xs) with does (P? x) in eq
+  ... | false            = filter-idem xs
+  ... | true  rewrite eq = cong (x ∷_) (filter-idem xs)
 
   filter-++ : ∀ xs ys → filter P? (xs ++ ys) ≡ filter P? xs ++ filter P? ys
   filter-++ []       ys = refl
