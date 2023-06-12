@@ -13,8 +13,10 @@ open import Level using (Level)
 
 private
   variable
-    a : Level
+    a b c : Level
     A : Set a
+    B : Set b
+    C : Set c
     n : ℕᵇ
 
 -- Core type
@@ -56,3 +58,24 @@ tail : Vecᵇ A (suc n) → Vecᵇ A n
 tail {n = zero} (x ∷⟨ [] / [] ⟩) = []
 tail {n = 2[1+ n ]} (x ∷⟨ ls / rs ⟩) = merge ls rs
 tail {n = 1+[2 n ]} (x × y ∷⟨ ls / rs ⟩) = y ∷⟨ ls / rs ⟩
+
+-- Shape-preserving operations
+------------------------------------------------------------------------
+
+-- Construct a vector from one element
+replicate : A → Vecᵇ A n
+replicate {n = zero} x = []
+replicate {n = 2[1+ n ]} x = x × x ∷⟨ replicate x / replicate x ⟩
+replicate {n = 1+[2 n ]} x = x ∷⟨ replicate x / replicate x ⟩
+
+-- Apply a function to each element of a vector
+map : (A → B) → Vecᵇ A n → Vecᵇ B n
+map f [] = []
+map f (x ∷⟨ ls / rs ⟩) = f x ∷⟨ map f ls / map f rs ⟩
+map f (x × y ∷⟨ ls / rs ⟩) = f x × f y ∷⟨ map f ls / map f rs ⟩
+
+-- Apply a binary operation to the corresponding elements of two vectors
+zipWith : (A → B → C) → Vecᵇ A n → Vecᵇ B n → Vecᵇ C n
+zipWith f [] [] = []
+zipWith f (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) = f x₁ x₂ ∷⟨ zipWith f ls₁ ls₂ / zipWith f rs₁ rs₂ ⟩
+zipWith f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = f x₁ x₂ × f y₁ y₂ ∷⟨ zipWith f ls₁ ls₂ / zipWith f rs₁ rs₂ ⟩
