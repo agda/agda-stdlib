@@ -29,6 +29,7 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 open Setoid using (isEquivalence)
+open import Relation.Unary using (Pred)
 
 private
   variable
@@ -312,7 +313,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 -- Bundles specialised for propositional equality
 ------------------------------------------------------------------------
 
-infix 3 _⟶_ _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↩↪_ _↔_
+infix 3 _⟶_ _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↩↪_ _↔_ _↔̇_
 _⟶_ : Set a → Set b → Set _
 A ⟶ B = Func (≡.setoid A) (≡.setoid B)
 
@@ -339,6 +340,9 @@ A ↩↪ B = BiInverse (≡.setoid A) (≡.setoid B)
 
 _↔_ : Set a → Set b → Set _
 A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
+
+_↔̇_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+A ↔̇ B = ∀ {i} → A i ↔ B i
 
 -- We now define some constructors for the above that
 -- automatically provide the required congruency proofs.
