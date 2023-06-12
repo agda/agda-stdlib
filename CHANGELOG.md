@@ -2787,8 +2787,8 @@ Other minor changes
   
  * Added new lemmas in `Data.List.Propreties`:
   ```
-  take-[] : ∀ m → take {A = A} m [] ≡ []
-  drop-[] : ∀ m → drop {A = A} m [] ≡ []
+  take-[] : ∀ m → take  m [] ≡ []
+  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 NonZero/Positive/Negative changes
