@@ -8,6 +8,7 @@
 
 module Data.Vec.Binary.Properties where
 
+open import Data.Fin.Binary.Base
 open import Data.Nat.Binary.Base
 open import Data.Vec.Binary.Base
 open import Function.Base
@@ -54,10 +55,28 @@ tail-∷ x (y × z ∷⟨ ls / rs ⟩) = merge-∷ y z ls rs
 -- Properties of replicate, map, and zipWith
 ------------------------------------------------------------------------
 
+lookup-replicate : ∀ (i : Finᵇ n) (x : A) → lookup (replicate x) i ≡ x
+lookup-replicate zeroᵒ x = refl
+lookup-replicate zeroᵉ x = refl
+lookup-replicate oneᵉ x = refl
+lookup-replicate 1+[2 i ]ᵒ x = lookup-replicate i x
+lookup-replicate 2[1+ i ]ᵒ x = lookup-replicate i x
+lookup-replicate 2[1+ i ]ᵉ x = lookup-replicate i x
+lookup-replicate 3+[2 i ]ᵒ x = lookup-replicate i x
+
 map-replicate : (f : A → B) (x : A) → map f (replicate {n = n} x) ≡ replicate (f x)
 map-replicate {n = zero} f x = refl
 map-replicate {n = 2[1+ n ]} f x = cong₂ (f x × f x ∷⟨_/_⟩) (map-replicate f x) (map-replicate f x)
 map-replicate {n = 1+[2 n ]} f x = cong₂ (f x ∷⟨_/_⟩) (map-replicate f x) (map-replicate f x)
+
+lookup-map : ∀ (i : Finᵇ n) (f : A → B) (xs : Vecᵇ A n) → lookup (map f xs) i ≡ f (lookup xs i)
+lookup-map zeroᵒ f (x ∷⟨ ls / rs ⟩) = refl
+lookup-map zeroᵉ f (x × y ∷⟨ ls / rs ⟩) = refl
+lookup-map oneᵉ f (x × y ∷⟨ ls / rs ⟩) = refl
+lookup-map 1+[2 i ]ᵒ f (x ∷⟨ ls / rs ⟩) = lookup-map i f ls
+lookup-map 2[1+ i ]ᵒ f (x ∷⟨ ls / rs ⟩) = lookup-map i f rs
+lookup-map 2[1+ i ]ᵉ f (x × y ∷⟨ ls / rs ⟩) = lookup-map i f ls
+lookup-map 3+[2 i ]ᵒ f (x × y ∷⟨ ls / rs ⟩) = lookup-map i f rs
 
 map-id : (xs : Vecᵇ A n) → map id xs ≡ xs
 map-id [] = refl
@@ -73,6 +92,15 @@ map-∘ : (f : B → C) (g : A → B) → map {n = n} (f ∘ g) ≗ map f ∘ ma
 map-∘ f g [] = refl
 map-∘ f g (x ∷⟨ ls / rs ⟩) = cong₂ (f (g x) ∷⟨_/_⟩) (map-∘ f g ls) (map-∘ f g rs)
 map-∘ f g (x × y ∷⟨ ls / rs ⟩) = cong₂ (f (g x) × f (g y) ∷⟨_/_⟩) (map-∘ f g ls) (map-∘ f g rs)
+
+zipWith-lookup : (i : Finᵇ n) (f : A → B → C) (xs : Vecᵇ A n) (ys : Vecᵇ B n) → lookup (zipWith f xs ys) i ≡ f (lookup xs i) (lookup ys i)
+zipWith-lookup zeroᵒ f (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) = refl
+zipWith-lookup zeroᵉ f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = refl
+zipWith-lookup oneᵉ f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = refl
+zipWith-lookup 1+[2 i ]ᵒ f (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f ls₁ ls₂
+zipWith-lookup 2[1+ i ]ᵒ f (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f rs₁ rs₂
+zipWith-lookup 2[1+ i ]ᵉ f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f ls₁ ls₂
+zipWith-lookup 3+[2 i ]ᵒ f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f rs₁ rs₂
 
 zipWith-map₁ : (_⊕_ : B → C → D) (f : A → B) (xs : Vecᵇ A n) (ys : Vecᵇ C n) → zipWith _⊕_ (map f xs) ys ≡ zipWith (f -⟨ _⊕_ ∣) xs ys
 zipWith-map₁ _⊕_ f [] [] = refl

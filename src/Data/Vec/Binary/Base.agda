@@ -8,6 +8,7 @@
 
 module Data.Vec.Binary.Base where
 
+open import Data.Fin.Binary.Base
 open import Data.Nat.Binary.Base
 open import Level using (Level)
 
@@ -29,6 +30,18 @@ data Vecᵇ (A : Set a) : ℕᵇ → Set a where
   _∷⟨_/_⟩   : A     → Vecᵇ A n → Vecᵇ A n → Vecᵇ A 1+[2 n ]
   -- A vector with a non-zero even number of elements
   _×_∷⟨_/_⟩ : A → A → Vecᵇ A n → Vecᵇ A n → Vecᵇ A 2[1+ n ]
+
+-- Indexing
+------------------------------------------------------------------------
+
+lookup : Vecᵇ A n → Finᵇ n → A
+lookup (x ∷⟨ ls / rs ⟩) zeroᵒ = x
+lookup (x ∷⟨ ls / rs ⟩) 1+[2 i ]ᵒ = lookup ls i
+lookup (x ∷⟨ ls / rs ⟩) 2[1+ i ]ᵒ = lookup rs i
+lookup (x × y ∷⟨ ls / rs ⟩) zeroᵉ = x
+lookup (x × y ∷⟨ ls / rs ⟩) oneᵉ = y
+lookup (x × y ∷⟨ ls / rs ⟩) 2[1+ i ]ᵉ = lookup ls i
+lookup (x × y ∷⟨ ls / rs ⟩) 3+[2 i ]ᵒ = lookup rs i
 
 -- Operations on the front of a vector
 ------------------------------------------------------------------------
