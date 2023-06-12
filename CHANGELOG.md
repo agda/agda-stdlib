@@ -2785,7 +2785,7 @@ Other minor changes
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
   
- * Added new functions in `Data.List.Proppreties`:
+ * Added new lemmas in `Data.List.Proppreties`:
   ```
   take-[] : ∀ m → take {A = A} m [] ≡ []
   drop-[] : ∀ m → drop {A = A} m [] ≡ []
