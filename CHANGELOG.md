@@ -2784,23 +2784,12 @@ Other minor changes
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
-
-* Added 'take-[]' to 'Data.List.Proppreties'
-  ```agda
-  -- Taking and dropping from an empty list do nothing.
+  
+ * Added new functions in `Data.List.Proppreties`:
+  ```
   take-[] : ∀ m → take {A = A} m [] ≡ []
-  take-[] ℕ.zero = refl
-  take-[] (suc m) = refl
-  ```
-
-* Added 'drop-[]' to 'Data.List.Proppreties'
-  ```agda
-  -- Taking and dropping from an empty list do nothing.
   drop-[] : ∀ m → drop {A = A} m [] ≡ []
-  drop-[] ℕ.zero = refl
-  drop-[] (suc m) = refl
   ```
- 
 
 NonZero/Positive/Negative changes
 ---------------------------------
