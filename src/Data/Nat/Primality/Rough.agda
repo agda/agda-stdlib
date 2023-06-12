@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Nat.Rough where
+module Data.Nat.Primality.Rough where
 
 open import Data.Nat.Base using (ℕ; suc; _≤_; _<_; z≤n; s≤s; _+_)
 open import Data.Nat.Divisibility using (_∣_; _∤_; ∣-trans; ∣1⇒≡1)
