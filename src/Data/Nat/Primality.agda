@@ -21,7 +21,7 @@ open import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Decidable)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; subst)
+  using (_≡_; refl; sym; cong)
 
 private
   variable
@@ -153,6 +153,6 @@ Composite⇒NonZero {suc _} _ = _
 
 -- If m is a factor of prime p, then it is equal to either 1 or p itself
 ∣p⇒≡1∨≡p : ∀ m {p} → Prime p → m ∣ p → m ≡ 1 ⊎ m ≡ p
-∣p⇒≡1∨≡p 0 {p} p-prime m∣p = contradiction (0∣⇒≡0 m∣p) λ p≡0 → subst Prime p≡0 p-prime
+∣p⇒≡1∨≡p 0 {p} p-prime m∣p = contradiction (0∣⇒≡0 m∣p) (≢-nonZero⁻¹ p {{Prime⇒NonZero p-prime}})
 ∣p⇒≡1∨≡p 1 {p} p-prime m∣p = inj₁ refl
 ∣p⇒≡1∨≡p (suc (suc m)) {suc (suc p)} p-prime m∣p = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → p-prime (s≤s (s≤s z≤n)) m<p m∣p)
