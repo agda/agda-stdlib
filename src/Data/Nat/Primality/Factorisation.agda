@@ -20,7 +20,7 @@ open import Data.List.Base using (List; []; _∷_; product)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Binary.Permutation.Propositional as ↭
   using (_↭_; prep; swap; ↭-refl; refl; module PermutationReasoning)
-open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (productPreserves↭⇒≡; All-resp-↭)
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (product-↭; All-resp-↭)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
 open import Relation.Nullary.Decidable using (yes; no)
@@ -188,7 +188,7 @@ factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = 
   Πas≡Πbs′ : product as ≡ product bs′
   Πas≡Πbs′ = *-cancelˡ-≡ (product as) (product bs′) a {{Prime⇒NonZero aPrime}} $ begin
     a * product as  ≡⟨ Πas≡Πbs ⟩
-    product bs      ≡⟨ productPreserves↭⇒≡ bs↭a∷bs′ ⟩
+    product bs      ≡⟨ product-↭ bs↭a∷bs′ ⟩
     a * product bs′ ∎ where open ≡-Reasoning
 
   bs′Prime : All Prime bs′

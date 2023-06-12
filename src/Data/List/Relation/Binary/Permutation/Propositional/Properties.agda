@@ -363,13 +363,13 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
 ------------------------------------------------------------------------
 -- product
 
-productPreserves↭⇒≡ : product Preserves _↭_ ⟶ _≡_
-productPreserves↭⇒≡ refl = refl
-productPreserves↭⇒≡ (prep x r) = cong (x *_) (productPreserves↭⇒≡ r)
-productPreserves↭⇒≡ (trans r s) = ≡.trans (productPreserves↭⇒≡ r) (productPreserves↭⇒≡ s)
-productPreserves↭⇒≡ (swap {xs} {ys} x y r) = begin
+product-↭ : product Preserves _↭_ ⟶ _≡_
+product-↭ refl = refl
+product-↭ (prep x r) = cong (x *_) (product-↭ r)
+product-↭ (trans r s) = ≡.trans (product-↭ r) (product-↭ s)
+product-↭ (swap {xs} {ys} x y r) = begin
   x * (y * product xs) ≡˘⟨ *-assoc x y (product xs) ⟩
-  (x * y) * product xs ≡⟨ cong₂ _*_ (*-comm x y) (productPreserves↭⇒≡ r) ⟩
+  (x * y) * product xs ≡⟨ cong₂ _*_ (*-comm x y) (product-↭ r) ⟩
   (y * x) * product ys ≡⟨ *-assoc y x (product ys) ⟩
   y * (x * product ys) ∎
   where open ≡-Reasoning
