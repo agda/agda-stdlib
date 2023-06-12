@@ -87,6 +87,7 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
     ; factorsPrime = roughn∧∣n⇒prime k-rough-n 2≤2+n k∣n ∷ factorsPrime res
     }
     where
+      open ≤-Reasoning
 
       q : ℕ
       q = quotient k∣n
@@ -100,19 +101,19 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
           q * 2+ k  ≤⟨ *-monoˡ-≤ (2 + k) q≤1 ⟩
           2 + k + 0 ≡⟨ +-identityʳ (2 + k) ⟩
           2 + k     <⟨ ≤‴⇒≤ k<n ⟩
-          2 + n     ∎ where open ≤-Reasoning
+          2 + n     ∎
 
       0<q : 0 < q
       0<q = begin-strict
         0 <⟨ s≤s z≤n ⟩
         2 ≤⟨ 2≤q ⟩
-        q ∎ where open ≤-Reasoning
+        q ∎
 
       q<n : q < 2 + n
       q<n = begin-strict
         q           <⟨ m<m*n q (2 + k) ⦃ >-nonZero 0<q ⦄ 2≤2+n ⟩
         q * (2 + k) ≡˘⟨ _∣_.equality k∣n ⟩
-        2 + n       ∎ where open ≤-Reasoning
+        2 + n       ∎
 
       q≮2+k : q ≮ 2 + k
       q≮2+k q<k = k-rough-n 2≤q q<k (quotient∣n k∣n)
@@ -122,14 +123,14 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
           $ λ {d} d<k d-prime → k-rough-n d<k d-prime ∘ flip ∣-trans (quotient∣n k∣n)
 
       prop : (2 + k) * product (factors res) ≡ 2 + n
-      prop = begin
+      prop = begin-equality
         (2 + k) * product (factors res)
           ≡⟨ cong ((2 + k) *_) (isFactorisation res) ⟩
         (2 + k) * q
           ≡⟨ *-comm (2 + k) q ⟩
         q * (2 + k)
           ≡˘⟨ _∣_.equality k∣n ⟩
-        2 + n ∎ where open ≡-Reasoning
+        2 + n ∎
 
 ------------------------------------------------------------------------
 -- Properties of a factorisation
