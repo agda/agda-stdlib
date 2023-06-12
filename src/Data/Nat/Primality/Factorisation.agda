@@ -143,16 +143,17 @@ factorisationPullToFront : ∀ {as} {p} → Prime p → p ∣ product as → All
 factorisationPullToFront {[]} {suc (suc p)} pPrime p∣Πas asPrime = contradiction (∣1⇒≡1 p∣Πas) λ ()
 factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime)
   with euclidsLemma a (product as) pPrime p∣aΠas
-... | inj₂ p∣Πas = Π.map (a ∷_) step ih where
+... | inj₂ p∣Πas = Π.map (a ∷_) step ih
+  where
+    ih : ∃[ as′ ] as ↭ (p ∷ as′)
+    ih = factorisationPullToFront pPrime p∣Πas asPrime
 
-  ih : ∃[ as′ ] as ↭ (p ∷ as′)
-  ih = factorisationPullToFront pPrime p∣Πas asPrime
-
-  step : ∀ {as′} → as ↭ p ∷ as′ → a ∷ as ↭ p ∷ a ∷ as′
-  step {as′} as↭p∷as′ = begin
-    a ∷ as      ↭⟨ prep a as↭p∷as′ ⟩
-    a ∷ p ∷ as′ ↭⟨ swap a p refl ⟩
-    p ∷ a ∷ as′ ∎ where open PermutationReasoning
+    step : ∀ {as′} → as ↭ p ∷ as′ → a ∷ as ↭ p ∷ a ∷ as′
+    step {as′} as↭p∷as′ = begin
+      a ∷ as      ↭⟨ prep a as↭p∷as′ ⟩
+      a ∷ p ∷ as′ ↭⟨ swap a p refl ⟩
+      p ∷ a ∷ as′ ∎
+      where open PermutationReasoning
 
 ... | inj₁ p∣a with ∣p⇒≡1∨≡p p aPrime p∣a
 ...   | inj₁ refl = ⊥-elim pPrime
@@ -161,52 +162,57 @@ factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime)
 factorisationUnique′ : (as bs : List ℕ) → product as ≡ product bs → All Prime as → All Prime bs → as ↭ bs
 factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = refl
 factorisationUnique′ [] (suc (suc b) ∷ bs) Πas≡Πbs asPrime (bPrime ∷ bsPrime) =
-  contradiction Πas≡Πbs (<⇒≢ Πas<Πbs) where
+  contradiction Πas≡Πbs (<⇒≢ Πas<Πbs)
+  where
+    Πas<Πbs : product [] < product (2+ b ∷ bs)
+    Πas<Πbs = begin-strict
+      1                    ≡⟨⟩
+      1       * 1          <⟨ *-monoˡ-< 1 {1} {2 + b} 1<2+n ⟩
+      (2 + b) * 1          ≤⟨ *-monoʳ-≤ (2 + b) (factorisation≥1 bsPrime) ⟩
+      2+ b    * product bs ≡⟨⟩
+      product (2+ b ∷ bs)  ∎
+      where open ≤-Reasoning
 
-  Πas<Πbs : product [] < product (2+ b ∷ bs)
-  Πas<Πbs = begin-strict
-    1                    ≡⟨⟩
-    1       * 1          <⟨ *-monoˡ-< 1 {1} {2 + b} 1<2+n ⟩
-    (2 + b) * 1          ≤⟨ *-monoʳ-≤ (2 + b) (factorisation≥1 bsPrime) ⟩
-    2+ b    * product bs ≡⟨⟩
-    product (2+ b ∷ bs)  ∎ where open ≤-Reasoning
+factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = a∷as↭bs
+  where
+    a∣Πbs : a ∣ product bs
+    a∣Πbs = divides (product as) $ begin
+      product bs       ≡˘⟨ Πas≡Πbs ⟩
+      product (a ∷ as) ≡⟨⟩
+      a * product as   ≡⟨ *-comm a (product as) ⟩
+      product as * a   ∎
+      where open ≡-Reasoning
 
-factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = a∷as↭bs where
+    shuffle : ∃[ bs′ ] bs ↭ a ∷ bs′
+    shuffle = factorisationPullToFront aPrime a∣Πbs bsPrime
 
-  a∣Πbs : a ∣ product bs
-  a∣Πbs = divides (product as) $ begin
-    product bs       ≡˘⟨ Πas≡Πbs ⟩
-    product (a ∷ as) ≡⟨⟩
-    a * product as   ≡⟨ *-comm a (product as) ⟩
-    product as * a   ∎ where open ≡-Reasoning
+    bs′ = proj₁ shuffle
+    bs↭a∷bs′ = proj₂ shuffle
 
-  shuffle : ∃[ bs′ ] bs ↭ a ∷ bs′
-  shuffle = factorisationPullToFront aPrime a∣Πbs bsPrime
+    Πas≡Πbs′ : product as ≡ product bs′
+    Πas≡Πbs′ = *-cancelˡ-≡ (product as) (product bs′) a {{Prime⇒NonZero aPrime}} $ begin
+      a * product as  ≡⟨ Πas≡Πbs ⟩
+      product bs      ≡⟨ product-↭ bs↭a∷bs′ ⟩
+      a * product bs′ ∎
+      where open ≡-Reasoning
 
-  bs′ = proj₁ shuffle
-  bs↭a∷bs′ = proj₂ shuffle
+    bs′Prime : All Prime bs′
+    bs′Prime = All.tail (All-resp-↭ bs↭a∷bs′ bsPrime)
 
-  Πas≡Πbs′ : product as ≡ product bs′
-  Πas≡Πbs′ = *-cancelˡ-≡ (product as) (product bs′) a {{Prime⇒NonZero aPrime}} $ begin
-    a * product as  ≡⟨ Πas≡Πbs ⟩
-    product bs      ≡⟨ product-↭ bs↭a∷bs′ ⟩
-    a * product bs′ ∎ where open ≡-Reasoning
-
-  bs′Prime : All Prime bs′
-  bs′Prime = All.tail (All-resp-↭ bs↭a∷bs′ bsPrime)
-
-  a∷as↭bs : a ∷ as ↭ bs
-  a∷as↭bs = begin
-    a ∷ as  <⟨ factorisationUnique′ as bs′ Πas≡Πbs′ asPrime bs′Prime ⟩
-    a ∷ bs′ ↭˘⟨ bs↭a∷bs′ ⟩
-    bs      ∎ where open PermutationReasoning
+    a∷as↭bs : a ∷ as ↭ bs
+    a∷as↭bs = begin
+      a ∷ as  <⟨ factorisationUnique′ as bs′ Πas≡Πbs′ asPrime bs′Prime ⟩
+      a ∷ bs′ ↭˘⟨ bs↭a∷bs′ ⟩
+      bs      ∎
+      where open PermutationReasoning
 
 factorisationUnique : {n : ℕ} (f f′ : PrimeFactorisation n) → factors f ↭ factors f′
 factorisationUnique {n} f f′ =
-  factorisationUnique′ (factors f) (factors f′) Πf≡Πf′ (factorsPrime f) (factorsPrime f′) where
-
-  Πf≡Πf′ : product (factors f) ≡ product (factors f′)
-  Πf≡Πf′ = begin
-    product (factors f)  ≡⟨ isFactorisation f ⟩
-    n                    ≡˘⟨ isFactorisation f′ ⟩
-    product (factors f′) ∎ where open ≡-Reasoning
+  factorisationUnique′ (factors f) (factors f′) Πf≡Πf′ (factorsPrime f) (factorsPrime f′)
+  where
+    Πf≡Πf′ : product (factors f) ≡ product (factors f′)
+    Πf≡Πf′ = begin
+      product (factors f)  ≡⟨ isFactorisation f ⟩
+      n                    ≡˘⟨ isFactorisation f′ ⟩
+      product (factors f′) ∎
+      where open ≡-Reasoning
