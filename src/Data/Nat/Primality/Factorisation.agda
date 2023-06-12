@@ -30,14 +30,14 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; modu
 ------------------------------------------------------------------------
 -- Core definition
 
-record Factorisation (n : ℕ) : Set where
+record PrimeFactorisation (n : ℕ) : Set where
   field
     factors : List ℕ
     isFactorisation : product factors ≡ n
     factorsPrime : All Prime factors
 
-open Factorisation public using (factors)
-open Factorisation
+open PrimeFactorisation public using (factors)
+open PrimeFactorisation
 
 ------------------------------------------------------------------------
 -- Finding a factorisation
@@ -57,7 +57,7 @@ private
   pattern 2≤2+n = s≤s (s≤s z≤n)
   pattern 1<2+n = 2≤2+n
 
-factorise : ∀ n → .{{NonZero n}} → Factorisation n
+factorise : ∀ n → .{{NonZero n}} → PrimeFactorisation n
 factorise 1 = record
   { factors = []
   ; isFactorisation = refl
@@ -67,7 +67,7 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
   where
 
   P : ℕ → Set
-  P n′ = ∀ {k} → 2 ≤ n′ → k ≤‴ n′ → k Rough n′ → Factorisation n′
+  P n′ = ∀ {k} → 2 ≤ n′ → k ≤‴ n′ → k Rough n′ → PrimeFactorisation n′
 
   factoriseRec : ∀ n → <-Rec P n → P n
   factoriseRec (2+ n) rec (s≤s (s≤s n≤z)) ≤‴-refl k-rough-n = record
@@ -118,7 +118,7 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
       q≮2+k : q ≮ 2 + k
       q≮2+k q<k = k-rough-n 2≤q q<k (quotient∣n k∣n)
 
-      res : Factorisation q
+      res : PrimeFactorisation q
       res = rec q q<n {2 + k} 2≤q (≤⇒≤‴ (≮⇒≥ q≮2+k))
           $ λ {d} d<k d-prime → k-rough-n d<k d-prime ∘ flip ∣-trans (quotient∣n k∣n)
 
@@ -201,7 +201,7 @@ factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = 
     a ∷ bs′ ↭˘⟨ bs↭a∷bs′ ⟩
     bs      ∎ where open PermutationReasoning
 
-factorisationUnique : {n : ℕ} (f f′ : Factorisation n) → factors f ↭ factors f′
+factorisationUnique : {n : ℕ} (f f′ : PrimeFactorisation n) → factors f ↭ factors f′
 factorisationUnique {n} f f′ =
   factorisationUnique′ (factors f) (factors f′) Πf≡Πf′ (factorsPrime f) (factorsPrime f′) where
 
