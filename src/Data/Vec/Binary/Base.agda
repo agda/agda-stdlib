@@ -41,7 +41,8 @@ lookup (x ∷⟨ ls / rs ⟩) 2[1+ i ]ᵒ = lookup rs i
 lookup (x × y ∷⟨ ls / rs ⟩) zeroᵉ = x
 lookup (x × y ∷⟨ ls / rs ⟩) oneᵉ = y
 lookup (x × y ∷⟨ ls / rs ⟩) 2[1+ i ]ᵉ = lookup ls i
-lookup (x × y ∷⟨ ls / rs ⟩) 3+[2 i ]ᵒ = lookup rs i
+lookup (x × y ∷⟨ ls / rs ⟩) 3+[2 i ]ᵉ = lookup rs i
+
 
 -- Operations on the front of a vector
 ------------------------------------------------------------------------

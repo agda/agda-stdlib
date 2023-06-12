@@ -62,7 +62,7 @@ lookup-replicate oneᵉ x = refl
 lookup-replicate 1+[2 i ]ᵒ x = lookup-replicate i x
 lookup-replicate 2[1+ i ]ᵒ x = lookup-replicate i x
 lookup-replicate 2[1+ i ]ᵉ x = lookup-replicate i x
-lookup-replicate 3+[2 i ]ᵒ x = lookup-replicate i x
+lookup-replicate 3+[2 i ]ᵉ x = lookup-replicate i x
 
 map-replicate : (f : A → B) (x : A) → map f (replicate {n = n} x) ≡ replicate (f x)
 map-replicate {n = zero} f x = refl
@@ -76,7 +76,7 @@ lookup-map oneᵉ f (x × y ∷⟨ ls / rs ⟩) = refl
 lookup-map 1+[2 i ]ᵒ f (x ∷⟨ ls / rs ⟩) = lookup-map i f ls
 lookup-map 2[1+ i ]ᵒ f (x ∷⟨ ls / rs ⟩) = lookup-map i f rs
 lookup-map 2[1+ i ]ᵉ f (x × y ∷⟨ ls / rs ⟩) = lookup-map i f ls
-lookup-map 3+[2 i ]ᵒ f (x × y ∷⟨ ls / rs ⟩) = lookup-map i f rs
+lookup-map 3+[2 i ]ᵉ f (x × y ∷⟨ ls / rs ⟩) = lookup-map i f rs
 
 map-id : (xs : Vecᵇ A n) → map id xs ≡ xs
 map-id [] = refl
@@ -100,7 +100,7 @@ zipWith-lookup oneᵉ f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ �
 zipWith-lookup 1+[2 i ]ᵒ f (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f ls₁ ls₂
 zipWith-lookup 2[1+ i ]ᵒ f (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f rs₁ rs₂
 zipWith-lookup 2[1+ i ]ᵉ f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f ls₁ ls₂
-zipWith-lookup 3+[2 i ]ᵒ f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f rs₁ rs₂
+zipWith-lookup 3+[2 i ]ᵉ f (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = zipWith-lookup i f rs₁ rs₂
 
 zipWith-map₁ : (_⊕_ : B → C → D) (f : A → B) (xs : Vecᵇ A n) (ys : Vecᵇ C n) → zipWith _⊕_ (map f xs) ys ≡ zipWith (f -⟨ _⊕_ ∣) xs ys
 zipWith-map₁ _⊕_ f [] [] = refl

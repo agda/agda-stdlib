@@ -20,4 +20,4 @@ data Finᵇ : ℕᵇ → Set where
   1+[2_]ᵒ : Finᵇ n → Finᵇ 1+[2 n ]
   2[1+_]ᵒ : Finᵇ n → Finᵇ 1+[2 n ]
   2[1+_]ᵉ : Finᵇ n → Finᵇ 2[1+ n ]
-  3+[2_]ᵒ : Finᵇ n → Finᵇ 2[1+ n ]
+  3+[2_]ᵉ : Finᵇ n → Finᵇ 2[1+ n ]
