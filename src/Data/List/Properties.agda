@@ -782,6 +782,11 @@ take++drop zero    xs       = refl
 take++drop (suc n) []       = refl
 take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
 
+
+take-drop-[] : ∀ m n → take n (drop {A = A} m []) ≡ []
+take-drop-[] m n = trans (cong (take n) (drop-[] m)) (take-[] n)
+
+
 ------------------------------------------------------------------------
 -- splitAt
 
