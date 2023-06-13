@@ -758,9 +758,9 @@ length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
--- Taking and dropping from an empty list do nothing.
+-- Taking from an empty list do nothing.
 take-[] : ∀ m → take {A = A} m [] ≡ []
-take-[] ℕ.zero = refl
+take-[] zero = refl
 take-[] (suc m) = refl
 
 ------------------------------------------------------------------------
@@ -771,9 +771,9 @@ length-drop zero    xs       = refl
 length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
 
--- Taking and dropping from an empty list do nothing.
+-- Dropping from an empty list do nothing.
 drop-[] : ∀ m → drop {A = A} m [] ≡ []
-drop-[] ℕ.zero = refl
+drop-[] zero = refl
 drop-[] (suc m) = refl
 
 
