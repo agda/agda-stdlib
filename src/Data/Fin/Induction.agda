@@ -23,8 +23,8 @@ open import Induction.WellFounded as WF
 open import Level using (Level)
 open import Relation.Binary
   using (Rel; Decidable; IsPartialOrder; IsStrictPartialOrder; StrictPartialOrder)
-import Relation.Binary.Construct.Converse as Converse
-import Relation.Binary.Construct.Flip as Flip
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
+import Relation.Binary.Construct.Flip.Ord as Ord
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.Definitions using (Tri; tri<; tri≈; tri>)
@@ -123,7 +123,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
     pigeon : (xs : Vec (Fin n) n) → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_
     pigeon xs i∷xs↑ =
       let (i₁ , i₂ , i₁<i₂ , xs[i₁]≡xs[i₂]) = pigeonhole (n<1+n n) (Vec.lookup (i ∷ xs)) in
-      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Flip.transitive _⊏_ ⊏.trans) {xs = i ∷ xs} i∷xs↑ i₁<i₂ in
+      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Ord.transitive _⊏_ ⊏.trans) {xs = i ∷ xs} i∷xs↑ i₁<i₂ in
       let xs[i₁]⊏xs[i₁] = ⊏.<-respʳ-≈ (⊏.Eq.reflexive xs[i₁]≡xs[i₂]) xs[i₁]⊏xs[i₂] in
       contradiction xs[i₁]⊏xs[i₁] (⊏.irrefl ⊏.Eq.refl)
 
@@ -137,7 +137,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
 
   spo-noetherian : ∀ {r} {_⊏_ : Rel (Fin n) r} →
                    IsStrictPartialOrder _≈_ _⊏_ → WellFounded (flip _⊏_)
-  spo-noetherian isSPO = spo-wellFounded (Converse.isStrictPartialOrder isSPO)
+  spo-noetherian isSPO = spo-wellFounded (EqAndOrd.isStrictPartialOrder isSPO)
 
   po-noetherian : ∀ {r} {_⊑_ : Rel (Fin n) r} → IsPartialOrder _≈_ _⊑_ →
                   WellFounded (flip (ToStrict._<_ _≈_ _⊑_))
