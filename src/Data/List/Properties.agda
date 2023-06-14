@@ -758,6 +758,10 @@ length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
+take-one-more : {ℓ : Level} {X : Set ℓ} {m : ℕ} (x : Fin m) (f : Fin m → X) →
+   take (toℕ x) (tabulate f) ∷ʳ f x ≡ take (suc (toℕ x)) (tabulate f)
+take-one-more {m = suc m} zero    f = refl
+take-one-more {m = suc m} (suc x) f = cong (f zero ∷_) (take-one-more x (f ∘ suc))
 ------------------------------------------------------------------------
 -- drop
 
@@ -766,10 +770,19 @@ length-drop zero    xs       = refl
 length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
 
+------------------------------------------------------------------------
+-- take-drop
+
 take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl
 take++drop (suc n) []       = refl
 take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
+
+take-drop-1 : {x : Level} {X : Set x} {k : ℕ} (f : Fin k → X) (n : Fin k) →
+  drop (toℕ n) (take (suc (toℕ n)) (tabulate f)) ≡ [ f n ]
+take-drop-1 f zero    = refl
+take-drop-1 f (suc n) = take-drop-1 (f ∘ suc) n
+
 
 ------------------------------------------------------------------------
 -- splitAt
@@ -1074,6 +1087,8 @@ module _ {x y : A} where
 
 ∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
 ∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
+
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED
