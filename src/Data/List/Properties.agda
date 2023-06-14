@@ -21,7 +21,7 @@ open import Data.List.Base as List
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
@@ -40,6 +40,7 @@ open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradi
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
+
 
 open ≡-Reasoning
 
@@ -758,6 +759,13 @@ length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
+-- Take commutes with map.
+take-map-commute : {x y : Level} {X : Set x} {Y : Set y} {f : X → Y} → (m : ℕ) (l : List X) → take m (map f l) ≡ map f (take m l)
+take-map-commute zero l = refl
+take-map-commute (suc s) [] = refl
+take-map-commute (suc s) (x ∷ l) = cong (_ ∷_) (take-map-commute s l)
+
+
 ------------------------------------------------------------------------
 -- drop
 
@@ -765,6 +773,13 @@ length-drop : ∀ n (xs : List A) → length (drop n xs) ≡ length xs ∸ n
 length-drop zero    xs       = refl
 length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
+
+-- Drop commutes with map.
+drop-map-commute : {x y : Level} {X : Set x} {Y : Set y} {f : X → Y} → (m : ℕ) (l : List X) → drop m (map f l) ≡ map f (drop m l)
+drop-map-commute zero l = refl
+drop-map-commute (suc m) [] = refl
+drop-map-commute (suc m) (x ∷ l) = drop-map-commute m l
+
 
 take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl
@@ -1074,6 +1089,17 @@ module _ {x y : A} where
 
 ∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
 ∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
+
+------------------------------------------------------------------------
+-- head
+
+-- 'commute' List.head and List.map to obtain a Maybe.map and List.head.
+head-map-commute : {f : A → B} (l : List A) → head (map f l) ≡ Maybe.map f (head l)
+head-map-commute [] = refl
+head-map-commute (_ ∷ _) = refl
+
+
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED
