@@ -29,7 +29,6 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 open Setoid using (isEquivalence)
-open import Relation.Unary using (Pred)
 
 private
   variable
