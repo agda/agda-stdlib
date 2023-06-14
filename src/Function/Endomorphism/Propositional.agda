@@ -43,6 +43,8 @@ toSetoidEndo f = record
 ------------------------------------------------------------------------
 -- N-th composition
 
+infixr 8 _^_
+
 _^_ : Endo → ℕ → Endo
 f ^ zero  = id
 f ^ suc n = f ∘′ (f ^ n)
