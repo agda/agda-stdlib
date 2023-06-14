@@ -2784,7 +2784,12 @@ Other minor changes
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
-
+* Added new functions to `Data.List.Properties`
+  ```agda
+  take-drop-1 : {x : Level} {X : Set x} {k : ℕ} (f : Fin k → X) (n : Fin k) → drop (toℕ n) (take (suc (toℕ n)) (tabulate f)) ≡ [ f n ]
+  take-one-more : {ℓ : Level} {X : Set ℓ} {m : ℕ} (x : Fin m) (f : Fin m → X) → take (toℕ x) (tabulate f) ∷ʳ f x ≡ take (suc (toℕ x)) (tabulate f)
+  ```
+  
 NonZero/Positive/Negative changes
 ---------------------------------
 
