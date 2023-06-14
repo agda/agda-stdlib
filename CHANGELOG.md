@@ -2784,6 +2784,12 @@ Other minor changes
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
+* Added new functions to `Data.List.Properties`
+  ```agda
+  head-map-commute : {f : A → B} (l : List A) → head (map f l) ≡ Maybe.map f (head l)
+  take-map-commute : {x y : Level} {X : Set x} {Y : Set y} {f : X → Y} → (m : ℕ) (l : List X) → take m (map f l) ≡ map f (take m l)
+  drop-map-commute : {x y : Level} {X : Set x} {Y : Set y} {f : X → Y} → (m : ℕ) (l : List X) → drop m (map f l) ≡ map f (drop m l)
+  ```
 
 NonZero/Positive/Negative changes
 ---------------------------------
