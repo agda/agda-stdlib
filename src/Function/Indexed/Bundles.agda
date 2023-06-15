@@ -23,7 +23,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 -- Bundles specialised for lifting relations to indexed sets
 ------------------------------------------------------------------------
 
-infix 3 _⟶ᵢ_ _↣ᵢ_ _↠ᵢ_ _⤖ᵢ_ _⇔ᵢ_ _↩ᵢ_ _↪ᵢ_ _↔ᵢ_
+infix 3 _⟶ᵢ_ _↣ᵢ_ _↠ᵢ_ _⤖ᵢ_ _⇔ᵢ_ _↩ᵢ_ _↪ᵢ_ _↩↪ᵢ_ _↔ᵢ_
 _⟶ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
 A ⟶ᵢ B = ∀ {i} → A i ⟶ B i
 
@@ -45,8 +45,8 @@ A ↩ᵢ B = ∀ {i} → A i ↩ B i
 _↪ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
 A ↪ᵢ B = ∀ {i} → A i ↪ B i
 
--- _↩↪ᵢ_ : ∀ {i} {I : Set i} ↩↪ Pred I a → Pred I b → Set _
--- A ↩↪ᵢ B = ∀ {i} → A i ↩↪ B i
+_↩↪ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+A ↩↪ᵢ B = ∀ {i} → A i ↩↪ B i
 
 _↔ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
 A ↔ᵢ B = ∀ {i} → A i ↔ B i
