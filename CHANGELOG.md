@@ -889,7 +889,7 @@ Major improvements
 Deprecated modules
 ------------------
 
-### Moving Relation.Binary.Construct.(Converse/Flip)
+### Moving `Relation.Binary.Construct.(Converse/Flip)`
 
 * The following files have been moved:
   ```agda
