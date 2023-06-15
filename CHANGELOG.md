@@ -2053,6 +2053,9 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+  
+  take-tabulate-1 :(f : Fin m → A) (n : Fin m) → drop (toℕ n) (take (suc (toℕ n)) (tabulate f)) ≡ [ f n ]
+  take-suc-tabulate :(n : Fin m) (f : Fin m → A) → take (toℕ x) (tabulate f) ∷ʳ f x ≡ take (suc (toℕ x)) (tabulate f)
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2783,11 +2786,6 @@ Other minor changes
                                      cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
-  ```
-* Added new functions to `Data.List.Properties`
-  ```agda
-  take-drop-1 : {x : Level} {X : Set x} {k : ℕ} (f : Fin k → X) (n : Fin k) → drop (toℕ n) (take (suc (toℕ n)) (tabulate f)) ≡ [ f n ]
-  take-one-more : {ℓ : Level} {X : Set ℓ} {m : ℕ} (x : Fin m) (f : Fin m → X) → take (toℕ x) (tabulate f) ∷ʳ f x ≡ take (suc (toℕ x)) (tabulate f)
   ```
   
 NonZero/Positive/Negative changes
