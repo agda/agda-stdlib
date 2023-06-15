@@ -889,6 +889,14 @@ Major improvements
 Deprecated modules
 ------------------
 
+### Moving Relation.Binary.Construct.(Converse/Flip)
+
+* The following files have been moved:
+  ```agda
+  Relation.Binary.Construct.Converse               ↦ Relation.Binary.Construct.Flip.EqAndOrd
+  Relation.Binary.Construct.Flip                   ↦ Relation.Binary.Construct.Flip.Ord
+  ```
+
 ### Deprecation of old function hierarchy
 
 * The module `Function.Related` has been deprecated in favour of `Function.Related.Propositional`
