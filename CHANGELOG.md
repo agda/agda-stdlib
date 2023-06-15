@@ -2053,6 +2053,8 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+  
+  take-all : n ≥ length l → take n xs ≡ xs     
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2784,11 +2786,7 @@ Other minor changes
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
-  
-* Added new function to `Data.List.Properties`
-  ```agda
-  take-all : {a : Level} {A : Set a} (k : ℕ) (l : List A) → (k ≥ length l) → take k l ≡ l
-  ```
+
 NonZero/Positive/Negative changes
 ---------------------------------
 
