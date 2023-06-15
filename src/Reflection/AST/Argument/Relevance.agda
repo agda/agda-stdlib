@@ -21,6 +21,8 @@ open Relevance public
 ------------------------------------------------------------------------
 -- Decidable equality
 
+infix 4 _≟_
+
 _≟_ : DecidableEquality Relevance
 relevant   ≟ relevant   = yes refl
 irrelevant ≟ irrelevant = yes refl

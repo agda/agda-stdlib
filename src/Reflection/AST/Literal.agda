@@ -104,5 +104,7 @@ meta x ≟ string x₁ = no (λ ())
 meta x ≟ name x₁ = no (λ ())
 meta x ≟ meta x₁ = map′ (cong meta) meta-injective (x Meta.≟ x₁)
 
+infix 4 _≡ᵇ_
+
 _≡ᵇ_ : Literal → Literal → Bool
 l ≡ᵇ l′ = isYes (l ≟ l′)

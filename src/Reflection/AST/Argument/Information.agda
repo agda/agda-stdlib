@@ -48,6 +48,8 @@ arg-info-injective₂ refl = refl
 arg-info-injective : arg-info v m ≡ arg-info v′ m′ → v ≡ v′ × m ≡ m′
 arg-info-injective = < arg-info-injective₁ , arg-info-injective₂ >
 
+infix 4 _≟_
+
 _≟_ : DecidableEquality ArgInfo
 arg-info v m ≟ arg-info v′ m′ =
   map′
