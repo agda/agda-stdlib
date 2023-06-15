@@ -758,10 +758,16 @@ length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
-take-one-more : {ℓ : Level} {X : Set ℓ} {m : ℕ} (x : Fin m) (f : Fin m → X) →
-   take (toℕ x) (tabulate f) ∷ʳ f x ≡ take (suc (toℕ x)) (tabulate f)
-take-one-more {m = suc m} zero    f = refl
-take-one-more {m = suc m} (suc x) f = cong (f zero ∷_) (take-one-more x (f ∘ suc))
+take-suc-tabulate :  {m : ℕ} (n : Fin m) (f : Fin m → A) →
+   take (toℕ n) (tabulate f) ∷ʳ f n ≡ take (suc (toℕ n)) (tabulate f)
+take-suc-tabulate {m = suc m} zero    f = refl
+take-suc-tabulate {m = suc m} (suc n) f = cong (f zero ∷_) (take-suc-tabulate n (f ∘ suc))
+
+take-tabulate-1 : {m : ℕ} (f : Fin m → A) (n : Fin m) →
+  drop (toℕ n) (take (suc (toℕ n)) (tabulate f)) ≡ [ f n ]
+take-tabulate-1 f zero    = refl
+take-tabulate-1 f (suc n) = take-tabulate-1 (f ∘ suc) n
+
 ------------------------------------------------------------------------
 -- drop
 
@@ -770,19 +776,10 @@ length-drop zero    xs       = refl
 length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
 
-------------------------------------------------------------------------
--- take-drop
-
 take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl
 take++drop (suc n) []       = refl
 take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
-
-take-drop-1 : {x : Level} {X : Set x} {k : ℕ} (f : Fin k → X) (n : Fin k) →
-  drop (toℕ n) (take (suc (toℕ n)) (tabulate f)) ≡ [ f n ]
-take-drop-1 f zero    = refl
-take-drop-1 f (suc n) = take-drop-1 (f ∘ suc) n
-
 
 ------------------------------------------------------------------------
 -- splitAt
