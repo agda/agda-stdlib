@@ -2784,6 +2784,12 @@ Other minor changes
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
+  
+ * Added new lemmas in `Data.List.Propreties`:
+  ```
+  take-[] : ∀ m → take  m [] ≡ []
+  drop-[] : ∀ m → drop  m [] ≡ []
+  ```
 
 NonZero/Positive/Negative changes
 ---------------------------------
