@@ -759,10 +759,10 @@ length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
 -- If you take at least as many elements from a list as it has, you get the whole list.
-take-all :(n : ℕ) (l : List A) → (n ≥ length l) → take n l ≡ l
+take-all :(n : ℕ) (xs : List A) → (n ≥ length xs) → take n xs ≡ xs
 take-all zero [] _ = refl
 take-all (suc _) [] _ = refl
-take-all (suc n) (x ∷ l) (s≤s pf) = cong (x ∷_) (take-all n l pf)
+take-all (suc n) (x ∷ xs) (s≤s pf) = cong (x ∷_) (take-all n xs pf)
 
 
 ------------------------------------------------------------------------
