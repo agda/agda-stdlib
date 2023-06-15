@@ -2053,6 +2053,10 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+  
+  take-map : take n (map f xs) ≡ map f (take n xs)
+  drop-map : drop n (map f xs) ≡ map f (drop n xs)
+  head-map : head (map f xs) ≡ Maybe.map f (head xs)
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2783,12 +2787,6 @@ Other minor changes
                                      cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
-  ```
-* Added new functions to `Data.List.Properties`
-  ```agda
-  head-map-commute : {f : A → B} (l : List A) → head (map f l) ≡ Maybe.map f (head l)
-  take-map-commute : {x y : Level} {X : Set x} {Y : Set y} {f : X → Y} → (m : ℕ) (l : List X) → take m (map f l) ≡ map f (take m l)
-  drop-map-commute : {x y : Level} {X : Set x} {Y : Set y} {f : X → Y} → (m : ℕ) (l : List X) → drop m (map f l) ≡ map f (drop m l)
   ```
 
 NonZero/Positive/Negative changes

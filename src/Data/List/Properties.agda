@@ -1,3 +1,4 @@
+
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
@@ -760,10 +761,10 @@ length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
 -- Take commutes with map.
-take-map-commute : {x y : Level} {X : Set x} {Y : Set y} {f : X → Y} → (m : ℕ) (l : List X) → take m (map f l) ≡ map f (take m l)
-take-map-commute zero l = refl
-take-map-commute (suc s) [] = refl
-take-map-commute (suc s) (x ∷ l) = cong (_ ∷_) (take-map-commute s l)
+take-map : {f : A → B} → (n : ℕ) (xs : List A) → take n (map f xs) ≡ map f (take n xs)
+take-map zero xs = refl
+take-map (suc s) [] = refl
+take-map (suc s) (a ∷ xs) = cong (_ ∷_) (take-map s xs)
 
 
 ------------------------------------------------------------------------
@@ -775,10 +776,10 @@ length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
 
 -- Drop commutes with map.
-drop-map-commute : {x y : Level} {X : Set x} {Y : Set y} {f : X → Y} → (m : ℕ) (l : List X) → drop m (map f l) ≡ map f (drop m l)
-drop-map-commute zero l = refl
-drop-map-commute (suc m) [] = refl
-drop-map-commute (suc m) (x ∷ l) = drop-map-commute m l
+drop-map : {f : A → B} → (n : ℕ) (xs : List A) → drop n (map f xs) ≡ map f (drop n xs)
+drop-map zero xs = refl
+drop-map (suc n) [] = refl
+drop-map (suc n) (a ∷ xs) = drop-map n xs
 
 
 take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
@@ -1094,9 +1095,9 @@ module _ {x y : A} where
 -- head
 
 -- 'commute' List.head and List.map to obtain a Maybe.map and List.head.
-head-map-commute : {f : A → B} (l : List A) → head (map f l) ≡ Maybe.map f (head l)
-head-map-commute [] = refl
-head-map-commute (_ ∷ _) = refl
+head-map : {f : A → B} (xs : List A) → head (map f xs) ≡ Maybe.map f (head xs)
+head-map [] = refl
+head-map (_ ∷ _) = refl
 
 
 
