@@ -2055,7 +2055,7 @@ Other minor changes
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
   
   take-tabulate-1 :(f : Fin m → A) (n : Fin m) → drop (toℕ n) (take (suc (toℕ n)) (tabulate f)) ≡ [ f n ]
-  take-suc-tabulate :(n : Fin m) (f : Fin m → A) → take (toℕ x) (tabulate f) ∷ʳ f x ≡ take (suc (toℕ x)) (tabulate f)
+  take-suc-tabulate : (n : Fin m) (f : Fin m → A) → take (suc (toℕ n)) (tabulate f) ≡ take (toℕ n) (tabulate f) ∷ʳ f n 
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:

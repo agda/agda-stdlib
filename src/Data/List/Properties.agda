@@ -759,7 +759,7 @@ length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
 take-suc-tabulate :  {m : ℕ} (n : Fin m) (f : Fin m → A) →
-   take (toℕ n) (tabulate f) ∷ʳ f n ≡ take (suc (toℕ n)) (tabulate f)
+  take (suc (toℕ n)) (tabulate f) ≡ take (toℕ n) (tabulate f) ∷ʳ f n
 take-suc-tabulate {m = suc m} zero    f = refl
 take-suc-tabulate {m = suc m} (suc n) f = cong (f zero ∷_) (take-suc-tabulate n (f ∘ suc))
 
