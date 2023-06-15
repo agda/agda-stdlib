@@ -12,6 +12,7 @@ module Data.Vec.Relation.Binary.Equality.Setoid
   {a ℓ} (S : Setoid a ℓ) where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
+open import Data.Fin using (zero; suc)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as PW
   using (Pointwise)
@@ -78,6 +79,12 @@ map-++ : ∀ {b m n} {B : Set b}
                    map f (xs ++ ys) ≋ map f xs ++ map f ys
 map-++ f []       = ≋-refl
 map-++ f (x ∷ xs) = refl ∷ map-++ f xs
+
+map-[]≔ : ∀ {b n} {B : Set b}
+          (f : B → A) (xs : Vec B n) i p →
+          map f (xs [ i ]≔ p) ≋ map f xs [ i ]≔ f p
+map-[]≔ f (x ∷ xs) zero    p = refl ∷ ≋-refl
+map-[]≔ f (x ∷ xs) (suc i) p = refl ∷ map-[]≔ f xs i p
 
 ------------------------------------------------------------------------
 -- concat
