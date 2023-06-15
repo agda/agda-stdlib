@@ -1,8 +1,8 @@
-------------------------------------------------------------------------
+-------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Many properties which hold for `∼` also hold for `flip ∼`. Unlike
--- the module `Relation.Binary.Construct.Converse` this module does not
+-- the module `Relation.Binary.Construct.Flip` this module does not
 -- flip the underlying equality.
 ------------------------------------------------------------------------
 

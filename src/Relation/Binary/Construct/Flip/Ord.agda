@@ -2,8 +2,8 @@
 -- The Agda standard library
 --
 -- Many properties which hold for `∼` also hold for `flip ∼`. Unlike
--- the module `Relation.Binary.Construct.Flip.Ord` this module flips
--- both the relation and the underlying equality.
+-- the module `Relation.Binary.Construct.Flip.EqAndOrd` this module
+-- flips both the relation and the underlying equality.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
