@@ -29,6 +29,41 @@ Highlights
 Bug-fixes
 ---------
 
+* The following operators were missing a fixity declaration, which has now
+  been fixed -
+  ```
+  infixr  5 _∷_                     (Codata.Guarded.Stream)
+  infix   4 _[_]                    (Codata.Guarded.Stream)
+  infixr  5 _∷_                     (Codata.Guarded.Stream.Relation.Binary.Pointwise)
+  infix   4 _≈∞_                    (Codata.Guarded.Stream.Relation.Binary.Pointwise)
+  infixr  5 _∷_                     (Codata.Musical.Colist)
+  infix   4 _≈_                     (Codata.Musical.Conat)
+  infixr  5 _∷_                     (Codata.Musical.Colist.Bisimilarity)
+  infixr  5 _∷_                     (Codata.Musical.Colist.Relation.Unary.All)
+  infixr  5 _∷_                     (Codata.Sized.Colist)
+  infixr  5 _∷_                     (Codata.Sized.Covec)
+  infixr  5 _∷_                     (Codata.Sized.Cowriter)
+  infixl  1 _>>=_                   (Codata.Sized.Cowriter)
+  infixr  5 _∷_                     (Codata.Sized.Stream)
+  infixr  5 _∷_                     (Codata.Sized.Colist.Bisimilarity)
+  infix   4 _ℕ≤?_                   (Codata.Sized.Conat.Properties)
+  infixr  5 _∷_                     (Codata.Sized.Covec.Bisimilarity)
+  infixr  5 _∷_                     (Codata.Sized.Cowriter.Bisimilarity)
+  infixr  5 _∷_                     (Codata.Sized.Stream.Bisimilarity)
+  infixr  8 _⇒_ _⊸_                 (Data.Container.Core)
+  infixr -1 _<$>_ _<*>_             (Data.Container.FreeMonad)
+  infixl  1 _>>=_                   (Data.Container.FreeMonad)
+  infix   5 _▷_                     (Data.Container.Indexed)
+  infix   4 _≈_                     (Data.Float.Base)
+  infixl  7 _⊓′_                    (Data.Nat.Base)
+  infixl  6 _⊔′_                    (Data.Nat.Base)
+  infixr  8 _^_                     (Data.Nat.Base)
+  infix   4 _!≢0 _!*_!≢0            (Data.Nat.Properties)
+  infix   4 _≃?_                    (Data.Rational.Unnormalised.Properties)
+  infix   4 _≈ₖᵥ_                   (Data.Tree.AVL.Map.Membership.Propositional)
+  infix   4 _<_                     (Induction.WellFounded)
+  ```
+
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
