@@ -23,17 +23,10 @@ private
 open import Data.Product.Base public
 
 ------------------------------------------------------------------------
--- Existential quantifiers
-
-∃ : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
-∃ = Σ _
+-- Negation of existential quantifier
 
 ∄ : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
 ∄ P = ¬ ∃ P
-
-∃₂ : ∀ {A : Set a} {B : A → Set b}
-     (C : (x : A) → B x → Set c) → Set (a ⊔ b ⊔ c)
-∃₂ C = ∃ λ a → ∃ λ b → C a b
 
 -- Unique existence (parametrised by an underlying equality).
 

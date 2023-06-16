@@ -42,6 +42,16 @@ infix 2 Σ-syntax
 syntax Σ-syntax A (λ x → B) = Σ[ x ∈ A ] B
 
 ------------------------------------------------------------------------
+-- Existential quantifiers
+
+∃ : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
+∃ = Σ _
+
+∃₂ : ∀ {A : Set a} {B : A → Set b}
+     (C : (x : A) → B x → Set c) → Set (a ⊔ b ⊔ c)
+∃₂ C = ∃ λ a → ∃ λ b → C a b
+
+------------------------------------------------------------------------
 -- Definition of non-dependent products
 
 infixr 4 _,′_
