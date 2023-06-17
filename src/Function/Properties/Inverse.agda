@@ -10,7 +10,7 @@
 module Function.Properties.Inverse where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Bundles
 open import Level using (Level)
 open import Relation.Binary using (Setoid; IsEquivalence)

@@ -9,7 +9,7 @@
 module Data.Product.Base where
 
 open import Function.Base
-open import Level
+open import Level using (Level; _⊔_)
 
 private
   variable
