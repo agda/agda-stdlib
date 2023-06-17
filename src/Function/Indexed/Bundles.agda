@@ -17,8 +17,6 @@ private
   variable
     a b ℓ₁ ℓ₂ : Level
 
-module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
-
 ------------------------------------------------------------------------
 -- Bundles specialised for lifting relations to indexed sets
 ------------------------------------------------------------------------
