@@ -13,14 +13,11 @@ module Relation.Binary.Properties.TotalOrder
 
 open TotalOrder T
 
-open import Data.Product using (proj₁)
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Product.Base using (proj₁)
 import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Poset poset as PosetProperties
 open import Relation.Binary.Consequences
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
 
 ------------------------------------------------------------------------
 -- Total orders are almost decidable total orders

@@ -15,7 +15,7 @@ module Relation.Binary.Structures
   (_≈_ : Rel A ℓ)   -- The underlying equality relation
   where
 
-open import Data.Product using (proj₁; proj₂; _,_)
+open import Data.Product.Base using (proj₁; proj₂; _,_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

@@ -16,7 +16,7 @@ open CommutativeSemigroup CS
 
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Data.Product
+open import Data.Product.Base using (_,_)
 
 ------------------------------------------------------------------------------
 -- Re-export the contents of semigroup

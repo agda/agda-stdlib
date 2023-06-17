@@ -11,8 +11,8 @@ open import Relation.Binary
 module Relation.Binary.Properties.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
 
-open import Function.Base
-open import Data.Product as Prod
+open import Function.Base using (flip)
+open import Data.Product.Base as Prod using (_×_; _,_; swap)
 import Relation.Binary.Construct.Converse as Converse
 
 open Preorder P

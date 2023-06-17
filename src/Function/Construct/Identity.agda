@@ -8,12 +8,12 @@
 
 module Function.Construct.Identity where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 open import Function.Bundles
 import Function.Definitions as Definitions
 import Function.Structures as Structures
-open import Level
+open import Level using (Level)
 open import Relation.Binary as B hiding (_⇔_; IsEquivalence)
 open import Relation.Binary.PropositionalEquality using (_≡_; setoid)
 

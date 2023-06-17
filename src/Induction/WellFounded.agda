@@ -6,15 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
-
 module Induction.WellFounded where
 
-open import Data.Product
-open import Function
+open import Data.Product.Base using (Σ; _,_; proj₁)
+open import Function.Base using (_on_)
 open import Induction
-open import Level
-open import Relation.Binary.PropositionalEquality hiding (trans)
+open import Level using (Level; _⊔_)
+open import Relation.Binary
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary
 
 private

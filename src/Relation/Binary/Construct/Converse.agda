@@ -12,7 +12,7 @@ open import Relation.Binary
 
 module Relation.Binary.Construct.Converse where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function.Base using (flip; _∘_)
 open import Level using (Level)
 

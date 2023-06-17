@@ -35,13 +35,6 @@ open import Data.Product.Base public
 
 -- Syntax
 
-infix 2 ∃-syntax
-
-∃-syntax : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
-∃-syntax = ∃
-
-syntax ∃-syntax (λ x → B) = ∃[ x ] B
-
 infix 2 ∄-syntax
 
 ∄-syntax : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
