@@ -31,7 +31,27 @@ Bug-fixes
 
 * The following operators were missing a fixity declaration, which has now
   been fixed -
-  ```
+   ```
+  infix  -1 _$ⁿ_          (Data.Vec.N-ary)
+  infix  4 _≋_            (Data.Vec.Functional.Relation.Binary.Equality.Setoid)
+  infix  4 _≟_            (Reflection.AST.Definition)
+  infix  4 _≡ᵇ_           (Reflection.AST.Literal)
+  infix  4 _≈?_ _≟_ _≈_   (Reflection.AST.Meta)
+  infix  4 _≈?_ _≟_ _≈_   (Reflection.AST.Name)
+  infix  4 _≟-Telescope_  (Reflection.AST.Term)
+  infix  4 _≟_            (Reflection.AST.Argument.Information)
+  infix  4 _≟_            (Reflection.AST.Argument.Modality)
+  infix  4 _≟_            (Reflection.AST.Argument.Quantity)
+  infix  4 _≟_            (Reflection.AST.Argument.Relevance)
+  infix  4 _≟_            (Reflection.AST.Argument.Visibility)
+  infixr 8 _^_            (Function.Endomorphism.Propositional)
+  infixr 8 _^_            (Function.Endomorphism.Setoid)
+  infix  4 _≃_            (Function.HalfAdjointEquivalence)
+  infix  4 _≈_ _≈ᵢ_ _≤_   (Function.Metric.Bundles)
+  infixl 6 _∙_            (Function.Metric.Bundles)
+  infix  4 _≈_            (Function.Metric.Nat.Bundles)
+  infix  3 _←_ _↢_        (Function.Related)
+
   infix  4 _ℕ<_ _ℕ≤infinity _ℕ≤_                            (Codata.Sized.Conat)
   infix  6 _ℕ+_ _+ℕ_                                        (Codata.Sized.Conat)
   infixl 4 _+ _*                                            (Data.List.Kleene.Base)

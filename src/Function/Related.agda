@@ -53,6 +53,8 @@ open R public using
 -- (which implies that Agda can deduce the universe code from an
 -- expression matching any of the right-hand sides).
 
+infix 3 _←_ _↢_
+
 record _←_ {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
   constructor lam
   field app-← : B → A

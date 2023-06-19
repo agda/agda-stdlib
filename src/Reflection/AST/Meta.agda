@@ -23,12 +23,13 @@ open import Agda.Builtin.Reflection.Properties public
 
 -- Equality of metas is decidable.
 
+infix 4 _≈?_ _≟_ _≈_
+
 _≈_ : Rel Meta _
 _≈_ = _≡_ on toℕ
 
 _≈?_ : Decidable _≈_
 _≈?_ = On.decidable toℕ _≡_ ℕₚ._≟_
 
-infix 4 _≟_
 _≟_ : DecidableEquality Meta
 m ≟ n = map′ (toℕ-injective _ _) (cong toℕ) (m ≈? n)
