@@ -24,6 +24,8 @@ open import Function.Surjection as Surj using (_↠_; module Surjection)
 
 module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
 
+  infixr 1 _⊎-⇔_ _⊎-↣_ _⊎-↞_ _⊎-↠_ _⊎-↔_
+
   _⊎-⇔_ : A ⇔ B → C ⇔ D → (A ⊎ C) ⇔ (B ⊎ D)
   _⊎-⇔_ A⇔B C⇔D =
     Inverse.equivalence (Pointwise-≡↔≡ B D) ⟨∘⟩
@@ -60,6 +62,8 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
     where open Inv using () renaming (_∘_ to _⟨∘⟩_)
 
 module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
+
+  infixr 1 _⊎-cong_
 
   _⊎-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A ⊎ C) ∼[ k ] (B ⊎ D)
   _⊎-cong_ {implication}         = map
