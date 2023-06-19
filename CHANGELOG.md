@@ -29,6 +29,35 @@ Highlights
 Bug-fixes
 ---------
 
+* The following operators were missing a fixity declaration, which has now
+  been fixed -
+  ```
+  infix  4 _ℕ<_ _ℕ≤infinity _ℕ≤_                            (Codata.Sized.Conat)
+  infix  6 _ℕ+_ _+ℕ_                                        (Codata.Sized.Conat)
+  infixl 4 _+ _*                                            (Data.List.Kleene.Base)
+  infixr 4 _++++_ _+++*_ _*+++_ _*++*_                      (Data.List.Kleene.Base)
+  infix  4 _[_]* _[_]+                                      (Data.List.Kleene.Base)
+  infix  4 _≢∈_                                             (Data.List.Membership.Propositional)
+  infixr 5 _`∷_                                             (Data.List.Reflection)
+  infix  4 _≡?_                                             (Data.List.Relation.Binary.Equality.DecPropositional)
+  infixr 5 _++ᵖ_                                            (Data.List.Relation.Binary.Prefix.Heterogeneous)
+  infixr 5 _++ˢ_                                            (Data.List.Relation.Binary.Suffix.Heterogeneous)
+  infixr 5 _++_ _++[]                                       (Data.List.Relation.Ternary.Appending.Propositional)
+  infixr 5 _∷=_                                             (Data.List.Relation.Unary.Any)
+  infixr 5 _++_                                             (Data.List.Ternary.Appending)
+  infixr 2 _×-⇔_ _×-↣_ _×-↞_ _×-↠_ _×-↔_ _×-cong_           (Data.Product.Function.NonDependent.Propositional)
+  infixr 2 _×-⟶_                                           (Data.Product.Function.NonDependent.Setoid)
+  infixr 2 _×-equivalence_ _×-injection_ _×-left-inverse_   (Data.Product.Function.NonDependent.Setoid)
+  infixr 2 _×-surjection_ _×-inverse_                       (Data.Product.Function.NonDependent.Setoid)
+  infixr 1 _⊎-⇔_ _⊎-↣_ _⊎-↞_ _⊎-↠_ _⊎-↔_ _⊎-cong_           (Data.Sum.Function.Propositional)
+  infixr 1 _⊎-⟶_                                           (Data.Sum.Function.Setoid)
+  infixr 1 _⊎-equivalence_ _⊎-injection_ _⊎-left-inverse_   (Data.Sum.Function.Setoid)
+  infixr 1 _⊎-surjection_ _⊎-inverse_                       (Data.Sum.Function.Setoid)
+  infix  8 _⁻¹                                              (Data.Parity.Base)
+  infixr 5 _`∷_                                             (Data.Vec.Reflection)
+  infixr 5 _∷=_                                             (Data.Vec.Membership.Setoid)
+  ```
+
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
@@ -2053,6 +2082,9 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+ 
+  take-[] : ∀ m → take  m [] ≡ []
+  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2783,12 +2815,6 @@ Other minor changes
                                      cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
-  ```
-  
- * Added new lemmas in `Data.List.Propreties`:
-  ```
-  take-[] : ∀ m → take  m [] ≡ []
-  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 NonZero/Positive/Negative changes

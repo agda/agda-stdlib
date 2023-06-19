@@ -62,6 +62,8 @@ index (there pxs) = suc (index pxs)
 lookup : {P : Pred A p} → Any P xs → A
 lookup {xs = xs} p = List.lookup xs (index p)
 
+infixr 5 _∷=_
+
 _∷=_ : {P : Pred A p} → Any P xs → A → List A
 _∷=_ {xs = xs} x∈xs v = xs List.[ index x∈xs ]∷= v
 

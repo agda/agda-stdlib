@@ -22,6 +22,8 @@ open SetoidMembership (setoid A) public hiding (lose)
 ------------------------------------------------------------------------
 -- Different members
 
+infix 4 _≢∈_
+
 _≢∈_ : ∀ {x y : A} {xs} → x ∈ xs → y ∈ xs → Set _
 _≢∈_ x∈xs y∈xs = ∀ x≡y → subst (_∈ _) x≡y x∈xs ≢ y∈xs
 

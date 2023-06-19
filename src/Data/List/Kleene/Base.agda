@@ -41,6 +41,7 @@ private
 --   simplify certain proofs.
 
 infixr 5 _&_ ∹_
+infixl 4 _+ _*
 
 record _+ {a} (A : Set a) : Set a
 data _* {a} (A : Set a) : Set a
@@ -102,6 +103,7 @@ module _ (f : B → A → B) where
 -- Concatenation
 
 module Concat where
+  infixr 4 _++++_ _+++*_ _*+++_ _*++*_
   _++++_ : A + → A + → A +
   _+++*_ : A + → A * → A +
   _*+++_ : A * → A + → A +
@@ -270,6 +272,8 @@ module _ (f : A → Maybe B → B) where
 
 ------------------------------------------------------------------------
 -- Indexing
+
+infix 4 _[_]* _[_]+
 
 _[_]* : A * → ℕ → Maybe A
 _[_]+ : A + → ℕ → Maybe A
