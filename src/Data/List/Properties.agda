@@ -29,6 +29,7 @@ open import Data.Product as Prod hiding (map; zip)
 import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
+open import Data.Fin.Properties using (toℕ-cast)
 open import Function
 open import Level using (Level)
 open import Relation.Binary as B using (DecidableEquality)
@@ -758,16 +759,15 @@ length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
-take-suc-tabulate :  {m : ℕ} (n : Fin m) (f : Fin m → A) →
-  take (suc (toℕ n)) (tabulate f) ≡ take (toℕ n) (tabulate f) ∷ʳ f n
-take-suc-tabulate {m = suc m} zero    f = refl
-take-suc-tabulate {m = suc m} (suc n) f = cong (f zero ∷_) (take-suc-tabulate n (f ∘ suc))
+take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
+           take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
+take-suc (x ∷ xs) zero    = refl
+take-suc (x ∷ xs) (suc i) = cong (x ∷_) (take-suc xs i)
 
-take-tabulate-1 : {m : ℕ} (f : Fin m → A) (n : Fin m) →
-  drop (toℕ n) (take (suc (toℕ n)) (tabulate f)) ≡ [ f n ]
-take-tabulate-1 f zero    = refl
-take-tabulate-1 f (suc n) = take-tabulate-1 (f ∘ suc) n
-
+take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
+                    take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
+take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
+  = take-suc (tabulate f) (cast _ i)
 ------------------------------------------------------------------------
 -- drop
 
@@ -780,6 +780,16 @@ take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl
 take++drop (suc n) []       = refl
 take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
+
+drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
+           drop m (take (suc m) xs) ≡ [ lookup xs i ]
+drop-take-suc (x ∷ xs) zero    = refl
+drop-take-suc (x ∷ xs) (suc i) = drop-take-suc xs i
+
+drop-take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
+                  drop m (take (suc m) (tabulate f)) ≡ [ f i ]
+drop-take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
+  = drop-take-suc (tabulate f) (cast _ i)
 
 ------------------------------------------------------------------------
 -- splitAt
