@@ -38,6 +38,8 @@ module _ (L : REL A C l) (R : REL B C r) where
 ------------------------------------------------------------------------
 -- Functions manipulating Appending
 
+infixr 5 _++_
+
 _++_ : ∀ {cs₁ cs₂ : List C} → Pointwise L as cs₁ → Pointwise R bs cs₂ →
        Appending L R as bs (cs₁ List.++ cs₂)
 []       ++ rs = []++ rs

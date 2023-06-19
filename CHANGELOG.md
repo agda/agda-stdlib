@@ -32,36 +32,79 @@ Bug-fixes
 * The following operators were missing a fixity declaration, which has now
   been fixed -
   ```
-  infixr  5 _∷_                     (Codata.Guarded.Stream)
-  infix   4 _[_]                    (Codata.Guarded.Stream)
-  infixr  5 _∷_                     (Codata.Guarded.Stream.Relation.Binary.Pointwise)
-  infix   4 _≈∞_                    (Codata.Guarded.Stream.Relation.Binary.Pointwise)
-  infixr  5 _∷_                     (Codata.Musical.Colist)
-  infix   4 _≈_                     (Codata.Musical.Conat)
-  infixr  5 _∷_                     (Codata.Musical.Colist.Bisimilarity)
-  infixr  5 _∷_                     (Codata.Musical.Colist.Relation.Unary.All)
-  infixr  5 _∷_                     (Codata.Sized.Colist)
-  infixr  5 _∷_                     (Codata.Sized.Covec)
-  infixr  5 _∷_                     (Codata.Sized.Cowriter)
-  infixl  1 _>>=_                   (Codata.Sized.Cowriter)
-  infixr  5 _∷_                     (Codata.Sized.Stream)
-  infixr  5 _∷_                     (Codata.Sized.Colist.Bisimilarity)
-  infix   4 _ℕ≤?_                   (Codata.Sized.Conat.Properties)
-  infixr  5 _∷_                     (Codata.Sized.Covec.Bisimilarity)
-  infixr  5 _∷_                     (Codata.Sized.Cowriter.Bisimilarity)
-  infixr  5 _∷_                     (Codata.Sized.Stream.Bisimilarity)
-  infixr  8 _⇒_ _⊸_                 (Data.Container.Core)
-  infixr -1 _<$>_ _<*>_             (Data.Container.FreeMonad)
-  infixl  1 _>>=_                   (Data.Container.FreeMonad)
-  infix   5 _▷_                     (Data.Container.Indexed)
-  infix   4 _≈_                     (Data.Float.Base)
-  infixl  7 _⊓′_                    (Data.Nat.Base)
-  infixl  6 _⊔′_                    (Data.Nat.Base)
-  infixr  8 _^_                     (Data.Nat.Base)
-  infix   4 _!≢0 _!*_!≢0            (Data.Nat.Properties)
-  infix   4 _≃?_                    (Data.Rational.Unnormalised.Properties)
-  infix   4 _≈ₖᵥ_                   (Data.Tree.AVL.Map.Membership.Propositional)
-  infix   4 _<_                     (Induction.WellFounded)
+  infixr  5 _∷_                                              (Codata.Guarded.Stream)
+  infix   4 _[_]                                             (Codata.Guarded.Stream)
+  infixr  5 _∷_                                              (Codata.Guarded.Stream.Relation.Binary.Pointwise)
+  infix   4 _≈∞_                                             (Codata.Guarded.Stream.Relation.Binary.Pointwise)
+  infixr  5 _∷_                                              (Codata.Musical.Colist)
+  infix   4 _≈_                                              (Codata.Musical.Conat)
+  infixr  5 _∷_                                              (Codata.Musical.Colist.Bisimilarity)
+  infixr  5 _∷_                                              (Codata.Musical.Colist.Relation.Unary.All)
+  infixr  5 _∷_                                              (Codata.Sized.Colist)
+  infixr  5 _∷_                                              (Codata.Sized.Covec)
+  infixr  5 _∷_                                              (Codata.Sized.Cowriter)
+  infixl  1 _>>=_                                            (Codata.Sized.Cowriter)
+  infixr  5 _∷_                                              (Codata.Sized.Stream)
+  infixr  5 _∷_                                              (Codata.Sized.Colist.Bisimilarity)
+  infix   4 _ℕ≤?_                                            (Codata.Sized.Conat.Properties)
+  infixr  5 _∷_                                              (Codata.Sized.Covec.Bisimilarity)
+  infixr  5 _∷_                                              (Codata.Sized.Cowriter.Bisimilarity)
+  infixr  5 _∷_                                              (Codata.Sized.Stream.Bisimilarity)
+  infixr  8 _⇒_ _⊸_                                          (Data.Container.Core)
+  infixr -1 _<$>_ _<*>_                                      (Data.Container.FreeMonad)
+  infixl  1 _>>=_                                            (Data.Container.FreeMonad)
+  infix   5 _▷_                                              (Data.Container.Indexed)
+  infix   4 _≈_                                              (Data.Float.Base)
+  infixl  7 _⊓′_                                             (Data.Nat.Base)
+  infixl  6 _⊔′_                                             (Data.Nat.Base)
+  infixr  8 _^_                                              (Data.Nat.Base)
+  infix   4 _!≢0 _!*_!≢0                                     (Data.Nat.Properties)
+  infix   4 _≃?_                                             (Data.Rational.Unnormalised.Properties)
+  infix   4 _≈ₖᵥ_                                            (Data.Tree.AVL.Map.Membership.Propositional)
+  infix   4 _<_                                              (Induction.WellFounded)
+  infix  -1 _$ⁿ_                                             (Data.Vec.N-ary)
+  infix   4 _≋_                                              (Data.Vec.Functional.Relation.Binary.Equality.Setoid)
+  infix   4 _≟_                                              (Reflection.AST.Definition)
+  infix   4 _≡ᵇ_                                             (Reflection.AST.Literal)
+  infix   4 _≈?_ _≟_ _≈_                                     (Reflection.AST.Meta)
+  infix   4 _≈?_ _≟_ _≈_                                     (Reflection.AST.Name)
+  infix   4 _≟-Telescope_                                    (Reflection.AST.Term)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Information)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Modality)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Quantity)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Relevance)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Visibility)
+  infixr  8 _^_                                              (Function.Endomorphism.Propositional)
+  infixr  8 _^_                                              (Function.Endomorphism.Setoid)
+  infix   4 _≃_                                              (Function.HalfAdjointEquivalence)
+  infix   4 _≈_ _≈ᵢ_ _≤_                                     (Function.Metric.Bundles)
+  infixl  6 _∙_                                              (Function.Metric.Bundles)
+  infix   4 _≈_                                              (Function.Metric.Nat.Bundles)
+  infix   3 _←_ _↢_                                          (Function.Related)
+  infix   4 _ℕ<_ _ℕ≤infinity _ℕ≤_                            (Codata.Sized.Conat)
+  infix   6 _ℕ+_ _+ℕ_                                        (Codata.Sized.Conat)
+  infixl  4 _+ _*                                            (Data.List.Kleene.Base)
+  infixr  4 _++++_ _+++*_ _*+++_ _*++*_                      (Data.List.Kleene.Base)
+  infix   4 _[_]* _[_]+                                      (Data.List.Kleene.Base)
+  infix   4 _≢∈_                                             (Data.List.Membership.Propositional)
+  infixr  5 _`∷_                                             (Data.List.Reflection)
+  infix   4 _≡?_                                             (Data.List.Relation.Binary.Equality.DecPropositional)
+  infixr  5 _++ᵖ_                                            (Data.List.Relation.Binary.Prefix.Heterogeneous)
+  infixr  5 _++ˢ_                                            (Data.List.Relation.Binary.Suffix.Heterogeneous)
+  infixr  5 _++_ _++[]                                       (Data.List.Relation.Ternary.Appending.Propositional)
+  infixr  5 _∷=_                                             (Data.List.Relation.Unary.Any)
+  infixr  5 _++_                                             (Data.List.Ternary.Appending)
+  infixr  2 _×-⇔_ _×-↣_ _×-↞_ _×-↠_ _×-↔_ _×-cong_           (Data.Product.Function.NonDependent.Propositional)
+  infixr  2 _×-⟶_                                           (Data.Product.Function.NonDependent.Setoid)
+  infixr  2 _×-equivalence_ _×-injection_ _×-left-inverse_   (Data.Product.Function.NonDependent.Setoid)
+  infixr  2 _×-surjection_ _×-inverse_                       (Data.Product.Function.NonDependent.Setoid)
+  infixr  1 _⊎-⇔_ _⊎-↣_ _⊎-↞_ _⊎-↠_ _⊎-↔_ _⊎-cong_           (Data.Sum.Function.Propositional)
+  infixr  1 _⊎-⟶_                                           (Data.Sum.Function.Setoid)
+  infixr  1 _⊎-equivalence_ _⊎-injection_ _⊎-left-inverse_   (Data.Sum.Function.Setoid)
+  infixr  1 _⊎-surjection_ _⊎-inverse_                       (Data.Sum.Function.Setoid)
+  infix   8 _⁻¹                                              (Data.Parity.Base)
+  infixr  5 _`∷_                                             (Data.Vec.Reflection)
+  infixr  5 _∷=_                                             (Data.Vec.Membership.Setoid)
   ```
 
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
@@ -1630,6 +1673,12 @@ New modules
   ```
   Algebra.Properties.KleeneAlgebra
   ```
+
+* Relations on indexed sets
+  ```
+  Function.Indexed.Bundles
+  ```
+
 Other minor changes
 -------------------
 
@@ -2088,6 +2137,9 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+ 
+  take-[] : ∀ m → take  m [] ≡ []
+  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2818,12 +2870,6 @@ Other minor changes
                                      cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
-  ```
-  
- * Added new lemmas in `Data.List.Propreties`:
-  ```
-  take-[] : ∀ m → take  m [] ≡ []
-  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 NonZero/Positive/Negative changes
