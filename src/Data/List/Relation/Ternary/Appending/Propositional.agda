@@ -32,6 +32,8 @@ open General public
 ------------------------------------------------------------------------
 -- Definition
 
+infixr 5 _++_ _++[]
+
 _++_ : (as bs : List A) → Appending as bs (as List.++ bs)
 as ++ bs = Pw.≡⇒Pointwise-≡ refl General.++ Pw.≡⇒Pointwise-≡ refl
 
