@@ -8,10 +8,11 @@
 
 module Data.Vec.Binary.Properties where
 
-open import Data.Fin.Binary.Base
+open import Data.Fin.Binary.Base as Finᵇ hiding (zero; suc)
 open import Data.Nat.Binary.Base
 open import Data.Vec.Binary.Base
 open import Function.Base
+open import Function.Nary.NonDependent using (congₙ)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
 
@@ -24,8 +25,40 @@ private
     D : Set d
     n : ℕᵇ
 
+-- Properties of tabulate
+------------------------------------------------------------------------
+
+lookup∘tabulate : ∀ (f : Finᵇ n → A) (i : Finᵇ n) → lookup (tabulate f) i ≡ f i
+lookup∘tabulate f zeroᵒ = refl
+lookup∘tabulate f zeroᵉ = refl
+lookup∘tabulate f oneᵉ = refl
+lookup∘tabulate f 1+[2 i ]ᵒ = lookup∘tabulate (f ∘ 1+[2_]ᵒ) i
+lookup∘tabulate f 2[1+ i ]ᵒ = lookup∘tabulate (f ∘ 2[1+_]ᵒ) i
+lookup∘tabulate f 2[1+ i ]ᵉ = lookup∘tabulate (f ∘ 2[1+_]ᵉ) i
+lookup∘tabulate f 3+[2 i ]ᵉ = lookup∘tabulate (f ∘ 3+[2_]ᵉ) i
+
+tabulate∘lookup : ∀ (xs : Vecᵇ A n) → tabulate (lookup xs) ≡ xs
+tabulate∘lookup [] = refl
+tabulate∘lookup (x ∷⟨ ls / rs ⟩) = cong₂ (x ∷⟨_/_⟩) (tabulate∘lookup ls) (tabulate∘lookup rs)
+tabulate∘lookup (x × y ∷⟨ ls / rs ⟩) = cong₂ (x × y ∷⟨_/_⟩) (tabulate∘lookup ls) (tabulate∘lookup rs)
+
+tabulate-∘ : ∀ (f : A → B) (g : Finᵇ n → A) → tabulate (f ∘ g) ≡ map f (tabulate g)
+tabulate-∘ {n = zero} f g = refl
+tabulate-∘ {n = 1+[2 n ]} f g = cong₂ (f (g zeroᵒ) ∷⟨_/_⟩) (tabulate-∘ f (g ∘ 1+[2_]ᵒ)) (tabulate-∘ f (g ∘ 2[1+_]ᵒ))
+tabulate-∘ {n = 2[1+ n ]} f g = cong₂ (f (g zeroᵉ) × f (g oneᵉ) ∷⟨_/_⟩) (tabulate-∘ f (g ∘ 2[1+_]ᵉ)) (tabulate-∘ f (g ∘ 3+[2_]ᵉ))
+
+tabulate-cong : ∀ {f g : Finᵇ n → A} → f ≗ g → tabulate f ≡ tabulate g
+tabulate-cong {n = zero} f≗g = refl
+tabulate-cong {n = 1+[2 n ]} f≗g = congₙ 3 _∷⟨_/_⟩ (f≗g zeroᵒ) (tabulate-cong (f≗g ∘ 1+[2_]ᵒ)) (tabulate-cong (f≗g ∘ 2[1+_]ᵒ))
+tabulate-cong {n = 2[1+ n ]} f≗g = congₙ 4 _×_∷⟨_/_⟩ (f≗g zeroᵉ) (f≗g oneᵉ) (tabulate-cong (f≗g ∘ 2[1+_]ᵉ)) (tabulate-cong (f≗g ∘ 3+[2_]ᵉ))
+
 -- Properties of head, tail, and _∷_
 ------------------------------------------------------------------------
+
+head-is-lookup : ∀ (xs : Vecᵇ A (suc n)) → head xs ≡ lookup xs Finᵇ.zero
+head-is-lookup {n = zero} (x ∷⟨ [] / [] ⟩) = refl
+head-is-lookup {n = 2[1+ n ]} (x ∷⟨ ls / rs ⟩) = refl
+head-is-lookup {n = 1+[2 n ]} (x × y ∷⟨ ls / rs ⟩) = refl
 
 head-∷ : ∀ x (xs : Vecᵇ A n) → head (x ∷ xs) ≡ x
 head-∷ x [] = refl
@@ -36,6 +69,44 @@ merge-∷ : ∀ x₁ x₂ (xs₁ xs₂ : Vecᵇ A n) → merge (x₁ ∷ xs₁) 
 merge-∷ x₁ x₂ [] [] = refl
 merge-∷ x₁ x₂ (x ∷⟨ xs₁ / xs₂ ⟩) (x₃ ∷⟨ xs₃ / xs₄ ⟩) = refl
 merge-∷ x₁ x₂ (y₁ × z₁ ∷⟨ ls₁ / rs₁ ⟩) (y₂ × z₂ ∷⟨ ls₂ / rs₂ ⟩) = cong₂ (x₁ × x₂ ∷⟨_/_⟩) (merge-∷ y₁ z₁ ls₁ rs₁) (merge-∷ y₂ z₂ ls₂ rs₂)
+
+lookup-merge-zero : ∀ (ls rs : Vecᵇ A (suc n)) → lookup (merge ls rs) zeroᵉ ≡ lookup ls Finᵇ.zero
+lookup-merge-zero {n = zero} (x₁ ∷⟨ [] / [] ⟩) (x₂ ∷⟨ [] / [] ⟩) = refl
+lookup-merge-zero {n = 2[1+ n ]} (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) = refl
+lookup-merge-zero {n = 1+[2 n ]} (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = refl
+
+lookup-merge-one : ∀ (ls rs : Vecᵇ A (suc n)) → lookup (merge ls rs) oneᵉ ≡ lookup rs Finᵇ.zero
+lookup-merge-one {n = zero} (x₁ ∷⟨ [] / [] ⟩) (x₂ ∷⟨ [] / [] ⟩) = refl
+lookup-merge-one {n = 2[1+ n ]} (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) = refl
+lookup-merge-one {n = 1+[2 n ]} (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) = refl
+
+lookup-merge-2[1+] : ∀ (ls rs : Vecᵇ A (suc n)) i → lookup (merge ls rs) 2[1+ i ]ᵉ ≡ lookup ls (Finᵇ.suc i)
+lookup-merge-3+[2] : ∀ (ls rs : Vecᵇ A (suc n)) i → lookup (merge ls rs) 3+[2 i ]ᵉ ≡ lookup rs (Finᵇ.suc i)
+
+lookup-merge-2[1+] (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) zeroᵉ = lookup-merge-zero ls₁ rs₁
+lookup-merge-2[1+] (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) oneᵉ = lookup-merge-one ls₁ rs₁
+lookup-merge-2[1+] (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) 2[1+ i ]ᵉ = lookup-merge-2[1+] ls₁ rs₁ i
+lookup-merge-2[1+] (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) 3+[2 i ]ᵉ = lookup-merge-3+[2] ls₁ rs₁ i
+lookup-merge-2[1+] (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) zeroᵒ = refl
+lookup-merge-2[1+] (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) 1+[2 i ]ᵒ = refl
+lookup-merge-2[1+] (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) 2[1+ i ]ᵒ = refl
+
+lookup-merge-3+[2] (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) zeroᵉ = lookup-merge-zero ls₂ rs₂
+lookup-merge-3+[2] (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) oneᵉ = lookup-merge-one ls₂ rs₂
+lookup-merge-3+[2] (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) 2[1+ i ]ᵉ = lookup-merge-2[1+] ls₂ rs₂ i
+lookup-merge-3+[2] (x₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ ∷⟨ ls₂ / rs₂ ⟩) 3+[2 i ]ᵉ = lookup-merge-3+[2] ls₂ rs₂ i
+lookup-merge-3+[2] (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) zeroᵒ = refl
+lookup-merge-3+[2] (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) 1+[2 i ]ᵒ = refl
+lookup-merge-3+[2] (x₁ × y₁ ∷⟨ ls₁ / rs₁ ⟩) (x₂ × y₂ ∷⟨ ls₂ / rs₂ ⟩) 2[1+ i ]ᵒ = refl
+
+tail-lookup : ∀ (xs : Vecᵇ A (suc n)) (i : Finᵇ n) → lookup (tail xs) i ≡ lookup xs (Finᵇ.suc i)
+tail-lookup {n = 2[1+ n ]} (x ∷⟨ ls / rs ⟩) zeroᵉ = lookup-merge-zero ls rs
+tail-lookup {n = 2[1+ n ]} (x ∷⟨ ls / rs ⟩) oneᵉ = lookup-merge-one ls rs
+tail-lookup {n = 2[1+ n ]} (x ∷⟨ ls / rs ⟩) 2[1+ i ]ᵉ = lookup-merge-2[1+] ls rs i
+tail-lookup {n = 2[1+ n ]} (x ∷⟨ ls / rs ⟩) 3+[2 i ]ᵉ = lookup-merge-3+[2] ls rs i
+tail-lookup {n = 1+[2 n ]} (x × y ∷⟨ ls / rs ⟩) zeroᵒ = refl
+tail-lookup {n = 1+[2 n ]} (x × y ∷⟨ ls / rs ⟩) 1+[2 i ]ᵒ = refl
+tail-lookup {n = 1+[2 n ]} (x × y ∷⟨ ls / rs ⟩) 2[1+ i ]ᵒ = refl
 
 tail-∷ : ∀ x (xs : Vecᵇ A n) → tail (x ∷ xs) ≡ xs
 tail-∷ x [] = refl

@@ -8,8 +8,9 @@
 
 module Data.Vec.Binary.Base where
 
-open import Data.Fin.Binary.Base
+open import Data.Fin.Binary.Base as Finᵇ hiding (zero; suc)
 open import Data.Nat.Binary.Base
+open import Function.Base using (_∘_)
 open import Level using (Level)
 
 private
@@ -30,6 +31,14 @@ data Vecᵇ (A : Set a) : ℕᵇ → Set a where
   _∷⟨_/_⟩   : A     → Vecᵇ A n → Vecᵇ A n → Vecᵇ A 1+[2 n ]
   -- A vector with a non-zero even number of elements
   _×_∷⟨_/_⟩ : A → A → Vecᵇ A n → Vecᵇ A n → Vecᵇ A 2[1+ n ]
+
+-- Building a Vecᵇ
+------------------------------------------------------------------------
+
+tabulate : (Finᵇ n → A) → Vecᵇ A n
+tabulate {n = zero} f = []
+tabulate {n = 2[1+ n ]} f = f zeroᵉ × f oneᵉ ∷⟨ tabulate (f ∘ 2[1+_]ᵉ) / tabulate (f ∘ 3+[2_]ᵉ) ⟩
+tabulate {n = 1+[2 n ]} f = f zeroᵒ ∷⟨ tabulate (f ∘ 1+[2_]ᵒ) / tabulate (f ∘ 2[1+_]ᵒ) ⟩
 
 -- Indexing
 ------------------------------------------------------------------------
