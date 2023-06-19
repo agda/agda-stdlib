@@ -764,6 +764,10 @@ take-all zero [] _ = refl
 take-all (suc _) [] _ = refl
 take-all (suc n) (x ∷ xs) (s≤s pf) = cong (x ∷_) (take-all n xs pf)
 
+-- Taking from an empty list does nothing.
+take-[] : ∀ m → take {A = A} m [] ≡ []
+take-[] zero = refl
+take-[] (suc m) = refl
 
 ------------------------------------------------------------------------
 -- drop
@@ -772,6 +776,12 @@ length-drop : ∀ n (xs : List A) → length (drop n xs) ≡ length xs ∸ n
 length-drop zero    xs       = refl
 length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
+
+-- Dropping from an empty list does nothing.
+drop-[] : ∀ m → drop {A = A} m [] ≡ []
+drop-[] zero = refl
+drop-[] (suc m) = refl
+
 
 take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl

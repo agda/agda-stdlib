@@ -218,6 +218,16 @@ module _ {_∼_ : REL A B ℓ} where
   tabulate⁻ (_     ∷ f∼g) (suc i) = tabulate⁻ f∼g i
 
 ------------------------------------------------------------------------
+-- cong
+
+module _ {_∼_ : Rel A ℓ} (refl : Reflexive _∼_) where
+  cong-[_]≔ : ∀ {n} i p {xs} {ys} →
+              Pointwise _∼_ {n} xs ys →
+              Pointwise _∼_ (xs [ i ]≔ p) (ys [ i ]≔ p)
+  cong-[ zero ]≔  p (_   ∷ eqn) = refl ∷ eqn
+  cong-[ suc i ]≔ p (x∼y ∷ eqn) = x∼y  ∷ cong-[ i ]≔ p eqn
+
+------------------------------------------------------------------------
 -- Degenerate pointwise relations
 
 module _ {P : Pred A ℓ} where
