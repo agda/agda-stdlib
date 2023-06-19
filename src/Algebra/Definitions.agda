@@ -108,6 +108,10 @@ _*_ DistributesOverʳ _+_ =
 _DistributesOver_ : Op₂ A → Op₂ A → Set _
 * DistributesOver + = (* DistributesOverˡ +) × (* DistributesOverʳ +)
 
+_MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
+_*_ MiddleFourExchange _+_ =
+  ∀ w x y z → ((w + x) * (y + z)) ≈ ((w + y) * (x + z))
+
 _IdempotentOn_ : Op₂ A → A → Set _
 _∙_ IdempotentOn x = (x ∙ x) ≈ x
 

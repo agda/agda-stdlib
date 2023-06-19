@@ -29,6 +29,35 @@ Highlights
 Bug-fixes
 ---------
 
+* The following operators were missing a fixity declaration, which has now
+  been fixed -
+  ```
+  infix  4 _ℕ<_ _ℕ≤infinity _ℕ≤_                            (Codata.Sized.Conat)
+  infix  6 _ℕ+_ _+ℕ_                                        (Codata.Sized.Conat)
+  infixl 4 _+ _*                                            (Data.List.Kleene.Base)
+  infixr 4 _++++_ _+++*_ _*+++_ _*++*_                      (Data.List.Kleene.Base)
+  infix  4 _[_]* _[_]+                                      (Data.List.Kleene.Base)
+  infix  4 _≢∈_                                             (Data.List.Membership.Propositional)
+  infixr 5 _`∷_                                             (Data.List.Reflection)
+  infix  4 _≡?_                                             (Data.List.Relation.Binary.Equality.DecPropositional)
+  infixr 5 _++ᵖ_                                            (Data.List.Relation.Binary.Prefix.Heterogeneous)
+  infixr 5 _++ˢ_                                            (Data.List.Relation.Binary.Suffix.Heterogeneous)
+  infixr 5 _++_ _++[]                                       (Data.List.Relation.Ternary.Appending.Propositional)
+  infixr 5 _∷=_                                             (Data.List.Relation.Unary.Any)
+  infixr 5 _++_                                             (Data.List.Ternary.Appending)
+  infixr 2 _×-⇔_ _×-↣_ _×-↞_ _×-↠_ _×-↔_ _×-cong_           (Data.Product.Function.NonDependent.Propositional)
+  infixr 2 _×-⟶_                                           (Data.Product.Function.NonDependent.Setoid)
+  infixr 2 _×-equivalence_ _×-injection_ _×-left-inverse_   (Data.Product.Function.NonDependent.Setoid)
+  infixr 2 _×-surjection_ _×-inverse_                       (Data.Product.Function.NonDependent.Setoid)
+  infixr 1 _⊎-⇔_ _⊎-↣_ _⊎-↞_ _⊎-↠_ _⊎-↔_ _⊎-cong_           (Data.Sum.Function.Propositional)
+  infixr 1 _⊎-⟶_                                           (Data.Sum.Function.Setoid)
+  infixr 1 _⊎-equivalence_ _⊎-injection_ _⊎-left-inverse_   (Data.Sum.Function.Setoid)
+  infixr 1 _⊎-surjection_ _⊎-inverse_                       (Data.Sum.Function.Setoid)
+  infix  8 _⁻¹                                              (Data.Parity.Base)
+  infixr 5 _`∷_                                             (Data.Vec.Reflection)
+  infixr 5 _∷=_                                             (Data.Vec.Membership.Setoid)
+  ```
+
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
@@ -1678,8 +1707,30 @@ Other minor changes
                                      Involutive _≈_ f
   ```
 
+* Added new proofs to `Algebra.Consequences.Propositional`:
+  ```agda
+  comm+assoc⇒middleFour     : Commutative _•_ →
+                              Associative _•_ →
+                              _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒comm  : Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+  ```
+
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
+  comm+assoc⇒middleFour     : Congruent₂ _•_ → Commutative _•_ → Associative _•_ →
+                              _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Congruent₂ _•_ → Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒comm  : Congruent₂ _•_ → Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+
   involutive⇒surjective  : Involutive f  → Surjective f
   selfInverse⇒involutive : SelfInverse f → Involutive f
   selfInverse⇒congruent  : SelfInverse f → Congruent f
@@ -1743,6 +1794,8 @@ Other minor changes
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
+  _MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
+
   SelfInverse : Op₁ A → Set _
   
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
@@ -2061,6 +2114,9 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+ 
+  take-[] : ∀ m → take  m [] ≡ []
+  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -3085,7 +3141,29 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
 
+* Added new function to `Data.Vec.Relation.Binary.Pointwise.Inductive`
+  ```agda
+  cong-[_]≔ : Pointwise _∼_ xs ys → Pointwise _∼_ (xs [ i ]≔ p) (ys [ i ]≔ p)
+  ```
+
+* Added new function to `Data.Vec.Relation.Binary.Equality.Setoid`
+  ```agda
+  map-[]≔ : map f (xs [ i ]≔ p) ≋ map f xs [ i ]≔ f p
+  ```
+
 * Added new function to `Data.List.Relation.Binary.Permutation.Propositional.Properties`
   ```agda
   ↭-reverse : (xs : List A) → reverse xs ↭ xs
+  ```
+
+* Added new file `Relation.Binary.Reasoning.Base.Apartness`
+
+This is how to use it:
+  ```agda
+  _ : a # d
+  _ = begin-apartness
+    a ≈⟨ a≈b ⟩
+    b #⟨ b#c ⟩
+    c ≈⟨ c≈d ⟩
+    d ∎
   ```
