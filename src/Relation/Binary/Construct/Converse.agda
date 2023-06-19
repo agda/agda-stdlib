@@ -1,9 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Many properties which hold for `∼` also hold for `flip ∼`. Unlike
--- the module `Relation.Binary.Construct.Flip` this module does not
--- flip the underlying equality.
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Construct.Flip.EqAndOrd` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
