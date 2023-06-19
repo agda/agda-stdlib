@@ -1624,6 +1624,12 @@ New modules
   ```
   Algebra.Properties.KleeneAlgebra
   ```
+
+* Relations on indexed sets
+  ```
+  Function.Indexed.Bundles
+  ```
+
 Other minor changes
 -------------------
 
