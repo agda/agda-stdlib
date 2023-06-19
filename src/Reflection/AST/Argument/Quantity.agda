@@ -21,6 +21,8 @@ open Quantity public
 ------------------------------------------------------------------------
 -- Decidable equality
 
+infix 4 _≟_
+
 _≟_ : DecidableEquality Quantity
 quantity-ω ≟ quantity-ω = yes refl
 quantity-0 ≟ quantity-0 = yes refl
