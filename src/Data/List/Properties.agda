@@ -1,4 +1,3 @@
-
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
@@ -761,11 +760,10 @@ length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
 -- Take commutes with map.
-take-map : {f : A → B} → (n : ℕ) (xs : List A) → take n (map f xs) ≡ map f (take n xs)
+take-map : (n : ℕ) (xs : List A) → take n (map f xs) ≡ map f (take n xs)
 take-map zero xs = refl
 take-map (suc s) [] = refl
 take-map (suc s) (a ∷ xs) = cong (_ ∷_) (take-map s xs)
-
 
 ------------------------------------------------------------------------
 -- drop
@@ -776,11 +774,10 @@ length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
 
 -- Drop commutes with map.
-drop-map : {f : A → B} → (n : ℕ) (xs : List A) → drop n (map f xs) ≡ map f (drop n xs)
+drop-map : (n : ℕ) (xs : List A) → drop n (map f xs) ≡ map f (drop n xs)
 drop-map zero xs = refl
 drop-map (suc n) [] = refl
 drop-map (suc n) (a ∷ xs) = drop-map n xs
-
 
 take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl
