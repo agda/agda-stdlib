@@ -2082,6 +2082,9 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+ 
+  take-[] : ∀ m → take  m [] ≡ []
+  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2812,12 +2815,6 @@ Other minor changes
                                      cartesianProductWith f xs zs ++ cartesianProductWith f ys zs
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
-  ```
-  
- * Added new lemmas in `Data.List.Propreties`:
-  ```
-  take-[] : ∀ m → take  m [] ≡ []
-  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 NonZero/Positive/Negative changes
