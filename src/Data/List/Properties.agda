@@ -1092,7 +1092,7 @@ module _ {x y : A} where
 -- head
 
 -- 'commute' List.head and List.map to obtain a Maybe.map and List.head.
-head-map : {f : A → B} (xs : List A) → head (map f xs) ≡ Maybe.map f (head xs)
+head-map : (xs : List A) → head (map f xs) ≡ Maybe.map f (head xs)
 head-map [] = refl
 head-map (_ ∷ _) = refl
 
