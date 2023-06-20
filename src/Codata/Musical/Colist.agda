@@ -215,6 +215,8 @@ data Finite {A : Set a} : Colist A → Set a where
   []  : Finite []
   _∷_ : ∀ x {xs} (fin : Finite (♭ xs)) → Finite (x ∷ xs)
 
+infixr 5 _∷_
+
 module Finite-injective where
 
  ∷-injective : ∀ {x : A} {xs p q} → (Finite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
