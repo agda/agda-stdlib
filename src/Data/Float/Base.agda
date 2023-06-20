@@ -65,5 +65,7 @@ open import Agda.Builtin.Float public
   ; primFloatATanh             to atanh
   )
 
+infix 4 _≈_
+
 _≈_ : Rel Float _
 _≈_ = _≡_ on Maybe.map Word.toℕ ∘ toWord

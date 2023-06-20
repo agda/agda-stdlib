@@ -34,6 +34,8 @@ fromℕ-injective {suc m} {suc n} eq = P.cong suc (fromℕ-injective (P.cong pre
 ------------------------------------------------------------------------
 -- Equality
 
+infix 4 _≈_
+
 data _≈_ : Coℕ → Coℕ → Set where
   zero :                                 zero  ≈ zero
   suc  : ∀ {m n} (m≈n : ∞ (♭ m ≈ ♭ n)) → suc m ≈ suc n
