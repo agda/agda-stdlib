@@ -44,7 +44,7 @@ _⊇_ : Rel (List A) (c ⊔ ℓ)
 xs ⊇ ys = ys ⊆ xs
 
 _⊂_ : Rel (List A) (c ⊔ ℓ)
-xs ⊂ ys = xs ⊆ ys × ¬ (xs ≋ ys)
+xs ⊂ ys = xs ⊆ ys × (¬ (xs ≋ ys))
 
 _⊃_ : Rel (List A) (c ⊔ ℓ)
 xs ⊃ ys = ys ⊂ xs
