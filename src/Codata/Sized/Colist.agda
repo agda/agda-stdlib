@@ -42,6 +42,8 @@ data Colist (A : Set a) (i : Size) : Set a where
   []  : Colist A i
   _∷_ : A → Thunk (Colist A) i → Colist A i
 
+infixr 5 _∷_
+
 ------------------------------------------------------------------------
 -- Relationship to Cowriter.
 

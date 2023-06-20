@@ -39,6 +39,8 @@ data Cowriter (W : Set w) (A : Set a) (i : Size) : Set (a L.⊔ w) where
   [_] : A → Cowriter W A i
   _∷_ : W → Thunk (Cowriter W A) i → Cowriter W A i
 
+infixr 5 _∷_
+
 ------------------------------------------------------------------------
 -- Relationship to Delay.
 
@@ -100,6 +102,8 @@ map₂ = map id
 ap : ∀ {i} → Cowriter W (A → X) i → Cowriter W A i → Cowriter W X i
 ap [ f ]    ca = map₂ f ca
 ap (w ∷ cf) ca = w ∷ λ where .force → ap (cf .force) ca
+
+infixl 1 _>>=_
 
 _>>=_ : ∀ {i} → Cowriter W A i → (A → Cowriter W X i) → Cowriter W X i
 [ a ]    >>= f = f a

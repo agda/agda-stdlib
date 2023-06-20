@@ -128,7 +128,7 @@ absurd-clause-injective = < absurd-clause-injective₁ , absurd-clause-injective
 
 infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
         _≟-Clause_ _≟-Clauses_ _≟_
-        _≟-Sort_ _≟-Pattern_ _≟-Patterns_
+        _≟-Sort_ _≟-Pattern_ _≟-Patterns_ _≟-Telescope_
 
 _≟-AbsTerm_  : DecidableEquality (Abs Term)
 _≟-AbsType_  : DecidableEquality (Abs Type)

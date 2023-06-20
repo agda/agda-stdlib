@@ -183,6 +183,7 @@ module Lexicographic {A : Set a} {B : A → Set b}
                      (RelA : Rel A ℓ₁)
                      (RelB : ∀ x → Rel (B x) ℓ₂) where
 
+  infix 4 _<_
   data _<_ : Rel (Σ A B) (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     left  : ∀ {x₁ y₁ x₂ y₂} (x₁<x₂ : RelA   x₁ x₂) → (x₁ , y₁) < (x₂ , y₂)
     right : ∀ {x y₁ y₂}     (y₁<y₂ : RelB x y₁ y₂) → (x  , y₁) < (x  , y₂)

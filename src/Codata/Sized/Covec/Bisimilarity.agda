@@ -22,6 +22,7 @@ data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) (i : Size) :
   _∷_ : ∀ {x y m n xs ys} → R x y → Thunk^R (λ i → Bisim R i (m .force) (n .force)) i xs ys →
         Bisim R i (suc m) (suc n) (x ∷ xs) (y ∷ ys)
 
+infixr 5 _∷_
 
 module _ {a r} {A : Set a} {R : A → A → Set r} where
 

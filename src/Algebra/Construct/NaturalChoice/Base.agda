@@ -11,7 +11,7 @@ open import Algebra.Core
 open import Level as L hiding (_⊔_)
 open import Function.Base using (flip)
 open import Relation.Binary
-open import Relation.Binary.Construct.Converse using ()
+open import Relation.Binary.Construct.Flip.EqAndOrd using ()
   renaming (totalPreorder to flipOrder)
 import Relation.Binary.Properties.TotalOrder as TotalOrderProperties
 

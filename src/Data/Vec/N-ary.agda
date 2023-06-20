@@ -44,6 +44,8 @@ curryⁿ : ∀ {n} → (Vec A n → B) → N-ary n A B
 curryⁿ {n = zero}  f = f []
 curryⁿ {n = suc n} f = λ x → curryⁿ (f ∘ _∷_ x)
 
+infix -1 _$ⁿ_
+
 _$ⁿ_ : ∀ {n} → N-ary n A B → (Vec A n → B)
 f $ⁿ []       = f
 f $ⁿ (x ∷ xs) = f x $ⁿ xs

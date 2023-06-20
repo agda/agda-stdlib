@@ -1948,6 +1948,8 @@ n≡⌈n+n/2⌉ (suc n′@(suc n)) =
 1≤n! zero    = ≤-refl
 1≤n! (suc n) = *-mono-≤ (m≤m+n 1 n) (1≤n! n)
 
+infix 4 _!≢0 _!*_!≢0
+
 _!≢0 : ∀ n → NonZero (n !)
 n !≢0 = >-nonZero (1≤n! n)
 
