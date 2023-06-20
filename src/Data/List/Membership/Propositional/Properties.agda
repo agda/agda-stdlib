@@ -43,7 +43,7 @@ import Relation.Nullary.Reflects as Reflects
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (excluded-middle)
+open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -344,7 +344,7 @@ module _ {_•_ : Op₂ A} where
 
 finite : (f : ℕ ↣ A) → ∀ xs → ¬ (∀ i → Injection.to f ⟨$⟩ i ∈ xs)
 finite inj []       fᵢ∈[]   = ¬Any[] (fᵢ∈[] 0)
-finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
+finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
   where
   open Injection inj renaming (injective to f-inj)
 

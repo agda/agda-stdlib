@@ -874,7 +874,8 @@ Non-backwards compatible changes
     lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
-
+  * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
+    `¬¬-excluded-middle`.
 
 Major improvements
 ------------------

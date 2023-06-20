@@ -395,7 +395,7 @@ module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
   now-or-never : Reflexive _∼_ →
                  ∀ {k} (x : A ⊥) →
                  ¬ ¬ ((∃ λ y → x ⇓[ other k ] y) ⊎ x ⇑[ other k ])
-  now-or-never refl x = helper <$> excluded-middle
+  now-or-never refl x = helper <$> ¬¬-excluded-middle
     where
     open RawMonad ¬¬-Monad
 

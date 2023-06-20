@@ -85,7 +85,7 @@ call/cc hyp ¬p = hyp (λ p → ⊥-elim (¬p p)) ¬p
 
 independence-of-premise : {R : Q → Set r} →
                           Q → (P → Σ Q R) → DoubleNegation (Σ[ x ∈ Q ] (P → R x))
-independence-of-premise {P = P} q f = ¬¬-map helper excluded-middle
+independence-of-premise {P = P} q f = ¬¬-map helper ¬¬-excluded-middle
   where
   helper : Dec P → _
   helper (yes p) = Prod.map₂ const (f p)
@@ -94,7 +94,7 @@ independence-of-premise {P = P} q f = ¬¬-map helper excluded-middle
 -- The independence of premise rule for binary sums.
 
 independence-of-premise-⊎ : (P → Q ⊎ R) → DoubleNegation ((P → Q) ⊎ (P → R))
-independence-of-premise-⊎ {P = P} f = ¬¬-map helper excluded-middle
+independence-of-premise-⊎ {P = P} f = ¬¬-map helper ¬¬-excluded-middle
   where
   helper : Dec P → _
   helper (yes p) = Sum.map const const (f p)
