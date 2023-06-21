@@ -2155,8 +2155,17 @@ Other minor changes
   pattern z<s {n}         = s≤s (z≤n {n})
   pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
 
+  s≤s⁻¹ : suc m ≤ suc n → m ≤ n
+  s<s⁻¹ : ∀ {m n} → suc m < suc n → m < n
+
+  LessThan : Rel ℕ 0ℓ
+  <-lessThan   : .(m < n) → LessThan m n
+  <-lessThan⁻¹ : .{{LessThan m n}} → m < n
+
   pattern <′-base          = ≤′-refl
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+
+  pattern ≤″-offset k = less-than-or-equal {k} refl
 
   _⊔′_ : ℕ → ℕ → ℕ
   _⊓′_ : ℕ → ℕ → ℕ

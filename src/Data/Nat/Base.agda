@@ -60,6 +60,15 @@ m < n = suc m ≤ n
 pattern z<s {n}         = s≤s (z≤n {n})
 pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
 
+-- Smart destructors of _≤_, _<_
+
+s≤s⁻¹ : ∀ {m n} → suc m ≤ suc n → m ≤ n
+s≤s⁻¹ (s≤s m≤n) = m≤n
+
+s<s⁻¹ : ∀ {m n} → suc m < suc n → m < n
+s<s⁻¹ (s<s m<n) = m<n
+
+
 ------------------------------------------------------------------------
 -- other ordering relations
 
@@ -120,10 +129,28 @@ instance
 >-nonZero⁻¹ (suc n) = z<s
 
 ------------------------------------------------------------------------
--- Arithmetic
+-- Another useful (proof-irrelevant) ordering relation
 
 open import Agda.Builtin.Nat public
   using (_+_; _*_) renaming (_-_ to _∸_)
+
+LessThan : Rel ℕ 0ℓ
+LessThan m n = NonZero (n ∸ m)
+
+-- Constructor
+
+<-lessThan : ∀ {m n} → .(m < n) → LessThan m n
+<-lessThan {zero}  {suc n} _   = _
+<-lessThan {suc m} {suc n} m<n = <-lessThan {m} {n} (s<s⁻¹ m<n)
+
+-- Destructor
+
+<-lessThan⁻¹ : ∀ m n → .{{LessThan m n}} → m < n
+<-lessThan⁻¹ zero    (suc n)        = z<s
+<-lessThan⁻¹ (suc m) (suc n) {{lt}} = s<s (<-lessThan⁻¹ m n {{lt}})
+
+------------------------------------------------------------------------
+-- Arithmetic
 
 open import Agda.Builtin.Nat
   using (div-helper; mod-helper)
@@ -266,6 +293,8 @@ record _≤″_ (m n : ℕ) : Set where
   field
     {k}   : ℕ
     proof : m + k ≡ n
+
+pattern ≤″-offset k = less-than-or-equal {k} refl
 
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
