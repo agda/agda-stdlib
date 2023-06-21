@@ -129,31 +129,10 @@ instance
 >-nonZero⁻¹ (suc n) = z<s
 
 ------------------------------------------------------------------------
--- Another useful (proof-irrelevant) ordering relation
-
-open import Agda.Builtin.Nat public
-  using (_+_; _*_) renaming (_-_ to _∸_)
-
-LessThan : Rel ℕ 0ℓ
-LessThan m n = NonZero (n ∸ m)
-
--- Constructor
-
-<-lessThan : ∀ {m n} → .(m < n) → LessThan m n
-<-lessThan {zero}  {suc n} _   = _
-<-lessThan {suc m} {suc n} m<n = <-lessThan {m} {n} (s<s⁻¹ m<n)
-
--- Destructor
-
-<-lessThan⁻¹ : ∀ m n → .{{LessThan m n}} → m < n
-<-lessThan⁻¹ zero    (suc n)        = z<s
-<-lessThan⁻¹ (suc m) (suc n) {{lt}} = s<s (<-lessThan⁻¹ m n {{lt}})
-
-------------------------------------------------------------------------
 -- Arithmetic
 
-open import Agda.Builtin.Nat
-  using (div-helper; mod-helper)
+open import Agda.Builtin.Nat public
+  using (_+_; _*_; div-helper; mod-helper) renaming (_-_ to _∸_)
 
 pred : ℕ → ℕ
 pred n = n ∸ 1
@@ -260,7 +239,28 @@ zero  ! = 1
 suc n ! = suc n * n !
 
 ------------------------------------------------------------------------
--- Alternative definition of _≤_
+-- Alternative definitions of _≤_/_<_
+
+------------------------------------------------------------------------
+-- Another useful (proof-irrelevant) relation
+
+LessThan : Rel ℕ 0ℓ
+LessThan m n = NonZero (n ∸ m)
+
+-- Constructor
+
+<-lessThan : ∀ {m n} → .(m < n) → LessThan m n
+<-lessThan {zero}  {suc n} _   = _
+<-lessThan {suc m} {suc n} m<n = <-lessThan {m} {n} (s<s⁻¹ m<n)
+
+-- Destructor
+
+<-lessThan⁻¹ : ∀ m n → .{{LessThan m n}} → m < n
+<-lessThan⁻¹ zero    (suc n)        = z<s
+<-lessThan⁻¹ (suc m) (suc n) {{lt}} = s<s (<-lessThan⁻¹ m n {{lt}})
+
+------------------------------------------------------------------------
+-- Another alternative definition of _≤_
 
 -- The following definition of _≤_ is more suitable for well-founded
 -- induction (see Data.Nat.Induction)
