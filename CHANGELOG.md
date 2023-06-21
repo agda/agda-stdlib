@@ -2156,7 +2156,7 @@ Other minor changes
   pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
 
   s≤s⁻¹ : suc m ≤ suc n → m ≤ n
-  s<s⁻¹ : ∀ {m n} → suc m < suc n → m < n
+  s<s⁻¹ : suc m < suc n → m < n
 
   LessThan : Rel ℕ 0ℓ
   <-lessThan   : .(m < n) → LessThan m n
