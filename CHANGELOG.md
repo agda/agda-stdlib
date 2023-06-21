@@ -1595,6 +1595,11 @@ New modules
   ```
   Algebra.Properties.KleeneAlgebra
   ```
+  
+* New module for Naperian functor
+  ```
+  Effect.Functor.Naperian
+  ```
 Other minor changes
 -------------------
 
@@ -2790,7 +2795,11 @@ Other minor changes
   take-[] : ∀ m → take  m [] ≡ []
   drop-[] : ∀ m → drop  m [] ≡ []
   ```
-
+ * Added new definitions to `Effect.Functor.Naperian`
+   ```
+   record RawNaperian (RF : RawFunctor F) : Set (suc (b ⊔ d) ⊔ c)
+   record Naperian (RF : RawFunctor F) : Set (suc (b ⊔ d) ⊔ c)
+   ```
 NonZero/Positive/Negative changes
 ---------------------------------
 
