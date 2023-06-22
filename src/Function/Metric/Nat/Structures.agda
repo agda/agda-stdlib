@@ -12,7 +12,7 @@ open import Data.Nat.Base hiding (suc)
 open import Function using (const)
 open import Level using (Level; suc)
 open import Relation.Binary hiding (Symmetric)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 open import Function.Metric.Nat.Core
 open import Function.Metric.Nat.Definitions

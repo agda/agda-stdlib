@@ -16,7 +16,7 @@ open import Data.Vec.Relation.Unary.Unique.Propositional using (Unique)
 import Data.Vec.Relation.Unary.Unique.Propositional.Properties as Uniqueₚ
 open import Data.Vec.Relation.Unary.AllPairs using (allPairs?)
 open import Relation.Nullary.Decidable using (True; from-yes; ¬?)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Function using (_∘_)
 
 module Data.Digit.Properties where

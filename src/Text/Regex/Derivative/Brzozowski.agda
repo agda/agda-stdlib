@@ -19,7 +19,7 @@ open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (map′; ¬?)
 open import Relation.Binary using (Decidable)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 open DecPoset P? using (preorder) renaming (Carrier to A)
 open import Text.Regex.Base preorder as R hiding (_∣_; _∙_; _⋆)

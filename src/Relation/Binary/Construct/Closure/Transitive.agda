@@ -13,7 +13,7 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Induction.WellFounded
 open import Level
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable

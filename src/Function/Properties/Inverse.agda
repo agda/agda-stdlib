@@ -14,7 +14,8 @@ open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Bundles
 open import Level using (Level)
 open import Relation.Binary using (Setoid; IsEquivalence)
-open import Relation.Binary.PropositionalEquality as P using (setoid)
+import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 open import Function.Consequences
 

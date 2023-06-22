@@ -16,7 +16,7 @@ open import Data.Product.Base using (proj₂)
 open import Data.String.Base
 open import Function.Base using (_∘′_)
 
-open import Relation.Binary.PropositionalEquality; open ≡-Reasoning
+open import Relation.Binary.PropositionalEquality.Core; open ≡-Reasoning
 open import Relation.Binary.PropositionalEquality.TrustMe using (trustMe)
 
 ------------------------------------------------------------------------

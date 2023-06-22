@@ -26,7 +26,7 @@ open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no; _because_)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; _≢_)
 
 private
   variable

@@ -11,7 +11,7 @@ module Data.List.Relation.Ternary.Interleaving.Propositional.Properties
 
 import Data.List.Relation.Ternary.Interleaving.Setoid.Properties
   as SetoidProperties
-open import Relation.Binary.PropositionalEquality using (setoid)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 ------------------------------------------------------------------------
 -- Re-exporting existing properties

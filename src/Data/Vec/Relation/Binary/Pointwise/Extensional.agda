@@ -19,7 +19,7 @@ open import Function.Bundles using (module Equivalence; _⇔_; mk⇔)
 open import Function.Properties.Equivalence using (⇔-setoid)
 open import Level using (Level; _⊔_; 0ℓ)
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
 open import Relation.Nullary

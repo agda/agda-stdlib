@@ -16,7 +16,7 @@ open import Data.Product as Prod using (∃; ∃₂; _×_; uncurry; _,_; -,_; pr
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- Definition

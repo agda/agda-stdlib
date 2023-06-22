@@ -12,7 +12,7 @@ open import Relation.Binary.HeterogeneousEquality.Quotients
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.HeterogeneousEquality hiding (isEquivalence)
-import Relation.Binary.PropositionalEquality as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product

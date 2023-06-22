@@ -15,7 +15,7 @@ open import Data.Fin.Base using (Fin; zero; suc; lift)
 open import Data.Vec.Base
 import Data.Vec.Properties as VecProp
 open import Function as Fun using (_∘_; _$_)
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (Star; ε; _◅_; _▻_)
