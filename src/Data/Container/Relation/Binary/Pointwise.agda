@@ -8,7 +8,7 @@
 
 module Data.Container.Relation.Binary.Pointwise where
 
-open import Data.Product using (_,_; Σ-syntax; -,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; Σ-syntax; -,_; proj₁; proj₂)
 open import Function
 open import Level using (_⊔_)
 open import Relation.Binary using (REL; _⇒_)

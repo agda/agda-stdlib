@@ -11,7 +11,7 @@ module Data.Sign.Properties where
 open import Algebra.Bundles
 open import Data.Empty
 open import Data.Sign.Base
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function hiding (Inverse)
 open import Level using (0ℓ)
 open import Relation.Binary

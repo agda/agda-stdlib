@@ -18,7 +18,7 @@ open import Data.Nat.GCD.Lemmas
 open import Data.Nat.Primality
 open import Data.Nat.Properties
 open import Data.Nat.DivMod
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Function
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as P

@@ -8,7 +8,7 @@
 
 module Data.Sum.Relation.Binary.Pointwise where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum
 open import Data.Sum.Properties
 open import Level using (_⊔_)

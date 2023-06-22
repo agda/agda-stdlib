@@ -15,7 +15,7 @@ open import Data.Nat.Base
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_; _∷⁺_)
 open import Data.Vec.Base using (Vec; []; _∷_)
-open import Data.Product as P hiding (map)
+open import Data.Product.Base as P hiding (map)
 open import Function.Base
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)

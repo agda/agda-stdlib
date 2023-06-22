@@ -16,7 +16,7 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties using (All¬⇒¬Any)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Unique.Setoid
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
 open import Data.Fin.Base using (Fin)

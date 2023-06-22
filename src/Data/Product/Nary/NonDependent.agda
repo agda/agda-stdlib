@@ -16,7 +16,7 @@ module Data.Product.Nary.NonDependent where
 
 open import Level as L using (Level; _⊔_; Lift; 0ℓ)
 open import Agda.Builtin.Unit
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 import Data.Product.Properties as Prodₚ
 open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)

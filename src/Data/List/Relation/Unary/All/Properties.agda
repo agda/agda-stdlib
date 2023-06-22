@@ -31,7 +31,7 @@ open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
-open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)

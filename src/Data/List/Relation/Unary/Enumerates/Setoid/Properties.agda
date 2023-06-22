@@ -14,7 +14,7 @@ open import Data.List.Relation.Unary.Enumerates.Setoid
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Sum.Relation.Binary.Pointwise
   using (_⊎ₛ_; inj₁; inj₂)
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (_×ₛ_)
 open import Function

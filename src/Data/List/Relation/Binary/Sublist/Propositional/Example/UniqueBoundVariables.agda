@@ -36,7 +36,7 @@ open import Data.List.Relation.Binary.Sublist.Propositional.Properties using
   ; equalize-separators
   )
 
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 
 infixr 8 _⇒_
 infix 1 _⊢_~_▷_

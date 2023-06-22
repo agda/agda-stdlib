@@ -12,7 +12,7 @@ open import Algebra.Core using (Op₂)
 open import Function.Base
 open import Function.Inverse using (Inverse)
 open import Data.Bool.Base using (true; false)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.List.Base as List hiding (map; head; tail; uncons)
 open import Data.List.Properties using (≡-dec; length-++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
