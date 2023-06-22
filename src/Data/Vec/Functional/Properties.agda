@@ -12,7 +12,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Nat as ℕ
 import Data.Nat.Properties as ℕₚ
-open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.List.Base as L using (List)
 import Data.List.Properties as Lₚ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
