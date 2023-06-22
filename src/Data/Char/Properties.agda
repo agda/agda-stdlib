@@ -12,7 +12,7 @@ open import Data.Bool.Base using (Bool)
 open import Data.Char.Base
 import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
 open import Function.Base
 open import Relation.Nullary using (¬_; yes; no)

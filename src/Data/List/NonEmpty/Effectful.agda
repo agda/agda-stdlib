@@ -11,7 +11,7 @@ module Data.List.NonEmpty.Effectful where
 open import Agda.Builtin.List
 import Data.List.Effectful as List
 open import Data.List.NonEmpty.Base
-open import Data.Product using (uncurry)
+open import Data.Product.Base using (uncurry)
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad

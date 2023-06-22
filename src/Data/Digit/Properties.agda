@@ -11,7 +11,7 @@ import Data.Char.Properties as Charₚ
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Fin.Properties using (inject≤-injective)
-open import Data.Product using (_,_; proj₁)
+open import Data.Product.Base using (_,_; proj₁)
 open import Data.Vec.Relation.Unary.Unique.Propositional using (Unique)
 import Data.Vec.Relation.Unary.Unique.Propositional.Properties as Uniqueₚ
 open import Data.Vec.Relation.Unary.AllPairs using (allPairs?)

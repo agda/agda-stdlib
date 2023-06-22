@@ -16,7 +16,7 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
 import Data.Nat.GeneralisedArithmetic as ℕ
-open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_×_; _,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function.Base using (const; flip; id; _∘′_; _$′_; _⟨_⟩_; _∘₂′_)
 open import Level using (Level)

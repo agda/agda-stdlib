@@ -12,7 +12,7 @@ open import Level using (Level)
 open import Size
 open import Data.Unit.Base
 open import Data.Nat.Base
-open import Data.Product using (_×_ ; _,_)
+open import Data.Product.Base using (_×_ ; _,_)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.List.Base using (List; []; _∷_)

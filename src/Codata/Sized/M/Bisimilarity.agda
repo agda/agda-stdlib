@@ -14,7 +14,7 @@ open import Codata.Sized.Thunk
 open import Codata.Sized.M
 open import Data.Container.Core
 open import Data.Container.Relation.Binary.Pointwise using (Pointwise; _,_)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_)
 open import Relation.Binary
 import Relation.Binary.PropositionalEquality as P

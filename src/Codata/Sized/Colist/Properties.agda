@@ -27,7 +27,7 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybeₚ
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
 open import Data.Nat.Base as ℕ using (zero; suc; z≤n; s≤s)
-open import Data.Product as Prod using (_×_; _,_; uncurry)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
