@@ -13,8 +13,8 @@ module Relation.Unary.Enumerable where
   open import Level using (Level)
   open import Function.Bundles using (_↔_)
 
-  record IsEnumerable {x : Level} (X : Set x) : Set x where 
+  record IsEnumerable {a : Level} (A : Set a) : Set a where 
       field
         size : ℕ
-        enum : Fin size ↔ X
+        enum : Fin size ↔ A
 

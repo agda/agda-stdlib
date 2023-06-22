@@ -2766,7 +2766,7 @@ Other minor changes
 
 * Added new definition to `Relation.Unary.Enumerable` :
   ```
-  record IsEnumerable (X : Set x) : Set x 
+  record IsEnumerable (A : Set a) : Set a 
   ```
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
