@@ -91,6 +91,8 @@ drop-*≡* (*≡* eq) = eq
      ↥ z ℤ.* ↧ x ℤ.* ↧ y ∎))
   where open ≡-Reasoning
 
+infix 4 _≃?_
+
 _≃?_ : Decidable _≃_
 p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
 

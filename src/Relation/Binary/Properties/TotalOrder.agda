@@ -15,7 +15,7 @@ open TotalOrder T
 
 open import Data.Product using (proj₁)
 open import Data.Sum.Base using (inj₁; inj₂)
-import Relation.Binary.Construct.Converse as Converse
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Poset poset as PosetProperties
 open import Relation.Binary.Consequences
@@ -51,7 +51,7 @@ open PosetProperties public
   )
 
 ≥-isTotalOrder : IsTotalOrder _≈_ _≥_
-≥-isTotalOrder = Converse.isTotalOrder isTotalOrder
+≥-isTotalOrder = EqAndOrd.isTotalOrder isTotalOrder
 
 ≥-totalOrder : TotalOrder _ _ _
 ≥-totalOrder = record

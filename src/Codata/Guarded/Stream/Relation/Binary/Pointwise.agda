@@ -25,6 +25,8 @@ private
 ------------------------------------------------------------------------
 -- Bisimilarity
 
+infixr 5 _∷_
+
 record Pointwise (_∼_ : REL A B ℓ) (as : Stream A) (bs : Stream B) : Set ℓ where
   coinductive
   constructor _∷_
@@ -191,4 +193,6 @@ module pw-Reasoning (S : Setoid a ℓ) where
 module ≈-Reasoning {a} {A : Set a} where
 
   open pw-Reasoning (P.setoid A) public
+
+  infix 4 _≈∞_
   _≈∞_ = `Pointwise∞

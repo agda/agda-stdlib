@@ -33,6 +33,8 @@ data Bisim {V : Set v} {W : Set w} {A : Set a} {B : Set b}
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R S) i xs ys →
         Bisim R S i (x ∷ xs) (y ∷ ys)
 
+infixr 5 _∷_
+
 module _ {R : Rel W r} {S : Rel A s}
          (refl^R : Reflexive R) (refl^S : Reflexive S) where
 

@@ -39,6 +39,8 @@ mapWith∈ : ∀ {b} {B : Set b} {n}
 mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 
+infixr 5 _∷=_
+
 _∷=_ : ∀ {n} {xs : Vec A n} {x} → x ∈ xs → A → Vec A n
 _∷=_ {xs = xs} x∈xs v = xs Vec.[ index x∈xs ]≔ v
 

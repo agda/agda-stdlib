@@ -24,6 +24,8 @@ open Setoid S renaming (Carrier to A)
 -- Definition
 ------------------------------------------------------------------------
 
+infix 4 _≋_
+
 _≋_ : ∀ {n} → Vector A n → Vector A n → Set ℓ
 _≋_ = Pointwise _≈_
 

@@ -45,6 +45,8 @@ module _ {a b r s} {A : Set a} {B : Set b} {R : REL A B r} {S : REL A B s} where
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
+  infixr 5 _++ᵖ_
+
   _++ᵖ_ : ∀ {as bs} → Prefix R as bs → ∀ suf → Prefix R as (bs List.++ suf)
   []       ++ᵖ suf = []
   (r ∷ rs) ++ᵖ suf = r ∷ (rs ++ᵖ suf)
