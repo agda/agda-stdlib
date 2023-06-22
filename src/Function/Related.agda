@@ -19,7 +19,7 @@ open import Function.LeftInverse as LeftInv using (LeftInverse)
 open import Function.Surjection  as Surj    using (Surjection)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
+open import Data.Product.Base using (_,_; proj₁; proj₂; <_,_>)
 
 import Function.Related.Propositional as R
 import Function.Bundles as B

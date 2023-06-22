@@ -12,7 +12,7 @@ module Relation.Binary.Morphism.Structures
   {a b} {A : Set a} {B : Set b}
   where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Definitions
 open import Level
 open import Relation.Binary.Morphism.Definitions A B

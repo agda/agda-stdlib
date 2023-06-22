@@ -8,7 +8,7 @@
 
 module Function.Construct.Identity where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 open import Function.Bundles
 import Function.Definitions as Definitions
