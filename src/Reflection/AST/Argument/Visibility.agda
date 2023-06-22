@@ -21,6 +21,8 @@ open Visibility public
 ------------------------------------------------------------------------
 -- Decidable equality
 
+infix 4 _≟_
+
 _≟_ : DecidableEquality Visibility
 visible   ≟ visible   = yes refl
 hidden    ≟ hidden    = yes refl

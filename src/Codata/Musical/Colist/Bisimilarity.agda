@@ -27,6 +27,8 @@ data _≈_ {A : Set a} : Rel (Colist A) a where
   []  :                                       []     ≈ []
   _∷_ : ∀ x {xs ys} (xs≈ : ∞ (♭ xs ≈ ♭ ys)) → x ∷ xs ≈ x ∷ ys
 
+infixr 5 _∷_
+
 -- The equality relation forms a setoid.
 
 setoid : Set a → Setoid _ _

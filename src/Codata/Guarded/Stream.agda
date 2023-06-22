@@ -28,6 +28,8 @@ private
 ------------------------------------------------------------------------
 -- Type
 
+infixr 5 _∷_
+
 record Stream (A : Set a) : Set a where
   coinductive
   constructor _∷_
@@ -68,6 +70,8 @@ nats = tabulate id
 lookup : Stream A → ℕ → A
 lookup xs zero    = head xs
 lookup xs (suc n) = lookup (tail xs) n
+
+infix 4 _[_]
 
 _[_] : Stream A → ℕ → A
 _[_] = lookup

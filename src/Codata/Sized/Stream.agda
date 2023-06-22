@@ -34,6 +34,8 @@ private
 data Stream (A : Set a) (i : Size) : Set a where
   _∷_ : A → Thunk (Stream A) i → Stream A i
 
+infixr 5 _∷_
+
 ------------------------------------------------------------------------
 -- Creating streams
 

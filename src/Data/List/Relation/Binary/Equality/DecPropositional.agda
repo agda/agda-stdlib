@@ -32,5 +32,7 @@ open DecSetoidEq (decSetoid _≟_) public
 ------------------------------------------------------------------------
 -- Additional proofs
 
+infix 4 _≡?_
+
 _≡?_ : Decidable (_≡_ {A = List A})
 _≡?_ = ≡-dec _≟_

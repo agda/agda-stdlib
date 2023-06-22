@@ -59,6 +59,8 @@ record′-injective = < record′-injective₁ , record′-injective₂ >
 constructor′-injective : ∀ {c c′} → constructor′ c ≡ constructor′ c′ → c ≡ c′
 constructor′-injective refl = refl
 
+infix 4 _≟_
+
 _≟_ : DecidableEquality Definition
 function cs       ≟ function cs′        =
   map′ (cong function) function-injective (cs Term.≟-Clauses cs′)
