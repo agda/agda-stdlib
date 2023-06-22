@@ -2159,8 +2159,10 @@ Other minor changes
   s<s⁻¹ : suc m < suc n → m < n
 
   LessThan : Rel ℕ 0ℓ
-  <-lessThan   : .(m < n) → LessThan m n
-  <-lessThan⁻¹ : .{{LessThan m n}} → m < n
+  <ᵇ-lessThan   : .(T (m <ᵇ n)) → LessThan m n
+  <-lessThan    : .(m < n) → LessThan m n
+  <ᵇ-lessThan⁻¹ : .{{LessThan m n}} → T (m <ᵇ n)
+  <-lessThan⁻¹  : .{{LessThan m n}} → m < n
 
   pattern <′-base          = ≤′-refl
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
