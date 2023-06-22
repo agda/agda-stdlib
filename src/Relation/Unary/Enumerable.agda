@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Definition of enumerability 
+-- Enumerable definition 
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
