@@ -247,13 +247,21 @@ suc n ! = suc n * n !
 LessThan : Rel ℕ 0ℓ
 LessThan m n = NonZero (n ∸ m)
 
--- Constructor
+-- Constructors
+
+<ᵇ-lessThan : ∀ {m n} → .(T (m <ᵇ n)) → LessThan m n
+<ᵇ-lessThan {zero}  {suc n} _ = _
+<ᵇ-lessThan {suc m} {suc n} m<n = <ᵇ-lessThan {m} {n} m<n
 
 <-lessThan : ∀ {m n} → .(m < n) → LessThan m n
 <-lessThan {zero}  {suc n} _   = _
 <-lessThan {suc m} {suc n} m<n = <-lessThan {m} {n} (s<s⁻¹ m<n)
 
--- Destructor
+-- Destructors
+
+<ᵇ-lessThan⁻¹ : ∀ m n → .{{LessThan m n}} → T (m <ᵇ n)
+<ᵇ-lessThan⁻¹ zero    (suc n) = _
+<ᵇ-lessThan⁻¹ (suc m) (suc n) = <ᵇ-lessThan⁻¹ m n
 
 <-lessThan⁻¹ : ∀ m n → .{{LessThan m n}} → m < n
 <-lessThan⁻¹ zero    (suc n)        = z<s
