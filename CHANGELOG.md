@@ -1681,20 +1681,17 @@ New modules
   ```
   Algebra.Properties.KleeneAlgebra
   ```
-<<<<<<< HEAD
-  
+   
 * New module for Naperian functor
   ```
   Effect.Functor.Naperian
   ```
-=======
-
+  
 * Relations on indexed sets
   ```
   Function.Indexed.Bundles
   ```
 
->>>>>>> 3041cea05bb3d18169407fb8632a5f9274b6a8c7
 Other minor changes
 -------------------
 
@@ -2887,7 +2884,6 @@ Other minor changes
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
-<<<<<<< HEAD
   
  * Added new lemmas in `Data.List.Propreties`:
   ```
@@ -2899,9 +2895,7 @@ Other minor changes
    record RawNaperian (RF : RawFunctor F) : Set (suc (b ⊔ d) ⊔ c)
    record Naperian (RF : RawFunctor F) : Set (suc (b ⊔ d) ⊔ c)
    ```
-=======
-
->>>>>>> 3041cea05bb3d18169407fb8632a5f9274b6a8c7
+   
 NonZero/Positive/Negative changes
 ---------------------------------
 
