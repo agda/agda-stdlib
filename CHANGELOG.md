@@ -1595,6 +1595,12 @@ New modules
   ```
   Algebra.Properties.KleeneAlgebra
   ```
+
+* Definition of Enumerability 
+  ```
+  Relation.Unary.Enumerable
+  ```
+
 Other minor changes
 -------------------
 
@@ -2663,6 +2669,11 @@ Other minor changes
 * Generalised proofs in `Relation.Unary.Properties`:
   ```
   ⊆-trans : Trans _⊆_ _⊆_ _⊆_
+  ```
+
+* Added new definition to `Relation.Unary.Enumerable` :
+  ```
+  record IsEnumerable (X : Set x) : Set x 
   ```
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
