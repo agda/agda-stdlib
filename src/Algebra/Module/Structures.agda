@@ -16,7 +16,7 @@ open import Algebra.Module.Core
 import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
 open import Algebra.Structures
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (Level; _⊔_)
 
 private

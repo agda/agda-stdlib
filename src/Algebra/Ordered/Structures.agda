@@ -21,7 +21,7 @@ module Algebra.Ordered.Structures
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product.Base using (proj₁; proj₂)
 open import Function using (flip)
 open import Level using (_⊔_)
 open import Relation.Binary.Definitions using (Transitive; Monotonic₁; Monotonic₂)

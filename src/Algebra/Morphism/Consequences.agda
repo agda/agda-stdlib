@@ -10,7 +10,7 @@ module Algebra.Morphism.Consequences where
 
 open import Algebra using (Magma)
 open import Algebra.Morphism.Definitions
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_)
 open import Function.Definitions
 import Relation.Binary.Reasoning.Setoid as EqR

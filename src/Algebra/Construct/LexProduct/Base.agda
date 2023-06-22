@@ -8,7 +8,7 @@
 
 open import Algebra.Core using (Op₂)
 open import Data.Bool.Base using (true; false)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable using (does; yes; no)

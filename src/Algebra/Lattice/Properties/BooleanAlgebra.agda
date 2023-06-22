@@ -25,7 +25,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary
 open import Function.Base
 open import Function.Bundles using (_⇔_; module Equivalence)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
 ------------------------------------------------------------------------
 -- Export properties from distributive lattices

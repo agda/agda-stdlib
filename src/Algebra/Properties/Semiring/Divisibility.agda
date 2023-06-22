@@ -8,7 +8,7 @@
 
 open import Algebra using (Semiring)
 import Algebra.Properties.Monoid.Divisibility as MonoidDivisibility
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 
 module Algebra.Properties.Semiring.Divisibility
