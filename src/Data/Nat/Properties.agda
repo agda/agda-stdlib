@@ -21,7 +21,6 @@ import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
-open import Data.Empty using (⊥)
 open import Data.Nat.Base
 open import Data.Product using (∄; ∃; _×_; _,_)
 open import Data.Sum.Base as Sum
@@ -31,12 +30,12 @@ open import Function.Bundles using (_↣_)
 open import Function.Metric.Nat
 open import Level using (0ℓ)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary
+open import Relation.Binary as B
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
-open import Relation.Nullary.Negation using (contradiction; contradiction₂)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open import Algebra.Definitions {A = ℕ} _≡_
@@ -107,6 +106,15 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 1+n≢n {suc n} = 1+n≢n ∘ suc-injective
 
 ------------------------------------------------------------------------
+-- Properties of LessThan
+------------------------------------------------------------------------
+
+lessThan? : B.Decidable LessThan
+lessThan? m       zero    = no (¬[n]LessThan[0] {m})
+lessThan? zero    (suc n) = yes _
+lessThan? (suc m) (suc n) = lessThan? m n
+
+------------------------------------------------------------------------
 -- Properties of _<ᵇ_
 ------------------------------------------------------------------------
 
@@ -161,9 +169,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≤-total : Total _≤_
 ≤-total zero    _       = inj₁ z≤n
 ≤-total _       zero    = inj₂ z≤n
-≤-total (suc m) (suc n) with ≤-total m n
-... | inj₁ m≤n = inj₁ (s≤s m≤n)
-... | inj₂ n≤m = inj₂ (s≤s n≤m)
+≤-total (suc m) (suc n) = [ (inj₁ ∘ s≤s) , (inj₂ ∘ s≤s) ]′ (≤-total m n)
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant z≤n        z≤n        = refl
@@ -251,9 +257,6 @@ _≥?_ = flip _≤?_
 
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
-
-≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
-≤-pred (s≤s m≤n) = m≤n
 
 m≤n⇒m≤1+n : ∀ {m n} → m ≤ n → m ≤ 1 + n
 m≤n⇒m≤1+n z≤n       = z≤n
@@ -414,9 +417,6 @@ _>?_ = flip _<?_
 s<s-injective : ∀ {m n} {p q : m < n} → s<s p ≡ s<s q → p ≡ q
 s<s-injective refl = refl
 
-<-pred : ∀ {m n} → suc m < suc n → m < n
-<-pred (s<s m<n) = m<n
-
 m<n⇒m<1+n : ∀ {m n} → m < n → m < 1 + n
 m<n⇒m<1+n z<s               = z<s
 m<n⇒m<1+n (s<s m<n@(s≤s _)) = s<s (m<n⇒m<1+n m<n)
@@ -453,11 +453,10 @@ m<n⇒m≤1+n : ∀ {m n} → m < n → m ≤ suc n
 m<n⇒m≤1+n = m≤n⇒m≤1+n ∘ <⇒≤
 
 m<1+n⇒m<n∨m≡n :  ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
-m<1+n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
-m<1+n⇒m<n∨m≡n {0}     {suc n} _          =  inj₁ 0<1+n
-m<1+n⇒m<n∨m≡n {suc m} {suc n} (s<s m<1+n)  with m<1+n⇒m<n∨m≡n m<1+n
-... | inj₂ m≡n = inj₂ (cong suc m≡n)
-... | inj₁ m<n = inj₁ (s<s m<n)
+m<1+n⇒m<n∨m≡n {0}     {0}     _           = inj₂ refl
+m<1+n⇒m<n∨m≡n {0}     {suc n} _           = inj₁ 0<1+n
+m<1+n⇒m<n∨m≡n {suc m} {suc n} (s<s m<1+n)
+  = [ inj₁ ∘ s<s , inj₂ ∘ (cong suc) ]′ (m<1+n⇒m<n∨m≡n m<1+n)
 
 m≤n⇒m<n∨m≡n :  ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
 m≤n⇒m<n∨m≡n m≤n = m<1+n⇒m<n∨m≡n (s≤s m≤n)
@@ -479,7 +478,7 @@ m<1+n⇒m≤n (s≤s m≤n) = m≤n
 ∀[m<n⇒m≢o]⇒n≤o (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒n≤o n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
-  rec x<m refl = m<n⇒m≢o (s≤s x<m) refl
+  rec x<m refl = m<n⇒m≢o (s<s x<m) refl
 
 ------------------------------------------------------------------------
 -- A module for reasoning about the _≤_ and _<_ relations
@@ -2055,14 +2054,13 @@ m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 <ᵇ⇒<″ {m} {n} leq = less-than-or-equal (m+[n∸m]≡n (<ᵇ⇒< m n leq))
 
 <″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
-<″⇒<ᵇ {m} (less-than-or-equal refl) = <⇒<ᵇ (m≤m+n (suc m) _)
+<″⇒<ᵇ {m} (<″-offset k) = <⇒<ᵇ (m≤m+n (suc m) k)
 
 -- equivalence to _≤_
 
 ≤″⇒≤ : _≤″_ ⇒ _≤_
-≤″⇒≤ {zero}  (less-than-or-equal refl) = z≤n
-≤″⇒≤ {suc m} (less-than-or-equal refl) =
-  s≤s (≤″⇒≤ (less-than-or-equal refl))
+≤″⇒≤ {zero}  (≤″-offset k) = z≤n {k}
+≤″⇒≤ {suc m} (≤″-offset k) = s≤s (≤″⇒≤ (≤″-offset k))
 
 ≤⇒≤″ : _≤_ ⇒ _≤″_
 ≤⇒≤″ = less-than-or-equal ∘ m+[n∸m]≡n
@@ -2079,7 +2077,7 @@ _<″?_ : Decidable _<″_
 m <″? n = map′ <ᵇ⇒<″ <″⇒<ᵇ (T? (m <ᵇ n))
 
 _≤″?_ : Decidable _≤″_
-zero  ≤″? n = yes (less-than-or-equal refl)
+zero  ≤″? n = yes (≤″-offset n)
 suc m ≤″? n = m <″? n
 
 _≥″?_ : Decidable _≥″_
@@ -2091,8 +2089,8 @@ _>″?_ = flip _<″?_
 ≤″-irrelevant : Irrelevant _≤″_
 ≤″-irrelevant {m} (less-than-or-equal eq₁)
                   (less-than-or-equal eq₂)
-  with +-cancelˡ-≡ m _ _ (trans eq₁ (sym eq₂))
-... | refl = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
+  with refl ← +-cancelˡ-≡ m _ _ (trans eq₁ (sym eq₂))
+  = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
 
 <″-irrelevant : Irrelevant _<″_
 <″-irrelevant = ≤″-irrelevant
@@ -2288,6 +2286,16 @@ n≤m⊔n = m≤n⊔m
 #-}
 
 -- Version 2.0
+
+≤-pred = s≤s⁻¹
+{-# WARNING_ON_USAGE ≤-pred
+"Warning: ≤-pred was deprecated in v2.0. Please use Data.Nat.Base.s≤s⁻¹ instead. "
+#-}
+
+<-pred = s<s⁻¹
+{-# WARNING_ON_USAGE ≤-pred
+"Warning: <-pred was deprecated in v2.0. Please use Data.Nat.Base.s<s⁻¹ instead. "
+#-}
 
 suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
 suc[pred[n]]≡n {zero}  0≢0 = contradiction refl 0≢0
