@@ -271,16 +271,16 @@ fromℕ<-injective (suc m) (suc n) (s<s m<o) (s<s n<o) r
 ------------------------------------------------------------------------
 
 fromℕ<≡fromℕ<″ : ∀ (m<n : m ℕ.< n) (m<″n : m ℕ.<″ n) →
-                 fromℕ< m<n ≡ fromℕ<″ m<″n
+                 fromℕ< m<n ≡ fromℕ<″ m m<″n
 fromℕ<≡fromℕ<″ z<s               (ℕ.<″-offset _) = refl
 fromℕ<≡fromℕ<″ (s<s m<n@(s≤s _)) (ℕ.<″-offset k) =
   cong suc (fromℕ<≡fromℕ<″ m<n (ℕ.<″-offset k))
 
-toℕ-fromℕ<″ : ∀ (m<″n : m ℕ.<″ n) → toℕ (fromℕ<″ m<″n) ≡ m
+toℕ-fromℕ<″ : ∀ (m<″n : m ℕ.<″ n) → toℕ (fromℕ<″ m m<″n) ≡ m
 toℕ-fromℕ<″ {m} {n} m<″n = begin
-  toℕ (fromℕ<″ m<″n) ≡˘⟨ cong toℕ (fromℕ<≡fromℕ<″ m<n m<″n) ⟩
-  toℕ (fromℕ<  m<n)  ≡⟨ toℕ-fromℕ< m<n ⟩
-  m                  ∎
+  toℕ (fromℕ<″ m m<″n) ≡˘⟨ cong toℕ (fromℕ<≡fromℕ<″ m<n m<″n) ⟩
+  toℕ (fromℕ<  m<n)    ≡⟨ toℕ-fromℕ< m<n ⟩
+  m                    ∎
   where open ≡-Reasoning ; m<n = ℕₚ.≤″⇒≤ m<″n
 
 ------------------------------------------------------------------------

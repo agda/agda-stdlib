@@ -71,22 +71,21 @@ fromℕLessThan : ∀ m {n} → .{{ℕ.LessThan m n}} → Fin n
 fromℕLessThan zero    {suc _} = zero
 fromℕLessThan (suc m) {suc _} = suc (fromℕLessThan m)
 
--- fromℕ< {m} _ = "m".
-
-fromℕ< : ∀ {m n} → .(m ℕ.< n) → Fin n
-fromℕ< m<n = fromℕLessThan _ where instance _ = ℕ.<-lessThan m<n
-
 -- fromℕ<′ m ⦃_⦄ = "m".
 
 fromℕ<′ : ∀ m {n} → .{{m ℕ.< n}} → Fin n
-fromℕ<′ zero    {suc _} = zero
-fromℕ<′ (suc m) {suc _} ⦃ m<n ⦄ = suc (fromℕ<′ m ⦃ ℕ.s<s⁻¹ m<n ⦄)
+fromℕ<′ m {n} ⦃ m<n ⦄ = fromℕLessThan m where instance _ = ℕ.<-lessThan m<n
+
+-- fromℕ< {m} _ = "m".
+
+fromℕ< : ∀ {m n} → .(m ℕ.< n) → Fin n
+fromℕ< {m} m<n = fromℕ<′ m ⦃ m<n ⦄
 
 -- fromℕ<″ m _ = "m".
 
-fromℕ<″ : ∀ {m n} → .(m ℕ.<″ n) → Fin n
-fromℕ<″ {zero}  {suc _} _    = zero
-fromℕ<″ {suc m} {suc _} m<″n = suc (fromℕ<″ (ℕ.s<″s⁻¹ m<″n))
+fromℕ<″ : ∀ m {n} → .(m ℕ.<″ n) → Fin n
+fromℕ<″ zero    {suc _} _    = zero
+fromℕ<″ (suc m) {suc _} m<″n = suc (fromℕ<″ m (ℕ.s<″s⁻¹ m<″n))
 
 -- canonical liftings of i:Fin m to larger index
 
