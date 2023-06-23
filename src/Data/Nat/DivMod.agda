@@ -20,7 +20,6 @@ open import Data.Nat.Properties
 open import Function using (_$_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable using (False; toWitnessFalse)
 
 import Algebra.Properties.CommutativeSemigroup *-commutativeSemigroup as *-CS
 
@@ -461,12 +460,12 @@ _div_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
 _div_ = _/_
 
 _mod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → Fin divisor
-m mod (suc n) = fromℕ< (m%n<n m (suc n))
+m mod n = fromℕ< (m%n<n m n)
 
 _divMod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} →
            DivMod dividend divisor
-m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
-  m                                   ≡⟨  m≡m%n+[m/n]*n m n ⟩
-  m % n                    + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< (m%n<n m n)) ⟩
-  toℕ (fromℕ< (m%n<n m n)) + [m/n]*n  ∎)
-  where [m/n]*n = m / n * n
+m divMod n = result (m / n) (m mod n) $ begin-equality
+  m                             ≡⟨  m≡m%n+[m/n]*n m n ⟩
+  m % n              + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< lemma) ⟩
+  toℕ (fromℕ< lemma) + [m/n]*n  ∎
+  where [m/n]*n = m / n * n ; lemma = m%n<n m n
