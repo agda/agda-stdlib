@@ -278,7 +278,7 @@ fromℕ<≡fromℕ<″ (s<s m<n@(s≤s _)) (ℕ.<″-offset k) =
 
 toℕ-fromℕ<″ : ∀ (m<″n : m ℕ.<″ n) → toℕ (fromℕ<″ m<″n) ≡ m
 toℕ-fromℕ<″ {m} {n} m<″n = begin
-  toℕ (fromℕ<″ m<″n) ≡⟨ cong toℕ (sym (fromℕ<≡fromℕ<″ m<n m<″n)) ⟩
+  toℕ (fromℕ<″ m<″n) ≡˘⟨ cong toℕ (fromℕ<≡fromℕ<″ m<n m<″n) ⟩
   toℕ (fromℕ<  m<n)  ≡⟨ toℕ-fromℕ< m<n ⟩
   m                  ∎
   where open ≡-Reasoning ; m<n = ℕₚ.≤″⇒≤ m<″n
@@ -1110,7 +1110,7 @@ opposite-suc {n} i = begin
   toℕ (opposite (suc i))     ≡⟨ opposite-prop (suc i) ⟩
   suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
   n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡⟨ sym (opposite-prop i) ⟩
+  n ∸ suc (toℕ i)            ≡˘⟨ opposite-prop i ⟩
   toℕ (opposite i)           ∎
   where open ≡-Reasoning
 
