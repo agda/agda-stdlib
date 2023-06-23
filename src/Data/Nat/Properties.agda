@@ -155,6 +155,8 @@ lessThan? (suc m) (suc n) = lessThan? m n
 ≤-reflexive {zero}  refl = z≤n
 ≤-reflexive {suc m} refl = s≤s (≤-reflexive refl)
 
+≤-pred = s≤s⁻¹
+
 ≤-refl : Reflexive _≤_
 ≤-refl = ≤-reflexive refl
 
@@ -416,6 +418,8 @@ _>?_ = flip _<?_
 
 s<s-injective : ∀ {m n} {p q : m < n} → s<s p ≡ s<s q → p ≡ q
 s<s-injective refl = refl
+
+<-pred = s<s⁻¹
 
 m<n⇒m<1+n : ∀ {m n} → m < n → m < 1 + n
 m<n⇒m<1+n z<s               = z<s
@@ -2286,16 +2290,6 @@ n≤m⊔n = m≤n⊔m
 #-}
 
 -- Version 2.0
-
-≤-pred = s≤s⁻¹
-{-# WARNING_ON_USAGE ≤-pred
-"Warning: ≤-pred was deprecated in v2.0. Please use Data.Nat.Base.s≤s⁻¹ instead. "
-#-}
-
-<-pred = s<s⁻¹
-{-# WARNING_ON_USAGE ≤-pred
-"Warning: <-pred was deprecated in v2.0. Please use Data.Nat.Base.s<s⁻¹ instead. "
-#-}
 
 suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
 suc[pred[n]]≡n {zero}  0≢0 = contradiction refl 0≢0
