@@ -132,7 +132,7 @@ instance
 -- Arithmetic
 
 open import Agda.Builtin.Nat public
-  using (_+_; _*_; div-helper; mod-helper) renaming (_-_ to _∸_)
+  using (_+_; _*_) renaming (_-_ to _∸_)
 
 open import Agda.Builtin.Nat
   using (div-helper; mod-helper)
