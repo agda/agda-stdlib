@@ -134,6 +134,9 @@ instance
 open import Agda.Builtin.Nat public
   using (_+_; _*_; div-helper; mod-helper) renaming (_-_ to _∸_)
 
+open import Agda.Builtin.Nat
+  using (div-helper; mod-helper)
+
 pred : ℕ → ℕ
 pred n = n ∸ 1
 
@@ -242,16 +245,18 @@ suc n ! = suc n * n !
 -- Alternative definitions of _≤_/_<_
 
 ------------------------------------------------------------------------
--- Another useful (proof-irrelevant) relation
+-- Another useful (proof-irrelevant) definition of _<_
 
 LessThan : Rel ℕ 0ℓ
-LessThan m n = NonZero (n ∸ m)
+LessThan m n = T (m <ᵇ n)
+
+-- instance
+
+instance
+  lessThan : ∀ {n} → LessThan 0 (suc n)
+  lessThan = _
 
 -- Constructors
-
-<ᵇ-lessThan : ∀ {m n} → .(T (m <ᵇ n)) → LessThan m n
-<ᵇ-lessThan {zero}  {suc n} _ = _
-<ᵇ-lessThan {suc m} {suc n} m<n = <ᵇ-lessThan {m} {n} m<n
 
 <-lessThan : ∀ {m n} → .(m < n) → LessThan m n
 <-lessThan {zero}  {suc n} _   = _
@@ -259,13 +264,15 @@ LessThan m n = NonZero (n ∸ m)
 
 -- Destructors
 
-<ᵇ-lessThan⁻¹ : ∀ m n → .{{LessThan m n}} → T (m <ᵇ n)
-<ᵇ-lessThan⁻¹ zero    (suc n) = _
-<ᵇ-lessThan⁻¹ (suc m) (suc n) = <ᵇ-lessThan⁻¹ m n
+<-lessThan⁻¹ : ∀ m {n} → .{{LessThan m n}} → m < n
+<-lessThan⁻¹ zero    {suc n} = z<s
+<-lessThan⁻¹ (suc m) {suc n} = s<s (<-lessThan⁻¹ m)
 
-<-lessThan⁻¹ : ∀ m n → .{{LessThan m n}} → m < n
-<-lessThan⁻¹ zero    (suc n)        = z<s
-<-lessThan⁻¹ (suc m) (suc n) {{lt}} = s<s (<-lessThan⁻¹ m n {{lt}})
+-- Non-Constructor
+
+¬[n]LessThan[0] : ∀ {n} → ¬ LessThan n 0
+¬[n]LessThan[0] ()
+
 
 ------------------------------------------------------------------------
 -- Another alternative definition of _≤_
@@ -302,7 +309,10 @@ record _≤″_ (m n : ℕ) : Set where
     {k}   : ℕ
     proof : m + k ≡ n
 
-pattern ≤″-offset k = less-than-or-equal {k} refl
+-- Smart constructor of _<″_
+
+pattern ≤″-offset k = less-than-or-equal {k = k} refl
+pattern <″-offset k = ≤″-offset k
 
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
@@ -314,6 +324,11 @@ m ≥″ n = n ≤″ m
 
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
+
+-- Smart destructor of _<″_
+
+s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
+s<″s⁻¹ (<″-offset k) = <″-offset k
 
 ------------------------------------------------------------------------
 -- Another alternative definition of _≤_
