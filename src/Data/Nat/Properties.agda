@@ -169,7 +169,7 @@ lessThan? (suc m) (suc n) = lessThan? m n
 ≤-total : Total _≤_
 ≤-total zero    _       = inj₁ z≤n
 ≤-total _       zero    = inj₂ z≤n
-≤-total (suc m) (suc n) = [ (inj₁ ∘ s≤s) , (inj₂ ∘ s≤s) ]′ (≤-total m n)
+≤-total (suc m) (suc n) = [ inj₁ ∘ s≤s , inj₂ ∘ s≤s ]′ (≤-total m n)
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant z≤n        z≤n        = refl
