@@ -18,11 +18,13 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; _∸_; _^_)
+open import Data.Nat.Base as ℕ
+  using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; s<s⁻¹; _∸_; _^_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
-open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
+open import Data.Product
+  using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
@@ -156,16 +158,23 @@ toℕ-↑ʳ (suc n) i = cong suc (toℕ-↑ʳ n i)
 -- toℕ and the ordering relations
 ------------------------------------------------------------------------
 
+toℕ-LessThan : (i : Fin n) → ℕ.LessThan (toℕ i) n
+toℕ-LessThan zero    = _
+toℕ-LessThan (suc i) = toℕ-LessThan i
+
+toℕ<n : (i : Fin n) → toℕ i ℕ.< n
+toℕ<n {n = suc _} i = ℕ.<-lessThan⁻¹ (toℕ i) {{toℕ-LessThan i}}
+
 toℕ≤pred[n] : ∀ (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 
 toℕ≤n : ∀ (i : Fin n) → toℕ i ℕ.≤ n
 toℕ≤n {suc n} i = ℕₚ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
-
+{-
 toℕ<n : ∀ (i : Fin n) → toℕ i ℕ.< n
 toℕ<n {suc n} i = s<s (toℕ≤pred[n] i)
-
+-}
 -- A simpler implementation of toℕ≤pred[n],
 -- however, with a different reduction behavior.
 -- If no one needs the reduction behavior of toℕ≤pred[n],
@@ -198,53 +207,81 @@ fromℕ-toℕ zero    = refl
 fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
 ≤fromℕ : ∀ (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
-≤fromℕ i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ _)) (toℕ≤pred[n] i)
+≤fromℕ {n = n} i rewrite toℕ-fromℕ n = ℕ.s≤s⁻¹ (toℕ<n i)
+
+------------------------------------------------------------------------
+-- fromℕLessThan
+------------------------------------------------------------------------
+
+fromℕLessThan-toℕ : ∀ (i : Fin n) → let instance _ = toℕ-LessThan i in
+                    fromℕLessThan (toℕ i) ≡ i
+fromℕLessThan-toℕ zero    = refl
+fromℕLessThan-toℕ (suc i) = cong suc (fromℕLessThan-toℕ i)
+
+toℕ-fromℕLessThan : ∀ m {n} .{{_ : ℕ.LessThan m n}} → toℕ (fromℕLessThan m {n}) ≡ m
+toℕ-fromℕLessThan zero    {suc _} = refl
+toℕ-fromℕLessThan (suc m) {suc _} = cong suc (toℕ-fromℕLessThan m)
 
 ------------------------------------------------------------------------
 -- fromℕ<
 ------------------------------------------------------------------------
 
-fromℕ<-toℕ : ∀ (i : Fin n) (i<n : toℕ i ℕ.< n) → fromℕ< i<n ≡ i
-fromℕ<-toℕ zero    z<s       = refl
-fromℕ<-toℕ (suc i) (s<s i<n) = cong suc (fromℕ<-toℕ i i<n)
+fromℕ<≡fromℕLessThan : ∀ {m n} .(m<n : m ℕ.< n) →
+                       let instance _ = ℕ.<-lessThan m<n in
+                       fromℕ< m<n ≡ fromℕLessThan m
+fromℕ<≡fromℕLessThan {zero}  {suc _} m<n = refl
+fromℕ<≡fromℕLessThan {suc m} {suc _} m<n = cong suc (fromℕ<≡fromℕLessThan (ℕ.s<s⁻¹ m<n))
 
-toℕ-fromℕ< : ∀ (m<n : m ℕ.< n) → toℕ (fromℕ< m<n) ≡ m
-toℕ-fromℕ< z<s               = refl
-toℕ-fromℕ< (s<s m<n@(s≤s _)) = cong suc (toℕ-fromℕ< m<n)
+fromℕ<-toℕ : (i : Fin n) .(i<n : toℕ i ℕ.< n) → fromℕ< i<n ≡ i
+fromℕ<-toℕ zero    _   = refl
+fromℕ<-toℕ (suc i) i<n = cong suc (fromℕ<-toℕ i (ℕ.s<s⁻¹ i<n))
+
+toℕ-fromℕ< : ∀ {m n} .(m<n : m ℕ.< n) → toℕ (fromℕ< m<n) ≡ m
+toℕ-fromℕ< {zero}  {suc _} _   = refl
+toℕ-fromℕ< {suc m} {suc n} m<n = cong suc (toℕ-fromℕ< (ℕ.s<s⁻¹ m<n))
+
+fromℕ<′-toℕ : (i : Fin n) → let instance _ = toℕ<n i in fromℕ<′ (toℕ i) ≡ i
+fromℕ<′-toℕ zero    = refl
+fromℕ<′-toℕ (suc i) = cong suc (fromℕ<′-toℕ i)
+
+toℕ-fromℕ<′ : ∀ m {n} .{{_ : m ℕ.< n}} → toℕ (fromℕ<′ m) ≡ m
+toℕ-fromℕ<′ zero    {suc _} = refl
+toℕ-fromℕ<′ (suc m) {suc n} {{lt}} = cong suc (toℕ-fromℕ<′ m {n} {{ℕ.s<s⁻¹ lt}})
 
 -- fromℕ is a special case of fromℕ<.
-fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕₚ.≤-refl
+fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< (ℕₚ.n<1+n n)
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
 
 fromℕ<-cong : ∀ m n {o} → m ≡ n → (m<o : m ℕ.< o) (n<o : n ℕ.< o) →
               fromℕ< m<o ≡ fromℕ< n<o
-fromℕ<-cong 0       0       r z<s       z<s  = refl
-fromℕ<-cong (suc _) (suc _) r (s<s m<n) (s<s n<o)
-  = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) m<n n<o)
+fromℕ<-cong 0       0               r _ _ = refl
+fromℕ<-cong (suc m) (suc n) {suc o} r m<o n<o
+  = cong suc (fromℕ<-cong m n (ℕₚ.suc-injective r) (s<s⁻¹ m<o) (s<s⁻¹ n<o))
 
 fromℕ<-injective : ∀ m n {o} → (m<o : m ℕ.< o) (n<o : n ℕ.< o) →
-                   fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
-fromℕ<-injective 0       0       z<s               z<s r = refl
-fromℕ<-injective (suc _) (suc _) (s<s m<n@(s≤s _)) (s<s n<o@(s≤s _)) r
-  = cong suc (fromℕ<-injective _ _ m<n n<o (suc-injective r))
+                   fromℕ< m<o ≡ fromℕ< n<o →
+                   m ≡ n
+fromℕ<-injective 0       0       z<s       z<s       r = refl
+fromℕ<-injective (suc m) (suc n) (s<s m<o) (s<s n<o) r
+  = cong suc (fromℕ<-injective m n m<o n<o (suc-injective r))
 
 ------------------------------------------------------------------------
 -- fromℕ<″
 ------------------------------------------------------------------------
 
 fromℕ<≡fromℕ<″ : ∀ (m<n : m ℕ.< n) (m<″n : m ℕ.<″ n) →
-                 fromℕ< m<n ≡ fromℕ<″ m m<″n
-fromℕ<≡fromℕ<″ z<s               (ℕ.less-than-or-equal refl) = refl
-fromℕ<≡fromℕ<″ (s<s m<n@(s≤s _)) (ℕ.less-than-or-equal refl) =
-  cong suc (fromℕ<≡fromℕ<″ m<n (ℕ.less-than-or-equal refl))
+                 fromℕ< m<n ≡ fromℕ<″ m<″n
+fromℕ<≡fromℕ<″ z<s               (ℕ.<″-offset _) = refl
+fromℕ<≡fromℕ<″ (s<s m<n@(s≤s _)) (ℕ.<″-offset k) =
+  cong suc (fromℕ<≡fromℕ<″ m<n (ℕ.<″-offset k))
 
-toℕ-fromℕ<″ : ∀ (m<n : m ℕ.<″ n) → toℕ (fromℕ<″ m m<n) ≡ m
-toℕ-fromℕ<″ {m} {n} m<n = begin
-  toℕ (fromℕ<″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ<≡fromℕ<″ (ℕₚ.≤″⇒≤ m<n) m<n)) ⟩
-  toℕ (fromℕ< _)       ≡⟨ toℕ-fromℕ< (ℕₚ.≤″⇒≤ m<n) ⟩
-  m                    ∎
-  where open ≡-Reasoning
+toℕ-fromℕ<″ : ∀ (m<″n : m ℕ.<″ n) → toℕ (fromℕ<″ m<″n) ≡ m
+toℕ-fromℕ<″ {m} {n} m<″n = begin
+  toℕ (fromℕ<″ m<″n) ≡⟨ cong toℕ (sym (fromℕ<≡fromℕ<″ m<n m<″n)) ⟩
+  toℕ (fromℕ<  m<n)  ≡⟨ toℕ-fromℕ< m<n ⟩
+  m                  ∎
+  where open ≡-Reasoning ; m<n = ℕₚ.≤″⇒≤ m<″n
 
 ------------------------------------------------------------------------
 -- Properties of cast
@@ -426,10 +463,10 @@ i<1+i = ℕₚ.n<1+n ∘ toℕ
 <⇒≢ i<i refl = ℕₚ.n≮n _ i<i
 
 ≤∧≢⇒< : i ≤ j → i ≢ j → i < j
-≤∧≢⇒< {i = zero}  {zero}  _         0≢0     = contradiction refl 0≢0
-≤∧≢⇒< {i = zero}  {suc j} _         _       = z<s
-≤∧≢⇒< {i = suc i} {suc j} (s≤s i≤j) 1+i≢1+j =
-  s<s (≤∧≢⇒< i≤j (1+i≢1+j ∘ (cong suc)))
+≤∧≢⇒< {i = zero}  {zero}  _         0≢0   = contradiction refl 0≢0
+≤∧≢⇒< {i = zero}  {suc j} _         _     = z<s
+≤∧≢⇒< {i = suc i} {suc j} 1+i≤1+j 1+i≢1+j =
+  s<s (≤∧≢⇒< (ℕ.s≤s⁻¹ 1+i≤1+j) (1+i≢1+j ∘ (cong suc)))
 
 ------------------------------------------------------------------------
 -- inject
@@ -465,11 +502,11 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 ≤̄⇒inject₁< {i = i} i≤j rewrite sym (toℕ-inject₁ i) = s<s i≤j
 
 ℕ<⇒inject₁< : ∀ {i : Fin (ℕ.suc n)} {j : Fin n} → j < i → inject₁ j < i
-ℕ<⇒inject₁< {i = suc i} (s≤s j≤i) = ≤̄⇒inject₁< j≤i
+ℕ<⇒inject₁< {i = suc i} j≤i = ≤̄⇒inject₁< (ℕ.s≤s⁻¹ j≤i)
 
 i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
-i≤inject₁[j]⇒i≤1+j {i = zero} i≤j = z≤n
-i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} (s≤s i≤j) = s≤s (ℕₚ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) i≤j))
+i≤inject₁[j]⇒i≤1+j {i = zero}              _   = z≤n
+i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} i≤j = s≤s (ℕₚ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) (ℕ.s≤s⁻¹ i≤j)))
 
 ------------------------------------------------------------------------
 -- lower₁
@@ -482,8 +519,8 @@ toℕ-lower₁ {ℕ.suc m} (suc i) p = cong ℕ.suc (toℕ-lower₁ i (p ∘ con
 
 lower₁-injective : ∀ {n≢i : n ≢ toℕ i} {n≢j : n ≢ toℕ j} →
                    lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
-lower₁-injective {zero}  {zero}  {_}     {n≢i} {_}   _    = ⊥-elim (n≢i refl)
-lower₁-injective {zero}  {_}     {zero}  {_}   {n≢j} _    = ⊥-elim (n≢j refl)
+lower₁-injective {zero}  {zero}  {_}     {n≢i} {_}   _    = contradiction refl n≢i
+lower₁-injective {zero}  {_}     {zero}  {_}   {n≢j} _    = contradiction refl n≢j
 lower₁-injective {suc n} {zero}  {zero}  {_}   {_}   refl = refl
 lower₁-injective {suc n} {suc i} {suc j} {n≢i} {n≢j} eq   =
   cong suc (lower₁-injective (suc-injective eq))
@@ -523,26 +560,26 @@ inject₁≡⇒lower₁≡ n≢j i≡j = inject₁-injective (trans (inject₁-l
 -- inject≤
 ------------------------------------------------------------------------
 
-toℕ-inject≤ : ∀ i (m≤n : m ℕ.≤ n) → toℕ (inject≤ i m≤n) ≡ toℕ i
+toℕ-inject≤ : ∀ i .(m≤n : m ℕ.≤ n) → toℕ (inject≤ i m≤n) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _         = refl
-toℕ-inject≤ {_} {suc n} (suc i) (s≤s m≤n) = cong suc (toℕ-inject≤ i m≤n)
+toℕ-inject≤ {_} {suc n} (suc i) m≤n = cong suc (toℕ-inject≤ i (ℕ.s≤s⁻¹ m≤n))
 
-inject≤-refl : ∀ i (n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
-inject≤-refl {suc n} zero    _         = refl
-inject≤-refl {suc n} (suc i) (s≤s n≤n) = cong suc (inject≤-refl i n≤n)
+inject≤-refl : ∀ i .(n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
+inject≤-refl {suc n} zero    _   = refl
+inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.s≤s⁻¹ n≤n))
 
 inject≤-idempotent : ∀ (i : Fin m)
-                     (m≤n : m ℕ.≤ n) (n≤o : n ℕ.≤ o) (m≤o : m ℕ.≤ o) →
+                     .(m≤n : m ℕ.≤ n) .(n≤o : n ℕ.≤ o) .(m≤o : m ℕ.≤ o) →
                      inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i m≤o
-inject≤-idempotent {_} {suc n} {suc o} zero    _   _   _ = refl
-inject≤-idempotent {_} {suc n} {suc o} (suc i) (s≤s m≤n) (s≤s n≤o) (s≤s m≤o) =
-  cong suc (inject≤-idempotent i m≤n n≤o m≤o)
+inject≤-idempotent {_} {suc n} {suc o} zero    _   _   _   = refl
+inject≤-idempotent {_} {suc n} {suc o} (suc i) m≤n n≤o m≤o =
+  cong suc (inject≤-idempotent i (ℕ.s≤s⁻¹ m≤n) (ℕ.s≤s⁻¹ n≤o) (ℕ.s≤s⁻¹ m≤o))
 
-inject≤-injective : ∀ (m≤n m≤n′ : m ℕ.≤ n) i j →
+inject≤-injective : ∀ .(m≤n m≤n′ : m ℕ.≤ n) i j →
                     inject≤ i m≤n ≡ inject≤ j m≤n′ → i ≡ j
-inject≤-injective (s≤s p) (s≤s q) zero    zero    eq = refl
-inject≤-injective (s≤s p) (s≤s q) (suc i) (suc j) eq =
-  cong suc (inject≤-injective p q i j (suc-injective eq))
+inject≤-injective {n = suc _} p q zero    zero    eq = refl
+inject≤-injective {n = suc _} p q (suc i) (suc j) eq =
+  cong suc (inject≤-injective (ℕ.s≤s⁻¹ p) (ℕ.s≤s⁻¹ q) i j (suc-injective eq))
 
 ------------------------------------------------------------------------
 -- pred
@@ -592,17 +629,21 @@ join-splitAt (suc m) n (suc i) = begin
 
 -- splitAt "m" "i" ≡ inj₁ "i" if i < m
 
-splitAt-< : ∀ m {n} (i : Fin (m ℕ.+ n)) (i<m : toℕ i ℕ.< m) →
+splitAt-LessThan : ∀ m {n} (i : Fin (m ℕ.+ n)) .{{_ : ℕ.LessThan (toℕ i) m}} →
+            splitAt m i ≡ inj₁ (fromℕLessThan (toℕ i))
+splitAt-LessThan (suc m) zero    = refl
+splitAt-LessThan (suc m) (suc i) = cong (Sum.map suc id) (splitAt-LessThan m i)
+
+splitAt-< : ∀ m {n} (i : Fin (m ℕ.+ n)) .(i<m : toℕ i ℕ.< m) →
             splitAt m i ≡ inj₁ (fromℕ< i<m)
-splitAt-< (suc m) zero    z<s               = refl
-splitAt-< (suc m) (suc i) (s<s i<m) = cong (Sum.map suc id) (splitAt-< m i i<m)
+splitAt-< m i i<m = splitAt-LessThan m i ⦃ ℕ.<-lessThan i<m ⦄
 
 -- splitAt "m" "i" ≡ inj₂ "i - m" if i ≥ m
 
-splitAt-≥ : ∀ m {n} (i : Fin (m ℕ.+ n)) (i≥m : toℕ i ℕ.≥ m) →
+splitAt-≥ : ∀ m {n} (i : Fin (m ℕ.+ n)) .(i≥m : toℕ i ℕ.≥ m) →
             splitAt m i ≡ inj₂ (reduce≥ i i≥m)
-splitAt-≥ zero    i       _         = refl
-splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m i i≥m)
+splitAt-≥ zero    i       _   = refl
+splitAt-≥ (suc m) (suc i) i≥m = cong (Sum.map suc id) (splitAt-≥ m i (ℕ.s≤s⁻¹ i≥m))
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -873,10 +914,10 @@ pinch-surjective zero    (suc j) = suc (suc j) , refl
 pinch-surjective (suc i) (suc j) = map suc (cong suc) (pinch-surjective i j)
 
 pinch-mono-≤ : ∀ (i : Fin n) → (pinch i) Preserves _≤_ ⟶ _≤_
-pinch-mono-≤ 0F      {0F}    {k}     0≤n       = z≤n
-pinch-mono-≤ 0F      {suc j} {suc k} (s≤s j≤k) = j≤k
-pinch-mono-≤ (suc i) {0F}    {k}     0≤n       = z≤n
-pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
+pinch-mono-≤ 0F      {0F}    {k}     0≤n = z≤n
+pinch-mono-≤ 0F      {suc j} {suc k} j≤k = (ℕ.s≤s⁻¹ j≤k)
+pinch-mono-≤ (suc i) {0F}    {k}     0≤n = z≤n
+pinch-mono-≤ (suc i) {suc j} {suc k} j≤k = s≤s (pinch-mono-≤ i (ℕ.s≤s⁻¹ j≤k))
 
 pinch-injective : ∀ {i : Fin n} {j k : Fin (ℕ.suc n)} →
                   suc i ≢ j → suc i ≢ k → pinch i j ≡ pinch i k → j ≡ k
