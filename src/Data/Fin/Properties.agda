@@ -222,13 +222,13 @@ toℕ-fromℕLessThan : ∀ m {n} .⦃ _ : ℕ.LessThan m n ⦄ → toℕ (from�
 toℕ-fromℕLessThan zero    {suc _} = refl
 toℕ-fromℕLessThan (suc m) {suc _} = cong suc (toℕ-fromℕLessThan m)
 
-fromℕLessThan-cong : ∀ {m n o} ⦃ m<o : ℕ.LessThan m o ⦄ ⦃ n<o : ℕ.LessThan n o ⦄ →
-                     m ≡ n → fromℕLessThan m {o} ⦃ m<o ⦄ ≡ fromℕLessThan n {o} ⦃ n<o ⦄
+fromℕLessThan-cong : ∀ {m n o} ⦃ m<o : _ ⦄ ⦃ n<o : _ ⦄ → m ≡ n →
+                     fromℕLessThan m {o} ⦃ m<o ⦄ ≡ fromℕLessThan n {o} ⦃ n<o ⦄
 fromℕLessThan-cong {zero}  {zero}                          r = refl
 fromℕLessThan-cong {suc m} {suc n} {suc _} ⦃ m<o ⦄ ⦃ n<o ⦄ r
   = cong suc (fromℕLessThan-cong {m} {n} ⦃ m<o ⦄ ⦃ n<o ⦄ (ℕₚ.suc-injective r))
 
-fromℕLessThan-injective : ∀ {m n o} ⦃ m<o : ℕ.LessThan m o ⦄ ⦃ n<o : ℕ.LessThan n o ⦄ →
+fromℕLessThan-injective : ∀ {m n o} ⦃ m<o : _ ⦄ ⦃ n<o : _ ⦄ →
                           fromℕLessThan m {o} ⦃ m<o ⦄ ≡ fromℕLessThan n {o} ⦃ n<o ⦄ →
                           m ≡ n
 fromℕLessThan-injective {zero}  {zero}          r = refl
@@ -337,7 +337,7 @@ toℕ-fromℕ<″ {m} {n} m<″n = begin
   toℕ (fromℕ<″ m m<″n)        ≡⟨ cong toℕ (fromℕ<″≡fromℕ m<″n) ⟩
   toℕ (fromℕLessThan m ⦃ _ ⦄) ≡⟨ toℕ-fromℕLessThan m ⦃ _ ⦄ ⟩
   m                           ∎
-  where open ≡-Reasoning ; instance _ = ℕ.<-lessThan (ℕₚ.≤″⇒≤ m<″n)
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of cast
@@ -685,10 +685,11 @@ join-splitAt (suc m) n (suc i) = begin
 
 -- splitAt "m" "i" ≡ inj₁ "i" if i < m
 
-splitAt-LessThan : ∀ m {n} (i : Fin (m ℕ.+ n)) .{{lt : ℕ.LessThan (toℕ i) m}} →
-            splitAt m i ≡ inj₁ (fromℕLessThan (toℕ i) ⦃ lt ⦄ )
+splitAt-LessThan : ∀ m {n} (i : Fin (m ℕ.+ n)) .⦃ lt : _ ⦄ →
+                   splitAt m i ≡ inj₁ (fromℕLessThan (toℕ i) ⦃ lt ⦄ )
 splitAt-LessThan (suc m) zero           = refl
-splitAt-LessThan (suc m) (suc i) ⦃ lt ⦄ = cong (Sum.map suc id) (splitAt-LessThan m i ⦃ lt ⦄)
+splitAt-LessThan (suc m) (suc i) ⦃ lt ⦄ =
+  cong (Sum.map suc id) (splitAt-LessThan m i ⦃ lt ⦄)
 
 splitAt-< : ∀ m {n} (i : Fin (m ℕ.+ n)) .(i<m : toℕ i ℕ.< m) →
             splitAt m i ≡ inj₁ (fromℕ< i<m)
