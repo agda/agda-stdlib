@@ -110,7 +110,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ------------------------------------------------------------------------
 
 lessThan? : B.Decidable LessThan
-lessThan? m       zero    = no (¬[n]LessThan[0] {m})
+lessThan? m       zero    = no λ()
 lessThan? zero    (suc n) = yes _
 lessThan? (suc m) (suc n) = lessThan? m n
 
