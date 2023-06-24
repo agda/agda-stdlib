@@ -262,6 +262,13 @@ lessThanSuc : ∀ {n} → LessThan n (suc n)
 lessThanSuc {zero}  = _
 lessThanSuc {suc n} = lessThanSuc {n}
 
+lessThanSucSuc : ∀ {m n} → ⦃ LessThan m n ⦄ → LessThan (suc m) (suc n)
+lessThanSucSuc ⦃ lt ⦄ = lt
+{-
+lessThanSucSuc {zero}  {suc _} = _
+lessThanSucSuc {suc m} {suc n} = lessThanSucSuc {m} {n}
+-}
+
 <-lessThan : ∀ {m n} → .(m<n : m < n) → LessThan m n
 <-lessThan {zero}  {suc n}       = _
 <-lessThan {suc m} {suc n} (m<n) = <-lessThan {m} {n} (s<s⁻¹ m<n)
