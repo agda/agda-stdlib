@@ -262,20 +262,19 @@ lessThanSuc : ∀ {n} → LessThan n (suc n)
 lessThanSuc {zero}  = _
 lessThanSuc {suc n} = lessThanSuc {n}
 
-<-lessThan : ∀ {m n} → .(m < n) → LessThan m n
-<-lessThan {zero}  {suc n} _   = _
-<-lessThan {suc m} {suc n} m<n = <-lessThan {m} {n} (s<s⁻¹ m<n)
+<-lessThan : ∀ {m n} → .⦃ m < n ⦄ → LessThan m n
+<-lessThan {zero}  {suc n} = _
+<-lessThan {suc m} {suc n} ⦃ m<n ⦄ = <-lessThan {m} {n} ⦃ s<s⁻¹ m<n ⦄
+
+<″-lessThan : ∀ {m n} → LessThan m (suc m + n)
+<″-lessThan {zero}    = _
+<″-lessThan {suc m} = <″-lessThan {m}
 
 -- Destructors
 
 <-lessThan⁻¹ : ∀ m {n} → .{{LessThan m n}} → m < n
 <-lessThan⁻¹ zero    {suc n} = z<s
 <-lessThan⁻¹ (suc m) {suc n} = s<s (<-lessThan⁻¹ m)
-
--- Non-Constructor
-
-¬[n]LessThan[0] : ∀ {n} → ¬ LessThan n 0
-¬[n]LessThan[0] ()
 
 
 ------------------------------------------------------------------------
