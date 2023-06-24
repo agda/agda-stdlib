@@ -7,7 +7,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Substitutive; Symmetric; Total)
 
 module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 

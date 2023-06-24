@@ -12,7 +12,8 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Induction.WellFounded
 open import Level
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 private

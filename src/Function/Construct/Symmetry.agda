@@ -11,7 +11,9 @@ module Function.Construct.Symmetry where
 open import Data.Product using (_,_; swap; proj₁; proj₂)
 open import Function
 open import Level using (Level)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Symmetric; Transitive)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality
 
 private

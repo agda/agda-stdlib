@@ -21,7 +21,7 @@ open import Data.Nat.DivMod
 open import Data.Nat.Induction
 open import Relation.Nullary.Decidable using (does)
 open import Relation.Nullary.Decidable
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 open import Function
 

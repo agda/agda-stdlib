@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Preorder)
+open import Relation.Binary.Bundles using (Preorder)
 
 module Text.Regex.Base {a e r} (P : Preorder a e r) where
 
