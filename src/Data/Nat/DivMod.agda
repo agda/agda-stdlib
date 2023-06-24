@@ -17,7 +17,7 @@ open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Function using (_$_)
+open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (False; toWitnessFalse)

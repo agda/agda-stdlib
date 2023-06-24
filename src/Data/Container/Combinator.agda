@@ -13,7 +13,7 @@ open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product as P using (_,_; <_,_>; proj₁; proj₂; ∃)
 open import Data.Sum.Base as S using ([_,_]′)
 open import Data.Unit.Polymorphic.Base using (⊤)
-import Function as F
+import Function.Base as F
 
 open import Data.Container.Core
 open import Data.Container.Relation.Unary.Any
