@@ -163,7 +163,7 @@ toℕ-LessThan zero    = _
 toℕ-LessThan (suc i) = toℕ-LessThan i
 
 toℕ<n : (i : Fin n) → toℕ i ℕ.< n
-toℕ<n {n = suc _} i = ℕ.<-lessThan⁻¹ (toℕ i) {{toℕ-LessThan i}}
+toℕ<n {n = suc _} i = ℕ.<-lessThan⁻¹ (toℕ i) ⦃ toℕ-LessThan i ⦄
 
 toℕ≤pred[n] : ∀ (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
@@ -206,7 +206,7 @@ fromℕ-toℕ : ∀ (i : Fin n) → fromℕ (toℕ i) ≡ strengthen i
 fromℕ-toℕ zero    = refl
 fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
-≤fromℕ : ∀ (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
+≤fromℕ : ∀ (i : Fin (suc n)) → i ≤ fromℕ n
 ≤fromℕ {n = n} i rewrite toℕ-fromℕ n = ℕ.s≤s⁻¹ (toℕ<n i)
 
 ------------------------------------------------------------------------
@@ -218,70 +218,126 @@ fromℕLessThan-toℕ : ∀ (i : Fin n) → let instance _ = toℕ-LessThan i in
 fromℕLessThan-toℕ zero    = refl
 fromℕLessThan-toℕ (suc i) = cong suc (fromℕLessThan-toℕ i)
 
-toℕ-fromℕLessThan : ∀ m {n} .{{_ : ℕ.LessThan m n}} → toℕ (fromℕLessThan m {n}) ≡ m
+toℕ-fromℕLessThan : ∀ m {n} .⦃ _ : ℕ.LessThan m n ⦄ → toℕ (fromℕLessThan m {n}) ≡ m
 toℕ-fromℕLessThan zero    {suc _} = refl
 toℕ-fromℕLessThan (suc m) {suc _} = cong suc (toℕ-fromℕLessThan m)
+
+fromℕLessThan-cong : ∀ {m n o} ⦃ m<o : ℕ.LessThan m o ⦄ ⦃ n<o : ℕ.LessThan n o ⦄ →
+                     m ≡ n → fromℕLessThan m {o} ⦃ m<o ⦄ ≡ fromℕLessThan n {o} ⦃ n<o ⦄
+fromℕLessThan-cong {zero}  {zero}                          r = refl
+fromℕLessThan-cong {suc m} {suc n} {suc _} ⦃ m<o ⦄ ⦃ n<o ⦄ r
+  = cong suc (fromℕLessThan-cong {m} {n} ⦃ m<o ⦄ ⦃ n<o ⦄ (ℕₚ.suc-injective r))
+
+fromℕLessThan-injective : ∀ {m n o} ⦃ m<o : ℕ.LessThan m o ⦄ ⦃ n<o : ℕ.LessThan n o ⦄ →
+                          fromℕLessThan m {o} ⦃ m<o ⦄ ≡ fromℕLessThan n {o} ⦃ n<o ⦄ →
+                          m ≡ n
+fromℕLessThan-injective {zero}  {zero}          r = refl
+fromℕLessThan-injective {zero}  {suc n} {suc _} ()
+fromℕLessThan-injective {suc m} {suc n} {suc _} ⦃ m<o ⦄ ⦃ n<o ⦄ r
+  = cong suc (fromℕLessThan-injective {m} {n} ⦃ m<o ⦄ ⦃ n<o ⦄ (suc-injective r))
+
+-- fromℕ is a special case of fromℕLessThan.
+fromℕ-LessThan-def : ∀ n → let instance _ = ℕ.lessThanSuc {n} in
+                     fromℕ n ≡ fromℕLessThan n
+fromℕ-LessThan-def zero    = refl
+fromℕ-LessThan-def (suc n) = cong suc (fromℕ-LessThan-def n)
+
+------------------------------------------------------------------------
+-- fromℕ<′
+------------------------------------------------------------------------
+
+fromℕ<′≡fromℕLessThan : ∀ {m n} → .⦃ m<n : m ℕ.< n ⦄ →
+                        let instance _ = ℕ.<-lessThan m<n in
+                        fromℕ<′ m ≡ fromℕLessThan m
+fromℕ<′≡fromℕLessThan = refl
+
+fromℕ<′-toℕ : (i : Fin n) → let instance _ = toℕ<n i in fromℕ<′ (toℕ i) ≡ i
+fromℕ<′-toℕ i = fromℕLessThan-toℕ i
+
+toℕ-fromℕ<′ : ∀ m {n} .⦃ m<n : m ℕ.< n ⦄ → toℕ (fromℕ<′ m ⦃ m<n ⦄) ≡ m
+toℕ-fromℕ<′ m {n} ⦃ m<n ⦄ = toℕ-fromℕLessThan m {n} ⦃ ℕ.<-lessThan m<n ⦄
+
+fromℕ<′-cong : ∀ {m n o} .⦃ m<o : m ℕ.< o ⦄ .⦃ n<o : n ℕ.< o ⦄ →
+               m ≡ n → fromℕ<′ m ≡ fromℕ<′ n
+fromℕ<′-cong ⦃ m<o ⦄ ⦃ n<o ⦄ r = fromℕLessThan-cong r
+  where
+    instance _ = ℕ.<-lessThan m<o
+    instance _ = ℕ.<-lessThan n<o
+
+fromℕ<′-injective : ∀ {m n o} ⦃ m<o : m ℕ.< o ⦄ ⦃ n<o : n ℕ.< o ⦄ →
+                    fromℕ<′ m {o} ⦃ m<o ⦄ ≡ fromℕ<′ n {o} ⦃ n<o ⦄ →
+                    m ≡ n
+fromℕ<′-injective ⦃ m<o ⦄ ⦃ n<o ⦄ r = fromℕLessThan-injective r
+  where
+    instance _ = ℕ.<-lessThan m<o
+    instance _ = ℕ.<-lessThan n<o
 
 ------------------------------------------------------------------------
 -- fromℕ<
 ------------------------------------------------------------------------
 
-fromℕ<≡fromℕLessThan : ∀ {m n} .(m<n : m ℕ.< n) →
+fromℕ<≡fromℕLessThan : .⦃ m<n : m ℕ.< n ⦄ →
                        let instance _ = ℕ.<-lessThan m<n in
                        fromℕ< m<n ≡ fromℕLessThan m
-fromℕ<≡fromℕLessThan {zero}  {suc _} m<n = refl
-fromℕ<≡fromℕLessThan {suc m} {suc _} m<n = cong suc (fromℕ<≡fromℕLessThan (ℕ.s<s⁻¹ m<n))
+fromℕ<≡fromℕLessThan = fromℕ<′≡fromℕLessThan
 
 fromℕ<-toℕ : (i : Fin n) .(i<n : toℕ i ℕ.< n) → fromℕ< i<n ≡ i
-fromℕ<-toℕ zero    _   = refl
-fromℕ<-toℕ (suc i) i<n = cong suc (fromℕ<-toℕ i (ℕ.s<s⁻¹ i<n))
+fromℕ<-toℕ i i<n = begin
+  fromℕ< i<n
+    ≡⟨ fromℕ<≡fromℕLessThan ⦃ i<n ⦄ ⟩
+  fromℕLessThan (toℕ i)
+    ≡⟨ fromℕLessThan-toℕ i ⟩
+  i ∎ where open ≡-Reasoning ; instance _ = toℕ-LessThan i
 
-toℕ-fromℕ< : ∀ {m n} .(m<n : m ℕ.< n) → toℕ (fromℕ< m<n) ≡ m
-toℕ-fromℕ< {zero}  {suc _} _   = refl
-toℕ-fromℕ< {suc m} {suc n} m<n = cong suc (toℕ-fromℕ< (ℕ.s<s⁻¹ m<n))
+toℕ-fromℕ< : .(m<n : m ℕ.< n) → toℕ (fromℕ< m<n) ≡ m
+toℕ-fromℕ< {m = m} m<n = begin
+  toℕ (fromℕ< m<n)
+    ≡⟨ cong toℕ (fromℕ<≡fromℕLessThan ⦃ m<n ⦄) ⟩
+  toℕ (fromℕLessThan m)
+    ≡⟨ toℕ-fromℕLessThan m ⟩
+  m ∎ where open ≡-Reasoning; instance _ = ℕ.<-lessThan m<n
 
-fromℕ<′-toℕ : (i : Fin n) → let instance _ = toℕ<n i in fromℕ<′ (toℕ i) ≡ i
-fromℕ<′-toℕ zero    = refl
-fromℕ<′-toℕ (suc i) = cong suc (fromℕ<′-toℕ i)
+fromℕ<-cong : ∀ m n {o} → m ≡ n → .(m<o : m ℕ.< o) .(n<o : n ℕ.< o) →
+              fromℕ< m<o ≡ fromℕ< n<o
+fromℕ<-cong m n r m<o n<o = fromℕ<′-cong {m} {n} ⦃ m<o ⦄ ⦃ n<o ⦄ r
 
-toℕ-fromℕ<′ : ∀ m {n} .{{_ : m ℕ.< n}} → toℕ (fromℕ<′ m) ≡ m
-toℕ-fromℕ<′ zero    {suc _} = refl
-toℕ-fromℕ<′ (suc m) {suc n} {{lt}} = cong suc (toℕ-fromℕ<′ m {n} {{ℕ.s<s⁻¹ lt}})
+fromℕ<-injective : ∀ m n {o} (m<o : m ℕ.< o) (n<o : n ℕ.< o) →
+                   fromℕ< m<o ≡ fromℕ< n<o →
+                   m ≡ n
+fromℕ<-injective m n m<o n<o = fromℕ<′-injective ⦃ m<o ⦄ ⦃ n<o ⦄
 
 -- fromℕ is a special case of fromℕ<.
 fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< (ℕₚ.n<1+n n)
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
 
-fromℕ<-cong : ∀ m n {o} → m ≡ n → (m<o : m ℕ.< o) (n<o : n ℕ.< o) →
-              fromℕ< m<o ≡ fromℕ< n<o
-fromℕ<-cong 0       0               r _ _ = refl
-fromℕ<-cong (suc m) (suc n) {suc o} r m<o n<o
-  = cong suc (fromℕ<-cong m n (ℕₚ.suc-injective r) (s<s⁻¹ m<o) (s<s⁻¹ n<o))
-
-fromℕ<-injective : ∀ m n {o} → (m<o : m ℕ.< o) (n<o : n ℕ.< o) →
-                   fromℕ< m<o ≡ fromℕ< n<o →
-                   m ≡ n
-fromℕ<-injective 0       0       z<s       z<s       r = refl
-fromℕ<-injective (suc m) (suc n) (s<s m<o) (s<s n<o) r
-  = cong suc (fromℕ<-injective m n m<o n<o (suc-injective r))
-
 ------------------------------------------------------------------------
 -- fromℕ<″
 ------------------------------------------------------------------------
 
+fromℕ<″≡fromℕ : ∀ (m<″n : m ℕ.<″ n) →
+                let ℕ.less-than-or-equal {k} proof = m<″n
+                    instance _ = subst (ℕ.LessThan m) proof (ℕ.<″-lessThan {m} {k})
+                in
+                fromℕ<″ m m<″n ≡ fromℕLessThan m
+fromℕ<″≡fromℕ {m = zero}              (ℕ.<″-offset _) = refl
+fromℕ<″≡fromℕ {m = suc m} {n = suc n} (ℕ.<″-offset k) =
+  cong suc (fromℕ<″≡fromℕ (ℕ.<″-offset k))
+
+fromℕ<″≡fromℕ< : ∀ (m<″n : m ℕ.<″ n) →
+                 fromℕ<″ m m<″n ≡ fromℕ< (ℕₚ.≤″⇒≤ m<″n)
+fromℕ<″≡fromℕ< m<″n = fromℕ<″≡fromℕ m<″n
+
 fromℕ<≡fromℕ<″ : ∀ (m<n : m ℕ.< n) (m<″n : m ℕ.<″ n) →
                  fromℕ< m<n ≡ fromℕ<″ m m<″n
-fromℕ<≡fromℕ<″ z<s               (ℕ.<″-offset _) = refl
-fromℕ<≡fromℕ<″ (s<s m<n@(s≤s _)) (ℕ.<″-offset k) =
-  cong suc (fromℕ<≡fromℕ<″ m<n (ℕ.<″-offset k))
+fromℕ<≡fromℕ<″ _ m<″n = sym (fromℕ<″≡fromℕ< m<″n)
 
 toℕ-fromℕ<″ : ∀ (m<″n : m ℕ.<″ n) → toℕ (fromℕ<″ m m<″n) ≡ m
 toℕ-fromℕ<″ {m} {n} m<″n = begin
-  toℕ (fromℕ<″ m m<″n) ≡˘⟨ cong toℕ (fromℕ<≡fromℕ<″ m<n m<″n) ⟩
-  toℕ (fromℕ<  m<n)    ≡⟨ toℕ-fromℕ< m<n ⟩
-  m                    ∎
-  where open ≡-Reasoning ; m<n = ℕₚ.≤″⇒≤ m<″n
+  toℕ (fromℕ<″ m m<″n)        ≡⟨ cong toℕ (fromℕ<″≡fromℕ m<″n) ⟩
+  toℕ (fromℕLessThan m ⦃ _ ⦄) ≡⟨ toℕ-fromℕLessThan m ⦃ _ ⦄ ⟩
+  m                           ∎
+  where open ≡-Reasoning ; instance _ = ℕ.<-lessThan (ℕₚ.≤″⇒≤ m<″n)
 
 ------------------------------------------------------------------------
 -- Properties of cast
@@ -629,10 +685,10 @@ join-splitAt (suc m) n (suc i) = begin
 
 -- splitAt "m" "i" ≡ inj₁ "i" if i < m
 
-splitAt-LessThan : ∀ m {n} (i : Fin (m ℕ.+ n)) .{{_ : ℕ.LessThan (toℕ i) m}} →
-            splitAt m i ≡ inj₁ (fromℕLessThan (toℕ i))
-splitAt-LessThan (suc m) zero    = refl
-splitAt-LessThan (suc m) (suc i) = cong (Sum.map suc id) (splitAt-LessThan m i)
+splitAt-LessThan : ∀ m {n} (i : Fin (m ℕ.+ n)) .{{lt : ℕ.LessThan (toℕ i) m}} →
+            splitAt m i ≡ inj₁ (fromℕLessThan (toℕ i) ⦃ lt ⦄ )
+splitAt-LessThan (suc m) zero           = refl
+splitAt-LessThan (suc m) (suc i) ⦃ lt ⦄ = cong (Sum.map suc id) (splitAt-LessThan m i ⦃ lt ⦄)
 
 splitAt-< : ∀ m {n} (i : Fin (m ℕ.+ n)) .(i<m : toℕ i ℕ.< m) →
             splitAt m i ≡ inj₁ (fromℕ< i<m)
