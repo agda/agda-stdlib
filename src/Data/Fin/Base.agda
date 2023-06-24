@@ -67,14 +67,15 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕLessThan m ⦃_⦄ = "m".
 
-fromℕLessThan : ∀ m {n} → .{{ℕ.LessThan m n}} → Fin n
+fromℕLessThan : ∀ m {n} → .⦃ ℕ.LessThan m n ⦄ → Fin n
 fromℕLessThan zero    {suc _} = zero
 fromℕLessThan (suc m) {suc _} = suc (fromℕLessThan m)
 
 -- fromℕ<′ m ⦃_⦄ = "m".
 
-fromℕ<′ : ∀ m {n} → .{{m ℕ.< n}} → Fin n
-fromℕ<′ m {n} ⦃ m<n ⦄ = fromℕLessThan m where instance _ = ℕ.<-lessThan m<n
+fromℕ<′ : ∀ m {n} → .⦃ m ℕ.< n ⦄ → Fin n
+fromℕ<′ m {n} ⦃ m<n ⦄ = fromℕLessThan m {n}
+  where instance _ = ℕ.<-lessThan m<n
 
 -- fromℕ< {m} _ = "m".
 
