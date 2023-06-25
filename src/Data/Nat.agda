@@ -42,5 +42,14 @@ open import Data.Nat.Properties public
 
 -- Version 0.17
 
+-- Version 2.0
+
 open import Data.Nat.Properties public
-  using (≤-pred)
+  hiding (≤-pred; <-pred)
+
+≤-pred : ∀ {m n} → (m ≤ n) → pred m ≤ pred n
+≤-pred {m = zero}              _   = z≤n
+≤-pred {m = suc _} {n = suc _} m≤n = s≤s⁻¹ m≤n
+
+<-pred : ∀ {m n} → .⦃ _ : NonZero m ⦄ → (m < n) → pred m < pred n
+<-pred {m = suc _} {n = suc _} = s<s⁻¹

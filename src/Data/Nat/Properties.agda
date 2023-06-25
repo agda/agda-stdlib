@@ -155,8 +155,6 @@ lessThan? (suc m) (suc n) = lessThan? m n
 ≤-reflexive {zero}  refl = z≤n
 ≤-reflexive {suc m} refl = s≤s (≤-reflexive refl)
 
-≤-pred = s≤s⁻¹
-
 ≤-refl : Reflexive _≤_
 ≤-refl = ≤-reflexive refl
 
@@ -418,8 +416,6 @@ _>?_ = flip _<?_
 
 s<s-injective : ∀ {m n} {p q : m < n} → s<s p ≡ s<s q → p ≡ q
 s<s-injective refl = refl
-
-<-pred = s<s⁻¹
 
 m<n⇒m<1+n : ∀ {m n} → m < n → m < 1 + n
 m<n⇒m<1+n z<s               = z<s
@@ -707,7 +703,7 @@ m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 +-monoʳ-< (suc n) m≤o = s≤s (+-monoʳ-< n m≤o)
 
 m+1+n≰m : ∀ m {n} → m + suc n ≰ m
-m+1+n≰m (suc m) (s≤s m+1+n≤m) = m+1+n≰m m m+1+n≤m
+m+1+n≰m (suc m) m+1+n≤m = m+1+n≰m m (s≤s⁻¹ m+1+n≤m)
 
 m<m+n : ∀ m {n} → n > 0 → m < m + n
 m<m+n zero    n>0 = n>0
@@ -2296,6 +2292,16 @@ suc[pred[n]]≡n {zero}  0≢0 = contradiction refl 0≢0
 suc[pred[n]]≡n {suc n} _   = refl
 {-# WARNING_ON_USAGE suc[pred[n]]≡n
 "Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments"
+#-}
+
+≤-pred = s≤s⁻¹
+{-# WARNING_ON_USAGE ≤-pred
+"Warning: ≤-pred was deprecated in v2.0. Please use Data.Nat.Base.s≤s⁻¹  or Data.Nat.≤-pred instead. Note that the latter now has a different type. "
+#-}
+
+<-pred = s<s⁻¹
+{-# WARNING_ON_USAGE ≤-pred
+"Warning: <-pred was deprecated in v2.0. Please use Data.Nat.Base.s<s⁻¹ or Data.Nat.<-pred instead. Note that the latter now has a different type using instance arguments."
 #-}
 
 ≤-step = m≤n⇒m≤1+n
