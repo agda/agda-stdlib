@@ -9,7 +9,8 @@
 
 {-# OPTIONS --cubical-compatible --sized-types #-}
 
-open import Relation.Binary using (Rel; StrictTotalOrder)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Trie {k e r} (S : StrictTotalOrder k e r) where
 

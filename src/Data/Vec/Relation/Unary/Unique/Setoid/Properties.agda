@@ -18,7 +18,8 @@ import Data.Vec.Relation.Unary.AllPairs.Properties as AllPairsₚ
 open import Data.Nat.Base using (ℕ; _+_)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
-open import Relation.Binary using (Rel; Setoid)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary.Negation using (contradiction; contraposition)
 

@@ -8,21 +8,21 @@
 
 module Reflection.AST.Term where
 
-open import Data.List.Base as List  hiding (_++_)
-open import Data.List.Properties    using (∷-dec)
-open import Data.Nat as ℕ           using (ℕ; zero; suc)
-open import Data.Product.Base       using (_×_; _,_; <_,_>; uncurry; map₁)
-open import Data.Product.Properties using (,-injective)
-open import Data.Maybe.Base         using (Maybe; just; nothing)
-open import Data.String.Base    using (String)
-open import Data.String.Properties as String hiding (_≟_)
+open import Data.List.Base as List                     hiding (_++_)
+open import Data.List.Properties                       using (∷-dec)
+open import Data.Nat as ℕ                              using (ℕ; zero; suc)
+open import Data.Product.Base                          using (_×_; _,_; <_,_>; uncurry; map₁)
+open import Data.Product.Properties                    using (,-injective)
+open import Data.Maybe.Base                            using (Maybe; just; nothing)
+open import Data.String.Base                           using (String)
+open import Data.String.Properties as String           hiding (_≟_)
 open import Relation.Nullary.Decidable                 using (map′; _×-dec_; yes; no)
-open import Relation.Binary                            using (Decidable; DecidableEquality)
+open import Relation.Binary.Definitions                using (Decidable; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 
 open import Reflection.AST.Abstraction
 open import Reflection.AST.Argument
-open import Reflection.AST.Argument.Information using (visibility)
+open import Reflection.AST.Argument.Information   using (visibility)
 open import Reflection.AST.Argument.Visibility as Visibility hiding (_≟_)
 import Reflection.AST.Literal as Literal
 import Reflection.AST.Meta as Meta

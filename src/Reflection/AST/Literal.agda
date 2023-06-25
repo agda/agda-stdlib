@@ -18,7 +18,7 @@ import Reflection.AST.Meta as Meta
 import Reflection.AST.Name as Name
 open import Relation.Nullary                           using (yes; no)
 open import Relation.Nullary.Decidable                 using (map′; isYes)
-open import Relation.Binary                            using (DecidableEquality)
+open import Relation.Binary.Definitions                using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------

@@ -13,7 +13,8 @@ open import Effect.Monad.Partiality as Partiality using (_⊥; ⇒≈)
 open import Codata.Musical.Notation
 open import Function.Base using (flip; _∘_)
 open import Level
-open import Relation.Binary using (_Respects_; IsEquivalence)
+open import Relation.Binary.Definitions using (_Respects_)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 open Partiality._⊥
