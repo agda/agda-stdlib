@@ -13,7 +13,7 @@ open import Data.List.Fresh as List# using (List#; []; cons; fresh)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat using (ℕ; suc)
 open import Data.Product using (_×_; _,_)
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 
 private
   variable

@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Reflexive; Decidable)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Reflexive; Decidable)
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
   {a r} {A : Set a} (R : Rel A r)

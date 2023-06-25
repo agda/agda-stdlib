@@ -12,7 +12,7 @@ open import Level using (Level; _⊔_)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.Product as Prod using (∃₂; _×_; _,_; -,_)
-open import Relation.Binary using (REL)
+open import Relation.Binary.Core using (REL)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 
 private

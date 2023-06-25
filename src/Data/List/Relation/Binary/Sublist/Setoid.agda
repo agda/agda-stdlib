@@ -9,7 +9,8 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --postfix-projections #-}
 
-open import Relation.Binary using (Setoid; Rel)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Binary.Sublist.Setoid
   {c ℓ} (S : Setoid c ℓ) where

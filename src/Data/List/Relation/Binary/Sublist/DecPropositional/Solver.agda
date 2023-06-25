@@ -7,7 +7,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 open import Agda.Builtin.Equality using (_≡_)
 
 module Data.List.Relation.Binary.Sublist.DecPropositional.Solver

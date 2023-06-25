@@ -12,7 +12,8 @@ open import Data.List.Base using (List; [])
 open import Data.List.Relation.Ternary.Appending
 open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Level using (Level)
-open import Relation.Binary using (REL; Rel; Trans)
+open import Relation.Binary.Core using (REL; Rel)
+open import Relation.Binary.Definitions using (Trans)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 private

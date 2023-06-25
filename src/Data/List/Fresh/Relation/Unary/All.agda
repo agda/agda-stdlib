@@ -13,7 +13,7 @@ open import Data.Product using (_×_; _,_; proj₁; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_)
 open import Relation.Unary  as U
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 
 open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 open import Data.List.Fresh.Relation.Unary.Any as Any using (Any; here; there)
