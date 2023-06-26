@@ -31,10 +31,10 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function
 open import Level using (Level)
-open import Relation.Binary as B using (DecidableEquality)
+open import Relation.Binary.Definitions as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)

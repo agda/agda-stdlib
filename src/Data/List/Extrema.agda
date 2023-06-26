@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (TotalOrder; Setoid)
+open import Relation.Binary.Bundles using (TotalOrder; Setoid)
 
 module Data.List.Extrema
   {b ℓ₁ ℓ₂} (totalOrder : TotalOrder b ℓ₁ ℓ₂) where

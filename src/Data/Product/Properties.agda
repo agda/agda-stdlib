@@ -12,7 +12,7 @@ open import Axiom.UniquenessOfIdentityProofs
 open import Data.Product
 open import Function
 open import Level using (Level)
-open import Relation.Binary using (DecidableEquality)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no)
 

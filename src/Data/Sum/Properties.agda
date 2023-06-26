@@ -12,7 +12,7 @@ open import Level
 open import Data.Sum.Base
 open import Function
 open import Function.Bundles using (mk↔′)
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′)

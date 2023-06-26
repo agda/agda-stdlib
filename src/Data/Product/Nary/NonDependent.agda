@@ -23,7 +23,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function.Base using (const; _∘′_; _∘_)
 open import Relation.Nullary.Decidable using (Dec; yes; no; _×-dec_)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
 
 open import Function.Nary.NonDependent.Base

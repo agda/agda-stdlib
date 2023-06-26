@@ -7,7 +7,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Map.Membership.Propositional.Properties
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -21,7 +21,7 @@ open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _∘′_)
 open import Level using (Level)
 
-open import Relation.Binary using (Transitive; Symmetric; _Respectsˡ_)
+open import Relation.Binary.Definitions using (Transitive; Symmetric; _Respectsˡ_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Intersection using (_∩_)
 open import Relation.Binary.PropositionalEquality
