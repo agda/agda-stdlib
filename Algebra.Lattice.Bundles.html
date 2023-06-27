@@ -169,11 +169,11 @@
   <a id="4723" class="Keyword">open</a> <a id="4728" href="Algebra.Lattice.Bundles.Raw.html#456" class="Module">RawLattice</a> <a id="4739" href="Algebra.Lattice.Bundles.html#4613" class="Function">rawLattice</a> <a id="4750" class="Keyword">public</a>
     <a id="4761" class="Keyword">using</a> <a id="4767" class="Symbol">(</a><a id="4768" href="Algebra.Lattice.Bundles.Raw.html#653" class="Function">∨-rawMagma</a><a id="4778" class="Symbol">;</a> <a id="4780" href="Algebra.Lattice.Bundles.Raw.html#729" class="Function">∧-rawMagma</a><a id="4790" class="Symbol">)</a>
 
-  <a id="Lattice.setoid"></a><a id="4795" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a> <a id="4802" class="Symbol">:</a> <a id="4804" href="Relation.Binary.Bundles.html#1027" class="Record">Setoid</a> <a id="4811" href="Algebra.Lattice.Bundles.html#4346" class="Bound">c</a> <a id="4813" href="Algebra.Lattice.Bundles.html#4348" class="Bound">ℓ</a>
-  <a id="4817" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a> <a id="4824" class="Symbol">=</a> <a id="4826" class="Keyword">record</a> <a id="4833" class="Symbol">{</a> <a id="4835" href="Relation.Binary.Bundles.html#1150" class="Field">isEquivalence</a> <a id="4849" class="Symbol">=</a> <a id="4851" href="Algebra.Lattice.Structures.html#4074" class="Function">isEquivalence</a> <a id="4865" class="Symbol">}</a>
+  <a id="Lattice.setoid"></a><a id="4795" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a> <a id="4802" class="Symbol">:</a> <a id="4804" href="Relation.Binary.Bundles.html#1041" class="Record">Setoid</a> <a id="4811" href="Algebra.Lattice.Bundles.html#4346" class="Bound">c</a> <a id="4813" href="Algebra.Lattice.Bundles.html#4348" class="Bound">ℓ</a>
+  <a id="4817" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a> <a id="4824" class="Symbol">=</a> <a id="4826" class="Keyword">record</a> <a id="4833" class="Symbol">{</a> <a id="4835" href="Relation.Binary.Bundles.html#1164" class="Field">isEquivalence</a> <a id="4849" class="Symbol">=</a> <a id="4851" href="Algebra.Lattice.Structures.html#4074" class="Function">isEquivalence</a> <a id="4865" class="Symbol">}</a>
 
-  <a id="4870" class="Keyword">open</a> <a id="4875" href="Relation.Binary.Bundles.html#1027" class="Module">Setoid</a> <a id="4882" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a> <a id="4889" class="Keyword">public</a>
-    <a id="4900" class="Keyword">using</a> <a id="4906" class="Symbol">(</a><a id="4907" href="Relation.Binary.Bundles.html#978" class="Function Operator">_≉_</a><a id="4910" class="Symbol">)</a>
+  <a id="4870" class="Keyword">open</a> <a id="4875" href="Relation.Binary.Bundles.html#1041" class="Module">Setoid</a> <a id="4882" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a> <a id="4889" class="Keyword">public</a>
+    <a id="4900" class="Keyword">using</a> <a id="4906" class="Symbol">(</a><a id="4907" href="Relation.Binary.Bundles.html#992" class="Function Operator">_≉_</a><a id="4910" class="Symbol">)</a>
 
 
 <a id="4914" class="Keyword">record</a> <a id="DistributiveLattice"></a><a id="4921" href="Algebra.Lattice.Bundles.html#4921" class="Record">DistributiveLattice</a> <a id="4941" href="Algebra.Lattice.Bundles.html#4941" class="Bound">c</a> <a id="4943" href="Algebra.Lattice.Bundles.html#4943" class="Bound">ℓ</a> <a id="4945" class="Symbol">:</a> <a id="4947" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="4951" class="Symbol">(</a><a id="4952" href="Agda.Primitive.html#774" class="Primitive">suc</a> <a id="4956" class="Symbol">(</a><a id="4957" href="Algebra.Lattice.Bundles.html#4941" class="Bound">c</a> <a id="4959" href="Agda.Primitive.html#804" class="Primitive Operator">⊔</a> <a id="4961" href="Algebra.Lattice.Bundles.html#4943" class="Bound">ℓ</a><a id="4962" class="Symbol">))</a> <a id="4965" class="Keyword">where</a>
@@ -194,7 +194,7 @@
 
   <a id="5374" class="Keyword">open</a> <a id="5379" href="Algebra.Lattice.Bundles.html#4338" class="Module">Lattice</a> <a id="5387" href="Algebra.Lattice.Bundles.html#5304" class="Function">lattice</a> <a id="5395" class="Keyword">public</a>
     <a id="5406" class="Keyword">using</a>
-    <a id="5416" class="Symbol">(</a> <a id="5418" href="Relation.Binary.Bundles.html#978" class="Function Operator">_≉_</a><a id="5421" class="Symbol">;</a> <a id="5423" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a><a id="5429" class="Symbol">;</a> <a id="5431" href="Algebra.Lattice.Bundles.html#4613" class="Function">rawLattice</a>
+    <a id="5416" class="Symbol">(</a> <a id="5418" href="Relation.Binary.Bundles.html#992" class="Function Operator">_≉_</a><a id="5421" class="Symbol">;</a> <a id="5423" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a><a id="5429" class="Symbol">;</a> <a id="5431" href="Algebra.Lattice.Bundles.html#4613" class="Function">rawLattice</a>
     <a id="5446" class="Symbol">;</a> <a id="5448" href="Algebra.Lattice.Bundles.Raw.html#653" class="Function">∨-rawMagma</a><a id="5458" class="Symbol">;</a> <a id="5460" href="Algebra.Lattice.Bundles.Raw.html#729" class="Function">∧-rawMagma</a>
     <a id="5475" class="Symbol">)</a>
 
@@ -223,7 +223,7 @@
 
   <a id="6080" class="Keyword">open</a> <a id="6085" href="Algebra.Lattice.Bundles.html#4921" class="Module">DistributiveLattice</a> <a id="6105" href="Algebra.Lattice.Bundles.html#5942" class="Function">distributiveLattice</a> <a id="6125" class="Keyword">public</a>
     <a id="6136" class="Keyword">using</a>
-    <a id="6146" class="Symbol">(</a> <a id="6148" href="Relation.Binary.Bundles.html#978" class="Function Operator">_≉_</a><a id="6151" class="Symbol">;</a> <a id="6153" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a><a id="6159" class="Symbol">;</a> <a id="6161" href="Algebra.Lattice.Bundles.html#4613" class="Function">rawLattice</a>
+    <a id="6146" class="Symbol">(</a> <a id="6148" href="Relation.Binary.Bundles.html#992" class="Function Operator">_≉_</a><a id="6151" class="Symbol">;</a> <a id="6153" href="Algebra.Lattice.Bundles.html#4795" class="Function">setoid</a><a id="6159" class="Symbol">;</a> <a id="6161" href="Algebra.Lattice.Bundles.html#4613" class="Function">rawLattice</a>
     <a id="6176" class="Symbol">;</a> <a id="6178" href="Algebra.Lattice.Bundles.Raw.html#653" class="Function">∨-rawMagma</a><a id="6188" class="Symbol">;</a> <a id="6190" href="Algebra.Lattice.Bundles.Raw.html#729" class="Function">∧-rawMagma</a>
     <a id="6205" class="Symbol">;</a> <a id="6207" href="Algebra.Lattice.Bundles.html#5304" class="Function">lattice</a>
     <a id="6219" class="Symbol">)</a>

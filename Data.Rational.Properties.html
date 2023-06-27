@@ -89,10 +89,10 @@
   <a id="3531" href="Data.Rational.Properties.html#3204" class="Function">mkℚ-injective</a>
   <a id="3547" class="Symbol">(</a><a id="3548" href="Data.Rational.Properties.html#3479" class="Bound">n₁</a> <a id="3551" href="Data.Integer.Properties.html#2120" class="Function Operator">ℤ.≟</a> <a id="3555" href="Data.Rational.Properties.html#3493" class="Bound">n₂</a> <a id="3558" href="Relation.Nullary.Decidable.Core.html#2269" class="Function Operator">×-dec</a> <a id="3564" href="Data.Rational.Properties.html#3482" class="Bound">d₁</a> <a id="3567" href="Data.Nat.Properties.html#2947" class="Function Operator">ℕ.≟</a> <a id="3571" href="Data.Rational.Properties.html#3496" class="Bound">d₂</a><a id="3573" class="Symbol">)</a>
 
-<a id="≡-setoid"></a><a id="3576" href="Data.Rational.Properties.html#3576" class="Function">≡-setoid</a> <a id="3585" class="Symbol">:</a> <a id="3587" href="Relation.Binary.Bundles.html#1027" class="Record">Setoid</a> <a id="3594" href="Level.html#521" class="Function">0ℓ</a> <a id="3597" href="Level.html#521" class="Function">0ℓ</a>
+<a id="≡-setoid"></a><a id="3576" href="Data.Rational.Properties.html#3576" class="Function">≡-setoid</a> <a id="3585" class="Symbol">:</a> <a id="3587" href="Relation.Binary.Bundles.html#1041" class="Record">Setoid</a> <a id="3594" href="Level.html#521" class="Function">0ℓ</a> <a id="3597" href="Level.html#521" class="Function">0ℓ</a>
 <a id="3600" href="Data.Rational.Properties.html#3576" class="Function">≡-setoid</a> <a id="3609" class="Symbol">=</a> <a id="3611" href="Relation.Binary.PropositionalEquality.Properties.html#5413" class="Function">setoid</a> <a id="3618" href="Data.Rational.Base.html#1296" class="Record">ℚ</a>
 
-<a id="≡-decSetoid"></a><a id="3621" href="Data.Rational.Properties.html#3621" class="Function">≡-decSetoid</a> <a id="3633" class="Symbol">:</a> <a id="3635" href="Relation.Binary.Bundles.html#1409" class="Record">DecSetoid</a> <a id="3645" href="Level.html#521" class="Function">0ℓ</a> <a id="3648" href="Level.html#521" class="Function">0ℓ</a>
+<a id="≡-decSetoid"></a><a id="3621" href="Data.Rational.Properties.html#3621" class="Function">≡-decSetoid</a> <a id="3633" class="Symbol">:</a> <a id="3635" href="Relation.Binary.Bundles.html#1423" class="Record">DecSetoid</a> <a id="3645" href="Level.html#521" class="Function">0ℓ</a> <a id="3648" href="Level.html#521" class="Function">0ℓ</a>
 <a id="3651" href="Data.Rational.Properties.html#3621" class="Function">≡-decSetoid</a> <a id="3663" class="Symbol">=</a> <a id="3665" href="Relation.Binary.PropositionalEquality.Properties.html#5544" class="Function">decSetoid</a> <a id="3675" href="Data.Rational.Properties.html#3449" class="Function Operator">_≟_</a>
 
 <a id="3680" class="Comment">------------------------------------------------------------------------</a>
@@ -546,17 +546,17 @@
 <a id="19756" class="Comment">------------------------------------------------------------------------</a>
 <a id="19829" class="Comment">-- Bundles</a>
 
-<a id="≤-totalPreorder"></a><a id="19841" href="Data.Rational.Properties.html#19841" class="Function">≤-totalPreorder</a> <a id="19857" class="Symbol">:</a> <a id="19859" href="Relation.Binary.Bundles.html#2393" class="Record">TotalPreorder</a> <a id="19873" href="Level.html#521" class="Function">0ℓ</a> <a id="19876" href="Level.html#521" class="Function">0ℓ</a> <a id="19879" href="Level.html#521" class="Function">0ℓ</a>
+<a id="≤-totalPreorder"></a><a id="19841" href="Data.Rational.Properties.html#19841" class="Function">≤-totalPreorder</a> <a id="19857" class="Symbol">:</a> <a id="19859" href="Relation.Binary.Bundles.html#2407" class="Record">TotalPreorder</a> <a id="19873" href="Level.html#521" class="Function">0ℓ</a> <a id="19876" href="Level.html#521" class="Function">0ℓ</a> <a id="19879" href="Level.html#521" class="Function">0ℓ</a>
 <a id="19882" href="Data.Rational.Properties.html#19841" class="Function">≤-totalPreorder</a> <a id="19898" class="Symbol">=</a> <a id="19900" class="Keyword">record</a>
-  <a id="19909" class="Symbol">{</a> <a id="19911" href="Relation.Binary.Bundles.html#2626" class="Field">isTotalPreorder</a> <a id="19927" class="Symbol">=</a> <a id="19929" href="Data.Rational.Properties.html#19204" class="Function">≤-isTotalPreorder</a>
+  <a id="19909" class="Symbol">{</a> <a id="19911" href="Relation.Binary.Bundles.html#2640" class="Field">isTotalPreorder</a> <a id="19927" class="Symbol">=</a> <a id="19929" href="Data.Rational.Properties.html#19204" class="Function">≤-isTotalPreorder</a>
   <a id="19949" class="Symbol">}</a>
 
-<a id="≤-decTotalOrder"></a><a id="19952" href="Data.Rational.Properties.html#19952" class="Function">≤-decTotalOrder</a> <a id="19968" class="Symbol">:</a> <a id="19970" href="Relation.Binary.Bundles.html#6025" class="Record">DecTotalOrder</a> <a id="19984" class="Symbol">_</a> <a id="19986" class="Symbol">_</a> <a id="19988" class="Symbol">_</a>
+<a id="≤-decTotalOrder"></a><a id="19952" href="Data.Rational.Properties.html#19952" class="Function">≤-decTotalOrder</a> <a id="19968" class="Symbol">:</a> <a id="19970" href="Relation.Binary.Bundles.html#6039" class="Record">DecTotalOrder</a> <a id="19984" class="Symbol">_</a> <a id="19986" class="Symbol">_</a> <a id="19988" class="Symbol">_</a>
 <a id="19990" href="Data.Rational.Properties.html#19952" class="Function">≤-decTotalOrder</a> <a id="20006" class="Symbol">=</a> <a id="20008" class="Keyword">record</a>
-  <a id="20017" class="Symbol">{</a> <a id="20019" href="Relation.Binary.Bundles.html#6109" class="Field">Carrier</a>         <a id="20035" class="Symbol">=</a> <a id="20037" href="Data.Rational.Base.html#1296" class="Record">ℚ</a>
-  <a id="20041" class="Symbol">;</a> <a id="20043" href="Relation.Binary.Bundles.html#6137" class="Field Operator">_≈_</a>             <a id="20059" class="Symbol">=</a> <a id="20061" href="Agda.Builtin.Equality.html#133" class="Datatype Operator">_≡_</a>
-  <a id="20067" class="Symbol">;</a> <a id="20069" href="Relation.Binary.Bundles.html#6174" class="Field Operator">_≤_</a>             <a id="20085" class="Symbol">=</a> <a id="20087" href="Data.Rational.Base.html#2356" class="Datatype Operator">_≤_</a>
-  <a id="20093" class="Symbol">;</a> <a id="20095" href="Relation.Binary.Bundles.html#6211" class="Field">isDecTotalOrder</a> <a id="20111" class="Symbol">=</a> <a id="20113" href="Data.Rational.Properties.html#19599" class="Function">≤-isDecTotalOrder</a>
+  <a id="20017" class="Symbol">{</a> <a id="20019" href="Relation.Binary.Bundles.html#6123" class="Field">Carrier</a>         <a id="20035" class="Symbol">=</a> <a id="20037" href="Data.Rational.Base.html#1296" class="Record">ℚ</a>
+  <a id="20041" class="Symbol">;</a> <a id="20043" href="Relation.Binary.Bundles.html#6151" class="Field Operator">_≈_</a>             <a id="20059" class="Symbol">=</a> <a id="20061" href="Agda.Builtin.Equality.html#133" class="Datatype Operator">_≡_</a>
+  <a id="20067" class="Symbol">;</a> <a id="20069" href="Relation.Binary.Bundles.html#6188" class="Field Operator">_≤_</a>             <a id="20085" class="Symbol">=</a> <a id="20087" href="Data.Rational.Base.html#2356" class="Datatype Operator">_≤_</a>
+  <a id="20093" class="Symbol">;</a> <a id="20095" href="Relation.Binary.Bundles.html#6225" class="Field">isDecTotalOrder</a> <a id="20111" class="Symbol">=</a> <a id="20113" href="Data.Rational.Properties.html#19599" class="Function">≤-isDecTotalOrder</a>
   <a id="20133" class="Symbol">}</a>
 
 <a id="20136" class="Comment">------------------------------------------------------------------------</a>
@@ -691,14 +691,14 @@
 <a id="24321" class="Comment">------------------------------------------------------------------------</a>
 <a id="24394" class="Comment">-- Bundles</a>
 
-<a id="&lt;-strictPartialOrder"></a><a id="24406" href="Data.Rational.Properties.html#24406" class="Function">&lt;-strictPartialOrder</a> <a id="24427" class="Symbol">:</a> <a id="24429" href="Relation.Binary.Bundles.html#4126" class="Record">StrictPartialOrder</a> <a id="24448" href="Level.html#521" class="Function">0ℓ</a> <a id="24451" href="Level.html#521" class="Function">0ℓ</a> <a id="24454" href="Level.html#521" class="Function">0ℓ</a>
+<a id="&lt;-strictPartialOrder"></a><a id="24406" href="Data.Rational.Properties.html#24406" class="Function">&lt;-strictPartialOrder</a> <a id="24427" class="Symbol">:</a> <a id="24429" href="Relation.Binary.Bundles.html#4140" class="Record">StrictPartialOrder</a> <a id="24448" href="Level.html#521" class="Function">0ℓ</a> <a id="24451" href="Level.html#521" class="Function">0ℓ</a> <a id="24454" href="Level.html#521" class="Function">0ℓ</a>
 <a id="24457" href="Data.Rational.Properties.html#24406" class="Function">&lt;-strictPartialOrder</a> <a id="24478" class="Symbol">=</a> <a id="24480" class="Keyword">record</a>
-  <a id="24489" class="Symbol">{</a> <a id="24491" href="Relation.Binary.Bundles.html#4332" class="Field">isStrictPartialOrder</a> <a id="24512" class="Symbol">=</a> <a id="24514" href="Data.Rational.Properties.html#23937" class="Function">&lt;-isStrictPartialOrder</a>
+  <a id="24489" class="Symbol">{</a> <a id="24491" href="Relation.Binary.Bundles.html#4346" class="Field">isStrictPartialOrder</a> <a id="24512" class="Symbol">=</a> <a id="24514" href="Data.Rational.Properties.html#23937" class="Function">&lt;-isStrictPartialOrder</a>
   <a id="24539" class="Symbol">}</a>
 
-<a id="&lt;-strictTotalOrder"></a><a id="24542" href="Data.Rational.Properties.html#24542" class="Function">&lt;-strictTotalOrder</a> <a id="24561" class="Symbol">:</a> <a id="24563" href="Relation.Binary.Bundles.html#6946" class="Record">StrictTotalOrder</a> <a id="24580" href="Level.html#521" class="Function">0ℓ</a> <a id="24583" href="Level.html#521" class="Function">0ℓ</a> <a id="24586" href="Level.html#521" class="Function">0ℓ</a>
+<a id="&lt;-strictTotalOrder"></a><a id="24542" href="Data.Rational.Properties.html#24542" class="Function">&lt;-strictTotalOrder</a> <a id="24561" class="Symbol">:</a> <a id="24563" href="Relation.Binary.Bundles.html#6960" class="Record">StrictTotalOrder</a> <a id="24580" href="Level.html#521" class="Function">0ℓ</a> <a id="24583" href="Level.html#521" class="Function">0ℓ</a> <a id="24586" href="Level.html#521" class="Function">0ℓ</a>
 <a id="24589" href="Data.Rational.Properties.html#24542" class="Function">&lt;-strictTotalOrder</a> <a id="24608" class="Symbol">=</a> <a id="24610" class="Keyword">record</a>
-  <a id="24619" class="Symbol">{</a> <a id="24621" href="Relation.Binary.Bundles.html#7144" class="Field">isStrictTotalOrder</a> <a id="24640" class="Symbol">=</a> <a id="24642" href="Data.Rational.Properties.html#24148" class="Function">&lt;-isStrictTotalOrder</a>
+  <a id="24619" class="Symbol">{</a> <a id="24621" href="Relation.Binary.Bundles.html#7158" class="Field">isStrictTotalOrder</a> <a id="24640" class="Symbol">=</a> <a id="24642" href="Data.Rational.Properties.html#24148" class="Function">&lt;-isStrictTotalOrder</a>
   <a id="24665" class="Symbol">}</a>
 
 <a id="24668" class="Comment">------------------------------------------------------------------------</a>

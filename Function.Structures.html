@@ -32,21 +32,21 @@
 
   <a id="1011" class="Keyword">module</a> <a id="IsCongruent.Eq₁"></a><a id="1018" href="Function.Structures.html#1018" class="Module">Eq₁</a> <a id="1022" class="Keyword">where</a>
 
-    <a id="IsCongruent.Eq₁.setoid"></a><a id="1033" href="Function.Structures.html#1033" class="Function">setoid</a> <a id="1040" class="Symbol">:</a> <a id="1042" href="Relation.Binary.Bundles.html#1027" class="Record">Setoid</a> <a id="1049" href="Function.Structures.html#393" class="Bound">a</a> <a id="1051" href="Function.Structures.html#397" class="Bound">ℓ₁</a>
+    <a id="IsCongruent.Eq₁.setoid"></a><a id="1033" href="Function.Structures.html#1033" class="Function">setoid</a> <a id="1040" class="Symbol">:</a> <a id="1042" href="Relation.Binary.Bundles.html#1041" class="Record">Setoid</a> <a id="1049" href="Function.Structures.html#393" class="Bound">a</a> <a id="1051" href="Function.Structures.html#397" class="Bound">ℓ₁</a>
     <a id="1058" href="Function.Structures.html#1033" class="Function">setoid</a> <a id="1065" class="Symbol">=</a> <a id="1067" class="Keyword">record</a>
-      <a id="1080" class="Symbol">{</a> <a id="1082" href="Relation.Binary.Bundles.html#1150" class="Field">isEquivalence</a> <a id="1096" class="Symbol">=</a> <a id="1098" href="Function.Structures.html#932" class="Field">isEquivalence₁</a>
+      <a id="1080" class="Symbol">{</a> <a id="1082" href="Relation.Binary.Bundles.html#1164" class="Field">isEquivalence</a> <a id="1096" class="Symbol">=</a> <a id="1098" href="Function.Structures.html#932" class="Field">isEquivalence₁</a>
       <a id="1119" class="Symbol">}</a>
 
-    <a id="1126" class="Keyword">open</a> <a id="1131" href="Relation.Binary.Bundles.html#1027" class="Module">Setoid</a> <a id="1138" href="Function.Structures.html#1033" class="Function">setoid</a> <a id="1145" class="Keyword">public</a>
+    <a id="1126" class="Keyword">open</a> <a id="1131" href="Relation.Binary.Bundles.html#1041" class="Module">Setoid</a> <a id="1138" href="Function.Structures.html#1033" class="Function">setoid</a> <a id="1145" class="Keyword">public</a>
 
   <a id="1155" class="Keyword">module</a> <a id="IsCongruent.Eq₂"></a><a id="1162" href="Function.Structures.html#1162" class="Module">Eq₂</a> <a id="1166" class="Keyword">where</a>
 
-    <a id="IsCongruent.Eq₂.setoid"></a><a id="1177" href="Function.Structures.html#1177" class="Function">setoid</a> <a id="1184" class="Symbol">:</a> <a id="1186" href="Relation.Binary.Bundles.html#1027" class="Record">Setoid</a> <a id="1193" href="Function.Structures.html#395" class="Bound">b</a> <a id="1195" href="Function.Structures.html#400" class="Bound">ℓ₂</a>
+    <a id="IsCongruent.Eq₂.setoid"></a><a id="1177" href="Function.Structures.html#1177" class="Function">setoid</a> <a id="1184" class="Symbol">:</a> <a id="1186" href="Relation.Binary.Bundles.html#1041" class="Record">Setoid</a> <a id="1193" href="Function.Structures.html#395" class="Bound">b</a> <a id="1195" href="Function.Structures.html#400" class="Bound">ℓ₂</a>
     <a id="1202" href="Function.Structures.html#1177" class="Function">setoid</a> <a id="1209" class="Symbol">=</a> <a id="1211" class="Keyword">record</a>
-      <a id="1224" class="Symbol">{</a> <a id="1226" href="Relation.Binary.Bundles.html#1150" class="Field">isEquivalence</a> <a id="1240" class="Symbol">=</a> <a id="1242" href="Function.Structures.html#972" class="Field">isEquivalence₂</a>
+      <a id="1224" class="Symbol">{</a> <a id="1226" href="Relation.Binary.Bundles.html#1164" class="Field">isEquivalence</a> <a id="1240" class="Symbol">=</a> <a id="1242" href="Function.Structures.html#972" class="Field">isEquivalence₂</a>
       <a id="1263" class="Symbol">}</a>
 
-    <a id="1270" class="Keyword">open</a> <a id="1275" href="Relation.Binary.Bundles.html#1027" class="Module">Setoid</a> <a id="1282" href="Function.Structures.html#1177" class="Function">setoid</a> <a id="1289" class="Keyword">public</a>
+    <a id="1270" class="Keyword">open</a> <a id="1275" href="Relation.Binary.Bundles.html#1041" class="Module">Setoid</a> <a id="1282" href="Function.Structures.html#1177" class="Function">setoid</a> <a id="1289" class="Keyword">public</a>
 
 
 <a id="1298" class="Keyword">record</a> <a id="IsInjection"></a><a id="1305" href="Function.Structures.html#1305" class="Record">IsInjection</a> <a id="1317" class="Symbol">(</a><a id="1318" href="Function.Structures.html#1318" class="Bound">to</a> <a id="1321" class="Symbol">:</a> <a id="1323" href="Function.Structures.html#407" class="Bound">A</a> <a id="1325" class="Symbol">→</a> <a id="1327" href="Function.Structures.html#467" class="Bound">B</a><a id="1328" class="Symbol">)</a> <a id="1330" class="Symbol">:</a> <a id="1332" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="1336" class="Symbol">(</a><a id="1337" href="Function.Structures.html#393" class="Bound">a</a> <a id="1339" href="Agda.Primitive.html#804" class="Primitive Operator">⊔</a> <a id="1341" href="Function.Structures.html#395" class="Bound">b</a> <a id="1343" href="Agda.Primitive.html#804" class="Primitive Operator">⊔</a> <a id="1345" href="Function.Structures.html#397" class="Bound">ℓ₁</a> <a id="1348" href="Agda.Primitive.html#804" class="Primitive Operator">⊔</a> <a id="1350" href="Function.Structures.html#400" class="Bound">ℓ₂</a><a id="1352" class="Symbol">)</a> <a id="1354" class="Keyword">where</a>
