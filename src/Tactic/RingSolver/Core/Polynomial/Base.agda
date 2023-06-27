@@ -50,15 +50,15 @@ module Tactic.RingSolver.Core.Polynomial.Base
 
 open RawCoeff coeffs
 
-open import Data.Bool              using (Bool; true; false; T)
+open import Data.Bool.Base         using (Bool; true; false; T)
 open import Data.Empty             using (⊥)
 open import Data.Fin.Base as Fin        using (Fin; zero; suc)
 open import Data.List.Kleene
 open import Data.Nat.Base as ℕ          using (ℕ; suc; zero; _≤′_; compare; ≤′-refl; ≤′-step; _<′_)
 open import Data.Nat.Properties    using (z≤′n; ≤′-trans)
 open import Data.Nat.Induction
-open import Data.Product           using (_×_; _,_; map₁; curry; uncurry)
-open import Data.Unit              using (⊤; tt)
+open import Data.Product.Base      using (_×_; _,_; map₁; curry; uncurry)
+open import Data.Unit.Base         using (⊤; tt)
 open import Function.Base
 open import Relation.Nullary       using (¬_; Dec; yes; no)
 

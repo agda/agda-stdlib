@@ -15,7 +15,7 @@ open Setoid S renaming (Carrier to A)
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_)
 import Function.Definitions as FunDefs
 import Relation.Binary.Consequences as Bin
