@@ -759,15 +759,15 @@ length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
-take-suc : (xs : List A) (o : Fin (length xs)) → let m = toℕ o in
-           take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
+take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
+           take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
 take-suc (x ∷ xs) zero    = refl
-take-suc (x ∷ xs) (suc o) = cong (x ∷_) (take-suc xs o)
+take-suc (x ∷ xs) (suc i) = cong (x ∷_) (take-suc xs i)
 
-take-suc-tabulate : ∀ {n} (f : Fin n → A) (o : Fin n) → let m = toℕ o in
-                    take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
-take-suc-tabulate f o rewrite sym (toℕ-cast (sym (length-tabulate f)) o) | sym (lookup-tabulate f o)
-  = take-suc (tabulate f) (cast _ o)
+take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
+                    take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
+take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
+  = take-suc (tabulate f) (cast _ i)
 ------------------------------------------------------------------------
 -- drop
 
@@ -781,15 +781,15 @@ take++drop zero    xs       = refl
 take++drop (suc n) []       = refl
 take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
 
-drop-take-suc : (xs : List A) (o : Fin (length xs)) → let m = toℕ o in
-           drop m (take (suc m) xs) ≡ [ lookup xs o ]
+drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
+           drop m (take (suc m) xs) ≡ [ lookup xs i ]
 drop-take-suc (x ∷ xs) zero    = refl
-drop-take-suc (x ∷ xs) (suc o) = drop-take-suc xs o
+drop-take-suc (x ∷ xs) (suc i) = drop-take-suc xs i
 
-drop-take-suc-tabulate : ∀ {n} (f : Fin n → A) (o : Fin n) → let m = toℕ o in
-                  drop m (take (suc m) (tabulate f)) ≡ [ f o ]
-drop-take-suc-tabulate f o rewrite sym (toℕ-cast (sym (length-tabulate f)) o) | sym (lookup-tabulate f o)
-  = drop-take-suc (tabulate f) (cast _ o)
+drop-take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
+                  drop m (take (suc m) (tabulate f)) ≡ [ f i ]
+drop-take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
+  = drop-take-suc (tabulate f) (cast _ i)
 
 ------------------------------------------------------------------------
 -- splitAt
