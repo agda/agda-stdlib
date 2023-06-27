@@ -26,8 +26,6 @@ open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
 open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
 open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
-open import Relation.Nullary using (ofʸ; ofⁿ; does; proof; yes; no)
-open import Relation.Nullary.Decidable using (True)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
