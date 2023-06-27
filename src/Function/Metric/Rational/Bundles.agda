@@ -34,6 +34,8 @@ record ProtoMetric a ℓ : Set (suc (a ⊔ ℓ)) where
     d             : DistanceFunction Carrier
     isProtoMetric : IsProtoMetric _≈_ d
 
+  infix 4 _≈_
+
   open IsProtoMetric isProtoMetric public
 
 ------------------------------------------------------------------------
@@ -45,6 +47,8 @@ record PreMetric a ℓ : Set (suc (a ⊔ ℓ)) where
     _≈_         : Rel Carrier ℓ
     d           : DistanceFunction Carrier
     isPreMetric : IsPreMetric _≈_ d
+
+  infix 4 _≈_
 
   open IsPreMetric isPreMetric public
 
@@ -62,6 +66,8 @@ record QuasiSemiMetric a ℓ : Set (suc (a ⊔ ℓ)) where
     _≈_               : Rel Carrier ℓ
     d                 : DistanceFunction Carrier
     isQuasiSemiMetric : IsQuasiSemiMetric _≈_ d
+
+  infix 4 _≈_
 
   open IsQuasiSemiMetric isQuasiSemiMetric public
 
@@ -83,6 +89,8 @@ record SemiMetric a ℓ : Set (suc (a ⊔ ℓ)) where
     d            : DistanceFunction Carrier
     isSemiMetric : IsSemiMetric _≈_ d
 
+  infix 4 _≈_
+
   open IsSemiMetric isSemiMetric public
 
   quasiSemiMetric : QuasiSemiMetric a ℓ
@@ -103,6 +111,8 @@ record Metric a ℓ : Set (suc (a ⊔ ℓ)) where
     d        : DistanceFunction Carrier
     isMetric : IsMetric _≈_ d
 
+  infix 4 _≈_
+
   open IsMetric isMetric public
 
   semiMetric : SemiMetric a ℓ
@@ -122,6 +132,8 @@ record UltraMetric a ℓ : Set (suc (a ⊔ ℓ)) where
     _≈_           : Rel Carrier ℓ
     d             : DistanceFunction Carrier
     isUltraMetric : IsUltraMetric _≈_ d
+
+  infix 4 _≈_
 
   open IsUltraMetric isUltraMetric public
 
