@@ -28,6 +28,8 @@ import Relation.Nullary.Decidable as Dec
 ------------------------------------------------------------------------
 -- Definition
 
+infix 4 _<₋_
+
 data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
   ⊥₋<[_] : (l : A)           → ⊥₋    <₋ [ l ]
   [_]    : {k l : A} → k < l → [ k ] <₋ [ l ]

@@ -26,6 +26,8 @@ import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 ------------------------------------------------------------------------
 -- Definition
 
+infix 4 _≤⁺_ _≤⊤⁺
+
 data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
   [_]  : {k l : A} → k ≤ l → [ k ] ≤⁺ [ l ]
   _≤⊤⁺ : (k : A ⁺)         → k     ≤⁺ ⊤⁺
