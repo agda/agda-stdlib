@@ -39,6 +39,8 @@ module _ {_∼_ : Rel A ℓ} where
   private
     _∼⁺_ = TransClosure _∼_
 
+  infixr 5 _∷ʳ_
+
   _∷ʳ_ : ∀ {x y z} → (x∼⁺y : x ∼⁺ y) (y∼z : y ∼ z) → x ∼⁺ z
   [ x∼y ]      ∷ʳ y∼z = x∼y ∷ [ y∼z ]
   (x∼y ∷ x∼⁺y) ∷ʳ y∼z = x∼y ∷ (x∼⁺y ∷ʳ y∼z)
