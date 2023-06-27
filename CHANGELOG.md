@@ -2152,7 +2152,8 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
- 
+  
+  take-all : n ≥ length xs → take n xs ≡ xs     
   take-[] : ∀ m → take  m [] ≡ []
   drop-[] : ∀ m → drop  m [] ≡ []
   ```
