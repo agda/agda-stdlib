@@ -8,7 +8,7 @@
 
 module Function.Construct.Symmetry where
 
-open import Data.Product using (_,_; swap; proj₁; proj₂)
+open import Data.Product.Base using (_,_; swap; proj₁; proj₂)
 open import Function
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
