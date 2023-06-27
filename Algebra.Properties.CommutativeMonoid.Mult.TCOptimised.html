@@ -10,7 +10,7 @@
 
 <a id="314" class="Keyword">open</a> <a id="319" class="Keyword">import</a> <a id="326" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="342" class="Keyword">using</a> <a id="348" class="Symbol">(</a><a id="349" href="Algebra.Bundles.html#6587" class="Record">CommutativeMonoid</a><a id="366" class="Symbol">)</a>
 <a id="368" class="Keyword">open</a> <a id="373" class="Keyword">import</a> <a id="380" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="394" class="Symbol">as</a> <a id="397" class="Module">ℕ</a> <a id="399" class="Keyword">using</a> <a id="405" class="Symbol">(</a><a id="406" href="Agda.Builtin.Nat.html#186" class="Datatype">ℕ</a><a id="407" class="Symbol">;</a> <a id="409" href="Agda.Builtin.Nat.html#204" class="InductiveConstructor">zero</a><a id="413" class="Symbol">;</a> <a id="415" href="Agda.Builtin.Nat.html#217" class="InductiveConstructor">suc</a><a id="418" class="Symbol">)</a>
-<a id="420" class="Keyword">open</a> <a id="425" class="Keyword">import</a> <a id="432" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="453" class="Keyword">using</a> <a id="459" class="Symbol">(</a><a id="460" href="Relation.Binary.Core.html#1572" class="Function Operator">_Preserves_⟶_</a><a id="473" class="Symbol">;</a> <a id="475" href="Relation.Binary.Core.html#1698" class="Function Operator">_Preserves₂_⟶_⟶_</a><a id="491" class="Symbol">)</a>
+<a id="420" class="Keyword">open</a> <a id="425" class="Keyword">import</a> <a id="432" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="453" class="Keyword">using</a> <a id="459" class="Symbol">(</a><a id="460" href="Relation.Binary.Core.html#1577" class="Function Operator">_Preserves_⟶_</a><a id="473" class="Symbol">;</a> <a id="475" href="Relation.Binary.Core.html#1703" class="Function Operator">_Preserves₂_⟶_⟶_</a><a id="491" class="Symbol">)</a>
 <a id="493" class="Keyword">open</a> <a id="498" class="Keyword">import</a> <a id="505" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="543" class="Symbol">as</a> <a id="546" class="Module">P</a> <a id="548" class="Keyword">using</a> <a id="554" class="Symbol">(</a><a id="555" href="Agda.Builtin.Equality.html#133" class="Datatype Operator">_≡_</a><a id="558" class="Symbol">)</a>
 
 <a id="561" class="Keyword">module</a> <a id="568" href="Algebra.Properties.CommutativeMonoid.Mult.TCOptimised.html" class="Module">Algebra.Properties.CommutativeMonoid.Mult.TCOptimised</a>
@@ -18,19 +18,19 @@
 
 <a id="665" class="Keyword">open</a> <a id="670" href="Algebra.Bundles.html#6587" class="Module">CommutativeMonoid</a> <a id="688" href="Algebra.Properties.CommutativeMonoid.Mult.TCOptimised.html#631" class="Bound">M</a> <a id="690" class="Keyword">renaming</a>
   <a id="701" class="Symbol">(</a> <a id="703" href="Algebra.Bundles.html#6749" class="Field Operator">_∙_</a>       <a id="713" class="Symbol">to</a> <a id="716" class="Field Operator">_+_</a>
-  <a id="722" class="Symbol">;</a> <a id="724" href="Algebra.Structures.html#1216" class="Function">∙-cong</a>    <a id="734" class="Symbol">to</a> <a id="737" class="Function">+-cong</a>
-  <a id="746" class="Symbol">;</a> <a id="748" href="Algebra.Structures.html#1366" class="Function">∙-congˡ</a>   <a id="758" class="Symbol">to</a> <a id="761" class="Function">+-congˡ</a>
-  <a id="771" class="Symbol">;</a> <a id="773" href="Algebra.Structures.html#1427" class="Function">∙-congʳ</a>   <a id="783" class="Symbol">to</a> <a id="786" class="Function">+-congʳ</a>
-  <a id="796" class="Symbol">;</a> <a id="798" href="Algebra.Structures.html#4037" class="Function">identityˡ</a> <a id="808" class="Symbol">to</a> <a id="811" class="Function">+-identityˡ</a>
-  <a id="825" class="Symbol">;</a> <a id="827" href="Algebra.Structures.html#4098" class="Function">identityʳ</a> <a id="837" class="Symbol">to</a> <a id="840" class="Function">+-identityʳ</a>
-  <a id="854" class="Symbol">;</a> <a id="856" href="Algebra.Structures.html#2878" class="Function">assoc</a>     <a id="866" class="Symbol">to</a> <a id="869" class="Function">+-assoc</a>
+  <a id="722" class="Symbol">;</a> <a id="724" href="Algebra.Structures.html#1221" class="Function">∙-cong</a>    <a id="734" class="Symbol">to</a> <a id="737" class="Function">+-cong</a>
+  <a id="746" class="Symbol">;</a> <a id="748" href="Algebra.Structures.html#1371" class="Function">∙-congˡ</a>   <a id="758" class="Symbol">to</a> <a id="761" class="Function">+-congˡ</a>
+  <a id="771" class="Symbol">;</a> <a id="773" href="Algebra.Structures.html#1432" class="Function">∙-congʳ</a>   <a id="783" class="Symbol">to</a> <a id="786" class="Function">+-congʳ</a>
+  <a id="796" class="Symbol">;</a> <a id="798" href="Algebra.Structures.html#4042" class="Function">identityˡ</a> <a id="808" class="Symbol">to</a> <a id="811" class="Function">+-identityˡ</a>
+  <a id="825" class="Symbol">;</a> <a id="827" href="Algebra.Structures.html#4103" class="Function">identityʳ</a> <a id="837" class="Symbol">to</a> <a id="840" class="Function">+-identityʳ</a>
+  <a id="854" class="Symbol">;</a> <a id="856" href="Algebra.Structures.html#2883" class="Function">assoc</a>     <a id="866" class="Symbol">to</a> <a id="869" class="Function">+-assoc</a>
   <a id="879" class="Symbol">;</a> <a id="881" href="Algebra.Bundles.html#6787" class="Field">ε</a>         <a id="891" class="Symbol">to</a> <a id="894" class="Field">0#</a>
   <a id="899" class="Symbol">)</a>
 
 <a id="902" class="Keyword">open</a> <a id="907" class="Keyword">import</a> <a id="914" href="Algebra.Properties.CommutativeMonoid.Mult.html" class="Module">Algebra.Properties.CommutativeMonoid.Mult</a> <a id="956" href="Algebra.Properties.CommutativeMonoid.Mult.TCOptimised.html#631" class="Bound">M</a> as <a id="U"></a><a id="961" href="Algebra.Properties.CommutativeMonoid.Mult.TCOptimised.html#961" class="Module">U</a>
   <a id="965" class="Keyword">using</a> <a id="971" class="Symbol">()</a> <a id="974" class="Keyword">renaming</a> <a id="983" class="Symbol">(</a><a id="984" href="Algebra.Definitions.RawMonoid.html#1089" class="Function Operator">_×_</a> <a id="988" class="Symbol">to</a> <a id="991" class="Function Operator">_×ᵤ_</a><a id="995" class="Symbol">)</a>
 
-<a id="998" class="Keyword">open</a> <a id="1003" class="Keyword">import</a> <a id="1010" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="1043" href="Algebra.Structures.html#1291" class="Function">setoid</a>
+<a id="998" class="Keyword">open</a> <a id="1003" class="Keyword">import</a> <a id="1010" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="1043" href="Algebra.Structures.html#1296" class="Function">setoid</a>
 
 <a id="1051" class="Comment">------------------------------------------------------------------------</a>
 <a id="1124" class="Comment">-- Re-export definition and properties for monoids</a>
