@@ -49,6 +49,8 @@ private
     x x′ y y′ : V
     kx : Key × V
 
+infix 4 _≈ₖᵥ_
+
 _≈ₖᵥ_ : Rel (Key × V) _
 _≈ₖᵥ_ = _≈_ ×ᴿ _≡_
 

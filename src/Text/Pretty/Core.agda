@@ -17,7 +17,7 @@ open import Data.Irrelevant as Irrelevant using (Irrelevant) hiding (module Irre
 open import Data.List.Base as List   using (List; []; _∷_)
 open import Data.Nat.Base            using (ℕ; zero; suc; _+_; _⊔_; _≤_; z≤n)
 open import Data.Nat.Properties
-open import Data.Product as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
 import Data.Product.Relation.Unary.All as Allᴾ
 
 open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; mapₙ)

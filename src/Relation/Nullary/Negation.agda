@@ -8,16 +8,15 @@
 
 module Relation.Nullary.Negation where
 
-open import Effect.Monad
+open import Effect.Monad using (RawMonad; mkRawMonad)
 open import Data.Bool.Base using (Bool; false; true; if_then_else_; not)
-open import Data.Empty
-open import Data.Product as Prod
+open import Data.Empty using (⊥-elim)
+open import Data.Product.Base as Prod using (_,_; Σ; Σ-syntax; ∃; curry; uncurry)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
-open import Function.Base
-open import Level
-open import Relation.Nullary.Negation.Core
-open import Relation.Nullary.Decidable.Core
-open import Relation.Unary
+open import Function.Base using (flip; _∘_; const; _∘′_)
+open import Level using (Level)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; excluded-middle)
+open import Relation.Unary using (Universal)
 
 private
   variable
@@ -89,7 +88,7 @@ independence-of-premise : {R : Q → Set r} →
 independence-of-premise {P = P} q f = ¬¬-map helper excluded-middle
   where
   helper : Dec P → _
-  helper (yes p) = Prod.map id const (f p)
+  helper (yes p) = Prod.map₂ const (f p)
   helper (no ¬p) = (q , ⊥-elim ∘′ ¬p)
 
 -- The independence of premise rule for binary sums.

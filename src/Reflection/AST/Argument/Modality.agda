@@ -48,6 +48,8 @@ modality-injective₂ refl = refl
 modality-injective : modality r q ≡ modality r′ q′ → r ≡ r′ × q ≡ q′
 modality-injective = < modality-injective₁ , modality-injective₂ >
 
+infix 4 _≟_
+
 _≟_ : DecidableEquality Modality
 modality r q ≟ modality r′ q′ =
   map′

@@ -37,10 +37,10 @@ Names = List Name
 -- Decidable equality for names
 ----------------------------------------------------------------------
 
+infix 4 _≈?_ _≟_ _≈_
+
 _≈_ : Rel Name _
 _≈_ = _≡_ on toWords
-
-infix 4 _≈?_ _≟_
 
 _≈?_ : Decidable _≈_
 _≈?_ = decidable toWords _≡_ (Prodₚ.≡-dec Wₚ._≟_ Wₚ._≟_)

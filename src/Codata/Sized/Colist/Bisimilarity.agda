@@ -32,6 +32,8 @@ data Bisim {A : Set a} {B : Set b} (R : REL A B r) (i : Size) :
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R) i xs ys →
         Bisim R i (x ∷ xs) (y ∷ ys)
 
+infixr 5 _∷_
+
 module _ {R : Rel A r} where
 
  reflexive : Reflexive R → Reflexive (Bisim R i)

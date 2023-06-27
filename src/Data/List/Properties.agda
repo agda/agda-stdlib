@@ -25,7 +25,8 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
-open import Data.Product as Prod hiding (map; zip)
+open import Data.Product.Base as Prod
+  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
 import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -768,6 +769,18 @@ take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
                     take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
 take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
   = take-suc (tabulate f) (cast _ i)
+
+-- If you take at least as many elements from a list as it has, you get the whole list.
+take-all :(n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
+take-all zero [] _ = refl
+take-all (suc _) [] _ = refl
+take-all (suc n) (x ∷ xs) (s≤s pf) = cong (x ∷_) (take-all n xs pf)
+
+-- Taking from an empty list does nothing.
+take-[] : ∀ m → take {A = A} m [] ≡ []
+take-[] zero = refl
+take-[] (suc m) = refl
+
 ------------------------------------------------------------------------
 -- drop
 
@@ -775,6 +788,12 @@ length-drop : ∀ n (xs : List A) → length (drop n xs) ≡ length xs ∸ n
 length-drop zero    xs       = refl
 length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
+
+-- Dropping from an empty list does nothing.
+drop-[] : ∀ m → drop {A = A} m [] ≡ []
+drop-[] zero = refl
+drop-[] (suc m) = refl
+
 
 take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl

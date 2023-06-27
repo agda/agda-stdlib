@@ -29,6 +29,8 @@ data Covec (A : Set a) (i : Size) : Conat ∞ → Set a where
   []  : Covec A i zero
   _∷_ : ∀ {n} → A → Thunk (λ i → Covec A i (n .force)) i → Covec A i (suc n)
 
+infixr 5 _∷_
+
 head : ∀ {n i} → Covec A i (suc n) → A
 head (x ∷ _) = x
 

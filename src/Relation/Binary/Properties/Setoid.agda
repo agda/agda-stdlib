@@ -6,16 +6,15 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S
-
 
 ------------------------------------------------------------------------------
 -- Every setoid is a preorder and partial order with respect to propositional
