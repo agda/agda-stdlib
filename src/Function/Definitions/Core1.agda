@@ -9,7 +9,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 
 module Function.Definitions.Core1
   {a b ℓ₁} {A : Set a} {B : Set b} (_≈₁_ : Rel A ℓ₁)

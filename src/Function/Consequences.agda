@@ -8,13 +8,12 @@
 
 module Function.Consequences where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function.Definitions
-open import Level
+open import Level using (Level)
 open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation.Core using (contraposition)
+open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 
 private
   variable

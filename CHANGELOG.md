@@ -105,6 +105,13 @@ Bug-fixes
   infix   8 _⁻¹                                              (Data.Parity.Base)
   infixr  5 _`∷_                                             (Data.Vec.Reflection)
   infixr  5 _∷=_                                             (Data.Vec.Membership.Setoid)
+  infix   4 _≟H_ _≟N_                                        (Algebra.Solver.Ring)
+  infix   4 _≈_                                              (Relation.Binary.Bundles)
+  infixl  6 _∩_                                              (Relation.Binary.Construct.Intersection)
+  infix   4 _<₋_                                             (Relation.Binary.Construct.Add.Infimum.Strict)
+  infix   4 _≈∙_                                             (Relation.Binary.Construct.Add.Point.Equality)
+  infix   4 _≤⁺_ _≤⊤⁺                                        (Relation.Binary.Construct.Add.Supremum.NonStrict)
+  infixr  5 _∷ʳ_                                             (Relation.Binary.Construct.Closure.Transitive)
   ```
 
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
@@ -2145,7 +2152,8 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
- 
+  
+  take-all : n ≥ length xs → take n xs ≡ xs     
   take-[] : ∀ m → take  m [] ≡ []
   drop-[] : ∀ m → drop  m [] ≡ []
   ```

@@ -25,7 +25,8 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
-open import Data.Product as Prod hiding (map; zip)
+open import Data.Product.Base as Prod
+  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
 import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -757,6 +758,12 @@ length-take : ∀ n (xs : List A) → length (take n xs) ≡ n ⊓ (length xs)
 length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
+
+-- If you take at least as many elements from a list as it has, you get the whole list.
+take-all :(n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
+take-all zero [] _ = refl
+take-all (suc _) [] _ = refl
+take-all (suc n) (x ∷ xs) (s≤s pf) = cong (x ∷_) (take-all n xs pf)
 
 -- Taking from an empty list does nothing.
 take-[] : ∀ m → take {A = A} m [] ≡ []
