@@ -15,11 +15,11 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_)
 import Data.List.Membership.Setoid as SetoidMembership
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
-open import Function
-open import Level
+open import Function.Base using (_∘_; _∘′_; id; const)
+open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)

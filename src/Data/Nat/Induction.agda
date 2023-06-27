@@ -10,9 +10,8 @@ module Data.Nat.Induction where
 
 open import Data.Nat.Base
 open import Data.Nat.Properties using (<⇒<′)
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base
-open import Function.Base
 open import Induction
 open import Induction.WellFounded as WF
 open import Level using (Level)

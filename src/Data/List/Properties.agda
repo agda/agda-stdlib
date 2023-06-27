@@ -25,7 +25,8 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
-open import Data.Product as Prod hiding (map; zip)
+open import Data.Product.Base as Prod
+  using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
 import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)

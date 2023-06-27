@@ -12,7 +12,7 @@ import Data.List.Base as List
 import Data.List.Properties as Listₚ
 open import Data.Maybe.Base using (maybe′)
 open import Data.Nat.Base using (zero; suc; _+_)
-open import Data.Product using (proj₂)
+open import Data.Product.Base using (proj₂)
 open import Data.String.Base
 open import Function.Base using (_∘′_)
 

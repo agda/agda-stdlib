@@ -8,11 +8,12 @@
 
 module Data.List.Kleene.Base where
 
-open import Data.Product as Product using (_×_; _,_; map₂; map₁; proj₁; proj₂)
-open import Data.Nat     as ℕ       using (ℕ; suc; zero)
-open import Data.Maybe   as Maybe   using (Maybe; just; nothing)
-open import Data.Sum     as Sum     using (_⊎_; inj₁; inj₂)
-open import Level        as Level   using (Level)
+open import Data.Product.Base as Product
+  using (_×_; _,_; map₂; map₁; proj₁; proj₂)
+open import Data.Nat.Base as ℕ using (ℕ; suc; zero)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
+open import Level using (Level)
 
 open import Algebra.Core using (Op₂)
 open import Function.Base
