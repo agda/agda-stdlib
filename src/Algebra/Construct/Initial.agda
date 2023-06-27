@@ -24,7 +24,8 @@ open import Algebra.Structures using (IsMagma; IsSemigroup; IsBand)
 open import Data.Empty.Polymorphic
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
 
 
 ------------------------------------------------------------------------

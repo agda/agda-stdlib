@@ -20,9 +20,12 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core as B hiding (Rel; _⇔_)
-open import Relation.Binary.Definitions using (Decidable; Reflexive; Symmetric; Transitive)
-open import Relation.Binary.Structures using (IsPreorder; IsEquivalence)
-open import Relation.Binary.Bundles using (Preorder; Setoid; Poset)
+open import Relation.Binary.Definitions
+  using (Decidable; Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsEquivalence)
+open import Relation.Binary.Bundles
+  using (Preorder; Setoid; Poset)
 import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
