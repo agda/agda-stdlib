@@ -224,17 +224,17 @@ toℕ-fromℕLessThan (suc m) {suc _} = cong suc (toℕ-fromℕLessThan m)
 
 fromℕLessThan-cong : ∀ {m n o} ⦃ m<o : _ ⦄ ⦃ n<o : _ ⦄ → m ≡ n →
                      fromℕLessThan m {o} ⦃ m<o ⦄ ≡ fromℕLessThan n {o} ⦃ n<o ⦄
-fromℕLessThan-cong {zero}  {zero}                          r = refl
-fromℕLessThan-cong {suc m} {suc n} {suc _} ⦃ m<o ⦄ ⦃ n<o ⦄ r
-  = cong suc (fromℕLessThan-cong {m} {n} ⦃ m<o ⦄ ⦃ n<o ⦄ (ℕₚ.suc-injective r))
+fromℕLessThan-cong {zero}  {zero}          r = refl
+fromℕLessThan-cong {suc m} {suc n} {suc _} r
+  = cong suc (fromℕLessThan-cong {m} {n} (ℕₚ.suc-injective r))
 
 fromℕLessThan-injective : ∀ {m n o} ⦃ m<o : _ ⦄ ⦃ n<o : _ ⦄ →
                           fromℕLessThan m {o} ⦃ m<o ⦄ ≡ fromℕLessThan n {o} ⦃ n<o ⦄ →
                           m ≡ n
 fromℕLessThan-injective {zero}  {zero}          r = refl
-fromℕLessThan-injective {zero}  {suc n} {suc _} ()
-fromℕLessThan-injective {suc m} {suc n} {suc _} ⦃ m<o ⦄ ⦃ n<o ⦄ r
-  = cong suc (fromℕLessThan-injective {m} {n} ⦃ m<o ⦄ ⦃ n<o ⦄ (suc-injective r))
+fromℕLessThan-injective {zero}  {suc n} {suc _} () -- unexpectedly necessary?
+fromℕLessThan-injective {suc m} {suc n} {suc _} r
+  = cong suc (fromℕLessThan-injective {m} {n} (suc-injective r))
 
 -- fromℕ is a special case of fromℕLessThan.
 fromℕ-LessThan-def : ∀ n → let instance _ = ℕ.lessThanSuc {n} in
