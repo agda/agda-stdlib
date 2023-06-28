@@ -15,7 +15,7 @@ open import Data.Product using (_,_)
 open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_⇒_; Rel)
-open import Relation.Binary.Bundles as Bundles
+open import Relation.Binary.Bundles as B
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Indexed.Homogeneous.Core
@@ -46,7 +46,7 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
   _≉_ : Rel Carrier _
   x ≉ y = ¬ (x ≈ y)
 
-  setoid : Bundles.Setoid _ _
+  setoid : B.Setoid _ _
   setoid = record
     { isEquivalence = isEquivalence
     }
@@ -94,7 +94,7 @@ record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ :
   _∼_ : Rel Carrier _
   x ∼ y = ∀ i → x i ∼ᵢ y i
 
-  preorder : Bundles.Preorder _ _ _
+  preorder : B.Preorder _ _ _
   preorder = record
     { isPreorder = isPreorder
     }
@@ -120,7 +120,7 @@ record IndexedPoset {i} (I : Set i) c ℓ₁ ℓ₂ :
   open IndexedPreorder preorderᵢ public
     using (Carrier; _≈_; preorder) renaming (_∼_ to _≤_)
 
-  poset : Bundles.Poset _ _ _
+  poset : B.Poset _ _ _
   poset = record
     { isPartialOrder = isPartialOrder
     }

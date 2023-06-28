@@ -21,9 +21,8 @@ open import Data.Product using (_,_)
 open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_⇒_)
-import Relation.Binary.Definitions as Definitions
-import Relation.Binary.Bundles as Bundles
-import Relation.Binary.Structures as Structures
+import Relation.Binary.Definitions as B
+import Relation.Binary.Structures as B
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Binary.Indexed.Homogeneous.Definitions
 
@@ -48,16 +47,16 @@ record IsIndexedEquivalence : Set (i ⊔ a ⊔ ℓ) where
   reflexive : _≡_ ⇒ (Lift A _≈ᵢ_)
   reflexive P.refl i = reflᵢ
 
-  refl : Definitions.Reflexive (Lift A _≈ᵢ_)
+  refl : B.Reflexive (Lift A _≈ᵢ_)
   refl i = reflᵢ
 
-  sym : Definitions.Symmetric (Lift A _≈ᵢ_)
+  sym : B.Symmetric (Lift A _≈ᵢ_)
   sym x≈y i = symᵢ (x≈y i)
 
-  trans : Definitions.Transitive (Lift A _≈ᵢ_)
+  trans : B.Transitive (Lift A _≈ᵢ_)
   trans x≈y y≈z i = transᵢ (x≈y i) (y≈z i)
 
-  isEquivalence : Structures.IsEquivalence (Lift A _≈ᵢ_)
+  isEquivalence : B.IsEquivalence (Lift A _≈ᵢ_)
   isEquivalence = record
     { refl  = refl
     ; sym   = sym
@@ -103,22 +102,22 @@ record IsIndexedPreorder {ℓ₂} (_∼ᵢ_ : IRel A ℓ₂)
   reflexive : Lift A _≈ᵢ_ ⇒ Lift A _∼ᵢ_
   reflexive x≈y i = reflexiveᵢ (x≈y i)
 
-  refl : Definitions.Reflexive (Lift A _∼ᵢ_)
+  refl : B.Reflexive (Lift A _∼ᵢ_)
   refl i = reflᵢ
 
-  trans : Definitions.Transitive (Lift A _∼ᵢ_)
+  trans : B.Transitive (Lift A _∼ᵢ_)
   trans x≈y y≈z i = transᵢ (x≈y i) (y≈z i)
 
-  ∼-respˡ-≈ : (Lift A _∼ᵢ_) Definitions.Respectsˡ (Lift A _≈ᵢ_)
+  ∼-respˡ-≈ : (Lift A _∼ᵢ_) B.Respectsˡ (Lift A _≈ᵢ_)
   ∼-respˡ-≈ x≈y x∼z i = ∼ᵢ-respˡ-≈ᵢ (x≈y i) (x∼z i)
 
-  ∼-respʳ-≈ : (Lift A _∼ᵢ_) Definitions.Respectsʳ (Lift A _≈ᵢ_)
+  ∼-respʳ-≈ : (Lift A _∼ᵢ_) B.Respectsʳ (Lift A _≈ᵢ_)
   ∼-respʳ-≈ x≈y z∼x i = ∼ᵢ-respʳ-≈ᵢ (x≈y i) (z∼x i)
 
-  ∼-resp-≈ : (Lift A _∼ᵢ_) Definitions.Respects₂ (Lift A _≈ᵢ_)
+  ∼-resp-≈ : (Lift A _∼ᵢ_) B.Respects₂ (Lift A _≈ᵢ_)
   ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
 
-  isPreorder : Structures.IsPreorder (Lift A _≈ᵢ_) (Lift A _∼ᵢ_)
+  isPreorder : B.IsPreorder (Lift A _≈ᵢ_) (Lift A _∼ᵢ_)
   isPreorder = record
     { isEquivalence = Eq.isEquivalence
     ; reflexive     = reflexive
@@ -145,10 +144,10 @@ record IsIndexedPartialOrder {ℓ₂} (_≤ᵢ_ : IRel A ℓ₂)
     ; ∼-resp-≈    to ≤-resp-≈
     )
 
-  antisym : Definitions.Antisymmetric (Lift A _≈ᵢ_) (Lift A _≤ᵢ_)
+  antisym : B.Antisymmetric (Lift A _≈ᵢ_) (Lift A _≤ᵢ_)
   antisym x≤y y≤x i = antisymᵢ (x≤y i) (y≤x i)
 
-  isPartialOrder : Structures.IsPartialOrder (Lift A _≈ᵢ_) (Lift A _≤ᵢ_)
+  isPartialOrder : B.IsPartialOrder (Lift A _≈ᵢ_) (Lift A _≤ᵢ_)
   isPartialOrder = record
     { isPreorder = isPreorder
     ; antisym    = antisym
