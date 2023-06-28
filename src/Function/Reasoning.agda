@@ -19,4 +19,4 @@ infixl 0 ∋-syntax
 syntax ∋-syntax A a = a ∶ A
 
 -- Export pipeline functions
-open import Function public using (_|>_; _|>′_)
+open import Function.Base public using (_|>_; _|>′_)

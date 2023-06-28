@@ -16,7 +16,7 @@ open import Data.Product using (_×_; _,_)
 open import Data.String.Base as String using (String; _++_)
 open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Unit.Base using (⊤; tt)
-open import Function using (case_of_; _$_; _∘_)
+open import Function.Base using (case_of_; _$_; _∘_)
 open import Reflection hiding (name)
 
 -- Type aliases for the various strings.

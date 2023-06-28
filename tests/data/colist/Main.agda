@@ -11,7 +11,7 @@ import Data.Fin.Show as Fin
 open import Data.String.Base using (String; _++_; parens)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Codata.Sized.Thunk
-open import Function using (_$_; _∘_; id)
+open import Function.Base using (_$_; _∘_; id)
 open import Relation.Nullary
 
 open import Codata.Musical.Notation

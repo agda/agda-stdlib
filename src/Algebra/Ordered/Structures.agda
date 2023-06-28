@@ -22,7 +22,7 @@ open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
 open import Data.Product.Base using (proj₁; proj₂)
-open import Function using (flip)
+open import Function.Base using (flip)
 open import Level using (_⊔_)
 open import Relation.Binary.Definitions using (Transitive; Monotonic₁; Monotonic₂)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)

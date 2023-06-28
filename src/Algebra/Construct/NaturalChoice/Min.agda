@@ -11,7 +11,7 @@ open import Algebra.Bundles
 open import Algebra.Construct.NaturalChoice.Base
 open import Data.Sum using (inj₁; inj₂; [_,_])
 open import Data.Product.Base using (_,_)
-open import Function using (id)
+open import Function.Base using (id)
 open import Relation.Binary
 import Algebra.Construct.NaturalChoice.MinOp as MinOp
 
