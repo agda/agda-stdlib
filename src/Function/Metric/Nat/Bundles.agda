@@ -13,7 +13,7 @@
 module Function.Metric.Nat.Bundles where
 
 open import Data.Nat.Base hiding (suc; _⊔_)
-open import Function using (const)
+open import Function.Base using (const)
 open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality

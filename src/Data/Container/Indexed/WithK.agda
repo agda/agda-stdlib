@@ -16,7 +16,7 @@ module Data.Container.Indexed.WithK where
 open import Axiom.Extensionality.Heterogeneous using (Extensionality)
 open import Data.Container.Indexed hiding (module PlainMorphism)
 open import Data.Product as Prod hiding (map)
-open import Function renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
+open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Level
 open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
