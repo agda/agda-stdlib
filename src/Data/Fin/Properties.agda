@@ -692,8 +692,9 @@ join-splitAt (suc m) n (suc i) = begin
 splitAt-LessThan : ∀ m {n} (i : Fin (m ℕ.+ n)) .⦃ lt : _ ⦄ →
                    splitAt m i ≡ inj₁ (fromℕLessThan (toℕ i) ⦃ lt ⦄ )
 splitAt-LessThan (suc m) zero           = refl
-splitAt-LessThan (suc m) (suc i) ⦃ lt ⦄ =
-  cong (Sum.map suc id) (splitAt-LessThan m i ⦃ lt ⦄)
+splitAt-LessThan (suc m) (suc i) =
+  cong (Sum.map suc id) (splitAt-LessThan m i)
+  where instance _ = ℕ.lessThanSucSuc
 
 splitAt-< : ∀ m {n} (i : Fin (m ℕ.+ n)) .(i<m : toℕ i ℕ.< m) →
             splitAt m i ≡ inj₁ (fromℕ< i<m)
