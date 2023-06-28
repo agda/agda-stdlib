@@ -15,7 +15,7 @@ import Data.Fin.Permutation.Components as PC
 open import Data.List.Base using (List; []; _∷_; map)
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product using (_×_; _,_)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; sym; cong; module ≡-Reasoning)
 open ≡-Reasoning
