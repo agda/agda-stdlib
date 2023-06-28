@@ -14,7 +14,7 @@ module Relation.Binary.Indexed.Homogeneous.Definitions where
 open import Data.Product using (_×_)
 open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_)
-import Relation.Binary.Definitions as Definitions
+import Relation.Binary.Definitions as B
 open import Relation.Unary.Indexed using (IPred)
 
 open import Relation.Binary.Indexed.Homogeneous.Core
@@ -35,19 +35,19 @@ module _ (A : I → Set a) where
   Implies _∼₁_ _∼₂_ = ∀ {i} → _∼₁_ ⇒ (_∼₂_ {i})
 
   Reflexive : IRel A ℓ → Set _
-  Reflexive _∼_ = ∀ {i} → Definitions.Reflexive (_∼_ {i})
+  Reflexive _∼_ = ∀ {i} → B.Reflexive (_∼_ {i})
 
   Symmetric : IRel A ℓ → Set _
-  Symmetric _∼_ = ∀ {i} → Definitions.Symmetric (_∼_ {i})
+  Symmetric _∼_ = ∀ {i} → B.Symmetric (_∼_ {i})
 
   Transitive : IRel A ℓ → Set _
-  Transitive _∼_ = ∀ {i} → Definitions.Transitive (_∼_ {i})
+  Transitive _∼_ = ∀ {i} → B.Transitive (_∼_ {i})
 
   Antisymmetric : IRel A ℓ₁ → IRel A ℓ₂ → Set _
-  Antisymmetric _≈_ _∼_ = ∀ {i} → Definitions.Antisymmetric _≈_ (_∼_ {i})
+  Antisymmetric _≈_ _∼_ = ∀ {i} → B.Antisymmetric _≈_ (_∼_ {i})
 
   Decidable : IRel A ℓ → Set _
-  Decidable _∼_ = ∀ {i} → Definitions.Decidable (_∼_ {i})
+  Decidable _∼_ = ∀ {i} → B.Decidable (_∼_ {i})
 
   Respects : IPred A ℓ₁ → IRel A ℓ₂ → Set _
   Respects P _∼_ = ∀ {i} {x y : A i} → x ∼ y → P x → P y
