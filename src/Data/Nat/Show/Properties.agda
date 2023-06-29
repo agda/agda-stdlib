@@ -6,15 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Digit using (showDigit; toDigits)
 open import Data.Digit.Properties using (toDigits-injective; showDigit-injective)
-open import Function using (_∘_)
 import Data.List.Properties as Listₚ
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
+open import Data.Nat.Show using (charsInBase)
+open import Function using (_∘_)
 open import Relation.Nullary.Decidable using (True)
 open import Relation.Binary.PropositionalEquality using (_≡_)
-open import Data.Nat.Show using (charsInBase)
 
 module Data.Nat.Show.Properties where
 
