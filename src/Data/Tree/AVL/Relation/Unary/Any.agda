@@ -12,7 +12,7 @@ module Data.Tree.AVL.Relation.Unary.Any
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Product as Prod using (∃)
+open import Data.Product.Base as Prod using (∃)
 open import Function.Base using (_∘_; _$_)
 open import Level using (Level; _⊔_)
 

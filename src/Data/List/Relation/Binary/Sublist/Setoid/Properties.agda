@@ -16,7 +16,7 @@ open import Data.List.Relation.Unary.Any using (Any)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (_≤_; _≥_)
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃; _,_; proj₂)
+open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level

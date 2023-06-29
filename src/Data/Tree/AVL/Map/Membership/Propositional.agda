@@ -15,7 +15,7 @@ module Data.Tree.AVL.Map.Membership.Propositional
 
 open import Data.Bool.Base using (true; false)
 open import Data.Maybe.Base using (just; nothing; is-just)
-open import Data.Product as Prod using (_×_; ∃-syntax; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; ∃-syntax; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent renaming (Pointwise to _×ᴿ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _∘′_)

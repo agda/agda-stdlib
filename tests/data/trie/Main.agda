@@ -12,7 +12,7 @@ import Data.Char.Properties   as Char
 open import Data.List.Base    as List using (List; []; _∷_)
 open import Data.List.Fresh   as List# using (List#; []; _∷#_)
 open import Data.Maybe        as Maybe
-open import Data.Product      as Prod
+open import Data.Product.Base using (map₁)
 open import Data.String       as String using (String; unlines; _++_)
 open import Data.These        as These
 
@@ -55,7 +55,7 @@ module _ {t} (L : Lexer t) where
     Keywords = Trie (const _ Tok) _
 
     init : Keywords
-    init = fromList $ List.map (Prod.map₁ String.toList) $ proj₁ $ List#.toList keywords
+    init = fromList $ List.map (map₁ String.toList) $ proj₁ $ List#.toList keywords
 
     start : List Char → List Tok
     start = loop [] init

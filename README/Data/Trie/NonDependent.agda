@@ -56,7 +56,7 @@ import Data.Char.Properties  as Char
 open import Data.List.Base   as List using (List; []; _∷_)
 open import Data.List.Fresh  as List# using (List#; []; _∷#_)
 open import Data.Maybe       as Maybe
-open import Data.Product     as Prod
+open import Data.Product.Base using (map₁; _×_; ∃; proj₁; _,_)
 open import Data.String.Base as String using (String)
 open import Data.String.Properties as String using (_≟_)
 open import Data.These       as These
@@ -127,7 +127,7 @@ module _ {t} (L : Lexer t) where
     -- characters one by one
 
     init : Keywords
-    init = fromList $ List.map (Prod.map₁ String.toList) $ proj₁ $ List#.toList keywords
+    init = fromList $ List.map (map₁ String.toList) $ proj₁ $ List#.toList keywords
 
     -- Kickstart the tokeniser with an empty accumulator and the initial
     -- trie.
