@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.Grouped.Properties where
 
 open import Data.Bool using (true; false)
-open import Data.List
+open import Data.List.Base using ([]; [_]; _∷_; map; derun)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)

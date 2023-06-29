@@ -12,7 +12,7 @@ open import Data.Empty
 open import Data.Nat using (ℕ; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Product using (_×_; _,_; proj₁; proj₂; uncurry)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive using (Pointwise; []; _∷_)
 open import Function.Base using (flip)
