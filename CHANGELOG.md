@@ -1008,7 +1008,7 @@ Deprecated modules
 
 ### Deprecation of `Data.Nat.Properties.Core`
 
-* The module `Data.Nat.Properties.Core` has been deprecated, and its one entry moved to `Data.Nat.Properties`
+* The module `Data.Nat.Properties.Core` has been deprecated, and its one lemma moved to `Data.Nat.Base`, renamed as `s≤s⁻¹`
 
 Deprecated names
 ----------------
@@ -1234,6 +1234,8 @@ Deprecated names
 * In `Data.Nat.Properties`:
   ```
   suc[pred[n]]≡n  ↦  suc-pred
+  ≤-pred ↦ s≤s⁻¹
+  <-pred ↦ s<s⁻¹
   ≤-step          ↦  m≤n⇒m≤1+n
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
@@ -2159,9 +2161,11 @@ Other minor changes
   s<s⁻¹ : suc m < suc n → m < n
 
   LessThan : Rel ℕ 0ℓ
-  <ᵇ-lessThan   : .(T (m <ᵇ n)) → LessThan m n
+  instance lessThan : LessThan 0 (suc n)
+  lessThanSuc       : LessThan n (suc n)
+  lessThanSucSuc    : .⦃ LessThan m n ⦄ → LessThan (suc m) (suc n)
+
   <-lessThan    : .(m < n) → LessThan m n
-  <ᵇ-lessThan⁻¹ : .{{LessThan m n}} → T (m <ᵇ n)
   <-lessThan⁻¹  : .{{LessThan m n}} → m < n
 
   pattern <′-base          = ≤′-refl
