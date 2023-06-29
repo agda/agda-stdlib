@@ -8,7 +8,7 @@
 
 open import Data.Digit using (showDigit; toDigits)
 open import Data.Digit.Properties using (toDigits-injective; showDigit-injective)
-open import Function using (_∘_; Injective)
+open import Function using (_∘_)
 import Data.List.Properties as Listₚ
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
