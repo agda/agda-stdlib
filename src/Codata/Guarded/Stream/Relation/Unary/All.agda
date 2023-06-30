@@ -20,6 +20,8 @@ private
     P Q R : Pred A p
     xs : Stream A
 
+infixr 5 _∷_
+
 record All (P : Pred A ℓ) (as : Stream A) : Set ℓ where
   coinductive
   constructor _∷_

@@ -112,6 +112,14 @@ Bug-fixes
   infix   4 _≈∙_                                             (Relation.Binary.Construct.Add.Point.Equality)
   infix   4 _≤⁺_ _≤⊤⁺                                        (Relation.Binary.Construct.Add.Supremum.NonStrict)
   infixr  5 _∷ʳ_                                             (Relation.Binary.Construct.Closure.Transitive)
+  infixr  5 _∷_                                              (Codata.Guarded.Stream.Relation.Unary.All)
+  infixr  5 _∷_                                              (Foreign.Haskell.List.NonEmpty)
+  infix   4 _≈_                                              (Function.Metric.Rational.Bundles)
+  infixl  6 _ℕ+_                                             (Level.Literals)
+  infixr  6 _∪_                                              (Relation.Binary.Construct.Union)
+  infixl  6 _+ℤ_                                             (Relation.Binary.HeterogeneousEquality.Quotients.Examples)
+  infix   4 _≉_ _≈ᵢ_ _≤ᵢ_                                    (Relation.Binary.Indexed.Homogeneous.Bundles)
+  infixr  5 _∷ᴹ_ _∷⁻¹ᴹ_                                      (Text.Regex.Search)
   ```
 
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer

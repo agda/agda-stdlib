@@ -87,6 +87,8 @@ module Prefix where
   []⁻¹ᴹ : ∀ {e} → Match (Prefix _≡_) [] e → [] ∈ e
   []⁻¹ᴹ (mkMatch .[] p []) = p
 
+  infixr 5 _∷ᴹ_ _∷⁻¹ᴹ_
+
   _∷ᴹ_ : ∀ {xs e} x → Match (Prefix _≡_) xs (eat x e) → Match (Prefix _≡_) (x ∷ xs) e
   x ∷ᴹ (mkMatch ys ys∈e\x ys≤xs) = mkMatch (x ∷ ys) (eat-sound x _ ys∈e\x) (refl ∷ ys≤xs)
 
