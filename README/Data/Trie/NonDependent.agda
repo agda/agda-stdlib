@@ -53,7 +53,7 @@ open import Data.Unit
 open import Data.Bool
 open import Data.Char        as Char
 import Data.Char.Properties  as Char
-open import Data.List        as List using (List; []; _∷_)
+open import Data.List.Base   as List using (List; []; _∷_)
 open import Data.List.Fresh  as List# using (List#; []; _∷#_)
 open import Data.Maybe       as Maybe
 open import Data.Product     as Prod
