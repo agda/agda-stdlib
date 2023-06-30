@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (CommutativeMagma)
-open import Data.Product using (_×_; _,_; map)
+open import Data.Product.Base using (_×_; _,_; map)
 
 module Algebra.Properties.CommutativeMagma.Divisibility
   {a ℓ} (CM : CommutativeMagma a ℓ)
