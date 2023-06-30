@@ -30,6 +30,7 @@ open import Data.Product.Base as Prod
 import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
+open import Data.Fin.Properties using (toℕ-cast)
 open import Function
 open import Level using (Level)
 open import Relation.Binary as B using (DecidableEquality)
@@ -759,6 +760,22 @@ length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
+take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
+           take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
+take-suc (x ∷ xs) zero    = refl
+take-suc (x ∷ xs) (suc i) = cong (x ∷_) (take-suc xs i)
+
+take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
+                    take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
+take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
+  = take-suc (tabulate f) (cast _ i)
+
+-- If you take at least as many elements from a list as it has, you get the whole list.
+take-all :(n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
+take-all zero [] _ = refl
+take-all (suc _) [] _ = refl
+take-all (suc n) (x ∷ xs) (s≤s pf) = cong (x ∷_) (take-all n xs pf)
+
 -- Taking from an empty list does nothing.
 take-[] : ∀ m → take {A = A} m [] ≡ []
 take-[] zero = refl
@@ -782,6 +799,16 @@ take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl
 take++drop (suc n) []       = refl
 take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
+
+drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
+           drop m (take (suc m) xs) ≡ [ lookup xs i ]
+drop-take-suc (x ∷ xs) zero    = refl
+drop-take-suc (x ∷ xs) (suc i) = drop-take-suc xs i
+
+drop-take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
+                  drop m (take (suc m) (tabulate f)) ≡ [ f i ]
+drop-take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
+  = drop-take-suc (tabulate f) (cast _ i)
 
 ------------------------------------------------------------------------
 -- splitAt
@@ -1086,6 +1113,8 @@ module _ {x y : A} where
 
 ∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
 ∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
+
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED

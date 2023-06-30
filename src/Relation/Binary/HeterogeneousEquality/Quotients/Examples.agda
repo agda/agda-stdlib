@@ -82,6 +82,8 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
   module _ (ext : ∀ {a b} {A : Set a} {B₁ B₂ : A → Set b} {f₁ : ∀ a → B₁ a}
                   {f₂ : ∀ a → B₂ a} → (∀ a → f₁ a ≅ f₂ a) → f₁ ≅ f₂) where
 
+    infixl 6 _+ℤ_
+
     _+ℤ_ : ℤ → ℤ → ℤ
     _+ℤ_ = Properties₂.lift₂ ext Int Int (λ i j → abs (i +² j))
          $ λ {a} {b} {c} p p′ → compat-abs (+²-cong {a} {b} {c} p p′)

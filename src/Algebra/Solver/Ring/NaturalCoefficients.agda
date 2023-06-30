@@ -12,7 +12,7 @@ import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; just; nothing; map)
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Data.Nat.Base as ℕ
-open import Data.Product using (module Σ)
+open import Data.Product.Base using (module Σ)
 open import Function.Base using (id)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 

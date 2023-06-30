@@ -176,6 +176,8 @@ mutual
 
   -- Equality is weakly decidable.
 
+  infix 4 _≟H_ _≟N_
+
   _≟H_ : ∀ {n} → WeaklyDecidable (_≈H_ {n = n})
   ∅           ≟H ∅           = just ∅
   ∅           ≟H (_ *x+ _)   = nothing

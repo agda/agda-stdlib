@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Unary.AllPairs.Properties where
 
-open import Data.List hiding (any)
+open import Data.List.Base hiding (any)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)

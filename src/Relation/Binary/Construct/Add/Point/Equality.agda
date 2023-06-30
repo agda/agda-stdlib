@@ -24,6 +24,8 @@ import Relation.Nullary.Decidable as Dec
 ------------------------------------------------------------------------
 -- Definition
 
+infix 4 _≈∙_
+
 data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
   ∙≈∙ :                     ∙     ≈∙ ∙
   [_] : {k l : A} → k ≈ l → [ k ] ≈∙ [ l ]

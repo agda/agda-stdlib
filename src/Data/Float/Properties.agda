@@ -15,7 +15,7 @@ import Data.Maybe.Properties as Mₚ
 import Data.Nat.Properties as Nₚ
 import Data.Word.Base as Word
 import Data.Word.Properties as Wₚ
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Nullary.Decidable as RN using (map′)
 open import Relation.Binary
 import Relation.Binary.Construct.On as On

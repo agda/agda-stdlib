@@ -9,7 +9,7 @@
 module Reflection.AST.Meta where
 
 import Data.Nat.Properties as ℕₚ                       using (_≟_)
-open import Function                                   using (_on_)
+open import Function.Base                              using (_on_)
 open import Relation.Nullary.Decidable                 using (map′)
 open import Relation.Binary                            using (Rel; Decidable; DecidableEquality)
 import Relation.Binary.Construct.On as On

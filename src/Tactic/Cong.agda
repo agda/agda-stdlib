@@ -24,7 +24,7 @@
 
 module Tactic.Cong where
 
-open import Function using (_$_)
+open import Function.Base using (_$_)
 
 open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
 open import Data.Char.Base   as Char  using (toℕ)
