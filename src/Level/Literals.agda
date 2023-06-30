@@ -15,6 +15,8 @@ open import Level using (Level; 0ℓ)
 
 -- Increase a Level by a number of sucs.
 
+infixl 6 _ℕ+_
+
 _ℕ+_ : ℕ → Level → Level
 zero  ℕ+ ℓ = ℓ
 suc n ℕ+ ℓ = Level.suc (n ℕ+ ℓ)
