@@ -16,7 +16,7 @@ open import Effect.Functor using (RawFunctor)
 open import Effect.Monad using (RawMonad)
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Function
+open import Function.Base using (id)
 import Function.Identity.Effectful as Id
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)

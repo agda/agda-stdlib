@@ -26,7 +26,7 @@ open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
-open import Function
+open import Function using (_$_; _∘′_; _∘_; id)
 open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 

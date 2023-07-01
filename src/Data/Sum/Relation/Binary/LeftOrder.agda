@@ -13,7 +13,7 @@ open import Data.Sum.Relation.Binary.Pointwise as PW
   using (Pointwise; inj₁; inj₂)
 open import Data.Product
 open import Data.Empty
-open import Function
+open import Function.Base using (_$_; _∘_)
 open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec

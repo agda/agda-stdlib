@@ -11,7 +11,7 @@ module Data.Vec.Bounded where
 open import Level using (Level)
 open import Data.Nat.Base
 open import Data.Vec as Vec using (Vec)
-open import Function
+open import Function.Base using (id)
 open import Relation.Binary using (_Preserves_⟶_)
 open import Relation.Unary using (Pred; Decidable)
 

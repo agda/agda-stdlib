@@ -36,7 +36,7 @@ open import Data.Nat
 open import Data.List.Base
 open import Data.Char.Base
 open import Data.String as String using (String; toList; fromList; _==_)
-open import Function
+open import Function.Base using (_∘_)
 open import Data.Bool hiding (_≤?_)
 open import Data.Product as P using (_×_; <_,_>; uncurry; proj₁)
 open import Agda.Builtin.Equality

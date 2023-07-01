@@ -16,7 +16,7 @@ open import Data.Unit.Polymorphic
 open import Effect.Applicative.Indexed
 open import Effect.Monad
 open import Effect.Monad.Indexed
-open import Function
+open import Function.Base using (_∘′_)
 open import Function.Identity.Effectful as Id using (Identity)
 
 private

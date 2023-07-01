@@ -25,7 +25,7 @@ import Function.Identity.Effectful as IdCat
 open import Data.Vec.Properties using (lookup-map)
 open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
   using (Pointwise; ext)
-open import Function
+open import Function.Base using (_∘_; _$_; flip)
 open import Relation.Binary.PropositionalEquality as P using (_≗_)
 import Relation.Binary.Reflection as Reflection
 

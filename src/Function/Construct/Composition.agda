@@ -9,7 +9,13 @@
 module Function.Construct.Composition where
 
 open import Data.Product.Base using (_,_)
-open import Function
+open import Function.Base using (_∘_)
+open import Function.Bundles
+  using (Func; Injection; Surjection; Bijection; Equivalence; LeftInverse; RightInverse; Inverse; _⟶_; _↣_; _↠_; _⤖_; _⇔_; _↩_; _↪_; _↔_)
+open import Function.Definitions
+  using (Congruent; Injective; Surjective; Bijective; Inverseˡ; Inverseʳ; Inverseᵇ)
+open import Function.Structures
+  using (IsCongruent; IsInjection; IsSurjection; IsBijection; IsLeftInverse; IsRightInverse; IsInverse)
 open import Level using (Level)
 open import Relation.Binary hiding (_⇔_; IsEquivalence)
 

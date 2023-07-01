@@ -19,7 +19,7 @@ open import Data.Nat.Primality
 open import Data.Nat.Properties
 open import Data.Nat.DivMod
 open import Data.Product as Prod
-open import Function
+open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; trans; cong; subst; module ≡-Reasoning)

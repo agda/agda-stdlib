@@ -8,7 +8,7 @@
 
 module Relation.Binary.Construct.Closure.Transitive.WithK where
 
-open import Function
+open import Function.Base using (_∋_)
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Transitive
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)

@@ -73,7 +73,7 @@
 module Tactic.MonoidSolver where
 
 open import Algebra
-open import Function
+open import Function.Base using (_⟨_⟩_)
 
 open import Data.Bool    as Bool    using (Bool; _∨_; if_then_else_)
 open import Data.Maybe   as Maybe   using (Maybe; just; nothing; maybe)

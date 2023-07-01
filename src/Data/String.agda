@@ -21,7 +21,6 @@ open import Data.List.Relation.Binary.Lex.Strict using (Lex-<; Lex-≤)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
 import Data.Char.Properties as Char using (_≟_)
-open import Function
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Relation.Nullary.Decidable using (does)

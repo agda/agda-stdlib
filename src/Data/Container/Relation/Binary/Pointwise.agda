@@ -9,7 +9,7 @@
 module Data.Container.Relation.Binary.Pointwise where
 
 open import Data.Product using (_,_; Σ-syntax; -,_; proj₁; proj₂)
-open import Function
+open import Function.Base using (_∘_)
 open import Level using (_⊔_)
 open import Relation.Binary using (REL; _⇒_)
 open import Relation.Binary.PropositionalEquality as P

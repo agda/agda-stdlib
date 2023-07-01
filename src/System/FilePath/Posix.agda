@@ -15,7 +15,6 @@ open import IO.Base using (IO; lift)
 open import Data.Maybe.Base using (Maybe)
 open import Data.Product using (_×_)
 open import Data.Sum.Base using (_⊎_)
-open import Function
 
 open import Foreign.Haskell.Coerce
 

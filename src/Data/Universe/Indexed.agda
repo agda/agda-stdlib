@@ -10,7 +10,7 @@ module Data.Universe.Indexed where
 
 open import Data.Product
 open import Data.Universe
-open import Function
+open import Function.Base using (_∘_)
 open import Level
 
 ------------------------------------------------------------------------

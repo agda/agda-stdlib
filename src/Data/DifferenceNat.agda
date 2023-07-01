@@ -10,7 +10,7 @@
 module Data.DifferenceNat where
 
 open import Data.Nat.Base as N using (ℕ)
-open import Function
+open import Function.Base using (_⟨_⟩_)
 
 infixl 6 _+_
 

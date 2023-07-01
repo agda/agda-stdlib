@@ -8,7 +8,7 @@
 
 module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 
-open import Function
+open import Function.Base using (id; _∘_; _$_)
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.PropositionalEquality as PropEq
