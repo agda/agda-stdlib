@@ -14,7 +14,7 @@ open import Algebra.Consequences.Base
 open import Relation.Binary
 open import Relation.Nullary using (¬_; yes; no)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Unary using (Pred)

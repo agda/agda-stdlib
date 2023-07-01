@@ -3,7 +3,7 @@
 module Main where
 
 
-open import Data.List using (replicate)
+open import Data.List.Base using (replicate)
 open import Data.String using (toList; fromList)
 
 open import IO

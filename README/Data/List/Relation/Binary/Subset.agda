@@ -4,7 +4,7 @@
 -- Documentation for subset relations over `List`s
 ------------------------------------------------------------------------
 
-open import Data.List using (List; _∷_; [])
+open import Data.List.Base using (List; _∷_; [])
 open import Data.List.Membership.Propositional.Properties
   using (∈-++⁺ˡ; ∈-insert)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)

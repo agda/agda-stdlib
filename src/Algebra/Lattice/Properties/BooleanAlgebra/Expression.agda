@@ -18,7 +18,7 @@ open import Effect.Applicative as Applicative
 open import Effect.Monad
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
 import Data.Vec.Effectful as VecCat
 import Function.Identity.Effectful as IdCat

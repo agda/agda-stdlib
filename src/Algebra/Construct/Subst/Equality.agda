@@ -9,7 +9,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Relation.Binary.Core
 
 module Algebra.Construct.Subst.Equality

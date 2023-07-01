@@ -18,7 +18,7 @@ open import Data.Nat.Base as ℕ                         using (ℕ; suc; zero; 
 open import Data.Nat.Properties as ℕₚ                  using (≤′-trans)
 open import Data.Vec.Base as Vec                       using (Vec; _∷_)
 open import Data.Fin                                   using (Fin; zero; suc)
-open import Data.List                                  using (_∷_; [])
+open import Data.List.Base                             using (_∷_; [])
 open import Data.Unit using (tt)
 open import Data.List.Kleene
 open import Data.Product                               using (_,_; proj₁; proj₂; map₁; _×_)
