@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Monoid)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Relation.Binary
 
 module Algebra.Properties.Monoid.Divisibility

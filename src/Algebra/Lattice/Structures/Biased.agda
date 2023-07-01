@@ -14,7 +14,7 @@
 
 open import Algebra.Core
 open import Algebra.Consequences.Setoid
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
