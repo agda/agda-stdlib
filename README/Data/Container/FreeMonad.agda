@@ -16,7 +16,7 @@ open import Data.Unit
 open import Data.Bool.Base using (Bool; true)
 open import Data.Nat
 open import Data.Sum using (inj₁; inj₂)
-open import Data.Product renaming (_×_ to _⟨×⟩_)
+open import Data.Product.Base renaming (_×_ to _⟨×⟩_)
 open import Data.Container using (Container; _▷_)
 open import Data.Container.Combinator
 open import Data.Container.FreeMonad as FreeMonad

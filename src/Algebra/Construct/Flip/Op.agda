@@ -10,7 +10,7 @@
 module Algebra.Construct.Flip.Op where
 
 open import Algebra
-import Data.Product as Prod
+import Data.Product.Base as Prod
 import Data.Sum as Sum
 open import Function.Base using (flip)
 open import Level using (Level)

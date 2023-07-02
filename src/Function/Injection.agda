@@ -13,7 +13,7 @@
 
 module Function.Injection where
 
-open import Function as Fun using () renaming (_∘_ to _⟨∘⟩_)
+open import Function.Base as Fun using () renaming (_∘_ to _⟨∘⟩_)
 open import Level
 open import Relation.Binary
 open import Function.Equality as F

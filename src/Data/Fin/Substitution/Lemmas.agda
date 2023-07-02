@@ -14,7 +14,7 @@ open import Data.Nat hiding (_⊔_; _/_)
 open import Data.Fin.Base using (Fin; zero; suc; lift)
 open import Data.Vec.Base
 import Data.Vec.Properties as VecProp
-open import Function as Fun using (_∘_; _$_)
+open import Function.Base as Fun using (_∘_; _$_; flip)
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
@@ -222,7 +222,7 @@ record Lemmas₃ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
            ∀ k t → t /✶ ρs₁ ↑✶ k ≡ t /✶ ρs₂ ↑✶ k
   /✶-↑✶′ ρs₁ ρs₂ hyp = /✶-↑✶ ρs₁ ρs₂ (λ k x → begin
     var x /✶ ρs₁ ↑✶ k        ≡⟨ sym (lookup-⨀ x (ρs₁ ↑✶ k)) ⟩
-    lookup (⨀ (ρs₁ ↑✶ k)) x  ≡⟨ cong (Fun.flip lookup x) (hyp k) ⟩
+    lookup (⨀ (ρs₁ ↑✶ k)) x  ≡⟨ cong (flip lookup x) (hyp k) ⟩
     lookup (⨀ (ρs₂ ↑✶ k)) x  ≡⟨ lookup-⨀ x (ρs₂ ↑✶ k) ⟩
     var x /✶ ρs₂ ↑✶ k        ∎)
 
@@ -341,7 +341,7 @@ record Lemmas₄ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
             var (suc x) / ρ ↑ ≡ var x / ρ / wk
   suc-/-↑ {ρ = ρ} x = begin
     var (suc x) / ρ ↑        ≡⟨ var-/ ⟩
-    lookup (map weaken ρ) x  ≡⟨ cong (Fun.flip lookup x) (map-weaken {ρ = ρ}) ⟩
+    lookup (map weaken ρ) x  ≡⟨ cong (flip lookup x) (map-weaken {ρ = ρ}) ⟩
     lookup (ρ ⊙ wk)       x  ≡⟨ lookup-⊙ x {ρ₁ = ρ} ⟩
     lookup ρ x / wk          ≡⟨ cong₂ _/_ (sym var-/) refl ⟩
     var x / ρ / wk           ∎

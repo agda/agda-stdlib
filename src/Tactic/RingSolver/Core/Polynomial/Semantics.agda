@@ -13,11 +13,11 @@ module Tactic.RingSolver.Core.Polynomial.Semantics
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Nat     using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Vec     using (Vec; []; _∷_; uncons)
-open import Data.List    using ([]; _∷_)
-open import Data.Product using (_,_; _×_)
-open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
+open import Data.Nat          using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Vec          using (Vec; []; _∷_; uncons)
+open import Data.List.Base    using ([]; _∷_)
+open import Data.Product      using (_,_; _×_)
+open import Data.List.Kleene  using (_+; _*; ∹_; _&_; [])
 
 open Homomorphism homo hiding (_^_)
 open import Tactic.RingSolver.Core.Polynomial.Base from

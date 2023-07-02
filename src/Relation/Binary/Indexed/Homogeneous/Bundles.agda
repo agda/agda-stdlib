@@ -40,7 +40,9 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
   Carrier : Set _
   Carrier = ∀ i → Carrierᵢ i
 
-  _≈_ : Rel Carrier _
+  infix 4 _≉_
+
+  _≈_ : B.Rel Carrier _
   _≈_ = Lift Carrierᵢ _≈ᵢ_
 
   _≉_ : Rel Carrier _
@@ -104,6 +106,7 @@ record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ :
 
 record IndexedPoset {i} (I : Set i) c ℓ₁ ℓ₂ :
                     Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈ᵢ_ _≤ᵢ_
   field
     Carrierᵢ        : I → Set c
     _≈ᵢ_            : IRel Carrierᵢ ℓ₁

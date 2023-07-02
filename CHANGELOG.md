@@ -112,6 +112,14 @@ Bug-fixes
   infix   4 _≈∙_                                             (Relation.Binary.Construct.Add.Point.Equality)
   infix   4 _≤⁺_ _≤⊤⁺                                        (Relation.Binary.Construct.Add.Supremum.NonStrict)
   infixr  5 _∷ʳ_                                             (Relation.Binary.Construct.Closure.Transitive)
+  infixr  5 _∷_                                              (Codata.Guarded.Stream.Relation.Unary.All)
+  infixr  5 _∷_                                              (Foreign.Haskell.List.NonEmpty)
+  infix   4 _≈_                                              (Function.Metric.Rational.Bundles)
+  infixl  6 _ℕ+_                                             (Level.Literals)
+  infixr  6 _∪_                                              (Relation.Binary.Construct.Union)
+  infixl  6 _+ℤ_                                             (Relation.Binary.HeterogeneousEquality.Quotients.Examples)
+  infix   4 _≉_ _≈ᵢ_ _≤ᵢ_                                    (Relation.Binary.Indexed.Homogeneous.Bundles)
+  infixr  5 _∷ᴹ_ _∷⁻¹ᴹ_                                      (Text.Regex.Search)
   ```
 
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
@@ -2152,8 +2160,14 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+
+  take-suc : (o : Fin (length xs)) → let m = toℕ o in take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
+  take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
+  drop-take-suc : (o : Fin (length xs)) → let m = toℕ o in drop m (take (suc m) xs) ≡ [ lookup xs o ]
+  drop-take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in drop m (take (suc m) (tabulate f)) ≡ [ f o ]
   
   take-all : n ≥ length xs → take n xs ≡ xs     
+  
   take-[] : ∀ m → take  m [] ≡ []
   drop-[] : ∀ m → drop  m [] ≡ []
   ```
@@ -2887,7 +2901,7 @@ Other minor changes
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
-
+  
 NonZero/Positive/Negative changes
 ---------------------------------
 
