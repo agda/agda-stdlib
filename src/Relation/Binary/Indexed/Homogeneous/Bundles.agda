@@ -42,7 +42,7 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
 
   infix 4 _≉_
 
-  _≈_ : B.Rel Carrier _
+  _≈_ : Rel Carrier _
   _≈_ = Lift Carrierᵢ _≈ᵢ_
 
   _≉_ : Rel Carrier _
