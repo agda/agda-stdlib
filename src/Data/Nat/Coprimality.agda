@@ -45,8 +45,8 @@ coprime⇒GCD≡1 : ∀ {m n} → Coprime m n → GCD m n 1
 coprime⇒GCD≡1 {m} {n} c = GCD.is (1∣ m , 1∣ n) (∣-reflexive ∘ c)
 
 GCD≡1⇒coprime : ∀ {m n} → GCD m n 1 → Coprime m n
-GCD≡1⇒coprime g cd with GCD.greatest g cd
-... | divides q eq = m*n≡1⇒n≡1 q _ (P.sym eq)
+GCD≡1⇒coprime g cd with divides q eq ← GCD.greatest g cd
+  = m*n≡1⇒n≡1 q _ (P.sym eq)
 
 coprime⇒gcd≡1 : ∀ {m n} → Coprime m n → gcd m n ≡ 1
 coprime⇒gcd≡1 coprime = GCD.unique (gcd-GCD _ _) (coprime⇒GCD≡1 coprime)
@@ -111,9 +111,9 @@ recompute {n} {d} c = Nullary.recompute (coprime? n d) c
 
 Bézout-coprime : ∀ {i j d} .{{_ : NonZero d}} →
                  Bézout.Identity d (i * d) (j * d) → Coprime i j
-Bézout-coprime {d = suc _} (Bézout.+- x y eq) (divides q₁ refl , divides q₂ refl) =
+Bézout-coprime {d = suc _} (Bézout.+- x y eq) (divides-refl q₁ , divides-refl q₂) =
   lem₁₀ y q₂ x q₁ eq
-Bézout-coprime {d = suc _} (Bézout.-+ x y eq) (divides q₁ refl , divides q₂ refl) =
+Bézout-coprime {d = suc _} (Bézout.-+ x y eq) (divides-refl q₁ , divides-refl q₂) =
   lem₁₀ x q₁ y q₂ eq
 
 -- Coprime numbers satisfy Bézout's identity.
