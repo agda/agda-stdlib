@@ -9,7 +9,6 @@
 module Data.Maybe.Relation.Binary.Connected where
 
 open import Level
-open import Data.Product
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary hiding (_⇔_)

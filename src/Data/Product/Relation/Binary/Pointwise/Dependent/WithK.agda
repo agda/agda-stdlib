@@ -9,7 +9,7 @@
 
 module Data.Product.Relation.Binary.Pointwise.Dependent.WithK where
 
-open import Data.Product
+open import Data.Product.Base using (Σ; uncurry)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Function.Base
 open import Function.Inverse using (Inverse)

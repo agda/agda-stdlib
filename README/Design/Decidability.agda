@@ -13,7 +13,7 @@ open import Data.List
 open import Data.List.Properties using (∷-injective)
 open import Data.Nat
 open import Data.Nat.Properties using (suc-injective)
-open import Data.Product
+open import Data.Product.Base using (uncurry)
 open import Data.Unit
 open import Function
 open import Relation.Binary.PropositionalEquality

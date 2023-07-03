@@ -16,7 +16,7 @@ module Data.Tree.AVL.Key
 open import Level
 open import Data.Empty
 open import Data.Unit
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Construct.Add.Extrema

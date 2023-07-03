@@ -11,7 +11,7 @@ module Function.Properties.Surjection where
 open import Function.Base
 open import Function.Bundles
 open import Level using (Level)
-open import Data.Product
+open import Data.Product.Base using (proj₁; proj₂)
 
 private
   variable

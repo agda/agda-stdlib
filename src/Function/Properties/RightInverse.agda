@@ -12,7 +12,7 @@ open import Function.Base
 open import Function.Bundles
 open import Function.Consequences using (inverseʳ⇒surjective)
 open import Level using (Level)
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Relation.Binary using (Setoid; IsEquivalence)
 
 private

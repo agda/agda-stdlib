@@ -9,7 +9,7 @@
 
 module Data.Product.Function.Dependent.Setoid.WithK where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.Product.Function.Dependent.Setoid using (surjection)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Relation.Binary

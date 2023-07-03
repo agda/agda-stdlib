@@ -10,7 +10,6 @@ module Algebra.Morphism.Construct.Composition where
 
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
-open import Data.Product
 open import Function.Base using (_∘_)
 import Function.Construct.Composition as Func
 open import Level using (Level)

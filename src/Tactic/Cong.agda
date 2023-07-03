@@ -34,7 +34,7 @@ open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base    as Nat   using (ℕ; zero; suc; _≡ᵇ_; _+_)
 open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
-open import Data.Product
+open import Data.Product.Base         using (_×_; map₁; _,_)
 
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_; refl; cong)
 

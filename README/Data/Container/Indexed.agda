@@ -11,7 +11,7 @@ module README.Data.Container.Indexed where
 open import Data.Unit
 open import Data.Empty
 open import Data.Nat.Base
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function
 open import Data.W.Indexed
 open import Data.Container.Indexed

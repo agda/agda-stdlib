@@ -9,7 +9,7 @@
 
 module Data.Product.Function.Dependent.Setoid where
 
-open import Data.Product
+open import Data.Product.Base using (map; _,_)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Function.Base
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)

@@ -15,7 +15,7 @@ module Relation.Binary.Construct.Add.Supremum.Strict
   {a r} {A : Set a} (_<_ : Rel A r) where
 
 open import Level using (_⊔_)
-open import Data.Product
+open import Data.Product.Base using (_,_; map)
 open import Function.Base
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec

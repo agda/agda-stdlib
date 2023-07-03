@@ -16,7 +16,6 @@ module Algebra.Module.Definitions.Left
   where
 
 open import Data.Sum
-open import Data.Product
 
 ------------------------------------------------------------------------
 -- Binary operations
