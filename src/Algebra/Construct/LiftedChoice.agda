@@ -11,7 +11,8 @@ open import Algebra
 module Algebra.Construct.LiftedChoice where
 
 open import Algebra.Consequences.Base
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Nullary using (¬_; yes; no)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Product.Base using (_×_; _,_)

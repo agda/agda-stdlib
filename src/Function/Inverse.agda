@@ -19,7 +19,8 @@ open import Function.Bijection hiding (id; _∘_; bijection)
 open import Function.Equality as F
   using (_⟶_) renaming (_∘_ to _⟪∘⟫_)
 open import Function.LeftInverse as Left hiding (id; _∘_)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Reflexive; TransFlip; Sym)
 open import Relation.Binary.PropositionalEquality as P using (_≗_; _≡_)
 open import Relation.Unary using (Pred)
 

@@ -15,7 +15,7 @@ module Function.Bijection where
 
 open import Data.Product
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality as P
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)

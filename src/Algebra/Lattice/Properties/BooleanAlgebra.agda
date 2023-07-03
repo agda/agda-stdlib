@@ -22,7 +22,7 @@ open import Algebra.Consequences.Setoid setoid
 open import Algebra.Bundles
 open import Algebra.Lattice.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Relation.Binary
+-- open import Relation.Binary
 open import Function.Base using (id; _$_; _⟨_⟩_)
 open import Function.Bundles using (_⇔_; module Equivalence)
 open import Data.Product.Base using (_,_)

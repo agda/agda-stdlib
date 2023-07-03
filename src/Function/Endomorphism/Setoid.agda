@@ -9,7 +9,8 @@
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Function.Endomorphism.Setoid {c e} (S : Setoid c e) where
 

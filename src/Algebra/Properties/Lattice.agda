@@ -8,7 +8,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice.Bundles
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 open import Function.Base
 open import Function.Bundles using (module Equivalence; _⇔_)
 open import Data.Product.Base using (_,_; swap)

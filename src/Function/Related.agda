@@ -17,7 +17,10 @@ open import Function.Injection   as Inj     using (Injection; _↣_)
 open import Function.Inverse     as Inv     using (Inverse; _↔_)
 open import Function.LeftInverse as LeftInv using (LeftInverse)
 open import Function.Surjection  as Surj    using (Surjection)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
+open import Relation.Binary.Definitions using (Reflexive; Trans; Sym)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
 

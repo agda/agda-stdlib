@@ -11,7 +11,8 @@ module Function.Consequences where
 open import Data.Product.Base using (_,_)
 open import Function.Definitions
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 

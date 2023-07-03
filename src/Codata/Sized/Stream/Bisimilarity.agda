@@ -14,7 +14,11 @@ open import Codata.Sized.Stream
 open import Level
 open import Data.List.NonEmpty as List⁺ using (_∷_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Sym; Trans)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 private

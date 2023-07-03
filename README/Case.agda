@@ -17,7 +17,6 @@ open import Data.Sum
 open import Data.Product
 open import Function.Base using (case_of_; case_return_of_)
 open import Relation.Nullary
-open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------

@@ -15,7 +15,6 @@ open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Product
 open import Level using (Level)
-open import Relation.Binary
 
 private
   variable
