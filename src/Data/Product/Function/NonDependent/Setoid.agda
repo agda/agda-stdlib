@@ -11,7 +11,8 @@ module Data.Product.Function.NonDependent.Setoid where
 
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Relation.Binary
+open import Relation.Binary.Core using (_=[_]⇒_)
+open import Relation.Binary.Bundles using (Setoid)
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
 open import Function.Equivalence as Eq
   using (Equivalence; _⇔_; module Equivalence)

@@ -10,7 +10,8 @@ module Relation.Binary.HeterogeneousEquality.Quotients.Examples where
 
 open import Relation.Binary.HeterogeneousEquality.Quotients
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.HeterogeneousEquality hiding (isEquivalence)
 import Relation.Binary.PropositionalEquality as ≡
 open import Data.Nat.Base

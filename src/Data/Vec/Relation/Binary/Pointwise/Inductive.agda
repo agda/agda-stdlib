@@ -16,7 +16,12 @@ open import Data.Vec.Relation.Unary.All using (All; []; _∷_)
 open import Level using (Level; _⊔_)
 open import Function.Base using (_∘_)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Trans; Decidable; Reflexive; Sym)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Decidable using (yes; no; _×-dec_; map′)
 open import Relation.Unary using (Pred)

@@ -16,7 +16,8 @@ open MeetSemilattice M
 open import Algebra.Definitions _≈_
 open import Data.Product
 open import Function.Base using (flip)
-open import Relation.Binary
+open import Relation.Binary.Structures using (IsDecPartialOrder)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Lattice.Properties.JoinSemilattice as J
 

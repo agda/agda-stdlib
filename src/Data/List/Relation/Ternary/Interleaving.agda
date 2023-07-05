@@ -15,7 +15,7 @@ open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.Product as Prod using (∃; ∃₂; _×_; uncurry; _,_; -,_; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------

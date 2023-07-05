@@ -18,7 +18,6 @@ open import Algebra.Ordered.Structures using (IsCommutativePomonoid)
 open import Algebra.Ordered.Bundles using (CommutativePomonoid)
 open import Data.Product
 open import Function.Base using (_∘_; flip)
-open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
   using (isPosemigroup; ∨-comm)

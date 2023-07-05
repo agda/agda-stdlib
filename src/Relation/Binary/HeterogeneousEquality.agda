@@ -16,7 +16,10 @@ open import Function.Inverse using (Inverse)
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Unary using (Pred)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
+open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
+open import Relation.Binary.Definitions using (Substitutive; Irrelevant; Decidable; _Respects₂_)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)

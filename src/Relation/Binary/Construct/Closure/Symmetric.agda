@@ -10,7 +10,8 @@ module Relation.Binary.Construct.Closure.Symmetric where
 
 open import Function.Base using (id; _on_)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Definitions using (Symmetric)
 import Relation.Binary.Construct.On as On
 
 private

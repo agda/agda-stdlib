@@ -10,7 +10,10 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
+open import Relation.Binary.Definitions
+  using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 

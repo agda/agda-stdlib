@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.Closure.Transitive.WithK where
 
 open import Function
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.Transitive
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 

@@ -14,7 +14,7 @@ open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Properties using (reverse-involutive)
 open import Data.List.Relation.Ternary.Interleaving hiding (map)
 open import Function
-open import Relation.Binary
+open import Relation.Binary.Core using (REL)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; module ≡-Reasoning)
 open ≡-Reasoning

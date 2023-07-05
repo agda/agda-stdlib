@@ -14,7 +14,13 @@ module Data.Product.Relation.Binary.Lex.NonStrict where
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Poset; DecTotalOrder; TotalOrder)
+open import Relation.Binary.Structures
+  using (IsPartialOrder; IsEquivalence; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Decidable; Antisymmetric; Total; Trichotomous; Irreflexive; Asymmetric; _Respects₂_; tri<; tri>; tri≈)
 open import Relation.Binary.Consequences
 import Relation.Binary.Construct.NonStrictToStrict as Conv
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise

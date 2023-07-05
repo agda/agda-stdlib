@@ -16,7 +16,6 @@ open BoundedMeetSemilattice M
 open import Algebra.Definitions _≈_
 open import Data.Product
 open import Function.Base using (_∘_; flip)
-open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Lattice.Properties.BoundedJoinSemilattice as J
 

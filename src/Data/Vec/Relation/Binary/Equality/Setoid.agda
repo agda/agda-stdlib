@@ -6,7 +6,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Sym; Trans)
 
 module Data.Vec.Relation.Binary.Equality.Setoid
   {a ℓ} (S : Setoid a ℓ) where
@@ -18,7 +21,6 @@ open import Data.Vec.Relation.Binary.Pointwise.Inductive as PW
   using (Pointwise)
 open import Function.Base
 open import Level using (_⊔_)
-open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 open Setoid S renaming (Carrier to A)

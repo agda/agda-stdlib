@@ -28,7 +28,8 @@ open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary hiding (_∈_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
 
 private

@@ -9,7 +9,11 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Extrema
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Decidable; Irrelevant; Substitutive)
 
 module Relation.Binary.Construct.Add.Extrema.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where

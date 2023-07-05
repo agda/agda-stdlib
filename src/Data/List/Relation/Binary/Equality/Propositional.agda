@@ -10,7 +10,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
 
 module Data.List.Relation.Binary.Equality.Propositional {a} {A : Set a} where
 

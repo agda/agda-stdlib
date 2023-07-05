@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Transitive; Reflexive)
 
 module Relation.Unary.Closure.Base {a b} {A : Set a} (R : Rel A b) where
 

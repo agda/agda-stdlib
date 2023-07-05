@@ -10,7 +10,7 @@ module Relation.Binary.HeterogeneousEquality.Quotients where
 
 open import Function
 open import Level hiding (lift)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.HeterogeneousEquality
 open ≅-Reasoning
 

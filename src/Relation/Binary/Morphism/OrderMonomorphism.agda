@@ -11,8 +11,12 @@
 
 open import Algebra.Morphism.Definitions
 open import Function.Base
-open import Data.Product using (_,_; map)
-open import Relation.Binary
+open import Data.Product.Base using (_,_; map)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Irreflexive; Antisymmetric; Trichotomous; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.RelMonomorphism as RawRelation
 

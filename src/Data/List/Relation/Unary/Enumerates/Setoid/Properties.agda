@@ -19,7 +19,7 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (_×ₛ_)
 open import Function
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Binary.Properties.Setoid using (respʳ-flip)
 

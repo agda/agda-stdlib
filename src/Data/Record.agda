@@ -16,7 +16,7 @@ open import Data.Product hiding (proj₁; proj₂)
 open import Data.Unit.Polymorphic
 open import Function
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 open import Relation.Nullary.Decidable

@@ -12,7 +12,13 @@ open import Data.Product
 open import Function.Base using (_on_; _∘_)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; Setoid; DecSetoid; Poset; DecPoset; StrictPartialOrder; TotalOrder; DecTotalOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsStrictPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Irreflexive; Symmetric; Transitive; Antisymmetric; Asymmetric; Decidable; Total; Trichotomous; _Respects_; _Respects₂_)
 
 private
   variable

@@ -19,7 +19,12 @@ open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
 open import Function.Base
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Symmetric; Decidable)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
 private

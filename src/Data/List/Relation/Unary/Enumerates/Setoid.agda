@@ -8,7 +8,7 @@
 
 open import Data.List
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Unary.Enumerates.Setoid
   {a ℓ} (S : Setoid a ℓ) where

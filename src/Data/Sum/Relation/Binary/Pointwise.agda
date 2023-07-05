@@ -16,7 +16,13 @@ open import Function.Base using (_∘_; id)
 open import Function.Inverse using (Inverse)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsStrictPartialOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Asymmetric; Substitutive; Decidable; Irreflexive; Antisymmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ----------------------------------------------------------------------

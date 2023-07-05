@@ -25,7 +25,8 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; trans; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary as Nullary hiding (recompute)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Symmetric; Decidable)
 
 open ≤-Reasoning
 
