@@ -15,8 +15,8 @@
 --   0         ∎
 
 -- Module `≡-Reasoning` in `Relation.Binary.PropositionalEquality`
--- is recommended for equational reasoning when the underlying equality is
--- `_≡_`.
+-- is recommended for equational reasoning when the underlying equality
+-- is `_≡_`.
 
 {-# OPTIONS --cubical-compatible --safe #-}
 

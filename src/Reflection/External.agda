@@ -26,8 +26,8 @@ StdIn   = String
 StdErr  = String
 StdOut  = String
 
--- Representation for exit codes, assuming 0 is consistently used to indicate
--- success across platforms.
+-- Representation for exit codes, assuming 0 is consistently used to
+-- indicate success across platforms.
 data ExitCode : Set where
   exitSuccess : ExitCode
   exitFailure : (n : ℕ) {n≢0 : NonZero n} → ExitCode

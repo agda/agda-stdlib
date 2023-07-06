@@ -86,9 +86,10 @@ proof (p? →-dec q?) = proof p? →-reflects proof q?
 ------------------------------------------------------------------------
 -- Relationship with booleans
 
--- `isYes` is a stricter version of `does`. The lack of computation means that
--- we can recover the proposition `P` from `isYes P?` by unification. This is
--- useful when we are using the decision procedure for proof automation.
+-- `isYes` is a stricter version of `does`. The lack of computation
+-- means that we can recover the proposition `P` from `isYes P?` by
+-- unification. This is useful when we are using the decision procedure
+-- for proof automation.
 
 isYes : Dec P → Bool
 isYes (true  because _) = true

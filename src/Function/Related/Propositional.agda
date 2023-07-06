@@ -305,7 +305,8 @@ module EquationalReasoning where
   _∼⟨_⟩_ : (A : Set a) → A ∼[ k ] B → B ∼[ k ] C → A ∼[ k ] C
   _ ∼⟨ A↝B ⟩ B↝C = K-trans A↝B B↝C
 
-  -- Isomorphisms and bijections can be combined with any other kind of relatedness.
+  -- Isomorphisms and bijections can be combined with any other kind of
+  -- relatedness.
 
   _⤖⟨_⟩_ : (A : Set a) → A ⤖ B → B ∼[ k ] C → A ∼[ k ] C
   A ⤖⟨ A⤖B ⟩ B⇔C = A ∼⟨ ⤖⇒ A⤖B ⟩ B⇔C

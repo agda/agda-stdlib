@@ -17,12 +17,12 @@ open CommutativeMagma CM
 
 open import Relation.Binary.Reasoning.Setoid setoid
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-export the contents of magmas
 
 open import Algebra.Properties.Magma.Divisibility magma public
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Further properties
 
 x∣xy : ∀ x y → x ∣ x ∙ y

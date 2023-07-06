@@ -38,8 +38,8 @@ open import Data.Product
 
 open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_; refl; cong)
 
--- 'Data.String.Properties' defines this via 'Dec', so let's use the builtin
--- for maximum speed.
+-- 'Data.String.Properties' defines this via 'Dec', so let's use the
+-- builtin for maximum speed.
 import Agda.Builtin.String as String renaming (primStringEquality to _≡ᵇ_)
 
 open import Reflection

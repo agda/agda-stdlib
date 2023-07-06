@@ -80,16 +80,16 @@ module _ {a} {A B : Set a} where
   bind̅₂ (later s) {f} (later foo) =
     bind̅₂ (force s) foo
 
-  -- The extracted value of a bind is equivalent to the extracted value of its
-  -- second element
+  -- The extracted value of a bind is equivalent to the extracted value
+  -- of its second element
   extract-bind-⇓ : {d : Delay A Size.∞} → {f : A → Delay B Size.∞} →
                    (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
                    extract (bind-⇓ d⇓ {f} f⇓) ≡ extract f⇓
   extract-bind-⇓ (now a) f⇓ = Eq.refl
   extract-bind-⇓ (later t) f⇓ = extract-bind-⇓ t f⇓
 
-  -- If the right element of a bind returns a certain value so does the entire
-  -- bind
+  -- If the right element of a bind returns a certain value so does the
+  -- entire bind
   extract-bind̅₂-bind⇓ :
     (d : Delay A ∞) {f : A → Delay B ∞} →
     (bind⇓ : bind d f ⇓) →
@@ -98,8 +98,8 @@ module _ {a} {A B : Set a} where
   extract-bind̅₂-bind⇓ (later s) (later bind⇓) =
     extract-bind̅₂-bind⇓ (force s) bind⇓
 
-  -- Proof that the length of a bind-⇓ is equal to the sum of the length of its
-  -- components.
+  -- Proof that the length of a bind-⇓ is equal to the sum of the length
+  -- of its components.
   bind⇓-length :
       {d : Delay A ∞} {f : A → Delay B ∞} →
       (bind⇓ : bind d f ⇓) →
