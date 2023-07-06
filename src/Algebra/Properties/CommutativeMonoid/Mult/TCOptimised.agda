@@ -10,7 +10,6 @@
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 module Algebra.Properties.CommutativeMonoid.Mult.TCOptimised
   {a ℓ} (M : CommutativeMonoid a ℓ) where

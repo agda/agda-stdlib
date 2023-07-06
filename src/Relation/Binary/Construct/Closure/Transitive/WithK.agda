@@ -11,7 +11,7 @@ module Relation.Binary.Construct.Closure.Transitive.WithK where
 open import Function
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Transitive
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 module _ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} where
 

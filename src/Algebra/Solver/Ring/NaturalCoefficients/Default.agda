@@ -20,7 +20,7 @@ import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; map)
 open import Data.Nat using (_≟_)
 open import Relation.Binary.Consequences using (dec⇒weaklyDec)
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 
 open CommutativeSemiring R
 open SemiringMultiplication semiring

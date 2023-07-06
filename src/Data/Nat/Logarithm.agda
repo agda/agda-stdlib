@@ -11,7 +11,7 @@ module Data.Nat.Logarithm where
 open import Data.Nat
 open import Data.Nat.Induction using (<-wellFounded)
 open import Data.Nat.Logarithm.Core
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Logarithm base 2
