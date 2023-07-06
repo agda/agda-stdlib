@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of the membership relation for AVL Maps identifying values up to
--- propositional equality.
+-- Properties of the membership relation for AVL Maps identifying values
+-- up to propositional equality.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

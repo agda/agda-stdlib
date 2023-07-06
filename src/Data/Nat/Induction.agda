@@ -90,10 +90,10 @@ module _ {ℓ : Level} where
 -- the first billion proofs. Use this when you require the function
 -- using the proof of well-foundedness to evaluate fast.
 --
--- IMPORTANT: You have to be a little bit careful when using this to always
--- make the function be strict in some other argument than the accessibility
--- proof, otherwise you will have neutral terms unfolding a billion times
--- before getting stuck.
+-- IMPORTANT: You have to be a little bit careful when using this to
+-- always make the function be strict in some other argument than the
+-- accessibility proof, otherwise you will have neutral terms unfolding
+-- a billion times before getting stuck.
 <-wellFounded-fast : WellFounded _<_
 <-wellFounded-fast = <-wellFounded-skip 1000000000
   where

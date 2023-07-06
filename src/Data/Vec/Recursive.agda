@@ -4,13 +4,13 @@
 -- Vectors defined by recursion
 ------------------------------------------------------------------------
 
--- What is the point of this module? The n-ary products below are intended
--- to be used with a fixed n, in which case the nil constructor can be
--- avoided: pairs are represented as pairs (x , y), not as triples
--- (x , y , unit).
--- Additionally, vectors defined by recursion enjoy η-rules. That is to say
--- that two vectors of known length are definitionally equal whenever their
--- elements are.
+-- What is the point of this module? The n-ary products below are
+-- intended to be used with a fixed n, in which case the nil constructor
+-- can be avoided: pairs are represented as pairs (x , y), not as
+-- triples (x , y , unit).
+-- Additionally, vectors defined by recursion enjoy η-rules. That is to
+-- say that two vectors of known length are definitionally equal
+-- whenever their elements are.
 
 {-# OPTIONS --cubical-compatible --safe #-}
 

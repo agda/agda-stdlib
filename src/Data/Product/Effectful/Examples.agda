@@ -38,16 +38,16 @@ private
 
   open RawFunctor functor
 
-  -- This type to the right of × needs to be a "lifted" version of (B : Set b)
-  -- that lives in the universe (Set (a ⊔ b)).
+  -- This type to the right of × needs to be a "lifted" version of
+  -- (B : Set b) that lives in the universe (Set (a ⊔ b)).
   fmapIdₗ : (x : A.Carrier × Lift a B) → (id <$> x) ≈ x
   fmapIdₗ x = A.refl , refl
 
   open RawMonad monad
 
-  -- Now, let's show that "pure" is a unit for >>=. We use Lift in exactly
-  -- the same way as above. The data (x : B) then needs to be "lifted" to
-  -- this new type (Lift B).
+  -- Now, let's show that "pure" is a unit for >>=. We use Lift in
+  -- exactly the same way as above. The data (x : B) then needs to be
+  -- "lifted" to this new type (Lift B).
   pureUnitL : ∀ {x : B} {f : Lift a B → A.Carrier × Lift a B} →
                 (pure (lift x) >>= f) ≈ f (lift x)
   pureUnitL = A.identityˡ _ , refl

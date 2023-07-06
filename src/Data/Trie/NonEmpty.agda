@@ -35,10 +35,10 @@ open Value
 ------------------------------------------------------------------------
 -- Definition
 
--- A Trie⁺ is a tree branching over an alphabet of Keys. It stores values
--- indexed over the Word (i.e. List Key) that was read to reach them.
--- Each node in the Trie⁺ contains either a value, a non-empty Tree of
--- sub-Trie⁺ reached by reading an extra letter, or both.
+-- A Trie⁺ is a tree branching over an alphabet of Keys. It stores
+-- values indexed over the Word (i.e. List Key) that was read to reach
+-- them. Each node in the Trie⁺ contains either a value, a non-empty
+-- Tree of sub-Trie⁺ reached by reading an extra letter, or both.
 
 Word : Set k
 Word = List Key
