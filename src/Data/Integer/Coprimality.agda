@@ -16,7 +16,7 @@ import Data.Nat.Divisibility as ℕ
 open import Function.Base using (_on_)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel; Decidable; Symmetric)
-open import Relation.Binary.PropositionalEquality using (subst)
+open import Relation.Binary.PropositionalEquality.Core using (subst)
 
 ------------------------------------------------------------------------
 -- Definition

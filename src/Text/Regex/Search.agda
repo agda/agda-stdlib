@@ -31,7 +31,7 @@ open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality hiding (preorder)
+open import Relation.Binary.PropositionalEquality.Core
 
 open DecPoset P? using (preorder) renaming (Carrier to A)
 open import Text.Regex.Base preorder

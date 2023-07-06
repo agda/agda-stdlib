@@ -17,7 +17,7 @@ import Data.List.Relation.Binary.Pointwise as Pointwise
 open import Data.List.Relation.Binary.Equality.Setoid S
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Level using (_⊔_)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private

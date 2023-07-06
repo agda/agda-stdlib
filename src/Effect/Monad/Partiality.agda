@@ -27,7 +27,8 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Bundles
   using (Preorder; Setoid; Poset)
 import Relation.Binary.Properties.Setoid as SetoidProperties
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 open import Relation.Nullary
 open import Relation.Nullary.Decidable hiding (map)
 open import Relation.Nullary.Negation

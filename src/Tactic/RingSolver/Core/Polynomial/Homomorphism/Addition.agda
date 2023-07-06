@@ -22,7 +22,7 @@ open import Data.Vec                  using (Vec)
 open import Function
 open import Relation.Unary
 
-import Relation.Binary.PropositionalEquality as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡
 
 open Homomorphism homo hiding (_^_)
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo

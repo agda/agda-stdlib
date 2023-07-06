@@ -11,8 +11,9 @@ module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 open import Function
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; refl; sym; cong; cong₂)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 import Relation.Binary.Reasoning.Preorder as PreR
 
 ------------------------------------------------------------------------

@@ -22,7 +22,7 @@ open import Data.Vec.Base using (Vec; lookup)
 open import Function.Base using (_∘_; _$_)
 open import Relation.Binary.Definitions using (Decidable)
 
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.Reflection
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec

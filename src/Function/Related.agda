@@ -18,7 +18,8 @@ open import Function.Inverse     as Inv     using (Inverse; _↔_)
 open import Function.LeftInverse as LeftInv using (LeftInverse)
 open import Function.Surjection  as Surj    using (Surjection)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
 
 import Function.Related.Propositional as R

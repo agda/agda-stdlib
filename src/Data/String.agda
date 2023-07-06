@@ -23,7 +23,7 @@ open import Data.Char.Base as Char using (Char)
 import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Nullary.Decidable using (does)
 open import Relation.Unary using (Pred; Decidable)
 
