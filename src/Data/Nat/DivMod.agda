@@ -89,7 +89,8 @@ m*n≤o⇒[o∸m*n]%n≡o%n m {n} {o} m*n≤o = begin-equality
 
 m∣n⇒o%n%m≡o%m : ∀ m n o .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ∣ n →
                 o % n % m ≡ o % m
-m∣n⇒o%n%m≡o%m m n o (divides-refl p) = begin-equality
+m∣n⇒o%n%m≡o%m m n@.(p * m) o (divides-refl p) = begin-equality
+  o % n % m                ≡⟨⟩
   o % pm % m               ≡⟨ %-congˡ (m%n≡m∸m/n*n o pm) ⟩
   (o ∸ o / pm * pm) % m    ≡˘⟨ cong (λ # → (o ∸ #) % m) (*-assoc (o / pm) p m) ⟩
   (o ∸ o / pm * p * m) % m ≡⟨ m*n≤o⇒[o∸m*n]%n≡o%n (o / pm * p) lem ⟩
@@ -169,7 +170,8 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
     m′ * n′ + (m′ * j + (n′ + j * d) * k) * d         ∎
 
 %-remove-+ˡ : ∀ {m} n {d} .{{_ : NonZero d}} → d ∣ m → (m + n) % d ≡ n % d
-%-remove-+ˡ {m} n {d@(suc _)} (divides-refl p) = begin-equality
+%-remove-+ˡ {m@.(p * d)} n {d@(suc _)} (divides-refl p) = begin-equality
+  (m + n)     % d ≡⟨⟩
   (p * d + n) % d ≡⟨ cong (_% d) (+-comm (p * d) n) ⟩
   (n + p * d) % d ≡⟨ [m+kn]%n≡m%n n p d ⟩
   n           % d ∎
@@ -259,14 +261,16 @@ m≥n⇒m/n>0 {m@(suc _)} {n@(suc _)} m≥n = begin
 
 +-distrib-/-∣ˡ : ∀ {m} n {d} .{{_ : NonZero d}} →
                  d ∣ m → (m + n) / d ≡ m / d + n / d
-+-distrib-/-∣ˡ {m} n {d} (divides-refl p) = +-distrib-/ m n (begin-strict
++-distrib-/-∣ˡ {m@.(p * d)} n {d} (divides-refl p) = +-distrib-/ m n (begin-strict
+  m % d + n % d     ≡⟨⟩
   p * d % d + n % d ≡⟨ cong (_+ n % d) (m*n%n≡0 p d) ⟩
   n % d             <⟨ m%n<n n d ⟩
   d                 ∎)
 
 +-distrib-/-∣ʳ : ∀ m {n} {d} .{{_ : NonZero d}} →
                  d ∣ n → (m + n) / d ≡ m / d + n / d
-+-distrib-/-∣ʳ m {n} {d} (divides-refl p) = +-distrib-/ m n (begin-strict
++-distrib-/-∣ʳ m {n@.(p * d)} {d} (divides-refl p) = +-distrib-/ m n (begin-strict
+  m % d + n % d     ≡⟨⟩
   m % d + p * d % d ≡⟨ cong (m % d +_) (m*n%n≡0 p d) ⟩
   m % d + 0         ≡⟨ +-identityʳ _ ⟩
   m % d             <⟨ m%n<n m d ⟩
