@@ -183,7 +183,8 @@ m*n∣⇒n∣ : ∀ {i} m n → m * n ∣ i → n ∣ i
 m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
 *-monoʳ-∣ : ∀ {i j} k → i ∣ j → k * i ∣ k * j
-*-monoʳ-∣ {i} {j} k (divides-refl q) = divides q $ begin-equality
+*-monoʳ-∣ {i} {j@.(q * i)} k (divides-refl q) = divides q $ begin-equality
+  k * j        ≡⟨⟩
   k * (q * i)  ≡⟨ sym (*-assoc k q i) ⟩
   (k * q) * i  ≡⟨ cong (_* i) (*-comm k q) ⟩
   (q * k) * i  ≡⟨ *-assoc q k i ⟩
@@ -223,20 +224,23 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 -- Properties of _∣_ and _/_
 
 m/n∣m : ∀ {m n} .{{_ : NonZero n}} → n ∣ m → m / n ∣ m
-m/n∣m {m} {n} (divides-refl p) = begin
+m/n∣m {m@.(p * n)} {n} (divides-refl p) = begin
+  m / n     ≡⟨⟩
   p * n / n ≡⟨ m*n/n≡m p n ⟩
   p         ∣⟨ m∣m*n n ⟩
-  p * n     ∎
+  p * n     ≡⟨⟩
+  m         ∎
   where open ∣-Reasoning
 
 m*n∣o⇒m∣o/n : ∀ m n {o} .{{_ : NonZero n}} → m * n ∣ o → m ∣ o / n
-m*n∣o⇒m∣o/n m n {_} (divides-refl p) = begin
+m*n∣o⇒m∣o/n m n {o@.(p * (m * n))} (divides-refl p) = begin
   m               ∣⟨ n∣m*n p ⟩
   p * m           ≡⟨ sym (*-identityʳ (p * m)) ⟩
   p * m * 1       ≡⟨ sym (cong (p * m *_) (n/n≡1 n)) ⟩
   p * m * (n / n) ≡⟨ sym (*-/-assoc (p * m) (n∣n {n})) ⟩
   p * m * n / n   ≡⟨ cong (_/ n) (*-assoc p m n) ⟩
-  p * (m * n) / n ∎
+  p * (m * n) / n ≡⟨⟩
+  o / n           ∎
   where open ∣-Reasoning
 
 m*n∣o⇒n∣o/m : ∀ m n {o} .{{_ : NonZero m}} → m * n ∣ o → n ∣ (o / m)
@@ -258,7 +262,8 @@ m/n∣o⇒m∣o*n {_} {n} {o} (divides-refl p) p*n/n∣o = begin
   where open ∣-Reasoning
 
 m∣n*o⇒m/n∣o : ∀ {m n o} .{{_ : NonZero n}} → n ∣ m → m ∣ o * n → m / n ∣ o
-m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides-refl p) pn∣on = begin
+m∣n*o⇒m/n∣o {m@.(p * n)} {n@(suc _)} {o} (divides-refl p) pn∣on = begin
+  m / n     ≡⟨⟩
   p * n / n ≡⟨ m*n/n≡m p n ⟩
   p         ∣⟨ *-cancelʳ-∣ n pn∣on ⟩
   o         ∎
