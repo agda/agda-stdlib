@@ -12,8 +12,8 @@ open import Relation.Nullary
 open import Relation.Nullary.Negation
 open import Relation.Binary hiding (_⇒_)
 import Relation.Binary.Construct.Always as Always
-open import Relation.Binary.PropositionalEquality as PropEq
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
 open import Data.Sum     as Sum  hiding (map)

@@ -17,7 +17,7 @@ open import Codata.Sized.Conat.Bisimilarity as Coℕ using (zero ; suc)
 open import Codata.Sized.Delay
 open import Codata.Sized.Delay.Bisimilarity
 open import Function.Base using (id; _∘′_)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 
 module _ {a} {A : Set a} where
 

@@ -14,7 +14,8 @@ import Data.List.Relation.Binary.Pointwise as Pw
 open import Data.List.Relation.Binary.Equality.Propositional using (_≋_)
 open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 open import Function.Base using (_∘′_)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_; setoid)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 import Data.List.Relation.Ternary.Appending.Setoid.Properties (setoid A)
   as Appendingₚ

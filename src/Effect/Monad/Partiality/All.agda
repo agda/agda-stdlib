@@ -14,7 +14,7 @@ open import Codata.Musical.Notation
 open import Function.Base using (flip; _∘_)
 open import Level
 open import Relation.Binary using (_Respects_; IsEquivalence)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 open Partiality._⊥
 open Partiality.Equality using (Rel)

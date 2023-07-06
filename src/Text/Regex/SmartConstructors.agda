@@ -19,7 +19,7 @@ open import Data.Sum.Base using (inj₁; inj₂; fromInj₁; fromInj₂)
 
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality using (refl)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 open import Text.Regex.Base P as R hiding (_∣_; _∙_; _⋆)
 open import Text.Regex.Properties.Core P

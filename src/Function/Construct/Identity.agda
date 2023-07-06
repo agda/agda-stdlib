@@ -15,7 +15,8 @@ import Function.Definitions as Definitions
 import Function.Structures as Structures
 open import Level using (Level)
 open import Relation.Binary as B hiding (_⇔_; IsEquivalence)
-open import Relation.Binary.PropositionalEquality using (_≡_; setoid)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 private
   variable

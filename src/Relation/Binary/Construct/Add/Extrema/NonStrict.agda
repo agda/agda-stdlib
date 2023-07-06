@@ -17,7 +17,7 @@ module Relation.Binary.Construct.Add.Extrema.NonStrict
 open import Function.Base
 open import Relation.Nullary.Construct.Add.Extrema
 import Relation.Nullary.Construct.Add.Infimum as I
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 import Relation.Binary.Construct.Add.Infimum.NonStrict as AddInfimum
 import Relation.Binary.Construct.Add.Supremum.NonStrict as AddSupremum
 import Relation.Binary.Construct.Add.Extrema.Equality as Equality

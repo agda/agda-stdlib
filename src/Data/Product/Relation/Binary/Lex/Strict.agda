@@ -22,7 +22,7 @@ open import Level
 open import Relation.Nullary.Decidable
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
 
 private
   variable

@@ -29,9 +29,10 @@ open import Data.Sum.Properties
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (dec-true; dec-false)
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; _≢_; refl; cong)
 open PropEq.≡-Reasoning
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 private
   open module D = DecSetoid D

@@ -16,7 +16,7 @@ open import Function.Base using (_∘′_)
 open import Relation.Nullary
 open import Relation.Unary  as U
 open import Relation.Binary as B using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 open import Data.List.Fresh.Relation.Unary.All
