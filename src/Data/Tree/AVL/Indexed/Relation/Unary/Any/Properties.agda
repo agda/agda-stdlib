@@ -22,7 +22,7 @@ open import Function.Base as F
 open import Level using (Level)
 
 open import Relation.Binary using (_Respects_; tri<; tri≈; tri>)
-open import Relation.Binary.PropositionalEquality using (_≡_) renaming (refl to ≡-refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_) renaming (refl to ≡-refl)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; _∩_)

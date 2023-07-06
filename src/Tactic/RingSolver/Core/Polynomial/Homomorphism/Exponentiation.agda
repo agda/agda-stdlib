@@ -21,7 +21,7 @@ open import Data.List.Kleene
 open import Data.Vec      using (Vec)
 
 import Data.Nat.Properties as ℕ-Prop
-import Relation.Binary.PropositionalEquality as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡
 
 open Homomorphism homo
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo

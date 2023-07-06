@@ -13,7 +13,8 @@ open import Relation.Binary
   using (Sym; Reflexive; Trans; IsEquivalence; Setoid; IsPreorder; Preorder)
 open import Function.Bundles
 open import Function.Base
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 open import Function.Properties.Surjection   using (↠⇒↪; ↠⇒⇔)
 open import Function.Properties.RightInverse using (↪⇒↠)

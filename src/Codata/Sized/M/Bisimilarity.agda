@@ -17,7 +17,7 @@ open import Data.Container.Relation.Binary.Pointwise using (Pointwise; _,_)
 open import Data.Product using (_,_)
 open import Function.Base using (_∋_)
 open import Relation.Binary
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 
 data Bisim {s p} (C : Container s p) (i : Size) : Rel (M C ∞) (s ⊔ p) where
   inf : ∀ {t u} → Pointwise C (Thunk^R (Bisim C) i) t u → Bisim C i (inf t) (inf u)

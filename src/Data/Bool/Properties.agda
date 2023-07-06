@@ -22,7 +22,8 @@ open import Function.Equivalence
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality hiding ([_])
+open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
 open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
 open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
 import Relation.Unary as U

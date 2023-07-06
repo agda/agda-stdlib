@@ -13,7 +13,7 @@ import Data.String.Unsafe as Stringₚ
 open import Function.Base using (_on_; id)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel; Decidable)
-open import Relation.Binary.PropositionalEquality using (_≡_; sym; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; sym; subst)
 open import Relation.Nullary.Decidable using (map′)
 
 ------------------------------------------------------------------------
