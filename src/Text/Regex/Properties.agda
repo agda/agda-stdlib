@@ -24,7 +24,6 @@ open import Relation.Nullary.Negation
 
 import Relation.Unary  as U
 open import Relation.Binary.Definitions using (Decidable)
-import Relation.Binary.PropositionalEquality as P
 
 open DecPoset P? renaming (Carrier to A)
 open import Text.Regex.Base preorder
