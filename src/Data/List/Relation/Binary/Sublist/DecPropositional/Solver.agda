@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A solver for proving that one list is a sublist of the other for types
--- which enjoy decidable equalities.
+-- A solver for proving that one list is a sublist of the other for
+-- types which enjoy decidable equalities.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

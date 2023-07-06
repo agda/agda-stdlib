@@ -770,7 +770,8 @@ take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
 take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
   = take-suc (tabulate f) (cast _ i)
 
--- If you take at least as many elements from a list as it has, you get the whole list.
+-- If you take at least as many elements from a list as it has, you get
+-- the whole list.
 take-all :(n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
 take-all zero [] _ = refl
 take-all (suc _) [] _ = refl

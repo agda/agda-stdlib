@@ -293,8 +293,8 @@ dB→Named {Δ = Δ} {a = a ⇒ b} (abs e) with dB→Named e
   z#β     = subst (λ □ → Disjoint □ β) eq (shrinkDisjointˡ [a]⊆aΔ zδ#β)
   z⊎β     = Disjoint→DisjointUnion z#β
 
--- For the translation of an application (f e) we have by induction hypothesis
--- two independent extensions δ₁ : Δ ⊆ Γ₁ and δ₂ : Δ ⊆ Γ₂
+-- For the translation of an application (f e) we have by induction
+-- hypothesis two independent extensions δ₁ : Δ ⊆ Γ₁ and δ₂ : Δ ⊆ Γ₂
 -- and two bound variable lists β₁ : B₁ ⊆ Γ₁ and β₂ : B₂ ⊆ Γ₂.
 -- We need to find a common global context Γ such that
 --
@@ -309,8 +309,8 @@ dB→Named {Δ = Δ} {a = a ⇒ b} (abs e) with dB→Named e
 --   β₁′ = β₁ϕ₁ : B₁ ⊆ Γ₁₂ and
 --   β₂′ = β₂ϕ₂ : B₂ ⊆ Γ₁₂ and
 --
--- may be overlapping, but we can separate them by enlarging the global context
--- to Γ with two embeddings
+-- may be overlapping, but we can separate them by enlarging the global
+-- context to Γ with two embeddings
 --
 --   γ₁ : Γ₁₂ ⊆ Γ
 --   γ₂ : Γ₁₂ ⊆ Γ
