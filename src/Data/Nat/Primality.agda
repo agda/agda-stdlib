@@ -21,7 +21,7 @@ open import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Decidable)
 open import Relation.Binary.PropositionalEquality
-  using (refl; sym; cong; subst)
+  using (refl; cong)
 
 private
   variable
