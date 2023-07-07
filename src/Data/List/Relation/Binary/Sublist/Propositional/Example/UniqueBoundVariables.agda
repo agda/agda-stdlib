@@ -141,9 +141,10 @@ variable
 
 -- Relating de Bruijn terms and uniquely named terms.
 --
--- The judgement δ ⊢ e ~ β ▷ t relates a de Bruijn term e with potentially free variables δ : Δ ⊆ Γ
--- to a named term t with exact bound variables β : B ⊆ Γ.  The intention is to relate exactly
--- the terms with the same meaning.
+-- The judgement δ ⊢ e ~ β ▷ t relates a de Bruijn term e with
+-- potentially free variables δ : Δ ⊆ Γ to a named term t with exact
+-- bound variables β : B ⊆ Γ.  The intention is to relate exactly the
+-- terms with the same meaning.
 --
 -- The judgement will imply the disjointness of Δ and B.
 
@@ -152,8 +153,8 @@ variable
 
 data _⊢_~_▷_ {Γ Δ : Cxt} (δ : Δ ⊆ Γ) : ∀{a} (e : Exp Δ a) {B} (β : B ⊆ Γ) (t : Tm β a) → Set where
 
-  -- Free de Bruijn index x : a ∈ Δ is related to free variable y : a ∈ Γ
-  -- if δ : Δ ⊆ Γ maps x to y.
+  -- Free de Bruijn index x : a ∈ Δ is related to free variable
+  -- y : a ∈ Γ if δ : Δ ⊆ Γ maps x to y.
 
   var : ∀{y} (δx≡y : lookup δ x ≡ y) (δ#β : Disjoint δ β)
       → δ ⊢ var x ~ β ▷ var! y
@@ -229,9 +230,10 @@ disjoint-fv-bv (app dₜ dᵤ βₜ⊎βᵤ) = disjoint⇒disjoint-to-union δ#�
 
 -- Translating de Bruijn terms to uniquely named terms.
 --
--- Given a de Bruijn term Δ ⊢ e : a, we seek to produce a named term β ▷ t : a
--- that is related to the de Bruijn term.  On the way, we have to compute the
--- global context Γ that hosts all free and bound variables of t.
+-- Given a de Bruijn term Δ ⊢ e : a, we seek to produce a named term
+-- β ▷ t : a that is related to the de Bruijn term.  On the way, we have
+-- to compute the global context Γ that hosts all free and bound
+-- variables of t.
 
 -- Record (NamedOf e) collects all the outputs of the translation of e.
 
