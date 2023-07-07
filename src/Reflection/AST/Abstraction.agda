@@ -9,7 +9,8 @@
 module Reflection.AST.Abstraction where
 
 open import Data.Product                               using (_×_; <_,_>; uncurry)
-open import Data.String as String                      using (String)
+open import Data.String.Base as String                 using (String)
+open import Data.String.Properties as String           using (_≟_)
 open import Level
 open import Relation.Nullary.Decidable                 using (Dec; map′; _×-dec_)
 open import Relation.Binary                            using (DecidableEquality)

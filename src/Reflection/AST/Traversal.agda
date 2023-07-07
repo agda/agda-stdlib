@@ -14,7 +14,7 @@ module Reflection.AST.Traversal
 open import Data.Nat          using (ℕ; zero; suc; _+_)
 open import Data.List.Base    using (List; []; _∷_; _++_; reverse; length)
 open import Data.Product      using (_×_; _,_)
-open import Data.String       using (String)
+open import Data.String.Base  using (String)
 open import Function.Base     using (_∘_)
 open import Reflection        hiding (pure)
 
