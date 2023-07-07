@@ -59,7 +59,7 @@ pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
 pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
 pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Utility functions
 
 getName : Term → Maybe Name
