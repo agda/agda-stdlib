@@ -29,7 +29,6 @@ open Setoid S
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
--- open import Relation.Binary.Reasoning.PartialSetoid partialSetoid public
 open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans as Base public
   hiding (step-∼)
 
