@@ -94,6 +94,12 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong       : to Preserves _≈₁_ ⟶ _≈₂_
       surjective : Surjective to
 
+    function : Func
+    function = record
+      { to   = to
+      ; cong = cong
+      }
+
     to⁻ : B → A
     to⁻ = proj₁ ∘ surjective
 
