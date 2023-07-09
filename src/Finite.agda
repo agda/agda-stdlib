@@ -1,3 +1,11 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Notions of finiteness for setoids
+------------------------------------------------------------------------
+
+{-# OPTIONS --safe --cubical-compatible #-}
+
 module Finite where
 
 open import Data.Fin.Base using (Fin)
