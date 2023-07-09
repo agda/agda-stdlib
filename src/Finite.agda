@@ -3,8 +3,7 @@ module Finite where
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base as ×
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (×-setoid)
-open import Data.Sum as ⊎ using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as ⊎ using (_⊎_; inj₁; inj₂)
 open import Data.Unit using (⊤; tt)
 open import Function
 open import Level renaming (suc to lsuc)
@@ -33,9 +32,6 @@ Subset X p = Func X (Ω p)
 
 FullSubset : {X : Setoid c ℓ} → Subset X 0ℓ
 FullSubset = record { to = λ _ → ⊤ }
-
-Relation : Setoid c ℓ → (r : Level) → Set (c ⊔ ℓ ⊔ lsuc r)
-Relation X r = Func (×-setoid X X) (Ω r)
 
 record EquivalenceRelation (X : Setoid c ℓ) r : Set (c ⊔ ℓ ⊔ lsuc r) where
   infix 4 _∼_
@@ -124,25 +120,25 @@ record FinitelyEnumerable (X : Setoid c ℓ) : Set (c ⊔ ℓ) where
 record SubFinitelyEnumerable (X : Setoid c ℓ) c′ ℓ′
        : Set (c ⊔ ℓ ⊔ lsuc (c′ ⊔ ℓ′)) where
   field
-    F : Setoid c′ ℓ′
-    finitelyEnumerable : FinitelyEnumerable F
-    inj : Injection X F
+    Apex : Setoid c′ ℓ′
+    finitelyEnumerable : FinitelyEnumerable Apex
+    inj : Injection X Apex
 
   open FinitelyEnumerable finitelyEnumerable public
 
 record SubfinitelyEnumerable (X : Setoid c ℓ) c′ ℓ′
        : Set (c ⊔ ℓ ⊔ lsuc (c′ ⊔ ℓ′)) where
   field
-    F : Setoid c′ ℓ′
-    subfinite : Subfinite F
-    srj : Surjection F X
+    Apex : Setoid c′ ℓ′
+    subfinite : Subfinite Apex
+    srj : Surjection Apex X
 
   open Subfinite subfinite public
 
 lemma→ : {X : Setoid c ℓ} →
   SubFinitelyEnumerable X c′ ℓ′ → SubfinitelyEnumerable X (c ⊔ ℓ′) 0ℓ
 lemma→ {X = X} sfe = record
-  { F = e.function ⁻¹[ ↣⇒⊆ inj ]
+  { Apex = e.function ⁻¹[ ↣⇒⊆ inj ]
   ; subfinite = record
     { size = size
     ; inj = record
@@ -154,27 +150,27 @@ lemma→ {X = X} sfe = record
   ; srj = record
     { to = λ (i , x , q) → x
     ; cong = λ {(i , x , q)} {(i′ , x′ , q′)} p →
-      let open SetR F in m.injective $ begin
+      let open SetR Apex in m.injective $ begin
       m.to x   ≈⟨ q ⟩
       e.to i   ≡⟨ ≡.cong e.to p ⟩
       e.to i′  ≈˘⟨ q′ ⟩
       m.to x′  ∎
     ; surjective = λ x →
-      (e.to⁻ (m.to x) , x , F.sym (e.surjective (m.to x) .proj₂)) , X.refl
+      (e.to⁻ (m.to x) , x , A.sym (e.surjective (m.to x) .proj₂)) , X.refl
     }
   }
   where
-  -- X --m--> F <--e-- Fin size
+  -- X --m--> Apex <--e-- Fin size
   open SubFinitelyEnumerable sfe
   module X = Setoid X
-  module F = Setoid F
+  module A = Setoid Apex
   module m = Injection inj
   module e = Surjection srj
 
 lemma← : {X : Setoid c ℓ} →
   SubfinitelyEnumerable X c′ ℓ′ → SubFinitelyEnumerable X 0ℓ (ℓ ⊔ c′)
 lemma← {X = X} se = record
-  { F = ≡.setoid (Fin size) / R
+  { Apex = ≡.setoid (Fin size) / R
   ; finitelyEnumerable = record
     { size = size
     ; srj = include-/ R
@@ -203,17 +199,17 @@ lemma← {X = X} se = record
     }
   }
   where
-  -- X <--e-- F --m--> Fin size
+  -- X <--e-- Apex --m--> Fin size
   open SubfinitelyEnumerable se
   module X = Setoid X
-  module F = Setoid F
+  module A = Setoid Apex
   module m = Injection inj
   module e = Surjection srj
 
   R : EquivalenceRelation (≡.setoid (Fin size)) _
   R = record
     { _∼_ = λ i j → i ≡ j ⊎
-      ∃ \ ((f , g) : F.Carrier × F.Carrier) →
+      ∃ \ ((f , g) : A.Carrier × A.Carrier) →
         m.to f ≡ i × m.to g ≡ j × e.to f X.≈ e.to g
     ; ∼-resp-≈ = λ { ≡.refl ≡.refl → id }
     ; ∼-isEquivalence = record
