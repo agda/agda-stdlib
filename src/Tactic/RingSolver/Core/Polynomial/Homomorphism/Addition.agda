@@ -18,7 +18,7 @@ open import Data.Nat.Properties as ℕₚ using (≤′-trans)
 open import Data.Product              using (_,_; _×_; proj₂)
 open import Data.List.Base            using (_∷_; [])
 open import Data.List.Kleene
-open import Data.Vec                  using (Vec)
+open import Data.Vec.Base             using (Vec)
 open import Function
 open import Relation.Unary
 

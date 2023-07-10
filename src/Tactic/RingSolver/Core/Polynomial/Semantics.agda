@@ -14,7 +14,7 @@ module Tactic.RingSolver.Core.Polynomial.Semantics
   where
 
 open import Data.Nat          using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Vec          using (Vec; []; _∷_; uncons)
+open import Data.Vec.Base          using (Vec; []; _∷_; uncons)
 open import Data.List.Base    using ([]; _∷_)
 open import Data.Product      using (_,_; _×_)
 open import Data.List.Kleene  using (_+; _*; ∹_; _&_; [])

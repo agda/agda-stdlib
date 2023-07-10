@@ -18,7 +18,7 @@ open import Data.Nat.Binary.Properties
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum using (inj₁; inj₂)
-open import Data.Vec using ([]; _∷_)
+open import Data.Vec.Base using ([]; _∷_)
 open import Function.Base using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
