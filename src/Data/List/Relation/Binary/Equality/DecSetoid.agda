@@ -12,7 +12,8 @@ module Data.List.Relation.Binary.Equality.DecSetoid
   {a ℓ} (DS : DecSetoid a ℓ) where
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
-import Data.List.Relation.Binary.Pointwise as PW
+import Data.List.Relation.Binary.Pointwise as PW using (isDecEquivalence; decSetoid)
+import Data.List.Relation.Binary.Pointwise.Properties as PW using (decidable)
 open import Level
 open import Relation.Binary using (Decidable)
 open DecSetoid DS

@@ -11,8 +11,12 @@ module Data.List.Relation.Binary.Suffix.Heterogeneous.Properties where
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base as List
   using (List; []; _∷_; _++_; length; filter; replicate; reverse; reverseAcc)
-open import Data.List.Relation.Binary.Pointwise as Pw
-  using (Pointwise; []; _∷_; Pointwise-length)
+open import Data.List.Relation.Binary.Pointwise.Base as Pw
+  using (Pointwise; []; _∷_)
+import Data.List.Relation.Binary.Pointwise as Pw
+  using (Pointwise-length; reverse⁺; ++⁺; map⁺; map⁻; filter⁺; replicate⁺)
+import Data.List.Relation.Binary.Pointwise.Properties as Pw
+  using (transitive; antisymmetric; irrelevant)
 open import Data.List.Relation.Binary.Suffix.Heterogeneous as Suffix
   using (Suffix; here; there; tail)
 open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
@@ -75,7 +79,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   length-mono : ∀ {as bs} → Suffix R as bs → length as ≤ length bs
-  length-mono (here rs)   = ≤-reflexive (Pointwise-length rs)
+  length-mono (here rs)   = ≤-reflexive (Pw.Pointwise-length rs)
   length-mono (there suf) = m≤n⇒m≤1+n (length-mono suf)
 
   S[as][bs]⇒∣as∣≢1+∣bs∣ : ∀ {as bs} → Suffix R as bs →
@@ -139,7 +143,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
       length ds                   ≤⟨ m≤n+m (length ds) (length bs) ⟩
       length bs + length ds       <⟨ ≤-refl ⟩
       suc (length bs + length ds) ≡⟨ sym $ Listₚ.length-++ (b ∷ bs) ⟩
-      length (b ∷ bs ++ ds)       ≡⟨ sym $ Pointwise-length rs ⟩
+      length (b ∷ bs ++ ds)       ≡⟨ sym $ Pw.Pointwise-length rs ⟩
       length cs                   ∎
 
 ------------------------------------------------------------------------
@@ -199,8 +203,8 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   irrelevant : Irrelevant R → Irrelevant (Suffix R)
   irrelevant irr (here  rs)   (here  rs₁)   = P.cong here $ Pw.irrelevant irr rs rs₁
-  irrelevant irr (here  rs)   (there rsuf)  = contradiction (Pointwise-length rs) (S[as][bs]⇒∣as∣≢1+∣bs∣ rsuf)
-  irrelevant irr (there rsuf) (here  rs)    = contradiction (Pointwise-length rs) (S[as][bs]⇒∣as∣≢1+∣bs∣ rsuf)
+  irrelevant irr (here  rs)   (there rsuf)  = contradiction (Pw.Pointwise-length rs) (S[as][bs]⇒∣as∣≢1+∣bs∣ rsuf)
+  irrelevant irr (there rsuf) (here  rs)    = contradiction (Pw.Pointwise-length rs) (S[as][bs]⇒∣as∣≢1+∣bs∣ rsuf)
   irrelevant irr (there rsuf) (there rsuf₁) = P.cong there $ irrelevant irr rsuf rsuf₁
 
 ------------------------------------------------------------------------

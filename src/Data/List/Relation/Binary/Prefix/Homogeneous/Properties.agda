@@ -11,8 +11,8 @@ module Data.List.Relation.Binary.Prefix.Homogeneous.Properties where
 open import Level
 open import Function.Base using (_∘′_)
 open import Relation.Binary
-
-open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise.Base as Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise as Pointwise using (isEquivalence)
 open import Data.List.Relation.Binary.Prefix.Heterogeneous
 open import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
 

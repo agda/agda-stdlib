@@ -15,8 +15,10 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
 open import Algebra
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base as List hiding (head; tail)
-open import Data.List.Relation.Binary.Pointwise as Pointwise
-  using (Pointwise; head; tail)
+import Data.List.Relation.Binary.Pointwise.Base as Pointwise
+  using (Pointwise; head; tail; map)
+import Data.List.Relation.Binary.Pointwise as Pointwise
+  using (map⁺; ++⁺)
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -319,43 +321,43 @@ dropMiddleElement {v} ws xs {ys} {zs} p = helper p ws xs ≋-refl ≋-refl
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈w y≈w p) [] (x ∷ []) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨  ≋₁ ⟩
     a ∷ as           ↭⟨  prep y≈w p ⟩
-    _ ∷ bs           ≋˘⟨ ≈₂ ∷ tail ≋₂ ⟩
+    _ ∷ bs           ≋˘⟨ ≈₂ ∷ Pointwise.tail ≋₂ ⟩
     x ∷ zs           ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈w y≈x p) [] (x ∷ w ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨ ≋₁ ⟩
     a ∷ as           ↭⟨ prep y≈x p ⟩
-    _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ tail ≋₂) ⟩
-    x ∷ xs ++ v ∷ zs ↭⟨ prep ≈-refl (shift (lemma ≈₁ v≈w (head ≋₂)) xs zs) ⟩
+    _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ Pointwise.tail ≋₂) ⟩
+    x ∷ xs ++ v ∷ zs ↭⟨ prep ≈-refl (shift (lemma ≈₁ v≈w (Pointwise.head ≋₂)) xs zs) ⟩
     x ∷ w ∷ xs ++ zs ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap w≈x _ p) (w ∷ []) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    w ∷ ys           ≋⟨ ≈₁ ∷ tail (≋₁) ⟩
+    w ∷ ys           ≋⟨ ≈₁ ∷ Pointwise.tail (≋₁) ⟩
     _ ∷ as           ↭⟨ prep w≈x p ⟩
     b ∷ bs           ≋⟨ ≋-sym ≋₂ ⟩
     zs               ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap w≈y x≈v p) (w ∷ x ∷ ws) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    w ∷ x ∷ ws ++ ys ↭⟨ prep ≈-refl (↭-sym (shift (lemma ≈₂ (≈-sym x≈v) (head ≋₁)) ws ys)) ⟩
-    w ∷ ws ++ v ∷ ys ≋⟨ ≈₁ ∷ tail ≋₁ ⟩
+    w ∷ x ∷ ws ++ ys ↭⟨ prep ≈-refl (↭-sym (shift (lemma ≈₂ (≈-sym x≈v) (Pointwise.head ≋₁)) ws ys)) ⟩
+    w ∷ ws ++ v ∷ ys ≋⟨ ≈₁ ∷ Pointwise.tail ≋₁ ⟩
     _ ∷ as           ↭⟨ prep w≈y p ⟩
     b ∷ bs           ≋⟨ ≋-sym ≋₂ ⟩
     zs               ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap x≈v v≈y p) (x ∷ []) (y ∷ []) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    x ∷ ys           ≋⟨ ≈₁ ∷ tail ≋₁ ⟩
-    _ ∷ as           ↭⟨ prep (≈-trans x≈v (≈-trans (≈-sym (head ≋₂)) (≈-trans (head ≋₁) v≈y))) p ⟩
-    _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ tail ≋₂) ⟩
+    x ∷ ys           ≋⟨ ≈₁ ∷ Pointwise.tail ≋₁ ⟩
+    _ ∷ as           ↭⟨ prep (≈-trans x≈v (≈-trans (≈-sym (Pointwise.head ≋₂)) (≈-trans (Pointwise.head ≋₁) v≈y))) p ⟩
+    _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ Pointwise.tail ≋₂) ⟩
     y ∷ zs           ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap y≈w v≈z p) (y ∷ []) (z ∷ w ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    y ∷ ys           ≋⟨ ≈₁ ∷ tail ≋₁ ⟩
+    y ∷ ys           ≋⟨ ≈₁ ∷ Pointwise.tail ≋₁ ⟩
     _ ∷ as           ↭⟨ prep y≈w p ⟩
     _ ∷ bs           ≋⟨ ≋-sym ≋₂ ⟩
     w ∷ xs ++ v ∷ zs ↭⟨ ↭-prep w (↭-shift xs zs) ⟩
-    w ∷ v ∷ xs ++ zs ↭⟨ swap ≈-refl (lemma (head ≋₁) v≈z ≈₂) ↭-refl ⟩
+    w ∷ v ∷ xs ++ zs ↭⟨ swap ≈-refl (lemma (Pointwise.head ≋₁) v≈z ≈₂) ↭-refl ⟩
     z ∷ w ∷ xs ++ zs ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap y≈v w≈z p) (y ∷ w ∷ ws) (z ∷ []) {ys} {zs}    (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    y ∷ w ∷ ws ++ ys ↭⟨ swap (lemma ≈₁ y≈v (head ≋₂)) ≈-refl ↭-refl ⟩
+    y ∷ w ∷ ws ++ ys ↭⟨ swap (lemma ≈₁ y≈v (Pointwise.head ≋₂)) ≈-refl ↭-refl ⟩
     w ∷ v ∷ ws ++ ys ↭⟨ ↭-prep w (↭-sym (↭-shift ws ys)) ⟩
     w ∷ ws ++ v ∷ ys ≋⟨ ≋₁ ⟩
     _ ∷ as           ↭⟨ prep w≈z p ⟩
-    _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ tail ≋₂) ⟩
+    _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ Pointwise.tail ≋₂) ⟩
     z ∷ zs           ∎
   helper (swap x≈z y≈w p) (x ∷ y ∷ ws) (w ∷ z ∷ xs) {ys} {zs} (≈₁ ∷ ≈₃ ∷ ≋₁) (≈₂ ∷ ≈₄ ∷ ≋₂) = begin
     x ∷ y ∷ ws ++ ys ↭⟨ swap (lemma ≈₁ x≈z ≈₄) (lemma ≈₃ y≈w ≈₂) (helper p ws xs ≋₁ ≋₂) ⟩

@@ -13,7 +13,7 @@ module Data.List.Relation.Binary.Permutation.Setoid
 
 open import Data.List.Base using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
-import Data.List.Relation.Binary.Pointwise as Pointwise
+import Data.List.Relation.Binary.Pointwise.Properties as Pointwise using (refl)
 open import Data.List.Relation.Binary.Equality.Setoid S
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Level using (_⊔_)

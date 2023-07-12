@@ -11,7 +11,8 @@ module Data.String.Properties where
 open import Data.Bool.Base using (Bool)
 import Data.Char.Properties as Charₚ
 import Data.List.Properties as Listₚ
-import Data.List.Relation.Binary.Pointwise as Pointwise
+import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise-≡⇒≡; ≡⇒Pointwise-≡)
+import Data.List.Relation.Binary.Pointwise.Properties as Pointwise using (symmetric; transitive; decidable)
 import Data.List.Relation.Binary.Lex.Strict as StrictLex
 open import Data.String.Base
 open import Function.Base

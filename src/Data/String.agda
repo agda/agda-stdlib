@@ -16,7 +16,7 @@ import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List; _∷_; []; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
 open import Data.List.Extrema ℕₚ.≤-totalOrder
-open import Data.List.Relation.Binary.Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Strict using (Lex-<; Lex-≤)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)

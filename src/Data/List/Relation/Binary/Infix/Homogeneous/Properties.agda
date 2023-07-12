@@ -12,7 +12,9 @@ open import Level
 open import Function.Base using (_∘′_)
 open import Relation.Binary
 
-open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise.Base as Pointwise using (Pointwise)
+import Data.List.Relation.Binary.Pointwise as Pointwise using (isEquivalence)
+open import Data.List.Relation.Binary.Pointwise.Properties as Pointwise using (decidable)
 open import Data.List.Relation.Binary.Infix.Heterogeneous
 open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties
 

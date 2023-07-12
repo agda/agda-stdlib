@@ -18,7 +18,9 @@ open import Data.List.Base as List hiding (map; _∷ʳ_)
 import Data.List.Properties as Lₚ
 open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
-open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise.Base as Pw using (Pointwise; []; _∷_)
+import Data.List.Relation.Binary.Pointwise.Properties as Pw using (refl; decidable)
+import Data.List.Relation.Binary.Pointwise as Pw using (isEquivalence)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
 
 open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
