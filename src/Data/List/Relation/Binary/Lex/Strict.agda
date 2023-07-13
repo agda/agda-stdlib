@@ -21,10 +21,9 @@ open import Level using (_⊔_)
 open import Relation.Nullary using (yes; no; ¬_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
+open import Data.List.Relation.Binary.Pointwise as Pointwise
    using (Pointwise; []; _∷_; head; tail)
-import Data.List.Relation.Binary.Pointwise as Pointwise using (isEquivalence)
-open import Data.List.Relation.Binary.Pointwise.Properties as Pointwise using (decidable)
+
 import Data.List.Relation.Binary.Lex as Core
 
 ----------------------------------------------------------------------

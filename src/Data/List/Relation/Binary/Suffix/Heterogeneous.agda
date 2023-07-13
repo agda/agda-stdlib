@@ -14,7 +14,6 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
   using (Pointwise; []; _∷_)
 
-
 module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
 
   infixr 5 _++_
