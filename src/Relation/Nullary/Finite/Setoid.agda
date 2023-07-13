@@ -39,7 +39,7 @@ record FinitelyEnumerable (X : Setoid c ℓ) : Set (c ⊔ ℓ) where
     size : ℕ
     srj : Surjection (≡.setoid (Fin size)) X
 
-record SubFinitelyEnumerable (X : Setoid c ℓ) c′ ℓ′
+record InjectsIntoFinitelyEnumerable (X : Setoid c ℓ) c′ ℓ′
        : Set (c ⊔ ℓ ⊔ lsuc (c′ ⊔ ℓ′)) where
   field
     Apex : Setoid c′ ℓ′
@@ -48,7 +48,7 @@ record SubFinitelyEnumerable (X : Setoid c ℓ) c′ ℓ′
 
   open FinitelyEnumerable finitelyEnumerable public
 
-record SubfinitelyEnumerable (X : Setoid c ℓ) c′ ℓ′
+record SurjectionFromFinitelyEnumerable (X : Setoid c ℓ) c′ ℓ′
        : Set (c ⊔ ℓ ⊔ lsuc (c′ ⊔ ℓ′)) where
   field
     Apex : Setoid c′ ℓ′
