@@ -13,7 +13,7 @@ open import Data.Product as Prod using (_,_; ∃; _×_; -,_)
 open import Data.Vec hiding (here; there)
 open import Data.Vec.Relation.Unary.Any using (here; there)
 open import Data.List.Base using ([]; _∷_)
-open import Data.List.Relation.Unary.Any using (here; there)
+open import Data.List.Relation.Unary.Any using (here; there) renaming (index to indexₗ)
 open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
 open import Data.List.Membership.Propositional
@@ -101,6 +101,11 @@ index-∈-lookup (suc i) (x ∷ xs) = cong suc (index-∈-lookup i xs)
 ∈-fromList⁻ : ∀ {v : A} {xs} → v ∈ fromList xs → v ∈ₗ xs
 ∈-fromList⁻ {xs = _ ∷ _} (here refl)  = here refl
 ∈-fromList⁻ {xs = _ ∷ _} (there v∈xs) = there (∈-fromList⁻ v∈xs)
+
+index-∈-fromList⁺ : ∀ {v : A} {xs} → (v∈xs : v ∈ₗ xs) →
+                    Any.index (∈-fromList⁺ v∈xs) ≡ indexₗ v∈xs
+index-∈-fromList⁺ (here refl) = refl
+index-∈-fromList⁺ (there v∈xs) = cong suc (index-∈-fromList⁺ v∈xs)
 
 ------------------------------------------------------------------------
 -- Relationship to Any

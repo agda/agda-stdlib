@@ -2146,6 +2146,7 @@ Other minor changes
   ```agda
   mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
   map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  index-injective : index x₁∈xs ≡ index x₂∈xs → x₁ ≈ x₂
   ```
 
 * Add new proofs in `Data.List.Properties`:
@@ -2170,6 +2171,8 @@ Other minor changes
   
   take-[] : ∀ m → take  m [] ≡ []
   drop-[] : ∀ m → drop  m [] ≡ []
+
+  map-replicate : map f (replicate n x) ≡ replicate n (f x)
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2530,6 +2533,8 @@ Other minor changes
   map-∷ʳ       : map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
   map-reverse  : map f (reverse xs) ≡ reverse (map f xs)
   map-ʳ++      : map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
+  map-insert   : map f (insert xs i x) ≡ insert (map f xs) i (f x)
+  toList-map   : toList (map f xs) ≡ List.map f (toList xs)
 
   lookup-concat : lookup (concat xss) (combine i j) ≡ lookup (lookup xss i) j
 
@@ -2564,6 +2569,9 @@ Other minor changes
   reverse-injective  : reverse xs ≡ reverse ys → xs ≡ ys
 
   transpose-replicate : transpose (replicate xs) ≡ map replicate xs
+  toList-replicate    : toList (replicate {n = n} a) ≡ List.replicate n a
+
+  toList-++ : toList (xs ++ ys) ≡ toList xs List.++ toList ys
 
   toList-cast   : toList (cast eq xs) ≡ toList xs
   cast-is-id    : cast eq xs ≡ xs
@@ -2573,6 +2581,13 @@ Other minor changes
   lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
+
+  zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
+  ```
+
+* Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  index-∈-fromList⁺ : Any.index (∈-fromList⁺ v∈xs) ≡ indexₗ v∈xs
   ```
 
 * Added new proofs in `Data.Vec.Functional.Properties`:
