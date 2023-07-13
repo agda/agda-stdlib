@@ -10,15 +10,10 @@ module Relation.Nullary.Finite.Setoid where
 
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product.Base as ×
-open import Data.Sum.Base as ⊎ using (_⊎_; inj₁; inj₂)
-open import Data.Unit using (⊤; tt)
-open import Function
-open import Level renaming (suc to lsuc)
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
-import Relation.Binary.Reasoning.Setoid as SetR
-import Relation.Binary.Construct.On as On
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
+open import Function.Bundles using (Injection; Surjection; Inverse)
+open import Level using (Level; _⊔_) renaming (suc to lsuc)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 private
   variable
@@ -27,17 +22,17 @@ private
 record StrictlyFinite (X : Setoid c ℓ) : Set (c ⊔ ℓ) where
    field
      size : ℕ
-     inv : Inverse X (≡.setoid (Fin size))
+     inv : Inverse X (setoid (Fin size))
 
 record Subfinite (X : Setoid c ℓ) : Set (c ⊔ ℓ) where
   field
     size : ℕ
-    inj : Injection X (≡.setoid (Fin size))
+    inj : Injection X (setoid (Fin size))
 
 record FinitelyEnumerable (X : Setoid c ℓ) : Set (c ⊔ ℓ) where
   field
     size : ℕ
-    srj : Surjection (≡.setoid (Fin size)) X
+    srj : Surjection (setoid (Fin size)) X
 
 record InjectsIntoFinitelyEnumerable (X : Setoid c ℓ) c′ ℓ′
        : Set (c ⊔ ℓ ⊔ lsuc (c′ ⊔ ℓ′)) where
