@@ -24,7 +24,7 @@ open import Data.Maybe.Base
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product
-open import Data.Vec.Base hiding (_⊛_)
+open import Data.Vec.Base using (Vec)
 open import Data.Vec.N-ary
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
