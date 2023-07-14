@@ -19,10 +19,13 @@ private
   variable
     c ℓ c′ ℓ′ : Level
 
-record StrictlyFinite (X : Setoid c ℓ) : Set (c ⊔ ℓ) where
+record IsStronglyFinite (X : Setoid c ℓ) (n : ℕ) : Set (c ⊔ ℓ) where
    field
-     size : ℕ
-     inv : Inverse X (setoid (Fin size))
+     inv : Inverse X (setoid (Fin n))
+
+record StronglyFinite (X : Setoid c ℓ) (n : ℕ) : Set (c ⊔ ℓ) where
+   field
+     isFinite : IsStronglyFinite X n
 
 record Subfinite (X : Setoid c ℓ) : Set (c ⊔ ℓ) where
   field
