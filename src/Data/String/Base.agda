@@ -8,9 +8,12 @@
 
 module Data.String.Base where
 
+
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Char.Base as Char using (Char)
+import Data.Char.Properties as Char
 open import Data.List.Base as List using (List; [_]; _∷_; [])
+import Data.List.Membership.DecSetoid as Membership
 open import Data.List.NonEmpty.Base as NE using (List⁺)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Core using (Lex-<; Lex-≤)
@@ -21,8 +24,11 @@ open import Function.Base using (_on_; _∘′_; _∘_)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable.Core using (does)
+
+open Membership (decSetoid Char._≟_) using (_∈?_)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -114,6 +120,12 @@ _<+>_ : String → String → String
 "" <+> b = b
 a <+> "" = a
 a <+> b = a ++ " " ++ b
+
+-- enclose string with parens if it contains a space character
+parensIfSpace : String → String
+parensIfSpace s with does (' ' ∈? toList s)
+... | true  = parens s
+... | false = s
 
 ------------------------------------------------------------------------
 -- Padding
