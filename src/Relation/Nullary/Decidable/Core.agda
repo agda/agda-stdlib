@@ -177,3 +177,8 @@ decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
 
 ¬¬-excluded-middle : DoubleNegation (Dec P)
 ¬¬-excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
+
+{-# WARNING_ON_USAGE map-identity
+"Warning: excluded-middle was deprecated in v2.0.
+Please use ¬¬-excluded-middle instead."
+#-}
