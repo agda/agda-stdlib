@@ -15,7 +15,7 @@ open import Data.Product.Base as Prod using (_,_; Σ; Σ-syntax; ∃; curry; unc
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (flip; _∘_; const; _∘′_)
 open import Level using (Level)
-open import Relation.Nullary.Decidable.Core using (Dec; yes; no; excluded-middle)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; ¬¬-excluded-middle)
 open import Relation.Unary using (Universal)
 
 private
