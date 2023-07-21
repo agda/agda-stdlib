@@ -21,7 +21,7 @@ open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
 data Pointer {r p q} {T : Rel I r}
              (P : EdgePred p T) (Q : EdgePred q T)
-             : Rel (Maybe (NonEmpty (Star T))) (p ⊔ q) where
+             : Rel (Maybe (NonEmpty (Star T))) (ℓ ⊔ r ⊔ p ⊔ q) where
   step : ∀ {i j k} {x : T i j} {xs : Star T j k}
          (p : P x) → Pointer P Q (just (nonEmpty (x ◅ xs)))
                                  (just (nonEmpty xs))
