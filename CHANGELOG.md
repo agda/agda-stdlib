@@ -733,6 +733,13 @@ Non-backwards compatible changes
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
   the `--without-K` flag now use the `--cubical-compatible` flag instead.
 
+* To avoid _large indices_ that are by default no longer allowed in Agda 2.6.4,
+  universe levels have been increased in the following definitions:
+  - `Data.Star.Decoration.DecoratedWith`
+  - `Data.Star.Pointer.Pointer`
+  - `Reflection.AnnotatedAST.Typeₐ`
+  - `Reflection.AnnotatedAST.AnnotationFun`
+
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
   have been made implicit.
 
