@@ -2165,9 +2165,9 @@ Other minor changes
   take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
   drop-take-suc : (o : Fin (length xs)) → let m = toℕ o in drop m (take (suc m) xs) ≡ [ lookup xs o ]
   drop-take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in drop m (take (suc m) (tabulate f)) ≡ [ f o ]
-  
-  take-all : n ≥ length xs → take n xs ≡ xs     
-  
+
+  take-all : n ≥ length xs → take n xs ≡ xs
+
   take-[] : ∀ m → take  m [] ≡ []
   drop-[] : ∀ m → drop  m [] ≡ []
   ```
@@ -2901,7 +2901,7 @@ Other minor changes
   foldr-map : foldr f x (map g xs) ≡ foldr (g -⟨ f ∣) x xs
   foldl-map : foldl f x (map g xs) ≡ foldl (∣ f ⟩- g) x xs
   ```
-  
+
 NonZero/Positive/Negative changes
 ---------------------------------
 
