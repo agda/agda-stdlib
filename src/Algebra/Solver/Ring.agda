@@ -42,7 +42,7 @@ open import Algebra.Properties.Semiring.Exp semiring
 open import Relation.Binary
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Binary.Reasoning.Setoid setoid
-import Relation.Binary.PropositionalEquality as PropEq
+import Relation.Binary.PropositionalEquality.Core as PropEq
 import Relation.Binary.Reflection as Reflection
 
 open import Data.Nat.Base using (ℕ; suc; zero)
@@ -175,6 +175,8 @@ mutual
 mutual
 
   -- Equality is weakly decidable.
+
+  infix 4 _≟H_ _≟N_
 
   _≟H_ : ∀ {n} → WeaklyDecidable (_≈H_ {n = n})
   ∅           ≟H ∅           = just ∅

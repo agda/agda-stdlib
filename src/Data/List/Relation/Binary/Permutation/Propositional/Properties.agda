@@ -28,7 +28,7 @@ open import Function.Inverse as Inv using (inverse)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_)
 open import Relation.Nullary
 

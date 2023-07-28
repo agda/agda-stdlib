@@ -14,7 +14,7 @@ open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷
 open import Level using (Level)
 open import Relation.Binary.Core using (REL; Rel)
 open import Relation.Binary.Definitions using (Trans)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
   variable

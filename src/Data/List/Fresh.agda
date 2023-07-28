@@ -16,7 +16,7 @@ module Data.List.Fresh where
 open import Level using (Level; _⊔_)
 open import Data.Bool.Base using (true; false)
 open import Data.Unit.Polymorphic.Base using (⊤)
-open import Data.Product using (∃; _×_; _,_; -,_; proj₁; proj₂)
+open import Data.Product.Base using (∃; _×_; _,_; -,_; proj₁; proj₂)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)

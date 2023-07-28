@@ -20,7 +20,7 @@ open import Relation.Nullary
 open import Relation.Unary  as U using (Pred)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nary
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 open import Data.List.Fresh
 open import Data.List.Fresh.Relation.Unary.All

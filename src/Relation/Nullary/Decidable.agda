@@ -11,7 +11,7 @@ module Relation.Nullary.Decidable where
 open import Level using (Level)
 open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.Empty using (⊥-elim)
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 open import Data.Sum.Base as Sum hiding (map)
 open import Function.Base
 open import Function.Bundles using

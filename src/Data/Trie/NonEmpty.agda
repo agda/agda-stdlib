@@ -18,7 +18,7 @@ open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
-open import Function as F
+open import Function.Base as F
 import Function.Identity.Effectful as Identity
 open import Relation.Unary using (_⇒_; IUniversal)
 

@@ -9,7 +9,7 @@
 module Data.Product.Base where
 
 open import Function.Base
-open import Level
+open import Level using (Level; _⊔_)
 
 private
   variable
@@ -31,6 +31,19 @@ open import Agda.Builtin.Sigma public
 module Σ = Agda.Builtin.Sigma.Σ
   renaming (fst to proj₁; snd to proj₂)
 
+------------------------------------------------------------------------
+-- Existential quantifiers
+
+∃ : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
+∃ = Σ _
+
+∃₂ : ∀ {A : Set a} {B : A → Set b}
+     (C : (x : A) → B x → Set c) → Set (a ⊔ b ⊔ c)
+∃₂ C = ∃ λ a → ∃ λ b → C a b
+
+------------------------------------------------------------------------
+-- Syntaxes
+
 -- The syntax declaration below is attached to Σ-syntax, to make it
 -- easy to import Σ without the special syntax.
 
@@ -40,6 +53,13 @@ infix 2 Σ-syntax
 Σ-syntax = Σ
 
 syntax Σ-syntax A (λ x → B) = Σ[ x ∈ A ] B
+
+infix 2 ∃-syntax
+
+∃-syntax : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
+∃-syntax = ∃
+
+syntax ∃-syntax (λ x → B) = ∃[ x ] B
 
 ------------------------------------------------------------------------
 -- Definition of non-dependent products

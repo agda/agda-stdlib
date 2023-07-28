@@ -16,15 +16,12 @@
 
 module Data.Vec.Recursive where
 
-open import Level using (Level; lift)
-open import Function.Bundles using (mk↔′)
-open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc; NonZero; pred)
 open import Data.Nat.Properties using (+-comm; *-comm)
 open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.Fin.Properties using (1↔⊤; *↔×)
-open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.Unit.Base using (tt)
@@ -32,8 +29,11 @@ open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Unit.Polymorphic.Properties using (⊤↔⊤*)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Data.Vec.N-ary using (N-ary)
-open import Function
-open import Relation.Unary
+open import Function.Base using (_∘′_; _∘_; id)
+open import Function.Bundles using (_↔_; mk↔′; mk↔)
+open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
+open import Level using (Level; lift)
+open import Relation.Unary using (IUniversal; Universal; _⇒_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; trans; cong; subst)
 open import Relation.Binary.Structures using (IsEquivalence)
 
