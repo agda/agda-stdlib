@@ -24,7 +24,7 @@
 
 module Tactic.Cong where
 
-open import Function using (_$_)
+open import Function.Base using (_$_)
 
 open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
 open import Data.Char.Base   as Char  using (toℕ)
@@ -36,7 +36,7 @@ open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product
 
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_; refl; cong)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the builtin
 -- for maximum speed.

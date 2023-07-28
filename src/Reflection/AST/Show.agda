@@ -13,7 +13,7 @@ module Reflection.AST.Show where
 
 import Data.Char as Char   using (show)
 import Data.Float as Float using (show)
-open import Data.List hiding (_++_; intersperse)
+open import Data.List.Base hiding (_++_; intersperse)
 import Data.Nat.Show as ℕ using (show)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.String as String

@@ -14,7 +14,7 @@ import Data.List.Relation.Unary.Any as Any
 open import Data.List.Relation.Unary.All as All
 open import Data.List.Relation.Unary.All.Properties using (¬Any⇒All¬)
 open import Data.List.Relation.Unary.Any.Properties using (++⁻)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary
 open import Relation.Nullary.Negation using (¬_)

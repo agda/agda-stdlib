@@ -15,9 +15,9 @@ open import Data.Product.Base       using (_×_; _,_; <_,_>; uncurry; map₁)
 open import Data.Product.Properties using (,-injective)
 open import Data.Maybe.Base         using (Maybe; just; nothing)
 open import Data.String as String   using (String)
-open import Relation.Nullary.Decidable            using (map′; _×-dec_; yes; no)
-open import Relation.Binary                       using (Decidable; DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong₂)
+open import Relation.Nullary.Decidable                 using (map′; _×-dec_; yes; no)
+open import Relation.Binary                            using (Decidable; DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 
 open import Reflection.AST.Abstraction
 open import Reflection.AST.Argument

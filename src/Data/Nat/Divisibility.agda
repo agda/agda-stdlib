@@ -12,18 +12,17 @@ open import Algebra
 open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
-open import Data.Product
-open import Data.Unit using (tt)
-open import Function.Base
+open import Data.Unit.Base using (tt)
+open import Function.Base using (_∘′_; _$_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable as Dec using (False)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable as Dec using (False; yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 ------------------------------------------------------------------------
 -- Definition

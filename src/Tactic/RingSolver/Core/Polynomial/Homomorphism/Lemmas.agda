@@ -13,20 +13,20 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Bool                                  using (Bool;true;false)
-open import Data.Nat.Base as ℕ                         using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Nat.Properties as ℕₚ                  using (≤′-trans)
-open import Data.Vec.Base as Vec                       using (Vec; _∷_)
-open import Data.Fin                                   using (Fin; zero; suc)
-open import Data.List                                  using (_∷_; [])
+open import Data.Bool                                       using (Bool;true;false)
+open import Data.Nat.Base as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Properties as ℕₚ                       using (≤′-trans)
+open import Data.Vec.Base as Vec                            using (Vec; _∷_)
+open import Data.Fin                                        using (Fin; zero; suc)
+open import Data.List.Base                                  using (_∷_; [])
 open import Data.Unit using (tt)
 open import Data.List.Kleene
-open import Data.Product                               using (_,_; proj₁; proj₂; map₁; _×_)
-open import Data.Maybe                                 using (nothing; just)
-open import Function
-open import Level                                      using (lift)
-open import Relation.Nullary                           using (Dec; yes; no)
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
+open import Data.Product                                    using (_,_; proj₁; proj₂; map₁; _×_)
+open import Data.Maybe                                      using (nothing; just)
+open import Function.Base                                   using (_⟨_⟩_)
+open import Level                                           using (lift)
+open import Relation.Nullary                                using (Dec; yes; no)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 open Homomorphism homo hiding (_^_)
 open import Tactic.RingSolver.Core.Polynomial.Reasoning to

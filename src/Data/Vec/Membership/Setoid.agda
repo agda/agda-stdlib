@@ -10,7 +10,7 @@ open import Relation.Binary using (Setoid; _Respects_)
 
 module Data.Vec.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
-open import Function
+open import Function.Base using (_∘_; flip)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Any as Any
   using (Any; here; there; index)

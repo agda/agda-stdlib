@@ -13,12 +13,12 @@ open import Data.Sum.Relation.Binary.Pointwise as PW
   using (Pointwise; inj₁; inj₂)
 open import Data.Product
 open import Data.Empty
-open import Function
+open import Function.Base using (_$_; _∘_)
 open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ----------------------------------------------------------------------
 -- Definition

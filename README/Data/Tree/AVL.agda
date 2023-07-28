@@ -60,7 +60,7 @@ t₃ = delete 2 t₂
 
 -- Conversion of a list of key-value mappings to a tree.
 
-open import Data.List using (_∷_; [])
+open import Data.List.Base using (_∷_; [])
 
 t₄ : Tree
 t₄ = fromList ((2 , v₂) ∷ (1 , v₁) ∷ [])

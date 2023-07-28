@@ -10,7 +10,7 @@ open import Level
 
 module Effect.Monad.Reader.Indexed {r} (R : Set r) (a : Level) where
 
-open import Function
+open import Function.Base using (const; flip; _∘_)
 open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Applicative.Indexed
 open import Effect.Monad.Indexed

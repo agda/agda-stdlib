@@ -17,11 +17,11 @@ open import Data.Nat.Induction
   using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded-fast)
 open import Data.Product
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Function
+open import Function.Base using (_$_; _∘_)
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; subst; cong)
 open import Relation.Nullary.Decidable using (Dec)
 open import Relation.Nullary.Negation using (contradiction)

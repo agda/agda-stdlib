@@ -8,12 +8,12 @@
 
 module Relation.Unary where
 
-open import Data.Empty
+open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤)
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_; Σ-syntax; ∃; uncurry; swap)
 open import Data.Sum.Base using (_⊎_; [_,_])
-open import Function.Base
-open import Level
+open import Function.Base using (_∘_; _|>_)
+open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
 open import Relation.Nullary.Decidable.Core using (Dec; True)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
@@ -285,7 +285,7 @@ _⟨→⟩_ : Pred A ℓ₁ → Pred B ℓ₂ → Pred (A → B) _
 -- Product.
 
 _⟨·⟩_ : (P : Pred A ℓ₁) (Q : Pred B ℓ₂) →
-        (P ⟨×⟩ (P ⟨→⟩ Q)) ⊆ Q ∘ uncurry (flip _$_)
+        (P ⟨×⟩ (P ⟨→⟩ Q)) ⊆ Q ∘ uncurry _|>_
 (P ⟨·⟩ Q) (p , f) = f p
 
 -- Converse.

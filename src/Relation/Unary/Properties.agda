@@ -8,10 +8,10 @@
 
 module Relation.Unary.Properties where
 
-open import Data.Product as Product using (_×_; _,_; swap; proj₁; zip′)
+open import Data.Product.Base as Product using (_×_; _,_; swap; proj₁; zip′)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
-open import Level
+open import Level using (Level)
 open import Relation.Binary.Core as Binary
 open import Relation.Binary.Definitions hiding (Decidable; Universal; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core using (refl)

@@ -18,7 +18,7 @@ open import Data.Vec              using (Vec)
 open import Data.Nat              using (_<′_)
 open import Data.Nat.Induction
 
-open import Function
+open import Function.Base using (_⟨_⟩_; flip)
 
 open Homomorphism homo
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo

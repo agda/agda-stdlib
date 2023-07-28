@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core
+open import Relation.Binary.Core using (Rel)
 
 module Relation.Binary.Morphism.Structures
   {a b} {A : Set a} {B : Set b}
@@ -14,7 +14,7 @@ module Relation.Binary.Morphism.Structures
 
 open import Data.Product.Base using (_,_)
 open import Function.Definitions
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Morphism.Definitions A B
 
 private

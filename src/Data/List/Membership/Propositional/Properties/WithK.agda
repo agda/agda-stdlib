@@ -14,7 +14,7 @@ open import Data.List.Relation.Unary.Unique.Propositional
 open import Data.List.Membership.Propositional
 import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Relation.Unary using (Irrelevant)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties as P
 open import Relation.Binary.PropositionalEquality.WithK
 
 ------------------------------------------------------------------------

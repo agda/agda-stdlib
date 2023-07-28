@@ -20,7 +20,7 @@ open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
-import Relation.Binary.PropositionalEquality as PropEq
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 ------------------------------------------------------------------------
 -- Primitive properties

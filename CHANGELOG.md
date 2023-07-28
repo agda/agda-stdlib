@@ -105,6 +105,21 @@ Bug-fixes
   infix   8 _⁻¹                                              (Data.Parity.Base)
   infixr  5 _`∷_                                             (Data.Vec.Reflection)
   infixr  5 _∷=_                                             (Data.Vec.Membership.Setoid)
+  infix   4 _≟H_ _≟N_                                        (Algebra.Solver.Ring)
+  infix   4 _≈_                                              (Relation.Binary.Bundles)
+  infixl  6 _∩_                                              (Relation.Binary.Construct.Intersection)
+  infix   4 _<₋_                                             (Relation.Binary.Construct.Add.Infimum.Strict)
+  infix   4 _≈∙_                                             (Relation.Binary.Construct.Add.Point.Equality)
+  infix   4 _≤⁺_ _≤⊤⁺                                        (Relation.Binary.Construct.Add.Supremum.NonStrict)
+  infixr  5 _∷ʳ_                                             (Relation.Binary.Construct.Closure.Transitive)
+  infixr  5 _∷_                                              (Codata.Guarded.Stream.Relation.Unary.All)
+  infixr  5 _∷_                                              (Foreign.Haskell.List.NonEmpty)
+  infix   4 _≈_                                              (Function.Metric.Rational.Bundles)
+  infixl  6 _ℕ+_                                             (Level.Literals)
+  infixr  6 _∪_                                              (Relation.Binary.Construct.Union)
+  infixl  6 _+ℤ_                                             (Relation.Binary.HeterogeneousEquality.Quotients.Examples)
+  infix   4 _≉_ _≈ᵢ_ _≤ᵢ_                                    (Relation.Binary.Indexed.Homogeneous.Bundles)
+  infixr  5 _∷ᴹ_ _∷⁻¹ᴹ_                                      (Text.Regex.Search)
   ```
 
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
@@ -356,42 +371,42 @@ Non-backwards compatible changes
   `m / n` without having to explicitly provide a proof, as instance search will fill it in
   for you. The full list of such operations changed is as follows:
     - In `Data.Nat.DivMod`: `_/_`, `_%_`, `_div_`, `_mod_`
-	- In `Data.Nat.Pseudorandom.LCG`: `Generator`
-	- In `Data.Integer.DivMod`: `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
-	- In `Data.Rational`: `mkℚ+`, `normalize`, `_/_`, `1/_`
-	- In `Data.Rational.Unnormalised`: `_/_`, `1/_`, `_÷_`
+    - In `Data.Nat.Pseudorandom.LCG`: `Generator`
+    - In `Data.Integer.DivMod`: `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
+    - In `Data.Rational`: `mkℚ+`, `normalize`, `_/_`, `1/_`
+    - In `Data.Rational.Unnormalised`: `_/_`, `1/_`, `_÷_`
 
 * At the moment, there are 4 different ways such instance arguments can be provided,
   listed in order of convenience and clarity:
     1. *Automatic basic instances* - the standard library provides instances based on the constructors of each
-	   numeric type in `Data.X.Base`. For example, `Data.Nat.Base` constains an instance of `NonZero (suc n)` for any `n`
-	   and `Data.Integer.Base` contains an instance of `NonNegative (+ n)` for any `n`. Consequently,
-	   if the argument is of the required form, these instances will always be filled in by instance search
-	   automatically, e.g.
-	   ```
-	   0/n≡0 : 0 / suc n ≡ 0
-	   ```
-	2. *Take the instance as an argument* - You can provide the instance argument as a parameter to your function
-	   and Agda's instance search will automatically use it in the correct place without you having to
-	   explicitly pass it, e.g.
-	   ```
-	   0/n≡0 : .{{_ : NonZero n}} → 0 / n ≡ 0
-	   ```
-	3. *Define the instance locally* - You can define an instance argument in scope (e.g. in a `where` clause)
-	   and Agda's instance search will again find it automatically, e.g.
-	   ```
-	   instance
-	     n≢0 : NonZero n
-	     n≢0 = ...
+       numeric type in `Data.X.Base`. For example, `Data.Nat.Base` constains an instance of `NonZero (suc n)` for any `n`
+       and `Data.Integer.Base` contains an instance of `NonNegative (+ n)` for any `n`. Consequently,
+       if the argument is of the required form, these instances will always be filled in by instance search
+       automatically, e.g.
+       ```
+       0/n≡0 : 0 / suc n ≡ 0
+       ```
+    2. *Take the instance as an argument* - You can provide the instance argument as a parameter to your function
+       and Agda's instance search will automatically use it in the correct place without you having to
+       explicitly pass it, e.g.
+       ```
+       0/n≡0 : .{{_ : NonZero n}} → 0 / n ≡ 0
+       ```
+    3. *Define the instance locally* - You can define an instance argument in scope (e.g. in a `where` clause)
+       and Agda's instance search will again find it automatically, e.g.
+       ```
+       instance
+         n≢0 : NonZero n
+         n≢0 = ...
 
-	   0/n≡0 : 0 / n ≡ 0
-	   ```
-	4. *Pass the instance argument explicitly* - Finally, if all else fails you can pass the
-	   instance argument explicitly into the function using `{{ }}`, e.g.
-	   ```
-	   0/n≡0 : ∀ n (n≢0 : NonZero n) → ((0 / n) {{n≢0}}) ≡ 0
-	   ```
-	   Suitable constructors for `NonZero`/`Positive` etc. can be found in `Data.X.Base`.
+       0/n≡0 : 0 / n ≡ 0
+       ```
+    4. *Pass the instance argument explicitly* - Finally, if all else fails you can pass the
+       instance argument explicitly into the function using `{{ }}`, e.g.
+       ```
+       0/n≡0 : ∀ n (n≢0 : NonZero n) → ((0 / n) {{n≢0}}) ≡ 0
+       ```
+       Suitable constructors for `NonZero`/`Positive` etc. can be found in `Data.X.Base`.
 
 * A full list of proofs that have changed to use instance arguments is available at the end of this file.
   Notable changes to proofs are now discussed below.
@@ -442,14 +457,14 @@ Non-backwards compatible changes
 * As a consequence of this, some proofs that relied on this reduction behaviour
   or on eta-equality may no longer go through. There are several ways to fix this:
   1. The principled way is to not rely on this reduction behaviour in the first place.
-	 The `Properties` files for rational numbers have been greatly expanded in `v1.7`
-	 and `v2.0`, and we believe most proofs should be able to be built up from existing
-	 proofs contained within these files.
+     The `Properties` files for rational numbers have been greatly expanded in `v1.7`
+     and `v2.0`, and we believe most proofs should be able to be built up from existing
+     proofs contained within these files.
   2. Alternatively, annotating any rational arguments to a proof with either
-	 `@record{}` or `@(mkℚ _ _ _)` should restore the old reduction behaviour for any
-	 terms involving those parameters.
+     `@record{}` or `@(mkℚ _ _ _)` should restore the old reduction behaviour for any
+     terms involving those parameters.
   3. Finally, if the above approaches are not viable then you may be forced to explicitly
-	 use `cong` combined with a lemma that proves the old reduction behaviour.
+     use `cong` combined with a lemma that proves the old reduction behaviour.
 
 ### Change to the definition of `LeftCancellative` and `RightCancellative`
 
@@ -463,20 +478,20 @@ Non-backwards compatible changes
 
 * Therefore the definitions have been changed as follows to make all their arguments explicit:
   - `LeftCancellative _•_`
-	- From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z`
-	- To: `∀ x y z → (x • y) ≈ (x • z) → y ≈ z`
+    - From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z`
+    - To: `∀ x y z → (x • y) ≈ (x • z) → y ≈ z`
 
   - `RightCancellative _•_`
     - From: `∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z`
-	- To: `∀ x y z → (y • x) ≈ (z • x) → y ≈ z`
+    - To: `∀ x y z → (y • x) ≈ (z • x) → y ≈ z`
 
   - `AlmostLeftCancellative e _•_`
     - From: `∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
-	- To: `∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
+    - To: `∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
 
   - `AlmostRightCancellative e _•_`
-	- From: `∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
-	- To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+    - From: `∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+    - To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
 
 * Correspondingly some proofs of the above types will need additional arguments passed explicitly.
   Instances can easily be fixed by adding additional underscores, e.g.
@@ -628,7 +643,7 @@ Non-backwards compatible changes
   - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
   - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
   - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation`
-	to `Relation.Nullary.Decidable`.
+    to `Relation.Nullary.Decidable`.
   - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
 
 ### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
@@ -717,6 +732,13 @@ Non-backwards compatible changes
 
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
   the `--without-K` flag now use the `--cubical-compatible` flag instead.
+
+* To avoid _large indices_ that are by default no longer allowed in Agda 2.6.4,
+  universe levels have been increased in the following definitions:
+  - `Data.Star.Decoration.DecoratedWith`
+  - `Data.Star.Pointer.Pointer`
+  - `Reflection.AnnotatedAST.Typeₐ`
+  - `Reflection.AnnotatedAST.AnnotationFun`
 
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
   have been made implicit.
@@ -868,13 +890,13 @@ Major improvements
 
 * The ring solver tactic has been greatly improved. In particular:
   1. When the solver is used for concrete ring types, e.g. ℤ, the equality can now use
-	 all the ring operations defined natively for that type, rather than having
-	 to use the operations defined in `AlmostCommutativeRing`. For example
-	 previously you could not use `Data.Integer.Base._*_` but instead had to
-	 use `AlmostCommutativeRing._*_`.
+     all the ring operations defined natively for that type, rather than having
+     to use the operations defined in `AlmostCommutativeRing`. For example
+     previously you could not use `Data.Integer.Base._*_` but instead had to
+     use `AlmostCommutativeRing._*_`.
   2. The solver now supports use of the subtraction operator `_-_` whenever
      it is defined immediately in terms of `_+_` and `-_`. This is the case for
-	 `Data.Integer` and `Data.Rational`.
+     `Data.Integer` and `Data.Rational`.
 
 ### Moved `_%_` and `_/_` operators to `Data.Nat.Base`
 
@@ -2145,7 +2167,14 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
- 
+
+  take-suc : (o : Fin (length xs)) → let m = toℕ o in take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
+  take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
+  drop-take-suc : (o : Fin (length xs)) → let m = toℕ o in drop m (take (suc m) xs) ≡ [ lookup xs o ]
+  drop-take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in drop m (take (suc m) (tabulate f)) ≡ [ f o ]
+
+  take-all : n ≥ length xs → take n xs ≡ xs
+
   take-[] : ∀ m → take  m [] ≡ []
   drop-[] : ∀ m → drop  m [] ≡ []
   ```

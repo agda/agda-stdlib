@@ -10,7 +10,7 @@ module Data.Sum.Algebra where
 
 open import Algebra
 open import Data.Empty.Polymorphic using (⊥)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Data.Unit.Polymorphic using (⊤; tt)
