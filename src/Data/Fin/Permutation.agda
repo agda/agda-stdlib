@@ -15,7 +15,7 @@ open import Data.Fin.Patterns
 open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Product using (_,_; proj₂)
+open import Data.Product.Base using (_,_; proj₂)
 open import Function.Bundles using (_↔_; Injection; Inverse; mk↔′)
 open import Function.Construct.Composition using (_↔-∘_)
 open import Function.Construct.Identity using (↔-id)

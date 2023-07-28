@@ -14,7 +14,7 @@ module Data.List.Relation.Binary.Lex.Strict where
 open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤; tt)
 open import Function.Base using (_∘_; id)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.List.Base using (List; []; _∷_)
 open import Level using (_⊔_)
