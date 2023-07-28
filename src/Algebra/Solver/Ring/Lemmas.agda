@@ -24,7 +24,7 @@ open AlmostCommutativeRing r
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Function
+open import Function.Base using (_⟨_⟩_; _$_)
 
 lemma₀ : ∀ a b c x →
          (a + b) * x + c ≈ a * x + (b * x + c)

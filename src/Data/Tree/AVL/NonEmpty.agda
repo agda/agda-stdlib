@@ -23,7 +23,7 @@ open import Data.Maybe.Base hiding (map)
 open import Data.Nat.Base hiding (_<_; _⊔_; compare)
 open import Data.Product hiding (map)
 open import Data.Unit
-open import Function
+open import Function.Base using (_$_; _∘′_)
 open import Level using (_⊔_; Lift; lift)
 open import Relation.Unary
 

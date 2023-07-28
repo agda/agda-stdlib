@@ -11,7 +11,7 @@ module Data.Container.Relation.Unary.Any where
 open import Level using (_⊔_)
 open import Relation.Unary using (Pred; _⊆_)
 open import Data.Product as Prod using (_,_; proj₂; ∃)
-open import Function
+open import Function.Base using (_∘′_; id)
 
 open import Data.Container.Core hiding (map)
 import Data.Container.Morphism as M

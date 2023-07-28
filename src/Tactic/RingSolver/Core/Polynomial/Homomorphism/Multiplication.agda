@@ -19,7 +19,7 @@ open import Data.Nat.Induction
 open import Data.Product           using (_×_; _,_; proj₁; proj₂; map₁)
 open import Data.List.Kleene
 open import Data.Vec               using (Vec)
-open import Function
+open import Function.Base using (_⟨_⟩_; flip)
 open import Induction.WellFounded
 open import Relation.Unary
 

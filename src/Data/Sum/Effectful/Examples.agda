@@ -21,7 +21,7 @@ private
   module Examplesₗ {a b} {A : Set a} {B : Set b} where
 
     open import Agda.Builtin.Equality
-    open import Function
+    open import Function.Base using (id)
     module Sₗ = Sumₗ A b
 
     open RawFunctor Sₗ.functor

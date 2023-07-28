@@ -15,7 +15,7 @@ open import Data.Nat
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Product
 open import Data.Unit
-open import Function
+open import Function.Base using (id;  _∘_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nary
 

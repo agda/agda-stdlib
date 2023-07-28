@@ -19,7 +19,7 @@ open import Data.Product              using (_,_; _×_; proj₂)
 open import Data.List.Base            using (_∷_; [])
 open import Data.List.Kleene
 open import Data.Vec                  using (Vec)
-open import Function
+open import Function.Base using (_⟨_⟩_; flip)
 open import Relation.Unary
 
 import Relation.Binary.PropositionalEquality.Core as ≡

@@ -11,7 +11,7 @@ module
   Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK
   where
 
-open import Function
+open import Function.Base using (_∋_)
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.PropositionalEquality

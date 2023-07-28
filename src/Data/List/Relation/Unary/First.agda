@@ -17,7 +17,7 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Product as Prod using (∃; -,_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Function
+open import Function.Base using (id; _∘′_)
 open import Relation.Unary
 open import Relation.Nullary
 

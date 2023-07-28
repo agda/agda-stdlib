@@ -16,7 +16,7 @@ open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
 open import Effect.Comonad
-open import Function
+open import Function.Base using (flip; _∘′_; _∘_)
 
 ------------------------------------------------------------------------
 -- List⁺ applicative functor
