@@ -27,7 +27,7 @@ open import Codata.Sized.Cowriter as CW using (Cowriter; _∷_)
 open import Codata.Sized.Delay as Delay using (Delay ; now ; later)
 open import Codata.Sized.Stream using (Stream ; _∷_)
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
   variable

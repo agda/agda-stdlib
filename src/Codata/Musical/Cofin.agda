@@ -12,7 +12,7 @@ open import Codata.Musical.Notation
 open import Codata.Musical.Conat as Conat using (Coℕ; suc; ∞ℕ)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_ ; refl)
 open import Function.Base using (_∋_)
 
 ------------------------------------------------------------------------

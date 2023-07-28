@@ -24,7 +24,7 @@ open import Data.Product.Base as Prod using (_,_)
 open import Data.Vec.Base as Vec using (_∷_)
 
 open import Function.Base using (id; _$_; _∘′_; const)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; _≢_)
 
 private
   variable

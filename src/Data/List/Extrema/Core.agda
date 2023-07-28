@@ -18,7 +18,7 @@ import Algebra.Construct.NaturalChoice.Max as Max
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 open import Algebra.Construct.LiftedChoice
 

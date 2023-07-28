@@ -27,7 +27,7 @@ open import Function.Nary.NonDependent
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _because_; _×-dec_)
 import Relation.Unary as Unary
-open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 
 private
   variable

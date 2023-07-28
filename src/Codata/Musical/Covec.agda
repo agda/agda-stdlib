@@ -18,7 +18,7 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_)
 open import Level using (Level)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable
