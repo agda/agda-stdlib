@@ -28,7 +28,7 @@ data NonEmptyEdgePred {ℓ r p : Level} {I : Set ℓ} (T : Rel I r)
 -- Decorating an edge with more information.
 
 data DecoratedWith {ℓ r p : Level} {I : Set ℓ} {T : Rel I r} (P : EdgePred p T)
-       : Rel (NonEmpty (Star T)) p where
+       : Rel (NonEmpty (Star T)) (ℓ ⊔ r ⊔ p) where
   ↦ : ∀ {i j k} {x : T i j} {xs : Star T j k}
       (p : P x) → DecoratedWith P (nonEmpty (x ◅ xs)) (nonEmpty xs)
 

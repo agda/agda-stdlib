@@ -21,7 +21,8 @@ open import Data.Product using (_,_)
 open import Function.Base using (id; _∘′_; _∋_)
 open import Function.Equality using (_⟨$⟩_)
 open import Relation.Binary using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 import Function.Endomorphism.Setoid (P.setoid A) as Setoid
 

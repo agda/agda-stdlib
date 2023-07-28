@@ -21,7 +21,7 @@ open import Data.Nat.DivMod
 open import Data.Product as Prod
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; refl; trans; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary as Nullary hiding (recompute)
 open import Relation.Nullary.Negation using (contradiction)

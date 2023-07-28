@@ -14,7 +14,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map)
-open import Data.Sum hiding (map)
+open import Data.Sum.Base using (inj₁; inj₂; _⊎_)
 open import Function.Base using (_∘_; id)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Negation using (¬_)

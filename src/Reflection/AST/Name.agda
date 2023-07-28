@@ -8,14 +8,14 @@
 
 module Reflection.AST.Name where
 
-open import Data.List.Base                        using (List)
-import Data.Product.Properties as Prodₚ           using (≡-dec)
-import Data.Word.Properties as Wₚ                 using (_≟_)
-open import Function.Base                         using (_on_)
-open import Relation.Nullary.Decidable            using (map′)
-open import Relation.Binary                       using (Rel; Decidable; DecidableEquality)
-open import Relation.Binary.Construct.On          using (decidable)
-open import Relation.Binary.PropositionalEquality using (_≡_; cong)
+open import Data.List.Base              using (List)
+import Data.Product.Properties as Prodₚ using (≡-dec)
+import Data.Word.Properties as Wₚ       using (_≟_)
+open import Function.Base               using (_on_)
+open import Relation.Nullary.Decidable                 using (map′)
+open import Relation.Binary                            using (Rel; Decidable; DecidableEquality)
+open import Relation.Binary.Construct.On               using (decidable)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 
 ----------------------------------------------------------------------
 -- Re-export built-ins

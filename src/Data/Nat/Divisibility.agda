@@ -20,8 +20,9 @@ open import Relation.Nullary.Decidable as Dec using (False; yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 ------------------------------------------------------------------------
 -- Definition

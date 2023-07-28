@@ -16,10 +16,10 @@ import Data.String as String using (_≟_)
 import Data.Word as Word     using (_≟_)
 import Reflection.AST.Meta as Meta
 import Reflection.AST.Name as Name
-open import Relation.Nullary                      using (yes; no)
-open import Relation.Nullary.Decidable            using (map′; isYes)
-open import Relation.Binary                       using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Nullary                           using (yes; no)
+open import Relation.Nullary.Decidable                 using (map′; isYes)
+open import Relation.Binary                            using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors

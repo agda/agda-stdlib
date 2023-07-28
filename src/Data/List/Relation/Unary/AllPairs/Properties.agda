@@ -20,7 +20,7 @@ open import Data.Nat.Properties using (≤-refl; m<n⇒m<1+n)
 open import Function.Base using (_∘_; flip)
 open import Level using (Level)
 open import Relation.Binary using (Rel; DecSetoid)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable using (does)
 
