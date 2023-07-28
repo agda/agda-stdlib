@@ -23,7 +23,7 @@ open import Data.Unit using (tt)
 open import Data.List.Kleene
 open import Data.Product                                    using (_,_; proj₁; proj₂; map₁; _×_)
 open import Data.Maybe                                      using (nothing; just)
-open import Function
+open import Function.Base                                   using (_⟨_⟩_)
 open import Level                                           using (lift)
 open import Relation.Nullary                                using (Dec; yes; no)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)

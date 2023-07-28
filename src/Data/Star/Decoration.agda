@@ -9,7 +9,7 @@
 module Data.Star.Decoration where
 
 open import Data.Unit
-open import Function
+open import Function.Base using (flip)
 open import Level
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive

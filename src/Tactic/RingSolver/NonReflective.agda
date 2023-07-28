@@ -18,7 +18,7 @@ module Tactic.RingSolver.NonReflective
   where
 
 open import Algebra.Morphism
-open import Function
+open import Function.Base using (id; _⟨_⟩_)
 open import Data.Bool.Base using (Bool; true; false; T; if_then_else_)
 open import Data.Maybe.Base
 open import Data.Empty using (⊥-elim)

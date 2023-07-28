@@ -14,7 +14,7 @@ open import Data.Empty
 open import Data.List.Base
 open import Data.Product hiding (proj₁; proj₂)
 open import Data.Unit.Polymorphic
-open import Function
+open import Function.Base using (id; _∘_)
 open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
