@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecPoset)
+open import Relation.Binary.Bundles using (DecPoset)
 
 module Text.Regex.Properties {a e r} (P? : DecPoset a e r) where
 
@@ -23,7 +23,7 @@ open import Relation.Nullary.Negation
   using (¬_; contradiction)
 
 import Relation.Unary  as U
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 
 open DecPoset P? renaming (Carrier to A)
 open import Text.Regex.Base preorder

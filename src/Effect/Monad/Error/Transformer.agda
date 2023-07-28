@@ -41,7 +41,7 @@ record RawMonadError
 
 module Sumₗ where
 
-  open import Data.Sum using (inj₁; inj₂; [_,_]′)
+  open import Data.Sum.Base using (inj₁; inj₂; [_,_]′)
   open import Data.Sum.Effectful.Left.Transformer E a
 
   monadError : RawMonad M → RawMonadError (SumₗT M)
@@ -54,7 +54,7 @@ module Sumₗ where
 
 module Sumᵣ where
 
-  open import Data.Sum using (inj₁; inj₂; [_,_]′)
+  open import Data.Sum.Base using (inj₁; inj₂; [_,_]′)
   open import Data.Sum.Effectful.Right.Transformer a E
 
   monadError : RawMonad M → RawMonadError (SumᵣT M)
