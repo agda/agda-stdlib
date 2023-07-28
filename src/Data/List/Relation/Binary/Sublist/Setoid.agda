@@ -26,7 +26,7 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
 open import Data.Product using (∃; ∃₂; _×_; _,_; proj₂)
 
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 
 open Setoid S renaming (Carrier to A)

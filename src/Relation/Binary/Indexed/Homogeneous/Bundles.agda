@@ -14,8 +14,9 @@ module Relation.Binary.Indexed.Homogeneous.Bundles where
 open import Data.Product using (_,_)
 open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
-open import Relation.Binary as B using (_⇒_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (_⇒_; Rel)
+open import Relation.Binary.Bundles as B
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Indexed.Homogeneous.Core
 open import Relation.Binary.Indexed.Homogeneous.Structures
@@ -39,10 +40,12 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
   Carrier : Set _
   Carrier = ∀ i → Carrierᵢ i
 
-  _≈_ : B.Rel Carrier _
+  infix 4 _≉_
+
+  _≈_ : Rel Carrier _
   _≈_ = Lift Carrierᵢ _≈ᵢ_
 
-  _≉_ : B.Rel Carrier _
+  _≉_ : Rel Carrier _
   x ≉ y = ¬ (x ≈ y)
 
   setoid : B.Setoid _ _
@@ -87,10 +90,10 @@ record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ :
   Carrier : Set _
   Carrier = ∀ i → Carrierᵢ i
 
-  _≈_ : B.Rel Carrier _
+  _≈_ : Rel Carrier _
   x ≈ y = ∀ i → x i ≈ᵢ y i
 
-  _∼_ : B.Rel Carrier _
+  _∼_ : Rel Carrier _
   x ∼ y = ∀ i → x i ∼ᵢ y i
 
   preorder : B.Preorder _ _ _
@@ -103,6 +106,7 @@ record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ :
 
 record IndexedPoset {i} (I : Set i) c ℓ₁ ℓ₂ :
                     Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈ᵢ_ _≤ᵢ_
   field
     Carrierᵢ        : I → Set c
     _≈ᵢ_            : IRel Carrierᵢ ℓ₁

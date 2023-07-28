@@ -21,7 +21,7 @@ open import Function.Base using (id; _∘′_; _$_)
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
 import Relation.Binary as B
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 open import Relation.Nary
 
 open import Data.List.Fresh

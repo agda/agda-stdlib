@@ -27,7 +27,7 @@ open import Relation.Nullary using (yes; no; ¬_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.Construct.On as On using (wellFounded)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Level using (Level; _⊔_)
 
 private

@@ -20,7 +20,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary using (Setoid; _Respects_)
-open import Relation.Binary.PropositionalEquality as P using (subst)
+open import Relation.Binary.PropositionalEquality.Core as P using (subst)
 
 private
   variable

@@ -11,7 +11,7 @@ open import Data.List.Membership.Setoid.Properties as Membership
 open import Data.List.Relation.Unary.Any using (index)
 open import Data.List.Relation.Unary.Any.Properties using (lookup-index)
 open import Data.List.Relation.Unary.Enumerates.Setoid
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Binary.Pointwise
   using (_⊎ₛ_; inj₁; inj₂)
 open import Data.Product using (_,_; proj₁; proj₂)
@@ -20,7 +20,7 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function
 open import Level
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.Properties.Setoid using (respʳ-flip)
 
 module Data.List.Relation.Unary.Enumerates.Setoid.Properties where

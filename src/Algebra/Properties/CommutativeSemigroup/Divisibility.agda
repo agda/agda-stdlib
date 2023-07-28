@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (CommutativeSemigroup)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 module Algebra.Properties.CommutativeSemigroup.Divisibility

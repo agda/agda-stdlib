@@ -20,7 +20,7 @@ open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function.Base using (const; flip; id; _∘′_; _$′_; _⟨_⟩_; _∘₂′_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; cong; cong₂)
 
 private
   variable

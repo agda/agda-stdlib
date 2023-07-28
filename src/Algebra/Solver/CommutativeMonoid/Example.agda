@@ -8,7 +8,7 @@
 
 module Algebra.Solver.CommutativeMonoid.Example where
 
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 open import Data.Bool.Base using (_∨_)
 open import Data.Bool.Properties using (∨-commutativeMonoid)

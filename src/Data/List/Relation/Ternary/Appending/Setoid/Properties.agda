@@ -15,7 +15,7 @@ import Data.List.Properties as Listₚ
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; [])
 import Data.List.Relation.Ternary.Appending.Properties as Appendingₚ
 open import Data.Product using (_,_)
-open import Relation.Binary.PropositionalEquality using (refl)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 open import Data.List.Relation.Ternary.Appending.Setoid S
 module S = Setoid S; open S renaming (Carrier to A) using (_≈_)

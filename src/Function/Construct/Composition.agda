@@ -8,10 +8,10 @@
 
 module Function.Construct.Composition where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function
 open import Level using (Level)
-open import Relation.Binary as B hiding (_⇔_; IsEquivalence)
+open import Relation.Binary hiding (_⇔_; IsEquivalence)
 
 private
   variable

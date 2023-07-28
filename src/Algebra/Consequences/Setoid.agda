@@ -7,7 +7,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Substitutive; Symmetric; Total)
 
 module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
@@ -15,7 +18,7 @@ open Setoid S renaming (Carrier to A)
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_)
 import Function.Definitions as FunDefs
 import Relation.Binary.Consequences as Bin

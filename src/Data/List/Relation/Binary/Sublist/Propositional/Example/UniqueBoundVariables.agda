@@ -10,7 +10,7 @@
 
 module Data.List.Relation.Binary.Sublist.Propositional.Example.UniqueBoundVariables (Base : Set) where
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; cong; subst; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; cong; subst; module ≡-Reasoning)
 open ≡-Reasoning
 
 open import Data.List.Base using (List; []; _∷_; [_])
