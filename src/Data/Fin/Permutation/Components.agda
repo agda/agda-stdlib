@@ -13,7 +13,7 @@ open import Data.Fin.Base
 open import Data.Fin.Properties
 open import Data.Nat.Base as ℕ using (zero; suc; _∸_)
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (proj₂)
+open import Data.Product.Base using (proj₂)
 open import Function.Base using (_∘_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (does; _because_; yes; no)
