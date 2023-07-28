@@ -1985,10 +1985,18 @@ Other minor changes
   <-wellFounded : WellFounded _<_
   ∨-conicalˡ : LeftConical false _∨_
   ∨-conicalʳ : RightConical false _∨_
-  ∨-conical : Conical false _∨_
+  ∨-conical  : Conical false _∨_
   ∧-conicalˡ : LeftConical true _∧_
   ∧-conicalʳ : RightConical true _∧_
-  ∧-conical : Conical true _∧_
+  ∧-conical  : Conical true _∧_
+  xor-same-false    : ∀ x → x xor x ≡ false
+  xor-false-neutral : ∀ x → false xor x ≡ x
+  xor-true-not      : ∀ x → true xor x ≡ not x
+  xor-not-true      : ∀ x → x xor (not x) ≡ true
+  not-xor           : ∀ x y → not (x xor y) ≡ (not x) xor y
+  not-xor-cancel    : ∀ x y → (not x) xor (not y) ≡ x xor y
+  xor-commutative   : ∀ x y → x xor y ≡ y xor x
+  xor-associative   : ∀ x y z → x xor (y xor z) ≡ (x xor y) xor z
   ```
 
 * Added new functions in `Data.Fin.Base`:
