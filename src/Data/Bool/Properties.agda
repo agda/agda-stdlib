@@ -627,20 +627,7 @@ true  <? _     = no  (λ())
   }
 
 ------------------------------------------------------------------------
--- Properties of _xor_
-
-xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
-xor-is-ok true  y = refl
-xor-is-ok false y = sym (∧-identityʳ _)
-
-xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
-xor-∧-commutativeRing = ⊕-∧-commutativeRing
-  where
-  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
-  open XorRing _xor_ xor-is-ok
-
-------------------------------------------------------------------------
--- Miscellaneous other properties
+-- Propertied of not
 
 not-involutive : Involutive not
 not-involutive true  = refl
@@ -659,6 +646,56 @@ not-¬ {false} refl ()
 ¬-not {true}  {false} _   = refl
 ¬-not {false} {true}  _   = refl
 ¬-not {false} {false} x≢y = ⊥-elim (x≢y refl)
+
+------------------------------------------------------------------------
+-- Properties of _xor_
+
+xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
+xor-is-ok true  y = refl
+xor-is-ok false y = sym (∧-identityʳ _)
+
+xor-same-false : ∀ x → x xor x ≡ false
+xor-same-false false = refl
+xor-same-false true  = refl
+
+xor-false-neutral : ∀ x → false xor x ≡ x
+xor-false-neutral false = refl
+xor-false-neutral true  = refl
+
+xor-commutative : ∀ x y → x xor y ≡ y xor x
+xor-commutative false false = refl
+xor-commutative false true  = refl
+xor-commutative true  false = refl
+xor-commutative true  true  = refl
+
+xor-true-not : ∀ x → true xor x ≡ not x
+xor-true-not false = refl
+xor-true-not true  = refl
+
+xor-not-true : ∀ x → x xor (not x) ≡ true
+xor-not-true false = refl
+xor-not-true true  = refl
+
+not-xor : ∀ x y → not (x xor y) ≡ (not x) xor y
+not-xor false y = refl
+not-xor true  y = not-involutive _
+
+not-xor-cancel : ∀ x y → (not x) xor (not y) ≡ x xor y
+not-xor-cancel false y = not-involutive _
+not-xor-cancel true  y = refl
+
+xor-associative : ∀ x y z → x xor (y xor z) ≡ (x xor y) xor z
+xor-associative false y z = refl
+xor-associative true  y z = not-xor y z
+
+xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
+xor-∧-commutativeRing = ⊕-∧-commutativeRing
+  where
+  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
+  open XorRing _xor_ xor-is-ok
+
+------------------------------------------------------------------------
+-- Miscellaneous other properties
 
 ⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
 ⇔→≡ {true } {true }         hyp = refl
