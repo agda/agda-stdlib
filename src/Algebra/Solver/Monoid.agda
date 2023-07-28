@@ -20,7 +20,7 @@ open import Data.Nat.Base using (ℕ)
 open import Data.Product
 open import Data.Vec.Base using (Vec; lookup)
 open import Function.Base using (_∘_; _$_)
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.Reflection

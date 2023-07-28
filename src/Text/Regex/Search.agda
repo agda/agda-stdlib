@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecPoset)
+open import Relation.Binary.Bundles using (DecPoset)
 
 module Text.Regex.Search {a e r} (P? : DecPoset a e r) where
 
@@ -29,7 +29,8 @@ open import Data.List.Relation.Binary.Suffix.Heterogeneous
 open import Relation.Nullary using (Dec; ¬_; yes; no)
 open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary using (Rel; Decidable; _⇒_)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality.Core
 
 open DecPoset P? using (preorder) renaming (Carrier to A)

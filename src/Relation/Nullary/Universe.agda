@@ -10,7 +10,8 @@ module Relation.Nullary.Universe where
 
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Binary hiding (_⇒_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Construct.Always as Always
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.PropositionalEquality.Properties as PropEq
