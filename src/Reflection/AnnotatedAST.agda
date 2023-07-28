@@ -35,8 +35,8 @@ Annotation : ∀ ℓ → Set (suc ℓ)
 Annotation ℓ = ∀ {u} → ⟦ u ⟧ → Set ℓ
 
 -- An annotated type is a family over an Annotation and a reflected term.
-Typeₐ : ∀ ℓ → Univ → Set (suc ℓ)
-Typeₐ ℓ u = Annotation ℓ → ⟦ u ⟧ → Set ℓ
+Typeₐ : ∀ ℓ → Univ → Set (suc (suc ℓ))
+Typeₐ ℓ u = Annotation ℓ → ⟦ u ⟧ → Set (suc ℓ)
 
 private
   variable
@@ -168,7 +168,7 @@ mutual
 
 -- An annotation function computes the top-level annotation given a
 -- term annotated at all sub-terms.
-AnnotationFun : Annotation ℓ → Set ℓ
+AnnotationFun : Annotation ℓ → Set (suc ℓ)
 AnnotationFun Ann = ∀ u {t : ⟦ u ⟧} → Annotated′ Ann t → Ann t
 
 
