@@ -8,7 +8,7 @@
 
 module README.Design.Hierarchies where
 
-open import Data.Sum using (_⊎_)
+open import Data.Sum.Base using (_⊎_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_Preserves₂_⟶_⟶_)
 
