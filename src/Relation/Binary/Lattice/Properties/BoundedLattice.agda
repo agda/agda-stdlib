@@ -15,7 +15,7 @@ open BoundedLattice L
 
 open import Algebra.Definitions _≈_
 open import Data.Product using (_,_)
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
 open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
 

@@ -17,7 +17,9 @@ open import Function.Structures
 open import Function.Bundles
   using (Bijection; Equivalence; LeftInverse; RightInverse; Inverse; _⤖_; _⇔_; _↩_; _↪_; _↔_)
 open import Level using (Level)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Symmetric; Transitive)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality
 
 private
