@@ -26,8 +26,8 @@ private
 
     open RawFunctor Sₗ.functor
 
-    -- This type to the right of ⊎ needs to be a "lifted" version of (B : Set b)
-    -- that lives in the universe (Set (a ⊔ b)).
+    -- This type to the right of ⊎ needs to be a "lifted" version of
+    -- (B : Set b) that lives in the universe (Set (a ⊔ b)).
     fmapId : (x : A ⊎ (Lift a B)) → (id <$> x) ≡ x
     fmapId (inj₁ x) = refl
     fmapId (inj₂ y) = refl
@@ -35,9 +35,9 @@ private
 
     open RawMonad   Sₗ.monad
 
-    -- Now, let's show that "pure" is a unit for >>=. We use Lift in exactly
-    -- the same way as above. The data (x : B) then needs to be "lifted" to
-    -- this new type (Lift B).
+    -- Now, let's show that "pure" is a unit for >>=. We use Lift in
+    -- exactly the same way as above. The data (x : B) then needs to be
+    -- "lifted" to this new type (Lift B).
     pureUnitL : ∀ {x : B} {f : Lift a B → A ⊎ (Lift a B)}
                   → (pure (lift x) >>= f) ≡ f (lift x)
     pureUnitL = refl

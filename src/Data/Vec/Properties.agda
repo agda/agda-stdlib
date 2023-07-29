@@ -151,7 +151,7 @@ take-drop-id (suc m) (x ∷ xs) = begin
     x ∷ xs
   ∎
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- truncate
 
 truncate-refl : (xs : Vec A n) → truncate ≤-refl xs ≡ xs
@@ -163,7 +163,7 @@ truncate-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
 truncate-trans z≤n       n≤p       xs = refl
 truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- pad
 
 padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
@@ -179,7 +179,7 @@ padRight-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A
 padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
 padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- truncate and padRight together
 
 truncate-padRight : (m≤n : m ≤ n) (a : A) (xs : Vec A m) →

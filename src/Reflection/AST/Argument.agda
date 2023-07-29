@@ -79,8 +79,8 @@ arg-injective = < arg-injective₁ , arg-injective₂ >
 
 -- We often need decidability of equality for Arg A when implementing it
 -- for A. Unfortunately ≡-dec makes the termination checker unhappy.
--- Instead, we can match on both Arg A and use unArg-dec for an obviously
--- decreasing recursive call.
+-- Instead, we can match on both Arg A and use unArg-dec for an
+-- obviously decreasing recursive call.
 
 unArg : Arg A → A
 unArg (arg i a) = a

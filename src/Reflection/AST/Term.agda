@@ -59,7 +59,7 @@ pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
 pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
 pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Utility functions
 
 getName : Term → Maybe Name
@@ -143,9 +143,9 @@ _≟-Patterns_ : Decidable (_≡_ {A = Args Pattern})
 _≟-Pattern_  : Decidable (_≡_ {A = Pattern})
 
 -- Decidable equality 'transformers'
--- We need to inline these because the terms are not sized so termination
--- would not obvious if we were to use higher-order functions such as
--- Data.List.Properties' ≡-dec
+-- We need to inline these because the terms are not sized so
+-- termination would not obvious if we were to use higher-order
+-- functions such as Data.List.Properties' ≡-dec
 
 abs s a ≟-AbsTerm abs s′ a′ = unAbs-dec (a ≟ a′)
 abs s a ≟-AbsType abs s′ a′ = unAbs-dec (a ≟ a′)

@@ -35,12 +35,12 @@ list (suc k) gen x = x ∷ list k gen (step gen x)
 -- Examples of parameters
 -- Taken from https://en.wikipedia.org/wiki/Linear_congruential_generator
 
--- /!\ As explained in that wikipedia entry, none of these are claimed to
--- be good parameters.
+-- /!\ As explained in that wikipedia entry, none of these are claimed
+-- to be good parameters.
 
--- Note also that if you need your output to have good properties you may
--- need to postprocess the stream of values to only use some of the bits of
--- the output!
+-- Note also that if you need your output to have good properties you
+-- may need to postprocess the stream of values to only use some of the
+-- bits of the output!
 
 glibc : Generator
 glibc = record

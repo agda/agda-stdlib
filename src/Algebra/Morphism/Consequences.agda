@@ -15,7 +15,7 @@ open import Function.Base using (id; _∘_)
 open import Function.Definitions
 import Relation.Binary.Reasoning.Setoid as EqR
 
----------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- If f and g are mutually inverse maps between A and B, g is congruent,
 -- f is a homomorphism, then g is a homomorphism.
 

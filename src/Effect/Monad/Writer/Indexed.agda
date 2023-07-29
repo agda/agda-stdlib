@@ -34,7 +34,7 @@ module _ {M : IFun I (w ⊔ a)} {𝕎 : RawMonoid w ℓ} where
 
   open RawMonoid 𝕎 renaming (Carrier to W)
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Indexed writer applicative
 
   WriterTIApplicative : RawIApplicative M → RawIApplicative (IWriterT 𝕎 M)
@@ -59,7 +59,7 @@ module _ {M : IFun I (w ⊔ a)} {𝕎 : RawMonoid w ℓ} where
     ; _∣_ = _∣_
     } where open RawIAlternative Alt
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Indexed writer monad
 
   WriterTIMonad : RawIMonad M → RawIMonad (IWriterT 𝕎 M)

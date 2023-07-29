@@ -5,8 +5,8 @@
 -- equality induced by ℕ.
 --
 -- This is sufficient for proving equalities that are independent of the
--- characteristic.  In particular, this is enough for equalities in rings of
--- characteristic 0.
+-- characteristic.  In particular, this is enough for equalities in
+-- rings of characteristic 0.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

@@ -244,7 +244,7 @@ module _ {V : Value v} where
                Any P (singleton k v l<k<u) → P (k , v)
   singleton⁻ k v l<k<u (here Pkv) = Pkv
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- insert
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where

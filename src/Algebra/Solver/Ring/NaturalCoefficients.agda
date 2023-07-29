@@ -44,8 +44,8 @@ private
   -- There is a homomorphism from ℕ to R.
   --
   -- Note that the optimised _×_ is used rather than unoptimised _×ᵤ_.
-  -- If _×ᵤ_ were used, then Function.Related.TypeIsomorphisms.test would fail
-  -- to type-check.
+  -- If _×ᵤ_ were used, then Function.Related.TypeIsomorphisms.test
+  -- would fail to type-check.
 
   homomorphism : ℕ-ring -Raw-AlmostCommutative⟶ fromCommutativeSemiring R
   homomorphism = record
