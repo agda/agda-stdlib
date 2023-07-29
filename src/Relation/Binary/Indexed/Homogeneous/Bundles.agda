@@ -11,7 +11,7 @@
 
 module Relation.Binary.Indexed.Homogeneous.Bundles where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_⇒_; Rel)

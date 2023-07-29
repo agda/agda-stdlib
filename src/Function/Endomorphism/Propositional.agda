@@ -16,7 +16,7 @@ open import Algebra.Morphism; open Definitions
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
 open import Function.Base using (id; _∘′_; _∋_)
 open import Function.Equality using (_⟨$⟩_)

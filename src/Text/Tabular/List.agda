@@ -11,7 +11,7 @@ module Text.Tabular.List where
 open import Data.String using (String)
 open import Data.List.Base
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (-,_; proj₂)
+open import Data.Product.Base using (-,_; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Vec.Bounded.Base as Vec≤ using (Vec≤)
 open import Function.Base

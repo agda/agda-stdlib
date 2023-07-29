@@ -17,7 +17,7 @@ module Relation.Binary.Indexed.Homogeneous.Structures
   (_≈ᵢ_ : IRel A ℓ) -- The underlying indexed equality relation
   where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_⇒_)
