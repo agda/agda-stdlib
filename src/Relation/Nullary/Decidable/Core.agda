@@ -176,5 +176,13 @@ decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).
 
+¬¬-excluded-middle : DoubleNegation (Dec P)
+¬¬-excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
+
 excluded-middle : DoubleNegation (Dec P)
-excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
+excluded-middle = ¬¬-excluded-middle
+
+{-# WARNING_ON_USAGE excluded-middle
+"Warning: excluded-middle was deprecated in v2.0.
+Please use ¬¬-excluded-middle instead."
+#-}
