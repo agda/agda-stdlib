@@ -10,7 +10,7 @@ module System.Process where
 
 open import Level using (Level)
 open import Data.List.Base using (List)
-open import Data.Product using (_×_; proj₁)
+open import Data.Product.Base using (_×_; proj₁)
 open import Data.String.Base using (String)
 open import Data.Unit.Polymorphic using (⊤)
 open import Foreign.Haskell.Coerce

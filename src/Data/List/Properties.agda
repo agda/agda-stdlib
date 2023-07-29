@@ -31,7 +31,8 @@ import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Fin.Properties using (toℕ-cast)
-open import Function
+open import Function.Base using (id; _∘_; _∘′_; _∋_; _-⟨_∣; ∣_⟩-_; _$_; const; flip)
+open import Function.Definitions using (Injective)
 open import Level using (Level)
 open import Relation.Binary as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR

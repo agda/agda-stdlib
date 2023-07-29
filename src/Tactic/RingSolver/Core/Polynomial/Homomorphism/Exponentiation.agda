@@ -13,10 +13,10 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Function
+open import Function.Base using (_⟨_⟩_)
 
 open import Data.Nat.Base as ℕ using (ℕ; suc; zero; compare)
-open import Data.Product  using (_,_; _×_; proj₁; proj₂)
+open import Data.Product.Base  using (_,_; _×_; proj₁; proj₂)
 open import Data.List.Kleene
 open import Data.Vec.Base      using (Vec)
 

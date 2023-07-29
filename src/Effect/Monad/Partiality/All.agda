@@ -11,7 +11,7 @@ module Effect.Monad.Partiality.All where
 open import Effect.Monad
 open import Effect.Monad.Partiality as Partiality using (_⊥; ⇒≈)
 open import Codata.Musical.Notation
-open import Function
+open import Function.Base using (flip; _∘_)
 open import Level
 open import Relation.Binary using (_Respects_; IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

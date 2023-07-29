@@ -13,7 +13,7 @@ open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat using (suc)
-open import Data.Product using (-,_; proj₂)
+open import Data.Product.Base using (-,_; proj₂)
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)

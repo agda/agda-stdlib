@@ -13,7 +13,7 @@ open import Level using (Level)
 open import Relation.Binary hiding (_⇔_)
 import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Base using (_∘_)
 open import Function.Properties.Inverse using (Inverse⇒Equivalence)
 

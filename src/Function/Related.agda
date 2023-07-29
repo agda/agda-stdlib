@@ -20,7 +20,7 @@ open import Function.Surjection  as Surj    using (Surjection)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
-open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
+open import Data.Product.Base using (_,_; proj₁; proj₂; <_,_>)
 
 import Function.Related.Propositional as R
 import Function.Bundles as B

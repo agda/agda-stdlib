@@ -29,7 +29,6 @@ instance
 -- Imports!
 
 open import Data.List.Base as List using (List; _∷_; [])
-open import Function
 open import Relation.Binary.PropositionalEquality
   using (subst; cong; _≡_; module ≡-Reasoning)
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_)

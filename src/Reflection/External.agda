@@ -12,9 +12,9 @@ import Agda.Builtin.Reflection.External as Builtin
 
 open import Data.Nat.Base using (ℕ; suc; zero; NonZero)
 open import Data.List.Base using (List; _∷_; [])
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.String.Base as String using (String; _++_)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Unit.Base using (⊤; tt)
 open import Function.Base using (case_of_; _$_; _∘_)
 open import Reflection hiding (name)

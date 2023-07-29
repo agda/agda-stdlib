@@ -14,7 +14,7 @@ open import Function.Base using (id)
 import Data.Char.Base    as Cₛ
 import Data.Integer.Show as ℤₛ
 import Data.Float        as Fₛ
-import Data.Nat.Show     as ℕₛ
+import Data.Nat.Show     as ℕₛ  using (show)
 
 open import Text.Format as Format hiding (Error)
 open import Text.Printf.Generic
