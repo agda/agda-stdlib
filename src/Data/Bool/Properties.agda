@@ -627,7 +627,7 @@ true  <? _     = no  (λ())
   }
 
 ------------------------------------------------------------------------
--- Propertied of not
+-- Properties of not
 
 not-involutive : Involutive not
 not-involutive true  = refl
