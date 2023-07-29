@@ -21,10 +21,10 @@
 <a id="610" class="Keyword">private</a>
   <a id="620" class="Keyword">data</a> <a id="Empty"></a><a id="625" href="Data.Empty.html#625" class="Datatype">Empty</a> <a id="631" class="Symbol">:</a> <a id="633" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="637" class="Keyword">where</a>
 
-<a id="644" class="Comment">-- ⊥ is defined via Data.Irrelevant (a record with a single irrelevant field)</a>
-<a id="722" class="Comment">-- so that Agda can judgementally declare that all proofs of ⊥ are equal</a>
-<a id="795" class="Comment">-- to each other. In particular this means that all functions returning a</a>
-<a id="869" class="Comment">-- proof of ⊥ are equal.</a>
+<a id="644" class="Comment">-- ⊥ is defined via Data.Irrelevant (a record with a single irrelevant</a>
+<a id="715" class="Comment">-- field) so that Agda can judgementally declare that all proofs of ⊥</a>
+<a id="785" class="Comment">-- are equal to each other. In particular this means that all functions</a>
+<a id="857" class="Comment">-- returning a proof of ⊥ are equal.</a>
 
 <a id="⊥"></a><a id="895" href="Data.Empty.html#895" class="Function">⊥</a> <a id="897" class="Symbol">:</a> <a id="899" href="Agda.Primitive.html#320" class="Primitive">Set</a>
 <a id="903" href="Data.Empty.html#895" class="Function">⊥</a> <a id="905" class="Symbol">=</a> <a id="907" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a> <a id="918" href="Data.Empty.html#625" class="Datatype">Empty</a>

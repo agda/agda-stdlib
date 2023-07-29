@@ -31,15 +31,15 @@
 <a id="965" class="Comment">------------------------------------------------------------------------</a>
 <a id="1038" class="Comment">-- Type Definitions</a>
 
-<a id="1059" class="Comment">-- We want to define n-ary function spaces and generic n-ary operations on</a>
-<a id="1134" class="Comment">-- them such as (un)currying, zipWith, alignWith, etc.</a>
+<a id="1059" class="Comment">-- We want to define n-ary function spaces and generic n-ary operations</a>
+<a id="1131" class="Comment">-- on them such as (un)currying, zipWith, alignWith, etc.</a>
 
 <a id="1190" class="Comment">-- We want users to be able to use these seamlessly whenever n is concrete.</a>
 
-<a id="1267" class="Comment">-- In other words, we want Agda to infer the sets `A₁, ⋯, Aₙ` when we write</a>
-<a id="1343" class="Comment">-- `uncurryₙ n f` where `f` has type `A₁ → ⋯ → Aₙ → B`. For this to happen,</a>
-<a id="1419" class="Comment">-- we need the structure in which these Sets are stored to effectively</a>
-<a id="1490" class="Comment">-- η-expand to `A₁, ⋯, Aₙ` when the parameter `n` is known.</a>
+<a id="1267" class="Comment">-- In other words, we want Agda to infer the sets `A₁, ⋯, Aₙ` when we</a>
+<a id="1337" class="Comment">-- write `uncurryₙ n f` where `f` has type `A₁ → ⋯ → Aₙ → B`. For this</a>
+<a id="1408" class="Comment">-- to happen, we need the structure in which these Sets are stored to</a>
+<a id="1478" class="Comment">-- effectively η-expand to `A₁, ⋯, Aₙ` when the parameter `n` is known.</a>
 
 <a id="1551" class="Comment">-- Hence the following definitions:</a>
 <a id="1587" class="Comment">------------------------------------------------------------------------</a>
@@ -67,9 +67,9 @@
 <a id="2398" href="Function.Nary.NonDependent.Base.html#2344" class="Function">Sets</a> <a id="2403" href="Agda.Builtin.Nat.html#204" class="InductiveConstructor">zero</a>    <a id="2411" class="Symbol">_</a>        <a id="2420" class="Symbol">=</a> <a id="2422" href="Data.Unit.Polymorphic.Base.html#489" class="Function">⊤</a>
 <a id="2424" href="Function.Nary.NonDependent.Base.html#2344" class="Function">Sets</a> <a id="2429" class="Symbol">(</a><a id="2430" href="Agda.Builtin.Nat.html#217" class="InductiveConstructor">suc</a> <a id="2434" href="Function.Nary.NonDependent.Base.html#2434" class="Bound">n</a><a id="2435" class="Symbol">)</a> <a id="2437" class="Symbol">(</a><a id="2438" href="Function.Nary.NonDependent.Base.html#2438" class="Bound">l</a> <a id="2440" href="Agda.Builtin.Sigma.html#218" class="InductiveConstructor Operator">,</a> <a id="2442" href="Function.Nary.NonDependent.Base.html#2442" class="Bound">ls</a><a id="2444" class="Symbol">)</a> <a id="2446" class="Symbol">=</a> <a id="2448" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="2452" href="Function.Nary.NonDependent.Base.html#2438" class="Bound">l</a> <a id="2454" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="2456" href="Function.Nary.NonDependent.Base.html#2344" class="Function">Sets</a> <a id="2461" href="Function.Nary.NonDependent.Base.html#2434" class="Bound">n</a> <a id="2463" href="Function.Nary.NonDependent.Base.html#2442" class="Bound">ls</a>
 
-<a id="2467" class="Comment">-- Third, a function type whose domains are given by a &quot;vector&quot; of `n` Sets</a>
-<a id="2543" class="Comment">-- `A₁, ⋯, Aₙ` and whose codomain is `B`. `Arrows` forms such a type of</a>
-<a id="2615" class="Comment">-- shape `A₁ → ⋯ → Aₙ → B` by induction on `n`.</a>
+<a id="2467" class="Comment">-- Third, a function type whose domains are given by a &quot;vector&quot; of `n`</a>
+<a id="2538" class="Comment">-- Sets `A₁, ⋯, Aₙ` and whose codomain is `B`. `Arrows` forms such a</a>
+<a id="2607" class="Comment">-- type of shape `A₁ → ⋯ → Aₙ → B` by induction on `n`.</a>
 
 <a id="Arrows"></a><a id="2664" href="Function.Nary.NonDependent.Base.html#2664" class="Function">Arrows</a> <a id="2671" class="Symbol">:</a> <a id="2673" class="Symbol">∀</a> <a id="2675" href="Function.Nary.NonDependent.Base.html#2675" class="Bound">n</a> <a id="2677" class="Symbol">{</a><a id="2678" href="Function.Nary.NonDependent.Base.html#2678" class="Bound">r</a> <a id="2680" href="Function.Nary.NonDependent.Base.html#2680" class="Bound">ls</a><a id="2682" class="Symbol">}</a> <a id="2684" class="Symbol">→</a> <a id="2686" href="Function.Nary.NonDependent.Base.html#2344" class="Function">Sets</a> <a id="2691" href="Function.Nary.NonDependent.Base.html#2675" class="Bound">n</a> <a id="2693" href="Function.Nary.NonDependent.Base.html#2680" class="Bound">ls</a> <a id="2696" class="Symbol">→</a> <a id="2698" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="2702" href="Function.Nary.NonDependent.Base.html#2678" class="Bound">r</a> <a id="2704" class="Symbol">→</a> <a id="2706" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="2710" class="Symbol">(</a><a id="2711" href="Function.Nary.NonDependent.Base.html#2678" class="Bound">r</a> <a id="2713" href="Agda.Primitive.html#804" class="Primitive Operator">⊔</a> <a id="2715" class="Symbol">(</a><a id="2716" href="Function.Nary.NonDependent.Base.html#2148" class="Function">⨆</a> <a id="2718" href="Function.Nary.NonDependent.Base.html#2675" class="Bound">n</a> <a id="2720" href="Function.Nary.NonDependent.Base.html#2680" class="Bound">ls</a><a id="2722" class="Symbol">))</a>
 <a id="2725" href="Function.Nary.NonDependent.Base.html#2664" class="Function">Arrows</a> <a id="2732" href="Agda.Builtin.Nat.html#204" class="InductiveConstructor">zero</a>    <a id="2740" class="Symbol">_</a>        <a id="2749" href="Function.Nary.NonDependent.Base.html#2749" class="Bound">b</a> <a id="2751" class="Symbol">=</a> <a id="2753" href="Function.Nary.NonDependent.Base.html#2749" class="Bound">b</a>
