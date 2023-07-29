@@ -57,7 +57,8 @@ open import Data.List.Base   as List using (List; []; _∷_)
 open import Data.List.Fresh  as List# using (List#; []; _∷#_)
 open import Data.Maybe       as Maybe
 open import Data.Product     as Prod
-open import Data.String      as String using (String)
+open import Data.String.Base as String using (String)
+open import Data.String.Properties as String using (_≟_)
 open import Data.These       as These
 
 open import Function.Base using (case_of_; _$_; _∘′_; id; _on_)

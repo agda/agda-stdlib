@@ -8,7 +8,7 @@
 
 module Text.Tabular.List where
 
-open import Data.String using (String)
+open import Data.String.Base using (String)
 open import Data.List.Base
 import Data.Nat.Properties as ℕₚ
 open import Data.Product.Base using (-,_; proj₂)
