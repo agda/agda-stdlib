@@ -40,6 +40,9 @@ open _∣_ using (quotient) public
 _∤_ : Rel ℕ 0ℓ
 m ∤ n = ¬ (m ∣ n)
 
+-- smart constructor
+
+pattern divides-refl q = divides q refl
 
 ------------------------------------------------------------------------
 -- Basic properties
