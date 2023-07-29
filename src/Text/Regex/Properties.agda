@@ -27,8 +27,7 @@ open import Relation.Binary.Definitions using (Decidable)
 
 open DecPoset P? renaming (Carrier to A)
 open import Text.Regex.Base preorder
-
-open import Data.List.Relation.Binary.Pointwise using ([])
+open import Data.List.Relation.Binary.Pointwise.Base using ([])
 open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 open import Data.List.Relation.Ternary.Appending.Propositional.Properties {A = A}
 

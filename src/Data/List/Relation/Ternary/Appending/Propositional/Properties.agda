@@ -10,7 +10,7 @@ module Data.List.Relation.Ternary.Appending.Propositional.Properties {a} {A : Se
 
 open import Data.List.Base as List using (List; [])
 import Data.List.Properties as Listₚ
-import Data.List.Relation.Binary.Pointwise as Pw
+import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise-≡⇒≡)
 open import Data.List.Relation.Binary.Equality.Propositional using (_≋_)
 open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 open import Function.Base using (_∘′_)
