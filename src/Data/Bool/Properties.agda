@@ -654,27 +654,21 @@ xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
 xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
-xor-same-false : ∀ x → x xor x ≡ false
-xor-same-false false = refl
-xor-same-false true  = refl
+xor-same : ∀ x → x xor x ≡ false
+xor-same false = refl
+xor-same true  = refl
 
-xor-false-neutral : ∀ x → false xor x ≡ x
-xor-false-neutral false = refl
-xor-false-neutral true  = refl
+xor-false : ∀ x → false xor x ≡ x
+xor-false false = refl
+xor-false true  = refl
 
-xor-commutative : ∀ x y → x xor y ≡ y xor x
-xor-commutative false false = refl
-xor-commutative false true  = refl
-xor-commutative true  false = refl
-xor-commutative true  true  = refl
+xor-true : ∀ x → true xor x ≡ not x
+xor-true false = refl
+xor-true true  = refl
 
-xor-true-not : ∀ x → true xor x ≡ not x
-xor-true-not false = refl
-xor-true-not true  = refl
-
-xor-not-true : ∀ x → x xor (not x) ≡ true
-xor-not-true false = refl
-xor-not-true true  = refl
+xor-not : ∀ x → x xor (not x) ≡ true
+xor-not false = refl
+xor-not true  = refl
 
 not-xor : ∀ x y → not (x xor y) ≡ (not x) xor y
 not-xor false y = refl
@@ -683,6 +677,12 @@ not-xor true  y = not-involutive _
 not-xor-cancel : ∀ x y → (not x) xor (not y) ≡ x xor y
 not-xor-cancel false y = not-involutive _
 not-xor-cancel true  y = refl
+
+xor-commutative : ∀ x y → x xor y ≡ y xor x
+xor-commutative false false = refl
+xor-commutative false true  = refl
+xor-commutative true  false = refl
+xor-commutative true  true  = refl
 
 xor-associative : ∀ x y z → x xor (y xor z) ≡ (x xor y) xor z
 xor-associative false y z = refl
