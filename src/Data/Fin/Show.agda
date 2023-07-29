@@ -11,7 +11,7 @@ module Data.Fin.Show where
 open import Data.Fin.Base using (Fin; toℕ; fromℕ<)
 open import Data.Maybe.Base using (Maybe; nothing; just; _>>=_)
 open import Data.Nat as ℕ using (ℕ; _≤?_; _<?_)
-import Data.Nat.Show as ℕ
+import Data.Nat.Show as ℕ using (show; readMaybe)
 open import Data.String.Base using (String)
 open import Function.Base
 open import Relation.Nullary.Decidable using (yes; no)

@@ -14,7 +14,7 @@ open import Codata.Sized.Thunk
 open import Codata.Sized.M
 open import Data.Container.Core
 open import Data.Container.Relation.Binary.Pointwise using (Pointwise; _,_)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_)
 open import Relation.Binary
 import Relation.Binary.PropositionalEquality.Core as P
@@ -24,8 +24,8 @@ data Bisim {s p} (C : Container s p) (i : Size) : Rel (M C ∞) (s ⊔ p) where
 
 module _ {s p} {C : Container s p} where
 
-  -- unfortunately the proofs are a lot nicer if we do not use the combinators
-  -- C.refl, C.sym and C.trans
+  -- unfortunately the proofs are a lot nicer if we do not use the
+  -- combinators C.refl, C.sym and C.trans
 
   refl : ∀ {i} → Reflexive (Bisim C i)
   refl {x = inf t} = inf (P.refl , λ where p .force → refl)

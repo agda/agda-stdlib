@@ -78,7 +78,7 @@ x ≈? y = Pointwise.decidable Charₚ._≟_ (toList x) (toList y)
   { isDecEquivalence = ≈-isDecEquivalence
   }
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _≡_
 
 infix 4 _≟_

@@ -20,7 +20,7 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 data Pointwise {a b c d r s}
@@ -30,7 +30,7 @@ data Pointwise {a b c d r s}
   inj₁ : ∀ {a c} → R a c → Pointwise R S (inj₁ a) (inj₁ c)
   inj₂ : ∀ {b d} → S b d → Pointwise R S (inj₂ b) (inj₂ d)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties
 
 module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂}
@@ -108,7 +108,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
                 (Pointwise ∼₁ ∼₂) Respects₂ (Pointwise ≈₁ ≈₂)
   ⊎-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-respectsʳ r₁ r₂ , ⊎-respectsˡ l₁ l₂
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}

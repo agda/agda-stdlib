@@ -9,7 +9,7 @@
 module Data.List.Fresh.Relation.Unary.All where
 
 open import Level using (Level; _⊔_; Lift)
-open import Data.Product using (_×_; _,_; proj₁; uncurry)
+open import Data.Product.Base using (_×_; _,_; proj₁; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_)
 open import Relation.Unary  as U

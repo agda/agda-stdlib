@@ -8,9 +8,9 @@
 
 module Reflection.AST.Abstraction where
 
-open import Data.Product                               using (_×_; <_,_>; uncurry)
 open import Data.String.Base as String                 using (String)
 open import Data.String.Properties as String           using (_≟_)
+open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
 open import Level
 open import Relation.Nullary.Decidable                 using (Dec; map′; _×-dec_)
 open import Relation.Binary                            using (DecidableEquality)
@@ -51,8 +51,8 @@ abs-injective = < abs-injective₁ , abs-injective₂ >
 
 -- We often need decidability of equality for Abs A when implementing it
 -- for A. Unfortunately ≡-dec makes the termination checker unhappy.
--- Instead, we can match on both Abs A and use unAbs-dec for an obviously
--- decreasing recursive call.
+-- Instead, we can match on both Abs A and use unAbs-dec for an
+-- obviously decreasing recursive call.
 
 unAbs : Abs A → A
 unAbs (abs s a) = a

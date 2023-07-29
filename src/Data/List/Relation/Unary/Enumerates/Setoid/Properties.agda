@@ -11,13 +11,15 @@ open import Data.List.Membership.Setoid.Properties as Membership
 open import Data.List.Relation.Unary.Any using (index)
 open import Data.List.Relation.Unary.Any.Properties using (lookup-index)
 open import Data.List.Relation.Unary.Enumerates.Setoid
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Binary.Pointwise
   using (_⊎ₛ_; inj₁; inj₂)
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (_×ₛ_)
-open import Function
+open import Function.Base using (_∘_)
+open import Function.Bundles using (Surjection)
+open import Function.Definitions using (Surjective)
 open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)

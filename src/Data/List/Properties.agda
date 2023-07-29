@@ -31,7 +31,8 @@ import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Fin.Properties using (toℕ-cast)
-open import Function
+open import Function.Base using (id; _∘_; _∘′_; _∋_; _-⟨_∣; ∣_⟩-_; _$_; const; flip)
+open import Function.Definitions using (Injective)
 open import Level using (Level)
 open import Relation.Binary as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
@@ -54,7 +55,7 @@ private
     D : Set d
     E : Set e
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- _∷_
 
 module _ {x y : A} {xs ys : List A} where
@@ -770,7 +771,8 @@ take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ i in
 take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
   = take-suc (tabulate f) (cast _ i)
 
--- If you take at least as many elements from a list as it has, you get the whole list.
+-- If you take at least as many elements from a list as it has, you get
+-- the whole list.
 take-all :(n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
 take-all zero [] _ = refl
 take-all (suc _) [] _ = refl

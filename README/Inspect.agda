@@ -15,7 +15,8 @@ module README.Inspect where
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality using (inspect)
 
 ------------------------------------------------------------------------
 -- Using inspect

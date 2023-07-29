@@ -818,8 +818,9 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 -- punchOut
 ------------------------------------------------------------------------
 
--- A version of 'cong' for 'punchOut' in which the inequality argument can be
--- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
+-- A version of 'cong' for 'punchOut' in which the inequality argument
+-- can be changed out arbitrarily (reflecting the proof-irrelevance of
+-- that argument).
 
 punchOut-cong : ∀ (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} →
                 j ≡ k → punchOut i≢j ≡ punchOut i≢k
@@ -829,9 +830,9 @@ punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
 punchOut-cong {suc n} (suc i) {zero}  {zero}   _ = refl
 punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i ∘ suc-injective
 
--- An alternative to 'punchOut-cong' in the which the new inequality argument is
--- specific. Useful for enabling the omission of that argument during equational
--- reasoning.
+-- An alternative to 'punchOut-cong' in the which the new inequality
+-- argument is specific. Useful for enabling the omission of that
+-- argument during equational reasoning.
 
 punchOut-cong′ : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
                  punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)

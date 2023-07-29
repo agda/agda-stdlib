@@ -18,7 +18,7 @@ open import Data.List.Base using (List)
 import Data.List.Extrema
 open import Data.List.Relation.Unary.Any as Any using (Any)
 open import Data.List.Relation.Unary.All as All using (All)
-open import Data.Product using (_×_; _,_; uncurry′)
+open import Data.Product.Base using (_×_; _,_; uncurry′)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 

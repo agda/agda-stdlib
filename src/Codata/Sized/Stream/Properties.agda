@@ -20,7 +20,7 @@ open import Data.Nat.GeneralisedArithmetic using (fold; fold-pull)
 open import Data.List.Base as List using ([]; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 import Data.List.Relation.Binary.Equality.Propositional as Eq
-open import Data.Product as Prod using (_,_)
+open import Data.Product.Base as Prod using (_,_)
 open import Data.Vec.Base as Vec using (_∷_)
 
 open import Function.Base using (id; _$_; _∘′_; const)
