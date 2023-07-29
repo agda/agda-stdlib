@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of the setoid sublist relation
@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid; _⇒_; _Preserves_⟶_)
+open import Relation.Binary using (Rel; Setoid; _⇒_; _Preserves_⟶_)
 
 module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
@@ -20,10 +20,12 @@ open import Data.Product using (∃; _,_; proj₂)
 open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Binary using () renaming (Decidable to Decidable₂)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable using (¬?)
+open import Relation.Nullary.Decidable using (¬?; yes; no)
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
@@ -202,6 +204,29 @@ module _ {as bs : List A} where
 
   reverse⁻ : reverse as ⊆ reverse bs → as ⊆ bs
   reverse⁻ = HeteroProperties.reverse⁻
+
+------------------------------------------------------------------------
+-- merge
+
+module _ {ℓ′} {_≤_ : Rel A ℓ′} (_≤?_ : Decidable₂ _≤_) where
+
+  ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  ⊆-mergeˡ []       ys = minimum ys
+  ⊆-mergeˡ (x ∷ xs) [] = ⊆-refl
+  ⊆-mergeˡ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | ⊆-mergeˡ xs (y ∷ ys)
+                      | ⊆-mergeˡ (x ∷ xs) ys
+  ... | yes x≤y | rec | _   = ≈-refl ∷ rec
+  ... | no  x≰y | _   | rec = y ∷ʳ rec
+
+  ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ⊆-mergeʳ [] ys =  ⊆-refl
+  ⊆-mergeʳ (x ∷ xs) [] = minimum (merge _≤?_ (x ∷ xs) [])
+  ⊆-mergeʳ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | ⊆-mergeʳ xs (y ∷ ys)
+                      | ⊆-mergeʳ (x ∷ xs) ys
+  ... | yes x≤y | rec | _   = x ∷ʳ rec
+  ... | no  x≰y | _   | rec = ≈-refl ∷ rec
 
 ------------------------------------------------------------------------
 -- Inversion lemmas

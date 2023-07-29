@@ -7,7 +7,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Substitutive; Symmetric; Total)
 
 module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
@@ -15,7 +18,7 @@ open Setoid S renaming (Carrier to A)
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_)
 import Function.Definitions as FunDefs
 import Relation.Binary.Consequences as Bin
@@ -28,6 +31,40 @@ open import Relation.Unary using (Pred)
 -- Export base lemmas that don't require the setoid
 
 open import Algebra.Consequences.Base public
+
+------------------------------------------------------------------------
+-- MiddleFourExchange
+
+module _ {_•_ : Op₂ A} (cong : Congruent₂ _•_) where
+
+  comm+assoc⇒middleFour : Commutative _•_ → Associative _•_ →
+                          _•_ MiddleFourExchange _•_
+  comm+assoc⇒middleFour comm assoc w x y z = begin
+    (w • x) • (y • z) ≈⟨ assoc w x (y • z) ⟩
+    w • (x • (y • z)) ≈⟨ cong refl (sym (assoc x y z)) ⟩
+    w • ((x • y) • z) ≈⟨ cong refl (cong (comm x y) refl) ⟩
+    w • ((y • x) • z) ≈⟨ cong refl (assoc y x z) ⟩
+    w • (y • (x • z)) ≈⟨ sym (assoc w y (x • z)) ⟩
+    (w • y) • (x • z) ∎
+
+  identity+middleFour⇒assoc : {e : A} → Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒assoc {e} (identityˡ , identityʳ) middleFour x y z = begin
+    (x • y) • z       ≈⟨ cong refl (sym (identityˡ z)) ⟩
+    (x • y) • (e • z) ≈⟨ middleFour x y e z ⟩
+    (x • e) • (y • z) ≈⟨ cong (identityʳ x) refl ⟩
+    x • (y • z)       ∎
+
+  identity+middleFour⇒comm : {_+_ : Op₂ A} {e : A} → Identity e _+_ →
+                             _•_ MiddleFourExchange _+_ →
+                             Commutative _•_
+  identity+middleFour⇒comm {_+_} {e} (identityˡ , identityʳ) middleFour x y
+    = begin
+    x • y             ≈⟨ sym (cong (identityˡ x) (identityʳ y)) ⟩
+    (e + x) • (y + e) ≈⟨ middleFour e x y e ⟩
+    (e + y) • (x + e) ≈⟨ cong (identityˡ y) (identityʳ x) ⟩
+    y • x             ∎
 
 ------------------------------------------------------------------------
 -- Involutive/SelfInverse functions
@@ -196,7 +233,7 @@ module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (cong : Congruent₂ _•_) wh
     (x ⁻¹) • e       ≈⟨ idʳ (x ⁻¹) ⟩
     x ⁻¹             ∎
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bisemigroup-like structures
 
 module _ {_•_ _◦_ : Op₂ A}
@@ -251,7 +288,7 @@ module _ {_•_ _◦_ : Op₂ A}
     (x ◦ (x • z)) • (y ◦ (x • z))  ≈˘⟨ ◦-distribʳ-• _ _ _ ⟩
     (x • y) ◦ (x • z)              ∎
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Ring-like structures
 
 module _ {_+_ _*_ : Op₂ A}

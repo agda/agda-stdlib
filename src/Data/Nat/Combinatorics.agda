@@ -12,7 +12,7 @@ open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
-open import Relation.Binary.Definitions 
+open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; subst)
 
@@ -118,7 +118,7 @@ module _ {n k} (k<n : k < n) where
 
     [n-k]!           = [n-k] !
     [n-k-1]!         = [n-k-1] !
-  
+
     [n-k]≡1+[n-k-1]  : [n-k] ≡ suc [n-k-1]
     [n-k]≡1+[n-k-1]  = +-∸-assoc 1 k<n
 

@@ -17,9 +17,9 @@ open import Data.Nat.Binary.Base
 open import Data.Nat.Binary.Properties
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Vec using ([]; _∷_)
-open import Function using (_∘_; _$_)
+open import Function.Base using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Tri; tri<; tri≈; tri>; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
@@ -134,7 +134,7 @@ x∸y≡0⇒x≤y {x} {y} = toℕ-cancel-≤ ∘ ℕₚ.m∸n≡0⇒m≤n ∘ tr
 x<y⇒y∸x>0 : x < y → y ∸ x > 0ᵇ
 x<y⇒y∸x>0 {x} {y} = toℕ-cancel-< ∘ subst (ℕ._> 0) (sym (toℕ-homo-∸ y x)) ∘ ℕₚ.m<n⇒0<n∸m ∘ toℕ-mono-<
 
----------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _∸_ and _+_
 
 [x∸y]+y≡x : x ≥ y → (x ∸ y) + y ≡ x

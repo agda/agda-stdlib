@@ -16,6 +16,8 @@ open import Relation.Binary.PropositionalEquality
 
 -- Half adjoint equivalences (see the HoTT book).
 
+infix 4 _≃_
+
 record _≃_ {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
   field
     to               : A → B

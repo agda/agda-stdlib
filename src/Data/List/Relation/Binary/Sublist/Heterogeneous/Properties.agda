@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of the heterogeneous sublist relation
@@ -34,7 +34,7 @@ open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Decidable as Dec using (¬?)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- Injectivity of constructors
@@ -78,9 +78,9 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 -- Various functions' outputs are sublists
 
 -- These lemmas are generalisations of results of the form `f xs ⊆ xs`.
--- (where _⊆_ stands for Sublist R). If R is reflexive then we can indeed
--- obtain `f xs ⊆ xs` from `xs ⊆ ys → f xs ⊆ ys`. The other direction is
--- only true if R is both reflexive and transitive.
+-- (where _⊆_ stands for Sublist R). If R is reflexive then we can
+-- indeed obtain `f xs ⊆ xs` from `xs ⊆ ys → f xs ⊆ ys`. The other
+-- direction is only true if R is both reflexive and transitive.
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 

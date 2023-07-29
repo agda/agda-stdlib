@@ -18,7 +18,7 @@ open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘_; _∘′_; const)
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Nullary using (¬_; yes; no; Reflects)
 open import Relation.Nullary.Reflects using (fromEquivalence)
 

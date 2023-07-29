@@ -23,3 +23,5 @@ private
 data All {A : Set a} (P : Pred A p) : Pred (Colist A) (a ⊔ p) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : ∞ (All P (♭ xs))) → All P (x ∷ xs)
+
+infixr 5 _∷_

@@ -1,10 +1,6 @@
-resolver: nightly-2022-01-27
+resolver: lts-19.33
 compiler: ghc-9.0.2
 compiler-check: match-exact
-
-# extra-deps:
-#   - filemanip-0.3.6.3
-#   - unix-compat-0.5.2
 
 packages:
 - '.'

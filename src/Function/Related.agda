@@ -18,8 +18,9 @@ open import Function.Inverse     as Inv     using (Inverse; _↔_)
 open import Function.LeftInverse as LeftInv using (LeftInverse)
 open import Function.Surjection  as Surj    using (Surjection)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
+open import Data.Product.Base using (_,_; proj₁; proj₂; <_,_>)
 
 import Function.Related.Propositional as R
 import Function.Bundles as B
@@ -52,6 +53,8 @@ open R public using
 -- Synonyms which are used to make _∼[_]_ below "constructor-headed"
 -- (which implies that Agda can deduce the universe code from an
 -- expression matching any of the right-hand sides).
+
+infix 3 _←_ _↢_
 
 record _←_ {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
   constructor lam

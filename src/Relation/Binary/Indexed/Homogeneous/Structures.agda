@@ -17,11 +17,13 @@ module Relation.Binary.Indexed.Homogeneous.Structures
   (_≈ᵢ_ : IRel A ℓ) -- The underlying indexed equality relation
   where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
-open import Relation.Binary as B using (_⇒_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (_⇒_)
+import Relation.Binary.Definitions as B
+import Relation.Binary.Structures as B
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Indexed.Homogeneous.Definitions
 
 ------------------------------------------------------------------------
@@ -97,7 +99,7 @@ record IsIndexedPreorder {ℓ₂} (_∼ᵢ_ : IRel A ℓ₂)
 
   -- Lifted properties
 
-  reflexive : Lift A _≈ᵢ_ B.⇒ Lift A _∼ᵢ_
+  reflexive : Lift A _≈ᵢ_ ⇒ Lift A _∼ᵢ_
   reflexive x≈y i = reflexiveᵢ (x≈y i)
 
   refl : B.Reflexive (Lift A _∼ᵢ_)

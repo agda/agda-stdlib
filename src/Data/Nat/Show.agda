@@ -16,9 +16,9 @@ open import Data.List.Effectful using (module TraversableA)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; _<∣>_; when)
 import Data.Maybe.Effectful as Maybe
 open import Data.Nat
-open import Data.Product using (proj₁)
-open import Data.String as String using (String)
-open import Function.Base
+open import Data.Product.Base using (proj₁)
+open import Data.String.Base as String using (String; fromList; toList)
+open import Function.Base using (_∘′_; _∘_)
 open import Relation.Nullary.Decidable using (True)
 
 ------------------------------------------------------------------------
@@ -28,7 +28,7 @@ readMaybe : ∀ base {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
 readMaybe _ "" = nothing
 readMaybe base = Maybe.map convert
               ∘′ TraversableA.mapA Maybe.applicative readDigit
-              ∘′ String.toList
+              ∘′ toList
 
   where
 
@@ -62,7 +62,7 @@ toDecimalChars : ℕ → List Char
 toDecimalChars = List.map toDigitChar ∘′ toNatDigits 10
 
 show : ℕ → String
-show = String.fromList ∘ toDecimalChars
+show = fromList ∘′ toDecimalChars
 
 -- Arbitrary base betwen 2 & 16.
 -- Warning: when compiled the time complexity of `showInBase b n` is
@@ -81,5 +81,5 @@ showInBase : (base : ℕ)
              {base≥2 : True (2 ≤? base)}
              {base≤16 : True (base ≤? 16)} →
              ℕ → String
-showInBase base {base≥2} {base≤16} = String.fromList
+showInBase base {base≥2} {base≤16} = fromList
                                    ∘ charsInBase base {base≥2} {base≤16}

@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Trans; TotalOrder; Setoid)
+open import Relation.Binary.Definitions using (Trans)
+open import Relation.Binary.Bundles using (TotalOrder; Setoid)
 
 module Data.List.Extrema.Core
   {b ℓ₁ ℓ₂} (totalOrder : TotalOrder b ℓ₁ ℓ₂) where
@@ -15,10 +16,10 @@ open import Algebra.Core
 open import Algebra.Definitions
 import Algebra.Construct.NaturalChoice.Min as Min
 import Algebra.Construct.NaturalChoice.Max as Max
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 open import Algebra.Construct.LiftedChoice
 
