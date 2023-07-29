@@ -16,7 +16,7 @@ open import Data.Bool.Base using (Bool; false; true; not; T; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
 open import Data.Empty using (⊥)
 open import Data.Empty.Irrelevant using (⊥-elim)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Reflects
@@ -86,9 +86,10 @@ proof (p? →-dec q?) = proof p? →-reflects proof q?
 ------------------------------------------------------------------------
 -- Relationship with booleans
 
--- `isYes` is a stricter version of `does`. The lack of computation means that
--- we can recover the proposition `P` from `isYes P?` by unification. This is
--- useful when we are using the decision procedure for proof automation.
+-- `isYes` is a stricter version of `does`. The lack of computation
+-- means that we can recover the proposition `P` from `isYes P?` by
+-- unification. This is useful when we are using the decision procedure
+-- for proof automation.
 
 isYes : Dec P → Bool
 isYes (true  because _) = true

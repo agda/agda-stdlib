@@ -15,17 +15,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
   (_≈_ : Rel A ℓ)     -- The underlying equality
   where
 
-open import Algebra.Core
-open import Data.Product
-open import Data.Sum.Base
+open import Algebra.Core using (Op₁; Op₂)
+open import Data.Product.Base using (_×_; ∃-syntax)
+open import Data.Sum.Base using (_⊎_)
 
 ------------------------------------------------------------------------
 -- Properties of operations
@@ -109,7 +109,7 @@ _DistributesOver_ : Op₂ A → Op₂ A → Set _
 * DistributesOver + = (* DistributesOverˡ +) × (* DistributesOverʳ +)
 
 _MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
-_*_ MiddleFourExchange _+_ = 
+_*_ MiddleFourExchange _+_ =
   ∀ w x y z → ((w + x) * (y + z)) ≈ ((w + y) * (x + z))
 
 _IdempotentOn_ : Op₂ A → A → Set _

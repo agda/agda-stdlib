@@ -11,7 +11,7 @@
 
 open import Algebra.Morphism.Definitions
 open import Function.Base
-open import Data.Product using (_,_; map)
+open import Data.Product.Base using (_,_; map)
 open import Relation.Binary
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.RelMonomorphism as RawRelation

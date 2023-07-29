@@ -11,7 +11,9 @@ module Algebra.Consequences.Propositional
   {a} {A : Set a} where
 
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Relation.Binary using (Rel; Setoid; Symmetric; Total)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Symmetric; Total)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary using (Pred)
 

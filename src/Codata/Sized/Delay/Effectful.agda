@@ -9,7 +9,7 @@
 module Codata.Sized.Delay.Effectful where
 
 open import Codata.Sized.Delay
-open import Function
+open import Function.Base using (id)
 open import Effect.Choice
 open import Effect.Empty
 open import Effect.Functor

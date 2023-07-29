@@ -9,7 +9,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Relation.Binary.Core
 
 module Algebra.Construct.Subst.Equality
@@ -19,7 +19,7 @@ module Algebra.Construct.Subst.Equality
 
 open import Algebra.Definitions
 open import Algebra.Structures
-import Data.Sum as Sum
+import Data.Sum.Base as Sum
 open import Function.Base
 open import Relation.Binary.Construct.Subst.Equality equiv
 

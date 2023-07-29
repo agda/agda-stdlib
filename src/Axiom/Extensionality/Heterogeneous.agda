@@ -9,7 +9,7 @@
 module Axiom.Extensionality.Heterogeneous where
 
 import Axiom.Extensionality.Propositional as P
-open import Function
+open import Function.Base using (_$_; _∘_)
 open import Level
 open import Relation.Binary.HeterogeneousEquality.Core
 open import Relation.Binary.PropositionalEquality.Core

@@ -19,10 +19,9 @@ open import Data.Vec using (Vec; []; _∷_)
 import Data.Vec.Relation.Binary.Lex.Strict as Strict
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
   using (Pointwise; []; _∷_; head; tail)
-open import Function using (id)
+open import Function.Base using (id)
 open import Relation.Binary
 import Relation.Binary.Construct.NonStrictToStrict as Conv
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary hiding (Irrelevant)
 open import Level using (Level; _⊔_)
 

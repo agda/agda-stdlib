@@ -12,7 +12,8 @@ open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Relation.Binary.Permutation.Propositional as Perm using (_↭_)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (shift)
 import Data.List.Relation.Ternary.Interleaving.Setoid as General
-open import Relation.Binary.PropositionalEquality using (setoid; refl)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open Perm.PermutationReasoning
 
 ------------------------------------------------------------------------

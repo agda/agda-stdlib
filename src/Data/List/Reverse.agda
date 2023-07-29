@@ -10,7 +10,7 @@ module Data.List.Reverse where
 
 open import Data.List.Base as L hiding (reverse)
 open import Data.List.Properties
-open import Function
+open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
 
 -- If you want to traverse a list from the end, then you can use the

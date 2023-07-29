@@ -8,7 +8,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 
 module Function.Definitions
   {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
@@ -16,10 +16,9 @@ module Function.Definitions
   (_≈₂_ : Rel B ℓ₂) -- Equality over the codomain
   where
 
-open import Data.Product using (∃; _×_)
+open import Data.Product.Base using (_×_)
 import Function.Definitions.Core1 as Core₁
 import Function.Definitions.Core2 as Core₂
-open import Function.Base
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------

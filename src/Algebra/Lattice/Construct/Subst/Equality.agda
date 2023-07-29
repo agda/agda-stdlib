@@ -12,7 +12,6 @@
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions
 open import Algebra.Lattice.Structures
-import Data.Sum as Sum
 open import Data.Product as Prod
 open import Function.Base
 open import Relation.Binary.Core

@@ -54,7 +54,7 @@ open import Relation.Binary.PropositionalEquality using (_≗_)
 -- to `_≗_`. However instead of using the pointwise module directly
 -- to write:
 
-open import Data.List.Relation.Binary.Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
 
 lem₃ : Pointwise _≗_ ((λ x → x + 1) ∷ []) ((λ x → x + 2 ∸ 1) ∷ [])
 lem₃ = {!!}

@@ -11,7 +11,7 @@
 
 module Relation.Binary.Indexed.Homogeneous.Definitions where
 
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Level using (Level)
 import Relation.Binary as B
 open import Relation.Unary.Indexed using (IPred)

@@ -54,9 +54,9 @@ infixr 5 _∷_
 pattern _∷_ x xs = Kleene.∹ x Kleene.& xs
 
 ------------------------------------------------------------------------
--- The following functions change the type of the list (from ⁺ to * or vice
--- versa) in Data.KleeneList, so we reimplement them here to keep the
--- type the same.
+-- The following functions change the type of the list (from ⁺ to * or
+-- vice versa) in Data.KleeneList, so we reimplement them here to keep
+-- the type the same.
 
 scanr : (A → B → B) → B → List A → List B
 scanr f b xs = Kleene.∹ Kleene.scanr* f b xs
