@@ -13,7 +13,7 @@ open import Codata.Sized.Thunk
 open import Codata.Sized.Stream
 open import Level
 open import Data.List.NonEmpty as List⁺ using (_∷_)
-open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as Eq
