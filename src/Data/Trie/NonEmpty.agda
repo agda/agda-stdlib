@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --sized-types #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Trie.NonEmpty {k e r} (S : StrictTotalOrder k e r) where
 

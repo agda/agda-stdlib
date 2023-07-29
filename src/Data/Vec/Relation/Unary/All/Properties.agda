@@ -20,7 +20,7 @@ open import Level using (Level)
 open import Function.Base using (_∘_; id)
 open import Function.Inverse using (_↔_; inverse)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
-open import Relation.Binary as B using (REL)
+open import Relation.Binary.Core using (REL)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; →-to-⟶)
 

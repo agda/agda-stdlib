@@ -18,7 +18,7 @@ open import Function.Base using (_∘′_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Unary  as U using (Pred)
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nary
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
