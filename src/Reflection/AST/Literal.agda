@@ -12,7 +12,7 @@ open import Data.Bool.Base   using (Bool; true; false)
 import Data.Char as Char     using (_≟_)
 import Data.Float as Float   using (_≟_)
 import Data.Nat as ℕ        using (_≟_)
-import Data.String as String using (_≟_)
+import Data.String.Properties as String using (_≟_)
 import Data.Word as Word     using (_≟_)
 import Reflection.AST.Meta as Meta
 import Reflection.AST.Name as Name
