@@ -34,7 +34,8 @@ open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
