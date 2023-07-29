@@ -17,12 +17,12 @@ open import Data.Maybe.Properties using (just-injective)
 open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product as Prod using (∃; ∃-syntax; _×_; _,_; proj₁; proj₂)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base as F
 open import Level using (Level)
 
 open import Relation.Binary.Definitions using (_Respects_; tri<; tri≈; tri>)
-open import Relation.Binary.PropositionalEquality using (_≡_) renaming (refl to ≡-refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_) renaming (refl to ≡-refl)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; _∩_)
@@ -244,7 +244,7 @@ module _ {V : Value v} where
                Any P (singleton k v l<k<u) → P (k , v)
   singleton⁻ k v l<k<u (here Pkv) = Pkv
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- insert
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where

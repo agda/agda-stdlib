@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Unary.AllPairs.Properties where
 
-open import Data.List hiding (any)
+open import Data.List.Base hiding (any)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
@@ -21,7 +21,7 @@ open import Function.Base using (_∘_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (DecSetoid)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable using (does)
 

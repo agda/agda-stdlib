@@ -10,7 +10,7 @@
 
 module Effect.Functor.Predicate where
 
-open import Function
+open import Function.Base using (const)
 open import Level
 open import Relation.Unary
 open import Relation.Unary.PredicateTransformer using (PT)

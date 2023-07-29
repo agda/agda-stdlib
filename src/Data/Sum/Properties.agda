@@ -10,8 +10,8 @@ module Data.Sum.Properties where
 
 open import Level
 open import Data.Sum.Base
-open import Function
-open import Function.Bundles using (mk↔′)
+open import Function.Base using (_∋_; _∘_; id)
+open import Function.Bundles using (mk↔′; _↔_)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)

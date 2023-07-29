@@ -7,7 +7,8 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality using (_≡_; decSetoid)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
 module Data.List.Membership.DecPropositional
   {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) where

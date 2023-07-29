@@ -9,7 +9,7 @@
 module Data.List.Fresh.Properties where
 
 open import Level using (Level; _⊔_; Lift)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
 import Relation.Binary.Definitions as B

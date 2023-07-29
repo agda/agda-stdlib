@@ -13,18 +13,19 @@ open import Algebra.Lattice.Bundles
 import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
 open import Data.Bool.Base
 open import Data.Empty
-open import Data.Product
-open import Data.Sum.Base
-open import Function.Base
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
+open import Function.Base using (_⟨_⟩_; const; id)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality hiding ([_])
-open import Relation.Nullary using (ofʸ; ofⁿ; does; proof; yes; no)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
+open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
+open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_

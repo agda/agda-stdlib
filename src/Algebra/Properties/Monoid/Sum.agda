@@ -12,7 +12,7 @@ open import Data.Vec.Functional as Vector
 open import Data.Fin.Base using (zero; suc)
 open import Data.Unit using (tt)
 open import Function.Base using (_∘_)
-open import Relation.Binary as B using (_Preserves_⟶_)
+open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality as P using (_≗_; _≡_)
 
 module Algebra.Properties.Monoid.Sum {a ℓ} (M : Monoid a ℓ) where

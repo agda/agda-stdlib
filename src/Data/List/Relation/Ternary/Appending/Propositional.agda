@@ -14,8 +14,7 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Product using (_,_)
 
 import Data.List.Properties as Listₚ
-import Data.List.Relation.Binary.Pointwise as Pw
-
+import Data.List.Relation.Binary.Pointwise as Pw using (≡⇒Pointwise-≡; Pointwise-≡⇒≡)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; setoid; refl; trans; cong₂; module ≡-Reasoning)
 
