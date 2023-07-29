@@ -12,7 +12,7 @@
 module Relation.Binary.Indexed.Homogeneous.Core where
 
 open import Level using (Level; _⊔_)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Relation.Binary.Core as B using (REL; Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Indexed.Heterogeneous as I

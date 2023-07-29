@@ -17,7 +17,7 @@ module Function.Nary.NonDependent where
 open import Level using (Level; 0ℓ; _⊔_; Lift)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
 open import Function.Base using (_∘′_; _$′_; const; flip)
 open import Relation.Unary using (IUniversal)

@@ -16,7 +16,7 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation
 open import Function.Base using (_⟨_⟩_)
 
 open import Data.Nat.Base as ℕ using (ℕ; suc; zero; compare)
-open import Data.Product  using (_,_; _×_; proj₁; proj₂)
+open import Data.Product.Base  using (_,_; _×_; proj₁; proj₂)
 open import Data.List.Kleene
 open import Data.Vec      using (Vec)
 

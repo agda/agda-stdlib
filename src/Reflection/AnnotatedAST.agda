@@ -17,7 +17,7 @@ open import Effect.Applicative           using (RawApplicative)
 open import Data.Bool.Base               using (Bool; false; true; if_then_else_)
 open import Data.List.Base               using (List; []; _∷_)
 open import Data.List.Relation.Unary.All using (All; _∷_; [])
-open import Data.Product                 using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base            using (_×_; _,_; proj₁; proj₂)
 open import Data.String.Base             using (String)
 
 open import Reflection                   hiding (pure)

@@ -8,7 +8,7 @@
 
 module Reflection.AST.Abstraction where
 
-open import Data.Product                               using (_×_; <_,_>; uncurry)
+open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
 open import Data.String as String                      using (String)
 open import Level
 open import Relation.Nullary.Decidable                 using (Dec; map′; _×-dec_)
