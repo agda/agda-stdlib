@@ -15,7 +15,7 @@ open import Relation.Binary as B
   using (_⇒_; Setoid; IsEquivalence)
 open import Relation.Binary.Indexed.Heterogeneous as I
   using (IREL; IRel; IndexedSetoid; IsIndexedEquivalence)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- Pointwise lifting

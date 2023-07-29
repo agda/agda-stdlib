@@ -21,6 +21,7 @@ open import Relation.Binary.Structures
 ------------------------------------------------------------------------
 
 record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
+  infix 4 _≈_
   field
     Carrier              : Set a
     _≈_                  : Rel Carrier ℓ

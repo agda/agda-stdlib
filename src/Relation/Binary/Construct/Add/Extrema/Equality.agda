@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- A pointwise lifting of a relation to incorporate new extrema.
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
@@ -19,7 +19,7 @@ import Relation.Binary.Construct.Add.Infimum.Equality as AddInfimum
 import Relation.Binary.Construct.Add.Supremum.Equality as AddSupremum
 open import Relation.Nullary.Construct.Add.Extrema
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 private
@@ -28,14 +28,14 @@ private
 
 open Sup using () renaming (_≈⁺_ to _≈±_) public
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Useful pattern synonyms
 
 pattern ⊥±≈⊥± = Sup.[ Inf.⊥₋≈⊥₋ ]
 pattern [_] p = Sup.[ Inf.[ p ] ]
 pattern ⊤±≈⊤± = Sup.⊤⁺≈⊤⁺
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties
 
 [≈]-injective : ∀ {k l} → [ k ] ≈± [ l ] → k ≈ l
@@ -59,7 +59,7 @@ pattern ⊤±≈⊤± = Sup.⊤⁺≈⊤⁺
 ≈±-substitutive : ∀ {ℓ} → Substitutive _≈_ ℓ → Substitutive _≈±_ ℓ
 ≈±-substitutive = Sup.≈⁺-substitutive ∘′ Inf.≈₋-substitutive
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 ≈±-isEquivalence : IsEquivalence _≈_ → IsEquivalence _≈±_

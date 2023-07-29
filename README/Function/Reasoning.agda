@@ -35,8 +35,9 @@ module _ {A B C : Set} {A→B : A → B} {B→C : B → C} where
 open import Data.Nat
 open import Data.List.Base
 open import Data.Char.Base
-open import Data.String as String using (String; toList; fromList; _==_)
-open import Function
+open import Data.String.Base as String using (String; toList; fromList)
+open import Data.String.Properties as String using (_==_)
+open import Function.Base using (_∘_)
 open import Data.Bool hiding (_≤?_)
 open import Data.Product.Base as P using (_×_; <_,_>; uncurry; proj₁)
 open import Agda.Builtin.Equality

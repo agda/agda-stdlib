@@ -3,7 +3,7 @@
 module TakeWhile where
 
 open import Level
-open import Data.List hiding (takeWhile)
+open import Data.List.Base hiding (takeWhile)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_; refl)
 open import Data.List.Relation.Ternary.Appending.Propositional

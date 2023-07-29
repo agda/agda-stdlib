@@ -15,8 +15,7 @@ module Function.Structures {a b ℓ₁ ℓ₂}
   {B : Set b} (_≈₂_ : Rel B ℓ₂) -- Equality over the codomain
   where
 
-open import Data.Product using (∃; _×_; _,_)
-open import Function.Base
+open import Data.Product.Base using (_,_)
 open import Function.Definitions
 open import Level using (_⊔_)
 

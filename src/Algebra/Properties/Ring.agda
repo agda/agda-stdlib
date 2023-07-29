@@ -16,7 +16,6 @@ import Algebra.Properties.AbelianGroup as AbelianGroupProperties
 open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Algebra.Definitions _≈_
-open import Data.Product
 
 ------------------------------------------------------------------------
 -- Export properties of abelian groups

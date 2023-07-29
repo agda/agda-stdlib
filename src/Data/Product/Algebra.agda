@@ -11,9 +11,9 @@ module Data.Product.Algebra where
 open import Algebra
 open import Data.Bool.Base using (true; false)
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
-open import Data.Product
+open import Data.Product.Base
 open import Data.Product.Properties
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Algebra
 open import Data.Unit.Polymorphic using (⊤; tt)
 open import Function.Base using (_∘′_)

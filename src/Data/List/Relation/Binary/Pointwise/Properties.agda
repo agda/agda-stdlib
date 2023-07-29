@@ -13,7 +13,7 @@ open import Data.List.Base using (List; []; _∷_)
 open import Level
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 open import Relation.Nullary using (yes; no; _×-dec_)
 import Relation.Nullary.Decidable as Dec
 

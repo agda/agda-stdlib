@@ -8,12 +8,12 @@
 
 module Reflection.AST.Definition where
 
-import Data.List.Properties as Listₚ              using (≡-dec)
-import Data.Nat.Properties as ℕₚ                 using (_≟_)
-open import Data.Product                          using (_×_; <_,_>; uncurry)
-open import Relation.Nullary.Decidable            using (map′; _×-dec_; yes; no)
-open import Relation.Binary                       using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong₂)
+import Data.List.Properties as Listₚ                   using (≡-dec)
+import Data.Nat.Properties as ℕₚ                       using (_≟_)
+open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
+open import Relation.Nullary.Decidable                 using (map′; _×-dec_; yes; no)
+open import Relation.Binary                            using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 
 import Reflection.AST.Argument as Arg
 import Reflection.AST.Name     as Name

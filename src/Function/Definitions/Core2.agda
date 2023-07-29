@@ -9,13 +9,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 
 module Function.Definitions.Core2
   {a b ℓ₂} {A : Set a} {B : Set b} (_≈₂_ : Rel B ℓ₂)
   where
 
-open import Data.Product using (∃)
+open import Data.Product.Base using (∃)
 open import Level using (Level; _⊔_)
 
 ------------------------------------------------------------------------
