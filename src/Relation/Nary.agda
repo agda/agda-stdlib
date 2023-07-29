@@ -105,10 +105,10 @@ module _ {n r ls} {as : Sets n ls} (P : as ⇉ Set r) where
 ------------------------------------------------------------------------
 -- Pointwise liftings of k-ary operators
 
--- Rather than having multiple ad-hoc lifting functions for various arities
--- we have a fully generic liftₙ functional which lifts a k-ary operator
--- to work with k n-ary functions whose respective codomains match the domains
--- of the operator.
+-- Rather than having multiple ad-hoc lifting functions for various
+-- arities we have a fully generic liftₙ functional which lifts a k-ary
+-- operator to work with k n-ary functions whose respective codomains
+-- match the domains of the operator.
 -- The type of liftₙ is fairly unreadable. Here it is written with ellipsis:
 
 -- liftₙ : ∀ k n. (B₁ → ⋯ → Bₖ → R) →

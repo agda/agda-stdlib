@@ -17,7 +17,7 @@ open import Relation.Binary                            using (Rel; Decidable; De
 open import Relation.Binary.Construct.On               using (decidable)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-export built-ins
 
 open import Agda.Builtin.Reflection public
@@ -26,16 +26,16 @@ open import Agda.Builtin.Reflection public
 open import Agda.Builtin.Reflection.Properties public
   renaming (primQNameToWord64sInjective to toWords-injective)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- More definitions
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 Names : Set
 Names = List Name
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Decidable equality for names
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 infix 4 _≈?_ _≟_ _≈_
 

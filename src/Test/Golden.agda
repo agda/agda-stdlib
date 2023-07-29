@@ -56,7 +56,7 @@
 --
 -- We provide an options parser (`options`) that takes the list of command line
 -- arguments and constructs this for you.
----
+--
 
 ------------------------------------------------------------------------
 -- Usage

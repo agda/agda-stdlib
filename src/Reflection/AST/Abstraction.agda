@@ -50,8 +50,8 @@ abs-injective = < abs-injective₁ , abs-injective₂ >
 
 -- We often need decidability of equality for Abs A when implementing it
 -- for A. Unfortunately ≡-dec makes the termination checker unhappy.
--- Instead, we can match on both Abs A and use unAbs-dec for an obviously
--- decreasing recursive call.
+-- Instead, we can match on both Abs A and use unAbs-dec for an
+-- obviously decreasing recursive call.
 
 unAbs : Abs A → A
 unAbs (abs s a) = a
