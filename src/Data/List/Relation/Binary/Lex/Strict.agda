@@ -26,13 +26,13 @@ open import Data.List.Relation.Binary.Pointwise as Pointwise
 
 import Data.List.Relation.Binary.Lex as Core
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-exporting core definitions
 
 open Core public
   using (Lex-<; Lex-≤; base; halt; this; next; ¬≤-this; ¬≤-next)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Strict lexicographic ordering.
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where
@@ -132,7 +132,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
   { isStrictTotalOrder = <-isStrictTotalOrder isStrictTotalOrder
   } where open StrictTotalOrder sto
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Non-strict lexicographic ordering.
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where

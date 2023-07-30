@@ -21,7 +21,7 @@ import Data.Tree.AVL
 
 open import Data.Nat.Properties using (<-strictTotalOrder)
 open import Data.Product as Prod using (_,_; _,′_)
-open import Data.String using (String)
+open import Data.String.Base using (String)
 open import Data.Vec.Base using (Vec; _∷_; [])
 open import Relation.Binary.PropositionalEquality
 

@@ -149,8 +149,8 @@ lookup-⊆-trans = Any-resp-⊆-trans
 ------------------------------------------------------------------------
 -- The `lookup` function for `xs ⊆ ys` is injective.
 --
--- Note: `lookup` can be seen as a strictly increasing reindexing function
--- for indices into `xs`, producing indices into `ys`.
+-- Note: `lookup` can be seen as a strictly increasing reindexing
+-- function for indices into `xs`, producing indices into `ys`.
 
 lookup-injective : ∀ {P : Pred A ℓ} {xs ys} {τ : xs ⊆ ys} {i j : Any P xs} →
                    lookup τ i ≡ lookup τ j → i ≡ j
@@ -160,7 +160,7 @@ lookup-injective {τ = x≡y ∷ _} {here  _} {here  _} = cong here ∘′ subst
   -- However, this turns the following clause into a non-strict match.
 lookup-injective {τ = _   ∷ _} {there _} {there _} = cong there ∘′ lookup-injective ∘′ there-injective
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- from∈ ∘ to∈ turns a sublist morphism τ : x∷xs ⊆ ys into a morphism
 -- [x] ⊆ ys.  The same morphism is obtained by pre-composing τ with
 -- the canonial morphism [x] ⊆ x∷xs.

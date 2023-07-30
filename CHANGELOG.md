@@ -881,7 +881,8 @@ Non-backwards compatible changes
     lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
-
+  * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
+    `¬¬-excluded-middle`.
 
 Major improvements
 ------------------
@@ -908,7 +909,7 @@ Major improvements
   for them still live in `Data.Nat.DivMod` (which also publicly re-exports them
   to provide backwards compatability).
 
-* Beneficieries of this change include `Data.Rational.Unnormalised.Base` whose
+* Beneficiaries of this change include `Data.Rational.Unnormalised.Base` whose
   dependencies are now significantly smaller.
 
 ### Moved raw bundles from Data.X.Properties to Data.X.Base
@@ -2205,6 +2206,11 @@ Other minor changes
 * Added a new proof to `Data.Nat.Binary.Properties`:
   ```agda
   suc-injective : Injective _≡_ _≡_ suc
+  ```
+
+* Added a new pattern synonym to `Data.Nat.Divisibility.Core`:
+  ```agda
+  pattern divides-refl q = divides q refl
   ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:

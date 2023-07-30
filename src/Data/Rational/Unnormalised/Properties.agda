@@ -794,7 +794,7 @@ p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
 +-mono-<-≤ {p} {q} {r} p<q q≤r = <-≤-trans (+-monoˡ-< r p<q) (+-monoʳ-≤ q q≤r)
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _+_ and predicates
 
 pos+pos⇒pos : ∀ p .{{_ : Positive p}} →
@@ -808,7 +808,7 @@ nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} →
 nonNeg+nonNeg⇒nonNeg p q = nonNegative
   (+-mono-≤ (nonNegative⁻¹ p) (nonNegative⁻¹ q))
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _-_
 
 +-minus-telescope : ∀ p q r → (p - q) + (q - r) ≃ p - r
@@ -1235,7 +1235,7 @@ private
 *-cancelʳ-<-nonPos : ∀ r .{{_ : NonPositive r}} → p * r < q * r → q < p
 *-cancelʳ-<-nonPos {p} {q} r rewrite *-comm-≡ p r | *-comm-≡ q r = *-cancelˡ-<-nonPos r
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _*_ and predicates
 
 pos*pos⇒pos : ∀ p .{{_ : Positive p}} →

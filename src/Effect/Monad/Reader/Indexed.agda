@@ -30,7 +30,7 @@ IReaderT M i j A = R → M i j A
 
 module _ {M : IFun I (r ⊔ a)} where
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Indexed reader applicative
 
   ReaderTIApplicative : RawIApplicative M → RawIApplicative (IReaderT M)
@@ -52,7 +52,7 @@ module _ {M : IFun I (r ⊔ a)} where
     ; _∣_ = λ m n r → m r ∣ n r
     } where open RawIAlternative Alt
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Indexed reader monad
 
   ReaderTIMonad : RawIMonad M → RawIMonad (IReaderT M)

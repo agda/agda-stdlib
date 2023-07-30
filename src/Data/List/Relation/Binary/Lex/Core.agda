@@ -35,7 +35,7 @@ data Lex {A : Set a} (P : Set)
   next : ∀ {x xs y ys} (x≈y : x ≈ y)
          (xs<ys : Lex P _≈_ _≺_ xs ys) → Lex P _≈_ _≺_ (x ∷ xs) (y ∷ ys)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Lexicographic orderings, using a strict ordering as the base
 
 Lex-< : {A : Set a} (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →

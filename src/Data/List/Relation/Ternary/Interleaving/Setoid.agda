@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Ternary.Interleaving.Setoid {c ℓ} (S : Setoid c ℓ) where
 

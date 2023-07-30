@@ -21,7 +21,7 @@ open import Function.Base using (id; _∘′_)
 open import Relation.Unary
 open import Relation.Nullary
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Basic type.
 
 module _ {p q} (P : Pred A p) (Q : Pred A q) where

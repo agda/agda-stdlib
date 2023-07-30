@@ -35,8 +35,8 @@ open Indexed using (⊥⁺; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
 
--- NB: the height is non-zero thus guaranteeing that the AVL tree contains
--- at least one value.
+-- NB: the height is non-zero thus guaranteeing that the AVL tree
+-- contains at least one value.
 
 data Tree⁺ {v} (V : Value v) : Set (a ⊔ v ⊔ ℓ₂) where
   tree : ∀ {h} → Indexed.Tree V ⊥⁺ ⊤⁺ (suc h) → Tree⁺ V

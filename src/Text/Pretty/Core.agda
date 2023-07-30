@@ -43,10 +43,11 @@ import Data.Refinement.Relation.Unary.All as Allᴿ
 ------------------------------------------------------------------------
 -- Block of text
 
--- Content is a representation of the first line and the middle of the block.
--- We use a tree rather than a list for the middle of the block so that we can
--- extend it with lines on the left and on the line for free. We will ultimately
--- render the block by traversing the tree left to right in a depth-first manner.
+-- Content is a representation of the first line and the middle of the
+-- block. We use a tree rather than a list for the middle of the block
+-- so that we can extend it with lines on the left and on the line for
+-- free. We will ultimately render the block by traversing the tree left
+-- to right in a depth-first manner.
 
 Content : Set
 Content = Maybe (String × Tree String ⊤)

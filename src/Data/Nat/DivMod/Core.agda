@@ -21,7 +21,7 @@ open import Relation.Nullary.Negation using (contradiction)
 
 open ≤-Reasoning
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Helper lemmas that have no interpretation for _%_, only for modₕ
 
 private
@@ -38,7 +38,7 @@ private
     modₕ (a + suc acc) n b 0       ≡⟨ cong (λ v → modₕ v n b 0) (+-suc a acc) ⟩
     modₕ (suc a + acc) n b 0       ∎
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Lemmas for modₕ that also have an interpretation for _%_
 
 a[modₕ]1≡0 : ∀ a → modₕ 0 0 a 0 ≡ 0
@@ -120,7 +120,7 @@ a+n[modₕ]n≡a[modₕ]n acc (suc a) (suc n) rewrite +-suc acc n = begin-equali
   mod₁ = modₕ acc       (suc acc + n)
   mod₂ = modₕ (suc acc) (suc acc + n)
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Helper lemmas that have no interpretation for `_/_`, only for `divₕ`
 
 private
@@ -176,7 +176,7 @@ private
   divₕ-offsetEq d (suc n) (suc j) (suc k) j≤d k≤d (inj₃  (eq , k<mod , mod≤1+j)) =
     divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₃ (eq , k<1+a[modₕ]n⇒k≤a[modₕ]n 0 (suc k) n d k<mod , 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 j n d (<-transʳ z≤n k<mod) mod≤1+j))
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Lemmas for divₕ that also have an interpretation for _/_
 
 -- The quotient and remainder are related to the dividend and

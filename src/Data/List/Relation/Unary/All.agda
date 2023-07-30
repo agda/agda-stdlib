@@ -49,7 +49,8 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
 -- All P xs is a finite map from indices x ∈ xs to content P x.
--- Relation pxs [ i ]= px states that, in map pxs, key i : x ∈ xs points to value px.
+-- Relation pxs [ i ]= px states that, in map pxs, key i : x ∈ xs points
+-- to value px.
 
 infix 4 _[_]=_
 
