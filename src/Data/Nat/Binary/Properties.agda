@@ -24,8 +24,8 @@ open import Data.Nat.Solver
 open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
-open import Function.Definitions using (Injective)
-open import Function.Definitions.Core2 using (Surjective)
+open import Function.Definitions
+open import Function.Consequences.Propositional
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Consequences
@@ -196,8 +196,8 @@ toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   xN≡yN   = ℕₚ.*-cancelˡ-≡ _ _ 2 2xN≡2yN
   x≡y     = toℕ-injective xN≡yN
 
-toℕ-surjective : Surjective _≡_ toℕ
-toℕ-surjective n = (fromℕ n , toℕ-fromℕ n)
+toℕ-surjective : Surjective _≡_ _≡_ toℕ
+toℕ-surjective = strictlySurjective⇒surjective (λ n → fromℕ n , toℕ-fromℕ n)
 
 toℕ-isRelHomomorphism : IsRelHomomorphism _≡_ _≡_ toℕ
 toℕ-isRelHomomorphism = record
@@ -214,6 +214,15 @@ fromℕ-injective {x} {y} f[x]≡f[y] = begin
 
 fromℕ-toℕ : fromℕ ∘ toℕ ≗ id
 fromℕ-toℕ = toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
+
+toℕ-inverseˡ : Inverseˡ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseˡ = strictlyInverseˡ⇒inverseˡ {f⁻¹ = fromℕ} toℕ toℕ-fromℕ
+
+toℕ-inverseʳ : Inverseʳ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseʳ = strictlyInverseʳ⇒inverseʳ toℕ fromℕ-toℕ
+
+toℕ-inverseᵇ : Inverseᵇ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseᵇ = toℕ-inverseˡ , toℕ-inverseʳ
 
 fromℕ-pred : ∀ n → fromℕ (ℕ.pred n) ≡ pred (fromℕ n)
 fromℕ-pred n = begin
