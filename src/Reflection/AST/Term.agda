@@ -22,7 +22,7 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong;
 
 open import Reflection.AST.Abstraction
 open import Reflection.AST.Argument
-open import Reflection.AST.Argument.Information   using (visibility)
+open import Reflection.AST.Argument.Information using (visibility)
 open import Reflection.AST.Argument.Visibility as Visibility hiding (_≟_)
 import Reflection.AST.Literal as Literal
 import Reflection.AST.Meta as Meta
