@@ -8,10 +8,13 @@
 
 module Function.Construct.Composition where
 
-open import Data.Product as Product using (_,_)
-open import Function
+open import Data.Product.Base as Product using (_,_)
+open import Function.Base using (_∘_)
+open import Function.Bundles
+open import Function.Definitions
+open import Function.Structures
 open import Level using (Level)
-open import Relation.Binary as B hiding (_⇔_; IsEquivalence)
+open import Relation.Binary hiding (_⇔_; IsEquivalence)
 
 private
   variable

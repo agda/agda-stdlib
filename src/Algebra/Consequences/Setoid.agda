@@ -7,7 +7,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Substitutive; Symmetric; Total)
 
 module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
@@ -15,7 +18,7 @@ open Setoid S renaming (Carrier to A)
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id; _∘_)
 open import Function.Definitions
 import Relation.Binary.Consequences as Bin
@@ -217,7 +220,7 @@ module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (cong : Congruent₂ _•_) wh
     (x ⁻¹) • e       ≈⟨ idʳ (x ⁻¹) ⟩
     x ⁻¹             ∎
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bisemigroup-like structures
 
 module _ {_•_ _◦_ : Op₂ A}
@@ -272,7 +275,7 @@ module _ {_•_ _◦_ : Op₂ A}
     (x ◦ (x • z)) • (y ◦ (x • z))  ≈˘⟨ ◦-distribʳ-• _ _ _ ⟩
     (x • y) ◦ (x • z)              ∎
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Ring-like structures
 
 module _ {_+_ _*_ : Op₂ A}

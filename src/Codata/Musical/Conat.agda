@@ -12,7 +12,7 @@ open import Codata.Musical.Notation
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- Re-exporting the type and basic operations
@@ -33,6 +33,8 @@ fromℕ-injective {suc m} {suc n} eq = P.cong suc (fromℕ-injective (P.cong pre
 
 ------------------------------------------------------------------------
 -- Equality
+
+infix 4 _≈_
 
 data _≈_ : Coℕ → Coℕ → Set where
   zero :                                 zero  ≈ zero

@@ -8,9 +8,9 @@
 
 module Reflection.AST.Argument.Visibility where
 
-open import Relation.Nullary                      using (yes; no)
-open import Relation.Binary                       using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (refl)
+open import Relation.Nullary                           using (yes; no)
+open import Relation.Binary                            using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtins publicly
@@ -20,6 +20,8 @@ open Visibility public
 
 ------------------------------------------------------------------------
 -- Decidable equality
+
+infix 4 _≟_
 
 _≟_ : DecidableEquality Visibility
 visible   ≟ visible   = yes refl

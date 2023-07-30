@@ -6,15 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
-
 module Induction.WellFounded where
 
-open import Data.Product
-open import Function
+open import Data.Product.Base using (Σ; _,_; proj₁)
+open import Function.Base using (_on_)
 open import Induction
-open import Level
-open import Relation.Binary.PropositionalEquality hiding (trans)
+open import Level using (Level; _⊔_)
+open import Relation.Binary
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary
 
 private
@@ -184,6 +183,7 @@ module Lexicographic {A : Set a} {B : A → Set b}
                      (RelA : Rel A ℓ₁)
                      (RelB : ∀ x → Rel (B x) ℓ₂) where
 
+  infix 4 _<_
   data _<_ : Rel (Σ A B) (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     left  : ∀ {x₁ y₁ x₂ y₂} (x₁<x₂ : RelA   x₁ x₂) → (x₁ , y₁) < (x₂ , y₂)
     right : ∀ {x y₁ y₂}     (y₁<y₂ : RelB x y₁ y₂) → (x  , y₁) < (x  , y₂)

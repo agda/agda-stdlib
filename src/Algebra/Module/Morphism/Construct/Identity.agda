@@ -21,7 +21,7 @@ open import Algebra.Module.Morphism.Structures
         ; module ModuleMorphisms
         )
 open import Algebra.Morphism.Construct.Identity
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 import Function.Construct.Identity as Id
 open import Level using (Level)

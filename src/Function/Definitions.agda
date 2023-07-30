@@ -10,7 +10,7 @@
 
 module Function.Definitions where
 
-open import Data.Product using (∃; _×_)
+open import Data.Product.Base using (∃; _×_)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 

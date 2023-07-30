@@ -32,4 +32,4 @@ em⇒dne : ∀ {ℓ} → ExcludedMiddle ℓ → DoubleNegationElimination ℓ
 em⇒dne em = decidable-stable em
 
 dne⇒em : ∀ {ℓ} → DoubleNegationElimination ℓ → ExcludedMiddle ℓ
-dne⇒em dne = dne excluded-middle
+dne⇒em dne = dne ¬¬-excluded-middle

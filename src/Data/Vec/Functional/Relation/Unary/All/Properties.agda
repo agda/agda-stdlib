@@ -14,7 +14,7 @@ open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Unary.All
-open import Function
+open import Function.Base using (const; _∘_)
 open import Level using (Level)
 open import Relation.Unary
 

@@ -13,7 +13,7 @@ module Relation.Binary.Properties.DecTotalOrder
 
 open DecTotalOrder DT hiding (trans)
 
-import Relation.Binary.Construct.Converse as Converse
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.TotalOrder totalOrder as TotalOrderProperties
 open import Relation.Nullary.Negation using (¬_)
@@ -38,7 +38,7 @@ open TotalOrderProperties public
   )
 
 ≥-isDecTotalOrder : IsDecTotalOrder _≈_ _≥_
-≥-isDecTotalOrder = Converse.isDecTotalOrder isDecTotalOrder
+≥-isDecTotalOrder = EqAndOrd.isDecTotalOrder isDecTotalOrder
 
 ≥-decTotalOrder : DecTotalOrder _ _ _
 ≥-decTotalOrder = record

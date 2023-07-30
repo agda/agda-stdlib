@@ -12,7 +12,7 @@ open import Level using (Level)
 open import Size
 open import Data.Unit.Base
 open import Data.Nat.Base
-open import Data.Product using (_×_ ; _,_)
+open import Data.Product.Base using (_×_ ; _,_)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.List.Base using (List; []; _∷_)
@@ -27,7 +27,7 @@ open import Codata.Sized.Cowriter as CW using (Cowriter; _∷_)
 open import Codata.Sized.Delay as Delay using (Delay ; now ; later)
 open import Codata.Sized.Stream using (Stream ; _∷_)
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
   variable
@@ -41,6 +41,8 @@ private
 data Colist (A : Set a) (i : Size) : Set a where
   []  : Colist A i
   _∷_ : A → Thunk (Colist A) i → Colist A i
+
+infixr 5 _∷_
 
 ------------------------------------------------------------------------
 -- Relationship to Cowriter.

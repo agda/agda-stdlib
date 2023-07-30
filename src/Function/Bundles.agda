@@ -23,7 +23,7 @@ open import Function.Base using (_∘_)
 open import Function.Definitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_)

@@ -36,7 +36,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Nullary.Decidable using (excluded-middle)
+open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 open import Relation.Unary using (Pred)
 
 private
@@ -215,6 +215,8 @@ data Finite {A : Set a} : Colist A → Set a where
   []  : Finite []
   _∷_ : ∀ x {xs} (fin : Finite (♭ xs)) → Finite (x ∷ xs)
 
+infixr 5 _∷_
+
 module Finite-injective where
 
  ∷-injective : ∀ {x : A} {xs p q} → (Finite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
@@ -242,7 +244,7 @@ not-finite-is-infinite (x ∷ xs) hyp =
 
 finite-or-infinite :
   (xs : Colist A) → ¬ ¬ (Finite xs ⊎ Infinite xs)
-finite-or-infinite xs = helper <$> excluded-middle
+finite-or-infinite xs = helper <$> ¬¬-excluded-middle
   where
   helper : Dec (Finite xs) → Finite xs ⊎ Infinite xs
   helper ( true because  [fin]) = inj₁ (invert [fin])

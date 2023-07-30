@@ -143,7 +143,7 @@ toℚᵘ (mkℚ n d-1 _) = mkℚᵘ n d-1
 fromℚᵘ : ℚᵘ → ℚ
 fromℚᵘ (mkℚᵘ n d-1) = n / suc d-1
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some constants
 
 0ℚ : ℚ
@@ -202,11 +202,11 @@ nonPositive {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonPositive {toℚᵘ p} (�
 nonNegative : ∀ {p} → p ≥ 0ℚ → NonNegative p
 nonNegative {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonNegative {toℚᵘ p} (ℚᵘ.*≤* p≤q)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Operations on rationals
 
--- For explanation of the `@record{}` annotations see notes in the equivalent
--- place in `Data.Rational.Unnormalised.Base`.
+-- For explanation of the `@record{}` annotations see notes in the
+-- equivalent place in `Data.Rational.Unnormalised.Base`.
 
 infix  8 -_ 1/_
 infixl 7 _*_ _÷_ _⊓_

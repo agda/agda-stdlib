@@ -20,7 +20,7 @@ open import Algebra.Morphism.Structures
         ; module QuasigroupMorphisms
         ; module LoopMorphisms
         )
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 import Function.Construct.Identity as Id
 open import Level using (Level)

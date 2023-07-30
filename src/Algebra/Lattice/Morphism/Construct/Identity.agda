@@ -11,7 +11,7 @@ module Algebra.Lattice.Morphism.Construct.Identity where
 open import Algebra.Lattice.Bundles
 open import Algebra.Lattice.Morphism.Structures
   using ( module LatticeMorphisms )
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 import Function.Construct.Identity as Id
 open import Level using (Level)

@@ -29,6 +29,8 @@ private
 sℕ≤s⁻¹ : ∀ {m n} → suc m ℕ≤ suc n → m ℕ≤ n .force
 sℕ≤s⁻¹ (sℕ≤s p) = p
 
+infix 4 _ℕ≤?_
+
 _ℕ≤?_ : Decidable _ℕ≤_
 zero  ℕ≤? n     = yes zℕ≤n
 suc m ℕ≤? zero  = no (λ ())

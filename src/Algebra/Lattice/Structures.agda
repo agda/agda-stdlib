@@ -14,9 +14,11 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_)
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Lattice.Structures
   {a ℓ} {A : Set a}  -- The underlying set

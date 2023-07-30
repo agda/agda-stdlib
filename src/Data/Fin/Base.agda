@@ -14,7 +14,7 @@ module Data.Fin.Base where
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
-open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)

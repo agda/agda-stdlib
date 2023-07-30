@@ -14,7 +14,7 @@ open import Codata.Sized.Thunk
 open import Codata.Sized.Conat hiding (_⊔_)
 open import Codata.Sized.Covec
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 
 data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) (i : Size) :
            ∀ m n (xs : Covec A ∞ m) (ys : Covec B ∞ n) → Set (r ⊔ a ⊔ b) where
@@ -22,6 +22,7 @@ data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) (i : Size) :
   _∷_ : ∀ {x y m n xs ys} → R x y → Thunk^R (λ i → Bisim R i (m .force) (n .force)) i xs ys →
         Bisim R i (suc m) (suc n) (x ∷ xs) (y ∷ ys)
 
+infixr 5 _∷_
 
 module _ {a r} {A : Set a} {R : A → A → Set r} where
 

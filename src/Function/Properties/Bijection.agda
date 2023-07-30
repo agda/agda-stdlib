@@ -12,7 +12,7 @@ open import Function.Bundles
 open import Level using (Level)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (setoid)
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Base using (_∘_)
 open import Function.Properties.Surjection using (injective⇒to⁻-cong)
 open import Function.Properties.Inverse using (Inverse⇒Equivalence)

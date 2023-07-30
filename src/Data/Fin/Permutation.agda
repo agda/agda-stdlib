@@ -15,7 +15,7 @@ open import Data.Fin.Patterns
 open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Product using (_,_; proj₂)
+open import Data.Product.Base using (_,_; proj₂)
 open import Function.Bundles using (_↔_; Injection; Inverse; mk↔′)
 open import Function.Construct.Composition using (_↔-∘_)
 open import Function.Construct.Identity using (↔-id)
@@ -25,7 +25,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Properties.Inverse using (↔⇒↣)
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (does; ¬_; yes; no)
 open import Relation.Nullary.Decidable using (dec-yes; dec-no)
 open import Relation.Nullary.Negation using (contradiction)

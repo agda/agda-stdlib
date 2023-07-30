@@ -14,7 +14,7 @@ open import Data.Fin.Permutation as Perm using (Permutation; _⟨$⟩ˡ_; _⟨$�
 open import Data.Fin.Patterns using (0F)
 open import Data.Vec.Functional
 open import Function.Base using (_∘_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary.Negation using (contradiction)
 
 module Algebra.Properties.CommutativeMonoid.Sum
