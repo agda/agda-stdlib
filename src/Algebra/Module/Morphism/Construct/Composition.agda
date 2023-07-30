@@ -51,7 +51,7 @@ module _
                                 IsLeftSemimoduleIsomorphism M₁ M₃ (g ∘ f)
   isLeftSemimoduleIsomorphism f-iso g-iso = record
     { isLeftSemimoduleMonomorphism = isLeftSemimoduleMonomorphism F.isLeftSemimoduleMonomorphism G.isLeftSemimoduleMonomorphism
-    ; surjective                   = Func.surjective (_≈ᴹ_ M₁) _ _ (≈ᴹ-trans M₃) G.⟦⟧-cong F.surjective G.surjective
+    ; surjective                   = Func.surjective _ _ (_≈ᴹ_ M₃) F.surjective G.surjective
     } where module F = IsLeftSemimoduleIsomorphism f-iso; module G = IsLeftSemimoduleIsomorphism g-iso
 
 module _
@@ -85,7 +85,7 @@ module _
                             IsLeftModuleIsomorphism M₁ M₃ (g ∘ f)
   isLeftModuleIsomorphism f-iso g-iso = record
     { isLeftModuleMonomorphism = isLeftModuleMonomorphism F.isLeftModuleMonomorphism G.isLeftModuleMonomorphism
-    ; surjective               = Func.surjective (_≈ᴹ_ M₁) _ _ (≈ᴹ-trans M₃) G.⟦⟧-cong F.surjective G.surjective
+    ; surjective               = Func.surjective _ _ (_≈ᴹ_ M₃) F.surjective G.surjective
     } where module F = IsLeftModuleIsomorphism f-iso; module G = IsLeftModuleIsomorphism g-iso
 
 module _
@@ -119,7 +119,7 @@ module _
                                  IsRightSemimoduleIsomorphism M₁ M₃ (g ∘ f)
   isRightSemimoduleIsomorphism f-iso g-iso = record
     { isRightSemimoduleMonomorphism = isRightSemimoduleMonomorphism F.isRightSemimoduleMonomorphism G.isRightSemimoduleMonomorphism
-    ; surjective                    = Func.surjective (_≈ᴹ_ M₁) _ _ (≈ᴹ-trans M₃) G.⟦⟧-cong F.surjective G.surjective
+    ; surjective                    = Func.surjective _ _ (_≈ᴹ_ M₃) F.surjective G.surjective
     } where module F = IsRightSemimoduleIsomorphism f-iso; module G = IsRightSemimoduleIsomorphism g-iso
 
 module _
@@ -153,7 +153,7 @@ module _
                              IsRightModuleIsomorphism M₁ M₃ (g ∘ f)
   isRightModuleIsomorphism f-iso g-iso = record
     { isRightModuleMonomorphism = isRightModuleMonomorphism F.isRightModuleMonomorphism G.isRightModuleMonomorphism
-    ; surjective                = Func.surjective (_≈ᴹ_ M₁) _ _ (≈ᴹ-trans M₃) G.⟦⟧-cong F.surjective G.surjective
+    ; surjective                = Func.surjective _ _ (_≈ᴹ_ M₃) F.surjective G.surjective
     } where module F = IsRightModuleIsomorphism f-iso; module G = IsRightModuleIsomorphism g-iso
 
 module _
@@ -189,7 +189,7 @@ module _
                               IsBisemimoduleIsomorphism M₁ M₃ (g ∘ f)
   isBisemimoduleIsomorphism f-iso g-iso = record
     { isBisemimoduleMonomorphism = isBisemimoduleMonomorphism F.isBisemimoduleMonomorphism G.isBisemimoduleMonomorphism
-    ; surjective                 = Func.surjective (_≈ᴹ_ M₁) _ _ (≈ᴹ-trans M₃) G.⟦⟧-cong F.surjective G.surjective
+    ; surjective                 = Func.surjective _ _ (_≈ᴹ_ M₃) F.surjective G.surjective
     } where module F = IsBisemimoduleIsomorphism f-iso; module G = IsBisemimoduleIsomorphism g-iso
 
 module _
@@ -225,7 +225,7 @@ module _
                           IsBimoduleIsomorphism M₁ M₃ (g ∘ f)
   isBimoduleIsomorphism f-iso g-iso = record
     { isBimoduleMonomorphism = isBimoduleMonomorphism F.isBimoduleMonomorphism G.isBimoduleMonomorphism
-    ; surjective             = Func.surjective (_≈ᴹ_ M₁) _ _ (≈ᴹ-trans M₃) G.⟦⟧-cong F.surjective G.surjective
+    ; surjective             = Func.surjective _ _ (_≈ᴹ_ M₃) F.surjective G.surjective
     } where module F = IsBimoduleIsomorphism f-iso; module G = IsBimoduleIsomorphism g-iso
 
 module _
@@ -258,7 +258,7 @@ module _
                             IsSemimoduleIsomorphism M₁ M₃ (g ∘ f)
   isSemimoduleIsomorphism f-iso g-iso = record
     { isSemimoduleMonomorphism = isSemimoduleMonomorphism F.isSemimoduleMonomorphism G.isSemimoduleMonomorphism
-    ; surjective               = Func.surjective (_≈ᴹ_ M₁) _ _ (≈ᴹ-trans M₃) G.⟦⟧-cong F.surjective G.surjective
+    ; surjective               = Func.surjective _ _ (_≈ᴹ_ M₃) F.surjective G.surjective
     } where module F = IsSemimoduleIsomorphism f-iso; module G = IsSemimoduleIsomorphism g-iso
 
 module _
@@ -291,5 +291,5 @@ module _
                         IsModuleIsomorphism M₁ M₃ (g ∘ f)
   isModuleIsomorphism f-iso g-iso = record
     { isModuleMonomorphism = isModuleMonomorphism F.isModuleMonomorphism G.isModuleMonomorphism
-    ; surjective           = Func.surjective (_≈ᴹ_ M₁) _ _ (≈ᴹ-trans M₃) G.⟦⟧-cong F.surjective G.surjective
+    ; surjective           = Func.surjective _ _ (_≈ᴹ_ M₃) F.surjective G.surjective
     } where module F = IsModuleIsomorphism f-iso; module G = IsModuleIsomorphism g-iso

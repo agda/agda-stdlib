@@ -11,7 +11,7 @@ open import Algebra.Bundles
 open import Algebra.Module.Bundles
 import Algebra.Module.Morphism.Definitions as MorphismDefinitions
 import Algebra.Morphism.Structures as MorphismStructures
-import Function.Definitions as FunctionDefinitions
+open import Function.Definitions
 open import Level
 
 private
@@ -28,7 +28,6 @@ module LeftSemimoduleMorphisms
   open LeftSemimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _≈ᴹ_ to _≈ᴹ₁_)
   open LeftSemimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
-  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open MorphismStructures.MonoidMorphisms (LeftSemimodule.+ᴹ-rawMonoid M₁) (LeftSemimodule.+ᴹ-rawMonoid M₂)
 
   record IsLeftSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
@@ -43,7 +42,7 @@ module LeftSemimoduleMorphisms
   record IsLeftSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isLeftSemimoduleHomomorphism : IsLeftSemimoduleHomomorphism ⟦_⟧
-      injective                    : Injective ⟦_⟧
+      injective                    : Injective  _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsLeftSemimoduleHomomorphism isLeftSemimoduleHomomorphism public
 
@@ -60,7 +59,7 @@ module LeftSemimoduleMorphisms
   record IsLeftSemimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isLeftSemimoduleMonomorphism : IsLeftSemimoduleMonomorphism ⟦_⟧
-      surjective                   : Surjective ⟦_⟧
+      surjective                   : Surjective  _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsLeftSemimoduleMonomorphism isLeftSemimoduleMonomorphism public
 
@@ -84,7 +83,6 @@ module LeftModuleMorphisms
   open LeftModule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _≈ᴹ_ to _≈ᴹ₁_)
   open LeftModule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
-  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open MorphismStructures.GroupMorphisms (LeftModule.+ᴹ-rawGroup M₁) (LeftModule.+ᴹ-rawGroup M₂)
   open LeftSemimoduleMorphisms (LeftModule.leftSemimodule M₁) (LeftModule.leftSemimodule M₂)
 
@@ -108,7 +106,7 @@ module LeftModuleMorphisms
   record IsLeftModuleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isLeftModuleHomomorphism : IsLeftModuleHomomorphism ⟦_⟧
-      injective                : Injective ⟦_⟧
+      injective                : Injective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsLeftModuleHomomorphism isLeftModuleHomomorphism public
 
@@ -130,7 +128,7 @@ module LeftModuleMorphisms
   record IsLeftModuleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isLeftModuleMonomorphism : IsLeftModuleMonomorphism ⟦_⟧
-      surjective               : Surjective ⟦_⟧
+      surjective               : Surjective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsLeftModuleMonomorphism isLeftModuleMonomorphism public
 
@@ -159,7 +157,6 @@ module RightSemimoduleMorphisms
   open RightSemimodule M₁ renaming (Carrierᴹ to A; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
   open RightSemimodule M₂ renaming (Carrierᴹ to B; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
-  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open MorphismStructures.MonoidMorphisms (RightSemimodule.+ᴹ-rawMonoid M₁) (RightSemimodule.+ᴹ-rawMonoid M₂)
 
   record IsRightSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
@@ -174,7 +171,7 @@ module RightSemimoduleMorphisms
   record IsRightSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism ⟦_⟧
-      injective                    : Injective ⟦_⟧
+      injective                    : Injective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsRightSemimoduleHomomorphism isRightSemimoduleHomomorphism public
 
@@ -191,7 +188,7 @@ module RightSemimoduleMorphisms
   record IsRightSemimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isRightSemimoduleMonomorphism : IsRightSemimoduleMonomorphism ⟦_⟧
-      surjective                   : Surjective ⟦_⟧
+      surjective                   : Surjective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsRightSemimoduleMonomorphism isRightSemimoduleMonomorphism public
 
@@ -215,7 +212,6 @@ module RightModuleMorphisms
   open RightModule M₁ renaming (Carrierᴹ to A; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
   open RightModule M₂ renaming (Carrierᴹ to B; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
-  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open MorphismStructures.GroupMorphisms (RightModule.+ᴹ-rawGroup M₁) (RightModule.+ᴹ-rawGroup M₂)
   open RightSemimoduleMorphisms (RightModule.rightSemimodule M₁) (RightModule.rightSemimodule M₂)
 
@@ -238,7 +234,7 @@ module RightModuleMorphisms
   record IsRightModuleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isRightModuleHomomorphism : IsRightModuleHomomorphism ⟦_⟧
-      injective                : Injective ⟦_⟧
+      injective                : Injective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsRightModuleHomomorphism isRightModuleHomomorphism public
 
@@ -260,7 +256,7 @@ module RightModuleMorphisms
   record IsRightModuleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isRightModuleMonomorphism : IsRightModuleMonomorphism ⟦_⟧
-      surjective               : Surjective ⟦_⟧
+      surjective               : Surjective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsRightModuleMonomorphism isRightModuleMonomorphism public
 
@@ -292,7 +288,6 @@ module BisemimoduleMorphisms
   open Bisemimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_ using (Homomorphicₗ)
   open MorphismDefinitions S A B _≈ᴹ₂_ using (Homomorphicᵣ)
-  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open MorphismStructures.MonoidMorphisms (Bisemimodule.+ᴹ-rawMonoid M₁) (Bisemimodule.+ᴹ-rawMonoid M₂)
   open LeftSemimoduleMorphisms (Bisemimodule.leftSemimodule M₁) (Bisemimodule.leftSemimodule M₂)
   open RightSemimoduleMorphisms (Bisemimodule.rightSemimodule M₁) (Bisemimodule.rightSemimodule M₂)
@@ -321,7 +316,7 @@ module BisemimoduleMorphisms
   record IsBisemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isBisemimoduleHomomorphism : IsBisemimoduleHomomorphism ⟦_⟧
-      injective                  : Injective ⟦_⟧
+      injective                  : Injective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsBisemimoduleHomomorphism isBisemimoduleHomomorphism public
 
@@ -343,7 +338,7 @@ module BisemimoduleMorphisms
   record IsBisemimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isBisemimoduleMonomorphism : IsBisemimoduleMonomorphism ⟦_⟧
-      surjective                 : Surjective ⟦_⟧
+      surjective                 : Surjective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsBisemimoduleMonomorphism isBisemimoduleMonomorphism public
 
@@ -375,7 +370,6 @@ module BimoduleMorphisms
   open Bimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_ using (Homomorphicₗ)
   open MorphismDefinitions S A B _≈ᴹ₂_ using (Homomorphicᵣ)
-  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open MorphismStructures.GroupMorphisms (Bimodule.+ᴹ-rawGroup M₁) (Bimodule.+ᴹ-rawGroup M₂)
   open LeftModuleMorphisms (Bimodule.leftModule M₁) (Bimodule.leftModule M₂)
   open RightModuleMorphisms (Bimodule.rightModule M₁) (Bimodule.rightModule M₂)
@@ -418,7 +412,7 @@ module BimoduleMorphisms
   record IsBimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isBimoduleHomomorphism : IsBimoduleHomomorphism ⟦_⟧
-      injective              : Injective ⟦_⟧
+      injective              : Injective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsBimoduleHomomorphism isBimoduleHomomorphism public
 
@@ -459,7 +453,7 @@ module BimoduleMorphisms
   record IsBimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isBimoduleMonomorphism : IsBimoduleMonomorphism ⟦_⟧
-      surjective             : Surjective ⟦_⟧
+      surjective             : Surjective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsBimoduleMonomorphism isBimoduleMonomorphism public
 
@@ -505,7 +499,6 @@ module SemimoduleMorphisms
 
   open Semimodule M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
   open Semimodule M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
-  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open BisemimoduleMorphisms (Semimodule.bisemimodule M₁) (Semimodule.bisemimodule M₂)
 
   record IsSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
@@ -517,7 +510,7 @@ module SemimoduleMorphisms
   record IsSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isSemimoduleHomomorphism : IsSemimoduleHomomorphism ⟦_⟧
-      injective                : Injective ⟦_⟧
+      injective                : Injective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsSemimoduleHomomorphism isSemimoduleHomomorphism public
 
@@ -535,7 +528,7 @@ module SemimoduleMorphisms
   record IsSemimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isSemimoduleMonomorphism : IsSemimoduleMonomorphism ⟦_⟧
-      surjective               : Surjective ⟦_⟧
+      surjective               : Surjective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsSemimoduleMonomorphism isSemimoduleMonomorphism public
 
@@ -558,7 +551,6 @@ module ModuleMorphisms
 
   open Module M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
   open Module M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
-  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open BimoduleMorphisms (Module.bimodule M₁) (Module.bimodule M₂)
   open SemimoduleMorphisms (Module.semimodule M₁) (Module.semimodule M₂)
 
@@ -576,7 +568,7 @@ module ModuleMorphisms
   record IsModuleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isModuleHomomorphism : IsModuleHomomorphism ⟦_⟧
-      injective            : Injective ⟦_⟧
+      injective            : Injective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsModuleHomomorphism isModuleHomomorphism public
 
@@ -601,7 +593,7 @@ module ModuleMorphisms
   record IsModuleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
       isModuleMonomorphism : IsModuleMonomorphism ⟦_⟧
-      surjective           : Surjective ⟦_⟧
+      surjective           : Surjective _≈ᴹ₁_ _≈ᴹ₂_ ⟦_⟧
 
     open IsModuleMonomorphism isModuleMonomorphism public
 
