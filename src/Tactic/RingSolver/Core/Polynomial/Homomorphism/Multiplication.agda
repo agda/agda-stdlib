@@ -18,7 +18,7 @@ open import Data.Nat.Properties    using (≤′-trans)
 open import Data.Nat.Induction
 open import Data.Product.Base      using (_×_; _,_; proj₁; proj₂; map₁)
 open import Data.List.Kleene
-open import Data.Vec               using (Vec)
+open import Data.Vec.Base          using (Vec)
 open import Function.Base using (_⟨_⟩_; flip)
 open import Induction.WellFounded
 open import Relation.Unary

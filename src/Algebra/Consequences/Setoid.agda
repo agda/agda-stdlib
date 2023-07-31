@@ -19,8 +19,8 @@ open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product.Base using (_,_)
-open import Function.Base using (_$_)
-import Function.Definitions as FunDefs
+open import Function.Base using (_$_; id; _∘_)
+open import Function.Definitions
 import Relation.Binary.Consequences as Bin
 open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
@@ -67,45 +67,32 @@ module _ {_•_ : Op₂ A} (cong : Congruent₂ _•_) where
     y • x             ∎
 
 ------------------------------------------------------------------------
--- Involutive/SelfInverse functions
-
-module _ {f : Op₁ A} (inv : Involutive f) where
-
-  open FunDefs _≈_ _≈_
-
-  involutive⇒surjective : Surjective f
-  involutive⇒surjective y = f y , inv y
+-- SelfInverse
 
 module _ {f : Op₁ A} (self : SelfInverse f) where
 
   selfInverse⇒involutive : Involutive f
   selfInverse⇒involutive = reflexive+selfInverse⇒involutive _≈_ refl self
 
-  private
-
-    inv = selfInverse⇒involutive
-
-  open FunDefs _≈_ _≈_
-
-  selfInverse⇒congruent : Congruent f
+  selfInverse⇒congruent : Congruent _≈_ _≈_ f
   selfInverse⇒congruent {x} {y} x≈y = sym (self (begin
-    f (f x) ≈⟨ inv x ⟩
+    f (f x) ≈⟨ selfInverse⇒involutive x ⟩
     x       ≈⟨ x≈y ⟩
     y       ∎))
 
-  selfInverse⇒inverseᵇ : Inverseᵇ f f
-  selfInverse⇒inverseᵇ = inv , inv
+  selfInverse⇒inverseᵇ : Inverseᵇ _≈_ _≈_ f f
+  selfInverse⇒inverseᵇ = self ∘ sym , self ∘ sym
 
-  selfInverse⇒surjective : Surjective f
-  selfInverse⇒surjective = involutive⇒surjective inv
+  selfInverse⇒surjective : Surjective _≈_ _≈_ f
+  selfInverse⇒surjective y = f y , self ∘ sym
 
-  selfInverse⇒injective : Injective f
+  selfInverse⇒injective : Injective _≈_ _≈_ f
   selfInverse⇒injective {x} {y} x≈y = begin
     x       ≈˘⟨ self x≈y ⟩
-    f (f y) ≈⟨ inv y ⟩
+    f (f y) ≈⟨ selfInverse⇒involutive y ⟩
     y       ∎
 
-  selfInverse⇒bijective : Bijective f
+  selfInverse⇒bijective : Bijective _≈_ _≈_ f
   selfInverse⇒bijective = selfInverse⇒injective , selfInverse⇒surjective
 
 ------------------------------------------------------------------------

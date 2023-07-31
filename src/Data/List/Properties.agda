@@ -21,7 +21,7 @@ open import Data.List.Base as List
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
@@ -43,6 +43,7 @@ open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradi
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
+
 
 open ≡-Reasoning
 
@@ -761,6 +762,12 @@ length-take zero    xs       = refl
 length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
+-- Take commutes with map.
+take-map : ∀ {f : A → B} (n : ℕ) xs → take n (map f xs) ≡ map f (take n xs)
+take-map zero xs = refl
+take-map (suc s) [] = refl
+take-map (suc s) (a ∷ xs) = cong (_ ∷_) (take-map s xs)
+
 take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
            take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
 take-suc (x ∷ xs) zero    = refl
@@ -791,11 +798,16 @@ length-drop zero    xs       = refl
 length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
 
+-- Drop commutes with map.
+drop-map : ∀ {f : A → B} (n : ℕ) xs → drop n (map f xs) ≡ map f (drop n xs)
+drop-map zero xs = refl
+drop-map (suc n) [] = refl
+drop-map (suc n) (a ∷ xs) = drop-map n xs
+
 -- Dropping from an empty list does nothing.
 drop-[] : ∀ m → drop {A = A} m [] ≡ []
 drop-[] zero = refl
 drop-[] (suc m) = refl
-
 
 take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
 take++drop zero    xs       = refl
@@ -1115,6 +1127,17 @@ module _ {x y : A} where
 
 ∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
 ∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
+
+
+
+------------------------------------------------------------------------
+-- head
+
+-- 'commute' List.head and List.map to obtain a Maybe.map and List.head.
+head-map : ∀ {f : A → B} xs → head (map f xs) ≡ Maybe.map f (head xs)
+head-map [] = refl
+head-map (_ ∷ _) = refl
+
 
 
 

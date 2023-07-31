@@ -10,7 +10,7 @@ module Function.Properties.RightInverse where
 
 open import Function.Base
 open import Function.Bundles
-open import Function.Consequences using (inverseʳ⇒surjective)
+open import Function.Consequences using (inverseˡ⇒surjective)
 open import Level using (Level)
 open import Data.Product
 open import Relation.Binary using (Setoid; IsEquivalence)
@@ -27,7 +27,7 @@ RightInverse⇒Surjection : RightInverse S T → Surjection T S
 RightInverse⇒Surjection I = record
   { to         = from
   ; cong       = from-cong
-  ; surjective = λ a → to a , inverseʳ a
+  ; surjective = inverseˡ⇒surjective Eq₁._≈_ inverseʳ
   } where open RightInverse I
 
 ↪⇒↠ : B ↪ A → A ↠ B
