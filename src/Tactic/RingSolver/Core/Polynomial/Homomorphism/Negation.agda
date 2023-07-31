@@ -13,8 +13,8 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
+open import Data.Vec.Base         using (Vec)
 open import Data.Product.Base     using (_,_)
-open import Data.Vec              using (Vec)
 open import Data.Nat              using (_<′_)
 open import Data.Nat.Induction
 
