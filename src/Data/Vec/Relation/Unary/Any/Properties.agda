@@ -16,7 +16,7 @@ import Data.List.Relation.Unary.Any as List
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
-open import Data.Vec hiding (here; there)
+open import Data.Vec.Base hiding (here; there)
 open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
   using (_∈_; mapWith∈; find; lose)
