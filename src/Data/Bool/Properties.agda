@@ -654,22 +654,6 @@ xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
 xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
-xor-same : ∀ x → x xor x ≡ false
-xor-same false = refl
-xor-same true  = refl
-
-xor-false : ∀ x → false xor x ≡ x
-xor-false false = refl
-xor-false true  = refl
-
-xor-true : ∀ x → true xor x ≡ not x
-xor-true false = refl
-xor-true true  = refl
-
-xor-not : ∀ x → x xor (not x) ≡ true
-xor-not false = refl
-xor-not true  = refl
-
 not-xor : ∀ x y → not (x xor y) ≡ (not x) xor y
 not-xor false y = refl
 not-xor true  y = not-involutive _
@@ -678,15 +662,39 @@ not-xor-cancel : ∀ x y → (not x) xor (not y) ≡ x xor y
 not-xor-cancel false y = not-involutive _
 not-xor-cancel true  y = refl
 
-xor-commutative : ∀ x y → x xor y ≡ y xor x
-xor-commutative false false = refl
-xor-commutative false true  = refl
-xor-commutative true  false = refl
-xor-commutative true  true  = refl
+xor-true : ∀ x → true xor x ≡ not x
+xor-true false = refl
+xor-true true  = refl
 
-xor-associative : ∀ x y z → x xor (y xor z) ≡ (x xor y) xor z
-xor-associative false y z = refl
-xor-associative true  y z = not-xor y z
+xor-assoc : Associative _xor_
+xor-assoc true  y z = sym (not-xor y z)
+xor-assoc false y z = refl
+
+xor-comm : Commutative _xor_
+xor-comm false false = refl
+xor-comm false true  = refl
+xor-comm true  false = refl
+xor-comm true  true  = refl
+
+xor-identityˡ : LeftIdentity false _xor_
+xor-identityˡ _ = refl
+
+xor-identityʳ : RightIdentity false _xor_
+xor-identityʳ false = refl
+xor-identityʳ true  = refl
+
+xor-identity : Identity false _xor_
+xor-identity = xor-identityˡ , xor-identityʳ
+
+xor-inverseˡ : LeftInverse true not _xor_
+xor-inverseˡ false = refl
+xor-inverseˡ true = refl
+
+xor-inverseʳ : RightInverse true not _xor_
+xor-inverseʳ x = xor-comm x (not x) ⟨ trans ⟩ xor-inverseˡ x
+
+xor-inverse : Inverse true not _xor_
+xor-inverse = xor-inverseˡ , xor-inverseʳ
 
 xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
 xor-∧-commutativeRing = ⊕-∧-commutativeRing
