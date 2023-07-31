@@ -763,7 +763,7 @@ length-take (suc n) []       = refl
 length-take (suc n) (x ∷ xs) = cong suc (length-take n xs)
 
 -- Take commutes with map.
-take-map : (n : ℕ) (xs : List A) → take n (map f xs) ≡ map f (take n xs)
+take-map : ∀ {f : A → B} (n : ℕ) xs → take n (map f xs) ≡ map f (take n xs)
 take-map zero xs = refl
 take-map (suc s) [] = refl
 take-map (suc s) (a ∷ xs) = cong (_ ∷_) (take-map s xs)
@@ -799,7 +799,7 @@ length-drop (suc n) []       = refl
 length-drop (suc n) (x ∷ xs) = length-drop n xs
 
 -- Drop commutes with map.
-drop-map : (n : ℕ) (xs : List A) → drop n (map f xs) ≡ map f (drop n xs)
+drop-map : ∀ {f : A → B} (n : ℕ) xs → drop n (map f xs) ≡ map f (drop n xs)
 drop-map zero xs = refl
 drop-map (suc n) [] = refl
 drop-map (suc n) (a ∷ xs) = drop-map n xs
@@ -1134,7 +1134,7 @@ module _ {x y : A} where
 -- head
 
 -- 'commute' List.head and List.map to obtain a Maybe.map and List.head.
-head-map : (xs : List A) → head (map f xs) ≡ Maybe.map f (head xs)
+head-map : ∀ {f : A → B} xs → head (map f xs) ≡ Maybe.map f (head xs)
 head-map [] = refl
 head-map (_ ∷ _) = refl
 
