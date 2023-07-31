@@ -2200,6 +2200,10 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+  
+  take-map : take n (map f xs) ≡ map f (take n xs)
+  drop-map : drop n (map f xs) ≡ map f (drop n xs)
+  head-map : head (map f xs) ≡ Maybe.map f (head xs)
 
   take-suc : (o : Fin (length xs)) → let m = toℕ o in take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
   take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
