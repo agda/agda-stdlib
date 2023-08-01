@@ -65,13 +65,10 @@ module _ (S : Setoid c ℓ) where
 
   -- index is injective in its first argument.
 
-  index-injective
-    : ∀ {x₁ x₂ xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
-      Any.index x₁∈xs ≡ Any.index x₂∈xs → x₁ ≈ x₂
+  index-injective : ∀ {x₁ x₂ xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
+                    Any.index x₁∈xs ≡ Any.index x₂∈xs → x₁ ≈ x₂
   index-injective (here x₁≈x)   (here x₂≈x)   _  = trans x₁≈x (sym x₂≈x)
   index-injective (there x₁∈xs) (there x₂∈xs) eq = index-injective x₁∈xs x₂∈xs (suc-injective eq)
-  index-injective (here _)  (there _) ()
-  index-injective (there _) (here _)  ()
 
 ------------------------------------------------------------------------
 -- Irrelevance
