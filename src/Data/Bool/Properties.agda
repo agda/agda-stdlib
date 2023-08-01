@@ -654,20 +654,24 @@ xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
 xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
-not-xor : ∀ x y → not (x xor y) ≡ (not x) xor y
-not-xor false y = refl
-not-xor true  y = not-involutive _
-
-not-xor-cancel : ∀ x y → (not x) xor (not y) ≡ x xor y
-not-xor-cancel false y = not-involutive _
-not-xor-cancel true  y = refl
-
 xor-true : ∀ x → true xor x ≡ not x
 xor-true false = refl
 xor-true true  = refl
 
+xor-same : ∀ x → x xor x ≡ false
+xor-same false = refl
+xor-same true  = refl
+
+not-distribˡ-xor : ∀ x y → not (x xor y) ≡ (not x) xor y
+not-distribˡ-xor false y = refl
+not-distribˡ-xor true  y = not-involutive _
+
+not-distribʳ-xor : ∀ x y → not (x xor y) ≡ x xor (not y)
+not-distribʳ-xor false y = refl
+not-distribʳ-xor true  y = refl
+
 xor-assoc : Associative _xor_
-xor-assoc true  y z = sym (not-xor y z)
+xor-assoc true  y z = sym (not-distribˡ-xor y z)
 xor-assoc false y z = refl
 
 xor-comm : Commutative _xor_
@@ -695,6 +699,22 @@ xor-inverseʳ x = xor-comm x (not x) ⟨ trans ⟩ xor-inverseˡ x
 
 xor-inverse : Inverse true not _xor_
 xor-inverse = xor-inverseˡ , xor-inverseʳ
+
+∧-distribˡ-xor : _∧_ DistributesOverˡ _xor_
+∧-distribˡ-xor false y z = refl
+∧-distribˡ-xor true  y z = refl
+
+∧-distribʳ-xor : _∧_ DistributesOverʳ _xor_
+∧-distribʳ-xor x false z    = refl
+∧-distribʳ-xor x true false = sym (xor-identityʳ x)
+∧-distribʳ-xor x true true  = sym (xor-same x)
+
+∧-distrib-xor : _∧_ DistributesOver _xor_
+∧-distrib-xor = ∧-distribˡ-xor , ∧-distribʳ-xor
+
+xor-annihilates-not : ∀ x y → (not x) xor (not y) ≡ x xor y
+xor-annihilates-not false y = not-involutive _
+xor-annihilates-not true  y = refl
 
 xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
 xor-∧-commutativeRing = ⊕-∧-commutativeRing
