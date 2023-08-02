@@ -869,14 +869,12 @@ foldr-∷ʳ B f y (x ∷ xs) = cong (f x) (foldr-∷ʳ B f y xs)
 -- init, last and _∷ʳ_
 
 init-∷ʳ : ∀ x (xs : Vec A n) → init (xs ∷ʳ x) ≡ xs
-init-∷ʳ x xs with xs ∷ʳ x in eq
-init-∷ʳ x xs | xs* with initLast xs*
-init-∷ʳ x xs | .(xs′ ∷ʳ x′) | xs′ , x′ , refl = sym (proj₁ (∷ʳ-injective xs xs′ eq))
+init-∷ʳ x []       = refl
+init-∷ʳ x (y ∷ xs) = cong (y ∷_) (init-∷ʳ x xs)
 
 last-∷ʳ : ∀ x (xs : Vec A n) → last (xs ∷ʳ x) ≡ x
-last-∷ʳ x xs with xs ∷ʳ x in eq
-last-∷ʳ x xs | xs* with initLast xs*
-last-∷ʳ x xs | .(xs′ ∷ʳ x′) | xs′ , x′ , refl = sym (proj₂ (∷ʳ-injective xs xs′ eq))
+last-∷ʳ x []       = refl
+last-∷ʳ x (y ∷ xs) = last-∷ʳ x xs
 
 -- map and _∷ʳ_
 
