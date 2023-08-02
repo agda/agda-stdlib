@@ -399,7 +399,7 @@ cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
 
-cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (xs : Vec A m) →
+cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
 cast-trans {m = zero}  {n = zero}  {o = zero}  eq₁ eq₂ [] = refl
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (x ∷ xs) =
@@ -839,6 +839,12 @@ map-is-foldr f = foldr-universal (Vec _) (λ x ys → f x ∷ ys) (map f) refl (
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
+-- snoc is snoc
+
+unfold-∷ʳ : ∀ .(eq : n + 1 ≡ suc n) x (xs : Vec A n) → cast eq (xs ++ x ∷ []) ≡ xs ∷ʳ x
+unfold-∷ʳ eq x []       = refl
+unfold-∷ʳ eq x (y ∷ xs) = cong (y ∷_) (unfold-∷ʳ (cong pred eq) x xs)
+
 ∷ʳ-injective : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
 ∷ʳ-injective []       []        refl = (refl , refl)
 ∷ʳ-injective (x ∷ xs) (y  ∷ ys) eq   with ∷-injective eq
@@ -860,11 +866,38 @@ foldr-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldrOp A B) {e} y (ys : Vec A n) →
 foldr-∷ʳ B f y []       = refl
 foldr-∷ʳ B f y (x ∷ xs) = cong (f x) (foldr-∷ʳ B f y xs)
 
+-- init, last and _∷ʳ_
+
+init-∷ʳ : ∀ x (xs : Vec A n) → init (xs ∷ʳ x) ≡ xs
+init-∷ʳ x xs with xs ∷ʳ x in eq
+init-∷ʳ x xs | xs* with initLast xs*
+init-∷ʳ x xs | .(xs′ ∷ʳ x′) | xs′ , x′ , refl = sym (proj₁ (∷ʳ-injective xs xs′ eq))
+
+last-∷ʳ : ∀ x (xs : Vec A n) → last (xs ∷ʳ x) ≡ x
+last-∷ʳ x xs with xs ∷ʳ x in eq
+last-∷ʳ x xs | xs* with initLast xs*
+last-∷ʳ x xs | .(xs′ ∷ʳ x′) | xs′ , x′ , refl = sym (proj₂ (∷ʳ-injective xs xs′ eq))
+
 -- map and _∷ʳ_
 
 map-∷ʳ : ∀ (f : A → B) x (xs : Vec A n) → map f (xs ∷ʳ x) ≡ map f xs ∷ʳ f x
 map-∷ʳ f x []       = refl
 map-∷ʳ f x (y ∷ xs) = cong (f y ∷_) (map-∷ʳ f x xs)
+
+-- cast and _∷ʳ_
+
+cast-∷ʳ : ∀ .(eq : suc n ≡ suc m) x (xs : Vec A n) →
+          cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
+cast-∷ʳ {m = zero}  eq x []       = refl
+cast-∷ʳ {m = suc m} eq x (y ∷ xs) = cong (y ∷_) (cast-∷ʳ (cong pred eq) x xs)
+
+-- _++_ and _∷ʳ_
+
+++-∷ʳ : ∀ .(eq : suc (n + m) ≡ n + suc m) z (xs : Vec A n) (ys : Vec A m) →
+        (cast eq ((xs ++ ys) ∷ʳ z)) ≡ xs ++ (ys ∷ʳ z)
+++-∷ʳ {n = zero}  eq z []       []       = refl
+++-∷ʳ {n = zero}  eq z []       (y ∷ ys) = cong (y ∷_) (++-∷ʳ refl z [] ys)
+++-∷ʳ {n = suc n} eq z (x ∷ xs) ys       = cong (x ∷_) (++-∷ʳ (cong pred eq) z xs ys)
 
 ------------------------------------------------------------------------
 -- reverse
