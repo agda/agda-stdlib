@@ -68,6 +68,21 @@ private
 -- See also Data.Vec.Properties.WithK.[]=-irrelevant.
 
 ------------------------------------------------------------------------
+-- selectors: head, tail, init and last
+
+head-singleton : head ≗ last {A = A} {n = zero}
+head-singleton (x ∷ []) = refl
+
+head-init : head ∘ init ≗ head {A = A} {n = suc n}
+head-init (x ∷ xs) = refl
+
+last-tail : last ∘ tail ≗ last {A = A} {n = suc n}
+last-tail (x ∷ xs) = refl
+
+init-tail : init ∘ tail ≗ tail ∘ init {A = A} {n = suc n}
+init-tail (x ∷ xs) = refl
+
+------------------------------------------------------------------------
 -- take
 
 unfold-take : ∀ n x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
@@ -938,6 +953,20 @@ reverse-injective {xs = xs} {ys} eq = begin
   xs                   ≡˘⟨ reverse-reverse eq ⟩
   reverse (reverse ys) ≡⟨  reverse-involutive ys ⟩
   ys                   ∎
+
+-- init and last of reverse
+
+init-reverse : init ∘ reverse ≗ reverse ∘ tail {A = A} {n = n}
+init-reverse (x ∷ xs) = begin
+  init (reverse (x ∷ xs))   ≡⟨ cong init (reverse-∷ x xs) ⟩
+  init (reverse xs ∷ʳ x)    ≡⟨ init-∷ʳ x (reverse xs) ⟩
+  reverse xs                ∎
+
+last-reverse : last ∘ reverse ≗ head {A = A} {n = n}
+last-reverse (x ∷ xs) = begin
+  last (reverse (x ∷ xs))   ≡⟨ cong last (reverse-∷ x xs) ⟩
+  last (reverse xs ∷ʳ x)    ≡⟨ last-∷ʳ x (reverse xs) ⟩
+  x                         ∎
 
 -- map and reverse
 
