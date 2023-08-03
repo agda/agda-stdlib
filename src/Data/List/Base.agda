@@ -20,7 +20,8 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s
 open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)
+open import Function.Base
+  using (id; _∘_ ; _∘′_; _∘₂_; _$_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary.Decidable.Core using (does; ¬?)
 open import Relation.Unary using (Pred; Decidable)
@@ -395,6 +396,24 @@ deduplicateᵇ : (A → A → Bool) → List A → List A
 deduplicateᵇ r [] = []
 deduplicateᵇ r (x ∷ xs) = x ∷ filterᵇ (not ∘ r x) (deduplicateᵇ r xs)
 
+findᵇ : (A → Bool) → List A → Maybe A
+findᵇ p [] = nothing
+findᵇ p (x ∷ xs) = if p x then just x else findᵇ p xs
+
+findIndexᵇ : (A → Bool) → (x : List A) → Maybe $ Fin (length x)
+findIndexᵇ p [] = nothing
+findIndexᵇ p (x ∷ xs) = if p x
+  then just zero
+  else mapMaybe suc (findIndexᵇ p xs)
+
+findIndicesᵇ : (A → Bool) → List A → List ℕ
+findIndicesᵇ {A = A} p = h 0 where
+  h : ℕ → List A → List ℕ
+  h n [] = []
+  h n (x ∷ xs) = if p x
+    then n ∷ h (suc n) xs
+    else h (suc n) xs
+
 -- Equivalent functions that use a decidable predicate instead of a
 -- boolean function.
 
@@ -435,6 +454,15 @@ derun R? = derunᵇ (does ∘₂ R?)
 
 deduplicate : ∀ {R : Rel A p} → B.Decidable R → List A → List A
 deduplicate R? = deduplicateᵇ (does ∘₂ R?)
+
+find : ∀ {P : Pred A p} → Decidable P → List A → Maybe A
+find P? = findᵇ (does ∘ P?)
+
+findIndex : ∀ {P : Pred A p} → Decidable P → (x : List A) → Maybe $ Fin (length x)
+findIndex P? = findIndexᵇ (does ∘ P?)
+
+findIndices : ∀ {P : Pred A p} → Decidable P → List A → List ℕ
+findIndices P? = findIndicesᵇ (does ∘ P?)
 
 ------------------------------------------------------------------------
 -- Actions on single elements

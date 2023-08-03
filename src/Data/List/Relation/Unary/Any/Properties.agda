@@ -12,7 +12,7 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List
+open import Data.List.Base as List hiding (find)
 open import Data.List.Properties using (ʳ++-defn)
 open import Data.List.Effectful as Listₑ using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)

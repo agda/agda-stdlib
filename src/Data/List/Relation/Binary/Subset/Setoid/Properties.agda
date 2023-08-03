@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Base hiding (_∷ʳ_; find)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Membership.Setoid as Membership
