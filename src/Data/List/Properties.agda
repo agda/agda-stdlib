@@ -780,7 +780,7 @@ take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym
 
 -- If you take at least as many elements from a list as it has, you get
 -- the whole list.
-take-all :(n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
+take-all : (n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
 take-all zero [] _ = refl
 take-all (suc _) [] _ = refl
 take-all (suc n) (x ∷ xs) (s≤s pf) = cong (x ∷_) (take-all n xs pf)
@@ -823,6 +823,13 @@ drop-take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ
                   drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 drop-take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
   = drop-take-suc (tabulate f) (cast _ i)
+
+-- Dropping m elements and then n elements is same as dropping n+m elements
+drop-drop : (n m : ℕ) → (x : List A) → drop n (drop m x) ≡ drop (n + m) x
+drop-drop zero    m       x                          = refl
+drop-drop (suc n) zero    x rewrite +-identityʳ n    = refl
+drop-drop (suc n) (suc m) []                         = refl
+drop-drop (suc n) (suc m) (x ∷ xs) rewrite +-suc n m = drop-drop (suc n) m xs
 
 ------------------------------------------------------------------------
 -- splitAt

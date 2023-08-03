@@ -2205,15 +2205,17 @@ Other minor changes
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
 
-  take-suc : (o : Fin (length xs)) → let m = toℕ o in take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
-  take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
-  drop-take-suc : (o : Fin (length xs)) → let m = toℕ o in drop m (take (suc m) xs) ≡ [ lookup xs o ]
-  drop-take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in drop m (take (suc m) (tabulate f)) ≡ [ f o ]
+  take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
+  take-suc-tabulate : (f : Fin n → A) (i : Fin n) → let m = toℕ i in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
+  drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in drop m (take (suc m) xs) ≡ [ lookup xs i ]
+  drop-take-suc-tabulate : (f : Fin n → A) (i : Fin n) → let m = toℕ i in drop m (take (suc m) (tabulate f)) ≡ [ f i ]
+
+  drop-drop : drop n (drop m x) ≡ drop (n + m) x
 
   take-all : n ≥ length xs → take n xs ≡ xs
 
-  take-[] : ∀ m → take  m [] ≡ []
-  drop-[] : ∀ m → drop  m [] ≡ []
+  take-[] : take  m [] ≡ []
+  drop-[] : drop  m [] ≡ []
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
