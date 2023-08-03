@@ -12,6 +12,7 @@ open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
+import Data.List.Properties as Listₚ
 open import Data.Nat.Base
 open import Data.Nat.Properties
   using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans; suc-injective; +-comm; +-suc)
@@ -401,11 +402,6 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 
 ------------------------------------------------------------------------
 -- cast
-
-toList-cast : ∀ .(eq : m ≡ n) (xs : Vec A m) → toList (cast eq xs) ≡ toList xs
-toList-cast {n = zero}  eq []       = refl
-toList-cast {n = suc _} eq (x ∷ xs) =
-  cong (x List.∷_) (toList-cast (cong pred eq) xs)
 
 cast-is-id : .(eq : m ≡ m) (xs : Vec A m) → cast eq xs ≡ xs
 cast-is-id eq []       = refl
@@ -1196,6 +1192,31 @@ toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
 toList∘fromList List.[]       = refl
 toList∘fromList (x List.∷ xs) = cong (x List.∷_) (toList∘fromList xs)
 
+toList-cast : ∀ .(eq : m ≡ n) (xs : Vec A m) → toList (cast eq xs) ≡ toList xs
+toList-cast {n = zero}  eq []       = refl
+toList-cast {n = suc _} eq (x ∷ xs) =
+  cong (x List.∷_) (toList-cast (cong pred eq) xs)
+
+cast-fromList : ∀ {xs ys : List A} (eq : xs ≡ ys) →
+                cast (cong List.length eq) (fromList xs) ≡ fromList ys
+cast-fromList {xs = List.[]}     {ys = List.[]}     eq = refl
+cast-fromList {xs = x List.∷ xs} {ys = y List.∷ ys} eq = begin
+  x ∷ cast (cong (pred ∘ List.length) eq) (fromList xs) ≡⟨ cong (_ ∷_) (cast-fromList xs-equals-ys) ⟩
+  x ∷ fromList ys                                       ≡⟨ cong (_∷ _) x-equals-y ⟩
+  y ∷ fromList ys                                       ∎
+  where
+  x-equals-y = proj₁ (Listₚ.∷-injective eq)
+  xs-equals-ys = proj₂ (Listₚ.∷-injective eq)
+
+fromList-map : ∀ (f : A → B) (xs : List A) →
+               cast (Listₚ.length-map f xs) (fromList (List.map f xs)) ≡ map f (fromList xs)
+fromList-map f List.[]       = refl
+fromList-map f (x List.∷ xs) = cong (f x ∷_) (fromList-map f xs)
+
+fromList-++ : ∀ (xs : List A) {ys : List A} →
+              cast (Listₚ.length-++ xs) (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+fromList-++ List.[]       {ys} = cast-is-id refl (fromList ys)
+fromList-++ (x List.∷ xs) {ys} = cong (x ∷_) (fromList-++ xs)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
