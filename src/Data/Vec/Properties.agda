@@ -14,7 +14,7 @@ open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties
-  using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans; suc-injective)
+  using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans; suc-injective; +-comm; +-suc)
 open import Data.Product.Base as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -503,6 +503,11 @@ toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
 ++-injective ws xs eq =
   (++-injectiveˡ ws xs eq , ++-injectiveʳ ws xs eq)
 
+++-assoc : ∀ .(eq : (n + m) + o ≡ n + (m + o)) (xs : Vec A n) (ys : Vec A m) (zs : Vec A o) →
+           cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
+++-assoc eq []       ys zs = cast-is-id eq (ys ++ zs)
+++-assoc eq (x ∷ xs) ys zs = cong (x ∷_) (++-assoc (cong pred eq) xs ys zs)
+
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
               lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
@@ -980,6 +985,38 @@ map-reverse f (x ∷ xs) = begin
   reverse (map f xs) ∷ʳ f x ≡˘⟨ reverse-∷ (f x) (map f xs) ⟩
   reverse (f x ∷ map f xs)  ≡⟨⟩
   reverse (map f (x ∷ xs))  ∎
+
+-- append and reverse
+
+reverse-++ : ∀ .(eq : n + m ≡ m + n) (xs : Vec A n) (ys : Vec A m) →
+             cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs
+reverse-++ {n = zero}  {m = m} eq []       ys = ++-identityʳ (+-comm zero m) (reverse ys)
+  where
+  ++-identityʳ : ∀ .(eq : n ≡ n + zero) (xs : Vec A n) → cast eq xs ≡ xs ++ []
+  ++-identityʳ eq []       = refl
+  ++-identityʳ eq (x ∷ xs) = cong (x ∷_) (++-identityʳ (cong pred eq) xs)
+reverse-++ {n = suc n} {m = m} eq (x ∷ xs) ys = begin
+  cast eq (reverse (x ∷ xs ++ ys))                ≡⟨ cong (cast eq) (reverse-∷ x (xs ++ ys)) ⟩
+  cast eq (reverse (xs ++ ys) ∷ʳ x)               ≡˘⟨ cast-trans eq₂ eq₁ (reverse (xs ++ ys) ∷ʳ x) ⟩
+  (cast eq₁ ∘ cast eq₂) (reverse (xs ++ ys) ∷ʳ x) ≡⟨ cong (cast eq₁) (cast-∷ʳ _ x (reverse (xs ++ ys))) ⟩
+  cast eq₁ ((cast eq₃ (reverse (xs ++ ys))) ∷ʳ x) ≡⟨ cong (cast eq₁) (cong (_∷ʳ x) (reverse-++ _ xs ys)) ⟩
+  cast eq₁ ((reverse ys ++ reverse xs)      ∷ʳ x) ≡⟨ ++-∷ʳ _ x (reverse ys) (reverse xs) ⟩
+  reverse ys ++ (reverse xs ∷ʳ x)                 ≡˘⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟩
+  reverse ys ++ (reverse (x ∷ xs))                ∎
+  where
+  eq₁ = sym (+-suc m n)
+  eq₂ = cong suc (+-comm n m)
+  eq₃ = cong pred eq₂
+
+cast-reverse : ∀ .(eq : n ≡ m) → cast eq ∘ reverse {A = A} {n = n} ≗ reverse ∘ cast eq
+cast-reverse {m = zero}  eq []       = refl
+cast-reverse {m = suc m} eq (x ∷ xs) = begin
+  cast eq (reverse (x ∷ xs))              ≡⟨ cong (cast eq) (reverse-∷ x xs) ⟩
+  cast eq (reverse xs ∷ʳ x)               ≡⟨ cast-∷ʳ eq x (reverse xs) ⟩
+  (cast (cong pred eq) (reverse xs)) ∷ʳ x ≡⟨ cong (_∷ʳ x) (cast-reverse (cong pred eq) xs) ⟩
+  (reverse (cast (cong pred eq) xs)) ∷ʳ x ≡˘⟨ reverse-∷ x (cast (cong pred eq) xs) ⟩
+  reverse (x ∷ cast (cong pred eq) xs)    ≡⟨⟩
+  reverse (cast eq (x ∷ xs))              ∎
 
 ------------------------------------------------------------------------
 -- _ʳ++_
