@@ -404,7 +404,7 @@ findIndexᵇ : (A → Bool) → (x : List A) → Maybe $ Fin (length x)
 findIndexᵇ p [] = nothing
 findIndexᵇ p (x ∷ xs) = if p x
   then just zero
-  else mapMaybe suc (findIndexᵇ p xs)
+  else Maybe.map suc (findIndexᵇ p xs)
 
 findIndicesᵇ : (A → Bool) → List A → List ℕ
 findIndicesᵇ {A = A} p = h 0 where
