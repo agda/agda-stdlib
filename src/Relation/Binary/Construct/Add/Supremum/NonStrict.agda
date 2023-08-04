@@ -4,7 +4,7 @@
 -- The lifting of a non-strict order to incorporate a new supremum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Supremum
@@ -18,13 +18,16 @@ open import Level using (_⊔_)
 open import Data.Sum.Base as Sum
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as P
 open import Relation.Nullary.Construct.Add.Supremum
 import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 
 ------------------------------------------------------------------------
 -- Definition
+
+infix 4 _≤⁺_ _≤⊤⁺
 
 data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
   [_]  : {k l : A} → k ≤ l → [ k ] ≤⁺ [ l ]

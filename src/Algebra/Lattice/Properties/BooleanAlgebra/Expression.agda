@@ -4,7 +4,7 @@
 -- Boolean algebra expressions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice
 
@@ -18,14 +18,14 @@ open import Effect.Applicative as Applicative
 open import Effect.Monad
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
 import Data.Vec.Effectful as VecCat
 import Function.Identity.Effectful as IdCat
 open import Data.Vec.Properties using (lookup-map)
 open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
   using (Pointwise; ext)
-open import Function
+open import Function.Base using (_∘_; _$_; flip)
 open import Relation.Binary.PropositionalEquality as P using (_≗_)
 import Relation.Binary.Reflection as Reflection
 

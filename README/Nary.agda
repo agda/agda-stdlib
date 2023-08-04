@@ -5,7 +5,7 @@
 -- can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Nary where
 
@@ -16,8 +16,8 @@ open import Data.Fin using (Fin; fromℕ; #_; inject₁)
 open import Data.List
 open import Data.List.Properties
 open import Data.Product using (_×_; _,_)
-open import Data.Sum using (inj₁; inj₂)
-open import Function
+open import Data.Sum.Base using (inj₁; inj₂)
+open import Function.Base using (id; flip; _∘′_)
 open import Relation.Nullary
 open import Relation.Binary using (module Tri); open Tri
 open import Relation.Binary.PropositionalEquality

@@ -4,7 +4,7 @@
 -- An either-or-both data type, basic type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.These.Base where
 

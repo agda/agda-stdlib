@@ -5,7 +5,7 @@
 -- functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Function.NonDependent.Setoid where
 
@@ -48,9 +48,11 @@ f ×-function g = record
   ; cong  = Prod.map (cong f) (cong g)
   } where open Func
 
+infixr 2 _×-equivalence_ _×-injection_ _×-left-inverse_
+
 _×-equivalence_ : Equivalence A B → Equivalence C D →
                   Equivalence (A ×ₛ C) (B ×ₛ D)
-f ×-equivalence g = record
+_×-equivalence_ f g = record
   { to        = Prod.map (to f) (to g)
   ; from      = Prod.map (from f) (from g)
   ; to-cong   = Prod.map (to-cong f) (to-cong g)
@@ -70,7 +72,7 @@ _×-surjection_ : Surjection A B → Surjection C D →
 f ×-surjection g = record
   { to         = Prod.map (to f) (to g)
   ; cong       = Prod.map (cong f) (cong g)
-  ; surjective = λ y → Prod.zip _,_ _,_ (surjective f (proj₁ y)) (surjective g (proj₂ y))
+  ; surjective = λ y → Prod.zip _,_ (λ ff gg x₂ → (ff (proj₁ x₂)) , (gg (proj₂ x₂))) (surjective f (proj₁ y)) (surjective g (proj₂ y))
   } where open Surjection
 
 _×-bijection_ : Bijection A B → Bijection C D →
@@ -79,7 +81,7 @@ f ×-bijection g = record
   { to         = Prod.map (to f) (to g)
   ; cong       = Prod.map (cong f) (cong g)
   ; bijective  = Prod.map (injective f) (injective g) ,
-                 λ y → Prod.zip _,_ _,_ (surjective f (proj₁ y)) (surjective g (proj₂ y))
+                 λ { (y₀ , y₁) → Prod.zip _,_ (λ {ff gg (x₀ , x₁) → ff x₀ , gg x₁}) (surjective f y₀) (surjective g y₁)}
   } where open Bijection
 
 _×-leftInverse_ : LeftInverse A B → LeftInverse C D →
@@ -101,6 +103,8 @@ f ×-rightInverse g = record
   ; from-cong = Prod.map (from-cong f) (from-cong g)
   ; inverseʳ   = λ x → inverseʳ f (proj₁ x) , inverseʳ g (proj₂ x)
   } where open RightInverse
+
+infixr 2 _×-surjection_ _×-inverse_
 
 _×-inverse_ : Inverse A B → Inverse C D →
               Inverse (A ×ₛ C) (B ×ₛ D)

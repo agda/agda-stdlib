@@ -4,11 +4,11 @@
 -- An effectful view of Stream
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Stream.Effectful where
 
-open import Data.Product using (<_,_>)
+open import Data.Product.Base using (<_,_>)
 open import Codata.Sized.Stream
 open import Effect.Functor
 open import Effect.Applicative

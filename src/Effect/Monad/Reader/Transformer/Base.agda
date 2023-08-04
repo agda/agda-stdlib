@@ -4,7 +4,7 @@
 -- Basic type and definition of the reader monad transformer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Reader.Transformer.Base {r} (R : Set r) where
 

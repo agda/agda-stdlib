@@ -4,13 +4,13 @@
 -- W-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.W where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Function.Base using (_$_; _∘_; const)
-open import Data.Product using (_,_; -,_; proj₂)
+open import Data.Product.Base using (_,_; -,_; proj₂)
 open import Data.Container.Core using (Container; ⟦_⟧; Shape; Position; _⇒_; ⟪_⟫)
 open import Data.Container.Relation.Unary.All using (□; all)
 open import Relation.Nullary.Negation using (¬_)

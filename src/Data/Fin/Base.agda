@@ -7,23 +7,22 @@
 -- Note that elements of Fin n can be seen as natural numbers in the
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Base where
 
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
-open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable.Core using (True; toWitness)
+open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no; True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
-open import Relation.Binary.Indexed.Heterogeneous using (IRel)
+open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
 
 private
   variable

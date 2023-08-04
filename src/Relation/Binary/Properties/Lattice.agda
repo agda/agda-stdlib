@@ -5,7 +5,7 @@
 -- `Relation.Binary.Lattice.Properties.Lattice` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -18,4 +18,3 @@ open import Relation.Binary.Lattice.Properties.Lattice L public
 "Relation.Binary.Properties.Lattice was deprecated in v2.0.
 Use Relation.Binary.Lattice.Properties.Lattice instead."
 #-}
-

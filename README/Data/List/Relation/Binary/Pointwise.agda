@@ -7,7 +7,7 @@
 module README.Data.List.Relation.Binary.Pointwise where
 
 open import Data.Nat using (ℕ; _<_; s≤s; z≤n)
-open import Data.List using (List; []; _∷_; length)
+open import Data.List.Base using (List; []; _∷_; length)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; setoid)
 open import Relation.Nullary.Negation using (¬_)

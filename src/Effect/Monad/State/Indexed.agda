@@ -4,7 +4,7 @@
 -- The indexed state monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.State.Indexed where
 

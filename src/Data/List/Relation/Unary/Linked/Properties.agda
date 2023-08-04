@@ -4,7 +4,7 @@
 -- Properties related to Linked
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Linked.Properties where
 
@@ -23,7 +23,7 @@ open import Data.Maybe.Relation.Binary.Connected
 open import Level using (Level)
 open import Function.Base using (_∘_; flip; _on_)
 open import Relation.Binary using (Rel; Transitive; DecSetoid)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable using (yes; no; does)
 

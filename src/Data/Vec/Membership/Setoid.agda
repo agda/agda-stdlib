@@ -4,13 +4,13 @@
 -- Membership of vectors, along with some additional definitions.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Setoid; _Respects_)
 
 module Data.Vec.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
-open import Function
+open import Function.Base using (_∘_; flip)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Any as Any
   using (Any; here; there; index)
@@ -38,6 +38,8 @@ mapWith∈ : ∀ {b} {B : Set b} {n}
            (xs : Vec A n) → (∀ {x} → x ∈ xs → B) → Vec B n
 mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
+
+infixr 5 _∷=_
 
 _∷=_ : ∀ {n} {xs : Vec A n} {x} → x ∈ xs → A → Vec A n
 _∷=_ {xs = xs} x∈xs v = xs Vec.[ index x∈xs ]≔ v

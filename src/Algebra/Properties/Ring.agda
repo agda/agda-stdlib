@@ -4,7 +4,7 @@
 -- Some basic properties of Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Ring)
 
@@ -16,7 +16,6 @@ import Algebra.Properties.AbelianGroup as AbelianGroupProperties
 open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Algebra.Definitions _≈_
-open import Data.Product
 
 ------------------------------------------------------------------------
 -- Export properties of abelian groups

@@ -4,18 +4,18 @@
 -- Properties of list appending
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Ternary.Appending.Setoid.Properties {c l} (S : Setoid c l) where
 
 open import Data.List.Base as List using (List; [])
 import Data.List.Properties as Listₚ
-open import Data.List.Relation.Binary.Pointwise using (Pointwise; [])
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; [])
 import Data.List.Relation.Ternary.Appending.Properties as Appendingₚ
 open import Data.Product using (_,_)
-open import Relation.Binary.PropositionalEquality using (refl)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 open import Data.List.Relation.Ternary.Appending.Setoid S
 module S = Setoid S; open S renaming (Carrier to A) using (_≈_)

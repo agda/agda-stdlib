@@ -4,7 +4,7 @@
 -- Bisimilarity for Streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Stream.Bisimilarity where
 
@@ -13,9 +13,10 @@ open import Codata.Sized.Thunk
 open import Codata.Sized.Stream
 open import Level
 open import Data.List.NonEmpty as List⁺ using (_∷_)
-open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as Eq
 
 private
   variable
@@ -29,6 +30,8 @@ data Bisim {A : Set a} {B : Set b} (R : REL A B r) i :
            REL (Stream A ∞) (Stream B ∞) (a ⊔ b ⊔ r) where
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R) i xs ys →
         Bisim R i (x ∷ xs) (y ∷ ys)
+
+infixr 5 _∷_
 
 module _ {R : Rel A r} where
 

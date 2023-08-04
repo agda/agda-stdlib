@@ -4,7 +4,7 @@
 -- Intersection of two binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Intersection where
 
@@ -23,6 +23,8 @@ private
 
 ------------------------------------------------------------------------
 -- Definition
+
+infixl 6 _∩_
 
 _∩_ : REL A B ℓ₁ → REL A B ℓ₂ → REL A B (ℓ₁ ⊔ ℓ₂)
 L ∩ R = λ i j → L i j × R i j

@@ -4,14 +4,14 @@
 -- Properties of Heyting Commutative Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Apartness.Bundles using (HeytingCommutativeRing)
 
 module Algebra.Apartness.Properties.HeytingCommutativeRing
   {c ℓ₁ ℓ₂} (HCR : HeytingCommutativeRing c ℓ₁ ℓ₂) where
 
-open import Data.Product using (_,_; proj₂)
+open import Data.Product.Base using (_,_; proj₂)
 open import Algebra using (CommutativeRing; RightIdentity)
 
 open HeytingCommutativeRing HCR

@@ -4,7 +4,7 @@
 -- Coinductive pointwise lifting of relations to streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Guarded.Stream.Relation.Binary.Pointwise where
 
@@ -13,7 +13,8 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘_; _on_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable
@@ -24,6 +25,8 @@ private
 
 ------------------------------------------------------------------------
 -- Bisimilarity
+
+infixr 5 _∷_
 
 record Pointwise (_∼_ : REL A B ℓ) (as : Stream A) (bs : Stream B) : Set ℓ where
   coinductive
@@ -191,4 +194,6 @@ module pw-Reasoning (S : Setoid a ℓ) where
 module ≈-Reasoning {a} {A : Set a} where
 
   open pw-Reasoning (P.setoid A) public
+
+  infix 4 _≈∞_
   _≈∞_ = `Pointwise∞

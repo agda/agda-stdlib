@@ -4,7 +4,7 @@
 -- Reflection utilities for List
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Reflection where
 
@@ -24,6 +24,8 @@ open import Reflection.AST.Argument
 `[] : Term
 `[] = con (quote List.[]) (2 ⋯⟅∷⟆ [])
 
+infixr 5 _`∷_
+
 _`∷_ : Term → Term → Term
 x `∷ xs = con (quote List._∷_) (2 ⋯⟅∷⟆ x ⟨∷⟩ xs ⟨∷⟩ [])
 
@@ -33,4 +35,3 @@ x `∷ xs = con (quote List._∷_) (2 ⋯⟅∷⟆ x ⟨∷⟩ xs ⟨∷⟩ [])
 -- Can't be used on the RHS as the omitted args aren't inferable
 pattern `[]`       = con (quote List.[])  _
 pattern _`∷`_ x xs = con (quote List._∷_) (_ ∷ _ ∷ x ⟨∷⟩ xs ⟨∷⟩ _)
-

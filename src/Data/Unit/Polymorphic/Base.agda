@@ -4,7 +4,7 @@
 -- A universe polymorphic unit type, as a Lift of the Level 0 one.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Unit.Polymorphic.Base where
 

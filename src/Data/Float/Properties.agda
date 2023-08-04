@@ -4,14 +4,18 @@
 -- Properties of operations on floats
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Float.Properties where
 
 open import Data.Bool.Base as Bool using (Bool)
 open import Data.Float.Base
+import Data.Maybe.Base as M
+import Data.Maybe.Properties as Mₚ
+import Data.Nat.Properties as Nₚ
 import Data.Word.Base as Word
 import Data.Word.Properties as Wₚ
+open import Function.Base using (_∘_)
 open import Relation.Nullary.Decidable as RN using (map′)
 open import Relation.Binary
 import Relation.Binary.Construct.On as On
@@ -28,10 +32,10 @@ open import Agda.Builtin.Float.Properties
 -- Properties of _≈_
 
 ≈⇒≡ : _≈_ ⇒ _≡_
-≈⇒≡ eq = toWord-injective _ _  (Wₚ.≈⇒≡ eq)
+≈⇒≡ eq = toWord-injective _ _ (Mₚ.map-injective Wₚ.≈⇒≡ eq)
 
 ≈-reflexive : _≡_ ⇒ _≈_
-≈-reflexive eq = Wₚ.≈-reflexive (cong toWord eq)
+≈-reflexive eq = cong (M.map Word.toℕ ∘ toWord) eq
 
 ≈-refl : Reflexive _≈_
 ≈-refl = refl
@@ -47,7 +51,7 @@ open import Agda.Builtin.Float.Properties
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-_≈?_ = On.decidable toWord Word._≈_ Wₚ._≈?_
+_≈?_ = On.decidable (M.map Word.toℕ ∘ toWord) _≡_ (Mₚ.≡-dec Nₚ._≟_)
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record

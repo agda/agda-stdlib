@@ -8,7 +8,7 @@
 -- `Any-cong` in `Data.Any.Properties` which relies on `Any↔` in this
 -- file.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Membership.Propositional.Properties.Core where
 
@@ -20,7 +20,7 @@ open import Data.List.Membership.Propositional
 open import Data.Product as Prod
   using (_,_; proj₁; proj₂; uncurry′; ∃; _×_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 open import Relation.Unary using (Pred; _⊆_)
 

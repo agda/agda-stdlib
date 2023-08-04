@@ -4,14 +4,14 @@
 -- Properties of constructions over unary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Unary.Properties where
 
-open import Data.Product as Product using (_×_; _,_; swap; proj₁; zip′)
+open import Data.Product.Base as Product using (_×_; _,_; swap; proj₁; zip′)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
-open import Level
+open import Level using (Level)
 open import Relation.Binary.Core as Binary
 open import Relation.Binary.Definitions hiding (Decidable; Universal; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
@@ -25,7 +25,7 @@ private
     A : Set a
     B : Set b
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The empty set
 
 ∅? : Decidable {A = A} ∅
@@ -37,7 +37,7 @@ private
 ∁∅-Universal : Universal {A = A} (∁ ∅)
 ∁∅-Universal = λ x x∈∅ → x∈∅
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The universe
 
 U? : Decidable {A = A} U
@@ -49,7 +49,7 @@ U-Universal = λ _ → _
 ∁U-Empty : Empty {A = A} (∁ U)
 ∁U-Empty = λ x x∈∁U → x∈∁U _
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Subset properties
 
 ∅-⊆ : (P : Pred A ℓ) → ∅ ⊆ P
@@ -169,7 +169,7 @@ U-Universal = λ _ → _
 ⊂′⇒⊂ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _⊂_
 ⊂′⇒⊂ = Product.map ⊆′⇒⊆ (_∘ ⊆⇒⊆′)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Equality properties
 
 ≐-refl : Reflexive {A = Pred A ℓ} _≐_
@@ -196,7 +196,7 @@ U-Universal = λ _ → _
 ≐′⇒≐ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _≐_
 ≐′⇒≐ = Product.map ⊆′⇒⊆ ⊆′⇒⊆
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Decidability properties
 
 ∁? : {P : Pred A ℓ} → Decidable P → Decidable (∁ P)
@@ -226,7 +226,7 @@ _⊎?_ P? Q? (inj₂ b) = Q? b
 _~? : {P : Pred (A × B) ℓ} → Decidable P → Decidable (P ~)
 _~? P? = P? ∘ swap
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Irrelevant properties
 
 U-irrelevant : Irrelevant {A = A} U

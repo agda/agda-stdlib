@@ -8,7 +8,7 @@
 -- `Data.Nat.Divisibility` to avoid a dependency cycle with
 -- `Data.Nat.DivMod`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Divisibility.Core where
 
@@ -40,6 +40,9 @@ open _∣_ using (quotient) public
 _∤_ : Rel ℕ 0ℓ
 m ∤ n = ¬ (m ∣ n)
 
+-- smart constructor
+
+pattern divides-refl q = divides q refl
 
 ------------------------------------------------------------------------
 -- Basic properties

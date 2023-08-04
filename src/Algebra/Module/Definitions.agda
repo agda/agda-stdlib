@@ -5,7 +5,7 @@
 -- (LeftDefs), right-scaling (RightDefs), and both (BiDefs).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 

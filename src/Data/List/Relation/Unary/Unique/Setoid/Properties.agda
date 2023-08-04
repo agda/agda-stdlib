@@ -4,7 +4,7 @@
 -- Properties of unique lists (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
@@ -24,7 +24,7 @@ open import Data.Nat.Base using (_<_)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
 open import Relation.Binary using (Rel; Setoid)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contraposition)

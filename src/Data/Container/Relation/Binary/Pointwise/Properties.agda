@@ -4,7 +4,7 @@
 -- Properties of pointwise equality for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Relation.Binary.Pointwise.Properties where
 
@@ -14,7 +14,7 @@ open import Data.Container.Relation.Binary.Pointwise
 open import Data.Product using (_,_; Σ-syntax; -,_)
 open import Level using (_⊔_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; subst; cong)
 
 module _ {s p x r} {X : Set x} (C : Container s p) (R : Rel X r) where

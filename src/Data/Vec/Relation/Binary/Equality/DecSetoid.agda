@@ -4,7 +4,7 @@
 -- Decidable semi-heterogeneous vector equality over setoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
@@ -15,7 +15,7 @@ open import Data.Nat.Base using (ℕ)
 import Data.Vec.Relation.Binary.Equality.Setoid as Equality
 import Data.Vec.Relation.Binary.Pointwise.Inductive as PW
 open import Level using (_⊔_)
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 
 open DecSetoid DS
 

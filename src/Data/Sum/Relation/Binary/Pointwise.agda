@@ -4,7 +4,7 @@
 -- Pointwise sum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Sum.Relation.Binary.Pointwise where
 
@@ -17,16 +17,17 @@ open import Function.Bundles using (Inverse; mk↔)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable
-    a b c d ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
-    A B C D : Set a
-    R S T U : REL A B ℓ₁
-    ≈₁ ≈₂ : Rel A ℓ₁
-
-----------------------------------------------------------------------
+    a b c d ℓ₁ ℓ₂ ℓ₃ ℓ : Level
+    A B C D : Set ℓ
+    R S T U : REL A B ℓ
+    ≈₁ ≈₂ : Rel A ℓ
+     
+------------------------------------------------------------------------
 -- Definition
 
 data Pointwise {A : Set a} {B : Set b} {C : Set c} {D : Set d}
@@ -44,7 +45,7 @@ map : ∀ {f : A → C} {g : B → D} →
 map R⇒T _ (inj₁ x) = inj₁ (R⇒T x)
 map _ S⇒U (inj₂ x) = inj₂ (S⇒U x)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties
 
 drop-inj₁ : ∀ {x y} → Pointwise R S (inj₁ x) (inj₁ y) → R x y
@@ -112,7 +113,7 @@ drop-inj₂ (inj₂ x) = x
               (Pointwise R S) Respects₂ (Pointwise ≈₁ ≈₂)
 ⊎-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-respectsʳ r₁ r₂ , ⊎-respectsˡ l₁ l₂
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 ⊎-isEquivalence : IsEquivalence ≈₁ → IsEquivalence ≈₂ →
@@ -213,6 +214,5 @@ Pointwise-≡↔≡ _ _ = record
   ; from      = id
   ; to-cong   = Pointwise-≡⇒≡
   ; from-cong = ≡⇒Pointwise-≡
-  ; inverse   = (\x → P.refl) ,
-                (\x → ⊎-refl P.refl P.refl)
+  ; inverse   = Pointwise-≡⇒≡ , ≡⇒Pointwise-≡
   }

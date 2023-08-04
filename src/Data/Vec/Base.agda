@@ -4,7 +4,7 @@
 -- Vectors, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Base where
 
@@ -12,12 +12,12 @@ open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
-open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; ∃₂; _×_; _,_)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-open import Relation.Nullary.Decidable using (does)
+open import Relation.Nullary.Decidable.Core using (does)
 open import Relation.Unary using (Pred; Decidable)
 
 private

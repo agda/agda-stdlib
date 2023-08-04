@@ -4,7 +4,7 @@
 -- Pointwise products of binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
@@ -17,7 +17,8 @@ open import Function
 open import Function.Related
 open import Relation.Nullary.Decidable using (_×-dec_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable
@@ -199,5 +200,5 @@ Pointwise-≡↔≡ = record
   ; from       = id
   ; to-cong    = ≡×≡⇒≡
   ; from-cong  = ≡⇒≡×≡
-  ; inverse    = (λ _ → P.refl) , (λ _ → P.refl , P.refl)
+  ; inverse    = ≡×≡⇒≡ , ≡⇒≡×≡
   }

@@ -4,7 +4,7 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Unary.All.Properties where
 
@@ -13,7 +13,7 @@ open import Data.Maybe.Relation.Unary.All as All
   using (All; nothing; just)
 open import Data.Maybe.Relation.Binary.Connected
 open import Data.Product using (_×_; _,_)
-open import Function
+open import Function.Base using (_∘_)
 open import Level
 open import Relation.Unary
 open import Relation.Binary.Core

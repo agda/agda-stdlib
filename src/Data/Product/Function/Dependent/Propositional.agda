@@ -5,7 +5,7 @@
 -- preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Function.Dependent.Propositional where
 
@@ -48,7 +48,7 @@ module _ where
          Σ I A ⇔ Σ J B
   Σ-↠ {B = B} I↠J A⇔B = mk⇔
     (map (to  I↠J) (Equivalence.to A⇔B))
-    (map (to⁻ I↠J) (Equivalence.from A⇔B ∘ P.subst B (P.sym $ proj₂ (surjective I↠J _))))
+    (map (to⁻ I↠J) (Equivalence.from A⇔B ∘ P.subst B (P.sym (proj₂ (surjective I↠J _) P.refl))))
 
   -- See also Data.Product.Relation.Binary.Pointwise.Dependent.WithK.↣.
 {-
@@ -182,37 +182,26 @@ module _ where
   open LeftInverse
   
   Σ-↩ : (I↩J : I ↩ J) →
-      (∀ {j} → A (LeftInverse.from I↩J j) ↩ B j) →
+      -- (∀ {j} → A (LeftInverse.from I↩J j) ↩ B j) →
+      (∀ {i} → A i ↩ B (to I↩J i)) →
       Σ I A ↩ Σ J B
-  Σ-↩ {A = A} I↩J A↩B = mk↩ {to = to′} {from = from′} inverseˡ′
+  Σ-↩ {I = I} {J = J} {A = A} {B = B} I↩J A↩B = mk↩ {to = to′ } {from = from′} inv
     where
     open P.≡-Reasoning
 
-    to′   = map (to I↩J)
-      (λ {x} y → to A↩B ?) --(P.subst A (P.sym (inverseˡ I↩J x)) y))
-    
-    from′ = map (from I↩J) (from A↩B)
+    to′ : Σ I A → Σ J B
+    to′   = map (to I↩J) (to A↩B)
+    from′ : Σ J B → Σ I A
+    from′ = map (from I↩J) λ bx → from A↩B (P.subst B (P.sym (strictlyInverseˡ I↩J _)) bx)
 
-{-
-  
--}
-    inverseˡ′ : ∀ p → from′ (to′ p) ≡ p
-    inverseˡ′ (x , y) = ?
-{-
-Σ-≡,≡→≡
-      ( LeftInverse.inverseˡ I↩J x
-      , (P.subst A (LeftInverse.inverseˡ I↩J x)
-           (LeftInverse.from A↩B (LeftInverse.to A↩B
-              (P.subst A (P.sym (LeftInverse.inverseˡ I↩J x))
-                 y)))                                                    ≡⟨ P.cong (P.subst A _) (LeftInverse.inverseˡ A↩B _) ⟩
-
-         P.subst A (LeftInverse.inverseˡ I↩J x)
-           (P.subst A (P.sym (LeftInverse.inverseˡ I↩J x))
-              y)                                                         ≡⟨ P.subst-subst-sym (LeftInverse.inverseˡ I↩J x) ⟩
-
-         y                                                               ∎)
-      )
--}
+    inv : {x : Σ J B} {y : Σ I A} → y ≡ from′ x → to′ y ≡ x
+    inv {j , b} {.(from′ (j , b))} P.refl = Σ-≡,≡→≡ (strictlyInverseˡ I↩J j  , (
+      begin
+        P.subst B (inverseˡ I↩J P.refl)
+          (to A↩B (from A↩B (P.subst B (P.sym (inverseˡ I↩J P.refl)) b))) ≡⟨ P.cong (P.subst B _) (inverseˡ A↩B P.refl) ⟩
+        P.subst B (inverseˡ I↩J P.refl)
+          (P.subst B (P.sym (inverseˡ I↩J P.refl)) b)                        ≡⟨ P.subst-subst-sym (inverseˡ I↩J _) ⟩
+        b ∎))
 {-
   ↠ : (I↠J : I ↠ J) →
       (∀ {x} → A x ↠ B (Surjection.to I↠J ⟨$⟩ x)) →

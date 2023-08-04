@@ -4,7 +4,7 @@
 -- Sum combinators for setoid equality preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Sum.Function.Setoid where
 
@@ -14,8 +14,7 @@ open import Data.Sum.Relation.Binary.Pointwise as Pointwise
 open import Relation.Binary
 open import Function.Base
 open import Function.Bundles
-open import Function.Definitions hiding (Surjective)
-open import Function.Definitions.Core2
+open import Function.Definitions
 open import Level
 
 private
@@ -56,14 +55,26 @@ swapₛ = [ inj₂ₛ , inj₁ₛ ]ₛ
 ⊎-injective f-inj g-inj {inj₁ x} {inj₁ y} (inj₁ x∼₁y) = inj₁ (f-inj x∼₁y)
 ⊎-injective f-inj g-inj {inj₂ x} {inj₂ y} (inj₂ x∼₂y) = inj₂ (g-inj x∼₂y)
 
-⊎-surjective : ∀ {f : A → B} {g : C → D} →
-              Surjective ≈₁ f →
-              Surjective ≈₂ g →
-              Surjective (Pointwise ≈₁ ≈₂) (Sum.map f g)
-⊎-surjective f-sur g-sur =
+⊎-strictlySurjective : ∀ {f : A → B} {g : C → D} →
+              StrictlySurjective ≈₁ f →
+              StrictlySurjective ≈₂ g →
+              StrictlySurjective (Pointwise ≈₁ ≈₂) (Sum.map f g)
+⊎-strictlySurjective f-sur g-sur =
   [ Prod.map inj₁ inj₁ ∘ f-sur
   , Prod.map inj₂ inj₂ ∘ g-sur
   ]
+
+⊎-surjective : ∀ {f : A → B} {g : C → D} →
+              Surjective ≈₁ ≈₂ f →
+              Surjective ≈₃ ≈₄ g →
+              Surjective (Pointwise ≈₁ ≈₃) (Pointwise ≈₂ ≈₄) (Sum.map f g)
+⊎-surjective f-sur g-sur =
+  [ Prod.map inj₁ (λ { fwd (inj₁ x) → inj₁ (fwd x)}) ∘ f-sur
+  , Prod.map inj₂ (λ { fwd (inj₂ y) → inj₂ (fwd y)}) ∘ g-sur
+  ]
+
+
+infixr 1 _⊎-equivalence_ _⊎-injection_ _⊎-left-inverse_
 
 ------------------------------------------------------------------------
 -- Function bundles
@@ -91,6 +102,7 @@ S↣T ⊎-injection U↣V = record
   ; injective = ⊎-injective (injective S↣T) (injective U↣V)
   } where open Injection
 
+infixr 1 _⊎-surjection_ _⊎-inverse_
 _⊎-surjection_ : Surjection S T → Surjection U V →
                  Surjection (S ⊎ₛ U) (T ⊎ₛ V)
 S↠T ⊎-surjection U↠V = record
@@ -115,7 +127,8 @@ S↩T ⊎-leftInverse U↩V = record
   ; from            = Sum.map (from S↩T) (from U↩V)
   ; to-cong         = Pointwise.map (to-cong S↩T) (to-cong U↩V)
   ; from-cong       = Pointwise.map (from-cong S↩T) (from-cong U↩V)
-  ; inverseˡ        = [ inj₁ ∘ inverseˡ S↩T , inj₂ ∘ inverseˡ U↩V ]
+  ; inverseˡ        = λ { {inj₁ _} {.(inj₁ _)} (inj₁ x) → inj₁ (inverseˡ S↩T x)
+                        ; {inj₂ _} {.(inj₂ _)} (inj₂ x) → inj₂ (inverseˡ U↩V x)}
   } where open LeftInverse
 
 _⊎-rightInverse_ : RightInverse S T → RightInverse U V →
@@ -125,7 +138,9 @@ S↪T ⊎-rightInverse U↪V = record
   ; from            = Sum.map (from S↪T) (from U↪V)
   ; to-cong         = Pointwise.map (to-cong S↪T) (to-cong U↪V)
   ; from-cong       = Pointwise.map (from-cong S↪T) (from-cong U↪V)
-  ; inverseʳ        = [ inj₁ ∘ inverseʳ S↪T , inj₂ ∘ inverseʳ U↪V ]
+  ; inverseʳ        = λ { {inj₁ _} (inj₁ x) → inj₁ (inverseʳ S↪T x)
+                        ; {inj₂ _} (inj₂ x) → inj₂ (inverseʳ U↪V x)
+                        }
   } where open RightInverse
 
 _⊎-inverse_ : Inverse S T → Inverse U V →
@@ -135,8 +150,11 @@ S↔T ⊎-inverse U↔V = record
   ; from      = Sum.map (from S↔T) (from U↔V)
   ; to-cong   = Pointwise.map (to-cong S↔T) (to-cong U↔V)
   ; from-cong = Pointwise.map (from-cong S↔T) (from-cong U↔V)
-  ; inverse   = [ inj₁ ∘ inverseˡ S↔T , inj₂ ∘ inverseˡ U↔V ] ,
-                [ inj₁ ∘ inverseʳ S↔T , inj₂ ∘ inverseʳ U↔V ]
+  ; inverse   = (λ { {inj₁ _} (inj₁ x) → inj₁ (inverseˡ S↔T x)
+                   ; {inj₂ _} (inj₂ x) → inj₂ (inverseˡ U↔V x)}) ,
+                 λ { {inj₁ _} (inj₁ x) → inj₁ (inverseʳ S↔T x)
+                   ; {inj₂ _} (inj₂ x) → inj₂ (inverseʳ U↔V x)
+                   }
   } where open Inverse
 
 

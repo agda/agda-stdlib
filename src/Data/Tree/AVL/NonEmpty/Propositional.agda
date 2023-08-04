@@ -4,10 +4,10 @@
 -- Non-empty AVL trees, where equality for keys is propositional equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel; IsStrictTotalOrder; StrictTotalOrder)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; subst)
 
 module Data.Tree.AVL.NonEmpty.Propositional
   {k r} {Key : Set k} {_<_ : Rel Key r}

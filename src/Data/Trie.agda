@@ -7,7 +7,7 @@
 -- See README.Data.Trie.NonDependent for an example of using a trie to
 -- build a lexer.
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 open import Relation.Binary using (Rel; StrictTotalOrder)
 
@@ -20,7 +20,7 @@ import Data.List.NonEmpty as List⁺
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; maybe′)
 open import Data.Product as Prod using (∃)
 open import Data.These.Base as These using (These)
-open import Function
+open import Function.Base using (_∘′_; const)
 open import Relation.Unary using (IUniversal; _⇒_)
 
 open StrictTotalOrder S

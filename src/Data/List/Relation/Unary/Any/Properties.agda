@@ -4,7 +4,7 @@
 -- Properties related to Any
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Any.Properties where
 
@@ -39,8 +39,8 @@ open import Function.Bundles
 open import Function.Related.Propositional as Related using (Kind; Related)
 open import Level using (Level)
 open import Relation.Binary as B hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; inspect)
+open import Relation.Binary.PropositionalEquality.Core as P
+  using (_≡_; refl)
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ; yes; no)
@@ -86,7 +86,7 @@ Any-cong : ∀ {k : Kind} → (∀ x → Related k (P x) (Q x)) →
            Related k (Any P xs) (Any Q ys)
 Any-cong {P = P} {Q = Q} {xs = xs} {ys} P↔Q xs≈ys =
   Any P xs                ↔⟨ Related.SK-sym Any↔ ⟩
-  (∃ λ x → x ∈ xs × P x)  ∼⟨ {!!} ⟩ --Σ.cong ? ? ⟩ --(xs≈ys ×-cong P↔Q _) ⟩ -- Inv.id
+  (∃ λ x → x ∈ xs × P x)  ∼⟨ {!? ×-cong ?!} ⟩ --Σ.cong ? ? ⟩ --(xs≈ys ×-cong P↔Q _) ⟩ -- Inv.id
   (∃ λ x → x ∈ ys × Q x)  ↔⟨ Any↔ ⟩
   Any Q ys                ∎
   where open Related.EquationalReasoning
@@ -168,9 +168,9 @@ any⁺ p (there {x = x} pxs) with p x
 ... | false = any⁺ p pxs
 
 any⁻ : ∀ (p : A → Bool) xs → T (any p xs) → Any (T ∘ p) xs
-any⁻ p (x ∷ xs) px∷xs with p x | inspect p x
-... | true  | P.[ eq ] = here (Equivalence.from T-≡ eq)
-... | false | _        = there (any⁻ p xs px∷xs)
+any⁻ p (x ∷ xs) px∷xs with p x in eq
+... | true  = here (Equivalence.from T-≡ eq)
+... | false = there (any⁻ p xs px∷xs)
 
 any⇔ : ∀ {p : A → Bool} → Any (T ∘ p) xs ⇔ T (any p xs)
 any⇔ = mk⇔ (any⁺ _) (any⁻ _ _)

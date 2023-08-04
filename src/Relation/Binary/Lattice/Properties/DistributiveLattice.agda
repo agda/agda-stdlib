@@ -4,7 +4,7 @@
 -- Properties for distributive lattice
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -14,7 +14,7 @@ module Relation.Binary.Lattice.Properties.DistributiveLattice
 open DistributiveLattice L hiding (refl)
 
 open import Algebra.Definitions _≈_
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Relation.Binary
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary.Lattice.Properties.Lattice lattice

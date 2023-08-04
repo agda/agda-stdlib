@@ -5,13 +5,14 @@
 -- along with some additional definitions.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Membership.Propositional {a} {A : Set a} where
 
 open import Data.Vec.Base using (Vec)
 open import Data.Vec.Relation.Unary.Any using (Any)
-open import Relation.Binary.PropositionalEquality using (setoid; subst)
+open import Relation.Binary.PropositionalEquality.Core using (subst)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 import Data.Vec.Membership.Setoid as SetoidMembership
 

@@ -4,7 +4,7 @@
 -- Some examples showing how the AVL tree module can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Data.Tree.AVL where
 
@@ -21,8 +21,8 @@ import Data.Tree.AVL
 
 open import Data.Nat.Properties using (<-strictTotalOrder)
 open import Data.Product as Prod using (_,_; _,′_)
-open import Data.String using (String)
-open import Data.Vec using (Vec; _∷_; [])
+open import Data.String.Base using (String)
+open import Data.Vec.Base using (Vec; _∷_; [])
 open import Relation.Binary.PropositionalEquality
 
 open Data.Tree.AVL <-strictTotalOrder renaming (Tree to Tree′)
@@ -60,7 +60,7 @@ t₃ = delete 2 t₂
 
 -- Conversion of a list of key-value mappings to a tree.
 
-open import Data.List using (_∷_; [])
+open import Data.List.Base using (_∷_; [])
 
 t₄ : Tree
 t₄ = fromList ((2 , v₂) ∷ (1 , v₁) ∷ [])

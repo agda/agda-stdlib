@@ -4,7 +4,7 @@
 -- Sum combinators for propositional equality preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Sum.Function.Propositional where
 
@@ -41,8 +41,11 @@ private
 ------------------------------------------------------------------------
 -- Combinators for various function types
 
+infixr 1 _⊎-⟶_ _⊎-⇔_ _⊎-↣_ _⊎-↩_ _⊎-↪_ _⊎-↔_
+
 _⊎-⟶_ : A ⟶ B → C ⟶ D → (A ⊎ C) ⟶ (B ⊎ D)
 _⊎-⟶_ = liftViaInverse Compose.function Inv.toFunction _⊎-function_
+
 
 _⊎-⇔_ : A ⇔ B → C ⇔ D → (A ⊎ C) ⇔ (B ⊎ D)
 _⊎-⇔_ = liftViaInverse Compose.equivalence Inverse⇒Equivalence _⊎-equivalence_
@@ -64,6 +67,8 @@ _⊎-⤖_ = liftViaInverse Compose.bijection Inverse⇒Bijection _⊎-bijection_
 
 _⊎-↔_ : A ↔ B → C ↔ D → (A ⊎ C) ↔ (B ⊎ D)
 _⊎-↔_ = liftViaInverse Compose.inverse id _⊎-inverse_
+
+infixr 1 _⊎-cong_
 
 _⊎-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A ⊎ C) ∼[ k ] (B ⊎ D)
 _⊎-cong_ {k = implication}         = _⊎-⟶_

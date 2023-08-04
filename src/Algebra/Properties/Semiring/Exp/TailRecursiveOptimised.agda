@@ -4,7 +4,7 @@
 -- Exponentiation over a semiring optimised for tail-recursion.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Nat.Base as ℕ using (zero; suc)

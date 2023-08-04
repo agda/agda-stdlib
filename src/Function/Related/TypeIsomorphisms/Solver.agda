@@ -6,14 +6,14 @@
 -- See examples at the bottom of the file for how to use this solver
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Related.TypeIsomorphisms.Solver where
 
 open import Algebra using (CommutativeSemiring)
 import Algebra.Solver.Ring.NaturalCoefficients.Default
 open import Data.Empty.Polymorphic using (⊥)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Data.Unit.Polymorphic using (⊤)
 open import Level using (Level)

@@ -4,7 +4,7 @@
 -- The IO monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 open import Level
 
@@ -32,7 +32,7 @@ record RawMonadIO
     liftIO : IO A → M A
 
 ------------------------------------------------------------------------
--- Reader monad specifics
+-- IO monad specifics
 
 monadIO : RawMonadIO {f} IO
 monadIO = record { liftIO = id }
@@ -50,3 +50,10 @@ liftReaderT : ∀ {R} → RawMonadIO M → RawMonadIO (ReaderT R M)
 liftReaderT MIO = record
   { liftIO = λ io → mkReaderT (λ r → liftIO io)
   } where open RawMonadIO MIO
+
+open import Effect.Monad.Writer.Transformer.Base using (WriterT; mkWriterT)
+
+liftWriterT : ∀ {f 𝕎} → RawFunctor M → RawMonadIO M → RawMonadIO (WriterT {f = f} 𝕎 M)
+liftWriterT M MIO = record
+  { liftIO = λ io → mkWriterT (λ w → (w ,_) <$> liftIO io)
+  } where open RawFunctor M; open RawMonadIO MIO

@@ -4,9 +4,10 @@
 -- Properties of the sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Definitions hiding (Decidable)
+open import Relation.Binary.Structures using (IsPreorder)
 
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
@@ -35,7 +36,8 @@ open import Function.Equivalence using (module Equivalence)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
-open import Relation.Binary using (_⇒_; _Respects_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning

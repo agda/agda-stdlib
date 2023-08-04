@@ -4,12 +4,12 @@
 -- Some properties of operations in CancellativeCommutativeSemiring.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (CancellativeCommutativeSemiring)
 open import Algebra.Definitions using (AlmostRightCancellative)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 

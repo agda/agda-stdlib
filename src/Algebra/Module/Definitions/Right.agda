@@ -4,7 +4,7 @@
 -- Properties of right-scaling
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
@@ -16,7 +16,6 @@ module Algebra.Module.Definitions.Right
   where
 
 open import Data.Product
-open import Data.Sum
 
 ------------------------------------------------------------------------
 -- Binary operations

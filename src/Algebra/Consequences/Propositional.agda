@@ -5,13 +5,15 @@
 -- commutativity (specialised to propositional equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Consequences.Propositional
   {a} {A : Set a} where
 
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Relation.Binary using (Rel; Setoid; Symmetric; Total)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Symmetric; Total)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary using (Pred)
 
@@ -24,7 +26,10 @@ import Algebra.Consequences.Setoid (setoid A) as Base
 
 open Base public
   hiding
-  ( assoc+distribʳ+idʳ+invʳ⇒zeˡ
+  ( comm+assoc⇒middleFour
+  ; identity+middleFour⇒assoc
+  ; identity+middleFour⇒comm
+  ; assoc+distribʳ+idʳ+invʳ⇒zeˡ
   ; assoc+distribˡ+idʳ+invʳ⇒zeʳ
   ; assoc+id+invʳ⇒invˡ-unique
   ; assoc+id+invˡ⇒invʳ-unique
@@ -89,6 +94,25 @@ module _ {_•_ : Op₂ A} where
 
   sel⇒idem : Selective _•_ → Idempotent _•_
   sel⇒idem = Base.sel⇒idem _≡_
+
+------------------------------------------------------------------------
+-- Middle-Four Exchange
+
+module _ {_•_ : Op₂ A} where
+
+  comm+assoc⇒middleFour : Commutative _•_ → Associative _•_ →
+                          _•_ MiddleFourExchange _•_
+  comm+assoc⇒middleFour = Base.comm+assoc⇒middleFour (cong₂ _•_)
+
+  identity+middleFour⇒assoc : {e : A} → Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒assoc = Base.identity+middleFour⇒assoc (cong₂ _•_)
+
+  identity+middleFour⇒comm : {_+_ : Op₂ A} {e : A} → Identity e _+_ →
+                             _•_ MiddleFourExchange _+_ →
+                             Commutative _•_
+  identity+middleFour⇒comm = Base.identity+middleFour⇒comm (cong₂ _•_)
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality

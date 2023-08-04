@@ -4,7 +4,7 @@
 -- Parity
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Parity.Base where
 
@@ -12,7 +12,7 @@ open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring)
 open import Data.Sign.Base using (Sign; +; -)
 open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -25,6 +25,8 @@ data Parity : Set where
 -- Operations
 
 -- The opposite parity.
+
+infix 8 _⁻¹
 
 _⁻¹ : Parity → Parity
 1ℙ ⁻¹ = 0ℙ

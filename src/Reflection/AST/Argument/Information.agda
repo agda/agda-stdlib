@@ -4,14 +4,14 @@
 -- Argument information used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.Argument.Information where
 
-open import Data.Product.Base                     using (_×_; <_,_>; uncurry)
-open import Relation.Nullary.Decidable            using (map′; _×-dec_)
-open import Relation.Binary                       using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
+open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
+open import Relation.Nullary.Decidable                 using (map′; _×-dec_)
+open import Relation.Binary                            using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 
 open import Reflection.AST.Argument.Modality as Modality using (Modality)
 open import Reflection.AST.Argument.Visibility as Visibility using (Visibility)
@@ -47,6 +47,8 @@ arg-info-injective₂ refl = refl
 
 arg-info-injective : arg-info v m ≡ arg-info v′ m′ → v ≡ v′ × m ≡ m′
 arg-info-injective = < arg-info-injective₁ , arg-info-injective₂ >
+
+infix 4 _≟_
 
 _≟_ : DecidableEquality ArgInfo
 arg-info v m ≟ arg-info v′ m′ =

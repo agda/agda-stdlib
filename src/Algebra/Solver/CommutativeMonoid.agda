@@ -6,7 +6,7 @@
 -- Adapted from Algebra.Solver.Monoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 
@@ -17,7 +17,7 @@ open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
-open import Data.Product using (_×_; uncurry)
+open import Data.Product.Base using (_×_; uncurry)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
 open import Function.Base using (_∘_)
@@ -27,7 +27,7 @@ import Relation.Binary.Reflection as Reflection
 import Relation.Nullary.Decidable as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
-open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary.Decidable using (Dec)
 
 open CommutativeMonoid M

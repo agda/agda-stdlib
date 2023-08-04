@@ -4,14 +4,14 @@
 -- An inductive definition of the heterogeneous suffix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Suffix.Heterogeneous where
 
 open import Level
 open import Relation.Binary using (REL; _⇒_)
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.List.Relation.Binary.Pointwise as Pointwise
+open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
   using (Pointwise; []; _∷_)
 
 module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
@@ -30,6 +30,8 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   tail : ∀ {a as bs} → Suffix R (a ∷ as) bs → Suffix R as bs
   tail (here (_ ∷ rs)) = there (here rs)
   tail (there x) = there (tail x)
+
+  infixr 5 _++ˢ_
 
   _++ˢ_ : ∀ pre {as bs} → Suffix R as bs → Suffix R as (pre List.++ bs)
   []       ++ˢ rs = rs

@@ -4,14 +4,14 @@
 -- Definitions of 'raw' bundles
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Lattice.Bundles.Raw where
 
 open import Algebra.Core
 open import Algebra.Bundles.Raw using (RawMagma)
 open import Level using (suc; _⊔_)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 
 record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_

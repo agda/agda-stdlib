@@ -4,12 +4,12 @@
 -- Properties of fresh lists and functions acting on them
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Fresh.Properties where
 
 open import Level using (Level; _⊔_; Lift)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary as B using (Rel)

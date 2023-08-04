@@ -4,7 +4,7 @@
 -- Membership for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Membership where
 

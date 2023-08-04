@@ -8,7 +8,7 @@
 -- The contents of this module should be accessed via
 -- `Algebra.Ordered`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core using (Rel; _⇒_)
 
@@ -21,8 +21,8 @@ module Algebra.Ordered.Structures
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
-open import Data.Product using (proj₁; proj₂)
-open import Function using (flip)
+open import Data.Product.Base using (proj₁; proj₂)
+open import Function.Base using (flip)
 open import Level using (_⊔_)
 open import Relation.Binary.Definitions using (Transitive; Monotonic₁; Monotonic₂)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
@@ -389,4 +389,3 @@ record IsPoKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a �
 
   open IsProKleeneAlgebra isProKleeneAlgebra public
     using (isKleeneAlgebra; starExpansive; starDestructive)
-

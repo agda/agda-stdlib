@@ -6,42 +6,59 @@
 
 -- The contents of this file should usually be accessed from `Function`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+module Function.Definitions where
 
-module Function.Definitions
-  {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
+open import Data.Product.Base using (∃; _×_)
+open import Level using (Level)
+open import Relation.Binary.Core using (Rel)
+
+private
+  variable
+    a ℓ₁ ℓ₂ : Level
+    A B : Set a
+
+------------------------------------------------------------------------
+-- Basic definitions
+
+module _
   (_≈₁_ : Rel A ℓ₁) -- Equality over the domain
   (_≈₂_ : Rel B ℓ₂) -- Equality over the codomain
   where
 
-open import Data.Product using (∃; _×_)
-import Function.Definitions.Core1 as Core₁
-import Function.Definitions.Core2 as Core₂
-open import Function.Base
-open import Level using (_⊔_)
+  Congruent : (A → B) → Set _
+  Congruent f = ∀ {x y} → x ≈₁ y → f x ≈₂ f y
+
+  Injective : (A → B) → Set _
+  Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y
+
+  Surjective : (A → B) → Set _
+  Surjective f = ∀ y → ∃ λ x → ∀ {z} → z ≈₁ x → f z ≈₂ y
+
+  Bijective : (A → B) → Set _
+  Bijective f = Injective f × Surjective f
+
+  Inverseˡ : (A → B) → (B → A) → Set _
+  Inverseˡ f g = ∀ {x y} → y ≈₁ g x → f y ≈₂ x
+
+  Inverseʳ : (A → B) → (B → A) → Set _
+  Inverseʳ f g = ∀ {x y} → y ≈₂ f x → g y ≈₁ x
+
+  Inverseᵇ : (A → B) → (B → A) → Set _
+  Inverseᵇ f g = Inverseˡ f g × Inverseʳ f g
 
 ------------------------------------------------------------------------
--- Definitions
+-- Strict definitions
 
-Congruent : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
-Congruent f = ∀ {x y} → x ≈₁ y →  f x ≈₂ f y
+-- These are often easier to use once but much harder to compose and
+-- reason about.
 
-Injective : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
-Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y
+StrictlySurjective : Rel B ℓ₂ → (A → B) → Set _
+StrictlySurjective _≈₂_ f = ∀ y → ∃ λ x → f x ≈₂ y
 
-open Core₂ {A = A} _≈₂_ public
-  using (Surjective)
+StrictlyInverseˡ : Rel B ℓ₂ → (A → B) → (B → A) → Set _
+StrictlyInverseˡ _≈₂_ f g = ∀ y → f (g y) ≈₂ y
 
-Bijective : (A → B) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
-Bijective f = Injective f × Surjective f
-
-open Core₂ {A = A} _≈₂_ public
-  using (Inverseˡ)
-
-open Core₁ {B = B} _≈₁_ public
-  using (Inverseʳ)
-
-Inverseᵇ : (A → B) → (B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
-Inverseᵇ f g = Inverseˡ f g × Inverseʳ f g
+StrictlyInverseʳ : Rel A ℓ₁ → (A → B) → (B → A) → Set _
+StrictlyInverseʳ _≈₁_ f g = ∀ x → g (f x) ≈₁ x

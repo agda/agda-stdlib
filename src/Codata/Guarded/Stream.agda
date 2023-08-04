@@ -4,7 +4,7 @@
 -- Infinite streams defined as coinductive records
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --cubical-compatible --safe --guardedness #-}
 
 module Codata.Guarded.Stream where
 
@@ -27,6 +27,8 @@ private
 
 ------------------------------------------------------------------------
 -- Type
+
+infixr 5 _∷_
 
 record Stream (A : Set a) : Set a where
   coinductive
@@ -68,6 +70,8 @@ nats = tabulate id
 lookup : Stream A → ℕ → A
 lookup xs zero    = head xs
 lookup xs (suc n) = lookup (tail xs) n
+
+infix 4 _[_]
 
 _[_] : Stream A → ℕ → A
 _[_] = lookup

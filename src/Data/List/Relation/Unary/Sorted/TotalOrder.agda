@@ -4,7 +4,7 @@
 -- Sorted lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (TotalOrder)
 
@@ -19,7 +19,7 @@ open import Level using (_⊔_)
 open import Relation.Unary as U using (Pred; _⊆_)
 open import Relation.Binary as B
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 Sorted : Pred (List A) (a ⊔ ℓ₂)
@@ -47,4 +47,3 @@ irrelevant = Linked.irrelevant
 
 satisfiable : U.Satisfiable Sorted
 satisfiable = Linked.satisfiable
-

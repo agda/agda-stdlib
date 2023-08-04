@@ -4,7 +4,7 @@
 -- Sorted lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Sorted.TotalOrder.Properties where
 
@@ -14,15 +14,20 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_; _∷′_; head′; tail)
 import Data.List.Relation.Unary.Linked.Properties as Linked
+import Data.List.Relation.Binary.Sublist.Setoid as Sublist
+import Data.List.Relation.Binary.Sublist.Setoid.Properties as SublistProperties
 open import Data.List.Relation.Unary.Sorted.TotalOrder hiding (head)
+
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Maybe.Relation.Binary.Connected using (Connected; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _<_)
+
 open import Level using (Level)
 open import Relation.Binary hiding (Decidable)
 import Relation.Binary.Properties.TotalOrder as TotalOrderProperties
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable using (yes; no)
+
 private
   variable
     a b p ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
@@ -101,7 +106,7 @@ module _ (O : TotalOrder a ℓ₁ ℓ₂) where
 -- merge
 
 module _ (DO : DecTotalOrder a ℓ₁ ℓ₂) where
-  open DecTotalOrder DO renaming (totalOrder to O)
+  open DecTotalOrder DO using (_≤_; _≤?_) renaming (totalOrder to O)
   open TotalOrderProperties O using (≰⇒≥)
 
   private
@@ -109,21 +114,32 @@ module _ (DO : DecTotalOrder a ℓ₁ ℓ₂) where
                 Connected _≤_ (just v) (head xs) →
                 Connected _≤_ (just v) (head ys) →
                 Connected _≤_ (just v) (head (merge _≤?_ xs ys))
-    merge-con {xs = []}     {[]}     cxs cys = cys
-    merge-con {xs = []}     {y ∷ ys} cxs cys = cys
+    merge-con {xs = []}              cxs cys = cys
     merge-con {xs = x ∷ xs} {[]}     cxs cys = cxs
     merge-con {xs = x ∷ xs} {y ∷ ys} cxs cys with x ≤? y
     ... | yes x≤y = cxs
     ... | no  x≰y = cys
 
   merge⁺ : ∀ {xs ys} → Sorted O xs → Sorted O ys → Sorted O (merge _≤?_ xs ys)
-  merge⁺ {[]}     {[]}     rxs rys = []
-  merge⁺ {[]}     {x ∷ ys} rxs rys = rys
+  merge⁺ {[]}              rxs rys = rys
   merge⁺ {x ∷ xs} {[]}     rxs rys = rxs
-  merge⁺ {x ∷ xs} {y ∷ ys} rxs rys with x ≤? y |
-    merge⁺ (Linked.tail rxs) rys | merge⁺ rxs (Linked.tail rys)
+  merge⁺ {x ∷ xs} {y ∷ ys} rxs rys
+   with x ≤? y  | merge⁺ (Linked.tail rxs) rys
+                      | merge⁺ rxs (Linked.tail rys)
   ... | yes x≤y | rec | _   = merge-con (head′ rxs)      (just x≤y)  ∷′ rec
   ... | no  x≰y | _   | rec = merge-con (just (≰⇒≥ x≰y)) (head′ rys) ∷′ rec
+
+  -- Reexport ⊆-mergeˡʳ
+
+  S = Preorder.Eq.setoid (DecTotalOrder.preorder DO)
+  open Sublist S using (_⊆_)
+  module SP = SublistProperties S
+
+  ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  ⊆-mergeˡ = SP.⊆-mergeˡ _≤?_
+
+  ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ⊆-mergeʳ = SP.⊆-mergeʳ _≤?_
 
 ------------------------------------------------------------------------
 -- filter

@@ -4,7 +4,7 @@
 -- Existential lifting of predicates over Vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Unary.Any where
 
@@ -13,7 +13,7 @@ open import Data.Fin.Properties using (any?)
 open import Data.Nat.Base
 open import Data.Product as Σ using (Σ; ∃; _×_; _,_; proj₁; proj₂)
 open import Data.Vec.Functional as VF hiding (map)
-open import Function
+open import Function.Base using (id)
 open import Level using (Level)
 open import Relation.Unary
 

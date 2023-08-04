@@ -7,11 +7,11 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Morphism.Definitions
 open import Function.Base
-open import Data.Product using (_,_; map)
+open import Data.Product.Base using (_,_; map)
 open import Relation.Binary
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.RelMonomorphism as RawRelation

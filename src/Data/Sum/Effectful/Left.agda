@@ -4,7 +4,7 @@
 -- An effectful view of the Sum type (Left-biased)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 
@@ -18,9 +18,9 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Function.Base
 
--- To minimize the universe level of the RawFunctor, we require that elements of
--- B are "lifted" to a copy of B at a higher universe level (a ⊔ b). See the
--- examples for how this is done.
+-- To minimize the universe level of the RawFunctor, we require that
+-- elements of B are "lifted" to a copy of B at a higher universe level
+-- (a ⊔ b). See the examples for how this is done.
 
 ------------------------------------------------------------------------
 -- Left-biased monad instance for _⊎_

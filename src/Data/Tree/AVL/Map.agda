@@ -6,7 +6,7 @@
 -- between the key and value types.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (StrictTotalOrder)
 
@@ -63,9 +63,8 @@ lookup = AVL.lookup
 map : (V → W) → Map V → Map W
 map f = AVL.map f
 
-infix 4 _∈?_
-_∈?_ : Key → Map V → Bool
-_∈?_ = AVL._∈?_
+member : Key → Map V → Bool
+member = AVL.member
 
 headTail : Map V → Maybe ((Key × V) × Map V)
 headTail = Maybe.map (Prod.map₁ AVL.toPair) ∘′ AVL.headTail
@@ -115,3 +114,20 @@ intersectionsWith f = AVL.intersectionsWith f
 
 intersections : List (Map V) → Map V
 intersections = AVL.intersections
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infixl 4 _∈?_
+_∈?_ : Key → Map V → Bool
+_∈?_ = member
+{-# WARNING_ON_USAGE _∈?_
+"Warning: _∈?_ was deprecated in v2.0.
+Please use member instead."
+#-}

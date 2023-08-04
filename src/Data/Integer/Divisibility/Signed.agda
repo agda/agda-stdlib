@@ -4,11 +4,11 @@
 -- Alternative definition of divisibility without using modulus.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Divisibility.Signed where
 
-open import Function
+open import Function.Base using (_⟨_⟩_; _$_; _$′_; _∘_; _∘′_)
 open import Data.Integer.Base
 open import Data.Integer.Properties
 open import Data.Integer.Divisibility as Unsigned

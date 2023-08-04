@@ -4,7 +4,7 @@
 -- AVL trees where the stored values may depend on their key
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (StrictTotalOrder)
 
@@ -20,7 +20,7 @@ open import Data.DifferenceList using (DiffList; []; _∷_; _++_)
 open import Function.Base as F hiding (const)
 open import Relation.Unary
 open import Relation.Binary using (_Respects_; Tri; tri<; tri≈; tri>)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
   variable

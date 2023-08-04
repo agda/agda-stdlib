@@ -4,7 +4,7 @@
 -- The core definition of a sorting algorithm
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.List.Base using (List)
 open import Data.List.Relation.Binary.Permutation.Propositional

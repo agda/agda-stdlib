@@ -7,7 +7,7 @@
 -- See README.Data.List for examples of how to use and reason about
 -- lists.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Base where
 
@@ -17,15 +17,13 @@ open import Data.Bool.Base as Bool
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product as Prod using (_×_; _,_; map₁; map₂′)
+open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)
 open import Level using (Level)
-open import Relation.Nullary.Decidable using (does)
-open import Relation.Nullary.Decidable using (¬?)
+open import Relation.Nullary.Decidable.Core using (does; ¬?)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Unary.Properties using (∁?)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)

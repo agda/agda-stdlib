@@ -4,7 +4,7 @@
 -- Universe-sensitive functor and monad instances for the Product type.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 
@@ -16,10 +16,10 @@ open import Effect.Functor using (RawFunctor)
 open import Effect.Monad using (RawMonad)
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Function
+open import Function.Base using (id)
 import Function.Identity.Effectful as Id
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- Examples
@@ -38,16 +38,16 @@ private
 
   open RawFunctor functor
 
-  -- This type to the right of × needs to be a "lifted" version of (B : Set b)
-  -- that lives in the universe (Set (a ⊔ b)).
+  -- This type to the right of × needs to be a "lifted" version of
+  -- (B : Set b) that lives in the universe (Set (a ⊔ b)).
   fmapIdₗ : (x : A.Carrier × Lift a B) → (id <$> x) ≈ x
   fmapIdₗ x = A.refl , refl
 
   open RawMonad monad
 
-  -- Now, let's show that "pure" is a unit for >>=. We use Lift in exactly
-  -- the same way as above. The data (x : B) then needs to be "lifted" to
-  -- this new type (Lift B).
+  -- Now, let's show that "pure" is a unit for >>=. We use Lift in
+  -- exactly the same way as above. The data (x : B) then needs to be
+  -- "lifted" to this new type (Lift B).
   pureUnitL : ∀ {x : B} {f : Lift a B → A.Carrier × Lift a B} →
                 (pure (lift x) >>= f) ≈ f (lift x)
   pureUnitL = A.identityˡ _ , refl

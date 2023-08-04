@@ -4,7 +4,7 @@
 -- An effectful view of Vec
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Effectful where
 
@@ -16,7 +16,7 @@ open import Effect.Applicative as App using (RawApplicative)
 open import Effect.Functor as Fun using (RawFunctor)
 open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)
 import Function.Identity.Effectful as Id
-open import Function hiding (Morphism)
+open import Function.Base
 open import Level using (Level)
 
 private

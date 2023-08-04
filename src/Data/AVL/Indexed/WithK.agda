@@ -7,7 +7,7 @@
 {-# OPTIONS --with-K --safe #-}
 
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; subst)
 
 module Data.AVL.Indexed.WithK
        {k r} (Key : Set k) {_<_ : Rel Key r}

@@ -4,7 +4,7 @@
 -- Properties of operations on the Covec type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Covec.Properties where
 
@@ -14,7 +14,7 @@ open import Codata.Sized.Conat
 open import Codata.Sized.Covec
 open import Codata.Sized.Covec.Bisimilarity
 open import Function.Base using (id; _∘_)
-open import Relation.Binary.PropositionalEquality as Eq
+open import Relation.Binary.PropositionalEquality.Core as Eq
 
 -- Functor laws
 

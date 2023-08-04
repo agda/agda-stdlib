@@ -4,7 +4,7 @@
 -- Finding the maximum/minimum values in a list
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (TotalOrder; Setoid)
 
@@ -30,7 +30,7 @@ open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; sym; subst) renaming (refl to ≡-refl)
 import Relation.Binary.Construct.On as On
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Setup
 
 open TotalOrder totalOrder renaming (Carrier to B)
@@ -43,7 +43,7 @@ private
     a p : Level
     A : Set a
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Functions
 
 argmin : (A → B) → A → List A → A
@@ -58,7 +58,7 @@ min = argmin id
 max : B → List B → B
 max = argmax id
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of argmin
 
 module _ {f : A → B} where
@@ -114,7 +114,7 @@ argmin-all f {⊤} {xs} {P = P}  p⊤ pxs with argmin-sel f ⊤ xs
 ... | inj₁ argmin≡⊤  = subst P (sym argmin≡⊤) p⊤
 ... | inj₂ argmin∈xs = lookup pxs argmin∈xs
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of argmax
 
 module _ {f : A → B} where
@@ -170,7 +170,7 @@ argmax-all f {P = P} {⊥} {xs} p⊥ pxs with argmax-sel f ⊥ xs
 ... | inj₁ argmax≡⊥  = subst P (sym argmax≡⊥) p⊥
 ... | inj₂ argmax∈xs = lookup pxs argmax∈xs
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of min
 
 min≤v⁺ : ∀ {v} ⊤ xs → ⊤ ≤ v ⊎ Any (_≤ v) xs → min ⊤ xs ≤ v
@@ -208,7 +208,7 @@ min-mono-⊆ : ∀ {⊥₁ ⊥₂ xs ys} → ⊥₁ ≤ ⊥₂ → xs ⊇ ys →
 min-mono-⊆ ⊥₁≤⊥₂ ys⊆xs = min[xs]≤min[ys]⁺ _ _ (inj₁ ⊥₁≤⊥₂)
   (tabulate (inj₂ ∘ Any.map (λ {≡-refl → refl}) ∘ ys⊆xs))
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of max
 
 max≤v⁺ : ∀ {v ⊥ xs} → ⊥ ≤ v → All (_≤ v) xs → max ⊥ xs ≤ v

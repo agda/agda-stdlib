@@ -5,7 +5,7 @@
 -- equivalent or…)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Related.TypeIsomorphisms where
 
@@ -27,7 +27,7 @@ open import Function.Bundles
 open import Function.Related.Propositional
 import Function.Construct.Identity as Identity
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ)
 import Relation.Nullary.Indexed as I

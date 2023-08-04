@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous suffix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Suffix.Heterogeneous.Properties where
 
@@ -26,7 +26,7 @@ open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary as B
   using (REL; Rel; Trans; Antisym; Irrelevant; _⇒_)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; refl; sym; subst; subst₂)
 
 import Data.List.Properties as Listₚ

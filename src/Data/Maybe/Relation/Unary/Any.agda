@@ -4,7 +4,7 @@
 -- Maybes where one of the elements satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Unary.Any where
 
@@ -13,7 +13,7 @@ open import Data.Product as Prod using (∃; _,_; -,_)
 open import Function.Base using (id)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
-open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; cong)
 open import Relation.Unary
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec

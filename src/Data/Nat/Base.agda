@@ -7,7 +7,7 @@
 -- See README.Data.Nat for examples of how to use and reason about
 -- naturals.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Base where
 
@@ -18,9 +18,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Unary using (Pred)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 ------------------------------------------------------------------------
 -- Types
@@ -134,8 +132,8 @@ pred : ℕ → ℕ
 pred n = n ∸ 1
 
 infix  8 _!
-infixl 7 _⊓_ _/_ _%_
-infixl 6 _+⋎_ _⊔_
+infixl 7 _⊓_ _⊓′_ _/_ _%_
+infixl 6 _+⋎_ _⊔_ _⊔′_
 
 -- Argument-swapping addition. Used by Data.Vec._⋎_.
 
@@ -194,6 +192,8 @@ parity (suc (suc n)) = parity n
 
 -- Naïve exponentiation
 
+infixr 8 _^_
+
 _^_ : ℕ → ℕ → ℕ
 x ^ zero  = 1
 x ^ suc n = x * x ^ n
@@ -206,8 +206,8 @@ x ^ suc n = x * x ^ n
 ∣ suc x - suc y ∣ = ∣ x - y ∣
 
 -- Distance in terms of primitive operations.
--- This is much faster than `∣_-_∣` but harder to reason about. For proofs
--- involving this function, convert it to `∣_-_∣` with
+-- This is much faster than `∣_-_∣` but harder to reason about.
+-- For proofs involving this function, convert it to `∣_-_∣` with
 -- `Data.Nat.Properties.∣-∣≡∣-∣′`.
 ∣_-_∣′ : ℕ → ℕ → ℕ
 ∣ x - y ∣′ with x <ᵇ y

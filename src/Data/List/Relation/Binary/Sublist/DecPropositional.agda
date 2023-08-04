@@ -6,7 +6,7 @@
 -- Embeddings (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 open import Agda.Builtin.Equality using (_≡_)

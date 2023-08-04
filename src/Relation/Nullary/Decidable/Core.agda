@@ -7,7 +7,7 @@
 -- Relation.Nullary.Decidable
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Decidable.Core where
 
@@ -16,7 +16,7 @@ open import Data.Bool.Base using (Bool; false; true; not; T; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
 open import Data.Empty using (⊥)
 open import Data.Empty.Irrelevant using (⊥-elim)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Reflects
@@ -86,9 +86,10 @@ proof (p? →-dec q?) = proof p? →-reflects proof q?
 ------------------------------------------------------------------------
 -- Relationship with booleans
 
--- `isYes` is a stricter version of `does`. The lack of computation means that
--- we can recover the proposition `P` from `isYes P?` by unification. This is
--- useful when we are using the decision procedure for proof automation.
+-- `isYes` is a stricter version of `does`. The lack of computation
+-- means that we can recover the proposition `P` from `isYes P?` by
+-- unification. This is useful when we are using the decision procedure
+-- for proof automation.
 
 isYes : Dec P → Bool
 isYes (true  because _) = true
@@ -175,5 +176,13 @@ decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).
 
+¬¬-excluded-middle : DoubleNegation (Dec P)
+¬¬-excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
+
 excluded-middle : DoubleNegation (Dec P)
-excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
+excluded-middle = ¬¬-excluded-middle
+
+{-# WARNING_ON_USAGE excluded-middle
+"Warning: excluded-middle was deprecated in v2.0.
+Please use ¬¬-excluded-middle instead."
+#-}

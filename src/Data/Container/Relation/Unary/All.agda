@@ -4,14 +4,14 @@
 -- All (□) for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Relation.Unary.All where
 
 open import Level using (_⊔_)
 open import Relation.Unary using (Pred; _⊆_)
 open import Data.Product as Prod using (_,_; proj₁; proj₂; ∃)
-open import Function as F
+open import Function.Base using (_∘′_; id)
 
 open import Data.Container.Core hiding (map)
 import Data.Container.Morphism as M

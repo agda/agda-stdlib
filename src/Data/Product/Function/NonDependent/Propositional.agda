@@ -5,7 +5,7 @@
 -- preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Function.NonDependent.Propositional where
 
@@ -41,6 +41,8 @@ private
 ------------------------------------------------------------------------
 -- Combinators for various function types
 
+infixr 2 _×-⇔_ _×-↣_ _×-↠_ _×-⤖_ _×-↩_ _×-↪_ _×-↔_
+
 _×-⟶_ : A ⟶ B → C ⟶ D → (A × C) ⟶ (B × D)
 _×-⟶_ = liftViaInverse Compose.function Inv.toFunction _×-function_
 
@@ -65,6 +67,8 @@ _×-↪_ = liftViaInverse Compose.rightInverse Inverse.rightInverse _×-rightInv
 _×-↔_ : A ↔ B → C ↔ D → (A × C) ↔ (B × D)
 _×-↔_ = liftViaInverse Compose.inverse id _×-inverse_
 
+infixr 2 _×-cong_
+
 _×-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A × C) ∼[ k ] (B × D)
 _×-cong_ {k = implication}         = _×-⟶_
 _×-cong_ {k = reverseImplication}  = _×-⟶_
@@ -74,3 +78,15 @@ _×-cong_ {k = reverseInjection}    = _×-↣_
 _×-cong_ {k = leftInverse}         = _×-↪_
 _×-cong_ {k = surjection}          = _×-↠_
 _×-cong_ {k = bijection}           = _×-↔_
+
+{-
+  _×-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A × C) ∼[ k ] (B × D)
+  _×-cong_ {implication}         = λ f g →      map        f         g
+  _×-cong_ {reverse-implication} = λ f g → lam (map (app-← f) (app-← g))
+  _×-cong_ {equivalence}         = _×-⇔_
+  _×-cong_ {injection}           = _×-↣_
+  _×-cong_ {reverse-injection}   = λ f g → lam (app-↢ f ×-↣ app-↢ g)
+  _×-cong_ {left-inverse}        = _×-↞_
+  _×-cong_ {surjection}          = _×-↠_
+  _×-cong_ {bijection}           = _×-↔_
+-}

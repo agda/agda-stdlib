@@ -4,7 +4,7 @@
 -- Non-empty lists: base type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.NonEmpty.Base where
 
@@ -14,7 +14,7 @@ open import Data.Bool.Properties using (T?)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat.Base as ℕ
-open import Data.Product as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
+open import Data.Product.Base as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)

@@ -4,7 +4,7 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.All.Properties where
 
@@ -25,7 +25,7 @@ open import Data.List.Relation.Unary.All as All using
   )
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
-open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)

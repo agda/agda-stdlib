@@ -8,7 +8,7 @@
 -- Erwig's FGL. Note that this representation does not aim to be
 -- efficient.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Graph.Acyclic where
 
@@ -26,9 +26,9 @@ open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
-open import Function
+open import Function.Base using (_$_; _∘′_; _∘_; id)
 open import Relation.Nullary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- A lemma

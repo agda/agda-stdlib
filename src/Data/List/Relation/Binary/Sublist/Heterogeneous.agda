@@ -6,13 +6,13 @@
 -- Preserving Embeddings (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.List.Base using (List; []; _∷_; [_])
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Level using (_⊔_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Unary using (Pred)
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous

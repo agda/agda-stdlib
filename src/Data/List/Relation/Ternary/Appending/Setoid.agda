@@ -4,9 +4,9 @@
 -- Appending of lists using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Ternary.Appending.Setoid
   {c ℓ} (S : Setoid c ℓ)

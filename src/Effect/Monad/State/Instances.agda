@@ -4,7 +4,7 @@
 -- Instances for the state monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.State.Instances where
 
@@ -22,6 +22,7 @@ instance
   stateTMonadPlus = λ {s} {S} {f} {M} {{mpl}} → monadPlus {s} {S} {f} {M} mpl
   stateTMonadT = λ {s} {S} {f} {M} {{mon}} → monadT {s} {S} {f} {M} mon
   stateTMonadState = λ {s} {S} {f} {M} {{mon}} → monadState {s} {S} {f} {M} mon
-  -- the following instance conflicts with stateTMonadState so we don't include it
-  -- stateTLiftStateT = λ {s} {S₁} {S₂} {f} {M} {{mon}} {{ms}} → liftStateT {s} {S₁} {S₂} {f} {M} mon ms
   stateTLiftReaderT = λ {R} {s} {S} {f} {M} {{ms}} → liftReaderT {R} {s} {S} {f} {M} ms
+  stateTLiftWriterT = λ {R} {s} {S} {f} {M} {{fun}} {{mo}} {{ms}} → liftWriterT {R} {s} {S} {f} {M} mo fun ms
+  -- the following instances conflicts with stateTMonadState so we don't include it
+  -- stateTLiftStateT = λ {s} {S₁} {S₂} {f} {M} {{mon}} {{ms}} → liftStateT {s} {S₁} {S₂} {f} {M} mon ms

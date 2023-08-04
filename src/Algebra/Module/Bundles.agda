@@ -21,7 +21,7 @@
 --     right-scaling coincide.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Bundles where
 
@@ -197,6 +197,7 @@ record Bisemimodule (R-semiring : Semiring r ℓr) (S-semiring : Semiring s ℓs
     module S = Semiring S-semiring
 
   infixr 7 _*ₗ_
+  infixl 7 _*ᵣ_
   infixl 6 _+ᴹ_
   infix 4 _≈ᴹ_
 
@@ -228,6 +229,7 @@ record Bimodule (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) m ℓm
     module S = Ring S-ring
 
   infixr 7 _*ₗ_
+  infixl 7 _*ᵣ_
   infixl 6 _+ᴹ_
   infix 4 _≈ᴹ_
 
@@ -318,6 +320,7 @@ record Module (commutativeRing : CommutativeRing r ℓr) m ℓm
 
   infixr 8 -ᴹ_
   infixr 7 _*ₗ_
+  infixl 7 _*ᵣ_
   infixl 6 _+ᴹ_
   infix 4 _≈ᴹ_
 

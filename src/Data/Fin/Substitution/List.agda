@@ -7,7 +7,7 @@
 -- This module illustrates how Data.Fin.Substitution.Lemmas.AppLemmas
 -- can be used.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin.Substitution.Lemmas
 open import Data.Nat.Base using (ℕ)
@@ -17,7 +17,7 @@ module Data.Fin.Substitution.List {ℓ} {T : ℕ → Set ℓ} (lemmas₄ : Lemma
 open import Data.List.Base
 open import Data.List.Properties
 open import Data.Fin.Substitution
-import Function as Fun
+import Function.Base as Fun
 open import Relation.Binary.PropositionalEquality
 open ≡-Reasoning
 

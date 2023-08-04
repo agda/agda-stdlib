@@ -4,7 +4,7 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Bool.Properties where
 
@@ -13,16 +13,17 @@ open import Algebra.Lattice.Bundles
 import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
 open import Data.Bool.Base
 open import Data.Empty
-open import Data.Product
-open import Data.Sum.Base
-open import Function.Base
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
+open import Function.Base using (_⟨_⟩_; const; id)
 open import Function.Bundles hiding (LeftInverse; RightInverse; Inverse)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality hiding ([_])
-open import Relation.Nullary using (ofʸ; ofⁿ; does; proof; yes; no)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
+open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
+open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
@@ -271,6 +272,15 @@ true  <? _     = no  (λ())
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
 
+∨-conicalˡ : LeftConical false _∨_
+∨-conicalˡ false false _ = refl
+
+∨-conicalʳ : RightConical false _∨_
+∨-conicalʳ false false _ = refl
+
+∨-conical : Conical false _∨_
+∨-conical = ∨-conicalˡ , ∨-conicalʳ
+
 ∨-isMagma : IsMagma _∨_
 ∨-isMagma = record
   { isEquivalence = isEquivalence
@@ -394,6 +404,15 @@ true  <? _     = no  (λ())
 ∧-sel : Selective _∧_
 ∧-sel false y = inj₁ refl
 ∧-sel true y  = inj₂ refl
+
+∧-conicalˡ : LeftConical true _∧_
+∧-conicalˡ true true _ = refl
+
+∧-conicalʳ : RightConical true _∧_
+∧-conicalʳ true true _ = refl
+
+∧-conical : Conical true _∧_
+∧-conical = ∧-conicalˡ , ∧-conicalʳ
 
 ∧-distribˡ-∨ : _∧_ DistributesOverˡ _∨_
 ∧-distribˡ-∨ true  y z = refl

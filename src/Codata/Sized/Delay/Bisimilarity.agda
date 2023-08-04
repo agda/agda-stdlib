@@ -4,7 +4,7 @@
 -- Bisimilarity for the Delay type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Delay.Bisimilarity where
 
@@ -13,7 +13,7 @@ open import Codata.Sized.Thunk
 open import Codata.Sized.Delay
 open import Level
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 
 data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) i :
            (xs : Delay A ∞) (ys : Delay B ∞) → Set (a ⊔ b ⊔ r) where

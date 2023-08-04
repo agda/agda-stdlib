@@ -7,13 +7,14 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Homogeneous`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Indexed.Homogeneous.Definitions where
 
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Level using (Level)
-import Relation.Binary as B
+open import Relation.Binary.Core using (_⇒_)
+import Relation.Binary.Definitions as B
 open import Relation.Unary.Indexed using (IPred)
 
 open import Relation.Binary.Indexed.Homogeneous.Core
@@ -31,7 +32,7 @@ module _ (A : I → Set a) where
   syntax Implies A _∼₁_ _∼₂_ = _∼₁_ ⇒[ A ] _∼₂_
 
   Implies : IRel A ℓ₁ → IRel A ℓ₂ → Set _
-  Implies _∼₁_ _∼₂_ = ∀ {i} → _∼₁_ B.⇒ (_∼₂_ {i})
+  Implies _∼₁_ _∼₂_ = ∀ {i} → _∼₁_ ⇒ (_∼₂_ {i})
 
   Reflexive : IRel A ℓ → Set _
   Reflexive _∼_ = ∀ {i} → B.Reflexive (_∼_ {i})

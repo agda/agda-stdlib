@@ -4,7 +4,7 @@
 -- Pointwise equality of colists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Bisimilarity where
 
@@ -26,6 +26,8 @@ infix 4 _≈_
 data _≈_ {A : Set a} : Rel (Colist A) a where
   []  :                                       []     ≈ []
   _∷_ : ∀ x {xs ys} (xs≈ : ∞ (♭ xs ≈ ♭ ys)) → x ∷ xs ≈ x ∷ ys
+
+infixr 5 _∷_
 
 -- The equality relation forms a setoid.
 

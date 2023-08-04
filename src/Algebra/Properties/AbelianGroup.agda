@@ -4,7 +4,7 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 
@@ -12,7 +12,7 @@ module Algebra.Properties.AbelianGroup
   {a ℓ} (G : AbelianGroup a ℓ) where
 
 open AbelianGroup G
-open import Function
+open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------

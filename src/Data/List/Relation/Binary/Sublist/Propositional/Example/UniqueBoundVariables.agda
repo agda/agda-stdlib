@@ -6,11 +6,11 @@
 -- (both bound and free ones).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Sublist.Propositional.Example.UniqueBoundVariables (Base : Set) where
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; cong; subst; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; cong; subst; module ≡-Reasoning)
 open ≡-Reasoning
 
 open import Data.List.Base using (List; []; _∷_; [_])
@@ -141,9 +141,10 @@ variable
 
 -- Relating de Bruijn terms and uniquely named terms.
 --
--- The judgement δ ⊢ e ~ β ▷ t relates a de Bruijn term e with potentially free variables δ : Δ ⊆ Γ
--- to a named term t with exact bound variables β : B ⊆ Γ.  The intention is to relate exactly
--- the terms with the same meaning.
+-- The judgement δ ⊢ e ~ β ▷ t relates a de Bruijn term e with
+-- potentially free variables δ : Δ ⊆ Γ to a named term t with exact
+-- bound variables β : B ⊆ Γ.  The intention is to relate exactly the
+-- terms with the same meaning.
 --
 -- The judgement will imply the disjointness of Δ and B.
 
@@ -152,8 +153,8 @@ variable
 
 data _⊢_~_▷_ {Γ Δ : Cxt} (δ : Δ ⊆ Γ) : ∀{a} (e : Exp Δ a) {B} (β : B ⊆ Γ) (t : Tm β a) → Set where
 
-  -- Free de Bruijn index x : a ∈ Δ is related to free variable y : a ∈ Γ
-  -- if δ : Δ ⊆ Γ maps x to y.
+  -- Free de Bruijn index x : a ∈ Δ is related to free variable
+  -- y : a ∈ Γ if δ : Δ ⊆ Γ maps x to y.
 
   var : ∀{y} (δx≡y : lookup δ x ≡ y) (δ#β : Disjoint δ β)
       → δ ⊢ var x ~ β ▷ var! y
@@ -229,9 +230,10 @@ disjoint-fv-bv (app dₜ dᵤ βₜ⊎βᵤ) = disjoint⇒disjoint-to-union δ#�
 
 -- Translating de Bruijn terms to uniquely named terms.
 --
--- Given a de Bruijn term Δ ⊢ e : a, we seek to produce a named term β ▷ t : a
--- that is related to the de Bruijn term.  On the way, we have to compute the
--- global context Γ that hosts all free and bound variables of t.
+-- Given a de Bruijn term Δ ⊢ e : a, we seek to produce a named term
+-- β ▷ t : a that is related to the de Bruijn term.  On the way, we have
+-- to compute the global context Γ that hosts all free and bound
+-- variables of t.
 
 -- Record (NamedOf e) collects all the outputs of the translation of e.
 
@@ -293,8 +295,8 @@ dB→Named {Δ = Δ} {a = a ⇒ b} (abs e) with dB→Named e
   z#β     = subst (λ □ → Disjoint □ β) eq (shrinkDisjointˡ [a]⊆aΔ zδ#β)
   z⊎β     = Disjoint→DisjointUnion z#β
 
--- For the translation of an application (f e) we have by induction hypothesis
--- two independent extensions δ₁ : Δ ⊆ Γ₁ and δ₂ : Δ ⊆ Γ₂
+-- For the translation of an application (f e) we have by induction
+-- hypothesis two independent extensions δ₁ : Δ ⊆ Γ₁ and δ₂ : Δ ⊆ Γ₂
 -- and two bound variable lists β₁ : B₁ ⊆ Γ₁ and β₂ : B₂ ⊆ Γ₂.
 -- We need to find a common global context Γ such that
 --
@@ -309,8 +311,8 @@ dB→Named {Δ = Δ} {a = a ⇒ b} (abs e) with dB→Named e
 --   β₁′ = β₁ϕ₁ : B₁ ⊆ Γ₁₂ and
 --   β₂′ = β₂ϕ₂ : B₂ ⊆ Γ₁₂ and
 --
--- may be overlapping, but we can separate them by enlarging the global context
--- to Γ with two embeddings
+-- may be overlapping, but we can separate them by enlarging the global
+-- context to Γ with two embeddings
 --
 --   γ₁ : Γ₁₂ ⊆ Γ
 --   γ₂ : Γ₁₂ ⊆ Γ

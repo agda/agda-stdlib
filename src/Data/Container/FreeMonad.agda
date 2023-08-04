@@ -4,7 +4,7 @@
 -- The free monad construction on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.FreeMonad where
 
@@ -102,6 +102,9 @@ module _ {P : Set ℓ}
 
  foldr : C ⋆ X → P
  foldr = induction (Function.const P) algP (algI ∘ -,_ ∘ □.proof)
+
+infixr -1 _<$>_ _<*>_
+infixl 1 _>>=_
 
 _<$>_ : (X → Y) → C ⋆ X → C ⋆ Y
 f <$> t = foldr (pure ∘ f) impure t

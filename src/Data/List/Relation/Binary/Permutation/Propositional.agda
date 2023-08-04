@@ -4,14 +4,14 @@
 -- An inductive definition for the permutation relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Propositional
   {a} {A : Set a} where
 
 open import Data.List.Base using (List; []; _∷_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 ------------------------------------------------------------------------

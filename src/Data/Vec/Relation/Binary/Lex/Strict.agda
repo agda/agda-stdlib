@@ -7,24 +7,27 @@
 -- The definitions of lexicographic ordering used here are suitable if
 -- the argument order is a strict partial order.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Binary.Lex.Strict where
 
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Unit.Properties using (⊤-irrelevant)
-open import Data.Nat.Base using (ℕ)
-open import Data.Product using (proj₁; proj₂)
+open import Data.Nat.Base using (ℕ; suc)
+open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Relation.Binary.Lex.Strict
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Vec.Base using (Vec; []; _∷_)
+open import Data.Vec.Base using (Vec; []; _∷_; uncons)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
   using (Pointwise; []; _∷_; head; tail)
-open import Function.Base using (id; _∘_)
+open import Function.Base using (id; _on_; _∘_)
+open import Induction.WellFounded
 open import Relation.Nullary using (yes; no; ¬_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Construct.On as On using (wellFounded)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Level using (Level; _⊔_)
 
 private
@@ -32,16 +35,16 @@ private
     a ℓ₁ ℓ₂ : Level
     A : Set a
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-exports
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 open import Data.Vec.Relation.Binary.Lex.Core as Core public
   using (base; this; next; ≰-this; ≰-next)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definitions
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 module _ {A : Set a} (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) where
 
@@ -51,9 +54,9 @@ module _ {A : Set a} (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) where
   Lex-≤ : ∀ {m n} → REL (Vec A m) (Vec A n) (a ⊔ ℓ₁ ⊔ ℓ₂)
   Lex-≤ = Core.Lex {A = A} ⊤ _≈_ _≺_
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of Lex-<
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   private
@@ -105,6 +108,14 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
                 ∀ {m n} → Decidable (_<_ {m} {n})
   <-decidable = Core.decidable (no id)
 
+  <-respectsˡ : IsPartialEquivalence _≈_ → _≺_ Respectsˡ _≈_ →
+                ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
+  <-respectsˡ = Core.respectsˡ
+
+  <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
+                ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
+  <-respectsʳ = Core.respectsʳ
+
   <-respects₂ : IsPartialEquivalence _≈_ → _≺_ Respects₂ _≈_ →
                 ∀ {n} → _Respects₂_ (_<_ {n} {n}) _≋_
   <-respects₂ = Core.respects₂
@@ -113,7 +124,21 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
                  ∀ {m n} → Irrelevant (_<_ {m} {n})
   <-irrelevant = Core.irrelevant (λ ())
 
-----------------------------------------------------------------------
+  module _ (≈-sym : Symmetric _≈_) (≈-trans : Transitive _≈_) (≺-respʳ : _≺_ Respectsʳ _≈_ ) (≺-wf : WellFounded _≺_)
+    where
+
+    <-wellFounded : ∀ {n} → WellFounded (_<_ {n})
+    <-wellFounded {0}     [] = acc λ ys ys<[] → ⊥-elim (xs≮[] ys ys<[])
+    <-wellFounded {suc n} xs = Subrelation.wellFounded <⇒uncons-Lex uncons-Lex-wellFounded xs
+      where
+        <⇒uncons-Lex : {xs ys : Vec A (suc n)} → xs < ys → (×-Lex _≈_ _≺_ _<_ on uncons) xs ys
+        <⇒uncons-Lex {x ∷ xs} {y ∷ ys} (this x<y _) = inj₁ x<y
+        <⇒uncons-Lex {x ∷ xs} {y ∷ ys} (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
+
+        uncons-Lex-wellFounded : WellFounded (×-Lex _≈_ _≺_ _<_ on uncons)
+        uncons-Lex-wellFounded = On.wellFounded uncons (×-wellFounded' ≈-sym ≈-trans ≺-respʳ ≺-wf <-wellFounded)
+
+------------------------------------------------------------------------
 -- Structures
 
   <-isStrictPartialOrder : IsStrictPartialOrder _≈_ _≺_ →
@@ -141,7 +166,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     ; compare       = <-cmp O.Eq.sym O.compare
     } where module O = IsStrictTotalOrder ≺-isStrictTotalOrder
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles for Lex-<
 
 <-strictPartialOrder : StrictPartialOrder a ℓ₁ ℓ₂ → ℕ → StrictPartialOrder _ _ _
@@ -159,9 +184,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   { isStrictTotalOrder = <-isStrictTotalOrder isStrictTotalOrder {n = n}
   } where open StrictTotalOrder ≺-sto
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of Lex-≤
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   private
@@ -220,7 +245,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
                  ∀ {m n} → Irrelevant (_≤_ {m} {n})
   ≤-irrelevant = Core.irrelevant ⊤-irrelevant
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
   ≤-isPreorder : IsEquivalence _≈_ → Transitive _≺_ → _≺_ Respects₂ _≈_ →
@@ -261,7 +286,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     ; _≤?_         = ≤-dec _≟_ _<?_
     } where open IsStrictTotalOrder ≺-isStrictTotalOrder
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles
 
 ≤-preorder : Preorder a ℓ₁ ℓ₂ → ℕ → Preorder _ _ _
@@ -289,9 +314,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   { isDecTotalOrder = ≤-isDecTotalOrder isStrictTotalOrder {n = n}
   } where open StrictTotalOrder ≺-sto
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Equational Reasoning
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 module ≤-Reasoning {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
                    (≈-isEquivalence : IsEquivalence _≈_)

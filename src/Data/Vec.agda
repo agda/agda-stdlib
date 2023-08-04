@@ -12,7 +12,7 @@
 -- about fixed sized vectors and for when ease of retrevial is
 -- important.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec where
 

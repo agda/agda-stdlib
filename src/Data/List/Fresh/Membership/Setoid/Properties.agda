@@ -4,9 +4,10 @@
 -- Properties of the membership predicate for fresh lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Fresh.Membership.Setoid.Properties {c ℓ} (S : Setoid c ℓ) where
 
@@ -21,7 +22,7 @@ open import Function.Base using (id; _∘′_; _$_)
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
 import Relation.Binary as B
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 open import Relation.Nary
 
 open import Data.List.Fresh

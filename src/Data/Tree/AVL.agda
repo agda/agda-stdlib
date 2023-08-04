@@ -11,9 +11,9 @@
 
 -- See README.Data.Tree.AVL for examples of how to use AVL trees.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -87,10 +87,8 @@ module _ {v} {V : Value v} where
   private
     Val = Value.family V
 
-
-  infix 4 _∈?_
-  _∈?_ : Key → Tree V → Bool
-  k ∈? t = is-just (lookup t k)
+  member : Key → Tree V → Bool
+  member k t = is-just (lookup t k)
 
   headTail : Tree V → Maybe (K& V × Tree V)
   headTail (tree (Indexed.leaf _)) = nothing
@@ -183,3 +181,20 @@ module _ {v} {V : Value v} where
   -- Left-biased.
   intersections : List (Tree V) → Tree V
   intersections = intersectionsWith F.const
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infixl 4 _∈?_
+_∈?_ : ∀ {v} {V : Value v} → Key → Tree V → Bool
+_∈?_ = member
+{-# WARNING_ON_USAGE _∈?_
+"Warning: _∈?_ was deprecated in v2.0.
+Please use member instead."
+#-}

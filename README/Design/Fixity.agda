@@ -4,7 +4,7 @@
 -- Documentation describing some of the fixity choices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- There is no actual code in here, just design note.
 

@@ -5,7 +5,7 @@
 -- instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.OrderMorphism where
 
@@ -16,7 +16,7 @@ Use Relation.Binary.Reasoning.Morphism instead."
 
 open import Relation.Binary
 open Poset
-import Function as F
+import Function.Base as F
 open import Level
 
 record _⇒-Poset_ {p₁ p₂ p₃ p₄ p₅ p₆}

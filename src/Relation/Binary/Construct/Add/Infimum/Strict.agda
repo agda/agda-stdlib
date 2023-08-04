@@ -4,7 +4,7 @@
 -- The lifting of a non-strict order to incorporate a new infimum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Infimum
@@ -17,8 +17,9 @@ module Relation.Binary.Construct.Add.Infimum.Strict
 open import Level using (_⊔_)
 open import Data.Product
 open import Function.Base
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
 open import Relation.Nullary hiding (Irrelevant)
@@ -27,6 +28,8 @@ import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
 -- Definition
+
+infix 4 _<₋_
 
 data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
   ⊥₋<[_] : (l : A)           → ⊥₋    <₋ [ l ]

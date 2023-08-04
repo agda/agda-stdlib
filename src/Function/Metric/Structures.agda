@@ -7,7 +7,7 @@
 -- The contents of this module should usually be accessed via
 -- `Function.Metric`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary hiding (Symmetric)
 

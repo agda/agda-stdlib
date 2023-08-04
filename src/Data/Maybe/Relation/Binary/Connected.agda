@@ -4,7 +4,7 @@
 -- Lifting a relation such that `nothing` is also related to `just`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Binary.Connected where
 
@@ -13,7 +13,7 @@ open import Data.Product
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 

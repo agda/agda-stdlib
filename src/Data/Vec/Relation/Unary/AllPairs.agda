@@ -4,7 +4,7 @@
 -- Vectors where every pair of elements are related (symmetrically)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Rel)
 
@@ -15,7 +15,7 @@ open import Data.Nat.Base using (suc)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
-open import Function using (id; _∘_)
+open import Function.Base using (id; _∘_)
 open import Level using (_⊔_)
 open import Relation.Binary as B using (Rel; _⇒_)
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)

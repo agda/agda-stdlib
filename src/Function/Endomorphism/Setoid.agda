@@ -4,7 +4,7 @@
 -- Endomorphisms on a Setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
@@ -34,6 +34,8 @@ private
 
 Endo : Set _
 Endo = S ⟶ S
+
+infixr 8 _^_
 
 _^_ : Endo → ℕ → Endo
 f ^ zero  = id

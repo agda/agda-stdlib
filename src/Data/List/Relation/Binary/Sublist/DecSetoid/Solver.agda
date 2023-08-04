@@ -4,9 +4,9 @@
 -- A solver for proving that one list is a sublist of the other.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecSetoid)
+open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.List.Relation.Binary.Sublist.DecSetoid.Solver {c ℓ} (S : DecSetoid c ℓ) where
 

@@ -4,7 +4,7 @@
 -- Some basic properties of RingWithoutOne
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 

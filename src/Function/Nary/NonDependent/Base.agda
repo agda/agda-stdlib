@@ -4,7 +4,7 @@
 -- Heterogeneous N-ary Functions: basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Nary.NonDependent.Base where
 
@@ -16,7 +16,7 @@ module Function.Nary.NonDependent.Base where
 
 open import Level using (Level; 0ℓ; _⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base
 open import Function.Base using (_∘′_; _$′_; const; flip)
 
@@ -30,15 +30,15 @@ private
 ------------------------------------------------------------------------
 -- Type Definitions
 
--- We want to define n-ary function spaces and generic n-ary operations on
--- them such as (un)currying, zipWith, alignWith, etc.
+-- We want to define n-ary function spaces and generic n-ary operations
+-- on them such as (un)currying, zipWith, alignWith, etc.
 
 -- We want users to be able to use these seamlessly whenever n is concrete.
 
--- In other words, we want Agda to infer the sets `A₁, ⋯, Aₙ` when we write
--- `uncurryₙ n f` where `f` has type `A₁ → ⋯ → Aₙ → B`. For this to happen,
--- we need the structure in which these Sets are stored to effectively
--- η-expand to `A₁, ⋯, Aₙ` when the parameter `n` is known.
+-- In other words, we want Agda to infer the sets `A₁, ⋯, Aₙ` when we
+-- write `uncurryₙ n f` where `f` has type `A₁ → ⋯ → Aₙ → B`. For this
+-- to happen, we need the structure in which these Sets are stored to
+-- effectively η-expand to `A₁, ⋯, Aₙ` when the parameter `n` is known.
 
 -- Hence the following definitions:
 ------------------------------------------------------------------------
@@ -66,9 +66,9 @@ Sets : ∀ n (ls : Levels n) → Set (Level.suc (⨆ n ls))
 Sets zero    _        = ⊤
 Sets (suc n) (l , ls) = Set l × Sets n ls
 
--- Third, a function type whose domains are given by a "vector" of `n` Sets
--- `A₁, ⋯, Aₙ` and whose codomain is `B`. `Arrows` forms such a type of
--- shape `A₁ → ⋯ → Aₙ → B` by induction on `n`.
+-- Third, a function type whose domains are given by a "vector" of `n`
+-- Sets `A₁, ⋯, Aₙ` and whose codomain is `B`. `Arrows` forms such a
+-- type of shape `A₁ → ⋯ → Aₙ → B` by induction on `n`.
 
 Arrows : ∀ n {r ls} → Sets n ls → Set r → Set (r ⊔ (⨆ n ls))
 Arrows zero    _        b = b

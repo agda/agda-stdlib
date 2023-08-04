@@ -4,7 +4,7 @@
 -- Homomorphism proofs for variables and constants over polynomials
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 
@@ -13,7 +13,7 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Product         using (_,_)
+open import Data.Product.Base    using (_,_)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Fin             using (Fin)
 open import Data.List.Kleene

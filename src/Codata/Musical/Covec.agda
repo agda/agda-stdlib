@@ -4,7 +4,7 @@
 -- Coinductive vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Covec where
 
@@ -14,11 +14,11 @@ open import Codata.Musical.Cofin using (Cofin; zero; suc)
 open import Codata.Musical.Colist as Colist using (Colist; []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Vec.Base using (Vec; []; _∷_)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_)
 open import Level using (Level)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable

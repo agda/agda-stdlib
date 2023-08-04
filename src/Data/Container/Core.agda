@@ -4,7 +4,7 @@
 -- Containers core
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Core where
 
@@ -37,6 +37,8 @@ map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
 map f = Prod.map₂ (f ∘_)
 
 -- Representation of container morphisms.
+
+infixr 8 _⇒_ _⊸_
 
 record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
            : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where

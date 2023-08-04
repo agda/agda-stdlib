@@ -4,9 +4,11 @@
 -- Some algebraic structures defined over some other structure
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Module.Structures where
 
@@ -16,7 +18,7 @@ open import Algebra.Module.Core
 import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
 open import Algebra.Structures
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (Level; _⊔_)
 
 private
@@ -164,8 +166,9 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr)
   open CommutativeSemiring commutativeSemiring renaming (Carrier to R)
 
   -- An R-semimodule is an R-R-bisemimodule where R is commutative.
-  -- This means that *ₗ and *ᵣ coincide up to mathematical equality, though it
-  -- may be that they do not coincide up to definitional equality.
+  -- This means that *ₗ and *ᵣ coincide up to mathematical equality,
+  -- though it may be that they do not coincide up to definitional
+  -- equality.
 
   record IsSemimodule (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M)
                       : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
@@ -279,8 +282,9 @@ module _ (commutativeRing : CommutativeRing r ℓr)
   open CommutativeRing commutativeRing renaming (Carrier to R)
 
   -- An R-module is an R-R-bimodule where R is commutative.
-  -- This means that *ₗ and *ᵣ coincide up to mathematical equality, though it
-  -- may be that they do not coincide up to definitional equality.
+  -- This means that *ₗ and *ᵣ coincide up to mathematical equality,
+  -- though it may be that they do not coincide up to definitional
+  -- equality.
 
   record IsModule (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     field
