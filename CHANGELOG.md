@@ -442,15 +442,15 @@ Non-backwards compatible changes
   divisibility, `_∣ˡ_` for the `RawMagma` structure of `_+_`. Since the addition of
   raw bundles to `Data.X.Base`, this definition can now be made directly. Knock-on
   consequences include the need to retain the old constructor name, now introduced
-  as a pattern synonym, and deprecation of (a function equiavlent to) the former
-  field name/projection function `proof`. 
+  as a pattern synonym, and introduction of (a function equivalent to) the former
+  field name/projection function `proof` as `≤″-proof` in `Data.Nat.Properties`. 
 
 * Accordingly, the definition has been changed to:
   ```agda
   _≤″_ : (m n : ℕ)  → Set
   _≤″_ = _∣ˡ_ +-rawMagma
 
-  pattern less-than-or-equal {k} proof = k , proof
+  pattern less-than-or-equal {k} prf = k , prf
   ```
 
 ### Renaming of `Reflection` modules
@@ -1133,11 +1133,6 @@ Deprecated names
   map-with-∈⁺  ↦  mapWith∈⁺
   map-with-∈⁻  ↦  mapWith∈⁻
   map-with-∈↔  ↦  mapWith∈↔
-  ```
-
-* In `Data.Nat.Base`:
-  ```
-  _≤″_.proof ↦  Data.Product.Base.proj₂
   ```
 
 * In `Data.Nat.Properties`:
@@ -2168,6 +2163,11 @@ Other minor changes
   gcd-zeroˡ     : LeftZero 1 gcd
   gcd-zeroʳ     : RightZero 1 gcd
   gcd-zero      : Zero 1 gcd
+  ```
+
+* Added new proof in `Data.Nat.Properties`:
+  ```agda
+  ≤″-proof : (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
   ```
 
 * Added new patterns in `Data.Nat.Reflection`:
