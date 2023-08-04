@@ -11,7 +11,7 @@ module Data.These where
 open import Level
 open import Data.Maybe.Base using (Maybe; just; nothing; maybe′)
 open import Data.Sum.Base using (_⊎_; [_,_]′)
-open import Function
+open import Function.Base using (const; _∘′_; id; constᵣ)
 
 
 ------------------------------------------------------------------------

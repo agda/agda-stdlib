@@ -19,7 +19,7 @@ module Relation.Binary.Lattice.Structures
 
 open import Algebra.Core
 open import Algebra.Definitions
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Level using (suc; _⊔_)
 
 open import Relation.Binary.Lattice.Definitions

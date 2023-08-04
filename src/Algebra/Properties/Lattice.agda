@@ -11,7 +11,7 @@ open import Algebra.Lattice.Bundles
 open import Relation.Binary
 open import Function.Base
 open import Function.Bundles using (module Equivalence; _⇔_)
-open import Data.Product using (_,_; swap)
+open import Data.Product.Base using (_,_; swap)
 
 module Algebra.Properties.Lattice {l₁ l₂} (L : Lattice l₁ l₂) where
 

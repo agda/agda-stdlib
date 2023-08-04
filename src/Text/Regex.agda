@@ -10,7 +10,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecPoset)
+open import Relation.Binary.Bundles using (DecPoset)
 
 module Text.Regex {a e r} (decPoset : DecPoset a e r) where
 

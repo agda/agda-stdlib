@@ -20,7 +20,7 @@ open import Data.Vec.Functional.Relation.Binary.Pointwise
 open import Function.Base
 open import Level using (Level)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable

@@ -15,7 +15,8 @@ open import Function.Base using (id)
 open import Level
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.Construct.Closure.Reflexive
-open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as PropEq using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary using (Pred)

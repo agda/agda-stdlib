@@ -18,7 +18,7 @@ module Data.List.Relation.Unary.Sufficient where
 
 open import Level using (Level; _⊔_)
 open import Data.List.Base using (List; []; _∷_; [_]; _++_)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
   variable

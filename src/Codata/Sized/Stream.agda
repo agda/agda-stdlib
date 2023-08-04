@@ -15,10 +15,10 @@ open import Data.Nat.Base
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_; _∷⁺_)
 open import Data.Vec.Base using (Vec; []; _∷_)
-open import Data.Product as P hiding (map)
-open import Function.Base
+open import Data.Product.Base as P using (Σ; _×_; _,_; <_,_>; proj₁; proj₂)
+open import Function.Base using (id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
   variable
@@ -33,6 +33,8 @@ private
 
 data Stream (A : Set a) (i : Size) : Set a where
   _∷_ : A → Thunk (Stream A) i → Stream A i
+
+infixr 5 _∷_
 
 ------------------------------------------------------------------------
 -- Creating streams
@@ -125,8 +127,8 @@ chunksOf n = chunksOfAcc n id module ChunksOf where
 interleave : Stream A i → Thunk (Stream A) i → Stream A i
 interleave (x ∷ xs) ys = x ∷ λ where .force → interleave (ys .force) xs
 
--- This interleaving strategy can be generalised to an arbitrary non-empty
--- list of streams
+-- This interleaving strategy can be generalised to an arbitrary
+-- non-empty list of streams
 interleave⁺ : List⁺ (Stream A i) → Stream A i
 interleave⁺ xss =
   List⁺.map head xss
@@ -153,8 +155,8 @@ cantor (l ∷ ls) = zig (l ∷ []) (ls .force) module Cantor where
   zag (x ∷ []) zs (l ∷ ls) = x ∷ λ where .force → zig (l ∷⁺ zs) (ls .force)
   zag (x ∷ (y ∷ xs)) zs ls = x ∷ λ where .force → zag (y ∷ xs) zs ls
 
--- We can use the Cantor zig zag function to define a form of `bind' that
--- reaches any point of the plane in a finite amount of time.
+-- We can use the Cantor zig zag function to define a form of `bind'
+-- that reaches any point of the plane in a finite amount of time.
 plane : {B : A → Set b} → Stream A ∞ → ((a : A) → Stream (B a) ∞) →
         Stream (Σ A B) ∞
 plane as bs = cantor (map (λ a → map (a ,_) (bs a)) as)

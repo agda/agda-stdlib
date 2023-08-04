@@ -1,56 +1,113 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Relationships between properties of functions
+-- Relationships between properties of functions. See
+-- `Function.Consequences.Propositional` for specialisations to
+-- propositional equality.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Consequences where
 
-open import Data.Product
+open import Data.Product.Base as Prod
 open import Function.Definitions
 open import Level
-open import Relation.Binary
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation.Core using (contraposition)
+open import Relation.Binary.Core
+open import Relation.Binary.Definitions
+open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 
 private
   variable
     a b ℓ₁ ℓ₂ : Level
-    A : Set a
-    B : Set b
+    A B : Set a
+    ≈₁ ≈₂ : Rel A ℓ₁
+    f f⁻¹ : A → B
 
-module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {f f⁻¹} where
+------------------------------------------------------------------------
+-- Injective
 
-  inverseˡ⇒surjective : Inverseˡ ≈₁ ≈₂ f f⁻¹ → Surjective ≈₁ ≈₂ f
-  inverseˡ⇒surjective invˡ y = (f⁻¹ y , invˡ y)
+contraInjective : Injective ≈₁ ≈₂ f →
+                  ∀ {x y} → ¬ (≈₁ x y) → ¬ (≈₂ (f x) (f y))
+contraInjective inj p = contraposition inj p
 
-  inverseʳ⇒surjective : Inverseʳ ≈₁ ≈₂ f f⁻¹ → Surjective ≈₂ ≈₁ f⁻¹
-  inverseʳ⇒surjective invʳ y = (f y , invʳ y)
+------------------------------------------------------------------------
+-- Inverseˡ
 
-module _ (From : Setoid a ℓ₁) {≈₂ : Rel B ℓ₂} where
+inverseˡ⇒surjective : ∀ (≈₂ : Rel B ℓ₂) →
+                      Inverseˡ ≈₁ ≈₂ f f⁻¹ →
+                      Surjective ≈₁ ≈₂ f
+inverseˡ⇒surjective ≈₂ invˡ y = (_ , invˡ)
 
-  open Setoid From using () renaming (Carrier to A; _≈_ to ≈₁)
+------------------------------------------------------------------------
+-- Inverseʳ
 
-  inverseʳ⇒injective : ∀ {f f⁻¹} → Congruent ≈₂ ≈₁ f⁻¹ →
-                       Inverseʳ ≈₁ ≈₂ f f⁻¹ → Injective ≈₁ ≈₂ f
-  inverseʳ⇒injective {f} {f⁻¹} cong₂ invʳ {x} {y} x≈y = begin
-    x         ≈˘⟨ invʳ x ⟩
-    f⁻¹ (f x) ≈⟨  cong₂ x≈y ⟩
-    f⁻¹ (f y) ≈⟨  invʳ y ⟩
-    y         ∎
-    where open SetoidReasoning From
+inverseʳ⇒injective : ∀ (≈₂ : Rel B ℓ₂) f →
+                     Reflexive ≈₂ →
+                     Symmetric ≈₁ →
+                     Transitive ≈₁ →
+                     Inverseʳ ≈₁ ≈₂ f f⁻¹ →
+                     Injective ≈₁ ≈₂ f
+inverseʳ⇒injective ≈₂ f refl sym trans invʳ {x} {y} fx≈fy =
+  trans (sym (invʳ refl)) (invʳ fx≈fy)
 
-  inverseᵇ⇒bijective : ∀ {f f⁻¹} → Congruent ≈₂ ≈₁ f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Bijective ≈₁ ≈₂ f
-  inverseᵇ⇒bijective cong₂ (invˡ , invʳ) =
-    (inverseʳ⇒injective cong₂ invʳ , inverseˡ⇒surjective ≈₁ ≈₂ invˡ)
+------------------------------------------------------------------------
+-- Inverseᵇ
 
-module _
-  {f : A → B} (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
-  where
+inverseᵇ⇒bijective : ∀ (≈₂ : Rel B ℓ₂) →
+                     Reflexive ≈₂ →
+                     Symmetric ≈₁ →
+                     Transitive ≈₁ →
+                     Inverseᵇ ≈₁ ≈₂ f f⁻¹ →
+                     Bijective ≈₁ ≈₂ f
+inverseᵇ⇒bijective {f = f} ≈₂ refl sym trans (invˡ , invʳ) =
+  (inverseʳ⇒injective ≈₂ f refl sym trans invʳ , inverseˡ⇒surjective ≈₂ invˡ)
 
-  contraInjective : Injective _≈₁_ _≈₂_ f →
-                    ∀ {x y} → ¬ (x ≈₁ y) → ¬ (f x ≈₂ f y)
-  contraInjective inj p = contraposition inj p
+------------------------------------------------------------------------
+-- StrictlySurjective
+
+surjective⇒strictlySurjective : ∀ (≈₂ : Rel B ℓ₂) →
+                                 Reflexive ≈₁ →
+                                 Surjective ≈₁ ≈₂ f →
+                                 StrictlySurjective ≈₂ f
+surjective⇒strictlySurjective _ refl surj x =
+  Prod.map₂ (λ v → v refl) (surj x)
+
+strictlySurjective⇒surjective : Transitive ≈₂ →
+                                 Congruent ≈₁ ≈₂ f →
+                                 StrictlySurjective ≈₂ f →
+                                 Surjective ≈₁ ≈₂ f
+strictlySurjective⇒surjective trans cong surj x =
+  Prod.map₂ (λ fy≈x z≈y → trans (cong z≈y) fy≈x) (surj x)
+
+------------------------------------------------------------------------
+-- StrictlyInverseˡ
+
+inverseˡ⇒strictlyInverseˡ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                            Reflexive ≈₁ →
+                            Inverseˡ ≈₁ ≈₂ f f⁻¹ →
+                            StrictlyInverseˡ ≈₂ f f⁻¹
+inverseˡ⇒strictlyInverseˡ _ _ refl sinv x = sinv refl
+
+strictlyInverseˡ⇒inverseˡ : Transitive ≈₂ →
+                            Congruent ≈₁ ≈₂ f →
+                            StrictlyInverseˡ ≈₂ f f⁻¹ →
+                            Inverseˡ ≈₁ ≈₂ f f⁻¹
+strictlyInverseˡ⇒inverseˡ trans cong sinv {x} y≈f⁻¹x =
+  trans (cong y≈f⁻¹x) (sinv x)
+
+------------------------------------------------------------------------
+-- StrictlyInverseʳ
+
+inverseʳ⇒strictlyInverseʳ : ∀ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) →
+                            Reflexive ≈₂ →
+                            Inverseʳ ≈₁ ≈₂ f f⁻¹ →
+                            StrictlyInverseʳ ≈₁ f f⁻¹
+inverseʳ⇒strictlyInverseʳ _ _ refl sinv x = sinv refl
+
+strictlyInverseʳ⇒inverseʳ : Transitive ≈₁ →
+                            Congruent ≈₂ ≈₁ f⁻¹ →
+                            StrictlyInverseʳ ≈₁ f f⁻¹ →
+                            Inverseʳ ≈₁ ≈₂ f f⁻¹
+strictlyInverseʳ⇒inverseʳ trans cong sinv {x} y≈f⁻¹x =
+  trans (cong y≈f⁻¹x) (sinv x)

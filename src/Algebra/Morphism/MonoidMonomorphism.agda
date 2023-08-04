@@ -24,7 +24,7 @@ open RawMonoid M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; �
 
 open import Algebra.Definitions
 open import Algebra.Structures
-open import Data.Product using (map)
+open import Data.Product.Base using (map)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------

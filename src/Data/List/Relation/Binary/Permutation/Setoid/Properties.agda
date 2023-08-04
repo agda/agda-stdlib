@@ -6,7 +6,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary as B hiding (Decidable)
+open import Relation.Binary.Core
+  using (Rel; _⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 
 module Data.List.Relation.Binary.Permutation.Setoid.Properties
   {a ℓ} (S : Setoid a ℓ)
@@ -36,8 +39,8 @@ open import Function.Inverse as Inv using (inverse)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_; inspect)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
 open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 

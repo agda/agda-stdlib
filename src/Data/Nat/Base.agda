@@ -182,8 +182,8 @@ pred : ℕ → ℕ
 pred n = n ∸ 1
 
 infix  8 _!
-infixl 7 _⊓_ _/_ _%_
-infixl 6 _+⋎_ _⊔_
+infixl 7 _⊓_ _⊓′_ _/_ _%_
+infixl 6 _+⋎_ _⊔_ _⊔′_
 
 -- Argument-swapping addition. Used by Data.Vec._⋎_.
 
@@ -242,6 +242,8 @@ parity (suc (suc n)) = parity n
 
 -- Naïve exponentiation
 
+infixr 8 _^_
+
 _^_ : ℕ → ℕ → ℕ
 x ^ zero  = 1
 x ^ suc n = x * x ^ n
@@ -254,8 +256,8 @@ x ^ suc n = x * x ^ n
 ∣ suc x - suc y ∣ = ∣ x - y ∣
 
 -- Distance in terms of primitive operations.
--- This is much faster than `∣_-_∣` but harder to reason about. For proofs
--- involving this function, convert it to `∣_-_∣` with
+-- This is much faster than `∣_-_∣` but harder to reason about.
+-- For proofs involving this function, convert it to `∣_-_∣` with
 -- `Data.Nat.Properties.∣-∣≡∣-∣′`.
 ∣_-_∣′ : ℕ → ℕ → ℕ
 ∣ x - y ∣′ with x <ᵇ y

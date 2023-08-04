@@ -8,9 +8,9 @@
 
 module Data.List.Relation.Unary.Grouped where
 
-open import Data.List using (List; []; _∷_; map)
+open import Data.List.Base using (List; []; _∷_; map)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_; all?)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product using (_×_; _,_)
 open import Relation.Binary as B using (REL; Rel)
 open import Relation.Unary as U using (Pred)

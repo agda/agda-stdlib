@@ -9,7 +9,7 @@
 module Codata.Guarded.Stream.Relation.Unary.All where
 
 open import Codata.Guarded.Stream using (Stream; head; tail)
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level
 open import Relation.Unary
 
@@ -19,6 +19,8 @@ private
     A : Set a
     P Q R : Pred A p
     xs : Stream A
+
+infixr 5 _∷_
 
 record All (P : Pred A ℓ) (as : Stream A) : Set ℓ where
   coinductive

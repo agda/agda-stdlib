@@ -20,8 +20,9 @@ open import Algebra.Morphism.Structures
         ; module QuasigroupMorphisms
         ; module LoopMorphisms
         )
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
+import Function.Construct.Identity as Id
 open import Level using (Level)
 open import Relation.Binary.Morphism.Construct.Identity using (isRelHomomorphism)
 open import Relation.Binary.Definitions using (Reflexive)
@@ -51,7 +52,7 @@ module _ (M : RawMagma c ℓ) (open RawMagma M) (refl : Reflexive _≈_) where
   isMagmaIsomorphism : IsMagmaIsomorphism id
   isMagmaIsomorphism = record
     { isMagmaMonomorphism = isMagmaMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
 ------------------------------------------------------------------------
@@ -75,7 +76,7 @@ module _ (M : RawMonoid c ℓ) (open RawMonoid M) (refl : Reflexive _≈_) where
   isMonoidIsomorphism : IsMonoidIsomorphism id
   isMonoidIsomorphism = record
     { isMonoidMonomorphism = isMonoidMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
 ------------------------------------------------------------------------
@@ -99,7 +100,7 @@ module _ (G : RawGroup c ℓ) (open RawGroup G) (refl : Reflexive _≈_) where
   isGroupIsomorphism : IsGroupIsomorphism id
   isGroupIsomorphism = record
     { isGroupMonomorphism = isGroupMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
 ------------------------------------------------------------------------
@@ -123,7 +124,7 @@ module _ (R : RawNearSemiring c ℓ) (open RawNearSemiring R) (refl : Reflexive 
   isNearSemiringIsomorphism : IsNearSemiringIsomorphism id
   isNearSemiringIsomorphism = record
     { isNearSemiringMonomorphism = isNearSemiringMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
 ------------------------------------------------------------------------
@@ -147,7 +148,7 @@ module _ (R : RawSemiring c ℓ) (open RawSemiring R) (refl : Reflexive _≈_) w
   isSemiringIsomorphism : IsSemiringIsomorphism id
   isSemiringIsomorphism = record
     { isSemiringMonomorphism = isSemiringMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
 ------------------------------------------------------------------------
@@ -171,7 +172,7 @@ module _ (R : RawRingWithoutOne c ℓ) (open RawRingWithoutOne R) (refl : Reflex
   isRingWithoutOneIsoMorphism : IsRingWithoutOneIsoMorphism id
   isRingWithoutOneIsoMorphism = record
     { isRingWithoutOneMonomorphism = isRingWithoutOneMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
 ------------------------------------------------------------------------
@@ -195,7 +196,7 @@ module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
   isRingIsomorphism : IsRingIsomorphism id
   isRingIsomorphism = record
     { isRingMonomorphism = isRingMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
 ------------------------------------------------------------------------
@@ -221,7 +222,7 @@ module _ (Q : RawQuasigroup c ℓ) (open RawQuasigroup Q) (refl : Reflexive _≈
   isQuasigroupIsomorphism : IsQuasigroupIsomorphism id
   isQuasigroupIsomorphism = record
     { isQuasigroupMonomorphism = isQuasigroupMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
 ------------------------------------------------------------------------
@@ -245,5 +246,5 @@ module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
   isLoopIsomorphism : IsLoopIsomorphism id
   isLoopIsomorphism = record
     { isLoopMonomorphism = isLoopMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }

@@ -11,7 +11,7 @@ module Data.List.Relation.Binary.Permutation.Propositional
 
 open import Data.List.Base using (List; []; _∷_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 ------------------------------------------------------------------------

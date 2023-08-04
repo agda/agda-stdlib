@@ -16,7 +16,7 @@ import Data.List.Relation.Unary.Any as List
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
-open import Data.Vec hiding (here; there)
+open import Data.Vec.Base hiding (here; there)
 open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
   using (_∈_; mapWith∈; find; lose)
@@ -29,7 +29,7 @@ open import Level using (Level)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
 
 private
   variable
@@ -333,12 +333,12 @@ module _ {P : Pred A p} where
 
   concat⁺∘concat⁻ : ∀ {n m} (xss : Vec (Vec A n) m) (p : Any P (concat xss)) →
                    concat⁺ (concat⁻ xss p) ≡ p
-  concat⁺∘concat⁻ (xs ∷ xss) p  with ++⁻ xs p | P.inspect (++⁻ xs) p
-  ... | inj₁ pxs | P.[ p=inj₁ ]
-    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym p=inj₁))
+  concat⁺∘concat⁻ (xs ∷ xss) p  with ++⁻ xs p in eq
+  ... | inj₁ pxs
+    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym eq))
     $ ++⁺∘++⁻ xs p
-  ... | inj₂ pxss | P.[ p=inj₂ ] rewrite concat⁺∘concat⁻ xss pxss
-    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym p=inj₂))
+  ... | inj₂ pxss rewrite concat⁺∘concat⁻ xss pxss
+    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym eq))
     $ ++⁺∘++⁻ xs p
 
   concat⁻∘concat⁺ : ∀ {n m} {xss : Vec (Vec A n) m} (p : Any (Any P) xss) →

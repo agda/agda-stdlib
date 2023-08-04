@@ -8,14 +8,15 @@
 
 module Function.Construct.Identity where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 open import Function.Bundles
 import Function.Definitions as Definitions
 import Function.Structures as Structures
-open import Level
+open import Level using (Level)
 open import Relation.Binary as B hiding (_⇔_; IsEquivalence)
-open import Relation.Binary.PropositionalEquality using (_≡_; setoid)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 private
   variable
@@ -27,28 +28,28 @@ private
 
 module _ (_≈_ : Rel A ℓ) where
 
-  open Definitions _≈_ _≈_
+  open Definitions
 
-  congruent : Congruent id
+  congruent : Congruent _≈_ _≈_ id
   congruent = id
 
-  injective : Injective id
+  injective : Injective _≈_ _≈_ id
   injective = id
 
-  surjective : Reflexive _≈_ → Surjective id
-  surjective refl x = x , refl
+  surjective : Surjective _≈_ _≈_ id
+  surjective x = x , id
 
-  bijective : Reflexive _≈_ → Bijective id
-  bijective refl = injective , surjective refl
+  bijective : Bijective _≈_ _≈_ id
+  bijective = injective , surjective
 
-  inverseˡ : Reflexive _≈_ → Inverseˡ id id
-  inverseˡ refl x = refl
+  inverseˡ : Inverseˡ _≈_ _≈_ id id
+  inverseˡ = id
 
-  inverseʳ : Reflexive _≈_ → Inverseʳ id id
-  inverseʳ refl x = refl
+  inverseʳ : Inverseʳ _≈_ _≈_ id id
+  inverseʳ = id
 
-  inverseᵇ : Reflexive _≈_ → Inverseᵇ id id
-  inverseᵇ refl = inverseˡ refl , inverseʳ refl
+  inverseᵇ : Inverseᵇ _≈_ _≈_ id id
+  inverseᵇ = inverseˡ , inverseʳ
 
 ------------------------------------------------------------------------
 -- Structures
@@ -74,33 +75,33 @@ module _ {_≈_ : Rel A ℓ} (isEq : B.IsEquivalence _≈_) where
   isSurjection : IsSurjection id
   isSurjection = record
     { isCongruent = isCongruent
-    ; surjective  = surjective _≈_ refl
+    ; surjective  = surjective _≈_
     }
 
   isBijection : IsBijection id
   isBijection = record
     { isInjection = isInjection
-    ; surjective  = surjective _≈_ refl
+    ; surjective  = surjective _≈_
     }
 
   isLeftInverse : IsLeftInverse id id
   isLeftInverse = record
     { isCongruent = isCongruent
     ; from-cong   = id
-    ; inverseˡ    = inverseˡ _≈_ refl
+    ; inverseˡ    = inverseˡ _≈_
     }
 
   isRightInverse : IsRightInverse id id
   isRightInverse = record
     { isCongruent = isCongruent
     ; from-cong   = id
-    ; inverseʳ    = inverseʳ _≈_ refl
+    ; inverseʳ    = inverseʳ _≈_
     }
 
   isInverse : IsInverse id id
   isInverse = record
     { isLeftInverse = isLeftInverse
-    ; inverseʳ      = inverseʳ _≈_ refl
+    ; inverseʳ      = inverseʳ _≈_
     }
 
 ------------------------------------------------------------------------
@@ -127,14 +128,14 @@ module _ (S : Setoid a ℓ) where
   surjection = record
     { to         = id
     ; cong       = id
-    ; surjective = surjective _≈_ refl
+    ; surjective = surjective _≈_
     }
 
   bijection : Bijection S S
   bijection = record
     { to        = id
     ; cong      = id
-    ; bijective = bijective _≈_ refl
+    ; bijective = bijective _≈_
     }
 
   equivalence : Equivalence S S
@@ -151,7 +152,7 @@ module _ (S : Setoid a ℓ) where
     ; from      = id
     ; to-cong   = id
     ; from-cong = id
-    ; inverseˡ  = inverseˡ _≈_ refl
+    ; inverseˡ  = inverseˡ _≈_
     }
 
   rightInverse : RightInverse S S
@@ -160,7 +161,7 @@ module _ (S : Setoid a ℓ) where
     ; from      = id
     ; to-cong   = id
     ; from-cong = id
-    ; inverseʳ  = inverseʳ _≈_ refl
+    ; inverseʳ  = inverseʳ _≈_
     }
 
   inverse : Inverse S S
@@ -169,7 +170,7 @@ module _ (S : Setoid a ℓ) where
     ; from      = id
     ; to-cong   = id
     ; from-cong = id
-    ; inverse   = inverseᵇ _≈_ refl
+    ; inverse   = inverseᵇ _≈_
     }
 
 ------------------------------------------------------------------------

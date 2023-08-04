@@ -15,7 +15,7 @@ open import Relation.Unary
 open import Relation.Unary.Properties
 open import Relation.Unary.Relation.Binary.Equality using (≐-isEquivalence; ≐′-isEquivalence)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 module _ {a : Level} {A : Set a} {ℓ : Level} where
@@ -68,7 +68,7 @@ module _ {a : Level} {A : Set a} {ℓ : Level} where
     ; <-resp-≈ = ⊂′-resp-≐′
     }
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles
 
 module _ {a : Level} (A : Set a) (ℓ : Level) where
