@@ -2210,7 +2210,7 @@ Other minor changes
   drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in drop m (take (suc m) xs) ≡ [ lookup xs i ]
   drop-take-suc-tabulate : (f : Fin n → A) (i : Fin n) → let m = toℕ i in drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 
-  drop-drop : drop n (drop m x) ≡ drop (n + m) x
+  drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
 
   take-all : n ≥ length xs → take n xs ≡ xs
 

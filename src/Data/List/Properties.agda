@@ -825,11 +825,10 @@ drop-take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) 
   = drop-take-suc (tabulate f) (cast _ i)
 
 -- Dropping m elements and then n elements is same as dropping n+m elements
-drop-drop : (n m : ℕ) → (x : List A) → drop n (drop m x) ≡ drop (n + m) x
-drop-drop zero    m       x                          = refl
-drop-drop (suc n) zero    x rewrite +-identityʳ n    = refl
-drop-drop (suc n) (suc m) []                         = refl
-drop-drop (suc n) (suc m) (x ∷ xs) rewrite +-suc n m = drop-drop (suc n) m xs
+drop-drop : (m n : ℕ) → (xs : List A) → drop n (drop m xs) ≡ drop (m + n) xs
+drop-drop zero n xs = refl
+drop-drop (suc m) n [] = drop-[] n
+drop-drop (suc m) n (x ∷ xs) = drop-drop m n xs
 
 ------------------------------------------------------------------------
 -- splitAt
