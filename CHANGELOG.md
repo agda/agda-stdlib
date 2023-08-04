@@ -2070,6 +2070,8 @@ Other minor changes
   <⇒<′ : m < n → m <′ n
   <′⇒< : m <′ n → m < n
 
+  ≤″-proof : (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
+
   1≤n!    : 1 ≤ n !
   _!≢0    : NonZero (n !)
   _!*_!≢0 : NonZero (m ! * n !)
@@ -2163,11 +2165,6 @@ Other minor changes
   gcd-zeroˡ     : LeftZero 1 gcd
   gcd-zeroʳ     : RightZero 1 gcd
   gcd-zero      : Zero 1 gcd
-  ```
-
-* Added new proof in `Data.Nat.Properties`:
-  ```agda
-  ≤″-proof : (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
   ```
 
 * Added new patterns in `Data.Nat.Reflection`:
