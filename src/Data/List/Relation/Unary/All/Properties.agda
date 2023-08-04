@@ -33,9 +33,9 @@ open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
+import Function.Bundles as B
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
-open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
 open import Level using (Level)
 open import Relation.Binary as B using (REL; Setoid; _Respects_)
@@ -405,8 +405,8 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ++⁻ []       p          = [] , p
 ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
 
-++↔ : (All P xs × All P ys) ↔ All P (xs ++ ys)
-++↔ {xs = zs} = inverse (uncurry ++⁺) (++⁻ zs) ++⁻∘++⁺ (++⁺∘++⁻ zs)
+++↔ : (All P xs × All P ys) B.↔ All P (xs ++ ys)
+++↔ {xs = zs} = B.mk↔′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
   where
   ++⁺∘++⁻ : ∀ xs (p : All P (xs ++ ys)) → uncurry′ ++⁺ (++⁻ xs p) ≡ p
   ++⁺∘++⁻ []       p          = refl
