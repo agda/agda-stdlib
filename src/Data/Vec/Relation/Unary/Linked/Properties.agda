@@ -16,7 +16,7 @@ open import Data.Vec.Relation.Unary.Linked as Linked
 open import Data.Fin.Base using (zero; suc; _<_)
 open import Data.Nat.Base using (ℕ; zero; suc; s<s⁻¹)
 open import Level using (Level)
-pen import Function.Base using (_on_)
+open import Function.Base using (_on_)
 open import Relation.Binary using (Rel; Transitive)
 open import Relation.Unary using (Pred; Decidable)
 
