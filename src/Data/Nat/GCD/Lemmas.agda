@@ -11,7 +11,7 @@ module Data.Nat.GCD.Lemmas where
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Nat.Solver
-open import Function
+open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
 
 open +-*-Solver

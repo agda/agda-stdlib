@@ -8,7 +8,6 @@
 
 module Data.Vec.Bounded.Base where
 
-open import Level using (Level)
 open import Data.Nat.Base
 import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List)
@@ -16,13 +15,13 @@ open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.All.Properties as Allₚ
 open import Data.List.Membership.Propositional using (mapWith∈)
-open import Data.Product using (∃; _×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (∃; _×_; _,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.These.Base as These using (These)
-open import Function
-open import Relation.Nullary
-open import Relation.Unary
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Function.Base using (_∘_; id; _$_)
+open import Level using (Level)
+open import Relation.Nullary.Decidable.Core using (recompute)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
 
 private
   variable

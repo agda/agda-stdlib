@@ -10,7 +10,7 @@ module Function.Indexed.Bundles where
 
 open import Relation.Unary using (Pred)
 open import Function.Bundles using (_⟶_; _↣_; _↠_; _⤖_; _⇔_; _↩_; _↪_; _↩↪_; _↔_)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core hiding (_⇔_)
 open import Level using (Level)
 
 private

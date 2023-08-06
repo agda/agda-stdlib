@@ -22,7 +22,7 @@ import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base
-open import Data.Product using (∄; ∃; _×_; _,_)
+open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
@@ -1550,7 +1550,7 @@ m≤n⇒n∸m≤n : ∀ {m n} → m ≤ n → n ∸ m ≤ n
 m≤n⇒n∸m≤n z≤n       = ≤-refl
 m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
 
----------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _∸_ and _+_
 
 +-∸-comm : ∀ {m} n {o} → o ≤ m → (m + n) ∸ o ≡ (m ∸ o) + n
@@ -2170,7 +2170,7 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   ... | _      | yes (n , n<v , Pn) = yes (n , m≤n⇒m≤1+n n<v , Pn)
   ... | no ¬Pv | no ¬Pn<v           = no ¬Pn<1+v
     where
-    ¬Pn<1+v : ∄ λ n → n < suc v × P n
+    ¬Pn<1+v : (∃ λ n → n < suc v × P n) → ⊥
     ¬Pn<1+v (n , s≤s n≤v , Pn) with n ≟ v
     ... | yes refl = ¬Pv Pn
     ... | no  n≢v  = ¬Pn<v (n , ≤∧≢⇒< n≤v n≢v , Pn)

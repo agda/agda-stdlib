@@ -23,7 +23,7 @@ open import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (∃; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
@@ -31,9 +31,8 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
-open import Function.Definitions using (Injective)
-open import Function.Definitions.Core2 using (Surjective)
-open import Function.Consequences using (contraInjective)
+open import Function.Definitions using (Injective; Surjective)
+open import Function.Consequences.Propositional using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
@@ -920,8 +919,9 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 -- punchOut
 ------------------------------------------------------------------------
 
--- A version of 'cong' for 'punchOut' in which the inequality argument can be
--- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
+-- A version of 'cong' for 'punchOut' in which the inequality argument
+-- can be changed out arbitrarily (reflecting the proof-irrelevance of
+-- that argument).
 
 punchOut-cong : ∀ (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} →
                 j ≡ k → punchOut i≢j ≡ punchOut i≢k
@@ -931,9 +931,9 @@ punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
 punchOut-cong {suc n} (suc i) {zero}  {zero}   _ = refl
 punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i ∘ suc-injective
 
--- An alternative to 'punchOut-cong' in the which the new inequality argument is
--- specific. Useful for enabling the omission of that argument during equational
--- reasoning.
+-- An alternative to 'punchOut-cong' in the which the new inequality
+-- argument is specific. Useful for enabling the omission of that
+-- argument during equational reasoning.
 
 punchOut-cong′ : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
                  punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
@@ -971,10 +971,10 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 -- pinch
 ------------------------------------------------------------------------
 
-pinch-surjective : ∀ (i : Fin n) → Surjective _≡_ (pinch i)
-pinch-surjective _       zero    = zero , refl
-pinch-surjective zero    (suc j) = suc (suc j) , refl
-pinch-surjective (suc i) (suc j) = map suc (cong suc) (pinch-surjective i j)
+pinch-surjective : ∀ (i : Fin n) → Surjective _≡_ _≡_ (pinch i)
+pinch-surjective _       zero    = zero , λ { refl → refl }
+pinch-surjective zero    (suc j) = suc (suc j) , λ { refl → refl }
+pinch-surjective (suc i) (suc j) = map suc (λ {f refl → cong suc (f refl)}) (pinch-surjective i j)
 
 pinch-mono-≤ : ∀ (i : Fin n) → (pinch i) Preserves _≤_ ⟶ _≤_
 pinch-mono-≤ 0F      {0F}    {k}     0≤n = z≤n
@@ -1090,8 +1090,8 @@ injective⇒≤ {zero}  {_}     {f} _   = z≤n
 injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
 injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
   suc-injective (inj (punchOut-injective
-    (contraInjective _≡_ _≡_ inj 0≢1+n)
-    (contraInjective _≡_ _≡_ inj 0≢1+n) eq))))
+    (contraInjective inj 0≢1+n)
+    (contraInjective inj 0≢1+n) eq))))
 
 <⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
 <⇒notInjective n<m inj = ℕₚ.≤⇒≯ (injective⇒≤ inj) n<m
@@ -1261,4 +1261,3 @@ Please use <⇒<′ instead."
 "Warning: <′⇒≺ was deprecated in v2.0.
 Please use <′⇒< instead."
 #-}
-

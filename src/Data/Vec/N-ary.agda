@@ -11,14 +11,13 @@ module Data.Vec.N-ary where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Function.Bundles using (_↔_; Inverse; mk↔′)
 open import Data.Nat.Base hiding (_⊔_)
-open import Data.Product as Prod
-open import Data.Vec.Base
-open import Function.Base
+open import Data.Product.Base as Prod using (∃; _,_)
+open import Data.Vec.Base using (Vec; []; _∷_; head; tail)
+open import Function.Base using (_∘_; id; flip; constᵣ)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 private
   variable
@@ -185,5 +184,5 @@ module _ (ext : ∀ {a b} → Extensionality a b) where
   Vec↔N-ary (suc n) = let open Inverse (Vec↔N-ary n) in
     mk↔′ (λ vxs x → to λ xs → vxs (x ∷ xs))
     (λ any xs → from (any (head xs)) (tail xs))
-    (λ any → ext λ x → inverseˡ _)
-    (λ vxs → ext λ where (x ∷ xs) → cong (λ f → f xs) (inverseʳ (λ ys → vxs (x ∷ ys))))
+    (λ any → ext λ x → strictlyInverseˡ _)
+    (λ vxs → ext λ where (x ∷ xs) → cong (λ f → f xs) (strictlyInverseʳ (λ ys → vxs (x ∷ ys))))

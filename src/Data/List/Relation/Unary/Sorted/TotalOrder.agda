@@ -19,7 +19,7 @@ open import Level using (_⊔_)
 open import Relation.Unary as U using (Pred; _⊆_)
 open import Relation.Binary as B
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 Sorted : Pred (List A) (a ⊔ ℓ₂)

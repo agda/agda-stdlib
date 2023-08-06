@@ -3,7 +3,7 @@
 module Main where
 
 open import Level
-open import Data.List as List using (List; _∷_; []; _++_; reverse)
+open import Data.List.Base as List using (List; _∷_; []; _++_; reverse)
 open import Data.List.Zipper
 import Data.List.Sort as Sort
 open import Data.Maybe.Base

@@ -9,7 +9,7 @@
 module Data.Container.Morphism where
 
 open import Data.Container.Core
-import Function as F
+import Function.Base as F
 
 module _ {s p} (C : Container s p) where
 

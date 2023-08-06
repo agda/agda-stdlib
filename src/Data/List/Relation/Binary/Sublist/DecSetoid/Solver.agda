@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecSetoid)
+open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.List.Relation.Binary.Sublist.DecSetoid.Solver {c ℓ} (S : DecSetoid c ℓ) where
 

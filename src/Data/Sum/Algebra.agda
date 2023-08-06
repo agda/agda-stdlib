@@ -10,7 +10,7 @@ module Data.Sum.Algebra where
 
 open import Algebra
 open import Data.Empty.Polymorphic using (⊥)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Data.Unit.Polymorphic using (⊤; tt)
@@ -29,14 +29,7 @@ import Function.Definitions as FuncDef
 private
   variable
     a b c d : Level
-    A : Set a
-    B : Set b
-    C : Set c
-    D : Set d
-
-  -- The module is needed because we need to pass `A` and `B` to `FuncDef`
-  module _ {A : Set a} {B : Set b} where
-    open FuncDef {A = A} {B} _≡_ _≡_
+    A B C D : Set a
 
   ♯ : {B : ⊥ {a} → Set b} → (w : ⊥) → B w
   ♯ ()
@@ -46,8 +39,8 @@ private
 
 ⊎-cong : A ↔ B → C ↔ D → (A ⊎ C) ↔ (B ⊎ D)
 ⊎-cong i j = mk↔′ (map I.to J.to) (map I.from J.from)
-  [ cong inj₁ ∘ I.inverseˡ , cong inj₂ ∘ J.inverseˡ ]
-  [ cong inj₁ ∘ I.inverseʳ , cong inj₂ ∘ J.inverseʳ ]
+  [ cong inj₁ ∘ I.strictlyInverseˡ , cong inj₂ ∘ J.strictlyInverseˡ ]
+  [ cong inj₁ ∘ I.strictlyInverseʳ , cong inj₂ ∘ J.strictlyInverseʳ ]
   where module I = Inverse i; module J = Inverse j
 
 -- ⊎ is commutative.

@@ -8,11 +8,20 @@
 
 module Function.Construct.Symmetry where
 
-open import Data.Product using (_,_; swap; proj₁; proj₂)
-open import Function
+open import Data.Product.Base using (_,_; swap; proj₁; proj₂)
+open import Function.Base using (_∘_)
+open import Function.Definitions
+  using (Bijective; Injective; Surjective; Inverseˡ; Inverseʳ; Inverseᵇ; Congruent)
+open import Function.Structures
+  using (IsBijection; IsCongruent; IsRightInverse; IsLeftInverse; IsInverse)
+open import Function.Bundles
+  using (Bijection; Equivalence; LeftInverse; RightInverse; Inverse; _⤖_; _⇔_; _↩_; _↪_; _↔_)
 open import Level using (Level)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality
+  using (_≡_; cong; setoid)
 
 private
   variable
@@ -30,18 +39,19 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B}
     f⁻¹      = proj₁ ∘ surj
     f∘f⁻¹≡id = proj₂ ∘ surj
 
-  injective : Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ f⁻¹
-  injective sym trans cong gx≈gy = trans (trans (sym (f∘f⁻¹≡id _)) (cong gx≈gy)) (f∘f⁻¹≡id _)
+  injective : Reflexive ≈₁ → Symmetric ≈₂ → Transitive ≈₂ →
+              Congruent ≈₁ ≈₂ f → Injective ≈₂ ≈₁ f⁻¹
+  injective refl sym trans cong gx≈gy =
+    trans (trans (sym (f∘f⁻¹≡id _ refl)) (cong gx≈gy)) (f∘f⁻¹≡id _ refl)
 
-  surjective : Surjective ≈₂ ≈₁ f⁻¹
-  surjective x = f x , inj (proj₂ (surj (f x)))
+  surjective : Reflexive ≈₁ → Transitive ≈₂ → Surjective ≈₂ ≈₁ f⁻¹
+  surjective refl trans x = f x , inj ∘ trans (f∘f⁻¹≡id _ refl)
 
-  bijective : Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ f⁻¹
-  bijective sym trans cong = injective sym trans cong , surjective
+  bijective : Reflexive ≈₁ → Symmetric ≈₂ → Transitive ≈₂ →
+              Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ f⁻¹
+  bijective refl sym trans cong = injective refl sym trans cong , surjective refl trans
 
-module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂)
-         (f : A → B) {f⁻¹ : B → A}
-         where
+module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {f : A → B} {f⁻¹ : B → A} where
 
   inverseʳ : Inverseˡ ≈₁ ≈₂ f f⁻¹ → Inverseʳ ≈₂ ≈₁ f⁻¹ f
   inverseʳ inv = inv
@@ -73,9 +83,9 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
         ; isEquivalence₁ = IB.Eq₂.isEquivalence
         ; isEquivalence₂ = IB.Eq₁.isEquivalence
         }
-      ; injective = injective IB.bijective IB.Eq₂.sym IB.Eq₂.trans IB.cong
+      ; injective = injective IB.bijective IB.Eq₁.refl IB.Eq₂.sym IB.Eq₂.trans IB.cong
       }
-    ; surjective = surjective {≈₂ = ≈₂} IB.bijective
+    ; surjective = surjective IB.bijective IB.Eq₁.refl IB.Eq₂.trans
     }
 
 module _ {≈₁ : Rel A ℓ₁} {f : A → B} (isBij : IsBijection ≈₁ _≡_ f) where
@@ -86,35 +96,33 @@ module _ {≈₁ : Rel A ℓ₁} {f : A → B} (isBij : IsBijection ≈₁ _≡_
   isBijection-≡ = isBijection isBij (IB.Eq₁.reflexive ∘ cong _)
     where module IB = IsBijection isBij
 
-module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
-         {f : A → B} {f⁻¹ : B → A}
-         where
+module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {f : A → B} {f⁻¹ : B → A} where
 
   isCongruent : IsCongruent ≈₁ ≈₂ f → Congruent ≈₂ ≈₁ f⁻¹ → IsCongruent ≈₂ ≈₁ f⁻¹
   isCongruent ic cg = record
     { cong           = cg
-    ; isEquivalence₁ = IC.isEquivalence₂
-    ; isEquivalence₂ = IC.isEquivalence₁
-    } where module IC = IsCongruent ic
+    ; isEquivalence₁ = F.isEquivalence₂
+    ; isEquivalence₂ = F.isEquivalence₁
+    } where module F = IsCongruent ic
 
   isLeftInverse : IsRightInverse ≈₁ ≈₂ f f⁻¹ → IsLeftInverse ≈₂ ≈₁ f⁻¹ f
   isLeftInverse inv = record
     { isCongruent = isCongruent F.isCongruent F.from-cong
     ; from-cong   = F.cong₁
-    ; inverseˡ    = inverseˡ ≈₁ ≈₂ f {f⁻¹} F.inverseʳ
+    ; inverseˡ    = inverseˡ ≈₁ ≈₂ F.inverseʳ
     } where module F = IsRightInverse inv
 
   isRightInverse : IsLeftInverse ≈₁ ≈₂ f f⁻¹ → IsRightInverse ≈₂ ≈₁ f⁻¹ f
   isRightInverse inv = record
     { isCongruent = isCongruent F.isCongruent F.from-cong
     ; from-cong   = F.to-cong
-    ; inverseʳ    = inverseʳ ≈₁ ≈₂ f {f⁻¹} F.inverseˡ
+    ; inverseʳ    = inverseʳ ≈₁ ≈₂ F.inverseˡ
     } where module F = IsLeftInverse inv
 
   isInverse : IsInverse ≈₁ ≈₂ f f⁻¹ → IsInverse ≈₂ ≈₁ f⁻¹ f
   isInverse f-inv = record
     { isLeftInverse = isLeftInverse F.isRightInverse
-    ; inverseʳ      = inverseʳ ≈₁ ≈₂ f F.inverseˡ
+    ; inverseʳ      = inverseʳ ≈₁ ≈₂ F.inverseˡ
     } where module F = IsInverse f-inv
 
 ------------------------------------------------------------------------
@@ -132,7 +140,7 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} (bij : Bijection R S) where
   bijection cong = record
     { to        = from
     ; cong      = cong
-    ; bijective = bijective IB.bijective IB.Eq₂.sym IB.Eq₂.trans IB.cong
+    ; bijective = bijective IB.bijective IB.Eq₁.refl IB.Eq₂.sym IB.Eq₂.trans IB.cong
     }
 
 -- We can always flip a bijection if using the equality over the
