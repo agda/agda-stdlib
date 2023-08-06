@@ -35,7 +35,7 @@ open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open import Algebra.Definitions {A = ℕ} _≡_
@@ -2170,7 +2170,7 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   ... | _      | yes (n , n<v , Pn) = yes (n , m≤n⇒m≤1+n n<v , Pn)
   ... | no ¬Pv | no ¬Pn<v           = no ¬Pn<1+v
     where
-    ¬Pn<1+v : (∃ λ n → n < suc v × P n) → ⊥
+    ¬Pn<1+v : ¬ (∃ λ n → n < suc v × P n)
     ¬Pn<1+v (n , s≤s n≤v , Pn) with n ≟ v
     ... | yes refl = ¬Pv Pn
     ... | no  n≢v  = ¬Pn<v (n , ≤∧≢⇒< n≤v n≢v , Pn)
