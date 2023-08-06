@@ -276,12 +276,12 @@ private
   (λ f → to C↔D ∘ f ∘ from A↔B)
   (λ f → from C↔D ∘ f ∘ to A↔B)
   (λ f → ext₂ λ x → begin
-    to C↔D (from C↔D (f (to A↔B (from A↔B x)))) ≡⟨ inverseˡ C↔D _ ⟩
-    f (to A↔B (from A↔B x))                       ≡⟨ P.cong f $ inverseˡ A↔B x ⟩
-    f x                                             ∎)
+    to C↔D (from C↔D (f (to A↔B (from A↔B x)))) ≡⟨ strictlyInverseˡ C↔D _ ⟩
+    f (to A↔B (from A↔B x))                     ≡⟨ P.cong f $ strictlyInverseˡ A↔B x ⟩
+    f x                                         ∎)
   (λ f → ext₁ λ x → begin
-    from C↔D (to C↔D (f (from A↔B (to A↔B x))))  ≡⟨ inverseʳ C↔D _ ⟩
-    f (from A↔B (to A↔B x))                        ≡⟨ P.cong f $ inverseʳ A↔B x ⟩
+    from C↔D (to C↔D (f (from A↔B (to A↔B x))))  ≡⟨ strictlyInverseʳ C↔D _ ⟩
+    f (from A↔B (to A↔B x))                        ≡⟨ P.cong f $ strictlyInverseʳ A↔B x ⟩
     f x                                              ∎)
   where open Inverse; open P.≡-Reasoning
 
