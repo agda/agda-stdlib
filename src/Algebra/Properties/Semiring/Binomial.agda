@@ -17,9 +17,9 @@ open import Data.Fin.Base as Fin
   using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Patterns using (0F)
 open import Data.Fin.Properties as Fin
-  using (toℕ<n; toℕ-inject₁)
+  using (toℕ<n; toℕ-fromℕ; toℕ-inject₁)
 open import Data.Fin.Relation.Unary.Top
-  using (view; top; inj; view-inj; view-top; view-top-toℕ; module Instances)
+  using (view; top; inj; view-inj; view-top)
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; cong; module ≡-Reasoning)
@@ -231,7 +231,7 @@ module _ (x y : Carrier) where
       term₁+term₂≈term (suc i) with view i
       ... | top
       {- remembering that i = fromℕ n, definitionally -}
-        rewrite view-top-toℕ i {{Instances.top⁺}}
+        rewrite toℕ-fromℕ n
           | nCn≡1 n
           | n∸n≡0 n
           | n<ᵇ1+n
