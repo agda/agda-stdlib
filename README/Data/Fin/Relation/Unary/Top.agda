@@ -64,8 +64,8 @@ inject₁⁻¹-irrelevant : (i : Fin (suc n)) .{{ii₁ ii₂ : IsInj (view i)}} 
                        inject₁⁻¹ i {{ii₁}} ≡ inject₁⁻¹ i {{ii₂}}
 inject₁⁻¹-irrelevant i with inj _ ← view i = refl
 
-inject₁-inject₁⁻¹ : (i : Fin (suc n)) .{{ii : IsInj (view i)}} →
-                    inject₁ (inject₁⁻¹ i {{ii}}) ≡ i
+inject₁-inject₁⁻¹ : (i : Fin (suc n)) → .{{_ : IsInj (view i)}} →
+                    inject₁ (inject₁⁻¹ i) ≡ i
 inject₁-inject₁⁻¹ i with inj _ ← view i = refl
 
 inject₁⁻¹-inject₁ : (j : Fin n) → inject₁⁻¹ (inject₁ j) {{inj⁺}} ≡ j
@@ -76,13 +76,13 @@ inject₁≡⇒inject₁⁻¹≡ : (eq : inject₁ {n} j ≡ i) →
 inject₁≡⇒inject₁⁻¹≡ refl = inject₁⁻¹-inject₁ _
 
 inject₁⁻¹-injective : (i₁ i₂ : Fin (suc n)) →
-                      .{{ii₁ : IsInj (view i₁)}} →
-                      .{{ii₂ : IsInj (view i₂)}} →
-                      inject₁⁻¹ i₁ {{ii₁}} ≡ inject₁⁻¹ i₂ {{ii₂}} → i₁ ≡ i₂
+                      .{{_ : IsInj (view i₁)}} →
+                      .{{_ : IsInj (view i₂)}} →
+                      inject₁⁻¹ i₁ ≡ inject₁⁻¹ i₂ → i₁ ≡ i₂
 inject₁⁻¹-injective i₁ i₂ with inj _ ← view i₁ | inj _ ← view i₂ = cong inject₁
 
-toℕ-inject₁⁻¹ : (i : Fin (suc n)) .{{ii : IsInj (view i)}} →
-                 toℕ (inject₁⁻¹ i {{ii}}) ≡ toℕ i
+toℕ-inject₁⁻¹ : (i : Fin (suc n)) → .{{_ : IsInj (view i)}} →
+                toℕ (inject₁⁻¹ i) ≡ toℕ i
 toℕ-inject₁⁻¹ i with inj₁ j ← view i = sym (toℕ-inject₁ j)
 
 ------------------------------------------------------------------------
