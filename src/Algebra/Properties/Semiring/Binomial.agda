@@ -211,7 +211,7 @@ module _ (x y : Carrier) where
       private
 
         n<ᵇ1+n : (n Nat.<ᵇ suc n) ≡ true
-        n<ᵇ1+n with n Nat.<ᵇ suc n in eq | <⇒<ᵇ (n<1+n n)
+        n<ᵇ1+n with n Nat.<ᵇ suc n | <⇒<ᵇ (n<1+n n)
         ... | true | _ = ≡-refl
 
 
