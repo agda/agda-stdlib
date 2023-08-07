@@ -194,9 +194,9 @@ module _ (x y : Carrier) where
 
           [n-k]≡[n-j] : [n-k] ≡ [n-j]
           [n-k]≡[n-j] = begin
-            [n-k]       ≡⟨ cong (n ∸_) k≡j ⟩
+            [n-k]      ≡⟨ cong (n ∸_) k≡j ⟩
             n ∸ toℕ j  ≡⟨ +-∸-assoc 1 (toℕ<n j) ⟩
-            [n-j]       ∎ where open ≡-Reasoning
+            [n-j]      ∎ where open ≡-Reasoning
           open ≈-Reasoning
 
 ------------------------------------------------------------------------
@@ -226,7 +226,7 @@ module _ (x y : Carrier) where
         y ^ suc n                    ≈˘⟨ *-identityˡ (y ^ suc n) ⟩
         1# * y ^ suc n               ≈˘⟨ +-identityʳ (1# * y ^ suc n) ⟩
         1 × (1# * y ^ suc n)         ≡⟨⟩
-        Binomial.term (suc n) 0F      ∎
+        Binomial.term (suc n) 0F     ∎
 
       term₁+term₂≈term (suc i) with view i
       ... | top
