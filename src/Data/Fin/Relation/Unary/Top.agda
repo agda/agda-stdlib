@@ -46,8 +46,8 @@ view-zero zero    = top
 view-zero (suc n) = inj (view-zero n)
 
 view : ∀ j → View {n} j
-view {n = suc n} zero    = view-zero n
-view {n = suc n} (suc i) with view {n} i
+view zero    = view-zero _
+view (suc i) with view i
 ... | top    = top
 ... | inj₁ j = inj (view (suc j))
 
@@ -59,7 +59,7 @@ view {n = suc n} (suc i) with view {n} i
 
 -- Completeness of the view
 
-view-complete : (v : View {n} j) → ⟦ v ⟧ ≡ j
+view-complete : (v : View j) → ⟦ v ⟧ ≡ j
 view-complete top     = refl
 view-complete (inj _) = refl
 
@@ -69,7 +69,7 @@ view-top : ∀ n → view (fromℕ n) ≡ top
 view-top zero                       = refl
 view-top (suc n) rewrite view-top n = refl
 
-view-inj : ∀ j → view (inject₁ j) ≡ inj (view {n} j)
+view-inj : ∀ j → view {suc n} (inject₁ j) ≡ inj (view j)
 view-inj zero                       = refl
 view-inj (suc j) rewrite view-inj j = refl
 
@@ -85,7 +85,7 @@ view-inj (suc j) rewrite view-inj j = refl
 --
 -- So the two predicates on values of the view defined below
 -- are extensionally equivalent to the assertions
--- `view {n} i ≡ top` and `view {n} i ≡ inj₁ j`
+-- `view {suc n} i ≡ top` and `view {suc n} i ≡ inj₁ j`
 --
 -- But such assertions can only ever have a unique (irrelevant) proof
 -- so we introduce instances to witness them, themselves given in

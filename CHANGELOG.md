@@ -1402,7 +1402,7 @@ New modules
   Data.Default
   ```
 
-* A small library defining a structurally inductive view of `Fin n`:
+* A small library defining a structurally recursive view of `Fin n`:
   ```
   Data.Fin.Relation.Unary.Top
   ```
