@@ -22,6 +22,7 @@ open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁; _>_)
 open import Data.Fin.Properties using (toℕ-fromℕ; toℕ<n; toℕ-inject₁)
 open import Data.Fin.Induction hiding (>-weakInduction)
 open import Data.Fin.Relation.Unary.Top
+open import Data.Fin.Relation.Unary.Top.Instances
 open import Induction.WellFounded as WF
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
@@ -33,8 +34,6 @@ private
     n : ℕ
     i : Fin (suc n)
     j : Fin n
-
-open Instances
 
 ------------------------------------------------------------------------
 -- Inverting inject₁
@@ -49,41 +48,41 @@ open Instances
 -- * such patterns are irrefutable *precisely* when `i` is in the codomain
 --   of `inject₁`, which by property `fromℕ≢inject₁`, is equivalent to the
 --   condition `i ≢ fromℕ n`, or again equivalently, `toℕ i ≢ n`, each
---   equivalent to `IsInj {n} (view i)`, hence amenable to instance resolution
+--   equivalent to `IsInject₁ {n} (view i)`, hence amenable to instance resolution
 --
 -- Definition
 --
 -- Rather than redefine `lower₁` of `Data.Fin.Base`, we instead define
 
-inject₁⁻¹ : (i : Fin (suc n)) → .{{IsInj (view i)}} → Fin n
-inject₁⁻¹ i with inj₁ j ← view i = j
+inject₁⁻¹ : (i : Fin (suc n)) → .{{IsInject₁ (view i)}} → Fin n
+inject₁⁻¹ i with ‵inject₁ j ← view i = j
 
 -- Properties, by analogy with those for `lower₁` in `Data.Fin.Properties`
 
-inject₁⁻¹-irrelevant : (i : Fin (suc n)) .{{ii₁ ii₂ : IsInj (view i)}} →
+inject₁⁻¹-irrelevant : (i : Fin (suc n)) .{{ii₁ ii₂ : IsInject₁ (view i)}} →
                        inject₁⁻¹ i {{ii₁}} ≡ inject₁⁻¹ i {{ii₂}}
-inject₁⁻¹-irrelevant i with inj _ ← view i = refl
+inject₁⁻¹-irrelevant i with ‵inj₁_ ← view i = refl
 
-inject₁-inject₁⁻¹ : (i : Fin (suc n)) → .{{_ : IsInj (view i)}} →
+inject₁-inject₁⁻¹ : (i : Fin (suc n)) → .{{_ : IsInject₁ (view i)}} →
                     inject₁ (inject₁⁻¹ i) ≡ i
-inject₁-inject₁⁻¹ i with inj _ ← view i = refl
+inject₁-inject₁⁻¹ i with ‵inj₁ _ ← view i = refl
 
 inject₁⁻¹-inject₁ : (j : Fin n) → inject₁⁻¹ (inject₁ j) {{inj⁺}} ≡ j
-inject₁⁻¹-inject₁ j rewrite view-inj j = refl
+inject₁⁻¹-inject₁ j rewrite view-inject₁ j = refl
 
 inject₁≡⇒inject₁⁻¹≡ : (eq : inject₁ {n} j ≡ i) →
                        inject₁⁻¹ i {{inject₁≡⁺ {eq = eq}}} ≡ j
 inject₁≡⇒inject₁⁻¹≡ refl = inject₁⁻¹-inject₁ _
 
 inject₁⁻¹-injective : (i₁ i₂ : Fin (suc n)) →
-                      .{{_ : IsInj (view i₁)}} →
-                      .{{_ : IsInj (view i₂)}} →
+                      .{{_ : IsInject₁ (view i₁)}} →
+                      .{{_ : IsInject₁ (view i₂)}} →
                       inject₁⁻¹ i₁ ≡ inject₁⁻¹ i₂ → i₁ ≡ i₂
-inject₁⁻¹-injective i₁ i₂ with inj _ ← view i₁ | inj _ ← view i₂ = cong inject₁
+inject₁⁻¹-injective i₁ i₂ with ‵inj₁ _ ← view i₁ | ‵inj₁ _ ← view i₂ = cong inject₁
 
-toℕ-inject₁⁻¹ : (i : Fin (suc n)) → .{{_ : IsInj (view i)}} →
+toℕ-inject₁⁻¹ : (i : Fin (suc n)) → .{{_ : IsInject₁ (view i)}} →
                 toℕ (inject₁⁻¹ i) ≡ toℕ i
-toℕ-inject₁⁻¹ i with inj₁ j ← view i = sym (toℕ-inject₁ j)
+toℕ-inject₁⁻¹ i with ‵inject₁ j ← view i = sym (toℕ-inject₁ j)
 
 ------------------------------------------------------------------------
 -- Reimplementation of `Data.Fin.Base.opposite`, and its properties
@@ -92,31 +91,31 @@ toℕ-inject₁⁻¹ i with inj₁ j ← view i = sym (toℕ-inject₁ j)
 
 opposite : Fin n → Fin n
 opposite {suc n} i with view i
-... | top    = zero
-... | inj₁ j = suc (opposite {n} j)
+... | ‵fromℕ     = zero
+... | ‵inject₁ j = suc (opposite {n} j)
 
 -- Properties
 
-opposite-zero≡top : ∀ n → opposite {suc n} zero ≡ fromℕ n
-opposite-zero≡top zero    = refl
-opposite-zero≡top (suc n) = cong suc (opposite-zero≡top n)
+opposite-zero≡fromℕ : ∀ n → opposite {suc n} zero ≡ fromℕ n
+opposite-zero≡fromℕ zero    = refl
+opposite-zero≡fromℕ (suc n) = cong suc (opposite-zero≡fromℕ n)
 
-opposite-top≡zero : ∀ n → opposite {suc n} (fromℕ n) ≡ zero
-opposite-top≡zero n rewrite view-top n = refl
+opposite-fromℕ≡zero : ∀ n → opposite {suc n} (fromℕ n) ≡ zero
+opposite-fromℕ≡zero n rewrite view-fromℕ n = refl
 
 opposite-suc≡inject₁-opposite : (j : Fin n) →
                                 opposite (suc j) ≡ inject₁ (opposite j)
 opposite-suc≡inject₁-opposite {suc n} i with view i
-... | top    = refl
-... | inj₁ j = cong suc (opposite-suc≡inject₁-opposite {n} j)
+... | ‵fromℕ     = refl
+... | ‵inject₁ j = cong suc (opposite-suc≡inject₁-opposite {n} j)
 
 opposite-involutive : (j : Fin n) → opposite (opposite j) ≡ j
 opposite-involutive {suc n} zero
-  rewrite opposite-zero≡top n
-        | view-top n            = refl
+  rewrite opposite-zero≡fromℕ n
+        | view-fromℕ n            = refl
 opposite-involutive {suc n} (suc i)
   rewrite opposite-suc≡inject₁-opposite i
-        | view-inj (opposite i) = cong suc (opposite-involutive i)
+        | view-inject₁(opposite i) = cong suc (opposite-involutive i)
 
 opposite-suc : (j : Fin n) → toℕ (opposite (suc j)) ≡ toℕ (opposite j)
 opposite-suc j = begin
@@ -126,8 +125,8 @@ opposite-suc j = begin
 
 opposite-prop : (j : Fin n) → toℕ (opposite j) ≡ n ∸ suc (toℕ j)
 opposite-prop {suc n} i with view i
-... | top  rewrite toℕ-fromℕ n | n∸n≡0 n = refl
-... | inj₁ j = begin
+... | ‵fromℕ  rewrite toℕ-fromℕ n | n∸n≡0 n = refl
+... | ‵inject₁ j = begin
   suc (toℕ (opposite j)) ≡⟨ cong suc (opposite-prop j) ⟩
   suc (n ∸ suc (toℕ j))  ≡˘⟨ +-∸-assoc 1 {n} {suc (toℕ j)} (toℕ<n j) ⟩
   n ∸ toℕ j              ≡˘⟨ cong (n ∸_) (toℕ-inject₁ j) ⟩
@@ -146,8 +145,8 @@ open WF using (Acc; acc)
   where
   induct : ∀ {i} → Acc _>_ i → P i
   induct {i} (acc rec) with view i
-  ... | top = Pₙ
-  ... | inj₁ j = Pᵢ₊₁⇒Pᵢ j (induct (rec _ inject₁[j]+1≤[j+1]))
+  ... | ‵fromℕ = Pₙ
+  ... | ‵inject₁ j = Pᵢ₊₁⇒Pᵢ j (induct (rec _ inject₁[j]+1≤[j+1]))
     where
     inject₁[j]+1≤[j+1] : suc (toℕ (inject₁ j)) ≤ toℕ (suc j)
     inject₁[j]+1≤[j+1] = ≤-reflexive (toℕ-inject₁ (suc j))
