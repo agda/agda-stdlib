@@ -18,7 +18,7 @@ open import Agda.Builtin.Equality
 open import Algebra
 open import Algebra.Structures
 open import Algebra.Morphism; open Definitions
-open import Function.Equality
+open import Function.Equality using (setoid; _⟶_; id; _∘_; cong)
 open import Data.Nat.Base using (ℕ; _+_); open ℕ
 open import Data.Nat.Properties
 open import Data.Product
