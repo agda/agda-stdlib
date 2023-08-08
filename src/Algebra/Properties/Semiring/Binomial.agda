@@ -285,16 +285,16 @@ module _ (x y : Carrier) where
       (0 C 0) × (x ^ 0 * y ^ 0) + 0#  ≡⟨⟩
       Binomial.expansion 0            ∎
 
-    theorem n@(suc n-1) = begin
-      (x + y) ^ n                         ≡⟨⟩
-      (x + y) * (x + y) ^ n-1             ≈⟨ *-congˡ (theorem n-1) ⟩
-      (x + y) * expansion                 ≈⟨ distribʳ _ _ _ ⟩
-      x * expansion + y * expansion       ≈⟨ +-cong lemma₁ lemma₂ ⟩
-      sum₁ + sum₂                         ≈˘⟨ ∑-distrib-+ term₁ term₂ ⟩
-      ∑[ i < suc n ] (term₁ i + term₂ i)  ≈⟨ sum-cong-≋ (term₁+term₂≈term n-1) ⟩
-      ∑[ i < suc n ] Binomial.term n i    ≡⟨⟩
-      Binomial.expansion n                ∎
+    theorem n+1@(suc n) = begin
+      (x + y) ^ n+1                         ≡⟨⟩
+      (x + y) * (x + y) ^ n                 ≈⟨ *-congˡ (theorem n) ⟩
+      (x + y) * expansion                   ≈⟨ distribʳ _ _ _ ⟩
+      x * expansion + y * expansion         ≈⟨ +-cong lemma₁ lemma₂ ⟩
+      sum₁ + sum₂                           ≈˘⟨ ∑-distrib-+ term₁ term₂ ⟩
+      ∑[ i < suc n+1 ] (term₁ i + term₂ i)  ≈⟨ sum-cong-≋ (term₁+term₂≈term n) ⟩
+      ∑[ i < suc n+1 ] Binomial.term n+1 i  ≡⟨⟩
+      Binomial.expansion n+1                ∎
       where
-        open Binomial n-1
-        open BinomialLemmas n-1
+        open Binomial n
+        open BinomialLemmas n
 
