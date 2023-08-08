@@ -11,13 +11,12 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Fin.Relation.Unary.Top where
+module Data.Fin.Relation.Unary.TopBinomial where
 
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Nat.Base using (ℕ; zero; suc; _<_; _∸_)
 open import Data.Nat.Properties using (n∸n≡0; +-∸-assoc)
 open import Data.Product using (uncurry)
-open import Data.Sum using (inj₁; inj₂)
 open import Data.Fin.Base hiding (_<_)
 open import Data.Fin.Properties as Fin
   using (suc-injective; toℕ-fromℕ; toℕ<n; toℕ-inject₁; inject₁ℕ<)

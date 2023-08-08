@@ -18,7 +18,7 @@ open import Data.Fin.Base as Fin
 open import Data.Fin.Patterns using (0F)
 open import Data.Fin.Properties as Fin
   using (toℕ<n; toℕ-fromℕ; toℕ-inject₁)
-open import Data.Fin.Relation.Unary.Top
+open import Data.Fin.Relation.Unary.TopBinomial
   using (view; top; inj; view-inj; view-top)
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core
