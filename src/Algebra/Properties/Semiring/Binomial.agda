@@ -21,7 +21,7 @@ open import Data.Fin.Properties as Fin
 open import Data.Fin.Relation.Unary.Top
   using (view; top; inj; view-inj; view-top)
 open import Function.Base using (_∘_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; cong; module ≡-Reasoning)
   renaming (refl to ≡-refl)
 
