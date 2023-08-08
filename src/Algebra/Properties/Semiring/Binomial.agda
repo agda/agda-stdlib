@@ -60,14 +60,14 @@ module _ (x y : Carrier) where
       term = (n C k) × binomial
 
     expansion : Carrier
-    expansion = ∑[ i < suc n ] term i
+    expansion = ∑[ i ≤ n ] term i
 
     term₁ : (i : Fin (suc (suc n))) → Carrier
     term₁ zero    = 0#
     term₁ (suc i) = x * term i
 
     sum₁ : Carrier
-    sum₁ = ∑[ i < suc (suc n) ] term₁ i
+    sum₁ = ∑[ i ≤ suc n ] term₁ i
 
     term₂ : (i : Fin (suc (suc n))) → Carrier
     term₂ i with view i
@@ -75,7 +75,7 @@ module _ (x y : Carrier) where
     ... | inj j = y * term j
 
     sum₂ : Carrier
-    sum₂ = ∑[ i < suc (suc n) ] term₂ i
+    sum₂ = ∑[ i ≤ suc n ] term₂ i
 
 ------------------------------------------------------------------------
 -- Properties
@@ -90,11 +90,11 @@ module _ (x y : Carrier) where
     lemma₁ = begin
       x * expansion
         ≈⟨ *-distribˡ-sum x term ⟩
-      ∑[ i < suc n ] (x * term i)
+      ∑[ i ≤ n ] (x * term i)
         ≈˘⟨ +-identityˡ _ ⟩
-      (0# + ∑[ i < suc n ] (x * term i))
+      (0# + ∑[ i ≤ n ] (x * term i))
         ≡⟨⟩
-      (0# + ∑[ i < suc n ] term₁ (suc i))
+      (0# + ∑[ i ≤ n ] term₁ (suc i))
         ≡⟨⟩
       sum₁  ∎
 
@@ -102,11 +102,11 @@ module _ (x y : Carrier) where
     lemma₂ = begin
       (y * expansion)
         ≈⟨ *-distribˡ-sum y term ⟩
-      ∑[ i < suc n ] (y * term i)
+      ∑[ i ≤ n ] (y * term i)
         ≈˘⟨ +-identityʳ _ ⟩
-      ∑[ i < suc n ] (y * term i) + 0#
+      ∑[ i ≤ n ] (y * term i) + 0#
         ≈⟨ +-cong (sum-cong-≋ lemma₂-inj) lemma₂-top ⟩
-      (∑[ i < suc n ] term₂-inj i) + term₂ [n+1]
+      (∑[ i ≤ n ] term₂-inj i) + term₂ [n+1]
         ≈˘⟨ sum-init-last term₂ ⟩
       sum term₂
         ≡⟨⟩
@@ -286,14 +286,14 @@ module _ (x y : Carrier) where
       Binomial.expansion 0            ∎
 
     theorem n+1@(suc n) = begin
-      (x + y) ^ n+1                         ≡⟨⟩
-      (x + y) * (x + y) ^ n                 ≈⟨ *-congˡ (theorem n) ⟩
-      (x + y) * expansion                   ≈⟨ distribʳ _ _ _ ⟩
-      x * expansion + y * expansion         ≈⟨ +-cong lemma₁ lemma₂ ⟩
-      sum₁ + sum₂                           ≈˘⟨ ∑-distrib-+ term₁ term₂ ⟩
-      ∑[ i < suc n+1 ] (term₁ i + term₂ i)  ≈⟨ sum-cong-≋ (term₁+term₂≈term n) ⟩
-      ∑[ i < suc n+1 ] Binomial.term n+1 i  ≡⟨⟩
-      Binomial.expansion n+1                ∎
+      (x + y) ^ n+1                     ≡⟨⟩
+      (x + y) * (x + y) ^ n             ≈⟨ *-congˡ (theorem n) ⟩
+      (x + y) * expansion               ≈⟨ distribʳ _ _ _ ⟩
+      x * expansion + y * expansion     ≈⟨ +-cong lemma₁ lemma₂ ⟩
+      sum₁ + sum₂                       ≈˘⟨ ∑-distrib-+ term₁ term₂ ⟩
+      ∑[ i ≤ n+1 ] (term₁ i + term₂ i)  ≈⟨ sum-cong-≋ (term₁+term₂≈term n) ⟩
+      ∑[ i ≤ n+1 ] Binomial.term n+1 i  ≡⟨⟩
+      Binomial.expansion n+1            ∎
       where
         open Binomial n
         open BinomialLemmas n
