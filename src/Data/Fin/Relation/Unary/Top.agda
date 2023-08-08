@@ -16,7 +16,7 @@ module Data.Fin.Relation.Unary.Top where
 open import Data.Nat.Base using (ℕ; zero; suc; _<_)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Properties using (toℕ-fromℕ; toℕ-inject₁; inject₁ℕ<)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Nullary.Negation using (contradiction)
 
 private
@@ -45,9 +45,9 @@ view-zero : ∀ n → View {suc n} zero
 view-zero zero    = ‵fromℕ
 view-zero (suc n) = ‵inj₁ (view-zero n)
 
-view : ∀ j → View {n} j
-view {n = suc n} zero = view-zero n
-view {n = suc n} (suc i) with view {n} i
+view : (j : Fin n) → View j
+view zero = view-zero _
+view (suc i) with view i
 ... | ‵fromℕ  = ‵fromℕ
 ... | ‵inject₁ j = ‵inj₁ (view (suc j))
 
@@ -72,3 +72,13 @@ view-fromℕ (suc n) rewrite view-fromℕ n = refl
 view-inject₁ : ∀ j → view {suc n} (inject₁ j) ≡ ‵inj₁ (view {n} j)
 view-inject₁ zero                           = refl
 view-inject₁ (suc j) rewrite view-inject₁ j = refl
+
+-- Uniqeness of the view
+
+view-unique : (v : View {n} j) → view j ≡ v
+view-unique ‵fromℕ            = view-fromℕ _
+view-unique (‵inj₁ {j = j} v) = begin
+  view (inject₁ j) ≡⟨ view-inject₁ j ⟩
+  ‵inj₁ (view j)   ≡⟨ cong ‵inj₁ (view-unique v) ⟩
+  ‵inj₁ v          ∎ where open ≡-Reasoning
+

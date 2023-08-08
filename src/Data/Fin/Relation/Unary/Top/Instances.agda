@@ -50,30 +50,30 @@ data IsFromℕ : View {suc n} i → Set where
 
 instance
 
-  ‵fromℕ⁺ : IsFromℕ (view (fromℕ n))
-  ‵fromℕ⁺ {n = n} rewrite view-fromℕ n = ‵fromℕ
+  fromℕ⁺ : IsFromℕ (view (fromℕ n))
+  fromℕ⁺ {n = n} rewrite view-fromℕ n = ‵fromℕ
 
 data IsInject₁ : View {suc n} i → Set where
   ‵inj₁ : ∀ {j} (v : View {n} j) → IsInject₁ (‵inj₁ v)
 
 instance
 
-  inj⁺ : IsInject₁ (view (inject₁ j))
-  inj⁺ {j = j} rewrite view-inject₁ j = ‵inj₁ _
+  inject₁⁺ : IsInject₁ (view (inject₁ j))
+  inject₁⁺ {j = j} rewrite view-inject₁ j = ‵inj₁ _
 
   inject₁≡⁺ : {eq : inject₁ j ≡ i} → IsInject₁ (view i)
-  inject₁≡⁺ {eq = refl} = inj⁺
+  inject₁≡⁺ {eq = refl} = inject₁⁺
 
   inject₁≢n⁺ : {n≢i : n ≢ toℕ (inject₁ i)} → IsInject₁ (view {suc n} i)
   inject₁≢n⁺ {n} {i} {n≢i} with view i
-  ... | ‵fromℕ = contradiction n≡i n≢i
+  ... | ‵fromℕ = contradiction (sym i≡n) n≢i
     where
       open ≡-Reasoning
-      n≡i : n ≡ toℕ (inject₁ (fromℕ n))
-      n≡i = sym (begin
+      i≡n : toℕ (inject₁ (fromℕ n)) ≡ n
+      i≡n = begin
         toℕ (inject₁ (fromℕ n)) ≡⟨ toℕ-inject₁ (fromℕ n) ⟩
         toℕ (fromℕ n)           ≡⟨ toℕ-fromℕ n ⟩
-        n                       ∎)
+        n                       ∎
   ... | ‵inj₁ v = ‵inj₁ v
 
 
