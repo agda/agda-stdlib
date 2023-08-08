@@ -211,8 +211,7 @@ module _ (x y : Carrier) where
       private
 
         n<ᵇ1+n : (n Nat.<ᵇ suc n) ≡ true
-        n<ᵇ1+n with n Nat.<ᵇ suc n | <⇒<ᵇ (n<1+n n)
-        ... | true | _ = ≡-refl
+        n<ᵇ1+n with true ← n Nat.<ᵇ suc n | _ ← <⇒<ᵇ (n<1+n n) = {!≡-refl!}
 
 
       term₁+term₂≈term : ∀ i → term₁ i + term₂ i ≈ Binomial.term (suc n) i
