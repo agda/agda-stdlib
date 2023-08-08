@@ -2060,7 +2060,7 @@ m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 -- equivalence to the old definition of _≤″_
 
 ≤″-proof : ∀ {m n} (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
-≤″-proof (less-than-or-equal {k} prf) = prf
+≤″-proof (less-than-or-equal prf) = prf
 
 -- equivalence to _≤_
 
@@ -2121,7 +2121,7 @@ m≤‴m+k {m} {k = zero}  refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ
 m≤‴m+k {m} {k = suc k} prf  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) prf))
 
 ≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
-≤″⇒≤‴ (less-than-or-equal prf) = m≤‴m+k prf
+≤″⇒≤‴ m≤n = m≤‴m+k (≤″-proof m≤n)
 
 0≤‴n : ∀{n} → 0 ≤‴ n
 0≤‴n {n} = m≤‴m+k refl
