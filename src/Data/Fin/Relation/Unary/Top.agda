@@ -73,7 +73,7 @@ view-inject₁ : ∀ j → view {suc n} (inject₁ j) ≡ ‵inj₁ (view {n} j)
 view-inject₁ zero                           = refl
 view-inject₁ (suc j) rewrite view-inject₁ j = refl
 
--- Uniqeness of the view
+-- Uniqueness of the view
 
 view-unique : (v : View {n} j) → view j ≡ v
 view-unique ‵fromℕ            = view-fromℕ _
