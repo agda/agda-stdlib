@@ -2206,10 +2206,21 @@ Additions to existing modules
 
 * Added new functions and definitions to `Data.List.Base`:
   ```agda
-  catMaybes : List (Maybe A) → List A
-  ap : List (A → B) → List A → List B
-  ++-rawMagma : Set a → RawMagma a _
+  takeWhileᵇ      : (A → Bool) → List A → List A
+  dropWhileᵇ      : (A → Bool) → List A → List A
+  filterᵇ         : (A → Bool) → List A → List A
+  partitionᵇ      : (A → Bool) → List A → List A × List A
+  spanᵇ           : (A → Bool) → List A → List A × List A
+  breakᵇ          : (A → Bool) → List A → List A × List A
+  linesByᵇ        : (A → Bool) → List A → List (List A)
+  wordsByᵇ        : (A → Bool) → List A → List (List A)
+  derunᵇ          : (A → A → Bool) → List A → List A
+  deduplicateᵇ    : (A → A → Bool) → List A → List A
+  catMaybes       : List (Maybe A) → List A
+  ap              : List (A → B) → List A → List B
+  ++-rawMagma     : Set a → RawMagma a _
   ++-[]-rawMonoid : Set a → RawMonoid a _
+  iterate         : (A → A) → A → ℕ → List A
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:

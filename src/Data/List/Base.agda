@@ -188,6 +188,10 @@ replicate : ℕ → A → List A
 replicate zero    x = []
 replicate (suc n) x = x ∷ replicate n x
 
+iterate : (A → A) → A → ℕ → List A
+iterate f k zero    = []
+iterate f k (suc n) = k ∷ iterate f (f k) n
+
 inits : List A → List (List A)
 inits []       = [] ∷ []
 inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
