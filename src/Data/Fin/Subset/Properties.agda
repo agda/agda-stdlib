@@ -25,7 +25,7 @@ open import Data.Nat.Base hiding (∣_-_∣)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product as Product using (∃; ∄; _×_; _,_; proj₁)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Vec.Base
+open import Data.Vec.Base hiding (_─_)
 open import Data.Vec.Properties
 open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Bundles using (_⇔_; mk⇔)

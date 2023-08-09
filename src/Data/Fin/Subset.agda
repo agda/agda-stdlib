@@ -14,7 +14,7 @@ open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product using (∃; _×_)
-open import Data.Vec.Base hiding (foldr; foldl)
+open import Data.Vec.Base hiding (foldr; foldl; _─_)
 open import Relation.Nullary
 
 private

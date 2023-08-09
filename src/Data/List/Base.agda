@@ -195,6 +195,14 @@ tails : List A → List (List A)
 tails []       = [] ∷ []
 tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
 
+insert : (xs : List A) → Fin (length xs) → A → List A
+insert (x ∷ xs) zero    v = v ∷ x ∷ xs
+insert (x ∷ xs) (suc k) v = v ∷ insert xs k v
+
+updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
+updateAt (x ∷ xs) zero    f = f x ∷ xs
+updateAt (x ∷ xs) (suc i) f = x ∷ updateAt xs i f
+
 -- Scans
 
 scanr : (A → B → B) → B → List A → List B
@@ -329,6 +337,10 @@ splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
 splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
 
+remove : (xs : List A) → Fin (length xs) → List A
+remove (x ∷ xs) zero     = xs
+remove (x ∷ xs) (suc i)  = x ∷ remove xs i
+
 -- The following are functions which split a list up using boolean
 -- predicates. However, in practice they are difficult to use and
 -- prove properties about, and are mainly provided for advanced use
@@ -441,16 +453,20 @@ deduplicate R? = deduplicateᵇ (does ∘₂ R?)
 
 infixl 5 _[_]%=_ _[_]∷=_ _─_
 
+-- xs [ i ]%= f  modifies the i-th element of xs according to f
+
 _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-(x ∷ xs) [ zero  ]%= f = f x ∷ xs
-(x ∷ xs) [ suc k ]%= f = x ∷ (xs [ k ]%= f)
+xs [ i ]%= f = updateAt xs i f
+
+-- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
 _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
 xs [ k ]∷= v = xs [ k ]%= const v
 
+-- xs ─ i removes the i-th element of xs
+
 _─_ : (xs : List A) → Fin (length xs) → List A
-(x ∷ xs) ─ zero  = xs
-(x ∷ xs) ─ suc k = x ∷ (xs ─ k)
+xs ─ i = remove xs i
 
 ------------------------------------------------------------------------
 -- Conditional versions of cons and snoc

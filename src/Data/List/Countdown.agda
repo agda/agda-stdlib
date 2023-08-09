@@ -20,7 +20,7 @@ open import Function.Base
 open import Function.Bundles
   using (Injection; module Injection)
 open import Data.Bool.Base using (true; false)
-open import Data.List.Base hiding (lookup)
+open import Data.List.Base hiding (lookup; insert)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product

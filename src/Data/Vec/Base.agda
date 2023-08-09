@@ -78,17 +78,20 @@ updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
 
 -- xs [ i ]%= f  modifies the i-th element of xs according to f
 
-infixl 6 _[_]%=_
+infixl 6 _[_]%=_ _[_]≔_ _─_
 
 _[_]%=_ : Vec A n → Fin n → (A → A) → Vec A n
 xs [ i ]%= f = updateAt i f xs
 
 -- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
-infixl 6 _[_]≔_
-
 _[_]≔_ : Vec A n → Fin n → A → Vec A n
 xs [ i ]≔ y = xs [ i ]%= const y
+
+-- xs ─ i removes the i-th element of xs
+
+_─_ : Vec A (suc n) → Fin (suc n) → Vec A n
+xs ─ i = remove xs i
 
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
