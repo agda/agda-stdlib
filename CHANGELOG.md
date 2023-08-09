@@ -2133,7 +2133,7 @@ Other minor changes
   gcd-zero  : Zero 1ℤ gcd
   ```
 
-* Added new functions in `Data.List`:
+* Added new functions in `Data.List.Base`:
   ```agda
   takeWhileᵇ   : (A → Bool) → List A → List A
   dropWhileᵇ   : (A → Bool) → List A → List A
@@ -2145,14 +2145,15 @@ Other minor changes
   wordsByᵇ     : (A → Bool) → List A → List (List A)
   derunᵇ       : (A → A → Bool) → List A → List A
   deduplicateᵇ : (A → A → Bool) → List A → List A
-  ```
 
-* Added new functions and definitions to `Data.List.Base`:
-  ```agda
-  catMaybes : List (Maybe A) → List A
-  ap : List (A → B) → List A → List B
-  ++-rawMagma : Set a → RawMagma a _
+  catMaybes       : List (Maybe A) → List A
+  ap              : List (A → B) → List A → List B
+  ++-rawMagma     : Set a → RawMagma a _
   ++-[]-rawMonoid : Set a → RawMonoid a _
+
+  insert   : (xs : List A) → Fin (length xs) → A → List A
+  remove   : (xs : List A) → Fin (length xs) → List A
+  updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
@@ -2558,6 +2559,8 @@ Other minor changes
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
+
+  _─_ : Vec A (suc n) → Fin (suc n) → Vec A n
   ```
 
 * Added new instance in `Data.Vec.Categorical`:
