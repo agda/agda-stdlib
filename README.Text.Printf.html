@@ -82,10 +82,10 @@
 <a id="2330" class="Comment">-- If the format string str is invalid then `printf str` will have type</a>
 <a id="2402" class="Comment">-- `Error e` where `e` is the lexing error.</a>
 
-<a id="2447" href="README.Text.Printf.html#2447" class="Function">_</a> <a id="2449" class="Symbol">:</a> <a id="2451" href="Text.Printf.Generic.html#1279" class="Record">Text.Printf.Error</a> <a id="2469" class="Symbol">(</a><a id="2470" href="Text.Format.Generic.html#2338" class="InductiveConstructor">UnexpectedEndOfString</a> <a id="2492" class="String">&quot;%s: %u + %u ≡ %&quot;</a><a id="2509" class="Symbol">)</a>
+<a id="2447" href="README.Text.Printf.html#2447" class="Function">_</a> <a id="2449" class="Symbol">:</a> <a id="2451" href="Text.Printf.Generic.html#1284" class="Record">Text.Printf.Error</a> <a id="2469" class="Symbol">(</a><a id="2470" href="Text.Format.Generic.html#2338" class="InductiveConstructor">UnexpectedEndOfString</a> <a id="2492" class="String">&quot;%s: %u + %u ≡ %&quot;</a><a id="2509" class="Symbol">)</a>
 <a id="2511" class="Symbol">_</a> <a id="2513" class="Symbol">=</a> <a id="2515" href="Text.Printf.html#1058" class="Function">printf</a> <a id="2522" class="String">&quot;%s: %u + %u ≡ %&quot;</a>
 
-<a id="2541" href="README.Text.Printf.html#2541" class="Function">_</a> <a id="2543" class="Symbol">:</a> <a id="2545" href="Text.Printf.Generic.html#1279" class="Record">Text.Printf.Error</a> <a id="2563" class="Symbol">(</a><a id="2564" href="Text.Format.Generic.html#2441" class="InductiveConstructor">InvalidType</a> <a id="2576" class="String">&quot;%s: %u + %&quot;</a> <a id="2589" class="String">&#39;a&#39;</a> <a id="2593" class="String">&quot; ≡ %u&quot;</a><a id="2600" class="Symbol">)</a>
+<a id="2541" href="README.Text.Printf.html#2541" class="Function">_</a> <a id="2543" class="Symbol">:</a> <a id="2545" href="Text.Printf.Generic.html#1284" class="Record">Text.Printf.Error</a> <a id="2563" class="Symbol">(</a><a id="2564" href="Text.Format.Generic.html#2441" class="InductiveConstructor">InvalidType</a> <a id="2576" class="String">&quot;%s: %u + %&quot;</a> <a id="2589" class="String">&#39;a&#39;</a> <a id="2593" class="String">&quot; ≡ %u&quot;</a><a id="2600" class="Symbol">)</a>
 <a id="2602" class="Symbol">_</a> <a id="2604" class="Symbol">=</a> <a id="2606" href="Text.Printf.html#1058" class="Function">printf</a> <a id="2613" class="String">&quot;%s: %u + %a ≡ %u&quot;</a>
 
 <a id="2633" class="Comment">-- Trying to pass arguments to such an ̀Error` type will lead to a</a>
