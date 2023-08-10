@@ -59,7 +59,7 @@ open import Data.Maybe       as Maybe
 open import Data.Product.Base using (map₁; _×_; ∃; proj₁; _,_)
 open import Data.String.Base as String using (String)
 open import Data.String.Properties as String using (_≟_)
-open import Data.These       as These
+open import Data.These       as These hiding (map₁)
 
 open import Function.Base using (case_of_; _$_; _∘′_; id; _on_)
 open import Relation.Nary
