@@ -39,7 +39,7 @@ open import Data.String.Base as String using (String; toList; fromList)
 open import Data.String.Properties as String using (_==_)
 open import Function.Base using (_∘_)
 open import Data.Bool hiding (_≤?_)
-open import Data.Product as P using (_×_; <_,_>; uncurry; proj₁)
+open import Data.Product.Base as P using (_×_; <_,_>; uncurry; proj₁)
 open import Agda.Builtin.Equality
 
 -- This can give us for instance this decomposition of a function

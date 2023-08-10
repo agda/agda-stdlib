@@ -13,7 +13,7 @@ module Data.Tree.AVL.Sets.Membership
   where
 
 open import Data.Bool.Base using (true; false)
-open import Data.Product as Prod using (_,_; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘_; _∘′_; const)
