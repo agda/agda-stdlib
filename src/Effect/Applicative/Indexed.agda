@@ -12,7 +12,7 @@
 module Effect.Applicative.Indexed where
 
 open import Effect.Functor using (RawFunctor)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Function.Base
 open import Level
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

@@ -19,7 +19,7 @@ open import Data.Product.Base using (_,_)
 open import Data.W.Indexed
 open import Relation.Unary
 open import Relation.Unary.PredicateTransformer
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 ------------------------------------------------------------------------
 

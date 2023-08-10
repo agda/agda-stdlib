@@ -14,7 +14,7 @@ open import Codata.Musical.Colist using (Colist; []; _∷_)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable

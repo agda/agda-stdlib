@@ -4,7 +4,7 @@ module Main where
 
 open import Data.Nat.Base
 open import Data.Nat.Show using (show)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.String.Base using (String; _++_)
 open import IO.Base as IO using (IO; Main; run)
 open import IO.Finite using (putStrLn)

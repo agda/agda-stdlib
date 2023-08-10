@@ -10,7 +10,7 @@ module Data.List.Relation.Unary.Linked {a} {A : Set a} where
 
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
-open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
+open import Data.Product.Base as Prod using (_,_; _×_; uncurry; <_,_>)
 open import Data.Maybe.Base using (just)
 open import Data.Maybe.Relation.Binary.Connected
   using (Connected; just; just-nothing)

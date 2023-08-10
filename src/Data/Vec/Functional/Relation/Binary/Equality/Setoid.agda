@@ -13,7 +13,7 @@ open import Data.Vec.Functional.Relation.Binary.Pointwise
 import Data.Vec.Functional.Relation.Binary.Pointwise.Properties as PW
 open import Level using (Level)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 module Data.Vec.Functional.Relation.Binary.Equality.Setoid
   {a ℓ} (S : Setoid a ℓ) where

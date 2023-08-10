@@ -15,7 +15,7 @@ open import Effect.Monad
 open import Effect.Monad.Indexed
 open import Data.Unit
 open import Data.Product.Base using (_,_)
-open import Function
+open import Function.Base using (const; id; _∘_)
 open import Level
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary

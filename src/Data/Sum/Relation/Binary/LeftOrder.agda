@@ -13,14 +13,14 @@ open import Data.Sum.Relation.Binary.Pointwise as PW
   using (Pointwise; inj₁; inj₂)
 open import Data.Product.Base using (_,_)
 open import Data.Empty
-open import Function
+open import Function.Base using (_$_; _∘_)
 open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 infixr 1 _⊎-<_
@@ -32,7 +32,7 @@ data _⊎-<_ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ₁∼₁ : ∀ {x y} (x∼₁y : x ∼₁ y) → (_∼₁_ ⊎-< _∼₂_) (inj₁ x) (inj₁ y)
   ₂∼₂ : ∀ {x y} (x∼₂y : x ∼₂ y) → (_∼₁_ ⊎-< _∼₂_) (inj₂ x) (inj₂ y)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some properties which are preserved by _⊎-<_
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
@@ -127,7 +127,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ... | tri≈ x≮y x≈y x≯y = tri≈ (x≮y ∘ drop-inj₂) (inj₂ x≈y) (x≯y ∘ drop-inj₂)
   ... | tri> x≮y x≉y x>y = tri> (x≮y ∘ drop-inj₂) (x≉y ∘ PW.drop-inj₂) (₂∼₂ x>y)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some collections of properties which are preserved
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}

@@ -14,7 +14,8 @@ open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Bundles
 open import Level using (Level)
 open import Relation.Binary using (Setoid; IsEquivalence)
-open import Relation.Binary.PropositionalEquality as P using (setoid)
+import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 open import Function.Consequences
 
@@ -56,17 +57,17 @@ open module ↔ {ℓ} = IsEquivalence (↔-isEquivalence {ℓ}) using ()
 -- Conversion functions
 
 Inverse⇒Injection : Inverse S T → Injection S T
-Inverse⇒Injection {S = S} I = record
+Inverse⇒Injection I = record
   { to = to
   ; cong = to-cong
-  ; injective = inverseʳ⇒injective S {f⁻¹ = from} from-cong inverseʳ
+  ; injective = inverseʳ⇒injective Eq₂._≈_ to Eq₂.refl Eq₁.sym Eq₁.trans inverseʳ
   } where open Inverse I
 
 Inverse⇒Bijection : Inverse S T → Bijection S T
-Inverse⇒Bijection {S = S} I = record
+Inverse⇒Bijection I = record
   { to        = to
   ; cong      = to-cong
-  ; bijective = inverseᵇ⇒bijective S from-cong inverse
+  ; bijective = inverseᵇ⇒bijective Eq₂._≈_ Eq₂.refl Eq₁.sym Eq₁.trans inverse
   } where open Inverse I
 
 Inverse⇒Equivalence : Inverse S T → Equivalence S T
@@ -92,6 +93,6 @@ module _ (ext : ∀ {a b} → Extensionality a b) where
   ↔-fun A↔B C↔D = mk↔′
     (λ a→c b → to C↔D (a→c (from A↔B b)))
     (λ b→d a → from C↔D (b→d (to A↔B a)))
-    (λ b→d → ext λ _ → P.trans (inverseˡ C↔D _ ) (P.cong b→d (inverseˡ A↔B _)))
-    (λ a→c → ext λ _ → P.trans (inverseʳ C↔D _ ) (P.cong a→c (inverseʳ A↔B _)))
+    (λ b→d → ext λ _ → P.trans (strictlyInverseˡ C↔D _ ) (P.cong b→d (strictlyInverseˡ A↔B _)))
+    (λ a→c → ext λ _ → P.trans (strictlyInverseʳ C↔D _ ) (P.cong a→c (strictlyInverseʳ A↔B _)))
     where open Inverse

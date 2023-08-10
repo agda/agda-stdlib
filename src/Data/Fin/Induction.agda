@@ -13,7 +13,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_; s≤s)
 open import Data.Nat.Properties using (n<1+n; ≤⇒≯)
 import Data.Nat.Induction as ℕ
 import Data.Nat.Properties as ℕ
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Linked as Linked using (Linked; [-]; _∷_)
 import Data.Vec.Relation.Unary.Linked.Properties as Linkedₚ

@@ -24,7 +24,7 @@ open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ;
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
@@ -794,7 +794,7 @@ p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
 +-mono-<-≤ {p} {q} {r} p<q q≤r = <-≤-trans (+-monoˡ-< r p<q) (+-monoʳ-≤ q q≤r)
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _+_ and predicates
 
 pos+pos⇒pos : ∀ p .{{_ : Positive p}} →
@@ -808,7 +808,7 @@ nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} →
 nonNeg+nonNeg⇒nonNeg p q = nonNegative
   (+-mono-≤ (nonNegative⁻¹ p) (nonNegative⁻¹ q))
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _-_
 
 +-minus-telescope : ∀ p q r → (p - q) + (q - r) ≃ p - r
@@ -1235,7 +1235,7 @@ private
 *-cancelʳ-<-nonPos : ∀ r .{{_ : NonPositive r}} → p * r < q * r → q < p
 *-cancelʳ-<-nonPos {p} {q} r rewrite *-comm-≡ p r | *-comm-≡ q r = *-cancelˡ-<-nonPos r
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _*_ and predicates
 
 pos*pos⇒pos : ∀ p .{{_ : Positive p}} →

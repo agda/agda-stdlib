@@ -20,7 +20,7 @@ import Data.List.Relation.Binary.Sublist.Setoid as Sublist
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutationₚ
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; _∘₂_)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)

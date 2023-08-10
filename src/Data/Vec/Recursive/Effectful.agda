@@ -9,12 +9,12 @@
 module Data.Vec.Recursive.Effectful where
 
 open import Agda.Builtin.Nat
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.Vec.Recursive
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Function
+open import Function.Base using (_∘_; flip)
 
 ------------------------------------------------------------------------
 -- Functor and applicative

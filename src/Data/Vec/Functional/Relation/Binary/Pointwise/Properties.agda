@@ -11,7 +11,7 @@ module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 open import Data.Fin.Base using (zero; suc; _↑ˡ_; _↑ʳ_; splitAt)
 open import Data.Fin.Properties using (all?; splitAt-↑ˡ; splitAt-↑ʳ)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using () renaming (Pointwise to ×-Pointwise)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
@@ -20,7 +20,7 @@ open import Data.Vec.Functional.Relation.Binary.Pointwise
 open import Function.Base
 open import Level using (Level)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable

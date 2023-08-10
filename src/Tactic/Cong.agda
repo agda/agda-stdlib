@@ -36,10 +36,10 @@ open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
 
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_; refl; cong)
 
--- 'Data.String.Properties' defines this via 'Dec', so let's use the builtin
--- for maximum speed.
+-- 'Data.String.Properties' defines this via 'Dec', so let's use the
+-- builtin for maximum speed.
 import Agda.Builtin.String as String renaming (primStringEquality to _≡ᵇ_)
 
 open import Reflection
@@ -55,9 +55,9 @@ open import Reflection.AST.Term                 as Term
 
 open import Reflection.TCM.Syntax
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Utilities
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 private
   -- Descend past a variable.
@@ -116,7 +116,7 @@ private
     `y ← quoteTC y
     pure $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Anti-Unification
 --
 -- The core idea of the tactic is that we can compute the input
@@ -128,7 +128,7 @@ private
 -- For instance, the two terms 'suc (m + (m + 0)) + (m + 0)' and
 -- 'suc (m + m) + (m + 0)' would anti unify to 'suc (m + _) + (m + 0)'
 -- which we can then use to construct the lambda 'λ ϕ → suc (m + ϕ) + (m + 0)'.
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 private
   antiUnify        : ℕ → Term → Term → Term
@@ -202,9 +202,9 @@ private
     just []
 
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Rewriting
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 macro
   cong! : ∀ {a} {A : Set a} {x y : A} → x ≡ y → Term → TC ⊤
