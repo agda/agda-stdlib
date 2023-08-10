@@ -189,8 +189,8 @@ replicate zero    x = []
 replicate (suc n) x = x ∷ replicate n x
 
 iterate : (A → A) → A → ℕ → List A
-iterate f k zero    = []
-iterate f k (suc n) = k ∷ iterate f (f k) n
+iterate s z zero    = []
+iterate s z (suc n) = z ∷ iterate s (s z) n
 
 inits : List A → List (List A)
 inits []       = [] ∷ []
