@@ -272,7 +272,7 @@ Non-backwards compatible changes
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
   which can be used to indicate meet/join-ness of the original structures.
 
-#### Function hierarchy
+#### Removal of the old function hierarchy
 
 * The switch to the new function hierarchy is complete and the following definitions
   now use the new definitions instead of the old ones:
@@ -345,9 +345,41 @@ Non-backwards compatible changes
   * `Relation.Nullary.Decidable`
     * `map`
 
-* The names of the fields in the records of the new hierarchy have been
-  changed from `f`, `g`, `cong₁`, `cong₂` to `to`, `from`, `to-cong`, `from-cong`.
 
+#### Changes to the new function hierarchy
+
+* The names of the fields in `Function.Bundles` have been
+  changed from `f`, `g`, `cong₁` and `cong₂` to `to`, `from`, `to-cong`, `from-cong`.
+
+* The module `Function.Definitions` no longer has two equalities as module arguments, as
+  they did not interact as intended with the re-exports from `Function.Definitions.(Core1/Core2)`.
+  The latter have been removed and their definitions folded into `Function.Definitions`.
+  
+* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective` 
+  have been changed from:
+  ```
+  Surjective f = ∀ y → ∃ λ x → f x ≈₂ y
+  Inverseˡ f g = ∀ y → f (g y) ≈₂ y
+  Inverseʳ f g = ∀ x → g (f x) ≈₁ x
+  ```
+  to:
+  ```
+  Surjective f = ∀ y → ∃ λ x → ∀ {z} → z ≈₁ x → f z ≈₂ y
+  Inverseˡ f g = ∀ {x y} → y ≈₁ g x → f y ≈₂ x
+  Inverseʳ f g = ∀ {x y} → y ≈₂ f x → g y ≈₁ x
+  ```
+  This is for several reasons: i) the new definitions compose much more easily, ii) Agda
+  can better infer the equalities used.
+  
+  To ease backwards compatibility:
+   - the old definitions have been moved to the new names  `StrictlySurjective`, 
+	 `StrictlyInverseˡ` and `StrictlyInverseʳ`. 
+   - The records in  `Function.Structures` and `Function.Bundles` export proofs 
+	 of these under the names `strictlySurjective`, `strictlyInverseˡ` and 
+	 `strictlyInverseʳ`,
+   - Conversion functions have been added in both directions to
+	 `Function.Consequences(.Propositional)`. 
+  
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
@@ -2168,6 +2200,10 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+  
+  take-map : take n (map f xs) ≡ map f (take n xs)
+  drop-map : drop n (map f xs) ≡ map f (drop n xs)
+  head-map : head (map f xs) ≡ Maybe.map f (head xs)
 
   take-suc : (o : Fin (length xs)) → let m = toℕ o in take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
   take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
@@ -2206,6 +2242,9 @@ Other minor changes
 * Added a new proof to `Data.Nat.Binary.Properties`:
   ```agda
   suc-injective : Injective _≡_ _≡_ suc
+  toℕ-inverseˡ  : Inverseˡ _≡_ _≡_ toℕ fromℕ
+  toℕ-inverseʳ  : Inverseʳ _≡_ _≡_ toℕ fromℕ
+  toℕ-inverseᵇ  : Inverseᵇ _≡_ _≡_ toℕ fromℕ
   ```
 
 * Added a new pattern synonym to `Data.Nat.Divisibility.Core`:

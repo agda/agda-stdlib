@@ -12,7 +12,7 @@
 module Data.Container.Indexed where
 
 open import Level
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 open import Data.W.Indexed
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Function.Equality using (_⟨$⟩_)

@@ -18,7 +18,7 @@ open import Data.Nat.Binary.Properties
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Vec using ([]; _∷_)
+open import Data.Vec.Base using ([]; _∷_)
 open import Function.Base using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -109,8 +109,8 @@ toℕ-homo-∸ 1+[2 x ] 1+[2 y ] = begin
   where open ≡-Reasoning
 
 fromℕ-homo-∸ : ∀ m n → fromℕ (m ℕ.∸ n) ≡ (fromℕ m) ∸ (fromℕ n)
-fromℕ-homo-∸ = homomorphic₂-inv ∸-magma ℕₚ.∸-magma {toℕ}
-  (cong fromℕ) (toℕ-fromℕ , fromℕ-toℕ) toℕ-homo-∸
+fromℕ-homo-∸ = homomorphic₂-inv ∸-magma ℕₚ.∸-magma
+  (cong fromℕ) toℕ-inverseᵇ toℕ-homo-∸
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_

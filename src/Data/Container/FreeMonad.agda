@@ -10,7 +10,7 @@ module Data.Container.FreeMonad where
 
 open import Level using (Level; _⊔_)
 open import Data.Sum.Base using (inj₁; inj₂ ; [_,_]′)
-open import Data.Product using (_,_; -,_)
+open import Data.Product.Base using (_,_; -,_)
 open import Data.Container using (Container; ⟦_⟧; μ)
 open import Data.Container.Relation.Unary.All using (□; all)
 open import Data.Container.Combinator using (const; _⊎_)

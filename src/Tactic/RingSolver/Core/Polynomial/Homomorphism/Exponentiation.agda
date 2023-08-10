@@ -18,7 +18,7 @@ open import Function.Base using (_⟨_⟩_)
 open import Data.Nat.Base as ℕ using (ℕ; suc; zero; compare)
 open import Data.Product.Base  using (_,_; _×_; proj₁; proj₂)
 open import Data.List.Kleene
-open import Data.Vec      using (Vec)
+open import Data.Vec.Base      using (Vec)
 
 import Data.Nat.Properties as ℕ-Prop
 import Relation.Binary.PropositionalEquality.Core as ≡

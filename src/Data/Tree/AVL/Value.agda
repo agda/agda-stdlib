@@ -11,7 +11,7 @@ open import Relation.Binary using (Setoid; _Respects_)
 
 module Data.Tree.AVL.Value {a ℓ} (S : Setoid a ℓ) where
 
-open import Data.Product using (Σ; _,_)
+open import Data.Product.Base using (Σ; _,_)
 open import Level using (suc; _⊔_)
 import Function.Base as F
 open Setoid S renaming (Carrier to Key)

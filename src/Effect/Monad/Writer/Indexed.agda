@@ -11,7 +11,7 @@ open import Level
 module Effect.Monad.Writer.Indexed (a : Level) where
 
 open import Algebra using (RawMonoid)
-open import Data.Product using (_×_; _,_; map₁)
+open import Data.Product.Base using (_×_; _,_; map₁)
 open import Data.Unit.Polymorphic
 open import Effect.Applicative.Indexed
 open import Effect.Monad
