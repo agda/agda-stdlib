@@ -11,7 +11,7 @@ module Data.List.Relation.Ternary.Appending.Propositional
   where
 
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
 import Data.List.Properties as Listₚ
 import Data.List.Relation.Binary.Pointwise as Pw using (≡⇒Pointwise-≡; Pointwise-≡⇒≡)

@@ -10,7 +10,7 @@ module Data.List.Relation.Binary.Lex where
 
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
-open import Data.Product using (_×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_; flip; id)

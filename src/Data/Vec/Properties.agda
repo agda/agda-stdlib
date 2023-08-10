@@ -15,7 +15,7 @@ open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties
   using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans; suc-injective)
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)

@@ -8,7 +8,7 @@
 
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Data.Product.Properties using (≡-dec)
 open import Data.Sum.Base
 open import Data.Unit.Base using (⊤)
