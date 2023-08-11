@@ -17,7 +17,8 @@ open import Data.Fin.Base using (zero; suc; _<_)
 open import Data.Nat.Base using (ℕ; zero; suc; s<s⁻¹)
 open import Level using (Level)
 open import Function.Base using (_on_)
-open import Relation.Binary using (Rel; Transitive)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Transitive)
 open import Relation.Unary using (Pred; Decidable)
 
 private
