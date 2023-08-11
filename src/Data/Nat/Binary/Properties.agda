@@ -21,11 +21,11 @@ open import Data.Nat.Divisibility using (∣-refl)
 import Data.Nat.Base as ℕᵇ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
-open import Function.Definitions using (Injective)
-open import Function.Definitions.Core2 using (Surjective)
+open import Function.Definitions
+open import Function.Consequences.Propositional
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Bundles
@@ -202,8 +202,8 @@ toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   xN≡yN   = ℕₚ.*-cancelˡ-≡ _ _ 2 2xN≡2yN
   x≡y     = toℕ-injective xN≡yN
 
-toℕ-surjective : Surjective _≡_ toℕ
-toℕ-surjective n = (fromℕ n , toℕ-fromℕ n)
+toℕ-surjective : Surjective _≡_ _≡_ toℕ
+toℕ-surjective = strictlySurjective⇒surjective (λ n → fromℕ n , toℕ-fromℕ n)
 
 toℕ-isRelHomomorphism : IsRelHomomorphism _≡_ _≡_ toℕ
 toℕ-isRelHomomorphism = record
@@ -220,6 +220,15 @@ fromℕ-injective {x} {y} f[x]≡f[y] = begin
 
 fromℕ-toℕ : fromℕ ∘ toℕ ≗ id
 fromℕ-toℕ = toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
+
+toℕ-inverseˡ : Inverseˡ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseˡ = strictlyInverseˡ⇒inverseˡ {f⁻¹ = fromℕ} toℕ toℕ-fromℕ
+
+toℕ-inverseʳ : Inverseʳ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseʳ = strictlyInverseʳ⇒inverseʳ toℕ fromℕ-toℕ
+
+toℕ-inverseᵇ : Inverseᵇ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseᵇ = toℕ-inverseˡ , toℕ-inverseʳ
 
 fromℕ-pred : ∀ n → fromℕ (ℕ.pred n) ≡ pred (fromℕ n)
 fromℕ-pred n = begin
@@ -279,7 +288,7 @@ x≢0⇒x>0 {1+[2 _ ]} _   =  0<odd
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ = inj₁
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _<_ and toℕ & fromℕ.
 
 toℕ-mono-< : toℕ Preserves _<_ ⟶ ℕ._<_
@@ -340,7 +349,7 @@ toℕ-isMonomorphism-< = record
   ; cancel              = toℕ-cancel-<
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties of _<_
 
 <-irrefl : Irreflexive _≡_ _<_
@@ -393,7 +402,7 @@ toℕ-isMonomorphism-< = record
 _<?_ : Decidable _<_
 _<?_ = tri⇒dec< <-cmp
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures for _<_
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
@@ -411,7 +420,7 @@ _<?_ = tri⇒dec< <-cmp
   ; compare       = <-cmp
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles for _<_
 
 <-strictPartialOrder : StrictPartialOrder _ _ _
@@ -424,7 +433,7 @@ _<?_ = tri⇒dec< <-cmp
   { isStrictTotalOrder =  <-isStrictTotalOrder
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Other properties of _<_
 
 x<2[1+x] : ∀ x → x < 2[1+ x ]
@@ -438,9 +447,9 @@ x<1+[2x] zero     = 0<odd
 x<1+[2x] 2[1+ x ] = even<odd (x<2[1+x] x)
 x<1+[2x] 1+[2 x ] = odd<odd (x<1+[2x] x)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _≤_
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Basic properties
 
 <⇒≱ : _<_ ⇒ _≱_
@@ -474,7 +483,7 @@ x<1+[2x] 1+[2 x ] = odd<odd (x<1+[2x] x)
 x≤0⇒x≡0 : x ≤ zero → x ≡ zero
 x≤0⇒x≡0 (inj₂ x≡0) = x≡0
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _<_ and toℕ & fromℕ.
 
 fromℕ-mono-≤ : fromℕ Preserves ℕ._≤_ ⟶ _≤_
@@ -505,7 +514,7 @@ toℕ-isMonomorphism-≤ = record
   ; cancel              = toℕ-cancel-≤
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties of _≤_
 
 ≤-refl : Reflexive _≤_
@@ -543,7 +552,7 @@ x ≤? y with <-cmp x y
 ... | tri> _   _   y<x = no (<⇒≱ y<x)
 
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
@@ -572,7 +581,7 @@ x ≤? y with <-cmp x y
   ; _≤?_         = _≤?_
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
@@ -595,7 +604,7 @@ x ≤? y with <-cmp x y
   { isDecTotalOrder = ≤-isDecTotalOrder
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
 module ≤-Reasoning = InequalityReasoning
@@ -605,9 +614,9 @@ module ≤-Reasoning = InequalityReasoning
   <-≤-trans ≤-<-trans
   hiding (step-≈; step-≈˘)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _<ℕ_
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 <⇒<ℕ : ∀ {x y} → x < y → x <ℕ y
 <⇒<ℕ x<y = toℕ-mono-< x<y
@@ -805,7 +814,7 @@ private
 
 module Bin+CSemigroup = CommSemigProp +-commutativeSemigroup
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
 
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_

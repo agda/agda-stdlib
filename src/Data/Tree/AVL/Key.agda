@@ -3,7 +3,7 @@
 --
 -- Keys for AVL trees -- the original key type extended with a new
 -- minimum and maximum.
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
@@ -18,8 +18,8 @@ module Data.Tree.AVL.Key
 open import Level
 open import Data.Empty
 open import Data.Unit
-open import Data.Product
-open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Data.Product.Base using (_×_; _,_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_ ; refl)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Construct.Add.Extrema
   as AddExtremaToSet using (_±)
@@ -31,7 +31,7 @@ import Relation.Binary.Construct.Add.Extrema.Strict
 open StrictTotalOrder sto renaming (Carrier to Key)
   using (_≈_; _<_; trans; irrefl; module Eq)
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Keys are augmented with new extrema (i.e. an artificial minimum and
 -- maximum)
 
@@ -45,7 +45,7 @@ open AddExtremaToSet public
   ; ⊤± to ⊤⁺
   )
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The equality is extended in a corresponding manner
 
 open AddExtremaToEquality _≈_ public
@@ -55,7 +55,7 @@ open AddExtremaToEquality _≈_ public
   ; [_]  to [_]ᴱ
   )
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The order is extended in a corresponding manner
 
 open AddExtremaToOrder _<_ public

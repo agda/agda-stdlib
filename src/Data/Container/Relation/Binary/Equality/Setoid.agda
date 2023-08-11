@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.Container.Relation.Binary.Equality.Setoid {c e} (S : Setoid c e) where
 

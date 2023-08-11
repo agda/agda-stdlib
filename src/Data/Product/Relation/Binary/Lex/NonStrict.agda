@@ -11,7 +11,7 @@
 
 module Data.Product.Relation.Binary.Lex.NonStrict where
 
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _⇒_)

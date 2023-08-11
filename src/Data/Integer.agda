@@ -30,7 +30,7 @@ open import Data.Integer.Properties public
 -- Version 1.5
 -- Show
 
-import Data.Nat.Show as ℕ
+import Data.Nat.Show as ℕ using (show)
 open import Data.Sign as Sign using (Sign)
 open import Data.String.Base using (String; _++_)
 

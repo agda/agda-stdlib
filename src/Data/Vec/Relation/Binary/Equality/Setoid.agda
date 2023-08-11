@@ -21,7 +21,6 @@ open import Data.Vec.Relation.Binary.Pointwise.Inductive as PW
   using (Pointwise)
 open import Function.Base
 open import Level using (_⊔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 open Setoid S renaming (Carrier to A)
 

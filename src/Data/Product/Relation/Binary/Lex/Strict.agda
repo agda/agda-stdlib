@@ -28,7 +28,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Transitive; Symmetric; Irreflexive; Asymmetric; Total; Decidable; Antisymmetric; Trichotomous; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri>; tri≈)
 open import Relation.Binary.Consequences
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
 
 private
   variable

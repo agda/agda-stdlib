@@ -13,9 +13,9 @@ module Data.Vec.Relation.Binary.Lex.NonStrict where
 
 open import Data.Empty
 open import Data.Unit using (⊤; tt)
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product.Base using (proj₁; proj₂)
 open import Data.Nat using (ℕ)
-open import Data.Vec using (Vec; []; _∷_)
+open import Data.Vec.Base using (Vec; []; _∷_)
 import Data.Vec.Relation.Binary.Lex.Strict as Strict
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
   using (Pointwise; []; _∷_; head; tail)
@@ -28,7 +28,6 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric; Trans; Decidable; Total; Trichotomous)
 import Relation.Binary.Construct.NonStrictToStrict as Conv
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary hiding (Irrelevant)
 open import Level using (Level; _⊔_)
 

@@ -8,7 +8,7 @@
 
 module Relation.Binary.HeterogeneousEquality.Quotients where
 
-open import Function
+open import Function.Base using (_$_; const; _∘_)
 open import Level hiding (lift)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.HeterogeneousEquality

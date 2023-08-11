@@ -8,7 +8,7 @@
 
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Data.Product.Properties using (≡-dec)
 open import Data.Sum.Base
 open import Data.Unit.Base using (⊤)
@@ -33,7 +33,8 @@ open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsStrictPartialOrder)
 open import Relation.Binary.Definitions
   using (Reflexive; Irreflexive; Symmetric; Transitive; Antisymmetric; Asymmetric; Total; Decidable; _Respects₂_; _Respects_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 

@@ -12,9 +12,9 @@
 open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.Empty
 open import Data.List.Base
-open import Data.Product hiding (proj₁; proj₂)
+open import Data.Product.Base hiding (proj₁; proj₂)
 open import Data.Unit.Polymorphic
-open import Function
+open import Function.Base using (id; _∘_)
 open import Level
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality

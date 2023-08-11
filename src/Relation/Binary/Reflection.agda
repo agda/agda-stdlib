@@ -14,7 +14,7 @@ open import Function.Base using (id; _⟨_⟩_)
 open import Function.Bundles using (module Equivalence)
 open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid)
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 
 -- Think of the parameters as follows:
 --

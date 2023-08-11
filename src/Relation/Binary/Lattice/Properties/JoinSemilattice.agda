@@ -18,7 +18,7 @@ import Algebra.Structures as Alg
 open import Algebra.Definitions _≈_
 open import Algebra.Ordered.Structures using (IsPosemigroup)
 open import Algebra.Ordered.Bundles using (Posemigroup)
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; flip)
 open import Relation.Binary.Core using (_Preserves₂_⟶_⟶_)
 open import Relation.Binary.Structures using (IsDecPartialOrder)

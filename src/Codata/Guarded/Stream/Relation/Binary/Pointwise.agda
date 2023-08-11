@@ -13,7 +13,8 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘_; _on_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable

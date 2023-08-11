@@ -24,7 +24,8 @@ open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary using (Setoid; _Respects_)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable
@@ -48,7 +49,8 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
 -- All P xs is a finite map from indices x ∈ xs to content P x.
--- Relation pxs [ i ]= px states that, in map pxs, key i : x ∈ xs points to value px.
+-- Relation pxs [ i ]= px states that, in map pxs, key i : x ∈ xs points
+-- to value px.
 
 infix 4 _[_]=_
 

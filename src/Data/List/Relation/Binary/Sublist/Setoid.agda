@@ -9,7 +9,8 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --postfix-projections #-}
 
-open import Relation.Binary using (Setoid; Rel)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Binary.Sublist.Setoid
   {c ℓ} (S : Setoid c ℓ) where
@@ -23,12 +24,12 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Core
   as HeterogeneousCore
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeterogeneousProperties
-open import Data.Product using (∃; ∃₂; _×_; _,_; proj₂)
+open import Data.Product.Base using (∃; ∃₂; _×_; _,_; proj₂)
 
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 
 open Setoid S renaming (Carrier to A)

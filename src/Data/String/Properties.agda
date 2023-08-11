@@ -26,7 +26,7 @@ open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Substitutive; Decidable)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
-import Relation.Binary.PropositionalEquality as PropEq
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 ------------------------------------------------------------------------
 -- Primitive properties
@@ -84,7 +84,7 @@ x ≈? y = Pointwise.decidable Charₚ._≟_ (toList x) (toList y)
   { isDecEquivalence = ≈-isDecEquivalence
   }
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _≡_
 
 infix 4 _≟_

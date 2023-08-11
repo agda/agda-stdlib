@@ -21,9 +21,9 @@ open import Relation.Unary using (Pred)
 
 -- Box
 
--- We start with the definition of □ ("box") which is named after the box
--- modality in modal logic. `□ T x` states that all the elements one step
--- away from `x` with respect to the relation R satisfy `T`.
+-- We start with the definition of □ ("box") which is named after the
+-- box modality in modal logic. `□ T x` states that all the elements one
+-- step away from `x` with respect to the relation R satisfy `T`.
 
 □ : ∀ {t} → Pred A t → Pred A (a ⊔ b ⊔ t)
 □ T x = ∀ {y} → R x y → T y
@@ -43,8 +43,8 @@ open import Relation.Unary using (Pred)
 -- diamond modality in modal logic. In modal logic, `◇ T x` states that
 -- there exists an element one step away from x with respect to the
 -- relation R that satisfies T. It is worth noting that the modal logic
--- metaphor breaks down here: this only is a closure operator if the step
--- we take is *backwards* with respect to R.
+-- metaphor breaks down here: this only is a closure operator if the
+-- step we take is *backwards* with respect to R.
 
 ◇ : ∀ {t} → Pred A t → Pred A (a ⊔ b ⊔ t)
 ◇ T x = Σ[ support ∈ A ] (R support x × T support)

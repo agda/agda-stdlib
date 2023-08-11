@@ -9,7 +9,7 @@
 module Data.Star.Nat where
 
 open import Data.Unit
-open import Function
+open import Function.Base using (const)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.Construct.Always using (Always)

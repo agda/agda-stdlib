@@ -10,7 +10,6 @@ module Algebra.Morphism.Construct.Composition where
 
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
-open import Data.Product
 open import Function.Base using (_∘_)
 import Function.Construct.Composition as Func
 open import Level using (Level)
@@ -57,7 +56,7 @@ module _ {M₁ : RawMagma a ℓ₁}
     → IsMagmaIsomorphism M₁ M₃ (g ∘ f)
   isMagmaIsomorphism f-iso g-iso = record
     { isMagmaMonomorphism = isMagmaMonomorphism F.isMagmaMonomorphism G.isMagmaMonomorphism
-    ; surjective          = Func.surjective (_≈_ M₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective          = Func.surjective _ _ (_≈_ M₃) F.surjective G.surjective
     } where module F = IsMagmaIsomorphism f-iso; module G = IsMagmaIsomorphism g-iso
 
 
@@ -97,7 +96,7 @@ module _ {M₁ : RawMonoid a ℓ₁}
     → IsMonoidIsomorphism M₁ M₃ (g ∘ f)
   isMonoidIsomorphism f-iso g-iso = record
     { isMonoidMonomorphism = isMonoidMonomorphism F.isMonoidMonomorphism G.isMonoidMonomorphism
-    ; surjective           = Func.surjective (_≈_ M₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective           = Func.surjective _ _(_≈_ M₃)  F.surjective G.surjective
     } where module F = IsMonoidIsomorphism f-iso; module G = IsMonoidIsomorphism g-iso
 
 
@@ -138,7 +137,7 @@ module _ {G₁ : RawGroup a ℓ₁}
     → IsGroupIsomorphism G₁ G₃ (g ∘ f)
   isGroupIsomorphism f-iso g-iso = record
     { isGroupMonomorphism = isGroupMonomorphism F.isGroupMonomorphism G.isGroupMonomorphism
-    ; surjective          = Func.surjective (_≈_ G₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective          = Func.surjective  _ _ (_≈_ G₃) F.surjective G.surjective
     } where module F = IsGroupIsomorphism f-iso; module G = IsGroupIsomorphism g-iso
 
 
@@ -178,7 +177,7 @@ module _ {R₁ : RawNearSemiring a ℓ₁}
     → IsNearSemiringIsomorphism R₁ R₃ (g ∘ f)
   isNearSemiringIsomorphism f-iso g-iso = record
     { isNearSemiringMonomorphism = isNearSemiringMonomorphism F.isNearSemiringMonomorphism G.isNearSemiringMonomorphism
-    ; surjective                 = Func.surjective (_≈_ R₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective                 = Func.surjective _ _ (_≈_ R₃) F.surjective G.surjective
     } where module F = IsNearSemiringIsomorphism f-iso; module G = IsNearSemiringIsomorphism g-iso
 
 
@@ -220,7 +219,7 @@ module _
     → IsSemiringIsomorphism R₁ R₃ (g ∘ f)
   isSemiringIsomorphism f-iso g-iso = record
     { isSemiringMonomorphism = isSemiringMonomorphism F.isSemiringMonomorphism G.isSemiringMonomorphism
-    ; surjective             = Func.surjective (_≈_ R₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective             = Func.surjective _ _ (_≈_ R₃) F.surjective G.surjective
     } where module F = IsSemiringIsomorphism f-iso; module G = IsSemiringIsomorphism g-iso
 
 ------------------------------------------------------------------------
@@ -260,7 +259,7 @@ module _ {R₁ : RawRingWithoutOne a ℓ₁}
     → IsRingWithoutOneIsoMorphism R₁ R₃ (g ∘ f)
   isRingWithoutOneIsoMorphism f-iso g-iso = record
     { isRingWithoutOneMonomorphism = isRingWithoutOneMonomorphism F.isRingWithoutOneMonomorphism G.isRingWithoutOneMonomorphism
-    ; surjective         = Func.surjective (_≈_ R₁) (_≈_ R₂) (_≈_ R₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective         = Func.surjective _ _ (_≈_ R₃) F.surjective G.surjective
     } where module F = IsRingWithoutOneIsoMorphism f-iso; module G = IsRingWithoutOneIsoMorphism g-iso
 
 ------------------------------------------------------------------------
@@ -300,7 +299,7 @@ module _ {R₁ : RawRing a ℓ₁}
     → IsRingIsomorphism R₁ R₃ (g ∘ f)
   isRingIsomorphism f-iso g-iso = record
     { isRingMonomorphism = isRingMonomorphism F.isRingMonomorphism G.isRingMonomorphism
-    ; surjective         = Func.surjective (_≈_ R₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective         = Func.surjective _ _ (_≈_ R₃) F.surjective G.surjective
     } where module F = IsRingIsomorphism f-iso; module G = IsRingIsomorphism g-iso
 
 ------------------------------------------------------------------------
@@ -342,7 +341,7 @@ module _ {Q₁ : RawQuasigroup a ℓ₁}
     → IsQuasigroupIsomorphism Q₁ Q₃ (g ∘ f)
   isQuasigroupIsomorphism f-iso g-iso = record
     { isQuasigroupMonomorphism = isQuasigroupMonomorphism F.isQuasigroupMonomorphism G.isQuasigroupMonomorphism
-    ; surjective               = Func.surjective (_≈_ Q₁) (_≈_ Q₂) (_≈_ Q₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective               = Func.surjective _ _ (_≈_ Q₃) F.surjective G.surjective
     } where module F = IsQuasigroupIsomorphism f-iso; module G = IsQuasigroupIsomorphism g-iso
 
 ------------------------------------------------------------------------
@@ -382,5 +381,5 @@ module _ {L₁ : RawLoop a ℓ₁}
     → IsLoopIsomorphism L₁ L₃ (g ∘ f)
   isLoopIsomorphism f-iso g-iso = record
     { isLoopMonomorphism = isLoopMonomorphism F.isLoopMonomorphism G.isLoopMonomorphism
-    ; surjective               = Func.surjective (_≈_ L₁) (_≈_ L₂) (_≈_ L₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective         = Func.surjective _ _ (_≈_ L₃) F.surjective G.surjective
     } where module F = IsLoopIsomorphism f-iso; module G = IsLoopIsomorphism g-iso

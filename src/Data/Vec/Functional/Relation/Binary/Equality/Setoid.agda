@@ -17,7 +17,7 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 module Data.Vec.Functional.Relation.Binary.Equality.Setoid
   {a ℓ} (S : Setoid a ℓ) where

@@ -14,9 +14,8 @@ module Data.List.Relation.Binary.Lex.NonStrict where
 open import Data.Empty using (⊥)
 open import Function.Base
 open import Data.Unit.Base using (⊤; tt)
-open import Data.Product
 open import Data.List.Base
-open import Data.List.Relation.Binary.Pointwise using (Pointwise; [])
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; [])
 import Data.List.Relation.Binary.Lex.Strict as Strict
 open import Level
 open import Relation.Nullary

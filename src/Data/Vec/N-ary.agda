@@ -184,5 +184,5 @@ module _ (ext : ∀ {a b} → Extensionality a b) where
   Vec↔N-ary (suc n) = let open Inverse (Vec↔N-ary n) in
     mk↔′ (λ vxs x → to λ xs → vxs (x ∷ xs))
     (λ any xs → from (any (head xs)) (tail xs))
-    (λ any → ext λ x → inverseˡ _)
-    (λ vxs → ext λ where (x ∷ xs) → cong (λ f → f xs) (inverseʳ (λ ys → vxs (x ∷ ys))))
+    (λ any → ext λ x → strictlyInverseˡ _)
+    (λ vxs → ext λ where (x ∷ xs) → cong (λ f → f xs) (strictlyInverseʳ (λ ys → vxs (x ∷ ys))))

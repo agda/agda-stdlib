@@ -14,7 +14,7 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions using (Reflexive; Transitive)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 ------------------------------------------------------------------------

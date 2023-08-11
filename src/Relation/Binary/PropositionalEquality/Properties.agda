@@ -3,9 +3,9 @@
 --
 -- Propositional equality
 --
--- This file contains some core properies of propositional equality which
--- are re-exported by Relation.Binary.PropositionalEquality. They are
--- ``equality rearrangement'' lemmas.
+-- This file contains some core properies of propositional equality
+-- which are re-exported by Relation.Binary.PropositionalEquality. They
+-- are ``equality rearrangement'' lemmas.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

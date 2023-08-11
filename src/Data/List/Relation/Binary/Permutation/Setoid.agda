@@ -17,11 +17,11 @@ module Data.List.Relation.Binary.Permutation.Setoid
 
 open import Data.List.Base using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
-import Data.List.Relation.Binary.Pointwise as Pointwise
+import Data.List.Relation.Binary.Pointwise.Properties as Pointwise using (refl)
 open import Data.List.Relation.Binary.Equality.Setoid S
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Level using (_⊔_)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private

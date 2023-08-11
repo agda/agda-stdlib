@@ -15,11 +15,12 @@ module Data.Container.Indexed.WithK where
 
 open import Axiom.Extensionality.Heterogeneous using (Extensionality)
 open import Data.Container.Indexed hiding (module PlainMorphism)
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base
+  using (_,_; -,_; _×_; ∃; proj₁; proj₂; Σ-syntax)
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Level
 open import Relation.Unary using (Pred; _⊆_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 open import Relation.Binary.Indexed.Heterogeneous
 

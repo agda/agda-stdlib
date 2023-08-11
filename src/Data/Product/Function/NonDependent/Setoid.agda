@@ -9,7 +9,7 @@
 
 module Data.Product.Function.NonDependent.Setoid where
 
-open import Data.Product
+open import Data.Product.Base using (map; _,_; <_,_>; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Relation.Binary.Core using (_=[_]⇒_)
 open import Relation.Binary.Bundles using (Setoid)

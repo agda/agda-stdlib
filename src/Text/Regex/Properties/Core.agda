@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Preorder)
+open import Relation.Binary.Bundles using (Preorder)
 
 module Text.Regex.Properties.Core {a e r} (P : Preorder a e r) where
 
@@ -17,7 +17,7 @@ open import Data.List.Base as List using (List; []; _∷_; _++_)
 
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 
 open import Relation.Nullary using (¬_; Dec; yes; no)

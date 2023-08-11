@@ -9,7 +9,6 @@
 module Relation.Binary.HeterogeneousEquality where
 
 import Axiom.Extensionality.Heterogeneous as Ext
-open import Data.Product
 open import Data.Unit.NonEta
 open import Function.Base
 open import Function.Inverse using (Inverse)
@@ -25,7 +24,8 @@ open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 import Relation.Binary.HeterogeneousEquality.Core as Core
 
