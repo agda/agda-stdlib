@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.Vec.Relation.Unary.Unique.Setoid {a ℓ} (S : Setoid a ℓ) where
 

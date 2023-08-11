@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; _⇒_; _Preserves_⟶_)
+open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
@@ -20,7 +21,7 @@ open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
-open import Relation.Binary using () renaming (Decidable to Decidable₂)
+open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)

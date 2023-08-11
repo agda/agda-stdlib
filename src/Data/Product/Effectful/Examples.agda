@@ -18,7 +18,7 @@ open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function.Base using (id)
 import Function.Identity.Effectful as Id
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------

@@ -19,7 +19,7 @@ open import Data.Product.Base using (_×_; _,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (id; flip; _∘′_)
 open import Relation.Nullary
-open import Relation.Binary using (module Tri); open Tri
+open import Relation.Binary.Definitions using (module Tri); open Tri
 open import Relation.Binary.PropositionalEquality
 
 private

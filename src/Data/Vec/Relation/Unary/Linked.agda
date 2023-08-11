@@ -14,7 +14,8 @@ open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Product.Base as Prod using (_,_; _×_; uncurry; <_,_>)
 open import Function.Base using (id; _∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary as B using (Rel; _⇒_)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions as B
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
