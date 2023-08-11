@@ -15,13 +15,14 @@ open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties
   using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans; suc-injective)
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Function.Base
-open import Function.Inverse using (_↔_; inverse)
+-- open import Function.Inverse using (_↔_; inverse)
+open import Function.Bundles using (_↔_; mk↔′)
 open import Level using (Level)
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
@@ -151,7 +152,7 @@ take-drop-id (suc m) (x ∷ xs) = begin
     x ∷ xs
   ∎
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- truncate
 
 truncate-refl : (xs : Vec A n) → truncate ≤-refl xs ≡ xs
@@ -163,7 +164,7 @@ truncate-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
 truncate-trans z≤n       n≤p       xs = refl
 truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- pad
 
 padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
@@ -179,7 +180,7 @@ padRight-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A
 padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
 padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- truncate and padRight together
 
 truncate-padRight : (m≤n : m ≤ n) (a : A) (xs : Vec A m) →
@@ -199,9 +200,8 @@ lookup⇒[]= zero    (_ ∷ _)  refl = here
 lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
 
 []=↔lookup : ∀ {i} → xs [ i ]= x ↔ lookup xs i ≡ x
-[]=↔lookup {i = i} =
-  inverse []=⇒lookup (lookup⇒[]= _ _)
-          lookup⇒[]=∘[]=⇒lookup ([]=⇒lookup∘lookup⇒[]= _ i)
+[]=↔lookup {xs = ys} {i = i} =
+  mk↔′ []=⇒lookup (lookup⇒[]= i ys) ([]=⇒lookup∘lookup⇒[]= _ i) lookup⇒[]=∘[]=⇒lookup
   where
   lookup⇒[]=∘[]=⇒lookup : ∀ {i} (p : xs [ i ]= x) →
                           lookup⇒[]= i xs ([]=⇒lookup p) ≡ p
@@ -706,7 +706,7 @@ zip∘unzip []         = refl
 zip∘unzip (xy ∷ xys) = cong (xy ∷_) (zip∘unzip xys)
 
 ×v↔v× : (Vec A n × Vec B n) ↔ Vec (A × B) n
-×v↔v× = inverse (uncurry zip) unzip (uncurry unzip∘zip) zip∘unzip
+×v↔v× = mk↔′ (uncurry zip) unzip zip∘unzip (uncurry unzip∘zip)
 
 ------------------------------------------------------------------------
 -- _⊛_

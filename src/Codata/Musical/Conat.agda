@@ -14,7 +14,7 @@ open import Function.Base using (_∋_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- Re-exporting the type and basic operations

@@ -11,7 +11,7 @@
 
 module README.Data.Record where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.String
 open import Function.Base using (flip)
 open import Level

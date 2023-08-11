@@ -15,7 +15,8 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.Empty.Polymorphic using (⊥) renaming (⊥-elim to ⊥ₚ-elim)
-open import Data.Product as Prod hiding (swap)
+open import Data.Product.Base as Prod
+  using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃)
 open import Data.Product.Function.NonDependent.Propositional
 open import Data.Sum.Base as Sum
 open import Data.Sum.Properties using (swap-involutive)
@@ -28,7 +29,7 @@ open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ)
 import Relation.Nullary.Indexed as I

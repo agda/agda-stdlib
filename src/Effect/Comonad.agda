@@ -11,7 +11,7 @@
 module Effect.Comonad where
 
 open import Level
-open import Function
+open import Function.Base using (id; _∘′_; flip)
 
 private
   variable

@@ -16,9 +16,6 @@ module Algebra.Module.Definitions.Left
   {a b ℓb} (A : Set a) {B : Set b} (_≈_ : Rel B ℓb)
   where
 
-open import Data.Sum
-open import Data.Product
-
 ------------------------------------------------------------------------
 -- Binary operations
 

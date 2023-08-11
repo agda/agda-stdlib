@@ -10,12 +10,14 @@
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra
+open import Algebra.Apartness
 open import Algebra.Lattice
 import Algebra.Consequences.Setoid as Consequences
 open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
+open import Data.Empty using (⊥-elim)
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
@@ -24,7 +26,7 @@ open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ;
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Unnormalised.Base
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
@@ -36,6 +38,8 @@ open import Relation.Binary
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
+open import Relation.Nullary using (yes; no)
+import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
@@ -96,6 +100,21 @@ infix 4 _≃?_
 _≃?_ : Decidable _≃_
 p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
 
+0≠1 : 0ℚᵘ ≠ 1ℚᵘ
+0≠1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
+
+≃-≠-irreflexive : Irreflexive _≃_ _≠_
+≃-≠-irreflexive x≃y x≠y = x≠y x≃y
+
+≠-symmetric : Symmetric _≠_
+≠-symmetric x≠y y≃x = x≠y (≃-sym y≃x)
+
+≠-cotransitive : Cotransitive _≠_
+≠-cotransitive {x} {y} x≠y z with x ≃? z | z ≃? y
+... | no  x≠z | _       = inj₁ x≠z
+... | yes _   | no z≠y  = inj₂ z≠y
+... | yes x≃z | yes z≃y = ⊥-elim (x≠y (≃-trans x≃z z≃y))
+
 ≃-isEquivalence : IsEquivalence _≃_
 ≃-isEquivalence = record
   { refl  = ≃-refl
@@ -109,6 +128,17 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
   ; _≟_           = _≃?_
   }
 
+≠-isApartnessRelation : IsApartnessRelation _≃_ _≠_
+≠-isApartnessRelation = record
+  { irrefl  = ≃-≠-irreflexive
+  ; sym     = ≠-symmetric
+  ; cotrans = ≠-cotransitive
+  }
+
+≠-tight : Tight _≃_ _≠_
+proj₁ (≠-tight p q) ¬p≠q = Dec.decidable-stable (p ≃? q) ¬p≠q
+proj₂ (≠-tight p q) p≃q p≠q = p≠q p≃q
+
 ≃-setoid : Setoid 0ℓ 0ℓ
 ≃-setoid = record
   { isEquivalence = ≃-isEquivalence
@@ -118,6 +148,8 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 ≃-decSetoid = record
   { isDecEquivalence = ≃-isDecEquivalence
   }
+
+module ≃-Reasoning = SetoidReasoning ≃-setoid
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -794,7 +826,7 @@ p≤p+q p q rewrite +-comm-≡ p q = p≤q+p p q
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
 +-mono-<-≤ {p} {q} {r} p<q q≤r = <-≤-trans (+-monoˡ-< r p<q) (+-monoʳ-≤ q q≤r)
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _+_ and predicates
 
 pos+pos⇒pos : ∀ p .{{_ : Positive p}} →
@@ -808,7 +840,7 @@ nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} →
 nonNeg+nonNeg⇒nonNeg p q = nonNegative
   (+-mono-≤ (nonNegative⁻¹ p) (nonNegative⁻¹ q))
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _-_
 
 +-minus-telescope : ∀ p q r → (p - q) + (q - r) ≃ p - r
@@ -1044,6 +1076,12 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-inverseʳ : ∀ p .{{_ : NonZero p}} → p * 1/ p ≃ 1ℚᵘ
 *-inverseʳ p = ≃-trans (*-comm p (1/ p)) (*-inverseˡ p)
 
+≠⇒invertible : p ≠ q → Invertible _≃_ 1ℚᵘ _*_ (p - q)
+≠⇒invertible {p} {q} p≠q = _ , *-inverseˡ (p - q) , *-inverseʳ (p - q)
+  where instance
+  _ : NonZero (p - q)
+  _ = ≢-nonZero (p≠q ∘ p-q≃0⇒p≃q p q)
+
 *-zeroˡ : LeftZero _≃_ 0ℚᵘ _*_
 *-zeroˡ p@record{} = *≡* refl
 
@@ -1052,6 +1090,14 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 
 *-zero : Zero _≃_ 0ℚᵘ _*_
 *-zero = *-zeroˡ , *-zeroʳ
+
+invertible⇒≠ : Invertible _≃_ 1ℚᵘ _*_ (p - q) → p ≠ q
+invertible⇒≠ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≠1 (begin
+  0ℚᵘ             ≈˘⟨ *-zeroˡ 1/p-q ⟩
+  0ℚᵘ * 1/p-q     ≈˘⟨ *-congʳ (p≃q⇒p-q≃0 p q p≃q) ⟩
+  (p - q) * 1/p-q ≈⟨ x*1/x≃1 ⟩
+  1ℚᵘ             ∎)
+  where open ≃-Reasoning
 
 *-distribˡ-+ : _DistributesOverˡ_ _≃_ _*_ _+_
 *-distribˡ-+ p@record{} q@record{} r@record{} =
@@ -1235,7 +1281,7 @@ private
 *-cancelʳ-<-nonPos : ∀ r .{{_ : NonPositive r}} → p * r < q * r → q < p
 *-cancelʳ-<-nonPos {p} {q} r rewrite *-comm-≡ p r | *-comm-≡ q r = *-cancelˡ-<-nonPos r
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _*_ and predicates
 
 pos*pos⇒pos : ∀ p .{{_ : Positive p}} →
@@ -1293,6 +1339,20 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
   ; *-comm = *-comm
   }
 
++-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isHeytingCommutativeRing = record
+  { isCommutativeRing   = +-*-isCommutativeRing
+  ; isApartnessRelation = ≠-isApartnessRelation
+  ; #⇒invertible        = ≠⇒invertible
+  ; invertible⇒#        = invertible⇒≠
+  }
+
++-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isHeytingField = record
+  { isHeytingCommutativeRing = +-*-isHeytingCommutativeRing
+  ; tight                    = ≠-tight
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic bundles
 
@@ -1324,6 +1384,16 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
 +-*-commutativeRing : CommutativeRing 0ℓ 0ℓ
 +-*-commutativeRing = record
   { isCommutativeRing = +-*-isCommutativeRing
+  }
+
++-*-heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
++-*-heytingCommutativeRing = record
+  { isHeytingCommutativeRing = +-*-isHeytingCommutativeRing
+  }
+
++-*-heytingField : HeytingField 0ℓ 0ℓ 0ℓ
++-*-heytingField = record
+  { isHeytingField = +-*-isHeytingField
   }
 
 ------------------------------------------------------------------------

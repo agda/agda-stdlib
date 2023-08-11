@@ -1,8 +1,8 @@
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Additional properties for setoids
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
@@ -16,9 +16,9 @@ module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S
 
-------------------------------------------------------------------------------
--- Every setoid is a preorder and partial order with respect to propositional
--- equality
+------------------------------------------------------------------------
+-- Every setoid is a preorder and partial order with respect to
+-- propositional equality
 
 isPreorder : IsPreorder _≡_ _≈_
 isPreorder = record
@@ -59,7 +59,7 @@ preorder = record
   { isPartialOrder = ≈-isPartialOrder
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _≉_
 
 ≉-sym :  Symmetric _≉_
@@ -74,7 +74,7 @@ preorder = record
 ≉-resp₂ : _≉_ Respects₂ _≈_
 ≉-resp₂ = ≉-respʳ , ≉-respˡ
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Other properties
 
 respʳ-flip : _≈_ Respectsʳ (flip _≈_)

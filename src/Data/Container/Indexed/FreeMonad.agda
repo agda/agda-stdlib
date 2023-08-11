@@ -15,11 +15,11 @@ open import Data.Container.Indexed
 open import Data.Container.Indexed.Combinator hiding (id; _∘_)
 open import Data.Empty
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.W.Indexed
 open import Relation.Unary
 open import Relation.Unary.PredicateTransformer
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 ------------------------------------------------------------------------
 

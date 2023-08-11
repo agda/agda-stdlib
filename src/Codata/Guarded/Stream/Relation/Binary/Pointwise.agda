@@ -17,7 +17,8 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions
   using (Reflexive; Sym; Trans; Antisym; Symmetric; Transitive)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable

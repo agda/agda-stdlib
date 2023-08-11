@@ -13,7 +13,7 @@ import Data.List.Properties as Listₚ
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
 open import Relation.Nullary.Decidable using (True)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Data.Nat.Show using (charsInBase)
 
 module Data.Nat.Show.Properties where

@@ -4,13 +4,13 @@
 -- Vectors defined by recursion
 ------------------------------------------------------------------------
 
--- What is the point of this module? The n-ary products below are intended
--- to be used with a fixed n, in which case the nil constructor can be
--- avoided: pairs are represented as pairs (x , y), not as triples
--- (x , y , unit).
--- Additionally, vectors defined by recursion enjoy η-rules. That is to say
--- that two vectors of known length are definitionally equal whenever their
--- elements are.
+-- What is the point of this module? The n-ary products below are
+-- intended to be used with a fixed n, in which case the nil constructor
+-- can be avoided: pairs are represented as pairs (x , y), not as
+-- triples (x , y , unit).
+-- Additionally, vectors defined by recursion enjoy η-rules. That is to
+-- say that two vectors of known length are definitionally equal
+-- whenever their elements are.
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
@@ -29,7 +29,7 @@ open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Unit.Polymorphic.Properties using (⊤↔⊤*)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Data.Vec.N-ary using (N-ary)
-open import Function.Base using (_∘′_; _∘_; id)
+open import Function.Base using (_∘′_; _∘_; id; const)
 open import Function.Bundles using (_↔_; mk↔′; mk↔)
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
 open import Level using (Level; lift)
@@ -44,8 +44,8 @@ private
     B : Set b
     C : Set c
 
--- Types and patterns
 ------------------------------------------------------------------------
+-- Types and patterns
 
 infix 8 _^_
 _^_ : Set a → ℕ → Set a
@@ -61,8 +61,8 @@ a ∈[ 0    ] as               = ⊥
 a ∈[ 1    ] a′               = a ≡ a′
 a ∈[ suc n@(suc _) ] a′ , as = a ≡ a′ ⊎ a ∈[ n ] as
 
--- Basic operations
 ------------------------------------------------------------------------
+-- Basic operations
 
 cons : ∀ n → A → A ^ n → A ^ suc n
 cons 0       a _  = a
@@ -106,9 +106,8 @@ splitAt (suc m) n xs =
   let (ys , zs) = splitAt m n (tail (m Nat.+ n) xs) in
   cons m (head (m Nat.+ n) xs) ys , zs
 
-
--- Manipulating N-ary products
 ------------------------------------------------------------------------
+-- Manipulating N-ary products
 
 map : (A → B) → ∀ n → A ^ n → B ^ n
 map f 0      as       = lift tt
@@ -156,7 +155,7 @@ unzip : ∀ n → (A × B) ^ n → A ^ n × B ^ n
 unzip = unzipWith id
 
 lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
-lift↔ 0               A↔B = mk↔ ((λ { [] → refl }) , (λ{ [] → refl }))
+lift↔ 0               A↔B = mk↔′ _ _ (const refl) (const refl)
 lift↔ 1               A↔B = A↔B
 lift↔ (suc n@(suc _)) A↔B = ×-cong A↔B (lift↔ n A↔B)
 

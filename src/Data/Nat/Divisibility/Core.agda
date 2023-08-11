@@ -16,7 +16,7 @@ open import Data.Nat.Base using (ℕ; _*_)
 open import Data.Nat.Properties
 open import Level using (0ℓ)
 open import Relation.Nullary.Negation using (¬_)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong₂; module ≡-Reasoning)
 
@@ -40,6 +40,9 @@ open _∣_ using (quotient) public
 _∤_ : Rel ℕ 0ℓ
 m ∤ n = ¬ (m ∣ n)
 
+-- smart constructor
+
+pattern divides-refl q = divides q refl
 
 ------------------------------------------------------------------------
 -- Basic properties

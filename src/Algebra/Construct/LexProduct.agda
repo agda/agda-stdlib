@@ -8,7 +8,7 @@
 
 open import Algebra
 open import Data.Bool using (true; false)
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_)

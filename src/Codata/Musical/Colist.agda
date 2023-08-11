@@ -21,7 +21,7 @@ open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function.Base
@@ -38,7 +38,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Nullary.Decidable using (excluded-middle)
+open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 open import Relation.Unary using (Pred)
 
 private
@@ -246,7 +246,7 @@ not-finite-is-infinite (x ∷ xs) hyp =
 
 finite-or-infinite :
   (xs : Colist A) → ¬ ¬ (Finite xs ⊎ Infinite xs)
-finite-or-infinite xs = helper <$> excluded-middle
+finite-or-infinite xs = helper <$> ¬¬-excluded-middle
   where
   helper : Dec (Finite xs) → Finite xs ⊎ Infinite xs
   helper ( true because  [fin]) = inj₁ (invert [fin])

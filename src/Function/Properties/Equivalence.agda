@@ -11,8 +11,9 @@ module Function.Properties.Equivalence where
 
 open import Function.Bundles using (Equivalence; _⇔_)
 open import Level
-open import Relation.Binary using (Setoid; IsEquivalence)
-import Relation.Binary.PropositionalEquality as Eq using (setoid)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+import Relation.Binary.PropositionalEquality.Properties as Eq
 
 import Function.Construct.Identity as Identity
 import Function.Construct.Symmetry as Symmetry

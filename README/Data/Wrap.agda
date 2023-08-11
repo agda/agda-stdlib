@@ -13,7 +13,7 @@ open import Data.Wrap
 open import Algebra
 open import Data.Nat
 open import Data.Nat.Properties
-open import Data.Product
+open import Data.Product.Base using (_,_; ∃; ∃₂; _×_)
 open import Level using (Level)
 
 private

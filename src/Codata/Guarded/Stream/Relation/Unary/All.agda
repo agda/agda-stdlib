@@ -9,7 +9,7 @@
 module Codata.Guarded.Stream.Relation.Unary.All where
 
 open import Codata.Guarded.Stream using (Stream; head; tail)
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level
 open import Relation.Unary
 

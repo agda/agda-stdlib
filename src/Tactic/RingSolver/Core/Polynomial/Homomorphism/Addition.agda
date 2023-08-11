@@ -15,14 +15,14 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition
 
 open import Data.Nat            as ℕ  using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Nat.Properties as ℕₚ using (≤′-trans)
-open import Data.Product              using (_,_; _×_; proj₂)
+open import Data.Product.Base         using (_,_; _×_; proj₂)
 open import Data.List.Base            using (_∷_; [])
 open import Data.List.Kleene
-open import Data.Vec                  using (Vec)
-open import Function
+open import Data.Vec.Base             using (Vec)
+open import Function.Base using (_⟨_⟩_; flip)
 open import Relation.Unary
 
-import Relation.Binary.PropositionalEquality as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡
 
 open Homomorphism homo hiding (_^_)
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo

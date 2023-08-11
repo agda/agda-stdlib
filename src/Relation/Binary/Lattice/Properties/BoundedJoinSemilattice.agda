@@ -16,7 +16,7 @@ open BoundedJoinSemilattice J
 open import Algebra.Definitions _≈_
 open import Algebra.Ordered.Structures using (IsCommutativePomonoid)
 open import Algebra.Ordered.Bundles using (CommutativePomonoid)
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset

@@ -13,7 +13,6 @@
 
 module Function.LeftInverse where
 
-open import Data.Product
 open import Level
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 open import Relation.Binary.Bundles using (Setoid)

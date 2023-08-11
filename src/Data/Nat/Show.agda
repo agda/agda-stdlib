@@ -17,7 +17,7 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; _<∣>_; when)
 import Data.Maybe.Effectful as Maybe
 open import Data.Nat
 open import Data.Product.Base using (proj₁)
-open import Data.String.Base as String using (String; fromList; toList)
+open import Data.String.Base using (toList; fromList; String)
 open import Function.Base using (_∘′_; _∘_)
 open import Relation.Nullary.Decidable using (True)
 

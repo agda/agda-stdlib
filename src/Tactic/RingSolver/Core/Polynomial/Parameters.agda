@@ -13,7 +13,6 @@ module Tactic.RingSolver.Core.Polynomial.Parameters where
 
 open import Algebra.Bundles using (RawRing)
 open import Data.Bool.Base using (Bool; T)
-open import Function
 open import Level
 open import Relation.Unary
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
