@@ -153,12 +153,12 @@ record RawRingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 6 _+_
   infix  4 _≈_
   field
-    Carrier           : Set c
-    _≈_               : Rel Carrier ℓ
-    _+_               : Op₂ Carrier
-    _*_               : Op₂ Carrier
-    -_                : Op₁ Carrier
-    0#                : Carrier
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _+_     : Op₂ Carrier
+    _*_     : Op₂ Carrier
+    -_      : Op₁ Carrier
+    0#      : Carrier
 
   +-rawGroup : RawGroup c ℓ
   +-rawGroup = record
@@ -292,13 +292,13 @@ record RawKleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 6 _+_
   infix  4 _≈_
   field
-    Carrier               : Set c
-    _≈_                   : Rel Carrier ℓ
-    _+_                   : Op₂ Carrier
-    _*_                   : Op₂ Carrier
-    _⋆                    : Op₁ Carrier
-    0#                    : Carrier
-    1#                    : Carrier
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _+_     : Op₂ Carrier
+    _*_     : Op₂ Carrier
+    _⋆      : Op₁ Carrier
+    0#      : Carrier
+    1#      : Carrier
 
   rawSemiring : RawSemiring c ℓ
   rawSemiring = record
