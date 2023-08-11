@@ -17,7 +17,7 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_; id; _∘_; _∘′_)
 open import Function.Definitions using (Injective)
 open import Level using (Level)
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′)

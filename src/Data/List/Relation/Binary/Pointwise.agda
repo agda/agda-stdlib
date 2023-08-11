@@ -25,7 +25,10 @@ open import Level
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary renaming (Rel to Rel₂)
+open import Relation.Binary.Core renaming (Rel to Rel₂)
+open import Relation.Binary.Definitions using (_Respects_; _Respects₂_)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder; Poset)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence; IsPartialOrder; IsPreorder)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
 
