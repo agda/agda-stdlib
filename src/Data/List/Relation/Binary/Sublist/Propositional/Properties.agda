@@ -22,7 +22,7 @@ import Data.List.Relation.Binary.Sublist.Setoid.Properties
 open import Data.Product using (∃; _,_; proj₂)
 open import Function.Base
 open import Level using (Level)
-open import Relation.Binary using (_Respects_)
+open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary using (Pred)
 
