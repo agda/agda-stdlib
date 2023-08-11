@@ -21,7 +21,7 @@ open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as Lₚ
-open import Data.Product using (_,_; _×_; ∃; ∃₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)

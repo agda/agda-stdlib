@@ -15,7 +15,8 @@ open import Data.Nat.GCD.Lemmas
 open import Data.Nat.Properties
 open import Data.Nat.Induction
   using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded-fast)
-open import Data.Product
+open import Data.Product.Base
+  using (_×_; _,_; proj₂; proj₁; swap; uncurry′; ∃; map)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
 open import Induction using (build)

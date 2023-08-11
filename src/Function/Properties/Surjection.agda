@@ -12,7 +12,7 @@ open import Function.Base
 open import Function.Definitions
 open import Function.Bundles
 open import Level using (Level)
-open import Data.Product
+open import Data.Product.Base using (proj₁; proj₂)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary using (Setoid)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning

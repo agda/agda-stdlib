@@ -9,7 +9,7 @@
 
 module Effect.Monad.State where
 
-open import Data.Product
+open import Data.Product.Base using (_×_)
 open import Effect.Choice
 open import Effect.Empty
 open import Effect.Functor

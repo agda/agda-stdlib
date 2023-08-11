@@ -19,7 +19,7 @@ open import Data.List.Relation.Binary.Sublist.Propositional
   hiding (map)
 import Data.List.Relation.Binary.Sublist.Setoid.Properties
   as SetoidProperties
-open import Data.Product using (∃; _,_; proj₂)
+open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base
 open import Level using (Level)
 open import Relation.Binary.Definitions using (_Respects_)

@@ -15,7 +15,7 @@ open import Function.Base using (_∘_; flip)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Any as Any
   using (Any; here; there; index)
-open import Data.Product using (∃; _×_; _,_)
+open import Data.Product.Base using (∃; _×_; _,_)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary using (Pred)
 
