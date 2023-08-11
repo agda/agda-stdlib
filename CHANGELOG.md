@@ -1080,12 +1080,14 @@ Deprecated names
   ```agda
   map-identity  ↦  map-id
   map-fusion    ↦  map-∘
+  drop-fusion   ↦  drop-drop
   ```
 
 * In `Codata.Sized.Colist.Properties`:
   ```agda
-  map-identity   ↦  map-id
-  map-map-fusion  ↦  map-∘
+  map-identity      ↦  map-id
+  map-map-fusion    ↦  map-∘
+  drop-drop-fusion  ↦  drop-drop
   ```
 
 * In `Codata.Sized.Covec.Properties`:
