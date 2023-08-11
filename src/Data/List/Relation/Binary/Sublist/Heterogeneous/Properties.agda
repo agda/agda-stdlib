@@ -24,7 +24,7 @@ open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
 open import Data.Nat.Base using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
+open import Data.Product.Base using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
 
 open import Function.Base
 open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)

@@ -16,7 +16,7 @@
 open import Algebra
 open import Algebra.Lattice
 import Algebra.Construct.DirectProduct as DirectProduct
-open import Data.Product
+open import Data.Product.Base using (_,_; _<*>_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level using (Level; _⊔_)
 

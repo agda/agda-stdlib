@@ -15,7 +15,6 @@ module Data.Tree.AVL.Indexed.WithK
 
 strictTotalOrder = record { isStrictTotalOrder = isStrictTotalOrder }
 
-open import Data.Product
 open import Data.Tree.AVL.Indexed strictTotalOrder as AVL hiding (Value)
 
 module _ {v} {V′ : Key → Set v} where

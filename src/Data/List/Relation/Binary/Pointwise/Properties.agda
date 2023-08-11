@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Binary.Pointwise.Properties where
 
-open import Data.Product using (_,_; uncurry)
+open import Data.Product.Base using (_,_; uncurry)
 open import Data.List.Base using (List; []; _∷_)
 open import Level
 open import Relation.Binary.Core using (REL; _⇒_)

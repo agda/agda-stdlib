@@ -627,20 +627,7 @@ true  <? _     = no  (λ())
   }
 
 ------------------------------------------------------------------------
--- Properties of _xor_
-
-xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
-xor-is-ok true  y = refl
-xor-is-ok false y = sym (∧-identityʳ _)
-
-xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
-xor-∧-commutativeRing = ⊕-∧-commutativeRing
-  where
-  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
-  open XorRing _xor_ xor-is-ok
-
-------------------------------------------------------------------------
--- Miscellaneous other properties
+-- Properties of not
 
 not-involutive : Involutive not
 not-involutive true  = refl
@@ -659,6 +646,84 @@ not-¬ {false} refl ()
 ¬-not {true}  {false} _   = refl
 ¬-not {false} {true}  _   = refl
 ¬-not {false} {false} x≢y = ⊥-elim (x≢y refl)
+
+------------------------------------------------------------------------
+-- Properties of _xor_
+
+xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
+xor-is-ok true  y = refl
+xor-is-ok false y = sym (∧-identityʳ _)
+
+true-xor : ∀ x → true xor x ≡ not x
+true-xor false = refl
+true-xor true  = refl
+
+xor-same : ∀ x → x xor x ≡ false
+xor-same false = refl
+xor-same true  = refl
+
+not-distribˡ-xor : ∀ x y → not (x xor y) ≡ (not x) xor y
+not-distribˡ-xor false y = refl
+not-distribˡ-xor true  y = not-involutive _
+
+not-distribʳ-xor : ∀ x y → not (x xor y) ≡ x xor (not y)
+not-distribʳ-xor false y = refl
+not-distribʳ-xor true  y = refl
+
+xor-assoc : Associative _xor_
+xor-assoc true  y z = sym (not-distribˡ-xor y z)
+xor-assoc false y z = refl
+
+xor-comm : Commutative _xor_
+xor-comm false false = refl
+xor-comm false true  = refl
+xor-comm true  false = refl
+xor-comm true  true  = refl
+
+xor-identityˡ : LeftIdentity false _xor_
+xor-identityˡ _ = refl
+
+xor-identityʳ : RightIdentity false _xor_
+xor-identityʳ false = refl
+xor-identityʳ true  = refl
+
+xor-identity : Identity false _xor_
+xor-identity = xor-identityˡ , xor-identityʳ
+
+xor-inverseˡ : LeftInverse true not _xor_
+xor-inverseˡ false = refl
+xor-inverseˡ true = refl
+
+xor-inverseʳ : RightInverse true not _xor_
+xor-inverseʳ x = xor-comm x (not x) ⟨ trans ⟩ xor-inverseˡ x
+
+xor-inverse : Inverse true not _xor_
+xor-inverse = xor-inverseˡ , xor-inverseʳ
+
+∧-distribˡ-xor : _∧_ DistributesOverˡ _xor_
+∧-distribˡ-xor false y z = refl
+∧-distribˡ-xor true  y z = refl
+
+∧-distribʳ-xor : _∧_ DistributesOverʳ _xor_
+∧-distribʳ-xor x false z    = refl
+∧-distribʳ-xor x true false = sym (xor-identityʳ x)
+∧-distribʳ-xor x true true  = sym (xor-same x)
+
+∧-distrib-xor : _∧_ DistributesOver _xor_
+∧-distrib-xor = ∧-distribˡ-xor , ∧-distribʳ-xor
+
+xor-annihilates-not : ∀ x y → (not x) xor (not y) ≡ x xor y
+xor-annihilates-not false y = not-involutive _
+xor-annihilates-not true  y = refl
+
+xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
+xor-∧-commutativeRing = ⊕-∧-commutativeRing
+  where
+  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
+  open XorRing _xor_ xor-is-ok
+
+------------------------------------------------------------------------
+-- Miscellaneous other properties
 
 ⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
 ⇔→≡ {true } {true }         hyp = refl

@@ -12,7 +12,7 @@
 module Effect.Applicative.Predicate where
 
 open import Effect.Functor.Predicate
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function.Base using (const; constᵣ)
 open import Level
 open import Relation.Unary

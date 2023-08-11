@@ -19,7 +19,7 @@ open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _+_)
 open import Function.Base using (_∘_)
 open import Level using (Level)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 
 private

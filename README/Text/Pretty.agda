@@ -14,7 +14,7 @@ open import Data.Bool.Base
 open import Data.List.Base as List
 open import Data.List.NonEmpty as List⁺
 open import Data.Nat.Base
-open import Data.Product
+open import Data.Product.Base using (_×_; uncurry; _,_)
 open import Data.String.Base hiding (parens; _<+>_)
 open import Data.Vec.Base as Vec
 open import Function.Base

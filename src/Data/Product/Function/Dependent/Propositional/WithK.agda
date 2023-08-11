@@ -9,7 +9,7 @@
 
 module Data.Product.Function.Dependent.Propositional.WithK where
 
-open import Data.Product
+open import Data.Product.Base using (Σ)
 open import Data.Product.Function.Dependent.Setoid
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Data.Product.Relation.Binary.Pointwise.Dependent.WithK

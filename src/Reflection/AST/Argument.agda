@@ -11,7 +11,7 @@ module Reflection.AST.Argument where
 open import Data.List.Base as List                     using (List; []; _∷_)
 open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
 open import Relation.Nullary.Decidable                 using (Dec; map′; _×-dec_)
-open import Relation.Binary                            using (DecidableEquality)
+open import Relation.Binary.Definitions                using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 open import Level
 

@@ -2020,10 +2020,27 @@ Other minor changes
   <-wellFounded : WellFounded _<_
   ∨-conicalˡ : LeftConical false _∨_
   ∨-conicalʳ : RightConical false _∨_
-  ∨-conical : Conical false _∨_
+  ∨-conical  : Conical false _∨_
   ∧-conicalˡ : LeftConical true _∧_
   ∧-conicalʳ : RightConical true _∧_
-  ∧-conical : Conical true _∧_
+  ∧-conical  : Conical true _∧_
+
+  true-xor            : true xor x ≡ not x
+  xor-same            : x xor x ≡ false
+  not-distribˡ-xor    : not (x xor y) ≡ (not x) xor y
+  not-distribʳ-xor    : not (x xor y) ≡ x xor (not y)
+  xor-assoc           : Associative _xor_
+  xor-comm            : Commutative _xor_
+  xor-identityˡ       : LeftIdentity false _xor_
+  xor-identityʳ       : RightIdentity false _xor_
+  xor-identity        : Identity false _xor_
+  xor-inverseˡ        : LeftInverse true not _xor_
+  xor-inverseʳ        : RightInverse true not _xor_
+  xor-inverse         : Inverse true not _xor_
+  ∧-distribˡ-xor      : _∧_ DistributesOverˡ _xor_
+  ∧-distribʳ-xor      : _∧_ DistributesOverʳ _xor_
+  ∧-distrib-xor       : _∧_ DistributesOver _xor_
+  xor-annihilates-not : (not x) xor (not y) ≡ x xor y
   ```
 
 * Added new functions in `Data.Fin.Base`:
@@ -3258,6 +3275,32 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
 
+* Added new module to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  module ≃-Reasoning = SetoidReasoning ≃-setoid
+  ```
+
+* Added new functions to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  0≠1 : 0ℚᵘ ≠ 1ℚᵘ
+  ≃-≠-irreflexive : Irreflexive _≃_ _≠_
+  ≠-symmetric : Symmetric _≠_
+  ≠-cotransitive : Cotransitive _≠_
+  ≠⇒invertible : p ≠ q → Invertible _≃_ 1ℚᵘ _*_ (p - q)
+  ```
+
+* Added new structures to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  +-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
+  +-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
+  ```
+
+* Added new bundles to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  +-*-heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  +-*-heytingField : HeytingField 0ℓ 0ℓ 0ℓ
+  ```
+
 * Added new function to `Data.Vec.Relation.Binary.Pointwise.Inductive`
   ```agda
   cong-[_]≔ : Pointwise _∼_ xs ys → Pointwise _∼_ (xs [ i ]≔ p) (ys [ i ]≔ p)
@@ -3271,6 +3314,24 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added new function to `Data.List.Relation.Binary.Permutation.Propositional.Properties`
   ```agda
   ↭-reverse : (xs : List A) → reverse xs ↭ xs
+  ```
+
+* Added new functions to `Algebra.Properties.CommutativeMonoid`
+  ```agda
+  invertibleˡ⇒invertibleʳ : LeftInvertible _≈_ 0# _+_ x → RightInvertible _≈_ 0# _+_ x
+  invertibleʳ⇒invertibleˡ : RightInvertible _≈_ 0# _+_ x → LeftInvertible _≈_ 0# _+_ x
+  invertibleˡ⇒invertible  : LeftInvertible _≈_ 0# _+_ x → Invertible _≈_ 0# _+_ x
+  invertibleʳ⇒invertible  : RightInvertible _≈_ 0# _+_ x → Invertible _≈_ 0# _+_ x
+  ```
+
+* Added new functions to `Algebra.Apartness.Bundles`
+  ```agda
+  invertibleˡ⇒# : LeftInvertible _≈_ 1# _*_ (x - y) → x # y
+  invertibleʳ⇒# : RightInvertible _≈_ 1# _*_ (x - y) → x # y
+  x#0y#0→xy#0   : x # 0# → y # 0# → x * y # 0#
+  #-sym         : Symmetric _#_
+  #-congʳ       : x ≈ y → x # z → y # z
+  #-congˡ       : y ≈ z → x # y → x # z
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Setoid.Properties`

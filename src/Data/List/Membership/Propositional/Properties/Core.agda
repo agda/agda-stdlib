@@ -17,7 +17,7 @@ open import Function.Inverse using (_↔_; inverse)
 open import Data.List.Base using (List)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (_,_; proj₁; proj₂; uncurry′; ∃; _×_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core as P

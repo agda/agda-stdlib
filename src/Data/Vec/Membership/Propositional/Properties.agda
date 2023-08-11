@@ -9,7 +9,7 @@
 module Data.Vec.Membership.Propositional.Properties where
 
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.Product as Prod using (_,_; ∃; _×_; -,_)
+open import Data.Product.Base using (_,_; ∃; _×_; -,_; map₁; map₂)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Unary.Any using (here; there)
 open import Data.List.Base using ([]; _∷_)
@@ -109,7 +109,7 @@ module _ {P : Pred A p} where
 
   fromAny : ∀ {n} {xs : Vec A n} → Any P xs → ∃ λ x → x ∈ xs × P x
   fromAny (here px) = -, here refl , px
-  fromAny (there v) = Prod.map₂ (Prod.map₁ there) (fromAny v)
+  fromAny (there v) = map₂ (map₁ there) (fromAny v)
 
   toAny : ∀ {n x} {xs : Vec A n} → x ∈ xs → P x → Any P xs
   toAny (here refl) px = here px

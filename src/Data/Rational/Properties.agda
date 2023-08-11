@@ -33,7 +33,7 @@ open import Data.Nat.Coprimality as C using (Coprime; coprime?)
 open import Data.Nat.Divisibility
 import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
-open import Data.Product using (proj₁; proj₂; _×_; _,_; uncurry)
+open import Data.Product.Base using (proj₁; proj₂; _×_; _,_; uncurry)
 open import Data.Rational.Base
 open import Data.Rational.Unnormalised.Base as ℚᵘ
   using (ℚᵘ; mkℚᵘ; *≡*; *≤*; *<*)

@@ -15,7 +15,7 @@ module Relation.Binary.Construct.Add.Infimum.Strict
   {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
-open import Data.Product
+open import Data.Product.Base using (_,_; map)
 open import Function.Base
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)

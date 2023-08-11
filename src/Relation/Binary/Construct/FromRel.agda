@@ -15,7 +15,6 @@ module Relation.Binary.Construct.FromRel
   {a r} {A : Set a} (_R_ : REL A (Carrier S) r) -- The relation
   where
 
-open import Data.Product
 open import Function.Base
 open import Level using (_⊔_)
 

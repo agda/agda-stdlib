@@ -10,7 +10,7 @@ open import Level
 
 module Effect.Monad.IO where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base
 open import IO.Base using (IO)
 open import Effect.Functor
