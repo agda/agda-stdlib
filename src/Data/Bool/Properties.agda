@@ -654,9 +654,9 @@ xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
 xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
-xor-true : ∀ x → true xor x ≡ not x
-xor-true false = refl
-xor-true true  = refl
+true-xor : ∀ x → true xor x ≡ not x
+true-xor false = refl
+true-xor true  = refl
 
 xor-same : ∀ x → x xor x ≡ false
 xor-same false = refl

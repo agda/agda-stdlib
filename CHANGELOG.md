@@ -1989,14 +1989,23 @@ Other minor changes
   ∧-conicalˡ : LeftConical true _∧_
   ∧-conicalʳ : RightConical true _∧_
   ∧-conical  : Conical true _∧_
-  xor-same-false    : ∀ x → x xor x ≡ false
-  xor-false-neutral : ∀ x → false xor x ≡ x
-  xor-true-not      : ∀ x → true xor x ≡ not x
-  xor-not-true      : ∀ x → x xor (not x) ≡ true
-  not-xor           : ∀ x y → not (x xor y) ≡ (not x) xor y
-  not-xor-cancel    : ∀ x y → (not x) xor (not y) ≡ x xor y
-  xor-commutative   : ∀ x y → x xor y ≡ y xor x
-  xor-associative   : ∀ x y z → x xor (y xor z) ≡ (x xor y) xor z
+
+  true-xor            : true xor x ≡ not x
+  xor-same            : x xor x ≡ false
+  not-distribˡ-xor    : not (x xor y) ≡ (not x) xor y
+  not-distribʳ-xor    : not (x xor y) ≡ x xor (not y)
+  xor-assoc           : Associative _xor_
+  xor-comm            : Commutative _xor_
+  xor-identityˡ       : LeftIdentity false _xor_
+  xor-identityʳ       : RightIdentity false _xor_
+  xor-identity        : Identity false _xor_
+  xor-inverseˡ        : LeftInverse true not _xor_
+  xor-inverseʳ        : RightInverse true not _xor_
+  xor-inverse         : Inverse true not _xor_
+  ∧-distribˡ-xor      : _∧_ DistributesOverˡ _xor_
+  ∧-distribʳ-xor      : _∧_ DistributesOverʳ _xor_
+  ∧-distrib-xor       : _∧_ DistributesOver _xor_
+  xor-annihilates-not : (not x) xor (not y) ≡ x xor y
   ```
 
 * Added new functions in `Data.Fin.Base`:
