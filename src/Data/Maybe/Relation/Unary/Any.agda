@@ -9,7 +9,7 @@
 module Data.Maybe.Relation.Unary.Any where
 
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Product as Prod using (∃; _,_; -,_)
+open import Data.Product.Base as Prod using (∃; _,_; -,_)
 open import Function.Base using (id)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level

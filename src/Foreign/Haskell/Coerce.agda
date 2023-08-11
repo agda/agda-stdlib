@@ -39,7 +39,7 @@ import IO.Primitive            as STD
 import Data.List.Base          as STD
 import Data.List.NonEmpty.Base as STD
 import Data.Maybe.Base         as STD
-import Data.Product            as STD
+import Data.Product.Base       as STD
 import Data.Sum.Base           as STD
 
 import Foreign.Haskell.Pair          as FFI

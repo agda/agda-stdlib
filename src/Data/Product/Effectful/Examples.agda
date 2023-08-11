@@ -14,7 +14,7 @@ module Data.Product.Effectful.Examples
 open import Level using (Lift; lift; _⊔_)
 open import Effect.Functor using (RawFunctor)
 open import Effect.Monad using (RawMonad)
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function.Base using (id)
 import Function.Identity.Effectful as Id

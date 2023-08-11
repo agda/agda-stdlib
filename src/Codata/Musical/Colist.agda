@@ -21,7 +21,7 @@ open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function.Base

@@ -16,7 +16,7 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Properties using (just-injective)
 open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product as Prod using (∃; ∃-syntax; _×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Prod using (∃; ∃-syntax; _×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base as F
 open import Level using (Level)

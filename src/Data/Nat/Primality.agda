@@ -13,7 +13,7 @@ open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
 open import Data.Nat.Properties
-open import Data.Product
+open import Data.Product.Base using (∃; _×_; map₂; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (flip; _∘_; _∘′_)
 open import Relation.Nullary.Decidable as Dec
