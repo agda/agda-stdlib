@@ -12,7 +12,7 @@ module Algebra.Apartness.Properties.HeytingCommutativeRing
   {c ℓ₁ ℓ₂} (HCR : HeytingCommutativeRing c ℓ₁ ℓ₂) where
 
 open import Function.Base using (_∘_)
-open import Data.Product.Base using (_,_; proj₂; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Algebra using (CommutativeRing; RightIdentity; Invertible; LeftInvertible; RightInvertible)
 
 open HeytingCommutativeRing HCR
