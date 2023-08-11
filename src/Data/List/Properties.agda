@@ -824,7 +824,7 @@ drop-take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ
 drop-take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
   = drop-take-suc (tabulate f) (cast _ i)
 
--- Dropping m elements and then n elements is same as dropping n+m elements
+-- Dropping m elements and then n elements is same as dropping m+n elements
 drop-drop : (m n : ℕ) → (xs : List A) → drop n (drop m xs) ≡ drop (m + n) xs
 drop-drop zero n xs = refl
 drop-drop (suc m) n [] = drop-[] n
