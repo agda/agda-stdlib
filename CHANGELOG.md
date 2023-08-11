@@ -29,6 +29,99 @@ Highlights
 Bug-fixes
 ---------
 
+* The following operators were missing a fixity declaration, which has now
+  been fixed -
+  ```
+  infixr  5 _∷_                                              (Codata.Guarded.Stream)
+  infix   4 _[_]                                             (Codata.Guarded.Stream)
+  infixr  5 _∷_                                              (Codata.Guarded.Stream.Relation.Binary.Pointwise)
+  infix   4 _≈∞_                                             (Codata.Guarded.Stream.Relation.Binary.Pointwise)
+  infixr  5 _∷_                                              (Codata.Musical.Colist)
+  infix   4 _≈_                                              (Codata.Musical.Conat)
+  infixr  5 _∷_                                              (Codata.Musical.Colist.Bisimilarity)
+  infixr  5 _∷_                                              (Codata.Musical.Colist.Relation.Unary.All)
+  infixr  5 _∷_                                              (Codata.Sized.Colist)
+  infixr  5 _∷_                                              (Codata.Sized.Covec)
+  infixr  5 _∷_                                              (Codata.Sized.Cowriter)
+  infixl  1 _>>=_                                            (Codata.Sized.Cowriter)
+  infixr  5 _∷_                                              (Codata.Sized.Stream)
+  infixr  5 _∷_                                              (Codata.Sized.Colist.Bisimilarity)
+  infix   4 _ℕ≤?_                                            (Codata.Sized.Conat.Properties)
+  infixr  5 _∷_                                              (Codata.Sized.Covec.Bisimilarity)
+  infixr  5 _∷_                                              (Codata.Sized.Cowriter.Bisimilarity)
+  infixr  5 _∷_                                              (Codata.Sized.Stream.Bisimilarity)
+  infixr  8 _⇒_ _⊸_                                          (Data.Container.Core)
+  infixr -1 _<$>_ _<*>_                                      (Data.Container.FreeMonad)
+  infixl  1 _>>=_                                            (Data.Container.FreeMonad)
+  infix   5 _▷_                                              (Data.Container.Indexed)
+  infix   4 _≈_                                              (Data.Float.Base)
+  infixl  7 _⊓′_                                             (Data.Nat.Base)
+  infixl  6 _⊔′_                                             (Data.Nat.Base)
+  infixr  8 _^_                                              (Data.Nat.Base)
+  infix   4 _!≢0 _!*_!≢0                                     (Data.Nat.Properties)
+  infix   4 _≃?_                                             (Data.Rational.Unnormalised.Properties)
+  infix   4 _≈ₖᵥ_                                            (Data.Tree.AVL.Map.Membership.Propositional)
+  infix   4 _<_                                              (Induction.WellFounded)
+  infix  -1 _$ⁿ_                                             (Data.Vec.N-ary)
+  infix   4 _≋_                                              (Data.Vec.Functional.Relation.Binary.Equality.Setoid)
+  infix   4 _≟_                                              (Reflection.AST.Definition)
+  infix   4 _≡ᵇ_                                             (Reflection.AST.Literal)
+  infix   4 _≈?_ _≟_ _≈_                                     (Reflection.AST.Meta)
+  infix   4 _≈?_ _≟_ _≈_                                     (Reflection.AST.Name)
+  infix   4 _≟-Telescope_                                    (Reflection.AST.Term)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Information)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Modality)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Quantity)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Relevance)
+  infix   4 _≟_                                              (Reflection.AST.Argument.Visibility)
+  infixr  8 _^_                                              (Function.Endomorphism.Propositional)
+  infixr  8 _^_                                              (Function.Endomorphism.Setoid)
+  infix   4 _≃_                                              (Function.HalfAdjointEquivalence)
+  infix   4 _≈_ _≈ᵢ_ _≤_                                     (Function.Metric.Bundles)
+  infixl  6 _∙_                                              (Function.Metric.Bundles)
+  infix   4 _≈_                                              (Function.Metric.Nat.Bundles)
+  infix   3 _←_ _↢_                                          (Function.Related)
+  infix   4 _ℕ<_ _ℕ≤infinity _ℕ≤_                            (Codata.Sized.Conat)
+  infix   6 _ℕ+_ _+ℕ_                                        (Codata.Sized.Conat)
+  infixl  4 _+ _*                                            (Data.List.Kleene.Base)
+  infixr  4 _++++_ _+++*_ _*+++_ _*++*_                      (Data.List.Kleene.Base)
+  infix   4 _[_]* _[_]+                                      (Data.List.Kleene.Base)
+  infix   4 _≢∈_                                             (Data.List.Membership.Propositional)
+  infixr  5 _`∷_                                             (Data.List.Reflection)
+  infix   4 _≡?_                                             (Data.List.Relation.Binary.Equality.DecPropositional)
+  infixr  5 _++ᵖ_                                            (Data.List.Relation.Binary.Prefix.Heterogeneous)
+  infixr  5 _++ˢ_                                            (Data.List.Relation.Binary.Suffix.Heterogeneous)
+  infixr  5 _++_ _++[]                                       (Data.List.Relation.Ternary.Appending.Propositional)
+  infixr  5 _∷=_                                             (Data.List.Relation.Unary.Any)
+  infixr  5 _++_                                             (Data.List.Ternary.Appending)
+  infixr  2 _×-⇔_ _×-↣_ _×-↞_ _×-↠_ _×-↔_ _×-cong_           (Data.Product.Function.NonDependent.Propositional)
+  infixr  2 _×-⟶_                                           (Data.Product.Function.NonDependent.Setoid)
+  infixr  2 _×-equivalence_ _×-injection_ _×-left-inverse_   (Data.Product.Function.NonDependent.Setoid)
+  infixr  2 _×-surjection_ _×-inverse_                       (Data.Product.Function.NonDependent.Setoid)
+  infixr  1 _⊎-⇔_ _⊎-↣_ _⊎-↞_ _⊎-↠_ _⊎-↔_ _⊎-cong_           (Data.Sum.Function.Propositional)
+  infixr  1 _⊎-⟶_                                           (Data.Sum.Function.Setoid)
+  infixr  1 _⊎-equivalence_ _⊎-injection_ _⊎-left-inverse_   (Data.Sum.Function.Setoid)
+  infixr  1 _⊎-surjection_ _⊎-inverse_                       (Data.Sum.Function.Setoid)
+  infix   8 _⁻¹                                              (Data.Parity.Base)
+  infixr  5 _`∷_                                             (Data.Vec.Reflection)
+  infixr  5 _∷=_                                             (Data.Vec.Membership.Setoid)
+  infix   4 _≟H_ _≟N_                                        (Algebra.Solver.Ring)
+  infix   4 _≈_                                              (Relation.Binary.Bundles)
+  infixl  6 _∩_                                              (Relation.Binary.Construct.Intersection)
+  infix   4 _<₋_                                             (Relation.Binary.Construct.Add.Infimum.Strict)
+  infix   4 _≈∙_                                             (Relation.Binary.Construct.Add.Point.Equality)
+  infix   4 _≤⁺_ _≤⊤⁺                                        (Relation.Binary.Construct.Add.Supremum.NonStrict)
+  infixr  5 _∷ʳ_                                             (Relation.Binary.Construct.Closure.Transitive)
+  infixr  5 _∷_                                              (Codata.Guarded.Stream.Relation.Unary.All)
+  infixr  5 _∷_                                              (Foreign.Haskell.List.NonEmpty)
+  infix   4 _≈_                                              (Function.Metric.Rational.Bundles)
+  infixl  6 _ℕ+_                                             (Level.Literals)
+  infixr  6 _∪_                                              (Relation.Binary.Construct.Union)
+  infixl  6 _+ℤ_                                             (Relation.Binary.HeterogeneousEquality.Quotients.Examples)
+  infix   4 _≉_ _≈ᵢ_ _≤ᵢ_                                    (Relation.Binary.Indexed.Homogeneous.Bundles)
+  infixr  5 _∷ᴹ_ _∷⁻¹ᴹ_                                      (Text.Regex.Search)
+  ```
+
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
@@ -179,7 +272,7 @@ Non-backwards compatible changes
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
   which can be used to indicate meet/join-ness of the original structures.
 
-#### Function hierarchy
+#### Removal of the old function hierarchy
 
 * The switch to the new function hierarchy is complete and the following definitions
   now use the new definitions instead of the old ones:
@@ -252,9 +345,41 @@ Non-backwards compatible changes
   * `Relation.Nullary.Decidable`
     * `map`
 
-* The names of the fields in the records of the new hierarchy have been
-  changed from `f`, `g`, `cong₁`, `cong₂` to `to`, `from`, `to-cong`, `from-cong`.
 
+#### Changes to the new function hierarchy
+
+* The names of the fields in `Function.Bundles` have been
+  changed from `f`, `g`, `cong₁` and `cong₂` to `to`, `from`, `to-cong`, `from-cong`.
+
+* The module `Function.Definitions` no longer has two equalities as module arguments, as
+  they did not interact as intended with the re-exports from `Function.Definitions.(Core1/Core2)`.
+  The latter have been removed and their definitions folded into `Function.Definitions`.
+  
+* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective` 
+  have been changed from:
+  ```
+  Surjective f = ∀ y → ∃ λ x → f x ≈₂ y
+  Inverseˡ f g = ∀ y → f (g y) ≈₂ y
+  Inverseʳ f g = ∀ x → g (f x) ≈₁ x
+  ```
+  to:
+  ```
+  Surjective f = ∀ y → ∃ λ x → ∀ {z} → z ≈₁ x → f z ≈₂ y
+  Inverseˡ f g = ∀ {x y} → y ≈₁ g x → f y ≈₂ x
+  Inverseʳ f g = ∀ {x y} → y ≈₂ f x → g y ≈₁ x
+  ```
+  This is for several reasons: i) the new definitions compose much more easily, ii) Agda
+  can better infer the equalities used.
+  
+  To ease backwards compatibility:
+   - the old definitions have been moved to the new names  `StrictlySurjective`, 
+	 `StrictlyInverseˡ` and `StrictlyInverseʳ`. 
+   - The records in  `Function.Structures` and `Function.Bundles` export proofs 
+	 of these under the names `strictlySurjective`, `strictlyInverseˡ` and 
+	 `strictlyInverseʳ`,
+   - Conversion functions have been added in both directions to
+	 `Function.Consequences(.Propositional)`. 
+  
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
@@ -278,42 +403,42 @@ Non-backwards compatible changes
   `m / n` without having to explicitly provide a proof, as instance search will fill it in
   for you. The full list of such operations changed is as follows:
     - In `Data.Nat.DivMod`: `_/_`, `_%_`, `_div_`, `_mod_`
-	- In `Data.Nat.Pseudorandom.LCG`: `Generator`
-	- In `Data.Integer.DivMod`: `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
-	- In `Data.Rational`: `mkℚ+`, `normalize`, `_/_`, `1/_`
-	- In `Data.Rational.Unnormalised`: `_/_`, `1/_`, `_÷_`
+    - In `Data.Nat.Pseudorandom.LCG`: `Generator`
+    - In `Data.Integer.DivMod`: `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
+    - In `Data.Rational`: `mkℚ+`, `normalize`, `_/_`, `1/_`
+    - In `Data.Rational.Unnormalised`: `_/_`, `1/_`, `_÷_`
 
 * At the moment, there are 4 different ways such instance arguments can be provided,
   listed in order of convenience and clarity:
     1. *Automatic basic instances* - the standard library provides instances based on the constructors of each
-	   numeric type in `Data.X.Base`. For example, `Data.Nat.Base` constains an instance of `NonZero (suc n)` for any `n`
-	   and `Data.Integer.Base` contains an instance of `NonNegative (+ n)` for any `n`. Consequently,
-	   if the argument is of the required form, these instances will always be filled in by instance search
-	   automatically, e.g.
-	   ```
-	   0/n≡0 : 0 / suc n ≡ 0
-	   ```
-	2. *Take the instance as an argument* - You can provide the instance argument as a parameter to your function
-	   and Agda's instance search will automatically use it in the correct place without you having to
-	   explicitly pass it, e.g.
-	   ```
-	   0/n≡0 : .{{_ : NonZero n}} → 0 / n ≡ 0
-	   ```
-	3. *Define the instance locally* - You can define an instance argument in scope (e.g. in a `where` clause)
-	   and Agda's instance search will again find it automatically, e.g.
-	   ```
-	   instance
-	     n≢0 : NonZero n
-	     n≢0 = ...
+       numeric type in `Data.X.Base`. For example, `Data.Nat.Base` constains an instance of `NonZero (suc n)` for any `n`
+       and `Data.Integer.Base` contains an instance of `NonNegative (+ n)` for any `n`. Consequently,
+       if the argument is of the required form, these instances will always be filled in by instance search
+       automatically, e.g.
+       ```
+       0/n≡0 : 0 / suc n ≡ 0
+       ```
+    2. *Take the instance as an argument* - You can provide the instance argument as a parameter to your function
+       and Agda's instance search will automatically use it in the correct place without you having to
+       explicitly pass it, e.g.
+       ```
+       0/n≡0 : .{{_ : NonZero n}} → 0 / n ≡ 0
+       ```
+    3. *Define the instance locally* - You can define an instance argument in scope (e.g. in a `where` clause)
+       and Agda's instance search will again find it automatically, e.g.
+       ```
+       instance
+         n≢0 : NonZero n
+         n≢0 = ...
 
-	   0/n≡0 : 0 / n ≡ 0
-	   ```
-	4. *Pass the instance argument explicitly* - Finally, if all else fails you can pass the
-	   instance argument explicitly into the function using `{{ }}`, e.g.
-	   ```
-	   0/n≡0 : ∀ n (n≢0 : NonZero n) → ((0 / n) {{n≢0}}) ≡ 0
-	   ```
-	   Suitable constructors for `NonZero`/`Positive` etc. can be found in `Data.X.Base`.
+       0/n≡0 : 0 / n ≡ 0
+       ```
+    4. *Pass the instance argument explicitly* - Finally, if all else fails you can pass the
+       instance argument explicitly into the function using `{{ }}`, e.g.
+       ```
+       0/n≡0 : ∀ n (n≢0 : NonZero n) → ((0 / n) {{n≢0}}) ≡ 0
+       ```
+       Suitable constructors for `NonZero`/`Positive` etc. can be found in `Data.X.Base`.
 
 * A full list of proofs that have changed to use instance arguments is available at the end of this file.
   Notable changes to proofs are now discussed below.
@@ -364,14 +489,14 @@ Non-backwards compatible changes
 * As a consequence of this, some proofs that relied on this reduction behaviour
   or on eta-equality may no longer go through. There are several ways to fix this:
   1. The principled way is to not rely on this reduction behaviour in the first place.
-	 The `Properties` files for rational numbers have been greatly expanded in `v1.7`
-	 and `v2.0`, and we believe most proofs should be able to be built up from existing
-	 proofs contained within these files.
+     The `Properties` files for rational numbers have been greatly expanded in `v1.7`
+     and `v2.0`, and we believe most proofs should be able to be built up from existing
+     proofs contained within these files.
   2. Alternatively, annotating any rational arguments to a proof with either
-	 `@record{}` or `@(mkℚ _ _ _)` should restore the old reduction behaviour for any
-	 terms involving those parameters.
+     `@record{}` or `@(mkℚ _ _ _)` should restore the old reduction behaviour for any
+     terms involving those parameters.
   3. Finally, if the above approaches are not viable then you may be forced to explicitly
-	 use `cong` combined with a lemma that proves the old reduction behaviour.
+     use `cong` combined with a lemma that proves the old reduction behaviour.
 
 ### Change to the definition of `LeftCancellative` and `RightCancellative`
 
@@ -385,20 +510,20 @@ Non-backwards compatible changes
 
 * Therefore the definitions have been changed as follows to make all their arguments explicit:
   - `LeftCancellative _•_`
-	- From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z`
-	- To: `∀ x y z → (x • y) ≈ (x • z) → y ≈ z`
+    - From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z`
+    - To: `∀ x y z → (x • y) ≈ (x • z) → y ≈ z`
 
   - `RightCancellative _•_`
     - From: `∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z`
-	- To: `∀ x y z → (y • x) ≈ (z • x) → y ≈ z`
+    - To: `∀ x y z → (y • x) ≈ (z • x) → y ≈ z`
 
   - `AlmostLeftCancellative e _•_`
     - From: `∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
-	- To: `∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
+    - To: `∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
 
   - `AlmostRightCancellative e _•_`
-	- From: `∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
-	- To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+    - From: `∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+    - To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
 
 * Correspondingly some proofs of the above types will need additional arguments passed explicitly.
   Instances can easily be fixed by adding additional underscores, e.g.
@@ -528,7 +653,7 @@ Non-backwards compatible changes
 * It was very difficult to use the `Relation.Nullary` modules, as `Relation.Nullary`
   contained the basic definitions of negation, decidability etc., and the operations and
   proofs were smeared over `Relation.Nullary.(Negation/Product/Sum/Implication etc.)`.
-  
+
 * In order to fix this:
   - the definition of `Dec` and `recompute` have been moved to `Relation.Nullary.Decidable.Core`
   - the definition of `Reflects` has been moved to `Relation.Nullary.Reflects`
@@ -545,12 +670,12 @@ Non-backwards compatible changes
   have been deprecated and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`
   however all their contents is re-exported by `Relation.Nullary` which is the easiest way to access
   it now.
-  
+
 * In order to facilitate this reorganisation the following breaking moves have occured:
   - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
   - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
-  - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation` 
-	to `Relation.Nullary.Decidable`.
+  - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation`
+    to `Relation.Nullary.Decidable`.
   - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
 
 ### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
@@ -640,6 +765,13 @@ Non-backwards compatible changes
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
   the `--without-K` flag now use the `--cubical-compatible` flag instead.
 
+* To avoid _large indices_ that are by default no longer allowed in Agda 2.6.4,
+  universe levels have been increased in the following definitions:
+  - `Data.Star.Decoration.DecoratedWith`
+  - `Data.Star.Pointer.Pointer`
+  - `Reflection.AnnotatedAST.Typeₐ`
+  - `Reflection.AnnotatedAST.AnnotationFun`
+
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
   have been made implicit.
 
@@ -695,7 +827,7 @@ Non-backwards compatible changes
   ```
   NB. It is not possible to rename or deprecate `syntax` declarations, so Agda will
   only issue a "Could not parse the application `begin ...` when scope checking"
-  warning if the old combinators are used. 
+  warning if the old combinators are used.
 
 * The types of the proofs `pos⇒1/pos`/`1/pos⇒pos` and `neg⇒1/neg`/`1/neg⇒neg` in
   `Data.Rational(.Unnormalised).Properties` have been switched, as the previous
@@ -781,7 +913,8 @@ Non-backwards compatible changes
     lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
-
+  * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
+    `¬¬-excluded-middle`.
 
 Major improvements
 ------------------
@@ -790,13 +923,13 @@ Major improvements
 
 * The ring solver tactic has been greatly improved. In particular:
   1. When the solver is used for concrete ring types, e.g. ℤ, the equality can now use
-	 all the ring operations defined natively for that type, rather than having
-	 to use the operations defined in `AlmostCommutativeRing`. For example
-	 previously you could not use `Data.Integer.Base._*_` but instead had to
-	 use `AlmostCommutativeRing._*_`.
+     all the ring operations defined natively for that type, rather than having
+     to use the operations defined in `AlmostCommutativeRing`. For example
+     previously you could not use `Data.Integer.Base._*_` but instead had to
+     use `AlmostCommutativeRing._*_`.
   2. The solver now supports use of the subtraction operator `_-_` whenever
      it is defined immediately in terms of `_+_` and `-_`. This is the case for
-	 `Data.Integer` and `Data.Rational`.
+     `Data.Integer` and `Data.Rational`.
 
 ### Moved `_%_` and `_/_` operators to `Data.Nat.Base`
 
@@ -808,7 +941,7 @@ Major improvements
   for them still live in `Data.Nat.DivMod` (which also publicly re-exports them
   to provide backwards compatability).
 
-* Beneficieries of this change include `Data.Rational.Unnormalised.Base` whose
+* Beneficiaries of this change include `Data.Rational.Unnormalised.Base` whose
   dependencies are now significantly smaller.
 
 ### Moved raw bundles from Data.X.Properties to Data.X.Base
@@ -839,6 +972,14 @@ Major improvements
 
 Deprecated modules
 ------------------
+
+### Moving `Relation.Binary.Construct.(Converse/Flip)`
+
+* The following files have been moved:
+  ```agda
+  Relation.Binary.Construct.Converse               ↦ Relation.Binary.Construct.Flip.EqAndOrd
+  Relation.Binary.Construct.Flip                   ↦ Relation.Binary.Construct.Flip.Ord
+  ```
 
 ### Deprecation of old function hierarchy
 
@@ -987,7 +1128,7 @@ Deprecated names
 
 * In `Data.Fin.Induction`:
   ```
-  ≺-Rec 
+  ≺-Rec
   ≺-wellFounded
   ≺-recBuilder
   ≺-rec
@@ -996,7 +1137,7 @@ Deprecated names
   As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
   associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
   But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
-  least of all those counterparts... the type confusion would be intolerable. 
+  least of all those counterparts... the type confusion would be intolerable.
 
 * In `Data.Fin.Properties`:
   ```
@@ -1077,14 +1218,14 @@ Deprecated names
 
   ^-semigroup-morphism ↦ ^-isMagmaHomomorphism
   ^-monoid-morphism    ↦ ^-isMonoidHomomorphism
-  
+
   pos-distrib-* ↦ pos-*
   pos-+-commute ↦ pos-+
   abs-*-commute ↦ abs-*
-  
+
   +-isAbelianGroup ↦ +-0-isAbelianGroup
   ```
-  
+
 * In `Data.List.Properties`:
   ```agda
   map-id₂         ↦  map-id-local
@@ -1575,7 +1716,7 @@ New modules
   ```
   Algebra.Properties.Quasigroup
   ```
-  
+
 * Properties of MiddleBolLoop
   ```
   Algebra.Properties.MiddleBolLoop
@@ -1595,6 +1736,12 @@ New modules
   ```
   Algebra.Properties.KleeneAlgebra
   ```
+
+* Relations on indexed sets
+  ```
+  Function.Indexed.Bundles
+  ```
+
 Other minor changes
 -------------------
 
@@ -1646,8 +1793,30 @@ Other minor changes
                                      Involutive _≈_ f
   ```
 
+* Added new proofs to `Algebra.Consequences.Propositional`:
+  ```agda
+  comm+assoc⇒middleFour     : Commutative _•_ →
+                              Associative _•_ →
+                              _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒comm  : Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+  ```
+
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
+  comm+assoc⇒middleFour     : Congruent₂ _•_ → Commutative _•_ → Associative _•_ →
+                              _•_ MiddleFourExchange _•_
+  identity+middleFour⇒assoc : Congruent₂ _•_ → Identity e _•_ →
+                              _•_ MiddleFourExchange _•_ →
+                              Associative _•_
+  identity+middleFour⇒comm  : Congruent₂ _•_ → Identity e _+_ →
+                              _•_ MiddleFourExchange _+_ →
+                              Commutative _•_
+
   involutive⇒surjective  : Involutive f  → Surjective f
   selfInverse⇒involutive : SelfInverse f → Involutive f
   selfInverse⇒congruent  : SelfInverse f → Congruent f
@@ -1711,8 +1880,10 @@ Other minor changes
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
+  _MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
+
   SelfInverse : Op₁ A → Set _
-  
+
   LeftDividesˡ  : Op₂ A → Op₂ A → Set _
   LeftDividesʳ  : Op₂ A → Op₂ A → Set _
   RightDividesˡ : Op₂ A → Op₂ A → Set _
@@ -1748,7 +1919,7 @@ Other minor changes
   _^ᵗ_     : A → ℕ → A
   ```
 
-* `Algebra.Properties.Magma.Divisibility` now re-exports operations 
+* `Algebra.Properties.Magma.Divisibility` now re-exports operations
   `_∣ˡ_`, `_∤ˡ_`, `_∣ʳ_`, `_∤ʳ_` from `Algebra.Definitions.Magma`.
 
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
@@ -1930,7 +2101,7 @@ Other minor changes
 * Added new functions in `Data.Integer.Base`:
   ```
   _^_ : ℤ → ℕ → ℤ
- 
+
   +-0-rawGroup  : Rawgroup 0ℓ 0ℓ
 
   *-rawMagma    : RawMagma 0ℓ 0ℓ
@@ -2029,6 +2200,20 @@ Other minor changes
 
   length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
+  
+  take-map : take n (map f xs) ≡ map f (take n xs)
+  drop-map : drop n (map f xs) ≡ map f (drop n xs)
+  head-map : head (map f xs) ≡ Maybe.map f (head xs)
+
+  take-suc : (o : Fin (length xs)) → let m = toℕ o in take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
+  take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
+  drop-take-suc : (o : Fin (length xs)) → let m = toℕ o in drop m (take (suc m) xs) ≡ [ lookup xs o ]
+  drop-take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in drop m (take (suc m) (tabulate f)) ≡ [ f o ]
+
+  take-all : n ≥ length xs → take n xs ≡ xs
+
+  take-[] : ∀ m → take  m [] ≡ []
+  drop-[] : ∀ m → drop  m [] ≡ []
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2045,7 +2230,7 @@ Other minor changes
   _! : ℕ → ℕ
 
   parity : ℕ → Parity
-  
+
   +-rawMagma          : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid       : RawMonoid 0ℓ 0ℓ
   *-rawMagma          : RawMagma 0ℓ 0ℓ
@@ -2057,6 +2242,14 @@ Other minor changes
 * Added a new proof to `Data.Nat.Binary.Properties`:
   ```agda
   suc-injective : Injective _≡_ _≡_ suc
+  toℕ-inverseˡ  : Inverseˡ _≡_ _≡_ toℕ fromℕ
+  toℕ-inverseʳ  : Inverseʳ _≡_ _≡_ toℕ fromℕ
+  toℕ-inverseᵇ  : Inverseᵇ _≡_ _≡_ toℕ fromℕ
+  ```
+
+* Added a new pattern synonym to `Data.Nat.Divisibility.Core`:
+  ```agda
+  pattern divides-refl q = divides q refl
   ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
@@ -2290,10 +2483,10 @@ Other minor changes
 * Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
   ```agda
   ×-respectsʳ : Transitive _≈₁_ →
-                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_ 
+                _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_
   ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
-                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_ 
-  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ → 
+                 _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_
+  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ →
                    WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
   ```
 
@@ -2446,7 +2639,7 @@ Other minor changes
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
   <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
                 ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
-  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ → 
+  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
                   ∀ {n} → WellFounded (_<_ {n})
 ```
 
@@ -3050,6 +3243,42 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
 
+* Added new module to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  module ≃-Reasoning = SetoidReasoning ≃-setoid
+  ```
+
+* Added new functions to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  0≠1 : 0ℚᵘ ≠ 1ℚᵘ
+  ≃-≠-irreflexive : Irreflexive _≃_ _≠_
+  ≠-symmetric : Symmetric _≠_
+  ≠-cotransitive : Cotransitive _≠_
+  ≠⇒invertible : p ≠ q → Invertible _≃_ 1ℚᵘ _*_ (p - q)
+  ```
+
+* Added new structures to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  +-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
+  +-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
+  ```
+
+* Added new bundles to `Data.Rational.Unnormalised.Properties`
+  ```agda
+  +-*-heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  +-*-heytingField : HeytingField 0ℓ 0ℓ 0ℓ
+  ```
+
+* Added new function to `Data.Vec.Relation.Binary.Pointwise.Inductive`
+  ```agda
+  cong-[_]≔ : Pointwise _∼_ xs ys → Pointwise _∼_ (xs [ i ]≔ p) (ys [ i ]≔ p)
+  ```
+
+* Added new function to `Data.Vec.Relation.Binary.Equality.Setoid`
+  ```agda
+  map-[]≔ : map f (xs [ i ]≔ p) ≋ map f xs [ i ]≔ f p
+  ```
+
 * Added new function to `Data.List.Relation.Binary.Permutation.Propositional.Properties`
   ```agda
   ↭-reverse : (xs : List A) → reverse xs ↭ xs
@@ -3073,14 +3302,21 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   #-congˡ       : y ≈ z → x # y → x # z
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Setoid.Properties`
+  and `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`.
+  ```agda
+  ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ```
+
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`
 
-This is how to use it:
-  ```agda
-  _ : a # d
-  _ = begin-apartness
-    a ≈⟨ a≈b ⟩
-    b #⟨ b#c ⟩
-    c ≈⟨ c≈d ⟩
-    d ∎
-  ```
+  This is how to use it:
+    ```agda
+    _ : a # d
+    _ = begin-apartness
+      a ≈⟨ a≈b ⟩
+      b #⟨ b#c ⟩
+      c ≈⟨ c≈d ⟩
+      d ∎
+    ```

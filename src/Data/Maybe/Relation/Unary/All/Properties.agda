@@ -12,8 +12,8 @@ open import Data.Maybe.Base
 open import Data.Maybe.Relation.Unary.All as All
   using (All; nothing; just)
 open import Data.Maybe.Relation.Binary.Connected
-open import Data.Product using (_×_; _,_)
-open import Function
+open import Data.Product.Base using (_×_; _,_)
+open import Function.Base using (_∘_)
 open import Level
 open import Relation.Unary
 open import Relation.Binary.Core

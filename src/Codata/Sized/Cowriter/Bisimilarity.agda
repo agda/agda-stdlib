@@ -13,7 +13,8 @@ open import Size
 open import Codata.Sized.Thunk
 open import Codata.Sized.Cowriter
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as Eq
 
 private
   variable
@@ -32,6 +33,8 @@ data Bisim {V : Set v} {W : Set w} {A : Set a} {B : Set b}
   [_] : ∀ {a b} → S a b → Bisim R S i [ a ] [ b ]
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R S) i xs ys →
         Bisim R S i (x ∷ xs) (y ∷ ys)
+
+infixr 5 _∷_
 
 module _ {R : Rel W r} {S : Rel A s}
          (refl^R : Reflexive R) (refl^S : Reflexive S) where

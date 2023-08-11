@@ -12,11 +12,11 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Nat as ℕ
 import Data.Nat.Properties as ℕₚ
-open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
-open import Data.List as L using (List)
+open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
+open import Data.List.Base as L using (List)
 import Data.List.Properties as Lₚ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Vec as V using (Vec)
+open import Data.Vec.Base as V using (Vec)
 import Data.Vec.Properties as Vₚ
 open import Data.Vec.Functional
 open import Function.Base

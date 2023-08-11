@@ -17,7 +17,7 @@ open import Data.Bool.Base as Bool
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product as Prod using (_×_; _,_; map₁; map₂′)
+open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)

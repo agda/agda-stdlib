@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.List
+open import Data.List.Base using (List)
 open import Level
 open import Relation.Binary
 

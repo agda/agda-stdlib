@@ -17,7 +17,7 @@ open import Level
 module Data.Product.Effectful.Right.Base
   {b} (B : Set b) (a : Level) where
 
-open import Data.Product using (_×_; map₁; proj₁; proj₂; <_,_>)
+open import Data.Product.Base using (_×_; map₁; proj₁; proj₂; <_,_>)
 open import Effect.Functor using (RawFunctor)
 open import Effect.Comonad using (RawComonad)
 

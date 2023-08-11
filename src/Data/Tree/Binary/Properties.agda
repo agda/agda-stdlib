@@ -8,7 +8,7 @@
 
 module Data.Tree.Binary.Properties where
 
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Function.Nary.NonDependent using (congₙ)
 open import Level using (Level)
 open import Data.Nat.Base using (suc; _+_)

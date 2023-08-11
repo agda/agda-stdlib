@@ -3,7 +3,7 @@
 --
 -- Values for AVL trees
 -- Values must respect the underlying equivalence on keys
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
@@ -11,12 +11,12 @@ open import Relation.Binary using (Setoid; _Respects_)
 
 module Data.Tree.AVL.Value {a ℓ} (S : Setoid a ℓ) where
 
-open import Data.Product using (Σ; _,_)
+open import Data.Product.Base using (Σ; _,_)
 open import Level using (suc; _⊔_)
-import Function as F
+import Function.Base as F
 open Setoid S renaming (Carrier to Key)
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- A Value
 
 record Value v : Set (a ⊔ ℓ ⊔ suc v) where
@@ -25,7 +25,7 @@ record Value v : Set (a ⊔ ℓ ⊔ suc v) where
     family   : Key → Set v
     respects : family Respects _≈_
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- A Key together with its value
 
 record K&_ {v} (V : Value v) : Set (a ⊔ v) where
@@ -43,7 +43,7 @@ module _ {v} {V : Value v} where
   fromPair : Σ Key (Value.family V) → K& V
   fromPair (k , v) = k , v
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The constant family of values
 
 -- The function `const` is defined using copatterns to prevent eager

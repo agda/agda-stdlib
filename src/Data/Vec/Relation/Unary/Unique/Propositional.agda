@@ -8,7 +8,7 @@
 
 module Data.Vec.Relation.Unary.Unique.Propositional {a} {A : Set a} where
 
-open import Relation.Binary.PropositionalEquality using (setoid)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Data.Vec.Relation.Unary.Unique.Setoid as SetoidUnique
 
 ------------------------------------------------------------------------

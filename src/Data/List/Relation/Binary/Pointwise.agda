@@ -12,7 +12,7 @@ open import Algebra.Core using (Op₂)
 open import Function.Base
 open import Function.Inverse using (Inverse)
 open import Data.Bool.Base using (true; false)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.List.Base as List hiding (map; head; tail; uncons)
 open import Data.List.Properties using (≡-dec; length-++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -26,7 +26,8 @@ open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary renaming (Rel to Rel₂)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable

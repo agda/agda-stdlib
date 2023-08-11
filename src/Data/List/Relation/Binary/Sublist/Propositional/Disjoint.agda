@@ -11,7 +11,7 @@ module Data.List.Relation.Binary.Sublist.Propositional.Disjoint
 
 open import Data.List.Base using (List)
 open import Data.List.Relation.Binary.Sublist.Propositional
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------
 -- A Union where the triangles commute is a
