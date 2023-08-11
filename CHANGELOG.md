@@ -2018,10 +2018,27 @@ Other minor changes
   <-wellFounded : WellFounded _<_
   ∨-conicalˡ : LeftConical false _∨_
   ∨-conicalʳ : RightConical false _∨_
-  ∨-conical : Conical false _∨_
+  ∨-conical  : Conical false _∨_
   ∧-conicalˡ : LeftConical true _∧_
   ∧-conicalʳ : RightConical true _∧_
-  ∧-conical : Conical true _∧_
+  ∧-conical  : Conical true _∧_
+
+  true-xor            : true xor x ≡ not x
+  xor-same            : x xor x ≡ false
+  not-distribˡ-xor    : not (x xor y) ≡ (not x) xor y
+  not-distribʳ-xor    : not (x xor y) ≡ x xor (not y)
+  xor-assoc           : Associative _xor_
+  xor-comm            : Commutative _xor_
+  xor-identityˡ       : LeftIdentity false _xor_
+  xor-identityʳ       : RightIdentity false _xor_
+  xor-identity        : Identity false _xor_
+  xor-inverseˡ        : LeftInverse true not _xor_
+  xor-inverseʳ        : RightInverse true not _xor_
+  xor-inverse         : Inverse true not _xor_
+  ∧-distribˡ-xor      : _∧_ DistributesOverˡ _xor_
+  ∧-distribʳ-xor      : _∧_ DistributesOverʳ _xor_
+  ∧-distrib-xor       : _∧_ DistributesOver _xor_
+  xor-annihilates-not : (not x) xor (not y) ≡ x xor y
   ```
 
 * Added new functions in `Data.Fin.Base`:
