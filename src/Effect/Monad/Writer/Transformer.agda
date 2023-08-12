@@ -10,7 +10,7 @@
 module Effect.Monad.Writer.Transformer where
 
 open import Algebra using (RawMonoid)
-open import Data.Product using (_×_; _,_; proj₂; map₂)
+open import Data.Product.Base using (_×_; _,_; proj₂; map₂)
 open import Effect.Applicative
 open import Effect.Choice
 open import Effect.Empty

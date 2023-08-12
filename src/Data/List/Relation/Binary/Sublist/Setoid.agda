@@ -24,7 +24,7 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Core
   as HeterogeneousCore
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeterogeneousProperties
-open import Data.Product using (∃; ∃₂; _×_; _,_; proj₂)
+open import Data.Product.Base using (∃; ∃₂; _×_; _,_; proj₂)
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

@@ -25,7 +25,7 @@ open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
 open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional

@@ -13,7 +13,6 @@
 
 module Function.Bijection where
 
-open import Data.Product
 open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P

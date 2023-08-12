@@ -8,7 +8,7 @@
 
 module Relation.Unary.Indexed  where
 
-open import Data.Product using (∃; _×_)
+open import Data.Product.Base using (∃; _×_)
 open import Level
 open import Relation.Nullary.Negation using (¬_)
 

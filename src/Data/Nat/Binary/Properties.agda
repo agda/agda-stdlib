@@ -21,7 +21,7 @@ open import Data.Nat.Divisibility using (∣-refl)
 import Data.Nat.Base as ℕᵇ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
 open import Function.Definitions

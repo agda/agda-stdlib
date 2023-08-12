@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Suffix.Heterogeneous where
 
 open import Level
-open import Relation.Binary using (REL; _⇒_)
+open import Relation.Binary.Core using (REL; _⇒_)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
   using (Pointwise; []; _∷_)

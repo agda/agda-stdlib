@@ -9,11 +9,11 @@
 
 module Data.Product.Relation.Binary.Pointwise.Dependent.WithK where
 
-open import Data.Product
+open import Data.Product.Base using (Σ; uncurry)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Function.Base
 open import Function.Inverse using (Inverse)
-open import Relation.Binary using (_⇒_)
+open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 open import Relation.Binary.Indexed.Heterogeneous using (IndexedSetoid)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

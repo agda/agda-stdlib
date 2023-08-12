@@ -10,7 +10,7 @@ open import Data.Maybe.Base using (just; nothing)
 open import Data.Maybe.Effectful.Transformer
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _^_; _≡ᵇ_)
 open import Data.Nat.Show using (show)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.String.Base using (_++_)
 open import Function.Base using (_$_)
 

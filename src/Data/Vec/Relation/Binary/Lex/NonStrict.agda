@@ -13,7 +13,7 @@ module Data.Vec.Relation.Binary.Lex.NonStrict where
 
 open import Data.Empty
 open import Data.Unit using (⊤; tt)
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product.Base using (proj₁; proj₂)
 open import Data.Nat using (ℕ)
 open import Data.Vec.Base using (Vec; []; _∷_)
 import Data.Vec.Relation.Binary.Lex.Strict as Strict

@@ -6,20 +6,20 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Indexed
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂) where
 
 open import Level using (Level; _⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Product using (Σ; ∃; _×_; _,_; proj₁)
+open import Data.Product.Base using (Σ; ∃; _×_; _,_; proj₁)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.List.Base as List using (List)
 open import Data.DifferenceList using (DiffList; []; _∷_; _++_)
 open import Function.Base as F hiding (const)
 open import Relation.Unary
-open import Relation.Binary using (_Respects_; Tri; tri<; tri≈; tri>)
+open import Relation.Binary.Definitions using (_Respects_; Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
