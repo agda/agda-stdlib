@@ -30,6 +30,7 @@ open import Data.Product.Base as Prod
 import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
+open import Data.Vec.Base as Vec using (toList)
 open import Data.Fin.Properties using (toℕ-cast)
 open import Function.Base using (id; _∘_; _∘′_; _∋_; _-⟨_∣; ∣_⟩-_; _$_; const; flip)
 open import Function.Definitions using (Injective)
@@ -627,6 +628,43 @@ sum-++ (x ∷ xs) ys = begin
 length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
 length-replicate zero    = refl
 length-replicate (suc n) = cong suc (length-replicate n)
+
+lookup-replicate : ∀ n (x : A) (i : Fin (length (replicate n x))) → lookup (replicate n x) i ≡ x
+lookup-replicate (suc n) x zero    = refl
+lookup-replicate (suc n) x (suc i) = lookup-replicate n x i
+
+map-replicate :  ∀ (f : A → B) (x : A) n →
+                 map f (replicate n x) ≡ replicate n (f x)
+map-replicate f x zero    = refl
+map-replicate f x (suc n) = cong (_ ∷_) (map-replicate f x n)
+
+zipWith-replicate : ∀ n (_⊕_ : A → B → C) (x : A) (y : B) →
+                    zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
+zipWith-replicate zero    _⊕_ x y = refl
+zipWith-replicate (suc n) _⊕_ x y = cong (x ⊕ y ∷_) (zipWith-replicate n _⊕_ x y)
+
+------------------------------------------------------------------------
+-- iterate
+
+length-iterate : ∀ n {f} {x : A} → length (iterate f x n) ≡ n
+length-iterate zero    = refl
+length-iterate (suc n) = cong suc (length-iterate n)
+
+toList-iterate : ∀ n {f} {x : A} → toList (Vec.iterate f x {n = n}) ≡ iterate f x n
+toList-iterate zero    = refl
+toList-iterate (suc n) = cong (_ ∷_) (toList-iterate n)
+
+iterate-id : ∀ n {x : A} → iterate id x n ≡ replicate n x
+iterate-id zero    = refl
+iterate-id (suc n) = cong (_ ∷_) (iterate-id n)
+
+take-iterate : ∀ n {f} {x : A} → take n (iterate f x n) ≡ iterate f x n
+take-iterate zero    = refl
+take-iterate (suc n) = cong (_ ∷_) (take-iterate n)
+
+drop-iterate : ∀ n {f} {x : A} → drop n (iterate f x n) ≡ []
+drop-iterate zero    = refl
+drop-iterate (suc n) = drop-iterate n
 
 ------------------------------------------------------------------------
 -- scanr
