@@ -2206,21 +2206,23 @@ Additions to existing modules
 
 * Added new functions and definitions to `Data.List.Base`:
   ```agda
-  takeWhileᵇ      : (A → Bool) → List A → List A
-  dropWhileᵇ      : (A → Bool) → List A → List A
-  filterᵇ         : (A → Bool) → List A → List A
-  partitionᵇ      : (A → Bool) → List A → List A × List A
-  spanᵇ           : (A → Bool) → List A → List A × List A
-  breakᵇ          : (A → Bool) → List A → List A × List A
-  linesByᵇ        : (A → Bool) → List A → List (List A)
-  wordsByᵇ        : (A → Bool) → List A → List (List A)
-  derunᵇ          : (A → A → Bool) → List A → List A
-  deduplicateᵇ    : (A → A → Bool) → List A → List A
+  takeWhileᵇ   : (A → Bool) → List A → List A
+  dropWhileᵇ   : (A → Bool) → List A → List A
+  filterᵇ      : (A → Bool) → List A → List A
+  partitionᵇ   : (A → Bool) → List A → List A × List A
+  spanᵇ        : (A → Bool) → List A → List A × List A
+  breakᵇ       : (A → Bool) → List A → List A × List A
+  linesByᵇ     : (A → Bool) → List A → List (List A)
+  wordsByᵇ     : (A → Bool) → List A → List (List A)
+  derunᵇ       : (A → A → Bool) → List A → List A
+  deduplicateᵇ : (A → A → Bool) → List A → List A
+
   catMaybes       : List (Maybe A) → List A
   ap              : List (A → B) → List A → List B
   ++-rawMagma     : Set a → RawMagma a _
   ++-[]-rawMonoid : Set a → RawMonoid a _
-  iterate         : (A → A) → A → ℕ → List A
+
+  iterate : (A → A) → A → ℕ → List A
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
@@ -2281,12 +2283,27 @@ Additions to existing modules
 
   take-all : n ≥ length xs → take n xs ≡ xs
 
+<<<<<<< HEAD
   take-[] : take m [] ≡ []
   drop-[] : drop m [] ≡ []
 
   map-replicate : map f (replicate n x) ≡ replicate n (f x)
 
   drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
+=======
+  take-[] : ∀ m → take  m [] ≡ []
+  drop-[] : ∀ m → drop  m [] ≡ []
+
+  lookup-replicate  : lookup (replicate n x) i ≡ x
+  map-replicate     : map f (replicate n x) ≡ replicate n (f x)
+  zipWith-replicate : zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
+
+  length-iterate : length (iterate f x n) ≡ n
+  toList-iterate : toList (Vec.iterate f x {n = n}) ≡ iterate f x n
+  iterate-id     : iterate id x n ≡ replicate n x
+  take-iterate   : take n (iterate f x n) ≡ iterate f x n
+  drop-iterate   : drop n (iterate f x n) ≡ []
+>>>>>>> dd0d05e65 (Update CHANGELOG)
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2707,6 +2724,7 @@ Additions to existing modules
   lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
+<<<<<<< HEAD
   cast-reverse : cast eq ∘ reverse ≗ reverse ∘ cast eq
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
@@ -2726,6 +2744,11 @@ Additions to existing modules
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
   ```agda
   index-∈-fromList⁺ : Any.index (∈-fromList⁺ v∈xs) ≡ indexₗ v∈xs
+=======
+
+  length-iterate : length (iterate f x {n}) ≡ n
+  iterate-id     : iterate id x {n} ≡ replicate x
+>>>>>>> dd0d05e65 (Update CHANGELOG)
   ```
 
 * Added new proofs in `Data.Vec.Functional.Properties`:
