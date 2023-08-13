@@ -24,8 +24,7 @@ open import Level using (Level; 0ℓ)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
-open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
-open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
+open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no; bool⁺)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
@@ -755,9 +754,7 @@ T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
 
 T? : U.Decidable T
-does  (T? b) = b
-proof (T? true ) = ofʸ _
-proof (T? false) = ofⁿ λ()
+T? = bool⁺
 
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _

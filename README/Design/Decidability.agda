@@ -37,8 +37,7 @@ ex₁ : (n : ℕ) → Reflects (zero ≡ suc n) false
 ex₁ n = ofⁿ λ ()
 
 ex₂ : (b : Bool) → Reflects (T b) b
-ex₂ false = ofⁿ id
-ex₂ true  = ofʸ tt
+ex₂ = T⁺
 
 ------------------------------------------------------------------------
 -- Dec
