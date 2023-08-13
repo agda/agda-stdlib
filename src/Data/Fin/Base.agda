@@ -18,8 +18,6 @@ open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
-open import Relation.Nullary.Negation.Core using (contradiction)
-open import Relation.Nullary.Decidable.Core using (yes; no; True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
