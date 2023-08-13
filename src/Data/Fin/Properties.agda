@@ -42,7 +42,7 @@ open import Relation.Nullary.Decidable.Core
   using (Dec; _because_; does; proof; yes; no; _×-dec_; _⊎-dec_; map′)
 open import Relation.Nullary.Decidable as Dec using (via-injection)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Reflects using (Reflects; ofʸ; ofⁿ; invert)
+open import Relation.Nullary.Reflects using (Reflects; invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
