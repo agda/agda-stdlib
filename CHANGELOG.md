@@ -1242,6 +1242,8 @@ Deprecated names
 
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
+
+  ʳ++-++  ↦  ++-ʳ++
   ```
 
 * In `Data.List.NonEmpty.Properties`:
