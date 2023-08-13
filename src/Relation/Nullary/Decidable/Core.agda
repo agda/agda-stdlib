@@ -53,6 +53,15 @@ pattern yes p =  true because ofʸ  p
 pattern no ¬p = false because ofⁿ ¬p
 
 ------------------------------------------------------------------------
+-- decision procedures are Decidable
+
+bool⁺ : ∀ b → Dec (T b)
+bool⁺ b = b because (T⁺ b)
+
+dec : ∀ {a} {A : Set a} (p : A → Bool) (x : A) → Dec (T (p x))
+dec p x = bool⁺ (p x)
+
+------------------------------------------------------------------------
 -- Recompute
 
 -- Given an irrelevant proof of a decidable type, a proof can
@@ -179,7 +188,14 @@ decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
 ¬¬-excluded-middle : DoubleNegation (Dec P)
 ¬¬-excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
 
-excluded-middle : DoubleNegation (Dec P)
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
 excluded-middle = ¬¬-excluded-middle
 
 {-# WARNING_ON_USAGE excluded-middle

@@ -15,7 +15,7 @@ open import Data.Empty
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
-open import Function.Base using (_$_; _∘_; const)
+open import Function.Base using (id; _$_; _∘_; const)
 
 open import Relation.Nullary.Negation.Core
 
@@ -36,6 +36,10 @@ data Reflects {p} (P : Set p) : Bool → Set p where
 
 ------------------------------------------------------------------------
 -- Constructors and destructors
+
+T⁺ : ∀ b → Reflects (T b) b
+T⁺ true  = ofʸ _
+T⁺ false = ofⁿ id
 
 -- These lemmas are intended to be used mostly when `b` is a value, so
 -- that the `if` expressions have already been evaluated away.

@@ -676,7 +676,8 @@ Non-backwards compatible changes
   - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
   - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation`
     to `Relation.Nullary.Decidable`.
-  - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
+  - `excluded-middle` has been deprecated in favour of `¬¬-excluded-middle` 
+  - `fromDec` and `toDec` have been moved from `Data.Sum.Base` to `Data.Sum`.
 
 ### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
 
@@ -2789,6 +2790,20 @@ Other minor changes
   ```
   subst₂-removable : subst₂ _∼_ eq₁ eq₂ p ≅ p
   ```
+
+* Added new constructors for `Relation.Nullary.Decidable`
+  ```
+  bool⁺ : ∀ b → Dec (T b)
+  predᵇ⁺ : (p : A → Bool) (x : A) → Dec (T (p x))
+
+  ```
+  (the first is example `README.Design.Decidability.ex₃`
+
+* Added new constructor for `Relation.Nullary.Reflects`
+  ```
+  T⁺ : ∀ b → Reflects (T b) b
+  ```
+  (this is example `README.Design.Decidability.ex₂`
 
 * Added new definitions in `Relation.Unary`:
   ```
