@@ -38,10 +38,11 @@ open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
-open import Relation.Nullary
-  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_; _×-dec_; _⊎-dec_; contradiction)
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Decidable as Dec using (map′)
+open import Relation.Nullary.Decidable.Core
+  using (Dec; _because_; does; proof; yes; no; _×-dec_; _⊎-dec_; map′)
+open import Relation.Nullary.Decidable as Dec using (via-injection)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Reflects using (Reflects; ofʸ; ofⁿ; invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
@@ -1036,7 +1037,7 @@ module _ {ℓ} {S : Setoid a ℓ} (inj : Injection S (≡-setoid n)) where
   open Setoid S
 
   inj⇒≟ : B.Decidable _≈_
-  inj⇒≟ = Dec.via-injection inj _≟_
+  inj⇒≟ = via-injection inj _≟_
 
   inj⇒decSetoid : DecSetoid a ℓ
   inj⇒decSetoid = record
