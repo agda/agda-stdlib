@@ -345,12 +345,12 @@ initLast {n = suc n} (x ∷ xs) with initLast xs
 ... | (ys , y , refl) = (x ∷ ys , y , refl)
 
 init : Vec A (1 + n) → Vec A n
-init {n = zero}  (x ∷ xs) = []
+init {n = zero}  (x ∷ _)  = []
 init {n = suc n} (x ∷ xs) = x ∷ init xs
 
 last : Vec A (1 + n) → A
-last {n = zero}  (x ∷ xs) = x
-last {n = suc n} (x ∷ xs) = last xs
+last {n = zero}  (x ∷ _)  = x
+last {n = suc n} (_ ∷ xs) = last xs
 
 ------------------------------------------------------------------------
 -- Other operations

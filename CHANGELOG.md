@@ -858,7 +858,8 @@ Non-backwards compatible changes
 
 * In `Data.Sum.Base` the definitions `fromDec` and `toDec` have been moved to `Data.Sum`.
 
-* In `Data.Vec.Base`: the definitions `init` and `last` have been replaced by an inductive definition.
+* In `Data.Vec.Base`: the definitions `init` and `last` have been changed from the `initLast`
+  view-derived implementation to direct recursive definitions.
 
 * In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
   * `cycle`
