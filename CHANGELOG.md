@@ -2613,7 +2613,7 @@ Other minor changes
   ∷ʳ-injectiveˡ : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
   ∷ʳ-injectiveʳ : xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
 
-  unfold-∷ʳ : cast eq (xs ++ x ∷ []) ≡ xs ∷ʳ x
+  unfold-∷ʳ : cast eq (xs ∷ʳ x) ≡ xs ++ [ x ]
   init-∷ʳ   : init (xs ∷ʳ x) ≡ xs
   last-∷ʳ   : last (xs ∷ʳ x) ≡ x
   cast-∷ʳ   : cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x

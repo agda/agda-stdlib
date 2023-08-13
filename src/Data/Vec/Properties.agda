@@ -841,7 +841,7 @@ map-is-foldr f = foldr-universal (Vec _) (λ x ys → f x ∷ ys) (map f) refl (
 
 -- snoc is snoc
 
-unfold-∷ʳ : ∀ .(eq : n + 1 ≡ suc n) x (xs : Vec A n) → cast eq (xs ++ x ∷ []) ≡ xs ∷ʳ x
+unfold-∷ʳ : ∀ .(eq : suc n ≡ n + 1) x (xs : Vec A n) → cast eq (xs ∷ʳ x) ≡ xs ++ [ x ]
 unfold-∷ʳ eq x []       = refl
 unfold-∷ʳ eq x (y ∷ xs) = cong (y ∷_) (unfold-∷ʳ (cong pred eq) x xs)
 
