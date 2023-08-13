@@ -2659,7 +2659,7 @@ Other minor changes
   init-tail      : init ∘ tail ≗ tail ∘ init
 
   ++-assoc     : cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
-  ++-identityʳ : cast eq xs ≡ xs ++ []
+  ++-identityʳ : cast eq (xs ++ []) ≡ xs
   init-reverse : init ∘ reverse ≗ reverse ∘ tail
   last-reverse : last ∘ reverse ≗ head
   reverse-++   : cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs

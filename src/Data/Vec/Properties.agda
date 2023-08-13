@@ -504,7 +504,7 @@ toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
 ++-assoc eq []       ys zs = cast-is-id eq (ys ++ zs)
 ++-assoc eq (x ∷ xs) ys zs = cong (x ∷_) (++-assoc (cong pred eq) xs ys zs)
 
-++-identityʳ : ∀ .(eq : m ≡ m + zero) (xs : Vec A m) → cast eq xs ≡ xs ++ []
+++-identityʳ : ∀ .(eq : n + zero ≡ n) (xs : Vec A n) → cast eq (xs ++ []) ≡ xs
 ++-identityʳ eq []       = refl
 ++-identityʳ eq (x ∷ xs) = cong (x ∷_) (++-identityʳ (cong pred eq) xs)
 
@@ -990,7 +990,12 @@ map-reverse f (x ∷ xs) = begin
 
 reverse-++ : ∀ .(eq : m + n ≡ n + m) (xs : Vec A m) (ys : Vec A n) →
              cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs
-reverse-++ {m = zero}  {n = n} eq []       ys = ++-identityʳ (+-comm zero n) (reverse ys)
+reverse-++ {m = zero}  {n = n} eq []       ys = begin
+  cast _ (reverse ys)                ≡˘⟨ cong (cast eq) (++-identityʳ (sym eq) (reverse ys)) ⟩
+  cast _ (cast _ (reverse ys ++ [])) ≡⟨ cast-trans (sym eq) eq (reverse ys ++ []) ⟩
+  cast _ (reverse ys ++ [])          ≡⟨ cast-is-id (trans (sym eq) eq) (reverse ys ++ []) ⟩
+  reverse ys ++ []                   ≡⟨⟩
+  reverse ys ++ reverse []           ∎
 reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin
   cast eq (reverse (x ∷ xs ++ ys))                ≡⟨ cong (cast eq) (reverse-∷ x (xs ++ ys)) ⟩
   cast eq (reverse (xs ++ ys) ∷ʳ x)               ≡˘⟨ cast-trans eq₂ eq₁ (reverse (xs ++ ys) ∷ʳ x) ⟩
