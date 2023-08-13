@@ -2617,7 +2617,7 @@ Other minor changes
   init-∷ʳ   : init (xs ∷ʳ x) ≡ xs
   last-∷ʳ   : last (xs ∷ʳ x) ≡ x
   cast-∷ʳ   : cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
-  ++-∷ʳ     : (cast eq ((xs ++ ys) ∷ʳ z)) ≡ xs ++ (ys ∷ʳ z)
+  ++-∷ʳ     : cast eq ((xs ++ ys) ∷ʳ z) ≡ xs ++ (ys ∷ʳ z)
 
   reverse-∷          : reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
   reverse-involutive : Involutive _≡_ reverse

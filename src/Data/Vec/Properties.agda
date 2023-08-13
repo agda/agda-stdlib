@@ -891,11 +891,11 @@ cast-∷ʳ {m = suc m} eq x (y ∷ xs) = cong (y ∷_) (cast-∷ʳ (cong pred eq
 
 -- _++_ and _∷ʳ_
 
-++-∷ʳ : ∀ .(eq : suc (n + m) ≡ n + suc m) z (xs : Vec A n) (ys : Vec A m) →
-        (cast eq ((xs ++ ys) ∷ʳ z)) ≡ xs ++ (ys ∷ʳ z)
-++-∷ʳ {n = zero}  eq z []       []       = refl
-++-∷ʳ {n = zero}  eq z []       (y ∷ ys) = cong (y ∷_) (++-∷ʳ refl z [] ys)
-++-∷ʳ {n = suc n} eq z (x ∷ xs) ys       = cong (x ∷_) (++-∷ʳ (cong pred eq) z xs ys)
+++-∷ʳ : ∀ .(eq : suc (m + n) ≡ m + suc n) z (xs : Vec A m) (ys : Vec A n) →
+        cast eq ((xs ++ ys) ∷ʳ z) ≡ xs ++ (ys ∷ʳ z)
+++-∷ʳ {m = zero}  eq z []       []       = refl
+++-∷ʳ {m = zero}  eq z []       (y ∷ ys) = cong (y ∷_) (++-∷ʳ refl z [] ys)
+++-∷ʳ {m = suc m} eq z (x ∷ xs) ys       = cong (x ∷_) (++-∷ʳ (cong pred eq) z xs ys)
 
 ------------------------------------------------------------------------
 -- reverse
