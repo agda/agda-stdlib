@@ -40,11 +40,9 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
-import Relation.Nullary.Reflects as Reflects
+open import Relation.Nullary.Decidable.Core using (Dec; does; yes; no; ¬¬-excluded-middle)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -373,13 +371,13 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
     lemma i≤j i≰1+j refl = i≰1+j (m≤n⇒m≤1+n i≤j)
 
     f′ⱼ∈xs : ∀ j → f′ j ∈ xs
-    f′ⱼ∈xs j with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
+    f′ⱼ∈xs j with i ≤ᵇ j | invert (≤ᵇ-reflects-≤ i j)
     ... | true  | p = ∈-if-not-i (<⇒≢ (s≤s p))
     ... | false | p = ∈-if-not-i (<⇒≢ (≰⇒> p) ∘ sym)
 
     f′-injective′ : Injective {B = P.setoid _} (→-to-⟶ f′)
-    f′-injective′ {j} {k} eq with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
-                                | i ≤ᵇ k | Reflects.invert (≤ᵇ-reflects-≤ i k)
+    f′-injective′ {j} {k} eq with i ≤ᵇ j | invert (≤ᵇ-reflects-≤ i j)
+                                | i ≤ᵇ k | invert (≤ᵇ-reflects-≤ i k)
     ... | true  | p | true  | q = P.cong pred (f-inj eq)
     ... | true  | p | false | q = contradiction (f-inj eq) (lemma p q)
     ... | false | p | true  | q = contradiction (f-inj eq) (lemma q p ∘ sym)

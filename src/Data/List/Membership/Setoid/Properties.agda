@@ -29,10 +29,9 @@ open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Unary as U using (Decidable; Pred)
-open import Relation.Nullary using (¬_; does; _because_; yes; no)
+open import Relation.Nullary.Decidable.Core using (does; _because_; ¬?)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬?)
 open Setoid using (Carrier)
 
 private

@@ -38,9 +38,10 @@ open import Relation.Binary.Definitions as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
 open import Relation.Binary.Core using (Rel)
+open import Relation.Nullary.Decidable.Core
+  using (Dec; does; _because_; yes; no; map′; ¬?; _×-dec_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
-open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -71,7 +72,7 @@ module _ {x y : A} {xs ys : List A} where
   ∷-injectiveʳ refl = refl
 
   ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y ∷ ys)
-  ∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+  ∷-dec x≟y xs≟ys = map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
 ≡-dec _≟_ []       []       = yes refl

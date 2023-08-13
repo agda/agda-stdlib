@@ -11,7 +11,7 @@ module Data.List.Fresh.Relation.Unary.All where
 open import Level using (Level; _⊔_; Lift)
 open import Data.Product.Base using (_×_; _,_; proj₁; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; map′; _×-dec_)
 open import Relation.Unary  as U
 open import Relation.Binary.Core using (Rel)
 
@@ -65,7 +65,7 @@ module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
 
   all? : (xs : List# A R) → Dec (All P xs)
   all? []        = yes []
-  all? (x ∷# xs) = Dec.map′ (uncurry _∷_) uncons (P? x ×-dec all? xs)
+  all? (x ∷# xs) = map′ (uncurry _∷_) uncons (P? x ×-dec all? xs)
 
 ------------------------------------------------------------------------
 -- Generalised decidability procedure
