@@ -24,8 +24,7 @@ open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
-open import Relation.Nullary.Decidable using (yes; no)
-import Relation.Nullary.Decidable as DEC
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 
 ------------------------------------------------------------------------
 -- Type
@@ -130,7 +129,7 @@ module ∣-Reasoning where
 infix 4 _∣?_
 
 _∣?_ : Decidable _∣_
-k ∣? m = DEC.map′ ∣ᵤ⇒∣ ∣⇒∣ᵤ (∣ k ∣ ℕ.∣? ∣ m ∣)
+k ∣? m = map′ ∣ᵤ⇒∣ ∣⇒∣ᵤ (∣ k ∣ ℕ.∣? ∣ m ∣)
 
 0∣⇒≡0 : ∀ {m} → 0ℤ ∣ m → m ≡ 0ℤ
 0∣⇒≡0 0|m = ∣i∣≡0⇒i≡0 (ℕ.0∣⇒≡0 (∣⇒∣ᵤ 0|m))

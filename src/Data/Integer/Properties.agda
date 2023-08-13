@@ -29,10 +29,9 @@ open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no; ¬_)
-import Relation.Nullary.Reflects as Reflects
-open import Relation.Nullary.Negation using (contradiction)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 open import Algebra.Definitions {A = ℤ} _≡_
 open import Algebra.Consequences.Propositional
@@ -62,10 +61,10 @@ private
 
 infix 4 _≟_
 _≟_ : DecidableEquality ℤ
-+ m      ≟ + n      = Dec.map′ (cong (+_)) +-injective (m ℕ.≟ n)
++ m      ≟ + n      = map′ (cong (+_)) +-injective (m ℕ.≟ n)
 + m      ≟ -[1+ n ] = no λ()
 -[1+ m ] ≟ + n      = no λ()
--[1+ m ] ≟ -[1+ n ] = Dec.map′ (cong -[1+_]) -[1+-injective (m ℕ.≟ n)
+-[1+ m ] ≟ -[1+ n ] = map′ (cong -[1+_]) -[1+-injective (m ℕ.≟ n)
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ℤ
@@ -111,10 +110,10 @@ drop‿-≤- (-≤- n≤m) = n≤m
 
 infix  4 _≤?_
 _≤?_ : Decidable _≤_
--[1+ m ] ≤? -[1+ n ] = Dec.map′ -≤- drop‿-≤- (n ℕ.≤? m)
+-[1+ m ] ≤? -[1+ n ] = map′ -≤- drop‿-≤- (n ℕ.≤? m)
 -[1+ m ] ≤? +    n   = yes -≤+
 +    m   ≤? -[1+ n ] = no λ ()
-+    m   ≤? +    n   = Dec.map′ +≤+ drop‿+≤+ (m ℕ.≤? n)
++    m   ≤? +    n   = map′ +≤+ drop‿+≤+ (m ℕ.≤? n)
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant -≤+       -≤+         = refl
@@ -302,10 +301,10 @@ drop‿-<- (-<- n<m) = n<m
 
 infix 4 _<?_
 _<?_ : Decidable _<_
--[1+ m ] <? -[1+ n ] = Dec.map′ -<- drop‿-<- (n ℕ.<? m)
+-[1+ m ] <? -[1+ n ] = map′ -<- drop‿-<- (n ℕ.<? m)
 -[1+ m ] <? + n      = yes -<+
 + m      <? -[1+ n ] = no λ()
-+ m      <? + n      = Dec.map′ +<+ drop‿+<+ (m ℕ.<? n)
++ m      <? + n      = map′ +<+ drop‿+<+ (m ℕ.<? n)
 
 <-irrelevant : Irrelevant _<_
 <-irrelevant (-<- n<m₁) (-<- n<m₂) = cong -<- (ℕ.<-irrelevant n<m₁ n<m₂)
@@ -606,7 +605,7 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
   - (suc n ⊖ suc m) ∎ where open ≡-Reasoning
 
 ⊖-≥ : m ℕ.≥ n → m ⊖ n ≡ + (m ∸ n)
-⊖-≥ {m} {n} p with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
+⊖-≥ {m} {n} p with m ℕ.<ᵇ n | invert (ℕ.<ᵇ-reflects-< m n)
 ... | true  | q = contradiction (ℕ.<-transʳ p q) (ℕ.<-irrefl refl)
 ... | false | q = refl
 
@@ -619,7 +618,7 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
   + (suc n ∸ suc m) ∎ where open ≡-Reasoning
 
 ⊖-≤ : m ℕ.≤ n → m ⊖ n ≡ - + (n ∸ m)
-⊖-≤ {m} {n} p with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
+⊖-≤ {m} {n} p with m ℕ.<ᵇ n | invert (ℕ.<ᵇ-reflects-< m n)
 ... | true  | q = refl
 ... | false | q rewrite ℕ.≤-antisym p (ℕ.≮⇒≥ q) | ℕ.n∸n≡0 n = refl
 
@@ -657,7 +656,7 @@ m-n≡m⊖n (suc m) zero    = cong +[1+_] (ℕ.+-identityʳ m)
 m-n≡m⊖n (suc m) (suc n) = refl
 
 -[n⊖m]≡-m+n : ∀ m n → - (m ⊖ n) ≡ (- (+ m)) + (+ n)
--[n⊖m]≡-m+n m n with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
+-[n⊖m]≡-m+n m n with m ℕ.<ᵇ n | invert (ℕ.<ᵇ-reflects-< m n)
 ... | true  | p = begin
   - (- (+ (n ∸ m))) ≡⟨ neg-involutive (+ (n ∸ m)) ⟩
   + (n ∸ m)         ≡˘⟨ ⊖-≥ (ℕ.≤-trans (ℕ.m≤n+m m 1) p) ⟩
