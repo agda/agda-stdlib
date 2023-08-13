@@ -499,7 +499,7 @@ toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
 ++-injective ws xs eq =
   (++-injectiveˡ ws xs eq , ++-injectiveʳ ws xs eq)
 
-++-assoc : ∀ .(eq : (n + m) + o ≡ n + (m + o)) (xs : Vec A n) (ys : Vec A m) (zs : Vec A o) →
+++-assoc : ∀ .(eq : (m + n) + o ≡ m + (n + o)) (xs : Vec A m) (ys : Vec A n) (zs : Vec A o) →
            cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
 ++-assoc eq []       ys zs = cast-is-id eq (ys ++ zs)
 ++-assoc eq (x ∷ xs) ys zs = cong (x ∷_) (++-assoc (cong pred eq) xs ys zs)
@@ -984,14 +984,14 @@ map-reverse f (x ∷ xs) = begin
 
 -- append and reverse
 
-reverse-++ : ∀ .(eq : n + m ≡ m + n) (xs : Vec A n) (ys : Vec A m) →
+reverse-++ : ∀ .(eq : m + n ≡ n + m) (xs : Vec A m) (ys : Vec A n) →
              cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs
-reverse-++ {n = zero}  {m = m} eq []       ys = ++-identityʳ (+-comm zero m) (reverse ys)
+reverse-++ {m = zero}  {n = n} eq []       ys = ++-identityʳ (+-comm zero n) (reverse ys)
   where
-  ++-identityʳ : ∀ .(eq : n ≡ n + zero) (xs : Vec A n) → cast eq xs ≡ xs ++ []
+  ++-identityʳ : ∀ .(eq : m ≡ m + zero) (xs : Vec A m) → cast eq xs ≡ xs ++ []
   ++-identityʳ eq []       = refl
   ++-identityʳ eq (x ∷ xs) = cong (x ∷_) (++-identityʳ (cong pred eq) xs)
-reverse-++ {n = suc n} {m = m} eq (x ∷ xs) ys = begin
+reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin
   cast eq (reverse (x ∷ xs ++ ys))                ≡⟨ cong (cast eq) (reverse-∷ x (xs ++ ys)) ⟩
   cast eq (reverse (xs ++ ys) ∷ʳ x)               ≡˘⟨ cast-trans eq₂ eq₁ (reverse (xs ++ ys) ∷ʳ x) ⟩
   (cast eq₁ ∘ cast eq₂) (reverse (xs ++ ys) ∷ʳ x) ≡⟨ cong (cast eq₁) (cast-∷ʳ _ x (reverse (xs ++ ys))) ⟩
@@ -1000,13 +1000,13 @@ reverse-++ {n = suc n} {m = m} eq (x ∷ xs) ys = begin
   reverse ys ++ (reverse xs ∷ʳ x)                 ≡˘⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟩
   reverse ys ++ (reverse (x ∷ xs))                ∎
   where
-  eq₁ = sym (+-suc m n)
-  eq₂ = cong suc (+-comm n m)
+  eq₁ = sym (+-suc n m)
+  eq₂ = cong suc (+-comm m n)
   eq₃ = cong pred eq₂
 
-cast-reverse : ∀ .(eq : n ≡ m) → cast eq ∘ reverse {A = A} {n = n} ≗ reverse ∘ cast eq
-cast-reverse {m = zero}  eq []       = refl
-cast-reverse {m = suc m} eq (x ∷ xs) = begin
+cast-reverse : ∀ .(eq : m ≡ n) → cast eq ∘ reverse {A = A} {n = m} ≗ reverse ∘ cast eq
+cast-reverse {n = zero}  eq []       = refl
+cast-reverse {n = suc n} eq (x ∷ xs) = begin
   cast eq (reverse (x ∷ xs))              ≡⟨ cong (cast eq) (reverse-∷ x xs) ⟩
   cast eq (reverse xs ∷ʳ x)               ≡⟨ cast-∷ʳ eq x (reverse xs) ⟩
   (cast (cong pred eq) (reverse xs)) ∷ʳ x ≡⟨ cong (_∷ʳ x) (cast-reverse (cong pred eq) xs) ⟩
