@@ -2658,7 +2658,7 @@ Other minor changes
                 ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
   <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
                   ∀ {n} → WellFounded (_<_ {n})
-```
+  ```
 
 * Added new functions in `Data.Vec.Relation.Unary.Any`:
   ```
@@ -2681,6 +2681,13 @@ Other minor changes
   evalState : State s a → s → a
   execState : State s a → s → s
   ```
+  
+* Added new proofs and definitions in `Function.Bundles`:
+  ```agda
+  LeftInverse.isSplitSurjection : LeftInverse → IsSplitSurjection to
+  LeftInverse.surjection        : LeftInverse → Surjection
+  SplitSurjection               = LeftInverse
+  ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
   ```
@@ -2696,6 +2703,12 @@ Other minor changes
   ```
   _!|>_  : (a : A) → (∀ a → B a) → B a
   _!|>′_ : A → (A → B) → B
+  ```
+  
+* Added new proof and record in `Function.Structures`:
+  ```agda
+  IsLeftInverse.isSurjection : IsLeftInverse to from → IsSurjection to
+  record IsSplitSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
 * Added new definition to the `Surjection` module in `Function.Related.Surjection`:
