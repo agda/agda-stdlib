@@ -914,9 +914,6 @@ Non-backwards compatible changes
     lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
-  * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
-    `¬¬-excluded-middle`.
-
 Major improvements
 ------------------
 
@@ -1469,6 +1466,11 @@ Deprecated names
   ```
   invIsPreorder ↦ converse-isPreorder
   invPreorder   ↦ converse-preorder
+  ```
+
+* In `Relation.Nullary.Decidable.Core`:
+  ```
+  excluded-middle`  ↦  `¬¬-excluded-middle`
   ```
 
 ### Renamed Data.Erased to Data.Irrelevant
