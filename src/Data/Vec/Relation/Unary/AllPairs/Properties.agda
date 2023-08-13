@@ -70,13 +70,11 @@ module _ {R : Rel A ℓ} where
 
   take⁺ : ∀ {n} m {xs} → AllPairs R {m + n} xs → AllPairs R {m} (take m xs)
   take⁺ zero pxs = []
-  take⁺ (suc m) {x ∷ xs} (px ∷ pxs)
-    rewrite Vecₚ.unfold-take m x xs = Allₚ.take⁺ m px ∷ take⁺ m pxs
+  take⁺ (suc m) {x ∷ xs} (px ∷ pxs) = Allₚ.take⁺ m px ∷ take⁺ m pxs
 
   drop⁺ : ∀ {n} m {xs} → AllPairs R {m + n} xs → AllPairs R {n} (drop m xs)
   drop⁺ zero pxs = pxs
-  drop⁺ (suc m) {x ∷ xs} (_ ∷ pxs)
-    rewrite Vecₚ.unfold-drop m x xs = drop⁺ m pxs
+  drop⁺ (suc m) {x ∷ xs} (_ ∷ pxs) = drop⁺ m pxs
 
 ------------------------------------------------------------------------
 -- tabulate
