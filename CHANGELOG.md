@@ -2799,13 +2799,11 @@ Other minor changes
   predᵇ⁺ : (p : A → Bool) (x : A) → Dec (T (p x))
 
   ```
-  (the first is example `README.Design.Decidability.ex₃`
 
 * Added new constructor for `Relation.Nullary.Reflects`
   ```
   T⁺ : ∀ b → Reflects (T b) b
   ```
-  (this is example `README.Design.Decidability.ex₂`
 
 * Added new definitions in `Relation.Unary`:
   ```

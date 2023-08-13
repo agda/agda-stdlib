@@ -58,8 +58,8 @@ pattern no ¬p = false because ofⁿ ¬p
 bool⁺ : ∀ b → Dec (T b)
 bool⁺ b = b because (T⁺ b)
 
-dec : ∀ {a} {A : Set a} (p : A → Bool) (x : A) → Dec (T (p x))
-dec p x = bool⁺ (p x)
+predᵇ⁺ : ∀ {a} {A : Set a} (p : A → Bool) (x : A) → Dec (T (p x))
+predᵇ⁺ p x = bool⁺ (p x)
 
 ------------------------------------------------------------------------
 -- Recompute
