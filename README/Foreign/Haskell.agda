@@ -24,7 +24,7 @@ open import Data.List.Base as List using (List; _∷_; []; takeWhile; dropWhile)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Product.Base using (_×_; _,_)
 open import Function
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core using (¬?)
 
 import Foreign.Haskell as FFI
 open import Foreign.Haskell.Coerce

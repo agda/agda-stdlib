@@ -42,7 +42,7 @@ ex₂ = T⁺
 ------------------------------------------------------------------------
 -- Dec
 
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core
 
 -- A proof of `Dec P` is a proof of `Reflects P b` for some `b`.
 -- `Dec P` is declared as a record, with fields:
