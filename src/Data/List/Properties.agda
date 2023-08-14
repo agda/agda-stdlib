@@ -44,6 +44,7 @@ open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradi
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
+import Data.Nat.GeneralisedArithmetic as ℕ
 
 
 open ≡-Reasoning
@@ -665,6 +666,10 @@ take-iterate (suc n) = cong (_ ∷_) (take-iterate n)
 drop-iterate : ∀ n {f} {x : A} → drop n (iterate f x n) ≡ []
 drop-iterate zero    = refl
 drop-iterate (suc n) = drop-iterate n
+
+lookup-iterate : ∀ f n (x : A) (i : Fin (length (iterate f x n))) → lookup (iterate f x n) i ≡ ℕ.iterate f x (toℕ i)
+lookup-iterate f (suc n) x zero    = refl
+lookup-iterate f (suc n) x (suc i) = lookup-iterate f n (f x) i
 
 ------------------------------------------------------------------------
 -- scanr

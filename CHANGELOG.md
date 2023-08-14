@@ -2276,6 +2276,7 @@ Additions to existing modules
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
 
+<<<<<<< HEAD
   take-suc               : take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
   take-suc-tabulate      : take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
   drop-take-suc          : drop m (take (suc m) xs) ≡ [ lookup xs i ]
@@ -2290,9 +2291,19 @@ Additions to existing modules
   map-replicate : map f (replicate n x) ≡ replicate n (f x)
 
   drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
-=======
+
   take-[] : ∀ m → take  m [] ≡ []
   drop-[] : ∀ m → drop  m [] ≡ []
+
+  take-suc               : let m = toℕ i in take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
+  take-suc-tabulate      : let m = toℕ i in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
+  drop-take-suc          : let m = toℕ i in drop m (take (suc m) xs) ≡ [ lookup xs i ]
+  drop-take-suc-tabulate : let m = toℕ i in drop m (take (suc m) (tabulate f)) ≡ [ f i ]
+
+  take-all : n ≥ length xs → take n xs ≡ xs
+
+  take-[] : take m [] ≡ []
+  drop-[] : drop m [] ≡ []
 
   lookup-replicate  : lookup (replicate n x) i ≡ x
   map-replicate     : map f (replicate n x) ≡ replicate n (f x)
@@ -2303,7 +2314,7 @@ Additions to existing modules
   iterate-id     : iterate id x n ≡ replicate n x
   take-iterate   : take n (iterate f x n) ≡ iterate f x n
   drop-iterate   : drop n (iterate f x n) ≡ []
->>>>>>> dd0d05e65 (Update CHANGELOG)
+  lookup-iterate : lookup (iterate f x n) i ≡ ℕ.iterate f x (toℕ i)
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2744,11 +2755,12 @@ Additions to existing modules
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
   ```agda
   index-∈-fromList⁺ : Any.index (∈-fromList⁺ v∈xs) ≡ indexₗ v∈xs
-=======
 
   length-iterate : length (iterate f x {n}) ≡ n
   iterate-id     : iterate id x {n} ≡ replicate x
->>>>>>> dd0d05e65 (Update CHANGELOG)
+  take-iterate   : take n (iterate f x {n + m}) ≡ iterate f x
+  drop-iterate   : drop n (iterate f x) ≡ []
+  lookup-iterate : lookup (iterate f x) i ≡ ℕ.iterate f x (toℕ i)
   ```
 
 * Added new proofs in `Data.Vec.Functional.Properties`:
