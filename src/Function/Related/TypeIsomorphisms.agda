@@ -30,10 +30,9 @@ open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; True)
 import Relation.Nullary.Indexed as I
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
 -- Properties of Σ and _×_
@@ -332,10 +331,10 @@ Related-cong {A = A} {B} {C} {D} A≈B C≈D =
 
 True↔ : ∀ {p} {P : Set p}
         (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ ( true because  [p]) irr =
-  inverse (λ _ → invert [p]) (λ _ → _) (λ _ → P.refl) (irr _)
-True↔ (false because ofⁿ ¬p) _ =
-  inverse (λ()) (invert (ofⁿ ¬p)) (λ ()) (⊥-elim ∘ ¬p)
+True↔ (yes p) irr =
+  inverse (λ _ → p) (λ _ → _) (λ _ → P.refl) (irr _)
+True↔ (no ¬p) _ =
+  inverse (λ()) ¬p (λ ()) (⊥-elim ∘ ¬p)
 
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
