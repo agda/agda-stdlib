@@ -2200,24 +2200,24 @@ Other minor changes
   concatMap-map  : concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
   map-concatMap  : map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
 
-  length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMagmaHomomorphism  : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
   
   take-map : take n (map f xs) ≡ map f (take n xs)
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
 
-  take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
-  take-suc-tabulate : (f : Fin n → A) (i : Fin n) → let m = toℕ i in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
-  drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in drop m (take (suc m) xs) ≡ [ lookup xs i ]
-  drop-take-suc-tabulate : (f : Fin n → A) (i : Fin n) → let m = toℕ i in drop m (take (suc m) (tabulate f)) ≡ [ f i ]
-
-  drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
+  take-suc               : take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
+  take-suc-tabulate      : take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
+  drop-take-suc          : drop m (take (suc m) xs) ≡ [ lookup xs i ]
+  drop-take-suc-tabulate : drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 
   take-all : n ≥ length xs → take n xs ≡ xs
 
-  take-[] : take  m [] ≡ []
-  drop-[] : drop  m [] ≡ []
+  take-[] : take m [] ≡ []
+  drop-[] : drop m [] ≡ []
+
+  drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
