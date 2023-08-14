@@ -13,8 +13,7 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; map′)
 
 private
   variable
@@ -60,7 +59,7 @@ sym R-sym just-nothing = nothing-just
 sym R-sym nothing      = nothing
 
 connected? : Decidable R → Decidable (Connected R)
-connected? R? (just x) (just y) = Dec.map just-equivalence (R? x y)
+connected? R? (just x) (just y) = map′ just drop-just (R? x y)
 connected? R? (just x) nothing  = yes just-nothing
 connected? R? nothing  (just y) = yes nothing-just
 connected? R? nothing  nothing  = yes nothing

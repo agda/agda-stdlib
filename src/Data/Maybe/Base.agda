@@ -16,8 +16,7 @@ open import Data.Unit.Base using (⊤)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Product.Base as Prod using (_×_; _,_)
 open import Function.Base
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Decidable.Core
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no)
 
 private
   variable
@@ -47,8 +46,8 @@ is-nothing : Maybe A → Bool
 is-nothing = not ∘ is-just
 
 decToMaybe : Dec A → Maybe A
-decToMaybe ( true because [a]) = just (invert [a])
-decToMaybe (false because  _ ) = nothing
+decToMaybe (yes a) = just a
+decToMaybe (no  _) = nothing
 
 -- A dependent eliminator.
 

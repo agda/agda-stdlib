@@ -14,8 +14,7 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -72,7 +71,7 @@ module _ {a b c r₁ r₂ r₃} {A : Set a} {B : Set b} {C : Set c}
 module _ {a r} {A : Set a} {R : Rel A r} where
 
   dec : Decidable R → Decidable (Pointwise R)
-  dec R-dec (just x) (just y) = Dec.map just-equivalence (R-dec x y)
+  dec R-dec (just x) (just y) = map′ just drop-just (R-dec x y)
   dec R-dec (just x) nothing  = no (λ ())
   dec R-dec nothing  (just y) = no (λ ())
   dec R-dec nothing  nothing  = yes nothing

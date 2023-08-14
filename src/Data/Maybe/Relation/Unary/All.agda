@@ -18,8 +18,7 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; cong)
 open import Relation.Unary
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; map′)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -106,7 +105,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 
   dec : Decidable P → Decidable (All P)
   dec P-dec nothing  = yes nothing
-  dec P-dec (just x) = Dec.map just-equivalence (P-dec x)
+  dec P-dec (just x) = map′ just drop-just (P-dec x)
 
   universal : Universal P → Universal (All P)
   universal P-universal (just x) = just (P-universal x)

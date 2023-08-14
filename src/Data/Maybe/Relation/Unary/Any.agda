@@ -15,8 +15,7 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; cong)
 open import Relation.Unary
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core as Dec using (no; map′)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -67,7 +66,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 
   dec : Decidable P → Decidable (Any P)
   dec P-dec nothing  = no λ ()
-  dec P-dec (just x) = Dec.map just-equivalence (P-dec x)
+  dec P-dec (just x) = map′ just drop-just (P-dec x)
 
   irrelevant : Irrelevant P → Irrelevant (Any P)
   irrelevant P-irrelevant (just p) (just q) = cong just (P-irrelevant p q)

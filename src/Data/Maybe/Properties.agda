@@ -19,8 +19,7 @@ open import Function.Definitions using (Injective)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 
 private
   variable
