@@ -18,8 +18,7 @@ open import Function.Base using (id; _∘_)
 open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core using (does)
 
 -- The module is parametrised by the type of labels, which should come
 -- with decidable equality.

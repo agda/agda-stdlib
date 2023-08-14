@@ -31,9 +31,8 @@ open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
 open import Level using (0ℓ)
-open import Relation.Nullary using (¬_; yes; no)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction; contraposition)
+open import Relation.Nullary.Decidable.Core using (yes; no; from-no; map′; decidable-stable)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; contraposition)
 open import Relation.Binary
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
@@ -98,10 +97,10 @@ drop-*≡* (*≡* eq) = eq
 infix 4 _≃?_
 
 _≃?_ : Decidable _≃_
-p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
+p ≃? q = map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
 
 0≠1 : 0ℚᵘ ≠ 1ℚᵘ
-0≠1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
+0≠1 = from-no (0ℚᵘ ≃? 1ℚᵘ)
 
 ≃-≠-irreflexive : Irreflexive _≃_ _≠_
 ≃-≠-irreflexive x≃y x≠y = x≠y x≃y
@@ -136,7 +135,7 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
   }
 
 ≠-tight : Tight _≃_ _≠_
-proj₁ (≠-tight p q) ¬p≠q = Dec.decidable-stable (p ≃? q) ¬p≠q
+proj₁ (≠-tight p q) ¬p≠q = decidable-stable (p ≃? q) ¬p≠q
 proj₂ (≠-tight p q) p≃q p≠q = p≠q p≃q
 
 ≃-setoid : Setoid 0ℓ 0ℓ
@@ -247,7 +246,7 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
 infix 4 _≤?_ _≥?_
 
 _≤?_ : Decidable _≤_
-p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
+p ≤? q = map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
@@ -450,7 +449,7 @@ drop-*<* (*<* pq<qp) = pq<qp
 infix 4 _<?_ _>?_
 
 _<?_ : Decidable _<_
-p <? q = Dec.map′ *<* drop-*<* (↥ p ℤ.* ↧ q ℤ.<? ↥ q ℤ.* ↧ p)
+p <? q = map′ *<* drop-*<* (↥ p ℤ.* ↧ q ℤ.<? ↥ q ℤ.* ↧ p)
 
 _>?_ : Decidable _>_
 _>?_ = flip _<?_
