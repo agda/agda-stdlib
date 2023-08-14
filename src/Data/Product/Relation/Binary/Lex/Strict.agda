@@ -19,7 +19,7 @@ open import Data.Empty
 open import Function.Base
 open import Induction.WellFounded
 open import Level
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core using (_⊎-dec_; _×-dec_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)

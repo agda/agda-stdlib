@@ -15,7 +15,7 @@ open import Function.Bundles using (_↔_; mk↔′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; map′)
 
 private
   variable
@@ -43,7 +43,7 @@ module _ {B : A → Set b} where
           DecidableEquality (Σ A B)
   ≡-dec dec₁ dec₂ (a , x) (b , y) with dec₁ a b
   ... | no [a≢b] = no ([a≢b] ∘ ,-injectiveˡ)
-  ... | yes refl = Dec.map′ (cong (a ,_)) (,-injectiveʳ-UIP (Decidable⇒UIP.≡-irrelevant dec₁)) (dec₂ x y)
+  ... | yes refl = map′ (cong (a ,_)) (,-injectiveʳ-UIP (Decidable⇒UIP.≡-irrelevant dec₁)) (dec₂ x y)
 
 ------------------------------------------------------------------------
 -- Equality (non-dependent)

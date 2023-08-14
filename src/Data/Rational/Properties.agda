@@ -53,9 +53,8 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
-open import Relation.Nullary.Decidable as Dec
-  using (True; False; fromWitness; fromWitnessFalse; toWitnessFalse; yes; no; recompute; map′; _×-dec_)
-open import Relation.Nullary.Negation using (¬_; contradiction; contraposition)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′; _×-dec_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; contraposition)
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
@@ -499,7 +498,7 @@ private
 infix 4 _≤?_ _≥?_
 
 _≤?_ : Decidable _≤_
-p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
+p ≤? q = map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
@@ -646,7 +645,7 @@ toℚᵘ-isOrderMonomorphism-< = record
 infix 4 _<?_ _>?_
 
 _<?_ : Decidable _<_
-p <? q = Dec.map′ *<* drop-*<* ((↥ p ℤ.* ↧ q) ℤ.<? (↥ q ℤ.* ↧ p))
+p <? q = map′ *<* drop-*<* ((↥ p ℤ.* ↧ q) ℤ.<? (↥ q ℤ.* ↧ p))
 
 _>?_ : Decidable _>_
 _>?_ = flip _<?_
