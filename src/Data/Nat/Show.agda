@@ -19,7 +19,7 @@ open import Data.Nat
 open import Data.Product.Base using (proj₁)
 open import Data.String.Base using (toList; fromList; String)
 open import Function.Base using (_∘′_; _∘_)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Nullary.Decidable.Core using (True)
 
 ------------------------------------------------------------------------
 -- Read

@@ -19,8 +19,7 @@ open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable using (False; toWitnessFalse)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 
 open ≤-Reasoning
 

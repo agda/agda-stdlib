@@ -24,9 +24,8 @@ open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; subst; cong)
-open import Relation.Nullary.Decidable using (Dec)
-open import Relation.Nullary.Negation using (contradiction)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (Dec; map′)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open import Algebra.Definitions {A = ℕ} _≡_ as Algebra
   using (Associative; Commutative; LeftIdentity; RightIdentity; LeftZero; RightZero; Zero)
@@ -280,8 +279,8 @@ mkGCD m n = gcd m n , gcd-GCD m n
 
 gcd? : (m n d : ℕ) → Dec (GCD m n d)
 gcd? m n d =
-  Dec.map′ (λ { P.refl → gcd-GCD m n }) (GCD.unique (gcd-GCD m n))
-           (gcd m n ≟ d)
+  map′ (λ { P.refl → gcd-GCD m n }) (GCD.unique (gcd-GCD m n))
+       (gcd m n ≟ d)
 
 GCD-* : ∀ {m n d c} .{{_ : NonZero c}} → GCD (m * c) (n * c) (d * c) → GCD m n d
 GCD-* {c = suc _} (GCD.is (dc∣nc , dc∣mc) dc-greatest) =

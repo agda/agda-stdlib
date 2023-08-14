@@ -16,7 +16,7 @@ open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘′_; _$_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
-open import Relation.Nullary.Decidable as Dec using (False; yes; no)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
@@ -83,7 +83,7 @@ infix 4 _∣?_
 _∣?_ : Decidable _∣_
 zero  ∣? zero   = yes (divides-refl 0)
 zero  ∣? suc m  = no ((λ()) ∘′ ∣-antisym (divides-refl 0))
-suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m (suc n)) (m % suc n ≟ 0)
+n@(suc _) ∣? m  = map′ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n) (m % n ≟ 0)
 
 ∣-isPreorder : IsPreorder _≡_ _∣_
 ∣-isPreorder = record

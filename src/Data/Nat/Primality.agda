@@ -16,9 +16,9 @@ open import Data.Nat.Properties
 open import Data.Product.Base using (∃; _×_; map₂; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (flip; _∘_; _∘′_)
-open import Relation.Nullary.Decidable as Dec
-  using (yes; no; from-yes; ¬?; decidable-stable; _×-dec_; _→-dec_)
-open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Nullary.Decidable
+  using (yes; no; from-yes; map′; ¬?; decidable-stable; _×-dec_; _→-dec_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Decidable)
 open import Relation.Binary.PropositionalEquality
   using (refl; cong)
@@ -50,7 +50,7 @@ Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
 composite? : Decidable Composite
 composite? 0               = no λ()
 composite? 1               = no λ()
-composite? n@(suc (suc _)) = Dec.map′
+composite? n@(suc (suc _)) = map′
   (map₂ λ { (a , b , c) → (b , a , c)})
   (map₂ λ { (a , b , c) → (b , a , c)})
   (anyUpTo? (λ d → 2 ≤? d ×-dec d ∣? n) n)
@@ -58,7 +58,7 @@ composite? n@(suc (suc _)) = Dec.map′
 prime? : Decidable Prime
 prime? 0               = no λ()
 prime? 1               = no λ()
-prime? n@(suc (suc _)) = Dec.map′
+prime? n@(suc (suc _)) = map′
   (λ f {d} → flip (f {d}))
   (λ f {d} → flip (f {d}))
   (allUpTo? (λ d → 2 ≤? d →-dec ¬? (d ∣? n)) n)

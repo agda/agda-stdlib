@@ -33,9 +33,8 @@ open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
-open import Relation.Nullary using (¬_; yes; no)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 open import Algebra.Definitions {A = ℕᵇ} _≡_
 open import Algebra.Structures {A = ℕᵇ} _≡_
@@ -73,11 +72,11 @@ zero     ≟ zero     =  yes refl
 zero     ≟ 2[1+ _ ] =  no λ()
 zero     ≟ 1+[2 _ ] =  no λ()
 2[1+ _ ] ≟ zero     =  no λ()
-2[1+ x ] ≟ 2[1+ y ] =  Dec.map′ (cong 2[1+_]) 2[1+_]-injective (x ≟ y)
+2[1+ x ] ≟ 2[1+ y ] =  map′ (cong 2[1+_]) 2[1+_]-injective (x ≟ y)
 2[1+ _ ] ≟ 1+[2 _ ] =  no λ()
 1+[2 _ ] ≟ zero     =  no λ()
 1+[2 _ ] ≟ 2[1+ _ ] =  no λ()
-1+[2 x ] ≟ 1+[2 y ] =  Dec.map′ (cong 1+[2_]) 1+[2_]-injective (x ≟ y)
+1+[2 x ] ≟ 1+[2 y ] =  map′ (cong 1+[2_]) 1+[2_]-injective (x ≟ y)
 
 ≡-isDecEquivalence : IsDecEquivalence {A = ℕᵇ} _≡_
 ≡-isDecEquivalence = isDecEquivalence _≟_

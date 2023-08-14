@@ -16,8 +16,8 @@ open import Data.Nat.Properties
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open ≤-Reasoning
 
