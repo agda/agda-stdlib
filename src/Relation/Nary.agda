@@ -24,8 +24,8 @@ open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_$_; _∘′_)
 open import Function.Nary.NonDependent
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _because_; _×-dec_)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core hiding (⌊_⌋; toWitness; fromWitness)
 import Relation.Unary as Unary
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 
@@ -85,7 +85,7 @@ infix 5 ∃⟨_⟩ Π[_] ∀[_]
          ∀ {l r} → Arrows n (Dec <$> Equalₙ n l r) (Dec (uncurryₙ n con l ≡ uncurryₙ n con r))
 ≟-mapₙ n con con-inj =
   curryₙ n λ a?s → let as? = Product-dec n a?s in
-  Dec.map′ (cong (uncurryₙ n con) ∘′ fromEqualₙ n) con-inj as?
+  map′ (cong (uncurryₙ n con) ∘′ fromEqualₙ n) con-inj as?
 
 ------------------------------------------------------------------------
 -- Substitution
@@ -187,7 +187,7 @@ Decidable R = Π[ mapₙ _ Dec R ]
 -- erasure
 
 ⌊_⌋ : ∀ {n ls r} {as : Sets n ls} {R : as ⇉ Set r} → Decidable R → as ⇉ Set r
-⌊_⌋ {zero}  R? = Lift _ (Dec.True R?)
+⌊_⌋ {zero}  R? = Lift _ (True R?)
 ⌊_⌋ {suc n} R? a = ⌊ R? a ⌋
 
 -- equivalence between R and its erasure

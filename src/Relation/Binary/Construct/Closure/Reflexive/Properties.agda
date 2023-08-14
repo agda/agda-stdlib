@@ -17,8 +17,8 @@ open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.PropositionalEquality.Core as PropEq using (_≡_; refl)
 import Relation.Binary.PropositionalEquality.Properties as PropEq
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; no; map′; _⊎-dec_)
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Unary using (Pred)
 
 private
@@ -75,7 +75,7 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri> _ _    c = inj₂ [ c ]
 
   dec : Decidable {A = A} _≡_ → Decidable _~_ → Decidable _~ᵒ_
-  dec ≡-dec ~-dec a b = Dec.map ⊎⇔Refl (≡-dec a b ⊎-dec ~-dec a b)
+  dec ≡-dec ~-dec a b = map′ fromSum toSum (≡-dec a b ⊎-dec ~-dec a b)
 
   decidable : Trichotomous _≡_ _~_ → Decidable _~ᵒ_
   decidable ~-tri a b with ~-tri a b

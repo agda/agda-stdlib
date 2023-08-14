@@ -22,9 +22,8 @@ open import Relation.Binary.PropositionalEquality.Core as P
 import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
-open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core
 
 ------------------------------------------------------------------------
 -- Definition
@@ -52,7 +51,7 @@ data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
 <₋-dec _<?_ ⊥₋    ⊥₋    = no (λ ())
 <₋-dec _<?_ ⊥₋    [ l ] = yes ⊥₋<[ l ]
 <₋-dec _<?_ [ k ] ⊥₋    = no (λ ())
-<₋-dec _<?_ [ k ] [ l ] = Dec.map′ [_] [<]-injective (k <? l)
+<₋-dec _<?_ [ k ] [ l ] = map′ [_] [<]-injective (k <? l)
 
 <₋-irrelevant : Irrelevant _<_ → Irrelevant _<₋_
 <₋-irrelevant <-irr ⊥₋<[ l ] ⊥₋<[ l ] = P.refl

@@ -15,7 +15,7 @@ module Relation.Binary.Reasoning.Base.Single
 
 -- TODO: the following part is copied from Relation.Binary.Reasoning.Base.Partial
 -- in order to avoid larger refactors. We will refactor this part later
--- so taht we use the same framework as Relation.Binary.Reasoning.Base.Partial.
+-- so that we use the same framework as Relation.Binary.Reasoning.Base.Partial.
 
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality.Core as P

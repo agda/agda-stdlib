@@ -11,8 +11,7 @@ open import Relation.Binary.Definitions
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_)
-open import Relation.Nullary.Decidable using (Dec; yes; no)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; True)
 
 module Relation.Binary.Reasoning.Base.Partial
   {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) (trans : Transitive _∼_)

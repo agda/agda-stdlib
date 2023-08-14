@@ -13,7 +13,7 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
-open import Relation.Nullary.Decidable using (yes; no; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (yes; no; _×-dec_)
 
 private
   variable

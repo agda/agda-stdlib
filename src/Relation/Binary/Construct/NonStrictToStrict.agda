@@ -14,9 +14,8 @@ module Relation.Binary.Construct.NonStrictToStrict
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_; flip)
-open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬?; _×-dec_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no; ¬?; _×-dec_)
 
 private
   _≉_ : Rel A ℓ₁

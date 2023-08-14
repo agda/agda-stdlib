@@ -17,8 +17,7 @@ module Relation.Binary.Construct.Add.Supremum.Strict
 open import Level using (_⊔_)
 open import Data.Product.Base using (_,_; map)
 open import Function.Base
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 import Relation.Binary.PropositionalEquality.Properties as P
@@ -49,7 +48,7 @@ data _<⁺_ : Rel (A ⁺) (a ⊔ r) where
 <⁺-trans <-trans [ p ] [ k ]<⊤⁺ = [ _ ]<⊤⁺
 
 <⁺-dec : Decidable _<_ → Decidable _<⁺_
-<⁺-dec _<?_ [ k ] [ l ] = Dec.map′ [_] [<]-injective (k <? l)
+<⁺-dec _<?_ [ k ] [ l ] = map′ [_] [<]-injective (k <? l)
 <⁺-dec _<?_ [ k ] ⊤⁺    = yes [ k ]<⊤⁺
 <⁺-dec _<?_ ⊤⁺    [ l ] = no (λ ())
 <⁺-dec _<?_ ⊤⁺    ⊤⁺    = no (λ ())

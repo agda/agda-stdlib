@@ -22,7 +22,7 @@ open import Data.Sum.Base
 open import Data.Empty
 open import Function.Base
 open import Relation.Binary.Consequences
-open import Relation.Nullary.Decidable using (_⊎-dec_; yes; no)
+open import Relation.Nullary.Decidable.Core using (_⊎-dec_; yes; no)
 
 ------------------------------------------------------------------------
 -- Conversion

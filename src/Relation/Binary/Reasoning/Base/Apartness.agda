@@ -19,8 +19,7 @@ module Relation.Binary.Reasoning.Base.Apartness {a ℓ₁ ℓ₂} {A : Set a}
 open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
-open import Relation.Nullary.Decidable using (Dec; yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; True; toWitness)
 
 open IsEquivalence ≈-equiv
   renaming

@@ -20,9 +20,8 @@ open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
-open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -48,7 +47,7 @@ data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
 ≤₋-dec : Decidable _≤_ → Decidable _≤₋_
 ≤₋-dec _≤?_ ⊥₋    l     = yes (⊥₋≤ l)
 ≤₋-dec _≤?_ [ k ] ⊥₋    = no (λ ())
-≤₋-dec _≤?_ [ k ] [ l ] = Dec.map′ [_] [≤]-injective (k ≤? l)
+≤₋-dec _≤?_ [ k ] [ l ] = map′ [_] [≤]-injective (k ≤? l)
 
 ≤₋-total : Total _≤_ → Total _≤₋_
 ≤₋-total ≤-total ⊥₋    l     = inj₁ (⊥₋≤ l)
