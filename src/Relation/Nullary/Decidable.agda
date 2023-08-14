@@ -60,8 +60,8 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
 -- A lemma relating True and Dec
 
 True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
-True-↔ (true  because  [p]) irr = mk↔′ (λ _ → invert [p]) _ (irr (invert [p])) cong′
-True-↔ (false because ofⁿ ¬p) _ = mk↔′ (λ ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) λ ()
+True-↔ (yes p) irr = mk↔′ (λ _ → p) _ (irr p) cong′
+True-↔ (no ¬p) _   = mk↔′ (λ ()) ¬p (⊥-elim ∘ ¬p) λ ()
 
 ------------------------------------------------------------------------
 -- Result of decidability
