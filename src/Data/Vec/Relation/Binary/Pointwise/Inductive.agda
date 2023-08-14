@@ -18,7 +18,7 @@ open import Function.Base using (_∘_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Nullary.Decidable using (yes; no; _×-dec_; map′)
+open import Relation.Nullary.Decidable.Core using (yes; no; _×-dec_; map′)
 open import Relation.Unary using (Pred)
 
 private

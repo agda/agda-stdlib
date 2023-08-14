@@ -22,8 +22,8 @@ open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (map′)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
@@ -107,8 +107,7 @@ trans trns xs∼ys ys∼zs = ext λ i →
 
 decidable : ∀ {_∼_ : REL A B ℓ} →
             Decidable _∼_ → ∀ {n} → Decidable (Pointwise _∼_ {n = n})
-decidable dec xs ys = Dec.map
-  (Setoid.sym (⇔-setoid _) equivalent)
+decidable dec xs ys = map′ inductive⇒extensional extensional⇒inductive
   (Inductive.decidable dec xs ys)
 
 isEquivalence : ∀ {_∼_ : Rel A ℓ} {n} →

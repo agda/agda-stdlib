@@ -23,7 +23,7 @@ open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl; cong)
 import Relation.Nullary as Nullary
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_; _⊎-dec_)
-open import Relation.Nullary.Negation
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 private
   variable

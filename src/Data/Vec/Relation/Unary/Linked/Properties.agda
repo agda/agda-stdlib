@@ -24,7 +24,7 @@ open import Relation.Binary.Definitions using (Transitive)
 open import Relation.Binary.Bundles using (DecSetoid)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable using (yes; no; does)
+
 
 private
   variable

@@ -19,7 +19,7 @@ open import Relation.Binary.Definitions as B
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
-open import Relation.Nullary.Decidable as Dec using (yes; no; _×-dec_; map′)
+open import Relation.Nullary.Decidable.Core using (yes; no; _×-dec_; map′)
 
 private
   variable
