@@ -20,10 +20,9 @@ open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Function.Base using (_$_; flip)
-open import Relation.Nullary using (Dec; does; ¬_)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (does; map′)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
-open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary as B
   using (REL; Rel; Trans; Antisym; Irrelevant; _⇒_)
 open import Relation.Binary.PropositionalEquality.Core as P
@@ -207,5 +206,5 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 -- Decidability
 
   suffix? : B.Decidable R → B.Decidable (Suffix R)
-  suffix? R? as bs = Dec.map′ fromPrefix-rev toPrefix-rev
+  suffix? R? as bs = map′ fromPrefix-rev toPrefix-rev
                    $ Prefixₚ.prefix? R? (reverse as) (reverse bs)

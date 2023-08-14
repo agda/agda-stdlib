@@ -14,8 +14,7 @@ open import Level
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions
 import Relation.Binary.PropositionalEquality.Core as P
-open import Relation.Nullary using (yes; no; _×-dec_)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; no; map′; _×-dec_)
 
 open import Data.List.Relation.Binary.Pointwise.Base
 
@@ -68,7 +67,7 @@ decidable : Decidable R → Decidable (Pointwise R)
 decidable _  []       []       = yes []
 decidable _  []       (y ∷ ys) = no λ()
 decidable _  (x ∷ xs) []       = no λ()
-decidable R? (x ∷ xs) (y ∷ ys) = Dec.map′ (uncurry _∷_) uncons
+decidable R? (x ∷ xs) (y ∷ ys) = map′ (uncurry _∷_) uncons
   (R? x y ×-dec decidable R? xs ys)
 
 irrelevant : Irrelevant R → Irrelevant (Pointwise R)

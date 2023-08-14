@@ -29,9 +29,9 @@ open import Data.Product.Base using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
 open import Function.Base
 open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
 open import Function.Consequences.Propositional using (strictlySurjective⇒surjective)
+open import Relation.Nullary.Decidable.Core using (Dec; does; _because_; yes; no; map′; ¬?)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
-open import Relation.Nullary.Decidable as Dec using (¬?)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
@@ -412,9 +412,9 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) wher
   sublist? (x ∷ xs) []       = no λ ()
   sublist? (x ∷ xs) (y ∷ ys) with R? x y
   ... | true  because  [r] =
-    Dec.map (∷⁻¹  (invert  [r])) (sublist? xs ys)
+    map′ ((invert  [r]) ∷_) ∷⁻ (sublist? xs ys)
   ... | false because [¬r] =
-    Dec.map (∷ʳ⁻¹ (invert [¬r])) (sublist? (x ∷ xs) ys)
+    map′ (_ ∷ʳ_) (∷ʳ⁻ (invert [¬r])) (sublist? (x ∷ xs) ys)
 
 module _ {a e r} {A : Set a} {E : Rel A e} {R : Rel A r} where
 
@@ -491,12 +491,12 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ⊆-disjoint? (x≈z ∷ τ₁) (y≈z ∷ τ₂) = no λ()
   -- Present in either sublist: ok.
   ⊆-disjoint? (y ∷ʳ τ₁) (x≈y ∷ τ₂) =
-    Dec.map′ (x≈y ∷ᵣ_) (λ{ (_ ∷ᵣ d) → d }) (⊆-disjoint? τ₁ τ₂)
+    map′ (x≈y ∷ᵣ_) (λ{ (_ ∷ᵣ d) → d }) (⊆-disjoint? τ₁ τ₂)
   ⊆-disjoint? (x≈y ∷ τ₁) (y ∷ʳ τ₂) =
-    Dec.map′ (x≈y ∷ₗ_) (λ{ (_ ∷ₗ d) → d }) (⊆-disjoint? τ₁ τ₂)
+    map′ (x≈y ∷ₗ_) (λ{ (_ ∷ₗ d) → d }) (⊆-disjoint? τ₁ τ₂)
   -- Present in neither sublist: ok.
   ⊆-disjoint? (y ∷ʳ τ₁) (.y ∷ʳ τ₂) =
-    Dec.map′ (y ∷ₙ_) (λ{ (_ ∷ₙ d) → d }) (⊆-disjoint? τ₁ τ₂)
+    map′ (y ∷ₙ_) (λ{ (_ ∷ₙ d) → d }) (⊆-disjoint? τ₁ τ₂)
 
   -- Disjoint is proof-irrelevant
 

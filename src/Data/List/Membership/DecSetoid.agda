@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.Bundles using (DecSetoid)
-open import Relation.Nullary.Decidable using (¬?)
+open import Relation.Nullary.Decidable.Core using (¬?)
 
 module Data.List.Membership.DecSetoid {a ℓ} (DS : DecSetoid a ℓ) where
 

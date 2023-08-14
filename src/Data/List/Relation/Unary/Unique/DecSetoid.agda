@@ -9,7 +9,7 @@
 open import Relation.Binary using (DecSetoid)
 import Data.List.Relation.Unary.AllPairs as AllPairs
 open import Relation.Unary using (Decidable)
-open import Relation.Nullary.Decidable using (¬?)
+open import Relation.Nullary.Decidable.Core using (¬?)
 
 module Data.List.Relation.Unary.Unique.DecSetoid
   {a ℓ} (DS : DecSetoid a ℓ) where

@@ -50,8 +50,7 @@ open import Relation.Nullary.Decidable
 --   proof : Reflects P does
 
 ex₃ : (b : Bool) → Dec (T b)
-does  (ex₃ b) = b
-proof (ex₃ b) = ex₂ b
+ex₃ = bool⁺
 
 -- We also have pattern synonyms `yes` and `no`, allowing both fields to be
 -- given at once.

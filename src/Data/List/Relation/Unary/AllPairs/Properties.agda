@@ -23,7 +23,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (DecSetoid)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable using (does)
+open import Relation.Nullary.Decidable.Core using (does)
 
 private
   variable

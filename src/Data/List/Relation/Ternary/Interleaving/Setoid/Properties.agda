@@ -14,8 +14,7 @@ module Data.List.Relation.Ternary.Interleaving.Setoid.Properties
 open import Data.List.Base using (List; []; _∷_; filter; _++_)
 open import Data.Bool.Base using (true; false)
 open import Relation.Unary using (Decidable)
-open import Relation.Nullary.Decidable using (does)
-open import Relation.Nullary.Decidable using (¬?)
+open import Relation.Nullary.Decidable.Core using (does; ¬?)
 open import Function.Base using (_∘_)
 
 open import Data.List.Relation.Binary.Equality.Setoid S using (≋-refl)

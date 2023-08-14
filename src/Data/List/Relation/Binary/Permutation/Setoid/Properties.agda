@@ -41,8 +41,8 @@ open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
-open import Relation.Nullary.Decidable using (yes; no; does)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no; does)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 private
   variable

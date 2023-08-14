@@ -25,8 +25,8 @@ open import Relation.Binary.Definitions using () renaming (Decidable to Decidabl
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable using (¬?; yes; no)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core using (¬?; yes; no)
 
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist

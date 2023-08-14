@@ -30,8 +30,8 @@ open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable.Core using (yes; no; map′)
-open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Reflects using (invert)
 
 open import Algebra.Definitions {A = ℤ} _≡_
 open import Algebra.Consequences.Propositional

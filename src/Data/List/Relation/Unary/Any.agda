@@ -14,9 +14,8 @@ open import Data.List.Base as List using (List; []; [_]; _∷_)
 open import Data.Product.Base as Prod using (∃; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary using (¬_; yes; no; _⊎-dec_)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′; _⊎-dec_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary hiding (_∈_)
 
 private
@@ -90,7 +89,7 @@ fromSum (inj₂ pxs) = there pxs
 
 any? : Decidable P → Decidable (Any P)
 any? P? []       = no λ()
-any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎-dec any? P? xs)
+any? P? (x ∷ xs) = map′ fromSum toSum (P? x ⊎-dec any? P? xs)
 
 satisfiable : Satisfiable P → Satisfiable (Any P)
 satisfiable (x , Px) = [ x ] , here Px

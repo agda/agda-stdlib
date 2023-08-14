@@ -22,8 +22,8 @@ open import Data.Nat.Properties using (suc-injective)
 open import Data.Product.Base as Prod using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Function.Base
 
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no; _because_)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core using (_×-dec_; yes; no; _because_; map′)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; _≢_)
@@ -216,5 +216,5 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   prefix? : Decidable R → Decidable (Prefix R)
   prefix? R? []       bs       = yes []
   prefix? R? (a ∷ as) []       = no (λ ())
-  prefix? R? (a ∷ as) (b ∷ bs) = Dec.map′ (uncurry _∷_) uncons
+  prefix? R? (a ∷ as) (b ∷ bs) = map′ (uncurry _∷_) uncons
                                $ R? a b ×-dec prefix? R? as bs

@@ -20,8 +20,7 @@ open import Data.Product.Base as Prod
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Function.Base using (_∘_; _∘′_; id; const)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary hiding (Irrelevant)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; map′; _×-dec_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary using (Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core as P
@@ -205,7 +204,7 @@ module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
 
 all? : Decidable P → Decidable (All P)
 all? p []       = yes []
-all? p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×-dec all? p xs)
+all? p (x ∷ xs) = map′ (uncurry _∷_) uncons (p x ×-dec all? p xs)
 
 universal : Universal P → Universal (All P)
 universal u []       = []
