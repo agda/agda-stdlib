@@ -15,8 +15,7 @@ open import Data.Product.Base using (_,_)
 open import Data.Empty
 open import Function.Base using (_$_; _∘_)
 open import Level
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
@@ -73,10 +72,10 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
 
   ⊎-<-decidable : Decidable ∼₁ → Decidable ∼₂ →
                   Decidable (∼₁ ⊎-< ∼₂)
-  ⊎-<-decidable dec₁ dec₂ (inj₁ x) (inj₁ y) = Dec.map′ ₁∼₁ drop-inj₁ (dec₁ x y)
+  ⊎-<-decidable dec₁ dec₂ (inj₁ x) (inj₁ y) = map′ ₁∼₁ drop-inj₁ (dec₁ x y)
   ⊎-<-decidable dec₁ dec₂ (inj₁ x) (inj₂ y) = yes ₁∼₂
   ⊎-<-decidable dec₁ dec₂ (inj₂ x) (inj₁ y) = no λ()
-  ⊎-<-decidable dec₁ dec₂ (inj₂ x) (inj₂ y) = Dec.map′ ₂∼₂ drop-inj₂ (dec₂ x y)
+  ⊎-<-decidable dec₁ dec₂ (inj₂ x) (inj₂ y) = map′ ₂∼₂ drop-inj₂ (dec₂ x y)
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
          {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}

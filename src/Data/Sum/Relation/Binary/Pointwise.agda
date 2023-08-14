@@ -14,8 +14,7 @@ open import Data.Sum.Properties
 open import Level using (_⊔_)
 open import Function.Base using (_∘_; id)
 open import Function.Inverse using (Inverse)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
@@ -70,10 +69,10 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂}
 
   ⊎-decidable : Decidable ∼₁ → Decidable ∼₂ →
                 Decidable (Pointwise ∼₁ ∼₂)
-  ⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x ≟₁ y)
+  ⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₁ y) = map′ inj₁ drop-inj₁ (x ≟₁ y)
   ⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₂ y) = no λ()
   ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
-  ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x ≟₂ y)
+  ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = map′ inj₂ drop-inj₂ (x ≟₂ y)
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
          {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}
