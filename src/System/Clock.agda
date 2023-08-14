@@ -21,7 +21,6 @@ open import IO.Base
 open import Function.Base using (_$_; _∘′_)
 open import Foreign.Haskell using (_,_)
 
-open import Relation.Nullary.Decidable using (False; fromWitnessFalse; toWitnessFalse)
 
 private
   variable
