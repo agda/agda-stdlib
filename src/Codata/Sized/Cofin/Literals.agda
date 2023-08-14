@@ -13,7 +13,7 @@ open import Agda.Builtin.FromNat
 open import Codata.Sized.Conat
 open import Codata.Sized.Conat.Properties
 open import Codata.Sized.Cofin
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core using (True; toWitness)
 
 number : ∀ n → Number (Cofin n)
 number n = record

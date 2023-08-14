@@ -40,7 +40,7 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
 open import Relation.Nullary.Decidable.Core
   using (Dec; _because_; does; yes; no; _×-dec_; _⊎-dec_; map′)
-open import Relation.Nullary.Decidable as Dec using (via-injection)
+open import Relation.Nullary.Decidable using (via-injection)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary as U
@@ -937,7 +937,7 @@ decFinSubset {suc n} {P = P} {Q} Q? P?
 
 any? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∃ P)
 any? {zero}  {P = _} P? = no λ { (() , _) }
-any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
+any? {suc n} {P = P} P? = map′ [ ∃-here , ∃-there ] ∃-toSum (P? zero ⊎-dec any? (P? ∘ suc))
 
 all? : ∀ {p} {P : Pred (Fin n) p} → Decidable P → Dec (∀ f → P f)
 all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
