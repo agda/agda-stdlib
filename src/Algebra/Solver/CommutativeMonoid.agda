@@ -28,7 +28,7 @@ import Relation.Nullary.Decidable as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Nullary.Decidable using (Dec)
+open import Relation.Nullary.Decidable.Core using (Dec)
 
 open CommutativeMonoid M
 open EqReasoning setoid

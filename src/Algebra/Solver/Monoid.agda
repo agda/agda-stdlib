@@ -24,8 +24,7 @@ open import Relation.Binary.Definitions using (Decidable)
 
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.Reflection
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable.Core using (map′)
 
 open Monoid M
 open import Relation.Binary.Reasoning.Setoid setoid
@@ -115,7 +114,7 @@ open module R = Relation.Binary.Reflection
 infix 5 _≟_
 
 _≟_ : ∀ {n} → Decidable {A = Normal n} _≡_
-nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
+nf₁ ≟ nf₂ = map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
   where open ListEq Fin._≟_
 
 -- We can also give a sound, but not necessarily complete, procedure

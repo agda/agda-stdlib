@@ -10,8 +10,8 @@ open import Algebra using (CancellativeCommutativeSemiring)
 open import Algebra.Definitions using (AlmostRightCancellative)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 module Algebra.Properties.CancellativeCommutativeSemiring
   {a ℓ} (R : CancellativeCommutativeSemiring a ℓ)

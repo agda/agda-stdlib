@@ -14,7 +14,7 @@ open import Data.Product.Base using (∃; _,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _⊎-dec_; map′)
 open import Relation.Unary  as U
 open import Relation.Binary.Core using (Rel)
 
@@ -79,4 +79,4 @@ module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
 
   any? : (xs : List# A R) → Dec (Any P xs)
   any? []        = no (λ ())
-  any? (x ∷# xs) = Dec.map ⊎⇔Any (P? x ⊎-dec any? xs)
+  any? (x ∷# xs) = map′ fromSum toSum (P? x ⊎-dec any? xs)

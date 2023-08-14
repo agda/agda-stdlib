@@ -43,8 +43,8 @@ open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Nullary
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬?; decidable-stable)
+open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Decidable.Core using (¬?; decidable-stable)
 open import Relation.Unary
   using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)

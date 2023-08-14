@@ -12,7 +12,7 @@ open import Axiom.ExcludedMiddle
 open import Level
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core
 
 ------------------------------------------------------------------------
 -- Definition

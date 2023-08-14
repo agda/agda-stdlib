@@ -16,7 +16,7 @@ open import Data.Nat.Properties
 open import Data.Product.Base using (∃; _×_; map₂; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (flip; _∘_; _∘′_)
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core
   using (yes; no; from-yes; map′; ¬?; decidable-stable; _×-dec_; _→-dec_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Decidable)
