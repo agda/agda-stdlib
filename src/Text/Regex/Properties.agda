@@ -17,9 +17,9 @@ open import Data.Product.Base using (_×_; _,_; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_$_)
 
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable.Core
   using (Dec; yes; no; map′; ¬?; _×-dec_; _⊎-dec_)
-open import Relation.Nullary.Negation
+open import Relation.Nullary.Negation.Core
   using (¬_; contradiction)
 
 import Relation.Unary  as U

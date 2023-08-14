@@ -26,9 +26,8 @@ open import Data.List.Relation.Binary.Pointwise
 open import Data.List.Relation.Binary.Suffix.Heterogeneous
   using (Suffix; here; there) hiding (module Suffix)
 
-open import Relation.Nullary using (Dec; ¬_; yes; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; map′)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality.Core

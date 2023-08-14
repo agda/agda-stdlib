@@ -33,7 +33,7 @@ open import Data.String.Base as String
   using (String; length; replicate; _++_; unlines)
 open import Data.String.Unsafe as Stringₚ
 open import Function.Base
-open import Relation.Nullary.Decidable using (Dec)
+open import Relation.Nullary.Decidable.Core using (Dec)
 open import Relation.Unary using (IUniversal; _⇒_; U)
 open import Relation.Binary.PropositionalEquality
 

@@ -17,8 +17,8 @@ open import Data.List.Base using ([])
 open import Data.List.Relation.Ternary.Appending.Propositional
 open import Data.Sum.Base using (inj₁; inj₂; fromInj₁; fromInj₂)
 
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 open import Text.Regex.Base P as R hiding (_∣_; _∙_; _⋆)

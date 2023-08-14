@@ -15,7 +15,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; sym; subst)
-open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Decidable.Core using (map′)
 
 ------------------------------------------------------------------------
 -- Re-exporting safe definitions
