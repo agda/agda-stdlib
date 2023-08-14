@@ -29,8 +29,8 @@ import Relation.Binary.Construct.NonStrictToStrict as ToStrict
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.Definitions using (Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Unary using (Pred)
 
 module Data.Fin.Induction where

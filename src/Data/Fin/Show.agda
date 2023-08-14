@@ -14,8 +14,7 @@ open import Data.Nat as ℕ using (ℕ; _≤?_; _<?_)
 import Data.Nat.Show as ℕ using (show; readMaybe)
 open import Data.String.Base using (String)
 open import Function.Base
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Nullary.Decidable.Core using (yes; no; True)
 
 show : ∀ {n} → Fin n → String
 show = ℕ.show ∘′ toℕ

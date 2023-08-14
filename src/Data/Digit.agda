@@ -19,7 +19,7 @@ open import Data.Product.Base using (∃; _,_)
 open import Data.Vec.Base as Vec using (Vec; _∷_; [])
 open import Data.Nat.DivMod
 open import Data.Nat.Induction
-open import Relation.Nullary.Decidable using (True; does; toWitness)
+open import Relation.Nullary.Decidable.Core using (True; does; toWitness)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
 open import Function.Base using (_$_)

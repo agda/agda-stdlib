@@ -16,7 +16,7 @@ open import Data.Product.Base using (_,_)
 
 open import Function.Base
 open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Decidable using (map′; isYes)
+open import Relation.Nullary.Decidable.Core using (map′; isYes)
 open import Relation.Binary
 import Relation.Binary.Construct.On as On
 import Relation.Binary.Construct.Subst.Equality as Subst

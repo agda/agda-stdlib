@@ -32,7 +32,7 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_; map′)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable; Satisfiable)
 
@@ -105,7 +105,7 @@ infix 4 _∈?_
 _∈?_ : ∀ x (p : Subset n) → Dec (x ∈ p)
 zero  ∈? inside  ∷ p = yes here
 zero  ∈? outside ∷ p = no  λ()
-suc n ∈? s       ∷ p = Dec.map′ there drop-there (n ∈? p)
+suc n ∈? s       ∷ p = map′ there drop-there (n ∈? p)
 
 ------------------------------------------------------------------------
 -- Empty
@@ -220,9 +220,9 @@ x∉⁅y⁆⇒x≢y x∉⁅x⁆ refl = x∉⁅x⁆ (x∈⁅x⁆ _)
 infix 4 _⊆?_
 _⊆?_ : B.Decidable {A = Subset n} _⊆_
 []          ⊆? []          = yes id
-outside ∷ p ⊆?       y ∷ q = Dec.map out⊆-⇔ (p ⊆? q)
+outside ∷ p ⊆?       y ∷ q = map′ out⊆ drop-∷-⊆ (p ⊆? q)
 inside  ∷ p ⊆? outside ∷ q = no (λ p⊆q → case (p⊆q here) of λ())
-inside  ∷ p ⊆? inside  ∷ q = Dec.map in⊆in-⇔ (p ⊆? q)
+inside  ∷ p ⊆? inside  ∷ q = map′ in⊆in drop-∷-⊆ (p ⊆? q)
 
 module _ (n : ℕ) where
 
@@ -285,10 +285,10 @@ infix 4 _⊂?_
 
 _⊂?_ : B.Decidable {A = Subset n} _⊂_
 []          ⊂? []          = no λ ()
-outside ∷ p ⊂? outside ∷ q = Dec.map out⊂out-⇔ (p ⊂? q)
-outside ∷ p ⊂? inside  ∷ q = Dec.map out⊂in-⇔ (p ⊆? q)
+outside ∷ p ⊂? outside ∷ q = map′ out⊂ drop-∷-⊂ (p ⊂? q)
+outside ∷ p ⊂? inside  ∷ q = map′ out⊂in (drop-∷-⊆ ∘ proj₁) (p ⊆? q)
 inside  ∷ p ⊂? outside ∷ q = no (λ {(p⊆q , _) → case (p⊆q here) of λ ()})
-inside  ∷ p ⊂? inside  ∷ q = Dec.map in⊂in-⇔ (p ⊂? q)
+inside  ∷ p ⊂? inside  ∷ q = map′ in⊂in drop-∷-⊂ (p ⊂? q)
 
 module _ (n : ℕ) where
 
@@ -851,8 +851,10 @@ module _ {P : Pred (Subset (suc n)) ℓ} where
     ∃-Subset-suc
 
 anySubset? : ∀ {P : Pred (Subset n) ℓ} → Decidable P → Dec ∃⟨ P ⟩
-anySubset? {n = zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
-anySubset? {n = suc n} P? = Dec.map ∃-Subset-∷-⇔
+anySubset? {n = zero}  P? = map′ ([] ,_) ∃-Subset-zero (P? [])
+anySubset? {n = suc n} P? = map′
+  [ Product.map _ id , Product.map _ id ]′
+  ∃-Subset-suc
   (anySubset? (P? ∘ (inside ∷_)) ⊎-dec anySubset? (P? ∘ (outside ∷_)))
 
 
