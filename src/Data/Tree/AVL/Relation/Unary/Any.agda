@@ -16,7 +16,7 @@ open import Data.Product.Base as Prod using (∃)
 open import Function.Base using (_∘_; _$_)
 open import Level using (Level; _⊔_)
 
-open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Decidable.Core using (map′)
 open import Relation.Unary
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)

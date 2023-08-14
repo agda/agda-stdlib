@@ -21,7 +21,7 @@ open import Function.Nary.NonDependent using (congₙ)
 open import Level using (Level; _⊔_)
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Relation.Nullary.Decidable using (Dec; yes; map′; _×-dec_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; map′; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant; _⊆_; _∪_)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)

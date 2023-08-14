@@ -23,8 +23,8 @@ open import Level using (Level)
 
 open import Relation.Binary.Definitions using (_Respects_; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_) renaming (refl to ≡-refl)
-open import Relation.Nullary using (¬_; Dec; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred; _∩_)
 
 open import Data.Tree.AVL.Indexed sto as AVL
