@@ -20,7 +20,7 @@ open import Data.String as String using (parensIfSpace)
 open import Data.Product.Base using (_×_; _,_)
 import Data.Word as Word   using (toℕ)
 open import Function.Base using (id; _∘′_; case_of_)
-open import Relation.Nullary.Decidable using (yes; no)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 
 open import Reflection.AST.Abstraction hiding (map)
 open import Reflection.AST.Argument hiding (map)

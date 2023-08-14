@@ -16,7 +16,7 @@ open import Data.Product.Properties                    using (,-injective)
 open import Data.Maybe.Base                            using (Maybe; just; nothing)
 open import Data.String.Base                           using (String)
 open import Data.String.Properties as String           hiding (_≟_)
-open import Relation.Nullary.Decidable                 using (map′; _×-dec_; yes; no)
+open import Relation.Nullary.Decidable.Core            using (map′; _×-dec_; yes; no)
 open import Relation.Binary.Definitions                using (Decidable; DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 
