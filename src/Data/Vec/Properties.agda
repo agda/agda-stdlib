@@ -71,86 +71,43 @@ private
 -- take
 
 unfold-take : ∀ n x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
-unfold-take n x xs with splitAt n xs
-... | xs , ys , refl = refl
+unfold-take n x xs = refl
 
 take-distr-zipWith : ∀ (f : A → B → C) →
                      (xs : Vec A (m + n)) (ys : Vec B (m + n)) →
                      take m (zipWith f xs ys) ≡ zipWith f (take m xs) (take m ys)
 take-distr-zipWith {m = zero}  f xs       ys       = refl
-take-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
-    take (suc m) (zipWith f (x ∷ xs) (y ∷ ys))
-  ≡⟨⟩
-    take (suc m) (f x y ∷ (zipWith f xs ys))
-  ≡⟨ unfold-take m (f x y) (zipWith f xs ys) ⟩
-    f x y ∷ take m (zipWith f xs ys)
-  ≡⟨ cong (f x y ∷_) (take-distr-zipWith f xs ys) ⟩
-    f x y ∷ (zipWith f (take m xs) (take m ys))
-  ≡⟨⟩
-    zipWith f (x ∷ (take m xs)) (y ∷ (take m ys))
-  ≡˘⟨ cong₂ (zipWith f) (unfold-take m x xs) (unfold-take m y ys) ⟩
-    zipWith f (take (suc m) (x ∷ xs)) (take (suc m) (y ∷ ys))
-  ∎
+take-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = cong (f x y ∷_) (take-distr-zipWith f xs ys)
 
 take-distr-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
                  take m (map f xs) ≡ map f (take m xs)
 take-distr-map f zero xs = refl
-take-distr-map f (suc m) (x ∷ xs) = begin
-  take (suc m) (map f (x ∷ xs)) ≡⟨⟩
-  take (suc m) (f x ∷ map f xs) ≡⟨ unfold-take m (f x) (map f xs) ⟩
-  f x ∷ (take m (map f xs))     ≡⟨ cong (f x ∷_) (take-distr-map f m xs) ⟩
-  f x ∷ (map f (take m xs))     ≡⟨⟩
-  map f (x ∷ take m xs)         ≡˘⟨ cong (map f) (unfold-take m x xs) ⟩
-  map f (take (suc m) (x ∷ xs)) ∎
+take-distr-map f (suc m) (x ∷ xs) = cong (f x ∷_) (take-distr-map f m xs)
 
 ------------------------------------------------------------------------
 -- drop
 
 unfold-drop : ∀ n x (xs : Vec A (n + m)) →
               drop (suc n) (x ∷ xs) ≡ drop n xs
-unfold-drop n x xs with splitAt n xs
-... | xs , ys , refl = refl
+unfold-drop n x xs = refl
 
 drop-distr-zipWith : (f : A → B → C) →
                      (x : Vec A (m + n)) (y : Vec B (m + n)) →
                      drop m (zipWith f x y) ≡ zipWith f (drop m x) (drop m y)
 drop-distr-zipWith {m = zero} f   xs       ys = refl
-drop-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
-    drop (suc m) (zipWith f (x ∷ xs) (y ∷ ys))
-  ≡⟨⟩
-    drop (suc m) (f x y ∷ (zipWith f xs ys))
-  ≡⟨ unfold-drop m (f x y) (zipWith f xs ys) ⟩
-    drop m (zipWith f xs ys)
-  ≡⟨ drop-distr-zipWith f xs ys ⟩
-    zipWith f (drop m xs) (drop m ys)
-  ≡˘⟨ cong₂ (zipWith f) (unfold-drop m x xs) (unfold-drop m y ys) ⟩
-    zipWith f (drop (suc m) (x ∷ xs)) (drop (suc m) (y ∷ ys))
-  ∎
+drop-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = drop-distr-zipWith f xs ys
 
 drop-distr-map : ∀ (f : A → B) (m : ℕ) (x : Vec A (m + n)) →
                  drop m (map f x) ≡ map f (drop m x)
 drop-distr-map f zero x = refl
-drop-distr-map f (suc m) (x ∷ xs) = begin
-  drop (suc m) (map f (x ∷ xs)) ≡⟨⟩
-  drop (suc m) (f x ∷ map f xs) ≡⟨  unfold-drop m (f x) (map f xs) ⟩
-  drop m (map f xs)             ≡⟨  drop-distr-map f m xs ⟩
-  map f (drop m xs)             ≡˘⟨ cong (map f) (unfold-drop m x xs) ⟩
-  map f (drop (suc m) (x ∷ xs)) ∎
+drop-distr-map f (suc m) (x ∷ xs) = drop-distr-map f m xs
 
 ------------------------------------------------------------------------
 -- take and drop together
 
 take-drop-id : ∀ (m : ℕ) (x : Vec A (m + n)) → take m x ++ drop m x ≡ x
 take-drop-id zero x = refl
-take-drop-id (suc m) (x ∷ xs) = begin
-    take (suc m) (x ∷ xs) ++ drop (suc m) (x ∷ xs)
-  ≡⟨ cong₂ _++_ (unfold-take m x xs) (unfold-drop m x xs) ⟩
-    (x ∷ take m xs) ++ (drop m xs)
-  ≡⟨⟩
-    x ∷ (take m xs ++ drop m xs)
-  ≡⟨ cong (x ∷_) (take-drop-id m xs) ⟩
-    x ∷ xs
-  ∎
+take-drop-id (suc m) (x ∷ xs) = cong (x ∷_) (take-drop-id m xs)
 
 ------------------------------------------------------------------------
 -- truncate

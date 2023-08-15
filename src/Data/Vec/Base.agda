@@ -16,7 +16,7 @@ open import Data.Product.Base as Prod using (∃; ∃₂; _×_; _,_; proj₁; pr
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; trans; cong)
 open import Relation.Nullary.Decidable.Core using (does)
 open import Relation.Unary using (Pred; Decidable)
 
@@ -262,8 +262,8 @@ allFin _ = tabulate id
 splitAt : ∀ m {n} (xs : Vec A (m + n)) →
           ∃₂ λ (ys : Vec A m) (zs : Vec A n) → xs ≡ ys ++ zs
 splitAt zero    xs                = ([] , xs , refl)
-splitAt (suc m) (x ∷ xs)          with splitAt m xs
-splitAt (suc m) (x ∷ xs) | (ys , zs , p) = ((x ∷ ys) , zs , cong (x ∷_) p)
+splitAt (suc m) (x ∷ xs) =
+  let (ys , zs , eq) = splitAt m xs in ((x ∷ ys) , zs , cong (x ∷_) eq)
 
 take : ∀ m {n} → Vec A (m + n) → Vec A m
 take m xs = proj₁ (splitAt m xs)
@@ -274,10 +274,9 @@ drop m xs = proj₁ (proj₂ (splitAt m xs))
 group : ∀ n k (xs : Vec A (n * k)) →
         ∃ λ (xss : Vec (Vec A k) n) → xs ≡ concat xss
 group zero    k []                  = ([] , refl)
-group (suc n) k xs                  with splitAt k xs
-group (suc n) k .(ys ++ zs)         | (ys , zs , refl) with group n k zs
-group (suc n) k .(ys ++ concat zss) | (ys , ._ , refl) | (zss , refl) =
-  ((ys ∷ zss) , refl)
+group (suc n) k xs with splitAt k xs
+group (suc n) k xs | (ys , zs , eq) with group n k zs
+group (suc n) k xs | (ys , ._ , eq) | (zss , eq′) = ((ys ∷ zss) , trans eq (cong (ys ++_) eq′))
 
 split : Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
@@ -339,15 +338,13 @@ xs ʳ++ ys = foldl (Vec _ ∘ (_+ _)) (λ rev x → x ∷ rev) ys xs
 initLast : ∀ (xs : Vec A (1 + n)) → ∃₂ λ ys y → xs ≡ ys ∷ʳ y
 initLast {n = zero}  (x ∷ []) = ([] , x , refl)
 initLast {n = suc n} (x ∷ xs) with initLast xs
-... | (ys , y , refl) = (x ∷ ys , y , refl)
+... | (ys , y , eq) = (x ∷ ys , y , cong (x ∷_) eq)
 
 init : Vec A (1 + n) → Vec A n
-init xs with initLast xs
-... | (ys , y , refl) = ys
+init xs = proj₁ (initLast xs)
 
 last : Vec A (1 + n) → A
-last xs with initLast xs
-... | (ys , y , refl) = y
+last xs = proj₁ (proj₂ (initLast xs))
 
 ------------------------------------------------------------------------
 -- Other operations
