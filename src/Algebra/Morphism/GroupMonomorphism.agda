@@ -26,7 +26,7 @@ open RawGroup G₂ renaming
 
 open import Algebra.Definitions
 open import Algebra.Structures
-open import Data.Product
+open import Data.Product.Base using (_,_)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------

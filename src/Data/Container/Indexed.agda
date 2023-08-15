@@ -12,7 +12,7 @@
 module Data.Container.Indexed where
 
 open import Level
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 open import Data.W.Indexed
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Function.Equality using (_⟨$⟩_)
@@ -30,6 +30,8 @@ open Container public
 
 -- Abbreviation for the commonly used level one version of indexed
 -- containers.
+
+infix 5 _▷_
 
 _▷_ : Set → Set → Set₁
 I ▷ O = Container I O zero zero
@@ -102,6 +104,8 @@ module _ {i₁ i₂ o₁ o₂}
 -- Degenerate cases where no reindexing is performed.
 
 module _ {i o c r} {I : Set i} {O : Set o} where
+
+  infixr 8 _⇒_ _⊸_ _⇒C_
 
   _⇒_ : B.Rel (Container I O c r) _
   C₁ ⇒ C₂ = C₁ ⇒[ ⟨id⟩ / ⟨id⟩ ] C₂

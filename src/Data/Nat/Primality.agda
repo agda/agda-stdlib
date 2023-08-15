@@ -13,7 +13,7 @@ open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
 open import Data.Nat.Properties
-open import Data.Product
+open import Data.Product.Base using (∃; _×_; map₂; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (flip; _∘_; _∘′_)
 open import Relation.Nullary.Decidable as Dec
@@ -87,8 +87,8 @@ prime⇒¬composite {n@(suc (suc _))} n-prime (d , 2≤d , d<n , d∣n) =
 -- Euclid's lemma
 
 -- For p prime, if p ∣ m * n, then either p ∣ m or p ∣ n.
--- This demonstrates that the usual definition of prime numbers matches the
--- ring theoretic definition of a prime element of the semiring ℕ.
+-- This demonstrates that the usual definition of prime numbers matches
+-- the ring theoretic definition of a prime element of the semiring ℕ.
 -- This is useful for proving many other theorems involving prime numbers.
 euclidsLemma : ∀ m n {p} → Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
 euclidsLemma m n {p@(suc (suc _))} p-prime p∣m*n = result
@@ -104,13 +104,13 @@ euclidsLemma m n {p@(suc (suc _))} p-prime p∣m*n = result
 
   result : p ∣ m ⊎ p ∣ n
   result with Bézout.lemma m p
-  -- if the GCD of m and p is zero then p must be zero, which is impossible as p
-  -- is a prime
+  -- if the GCD of m and p is zero then p must be zero, which is
+  -- impossible as p is a prime
   ... | Bézout.result 0 g _ = contradiction (0∣⇒≡0 (GCD.gcd∣n g)) λ()
 
-  -- if the GCD of m and p is one then m and p is coprime, and we know that for
-  -- some integers s and r, sm + rp = 1. We can use this fact to determine that p
-  -- divides n
+  -- if the GCD of m and p is one then m and p is coprime, and we know
+  -- that for some integers s and r, sm + rp = 1. We can use this fact
+  -- to determine that p divides n
   ... | Bézout.result 1 _ (Bézout.+- r s 1+sp≡rm) =
     inj₂ (flip ∣m+n∣m⇒∣n (n∣m*n*o s n) (begin
       p             ∣⟨ p∣rmn r ⟩

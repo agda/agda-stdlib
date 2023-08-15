@@ -11,12 +11,13 @@ module Relation.Nullary.Decidable where
 open import Level using (Level)
 open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.Empty using (⊥-elim)
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 open import Data.Sum.Base as Sum hiding (map)
 open import Function.Base
 open import Function.Bundles using
   (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔′)
-open import Relation.Binary using (Setoid; module Setoid; Decidable)
+open import Relation.Binary.Bundles using (Setoid; module Setoid)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
 open import Relation.Nullary.Reflects using (invert)

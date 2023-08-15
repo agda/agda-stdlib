@@ -9,7 +9,7 @@
 
 module Data.Product.Function.Dependent.Setoid.WithK where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.Product.Function.Dependent.Setoid using (surjection)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Relation.Binary
@@ -30,7 +30,8 @@ open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 ------------------------------------------------------------------------
 -- Combinator for Inverse

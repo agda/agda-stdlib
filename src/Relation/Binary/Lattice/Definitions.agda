@@ -12,10 +12,10 @@
 module Relation.Binary.Lattice.Definitions where
 
 open import Algebra.Core
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Function.Base using (flip)
-open import Relation.Binary
-open import Level
+open import Relation.Binary.Core using (Rel)
+open import Level using (Level)
 
 private
   variable

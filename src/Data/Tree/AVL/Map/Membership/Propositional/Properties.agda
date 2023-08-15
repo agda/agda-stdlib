@@ -1,13 +1,13 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of the membership relation for AVL Maps identifying values up to
--- propositional equality.
+-- Properties of the membership relation for AVL Maps identifying values
+-- up to propositional equality.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Map.Membership.Propositional.Properties
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -15,13 +15,13 @@ module Data.Tree.AVL.Map.Membership.Propositional.Properties
 
 open import Data.Bool.Base using (true; false)
 open import Data.Maybe.Base using (just; nothing; is-just)
-open import Data.Product as Prod using (_×_; ∃-syntax; _,_; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_×_; ∃-syntax; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent renaming (Pointwise to _×ᴿ_)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _∘′_)
 open import Level using (Level)
 
-open import Relation.Binary using (Transitive; Symmetric; _Respectsˡ_)
+open import Relation.Binary.Definitions using (Transitive; Symmetric; _Respectsˡ_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Intersection using (_∩_)
 open import Relation.Binary.PropositionalEquality

@@ -11,9 +11,9 @@ module Data.Product.Algebra where
 open import Algebra
 open import Data.Bool.Base using (true; false)
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
-open import Data.Product
+open import Data.Product.Base
 open import Data.Product.Properties
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Algebra
 open import Data.Unit.Polymorphic using (⊤; tt)
 open import Function.Base using (_∘′_)
@@ -29,13 +29,7 @@ import Function.Definitions as FuncDef
 private
   variable
     a b c d p : Level
-    A : Set a
-    B : Set b
-    C : Set c
-    D : Set d
-
-  module _ {A : Set a} {B : Set b} where
-    open FuncDef {A = A} {B} _≡_ _≡_
+    A B C D : Set a
 
 ------------------------------------------------------------------------
 -- Properties of Σ
@@ -56,8 +50,8 @@ private
 -- × is a congruence
 ×-cong : A ↔ B → C ↔ D → (A × C) ↔ (B × D)
 ×-cong i j = mk↔′ (map I.to J.to) (map I.from J.from)
-  (λ {(a , b) → cong₂ _,_ (I.inverseˡ a) (J.inverseˡ b)})
-  (λ {(a , b) → cong₂ _,_ (I.inverseʳ a) (J.inverseʳ b)})
+  (λ {(a , b) → cong₂ _,_ (I.strictlyInverseˡ a) (J.strictlyInverseˡ b)})
+  (λ {(a , b) → cong₂ _,_ (I.strictlyInverseʳ a) (J.strictlyInverseʳ b)})
   where module I = Inverse i; module J = Inverse j
 
 -- × is commutative.

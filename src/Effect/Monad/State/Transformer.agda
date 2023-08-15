@@ -11,7 +11,7 @@ open import Level using (Level; suc; _⊔_)
 module Effect.Monad.State.Transformer where
 
 open import Algebra using (RawMonoid)
-open import Data.Product using (_×_; _,_; map₂; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; map₂; proj₁; proj₂)
 open import Data.Unit.Polymorphic.Base
 open import Effect.Choice
 open import Effect.Empty

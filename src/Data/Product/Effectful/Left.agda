@@ -18,7 +18,7 @@ open import Level
 module Data.Product.Effectful.Left
   {a e} (A : RawMonoid a e) (b : Level) where
 
-open import Data.Product
+open import Data.Product.Base
 import Data.Product.Effectful.Left.Base as Base
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)

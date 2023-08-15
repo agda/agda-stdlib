@@ -17,7 +17,7 @@ import Data.List.Relation.Unary.Unique.Setoid.Properties as Setoid
 open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base using (_<_)
 open import Data.Nat.Properties using (<⇒≢)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡⇒≡×≡)
 open import Function.Base using (id; _∘_)
 open import Level using (Level)

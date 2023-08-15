@@ -24,6 +24,8 @@ open import Reflection.AST.Argument
 `[] : Term
 `[] = con (quote List.[]) (2 ⋯⟅∷⟆ [])
 
+infixr 5 _`∷_
+
 _`∷_ : Term → Term → Term
 x `∷ xs = con (quote List._∷_) (2 ⋯⟅∷⟆ x ⟨∷⟩ xs ⟨∷⟩ [])
 

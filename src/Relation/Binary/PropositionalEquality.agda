@@ -13,10 +13,9 @@ open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base using (id; _∘_)
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level using (Level; _⊔_)
-open import Data.Product using (∃)
+open import Data.Product.Base using (∃)
 
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable using (yes; no; dec-yes-irr; dec-no)
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
@@ -132,4 +131,3 @@ Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/
 "Warning: inspect was deprecated in v2.0.
 Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead."
 #-}
-

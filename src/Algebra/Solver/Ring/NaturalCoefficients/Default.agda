@@ -5,8 +5,8 @@
 -- equality induced by ℕ.
 --
 -- This is sufficient for proving equalities that are independent of the
--- characteristic.  In particular, this is enough for equalities in rings of
--- characteristic 0.
+-- characteristic.  In particular, this is enough for equalities in
+-- rings of characteristic 0.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -20,7 +20,7 @@ import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; map)
 open import Data.Nat using (_≟_)
 open import Relation.Binary.Consequences using (dec⇒weaklyDec)
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 
 open CommutativeSemiring R
 open SemiringMultiplication semiring

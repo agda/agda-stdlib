@@ -14,7 +14,7 @@ open import Algebra.Structures
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base using (suc; _*_)
 open import Data.Nat.Properties using (*-assoc; *-comm)
-open import Data.Product using (-,_; proj₂)
+open import Data.Product.Base using (-,_; proj₂)
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -22,14 +22,14 @@ open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as Lₚ
-open import Data.Product using (_,_; _×_; ∃; ∃₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_; module ≡-Reasoning)
 open import Relation.Nullary
 

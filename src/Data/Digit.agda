@@ -9,21 +9,20 @@
 module Data.Digit where
 
 open import Data.Nat.Base
-open import Data.Nat.Properties
-open import Data.Nat.Solver
+open import Data.Nat.Properties using (_≤?_; _<?_; ≤⇒≤′; module ≤-Reasoning; m≤m+n)
+open import Data.Nat.Solver using (module +-*-Solver)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Char using (Char)
+open import Data.Char.Base using (Char)
 open import Data.List.Base
-open import Data.Product
+open import Data.Product.Base using (∃; _,_)
 open import Data.Vec.Base as Vec using (Vec; _∷_; [])
 open import Data.Nat.DivMod
 open import Data.Nat.Induction
-open import Relation.Nullary.Decidable using (does)
-open import Relation.Nullary.Decidable
-open import Relation.Binary using (Decidable)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
-open import Function
+open import Relation.Nullary.Decidable using (True; does; toWitness)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+open import Function.Base using (_$_)
 
 ------------------------------------------------------------------------
 -- Digits
