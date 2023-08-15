@@ -30,6 +30,16 @@ import Relation.Binary.PropositionalEquality.Properties as PropEq
 open import Data.Nat.Divisibility.Core public
 
 ------------------------------------------------------------------------
+-- Properties of quotient
+
+quotient∣n : ∀ {m n} (m∣n : m ∣ n) → quotient m∣n ∣ n
+quotient∣n {m = m} {n = n} m∣n = divides m $ begin-equality
+  n                ≡⟨ _∣_.equality m∣n ⟩
+  quotient m∣n * m ≡⟨ *-comm (quotient m∣n) m ⟩
+  m * quotient m∣n ∎
+  where open ≤-Reasoning
+
+------------------------------------------------------------------------
 -- Relationship with _%_
 
 m%n≡0⇒n∣m : ∀ m n .{{_ : NonZero n}} → m % n ≡ 0 → n ∣ m
@@ -305,12 +315,3 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   help {m} {n}     ≤′-refl        = ∣-refl
   help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)
 
-------------------------------------------------------------------------
--- Properties of quotient
-
-quotient∣n : ∀ {m n} (m∣n : m ∣ n) → quotient m∣n ∣ n
-quotient∣n {m = m} {n = n} m∣n = divides m $ begin-equality
-  n                ≡⟨ _∣_.equality m∣n ⟩
-  quotient m∣n * m ≡⟨ *-comm (quotient m∣n) m ⟩
-  m * quotient m∣n ∎
-  where open ≤-Reasoning
