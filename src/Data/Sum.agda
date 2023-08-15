@@ -16,7 +16,9 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Base
 open import Level
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; yes; no; _because_; ¬_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _because_)
+open import Relation.Nullary.Negation.Core using (¬_)
+
 
 private
   variable
