@@ -16,11 +16,14 @@ open import Data.Nat.Induction using (<-Rec; <-rec)
 open import Data.Nat.Primality using (Prime; euclidsLemma; ∣p⇒≡1∨≡p; Prime⇒NonZero)
 open import Data.Nat.Primality.Rough using (_Rough_; 2-rough-n; extend-∤; roughn∧∣n⇒prime)
 open import Data.Product as Π using (∃-syntax; _,_; proj₁; proj₂)
-open import Data.List.Base using (List; []; _∷_; product)
+open import Data.List.Base using (List; []; _∷_; _++_; product)
+open import Data.List.Membership.Propositional using (_∈_)
+open import Data.List.Membership.Propositional.Properties using (∈-∃++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
+open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Binary.Permutation.Propositional as ↭
   using (_↭_; prep; swap; ↭-refl; refl; module PermutationReasoning)
-open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (product-↭; All-resp-↭)
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (product-↭; All-resp-↭; shift)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
 open import Relation.Nullary.Decidable using (yes; no)
@@ -139,25 +142,13 @@ factorisation≥1 : ∀ {as} → All Prime as → product as ≥ 1
 factorisation≥1 {[]} [] = s≤s z≤n
 factorisation≥1 {suc a ∷ as} (pa ∷ asPrime) = *-mono-≤ {1} {1 + a} (s≤s z≤n) (factorisation≥1 asPrime)
 
-factorisationPullToFront : ∀ {as} {p} → Prime p → p ∣ product as → All Prime as → ∃[ as′ ] as ↭ (p ∷ as′)
-factorisationPullToFront {[]} {suc (suc p)} pPrime p∣Πas asPrime = contradiction (∣1⇒≡1 p∣Πas) λ ()
-factorisationPullToFront {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime)
-  with euclidsLemma a (product as) pPrime p∣aΠas
-... | inj₂ p∣Πas = Π.map (a ∷_) step ih
-  where
-    ih : ∃[ as′ ] as ↭ (p ∷ as′)
-    ih = factorisationPullToFront pPrime p∣Πas asPrime
-
-    step : ∀ {as′} → as ↭ p ∷ as′ → a ∷ as ↭ p ∷ a ∷ as′
-    step {as′} as↭p∷as′ = begin
-      a ∷ as      ↭⟨ prep a as↭p∷as′ ⟩
-      a ∷ p ∷ as′ ↭⟨ swap a p refl ⟩
-      p ∷ a ∷ as′ ∎
-      where open PermutationReasoning
-
+factorisationHasAllPrimeFactors : ∀ {as} {p} → Prime p → p ∣ product as → All Prime as → p ∈ as
+factorisationHasAllPrimeFactors {[]} {2+ p} pPrime p∣Πas [] = contradiction (∣1⇒≡1 p∣Πas) λ ()
+factorisationHasAllPrimeFactors {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime) with euclidsLemma a (product as) pPrime p∣aΠas
+... | inj₂ p∣Πas = there (factorisationHasAllPrimeFactors pPrime p∣Πas asPrime)
 ... | inj₁ p∣a with ∣p⇒≡1∨≡p p aPrime p∣a
 ...   | inj₁ refl = ⊥-elim pPrime
-...   | inj₂ refl = as , ↭-refl
+...   | inj₂ refl = here refl
 
 factorisationUnique′ : (as bs : List ℕ) → product as ≡ product bs → All Prime as → All Prime bs → as ↭ bs
 factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = refl
@@ -184,7 +175,8 @@ factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = 
       where open ≡-Reasoning
 
     shuffle : ∃[ bs′ ] bs ↭ a ∷ bs′
-    shuffle = factorisationPullToFront aPrime a∣Πbs bsPrime
+    shuffle with ys , zs , p ← ∈-∃++ (factorisationHasAllPrimeFactors aPrime a∣Πbs bsPrime)
+      = ys ++ zs , ↭.↭-trans (↭.↭-reflexive p) (shift a ys zs)
 
     bs′ = proj₁ shuffle
     bs↭a∷bs′ = proj₂ shuffle
