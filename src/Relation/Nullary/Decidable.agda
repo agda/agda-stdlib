@@ -18,8 +18,8 @@ open import Function.Bundles using
   (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔′)
 open import Relation.Binary.Bundles using (Setoid; module Setoid)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary
-open import Relation.Nullary.Negation
+open import Relation.Nullary using (Irrelevant)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong′)
 
