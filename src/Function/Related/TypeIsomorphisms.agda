@@ -13,8 +13,7 @@ open import Algebra
 open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
-open import Data.Empty using (⊥-elim)
-open import Data.Empty.Polymorphic using (⊥) renaming (⊥-elim to ⊥ₚ-elim)
+open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product.Base as Prod
   using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃)
 open import Data.Product.Function.NonDependent.Propositional
@@ -28,11 +27,13 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary hiding (_⇔_; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Nullary.Decidable.Core using (Dec; yes; no; True)
+open import Relation.Nullary using (Irrelevant)
+open import Relation.Nullary.Decidable.Core using (Dec; _because_; True)
+open import Relation.Nullary.Reflects using (invert)
 import Relation.Nullary.Indexed as I
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 ------------------------------------------------------------------------
 -- Properties of Σ and _×_
@@ -64,10 +65,10 @@ open import Relation.Nullary.Negation.Core using (¬_)
 -- × has ⊥ has its zero
 
 ×-zeroˡ : ∀ ℓ → LeftZero _↔_ (⊥ {ℓ}) _×_
-×-zeroˡ ℓ A = inverse proj₁ < id , ⊥ₚ-elim > (λ { () }) (λ _ → P.refl)
+×-zeroˡ ℓ A = inverse proj₁ < id , ⊥-elim > (λ { () }) (λ _ → P.refl)
 
 ×-zeroʳ : ∀ ℓ → RightZero _↔_ (⊥ {ℓ}) _×_
-×-zeroʳ ℓ A = inverse proj₂ < ⊥ₚ-elim , id > (λ { () }) λ _ → P.refl
+×-zeroʳ ℓ A = inverse proj₂ < ⊥-elim , id > (λ { () }) λ _ → P.refl
 
 ×-zero : ∀ ℓ → Zero _↔_ ⊥ _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
@@ -330,11 +331,11 @@ Related-cong {A = A} {B} {C} {D} A≈B C≈D =
 -- A lemma relating True dec and P, where dec : Dec P
 
 True↔ : ∀ {p} {P : Set p}
-        (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ (yes p) irr =
+        (dec : Dec P) → Irrelevant P → True dec ↔ P
+True↔ (true  because [p]) irr = let p = invert [p] in
   inverse (λ _ → p) (λ _ → _) (λ _ → P.refl) (irr _)
-True↔ (no ¬p) _ =
-  inverse (λ()) ¬p (λ ()) (⊥-elim ∘ ¬p)
+True↔ (false because [¬p]) _  = let ¬p = invert [¬p] in
+  inverse (λ()) ¬p (λ ()) (λ p → contradiction p ¬p)
 
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
