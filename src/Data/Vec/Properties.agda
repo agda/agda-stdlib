@@ -69,21 +69,6 @@ private
 -- See also Data.Vec.Properties.WithK.[]=-irrelevant.
 
 ------------------------------------------------------------------------
--- selectors: head, tail, init and last
-
-head-singleton : head ≗ last {A = A} {n = zero}
-head-singleton (x ∷ []) = refl
-
-head-init : head ∘ init ≗ head {A = A} {n = suc n}
-head-init (x ∷ xs) = refl
-
-last-tail : last ∘ tail ≗ last {A = A} {n = suc n}
-last-tail (x ∷ xs) = refl
-
-init-tail : init ∘ tail ≗ tail ∘ init {A = A} {n = suc n}
-init-tail (x ∷ xs) = refl
-
-------------------------------------------------------------------------
 -- take
 
 unfold-take : ∀ n x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs

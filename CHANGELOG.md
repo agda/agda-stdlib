@@ -2653,11 +2653,6 @@ Other minor changes
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
-  head-singleton : head ≗ last {n = zero}
-  head-init      : head ∘ init ≗ head
-  last-tail      : last ∘ tail ≗ last
-  init-tail      : init ∘ tail ≗ tail ∘ init
-
   ++-assoc     : cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
   ++-identityʳ : cast eq (xs ++ []) ≡ xs
   init-reverse : init ∘ reverse ≗ reverse ∘ tail
