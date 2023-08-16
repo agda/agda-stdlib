@@ -11,13 +11,12 @@ module Relation.Nullary.Reflects where
 open import Agda.Builtin.Equality
 
 open import Data.Bool.Base
-open import Data.Empty
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
 open import Function.Base using (id; _$_; _∘_; const)
 
-open import Relation.Nullary.Negation.Core
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; _¬-⊎_)
 
 private
   variable
@@ -84,7 +83,7 @@ _→-reflects_ : ∀ {a b} → Reflects P a → Reflects Q b →
                 Reflects (P → Q) (not a ∨ b)
 ofʸ  p →-reflects ofʸ  q = ofʸ (const q)
 ofʸ  p →-reflects ofⁿ ¬q = ofⁿ (¬q ∘ (_$ p))
-ofⁿ ¬p →-reflects _      = ofʸ (⊥-elim ∘ ¬p)
+ofⁿ ¬p →-reflects _      = ofʸ (λ p → contradiction p ¬p)
 
 ------------------------------------------------------------------------
 -- Other lemmas
@@ -96,6 +95,6 @@ fromEquivalence {b = false} sound complete = ofⁿ complete
 -- `Reflects` is deterministic.
 det : ∀ {b b′} → Reflects P b → Reflects P b′ → b ≡ b′
 det (ofʸ  p) (ofʸ  p′) = refl
-det (ofʸ  p) (ofⁿ ¬p′) = ⊥-elim (¬p′ p)
-det (ofⁿ ¬p) (ofʸ  p′) = ⊥-elim (¬p p′)
+det (ofʸ  p) (ofⁿ ¬p′) = contradiction p ¬p′
+det (ofⁿ ¬p) (ofʸ  p′) = contradiction p′ ¬p
 det (ofⁿ ¬p) (ofⁿ ¬p′) = refl
