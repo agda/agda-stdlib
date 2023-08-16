@@ -9,8 +9,7 @@
 module Relation.Nullary.Decidable where
 
 open import Level using (Level)
-open import Data.Bool.Base using (true; false; if_then_else_)
-open import Data.Empty using (⊥-elim)
+open import Data.Bool.Base using (true; false)
 open import Data.Product.Base as Prod hiding (map)
 open import Data.Sum.Base as Sum hiding (map)
 open import Function.Base
@@ -19,7 +18,7 @@ open import Function.Bundles using
 open import Relation.Binary.Bundles using (Setoid; module Setoid)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary using (Irrelevant)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong′)
 
@@ -60,8 +59,10 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
 -- A lemma relating True and Dec
 
 True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
-True-↔ (yes p) irr = mk↔′ (λ _ → p) _ (irr p) cong′
-True-↔ (no ¬p) _   = mk↔′ (λ ()) ¬p (⊥-elim ∘ ¬p) λ ()
+True-↔ (true  because [p]) irr = let p = invert [p] in
+  mk↔′ (λ _ → p) _ (irr p) cong′
+True-↔ (false because [¬p]) _  = let ¬p = invert [¬p] in
+  mk↔′ (λ ()) ¬p (λ p → contradiction p ¬p) λ ()
 
 ------------------------------------------------------------------------
 -- Result of decidability
@@ -72,11 +73,11 @@ isYes≗does (false because _) = refl
 
 dec-true : (p? : Dec P) → P → does p? ≡ true
 dec-true (true  because   _ ) p = refl
-dec-true (false because [¬p]) p = ⊥-elim (invert [¬p] p)
+dec-true (false because [¬p]) p = contradiction p (invert [¬p])
 
 dec-false : (p? : Dec P) → ¬ P → does p? ≡ false
 dec-false (false because  _ ) ¬p = refl
-dec-false (true  because [p]) ¬p = ⊥-elim (¬p (invert [p]))
+dec-false (true  because [p]) ¬p = contradiction (invert [p]) ¬p
 
 dec-yes : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
 dec-yes p? p with dec-true p? p
@@ -87,5 +88,4 @@ dec-no p? ¬p with dec-false p? ¬p
 dec-no (no _) _ | refl = refl
 
 dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
-dec-yes-irr p? irr p with dec-yes p? p
-... | p′ , eq rewrite irr p p′ = eq
+dec-yes-irr p? irr p with p′ , eq ← dec-yes p? p rewrite irr p p′ = eq
