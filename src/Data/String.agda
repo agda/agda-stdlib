@@ -10,8 +10,8 @@ module Data.String where
 
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Char as Char using (Char)
-open import Function.Base
-open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
+open import Function.Base using (_∘_; _$_)
+open import Data.Nat.Base as ℕ using (ℕ)
 import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List; _∷_; []; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
@@ -24,7 +24,6 @@ import Data.Char.Properties as Char using (_≟_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Nullary.Decidable using (does)
-open import Relation.Unary using (Pred; Decidable)
 
 open import Data.List.Membership.DecPropositional Char._≟_
 
