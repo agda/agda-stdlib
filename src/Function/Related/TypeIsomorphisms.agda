@@ -32,7 +32,6 @@ open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary using (Irrelevant)
 open import Relation.Nullary.Decidable.Core using (Dec; _because_; True)
 open import Relation.Nullary.Reflects using (invert)
-import Relation.Nullary.Indexed as I
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 ------------------------------------------------------------------------
