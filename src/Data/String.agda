@@ -8,7 +8,7 @@
 
 module Data.String where
 
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (if_then_else_)
 open import Data.Char as Char using (Char)
 open import Function.Base
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
@@ -48,9 +48,9 @@ fromVec = fromList ∘ Vec.toList
 
 -- enclose string with parens if it contains a space character
 parensIfSpace : String → String
-parensIfSpace s with does (' ' ∈? toList s)
-... | true  = parens s
-... | false = s
+parensIfSpace s = if (does (' ' ∈? toList s))
+  then (parens s)
+  else s
 
 
 ------------------------------------------------------------------------
