@@ -13,16 +13,11 @@ open import Data.Char as Char using (Char)
 open import Function.Base using (_∘_; _$_)
 open import Data.Nat.Base as ℕ using (ℕ)
 import Data.Nat.Properties as ℕₚ
-open import Data.List.Base as List using (List; _∷_; []; [_])
-open import Data.List.NonEmpty as NE using (List⁺)
+open import Data.List.Base as List using (List)
 open import Data.List.Extrema ℕₚ.≤-totalOrder
-open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
-open import Data.List.Relation.Binary.Lex.Strict using (Lex-<; Lex-≤)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
 import Data.Char.Properties as Char using (_≟_)
-open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Nullary.Decidable using (does)
 
 open import Data.List.Membership.DecPropositional Char._≟_
