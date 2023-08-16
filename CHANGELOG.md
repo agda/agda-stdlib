@@ -1126,6 +1126,12 @@ Deprecated names
   but omitting the inversion principle which pattern matching on `_≻toℕ_`
   would achieve; this instead is proxied by the property `Data.Fin.Properties.toℕ<`.
 
+* In `Data.Bool.Properties` (Issue #2046):
+  ```
+  push-function-into-if ↦ if-float
+  ```
+
+
 * In `Data.Fin.Induction`:
   ```
   ≺-Rec
@@ -1136,7 +1142,7 @@ Deprecated names
 
   As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
   associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
-  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  But it's not quite sensible to say that these definitions should be *renamed* to *anything*,
   least of all those counterparts... the type confusion would be intolerable.
 
 * In `Data.Fin.Properties`:

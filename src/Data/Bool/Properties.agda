@@ -762,7 +762,21 @@ proof (T? false) = ofⁿ λ()
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _
 
-push-function-into-if : ∀ (f : A → B) x {y z} →
-                        f (if x then y else z) ≡ (if x then f y else f z)
-push-function-into-if _ true  = refl
-push-function-into-if _ false = refl
+if-float : ∀ (f : A → B) b {xᵗ xᶠ} →
+           f (if b then xᵗ else xᶠ) ≡ (if b then f xᵗ else f xᶠ)
+if-float _ true  = refl
+if-float _ false = refl
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+push-function-into-if = if-float
+{-# WARNING_ON_USAGE push-function-into-if
+"Warning: push-function-into-if was deprecated in v2.0.
+Please use if-float instead."
+#-}
