@@ -8,7 +8,7 @@
 
 module Data.String where
 
-open import Data.Bool using (true; false; T?)
+open import Data.Bool.Base using (true; false)
 open import Data.Char as Char using (Char)
 open import Function.Base
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
