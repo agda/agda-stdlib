@@ -274,9 +274,10 @@ drop m xs = proj₁ (proj₂ (splitAt m xs))
 group : ∀ n k (xs : Vec A (n * k)) →
         ∃ λ (xss : Vec (Vec A k) n) → xs ≡ concat xss
 group zero    k []                  = ([] , refl)
-group (suc n) k xs with splitAt k xs
-group (suc n) k xs | (ys , zs , eq) with group n k zs
-group (suc n) k xs | (ys , ._ , eq) | (zss , eq′) = ((ys ∷ zss) , trans eq (cong (ys ++_) eq′))
+group (suc n) k xs  = 
+  let ys , zs , eq-split = splitAt k xs in
+  let zss , eq-group     = group n k zs in
+   (ys ∷ zss) , trans eq-split (cong (ys ++_) eq-group)
 
 split : Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
@@ -337,8 +338,9 @@ xs ʳ++ ys = foldl (Vec _ ∘ (_+ _)) (λ rev x → x ∷ rev) ys xs
 
 initLast : ∀ (xs : Vec A (1 + n)) → ∃₂ λ ys y → xs ≡ ys ∷ʳ y
 initLast {n = zero}  (x ∷ []) = ([] , x , refl)
-initLast {n = suc n} (x ∷ xs) with initLast xs
-... | (ys , y , eq) = (x ∷ ys , y , cong (x ∷_) eq)
+initLast {n = suc n} (x ∷ xs) =
+  let ys , y , eq = initLast xs in
+  (x ∷ ys , y , cong (x ∷_) eq)
 
 init : Vec A (1 + n) → Vec A n
 init xs = proj₁ (initLast xs)

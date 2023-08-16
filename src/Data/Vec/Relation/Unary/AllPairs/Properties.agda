@@ -74,7 +74,7 @@ module _ {R : Rel A ℓ} where
 
   drop⁺ : ∀ {n} m {xs} → AllPairs R {m + n} xs → AllPairs R {n} (drop m xs)
   drop⁺ zero pxs = pxs
-  drop⁺ (suc m) {x ∷ xs} (_ ∷ pxs) = drop⁺ m pxs
+  drop⁺ (suc m) (_ ∷ pxs) = drop⁺ m pxs
 
 ------------------------------------------------------------------------
 -- tabulate
