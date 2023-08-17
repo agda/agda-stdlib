@@ -1143,35 +1143,25 @@ Other minor changes
   ```
 
 * Changed the fixity of `Data.Fin.Substitution.TermSubst._/Var_`.
+  ```agda
+  infix 8 ↦ infixl 8
+  ```
 
 * Added new lemmas in `Data.Fin.Substitution.Lemmas.TermLemmas`:
   ```
-  map-var≡ :
-    ∀ {m n} {ρ₁ : Sub Fin m n} {ρ₂ : Sub T m n} {f : Fin m → Fin n} →
-    (∀ x → lookup ρ₁ x ≡ f x) →
-    (∀ x → lookup ρ₂ x ≡ T.var (f x)) →
-    map T.var ρ₁ ≡ ρ₂
-  wk≡wk :
-    ∀ {n} → map T.var VarSubst.wk ≡ T.wk {n = n}
-  id≡id :
-    ∀ {n} → map T.var VarSubst.id ≡ T.id {n = n}
-  sub≡sub :
-    ∀ {n} {x : Fin n} →
-    map T.var (VarSubst.sub x) ≡ T.sub (T.var x)
-  ↑≡↑ :
-    ∀ {m n} {ρ : Sub Fin m n} →
-    map T.var (ρ VarSubst.↑) ≡ map T.var ρ T.↑
-  /Var≡/ :
-    ∀ {m n} {ρ : Sub Fin m n} {t} →
-    t /Var ρ ≡ t T./ map T.var ρ
-  sub-renaming-commutes :
-    ∀ {m n t x} {ρ : Sub T m n} →
-    t /Var VarSubst.sub x T./ ρ ≡
-    t T./ ρ T.↑ T./ T.sub (lookup ρ x)
-  sub-commutes-with-renaming :
-    ∀ {m n} {t t′} {ρ : Sub Fin m n} →
-    t T./ T.sub t′ /Var ρ ≡
-    t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)
+  map-var≡ : {ρ₁ : Sub Fin m n} {ρ₂ : Sub T m n} {f : Fin m → Fin n} →
+             (∀ x → lookup ρ₁ x ≡ f x) →
+             (∀ x → lookup ρ₂ x ≡ T.var (f x)) →
+             map T.var ρ₁ ≡ ρ₂
+  wk≡wk : map T.var VarSubst.wk ≡ T.wk {n = n}
+  id≡id : map T.var VarSubst.id ≡ T.id {n = n}
+  sub≡sub : {x : Fin n} → map T.var (VarSubst.sub x) ≡ T.sub (T.var x)
+  ↑≡↑ : {ρ : Sub Fin m n} → map T.var (ρ VarSubst.↑) ≡ map T.var ρ T.↑
+  /Var≡/ : {ρ : Sub Fin m n} {t} → t /Var ρ ≡ t T./ map T.var ρ
+  sub-renaming-commutes : {ρ : Sub T m n} →
+    t /Var VarSubst.sub x T./ ρ ≡ t T./ ρ T.↑ T./ T.sub (lookup ρ x)
+  sub-commutes-with-renaming : {ρ : Sub Fin m n} →
+    t T./ T.sub t′ /Var ρ ≡ t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)
   ```
 
 * Added new functions in `Data.Integer.Base`:
