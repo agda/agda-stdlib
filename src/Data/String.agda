@@ -18,7 +18,7 @@ open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
 import Data.Char.Properties as Char using (_≟_)
-open import Relation.Nullary.Decidable using (does)
+open import Relation.Nullary.Decidable.Core using (does)
 
 open import Data.List.Membership.DecPropositional Char._≟_
 
@@ -42,9 +42,7 @@ fromVec = fromList ∘ Vec.toList
 
 -- enclose string with parens if it contains a space character
 parensIfSpace : String → String
-parensIfSpace s = if (does (' ' ∈? toList s))
-  then parens s
-  else s
+parensIfSpace s = if does (' ' ∈? toList s) then parens s else s
 
 
 ------------------------------------------------------------------------
