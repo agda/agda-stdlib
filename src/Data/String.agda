@@ -43,7 +43,7 @@ fromVec = fromList ∘ Vec.toList
 -- enclose string with parens if it contains a space character
 parensIfSpace : String → String
 parensIfSpace s = if (does (' ' ∈? toList s))
-  then (parens s)
+  then parens s
   else s
 
 
