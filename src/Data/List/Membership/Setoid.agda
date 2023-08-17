@@ -11,12 +11,12 @@ open import Relation.Binary
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Function.Base using (_∘_; id; flip)
-open import Data.List.Base as List using (List; []; _∷_; length; lookup)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any
   using (Any; index; map; here; there)
 open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Relation.Unary using (Pred)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 open Setoid S renaming (Carrier to A)
 
