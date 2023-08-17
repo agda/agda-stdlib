@@ -528,11 +528,12 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
   open Lemmas₅ lemmas₅ public hiding (lemmas₃)
 
   wk-⊙-∷ : ∀ {m n} (t : T n) (ρ : Sub T m n) → (T.wk T.⊙ (t ∷ ρ)) ≡ ρ
-  wk-⊙-∷ t ρ = extensionality (λ x → begin
+  wk-⊙-∷ t ρ = extensionality λ x → begin
     lookup (T.wk T.⊙ (t ∷ ρ)) x ≡⟨ L₃.lookup-wk-↑⋆-⊙ 0 {ρ = t ∷ ρ} ⟩
-    lookup ρ x                  ∎)
+    lookup ρ x                  ∎
 
-  weaken-∷ : ∀ {k n} (t₁ : T k) {t₂ : T n} {ρ : Sub T k n} → T.weaken t₁ T./ (t₂ ∷ ρ) ≡ t₁ T./ ρ
+  weaken-∷ : ∀ {k n} (t₁ : T k) {t₂ : T n} {ρ : Sub T k n} →
+    T.weaken t₁ T./ (t₂ ∷ ρ) ≡ t₁ T./ ρ
   weaken-∷ t₁ {t₂} {ρ} = begin
     T.weaken t₁ T./ (t₂ ∷ ρ)   ≡⟨ cong (T._/ (t₂ ∷ ρ)) (sym /-wk) ⟩
     (t₁ T./ T.wk) T./ (t₂ ∷ ρ) ≡⟨ ⨀→/✶ ((t₂ ∷ ρ) ◅ T.wk ◅ ε) (ρ ◅ ε) (wk-⊙-∷ t₂ ρ) t₁ ⟩
@@ -546,11 +547,10 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
 
   -- Lemmas relating renamings to substitutions.
 
-  map-var≡ :
-    ∀ {m n} {ρ₁ : Sub Fin m n} {ρ₂ : Sub T m n} {f : Fin m → Fin n} →
-    (∀ x → lookup ρ₁ x ≡ f x) →
-    (∀ x → lookup ρ₂ x ≡ T.var (f x)) →
-    map T.var ρ₁ ≡ ρ₂
+  map-var≡ : ∀ {m n} {ρ₁ : Sub Fin m n} {ρ₂ : Sub T m n} {f : Fin m → Fin n} →
+             (∀ x → lookup ρ₁ x ≡ f x) →
+             (∀ x → lookup ρ₂ x ≡ T.var (f x)) →
+             map T.var ρ₁ ≡ ρ₂
   map-var≡ {ρ₁ = ρ₁} {ρ₂ = ρ₂} {f = f} hyp₁ hyp₂ = extensionality λ x →
     lookup (map T.var ρ₁) x  ≡⟨ VecProp.lookup-map x _ ρ₁ ⟩
     T.var (lookup ρ₁ x)      ≡⟨ cong T.var $ hyp₁ x ⟩
@@ -563,21 +563,17 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
   id≡id : ∀ {n} → map T.var VarSubst.id ≡ T.id {n = n}
   id≡id = map-var≡ VarLemmas.lookup-id lookup-id
 
-  sub≡sub :
-    ∀ {n} {x : Fin n} →
-    map T.var (VarSubst.sub x) ≡ T.sub (T.var x)
+  sub≡sub : ∀ {n} {x : Fin n} →
+            map T.var (VarSubst.sub x) ≡ T.sub (T.var x)
   sub≡sub = cong (_ ∷_) id≡id
 
-  ↑≡↑ :
-    ∀ {m n} {ρ : Sub Fin m n} →
-    map T.var (ρ VarSubst.↑) ≡ map T.var ρ T.↑
+  ↑≡↑ : ∀ {m n} {ρ : Sub Fin m n} →
+        map T.var (ρ VarSubst.↑) ≡ map T.var ρ T.↑
   ↑≡↑ {ρ = ρ} = map-var≡
     (VarLemmas.lookup-↑⋆ (lookup ρ) (λ _ → refl) 1)
     (lookup-↑⋆ (lookup ρ) (λ _ → VecProp.lookup-map _ _ ρ) 1)
 
-  /Var≡/ :
-    ∀ {m n} {ρ : Sub Fin m n} {t} →
-    t /Var ρ ≡ t T./ map T.var ρ
+  /Var≡/ : ∀ {m n} {ρ : Sub Fin m n} {t} → t /Var ρ ≡ t T./ map T.var ρ
   /Var≡/ {ρ = ρ} {t = t} =
     /✶-↑✶ (ε ▻ ρ) (ε ▻ map T.var ρ)
       (λ k x →
@@ -588,10 +584,8 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
          T.var x T./ map T.var ρ T.↑⋆ k      ∎)
       zero t
 
-  sub-renaming-commutes :
-    ∀ {m n t x} {ρ : Sub T m n} →
-    t /Var VarSubst.sub x T./ ρ ≡
-    t T./ ρ T.↑ T./ T.sub (lookup ρ x)
+  sub-renaming-commutes : ∀ {m n t x} {ρ : Sub T m n} →
+    t /Var VarSubst.sub x T./ ρ ≡ t T./ ρ T.↑ T./ T.sub (lookup ρ x)
   sub-renaming-commutes {t = t} {x = x} {ρ = ρ} =
     t /Var VarSubst.sub x T./ ρ             ≡⟨ cong (T._/ ρ) /Var≡/ ⟩
     t T./ map T.var (VarSubst.sub x) T./ ρ  ≡⟨ cong (λ ρ′ → t T./ ρ′ T./ ρ) sub≡sub ⟩
@@ -599,10 +593,8 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
     t T./ ρ T.↑ T./ T.sub (T.var x T./ ρ)   ≡⟨ cong (λ t′ → t T./ ρ T.↑ T./ T.sub t′) app-var ⟩
     t T./ ρ T.↑ T./ T.sub (lookup ρ x)      ∎
 
-  sub-commutes-with-renaming :
-    ∀ {m n} {t t′} {ρ : Sub Fin m n} →
-    t T./ T.sub t′ /Var ρ ≡
-    t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)
+  sub-commutes-with-renaming : ∀ {m n} {t t′} {ρ : Sub Fin m n} →
+    t T./ T.sub t′ /Var ρ ≡ t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)
   sub-commutes-with-renaming {t = t} {t′ = t′} {ρ = ρ} =
     t T./ T.sub t′ /Var ρ                                          ≡⟨ /Var≡/ ⟩
     t T./ T.sub t′ T./ map T.var ρ                                 ≡⟨ sub-commutes _ ⟩
