@@ -8,7 +8,6 @@
 
 module Data.Universe where
 
-open import Data.Product
 open import Level
 
 ------------------------------------------------------------------------

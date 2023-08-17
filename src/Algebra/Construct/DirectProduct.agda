@@ -16,7 +16,7 @@
 module Algebra.Construct.DirectProduct where
 
 open import Algebra
-open import Data.Product
+open import Data.Product.Base using (_×_; zip; _,_; map; _<*>_; uncurry)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level using (Level; _⊔_)
 

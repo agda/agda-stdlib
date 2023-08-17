@@ -6,14 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Indexed.Relation.Unary.All
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
 open import Data.Nat.Base using (ℕ)
-open import Data.Product using (_,_; _×_)
+open import Data.Product.Base using (_,_; _×_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base

@@ -20,7 +20,7 @@ open import Data.Product.Base using (_,_)
 
 open import Function.Base using (id; _∘′_; _∋_)
 open import Function.Equality using (_⟨$⟩_)
-open import Relation.Binary using (_Preserves_⟶_)
+open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
 import Relation.Binary.PropositionalEquality.Properties as P
 

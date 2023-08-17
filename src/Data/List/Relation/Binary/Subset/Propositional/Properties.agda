@@ -26,7 +26,7 @@ open import Data.List.Relation.Binary.Subset.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 open import Data.Nat using (ℕ; _≤_)
-import Data.Product as Prod
+import Data.Product.Base as Prod
 import Data.Sum.Base as Sum
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; _$_)

@@ -34,10 +34,10 @@ open import Data.Fin.Properties using (toℕ-cast)
 open import Function.Base using (id; _∘_; _∘′_; _∋_; _-⟨_∣; ∣_⟩-_; _$_; const; flip)
 open import Function.Definitions using (Injective)
 open import Level using (Level)
-open import Relation.Binary as B using (DecidableEquality)
+open import Relation.Binary.Definitions as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
@@ -117,6 +117,10 @@ map-injective finj {[]} {[]} eq = refl
 map-injective finj {x ∷ xs} {y ∷ ys} eq =
   let fx≡fy , fxs≡fys = ∷-injective eq in
   cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
+
+map-replicate : ∀ (f : A → B) n x → map f (replicate n x) ≡ replicate n (f x)
+map-replicate f zero    x = refl
+map-replicate f (suc n) x = cong (_ ∷_) (map-replicate f n x)
 
 ------------------------------------------------------------------------
 -- mapMaybe

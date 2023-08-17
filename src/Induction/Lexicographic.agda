@@ -8,7 +8,7 @@
 
 module Induction.Lexicographic where
 
-open import Data.Product
+open import Data.Product.Base using (Σ; _,_; _×_)
 open import Induction
 open import Level
 

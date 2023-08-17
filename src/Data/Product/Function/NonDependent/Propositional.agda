@@ -9,7 +9,7 @@
 
 module Data.Product.Function.NonDependent.Propositional where
 
-open import Data.Product
+open import Data.Product.Base using (_×_; map)
 open import Data.Product.Function.NonDependent.Setoid
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Relation.Binary hiding (_⇔_)

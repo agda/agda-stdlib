@@ -15,7 +15,7 @@ open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Unit.Properties using (⊤-irrelevant)
 open import Data.Nat.Base using (ℕ; suc)
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Lex.Strict
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Vec.Base using (Vec; []; _∷_; uncons)

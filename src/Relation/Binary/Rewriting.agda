@@ -10,7 +10,7 @@
 module Relation.Binary.Rewriting where
 
 open import Agda.Builtin.Equality using (_≡_ ; refl)
-open import Data.Product using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
 open import Data.Empty
 open import Function.Base using (flip)
 open import Induction.WellFounded

@@ -22,7 +22,7 @@ open import Data.Bool.Base using (Bool; if_then_else_)
 open import Data.Char as Char
 open import Data.List.Base as List using (List; _∷_; []; takeWhile; dropWhile)
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Function
 open import Relation.Nullary.Decidable
 

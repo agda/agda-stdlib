@@ -20,7 +20,7 @@ import Data.Tree.AVL
 -- natural numbers as keys and vectors of strings as values.
 
 open import Data.Nat.Properties using (<-strictTotalOrder)
-open import Data.Product as Prod using (_,_; _,′_)
+open import Data.Product.Base as Prod using (_,_; _,′_)
 open import Data.String.Base using (String)
 open import Data.Vec.Base using (Vec; _∷_; [])
 open import Relation.Binary.PropositionalEquality

@@ -12,8 +12,9 @@ open import Function.Base
 open import Function.Bundles
 open import Function.Consequences using (inverseˡ⇒surjective)
 open import Level using (Level)
-open import Data.Product
-open import Relation.Binary using (Setoid; IsEquivalence)
+open import Data.Product.Base using (_,_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 private
   variable
