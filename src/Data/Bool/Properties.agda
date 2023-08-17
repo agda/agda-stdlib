@@ -762,8 +762,8 @@ proof (T? false) = ofⁿ λ()
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _
 
-if-float : ∀ (f : A → B) b {xᵗ xᶠ} →
-           f (if b then xᵗ else xᶠ) ≡ (if b then f xᵗ else f xᶠ)
+if-float : ∀ (f : A → B) b {x y} →
+           f (if b then x else y) ≡ (if b then f x else f y)
 if-float _ true  = refl
 if-float _ false = refl
 
