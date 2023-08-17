@@ -448,6 +448,12 @@ map-updateAt : ∀ {f : A → B} {g : A → A} {h : B → B}
 map-updateAt (x ∷ xs) zero    eq = cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
+map-insert : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
+             map f (insert xs i x) ≡ insert (map f xs) i (f x)
+map-insert f _ []        Fin.zero = refl
+map-insert f _ (x' ∷ xs) Fin.zero = refl
+map-insert f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insert f x xs i)
+
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
 map-[]≔ f xs i = map-updateAt xs i refl
@@ -456,6 +462,11 @@ map-⊛ : ∀ (f : A → B → C) (g : A → B) (xs : Vec A n) →
         (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
 map-⊛ f g []       = refl
 map-⊛ f g (x ∷ xs) = cong (f x (g x) ∷_) (map-⊛ f g xs)
+
+toList-map : ∀ (f : A → B) (xs : Vec A n) →
+             toList (map f xs) ≡ List.map f (toList xs)
+toList-map f [] = refl
+toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -508,6 +519,11 @@ lookup-splitAt (suc m) (x ∷ xs) ys zero    = refl
 lookup-splitAt (suc m) (x ∷ xs) ys (suc i) = trans
   (lookup-splitAt m xs ys i)
   (sym ([,]-map (Fin.splitAt m i)))
+
+toList-++ : (xs : Vec A n) (ys : Vec A m) →
+            toList (xs ++ ys) ≡ toList xs List.++ toList ys
+toList-++ []       ys = refl
+toList-++ (x ∷ xs) ys = cong (x List.∷_) (toList-++ xs ys)
 
 ------------------------------------------------------------------------
 -- concat
@@ -644,6 +660,15 @@ lookup-zipWith : ∀ (f : A → B → C) (i : Fin n) xs ys →
                  lookup (zipWith f xs ys) i ≡ f (lookup xs i) (lookup ys i)
 lookup-zipWith _ zero    (x ∷ _)  (y ∷ _)   = refl
 lookup-zipWith _ (suc i) (_ ∷ xs) (_ ∷ ys)  = lookup-zipWith _ i xs ys
+
+zipWith-++ : ∀ (f : A → B → C)
+             (xs : Vec A n) (ys : Vec A m)
+             (xs' : Vec B n) (ys' : Vec B m) →
+             zipWith f (xs ++ ys) (xs' ++ ys') ≡
+             zipWith f xs xs' ++ zipWith f ys ys'
+zipWith-++ f []       ys []         ys' = refl
+zipWith-++ f (x ∷ xs) ys (x' ∷ xs') ys' =
+  cong (_ ∷_) (zipWith-++ f xs ys xs' ys')
 
 ------------------------------------------------------------------------
 -- zip
@@ -1001,6 +1026,11 @@ zipWith-replicate₂ : ∀ (_⊕_ : A → B → C) (xs : Vec A n) (y : B) →
 zipWith-replicate₂ _⊕_ []       y = refl
 zipWith-replicate₂ _⊕_ (x ∷ xs) y =
   cong (x ⊕ y ∷_) (zipWith-replicate₂ _⊕_ xs y)
+
+toList-replicate : ∀ (n : ℕ) (x : A) →
+                   toList (replicate {n = n} a) ≡ List.replicate n a
+toList-replicate zero    x = refl
+toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 
 ------------------------------------------------------------------------
 -- tabulate

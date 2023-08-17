@@ -11,6 +11,7 @@ module Data.List.Membership.Setoid.Properties where
 open import Algebra using (Op₂; Selective)
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Fin.Properties using (suc-injective)
 open import Data.List.Base
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
@@ -61,6 +62,13 @@ module _ (S : Setoid c ℓ) where
 
   ∉-resp-≋ : ∀ {x} → (x ∉_) Respects _≋_
   ∉-resp-≋ xs≋ys v∉xs v∈ys = v∉xs (∈-resp-≋ (≋-sym xs≋ys) v∈ys)
+
+  -- index is injective in its first argument.
+
+  index-injective : ∀ {x₁ x₂ xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
+                    Any.index x₁∈xs ≡ Any.index x₂∈xs → x₁ ≈ x₂
+  index-injective (here x₁≈x)   (here x₂≈x)   _  = trans x₁≈x (sym x₂≈x)
+  index-injective (there x₁∈xs) (there x₂∈xs) eq = index-injective x₁∈xs x₂∈xs (suc-injective eq)
 
 ------------------------------------------------------------------------
 -- Irrelevance
