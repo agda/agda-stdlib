@@ -14,7 +14,6 @@ module Relation.Nullary.Decidable.Core where
 open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; false; true; not; T; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
-open import Data.Empty using (⊥)
 open import Data.Empty.Irrelevant using (⊥-elim)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
@@ -177,7 +176,7 @@ proof (map′ P→Q Q→P (false because [¬p])) = ofⁿ (invert [¬p] ∘ Q→P
 
 decidable-stable : Dec P → Stable P
 decidable-stable (yes p) ¬¬p = p
-decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
+decidable-stable (no ¬p) ¬¬p = contradiction ¬p ¬¬p
 
 ¬-drop-Dec : Dec (¬ ¬ P) → Dec (¬ P)
 ¬-drop-Dec ¬¬p? = map′ negated-stable contradiction (¬? ¬¬p?)
