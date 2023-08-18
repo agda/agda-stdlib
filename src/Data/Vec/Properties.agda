@@ -22,7 +22,6 @@ open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Function.Base
--- open import Function.Inverse using (_↔_; inverse)
 open import Function.Bundles using (_↔_; mk↔′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
@@ -1087,6 +1086,10 @@ drop-iterate (suc n) f x = drop-iterate n f (f x)
 lookup-iterate :  ∀ f (i : Fin n) (x : A) → lookup (iterate f x) i ≡ ℕ.iterate f x (toℕ i)
 lookup-iterate f zero    x = refl
 lookup-iterate f (suc i) x = lookup-iterate f i (f x)
+
+toList-iterate : ∀ n f (x : A) → toList (iterate f x {n}) ≡ List.iterate f x n
+toList-iterate zero    f x = refl
+toList-iterate (suc n) f x = cong (_ List.∷_) (toList-iterate n f (f x))
 
 ------------------------------------------------------------------------
 -- tabulate

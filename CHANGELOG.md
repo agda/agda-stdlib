@@ -2311,7 +2311,6 @@ Additions to existing modules
   zipWith-replicate : zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
 
   length-iterate : length (iterate f x n) ≡ n
-  toList-iterate : toList (Vec.iterate f x {n = n}) ≡ iterate f x n
   iterate-id     : iterate id x n ≡ replicate n x
   take-iterate   : take n (iterate f x n) ≡ iterate f x n
   drop-iterate   : drop n (iterate f x n) ≡ []
@@ -2736,8 +2735,12 @@ Additions to existing modules
   lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
-<<<<<<< HEAD
-  cast-reverse : cast eq ∘ reverse ≗ reverse ∘ cast eq
+
+  length-iterate : length (iterate f x {n}) ≡ n
+  iterate-id     : iterate id x {n} ≡ replicate x
+  take-iterate   : take n (iterate f x {n + m}) ≡ iterate f x {n}
+  drop-iterate   : drop n (iterate f x) ≡ []
+  lookup-iterate : lookup (iterate f x) i ≡ ℕ.iterate f x (toℕ i)
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
@@ -2756,12 +2759,6 @@ Additions to existing modules
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
   ```agda
   index-∈-fromList⁺ : Any.index (∈-fromList⁺ v∈xs) ≡ indexₗ v∈xs
-
-  length-iterate : length (iterate f x {n}) ≡ n
-  iterate-id     : iterate id x {n} ≡ replicate x
-  take-iterate   : take n (iterate f x {n + m}) ≡ iterate f x {n}
-  drop-iterate   : drop n (iterate f x) ≡ []
-  lookup-iterate : lookup (iterate f x) i ≡ ℕ.iterate f x (toℕ i)
   ```
 
 * Added new proofs in `Data.Vec.Functional.Properties`:

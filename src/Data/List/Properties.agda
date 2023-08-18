@@ -30,7 +30,6 @@ open import Data.Product.Base as Prod
 import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Data.Vec.Base as Vec using (toList)
 open import Data.Fin.Properties using (toℕ-cast)
 open import Function.Base using (id; _∘_; _∘′_; _∋_; _-⟨_∣; ∣_⟩-_; _$_; const; flip)
 open import Function.Definitions using (Injective)
@@ -650,10 +649,6 @@ zipWith-replicate (suc n) _⊕_ x y = cong (x ⊕ y ∷_) (zipWith-replicate n _
 length-iterate : ∀ n {f} {x : A} → length (iterate f x n) ≡ n
 length-iterate zero    = refl
 length-iterate (suc n) = cong suc (length-iterate n)
-
-toList-iterate : ∀ n {f} {x : A} → toList (Vec.iterate f x {n}) ≡ iterate f x n
-toList-iterate zero    = refl
-toList-iterate (suc n) = cong (_ ∷_) (toList-iterate n)
 
 iterate-id : ∀ n {x : A} → iterate id x n ≡ replicate n x
 iterate-id zero    = refl
