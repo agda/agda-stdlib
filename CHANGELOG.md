@@ -2301,6 +2301,7 @@ Additions to existing modules
   drop-take-suc-tabulate : let m = toℕ i in drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 
   take-all : n ≥ length xs → take n xs ≡ xs
+  drop-all : n ≥ length xs → drop n xs ≡ []
 
   take-[] : take m [] ≡ []
   drop-[] : drop m [] ≡ []
@@ -2758,7 +2759,7 @@ Additions to existing modules
 
   length-iterate : length (iterate f x {n}) ≡ n
   iterate-id     : iterate id x {n} ≡ replicate x
-  take-iterate   : take n (iterate f x {n + m}) ≡ iterate f x
+  take-iterate   : take n (iterate f x {n + m}) ≡ iterate f x {n}
   drop-iterate   : drop n (iterate f x) ≡ []
   lookup-iterate : lookup (iterate f x) i ≡ ℕ.iterate f x (toℕ i)
   ```

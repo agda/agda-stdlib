@@ -626,11 +626,11 @@ sum-++ (x ∷ xs) ys = begin
 ------------------------------------------------------------------------
 -- replicate
 
-length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
-length-replicate zero    = refl
-length-replicate (suc n) = cong suc (length-replicate n)
+length-replicate : ∀ n (x : A) → length (replicate n x) ≡ n
+length-replicate zero    x = refl
+length-replicate (suc n) x = cong suc (length-replicate n x)
 
-lookup-replicate : ∀ n (x : A) (i : Fin (length (replicate n x))) → lookup (replicate n x) i ≡ x
+lookup-replicate : ∀ n (x : A) (i : Fin n) → lookup (replicate n x) (cast (sym (length-replicate n x)) i) ≡ x
 lookup-replicate (suc n) x zero    = refl
 lookup-replicate (suc n) x (suc i) = lookup-replicate n x i
 
@@ -647,9 +647,9 @@ zipWith-replicate (suc n) _⊕_ x y = cong (x ⊕ y ∷_) (zipWith-replicate n _
 ------------------------------------------------------------------------
 -- iterate
 
-length-iterate : ∀ n {f} {x : A} → length (iterate f x n) ≡ n
-length-iterate zero    = refl
-length-iterate (suc n) = cong suc (length-iterate n)
+length-iterate : ∀ n f (x : A) → length (iterate f x n) ≡ n
+length-iterate zero    f x = refl
+length-iterate (suc n) f x = cong suc (length-iterate n f (f x))
 
 toList-iterate : ∀ n {f} {x : A} → toList (Vec.iterate f x {n = n}) ≡ iterate f x n
 toList-iterate zero    = refl
@@ -667,9 +667,9 @@ drop-iterate : ∀ n {f} {x : A} → drop n (iterate f x n) ≡ []
 drop-iterate zero    = refl
 drop-iterate (suc n) = drop-iterate n
 
-lookup-iterate : ∀ f n (x : A) (i : Fin (length (iterate f x n))) → lookup (iterate f x n) i ≡ ℕ.iterate f x (toℕ i)
-lookup-iterate f (suc n) x zero    = refl
-lookup-iterate f (suc n) x (suc i) = lookup-iterate f n (f x) i
+lookup-iterate : ∀ n f (x : A) (i : Fin n) → lookup (iterate f x n) (cast (sym (length-iterate n f x)) i) ≡ ℕ.iterate f x (toℕ i)
+lookup-iterate (suc n) f x zero    = refl
+lookup-iterate (suc n) f x (suc i) = lookup-iterate n f (f x) i
 
 ------------------------------------------------------------------------
 -- scanr
@@ -876,6 +876,10 @@ drop-drop : (m n : ℕ) → (xs : List A) → drop n (drop m xs) ≡ drop (m + n
 drop-drop zero n xs = refl
 drop-drop (suc m) n [] = drop-[] n
 drop-drop (suc m) n (x ∷ xs) = drop-drop m n xs
+
+drop-all : (n : ℕ) (xs : List A) → n ≥ length xs → drop n xs ≡ []
+drop-all n       []       _ = drop-[] n
+drop-all (suc n) (x ∷ xs) p = drop-all n xs (≤-pred p)
 
 ------------------------------------------------------------------------
 -- splitAt
