@@ -45,8 +45,9 @@ open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
-open import Relation.Nullary.Decidable.Core using (does; yes; no; ¬?; decidable-stable)
+open import Relation.Nullary.Decidable.Core using (does; _because_; yes; no; ¬?; decidable-stable)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Reflects using (invert)
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -526,8 +527,8 @@ module _ (Q? : U.Decidable Q) where
 
   filter⁺ : (p : Any P xs) → Any P (filter Q? xs) ⊎ ¬ Q (Any.lookup p)
   filter⁺ {xs = x ∷ _} (here px) with Q? x
-  ... | yes _  = inj₁ (here px)
-  ... | no ¬Qx = inj₂ ¬Qx
+  ... | true  because _     = inj₁ (here px)
+  ... | false because [¬Qx] = inj₂ (invert [¬Qx])
   filter⁺ {xs = x ∷ _} (there p) with does (Q? x)
   ... | true  = Sum.map₁ there (filter⁺ p)
   ... | false = filter⁺ p
@@ -547,8 +548,8 @@ module _ {R : A → A → Set r} (R? : B.Decidable R) where
     derun⁺-aux : ∀ x xs → P Respects R → P x → Any P (derun R? (x ∷ xs))
     derun⁺-aux x [] resp Px = here Px
     derun⁺-aux x (y ∷ xs) resp Px with R? x y
-    ... | yes Rxy = derun⁺-aux y xs resp (resp Rxy Px)
-    ... | no _    = here Px
+    ... | true  because [Rxy] = derun⁺-aux y xs resp (resp (invert [Rxy]) Px)
+    ... | false because _     = here Px
 
   derun⁺ : P Respects R → Any P xs → Any P (derun R? xs)
   derun⁺ {xs = x ∷ xs}     resp (here px)   = derun⁺-aux x xs resp px
