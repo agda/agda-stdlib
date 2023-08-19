@@ -3352,6 +3352,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
       c ≈⟨ c≈d ⟩
       d ∎
     ```
+
 * Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
   ```agda
   _↭_ : IRel (Vector A) _
