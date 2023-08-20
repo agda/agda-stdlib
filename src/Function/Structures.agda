@@ -8,7 +8,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Function.Structures {a b ℓ₁ ℓ₂}
   {A : Set a} (_≈₁_ : Rel A ℓ₁) -- Equality over the domain

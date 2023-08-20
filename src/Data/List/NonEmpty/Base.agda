@@ -9,8 +9,7 @@
 module Data.List.NonEmpty.Base where
 
 open import Level using (Level)
-open import Data.Bool.Base using (Bool; false; true; not; T)
-open import Data.Bool.Properties using (T?)
+open import Data.Bool.Base using (Bool; false; true)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat.Base as ℕ

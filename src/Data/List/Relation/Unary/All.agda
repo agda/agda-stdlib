@@ -22,7 +22,8 @@ open import Function.Base using (_∘_; _∘′_; id; const)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Decidable.Core using (yes; map′; _×-dec_)
 open import Relation.Unary hiding (_∈_)
-open import Relation.Binary using (Setoid; _Respects_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.PropositionalEquality.Core as P
 import Relation.Binary.PropositionalEquality.Properties as P
 

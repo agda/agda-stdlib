@@ -20,8 +20,7 @@ open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Function.Base using (_$_; flip)
-open import Relation.Binary.Core
-  using (REL; Rel; _⇒_)
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Definitions as B
   using (Trans; Antisym; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core as P

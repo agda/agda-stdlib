@@ -15,7 +15,11 @@ open import Codata.Sized.Colist
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Data.List.NonEmpty as List⁺  using (List⁺; _∷_)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Sym; Trans)
 open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as Eq
 

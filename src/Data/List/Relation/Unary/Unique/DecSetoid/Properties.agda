@@ -11,7 +11,7 @@ import Data.List.Relation.Unary.Unique.DecSetoid as Unique
 open import Data.List.Relation.Unary.All.Properties using (all-filter)
 open import Data.List.Relation.Unary.Unique.Setoid.Properties
 open import Level
-open import Relation.Binary using (DecSetoid)
+open import Relation.Binary.Bundles using (DecSetoid)
 open import Relation.Nullary.Decidable.Core using (¬?)
 
 module Data.List.Relation.Unary.Unique.DecSetoid.Properties where

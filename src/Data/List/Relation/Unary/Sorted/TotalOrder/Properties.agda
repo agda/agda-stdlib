@@ -23,7 +23,8 @@ open import Data.Maybe.Relation.Binary.Connected using (Connected; just)
 open import Data.Nat.Base using (ℕ; zero; suc; _<_)
 
 open import Level using (Level)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.Bundles using (TotalOrder; DecTotalOrder; Preorder)
 import Relation.Binary.Properties.TotalOrder as TotalOrderProperties
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable.Core using (yes; no)

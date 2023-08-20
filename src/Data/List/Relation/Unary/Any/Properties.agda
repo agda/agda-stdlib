@@ -40,7 +40,8 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
 open import Function.Related as Related using (Kind; Related; SK-sym)
 open import Level using (Level)
-open import Relation.Binary as B hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 open import Relation.Unary as U

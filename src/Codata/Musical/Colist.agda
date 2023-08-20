@@ -28,7 +28,9 @@ open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (_⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles using (Poset; Setoid; Preorder)
+open import Relation.Binary.Definitions using (Transitive; Antisymmetric)
 import Relation.Binary.Construct.FromRel as Ind
 import Relation.Binary.Reasoning.Preorder as PreR
 import Relation.Binary.Reasoning.PartialOrder as POR

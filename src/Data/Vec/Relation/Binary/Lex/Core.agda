@@ -18,7 +18,10 @@ open import Data.Vec.Relation.Binary.Pointwise.Inductive using (Pointwise; []; _
 open import Function.Base using (flip)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Asymmetric; Antisymmetric; Irreflexive; Trans; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Decidable; Irrelevant)
+open import Relation.Binary.Structures using (IsPartialEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl; cong)
 import Relation.Nullary as Nullary

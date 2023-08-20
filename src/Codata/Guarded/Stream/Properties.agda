@@ -268,9 +268,9 @@ take-zipWith (suc n) f as bs =
 ------------------------------------------------------------------------
 -- Properties of drop
 
-drop-fusion : ∀ m n (as : Stream A) → drop n (drop m as) ≡ drop (m + n) as
-drop-fusion zero    n as = P.refl
-drop-fusion (suc m) n as = drop-fusion m n (as .tail)
+drop-drop : ∀ m n (as : Stream A) → drop n (drop m as) ≡ drop (m + n) as
+drop-drop zero    n as = P.refl
+drop-drop (suc m) n as = drop-drop m n (as .tail)
 
 drop-zipWith : ∀ n (f : A → B → C) as bs →
                drop n (zipWith f as bs) ≡ zipWith f (drop n as) (drop n bs)
@@ -330,4 +330,10 @@ map-fusion = map-∘
 {-# WARNING_ON_USAGE map-fusion
 "Warning: map-fusion was deprecated in v2.0.
 Please use map-∘ instead."
+#-}
+
+drop-fusion = drop-drop
+{-# WARNING_ON_USAGE drop-fusion
+"Warning: drop-fusion was deprecated in v2.0.
+Please use drop-drop instead."
 #-}

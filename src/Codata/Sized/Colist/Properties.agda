@@ -197,11 +197,11 @@ drop-nil : ∀ m → i ⊢ drop {A = A} m [] ≈ []
 drop-nil zero    = []
 drop-nil (suc m) = []
 
-drop-drop-fusion : ∀ m n (as : Colist A ∞) →
+drop-drop : ∀ m n (as : Colist A ∞) →
                    i ⊢ drop n (drop m as) ≈ drop (m ℕ.+ n) as
-drop-drop-fusion zero    n as       = refl
-drop-drop-fusion (suc m) n []       = drop-nil n
-drop-drop-fusion (suc m) n (a ∷ as) = drop-drop-fusion m n (as .force)
+drop-drop zero    n as       = refl
+drop-drop (suc m) n []       = drop-nil n
+drop-drop (suc m) n (a ∷ as) = drop-drop m n (as .force)
 
 map-drop : ∀ (f : A → B) m as → i ⊢ map f (drop m as) ≈ drop m (map f as)
 map-drop f zero    as       = refl
@@ -350,4 +350,10 @@ map-map-fusion = map-∘
 {-# WARNING_ON_USAGE map-map-fusion
 "Warning: map-map-fusion was deprecated in v2.0.
 Please use map-∘ instead."
+#-}
+
+drop-drop-fusion = drop-drop
+{-# WARNING_ON_USAGE drop-drop-fusion
+"Warning: drop-drop-fusion was deprecated in v2.0.
+Please use drop-drop instead."
 #-}
