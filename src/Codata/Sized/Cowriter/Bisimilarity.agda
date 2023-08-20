@@ -12,7 +12,11 @@ open import Level using (Level; _⊔_)
 open import Size
 open import Codata.Sized.Thunk
 open import Codata.Sized.Cowriter
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Sym; Trans)
 open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as Eq
 

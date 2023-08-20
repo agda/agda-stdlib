@@ -13,7 +13,7 @@ open import Level using (Level; 0ℓ)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 open import Data.Sum.Base using (inj₁; inj₂; _⊎_)
 open import Function.Base using (_∘_; id)
 open import Relation.Binary.PropositionalEquality

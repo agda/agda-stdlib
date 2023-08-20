@@ -9,7 +9,7 @@
 module Data.Container.Core where
 
 open import Level
-open import Data.Product as Prod using (Σ-syntax)
+open import Data.Product.Base as Prod using (Σ-syntax)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (_↔_; module Inverse)

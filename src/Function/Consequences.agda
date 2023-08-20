@@ -12,9 +12,10 @@ module Function.Consequences where
 
 open import Data.Product.Base as Prod
 open import Function.Definitions
-open import Level
-open import Relation.Binary.Core
-open import Relation.Binary.Definitions
+open import Level using (Level)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
 open import Relation.Nullary.Negation.Core using (¬_; contraposition)
 
 private

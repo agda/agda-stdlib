@@ -14,7 +14,7 @@ open import Data.Char.Base using (Char)
 open import Data.List.Base as List
 open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base
 open import Data.String.Base

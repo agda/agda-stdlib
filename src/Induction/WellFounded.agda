@@ -12,7 +12,9 @@ open import Data.Product.Base using (Σ; _,_; proj₁)
 open import Function.Base using (_on_)
 open import Induction
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions
+  using (Symmetric; _Respectsʳ_; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary
 

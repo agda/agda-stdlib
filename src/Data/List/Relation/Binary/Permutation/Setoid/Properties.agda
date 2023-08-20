@@ -32,7 +32,7 @@ import Data.List.Properties as Lₚ
 open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Data.Product using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
 open import Function.Base using (_∘_; _⟨_⟩_; flip)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)

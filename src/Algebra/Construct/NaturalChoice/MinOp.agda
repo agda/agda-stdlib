@@ -13,7 +13,9 @@ open import Algebra.Construct.NaturalChoice.Base
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_)
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles using (TotalPreorder)
+open import Relation.Binary.Definitions using (Maximum; Minimum)
 open import Relation.Binary.Consequences
 
 module Algebra.Construct.NaturalChoice.MinOp

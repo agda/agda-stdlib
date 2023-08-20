@@ -12,13 +12,13 @@
 module Data.Container.Indexed where
 
 open import Level
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 open import Data.W.Indexed
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (_↔_; module Inverse)
 open import Relation.Unary using (Pred; _⊆_)
-import Relation.Binary as B
+open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
 
 ------------------------------------------------------------------------
@@ -66,7 +66,7 @@ module _ {i₁ i₂ o₁ o₂}
   record ContainerMorphism {c₁ c₂ r₁ r₂ ℓ₁ ℓ₂}
          (C₁ : Container I₁ O₁ c₁ r₁) (C₂ : Container I₂ O₂ c₂ r₂)
          (f : I₁ → I₂) (g : O₁ → O₂)
-         (_∼_ : B.Rel I₂ ℓ₁) (_≈_ : B.REL (Set r₂) (Set r₁) ℓ₂)
+         (_∼_ : Rel I₂ ℓ₁) (_≈_ : REL (Set r₂) (Set r₁) ℓ₂)
          (_·_ : ∀ {A B} → A ≈ B → A → B) :
          Set (i₁ ⊔ i₂ ⊔ o₁ ⊔ o₂ ⊔ c₁ ⊔ c₂ ⊔ r₁ ⊔ r₂ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -107,13 +107,13 @@ module _ {i o c r} {I : Set i} {O : Set o} where
 
   infixr 8 _⇒_ _⊸_ _⇒C_
 
-  _⇒_ : B.Rel (Container I O c r) _
+  _⇒_ : Rel (Container I O c r) _
   C₁ ⇒ C₂ = C₁ ⇒[ ⟨id⟩ / ⟨id⟩ ] C₂
 
-  _⊸_ : B.Rel (Container I O c r) _
+  _⊸_ : Rel (Container I O c r) _
   C₁ ⊸ C₂ = C₁ ⊸[ ⟨id⟩ / ⟨id⟩ ] C₂
 
-  _⇒C_ : B.Rel (Container I O c r) _
+  _⇒C_ : Rel (Container I O c r) _
   C₁ ⇒C C₂ = C₁ ⇒C[ ⟨id⟩ / ⟨id⟩ ] C₂
 
 ------------------------------------------------------------------------
