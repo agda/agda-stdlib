@@ -1765,6 +1765,11 @@ New modules
   Function.Indexed.Bundles
   ```
 
+* Combinators for propositional equational reasoning on vectors with different indices
+  ```
+  Data.Vec.Relation.Binary.Reasoning.Propositional
+  ```
+
 Other minor changes
 -------------------
 
@@ -2673,6 +2678,7 @@ Other minor changes
   last-∷ʳ   : last (xs ∷ʳ x) ≡ x
   cast-∷ʳ   : cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
   ++-∷ʳ     : cast eq ((xs ++ ys) ∷ʳ z) ≡ xs ++ (ys ∷ʳ z)
+  ∷ʳ-++     : cast eq ((xs ∷ʳ a) ++ ys) ≡ xs ++ (a ∷ ys)
 
   reverse-∷          : reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
   reverse-involutive : Involutive _≡_ reverse
@@ -2692,6 +2698,8 @@ Other minor changes
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
   cast-reverse : cast eq ∘ reverse ≗ reverse ∘ cast eq
+  cast-++ˡ      : cast (cong (_+ n) eq) (xs ++ ys) ≡ cast eq xs ++ ys
+  cast-++ʳ      : cast (cong (m +_) eq) (xs ++ ys) ≡ xs ++ cast eq ys
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
@@ -2705,6 +2713,11 @@ Other minor changes
   cast-fromList : cast _ (fromList xs) ≡ fromList ys
   fromList-map  : cast _ (fromList (List.map f xs)) ≡ map f (fromList xs)
   fromList-++   : cast _ (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+  fromList-reverse : cast (Listₚ.length-reverse xs) (fromList (List.reverse xs)) ≡ reverse (fromList xs)
+
+  ∷-ʳ++   : cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
+  ++-ʳ++  : cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
+  ʳ++-ʳ++ : cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
   ```
 
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
