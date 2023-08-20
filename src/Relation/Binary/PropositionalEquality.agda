@@ -11,7 +11,8 @@ module Relation.Binary.PropositionalEquality where
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base using (id; _∘_)
-open import Function.Equality using (Π; _⟶_; ≡-setoid)
+open import Function.Equality using (Π; _⟶_)
+open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product.Base using (∃)
 
