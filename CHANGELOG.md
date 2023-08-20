@@ -1114,6 +1114,11 @@ Deprecated names
   map-map-fusion  ↦  map-∘
   ```
 
+* In `Data.Bool.Properties` (Issue #2046):
+  ```
+  push-function-into-if ↦ if-float
+  ```
+
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
   for the 'left', resp. 'right' injection of a Fin m into a 'larger' type,
   `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the
@@ -1138,7 +1143,7 @@ Deprecated names
 
   As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
   associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
-  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  But it's not quite sensible to say that these definitions should be *renamed* to *anything*,
   least of all those counterparts... the type confusion would be intolerable.
 
 * In `Data.Fin.Properties`:
