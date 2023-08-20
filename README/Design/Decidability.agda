@@ -8,7 +8,7 @@
 
 module README.Design.Decidability where
 
-open import Data.Bool
+open import Data.Bool.Base
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Properties using (∷-injective)
 open import Data.Nat
@@ -37,7 +37,8 @@ ex₁ : (n : ℕ) → Reflects (zero ≡ suc n) false
 ex₁ n = ofⁿ λ ()
 
 ex₂ : (b : Bool) → Reflects (T b) b
-ex₂ = T⁺
+ex₂ false = ofⁿ id
+ex₂ true  = ofʸ tt
 
 ------------------------------------------------------------------------
 -- Dec
@@ -50,7 +51,8 @@ open import Relation.Nullary.Decidable.Core
 --   proof : Reflects P does
 
 ex₃ : (b : Bool) → Dec (T b)
-ex₃ = bool⁺
+does  (ex₃ b) = b
+proof (ex₃ b) = ex₂ b
 
 -- We also have pattern synonyms `yes` and `no`, allowing both fields to be
 -- given at once.
