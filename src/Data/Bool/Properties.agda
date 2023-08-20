@@ -21,7 +21,13 @@ open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Poset; Preorder; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
 open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)

@@ -38,7 +38,9 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Surjection using (_↠_; surjection)
 open import Level using (Level)
-open import Relation.Binary as B using (REL; Setoid; _Respects_)
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Bundles using (Setoid)
+import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Nullary
@@ -731,7 +733,7 @@ module _ (S : Setoid c ℓ) where
   open Setoid S
   open ListEq S
 
-  respects : P Respects _≈_ → (All P) Respects _≋_
+  respects : P B.Respects _≈_ → (All P) B.Respects _≋_
   respects p≈ []            []         = []
   respects p≈ (x≈y ∷ xs≈ys) (px ∷ pxs) = p≈ x≈y px ∷ respects p≈ xs≈ys pxs
 

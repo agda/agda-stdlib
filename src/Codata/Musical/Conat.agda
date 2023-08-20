@@ -11,7 +11,9 @@ module Codata.Musical.Conat where
 open import Codata.Musical.Notation
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
