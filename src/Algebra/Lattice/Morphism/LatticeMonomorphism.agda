@@ -16,7 +16,7 @@ import Algebra.Consequences.Setoid as Consequences
 import Algebra.Morphism.MagmaMonomorphism as MagmaMonomorphisms
 import Algebra.Lattice.Properties.Lattice as LatticeProperties
 open import Data.Product.Base using (_,_; map)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Morphism.RelMonomorphism as RelMonomorphisms
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 

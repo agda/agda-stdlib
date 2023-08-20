@@ -16,7 +16,11 @@ open import Data.Container.Core
 open import Data.Container.Relation.Binary.Pointwise using (Pointwise; _,_)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
 import Relation.Binary.PropositionalEquality.Core as P
 
 data Bisim {s p} (C : Container s p) (i : Size) : Rel (M C ∞) (s ⊔ p) where
