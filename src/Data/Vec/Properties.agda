@@ -1190,13 +1190,11 @@ toList-cast {n = suc _} eq (x ∷ xs) =
 cast-fromList : ∀ {xs ys : List A} (eq : xs ≡ ys) →
                 cast (cong List.length eq) (fromList xs) ≡ fromList ys
 cast-fromList {xs = List.[]}     {ys = List.[]}     eq = refl
-cast-fromList {xs = x List.∷ xs} {ys = y List.∷ ys} eq = begin
-  x ∷ cast (cong (pred ∘ List.length) eq) (fromList xs) ≡⟨ cong (_ ∷_) (cast-fromList xs-equals-ys) ⟩
-  x ∷ fromList ys                                       ≡⟨ cong (_∷ _) x-equals-y ⟩
+cast-fromList {xs = x List.∷ xs} {ys = y List.∷ ys} eq =
+  let x≡y , xs≡ys = Listₚ.∷-injective eq in begin
+  x ∷ cast (cong (pred ∘ List.length) eq) (fromList xs) ≡⟨ cong (_ ∷_) (cast-fromList xs≡ys) ⟩
+  x ∷ fromList ys                                       ≡⟨ cong (_∷ _) x≡y ⟩
   y ∷ fromList ys                                       ∎
-  where
-  x-equals-y = proj₁ (Listₚ.∷-injective eq)
-  xs-equals-ys = proj₂ (Listₚ.∷-injective eq)
 
 fromList-map : ∀ (f : A → B) (xs : List A) →
                cast (Listₚ.length-map f xs) (fromList (List.map f xs)) ≡ map f (fromList xs)
