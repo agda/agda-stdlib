@@ -52,13 +52,10 @@ pattern yes p =  true because ofʸ  p
 pattern no ¬p = false because ofⁿ ¬p
 
 ------------------------------------------------------------------------
--- decision procedures are Decidable
+-- Booleans (decision procedures) are Decidable
 
-bool⁺ : ∀ b → Dec (T b)
-bool⁺ b = b because (T⁺ b)
-
-predᵇ⁺ : ∀ {a} {A : Set a} (p : A → Bool) (x : A) → Dec (T (p x))
-predᵇ⁺ p x = bool⁺ (p x)
+T? : ∀ b → Dec (T b)
+T? b = b because (T⁺ b)
 
 ------------------------------------------------------------------------
 -- Recompute
