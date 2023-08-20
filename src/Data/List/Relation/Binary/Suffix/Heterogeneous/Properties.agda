@@ -20,13 +20,15 @@ open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Function.Base using (_$_; flip)
+open import Relation.Binary.Core
+  using (REL; Rel; _⇒_)
+open import Relation.Binary.Definitions as B
+  using (Trans; Antisym; Irrelevant)
+open import Relation.Binary.PropositionalEquality.Core as P
+  using (_≡_; _≢_; refl; sym; subst; subst₂)
 open import Relation.Nullary.Decidable.Core using (does; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary as B
-  using (REL; Rel; Trans; Antisym; Irrelevant; _⇒_)
-open import Relation.Binary.PropositionalEquality.Core as P
-  using (_≡_; _≢_; refl; sym; subst; subst₂)
 
 import Data.List.Properties as Listₚ
 import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties as Prefixₚ
