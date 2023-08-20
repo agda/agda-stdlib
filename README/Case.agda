@@ -14,7 +14,6 @@ open import Data.Maybe hiding (from-just)
 open import Data.Nat   hiding (pred)
 open import Function.Base using (case_of_; case_return_of_)
 open import Relation.Nullary
-open import Relation.Binary
 
 ------------------------------------------------------------------------
 -- Different types of pattern-matching lambdas

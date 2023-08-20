@@ -33,7 +33,12 @@ open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Decidable as Dec using (¬?)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Bundles using (Preorder; Poset; DecPoset)
+open import Relation.Binary.Definitions
+  using (Reflexive; Trans; Antisym; Decidable; Irrelevant; Irreflexive)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------

@@ -24,7 +24,6 @@ open import Function.LeftInverse as LeftInv
   using (LeftInverse; _↞_; _LeftInverseOf_; _RightInverseOf_; module LeftInverse)
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
-open import Relation.Binary as B
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At

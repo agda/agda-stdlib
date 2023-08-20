@@ -14,7 +14,10 @@ open import Function.Bundles
 import Function.Definitions as Definitions
 import Function.Structures as Structures
 open import Level using (Level)
-open import Relation.Binary as B hiding (_⇔_; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures as B hiding (IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
