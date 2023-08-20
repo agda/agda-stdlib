@@ -2793,11 +2793,9 @@ Other minor changes
   subst₂-removable : subst₂ _∼_ eq₁ eq₂ p ≅ p
   ```
 
-* Added new constructors for `Relation.Nullary.Decidable`
+* Added new constructor for `Relation.Nullary.Decidable`
   ```
-  bool⁺ : ∀ b → Dec (T b)
-  predᵇ⁺ : (p : A → Bool) (x : A) → Dec (T (p x))
-
+  T? : ∀ b → Dec (T b)
   ```
 
 * Added new constructor for `Relation.Nullary.Reflects`
