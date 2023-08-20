@@ -813,10 +813,10 @@ drop-[] : ∀ m → drop {A = A} m [] ≡ []
 drop-[] zero = refl
 drop-[] (suc m) = refl
 
-take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
-take++drop zero    xs       = refl
-take++drop (suc n) []       = refl
-take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
+take++drop≡id : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
+take++drop≡id zero    xs       = refl
+take++drop≡id (suc n) []       = refl
+take++drop≡id (suc n) (x ∷ xs) = cong (x ∷_) (take++drop≡id n xs)
 
 drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
            drop m (take (suc m) xs) ≡ [ lookup xs i ]
@@ -1205,4 +1205,10 @@ zipWith-identityʳ = zipWith-zeroʳ
 {-# WARNING_ON_USAGE zipWith-identityʳ
 "Warning: zipWith-identityʳ was deprecated in v2.0.
 Please use zipWith-zeroʳ instead."
+#-}
+
+take++drop = take++drop≡id
+{-# WARNING_ON_USAGE take++drop
+"Warning: take++drop was deprecated in v2.0.
+Please use take++drop≡id instead."
 #-}
