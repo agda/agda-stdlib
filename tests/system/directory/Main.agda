@@ -10,7 +10,7 @@ import Data.String.Properties as Stringₚ
 open import IO
 open import Function.Base using (_$_)
 
--- open import Relation.Binary
+open import Relation.Binary.Bundles using (DecTotalOrder)
 import Relation.Binary.Construct.On as On
 
 open import System.Directory
