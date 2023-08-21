@@ -12,7 +12,11 @@ open import Codata.Guarded.Stream as Stream using (Stream; head; tail)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘_; _on_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; _⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Reflexive; Sym; Trans; Antisym; Symmetric; Transitive)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
 

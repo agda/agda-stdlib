@@ -21,7 +21,8 @@ open import Algebra.Structures
 import Algebra.Lattice.Bundles.Raw as Raw
 open import Algebra.Lattice.Structures
 open import Level using (suc; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------
 -- Re-export definitions of 'raw' bundles

@@ -11,8 +11,10 @@ module Data.Product.Relation.Binary.Pointwise.Dependent where
 open import Data.Product.Base as Prod
 open import Level
 open import Function.Base
-open import Relation.Binary as B
-  using (_⇒_; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions as B
 open import Relation.Binary.Indexed.Heterogeneous as I
   using (IREL; IRel; IndexedSetoid; IsIndexedEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
@@ -25,7 +27,7 @@ infixr 4 _,_
 record POINTWISE {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
                  {A₁ : Set a₁} (B₁ : A₁ → Set b₁)
                  {A₂ : Set a₂} (B₂ : A₂ → Set b₂)
-                 (_R₁_ : B.REL A₁ A₂ ℓ₁) (_R₂_ : IREL B₁ B₂ ℓ₂)
+                 (_R₁_ : REL A₁ A₂ ℓ₁) (_R₂_ : IREL B₁ B₂ ℓ₂)
                  (xy₁ : Σ A₁ B₁) (xy₂ : Σ A₂ B₂)
                  : Set (a₁ ⊔ a₂ ⊔ b₁ ⊔ b₂ ⊔ ℓ₁ ⊔ ℓ₂) where
   constructor _,_
@@ -36,14 +38,14 @@ record POINTWISE {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
 open POINTWISE public
 
 Pointwise : ∀ {a b ℓ₁ ℓ₂} {A : Set a} (B : A → Set b)
-            (_R₁_ : B.Rel A ℓ₁) (_R₂_ : IRel B ℓ₂) → B.Rel (Σ A B) _
+            (_R₁_ : Rel A ℓ₁) (_R₂_ : IRel B ℓ₂) → Rel (Σ A B) _
 Pointwise B = POINTWISE B B
 
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
 
 module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
-         {R : B.Rel A ℓ₁} {S : IRel B ℓ₂} where
+         {R : Rel A ℓ₁} {S : IRel B ℓ₂} where
 
   private
     R×S = Pointwise B R S
