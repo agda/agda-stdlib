@@ -1069,13 +1069,16 @@ insert-punchIn xs       zero     v j       = refl
 insert-punchIn (x ∷ xs) (suc i)  v zero    = refl
 insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
 
-remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
-                  lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
-remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
-remove-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
-remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
-remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
-  remove-punchOut (y ∷ xs) (i≢j ∘ cong suc)
+-- where should this go? Or can I write this proof without this? Or does
+-- something similar already exist?
+length-length : (xs : Vec A n) → length xs ≡ List.length (toList xs)
+length-length []       = refl
+length-length (x ∷ xs) = cong suc (length-length xs)
+
+toList-insert : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) → toList (insert xs i v) ≡ List.insert (toList xs) (Fin.cast (cong suc (length-length xs)) i) v
+toList-insert []       zero    v = refl
+toList-insert (x ∷ xs) zero    v = refl
+toList-insert (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insert xs i v)
 
 ------------------------------------------------------------------------
 -- remove
@@ -1092,6 +1095,14 @@ insert-remove : ∀ (xs : Vec A (suc n)) (i : Fin (suc n)) →
 insert-remove (x ∷ xs)     zero     = refl
 insert-remove (x ∷ y ∷ xs) (suc i)  =
   cong (x ∷_) (insert-remove (y ∷ xs) i)
+
+remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
+                  lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
+remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
+remove-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
+remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
+remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
+  remove-punchOut (y ∷ xs) (i≢j ∘ cong suc)
 
 ------------------------------------------------------------------------
 -- Conversion function

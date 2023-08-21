@@ -195,9 +195,10 @@ tails : List A → List (List A)
 tails []       = [] ∷ []
 tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
 
-insert : (xs : List A) → Fin (length xs) → A → List A
+insert : (xs : List A) → Fin (suc (length xs)) → A → List A
+insert []       zero    v = [ v ]
 insert (x ∷ xs) zero    v = v ∷ x ∷ xs
-insert (x ∷ xs) (suc k) v = v ∷ insert xs k v
+insert (x ∷ xs) (suc i) v = x ∷ insert xs i v
 
 updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
 updateAt (x ∷ xs) zero    f = f x ∷ xs

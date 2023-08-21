@@ -742,17 +742,41 @@ map-∷= (x ∷ xs) zero    v f = refl
 map-∷= (x ∷ xs) (suc k) v f = cong (f x ∷_) (map-∷= xs k v f)
 
 ------------------------------------------------------------------------
--- _─_
+-- insert
 
-length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
-length-─ (x ∷ xs) zero        = refl
-length-─ (x ∷ y ∷ xs) (suc k) = cong suc (length-─ (y ∷ xs) k)
+length-insert : ∀ (xs : List A) (i : Fin (suc (length xs))) v → length (insert xs i v) ≡ suc (length xs)
+length-insert []       zero    v = refl
+length-insert (x ∷ xs) zero    v = refl
+length-insert (x ∷ xs) (suc i) v = cong suc (length-insert xs i v)
 
-map-─ : ∀ xs k (f : A → B) →
-        let eq = sym (length-map f xs) in
-        map f (xs ─ k) ≡ map f xs ─ cast eq k
-map-─ (x ∷ xs) zero    f = refl
-map-─ (x ∷ xs) (suc k) f = cong (f x ∷_) (map-─ xs k f)
+------------------------------------------------------------------------
+-- remove
+
+length-remove : ∀ (xs : List A) k → suc (length (remove xs k)) ≡ length xs
+length-remove (x ∷ xs) zero        = refl
+length-remove (x ∷ y ∷ xs) (suc k) = cong suc (length-remove (y ∷ xs) k)
+
+map-remove : ∀ xs k (f : A → B) →
+            let eq = sym (length-map f xs) in
+            map f (remove xs k) ≡ remove (map f xs) (cast eq k)
+map-remove (x ∷ xs) zero    f = refl
+map-remove (x ∷ xs) (suc k) f = cong (f x ∷_) (map-remove xs k f)
+
+------------------------------------------------------------------------
+ -- insert and remove
+
+remove-insert : ∀ (xs : List A) (i : Fin (suc (length xs))) v → remove (insert xs i v) ((cast (sym (length-insert xs i v)) i)) ≡ xs
+remove-insert []       zero    v = refl
+remove-insert (x ∷ xs) zero    v = refl
+remove-insert (x ∷ xs) (suc i) v = cong (_ ∷_) (remove-insert xs i v)
+
+insert-remove : (xs : List A) (i : Fin (length xs)) → insert (remove xs i) (cast (sym (length-remove xs i)) i) (lookup xs i) ≡ xs
+insert-remove (x ∷ xs) zero = h xs x
+  where
+  h : ∀ (xs : List A) v → insert xs zero v ≡ v ∷ xs
+  h []       v = refl
+  h (x ∷ xs) v = refl
+insert-remove (x ∷ xs) (suc i) = cong (_ ∷_) (insert-remove xs i)
 
 ------------------------------------------------------------------------
 -- take
