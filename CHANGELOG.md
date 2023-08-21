@@ -29,6 +29,11 @@ Deprecated names
 New modules
 -----------
 
+* Symmetric interior of a binary relation
+  ```
+  Relation.Binary.Construct.Interior.Symmetric
+  ```
+
 Additions to existing modules
 -----------------------------
 

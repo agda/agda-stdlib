@@ -12,6 +12,7 @@ module Relation.Binary.Definitions where
 
 open import Agda.Builtin.Equality using (_≡_)
 
+open import Data.Empty using (⊥)
 open import Data.Maybe.Base using (Maybe)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
@@ -239,6 +240,11 @@ Recomputable _∼_ = ∀ {x y} → .(x ∼ y) → x ∼ y
 
 Universal : REL A B ℓ → Set _
 Universal _∼_ = ∀ x y → x ∼ y
+
+-- Empty - no elements are related
+
+Empty : REL A B ℓ → Set _
+Empty _∼_ = ∀ {x y} → x ∼ y → ⊥
 
 -- Non-emptiness - at least one pair of elements are related.
 
