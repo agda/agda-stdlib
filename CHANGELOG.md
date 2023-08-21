@@ -910,17 +910,20 @@ Non-backwards compatible changes
     Tactic.RingSolver
     Tactic.RingSolver.Core.NatSet
     ```
+
   * Moved & renamed from `Data.Vec.Relation.Unary.All`
     to `Data.Vec.Relation.Unary.All.Properties`:
     ```
     lookup ↦ lookup⁺
     tabulate ↦ lookup⁻
     ```
+
   * Renamed in `Data.Vec.Relation.Unary.Linked.Properties`
     and `Codata.Guarded.Stream.Relation.Binary.Pointwise`:
     ```
     lookup ↦ lookup⁺
     ```
+
   * Added the following new definitions to `Data.Vec.Relation.Unary.All`:
     ```
     lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
@@ -928,8 +931,15 @@ Non-backwards compatible changes
     lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
+
   * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
     `¬¬-excluded-middle`.
+
+  * `iterate` in `Data.Vec.Base` now takes `n` (the length of `Vec`) as an
+    explicit argument.
+    ```agda
+    iterate : (A → A) → A → ∀ n → Vec A n
+    ```
 
 Major improvements
 ------------------

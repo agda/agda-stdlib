@@ -1071,23 +1071,23 @@ toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 ------------------------------------------------------------------------
 -- iterate
 
-iterate-id : ∀ n (x : A) → iterate id x {n} ≡ replicate x
+iterate-id : ∀ n (x : A) → iterate id x n ≡ replicate x
 iterate-id zero x    = refl
 iterate-id (suc n) x = cong (_ ∷_) (iterate-id n (id x))
 
-take-iterate : ∀ n f (x : A) → take n (iterate f x {n + m}) ≡ iterate f x {n}
+take-iterate : ∀ n f (x : A) → take n (iterate f x (n + m)) ≡ iterate f x n
 take-iterate zero    f x = refl
 take-iterate (suc n) f x = cong (_ ∷_) (take-iterate n f (f x))
 
-drop-iterate : ∀ n f (x : A) → drop n (iterate f x) ≡ []
+drop-iterate : ∀ n f (x : A) → drop n (iterate f x (n + zero)) ≡ []
 drop-iterate zero    f x = refl
 drop-iterate (suc n) f x = drop-iterate n f (f x)
 
-lookup-iterate :  ∀ f (i : Fin n) (x : A) → lookup (iterate f x) i ≡ ℕ.iterate f x (toℕ i)
+lookup-iterate :  ∀ f (i : Fin n) (x : A) → lookup (iterate f x n) i ≡ ℕ.iterate f x (toℕ i)
 lookup-iterate f zero    x = refl
 lookup-iterate f (suc i) x = lookup-iterate f i (f x)
 
-toList-iterate : ∀ n f (x : A) → toList (iterate f x {n}) ≡ List.iterate f x n
+toList-iterate : ∀ n f (x : A) → toList (iterate f x n) ≡ List.iterate f x n
 toList-iterate zero    f x = refl
 toList-iterate (suc n) f x = cong (_ List.∷_) (toList-iterate n f (f x))
 
