@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Symmetric core of a binary relation
+-- Symmetric interior of a binary relation
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Relation.Binary.Construct.SymmetricCore where
+module Relation.Binary.Construct.Interior.Symmetric where
 
 open import Function.Base using (flip)
 open import Level
@@ -23,37 +23,42 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-record SymCore (R : Rel A ℓ) (x y : A) : Set ℓ where
+record SymInterior (R : Rel A ℓ) (x y : A) : Set ℓ where
   constructor _,_
   field
     holds : R x y
-    sdolh : R y x
-open SymCore public
+    op-holds : R y x
+open SymInterior public
 
 ------------------------------------------------------------------------
 -- Properties
 
--- Symmetric cores are symmetric
-symmetric : Symmetric (SymCore R)
+-- The symmetric interior is symmetric.
+symmetric : Symmetric (SymInterior R)
 symmetric (r , r′) = r′ , r
 
--- SymCore preserves various properties
-reflexive : Reflexive R → Reflexive (SymCore R)
+-- The symmetric interior of R is greater than (or equal to) any other symmetric
+-- relation contained by R.
+unfold : Symmetric S → S ⇒ R → S ⇒ SymInterior R
+unfold sym f s = f s , f (sym s)
+
+-- SymInterior preserves various properties.
+reflexive : Reflexive R → Reflexive (SymInterior R)
 reflexive refl = refl , refl
 
-transitive′ :
-  Trans R S T → Trans S R T → Trans (SymCore R) (SymCore S) (SymCore T)
+transitive′ : Trans R S T → Trans S R T →
+  Trans (SymInterior R) (SymInterior S) (SymInterior T)
 transitive′ trans trans′ (r , r′) (s , s′) = trans r s , trans′ s′ r′
 
-transitive : Transitive R → Transitive (SymCore R)
+transitive : Transitive R → Transitive (SymInterior R)
 transitive {R = R} tr = transitive′ {R = R} tr tr
 
--- The symmetric core of a strict relation is empty
-Empty-SymCore : Asymmetric R → Empty (SymCore R)
-Empty-SymCore asym (r , r′) = asym r r′
+-- The symmetric interior of a strict relation is empty.
+Empty-SymInterior : Asymmetric R → Empty (SymInterior R)
+Empty-SymInterior asym (r , r′) = asym r r′
 
 -- A reflexive transitive relation _≤_ gives rise to a poset in which the
--- equivalence relation is SymCore _≤_
+-- equivalence relation is SymInterior _≤_.
 record IsProset {a ℓ} {A : Set a} (≤ : Rel A ℓ) : Set (a ⊔ ℓ) where
   field
     refl : Reflexive ≤
@@ -67,7 +72,7 @@ record Proset c ℓ : Set (suc (c ⊔ ℓ)) where
     isProset : IsProset _≤_
 
 IsProset⇒IsPartialOrder : ∀ {a ℓ} {A : Set a} {≤ : Rel A ℓ} →
-  IsProset ≤ → IsPartialOrder (SymCore ≤) ≤
+  IsProset ≤ → IsPartialOrder (SymInterior ≤) ≤
 IsProset⇒IsPartialOrder {≤ = ≤} isProset = record
   { isPreorder = record
     { isEquivalence = record
