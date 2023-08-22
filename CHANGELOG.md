@@ -1246,6 +1246,9 @@ Deprecated names
 
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
+
+  length-─  ↦  length-remove
+  map-─     ↦  map-remove
   ```
 
 * In `Data.List.NonEmpty.Properties`:
