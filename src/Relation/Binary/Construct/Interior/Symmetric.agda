@@ -26,8 +26,8 @@ private
 record SymInterior (R : Rel A ℓ) (x y : A) : Set ℓ where
   constructor _,_
   field
-    holds : R x y
-    op-holds : R y x
+    lhs≤rhs : R x y
+    rhs≤lhs : R y x
 open SymInterior public
 
 ------------------------------------------------------------------------
@@ -80,7 +80,7 @@ IsProset⇒IsPartialOrder {≤ = ≤} isProset = record
       ; sym = symmetric
       ; trans = transitive trans
       }
-    ; reflexive = holds
+    ; reflexive = lhs≤rhs
     ; trans = trans
     }
   ; antisym = _,_
