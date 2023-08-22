@@ -1099,7 +1099,7 @@ insert-punchIn xs       zero     v j       = refl
 insert-punchIn (x ∷ xs) (suc i)  v zero    = refl
 insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
 
--- where should this go? Or can I write this proof without this? Or does
+-- where should this go? Or can I write toList-insert without this? Or does
 -- something similar already exist?
 length-length : (xs : Vec A n) → length xs ≡ List.length (toList xs)
 length-length []       = refl
