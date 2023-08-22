@@ -16,7 +16,8 @@ open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _
 open import Data.List.Relation.Unary.Grouped
 open import Function.Base using (_∘_)
 open import Function.Bundles using (module Equivalence; _⇔_)
-open import Relation.Binary as B using (REL; Rel)
+open import Relation.Binary.Definitions as B
+open import Relation.Binary.Core using (REL; Rel)
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)

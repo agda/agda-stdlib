@@ -5,7 +5,7 @@ module Main where
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Show using (show)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.String.Base using (String; _++_)
 
 open import Data.Default

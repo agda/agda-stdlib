@@ -12,7 +12,8 @@ open import Level using (Level; _⊔_; Lift)
 open import Data.Product.Base using (_,_)
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary as B using (Rel)
+import Relation.Binary.Definitions as B
+open import Relation.Binary.Core using (Rel)
 
 open import Data.List.Fresh
 

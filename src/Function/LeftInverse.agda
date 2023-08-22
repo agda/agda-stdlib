@@ -13,10 +13,9 @@
 
 module Function.LeftInverse where
 
-open import Data.Product
 open import Level
 import Relation.Binary.Reasoning.Setoid as EqReasoning
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Function.Equality as Eq
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
 open import Function.Equivalence using (Equivalence)

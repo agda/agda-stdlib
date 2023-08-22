@@ -9,7 +9,7 @@
 
 module Data.Product.Function.Dependent.Setoid where
 
-open import Data.Product
+open import Data.Product.Base using (map; _,_)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Function.Base
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
@@ -23,7 +23,8 @@ open import Function.LeftInverse as LeftInv
   using (LeftInverse; _↞_; _LeftInverseOf_; _RightInverseOf_; module LeftInverse)
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
-open import Relation.Binary as B hiding (_⇔_)
+open import Relation.Binary.Core using (_=[_]⇒_)
+open import Relation.Binary.Bundles as B
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At
@@ -57,7 +58,6 @@ private
     using () renaming (_≈_ to _≈₁_)
   open B.Setoid (setoid (P.setoid A₂) B₂)
     using () renaming (_≈_ to _≈₂_)
-  open B using (_=[_]⇒_)
 
   fg = map f (_⟨$⟩_ g)
 

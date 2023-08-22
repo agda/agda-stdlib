@@ -25,7 +25,7 @@ open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
 open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
@@ -40,7 +40,8 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
 open import Function.Related as Related using (Kind; Related; SK-sym)
 open import Level using (Level)
-open import Relation.Binary as B hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 open import Relation.Unary as U

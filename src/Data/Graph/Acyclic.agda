@@ -20,7 +20,7 @@ open import Data.Fin as Fin
   using (Fin; Fin′; zero; suc; #_; toℕ; _≟_; opposite) renaming (_ℕ-ℕ_ to _-_)
 import Data.Fin.Properties as FP
 import Data.Fin.Permutation.Components as PC
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
 open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)

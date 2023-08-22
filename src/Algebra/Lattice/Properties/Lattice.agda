@@ -8,7 +8,7 @@
 
 open import Algebra.Lattice.Bundles
 import Algebra.Lattice.Properties.Semilattice as SemilatticeProperties
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Poset)
 import Relation.Binary.Lattice as R
 open import Function.Base
 open import Data.Product.Base using (_,_; swap)

@@ -11,7 +11,7 @@
 open import Codata.Sized.Stream using (Stream; unfold)
 open import Data.Nat.PseudoRandom.LCG
 open import Data.Nat using (ℕ)
-open import Data.Product using (<_,_>)
+open import Data.Product.Base using (<_,_>)
 open import Function.Base using (id)
 
 module Data.Nat.PseudoRandom.LCG.Unsafe where

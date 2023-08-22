@@ -15,13 +15,13 @@ open import Level using (Level; _⊔_)
 open import Data.Empty
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Product using (∃; _×_; _,_)
+open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
 
 open import Function.Base using (id; _∘′_; _$_)
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
-import Relation.Binary as B
+import Relation.Binary.Definitions as B
 import Relation.Binary.PropositionalEquality.Core as P
 open import Relation.Nary
 

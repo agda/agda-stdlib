@@ -14,7 +14,9 @@ open import Function.Bundles
 open import Function.Definitions
 open import Function.Structures
 open import Level using (Level)
-open import Relation.Binary hiding (_⇔_; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Transitive)
 
 private
   variable
