@@ -1236,3 +1236,15 @@ zipWith-identityʳ = zipWith-zeroʳ
 "Warning: zipWith-identityʳ was deprecated in v2.0.
 Please use zipWith-zeroʳ instead."
 #-}
+
+length-─ = length-remove
+{-# WARNING_ON_USAGE length-─
+"Warning: length-─ was deprecated in v2.0.
+Please use length-remove instead."
+#-}
+
+map-─ = map-remove
+{-# WARNING_ON_USAGE map-─
+"Warning: map-─ was deprecated in v2.0.
+Please use map-remove instead."
+#-}

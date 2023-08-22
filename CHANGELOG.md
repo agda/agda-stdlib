@@ -2175,7 +2175,7 @@ Other minor changes
   ++-rawMagma     : Set a → RawMagma a _
   ++-[]-rawMonoid : Set a → RawMonoid a _
 
-  insert   : (xs : List A) → Fin (length xs) → A → List A
+  insert   : (xs : List A) → Fin (suc (length xs)) → A → List A
   remove   : (xs : List A) → Fin (length xs) → List A
   updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
   ```
@@ -2244,6 +2244,10 @@ Other minor changes
   map-replicate : map f (replicate n x) ≡ replicate n (f x)
 
   drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
+
+  length-insert : length (insert xs i v) ≡ suc (length xs)
+  remove-insert : remove (insert xs i v) ((cast (sym (length-insert xs i v)) i)) ≡ xs
+  insert-remove : insert (remove xs i) (cast (sym (length-remove xs i)) i) (lookup xs i) ≡ xs
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2664,6 +2668,9 @@ Other minor changes
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
+
+  length-length : length xs ≡ List.length (toList xs)
+  toList-insert : toList (insert xs i v) ≡ List.insert (toList xs) (Fin.cast (cong suc (length-length xs)) i) v
   ```
 
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:

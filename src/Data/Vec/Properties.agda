@@ -1113,6 +1113,17 @@ toList-insert (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insert xs i v)
 ------------------------------------------------------------------------
 -- remove
 
+remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
+                  lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
+remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
+remove-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
+remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
+remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
+  remove-punchOut (y ∷ xs) (i≢j ∘ cong suc)
+
+------------------------------------------------------------------------
+-- insert and remove
+
 remove-insert : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
                 remove (insert xs i v) i ≡ xs
 remove-insert xs           zero           v = refl
@@ -1125,14 +1136,6 @@ insert-remove : ∀ (xs : Vec A (suc n)) (i : Fin (suc n)) →
 insert-remove (x ∷ xs)     zero     = refl
 insert-remove (x ∷ y ∷ xs) (suc i)  =
   cong (x ∷_) (insert-remove (y ∷ xs) i)
-
-remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
-                  lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
-remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
-remove-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
-remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
-remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
-  remove-punchOut (y ∷ xs) (i≢j ∘ cong suc)
 
 ------------------------------------------------------------------------
 -- Conversion function
