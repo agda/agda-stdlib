@@ -1080,12 +1080,14 @@ Deprecated names
   ```agda
   map-identity  ↦  map-id
   map-fusion    ↦  map-∘
+  drop-fusion   ↦  drop-drop
   ```
 
 * In `Codata.Sized.Colist.Properties`:
   ```agda
-  map-identity   ↦  map-id
-  map-map-fusion  ↦  map-∘
+  map-identity      ↦  map-id
+  map-map-fusion    ↦  map-∘
+  drop-drop-fusion  ↦  drop-drop
   ```
 
 * In `Codata.Sized.Covec.Properties`:
@@ -1112,6 +1114,11 @@ Deprecated names
   map-map-fusion  ↦  map-∘
   ```
 
+* In `Data.Bool.Properties` (Issue #2046):
+  ```
+  push-function-into-if ↦ if-float
+  ```
+
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
   for the 'left', resp. 'right' injection of a Fin m into a 'larger' type,
   `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the
@@ -1136,7 +1143,7 @@ Deprecated names
 
   As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
   associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
-  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  But it's not quite sensible to say that these definitions should be *renamed* to *anything*,
   least of all those counterparts... the type confusion would be intolerable.
 
 * In `Data.Fin.Properties`:
@@ -2204,6 +2211,7 @@ Other minor changes
   ```agda
   mapWith∈-id  : mapWith∈ xs (λ {x} _ → x) ≡ xs
   map-mapWith∈ : map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+  index-injective : index x₁∈xs ≡ index x₂∈xs → x₁ ≈ x₂
   ```
 
 * Add new proofs in `Data.List.Properties`:
@@ -2216,22 +2224,26 @@ Other minor changes
   concatMap-map  : concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
   map-concatMap  : map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
 
-  length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMagmaHomomorphism  : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
   
   take-map : take n (map f xs) ≡ map f (take n xs)
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
 
-  take-suc : (o : Fin (length xs)) → let m = toℕ o in take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
-  take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
-  drop-take-suc : (o : Fin (length xs)) → let m = toℕ o in drop m (take (suc m) xs) ≡ [ lookup xs o ]
-  drop-take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in drop m (take (suc m) (tabulate f)) ≡ [ f o ]
+  take-suc               : take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
+  take-suc-tabulate      : take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
+  drop-take-suc          : drop m (take (suc m) xs) ≡ [ lookup xs i ]
+  drop-take-suc-tabulate : drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 
   take-all : n ≥ length xs → take n xs ≡ xs
 
-  take-[] : ∀ m → take  m [] ≡ []
-  drop-[] : ∀ m → drop  m [] ≡ []
+  take-[] : take m [] ≡ []
+  drop-[] : drop m [] ≡ []
+
+  map-replicate : map f (replicate n x) ≡ replicate n (f x)
+
+  drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2602,6 +2614,8 @@ Other minor changes
   map-∷ʳ       : map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
   map-reverse  : map f (reverse xs) ≡ reverse (map f xs)
   map-ʳ++      : map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
+  map-insert   : map f (insert xs i x) ≡ insert (map f xs) i (f x)
+  toList-map   : toList (map f xs) ≡ List.map f (toList xs)
 
   lookup-concat : lookup (concat xss) (combine i j) ≡ lookup (lookup xss i) j
 
@@ -2636,6 +2650,9 @@ Other minor changes
   reverse-injective  : reverse xs ≡ reverse ys → xs ≡ ys
 
   transpose-replicate : transpose (replicate xs) ≡ map replicate xs
+  toList-replicate    : toList (replicate {n = n} a) ≡ List.replicate n a
+
+  toList-++ : toList (xs ++ ys) ≡ toList xs List.++ toList ys
 
   toList-cast   : toList (cast eq xs) ≡ toList xs
   cast-is-id    : cast eq xs ≡ xs
@@ -2645,6 +2662,13 @@ Other minor changes
   lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
+
+  zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
+  ```
+
+* Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  index-∈-fromList⁺ : Any.index (∈-fromList⁺ v∈xs) ≡ indexₗ v∈xs
   ```
 
 * Added new proofs in `Data.Vec.Functional.Properties`:

@@ -15,7 +15,7 @@ module Function.Injection where
 
 open import Function.Base as Fun using () renaming (_∘_ to _⟨∘⟩_)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_ ; Π) renaming (_∘_ to _⟪∘⟫_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

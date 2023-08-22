@@ -26,7 +26,11 @@ open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable) renaming (_⊆_ to _⋐_)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 open Setoid using (Carrier)
