@@ -46,12 +46,12 @@ unfold sym f s = f s , f (sym s)
 reflexive : Reflexive R → Reflexive (SymInterior R)
 reflexive refl = refl , refl
 
-transitive′ : Trans R S T → Trans S R T →
+trans′ : Trans R S T → Trans S R T →
   Trans (SymInterior R) (SymInterior S) (SymInterior T)
-transitive′ trans trans′ (r , r′) (s , s′) = trans r s , trans′ s′ r′
+trans′ trans-rs trans-sr (r , r′) (s , s′) = trans-rs r s , trans-sr s′ r′
 
 transitive : Transitive R → Transitive (SymInterior R)
-transitive {R = R} tr = transitive′ {R = R} tr tr
+transitive {R = R} tr = trans′ {R = R} tr tr
 
 -- The symmetric interior of a strict relation is empty.
 Empty-SymInterior : Asymmetric R → Empty (SymInterior R)
@@ -59,10 +59,10 @@ Empty-SymInterior asym (r , r′) = asym r r′
 
 -- A reflexive transitive relation _≤_ gives rise to a poset in which the
 -- equivalence relation is SymInterior _≤_.
-record IsProset {a ℓ} {A : Set a} (≤ : Rel A ℓ) : Set (a ⊔ ℓ) where
+record IsProset {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) : Set (a ⊔ ℓ) where
   field
-    refl : Reflexive ≤
-    trans : Transitive ≤
+    refl : Reflexive _≤_
+    trans : Transitive _≤_
 
 record Proset c ℓ : Set (suc (c ⊔ ℓ)) where
   infix 4 _≤_
