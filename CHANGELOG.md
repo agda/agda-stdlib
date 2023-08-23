@@ -2169,12 +2169,13 @@ Other minor changes
   wordsByᵇ     : (A → Bool) → List A → List (List A)
   derunᵇ       : (A → A → Bool) → List A → List A
   deduplicateᵇ : (A → A → Bool) → List A → List A
+
   findᵇ        : (A → Bool) → List A -> Maybe A
-  findIndexᵇ   : (A → Bool) → (x : List A) → Maybe $ Fin (length x)
-  findIndicesᵇ : (A → Bool) → List A → List ℕ
-  find         : ∀ {P : Pred A p} → Decidable P → List A → Maybe A
-  findIndex    : ∀ {P : Pred A p} → Decidable P → (x : List A) → Maybe $ Fin (length x)
-  findIndices  : ∀ {P : Pred A p} → Decidable P → List A → List ℕ
+  findIndexᵇ   : (A → Bool) → (xs : List A) → Maybe $ Fin (length xs)
+  findIndicesᵇ : (A → Bool) → (xs : List A) → List $ Fin (length xs)
+  find         : Decidable P → List A → Maybe A
+  findIndex    : Decidable P → (xs : List A) → Maybe $ Fin (length xs)
+  findIndices  : Decidable P → (xs : List A) → List $ Fin (length xs)
   ```
 
 * Added new functions and definitions to `Data.List.Base`:

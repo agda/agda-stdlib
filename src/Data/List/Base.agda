@@ -397,22 +397,21 @@ deduplicateᵇ r [] = []
 deduplicateᵇ r (x ∷ xs) = x ∷ filterᵇ (not ∘ r x) (deduplicateᵇ r xs)
 
 findᵇ : (A → Bool) → List A → Maybe A
-findᵇ p [] = nothing
+findᵇ p []       = nothing
 findᵇ p (x ∷ xs) = if p x then just x else findᵇ p xs
 
-findIndexᵇ : (A → Bool) → (x : List A) → Maybe $ Fin (length x)
-findIndexᵇ p [] = nothing
+findIndexᵇ : (A → Bool) → (xs : List A) → Maybe $ Fin (length xs)
+findIndexᵇ p []       = nothing
 findIndexᵇ p (x ∷ xs) = if p x
   then just zero
   else Maybe.map suc (findIndexᵇ p xs)
 
-findIndicesᵇ : (A → Bool) → List A → List ℕ
-findIndicesᵇ {A = A} p = h 0 where
-  h : ℕ → List A → List ℕ
-  h n [] = []
-  h n (x ∷ xs) = if p x
-    then n ∷ h (suc n) xs
-    else h (suc n) xs
+findIndicesᵇ : (A → Bool) → (xs : List A) → List $ Fin (length xs)
+findIndicesᵇ p []       = []
+findIndicesᵇ p (x ∷ xs) = if p x
+  then zero ∷ indices
+  else indices
+    where indices = map suc (findIndicesᵇ p xs)
 
 -- Equivalent functions that use a decidable predicate instead of a
 -- boolean function.
@@ -458,10 +457,10 @@ deduplicate R? = deduplicateᵇ (does ∘₂ R?)
 find : ∀ {P : Pred A p} → Decidable P → List A → Maybe A
 find P? = findᵇ (does ∘ P?)
 
-findIndex : ∀ {P : Pred A p} → Decidable P → (x : List A) → Maybe $ Fin (length x)
+findIndex : ∀ {P : Pred A p} → Decidable P → (xs : List A) → Maybe $ Fin (length xs)
 findIndex P? = findIndexᵇ (does ∘ P?)
 
-findIndices : ∀ {P : Pred A p} → Decidable P → List A → List ℕ
+findIndices : ∀ {P : Pred A p} → Decidable P → (xs : List A) → List $ Fin (length xs)
 findIndices P? = findIndicesᵇ (does ∘ P?)
 
 ------------------------------------------------------------------------
