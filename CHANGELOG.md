@@ -3361,3 +3361,20 @@ This is a full list of proofs that have changed form to use irrelevant instance 
       c ≈⟨ c≈d ⟩
       d ∎
     ```
+
+* Added new file `Data.Fin.Mod`
+  ```agda
+  suc : Fin n → Fin n
+  pred : Fin n → Fin n
+  _ℕ+_ : ℕ → Fin n → Fin n
+  _+_ : Fin m → Fin n → Fin n
+  _+‵_ : Fin n → Fin n → Fin n
+  _-_ : Fin n → Fin n → Fin n
+  suc-inj≡fsuc : ∀ i → suc (inject₁ i) ≡ F.suc i
+  pred-fsuc≡inj : ∀ i → pred (F.suc i) ≡ inject₁ i
+  suc-pred≡id : ∀ i → suc (pred i) ≡ i
+  pred-suc≡id : ∀ i → pred (suc i) ≡ i
+  +-identityˡ : LeftIdentity {ℕ.suc n} zero _+_
+  +ℕ-identityʳ : m ℕ.≤ suc n → toℕ (m ℕ+ zero) ≡ m
+  +-identityʳ : RightIdentity zero _+_
+  ```
