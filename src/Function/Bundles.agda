@@ -95,6 +95,12 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong       : Congruent _≈₁_ _≈₂_ to
       surjective : Surjective _≈₁_ _≈₂_ to
 
+    function : Func
+    function = record
+      { to   = to
+      ; cong = cong
+      }
+
     to⁻ : B → A
     to⁻ = proj₁ ∘ surjective
 
