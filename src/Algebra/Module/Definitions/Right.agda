@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core
+  using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 
 -- The properties are parameterised by the two carriers and
 -- the result equality.
@@ -14,8 +15,6 @@ open import Relation.Binary
 module Algebra.Module.Definitions.Right
   {a b ℓb} (A : Set a) {B : Set b} (_≈_ : Rel B ℓb)
   where
-
-open import Data.Product
 
 ------------------------------------------------------------------------
 -- Binary operations

@@ -13,7 +13,7 @@ open import Data.String.Properties as String           using (_≟_)
 open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
 open import Level
 open import Relation.Nullary.Decidable                 using (Dec; map′; _×-dec_)
-open import Relation.Binary                            using (DecidableEquality)
+open import Relation.Binary.Definitions                using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 
 private

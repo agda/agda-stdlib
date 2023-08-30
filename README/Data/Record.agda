@@ -11,11 +11,11 @@
 
 module README.Data.Record where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.String
 open import Function.Base using (flip)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Definitions using (Symmetric; Transitive)
 
 import Data.Record as Record
 

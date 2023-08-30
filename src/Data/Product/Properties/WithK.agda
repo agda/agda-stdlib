@@ -8,7 +8,7 @@
 
 module Data.Product.Properties.WithK where
 
-open import Data.Product
+open import Data.Product.Base using (Σ; _,_)
 open import Function.Base using (_∋_)
 open import Relation.Binary.PropositionalEquality
 

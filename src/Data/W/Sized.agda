@@ -11,7 +11,7 @@ module Data.W.Sized where
 open import Level
 open import Size
 open import Function.Base using (_$_; _∘_; const)
-open import Data.Product using (_,_; -,_; proj₂)
+open import Data.Product.Base using (_,_; -,_; proj₂)
 open import Data.Container.Core as Container using (Container; ⟦_⟧; Shape; Position; _⇒_; ⟪_⟫)
 open import Data.Container.Relation.Unary.All using (□; all)
 open import Relation.Nullary.Negation using (¬_)

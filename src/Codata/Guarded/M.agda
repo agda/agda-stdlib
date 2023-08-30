@@ -11,7 +11,7 @@ module Codata.Guarded.M where
 open import Level
 open import Data.Container.Core hiding (map; Shape; Position)
 open import Function.Base
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 
 -- The family of M-types
 

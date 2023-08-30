@@ -34,10 +34,10 @@ open import Data.Fin.Properties using (toℕ-cast)
 open import Function.Base using (id; _∘_; _∘′_; _∋_; _-⟨_∣; ∣_⟩-_; _$_; const; flip)
 open import Function.Definitions using (Injective)
 open import Level using (Level)
-open import Relation.Binary as B using (DecidableEquality)
+open import Relation.Binary.Definitions as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
@@ -117,6 +117,10 @@ map-injective finj {[]} {[]} eq = refl
 map-injective finj {x ∷ xs} {y ∷ ys} eq =
   let fx≡fy , fxs≡fys = ∷-injective eq in
   cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
+
+map-replicate : ∀ (f : A → B) n x → map f (replicate n x) ≡ replicate n (f x)
+map-replicate f zero    x = refl
+map-replicate f (suc n) x = cong (_ ∷_) (map-replicate f n x)
 
 ------------------------------------------------------------------------
 -- mapMaybe
@@ -780,7 +784,7 @@ take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym
 
 -- If you take at least as many elements from a list as it has, you get
 -- the whole list.
-take-all :(n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
+take-all : (n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
 take-all zero [] _ = refl
 take-all (suc _) [] _ = refl
 take-all (suc n) (x ∷ xs) (s≤s pf) = cong (x ∷_) (take-all n xs pf)
@@ -823,6 +827,12 @@ drop-take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ
                   drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 drop-take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
   = drop-take-suc (tabulate f) (cast _ i)
+
+-- Dropping m elements and then n elements is same as dropping m+n elements
+drop-drop : (m n : ℕ) → (xs : List A) → drop n (drop m xs) ≡ drop (m + n) xs
+drop-drop zero n xs = refl
+drop-drop (suc m) n [] = drop-[] n
+drop-drop (suc m) n (x ∷ xs) = drop-drop m n xs
 
 ------------------------------------------------------------------------
 -- splitAt

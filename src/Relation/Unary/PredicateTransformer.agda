@@ -8,7 +8,7 @@
 
 module Relation.Unary.PredicateTransformer where
 
-open import Data.Product
+open import Data.Product.Base using (∃)
 open import Function.Base using (_∘_)
 open import Level hiding (_⊔_)
 open import Relation.Nullary

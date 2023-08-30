@@ -12,7 +12,7 @@ open import Algebra.Bundles
 open import Data.Empty
 open import Data.Nat.Base as ℕ using (zero; suc; parity)
 open import Data.Parity.Base as ℙ using (Parity; 0ℙ; 1ℙ; _⁻¹; toSign; fromSign)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sign.Base as 𝕊
 open import Function.Base using (_$_; id)
 open import Function.Definitions
