@@ -1246,6 +1246,8 @@ Deprecated names
 
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
+
+  take++drop ↦ take++drop≡id
   ```
 
 * In `Data.List.NonEmpty.Properties`:
@@ -1401,6 +1403,8 @@ Deprecated names
   []≔-++-raise    ↦ []≔-++-↑ʳ
   idIsFold        ↦ id-is-foldr
   sum-++-commute  ↦ sum-++
+
+  take-drop-id ↦ take++drop≡id
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```

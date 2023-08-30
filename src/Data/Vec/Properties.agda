@@ -140,15 +140,15 @@ drop-distr-map f (suc m) (x ∷ xs) = begin
 ------------------------------------------------------------------------
 -- take and drop together
 
-take-drop-id : ∀ (m : ℕ) (x : Vec A (m + n)) → take m x ++ drop m x ≡ x
-take-drop-id zero x = refl
-take-drop-id (suc m) (x ∷ xs) = begin
+take++drop≡id : ∀ (m : ℕ) (x : Vec A (m + n)) → take m x ++ drop m x ≡ x
+take++drop≡id zero x = refl
+take++drop≡id (suc m) (x ∷ xs) = begin
     take (suc m) (x ∷ xs) ++ drop (suc m) (x ∷ xs)
   ≡⟨ cong₂ _++_ (unfold-take m x xs) (unfold-drop m x xs) ⟩
     (x ∷ take m xs) ++ (drop m xs)
   ≡⟨⟩
     x ∷ (take m xs ++ drop m xs)
-  ≡⟨ cong (x ∷_) (take-drop-id m xs) ⟩
+  ≡⟨ cong (x ∷_) (take++drop≡id m xs) ⟩
     x ∷ xs
   ∎
 
@@ -1185,4 +1185,10 @@ sum-++-commute = sum-++
 {-# WARNING_ON_USAGE sum-++-commute
 "Warning: sum-++-commute was deprecated in v2.0.
 Please use sum-++ instead."
+#-}
+
+take-drop-id = take++drop≡id
+{-# WARNING_ON_USAGE take-drop-id
+"Warning: take-drop-id was deprecated in v2.0.
+Please use take++drop≡id instead."
 #-}
