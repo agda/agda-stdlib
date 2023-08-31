@@ -22,7 +22,7 @@ open import Level
 open import Relation.Nullary.Decidable
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
   variable
@@ -198,10 +198,10 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
             WfRec _<ₗₑₓ_ (Acc _<ₗₑₓ_) (x , y)
     ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
       = acc (×-acc (rec₁ u u<x) (wf₂ v))
-    ×-acc {x₁} acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
+    ×-acc acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
       = Acc-resp-flip-≈
-        (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp  (≡.respʳ   _<₂_) )
-        (u≈x , _≡_.refl)
+        (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (≡.respʳ _<₂_))
+        (u≈x , ≡.refl)
         (acc (×-acc acc₁ (rec₂ v v<y)))
 
 
