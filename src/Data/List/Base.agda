@@ -396,19 +396,19 @@ deduplicateᵇ : (A → A → Bool) → List A → List A
 deduplicateᵇ r [] = []
 deduplicateᵇ r (x ∷ xs) = x ∷ filterᵇ (not ∘ r x) (deduplicateᵇ r xs)
 
--- finds the first element satisfying the boolean predicate
+-- Finds the first element satisfying the boolean predicate
 findᵇ : (A → Bool) → List A → Maybe A
 findᵇ p []       = nothing
 findᵇ p (x ∷ xs) = if p x then just x else findᵇ p xs
 
--- finds the index of the first element satisfying the boolean predicate
+-- Finds the index of the first element satisfying the boolean predicate
 findIndexᵇ : (A → Bool) → (xs : List A) → Maybe $ Fin (length xs)
 findIndexᵇ p []       = nothing
 findIndexᵇ p (x ∷ xs) = if p x
   then just zero
   else Maybe.map suc (findIndexᵇ p xs)
 
--- finds indices of all the elements satisfying the boolean predicate
+-- Finds indices of all the elements satisfying the boolean predicate
 findIndicesᵇ : (A → Bool) → (xs : List A) → List $ Fin (length xs)
 findIndicesᵇ p []       = []
 findIndicesᵇ p (x ∷ xs) = if p x
