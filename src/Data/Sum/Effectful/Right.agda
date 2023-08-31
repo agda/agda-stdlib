@@ -56,6 +56,9 @@ monad = record
   ; _>>=_ = [ _|>′_ , const ∘′ inj₂ ]′
   }
 
+monadWithJoin : RawMonadWithJoin Sumᵣ
+monadWithJoin = record { rawMonad = monad }
+
 monadZero : B → RawMonadZero Sumᵣ
 monadZero b = record
   { rawMonad = monad

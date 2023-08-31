@@ -67,6 +67,9 @@ monad = record
   ; _>>=_ = _>>=_
   }
 
+monadWithJoin : RawMonadWithJoin {f} Maybe
+monadWithJoin = record { rawMonad = monad }
+
 monadZero : RawMonadZero {f} Maybe
 monadZero = record
   { rawMonad = monad

@@ -66,6 +66,9 @@ monad = record
   ; _>>=_  = flip concatMap
   }
 
+monadWithJoin : ∀ {ℓ} → RawMonadWithJoin {ℓ} List
+monadWithJoin = record { rawMonad = monad }
+
 monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
 monadZero = record
   { rawMonad = monad

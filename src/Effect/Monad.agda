@@ -16,7 +16,7 @@ open import Data.Unit.Polymorphic.Base using (⊤)
 open import Effect.Choice
 open import Effect.Empty
 open import Effect.Applicative
-open import Function.Base using (flip; _$′_; _∘′_)
+open import Function.Base using (id; flip; _$′_; _∘′_)
 open import Level using (Level; suc; _⊔_)
 
 private
@@ -58,23 +58,37 @@ record RawMonad (F : Set f → Set g) : Set (suc f ⊔ g) where
   unless : Bool → F ⊤ → F ⊤
   unless = when ∘′ not
 
--- Smart constructor
-module _ where
+-- When g=f, a join/μ operator is definable
 
-  open RawMonad
-  open RawApplicative
+record RawMonadWithJoin (F : Set f → Set f) : Set (suc f) where
 
-  mkRawMonad :
-    (F : Set f → Set f) →
-    (pure : ∀ {A} → A → F A) →
-    (bind : ∀ {A B} → F A → (A → F B) → F B) →
-    RawMonad F
-  mkRawMonad F pure _>>=_ .rawApplicative =
-    mkRawApplicative _ pure $′ λ mf mx → do
-      f ← mf
-      x ← mx
-      pure (f x)
-  mkRawMonad F pure _>>=_ ._>>=_ = _>>=_
+  field
+    rawMonad : RawMonad F
+
+  open RawMonad rawMonad public
+
+  join : F (F A) → F A
+  join = _>>= id
+
+
+-- Smart constructors
+
+module _ (F : Set f → Set f)
+         (pure : ∀ {A} → A → F A)
+         (bind : ∀ {A B} → F A → (A → F B) → F B)
+  where
+
+  open RawMonadWithJoin using (rawMonad)
+  open RawMonad using (rawApplicative; _>>=_)
+  open RawApplicative hiding (pure)
+
+  mkRawMonad : RawMonad F
+  mkRawMonad .rawApplicative = mkRawApplicative F pure
+    λ mf mx → bind mf λ f → bind mx λ x → pure (f x)
+  mkRawMonad ._>>=_ = bind
+
+  mkRawMonadWithJoin : RawMonadWithJoin F
+  mkRawMonadWithJoin .rawMonad = mkRawMonad
 
 ------------------------------------------------------------------------
 -- The type of raw monads with a zero

@@ -62,6 +62,9 @@ monad = record
   ; _>>=_ = [ const ∘′ inj₁ , _|>′_ ]′
   }
 
+monadWithJoin : RawMonadWithJoin Sumₗ
+monadWithJoin = record { rawMonad = monad }
+
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
