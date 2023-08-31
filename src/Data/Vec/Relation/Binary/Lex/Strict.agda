@@ -124,7 +124,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
                  ∀ {m n} → Irrelevant (_<_ {m} {n})
   <-irrelevant = Core.irrelevant (λ ())
 
-  module _ (≈-sym : Symmetric _≈_) (≈-trans : Transitive _≈_) (≺-respʳ : _≺_ Respectsʳ _≈_ ) (≺-wf : WellFounded _≺_)
+  module _ (≈-trans : Transitive _≈_) (≺-respʳ : _≺_ Respectsʳ _≈_ ) (≺-wf : WellFounded _≺_)
     where
 
     <-wellFounded : ∀ {n} → WellFounded (_<_ {n})
@@ -136,7 +136,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
         <⇒uncons-Lex {x ∷ xs} {y ∷ ys} (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
 
         uncons-Lex-wellFounded : WellFounded (×-Lex _≈_ _≺_ _<_ on uncons)
-        uncons-Lex-wellFounded = On.wellFounded uncons (×-wellFounded' ≈-sym ≈-trans ≺-respʳ ≺-wf <-wellFounded)
+        uncons-Lex-wellFounded = On.wellFounded uncons (×-wellFounded' ≈-trans ≺-respʳ ≺-wf <-wellFounded)
 
 ------------------------------------------------------------------------
 -- Structures

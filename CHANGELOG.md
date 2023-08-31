@@ -781,6 +781,28 @@ Non-backwards compatible changes
   properties about the orderings themselves the second index must be provided
   explicitly.
 
+* Issue #2075 (Johannes Waldmann): wellfoundedness of the lexicographic ordering
+  on products, defined in `Data.Product.Relation.Binary.Lex.Strict`, no longer
+  requires the assumption of symmetry for the first equality relation `_≈₁_`,
+  and so the type of the auxiliary proof `×-wellFounded'` now reads:
+  ```agda
+  ×-wellFounded' : Transitive _≈₁_ →
+                   _<₁_ Respectsʳ _≈₁_ →
+                   WellFounded _<₁_ →
+                   WellFounded _<₂_ →
+                   WellFounded _<ₗₑₓ_
+  ```
+  leading to:
+  upstream requirement for a new lemma in `Induction.WellFounded` with weaker assumptions;
+  downstream consequence for `Data.Vec.Relation.Binary.Lex.Strict.<-wellFounded`,
+  with change of type to:
+  ```agda
+  <-wellFounded : (≈-trans : Transitive _≈_) →
+	          (≺-respʳ : _≺_ Respectsʳ _≈_ ) →
+	          (≺-wf : WellFounded _≺_) →
+                  ∀ {n} → WellFounded (_<_ {n})
+  ```
+
 * The operation `SymClosure` on relations in
   `Relation.Binary.Construct.Closure.Symmetric` has been reimplemented
   as a data type `SymClosure _⟶_ a b` that is parameterized by the
@@ -3352,6 +3374,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
   ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ```
+
+* Added new proof to `Induction.WellFounded`
+  ```agda
+  Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
   ```
 
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`

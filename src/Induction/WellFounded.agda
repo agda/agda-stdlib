@@ -9,7 +9,7 @@
 module Induction.WellFounded where
 
 open import Data.Product.Base using (Σ; _,_; proj₁)
-open import Function.Base using (_on_)
+open import Function.Base using (_∘_; flip; _on_)
 open import Induction
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
@@ -54,10 +54,13 @@ acc-inverse : ∀ {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
               (y : A) → y < x → Acc _<_ y
 acc-inverse (acc rs) y y<x = rs y y<x
 
-Acc-resp-≈ : {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} → Symmetric _≈_ →
-             _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
-Acc-resp-≈ sym respʳ x≈y (acc rec) =
-  acc (λ z z<y → rec z (respʳ (sym x≈y) z<y))
+module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
+
+  Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
+  Acc-resp-flip-≈ respʳ x≈y (acc rec) = acc (λ z z<y → rec z (respʳ (x≈y) z<y))
+
+  Acc-resp-≈ : Symmetric _≈_ → _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
+  Acc-resp-≈ sym respʳ x≈y wf = Acc-resp-flip-≈ (respʳ ∘ sym) x≈y wf
 
 ------------------------------------------------------------------------
 -- Well-founded induction for the subset of accessible elements:

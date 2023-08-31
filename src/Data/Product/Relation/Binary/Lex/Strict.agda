@@ -186,12 +186,12 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
   private
     _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
 
-  ×-wellFounded' : Symmetric _≈₁_ → Transitive _≈₁_ →
+  ×-wellFounded' : Transitive _≈₁_ →
                    _<₁_ Respectsʳ _≈₁_ →
                    WellFounded _<₁_ →
                    WellFounded _<₂_ →
                    WellFounded _<ₗₑₓ_
-  ×-wellFounded' sym trans resp wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
+  ×-wellFounded' trans resp wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
     where
     ×-acc : ∀ {x y} →
             Acc _<₁_ x → Acc _<₂_ y →
@@ -199,10 +199,11 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
     ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
       = acc (×-acc (rec₁ u u<x) (wf₂ v))
     ×-acc {x₁} acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
-      = Acc-resp-≈ (Pointwise.×-symmetric {_∼₁_ = _≈₁_} {_∼₂_ = _≡_ } sym ≡.sym)
-                   (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (≡.respʳ _<₂_))
-                   (sym u≈x , _≡_.refl)
-                   (acc (×-acc acc₁ (rec₂ v v<y)))
+      = Acc-resp-flip-≈
+        (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp  (≡.respʳ   _<₂_) )
+        (u≈x , _≡_.refl)
+        (acc (×-acc acc₁ (rec₂ v v<y)))
+
 
 module _ {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel B ℓ₂} where
 
@@ -212,7 +213,7 @@ module _ {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel B ℓ₂} where
   ×-wellFounded : WellFounded _<₁_ →
                   WellFounded _<₂_ →
                   WellFounded _<ₗₑₓ_
-  ×-wellFounded = ×-wellFounded' ≡.sym ≡.trans (≡.respʳ _<₁_)
+  ×-wellFounded = ×-wellFounded' ≡.trans (≡.respʳ _<₁_)
 
 ------------------------------------------------------------------------
 -- Collections of properties which are preserved by ×-Lex.
