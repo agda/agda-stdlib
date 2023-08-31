@@ -784,24 +784,8 @@ Non-backwards compatible changes
 * Issue #2075 (Johannes Waldmann): wellfoundedness of the lexicographic ordering
   on products, defined in `Data.Product.Relation.Binary.Lex.Strict`, no longer
   requires the assumption of symmetry for the first equality relation `_≈₁_`,
-  and so the type of the auxiliary proof `×-wellFounded'` now reads:
-  ```agda
-  ×-wellFounded' : Transitive _≈₁_ →
-                   _<₁_ Respectsʳ _≈₁_ →
-                   WellFounded _<₁_ →
-                   WellFounded _<₂_ →
-                   WellFounded _<ₗₑₓ_
-  ```
-  leading to:
-  upstream requirement for a new lemma in `Induction.WellFounded` with weaker assumptions;
-  downstream consequence for `Data.Vec.Relation.Binary.Lex.Strict.<-wellFounded`,
-  with change of type to:
-  ```agda
-  <-wellFounded : (≈-trans : Transitive _≈_) →
-	          (≺-respʳ : _≺_ Respectsʳ _≈_ ) →
-	          (≺-wf : WellFounded _≺_) →
-                  ∀ {n} → WellFounded (_<_ {n})
-  ```
+  leading to a new lemma `Induction.WellFounded.Acc-resp-flip-≈`, and refactoring
+  of the previous proof `Induction.WellFounded.Acc-resp-≈`.
 
 * The operation `SymClosure` on relations in
   `Relation.Binary.Construct.Closure.Symmetric` has been reimplemented
@@ -2535,13 +2519,13 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
-* Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
+* Added new proofs to `Data.Product.Relation.Binary.Lex.Strict`
   ```agda
   ×-respectsʳ : Transitive _≈₁_ →
                 _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_
   ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
                  _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_
-  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ →
+  ×-wellFounded' : Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ →
                    WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
   ```
 
@@ -2706,7 +2690,7 @@ Other minor changes
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
   <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
                 ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
-  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
+  <-wellFounded : Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
                   ∀ {n} → WellFounded (_<_ {n})
 ```
 
