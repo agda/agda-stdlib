@@ -420,6 +420,6 @@ module _ {K₁ : RawKleeneAlgebra a ℓ₁}
     → IsKleeneAlgebraIsomorphism K₁ K₃ (g ∘ f)
   isKleeneAlgebraIsomorphism f-iso g-iso = record
     { isKleeneAlgebraMonomorphism = isKleeneAlgebraMonomorphism F.isKleeneAlgebraMonomorphism G.isKleeneAlgebraMonomorphism
-    ; surjective                  = Func.surjective (_≈_ K₁) (_≈_ K₂) (_≈_ K₃) ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective                  = Func.surjective (_≈_ K₁) (_≈_ K₂) (_≈_ K₃) F.surjective G.surjective
     } where module F = IsKleeneAlgebraIsomorphism f-iso; module G = IsKleeneAlgebraIsomorphism g-iso
 

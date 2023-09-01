@@ -271,6 +271,6 @@ module _ (K : RawKleeneAlgebra c ℓ) (open RawKleeneAlgebra K) (refl : Reflexiv
   isKleeneAlgebraIsomorphism : IsKleeneAlgebraIsomorphism id
   isKleeneAlgebraIsomorphism = record
     { isKleeneAlgebraMonomorphism = isKleeneAlgebraMonomorphism
-    ; surjective = _, refl
+    ; surjective = Id.surjective _
     }
 
