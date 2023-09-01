@@ -1604,11 +1604,6 @@ New modules
   Data.List.NonEmpty.Relation.Unary.All
   ```
 
-* A small library for heterogeneous equational reasoning on vectors:
-  ```
-  Data.Vec.Properties.Heterogeneous
-  ```
-
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
