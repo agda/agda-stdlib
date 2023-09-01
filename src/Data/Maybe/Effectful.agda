@@ -67,8 +67,8 @@ monad = record
   ; _>>=_ = _>>=_
   }
 
-monadWithJoin : RawMonadWithJoin {f} Maybe
-monadWithJoin = record { rawMonad = monad }
+join : Maybe (Maybe A) → Maybe A
+join = Join.join where instance _ = monad
 
 monadZero : RawMonadZero {f} Maybe
 monadZero = record

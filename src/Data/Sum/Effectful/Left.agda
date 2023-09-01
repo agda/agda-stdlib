@@ -62,8 +62,8 @@ monad = record
   ; _>>=_ = [ const ∘′ inj₁ , _|>′_ ]′
   }
 
-monadWithJoin : RawMonadWithJoin Sumₗ
-monadWithJoin = record { rawMonad = monad }
+join : {B : Set (a ⊔ b)} → Sumₗ (Sumₗ B) → Sumₗ B
+join = Join.join where instance _ = monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

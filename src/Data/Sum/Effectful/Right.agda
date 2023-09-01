@@ -56,8 +56,8 @@ monad = record
   ; _>>=_ = [ _|>′_ , const ∘′ inj₂ ]′
   }
 
-monadWithJoin : RawMonadWithJoin Sumᵣ
-monadWithJoin = record { rawMonad = monad }
+join : {A : Set (a ⊔ b)} → Sumᵣ (Sumᵣ A) → Sumᵣ A
+join = Join.join where instance _ = monad
 
 monadZero : B → RawMonadZero Sumᵣ
 monadZero b = record

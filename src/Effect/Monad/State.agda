@@ -59,8 +59,8 @@ applicative = Trans.applicative Id.monad
 monad : RawMonad (State S)
 monad = Trans.monad Id.monad
 
-monadWithJoin : RawMonadWithJoin (State S)
-monadWithJoin = record { rawMonad = monad }
+join : State S (State S A) → State S A
+join = Join.join where instance _ = monad
 
 ------------------------------------------------------------------------
 -- State monad specifics

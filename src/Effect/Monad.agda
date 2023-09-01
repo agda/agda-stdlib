@@ -58,37 +58,33 @@ record RawMonad (F : Set f → Set g) : Set (suc f ⊔ g) where
   unless : Bool → F ⊤ → F ⊤
   unless = when ∘′ not
 
--- When g=f, a join/μ operator is definable
+-- When level g=f, a join/μ operator is definable
 
-record RawMonadWithJoin (F : Set f → Set f) : Set (suc f) where
-
-  field
-    rawMonad : RawMonad F
-
-  open RawMonad rawMonad public
+module Join {F : Set f → Set f} ⦃ M : RawMonad {f} {f} F ⦄ where
+  open RawMonad M
 
   join : F (F A) → F A
   join = _>>= id
 
 
--- Smart constructors
+-- Smart constructor
 
-module _ (F : Set f → Set f)
-         (pure : ∀ {A} → A → F A)
-         (bind : ∀ {A B} → F A → (A → F B) → F B)
-  where
+module _ where
 
-  open RawMonadWithJoin using (rawMonad)
-  open RawMonad using (rawApplicative; _>>=_)
-  open RawApplicative hiding (pure)
+  open RawMonad
+  open RawApplicative
 
-  mkRawMonad : RawMonad F
-  mkRawMonad .rawApplicative = mkRawApplicative F pure
-    λ mf mx → bind mf λ f → bind mx λ x → pure (f x)
-  mkRawMonad ._>>=_ = bind
-
-  mkRawMonadWithJoin : RawMonadWithJoin F
-  mkRawMonadWithJoin .rawMonad = mkRawMonad
+  mkRawMonad :
+    (F : Set f → Set f) →
+    (pure : ∀ {A} → A → F A) →
+    (bind : ∀ {A B} → F A → (A → F B) → F B) →
+    RawMonad F
+  mkRawMonad F pure _>>=_ .rawApplicative =
+    mkRawApplicative _ pure $′ λ mf mx → do
+      f ← mf
+      x ← mx
+      pure (f x)
+  mkRawMonad F pure _>>=_ ._>>=_ = _>>=_
 
 ------------------------------------------------------------------------
 -- The type of raw monads with a zero

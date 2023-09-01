@@ -14,8 +14,7 @@ open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties
 open import Effect.Applicative as App using (RawApplicative)
 open import Effect.Functor as Fun using (RawFunctor)
-open import Effect.Monad
-  using (RawMonad; RawMonadWithJoin; RawMonadT; mkRawMonad; mkRawMonadWithJoin)
+open import Effect.Monad using (RawMonad; module Join; RawMonadT; mkRawMonad)
 import Function.Identity.Effectful as Id
 open import Function.Base
 open import Level using (Level)
@@ -47,8 +46,8 @@ monad = record
   ; _>>=_ = DiagonalBind._>>=_
   }
 
-monadWithJoin : RawMonadWithJoin (λ (A : Set a) → Vec A n)
-monadWithJoin = record { rawMonad = monad }
+join : Vec (Vec A n) n → Vec A n
+join = Join.join where instance _ = monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

@@ -18,6 +18,7 @@ open import Level
 private
   variable
     a : Level
+    A : Set a
 
 record Identity (A : Set a) : Set a where
   constructor mkIdentity
@@ -48,5 +49,5 @@ comonad = record
   ; extend  = λ f a → mkIdentity (f a)
   }
 
-monadWithJoin : RawMonadWithJoin {a} Identity
-monadWithJoin = record { rawMonad = monad }
+join : Identity (Identity A) → Identity A
+join = Join.join where instance _ = monad

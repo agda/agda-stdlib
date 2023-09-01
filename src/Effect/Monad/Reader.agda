@@ -52,8 +52,8 @@ applicative = Trans.applicative Id.applicative
 monad : RawMonad (Reader R)
 monad = Trans.monad Id.monad
 
-monadWithJoin : RawMonadWithJoin (Reader R)
-monadWithJoin = record { rawMonad = monad }
+join : Reader R (Reader R A) → Reader R A
+join = Join.join where instance _ = monad
 
 ------------------------------------------------------------------------
 -- Reader monad specifics
