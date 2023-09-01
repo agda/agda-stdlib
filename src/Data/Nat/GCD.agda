@@ -15,13 +15,14 @@ open import Data.Nat.GCD.Lemmas
 open import Data.Nat.Properties
 open import Data.Nat.Induction
   using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded-fast)
-open import Data.Product
+open import Data.Product.Base
+  using (_×_; _,_; proj₂; proj₁; swap; uncurry′; ∃; map)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Function
+open import Function.Base using (_$_; _∘_)
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; subst; cong)
 open import Relation.Nullary.Decidable using (Dec)
 open import Relation.Nullary.Negation using (contradiction)
@@ -56,8 +57,8 @@ gcd m n with <-cmp m n
 gcd′[m,n]∣m,n : ∀ {m n} rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
 gcd′[m,n]∣m,n {m} {zero}  rec       n<m = ∣-refl , m ∣0
 gcd′[m,n]∣m,n {m} {suc n} (acc rec) n<m
-  with gcd′[m,n]∣m,n (rec _ n<m) (m%n<n m (suc n))
-... | gcd∣n , gcd∣m%n = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
+  with gcd∣n , gcd∣m%n ← gcd′[m,n]∣m,n (rec _ n<m) (m%n<n m (suc n))
+  = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
 
 gcd′-greatest : ∀ {m n c} rec n<m → c ∣ m → c ∣ n → c ∣ gcd′ m n rec n<m
 gcd′-greatest {m} {zero}  rec       n<m c∣m c∣n = c∣m
@@ -166,10 +167,8 @@ gcd-universality : ∀ {m n g} →
                    (∀ {d} → d ∣ m × d ∣ n → d ∣ g) →
                    (∀ {d} → d ∣ g → d ∣ m × d ∣ n) →
                    g ≡ gcd m n
-gcd-universality {m} {n} forwards backwards with backwards ∣-refl
-... | back₁ , back₂ = ∣-antisym
-  (gcd-greatest back₁ back₂)
-  (forwards (gcd[m,n]∣m m n , gcd[m,n]∣n m n))
+gcd-universality {m} {n} forwards backwards with back₁ , back₂ ← backwards ∣-refl
+  = ∣-antisym (gcd-greatest back₁ back₂) (forwards (gcd[m,n]∣m m n , gcd[m,n]∣n m n))
 
 -- This could be simplified with some nice backwards/forwards reasoning
 -- after the new function hierarchy is up and running.
@@ -180,10 +179,10 @@ gcd[cm,cn]/c≡gcd[m,n] c m n = gcd-universality forwards backwards
   forwards {d} (d∣m , d∣n) = m*n∣o⇒n∣o/m c d (gcd-greatest (*-monoʳ-∣ c d∣m) (*-monoʳ-∣ c d∣n))
 
   backwards : ∀ {d : ℕ} → d ∣ gcd (c * m) (c * n) / c → d ∣ m × d ∣ n
-  backwards {d} d∣gcd[cm,cn]/c with m∣n/o⇒o*m∣n (gcd-greatest (m∣m*n m) (m∣m*n n)) d∣gcd[cm,cn]/c
-  ... | cd∣gcd[cm,n] =
-    *-cancelˡ-∣ c (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣m (c * m) _)) ,
-    *-cancelˡ-∣ c (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣n (c * m) _))
+  backwards {d} d∣gcd[cm,cn]/c
+    with cd∣gcd[cm,n] ← m∣n/o⇒o*m∣n (gcd-greatest (m∣m*n m) (m∣m*n n)) d∣gcd[cm,cn]/c
+    = *-cancelˡ-∣ c (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣m (c * m) _)) ,
+      *-cancelˡ-∣ c (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣n (c * m) _))
 
 c*gcd[m,n]≡gcd[cm,cn] : ∀ c m n → c * gcd m n ≡ gcd (c * m) (c * n)
 c*gcd[m,n]≡gcd[cm,cn] zero      m n = P.sym gcd[0,0]≡0
@@ -256,8 +255,8 @@ module GCD where
   -- n + k.
 
   step : ∀ {n k d} → GCD n k d → GCD n (n + k) d
-  step g with GCD.commonDivisor g
-  step {n} {k} {d} g | (d₁ , d₂) = is (d₁ , ∣m∣n⇒∣m+n d₁ d₂) greatest′
+  step {n} {k} {d} g with d₁ , d₂ ← GCD.commonDivisor g
+    = is (d₁ , ∣m∣n⇒∣m+n d₁ d₂) greatest′
     where
     greatest′ : ∀ {d′} → d′ ∣ n × d′ ∣ n + k → d′ ∣ d
     greatest′ (d₁ , d₂) = GCD.greatest g (d₁ , ∣m+n∣m⇒∣n d₂ d₁)
@@ -292,7 +291,7 @@ GCD-* {c = suc _} (GCD.is (dc∣nc , dc∣mc) dc-greatest) =
 GCD-/ : ∀ {m n d c} .{{_ : NonZero c}} → c ∣ m → c ∣ n → c ∣ d →
         GCD m n d → GCD (m / c) (n / c) (d / c)
 GCD-/ {m} {n} {d} {c} {{x}}
-  (divides p P.refl) (divides q P.refl) (divides r P.refl) gcd
+  (divides-refl p) (divides-refl q) (divides-refl r) gcd
   rewrite m*n/n≡m p c {{x}} | m*n/n≡m q c {{x}} | m*n/n≡m r c {{x}} = GCD-* gcd
 
 GCD-/gcd : ∀ m n .{{_ : NonZero (gcd m n)}} → GCD (m / gcd m n) (n / gcd m n) 1
@@ -400,6 +399,4 @@ module Bézout where
   -- Bézout's identity can be recovered from the GCD.
 
   identity : ∀ {m n d} → GCD m n d → Identity d m n
-  identity {m} {n} g with lemma m n
-  ... | result d g′ b with GCD.unique g g′
-  ...   | P.refl = b
+  identity {m} {n} g with result d g′ b ← lemma m n rewrite GCD.unique g g′ = b

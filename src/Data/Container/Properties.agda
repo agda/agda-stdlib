@@ -8,7 +8,7 @@
 
 module Data.Container.Properties where
 
-import Function as F
+import Function.Base as F
 open import Relation.Binary
 
 open import Data.Container.Core

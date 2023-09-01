@@ -6,12 +6,12 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.List
+open import Data.List.Base using ([]; _∷_; deduplicate)
 import Data.List.Relation.Unary.Unique.DecSetoid as Unique
 open import Data.List.Relation.Unary.All.Properties using (all-filter)
 open import Data.List.Relation.Unary.Unique.Setoid.Properties
 open import Level
-open import Relation.Binary using (DecSetoid)
+open import Relation.Binary.Bundles using (DecSetoid)
 open import Relation.Nullary.Decidable using (¬?)
 
 module Data.List.Relation.Unary.Unique.DecSetoid.Properties where

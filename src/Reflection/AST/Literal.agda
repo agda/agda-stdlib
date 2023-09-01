@@ -12,14 +12,14 @@ open import Data.Bool.Base   using (Bool; true; false)
 import Data.Char as Char     using (_≟_)
 import Data.Float as Float   using (_≟_)
 import Data.Nat as ℕ        using (_≟_)
-import Data.String as String using (_≟_)
+import Data.String.Properties as String using (_≟_)
 import Data.Word as Word     using (_≟_)
 import Reflection.AST.Meta as Meta
 import Reflection.AST.Name as Name
-open import Relation.Nullary                      using (yes; no)
-open import Relation.Nullary.Decidable            using (map′; isYes)
-open import Relation.Binary                       using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Nullary                           using (yes; no)
+open import Relation.Nullary.Decidable                 using (map′; isYes)
+open import Relation.Binary.Definitions                using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors
@@ -103,6 +103,8 @@ meta x ≟ char x₁ = no (λ ())
 meta x ≟ string x₁ = no (λ ())
 meta x ≟ name x₁ = no (λ ())
 meta x ≟ meta x₁ = map′ (cong meta) meta-injective (x Meta.≟ x₁)
+
+infix 4 _≡ᵇ_
 
 _≡ᵇ_ : Literal → Literal → Bool
 l ≡ᵇ l′ = isYes (l ≟ l′)

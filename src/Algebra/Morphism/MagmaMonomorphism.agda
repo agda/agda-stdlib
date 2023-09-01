@@ -25,7 +25,7 @@ open RawMagma M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_)
 
 open import Algebra.Structures
 open import Algebra.Definitions
-open import Data.Product
+open import Data.Product.Base using (map)
 open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 import Relation.Binary.Morphism.RelMonomorphism isRelMonomorphism as RelMorphism

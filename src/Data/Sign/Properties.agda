@@ -11,8 +11,9 @@ module Data.Sign.Properties where
 open import Algebra.Bundles
 open import Data.Empty
 open import Data.Sign.Base
-open import Data.Product using (_,_)
-open import Function hiding (Inverse)
+open import Data.Product.Base using (_,_)
+open import Function.Base using (_$_; id)
+open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)

@@ -17,7 +17,7 @@ open import Data.Maybe.Base using (Maybe)
 open import Data.Nat.Base using (ℕ)
 open import Data.String.Base using (String)
 open import Foreign.Haskell.Coerce using (coerce)
-open import Function
+open import Function.Base using (_∘′_)
 open import System.FilePath.Posix hiding (makeRelative)
 
 open import System.Directory.Primitive as Prim

@@ -13,9 +13,11 @@ open import Data.Nat.Properties using (+-suc)
 open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Properties using (reverse-involutive)
 open import Data.List.Relation.Ternary.Interleaving hiding (map)
-open import Function
+open import Function.Base using (_$_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+--open import Relation.Binary.PropositionalEquality
+--  using (_≡_; refl; sym; cong; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym; cong; module ≡-Reasoning)
 open ≡-Reasoning
 

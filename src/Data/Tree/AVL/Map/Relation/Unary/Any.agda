@@ -6,13 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Map.Relation.Unary.Any
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Product as Prod using (_×_; ∃; _,_)
+open import Data.Product.Base as Prod using (_×_; ∃; _,_)
 open import Function.Base using (_∘_; _∘′_; id)
 open import Level using (Level; _⊔_)
 

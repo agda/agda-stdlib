@@ -12,7 +12,7 @@ open import Data.Bool.Base using (Bool)
 open import Data.Char.Base
 import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
 open import Function.Base
 open import Relation.Nullary using (¬_; yes; no)
@@ -22,8 +22,9 @@ import Relation.Binary.Construct.On as On
 import Relation.Binary.Construct.Subst.Equality as Subst
 import Relation.Binary.Construct.Closure.Reflexive as Refl
 import Relation.Binary.Construct.Closure.Reflexive.Properties as Reflₚ
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; _≢_; refl; cong; sym; trans; subst)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 ------------------------------------------------------------------------
 -- Primitive properties

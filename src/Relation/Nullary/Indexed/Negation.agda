@@ -10,7 +10,7 @@ module Relation.Nullary.Indexed.Negation where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Empty.Polymorphic
-open import Function
+open import Function.Bundles using (_↔_)
 open import Function.Properties
 import Function.Construct.Identity as Identity
 open import Relation.Nullary.Indexed

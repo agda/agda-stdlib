@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of the heterogeneous sublist relation
@@ -24,17 +24,22 @@ open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
 open import Data.Nat.Base using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
+open import Data.Product.Base using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
 
 open import Function.Base
 open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
-
+open import Function.Consequences.Propositional using (strictlySurjective⇒surjective)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Decidable as Dec using (¬?)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Bundles using (Preorder; Poset; DecPoset)
+open import Relation.Binary.Definitions
+  using (Reflexive; Trans; Antisym; Decidable; Irrelevant; Irreflexive)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- Injectivity of constructors
@@ -78,9 +83,9 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 -- Various functions' outputs are sublists
 
 -- These lemmas are generalisations of results of the form `f xs ⊆ xs`.
--- (where _⊆_ stands for Sublist R). If R is reflexive then we can indeed
--- obtain `f xs ⊆ xs` from `xs ⊆ ys → f xs ⊆ ys`. The other direction is
--- only true if R is both reflexive and transitive.
+-- (where _⊆_ stands for Sublist R). If R is reflexive then we can
+-- indeed obtain `f xs ⊆ xs` from `xs ⊆ ys → f xs ⊆ ys`. The other
+-- direction is only true if R is both reflexive and transitive.
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
@@ -345,7 +350,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toAny∘fromAny≗id (there p) = P.cong there (toAny∘fromAny≗id p)
 
   Sublist-[x]-bijection : ∀ {x xs} → (Sublist R [ x ] xs) ⤖ (Any (R x) xs)
-  Sublist-[x]-bijection = mk⤖ (toAny-injective , < fromAny , toAny∘fromAny≗id >)
+  Sublist-[x]-bijection = mk⤖ (toAny-injective , strictlySurjective⇒surjective < fromAny , toAny∘fromAny≗id >)
 
 ------------------------------------------------------------------------
 -- Relational properties

@@ -9,7 +9,8 @@
 module Function.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
-open import Function
+open import Function.Base using (flip; _∘_)
+open import Function.Bundles using (_↔_; mk↔′; Inverse)
 open import Level
 open import Relation.Binary.PropositionalEquality.Core
   using (trans; cong; cong′)
@@ -42,6 +43,6 @@ private
 →-cong-↔ extAC extBD A↔B C↔D = mk↔′
   (λ h → C↔D.to   ∘ h ∘ A↔B.from)
   (λ g → C↔D.from ∘ g ∘ A↔B.to  )
-  (λ h → extBD λ x → trans (C↔D.inverseˡ _) (cong h (A↔B.inverseˡ x)))
-  (λ g → extAC λ x → trans (C↔D.inverseʳ _) (cong g (A↔B.inverseʳ x)))
+  (λ h → extBD λ x → trans (C↔D.strictlyInverseˡ _) (cong h (A↔B.strictlyInverseˡ x)))
+  (λ g → extAC λ x → trans (C↔D.strictlyInverseʳ _) (cong g (A↔B.strictlyInverseʳ x)))
   where module A↔B = Inverse A↔B; module C↔D = Inverse C↔D

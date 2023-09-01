@@ -10,7 +10,7 @@ module Data.Container.FreeMonad where
 
 open import Level using (Level; _⊔_)
 open import Data.Sum.Base using (inj₁; inj₂ ; [_,_]′)
-open import Data.Product using (_,_; -,_)
+open import Data.Product.Base using (_,_; -,_)
 open import Data.Container using (Container; ⟦_⟧; μ)
 open import Data.Container.Relation.Unary.All using (□; all)
 open import Data.Container.Combinator using (const; _⊎_)
@@ -102,6 +102,9 @@ module _ {P : Set ℓ}
 
  foldr : C ⋆ X → P
  foldr = induction (Function.const P) algP (algI ∘ -,_ ∘ □.proof)
+
+infixr -1 _<$>_ _<*>_
+infixl 1 _>>=_
 
 _<$>_ : (X → Y) → C ⋆ X → C ⋆ Y
 f <$> t = foldr (pure ∘ f) impure t

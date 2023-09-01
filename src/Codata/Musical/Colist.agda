@@ -21,14 +21,16 @@ open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (_⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles using (Poset; Setoid; Preorder)
+open import Relation.Binary.Definitions using (Transitive; Antisymmetric)
 import Relation.Binary.Construct.FromRel as Ind
 import Relation.Binary.Reasoning.Preorder as PreR
 import Relation.Binary.Reasoning.PartialOrder as POR
@@ -36,7 +38,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Nullary.Decidable using (excluded-middle)
+open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 open import Relation.Unary using (Pred)
 
 private
@@ -215,6 +217,8 @@ data Finite {A : Set a} : Colist A → Set a where
   []  : Finite []
   _∷_ : ∀ x {xs} (fin : Finite (♭ xs)) → Finite (x ∷ xs)
 
+infixr 5 _∷_
+
 module Finite-injective where
 
  ∷-injective : ∀ {x : A} {xs p q} → (Finite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
@@ -242,7 +246,7 @@ not-finite-is-infinite (x ∷ xs) hyp =
 
 finite-or-infinite :
   (xs : Colist A) → ¬ ¬ (Finite xs ⊎ Infinite xs)
-finite-or-infinite xs = helper <$> excluded-middle
+finite-or-infinite xs = helper <$> ¬¬-excluded-middle
   where
   helper : Dec (Finite xs) → Finite xs ⊎ Infinite xs
   helper ( true because  [fin]) = inj₁ (invert [fin])

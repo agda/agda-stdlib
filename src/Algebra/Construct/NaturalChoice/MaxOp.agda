@@ -11,8 +11,9 @@ open import Algebra.Core
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinOp as MinOp
 open import Function.Base using (flip)
-open import Relation.Binary
-open import Relation.Binary.Construct.Converse using ()
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.Bundles using (TotalPreorder)
+open import Relation.Binary.Construct.Flip.EqAndOrd using ()
   renaming (totalPreorder to flipOrder)
 
 module Algebra.Construct.NaturalChoice.MaxOp

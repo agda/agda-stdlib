@@ -8,19 +8,19 @@
 
 module Data.Sum.Relation.Binary.Pointwise where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum
 open import Data.Sum.Properties
-open import Induction.WellFounded
 open import Level using (_⊔_)
 open import Function.Base using (_∘_; id)
 open import Function.Inverse using (Inverse)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 data Pointwise {a b c d r s}
@@ -30,7 +30,7 @@ data Pointwise {a b c d r s}
   inj₁ : ∀ {a c} → R a c → Pointwise R S (inj₁ a) (inj₁ c)
   inj₂ : ∀ {b d} → S b d → Pointwise R S (inj₂ b) (inj₂ d)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties
 
 module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂}
@@ -75,19 +75,6 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
   ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x ≟₂ y)
 
-  ⊎-wellFounded : WellFounded ∼₁ → WellFounded ∼₂ → WellFounded (Pointwise ∼₁ ∼₂)
-  ⊎-wellFounded wf₁ wf₂ x = acc (⊎-acc x)
-    where
-    ⊎-acc₁ : ∀ {x} → Acc ∼₁ x → WfRec (Pointwise ∼₁ ∼₂) (Acc (Pointwise ∼₁ ∼₂)) (inj₁ x)
-    ⊎-acc₁ (acc rec) (inj₁ y) (inj₁ x∼₁y) = acc (⊎-acc₁ (rec y x∼₁y))
-
-    ⊎-acc₂ : ∀ {x} → Acc ∼₂ x → WfRec (Pointwise ∼₁ ∼₂) (Acc (Pointwise ∼₁ ∼₂)) (inj₂ x)
-    ⊎-acc₂ (acc rec) (inj₂ y) (inj₂ x∼₂y) = acc (⊎-acc₂ (rec y x∼₂y))
-    ⊎-acc  : ∀ x → WfRec (Pointwise ∼₁ ∼₂) (Acc (Pointwise ∼₁ ∼₂)) x
-
-    ⊎-acc (inj₁ x) = ⊎-acc₁ (wf₁ x)
-    ⊎-acc (inj₂ x) = ⊎-acc₂ (wf₂ x)
-
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
          {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}
          {ℓ₃ ℓ₄} {∼₂ : Rel A₂ ℓ₃} {≈₂ : Rel A₂ ℓ₄} where
@@ -121,7 +108,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
                 (Pointwise ∼₁ ∼₂) Respects₂ (Pointwise ≈₁ ≈₂)
   ⊎-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-respectsʳ r₁ r₂ , ⊎-respectsˡ l₁ l₂
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}

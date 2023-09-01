@@ -11,7 +11,8 @@ module Data.List.Membership.Setoid.Properties where
 open import Algebra using (Op₂; Selective)
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base
+open import Data.Fin.Properties using (suc-injective)
+open import Data.List.Base hiding (find)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any
@@ -20,14 +21,16 @@ import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.Nat.Base using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
-open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
+open import Data.Product.Base as Prod using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_$_; flip; _∘_; _∘′_; id)
 open import Function.Inverse using (_↔_)
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_; _Preserves_⟶_)
+open import Relation.Binary.Definitions as B hiding (Decidable)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Unary as U using (Decidable; Pred)
 open import Relation.Nullary using (¬_; does; _because_; yes; no)
 open import Relation.Nullary.Reflects using (invert)
@@ -61,6 +64,13 @@ module _ (S : Setoid c ℓ) where
 
   ∉-resp-≋ : ∀ {x} → (x ∉_) Respects _≋_
   ∉-resp-≋ xs≋ys v∉xs v∈ys = v∉xs (∈-resp-≋ (≋-sym xs≋ys) v∈ys)
+
+  -- index is injective in its first argument.
+
+  index-injective : ∀ {x₁ x₂ xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
+                    Any.index x₁∈xs ≡ Any.index x₂∈xs → x₁ ≈ x₂
+  index-injective (here x₁≈x)   (here x₂≈x)   _  = trans x₁≈x (sym x₂≈x)
+  index-injective (there x₁∈xs) (there x₂∈xs) eq = index-injective x₁∈xs x₂∈xs (suc-injective eq)
 
 ------------------------------------------------------------------------
 -- Irrelevance

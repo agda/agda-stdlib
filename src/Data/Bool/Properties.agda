@@ -13,18 +13,25 @@ open import Algebra.Lattice.Bundles
 import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
 open import Data.Bool.Base
 open import Data.Empty
-open import Data.Product
-open import Data.Sum.Base
-open import Function.Base
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
+open import Function.Base using (_⟨_⟩_; const; id)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality hiding ([_])
-open import Relation.Nullary using (ofʸ; ofⁿ; does; proof; yes; no)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Poset; Preorder; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
+open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
+open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
+open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
@@ -273,6 +280,15 @@ true  <? _     = no  (λ())
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
 
+∨-conicalˡ : LeftConical false _∨_
+∨-conicalˡ false false _ = refl
+
+∨-conicalʳ : RightConical false _∨_
+∨-conicalʳ false false _ = refl
+
+∨-conical : Conical false _∨_
+∨-conical = ∨-conicalˡ , ∨-conicalʳ
+
 ∨-isMagma : IsMagma _∨_
 ∨-isMagma = record
   { isEquivalence = isEquivalence
@@ -396,6 +412,15 @@ true  <? _     = no  (λ())
 ∧-sel : Selective _∧_
 ∧-sel false y = inj₁ refl
 ∧-sel true y  = inj₂ refl
+
+∧-conicalˡ : LeftConical true _∧_
+∧-conicalˡ true true _ = refl
+
+∧-conicalʳ : RightConical true _∧_
+∧-conicalʳ true true _ = refl
+
+∧-conical : Conical true _∧_
+∧-conical = ∧-conicalˡ , ∧-conicalʳ
 
 ∧-distribˡ-∨ : _∧_ DistributesOverˡ _∨_
 ∧-distribˡ-∨ true  y z = refl
@@ -608,20 +633,7 @@ true  <? _     = no  (λ())
   }
 
 ------------------------------------------------------------------------
--- Properties of _xor_
-
-xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
-xor-is-ok true  y = refl
-xor-is-ok false y = sym (∧-identityʳ _)
-
-xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
-xor-∧-commutativeRing = ⊕-∧-commutativeRing
-  where
-  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
-  open XorRing _xor_ xor-is-ok
-
-------------------------------------------------------------------------
--- Miscellaneous other properties
+-- Properties of not
 
 not-involutive : Involutive not
 not-involutive true  = refl
@@ -640,6 +652,84 @@ not-¬ {false} refl ()
 ¬-not {true}  {false} _   = refl
 ¬-not {false} {true}  _   = refl
 ¬-not {false} {false} x≢y = ⊥-elim (x≢y refl)
+
+------------------------------------------------------------------------
+-- Properties of _xor_
+
+xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
+xor-is-ok true  y = refl
+xor-is-ok false y = sym (∧-identityʳ _)
+
+true-xor : ∀ x → true xor x ≡ not x
+true-xor false = refl
+true-xor true  = refl
+
+xor-same : ∀ x → x xor x ≡ false
+xor-same false = refl
+xor-same true  = refl
+
+not-distribˡ-xor : ∀ x y → not (x xor y) ≡ (not x) xor y
+not-distribˡ-xor false y = refl
+not-distribˡ-xor true  y = not-involutive _
+
+not-distribʳ-xor : ∀ x y → not (x xor y) ≡ x xor (not y)
+not-distribʳ-xor false y = refl
+not-distribʳ-xor true  y = refl
+
+xor-assoc : Associative _xor_
+xor-assoc true  y z = sym (not-distribˡ-xor y z)
+xor-assoc false y z = refl
+
+xor-comm : Commutative _xor_
+xor-comm false false = refl
+xor-comm false true  = refl
+xor-comm true  false = refl
+xor-comm true  true  = refl
+
+xor-identityˡ : LeftIdentity false _xor_
+xor-identityˡ _ = refl
+
+xor-identityʳ : RightIdentity false _xor_
+xor-identityʳ false = refl
+xor-identityʳ true  = refl
+
+xor-identity : Identity false _xor_
+xor-identity = xor-identityˡ , xor-identityʳ
+
+xor-inverseˡ : LeftInverse true not _xor_
+xor-inverseˡ false = refl
+xor-inverseˡ true = refl
+
+xor-inverseʳ : RightInverse true not _xor_
+xor-inverseʳ x = xor-comm x (not x) ⟨ trans ⟩ xor-inverseˡ x
+
+xor-inverse : Inverse true not _xor_
+xor-inverse = xor-inverseˡ , xor-inverseʳ
+
+∧-distribˡ-xor : _∧_ DistributesOverˡ _xor_
+∧-distribˡ-xor false y z = refl
+∧-distribˡ-xor true  y z = refl
+
+∧-distribʳ-xor : _∧_ DistributesOverʳ _xor_
+∧-distribʳ-xor x false z    = refl
+∧-distribʳ-xor x true false = sym (xor-identityʳ x)
+∧-distribʳ-xor x true true  = sym (xor-same x)
+
+∧-distrib-xor : _∧_ DistributesOver _xor_
+∧-distrib-xor = ∧-distribˡ-xor , ∧-distribʳ-xor
+
+xor-annihilates-not : ∀ x y → (not x) xor (not y) ≡ x xor y
+xor-annihilates-not false y = not-involutive _
+xor-annihilates-not true  y = refl
+
+xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
+xor-∧-commutativeRing = ⊕-∧-commutativeRing
+  where
+  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
+  open XorRing _xor_ xor-is-ok
+
+------------------------------------------------------------------------
+-- Miscellaneous other properties
 
 ⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
 ⇔→≡ {true } {true }         hyp = refl
@@ -678,7 +768,21 @@ proof (T? false) = ofⁿ λ()
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _
 
-push-function-into-if : ∀ (f : A → B) x {y z} →
-                        f (if x then y else z) ≡ (if x then f y else f z)
-push-function-into-if _ true  = refl
-push-function-into-if _ false = refl
+if-float : ∀ (f : A → B) b {x y} →
+           f (if b then x else y) ≡ (if b then f x else f y)
+if-float _ true  = refl
+if-float _ false = refl
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+push-function-into-if = if-float
+{-# WARNING_ON_USAGE push-function-into-if
+"Warning: push-function-into-if was deprecated in v2.0.
+Please use if-float instead."
+#-}
