@@ -60,12 +60,11 @@ record RawMonad (F : Set f → Set g) : Set (suc f ⊔ g) where
 
 -- When level g=f, a join/μ operator is definable
 
-module Join {F : Set f → Set f} ⦃ M : RawMonad {f} {f} F ⦄ where
+module Join {F : Set f → Set f} ⦃ M : RawMonad F ⦄ where
   open RawMonad M
 
   join : F (F A) → F A
   join = _>>= id
-
 
 -- Smart constructor
 

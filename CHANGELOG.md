@@ -693,7 +693,7 @@ Non-backwards compatible changes
   are not computed using `_>>=_`. This may break proofs.
 
 * When `F : Set f → Set f` we moreover have a definable join/μ operator
-  `join : ⦃ M : RawMonad {f} {f} F ⦄ → F (F A) → F A`.
+  `join : ⦃ M : RawMonad F ⦄ → F (F A) → F A`.
 
 * We now have `RawEmpty` and `RawChoice` respectively packing `empty : M A` and
   `(<|>) : M A → M A → M A`. `RawApplicativeZero`, `RawAlternative`, `RawMonadZero`,
@@ -2603,7 +2603,7 @@ Other minor changes
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
   ```
 
-* Added new instances in `Data.Vec.Effectful`:
+* Added new instance in `Data.Vec.Effectful`:
   ```agda
   monad : RawMonad (λ (A : Set a) → Vec A n)
   ```
