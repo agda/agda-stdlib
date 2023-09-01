@@ -703,7 +703,6 @@ module KleeneAlgebraMorphisms (R₁ : RawKleeneAlgebra a ℓ₁) (R₂ : RawKlee
     )
 
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
   open SemiringMorphisms rawSemiring₁ rawSemiring₂
 
   record IsKleeneAlgebraHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -716,14 +715,14 @@ module KleeneAlgebraMorphisms (R₁ : RawKleeneAlgebra a ℓ₁) (R₂ : RawKlee
   record IsKleeneAlgebraMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isKleeneAlgebraHomomorphism   : IsKleeneAlgebraHomomorphism ⟦_⟧
-      injective                     : Injective ⟦_⟧
+      injective                     : Injective  _≈₁_ _≈₂_ ⟦_⟧
 
     open IsKleeneAlgebraHomomorphism isKleeneAlgebraHomomorphism public
 
   record IsKleeneAlgebraIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isKleeneAlgebraMonomorphism   : IsKleeneAlgebraMonomorphism ⟦_⟧
-      surjective                    : Surjective ⟦_⟧
+      surjective                    : Surjective  _≈₁_ _≈₂_ ⟦_⟧
 
     open IsKleeneAlgebraMonomorphism isKleeneAlgebraMonomorphism public
 
