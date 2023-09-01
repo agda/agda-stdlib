@@ -5,11 +5,11 @@
 -- functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Function.NonDependent.Setoid where
 
-open import Data.Product
+open import Data.Product.Base using (map; _,_; <_,_>; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Relation.Binary
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
@@ -32,6 +32,8 @@ module _  {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
           {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
           {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
           where
+
+  infixr 2 _×-⟶_
 
   _×-⟶_ : (A ⟶ B) → (C ⟶ D) → (A ×ₛ C) ⟶ (B ×ₛ D)
   _×-⟶_ f g = record
@@ -76,6 +78,8 @@ module _  {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
           {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
           where
 
+  infixr 2 _×-equivalence_ _×-injection_ _×-left-inverse_
+
   _×-equivalence_ : Equivalence A B → Equivalence C D →
                     Equivalence (A ×ₛ C) (B ×ₛ D)
   _×-equivalence_ A⇔B C⇔D = record
@@ -109,6 +113,8 @@ module _ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
   {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
   {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
   where
+
+  infixr 2 _×-surjection_ _×-inverse_
 
   _×-surjection_ : Surjection A B → Surjection C D →
                    Surjection (A ×ₛ C) (B ×ₛ D)

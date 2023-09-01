@@ -7,14 +7,14 @@
 
 -- The contents of this module should be accessed via `Algebra`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Bundles where
 
 import Algebra.Bundles.Raw as Raw
 open import Algebra.Core
 open import Algebra.Structures
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 open import Function.Base
 import Relation.Nullary as N
 open import Level

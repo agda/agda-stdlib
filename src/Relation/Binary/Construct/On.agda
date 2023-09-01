@@ -4,11 +4,11 @@
 -- Many properties which hold for `_∼_` also hold for `_∼_ on f`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.On where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_on_; _∘_)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level)

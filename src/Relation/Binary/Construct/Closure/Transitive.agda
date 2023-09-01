@@ -4,7 +4,7 @@
 -- Transitive closures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Closure.Transitive where
 
@@ -12,8 +12,10 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Induction.WellFounded
 open import Level
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable
@@ -38,6 +40,8 @@ syntax TransClosure R x y = x ⟨ R ⟩⁺ y
 module _ {_∼_ : Rel A ℓ} where
   private
     _∼⁺_ = TransClosure _∼_
+
+  infixr 5 _∷ʳ_
 
   _∷ʳ_ : ∀ {x y z} → (x∼⁺y : x ∼⁺ y) (y∼z : y ∼ z) → x ∼⁺ z
   [ x∼y ]      ∷ʳ y∼z = x∼y ∷ [ y∼z ]

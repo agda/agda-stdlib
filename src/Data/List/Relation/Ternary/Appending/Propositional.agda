@@ -4,18 +4,17 @@
 -- Appending of lists using propositional equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Ternary.Appending.Propositional
   {a} {A : Set a}
   where
 
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
 import Data.List.Properties as Listₚ
-import Data.List.Relation.Binary.Pointwise as Pw
-
+import Data.List.Relation.Binary.Pointwise as Pw using (≡⇒Pointwise-≡; Pointwise-≡⇒≡)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; setoid; refl; trans; cong₂; module ≡-Reasoning)
 
@@ -31,6 +30,8 @@ open General public
 
 ------------------------------------------------------------------------
 -- Definition
+
+infixr 5 _++_ _++[]
 
 _++_ : (as bs : List A) → Appending as bs (as List.++ bs)
 as ++ bs = Pw.≡⇒Pointwise-≡ refl General.++ Pw.≡⇒Pointwise-≡ refl

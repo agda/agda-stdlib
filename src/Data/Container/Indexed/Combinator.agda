@@ -4,7 +4,7 @@
 -- Indexed container combinators
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Indexed.Combinator where
 
@@ -12,10 +12,10 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Container.Indexed
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Unit.Polymorphic.Base using (⊤)
-open import Data.Product as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
-open import Data.Sum renaming (_⊎_ to _⟨⊎⟩_)
+open import Data.Product.Base as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
+open import Data.Sum.Base renaming (_⊎_ to _⟨⊎⟩_)
 open import Data.Sum.Relation.Unary.All as All using (All)
-open import Function as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
+open import Function.Base as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
 open import Function.Inverse using (_↔̇_; inverse)
 open import Level
 open import Relation.Unary using (Pred; _⊆_; _∪_; _∩_; ⋃; ⋂)

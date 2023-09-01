@@ -4,9 +4,10 @@
 -- Decidable setoid membership over lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Decidable; DecSetoid)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.Bundles using (DecSetoid)
 open import Relation.Nullary.Decidable using (¬?)
 
 module Data.List.Membership.DecSetoid {a ℓ} (DS : DecSetoid a ℓ) where

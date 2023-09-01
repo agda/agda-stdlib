@@ -6,7 +6,7 @@
 -- This module should not be imported directly! Please use
 -- `Data.Nat.Combinatorics` instead.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Combinatorics.Specification where
 
@@ -16,7 +16,7 @@ open import Data.Nat.DivMod
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
 open import Data.Nat.Combinatorics.Base
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; trans; _≢_)
 open import Relation.Nullary.Decidable using (yes; no; does)

@@ -4,11 +4,11 @@
 -- Properties of operations on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Properties where
 
-import Function as F
+import Function.Base as F
 open import Relation.Binary
 
 open import Data.Container.Core

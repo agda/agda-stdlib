@@ -17,7 +17,7 @@ open import Data.Irrelevant as Irrelevant using (Irrelevant) hiding (module Irre
 open import Data.List.Base as List   using (List; []; _∷_)
 open import Data.Nat.Base            using (ℕ; zero; suc; _+_; _⊔_; _≤_; z≤n)
 open import Data.Nat.Properties
-open import Data.Product as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
 import Data.Product.Relation.Unary.All as Allᴾ
 
 open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; mapₙ)
@@ -43,10 +43,11 @@ import Data.Refinement.Relation.Unary.All as Allᴿ
 ------------------------------------------------------------------------
 -- Block of text
 
--- Content is a representation of the first line and the middle of the block.
--- We use a tree rather than a list for the middle of the block so that we can
--- extend it with lines on the left and on the line for free. We will ultimately
--- render the block by traversing the tree left to right in a depth-first manner.
+-- Content is a representation of the first line and the middle of the
+-- block. We use a tree rather than a list for the middle of the block
+-- so that we can extend it with lines on the left and on the line for
+-- free. We will ultimately render the block by traversing the tree left
+-- to right in a depth-first manner.
 
 Content : Set
 Content = Maybe (String × Tree String ⊤)

@@ -4,7 +4,7 @@
 -- The composition of morphisms between algebraic lattice structures.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Algebra.Lattice.Morphism.Construct.Composition where
 
@@ -57,5 +57,5 @@ module _ {L₁ : RawLattice a ℓ₁}
     → IsLatticeIsomorphism L₁ L₃ (g ∘ f)
   isLatticeIsomorphism f-iso g-iso = record
     { isLatticeMonomorphism = isLatticeMonomorphism F.isLatticeMonomorphism G.isLatticeMonomorphism
-    ; surjective            = Func.surjective (_≈_ L₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    ; surjective            = Func.surjective _ _ (_≈_ L₃) F.surjective G.surjective
     } where module F = IsLatticeIsomorphism f-iso; module G = IsLatticeIsomorphism g-iso

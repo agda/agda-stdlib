@@ -6,7 +6,7 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Bundles where
 
@@ -21,6 +21,7 @@ open import Relation.Binary.Structures
 ------------------------------------------------------------------------
 
 record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
+  infix 4 _≈_
   field
     Carrier              : Set a
     _≈_                  : Rel Carrier ℓ

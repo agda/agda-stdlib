@@ -6,11 +6,11 @@
 
 -- For signed divisibility see `Data.Integer.Divisibility.Signed`
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Divisibility where
 
-open import Function
+open import Function.Base using (_on_; _$_)
 open import Data.Integer.Base
 open import Data.Integer.Properties
 import Data.Nat.Base as ℕ

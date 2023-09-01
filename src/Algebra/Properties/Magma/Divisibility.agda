@@ -4,10 +4,10 @@
 -- Divisibility over magmas
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Magma)
-open import Data.Product using (_×_; _,_; ∃; map; swap)
+open import Data.Product.Base using (_×_; _,_; ∃; map; swap)
 open import Relation.Binary.Definitions
 
 module Algebra.Properties.Magma.Divisibility {a ℓ} (M : Magma a ℓ) where

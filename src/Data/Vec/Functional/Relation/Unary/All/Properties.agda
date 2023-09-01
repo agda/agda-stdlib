@@ -4,17 +4,17 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Unary.All.Properties where
 
 open import Data.Fin.Base using (zero; suc; _↑ˡ_; _↑ʳ_; splitAt)
 open import Data.Fin.Properties using (splitAt-↑ˡ; splitAt-↑ʳ)
-open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Product.Base as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Unary.All
-open import Function
+open import Function.Base using (const; _∘_)
 open import Level using (Level)
 open import Relation.Unary
 

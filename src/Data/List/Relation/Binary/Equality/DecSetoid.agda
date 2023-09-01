@@ -4,7 +4,7 @@
 -- Pointwise decidable equality over lists parameterised by a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
@@ -14,7 +14,7 @@ module Data.List.Relation.Binary.Equality.DecSetoid
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Pointwise as PW
 open import Level
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 open DecSetoid DS
 
 ------------------------------------------------------------------------

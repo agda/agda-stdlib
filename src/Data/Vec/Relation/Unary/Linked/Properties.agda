@@ -4,7 +4,7 @@
 -- Properties related to Linked
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Unary.Linked.Properties where
 
@@ -19,8 +19,10 @@ open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
 open import Data.Nat.Properties using (<-pred)
 open import Level using (Level)
 open import Function.Base using (_∘_; flip; _on_)
-open import Relation.Binary using (Rel; Transitive; DecSetoid)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Transitive)
+open import Relation.Binary.Bundles using (DecSetoid)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable using (yes; no; does)
 

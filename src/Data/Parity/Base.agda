@@ -4,7 +4,7 @@
 -- Parity
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Parity.Base where
 
@@ -25,6 +25,8 @@ data Parity : Set where
 -- Operations
 
 -- The opposite parity.
+
+infix 8 _⁻¹
 
 _⁻¹ : Parity → Parity
 1ℙ ⁻¹ = 0ℙ

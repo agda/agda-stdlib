@@ -4,7 +4,7 @@
 -- Properties satisfied by bounded lattice
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -14,8 +14,8 @@ module Relation.Binary.Lattice.Properties.BoundedLattice
 open BoundedLattice L
 
 open import Algebra.Definitions _≈_
-open import Data.Product using (_,_)
-open import Relation.Binary using (Setoid)
+open import Data.Product.Base using (_,_)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
 open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
 

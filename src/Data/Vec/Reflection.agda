@@ -4,11 +4,11 @@
 -- Reflection utilities for Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Reflection where
 
-import Data.List as List
+import Data.List.Base as List
 open import Data.Vec.Base
 open import Reflection.AST.Term
 open import Reflection.AST.Argument
@@ -24,6 +24,8 @@ open import Reflection.AST.Argument
 
 `[] : Term
 `[] = con (quote []) (2 ⋯⟅∷⟆ List.[])
+
+infixr 5 _`∷_
 
 _`∷_ : Term → Term → Term
 _`∷_ x xs = con (quote _∷_) (3 ⋯⟅∷⟆ x ⟨∷⟩ xs ⟨∷⟩ List.[])

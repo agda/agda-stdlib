@@ -4,7 +4,7 @@
 -- IO: basic types and functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module IO.Base where
 
@@ -78,9 +78,9 @@ module _ {A B : Set a} where
 -- Running programs
 
 -- A value of type `IO A` is a description of a computation that may
--- eventually produce an `A`. The `run` function converts this description
--- of a computation into calls to primitive functions that will actually
--- perform it.
+-- eventually produce an `A`. The `run` function converts this
+-- description of a computation into calls to primitive functions that
+-- will actually perform it.
 
 {-# NON_TERMINATING #-}
 run : IO A → Prim.IO A

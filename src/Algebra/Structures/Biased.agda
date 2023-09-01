@@ -5,13 +5,15 @@
 -- be given in terms of others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
 open import Algebra.Consequences.Setoid
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Structures.Biased
   {a ℓ} {A : Set a}  -- The underlying set

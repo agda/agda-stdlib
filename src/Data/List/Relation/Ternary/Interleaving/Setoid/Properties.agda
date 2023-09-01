@@ -4,9 +4,9 @@
 -- Properties of interleaving using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Ternary.Interleaving.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
@@ -16,7 +16,7 @@ open import Data.Bool.Base using (true; false)
 open import Relation.Unary using (Decidable)
 open import Relation.Nullary.Decidable using (does)
 open import Relation.Nullary.Decidable using (¬?)
-open import Function
+open import Function.Base using (_∘_)
 
 open import Data.List.Relation.Binary.Equality.Setoid S using (≋-refl)
 open import Data.List.Relation.Ternary.Interleaving.Setoid S

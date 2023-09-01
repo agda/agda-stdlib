@@ -4,16 +4,16 @@
 -- Properties satisfied by preorders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
 module Relation.Binary.Properties.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
 
-open import Function.Base
-open import Data.Product as Prod
-import Relation.Binary.Construct.Converse as Converse
+open import Function.Base using (flip)
+open import Data.Product.Base as Prod using (_×_; _,_; swap)
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 
 open Preorder P
 
@@ -21,10 +21,10 @@ open Preorder P
 -- The inverse relation is also a preorder.
 
 converse-isPreorder : IsPreorder _≈_ (flip _∼_)
-converse-isPreorder = Converse.isPreorder isPreorder
+converse-isPreorder = EqAndOrd.isPreorder isPreorder
 
 converse-preorder : Preorder p₁ p₂ p₃
-converse-preorder = Converse.preorder P
+converse-preorder = EqAndOrd.preorder P
 
 ------------------------------------------------------------------------
 -- For every preorder there is an induced equivalence

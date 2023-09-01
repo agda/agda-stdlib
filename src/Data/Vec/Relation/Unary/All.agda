@@ -4,12 +4,12 @@
 -- Vectors where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Unary.All where
 
 open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
-open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
@@ -19,8 +19,9 @@ open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Decidable as Dec using (_×-dec_; yes; no)
 open import Relation.Unary hiding (_∈_)
-open import Relation.Binary using (Setoid; _Respects_)
-open import Relation.Binary.PropositionalEquality as P using (subst)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (_Respects_)
+open import Relation.Binary.PropositionalEquality.Core as P using (subst)
 
 private
   variable

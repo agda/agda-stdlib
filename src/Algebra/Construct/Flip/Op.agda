@@ -5,13 +5,13 @@
 -- algebraic properties.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Construct.Flip.Op where
 
 open import Algebra
-import Data.Product as Prod
-import Data.Sum as Sum
+import Data.Product.Base as Prod
+import Data.Sum.Base as Sum
 open import Function.Base using (flip)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)

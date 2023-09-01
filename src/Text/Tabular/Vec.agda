@@ -4,12 +4,12 @@
 -- Fancy display functions for Vec-based tables
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Text.Tabular.Vec where
 
 open import Data.List.Base using (List)
-open import Data.Product as Prod using (uncurry)
+open import Data.Product.Base as Prod using (uncurry)
 open import Data.String using (String; rectangle; fromAlignment)
 open import Data.Vec.Base
 open import Function.Base

@@ -4,7 +4,7 @@
 -- Extensional pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Binary.Pointwise.Extensional where
 
@@ -18,8 +18,11 @@ open import Function.Base using (_∘_)
 open import Function.Bundles using (module Equivalence; _⇔_; mk⇔)
 open import Function.Properties.Equivalence using (⇔-setoid)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel; REL; _⇒_; _=[_]⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
 open import Relation.Nullary
@@ -211,4 +214,3 @@ private
     ¬ix⁺∙jz (Equivalence.to Plus.equivalent
               (Plus.map (Equivalence.to equivalent)
                 (∙⁺⇒⁺∙ (Equivalence.from equivalent ix∙⁺jz))))
-

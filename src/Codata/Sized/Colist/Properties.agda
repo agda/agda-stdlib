@@ -4,7 +4,7 @@
 -- Properties of operations on the Colist type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Colist.Properties where
 
@@ -27,11 +27,11 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybeₚ
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
 open import Data.Nat.Base as ℕ using (zero; suc; z≤n; s≤s)
-open import Data.Product as Prod using (_×_; _,_; uncurry)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_; [_])
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 
 private
   variable
@@ -144,10 +144,10 @@ module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
 
   scanl-unfold : ∀ nil a → i ⊢ scanl cons nil (unfold alg a)
                              ≈ nil ∷ (λ where .force → unfold alg′ (a , nil))
-  scanl-unfold nil a with alg a | Eq.inspect alg a
-  ... | nothing       | [ eq ] = Eq.refl ∷ λ { .force →
+  scanl-unfold nil a with alg a in eq
+  ... | nothing      = Eq.refl ∷ λ { .force →
     sym (fromEq (unfold-nothing (Maybeₚ.map-nothing eq))) }
-  ... | just (a′ , b) | [ eq ] = Eq.refl ∷ λ { .force → begin
+  ... | just (a′ , b) = Eq.refl ∷ λ { .force → begin
     scanl cons (cons nil b) (unfold alg a′)
      ≈⟨ scanl-unfold (cons nil b) a′ ⟩
     (cons nil b ∷ _)
@@ -197,11 +197,11 @@ drop-nil : ∀ m → i ⊢ drop {A = A} m [] ≈ []
 drop-nil zero    = []
 drop-nil (suc m) = []
 
-drop-drop-fusion : ∀ m n (as : Colist A ∞) →
+drop-drop : ∀ m n (as : Colist A ∞) →
                    i ⊢ drop n (drop m as) ≈ drop (m ℕ.+ n) as
-drop-drop-fusion zero    n as       = refl
-drop-drop-fusion (suc m) n []       = drop-nil n
-drop-drop-fusion (suc m) n (a ∷ as) = drop-drop-fusion m n (as .force)
+drop-drop zero    n as       = refl
+drop-drop (suc m) n []       = drop-nil n
+drop-drop (suc m) n (a ∷ as) = drop-drop m n (as .force)
 
 map-drop : ∀ (f : A → B) m as → i ⊢ map f (drop m as) ≈ drop m (map f as)
 map-drop f zero    as       = refl
@@ -350,4 +350,10 @@ map-map-fusion = map-∘
 {-# WARNING_ON_USAGE map-map-fusion
 "Warning: map-map-fusion was deprecated in v2.0.
 Please use map-∘ instead."
+#-}
+
+drop-drop-fusion = drop-drop
+{-# WARNING_ON_USAGE drop-drop-fusion
+"Warning: drop-drop-fusion was deprecated in v2.0.
+Please use drop-drop instead."
 #-}

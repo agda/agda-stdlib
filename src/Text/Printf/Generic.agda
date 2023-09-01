@@ -4,7 +4,7 @@
 -- Generic printf function.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Text.Printf.Generic where
 
@@ -13,7 +13,7 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Char.Base
 open import Data.Maybe.Base hiding (map)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.Product.Nary.NonDependent
 open import Data.String.Base
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)

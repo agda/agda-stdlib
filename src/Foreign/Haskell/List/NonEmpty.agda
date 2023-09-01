@@ -4,7 +4,7 @@
 -- The NonEmpty type which calls out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module Foreign.Haskell.List.NonEmpty where
 
@@ -24,6 +24,8 @@ private
 
 data NonEmpty (A : Set a) : Set a where
   _∷_ : A → List A → NonEmpty A
+
+infixr 5 _∷_
 
 {-# FOREIGN GHC type AgdaNonEmpty l a = NE.NonEmpty a #-}
 {-# COMPILE GHC NonEmpty = data AgdaNonEmpty ((NE.:|)) #-}

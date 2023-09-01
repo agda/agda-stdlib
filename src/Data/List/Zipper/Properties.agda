@@ -4,7 +4,7 @@
 -- List Zipper-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Zipper.Properties where
 
@@ -15,7 +15,7 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
 open import Relation.Binary.PropositionalEquality
 open ≡-Reasoning
-open import Function
+open import Function.Base using (_on_; _$′_; _$_; flip)
 
 -- Invariant: Zipper represents a given list
 ------------------------------------------------------------------------

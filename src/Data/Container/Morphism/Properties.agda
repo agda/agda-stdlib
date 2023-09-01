@@ -4,14 +4,14 @@
 -- Propertiers of any for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Morphism.Properties where
 
 open import Level using (_⊔_; suc)
-open import Function as F using (_$_)
-open import Data.Product using (∃; proj₁; proj₂; _,_)
-open import Relation.Binary using (Setoid)
+open import Function.Base as F using (_$_)
+open import Data.Product.Base using (∃; proj₁; proj₂; _,_)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 
 open import Data.Container.Core

@@ -4,15 +4,14 @@
 -- Various forms of induction for natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Induction where
 
 open import Data.Nat.Base
 open import Data.Nat.Properties using (<⇒<′)
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base
-open import Function.Base
 open import Induction
 open import Induction.WellFounded as WF
 open import Level using (Level)
@@ -91,10 +90,10 @@ module _ {ℓ : Level} where
 -- the first billion proofs. Use this when you require the function
 -- using the proof of well-foundedness to evaluate fast.
 --
--- IMPORTANT: You have to be a little bit careful when using this to always
--- make the function be strict in some other argument than the accessibility
--- proof, otherwise you will have neutral terms unfolding a billion times
--- before getting stuck.
+-- IMPORTANT: You have to be a little bit careful when using this to
+-- always make the function be strict in some other argument than the
+-- accessibility proof, otherwise you will have neutral terms unfolding
+-- a billion times before getting stuck.
 <-wellFounded-fast : WellFounded _<_
 <-wellFounded-fast = <-wellFounded-skip 1000000000
   where
@@ -109,4 +108,3 @@ module _ {ℓ : Level} where
              ; wfRec        to <-rec
              )
     hiding (wfRec-builder)
-

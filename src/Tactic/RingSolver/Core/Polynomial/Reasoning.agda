@@ -4,7 +4,7 @@
 -- Polynomial reasoning
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
 

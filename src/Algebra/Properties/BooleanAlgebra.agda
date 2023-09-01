@@ -4,7 +4,7 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
@@ -30,7 +30,7 @@ open import Algebra.Structures _≈_
 open import Relation.Binary
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; module Equivalence)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

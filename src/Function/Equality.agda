@@ -4,7 +4,7 @@
 -- Function setoids and related constructions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Note: use of the standard function hierarchy is encouraged. The
 -- module `Function` re-exports `Congruent`, `IsBijection` and
@@ -14,8 +14,8 @@
 module Function.Equality where
 
 import Function.Base as Fun
-open import Level
-open import Relation.Binary using (Setoid)
+open import Level using (Level; _⊔_)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid; _=[_]⇒_)
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial

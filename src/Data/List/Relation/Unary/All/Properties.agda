@@ -4,7 +4,7 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.All.Properties where
 
@@ -25,20 +25,22 @@ open import Data.List.Relation.Unary.All as All using
   )
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
-open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
-open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
+import Function.Bundles as B
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
-open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
 open import Level using (Level)
-open import Relation.Binary as B using (REL; Setoid; _Respects_)
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Bundles using (Setoid)
+import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Nullary
@@ -405,8 +407,8 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ++⁻ []       p          = [] , p
 ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
 
-++↔ : (All P xs × All P ys) ↔ All P (xs ++ ys)
-++↔ {xs = zs} = inverse (uncurry ++⁺) (++⁻ zs) ++⁻∘++⁺ (++⁺∘++⁻ zs)
+++↔ : (All P xs × All P ys) B.↔ All P (xs ++ ys)
+++↔ {xs = zs} = B.mk↔′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
   where
   ++⁺∘++⁻ : ∀ xs (p : All P (xs ++ ys)) → uncurry′ ++⁺ (++⁻ xs p) ≡ p
   ++⁺∘++⁻ []       p          = refl
@@ -731,7 +733,7 @@ module _ (S : Setoid c ℓ) where
   open Setoid S
   open ListEq S
 
-  respects : P Respects _≈_ → (All P) Respects _≋_
+  respects : P B.Respects _≈_ → (All P) B.Respects _≋_
   respects p≈ []            []         = []
   respects p≈ (x≈y ∷ xs≈ys) (px ∷ pxs) = p≈ x≈y px ∷ respects p≈ xs≈ys pxs
 

@@ -5,7 +5,7 @@
 -- of elements /not/ in a given list
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -20,18 +20,19 @@ open import Function.Base
 open import Function.Bundles
   using (Injection; module Injection)
 open import Data.Bool.Base using (true; false)
-open import Data.List hiding (lookup)
+open import Data.List.Base hiding (lookup)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product
+open import Data.Product.Base using (∃; _,_; _×_)
 open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (dec-true; dec-false)
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; _≢_; refl; cong)
 open PropEq.≡-Reasoning
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 private
   open module D = DecSetoid D

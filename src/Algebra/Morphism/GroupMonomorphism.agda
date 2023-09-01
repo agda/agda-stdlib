@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
@@ -26,7 +26,7 @@ open RawGroup G₂ renaming
 
 open import Algebra.Definitions
 open import Algebra.Structures
-open import Data.Product
+open import Data.Product.Base using (_,_)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------

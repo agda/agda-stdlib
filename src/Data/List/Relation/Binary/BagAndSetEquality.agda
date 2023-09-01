@@ -4,7 +4,7 @@
 -- Bag and set equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
@@ -23,7 +23,7 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum hiding (map)
 open import Data.Sum.Properties hiding (map-cong)

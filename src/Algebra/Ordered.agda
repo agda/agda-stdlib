@@ -6,7 +6,7 @@
 -- operations, etc.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Ordered where
 

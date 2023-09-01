@@ -4,7 +4,7 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles
 
@@ -13,8 +13,8 @@ module Algebra.Properties.Group {g₁ g₂} (G : Group g₁ g₂) where
 open Group G
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Function
-open import Data.Product
+open import Function.Base using (_$_; _⟨_⟩_)
+open import Data.Product.Base using (_,_; proj₂)
 
 ε⁻¹≈ε : ε ⁻¹ ≈ ε
 ε⁻¹≈ε = begin

@@ -4,7 +4,7 @@
 -- Support for system calls as part of reflection
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.External where
 
@@ -12,11 +12,11 @@ import Agda.Builtin.Reflection.External as Builtin
 
 open import Data.Nat.Base using (ℕ; suc; zero; NonZero)
 open import Data.List.Base using (List; _∷_; [])
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.String.Base as String using (String; _++_)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Unit.Base using (⊤; tt)
-open import Function using (case_of_; _$_; _∘_)
+open import Function.Base using (case_of_; _$_; _∘_)
 open import Reflection hiding (name)
 
 -- Type aliases for the various strings.
@@ -26,8 +26,8 @@ StdIn   = String
 StdErr  = String
 StdOut  = String
 
--- Representation for exit codes, assuming 0 is consistently used to indicate
--- success across platforms.
+-- Representation for exit codes, assuming 0 is consistently used to
+-- indicate success across platforms.
 data ExitCode : Set where
   exitSuccess : ExitCode
   exitFailure : (n : ℕ) {n≢0 : NonZero n} → ExitCode

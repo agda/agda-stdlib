@@ -4,7 +4,7 @@
 -- Properties of operations on M-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.M.Properties where
 
@@ -15,10 +15,11 @@ open import Codata.Sized.M
 open import Codata.Sized.M.Bisimilarity
 open import Data.Container.Core as C hiding (map)
 import Data.Container.Morphism as Mp
-open import Data.Product as Prod using (_,_)
+open import Data.Product.Base as Prod using (_,_)
 open import Data.Product.Properties hiding (map-cong)
 open import Function.Base using (_$′_; _∘′_)
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Properties as P
 
 open import Data.Container.Relation.Binary.Pointwise using (_,_)
 import Data.Container.Relation.Binary.Equality.Setoid as EqSetoid

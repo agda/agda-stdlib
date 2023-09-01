@@ -4,18 +4,18 @@
 -- Almost commutative rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Tactic.RingSolver.Core.AlmostCommutativeRing where
 
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Structures using (IsCommutativeSemiring)
 open import Algebra.Definitions
 open import Algebra.Bundles using (RawRing; CommutativeRing; CommutativeSemiring)
 import Algebra.Morphism as Morphism
-open import Function hiding (Morphism)
+open import Function.Base using (id)
 open import Level
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 

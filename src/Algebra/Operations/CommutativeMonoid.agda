@@ -4,7 +4,7 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.List.Base as List using (List; []; _∷_; _++_)
@@ -12,7 +12,7 @@ open import Data.Fin.Base using (Fin; zero)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 module Algebra.Operations.CommutativeMonoid
   {s₁ s₂} (CM : CommutativeMonoid s₁ s₂)

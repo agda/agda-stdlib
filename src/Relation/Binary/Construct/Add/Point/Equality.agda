@@ -4,7 +4,7 @@
 -- A pointwise lifting of a relation to incorporate an additional point.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Point
@@ -16,13 +16,15 @@ module Relation.Binary.Construct.Add.Point.Equality
 
 open import Level using (_⊔_)
 open import Function.Base
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Point
 import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
 -- Definition
+
+infix 4 _≈∙_
 
 data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
   ∙≈∙ :                     ∙     ≈∙ ∙

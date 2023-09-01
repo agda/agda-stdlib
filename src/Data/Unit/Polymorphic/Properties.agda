@@ -5,13 +5,13 @@
 -- Defines Decidable Equality and Decidable Ordering as well
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Unit.Polymorphic.Properties where
 
 open import Level
 open import Function.Bundles using (_↔_; mk↔)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁)
 open import Data.Unit.Base renaming (⊤ to ⊤*)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)

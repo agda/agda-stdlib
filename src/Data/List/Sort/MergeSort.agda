@@ -8,7 +8,7 @@
 -- import and use the sorting algorithm from `Data.List.Sort` instead
 -- of this file.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Bool using (true; false)
 open import Data.List.Base
@@ -24,9 +24,9 @@ open import Relation.Nullary.Decidable using (does)
 open import Data.Nat using (_<_; _>_; z<s; s<s)
 open import Data.Nat.Induction
 open import Data.Nat.Properties using (m<n⇒m<1+n)
-open import Data.Product as Prod using (_,_)
+open import Data.Product.Base as Prod using (_,_)
 open import Function.Base using (_∘_)
-open import Relation.Binary using (DecTotalOrder)
+open import Relation.Binary.Bundles using (DecTotalOrder)
 open import Relation.Nullary.Negation using (¬_)
 
 module Data.List.Sort.MergeSort
@@ -113,4 +113,3 @@ mergeSort = record
   ; sort-↭ = sort-↭
   ; sort-↗ = sort-↗
   }
-

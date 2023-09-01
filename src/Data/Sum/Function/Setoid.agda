@@ -4,7 +4,7 @@
 -- Sum combinators for setoid equality preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Sum.Function.Setoid where
 
@@ -31,6 +31,8 @@ module _  {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
           {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
           {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
           where
+
+  infixr 1 _⊎-⟶_
 
   _⊎-⟶_ : (A ⟶ B) → (C ⟶ D) → (A ⊎ₛ C) ⟶ (B ⊎ₛ D)
   _⊎-⟶_ f g = record
@@ -77,6 +79,8 @@ module _  {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
           {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
           where
 
+  infixr 1 _⊎-equivalence_ _⊎-injection_ _⊎-left-inverse_
+
   _⊎-equivalence_ : Equivalence A B → Equivalence C D →
                     Equivalence (A ⊎ₛ C) (B ⊎ₛ D)
   A⇔B ⊎-equivalence C⇔D = record
@@ -119,6 +123,7 @@ module _ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
          {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
          where
 
+  infixr 1 _⊎-surjection_ _⊎-inverse_
   _⊎-surjection_ : Surjection A B → Surjection C D →
                    Surjection (A ⊎ₛ C) (B ⊎ₛ D)
   A↠B ⊎-surjection C↠D = record

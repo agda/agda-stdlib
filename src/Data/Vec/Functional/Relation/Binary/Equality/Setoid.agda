@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations over Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Functional as VF hiding (map)
@@ -13,7 +13,7 @@ open import Data.Vec.Functional.Relation.Binary.Pointwise
 import Data.Vec.Functional.Relation.Binary.Pointwise.Properties as PW
 open import Level using (Level)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 module Data.Vec.Functional.Relation.Binary.Equality.Setoid
   {a ℓ} (S : Setoid a ℓ) where
@@ -23,6 +23,8 @@ open Setoid S renaming (Carrier to A)
 ------------------------------------------------------------------------
 -- Definition
 ------------------------------------------------------------------------
+
+infix 4 _≋_
 
 _≋_ : ∀ {n} → Vector A n → Vector A n → Set ℓ
 _≋_ = Pointwise _≈_

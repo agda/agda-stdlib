@@ -4,7 +4,7 @@
 -- Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Rational where
 
@@ -26,7 +26,7 @@ open import Data.Rational.Properties public
 -- Version 1.5
 
 import Data.Integer.Show as ℤ
-open import Data.String using (String; _++_)
+open import Data.String.Base using (String; _++_)
 
 show : ℚ → String
 show p = ℤ.show (↥ p) ++ "/" ++ ℤ.show (↧ p)

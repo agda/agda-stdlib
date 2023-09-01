@@ -4,12 +4,12 @@
 -- Exponentiation over a semiring optimised for type-checking.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Nat.Base as ℕ using (zero; suc)
 import Data.Nat.Properties as ℕ
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 module Algebra.Properties.Semiring.Exp.TCOptimised

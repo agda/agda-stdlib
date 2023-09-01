@@ -4,13 +4,13 @@
 -- Propertiers of any for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Relation.Unary.Any.Properties where
 
 open import Level
 open import Algebra
-open import Data.Product as Prod using (∃; _×_; ∃₂; _,_; proj₂)
+open import Data.Product.Base using (∃; _×_; ∃₂; _,_; proj₂)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
@@ -22,7 +22,7 @@ open import Function.Inverse as Inv using (_↔_; inverse; module Inverse)
 open import Function.Related as Related using (Related; SK-sym)
 open import Function.Related.TypeIsomorphisms
 open import Relation.Unary using (Pred ; _∪_ ; _∩_)
-open import Relation.Binary using (REL)
+open import Relation.Binary.Core using (REL)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_; refl)
 

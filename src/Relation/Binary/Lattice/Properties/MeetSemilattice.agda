@@ -4,7 +4,7 @@
 -- Properties satisfied by meet semilattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -14,7 +14,6 @@ module Relation.Binary.Lattice.Properties.MeetSemilattice
 open MeetSemilattice M
 
 open import Algebra.Definitions _≈_
-open import Data.Product
 open import Function.Base using (flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset

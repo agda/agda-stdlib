@@ -6,18 +6,21 @@
 
 -- The contents of this file should usually be accessed from `Function`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Function.Structures {a b ℓ₁ ℓ₂}
   {A : Set a} (_≈₁_ : Rel A ℓ₁) -- Equality over the domain
   {B : Set b} (_≈₂_ : Rel B ℓ₂) -- Equality over the codomain
   where
 
-open import Data.Product using (∃; _×_; _,_)
+open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base
 open import Function.Definitions
+open import Function.Consequences
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
@@ -64,6 +67,9 @@ record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
 
   open IsCongruent isCongruent public
 
+  strictlySurjective : StrictlySurjective _≈₂_ f
+  strictlySurjective x = Product.map₂ (λ v → v Eq₁.refl) (surjective x)
+
 
 record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
@@ -81,6 +87,9 @@ record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     ; surjective  = surjective
     }
 
+  open IsSurjection isSurjection public
+    using (strictlySurjective)
+
 
 ------------------------------------------------------------------------
 -- Two element structures
@@ -95,6 +104,9 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
   open IsCongruent isCongruent public
     renaming (cong to to-cong)
 
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  strictlyInverseˡ x = inverseˡ Eq₁.refl
+
 
 record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
@@ -104,6 +116,9 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
 
   open IsCongruent isCongruent public
     renaming (cong to cong₁)
+
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  strictlyInverseʳ x = inverseʳ Eq₂.refl
 
 
 record IsInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -119,6 +134,9 @@ record IsInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ �
     ; from-cong   = from-cong
     ; inverseʳ    = inverseʳ
     }
+
+  open IsRightInverse isRightInverse public
+    using (strictlyInverseʳ)
 
   inverse : Inverseᵇ _≈₁_ _≈₂_ to from
   inverse = inverseˡ , inverseʳ

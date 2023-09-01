@@ -4,9 +4,9 @@
 -- Finite sets, based on AVL trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Sets
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -16,7 +16,7 @@ open import Data.Bool.Base using (Bool)
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base using (ℕ)
-open import Data.Product as Prod using (_×_; _,_; proj₁)
+open import Data.Product.Base as Prod using (_×_; _,_; proj₁)
 open import Data.Unit.Base
 open import Function.Base
 open import Level using (Level; _⊔_)
@@ -50,10 +50,8 @@ insert k = AVL.insert k _
 delete : A → ⟨Set⟩ → ⟨Set⟩
 delete = AVL.delete
 
-infix 4 _∈?_
-
-_∈?_ : A → ⟨Set⟩ → Bool
-_∈?_ = AVL._∈?_
+member : A → ⟨Set⟩ → Bool
+member = AVL.member
 
 headTail : ⟨Set⟩ → Maybe (A × ⟨Set⟩)
 headTail s = Maybe.map (Prod.map₁ proj₁) (AVL.headTail s)
@@ -87,3 +85,20 @@ intersection = AVL.intersection
 
 intersections : List ⟨Set⟩ → ⟨Set⟩
 intersections = AVL.intersections
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infixl 4 _∈?_
+_∈?_ : A → ⟨Set⟩ → Bool
+_∈?_ = member
+{-# WARNING_ON_USAGE _∈?_
+"Warning: _∈?_ was deprecated in v2.0.
+Please use member instead."
+#-}

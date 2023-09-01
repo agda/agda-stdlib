@@ -4,7 +4,7 @@
 -- Properties of the Any predicate on colists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Relation.Unary.Any.Properties where
 
@@ -21,7 +21,7 @@ open import Function.Base using (_∋_; _∘_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; cong)
 open import Relation.Unary using (Pred)

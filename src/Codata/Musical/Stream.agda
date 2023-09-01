@@ -4,7 +4,7 @@
 -- Streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Stream where
 
@@ -13,8 +13,10 @@ open import Codata.Musical.Notation
 open import Codata.Musical.Colist using (Colist; []; _∷_)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 private
   variable

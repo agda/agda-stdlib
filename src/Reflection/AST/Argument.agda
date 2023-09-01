@@ -4,15 +4,15 @@
 -- Arguments used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.Argument where
 
-open import Data.List.Base as List                using (List; []; _∷_)
-open import Data.Product                          using (_×_; <_,_>; uncurry)
-open import Relation.Nullary.Decidable            using (Dec; map′; _×-dec_)
-open import Relation.Binary                       using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
+open import Data.List.Base as List                     using (List; []; _∷_)
+open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
+open import Relation.Nullary.Decidable                 using (Dec; map′; _×-dec_)
+open import Relation.Binary.Definitions                using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 open import Level
 
 open import Reflection.AST.Argument.Visibility
@@ -79,8 +79,8 @@ arg-injective = < arg-injective₁ , arg-injective₂ >
 
 -- We often need decidability of equality for Arg A when implementing it
 -- for A. Unfortunately ≡-dec makes the termination checker unhappy.
--- Instead, we can match on both Arg A and use unArg-dec for an obviously
--- decreasing recursive call.
+-- Instead, we can match on both Arg A and use unArg-dec for an
+-- obviously decreasing recursive call.
 
 unArg : Arg A → A
 unArg (arg i a) = a

@@ -4,7 +4,7 @@
 -- Properties of infinite streams defined as coinductive records
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Guarded.Stream.Properties where
 
@@ -16,11 +16,11 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
 import Data.Nat.GeneralisedArithmetic as ℕ
-open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_×_; _,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function.Base using (const; flip; id; _∘′_; _$′_; _⟨_⟩_; _∘₂′_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; cong; cong₂)
 
 private
   variable
@@ -268,9 +268,9 @@ take-zipWith (suc n) f as bs =
 ------------------------------------------------------------------------
 -- Properties of drop
 
-drop-fusion : ∀ m n (as : Stream A) → drop n (drop m as) ≡ drop (m + n) as
-drop-fusion zero    n as = P.refl
-drop-fusion (suc m) n as = drop-fusion m n (as .tail)
+drop-drop : ∀ m n (as : Stream A) → drop n (drop m as) ≡ drop (m + n) as
+drop-drop zero    n as = P.refl
+drop-drop (suc m) n as = drop-drop m n (as .tail)
 
 drop-zipWith : ∀ n (f : A → B → C) as bs →
                drop n (zipWith f as bs) ≡ zipWith f (drop n as) (drop n bs)
@@ -330,4 +330,10 @@ map-fusion = map-∘
 {-# WARNING_ON_USAGE map-fusion
 "Warning: map-fusion was deprecated in v2.0.
 Please use map-∘ instead."
+#-}
+
+drop-fusion = drop-drop
+{-# WARNING_ON_USAGE drop-fusion
+"Warning: drop-fusion was deprecated in v2.0.
+Please use drop-drop instead."
 #-}

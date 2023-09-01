@@ -4,13 +4,13 @@
 -- ANSI escape codes
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module System.Console.ANSI where
 
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Nat.Base using (ℕ; _+_)
-import Data.Nat.Show as ℕ
+import Data.Nat.Show as ℕ using (show)
 open import Data.String.Base using (String; concat; intersperse)
 open import Function.Base using (_$_; case_of_)
 

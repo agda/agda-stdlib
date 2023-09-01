@@ -4,7 +4,7 @@
 -- Some properties about integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Properties where
 
@@ -21,11 +21,10 @@ open import Data.Nat as ℕ
   hiding (module ℕ)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
-open import Data.Product using (proj₁; proj₂; _,_)
+open import Data.Product.Base using (proj₁; proj₂; _,_; _×_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
-open import Data.Product using (_×_)
 open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
 open import Relation.Binary

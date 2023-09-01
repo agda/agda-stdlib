@@ -4,11 +4,14 @@
 -- Properties of divisibility over monoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Monoid)
-open import Data.Product using (_,_)
-open import Relation.Binary
+open import Data.Product.Base using (_,_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Preorder)
+open import Relation.Binary.Structures using (IsPreorder; IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive)
 
 module Algebra.Properties.Monoid.Divisibility
   {a ℓ} (M : Monoid a ℓ) where

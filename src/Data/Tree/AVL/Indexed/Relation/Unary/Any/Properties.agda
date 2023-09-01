@@ -4,29 +4,34 @@
 -- Properties related to Any
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
+open import Data.Maybe.Properties using (just-injective)
 open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product as Prod using (∃; _,_; proj₂)
+open import Data.Product.Base as Prod using (∃; ∃-syntax; _×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base as F
 open import Level using (Level)
 
-open import Relation.Binary using (_Respects_; tri<; tri≈; tri>)
-open import Relation.Unary using (Pred)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Binary.Definitions using (_Respects_; tri<; tri≈; tri>)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_) renaming (refl to ≡-refl)
+open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Unary using (Pred; _∩_)
 
 open import Data.Tree.AVL.Indexed sto as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any sto as Any
-open StrictTotalOrder sto renaming (Carrier to Key); open Eq using (_≉_; sym; refl)
+open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq using (_≉_; sym; trans)
+
+open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 
 import Relation.Binary.Reasoning.StrictPartialOrder as <-Reasoning
 
@@ -34,10 +39,11 @@ import Relation.Binary.Reasoning.StrictPartialOrder as <-Reasoning
 private
   variable
     v p q : Level
+    k : Key
     V : Value v
     l u : Key⁺
     n : ℕ
-    P : Pred (K& V) p
+    P Q : Pred (K& V) p
 
 ------------------------------------------------------------------------
 -- Any.lookup
@@ -53,6 +59,14 @@ lookup-bounded {t = node kv lk ku bal} (left p)  =
   Prod.map₂ (flip (trans⁺ _) (ordered ku)) (lookup-bounded p)
 lookup-bounded {t = node kv lk ku bal} (right p) =
   Prod.map₁ (trans⁺ _ (ordered lk)) (lookup-bounded p)
+
+lookup-rebuild : {t : Tree V l u n} (p : Any P t) → Q (Any.lookup p) → Any Q t
+lookup-rebuild (here _)  q = here q
+lookup-rebuild (left p)  q = left (lookup-rebuild p q)
+lookup-rebuild (right p) q = right (lookup-rebuild p q)
+
+lookup-rebuild-accum : {t : Tree V l u n} (p : Any P t) → Q (Any.lookup p) → Any (Q ∩ P) t
+lookup-rebuild-accum p q = lookup-rebuild p (q , lookup-result p)
 
 joinˡ⁺-here⁺ : ∀ {l u hˡ hʳ h} →
              (kv : K& V) →
@@ -148,14 +162,90 @@ joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (
 joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (left (right p)) = right (left p)
 joinʳ⁺-right⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  (right p)        = right (right p)
 
-------------------------------------------------------------------------
--- insert
+joinˡ⁺⁻ : ∀ {l u hˡ hʳ h} →
+            (kv@(k , v) : K& V) →
+            (l : ∃ λ i → Tree V l [ k ] (i ⊕ hˡ)) →
+            (r : Tree V [ k ] u hʳ) →
+            (bal : hˡ ∼ hʳ ⊔ h) →
+            Any P (proj₂ (joinˡ⁺ kv l r bal)) →
+            P kv ⊎ Any P (proj₂ l) ⊎ Any P r
+joinˡ⁺⁻ k₂ (0# , t₁)                       t₃ ba = Any.toSum
+joinˡ⁺⁻ k₂ (1# , t₁)                       t₃ ∼0 = Any.toSum
+joinˡ⁺⁻ k₂ (1# , t₁)                       t₃ ∼+ = Any.toSum
+joinˡ⁺⁻ k₄ (1# , node k₂ t₁ t₃ ∼-)         t₅ ∼- = λ where
+  (left p)          → inj₂ (inj₁ (left p))
+  (here p)          → inj₂ (inj₁ (here p))
+  (right (left p))  → inj₂ (inj₁ (right p))
+  (right (here p))  → inj₁ p
+  (right (right p)) → inj₂ (inj₂ p)
+joinˡ⁺⁻ k₄ (1# , node k₂ t₁ t₃ ∼0)         t₅ ∼- = λ where
+  (left p)          → inj₂ (inj₁ (left p))
+  (here p)          → inj₂ (inj₁ (here p))
+  (right (left p))  → inj₂ (inj₁ (right p))
+  (right (here p))  → inj₁ p
+  (right (right p)) → inj₂ (inj₂ p)
+joinˡ⁺⁻ k₆ (1# , node⁺ k₂ t₁ k₄ t₃ t₅ bal) t₇ ∼- = λ where
+  (left (left p))   → inj₂ (inj₁ (left p))
+  (left (here p))   → inj₂ (inj₁ (here p))
+  (left (right p))  → inj₂ (inj₁ (right (left p)))
+  (here p)          → inj₂ (inj₁ (right (here p)))
+  (right (left p))  → inj₂ (inj₁ (right (right p)))
+  (right (here p))  → inj₁ p
+  (right (right p)) → inj₂ (inj₂ p)
+
+joinʳ⁺⁻ : ∀ {l u hˡ hʳ h} →
+            (kv : K& V) →
+            (l : Tree V l [ kv .key ] hˡ) →
+            (r : ∃ λ i → Tree V [ kv .key ] u (i ⊕ hʳ)) →
+            (bal : hˡ ∼ hʳ ⊔ h) →
+            Any P (proj₂ (joinʳ⁺ kv l r bal)) →
+            P kv ⊎ Any P l ⊎ Any P (proj₂ r)
+joinʳ⁺⁻ k₂ t₁ (0# , t₃)                       bal = Any.toSum
+joinʳ⁺⁻ k₂ t₁ (1# , t₃)                       ∼0  = Any.toSum
+joinʳ⁺⁻ k₂ t₁ (1# , t₃)                       ∼-  = Any.toSum
+joinʳ⁺⁻ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+)         ∼+  = λ where
+  (left (left p))  → inj₂ (inj₁ p)
+  (left (here p))  → inj₁ p
+  (left (right p)) → inj₂ (inj₂ (left p))
+  (here p)         → inj₂ (inj₂ (here p))
+  (right p)        → inj₂ (inj₂ (right p))
+joinʳ⁺⁻ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0)         ∼+  = λ where
+  (left (left p))  → inj₂ (inj₁ p)
+  (left (here p))  → inj₁ p
+  (left (right p)) → inj₂ (inj₂ (left p))
+  (here p)         → inj₂ (inj₂ (here p))
+  (right p)        → inj₂ (inj₂ (right p))
+joinʳ⁺⁻ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+  = λ where
+  (left (left p))   → inj₂ (inj₁ p)
+  (left (here p))   → inj₁ p
+  (left (right p))  → inj₂ (inj₂ (left (left p)))
+  (here p)          → inj₂ (inj₂ (left (here p)))
+  (right (left p))  → inj₂ (inj₂ (left (right p)))
+  (right (here p))  → inj₂ (inj₂ (here p))
+  (right (right p)) → inj₂ (inj₂ (right p))
 
 module _ {V : Value v} where
 
   private
     Val  = Value.family V
     Val≈ = Value.respects V
+
+  singleton⁺ : {P : Pred (K& V) p} →
+               (k : Key) →
+               (v : Val k) →
+               (l<k<u : l < k < u) →
+               P (k , v) → Any P (singleton k v l<k<u)
+  singleton⁺ k v l<k<u Pkv = here Pkv
+
+  singleton⁻ : {P : Pred (K& V) p} →
+               (k : Key) →
+               (v : Val k) →
+               (l<k<u : l < k < u) →
+               Any P (singleton k v l<k<u) → P (k , v)
+  singleton⁻ k v l<k<u (here Pkv) = Pkv
+
+  ----------------------------------------------------------------------
+  -- insert
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
 
@@ -263,3 +353,69 @@ module _ {V : Value v} where
             (p : Any P t) → k ≉ Any.lookupKey p →
             Any P (proj₂ (insert k v t seg))
   insert⁺ k v = insertWith⁺ k (F.const v)
+
+  module _
+    {P : Pred (K& V) p}
+    (P-Resp : ∀ {k k′ v} → (k≈k′ : k ≈ k′) → P (k′ , Val≈ k≈k′ v) → P (k , v))
+    (k : Key) (v : Val k)
+    where
+
+    insert⁻ : (t : Tree V l u n) (seg : l < k < u) →
+              Any P (proj₂ (insert k v t seg)) →
+              P (k , v) ⊎ Any (λ{ (k′ , v′) → k ≉ k′ × P (k′ , v′)}) t
+    insert⁻ (leaf l<u) seg (here p) = inj₁ p
+    insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p with compare k k′
+    insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri< k<k′ k≉k′ _
+        with joinˡ⁺⁻ kv′ (insert k v l (l<k , [ k<k′ ]ᴿ)) r bal p
+    ... | inj₁ p        = inj₂ (here (k≉k′ , p))
+    ... | inj₂ (inj₂ p) = inj₂ (right (lookup-rebuild-accum p k≉p))
+      where
+      k′<p = [<]-injective (proj₁ (lookup-bounded p))
+      k≉p = λ k≈p → irrefl k≈p (<-trans k<k′ k′<p)
+    ... | inj₂ (inj₁ p) = Sum.map₂ (λ q → left q) (insert⁻ l (l<k , [ k<k′ ]ᴿ) p)
+    insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri> _ k≉k′ k′<k
+        with joinʳ⁺⁻ kv′ l (insert k v r ([ k′<k ]ᴿ , k<u)) bal p
+    ... | inj₁ p        = inj₂ (here (k≉k′ , p))
+    ... | inj₂ (inj₁ p) = inj₂ (left (lookup-rebuild-accum p k≉p))
+      where
+      p<k′ = [<]-injective (proj₂ (lookup-bounded p))
+      k≉p = λ k≈p → irrefl (sym k≈p) (<-trans p<k′ k′<k)
+    ... | inj₂ (inj₂ p) = Sum.map₂ (λ q → right q) (insert⁻ r ([ k′<k ]ᴿ , k<u) p)
+    insert⁻ (node kv′@(k′ , v′) l r bal) (l<k , k<u) p | tri≈ _ k≈k′ _
+        with p
+    ... | left p  = inj₂ (left (lookup-rebuild-accum p k≉p))
+      where
+      p<k′ = [<]-injective (proj₂ (lookup-bounded p))
+      k≉p = λ k≈p → irrefl (trans (sym k≈p) k≈k′) p<k′
+    ... | here p  = inj₁ (P-Resp k≈k′ p)
+    ... | right p = inj₂ (right (lookup-rebuild-accum p k≉p))
+      where
+      k′<p = [<]-injective (proj₁ (lookup-bounded p))
+      k≉p = λ k≈p → irrefl (trans (sym k≈k′) k≈p) k′<p
+
+  lookup⁺ : (t : Tree V l u n) (k : Key) (seg : l < k < u) →
+            (p : Any P t) →
+            key (Any.lookup p) ≉ k ⊎ ∃[ p≈k ] AVL.lookup t k seg ≡ just (Val≈ p≈k (value (Any.lookup p)))
+  lookup⁺ (node (k′ , v′) l r bal) k (l<k , k<u) p
+      with compare k′ k | p
+  ... | tri< k′<k _ _ | right p = lookup⁺ r k ([ k′<k ]ᴿ , k<u) p
+  ... | tri≈ _ k′≈k _ | here p = inj₂ (k′≈k , ≡-refl)
+  ... | tri> _ _ k<k′ | left p = lookup⁺ l k (l<k , [ k<k′ ]ᴿ) p
+  ... | tri< k′<k _ _ | left p = inj₁ (λ p≈k → irrefl p≈k (<-trans p<k′ k′<k))
+    where p<k′ = [<]-injective (proj₂ (lookup-bounded p))
+  ... | tri< k′<k _ _ | here p = inj₁ (λ p≈k → irrefl p≈k k′<k)
+  ... | tri≈ _ k′≈k _ | left p = inj₁ (λ p≈k → irrefl (trans p≈k (sym k′≈k)) p<k′)
+    where p<k′ = [<]-injective (proj₂ (lookup-bounded p))
+  ... | tri≈ _ k′≈k _ | right p = inj₁ (λ p≈k → irrefl (trans k′≈k (sym p≈k)) k′<p)
+    where k′<p = [<]-injective (proj₁ (lookup-bounded p))
+  ... | tri> _ _ k<k′ | here p = inj₁ (λ p≈k → irrefl (sym p≈k) k<k′)
+  ... | tri> _ _ k<k′ | right p = inj₁ (λ p≈k → irrefl (sym p≈k) (<-trans k<k′ k′<p))
+    where k′<p = [<]-injective (proj₁ (lookup-bounded p))
+
+  lookup⁻ : (t : Tree V l u n) (k : Key) (v : Val k) (seg : l < k < u) →
+            AVL.lookup t k seg ≡ just v →
+            Any (λ{ (k′ , v′) → ∃ λ k′≈k → Val≈ k′≈k v′ ≡ v}) t
+  lookup⁻ (node (k′ , v′) l r bal) k v (l<k , k<u) eq with compare k′ k
+  ... | tri< k′<k _ _ = right (lookup⁻ r k v ([ k′<k ]ᴿ , k<u) eq)
+  ... | tri≈ _ k′≈k _ = here (k′≈k , just-injective eq)
+  ... | tri> _ _ k<k′ = left (lookup⁻ l k v (l<k , [ k<k′ ]ᴿ) eq)

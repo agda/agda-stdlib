@@ -4,21 +4,21 @@
 -- Non empty trie, basic type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Trie.NonEmpty {k e r} (S : StrictTotalOrder k e r) where
 
 open import Level
 open import Size
 open import Effect.Monad
-open import Data.Product as Prod using (∃; uncurry; -,_)
+open import Data.Product.Base as Prod using (∃; uncurry; -,_)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
-open import Function as F
+open import Function.Base as F
 import Function.Identity.Effectful as Identity
 open import Relation.Unary using (_⇒_; IUniversal)
 
@@ -35,10 +35,10 @@ open Value
 ------------------------------------------------------------------------
 -- Definition
 
--- A Trie⁺ is a tree branching over an alphabet of Keys. It stores values
--- indexed over the Word (i.e. List Key) that was read to reach them.
--- Each node in the Trie⁺ contains either a value, a non-empty Tree of
--- sub-Trie⁺ reached by reading an extra letter, or both.
+-- A Trie⁺ is a tree branching over an alphabet of Keys. It stores
+-- values indexed over the Word (i.e. List Key) that was read to reach
+-- them. Each node in the Trie⁺ contains either a value, a non-empty
+-- Tree of sub-Trie⁺ reached by reading an extra letter, or both.
 
 Word : Set k
 Word = List Key

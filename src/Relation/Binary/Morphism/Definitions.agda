@@ -4,7 +4,7 @@
 -- Basic definitions for morphisms between algebraic structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core
 

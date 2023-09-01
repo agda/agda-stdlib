@@ -4,7 +4,7 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (MoufangLoop)
 
@@ -13,7 +13,7 @@ module Algebra.Properties.MoufangLoop {a ℓ} (M : MoufangLoop a ℓ) where
 open MoufangLoop M
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Data.Product
+open import Data.Product.Base using (_,_)
 
 alternativeˡ : LeftAlternative _∙_
 alternativeˡ x y = begin

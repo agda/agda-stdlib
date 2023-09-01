@@ -6,7 +6,7 @@
 
 -- Note that currently the monad laws are not included here.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Predicate where
 
@@ -14,8 +14,8 @@ open import Effect.Applicative.Indexed
 open import Effect.Monad
 open import Effect.Monad.Indexed
 open import Data.Unit
-open import Data.Product
-open import Function
+open import Data.Product.Base using (_,_)
+open import Function.Base using (const; id; _∘_)
 open import Level
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary

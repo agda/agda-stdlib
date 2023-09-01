@@ -6,7 +6,7 @@
 
 -- The contents of this module should be accessed via `Function.Metric`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Metric.Bundles  where
 
@@ -22,6 +22,7 @@ open import Function.Metric.Core
 
 record ProtoMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
                  : Set (suc (a ⊔ i ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃)) where
+  infix 4 _≈_ _≈ᵢ_ _≤_
   field
     Carrier       : Set a
     Image         : Set i
@@ -39,6 +40,7 @@ record ProtoMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
 
 record PreMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
                : Set (suc (a ⊔ i ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃)) where
+  infix 4 _≈_ _≈ᵢ_ _≤_
   field
     Carrier     : Set a
     Image       : Set i
@@ -61,6 +63,8 @@ record PreMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
 
 record QuasiSemiMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
                      : Set (suc (a ⊔ i ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃)) where
+
+  infix 4 _≈_ _≈ᵢ_ _≤_
   field
     Carrier           : Set a
     Image             : Set i
@@ -86,6 +90,7 @@ record QuasiSemiMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
 
 record SemiMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
                 : Set (suc (a ⊔ i ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃)) where
+  infix 4 _≈_ _≈ᵢ_ _≤_
   field
     Carrier      : Set a
     Image        : Set i
@@ -120,6 +125,8 @@ record SemiMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
 
 record GeneralMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
                    : Set (suc (a ⊔ i ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃)) where
+  infix 4 _≈_ _≈ᵢ_ _≤_
+  infixl 6 _∙_
   field
     Carrier         : Set a
     Image           : Set i

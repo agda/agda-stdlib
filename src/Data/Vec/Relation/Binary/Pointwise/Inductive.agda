@@ -4,20 +4,20 @@
 -- Inductive pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Binary.Pointwise.Inductive where
 
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product using (_×_; _,_; uncurry; <_,_>)
+open import Data.Product.Base using (_×_; _,_; uncurry; <_,_>)
 open import Data.Vec.Base as Vec hiding ([_]; head; tail; map; lookup; uncons)
 open import Data.Vec.Relation.Unary.All using (All; []; _∷_)
 open import Level using (Level; _⊔_)
 open import Function.Base using (_∘_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary.Decidable using (yes; no; _×-dec_; map′)
 open import Relation.Unary using (Pred)
 
@@ -216,6 +216,16 @@ module _ {_∼_ : REL A B ℓ} where
               (∀ i → f i ∼ g i)
   tabulate⁻ (f₀∼g₀ ∷ _)   zero    = f₀∼g₀
   tabulate⁻ (_     ∷ f∼g) (suc i) = tabulate⁻ f∼g i
+
+------------------------------------------------------------------------
+-- cong
+
+module _ {_∼_ : Rel A ℓ} (refl : Reflexive _∼_) where
+  cong-[_]≔ : ∀ {n} i p {xs} {ys} →
+              Pointwise _∼_ {n} xs ys →
+              Pointwise _∼_ (xs [ i ]≔ p) (ys [ i ]≔ p)
+  cong-[ zero ]≔  p (_   ∷ eqn) = refl ∷ eqn
+  cong-[ suc i ]≔ p (x∼y ∷ eqn) = x∼y  ∷ cong-[ i ]≔ p eqn
 
 ------------------------------------------------------------------------
 -- Degenerate pointwise relations

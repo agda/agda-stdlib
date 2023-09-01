@@ -4,7 +4,7 @@
 -- Bundles for local algebraic structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Apartness.Bundles where
 

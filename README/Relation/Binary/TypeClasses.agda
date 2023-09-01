@@ -4,7 +4,7 @@
 -- Usage examples of typeclasses for binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Relation.Binary.TypeClasses where
 
@@ -19,7 +19,7 @@ open import Data.List.Instances
 open import Data.List.Relation.Binary.Lex.NonStrict using (Lex-≤)
 open import Data.Nat.Base renaming (_≤_ to _≤ℕ_)
 open import Data.Nat.Instances
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_; Σ)
 open import Data.Product.Instances
 open import Data.Unit.Base renaming (_≤_ to _≤⊤_)
 open import Data.Unit.Instances

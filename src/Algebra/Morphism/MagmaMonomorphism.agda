@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
 open import Algebra.Bundles
@@ -25,7 +25,7 @@ open RawMagma M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_)
 
 open import Algebra.Structures
 open import Algebra.Definitions
-open import Data.Product
+open import Data.Product.Base using (map)
 open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 import Relation.Binary.Morphism.RelMonomorphism isRelMonomorphism as RelMorphism

@@ -21,7 +21,7 @@
 --     right-scaling coincide.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Bundles where
 
@@ -34,7 +34,7 @@ open import Algebra.Module.Definitions
 open import Algebra.Properties.Group
 open import Function.Base
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary    using (¬_)
 import Relation.Binary.Reasoning.Setoid as SetR
 

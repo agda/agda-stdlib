@@ -15,10 +15,10 @@
 --   0         ∎
 
 -- Module `≡-Reasoning` in `Relation.Binary.PropositionalEquality`
--- is recommended for equational reasoning when the underlying equality is
--- `_≡_`.
+-- is recommended for equational reasoning when the underlying equality
+-- is `_≡_`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary
 
@@ -29,7 +29,6 @@ open Setoid S
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
--- open import Relation.Binary.Reasoning.PartialSetoid partialSetoid public
 open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans as Base public
   hiding (step-∼)
 

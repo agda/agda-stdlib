@@ -11,7 +11,7 @@
 -- Product-based similar setting.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 
@@ -21,7 +21,7 @@ open import Data.These.Base
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Function
+open import Function.Base using (flip; _∘_)
 
 Theseᵣ : Set (a ⊔ b) → Set (a ⊔ b)
 Theseᵣ A = These A B

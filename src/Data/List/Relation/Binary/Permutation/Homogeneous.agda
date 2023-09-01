@@ -4,13 +4,15 @@
 -- A definition for the permutation relation using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Homogeneous where
 
 open import Data.List.Base using (List; _∷_)
-open import Data.List.Relation.Binary.Pointwise as Pointwise
+open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
   using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise.Properties as Pointwise
+  using (symmetric)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
 

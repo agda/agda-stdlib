@@ -4,9 +4,9 @@
 -- Regular expressions: basic types and semantics
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Preorder)
+open import Relation.Binary.Bundles using (Preorder)
 
 module Text.Regex.Base {a e r} (P : Preorder a e r) where
 
@@ -16,12 +16,9 @@ open import Data.Bool.Base using (Bool)
 open import Data.List.Base as L using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any)
 open import Data.List.Relation.Unary.All using (All)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_)
 
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Unary using (Pred)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary.Negation.Core using (¬_)
 
 open Preorder P using (_≈_) renaming (Carrier to A; _∼_ to _≤_)
 open import Data.List.Relation.Ternary.Appending.Propositional {A = A}

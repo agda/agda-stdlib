@@ -4,19 +4,19 @@
 -- An effectful view of List⁺
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.NonEmpty.Effectful where
 
 open import Agda.Builtin.List
 import Data.List.Effectful as List
 open import Data.List.NonEmpty.Base
-open import Data.Product using (uncurry)
+open import Data.Product.Base using (uncurry)
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
 open import Effect.Comonad
-open import Function
+open import Function.Base using (flip; _∘′_; _∘_)
 
 ------------------------------------------------------------------------
 -- List⁺ applicative functor

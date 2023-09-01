@@ -4,12 +4,12 @@
 -- Some theory for CancellativeCommutativeSemiring.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Semiring)
 open import Data.Sum.Base using (reduce)
 open import Function.Base using (flip)
-open import Relation.Binary using (Symmetric)
+open import Relation.Binary.Definitions using (Symmetric)
 
 module Algebra.Properties.Semiring.Primality
   {a ℓ} (R : Semiring a ℓ)

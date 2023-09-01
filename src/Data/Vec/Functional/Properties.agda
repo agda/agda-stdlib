@@ -4,7 +4,7 @@
 -- Some Vector-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Properties where
 
@@ -12,16 +12,16 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Nat as ℕ
 import Data.Nat.Properties as ℕₚ
-open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
-open import Data.List as L using (List)
+open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
+open import Data.List.Base as L using (List)
 import Data.List.Properties as Lₚ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Vec as V using (Vec)
+open import Data.Vec.Base as V using (Vec)
 import Data.Vec.Properties as Vₚ
 open import Data.Vec.Functional
 open import Function.Base
 open import Level using (Level)
-open import Relation.Binary as B
+open import Relation.Binary.Definitions using (DecidableEquality; Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; map′; _×-dec_)
@@ -46,8 +46,8 @@ module _ {n} {xs ys : Vector A (suc n)} where
   ∷-injective : xs ≗ ys → head xs ≡ head ys × tail xs ≗ tail ys
   ∷-injective eq = eq zero , eq ∘ suc
 
-≗-dec : B.DecidableEquality A →
-        ∀ {n} → B.Decidable {A = Vector A n} _≗_
+≗-dec : DecidableEquality A →
+        ∀ {n} → Decidable {A = Vector A n} _≗_
 ≗-dec _≟_ {zero}  xs ys = yes λ ()
 ≗-dec _≟_ {suc n} xs ys =
   map′ (Product.uncurry ∷-cong) ∷-injective

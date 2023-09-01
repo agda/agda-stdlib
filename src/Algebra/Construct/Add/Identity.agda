@@ -5,7 +5,7 @@
 -- identity element
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Construct.Add.Identity where
 
@@ -14,7 +14,7 @@ open import Algebra.Core using (Op₂)
 open import Algebra.Definitions
 open import Algebra.Structures
 open import Relation.Binary.Construct.Add.Point.Equality renaming (_≈∙_ to lift≈)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions

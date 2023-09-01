@@ -4,11 +4,11 @@
 -- Notation for freely adding extrema to any set
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Construct.Add.Extrema where
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Nullary.Construct.Add.Infimum  as Infimum  using (_₋)
 open import Relation.Nullary.Construct.Add.Supremum as Supremum using (_⁺)
 

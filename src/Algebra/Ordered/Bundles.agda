@@ -8,7 +8,7 @@
 
 -- The contents of this module should be accessed via `Algebra.Order`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Ordered.Bundles where
 
@@ -16,7 +16,7 @@ open import Algebra.Core
 open import Algebra.Bundles
 open import Algebra.Ordered.Structures
 open import Level using (suc; _⊔_)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Preorder; Poset)
 
 ------------------------------------------------------------------------

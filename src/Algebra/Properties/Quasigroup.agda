@@ -4,7 +4,7 @@
 -- Some basic properties of Quasigroup
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Quasigroup)
 
@@ -13,7 +13,7 @@ module Algebra.Properties.Quasigroup {q₁ q₂} (Q : Quasigroup q₁ q₂) wher
 open Quasigroup Q
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Data.Product
+open import Data.Product.Base using (_,_)
 
 cancelˡ : LeftCancellative _∙_
 cancelˡ x y z eq = begin

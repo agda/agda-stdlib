@@ -4,7 +4,7 @@
 -- Rational numbers in non-reduced form.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Rational.Unnormalised.Base where
 
@@ -117,7 +117,7 @@ infixl 7 _/_
 _/_ : (n : ℤ) (d : ℕ) .{{_ : ℕ.NonZero d}} → ℚᵘ
 n / suc d = mkℚᵘ n d
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some constants
 
 0ℚᵘ : ℚᵘ
@@ -190,24 +190,25 @@ nonNegative : ∀ {p} → p ≥ 0ℚᵘ → NonNegative p
 nonNegative {mkℚᵘ +0       _} (*≤* _) = _
 nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Operations on rationals
 
--- Explanation for `@record{}` everywhere: combined with no-eta-equality on
--- the record definition of ℚᵘ above, these annotations prevent the operations
--- from automatically expanding unless their arguments are explicitly pattern
--- matched on.
+-- Explanation for `@record{}` everywhere: combined with no-eta-equality
+-- on the record definition of ℚᵘ above, these annotations prevent the
+-- operations from automatically expanding unless their arguments are
+-- explicitly pattern matched on.
 --
--- For example prior to their addition, `p + q` would often be normalised by
--- Agda to `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While in this
--- small example this isn't a big problem, it leads to an exponential blowup
--- when you have large arithmetic expressions which would often choke
--- both type-checking and the display code. For example, the normalised
--- form of `p + q + r + s + t + u` would be ~300 lines long.
+-- For example prior to their addition, `p + q` would often be
+-- normalised by Agda to `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`.
+-- While in this small example this isn't a big problem, it leads to an
+-- exponential blowup when you have large arithmetic expressions which
+-- would often choke both type-checking and the display code. For
+-- example, the normalised form of `p + q + r + s + t + u` would be
+-- ~300 lines long.
 --
--- This is fundementally a problem with Agda, so if over-eager normalisation
--- is ever fixed in Agda (e.g. with glued representation of terms) these
--- annotations can be removed.
+-- This is fundementally a problem with Agda, so if over-eager
+-- normalisation is ever fixed in Agda (e.g. with glued representation
+-- of terms) these annotations can be removed.
 
 infix  8 -_ 1/_
 infixl 7 _*_ _÷_ _⊓_

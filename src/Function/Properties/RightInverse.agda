@@ -4,16 +4,17 @@
 -- Conversions for right inverses
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Properties.RightInverse where
 
 open import Function.Base
 open import Function.Bundles
-open import Function.Consequences using (inverseʳ⇒surjective)
+open import Function.Consequences using (inverseˡ⇒surjective)
 open import Level using (Level)
-open import Data.Product
-open import Relation.Binary using (Setoid; IsEquivalence)
+open import Data.Product.Base using (_,_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 private
   variable
@@ -27,7 +28,7 @@ RightInverse⇒Surjection : RightInverse S T → Surjection T S
 RightInverse⇒Surjection I = record
   { to         = from
   ; cong       = from-cong
-  ; surjective = λ a → to a , inverseʳ a
+  ; surjective = inverseˡ⇒surjective Eq₁._≈_ inverseʳ
   } where open RightInverse I
 
 ↪⇒↠ : B ↪ A → A ↠ B

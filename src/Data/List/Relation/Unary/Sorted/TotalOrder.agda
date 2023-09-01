@@ -4,9 +4,9 @@
 -- Sorted lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (TotalOrder)
+open import Relation.Binary.Bundles using (TotalOrder)
 
 module Data.List.Relation.Unary.Sorted.TotalOrder
   {a ℓ₁ ℓ₂} (totalOrder : TotalOrder a ℓ₁ ℓ₂) where
@@ -17,9 +17,9 @@ open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Unary.Linked as Linked using (Linked)
 open import Level using (_⊔_)
 open import Relation.Unary as U using (Pred; _⊆_)
-open import Relation.Binary as B
+open import Relation.Binary.Definitions as B
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 Sorted : Pred (List A) (a ⊔ ℓ₂)
@@ -47,4 +47,3 @@ irrelevant = Linked.irrelevant
 
 satisfiable : U.Satisfiable Sorted
 satisfiable = Linked.satisfiable
-

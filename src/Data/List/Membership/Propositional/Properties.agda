@@ -4,7 +4,7 @@
 -- Properties related to propositional list membership
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Membership.Propositional.Properties where
 
@@ -22,7 +22,7 @@ open import Data.List.Relation.Binary.Equality.Propositional
 open import Data.List.Effectful using (monad)
 open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
 open import Data.Nat.Properties
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
@@ -34,7 +34,8 @@ open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
@@ -43,7 +44,7 @@ import Relation.Nullary.Reflects as Reflects
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (excluded-middle)
+open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -79,6 +80,13 @@ mapWith∈-cong (x ∷ xs) f g cong = P.cong₂ _∷_ (cong (here refl))
 mapWith∈≗map : ∀ (f : A → B) xs → mapWith∈ xs (λ {x} _ → f x) ≡ map f xs
 mapWith∈≗map f xs =
   ≋⇒≡ (Membershipₛ.mapWith∈≗map (P.setoid _) (P.setoid _) f xs)
+
+mapWith∈-id : (xs : List A) → mapWith∈ xs (λ {x} _ → x) ≡ xs
+mapWith∈-id = Membershipₛ.mapWith∈-id (P.setoid _)
+
+map-mapWith∈ : (xs : List A) (f : ∀ {x} → x ∈ xs → B) (g : B → C) →
+               map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+map-mapWith∈ = Membershipₛ.map-mapWith∈ (P.setoid _)
 
 ------------------------------------------------------------------------
 -- map
@@ -337,7 +345,7 @@ module _ {_•_ : Op₂ A} where
 
 finite : (f : ℕ ↣ A) → ∀ xs → ¬ (∀ i → Injection.to f ⟨$⟩ i ∈ xs)
 finite inj []       fᵢ∈[]   = ¬Any[] (fᵢ∈[] 0)
-finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
+finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
   where
   open Injection inj renaming (injective to f-inj)
 

@@ -4,7 +4,7 @@
 -- Equivalence (coinhabitance)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Equivalence where
 
@@ -17,7 +17,8 @@ open import Function.Base using (flip)
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
 open import Level
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Reflexive; TransFlip; Sym)
 import Relation.Binary.PropositionalEquality as P
 
 ------------------------------------------------------------------------

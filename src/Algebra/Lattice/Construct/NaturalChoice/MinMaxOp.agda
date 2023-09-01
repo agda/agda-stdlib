@@ -4,11 +4,11 @@
 -- Properties of min and max operators specified over a total preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice.Bundles
 open import Algebra.Construct.NaturalChoice.Base
-open import Relation.Binary
+open import Relation.Binary.Bundles using (TotalPreorder)
 
 module Algebra.Lattice.Construct.NaturalChoice.MinMaxOp
   {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂}

@@ -4,11 +4,11 @@
 -- Pointwise products of binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Data.Product.Properties using (≡-dec)
 open import Data.Sum.Base
 open import Data.Unit.Base using (⊤)
@@ -27,7 +27,8 @@ open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
 open import Relation.Nullary.Decidable using (_×-dec_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 

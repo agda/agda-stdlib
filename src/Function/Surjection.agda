@@ -4,7 +4,7 @@
 -- Surjections
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Note: use of the standard function hierarchy is encouraged. The
 -- module `Function` re-exports `Surjective`, `IsSurjection` and
@@ -19,8 +19,7 @@ open import Function.Equality as F
 open import Function.Equivalence using (Equivalence)
 open import Function.Injection           hiding (id; _∘_; injection)
 open import Function.LeftInverse as Left hiding (id; _∘_)
-open import Data.Product
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------

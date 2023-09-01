@@ -6,14 +6,14 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Definitions where
 
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Data.Maybe.Base using (Maybe)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
 open import Level
