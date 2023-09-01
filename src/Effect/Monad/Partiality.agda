@@ -72,6 +72,9 @@ monad = record
   ; _>>=_  = bind
   }
 
+monadWithJoin : RawMonadWithJoin {f = f} _⊥
+monadWithJoin = record { rawMonad = monad }
+
 private module M {f} = RawMonad (monad {f})
 
 -- Non-termination.

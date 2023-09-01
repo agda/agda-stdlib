@@ -47,3 +47,6 @@ comonad = record
   { extract = runIdentity
   ; extend  = λ f a → mkIdentity (f a)
   }
+
+monadWithJoin : RawMonadWithJoin {a} Identity
+monadWithJoin = record { rawMonad = monad }
