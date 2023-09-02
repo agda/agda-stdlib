@@ -17,7 +17,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.Definitions using (Symmetric; Reflexive)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric)
 
 private
   variable
