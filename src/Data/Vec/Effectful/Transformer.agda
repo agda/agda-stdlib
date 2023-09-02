@@ -16,7 +16,7 @@ open import Effect.Monad
 open import Function.Base
 open import Level
 
-import Data.Vec.Effectful as Vec
+open import Data.Vec.Effectful as Vec using (join)
 
 private
   variable
@@ -50,7 +50,7 @@ monad {f} {g} M = record
   ; _>>=_ = λ ma k → mkVecT $ do
                       a ← runVecT ma
                       bs ← mapM {a = f} (runVecT ∘′ k) a
-                      pure (Vec.DiagonalBind.join bs)
+                      pure (join bs)
   } where open RawMonad M; open Vec.TraversableM {m = f} {n = g} M
 
 monadT : RawMonadT {f} {g} (VecT n)
