@@ -189,9 +189,6 @@ module DiagonalBind where
   _>>=_ : Vec A n → (A → Vec B n) → Vec B n
   xs >>= f = diagonal (map f xs)
 
-  join : Vec (Vec A n) n → Vec A n
-  join = _>>= id
-
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
 
@@ -358,3 +355,20 @@ last xs with initLast xs
 transpose : Vec (Vec A n) m → Vec (Vec A m) n
 transpose []         = replicate []
 transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+join : Vec (Vec A n) n → Vec A n
+join = _>>= id where open DiagonalBind
+
+{-# WARNING_ON_USAGE join
+"Warning: join was deprecated in v2.0
+Please use Data.Vec.Effectful.join instead."
+#-}

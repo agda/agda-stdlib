@@ -1393,6 +1393,11 @@ Deprecated names
   map-compose     ↦  map-∘
   ```
 
+* In `Data.Vec.Base`:
+  ```
+  join ↦  Data.Vec.Effectful.join
+  ```
+
 * In `Data.Vec.Properties`:
   ```
   updateAt-id-relative      ↦  updateAt-id-local
