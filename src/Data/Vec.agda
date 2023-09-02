@@ -9,7 +9,7 @@
 
 -- See `Data.Vec.Functional` for an alternative implementation as
 -- functions from finite sets, which is more suitable for reasoning
--- about fixed sized vectors and for when ease of retrevial is
+-- about fixed sized vectors and for when ease of retrieval is
 -- important.
 
 {-# OPTIONS --cubical-compatible --safe #-}
