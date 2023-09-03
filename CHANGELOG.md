@@ -617,7 +617,7 @@ Non-backwards compatible changes
   * `IsSemiringWithoutAnnihilatingZero`
   * `IsRing`
 * To aid with migration, structures matching the old style ones have been added
-  to `Algebra.Structures.Biased`, with conversion Functions:
+  to `Algebra.Structures.Biased`, with conversion functions:
   * `IsNearSemiring*` and `isNearSemiring*`
   * `IsSemiringWithoutOne*` and `isSemiringWithoutOne*`
   * `IsSemiringWithoutAnnihilatingZero*` and `isSemiringWithoutAnnihilatingZero*`
