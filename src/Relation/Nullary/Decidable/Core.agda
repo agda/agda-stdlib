@@ -7,20 +7,20 @@
 -- Relation.Nullary.Decidable
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Decidable.Core where
 
 open import Level using (Level; Lift)
-open import Data.Bool.Base using (Bool; false; true; not; T)
+open import Data.Bool.Base using (Bool; false; true; not; T; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
-open import Data.Empty
-open import Data.Product
-open import Function.Base
-
-open import Agda.Builtin.Equality
+open import Data.Empty using (⊥)
+open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Product.Base using (_×_)
+open import Data.Sum.Base using (_⊎_)
+open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Reflects
-open import Relation.Nullary
+open import Relation.Nullary.Negation.Core
 
 private
   variable
@@ -28,20 +28,72 @@ private
     P : Set p
     Q : Set q
 
--- `isYes` is a stricter version of `does`. The lack of computation means that
--- we can recover the proposition `P` from `isYes P?` by unification. This is
--- useful when we are using the decision procedure for proof automation.
+------------------------------------------------------------------------
+-- Definition.
+
+-- Decidability proofs have two parts: the `does` term which contains
+-- the boolean result and the `proof` term which contains a proof that
+-- reflects the boolean result. This definition allows the boolean
+-- part of the decision procedure to compute independently from the
+-- proof. This leads to better computational behaviour when we only care
+-- about the result and not the proof. See README.Decidability for
+-- further details.
+
+infix 2 _because_
+
+record Dec {p} (P : Set p) : Set p where
+  constructor _because_
+  field
+    does  : Bool
+    proof : Reflects P does
+
+open Dec public
+
+pattern yes p =  true because ofʸ  p
+pattern no ¬p = false because ofⁿ ¬p
+
+------------------------------------------------------------------------
+-- Recompute
+
+-- Given an irrelevant proof of a decidable type, a proof can
+-- be recomputed and subsequently used in relevant contexts.
+recompute : ∀ {a} {A : Set a} → Dec A → .A → A
+recompute (yes x) _ = x
+recompute (no ¬p) x = ⊥-elim (¬p x)
+
+------------------------------------------------------------------------
+-- Interaction with negation, sum, product etc.
+
+infixr 1 _⊎-dec_
+infixr 2 _×-dec_ _→-dec_
+
+¬? : Dec P → Dec (¬ P)
+does  (¬? p?) = not (does p?)
+proof (¬? p?) = ¬-reflects (proof p?)
+
+_×-dec_ : Dec P → Dec Q → Dec (P × Q)
+does  (p? ×-dec q?) = does p? ∧ does q?
+proof (p? ×-dec q?) = proof p? ×-reflects proof q?
+
+_⊎-dec_ : Dec P → Dec Q → Dec (P ⊎ Q)
+does  (p? ⊎-dec q?) = does p? ∨ does q?
+proof (p? ⊎-dec q?) = proof p? ⊎-reflects proof q?
+
+_→-dec_ : Dec P → Dec Q → Dec (P → Q)
+does  (p? →-dec q?) = not (does p?) ∨ does q?
+proof (p? →-dec q?) = proof p? →-reflects proof q?
+
+------------------------------------------------------------------------
+-- Relationship with booleans
+
+-- `isYes` is a stricter version of `does`. The lack of computation
+-- means that we can recover the proposition `P` from `isYes P?` by
+-- unification. This is useful when we are using the decision procedure
+-- for proof automation.
 
 isYes : Dec P → Bool
-isYes ( true because _) = true
+isYes (true  because _) = true
 isYes (false because _) = false
-
-isYes≗does : (P? : Dec P) → isYes P? ≡ does P?
-isYes≗does ( true because _) = refl
-isYes≗does (false because _) = refl
-
--- The traditional name for isYes is ⌊_⌋, indicating the stripping of evidence.
-⌊_⌋ = isYes
 
 isNo : Dec P → Bool
 isNo = not ∘ isYes
@@ -52,20 +104,23 @@ True Q = T (isYes Q)
 False : Dec P → Set
 False Q = T (isNo Q)
 
--- Gives a witness to the "truth".
+-- The traditional name for isYes is ⌊_⌋, indicating the stripping of evidence.
+⌊_⌋ = isYes
 
+------------------------------------------------------------------------
+-- Witnesses
+
+-- Gives a witness to the "truth".
 toWitness : {Q : Dec P} → True Q → P
 toWitness {Q = true  because [p]} _  = invert [p]
 toWitness {Q = false because  _ } ()
 
 -- Establishes a "truth", given a witness.
-
 fromWitness : {Q : Dec P} → P → True Q
 fromWitness {Q = true  because   _ } = const _
 fromWitness {Q = false because [¬p]} = invert [¬p]
 
 -- Variants for False.
-
 toWitnessFalse : {Q : Dec P} → False Q → ¬ P
 toWitnessFalse {Q = true  because   _ } ()
 toWitnessFalse {Q = false because [¬p]} _  = invert [¬p]
@@ -74,10 +129,10 @@ fromWitnessFalse : {Q : Dec P} → ¬ P → False Q
 fromWitnessFalse {Q = true  because [p]} = flip _$_ (invert [p])
 fromWitnessFalse {Q = false because  _ } = const _
 
+module _ {p} {P : Set p} where
+
 -- If a decision procedure returns "yes", then we can extract the
 -- proof using from-yes.
-
-module _ {p} {P : Set p} where
 
   From-yes : Dec P → Set p
   From-yes (true  because _) = P
@@ -99,32 +154,35 @@ module _ {p} {P : Set p} where
   from-no (true  because   _ ) = _
 
 ------------------------------------------------------------------------
--- Result of decidability
-
-dec-true : (p? : Dec P) → P → does p? ≡ true
-dec-true (true  because   _ ) p = refl
-dec-true (false because [¬p]) p = ⊥-elim (invert [¬p] p)
-
-dec-false : (p? : Dec P) → ¬ P → does p? ≡ false
-dec-false (false because  _ ) ¬p = refl
-dec-false (true  because [p]) ¬p = ⊥-elim (¬p (invert [p]))
-
-dec-yes : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
-dec-yes p? p with dec-true p? p
-dec-yes (yes p′) p | refl = p′ , refl
-
-dec-no : (p? : Dec P) (¬p : ¬ P) → p? ≡ no ¬p
-dec-no p? ¬p with dec-false p? ¬p
-dec-no (no _) _ | refl = refl
-
-dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
-dec-yes-irr p? irr p with dec-yes p? p
-... | p′ , eq rewrite irr p p′ = eq
-
-------------------------------------------------------------------------
 -- Maps
 
 map′ : (P → Q) → (Q → P) → Dec P → Dec Q
 does  (map′ P→Q Q→P p?)                   = does p?
 proof (map′ P→Q Q→P (true  because  [p])) = ofʸ (P→Q (invert [p]))
 proof (map′ P→Q Q→P (false because [¬p])) = ofⁿ (invert [¬p] ∘ Q→P)
+
+------------------------------------------------------------------------
+-- Relationship with double-negation
+
+-- Decidable predicates are stable.
+
+decidable-stable : Dec P → Stable P
+decidable-stable (yes p) ¬¬p = p
+decidable-stable (no ¬p) ¬¬p = ⊥-elim (¬¬p ¬p)
+
+¬-drop-Dec : Dec (¬ ¬ P) → Dec (¬ P)
+¬-drop-Dec ¬¬p? = map′ negated-stable contradiction (¬? ¬¬p?)
+
+-- A double-negation-translated variant of excluded middle (or: every
+-- nullary relation is decidable in the double-negation monad).
+
+¬¬-excluded-middle : DoubleNegation (Dec P)
+¬¬-excluded-middle ¬h = ¬h (no (λ p → ¬h (yes p)))
+
+excluded-middle : DoubleNegation (Dec P)
+excluded-middle = ¬¬-excluded-middle
+
+{-# WARNING_ON_USAGE excluded-middle
+"Warning: excluded-middle was deprecated in v2.0.
+Please use ¬¬-excluded-middle instead."
+#-}

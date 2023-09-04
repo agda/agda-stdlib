@@ -4,7 +4,7 @@
 -- Documentation for subset relations over `List`s
 ------------------------------------------------------------------------
 
-open import Data.List using (List; _∷_; [])
+open import Data.List.Base using (List; _∷_; [])
 open import Data.List.Membership.Propositional.Properties
   using (∈-++⁺ˡ; ∈-insert)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
@@ -21,7 +21,8 @@ module README.Data.List.Relation.Binary.Subset where
 -- tell Agda which equality relation to use.
 
 -- Decidable equality over Strings
-open import Data.String using (String; _≟_)
+open import Data.String.Base using (String)
+open import Data.String.Properties using (_≟_)
 
 -- Open the decidable membership module using Decidable ≡ over Strings
 open import Data.List.Membership.DecPropositional _≟_

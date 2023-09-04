@@ -4,23 +4,24 @@
 -- A universe of proposition functors, along with some properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Universe where
 
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Binary hiding (_⇒_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Construct.Always as Always
-open import Relation.Binary.PropositionalEquality as PropEq
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
-open import Data.Sum     as Sum  hiding (map)
+open import Data.Sum.Base as Sum  hiding (map)
 open import Data.Sum.Relation.Binary.Pointwise
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Function
+open import Function.Base using (_∘_; id)
 import Function.Equality as FunS
 open import Data.Empty
 open import Effect.Applicative
@@ -119,7 +120,7 @@ private
 
 ¬¬-pull : ∀ {p} (F : PropF p) {P} →
           ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P
-¬¬-pull = sequence rawIApplicative
+¬¬-pull = sequence rawApplicative
                    (λ f → f lower)
                    (λ f g → g (λ x → ⊥-elim (f x (λ y → g (λ _ → y)))))
 

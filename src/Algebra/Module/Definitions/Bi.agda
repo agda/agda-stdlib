@@ -4,9 +4,9 @@
 -- Properties connecting left-scaling and right-scaling
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 
 -- The properties are parameterised by the three carriers and
 -- the result equality.

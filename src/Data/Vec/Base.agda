@@ -4,7 +4,7 @@
 -- Vectors, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Base where
 
@@ -12,12 +12,12 @@ open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
-open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; ∃₂; _×_; _,_)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Relation.Nullary using (does)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Nullary.Decidable.Core using (does)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -92,6 +92,10 @@ xs [ i ]≔ y = xs [ i ]%= const y
 
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
+
+cast : .(eq : m ≡ n) → Vec A m → Vec A n
+cast {n = zero}  eq []       = []
+cast {n = suc _} eq (x ∷ xs) = x ∷ cast (cong pred eq) xs
 
 map : (A → B) → Vec A n → Vec B n
 map f []       = []
@@ -184,6 +188,9 @@ module DiagonalBind where
 
   _>>=_ : Vec A n → (A → Vec B n) → Vec B n
   xs >>= f = diagonal (map f xs)
+
+  join : Vec (Vec A n) n → Vec A n
+  join = _>>= id
 
 ------------------------------------------------------------------------
 -- Operations for reducing vectors

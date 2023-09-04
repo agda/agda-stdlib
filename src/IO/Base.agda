@@ -4,7 +4,7 @@
 -- IO: basic types and functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module IO.Base where
 
@@ -12,6 +12,7 @@ open import Level
 open import Codata.Musical.Notation
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 import Agda.Builtin.Unit as Unit0
 open import Data.Unit.Polymorphic.Base
 open import Function.Base using (_∘′_; const; flip)
@@ -34,17 +35,14 @@ private
 -- isolated to the run function below.
 
 data IO (A : Set a) : Set (suc a) where
-  lift   : (m : Prim.IO A) → IO A
-  return : (x : A) → IO A
-  bind   : {B : Set a} (m : ∞ (IO B)) (f : (x : B) → ∞ (IO A)) → IO A
-  seq    : {B : Set a} (m₁ : ∞ (IO B)) (m₂ : ∞ (IO A)) → IO A
-
-pure : A → IO A
-pure = return
+  lift : (m : Prim.IO A) → IO A
+  pure : (x : A) → IO A
+  bind : {B : Set a} (m : ∞ (IO B)) (f : (x : B) → ∞ (IO A)) → IO A
+  seq  : {B : Set a} (m₁ : ∞ (IO B)) (m₂ : ∞ (IO A)) → IO A
 
 lift! : IO A → IO (Lift b A)
-lift!         (lift io)   = lift (io Prim.>>= λ a → Prim.return (Level.lift a))
-lift!         (return a)  = return (Level.lift a)
+lift!         (lift io)   = lift (io Prim.>>= λ a → Prim.pure (Level.lift a))
+lift!         (pure a)    = pure (Level.lift a)
 lift! {b = b} (bind m f)  = bind (♯ lift! {b = b} (♭ m))
                                  (λ x → ♯ lift! (♭ (f (lower x))))
 lift! {b = b} (seq m₁ m₂) = seq (♯ lift! {b = b} (♭ m₁))
@@ -80,14 +78,14 @@ module _ {A B : Set a} where
 -- Running programs
 
 -- A value of type `IO A` is a description of a computation that may
--- eventually produce an `A`. The `run` function converts this description
--- of a computation into calls to primitive functions that will actually
--- perform it.
+-- eventually produce an `A`. The `run` function converts this
+-- description of a computation into calls to primitive functions that
+-- will actually perform it.
 
 {-# NON_TERMINATING #-}
 run : IO A → Prim.IO A
 run (lift m)    = m
-run (return x)  = Prim.return x
+run (pure x)    = Prim.pure x
 run (bind m f)  = run (♭ m ) Prim.>>= λ x → run (♭ (f x))
 run (seq m₁ m₂) = run (♭ m₁) Prim.>>= λ _ → run (♭ m₂)
 
@@ -102,11 +100,11 @@ Main = Prim.IO {0ℓ} ⊤
 
 -- Make a unit-returning primitive level polymorphic
 lift′ : Prim.IO Unit0.⊤ → IO {a} ⊤
-lift′ io = lift (io Prim.>>= λ _ → Prim.return _)
+lift′ io = lift (io Prim.>>= λ _ → Prim.pure _)
 
 -- Throw away the result
 ignore : IO A → IO ⊤
-ignore io = io >> return _
+ignore io = io >> pure _
 
 -- Conditional executions
 when : Bool → IO {a} ⊤ → IO ⊤
@@ -127,4 +125,9 @@ untilJust : IO (Maybe A) → IO A
 -- explicitly to guarantee that the corecursive call is guarded
 untilJust m = bind (♯ m) λ where
   nothing  → ♯ untilJust m
-  (just a) → ♯ return a
+  (just a) → ♯ pure a
+
+untilRight : {A B : Set a} → (A → IO (A ⊎ B)) → A → IO B
+untilRight f x = bind (♯ f x) λ where
+  (inj₁ x′) → ♯ untilRight f x′
+  (inj₂ y) → ♯ pure y

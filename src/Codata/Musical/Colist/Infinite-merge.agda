@@ -4,7 +4,7 @@
 -- Infinite merge operation for coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Infinite-merge where
 
@@ -13,7 +13,7 @@ open import Codata.Musical.Colist as Colist hiding (_⋎_)
 open import Data.Nat.Base
 open import Data.Nat.Induction using (<′-wellFounded)
 open import Data.Nat.Properties
-open import Data.Product as Prod
+open import Data.Product.Base as Prod using (_×_; _,_; ∃; ∃₂; proj₁; proj₂)
 open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
@@ -23,7 +23,7 @@ open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 import Induction.WellFounded as WF
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.Construct.On as On
 
 ------------------------------------------------------------------------

@@ -4,21 +4,23 @@
 -- Properties of unique vectors (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Unary.Unique.Setoid.Properties where
 
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
+import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.Vec.Relation.Unary.Unique.Setoid
 import Data.Vec.Relation.Unary.AllPairs.Properties as AllPairsₚ
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; _+_)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
-open import Relation.Binary using (Rel; Setoid)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary.Negation using (contradiction; contraposition)
 
 private
@@ -32,8 +34,8 @@ private
 
 module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
 
-  open Setoid S renaming (Carrier to A; _≈_ to _≈₁_)
-  open Setoid R renaming (Carrier to B; _≈_ to _≈₂_)
+  open Setoid S renaming (_≈_ to _≈₁_)
+  open Setoid R renaming (_≈_ to _≈₂_)
 
   map⁺ : ∀ {f} → (∀ {x y} → f x ≈₂ f y → x ≈₁ y) →
          ∀ {n xs} → Unique S {n} xs → Unique R {n} (map f xs)
@@ -66,10 +68,10 @@ module _ (S : Setoid a ℓ) where
 
 module _ (S : Setoid a ℓ) where
 
-  open Setoid S renaming (Carrier to A)
+  open Setoid S
 
   lookup-injective : ∀ {n xs} → Unique S {n} xs → ∀ i j → lookup xs i ≈ lookup xs j → i ≡ j
   lookup-injective (px ∷ pxs) zero zero eq = P.refl
-  lookup-injective (px ∷ pxs) zero (suc j) eq = contradiction eq (All.lookup j px)
-  lookup-injective (px ∷ pxs) (suc i) zero eq = contradiction (sym eq) (All.lookup i px)
+  lookup-injective (px ∷ pxs) zero (suc j) eq = contradiction eq (Allₚ.lookup⁺ px j)
+  lookup-injective (px ∷ pxs) (suc i) zero eq = contradiction (sym eq) (Allₚ.lookup⁺ px i)
   lookup-injective (px ∷ pxs) (suc i) (suc j) eq = P.cong suc (lookup-injective pxs i j eq)

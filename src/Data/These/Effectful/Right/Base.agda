@@ -11,7 +11,7 @@
 -- Product-based similar setting.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 
@@ -21,7 +21,7 @@ open import Data.These.Base
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Function
+open import Function.Base using (flip; _∘_)
 
 Theseᵣ : Set (a ⊔ b) → Set (a ⊔ b)
 Theseᵣ A = These A B
@@ -32,7 +32,7 @@ functor = record { _<$>_ = map₁ }
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module _ {F} (App : RawApplicative {a ⊔ b} F) where
+module _ {F} (App : RawApplicative {a ⊔ b} {a ⊔ b} F) where
 
   open RawApplicative App
 
@@ -47,9 +47,9 @@ module _ {F} (App : RawApplicative {a ⊔ b} F) where
   forA : ∀ {A B} → Theseᵣ A → (A → F B) → F (Theseᵣ B)
   forA = flip mapA
 
-module _ {M} (Mon : RawMonad {a ⊔ b} M) where
+module _ {M} (Mon : RawMonad {a ⊔ b} {a ⊔ b} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : ∀ {A} → Theseᵣ (M A) → M (Theseᵣ A)
   sequenceM = sequenceA App

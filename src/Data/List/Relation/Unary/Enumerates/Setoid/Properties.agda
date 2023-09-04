@@ -4,29 +4,30 @@
 -- Properties of lists which contain every element of a given type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Fin hiding (_≟_)
 open import Data.List.Base
 open import Data.List.Membership.Setoid.Properties as Membership
 open import Data.List.Relation.Unary.Any using (index)
 open import Data.List.Relation.Unary.Any.Properties using (lookup-index)
 open import Data.List.Relation.Unary.Enumerates.Setoid
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Binary.Pointwise
   using (_⊎ₛ_; inj₁; inj₂)
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (_×ₛ_)
-open import Function
+open import Function.Base using (_∘_)
+open import Function.Bundles using (Surjection)
+open import Function.Definitions using (Surjective)
+open import Function.Consequences using (strictlySurjective⇒surjective)
 open import Level
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Properties.Setoid using (respʳ-flip)
 
 module Data.List.Relation.Unary.Enumerates.Setoid.Properties where
 
-open Setoid
 
 private
   variable
@@ -39,7 +40,7 @@ module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (surj : Surjection S T) whe
   open Surjection surj
 
   map⁺ : ∀ {xs} → IsEnumeration S xs → IsEnumeration T (map to xs)
-  map⁺ _∈xs y with surjective y
+  map⁺ _∈xs y with strictlySurjective y
   ... | (x , fx≈y) = ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
 
 ------------------------------------------------------------------------
@@ -83,7 +84,9 @@ module _ (S? : DecSetoid a ℓ₁) where
 -- lookup
 
 module _ (S : Setoid a ℓ₁) where
+  open Setoid S
 
   lookup-surjective : ∀ {xs} → IsEnumeration S xs →
-                      Surjective {A = Fin (length xs)} _≡_ (_≈_ S) (lookup xs)
-  lookup-surjective _∈xs y = index (y ∈xs) , sym S (lookup-index (y ∈xs))
+                      Surjective _≡_ _≈_ (lookup xs)
+  lookup-surjective _∈xs = strictlySurjective⇒surjective
+    trans (λ { P.refl → refl}) (λ y → index (y ∈xs) , sym (lookup-index (y ∈xs)))

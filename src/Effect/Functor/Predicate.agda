@@ -6,11 +6,11 @@
 
 -- Note that currently the functor laws are not included here.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Functor.Predicate where
 
-open import Function
+open import Function.Base using (const)
 open import Level
 open import Relation.Unary
 open import Relation.Unary.PredicateTransformer using (PT)

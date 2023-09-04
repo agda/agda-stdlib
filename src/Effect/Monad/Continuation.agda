@@ -4,7 +4,7 @@
 -- A delimited continuation monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Continuation where
 
@@ -13,7 +13,7 @@ open import Effect.Applicative.Indexed
 open import Effect.Monad
 open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Monad.Indexed
-open import Function
+open import Function.Base using (flip)
 open import Level
 
 private
@@ -57,11 +57,11 @@ DContTIMonadDCont : ∀ (K : I → Set f) {M} →
                     RawMonad M → RawIMonadDCont K (DContT K M)
 DContTIMonadDCont K Mon = record
   { monad = DContTIMonad K Mon
-  ; reset = λ e k → e return >>= k
-  ; shift = λ e k → e (λ a k′ → (k a) >>= k′) return
+  ; reset = λ e k → e pure >>= k
+  ; shift = λ e k → e (λ a k′ → (k a) >>= k′) pure
   }
   where
-  open RawIMonad Mon
+  open RawMonad Mon
 
 DContIMonadDCont : (K : I → Set f) → RawIMonadDCont K (DCont K)
 DContIMonadDCont K = DContTIMonadDCont K Id.monad

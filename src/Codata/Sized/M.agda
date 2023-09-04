@@ -4,14 +4,14 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.M where
 
 open import Size
 open import Level
 open import Codata.Sized.Thunk using (Thunk; force)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.Container.Core as C hiding (map)
 
 data M {s p} (C : Container s p) (i : Size) : Set (s ⊔ p) where

@@ -4,7 +4,7 @@
 -- Instantiating homogeneously indexed bundles at a particular index
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 open import Relation.Binary

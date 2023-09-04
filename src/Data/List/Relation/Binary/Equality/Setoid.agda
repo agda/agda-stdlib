@@ -4,20 +4,22 @@
 -- Pointwise equality over lists parameterised by a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core using (Op₂)
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Transitive; Symmetric; Reflexive; _Respects_)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Data.List.Relation.Binary.Equality.Setoid {a ℓ} (S : Setoid a ℓ) where
 
-open import Data.Fin.Base
+open import Data.Fin.Base using (Fin)
 open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as PW using (Pointwise)
 open import Data.List.Relation.Unary.Unique.Setoid S using (Unique)
 open import Function.Base using (_∘_)
 open import Level
-open import Relation.Binary renaming (Rel to Rel₂)
+open import Relation.Binary.Core renaming (Rel to Rel₂)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Unary as U using (Pred)
@@ -129,13 +131,14 @@ concat⁺ = PW.concat⁺
 ------------------------------------------------------------------------
 -- tabulate
 
-tabulate⁺ : ∀ {n} {f : Fin n → A} {g : Fin n → A} →
-            (∀ i → f i ≈ g i) → tabulate f ≋ tabulate g
-tabulate⁺ = PW.tabulate⁺
+module _ {n} {f g : Fin n → A}
+  where
 
-tabulate⁻ : ∀ {n} {f : Fin n → A} {g : Fin n → A} →
-            tabulate f ≋ tabulate g → (∀ i → f i ≈ g i)
-tabulate⁻ = PW.tabulate⁻
+  tabulate⁺ : (∀ i → f i ≈ g i) → tabulate f ≋ tabulate g
+  tabulate⁺ = PW.tabulate⁺
+
+  tabulate⁻ : tabulate f ≋ tabulate g → (∀ i → f i ≈ g i)
+  tabulate⁻ = PW.tabulate⁻
 
 ------------------------------------------------------------------------
 -- filter

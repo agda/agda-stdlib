@@ -4,7 +4,7 @@
 -- Properties related to Linked
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Linked.Properties where
 
@@ -16,18 +16,18 @@ import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
-open import Data.Fin.Base using (Fin)
-open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _<_; z<s; s<s)
-open import Data.Nat.Properties using (≤-refl; ≤-pred; ≤-step)
+open import Data.Nat.Properties using (≤-refl; ≤-pred; m≤n⇒m≤1+n)
 open import Data.Maybe.Relation.Binary.Connected
   using (Connected; just; nothing; just-nothing; nothing-just)
 open import Level using (Level)
 open import Function.Base using (_∘_; flip; _on_)
-open import Relation.Binary using (Rel; Transitive; DecSetoid)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (DecSetoid)
+open import Relation.Binary.Definitions using (Transitive)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (yes; no; does)
+open import Relation.Nullary.Decidable using (yes; no; does)
 
 private
   variable
@@ -99,10 +99,10 @@ module _ {R : Rel A ℓ} where
 
   applyUpTo⁺₁ : ∀ f n → (∀ {i} → suc i < n → R (f i) (f (suc i))) →
                 Linked R (applyUpTo f n)
-  applyUpTo⁺₁ f zero          Rf = []
-  applyUpTo⁺₁ f (suc zero)    Rf = [-]
-  applyUpTo⁺₁ f (suc (suc n)) Rf =
-    Rf (s<s z<s) ∷ (applyUpTo⁺₁ (f ∘ suc) (suc n) (Rf ∘ s<s))
+  applyUpTo⁺₁ f 0               Rf = []
+  applyUpTo⁺₁ f 1               Rf = [-]
+  applyUpTo⁺₁ f (suc n@(suc _)) Rf =
+    Rf (s<s z<s) ∷ (applyUpTo⁺₁ (f ∘ suc) n (Rf ∘ s<s))
 
   applyUpTo⁺₂ : ∀ f n → (∀ i → R (f i) (f (suc i))) →
                 Linked R (applyUpTo f n)
@@ -115,10 +115,10 @@ module _ {R : Rel A ℓ} where
 
   applyDownFrom⁺₁ : ∀ f n → (∀ {i} → suc i < n → R (f (suc i)) (f i)) →
                     Linked R (applyDownFrom f n)
-  applyDownFrom⁺₁ f zero          Rf = []
-  applyDownFrom⁺₁ f (suc zero)    Rf = [-]
-  applyDownFrom⁺₁ f (suc (suc n)) Rf =
-    Rf ≤-refl ∷ applyDownFrom⁺₁ f (suc n) (Rf ∘ ≤-step)
+  applyDownFrom⁺₁ f 0               Rf = []
+  applyDownFrom⁺₁ f 1               Rf = [-]
+  applyDownFrom⁺₁ f (suc n@(suc _)) Rf =
+    Rf ≤-refl ∷ applyDownFrom⁺₁ f n (Rf ∘ m≤n⇒m≤1+n)
 
   applyDownFrom⁺₂ : ∀ f n → (∀ i → R (f (suc i)) (f i)) →
                     Linked R (applyDownFrom f n)

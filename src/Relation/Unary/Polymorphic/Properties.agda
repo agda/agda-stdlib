@@ -5,13 +5,13 @@
 -- Relation.Unary
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Unary.Polymorphic.Properties where
 
 open import Level using (Level)
 open import Relation.Binary.Definitions hiding (Decidable; Universal)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Unary hiding (∅; U)
 open import Relation.Unary.Polymorphic
 open import Data.Unit.Polymorphic.Base using (tt)
@@ -21,7 +21,7 @@ private
     a ℓ ℓ₁ ℓ₂ : Level
     A : Set a
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The empty set
 
 ∅? : Decidable {A = A} {ℓ} ∅
@@ -33,7 +33,7 @@ private
 ∁∅-Universal : Universal {A = A} {ℓ} (∁ ∅)
 ∁∅-Universal _ ()
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The universe
 
 U? : Decidable {A = A} {ℓ} U
@@ -45,7 +45,7 @@ U-Universal _ = _
 ∁U-Empty : Empty {A = A} {ℓ} (∁ U)
 ∁U-Empty _ x∈∁U = x∈∁U _
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Subset properties
 
 ∅-⊆ : (P : Pred A ℓ₁) → ∅ {ℓ = ℓ₂} ⊆ P

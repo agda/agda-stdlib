@@ -1084,12 +1084,14 @@ Deprecated names
   ```agda
   map-identity  ↦  map-id
   map-fusion    ↦  map-∘
+  drop-fusion   ↦  drop-drop
   ```
 
 * In `Codata.Sized.Colist.Properties`:
   ```agda
-  map-identity   ↦  map-id
-  map-map-fusion  ↦  map-∘
+  map-identity      ↦  map-id
+  map-map-fusion    ↦  map-∘
+  drop-drop-fusion  ↦  drop-drop
   ```
 
 * In `Codata.Sized.Covec.Properties`:
@@ -1116,6 +1118,11 @@ Deprecated names
   map-map-fusion  ↦  map-∘
   ```
 
+* In `Data.Bool.Properties` (Issue #2046):
+  ```
+  push-function-into-if ↦ if-float
+  ```
+
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
   for the 'left', resp. 'right' injection of a Fin m into a 'larger' type,
   `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the
@@ -1140,7 +1147,7 @@ Deprecated names
 
   As with Issue #1726 above: the deprecation of relation `_≺_` means that these definitions
   associated with wf-recursion are deprecated in favour of their `_<_` counterparts.
-  But it's not quite sensible to say that these definiton should be *renamed* to *anything*,
+  But it's not quite sensible to say that these definitions should be *renamed* to *anything*,
   least of all those counterparts... the type confusion would be intolerable.
 
 * In `Data.Fin.Properties`:
@@ -1243,6 +1250,53 @@ Deprecated names
 
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
+
+  take++drop ↦ take++drop≡id
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  map-compose     ↦  map-∘
+
+  map-++⁺-commute ↦  map-++⁺
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  updateAt-id-relative      ↦  updateAt-id-local
+  updateAt-compose-relative ↦  updateAt-∘-local
+  updateAt-compose          ↦  updateAt-∘
+  updateAt-cong-relative    ↦  updateAt-cong-local
+  ```
+
+* In `Data.List.Zipper.Properties`:
+  ```agda
+  toList-reverse-commute ↦  toList-reverse
+  toList-ˡ++-commute     ↦  toList-ˡ++
+  toList-++ʳ-commute     ↦  toList-++ʳ
+  toList-map-commute    ↦  toList-map
+  toList-foldr-commute  ↦  toList-foldr
+  ```
+
+* In `Data.Maybe.Properties`:
+  ```agda
+  map-id₂     ↦  map-id-local
+  map-cong₂   ↦  map-cong-local
+
+  map-compose    ↦  map-∘
+
+  map-<∣>-commute ↦  map-<∣>
+
+* In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```
+  map-with-∈⁺  ↦  mapWith∈⁺
+  ```
+
+* In `Data.List.Relation.Unary.Any.Properties`:
+  ```
+  map-with-∈⁺  ↦  mapWith∈⁺
+  map-with-∈⁻  ↦  mapWith∈⁻
+  map-with-∈↔  ↦  mapWith∈↔
   ```
 
 * In `Data.List.NonEmpty.Properties`:
@@ -1398,6 +1452,8 @@ Deprecated names
   []≔-++-raise    ↦ []≔-++-↑ʳ
   idIsFold        ↦ id-is-foldr
   sum-++-commute  ↦ sum-++
+
+  take-drop-id ↦ take++drop≡id
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```
@@ -2139,7 +2195,6 @@ Other minor changes
     t /Var VarSubst.sub x T./ ρ ≡ t T./ ρ T.↑ T./ T.sub (lookup ρ x)
   sub-commutes-with-renaming : {ρ : Sub Fin m n} →
     t T./ T.sub t′ /Var ρ ≡ t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)
-  ```
 
 * Added new functions in `Data.Integer.Base`:
   ```
@@ -2188,6 +2243,21 @@ Other minor changes
   wordsByᵇ     : (A → Bool) → List A → List (List A)
   derunᵇ       : (A → A → Bool) → List A → List A
   deduplicateᵇ : (A → A → Bool) → List A → List A
+
+  findᵇ        : (A → Bool) → List A -> Maybe A
+  findIndexᵇ   : (A → Bool) → (xs : List A) → Maybe $ Fin (length xs)
+  findIndicesᵇ : (A → Bool) → (xs : List A) → List $ Fin (length xs)
+  find         : Decidable P → List A → Maybe A
+  findIndex    : Decidable P → (xs : List A) → Maybe $ Fin (length xs)
+  findIndices  : Decidable P → (xs : List A) → List $ Fin (length xs)
+  ```
+
+* Added new functions and definitions to `Data.List.Base`:
+  ```agda
+  catMaybes : List (Maybe A) → List A
+  ap : List (A → B) → List A → List B
+  ++-rawMagma : Set a → RawMagma a _
+  ++-[]-rawMonoid : Set a → RawMonoid a _
   ```
 
 * Added new functions and definitions to `Data.List.Base`:
@@ -2242,24 +2312,26 @@ Other minor changes
   concatMap-map  : concatMap g (map f xs) ≡ concatMap (g ∘′ f) xs
   map-concatMap  : map f ∘′ concatMap g ≗ concatMap (map f ∘′ g)
 
-  length-isMagmaHomomorphism : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
+  length-isMagmaHomomorphism  : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
   
   take-map : take n (map f xs) ≡ map f (take n xs)
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
 
-  take-suc : (o : Fin (length xs)) → let m = toℕ o in take (suc m) xs ≡ take m xs ∷ʳ lookup xs o
-  take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f o
-  drop-take-suc : (o : Fin (length xs)) → let m = toℕ o in drop m (take (suc m) xs) ≡ [ lookup xs o ]
-  drop-take-suc-tabulate : (f : Fin n → A) (o : Fin n) → let m = toℕ o in drop m (take (suc m) (tabulate f)) ≡ [ f o ]
+  take-suc               : take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
+  take-suc-tabulate      : take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
+  drop-take-suc          : drop m (take (suc m) xs) ≡ [ lookup xs i ]
+  drop-take-suc-tabulate : drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 
   take-all : n ≥ length xs → take n xs ≡ xs
 
-  take-[] : ∀ m → take  m [] ≡ []
-  drop-[] : ∀ m → drop  m [] ≡ []
+  take-[] : take m [] ≡ []
+  drop-[] : drop m [] ≡ []
 
   map-replicate : map f (replicate n x) ≡ replicate n (f x)
+
+  drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:

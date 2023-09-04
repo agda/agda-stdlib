@@ -4,16 +4,16 @@
 -- Properties of showing natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Digit using (showDigit; toDigits)
 open import Data.Digit.Properties using (toDigits-injective; showDigit-injective)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 import Data.List.Properties as Listₚ
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
 open import Relation.Nullary.Decidable using (True)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Data.Nat.Show using (charsInBase)
 
 module Data.Nat.Show.Properties where

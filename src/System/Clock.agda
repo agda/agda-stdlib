@@ -4,7 +4,7 @@
 -- Measuring time
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module System.Clock where
 
@@ -12,7 +12,7 @@ open import Level using (Level; 0ℓ; Lift; lower)
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Fin.Base using (Fin; toℕ)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _∸_; _^_; _<ᵇ_)
-import Data.Nat.Show as ℕ
+import Data.Nat.Show as ℕ using (show)
 open import Data.Nat.DivMod using (_/_)
 import Data.Nat.Properties as ℕₚ
 open import Data.String.Base using (String; _++_; padLeft)
@@ -68,7 +68,7 @@ open Time public
 getTime : Clock → IO Time
 getTime c = do
   (a , b) ← lift (Prim.getTime c)
-  return $ mkTime a b
+  pure $ mkTime a b
 
 ------------------------------------------------------------------------
 -- Measuring time periods
@@ -89,7 +89,7 @@ time io = do
   start ← lift! $ getTime realTime
   a     ← io
   end   ← lift! $ getTime realTime
-  return $ mkTimed a $ diff (lower start) (lower end)
+  pure $ mkTimed a $ diff (lower start) (lower end)
 
 time′ : IO {0ℓ} A → IO Time
 time′ io = Timed.time <$> time io

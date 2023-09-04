@@ -3,9 +3,10 @@
 --
 -- Annotated reflected syntax.
 --
--- NOTE: This file does not check under --without-K due to restrictions
---       in the termination checker. In particular recursive functions
---       over a universe of types is not supported by --without-K.
+-- NOTE: This file does not check under --cubical-compatible due to
+--       restrictions in the termination checker. In particular
+--       recursive functions over a universe of types is not supported
+--       by --cubical-compatible.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --with-K #-}
@@ -13,14 +14,14 @@
 module Reflection.AnnotatedAST where
 
 open import Level                        using (Level; 0ℓ; suc; _⊔_)
-open import Effect.Applicative         using (RawApplicative)
+open import Effect.Applicative           using (RawApplicative)
 open import Data.Bool.Base               using (Bool; false; true; if_then_else_)
 open import Data.List.Base               using (List; []; _∷_)
 open import Data.List.Relation.Unary.All using (All; _∷_; [])
-open import Data.Product                 using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base            using (_×_; _,_; proj₁; proj₂)
 open import Data.String.Base             using (String)
 
-open import Reflection
+open import Reflection                   hiding (pure)
 open import Reflection.AST.Universe
 
 open Clause
@@ -35,8 +36,8 @@ Annotation : ∀ ℓ → Set (suc ℓ)
 Annotation ℓ = ∀ {u} → ⟦ u ⟧ → Set ℓ
 
 -- An annotated type is a family over an Annotation and a reflected term.
-Typeₐ : ∀ ℓ → Univ → Set (suc ℓ)
-Typeₐ ℓ u = Annotation ℓ → ⟦ u ⟧ → Set ℓ
+Typeₐ : ∀ ℓ → Univ → Set (suc (suc ℓ))
+Typeₐ ℓ u = Annotation ℓ → ⟦ u ⟧ → Set (suc ℓ)
 
 private
   variable
@@ -168,7 +169,7 @@ mutual
 
 -- An annotation function computes the top-level annotation given a
 -- term annotated at all sub-terms.
-AnnotationFun : Annotation ℓ → Set ℓ
+AnnotationFun : Annotation ℓ → Set (suc ℓ)
 AnnotationFun Ann = ∀ u {t : ⟦ u ⟧} → Annotated′ Ann t → Ann t
 
 
@@ -308,7 +309,7 @@ _⊗_ : AnnotationFun Ann₁ → AnnotationFun Ann₂ → AnnotationFun (λ t �
 
 module Traverse {M : Set → Set} (appl : RawApplicative M) where
 
-  open RawApplicative appl renaming (_⊛_ to _<*>_)
+  open RawApplicative appl
 
   module _ (apply? : ∀ {u} {t : ⟦ u ⟧} → Ann t → Bool)
            (action : ∀ {u} {t : ⟦ u ⟧} → Annotated Ann t → M ⟦ u ⟧) where

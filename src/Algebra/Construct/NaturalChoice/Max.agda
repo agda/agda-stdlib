@@ -4,9 +4,9 @@
 -- The max operator derived from an arbitrary total preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (TotalOrder)
 
 module Algebra.Construct.NaturalChoice.Max
   {a ℓ₁ ℓ₂} (totalOrder : TotalOrder a ℓ₁ ℓ₂) where
@@ -14,7 +14,7 @@ module Algebra.Construct.NaturalChoice.Max
 open import Algebra.Core
 open import Algebra.Definitions
 open import Algebra.Construct.NaturalChoice.Base
-open import Relation.Binary.Construct.Converse using ()
+open import Relation.Binary.Construct.Flip.EqAndOrd using ()
   renaming (totalOrder to flip)
 
 open TotalOrder totalOrder renaming (Carrier to A)

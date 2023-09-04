@@ -4,7 +4,7 @@
 -- Properties of operations on the Colist type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Colist.Properties where
 
@@ -27,11 +27,11 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybeₚ
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
 open import Data.Nat.Base as ℕ using (zero; suc; z≤n; s≤s)
-open import Data.Product as Prod using (_×_; _,_; uncurry)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_; [_])
+open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 
 private
   variable
@@ -45,15 +45,15 @@ private
 ------------------------------------------------------------------------
 -- Functor laws
 
-map-identity : ∀ (as : Colist A ∞) → i ⊢ map id as ≈ as
-map-identity []       = []
-map-identity (a ∷ as) = Eq.refl ∷ λ where .force → map-identity (as .force)
+map-id : ∀ (as : Colist A ∞) → i ⊢ map id as ≈ as
+map-id []       = []
+map-id (a ∷ as) = Eq.refl ∷ λ where .force → map-id (as .force)
 
-map-map-fusion : ∀ (f : A → B) (g : B → C) as {i} →
+map-∘ : ∀ (f : A → B) (g : B → C) as {i} →
                  i ⊢ map g (map f as) ≈ map (g ∘ f) as
-map-map-fusion f g []       = []
-map-map-fusion f g (a ∷ as) =
-  Eq.refl ∷ λ where .force → map-map-fusion f g (as .force)
+map-∘ f g []       = []
+map-∘ f g (a ∷ as) =
+  Eq.refl ∷ λ where .force → map-∘ f g (as .force)
 
 ------------------------------------------------------------------------
 -- Relation to Cowriter
@@ -97,7 +97,7 @@ map-replicate f zero    a = []
 map-replicate f (suc n) a =
   Eq.refl ∷ λ where .force → map-replicate f (n .force) a
 
-lookup-replicate : ∀ k n (a : A) → All (a ≡_) (lookup k (replicate n a))
+lookup-replicate : ∀ k n (a : A) → All (a ≡_) (lookup (replicate n a) k)
 lookup-replicate k zero          a = nothing
 lookup-replicate zero    (suc n) a = just Eq.refl
 lookup-replicate (suc k) (suc n) a = lookup-replicate k (n .force) a
@@ -144,10 +144,10 @@ module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
 
   scanl-unfold : ∀ nil a → i ⊢ scanl cons nil (unfold alg a)
                              ≈ nil ∷ (λ where .force → unfold alg′ (a , nil))
-  scanl-unfold nil a with alg a | Eq.inspect alg a
-  ... | nothing       | [ eq ] = Eq.refl ∷ λ { .force →
+  scanl-unfold nil a with alg a in eq
+  ... | nothing      = Eq.refl ∷ λ { .force →
     sym (fromEq (unfold-nothing (Maybeₚ.map-nothing eq))) }
-  ... | just (a′ , b) | [ eq ] = Eq.refl ∷ λ { .force → begin
+  ... | just (a′ , b) = Eq.refl ∷ λ { .force → begin
     scanl cons (cons nil b) (unfold alg a′)
      ≈⟨ scanl-unfold (cons nil b) a′ ⟩
     (cons nil b ∷ _)
@@ -161,8 +161,8 @@ module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
 
 map-alignWith : ∀ (f : C → D) (al : These A B → C) as bs →
                 i ⊢ map f (alignWith al as bs) ≈ alignWith (f ∘ al) as bs
-map-alignWith f al []         bs       = map-map-fusion (al ∘′ that) f bs
-map-alignWith f al as@(_ ∷ _) []       = map-map-fusion (al ∘′ this) f as
+map-alignWith f al []         bs       = map-∘ (al ∘′ that) f bs
+map-alignWith f al as@(_ ∷ _) []       = map-∘ (al ∘′ this) f as
 map-alignWith f al (a ∷ as)   (b ∷ bs) =
   Eq.refl ∷ λ where .force → map-alignWith f al (as .force) (bs .force)
 
@@ -197,11 +197,11 @@ drop-nil : ∀ m → i ⊢ drop {A = A} m [] ≈ []
 drop-nil zero    = []
 drop-nil (suc m) = []
 
-drop-drop-fusion : ∀ m n (as : Colist A ∞) →
+drop-drop : ∀ m n (as : Colist A ∞) →
                    i ⊢ drop n (drop m as) ≈ drop (m ℕ.+ n) as
-drop-drop-fusion zero    n as       = refl
-drop-drop-fusion (suc m) n []       = drop-nil n
-drop-drop-fusion (suc m) n (a ∷ as) = drop-drop-fusion m n (as .force)
+drop-drop zero    n as       = refl
+drop-drop (suc m) n []       = drop-nil n
+drop-drop (suc m) n (a ∷ as) = drop-drop m n (as .force)
 
 map-drop : ∀ (f : A → B) m as → i ⊢ map f (drop m as) ≈ drop m (map f as)
 map-drop f zero    as       = refl
@@ -331,3 +331,29 @@ map-fromStream : ∀ (f : A → B) as →
                  i ⊢ map f (fromStream as) ≈ fromStream (Stream.map f as)
 map-fromStream f (a ∷ as) =
   Eq.refl ∷ λ where .force → map-fromStream f (as .force)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-identity = map-id
+{-# WARNING_ON_USAGE map-identity
+"Warning: map-identity was deprecated in v2.0.
+Please use map-id instead."
+#-}
+
+map-map-fusion = map-∘
+{-# WARNING_ON_USAGE map-map-fusion
+"Warning: map-map-fusion was deprecated in v2.0.
+Please use map-∘ instead."
+#-}
+
+drop-drop-fusion = drop-drop
+{-# WARNING_ON_USAGE drop-drop-fusion
+"Warning: drop-drop-fusion was deprecated in v2.0.
+Please use drop-drop instead."
+#-}

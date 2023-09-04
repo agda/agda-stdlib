@@ -4,9 +4,10 @@
 -- Properties of the sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Definitions hiding (Decidable)
+open import Relation.Binary.Structures using (IsPreorder)
 
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
@@ -25,7 +26,7 @@ open import Data.List.Relation.Binary.Subset.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 open import Data.Nat using (ℕ; _≤_)
-import Data.Product as Prod
+import Data.Product.Base as Prod
 import Data.Sum.Base as Sum
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; _$_)
@@ -35,7 +36,8 @@ open import Function.Equivalence using (module Equivalence)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
-open import Relation.Binary using (_⇒_; _Respects_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
@@ -225,21 +227,21 @@ module _ (p : A → Bool) {xs ys} where
     _⟨$⟩_ (Equivalence.from Any.any⇔)
 
 ------------------------------------------------------------------------
--- map-with-∈
+-- mapWith∈
 
 module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
          {ys : List A} {g : ∀ {x} → x ∈ ys → B}
          where
 
-  map-with-∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
+  mapWith∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
                 mapWith∈ xs f ⊆ mapWith∈ ys g
-  map-with-∈⁺ xs⊆ys f≈g {x} =
-    _⟨$⟩_ (Inverse.to Any.map-with-∈↔) ∘
+  mapWith∈⁺ xs⊆ys f≈g {x} =
+    _⟨$⟩_ (Inverse.to Any.mapWith∈↔) ∘
     Prod.map₂ (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
       x               ≡⟨ x≡fx∈xs ⟩
       f x∈xs          ≡⟨ f≈g x∈xs ⟩
       g (xs⊆ys x∈xs)  ∎)) ∘
-    _⟨$⟩_ (Inverse.from Any.map-with-∈↔)
+    _⟨$⟩_ (Inverse.from Any.mapWith∈↔)
     where open ≡-Reasoning
 
 ------------------------------------------------------------------------
@@ -305,10 +307,15 @@ any-mono = any⁺
 "Warning: any-mono was deprecated in v1.5.
 Please use any⁺ instead."
 #-}
-map-with-∈-mono = map-with-∈⁺
+map-with-∈-mono = mapWith∈⁺
 {-# WARNING_ON_USAGE map-with-∈-mono
 "Warning: map-with-∈-mono was deprecated in v1.5.
-Please use map-with-∈⁺ instead."
+Please use mapWith∈⁺ instead."
+#-}
+map-with-∈⁺ = mapWith∈⁺
+{-# WARNING_ON_USAGE map-with-∈⁺
+"Warning: map-with-∈⁺ was deprecated in v2.0.
+Please use mapWith∈⁺ instead."
 #-}
 filter⁺ = filter-⊆
 {-# WARNING_ON_USAGE filter⁺

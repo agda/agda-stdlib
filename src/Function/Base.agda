@@ -8,7 +8,7 @@
 -- module. See `Function.Strict` for strict versions of these
 -- combinators.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Base where
 
@@ -72,7 +72,7 @@ flip f = λ y x → f x y
 
 -- Application - note that _$_ is right associative, as in Haskell.
 -- If you want a left associative infix application operator, use
--- Category.Functor._<$>_ from Category.Monad.Identity.IdentityMonad.
+-- RawFunctor._<$>_ from Effect.Functor.
 
 _$_ : ∀ {A : Set a} {B : A → Set b} →
       ((x : A) → B x) → ((x : A) → B x)
@@ -136,6 +136,11 @@ f ∘′ g = _∘_ f g
 
 _∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
 f ∘₂′ g = _∘₂_ f g
+
+-- Flipping order of arguments
+
+flip′ : (A → B → C) → (B → A → C)
+flip′ = flip
 
 -- Application
 

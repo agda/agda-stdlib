@@ -11,12 +11,12 @@
 -- also the coproduct, making it a biproduct.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Construct.DirectProduct where
 
 open import Algebra
-open import Data.Product
+open import Data.Product.Base using (_×_; zip; _,_; map; _<*>_; uncurry)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level using (Level; _⊔_)
 
@@ -104,6 +104,48 @@ magma M N = record
     ; ∙-cong = zip M.∙-cong N.∙-cong
     }
   } where module M = Magma M; module N = Magma N
+
+idempotentMagma : IdempotentMagma a ℓ₁ → IdempotentMagma b ℓ₂ → IdempotentMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+idempotentMagma G H = record
+  { isIdempotentMagma = record
+    { isMagma = Magma.isMagma (magma G.magma H.magma)
+    ; idem = λ x → (G.idem , H.idem) <*> x
+    }
+  } where module G = IdempotentMagma G; module H = IdempotentMagma H
+
+alternativeMagma : AlternativeMagma a ℓ₁ → AlternativeMagma b ℓ₂ → AlternativeMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+alternativeMagma G H = record
+  { isAlternativeMagma = record
+    { isMagma = Magma.isMagma (magma G.magma H.magma)
+    ; alter = (λ x y → G.alternativeˡ , H.alternativeˡ <*> x <*> y)
+            , (λ x y → G.alternativeʳ , H.alternativeʳ <*> x <*> y)
+    }
+  } where module G = AlternativeMagma G; module H = AlternativeMagma H
+
+flexibleMagma : FlexibleMagma a ℓ₁ → FlexibleMagma b ℓ₂ → FlexibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+flexibleMagma G H = record
+  { isFlexibleMagma = record
+    { isMagma = Magma.isMagma (magma G.magma H.magma)
+    ; flex = λ x y → (G.flex , H.flex) <*> x <*> y
+    }
+  } where module G = FlexibleMagma G; module H = FlexibleMagma H
+
+medialMagma : MedialMagma a ℓ₁ → MedialMagma b ℓ₂ → MedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+medialMagma G H = record
+  { isMedialMagma = record
+    { isMagma = Magma.isMagma (magma G.magma H.magma)
+    ; medial = λ x y u z → (G.medial , H.medial) <*> x <*> y <*> u <*> z
+    }
+  } where module G = MedialMagma G; module H = MedialMagma H
+
+semimedialMagma : SemimedialMagma a ℓ₁ → SemimedialMagma b ℓ₂ → SemimedialMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+semimedialMagma G H = record
+  { isSemimedialMagma = record
+    { isMagma = Magma.isMagma (magma G.magma H.magma)
+    ; semiMedial = (λ x y z → G.semimedialˡ , H.semimedialˡ <*> x <*> y <*> z)
+                 , ((λ x y z → G.semimedialʳ , H.semimedialʳ <*> x <*> y <*> z))
+    }
+  } where module G = SemimedialMagma G; module H = SemimedialMagma H
 
 semigroup : Semigroup a ℓ₁ → Semigroup b ℓ₂ → Semigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 semigroup G H = record
@@ -256,11 +298,22 @@ commutativeSemiring R S = record
       }
   } where module R = CommutativeSemiring R;  module S = CommutativeSemiring S
 
+idempotentSemiring : IdempotentSemiring a ℓ₁ → IdempotentSemiring b ℓ₂ → IdempotentSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+idempotentSemiring K L = record
+  { isIdempotentSemiring = record
+      { isSemiring = Semiring.isSemiring (semiring K.semiring L.semiring)
+      ; +-idem = λ x → (K.+-idem , L.+-idem) <*> x
+      }
+  } where module K = IdempotentSemiring K;  module L = IdempotentSemiring L
+
 kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 kleeneAlgebra K L = record
   { isKleeneAlgebra = record
-      { isSemiring = Semiring.isSemiring (semiring K.semiring L.semiring)
-      ; +-idem = λ x → (K.+-idem , L.+-idem) <*> x
+      { isIdempotentSemiring = IdempotentSemiring.isIdempotentSemiring (idempotentSemiring K.idempotentSemiring L.idempotentSemiring)
+      ; starExpansive = (λ x → (K.starExpansiveˡ  , L.starExpansiveˡ) <*> x)
+                      , (λ x → (K.starExpansiveʳ  , L.starExpansiveʳ) <*> x)
+      ; starDestructive = (λ a b x x₁ → (K.starDestructiveˡ  , L.starDestructiveˡ) <*> a <*> b <*> x <*> x₁)
+                        , (λ a b x x₁ → (K.starDestructiveʳ  , L.starDestructiveʳ) <*> a <*> b <*> x <*> x₁)
       }
   } where module K = KleeneAlgebra K;  module L = KleeneAlgebra L
 
@@ -313,3 +366,36 @@ loop M N = record
                , (M.identityʳ , N.identityʳ <*>_)
     }
   } where module M = Loop M; module N = Loop N
+
+leftBolLoop : LeftBolLoop a ℓ₁ → LeftBolLoop b ℓ₂ → LeftBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+leftBolLoop M N = record
+  { isLeftBolLoop = record
+    { isLoop = Loop.isLoop (loop M.loop N.loop)
+    ; leftBol = λ x y z → M.leftBol , N.leftBol <*> x <*> y <*> z
+    }
+  } where module M = LeftBolLoop M; module N = LeftBolLoop N
+
+rightBolLoop : RightBolLoop a ℓ₁ → RightBolLoop b ℓ₂ → RightBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+rightBolLoop M N = record
+  { isRightBolLoop = record
+    { isLoop = Loop.isLoop (loop M.loop N.loop)
+    ; rightBol = λ x y z → M.rightBol , N.rightBol <*> x <*> y <*> z
+    }
+  } where module M = RightBolLoop M; module N = RightBolLoop N
+
+middleBolLoop : MiddleBolLoop a ℓ₁ → MiddleBolLoop b ℓ₂ → MiddleBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+middleBolLoop M N = record
+  { isMiddleBolLoop = record
+    { isLoop = Loop.isLoop (loop M.loop N.loop)
+    ; middleBol = λ x y z → M.middleBol , N.middleBol <*> x <*> y <*> z
+    }
+  } where module M = MiddleBolLoop M; module N = MiddleBolLoop N
+
+moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+moufangLoop M N = record
+  { isMoufangLoop = record
+    { isLeftBolLoop = LeftBolLoop.isLeftBolLoop (leftBolLoop M.leftBolLoop N.leftBolLoop)
+    ; rightBol = λ x y z → M.rightBol , N.rightBol <*> x <*> y <*> z
+    ; identical = λ x y z → M.identical , N.identical <*> x <*> y <*> z
+    }
+  } where module M = MoufangLoop M; module N = MoufangLoop N

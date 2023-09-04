@@ -4,7 +4,7 @@
 -- Multiplication by a natural number over a semiring
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Nat.Base as ℕ using (zero; suc)
@@ -33,3 +33,30 @@ open import Algebra.Properties.Monoid.Mult +-monoid public
   n × 1# + (m × 1#) * (n × 1#)        ≈˘⟨ +-congʳ (*-identityˡ _) ⟩
   1# * (n × 1#) + (m × 1#) * (n × 1#) ≈˘⟨ distribʳ (n × 1#) 1# (m × 1#) ⟩
   (1# + m × 1#) * (n × 1#)            ∎
+
+-- (1 ×_) is the identity
+
+1×-identityʳ : ∀ x → 1 × x ≈ x
+1×-identityʳ = +-identityʳ
+
+-- (n ×_) commutes with _*_
+
+×-comm-* : ∀ n x y → x * (n × y) ≈ n × (x * y)
+×-comm-* zero    x y = zeroʳ x
+×-comm-* (suc n) x y = begin
+  x * (suc n × y)       ≡⟨⟩
+  x * (y + n × y)       ≈⟨ distribˡ _ _ _ ⟩
+  x * y + x * (n × y)   ≈⟨ +-congˡ (×-comm-* n _ _) ⟩
+  x * y + n × (x * y)   ≡⟨⟩
+  suc n × (x * y)       ∎
+
+-- (n ×_) associates with _*_
+
+×-assoc-* : ∀ n x y → (n × x) * y ≈ n × (x * y)
+×-assoc-* zero x y = zeroˡ y
+×-assoc-* (suc n) x y = begin
+  (suc n × x) * y       ≡⟨⟩
+  (x + n × x) * y       ≈⟨ distribʳ _ _ _ ⟩
+  x * y + (n × x) * y   ≈⟨ +-congˡ (×-assoc-* n _ _) ⟩
+  x * y + n × (x * y)   ≡⟨⟩
+  suc n × (x * y)       ∎

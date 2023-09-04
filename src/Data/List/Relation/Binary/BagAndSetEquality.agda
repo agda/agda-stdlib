@@ -4,7 +4,7 @@
 -- Bag and set equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
@@ -14,7 +14,7 @@ open import Effect.Monad using (RawMonad)
 open import Data.Empty
 open import Data.Fin.Base
 open import Data.List.Base
-open import Data.List.Effectful using (monad; module MonadProperties)
+open import Data.List.Effectful using (monad; module Applicative; module MonadProperties)
 import Data.List.Properties as LP
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties hiding (++-comm)
@@ -23,7 +23,7 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum hiding (map)
 open import Data.Sum.Properties hiding (map-cong)
@@ -115,7 +115,7 @@ module ⊆-Reasoning where
 module _ {a k} {A : Set a} {x y : A} {xs ys} where
 
   ∷-cong : x ≡ y → xs ∼[ k ] ys → x ∷ xs ∼[ k ] y ∷ ys
-  ∷-cong refl xs≈ys {y} =
+  ∷-cong refl xs≈ys {y} = begin
     y ∈ x ∷ xs        ↔⟨ SK-sym $ ∷↔ (y ≡_) ⟩
     (y ≡ x ⊎ y ∈ xs)  ∼⟨ (y ≡ x ∎) ⊎-cong xs≈ys ⟩
     (y ≡ x ⊎ y ∈ ys)  ↔⟨ ∷↔ (y ≡_) ⟩
@@ -128,7 +128,7 @@ module _ {a k} {A : Set a} {x y : A} {xs ys} where
 module _ {ℓ k} {A B : Set ℓ} {f g : A → B} {xs ys} where
 
   map-cong : f ≗ g → xs ∼[ k ] ys → map f xs ∼[ k ] map g ys
-  map-cong f≗g xs≈ys {x} =
+  map-cong f≗g xs≈ys {x} = begin
     x ∈ map f xs            ↔⟨ SK-sym $ map↔ ⟩
     Any (λ y → x ≡ f y) xs  ∼⟨ Any-cong (↔⇒ ∘ helper) xs≈ys ⟩
     Any (λ y → x ≡ g y) ys  ↔⟨ map↔ ⟩
@@ -153,7 +153,7 @@ module _ {a k} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
 
   ++-cong : xs₁ ∼[ k ] xs₂ → ys₁ ∼[ k ] ys₂ →
             xs₁ ++ ys₁ ∼[ k ] xs₂ ++ ys₂
-  ++-cong xs₁≈xs₂ ys₁≈ys₂ {x} =
+  ++-cong xs₁≈xs₂ ys₁≈ys₂ {x} = begin
     x ∈ xs₁ ++ ys₁       ↔⟨ SK-sym $ ++↔ ⟩
     (x ∈ xs₁ ⊎ x ∈ ys₁)  ∼⟨ xs₁≈xs₂ ⊎-cong ys₁≈ys₂ ⟩
     (x ∈ xs₂ ⊎ x ∈ ys₂)  ↔⟨ ++↔ ⟩
@@ -166,7 +166,7 @@ module _ {a k} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
 module _ {a k} {A : Set a} {xss yss : List (List A)} where
 
   concat-cong : xss ∼[ k ] yss → concat xss ∼[ k ] concat yss
-  concat-cong xss≈yss {x} =
+  concat-cong xss≈yss {x} = begin
     x ∈ concat xss        ↔⟨ SK-sym concat↔ ⟩
     Any (Any (x ≡_)) xss  ∼⟨ Any-cong (λ _ → _ ∎) xss≈yss ⟩
     Any (Any (x ≡_)) yss  ↔⟨ concat↔ ⟩
@@ -180,12 +180,13 @@ module _ {ℓ k} {A B : Set ℓ} {xs ys} {f g : A → List B} where
 
   >>=-cong : xs ∼[ k ] ys → (∀ x → f x ∼[ k ] g x) →
              (xs >>= f) ∼[ k ] (ys >>= g)
-  >>=-cong xs≈ys f≈g {x} =
+  >>=-cong xs≈ys f≈g {x} = begin
     x ∈ (xs >>= f)          ↔⟨ SK-sym >>=↔ ⟩
     Any (λ y → x ∈ f y) xs  ∼⟨ Any-cong (λ x → f≈g x) xs≈ys ⟩
     Any (λ y → x ∈ g y) ys  ↔⟨ >>=↔ ⟩
     x ∈ (ys >>= g)          ∎
     where open Related.EquationalReasoning
+
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -193,10 +194,14 @@ module _ {ℓ k} {A B : Set ℓ} {xs ys} {f g : A → List B} where
 module _ {ℓ k} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys} where
 
   ⊛-cong : fs ∼[ k ] gs → xs ∼[ k ] ys → (fs ⊛ xs) ∼[ k ] (gs ⊛ ys)
-  ⊛-cong fs≈gs xs≈ys =
-    >>=-cong fs≈gs λ f →
-    >>=-cong xs≈ys λ x →
-    _ ∎
+  ⊛-cong fs≈gs xs≈ys {x} = begin
+    x ∈ (fs ⊛ xs)
+      ≡⟨ P.cong (x ∈_) (Applicative.unfold-⊛ fs xs) ⟩
+    x ∈ (fs >>= λ f → xs >>= λ x → pure (f x))
+      ∼⟨ >>=-cong fs≈gs (λ f → >>=-cong xs≈ys λ x → K-refl) ⟩
+    x ∈ (gs >>= λ g → ys >>= λ y → pure (g y))
+      ≡˘⟨ P.cong (x ∈_) (Applicative.unfold-⊛ gs ys) ⟩
+    x ∈ (gs ⊛ ys) ∎
     where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
@@ -207,7 +212,7 @@ module _ {ℓ k} {A B : Set ℓ} {xs₁ xs₂ : List A} {ys₁ ys₂ : List B} w
   ⊗-cong : xs₁ ∼[ k ] xs₂ → ys₁ ∼[ k ] ys₂ →
            (xs₁ ⊗ ys₁) ∼[ k ] (xs₂ ⊗ ys₂)
   ⊗-cong xs₁≈xs₂ ys₁≈ys₂ =
-    ⊛-cong (⊛-cong (Ord.refl {x = [ _,_ ]}) xs₁≈xs₂) ys₁≈ys₂
+    ⊛-cong (map-cong (λ _ → refl) xs₁≈xs₂) ys₁≈ys₂
 
 ------------------------------------------------------------------------
 -- Other properties
@@ -277,16 +282,16 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
   ∀ {ℓ} {A B : Set ℓ} (fs : List (A → B)) xs₁ xs₂ →
   (fs ⊛ (xs₁ ++ xs₂)) ∼[ bag ] (fs ⊛ xs₁) ++ (fs ⊛ xs₂)
 ⊛-left-distributive {B = B} fs xs₁ xs₂ = begin
-  fs ⊛ (xs₁ ++ xs₂)                         ≡⟨⟩
-  (fs >>= λ f → xs₁ ++ xs₂ >>= return ∘ f)  ≡⟨ (MP.cong (refl {x = fs}) λ f →
-                                                MP.right-distributive xs₁ xs₂ (return ∘ f)) ⟩
-  (fs >>= λ f → (xs₁ >>= return ∘ f) ++
-                (xs₂ >>= return ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
+  fs ⊛ (xs₁ ++ xs₂)                       ≡⟨ Applicative.unfold-⊛ fs (xs₁ ++ xs₂) ⟩
+  (fs >>= λ f → xs₁ ++ xs₂ >>= pure ∘ f)  ≡⟨ (MP.cong (refl {x = fs}) λ f →
+                                                MP.right-distributive xs₁ xs₂ (pure ∘ f)) ⟩
+  (fs >>= λ f → (xs₁ >>= pure ∘ f) ++
+                (xs₂ >>= pure ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
 
-  (fs >>= λ f → xs₁ >>= return ∘ f) ++
-  (fs >>= λ f → xs₂ >>= return ∘ f)         ≡⟨⟩
+  (fs >>= λ f → xs₁ >>= pure ∘ f) ++
+  (fs >>= λ f → xs₂ >>= pure ∘ f)         ≡˘⟨ P.cong₂ _++_ (Applicative.unfold-⊛ fs xs₁) (Applicative.unfold-⊛ fs xs₂) ⟩
 
-  (fs ⊛ xs₁) ++ (fs ⊛ xs₂)                  ∎
+  (fs ⊛ xs₁) ++ (fs ⊛ xs₂)                ∎
   where open EqR ([ bag ]-Equality B)
 
 private
@@ -560,8 +565,6 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
     open Inverse
     open P.≡-Reasoning
   ... | ()
-
-
 
 ------------------------------------------------------------------------
 -- Relationships to other relations

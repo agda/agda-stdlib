@@ -4,19 +4,19 @@
 -- An effectful view of List⁺
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.NonEmpty.Effectful where
 
 open import Agda.Builtin.List
 import Data.List.Effectful as List
-open import Data.List.NonEmpty
-open import Data.Product using (uncurry)
+open import Data.List.NonEmpty.Base
+open import Data.Product.Base using (uncurry)
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
 open import Effect.Comonad
-open import Function
+open import Function.Base using (flip; _∘′_; _∘_)
 
 ------------------------------------------------------------------------
 -- List⁺ applicative functor
@@ -28,8 +28,9 @@ functor = record
 
 applicative : ∀ {f} → RawApplicative {f} List⁺
 applicative = record
-  { pure = [_]
-  ; _⊛_  = λ fs as → concatMap (λ f → map f as) fs
+  { rawFunctor = functor
+  ; pure = [_]
+  ; _<*>_  = ap
   }
 
 ------------------------------------------------------------------------
@@ -37,7 +38,7 @@ applicative = record
 
 monad : ∀ {f} → RawMonad {f} List⁺
 monad = record
-  { return = [_]
+  { rawApplicative = applicative
   ; _>>=_  = flip concatMap
   }
 
@@ -58,7 +59,7 @@ comonad = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module TraversableA {f F} (App : RawApplicative {f} F) where
+module TraversableA {f g F} (App : RawApplicative {f} {g} F) where
 
   open RawApplicative App
 
@@ -71,22 +72,13 @@ module TraversableA {f F} (App : RawApplicative {f} F) where
   forA : ∀ {a} {A : Set a} {B} → List⁺ A → (A → F B) → F (List⁺ B)
   forA = flip mapA
 
-module TraversableM {m M} (Mon : RawMonad {m} M) where
+module TraversableM {m n M} (Mon : RawMonad {m} {n} M) where
 
   open RawMonad Mon
 
-  open TraversableA rawIApplicative public
+  open TraversableA rawApplicative public
     renaming
     ( sequenceA to sequenceM
     ; mapA      to mapM
     ; forA      to forM
     )
-
-------------------------------------------------------------------------
--- List⁺ monad transformer
-
-monadT : ∀ {f} → RawMonadT {f} (_∘′ List⁺)
-monadT M = record
-  { return = pure ∘′ [_]
-  ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM f as
-  } where open RawMonad M; open TraversableM M

@@ -6,16 +6,16 @@
 
 -- The contents of this module should be accessed via `Function.Metric`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Metric.Definitions where
 
 open import Algebra.Core using (Op₂)
-open import Data.Product using (∃)
+open import Data.Product.Base using (∃)
 open import Function.Metric.Core using (DistanceFunction)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 private
   variable
@@ -23,7 +23,7 @@ private
     A : Set a
     I : Set i
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties
 
 Congruent : Rel A ℓ₁ → Rel I ℓ₂ → DistanceFunction A I → Set _

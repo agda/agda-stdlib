@@ -4,14 +4,14 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --cubical-compatible --safe --guardedness #-}
 
 module Codata.Guarded.M where
 
 open import Level
 open import Data.Container.Core hiding (map; Shape; Position)
 open import Function.Base
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 
 -- The family of M-types
 
@@ -20,7 +20,7 @@ record M {s p} (C : Container s p) : Set (s ⊔ p) where
   constructor inf
 
   open Container C
-  
+
   field
     head : Shape
     tail : Position head → M C

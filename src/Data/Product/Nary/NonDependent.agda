@@ -4,7 +4,7 @@
 -- Nondependent heterogeneous N-ary products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Nary.NonDependent where
 
@@ -16,26 +16,26 @@ module Data.Product.Nary.NonDependent where
 
 open import Level as L using (Level; _⊔_; Lift; 0ℓ)
 open import Agda.Builtin.Unit
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 import Data.Product.Properties as Prodₚ
 open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Function
-open import Relation.Nullary
-open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
+open import Function.Base using (const; _∘′_; _∘_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _×-dec_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 
 open import Function.Nary.NonDependent.Base
 
--- Provided n Levels and a corresponding "vector" of `n` Sets, we can build a big
--- right-nested product type packing a value for each one of these Sets.
+-- Provided n Levels and a corresponding "vector" of `n` Sets, we can
+-- build a big right-nested product type packing a value for each one
+-- of these Sets.
 -- We have two distinct but equivalent definitions:
 -- the first which is always ⊤-terminated
--- the other which has a special case for n = 1 because we want our `(un)curryₙ`
--- functions to work for user-written functions and products and they rarely are
--- ⊤-terminated.
+-- the other which has a special case for n = 1 because we want our
+-- `(un)curryₙ` functions to work for user-written functions and
+-- products and they rarely are ⊤-terminated.
 
 Product⊤ : ∀ n {ls} → Sets n ls → Set (⨆ n ls)
 Product⊤ zero    as       = ⊤
@@ -75,14 +75,14 @@ Equalₙ = Allₙ _≡_
 -- equivalence of Product and Product⊤
 
 toProduct : ∀ n {ls} {as : Sets n ls} → Product⊤ n as → Product n as
-toProduct 0             _        = _
-toProduct 1             (v , _)  = v
-toProduct (suc (suc n)) (v , vs) = v , toProduct _ vs
+toProduct 0               _        = _
+toProduct 1               (v , _)  = v
+toProduct (suc n@(suc _)) (v , vs) = v , toProduct n vs
 
 toProduct⊤ : ∀ n {ls} {as : Sets n ls} → Product n as → Product⊤ n as
-toProduct⊤ 0             _        = _
-toProduct⊤ 1             v        = v , _
-toProduct⊤ (suc (suc n)) (v , vs) = v , toProduct⊤ _ vs
+toProduct⊤ 0               _        = _
+toProduct⊤ 1               v        = v , _
+toProduct⊤ (suc n@(suc _)) (v , vs) = v , toProduct⊤ n vs
 
 ------------------------------------------------------------------------
 -- (un)curry
@@ -144,8 +144,8 @@ fromEqualₙ (suc n@(suc _)) eq = uncurry (cong₂ _,_) (Prod.map₂ (fromEqual�
 ------------------------------------------------------------------------
 -- projection of the k-th component
 
--- To know at which Set level the k-th projection out of an n-ary product
--- lives, we need to extract said level, by induction on k.
+-- To know at which Set level the k-th projection out of an n-ary
+-- product lives, we need to extract said level, by induction on k.
 
 Levelₙ : ∀ {n} → Levels n → Fin n → Level
 Levelₙ (l , _)  zero    = l
@@ -158,16 +158,29 @@ Projₙ : ∀ {n ls} → Sets n ls → ∀ k → Set (Levelₙ ls k)
 Projₙ (a , _)  zero    = a
 Projₙ (_ , as) (suc k) = Projₙ as k
 
--- Finally, provided a Product of these sets, we can extract the k-th value.
--- `projₙ` takes both `n` and `k` explicitly because we expect the user will
--- be using a concrete `k` (potentially manufactured using `Data.Fin`'s `#_`)
--- and it will not be possible to infer `n` from it.
+-- Finally, provided a Product of these sets, we can extract the k-th
+-- value. `projₙ` takes both `n` and `k` explicitly because we expect
+-- the user will be using a concrete `k` (potentially manufactured
+-- using `Data.Fin`'s `#_`) and it will not be possible to infer `n`
+-- from it.
 
 projₙ : ∀ n {ls} {as : Sets n ls} k → Product n as → Projₙ as k
 projₙ 1               zero    v        = v
 projₙ (suc n@(suc _)) zero    (v , _)  = v
 projₙ (suc n@(suc _)) (suc k) (_ , vs) = projₙ n k vs
 projₙ 1 (suc ()) v
+
+------------------------------------------------------------------------
+-- zip
+
+zipWith : ∀ n {lsa lsb lsc}
+          {as : Sets n lsa} {bs : Sets n lsb} {cs : Sets n lsc} →
+          (∀ k → Projₙ as k → Projₙ bs k → Projₙ cs k) →
+          Product n as → Product n bs → Product n cs
+zipWith 0               f _        _        = _
+zipWith 1               f v        w        = f zero v w
+zipWith (suc n@(suc _)) f (v , vs) (w , ws) =
+  f zero v w , zipWith n (λ k → f (suc k)) vs ws
 
 ------------------------------------------------------------------------
 -- removal of the k-th component
@@ -205,10 +218,10 @@ Insertₙ {zero} _ (suc ()) _
 
 insertₙ : ∀ n {ls l⁺} {as : Sets n ls} {a⁺ : Set l⁺} k (v⁺ : a⁺) →
           Product n as → Product (suc n) (Insertₙ as k a⁺)
-insertₙ 0             zero    v⁺ vs       = v⁺
-insertₙ (suc n)       zero    v⁺ vs       = v⁺ , vs
-insertₙ 1             (suc k) v⁺ vs       = vs , insertₙ 0 k v⁺ _
-insertₙ (suc (suc n)) (suc k) v⁺ (v , vs) = v , insertₙ _ k v⁺ vs
+insertₙ 0               zero    v⁺ vs       = v⁺
+insertₙ (suc n)         zero    v⁺ vs       = v⁺ , vs
+insertₙ 1               (suc k) v⁺ vs       = vs , insertₙ 0 k v⁺ _
+insertₙ (suc n@(suc _)) (suc k) v⁺ (v , vs) = v , insertₙ n k v⁺ vs
 insertₙ 0 (suc ()) _ _
 
 ------------------------------------------------------------------------
@@ -224,9 +237,9 @@ Updateₙ (a , as) (suc k) aᵘ = a , Updateₙ as k aᵘ
 
 updateₙ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : _ → Set lᵘ} (f : ∀ v → aᵘ v)
           (vs : Product n as) → Product n (Updateₙ as k (aᵘ (projₙ n k vs)))
-updateₙ 1             zero    f v        = f v
-updateₙ (suc (suc _)) zero    f (v , vs) = f v , vs
-updateₙ (suc (suc _)) (suc k) f (v , vs) = v , updateₙ _ k f vs
+updateₙ 1               zero    f v        = f v
+updateₙ (suc (suc _))   zero    f (v , vs) = f v , vs
+updateₙ (suc n@(suc _)) (suc k) f (v , vs) = v , updateₙ n k f vs
 updateₙ 1 (suc ()) _ _
 
 updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ as k → aᵘ) →

@@ -4,7 +4,7 @@
 -- Properties of First
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.First.Properties where
 
@@ -14,8 +14,8 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.List.Relation.Unary.First
-import Data.Sum.Base as Sum
-open import Function
+import Data.Sum as Sum
+open import Function.Base using (_∘′_; _$_; _∘_; id)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; _≗_)
 open import Relation.Unary
 open import Relation.Nullary.Negation

@@ -4,25 +4,27 @@
 -- Properties related to Linked
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Unary.Linked.Properties where
 
 open import Data.Bool.Base using (true; false)
-open import Data.Vec.Base as Vec hiding (lookup)
+open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
+import Data.Vec.Relation.Unary.All.Properties as Allₚ
 open import Data.Vec.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
-open import Data.Fin.Base using (Fin; zero; suc; _<_)
-open import Data.Fin.Properties using (suc-injective)
-open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Nat.Properties using (<-pred) -- ≤-refl; ≤-pred; ≤-step)
+open import Data.Fin.Base using (zero; suc; _<_)
+open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
+open import Data.Nat.Properties using (<-pred)
 open import Level using (Level)
 open import Function.Base using (_∘_; flip; _on_)
-open import Relation.Binary using (Rel; Transitive; DecSetoid)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Transitive)
+open import Relation.Binary.Bundles using (DecSetoid)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (yes; no; does)
+open import Relation.Nullary.Decidable using (yes; no; does)
 
 private
   variable
@@ -43,10 +45,11 @@ module _ (trans : Transitive R) where
   Linked⇒All Rvx [-]         = Rvx ∷ []
   Linked⇒All Rvx (Rxy ∷ Rxs) = Rvx ∷ Linked⇒All (trans Rvx Rxy) Rxs
 
-  lookup : ∀ {i j : Fin n} {xs} → i < j →
-           Linked R xs → R (Vec.lookup xs i) (Vec.lookup xs j)
-  lookup {i = zero}  {j = suc j} i<j (rx ∷ rxs) = All.lookup j (Linked⇒All rx rxs)
-  lookup {i = suc i} {j = suc j} i<j (_  ∷ rxs) = lookup (<-pred i<j) rxs
+  lookup⁺ : ∀ {i j} {xs : Vec _ n} →
+           Linked R xs → i < j →
+           R (lookup xs i) (lookup xs j)
+  lookup⁺ {i = zero}  {j = suc j} (rx ∷ rxs) i<j = Allₚ.lookup⁺ (Linked⇒All rx rxs) j
+  lookup⁺ {i = suc i} {j = suc j} (_  ∷ rxs) i<j = lookup⁺ rxs (<-pred i<j)
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for vec operations

@@ -4,7 +4,7 @@
 -- The lifting of a non-strict order to incorporate new extrema
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Extrema
@@ -17,12 +17,12 @@ module Relation.Binary.Construct.Add.Extrema.NonStrict
 open import Function.Base
 open import Relation.Nullary.Construct.Add.Extrema
 import Relation.Nullary.Construct.Add.Infimum as I
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 import Relation.Binary.Construct.Add.Infimum.NonStrict as AddInfimum
 import Relation.Binary.Construct.Add.Supremum.NonStrict as AddSupremum
 import Relation.Binary.Construct.Add.Extrema.Equality as Equality
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 private
@@ -31,7 +31,7 @@ private
 
 open Sup using () renaming (_≤⁺_ to _≤±_) public
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Useful pattern synonyms
 
 pattern ⊥±≤⊥±    = Sup.[ Inf.⊥₋≤ I.⊥₋ ]
@@ -51,7 +51,7 @@ _≤⊤± : ∀ k → k ≤± ⊤±
 [ k ] ≤⊤± = [ k ]≤⊤±
 ⊤±    ≤⊤± = ⊤±≤⊤±
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties
 
 [≤]-injective : ∀ {k l} → [ k ] ≤± [ l ] → k ≤ l
@@ -75,7 +75,7 @@ _≤⊤± : ∀ k → k ≤± ⊤±
 ≤±-irrelevant : Irrelevant _≤_ → Irrelevant _≤±_
 ≤±-irrelevant = Sup.≤⁺-irrelevant ∘′ Inf.≤₋-irrelevant
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties + propositional equality
 
 ≤±-reflexive-≡ : (_≡_ ⇒ _≤_) → (_≡_ ⇒ _≤±_)
@@ -84,7 +84,7 @@ _≤⊤± : ∀ k → k ≤± ⊤±
 ≤±-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤±_
 ≤±-antisym-≡ = Sup.≤⁺-antisym-≡ ∘′ Inf.≤₋-antisym-≡
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties + setoid equality
 
 module _ {e} {_≈_ : Rel A e} where
@@ -97,7 +97,7 @@ module _ {e} {_≈_ : Rel A e} where
   ≤±-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈±_ _≤±_
   ≤±-antisym = Sup.≤⁺-antisym ∘′ Inf.≤₋-antisym
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures + propositional equality
 
 ≤±-isPreorder-≡ : IsPreorder _≡_ _≤_ → IsPreorder _≡_ _≤±_
@@ -115,7 +115,7 @@ module _ {e} {_≈_ : Rel A e} where
 ≤±-isDecTotalOrder-≡ : IsDecTotalOrder _≡_ _≤_ → IsDecTotalOrder _≡_ _≤±_
 ≤±-isDecTotalOrder-≡ = Sup.≤⁺-isDecTotalOrder-≡ ∘′ Inf.≤₋-isDecTotalOrder-≡
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures + setoid equality
 
 module _ {e} {_≈_ : Rel A e} where

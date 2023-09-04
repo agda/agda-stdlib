@@ -7,26 +7,27 @@
 -- See README.Data.List for examples of how to use and reason about
 -- lists.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Base where
 
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product as Prod using (_×_; _,_; map₁; map₂′)
+open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)
+open import Function.Base
+  using (id; _∘_ ; _∘′_; _∘₂_; _$_; const; flip)
 open import Level using (Level)
-open import Relation.Nullary using (does)
-open import Relation.Nullary.Negation.Core using (¬?)
+open import Relation.Nullary.Decidable.Core using (does; ¬?)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Unary.Properties using (∁?)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
@@ -53,6 +54,9 @@ mapMaybe p []       = []
 mapMaybe p (x ∷ xs) with p x
 ... | just y  = y ∷ mapMaybe p xs
 ... | nothing = mapMaybe p xs
+
+catMaybes : List (Maybe A) → List A
+catMaybes = mapMaybe id
 
 infixr 5 _++_
 
@@ -141,6 +145,9 @@ concat = foldr _++_ []
 
 concatMap : (A → List B) → List A → List B
 concatMap f = concat ∘ map f
+
+ap : List (A → B) → List A → List B
+ap fs as = concatMap (flip map as) fs
 
 null : List A → Bool
 null []       = true
@@ -389,6 +396,26 @@ deduplicateᵇ : (A → A → Bool) → List A → List A
 deduplicateᵇ r [] = []
 deduplicateᵇ r (x ∷ xs) = x ∷ filterᵇ (not ∘ r x) (deduplicateᵇ r xs)
 
+-- Finds the first element satisfying the boolean predicate
+findᵇ : (A → Bool) → List A → Maybe A
+findᵇ p []       = nothing
+findᵇ p (x ∷ xs) = if p x then just x else findᵇ p xs
+
+-- Finds the index of the first element satisfying the boolean predicate
+findIndexᵇ : (A → Bool) → (xs : List A) → Maybe $ Fin (length xs)
+findIndexᵇ p []       = nothing
+findIndexᵇ p (x ∷ xs) = if p x
+  then just zero
+  else Maybe.map suc (findIndexᵇ p xs)
+
+-- Finds indices of all the elements satisfying the boolean predicate
+findIndicesᵇ : (A → Bool) → (xs : List A) → List $ Fin (length xs)
+findIndicesᵇ p []       = []
+findIndicesᵇ p (x ∷ xs) = if p x
+  then zero ∷ indices
+  else indices
+    where indices = map suc (findIndicesᵇ p xs)
+
 -- Equivalent functions that use a decidable predicate instead of a
 -- boolean function.
 
@@ -430,6 +457,15 @@ derun R? = derunᵇ (does ∘₂ R?)
 deduplicate : ∀ {R : Rel A p} → B.Decidable R → List A → List A
 deduplicate R? = deduplicateᵇ (does ∘₂ R?)
 
+find : ∀ {P : Pred A p} → Decidable P → List A → Maybe A
+find P? = findᵇ (does ∘ P?)
+
+findIndex : ∀ {P : Pred A p} → Decidable P → (xs : List A) → Maybe $ Fin (length xs)
+findIndex P? = findIndexᵇ (does ∘ P?)
+
+findIndices : ∀ {P : Pred A p} → Decidable P → (xs : List A) → List $ Fin (length xs)
+findIndices P? = findIndicesᵇ (does ∘ P?)
+
 ------------------------------------------------------------------------
 -- Actions on single elements
 
@@ -457,6 +493,24 @@ infixl 6 _∷ʳ?_
 _∷ʳ?_ : List A → Maybe A → List A
 xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
 
+------------------------------------------------------------------------
+-- Raw algebraic bundles
+
+module _ (A : Set a) where
+  ++-rawMagma : RawMagma a _
+  ++-rawMagma = record
+    { Carrier = List A
+    ; _≈_ = _≡_
+    ; _∙_ = _++_
+    }
+
+  ++-[]-rawMonoid : RawMonoid a _
+  ++-[]-rawMonoid = record
+    { Carrier = List A
+    ; _≈_ = _≡_
+    ; _∙_ = _++_
+    ; ε = []
+    }
 
 ------------------------------------------------------------------------
 -- DEPRECATED

@@ -11,17 +11,17 @@
 -- data-types, which is more suitable for reasoning about vectors that
 -- will grow or shrink in size.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional where
 
 open import Data.Fin.Base
 open import Data.List.Base as L using (List)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero; pred)
+open import Data.Product.Base using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Base as V using (Vec)
-open import Function.Base
+open import Function.Base using (_∘_; const; flip; _ˢ_; id)
 open import Level using (Level)
 
 infixr 5 _∷_ _++_

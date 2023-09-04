@@ -8,13 +8,13 @@
 -- probably want to be importing the appropriate module from
 -- `Algebra.Properties.(Magma/Semigroup/...).Divisibility`
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (RawMagma)
-open import Data.Product using (_×_; ∃)
+open import Data.Product.Base using (_×_; ∃)
 open import Level using (_⊔_)
 open import Relation.Binary.Core
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 
 module Algebra.Definitions.RawMagma
   {a ℓ} (M : RawMagma a ℓ)

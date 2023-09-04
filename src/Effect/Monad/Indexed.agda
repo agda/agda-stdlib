@@ -6,12 +6,12 @@
 
 -- Note that currently the monad laws are not included here.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Indexed where
 
 open import Effect.Applicative.Indexed
-open import Function
+open import Function.Base
 open import Level
 
 private

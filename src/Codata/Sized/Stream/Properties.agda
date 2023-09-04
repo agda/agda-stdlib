@@ -4,7 +4,7 @@
 -- Properties of operations on the Stream type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Stream.Properties where
 
@@ -20,11 +20,11 @@ open import Data.Nat.GeneralisedArithmetic using (fold; fold-pull)
 open import Data.List.Base as List using ([]; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 import Data.List.Relation.Binary.Equality.Propositional as Eq
-open import Data.Product as Prod using (_,_)
+open import Data.Product.Base as Prod using (_,_)
 open import Data.Vec.Base as Vec using (_∷_)
 
 open import Function.Base using (id; _$_; _∘′_; const)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; _≢_)
 
 private
   variable
@@ -37,7 +37,7 @@ private
 ------------------------------------------------------------------------
 -- repeat
 
-lookup-repeat-identity : (n : ℕ) (a : A) → lookup n (repeat a) ≡ a
+lookup-repeat-identity : (n : ℕ) (a : A) → lookup (repeat a) n ≡ a
 lookup-repeat-identity zero    a = P.refl
 lookup-repeat-identity (suc n) a = lookup-repeat-identity n a
 
@@ -90,11 +90,11 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- Functor laws
 
-map-identity : ∀ (as : Stream A ∞) → i ⊢ map id as ≈ as
-map-identity (a ∷ as) = P.refl ∷ λ where .force → map-identity (as .force)
+map-id : ∀ (as : Stream A ∞) → i ⊢ map id as ≈ as
+map-id (a ∷ as) = P.refl ∷ λ where .force → map-id (as .force)
 
-map-map-fusion : ∀ (f : A → B) (g : B → C) as → i ⊢ map g (map f as) ≈ map (g ∘′ f) as
-map-map-fusion f g (a ∷ as) = P.refl ∷ λ where .force → map-map-fusion f g (as .force)
+map-∘ : ∀ (f : A → B) (g : B → C) as → i ⊢ map g (map f as) ≈ map (g ∘′ f) as
+map-∘ f g (a ∷ as) = P.refl ∷ λ where .force → map-∘ f g (as .force)
 
 
 ------------------------------------------------------------------------
@@ -109,11 +109,31 @@ splitAt-map (suc n) f (x ∷ xs) =
 ------------------------------------------------------------------------
 -- iterate
 
-lookup-iterate-identity : ∀ n f (a : A) → lookup n (iterate f a) ≡ fold a f n
+lookup-iterate-identity : ∀ n f (a : A) → lookup (iterate f a) n ≡ fold a f n
 lookup-iterate-identity zero     f a = P.refl
 lookup-iterate-identity (suc n)  f a = begin
-  lookup (suc n) (iterate f a) ≡⟨⟩
-  lookup n (iterate f (f a))   ≡⟨ lookup-iterate-identity n f (f a) ⟩
+  lookup (iterate f a) (suc n) ≡⟨⟩
+  lookup (iterate f (f a)) n   ≡⟨ lookup-iterate-identity n f (f a) ⟩
   fold (f a) f n               ≡⟨ fold-pull a f (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
   f (fold a f n)               ≡⟨⟩
   fold a f (suc n)             ∎ where open P.≡-Reasoning
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+map-identity = map-id
+{-# WARNING_ON_USAGE map-identity
+"Warning: map-identity was deprecated in v2.0.
+Please use map-id instead."
+#-}
+
+map-map-fusion = map-∘
+{-# WARNING_ON_USAGE map-map-fusion
+"Warning: map-map-fusion was deprecated in v2.0.
+Please use map-∘ instead."
+#-}

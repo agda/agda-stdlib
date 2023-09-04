@@ -4,7 +4,7 @@
 -- Sum combinators for propositional equality preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Sum.Function.Propositional where
 
@@ -23,6 +23,8 @@ open import Function.Surjection as Surj using (_↠_; module Surjection)
 -- Combinators for various function types
 
 module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
+
+  infixr 1 _⊎-⇔_ _⊎-↣_ _⊎-↞_ _⊎-↠_ _⊎-↔_
 
   _⊎-⇔_ : A ⇔ B → C ⇔ D → (A ⊎ C) ⇔ (B ⊎ D)
   _⊎-⇔_ A⇔B C⇔D =
@@ -60,6 +62,8 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
     where open Inv using () renaming (_∘_ to _⟨∘⟩_)
 
 module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
+
+  infixr 1 _⊎-cong_
 
   _⊎-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A ⊎ C) ∼[ k ] (B ⊎ D)
   _⊎-cong_ {implication}         = map

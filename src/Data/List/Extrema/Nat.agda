@@ -4,7 +4,7 @@
 -- Finding the maximum/minimum values in a list, specialised for Nat
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- This specialised module is needed as `m < n` for Nat is not
 -- implemented as `m ≤ n × m ≢ n`.
@@ -18,9 +18,9 @@ open import Data.List.Base using (List)
 import Data.List.Extrema
 open import Data.List.Relation.Unary.Any as Any using (Any)
 open import Data.List.Relation.Unary.All as All using (All)
-open import Data.Product using (_×_; _,_; uncurry′)
+open import Data.Product.Base using (_×_; _,_; uncurry′)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 
 private
   variable

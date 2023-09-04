@@ -4,15 +4,16 @@
 -- Some properties of reflexive transitive closures.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 
-open import Function
+open import Function.Base using (id; _∘_; _$_)
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; refl; sym; cong; cong₂)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 import Relation.Binary.Reasoning.Preorder as PreR
 
 ------------------------------------------------------------------------

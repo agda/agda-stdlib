@@ -4,9 +4,12 @@
 -- Properties of permutations using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary as B hiding (Decidable)
+open import Relation.Binary.Core
+  using (Rel; _⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 
 module Data.List.Relation.Binary.Permutation.Setoid.Properties
   {a ℓ} (S : Setoid a ℓ)
@@ -14,7 +17,6 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
 
 open import Algebra
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; head; tail)
@@ -30,16 +32,16 @@ import Data.List.Properties as Lₚ
 open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Data.Product using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
 open import Function.Base using (_∘_; _⟨_⟩_; flip)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_; inspect)
-open import Relation.Nullary using (yes; no; does)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
+open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 
 private
@@ -116,8 +118,8 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 
 0<steps : ∀ {xs ys} (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
 0<steps (refl _)             = z<s
-0<steps (prep eq xs↭ys)      = ≤-step (0<steps xs↭ys)
-0<steps (swap eq₁ eq₂ xs↭ys) = ≤-step (0<steps xs↭ys)
+0<steps (prep eq xs↭ys)      = m<n⇒m<1+n (0<steps xs↭ys)
+0<steps (swap eq₁ eq₂ xs↭ys) = m<n⇒m<1+n (0<steps xs↭ys)
 0<steps (trans xs↭ys xs↭ys₁) =
   <-transˡ (0<steps xs↭ys) (m≤m+n (steps xs↭ys) (steps xs↭ys₁))
 
@@ -197,12 +199,9 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-comm : Commutative _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys         <⟨ ++-comm xs ys ⟩
-  x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
-  (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (↭-shift ys [])) ⟩
-  (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
-  ys ++ ([ x ] ++ xs)  ≡⟨⟩
-  ys ++ (x ∷ xs)       ∎
+  x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
+  x ∷ ys ++ xs   ↭˘⟨ ↭-shift ys xs ⟩
+  ys ++ (x ∷ xs) ∎
 
 -- Structures
 

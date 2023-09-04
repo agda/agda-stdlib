@@ -4,21 +4,21 @@
 -- Non empty trie, basic type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Trie.NonEmpty {k e r} (S : StrictTotalOrder k e r) where
 
 open import Level
 open import Size
 open import Effect.Monad
-open import Data.Product as Prod using (∃; uncurry; -,_)
+open import Data.Product.Base as Prod using (∃; uncurry; -,_)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
-open import Function as F
+open import Function.Base as F
 import Function.Identity.Effectful as Identity
 open import Relation.Unary using (_⇒_; IUniversal)
 
@@ -35,10 +35,10 @@ open Value
 ------------------------------------------------------------------------
 -- Definition
 
--- A Trie⁺ is a tree branching over an alphabet of Keys. It stores values
--- indexed over the Word (i.e. List Key) that was read to reach them.
--- Each node in the Trie⁺ contains either a value, a non-empty Tree of
--- sub-Trie⁺ reached by reading an extra letter, or both.
+-- A Trie⁺ is a tree branching over an alphabet of Keys. It stores
+-- values indexed over the Word (i.e. List Key) that was read to reach
+-- them. Each node in the Trie⁺ contains either a value, a non-empty
+-- Tree of sub-Trie⁺ reached by reading an extra letter, or both.
 
 Word : Set k
 Word = List Key
@@ -65,24 +65,24 @@ map V W f (node t) = node $ These.map f (Tree⁺.map (map _ _ f)) t
 ------------------------------------------------------------------------
 -- Query
 
-lookup : ∀ {v} {V : Value v} ks → Trie⁺ V ∞ →
+lookup : ∀ {v} {V : Value v} → Trie⁺ V ∞ → ∀ ks →
          Maybe (These (family V ks) (Tries⁺ (eat V ks) ∞))
-lookup []       (node nd) = just (These.map₂ (Tree⁺.map id) nd)
-lookup (k ∷ ks) (node nd) = let open Maybe in do
+lookup (node nd) []       = just (These.map₂ (Tree⁺.map id) nd)
+lookup (node nd) (k ∷ ks) = let open Maybe in do
   ts ← These.fromThat nd
-  t  ← Tree⁺.lookup k ts
-  lookup ks t
+  t  ← Tree⁺.lookup ts k
+  lookup t ks
 
 module _ {v} {V : Value v} where
 
-  lookupValue : ∀ (ks : Word) → Trie⁺ V ∞ → Maybe (family V ks)
-  lookupValue ks t = lookup ks t Maybe.>>= These.fromThis
+  lookupValue : Trie⁺ V ∞ → (ks : Word) → Maybe (family V ks)
+  lookupValue t ks = lookup t ks Maybe.>>= These.fromThis
 
-  lookupTries⁺ : ∀ ks → Trie⁺ V ∞ → Maybe (Tries⁺ (eat V ks) ∞)
-  lookupTries⁺ ks t = lookup ks t Maybe.>>= These.fromThat
+  lookupTries⁺ : Trie⁺ V ∞ → ∀ ks → Maybe (Tries⁺ (eat V ks) ∞)
+  lookupTries⁺ t ks = lookup t ks Maybe.>>= These.fromThat
 
-  lookupTrie⁺ : ∀ k → Trie⁺ V ∞ → Maybe (Trie⁺ (eat V (k ∷ [])) ∞)
-  lookupTrie⁺ k t = lookupTries⁺ [] t Maybe.>>= Tree⁺.lookup k
+  lookupTrie⁺ : Trie⁺ V ∞ → ∀ k → Maybe (Trie⁺ (eat V (k ∷ [])) ∞)
+  lookupTrie⁺ t k = lookupTries⁺ t [] Maybe.>>= λ ts → Tree⁺.lookup ts k
 
 ------------------------------------------------------------------------
 -- Construction
@@ -143,7 +143,7 @@ deleteWith (k ∷ ks) f t@(node nd) = let open RawMonad Identity.monad in do
   -- Tree⁺.updateWith : ∀ k → (Maybe (V k) → Maybe (V k)) → AVL → AVL
   -- Instead we lookup the subtree, update it and either put it back in
   -- or delete the corresponding leaf depending on whether the result is successful.
-  just t′ ← Tree⁺.lookup k ts where _ → just t
+  just t′ ← Tree⁺.lookup ts k where _ → just t
   Maybe.map node ∘′ Maybe.align (These.fromThis nd) $′ case deleteWith ks f t′ of λ where
     nothing  → Tree⁺.delete k ts
     (just u) → just (Tree⁺.insert k u ts)

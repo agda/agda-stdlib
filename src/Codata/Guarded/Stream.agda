@@ -4,7 +4,7 @@
 -- Infinite streams defined as coinductive records
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --cubical-compatible --safe --guardedness #-}
 
 module Codata.Guarded.Stream where
 
@@ -12,7 +12,7 @@ open import Level hiding (suc)
 open import Data.Nat.Base
 open import Function.Base
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.List.NonEmpty.Base as List⁺ using (List⁺; _∷_)
 open import Algebra.Core
@@ -27,6 +27,8 @@ private
 
 ------------------------------------------------------------------------
 -- Type
+
+infixr 5 _∷_
 
 record Stream (A : Set a) : Set a where
   coinductive
@@ -65,12 +67,14 @@ nats = tabulate id
 ------------------------------------------------------------------------
 -- Lookup
 
-lookup : ℕ → Stream A → A
-lookup zero = head
-lookup (suc n) = lookup n ∘′ tail
+lookup : Stream A → ℕ → A
+lookup xs zero    = head xs
+lookup xs (suc n) = lookup (tail xs) n
+
+infix 4 _[_]
 
 _[_] : Stream A → ℕ → A
-_[_] = flip lookup
+_[_] = lookup
 
 ------------------------------------------------------------------------
 -- Transforming streams

@@ -4,11 +4,11 @@
 -- Typeclass instances for Identity
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-module Function.Identity.Instances where
+module Effect.Monad.Identity.Instances where
 
-open import Function.Identity.Effectful
+open import Effect.Monad.Identity
 
 instance
   identityFunctor = functor

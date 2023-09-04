@@ -4,7 +4,7 @@
 -- This module is DEPRECATED, please use `Function.Strict` directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Strict where
 

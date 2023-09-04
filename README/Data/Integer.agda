@@ -5,7 +5,7 @@
 -- operations and properties are defined, and how they can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module README.Data.Integer where
 
@@ -51,7 +51,6 @@ ex₅ i j = ℤₚ.*-comm i j
 -- provides some combinators for equational reasoning.
 
 open P.≡-Reasoning
-open import Data.Product
 
 ex₆ : ∀ i j → i * (j + + 0) ≡ j * i
 ex₆ i j = begin

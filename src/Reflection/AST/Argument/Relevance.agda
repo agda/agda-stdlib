@@ -4,13 +4,13 @@
 -- Argument relevance used in the reflection machinery
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.AST.Argument.Relevance where
 
-open import Relation.Nullary
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary                           using (yes; no)
+open import Relation.Binary.Definitions                using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtins publicly
@@ -20,6 +20,8 @@ open Relevance public
 
 ------------------------------------------------------------------------
 -- Decidable equality
+
+infix 4 _≟_
 
 _≟_ : DecidableEquality Relevance
 relevant   ≟ relevant   = yes refl

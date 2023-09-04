@@ -4,13 +4,13 @@
 -- Some properties imply others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Consequences where
 
 open import Data.Maybe.Base using (just; nothing; decToMaybe)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Empty.Irrelevant using (⊥-elim)
 open import Function.Base using (_∘_; _∘₂_; _$_; flip)
 open import Level using (Level)
@@ -97,6 +97,13 @@ module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃}
   antimono⇒cong sym reflexive antisym antimono p≈q = antisym
     (antimono (reflexive (sym p≈q)))
     (antimono (reflexive p≈q))
+
+  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
+                f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
+                f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
+  mono₂⇒cong₂ sym reflexive antisym mono x≈y u≈v = antisym
+    (mono (reflexive x≈y) (reflexive u≈v))
+    (mono (reflexive (sym x≈y)) (reflexive (sym u≈v)))
 
 ------------------------------------------------------------------------
 -- Proofs for strict orders

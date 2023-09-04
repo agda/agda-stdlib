@@ -4,7 +4,7 @@
 -- Lists where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.All where
 
@@ -15,17 +15,18 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_)
 import Data.List.Membership.Setoid as SetoidMembership
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
-open import Function
-open import Level
+open import Function.Base using (_∘_; _∘′_; id; const)
+open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary hiding (_∈_)
-open import Relation.Binary using (Setoid; _Respects_)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (_Respects_)
+open import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable
@@ -49,7 +50,8 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
 -- All P xs is a finite map from indices x ∈ xs to content P x.
--- Relation pxs [ i ]= px states that, in map pxs, key i : x ∈ xs points to value px.
+-- Relation pxs [ i ]= px states that, in map pxs, key i : x ∈ xs points
+-- to value px.
 
 infix 4 _[_]=_
 
@@ -155,7 +157,7 @@ module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
 
   sequenceA : All (F ∘′ P) ⊆ F ∘′ All P
   sequenceA []       = pure []
-  sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
+  sequenceA (x ∷ xs) = _∷_ <$> x <*> sequenceA xs
 
   mapA : ∀ {Q : Pred A q} → (Q ⊆ F ∘′ P) → All Q ⊆ (F ∘′ All P)
   mapA f = sequenceA ∘′ map f
@@ -168,7 +170,7 @@ module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
          (Mon : RawMonad M)
          where
 
-  private App = RawMonad.rawIApplicative Mon
+  private App = RawMonad.rawApplicative Mon
 
   sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
   sequenceM = sequenceA p App

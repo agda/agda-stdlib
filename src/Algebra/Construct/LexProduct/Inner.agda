@@ -4,15 +4,15 @@
 -- Properties of the inner lexicographic product of two operators.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Bool.Base using (false; true)
-open import Data.Product using (_×_; _,_; swap; map; uncurry′)
+open import Data.Product.Base using (_×_; _,_; swap; map; uncurry′)
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary using (does; yes; no)
+open import Relation.Nullary.Decidable using (does; yes; no)
 open import Relation.Nullary.Negation
   using (contradiction; contradiction₂)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
@@ -165,8 +165,9 @@ cong₁ a≈b = cong₁₂ a≈b M.refl
 cong₂ : b ≈₁ c → lex a b x y ≈₂ lex a c x y
 cong₂ = cong₁₂ M.refl
 
--- It is possible to relax this. Instead of ∙ being selective and ◦ being associative it's also
--- possible for _◦_ to return a single idempotent element.
+-- It is possible to relax this. Instead of ∙ being selective and ◦
+-- being associative it's also possible for _◦_ to return a single
+-- idempotent element.
 assoc : Associative _≈₁_ _∙_ → Commutative _≈₁_ _∙_ →
         Selective _≈₁_ _∙_ → Associative _≈₂_ _◦_ →
         ∀ a b c x y z  → lex (a ∙ b) c (lex a b x y) z  ≈₂ lex a (b ∙ c) x (lex b c y z)

@@ -4,23 +4,21 @@
 -- AVL trees where at least one element satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Indexed.Relation.Unary.Any
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
 open import Data.Nat.Base using (ℕ)
-open import Data.Product using (_,_; ∃; -,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; ∃; -,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_∘′_; _∘_)
 open import Level using (Level; _⊔_)
 
-open import Relation.Nullary using (Dec; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Nullary.Decidable using (Dec; no; map′; _⊎-dec_)
 open import Relation.Unary
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)

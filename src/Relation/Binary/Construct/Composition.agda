@@ -4,11 +4,11 @@
 -- Composition of two binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Composition where
 
-open import Data.Product
+open import Data.Product.Base using (∃; _×_; _,_)
 open import Function.Base
 open import Level
 open import Relation.Binary

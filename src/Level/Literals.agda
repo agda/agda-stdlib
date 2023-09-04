@@ -4,7 +4,7 @@
 -- Conversion from naturals to universe levels
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Level.Literals where
 
@@ -14,6 +14,8 @@ open import Agda.Builtin.Unit
 open import Level using (Level; 0ℓ)
 
 -- Increase a Level by a number of sucs.
+
+infixl 6 _ℕ+_
 
 _ℕ+_ : ℕ → Level → Level
 zero  ℕ+ ℓ = ℓ

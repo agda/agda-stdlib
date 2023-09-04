@@ -4,9 +4,9 @@
 -- Lists which contain every element of a given type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.List
+open import Data.List.Base using (List)
 open import Level
 open import Relation.Binary
 

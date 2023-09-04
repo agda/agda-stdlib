@@ -7,19 +7,19 @@ module Main where
 open import Level
 open import Data.Unit
 open import Data.Bool
-open import Data.Char        as Char hiding (show)
-import Data.Char.Properties  as Char
-open import Data.List        as List using (List; []; _∷_)
-open import Data.List.Fresh  as List# using (List#; []; _∷#_)
-open import Data.Maybe       as Maybe
-open import Data.Product     as Prod
-open import Data.String      as String using (String; unlines; _++_)
-open import Data.These       as These
+open import Data.Char         as Char hiding (show)
+import Data.Char.Properties   as Char
+open import Data.List.Base    as List using (List; []; _∷_)
+open import Data.List.Fresh   as List# using (List#; []; _∷#_)
+open import Data.Maybe        as Maybe
+open import Data.Product      as Prod
+open import Data.String       as String using (String; unlines; _++_)
+open import Data.These        as These
 
 open import Function.Base using (case_of_; _$_; _∘′_; id; _on_)
 open import Relation.Nary
-open import Relation.Binary using (Rel)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Nullary.Decidable using (¬?)
 
 open import Data.Trie Char.<-strictTotalOrder
 open import Data.Tree.AVL.Value
@@ -67,9 +67,9 @@ module _ {t} (L : Lexer t) where
     loop acc toks []         = push acc []
     loop acc toks (c ∷ cs)   = case breaking c of λ where
       (true , m)  → push acc $ maybe′ _∷_ id m $ start cs
-      (false , _) → case lookupValue (c ∷ []) toks of λ where
+      (false , _) → case lookupValue toks (c ∷ []) of λ where
         (just tok) → tok ∷ start cs
-        nothing    → loop (c ∷ acc) (lookupTrie c toks) cs
+        nothing    → loop (c ∷ acc) (lookupTrie toks c) cs
 
     push : List Char → List Tok → List Tok
     push [] ts = ts

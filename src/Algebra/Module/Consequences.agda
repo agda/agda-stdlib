@@ -4,7 +4,7 @@
 -- Relations between properties of scaling and other operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Consequences where
 
@@ -14,7 +14,8 @@ open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Module.Definitions
 open import Function.Base using (flip)
 open import Level using (Level)
-open import Relation.Binary using (Rel; Setoid)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Reasoning.Setoid as Rea
 
 private

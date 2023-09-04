@@ -18,7 +18,7 @@
 -- It is a good alternative to Data.Product.Effectful when the notion
 -- of warnings does not have a neutral element (e.g. List⁺).
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 open import Algebra
@@ -36,18 +36,19 @@ module _ {a b} {A : Set a} {B : Set b} where
 
 applicative : RawApplicative Theseₗ
 applicative = record
-  { pure = that
-  ; _⊛_  = ap
+  { rawFunctor = functor
+  ; pure = that
+  ; _<*>_  = ap
   } where
 
-  ap : ∀ {A B}→ Theseₗ (A → B) → Theseₗ A → Theseₗ B
+  ap : ∀ {A B} → Theseₗ (A → B) → Theseₗ A → Theseₗ B
   ap (this w)    t = this w
   ap (that f)    t = map₂ f t
   ap (these w f) t = map (w ∙_) f t
 
 monad : RawMonad Theseₗ
 monad = record
-  { return = that
+  { rawApplicative = applicative
   ; _>>=_  = bind
   } where
 

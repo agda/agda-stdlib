@@ -4,7 +4,7 @@
 -- Properties of permutation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 
@@ -13,7 +13,7 @@ open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat using (suc)
-open import Data.Product using (-,_; proj₂)
+open import Data.Product.Base using (-,_; proj₂)
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -21,15 +21,15 @@ open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as Lₚ
-open import Data.Product using (_,_; _×_; ∃; ∃₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_ ; refl ; cong; cong₂; _≢_)
 open import Relation.Nullary
 
 open PermutationReasoning
@@ -86,6 +86,31 @@ Any-resp-↭ (trans p p₁) wit                 = Any-resp-↭ p₁ (Any-resp-�
 
 ∈-resp-↭ : ∀ {x : A} → (x ∈_) Respects _↭_
 ∈-resp-↭ = Any-resp-↭
+
+Any-resp-[σ⁻¹∘σ] : {xs ys : List A} {P : Pred A p} →
+                   (σ : xs ↭ ys) →
+                   (ix : Any P xs) →
+                   Any-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+Any-resp-[σ⁻¹∘σ] refl          ix               = refl
+Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (there (here _)) = refl
+Any-resp-[σ⁻¹∘σ] (trans σ₁ σ₂) ix
+  rewrite Any-resp-[σ⁻¹∘σ] σ₂ (Any-resp-↭ σ₁ ix)
+  rewrite Any-resp-[σ⁻¹∘σ] σ₁ ix
+  = refl
+Any-resp-[σ⁻¹∘σ] (prep _ σ)    (there ix)
+  rewrite Any-resp-[σ⁻¹∘σ] σ ix
+  = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
+  rewrite Any-resp-[σ⁻¹∘σ] σ ix
+  = refl
+
+∈-resp-[σ⁻¹∘σ] : {xs ys : List A} {x : A} →
+                 (σ : xs ↭ ys) →
+                 (ix : x ∈ xs) →
+                 ∈-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+∈-resp-[σ⁻¹∘σ] = Any-resp-[σ⁻¹∘σ]
 
 ------------------------------------------------------------------------
 -- map
@@ -218,12 +243,9 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
 ++-comm : Commutative {A = List A} _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys         ↭⟨ prep x (++-comm xs ys) ⟩
-  x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
-  (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (shift x ys [])) ⟩
-  (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
-  ys ++ ([ x ] ++ xs)  ≡⟨⟩
-  ys ++ (x ∷ xs)       ∎
+  x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
+  x ∷ ys ++ xs   ↭˘⟨ shift x ys xs ⟩
+  ys ++ (x ∷ xs) ∎
 
 ++-isMagma : IsMagma {A = List A} _↭_ _++_
 ++-isMagma = record
@@ -301,6 +323,18 @@ drop-∷ = drop-mid [] []
 ++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
 ++↭ʳ++ []       ys = ↭-refl
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (shift x xs ys)) (++↭ʳ++ xs (x ∷ ys))
+
+------------------------------------------------------------------------
+-- reverse
+
+↭-reverse : (xs : List A) → reverse xs ↭ xs
+↭-reverse [] = ↭-refl
+↭-reverse (x ∷ xs) = begin
+  reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
+  reverse xs ∷ʳ x ↭˘⟨ ∷↭∷ʳ x (reverse xs) ⟩
+  x ∷ reverse xs   ↭⟨ prep x (↭-reverse xs) ⟩
+  x ∷ xs ∎
+  where open PermutationReasoning
 
 ------------------------------------------------------------------------
 -- merge

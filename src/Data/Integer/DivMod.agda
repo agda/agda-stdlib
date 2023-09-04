@@ -4,7 +4,7 @@
 -- Integer division
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.DivMod where
 
@@ -42,14 +42,14 @@ n%d<d n -[1+ d ] = n%ℕd<d n (ℕ.suc d)
 a≡a%ℕn+[a/ℕn]*n : ∀ n d .{{_ : ℕ.NonZero d}} → n ≡ + (n %ℕ d) + (n /ℕ d) * + d
 a≡a%ℕn+[a/ℕn]*n (+ n) d = let q = n ℕ./ d; r = n ℕ.% d in begin-equality
   + n                ≡⟨ cong +_ (ℕ.m≡m%n+[m/n]*n n d) ⟩
-  + (r ℕ.+ q ℕ.* d)  ≡⟨ pos-+-commute r (q ℕ.* d) ⟩
-  + r + + (q ℕ.* d)  ≡⟨ cong (_+_ (+ r)) (sym (pos-distrib-* q d)) ⟩
+  + (r ℕ.+ q ℕ.* d)  ≡⟨ pos-+ r (q ℕ.* d) ⟩
+  + r + + (q ℕ.* d)  ≡⟨ cong (_+_ (+ r)) (pos-* q d) ⟩
   + r + + q * + d    ∎
 a≡a%ℕn+[a/ℕn]*n n@(-[1+ _ ]) d with ∣ n ∣ ℕ.% d in eq
 ... | ℕ.zero = begin-equality
   n                   ≡⟨ cong (-_ ∘′ +_) (ℕ.m≡m%n+[m/n]*n ∣n∣ d) ⟩
   - + (r ℕ.+ q ℕ.* d) ≡⟨ cong (-_ ∘′ +_) (cong (ℕ._+ q ℕ.* d) eq) ⟩
-  - + (q ℕ.* d)       ≡⟨ cong -_ (sym (pos-distrib-* q d)) ⟩
+  - + (q ℕ.* d)       ≡⟨ cong -_ (pos-* q d) ⟩
   - (+ q * + d)       ≡⟨ neg-distribˡ-* (+ q) (+ d) ⟩
   - (+ q) * + d       ≡⟨ sym (+-identityˡ (- (+ q) * + d)) ⟩
   + 0 + - (+ q) * + d ∎
@@ -58,9 +58,9 @@ a≡a%ℕn+[a/ℕn]*n n@(-[1+ _ ]) d with ∣ n ∣ ℕ.% d in eq
   let ∣n∣ = ∣ n ∣; q = ∣n∣ ℕ./ d; r′ = ∣n∣ ℕ.% d in
   n                                      ≡⟨ cong (-_ ∘′ +_) (ℕ.m≡m%n+[m/n]*n ∣n∣ d) ⟩
   - + (r′ ℕ.+ q ℕ.* d)                   ≡⟨ cong (-_ ∘′ +_) (cong (ℕ._+ q ℕ.* d) eq) ⟩
-  - + (r  ℕ.+ q ℕ.* d)                   ≡⟨ cong -_ (pos-+-commute r (q ℕ.* d)) ⟩
+  - + (r  ℕ.+ q ℕ.* d)                   ≡⟨ cong -_ (pos-+ r (q ℕ.* d)) ⟩
   - (+ r + + (q ℕ.* d))                  ≡⟨ neg-distrib-+ (+ r) (+ (q ℕ.* d)) ⟩
-  - + r - + (q ℕ.* d)                    ≡⟨ cong (_-_ (- + r)) (sym (pos-distrib-* q d)) ⟩
+  - + r - + (q ℕ.* d)                    ≡⟨ cong (_-_ (- + r)) (pos-* q d) ⟩
   - + r - (+ q * + d)                    ≡⟨⟩
   - + r - pred +[1+ q ] * + d            ≡⟨ cong (_-_ (- + r)) (*-distribʳ-+ (+ d) -1ℤ +[1+ q ]) ⟩
   - + r - (-1ℤ * + d + (+[1+ q ] * + d)) ≡⟨ cong (λ v → - + r - (v + (+[1+ q ] * + d))) (-1*i≡-i (+ d))  ⟩

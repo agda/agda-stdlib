@@ -7,9 +7,10 @@
 -- The contents of this module should usually be accessed via
 -- `Function.Metric`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary hiding (Symmetric)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsPartialOrder; IsEquivalence)
 
 module Function.Metric.Structures
   {a i ℓ₁ ℓ₂ ℓ₃} {A : Set a} {I : Set i}

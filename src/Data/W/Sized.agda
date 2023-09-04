@@ -4,18 +4,18 @@
 -- Sized W-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Data.W.Sized where
 
 open import Level
 open import Size
 open import Function.Base using (_$_; _∘_; const)
-open import Data.Product using (_,_; -,_; proj₂)
+open import Data.Product.Base using (_,_; -,_; proj₂)
 open import Data.Container.Core as Container using (Container; ⟦_⟧; Shape; Position; _⇒_; ⟪_⟫)
 open import Data.Container.Relation.Unary.All using (□; all)
-open import Relation.Nullary using (¬_)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Nullary.Negation using (¬_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
   variable

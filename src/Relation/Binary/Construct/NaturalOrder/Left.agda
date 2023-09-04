@@ -5,13 +5,13 @@
 -- natural order.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
-open import Data.Product using (_,_; _×_)
+open import Data.Product.Base using (_,_; _×_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 open import Relation.Binary.Lattice using (Infimum)
 

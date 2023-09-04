@@ -5,12 +5,13 @@
 -- along with some additional definitions.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Membership.Propositional {a} {A : Set a} where
 
 open import Data.List.Relation.Unary.Any using (Any)
-open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; setoid; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; subst)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 import Data.List.Membership.Setoid as SetoidMembership
 
@@ -21,6 +22,8 @@ open SetoidMembership (setoid A) public hiding (lose)
 
 ------------------------------------------------------------------------
 -- Different members
+
+infix 4 _≢∈_
 
 _≢∈_ : ∀ {x y : A} {xs} → x ∈ xs → y ∈ xs → Set _
 _≢∈_ x∈xs y∈xs = ∀ x≡y → subst (_∈ _) x≡y x∈xs ≢ y∈xs

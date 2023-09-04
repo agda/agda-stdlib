@@ -4,7 +4,7 @@
 -- Properties of operations on machine words
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Word.Properties where
 

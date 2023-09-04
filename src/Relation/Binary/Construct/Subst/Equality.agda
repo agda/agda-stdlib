@@ -7,9 +7,9 @@
 -- For more general transformations between binary relations
 -- see `Relation.Binary.Morphisms`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Relation.Binary
 
 module Relation.Binary.Construct.Subst.Equality

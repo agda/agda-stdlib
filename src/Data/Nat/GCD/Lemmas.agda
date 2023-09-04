@@ -4,14 +4,14 @@
 -- Boring lemmas used in Data.Nat.GCD and Data.Nat.Coprimality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.GCD.Lemmas where
 
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Nat.Solver
-open import Function
+open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
 
 open +-*-Solver
@@ -150,7 +150,7 @@ lem₁₀ : ∀ {a′} b c {d} e f → let a = suc a′ in
 lem₁₀ {a′} b c {d} e f eq =
   m*n≡1⇒n≡1 (e * f ∸ b * c) d
     (lem₀ (e * f) (b * c) d 1
-       (*-cancelʳ-≡ (e * f * d) (b * c * d + 1) (begin
+       (*-cancelʳ-≡ (e * f * d) (b * c * d + 1) _ (begin
           e * f * d * a        ≡⟨ solve 4 (λ e f d a → e :* f :* d :* a
                                                    :=  e :* (f :* d :* a))
                                           refl e f d a ⟩

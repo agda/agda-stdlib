@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- name: "The Agda Community"
+title: "Agda Standard Library"
+version: 1.7.2
+date-released: 2023-02-01
+url: "https://github.com/agda/agda-stdlib"

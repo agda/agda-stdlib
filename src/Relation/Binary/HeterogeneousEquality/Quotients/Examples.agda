@@ -12,10 +12,10 @@ open import Relation.Binary.HeterogeneousEquality.Quotients
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.HeterogeneousEquality hiding (isEquivalence)
-import Relation.Binary.PropositionalEquality as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Function.Base
 
 open ≅-Reasoning
@@ -29,7 +29,7 @@ infix 10 _∼_
 
 ∼-trans : ∀ {i j k} → i ∼ j → j ∼ k → i ∼ k
 ∼-trans {x₁ , y₁} {x₂ , y₂} {x₃ , y₃} p q =
-  ≡-to-≅ $ +-cancelˡ-≡ y₂ $ ≅-to-≡ $ begin
+  ≡-to-≅ $ +-cancelˡ-≡ y₂ _ _ $ ≅-to-≡ $ begin
   y₂ + (x₁ + y₃) ≡⟨ ≡.sym (+-assoc y₂ x₁ y₃) ⟩
   y₂ + x₁ + y₃   ≡⟨ ≡.cong (_+ y₃) (+-comm y₂ x₁) ⟩
   x₁ + y₂ + y₃   ≅⟨ cong (_+ y₃) p ⟩
@@ -81,6 +81,8 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
 
   module _ (ext : ∀ {a b} {A : Set a} {B₁ B₂ : A → Set b} {f₁ : ∀ a → B₁ a}
                   {f₂ : ∀ a → B₂ a} → (∀ a → f₁ a ≅ f₂ a) → f₁ ≅ f₂) where
+
+    infixl 6 _+ℤ_
 
     _+ℤ_ : ℤ → ℤ → ℤ
     _+ℤ_ = Properties₂.lift₂ ext Int Int (λ i j → abs (i +² j))

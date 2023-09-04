@@ -4,14 +4,14 @@
 -- The basic code for equational reasoning with a non-reflexive relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_)
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Nullary.Decidable using (True)
 
 module Relation.Binary.Reasoning.Base.Partial
@@ -113,4 +113,3 @@ _ ∎⟨ x∼x ⟩ = multiStep x∼x
 Please use _∎ instead if used in a chain, otherwise simply provide
 the proof of reflexivity directly without using these combinators."
 #-}
-
