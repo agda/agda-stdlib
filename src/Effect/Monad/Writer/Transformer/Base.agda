@@ -9,7 +9,7 @@
 module Effect.Monad.Writer.Transformer.Base where
 
 open import Algebra using (RawMonoid)
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Unit.Polymorphic using (⊤; tt)
 open import Function.Base using (id; _∘′_)
 open import Level using (Level; suc; _⊔_)

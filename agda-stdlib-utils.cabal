@@ -6,8 +6,10 @@ description:     Helper programs for setting up the Agda standard library.
 license:         MIT
 
 tested-with:
-  GHC == 9.4.4
-  GHC == 9.2.6
+  GHC == 9.8.0
+  GHC == 9.6.2
+  GHC == 9.4.6
+  GHC == 9.2.8
   GHC == 9.0.2
   GHC == 8.10.7
   GHC == 8.8.4
@@ -21,7 +23,7 @@ common common-build-parameters
     PatternSynonyms
 
   build-depends:
-      base          >= 4.12.0.0 && < 4.18
+      base          >= 4.12.0.0 && < 4.20
     , filemanip     >= 0.3.6.2  && < 0.4
 
 executable GenerateEverything
@@ -40,4 +42,4 @@ executable AllNonAsciiChars
   main-is:          AllNonAsciiChars.hs
 
   build-depends:
-      text          >= 1.2.3.1  && < 2.1
+      text          >= 1.2.3.1  && < 2.2

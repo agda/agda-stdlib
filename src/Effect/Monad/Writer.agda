@@ -9,7 +9,7 @@
 module Effect.Monad.Writer where
 
 open import Algebra using (RawMonoid)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Effect.Applicative
 open import Effect.Choice
 open import Effect.Empty

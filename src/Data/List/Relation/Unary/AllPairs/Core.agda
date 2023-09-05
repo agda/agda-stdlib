@@ -12,7 +12,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 
 module Data.List.Relation.Unary.AllPairs.Core
   {a ℓ} {A : Set a} (R : Rel A ℓ) where

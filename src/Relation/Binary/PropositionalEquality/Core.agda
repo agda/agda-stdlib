@@ -11,7 +11,7 @@
 
 module Relation.Binary.PropositionalEquality.Core where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary.Core

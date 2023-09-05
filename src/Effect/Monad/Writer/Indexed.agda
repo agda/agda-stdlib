@@ -11,12 +11,12 @@ open import Level
 module Effect.Monad.Writer.Indexed (a : Level) where
 
 open import Algebra using (RawMonoid)
-open import Data.Product using (_×_; _,_; map₁)
+open import Data.Product.Base using (_×_; _,_; map₁)
 open import Data.Unit.Polymorphic
 open import Effect.Applicative.Indexed
 open import Effect.Monad
 open import Effect.Monad.Indexed
-open import Function
+open import Function.Base using (_∘′_)
 open import Function.Identity.Effectful as Id using (Identity)
 
 private
@@ -34,7 +34,7 @@ module _ {M : IFun I (w ⊔ a)} {𝕎 : RawMonoid w ℓ} where
 
   open RawMonoid 𝕎 renaming (Carrier to W)
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Indexed writer applicative
 
   WriterTIApplicative : RawIApplicative M → RawIApplicative (IWriterT 𝕎 M)
@@ -59,7 +59,7 @@ module _ {M : IFun I (w ⊔ a)} {𝕎 : RawMonoid w ℓ} where
     ; _∣_ = _∣_
     } where open RawIAlternative Alt
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Indexed writer monad
 
   WriterTIMonad : RawIMonad M → RawIMonad (IWriterT 𝕎 M)

@@ -8,10 +8,10 @@
 
 open import Algebra.Lattice.Bundles
 import Algebra.Lattice.Properties.Semilattice as SemilatticeProperties
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Poset)
 import Relation.Binary.Lattice as R
 open import Function.Base
-open import Data.Product using (_,_; swap)
+open import Data.Product.Base using (_,_; swap)
 
 module Algebra.Lattice.Properties.Lattice
   {l₁ l₂} (L : Lattice l₁ l₂) where

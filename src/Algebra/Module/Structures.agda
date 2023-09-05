@@ -6,7 +6,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Module.Structures where
 
@@ -16,7 +18,7 @@ open import Algebra.Module.Core
 import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
 open import Algebra.Structures
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (Level; _⊔_)
 
 private

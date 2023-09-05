@@ -3,11 +3,11 @@
 module Main where
 
 
-open import Data.List using (replicate)
+open import Data.List.Base using (replicate)
 open import Data.String using (toList; fromList)
 
 open import IO
-open import Function using (_$_)
+open import Function.Base using (_$_)
 
 open import TakeWhile
 

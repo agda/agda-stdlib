@@ -15,10 +15,11 @@ module Relation.Binary.Construct.Add.Infimum.Strict
   {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
-open import Data.Product
+open import Data.Product.Base using (_,_; map)
 open import Function.Base
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
 open import Relation.Nullary hiding (Irrelevant)
@@ -27,6 +28,8 @@ import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
 -- Definition
+
+infix 4 _<₋_
 
 data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
   ⊥₋<[_] : (l : A)           → ⊥₋    <₋ [ l ]

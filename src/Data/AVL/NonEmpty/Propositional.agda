@@ -6,7 +6,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; IsStrictTotalOrder; StrictTotalOrder)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsStrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; subst)
 
 module Data.AVL.NonEmpty.Propositional

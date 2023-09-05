@@ -16,8 +16,9 @@ module Relation.Binary.Construct.Add.Infimum.NonStrict
 
 open import Level using (_⊔_)
 open import Data.Sum.Base as Sum
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum

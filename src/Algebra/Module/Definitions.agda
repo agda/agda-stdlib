@@ -7,8 +7,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
-
 module Algebra.Module.Definitions where
 
   import Algebra.Module.Definitions.Left as L

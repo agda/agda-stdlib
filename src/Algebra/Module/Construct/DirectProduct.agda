@@ -14,7 +14,7 @@ module Algebra.Module.Construct.DirectProduct where
 open import Algebra.Bundles
 open import Algebra.Construct.DirectProduct
 open import Algebra.Module.Bundles
-open import Data.Product
+open import Data.Product.Base using (map; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level
 
