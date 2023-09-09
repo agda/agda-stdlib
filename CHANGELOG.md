@@ -1393,11 +1393,6 @@ Deprecated names
   map-compose     ↦  map-∘
   ```
 
-* In `Data.Vec.Base`:
-  ```
-  DiagonalBind.join ↦  Data.Vec.Effectful.join
-  ```
-
 * In `Data.Vec.Properties`:
   ```
   updateAt-id-relative      ↦  updateAt-id-local
@@ -2601,7 +2596,6 @@ Other minor changes
 
   diagonal           : Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : Vec A n → (A → Vec B n) → Vec B n
-  join               : Vec (Vec A n) n → Vec A n
 
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
