@@ -9,14 +9,12 @@
 module Data.Vec.Effectful.Transformer where
 
 open import Data.Nat.Base using (ℕ)
-open import Data.Vec.Base as Vec using (Vec; []; _∷_)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_; diagonal)
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
 open import Function.Base
 open import Level
-
-open import Data.Vec.Effectful as Vec using (join)
 
 private
   variable
@@ -50,7 +48,7 @@ monad {f} {g} M = record
   ; _>>=_ = λ ma k → mkVecT $ do
                       a ← runVecT ma
                       bs ← mapM {a = f} (runVecT ∘′ k) a
-                      pure (join bs)
+                      pure (diagonal bs)
   } where open RawMonad M; open Vec.TraversableM {m = f} {n = g} M
 
 monadT : RawMonadT {f} {g} (VecT n)
