@@ -1395,7 +1395,7 @@ Deprecated names
 
 * In `Data.Vec.Base`:
   ```
-  join ↦  Data.Vec.Effectful.join
+  DiagonalBind.join ↦  Data.Vec.Effectful.join
   ```
 
 * In `Data.Vec.Properties`:
