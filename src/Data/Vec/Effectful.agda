@@ -10,7 +10,7 @@ module Data.Vec.Effectful where
 
 open import Data.Nat.Base using (ℕ)
 open import Data.Fin.Base using (Fin)
-open import Data.Vec.Base as Vec hiding (_⊛_; join)
+open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties
 open import Effect.Applicative as App using (RawApplicative)
 open import Effect.Functor as Fun using (RawFunctor)
