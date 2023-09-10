@@ -78,7 +78,7 @@ module _ (_∼_ : Rel A ℓ) where
 
   wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
   wellFounded wf x = accessible⁺ (wf x)
- 
+
   accessible⁻ : ∀ {x} → Acc _∼⁺_ x → Acc _∼_ x
   accessible⁻ acc[x] = acc (wf-acc⁻ acc[x])
     where
