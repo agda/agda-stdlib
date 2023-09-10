@@ -2686,7 +2686,7 @@ Other minor changes
 
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:
   ```agda
-  xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
+  xs≮[] : ∀ {n} {xs : Vec A n} → ¬ xs < []
   <-respectsˡ : IsPartialEquivalence _≈_ → _≺_ Respectsˡ _≈_ →
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
   <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
