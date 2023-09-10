@@ -16,6 +16,9 @@ open import Relation.Binary.PropositionalEquality
 
 private
 
+  n<′1+n : ∀ {n} → n <′ suc n
+  n<′1+n = ≤′-refl
+
   n<′2+n : ∀ {n} → n <′ suc (suc n)
   n<′2+n = ≤′-step ≤′-refl
 
@@ -111,7 +114,7 @@ half₂-2+ n = begin
 
   1 + half₂-step n
         (Some.wfRecBuilder _ half₂-step n
-           (<′-wellFounded′ (1 + n) ≤′-refl))               ≡⟨⟩
+           (<′-wellFounded′ (1 + n) n<′1+n))               ≡⟨⟩
 
   1 + half₂-step n
         (Some.wfRecBuilder _ half₂-step n (<′-wellFounded n)) ≡⟨⟩
