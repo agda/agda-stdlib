@@ -294,7 +294,7 @@ m*n/m*o≡n/o m@(suc _) n o = helper (<-wellFounded n)
   ... | no  n≮o = begin-equality
     (m * n) / (m * o)             ≡⟨  m/n≡1+[m∸n]/n (*-monoʳ-≤ m (≮⇒≥ n≮o)) ⟩
     1 + (m * n ∸ m * o) / (m * o) ≡˘⟨ cong (λ v → 1 + v / (m * o)) (*-distribˡ-∸ m n o) ⟩
-    1 + (m * (n ∸ o)) / (m * o)   ≡⟨  cong suc (helper (rec (n ∸ o) n∸o<n)) ⟩
+    1 + (m * (n ∸ o)) / (m * o)   ≡⟨  cong suc (helper (rec n∸o<n)) ⟩
     1 + (n ∸ o) / o               ≡˘⟨ cong₂ _+_ (n/n≡1 o) refl ⟩
     o / o + (n ∸ o) / o           ≡˘⟨ +-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o)))) ⟩
     (o + (n ∸ o)) / o             ≡⟨  cong (_/ o) (m+[n∸m]≡n (≮⇒≥ n≮o)) ⟩

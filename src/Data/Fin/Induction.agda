@@ -63,7 +63,7 @@ open WF public using (Acc; acc)
   induct {suc j} (acc rs) (tri< (s≤s i≤j) _ _) _ = Pᵢ⇒Pᵢ₊₁ j P[1+j]
     where
     toℕj≡toℕinjJ = sym $ toℕ-inject₁ j
-    P[1+j] = induct (rs _ (s≤s (subst (ℕ._≤ toℕ j) toℕj≡toℕinjJ ≤-refl)))
+    P[1+j] = induct (rs (s≤s (subst (ℕ._≤ toℕ j) toℕj≡toℕinjJ ≤-refl)))
       (<-cmp i $ inject₁ j) (subst (toℕ i ℕ.≤_) toℕj≡toℕinjJ i≤j)
 
 <-weakInduction : (P : Pred (Fin (suc n)) ℓ) →
@@ -78,8 +78,8 @@ open WF public using (Acc; acc)
 
 private
   acc-map : ∀ {x : Fin n} → Acc ℕ._<_ (n ∸ toℕ x) → Acc _>_ x
-  acc-map {n} (acc rs) = acc λ y y>x →
-    acc-map (rs (n ∸ toℕ y) (ℕ.∸-monoʳ-< y>x (toℕ≤n y)))
+  acc-map {n} (acc rs) = acc λ {y} y>x →
+    acc-map (rs {n ∸ toℕ y} (ℕ.∸-monoʳ-< y>x (toℕ≤n y)))
 
 >-wellFounded : WellFounded {A = Fin n} _>_
 >-wellFounded {n} x = acc-map (ℕ.<-wellFounded (n ∸ toℕ x))
@@ -94,7 +94,7 @@ private
   induct {i} (acc rec) with n ℕ.≟ toℕ i
   ... | yes n≡i = subst P (toℕ-injective (trans (toℕ-fromℕ n) n≡i)) Pₙ
   ... | no  n≢i = subst P (inject₁-lower₁ i n≢i) (Pᵢ₊₁⇒Pᵢ _ Pᵢ₊₁)
-    where Pᵢ₊₁ = induct (rec _ (ℕ.≤-reflexive (cong suc (sym (toℕ-lower₁ i n≢i)))))
+    where Pᵢ₊₁ = induct (rec (ℕ.≤-reflexive (cong suc (sym (toℕ-lower₁ i n≢i)))))
 
 ------------------------------------------------------------------------
 -- Well-foundedness of other (strict) partial orders on Fin
@@ -118,7 +118,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
          ((xs : Vec (Fin n) m) → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_) →
          Acc _⊏_ i
     go zero    i k = k [] [-] i
-    go (suc m) i k = acc $ λ j j⊏i → go m j (λ xs i∷xs↑ → k (j ∷ xs) (j⊏i ∷ i∷xs↑))
+    go (suc m) i k = acc λ {j} j⊏i → go m j (λ xs i∷xs↑ → k (j ∷ xs) (j⊏i ∷ i∷xs↑))
 
     pigeon : (xs : Vec (Fin n) n) → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_
     pigeon xs i∷xs↑ =
@@ -159,7 +159,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
 ≺-wellFounded = Subrelation.wellFounded ≺⇒<′ ℕ.<′-wellFounded
 
 module _ {ℓ} where
-  open WF.All ≺-wellFounded ℓ public
+  open WF.All ≺-wellFounded {ℓ} public
     renaming
     ( wfRecBuilder to ≺-recBuilder
     ; wfRec        to ≺-rec

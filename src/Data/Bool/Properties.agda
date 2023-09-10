@@ -197,8 +197,8 @@ true  <? _     = no  (λ())
 <-wellFounded : WellFounded _<_
 <-wellFounded _ = acc <-acc
   where
-    <-acc : ∀ {x} y → y < x → Acc _<_ y
-    <-acc false f<t = acc (λ _ → λ())
+    <-acc : ∀ {x y} → y < x → Acc _<_ y
+    <-acc f<t = acc λ ()
 
 -- Structures
 

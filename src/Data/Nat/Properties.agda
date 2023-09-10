@@ -479,7 +479,7 @@ m<1+n⇒m≤n (s≤s m≤n) = m≤n
 ∀[m<n⇒m≢o]⇒n≤o (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒n≤o n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
-  rec x<m refl = m<n⇒m≢o (s≤s x<m) refl
+  rec o<n refl = m<n⇒m≢o (s<s o<n) refl
 
 ------------------------------------------------------------------------
 -- A module for reasoning about the _≤_ and _<_ relations

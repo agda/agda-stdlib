@@ -128,7 +128,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     where
 
     <-wellFounded : ∀ {n} → WellFounded (_<_ {n})
-    <-wellFounded {0}     [] = acc λ ys ys<[] → ⊥-elim (xs≮[] ys ys<[])
+    <-wellFounded {0}     [] = acc λ {ys} ys<[] → ⊥-elim (xs≮[] ys ys<[])
     <-wellFounded {suc n} xs = Subrelation.wellFounded <⇒uncons-Lex uncons-Lex-wellFounded xs
       where
         <⇒uncons-Lex : {xs ys : Vec A (suc n)} → xs < ys → (×-Lex _≈_ _≺_ _<_ on uncons) xs ys

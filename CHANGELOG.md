@@ -551,6 +551,22 @@ Non-backwards compatible changes
   Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
   ```
 
+### Change to the definition of `Induction.WellFounded.WfRec` (issue #2083)
+
+* Previously, the following definition was adopted
+  ```agda
+  WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
+  WfRec _<_ P x = ∀ y → y < x → P y
+  ```
+  with the consequence that all arguments involving about accesibility and
+  wellfoundedness proofs were polluted by almost-aways-inferrable explicit
+  arguments for the `y` position. The definition has now been changed to
+  make that argument *implicit*, as 
+  ```agda
+  WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
+  WfRec _<_ P x = ∀ {y} → y < x → P y
+  ```
+
 ### Renaming of `Reflection` modules
 
 * Under the `Reflection` module, there were various impending name clashes

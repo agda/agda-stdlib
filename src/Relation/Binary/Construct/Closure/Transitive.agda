@@ -73,12 +73,12 @@ module _ (_∼_ : Rel A ℓ) where
   wellFounded wf = λ x → acc (accessible′ (wf x))
     where
     downwardsClosed : ∀ {x y} → Acc _∼⁺_ y → x ∼ y → Acc _∼⁺_ x
-    downwardsClosed (acc rec) x∼y = acc (λ z z∼x → rec z (z∼x ∷ʳ x∼y))
+    downwardsClosed (acc rec) x∼y = acc λ z∼x → rec (z∼x ∷ʳ x∼y)
 
     accessible′ : ∀ {x} → Acc _∼_ x → WfRec _∼⁺_ (Acc _∼⁺_) x
-    accessible′ (acc rec) y [ y∼x ]      = acc (accessible′ (rec y y∼x))
-    accessible′ acc[x]    y (y∼z ∷ z∼⁺x) =
-      downwardsClosed (accessible′ acc[x] _ z∼⁺x) y∼z
+    accessible′ (acc rec) [ y∼x ]      = acc (accessible′ (rec y∼x))
+    accessible′ acc[x]    (y∼z ∷ z∼⁺x) =
+      downwardsClosed (accessible′ acc[x] z∼⁺x) y∼z
 
 
 

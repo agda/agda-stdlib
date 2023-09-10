@@ -178,7 +178,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
     to : ∀ xss p → Pred (xss , p)
     to = λ xss p →
-      WF.All.wfRec (On.wellFounded size <′-wellFounded) _
+      WF.All.wfRec (On.wellFounded size <′-wellFounded)
                    Pred step (xss , p)
       where
       size : Input → ℕ
@@ -195,7 +195,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
       ... | inj₂ q | P.refl | q≤p =
         Prod.map there
                  (P.cong (there ∘ _⟨$⟩_ (Inverse.from (Any-⋎P xs)) ∘ inj₂))
-                 (rec (♭ xss , q) (s≤′s q≤p))
+                 (rec {♭ xss , q} (s≤′s q≤p))
 
     to∘from = λ p → from-injective _ _ (proj₂ (to xss (from p)))
 
