@@ -559,7 +559,7 @@ Non-backwards compatible changes
   WfRec _<_ P x = ∀ y → y < x → P y
   ```
   with the consequence that all arguments involving about accesibility and
-  wellfoundedness proofs were polluted by almost-aways-inferrable explicit
+  wellfoundedness proofs were polluted by almost-always-inferrable explicit
   arguments for the `y` position. The definition has now been changed to
   make that argument *implicit*, as 
   ```agda
