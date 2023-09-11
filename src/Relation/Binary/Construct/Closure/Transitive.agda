@@ -58,6 +58,7 @@ module _ {_∼_ : Rel A ℓ} where
 module _ (_∼_ : Rel A ℓ) where
   private
     _∼⁺_ = TransClosure _∼_
+    module ∼⊆∼⁺ = Subrelation {_<₂_ = _∼⁺_} [_]
 
   reflexive : Reflexive _∼_ → Reflexive _∼⁺_
   reflexive refl = [ refl ]
@@ -69,24 +70,21 @@ module _ (_∼_ : Rel A ℓ) where
   transitive : Transitive _∼⁺_
   transitive = _++_
 
-  accessible⁺ : ∀ {x} → Acc _∼_ x → Acc _∼⁺_ x
-  accessible⁺ acc[x] = acc (wf-acc⁺ acc[x])
-    where
-    wf-acc⁺ : ∀ {x} → Acc _∼_ x → WfRec _∼⁺_ (Acc _∼⁺_) x
-    wf-acc⁺ (acc rec) _ [ y∼x ]   = acc (wf-acc⁺ (rec _ y∼x))
-    wf-acc⁺ acc[x] _ (y∼z ∷ z∼⁺x) = acc-inverse (wf-acc⁺ acc[x] _ z∼⁺x) _ [ y∼z ]
-
-  wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
-  wellFounded wf x = accessible⁺ (wf x)
-
   accessible⁻ : ∀ {x} → Acc _∼⁺_ x → Acc _∼_ x
-  accessible⁻ acc[x] = acc (wf-acc⁻ acc[x])
-    where
-    wf-acc⁻ : ∀ {x} → Acc _∼⁺_ x → WfRec _∼_ (Acc _∼_) x
-    wf-acc⁻ (acc rec) _ y∼x = acc (wf-acc⁻ (rec _ [ y∼x ]))
+  accessible⁻ = accessible where open ∼⊆∼⁺
 
   wellFounded⁻ : WellFounded _∼⁺_ → WellFounded _∼_
-  wellFounded⁻ wf x = accessible⁻ (wf x)
+  wellFounded⁻ = wellFounded where open ∼⊆∼⁺
+
+  accessible : ∀ {x} → Acc _∼_ x → Acc _∼⁺_ x
+  accessible acc[x] = acc (wf-acc acc[x])
+    where
+    wf-acc : ∀ {x} → Acc _∼_ x → WfRec _∼⁺_ (Acc _∼⁺_) x
+    wf-acc (acc rec) _ [ y∼x ]   = acc (wf-acc (rec _ y∼x))
+    wf-acc acc[x] _ (y∼z ∷ z∼⁺x) = acc-inverse (wf-acc acc[x] _ z∼⁺x) _ [ y∼z ]
+
+  wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
+  wellFounded wf x = accessible (wf x)
 
 
 ------------------------------------------------------------------------
