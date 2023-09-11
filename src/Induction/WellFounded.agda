@@ -51,7 +51,7 @@ WellFounded _<_ = ∀ x → Acc _<_ x
 -- Basic properties
 
 acc-inverse : ∀ {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
-              ∀ {y} → y < x → Acc _<_ y
+              WfRec _<_ (Acc _<_) x
 acc-inverse (acc rs) y<x = rs y<x
 
 Acc-resp-≈ : {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} → Symmetric _≈_ →
