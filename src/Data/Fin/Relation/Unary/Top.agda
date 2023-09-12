@@ -33,11 +33,11 @@ private
 -- target *disjoint* instances of the family; and hence the interpretations
 -- of the View constructors will also be disjoint
 
-data View : ∀ {n} (j : Fin n) → Set where
+data View : (j : Fin n) → Set where
   ‵fromℕ : View (fromℕ n)
-  ‵inj₁ : {j : Fin n} → View j → View (inject₁ j)
+  ‵inj₁ : View j → View (inject₁ j)
 
-pattern ‵inject₁ {n} j = ‵inj₁ {n = n} {j = j} _
+pattern ‵inject₁ j = ‵inj₁ {j = j} _
 
 -- The view covering function, witnessing soundness of the view
 
@@ -48,34 +48,34 @@ view-zero (suc n) = ‵inj₁ (view-zero n)
 view : (j : Fin n) → View j
 view zero = view-zero _
 view (suc i) with view i
-... | ‵fromℕ  = ‵fromℕ
+... | ‵fromℕ     = ‵fromℕ
 ... | ‵inject₁ j = ‵inj₁ (view (suc j))
 
 -- Interpretation of the view constructors
 
-⟦_⟧ : View {n} j → Fin n
+⟦_⟧ : {j : Fin n} → View j → Fin n
 ⟦ ‵fromℕ ⟧     = fromℕ _
 ⟦ ‵inject₁ j ⟧ = inject₁ j
 
 -- Completeness of the view
 
-view-complete : (v : View {n} j) → ⟦ v ⟧ ≡ j
+view-complete : (v : View j) → ⟦ v ⟧ ≡ j
 view-complete ‵fromℕ    = refl
 view-complete (‵inj₁ _) = refl
 
 -- 'Computational' behaviour of the covering function
 
-view-fromℕ : ∀ n → view {suc n} (fromℕ n) ≡ ‵fromℕ
+view-fromℕ : ∀ n → view (fromℕ n) ≡ ‵fromℕ
 view-fromℕ zero                         = refl
 view-fromℕ (suc n) rewrite view-fromℕ n = refl
 
-view-inject₁ : ∀ j → view {suc n} (inject₁ j) ≡ ‵inj₁ (view {n} j)
+view-inject₁ : ∀ j → view (inject₁ j) ≡ ‵inj₁ (view {n = n} j)
 view-inject₁ zero                           = refl
 view-inject₁ (suc j) rewrite view-inject₁ j = refl
 
 -- Uniqueness of the view
 
-view-unique : (v : View {n} j) → view j ≡ v
+view-unique : (v : View j) → view j ≡ v
 view-unique ‵fromℕ            = view-fromℕ _
 view-unique (‵inj₁ {j = j} v) = begin
   view (inject₁ j) ≡⟨ view-inject₁ j ⟩
