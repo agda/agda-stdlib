@@ -63,7 +63,7 @@ monad = record
   }
 
 join : {B : Set (a ⊔ b)} → Sumₗ (Sumₗ B) → Sumₗ B
-join = Join.join where instance _ = monad
+join = Join.join monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

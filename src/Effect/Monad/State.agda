@@ -60,7 +60,7 @@ monad : RawMonad (State S)
 monad = Trans.monad Id.monad
 
 join : State S (State S A) → State S A
-join = Join.join where instance _ = monad
+join = Join.join monad
 
 ------------------------------------------------------------------------
 -- State monad specifics

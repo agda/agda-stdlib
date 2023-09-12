@@ -53,7 +53,7 @@ monad : RawMonad (Reader R)
 monad = Trans.monad Id.monad
 
 join : Reader R (Reader R A) → Reader R A
-join = Join.join where instance _ = monad
+join = Join.join monad
 
 ------------------------------------------------------------------------
 -- Reader monad specifics

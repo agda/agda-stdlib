@@ -57,7 +57,7 @@ monad = record
   }
 
 join : {A : Set (a ⊔ b)} → Sumᵣ (Sumᵣ A) → Sumᵣ A
-join = Join.join where instance _ = monad
+join = Join.join monad
 
 monadZero : B → RawMonadZero Sumᵣ
 monadZero b = record

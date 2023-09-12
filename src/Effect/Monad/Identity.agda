@@ -50,4 +50,4 @@ comonad = record
   }
 
 join : Identity (Identity A) → Identity A
-join = Join.join where instance _ = monad
+join = Join.join monad

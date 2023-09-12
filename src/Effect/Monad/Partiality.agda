@@ -73,7 +73,7 @@ monad = record
   }
 
 join : (A ⊥) ⊥ → A ⊥
-join = Join.join where instance _ = monad
+join = Join.join monad
 
 private module M {f} = RawMonad (monad {f})
 

@@ -68,7 +68,7 @@ monad = record
   }
 
 join : List (List A) → List A
-join = Join.join where instance _ = monad
+join = Join.join monad
 
 monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
 monadZero = record

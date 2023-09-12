@@ -47,7 +47,7 @@ monad = record
   }
 
 join : Vec (Vec A n) n → Vec A n
-join = Join.join where instance _ = monad
+join = Join.join monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
