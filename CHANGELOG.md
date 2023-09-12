@@ -781,6 +781,12 @@ Non-backwards compatible changes
   properties about the orderings themselves the second index must be provided
   explicitly.
 
+* Issue #2075 (Johannes Waldmann): wellfoundedness of the lexicographic ordering
+  on products, defined in `Data.Product.Relation.Binary.Lex.Strict`, no longer
+  requires the assumption of symmetry for the first equality relation `_≈₁_`,
+  leading to a new lemma `Induction.WellFounded.Acc-resp-flip-≈`, and refactoring
+  of the previous proof `Induction.WellFounded.Acc-resp-≈`.
+
 * The operation `SymClosure` on relations in
   `Relation.Binary.Construct.Closure.Symmetric` has been reimplemented
   as a data type `SymClosure _⟶_ a b` that is parameterized by the
@@ -2515,13 +2521,13 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
-* Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
+* Added new proofs to `Data.Product.Relation.Binary.Lex.Strict`
   ```agda
   ×-respectsʳ : Transitive _≈₁_ →
                 _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_
   ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
                  _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_
-  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ →
+  ×-wellFounded' : Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ →
                    WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
   ```
 
@@ -2686,7 +2692,7 @@ Other minor changes
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
   <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
                 ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
-  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
+  <-wellFounded : Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
                   ∀ {n} → WellFounded (_<_ {n})
 ```
 
@@ -3354,6 +3360,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
   ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ```
+
+* Added new proof to `Induction.WellFounded`
+  ```agda
+  Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
   ```
 
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`
