@@ -14,7 +14,10 @@ open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
 open import Data.List.Relation.Binary.Pointwise.Properties as Pointwise
   using (symmetric)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric)
 
 private
   variable

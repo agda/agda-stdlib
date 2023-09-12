@@ -40,7 +40,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (StrictPartialOrder)
 
 module Relation.Binary.Reasoning.StrictPartialOrder
   {p₁ p₂ p₃} (S : StrictPartialOrder p₁ p₂ p₃) where

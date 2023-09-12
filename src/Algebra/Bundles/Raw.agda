@@ -213,13 +213,17 @@ record RawRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; *-rawMagma; *-rawMonoid
     )
 
-  +-rawGroup : RawGroup c ℓ
-  +-rawGroup = record
+  rawRingWithoutOne : RawRingWithoutOne c ℓ
+  rawRingWithoutOne = record
     { _≈_ = _≈_
-    ; _∙_ = _+_
-    ; ε   = 0#
-    ; _⁻¹ = -_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; -_ = -_
+    ; 0# = 0#
     }
+
+  open RawRingWithoutOne rawRingWithoutOne public
+    using (+-rawGroup)
 
 ------------------------------------------------------------------------
 -- Raw bundles with 3 binary operations

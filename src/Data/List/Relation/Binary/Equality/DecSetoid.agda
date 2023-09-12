@@ -6,7 +6,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (DecSetoid)
+open import Relation.Binary.Structures using (IsDecEquivalence)
+open import Relation.Binary.Definitions using (Decidable)
 
 module Data.List.Relation.Binary.Equality.DecSetoid
   {a ℓ} (DS : DecSetoid a ℓ) where

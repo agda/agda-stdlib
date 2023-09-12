@@ -17,7 +17,13 @@ open import Data.Product.Base using (_,_)
 open import Function.Base
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder; Poset; DecPoset)
+open import Relation.Binary.Structures
+  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Decidable; Trichotomous; Irreflexive; Transitive; Asymmetric; Antisymmetric; Symmetric; Substitutive; Reflexive; tri<; tri≈; tri>)
 import Relation.Binary.Construct.On as On
 import Relation.Binary.Construct.Subst.Equality as Subst
 import Relation.Binary.Construct.Closure.Reflexive as Refl

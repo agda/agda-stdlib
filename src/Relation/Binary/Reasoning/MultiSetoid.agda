@@ -28,7 +28,7 @@ module Relation.Binary.Reasoning.MultiSetoid where
 
 open import Function.Base using (flip)
 open import Level using (_⊔_)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 import Relation.Binary.Reasoning.Setoid as EqR
