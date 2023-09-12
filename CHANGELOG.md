@@ -864,6 +864,9 @@ Non-backwards compatible changes
 
 * In `Data.Sum.Base` the definitions `fromDec` and `toDec` have been moved to `Data.Sum`.
 
+* In `Data.Vec.Base`: the definitions `init` and `last` have been changed from the `initLast`
+  view-derived implementation to direct recursive definitions.
+
 * In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
   * `cycle`
   * `interleave⁺`
@@ -1252,6 +1255,8 @@ Deprecated names
 
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
+
+  ʳ++-++  ↦  ++-ʳ++
 
   take++drop ↦ take++drop≡id
   ```
@@ -2657,6 +2662,12 @@ Other minor changes
   ∷ʳ-injective  : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
   ∷ʳ-injectiveˡ : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
   ∷ʳ-injectiveʳ : xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+
+  unfold-∷ʳ : cast eq (xs ∷ʳ x) ≡ xs ++ [ x ]
+  init-∷ʳ   : init (xs ∷ʳ x) ≡ xs
+  last-∷ʳ   : last (xs ∷ʳ x) ≡ x
+  cast-∷ʳ   : cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
+  ++-∷ʳ     : cast eq ((xs ++ ys) ∷ʳ z) ≡ xs ++ (ys ∷ʳ z)
 
   reverse-∷          : reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
   reverse-involutive : Involutive _≡_ reverse

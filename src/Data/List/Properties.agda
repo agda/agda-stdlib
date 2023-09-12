@@ -993,11 +993,11 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
 -- Reverse-append of append is reverse-append after reverse-append.
 
-ʳ++-++ : ∀ (xs {ys zs} : List A) → (xs ++ ys) ʳ++ zs ≡ ys ʳ++ xs ʳ++ zs
-ʳ++-++ [] = refl
-ʳ++-++ (x ∷ xs) {ys} {zs} = begin
+++-ʳ++ : ∀ (xs {ys zs} : List A) → (xs ++ ys) ʳ++ zs ≡ ys ʳ++ xs ʳ++ zs
+++-ʳ++ [] = refl
+++-ʳ++ (x ∷ xs) {ys} {zs} = begin
   (x ∷ xs ++ ys) ʳ++ zs   ≡⟨⟩
-  (xs ++ ys) ʳ++ x ∷ zs   ≡⟨ ʳ++-++ xs ⟩
+  (xs ++ ys) ʳ++ x ∷ zs   ≡⟨ ++-ʳ++ xs ⟩
   ys ʳ++ xs ʳ++ x ∷ zs    ≡⟨⟩
   ys ʳ++ (x ∷ xs) ʳ++ zs  ∎
 
@@ -1073,7 +1073,7 @@ reverse-++ : (xs ys : List A) →
                      reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
 reverse-++ xs ys = begin
   reverse (xs ++ ys)         ≡⟨⟩
-  (xs ++ ys) ʳ++ []          ≡⟨ ʳ++-++ xs ⟩
+  (xs ++ ys) ʳ++ []          ≡⟨ ++-ʳ++ xs ⟩
   ys ʳ++ xs ʳ++ []           ≡⟨⟩
   ys ʳ++ reverse xs          ≡⟨ ʳ++-defn ys ⟩
   reverse ys ++ reverse xs   ∎
@@ -1211,6 +1211,12 @@ zipWith-identityʳ = zipWith-zeroʳ
 {-# WARNING_ON_USAGE zipWith-identityʳ
 "Warning: zipWith-identityʳ was deprecated in v2.0.
 Please use zipWith-zeroʳ instead."
+#-}
+
+ʳ++-++ = ++-ʳ++
+{-# WARNING_ON_USAGE ʳ++-++
+"Warning: ʳ++-++ was deprecated in v2.0.
+Please use ++-ʳ++ instead."
 #-}
 
 take++drop = take++drop≡id
