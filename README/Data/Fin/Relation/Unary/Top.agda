@@ -61,17 +61,17 @@ inject₁⁻¹ i with ‵inject₁ j ← view i = j
 
 inject₁⁻¹-irrelevant : (i : Fin (suc n)) .{{ii₁ ii₂ : IsInject₁ (view i)}} →
                        inject₁⁻¹ i {{ii₁}} ≡ inject₁⁻¹ i {{ii₂}}
-inject₁⁻¹-irrelevant i with ‵inj₁_ ← view i = refl
+inject₁⁻¹-irrelevant i with ‵inj₁ _ ← view i = refl
 
-inject₁-inject₁⁻¹ : (i : Fin (suc n)) → .{{_ : IsInject₁ (view i)}} →
+inject₁-inject₁⁻¹ : (i : Fin (suc n)) .{{_ : IsInject₁ (view i)}} →
                     inject₁ (inject₁⁻¹ i) ≡ i
 inject₁-inject₁⁻¹ i with ‵inj₁ _ ← view i = refl
 
-inject₁⁻¹-inject₁ : (j : Fin n) → inject₁⁻¹ (inject₁ j) {{inj⁺}} ≡ j
+inject₁⁻¹-inject₁ : (j : Fin n) → inject₁⁻¹ (inject₁ j) ≡ j
 inject₁⁻¹-inject₁ j rewrite view-inject₁ j = refl
 
 inject₁≡⇒inject₁⁻¹≡ : (eq : inject₁ {n} j ≡ i) →
-                       inject₁⁻¹ i {{inject₁≡⁺ {eq = eq}}} ≡ j
+                      let instance _ = inject₁≡⁺ eq in inject₁⁻¹ i ≡ j
 inject₁≡⇒inject₁⁻¹≡ refl = inject₁⁻¹-inject₁ _
 
 inject₁⁻¹-injective : (i₁ i₂ : Fin (suc n)) →
@@ -112,7 +112,7 @@ opposite-suc≡inject₁-opposite {suc n} i with view i
 opposite-involutive : (j : Fin n) → opposite (opposite j) ≡ j
 opposite-involutive {suc n} zero
   rewrite opposite-zero≡fromℕ n
-        | view-fromℕ n            = refl
+        | view-fromℕ n             = refl
 opposite-involutive {suc n} (suc i)
   rewrite opposite-suc≡inject₁-opposite i
         | view-inject₁(opposite i) = cong suc (opposite-involutive i)
