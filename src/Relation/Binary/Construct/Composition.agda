@@ -11,7 +11,10 @@ module Relation.Binary.Construct.Composition where
 open import Data.Product.Base using (∃; _×_; _,_)
 open import Function.Base
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions
+  using (_Respects_; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Reflexive; Transitive)
 
 private
   variable

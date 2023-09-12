@@ -10,7 +10,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsPreorder)
 
 module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} (isPreorder : IsPreorder _≈_ _∼_)

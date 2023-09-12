@@ -7,7 +7,9 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder)
 open import Relation.Binary.Indexed.Homogeneous
 
 module Relation.Binary.Indexed.Homogeneous.Construct.At where
