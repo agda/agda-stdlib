@@ -594,6 +594,24 @@ record IsQuasiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; isSemigroup   to +-isSemigroup
     )
 
+  distribˡ : * DistributesOverˡ +
+  distribˡ = proj₁ distrib
+
+  distribʳ : * DistributesOverʳ +
+  distribʳ = proj₂ distrib
+
+  zeroˡ : LeftZero 0# *
+  zeroˡ = proj₁ zero
+
+  zeroʳ : RightZero 0# *
+  zeroʳ = proj₂ zero
+
+  identityˡ : LeftIdentity 1# *
+  identityˡ = proj₁ *-identity
+
+  identityʳ : RightIdentity 1# *
+  identityʳ = proj₂ *-identity
+
   *-isMagma : IsMagma *
   *-isMagma = record
     { isEquivalence = isEquivalence
@@ -683,11 +701,11 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
     ; assoc   = *-assoc
     }
 
-  open IsMagma *-isMagma public
+  open IsSemigroup *-isSemigroup public
     using ()
     renaming
-    ( ∙-congˡ  to *-congˡ
-    ; ∙-congʳ  to *-congʳ
+    ( ∙-congˡ   to *-congˡ
+    ; ∙-congʳ   to *-congʳ
     )
 
 ------------------------------------------------------------------------
@@ -698,7 +716,7 @@ record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a 
   field
     +-isAbelianGroup : IsAbelianGroup + 0# -_
     *-cong           : Congruent₂ *
-    identity         : Identity 1# *
+    *-identity       : Identity 1# *
     distrib          : * DistributesOver +
     zero             : Zero 0# *
 
@@ -728,6 +746,18 @@ record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a 
     ; isGroup                 to +-isGroup
     )
 
+  zeroˡ : LeftZero 0# *
+  zeroˡ = proj₁ zero
+
+  zeroʳ : RightZero 0# *
+  zeroʳ = proj₂ zero
+
+  distribˡ : * DistributesOverˡ +
+  distribˡ = proj₁ distrib
+
+  distribʳ : * DistributesOverʳ +
+  distribʳ = proj₂ distrib
+
   *-isMagma : IsMagma *
   *-isMagma = record
     { isEquivalence = isEquivalence
@@ -735,10 +765,23 @@ record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a 
     }
 
   *-identityˡ : LeftIdentity 1# *
-  *-identityˡ = proj₁ identity
+  *-identityˡ = proj₁ *-identity
 
   *-identityʳ : RightIdentity 1# *
-  *-identityʳ = proj₂ identity
+  *-identityʳ = proj₂ *-identity
+
+  *-isUnitalMagma : IsUnitalMagma * 1#
+  *-isUnitalMagma = record
+    { isMagma = *-isMagma
+    ; identity = *-identity
+    }
+
+  open IsUnitalMagma *-isUnitalMagma public
+    using ()
+    renaming
+    ( ∙-congˡ   to *-congˡ
+    ; ∙-congʳ   to *-congʳ
+    )
 
 record IsNearring (+ * : Op₂ A) (0# 1# : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
