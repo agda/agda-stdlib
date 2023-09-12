@@ -24,7 +24,13 @@ open import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 open import Function.Base using (id; _on_; _∘_)
 open import Induction.WellFounded
 open import Relation.Nullary using (yes; no; ¬_)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Poset; StrictPartialOrder; DecPoset; DecStrictPartialOrder; DecTotalOrder; StrictTotalOrder; Preorder; TotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder; IsDecStrictPartialOrder; IsDecTotalOrder; IsStrictTotalOrder; IsPreorder; IsTotalOrder; IsPartialEquivalence)
+open import Relation.Binary.Definitions
+  using (Irreflexive; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Antisymmetric; Asymmetric; Symmetric; Trans; Decidable; Total; Trichotomous; Transitive; Irrelevant; tri≈; tri>; tri<)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Construct.On as On using (wellFounded)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

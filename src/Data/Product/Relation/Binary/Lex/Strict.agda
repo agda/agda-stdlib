@@ -20,7 +20,13 @@ open import Function.Base
 open import Induction.WellFounded
 open import Level
 open import Relation.Nullary.Decidable
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Irreflexive; Asymmetric; Total; Decidable; Antisymmetric; Trichotomous; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri>; tri≈)
 open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
 

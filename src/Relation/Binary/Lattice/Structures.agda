@@ -9,7 +9,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsPartialOrder)
+open import Relation.Binary.Definitions using (Minimum; Maximum)
 
 module Relation.Binary.Lattice.Structures
  {a ℓ₁ ℓ₂} {A : Set a}

@@ -10,7 +10,9 @@ module Data.List.Relation.Binary.Prefix.Homogeneous.Properties where
 
 open import Level
 open import Function.Base using (_∘′_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
 
 open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Prefix.Heterogeneous

@@ -16,7 +16,7 @@ open import Codata.Sized.Conat.Bisimilarity
 open import Function.Base using (_∋_)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (map′)
-open import Relation.Binary
+open import Relation.Binary.Definitions using (Decidable)
 
 private
   variable

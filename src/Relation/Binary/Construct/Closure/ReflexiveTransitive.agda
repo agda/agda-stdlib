@@ -8,7 +8,9 @@
 
 module Relation.Binary.Construct.Closure.ReflexiveTransitive where
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Definitions
+  using (Transitive; Trans; Sym; TransFlip; Reflexive)
 open import Function.Base
 open import Level using (_⊔_)
 
