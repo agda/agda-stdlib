@@ -45,7 +45,7 @@ private
 -- terms of the functions `view-fromℕ` and `view-inject₁` defined in
 -- `Data.Fin.Relation.Unary.Top`
 
-data IsFromℕ : View {suc n} i → Set where
+data IsFromℕ : View i → Set where
   ‵fromℕ : IsFromℕ (‵fromℕ {n})
 
 instance
@@ -53,28 +53,28 @@ instance
   fromℕ⁺ : IsFromℕ (view (fromℕ n))
   fromℕ⁺ {n = n} rewrite view-fromℕ n = ‵fromℕ
 
-data IsInject₁ : View {suc n} i → Set where
-  ‵inj₁ : ∀ {j} (v : View {n} j) → IsInject₁ (‵inj₁ v)
+data IsInject₁ : View i → Set where
+  ‵inj₁ : (v : View j) → IsInject₁ (‵inj₁ v)
 
 instance
 
   inject₁⁺ : IsInject₁ (view (inject₁ j))
   inject₁⁺ {j = j} rewrite view-inject₁ j = ‵inj₁ _
 
-  inject₁≡⁺ : {eq : inject₁ j ≡ i} → IsInject₁ (view i)
-  inject₁≡⁺ {eq = refl} = inject₁⁺
+inject₁≡⁺ : (eq : inject₁ j ≡ i) → IsInject₁ (view i)
+inject₁≡⁺ refl = inject₁⁺
 
-  inject₁≢n⁺ : {n≢i : n ≢ toℕ (inject₁ i)} → IsInject₁ (view {suc n} i)
-  inject₁≢n⁺ {n} {i} {n≢i} with view i
-  ... | ‵fromℕ = contradiction (sym i≡n) n≢i
-    where
-      open ≡-Reasoning
-      i≡n : toℕ (inject₁ (fromℕ n)) ≡ n
-      i≡n = begin
-        toℕ (inject₁ (fromℕ n)) ≡⟨ toℕ-inject₁ (fromℕ n) ⟩
-        toℕ (fromℕ n)           ≡⟨ toℕ-fromℕ n ⟩
-        n                       ∎
-  ... | ‵inj₁ v = ‵inj₁ v
+inject₁≢n⁺ : (n≢i : n ≢ toℕ (inject₁ i)) → IsInject₁ (view {suc n} i)
+inject₁≢n⁺ {n} {i} n≢i with view i
+... | ‵fromℕ = contradiction (sym i≡n) n≢i
+  where
+    open ≡-Reasoning
+    i≡n : toℕ (inject₁ (fromℕ n)) ≡ n
+    i≡n = begin
+      toℕ (inject₁ (fromℕ n)) ≡⟨ toℕ-inject₁ (fromℕ n) ⟩
+      toℕ (fromℕ n)           ≡⟨ toℕ-fromℕ n ⟩
+      n                       ∎
+... | ‵inj₁ v = ‵inj₁ v
 
 
 ------------------------------------------------------------------------
@@ -83,7 +83,7 @@ instance
 -- the corresponding properties in `Data.Fin.Properties`
 
 view-fromℕ-toℕ : ∀ i → .{{IsFromℕ (view i)}} → toℕ i ≡ n
-view-fromℕ-toℕ {n = n} i with ‵fromℕ ← view i = toℕ-fromℕ n
+view-fromℕ-toℕ i with ‵fromℕ ← view i = toℕ-fromℕ _
 
 view-inject₁-toℕ< : ∀ i → .{{IsInject₁ (view i)}} → toℕ i < n
 view-inject₁-toℕ< i with ‵inject₁ j ← view i = inject₁ℕ< j
