@@ -70,8 +70,8 @@ inject₁≡⇒inject₁⁻¹≡ : (eq : inject₁ {n} j ≡ i) →
                       let instance _ = inject₁≡⁺ eq in inject₁⁻¹ i ≡ j
 inject₁≡⇒inject₁⁻¹≡ refl = inject₁⁻¹-inject₁ _
 
-inject₁⁻¹-injective : (i₁ i₂ : Fin (suc n)) →
-                      .{{_ : IsInject₁ (view i₁)}} →
+inject₁⁻¹-injective : (i₁ i₂ : Fin (suc n))
+                      .{{_ : IsInject₁ (view i₁)}}
                       .{{_ : IsInject₁ (view i₂)}} →
                       inject₁⁻¹ i₁ ≡ inject₁⁻¹ i₂ → i₁ ≡ i₂
 inject₁⁻¹-injective i₁ i₂ with ‵inj₁ _ ← view i₁ | ‵inj₁ _ ← view i₂ = cong inject₁
@@ -80,7 +80,7 @@ inject₁⁻¹-irrelevant : (i : Fin (suc n)) .{{ii₁ ii₂ : IsInject₁ (view
                        inject₁⁻¹ i {{ii₁}} ≡ inject₁⁻¹ i {{ii₂}}
 inject₁⁻¹-irrelevant i with ‵inj₁ _ ← view i = refl
 
-toℕ-inject₁⁻¹ : (i : Fin (suc n)) → .{{_ : IsInject₁ (view i)}} →
+toℕ-inject₁⁻¹ : (i : Fin (suc n)) .{{_ : IsInject₁ (view i)}} →
                 toℕ (inject₁⁻¹ i) ≡ toℕ i
 toℕ-inject₁⁻¹ i with ‵inject₁ j ← view i = sym (toℕ-inject₁ j)
 

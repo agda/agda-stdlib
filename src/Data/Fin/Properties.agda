@@ -443,8 +443,8 @@ toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
 -- inject₁
 ------------------------------------------------------------------------
 
-fromℕ≢inject₁ : (j : Fin n) → fromℕ n ≢ inject₁ j
-fromℕ≢inject₁ (suc j) eq = fromℕ≢inject₁ j (suc-injective eq)
+fromℕ≢inject₁ : fromℕ n ≢ inject₁ j
+fromℕ≢inject₁ {j = suc j} eq = fromℕ≢inject₁ {j = j} (suc-injective eq)
 
 inject₁-injective : inject₁ i ≡ inject₁ j → i ≡ j
 inject₁-injective {i = zero}  {zero}  i≡j = refl
