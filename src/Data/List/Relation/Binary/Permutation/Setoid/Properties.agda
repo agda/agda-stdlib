@@ -34,8 +34,6 @@ open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
 open import Function.Base using (_∘_; _⟨_⟩_; flip)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (inverse)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)

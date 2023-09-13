@@ -13,7 +13,7 @@ open import Data.Product.Base using (_,_)
 open import Data.Product.Function.Dependent.Setoid using (surjection)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Function.Base
-open import Function.Equality as F using (_⟶_; _⟨$⟩_)
+open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq
   using (Equivalence; _⇔_; module Equivalence)
 open import Function.Injection as Inj

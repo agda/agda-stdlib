@@ -708,6 +708,9 @@ Non-backwards compatible changes
   This reorganisation means in particular that the functor/applicative of a monad
   are not computed using `_>>=_`. This may break proofs.
 
+* When `F : Set f → Set f` we moreover have a definable join/μ operator
+  `join : (M : RawMonad F) → F (F A) → F A`.
+
 * We now have `RawEmpty` and `RawChoice` respectively packing `empty : M A` and
   `(<|>) : M A → M A → M A`. `RawApplicativeZero`, `RawAlternative`, `RawMonadZero`,
   `RawMonadPlus` are all defined in terms of these.
@@ -796,6 +799,9 @@ Non-backwards compatible changes
   Should be mostly backwards compatible, but very occasionally when proving
   properties about the orderings themselves the second index must be provided
   explicitly.
+
+* The argument `xs` in `xs≮[]` in `Data.{List|Vec}.Relation.Binary.Lex.Strict`
+  introduced in PRs #1648 and #1672 has now been made implicit.
 
 * Issue #2075 (Johannes Waldmann): wellfoundedness of the lexicographic ordering
   on products, defined in `Data.Product.Relation.Binary.Lex.Strict`, no longer
@@ -2620,14 +2626,13 @@ Other minor changes
 
   diagonal           : Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : Vec A n → (A → Vec B n) → Vec B n
-  join               : Vec (Vec A n) n → Vec A n
 
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
   ```
 
-* Added new instance in `Data.Vec.Categorical`:
+* Added new instance in `Data.Vec.Effectful`:
   ```agda
   monad : RawMonad (λ (A : Set a) → Vec A n)
   ```
@@ -2719,7 +2724,7 @@ Other minor changes
 
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:
   ```agda
-  xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
+  xs≮[] : {xs : Vec A n} → ¬ xs < []
   <-respectsˡ : IsPartialEquivalence _≈_ → _≺_ Respectsˡ _≈_ →
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
   <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →

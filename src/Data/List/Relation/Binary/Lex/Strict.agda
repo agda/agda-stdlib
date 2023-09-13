@@ -51,11 +51,11 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
       _≋_ = Pointwise _≈_
       _<_ = Lex-< _≈_ _≺_
 
-    xs≮[] : ∀ xs → ¬ xs < []
-    xs≮[] _ (base ())
+    xs≮[] : ∀ {xs} → ¬ xs < []
+    xs≮[] (base ())
 
     ¬[]<[] : ¬ [] < []
-    ¬[]<[] = xs≮[] []
+    ¬[]<[] = xs≮[]
 
     <-irreflexive : Irreflexive _≈_ _≺_ → Irreflexive _≋_ _<_
     <-irreflexive irr (x≈y ∷ xs≋ys) (this x<y)     = irr x≈y x<y
