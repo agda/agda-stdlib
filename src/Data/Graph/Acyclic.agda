@@ -313,7 +313,7 @@ module _ {ℓ e} {N : Set ℓ} {E : Set e} where
     expand n rec (c & g) =
       node (label c)
            (List.map
-              (Prod.map id (λ i → rec {n - suc i} (lemma n i) (g [ i ])))
+              (Prod.map id (λ i → rec (lemma n i) (g [ i ])))
               (successors c))
 
 -- Performs the toTree expansion once for each node.
