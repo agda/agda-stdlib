@@ -784,6 +784,9 @@ Non-backwards compatible changes
   properties about the orderings themselves the second index must be provided
   explicitly.
 
+* The argument `xs` in `xs≮[]` in `Data.{List|Vec}.Relation.Binary.Lex.Strict`
+  introduced in PRs #1648 and #1672 has now been made implicit.
+
 * Issue #2075 (Johannes Waldmann): wellfoundedness of the lexicographic ordering
   on products, defined in `Data.Product.Relation.Binary.Lex.Strict`, no longer
   requires the assumption of symmetry for the first equality relation `_≈₁_`,
@@ -2705,7 +2708,7 @@ Other minor changes
 
 * Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:
   ```agda
-  xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
+  xs≮[] : {xs : Vec A n} → ¬ xs < []
   <-respectsˡ : IsPartialEquivalence _≈_ → _≺_ Respectsˡ _≈_ →
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
   <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
