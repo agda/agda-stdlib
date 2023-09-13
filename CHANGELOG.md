@@ -781,6 +781,9 @@ Non-backwards compatible changes
   properties about the orderings themselves the second index must be provided
   explicitly.
 
+* The argument `xs` in `xs≮[]` in `Data.{List|Vec}.Relation.Binary.Lex.Strict`
+  introduced in PRs #1648 and #1672 has now been made implicit.
+
 * The operation `SymClosure` on relations in
   `Relation.Binary.Construct.Closure.Symmetric` has been reimplemented
   as a data type `SymClosure _⟶_ a b` that is parameterized by the
