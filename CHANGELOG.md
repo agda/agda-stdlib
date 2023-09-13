@@ -1195,6 +1195,9 @@ Deprecated names
   been made consistent so that `m`, `n` always refer to naturals and
   `i` and `j` always refer to integers:
   ```
+  ≤-<-trans  ↦  ≤-<-transˡ
+  <-≤-trans  ↦  <-≤-transʳ
+
   ≤-steps        ↦  i≤j⇒i≤k+j
   ≤-step         ↦  i≤j⇒i≤1+j
 
@@ -1224,7 +1227,7 @@ Deprecated names
   m<n⇒m≤pred[n]  ↦  i<j⇒i≤pred[j]
   -1*n≡-n        ↦  -1*i≡-i
   m*n≡0⇒m≡0∨n≡0  ↦  i*j≡0⇒i≡0∨j≡0
-  ∣m*n∣≡∣m∣*∣n∣     ↦  ∣i*j∣≡∣i∣*∣j∣
+  ∣m*n∣≡∣m∣*∣n∣  ↦  ∣i*j∣≡∣i∣*∣j∣
   m≤m+n          ↦  i≤i+j
   n≤m+n          ↦  i≤j+i
   m-n≤m          ↦  i≤i-j
