@@ -2951,6 +2951,13 @@ Other minor changes
                     f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
   ```
 
+* Added new proofs to `Relation.Binary.Construct.Closure.Transitive`:
+  ```
+  accessible⁻ : ∀ {x} → Acc _∼⁺_ x → Acc _∼_ x
+  wellFounded⁻ : WellFounded _∼⁺_ → WellFounded _∼_
+  accessible : ∀ {x} → Acc _∼_ x → Acc _∼⁺_ x
+  ```
+
 * Added new operations in `Relation.Binary.PropositionalEquality.Properties`:
   ```
   J       : (B : (y : A) → x ≡ y → Set b) (p : x ≡ y) → B x refl → B y p
