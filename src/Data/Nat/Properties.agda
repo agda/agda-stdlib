@@ -37,7 +37,7 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
   using (IsDecEquivalence; IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (DecidableEquality; Irrelevant; Reflexive; Antisymmetric; Transitive; Total; Decidable; Connex; Irreflexive; Asymmetric; Trans; LeftTrans; RightTrans; Trichotomous; tri≈; tri>; tri<; _Respects₂_)
+  using (DecidableEquality; Irrelevant; Reflexive; Antisymmetric; Transitive; Total; Decidable; Connex; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri>; tri<; _Respects₂_)
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
