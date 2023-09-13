@@ -154,14 +154,14 @@ private
   divₕ-offsetEq d (suc n) zero    zero    j≤d k≤d (inj₂′ (refl , _)) =
     divₕ-offsetEq d n d d ≤-refl ≤-refl (inj₂′ (refl , a[modₕ]n<n 0 n d , ≤-refl))
   divₕ-offsetEq d (suc n) zero    zero    j≤d k≤d (inj₃ (_ , 0<mod , mod≤0)) =
-    contradiction (<-transˡ 0<mod mod≤0) λ()
+    contradiction (<-≤-transʳ 0<mod mod≤0) λ()
   -- (0 , suc) cases
   divₕ-offsetEq d (suc n) zero (suc k)    j≤d k≤d (inj₁  (refl , _ , 1+k<mod)) =
     divₕ-offsetEq d n d k ≤-refl (<⇒≤ k≤d) (inj₃ (refl , k<1+a[modₕ]n⇒k≤a[modₕ]n 0 (suc k) n d 1+k<mod , a[modₕ]n<n 0 n d))
   divₕ-offsetEq d (suc n) zero (suc k)    j≤d k≤d (inj₂′ (refl , mod≤0 , _)) =
     divₕ-offsetEq d n d k ≤-refl (<⇒≤ k≤d) (inj₃ (refl , subst (k <_) (sym (a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 d n (n≤0⇒n≡0 mod≤0))) k≤d , a[modₕ]n<n 0 n d))
   divₕ-offsetEq d (suc n) zero (suc k)    j≤d k≤d (inj₃  (_ , 1+k<mod , mod≤0)) =
-    contradiction (<-transˡ 1+k<mod mod≤0) λ()
+    contradiction (<-≤-transʳ 1+k<mod mod≤0) λ()
   -- (suc , 0) cases
   divₕ-offsetEq d (suc n) (suc j) zero j≤d k≤d (inj₁  (_ , () , _))
   divₕ-offsetEq d (suc n) (suc j) zero j≤d k≤d (inj₂′ (_ , _ , ()))
@@ -174,7 +174,7 @@ private
   ... | yes mod≡0 = divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₁ (eq , j≤k , subst (k <_) (sym (a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 d n mod≡0)) k≤d))
   ... | no  mod≢0 = divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₂′ (eq , 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 j n d (n≢0⇒n>0 mod≢0) mod≤1+j , j≤k))
   divₕ-offsetEq d (suc n) (suc j) (suc k) j≤d k≤d (inj₃  (eq , k<mod , mod≤1+j)) =
-    divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₃ (eq , k<1+a[modₕ]n⇒k≤a[modₕ]n 0 (suc k) n d k<mod , 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 j n d (<-transʳ z≤n k<mod) mod≤1+j))
+    divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₃ (eq , k<1+a[modₕ]n⇒k≤a[modₕ]n 0 (suc k) n d k<mod , 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 j n d (≤-<-transˡ z≤n k<mod) mod≤1+j))
 
 ------------------------------------------------------------------------
 -- Lemmas for divₕ that also have an interpretation for _/_

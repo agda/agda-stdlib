@@ -24,6 +24,10 @@ open import Relation.Nullary.Decidable using (False; toWitnessFalse)
 
 open ≤-Reasoning
 
+private
+  variable
+    m n o p : ℕ
+
 ------------------------------------------------------------------------
 -- Definitions
 
@@ -46,10 +50,10 @@ m%n≡m∸m/n*n m n = begin-equality
 ------------------------------------------------------------------------
 -- Properties of _%_
 
-%-congˡ : ∀ {m n o} .⦃ _ : NonZero o ⦄ → m ≡ n → m % o ≡ n % o
+%-congˡ : .⦃ _ : NonZero o ⦄ → m ≡ n → m % o ≡ n % o
 %-congˡ refl = refl
 
-%-congʳ : ∀ {m n o} .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ≡ n →
+%-congʳ : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ≡ n →
           o % m ≡ o % n
 %-congʳ refl = refl
 
@@ -73,7 +77,7 @@ m%n%n≡m%n m (suc n-1) = modₕ-idem 0 m n-1
   (m + n)           % n ≡⟨ [m+n]%n≡m%n m n ⟩
   m                 % n ∎
 
-m≤n⇒[n∸m]%m≡n%m : ∀ {m n} .⦃ _ : NonZero m ⦄ → m ≤ n →
+m≤n⇒[n∸m]%m≡n%m : .⦃ _ : NonZero m ⦄ → m ≤ n →
                   (n ∸ m) % m ≡ n % m
 m≤n⇒[n∸m]%m≡n%m {m} {n} m≤n = begin-equality
   (n ∸ m) % m     ≡˘⟨ [m+n]%n≡m%n (n ∸ m) m ⟩
@@ -119,12 +123,12 @@ m%n≤n m n = <⇒≤ (m%n<n m n)
 m%n≤m : ∀ m n .{{_ : NonZero n}} → m % n ≤ m
 m%n≤m m (suc n-1) = a[modₕ]n≤a 0 m n-1
 
-m≤n⇒m%n≡m : ∀ {m n} → m ≤ n → m % suc n ≡ m
+m≤n⇒m%n≡m : m ≤ n → m % suc n ≡ m
 m≤n⇒m%n≡m {m} {n} m≤n with ≤⇒≤″ m≤n
 ... | less-than-or-equal {k} refl = a≤n⇒a[modₕ]n≡a 0 (m + k) m k
 
 m<n⇒m%n≡m : ∀ {m n} .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
-m<n⇒m%n≡m {m} {suc n} m<n = m≤n⇒m%n≡m (<⇒≤pred m<n)
+m<n⇒m%n≡m {m} {n = suc _} m<n = m≤n⇒m%n≡m (<⇒≤pred m<n)
 
 %-pred-≡0 : ∀ {m n} .{{_ : NonZero n}} → (suc m % n) ≡ 0 → (m % n) ≡ n ∸ 1
 %-pred-≡0 {m} {suc n-1} eq = a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 n-1 m eq
@@ -182,11 +186,11 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 ------------------------------------------------------------------------
 -- Properties of _/_
 
-/-congˡ : ∀ {m n o : ℕ} .{{_ : NonZero o}} →
+/-congˡ :  .{{_ : NonZero o}} →
           m ≡ n → m / o ≡ n / o
 /-congˡ refl = refl
 
-/-congʳ : ∀ {m n o : ℕ} .{{_ : NonZero n}} .{{_ : NonZero o}} →
+/-congʳ : .{{_ : NonZero n}} .{{_ : NonZero o}} →
           n ≡ o → m / n ≡ m / o
 /-congʳ refl = refl
 
@@ -205,7 +209,7 @@ m*n/n≡m m (suc n-1) = a*n[divₕ]n≡a 0 m n-1
 m/n*n≡m : ∀ {m n} .{{_ : NonZero n}} → n ∣ m → m / n * n ≡ m
 m/n*n≡m {_} {n@(suc _)} (divides-refl q) = cong (_* n) (m*n/n≡m q n)
 
-m*[n/m]≡n : ∀ {m n} .{{_ : NonZero m}} → m ∣ n → m * (n / m) ≡ n
+m*[n/m]≡n : .{{_ : NonZero m}} → m ∣ n → m * (n / m) ≡ n
 m*[n/m]≡n {m} m∣n = trans (*-comm m (_ / m)) (m/n*n≡m m∣n)
 
 m/n*n≤m : ∀ m n .{{_ : NonZero n}} → (m / n) * n ≤ m
@@ -227,11 +231,11 @@ m/n<m m n n≥2 = *-cancelʳ-< _ (m / n) m (begin-strict
   m           <⟨ m<m*n m n n≥2 ⟩
   m * n       ∎)
 
-/-mono-≤ : ∀ {m n o p} .{{_ : NonZero o}} .{{_ : NonZero p}} →
+/-mono-≤ : .{{_ : NonZero o}} .{{_ : NonZero p}} →
            m ≤ n → o ≥ p → m / o ≤ n / p
 /-mono-≤ m≤n (s≤s o≥p) = divₕ-mono-≤ 0 m≤n o≥p
 
-/-monoˡ-≤ : ∀ {m n} o .{{_ : NonZero o}} → m ≤ n → m / o ≤ n / o
+/-monoˡ-≤ : ∀ o .{{_ : NonZero o}} → m ≤ n → m / o ≤ n / o
 /-monoˡ-≤ o m≤n = /-mono-≤ m≤n (≤-refl {o})
 
 /-monoʳ-≤ : ∀ m {n o} .{{_ : NonZero n}} .{{_ : NonZero o}} →
@@ -330,7 +334,7 @@ m<n*o⇒m/o<n {m} {suc n} {o} m<n*o with m <? o
 [m∸n]/n≡m/n∸1 : ∀ m n .⦃ _ : NonZero n ⦄ → (m ∸ n) / n ≡ pred (m / n)
 [m∸n]/n≡m/n∸1 m n with m <? n
 ... | yes m<n = begin-equality
-  (m ∸ n) / n  ≡⟨ m<n⇒m/n≡0 (<-transʳ (m∸n≤m m n) m<n) ⟩
+  (m ∸ n) / n  ≡⟨ m<n⇒m/n≡0 (≤-<-transˡ (m∸n≤m m n) m<n) ⟩
   0            ≡⟨⟩
   0 ∸ 1        ≡˘⟨ cong (_∸ 1) (m<n⇒m/n≡0 m<n) ⟩
   m / n ∸ 1    ≡⟨⟩

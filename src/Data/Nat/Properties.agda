@@ -2342,4 +2342,3 @@ open Data.Nat.Base public
 "Warning: <-transˡ was deprecated in v2.0. Please use ≤-<-transʳ instead. "
 #-}
 
-
