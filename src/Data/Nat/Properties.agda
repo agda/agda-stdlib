@@ -2332,13 +2332,11 @@ suc[pred[n]]≡n {suc n} _   = refl
 open Data.Nat.Base public
   using (*-rawMagma; *-1-rawMonoid)
 
-<-transʳ : Trans _≤_ _<_ _<_
 <-transʳ = ≤-<-transˡ
 {-# WARNING_ON_USAGE <-transʳ
 "Warning: <-transʳ was deprecated in v2.0. Please use ≤-<-transˡ instead. "
 #-}
 
-<-transˡ : Trans _<_ _≤_ _<_
 <-transˡ = <-≤-transʳ
 {-# WARNING_ON_USAGE <-transˡ
 "Warning: <-transˡ was deprecated in v2.0. Please use ≤-<-transʳ instead. "
