@@ -1319,6 +1319,9 @@ Deprecated names
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
   <-step          ↦  m<n⇒m<1+n
+
+  <-transʳ        ↦  ≤-<-transˡ
+  <-transˡ        ↦  <-≤-transʳ
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:
