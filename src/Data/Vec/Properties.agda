@@ -73,16 +73,16 @@ private
 unfold-take : ∀ n x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
 unfold-take n x xs = refl
 
-take-distr-zipWith : ∀ (f : A → B → C) →
-                     (xs : Vec A (m + n)) (ys : Vec B (m + n)) →
-                     take m (zipWith f xs ys) ≡ zipWith f (take m xs) (take m ys)
-take-distr-zipWith {m = zero}  f xs       ys       = refl
-take-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = cong (f x y ∷_) (take-distr-zipWith f xs ys)
+take-zipWith : ∀ (f : A → B → C) →
+               (xs : Vec A (m + n)) (ys : Vec B (m + n)) →
+               take m (zipWith f xs ys) ≡ zipWith f (take m xs) (take m ys)
+take-zipWith {m = zero}  f xs       ys       = refl
+take-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = cong (f x y ∷_) (take-zipWith f xs ys)
 
-take-distr-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
-                 take m (map f xs) ≡ map f (take m xs)
-take-distr-map f zero xs = refl
-take-distr-map f (suc m) (x ∷ xs) = cong (f x ∷_) (take-distr-map f m xs)
+take-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
+           take m (map f xs) ≡ map f (take m xs)
+take-map f zero    xs       = refl
+take-map f (suc m) (x ∷ xs) = cong (f x ∷_) (take-map f m xs)
 
 ------------------------------------------------------------------------
 -- drop
@@ -91,16 +91,16 @@ unfold-drop : ∀ n x (xs : Vec A (n + m)) →
               drop (suc n) (x ∷ xs) ≡ drop n xs
 unfold-drop n x xs = refl
 
-drop-distr-zipWith : (f : A → B → C) →
-                     (x : Vec A (m + n)) (y : Vec B (m + n)) →
-                     drop m (zipWith f x y) ≡ zipWith f (drop m x) (drop m y)
-drop-distr-zipWith {m = zero} f   xs       ys = refl
-drop-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = drop-distr-zipWith f xs ys
+drop-zipWith : (f : A → B → C) →
+               (xs : Vec A (m + n)) (ys : Vec B (m + n)) →
+               drop m (zipWith f xs ys) ≡ zipWith f (drop m xs) (drop m ys)
+drop-zipWith {m = zero}  f   xs       ys     = refl
+drop-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = drop-zipWith f xs ys
 
-drop-distr-map : ∀ (f : A → B) (m : ℕ) (x : Vec A (m + n)) →
-                 drop m (map f x) ≡ map f (drop m x)
-drop-distr-map f zero x = refl
-drop-distr-map f (suc m) (x ∷ xs) = drop-distr-map f m xs
+drop-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
+           drop m (map f xs) ≡ map f (drop m xs)
+drop-map f zero    xs       = refl
+drop-map f (suc m) (x ∷ xs) = drop-map f m xs
 
 ------------------------------------------------------------------------
 -- take and drop together
@@ -1175,4 +1175,25 @@ take-drop-id = take++drop≡id
 {-# WARNING_ON_USAGE take-drop-id
 "Warning: take-drop-id was deprecated in v2.0.
 Please use take++drop≡id instead."
+#-}
+
+take-distr-zipWith = take-zipWith
+{-# WARNING_ON_USAGE take-distr-zipWith
+"Warning: take-distr-zipWith was deprecated in v2.0.
+Please use take-zipWith instead."
+#-}
+take-distr-map = take-map
+{-# WARNING_ON_USAGE take-distr-map
+"Warning: take-distr-map was deprecated in v2.0.
+Please use take-map instead."
+#-}
+drop-distr-zipWith = drop-zipWith
+{-# WARNING_ON_USAGE drop-distr-zipWith
+"Warning: drop-distr-zipWith was deprecated in v2.0.
+Please use tdrop-zipWith instead."
+#-}
+drop-distr-map = drop-map
+{-# WARNING_ON_USAGE drop-distr-map
+"Warning: drop-distr-map was deprecated in v2.0.
+Please use drop-map instead."
 #-}
