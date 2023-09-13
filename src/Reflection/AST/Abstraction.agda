@@ -11,8 +11,8 @@ module Reflection.AST.Abstraction where
 open import Data.String.Base as String                 using (String)
 open import Data.String.Properties as String           using (_≟_)
 open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
-open import Level
-open import Relation.Nullary.Decidable                 using (Dec; map′; _×-dec_)
+open import Level using (Level)
+open import Relation.Nullary.Decidable.Core            using (Dec; map′; _×-dec_)
 open import Relation.Binary.Definitions                using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 

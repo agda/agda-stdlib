@@ -13,7 +13,10 @@ open import Data.Container.Core
 open import Data.Container.Relation.Binary.Pointwise
 open import Data.Product.Base using (_,_; Σ-syntax; -,_)
 open import Level using (_⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; subst; cong)
 

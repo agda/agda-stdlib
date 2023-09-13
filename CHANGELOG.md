@@ -411,7 +411,7 @@ Non-backwards compatible changes
 * At the moment, there are 4 different ways such instance arguments can be provided,
   listed in order of convenience and clarity:
     1. *Automatic basic instances* - the standard library provides instances based on the constructors of each
-       numeric type in `Data.X.Base`. For example, `Data.Nat.Base` constains an instance of `NonZero (suc n)` for any `n`
+       numeric type in `Data.X.Base`. For example, `Data.Nat.Base` constrains an instance of `NonZero (suc n)` for any `n`
        and `Data.Integer.Base` contains an instance of `NonNegative (+ n)` for any `n`. Consequently,
        if the argument is of the required form, these instances will always be filled in by instance search
        automatically, e.g.
@@ -589,7 +589,7 @@ Non-backwards compatible changes
   ```
 
 * A new module `Reflection.AST` that re-exports the contents of the
-  submodules has been addeed.
+  submodules has been added.
 
 ### Implementation of division and modulus for `ℤ`
 
@@ -617,7 +617,7 @@ Non-backwards compatible changes
   * `IsSemiringWithoutAnnihilatingZero`
   * `IsRing`
 * To aid with migration, structures matching the old style ones have been added
-  to `Algebra.Structures.Biased`, with conversionFunctions:
+  to `Algebra.Structures.Biased`, with conversion functions:
   * `IsNearSemiring*` and `isNearSemiring*`
   * `IsSemiringWithoutOne*` and `isSemiringWithoutOne*`
   * `IsSemiringWithoutAnnihilatingZero*` and `isSemiringWithoutAnnihilatingZero*`
@@ -634,7 +634,7 @@ Non-backwards compatible changes
   ⊥ = Irrelevant Empty
   ```
   in order to make ⊥ proof irrelevant. Any two proofs of `⊥` or of a negated
-  statements are now *judgementally* equal to each other.
+  statements are now *judgmentally* equal to each other.
 
 * Consequently we have modified the following definitions:
   + In `Relation.Nullary.Decidable.Core`, the type of `dec-no` has changed
@@ -671,14 +671,14 @@ Non-backwards compatible changes
   however all their contents is re-exported by `Relation.Nullary` which is the easiest way to access
   it now.
 
-* In order to facilitate this reorganisation the following breaking moves have occured:
+* In order to facilitate this reorganisation the following breaking moves have occurred:
   - `¬?` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Decidable.Core`
   - `¬-reflects` has been moved from `Relation.Nullary.Negation.Core` to `Relation.Nullary.Reflects`.
   - `decidable-stable`, `excluded-middle` and `¬-drop-Dec` have been moved from `Relation.Nullary.Negation`
     to `Relation.Nullary.Decidable`.
-  - `fromDec` and `toDec` have been mvoed from `Data.Sum.Base` to `Data.Sum`.
+  - `fromDec` and `toDec` have been moved from `Data.Sum.Base` to `Data.Sum`.
 
-### Refactoring of the unindexed Functor/Applicative/Monad hiearchy
+### Refactoring of the unindexed Functor/Applicative/Monad hierarchy
 
 * The unindexed versions are not defined in terms of the named versions anymore
 
@@ -698,7 +698,7 @@ Non-backwards compatible changes
 
 * `MonadT T` now returns a `MonadTd` record that packs both a proof that the
   `Monad M` transformed by `T` is a monad and that we can `lift` a computation
-  `M A` to a trasnformed computation `T M A`.
+  `M A` to a transformed computation `T M A`.
 
 * The monad transformer are not mere aliases anymore, they are record-wrapped
   which allows constraints such as `MonadIO (StateT S (ReaderT R IO))` to be
@@ -784,6 +784,12 @@ Non-backwards compatible changes
 * The argument `xs` in `xs≮[]` in `Data.{List|Vec}.Relation.Binary.Lex.Strict`
   introduced in PRs #1648 and #1672 has now been made implicit.
 
+* Issue #2075 (Johannes Waldmann): wellfoundedness of the lexicographic ordering
+  on products, defined in `Data.Product.Relation.Binary.Lex.Strict`, no longer
+  requires the assumption of symmetry for the first equality relation `_≈₁_`,
+  leading to a new lemma `Induction.WellFounded.Acc-resp-flip-≈`, and refactoring
+  of the previous proof `Induction.WellFounded.Acc-resp-≈`.
+
 * The operation `SymClosure` on relations in
   `Relation.Binary.Construct.Closure.Symmetric` has been reimplemented
   as a data type `SymClosure _⟶_ a b` that is parameterized by the
@@ -792,12 +798,12 @@ Non-backwards compatible changes
   previous implementation using the sum type `a ⟶ b ⊎ b ⟶ a`.
 
 * In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
-  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
+  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redesigned to
   build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
   `IsSemiringHomomorphism` respectively, adding a single property at each step.
   This means that they no longer need to have two separate proofs of
   `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
-  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
+  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homomorphic.
 
   Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
 
@@ -860,6 +866,9 @@ Non-backwards compatible changes
     `i < j` rather than a mere `i ≢ j`.
 
 * In `Data.Sum.Base` the definitions `fromDec` and `toDec` have been moved to `Data.Sum`.
+
+* In `Data.Vec.Base`: the definitions `init` and `last` have been changed from the `initLast`
+  view-derived implementation to direct recursive definitions.
 
 * In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
   * `cycle`
@@ -942,7 +951,7 @@ Major improvements
 
 * To fix this, these operators have been moved to `Data.Nat.Base`. The properties
   for them still live in `Data.Nat.DivMod` (which also publicly re-exports them
-  to provide backwards compatability).
+  to provide backwards compatibility).
 
 * Beneficiaries of this change include `Data.Rational.Unnormalised.Base` whose
   dependencies are now significantly smaller.
@@ -1249,6 +1258,8 @@ Deprecated names
 
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
+
+  ʳ++-++  ↦  ++-ʳ++
 
   take++drop ↦ take++drop≡id
   ```
@@ -1607,11 +1618,6 @@ New modules
   Data.List.NonEmpty.Relation.Unary.All
   ```
 
-* A small library for heterogenous equational reasoning on vectors:
-  ```
-  Data.Vec.Properties.Heterogeneous
-  ```
-
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
@@ -1890,6 +1896,11 @@ Other minor changes
   rightBolLoop : RightBolLoop a ℓ₁ → RightBolLoop b ℓ₂ → RightBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   middleBolLoop : MiddleBolLoop a ℓ₁ → MiddleBolLoop b ℓ₂ → MiddleBolLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   moufangLoop : MoufangLoop a ℓ₁ → MoufangLoop b ℓ₂ → MoufangLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rawRingWithoutOne : RawRingWithoutOne a ℓ₁ → RawRingWithoutOne b ℓ₂ → RawRingWithoutOne (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  ringWithoutOne : RingWithoutOne a ℓ₁ → RingWithoutOne b ℓ₂ → RingWithoutOne (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  nonAssociativeRing : NonAssociativeRing a ℓ₁ → NonAssociativeRing b ℓ₂ → NonAssociativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  quasiring : Quasiring a ℓ₁ → Quasiring b ℓ₂ → Quasiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  nearring : Nearring a ℓ₁ → Nearring b ℓ₂ → Nearring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
 * Added new definition to `Algebra.Definitions`:
@@ -2523,13 +2534,13 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
-* Added new proof to `Data.Product.Relation.Binary.Lex.Strict`
+* Added new proofs to `Data.Product.Relation.Binary.Lex.Strict`
   ```agda
   ×-respectsʳ : Transitive _≈₁_ →
                 _<₁_ Respectsʳ _≈₁_ → _<₂_ Respectsʳ _≈₂_ → _<ₗₑₓ_ Respectsʳ _≋_
   ×-respectsˡ : Symmetric _≈₁_ → Transitive _≈₁_ →
                  _<₁_ Respectsˡ _≈₁_ → _<₂_ Respectsˡ _≈₂_ → _<ₗₑₓ_ Respectsˡ _≋_
-  ×-wellFounded' : Symmetric  _≈₁_ → Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ →
+  ×-wellFounded' : Transitive _≈₁_ → _<₁_ Respectsʳ _≈₁_ →
                    WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
   ```
 
@@ -2655,6 +2666,12 @@ Other minor changes
   ∷ʳ-injectiveˡ : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
   ∷ʳ-injectiveʳ : xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
 
+  unfold-∷ʳ : cast eq (xs ∷ʳ x) ≡ xs ++ [ x ]
+  init-∷ʳ   : init (xs ∷ʳ x) ≡ xs
+  last-∷ʳ   : last (xs ∷ʳ x) ≡ x
+  cast-∷ʳ   : cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
+  ++-∷ʳ     : cast eq ((xs ++ ys) ∷ʳ z) ≡ xs ++ (ys ∷ʳ z)
+
   reverse-∷          : reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
   reverse-involutive : Involutive _≡_ reverse
   reverse-reverse    : reverse xs ≡ ys → reverse ys ≡ xs
@@ -2694,7 +2711,7 @@ Other minor changes
                 ∀ {m n} → _Respectsˡ_ (_<_ {m} {n}) _≋_
   <-respectsʳ : IsPartialEquivalence _≈_ → _≺_ Respectsʳ _≈_ →
                 ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
-  <-wellFounded : Symmetric _≈_ →  Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
+  <-wellFounded : Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
                   ∀ {n} → WellFounded (_<_ {n})
 ```
 
@@ -3362,6 +3379,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
   ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ```
+
+* Added new proof to `Induction.WellFounded`
+  ```agda
+  Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
   ```
 
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`

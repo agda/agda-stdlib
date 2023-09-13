@@ -9,7 +9,11 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Supremum
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Maximum; Transitive; Total; Decidable; Irrelevant; Antisymmetric)
 
 module Relation.Binary.Construct.Add.Supremum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
