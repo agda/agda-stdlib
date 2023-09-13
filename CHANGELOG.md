@@ -2919,6 +2919,9 @@ Other minor changes
 
 * Added new definitions in `Relation.Binary.Definitions`:
   ```
+  RightTrans R S = Trans R S R
+  LeftTrans  S R = Trans S R R
+
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
 
