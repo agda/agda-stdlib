@@ -692,6 +692,9 @@ Non-backwards compatible changes
   This reorganisation means in particular that the functor/applicative of a monad
   are not computed using `_>>=_`. This may break proofs.
 
+* When `F : Set f → Set f` we moreover have a definable join/μ operator
+  `join : (M : RawMonad F) → F (F A) → F A`.
+
 * We now have `RawEmpty` and `RawChoice` respectively packing `empty : M A` and
   `(<|>) : M A → M A → M A`. `RawApplicativeZero`, `RawAlternative`, `RawMonadZero`,
   `RawMonadPlus` are all defined in terms of these.
@@ -2604,14 +2607,13 @@ Other minor changes
 
   diagonal           : Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : Vec A n → (A → Vec B n) → Vec B n
-  join               : Vec (Vec A n) n → Vec A n
 
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
   ```
 
-* Added new instance in `Data.Vec.Categorical`:
+* Added new instance in `Data.Vec.Effectful`:
   ```agda
   monad : RawMonad (λ (A : Set a) → Vec A n)
   ```
