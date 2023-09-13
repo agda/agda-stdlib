@@ -100,7 +100,7 @@ module _ {ℓ : Level} where
   <-wellFounded-skip : ∀ (k : ℕ) → WellFounded _<_
   <-wellFounded-skip zero    n       = <-wellFounded n
   <-wellFounded-skip (suc k) zero    = <-wellFounded 0
-  <-wellFounded-skip (suc k) (suc n) = acc (λ {m} _ → <-wellFounded-skip k m)
+  <-wellFounded-skip (suc k) (suc n) = acc λ {m} _ → <-wellFounded-skip k m
 
 module _ {ℓ : Level} where
   open WF.All <-wellFounded {ℓ} public
