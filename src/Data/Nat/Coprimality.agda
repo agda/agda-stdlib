@@ -146,4 +146,4 @@ prime⇒coprime (suc (suc _)) p _ _ _ {0} (0∣m , _) =
 prime⇒coprime (suc (suc _)) _ _ _ _ {1} _         = refl
 prime⇒coprime (suc (suc _)) p (suc _) _ n<m {(suc (suc _))} (d∣m , d∣n) =
   contradiction d∣m (p 2≤d d<m)
-  where 2≤d = s≤s (s≤s z≤n); d<m = <-transˡ (s≤s (∣⇒≤ d∣n)) n<m
+  where 2≤d = s≤s (s≤s z≤n); d<m = <-≤-transʳ (s≤s (∣⇒≤ d∣n)) n<m
