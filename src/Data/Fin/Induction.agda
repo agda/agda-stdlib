@@ -80,8 +80,7 @@ open WF public using (Acc; acc)
 
 private
   acc-map : ∀ {x : Fin n} → Acc ℕ._<_ (n ∸ toℕ x) → Acc _>_ x
-  acc-map {n} (acc rs) = acc λ {y} y>x →
-    acc-map (rs {n ∸ toℕ y} (ℕ.∸-monoʳ-< y>x (toℕ≤n y)))
+  acc-map {n} (acc rs) = acc λ y>x → acc-map (rs (ℕ.∸-monoʳ-< y>x (toℕ≤n _)))
 
 >-wellFounded : WellFounded {A = Fin n} _>_
 >-wellFounded {n} x = acc-map (ℕ.<-wellFounded (n ∸ toℕ x))
@@ -112,20 +111,20 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
 
   spo-wellFounded : ∀ {r} {_⊏_ : Rel (Fin n) r} →
                     IsStrictPartialOrder _≈_ _⊏_ → WellFounded _⊏_
-  spo-wellFounded {_} {_⊏_} isSPO i = go n i pigeon where
+  spo-wellFounded {_} {_⊏_} isSPO i = go n pigeon where
 
     module ⊏ = IsStrictPartialOrder isSPO
 
-    go : ∀ m i →
-         ((xs : Vec (Fin n) m) → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_) →
+    go : ∀ m {i} →
+         ({xs : Vec (Fin n) m} → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_) →
          Acc _⊏_ i
-    go zero    i k = k [] [-] i
-    go (suc m) i k = acc λ {j} j⊏i → go m j (λ xs i∷xs↑ → k (j ∷ xs) (j⊏i ∷ i∷xs↑))
+    go zero    k = k [-] _
+    go (suc m) k = acc λ j⊏i → go m λ i∷xs↑ → k (j⊏i ∷ i∷xs↑)
 
-    pigeon : (xs : Vec (Fin n) n) → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_
-    pigeon xs i∷xs↑ =
+    pigeon : {xs : Vec (Fin n) n} → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_
+    pigeon {xs} i∷xs↑ =
       let (i₁ , i₂ , i₁<i₂ , xs[i₁]≡xs[i₂]) = pigeonhole (n<1+n n) (Vec.lookup (i ∷ xs)) in
-      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Ord.transitive _⊏_ ⊏.trans) {xs = i ∷ xs} i∷xs↑ i₁<i₂ in
+      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Ord.transitive _⊏_ ⊏.trans) i∷xs↑ i₁<i₂ in
       let xs[i₁]⊏xs[i₁] = ⊏.<-respʳ-≈ (⊏.Eq.reflexive xs[i₁]≡xs[i₂]) xs[i₁]⊏xs[i₂] in
       contradiction xs[i₁]⊏xs[i₁] (⊏.irrefl ⊏.Eq.refl)
 
