@@ -48,7 +48,8 @@ mergePairs (xs ∷ ys ∷ yss) = merge _≤?_ xs ys ∷ mergePairs yss
 mergePairs xss             = xss
 
 private
-  length-mergePairs : ∀ xs ys yss → length (mergePairs (xs ∷ ys ∷ yss)) < length (xs ∷ ys ∷ yss)
+  length-mergePairs : ∀ xs ys yss → let zss = xs ∷ ys ∷ yss in
+                      length (mergePairs zss) < length zss
   length-mergePairs _ _ []              = s<s z<s
   length-mergePairs _ _ (xs ∷ [])       = s<s (s<s z<s)
   length-mergePairs _ _ (xs ∷ ys ∷ yss) = s<s (m<n⇒m<1+n (length-mergePairs xs ys yss))
