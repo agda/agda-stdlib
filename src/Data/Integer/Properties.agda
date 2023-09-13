@@ -2395,13 +2395,11 @@ Please use +-0-isAbelianGroup instead."
 open Data.Integer.Base public
   using (*-rawMagma; *-1-rawMonoid)
 
-≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans = ≤-<-transˡ
 {-# WARNING_ON_USAGE ≤-<-trans
 "Warning: ≤-<-trans was deprecated in v2.0. Please use ≤-<-transˡ instead. "
 #-}
 
-<-≤-trans : Trans _<_ _≤_ _<_
 <-≤-trans = <-≤-transʳ
 {-# WARNING_ON_USAGE <-≤-trans
 "Warning: <-≤-trans was deprecated in v2.0. Please use <-≤-transʳ instead. "
