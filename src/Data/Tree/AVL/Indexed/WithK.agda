@@ -6,7 +6,9 @@
 
 {-# OPTIONS --with-K --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsStrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; subst)
 
 module Data.Tree.AVL.Indexed.WithK

@@ -12,7 +12,7 @@ module Data.Container.Related where
 open import Level using (_⊔_)
 open import Data.Container.Core
 import Function.Related as Related
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Preorder; Setoid)
 open import Data.Container.Membership
 
 open Related public

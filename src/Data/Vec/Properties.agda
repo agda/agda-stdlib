@@ -24,7 +24,7 @@ open import Function.Base
 -- open import Function.Inverse using (_↔_; inverse)
 open import Function.Bundles using (_↔_; mk↔′)
 open import Level using (Level)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
@@ -105,9 +105,9 @@ drop-distr-map f (suc m) (x ∷ xs) = drop-distr-map f m xs
 ------------------------------------------------------------------------
 -- take and drop together
 
-take-drop-id : ∀ (m : ℕ) (x : Vec A (m + n)) → take m x ++ drop m x ≡ x
-take-drop-id zero x = refl
-take-drop-id (suc m) (x ∷ xs) = cong (x ∷_) (take-drop-id m xs)
+take++drop≡id : ∀ (m : ℕ) (xs : Vec A (m + n)) → take m xs ++ drop m xs ≡ xs
+take++drop≡id zero    xs       = refl
+take++drop≡id (suc m) (x ∷ xs) = cong (x ∷_) (take++drop≡id m xs)
 
 ------------------------------------------------------------------------
 -- truncate
@@ -352,7 +352,7 @@ cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
 
-cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (xs : Vec A m) →
+cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
 cast-trans {m = zero}  {n = zero}  {o = zero}  eq₁ eq₂ [] = refl
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (x ∷ xs) =
@@ -401,6 +401,12 @@ map-updateAt : ∀ {f : A → B} {g : A → A} {h : B → B}
 map-updateAt (x ∷ xs) zero    eq = cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
+map-insert : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
+             map f (insert xs i x) ≡ insert (map f xs) i (f x)
+map-insert f _ []        Fin.zero = refl
+map-insert f _ (x' ∷ xs) Fin.zero = refl
+map-insert f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insert f x xs i)
+
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
 map-[]≔ f xs i = map-updateAt xs i refl
@@ -409,6 +415,11 @@ map-⊛ : ∀ (f : A → B → C) (g : A → B) (xs : Vec A n) →
         (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
 map-⊛ f g []       = refl
 map-⊛ f g (x ∷ xs) = cong (f x (g x) ∷_) (map-⊛ f g xs)
+
+toList-map : ∀ (f : A → B) (xs : Vec A n) →
+             toList (map f xs) ≡ List.map f (toList xs)
+toList-map f [] = refl
+toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -461,6 +472,11 @@ lookup-splitAt (suc m) (x ∷ xs) ys zero    = refl
 lookup-splitAt (suc m) (x ∷ xs) ys (suc i) = trans
   (lookup-splitAt m xs ys i)
   (sym ([,]-map (Fin.splitAt m i)))
+
+toList-++ : (xs : Vec A n) (ys : Vec A m) →
+            toList (xs ++ ys) ≡ toList xs List.++ toList ys
+toList-++ []       ys = refl
+toList-++ (x ∷ xs) ys = cong (x List.∷_) (toList-++ xs ys)
 
 ------------------------------------------------------------------------
 -- concat
@@ -597,6 +613,15 @@ lookup-zipWith : ∀ (f : A → B → C) (i : Fin n) xs ys →
                  lookup (zipWith f xs ys) i ≡ f (lookup xs i) (lookup ys i)
 lookup-zipWith _ zero    (x ∷ _)  (y ∷ _)   = refl
 lookup-zipWith _ (suc i) (_ ∷ xs) (_ ∷ ys)  = lookup-zipWith _ i xs ys
+
+zipWith-++ : ∀ (f : A → B → C)
+             (xs : Vec A n) (ys : Vec A m)
+             (xs' : Vec B n) (ys' : Vec B m) →
+             zipWith f (xs ++ ys) (xs' ++ ys') ≡
+             zipWith f xs xs' ++ zipWith f ys ys'
+zipWith-++ f []       ys []         ys' = refl
+zipWith-++ f (x ∷ xs) ys (x' ∷ xs') ys' =
+  cong (_ ∷_) (zipWith-++ f xs ys xs' ys')
 
 ------------------------------------------------------------------------
 -- zip
@@ -792,6 +817,12 @@ map-is-foldr f = foldr-universal (Vec _) (λ x ys → f x ∷ ys) (map f) refl (
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
+-- snoc is snoc
+
+unfold-∷ʳ : ∀ .(eq : suc n ≡ n + 1) x (xs : Vec A n) → cast eq (xs ∷ʳ x) ≡ xs ++ [ x ]
+unfold-∷ʳ eq x []       = refl
+unfold-∷ʳ eq x (y ∷ xs) = cong (y ∷_) (unfold-∷ʳ (cong pred eq) x xs)
+
 ∷ʳ-injective : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
 ∷ʳ-injective []       []        refl = (refl , refl)
 ∷ʳ-injective (x ∷ xs) (y  ∷ ys) eq   with ∷-injective eq
@@ -813,11 +844,36 @@ foldr-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldrOp A B) {e} y (ys : Vec A n) →
 foldr-∷ʳ B f y []       = refl
 foldr-∷ʳ B f y (x ∷ xs) = cong (f x) (foldr-∷ʳ B f y xs)
 
+-- init, last and _∷ʳ_
+
+init-∷ʳ : ∀ x (xs : Vec A n) → init (xs ∷ʳ x) ≡ xs
+init-∷ʳ x []       = refl
+init-∷ʳ x (y ∷ xs) = cong (y ∷_) (init-∷ʳ x xs)
+
+last-∷ʳ : ∀ x (xs : Vec A n) → last (xs ∷ʳ x) ≡ x
+last-∷ʳ x []       = refl
+last-∷ʳ x (y ∷ xs) = last-∷ʳ x xs
+
 -- map and _∷ʳ_
 
 map-∷ʳ : ∀ (f : A → B) x (xs : Vec A n) → map f (xs ∷ʳ x) ≡ map f xs ∷ʳ f x
 map-∷ʳ f x []       = refl
 map-∷ʳ f x (y ∷ xs) = cong (f y ∷_) (map-∷ʳ f x xs)
+
+-- cast and _∷ʳ_
+
+cast-∷ʳ : ∀ .(eq : suc n ≡ suc m) x (xs : Vec A n) →
+          cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
+cast-∷ʳ {m = zero}  eq x []       = refl
+cast-∷ʳ {m = suc m} eq x (y ∷ xs) = cong (y ∷_) (cast-∷ʳ (cong pred eq) x xs)
+
+-- _++_ and _∷ʳ_
+
+++-∷ʳ : ∀ .(eq : suc (m + n) ≡ m + suc n) z (xs : Vec A m) (ys : Vec A n) →
+        cast eq ((xs ++ ys) ∷ʳ z) ≡ xs ++ (ys ∷ʳ z)
+++-∷ʳ {m = zero}  eq z []       []       = refl
+++-∷ʳ {m = zero}  eq z []       (y ∷ ys) = cong (y ∷_) (++-∷ʳ refl z [] ys)
+++-∷ʳ {m = suc m} eq z (x ∷ xs) ys       = cong (x ∷_) (++-∷ʳ (cong pred eq) z xs ys)
 
 ------------------------------------------------------------------------
 -- reverse
@@ -954,6 +1010,11 @@ zipWith-replicate₂ : ∀ (_⊕_ : A → B → C) (xs : Vec A n) (y : B) →
 zipWith-replicate₂ _⊕_ []       y = refl
 zipWith-replicate₂ _⊕_ (x ∷ xs) y =
   cong (x ⊕ y ∷_) (zipWith-replicate₂ _⊕_ xs y)
+
+toList-replicate : ∀ (n : ℕ) (x : A) →
+                   toList (replicate {n = n} a) ≡ List.replicate n a
+toList-replicate zero    x = refl
+toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -1108,4 +1169,10 @@ sum-++-commute = sum-++
 {-# WARNING_ON_USAGE sum-++-commute
 "Warning: sum-++-commute was deprecated in v2.0.
 Please use sum-++ instead."
+#-}
+
+take-drop-id = take++drop≡id
+{-# WARNING_ON_USAGE take-drop-id
+"Warning: take-drop-id was deprecated in v2.0.
+Please use take++drop≡id instead."
 #-}

@@ -11,7 +11,10 @@ module Codata.Musical.Colist.Bisimilarity where
 open import Codata.Musical.Colist.Base
 open import Codata.Musical.Notation
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _=[_]⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
 
 private
   variable

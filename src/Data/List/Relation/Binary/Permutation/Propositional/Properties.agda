@@ -23,11 +23,11 @@ open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as Lₚ
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
-open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Definitions using (_Respects_; Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_)
 open import Relation.Nullary

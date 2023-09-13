@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (PartialSetoid)
 
 module Relation.Binary.Reasoning.PartialSetoid
   {s₁ s₂} (S : PartialSetoid s₁ s₂) where

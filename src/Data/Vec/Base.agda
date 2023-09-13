@@ -189,8 +189,6 @@ module DiagonalBind where
   _>>=_ : Vec A n → (A → Vec B n) → Vec B n
   xs >>= f = diagonal (map f xs)
 
-  join : Vec (Vec A n) n → Vec A n
-  join = _>>= id
 
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
@@ -261,9 +259,9 @@ allFin _ = tabulate id
 
 splitAt : ∀ m {n} (xs : Vec A (m + n)) →
           ∃₂ λ (ys : Vec A m) (zs : Vec A n) → xs ≡ ys ++ zs
-splitAt zero    xs                = ([] , xs , refl)
+splitAt zero    xs                = [] , xs , refl
 splitAt (suc m) (x ∷ xs) =
-  let (ys , zs , eq) = splitAt m xs in ((x ∷ ys) , zs , cong (x ∷_) eq)
+  let ys , zs , eq = splitAt m xs in x ∷ ys , zs , cong (x ∷_) eq
 
 take : ∀ m {n} → Vec A (m + n) → Vec A m
 take m xs = proj₁ (splitAt m xs)
@@ -337,10 +335,10 @@ xs ʳ++ ys = foldl (Vec _ ∘ (_+ _)) (λ rev x → x ∷ rev) ys xs
 -- init and last
 
 initLast : ∀ (xs : Vec A (1 + n)) → ∃₂ λ ys y → xs ≡ ys ∷ʳ y
-initLast {n = zero}  (x ∷ []) = ([] , x , refl)
+initLast {n = zero}  (x ∷ []) = [] , x , refl
 initLast {n = suc n} (x ∷ xs) =
   let ys , y , eq = initLast xs in
-  (x ∷ ys , y , cong (x ∷_) eq)
+  x ∷ ys , y , cong (x ∷_) eq
 
 init : Vec A (1 + n) → Vec A n
 init xs = proj₁ (initLast xs)
@@ -354,3 +352,4 @@ last xs = proj₁ (proj₂ (initLast xs))
 transpose : Vec (Vec A n) m → Vec (Vec A m) n
 transpose []         = replicate []
 transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+

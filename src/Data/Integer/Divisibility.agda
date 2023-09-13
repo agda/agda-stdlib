@@ -18,7 +18,7 @@ import Data.Nat.Properties as ℕᵖ
 import Data.Nat.Divisibility as ℕᵈ
 import Data.Nat.Coprimality as ℕᶜ
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------

@@ -14,7 +14,12 @@ module Relation.Binary.PropositionalEquality.Properties where
 
 open import Function.Base using (id; _∘_)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; DecidableEquality)
 import Relation.Binary.Properties.Setoid as Setoid
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Unary using (Pred)
