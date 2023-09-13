@@ -71,10 +71,10 @@ module _ (_∼_ : Rel A ℓ) where
   transitive = _++_
 
   accessible⁻ : ∀ {x} → Acc _∼⁺_ x → Acc _∼_ x
-  accessible⁻ = accessible where open ∼⊆∼⁺
+  accessible⁻ = ∼⊆∼⁺.accessible
 
   wellFounded⁻ : WellFounded _∼⁺_ → WellFounded _∼_
-  wellFounded⁻ = wellFounded where open ∼⊆∼⁺
+  wellFounded⁻ = ∼⊆∼⁺.wellFounded
 
   accessible : ∀ {x} → Acc _∼_ x → Acc _∼⁺_ x
   accessible acc[x] = acc (wf-acc acc[x])

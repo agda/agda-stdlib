@@ -2933,14 +2933,6 @@ Other minor changes
   ```
   accessible⁻ : ∀ {x} → Acc _∼⁺_ x → Acc _∼_ x
   wellFounded⁻ : WellFounded _∼⁺_ → WellFounded _∼_
-  ```
-  as instances of the corresponding proofs in `Induction.WellFounded.Subrelation`,
-  together with a refactoring of the former proof
-  ```
-  wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
-  ```
-  in terms of a new proof:
-  ```
   accessible : ∀ {x} → Acc _∼_ x → Acc _∼⁺_ x
   ```
 
