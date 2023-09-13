@@ -75,7 +75,7 @@ module Some {_<_ : Rel A r} {ℓ} where
   wfRec = subsetBuild wfRecBuilder
 
   unfold-wfRec : (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P) {x : A} (q : Acc _<_ x) →
-                 wfRec P f x q ≡ f x (λ y<x → wfRec P f _ (acc-inverse q y<x))
+                 wfRec P f x q ≡ f x λ y<x → wfRec P f _ (acc-inverse q y<x)
   unfold-wfRec P f (acc rs) = refl
 
 
@@ -133,7 +133,7 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
 module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
 
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
-  accessible (acc rs) = acc (λ fy<fx → accessible (rs fy<fx))
+  accessible (acc rs) = acc λ fy<fx → accessible (rs fy<fx)
 
   wellFounded : WellFounded _<_ → WellFounded (_<_ on f)
   wellFounded wf = λ x → accessible (wf (f x))
@@ -160,7 +160,7 @@ module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
     trans : ∀ {x y z} (x<y : x <⁺ y) (y<z : y <⁺ z) → x <⁺ z
 
   downwardsClosed : ∀ {x y} → Acc _<⁺_ y → x <⁺ y → Acc _<⁺_ x
-  downwardsClosed (acc rs) x<y = acc (λ z<x → rs (trans z<x x<y))
+  downwardsClosed (acc rs) x<y = acc λ z<x → rs (trans z<x x<y)
 
   mutual
 
