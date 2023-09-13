@@ -363,14 +363,8 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 ≤-<-transˡ : LeftTrans _≤_ _<_
 ≤-<-transˡ m≤n (s<s n≤o) = s≤s (≤-trans m≤n n≤o)
 
-<-transʳ : Trans _≤_ _<_ _<_
-<-transʳ = ≤-<-transˡ -- deprecate!
-
 <-≤-transʳ : RightTrans _<_ _≤_
 <-≤-transʳ (s<s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
-
-<-transˡ : Trans _<_ _≤_ _<_
-<-transˡ = <-≤-transʳ -- deprecate!
 
 -- NB: we use the builtin function `_<ᵇ_` here so that the function
 -- quickly decides which constructor to return. It still takes a
@@ -509,8 +503,8 @@ module ≤-Reasoning where
     <-trans
     (resp₂ _<_)
     <⇒≤
-    <-transˡ
-    <-transʳ
+    <-≤-transʳ
+    ≤-<-transˡ
     public
     hiding (step-≈; step-≈˘)
 
@@ -991,7 +985,7 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m * n       ∎
 
 m<n⇒m<n*o : ∀ o .{{_ : NonZero o}} → m < n → m < n * o
-m<n⇒m<n*o {n = n} o m<n = <-transˡ m<n (m≤m*n n o)
+m<n⇒m<n*o {n = n} o m<n = <-≤-transʳ m<n (m≤m*n n o)
 
 m<n⇒m<o*n : ∀ {m n} o .{{_ : NonZero o}} → m < n → m < o * n
 m<n⇒m<o*n {m} {n} o m<n = begin-strict
@@ -1303,10 +1297,10 @@ m<n⇒m<o⊔n : ∀ o → m < n → m < o ⊔ n
 m<n⇒m<o⊔n = m≤n⇒m≤o⊔n
 
 m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
-m⊔n<o⇒m<o m n m⊔n<o = <-transʳ (m≤m⊔n m n) m⊔n<o
+m⊔n<o⇒m<o m n m⊔n<o = ≤-<-transˡ (m≤m⊔n m n) m⊔n<o
 
 m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
-m⊔n<o⇒n<o m n m⊔n<o = <-transʳ (m≤n⊔m m n) m⊔n<o
+m⊔n<o⇒n<o m n m⊔n<o = ≤-<-transˡ (m≤n⊔m m n) m⊔n<o
 
 ⊔-mono-< : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 ⊔-mono-< = ⊔-mono-≤
@@ -1405,10 +1399,10 @@ m⊔n≤m+n m n with ⊔-sel m n
 -- Other properties of _⊓_ and _≤_/_<_
 
 m<n⇒m⊓o<n : ∀ o → m < n → m ⊓ o < n
-m<n⇒m⊓o<n o m<n = <-transʳ (m⊓n≤m _ o) m<n
+m<n⇒m⊓o<n o m<n = ≤-<-transˡ (m⊓n≤m _ o) m<n
 
 m<n⇒o⊓m<n : ∀ o → m < n → o ⊓ m < n
-m<n⇒o⊓m<n o m<n = <-transʳ (m⊓n≤n o _) m<n
+m<n⇒o⊓m<n o m<n = ≤-<-transˡ (m⊓n≤n o _) m<n
 
 m<n⊓o⇒m<n : ∀ n o → m < n ⊓ o → m < n
 m<n⊓o⇒m<n = m≤n⊓o⇒m≤n
@@ -2337,3 +2331,17 @@ suc[pred[n]]≡n {suc n} _   = refl
 {- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
 open Data.Nat.Base public
   using (*-rawMagma; *-1-rawMonoid)
+
+<-transʳ : Trans _≤_ _<_ _<_
+<-transʳ = ≤-<-transˡ
+{-# WARNING_ON_USAGE <-transʳ
+"Warning: <-transʳ was deprecated in v2.0. Please use ≤-<-transˡ instead. "
+#-}
+
+<-transˡ : Trans _<_ _≤_ _<_
+<-transˡ = <-≤-transʳ
+{-# WARNING_ON_USAGE <-transˡ
+"Warning: <-transˡ was deprecated in v2.0. Please use ≤-<-transʳ instead. "
+#-}
+
+
