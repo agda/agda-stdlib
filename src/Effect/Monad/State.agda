@@ -59,6 +59,9 @@ applicative = Trans.applicative Id.monad
 monad : RawMonad (State S)
 monad = Trans.monad Id.monad
 
+join : State S (State S A) → State S A
+join = Join.join monad
+
 ------------------------------------------------------------------------
 -- State monad specifics
 
