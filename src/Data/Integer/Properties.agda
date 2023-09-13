@@ -33,7 +33,7 @@ open import Relation.Binary.Bundles using
 open import Relation.Binary.Structures
   using (IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>)
+  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Trans; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no; ¬_)
 import Relation.Nullary.Reflects as Reflects
@@ -276,20 +276,20 @@ drop‿-<- (-<- n<m) = n<m
 <-asym (-<- n<m) = ℕ.<-asym n<m ∘ drop‿-<-
 <-asym (+<+ m<n) = ℕ.<-asym m<n ∘ drop‿+<+
 
-≤-<-trans : Trans _≤_ _<_ _<_
-≤-<-trans (-≤- n≤m) (-<- o<n) = -<- (ℕ.<-transˡ o<n n≤m)
-≤-<-trans (-≤- n≤m) -<+       = -<+
-≤-<-trans -≤+       (+<+ m<o) = -<+
-≤-<-trans (+≤+ m≤n) (+<+ n<o) = +<+ (ℕ.<-transʳ m≤n n<o)
+≤-<-transˡ : LeftTrans _≤_ _<_
+≤-<-transˡ (-≤- n≤m) (-<- o<n) = -<- (ℕ.<-≤-transʳ o<n n≤m)
+≤-<-transˡ (-≤- n≤m) -<+       = -<+
+≤-<-transˡ -≤+       (+<+ m<o) = -<+
+≤-<-transˡ (+≤+ m≤n) (+<+ n<o) = +<+ (ℕ.≤-<-transˡ m≤n n<o)
 
-<-≤-trans : Trans _<_ _≤_ _<_
-<-≤-trans (-<- n<m) (-≤- o≤n) = -<- (ℕ.<-transʳ o≤n n<m)
-<-≤-trans (-<- n<m) -≤+       = -<+
-<-≤-trans -<+       (+≤+ m≤n) = -<+
-<-≤-trans (+<+ m<n) (+≤+ n≤o) = +<+ (ℕ.<-transˡ m<n n≤o)
+<-≤-transʳ : RightTrans _<_ _≤_
+<-≤-transʳ (-<- n<m) (-≤- o≤n) = -<- (ℕ.≤-<-transˡ o≤n n<m)
+<-≤-transʳ (-<- n<m) -≤+       = -<+
+<-≤-transʳ -<+       (+≤+ m≤n) = -<+
+<-≤-transʳ (+<+ m<n) (+≤+ n≤o) = +<+ (ℕ.<-≤-transʳ m<n n≤o)
 
 <-trans : Transitive _<_
-<-trans m<n n<p = ≤-<-trans (<⇒≤ m<n) n<p
+<-trans m<n n<p = ≤-<-transˡ (<⇒≤ m<n) n<p
 
 <-cmp : Trichotomous _≡_ _<_
 <-cmp +0       +0       = tri≈ +≮0 refl +≮0
@@ -368,8 +368,8 @@ module ≤-Reasoning where
     <-trans
     (resp₂ _<_)
     <⇒≤
-    <-≤-trans
-    ≤-<-trans
+    <-≤-transʳ
+    ≤-<-transˡ
     public
     hiding (step-≈; step-≈˘)
 
@@ -613,7 +613,7 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
 
 ⊖-≥ : m ℕ.≥ n → m ⊖ n ≡ + (m ∸ n)
 ⊖-≥ {m} {n} p with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
-... | true  | q = contradiction (ℕ.<-transʳ p q) (ℕ.<-irrefl refl)
+... | true  | q = contradiction (ℕ.≤-<-transˡ p q) (ℕ.<-irrefl refl)
 ... | false | q = refl
 
 ≤-⊖ : m ℕ.≤ n → n ⊖ m ≡ + (n ∸ m)
@@ -697,7 +697,7 @@ m⊖n≤m (suc m) (suc n) = begin
   +[1+ m ]      ∎ where open ≤-Reasoning
 
 m⊖n<1+m : ∀ m n → m ⊖ n < +[1+ m ]
-m⊖n<1+m m n = ≤-<-trans (m⊖n≤m m n) (+<+ (ℕ.m<n+m m z<s))
+m⊖n<1+m m n = ≤-<-transˡ (m⊖n≤m m n) (+<+ (ℕ.m<n+m m z<s))
 
 m⊖1+n<m : ∀ m n .{{_ : ℕ.NonZero n}} → m ⊖ n < + m
 m⊖1+n<m zero    (suc n) = -<+
@@ -1053,10 +1053,10 @@ i≤i+j i j rewrite +-comm i j = i≤j+i i j
 
 +-monoʳ-< : ∀ i → (_+_ i) Preserves _<_ ⟶ _<_
 +-monoʳ-< (+ n)    {_} {_}   (-<- o<m) = ⊖-monoʳ->-< n (s<s o<m)
-+-monoʳ-< (+ n)    {_} {_}   -<+       = <-≤-trans (m⊖1+n<m n _) (+≤+ (ℕ.m≤m+n n _))
++-monoʳ-< (+ n)    {_} {_}   -<+       = <-≤-transʳ (m⊖1+n<m n _) (+≤+ (ℕ.m≤m+n n _))
 +-monoʳ-< (+ n)    {_} {_}   (+<+ m<o) = +<+ (ℕ.+-monoʳ-< n m<o)
 +-monoʳ-< -[1+ n ] {_} {_}   (-<- o<m) = -<- (ℕ.+-monoʳ-< (suc n) o<m)
-+-monoʳ-< -[1+ n ] {_} {+ o} -<+       = <-≤-trans (-<- (ℕ.m≤m+n (suc n) _)) (-[1+m]≤n⊖m+1 n o)
++-monoʳ-< -[1+ n ] {_} {+ o} -<+       = <-≤-transʳ (-<- (ℕ.m≤m+n (suc n) _)) (-[1+m]≤n⊖m+1 n o)
 +-monoʳ-< -[1+ n ] {_} {_}   (+<+ m<o) = ⊖-monoˡ-< (suc n) m<o
 
 +-monoˡ-< : ∀ i → (_+ i) Preserves _<_ ⟶ _<_
@@ -1070,10 +1070,10 @@ i≤i+j i j rewrite +-comm i j = i≤j+i i j
   where open ≤-Reasoning
 
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
-+-mono-≤-< {i} {j} {k} i≤j j<k = ≤-<-trans (+-monoˡ-≤ k i≤j) (+-monoʳ-< j j<k)
++-mono-≤-< {i} {j} {k} i≤j j<k = ≤-<-transˡ (+-monoˡ-≤ k i≤j) (+-monoʳ-< j j<k)
 
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-+-mono-<-≤ {i} {j} {k} i<j j≤k = <-≤-trans (+-monoˡ-< k i<j) (+-monoʳ-≤ j j≤k)
++-mono-<-≤ {i} {j} {k} i<j j≤k = <-≤-transʳ (+-monoˡ-< k i<j) (+-monoʳ-≤ j j≤k)
 
 ------------------------------------------------------------------------
 -- Properties of _-_
@@ -1281,8 +1281,8 @@ minus-suc m n = begin
   pred (m - + n)     ∎ where open ≡-Reasoning
 
 i≤pred[j]⇒i<j : i ≤ pred j → i < j
-i≤pred[j]⇒i<j {_} { + n}      leq = ≤-<-trans leq (m⊖1+n<m n 1)
-i≤pred[j]⇒i<j {_} { -[1+ n ]} leq = ≤-<-trans leq (-<- ℕ.≤-refl)
+i≤pred[j]⇒i<j {_} { + n}      leq = ≤-<-transˡ leq (m⊖1+n<m n 1)
+i≤pred[j]⇒i<j {_} { -[1+ n ]} leq = ≤-<-transˡ leq (-<- ℕ.≤-refl)
 
 i<j⇒i≤pred[j] : i < j → i ≤ pred j
 i<j⇒i≤pred[j] {_} { +0}       -<+       = -≤- z≤n
@@ -2394,3 +2394,16 @@ Please use +-0-isAbelianGroup instead."
 {- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
 open Data.Integer.Base public
   using (*-rawMagma; *-1-rawMonoid)
+
+≤-<-trans : Trans _≤_ _<_ _<_
+≤-<-trans = ≤-<-transˡ
+{-# WARNING_ON_USAGE ≤-<-trans
+"Warning: ≤-<-trans was deprecated in v2.0. Please use ≤-<-transˡ instead. "
+#-}
+
+<-≤-trans : Trans _<_ _≤_ _<_
+<-≤-trans = <-≤-transʳ
+{-# WARNING_ON_USAGE <-≤-trans
+"Warning: <-≤-trans was deprecated in v2.0. Please use <-≤-transʳ instead. "
+#-}
+
