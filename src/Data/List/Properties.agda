@@ -844,10 +844,10 @@ lookup-replicate : ∀ n (x : A) (i : Fin n) →
 lookup-replicate (suc n) x zero    = refl
 lookup-replicate (suc n) x (suc i) = lookup-replicate n x i
 
-map-replicate :  ∀ (f : A → B) (x : A) n →
+map-replicate :  ∀ (f : A → B) n (x : A) →
                  map f (replicate n x) ≡ replicate n (f x)
-map-replicate f x zero    = refl
-map-replicate f x (suc n) = cong (_ ∷_) (map-replicate f x n)
+map-replicate f zero    x = refl
+map-replicate f (suc n) x = cong (_ ∷_) (map-replicate f n x)
 
 zipWith-replicate : ∀ n (_⊕_ : A → B → C) (x : A) (y : B) →
                     zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
@@ -861,7 +861,7 @@ length-iterate : ∀ n {f} {x : A} → length (iterate f x n) ≡ n
 length-iterate zero    = refl
 length-iterate (suc n) = cong suc (length-iterate n)
 
-iterate-id : ∀ n {x : A} → iterate id x n ≡ replicate n x
+iterate-id : ∀ {x : A} n → iterate id x n ≡ replicate n x
 iterate-id zero    = refl
 iterate-id (suc n) = cong (_ ∷_) (iterate-id n)
 
@@ -877,9 +877,9 @@ module _ f {x : A} n where
   drop-iterate : drop n xs ≡ []
   drop-iterate = drop-all n xs n≥length[xs]
 
-lookup-iterate : ∀ n f (x : A) (i : Fin n) → lookup (iterate f x n) (cast (sym (length-iterate n)) i) ≡ ℕ.iterate f x (toℕ i)
-lookup-iterate (suc n) f x zero    = refl
-lookup-iterate (suc n) f x (suc i) = lookup-iterate n f (f x) i
+lookup-iterate : ∀ f (x : A) n (i : Fin n) → lookup (iterate f x n) (cast (sym (length-iterate n)) i) ≡ ℕ.iterate f x (toℕ i)
+lookup-iterate f x (suc n) zero    = refl
+lookup-iterate f x (suc n) (suc i) = lookup-iterate f (f x) n i
 
 ------------------------------------------------------------------------
 -- splitAt
