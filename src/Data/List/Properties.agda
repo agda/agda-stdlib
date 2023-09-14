@@ -623,50 +623,6 @@ sum-++ (x ∷ xs) ys = begin
 ∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
 
 ------------------------------------------------------------------------
--- replicate
-
-length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
-length-replicate zero    = refl
-length-replicate (suc n) = cong suc (length-replicate n)
-
-lookup-replicate : ∀ n (x : A) (i : Fin n) → lookup (replicate n x) (cast (sym (length-replicate n)) i) ≡ x
-lookup-replicate (suc n) x zero    = refl
-lookup-replicate (suc n) x (suc i) = lookup-replicate n x i
-
-map-replicate :  ∀ (f : A → B) (x : A) n →
-                 map f (replicate n x) ≡ replicate n (f x)
-map-replicate f x zero    = refl
-map-replicate f x (suc n) = cong (_ ∷_) (map-replicate f x n)
-
-zipWith-replicate : ∀ n (_⊕_ : A → B → C) (x : A) (y : B) →
-                    zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
-zipWith-replicate zero    _⊕_ x y = refl
-zipWith-replicate (suc n) _⊕_ x y = cong (x ⊕ y ∷_) (zipWith-replicate n _⊕_ x y)
-
-------------------------------------------------------------------------
--- iterate
-
-length-iterate : ∀ n {f} {x : A} → length (iterate f x n) ≡ n
-length-iterate zero    = refl
-length-iterate (suc n) = cong suc (length-iterate n)
-
-iterate-id : ∀ n {x : A} → iterate id x n ≡ replicate n x
-iterate-id zero    = refl
-iterate-id (suc n) = cong (_ ∷_) (iterate-id n)
-
-take-iterate : ∀ n {f} {x : A} → take n (iterate f x n) ≡ iterate f x n
-take-iterate zero    = refl
-take-iterate (suc n) = cong (_ ∷_) (take-iterate n)
-
-drop-iterate : ∀ n {f} {x : A} → drop n (iterate f x n) ≡ []
-drop-iterate zero    = refl
-drop-iterate (suc n) = drop-iterate n
-
-lookup-iterate : ∀ n f (x : A) (i : Fin n) → lookup (iterate f x n) (cast (sym (length-iterate n)) i) ≡ ℕ.iterate f x (toℕ i)
-lookup-iterate (suc n) f x zero    = refl
-lookup-iterate (suc n) f x (suc i) = lookup-iterate n f (f x) i
-
-------------------------------------------------------------------------
 -- scanr
 
 scanr-defn : ∀ (f : A → B → B) (e : B) →
@@ -875,6 +831,55 @@ drop-drop (suc m) n (x ∷ xs) = drop-drop m n xs
 drop-all : (n : ℕ) (xs : List A) → n ≥ length xs → drop n xs ≡ []
 drop-all n       []       _ = drop-[] n
 drop-all (suc n) (x ∷ xs) p = drop-all n xs (≤-pred p)
+
+------------------------------------------------------------------------
+-- replicate
+
+length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
+length-replicate zero    = refl
+length-replicate (suc n) = cong suc (length-replicate n)
+
+lookup-replicate : ∀ n (x : A) (i : Fin n) → lookup (replicate n x) (cast (sym (length-replicate n)) i) ≡ x
+lookup-replicate (suc n) x zero    = refl
+lookup-replicate (suc n) x (suc i) = lookup-replicate n x i
+
+map-replicate :  ∀ (f : A → B) (x : A) n →
+                 map f (replicate n x) ≡ replicate n (f x)
+map-replicate f x zero    = refl
+map-replicate f x (suc n) = cong (_ ∷_) (map-replicate f x n)
+
+zipWith-replicate : ∀ n (_⊕_ : A → B → C) (x : A) (y : B) →
+                    zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
+zipWith-replicate zero    _⊕_ x y = refl
+zipWith-replicate (suc n) _⊕_ x y = cong (x ⊕ y ∷_) (zipWith-replicate n _⊕_ x y)
+
+------------------------------------------------------------------------
+-- iterate
+
+length-iterate : ∀ n {f} {x : A} → length (iterate f x n) ≡ n
+length-iterate zero    = refl
+length-iterate (suc n) = cong suc (length-iterate n)
+
+iterate-id : ∀ n {x : A} → iterate id x n ≡ replicate n x
+iterate-id zero    = refl
+iterate-id (suc n) = cong (_ ∷_) (iterate-id n)
+
+module _ n f x where
+  open import Data.List.Base
+  private
+    xs = iterate f x n
+    n≥length[xs] : n ≥ length xs
+    n≥length[xs] rewrite length-iterate n {f} {x} = ≤-refl
+    
+  take-iterate : take n xs ≡ xs
+  take-iterate = take-all n xs n≥length[xs]
+
+  drop-iterate : drop n xs ≡ []
+  drop-iterate = drop-all n xs n≥length[xs]
+
+lookup-iterate : ∀ n f (x : A) (i : Fin n) → lookup (iterate f x n) (cast (sym (length-iterate n)) i) ≡ ℕ.iterate f x (toℕ i)
+lookup-iterate (suc n) f x zero    = refl
+lookup-iterate (suc n) f x (suc i) = lookup-iterate n f (f x) i
 
 ------------------------------------------------------------------------
 -- splitAt
