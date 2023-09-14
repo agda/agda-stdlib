@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Base hiding (_∷ʳ_; find)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Membership.Setoid as Membership
@@ -26,7 +26,11 @@ open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable) renaming (_⊆_ to _⋐_)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 open Setoid using (Carrier)

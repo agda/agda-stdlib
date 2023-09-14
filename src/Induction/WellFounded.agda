@@ -9,10 +9,12 @@
 module Induction.WellFounded where
 
 open import Data.Product.Base using (Σ; _,_; proj₁)
-open import Function.Base using (_on_)
+open import Function.Base using (_∘_; flip; _on_)
 open import Induction
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions
+  using (Symmetric; _Respectsʳ_; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary
 
@@ -52,10 +54,13 @@ acc-inverse : ∀ {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
               (y : A) → y < x → Acc _<_ y
 acc-inverse (acc rs) y y<x = rs y y<x
 
-Acc-resp-≈ : {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} → Symmetric _≈_ →
-             _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
-Acc-resp-≈ sym respʳ x≈y (acc rec) =
-  acc (λ z z<y → rec z (respʳ (sym x≈y) z<y))
+module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
+
+  Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
+  Acc-resp-flip-≈ respʳ x≈y (acc rec) = acc λ z z<y → rec z (respʳ x≈y z<y)
+
+  Acc-resp-≈ : Symmetric _≈_ → _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
+  Acc-resp-≈ sym respʳ x≈y wf = Acc-resp-flip-≈ (respʳ ∘ sym) x≈y wf
 
 ------------------------------------------------------------------------
 -- Well-founded induction for the subset of accessible elements:
@@ -118,7 +123,7 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
                    (<₁⇒<₂ : ∀ {x y} → x <₁ y → x <₂ y) where
 
   accessible : Acc _<₂_ ⊆ Acc _<₁_
-  accessible (acc rs) = acc (λ y y<x → accessible (rs y (<₁⇒<₂ y<x)))
+  accessible (acc rs) = acc λ y y<x → accessible (rs y (<₁⇒<₂ y<x))
 
   wellFounded : WellFounded _<₂_ → WellFounded _<₁_
   wellFounded wf = λ x → accessible (wf x)
@@ -129,7 +134,7 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
 module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
 
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
-  accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
+  accessible (acc rs) = acc λ y fy<fx → accessible (rs (f y) fy<fx)
 
   wellFounded : WellFounded _<_ → WellFounded (_<_ on f)
   wellFounded wf = λ x → accessible (wf (f x))
@@ -156,7 +161,7 @@ module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
     trans : ∀ {x y z} (x<y : x <⁺ y) (y<z : y <⁺ z) → x <⁺ z
 
   downwardsClosed : ∀ {x y} → Acc _<⁺_ y → x <⁺ y → Acc _<⁺_ x
-  downwardsClosed (acc rs) x<y = acc (λ z z<x → rs z (trans z<x x<y))
+  downwardsClosed (acc rs) x<y = acc λ z z<x → rs z (trans z<x x<y)
 
   mutual
 

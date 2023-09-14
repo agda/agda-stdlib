@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecSetoid; DecidableEquality)
+open import Relation.Binary.Bundles using (DecSetoid)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
 module Data.List.Relation.Unary.Unique.DecPropositional

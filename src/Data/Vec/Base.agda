@@ -189,8 +189,6 @@ module DiagonalBind where
   _>>=_ : Vec A n → (A → Vec B n) → Vec B n
   xs >>= f = diagonal (map f xs)
 
-  join : Vec (Vec A n) n → Vec A n
-  join = _>>= id
 
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
@@ -345,12 +343,12 @@ initLast {n = suc n} (x ∷ xs) with initLast xs
 ... | (ys , y , refl) = (x ∷ ys , y , refl)
 
 init : Vec A (1 + n) → Vec A n
-init xs with initLast xs
-... | (ys , y , refl) = ys
+init {n = zero}  (x ∷ _)  = []
+init {n = suc n} (x ∷ xs) = x ∷ init xs
 
 last : Vec A (1 + n) → A
-last xs with initLast xs
-... | (ys , y , refl) = y
+last {n = zero}  (x ∷ _)  = x
+last {n = suc n} (_ ∷ xs) = last xs
 
 ------------------------------------------------------------------------
 -- Other operations
@@ -358,3 +356,4 @@ last xs with initLast xs
 transpose : Vec (Vec A n) m → Vec (Vec A m) n
 transpose []         = replicate []
 transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+

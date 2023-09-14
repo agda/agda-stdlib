@@ -12,7 +12,7 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List
+open import Data.List.Base as List hiding (find)
 open import Data.List.Properties using (ʳ++-defn)
 open import Data.List.Effectful as Listₑ using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -40,7 +40,8 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
 open import Function.Related as Related using (Kind; Related; SK-sym)
 open import Level using (Level)
-open import Relation.Binary as B hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 open import Relation.Unary as U

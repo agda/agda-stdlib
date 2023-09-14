@@ -21,7 +21,7 @@ import Data.Vec.Properties as Vₚ
 open import Data.Vec.Functional
 open import Function.Base
 open import Level using (Level)
-open import Relation.Binary as B
+open import Relation.Binary.Definitions using (DecidableEquality; Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; map′; _×-dec_)
@@ -46,8 +46,8 @@ module _ {n} {xs ys : Vector A (suc n)} where
   ∷-injective : xs ≗ ys → head xs ≡ head ys × tail xs ≗ tail ys
   ∷-injective eq = eq zero , eq ∘ suc
 
-≗-dec : B.DecidableEquality A →
-        ∀ {n} → B.Decidable {A = Vector A n} _≗_
+≗-dec : DecidableEquality A →
+        ∀ {n} → Decidable {A = Vector A n} _≗_
 ≗-dec _≟_ {zero}  xs ys = yes λ ()
 ≗-dec _≟_ {suc n} xs ys =
   map′ (Product.uncurry ∷-cong) ∷-injective

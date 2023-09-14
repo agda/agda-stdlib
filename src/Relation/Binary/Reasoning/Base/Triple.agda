@@ -10,7 +10,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions
+  using (Transitive; _Respects₂_; Trans)
 
 module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} {_<_ : Rel A ℓ₃}

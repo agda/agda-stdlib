@@ -12,9 +12,8 @@ module Data.Product.Function.Dependent.Setoid.WithK where
 open import Data.Product.Base using (_,_)
 open import Data.Product.Function.Dependent.Setoid using (surjection)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
-open import Relation.Binary
 open import Function.Base
-open import Function.Equality as F using (_⟶_; _⟨$⟩_)
+open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq
   using (Equivalence; _⇔_; module Equivalence)
 open import Function.Injection as Inj
@@ -25,7 +24,6 @@ open import Function.LeftInverse as LeftInv
   using (LeftInverse; _↞_; _LeftInverseOf_; _RightInverseOf_; module LeftInverse)
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
-open import Relation.Binary as B
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At
