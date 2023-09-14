@@ -2685,7 +2685,7 @@ Other minor changes
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
-  length-length : length xs ≡ List.length (toList xs)
+  length-toList : List.length (toList xs) ≡ length xs
   toList-insert : toList (insert xs i v) ≡ List.insert (toList xs) (Fin.cast (cong suc (length-length xs)) i) v
   ```
 

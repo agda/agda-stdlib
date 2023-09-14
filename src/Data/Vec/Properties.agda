@@ -1096,19 +1096,19 @@ length-toList (x ∷ xs) = cong suc (length-toList xs)
 -- insertAt
 
 insertAt-lookup : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
-                lookup (insertAt xs i v) i ≡ v
+                  lookup (insertAt xs i v) i ≡ v
 insertAt-lookup xs       zero     v = refl
 insertAt-lookup (x ∷ xs) (suc i)  v = insertAt-lookup xs i v
 
 insertAt-punchIn : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) (j : Fin n) →
-                 lookup (insertAt xs i v) (Fin.punchIn i j) ≡ lookup xs j
+                   lookup (insertAt xs i v) (Fin.punchIn i j) ≡ lookup xs j
 insertAt-punchIn xs       zero     v j       = refl
 insertAt-punchIn (x ∷ xs) (suc i)  v zero    = refl
 insertAt-punchIn (x ∷ xs) (suc i)  v (suc j) = insertAt-punchIn xs i v j
 
-toList-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) → toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (sym (length-toList xs))) i) v
-toList-insertAt []       zero    v = refl
-toList-insertAt (x ∷ xs) zero    v = refl
+toList-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
+                  toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (sym (length-toList xs))) i) v
+toList-insertAt xs       zero    v = refl
 toList-insertAt (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insertAt xs i v)
 
 ------------------------------------------------------------------------

@@ -196,8 +196,7 @@ tails []       = [] ∷ []
 tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
 
 insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
-insertAt []       zero    v = [ v ]
-insertAt (x ∷ xs) zero    v = v ∷ x ∷ xs
+insertAt xs       zero    v = v ∷ xs
 insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
 
 updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A

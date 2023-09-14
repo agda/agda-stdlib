@@ -746,19 +746,20 @@ map-∷= (x ∷ xs) zero    v f = refl
 map-∷= (x ∷ xs) (suc k) v f = cong (f x ∷_) (map-∷= xs k v f)
 
 ------------------------------------------------------------------------
--- insert
+-- insertAt
 
-length-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v → length (insertAt xs i v) ≡ suc (length xs)
-length-insertAt []       zero    v = refl
-length-insertAt (x ∷ xs) zero    v = refl
+length-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v →
+                  length (insertAt xs i v) ≡ suc (length xs)
+length-insertAt xs       zero    v = refl
 length-insertAt (x ∷ xs) (suc i) v = cong suc (length-insertAt xs i v)
 
 ------------------------------------------------------------------------
--- remove
+-- removeAt
 
-length-removeAt : ∀ (xs : List A) k → suc (length (removeAt xs k)) ≡ length xs
-length-removeAt (x ∷ xs) zero        = refl
-length-removeAt (x ∷ y ∷ xs) (suc k) = cong suc (length-removeAt (y ∷ xs) k)
+length-removeAt : ∀ (xs : List A) k →
+                  suc (length (removeAt xs k)) ≡ length xs
+length-removeAt (x ∷ xs) zero    = refl
+length-removeAt (x ∷ xs) (suc k) = cong suc (length-removeAt xs k)
 
 map-removeAt : ∀ xs k (f : A → B) →
             let eq = sym (length-map f xs) in
@@ -767,19 +768,16 @@ map-removeAt (x ∷ xs) zero    f = refl
 map-removeAt (x ∷ xs) (suc k) f = cong (f x ∷_) (map-removeAt xs k f)
 
 ------------------------------------------------------------------------
- -- insert and remove
+ -- insertAt and removeAt
 
-removeAt-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v → removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
-removeAt-insertAt []       zero    v = refl
-removeAt-insertAt (x ∷ xs) zero    v = refl
+removeAt-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v →
+  removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
+removeAt-insertAt xs       zero    v = refl
 removeAt-insertAt (x ∷ xs) (suc i) v = cong (_ ∷_) (removeAt-insertAt xs i v)
 
-insertAt-removeAt : (xs : List A) (i : Fin (length xs)) → insertAt (removeAt xs i) (cast (sym (length-removeAt xs i)) i) (lookup xs i) ≡ xs
-insertAt-removeAt (x ∷ xs) zero = h xs x
-  where
-  h : ∀ (xs : List A) v → insertAt xs zero v ≡ v ∷ xs
-  h []       v = refl
-  h (x ∷ xs) v = refl
+insertAt-removeAt : (xs : List A) (i : Fin (length xs)) →
+  insertAt (removeAt xs i) (cast (sym (length-removeAt xs i)) i) (lookup xs i) ≡ xs
+insertAt-removeAt (x ∷ xs) zero = refl
 insertAt-removeAt (x ∷ xs) (suc i) = cong (_ ∷_) (insertAt-removeAt xs i)
 
 ------------------------------------------------------------------------
