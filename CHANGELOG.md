@@ -915,6 +915,8 @@ Non-backwards compatible changes
     ```
   * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
     `¬¬-excluded-middle`.
+  * `length-─` in `Data.List.Properties` has been renamed to `length-removeAt`
+     with a new type `suc (length (removeAt xs k)) ≡ length xs`
 
 Major improvements
 ------------------

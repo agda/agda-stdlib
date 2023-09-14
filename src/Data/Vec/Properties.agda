@@ -1086,6 +1086,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | false = m≤n⇒m≤1+n (count≤n xs)
 
 ------------------------------------------------------------------------
+-- length
+
+length-toList : (xs : Vec A n) → List.length (toList xs) ≡ length xs
+length-toList []       = refl
+length-toList (x ∷ xs) = cong suc (length-toList xs)
+
+------------------------------------------------------------------------
 -- insertAt
 
 insertAt-lookup : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
@@ -1099,13 +1106,7 @@ insertAt-punchIn xs       zero     v j       = refl
 insertAt-punchIn (x ∷ xs) (suc i)  v zero    = refl
 insertAt-punchIn (x ∷ xs) (suc i)  v (suc j) = insertAt-punchIn xs i v j
 
--- where should this go? Or can I write toList-insertAt without this? Or does
--- something similar already exist?
-length-length : (xs : Vec A n) → length xs ≡ List.length (toList xs)
-length-length []       = refl
-length-length (x ∷ xs) = cong suc (length-length xs)
-
-toList-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) → toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (length-length xs)) i) v
+toList-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) → toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (sym (length-toList xs))) i) v
 toList-insertAt []       zero    v = refl
 toList-insertAt (x ∷ xs) zero    v = refl
 toList-insertAt (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insertAt xs i v)
