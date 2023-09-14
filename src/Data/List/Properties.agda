@@ -864,13 +864,12 @@ iterate-id : ∀ n {x : A} → iterate id x n ≡ replicate n x
 iterate-id zero    = refl
 iterate-id (suc n) = cong (_ ∷_) (iterate-id n)
 
-module _ n f x where
-  open import Data.List.Base
+module _ n f {x : A} where
   private
     xs = iterate f x n
     n≥length[xs] : n ≥ length xs
     n≥length[xs] rewrite length-iterate n {f} {x} = ≤-refl
-    
+
   take-iterate : take n xs ≡ xs
   take-iterate = take-all n xs n≥length[xs]
 
