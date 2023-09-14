@@ -748,39 +748,39 @@ map-∷= (x ∷ xs) (suc k) v f = cong (f x ∷_) (map-∷= xs k v f)
 ------------------------------------------------------------------------
 -- insert
 
-length-insert : ∀ (xs : List A) (i : Fin (suc (length xs))) v → length (insert xs i v) ≡ suc (length xs)
-length-insert []       zero    v = refl
-length-insert (x ∷ xs) zero    v = refl
-length-insert (x ∷ xs) (suc i) v = cong suc (length-insert xs i v)
+length-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v → length (insertAt xs i v) ≡ suc (length xs)
+length-insertAt []       zero    v = refl
+length-insertAt (x ∷ xs) zero    v = refl
+length-insertAt (x ∷ xs) (suc i) v = cong suc (length-insertAt xs i v)
 
 ------------------------------------------------------------------------
 -- remove
 
-length-remove : ∀ (xs : List A) k → suc (length (remove xs k)) ≡ length xs
-length-remove (x ∷ xs) zero        = refl
-length-remove (x ∷ y ∷ xs) (suc k) = cong suc (length-remove (y ∷ xs) k)
+length-removeAt : ∀ (xs : List A) k → suc (length (removeAt xs k)) ≡ length xs
+length-removeAt (x ∷ xs) zero        = refl
+length-removeAt (x ∷ y ∷ xs) (suc k) = cong suc (length-removeAt (y ∷ xs) k)
 
-map-remove : ∀ xs k (f : A → B) →
+map-removeAt : ∀ xs k (f : A → B) →
             let eq = sym (length-map f xs) in
-            map f (remove xs k) ≡ remove (map f xs) (cast eq k)
-map-remove (x ∷ xs) zero    f = refl
-map-remove (x ∷ xs) (suc k) f = cong (f x ∷_) (map-remove xs k f)
+            map f (removeAt xs k) ≡ removeAt (map f xs) (cast eq k)
+map-removeAt (x ∷ xs) zero    f = refl
+map-removeAt (x ∷ xs) (suc k) f = cong (f x ∷_) (map-removeAt xs k f)
 
 ------------------------------------------------------------------------
  -- insert and remove
 
-remove-insert : ∀ (xs : List A) (i : Fin (suc (length xs))) v → remove (insert xs i v) ((cast (sym (length-insert xs i v)) i)) ≡ xs
-remove-insert []       zero    v = refl
-remove-insert (x ∷ xs) zero    v = refl
-remove-insert (x ∷ xs) (suc i) v = cong (_ ∷_) (remove-insert xs i v)
+removeAt-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v → removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
+removeAt-insertAt []       zero    v = refl
+removeAt-insertAt (x ∷ xs) zero    v = refl
+removeAt-insertAt (x ∷ xs) (suc i) v = cong (_ ∷_) (removeAt-insertAt xs i v)
 
-insert-remove : (xs : List A) (i : Fin (length xs)) → insert (remove xs i) (cast (sym (length-remove xs i)) i) (lookup xs i) ≡ xs
-insert-remove (x ∷ xs) zero = h xs x
+insertAt-removeAt : (xs : List A) (i : Fin (length xs)) → insertAt (removeAt xs i) (cast (sym (length-removeAt xs i)) i) (lookup xs i) ≡ xs
+insertAt-removeAt (x ∷ xs) zero = h xs x
   where
-  h : ∀ (xs : List A) v → insert xs zero v ≡ v ∷ xs
+  h : ∀ (xs : List A) v → insertAt xs zero v ≡ v ∷ xs
   h []       v = refl
   h (x ∷ xs) v = refl
-insert-remove (x ∷ xs) (suc i) = cong (_ ∷_) (insert-remove xs i)
+insertAt-removeAt (x ∷ xs) (suc i) = cong (_ ∷_) (insertAt-removeAt xs i)
 
 ------------------------------------------------------------------------
 -- take
@@ -1237,14 +1237,14 @@ zipWith-identityʳ = zipWith-zeroʳ
 Please use zipWith-zeroʳ instead."
 #-}
 
-length-─ = length-remove
+length-─ = length-removeAt
 {-# WARNING_ON_USAGE length-─
 "Warning: length-─ was deprecated in v2.0.
-Please use length-remove instead."
+Please use length-removeAt instead."
 #-}
 
-map-─ = map-remove
+map-─ = map-removeAt
 {-# WARNING_ON_USAGE map-─
 "Warning: map-─ was deprecated in v2.0.
-Please use map-remove instead."
+Please use map-removeAt instead."
 #-}

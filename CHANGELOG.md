@@ -1247,8 +1247,8 @@ Deprecated names
   zipWith-identityˡ  ↦  zipWith-zeroˡ
   zipWith-identityʳ  ↦  zipWith-zeroʳ
 
-  length-─  ↦  length-remove
-  map-─     ↦  map-remove
+  length-─  ↦  length-removeAt
+  map-─     ↦  map-removeAt
   ```
 
 * In `Data.List.NonEmpty.Properties`:
@@ -1391,6 +1391,13 @@ Deprecated names
   map-compose     ↦  map-∘
   ```
 
+* In `Data.Vec.Base`:
+  ```
+  _─_     ↦ removeAt
+  remove  ↦ removeAt
+  insert  ↦ insertAt
+  ```
+
 * In `Data.Vec.Properties`:
   ```
   updateAt-id-relative      ↦  updateAt-id-local
@@ -1412,6 +1419,12 @@ Deprecated names
   to
   ```
   zipWith-comm : ∀ {f : A → B → C} {g : B → A → C}  (comm : ∀ x y → f x y ≡ g y x) (xs : Vec A n) ys → zipWith f xs ys ≡ zipWith g ys xs
+
+  map-insert      ↦ map-insertAt
+  insert-lookup   ↦ insertAt-lookup
+  insert-punchIn  ↦ insertAt-punchIn
+  remove-insert   ↦ removeAt-insertAt
+  insert-remove   ↦ insertAt-removeAt
   ```
 
 * In `Data.Vec.Functional.Properties`:
@@ -2178,8 +2191,8 @@ Other minor changes
   ++-rawMagma     : Set a → RawMagma a _
   ++-[]-rawMonoid : Set a → RawMonoid a _
 
-  insert   : (xs : List A) → Fin (suc (length xs)) → A → List A
-  remove   : (xs : List A) → Fin (length xs) → List A
+  insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
+  removeAt : (xs : List A) → Fin (length xs) → List A
   updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
   ```
 
@@ -2248,9 +2261,9 @@ Other minor changes
 
   drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
 
-  length-insert : length (insert xs i v) ≡ suc (length xs)
-  remove-insert : remove (insert xs i v) ((cast (sym (length-insert xs i v)) i)) ≡ xs
-  insert-remove : insert (remove xs i) (cast (sym (length-remove xs i)) i) (lookup xs i) ≡ xs
+  length-insertAt   : ∀ (xs : List A) (i : Fin (suc (length xs))) v → length (insertAt xs i v) ≡ suc (length xs)
+  removeAt-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v → removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
+  insertAt-removeAt : (xs : List A) (i : Fin (length xs)) → insertAt (removeAt xs i) (cast (sym (lengthAt-removeAt xs i)) i) (lookup xs i) ≡ xs
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2595,8 +2608,6 @@ Other minor changes
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
-
-  _─_ : Vec A (suc n) → Fin (suc n) → Vec A n
   ```
 
 * Added new instance in `Data.Vec.Categorical`:

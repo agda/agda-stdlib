@@ -195,10 +195,10 @@ tails : List A → List (List A)
 tails []       = [] ∷ []
 tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
 
-insert : (xs : List A) → Fin (suc (length xs)) → A → List A
-insert []       zero    v = [ v ]
-insert (x ∷ xs) zero    v = v ∷ x ∷ xs
-insert (x ∷ xs) (suc i) v = x ∷ insert xs i v
+insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
+insertAt []       zero    v = [ v ]
+insertAt (x ∷ xs) zero    v = v ∷ x ∷ xs
+insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
 
 updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
 updateAt (x ∷ xs) zero    f = f x ∷ xs
@@ -338,9 +338,9 @@ splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
 splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
 
-remove : (xs : List A) → Fin (length xs) → List A
-remove (x ∷ xs) zero     = xs
-remove (x ∷ xs) (suc i)  = x ∷ remove xs i
+removeAt : (xs : List A) → Fin (length xs) → List A
+removeAt (x ∷ xs) zero     = xs
+removeAt (x ∷ xs) (suc i)  = x ∷ removeAt xs i
 
 -- The following are functions which split a list up using boolean
 -- predicates. However, in practice they are difficult to use and
@@ -452,7 +452,7 @@ deduplicate R? = deduplicateᵇ (does ∘₂ R?)
 ------------------------------------------------------------------------
 -- Actions on single elements
 
-infixl 5 _[_]%=_ _[_]∷=_ _─_
+infixl 5 _[_]%=_ _[_]∷=_
 
 -- xs [ i ]%= f  modifies the i-th element of xs according to f
 
@@ -463,11 +463,6 @@ xs [ i ]%= f = updateAt xs i f
 
 _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
 xs [ k ]∷= v = xs [ k ]%= const v
-
--- xs ─ i removes the i-th element of xs
-
-_─_ : (xs : List A) → Fin (length xs) → List A
-xs ─ i = remove xs i
 
 ------------------------------------------------------------------------
 -- Conditional versions of cons and snoc
@@ -513,4 +508,13 @@ _∷ʳ'_ = InitLast._∷ʳ′_
 {-# WARNING_ON_USAGE _∷ʳ'_
 "Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
 Please use _∷ʳ′_ (ending in a prime) instead."
+#-}
+
+-- Version 2.0
+
+infixl 5 _─_
+_─_ = removeAt
+{-# WARNING_ON_USAGE _─_
+"Warning: _─_ was deprecated in v2.0.
+Please use removeAt instead."
 #-}

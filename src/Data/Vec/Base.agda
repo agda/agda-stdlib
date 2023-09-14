@@ -64,13 +64,13 @@ iterate : (A → A) → A → ∀ {n} → Vec A n
 iterate s z {zero}  = []
 iterate s z {suc n} = z ∷ iterate s (s z)
 
-insert : Vec A n → Fin (suc n) → A → Vec A (suc n)
-insert xs       zero     v = v ∷ xs
-insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
+insertAt : Vec A n → Fin (suc n) → A → Vec A (suc n)
+insertAt xs       zero     v = v ∷ xs
+insertAt (x ∷ xs) (suc i)  v = x ∷ insertAt xs i v
 
-remove : Vec A (suc n) → Fin (suc n) → Vec A n
-remove (_ ∷ xs)     zero     = xs
-remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
+removeAt : Vec A (suc n) → Fin (suc n) → Vec A n
+removeAt (_ ∷ xs)     zero     = xs
+removeAt (x ∷ y ∷ xs) (suc i)  = x ∷ removeAt (y ∷ xs) i
 
 updateAt : Fin n → (A → A) → Vec A n → Vec A n
 updateAt zero    f (x ∷ xs) = f x ∷ xs
@@ -78,7 +78,7 @@ updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
 
 -- xs [ i ]%= f  modifies the i-th element of xs according to f
 
-infixl 6 _[_]%=_ _[_]≔_ _─_
+infixl 6 _[_]%=_ _[_]≔_
 
 _[_]%=_ : Vec A n → Fin n → (A → A) → Vec A n
 xs [ i ]%= f = updateAt i f xs
@@ -87,11 +87,6 @@ xs [ i ]%= f = updateAt i f xs
 
 _[_]≔_ : Vec A n → Fin n → A → Vec A n
 xs [ i ]≔ y = xs [ i ]%= const y
-
--- xs ─ i removes the i-th element of xs
-
-_─_ : Vec A (suc n) → Fin (suc n) → Vec A n
-xs ─ i = remove xs i
 
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
@@ -361,3 +356,28 @@ last xs with initLast xs
 transpose : Vec (Vec A n) m → Vec (Vec A m) n
 transpose []         = replicate []
 transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infixl 6 _─_
+_─_ = removeAt
+{-# WARNING_ON_USAGE _─_
+"Warning: _─_ was deprecated in v2.0.
+Please use removeAt instead."
+#-}
+remove = removeAt
+{-# WARNING_ON_USAGE _─_
+"Warning: remove was deprecated in v2.0.
+Please use removeAt instead."
+#-}
+insert = insertAt
+{-# WARNING_ON_USAGE _─_
+"Warning: insert was deprecated in v2.0.
+Please use insertAt instead."
+#-}

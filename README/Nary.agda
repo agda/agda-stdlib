@@ -14,7 +14,7 @@ open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Fin using (Fin; fromℕ; #_; inject₁)
 open import Data.List
-open import Data.List.Properties hiding (remove-insert)
+open import Data.List.Properties hiding (removeAt-insertAt)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (id; flip; _∘′_)

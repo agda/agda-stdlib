@@ -448,11 +448,11 @@ map-updateAt : ∀ {f : A → B} {g : A → A} {h : B → B}
 map-updateAt (x ∷ xs) zero    eq = cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
-map-insert : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
-             map f (insert xs i x) ≡ insert (map f xs) i (f x)
-map-insert f _ []        Fin.zero = refl
-map-insert f _ (x' ∷ xs) Fin.zero = refl
-map-insert f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insert f x xs i)
+map-insertAt : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
+             map f (insertAt xs i x) ≡ insertAt (map f xs) i (f x)
+map-insertAt f _ []        Fin.zero = refl
+map-insertAt f _ (x' ∷ xs) Fin.zero = refl
+map-insertAt f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insertAt f x xs i)
 
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
@@ -1086,29 +1086,29 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | false = m≤n⇒m≤1+n (count≤n xs)
 
 ------------------------------------------------------------------------
--- insert
+-- insertAt
 
-insert-lookup : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
-                lookup (insert xs i v) i ≡ v
-insert-lookup xs       zero     v = refl
-insert-lookup (x ∷ xs) (suc i)  v = insert-lookup xs i v
+insertAt-lookup : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
+                lookup (insertAt xs i v) i ≡ v
+insertAt-lookup xs       zero     v = refl
+insertAt-lookup (x ∷ xs) (suc i)  v = insertAt-lookup xs i v
 
-insert-punchIn : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) (j : Fin n) →
-                 lookup (insert xs i v) (Fin.punchIn i j) ≡ lookup xs j
-insert-punchIn xs       zero     v j       = refl
-insert-punchIn (x ∷ xs) (suc i)  v zero    = refl
-insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
+insertAt-punchIn : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) (j : Fin n) →
+                 lookup (insertAt xs i v) (Fin.punchIn i j) ≡ lookup xs j
+insertAt-punchIn xs       zero     v j       = refl
+insertAt-punchIn (x ∷ xs) (suc i)  v zero    = refl
+insertAt-punchIn (x ∷ xs) (suc i)  v (suc j) = insertAt-punchIn xs i v j
 
--- where should this go? Or can I write toList-insert without this? Or does
+-- where should this go? Or can I write toList-insertAt without this? Or does
 -- something similar already exist?
 length-length : (xs : Vec A n) → length xs ≡ List.length (toList xs)
 length-length []       = refl
 length-length (x ∷ xs) = cong suc (length-length xs)
 
-toList-insert : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) → toList (insert xs i v) ≡ List.insert (toList xs) (Fin.cast (cong suc (length-length xs)) i) v
-toList-insert []       zero    v = refl
-toList-insert (x ∷ xs) zero    v = refl
-toList-insert (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insert xs i v)
+toList-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) → toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (length-length xs)) i) v
+toList-insertAt []       zero    v = refl
+toList-insertAt (x ∷ xs) zero    v = refl
+toList-insertAt (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insertAt xs i v)
 
 ------------------------------------------------------------------------
 -- remove
@@ -1122,20 +1122,20 @@ remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
   remove-punchOut (y ∷ xs) (i≢j ∘ cong suc)
 
 ------------------------------------------------------------------------
--- insert and remove
+-- insertAt and removeAt
 
-remove-insert : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
-                remove (insert xs i v) i ≡ xs
-remove-insert xs           zero           v = refl
-remove-insert (x ∷ xs)     (suc zero)     v = refl
-remove-insert (x ∷ y ∷ xs) (suc (suc i))  v =
-  cong (x ∷_) (remove-insert (y ∷ xs) (suc i) v)
+removeAt-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
+                    removeAt (insertAt xs i v) i ≡ xs
+removeAt-insertAt xs           zero           v = refl
+removeAt-insertAt (x ∷ xs)     (suc zero)     v = refl
+removeAt-insertAt (x ∷ y ∷ xs) (suc (suc i))  v =
+  cong (x ∷_) (removeAt-insertAt (y ∷ xs) (suc i) v)
 
-insert-remove : ∀ (xs : Vec A (suc n)) (i : Fin (suc n)) →
-                insert (remove xs i) i (lookup xs i) ≡ xs
-insert-remove (x ∷ xs)     zero     = refl
-insert-remove (x ∷ y ∷ xs) (suc i)  =
-  cong (x ∷_) (insert-remove (y ∷ xs) i)
+insertAt-removeAt : ∀ (xs : Vec A (suc n)) (i : Fin (suc n)) →
+                    insertAt (removeAt xs i) i (lookup xs i) ≡ xs
+insertAt-removeAt (x ∷ xs)     zero     = refl
+insertAt-removeAt (x ∷ y ∷ xs) (suc i)  =
+  cong (x ∷_) (insertAt-removeAt (y ∷ xs) i)
 
 ------------------------------------------------------------------------
 -- Conversion function
@@ -1199,4 +1199,30 @@ sum-++-commute = sum-++
 {-# WARNING_ON_USAGE sum-++-commute
 "Warning: sum-++-commute was deprecated in v2.0.
 Please use sum-++ instead."
+#-}
+
+map-insert = map-insertAt
+{-# WARNING_ON_USAGE map-insert
+"Warning: map-insert was deprecated in v2.0.
+Please use map-insertAt instead."
+#-}
+insert-lookup = insertAt-lookup
+{-# WARNING_ON_USAGE insert-lookup
+"Warning: insert-lookup was deprecated in v2.0.
+Please use insertAt-lookup instead."
+#-}
+insert-punchIn = insertAt-punchIn
+{-# WARNING_ON_USAGE insert-punchIn
+"Warning: insert-punchIn was deprecated in v2.0.
+Please use insertAt-punchIn instead."
+#-}
+remove-insert = removeAt-insertAt
+{-# WARNING_ON_USAGE remove-insert
+"Warning: remove-insert was deprecated in v2.0.
+Please use removeAt-insertAt instead."
+#-}
+insert-remove = insertAt-removeAt
+{-# WARNING_ON_USAGE insert-remove
+"Warning: insert-remove was deprecated in v2.0.
+Please use insertAt-removeAt instead."
 #-}
