@@ -50,7 +50,7 @@ monad {f} {g} M = record
   ; _>>=_ = λ ma k → mkVecT $ do
                       a ← runVecT ma
                       bs ← mapM {a = f} (runVecT ∘′ k) a
-                      pure (Vec.DiagonalBind.join bs)
+                      pure (Vec.diagonal bs)
   } where open RawMonad M; open Vec.TraversableM {m = f} {n = g} M
 
 monadT : RawMonadT {f} {g} (VecT n)

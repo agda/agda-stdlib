@@ -13,7 +13,7 @@ open import Data.Product.Properties using (≡-dec)
 open import Data.Sum.Base
 open import Data.Unit.Base using (⊤)
 open import Function.Base
-open import Function.Equality as F using (_⟶_; _⟨$⟩_)
+open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq
   using (Equivalence; _⇔_; module Equivalence)
 open import Function.Injection as Inj
@@ -26,7 +26,13 @@ open import Function.Related
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
 open import Relation.Nullary.Decidable using (_×-dec_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; Setoid; DecSetoid; Poset; StrictPartialOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsStrictPartialOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Irreflexive; Symmetric; Transitive; Antisymmetric; Asymmetric; Total; Decidable; _Respects₂_; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
 

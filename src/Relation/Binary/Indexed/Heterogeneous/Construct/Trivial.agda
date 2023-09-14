@@ -9,7 +9,9 @@
 module Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   {i} {I : Set i} where
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
 open import Relation.Binary.Indexed.Heterogeneous
 
 ------------------------------------------------------------------------

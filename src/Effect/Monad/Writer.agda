@@ -55,6 +55,9 @@ module _ {𝕎 : RawMonoid w ℓ} where
   monad : RawMonad (Writer 𝕎)
   monad = Trans.monad Id.monad
 
+  join : Writer 𝕎 (Writer 𝕎 A) → Writer 𝕎 A
+  join = Join.join monad
+
   ----------------------------------------------------------------------
   -- Writer monad specifics
 
