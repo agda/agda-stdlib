@@ -839,7 +839,8 @@ length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
 length-replicate zero    = refl
 length-replicate (suc n) = cong suc (length-replicate n)
 
-lookup-replicate : ∀ n (x : A) (i : Fin n) → lookup (replicate n x) (cast (sym (length-replicate n)) i) ≡ x
+lookup-replicate : ∀ n (x : A) (i : Fin n) →
+                   lookup (replicate n x) (cast (sym (length-replicate n)) i) ≡ x
 lookup-replicate (suc n) x zero    = refl
 lookup-replicate (suc n) x (suc i) = lookup-replicate n x i
 
@@ -864,7 +865,7 @@ iterate-id : ∀ n {x : A} → iterate id x n ≡ replicate n x
 iterate-id zero    = refl
 iterate-id (suc n) = cong (_ ∷_) (iterate-id n)
 
-module _ n f {x : A} where
+module _ f {x : A} n where
   private
     xs = iterate f x n
     n≥length[xs] : n ≥ length xs

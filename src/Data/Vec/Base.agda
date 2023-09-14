@@ -9,7 +9,7 @@
 module Data.Vec.Base where
 
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
-open import Data.Nat.Base as N
+open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
 open import Data.Product.Base as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
