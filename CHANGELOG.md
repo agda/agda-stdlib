@@ -2746,11 +2746,12 @@ Additions to existing modules
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
 
-  length-iterate : length (iterate f x {n}) ≡ n
-  iterate-id     : iterate id x {n} ≡ replicate x
-  take-iterate   : take n (iterate f x {n + m}) ≡ iterate f x {n}
-  drop-iterate   : drop n (iterate f x) ≡ []
-  lookup-iterate : lookup (iterate f x) i ≡ ℕ.iterate f x (toℕ i)
+  length-iterate : length (iterate f x n) ≡ n
+  iterate-id     : iterate id x n ≡ replicate x
+  take-iterate   : take n (iterate f x (n + m)) ≡ iterate f x n
+  drop-iterate   : drop n (iterate f x n) ≡ []
+  lookup-iterate : lookup (iterate f x n) i ≡ ℕ.iterate f x (toℕ i)
+  toList-iterate : toList (iterate f x n) ≡ List.iterate f x n
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
