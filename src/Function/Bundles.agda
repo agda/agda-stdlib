@@ -95,9 +95,6 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong       : Congruent _≈₁_ _≈₂_ to
       surjective : Surjective _≈₁_ _≈₂_ to
 
-    to⁻ : B → A
-    to⁻ = proj₁ ∘ surjective
-
     isCongruent : IsCongruent to
     isCongruent = record
       { cong           = cong
@@ -118,6 +115,12 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; strictlySurjective
       )
 
+    to⁻ : B → A
+    to⁻ = proj₁ ∘ surjective
+
+    to∘to⁻ : ∀ x → to (to⁻ x) ≈₂ x
+    to∘to⁻ = proj₂ ∘ strictlySurjective
+      
 
   record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field

@@ -35,8 +35,7 @@ injective⇒to⁻-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
   where
   open SetoidReasoning T
   open Surjection surj
-  to∘to⁻ = proj₂ ∘ strictlySurjective
-
+  
 ------------------------------------------------------------------------
 -- Conversion functions
 

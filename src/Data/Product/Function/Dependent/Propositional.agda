@@ -12,12 +12,14 @@ module Data.Product.Function.Dependent.Propositional where
 open import Data.Product.Base as Prod
 open import Data.Product.Function.NonDependent.Setoid using ()
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using ()
-open import Data.Product.Properties using (Σ-≡,≡→≡)
+open import Data.Product.Properties using (Σ-≡,≡→≡; Σ-≡,≡↔≡; Σ-≡,≡←≡)
 open import Level using (Level)
 open import Function.Base
 open import Function.Properties.Inverse
-open import Function.Consequences.Propositional using (inverseʳ⇒injective)
-open import Function.Definitions using (Inverseˡ; Inverseʳ; Injective)
+open import Function.Properties.Inverse.HalfAdjointEquivalence
+open import Function.Consequences.Propositional
+  using (inverseʳ⇒injective; strictlySurjective⇒surjective)
+open import Function.Definitions using (Inverseˡ; Inverseʳ; Injective; StrictlySurjective)
 open import Function.Bundles
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -56,141 +58,121 @@ module _ where
 module _ where
   open Injection hiding (to)
 
-  Σ-↣ : ∀ (I↔J : I ↔ J) →
-      (∀ {x} → A x ↣ B (Inverse.to I↔J x)) →
+  ↣ : (I↔J : I ↔ J) →
+      (∀ {i} → A i ↣ B (Inverse.to I↔J i)) →
       Σ I A ↣ Σ J B
-  Σ-↣ {I = I} {J = J} {A = A} {B = B} I↔J A↣B = mk↣ to-injective
+  ↣ {I = I} {J = J} {A = A} {B = B} I↔J A↣B = mk↣ to-injective
     where
     open P.≡-Reasoning
 
-    to′ : Σ I A → Σ J B
-    to′ = map (Inverse.to I↔J) (Injection.to A↣B)
-    module IJ = Inverse I↔J
+    I≃J = ↔⇒≃ I↔J
 
     subst-application′ :
-      {x₁ x₂ : I} {y : A (IJ.from (IJ.to x₁))}
-      (g : ∀ x → A (IJ.from (IJ.to x)) → B (IJ.to x)) (eq : IJ.to x₁ ≡ IJ.to x₂) →
-      P.subst B eq (g x₁ y) ≡ g x₂ (P.subst A (P.cong IJ.from eq) y)
-    subst-application′ {x₁} {x₂} {y} g eq = begin
+      let open _≃_ I≃J in
+      {x₁ x₂ : I} {y : A (from (to x₁))}
+      (g : ∀ x → A (from (to x)) → B (to x))
+      (eq : to x₁ ≡ to x₂) →
+      P.subst B eq (g x₁ y) ≡ g x₂ (P.subst A (P.cong from eq) y)
+    subst-application′ {x₁} {x₂} {y} g eq =
       P.subst B eq (g x₁ y)                      ≡⟨ P.cong (P.subst B eq) (P.sym (g′-lemma _ _)) ⟩
       P.subst B eq (g′ (to x₁) y)                ≡⟨ P.subst-application A g′ eq ⟩
       g′ (to x₂) (P.subst A (P.cong from eq) y)  ≡⟨ g′-lemma _ _ ⟩
       g x₂ (P.subst A (P.cong from eq) y)        ∎
       where
-      open Inverse I↔J
+      open _≃_ I≃J
 
       g′ : ∀ x → A (from x) → B x
       g′ x =
-        P.subst B (strictlyInverseˡ x) ∘
+        P.subst B (right-inverse-of x) ∘
         g (from x) ∘
-        P.subst A (P.sym (P.cong from (strictlyInverseˡ x)))
+        P.subst A (P.sym (P.cong from (right-inverse-of x)))
 
       g′-lemma : ∀ x y → g′ (to x) y ≡ g x y
       g′-lemma x y =
-        P.subst B (strictlyInverseˡ (to x))
+        P.subst B (right-inverse-of (to x))
           (g (from (to x)) $
-           P.subst A (P.sym (P.cong from (strictlyInverseˡ (to x)))) y)  ≡⟨ P.cong (λ p → P.subst B p (g (from (to x))
+           P.subst A (P.sym (P.cong from (right-inverse-of (to x)))) y)  ≡⟨ P.cong (λ p → P.subst B p (g (from (to x))
                                                                                                            (P.subst A (P.sym (P.cong from p)) y)))
-                                                                               (P.sym (lem2)) ⟩  -- was: left-right x
-        P.subst B (P.cong to (strictlyInverseʳ x))
+                                                                               (P.sym (left-right x)) ⟩
+        P.subst B (P.cong to (left-inverse-of x))
           (g (from (to x)) $
            P.subst A
-             (P.sym (P.cong from (P.cong to (strictlyInverseʳ x))))
+             (P.sym (P.cong from (P.cong to (left-inverse-of x))))
              y)                                                           ≡⟨ lemma _ ⟩
 
         g x y                                                             ∎
         where
-        lemma :
-          ∀ {x′} eq {y : A (from (to x′))} →
-          P.subst B (P.cong to eq)
-            (g (from (to x))
-               (P.subst A (P.sym (P.cong from (P.cong to eq))) y)) ≡
-          g x′ y
+        lemma : ∀ {x′} eq {y : A (from (to x′))} →
+                  P.subst B (P.cong to eq)
+                    (g (from (to x))
+                      (P.subst A (P.sym (P.cong from (P.cong to eq))) y)) ≡
+                  g x′ y
         lemma P.refl = P.refl
 
-        lem2 : P.cong to (inverseʳ P.refl) ≡ inverseˡ P.refl
-        lem2 = {!!}
-
+    to′ : Σ I A → Σ J B
+    to′ = Prod.map (_≃_.to I≃J) (Injection.to A↣B)
 
     to-injective : Injective _≡_ _≡_ to′
-    to-injective {(x₁ , x₂)} {(y₁ , y₂)} to-eq =
-      Σ-≡,≡→≡ ( inj₁ , inj₂)
+    to-injective {(x₁ , x₂)} {(y₁ , y₂)} =
+    
+      Σ-≡,≡→≡ ∘′
 
-        where
-          A→B : ∀ {x} → A x → B (Inverse.to I↔J x)
-          A→B Ax = Injection.to A↣B Ax
-          Inj : Injection (P.setoid I) (P.setoid J)
-          Inj = record { to = IJ.to
-                       ; cong = IJ.to-cong
-                       ; injective = λ {x} {y} eq → P.trans (P.sym (IJ.strictlyInverseʳ x)) (P.trans (P.cong IJ.from eq) (IJ.strictlyInverseʳ y))
-                       }
-          from∘to : ∀ x → IJ.from (IJ.to x) ≡ x
-          from∘to = IJ.strictlyInverseʳ
-          inj₁ : x₁ ≡ y₁
-          inj₁ = injective Inj (P.cong proj₁ to-eq)
-          A→B-eq : A→B (P.subst A inj₁ x₂) ≡ A→B y₂
-          A→B-eq = begin
-            A→B (P.subst A
-             (P.trans (P.sym (from∘to x₁))
-             (P.trans (P.cong IJ.from (P.cong proj₁ to-eq)) (from∘to y₁))) x₂)    ≡˘⟨ P.cong A→B (P.subst-subst (P.sym (from∘to x₁))) ⟩
-            A→B (P.subst A
-             (P.trans (P.cong IJ.from (P.cong proj₁ to-eq)) (from∘to y₁))
-             (P.subst A (P.sym (from∘to x₁)) x₂))                              ≡˘⟨ P.cong A→B (P.subst-subst (P.cong IJ.from (P.cong proj₁ to-eq))) ⟩
-            A→B (P.subst A (from∘to y₁)
-                (P.subst A (P.cong IJ.from (P.cong proj₁ to-eq))
-                (P.subst A (P.sym (from∘to x₁)) x₂)))                          ≡˘⟨ {!!}  ⟩
-           {- P.subst B {!P.cong proj₁ to-eq!}
-              (A→B (P.subst A {!from∘to x₁!}
-                   (P.subst A (P.sym (from∘to x₁)) x₂)))                            ≡⟨ {!!} ⟩ -}
-            P.subst B (P.cong proj₁ to-eq) (A→B {x₁} x₂)                       ≡⟨ {!P.cong proj₂ to-eq!} ⟩
-            A→B y₂ ∎
-          inj₂ : P.subst A inj₁ x₂ ≡ y₂
-          inj₂ = injective A↣B A→B-eq
-         {-
-      map (_≃_.injective I≃J) (λ {eq₁} eq₂ →
-        let lemma =
+      map (_≃_.injective I≃J) (λ {eq₁} eq₂ → Injection.injective A↣B (
+              Injection.to A↣B (P.subst A (_≃_.injective I≃J eq₁) x₂)  ≡⟨⟩
 
-              Injection.to A↣B ⟨$⟩
+              Injection.to A↣B (P.subst A
+                (P.trans (P.sym (_≃_.left-inverse-of I≃J x₁))
+                   (P.trans (P.cong (_≃_.from I≃J) eq₁)
+                      (P.trans (_≃_.left-inverse-of I≃J y₁)
+                         P.refl)))
+                x₂)                                                        ≡⟨ P.cong (λ p → Injection.to A↣B $
+                                                                                             P.subst A
+                                                                                               (P.trans (P.sym (_≃_.left-inverse-of I≃J _))
+                                                                                                  (P.trans (P.cong (_≃_.from I≃J) eq₁) p))
+                                                                                               x₂)
+                                                                               (P.trans-reflʳ _) ⟩
+              Injection.to A↣B (
               P.subst A
                 (P.trans (P.sym (_≃_.left-inverse-of I≃J x₁))
                    (P.trans (P.cong (_≃_.from I≃J) eq₁)
                       (_≃_.left-inverse-of I≃J y₁)))
-                x₂                                                        ≡⟨ P.cong (Injection.to A↣B ⟨$⟩_)
+                x₂                                   )                     ≡⟨ P.cong (Injection.to A↣B $_)
                                                                                (P.sym (P.subst-subst (P.sym (_≃_.left-inverse-of I≃J _)))) ⟩
-              Injection.to A↣B ⟨$⟩
+              Injection.to A↣B (
+              (P.subst A (P.trans (P.cong (_≃_.from I≃J) eq₁)
+                             (_≃_.left-inverse-of I≃J y₁)) $
+               P.subst A (P.sym (_≃_.left-inverse-of I≃J x₁)) x₂))      ≡⟨ P.cong (Injection.to A↣B $_)
+                                                                               (P.sym (P.subst-subst (P.cong (_≃_.from I≃J) eq₁))) ⟩
+              Injection.to A↣B (
               (P.subst A (_≃_.left-inverse-of I≃J y₁) $
                P.subst A (P.cong (_≃_.from I≃J) eq₁) $
-               P.subst A (P.sym (_≃_.left-inverse-of I≃J x₁)) x₂)      ≡⟨ P.sym (subst-application′
-                                                                                      (λ x y → Injection.to A↣B ⟨$⟩
+               P.subst A (P.sym (_≃_.left-inverse-of I≃J x₁)) x₂))      ≡⟨ P.sym (subst-application′
+                                                                                      (λ x y → Injection.to A↣B $
                                                                                                  P.subst A (_≃_.left-inverse-of I≃J x) y)
                                                                                       eq₁) ⟩
               P.subst B eq₁
-                (Injection.to A↣B ⟨$⟩
+                (Injection.to A↣B $
                  (P.subst A (_≃_.left-inverse-of I≃J x₁) $
-                  P.subst A (P.sym (_≃_.left-inverse-of I≃J x₁)) x₂))  ≡⟨ P.cong (P.subst B eq₁ ∘ (Injection.to A↣B ⟨$⟩_))
+                  P.subst A (P.sym (_≃_.left-inverse-of I≃J x₁)) x₂))  ≡⟨ P.cong (P.subst B eq₁ ∘ (Injection.to A↣B $_))
                                                                                (P.subst-subst (P.sym (_≃_.left-inverse-of I≃J _))) ⟩
               P.subst B eq₁
-                (Injection.to A↣B ⟨$⟩
+                (Injection.to A↣B $
                  P.subst A
                    (P.trans (P.sym (_≃_.left-inverse-of I≃J x₁))
                       (_≃_.left-inverse-of I≃J x₁))
                    x₂)                                                    ≡⟨ P.cong (λ p → P.subst B eq₁
-                                                                                             (Injection.to A↣B ⟨$⟩ P.subst A p x₂))
+                                                                                             (Injection.to A↣B $ P.subst A p x₂))
                                                                                (P.trans-symˡ (_≃_.left-inverse-of I≃J _)) ⟩
               P.subst B eq₁
-                (Injection.to A↣B ⟨$⟩ P.subst A P.refl x₂)             ≡⟨⟩
+                (Injection.to A↣B $ P.subst A P.refl x₂)             ≡⟨⟩
 
-              P.subst B eq₁ (Injection.to A↣B ⟨$⟩ x₂)                  ≡⟨ eq₂ ⟩
+              P.subst B eq₁ (Injection.to A↣B $ x₂)                  ≡⟨ eq₂ ⟩
 
-              Injection.to A↣B ⟨$⟩ y₂                                   ∎
+              Injection.to A↣B y₂                                   ∎
 
-        in
-
-        P.subst A (_≃_.injective I≃J eq₁) x₂  ≡⟨ Injection.injective A↣B lemma ⟩
-        y₂                                       ∎) ∘
+        )) ∘
 
       Σ-≡,≡←≡
--}
 
 module _ where
   open LeftInverse
@@ -213,45 +195,46 @@ module _ where
         P.subst B (inverseˡ I↩J P.refl)
           (to A↩B (from A↩B (P.subst B (P.sym (inverseˡ I↩J P.refl)) b))) ≡⟨ P.cong (P.subst B _) (inverseˡ A↩B P.refl) ⟩
         P.subst B (inverseˡ I↩J P.refl)
-          (P.subst B (P.sym (inverseˡ I↩J P.refl)) b)                        ≡⟨ P.subst-subst-sym (inverseˡ I↩J _) ⟩
+          (P.subst B (P.sym (inverseˡ I↩J P.refl)) b)                       ≡⟨ P.subst-subst-sym (inverseˡ I↩J _) ⟩
         b ∎))
-{-
+
+module _ where
+  open Surjection
+  
   ↠ : (I↠J : I ↠ J) →
-      (∀ {x} → A x ↠ B (Surjection.to I↠J ⟨$⟩ x)) →
-      Σ I A ↠ Σ J B
-  ↠ I↠J A↠B = record
-    { to         = P.→-to-⟶ to
-    ; surjective = record
-      { from             = P.→-to-⟶ from
-      ; right-inverse-of = right-inverse-of
-      }
-    }
+       (∀ {x} → A x ↠ B (to I↠J x)) →
+       Σ I A ↠ Σ J B
+  ↠ {I = I} {J = J} {A = A} {B = B} I↠J A↠B =
+    mk↠ (strictlySurjective⇒surjective strictlySurjective′)
     where
     open P.≡-Reasoning
 
-    to   = map (Surjection.to I↠J ⟨$⟩_)
-                    (Surjection.to A↠B ⟨$⟩_)
-    from = map
-      (Surjection.from I↠J ⟨$⟩_)
+    to′ : Σ I A → Σ J B
+    to′ = map (to I↠J) (to A↠B)
+
+    to⁻′ : Σ J B → Σ I A
+    to⁻′ = map
+      (to⁻ I↠J)
       (λ {x} y →
-         Surjection.from A↠B ⟨$⟩
-           P.subst B (P.sym (Surjection.right-inverse-of I↠J x)) y)
+         Surjection.to⁻ A↠B (
+           P.subst B (P.sym (proj₂ (strictlySurjective I↠J x))) y))
 
-    right-inverse-of : ∀ p → to (from p) ≡ p
-    right-inverse-of (x , y) = Σ-≡,≡→≡
-      ( Surjection.right-inverse-of I↠J x
-      , (P.subst B (Surjection.right-inverse-of I↠J x)
-           (Surjection.to A↠B ⟨$⟩ (Surjection.from A↠B ⟨$⟩
-              (P.subst B (P.sym (Surjection.right-inverse-of I↠J x))
-                 y)))                                                    ≡⟨ P.cong (P.subst B _) (Surjection.right-inverse-of A↠B _) ⟩
+    strictlySurjective′ : StrictlySurjective _≡_ to′
+    strictlySurjective′ (x , y) = to⁻′ (x , y) , Σ-≡,≡→≡
+      ( proj₂ (strictlySurjective I↠J x)
+      , (P.subst B (to∘to⁻ I↠J x)
+           (Surjection.to A↠B ((Surjection.to⁻ A↠B 
+              ((P.subst B (P.sym (to∘to⁻ I↠J x))
+                 y)))))                                                    ≡⟨ P.cong (P.subst B _) (to∘to⁻ A↠B _) ⟩
 
-         P.subst B (Surjection.right-inverse-of I↠J x)
-           (P.subst B (P.sym (Surjection.right-inverse-of I↠J x))
-              y)                                                         ≡⟨ P.subst-subst-sym (Surjection.right-inverse-of I↠J x) ⟩
+         P.subst B (to∘to⁻ I↠J x)
+           (P.subst B (P.sym (to∘to⁻ I↠J x))
+              y)                                                         ≡⟨ P.subst-subst-sym (to∘to⁻ I↠J x) ⟩
 
          y                                                               ∎)
       )
--}
+      
+
 module _ where
   open Inverse
 
