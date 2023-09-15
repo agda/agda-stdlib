@@ -110,7 +110,7 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   preorder = record { isPreorder = isPreorder }
 
   open Preorder preorder public
-    using (module Eq)
+    using (module Eq) renaming (_≁_ to _≰_)
 
 
 ------------------------------------------------------------------------
@@ -135,11 +135,7 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open Preorder preorder public
     using (module Eq) renaming (_≁_ to _≰_)
-{-
-  infix 4 _≰_
-  _≰_ : Rel Carrier _
-  x ≰ y = ¬ (x ≤ y)
--}
+
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _≤_
@@ -159,7 +155,7 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Poset poset public
-    using (preorder)
+    using (preorder; _≰_)
 
   module Eq where
     decSetoid : DecSetoid c ℓ₁
@@ -210,6 +206,8 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
   strictPartialOrder = record
     { isStrictPartialOrder = isStrictPartialOrder
     }
+
+  open StrictPartialOrder strictPartialOrder using (_≮_)
 
   module Eq where
 
@@ -267,7 +265,7 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     { isTotalOrder = isTotalOrder
     }
 
-  open TotalOrder totalOrder public using (poset; preorder)
+  open TotalOrder totalOrder public using (poset; preorder; _≰_)
 
   decPoset : DecPoset c ℓ₁ ℓ₂
   decPoset = record
@@ -299,7 +297,7 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
     }
 
   open StrictPartialOrder strictPartialOrder public
-    using (module Eq)
+    using (module Eq; _≮_)
 
   decSetoid : DecSetoid c ℓ₁
   decSetoid = record
