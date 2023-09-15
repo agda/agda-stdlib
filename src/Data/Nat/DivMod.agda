@@ -112,7 +112,7 @@ m∣n⇒o%n%m≡o%m m n@.(p * m) o (divides-refl p) = begin-equality
     o                    ∎
 
 m*n%n≡0 : ∀ m n .{{_ : NonZero n}} → (m * n) % n ≡ 0
-m*n%n≡0 m (suc n-1) = [m+kn]%n≡m%n 0 m (suc n-1)
+m*n%n≡0 m n@(suc _) = [m+kn]%n≡m%n 0 m n
 
 m%n<n : ∀ m n .{{_ : NonZero n}} → m % n < n
 m%n<n m (suc n-1) = s≤s (a[modₕ]n<n 0 m n-1)
@@ -124,11 +124,11 @@ m%n≤m : ∀ m n .{{_ : NonZero n}} → m % n ≤ m
 m%n≤m m (suc n-1) = a[modₕ]n≤a 0 m n-1
 
 m≤n⇒m%n≡m : m ≤ n → m % suc n ≡ m
-m≤n⇒m%n≡m {m} {n} m≤n with ≤⇒≤″ m≤n
-... | less-than-or-equal {k} refl = a≤n⇒a[modₕ]n≡a 0 (m + k) m k
+m≤n⇒m%n≡m {m = m} m≤n with less-than-or-equal {k} refl ← ≤⇒≤″ m≤n
+  = a≤n⇒a[modₕ]n≡a 0 (m + k) m k
 
-m<n⇒m%n≡m : ∀ {m n} .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
-m<n⇒m%n≡m {m} {n = suc _} m<n = m≤n⇒m%n≡m (<⇒≤pred m<n)
+m<n⇒m%n≡m : .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
+m<n⇒m%n≡m {n = suc _} m<n = m≤n⇒m%n≡m (<⇒≤pred m<n)
 
 %-pred-≡0 : ∀ {m n} .{{_ : NonZero n}} → (suc m % n) ≡ 0 → (m % n) ≡ n ∸ 1
 %-pred-≡0 {m} {suc n-1} eq = a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 n-1 m eq
@@ -467,11 +467,11 @@ _div_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
 _div_ = _/_
 
 _mod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → Fin divisor
-m mod (suc n) = fromℕ< (m%n<n m (suc n))
+m mod n@(suc _) = fromℕ< (m%n<n m n)
 
 _divMod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} →
            DivMod dividend divisor
-m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
+m divMod n@(suc _) = result (m / n) (m mod n) (begin-equality
   m                                   ≡⟨  m≡m%n+[m/n]*n m n ⟩
   m % n                    + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< (m%n<n m n)) ⟩
   toℕ (fromℕ< (m%n<n m n)) + [m/n]*n  ∎)
