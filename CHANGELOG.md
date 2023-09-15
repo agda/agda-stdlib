@@ -1809,6 +1809,14 @@ Other minor changes
   ```
   and their corresponding algebraic subbundles.
 
+  The following negated relation symbols have now been added
+  ```agda
+  infix 4 _≁_ _≰_ _≮_
+  Preorder._≁_            : Rel Carrier _
+  Poset._≰_               : Rel Carrier _
+  StrictPartialOrder._≮_  : Rel Carrier _
+  ```
+
 * Added new proofs to `Algebra.Consequences.Base`:
   ```agda
   reflexive+selfInverse⇒involutive : Reflexive _≈_ →

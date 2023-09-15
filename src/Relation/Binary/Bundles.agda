@@ -91,6 +91,9 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
     open Setoid setoid public
 
+  infix 4 _≁_
+  _≁_ : Rel Carrier _
+  x ≁ y = ¬ (x ∼ y)
 
 record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _≲_
@@ -132,6 +135,10 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open Preorder preorder public
     using (module Eq)
+
+  infix 4 _≰_
+  _≰_ : Rel Carrier _
+  x ≰ y = ¬ (x ≤ y)
 
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -181,6 +188,10 @@ record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) 
       }
 
     open Setoid setoid public
+
+  infix 4 _≮_
+  _≮_ : Rel Carrier _
+  x ≮ y = ¬ (x < y)
 
 
 record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
