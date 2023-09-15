@@ -18,7 +18,7 @@ open import Algebra.Definitions _≈_
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; flip; _∘_)
 open import Level using (_⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
 open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice

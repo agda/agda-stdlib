@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Reflexive; Transitive)
 
 module Relation.Binary.Reasoning.Base.Single
   {a ℓ} {A : Set a} (_∼_ : Rel A ℓ)

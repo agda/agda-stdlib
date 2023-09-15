@@ -317,7 +317,7 @@ module EquationalReasoning where
 
   _≡⟨_⟩_ : (A : Set a) → A ≡ B → B ∼[ k ] C → A ∼[ k ] C
   A ≡⟨ A≡B ⟩ B⇔C = A ∼⟨ ≡⇒ A≡B ⟩ B⇔C
-  
+
   _≡˘⟨_⟩_ : (A : Set a) → B ≡ A → B ∼[ k ] C → A ∼[ k ] C
   A ≡˘⟨ B≡A ⟩ B⇔C = A ∼⟨ ≡⇒ (P.sym B≡A) ⟩ B⇔C
 

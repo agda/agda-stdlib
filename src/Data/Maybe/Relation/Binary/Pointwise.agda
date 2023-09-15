@@ -9,10 +9,13 @@
 module Data.Maybe.Relation.Binary.Pointwise where
 
 open import Level
-open import Data.Product
+open import Data.Product.Base using (∃; _×_; -,_; _,_)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Bundles using (_⇔_; mk⇔)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
+open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec

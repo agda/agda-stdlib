@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (_Respects_)
 
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 

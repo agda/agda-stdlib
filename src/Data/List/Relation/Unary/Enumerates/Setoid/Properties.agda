@@ -14,7 +14,7 @@ open import Data.List.Relation.Unary.Enumerates.Setoid
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Binary.Pointwise
   using (_⊎ₛ_; inj₁; inj₂)
-open import Data.Product using (_,_; proj₁; proj₂)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (_×ₛ_)
 open import Function.Base using (_∘_)
@@ -22,7 +22,7 @@ open import Function.Bundles using (Surjection)
 open import Function.Definitions using (Surjective)
 open import Function.Consequences using (strictlySurjective⇒surjective)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Properties.Setoid using (respʳ-flip)
 

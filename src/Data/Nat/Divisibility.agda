@@ -18,7 +18,12 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
 open import Relation.Nullary.Decidable as Dec using (False; yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Preorder; Poset)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Antisymmetric; Decidable)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)

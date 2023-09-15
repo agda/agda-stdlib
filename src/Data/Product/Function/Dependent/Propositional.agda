@@ -9,7 +9,7 @@
 
 module Data.Product.Function.Dependent.Propositional where
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Data.Product.Function.NonDependent.Setoid using ()
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using ()
 open import Data.Product.Properties using (Σ-≡,≡→≡)
@@ -65,7 +65,7 @@ module _ where
     to′ : Σ I A → Σ J B
     to′ = map (Inverse.to I↔J) (Injection.to A↣B)
     module IJ = Inverse I↔J
- 
+
     subst-application′ :
       {x₁ x₂ : I} {y : A (IJ.from (IJ.to x₁))}
       (g : ∀ x → A (IJ.from (IJ.to x)) → B (IJ.to x)) (eq : IJ.to x₁ ≡ IJ.to x₂) →
@@ -128,7 +128,7 @@ module _ where
           A→B-eq = begin
             A→B (P.subst A
              (P.trans (P.sym (from∘to x₁))
-             (P.trans (P.cong IJ.from (P.cong proj₁ to-eq)) (from∘to y₁))) x₂)    ≡˘⟨ P.cong A→B (P.subst-subst (P.sym (from∘to x₁))) ⟩ 
+             (P.trans (P.cong IJ.from (P.cong proj₁ to-eq)) (from∘to y₁))) x₂)    ≡˘⟨ P.cong A→B (P.subst-subst (P.sym (from∘to x₁))) ⟩
             A→B (P.subst A
              (P.trans (P.cong IJ.from (P.cong proj₁ to-eq)) (from∘to y₁))
              (P.subst A (P.sym (from∘to x₁)) x₂))                              ≡˘⟨ P.cong A→B (P.subst-subst (P.cong IJ.from (P.cong proj₁ to-eq))) ⟩
@@ -139,7 +139,7 @@ module _ where
               (A→B (P.subst A {!from∘to x₁!}
                    (P.subst A (P.sym (from∘to x₁)) x₂)))                            ≡⟨ {!!} ⟩ -}
             P.subst B (P.cong proj₁ to-eq) (A→B {x₁} x₂)                       ≡⟨ {!P.cong proj₂ to-eq!} ⟩
-            A→B y₂ ∎ 
+            A→B y₂ ∎
           inj₂ : P.subst A inj₁ x₂ ≡ y₂
           inj₂ = injective A↣B A→B-eq
          {-
@@ -274,7 +274,7 @@ module _ where
        P.subst B (I↔Jˡ x₀) (P.subst B (P.sym (I↔Jˡ x₀)) x₁)   ≡⟨ P.subst-subst-sym (I↔Jˡ x₀) ⟩
        x₁ ∎))
      invʳ : Inverseʳ _≡_ _≡_ to′ from′
-     invʳ {x = x₀ , x₁} {y₀ , y₁} P.refl = Σ-≡,≡→≡ (eq₁ , eq₂) 
+     invʳ {x = x₀ , x₁} {y₀ , y₁} P.refl = Σ-≡,≡→≡ (eq₁ , eq₂)
        where
          eq₁ : proj₁ (from′ (y₀ , y₁)) ≡ x₀
          eq₁ = {!strictlyInverseˡ I↔J (to I↔J x₀)!} -- strictlyInverseʳ I↔J x₀ -- proj₂ (inverse I↔J) P.refl -- inverseʳ I↔J (P.cong proj₁ y≡to-x)
@@ -288,9 +288,9 @@ module _ where
            P.subst A eq₁ (proj₂ (from′ (y₀ , y₁)))                               ≡⟨⟩
            P.subst A eq₁ (from A↔B (P.subst B (P.sym eq₃) y₁))                   ≡⟨ P.subst-application B (λ _ y → from A↔B y) eq₁ ⟩
            from A↔B (P.subst B (P.cong (to I↔J) eq₁) (P.subst B (P.sym eq₃) y₁)) ≡⟨ {!eq₁!} ⟩
-           from A↔B (P.subst B (P.trans (P.sym eq₃) (P.cong (to I↔J) eq₁)) y₁)   ≡⟨ {!to-cong A↔B!} ⟩ 
+           from A↔B (P.subst B (P.trans (P.sym eq₃) (P.cong (to I↔J) eq₁)) y₁)   ≡⟨ {!to-cong A↔B!} ⟩
            x₁ ∎
-         
+
 
 {-
 private

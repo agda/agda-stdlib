@@ -13,7 +13,7 @@ open import Data.Vec.Base as Vec using (Vec; allFin)
 open import Function.Base using (id; _⟨_⟩_)
 open import Function.Bundles using (module Equivalence)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.PropositionalEquality.Core as P
 
 -- Think of the parameters as follows:

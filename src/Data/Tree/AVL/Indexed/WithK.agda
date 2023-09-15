@@ -6,7 +6,9 @@
 
 {-# OPTIONS --with-K --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsStrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; subst)
 
 module Data.Tree.AVL.Indexed.WithK
@@ -15,7 +17,6 @@ module Data.Tree.AVL.Indexed.WithK
 
 strictTotalOrder = record { isStrictTotalOrder = isStrictTotalOrder }
 
-open import Data.Product
 open import Data.Tree.AVL.Indexed strictTotalOrder as AVL hiding (Value)
 
 module _ {v} {V′ : Key → Set v} where

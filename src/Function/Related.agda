@@ -18,7 +18,10 @@ open import Function.Inverse     as Inv     using (Inverse; _↔_)
 open import Function.LeftInverse as LeftInv using (LeftInverse)
 open import Function.Surjection  as Surj    using (Surjection)
 open import Function.Consequences.Propositional
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
+open import Relation.Binary.Definitions using (Reflexive; Trans; Sym)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
 open import Data.Product.Base using (_,_; proj₁; proj₂; <_,_>)
@@ -103,7 +106,7 @@ toRelated {K = reverse-injection}   rel = lam (Inj.injection (B.Injection.to rel
 toRelated {K = left-inverse}        rel = LeftInv.leftInverse to from strictlyInverseʳ where open B.RightInverse rel
 toRelated {K = surjection}          rel = Surj.surjection to (proj₁ ∘ strictlySurjective) (proj₂ ∘ strictlySurjective)
   where open B.Surjection rel
-toRelated {K = bijection}           rel = 
+toRelated {K = bijection}           rel =
              Inv.inverse to from strictlyInverseʳ strictlyInverseˡ
   where open B.Inverse rel
 

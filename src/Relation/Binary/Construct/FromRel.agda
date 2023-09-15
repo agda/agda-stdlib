@@ -7,7 +7,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions using (_Respects_; Transitive)
 open Setoid using (Carrier)
 
 module Relation.Binary.Construct.FromRel
@@ -15,7 +18,6 @@ module Relation.Binary.Construct.FromRel
   {a r} {A : Set a} (_R_ : REL A (Carrier S) r) -- The relation
   where
 
-open import Data.Product
 open import Function.Base
 open import Level using (_⊔_)
 

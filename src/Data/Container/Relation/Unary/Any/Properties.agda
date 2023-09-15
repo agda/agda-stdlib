@@ -10,7 +10,7 @@ module Data.Container.Relation.Unary.Any.Properties where
 
 open import Level
 open import Algebra
-open import Data.Product as Prod using (∃; _×_; ∃₂; _,_; proj₂)
+open import Data.Product.Base using (∃; _×_; ∃₂; _,_; proj₂)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])

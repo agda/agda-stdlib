@@ -12,7 +12,7 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List
+open import Data.List.Base as List hiding (find)
 open import Data.List.Properties using (ʳ++-defn)
 open import Data.List.Effectful as Listₑ using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -25,7 +25,7 @@ open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
 open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
@@ -38,7 +38,8 @@ open import Function.Base
 open import Function.Bundles
 open import Function.Related.Propositional as Related using (Kind; Related)
 open import Level using (Level)
-open import Relation.Binary as B hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 open import Relation.Unary as U
@@ -394,7 +395,7 @@ module _ {P : A → Set p} where
 
   ++↔++ : ∀ xs ys → Any P (xs ++ ys) ↔ Any P (ys ++ xs)
   ++↔++ xs ys = mk↔′ (++-comm xs ys) (++-comm ys xs)
-                        (++-comm∘++-comm ys) (++-comm∘++-comm xs) 
+                        (++-comm∘++-comm ys) (++-comm∘++-comm xs)
 
   ++-insert : ∀ xs {ys} → P x → Any P (xs ++ [ x ] ++ ys)
   ++-insert xs Px = ++⁺ʳ xs (++⁺ˡ (singleton⁺ Px))
@@ -441,7 +442,7 @@ module _ {P : A → Set p} where
       P.cong there $ concat⁻∘concat⁺ p
 
   concat↔ : ∀ {xss} → Any (Any P) xss ↔ Any P (concat xss)
-  concat↔ {xss} = mk↔′ concat⁺ (concat⁻ xss) (concat⁺∘concat⁻ xss) concat⁻∘concat⁺ 
+  concat↔ {xss} = mk↔′ concat⁺ (concat⁻ xss) (concat⁺∘concat⁻ xss) concat⁻∘concat⁺
 
 ------------------------------------------------------------------------
 -- cartesianProductWith

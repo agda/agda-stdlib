@@ -9,13 +9,17 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Infimum
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures
+  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans; Trichotomous; tri≈; tri<; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 
 module Relation.Binary.Construct.Add.Infimum.Strict
   {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
-open import Data.Product
+open import Data.Product.Base using (_,_; map)
 open import Function.Base
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)

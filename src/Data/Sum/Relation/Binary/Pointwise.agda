@@ -8,8 +8,8 @@
 
 module Data.Sum.Relation.Binary.Pointwise where
 
-open import Data.Product using (_,_)
-open import Data.Sum.Base as Sum hiding (map)
+open import Data.Product.Base using (_,_)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Sum.Properties
 open import Level using (Level; _⊔_)
 open import Function.Base using (const; _∘_; id)
@@ -26,7 +26,7 @@ private
     A B C D : Set ℓ
     R S T U : REL A B ℓ
     ≈₁ ≈₂ : Rel A ℓ
-     
+
 ------------------------------------------------------------------------
 -- Definition
 

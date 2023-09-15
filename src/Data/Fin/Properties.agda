@@ -35,7 +35,12 @@ open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable; _⇔_)
+open import Relation.Binary.Definitions as B hiding (Decidable)
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
+open import Relation.Binary.Bundles
+  using (Preorder; Setoid; DecSetoid; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
 open import Relation.Nullary
@@ -262,7 +267,7 @@ cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
 subst-is-cast : (eq : m ≡ n) (k : Fin m) → subst Fin eq k ≡ cast eq k
 subst-is-cast refl k = sym (cast-is-id refl k)
 
-cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (k : Fin m) →
+cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (k : Fin m) →
              cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ zero = refl
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =

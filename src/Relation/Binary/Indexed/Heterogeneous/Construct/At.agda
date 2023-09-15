@@ -9,7 +9,8 @@
 
 module Relation.Binary.Indexed.Heterogeneous.Construct.At where
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
 open import Relation.Binary.Indexed.Heterogeneous
 
 ------------------------------------------------------------------------

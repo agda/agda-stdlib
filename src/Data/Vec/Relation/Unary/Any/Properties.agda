@@ -15,7 +15,7 @@ open import Data.List.Base using ([]; _∷_)
 import Data.List.Relation.Unary.Any as List
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Product as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
 open import Data.Vec.Base hiding (here; there)
 open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
@@ -28,7 +28,8 @@ open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary hiding (_∈_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
 
 private

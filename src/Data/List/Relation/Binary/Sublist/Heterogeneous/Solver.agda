@@ -23,7 +23,7 @@ open import Level using (_⊔_)
 open import Data.Fin as Fin
 open import Data.Maybe.Base as M
 open import Data.Nat.Base as Nat using (ℕ)
-open import Data.Product
+open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
 open import Data.List.Base hiding (lookup)
 open import Data.List.Properties

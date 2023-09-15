@@ -9,7 +9,7 @@
 
 module Data.Product.Function.NonDependent.Setoid where
 
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level using (Level)
 open import Relation.Binary

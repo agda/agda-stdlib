@@ -13,7 +13,9 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Bundles
 open import Level using (Level; _⊔_)
-open import Relation.Binary using (REL; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 import Relation.Binary.PropositionalEquality.Core as P
 import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
