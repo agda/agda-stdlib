@@ -1920,7 +1920,7 @@ Other minor changes
   subst-is-cast : subst Fin eq k ≡ cast eq k
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
 
-  fromℕ≢inject₁      : {j : Fin n} → fromℕ n ≢ inject₁ j
+  fromℕ≢inject₁      : {i : Fin n} → fromℕ n ≢ inject₁ i
   ```
 
 * Added new functions in `Data.Integer.Base`:
