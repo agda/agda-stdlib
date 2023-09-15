@@ -16,7 +16,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
-import Relation.Binary.PropositionalEquality.Core as P
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 open import Function.Consequences

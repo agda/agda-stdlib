@@ -15,6 +15,7 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent using ()
 open import Data.Product.Properties using (Σ-≡,≡→≡)
 open import Level using (Level)
 open import Function.Base
+open import Function.Properties.Inverse
 open import Function.Consequences.Propositional using (inverseʳ⇒injective)
 open import Function.Definitions using (Inverseˡ; Inverseʳ; Injective)
 open import Function.Bundles
@@ -58,7 +59,7 @@ module _ where
   Σ-↣ : ∀ (I↔J : I ↔ J) →
       (∀ {x} → A x ↣ B (Inverse.to I↔J x)) →
       Σ I A ↣ Σ J B
-  Σ-↣ {I = I} {J = J} {A = A} {B = B} I↔J A↣B = mk↣ {to = to′} {!!}
+  Σ-↣ {I = I} {J = J} {A = A} {B = B} I↔J A↣B = mk↣ to-injective
     where
     open P.≡-Reasoning
 
@@ -90,7 +91,7 @@ module _ where
           (g (from (to x)) $
            P.subst A (P.sym (P.cong from (strictlyInverseˡ (to x)))) y)  ≡⟨ P.cong (λ p → P.subst B p (g (from (to x))
                                                                                                            (P.subst A (P.sym (P.cong from p)) y)))
-                                                                               (P.sym ({!!})) ⟩  -- was: left-right x
+                                                                               (P.sym (lem2)) ⟩  -- was: left-right x
         P.subst B (P.cong to (strictlyInverseʳ x))
           (g (from (to x)) $
            P.subst A
@@ -106,6 +107,9 @@ module _ where
                (P.subst A (P.sym (P.cong from (P.cong to eq))) y)) ≡
           g x′ y
         lemma P.refl = P.refl
+
+        lem2 : P.cong to (inverseʳ P.refl) ≡ inverseˡ P.refl
+        lem2 = {!!}
 
 
     to-injective : Injective _≡_ _≡_ to′
@@ -192,9 +196,8 @@ module _ where
   open LeftInverse
 
   Σ-↩ : (I↩J : I ↩ J) →
-      -- (∀ {j} → A (LeftInverse.from I↩J j) ↩ B j) →
-      (∀ {i} → A i ↩ B (to I↩J i)) →
-      Σ I A ↩ Σ J B
+         (∀ {i} → A i ↩ B (to I↩J i)) →
+         Σ I A ↩ Σ J B
   Σ-↩ {I = I} {J = J} {A = A} {B = B} I↩J A↩B = mk↩ {to = to′ } {from = from′} inv
     where
     open P.≡-Reasoning
@@ -255,41 +258,49 @@ module _ where
   ↔ : (I↔J : I ↔ J) →
       (∀ {x} → A x ↔ B (to I↔J x)) →
       Σ I A ↔ Σ J B
-  ↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔ {to = to′} {from = from′} (invˡ , invʳ)
+  ↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔ (invˡ , invʳ)
    where
      open P.≡-Reasoning
      -- useful to make things look shorter
      I↔Jˡ : ∀ i → to I↔J (from I↔J i) ≡ i
      I↔Jˡ = strictlyInverseˡ I↔J
+
      I↔Jʳ : ∀ j → from I↔J (to I↔J j) ≡ j
      I↔Jʳ = strictlyInverseʳ I↔J
+     
      to′ : Σ I A → Σ J B
      to′ = map (to I↔J) (to A↔B)
+     
      from′ : Σ J B → Σ I A
-     from′ = map (from I↔J) λ {x} bx → from A↔B (P.subst B (P.sym {!strictlyInverseʳ I↔J ?!}) bx) -- (P.subst B (P.sym (strictlyInverseˡ I↔J x)) bx)
+     from′ = map (from I↔J) λ {x} bx → from A↔B (P.subst B (P.sym (strictlyInverseˡ I↔J x)) bx)
+     
      invˡ : Inverseˡ _≡_ _≡_ to′ from′
      invˡ {x = x₀ , x₁} P.refl = Σ-≡,≡→≡ (I↔Jˡ x₀ , (begin
        P.subst B (I↔Jˡ x₀)
          (to A↔B (from A↔B (P.subst B (P.sym (I↔Jˡ x₀)) x₁))) ≡⟨ P.cong (P.subst B _) (strictlyInverseˡ A↔B _) ⟩
        P.subst B (I↔Jˡ x₀) (P.subst B (P.sym (I↔Jˡ x₀)) x₁)   ≡⟨ P.subst-subst-sym (I↔Jˡ x₀) ⟩
        x₁ ∎))
+       
      invʳ : Inverseʳ _≡_ _≡_ to′ from′
      invʳ {x = x₀ , x₁} {y₀ , y₁} P.refl = Σ-≡,≡→≡ (eq₁ , eq₂)
        where
          eq₁ : proj₁ (from′ (y₀ , y₁)) ≡ x₀
-         eq₁ = {!strictlyInverseˡ I↔J (to I↔J x₀)!} -- strictlyInverseʳ I↔J x₀ -- proj₂ (inverse I↔J) P.refl -- inverseʳ I↔J (P.cong proj₁ y≡to-x)
+         eq₁ = strictlyInverseʳ I↔J x₀
+         
          eq₃ : to I↔J (from I↔J (to I↔J x₀)) ≡ to I↔J x₀
          eq₃ = {!I↔J!} -- this proof is forced upon us
          -- eq₄ : eq₃ ≡ P.cong (to I↔J) eq₁
+         
          eq₄ : {A B : Set} {f : A → B} {g : B → A} {a : A} {b : B} (eq₁ : f a ≡ b) (p : g (f a) ≡ a) (q : f (g b) ≡ b) → q ≡ P.subst (λ bb → f (g bb) ≡ bb) eq₁ (P.cong f p)
          eq₄ P.refl p q = {!!}
+
          eq₂ : P.subst A eq₁ (proj₂ (from′ (y₀ , y₁))) ≡ x₁
          eq₂ = begin
-           P.subst A eq₁ (proj₂ (from′ (y₀ , y₁)))                               ≡⟨⟩
-           P.subst A eq₁ (from A↔B (P.subst B (P.sym eq₃) y₁))                   ≡⟨ P.subst-application B (λ _ y → from A↔B y) eq₁ ⟩
-           from A↔B (P.subst B (P.cong (to I↔J) eq₁) (P.subst B (P.sym eq₃) y₁)) ≡⟨ {!eq₁!} ⟩
+           P.subst A eq₁ (proj₂ (from′ (y₀ , y₁)))                                 ≡⟨⟩
+           P.subst A eq₁ (from A↔B (P.subst B (P.sym eq₃) y₁))                    ≡⟨ P.subst-application B (λ _ y → from A↔B y) eq₁ ⟩
+           from A↔B (P.subst B (P.cong (to I↔J) eq₁) (P.subst B (P.sym eq₃) y₁)) ≡⟨ from-cong A↔B {!!} ⟩
            from A↔B (P.subst B (P.trans (P.sym eq₃) (P.cong (to I↔J) eq₁)) y₁)   ≡⟨ {!to-cong A↔B!} ⟩
-           x₁ ∎
+           x₁                                                                      ∎
 
 
 {-
