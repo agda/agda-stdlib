@@ -68,8 +68,7 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
 module Some {_<_ : Rel A r} {ℓ} where
 
   wfRecBuilder : SubsetRecursorBuilder (Acc _<_) (WfRec _<_ {ℓ = ℓ})
-  wfRecBuilder P f x (acc rs) = λ y<x →
-    f _ (wfRecBuilder P f _ (rs y<x))
+  wfRecBuilder P f x (acc rs) = λ y<x → f _ (wfRecBuilder P f _ (rs y<x))
 
   wfRec : SubsetRecursor (Acc _<_) (WfRec _<_)
   wfRec = subsetBuild wfRecBuilder
@@ -96,20 +95,24 @@ module All {_<_ : Rel A r} (wf : WellFounded _<_) {ℓ} where
 module FixPoint
   {_<_ : Rel A r} (wf : WellFounded _<_)
   (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P)
-  (f-ext : (x : A) {IH IH′ : WfRec _<_ P x} → (∀ {y} y<x → IH {y} y<x ≡ IH′ y<x) → f x IH ≡ f x IH′)
+  (f-ext : (x : A) {IH IH′ : WfRec _<_ P x} →
+           (∀ {y} y<x → IH {y} y<x ≡ IH′ y<x) →
+           f x IH ≡ f x IH′)
   where
 
-  some-wfRec-irrelevant : ∀ x → (q q′ : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q′
-  some-wfRec-irrelevant = All.wfRec wf
-                                   (λ x → (q q′ : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q′)
-                                   (λ { x IH (acc rs) (acc rs′) → f-ext x (λ y<x → IH y<x (rs y<x) (rs′ y<x)) })
+  some-wfrec-Irrelevant : Pred A _
+  some-wfrec-Irrelevant x = ∀ q q′ → Some.wfRec P f x q ≡ Some.wfRec P f x q′
+
+  some-wfRec-irrelevant : ∀ x → some-wfrec-Irrelevant x
+  some-wfRec-irrelevant = All.wfRec wf some-wfrec-Irrelevant
+    λ { x IH (acc rs) (acc rs′) → f-ext x λ y<x → IH y<x (rs y<x) (rs′ y<x) }
 
   open All wf {ℓ}
   wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y<x ≡ wfRec P f y
   wfRecBuilder-wfRec {x} {y} y<x with acc rs ← wf x
    = some-wfRec-irrelevant y (rs y<x) (wf y)
 
-  unfold-wfRec : ∀ {x} → wfRec P f x ≡ f x (λ {y} _ → wfRec P f y)
+  unfold-wfRec : ∀ {x} → wfRec P f x ≡ f x λ _ → wfRec P f _
   unfold-wfRec {x} = f-ext x wfRecBuilder-wfRec
 
 ------------------------------------------------------------------------
@@ -122,7 +125,7 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
                    (<₁⇒<₂ : ∀ {x y} → x <₁ y → x <₂ y) where
 
   accessible : Acc _<₂_ ⊆ Acc _<₁_
-  accessible (acc rs) = acc (λ y<x → accessible (rs (<₁⇒<₂ y<x)))
+  accessible (acc rs) = acc λ y<x → accessible (rs (<₁⇒<₂ y<x))
 
   wellFounded : WellFounded _<₂_ → WellFounded _<₁_
   wellFounded wf = λ x → accessible (wf x)
