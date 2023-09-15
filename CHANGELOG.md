@@ -1248,6 +1248,11 @@ Deprecated names
   +-isAbelianGroup ↦ +-0-isAbelianGroup
   ```
 
+* In `Data.List.Base`:
+  ```
+  _─_  ↦  removeAt
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   map-id₂         ↦  map-id-local
@@ -1412,7 +1417,6 @@ Deprecated names
 
 * In `Data.Vec.Base`:
   ```
-  _─_     ↦  removeAt
   remove  ↦  removeAt
   insert  ↦  insertAt
   ```
@@ -1433,11 +1437,12 @@ Deprecated names
 
   take-drop-id  ↦  take++drop≡id
 
-  map-insert      ↦  map-insertAt
-  insert-lookup   ↦  insertAt-lookup
-  insert-punchIn  ↦  insertAt-punchIn
-  remove-insert   ↦  removeAt-insertAt
-  insert-remove   ↦  insertAt-removeAt
+  map-insert       ↦  map-insertAt
+  insert-lookup    ↦  insertAt-lookup
+  insert-punchIn   ↦  insertAt-punchIn
+  remove-PunchOut  ↦ removeAt-punchOut
+  remove-insert    ↦  removeAt-insertAt
+  insert-remove    ↦  insertAt-removeAt
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```

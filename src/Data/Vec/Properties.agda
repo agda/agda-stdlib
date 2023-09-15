@@ -1195,15 +1195,15 @@ toList-insertAt xs       zero    v = refl
 toList-insertAt (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insertAt xs i v)
 
 ------------------------------------------------------------------------
--- remove
+-- removeAt
 
-remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
-                  lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
-remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
-remove-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
-remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
-remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
-  remove-punchOut (y ∷ xs) (i≢j ∘ cong suc)
+removeAt-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
+                  lookup (removeAt xs i) (Fin.punchOut i≢j) ≡ lookup xs j
+removeAt-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
+removeAt-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
+removeAt-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
+removeAt-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
+  removeAt-punchOut (y ∷ xs) (i≢j ∘ cong suc)
 
 ------------------------------------------------------------------------
 -- insertAt and removeAt
@@ -1328,6 +1328,11 @@ insert-punchIn = insertAt-punchIn
 {-# WARNING_ON_USAGE insert-punchIn
 "Warning: insert-punchIn was deprecated in v2.0.
 Please use insertAt-punchIn instead."
+#-}
+remove-PunchOut = removeAt-punchOut
+{-# WARNING_ON_USAGE remove-PunchOut
+"Warning: remove-PunchOut was deprecated in v2.0.
+Please use removeAt-punchOut instead."
 #-}
 remove-insert = removeAt-insertAt
 {-# WARNING_ON_USAGE remove-insert

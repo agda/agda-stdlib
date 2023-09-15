@@ -363,19 +363,13 @@ transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
 
 -- Version 2.0
 
-infixl 6 _─_
-_─_ = removeAt
-{-# WARNING_ON_USAGE _─_
-"Warning: _─_ was deprecated in v2.0.
-Please use removeAt instead."
-#-}
 remove = removeAt
-{-# WARNING_ON_USAGE _─_
+{-# WARNING_ON_USAGE remove
 "Warning: remove was deprecated in v2.0.
 Please use removeAt instead."
 #-}
 insert = insertAt
-{-# WARNING_ON_USAGE _─_
+{-# WARNING_ON_USAGE insert
 "Warning: insert was deprecated in v2.0.
 Please use insertAt instead."
 #-}
