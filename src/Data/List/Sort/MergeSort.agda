@@ -21,7 +21,7 @@ open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Perm
 open import Data.Maybe.Base using (just)
 open import Relation.Nullary.Decidable using (does)
-open import Data.Nat using (_<_; _>_; z<s; s<s)
+open import Data.Nat.Base using (_<_; _>_; z<s; s<s)
 open import Data.Nat.Induction
 open import Data.Nat.Properties using (m<n⇒m<1+n)
 open import Data.Product.Base as Prod using (_,_)
@@ -36,7 +36,7 @@ open DecTotalOrder O renaming (Carrier to A)
 
 open import Data.List.Sort.Base totalOrder
 open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder hiding (head)
-open import Relation.Binary.Properties.DecTotalOrder O using (_≰_; ≰⇒≥; ≰-respˡ-≈)
+open import Relation.Binary.Properties.DecTotalOrder O using (≰⇒≥; ≰-respˡ-≈)
 
 open PermutationReasoning
 
