@@ -134,12 +134,12 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Preorder preorder public
-    using (module Eq)
-
+    using (module Eq) renaming (_≁_ to _≰_)
+{-
   infix 4 _≰_
   _≰_ : Rel Carrier _
   x ≰ y = ¬ (x ≤ y)
-
+-}
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _≤_
