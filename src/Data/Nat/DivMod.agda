@@ -186,12 +186,10 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 ------------------------------------------------------------------------
 -- Properties of _/_
 
-/-congˡ :  .{{_ : NonZero o}} →
-          m ≡ n → m / o ≡ n / o
+/-congˡ : .{{_ : NonZero o}} → m ≡ n → m / o ≡ n / o
 /-congˡ refl = refl
 
-/-congʳ : .{{_ : NonZero n}} .{{_ : NonZero o}} →
-          n ≡ o → m / n ≡ m / o
+/-congʳ : .{{_ : NonZero n}} .{{_ : NonZero o}} → n ≡ o → m / n ≡ m / o
 /-congʳ refl = refl
 
 0/n≡0 : ∀ n .{{_ : NonZero n}} → 0 / n ≡ 0
