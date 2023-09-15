@@ -930,8 +930,6 @@ Non-backwards compatible changes
     ```
   * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
     `¬¬-excluded-middle`.
-  * `length-─` in `Data.List.Properties` has been renamed to `length-removeAt`
-     with a new type `suc (length (removeAt xs k)) ≡ length xs`
 
 Major improvements
 ------------------
@@ -1266,7 +1264,7 @@ Deprecated names
 
   ʳ++-++  ↦  ++-ʳ++
 
-  take++drop ↦ take++drop≡id
+  take++drop  ↦  take++drop≡id
 
   length-─  ↦  length-removeAt
   map-─     ↦  map-removeAt
@@ -1414,9 +1412,9 @@ Deprecated names
 
 * In `Data.Vec.Base`:
   ```
-  _─_     ↦ removeAt
-  remove  ↦ removeAt
-  insert  ↦ insertAt
+  _─_     ↦   removeAt
+  remove  ↦  removeAt
+  insert  ↦  insertAt
   ```
 
 * In `Data.Vec.Properties`:
@@ -1433,7 +1431,13 @@ Deprecated names
   idIsFold        ↦ id-is-foldr
   sum-++-commute  ↦ sum-++
 
-  take-drop-id ↦ take++drop≡id
+  take-drop-id  ↦  take++drop≡id
+
+  map-insert      ↦ map-insertAt
+  insert-lookup   ↦ insertAt-lookup
+  insert-punchIn  ↦ insertAt-punchIn
+  remove-insert   ↦ removeAt-insertAt
+  insert-remove   ↦ insertAt-removeAt
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```
@@ -1442,12 +1446,6 @@ Deprecated names
   to
   ```
   zipWith-comm : ∀ {f : A → B → C} {g : B → A → C}  (comm : ∀ x y → f x y ≡ g y x) (xs : Vec A n) ys → zipWith f xs ys ≡ zipWith g ys xs
-
-  map-insert      ↦ map-insertAt
-  insert-lookup   ↦ insertAt-lookup
-  insert-punchIn  ↦ insertAt-punchIn
-  remove-insert   ↦ removeAt-insertAt
-  insert-remove   ↦ insertAt-removeAt
   ```
 
 * In `Data.Vec.Functional.Properties`:
