@@ -1412,7 +1412,7 @@ Deprecated names
 
 * In `Data.Vec.Base`:
   ```
-  _─_     ↦   removeAt
+  _─_     ↦  removeAt
   remove  ↦  removeAt
   insert  ↦  insertAt
   ```
@@ -1433,11 +1433,11 @@ Deprecated names
 
   take-drop-id  ↦  take++drop≡id
 
-  map-insert      ↦ map-insertAt
-  insert-lookup   ↦ insertAt-lookup
-  insert-punchIn  ↦ insertAt-punchIn
-  remove-insert   ↦ removeAt-insertAt
-  insert-remove   ↦ insertAt-removeAt
+  map-insert      ↦  map-insertAt
+  insert-lookup   ↦  insertAt-lookup
+  insert-punchIn  ↦  insertAt-punchIn
+  remove-insert   ↦  removeAt-insertAt
+  insert-remove   ↦  insertAt-removeAt
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```
@@ -2289,9 +2289,10 @@ Other minor changes
 
   drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
 
-  length-insertAt   : ∀ (xs : List A) (i : Fin (suc (length xs))) v → length (insertAt xs i v) ≡ suc (length xs)
-  removeAt-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v → removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
-  insertAt-removeAt : (xs : List A) (i : Fin (length xs)) → insertAt (removeAt xs i) (cast (sym (lengthAt-removeAt xs i)) i) (lookup xs i) ≡ xs
+  length-insertAt   : length (insertAt xs i v) ≡ suc (length xs)
+  length-removeAt′  : length xs ≡ suc (length (removeAt xs k))
+  removeAt-insertAt : removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
+  insertAt-removeAt : insertAt (removeAt xs i) (cast (sym (lengthAt-removeAt xs i)) i) (lookup xs i) ≡ xs
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:

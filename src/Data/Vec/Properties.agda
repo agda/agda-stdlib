@@ -1158,16 +1158,16 @@ remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
 
 removeAt-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
                     removeAt (insertAt xs i v) i ≡ xs
-removeAt-insertAt xs           zero           v = refl
-removeAt-insertAt (x ∷ xs)     (suc zero)     v = refl
-removeAt-insertAt (x ∷ y ∷ xs) (suc (suc i))  v =
-  cong (x ∷_) (removeAt-insertAt (y ∷ xs) (suc i) v)
+removeAt-insertAt xs               zero           v = refl
+removeAt-insertAt (x ∷ xs)         (suc zero)     v = refl
+removeAt-insertAt (x ∷ xs@(_ ∷ _)) (suc (suc i))  v =
+  cong (x ∷_) (removeAt-insertAt xs (suc i) v)
 
 insertAt-removeAt : ∀ (xs : Vec A (suc n)) (i : Fin (suc n)) →
                     insertAt (removeAt xs i) i (lookup xs i) ≡ xs
-insertAt-removeAt (x ∷ xs)     zero     = refl
-insertAt-removeAt (x ∷ y ∷ xs) (suc i)  =
-  cong (x ∷_) (insertAt-removeAt (y ∷ xs) i)
+insertAt-removeAt (x ∷ xs)         zero     = refl
+insertAt-removeAt (x ∷ xs@(_ ∷ _)) (suc i)  =
+  cong (x ∷_) (insertAt-removeAt xs i)
 
 ------------------------------------------------------------------------
 -- Conversion function

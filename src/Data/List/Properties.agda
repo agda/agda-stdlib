@@ -756,10 +756,12 @@ length-insertAt (x ∷ xs) (suc i) v = cong suc (length-insertAt xs i v)
 ------------------------------------------------------------------------
 -- removeAt
 
-length-removeAt : ∀ (xs : List A) k →
-                  suc (length (removeAt xs k)) ≡ length xs
-length-removeAt (x ∷ xs) zero    = refl
-length-removeAt (x ∷ xs) (suc k) = cong suc (length-removeAt xs k)
+length-removeAt : ∀ (xs : List A) k → length (removeAt xs k) ≡ pred (length xs)
+length-removeAt (x ∷ xs) zero            = refl
+length-removeAt (x ∷ xs@(_ ∷ _)) (suc k) = cong suc (length-removeAt xs k)
+
+length-removeAt′ : ∀ (xs : List A) k → length xs ≡ suc (length (removeAt xs k))
+length-removeAt′ xs@(_ ∷ _) k rewrite length-removeAt xs k = refl
 
 map-removeAt : ∀ xs k (f : A → B) →
             let eq = sym (length-map f xs) in
@@ -776,9 +778,9 @@ removeAt-insertAt xs       zero    v = refl
 removeAt-insertAt (x ∷ xs) (suc i) v = cong (_ ∷_) (removeAt-insertAt xs i v)
 
 insertAt-removeAt : (xs : List A) (i : Fin (length xs)) →
-  insertAt (removeAt xs i) (cast (sym (length-removeAt xs i)) i) (lookup xs i) ≡ xs
-insertAt-removeAt (x ∷ xs) zero = refl
-insertAt-removeAt (x ∷ xs) (suc i) = cong (_ ∷_) (insertAt-removeAt xs i)
+  insertAt (removeAt xs i) (cast (length-removeAt′ xs i) i) (lookup xs i) ≡ xs
+insertAt-removeAt (x ∷ xs) zero    = refl
+insertAt-removeAt (x ∷ xs) (suc i) = cong (x ∷_) (insertAt-removeAt xs i)
 
 ------------------------------------------------------------------------
 -- take
