@@ -59,7 +59,7 @@ open PosetProperties public
   }
 
 open TotalOrder ≥-totalOrder public
-  using () renaming (total to ≥-total)
+  using () renaming (total to ≥-total; _≰_ to _≱_)
 
 ------------------------------------------------------------------------
 -- _<_ - the strict version is a strict partial order
