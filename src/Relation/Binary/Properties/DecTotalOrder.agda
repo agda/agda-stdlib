@@ -87,8 +87,7 @@ open StrictTotalOrder <-strictTotalOrder public
 
 open TotalOrderProperties public
   using
-  ( _≰_
-  ; ≰-respʳ-≈
+  ( ≰-respʳ-≈
   ; ≰-respˡ-≈
   ; ≰⇒>
   ; ≰⇒≥
