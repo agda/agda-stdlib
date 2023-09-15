@@ -2225,7 +2225,6 @@ Other minor changes
   ++-[]-rawMonoid : Set a → RawMonoid a _
 
   insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
-  removeAt : (xs : List A) → Fin (length xs) → List A
   updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
   ```
 
