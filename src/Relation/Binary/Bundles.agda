@@ -242,7 +242,7 @@ record TotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Poset poset public
-    using (module Eq; preorder)
+    using (module Eq; preorder; _≰_)
 
   totalPreorder : TotalPreorder c ℓ₁ ℓ₂
   totalPreorder = record

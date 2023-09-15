@@ -20,7 +20,7 @@ open import Relation.Nullary.Negation using (contradiction)
 module Relation.Binary.Properties.Poset
    {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
 
-open Poset P renaming (Carrier to A)
+open Poset P renaming (Carrier to A; _≰_ to _≰A_) -- issue #1214
 
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
@@ -62,15 +62,10 @@ open Poset ≥-poset public
 ------------------------------------------------------------------------
 -- Negated order
 
-infix 4 _≰_
-
-_≰_ : Rel A p₃
-x ≰ y = ¬ (x ≤ y)
-
-≰-respˡ-≈ : _≰_ Respectsˡ _≈_
+≰-respˡ-≈ : _≰A_ Respectsˡ _≈_
 ≰-respˡ-≈ x≈y = _∘ ≤-respˡ-≈ (Eq.sym x≈y)
 
-≰-respʳ-≈ : _≰_ Respectsʳ _≈_
+≰-respʳ-≈ : _≰A_ Respectsʳ _≈_
 ≰-respʳ-≈ x≈y = _∘ ≤-respʳ-≈ (Eq.sym x≈y)
 
 ------------------------------------------------------------------------
@@ -133,3 +128,18 @@ mono⇒cong = Consequences.mono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
 antimono⇒cong = Consequences.antimono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infix 4 _≰_
+_≰_ = _≰A_
+{-# WARNING_ON_USAGE _≤_
+"Warning: _≰_ was deprecated in v2.0. Please use  Relation.Binary.Bundles.Poset._≰_ instead"
+#-}
