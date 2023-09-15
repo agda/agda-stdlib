@@ -101,6 +101,12 @@ Inverse⇒Equivalence I = record
   ; from-cong = from-cong
   } where open Inverse I
 
+↔⇒⟶ : A ↔ B → A ⟶ B
+↔⇒⟶ = toFunction
+
+↔⇒⟵ : A ↔ B → B ⟶ A
+↔⇒⟵ = fromFunction
+
 ↔⇒↣ : A ↔ B → A ↣ B
 ↔⇒↣ = Inverse⇒Injection
 

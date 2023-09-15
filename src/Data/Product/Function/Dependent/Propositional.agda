@@ -14,6 +14,8 @@ open import Data.Product.Function.NonDependent.Setoid using ()
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using ()
 open import Data.Product.Properties using (Σ-≡,≡→≡; Σ-≡,≡↔≡; Σ-≡,≡←≡)
 open import Level using (Level)
+open import Function.Related.TypeIsomorphisms
+open import Function.Related.Propositional
 open import Function.Base
 open import Function.Properties.Inverse
 open import Function.Properties.Inverse.HalfAdjointEquivalence
@@ -32,6 +34,15 @@ private
 ------------------------------------------------------------------------
 -- Combinators for various function types
 
+module _ where
+  open Func
+
+  Σ-⟶ : (I⟶J : I ⟶ J) →
+         (∀ {i} → A i ⟶ B (to I⟶J i)) →
+         Σ I A ⟶ Σ J B
+  Σ-⟶ I⟶J A⟶B = mk⟶ $ Prod.map (to I⟶J) (to A⟶B)
+
+ 
 module _ where
   open Equivalence
 
@@ -238,90 +249,79 @@ module _ where
 module _ where
   open Inverse
 
+
   ↔ : (I↔J : I ↔ J) →
-      (∀ {x} → A x ↔ B (to I↔J x)) →
+      (∀ {x} → A x ↔ B (Inverse.to I↔J x)) →
       Σ I A ↔ Σ J B
-  ↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔ (invˡ , invʳ)
-   where
-     open P.≡-Reasoning
-     -- useful to make things look shorter
-     I↔Jˡ : ∀ i → to I↔J (from I↔J i) ≡ i
-     I↔Jˡ = strictlyInverseˡ I↔J
+  ↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔′
+    (Surjection.to  surjection′)
+    (Surjection.to⁻ surjection′)
+    (Surjection.to∘to⁻  surjection′)
+    left-inverse-of
+    where
+    open P.≡-Reasoning
 
-     I↔Jʳ : ∀ j → from I↔J (to I↔J j) ≡ j
-     I↔Jʳ = strictlyInverseʳ I↔J
-     
-     to′ : Σ I A → Σ J B
-     to′ = map (to I↔J) (to A↔B)
-     
-     from′ : Σ J B → Σ I A
-     from′ = map (from I↔J) λ {x} bx → from A↔B (P.subst B (P.sym (strictlyInverseˡ I↔J x)) bx)
-     
-     invˡ : Inverseˡ _≡_ _≡_ to′ from′
-     invˡ {x = x₀ , x₁} P.refl = Σ-≡,≡→≡ (I↔Jˡ x₀ , (begin
-       P.subst B (I↔Jˡ x₀)
-         (to A↔B (from A↔B (P.subst B (P.sym (I↔Jˡ x₀)) x₁))) ≡⟨ P.cong (P.subst B _) (strictlyInverseˡ A↔B _) ⟩
-       P.subst B (I↔Jˡ x₀) (P.subst B (P.sym (I↔Jˡ x₀)) x₁)   ≡⟨ P.subst-subst-sym (I↔Jˡ x₀) ⟩
-       x₁ ∎))
-       
-     invʳ : Inverseʳ _≡_ _≡_ to′ from′
-     invʳ {x = x₀ , x₁} {y₀ , y₁} P.refl = Σ-≡,≡→≡ (eq₁ , eq₂)
-       where
-         eq₁ : proj₁ (from′ (y₀ , y₁)) ≡ x₀
-         eq₁ = strictlyInverseʳ I↔J x₀
-         
-         eq₃ : to I↔J (from I↔J (to I↔J x₀)) ≡ to I↔J x₀
-         eq₃ = {!I↔J!} -- this proof is forced upon us
-         -- eq₄ : eq₃ ≡ P.cong (to I↔J) eq₁
-         
-         eq₄ : {A B : Set} {f : A → B} {g : B → A} {a : A} {b : B} (eq₁ : f a ≡ b) (p : g (f a) ≡ a) (q : f (g b) ≡ b) → q ≡ P.subst (λ bb → f (g bb) ≡ bb) eq₁ (P.cong f p)
-         eq₄ P.refl p q = {!!}
+    I≃J = ↔⇒≃ I↔J
 
-         eq₂ : P.subst A eq₁ (proj₂ (from′ (y₀ , y₁))) ≡ x₁
-         eq₂ = begin
-           P.subst A eq₁ (proj₂ (from′ (y₀ , y₁)))                                 ≡⟨⟩
-           P.subst A eq₁ (from A↔B (P.subst B (P.sym eq₃) y₁))                    ≡⟨ P.subst-application B (λ _ y → from A↔B y) eq₁ ⟩
-           from A↔B (P.subst B (P.cong (to I↔J) eq₁) (P.subst B (P.sym eq₃) y₁)) ≡⟨ from-cong A↔B {!!} ⟩
-           from A↔B (P.subst B (P.trans (P.sym eq₃) (P.cong (to I↔J) eq₁)) y₁)   ≡⟨ {!to-cong A↔B!} ⟩
-           x₁                                                                      ∎
+    surjection′ : _↠_ (Σ I A) (Σ J B)
+    surjection′ = ↠ (↔⇒↠ (≃⇒↔ I≃J)) (↔⇒↠ A↔B)
+
+    left-inverse-of :
+      ∀ p → Surjection.to⁻ surjection′
+              (Surjection.to surjection′ p) ≡ p
+    left-inverse-of (x , y) = Inverse.to Σ-≡,≡↔≡
+      ( _≃_.left-inverse-of I≃J x
+      , (P.subst A (_≃_.left-inverse-of I≃J x)
+           (Inverse.from A↔B
+              (P.subst B (P.sym (_≃_.right-inverse-of I≃J
+                                    (_≃_.to I≃J x)))
+                 (Inverse.to A↔B y)))                   ≡⟨ P.subst-application B (λ _ → Inverse.from A↔B) _ ⟩
+
+         Inverse.from A↔B
+           (P.subst B (P.cong (_≃_.to I≃J)
+                          (_≃_.left-inverse-of I≃J x))
+              (P.subst B (P.sym (_≃_.right-inverse-of I≃J
+                                    (_≃_.to I≃J x)))
+                 (Inverse.to A↔B y)))                   ≡⟨ P.cong (λ eq → Inverse.from A↔B (P.subst B eq
+                                                                                  (P.subst B (P.sym (_≃_.right-inverse-of I≃J _)) _)))
+                                                                   (_≃_.left-right I≃J _) ⟩
+         Inverse.from A↔B 
+           (P.subst B (_≃_.right-inverse-of I≃J
+                          (_≃_.to I≃J x))
+              (P.subst B (P.sym (_≃_.right-inverse-of I≃J
+                                    (_≃_.to I≃J x)))
+                 (Inverse.to A↔B y)))                   ≡⟨ P.cong (Inverse.from A↔B)
+                                                                   (P.subst-subst-sym (_≃_.right-inverse-of I≃J _)) ⟩
+
+         Inverse.from A↔B (Inverse.to A↔B y)      ≡⟨ Inverse.strictlyInverseʳ A↔B _ ⟩
+
+         y                                                    ∎)
+      )
 
 
-{-
-private
-
-  swap-coercions : ∀ {k a₁ a₂ b₁ b₂} {I : Set a₁} {J : Set a₂}
-    {A : I → Set b₁} (B : J → Set b₂)
+private module _ where
+  open Inverse
+  
+  swap-coercions : ∀ {k} (B : J → Set b)
     (I↔J : _↔_ I J) →
-    (∀ {x} → A x ∼[ k ] B (Inverse.to I↔J ⟨$⟩ x)) →
-    ∀ {x} → A (Inverse.from I↔J ⟨$⟩ x) ∼[ k ] B x
-  swap-coercions {k} {A = A} B I↔J eq {x} =
-    A (Inverse.from I↔J ⟨$⟩ x)
-      ∼⟨ eq ⟩
-    B (Inverse.to I↔J ⟨$⟩ (Inverse.from I↔J ⟨$⟩ x))
-      ↔⟨ K-reflexive
-         (P.cong B $ Inverse.right-inverse-of I↔J x) ⟩
-    B x
-      ∎
+    (∀ {x} → A x ∼[ k ] B (to I↔J x)) →
+    ∀ {x} → A (from I↔J x) ∼[ k ] B x
+  swap-coercions {A = A} B I↔J eq {x} =
+    A (from I↔J x)           ∼⟨ eq ⟩
+    B (to I↔J (from I↔J x)) ↔⟨ K-reflexive (P.cong B $ strictlyInverseˡ I↔J x) ⟩
+    B x                       ∎
     where open EquationalReasoning
+   
 
-cong : ∀ {k a₁ a₂ b₁ b₂}
-         {I : Set a₁} {J : Set a₂}
-         {A : I → Set b₁} {B : J → Set b₂}
-       (I↔J : _↔_ I J) →
-       (∀ {x} → A x ∼[ k ] B (Inverse.to I↔J ⟨$⟩ x)) →
+cong : ∀ {k} (I↔J : _↔_ I J) →
+       (∀ {x} → A x ∼[ k ] B (Inverse.to I↔J x)) →
        Σ I A ∼[ k ] Σ J B
-cong {implication}                   =
-  λ I↔J → map (_⟨$⟩_ (Inverse.to I↔J))
-cong {reverse-implication} {B = B} =
-  λ I↔J A←B → lam (map (_⟨$⟩_ (Inverse.from I↔J))
-    (app-← (swap-coercions B I↔J A←B)))
-cong {equivalence}                   = ⇔-↠ ∘ Inverse.surjection
-cong {injection}                     = ↣
-cong {reverse-injection}   {B = B} =
-  λ I↔J A↢B → lam (↣ (Inv.sym I↔J)
-    (app-↢ (swap-coercions B I↔J A↢B)))
-cong {left-inverse}                  =
-  λ I↔J → ↩ (Inverse.left-inverse I↔J) ∘ swap-coercions _ I↔J
-cong {surjection}                    = ↠ ∘ Inverse.surjection
-cong {bijection}                     = ↔
--}
+cong {k = implication}                   = λ I↔J A⟶B → Σ-⟶ (↔⇒⟶ I↔J) A⟶B
+cong {B = B} {k = reverseImplication}    = λ I↔J A⟵B → Σ-⟶ (↔⇒⟵ I↔J) (swap-coercions {k = reverseImplication} B I↔J A⟵B)
+cong {k = equivalence}                   = Σ-↠ ∘ ↔⇒↠
+cong {k = injection}                     = ↣
+cong {B = B} {k = reverseInjection}      = λ I↔J A↢B → ↣ {!↔-sym {?} {?} {?} ?!} (swap-coercions {k = reverseInjection} B I↔J A↢B)
+  -- lam (↣ (Inv.sym I↔J) (app-↢ (swap-coercions B I↔J A↢B)))
+cong {B = B} {k = leftInverse}           = λ I↔J → {!Σ-↩!} ∘ swap-coercions B I↔J --↩ (Inverse.left-inverse I↔J)
+cong {k = surjection}                    = ↠ ∘ ↔⇒↠
+cong {k = bijection}                     = ↔
