@@ -2706,7 +2706,6 @@ Other minor changes
 
   toList-++ : toList (xs ++ ys) ≡ toList xs List.++ toList ys
 
-  toList-cast   : toList (cast eq xs) ≡ toList xs
   cast-is-id    : cast eq xs ≡ xs
   subst-is-cast : subst (Vec A) eq xs ≡ cast eq xs
   cast-trans    : cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
@@ -2714,10 +2713,22 @@ Other minor changes
   lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
+  cast-reverse : cast eq ∘ reverse ≗ reverse ∘ cast eq
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
-  length-toList : List.length (toList xs) ≡ length xs
+  ++-assoc     : cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
+  ++-identityʳ : cast eq (xs ++ []) ≡ xs
+  init-reverse : init ∘ reverse ≗ reverse ∘ tail
+  last-reverse : last ∘ reverse ≗ head
+  reverse-++   : cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs
+
+  toList-cast   : toList (cast eq xs) ≡ toList xs
+  cast-fromList : cast _ (fromList xs) ≡ fromList ys
+  fromList-map  : cast _ (fromList (List.map f xs)) ≡ map f (fromList xs)
+  fromList-++   : cast _ (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+
+  length-toList   : List.length (toList xs) ≡ length xs
   toList-insertAt : toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (sym (length-toList xs))) i) v
   ```
 
