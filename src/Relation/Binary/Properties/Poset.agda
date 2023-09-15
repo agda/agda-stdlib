@@ -21,7 +21,7 @@ open import Relation.Nullary.Negation using (contradiction)
 module Relation.Binary.Properties.Poset
    {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
 
-open Poset P renaming (Carrier to A; _≰_ to _≰A_) -- issue #1214
+open Poset P renaming (Carrier to A; _≰_ to _≰A_) -- issue #1214 see below
 
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
@@ -99,10 +99,10 @@ open StrictPartialOrder <-strictPartialOrder public
 ≤∧≉⇒< : ∀ {x y} → x ≤ y → x ≉ y → x < y
 ≤∧≉⇒< = ToStrict.≤∧≉⇒<
 
-<⇒≱ : ∀ {x y} → x < y → ¬ (y ≤ x)
+<⇒≱ : ∀ {x y} → x < y → y ≰A x
 <⇒≱ = ToStrict.<⇒≱ antisym
 
-≤⇒≯ : ∀ {x y} → x ≤ y → ¬ (y < x)
+≤⇒≯ : ∀ {x y} → x ≤ y → y ≮ x
 ≤⇒≯ = ToStrict.≤⇒≯ antisym
 
 ------------------------------------------------------------------------
@@ -149,6 +149,8 @@ antimono⇒cong = Consequences.antimono⇒cong _≈_ _≈_ Eq.sym reflexive anti
 
 -- Version 2.0
 
+-- issue #1214: locally to this module, we rename the relation _≰_,
+-- so that we can deprecate it here, yet re-export it elsewhere
 infix 4 _≰_
 _≰_ = _≰A_
 {-# WARNING_ON_USAGE _≤_
