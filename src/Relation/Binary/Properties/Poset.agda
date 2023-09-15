@@ -108,7 +108,7 @@ open StrictPartialOrder <-strictPartialOrder public
 ------------------------------------------------------------------------
 -- Relating ≮ and λ x y → ¬ (x < y): now definitionally equal!
 
-private 
+private
   ≮⇒¬< : ∀ {x y} → x ≮ y → ¬ (x < y)
   ≮⇒¬< x≮y x<y = contradiction x<y x≮y
 
