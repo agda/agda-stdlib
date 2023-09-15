@@ -6,6 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+open import Data.Product.Base using (_,_)
 open import Function.Base using (flip; _∘_)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Relation.Binary.Bundles using (Poset; StrictPartialOrder)
@@ -85,7 +86,7 @@ _<_ = ToStrict._<_
   }
 
 open StrictPartialOrder <-strictPartialOrder public
-  using ( <-resp-≈; <-respʳ-≈; <-respˡ-≈)
+  using (_≮_; <-resp-≈; <-respʳ-≈; <-respˡ-≈)
   renaming
   ( irrefl to <-irrefl
   ; asym   to <-asym
@@ -103,6 +104,16 @@ open StrictPartialOrder <-strictPartialOrder public
 
 ≤⇒≯ : ∀ {x y} → x ≤ y → ¬ (y < x)
 ≤⇒≯ = ToStrict.≤⇒≯ antisym
+
+------------------------------------------------------------------------
+-- Relating ≮ and λ x y → ¬ (x < y): now definitionally equal!
+
+private 
+  ≮⇒¬< : ∀ {x y} → x ≮ y → ¬ (x < y)
+  ≮⇒¬< x≮y x<y = contradiction x<y x≮y
+
+  ¬<⇒≮ : ∀ {x y} → ¬ (x < y) → x ≮ y
+  ¬<⇒≮ x≮y x<y = contradiction x<y x≮y
 
 ------------------------------------------------------------------------
 -- If ≤ is decidable then so is ≈
