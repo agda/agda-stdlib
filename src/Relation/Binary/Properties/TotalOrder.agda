@@ -13,7 +13,9 @@ open import Relation.Binary.Structures using (IsTotalOrder)
 module Relation.Binary.Properties.TotalOrder
   {t₁ t₂ t₃} (T : TotalOrder t₁ t₂ t₃) where
 
-open TotalOrder T
+-- issue #1214: locally to this module, we rename the relation _≰_, so
+-- that we can deprecate it here, yet re-export it elsewhere
+open TotalOrder T renaming (_≰_ to _≰A_)
 
 open import Data.Product.Base using (proj₁)
 open import Data.Sum.Base using (inj₁; inj₂)
@@ -94,8 +96,23 @@ open PosetProperties public
   ; ≰-respˡ-≈
   )
 
-≰⇒> : ∀ {x y} → x ≰ y → y < x
+≰⇒> : ∀ {x y} → x ≰A y → y < x
 ≰⇒> = ToStrict.≰⇒> Eq.sym reflexive total
 
-≰⇒≥ : ∀ {x y} → x ≰ y → y ≤ x
+≰⇒≥ : ∀ {x y} → x ≰A y → y ≤ x
 ≰⇒≥ x≰y = proj₁ (≰⇒> x≰y)
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+-- issue #1214: see above
+infix 4 _≰_
+_≰_ = _≰A_
+{-# WARNING_ON_USAGE _≰_
+"Warning: export of _≰_ from this module was deprecated in v2.0. Please import from Relation.Binary.Bundles.Poset instead"
+#-}

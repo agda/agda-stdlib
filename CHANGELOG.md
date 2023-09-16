@@ -354,8 +354,8 @@ Non-backwards compatible changes
 * The module `Function.Definitions` no longer has two equalities as module arguments, as
   they did not interact as intended with the re-exports from `Function.Definitions.(Core1/Core2)`.
   The latter have been removed and their definitions folded into `Function.Definitions`.
-  
-* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective` 
+
+* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective`
   have been changed from:
   ```
   Surjective f = ∀ y → ∃ λ x → f x ≈₂ y
@@ -370,16 +370,16 @@ Non-backwards compatible changes
   ```
   This is for several reasons: i) the new definitions compose much more easily, ii) Agda
   can better infer the equalities used.
-  
+
   To ease backwards compatibility:
-   - the old definitions have been moved to the new names  `StrictlySurjective`, 
-	 `StrictlyInverseˡ` and `StrictlyInverseʳ`. 
-   - The records in  `Function.Structures` and `Function.Bundles` export proofs 
-	 of these under the names `strictlySurjective`, `strictlyInverseˡ` and 
-	 `strictlyInverseʳ`,
+   - the old definitions have been moved to the new names  `StrictlySurjective`,
+         `StrictlyInverseˡ` and `StrictlyInverseʳ`.
+   - The records in  `Function.Structures` and `Function.Bundles` export proofs
+         of these under the names `strictlySurjective`, `strictlyInverseˡ` and
+         `strictlyInverseʳ`,
    - Conversion functions have been added in both directions to
-	 `Function.Consequences(.Propositional)`. 
-  
+         `Function.Consequences(.Propositional)`.
+
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
@@ -762,20 +762,22 @@ Non-backwards compatible changes
   IO.Effectful
   IO.Instances
   ```
-### (Issue #1214) Reorganisation of the introduction of negated relation symbols under `Relation.Binary` 
+### (Issue #1214) Reorganisation of the introduction of negated relation symbols under `Relation.Binary`
 
-* Previously, negated relation symbols `_≰_` (for `Poset`) and `_≮_` (`StrictPartialOrder`)
-  were introduced in the corresponding `Relation.Binary.Properties` modules, for re-export. 
+* Previously, negated relation symbols `_≰_` (for `Poset`) and `_≮_` (`TotalOrder`)
+  were introduced in the corresponding `Relation.Binary.Properties` modules, for re-export.
 
 * Now they are introduced as definitions in the corresponding `Relation.Binary.Bundles`,
-  together with, for uniformity's sake, an additional negated symbol `_≁_` for `Preorder`. 
+  together with, for uniformity's sake, an additional negated symbol `_≁_` for `Preorder`.
+  NB `_≮_` is now introduced *earlier* in the hierarchy, at `StrictPartialOrder`, which
+  incurs some rather complicated deprecation gymnastics...
 
 * Accordingly, `_≰_` is in fact now a renamed `public` re-export from `Preorder`
   in each of `TotalPreorder` and `Poset`, as the negated version of the corresponding
   symbol introduced as a field name for the relation there.
 
 * As knock-on changes, public re-exports of `Preorder`, `Poset`, `StrictPartialOrder`
-  in derived bundles also now need to re-export the new symbols accordingly. 
+  in derived bundles also now need to re-export the new symbols accordingly.
 
 * Backwards compatibility has been maintained, with deprecated definitions in the
   corresponding `Relation.Binary.Properties` modules, and the corresponding client
@@ -783,11 +785,11 @@ Non-backwards compatible changes
 
 * Elsewhere under `Relation.Binary.Properties` etc. the use of *explicitly* negated
   relation symbols have now been replaced by their definitionally equal counterparts
-  using the new symbols accordingly. 
+  using the new symbols accordingly.
 
 * NB modules such as `Relation.Binary.Construct.NonStrictToStrict` which operate
   only on the the underlying `Structures` such as `IsPartialOrder` etc., are unable
-  to make use of the new symbols. 
+  to make use of the new symbols.
 
 * NB the corresponding situation regarding the `flip`ped relation symbols `_≥_`,
   `_>_` (and their negated versions!) has not (yet) been addressed; to develop
@@ -2298,7 +2300,7 @@ Other minor changes
 
   length-isMagmaHomomorphism  : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
-  
+
   take-map : take n (map f xs) ≡ map f (take n xs)
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
@@ -2859,9 +2861,9 @@ Other minor changes
   StrictPartialOrder._≮_  : Rel Carrier _
   ```
   Additionally, `Poset._≰_` is defined by renaming public export of `Preorder._≁_`
-  
+
   The corresponding former definitions in `Relation.Binary.Properties.*`
-  have been deprecated. 
+  have been deprecated.
 
 * Added new operations in `Relation.Binary.Construct.Closure.Equivalence`:
   ```
