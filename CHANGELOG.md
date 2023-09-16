@@ -791,13 +791,13 @@ Non-backwards compatible changes
   only on the the underlying `Structures` such as `IsPartialOrder` etc., are unable
   to make use of the new symbols.
 
-* NB the corresponding situation regarding the `flip`ped relation symbols `_≥_`,
-  `_>_` (and their negated versions!) has not (yet) been addressed; to develop
-  a parallel architecture to that above, there would need to be a suitable symbol
-  for the flipped relation `_∼_` (and its negation!) in `Relation.Bundles.Preorder`,
-  now handled purely semantically via `flip ∼` in `Relation.Binary.Properties.Preorder`,
-  `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}` etc. Similarly, for the strict
-  ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
+* NB (issues #2096 #2098) the corresponding situation regarding the `flip`ped
+  relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet)
+  been addressed; to develop a parallel architecture to that above, there
+  would need to be a suitable symbol for the flipped relation `_∼_` (and its negation!)
+  in `Relation.Bundles.Preorder`, currently handled purely semantically via `flip ∼`
+  in `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
+  etc. Similarly, for the strict ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
 
 ### Other
 
