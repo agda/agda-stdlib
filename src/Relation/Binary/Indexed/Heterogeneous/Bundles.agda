@@ -33,11 +33,11 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
 
 record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ :
                        Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix 4 _≈_ _∼_
+  infix 4 _≈_ _≲_
   field
     Carrier    : I → Set c
     _≈_        : IRel Carrier ℓ₁  -- The underlying equality.
-    _∼_        : IRel Carrier ℓ₂  -- The relation.
-    isPreorder : IsIndexedPreorder Carrier _≈_ _∼_
+    _≲_        : IRel Carrier ℓ₂  -- The relation.
+    isPreorder : IsIndexedPreorder Carrier _≈_ _≲_
 
   open IsIndexedPreorder isPreorder public
