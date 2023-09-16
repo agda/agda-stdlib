@@ -106,16 +106,6 @@ open StrictPartialOrder <-strictPartialOrder public
 ≤⇒≯ = ToStrict.≤⇒≯ antisym
 
 ------------------------------------------------------------------------
--- Relating ≮ and λ x y → ¬ (x < y): now definitionally equal!
-
-private
-  ≮⇒¬< : ∀ {x y} → x ≮ y → ¬ (x < y)
-  ≮⇒¬< x≮y x<y = contradiction x<y x≮y
-
-  ¬<⇒≮ : ∀ {x y} → ¬ (x < y) → x ≮ y
-  ¬<⇒≮ x≮y x<y = contradiction x<y x≮y
-
-------------------------------------------------------------------------
 -- If ≤ is decidable then so is ≈
 
 ≤-dec⇒≈-dec : Decidable _≤_ → Decidable _≈_
@@ -154,5 +144,5 @@ antimono⇒cong = Consequences.antimono⇒cong _≈_ _≈_ Eq.sym reflexive anti
 infix 4 _≰_
 _≰_ = _≰A_
 {-# WARNING_ON_USAGE _≤_
-"Warning: _≰_ was deprecated in v2.0. Please use  Relation.Binary.Bundles.Poset._≰_ instead"
+"Warning: export of _≰_ from this module was deprecated in v2.0, in favour of a direct public export from Relation.Binary.Bundles.Poset instead"
 #-}
