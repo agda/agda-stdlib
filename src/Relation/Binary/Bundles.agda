@@ -10,6 +10,7 @@
 
 module Relation.Binary.Bundles where
 
+open import Function.Base using (flip)
 open import Level
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core
@@ -90,6 +91,9 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
       }
 
     open Setoid setoid public
+
+  infix 4 _∼ᵒ_
+  _∼ᵒ_ = flip _∼_
 
 
 record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where

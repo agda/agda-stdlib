@@ -18,9 +18,6 @@ import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 
 open Preorder P
 
-private
-  infix 4 _∼ᵒ_
-  _∼ᵒ_ = flip _∼_
 
 ------------------------------------------------------------------------
 -- The converse relation is also a preorder.

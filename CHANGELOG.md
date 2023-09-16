@@ -354,8 +354,8 @@ Non-backwards compatible changes
 * The module `Function.Definitions` no longer has two equalities as module arguments, as
   they did not interact as intended with the re-exports from `Function.Definitions.(Core1/Core2)`.
   The latter have been removed and their definitions folded into `Function.Definitions`.
-  
-* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective` 
+
+* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective`
   have been changed from:
   ```
   Surjective f = ∀ y → ∃ λ x → f x ≈₂ y
@@ -370,16 +370,16 @@ Non-backwards compatible changes
   ```
   This is for several reasons: i) the new definitions compose much more easily, ii) Agda
   can better infer the equalities used.
-  
+
   To ease backwards compatibility:
-   - the old definitions have been moved to the new names  `StrictlySurjective`, 
-	 `StrictlyInverseˡ` and `StrictlyInverseʳ`. 
-   - The records in  `Function.Structures` and `Function.Bundles` export proofs 
-	 of these under the names `strictlySurjective`, `strictlyInverseˡ` and 
-	 `strictlyInverseʳ`,
+   - the old definitions have been moved to the new names  `StrictlySurjective`,
+         `StrictlyInverseˡ` and `StrictlyInverseʳ`.
+   - The records in  `Function.Structures` and `Function.Bundles` export proofs
+         of these under the names `strictlySurjective`, `strictlyInverseˡ` and
+         `strictlyInverseʳ`,
    - Conversion functions have been added in both directions to
-	 `Function.Consequences(.Propositional)`. 
-  
+         `Function.Consequences(.Propositional)`.
+
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
@@ -762,6 +762,20 @@ Non-backwards compatible changes
   IO.Effectful
   IO.Instances
   ```
+
+### (Issue #2096) Introduction of flipped relation symbol for `Relation.Binary.Bundles.Preorder`
+
+* Previously, the relation symbol `_∼_`  was (notationally) symmetric, so that its
+  converse relation could only be discussed *semantically* in terms of `flip _∼_`
+  in `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
+
+* Now a new symbol `_∼ᵒ_` is introduced as a definition in `Relation.Binary.Bundles.Preorder`
+  whose properties in `Relation.Binary.Properties.Preorder` now refer to it.
+
+* NB (issues #1214 #2098) the corresponding situation regarding the `flip`ped
+  relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet)
+  been addressed.
+
 
 ### Other
 
@@ -2253,7 +2267,7 @@ Other minor changes
 
   length-isMagmaHomomorphism  : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
-  
+
   take-map : take n (map f xs) ≡ map f (take n xs)
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
