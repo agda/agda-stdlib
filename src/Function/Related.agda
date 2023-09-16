@@ -401,7 +401,7 @@ InducedPreorder₁ : Kind → ∀ {a s} {A : Set a} →
                    (A → Set s) → Preorder _ _ _
 InducedPreorder₁ k S = record
   { _≈_        = _≡_
-  ; _∼_        = InducedRelation₁ k S
+  ; _≲_        = InducedRelation₁ k S
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = reflexive ∘
@@ -434,7 +434,7 @@ InducedPreorder₂ : Kind → ∀ {a b s} {A : Set a} {B : Set b} →
                    (A → B → Set s) → Preorder _ _ _
 InducedPreorder₂ k _S_ = record
   { _≈_        = _≡_
-  ; _∼_        = InducedRelation₂ k _S_
+  ; _≲_        = InducedRelation₂ k _S_
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = λ x≡y {z} →
