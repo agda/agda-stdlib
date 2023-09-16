@@ -301,7 +301,7 @@ module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
   preorder pre k = record
     { Carrier    = A ⊥
     ; _≈_        = _≡_
-    ; _∼_        = Rel k
+    ; _≲_        = Rel k
     ; isPreorder = record
       { isEquivalence = P.isEquivalence
       ; reflexive     = refl′
