@@ -12,9 +12,11 @@ open import Relation.Binary.Bundles
   using (DecTotalOrder; StrictTotalOrder)
 
 module Relation.Binary.Properties.DecTotalOrder
-  {d₁ d₂ d₃} (DT : DecTotalOrder d₁ d₂ d₃) where
+  {d₁ d₂ d₃} (DTO : DecTotalOrder d₁ d₂ d₃) where
 
-open DecTotalOrder DT hiding (trans)
+-- issue #1214: locally to this module, we hide the relation _≰_, so
+-- that we can deprecate its export here, yet re-export it elsewhere
+open DecTotalOrder DTO hiding (trans; _≰_)
 
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
@@ -95,3 +97,10 @@ open TotalOrderProperties public
 
 ≮⇒≥ : ∀ {x y} → x ≮ y → y ≤ x
 ≮⇒≥ = ToStrict.≮⇒≥ Eq.sym _≟_ reflexive total
+
+-- issue #1214: see above
+infix 4 _≰_
+_≰_ = DecTotalOrder._≰_ DTO
+{-# WARNING_ON_USAGE _≰_
+"Warning: export of _≰_ from this module was deprecated in v2.0, in favour of a direct public export from Relation.Binary.Bundles.Poset instead"
+#-}

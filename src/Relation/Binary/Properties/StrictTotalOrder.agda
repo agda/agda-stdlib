@@ -20,7 +20,7 @@ import Relation.Binary.Properties.StrictPartialOrder as SPO
 open import Relation.Binary.Consequences
 
 ------------------------------------------------------------------------
--- _<_ - the strict version is a strict total order
+-- _<_ - the strict version is a decidable total order
 
 decTotalOrder : DecTotalOrder _ _ _
 decTotalOrder = record
@@ -41,5 +41,5 @@ open DecTotalOrder decTotalOrder public
 infix 4 _≮_
 _≮_ = StrictTotalOrder._≮_ STO
 {-# WARNING_ON_USAGE _≮_
-"Warning: export of _≮_ from this module was deprecated in v2.0. Please import from Relation.Binary.Bundles.StrictPartialOrder._≮_ instead"
+"Warning: export of _≮_ from this module was deprecated in v2.0, in favour of a direct public export from Relation.Binary.Bundles.StrictPartialOrder instead"
 #-}
