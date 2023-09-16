@@ -80,7 +80,7 @@ open TotalOrderProperties public
   }
 
 open StrictTotalOrder <-strictTotalOrder public
-  using () renaming (compare to <-compare)
+  using (_≮_) renaming (compare to <-compare)
 
 ------------------------------------------------------------------------
 -- _≰_ - the negated order
@@ -93,5 +93,5 @@ open TotalOrderProperties public
   ; ≰⇒≥
   )
 
-≮⇒≥ : ∀ {x y} → ¬ (x < y) → y ≤ x
+≮⇒≥ : ∀ {x y} → x ≮ y → y ≤ x
 ≮⇒≥ = ToStrict.≮⇒≥ Eq.sym _≟_ reflexive total
