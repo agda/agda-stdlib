@@ -219,7 +219,7 @@ preorder : Set ℓ → Preorder ℓ ℓ ℓ
 preorder A = record
   { Carrier    = A
   ; _≈_        = _≡_
-  ; _∼_        = λ x y → x ≅ y
+  ; _≲_        = λ x y → x ≅ y
   ; isPreorder = isPreorder-≡
   }
 
