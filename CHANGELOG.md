@@ -769,8 +769,10 @@ Non-backwards compatible changes
   converse relation could only be discussed *semantically* in terms of `flip _∼_`
   in `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
 
-* Now a new symbol `_∼ᵒ_` is introduced as a definition in `Relation.Binary.Bundles.Preorder`
-  whose properties in `Relation.Binary.Properties.Preorder` now refer to it.
+* Now, the symbol `_∼_` has been renamed to a new symbol `_≲_`, with `_≳_`
+  introduced as a definition in `Relation.Binary.Bundles.Preorder` whose properties
+  in `Relation.Binary.Properties.Preorder` now refer to it. Backwards compatible, as
+  previous notations, and those derived from it, have been retained as deprecated. 
 
 * NB (issues #1214 #2098) the corresponding situation regarding the `flip`ped
   relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet)
@@ -1148,6 +1150,11 @@ Deprecated names
   push-function-into-if ↦ if-float
   ```
 
+* In `Data.Container.Related`:
+  ```
+  _∼[_]_  ↦  _≲[_]_
+  ```
+
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
   for the 'left', resp. 'right' injection of a Fin m into a 'larger' type,
   `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the
@@ -1504,6 +1511,16 @@ Deprecated names
   ```
   toForeign   ↦ Foreign.Haskell.Coerce.coerce
   fromForeign ↦ Foreign.Haskell.Coerce.coerce
+  ```
+
+* In `Relation.Binary.Bundles.Preorder`:
+  ```
+  _∼_  ↦  _≲_
+  ```
+
+* In `Relation.Binary.Indexed.Heterogeneous.Bundles.Preorder`:
+  ```
+  _∼_  ↦  _≲_
   ```
 
 * In `Relation.Binary.Properties.Preorder`:
