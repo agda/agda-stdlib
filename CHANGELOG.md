@@ -762,6 +762,40 @@ Non-backwards compatible changes
   IO.Effectful
   IO.Instances
   ```
+### (Issue #1214) Reorganisation of the introduction of negated relation symbols under `Relation.Binary` 
+
+* Previously, negated relation symbols `_≰_` (for `Poset`) and `_≮_` (`StrictPartialOrder`)
+  were introduced in the corresponding `Relation.Binary.Properties` modules, for re-export. 
+
+* Now they are introduced as definitions in the corresponding `Relation.Binary.Bundles`,
+  together with, for uniformity's sake, an additional negated symbol `_≁_` for `Preorder`. 
+
+* Accordingly, `_≰_` is in fact now a renamed `public` re-export from `Preorder`
+  in each of `TotalPreorder` and `Poset`, as the negated version of the corresponding
+  symbol introduced as a field name for the relation there.
+
+* As knock-on changes, public re-exports of `Preorder`, `Poset`, `StrictPartialOrder`
+  in derived bundles also now need to re-export the new symbols accordingly. 
+
+* Backwards compatibility has been maintained, with deprecated definitions in the
+  corresponding `Relation.Binary.Properties` modules, and the corresponding client
+  client module `import`s being adjusted accordingly.
+
+* Elsewhere under `Relation.Binary.Properties` etc. the use of *explicitly* negated
+  relation symbols have now been replaced by their definitionally equal counterparts
+  using the new symbols accordingly. 
+
+* NB modules such as `Relation.Binary.Construct.NonStrictToStrict` which operate
+  only on the the underlying `Structures` such as `IsPartialOrder` etc., are unable
+  to make use of the new symbols. 
+
+* NB the corresponding situation regarding the `flip`ped relation symbols `_≥_`,
+  `_>_` (and their negated versions!) has not (yet) been addressed; to develop
+  a parallel architecture to that above, there would need to be a suitable symbol
+  for the flipped relation `_∼_` (and its negation!) in `Relation.Bundles.Preorder`,
+  now handled purely semantically via `flip ∼` in `Relation.Binary.Properties.Preorder`,
+  `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}` etc. Similarly, for the strict
+  ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
 
 ### Other
 
@@ -928,8 +962,6 @@ Non-backwards compatible changes
     lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
-
-  * Moved `_≰_` from `Relation.Binary.Properties.Poset` to `Relation.Binary.Bundles.Poset` (issue #1214)
 
   * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
     `¬¬-excluded-middle`.
@@ -1501,6 +1533,16 @@ Deprecated names
   invPreorder   ↦ converse-preorder
   ```
 
+* Moved negated relation symbol from `Relation.Binary.Properties.Poset`:
+  ```
+  _≰_   ↦ Relation.Binary.Bundles.Poset._≰_
+  ```
+
+* Moved negated relation symbol from `Relation.Binary.Properties.TotalOrder`:
+  ```
+  _≮_   ↦ Relation.Binary.Bundles.StrictPartialOrder._≮_
+  ```
+
 ### Renamed Data.Erased to Data.Irrelevant
 
 * This fixes the fact we had picked the wrong name originally. The erased modality
@@ -1811,14 +1853,6 @@ Other minor changes
   ∧-commutativeSemigroup : CommutativeSemigroup c ℓ
   ```
   and their corresponding algebraic subbundles.
-
-  The following negated relation symbols have now been added
-  ```agda
-  infix 4 _≁_ _≰_ _≮_
-  Preorder._≁_            : Rel Carrier _
-  Poset._≰_               : Rel Carrier _
-  StrictPartialOrder._≮_  : Rel Carrier _
-  ```
 
 * Added new proofs to `Algebra.Consequences.Base`:
   ```agda
@@ -2814,6 +2848,20 @@ Other minor changes
   prependHLams : List String → Term → Term
   prependVLams : List String → Term → Term
   ```
+
+* Added new definitions to `Relation.Binary.Bundles`:
+
+  The following negated relation symbols have now been added, with their
+  (obvious) intended semantics:
+  ```agda
+  infix 4 _≁_ _≰_ _≮_
+  Preorder._≁_            : Rel Carrier _
+  StrictPartialOrder._≮_  : Rel Carrier _
+  ```
+  Additionally, `Poset._≰_` is defined by renaming public export of `Preorder._≁_`
+  
+  The corresponding former definitions in `Relation.Binary.Properties.*`
+  have been deprecated. 
 
 * Added new operations in `Relation.Binary.Construct.Closure.Equivalence`:
   ```
