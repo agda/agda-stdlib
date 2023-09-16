@@ -772,12 +772,11 @@ Non-backwards compatible changes
   NB `_≮_` is now introduced *earlier* in the hierarchy, at `StrictPartialOrder`, which
   incurs some rather complicated deprecation gymnastics...
 
-* Accordingly, `_≰_` is in fact now a renamed `public` re-export from `Preorder`
-  in each of `TotalPreorder` and `Poset`, as the negated version of the corresponding
-  symbol introduced as a field name for the relation there.
+* Accordingly, in fact we now have `_⋦_` (in `TotalPreorder`) and `_≰_` (in `Poset`)
+  as renamed `public` re-exports from `_≁_` in `Preorder`.
 
 * As knock-on changes, public re-exports of `Preorder`, `Poset`, `StrictPartialOrder`
-  in derived bundles also now need to re-export the new symbols accordingly.
+  in derived bundles also now need to re-export the various new symbols accordingly.
 
 * Backwards compatibility has been maintained, with deprecated definitions in the
   corresponding `Relation.Binary.Properties` modules, and the corresponding client
@@ -792,12 +791,12 @@ Non-backwards compatible changes
   to make use of the new symbols.
 
 * NB (issues #2096 #2098) the corresponding situation regarding the `flip`ped
-  relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet)
-  been addressed; to develop a parallel architecture to that above, there
-  would need to be a suitable symbol for the flipped relation `_∼_` (and its negation!)
-  in `Relation.Bundles.Preorder`, currently handled purely semantically via `flip ∼`
-  in `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
-  etc. Similarly, for the strict ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
+  relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet) been
+  addressed; to develop a parallel architecture to that above, there would need
+  to be a suitable symbol for the flipped relation `_∼_` (and its negation!) in
+  `Relation.Bundles.Preorder`, currently handled purely semantically via `flip ∼` in
+  `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
+  etc. Ditto. the strict ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
 
 ### Other
 

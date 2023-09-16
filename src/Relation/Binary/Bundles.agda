@@ -110,7 +110,7 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   preorder = record { isPreorder = isPreorder }
 
   open Preorder preorder public
-    using (module Eq) renaming (_≁_ to _≰_)
+    using (module Eq) renaming (_≁_ to _⋦_)
 
 
 ------------------------------------------------------------------------
