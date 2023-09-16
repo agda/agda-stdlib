@@ -22,7 +22,7 @@ open Preorder P
 ------------------------------------------------------------------------
 -- The converse relation is also a preorder.
 
-converse-isPreorder : IsPreorder _≈_ _∼ᵒ_
+converse-isPreorder : IsPreorder _≈_ _≳_
 converse-isPreorder = EqAndOrd.isPreorder isPreorder
 
 converse-preorder : Preorder p₁ p₂ p₃
@@ -33,7 +33,7 @@ converse-preorder = EqAndOrd.preorder P
 
 InducedEquivalence : Setoid _ _
 InducedEquivalence = record
-  { _≈_           = λ x y → x ∼ y × x ∼ᵒ y
+  { _≈_           = λ x y → x ≲ y × x ≳ y
   ; isEquivalence = record
     { refl  = (refl , refl)
     ; sym   = swap

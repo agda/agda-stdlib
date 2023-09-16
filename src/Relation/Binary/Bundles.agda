@@ -74,12 +74,12 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 
 record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix 4 _≈_ _∼_
+  infix 4 _≈_ _≲_
   field
     Carrier    : Set c
     _≈_        : Rel Carrier ℓ₁  -- The underlying equality.
-    _∼_        : Rel Carrier ℓ₂  -- The relation.
-    isPreorder : IsPreorder _≈_ _∼_
+    _≲_        : Rel Carrier ℓ₂  -- The relation.
+    isPreorder : IsPreorder _≈_ _≲_
 
   open IsPreorder isPreorder public
     hiding (module Eq)
@@ -92,8 +92,8 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
     open Setoid setoid public
 
-  infix 4 _∼ᵒ_
-  _∼ᵒ_ = flip _∼_
+  infix 4 _≳_
+  _≳_ = flip _≲_
 
 
 record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -111,7 +111,7 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   preorder = record { isPreorder = isPreorder }
 
   open Preorder preorder public
-    using (module Eq)
+    using (module Eq; _≳_)
 
 
 ------------------------------------------------------------------------
