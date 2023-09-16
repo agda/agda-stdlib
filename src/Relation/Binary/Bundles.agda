@@ -95,6 +95,9 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≳_
   _≳_ = flip _≲_
 
+  infix 4 _∼_ -- for deprecation
+  _∼_ = _≲_
+
 
 record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _≲_
@@ -317,3 +320,18 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
     isApartnessRelation : IsApartnessRelation _≈_ _#_
 
   open IsApartnessRelation isApartnessRelation public
+
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+{-# WARNING_ON_USAGE Preorder._∼_
+"Warning: Preorder._∼_ was deprecated in v2.0. Please use Preorder._≲_ instead. "
+#-}
