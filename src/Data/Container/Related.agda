@@ -33,7 +33,24 @@ open Related public
                Setoid (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
 [ k ]-Equality C X = Related.InducedEquivalence₂ k (_∈_ {C = C} {X = X})
 
-infix 4 _∼[_]_
-_∼[_]_ : ∀ {s p x} {C : Container s p} {X : Set x} →
+infix 4 _≲[_]_
+_≲[_]_ : ∀ {s p x} {C : Container s p} {X : Set x} →
          ⟦ C ⟧ X → Kind → ⟦ C ⟧ X → Set (p ⊔ x)
-_∼[_]_ {C = C} {X} xs k ys = Preorder._∼_ ([ k ]-Order C X) xs ys
+_≲[_]_ {C = C} {X} xs k ys = Preorder._≲_ ([ k ]-Order C X) xs ys
+
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infix 4 _∼[_]_
+_∼[_]_ = _≲[_]_
+{-# WARNING_ON_USAGE _∼[_]_
+"Warning: _∼[_]_ was deprecated in v2.0. Please use _≲[_]_ instead. "
+#-}
