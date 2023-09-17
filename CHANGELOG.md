@@ -2286,35 +2286,18 @@ Additions to existing modules
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
 
-<<<<<<< HEAD
   take-suc               : take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
   take-suc-tabulate      : take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
   drop-take-suc          : drop m (take (suc m) xs) ≡ [ lookup xs i ]
   drop-take-suc-tabulate : drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 
   take-all : n ≥ length xs → take n xs ≡ xs
-
-<<<<<<< HEAD
-  take-[] : take m [] ≡ []
-  drop-[] : drop m [] ≡ []
-
-  map-replicate : map f (replicate n x) ≡ replicate n (f x)
-
-  drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
-
-  take-[] : ∀ m → take  m [] ≡ []
-  drop-[] : ∀ m → drop  m [] ≡ []
-
-  take-suc               : let m = toℕ i in take (suc m) xs ≡ take m xs ∷ʳ lookup xs i
-  take-suc-tabulate      : let m = toℕ i in take (suc m) (tabulate f) ≡ take m (tabulate f) ∷ʳ f i
-  drop-take-suc          : let m = toℕ i in drop m (take (suc m) xs) ≡ [ lookup xs i ]
-  drop-take-suc-tabulate : let m = toℕ i in drop m (take (suc m) (tabulate f)) ≡ [ f i ]
-
-  take-all : n ≥ length xs → take n xs ≡ xs
   drop-all : n ≥ length xs → drop n xs ≡ []
 
   take-[] : take m [] ≡ []
   drop-[] : drop m [] ≡ []
+
+  drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
 
   lookup-replicate  : lookup (replicate n x) i ≡ x
   map-replicate     : map f (replicate n x) ≡ replicate n (f x)
