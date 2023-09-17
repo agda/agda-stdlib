@@ -1405,7 +1405,6 @@ New modules
 * A small library defining a structurally recursive view of `Fin n`:
   ```
   Data.Fin.Relation.Unary.Top
-  Data.Fin.Relation.Unary.Top.Instances
   ```
 
 * A small library for a non-empty fresh list:
