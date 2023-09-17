@@ -1765,8 +1765,8 @@ New modules
   Function.Indexed.Bundles
   ```
 
-Other minor changes
--------------------
+Additions to existing modules
+-----------------------------
 
 * Added new proof to `Data.Maybe.Properties`
   ```agda
