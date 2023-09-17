@@ -2193,7 +2193,7 @@ Additions to existing modules
   gcd-zero  : Zero 1ℤ gcd
   ```
 
-* Added new functions in `Data.List`:
+* Added new functions and definitions to `Data.List.Base`:
   ```agda
   takeWhileᵇ   : (A → Bool) → List A → List A
   dropWhileᵇ   : (A → Bool) → List A → List A
@@ -2212,20 +2212,6 @@ Additions to existing modules
   find         : Decidable P → List A → Maybe A
   findIndex    : Decidable P → (xs : List A) → Maybe $ Fin (length xs)
   findIndices  : Decidable P → (xs : List A) → List $ Fin (length xs)
-  ```
-
-* Added new functions and definitions to `Data.List.Base`:
-  ```agda
-  takeWhileᵇ   : (A → Bool) → List A → List A
-  dropWhileᵇ   : (A → Bool) → List A → List A
-  filterᵇ      : (A → Bool) → List A → List A
-  partitionᵇ   : (A → Bool) → List A → List A × List A
-  spanᵇ        : (A → Bool) → List A → List A × List A
-  breakᵇ       : (A → Bool) → List A → List A × List A
-  linesByᵇ     : (A → Bool) → List A → List (List A)
-  wordsByᵇ     : (A → Bool) → List A → List (List A)
-  derunᵇ       : (A → A → Bool) → List A → List A
-  deduplicateᵇ : (A → A → Bool) → List A → List A
 
   catMaybes       : List (Maybe A) → List A
   ap              : List (A → B) → List A → List B
