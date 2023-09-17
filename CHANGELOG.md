@@ -2642,6 +2642,14 @@ Other minor changes
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
   ```
+  and the type of `updateAt` has been updated from:
+  ```
+  updateAt : Fin n → (A → A) → Vec A n → Vec A n
+  ```
+  to:
+  ```
+  updateAt : Vec A n → Fin n → (A → A) → Vec A n
+  ```
 
 * Added new instance in `Data.Vec.Effectful`:
   ```agda

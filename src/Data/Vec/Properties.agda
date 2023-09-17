@@ -229,14 +229,14 @@ lookup-inject≤-take (suc (suc m)) (s≤s (s≤s m≤m+n)) (suc (suc i)) (x ∷
 -- (+) updateAt i actually updates the element at index i.
 
 updateAt-updates : ∀ (i : Fin n) {f : A → A} (xs : Vec A n) →
-                   xs [ i ]= x → (updateAt i f xs) [ i ]= f x
+                   xs [ i ]= x → (updateAt xs i f) [ i ]= f x
 updateAt-updates zero    (x ∷ xs) here        = here
 updateAt-updates (suc i) (x ∷ xs) (there loc) = there (updateAt-updates i xs loc)
 
 -- (-) updateAt i does not touch the elements at other indices.
 
 updateAt-minimal : ∀ (i j : Fin n) {f : A → A} (xs : Vec A n) →
-                   i ≢ j → xs [ i ]= x → (updateAt j f xs) [ i ]= x
+                   i ≢ j → xs [ i ]= x → (updateAt xs j f) [ i ]= x
 updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = contradiction refl 0≢0
 updateAt-minimal zero    (suc j) (x ∷ xs) _   here        = here
 updateAt-minimal (suc i) zero    (x ∷ xs) _   (there loc) = there loc
@@ -259,13 +259,13 @@ updateAt-minimal (suc i) (suc j) (x ∷ xs) i≢j (there loc) =
 
 updateAt-id-local : ∀ (i : Fin n) {f : A → A} (xs : Vec A n) →
                     f (lookup xs i) ≡ lookup xs i →
-                    updateAt i f xs ≡ xs
+                    updateAt xs i f ≡ xs
 updateAt-id-local zero    (x ∷ xs) eq = cong (_∷ xs) eq
 updateAt-id-local (suc i) (x ∷ xs) eq = cong (x ∷_) (updateAt-id-local i xs eq)
 
 -- 1b. identity:  updateAt i id ≗ id
 
-updateAt-id : ∀ (i : Fin n) (xs : Vec A n) → updateAt i id xs ≡ xs
+updateAt-id : ∀ (i : Fin n) (xs : Vec A n) → updateAt xs i id ≡ xs
 updateAt-id i xs = updateAt-id-local i xs refl
 
 -- 2a. local composition:  f ∘ g = h ↾ (lookup xs i)
@@ -273,15 +273,15 @@ updateAt-id i xs = updateAt-id-local i xs refl
 
 updateAt-∘-local : ∀ (i : Fin n) {f g h : A → A} (xs : Vec A n) →
                          f (g (lookup xs i)) ≡ h (lookup xs i) →
-                         updateAt i f (updateAt i g xs) ≡ updateAt i h xs
+                         updateAt (updateAt xs i g) i f ≡ updateAt xs i h
 updateAt-∘-local zero    (x ∷ xs) fg=h = cong (_∷ xs) fg=h
 updateAt-∘-local (suc i) (x ∷ xs) fg=h = cong (x ∷_) (updateAt-∘-local i xs fg=h)
 
 -- 2b. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
 
-updateAt-∘ : ∀ (i : Fin n) {f g : A → A} →
-                   updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
-updateAt-∘ i xs = updateAt-∘-local i xs refl
+-- updateAt-∘ : ∀ (i : Fin n) {f g : A → A} →
+--                    updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+-- updateAt-∘ i xs = updateAt-∘-local i xs refl
 
 -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
 
@@ -290,28 +290,28 @@ updateAt-∘ i xs = updateAt-∘-local i xs refl
 
 updateAt-cong-local : ∀ (i : Fin n) {f g : A → A} (xs : Vec A n) →
                       f (lookup xs i) ≡ g (lookup xs i) →
-                      updateAt i f xs ≡ updateAt i g xs
+                      updateAt xs i f ≡ updateAt xs i g
 updateAt-cong-local zero    (x ∷ xs) f=g = cong (_∷ xs) f=g
 updateAt-cong-local (suc i) (x ∷ xs) f=g = cong (x ∷_) (updateAt-cong-local i xs f=g)
 
 -- 3b. congruence:  f ≗ g → updateAt i f ≗ updateAt i g
 
-updateAt-cong : ∀ (i : Fin n) {f g : A → A} →
-                f ≗ g → updateAt i f ≗ updateAt i g
-updateAt-cong i f≗g xs = updateAt-cong-local i xs (f≗g (lookup xs i))
+-- updateAt-cong : ∀ (i : Fin n) {f g : A → A} →
+--                 f ≗ g → updateAt i f ≗ updateAt i g
+-- updateAt-cong i f≗g xs = updateAt-cong-local i xs (f≗g (lookup xs i))
 
 -- The order of updates at different indices i ≢ j does not matter.
 
 -- This a consequence of updateAt-updates and updateAt-minimal
 -- but easier to prove inductively.
 
-updateAt-commutes : ∀ (i j : Fin n) {f g : A → A} → i ≢ j →
-                    updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
-updateAt-commutes zero    zero    0≢0 (x ∷ xs) = contradiction refl 0≢0
-updateAt-commutes zero    (suc j) i≢j (x ∷ xs) = refl
-updateAt-commutes (suc i) zero    i≢j (x ∷ xs) = refl
-updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
-  cong (x ∷_) (updateAt-commutes i j (i≢j ∘ cong suc) xs)
+-- updateAt-commutes : ∀ (i j : Fin n) {f g : A → A} → i ≢ j →
+--                     updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
+-- updateAt-commutes zero    zero    0≢0 (x ∷ xs) = contradiction refl 0≢0
+-- updateAt-commutes zero    (suc j) i≢j (x ∷ xs) = refl
+-- updateAt-commutes (suc i) zero    i≢j (x ∷ xs) = refl
+-- updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
+--   cong (x ∷_) (updateAt-commutes i j (i≢j ∘ cong suc) xs)
 
 -- lookup after updateAt reduces.
 
@@ -319,14 +319,14 @@ updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
 -- using []=↔lookup.
 
 lookup∘updateAt : ∀ (i : Fin n) {f : A → A} xs →
-                  lookup (updateAt i f xs) i ≡ f (lookup xs i)
+                  lookup (updateAt xs i f) i ≡ f (lookup xs i)
 lookup∘updateAt i xs =
   []=⇒lookup (updateAt-updates i xs (lookup⇒[]= i _ refl))
 
 -- For different indices it easily follows from updateAt-minimal.
 
 lookup∘updateAt′ : ∀ (i j : Fin n) {f : A → A} → i ≢ j → ∀ xs →
-                   lookup (updateAt j f xs) i ≡ lookup xs i
+                   lookup (updateAt xs j f) i ≡ lookup xs i
 lookup∘updateAt′ i j xs i≢j =
   []=⇒lookup (updateAt-minimal i j i≢j xs (lookup⇒[]= i _ refl))
 
@@ -335,11 +335,11 @@ lookup∘updateAt′ i j xs i≢j =
 []%=-id : ∀ (xs : Vec A n) (i : Fin n) → xs [ i ]%= id ≡ xs
 []%=-id xs i = updateAt-id i xs
 
-[]%=-∘ : ∀ (xs : Vec A n) (i : Fin n) {f g : A → A} →
-     xs [ i ]%= f
-        [ i ]%= g
-   ≡ xs [ i ]%= g ∘ f
-[]%=-∘ xs i = updateAt-∘ i xs
+-- []%=-∘ : ∀ (xs : Vec A n) (i : Fin n) {f g : A → A} →
+--      xs [ i ]%= f
+--         [ i ]%= g
+--    ≡ xs [ i ]%= g ∘ f
+-- []%=-∘ xs i = updateAt-∘ i xs
 
 
 ------------------------------------------------------------------------
@@ -348,13 +348,13 @@ lookup∘updateAt′ i j xs i≢j =
 -- _[_]≔_ is defined in terms of updateAt, and all of its properties
 -- are special cases of the ones for updateAt.
 
-[]≔-idempotent : ∀ (xs : Vec A n) (i : Fin n) →
-                 (xs [ i ]≔ x) [ i ]≔ y ≡ xs [ i ]≔ y
-[]≔-idempotent xs i = updateAt-∘ i xs
+-- []≔-idempotent : ∀ (xs : Vec A n) (i : Fin n) →
+--                  (xs [ i ]≔ x) [ i ]≔ y ≡ xs [ i ]≔ y
+-- []≔-idempotent xs i = updateAt-∘ i xs
 
-[]≔-commutes : ∀ (xs : Vec A n) (i j : Fin n) → i ≢ j →
-               (xs [ i ]≔ x) [ j ]≔ y ≡ (xs [ j ]≔ y) [ i ]≔ x
-[]≔-commutes xs i j i≢j = updateAt-commutes j i (i≢j ∘ sym) xs
+-- []≔-commutes : ∀ (xs : Vec A n) (i j : Fin n) → i ≢ j →
+--                (xs [ i ]≔ x) [ j ]≔ y ≡ (xs [ j ]≔ y) [ i ]≔ x
+-- []≔-commutes xs i j i≢j = updateAt-commutes j i (i≢j ∘ sym) xs
 
 []≔-updates : ∀ (xs : Vec A n) (i : Fin n) → (xs [ i ]≔ x) [ i ]= x
 []≔-updates xs i = updateAt-updates i xs (lookup⇒[]= i xs refl)
@@ -440,7 +440,7 @@ lookup-map (suc i) f (x ∷ xs) = lookup-map i f xs
 map-updateAt : ∀ {f : A → B} {g : A → A} {h : B → B}
                (xs : Vec A n) (i : Fin n) →
                f (g (lookup xs i)) ≡ h (f (lookup xs i)) →
-               map f (updateAt i g xs) ≡ updateAt i h (map f xs)
+               map f (updateAt xs i g) ≡ updateAt (map f xs) i h
 map-updateAt (x ∷ xs) zero    eq = cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
@@ -1272,11 +1272,11 @@ updateAt-compose-relative = updateAt-∘-local
 Please use updateAt-∘-local instead."
 #-}
 
-updateAt-compose = updateAt-∘
-{-# WARNING_ON_USAGE updateAt-compose
-"Warning: updateAt-compose was deprecated in v2.0.
-Please use updateAt-∘ instead."
-#-}
+-- updateAt-compose = updateAt-∘
+-- {-# WARNING_ON_USAGE updateAt-compose
+-- "Warning: updateAt-compose was deprecated in v2.0.
+-- Please use updateAt-∘ instead."
+-- #-}
 
 updateAt-cong-relative = updateAt-cong-local
 {-# WARNING_ON_USAGE updateAt-cong-relative
@@ -1284,11 +1284,11 @@ updateAt-cong-relative = updateAt-cong-local
 Please use updateAt-cong-local instead."
 #-}
 
-[]%=-compose = []%=-∘
-{-# WARNING_ON_USAGE []%=-compose
-"Warning: []%=-compose was deprecated in v2.0.
-Please use []%=-∘ instead."
-#-}
+-- []%=-compose = []%=-∘
+-- {-# WARNING_ON_USAGE []%=-compose
+-- "Warning: []%=-compose was deprecated in v2.0.
+-- Please use []%=-∘ instead."
+-- #-}
 
 []≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
                  (xs ++ ys) [ i ↑ˡ n ]≔ x ≡ (xs [ i ]≔ x) ++ ys

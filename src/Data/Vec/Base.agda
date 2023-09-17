@@ -72,16 +72,16 @@ removeAt : Vec A (suc n) → Fin (suc n) → Vec A n
 removeAt (_ ∷ xs)     zero     = xs
 removeAt (x ∷ y ∷ xs) (suc i)  = x ∷ removeAt (y ∷ xs) i
 
-updateAt : Fin n → (A → A) → Vec A n → Vec A n
-updateAt zero    f (x ∷ xs) = f x ∷ xs
-updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
+updateAt : Vec A n → Fin n → (A → A) → Vec A n
+updateAt (x ∷ xs) zero    f = f x ∷ xs
+updateAt (x ∷ xs) (suc i) f = x   ∷ updateAt xs i f
 
 -- xs [ i ]%= f  modifies the i-th element of xs according to f
 
 infixl 6 _[_]%=_ _[_]≔_
 
 _[_]%=_ : Vec A n → Fin n → (A → A) → Vec A n
-xs [ i ]%= f = updateAt i f xs
+xs [ i ]%= f = updateAt xs i f
 
 -- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
