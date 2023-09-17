@@ -13,11 +13,9 @@
 
 module Data.Fin.Relation.Unary.Top where
 
-open import Data.Nat.Base using (ℕ; zero; suc; _<_)
-open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁)
-open import Data.Fin.Properties using (toℕ-fromℕ; toℕ-inject₁; inject₁ℕ<)
+open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc; fromℕ; inject₁)
 open import Relation.Binary.PropositionalEquality.Core
-open import Relation.Nullary.Negation using (contradiction)
 
 private
   variable
@@ -40,12 +38,11 @@ pattern ‵inject₁ i = ‵inj₁ {i = i} _
 
 -- The view covering function, witnessing soundness of the view
 
-view-zero : ∀ n → View {suc n} zero
-view-zero zero    = ‵fromℕ
-view-zero (suc n) = ‵inj₁ (view-zero n)
-
 view : (i : Fin n) → View i
-view zero = view-zero _
+view zero = view-zero where
+  view-zero : View (zero {n})
+  view-zero {n = zero}  = ‵fromℕ
+  view-zero {n = suc _} = ‵inj₁ view-zero
 view (suc i) with view i
 ... | ‵fromℕ     = ‵fromℕ
 ... | ‵inject₁ i = ‵inj₁ (view (suc i))
@@ -80,4 +77,3 @@ view-unique (‵inj₁ {i = i} v) = begin
   view (inject₁ i) ≡⟨ view-inject₁ i ⟩
   ‵inj₁ (view i)   ≡⟨ cong ‵inj₁ (view-unique v) ⟩
   ‵inj₁ v          ∎ where open ≡-Reasoning
-
