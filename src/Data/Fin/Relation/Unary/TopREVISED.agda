@@ -81,4 +81,3 @@ view-unique (‵inj₁ {i = i} v) = begin
   ‵inj₁ (view i)   ≡⟨ cong ‵inj₁ (view-unique v) ⟩
   ‵inj₁ v          ∎ where open ≡-Reasoning
 
-
