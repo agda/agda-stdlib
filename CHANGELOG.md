@@ -1423,6 +1423,11 @@ Deprecated names
 
 * In `Data.Vec.Properties`:
   ```
+  take-distr-zipWith ↦  take-zipWith
+  take-distr-map     ↦  take-map
+  drop-distr-zipWith ↦  drop-zipWith
+  drop-distr-map     ↦  drop-map
+  
   updateAt-id-relative      ↦  updateAt-id-local
   updateAt-compose-relative ↦  updateAt-∘-local
   updateAt-compose          ↦  updateAt-∘
@@ -1786,8 +1791,8 @@ New modules
   Function.Indexed.Bundles
   ```
 
-Other minor changes
--------------------
+Additions to existing modules
+-----------------------------
 
 * Added new proof to `Data.Maybe.Properties`
   ```agda
