@@ -119,10 +119,6 @@ map-injective finj {x ∷ xs} {y ∷ ys} eq =
   let fx≡fy , fxs≡fys = ∷-injective eq in
   cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
 
-map-replicate : ∀ (f : A → B) n x → map f (replicate n x) ≡ replicate n (f x)
-map-replicate f zero    x = refl
-map-replicate f (suc n) x = cong (_ ∷_) (map-replicate f n x)
-
 ------------------------------------------------------------------------
 -- mapMaybe
 
@@ -857,9 +853,9 @@ zipWith-replicate (suc n) _⊕_ x y = cong (x ⊕ y ∷_) (zipWith-replicate n _
 ------------------------------------------------------------------------
 -- iterate
 
-length-iterate : ∀ n {f} {x : A} → length (iterate f x n) ≡ n
-length-iterate zero    = refl
-length-iterate (suc n) = cong suc (length-iterate n)
+length-iterate : ∀ f (x : A) n → length (iterate f x n) ≡ n
+length-iterate f x zero    = refl
+length-iterate f x (suc n) = cong suc (length-iterate f (f x) n)
 
 iterate-id : ∀ {x : A} n → iterate id x n ≡ replicate n x
 iterate-id zero    = refl
@@ -869,7 +865,7 @@ module _ f {x : A} n where
   private
     xs = iterate f x n
     n≥length[xs] : n ≥ length xs
-    n≥length[xs] rewrite length-iterate n {f} {x} = ≤-refl
+    n≥length[xs] rewrite length-iterate f x n = ≤-refl
 
   take-iterate : take n xs ≡ xs
   take-iterate = take-all n xs n≥length[xs]
@@ -877,7 +873,8 @@ module _ f {x : A} n where
   drop-iterate : drop n xs ≡ []
   drop-iterate = drop-all n xs n≥length[xs]
 
-lookup-iterate : ∀ f (x : A) n (i : Fin n) → lookup (iterate f x n) (cast (sym (length-iterate n)) i) ≡ ℕ.iterate f x (toℕ i)
+lookup-iterate : ∀ f (x : A) n (i : Fin n) →
+  lookup (iterate f x n) (cast (sym (length-iterate f x n)) i) ≡ ℕ.iterate f x (toℕ i)
 lookup-iterate f x (suc n) zero    = refl
 lookup-iterate f x (suc n) (suc i) = lookup-iterate f (f x) n i
 
