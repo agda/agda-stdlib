@@ -35,6 +35,18 @@ private
     i j : Fin n
 
 ------------------------------------------------------------------------
+-- Derived induction principle
+
+module _ (P : ∀ {n} → Pred (Fin (suc n)) ℓ) where
+
+  view-inject₁-case : (Pinject₁[_] : (j : Fin n) → P (inject₁ j)) →
+                      ∀ {i : Fin (suc n)} → n ≢ toℕ i → P i
+  view-inject₁-case Pinject₁[_] {i} n≢i with view i
+  ... | ‵fromℕ {n} = contradiction (sym (toℕ-fromℕ n)) n≢i
+  ... | ‵inject₁ j = Pinject₁[ j ]
+
+
+------------------------------------------------------------------------
 -- Reimplementation of `Data.Fin.Base.lower₁` and its properties
 
 -- definition of lower₁
