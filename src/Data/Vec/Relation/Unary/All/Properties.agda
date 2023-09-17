@@ -148,13 +148,11 @@ module _ {P : A → Set p} where
 
 drop⁺ : ∀ m {xs} → All P {m + n} xs → All P {n} (drop m xs)
 drop⁺ zero pxs = pxs
-drop⁺ (suc m) {x ∷ xs} (px ∷ pxs)
-  rewrite Vecₚ.unfold-drop m x xs = drop⁺ m pxs
+drop⁺ (suc m) {x ∷ xs} (px ∷ pxs) = drop⁺ m pxs
 
 take⁺ : ∀ m {xs} → All P {m + n} xs → All P {m} (take m xs)
 take⁺ zero pxs = []
-take⁺ (suc m) {x ∷ xs} (px ∷ pxs)
-  rewrite Vecₚ.unfold-take m x xs = px ∷ take⁺ m pxs
+take⁺ (suc m) {x ∷ xs} (px ∷ pxs) = px ∷ take⁺ m pxs
 
 ------------------------------------------------------------------------
 -- toList
