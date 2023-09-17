@@ -2729,7 +2729,6 @@ Additions to existing modules
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
 
-  length-iterate : length (iterate f x n) ≡ n
   iterate-id     : iterate id x n ≡ replicate x
   take-iterate   : take n (iterate f x (n + m)) ≡ iterate f x n
   drop-iterate   : drop n (iterate f x n) ≡ []
