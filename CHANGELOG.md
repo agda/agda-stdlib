@@ -1174,6 +1174,8 @@ Deprecated names
   Likewise under issue #1726: the properties `≺⇒<′` and `<′⇒≺` have been deprecated
   in favour of their proxy counterparts `<⇒<′` and `<′⇒<`.
 
+  Additionally, `lower₁-inject₁′` has been deprecated in favour of `inject₁≡⇒lower₁≡`.
+
 * In `Data.Fin.Permutation.Components`:
   ```
   reverse            ↦ Data.Fin.Base.opposite
