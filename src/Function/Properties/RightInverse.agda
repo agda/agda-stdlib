@@ -19,11 +19,27 @@ open import Relation.Binary.Structures using (IsEquivalence)
 private
   variable
     ℓ₁ ℓ₂ a b : Level
-    A : Set a
-    B : Set b
-    S : Setoid a ℓ₁
-    T : Setoid b ℓ₂
+    A B : Set a
+    S T : Setoid a ℓ₁
+    
+RightInverse⇒LeftInverse : RightInverse S T → LeftInverse T S
+RightInverse⇒LeftInverse I = record
+  { to         = from
+  ; from       = to
+  ; to-cong    = from-cong
+  ; from-cong  = to-cong
+  ; inverseˡ   = inverseʳ
+  } where open RightInverse I
 
+LeftInverse⇒RightInverse : LeftInverse S T → RightInverse T S
+LeftInverse⇒RightInverse I = record
+  { to         = from
+  ; from       = to
+  ; to-cong    = from-cong
+  ; from-cong  = to-cong
+  ; inverseʳ    = inverseˡ
+  } where open LeftInverse I
+  
 RightInverse⇒Surjection : RightInverse S T → Surjection T S
 RightInverse⇒Surjection I = record
   { to         = from
@@ -33,3 +49,9 @@ RightInverse⇒Surjection I = record
 
 ↪⇒↠ : B ↪ A → A ↠ B
 ↪⇒↠ = RightInverse⇒Surjection
+
+↪⇒↩ : B ↪ A → A ↩ B
+↪⇒↩ = RightInverse⇒LeftInverse
+
+↩⇒↪ : B ↩ A → A ↪ B
+↩⇒↪ = LeftInverse⇒RightInverse

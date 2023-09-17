@@ -48,18 +48,22 @@ isEquivalence = record
 ------------------------------------------------------------------------
 -- Propositional bundles
 
+↔-refl : A ↔ A
+↔-refl = Identity.↔-id _
+
+↔-sym : A ↔ B → B ↔ A
+↔-sym = Symmetry.↔-sym
+
+↔-trans : A ↔ B → B ↔ C → A ↔ C
+↔-trans = Composition._↔-∘_
+
 -- need to η-expand for everything to line up properly
 ↔-isEquivalence : IsEquivalence {ℓ = ℓ} _↔_
 ↔-isEquivalence = record
-  { refl  = λ {x} → Identity.inverse (P.setoid x)
-  ; sym   = Symmetry.inverse
-  ; trans = Composition.inverse
+  { refl  = ↔-refl
+  ; sym   = ↔-sym
+  ; trans = ↔-trans
   }
-
-module _ {ℓ} where
-  open IsEquivalence (↔-isEquivalence {ℓ}) public
-    using ()
-    renaming (refl to ↔-refl; sym to ↔-sym; trans to ↔-trans)
 
 ------------------------------------------------------------------------
 -- Conversion functions
@@ -118,6 +122,12 @@ Inverse⇒Equivalence I = record
 
 ↔⇒⇔ : A ↔ B → A ⇔ B
 ↔⇒⇔ = Inverse⇒Equivalence
+
+↔⇒↩ : A ↔ B → A ↩ B
+↔⇒↩ = Inverse.leftInverse
+
+↔⇒↪ : A ↔ B → A ↪ B
+↔⇒↪ = Inverse.rightInverse
 
 -- The functions above can be combined with the following lemma to
 -- transport an arbitrary relation R (e.g. Injection) across
