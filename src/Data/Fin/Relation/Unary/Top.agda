@@ -14,8 +14,10 @@
 module Data.Fin.Relation.Unary.Top where
 
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Fin.Base using (Fin; zero; suc; fromℕ; inject₁)
+open import Data.Fin.Base as Fin using (Fin; zero; suc; fromℕ; inject₁)
+open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 private
   variable
@@ -77,3 +79,48 @@ view-unique (‵inj₁ {i = i} v) = begin
   view (inject₁ i) ≡⟨ view-inject₁ i ⟩
   ‵inj₁ (view i)   ≡⟨ cong ‵inj₁ (view-unique v) ⟩
   ‵inj₁ v          ∎ where open ≡-Reasoning
+
+-- An important distinguished observer and its properties
+
+toℕ  : {i : Fin n} → View i → ℕ
+toℕ (‵fromℕ {n}) = n
+toℕ (‵inj₁ v)    = toℕ v
+
+toℕ[view[suc]]≡suc[toℕ[view]] : (i : Fin n) →
+                                toℕ (view (suc i)) ≡ suc (toℕ (view i))
+toℕ[view[suc]]≡suc[toℕ[view]] i with view i
+... | ‵fromℕ {n}      = refl
+... | ‵inj₁ {i = j} v = trans (toℕ[view[suc]]≡suc[toℕ[view]] j)
+                              (cong (suc ∘ toℕ) (view-unique v))
+
+toℕ[view]≡Fin[toℕ] : (i : Fin n) → toℕ (view i) ≡ Fin.toℕ i
+toℕ[view]≡Fin[toℕ] {n = suc n} zero       = toℕ[view[zero]]≡Fin[toℕ[zero]] n
+  where
+  toℕ[view[zero]]≡Fin[toℕ[zero]] : ∀ n → toℕ (view (zero {n})) ≡ zero
+  toℕ[view[zero]]≡Fin[toℕ[zero]] zero    = refl
+  toℕ[view[zero]]≡Fin[toℕ[zero]] (suc n) = toℕ[view[zero]]≡Fin[toℕ[zero]] n
+toℕ[view]≡Fin[toℕ] {n = suc n} (suc i)
+  rewrite toℕ[view[suc]]≡suc[toℕ[view]] i = cong suc (toℕ[view]≡Fin[toℕ] i)
+
+-- independent reimplementation of Data.Fin.Properties.toℕ-fromℕ
+n≡Fin[toℕ[fromℕ]] : ∀ n → n ≡ Fin.toℕ (fromℕ n)
+n≡Fin[toℕ[fromℕ]] n = begin -- toℕ[view]≡Fin[toℕ] i
+  n                    ≡⟨⟩
+  toℕ (‵fromℕ {n})     ≡⟨ sym (cong toℕ (view-fromℕ n)) ⟩
+  toℕ (view (fromℕ n)) ≡⟨ toℕ[view]≡Fin[toℕ] (fromℕ n) ⟩
+  Fin.toℕ (fromℕ n)    ∎ where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Derived induction principle from the Top view, via another view!
+
+-- The idea being, that in what follows, a call pattern is repeated over
+-- and over again, so should be reified as induction over a revised view,
+-- `View≢`/`view≢`obtained from `View`/`view` by restricting the domain.
+
+data View≢ : {i : Fin (suc n)} → n ≢ Fin.toℕ i → Set where
+  ‵inj₁ : (j : Fin n) {n≢j : n ≢ Fin.toℕ (inject₁ j)} → View≢ n≢j
+
+view≢ : {i : Fin (suc n)} (n≢i : n ≢ Fin.toℕ i) → View≢ n≢i
+view≢ {i = i} n≢ with view i
+... | ‵fromℕ {n} = contradiction (n≡Fin[toℕ[fromℕ]] n) n≢
+... | ‵inject₁ j = ‵inj₁ j
