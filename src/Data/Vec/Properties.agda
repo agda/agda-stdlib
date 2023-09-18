@@ -21,7 +21,7 @@ open import Data.Product.Base as Prod
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
-open import Data.Vec.Relation.Binary.Equality.Cast as CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
+import Data.Vec.Relation.Binary.Equality.Cast as CastReasoning
 open import Function.Base
 -- open import Function.Inverse using (_↔_; inverse)
 open import Function.Bundles using (_↔_; mk↔′)
@@ -1022,7 +1022,7 @@ map-reverse f (x ∷ xs) = begin
 
 reverse-++ : ∀ .(eq : m + n ≡ n + m) (xs : Vec A m) (ys : Vec A n) →
              cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs
-reverse-++ {m = zero}  {n = n} eq []       ys = ≈-sym (++-identityʳ (sym eq) (reverse ys))
+reverse-++ {m = zero}  {n = n} eq []       ys = CastReasoning.≈-sym (++-identityʳ (sym eq) (reverse ys))
 reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin′
   reverse (x ∷ xs ++ ys)              ≂⟨ reverse-∷ x (xs ++ ys) ⟩
   reverse (xs ++ ys) ∷ʳ x             ≈⟨ cast-∷ʳ (cong suc (+-comm m n)) x (reverse (xs ++ ys))
@@ -1030,6 +1030,7 @@ reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin′
   (reverse ys ++ reverse xs) ∷ʳ x     ≈⟨ ++-∷ʳ (sym (+-suc n m)) x (reverse ys) (reverse xs) ⟩
   reverse ys ++ (reverse xs ∷ʳ x)     ≂˘⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟩
   reverse ys ++ (reverse (x ∷ xs))    ∎′
+  where open CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
 
 cast-reverse : ∀ .(eq : m ≡ n) → cast eq ∘ reverse {A = A} {n = m} ≗ reverse ∘ cast eq
 cast-reverse {n = zero}  eq []       = refl
@@ -1040,6 +1041,7 @@ cast-reverse {n = suc n} eq (x ∷ xs) = begin′
   reverse (cast _ xs) ∷ʳ x   ≂˘⟨ reverse-∷ x (cast (cong pred eq) xs) ⟩
   reverse (x ∷ cast _ xs)    ≈⟨⟩
   reverse (cast eq (x ∷ xs)) ∎′
+  where open CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
 
 ------------------------------------------------------------------------
 -- _ʳ++_
@@ -1076,6 +1078,7 @@ map-ʳ++ {ys = ys} f xs = begin
   (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++ eq a (reverse xs) ⟩
   reverse xs ++ (a ∷ ys)  ≂˘⟨ unfold-ʳ++ xs (a ∷ ys) ⟩
   xs ʳ++ (a ∷ ys)         ∎′
+  where open CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
 
 ++-ʳ++ : ∀ .(eq : m + n + o ≡ n + (m + o)) (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} →
          cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
@@ -1087,6 +1090,7 @@ map-ʳ++ {ys = ys} f xs = begin
   reverse ys ++ (reverse xs ++ zs) ≂˘⟨ cong (reverse ys ++_) (unfold-ʳ++ xs zs) ⟩
   reverse ys ++ (xs ʳ++ zs)        ≂˘⟨ unfold-ʳ++ ys (xs ʳ++ zs) ⟩
   ys ʳ++ (xs ʳ++ zs)               ∎′
+  where open CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
 
 ʳ++-ʳ++ : ∀ .(eq : (m + n) + o ≡ n + (m + o)) (xs : Vec A m) {ys : Vec A n} {zs} →
           cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
@@ -1099,6 +1103,7 @@ map-ʳ++ {ys = ys} f xs = begin
   (reverse ys ++ xs) ++ zs                   ≈⟨ ++-assoc (+-assoc n m o) (reverse ys) xs zs ⟩
   reverse ys ++ (xs ++ zs)                   ≂˘⟨ unfold-ʳ++ ys (xs ++ zs) ⟩
   ys ʳ++ (xs ++ zs)                          ∎′
+  where open CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
 
 ------------------------------------------------------------------------
 -- sum
@@ -1286,6 +1291,7 @@ fromList-reverse (x List.∷ xs) = begin′
   reverse (fromList xs) ∷ʳ x                    ≂˘⟨ reverse-∷ x (fromList xs) ⟩
   reverse (x ∷ fromList xs)                     ≈⟨⟩
   reverse (fromList (x List.∷ xs))              ∎′
+  where open CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
