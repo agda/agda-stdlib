@@ -35,7 +35,7 @@ private
     i j : Fin n
 
 ------------------------------------------------------------------------
--- EXPERIMENTAL: Derived induction principles from the view, via another view!
+-- Derived induction principles from the Top view, via another view!
 
 -- The idea being, that in what follows, a call pattern is repeated over
 -- and over again, so should be reified as induction over a revised view,
@@ -52,7 +52,7 @@ view {i = i} n≢i with Top.view i
 
 ------------------------------------------------------------------------
 -- Reimplementation of `Data.Fin.Base.lower₁` and its properties,
--- together with the streamlined version obtained from the view. 
+-- together with the streamlined versions obtained from the view. 
 
 -- definition of lower₁/inject₁⁻¹
 
