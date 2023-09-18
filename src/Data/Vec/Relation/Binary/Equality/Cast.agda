@@ -22,8 +22,6 @@ private
     l m n o : ℕ
     xs ys zs : Vec A n
 
--- Duplicate definition of cast-is-id and cast-trans to avoid circular dependency
-private
   cast-is-id : .(eq : m ≡ m) (xs : Vec A m) → cast eq xs ≡ xs
   cast-is-id eq []       = refl
   cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)

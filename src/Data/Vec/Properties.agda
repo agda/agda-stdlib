@@ -390,17 +390,14 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 -- cast
 
 cast-is-id : .(eq : m ≡ m) (xs : Vec A m) → cast eq xs ≡ xs
-cast-is-id eq []       = refl
-cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
+cast-is-id _ _ = CastReasoning.≈-reflexive refl
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
 
 cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
-cast-trans {m = zero}  {n = zero}  {o = zero}  eq₁ eq₂ [] = refl
-cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (x ∷ xs) =
-  cong (x ∷_) (cast-trans (suc-injective eq₁) (suc-injective eq₂) xs)
+cast-trans eq₁ _ _ = sym (CastReasoning.≈-trans (cong (cast eq₁) refl) refl)
 
 ------------------------------------------------------------------------
 -- map
