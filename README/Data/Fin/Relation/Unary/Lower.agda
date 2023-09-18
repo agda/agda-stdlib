@@ -18,11 +18,12 @@
 
 module README.Data.Fin.Relation.Unary.Lower where
 
-open import Data.Nat.Base using (ℕ; zero; suc; pred)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Properties
   using (toℕ-fromℕ; toℕ-inject₁; toℕ-inject₁-≢; inject₁-injective)
-open import Data.Fin.Relation.Unary.Top using (view; view≢; ‵fromℕ; ‵inject₁; ‵inj₁)
+open import Data.Fin.Relation.Unary.Top
+  using (view; view≢; ‵fromℕ; ‵inject₁; ‵inj₁) hiding (toℕ)
 open import Level using (Level)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; refl; sym; cong)
