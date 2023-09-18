@@ -1767,7 +1767,7 @@ New modules
 
 * Combinators for propositional equational reasoning on vectors with different indices
   ```
-  Data.Vec.Relation.Binary.Reasoning.Propositional
+  Data.Vec.Relation.Binary.Equality.Cast
   ```
 
 Other minor changes

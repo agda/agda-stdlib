@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Vec.Relation.Binary.Reasoning.Propositional {a} {A : Set a} where
+module Data.Vec.Relation.Binary.Equality.Cast {a} {A : Set a} where
 
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties using (suc-injective)

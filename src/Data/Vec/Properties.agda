@@ -21,7 +21,7 @@ open import Data.Product.Base as Prod
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
-open import Data.Vec.Relation.Binary.Reasoning.Propositional as VecReasoning renaming (begin_ to begin′_; _∎ to _∎′)
+open import Data.Vec.Relation.Binary.Equality.Cast as CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
 open import Function.Base
 -- open import Function.Inverse using (_↔_; inverse)
 open import Function.Bundles using (_↔_; mk↔′)
