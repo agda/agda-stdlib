@@ -1585,6 +1585,11 @@ New modules
   Data.Default
   ```
 
+* A small library defining a structurally recursive view of `Fin n`:
+  ```
+  Data.Fin.Relation.Unary.Top
+  ```
+
 * A small library for a non-empty fresh list:
   ```
   Data.List.Fresh.NonEmpty
@@ -2146,6 +2151,8 @@ Additions to existing modules
   cast-is-id    : cast eq k ≡ k
   subst-is-cast : subst Fin eq k ≡ cast eq k
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+
+  fromℕ≢inject₁      : {i : Fin n} → fromℕ n ≢ inject₁ i
   ```
 
 * Added new functions in `Data.Integer.Base`:
