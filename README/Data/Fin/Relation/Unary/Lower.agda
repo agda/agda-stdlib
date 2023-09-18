@@ -12,8 +12,6 @@
 -- together with their corresponding properties in `Data.Fin.Properties`.
 ------------------------------------------------------------------------
 
---- NB this is a provisional commit, ahead of merging PR #1923
-
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Data.Fin.Relation.Unary.Lower where
