@@ -23,7 +23,7 @@ open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ; inject₁)
 open import Data.Fin.Properties
   using (toℕ-fromℕ; toℕ-inject₁; toℕ-inject₁-≢; inject₁-injective)
 open import Data.Fin.Relation.Unary.Top
-  using (view; view≢; ‵fromℕ; ‵inject₁; ‵inj₁) hiding (toℕ)
+  using (view; view≢; ‵fromℕ; ‵inject₁; ‵inj₁)
 open import Level using (Level)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; refl; sym; cong)
