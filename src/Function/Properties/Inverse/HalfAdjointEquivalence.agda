@@ -17,7 +17,7 @@ private
   variable
     a b : Level
     A B : Set a
-   
+
 -- Half adjoint equivalences (see the HoTT book).
 --
 -- They are inverses with an extra coherence condition that the left
@@ -48,14 +48,14 @@ record _≃_ (A : Set a) (B : Set b) : Set (a ⊔ b) where
 ≃⇒↔ : A ≃ B → A ↔ B
 ≃⇒↔ A≃B = mk↔′ to from right-inverse-of left-inverse-of
   where open _≃_ A≃B
-  
+
 -- Inverses can be turned into half adjoint equivalences.
 --
 -- (This proof is based on one in the HoTT book.)
 
 ↔⇒≃ : A ↔ B → A ≃ B
 ↔⇒≃ A↔B = record
-  { to               = to   
+  { to               = to
   ; from             = from
   ; left-inverse-of  = strictlyInverseʳ
   ; right-inverse-of = right-inverse-of

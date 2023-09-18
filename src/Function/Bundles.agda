@@ -120,7 +120,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     to∘to⁻ : ∀ x → to (to⁻ x) ≈₂ x
     to∘to⁻ = proj₂ ∘ strictlySurjective
-      
+
 
   record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field

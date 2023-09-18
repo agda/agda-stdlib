@@ -9,30 +9,47 @@
 
 module Data.Product.Function.Dependent.Propositional.WithK where
 
-open import Data.Product.Base using (Σ)
+open import Data.Product.Base
+open import Data.Product.Properties
 open import Data.Product.Function.Dependent.Setoid
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Data.Product.Relation.Binary.Pointwise.Dependent.WithK
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Injection as Inj using (_↣_; module Injection)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-import Relation.Binary.HeterogeneousEquality as H
+open import Level using (Level)
+open import Function
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
+private
+  variable
+    i a : Level
+    I J : Set i
+    A B : I → Set a
+    
 ------------------------------------------------------------------------
 -- Combinator for Injection
 
-module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
-         {b₁ b₂} {B₁ : A₁ → Set b₁} {B₂ : A₂ → Set b₂}
-         where
+module _ where
+  open Injection
+  
+  ↣ : (I↣J : I ↣ J) →
+      (∀ {x} → A x ↣ B (to I↣J x)) →
+      Σ I A ↣ Σ J B
+  ↣ {I = I} {J = J} {A = A} {B = B} I↣J A↣B = mk↣ to′-injective
+    where
 
-  ↣ : ∀ (A₁↣A₂ : A₁ ↣ A₂) →
-      (∀ {x} → B₁ x ↣ B₂ (Injection.to A₁↣A₂ ⟨$⟩ x)) →
-      Σ A₁ B₁ ↣ Σ A₂ B₂
-  ↣ A₁↣A₂ B₁↣B₂ =
-    Inverse.injection Pointwise-≡↔≡ ⟨∘⟩
-    injection (H.indexedSetoid B₂) A₁↣A₂
-      (Inverse.injection (H.≡↔≅ B₂) ⟨∘⟩
-       B₁↣B₂ ⟨∘⟩
-       Inverse.injection (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
+    to′ : Σ I A → Σ J B
+    to′ = map (to I↣J) (to A↣B)
+
+    to′-injective : Injective _≡_ _≡_ to′
+    to′-injective eq = ?
+  {-
+
+with Σ-≡,≡←≡ eq
+    ... | (eq1 , eq2) = Σ-≡,≡→≡ (injective I↣J eq1 , {!!})
+    injection Pointwise-≡↔≡ ⟨∘⟩
+    injection (H.indexedSetoid B) I↣J
+      (Inverse.injection (H.≡↔≅ B) ⟨∘⟩
+       A↣B ⟨∘⟩
+       Inverse.injection (Inv.sym (H.≡↔≅ A))) ⟨∘⟩
     Inverse.injection (Inv.sym Pointwise-≡↔≡)
-    where open Inj using () renaming (_∘_ to _⟨∘⟩_)
+    where open Injection using () renaming (_∘_ to _⟨∘⟩_)
+  -}

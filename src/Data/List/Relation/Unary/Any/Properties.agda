@@ -87,7 +87,7 @@ Any-cong : ∀ {k : Kind} → (∀ x → Related k (P x) (Q x)) →
            Related k (Any P xs) (Any Q ys)
 Any-cong {P = P} {Q = Q} {xs = xs} {ys} P↔Q xs≈ys =
   Any P xs                ↔⟨ Related.SK-sym Any↔ ⟩
-  (∃ λ x → x ∈ xs × P x)  ∼⟨ {!? ×-cong ?!} ⟩ --Σ.cong ? ? ⟩ --(xs≈ys ×-cong P↔Q _) ⟩ -- Inv.id
+  (∃ λ x → x ∈ xs × P x)  ∼⟨ {!Σ-cong ?!} ⟩ --Σ.cong ? ? ⟩ --(xs≈ys ×-cong P↔Q _) ⟩ -- Inv.id
   (∃ λ x → x ∈ ys × Q x)  ↔⟨ Any↔ ⟩
   Any Q ys                ∎
   where open Related.EquationalReasoning

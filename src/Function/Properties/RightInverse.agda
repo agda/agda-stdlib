@@ -21,7 +21,7 @@ private
     ℓ₁ ℓ₂ a b : Level
     A B : Set a
     S T : Setoid a ℓ₁
-    
+
 RightInverse⇒LeftInverse : RightInverse S T → LeftInverse T S
 RightInverse⇒LeftInverse I = record
   { to         = from
@@ -39,7 +39,7 @@ LeftInverse⇒RightInverse I = record
   ; from-cong  = to-cong
   ; inverseʳ    = inverseˡ
   } where open LeftInverse I
-  
+
 RightInverse⇒Surjection : RightInverse S T → Surjection T S
 RightInverse⇒Surjection I = record
   { to         = from

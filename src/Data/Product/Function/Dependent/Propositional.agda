@@ -115,19 +115,19 @@ module _ where
         lemma P.refl = P.refl
 
     open Injection
-  
+
     to′ : Σ I A → Σ J B
     to′ = Prod.map (_≃_.to I≃J) (to A↣B)
 
     to-injective : Injective _≡_ _≡_ to′
     to-injective {(x₁ , x₂)} {(y₁ , y₂)} =
-    
+
       Σ-≡,≡→≡ ∘′
 
       map (_≃_.injective I≃J) (λ {eq₁} eq₂ → injective A↣B (
               to A↣B (P.subst A (_≃_.injective I≃J eq₁) x₂)             ≡⟨⟩
 
-              (let eq = 
+              (let eq =
                       P.trans (P.sym (_≃_.left-inverse-of I≃J x₁))
                         (P.trans (P.cong (_≃_.from I≃J) eq₁)
                           (P.trans (_≃_.left-inverse-of I≃J y₁)
@@ -180,7 +180,7 @@ module _ where
 
 module _ where
   open Surjection
-  
+
   Σ-↠ : (I↠J : I ↠ J) →
        (∀ {x} → A x ↠ B (to I↠J x)) →
        Σ I A ↠ Σ J B
@@ -192,7 +192,7 @@ module _ where
 
     backcast : ∀ {i} → B i → B (to I↠J (to⁻ I↠J i))
     backcast = P.subst B (P.sym (to∘to⁻ I↠J _))
-    
+
     to⁻′ : Σ J B → Σ I A
     to⁻′ = map (to⁻ I↠J) (Surjection.to⁻ A↠B ∘ backcast)
 
@@ -203,7 +203,7 @@ module _ where
          P.subst B (to∘to⁻ I↠J x) (backcast y)                      ≡⟨ P.subst-subst-sym (to∘to⁻ I↠J x) ⟩
          y                                                          ∎)
       ) where open P.≡-Reasoning
-      
+
 
 ------------------------------------------------------------------------
 -- Left inverses
@@ -218,10 +218,10 @@ module _ where
     where
     to′ : Σ I A → Σ J B
     to′ = map (to I↩J) (to A↩B)
-    
+
     backcast : ∀ {j} → B j → B (to I↩J (from I↩J j))
-    backcast = P.subst B (P.sym (inverseˡ I↩J P.refl)) 
-    
+    backcast = P.subst B (P.sym (inverseˡ I↩J P.refl))
+
     from′ : Σ J B → Σ I A
     from′ = map (from I↩J) (from A↩B ∘ backcast)
 
@@ -274,7 +274,7 @@ module _ where
                  (to A↔B y)))                   ≡⟨ P.cong (λ eq → from A↔B (P.subst B eq
                                                                                   (P.subst B (P.sym (_≃_.right-inverse-of I≃J _)) _)))
                                                                    (_≃_.left-right I≃J _) ⟩
-         from A↔B 
+         from A↔B
            (P.subst B (_≃_.right-inverse-of I≃J
                           (_≃_.to I≃J x))
               (P.subst B (P.sym (_≃_.right-inverse-of I≃J
@@ -290,7 +290,7 @@ module _ where
 
 private module _ where
   open Inverse
-  
+
   swap-coercions : ∀ {k} (B : J → Set b)
     (I↔J : _↔_ I J) →
     (∀ {x} → A x ∼[ k ] B (to I↔J x)) →
@@ -300,7 +300,7 @@ private module _ where
     B (to I↔J (from I↔J x)) ↔⟨ K-reflexive (P.cong B $ strictlyInverseˡ I↔J x) ⟩
     B x                       ∎
     where open EquationalReasoning
-   
+
 
 cong : ∀ {k} (I↔J : I ↔ J) →
        (∀ {x} → A x ∼[ k ] B (Inverse.to I↔J x)) →

@@ -78,15 +78,3 @@ _×-cong_ {k = reverseInjection}    = _×-↣_
 _×-cong_ {k = leftInverse}         = _×-↪_
 _×-cong_ {k = surjection}          = _×-↠_
 _×-cong_ {k = bijection}           = _×-↔_
-
-{-
-  _×-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A × C) ∼[ k ] (B × D)
-  _×-cong_ {implication}         = λ f g →      map        f         g
-  _×-cong_ {reverse-implication} = λ f g → lam (map (app-← f) (app-← g))
-  _×-cong_ {equivalence}         = _×-⇔_
-  _×-cong_ {injection}           = _×-↣_
-  _×-cong_ {reverse-injection}   = λ f g → lam (app-↢ f ×-↣ app-↢ g)
-  _×-cong_ {left-inverse}        = _×-↞_
-  _×-cong_ {surjection}          = _×-↠_
-  _×-cong_ {bijection}           = _×-↔_
--}
