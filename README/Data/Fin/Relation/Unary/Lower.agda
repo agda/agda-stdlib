@@ -25,8 +25,7 @@ open import Data.Fin.Properties
 import Data.Fin.Relation.Unary.Top as Top
 open import Level using (Level)
 open import Relation.Nullary.Negation.Core using (contradiction)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Unary using (Pred)
+open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; refl; sym; cong)
 
 private
   variable
