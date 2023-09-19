@@ -2723,7 +2723,6 @@ Additions to existing modules
 
   lookup-take-inject≤ : (xs : Vec A (m + n)) (i : Fin m) →
                         lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
-  take≤               : (m≤n : m ≤ n) (xs : Vec A n) → Vec A m
   ```
 
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
