@@ -179,17 +179,6 @@ lookup-take-inject≤ : ∀ m {n} (xs : Vec A (m + n)) (i : Fin m) →
                       lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
 lookup-take-inject≤ m xs i = lookup-take-inject≤′ (m≤m+n m _) xs i
 
--- provisional definition
-
-take≤ : (m≤n : m ≤ n) (xs : Vec A n) → Vec A m
-take≤ {m} m≤n xs = let less-than-or-equal {k} eq = ≤⇒≤″ m≤n in take m (cast (sym eq) xs)
-{-
-lookup-take : (m≤n : m ≤ n) (i : Fin m) →
-              let less-than-or-equal {k} refl = ≤⇒≤″ m≤n in
-              (xs : Vec A (m + k)) →
-              lookup (take m xs) i ≡ lookup (cast ? xs) (Fin.inject≤ i m≤n)
-lookup-take m≤n i xs = ?
--}
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
 
@@ -361,6 +350,13 @@ cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
+
+cast-sym : (eq : m ≡ n) {xs : Vec A m} {ys : Vec A n} →
+           ys ≡ cast eq xs → xs ≡ cast (sym eq) ys
+cast-sym eq {xs = []}     {ys = []}     _ = refl
+cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs≡[eq]yys
+  with x≡y , xs≡[eq]ys ← ∷-injective xxs≡[eq]yys
+  = cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs≡[eq]ys)
 
 cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs

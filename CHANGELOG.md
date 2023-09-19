@@ -2700,12 +2700,13 @@ Additions to existing modules
 
   cast-is-id    : cast eq xs ≡ xs
   subst-is-cast : subst (Vec A) eq xs ≡ cast eq xs
+  cast-sym      : ys ≡ cast eq xs → xs ≡ cast (sym eq) ys
   cast-trans    : cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
   map-cast      : map f (cast eq xs) ≡ cast eq (map f xs)
   lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
-  cast-reverse : cast eq ∘ reverse ≗ reverse ∘ cast eq
+  cast-reverse  : cast eq ∘ reverse ≗ reverse ∘ cast eq
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
