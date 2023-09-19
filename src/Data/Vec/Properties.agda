@@ -15,7 +15,7 @@ open import Data.List.Base as List using (List)
 import Data.List.Properties as Listₚ
 open import Data.Nat.Base
 open import Data.Nat.Properties
-  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤⇒≤″; suc-injective; +-comm; +-suc)
+  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; suc-injective; +-comm; +-suc)
 open import Data.Product.Base as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -178,6 +178,20 @@ lookup-take-inject≤′ (s≤s m≤m+n) (x ∷ xs) (suc i) = lookup-take-inject
 lookup-take-inject≤ : ∀ m {n} (xs : Vec A (m + n)) (i : Fin m) →
                       lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
 lookup-take-inject≤ m xs i = lookup-take-inject≤′ (m≤m+n m _) xs i
+
+------------------------------------------------------------------------
+-- take≤: provisional definition: where should this go?
+
+take≤ : (m≤n : m ≤ n) (xs : Vec A n) → Vec A m
+take≤ {m = m} m≤n xs = let less-than-or-equal eq = ≤⇒≤″ m≤n in take m (cast (sym eq) xs)
+
+take≤-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) (xs : Vec A n) →
+                   take≤ m≤n₁ xs ≡ take≤ m≤n₂ xs 
+take≤-irrelevant m≤n₁ m≤n₂ xs with refl ← ≤-irrelevant m≤n₁ m≤n₂ = refl
+
+take≤-unfold : (xs : Vec A (m + n)) → take≤ (m≤m+n m n) xs ≡ take m xs
+take≤-unfold {m = zero}  _        = refl
+take≤-unfold {m = suc m} (x ∷ xs) = cong (x ∷_) (take≤-unfold xs)
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)

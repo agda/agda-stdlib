@@ -2723,6 +2723,9 @@ Additions to existing modules
 
   lookup-take-inject≤ : (xs : Vec A (m + n)) (i : Fin m) →
                         lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
+  take≤               : (m≤n : m ≤ n) (xs : Vec A n) → Vec A m
+  take≤-irrelevant    : (xs : Vec A n) → take≤ m≤n₁ xs ≡ take≤ m≤n₂ xs 
+  take≤-unfold        : (xs : Vec A (m + n)) → take≤ (m≤m+n m n) xs ≡ take m xs
   ```
 
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
