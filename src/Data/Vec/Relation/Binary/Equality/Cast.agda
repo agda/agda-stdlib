@@ -97,10 +97,10 @@ step-≂ xs ys≈zs xs≡ys = ≈-trans (≈-reflexive xs≡ys) ys≈zs
 -- symmetric version of each of the operator
 step-≈˘ : ∀ .{n≡m : n ≡ m}.{m≡o : m ≡ o} (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} →
          ys ≈[ trans n≡m m≡o ] zs → ys ≈[ n≡m ] xs → xs ≈[ m≡o ] zs
-step-≈˘ xs ys≈zs ys≈xs = ≈-trans (≈-sym ys≈xs) ys≈zs
+step-≈˘ xs ys≈zs ys≈xs = step-≈ xs ys≈zs (≈-sym ys≈xs)
 
 step-≃˘ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≡ zs → ys ≈[ sym m≡n ] xs → xs ≈[ m≡n ] zs
-step-≃˘ xs ys≡zs ys≈xs = trans (≈-sym ys≈xs) ys≡zs
+step-≃˘ xs ys≡zs ys≈xs = step-≃ xs ys≡zs (≈-sym ys≈xs)
 
 step-≂˘ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≈[ m≡n ] zs → ys ≡ xs → xs ≈[ m≡n ] zs
 step-≂˘ xs ys≈zs ys≡xs = step-≂ xs ys≈zs (sym ys≡xs)
