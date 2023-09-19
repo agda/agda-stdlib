@@ -1409,6 +1409,11 @@ Deprecated names
 
 * In `Data.Vec.Properties`:
   ```
+  take-distr-zipWith ↦  take-zipWith
+  take-distr-map     ↦  take-map
+  drop-distr-zipWith ↦  drop-zipWith
+  drop-distr-map     ↦  drop-map
+  
   updateAt-id-relative      ↦  updateAt-id-local
   updateAt-compose-relative ↦  updateAt-∘-local
   updateAt-compose          ↦  updateAt-∘
@@ -1578,6 +1583,11 @@ New modules
 * A small library for function arguments with default values:
   ```
   Data.Default
+  ```
+
+* A small library defining a structurally recursive view of `Fin n`:
+  ```
+  Data.Fin.Relation.Unary.Top
   ```
 
 * A small library for a non-empty fresh list:
@@ -1770,8 +1780,8 @@ New modules
   Data.Vec.Relation.Binary.Equality.Cast
   ```
 
-Other minor changes
--------------------
+Additions to existing modules
+-----------------------------
 
 * Added new proof to `Data.Maybe.Properties`
   ```agda
@@ -2146,6 +2156,8 @@ Other minor changes
   cast-is-id    : cast eq k ≡ k
   subst-is-cast : subst Fin eq k ≡ cast eq k
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+
+  fromℕ≢inject₁      : {i : Fin n} → fromℕ n ≢ inject₁ i
   ```
 
 * Added new functions in `Data.Integer.Base`:
