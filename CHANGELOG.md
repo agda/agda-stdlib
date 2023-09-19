@@ -1428,7 +1428,7 @@ Deprecated names
 
   take-drop-id ↦ take++drop≡id
 
-  lookup-inject≤-take ↦ lookup-take-inject≤
+  lookup-inject≤-take ↦ lookup-take-inject≤′
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```
@@ -2719,6 +2719,9 @@ Additions to existing modules
   cast-fromList : cast _ (fromList xs) ≡ fromList ys
   fromList-map  : cast _ (fromList (List.map f xs)) ≡ map f (fromList xs)
   fromList-++   : cast _ (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+
+  lookup-take-inject≤ : (xs : Vec A (m + n)) (i : Fin m) →
+                        lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
   ```
 
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:

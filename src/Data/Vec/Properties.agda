@@ -178,13 +178,7 @@ lookup-take-inject≤′ (s≤s m≤m+n) (x ∷ xs) (suc i) = lookup-take-inject
 lookup-take-inject≤ : ∀ m {n} (xs : Vec A (m + n)) (i : Fin m) →
                       lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
 lookup-take-inject≤ m xs i = lookup-take-inject≤′ (m≤m+n m _) xs i
-{-
-lookup-take : (m≤n : m ≤ n) (i : Fin m) →
-              let less-than-or-equal {k} refl = ≤⇒≤″ m≤n in
-              (xs : Vec A (m + k)) →
-              lookup (take m xs) i ≡ lookup (cast ? xs) (Fin.inject≤ i m≤n)
-lookup-take m≤n i xs = ?
--}
+
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
 
@@ -1254,13 +1248,11 @@ sum-++-commute = sum-++
 "Warning: sum-++-commute was deprecated in v2.0.
 Please use sum-++ instead."
 #-}
-
 take-drop-id = take++drop≡id
 {-# WARNING_ON_USAGE take-drop-id
 "Warning: take-drop-id was deprecated in v2.0.
 Please use take++drop≡id instead."
 #-}
-
 take-distr-zipWith = take-zipWith
 {-# WARNING_ON_USAGE take-distr-zipWith
 "Warning: take-distr-zipWith was deprecated in v2.0.
@@ -1286,6 +1278,6 @@ lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m
 lookup-inject≤-take m m≤m+n i xs = sym (lookup-take-inject≤′ m≤m+n xs i)
 {-# WARNING_ON_USAGE lookup-inject≤-take
 "Warning: lookup-inject≤-take was deprecated in v2.0.
-Please use lookup-take-inject≤ instead."
+Please use lookup-take-inject≤′ instead."
 #-}
 
