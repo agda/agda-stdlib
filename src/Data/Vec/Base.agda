@@ -12,12 +12,12 @@ open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
-open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-open import Relation.Nullary.Decidable using (does)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; trans; cong)
+open import Relation.Nullary.Decidable.Core using (does)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -189,8 +189,6 @@ module DiagonalBind where
   _>>=_ : Vec A n → (A → Vec B n) → Vec B n
   xs >>= f = diagonal (map f xs)
 
-  join : Vec (Vec A n) n → Vec A n
-  join = _>>= id
 
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
@@ -261,26 +259,23 @@ allFin _ = tabulate id
 
 splitAt : ∀ m {n} (xs : Vec A (m + n)) →
           ∃₂ λ (ys : Vec A m) (zs : Vec A n) → xs ≡ ys ++ zs
-splitAt zero    xs                = ([] , xs , refl)
-splitAt (suc m) (x ∷ xs)          with splitAt m xs
-splitAt (suc m) (x ∷ .(ys ++ zs)) | (ys , zs , refl) =
-  ((x ∷ ys) , zs , refl)
+splitAt zero    xs                = [] , xs , refl
+splitAt (suc m) (x ∷ xs) =
+  let ys , zs , eq = splitAt m xs in x ∷ ys , zs , cong (x ∷_) eq
 
 take : ∀ m {n} → Vec A (m + n) → Vec A m
-take m xs          with splitAt m xs
-take m .(ys ++ zs) | (ys , zs , refl) = ys
+take m xs = proj₁ (splitAt m xs)
 
 drop : ∀ m {n} → Vec A (m + n) → Vec A n
-drop m xs          with splitAt m xs
-drop m .(ys ++ zs) | (ys , zs , refl) = zs
+drop m xs = proj₁ (proj₂ (splitAt m xs))
 
 group : ∀ n k (xs : Vec A (n * k)) →
         ∃ λ (xss : Vec (Vec A k) n) → xs ≡ concat xss
 group zero    k []                  = ([] , refl)
-group (suc n) k xs                  with splitAt k xs
-group (suc n) k .(ys ++ zs)         | (ys , zs , refl) with group n k zs
-group (suc n) k .(ys ++ concat zss) | (ys , ._ , refl) | (zss , refl) =
-  ((ys ∷ zss) , refl)
+group (suc n) k xs  = 
+  let ys , zs , eq-split = splitAt k xs in
+  let zss , eq-group     = group n k zs in
+   (ys ∷ zss) , trans eq-split (cong (ys ++_) eq-group)
 
 split : Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
@@ -340,17 +335,16 @@ xs ʳ++ ys = foldl (Vec _ ∘ (_+ _)) (λ rev x → x ∷ rev) ys xs
 -- init and last
 
 initLast : ∀ (xs : Vec A (1 + n)) → ∃₂ λ ys y → xs ≡ ys ∷ʳ y
-initLast {n = zero}  (x ∷ []) = ([] , x , refl)
-initLast {n = suc n} (x ∷ xs) with initLast xs
-... | (ys , y , refl) = (x ∷ ys , y , refl)
+initLast {n = zero}  (x ∷ []) = [] , x , refl
+initLast {n = suc n} (x ∷ xs) =
+  let ys , y , eq = initLast xs in
+  x ∷ ys , y , cong (x ∷_) eq
 
 init : Vec A (1 + n) → Vec A n
-init xs with initLast xs
-... | (ys , y , refl) = ys
+init xs = proj₁ (initLast xs)
 
 last : Vec A (1 + n) → A
-last xs with initLast xs
-... | (ys , y , refl) = y
+last xs = proj₁ (proj₂ (initLast xs))
 
 ------------------------------------------------------------------------
 -- Other operations
@@ -358,3 +352,4 @@ last xs with initLast xs
 transpose : Vec (Vec A n) m → Vec (Vec A m) n
 transpose []         = replicate []
 transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+

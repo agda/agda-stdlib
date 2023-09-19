@@ -23,7 +23,7 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum hiding (map)
 open import Data.Sum.Properties hiding (map-cong)
@@ -36,7 +36,8 @@ open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related as Related
   using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→; K-refl; SK-sym)
 open import Function.Related.TypeIsomorphisms
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Preorder; Setoid)
 import Relation.Binary.Reasoning.Setoid as EqR
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as P

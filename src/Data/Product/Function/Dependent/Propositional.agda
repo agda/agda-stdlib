@@ -9,12 +9,11 @@
 
 module Data.Product.Function.Dependent.Propositional where
 
-open import Data.Product
+open import Data.Product.Base using (Σ; map; _,_)
 open import Data.Product.Function.NonDependent.Setoid
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Relation.Binary hiding (_⇔_)
 open import Function.Base
-open import Function.Equality using (_⟶_; _⟨$⟩_)
+open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Equiv using (_⇔_; module Equivalence)
 open import Function.HalfAdjointEquivalence using (↔→≃; _≃_)
 open import Function.Injection as Inj

@@ -21,7 +21,7 @@ open import Data.These.Base
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-open import Function
+open import Function.Base using (_∘_; flip)
 
 Theseₗ : Set (a ⊔ b) → Set (a ⊔ b)
 Theseₗ B = These A B

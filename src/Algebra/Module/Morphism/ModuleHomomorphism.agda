@@ -25,7 +25,7 @@ module Algebra.Module.Morphism.ModuleHomomorphism
   where
 
 open import Axiom.DoubleNegationElimination
-open import Data.Product
+open import Data.Product.Base using (∃₂; _×_; _,_)
 open import Relation.Binary.Reasoning.MultiSetoid
 open import Relation.Nullary          using (¬_)
 open import Relation.Nullary.Negation using (contraposition)

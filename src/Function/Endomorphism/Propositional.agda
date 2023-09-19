@@ -16,12 +16,13 @@ open import Algebra.Morphism; open Definitions
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
-open import Function
+open import Function.Base using (id; _∘′_; _∋_)
 open import Function.Equality using (_⟨$⟩_)
-open import Relation.Binary using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 import Function.Endomorphism.Setoid (P.setoid A) as Setoid
 
@@ -42,6 +43,8 @@ toSetoidEndo f = record
 
 ------------------------------------------------------------------------
 -- N-th composition
+
+infixr 8 _^_
 
 _^_ : Endo → ℕ → Endo
 f ^ zero  = id

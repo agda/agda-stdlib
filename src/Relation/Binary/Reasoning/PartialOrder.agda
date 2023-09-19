@@ -39,7 +39,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Poset)
 
 module Relation.Binary.Reasoning.PartialOrder
   {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where

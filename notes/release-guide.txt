@@ -5,15 +5,13 @@ procedure should be followed:
 
 * Update `README.agda` by replacing 'development version' by 'version X.Y' in the title.
 
-* Update `README.md`
-
-* Update `agda-stdlib-utils.cabal` version to `X.Y`.
-
-* Update the version in standard-library.agda-lib to `X.Y`
-
-* Update `notes/installation-guide.txt`
-
-* Update `CHANGELOG.md`.
+* Update the version to `X.Y` in:
+  - `agda-stdlib-utils.cabal`
+  - `standard-library.agda-lib`
+  - `CITATION.cff`
+  - `CHANGELOG.md`
+  - `README.md`
+  - `notes/installation-guide.txt`
 
 * Update the copyright year range in the LICENSE file, if necessary.
 

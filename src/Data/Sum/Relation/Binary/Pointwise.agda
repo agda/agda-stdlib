@@ -8,7 +8,7 @@
 
 module Data.Sum.Relation.Binary.Pointwise where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum
 open import Data.Sum.Properties
 open import Level using (_⊔_)
@@ -16,10 +16,17 @@ open import Function.Base using (_∘_; id)
 open import Function.Inverse using (Inverse)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsStrictPartialOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Asymmetric; Substitutive; Decidable; Irreflexive; Antisymmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 data Pointwise {a b c d r s}
@@ -29,7 +36,7 @@ data Pointwise {a b c d r s}
   inj₁ : ∀ {a c} → R a c → Pointwise R S (inj₁ a) (inj₁ c)
   inj₂ : ∀ {b d} → S b d → Pointwise R S (inj₂ b) (inj₂ d)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties
 
 module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂}
@@ -107,7 +114,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
                 (Pointwise ∼₁ ∼₂) Respects₂ (Pointwise ≈₁ ≈₂)
   ⊎-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-respectsʳ r₁ r₂ , ⊎-respectsˡ l₁ l₂
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}

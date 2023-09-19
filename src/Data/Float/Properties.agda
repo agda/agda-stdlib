@@ -15,9 +15,14 @@ import Data.Maybe.Properties as Mₚ
 import Data.Nat.Properties as Nₚ
 import Data.Word.Base as Word
 import Data.Word.Properties as Wₚ
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Nullary.Decidable as RN using (map′)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Substitutive; Decidable; DecidableEquality)
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.PropositionalEquality
 

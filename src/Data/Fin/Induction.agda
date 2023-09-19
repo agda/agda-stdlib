@@ -13,7 +13,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_; s≤s)
 open import Data.Nat.Properties using (n<1+n; ≤⇒≯)
 import Data.Nat.Induction as ℕ
 import Data.Nat.Properties as ℕ
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Linked as Linked using (Linked; [-]; _∷_)
 import Data.Vec.Relation.Unary.Linked.Properties as Linkedₚ
@@ -21,10 +21,12 @@ open import Function.Base using (flip; _$_)
 open import Induction
 open import Induction.WellFounded as WF
 open import Level using (Level)
-open import Relation.Binary
-  using (Rel; Decidable; IsPartialOrder; IsStrictPartialOrder; StrictPartialOrder)
-import Relation.Binary.Construct.Converse as Converse
-import Relation.Binary.Construct.Flip as Flip
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (StrictPartialOrder)
+open import Relation.Binary.Structures using (IsPartialOrder; IsStrictPartialOrder)
+open import Relation.Binary.Definitions using (Decidable)
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
+import Relation.Binary.Construct.Flip.Ord as Ord
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.Definitions using (Tri; tri<; tri≈; tri>)
@@ -123,7 +125,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
     pigeon : (xs : Vec (Fin n) n) → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_
     pigeon xs i∷xs↑ =
       let (i₁ , i₂ , i₁<i₂ , xs[i₁]≡xs[i₂]) = pigeonhole (n<1+n n) (Vec.lookup (i ∷ xs)) in
-      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Flip.transitive _⊏_ ⊏.trans) {xs = i ∷ xs} i∷xs↑ i₁<i₂ in
+      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Ord.transitive _⊏_ ⊏.trans) {xs = i ∷ xs} i∷xs↑ i₁<i₂ in
       let xs[i₁]⊏xs[i₁] = ⊏.<-respʳ-≈ (⊏.Eq.reflexive xs[i₁]≡xs[i₂]) xs[i₁]⊏xs[i₂] in
       contradiction xs[i₁]⊏xs[i₁] (⊏.irrefl ⊏.Eq.refl)
 
@@ -137,7 +139,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
 
   spo-noetherian : ∀ {r} {_⊏_ : Rel (Fin n) r} →
                    IsStrictPartialOrder _≈_ _⊏_ → WellFounded (flip _⊏_)
-  spo-noetherian isSPO = spo-wellFounded (Converse.isStrictPartialOrder isSPO)
+  spo-noetherian isSPO = spo-wellFounded (EqAndOrd.isStrictPartialOrder isSPO)
 
   po-noetherian : ∀ {r} {_⊑_ : Rel (Fin n) r} → IsPartialOrder _≈_ _⊑_ →
                   WellFounded (flip (ToStrict._<_ _≈_ _⊑_))

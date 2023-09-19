@@ -33,7 +33,7 @@ open import Data.Nat.Coprimality as C using (Coprime; coprime?)
 open import Data.Nat.Divisibility
 import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
-open import Data.Product using (proj₁; proj₂; _×_; _,_; uncurry)
+open import Data.Product.Base using (proj₁; proj₂; _×_; _,_; uncurry)
 open import Data.Rational.Base
 open import Data.Rational.Unnormalised.Base as ℚᵘ
   using (ℚᵘ; mkℚᵘ; *≡*; *≤*; *<*)
@@ -49,7 +49,13 @@ import Data.Sign as S
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; TotalPreorder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsTotalOrder; IsTotalPreorder; IsPartialOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri<; tri>; tri≈; _Respectsʳ_; _Respectsˡ_; _Respects₂_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
@@ -1304,24 +1310,24 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 ------------------------------------------------------------------------
 
 p≤q⇒p⊔q≡q : p ≤ q → p ⊔ q ≡ q
-p≤q⇒p⊔q≡q {p@record{}} {q@record{}} p≤q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | _       = refl
-... | false | [ p≰q ] = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
+p≤q⇒p⊔q≡q {p@record{}} {q@record{}} p≤q with p ≤ᵇ q in p≰q
+... | true  = refl
+... | false = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
 
 p≥q⇒p⊔q≡p : p ≥ q → p ⊔ q ≡ p
-p≥q⇒p⊔q≡p {p@record{}} {q@record{}} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | [ p≤q ] = ≤-antisym p≥q (≤ᵇ⇒≤ (subst T (sym p≤q) _))
-... | false | [ p≤q ] = refl
+p≥q⇒p⊔q≡p {p@record{}} {q@record{}} p≥q with p ≤ᵇ q in p≤q
+... | true  = ≤-antisym p≥q (≤ᵇ⇒≤ (subst T (sym p≤q) _))
+... | false = refl
 
 p≤q⇒p⊓q≡p : p ≤ q → p ⊓ q ≡ p
-p≤q⇒p⊓q≡p {p@record{}} {q@record{}} p≤q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | _       = refl
-... | false | [ p≰q ] = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
+p≤q⇒p⊓q≡p {p@record{}} {q@record{}} p≤q with p ≤ᵇ q in p≰q
+... | true  = refl
+... | false = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
 
 p≥q⇒p⊓q≡q : p ≥ q → p ⊓ q ≡ q
-p≥q⇒p⊓q≡q {p@record{}} {q@record{}} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
-... | true  | [ p≤q ] = ≤-antisym (≤ᵇ⇒≤ (subst T (sym p≤q) _)) p≥q
-... | false | [ p≤q ] = refl
+p≥q⇒p⊓q≡q {p@record{}} {q@record{}} p≥q with p ≤ᵇ q in p≤q
+... | true  = ≤-antisym (≤ᵇ⇒≤ (subst T (sym p≤q) _)) p≥q
+... | false = refl
 
 ⊓-operator : MinOperator ≤-totalPreorder
 ⊓-operator = record

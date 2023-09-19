@@ -26,6 +26,8 @@ data Parity : Set where
 
 -- The opposite parity.
 
+infix 8 _⁻¹
+
 _⁻¹ : Parity → Parity
 1ℙ ⁻¹ = 0ℙ
 0ℙ ⁻¹ = 1ℙ

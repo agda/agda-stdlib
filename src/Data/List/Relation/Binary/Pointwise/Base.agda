@@ -8,9 +8,9 @@
 
 module Data.List.Relation.Binary.Pointwise.Base where
 
-open import Data.Product using (_×_; <_,_>)
+open import Data.Product.Base using (_×_; <_,_>)
 open import Data.List.Base using (List; []; _∷_)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; _⇒_)
 
 private
