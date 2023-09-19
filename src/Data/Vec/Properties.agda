@@ -15,7 +15,7 @@ open import Data.List.Base as List using (List)
 import Data.List.Properties as Listₚ
 open import Data.Nat.Base
 open import Data.Nat.Properties
-  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; suc-injective; +-comm; +-suc)
+  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤⇒≤″; suc-injective; +-comm; +-suc)
 open import Data.Product.Base as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -179,6 +179,17 @@ lookup-take-inject≤ : ∀ m {n} (xs : Vec A (m + n)) (i : Fin m) →
                       lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
 lookup-take-inject≤ m xs i = lookup-take-inject≤′ (m≤m+n m _) xs i
 
+-- provisional definition
+
+take≤ : (m≤n : m ≤ n) (xs : Vec A n) → Vec A m
+take≤ {m} m≤n xs = let less-than-or-equal {k} eq = ≤⇒≤″ m≤n in take m (cast (sym eq) xs)
+{-
+lookup-take : (m≤n : m ≤ n) (i : Fin m) →
+              let less-than-or-equal {k} refl = ≤⇒≤″ m≤n in
+              (xs : Vec A (m + k)) →
+              lookup (take m xs) i ≡ lookup (cast ? xs) (Fin.inject≤ i m≤n)
+lookup-take m≤n i xs = ?
+-}
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
 
