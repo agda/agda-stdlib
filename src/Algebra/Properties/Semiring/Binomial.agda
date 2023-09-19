@@ -18,12 +18,11 @@ open import Data.Fin.Base as Fin
 open import Data.Fin.Patterns using (0F)
 open import Data.Fin.Properties as Fin
   using (toℕ<n; toℕ-fromℕ; toℕ-inject₁)
-open import Data.Fin.Relation.Unary.TopBinomial
-  using (view; top; inj; view-inj; view-top)
+open import Data.Fin.Relation.Unary.Top
+  using (view; ‵fromℕ; ‵inject₁; view-fromℕ; view-inject₁)
 open import Function.Base using (_∘_)
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; cong; module ≡-Reasoning)
-  renaming (refl to ≡-refl)
 
 module Algebra.Properties.Semiring.Binomial {a ℓ} (S : Semiring a ℓ) where
 
@@ -71,8 +70,8 @@ module _ (x y : Carrier) where
 
     term₂ : (i : Fin (suc (suc n))) → Carrier
     term₂ i with view i
-    ... | top   = 0#
-    ... | inj j = y * term j
+    ... | ‵fromℕ     = 0#
+    ... | ‵inject₁ j = y * term j
 
     sum₂ : Carrier
     sum₂ = ∑[ i ≤ suc n ] term₂ i
@@ -105,8 +104,8 @@ module _ (x y : Carrier) where
       ∑[ i ≤ n ] (y * term i)
         ≈˘⟨ +-identityʳ _ ⟩
       ∑[ i ≤ n ] (y * term i) + 0#
-        ≈⟨ +-cong (sum-cong-≋ lemma₂-inj) lemma₂-top ⟩
-      (∑[ i ≤ n ] term₂-inj i) + term₂ [n+1]
+        ≈⟨ +-cong (sum-cong-≋ lemma₂-inject₁) lemma₂-fromℕ ⟩
+      (∑[ i ≤ n ] term₂-inject₁ i) + term₂ [n+1]
         ≈˘⟨ sum-init-last term₂ ⟩
       sum term₂
         ≡⟨⟩
@@ -114,14 +113,14 @@ module _ (x y : Carrier) where
       where
         [n+1] = fromℕ (suc n)
 
-        lemma₂-top : 0# ≈ term₂ [n+1]
-        lemma₂-top rewrite view-top (suc n) = refl
+        lemma₂-fromℕ : 0# ≈ term₂ [n+1]
+        lemma₂-fromℕ rewrite view-fromℕ  (suc n) = refl
 
-        term₂-inj : (i : Fin (suc n)) → Carrier
-        term₂-inj i = term₂ (inject₁ i)
+        term₂-inject₁ : (i : Fin (suc n)) → Carrier
+        term₂-inject₁ i = term₂ (inject₁ i)
 
-        lemma₂-inj : ∀ i → y * term i ≈ term₂-inj i
-        lemma₂-inj i rewrite view-inj i = refl
+        lemma₂-inject₁ : ∀ i → y * term i ≈ term₂-inject₁ i
+        lemma₂-inject₁ i rewrite view-inject₁ i = refl
 
 ------------------------------------------------------------------------
 -- Next, a lemma which is independent of commutativity
@@ -211,7 +210,7 @@ module _ (x y : Carrier) where
       private
 
         n<ᵇ1+n : (n Nat.<ᵇ suc n) ≡ true
-        n<ᵇ1+n with true ← n Nat.<ᵇ suc n | _ ← <⇒<ᵇ (n<1+n n) = ≡-refl
+        n<ᵇ1+n with true ← n Nat.<ᵇ suc n | _ ← <⇒<ᵇ (n<1+n n) = ≡.refl
 
 
       term₁+term₂≈term : ∀ i → term₁ i + term₂ i ≈ Binomial.term (suc n) i
@@ -228,7 +227,7 @@ module _ (x y : Carrier) where
         Binomial.term (suc n) 0F     ∎
 
       term₁+term₂≈term (suc i) with view i
-      ... | top
+      ... | ‵fromℕ {n}
       {- remembering that i = fromℕ n, definitionally -}
         rewrite toℕ-fromℕ n
           | nCn≡1 n
@@ -241,7 +240,7 @@ module _ (x y : Carrier) where
         x * x ^ n * 1#               ≈˘⟨ +-identityʳ _ ⟩
         1 × (x * x ^ n * 1#)         ∎
 
-      ... | inj j
+      ... | ‵inject₁ j
       {- remembering that i = inject₁ j, definitionally -}
           = begin
         (x * term i) + (y * term (suc j))
