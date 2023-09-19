@@ -170,10 +170,14 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
 
-lookup-take-inject≤′ : ∀ (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+lookup-take-inject≤′ : ∀ (m≤m+n : m ≤ m + n) (xs : Vec A (m + n)) (i : Fin m) →
                       lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i m≤m+n)
-lookup-take-inject≤′ _           zero    (_ ∷ _)  = refl
-lookup-take-inject≤′ (s≤s m≤m+n) (suc i) (x ∷ xs) = lookup-take-inject≤′ m≤m+n i xs
+lookup-take-inject≤′ _           (_ ∷ _)  zero    = refl
+lookup-take-inject≤′ (s≤s m≤m+n) (x ∷ xs) (suc i) = lookup-take-inject≤′ m≤m+n xs i
+
+lookup-take-inject≤ : ∀ m (xs : Vec A (m + n)) (i : Fin m) →
+                      lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i ?)
+lookup-take-inject≤ m xs i = lookup-take-inject≤′ ? xs i
 {-
 lookup-take : (m≤n : m ≤ n) (i : Fin m) →
               let less-than-or-equal {k} refl = ≤⇒≤″ m≤n in
@@ -1279,7 +1283,7 @@ Please use drop-map instead."
 #-}
 lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
                       lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
-lookup-inject≤-take m m≤m+n i xs = sym (lookup-take-inject≤′ m≤m+n i xs)
+lookup-inject≤-take m m≤m+n i xs = sym (lookup-take-inject≤′ m≤m+n xs i)
 {-# WARNING_ON_USAGE lookup-inject≤-take
 "Warning: lookup-inject≤-take was deprecated in v2.0.
 Please use lookup-take-inject≤ instead."
