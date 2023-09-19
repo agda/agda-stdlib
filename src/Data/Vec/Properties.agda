@@ -350,7 +350,7 @@ subst-is-cast refl xs = sym (cast-is-id refl xs)
 
 cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
-cast-trans eq₁ _ _ = sym (CastReasoning.≈-trans (cong (cast eq₁) refl) refl)
+cast-trans _ _ _ = sym (CastReasoning.≈-trans refl refl)
 
 ------------------------------------------------------------------------
 -- map
