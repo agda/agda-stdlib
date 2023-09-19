@@ -1427,6 +1427,8 @@ Deprecated names
   sum-++-commute  ↦ sum-++
 
   take-drop-id ↦ take++drop≡id
+
+  lookup-inject≤-take ↦ lookup-take-inject≤
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```

@@ -170,10 +170,15 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
 
-lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+lookup-take-inject≤ : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
                       lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
-lookup-inject≤-take (suc m) m≤m+n zero (x ∷ xs) = refl
-lookup-inject≤-take (suc m) (s≤s m≤m+n) (suc i) (x ∷ xs) = lookup-inject≤-take m m≤m+n i xs
+lookup-take-inject≤ (suc m) m≤m+n zero (x ∷ xs) = refl
+lookup-take-inject≤ (suc m) (s≤s m≤m+n) (suc i) (x ∷ xs) = lookup-take-inject≤ m m≤m+n i xs
+
+lookup-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+                      lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
+lookup-take (suc m) m≤m+n zero (x ∷ xs) = refl
+lookup-take (suc m) (s≤s m≤m+n) (suc i) (x ∷ xs) = lookup-take-inject≤ m m≤m+n i xs
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
@@ -1271,3 +1276,11 @@ drop-distr-map = drop-map
 "Warning: drop-distr-map was deprecated in v2.0.
 Please use drop-map instead."
 #-}
+lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+                      lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
+lookup-inject≤-take m m≤m+n i xs = lookup-take-inject≤ m m≤m+n i xs
+{-# WARNING_ON_USAGE lookup-inject≤-take
+"Warning: lookup-inject≤-take was deprecated in v2.0.
+Please use lookup-take-inject≤ instead."
+#-}
+
