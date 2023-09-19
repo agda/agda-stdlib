@@ -34,19 +34,18 @@ private
 
 
 
-≈-by : .(eq : n ≡ m) → REL (Vec A n) (Vec A m) _
-≈-by eq xs ys = (cast eq xs ≡ ys)
+infix 3 _≈[_]_
 
-infix 3 ≈-by
-syntax ≈-by n≡m xs ys = xs ≈[ n≡m ] ys
+_≈[_]_ : ∀ {n m} → Vec A n → .(eq : n ≡ m) → Vec A m → Set a
+xs ≈[ eq ] ys = cast eq xs ≡ ys
 
 ------------------------------------------------------------------------
--- ≈-by is ‘reflexive’, ‘symmetric’ and ‘transitive’
+-- _≈[_]_ is ‘reflexive’, ‘symmetric’ and ‘transitive’
 
-≈-reflexive : ∀ {n} → _≡_ ⇒ ≈-by {n} refl
+≈-reflexive : ∀ {n} → _≡_ ⇒ (λ xs ys → _≈[_]_ {n} xs refl ys)
 ≈-reflexive {x = x} eq = trans (cast-is-id refl x) eq
 
-≈-sym : .{m≡n : m ≡ n} → Sym (≈-by m≡n) (≈-by (sym m≡n))
+≈-sym : .{m≡n : m ≡ n} → Sym (_≈[ m≡n ]_) (_≈[ sym m≡n ]_)
 ≈-sym {m≡n = m≡n} {xs} {ys} xs≈ys = begin
   cast (sym m≡n) ys             ≡˘⟨ cong (cast (sym m≡n)) xs≈ys ⟩
   cast (sym m≡n) (cast m≡n xs)  ≡⟨ cast-trans m≡n (sym m≡n) xs ⟩
@@ -54,7 +53,7 @@ syntax ≈-by n≡m xs ys = xs ≈[ n≡m ] ys
   xs                            ∎
   where open ≡-Reasoning
 
-≈-trans : ∀ .{m≡n : m ≡ n} .{n≡o : n ≡ o} → Trans (≈-by m≡n) (≈-by n≡o) (≈-by (trans m≡n n≡o))
+≈-trans : ∀ .{m≡n : m ≡ n} .{n≡o : n ≡ o} → Trans (_≈[ m≡n ]_) (_≈[ n≡o ]_) (_≈[ trans m≡n n≡o ]_)
 ≈-trans {m≡n = m≡n} {n≡o} {xs} {ys} {zs} xs≈ys ys≈zs = begin
   cast (trans m≡n n≡o) xs ≡˘⟨ cast-trans m≡n n≡o xs ⟩
   cast n≡o (cast m≡n xs)  ≡⟨ cong (cast n≡o) xs≈ys ⟩
