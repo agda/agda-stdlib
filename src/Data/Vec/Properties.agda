@@ -22,15 +22,14 @@ open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Function.Base
--- open import Function.Inverse using (_↔_; inverse)
 open import Function.Bundles using (_↔_; mk↔′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable using (Dec; does; yes; no; _×-dec_; map′)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (Dec; does; yes; no; _×-dec_; map′)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open ≡-Reasoning
 
