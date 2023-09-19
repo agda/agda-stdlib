@@ -170,14 +170,14 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
 
-lookup-take-inject≤′ : ∀ (m≤m+n : m ≤ m + n) (xs : Vec A (m + n)) (i : Fin m) →
+lookup-take-inject≤ : (m≤m+n : m ≤ m + n) (xs : Vec A (m + n)) (i : Fin m) →
                       lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i m≤m+n)
-lookup-take-inject≤′ _           (_ ∷ _)  zero    = refl
-lookup-take-inject≤′ (s≤s m≤m+n) (x ∷ xs) (suc i) = lookup-take-inject≤′ m≤m+n xs i
+lookup-take-inject≤ _           (_ ∷ _)  zero    = refl
+lookup-take-inject≤ (s≤s m≤m+n) (x ∷ xs) (suc i) = lookup-take-inject≤ m≤m+n xs i
 
-lookup-take-inject≤ : ∀ m {n} (xs : Vec A (m + n)) (i : Fin m) →
-                      lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
-lookup-take-inject≤ m xs i = lookup-take-inject≤′ (m≤m+n m _) xs i
+lookup-take : ∀ m {n} (xs : Vec A (m + n)) (i : Fin m) →
+              lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
+lookup-take m xs i = lookup-take-inject≤ (m≤m+n m _) xs i
 
 ------------------------------------------------------------------------
 -- take≤: provisional definition: where should this go?
@@ -1296,7 +1296,7 @@ Please use drop-map instead."
 #-}
 lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
                       lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
-lookup-inject≤-take m m≤m+n i xs = sym (lookup-take-inject≤′ m≤m+n xs i)
+lookup-inject≤-take m m≤m+n i xs = sym (lookup-take-inject≤ m≤m+n xs i)
 {-# WARNING_ON_USAGE lookup-inject≤-take
 "Warning: lookup-inject≤-take was deprecated in v2.0.
 Please use lookup-take-inject≤′ instead."
