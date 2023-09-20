@@ -1299,6 +1299,6 @@ lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m
 lookup-inject≤-take m m≤m+n i xs = sym (lookup-take-inject≤ m≤m+n xs i)
 {-# WARNING_ON_USAGE lookup-inject≤-take
 "Warning: lookup-inject≤-take was deprecated in v2.0.
-Please use lookup-take-inject≤′ instead."
+Please use lookup-take-inject≤ instead."
 #-}
 
