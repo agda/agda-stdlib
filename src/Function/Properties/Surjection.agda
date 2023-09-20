@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Conversions for surjections
+-- Properties of surjections
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -23,6 +23,34 @@ private
     A B : Set a
     T S : Setoid a ℓ
 
+------------------------------------------------------------------------
+-- Constructors
+
+mkSurjection : (f : Func S T) (open Func f) →
+              Surjective Eq₁._≈_ Eq₂._≈_ to  →
+              Surjection S T
+mkSurjection f surjective = record
+  { Func f
+  ; surjective = surjective
+  }
+  
+------------------------------------------------------------------------
+-- Conversion functions
+
+↠⇒⟶ : A ↠ B → A ⟶ B
+↠⇒⟶ = Surjection.function
+
+↠⇒↪ : A ↠ B → B ↪ A
+↠⇒↪ s = mk↪ {from = to} λ { refl → proj₂ (strictlySurjective _)}
+  where open Surjection s
+
+↠⇒⇔ : A ↠ B → A ⇔ B
+↠⇒⇔ s = mk⇔ to (proj₁ ∘ surjective)
+  where open Surjection s
+
+------------------------------------------------------------------------
+-- Other
+
 injective⇒to⁻-cong : (surj : Surjection S T) →
                       (open Surjection surj) →
                       Injective Eq₁._≈_ Eq₂._≈_ to →
@@ -36,13 +64,3 @@ injective⇒to⁻-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
   open SetoidReasoning T
   open Surjection surj
 
-------------------------------------------------------------------------
--- Conversion functions
-
-↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ s = mk↪ {from = to} λ { refl → proj₂ (strictlySurjective _)}
-  where open Surjection s
-
-↠⇒⇔ : A ↠ B → A ⇔ B
-↠⇒⇔ s = mk⇔ to (proj₁ ∘ surjective)
-  where open Surjection s

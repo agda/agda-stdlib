@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Conversions for right inverses
+-- Properties of right inverses
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -9,6 +9,7 @@
 module Function.Properties.RightInverse where
 
 open import Function.Base
+open import Function.Definitions
 open import Function.Bundles
 open import Function.Consequences using (inverseˡ⇒surjective)
 open import Level using (Level)
@@ -21,6 +22,20 @@ private
     ℓ₁ ℓ₂ a b : Level
     A B : Set a
     S T : Setoid a ℓ₁
+
+------------------------------------------------------------------------
+-- Constructors
+
+mkRightInverse : (e : Equivalence S T) (open Equivalence e) →
+                 Inverseʳ Eq₁._≈_ Eq₂._≈_ to from →
+                 RightInverse S T
+mkRightInverse eq invʳ = record
+  { Equivalence eq
+  ; inverseʳ = invʳ
+  }
+
+------------------------------------------------------------------------
+-- Conversion
 
 RightInverse⇒LeftInverse : RightInverse S T → LeftInverse T S
 RightInverse⇒LeftInverse I = record

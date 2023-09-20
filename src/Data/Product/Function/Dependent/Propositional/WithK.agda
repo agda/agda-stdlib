@@ -11,12 +11,16 @@ module Data.Product.Function.Dependent.Propositional.WithK where
 
 open import Data.Product.Base
 open import Data.Product.Properties
-open import Data.Product.Function.Dependent.Setoid
+open import Data.Product.Function.Dependent.Setoid using (injection)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Data.Product.Relation.Binary.Pointwise.Dependent.WithK
+open import Relation.Binary.Indexed.Heterogeneous.Construct.At using (_atₛ_)
+open import Relation.Binary.HeterogeneousEquality as H
 open import Level using (Level)
 open import Function
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Function.Properties.Injection
+open import Function.Properties.Inverse as Inverse
+open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
 private
   variable
@@ -30,26 +34,16 @@ private
 module _ where
   open Injection
   
-  ↣ : (I↣J : I ↣ J) →
-      (∀ {x} → A x ↣ B (to I↣J x)) →
-      Σ I A ↣ Σ J B
-  ↣ {I = I} {J = J} {A = A} {B = B} I↣J A↣B = mk↣ to′-injective
+  Σ-↣ : (I↣J : I ↣ J) →
+         (∀ {i} → A i ↣ B (to I↣J i)) →
+         Σ I A ↣ Σ J B
+  Σ-↣ {A = A} {B = B} I↣J A↣B =
+    ↣-trans (Inverse⇒Injection (Inverse.sym Pointwise-≡↔≡)) $
+      ↣-trans (injection I↣J Aᵢ↣Bᵢ) $
+        Inverse⇒Injection Pointwise-≡↔≡
     where
-
-    to′ : Σ I A → Σ J B
-    to′ = map (to I↣J) (to A↣B)
-
-    to′-injective : Injective _≡_ _≡_ to′
-    to′-injective eq = ?
-  {-
-
-with Σ-≡,≡←≡ eq
-    ... | (eq1 , eq2) = Σ-≡,≡→≡ (injective I↣J eq1 , {!!})
-    injection Pointwise-≡↔≡ ⟨∘⟩
-    injection (H.indexedSetoid B) I↣J
-      (Inverse.injection (H.≡↔≅ B) ⟨∘⟩
-       A↣B ⟨∘⟩
-       Inverse.injection (Inv.sym (H.≡↔≅ A))) ⟨∘⟩
-    Inverse.injection (Inv.sym Pointwise-≡↔≡)
-    where open Injection using () renaming (_∘_ to _⟨∘⟩_)
-  -}
+    Aᵢ↣Bᵢ : (∀ {i} → Injection (H.indexedSetoid A atₛ i) (H.indexedSetoid B atₛ (Injection.to I↣J i)))
+    Aᵢ↣Bᵢ =
+      ↣-trans (Inverse⇒Injection (Inverse.sym (H.≡↔≅ A))) $
+        ↣-trans A↣B $ 
+          Inverse⇒Injection (H.≡↔≅ B)

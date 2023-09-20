@@ -9,7 +9,7 @@
 
 module Function.Properties.Equivalence where
 
-open import Function.Bundles using (Equivalence; _⇔_)
+open import Function.Bundles
 open import Level
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
@@ -22,6 +22,19 @@ import Function.Construct.Composition as Composition
 private
   variable
     a ℓ : Level
+    A B : Set a
+    S T : Setoid a ℓ
+    
+------------------------------------------------------------------------
+-- Constructors
+
+mkEquivalence : Func S T → Func T S → Equivalence S T
+mkEquivalence f g = record
+  { to = to f
+  ; from = to g
+  ; to-cong = cong f
+  ; from-cong = cong g
+  } where open Func
 
 ------------------------------------------------------------------------
 -- Setoid bundles
@@ -31,6 +44,13 @@ isEquivalence = record
   { refl = λ {x} → Identity.equivalence x
   ; sym = Symmetry.equivalence
   ; trans = Composition.equivalence
+  }
+
+setoid : (s₁ s₂ : Level) → Setoid (suc (s₁ ⊔ s₂)) (s₁ ⊔ s₂)
+setoid s₁ s₂ = record
+  { Carrier       = Setoid s₁ s₂
+  ; _≈_           = Equivalence
+  ; isEquivalence = isEquivalence
   }
 
 ------------------------------------------------------------------------
@@ -43,20 +63,18 @@ isEquivalence = record
   ; trans = Composition.equivalence
   }
 
-
-------------------------------------------------------------------------
--- Setoids
-
-setoid : (s₁ s₂ : Level) → Setoid (suc (s₁ ⊔ s₂)) (s₁ ⊔ s₂)
-setoid s₁ s₂ = record
-  { Carrier       = Setoid s₁ s₂
-  ; _≈_           = Equivalence
-  ; isEquivalence = isEquivalence
-  }
-
 ⇔-setoid : (ℓ : Level) → Setoid (suc ℓ) ℓ
 ⇔-setoid ℓ = record
   { Carrier       = Set ℓ
   ; _≈_           = _⇔_
   ; isEquivalence = ⇔-isEquivalence
   }
+
+⟶×⟵⇒⇔ : A ⟶ B → B ⟶ A → A ⇔ B
+⟶×⟵⇒⇔ = mkEquivalence
+
+⇔⇒⟶ : A ⇔ B → A ⟶ B
+⇔⇒⟶ = Equivalence.toFunction
+
+⇔⇒⟵ : A ⇔ B → B ⟶ A
+⇔⇒⟵ = Equivalence.fromFunction

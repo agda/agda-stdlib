@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some functional properties are Equivalence Relations
---   This file is meant to be imported qualified.
+-- Properties of inverses.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

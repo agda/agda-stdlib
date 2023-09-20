@@ -2,17 +2,25 @@
 -- The Agda standard library
 --
 -- Dependent product combinators for setoid equality preserving
--- functions
+-- functions.
+--
+-- NOTE: the first component of the equality is propositional equality.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Function.Dependent.Setoid where
 
-open import Data.Product.Base using (map; _,_)
+open import Data.Product.Base using (map; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
 open import Level using (Level)
 open import Function
+open import Function.Consequences
+open import Function.Properties.Injection
+open import Function.Properties.Surjection
+open import Function.Properties.Equivalence
+open import Function.Properties.RightInverse
+import Function.Properties.Inverse as InverseProperties
 open import Relation.Binary.Core using (_=[_]⇒_)
 open import Relation.Binary.Bundles as B
 open import Relation.Binary.Indexed.Heterogeneous
@@ -32,16 +40,25 @@ private
 -- Properties related to "relatedness"
 ------------------------------------------------------------------------
 
-private
-  subst-cong : ∀ {A : I → Set a}
-               (P : ∀ {i} → A i → A i → Set ℓ₁) {i i′} {x y : A i}
-               (i≡i′ : i ≡ i′) →
-               P x y → P (P.subst A i≡i′ x) (P.subst A i≡i′ y)
-  subst-cong P P.refl p = p
+private module _ (A : IndexedSetoid I a ℓ₁) where
+  open IndexedSetoid A
 
+  cast : ∀ {i j} → j ≡ i → Carrier i → Carrier j
+  cast j≡i = P.subst Carrier (P.sym $ j≡i)
+  
+  cast-cong : ∀ {i j} {x y : Carrier i}
+               (j≡i : j ≡ i) →
+               x ≈ y →
+               cast j≡i x ≈ cast j≡i y
+  cast-cong P.refl p = p
+
+  cast-eq : ∀ {i j x} (eq : i ≡ j) → cast eq x ≈ x
+  cast-eq P.refl = IndexedSetoid.refl A
+
+private
   _×ₛ_ : (I : Set i) → IndexedSetoid I a ℓ₁ → Setoid _ _
   I ×ₛ A = Σ.setoid (P.setoid I) A
-  
+
 ------------------------------------------------------------------------
 -- Functions
 
@@ -49,10 +66,11 @@ module _ where
   open Func
   open Setoid
   
-  ⟶ : (f : I ⟶ J) →
-        (∀ {i} → Func (A atₛ i) (B atₛ (to f i))) →
-        Func (I ×ₛ A) (J ×ₛ B)
-  ⟶ {I = I} {J = J} {A = A} {B = B} I⟶J A⟶B = record
+  function :
+    (f : I ⟶ J) →
+    (∀ {i} → Func (A atₛ i) (B atₛ (to f i))) →
+    Func (I ×ₛ A) (J ×ₛ B)
+  function {I = I} {J = J} {A = A} {B = B} I⟶J A⟶B = record
     { to    = to′
     ; cong  = cong′
     }
@@ -70,133 +88,169 @@ module _ where
   
   equivalence : 
     (I⇔J : I ⇔ J) →
-    (∀ {x} → Func (A atₛ x) (B atₛ (to   I⇔J x))) →
-    (∀ {y} → Func (B atₛ y) (A atₛ (from I⇔J y))) →
+    (∀ {i} → Func (A atₛ i) (B atₛ (to   I⇔J i))) →
+    (∀ {j} → Func (B atₛ j) (A atₛ (from I⇔J j))) →
     Equivalence (I ×ₛ A) (J ×ₛ B)
-  equivalence I⇔J A⟶B B⟶A = record
-    { to      = map (to   I⇔J) {!!}
-    ; to-cong = {!!}
-    ; from    = map (from I⇔J) {!!} --B-from
-    ; from-cong = {!!}
-    } where open Equivalence
+  equivalence I⇔J A⟶B B⟶A = mkEquivalence
+    (function (⇔⇒⟶ I⇔J) A⟶B)
+    (function (⇔⇒⟵ I⇔J) B⟶A)
 
   equivalence-↪ :
     (I↪J : I ↪ J) →
     (∀ {i} → Equivalence (A atₛ (RightInverse.from I↪J i)) (B atₛ i)) →
     Equivalence (I ×ₛ A) (J ×ₛ B)
   equivalence-↪ {A = A} {B = B} I↪J A⇔B =
-    equivalence (RightInverse.equivalence I↪J) B-to {!from ?!}
+    equivalence (RightInverse.equivalence I↪J) A→B (fromFunction A⇔B)
     where
-    B-to : ∀ {i} → Func (A atₛ i) (B atₛ (RightInverse.to I↪J i))
-    B-to = record
-      { _⟨$⟩_ = λ x → Equivalence.to A⇔B $ 
-                      P.subst (IndexedSetoid.Carrier A)
-                         (P.sym $ {!!}) --LeftInverse.left-inverse-of I↞J _)
-                         x
-      ; cong  = {!!} {-F.cong (Equivalence.to A⇔B) ∘
-              subst-cong (λ {x} → IndexedSetoid._≈_ A {x} {x})
-                         (P.sym (LeftInverse.left-inverse-of I↞J _)) -}
+    A→B : ∀ {i} → Func (A atₛ i) (B atₛ (RightInverse.to I↪J i))
+    A→B = record
+      { to   = to      A⇔B ∘ cast      A (RightInverse.strictlyInverseʳ I↪J _)
+      ; cong = to-cong A⇔B ∘ cast-cong A (RightInverse.strictlyInverseʳ I↪J _)
       }
 
-    B-from : ∀ {y} → Func (B atₛ y) (A atₛ (RightInverse.from I↪J y))
-    B-from = {!!} --Equivalence.from A⇔B
-{-
-  equivalence-↠ : {A : IndexedSetoid I b₁ b₁′} (B : IndexedSetoid J b₂ b₂′)
+  equivalence-↠ :
     (I↠J : I ↠ J) →
-    (∀ {x} → Equivalence (A atₛ x) (B atₛ (Surjection.to I↠J ⟨$⟩ x))) →
+    (∀ {x} → Equivalence (A atₛ x) (B atₛ (Surjection.to I↠J x))) →
     Equivalence (I ×ₛ A) (J ×ₛ B)
-  equivalence-↠ {A = A} B I↠J A⇔B =
-    equivalence (Surjection.equivalence I↠J) B-to B-from
+  equivalence-↠ {A = A} {B = B} I↠J A⇔B =
+    equivalence (↠⇒⇔ I↠J) B-to B-from
     where
-    B-to : ∀ {x} → _⟶_ (A atₛ x) (B atₛ (Surjection.to I↠J ⟨$⟩ x))
-    B-to = Equivalence.to A⇔B
+    B-to : ∀ {x} → Func (A atₛ x) (B atₛ (Surjection.to I↠J x))
+    B-to = toFunction A⇔B
 
-    B-from : ∀ {y} → _⟶_ (B atₛ y) (A atₛ (Surjection.from I↠J ⟨$⟩ y))
+    B-from : ∀ {y} → Func (B atₛ y) (A atₛ (Surjection.to⁻ I↠J y))
     B-from = record
-      { _⟨$⟩_ = λ x → Equivalence.from A⇔B ⟨$⟩
-                      P.subst (IndexedSetoid.Carrier B)
-                         (P.sym $ Surjection.right-inverse-of I↠J _)
-                         x
-      ; cong  = F.cong (Equivalence.from A⇔B) ∘
-              subst-cong (λ {x} → IndexedSetoid._≈_ B {x} {x})
-                         (P.sym (Surjection.right-inverse-of I↠J _))
+      { to   = from      A⇔B ∘ cast      B (Surjection.to∘to⁻ I↠J _)
+      ; cong = from-cong A⇔B ∘ cast-cong B (Surjection.to∘to⁻ I↠J _)
       }
--}
-{-
-  injection : {A : IndexedSetoid I b₁ b₁′} (B : IndexedSetoid J b₂ b₂′) →
-    (I↣J : I ↣ J) →
-    (∀ {x} → Injection (A atₛ x) (B atₛ (Injection.to I↣J ⟨$⟩ x))) →
-    Injection (I ×ₛ A) (J ×ₛ B)
-  injection {A = A} B I↣J A↣B = record
-    { to        = to
-    ; injective = inj
-    }
-    where
-    to = ⟶ B (Injection.to I↣J ⟨$⟩_) (Injection.to A↣B)
 
-    inj : Injective to
-    inj (x , y) =
-      Injection.injective I↣J x ,
-      lemma (Injection.injective I↣J x) y
+------------------------------------------------------------------------
+-- Injections
+
+module _ where
+  open Injection hiding (function)
+  open IndexedSetoid
+  
+  injection :
+    (I↣J : I ↣ J) →
+    (∀ {i} → Injection (A atₛ i) (B atₛ (Injection.to I↣J i))) →
+    Injection (I ×ₛ A) (J ×ₛ B)
+  injection {I = I} {J = J} {A = A} {B = B} I↣J A↣B = mkInjection func inj
+    where
+    func : Func (I ×ₛ A) (J ×ₛ B)
+    func = function (Injection.function I↣J) (Injection.function A↣B)
+
+    inj : Injective (Func.Eq₁._≈_ func) (Func.Eq₂._≈_ func) (Func.to func)
+    inj (to[i]≡to[j] , y) =
+      injective I↣J to[i]≡to[j] ,
+      lemma (injective I↣J to[i]≡to[j]) y
       where
       lemma :
-        ∀ {x x′}
-          {y : IndexedSetoid.Carrier A x} {y′ : IndexedSetoid.Carrier A x′} →
-        x ≡ x′ →
-        (eq : IndexedSetoid._≈_ B (Injection.to A↣B ⟨$⟩ y)
-                              (Injection.to A↣B ⟨$⟩ y′)) →
-        IndexedSetoid._≈_ A y y′
+        ∀ {i j} {x : Carrier A i} {y : Carrier A j} →
+          i ≡ j →
+          (_≈_ B (to A↣B x) (to A↣B y)) →
+          _≈_ A x y
       lemma P.refl = Injection.injective A↣B
 
-  left-inverse : (A : IndexedSetoid I b₁ b₁′) {B : IndexedSetoid J b₂ b₂′} →
-    (I↞J : I ↞ J) →
-    (∀ {x} → LeftInverse (A atₛ (LeftInverse.from I↞J ⟨$⟩ x))
-                         (B atₛ x)) →
-    LeftInverse (I ×ₛ A) (J ×ₛ B)
-  left-inverse A {B} I↞J A↞B = record
-    { to              = Equivalence.to   eq
-    ; from            = Equivalence.from eq
-    ; left-inverse-of = left
-    }
-    where
-    eq = equivalence-↞ A I↞J (LeftInverse.equivalence A↞B)
+------------------------------------------------------------------------
+-- Surjections
 
-    left : Equivalence.from eq LeftInverseOf Equivalence.to eq
-    left (x , y) =
-      LeftInverse.left-inverse-of I↞J x ,
-      IndexedSetoid.trans A
-        (LeftInverse.left-inverse-of A↞B _)
-        (lemma (P.sym (LeftInverse.left-inverse-of I↞J x)))
-      where
-      lemma :
-        ∀ {x x′ y} (eq : x ≡ x′) →
-        IndexedSetoid._≈_ A (P.subst (IndexedSetoid.Carrier A) eq y) y
-      lemma P.refl = IndexedSetoid.refl A
-
-  surjection : {A : IndexedSetoid I b₁ b₁′} (B : IndexedSetoid J b₂ b₂′) →
+module _ where
+  open Surjection hiding (function)
+  open Setoid
+  
+  surjection :
     (I↠J : I ↠ J) →
-    (∀ {x} → Surjection (A atₛ x) (B atₛ (Surjection.to I↠J ⟨$⟩ x))) →
+    (∀ {x} → Surjection (A atₛ x) (B atₛ (to I↠J x))) →
     Surjection (I ×ₛ A) (J ×ₛ B)
-  surjection B I↠J A↠B = record
-    { to         = Equivalence.to eq
-    ; surjective = record
-      { from             = Equivalence.from eq
-      ; right-inverse-of = right
-      }
+  surjection {I = I} {J = J} {A = A} {B = B} I↠J A↠B =
+    mkSurjection func surj
+    where    
+    func : Func (I ×ₛ A) (J ×ₛ B)
+    func = function (Surjection.function I↠J) (Surjection.function A↠B)
+
+    to⁻′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
+    to⁻′ (j , y) = to⁻ I↠J j , to⁻ A↠B (cast B (Surjection.to∘to⁻ I↠J _) y)
+
+    strictlySurj : StrictlySurjective (Func.Eq₂._≈_ func) (Func.to func)
+    strictlySurj (j , y) = to⁻′ (j , y) ,
+      to∘to⁻ I↠J j , IndexedSetoid.trans B (to∘to⁻ A↠B _) (cast-eq B (to∘to⁻ I↠J j))
+
+    surj : Surjective (Func.Eq₁._≈_ func) (Func.Eq₂._≈_ func) (Func.to func)
+    surj = strictlySurjective⇒surjective (trans (J ×ₛ B)) (Func.cong func) strictlySurj
+
+------------------------------------------------------------------------
+-- LeftInverse
+
+module _ where
+  open RightInverse
+  open Setoid
+  
+  left-inverse :
+    (I↪J : I ↪ J) →
+    (∀ {j} → RightInverse (A atₛ (from I↪J j)) (B atₛ j)) →
+    RightInverse (I ×ₛ A) (J ×ₛ B)
+  left-inverse {I = I} {J = J} {A = A} {B = B} I↪J A↪B =
+    mkRightInverse equiv invʳ
+    where
+    equiv : Equivalence (I ×ₛ A) (J ×ₛ B)
+    equiv = equivalence-↪ I↪J (RightInverse.equivalence A↪B)
+
+    strictlyInvʳ : StrictlyInverseʳ (_≈_ (I ×ₛ A)) (Equivalence.to equiv) (Equivalence.from equiv)
+    strictlyInvʳ (i , x) = strictlyInverseʳ I↪J i , IndexedSetoid.trans A (strictlyInverseʳ A↪B _) (cast-eq A (strictlyInverseʳ I↪J i))
+
+    invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) (Equivalence.to equiv) (Equivalence.from equiv)
+    invʳ = strictlyInverseʳ⇒inverseʳ {f⁻¹ = Equivalence.from equiv} (trans (I ×ₛ A)) (Equivalence.from-cong equiv) strictlyInvʳ
+    
+
+------------------------------------------------------------------------
+-- Inverses
+
+module _ where
+  open Inverse hiding (inverse)
+  open Setoid
+  
+  inverse : (I↔J : I ↔ J) →
+            (∀ {i} → Inverse (A atₛ i) (B atₛ (to I↔J i))) →
+            Inverse (I ×ₛ A) (J ×ₛ B)
+  inverse {I = I} {J = J} {A = A} {B = B} I↔J A↔B = record
+    { to = to′ 
+    ; from = from′ 
+    ; to-cong = to′-cong 
+    ; from-cong = from′-cong 
+    ; inverse = invˡ , invʳ 
     }
     where
-    eq = equivalence-↠ B I↠J (Surjection.equivalence A↠B)
+    to′ : Carrier (I ×ₛ A) → Carrier (J ×ₛ B)
+    to′ (i , x) = to I↔J i , to A↔B x
 
-    right : Equivalence.from eq RightInverseOf Equivalence.to eq
-    right (x , y) =
-      Surjection.right-inverse-of I↠J x ,
-      IndexedSetoid.trans B
-        (Surjection.right-inverse-of A↠B _)
-        (lemma (P.sym $ Surjection.right-inverse-of I↠J x))
-      where
-      lemma : ∀ {x x′ y} (eq : x ≡ x′) →
-              IndexedSetoid._≈_ B (P.subst (IndexedSetoid.Carrier B) eq y) y
-      lemma P.refl = IndexedSetoid.refl B
+    to′-cong : Congruent (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′
+    to′-cong (P.refl , x≈y) = to-cong I↔J P.refl , to-cong A↔B x≈y
 
-  -- See also Data.Product.Function.Dependent.Setoid.WithK.inverse.
--}
+    from′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
+    from′ (j , y) = from I↔J j , from A↔B (cast B (strictlyInverseˡ I↔J _) y)
+
+    from′-cong : Congruent (_≈_ (J ×ₛ B)) (_≈_ (I ×ₛ A)) from′
+    from′-cong (P.refl , x≈y) = from-cong I↔J P.refl , from-cong A↔B (cast-cong B (strictlyInverseˡ I↔J _) x≈y)    
+    
+    strictlyInvˡ : StrictlyInverseˡ (_≈_ (J ×ₛ B)) to′ from′
+    strictlyInvˡ (i , x) = strictlyInverseˡ I↔J i ,
+        IndexedSetoid.trans B (strictlyInverseˡ A↔B _)
+          (cast-eq B (strictlyInverseˡ I↔J i))
+
+    invˡ : Inverseˡ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′ from′
+    invˡ = strictlyInverseˡ⇒inverseˡ {≈₁ = _≈_ (I ×ₛ A)} {f⁻¹ = from′} (trans (J ×ₛ B)) to′-cong strictlyInvˡ
+
+    lem : ∀ {i j} → i ≡ j → ∀ {x : IndexedSetoid.Carrier B (to I↔J i)} {y : IndexedSetoid.Carrier B (to I↔J j)} →
+          IndexedSetoid._≈_ B x y →
+          IndexedSetoid._≈_ A (from A↔B x) (from A↔B y)
+    lem P.refl x≈y = from-cong A↔B x≈y
+    
+    strictlyInvʳ : StrictlyInverseʳ (_≈_ (I ×ₛ A)) to′ from′
+    strictlyInvʳ (i , x) = strictlyInverseʳ I↔J i ,
+      IndexedSetoid.trans A (lem (strictlyInverseʳ I↔J _) (cast-eq B (strictlyInverseˡ I↔J _))) (strictlyInverseʳ A↔B _)
+      
+    invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′ from′
+    invʳ = strictlyInverseʳ⇒inverseʳ {f⁻¹ = from′} (trans (I ×ₛ A)) from′-cong strictlyInvʳ
+    
+
