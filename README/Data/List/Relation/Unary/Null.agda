@@ -85,11 +85,8 @@ module ScanR (f : A → B → B) (e : B) where
 
   scanr⁺ : List A → [ List B ]⁺
 
-  refine⁻ (scanr⁺ []) = e ∷ []
-  refined (scanr⁺ []) = _
-
-  scanr⁺ (x ∷ xs) with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys
-    = refine⁺ (f x y ∷ ys)
+  scanr⁺ [] = e ∷⁺ []
+  scanr⁺ (x ∷ xs) with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys = f x y ∷⁺ ys
 
   scanr : List A → List B
   scanr xs = refine⁻ (scanr⁺ xs)
@@ -101,5 +98,5 @@ module ScanR (f : A → B → B) (e : B) where
                    let ys = scanr xs in
                    let instance _ = scanrNonNull {xs = xs} in
                    scanr (x ∷ xs) ≡ f x (safe-head ys) ∷ ys
-  unfold-scanr-∷ xs  with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys = refl
+  unfold-scanr-∷ xs with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys = refl
 

@@ -35,7 +35,7 @@ RefinementSyntax A p = Refinement p
 syntax RefinementSyntax A (λ x → p) = [ x ∈ A || p ]
 
 ------------------------------------------------------------------------
--- Export
+-- Export: hide irrelevant field name
 
-open Refinement public
+open Refinement public hiding (refined)
 

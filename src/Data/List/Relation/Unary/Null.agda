@@ -14,6 +14,7 @@ open import Level
 open import Relation.Binary.PropositionalEquality using (_≢_; refl)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Unary.Null
+open import Relation.Unary.Refinement
 
 private
   variable
@@ -55,3 +56,8 @@ instance
 
 >-nonNull⁻¹ : (xs : List A) → .{{NonNull xs}} → length xs > 0
 >-nonNull⁻¹ (_ ∷ _) = z<s
+
+-- cons
+
+_∷⁺_ : A → List A → [ List A ]⁺
+_∷⁺_ x xs = refine⁺ (x ∷ xs) {{_}} where instance _ = nonNull
