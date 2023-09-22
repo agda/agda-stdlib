@@ -35,4 +35,4 @@ NonNull {{nullA}} = T ∘ not-null where open Null nullA
 
 [_]⁺ : (A : Set a) → {{nA : Null A}} → Set a
 [ A ]⁺ {{nullA}} =  [ x ∈ A || not-null x ] where open Null nullA
-  
+

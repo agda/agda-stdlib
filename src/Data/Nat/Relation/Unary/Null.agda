@@ -21,7 +21,7 @@ private
 ------------------------------------------------------------------------
 -- Instance
 
-instance 
+instance
 
   nullℕ : Null ℕ
   nullℕ = record { null = _≡ᵇ 0 }

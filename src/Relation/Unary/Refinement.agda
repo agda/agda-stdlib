@@ -39,4 +39,3 @@ syntax RefinementSyntax A (λ x → p) = [ x ∈ A || p ]
 
 open Refinement public
 
-

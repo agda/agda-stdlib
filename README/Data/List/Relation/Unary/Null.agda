@@ -87,7 +87,7 @@ module ScanR (f : A → B → B) (e : B) where
 
   refine⁻ (scanr⁺ []) = e ∷ []
   refined (scanr⁺ []) = _
-  
+
   scanr⁺ (x ∷ xs) with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys
     = refine⁺ (f x y ∷ ys)
 
@@ -102,7 +102,4 @@ module ScanR (f : A → B → B) (e : B) where
                    let instance _ = scanrNonNull {xs = xs} in
                    scanr (x ∷ xs) ≡ f x (safe-head ys) ∷ ys
   unfold-scanr-∷ xs  with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys = refl
-
-
-
 
