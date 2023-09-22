@@ -84,8 +84,7 @@ module ScanR (f : A → B → B) (e : B) where
 -- essentially `scanrΣ` but with an irrelevant instance field instead
 
   scanr⁺ : List A → [ List B ]⁺
-
-  scanr⁺ [] = e ∷⁺ []
+  scanr⁺ []                                                    =     e ∷⁺ []
   scanr⁺ (x ∷ xs) with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys = f x y ∷⁺ ys
 
   scanr : List A → List B
