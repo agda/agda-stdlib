@@ -9,7 +9,6 @@
 module Data.Nat.Relation.Unary.Null where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _≡ᵇ_; _>_; z<s)
-open import Level using (Level) renaming (zero to ℓ₀)
 open import Relation.Binary.PropositionalEquality using (_≢_; refl)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Unary using (Pred)
@@ -27,7 +26,7 @@ instance
   nullℕ : Null ℕ
   nullℕ = record { null = _≡ᵇ 0 }
 
-NonZero : Pred ℕ ℓ₀
+NonZero : Pred ℕ _
 NonZero = NonNull
 
 ------------------------------------------------------------------------
