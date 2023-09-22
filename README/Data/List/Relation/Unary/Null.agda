@@ -68,10 +68,8 @@ module ScanRΣ (f : A → B → B) (e : B) where
   instance scanrNonNull : {xs : List A} → NonNull (scanr xs)
   scanrNonNull {xs = xs} = proj₂ (scanrΣ xs)
 
-  unfold-scanr-∷ : ∀ xs →
-                   let ys = scanr xs in
-                   let instance _ = scanrNonNull {xs = xs} in
-                   scanr (x ∷ xs) ≡ f x (safe-head ys) ∷ ys
+  unfold-scanr-∷ : ∀ xs → let instance _ = scanrNonNull {xs = xs} in
+                   scanr (x ∷ xs) ≡ f x (safe-head (scanr xs)) ∷ scanr xs
   unfold-scanr-∷ xs with ys@(y ∷ _) , _ ← scanrΣ xs = refl
 
 module ScanR (f : A → B → B) (e : B) where
@@ -96,20 +94,18 @@ module ScanR (f : A → B → B) (e : B) where
   instance scanrNonNull : {xs : List A} → NonNull (scanr xs)
   scanrNonNull {xs = xs} with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys = _
 
-  unfold-scanr-∷ : ∀ xs →
-                   let ys = scanr xs in
-                   let instance _ = scanrNonNull {xs = xs} in
-                   scanr (x ∷ xs) ≡ f x (safe-head ys) ∷ ys
-  unfold-scanr-∷ xs with refine⁺ ys ← scanr⁺ xs in eq with y ∷ _  ← ys = refl
+  unfold-scanr-∷ : ∀ xs → let instance _ = scanrNonNull {xs = xs} in
+                   scanr (x ∷ xs) ≡ f x (safe-head (scanr xs)) ∷ scanr xs
+  unfold-scanr-∷ xs with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys = refl
 
   unfold-scanr-∷≡ : ∀ xs → let ys = scanr xs in
                     ∃₂ λ y ys′ → ys ≡ y ∷ ys′ × scanr (x ∷ xs) ≡ f x y ∷ ys
-  unfold-scanr-∷≡ xs with refine⁺ ys ← scanr⁺ xs with y ∷ _ ← ys
+  unfold-scanr-∷≡ xs with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys
     = y , _ , refl , refl
 
 module ScanR′ (f : A → B → B) (e : B) where
 
--- design pattern: refinement types via mutual recursion, using `nonNull-≡`
+-- design pattern: refinement types via mutual recursion, using `nonNull-[_]⁻`
 
 -- to simulate the refinement type { xs : List A | NonNull xs }
 -- define two functions by mutual recursion:
@@ -131,10 +127,8 @@ module ScanR′ (f : A → B → B) (e : B) where
   scanrNonNull {xs = []}     = _
   scanrNonNull {xs = x ∷ xs} with _ ← helper xs = _
 
-  unfold-scanr-∷ : ∀ xs →
-                   let ys = scanr xs in
-                   let instance _ = scanrNonNull {xs = xs} in
-                   scanr (x ∷ xs) ≡ f x (safe-head ys) ∷ ys
+  unfold-scanr-∷ : ∀ xs → let instance _ = scanrNonNull {xs = xs} in
+                   scanr (x ∷ xs) ≡ f x (safe-head (scanr xs)) ∷ (scanr xs)
   unfold-scanr-∷ xs with y , _ , eq ← helper xs
     = cong (λ y → f _ y ∷ scanr xs) (safe-head-≡ (sym eq))
 
