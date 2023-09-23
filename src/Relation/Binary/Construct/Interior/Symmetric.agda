@@ -33,6 +33,13 @@ open SymInterior public
 ------------------------------------------------------------------------
 -- Properties
 
+-- A reflexive transitive relation _≤_ gives rise to a poset in which the
+-- equivalence relation is SymInterior _≤_.
+record IsProset {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) : Set (a ⊔ ℓ) where
+  field
+    refl : Reflexive _≤_
+    trans : Transitive _≤_
+
 -- The symmetric interior is symmetric.
 symmetric : Symmetric (SymInterior R)
 symmetric (r , r′) = r′ , r
@@ -46,23 +53,16 @@ unfold sym f s = f s , f (sym s)
 reflexive : Reflexive R → Reflexive (SymInterior R)
 reflexive refl = refl , refl
 
-trans′ : Trans R S T → Trans S R T →
+trans : Trans R S T → Trans S R T →
   Trans (SymInterior R) (SymInterior S) (SymInterior T)
-trans′ trans-rs trans-sr (r , r′) (s , s′) = trans-rs r s , trans-sr s′ r′
+trans trans-rs trans-sr (r , r′) (s , s′) = trans-rs r s , trans-sr s′ r′
 
 transitive : Transitive R → Transitive (SymInterior R)
-transitive tr = trans′ tr tr
+transitive tr = trans tr tr
 
 -- The symmetric interior of a strict relation is empty.
 Empty-SymInterior : Asymmetric R → Empty (SymInterior R)
 Empty-SymInterior asym (r , r′) = asym r r′
-
--- A reflexive transitive relation _≤_ gives rise to a poset in which the
--- equivalence relation is SymInterior _≤_.
-record IsProset {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) : Set (a ⊔ ℓ) where
-  field
-    refl : Reflexive _≤_
-    trans : Transitive _≤_
 
 record Proset c ℓ : Set (suc (c ⊔ ℓ)) where
   infix 4 _≤_
@@ -71,21 +71,25 @@ record Proset c ℓ : Set (suc (c ⊔ ℓ)) where
     _≤_ : Rel Carrier ℓ
     isProset : IsProset _≤_
 
-IsProset⇒IsPartialOrder : ∀ {a ℓ} {A : Set a} {≤ : Rel A ℓ} →
+isEquivalence : ∀ {a ℓ} {A : Set a} {≤ : Rel A ℓ} →
+  IsProset ≤ → IsEquivalence (SymInterior ≤)
+isEquivalence isProset = record
+  { refl = reflexive ≤-refl
+  ; sym = symmetric
+  ; trans = transitive ≤-trans
+  } where open IsProset isProset renaming (refl to ≤-refl; trans to ≤-trans)
+
+isPartialOrder : ∀ {a ℓ} {A : Set a} {≤ : Rel A ℓ} →
   IsProset ≤ → IsPartialOrder (SymInterior ≤) ≤
-IsProset⇒IsPartialOrder {≤ = ≤} isProset = record
+isPartialOrder isProset = record
   { isPreorder = record
-    { isEquivalence = record
-      { refl = reflexive refl
-      ; sym = symmetric
-      ; trans = transitive trans
-      }
+    { isEquivalence = isEquivalence isProset
     ; reflexive = lhs≤rhs
-    ; trans = trans
+    ; trans = ≤-trans
     }
   ; antisym = _,_
-  } where open IsProset isProset
+  } where open IsProset isProset renaming (trans to ≤-trans)
 
-Proset⇒Poset : Proset c ℓ → Poset c ℓ ℓ
-Proset⇒Poset record { isProset = isProset } =
-  record { isPartialOrder = IsProset⇒IsPartialOrder isProset }
+poset : Proset c ℓ → Poset c ℓ ℓ
+poset record { isProset = isProset } =
+  record { isPartialOrder = isPartialOrder isProset }
