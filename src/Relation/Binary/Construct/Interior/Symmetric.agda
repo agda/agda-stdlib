@@ -51,7 +51,7 @@ trans′ : Trans R S T → Trans S R T →
 trans′ trans-rs trans-sr (r , r′) (s , s′) = trans-rs r s , trans-sr s′ r′
 
 transitive : Transitive R → Transitive (SymInterior R)
-transitive {R = R} tr = trans′ {R = R} tr tr
+transitive tr = trans′ tr tr
 
 -- The symmetric interior of a strict relation is empty.
 Empty-SymInterior : Asymmetric R → Empty (SymInterior R)
