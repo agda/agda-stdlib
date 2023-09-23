@@ -55,20 +55,3 @@ instance
 >-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n > 0
 >-nonZero⁻¹ (suc n) = z<s
 
-------------------------------------------------------------------------
--- Specimen reimplementation
-
-open import Agda.Builtin.Nat
-  using (div-helper; mod-helper)
-
--- Division
--- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
-
-_/_ : (dividend divisor : ℕ) → .{{NonZero divisor}} → ℕ
-m / n@(suc n-1) = div-helper 0 n-1 m n-1
-
--- Remainder/modulus
--- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
-
-_%_ : (dividend divisor : ℕ) → .{{NonZero divisor}} → ℕ
-m % n@(suc n-1) = mod-helper 0 n-1 m n-1
