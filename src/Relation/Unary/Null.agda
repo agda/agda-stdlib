@@ -9,9 +9,10 @@
 module Relation.Unary.Null where
 
 open import Data.Bool.Base using (Bool; not; T)
+open import Data.Bool.Properties using (T?)
 open import Function.Base using (_∘_)
 open import Level
-open import Relation.Unary using (Pred)
+open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Refinement
 
 private
@@ -28,10 +29,23 @@ record Null (A : Set a) : Set a where
 
     null : A → Bool
 
-  not-null = not ∘ null
+  non-null = not ∘ null
 
-NonNull : {{Null A}} → Pred A _
-NonNull {{nullA}} = T ∘ not-null where open Null nullA
+------------------------------------------------------------------------
+-- Type constructor
 
-[_]⁺ : (A : Set a) → {{nA : Null A}} → Set a
-[ A ]⁺ {{nullA}} =  [ x ∈ A || not-null x ] where open Null nullA
+[_]⁺ : (A : Set a) {{nullA : Null A}} → Set a
+[ A ]⁺ {{nullA}} = [ x ∈ A |ᵇ non-null x ] where open Null nullA
+
+------------------------------------------------------------------------
+-- Derived notions
+
+module _ {{nullA : Null A}} where
+
+  open Null nullA
+
+  NonNull : Pred A _
+  NonNull = T ∘ non-null
+
+  NonNull? : Decidable NonNull
+  NonNull? = T? ∘ non-null
