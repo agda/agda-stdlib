@@ -10,6 +10,15 @@ module README.Data.Nat.Relation.Unary.Null where
 
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Relation.Unary.Null
+open import Relation.Unary using (Decidable)
+open import Relation.Unary.Null
+
+------------------------------------------------------------------------
+-- Properties of NonZero
+------------------------------------------------------------------------
+
+nonZero? : Decidable NonZero
+nonZero? = NonNull?
 
 ------------------------------------------------------------------------
 -- Specimen reimplementation
