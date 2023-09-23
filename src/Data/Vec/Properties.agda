@@ -186,7 +186,7 @@ take≤ : (m≤n : m ≤ n) (xs : Vec A n) → Vec A m
 take≤ {m = m} m≤n xs = let less-than-or-equal eq = ≤⇒≤″ m≤n in take m (cast (sym eq) xs)
 
 take≤-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) (xs : Vec A n) →
-                   take≤ m≤n₁ xs ≡ take≤ m≤n₂ xs 
+                   take≤ m≤n₁ xs ≡ take≤ m≤n₂ xs
 take≤-irrelevant m≤n₁ m≤n₂ xs with refl ← ≤-irrelevant m≤n₁ m≤n₂ = refl
 
 take≤-unfold : (xs : Vec A (m + n)) → take≤ (m≤m+n m n) xs ≡ take m xs
@@ -366,11 +366,11 @@ subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast e
 subst-is-cast refl xs = sym (cast-is-id refl xs)
 
 cast-sym : .(eq : m ≡ n) {xs : Vec A m} {ys : Vec A n} →
-           ys ≡ cast eq xs → xs ≡ cast (sym eq) ys
+           cast eq xs ≡ ys → cast (sym eq) ys ≡ xs
 cast-sym eq {xs = []}     {ys = []}     _ = refl
-cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs≡[eq]yys =
-  let x≡y , xs≡[eq]ys = ∷-injective xxs≡[eq]yys
-  in cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs≡[eq]ys)
+cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs[eq]≡yys =
+  let x≡y , xs[eq]≡ys = ∷-injective xxs[eq]≡yys
+  in cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs[eq]≡ys)
 
 cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs

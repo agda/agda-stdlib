@@ -114,7 +114,7 @@ inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
 inject≤ : Fin m → m ℕ.≤ n → Fin n
-inject≤ {_} {suc n} zero    _        = zero
+inject≤ {_} {suc n} zero    _         =  zero
 inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
 
 -- lower₁ "i" _ = "i".
