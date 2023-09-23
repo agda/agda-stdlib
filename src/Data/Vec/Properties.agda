@@ -365,12 +365,12 @@ cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
 
-cast-sym : (eq : m ≡ n) {xs : Vec A m} {ys : Vec A n} →
+cast-sym : .(eq : m ≡ n) {xs : Vec A m} {ys : Vec A n} →
            ys ≡ cast eq xs → xs ≡ cast (sym eq) ys
 cast-sym eq {xs = []}     {ys = []}     _ = refl
-cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs≡[eq]yys
-  with x≡y , xs≡[eq]ys ← ∷-injective xxs≡[eq]yys
-  = cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs≡[eq]ys)
+cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs≡[eq]yys =
+  let x≡y , xs≡[eq]ys = ∷-injective xxs≡[eq]yys
+  in cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs≡[eq]ys)
 
 cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
