@@ -988,14 +988,14 @@ Major improvements
 ### Generalised the definition of `NonZero` from `Data.Nat.Base` to `NonNull` based on:
 
 * A new module `Relation.Unary.Refinement` defining a general notion of refinement
-  of a type wrt a `Bool`-valued predicate.
+  of a type wrt a `Bool`-valued/`Decidable` predicate.
 
 * A new module `Relation.Unary.Null` defining being able to test for `null`ity,
   based on a `Bool`-valued predicate `null`, using `Refinement`.
 
 * Instances `Data.{Nat|List}.Relation.Unary.Null` of `Null` for `Nat` and `List`.
 
-* Example uses in `README.Data.List.Relation.Unary.Null`
+* Example uses in `README.Data.{Nat|List}.Relation.Unary.Null`
 
 
 Deprecated modules
