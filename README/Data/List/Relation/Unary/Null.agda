@@ -72,6 +72,7 @@ module ScanRΣ (f : A → B → B) (e : B) where
                    scanr (x ∷ xs) ≡ f x (safe-head (scanr xs)) ∷ scanr xs
   unfold-scanr-∷ xs with ys@(y ∷ _) , _ ← scanrΣ xs = refl
 
+
 module ScanR (f : A → B → B) (e : B) where
 
 -- design pattern: refinement types via mutual recursion
@@ -102,6 +103,7 @@ module ScanR (f : A → B → B) (e : B) where
                     ∃₂ λ y ys′ → ys ≡ y ∷ ys′ × scanr (x ∷ xs) ≡ f x y ∷ ys
   unfold-scanr-∷≡ xs with refine⁺ ys ← scanr⁺ xs with y ∷ _  ← ys
     = y , _ , refl , refl
+
 
 module ScanR′ (f : A → B → B) (e : B) where
 

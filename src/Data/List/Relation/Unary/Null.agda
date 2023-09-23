@@ -58,13 +58,15 @@ instance
 >-nonNull⁻¹ : (xs : List A) → .{{NonNull xs}} → length xs > 0
 >-nonNull⁻¹ (_ ∷ _) = z<s
 
+-- Existentials
+
 nonNull-[_]⁻ : (xs : List A) → .{{NonNull xs}} → ∃₂ λ y ys → xs ≡ y ∷ ys
 nonNull-[ x ∷ xs ]⁻ = x , xs , refl
 
 [_]⁻ : (r : [ List A ]⁺) → ∃₂ λ y ys → refine⁻ r ≡ y ∷ ys
 [ refine⁺ xs ]⁻ = nonNull-[ xs ]⁻
 
--- cons
+-- Smart constructor
 
 _∷⁺_ : A → List A → [ List A ]⁺
 _∷⁺_ x xs = refine⁺ (x ∷ xs) {{_}} where instance _ = nonNull
