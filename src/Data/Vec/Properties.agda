@@ -121,6 +121,20 @@ truncate-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
 truncate-trans z≤n       n≤p       xs = refl
 truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
 
+truncate-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) → truncate {A = A} m≤n₁ ≗ truncate m≤n₂
+truncate-irrelevant {m = zero}  m≤n₁ m≤n₂ _        = refl
+truncate-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) (x ∷ xs) = cong (x ∷_) (truncate-irrelevant m≤n₁ m≤n₂ xs)
+
+truncate≡take : (m≤n : m ≤ n) (xs : Vec A n) .(eq : n ≡ m + o) →
+                truncate m≤n xs ≡ take m (cast eq xs)
+truncate≡take z≤n       _        eq = refl
+truncate≡take (s≤s m≤n) (x ∷ xs) eq = cong (x ∷_) (truncate≡take m≤n xs (suc-injective eq))
+
+take≡truncate : ∀ m (xs : Vec A (m + n)) →
+                take m xs ≡ truncate (m≤m+n m n) xs
+take≡truncate zero    _        = refl
+take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
+
 ------------------------------------------------------------------------
 -- pad
 
@@ -170,28 +184,23 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
 
+lookup-truncate : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
+                  lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)
+lookup-truncate (s≤s m≤m+n) (_ ∷ _)  zero    = refl
+lookup-truncate (s≤s m≤m+n) (_ ∷ xs) (suc i) = lookup-truncate m≤m+n xs i
+
 lookup-take-inject≤ : (m≤m+n : m ≤ m + n) (xs : Vec A (m + n)) (i : Fin m) →
                       lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i m≤m+n)
-lookup-take-inject≤ _           (_ ∷ _)  zero    = refl
-lookup-take-inject≤ (s≤s m≤m+n) (x ∷ xs) (suc i) = lookup-take-inject≤ m≤m+n xs i
-
-lookup-take : ∀ m {n} (xs : Vec A (m + n)) (i : Fin m) →
-              lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
-lookup-take m xs i = lookup-take-inject≤ (m≤m+n m _) xs i
-
-------------------------------------------------------------------------
--- take≤: provisional definition: where should this go?
-
-take≤ : (m≤n : m ≤ n) (xs : Vec A n) → Vec A m
-take≤ {m = m} m≤n xs = let less-than-or-equal eq = ≤⇒≤″ m≤n in take m (cast (sym eq) xs)
-
-take≤-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) (xs : Vec A n) →
-                   take≤ m≤n₁ xs ≡ take≤ m≤n₂ xs
-take≤-irrelevant m≤n₁ m≤n₂ xs with refl ← ≤-irrelevant m≤n₁ m≤n₂ = refl
-
-take≤-unfold : (xs : Vec A (m + n)) → take≤ (m≤m+n m n) xs ≡ take m xs
-take≤-unfold {m = zero}  _        = refl
-take≤-unfold {m = suc m} (x ∷ xs) = cong (x ∷_) (take≤-unfold xs)
+lookup-take-inject≤ {m = m} m≤m+n xs i = begin
+  lookup (take m xs) i
+    ≡⟨ cong (λ ys → lookup ys i) (take≡truncate m xs) ⟩
+  lookup (truncate _ xs) i
+    ≡⟨ cong (λ ys → lookup ys i) (truncate-irrelevant _ _ xs) ⟩
+  lookup (truncate m≤m+n xs) i
+    ≡⟨ lookup-truncate m≤m+n xs i ⟩
+  lookup xs (Fin.inject≤ i m≤m+n)
+    ∎
+ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
