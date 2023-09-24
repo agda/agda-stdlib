@@ -2724,7 +2724,7 @@ Additions to existing modules
   truncate≡take       : .(eq : n ≡ m + o) → truncate m≤n xs ≡ take m (cast eq xs)
   take≡truncate       : take m xs ≡ truncate (m≤m+n m n) xs
   lookup-truncate     : lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)
-  lookup-take-inject≤ : lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i m≤m+n)
+  lookup-take-inject≤ : lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
   ```
 
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:

@@ -11,6 +11,7 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
+open import Data.Fin.Properties as Fin using (inject≤-irrelevant)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as Listₚ
 open import Data.Nat.Base
@@ -189,18 +190,15 @@ lookup-truncate : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
 lookup-truncate (s≤s m≤m+n) (_ ∷ _)  zero    = refl
 lookup-truncate (s≤s m≤m+n) (_ ∷ xs) (suc i) = lookup-truncate m≤m+n xs i
 
-lookup-take-inject≤ : (m≤m+n : m ≤ m + n) (xs : Vec A (m + n)) (i : Fin m) →
-                      lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i m≤m+n)
-lookup-take-inject≤ {m = m} m≤m+n xs i = begin
-  lookup (take m xs) i
+lookup-take-inject≤ : (xs : Vec A (m + n)) (i : Fin m) →
+                      lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
+lookup-take-inject≤ {m = m} {n = n} xs i = begin
+  lookup (take _ xs) i
     ≡⟨ cong (λ ys → lookup ys i) (take≡truncate m xs) ⟩
   lookup (truncate _ xs) i
-    ≡⟨ cong (λ ys → lookup ys i) (truncate-irrelevant _ _ xs) ⟩
-  lookup (truncate m≤m+n xs) i
-    ≡⟨ lookup-truncate m≤m+n xs i ⟩
-  lookup xs (Fin.inject≤ i m≤m+n)
-    ∎
- where open ≡-Reasoning
+    ≡⟨ lookup-truncate (m≤m+n m n) xs i ⟩
+  lookup xs (Fin.inject≤ i (m≤m+n m n))
+    ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
@@ -1305,7 +1303,13 @@ Please use drop-map instead."
 #-}
 lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
                       lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
-lookup-inject≤-take m m≤m+n i xs = sym (lookup-take-inject≤ m≤m+n xs i)
+lookup-inject≤-take m m≤m+n i xs = sym (begin
+  lookup (take m xs) i
+    ≡⟨ lookup-take-inject≤ xs i ⟩
+  lookup xs (Fin.inject≤ i _)
+    ≡⟨ cong (lookup xs) (inject≤-irrelevant _ _ i) ⟩
+  lookup xs (Fin.inject≤ i m≤m+n)
+    ∎) where open ≡-Reasoning
 {-# WARNING_ON_USAGE lookup-inject≤-take
 "Warning: lookup-inject≤-take was deprecated in v2.0.
 Please use lookup-take-inject≤ instead."
