@@ -190,6 +190,11 @@ nonNegative : ∀ {p} → p ≥ 0ℚᵘ → NonNegative p
 nonNegative {mkℚᵘ +0       _} (*≤* _) = _
 nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _
 
+-- Destructors -- mostly see `Data.Rational.Properties`
+
+≢-nonZero⁻¹ : ∀ p → .{{NonZero p}} → p ≢ 0ℚᵘ
+≢-nonZero⁻¹ _ ⦃ () ⦄ refl
+
 ------------------------------------------------------------------------
 -- Operations on rationals
 

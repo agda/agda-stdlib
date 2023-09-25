@@ -571,6 +571,17 @@ module ≤-Reasoning where
                                   (ℤ.≤-reflexive $ ℤ.*-identityʳ n)
 
 ------------------------------------------------------------------------
+-- Properties of NonZero predicate
+
+-- Destructor
+
+≠-nonZero⁻¹ : ∀ p → .{{NonZero p}} → p ≠ 0ℚᵘ
+≠-nonZero⁻¹ p (*≡* eq) = contradiction ↥p≡0ℤ (ℤ.≢-nonZero⁻¹ (↥ p))
+  where
+  ↥p≡0ℤ : (↥ p) ≡ 0ℤ
+  ↥p≡0ℤ = trans (sym (ℤ.*-identityʳ (↥ p))) (trans eq (ℤ.*-zeroˡ (↧ p)))
+
+------------------------------------------------------------------------
 -- Properties of sign predicates
 
 positive⁻¹ : ∀ p → .{{Positive p}} → p > 0ℚᵘ

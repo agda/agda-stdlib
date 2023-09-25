@@ -464,6 +464,9 @@ Non-backwards compatible changes
   p≄0⇒∣↥p∣≢0 : ∀ p → p ≠ 0ℚᵘ → ℤ.∣ (↥ p) ∣ ≢0
   ∣↥p∣≢0⇒p≄0 : ∀ p → ℤ.∣ (↥ p) ∣ ≢0 → p ≠ 0ℚᵘ
   ```
+  Instead, a uniform collection, for each of the various possible equality
+  relations of the various numeric datatypes, of constructor/destructor pairs
+  `-nonZero`/`-nonZero⁻¹` for `NonZero` instances are now defined. 
 
 ### Change in reduction behaviour of rationals
 
@@ -2163,7 +2166,11 @@ Additions to existing modules
 
   *-rawMagma    : RawMagma 0ℓ 0ℓ
   *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
- ```
+  ```
+  and new destructor for \`NonZero\` instances:
+  ```agda
+  ≢-nonZero⁻¹ : .{{NonZero i}} → i ≢ 0ℤ
+  ```
 
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
@@ -2475,6 +2482,10 @@ Additions to existing modules
   floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚ → ℤ
   fracPart : ℚ → ℚ
   ```
+  and new destructor for \`NonZero\` instances:
+  ```agda
+  ≢-nonZero⁻¹ : .{{NonZero p}} → p ≢ 0ℚ
+  ```
 
 * Added new definitions and proofs in `Data.Rational.Properties`:
   ```agda
@@ -2494,12 +2505,18 @@ Additions to existing modules
   pos⇒nonZero       : .{{Positive p}} → NonZero p
   neg⇒nonZero       : .{{Negative p}} → NonZero p
   nonZero⇒1/nonZero : .{{_ : NonZero p}} → NonZero (1/ p)
+
+  ≄-nonZero⁻¹       : .{{NonZero p}} → ¬ (p ≃ 0ℚ)
   ```
 
 * Added new rounding functions in `Data.Rational.Unnormalised.Base`:
   ```agda
   floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚᵘ → ℤ
   fracPart : ℚᵘ → ℚᵘ
+  ```
+  and new destructor for \`NonZero\` instances:
+  ```agda
+  ≢-nonZero⁻¹ : .{{NonZero p}} → p ≢ 0ℚᵘ
   ```
 
 * Added new definitions in `Data.Rational.Unnormalised.Properties`:
@@ -2527,6 +2544,10 @@ Additions to existing modules
   pos⊓pos⇒pos          : .{{_ : Positive p}}    .{{_ : Positive q}}    → Positive (p ⊓ q)
   pos⊔pos⇒pos          : .{{_ : Positive p}}    .{{_ : Positive q}}    → Positive (p ⊔ q)
   1/nonZero⇒nonZero    : .{{_ : NonZero p}} → NonZero (1/ p)
+  ```
+  and new destructor for \`NonZero\` instances:
+  ```agda
+  ≠-nonZero⁻¹          : .{{NonZero p}} → p ≠ 0ℚᵘ
   ```
 
 * Added new functions to `Data.Product.Nary.NonDependent`:
