@@ -45,7 +45,7 @@ private module _ (A : IndexedSetoid I a ℓ₁) where
 
   cast : ∀ {i j} → j ≡ i → Carrier i → Carrier j
   cast j≡i = P.subst Carrier (P.sym $ j≡i)
-  
+
   cast-cong : ∀ {i j} {x y : Carrier i}
                (j≡i : j ≡ i) →
                x ≈ y →
@@ -65,7 +65,7 @@ private
 module _ where
   open Func
   open Setoid
-  
+
   function :
     (f : I ⟶ J) →
     (∀ {i} → Func (A atₛ i) (B atₛ (to f i))) →
@@ -85,8 +85,8 @@ module _ where
 
 module _ where
   open Equivalence
-  
-  equivalence : 
+
+  equivalence :
     (I⇔J : I ⇔ J) →
     (∀ {i} → Func (A atₛ i) (B atₛ (to   I⇔J i))) →
     (∀ {j} → Func (B atₛ j) (A atₛ (from I⇔J j))) →
@@ -130,7 +130,7 @@ module _ where
 module _ where
   open Injection hiding (function)
   open IndexedSetoid
-  
+
   injection :
     (I↣J : I ↣ J) →
     (∀ {i} → Injection (A atₛ i) (B atₛ (Injection.to I↣J i))) →
@@ -158,14 +158,14 @@ module _ where
 module _ where
   open Surjection hiding (function)
   open Setoid
-  
+
   surjection :
     (I↠J : I ↠ J) →
     (∀ {x} → Surjection (A atₛ x) (B atₛ (to I↠J x))) →
     Surjection (I ×ₛ A) (J ×ₛ B)
   surjection {I = I} {J = J} {A = A} {B = B} I↠J A↠B =
     mkSurjection func surj
-    where    
+    where
     func : Func (I ×ₛ A) (J ×ₛ B)
     func = function (Surjection.function I↠J) (Surjection.function A↠B)
 
@@ -185,7 +185,7 @@ module _ where
 module _ where
   open RightInverse
   open Setoid
-  
+
   left-inverse :
     (I↪J : I ↪ J) →
     (∀ {j} → RightInverse (A atₛ (from I↪J j)) (B atₛ j)) →
@@ -201,7 +201,7 @@ module _ where
 
     invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) (Equivalence.to equiv) (Equivalence.from equiv)
     invʳ = strictlyInverseʳ⇒inverseʳ {f⁻¹ = Equivalence.from equiv} (trans (I ×ₛ A)) (Equivalence.from-cong equiv) strictlyInvʳ
-    
+
 
 ------------------------------------------------------------------------
 -- Inverses
@@ -209,16 +209,16 @@ module _ where
 module _ where
   open Inverse hiding (inverse)
   open Setoid
-  
+
   inverse : (I↔J : I ↔ J) →
             (∀ {i} → Inverse (A atₛ i) (B atₛ (to I↔J i))) →
             Inverse (I ×ₛ A) (J ×ₛ B)
   inverse {I = I} {J = J} {A = A} {B = B} I↔J A↔B = record
-    { to = to′ 
-    ; from = from′ 
-    ; to-cong = to′-cong 
-    ; from-cong = from′-cong 
-    ; inverse = invˡ , invʳ 
+    { to = to′
+    ; from = from′
+    ; to-cong = to′-cong
+    ; from-cong = from′-cong
+    ; inverse = invˡ , invʳ
     }
     where
     to′ : Carrier (I ×ₛ A) → Carrier (J ×ₛ B)
@@ -231,8 +231,8 @@ module _ where
     from′ (j , y) = from I↔J j , from A↔B (cast B (strictlyInverseˡ I↔J _) y)
 
     from′-cong : Congruent (_≈_ (J ×ₛ B)) (_≈_ (I ×ₛ A)) from′
-    from′-cong (P.refl , x≈y) = from-cong I↔J P.refl , from-cong A↔B (cast-cong B (strictlyInverseˡ I↔J _) x≈y)    
-    
+    from′-cong (P.refl , x≈y) = from-cong I↔J P.refl , from-cong A↔B (cast-cong B (strictlyInverseˡ I↔J _) x≈y)
+
     strictlyInvˡ : StrictlyInverseˡ (_≈_ (J ×ₛ B)) to′ from′
     strictlyInvˡ (i , x) = strictlyInverseˡ I↔J i ,
         IndexedSetoid.trans B (strictlyInverseˡ A↔B _)
@@ -245,12 +245,11 @@ module _ where
           IndexedSetoid._≈_ B x y →
           IndexedSetoid._≈_ A (from A↔B x) (from A↔B y)
     lem P.refl x≈y = from-cong A↔B x≈y
-    
+
     strictlyInvʳ : StrictlyInverseʳ (_≈_ (I ×ₛ A)) to′ from′
     strictlyInvʳ (i , x) = strictlyInverseʳ I↔J i ,
       IndexedSetoid.trans A (lem (strictlyInverseʳ I↔J _) (cast-eq B (strictlyInverseˡ I↔J _))) (strictlyInverseʳ A↔B _)
-      
+
     invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′ from′
     invʳ = strictlyInverseʳ⇒inverseʳ {f⁻¹ = from′} (trans (I ×ₛ A)) from′-cong strictlyInvʳ
-    
 

@@ -45,20 +45,20 @@ private
 -- Σ is associative
 Σ-assoc : ∀ {A : Set a} {B : A → Set b} {C : (a : A) → B a → Set c} →
           Σ (Σ A B) (uncurry C) ↔ Σ A (λ a → Σ (B a) (C a))
-Σ-assoc = mk↔′ Prod.assocʳ Prod.assocˡ (λ _ → P.refl) (λ _ → P.refl)
+Σ-assoc = mk↔ₛ′ Prod.assocʳ Prod.assocˡ (λ _ → P.refl) (λ _ → P.refl)
 
 -- × is commutative
 
 ×-comm : ∀ (A : Set a) (B : Set b) → (A × B) ↔ (B × A)
-×-comm _ _ = mk↔′ Prod.swap Prod.swap (λ _ → P.refl) λ _ → P.refl
+×-comm _ _ = mk↔ₛ′ Prod.swap Prod.swap (λ _ → P.refl) λ _ → P.refl
 
 -- × has ⊤ as its identity
 
 ×-identityˡ : ∀ ℓ → LeftIdentity  {ℓ = ℓ} _↔_ ⊤ _×_
-×-identityˡ _ _ = mk↔′ proj₂ -,_ (λ _ → P.refl) (λ _ → P.refl)
+×-identityˡ _ _ = mk↔ₛ′ proj₂ -,_ (λ _ → P.refl) (λ _ → P.refl)
 
 ×-identityʳ : ∀ ℓ → RightIdentity  {ℓ = ℓ} _↔_ ⊤ _×_
-×-identityʳ _ _ = mk↔′ proj₁ (_, _) (λ _ → P.refl) (λ _ → P.refl)
+×-identityʳ _ _ = mk↔ₛ′ proj₁ (_, _) (λ _ → P.refl) (λ _ → P.refl)
 
 ×-identity : ∀ ℓ → Identity _↔_ ⊤ _×_
 ×-identity ℓ = ×-identityˡ ℓ , ×-identityʳ ℓ
@@ -66,10 +66,10 @@ private
 -- × has ⊥ has its zero
 
 ×-zeroˡ : ∀ ℓ → LeftZero {ℓ = ℓ} _↔_ ⊥ _×_
-×-zeroˡ ℓ A = mk↔′ proj₁ < id , ⊥ₚ-elim > (λ _ → P.refl) (λ { () })
+×-zeroˡ ℓ A = mk↔ₛ′ proj₁ < id , ⊥ₚ-elim > (λ _ → P.refl) (λ { () })
 
 ×-zeroʳ : ∀ ℓ → RightZero {ℓ = ℓ} _↔_ ⊥ _×_
-×-zeroʳ ℓ A = mk↔′ proj₂ < ⊥ₚ-elim , id > (λ _ → P.refl) (λ { () })
+×-zeroʳ ℓ A = mk↔ₛ′ proj₂ < ⊥ₚ-elim , id > (λ _ → P.refl) (λ { () })
 
 ×-zero : ∀ ℓ → Zero _↔_ ⊥ _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
@@ -80,7 +80,7 @@ private
 -- ⊎ is associative
 
 ⊎-assoc : ∀ ℓ → Associative {ℓ = ℓ} _↔_ _⊎_
-⊎-assoc ℓ _ _ _ = mk↔′
+⊎-assoc ℓ _ _ _ = mk↔ₛ′
   [ [ inj₁ , inj₂ ∘′ inj₁ ]′ , inj₂ ∘′ inj₂ ]′
   [ inj₁ ∘′ inj₁ , [ inj₁ ∘′ inj₂ , inj₂ ]′ ]′
   [ (λ _ → P.refl) , [ (λ _ → P.refl) , (λ _ → P.refl) ] ]
@@ -89,16 +89,16 @@ private
 -- ⊎ is commutative
 
 ⊎-comm : ∀ (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
-⊎-comm _ _ = mk↔′ swap swap swap-involutive swap-involutive
+⊎-comm _ _ = mk↔ₛ′ swap swap swap-involutive swap-involutive
 
 -- ⊎ has ⊥ as its identity
 
 ⊎-identityˡ : ∀ ℓ → LeftIdentity _↔_ (⊥ {ℓ}) _⊎_
-⊎-identityˡ _ _ = mk↔′ [ (λ ()) , id ]′ inj₂ (λ _ → P.refl)
+⊎-identityˡ _ _ = mk↔ₛ′ [ (λ ()) , id ]′ inj₂ (λ _ → P.refl)
                           [ (λ ()) , (λ _ → P.refl) ]
 
 ⊎-identityʳ : ∀ ℓ → RightIdentity _↔_ (⊥ {ℓ}) _⊎_
-⊎-identityʳ _ _ = mk↔′ [ id , (λ ()) ]′ inj₁ (λ _ → P.refl)
+⊎-identityʳ _ _ = mk↔ₛ′ [ id , (λ ()) ]′ inj₁ (λ _ → P.refl)
                           [ (λ _ → P.refl) , (λ ()) ]
 
 ⊎-identity : ∀ ℓ → Identity _↔_ ⊥ _⊎_
@@ -110,14 +110,14 @@ private
 -- × distributes over ⊎
 
 ×-distribˡ-⊎ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribˡ-⊎ ℓ _ _ _ = mk↔′
+×-distribˡ-⊎ ℓ _ _ _ = mk↔ₛ′
   (uncurry λ x → [ inj₁ ∘′ (x ,_) , inj₂ ∘′ (x ,_) ]′)
   [ Prod.map₂ inj₁ , Prod.map₂ inj₂ ]′
   [ (λ _ → P.refl) , (λ _ → P.refl) ]
   (uncurry λ _ → [ (λ _ → P.refl) , (λ _ → P.refl) ])
 
 ×-distribʳ-⊎ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribʳ-⊎ ℓ _ _ _ = mk↔′
+×-distribʳ-⊎ ℓ _ _ _ = mk↔ₛ′
   (uncurry [ curry inj₁ , curry inj₂ ]′)
   [ Prod.map₁ inj₁ , Prod.map₁ inj₂ ]′
   [ (λ _ → P.refl) , (λ _ → P.refl) ]
@@ -145,7 +145,7 @@ private
 ×-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _×_
 ×-isSemigroup k ℓ = record
   { isMagma = ×-isMagma k ℓ
-  ; assoc   = λ _ _ _ → ⤖⇒ Σ-assoc
+  ; assoc   = λ _ _ _ → ↔⇒ Σ-assoc
   }
 
 ×-semigroup : SymmetricKind → (ℓ : Level) → Semigroup _ _
@@ -156,7 +156,7 @@ private
 ×-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _×_ ⊤
 ×-isMonoid k ℓ = record
   { isSemigroup = ×-isSemigroup k ℓ
-  ; identity    = (⤖⇒ ∘ ×-identityˡ ℓ) , (⤖⇒ ∘ ×-identityʳ ℓ)
+  ; identity    = (↔⇒ ∘ ×-identityˡ ℓ) , (↔⇒ ∘ ×-identityʳ ℓ)
   }
 
 ×-monoid : SymmetricKind → (ℓ : Level) → Monoid _ _
@@ -167,7 +167,7 @@ private
 ×-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _×_ ⊤
 ×-isCommutativeMonoid k ℓ = record
   { isMonoid = ×-isMonoid k ℓ
-  ; comm     = λ _ _ → ⤖⇒ (×-comm _ _)
+  ; comm     = λ _ _ → ↔⇒ (×-comm _ _)
   }
 
 ×-commutativeMonoid : SymmetricKind → (ℓ : Level) → CommutativeMonoid _ _
@@ -191,7 +191,7 @@ private
 ⊎-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _⊎_
 ⊎-isSemigroup k ℓ = record
   { isMagma = ⊎-isMagma k ℓ
-  ; assoc   = λ A B C → ⤖⇒ (⊎-assoc ℓ A B C)
+  ; assoc   = λ A B C → ↔⇒ (⊎-assoc ℓ A B C)
   }
 
 ⊎-semigroup : SymmetricKind → (ℓ : Level) → Semigroup _ _
@@ -202,7 +202,7 @@ private
 ⊎-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _⊎_ ⊥
 ⊎-isMonoid k ℓ = record
   { isSemigroup = ⊎-isSemigroup k ℓ
-  ; identity    = (⤖⇒ ∘ ⊎-identityˡ ℓ) , (⤖⇒ ∘ ⊎-identityʳ ℓ)
+  ; identity    = (↔⇒ ∘ ⊎-identityˡ ℓ) , (↔⇒ ∘ ⊎-identityʳ ℓ)
   }
 
 ⊎-monoid : SymmetricKind → (ℓ : Level) → Monoid _ _
@@ -213,7 +213,7 @@ private
 ⊎-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ ⊥
 ⊎-isCommutativeMonoid k ℓ = record
   { isMonoid = ⊎-isMonoid k ℓ
-  ; comm     = λ _ _ → ⤖⇒ (⊎-comm _ _)
+  ; comm     = λ _ _ → ↔⇒ (⊎-comm _ _)
   }
 
 ⊎-commutativeMonoid : SymmetricKind → (ℓ : Level) →
@@ -227,8 +227,8 @@ private
 ×-⊎-isCommutativeSemiring k ℓ = isCommutativeSemiringˡ record
   { +-isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
   ; *-isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
-  ; distribʳ              = λ A B C → ⤖⇒ (×-distribʳ-⊎ ℓ A B C)
-  ; zeroˡ                 = ⤖⇒ ∘ ×-zeroˡ ℓ
+  ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ-⊎ ℓ A B C)
+  ; zeroˡ                 = ↔⇒ ∘ ×-zeroˡ ℓ
   }
 
 ×-⊎-commutativeSemiring : SymmetricKind → (ℓ : Level) →
@@ -242,11 +242,11 @@ private
 
 ΠΠ↔ΠΠ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) →
         ((x : A) (y : B) → P x y) ↔ ((y : B) (x : A) → P x y)
-ΠΠ↔ΠΠ _ = mk↔′ flip flip (λ _ → P.refl) (λ _ → P.refl)
+ΠΠ↔ΠΠ _ = mk↔ₛ′ flip flip (λ _ → P.refl) (λ _ → P.refl)
 
 ∃∃↔∃∃ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) →
         (∃₂ λ x y → P x y) ↔ (∃₂ λ y x → P x y)
-∃∃↔∃∃ P = mk↔′ to from (λ _ → P.refl) (λ _ → P.refl)
+∃∃↔∃∃ P = mk↔ₛ′ to from (λ _ → P.refl) (λ _ → P.refl)
   where
   to : (∃₂ λ x y → P x y) → (∃₂ λ y x → P x y)
   to (x , y , Pxy) = (y , x , Pxy)
@@ -259,7 +259,7 @@ private
 
 Π↔Π : ∀ {A : Set a} {B : A → Set b} →
       ((x : A) → B x) ↔ ({x : A} → B x)
-Π↔Π = mk↔′ _$- λ- (λ _ → P.refl) (λ _ → P.refl)
+Π↔Π = mk↔ₛ′ _$- λ- (λ _ → P.refl) (λ _ → P.refl)
 
 ------------------------------------------------------------------------
 -- _→_ preserves the symmetric relations
@@ -273,7 +273,7 @@ private
 →-cong-↔ : Extensionality a c → Extensionality b d →
              {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
              A ↔ B → C ↔ D → (A → C) ↔ (B → D)
-→-cong-↔ ext₁ ext₂ A↔B C↔D = mk↔′
+→-cong-↔ ext₁ ext₂ A↔B C↔D = mk↔ₛ′
   (λ f → to C↔D ∘ f ∘ from A↔B)
   (λ f → from C↔D ∘ f ∘ to A↔B)
   (λ f → ext₂ λ x → begin
@@ -328,6 +328,6 @@ Related-cong {A = A} {B = B} {C = C} {D = D} A≈B C≈D = mk⇔
 True↔ : ∀ {p} {P : Set p}
         (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
 True↔ ( true because  [p]) irr =
-  mk↔′ (λ _ → invert [p]) (λ _ → _) (irr _) (λ _ → P.refl)
+  mk↔ₛ′ (λ _ → invert [p]) (λ _ → _) (irr _) (λ _ → P.refl)
 True↔ (false because ofⁿ ¬p) _ =
-  mk↔′ (λ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) (λ ())
+  mk↔ₛ′ (λ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) (λ ())

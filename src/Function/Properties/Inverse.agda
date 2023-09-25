@@ -11,6 +11,7 @@ module Function.Properties.Inverse where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Bundles
+import Function.Properties.RightInverse as RightInverse
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
@@ -144,9 +145,15 @@ transportVia R-trans inv⇒R IBA RBC ICD =
 module _ (ext : ∀ {a b} → Extensionality a b) where
 
   ↔-fun : A ↔ B → C ↔ D → (A → C) ↔ (B → D)
-  ↔-fun A↔B C↔D = mk↔′
+  ↔-fun A↔B C↔D = mk↔ₛ′
     (λ a→c b → to C↔D (a→c (from A↔B b)))
     (λ b→d a → from C↔D (b→d (to A↔B a)))
     (λ b→d → ext λ _ → P.trans (strictlyInverseˡ C↔D _ ) (P.cong b→d (strictlyInverseˡ A↔B _)))
     (λ a→c → ext λ _ → P.trans (strictlyInverseʳ C↔D _ ) (P.cong a→c (strictlyInverseʳ A↔B _)))
     where open Inverse
+
+module _ (I : Inverse S T) where
+  open Inverse I
+
+  to-from : ∀ {x y} → to x Eq₂.≈ y → from y Eq₁.≈ x
+  to-from = RightInverse.to-from rightInverse

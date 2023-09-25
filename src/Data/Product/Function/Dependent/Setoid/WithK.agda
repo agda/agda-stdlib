@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Dependent product combinators for setoid equality preserving
--- functions
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --with-K --safe #-}

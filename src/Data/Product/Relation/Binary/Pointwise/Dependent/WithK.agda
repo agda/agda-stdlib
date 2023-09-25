@@ -25,7 +25,7 @@ private
     a b : Level
     I : Set a
     A : I → Set a
-    
+
 ------------------------------------------------------------------------
 -- The propositional equality setoid over sigma types can be
 -- decomposed using Pointwise

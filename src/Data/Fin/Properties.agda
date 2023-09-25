@@ -30,7 +30,7 @@ open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
+open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
@@ -69,13 +69,13 @@ private
 -- Bundles
 
 0↔⊥ : Fin 0 ↔ ⊥
-0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
+0↔⊥ = mk↔ₛ′ ¬Fin0 (λ ()) (λ ()) (λ ())
 
 1↔⊤ : Fin 1 ↔ ⊤
-1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
+1↔⊤ = mk↔ₛ′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
 
 2↔Bool : Fin 2 ↔ Bool
-2↔Bool = mk↔′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
+2↔Bool = mk↔ₛ′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
   (λ { false → refl ; true → refl }) (λ { 0F → refl ; 1F → refl })
 
 ------------------------------------------------------------------------
@@ -614,7 +614,7 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 -- Bundles
 
 +↔⊎ : Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
-+↔⊎ {m} {n} = mk↔′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
++↔⊎ {m} {n} = mk↔ₛ′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
 
 ------------------------------------------------------------------------
 -- remQuot
@@ -706,7 +706,7 @@ combine-surjective {m} {n} i with remQuot {m} n i in eq
 -- Bundles
 
 *↔× : Fin (m ℕ.* n) ↔ (Fin m × Fin n)
-*↔× {m} {n} = mk↔′ (remQuot {m} n) (uncurry combine)
+*↔× {m} {n} = mk↔ₛ′ (remQuot {m} n) (uncurry combine)
   (uncurry remQuot-combine)
   (combine-remQuot {m} n)
 
@@ -757,7 +757,7 @@ finToFun-funToFin {suc m} {n} f (suc i) =
 -- Bundles
 
 ^↔→ : Extensionality _ _ → Fin (m ^ n) ↔ (Fin n → Fin m)
-^↔→ {m} {n} ext = mk↔′ finToFun funToFin
+^↔→ {m} {n} ext = mk↔ₛ′ finToFun funToFin
   (ext ∘ finToFun-funToFin)
   (funToFin-finToFin {n} {m})
 

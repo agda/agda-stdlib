@@ -14,7 +14,6 @@ open import Data.Sum.Base
 open import Data.Unit.Base using (⊤)
 open import Level using (Level; _⊔_; 0ℓ)
 open import Function
-open import Function.Related
 open import Relation.Nullary.Decidable using (_×-dec_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

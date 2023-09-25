@@ -244,7 +244,7 @@ module _ where
   Σ-↔ : (I↔J : I ↔ J) →
       (∀ {x} → A x ↔ B (to I↔J x)) →
       Σ I A ↔ Σ J B
-  Σ-↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔′
+  Σ-↔ {I = I} {J = J} {A = A} {B = B} I↔J A↔B = mk↔ₛ′
     (Surjection.to surjection′)
     (Surjection.to⁻ surjection′)
     (Surjection.to∘to⁻ surjection′)

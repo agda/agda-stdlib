@@ -33,7 +33,7 @@ mkSurjection f surjective = record
   { Func f
   ; surjective = surjective
   }
-  
+
 ------------------------------------------------------------------------
 -- Conversion functions
 

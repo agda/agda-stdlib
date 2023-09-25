@@ -46,7 +46,7 @@ record _≃_ (A : Set a) (B : Set b) : Set (a ⊔ b) where
 -- Half adjoint equivalences can be turned into inverses.
 
 ≃⇒↔ : A ≃ B → A ↔ B
-≃⇒↔ A≃B = mk↔′ to from right-inverse-of left-inverse-of
+≃⇒↔ A≃B = mk↔ₛ′ to from right-inverse-of left-inverse-of
   where open _≃_ A≃B
 
 -- Inverses can be turned into half adjoint equivalences.

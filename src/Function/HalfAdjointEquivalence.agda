@@ -1,12 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Half adjoint equivalences
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.HalfAdjointEquivalence where
+
+{-# WARNING_ON_IMPORT
+"Function.HalfAdjointEquivalence was deprecated in v2.0.
+Use Function.Properties.Inverse.HalfAdjointEquivalence instead."
+#-}
 
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)

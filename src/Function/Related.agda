@@ -1,13 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A universe which includes several kinds of "relatedness" for sets,
--- such as equivalences, surjections and bijections
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Related where
+
+{-# WARNING_ON_IMPORT
+"Function.Related was deprecated in v2.0.
+Use Function.Related.Propositional instead."
+#-}
 
 open import Level
 open import Function.Base
@@ -121,7 +126,7 @@ fromRelated {K = left-inverse}        record { to = to ; from = from ; left-inve
 fromRelated {K = surjection}          record { to = to ; surjective = surjective } with surjective
 ... | record { from = from ; right-inverse-of = right-inverse-of } =
   B.mk↠ {to = to ⟨$⟩_} < from ⟨$⟩_ , (λ { x P.refl → right-inverse-of x }) >
-fromRelated {K = bijection}           rel = B.mk↔′ (to ⟨$⟩_) (from ⟨$⟩_) right-inverse-of left-inverse-of
+fromRelated {K = bijection}           rel = B.mk↔ₛ′ (to ⟨$⟩_) (from ⟨$⟩_) right-inverse-of left-inverse-of
   where open Inverse rel
 
 -- The bijective equality implies any kind of relatedness.

@@ -72,20 +72,20 @@ Related k A B = A ∼[ k ] B
 
 -- The bijective equality implies any kind of relatedness.
 
-⤖⇒ : A ∼[ bijection ] B → A ∼[ k ] B
-⤖⇒ {k = implication}        = mk⟶ ∘ Inverse.to
-⤖⇒ {k = reverseImplication} = mk⟶ ∘ Inverse.from
-⤖⇒ {k = equivalence}        = ↔⇒⇔
-⤖⇒ {k = injection}          = ↔⇒↣
-⤖⇒ {k = reverseInjection}   = ↔⇒↣ ∘ Symmetry.inverse
-⤖⇒ {k = leftInverse}        = Inverse.rightInverse
-⤖⇒ {k = surjection}         = ↔⇒↠
-⤖⇒ {k = bijection}          = id
+↔⇒ : A ∼[ bijection ] B → A ∼[ k ] B
+↔⇒ {k = implication}        = mk⟶ ∘ Inverse.to
+↔⇒ {k = reverseImplication} = mk⟶ ∘ Inverse.from
+↔⇒ {k = equivalence}        = ↔⇒⇔
+↔⇒ {k = injection}          = ↔⇒↣
+↔⇒ {k = reverseInjection}   = ↔⇒↣ ∘ Symmetry.inverse
+↔⇒ {k = leftInverse}        = Inverse.rightInverse
+↔⇒ {k = surjection}         = ↔⇒↠
+↔⇒ {k = bijection}          = id
 
 -- Propositional equality also implies any kind of relatedness.
 
 ≡⇒ : A ≡ B → A ∼[ k ] B
-≡⇒ P.refl = ⤖⇒ (Identity.↔-id _)
+≡⇒ P.refl = ↔⇒ (Identity.↔-id _)
 
 ------------------------------------------------------------------------
 -- Special kinds of kinds
@@ -283,7 +283,7 @@ SK-setoid k ℓ = record { isEquivalence = SK-isEquivalence {ℓ} k }
 K-isPreorder : ∀ k → IsPreorder {ℓ = a} _↔_ (Related k)
 K-isPreorder k = record
   { isEquivalence = SK-isEquivalence bijection
-  ; reflexive     = ⤖⇒
+  ; reflexive     = ↔⇒
   ; trans         = K-trans
   }
 
@@ -299,6 +299,10 @@ module EquationalReasoning where
 
   infix  3 _∎
   infixr 2 _∼⟨_⟩_ _⤖⟨_⟩_ _↔⟨_⟩_ _↔⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_
+  infix  1 begin_
+
+  begin_ : ∀ {k} → A ∼[ k ] B → A ∼[ k ] B
+  begin_ x∼y = x∼y
 
   _∼⟨_⟩_ : (A : Set a) → A ∼[ k ] B → B ∼[ k ] C → A ∼[ k ] C
   _ ∼⟨ A↝B ⟩ B↝C = K-trans A↝B B↝C
@@ -307,10 +311,10 @@ module EquationalReasoning where
   -- relatedness.
 
   _⤖⟨_⟩_ : (A : Set a) → A ⤖ B → B ∼[ k ] C → A ∼[ k ] C
-  A ⤖⟨ A⤖B ⟩ B⇔C = A ∼⟨ ⤖⇒ (⤖⇒↔ A⤖B) ⟩ B⇔C
+  A ⤖⟨ A⤖B ⟩ B⇔C = A ∼⟨ ↔⇒ (⤖⇒↔ A⤖B) ⟩ B⇔C
 
   _↔⟨_⟩_ : (A : Set a) → A ↔ B → B ∼[ k ] C → A ∼[ k ] C
-  A ↔⟨ A↔B ⟩ B⇔C = A ∼⟨ ⤖⇒ A↔B ⟩ B⇔C
+  A ↔⟨ A↔B ⟩ B⇔C = A ∼⟨ ↔⇒ A↔B ⟩ B⇔C
 
   _↔⟨⟩_ : (A : Set a) → A ∼[ k ] B → A ∼[ k ] B
   A ↔⟨⟩ A⇔B = A⇔B

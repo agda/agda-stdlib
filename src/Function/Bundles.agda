@@ -99,7 +99,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       { to   = to
       ; cong = cong
       }
-      
+
     open Func function public
       hiding (to; cong)
 
@@ -458,12 +458,16 @@ module _ {A : Set a} {B : Set b} where
     ; inverse   = inv
     }
 
+
   -- Strict variant of the above.
-  mk↔′ : ∀ (to : A → B) (from : B → A) →
+  mk↠ₛ : ∀ {to : A → B} → StrictlySurjective _≡_ to → A ↠ B
+  mk↠ₛ = mk↠ ∘ strictlySurjective⇒surjective
+
+  mk↔ₛ′ : ∀ (to : A → B) (from : B → A) →
           StrictlyInverseˡ _≡_ to from →
           StrictlyInverseʳ _≡_ to from →
           A ↔ B
-  mk↔′ to from invˡ invʳ = mk↔ {to} {from}
+  mk↔ₛ′ to from invˡ invʳ = mk↔ {to} {from}
     ( strictlyInverseˡ⇒inverseˡ to invˡ
     , strictlyInverseʳ⇒inverseʳ to invʳ
     )
