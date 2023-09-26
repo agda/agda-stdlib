@@ -713,6 +713,7 @@ _>?_ = flip _<?_
 module ≤-Reasoning where
   import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤
@@ -721,7 +722,7 @@ module ≤-Reasoning where
     as Triple
 
   open Triple public
-    hiding (begin-irrefl; step-≈; step-≈˘)
+    hiding (step-≈; step-≈˘)
 
   infixr 2 step-≃ step-≃˘
 
@@ -730,9 +731,6 @@ module ≤-Reasoning where
 
   syntax step-≃  x y∼z x≃y = x ≃⟨  x≃y ⟩ y∼z
   syntax step-≃˘ x y∼z y≃x = x ≃˘⟨ y≃x ⟩ y∼z
-
-  infix 1 begin-irrefl_
-  begin-irrefl_ = Triple.begin-irrefl <-irrefl
 
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_

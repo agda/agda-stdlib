@@ -54,17 +54,13 @@ open import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_
 
 open import Relation.Binary.Reasoning.Base.Triple
   isPreorder
+  Strict.<-irrefl
   (Strict.<-trans isPartialOrder)
   (Strict.<-resp-≈ isEquivalence ≤-resp-≈)
   Strict.<⇒≤
   (Strict.<-≤-trans Eq.sym trans antisym ≤-respʳ-≈)
   (Strict.≤-<-trans trans antisym ≤-respˡ-≈)
-  as Reasoning
   public
-  hiding (begin-irrefl)
-
-infix 1 begin-irrefl_
-begin-irrefl_ = Reasoning.begin-irrefl Strict.<-irrefl
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

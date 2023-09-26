@@ -769,6 +769,30 @@ Non-backwards compatible changes
   IO.Instances
   ```
 
+### Changes to triple reasoning interface
+
+* The module `Relation.Binary.Reasoning.Base.Triple` now takes an extra proof that the strict
+  relation is irreflexive. 
+  
+* This allows the following new proof combinator:
+  ```agda
+  begin-contradiction : (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
+  ```
+  that takes a proof that a value is strictly less than itself and then applies the principle of explosion.
+  
+* Specialised versions of this combinator are available in the following derived modules:
+  ```
+  Data.Nat.Properties
+  Data.Nat.Binary.Properties
+  Data.Integer.Properties
+  Data.Rational.Unnormalised.Properties
+  Data.Rational.Properties
+  Data.Vec.Relation.Binary.Lex.Strict
+  Data.Vec.Relation.Binary.Lex.NonStrict
+  Relation.Binary.Reasoning.StrictPartialOrder
+  Relation.Binary.Reasoning.PartialOrder
+  ```
+
 ### Other
 
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
@@ -3441,20 +3465,3 @@ This is a full list of proofs that have changed form to use irrelevant instance 
       c ≈⟨ c≈d ⟩
       d ∎
     ```
-
-* In `Relation.Binary.Reasoning.Base.Triple` new function:
-  ```agda
-  begin-irrefl : Irreflexive _≈_ _<_ → (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
-  ```
-  Specialised versions are available in:
-  ```
-  Data.Nat.Properties
-  Data.Nat.Binary.Properties
-  Data.Integer.Properties
-  Data.Rational.Unnormalised.Properties
-  Data.Rational.Properties
-  Data.Vec.Relation.Binary.Lex.Strict
-  Data.Vec.Relation.Binary.Lex.NonStrict
-  Relation.Binary.Reasoning.StrictPartialOrder
-  Relation.Binary.Reasoning.PartialOrder
-  ```

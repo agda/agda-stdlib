@@ -277,33 +277,33 @@ module _ {V : Value v} where
                                      joinʳ⁺-right⁺ kv lk ku′ bal (Any-insertWith-just ku seg′ pr rp)
 
     -- impossible cases
-    ... | here eq  | tri< k<k′ _ _ = begin-irrefl
+    ... | here eq  | tri< k<k′ _ _ = begin-contradiction
       [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
       [ k′ ] ≈⟨ [ sym eq ]ᴱ ⟩
       [ k  ] ∎
-    ... | here eq  | tri> _ _ k>k′ = begin-irrefl
+    ... | here eq  | tri> _ _ k>k′ = begin-contradiction
       [ k  ] ≈⟨ [ eq ]ᴱ ⟩
       [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
       [ k  ] ∎
-    ... | left lp  | tri≈ _ k≈k′ _ = begin-irrefl
+    ... | left lp  | tri≈ _ k≈k′ _ = begin-contradiction
       let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
       [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
       [ k″ ] <⟨ k″<k′ ⟩
       [ k′ ] ≈⟨ [ sym k≈k′ ]ᴱ ⟩
       [ k  ] ∎
-    ... | left lp  | tri> _ _ k>k′ = begin-irrefl
+    ... | left lp  | tri> _ _ k>k′ = begin-contradiction
       let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
       [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
       [ k″ ] <⟨ k″<k′ ⟩
       [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
       [ k  ] ∎
-    ... | right rp | tri< k<k′ _ _ = begin-irrefl
+    ... | right rp | tri< k<k′ _ _ = begin-contradiction
       let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
       [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
       [ k′ ] <⟨ k′<k″ ⟩
       [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
       [ k  ] ∎
-    ... | right rp | tri≈ _ k≈k′ _ = begin-irrefl
+    ... | right rp | tri≈ _ k≈k′ _ = begin-contradiction
       let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
       [ k  ] ≈⟨ [ k≈k′ ]ᴱ ⟩
       [ k′ ] <⟨ k′<k″ ⟩

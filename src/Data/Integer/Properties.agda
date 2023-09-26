@@ -365,17 +365,14 @@ i≮i = <-irrefl refl
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤
     <-≤-trans
     ≤-<-trans
-    as Reasoning
     public
-    hiding (begin-irrefl; step-≈; step-≈˘)
-
-  infix 1 begin-irrefl_
-  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
+    hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_

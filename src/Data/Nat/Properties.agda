@@ -495,17 +495,14 @@ m<1+n⇒m≤n (s≤s m≤n) = m≤n
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤
     <-transˡ
     <-transʳ
-    as Reasoning
     public
-    hiding (begin-irrefl; step-≈; step-≈˘)
-
-  infix 1 begin-irrefl_
-  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
+    hiding (step-≈; step-≈˘)
 
 open ≤-Reasoning
 

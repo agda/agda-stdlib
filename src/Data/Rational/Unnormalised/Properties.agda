@@ -542,6 +542,7 @@ _>?_ = flip _<?_
 module ≤-Reasoning where
   import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     <-resp-≃
     <⇒≤
@@ -550,10 +551,7 @@ module ≤-Reasoning where
     as Triple
 
   open Triple public
-    hiding (step-≈; step-≈˘; begin-irrefl)
-
-  infix 1 begin-irrefl
-  begin-irrefl = Triple.begin-irrefl <-irrefl
+    hiding (step-≈; step-≈˘)
 
   infixr 2 step-≃ step-≃˘
 

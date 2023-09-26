@@ -53,14 +53,11 @@ import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_ as NonStrict
 
 open import Relation.Binary.Reasoning.Base.Triple
   (NonStrict.isPreorder₂ isStrictPartialOrder)
+  irrefl
   trans
   <-resp-≈
   NonStrict.<⇒≤
   (NonStrict.<-≤-trans trans <-respʳ-≈)
   (NonStrict.≤-<-trans Eq.sym trans <-respˡ-≈)
-  as Reasoning
   public
-  hiding (begin-irrefl)
 
-infix 1 begin-irrefl_
-begin-irrefl_ = Reasoning.begin-irrefl irrefl

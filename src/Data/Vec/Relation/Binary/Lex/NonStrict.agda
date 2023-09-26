@@ -261,14 +261,10 @@ module ≤-Reasoning  {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂}
 
   open import Relation.Binary.Reasoning.Base.Triple
     (≤-isPreorder ≼-po {n})
+    <-irrefl
     (<-trans ≼-po)
     (<-resp₂ isEquivalence ≤-resp-≈)
     <⇒≤
     (<-transˡ ≼-po)
     (<-transʳ ≼-po)
-    as Reasoning
     public
-    hiding (begin-irrefl)
-
-  infix 1 begin-irrefl_
-  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
