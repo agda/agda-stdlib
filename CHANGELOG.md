@@ -274,8 +274,14 @@ Non-backwards compatible changes
 
 #### Removal of the old function hierarchy
 
-* The switch to the new function hierarchy is complete and the following definitions
-  now use the new definitions instead of the old ones:
+* The switch to the new function hierarchy is complete and the following modules
+  have been completely switched over to use the new definitions:
+  ```
+  Data.Sum.Function.Setoid
+  Data.Sum.Function.Propositional
+  ```
+  
+* Additionally the following proofs now use the new definitions instead of the old ones:
   * `Algebra.Lattice.Properties.BooleanAlgebra`
   * `Algebra.Properties.CommutativeMonoid.Sum`
   * `Algebra.Properties.Lattice`
@@ -1079,6 +1085,10 @@ Deprecated modules
 ### Deprecation of `Data.Nat.Properties.Core`
 
 * The module `Data.Nat.Properties.Core` has been deprecated, and its one entry moved to `Data.Nat.Properties`
+
+### Deprecation of `Data.Product.Function.Dependent.Setoid.WithK`
+
+* This module has been deprecated, as none of its contents actually depended on axiom K. The contents has been moved to `Data.Product.Function.Dependent.Setoid`.
 
 Deprecated names
 ----------------

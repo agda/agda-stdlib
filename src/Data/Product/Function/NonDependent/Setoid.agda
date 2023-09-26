@@ -9,140 +9,126 @@
 
 module Data.Product.Function.NonDependent.Setoid where
 
-open import Data.Product.Base using (map; _,_; <_,_>; proj₁; proj₂)
+open import Data.Product.Base as Prod
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Relation.Binary.Core using (_=[_]⇒_)
-open import Relation.Binary.Bundles using (Setoid)
-open import Function.Equality as F using (_⟶_; _⟨$⟩_)
-open import Function.Equivalence as Eq
-  using (Equivalence; _⇔_; module Equivalence)
-open import Function.Injection as Inj
-  using (Injection; _↣_; module Injection)
-open import Function.Inverse as Inv
-  using (Inverse; _↔_; module Inverse)
-open import Function.LeftInverse as LeftInv
-  using (LeftInverse; _↞_; _LeftInverseOf_; module LeftInverse)
-open import Function.Related
-open import Function.Surjection as Surj
-  using (Surjection; _↠_; module Surjection)
+open import Level using (Level)
+open import Relation.Binary
+open import Function
+
+private
+  variable
+    a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂ : Level
+    a ℓ : Level
+    A B C D : Setoid a ℓ
 
 ------------------------------------------------------------------------
 -- Combinators for equality preserving functions
 
-module _  {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
-          {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
-          {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
-          where
+proj₁ₛ : Func (A ×ₛ B) A
+proj₁ₛ = record { to = proj₁ ; cong = proj₁ }
 
-  infixr 2 _×-⟶_
+proj₂ₛ : Func (A ×ₛ B) B
+proj₂ₛ = record { to = proj₂ ; cong = proj₂ }
 
-  _×-⟶_ : (A ⟶ B) → (C ⟶ D) → (A ×ₛ C) ⟶ (B ×ₛ D)
-  _×-⟶_ f g = record
-    { _⟨$⟩_ = fg
-    ; cong  = fg-cong
-    }
-    where
-    open Setoid (A ×ₛ C) using () renaming (_≈_ to _≈AC_)
-    open Setoid (B ×ₛ D) using () renaming (_≈_ to _≈BD_)
+<_,_>ₛ : Func A B → Func A C → Func A (B ×ₛ C)
+< f , g >ₛ = record
+  { to   = < to   f , to   g >
+  ; cong = < cong f , cong g >
+  } where open Func
 
-    fg = map (f ⟨$⟩_) (g ⟨$⟩_)
-
-    fg-cong : _≈AC_ =[ fg ]⇒ _≈BD_
-    fg-cong (_∼₁_ , _∼₂_) = (F.cong f _∼₁_ , F.cong g _∼₂_)
-
-module _ {a₁ a₂ b₁ b₂ c₁ c₂}
-         {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} {C : Setoid c₁ c₂}
-         where
-
-  <_,_>ₛ : (A ⟶ B) → (A ⟶ C) → A ⟶ (B ×ₛ C)
-  < f , g >ₛ = record
-    { _⟨$⟩_ = < f ⟨$⟩_ , g ⟨$⟩_ >
-    ; cong = < F.cong f , F.cong g >
-    }
-
-module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} where
-
-  proj₁ₛ : (A ×ₛ B) ⟶ A
-  proj₁ₛ = record { _⟨$⟩_ = proj₁ ; cong = proj₁ }
-
-  proj₂ₛ : (A ×ₛ B) ⟶ B
-  proj₂ₛ = record { _⟨$⟩_ = proj₂ ; cong = proj₂ }
-
-  swapₛ : (A ×ₛ B) ⟶ (B ×ₛ A)
-  swapₛ = < proj₂ₛ , proj₁ₛ >ₛ
+swapₛ : Func (A ×ₛ B) (B ×ₛ A)
+swapₛ = < proj₂ₛ , proj₁ₛ >ₛ
 
 ------------------------------------------------------------------------
--- Combinators for more complex function types
+-- Function bundles
 
-module _  {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
-          {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
-          {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
-          where
+_×-function_ : Func A B → Func C D → Func (A ×ₛ C) (B ×ₛ D)
+f ×-function g = record
+  { to    = Prod.map (to f) (to g)
+  ; cong  = Prod.map (cong f) (cong g)
+  } where open Func
 
-  infixr 2 _×-equivalence_ _×-injection_ _×-left-inverse_
+infixr 2 _×-equivalence_ _×-injection_ _×-left-inverse_
 
-  _×-equivalence_ : Equivalence A B → Equivalence C D →
-                    Equivalence (A ×ₛ C) (B ×ₛ D)
-  _×-equivalence_ A⇔B C⇔D = record
-    { to   = to   A⇔B ×-⟶ to   C⇔D
-    ; from = from A⇔B ×-⟶ from C⇔D
-    } where open Equivalence
+_×-equivalence_ : Equivalence A B → Equivalence C D →
+                  Equivalence (A ×ₛ C) (B ×ₛ D)
+_×-equivalence_ f g = record
+  { to        = Prod.map (to f) (to g)
+  ; from      = Prod.map (from f) (from g)
+  ; to-cong   = Prod.map (to-cong f) (to-cong g)
+  ; from-cong = Prod.map (from-cong f) (from-cong g)
+  } where open Equivalence
 
-  _×-injection_ : Injection A B → Injection C D →
-                  Injection (A ×ₛ C) (B ×ₛ D)
-  A↣B ×-injection C↣D = record
-    { to        = to A↣B ×-⟶ to C↣D
-    ; injective = map (injective A↣B) (injective C↣D)
-    } where open Injection
+_×-injection_ : Injection A B → Injection C D →
+                Injection (A ×ₛ C) (B ×ₛ D)
+f ×-injection g = record
+  { to        = Prod.map (to f) (to g)
+  ; cong      = Prod.map (cong f) (cong g)
+  ; injective = Prod.map (injective f) (injective g)
+  } where open Injection
 
-  _×-left-inverse_ : LeftInverse A B → LeftInverse C D →
-                     LeftInverse (A ×ₛ C) (B ×ₛ D)
-  A↞B ×-left-inverse C↞D = record
-    { to              = Equivalence.to eq
-    ; from            = Equivalence.from eq
-    ; left-inverse-of = left
-    }
-    where
-    open LeftInverse
-    eq = LeftInverse.equivalence A↞B ×-equivalence
-         LeftInverse.equivalence C↞D
+_×-surjection_ : Surjection A B → Surjection C D →
+                 Surjection (A ×ₛ C) (B ×ₛ D)
+f ×-surjection g = record
+  { to         = Prod.map (to f) (to g)
+  ; cong       = Prod.map (cong f) (cong g)
+  ; surjective = λ y → Prod.zip _,_ (λ ff gg x₂ → (ff (proj₁ x₂)) , (gg (proj₂ x₂))) (surjective f (proj₁ y)) (surjective g (proj₂ y))
+  } where open Surjection
 
-    left : Equivalence.from eq LeftInverseOf Equivalence.to eq
-    left (x , y) = (left-inverse-of A↞B x , left-inverse-of C↞D y)
+_×-bijection_ : Bijection A B → Bijection C D →
+                Bijection (A ×ₛ C) (B ×ₛ D)
+f ×-bijection g = record
+  { to         = Prod.map (to f) (to g)
+  ; cong       = Prod.map (cong f) (cong g)
+  ; bijective  = Prod.map (injective f) (injective g) ,
+                 λ { (y₀ , y₁) → Prod.zip _,_ (λ {ff gg (x₀ , x₁) → ff x₀ , gg x₁}) (surjective f y₀) (surjective g y₁)}
+  } where open Bijection
 
-module _ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
-  {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
-  {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
-  where
+_×-leftInverse_ : LeftInverse A B → LeftInverse C D →
+                  LeftInverse (A ×ₛ C) (B ×ₛ D)
+f ×-leftInverse g = record
+  { to        = Prod.map (to f) (to g)
+  ; from      = Prod.map (from f) (from g)
+  ; to-cong   = Prod.map (to-cong f) (to-cong g)
+  ; from-cong = Prod.map (from-cong f) (from-cong g)
+  ; inverseˡ   = λ x → inverseˡ f (proj₁ x) , inverseˡ g (proj₂ x)
+  } where open LeftInverse
 
-  infixr 2 _×-surjection_ _×-inverse_
+_×-rightInverse_ : RightInverse A B → RightInverse C D →
+                   RightInverse (A ×ₛ C) (B ×ₛ D)
+f ×-rightInverse g = record
+  { to        = Prod.map (to f) (to g)
+  ; from      = Prod.map (from f) (from g)
+  ; to-cong   = Prod.map (to-cong f) (to-cong g)
+  ; from-cong = Prod.map (from-cong f) (from-cong g)
+  ; inverseʳ   = λ x → inverseʳ f (proj₁ x) , inverseʳ g (proj₂ x)
+  } where open RightInverse
 
-  _×-surjection_ : Surjection A B → Surjection C D →
-                   Surjection (A ×ₛ C) (B ×ₛ D)
-  A↠B ×-surjection C↠D = record
-    { to         = LeftInverse.from inv
-    ; surjective = record
-      { from             = LeftInverse.to inv
-      ; right-inverse-of = LeftInverse.left-inverse-of inv
-      }
-    }
-    where
-    open Surjection
-    inv = right-inverse A↠B ×-left-inverse right-inverse C↠D
+infixr 2 _×-surjection_ _×-inverse_
 
-  _×-inverse_ : Inverse A B → Inverse C D →
-                Inverse (A ×ₛ C) (B ×ₛ D)
-  A↔B ×-inverse C↔D = record
-    { to         = Surjection.to   surj
-    ; from       = Surjection.from surj
-    ; inverse-of = record
-      { left-inverse-of  = LeftInverse.left-inverse-of inv
-      ; right-inverse-of = Surjection.right-inverse-of surj
-      }
-    }
-    where
-    open Inverse
-    surj = Inverse.surjection   A↔B ×-surjection
-           Inverse.surjection   C↔D
-    inv  = Inverse.left-inverse A↔B ×-left-inverse
-           Inverse.left-inverse C↔D
+_×-inverse_ : Inverse A B → Inverse C D →
+              Inverse (A ×ₛ C) (B ×ₛ D)
+f ×-inverse g = record
+  { to        = Prod.map (to f) (to g)
+  ; from      = Prod.map (from f) (from g)
+  ; to-cong   = Prod.map (to-cong f) (to-cong g)
+  ; from-cong = Prod.map (from-cong f) (from-cong g)
+  ; inverse   = (λ x → inverseˡ f (proj₁ x) , inverseˡ g (proj₂ x)) ,
+                (λ x → inverseʳ f (proj₁ x) , inverseʳ g (proj₂ x))
+  } where open Inverse
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+_×-left-inverse_ = _×-leftInverse_
+{-# WARNING_ON_USAGE _×-left-inverse_
+"Warning: _×-left-inverse_ was deprecated in v2.0.
+Please use _×-leftInverse_ instead."
+#-}

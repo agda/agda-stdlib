@@ -23,7 +23,7 @@ open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Function.Base
 -- open import Function.Inverse using (_↔_; inverse)
-open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
@@ -159,7 +159,7 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
 
 []=↔lookup : ∀ {i} → xs [ i ]= x ↔ lookup xs i ≡ x
 []=↔lookup {xs = ys} {i = i} =
-  mk↔′ []=⇒lookup (lookup⇒[]= i ys) ([]=⇒lookup∘lookup⇒[]= _ i) lookup⇒[]=∘[]=⇒lookup
+  mk↔ₛ′ []=⇒lookup (lookup⇒[]= i ys) ([]=⇒lookup∘lookup⇒[]= _ i) lookup⇒[]=∘[]=⇒lookup
   where
   lookup⇒[]=∘[]=⇒lookup : ∀ {i} (p : xs [ i ]= x) →
                           lookup⇒[]= i xs ([]=⇒lookup p) ≡ p
@@ -689,7 +689,7 @@ zip∘unzip []         = refl
 zip∘unzip (xy ∷ xys) = cong (xy ∷_) (zip∘unzip xys)
 
 ×v↔v× : (Vec A n × Vec B n) ↔ Vec (A × B) n
-×v↔v× = mk↔′ (uncurry zip) unzip zip∘unzip (uncurry unzip∘zip)
+×v↔v× = mk↔ₛ′ (uncurry zip) unzip zip∘unzip (uncurry unzip∘zip)
 
 ------------------------------------------------------------------------
 -- _⊛_

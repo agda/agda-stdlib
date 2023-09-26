@@ -1,17 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Bijections
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Bijective`, `IsBijection` and
--- `Bijection`. The alternative definitions found in this file will
--- eventually be deprecated.
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Bijection where
+
+{-# WARNING_ON_IMPORT
+"Function.Bijection was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
 
 open import Level
 open import Relation.Binary.Bundles using (Setoid)
@@ -89,11 +90,11 @@ bijection : ∀ {f t} {From : Set f} {To : Set t} →
             (∀ x → to (from x) ≡ x) →
             From ⤖ To
 bijection to from inj invʳ = record
-  { to        = P.→-to-⟶ to
+  { to        = F.→-to-⟶ to
   ; bijective = record
     { injective  = inj
     ; surjective = record
-      { from             = P.→-to-⟶ from
+      { from             = F.→-to-⟶ from
       ; right-inverse-of = invʳ
       }
     }
