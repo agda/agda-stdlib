@@ -261,6 +261,7 @@ module ≤-Reasoning  {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂}
 
   open import Relation.Binary.Reasoning.Base.Triple
     (≤-isPreorder ≼-po {n})
+    <-irrefl
     (<-trans ≼-po)
     (<-resp₂ isEquivalence ≤-resp-≈)
     <⇒≤
