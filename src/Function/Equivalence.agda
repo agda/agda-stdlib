@@ -1,21 +1,22 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Equivalence (coinhabitance)
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Equivalence where
 
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Congruent` and `IsCongruent`.
--- The alternative definitions found in this file will eventually be
--- deprecated.
+{-# WARNING_ON_IMPORT
+"Function.Equivalence was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
 
 open import Function.Base using (flip)
 open import Function.Equality as F
-  using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
+  using (_⟶_; _⟨$⟩_; →-to-⟶) renaming (_∘_ to _⟪∘⟫_)
 open import Level
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (Reflexive; TransFlip; Sym)
@@ -43,8 +44,8 @@ From ⇔ To = Equivalence (P.setoid From) (P.setoid To)
 equivalence : ∀ {f t} {From : Set f} {To : Set t} →
               (From → To) → (To → From) → From ⇔ To
 equivalence to from = record
-  { to   = P.→-to-⟶ to
-  ; from = P.→-to-⟶ from
+  { to   = →-to-⟶ to
+  ; from = →-to-⟶ from
   }
 
 ------------------------------------------------------------------------
