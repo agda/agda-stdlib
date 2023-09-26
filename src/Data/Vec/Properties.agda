@@ -1311,6 +1311,6 @@ lookup-inject≤-take m m≤m+n i xs = sym (begin
     ∎) where open ≡-Reasoning
 {-# WARNING_ON_USAGE lookup-inject≤-take
 "Warning: lookup-inject≤-take was deprecated in v2.0.
-Please use lookup-take-inject≤ instead."
+Please use lookup-take-inject≤ or lookup-truncate, take≡truncate instead."
 #-}
 
