@@ -123,7 +123,7 @@ truncate-trans z≤n       n≤p       xs = refl
 truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
 
 truncate-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) → truncate {A = A} m≤n₁ ≗ truncate m≤n₂
-truncate-irrelevant m≤n₁ m≤n₂ xs rewrite ≤-irrelevant m≤n₁ m≤n₂ = refl
+truncate-irrelevant m≤n₁ m≤n₂ xs = cong (λ m≤n → truncate m≤n xs) (≤-irrelevant m≤n₁ m≤n₂)
 
 truncate≡take : (m≤n : m ≤ n) (xs : Vec A n) .(eq : n ≡ m + o) →
                 truncate m≤n xs ≡ take m (cast eq xs)
