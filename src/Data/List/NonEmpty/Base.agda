@@ -4,31 +4,33 @@
 -- Non-empty lists: base type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.NonEmpty.Base where
 
 open import Level using (Level)
-open import Data.Bool.Base using (Bool; false; true; not; T)
+open import Data.Bool.Base using (Bool; false; true)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat.Base as ℕ
-open import Data.Product as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
+open import Data.Product.Base as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
-open import Relation.Binary.PropositionalEquality.Core using (_≢_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl)
+open import Relation.Unary using (Pred; Decidable; U; ∅)
+open import Relation.Unary.Properties using (U?; ∅?)
+open import Relation.Nullary.Decidable using (does)
 
 private
   variable
-    a b c : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    a p : Level
+    A B C : Set a
 
 ------------------------------------------------------------------------
--- Non-empty lists
+-- Definition
 
 infixr 5 _∷_
 
@@ -40,6 +42,7 @@ record List⁺ (A : Set a) : Set a where
 
 open List⁺ public
 
+------------------------------------------------------------------------
 -- Basic combinators
 
 uncons : List⁺ A → A × List A
@@ -85,6 +88,13 @@ map f (x ∷ xs) = (f x ∷ List.map f xs)
 replicate : ∀ n → n ≢ 0 → A → List⁺ A
 replicate n n≢0 a = a ∷ List.replicate (pred n) a
 
+-- when dropping more than the size of the length of the list, the
+-- last element remains
+drop+ : ℕ → List⁺ A → List⁺ A
+drop+ zero    xs           = xs
+drop+ (suc n) (x ∷ [])     = x ∷ []
+drop+ (suc n) (x ∷ y ∷ xs) = drop+ n (y ∷ xs)
+
 -- Right fold. Note that s is only applied to the last element (see
 -- the examples below).
 
@@ -129,6 +139,9 @@ concat (xs ∷ xss) = xs ⁺++ List.concat (List.map toList xss)
 
 concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
 concatMap f = concat ∘′ map f
+
+ap : List⁺ (A → B) → List⁺ A → List⁺ B
+ap fs as = concatMap (λ f → map f as) fs
 
 -- Reverse
 
@@ -193,3 +206,120 @@ snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
 last : List⁺ A → A
 last xs with snocView xs
 last .(ys ∷ʳ y) | ys ∷ʳ′ y = y
+
+-- Groups all contiguous elements for which the predicate returns the
+-- same result into lists. The left sums are the ones for which the
+-- predicate holds, the right ones are the ones for which it doesn't.
+groupSeqsᵇ : (A → Bool) → List A → List (List⁺ A ⊎ List⁺ A)
+groupSeqsᵇ p []       = []
+groupSeqsᵇ p (x ∷ xs) with p x | groupSeqsᵇ p xs
+... | true  | inj₁ xs′ ∷ xss = inj₁ (x ∷⁺ xs′) ∷ xss
+... | true  | xss            = inj₁ [ x ]      ∷ xss
+... | false | inj₂ xs′ ∷ xss = inj₂ (x ∷⁺ xs′) ∷ xss
+... | false | xss            = inj₂ [ x ]      ∷ xss
+
+-- Groups all contiguous elements /not/ satisfying the predicate into
+-- lists. Elements satisfying the predicate are dropped.
+wordsByᵇ : (A → Bool) → List A → List (List⁺ A)
+wordsByᵇ p = List.mapMaybe Sum.[ const nothing , just ] ∘ groupSeqsᵇ p
+
+groupSeqs : {P : Pred A p} → Decidable P → List A → List (List⁺ A ⊎ List⁺ A)
+groupSeqs P? = groupSeqsᵇ (does ∘ P?)
+
+wordsBy : {P : Pred A p} → Decidable P → List A → List (List⁺ A)
+wordsBy P? = wordsByᵇ (does ∘ P?)
+
+-- Inverse operation for groupSequences.
+ungroupSeqs : List (List⁺ A ⊎ List⁺ A) → List A
+ungroupSeqs = List.concat ∘ List.map Sum.[ toList , toList ]
+
+------------------------------------------------------------------------
+-- Examples
+
+-- Note that these examples are simple unit tests, because the type
+-- checker verifies them.
+
+private
+ module Examples {A B : Set}
+                 (_⊕_ : A → B → B)
+                 (_⊗_ : B → A → B)
+                 (_⊙_ : A → A → A)
+                 (f : A → B)
+                 (a b c : A)
+                 where
+
+  hd : head (a ∷⁺ b ∷⁺ [ c ]) ≡ a
+  hd = refl
+
+  tl : tail (a ∷⁺ b ∷⁺ [ c ]) ≡ b ∷ c ∷ []
+  tl = refl
+
+  mp : map f (a ∷⁺ b ∷⁺ [ c ]) ≡ f a ∷⁺ f b ∷⁺ [ f c ]
+  mp = refl
+
+  right : foldr _⊕_ f (a ∷⁺ b ∷⁺ [ c ]) ≡ (a ⊕ (b ⊕ f c))
+  right = refl
+
+  right₁ : foldr₁ _⊙_ (a ∷⁺ b ∷⁺ [ c ]) ≡ (a ⊙ (b ⊙ c))
+  right₁ = refl
+
+  left : foldl _⊗_ f (a ∷⁺ b ∷⁺ [ c ]) ≡ ((f a ⊗ b) ⊗ c)
+  left = refl
+
+  left₁ : foldl₁ _⊙_ (a ∷⁺ b ∷⁺ [ c ]) ≡ ((a ⊙ b) ⊙ c)
+  left₁ = refl
+
+  ⁺app⁺ : (a ∷⁺ b ∷⁺ [ c ]) ⁺++⁺ (b ∷⁺ [ c ]) ≡
+          a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]
+  ⁺app⁺ = refl
+
+  ⁺app : (a ∷⁺ b ∷⁺ [ c ]) ⁺++ (b ∷ c ∷ []) ≡
+          a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]
+  ⁺app = refl
+
+  app⁺ : (a ∷ b ∷ c ∷ []) ++⁺ (b ∷⁺ [ c ]) ≡
+          a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]
+  app⁺ = refl
+
+  conc : concat ((a ∷⁺ b ∷⁺ [ c ]) ∷⁺ [ b ∷⁺ [ c ] ]) ≡
+         a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]
+  conc = refl
+
+  rev : reverse (a ∷⁺ b ∷⁺ [ c ]) ≡ c ∷⁺ b ∷⁺ [ a ]
+  rev = refl
+
+  snoc : (a ∷ b ∷ c ∷ []) ∷ʳ a ≡ a ∷⁺ b ∷⁺ c ∷⁺ [ a ]
+  snoc = refl
+
+  snoc⁺ : (a ∷⁺ b ∷⁺ [ c ]) ⁺∷ʳ a ≡ a ∷⁺ b ∷⁺ c ∷⁺ [ a ]
+  snoc⁺ = refl
+
+  groupSeqs-true : groupSeqs U? (a ∷ b ∷ c ∷ []) ≡
+               inj₁ (a ∷⁺ b ∷⁺ [ c ]) ∷ []
+  groupSeqs-true = refl
+
+  groupSeqs-false : groupSeqs ∅? (a ∷ b ∷ c ∷ []) ≡
+                inj₂ (a ∷⁺ b ∷⁺ [ c ]) ∷ []
+  groupSeqs-false = refl
+
+  groupSeqs-≡1 : groupSeqsᵇ (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+                 inj₁ [ 1 ] ∷
+                 inj₂ (2 ∷⁺ [ 3 ]) ∷
+                 inj₁ (1 ∷⁺ [ 1 ]) ∷
+                 inj₂ [ 2 ] ∷
+                 inj₁ [ 1 ] ∷
+                 []
+  groupSeqs-≡1 = refl
+
+  wordsBy-true : wordsByᵇ (const true) (a ∷ b ∷ c ∷ []) ≡ []
+  wordsBy-true = refl
+
+  wordsBy-false : wordsByᵇ (const false) (a ∷ b ∷ c ∷ []) ≡
+                  (a ∷⁺ b ∷⁺ [ c ]) ∷ []
+  wordsBy-false = refl
+
+  wordsBy-≡1 : wordsByᵇ (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+               (2 ∷⁺ [ 3 ]) ∷
+               [ 2 ] ∷
+               []
+  wordsBy-≡1 = refl

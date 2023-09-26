@@ -4,7 +4,7 @@
 -- Properties of operations on strings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.String.Properties where
 
@@ -15,12 +15,18 @@ import Data.List.Relation.Binary.Pointwise as Pointwise
 import Data.List.Relation.Binary.Lex.Strict as StrictLex
 open import Data.String.Base
 open import Function.Base
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; DecTotalOrder; DecPoset)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsDecPartialOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Substitutive; Decidable)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
-import Relation.Binary.PropositionalEquality as PropEq
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 ------------------------------------------------------------------------
 -- Primitive properties
@@ -78,7 +84,7 @@ x ≈? y = Pointwise.decidable Charₚ._≟_ (toList x) (toList y)
   { isDecEquivalence = ≈-isDecEquivalence
   }
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _≡_
 
 infix 4 _≟_
@@ -129,6 +135,18 @@ x <? y = StrictLex.<-decidable Charₚ._≟_ Charₚ._<?_ (toList x) (toList y)
     toList
     (StrictLex.≤-isDecPartialOrder Charₚ.<-isStrictTotalOrder)
 
+≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
+≤-isDecTotalOrder-≈ =
+  On.isDecTotalOrder
+    toList
+    (StrictLex.≤-isDecTotalOrder Charₚ.<-isStrictTotalOrder)
+
+≤-decTotalOrder-≈ :  DecTotalOrder _ _ _
+≤-decTotalOrder-≈ =
+  On.decTotalOrder
+    (StrictLex.≤-decTotalOrder Charₚ.<-strictTotalOrder)
+    toList
+
 ≤-decPoset-≈ : DecPoset _ _ _
 ≤-decPoset-≈ =
   On.decPoset
@@ -157,23 +175,3 @@ private
 
   unit-test : P (_==_ "")
   unit-test = p _
-
--- Version 1.1
-
-setoid = ≡-setoid
-{-# WARNING_ON_USAGE setoid
-"Warning: setoid was deprecated in v1.1.
-Please use ≡-setoid instead."
-#-}
-
-decSetoid = ≡-decSetoid
-{-# WARNING_ON_USAGE decSetoid
-"Warning: decSetoid was deprecated in v1.1.
-Please use ≡-decSetoid instead."
-#-}
-
-strictTotalOrder = <-strictTotalOrder-≈
-{-# WARNING_ON_USAGE strictTotalOrder
-"Warning: strictTotalOrder was deprecated in v1.1.
-Please use <-strictTotalOrder-≈ instead."
-#-}

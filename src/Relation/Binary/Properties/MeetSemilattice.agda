@@ -1,46 +1,20 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties satisfied by meet semilattices
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Lattice.Properties.MeetSemilattice` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.MeetSemilattice
   {c ℓ₁ ℓ₂} (M : MeetSemilattice c ℓ₁ ℓ₂) where
 
-open MeetSemilattice M
+open import Relation.Binary.Lattice.Properties.MeetSemilattice M public
 
-open import Algebra.Definitions _≈_
-open import Data.Product
-open import Function.Base using (flip)
-open import Relation.Binary
-open import Relation.Binary.Properties.Poset poset
-import Relation.Binary.Properties.JoinSemilattice as J
-
--- The dual construction is a join semilattice.
-
-dualIsJoinSemilattice : IsJoinSemilattice _≈_ (flip _≤_) _∧_
-dualIsJoinSemilattice = record
-  { isPartialOrder = invIsPartialOrder
-  ; supremum       = infimum
-  }
-
-dualJoinSemilattice : JoinSemilattice c ℓ₁ ℓ₂
-dualJoinSemilattice = record
-  { _∨_               = _∧_
-  ; isJoinSemilattice = dualIsJoinSemilattice
-  }
-
-open J dualJoinSemilattice public
-  using (isAlgSemilattice; algSemilattice)
-  renaming
-    ( ∨-monotonic  to ∧-monotonic
-    ; ∨-cong       to ∧-cong
-    ; ∨-comm       to ∧-comm
-    ; ∨-assoc      to ∧-assoc
-    ; ∨-idempotent to ∧-idempotent
-    ; x≤y⇒x∨y≈y    to y≤x⇒x∧y≈y
-    )
+{-# WARNING_ON_IMPORT
+"Relation.Binary.Properties.MeetSemilattice was deprecated in v2.0.
+Use Relation.Binary.Lattice.Properties.MeetSemilattice instead."
+#-}

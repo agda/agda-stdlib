@@ -4,12 +4,18 @@
 -- Properties satisfied by posets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Function.Base using (flip; _∘_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
+open import Relation.Binary.Bundles using (Poset; StrictPartialOrder)
+open import Relation.Binary.Structures
+  using (IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder)
+open import Relation.Binary.Definitions
+  using (_Respectsˡ_; _Respectsʳ_; Decidable)
 import Relation.Binary.Consequences as Consequences
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 
 module Relation.Binary.Properties.Poset
    {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
@@ -29,15 +35,14 @@ _≥_ : Rel A p₃
 x ≥ y = y ≤ x
 
 open PreorderProperties public
-  using ()
-  renaming
-  ( invIsPreorder to ≥-isPreorder
-  ; invPreorder   to ≥-preorder
+  using () renaming
+  ( converse-isPreorder to ≥-isPreorder
+  ; converse-preorder   to ≥-preorder
   )
 
 ≥-isPartialOrder : IsPartialOrder _≈_ _≥_
 ≥-isPartialOrder = record
-  { isPreorder   = PreorderProperties.invIsPreorder
+  { isPreorder   = ≥-isPreorder
   ; antisym      = flip antisym
   }
 
@@ -47,8 +52,7 @@ open PreorderProperties public
   }
 
 open Poset ≥-poset public
-  using ()
-  renaming
+  using () renaming
   ( refl      to ≥-refl
   ; reflexive to ≥-reflexive
   ; trans     to ≥-trans
@@ -106,6 +110,22 @@ open StrictPartialOrder <-strictPartialOrder public
 ≤⇒≯ = ToStrict.≤⇒≯ antisym
 
 ------------------------------------------------------------------------
+-- If ≤ is decidable then so is ≈
+
+≤-dec⇒≈-dec : Decidable _≤_ → Decidable _≈_
+≤-dec⇒≈-dec _≤?_ x y with x ≤? y | y ≤? x
+... | yes x≤y | yes y≤x = yes (antisym x≤y y≤x)
+... | yes x≤y | no  y≰x = no λ x≈y → contradiction (reflexive (Eq.sym x≈y)) y≰x
+... | no  x≰y | _       = no λ x≈y → contradiction (reflexive x≈y) x≰y
+
+≤-dec⇒isDecPartialOrder : Decidable _≤_ → IsDecPartialOrder _≈_ _≤_
+≤-dec⇒isDecPartialOrder _≤?_ = record
+  { isPartialOrder = isPartialOrder
+  ; _≟_            = ≤-dec⇒≈-dec _≤?_
+  ; _≤?_           = _≤?_
+  }
+
+------------------------------------------------------------------------
 -- Other properties
 
 mono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
@@ -113,29 +133,3 @@ mono⇒cong = Consequences.mono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
 antimono⇒cong = Consequences.antimono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.2
-
-invIsPartialOrder = ≥-isPartialOrder
-{-# WARNING_ON_USAGE invIsPartialOrder
-"Warning: invIsPartialOrder was deprecated in v1.2.
-Please use ≥-isPartialOrder instead."
-#-}
-
-invPoset = ≥-poset
-{-# WARNING_ON_USAGE invPoset
-"Warning: invPoset was deprecated in v1.2.
-Please use ≥-poset instead."
-#-}
-
-strictPartialOrder = <-strictPartialOrder
-{-# WARNING_ON_USAGE strictPartialOrder
-"Warning: strictPartialOrder was deprecated in v1.2.
-Please use <-strictPartialOrder instead."
-#-}

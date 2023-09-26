@@ -4,16 +4,16 @@
 -- Lifting a relation such that `nothing` is also related to `just`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Binary.Connected where
 
 open import Level
-open import Data.Product
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Function.Equivalence using (_⇔_; equivalence)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Function.Bundles using (_⇔_; mk⇔)
+open import Relation.Binary.Core using (REL; _⇒_)
+open import Relation.Binary.Definitions using (Reflexive; Sym; Decidable)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 
@@ -42,7 +42,7 @@ drop-just : Connected R (just x) (just y) → R x y
 drop-just (just p) = p
 
 just-equivalence : R x y ⇔ Connected R (just x) (just y)
-just-equivalence = equivalence just drop-just
+just-equivalence = mk⇔ just drop-just
 
 ------------------------------------------------------------------------
 -- Relational properties

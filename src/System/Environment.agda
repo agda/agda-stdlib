@@ -4,14 +4,14 @@
 -- Miscellanous information about the system environment
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module System.Environment where
 
 open import IO using (IO; lift; run; ignore)
 open import Data.List.Base using (List)
 open import Data.Maybe.Base using (Maybe)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Data.String.Base using (String)
 open import Data.Unit.Polymorphic using (⊤)
 open import Foreign.Haskell.Coerce

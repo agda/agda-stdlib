@@ -4,9 +4,9 @@
 -- Some basic properties of Rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra using (Ring)
 
 module Algebra.Properties.Ring {r₁ r₂} (R : Ring r₁ r₂) where
 
@@ -15,6 +15,7 @@ open Ring R
 import Algebra.Properties.AbelianGroup as AbelianGroupProperties
 open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
+open import Algebra.Definitions _≈_
 
 ------------------------------------------------------------------------
 -- Export properties of abelian groups
@@ -34,11 +35,6 @@ open AbelianGroupProperties +-abelianGroup public
   ; inverseˡ-unique  to +-inverseˡ-unique
   ; inverseʳ-unique  to +-inverseʳ-unique
   ; ⁻¹-∙-comm        to -‿+-comm
-  -- DEPRECATED
-  ; left-identity-unique  to +-left-identity-unique
-  ; right-identity-unique to +-right-identity-unique
-  ; left-inverse-unique   to +-left-inverse-unique
-  ; right-inverse-unique  to +-right-inverse-unique
   )
 
 ------------------------------------------------------------------------
@@ -66,26 +62,23 @@ open AbelianGroupProperties +-abelianGroup public
   - (x * y) + 0#                 ≈⟨ +-identityʳ _ ⟩
   - (x * y)                      ∎
 
+-1*x≈-x : ∀ x → - 1# * x ≈ - x
+-1*x≈-x x = begin
+  - 1# * x    ≈⟨ sym (-‿distribˡ-* 1# x ) ⟩
+  - (1# * x)  ≈⟨ -‿cong ( *-identityˡ x ) ⟩
+  - x         ∎
 
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
+x+x≈x⇒x≈0 : ∀ x → x + x ≈ x → x ≈ 0#
+x+x≈x⇒x≈0 x eq = +-identityˡ-unique x x eq
 
--- Version 1.1
+x[y-z]≈xy-xz : ∀ x y z → x * (y - z) ≈ x * y - x * z
+x[y-z]≈xy-xz x y z = begin
+  x * (y - z)      ≈⟨ distribˡ x y (- z) ⟩
+  x * y + x * - z  ≈⟨ +-congˡ (sym (-‿distribʳ-* x z)) ⟩
+  x * y - x * z    ∎
 
--‿*-distribˡ : ∀ x y → - x * y ≈ - (x * y)
--‿*-distribˡ x y = sym (-‿distribˡ-* x y)
-{-# WARNING_ON_USAGE -‿*-distribˡ
-"Warning: -‿*-distribˡ was deprecated in v1.1.
-Please use -‿distribˡ-* instead.
-NOTE: the equality is flipped so you will need sym (-‿distribˡ-* ...)."
-#-}
--‿*-distribʳ : ∀ x y → x * - y ≈ - (x * y)
--‿*-distribʳ x y = sym (-‿distribʳ-* x y)
-{-# WARNING_ON_USAGE -‿*-distribʳ
-"Warning: -‿*-distribʳ was deprecated in v1.1.
-Please use -‿distribʳ-* instead.
-NOTE: the equality is flipped so you will need sym (-‿distribʳ-* ...)."
-#-}
+[y-z]x≈yx-zx : ∀ x y z → (y - z) * x ≈ (y * x) - (z * x)
+[y-z]x≈yx-zx x y z = begin
+  (y - z) * x      ≈⟨ distribʳ x y (- z) ⟩
+  y * x + - z * x  ≈⟨ +-congˡ (sym (-‿distribˡ-* z x)) ⟩
+  y * x - z * x    ∎

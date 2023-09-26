@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous suffix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Suffix.Heterogeneous.Properties where
 
@@ -24,9 +24,10 @@ open import Relation.Nullary using (Dec; does; ¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary as B
-  using (REL; Rel; Trans; Antisym; Irrelevant; _⇒_)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Definitions as B
+  using (Trans; Antisym; Irrelevant)
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; refl; sym; subst; subst₂)
 
 import Data.List.Properties as Listₚ
@@ -42,7 +43,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   fromPrefix {as} {bs} p with Prefix.toView p
   ... | Prefix._++_ {cs} rs ds =
     subst (Suffix R (reverse as))
-      (sym (Listₚ.reverse-++-commute cs ds))
+      (sym (Listₚ.reverse-++ cs ds))
       (Suffix.fromView (reverse ds Suffix.++ Pw.reverse⁺ rs))
 
   fromPrefix-rev : ∀ {as bs} → Prefix R (reverse as) (reverse bs) →
@@ -58,7 +59,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toPrefix-rev {as} {bs} s with Suffix.toView s
   ... | Suffix._++_ cs {ds} rs =
     subst (Prefix R (reverse as))
-      (sym (Listₚ.reverse-++-commute cs ds))
+      (sym (Listₚ.reverse-++ cs ds))
       (Prefix.fromView (Pw.reverse⁺ rs Prefix.++ reverse cs))
 
   toPrefix : ∀ {as bs} → Suffix R (reverse as) (reverse bs) →
@@ -76,7 +77,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   length-mono : ∀ {as bs} → Suffix R as bs → length as ≤ length bs
   length-mono (here rs)   = ≤-reflexive (Pointwise-length rs)
-  length-mono (there suf) = ≤-step (length-mono suf)
+  length-mono (there suf) = m≤n⇒m≤1+n (length-mono suf)
 
   S[as][bs]⇒∣as∣≢1+∣bs∣ : ∀ {as bs} → Suffix R as bs →
                           length as ≢ suc (length bs)

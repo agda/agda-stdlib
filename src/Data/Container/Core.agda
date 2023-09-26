@@ -4,15 +4,14 @@
 -- Containers core
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Core where
 
 open import Level
-open import Data.Product as Prod using (Σ-syntax)
+open import Data.Product.Base as Prod using (Σ-syntax)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse using (_↔_; module Inverse)
+open import Function using (Inverse; _↔_)
 open import Relation.Unary using (Pred; _⊆_)
 
 -- Definition of Containers
@@ -38,6 +37,8 @@ map f = Prod.map₂ (f ∘_)
 
 -- Representation of container morphisms.
 
+infixr 8 _⇒_ _⊸_
+
 record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
            : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where
   constructor _▷_
@@ -61,7 +62,7 @@ record _⊸_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Containe
   morphism : C₁ ⇒ C₂
   morphism = record
     { shape    = shape⊸
-    ; position = _⟨$⟩_ (Inverse.to position⊸)
+    ; position = Inverse.to position⊸
     }
 
   ⟪_⟫⊸ : ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X

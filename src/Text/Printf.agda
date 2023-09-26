@@ -4,26 +4,17 @@
 -- Printf
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Text.Printf where
 
-open import Level using (0ℓ; Lift)
-open import Data.List.Base as List using (List; []; _∷_)
-open import Data.Nat.Base using (ℕ)
-open import Data.Product
-open import Data.Product.Nary.NonDependent
-open import Data.String.Base
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Data.Unit using (⊤)
-open import Function.Nary.NonDependent
-open import Function
-open import Strict
+open import Data.String.Base using (String; fromChar; concat)
+open import Function.Base using (id)
 
 import Data.Char.Base    as Cₛ
 import Data.Integer.Show as ℤₛ
 import Data.Float        as Fₛ
-import Data.Nat.Show     as ℕₛ
+import Data.Nat.Show     as ℕₛ  using (show)
 
 open import Text.Format as Format hiding (Error)
 open import Text.Printf.Generic

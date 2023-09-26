@@ -4,10 +4,11 @@
 -- Lists made up entirely of unique elements (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid)
-open import Relation.Nullary using (¬_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Nullary.Negation using (¬_)
 
 module Data.List.Relation.Unary.Unique.Setoid {a ℓ} (S : Setoid a ℓ) where
 
@@ -25,4 +26,3 @@ open import Data.List.Relation.Unary.AllPairs.Core Distinct public
 
 open import Data.List.Relation.Unary.AllPairs {R = Distinct} public
   using (head; tail)
-

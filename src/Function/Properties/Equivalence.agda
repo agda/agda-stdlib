@@ -1,18 +1,19 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- An Equivalence (on functions) is an Equivalence relation
---   This file is meant to be imported qualified.
+-- Some basic properties of equivalences. This file is designed to be
+-- imported qualified.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Properties.Equivalence where
 
-open import Function.Bundles using (Equivalence; _⇔_)
-open import Level using (Level)
-open import Relation.Binary using (Setoid; IsEquivalence)
-open import Relation.Binary.PropositionalEquality using (setoid)
+open import Function.Bundles
+open import Level
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+import Relation.Binary.PropositionalEquality.Properties as Eq
 
 import Function.Construct.Identity as Identity
 import Function.Construct.Symmetry as Symmetry
@@ -20,24 +21,60 @@ import Function.Construct.Composition as Composition
 
 private
   variable
-    a b ℓ₁ ℓ₂ : Level
+    a ℓ : Level
+    A B : Set a
+    S T : Setoid a ℓ
+
+------------------------------------------------------------------------
+-- Constructors
+
+mkEquivalence : Func S T → Func T S → Equivalence S T
+mkEquivalence f g = record
+  { to = to f
+  ; from = to g
+  ; to-cong = cong f
+  ; from-cong = cong g
+  } where open Func
 
 ------------------------------------------------------------------------
 -- Setoid bundles
 
-isEquivalence : IsEquivalence (Equivalence {a} {b})
+isEquivalence : IsEquivalence (Equivalence {a} {ℓ})
 isEquivalence = record
   { refl = λ {x} → Identity.equivalence x
   ; sym = Symmetry.equivalence
   ; trans = Composition.equivalence
   }
 
+setoid : (s₁ s₂ : Level) → Setoid (suc (s₁ ⊔ s₂)) (s₁ ⊔ s₂)
+setoid s₁ s₂ = record
+  { Carrier       = Setoid s₁ s₂
+  ; _≈_           = Equivalence
+  ; isEquivalence = isEquivalence
+  }
+
 ------------------------------------------------------------------------
 -- Propositional bundles
 
-⇔-isEquivalence : IsEquivalence {ℓ = ℓ₁} _⇔_
+⇔-isEquivalence : IsEquivalence {ℓ = ℓ} _⇔_
 ⇔-isEquivalence = record
-  { refl = λ {x} → Identity.equivalence (setoid x)
+  { refl = λ {x} → Identity.equivalence (Eq.setoid x)
   ; sym = Symmetry.equivalence
   ; trans = Composition.equivalence
   }
+
+⇔-setoid : (ℓ : Level) → Setoid (suc ℓ) ℓ
+⇔-setoid ℓ = record
+  { Carrier       = Set ℓ
+  ; _≈_           = _⇔_
+  ; isEquivalence = ⇔-isEquivalence
+  }
+
+⟶×⟵⇒⇔ : A ⟶ B → B ⟶ A → A ⇔ B
+⟶×⟵⇒⇔ = mkEquivalence
+
+⇔⇒⟶ : A ⇔ B → A ⟶ B
+⇔⇒⟶ = Equivalence.toFunction
+
+⇔⇒⟵ : A ⇔ B → B ⟶ A
+⇔⇒⟵ = Equivalence.fromFunction

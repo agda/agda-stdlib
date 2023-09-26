@@ -4,15 +4,15 @@
 -- Pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Pointwise where
 
 open import Algebra.Core using (Op₂)
 open import Function.Base
-open import Function.Inverse using (Inverse)
+open import Function.Bundles using (Inverse)
 open import Data.Bool.Base using (true; false)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.List.Base as List hiding (map; head; tail; uncons)
 open import Data.List.Properties using (≡-dec; length-++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -23,12 +23,14 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Nullary.Negation.Core using (contradiction)
 import Relation.Nullary.Decidable as Dec using (map′)
-open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary renaming (Rel to Rel₂)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core renaming (Rel to Rel₂)
+open import Relation.Binary.Definitions using (_Respects_; _Respects₂_)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder; Poset)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence; IsPartialOrder; IsPreorder)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 private
   variable
@@ -267,47 +269,9 @@ Pointwise-≡⇒≡ (P.refl ∷ xs∼ys) with Pointwise-≡⇒≡ xs∼ys
 
 Pointwise-≡↔≡ : Inverse (setoid (P.setoid A)) (P.setoid (List A))
 Pointwise-≡↔≡ = record
-  { to         = record { _⟨$⟩_ = id; cong = Pointwise-≡⇒≡ }
-  ; from       = record { _⟨$⟩_ = id; cong = ≡⇒Pointwise-≡ }
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → refl P.refl
-    ; right-inverse-of = λ _ → P.refl
-    }
+  { to = id
+  ; from = id
+  ; to-cong = Pointwise-≡⇒≡
+  ; from-cong = ≡⇒Pointwise-≡
+  ; inverse = Pointwise-≡⇒≡ , ≡⇒Pointwise-≡
   }
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-Rel    = Pointwise
-{-# WARNING_ON_USAGE Rel
-"Warning: Rel was deprecated in v0.15.
-Please use Pointwise instead."
-#-}
-Rel≡⇒≡ = Pointwise-≡⇒≡
-{-# WARNING_ON_USAGE Rel≡⇒≡
-"Warning: Rel≡⇒≡ was deprecated in v0.15.
-Please use Pointwise-≡⇒≡ instead."
-#-}
-≡⇒Rel≡ = ≡⇒Pointwise-≡
-{-# WARNING_ON_USAGE ≡⇒Rel≡
-"Warning: ≡⇒Rel≡ was deprecated in v0.15.
-Please use ≡⇒Pointwise-≡ instead."
-#-}
-Rel↔≡  = Pointwise-≡↔≡
-{-# WARNING_ON_USAGE Rel↔≡
-"Warning: Rel↔≡ was deprecated in v0.15.
-Please use Pointwise-≡↔≡ instead."
-#-}
-
--- Version 1.0
-
-decidable-≡ = ≡-dec
-{-# WARNING_ON_USAGE decidable-≡
-"Warning: decidable-≡ was deprecated in v1.0.
-Please use ≡-dec from `Data.List.Properties` instead."
-#-}

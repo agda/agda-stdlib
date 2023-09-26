@@ -4,7 +4,7 @@
 -- Properties related to AllPairs
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Unary.AllPairs.Properties where
 
@@ -17,10 +17,10 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _+_)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Level using (Level)
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 
 private
   variable
@@ -70,13 +70,11 @@ module _ {R : Rel A ℓ} where
 
   take⁺ : ∀ {n} m {xs} → AllPairs R {m + n} xs → AllPairs R {m} (take m xs)
   take⁺ zero pxs = []
-  take⁺ (suc m) {x ∷ xs} (px ∷ pxs)
-    rewrite Vecₚ.unfold-take m x xs = Allₚ.take⁺ m px ∷ take⁺ m pxs
+  take⁺ (suc m) {x ∷ xs} (px ∷ pxs) = Allₚ.take⁺ m px ∷ take⁺ m pxs
 
   drop⁺ : ∀ {n} m {xs} → AllPairs R {m + n} xs → AllPairs R {n} (drop m xs)
   drop⁺ zero pxs = pxs
-  drop⁺ (suc m) {x ∷ xs} (_ ∷ pxs)
-    rewrite Vecₚ.unfold-drop m x xs = drop⁺ m pxs
+  drop⁺ (suc m) (_ ∷ pxs) = drop⁺ m pxs
 
 ------------------------------------------------------------------------
 -- tabulate

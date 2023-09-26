@@ -4,11 +4,11 @@
 -- Typeclass instances for products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Instances where
 
-open import Data.Product
+open import Data.Product.Base
   using (Σ)
 open import Data.Product.Properties
 open import Level

@@ -4,19 +4,19 @@
 -- Some properties imply others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Consequences where
 
 open import Data.Maybe.Base using (just; nothing; decToMaybe)
-open import Data.Sum.Base as Sum using (inj₁; inj₂)
-open import Data.Product using (_,_)
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
+open import Data.Product.Base using (_,_)
 open import Data.Empty.Irrelevant using (⊥-elim)
-open import Function.Base using (_∘_; _$_; flip)
+open import Function.Base using (_∘_; _∘₂_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
-open import Relation.Nullary using (yes; no; recompute)
+open import Relation.Nullary using (yes; no; recompute; ¬_)
 open import Relation.Nullary.Decidable.Core using (map′)
 open import Relation.Unary using (∁; Pred)
 
@@ -43,6 +43,29 @@ module _ {_∼_ : Rel A ℓ} {P : Pred A p} where
 
   resp⇒¬-resp : Symmetric _∼_ → P Respects _∼_ → (∁ P) Respects _∼_
   resp⇒¬-resp sym resp x∼y ¬Px Py = ¬Px (resp (sym x∼y) Py)
+
+------------------------------------------------------------------------
+-- Proofs for negation
+
+module _ {_∼_ : Rel A ℓ} where
+
+  sym⇒¬-sym : Symmetric _∼_ → Symmetric (¬_ ∘₂ _∼_)
+  sym⇒¬-sym sym≁ x≁y y∼x = x≁y (sym≁ y∼x)
+
+  -- N.B. the implicit arguments to Cotransitive are permuted w.r.t.
+  -- those of Transitive
+  cotrans⇒¬-trans : Cotransitive _∼_ → Transitive (¬_ ∘₂ _∼_)
+  cotrans⇒¬-trans cotrans {j = z} x≁z z≁y x∼y =
+    [ x≁z , z≁y ]′ (cotrans x∼y z)
+
+------------------------------------------------------------------------
+-- Proofs for Irreflexive relations
+
+module _ {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} where
+
+  irrefl⇒¬-refl : Reflexive _≈_ → Irreflexive _≈_ _∼_ →
+                  Reflexive (¬_ ∘₂ _∼_)
+  irrefl⇒¬-refl re irr = irr re
 
 ------------------------------------------------------------------------
 -- Proofs for non-strict orders
@@ -74,6 +97,13 @@ module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃}
   antimono⇒cong sym reflexive antisym antimono p≈q = antisym
     (antimono (reflexive (sym p≈q)))
     (antimono (reflexive p≈q))
+
+  mono₂⇒cong₂ : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
+                f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
+                f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
+  mono₂⇒cong₂ sym reflexive antisym mono x≈y u≈v = antisym
+    (mono (reflexive x≈y) (reflexive u≈v))
+    (mono (reflexive (sym x≈y)) (reflexive (sym u≈v)))
 
 ------------------------------------------------------------------------
 -- Proofs for strict orders

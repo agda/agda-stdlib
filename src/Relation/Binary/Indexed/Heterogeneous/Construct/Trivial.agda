@@ -4,14 +4,15 @@
 -- Creates trivially indexed records from their non-indexed counterpart.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   {i} {I : Set i} where
 
-open import Relation.Binary
-open import Relation.Binary.Indexed.Heterogeneous hiding (Rel)
-  hiding (IsEquivalence; Setoid)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
+open import Relation.Binary.Indexed.Heterogeneous
 
 ------------------------------------------------------------------------
 -- Structures

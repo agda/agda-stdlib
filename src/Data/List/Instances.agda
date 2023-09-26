@@ -4,12 +4,13 @@
 -- Typeclass instances for List
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Instances where
 
 open import Data.List.Base
-open import Data.List.Categorical
+open import Data.List.Effectful
+import Data.List.Effectful.Transformer as Trans
 open import Data.List.Properties
   using (≡-dec)
 open import Data.List.Relation.Binary.Pointwise
@@ -29,6 +30,7 @@ private
     A : Set a
 
 instance
+  -- List
   listFunctor = functor
   listApplicative = applicative
   listApplicativeZero = applicativeZero
@@ -36,7 +38,11 @@ instance
   listMonad = monad
   listMonadZero = monadZero
   listMonadPlus = monadPlus
-  listMonadT = λ {ℓ} {M} {{inst}} → monadT {ℓ} {M} inst
+  -- ListT
+  listTFunctor = λ {f} {g} {M} {{inst}} → Trans.functor {f} {g} {M} inst
+  listTApplicative = λ {f} {g} {M} {{inst}} → Trans.applicative {f} {g} {M} inst
+  listTMonad = λ {f} {g} {M} {{inst}} → Trans.monad {f} {g} {M} inst
+  listTMonadT = λ {f} {g} {M} {{inst}} → Trans.monadT {f} {g} {M} inst
 
   List-≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = List A} _≡_
   List-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_)

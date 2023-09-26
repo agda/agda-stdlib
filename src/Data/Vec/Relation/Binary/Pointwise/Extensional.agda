@@ -4,24 +4,25 @@
 -- Extensional pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Binary.Pointwise.Extensional where
 
 open import Data.Fin.Base using (zero; suc)
-open import Data.Nat.Base using (zero; suc)
 open import Data.Vec.Base as Vec hiding ([_]; head; tail; map)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Inductive
   using ([]; _∷_)
   renaming (Pointwise to IPointwise)
 open import Level using (_⊔_)
 open import Function.Base using (_∘_)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence as Equiv
-  using (_⇔_; ⇔-setoid; equivalence; module Equivalence)
+open import Function.Bundles using (module Equivalence; _⇔_; mk⇔)
+open import Function.Properties.Equivalence using (⇔-setoid)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel; REL; _⇒_; _=[_]⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
 open import Relation.Nullary
@@ -74,8 +75,8 @@ module _ {_∼_ : REL A B ℓ} where
 
   extensional⇒inductive : ∀ {n} {xs : Vec A n} {ys : Vec B n} →
                            Pointwise _∼_ xs ys → IPointwise _∼_ xs ys
-  extensional⇒inductive {zero} {[]}       {[]}      xs∼ys = []
-  extensional⇒inductive {suc n} {x ∷ xs} {y ∷ ys} xs∼ys =
+  extensional⇒inductive {xs = []}       {[]}   xs∼ys = []
+  extensional⇒inductive {xs = x ∷ xs} {y ∷ ys} xs∼ys =
     (head xs∼ys) ∷ extensional⇒inductive (tail xs∼ys)
 
   inductive⇒extensional : ∀ {n} {xs : Vec A n} {ys : Vec B n} →
@@ -88,7 +89,7 @@ module _ {_∼_ : REL A B ℓ} where
 
   equivalent : ∀ {n} {xs : Vec A n} {ys : Vec B n} →
                Pointwise _∼_ xs ys ⇔ IPointwise _∼_ xs ys
-  equivalent = equivalence extensional⇒inductive inductive⇒extensional
+  equivalent = mk⇔ extensional⇒inductive inductive⇒extensional
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -141,8 +142,7 @@ Pointwise-≡⇒≡ {xs = x ∷ xs} {y ∷ ys} xs∼ys     =
 ≡⇒Pointwise-≡ P.refl = refl P.refl
 
 Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
-Pointwise-≡↔≡ {ℓ} {A} =
-  Equiv.equivalence Pointwise-≡⇒≡ ≡⇒Pointwise-≡
+Pointwise-≡↔≡ {ℓ} {A} = mk⇔ Pointwise-≡⇒≡ ≡⇒Pointwise-≡
 
 ------------------------------------------------------------------------
 -- Pointwise and Plus commute when the underlying relation is
@@ -160,9 +160,9 @@ module _ {_∼_ : Rel A ℓ} where
   ∙⁺⇒⁺∙ : ∀ {n} {xs ys : Vec A n} → Reflexive _∼_ →
           Pointwise (Plus _∼_) xs ys → Plus (Pointwise _∼_) xs ys
   ∙⁺⇒⁺∙ rfl =
-    Plus.map (_⟨$⟩_ (Equivalence.from equivalent)) ∘
+    Plus.map (Equivalence.from equivalent) ∘
     helper ∘
-    _⟨$⟩_ (Equivalence.to equivalent)
+    Equivalence.to equivalent
     where
     helper : ∀ {n} {xs ys : Vec A n} →
              IPointwise (Plus _∼_) xs ys → Plus (IPointwise _∼_) xs ys
@@ -211,20 +211,6 @@ private
          Pointwise (Plus _R_) xs ys →
          Plus (Pointwise _R_) xs ys)
   counterexample ∙⁺⇒⁺∙ =
-    ¬ix⁺∙jz (Equivalence.to Plus.equivalent ⟨$⟩
-               Plus.map (_⟨$⟩_ (Equivalence.to equivalent))
-                 (∙⁺⇒⁺∙ (Equivalence.from equivalent ⟨$⟩ ix∙⁺jz)))
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-Pointwise-≡ = Pointwise-≡↔≡
-{-# WARNING_ON_USAGE Pointwise-≡
-"Warning: Pointwise-≡ was deprecated in v0.15.
-Please use Pointwise-≡↔≡ instead."
-#-}
+    ¬ix⁺∙jz (Equivalence.to Plus.equivalent
+              (Plus.map (Equivalence.to equivalent)
+                (∙⁺⇒⁺∙ (Equivalence.from equivalent ix∙⁺jz))))

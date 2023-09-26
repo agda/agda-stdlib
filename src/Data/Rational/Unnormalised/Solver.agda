@@ -4,7 +4,7 @@
 -- Automatic solvers for equations over rationals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Rational.Unnormalised.Solver where
 
@@ -18,4 +18,3 @@ open import Data.Rational.Unnormalised.Properties using (_≃?_; +-*-commutative
 
 module +-*-Solver =
   Solver (ACR.fromCommutativeRing +-*-commutativeRing) _≃?_
-

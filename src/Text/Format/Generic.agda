@@ -4,26 +4,24 @@
 -- Format strings for Printf and Scanf
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
-open import Data.Char.Base using (Char)
-open import Data.Maybe.Base using (Maybe)
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Text.Format.Generic where
 
 open import Level using (0ℓ)
-open import Category.Applicative
+open import Effect.Applicative
+open import Data.Char.Base using (Char)
 open import Data.List.Base as List
-open import Data.Maybe as Maybe
+open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base
 open import Data.String.Base
-import Data.Sum.Categorical.Left as Sumₗ
-open import Function
+import Data.Sum.Effectful.Left as Sumₗ
+open import Function.Base
 open import Function.Nary.NonDependent using (0ℓs; Sets)
-open import Strict
+open import Function.Strict
 
 ------------------------------------------------------------------------
 -- Format specifications.
@@ -51,7 +49,7 @@ module Format (spec : FormatSpec) where
 
   open FormatSpec spec
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Basic types
 
   data Chunk : Set where
@@ -61,7 +59,7 @@ module Format (spec : FormatSpec) where
   Format : Set
   Format = List Chunk
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Semantics
 
   size : Format → ℕ
@@ -74,11 +72,11 @@ module Format (spec : FormatSpec) where
   ⟦ Arg a  ∷ cs ⟧ = ArgType a , ⟦ cs ⟧
   ⟦ Raw _  ∷ cs ⟧ =             ⟦ cs ⟧
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Lexer: from Strings to Formats
 
-  -- Lexing may fail. To have a useful error message, we defined the following
-  -- enumerated type
+  -- Lexing may fail. To have a useful error message, we defined the
+  -- following enumerated type
 
   data Error : Set where
     UnexpectedEndOfString : String → Error

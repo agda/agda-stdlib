@@ -6,7 +6,7 @@
 
 -- The definitions in this file are reexported by Data.Maybe.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Base where
 
@@ -14,10 +14,10 @@ open import Level
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Base using (⊤)
 open import Data.These.Base using (These; this; that; these)
-open import Data.Product as Prod using (_×_; _,_)
+open import Data.Product.Base as Prod using (_×_; _,_)
 open import Function.Base
 open import Relation.Nullary.Reflects
-open import Relation.Nullary
+open import Relation.Nullary.Decidable.Core
 
 private
   variable
@@ -29,10 +29,8 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-data Maybe (A : Set a) : Set a where
-  nothing : Maybe A
-  just    : (x : A) → Maybe A
-
+open import Agda.Builtin.Maybe public
+  using (Maybe; just; nothing)
 
 ------------------------------------------------------------------------
 -- Some operations
@@ -102,6 +100,7 @@ just a  >>= f = f a
 
 -- Alternative: <∣>
 
+infixr 6 _<∣>_
 _<∣>_ : Maybe A → Maybe A → Maybe A
 just x  <∣> my = just x
 nothing <∣> my = my

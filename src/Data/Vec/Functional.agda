@@ -11,17 +11,17 @@
 -- data-types, which is more suitable for reasoning about vectors that
 -- will grow or shrink in size.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional where
 
 open import Data.Fin.Base
 open import Data.List.Base as L using (List)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero; pred)
+open import Data.Product.Base using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Base as V using (Vec)
-open import Function.Base
+open import Function.Base using (_∘_; const; flip; _ˢ_; id)
 open import Level using (Level)
 
 infixr 5 _∷_ _++_
@@ -138,10 +138,10 @@ unzip : ∀ {n} → Vector (A × B) n → Vector A n × Vector B n
 unzip = unzipWith id
 
 take : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A m
-take _ {n = n} xs = xs ∘ inject+ n
+take _ {n = n} xs = xs ∘ (_↑ˡ n)
 
 drop : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A n
-drop m xs = xs ∘ raise m
+drop m xs = xs ∘ (m ↑ʳ_)
 
 reverse : ∀ {n} → Vector A n → Vector A n
 reverse xs = xs ∘ opposite

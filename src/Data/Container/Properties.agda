@@ -4,12 +4,12 @@
 -- Properties of operations on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Properties where
 
-import Function as F
-open import Relation.Binary
+import Function.Base as F
+open import Relation.Binary.Bundles using (Setoid)
 
 open import Data.Container.Core
 open import Data.Container.Relation.Binary.Equality.Setoid

@@ -1,40 +1,20 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties satisfied by bounded lattice
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Lattice.Properties.BoundedLattice` instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.BoundedLattice
   {c ℓ₁ ℓ₂} (L : BoundedLattice c ℓ₁ ℓ₂) where
 
-open BoundedLattice L
+open import Relation.Binary.Lattice.Properties.BoundedLattice L public
 
-open import Algebra.Definitions _≈_
-open import Data.Product using (_,_)
-open import Relation.Binary using (Setoid)
-open import Relation.Binary.Properties.MeetSemilattice meetSemilattice
-open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
-
-open Setoid setoid renaming (trans to ≈-trans)
-
-∧-zeroʳ : RightZero ⊥ _∧_
-∧-zeroʳ x = y≤x⇒x∧y≈y (minimum x)
-
-∧-zeroˡ : LeftZero ⊥ _∧_
-∧-zeroˡ x = ≈-trans (∧-comm ⊥ x) (∧-zeroʳ x)
-
-∧-zero : Zero ⊥ _∧_
-∧-zero = ∧-zeroˡ , ∧-zeroʳ
-
-∨-zeroʳ : RightZero ⊤ _∨_
-∨-zeroʳ x = x≤y⇒x∨y≈y (maximum x)
-
-∨-zeroˡ : LeftZero ⊤ _∨_
-∨-zeroˡ x = ≈-trans (∨-comm ⊤ x) (∨-zeroʳ x)
-
-∨-zero : Zero ⊤ _∨_
-∨-zero = ∨-zeroˡ , ∨-zeroʳ
+{-# WARNING_ON_IMPORT
+"Relation.Binary.Properties.BoundedLattice was deprecated in v2.0.
+Use Relation.Binary.Lattice.Properties.BoundedLattice instead."
+#-}

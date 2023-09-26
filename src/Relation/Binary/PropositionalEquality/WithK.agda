@@ -10,7 +10,7 @@
 module Relation.Binary.PropositionalEquality.WithK where
 
 open import Axiom.UniquenessOfIdentityProofs.WithK
-open import Relation.Binary
+open import Relation.Binary.Definitions using (Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core
 
 ------------------------------------------------------------------------
@@ -30,17 +30,3 @@ open import Agda.Builtin.Equality.Erase
 
 ≡-irrelevant : ∀ {a} {A : Set a} → Irrelevant {A = A} _≡_
 ≡-irrelevant = uip
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-≡-irrelevance = ≡-irrelevant
-{-# WARNING_ON_USAGE ≡-irrelevance
-"Warning: ≡-irrelevance was deprecated in v1.0.
-Please use ≡-irrelevant instead."
-#-}

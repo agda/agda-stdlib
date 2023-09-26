@@ -35,10 +35,11 @@ module _ {A B C : Set} {A→B : A → B} {B→C : B → C} where
 open import Data.Nat
 open import Data.List.Base
 open import Data.Char.Base
-open import Data.String using (String; toList; fromList; _==_)
-open import Function
+open import Data.String.Base as String using (String; toList; fromList)
+open import Data.String.Properties as String using (_==_)
+open import Function.Base using (_∘_)
 open import Data.Bool hiding (_≤?_)
-open import Data.Product as P using (_×_; <_,_>; uncurry; proj₁)
+open import Data.Product.Base as P using (_×_; <_,_>; uncurry; proj₁)
 open import Agda.Builtin.Equality
 
 -- This can give us for instance this decomposition of a function
@@ -56,7 +57,7 @@ subpalindromes str = let Chars = List Char in
   |> filter (λ cs → 2 ≤? length cs)        ∶ List Chars
   -- only keep the ones that are palindromes
   |> map < fromList , fromList ∘ reverse > ∶ List (String × String)
-  |> boolFilter (uncurry _==_)             ∶ List (String × String)
+  |> filter (uncurry String._≟_)           ∶ List (String × String)
   |> map proj₁                             ∶ List String
 
 -- Test cases

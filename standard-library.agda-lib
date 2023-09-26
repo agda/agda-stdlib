@@ -1,2 +1,4 @@
-name: standard-library-1.6
+name: standard-library-2.0
 include: src
+flags:
+  --warning=noUnsupportedIndexedMatch

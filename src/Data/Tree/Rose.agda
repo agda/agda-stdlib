@@ -4,7 +4,7 @@
 -- Rose trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Data.Tree.Rose where
 

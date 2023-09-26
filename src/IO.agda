@@ -4,7 +4,7 @@
 -- IO
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module IO where
 
@@ -13,7 +13,7 @@ open import Codata.Musical.Costring
 open import Data.Unit.Polymorphic.Base
 open import Data.String.Base
 import Data.Unit.Base as Unit0
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; flip)
 import IO.Primitive as Prim
 open import Level
 
@@ -36,16 +36,16 @@ module Colist where
   open import Codata.Musical.Colist.Base
 
   sequence : Colist (IO A) → IO (Colist A)
-  sequence []       = return []
+  sequence []       = pure []
   sequence (c ∷ cs) = bind (♯ c)               λ x  → ♯
                       bind (♯ sequence (♭ cs)) λ xs → ♯
-                      return (x ∷ ♯ xs)
+                      pure (x ∷ ♯ xs)
 
   -- The reason for not defining sequence′ in terms of sequence is
   -- efficiency (the unused results could cause unnecessary memory use).
 
   sequence′ : Colist (IO A) → IO ⊤
-  sequence′ []       = return _
+  sequence′ []       = pure _
   sequence′ (c ∷ cs) = seq (♯ c) (♯ sequence′ (♭ cs))
 
   mapM : (A → IO B) → Colist A → IO (Colist B)
@@ -53,6 +53,12 @@ module Colist where
 
   mapM′ : (A → IO B) → Colist A → IO ⊤
   mapM′ f = sequence′ ∘ map f
+
+  forM : Colist A → (A → IO B) → IO (Colist B)
+  forM = flip mapM
+
+  forM′ : Colist A → (A → IO B) → IO ⊤
+  forM′ = flip mapM′
 
 module List where
 
@@ -66,7 +72,7 @@ module List where
   -- efficiency (the unused results could cause unnecessary memory use).
 
   sequence′ : List (IO A) → IO ⊤
-  sequence′ []       = return _
+  sequence′ []       = pure _
   sequence′ (c ∷ cs) = c >> sequence′ cs
 
   mapM : (A → IO B) → List A → IO (List B)
@@ -74,6 +80,12 @@ module List where
 
   mapM′ : (A → IO B) → List A → IO ⊤
   mapM′ f = sequence′ ∘ map f
+
+  forM : List A → (A → IO B) → IO (List B)
+  forM = flip mapM
+
+  forM′ : List A → (A → IO B) → IO ⊤
+  forM′ = flip mapM′
 
 ------------------------------------------------------------------------
 -- Simple lazy IO

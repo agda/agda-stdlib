@@ -37,9 +37,9 @@
 --      v  ≡⟨ v≡w ⟩
 --      w  ∎
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Poset)
 
 module Relation.Binary.Reasoning.PartialOrder
   {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
@@ -64,7 +64,7 @@ open import Relation.Binary.Reasoning.Base.Triple
   hiding (begin-irrefl)
 
 infix 1 begin-irrefl_
-begin-irrefl_ = Reasoning.begin-irrefl Strict.irrefl
+begin-irrefl_ = Reasoning.begin-irrefl Strict.<-irrefl
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

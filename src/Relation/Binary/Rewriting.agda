@@ -5,14 +5,13 @@
 -- Definitions are based on "Term Rewriting Systems" by J.W. Klop
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Rewriting where
 
 open import Agda.Builtin.Equality using (_≡_ ; refl)
-open import Data.Product using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
 open import Data.Empty
-open import Data.Sum.Base as Sum using (_⊎_)
 open import Function.Base using (flip)
 open import Induction.WellFounded
 open import Level

@@ -11,7 +11,7 @@ module README.IO where
 open import Level
 open import Data.Nat.Base
 open import Data.Nat.Show using (show)
-open import Data.String using (String; _++_; lines)
+open import Data.String.Base using (String; _++_; lines)
 open import Data.Unit.Polymorphic
 open import IO
 
@@ -105,5 +105,5 @@ open import Data.Unit.Polymorphic.Base
 -- Whether a colist is finite is semi decidable: just let the user wait until
 -- you reach the end!
 isFinite : ∀ {a} {A : Set a} → Colist A → IO Bool
-isFinite []       = return true
-isFinite (x ∷ xs) = seq (♯ return tt) (♯ isFinite (♭ xs))
+isFinite []       = pure true
+isFinite (x ∷ xs) = seq (♯ pure tt) (♯ isFinite (♭ xs))

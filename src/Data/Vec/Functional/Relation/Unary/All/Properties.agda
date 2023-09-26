@@ -4,18 +4,17 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Unary.All.Properties where
 
-open import Data.Fin.Base
-open import Data.Fin.Properties
-open import Data.Nat.Base
-open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Fin.Base using (zero; suc; _↑ˡ_; _↑ʳ_; splitAt)
+open import Data.Fin.Properties using (splitAt-↑ˡ; splitAt-↑ʳ)
+open import Data.Product.Base as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Unary.All
-open import Function
+open import Function.Base using (const; _∘_)
 open import Level using (Level)
 open import Relation.Unary
 
@@ -38,7 +37,7 @@ module _ {P : Pred A p} {Q : Pred B q} {f : A → B} where
 ------------------------------------------------------------------------
 -- replicate
 
-module _ {P : Pred A p} {x : A} {n : ℕ} where
+module _ {P : Pred A p} {x : A} {n} where
 
   replicate⁺ : P x → All P (replicate {n = n} x)
   replicate⁺ = const
@@ -87,22 +86,22 @@ tail⁺ P ps = ps ∘ suc
 ------------------------------------------------------------------------
 -- ++
 
-module _ (P : Pred A p) {m n : ℕ} {xs : Vector A m} {ys : Vector A n} where
+module _ (P : Pred A p) {m n} {xs : Vector A m} {ys : Vector A n} where
 
   ++⁺ : All P xs → All P ys → All P (xs ++ ys)
   ++⁺ pxs pys i with splitAt m i
   ... | inj₁ i′ = pxs i′
   ... | inj₂ j′ = pys j′
 
-module _ (P : Pred A p) {m n : ℕ} (xs : Vector A m) {ys : Vector A n} where
+module _ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} where
 
   ++⁻ˡ : All P (xs ++ ys) → All P xs
-  ++⁻ˡ ps i with ps (inject+ n i)
-  ... | p rewrite splitAt-inject+ m n i = p
+  ++⁻ˡ ps i with ps (i ↑ˡ n)
+  ... | p rewrite splitAt-↑ˡ m i n = p
 
   ++⁻ʳ : All P (xs ++ ys) → All P ys
-  ++⁻ʳ ps i with ps (raise m i)
-  ... | p rewrite splitAt-raise m n i = p
+  ++⁻ʳ ps i with ps (m ↑ʳ i)
+  ... | p rewrite splitAt-↑ʳ m n i = p
 
   ++⁻ : All P (xs ++ ys) → All P xs × All P ys
   ++⁻ ps = ++⁻ˡ ps , ++⁻ʳ ps

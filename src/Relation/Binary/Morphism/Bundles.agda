@@ -4,7 +4,7 @@
 -- Bundles for morphisms between binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 open import Relation.Binary.Core using (_Preserves_⟶_)
@@ -92,8 +92,8 @@ module _ (P : Poset ℓ₁ ℓ₂ ℓ₃) (Q : Poset ℓ₄ ℓ₅ ℓ₆) where
     open IsOrderHomomorphism isOrderHomomorphism public
 
 
-  -- Smart constructor that automatically constructs the congruence proof
-  -- from the monotonicity proof
+  -- Smart constructor that automatically constructs the congruence
+  -- proof from the monotonicity proof
   mkPosetHomo : ∀ f → f Preserves P._≤_ ⟶ Q._≤_ → PosetHomomorphism
   mkPosetHomo f mono = record
     { ⟦_⟧ = f

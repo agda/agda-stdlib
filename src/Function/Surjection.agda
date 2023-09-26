@@ -1,17 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Surjections
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Surjective`, `IsSurjection` and
--- `Surjection`. The alternative definitions found in this file will
--- eventually be deprecated.
+{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Surjection where
+
+{-# WARNING_ON_IMPORT
+"Function.Surjection was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
 
 open import Level
 open import Function.Equality as F
@@ -19,8 +20,7 @@ open import Function.Equality as F
 open import Function.Equivalence using (Equivalence)
 open import Function.Injection           hiding (id; _∘_; injection)
 open import Function.LeftInverse as Left hiding (id; _∘_)
-open import Data.Product
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------
@@ -95,9 +95,9 @@ surjection : ∀ {f t} {From : Set f} {To : Set t} →
              (∀ x → to (from x) ≡ x) →
              From ↠ To
 surjection to from surjective = record
-  { to         = P.→-to-⟶ to
+  { to         = F.→-to-⟶ to
   ; surjective = record
-    { from             = P.→-to-⟶ from
+    { from             = F.→-to-⟶ from
     ; right-inverse-of = surjective
     }
   }

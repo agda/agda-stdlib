@@ -5,9 +5,12 @@
 -- manipulating potentially infinite objects
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module IO.Primitive.Infinite where
+
+-- NOTE: the contents of this module should be accessed via `IO` or
+-- `IO.Infinite`.
 
 open import Codata.Musical.Costring
 open import Agda.Builtin.String

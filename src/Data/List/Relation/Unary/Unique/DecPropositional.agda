@@ -4,13 +4,11 @@
 -- Lists made up entirely of unique elements (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecSetoid; DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (decSetoid)
-import Data.List.Relation.Unary.AllPairs as AllPairs
-open import Relation.Unary using (Decidable)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Binary.Bundles using (DecSetoid)
+open import Relation.Binary.Definitions using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
 module Data.List.Relation.Unary.Unique.DecPropositional
   {a} {A : Set a} (_≟_ : DecidableEquality A) where

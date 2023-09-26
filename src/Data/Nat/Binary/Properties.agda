@@ -4,7 +4,7 @@
 -- Basic properties of ℕᵇ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Binary.Properties where
 
@@ -12,17 +12,28 @@ open import Algebra.Bundles
 open import Algebra.Morphism.Structures
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Algebra.Consequences.Propositional
+open import Data.Bool.Base using (if_then_else_; Bool; true; false)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Binary.Base
 open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
+open import Data.Nat.DivMod using (_%_; _/_; m/n≤m; +-distrib-/-∣ˡ)
+open import Data.Nat.Divisibility using (∣-refl)
+import Data.Nat.Base as ℕᵇ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Product using (_,_; proj₁; proj₂; ∃)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
-open import Function.Definitions using (Injective)
-open import Function.Definitions.Core2 using (Surjective)
+open import Function.Definitions
+open import Function.Consequences.Propositional
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder; Poset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Irreflexive; Transitive; Reflexive; Antisymmetric; Total; Trichotomous; tri≈; tri<; tri>)
+open import Relation.Binary.Structures
+  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
@@ -40,16 +51,20 @@ import Relation.Binary.Construct.StrictToNonStrict _≡_ _<_
   as StrictToNonStrict
 open +-*-Solver
 
+private
+  variable
+    x : ℕᵇ
+
 infix 4  _<?_ _≟_ _≤?_
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
 
-2[1+x]≢0 : ∀ {x} → 2[1+ x ] ≢ 0ᵇ
+2[1+x]≢0 : 2[1+ x ] ≢ 0ᵇ
 2[1+x]≢0 ()
 
-1+[2x]≢0 : ∀ {x} → 1+[2 x ] ≢ 0ᵇ
+1+[2x]≢0 : 1+[2 x ] ≢ 0ᵇ
 1+[2x]≢0 ()
 
 2[1+_]-injective : Injective _≡_ _≡_ 2[1+_]
@@ -97,20 +112,80 @@ toℕ-pred zero     =  refl
 toℕ-pred 2[1+ x ] =  cong ℕ.pred $ sym $ ℕₚ.*-distribˡ-+ 2 1 (toℕ x)
 toℕ-pred 1+[2 x ] =  toℕ-double x
 
-toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
-toℕ-fromℕ 0         = refl
-toℕ-fromℕ (ℕ.suc n) = begin
-  toℕ (fromℕ (ℕ.suc n))   ≡⟨⟩
-  toℕ (suc (fromℕ n))     ≡⟨ toℕ-suc (fromℕ n) ⟩
-  ℕ.suc (toℕ (fromℕ n))   ≡⟨ cong ℕ.suc (toℕ-fromℕ n) ⟩
+toℕ-fromℕ' : toℕ ∘ fromℕ' ≗ id
+toℕ-fromℕ' 0         = refl
+toℕ-fromℕ' (ℕ.suc n) = begin
+  toℕ (fromℕ' (ℕ.suc n))   ≡⟨⟩
+  toℕ (suc (fromℕ' n))     ≡⟨ toℕ-suc (fromℕ' n) ⟩
+  ℕ.suc (toℕ (fromℕ' n))   ≡⟨ cong ℕ.suc (toℕ-fromℕ' n) ⟩
   ℕ.suc n                 ∎
   where open ≡-Reasoning
+
+fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
+fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
+  where
+  split : ℕᵇ → Maybe Bool × ℕᵇ
+  split zero     = nothing , zero
+  split 2[1+ n ] = just false , n
+  split 1+[2 n ] = just true , n
+
+  head = proj₁ ∘ split
+  tail = proj₂ ∘ split
+
+  split-injective : Injective _≡_ _≡_ split
+  split-injective {zero} {zero} refl = refl
+  split-injective {2[1+ _ ]} {2[1+ _ ]} refl = refl
+  split-injective {1+[2 _ ]} {1+[2 _ ]} refl = refl
+
+  split-if : ∀ x xs → split (if x then 1+[2 xs ] else 2[1+ xs ]) ≡ (just x , xs)
+  split-if false xs = refl
+  split-if true xs = refl
+
+  head-suc : ∀ n → head (suc (suc (suc n))) ≡ head (suc n)
+  head-suc zero = refl
+  head-suc 2[1+ n ] = refl
+  head-suc 1+[2 n ] = refl
+
+  tail-suc : ∀ n → suc (tail (suc n)) ≡ tail (suc (suc (suc n)))
+  tail-suc zero = refl
+  tail-suc 2[1+ n ] = refl
+  tail-suc 1+[2 n ] = refl
+
+  head-homo : ∀ n → head (suc (fromℕ' n)) ≡ just (n % 2 ℕ.≡ᵇ 0)
+  head-homo ℕ.zero = refl
+  head-homo (ℕ.suc ℕ.zero) = refl
+  head-homo (ℕ.suc (ℕ.suc n)) = trans (head-suc (fromℕ' n)) (head-homo n)
+
+  open ≡-Reasoning
+
+  tail-homo : ∀ n → tail (suc (fromℕ' n)) ≡ fromℕ' (n / 2)
+  tail-homo ℕ.zero = refl
+  tail-homo (ℕ.suc ℕ.zero) = refl
+  tail-homo (ℕ.suc (ℕ.suc n)) = begin
+    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡˘⟨ tail-suc (fromℕ' n) ⟩
+    suc (tail (suc (fromℕ' n)))            ≡⟨ cong suc (tail-homo n) ⟩
+    fromℕ' (ℕ.suc (n / 2))                 ≡˘⟨ cong fromℕ' (+-distrib-/-∣ˡ {2} n ∣-refl) ⟩
+    fromℕ' (ℕ.suc (ℕ.suc n) / 2)           ∎
+
+  fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ.helper n n w ≡ fromℕ' n
+  fromℕ-helper≡fromℕ' ℕ.zero w p = refl
+  fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
+    split-injective (begin
+      split (fromℕ.helper n (ℕ.suc n) (ℕ.suc w))         ≡⟨ split-if _ _ ⟩
+      just (n % 2 ℕ.≡ᵇ 0) , fromℕ.helper n (n / 2) w     ≡⟨ cong (_ ,_) rec-n/2 ⟩
+      just (n % 2 ℕ.≡ᵇ 0) , fromℕ' (n / 2)               ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
+      head (fromℕ' (ℕ.suc n)) , tail (fromℕ' (ℕ.suc n))  ≡⟨⟩
+      split (fromℕ' (ℕ.suc n))                           ∎)
+    where rec-n/2 = fromℕ-helper≡fromℕ' (n / 2) w (ℕₚ.≤-trans (m/n≤m n 2) n≤w)
+
+toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
+toℕ-fromℕ n rewrite fromℕ≡fromℕ' n = toℕ-fromℕ' n
 
 toℕ-injective : Injective _≡_ _≡_ toℕ
 toℕ-injective {zero}     {zero}     _               =  refl
 toℕ-injective {2[1+ x ]} {2[1+ y ]} 2[1+xN]≡2[1+yN] =  cong 2[1+_] x≡y
   where
-  1+xN≡1+yN = ℕₚ.*-cancelˡ-≡ {ℕ.suc _} {ℕ.suc _} 1 2[1+xN]≡2[1+yN]
+  1+xN≡1+yN = ℕₚ.*-cancelˡ-≡ (ℕ.suc _) (ℕ.suc _) 2 2[1+xN]≡2[1+yN]
   xN≡yN     = cong ℕ.pred 1+xN≡1+yN
   x≡y       = toℕ-injective xN≡yN
 
@@ -123,11 +198,11 @@ toℕ-injective {1+[2 x ]} {2[1+ y ]} 1+2xN≡2[1+yN] =
 toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   where
   2xN≡2yN = cong ℕ.pred 1+2xN≡1+2yN
-  xN≡yN   = ℕₚ.*-cancelˡ-≡ 1 2xN≡2yN
+  xN≡yN   = ℕₚ.*-cancelˡ-≡ _ _ 2 2xN≡2yN
   x≡y     = toℕ-injective xN≡yN
 
-toℕ-surjective : Surjective _≡_ toℕ
-toℕ-surjective n = (fromℕ n , toℕ-fromℕ n)
+toℕ-surjective : Surjective _≡_ _≡_ toℕ
+toℕ-surjective = strictlySurjective⇒surjective (λ n → fromℕ n , toℕ-fromℕ n)
 
 toℕ-isRelHomomorphism : IsRelHomomorphism _≡_ _≡_ toℕ
 toℕ-isRelHomomorphism = record
@@ -143,21 +218,30 @@ fromℕ-injective {x} {y} f[x]≡f[y] = begin
   where open ≡-Reasoning
 
 fromℕ-toℕ : fromℕ ∘ toℕ ≗ id
-fromℕ-toℕ =  toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
+fromℕ-toℕ = toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
+
+toℕ-inverseˡ : Inverseˡ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseˡ = strictlyInverseˡ⇒inverseˡ {f⁻¹ = fromℕ} toℕ toℕ-fromℕ
+
+toℕ-inverseʳ : Inverseʳ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseʳ = strictlyInverseʳ⇒inverseʳ toℕ fromℕ-toℕ
+
+toℕ-inverseᵇ : Inverseᵇ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseᵇ = toℕ-inverseˡ , toℕ-inverseʳ
 
 fromℕ-pred : ∀ n → fromℕ (ℕ.pred n) ≡ pred (fromℕ n)
 fromℕ-pred n = begin
   fromℕ (ℕ.pred n)        ≡⟨ cong (fromℕ ∘ ℕ.pred) (sym (toℕ-fromℕ n)) ⟩
-  fromℕ (ℕ.pred (toℕ x))  ≡⟨ cong fromℕ (sym (toℕ-pred x)) ⟩
-  fromℕ (toℕ (pred x))    ≡⟨ fromℕ-toℕ (pred x) ⟩
-  pred x                  ≡⟨ refl ⟩
+  fromℕ (ℕ.pred (toℕ y))  ≡⟨ cong fromℕ (sym (toℕ-pred y)) ⟩
+  fromℕ (toℕ (pred y))    ≡⟨ fromℕ-toℕ (pred y) ⟩
+  pred y                  ≡⟨ refl ⟩
   pred (fromℕ n)          ∎
-  where open ≡-Reasoning;  x = fromℕ n
+  where open ≡-Reasoning;  y = fromℕ n
 
-x≡0⇒toℕ[x]≡0 : ∀ {x} → x ≡ zero → toℕ x ≡ 0
+x≡0⇒toℕ[x]≡0 : x ≡ zero → toℕ x ≡ 0
 x≡0⇒toℕ[x]≡0 {zero} _ = refl
 
-toℕ[x]≡0⇒x≡0 : ∀ {x} → toℕ x ≡ 0 → x ≡ zero
+toℕ[x]≡0⇒x≡0 : toℕ x ≡ 0 → x ≡ zero
 toℕ[x]≡0⇒x≡0 {zero} _ = refl
 
 ------------------------------------------------------------------------
@@ -165,10 +249,10 @@ toℕ[x]≡0⇒x≡0 {zero} _ = refl
 ------------------------------------------------------------------------
 -- Basic properties
 
-x≮0 : ∀ {x} → x ≮ zero
+x≮0 : x ≮ zero
 x≮0 ()
 
-x≢0⇒x>0 : ∀ {x} → x ≢ zero → x > zero
+x≢0⇒x>0 : x ≢ zero → x > zero
 x≢0⇒x>0 {zero}     0≢0 =  contradiction refl 0≢0
 x≢0⇒x>0 {2[1+ _ ]} _   =  0<even
 x≢0⇒x>0 {1+[2 _ ]} _   =  0<odd
@@ -203,7 +287,7 @@ x≢0⇒x>0 {1+[2 _ ]} _   =  0<odd
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ = inj₁
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _<_ and toℕ & fromℕ.
 
 toℕ-mono-< : toℕ Preserves _<_ ⟶ ℕ._<_
@@ -211,7 +295,7 @@ toℕ-mono-< {zero}     {2[1+ _ ]} _               =  ℕₚ.0<1+n
 toℕ-mono-< {zero}     {1+[2 _ ]} _               =  ℕₚ.0<1+n
 toℕ-mono-< {2[1+ x ]} {2[1+ y ]} (even<even x<y) =  begin
   ℕ.suc (2 ℕ.* (ℕ.suc xN))    ≤⟨ ℕₚ.+-monoʳ-≤ 1 (ℕₚ.*-monoʳ-≤ 2 xN<yN) ⟩
-  ℕ.suc (2 ℕ.* yN)            ≤⟨ ℕₚ.≤-step ℕₚ.≤-refl ⟩
+  ℕ.suc (2 ℕ.* yN)            ≤⟨ ℕₚ.n≤1+n _ ⟩
   2 ℕ.+ (2 ℕ.* yN)            ≡⟨ sym (ℕₚ.*-distribˡ-+ 2 1 yN) ⟩
   2 ℕ.* (ℕ.suc yN)            ∎
   where open ℕₚ.≤-Reasoning;  xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
@@ -221,29 +305,29 @@ toℕ-mono-< {1+[2 x ]} {2[1+ y ]} (odd<even (inj₁ x<y)) =   begin
   ℕ.suc (ℕ.suc (2 ℕ.* xN))    ≡⟨⟩
   2 ℕ.+ (2 ℕ.* xN)            ≡⟨ sym (ℕₚ.*-distribˡ-+ 2 1 xN) ⟩
   2 ℕ.* (ℕ.suc xN)            ≤⟨ ℕₚ.*-monoʳ-≤ 2 xN<yN ⟩
-  2 ℕ.* yN                    ≤⟨ ℕₚ.*-monoʳ-≤ 2 (ℕₚ.≤-step ℕₚ.≤-refl) ⟩
+  2 ℕ.* yN                    ≤⟨ ℕₚ.*-monoʳ-≤ 2 (ℕₚ.n≤1+n _) ⟩
   2 ℕ.* (ℕ.suc yN)            ∎
   where open ℕₚ.≤-Reasoning;  xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
 toℕ-mono-< {1+[2 x ]} {2[1+ .x ]} (odd<even (inj₂ refl)) =
   ℕₚ.≤-reflexive (sym (ℕₚ.*-distribˡ-+ 2 1 (toℕ x)))
-toℕ-mono-< {1+[2 x ]} {1+[2 y ]} (odd<odd x<y) =  ℕₚ.+-monoʳ-< 1 (ℕₚ.*-monoʳ-< 1 xN<yN)
+toℕ-mono-< {1+[2 x ]} {1+[2 y ]} (odd<odd x<y) =  ℕₚ.+-monoʳ-< 1 (ℕₚ.*-monoʳ-< 2 xN<yN)
   where xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
 
 toℕ-cancel-< : ∀ {x y} → toℕ x ℕ.< toℕ y → x < y
 toℕ-cancel-< {zero}     {2[1+ y ]} x<y = 0<even
 toℕ-cancel-< {zero}     {1+[2 y ]} x<y = 0<odd
 toℕ-cancel-< {2[1+ x ]} {2[1+ y ]} x<y =
-  even<even (toℕ-cancel-< (ℕ.≤-pred (ℕₚ.*-cancelˡ-< 2 x<y)))
+  even<even (toℕ-cancel-< (ℕ.≤-pred (ℕₚ.*-cancelˡ-< 2 _ _ x<y)))
 toℕ-cancel-< {2[1+ x ]} {1+[2 y ]} x<y
   rewrite ℕₚ.*-distribˡ-+ 2 1 (toℕ x) =
-  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (ℕₚ.≤-pred x<y))))
+  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (ℕₚ.≤-pred x<y))))
 toℕ-cancel-< {1+[2 x ]} {2[1+ y ]} x<y with toℕ x ℕₚ.≟ toℕ y
 ... | yes x≡y = odd<even (inj₂ (toℕ-injective x≡y))
 ... | no  x≢y
   rewrite ℕₚ.+-suc (toℕ y) (toℕ y ℕ.+ 0) =
-  odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 1 (ℕₚ.+-cancelˡ-≤ 2 x<y)) x≢y)))
+  odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 2 (ℕₚ.+-cancelˡ-≤ 2 _ _ x<y)) x≢y)))
 toℕ-cancel-< {1+[2 x ]} {1+[2 y ]} x<y =
-  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 (ℕ.≤-pred x<y)))
+  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕ.≤-pred x<y)))
 
 fromℕ-cancel-< : ∀ {x y} → fromℕ x < fromℕ y → x ℕ.< y
 fromℕ-cancel-< = subst₂ ℕ._<_ (toℕ-fromℕ _) (toℕ-fromℕ _) ∘ toℕ-mono-<
@@ -264,7 +348,7 @@ toℕ-isMonomorphism-< = record
   ; cancel              = toℕ-cancel-<
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties of _<_
 
 <-irrefl : Irreflexive _≡_ _<_
@@ -317,7 +401,7 @@ toℕ-isMonomorphism-< = record
 _<?_ : Decidable _<_
 _<?_ = tri⇒dec< <-cmp
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures for _<_
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
@@ -335,7 +419,7 @@ _<?_ = tri⇒dec< <-cmp
   ; compare       = <-cmp
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles for _<_
 
 <-strictPartialOrder : StrictPartialOrder _ _ _
@@ -348,7 +432,7 @@ _<?_ = tri⇒dec< <-cmp
   { isStrictTotalOrder =  <-isStrictTotalOrder
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Other properties of _<_
 
 x<2[1+x] : ∀ x → x < 2[1+ x ]
@@ -362,9 +446,9 @@ x<1+[2x] zero     = 0<odd
 x<1+[2x] 2[1+ x ] = even<odd (x<2[1+x] x)
 x<1+[2x] 1+[2 x ] = odd<odd (x<1+[2x] x)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _≤_
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Basic properties
 
 <⇒≱ : _<_ ⇒ _≱_
@@ -395,10 +479,10 @@ x<1+[2x] 1+[2 x ] = odd<odd (x<1+[2x] x)
 0≤x 2[1+ _ ] =  inj₁ 0<even
 0≤x 1+[2 x ] =  inj₁ 0<odd
 
-x≤0⇒x≡0 : ∀ {x} → x ≤ zero → x ≡ zero
+x≤0⇒x≡0 : x ≤ zero → x ≡ zero
 x≤0⇒x≡0 (inj₂ x≡0) = x≡0
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _<_ and toℕ & fromℕ.
 
 fromℕ-mono-≤ : fromℕ Preserves ℕ._≤_ ⟶ _≤_
@@ -429,7 +513,7 @@ toℕ-isMonomorphism-≤ = record
   ; cancel              = toℕ-cancel-≤
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties of _≤_
 
 ≤-refl : Reflexive _≤_
@@ -467,7 +551,7 @@ x ≤? y with <-cmp x y
 ... | tri> _   _   y<x = no (<⇒≱ y<x)
 
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
@@ -496,7 +580,7 @@ x ≤? y with <-cmp x y
   ; _≤?_         = _≤?_
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
@@ -519,7 +603,7 @@ x ≤? y with <-cmp x y
   { isDecTotalOrder = ≤-isDecTotalOrder
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
 module ≤-Reasoning where
@@ -538,9 +622,9 @@ module ≤-Reasoning where
   infix 1 begin-irrefl_
   begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _<ℕ_
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 <⇒<ℕ : ∀ {x y} → x < y → x <ℕ y
 <⇒<ℕ x<y = toℕ-mono-< x<y
@@ -555,25 +639,7 @@ module ≤-Reasoning where
 
 ------------------------------------------------------------------------
 -- Properties of _+_
-------------------------------------------------------------------------
 
-------------------------------------------------------------------------
--- Raw bundles for _+_
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  }
-
-+-0-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-0-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0ᵇ
-  }
-
-------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _+_
 
 toℕ-homo-+ : ∀ x y → toℕ (x + y) ≡ toℕ x ℕ.+ toℕ y
@@ -627,19 +693,19 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
   toℕ 1+[2 x ] ℕ.+ toℕ 1+[2 y ]           ∎
   where open ≡-Reasoning;  m = toℕ x;  n = toℕ y
 
-toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕₚ.+-rawMagma toℕ
+toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕᵇ.+-rawMagma toℕ
 toℕ-isMagmaHomomorphism-+ = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
   ; homo              = toℕ-homo-+
   }
 
-toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
+toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕᵇ.+-0-rawMonoid toℕ
 toℕ-isMonoidHomomorphism-+ = record
   { isMagmaHomomorphism = toℕ-isMagmaHomomorphism-+
   ; ε-homo              = refl
   }
 
-toℕ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
+toℕ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℕᵇ.+-0-rawMonoid toℕ
 toℕ-isMonoidMonomorphism-+ = record
   { isMonoidHomomorphism = toℕ-isMonoidHomomorphism-+
   ; injective            = toℕ-injective
@@ -662,15 +728,19 @@ suc-+ 1+[2 x ] 1+[2 y ] =  refl
 1+≗suc : (1ᵇ +_) ≗ suc
 1+≗suc = suc-+ zero
 
-fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
-fromℕ-homo-+ 0         _ = refl
-fromℕ-homo-+ (ℕ.suc m) n = begin
-  fromℕ ((ℕ.suc m) ℕ.+ n)          ≡⟨⟩
-  suc (fromℕ (m ℕ.+ n))            ≡⟨ cong suc (fromℕ-homo-+ m n) ⟩
+fromℕ'-homo-+ : ∀ m n → fromℕ' (m ℕ.+ n) ≡ fromℕ' m + fromℕ' n
+fromℕ'-homo-+ 0         _ = refl
+fromℕ'-homo-+ (ℕ.suc m) n = begin
+  fromℕ' ((ℕ.suc m) ℕ.+ n)         ≡⟨⟩
+  suc (fromℕ' (m ℕ.+ n))           ≡⟨ cong suc (fromℕ'-homo-+ m n) ⟩
   suc (a + b)                      ≡⟨ sym (suc-+ a b) ⟩
   (suc a) + b                      ≡⟨⟩
-  (fromℕ (ℕ.suc m)) + (fromℕ n)    ∎
-  where open ≡-Reasoning;  a = fromℕ m;  b = fromℕ n
+  (fromℕ' (ℕ.suc m)) + (fromℕ' n)  ∎
+  where open ≡-Reasoning;  a = fromℕ' m;  b = fromℕ' n
+
+fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
+fromℕ-homo-+ m n rewrite fromℕ≡fromℕ' (m ℕ.+ n) | fromℕ≡fromℕ' m | fromℕ≡fromℕ' n =
+  fromℕ'-homo-+ m n
 
 ------------------------------------------------------------------------
 -- Algebraic properties of _+_
@@ -752,7 +822,7 @@ private
 
 module Bin+CSemigroup = CommSemigProp +-commutativeSemigroup
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
 
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
@@ -829,7 +899,7 @@ x<x+1 x = x<x+y x 0<odd
 x<1+x : ∀ x → x < 1ᵇ + x
 x<1+x x rewrite +-comm 1ᵇ x = x<x+1 x
 
-x<1⇒x≡0 : ∀ {x} → x < 1ᵇ → x ≡ zero
+x<1⇒x≡0 : x < 1ᵇ → x ≡ zero
 x<1⇒x≡0 0<odd = refl
 
 ------------------------------------------------------------------------
@@ -841,25 +911,7 @@ x≢0⇒x+y≢0 {zero}     _    0≢0 =  contradiction refl 0≢0
 
 ------------------------------------------------------------------------
 -- Properties of _*_
-------------------------------------------------------------------------
 
-------------------------------------------------------------------------
--- Raw bundles for _*_
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1ᵇ
-  }
-
-------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _*_
 
 private  2*ₙ2*ₙ =  (2 ℕ.*_) ∘ (2 ℕ.*_)
@@ -954,19 +1006,19 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
     |y|+1+|x|≤cnt = subst (ℕ._≤ cnt) eq |x|+1+|y|≤cnt
 
 
-toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕₚ.*-rawMagma toℕ
+toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕᵇ.*-rawMagma toℕ
 toℕ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
   ; homo              = toℕ-homo-*
   }
 
-toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
+toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕᵇ.*-1-rawMonoid toℕ
 toℕ-isMonoidHomomorphism-* = record
   { isMagmaHomomorphism = toℕ-isMagmaHomomorphism-*
   ; ε-homo              = refl
   }
 
-toℕ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
+toℕ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℕᵇ.*-1-rawMonoid toℕ
 toℕ-isMonoidMonomorphism-* = record
   { isMonoidHomomorphism = toℕ-isMonoidHomomorphism-*
   ; injective            = toℕ-injective
@@ -1055,7 +1107,9 @@ private
 +-*-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _+_ _*_ zero 1ᵇ
 +-*-isSemiringWithoutAnnihilatingZero = record
   { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-  ; *-isMonoid            = *-1-isMonoid
+  ; *-cong                = cong₂ _*_
+  ; *-assoc               = *-assoc
+  ; *-identity            = *-identity
   ; distrib               = *-distrib-+
   }
 
@@ -1185,16 +1239,16 @@ x≢0∧y≢0⇒x*y≢0 {x} {_} x≢0 y≢0 xy≡0  with x*y≡0⇒x≡0∨y≡0
 -- Properties of double
 ------------------------------------------------------------------------
 
-double[x]≡0⇒x≡0 : ∀ {x} → double x ≡ zero → x ≡ zero
+double[x]≡0⇒x≡0 : double x ≡ zero → x ≡ zero
 double[x]≡0⇒x≡0 {zero} _ = refl
 
-x≡0⇒double[x]≡0 : ∀ {x} → x ≡ 0ᵇ → double x ≡ 0ᵇ
+x≡0⇒double[x]≡0 : x ≡ 0ᵇ → double x ≡ 0ᵇ
 x≡0⇒double[x]≡0 = cong double
 
-x≢0⇒double[x]≢0 : ∀ {x} → x ≢ zero → double x ≢ zero
+x≢0⇒double[x]≢0 : x ≢ zero → double x ≢ zero
 x≢0⇒double[x]≢0 x≢0 = x≢0 ∘ double[x]≡0⇒x≡0
 
-double≢1 : ∀ {x} → double x ≢ 1ᵇ
+double≢1 : double x ≢ 1ᵇ
 double≢1 {zero} ()
 
 double≗2* : double ≗ 2ᵇ *_
@@ -1278,6 +1332,18 @@ double-suc x = begin
 -- Properties of suc
 ------------------------------------------------------------------------
 
+suc≢0 : suc x ≢ zero
+suc≢0 {zero}     ()
+suc≢0 {2[1+ _ ]} ()
+suc≢0 {1+[2 _ ]} ()
+
+suc-injective : Injective _≡_ _≡_ suc
+suc-injective {zero} {zero} p = refl
+suc-injective {zero} {2[1+ y ]} p = contradiction 1+[2 p ]-injective (suc≢0 ∘ sym)
+suc-injective {2[1+ x ]} {zero} p = contradiction 1+[2 p ]-injective suc≢0
+suc-injective {2[1+ x ]} {2[1+ y ]} p = cong 2[1+_] (suc-injective 1+[2 p ]-injective)
+suc-injective {1+[2 x ]} {1+[2 y ]} refl = refl
+
 2[1+_]-double-suc : 2[1+_] ≗ double ∘ suc
 2[1+_]-double-suc zero     = refl
 2[1+_]-double-suc 2[1+ x ] = cong 2[1+_] (2[1+_]-double-suc x)
@@ -1293,11 +1359,6 @@ double-suc x = begin
   suc (double (suc 2x))   ≡⟨ cong (suc ∘ double) (sym (1+[2_]-suc-double x)) ⟩
   suc (double 1+[2 x ])   ∎
   where open ≡-Reasoning;  2x = double x
-
-suc≢0 : ∀ {x} → suc x ≢ zero
-suc≢0 {zero}     ()
-suc≢0 {2[1+ _ ]} ()
-suc≢0 {1+[2 _ ]} ()
 
 x+suc[y]≡suc[x]+y : ∀ x y → x + suc y ≡ suc x + y
 x+suc[y]≡suc[x]+y x y = begin
@@ -1392,7 +1453,7 @@ pred-suc zero     =  refl
 pred-suc 2[1+ x ] =  sym (2[1+_]-double-suc x)
 pred-suc 1+[2 x ] =  refl
 
-suc-pred : ∀ {x} → x ≢ zero → suc (pred x) ≡ x
+suc-pred : x ≢ zero → suc (pred x) ≡ x
 suc-pred {zero}     0≢0 =  contradiction refl 0≢0
 suc-pred {2[1+ _ ]} _   =  refl
 suc-pred {1+[2 x ]} _   =  sym (1+[2_]-suc-double x)
@@ -1408,7 +1469,7 @@ pred-mono-≤ {x} {y} x≤y = begin
   where
   open ≤-Reasoning;  m = toℕ x;  n = toℕ y
 
-pred[x]<x : ∀ {x} → x ≢ zero → pred x < x
+pred[x]<x : x ≢ zero → pred x < x
 pred[x]<x {x} x≢0 = begin-strict
   pred x       <⟨ x<suc[x] (pred x) ⟩
   suc (pred x) ≡⟨ suc-pred x≢0 ⟩
@@ -1430,7 +1491,7 @@ pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 = begin
 -- Properties of size
 ------------------------------------------------------------------------
 
-|x|≡0⇒x≡0 : ∀ {x} → size x ≡ 0 → x ≡ 0ᵇ
+|x|≡0⇒x≡0 : size x ≡ 0 → x ≡ 0ᵇ
 |x|≡0⇒x≡0 {zero} refl =  refl
 
 
@@ -1468,3 +1529,9 @@ Please use +-*-semiring instead."
 "Warning: *-+-commutativeSemiring was deprecated in v1.4.
 Please use +-*-commutativeSemiring instead."
 #-}
+
+-- Version 2.0
+
+{- issue1858/issue1755: raw bundles have moved to `Data.X.Base` -}
+open Data.Nat.Binary.Base public
+  using (+-rawMagma; +-0-rawMonoid; *-rawMagma; *-1-rawMonoid)

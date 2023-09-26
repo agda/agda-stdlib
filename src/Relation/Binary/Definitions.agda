@@ -6,19 +6,20 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Definitions where
 
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Data.Maybe.Base using (Maybe)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
 open import Level
 open import Relation.Binary.Core
-open import Relation.Nullary using (Dec; ¬_)
+open import Relation.Nullary.Decidable.Core using (Dec)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
@@ -130,6 +131,38 @@ Min R = Max (flip R)
 Minimum : Rel A ℓ → A → Set _
 Minimum = Min
 
+-- Definitions for apartness relations
+
+-- Note that Cotransitive's arguments are permuted with respect to Transitive's.
+Cotransitive : Rel A ℓ → Set _
+Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
+
+Tight : Rel A ℓ₁ → Rel A ℓ₂ → Set _
+Tight _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
+
+-- Properties of order morphisms, aka order-preserving maps
+
+Monotonic₁ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
+Monotonic₁ _≤_ _⊑_ f = f Preserves _≤_ ⟶ _⊑_
+
+Antitonic₁ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
+Antitonic₁ _≤_ _⊑_ f = f Preserves (flip _≤_) ⟶ _⊑_
+
+Monotonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+Monotonic₂ _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ _⊑_ ⟶ _≼_
+
+MonotonicAntitonic : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+MonotonicAntitonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ (flip _⊑_) ⟶ _≼_
+
+AntitonicMonotonic : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+AntitonicMonotonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ _⊑_ ⟶ _≼_
+
+Antitonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+Antitonic₂ _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ (flip _⊑_) ⟶ _≼_
+
+Adjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+Adjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y → f x ⊑ y)
+
 -- Unary relations respecting a binary relation.
 
 _⟶_Respects_ : (A → Set ℓ₁) → (B → Set ℓ₂) → REL A B ℓ₃ → Set _
@@ -205,19 +238,3 @@ record NonEmpty {A : Set a} {B : Set b}
     {x}   : A
     {y}   : B
     proof : T x y
-
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-Conn = Connex
-{-# WARNING_ON_USAGE Conn
-"Warning: Conn was deprecated in v1.1.
-Please use Connex instead."
-#-}

@@ -4,10 +4,11 @@
 -- Decidable propositional membership over lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Decidable)
-open import Relation.Binary.PropositionalEquality using (_≡_; decSetoid)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
 module Data.List.Membership.DecPropositional
   {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) where
@@ -18,4 +19,3 @@ module Data.List.Membership.DecPropositional
 open import Data.List.Membership.Propositional {A = A} public
 open import Data.List.Membership.DecSetoid (decSetoid _≟_) public
   using (_∈?_; _∉?_)
-

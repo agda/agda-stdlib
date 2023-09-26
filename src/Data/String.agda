@@ -4,28 +4,21 @@
 -- Strings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.String where
 
-open import Data.Bool using (true; false; T?)
+open import Data.Bool.Base using (if_then_else_)
 open import Data.Char as Char using (Char)
-open import Function.Base
-open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
+open import Function.Base using (_∘_; _$_)
+open import Data.Nat.Base as ℕ using (ℕ)
 import Data.Nat.Properties as ℕₚ
-open import Data.List.Base as List using (List; _∷_; []; [_])
-open import Data.List.NonEmpty as NE using (List⁺)
+open import Data.List.Base as List using (List)
 open import Data.List.Extrema ℕₚ.≤-totalOrder
-open import Data.List.Relation.Binary.Pointwise using (Pointwise)
-open import Data.List.Relation.Binary.Lex.Strict using (Lex-<; Lex-≤)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
 import Data.Char.Properties as Char using (_≟_)
-open import Function
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-open import Relation.Nullary using (does)
-open import Relation.Unary using (Pred; Decidable)
+open import Relation.Nullary.Decidable.Core using (does)
 
 open import Data.List.Membership.DecPropositional Char._≟_
 
@@ -49,32 +42,8 @@ fromVec = fromList ∘ Vec.toList
 
 -- enclose string with parens if it contains a space character
 parensIfSpace : String → String
-parensIfSpace s with does (' ' ∈? toList s)
-... | true  = parens s
-... | false = s
+parensIfSpace s = if does (' ' ∈? toList s) then parens s else s
 
-------------------------------------------------------------------------
--- Splitting strings
-
-wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
-
-words : String → List String
-words = wordsBy (T? ∘ Char.isSpace)
-
--- `words` ignores contiguous whitespace
-_ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
-_ = refl
-
-linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-linesBy P? = List.map fromList ∘ List.linesBy P? ∘ toList
-
-lines : String → List String
-lines = linesBy ('\n' Char.≟_)
-
--- `lines` preserves empty lines
-_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
-_ = refl
 
 ------------------------------------------------------------------------
 -- Rectangle

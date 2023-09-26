@@ -4,7 +4,7 @@
 -- IO only involving finite objects
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module IO.Finite where
 
@@ -40,10 +40,6 @@ getLine = lift Prim.getLine
 
 readFile : String → IO String
 readFile f = lift (Prim.readFile f)
-
-private
-  lift′ : Prim.IO Unit0.⊤ → IO {a} ⊤
-  lift′ io = lift (io Prim.>>= λ _ → Prim.return _)
 
 writeFile : String → String → IO {a} ⊤
 writeFile f s = lift′ (Prim.writeFile f s)

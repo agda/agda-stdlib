@@ -5,13 +5,9 @@
 -- (LeftDefs), right-scaling (RightDefs), and both (BiDefs).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
-open import Relation.Binary
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Definitions where
-
-  open import Algebra.Core
 
   import Algebra.Module.Definitions.Left as L
   import Algebra.Module.Definitions.Right as R

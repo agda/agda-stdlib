@@ -7,22 +7,26 @@
 -- Note that elements of Fin n can be seen as natural numbers in the
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
-
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Base where
 
+open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥-elim)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
-open import Data.Nat.Properties.Core using (≤-pred)
-open import Data.Product as Product using (_×_; _,_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
+open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Function.Base using (id; _∘_; _on_)
-open import Level using () renaming (zero to ℓ₀)
-open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable.Core using (True; toWitness)
+open import Function.Base using (id; _∘_; _on_; flip)
+open import Level using (0ℓ)
+open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Decidable.Core using (yes; no; True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
+open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
+
+private
+  variable
+    m n : ℕ
 
 ------------------------------------------------------------------------
 -- Types
@@ -30,24 +34,24 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl
 -- Fin n is a type with n elements.
 
 data Fin : ℕ → Set where
-  zero : {n : ℕ} → Fin (suc n)
-  suc  : {n : ℕ} (i : Fin n) → Fin (suc n)
+  zero : Fin (suc n)
+  suc  : (i : Fin n) → Fin (suc n)
 
 -- A conversion: toℕ "i" = i.
 
-toℕ : ∀ {n} → Fin n → ℕ
+toℕ : Fin n → ℕ
 toℕ zero    = 0
 toℕ (suc i) = suc (toℕ i)
 
 -- A Fin-indexed variant of Fin.
 
-Fin′ : ∀ {n} → Fin n → Set
+Fin′ : Fin n → Set
 Fin′ i = Fin (toℕ i)
 
 ------------------------------------------------------------------------
 -- A cast that actually computes on constructors (as opposed to subst)
 
-cast : ∀ {m n} → .(_ : m ≡ n) → Fin m → Fin n
+cast : .(m ≡ n) → Fin m → Fin n
 cast {zero}  {zero}  eq k       = k
 cast {suc m} {suc n} eq zero    = zero
 cast {suc m} {suc n} eq (suc k) = suc (cast (cong ℕ.pred eq) k)
@@ -65,9 +69,9 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ< {m} _ = "m".
 
-fromℕ< : ∀ {m n} → m ℕ.< n → Fin n
-fromℕ< {zero}  {suc n} m≤n = zero
-fromℕ< {suc m} {suc n} m≤n = suc (fromℕ< (≤-pred m≤n))
+fromℕ< : m ℕ.< n → Fin n
+fromℕ< {zero}  {suc n} z<s = zero
+fromℕ< {suc m} {suc n} (s<s m<n) = suc (fromℕ< m<n)
 
 -- fromℕ<″ m _ = "m".
 
@@ -76,49 +80,53 @@ fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero
 fromℕ<″ (suc m) (ℕ.less-than-or-equal refl) =
   suc (fromℕ<″ m (ℕ.less-than-or-equal refl))
 
--- raise m "i" = "m + i".
+-- canonical liftings of i:Fin m to larger index
 
-raise : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
-raise zero    i = i
-raise (suc n) i = suc (raise n i)
+-- injection on the left: "i" ↑ˡ n = "i" in Fin (m + n)
+infixl 5 _↑ˡ_
+_↑ˡ_ : ∀ {m} → Fin m → ∀ n → Fin (m ℕ.+ n)
+zero    ↑ˡ n = zero
+(suc i) ↑ˡ n = suc (i ↑ˡ n)
+
+-- injection on the right: n ↑ʳ "i" = "n + i" in Fin (n + m)
+infixr 5 _↑ʳ_
+_↑ʳ_ : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
+zero    ↑ʳ i = i
+(suc n) ↑ʳ i = suc (n ↑ʳ i)
 
 -- reduce≥ "m + i" _ = "i".
 
-reduce≥ : ∀ {m n} (i : Fin (m ℕ.+ n)) (i≥m : toℕ i ℕ.≥ m) → Fin n
+reduce≥ : ∀ (i : Fin (m ℕ.+ n)) (i≥m : toℕ i ℕ.≥ m) → Fin n
 reduce≥ {zero}  i       i≥m       = i
 reduce≥ {suc m} (suc i) (s≤s i≥m) = reduce≥ i i≥m
 
 -- inject⋆ m "i" = "i".
 
-inject : ∀ {n} {i : Fin n} → Fin′ i → Fin n
+inject : ∀ {i : Fin n} → Fin′ i → Fin n
 inject {i = suc i} zero    = zero
 inject {i = suc i} (suc j) = suc (inject j)
 
-inject! : ∀ {n} {i : Fin (suc n)} → Fin′ i → Fin n
+inject! : ∀ {i : Fin (suc n)} → Fin′ i → Fin n
 inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
-inject+ : ∀ {m} n → Fin m → Fin (m ℕ.+ n)
-inject+ n zero    = zero
-inject+ n (suc i) = suc (inject+ n i)
-
-inject₁ : ∀ {m} → Fin m → Fin (suc m)
+inject₁ : Fin n → Fin (suc n)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
-inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
-inject≤ {_} {suc n} zero    le = zero
-inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (≤-pred le))
+inject≤ : Fin m → m ℕ.≤ n → Fin n
+inject≤ {_} {suc n} zero    _        = zero
+inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
 
 -- lower₁ "i" _ = "i".
 
-lower₁ : ∀ {n} → (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
-lower₁ {zero} zero ne = ⊥-elim (ne refl)
-lower₁ {suc n} zero _ = zero
-lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
+lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
+lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
+lower₁ {suc n} zero    _  = zero
+lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
 -- A strengthening injection into the minimal Fin fibre.
-strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
+strengthen : ∀ (i : Fin n) → Fin′ (suc i)
 strengthen zero    = zero
 strengthen (suc i) = suc (strengthen i)
 
@@ -133,24 +141,40 @@ splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
 
 -- inverse of above function
 join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
-join m n = [ inject+ n , raise {n} m ]′
+join m n = [ _↑ˡ n , m ↑ʳ_ ]′
 
 -- quotRem k "i" = "i % k" , "i / k"
 -- This is dual to group from Data.Vec.
 
-quotRem : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
-quotRem {suc n} k i with splitAt k i
+quotRem : ∀ n → Fin (m ℕ.* n) → Fin n × Fin m
+quotRem {suc m} n i with splitAt n i
 ... | inj₁ j = j , zero
-... | inj₂ j = Product.map₂ suc (quotRem {n} k j)
+... | inj₂ j = Product.map₂ suc (quotRem {m} n j)
 
 -- a variant of quotRem the type of whose result matches the order of multiplication
-remQuot : ∀ {n} k → Fin (n ℕ.* k) → Fin n × Fin k
-remQuot k = Product.swap ∘ quotRem k
+remQuot : ∀ n → Fin (m ℕ.* n) → Fin m × Fin n
+remQuot i = Product.swap ∘ quotRem i
+
+quotient : ∀ n → Fin (m ℕ.* n) → Fin m
+quotient n = proj₁ ∘ remQuot n
+
+remainder : ∀ n → Fin (m ℕ.* n) → Fin n
+remainder {m} n = proj₂ ∘ remQuot {m} n
 
 -- inverse of remQuot
-combine : ∀ {n k} → Fin n → Fin k → Fin (n ℕ.* k)
-combine {suc n} {k} zero y = inject+ (n ℕ.* k) y
-combine {suc n} {k} (suc x) y = raise k (combine x y)
+combine : Fin m → Fin n → Fin (m ℕ.* n)
+combine {suc m} {n} zero    j = j ↑ˡ (m ℕ.* n)
+combine {suc m} {n} (suc i) j = n ↑ʳ (combine i j)
+
+-- Next in progression after splitAt and remQuot
+finToFun : Fin (m ^ n) → (Fin n → Fin m)
+finToFun {m} {suc n} i zero    = quotient (m ^ n) i
+finToFun {m} {suc n} i (suc j) = finToFun (remainder {m} (m ^ n) i) j
+
+-- inverse of above function
+funToFin : (Fin m → Fin n) → Fin (n ^ m)
+funToFin {zero}  f = zero
+funToFin {suc m} f = combine (f zero) (funToFin (f ∘ suc))
 
 ------------------------------------------------------------------------
 -- Operations
@@ -174,7 +198,7 @@ fold′ {n = suc n} T f x (suc i)  =
 
 -- Lifts functions.
 
-lift : ∀ {m n} k → (Fin m → Fin n) → Fin (k ℕ.+ m) → Fin (k ℕ.+ n)
+lift : ∀ k → (Fin m → Fin n) → Fin (k ℕ.+ m) → Fin (k ℕ.+ n)
 lift zero    f i       = f i
 lift (suc k) f zero    = zero
 lift (suc k) f (suc i) = suc (lift k f i)
@@ -183,7 +207,7 @@ lift (suc k) f (suc i) = suc (lift k f i)
 
 infixl 6 _+_
 
-_+_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (toℕ i ℕ.+ n)
+_+_ : ∀ (i : Fin m) (j : Fin n) → Fin (toℕ i ℕ.+ n)
 zero  + j = j
 suc i + j = suc (i + j)
 
@@ -191,7 +215,7 @@ suc i + j = suc (i + j)
 
 infixl 6 _-_
 
-_-_ : ∀ {m} (i : Fin m) (j : Fin′ (suc i)) → Fin (m ℕ.∸ toℕ j)
+_-_ : ∀ (i : Fin n) (j : Fin′ (suc i)) → Fin (n ℕ.∸ toℕ j)
 i     - zero   = i
 suc i - suc j  = i - j
 
@@ -213,13 +237,13 @@ suc n ℕ-ℕ suc i  = n ℕ-ℕ i
 
 -- pred "i" = "pred i".
 
-pred : ∀ {n} → Fin n → Fin n
+pred : Fin n → Fin n
 pred zero    = zero
 pred (suc i) = inject₁ i
 
 -- opposite "i" = "n - i" (i.e. the additive inverse).
 
-opposite : ∀ {n} → Fin n → Fin n
+opposite : Fin n → Fin n
 opposite {suc n} zero    = fromℕ n
 opposite {suc n} (suc i) = inject₁ (opposite i)
 
@@ -227,32 +251,43 @@ opposite {suc n} (suc i) = inject₁ (opposite i)
 -- This is a variant of the thick function from Conor
 -- McBride's "First-order unification by structural recursion".
 
-punchOut : ∀ {m} {i j : Fin (suc m)} → i ≢ j → Fin m
+punchOut : ∀ {i j : Fin (suc n)} → i ≢ j → Fin n
 punchOut {_}     {zero}   {zero}  i≢j = ⊥-elim (i≢j refl)
 punchOut {_}     {zero}   {suc j} _   = j
-punchOut {suc m} {suc i}  {zero}  _   = zero
-punchOut {suc m} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
+punchOut {suc _} {suc i}  {zero}  _   = zero
+punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
 
 -- The function f(i,j) = if j≥i then j+1 else j
 
-punchIn : ∀ {m} → Fin (suc m) → Fin m → Fin (suc m)
+punchIn : Fin (suc n) → Fin n → Fin (suc n)
 punchIn zero    j       = suc j
 punchIn (suc i) zero    = zero
 punchIn (suc i) (suc j) = suc (punchIn i j)
 
+-- The function f(i,j) such that f(i,j) = if j≤i then j else j-1
+
+pinch : Fin n → Fin (suc n) → Fin n
+pinch {suc n} _       zero    = zero
+pinch {suc n} zero    (suc j) = j
+pinch {suc n} (suc i) (suc j) = suc (pinch i j)
+
 ------------------------------------------------------------------------
 -- Order relations
 
-infix 4 _≤_ _<_
+infix 4 _≤_ _≥_ _<_ _>_
 
-_≤_ : ∀ {n} → Rel (Fin n) ℓ₀
-_≤_ = ℕ._≤_ on toℕ
+_≤_ : IRel Fin 0ℓ
+i ≤ j = toℕ i ℕ.≤ toℕ j
 
-_<_ : ∀ {n} → Rel (Fin n) ℓ₀
-_<_ = ℕ._<_ on toℕ
+_≥_ : IRel Fin 0ℓ
+i ≥ j = toℕ i ℕ.≥ toℕ j
 
-data _≺_ : ℕ → ℕ → Set where
-  _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
+_<_ : IRel Fin 0ℓ
+i < j = toℕ i ℕ.< toℕ j
+
+_>_ : IRel Fin 0ℓ
+i > j = toℕ i ℕ.> toℕ j
+
 
 ------------------------------------------------------------------------
 -- An ordering view.
@@ -264,7 +299,7 @@ data Ordering {n : ℕ} : Fin n → Fin n → Set where
   greater : ∀ greatest (least : Fin′ greatest) →
             Ordering greatest (inject least)
 
-compare : ∀ {n} (i j : Fin n) → Ordering i j
+compare : ∀ (i j : Fin n) → Ordering i j
 compare zero    zero    = equal   zero
 compare zero    (suc j) = less    (suc j) zero
 compare (suc i) zero    = greater (suc i) zero
@@ -280,15 +315,31 @@ compare (suc i) (suc j) with compare i j
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.2
+-- Version 2.0
 
-fromℕ≤ = fromℕ<
-{-# WARNING_ON_USAGE fromℕ≤
-"Warning: fromℕ≤ was deprecated in v1.2.
-Please use fromℕ< instead."
+raise = _↑ʳ_
+{-# WARNING_ON_USAGE raise
+"Warning: raise was deprecated in v2.0.
+Please use _↑_ʳ instead."
 #-}
-fromℕ≤″ = fromℕ<″
-{-# WARNING_ON_USAGE fromℕ≤″
-"Warning: fromℕ≤″ was deprecated in v1.2.
-Please use fromℕ<″ instead."
+inject+ : ∀ {m} n → Fin m → Fin (m ℕ.+ n)
+inject+ n i = i ↑ˡ n
+{-# WARNING_ON_USAGE inject+
+"Warning: inject+ was deprecated in v2.0.
+Please use _↑ˡ_ instead.
+NB argument order has been flipped:
+the left-hand argument is the Fin m
+the right-hand is the Nat index increment."
+#-}
+
+data _≺_ : ℕ → ℕ → Set where
+  _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
+
+{-# WARNING_ON_USAGE _≺_
+"Warning: _≺_ was deprecated in v2.0.
+Please use equivalent relation _<_ instead."
+#-}
+{-# WARNING_ON_USAGE _≻toℕ_
+"Warning: _≻toℕ_ was deprecated in v2.0.
+Please use toℕ<n from Data.Fin.Properties instead."
 #-}

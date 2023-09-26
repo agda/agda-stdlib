@@ -4,20 +4,20 @@
 -- Properties of the sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Definitions hiding (Decidable)
+open import Relation.Binary.Structures using (IsPreorder)
 
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
-open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
 open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
-open import Data.List.Categorical
+open import Data.List.Effectful
 open import Data.List.Relation.Unary.Any using (Any)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
@@ -25,17 +25,17 @@ import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
 open import Data.List.Relation.Binary.Subset.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
-open import Data.Nat using (ℕ; _≤_; s≤s)
-import Data.Product as Prod
+open import Data.Nat using (ℕ; _≤_)
+import Data.Product.Base as Prod
 import Data.Sum.Base as Sum
+open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; _$_)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-open import Function.Equivalence using (module Equivalence)
+open import Function.Bundles using (_↔_; Inverse; Equivalence)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
-open import Relation.Binary using (_⇒_; _Respects_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
@@ -110,7 +110,7 @@ module _ (A : Set a) where
 
 module ⊆-Reasoning (A : Set a) where
   open Setoidₚ.⊆-Reasoning (setoid A) public
-    hiding (step-≋; step-≋˘; _≋⟨⟩_)
+    hiding (step-≋; step-≋˘)
 
 ------------------------------------------------------------------------
 -- Properties of _⊆_ and various list predicates
@@ -129,9 +129,9 @@ All-resp-⊇ = Setoidₚ.All-resp-⊇ (setoid _) (subst _)
 
 map⁺ : ∀ (f : A → B) → xs ⊆ ys → map f xs ⊆ map f ys
 map⁺ f xs⊆ys =
-  _⟨$⟩_ (Inverse.to (map-∈↔ f)) ∘
+  Inverse.to (map-∈↔ f) ∘
   Prod.map₂ (Prod.map₁ xs⊆ys) ∘
-  _⟨$⟩_ (Inverse.from (map-∈↔ f))
+  Inverse.from (map-∈↔ f)
 
 ------------------------------------------------------------------------
 -- ∷
@@ -170,9 +170,9 @@ module _ {xss yss : List (List A)} where
 
   concat⁺ : xss ⊆ yss → concat xss ⊆ concat yss
   concat⁺ xss⊆yss =
-    _⟨$⟩_ (Inverse.to concat-∈↔) ∘
+    Inverse.to concat-∈↔ ∘
     Prod.map₂ (Prod.map₂ xss⊆yss) ∘
-    _⟨$⟩_ (Inverse.from concat-∈↔)
+    Inverse.from concat-∈↔
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -187,9 +187,9 @@ module _ {A B : Set a} (f g : A → List B) where
 
   >>=⁺ : xs ⊆ ys → (∀ {x} → f x ⊆ g x) → (xs >>= f) ⊆ (ys >>= g)
   >>=⁺ xs⊆ys f⊆g =
-    _⟨$⟩_ (Inverse.to >>=-∈↔) ∘
+    Inverse.to >>=-∈↔ ∘
     Prod.map₂ (Prod.map xs⊆ys f⊆g) ∘
-    _⟨$⟩_ (Inverse.from >>=-∈↔)
+    Inverse.from >>=-∈↔
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -198,9 +198,9 @@ module _ {A B : Set a} {fs gs : List (A → B)} where
 
   ⊛⁺ : fs ⊆ gs → xs ⊆ ys → (fs ⊛ xs) ⊆ (gs ⊛ ys)
   ⊛⁺ fs⊆gs xs⊆ys =
-    _⟨$⟩_ (Inverse.to $ ⊛-∈↔ gs) ∘
+    (Inverse.to $ ⊛-∈↔ gs) ∘
     Prod.map₂ (Prod.map₂ (Prod.map fs⊆gs (Prod.map₁ xs⊆ys))) ∘
-    _⟨$⟩_ (Inverse.from $ ⊛-∈↔ fs)
+    (Inverse.from $ ⊛-∈↔ fs)
 
 ------------------------------------------------------------------------
 -- _⊗_
@@ -209,9 +209,9 @@ module _ {A B : Set a} {ws xs : List A} {ys zs : List B} where
 
   ⊗⁺ : ws ⊆ xs → ys ⊆ zs → (ws ⊗ ys) ⊆ (xs ⊗ zs)
   ⊗⁺ ws⊆xs ys⊆zs =
-    _⟨$⟩_ (Inverse.to ⊗-∈↔) ∘
+    Inverse.to ⊗-∈↔ ∘
     Prod.map ws⊆xs ys⊆zs ∘
-    _⟨$⟩_ (Inverse.from ⊗-∈↔)
+    Inverse.from ⊗-∈↔
 
 ------------------------------------------------------------------------
 -- any
@@ -220,26 +220,26 @@ module _ (p : A → Bool) {xs ys} where
 
   any⁺ : xs ⊆ ys → T (any p xs) → T (any p ys)
   any⁺ xs⊆ys =
-    _⟨$⟩_ (Equivalence.to Any.any⇔) ∘
+    Equivalence.to Any.any⇔ ∘
     Any-resp-⊆ xs⊆ys ∘
-    _⟨$⟩_ (Equivalence.from Any.any⇔)
+    Equivalence.from Any.any⇔
 
 ------------------------------------------------------------------------
--- map-with-∈
+-- mapWith∈
 
 module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
          {ys : List A} {g : ∀ {x} → x ∈ ys → B}
          where
 
-  map-with-∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
-                map-with-∈ xs f ⊆ map-with-∈ ys g
-  map-with-∈⁺ xs⊆ys f≈g {x} =
-    _⟨$⟩_ (Inverse.to Any.map-with-∈↔) ∘
+  mapWith∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
+                mapWith∈ xs f ⊆ mapWith∈ ys g
+  mapWith∈⁺ xs⊆ys f≈g {x} =
+    Inverse.to Any.mapWith∈↔ ∘
     Prod.map₂ (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
       x               ≡⟨ x≡fx∈xs ⟩
       f x∈xs          ≡⟨ f≈g x∈xs ⟩
       g (xs⊆ys x∈xs)  ∎)) ∘
-    _⟨$⟩_ (Inverse.from Any.map-with-∈↔)
+    Inverse.from Any.mapWith∈↔
     where open ≡-Reasoning
 
 ------------------------------------------------------------------------
@@ -259,21 +259,6 @@ module _ {P : Pred A p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
-
--- Version 0.16
-
-boolFilter-⊆ : ∀ (p : A → Bool) →
-               (xs : List A) → boolFilter p xs ⊆ xs
-boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
-... | false | hyp = there ∘ hyp
-... | true  | hyp =
-  λ { (here  eq)          → here eq
-    ; (there ∈boolFilter) → there (hyp ∈boolFilter)
-    }
-{-# WARNING_ON_USAGE boolFilter-⊆
-"Warning: boolFilter was deprecated in v0.16.
-Please use filter instead."
-#-}
 
 -- Version 1.5
 
@@ -320,10 +305,15 @@ any-mono = any⁺
 "Warning: any-mono was deprecated in v1.5.
 Please use any⁺ instead."
 #-}
-map-with-∈-mono = map-with-∈⁺
+map-with-∈-mono = mapWith∈⁺
 {-# WARNING_ON_USAGE map-with-∈-mono
 "Warning: map-with-∈-mono was deprecated in v1.5.
-Please use map-with-∈⁺ instead."
+Please use mapWith∈⁺ instead."
+#-}
+map-with-∈⁺ = mapWith∈⁺
+{-# WARNING_ON_USAGE map-with-∈⁺
+"Warning: map-with-∈⁺ was deprecated in v2.0.
+Please use mapWith∈⁺ instead."
 #-}
 filter⁺ = filter-⊆
 {-# WARNING_ON_USAGE filter⁺

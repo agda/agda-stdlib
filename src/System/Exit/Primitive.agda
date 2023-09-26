@@ -4,16 +4,16 @@
 -- Primitive System.Exit simple bindings to Haskell functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module System.Exit.Primitive where
 
-open import Data.Nat.Base using (ℕ)
-open import IO.Primitive using (IO)
+open import Agda.Builtin.Int using (Int)
+open import Agda.Builtin.IO using (IO)
 
 data ExitCode : Set where
   ExitSuccess : ExitCode
-  ExitFailure : ℕ → ExitCode
+  ExitFailure : Int → ExitCode
 
 {-# FOREIGN GHC data AgdaExitCode = AgdaExitSuccess | AgdaExitFailure Integer #-}
 {-# COMPILE GHC ExitCode = data AgdaExitCode (AgdaExitSuccess | AgdaExitFailure) #-}
@@ -24,6 +24,10 @@ data ExitCode : Set where
 toExitCode :: AgdaExitCode -> SE.ExitCode
 toExitCode AgdaExitSuccess = SE.ExitSuccess
 toExitCode (AgdaExitFailure n) = SE.ExitFailure (fromIntegral n)
+
+fromExitCode :: SE.ExitCode -> AgdaExitCode
+fromExitCode SE.ExitSuccess = AgdaExitSuccess
+fromExitCode (SE.ExitFailure n) = AgdaExitFailure (fromIntegral n)
 #-}
 
 postulate

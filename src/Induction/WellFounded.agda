@@ -4,17 +4,18 @@
 -- Well-founded induction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
-open import Relation.Binary
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Induction.WellFounded where
 
-open import Data.Product
-open import Function
+open import Data.Product.Base using (Σ; _,_; proj₁)
+open import Function.Base using (_∘_; flip; _on_)
 open import Induction
-open import Level
-open import Relation.Binary.PropositionalEquality hiding (trans)
+open import Level using (Level; _⊔_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions
+  using (Symmetric; _Respectsʳ_; _Respects_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary
 
 private
@@ -46,12 +47,6 @@ data Acc {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
 WellFounded : Rel A ℓ → Set _
 WellFounded _<_ = ∀ x → Acc _<_ x
 
-Well-founded = WellFounded
-{-# WARNING_ON_USAGE Well-founded
-"Warning: Well-founded was deprecated in v0.15.
-Please use WellFounded instead."
-#-}
-
 ------------------------------------------------------------------------
 -- Basic properties
 
@@ -59,10 +54,13 @@ acc-inverse : ∀ {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
               (y : A) → y < x → Acc _<_ y
 acc-inverse (acc rs) y y<x = rs y y<x
 
-Acc-resp-≈ : {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} → Symmetric _≈_ →
-             _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
-Acc-resp-≈ sym respʳ x≈y (acc rec) =
-  acc (λ z z<y → rec z (respʳ (sym x≈y) z<y))
+module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
+
+  Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
+  Acc-resp-flip-≈ respʳ x≈y (acc rec) = acc λ z z<y → rec z (respʳ x≈y z<y)
+
+  Acc-resp-≈ : Symmetric _≈_ → _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
+  Acc-resp-≈ sym respʳ x≈y wf = Acc-resp-flip-≈ (respʳ ∘ sym) x≈y wf
 
 ------------------------------------------------------------------------
 -- Well-founded induction for the subset of accessible elements:
@@ -80,12 +78,6 @@ module Some {_<_ : Rel A r} {ℓ} where
                  wfRec P f x q ≡ f x (λ y y<x → wfRec P f y (acc-inverse q y y<x))
   unfold-wfRec P f (acc rs) = refl
 
-  wfRec-builder = wfRecBuilder
-  {-# WARNING_ON_USAGE wfRec-builder
-  "Warning: wfRec-builder was deprecated in v0.15.
-\ \Please use wfRecBuilder instead."
-  #-}
-
 
 ------------------------------------------------------------------------
 -- Well-founded induction for all elements, assuming they are all
@@ -100,10 +92,6 @@ module All {_<_ : Rel A r} (wf : WellFounded _<_) ℓ where
   wfRec = build wfRecBuilder
 
   wfRec-builder = wfRecBuilder
-  {-# WARNING_ON_USAGE wfRec-builder
-  "Warning: wfRec-builder was deprecated in v0.15.
-\ \Please use wfRecBuilder instead."
-  #-}
 
 module FixPoint
   {_<_ : Rel A r} (wf : WellFounded _<_)
@@ -135,16 +123,10 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
                    (<₁⇒<₂ : ∀ {x y} → x <₁ y → x <₂ y) where
 
   accessible : Acc _<₂_ ⊆ Acc _<₁_
-  accessible (acc rs) = acc (λ y y<x → accessible (rs y (<₁⇒<₂ y<x)))
+  accessible (acc rs) = acc λ y y<x → accessible (rs y (<₁⇒<₂ y<x))
 
   wellFounded : WellFounded _<₂_ → WellFounded _<₁_
   wellFounded wf = λ x → accessible (wf x)
-
-  well-founded = wellFounded
-  {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15.
-\ \Please use wellFounded instead."
-  #-}
 
 
 -- DEPRECATED in v1.4.
@@ -152,7 +134,7 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
 module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
 
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
-  accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
+  accessible (acc rs) = acc λ y fy<fx → accessible (rs (f y) fy<fx)
 
   wellFounded : WellFounded _<_ → WellFounded (_<_ on f)
   wellFounded wf = λ x → accessible (wf (f x))
@@ -164,10 +146,6 @@ module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
   #-}
   {-# WARNING_ON_USAGE wellFounded
   "Warning: wellFounded was deprecated in v1.4.
-\ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
-  #-}
-  {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15.
 \ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
   #-}
 
@@ -183,7 +161,7 @@ module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
     trans : ∀ {x y z} (x<y : x <⁺ y) (y<z : y <⁺ z) → x <⁺ z
 
   downwardsClosed : ∀ {x y} → Acc _<⁺_ y → x <⁺ y → Acc _<⁺_ x
-  downwardsClosed (acc rs) x<y = acc (λ z z<x → rs z (trans z<x x<y))
+  downwardsClosed (acc rs) x<y = acc λ z z<x → rs z (trans z<x x<y)
 
   mutual
 
@@ -202,14 +180,6 @@ module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
   "Warning: _<⁺_ was deprecated in v1.5.
 \ \Please use TransClosure from Relation.Binary.Construct.Closure.Transitive instead."
   #-}
-  downwards-closed = downwardsClosed
-  {-# WARNING_ON_USAGE downwards-closed
-  "Warning: downwards-closed was deprecated in v0.15."
-  #-}
-  well-founded     = wellFounded
-  {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15."
-  #-}
 
 
 -- DEPRECATED in v1.3.
@@ -218,6 +188,7 @@ module Lexicographic {A : Set a} {B : A → Set b}
                      (RelA : Rel A ℓ₁)
                      (RelB : ∀ x → Rel (B x) ℓ₂) where
 
+  infix 4 _<_
   data _<_ : Rel (Σ A B) (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     left  : ∀ {x₁ y₁ x₂ y₂} (x₁<x₂ : RelA   x₁ x₂) → (x₁ , y₁) < (x₂ , y₂)
     right : ∀ {x y₁ y₂}     (y₁<y₂ : RelB x y₁ y₂) → (x  , y₁) < (x  , y₂)
@@ -257,10 +228,6 @@ module Lexicographic {A : Set a} {B : A → Set b}
   {-# WARNING_ON_USAGE wellFounded
   "Warning: wellFounded was deprecated in v1.3.
 \ \Please use `×-wellFounded` from `Data.Product.Relation.Binary.Lex.Strict` instead."
-  #-}
-  {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15.
-\ \Please use wellFounded instead."
   #-}
 
 

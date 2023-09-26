@@ -4,15 +4,16 @@
 -- Lists, based on the Kleene star and plus, basic types and operations.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Kleene.Base where
 
-open import Data.Product as Product using (_×_; _,_; map₂; map₁; proj₁; proj₂)
-open import Data.Nat     as ℕ       using (ℕ; suc; zero)
-open import Data.Maybe   as Maybe   using (Maybe; just; nothing)
-open import Data.Sum     as Sum     using (_⊎_; inj₁; inj₂)
-open import Level        as Level   using (Level)
+open import Data.Product.Base as Product
+  using (_×_; _,_; map₂; map₁; proj₁; proj₂)
+open import Data.Nat.Base as ℕ using (ℕ; suc; zero)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
+open import Level using (Level)
 
 open import Algebra.Core using (Op₂)
 open import Function.Base
@@ -40,6 +41,7 @@ private
 --   simplify certain proofs.
 
 infixr 5 _&_ ∹_
+infixl 4 _+ _*
 
 record _+ {a} (A : Set a) : Set a
 data _* {a} (A : Set a) : Set a
@@ -101,6 +103,7 @@ module _ (f : B → A → B) where
 -- Concatenation
 
 module Concat where
+  infixr 4 _++++_ _+++*_ _*+++_ _*++*_
   _++++_ : A + → A + → A +
   _+++*_ : A + → A * → A +
   _*+++_ : A * → A + → A +
@@ -269,6 +272,8 @@ module _ (f : A → Maybe B → B) where
 
 ------------------------------------------------------------------------
 -- Indexing
+
+infix 4 _[_]* _[_]+
 
 _[_]* : A * → ℕ → Maybe A
 _[_]+ : A + → ℕ → Maybe A

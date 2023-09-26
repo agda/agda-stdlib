@@ -6,27 +6,30 @@
 
 -- The contents of this file should usually be accessed from `Function`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Function.Structures {a b ℓ₁ ℓ₂}
   {A : Set a} (_≈₁_ : Rel A ℓ₁) -- Equality over the domain
   {B : Set b} (_≈₂_ : Rel B ℓ₂) -- Equality over the codomain
   where
 
-open import Data.Product using (∃; _×_; _,_)
+open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base
 open import Function.Definitions
+open import Function.Consequences
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
 -- One element structures
 ------------------------------------------------------------------------
 
-record IsCongruent (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsCongruent (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    cong           : Congruent _≈₁_ _≈₂_ f
+    cong           : Congruent _≈₁_ _≈₂_ to
     isEquivalence₁ : IsEquivalence _≈₁_
     isEquivalence₂ : IsEquivalence _≈₂_
 
@@ -49,10 +52,10 @@ record IsCongruent (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     open Setoid setoid public
 
 
-record IsInjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsInjection (to : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isCongruent : IsCongruent f
-    injective   : Injective _≈₁_ _≈₂_ f
+    isCongruent : IsCongruent to
+    injective   : Injective _≈₁_ _≈₂_ to
 
   open IsCongruent isCongruent public
 
@@ -63,6 +66,9 @@ record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     surjective  : Surjective _≈₁_ _≈₂_ f
 
   open IsCongruent isCongruent public
+
+  strictlySurjective : StrictlySurjective _≈₂_ f
+  strictlySurjective x = Product.map₂ (λ v → v Eq₁.refl) (surjective x)
 
 
 record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -81,46 +87,58 @@ record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     ; surjective  = surjective
     }
 
+  open IsSurjection isSurjection public
+    using (strictlySurjective)
+
 
 ------------------------------------------------------------------------
 -- Two element structures
 ------------------------------------------------------------------------
 
-record IsLeftInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isCongruent  : IsCongruent f
-    cong₂        : Congruent _≈₂_ _≈₁_ g
-    inverseˡ     : Inverseˡ _≈₁_ _≈₂_ f g
+    isCongruent  : IsCongruent to
+    from-cong    : Congruent _≈₂_ _≈₁_ from
+    inverseˡ     : Inverseˡ _≈₁_ _≈₂_ to from
+
+  open IsCongruent isCongruent public
+    renaming (cong to to-cong)
+
+  strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
+  strictlyInverseˡ x = inverseˡ Eq₁.refl
+
+
+record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isCongruent : IsCongruent to
+    from-cong   : Congruent _≈₂_ _≈₁_ from
+    inverseʳ    : Inverseʳ _≈₁_ _≈₂_ to from
 
   open IsCongruent isCongruent public
     renaming (cong to cong₁)
 
+  strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
+  strictlyInverseʳ x = inverseʳ Eq₂.refl
 
-record IsRightInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+
+record IsInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isCongruent : IsCongruent f
-    cong₂       : Congruent _≈₂_ _≈₁_ g
-    inverseʳ    : Inverseʳ _≈₁_ _≈₂_ f g
-
-  open IsCongruent isCongruent public
-    renaming (cong to cong₁)
-
-
-record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
-  field
-    isLeftInverse : IsLeftInverse f g
-    inverseʳ      : Inverseʳ _≈₁_ _≈₂_ f g
+    isLeftInverse : IsLeftInverse to from
+    inverseʳ      : Inverseʳ _≈₁_ _≈₂_ to from
 
   open IsLeftInverse isLeftInverse public
 
-  isRightInverse : IsRightInverse f g
+  isRightInverse : IsRightInverse to from
   isRightInverse = record
     { isCongruent = isCongruent
-    ; cong₂       = cong₂
+    ; from-cong   = from-cong
     ; inverseʳ    = inverseʳ
     }
 
-  inverse : Inverseᵇ _≈₁_ _≈₂_ f g
+  open IsRightInverse isRightInverse public
+    using (strictlyInverseʳ)
+
+  inverse : Inverseᵇ _≈₁_ _≈₂_ to from
   inverse = inverseˡ , inverseʳ
 
 
@@ -129,24 +147,24 @@ record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ�
 ------------------------------------------------------------------------
 
 record IsBiEquivalence
-  (f : A → B) (g₁ : B → A) (g₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  (to : A → B) (from₁ : B → A) (from₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    f-isCongruent : IsCongruent f
-    cong₂         : Congruent _≈₂_ _≈₁_ g₁
-    cong₃         : Congruent _≈₂_ _≈₁_ g₂
+    to-isCongruent : IsCongruent to
+    from₁-cong    : Congruent _≈₂_ _≈₁_ from₁
+    from₂-cong    : Congruent _≈₂_ _≈₁_ from₂
 
-  open IsCongruent f-isCongruent public
-    renaming (cong to cong₁)
+  open IsCongruent to-isCongruent public
+    renaming (cong to to-cong₁)
 
 
 record IsBiInverse
-  (f : A → B) (g₁ : B → A) (g₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  (to : A → B) (from₁ : B → A) (from₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    f-isCongruent : IsCongruent f
-    cong₂         : Congruent _≈₂_ _≈₁_ g₁
-    inverseˡ      : Inverseˡ _≈₁_ _≈₂_ f g₁
-    cong₃         : Congruent _≈₂_ _≈₁_ g₂
-    inverseʳ      : Inverseʳ _≈₁_ _≈₂_ f g₂
+    to-isCongruent : IsCongruent to
+    from₁-cong     : Congruent _≈₂_ _≈₁_ from₁
+    from₂-cong     : Congruent _≈₂_ _≈₁_ from₂
+    inverseˡ       : Inverseˡ _≈₁_ _≈₂_ to from₁
+    inverseʳ       : Inverseʳ _≈₁_ _≈₂_ to from₂
 
-  open IsCongruent f-isCongruent public
-    renaming (cong to cong₁)
+  open IsCongruent to-isCongruent public
+    renaming (cong to to-cong)

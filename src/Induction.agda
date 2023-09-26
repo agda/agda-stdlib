@@ -11,7 +11,7 @@
 -- if they are normalised. Note also that Agda can do the
 -- normalisation for you.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Induction where
 
@@ -19,7 +19,8 @@ open import Level
 open import Relation.Unary
 
 -- A RecStruct describes the allowed structure of recursion. The
--- examples in Induction.Nat should explain what this is all about.
+-- examples in Data.Nat.Induction should explain what this is all
+-- about.
 
 RecStruct : ∀ {a} → Set a → (ℓ₁ ℓ₂ : Level) → Set _
 RecStruct A ℓ₁ ℓ₂ = Pred A ℓ₁ → Pred A ℓ₂

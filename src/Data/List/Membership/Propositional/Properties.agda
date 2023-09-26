@@ -4,12 +4,12 @@
 -- Properties related to propositional list membership
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Membership.Propositional.Properties where
 
 open import Algebra using (Op₂; Selective)
-open import Category.Monad using (RawMonad)
+open import Effect.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List
@@ -19,22 +19,23 @@ open import Data.List.Membership.Propositional
 import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
-open import Data.List.Categorical using (monad)
+open import Data.List.Effectful using (monad)
 open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
 open import Data.Nat.Properties
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
+open import Data.Product.Properties using (×-≡,≡↔≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (module Equivalence)
-open import Function.Injection using (Injection; Injective; _↣_)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-import Function.Related as Related
+open import Function.Definitions
+import Function.Related.Propositional as Related
+open import Function.Bundles
 open import Function.Related.TypeIsomorphisms
+open import Function.Construct.Identity using (↔-id)
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
@@ -42,7 +43,8 @@ open import Relation.Unary using (_⟨×⟩_; Decidable)
 import Relation.Nullary.Reflects as Reflects
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
-open import Relation.Nullary.Negation
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -78,6 +80,13 @@ mapWith∈-cong (x ∷ xs) f g cong = P.cong₂ _∷_ (cong (here refl))
 mapWith∈≗map : ∀ (f : A → B) xs → mapWith∈ xs (λ {x} _ → f x) ≡ map f xs
 mapWith∈≗map f xs =
   ≋⇒≡ (Membershipₛ.mapWith∈≗map (P.setoid _) (P.setoid _) f xs)
+
+mapWith∈-id : (xs : List A) → mapWith∈ xs (λ {x} _ → x) ≡ xs
+mapWith∈-id = Membershipₛ.mapWith∈-id (P.setoid _)
+
+map-mapWith∈ : (xs : List A) (f : ∀ {x} → x ∈ xs → B) (g : B → C) →
+               map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
+map-mapWith∈ = Membershipₛ.map-mapWith∈ (P.setoid _)
 
 ------------------------------------------------------------------------
 -- map
@@ -140,7 +149,7 @@ module _ {v : A} where
   concat-∈↔ : ∀ {xss : List (List A)} →
               (∃ λ xs → v ∈ xs × xs ∈ xss) ↔ v ∈ concat xss
   concat-∈↔ {xss} =
-    (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong Inv.id $ ×-comm _ _ ⟩
+    (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong (↔-id _) $ ×-comm _ _ ⟩
     (∃ λ xs → xs ∈ xss × v ∈ xs)  ↔⟨ Any↔ ⟩
     Any (Any (v ≡_)) xss          ↔⟨ concat↔ ⟩
     v ∈ concat xss                ∎
@@ -275,8 +284,8 @@ module _ (_≈?_ : B.Decidable {A = A} _≡_) where
 ⊛-∈↔ : ∀ (fs : List (A → B)) {xs y} →
        (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x) ↔ y ∈ (fs ⊛ xs)
 ⊛-∈↔ fs {xs} {y} =
-  (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x)       ↔⟨ Σ.cong Inv.id (∃∃↔∃∃ _) ⟩
-  (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong Inv.id ((_ ∎) ⟨ _×-cong_ ⟩ Any↔) ⟩
+  (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x)       ↔⟨ Σ.cong (↔-id _) (∃∃↔∃∃ _) ⟩
+  (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong (↔-id _) (↔-id _ ⟨ _×-cong_ ⟩ Any↔) ⟩
   (∃ λ f → f ∈ fs × Any (_≡_ y ∘ f) xs)        ↔⟨ Any↔ ⟩
   Any (λ f → Any (_≡_ y ∘ f) xs) fs            ↔⟨ ⊛↔ ⟩
   y ∈ (fs ⊛ xs)                                ∎
@@ -289,7 +298,7 @@ module _ (_≈?_ : B.Decidable {A = A} _≡_) where
        (x ∈ xs × y ∈ ys) ↔ (x , y) ∈ (xs ⊗ ys)
 ⊗-∈↔ {xs = xs} {ys} {x} {y} =
   (x ∈ xs × y ∈ ys)             ↔⟨ ⊗↔′ ⟩
-  Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong ×-≡×≡↔≡,≡ (_ ∎) ⟩
+  Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong (λ _ → ×-≡,≡↔≡) (↔-id _) ⟩
   (x , y) ∈ (xs ⊗ ys)           ∎
   where
   open Related.EquationalReasoning
@@ -334,14 +343,14 @@ module _ {_•_ : Op₂ A} where
 -- Only a finite number of distinct elements can be members of a
 -- given list.
 
-finite : (f : ℕ ↣ A) → ∀ xs → ¬ (∀ i → Injection.to f ⟨$⟩ i ∈ xs)
+finite : (inj : ℕ ↣ A) → ∀ xs → ¬ (∀ i → Injection.to inj i ∈ xs)
 finite inj []       fᵢ∈[]   = ¬Any[] (fᵢ∈[] 0)
-finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
+finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
   where
   open Injection inj renaming (injective to f-inj)
 
   f : ℕ → _
-  f = to ⟨$⟩_
+  f = to
 
   not-x : ∀ {i} → f i ≢ x → f i ∈ xs
   not-x {i} fᵢ≢x with fᵢ∈x∷xs i
@@ -361,14 +370,14 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
     ∈-if-not-i i≢j = not-x (i≢j ∘ f-inj ∘ trans fᵢ≡x ∘ sym)
 
     lemma : ∀ {k j} → i ≤ j → ¬ (i ≤ k) → suc j ≢ k
-    lemma i≤j i≰1+j refl = i≰1+j (≤-step i≤j)
+    lemma i≤j i≰1+j refl = i≰1+j (m≤n⇒m≤1+n i≤j)
 
     f′ⱼ∈xs : ∀ j → f′ j ∈ xs
     f′ⱼ∈xs j with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
     ... | true  | p = ∈-if-not-i (<⇒≢ (s≤s p))
     ... | false | p = ∈-if-not-i (<⇒≢ (≰⇒> p) ∘ sym)
 
-    f′-injective′ : Injective {B = P.setoid _} (→-to-⟶ f′)
+    f′-injective′ : Injective _≡_ _≡_ f′
     f′-injective′ {j} {k} eq with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
                                 | i ≤ᵇ k | Reflects.invert (≤ᵇ-reflects-≤ i k)
     ... | true  | p | true  | q = P.cong pred (f-inj eq)
@@ -376,8 +385,10 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
     ... | false | p | true  | q = contradiction (f-inj eq) (lemma q p ∘ sym)
     ... | false | p | false | q = f-inj eq
 
+    f′-inj : ℕ ↣ _
     f′-inj = record
-      { to        = →-to-⟶ f′
+      { to        = f′
+      ; cong      = P.cong f′
       ; injective = f′-injective′
       }
 
@@ -388,30 +399,3 @@ there-injective-≢∈ : ∀ {xs} {x y z : A} {x∈xs : x ∈ xs} {y∈xs : y �
                      there {x = z} x∈xs ≢∈ there y∈xs →
                      x∈xs ≢∈ y∈xs
 there-injective-≢∈ neq refl eq = neq refl (P.cong there eq)
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-boolFilter-∈ : ∀ (p : A → Bool) (xs : List A) {x} →
-           x ∈ xs → p x ≡ true → x ∈ boolFilter p xs
-boolFilter-∈ p (x ∷ xs) (here refl) px≡true rewrite px≡true = here refl
-boolFilter-∈ p (y ∷ xs) (there pxs) px≡true with p y
-... | true  = there (boolFilter-∈ p xs pxs px≡true)
-... | false =        boolFilter-∈ p xs pxs px≡true
-{-# WARNING_ON_USAGE boolFilter-∈
-"Warning: boolFilter was deprecated in v0.15.
-Please use filter instead."
-#-}
-
--- Version 0.16
-
-filter-∈ = ∈-filter⁺
-{-# WARNING_ON_USAGE filter-∈
-"Warning: filter-∈ was deprecated in v0.16.
-Please use ∈-filter⁺ instead."
-#-}

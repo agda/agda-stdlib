@@ -4,28 +4,38 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Bool.Properties where
 
 open import Algebra.Bundles
+open import Algebra.Lattice.Bundles
+import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
 open import Data.Bool.Base
 open import Data.Empty
-open import Data.Product
-open import Data.Sum.Base
-open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence
-  using (_⇔_; equivalence; module Equivalence)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
+open import Function.Base using (_⟨_⟩_; const; id)
+open import Function.Bundles hiding (LeftInverse; RightInverse; Inverse)
+open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality hiding ([_])
-open import Relation.Nullary using (ofʸ; ofⁿ; does; proof; yes; no)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Poset; Preorder; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
+open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
+open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
+open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
 open import Algebra.Structures {A = Bool} _≡_
+open import Algebra.Lattice.Structures {A = Bool} _≡_
+
 open ≡-Reasoning
 
 private
@@ -182,6 +192,12 @@ true  <? _     = no  (λ())
 <-irrelevant : Irrelevant _<_
 <-irrelevant f<t f<t = refl
 
+<-wellFounded : WellFounded _<_
+<-wellFounded _ = acc <-acc
+  where
+    <-acc : ∀ {x} y → y < x → Acc _<_ y
+    <-acc false f<t = acc (λ _ → λ())
+
 -- Structures
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
@@ -261,6 +277,15 @@ true  <? _     = no  (λ())
 ∨-sel : Selective _∨_
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
+
+∨-conicalˡ : LeftConical false _∨_
+∨-conicalˡ false false _ = refl
+
+∨-conicalʳ : RightConical false _∨_
+∨-conicalʳ false false _ = refl
+
+∨-conical : Conical false _∨_
+∨-conical = ∨-conicalˡ , ∨-conicalʳ
 
 ∨-isMagma : IsMagma _∨_
 ∨-isMagma = record
@@ -386,6 +411,15 @@ true  <? _     = no  (λ())
 ∧-sel false y = inj₁ refl
 ∧-sel true y  = inj₂ refl
 
+∧-conicalˡ : LeftConical true _∧_
+∧-conicalˡ true true _ = refl
+
+∧-conicalʳ : RightConical true _∧_
+∧-conicalʳ true true _ = refl
+
+∧-conical : Conical true _∧_
+∧-conical = ∧-conicalˡ , ∧-conicalʳ
+
 ∧-distribˡ-∨ : _∧_ DistributesOverˡ _∨_
 ∧-distribˡ-∨ true  y z = refl
 ∧-distribˡ-∨ false y z = refl
@@ -502,7 +536,9 @@ true  <? _     = no  (λ())
 ∨-∧-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∨-isCommutativeMonoid
-    ; *-isMonoid = ∧-isMonoid
+    ; *-cong = cong₂ _∧_
+    ; *-assoc = ∧-assoc
+    ; *-identity = ∧-identity
     ; distrib = ∧-distrib-∨
     }
   ; zero = ∧-zero
@@ -528,7 +564,9 @@ true  <? _     = no  (λ())
 ∧-∨-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∧-isCommutativeMonoid
-    ; *-isMonoid = ∨-isMonoid
+    ; *-cong = cong₂ _∨_
+    ; *-assoc = ∨-assoc
+    ; *-identity = ∨-identity
     ; distrib = ∨-distrib-∧
     }
   ; zero = ∨-zero
@@ -569,8 +607,9 @@ true  <? _     = no  (λ())
 
 ∨-∧-isDistributiveLattice : IsDistributiveLattice _∨_ _∧_
 ∨-∧-isDistributiveLattice = record
-  { isLattice    = ∨-∧-isLattice
-  ; ∨-distribʳ-∧ = ∨-distribʳ-∧
+  { isLattice   = ∨-∧-isLattice
+  ; ∨-distrib-∧ = ∨-distrib-∧
+  ; ∧-distrib-∨ = ∧-distrib-∨
   }
 
 ∨-∧-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
@@ -581,9 +620,9 @@ true  <? _     = no  (λ())
 ∨-∧-isBooleanAlgebra : IsBooleanAlgebra _∨_ _∧_ not true false
 ∨-∧-isBooleanAlgebra = record
   { isDistributiveLattice = ∨-∧-isDistributiveLattice
-  ; ∨-complementʳ = ∨-inverseʳ
-  ; ∧-complementʳ = ∧-inverseʳ
-  ; ¬-cong        = cong not
+  ; ∨-complement          = ∨-inverse
+  ; ∧-complement          = ∧-inverse
+  ; ¬-cong                = cong not
   }
 
 ∨-∧-booleanAlgebra : BooleanAlgebra 0ℓ 0ℓ
@@ -592,21 +631,7 @@ true  <? _     = no  (λ())
   }
 
 ------------------------------------------------------------------------
--- Properties of _xor_
-
-xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
-xor-is-ok true  y = refl
-xor-is-ok false y = sym (∧-identityʳ _)
-
-xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
-xor-∧-commutativeRing = commutativeRing
-  where
-  import Algebra.Properties.BooleanAlgebra as BA
-  open BA ∨-∧-booleanAlgebra
-  open XorRing _xor_ xor-is-ok
-
-------------------------------------------------------------------------
--- Miscellaneous other properties
+-- Properties of not
 
 not-involutive : Involutive not
 not-involutive true  = refl
@@ -626,31 +651,109 @@ not-¬ {false} refl ()
 ¬-not {false} {true}  _   = refl
 ¬-not {false} {false} x≢y = ⊥-elim (x≢y refl)
 
+------------------------------------------------------------------------
+-- Properties of _xor_
+
+xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
+xor-is-ok true  y = refl
+xor-is-ok false y = sym (∧-identityʳ _)
+
+true-xor : ∀ x → true xor x ≡ not x
+true-xor false = refl
+true-xor true  = refl
+
+xor-same : ∀ x → x xor x ≡ false
+xor-same false = refl
+xor-same true  = refl
+
+not-distribˡ-xor : ∀ x y → not (x xor y) ≡ (not x) xor y
+not-distribˡ-xor false y = refl
+not-distribˡ-xor true  y = not-involutive _
+
+not-distribʳ-xor : ∀ x y → not (x xor y) ≡ x xor (not y)
+not-distribʳ-xor false y = refl
+not-distribʳ-xor true  y = refl
+
+xor-assoc : Associative _xor_
+xor-assoc true  y z = sym (not-distribˡ-xor y z)
+xor-assoc false y z = refl
+
+xor-comm : Commutative _xor_
+xor-comm false false = refl
+xor-comm false true  = refl
+xor-comm true  false = refl
+xor-comm true  true  = refl
+
+xor-identityˡ : LeftIdentity false _xor_
+xor-identityˡ _ = refl
+
+xor-identityʳ : RightIdentity false _xor_
+xor-identityʳ false = refl
+xor-identityʳ true  = refl
+
+xor-identity : Identity false _xor_
+xor-identity = xor-identityˡ , xor-identityʳ
+
+xor-inverseˡ : LeftInverse true not _xor_
+xor-inverseˡ false = refl
+xor-inverseˡ true = refl
+
+xor-inverseʳ : RightInverse true not _xor_
+xor-inverseʳ x = xor-comm x (not x) ⟨ trans ⟩ xor-inverseˡ x
+
+xor-inverse : Inverse true not _xor_
+xor-inverse = xor-inverseˡ , xor-inverseʳ
+
+∧-distribˡ-xor : _∧_ DistributesOverˡ _xor_
+∧-distribˡ-xor false y z = refl
+∧-distribˡ-xor true  y z = refl
+
+∧-distribʳ-xor : _∧_ DistributesOverʳ _xor_
+∧-distribʳ-xor x false z    = refl
+∧-distribʳ-xor x true false = sym (xor-identityʳ x)
+∧-distribʳ-xor x true true  = sym (xor-same x)
+
+∧-distrib-xor : _∧_ DistributesOver _xor_
+∧-distrib-xor = ∧-distribˡ-xor , ∧-distribʳ-xor
+
+xor-annihilates-not : ∀ x y → (not x) xor (not y) ≡ x xor y
+xor-annihilates-not false y = not-involutive _
+xor-annihilates-not true  y = refl
+
+xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
+xor-∧-commutativeRing = ⊕-∧-commutativeRing
+  where
+  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
+  open XorRing _xor_ xor-is-ok
+
+------------------------------------------------------------------------
+-- Miscellaneous other properties
+
 ⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
 ⇔→≡ {true } {true }         hyp = refl
-⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
-⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp ⟨$⟩ refl
-⇔→≡ {false} {true } {true } hyp = Equivalence.from hyp ⟨$⟩ refl
-⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
+⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp refl)
+⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp refl
+⇔→≡ {false} {true } {true } hyp = Equivalence.from hyp refl
+⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp refl)
 ⇔→≡ {false} {false}         hyp = refl
 
 T-≡ : ∀ {x} → T x ⇔ x ≡ true
-T-≡ {false} = equivalence (λ ())       (λ ())
-T-≡ {true}  = equivalence (const refl) (const _)
+T-≡ {false} = mk⇔ (λ ())       (λ ())
+T-≡ {true}  = mk⇔ (const refl) (const _)
 
 T-not-≡ : ∀ {x} → T (not x) ⇔ x ≡ false
-T-not-≡ {false} = equivalence (const refl) (const _)
-T-not-≡ {true}  = equivalence (λ ())       (λ ())
+T-not-≡ {false} = mk⇔ (const refl) (const _)
+T-not-≡ {true}  = mk⇔ (λ ())       (λ ())
 
 T-∧ : ∀ {x y} → T (x ∧ y) ⇔ (T x × T y)
-T-∧ {true}  {true}  = equivalence (const (_ , _)) (const _)
-T-∧ {true}  {false} = equivalence (λ ())          proj₂
-T-∧ {false} {_}     = equivalence (λ ())          proj₁
+T-∧ {true}  {true}  = mk⇔ (const (_ , _)) (const _)
+T-∧ {true}  {false} = mk⇔ (λ ())          proj₂
+T-∧ {false} {_}     = mk⇔ (λ ())          proj₁
 
 T-∨ : ∀ {x y} → T (x ∨ y) ⇔ (T x ⊎ T y)
-T-∨ {true}  {_}     = equivalence inj₁ (const _)
-T-∨ {false} {true}  = equivalence inj₂ (const _)
-T-∨ {false} {false} = equivalence inj₁ [ id , id ]
+T-∨ {true}  {_}     = mk⇔ inj₁ (const _)
+T-∨ {false} {true}  = mk⇔ inj₂ (const _)
+T-∨ {false} {false} = mk⇔ inj₁ [ id , id ]
 
 T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
@@ -663,10 +766,10 @@ proof (T? false) = ofⁿ λ()
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _
 
-push-function-into-if : ∀ (f : A → B) x {y z} →
-                        f (if x then y else z) ≡ (if x then f y else f z)
-push-function-into-if _ true  = refl
-push-function-into-if _ false = refl
+if-float : ∀ (f : A → B) b {x y} →
+           f (if b then x else y) ≡ (if b then f x else f y)
+if-float _ true  = refl
+if-float _ false = refl
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -674,123 +777,10 @@ push-function-into-if _ false = refl
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.15
+-- Version 2.0
 
-∧-∨-distˡ   = ∧-distribˡ-∨
-{-# WARNING_ON_USAGE ∧-∨-distˡ
-"Warning: ∧-∨-distˡ was deprecated in v0.15.
-Please use ∧-distribˡ-∨ instead."
-#-}
-∧-∨-distʳ   = ∧-distribʳ-∨
-{-# WARNING_ON_USAGE ∧-∨-distʳ
-"Warning: ∧-∨-distʳ was deprecated in v0.15.
-Please use ∧-distribʳ-∨ instead."
-#-}
-distrib-∧-∨ = ∧-distrib-∨
-{-# WARNING_ON_USAGE distrib-∧-∨
-"Warning: distrib-∧-∨ was deprecated in v0.15.
-Please use ∧-distrib-∨ instead."
-#-}
-∨-∧-distˡ   = ∨-distribˡ-∧
-{-# WARNING_ON_USAGE ∨-∧-distˡ
-"Warning: ∨-∧-distˡ was deprecated in v0.15.
-Please use ∨-distribˡ-∧ instead."
-#-}
-∨-∧-distʳ   = ∨-distribʳ-∧
-{-# WARNING_ON_USAGE ∨-∧-distʳ
-"Warning: ∨-∧-distʳ was deprecated in v0.15.
-Please use ∨-distribʳ-∧ instead."
-#-}
-∨-∧-distrib = ∨-distrib-∧
-{-# WARNING_ON_USAGE ∨-∧-distrib
-"Warning: ∨-∧-distrib was deprecated in v0.15.
-Please use ∨-distrib-∧ instead."
-#-}
-∨-∧-abs    = ∨-abs-∧
-{-# WARNING_ON_USAGE ∨-∧-abs
-"Warning: ∨-∧-abs was deprecated in v0.15.
-Please use ∨-abs-∧ instead."
-#-}
-∧-∨-abs    = ∧-abs-∨
-{-# WARNING_ON_USAGE ∧-∨-abs
-"Warning: ∧-∨-abs was deprecated in v0.15.
-Please use ∧-abs-∨ instead."
-#-}
-not-∧-inverseˡ = ∧-inverseˡ
-{-# WARNING_ON_USAGE not-∧-inverseˡ
-"Warning: not-∧-inverseˡ was deprecated in v0.15.
-Please use ∧-inverseˡ instead."
-#-}
-not-∧-inverseʳ = ∧-inverseʳ
-{-# WARNING_ON_USAGE not-∧-inverseʳ
-"Warning: not-∧-inverseʳ was deprecated in v0.15.
-Please use ∧-inverseʳ instead."
-#-}
-not-∧-inverse = ∧-inverse
-{-# WARNING_ON_USAGE not-∧-inverse
-"Warning: not-∧-inverse was deprecated in v0.15.
-Please use ∧-inverse instead."
-#-}
-not-∨-inverseˡ = ∨-inverseˡ
-{-# WARNING_ON_USAGE not-∨-inverseˡ
-"Warning: not-∨-inverseˡ was deprecated in v0.15.
-Please use ∨-inverseˡ instead."
-#-}
-not-∨-inverseʳ = ∨-inverseʳ
-{-# WARNING_ON_USAGE not-∨-inverseʳ
-"Warning: not-∨-inverseʳ was deprecated in v0.15.
-Please use ∨-inverseʳ instead."
-#-}
-not-∨-inverse = ∨-inverse
-{-# WARNING_ON_USAGE not-∨-inverse
-"Warning: not-∨-inverse was deprecated in v0.15.
-Please use ∨-inverse instead."
-#-}
-isCommutativeSemiring-∨-∧ = ∨-∧-isCommutativeSemiring
-{-# WARNING_ON_USAGE isCommutativeSemiring-∨-∧
-"Warning: isCommutativeSemiring-∨-∧ was deprecated in v0.15.
-Please use ∨-∧-isCommutativeSemiring instead."
-#-}
-commutativeSemiring-∨-∧   =  ∨-∧-commutativeSemiring
-{-# WARNING_ON_USAGE commutativeSemiring-∨-∧
-"Warning: commutativeSemiring-∨-∧ was deprecated in v0.15.
-Please use ∨-∧-commutativeSemiring instead."
-#-}
-isCommutativeSemiring-∧-∨ = ∧-∨-isCommutativeSemiring
-{-# WARNING_ON_USAGE isCommutativeSemiring-∧-∨
-"Warning: isCommutativeSemiring-∧-∨ was deprecated in v0.15.
-Please use ∧-∨-isCommutativeSemiring instead."
-#-}
-commutativeSemiring-∧-∨   = ∧-∨-commutativeSemiring
-{-# WARNING_ON_USAGE commutativeSemiring-∧-∨
-"Warning: commutativeSemiring-∧-∨ was deprecated in v0.15.
-Please use ∧-∨-commutativeSemiring instead."
-#-}
-isBooleanAlgebra          = ∨-∧-isBooleanAlgebra
-{-# WARNING_ON_USAGE isBooleanAlgebra
-"Warning: isBooleanAlgebra was deprecated in v0.15.
-Please use ∨-∧-isBooleanAlgebra instead."
-#-}
-booleanAlgebra            = ∨-∧-booleanAlgebra
-{-# WARNING_ON_USAGE booleanAlgebra
-"Warning: booleanAlgebra was deprecated in v0.15.
-Please use ∨-∧-booleanAlgebra instead."
-#-}
-commutativeRing-xor-∧     = xor-∧-commutativeRing
-{-# WARNING_ON_USAGE commutativeRing-xor-∧
-"Warning: commutativeRing-xor-∧ was deprecated in v0.15.
-Please use xor-∧-commutativeRing instead."
-#-}
-proof-irrelevance = T-irrelevant
-{-# WARNING_ON_USAGE proof-irrelevance
-"Warning: proof-irrelevance was deprecated in v0.15.
-Please use T-irrelevant instead."
-#-}
-
--- Version 1.0
-
-T-irrelevance = T-irrelevant
-{-# WARNING_ON_USAGE T-irrelevance
-"Warning: T-irrelevance was deprecated in v1.0.
-Please use T-irrelevant instead."
+push-function-into-if = if-float
+{-# WARNING_ON_USAGE push-function-into-if
+"Warning: push-function-into-if was deprecated in v2.0.
+Please use if-float instead."
 #-}

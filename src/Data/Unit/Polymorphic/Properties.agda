@@ -5,15 +5,23 @@
 -- Defines Decidable Equality and Decidable Ordering as well
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Unit.Polymorphic.Properties where
 
 open import Level
+open import Function.Bundles using (_↔_; mk↔)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁)
+open import Data.Unit.Base renaming (⊤ to ⊤*)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Relation.Nullary
-open import Relation.Binary
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Antisymmetric; Total)
 open import Relation.Binary.PropositionalEquality
 
 private
@@ -96,3 +104,6 @@ _ ≟ _ = yes refl
 ≡-decTotalOrder ℓ = record
   { isDecTotalOrder = ≡-isDecTotalOrder ℓ
   }
+
+⊤↔⊤* : ⊤ {ℓ} ↔ ⊤*
+⊤↔⊤* = mk↔ ((λ _ → refl) , (λ _ → refl))

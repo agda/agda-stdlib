@@ -4,7 +4,7 @@
 -- Subtraction on Bin and some of its properties.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Binary.Subtraction where
 
@@ -16,10 +16,10 @@ open import Data.Nat as ℕ using (ℕ)
 open import Data.Nat.Binary.Base
 open import Data.Nat.Binary.Properties
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
-open import Data.Sum using (inj₁; inj₂)
-open import Data.Vec using ([]; _∷_)
-open import Function using (_∘_; _$_)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; ∃)
+open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Vec.Base using ([]; _∷_)
+open import Function.Base using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Tri; tri<; tri≈; tri>; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
@@ -31,6 +31,10 @@ open import Algebra.Definitions {A = ℕᵇ} _≡_
 open import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
   using (xy∙z≈y∙xz; x∙yz≈y∙xz)
 open import Algebra.Solver.CommutativeMonoid +-0-commutativeMonoid
+
+private
+  variable
+    x y : ℕᵇ
 
 ------------------------------------------------------------------------
 -- Definition
@@ -105,35 +109,35 @@ toℕ-homo-∸ 1+[2 x ] 1+[2 y ] = begin
   where open ≡-Reasoning
 
 fromℕ-homo-∸ : ∀ m n → fromℕ (m ℕ.∸ n) ≡ (fromℕ m) ∸ (fromℕ n)
-fromℕ-homo-∸ = homomorphic₂-inv ∸-magma ℕₚ.∸-magma {toℕ}
-  (cong fromℕ) (toℕ-fromℕ , fromℕ-toℕ) toℕ-homo-∸
+fromℕ-homo-∸ = homomorphic₂-inv ∸-magma ℕₚ.∸-magma
+  (cong fromℕ) toℕ-inverseᵇ toℕ-homo-∸
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
-even∸odd-for≥ : ∀ {x y} → x ≥ y → 2[1+ x ] ∸ 1+[2 y ] ≡ 1+[2 (x ∸ y) ]
+even∸odd-for≥ : x ≥ y → 2[1+ x ] ∸ 1+[2 y ] ≡ 1+[2 (x ∸ y) ]
 even∸odd-for≥ {x} {y} x≥y with x <? y
 ... | no _    = refl
 ... | yes x<y = contradiction x≥y (<⇒≱ x<y)
 
-odd∸even-for> : ∀ {x y} → x > y → 1+[2 x ] ∸ 2[1+ y ] ≡ pred (double (x ∸ y))
+odd∸even-for> : x > y → 1+[2 x ] ∸ 2[1+ y ] ≡ pred (double (x ∸ y))
 odd∸even-for> {x} {y} x>y with x ≤? y
 ... | no _    = refl
 ... | yes x≤y = contradiction x>y (≤⇒≯ x≤y)
 
-x≤y⇒x∸y≡0 : ∀ {x y} → x ≤ y → x ∸ y ≡ 0ᵇ
+x≤y⇒x∸y≡0 : x ≤ y → x ∸ y ≡ 0ᵇ
 x≤y⇒x∸y≡0 {x} {y} = toℕ-injective ∘ trans (toℕ-homo-∸ x y) ∘ ℕₚ.m≤n⇒m∸n≡0 ∘ toℕ-mono-≤
 
-x∸y≡0⇒x≤y : ∀ {x y} → x ∸ y ≡ 0ᵇ → x ≤ y
+x∸y≡0⇒x≤y : x ∸ y ≡ 0ᵇ → x ≤ y
 x∸y≡0⇒x≤y {x} {y} = toℕ-cancel-≤ ∘ ℕₚ.m∸n≡0⇒m≤n ∘ trans (sym (toℕ-homo-∸ x y)) ∘ cong toℕ
 
-x<y⇒y∸x>0 : ∀ {x y} → x < y → y ∸ x > 0ᵇ
+x<y⇒y∸x>0 : x < y → y ∸ x > 0ᵇ
 x<y⇒y∸x>0 {x} {y} = toℕ-cancel-< ∘ subst (ℕ._> 0) (sym (toℕ-homo-∸ y x)) ∘ ℕₚ.m<n⇒0<n∸m ∘ toℕ-mono-<
 
----------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _∸_ and _+_
 
-[x∸y]+y≡x : ∀ {x y} → x ≥ y → (x ∸ y) + y ≡ x
+[x∸y]+y≡x : x ≥ y → (x ∸ y) + y ≡ x
 [x∸y]+y≡x {x} {y} x≥y = toℕ-injective (begin
   toℕ (x ∸ y + y)             ≡⟨ toℕ-homo-+ (x ∸ y) y ⟩
   toℕ (x ∸ y) ℕ.+ toℕ y       ≡⟨ cong (ℕ._+ toℕ y) (toℕ-homo-∸ x y) ⟩
@@ -142,12 +146,12 @@ x<y⇒y∸x>0 {x} {y} = toℕ-cancel-< ∘ subst (ℕ._> 0) (sym (toℕ-homo-∸
   where open ≡-Reasoning
 
 x+y∸y≡x : ∀ x y → (x + y) ∸ y ≡ x
-x+y∸y≡x x y = +-cancelʳ-≡ _ x ([x∸y]+y≡x (x≤y+x y x))
+x+y∸y≡x x y = +-cancelʳ-≡ _ _ x ([x∸y]+y≡x (x≤y+x y x))
 
 [x+y]∸x≡y : ∀ x y → (x + y) ∸ x ≡ y
 [x+y]∸x≡y x y = trans (cong (_∸ x) (+-comm x y)) (x+y∸y≡x y x)
 
-x+[y∸x]≡y : ∀ {x y} → x ≤ y → x + (y ∸ x) ≡ y
+x+[y∸x]≡y : x ≤ y → x + (y ∸ x) ≡ y
 x+[y∸x]≡y {x} {y} x≤y = begin-equality
   x + (y ∸ x)   ≡⟨ +-comm x _ ⟩
   (y ∸ x) + x   ≡⟨ [x∸y]+y≡x x≤y ⟩

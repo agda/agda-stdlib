@@ -7,9 +7,10 @@
 -- See README.Data.Trie.NonDependent for an example of using a trie to
 -- build a lexer.
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
-open import Relation.Binary using (Rel; StrictTotalOrder)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Trie {k e r} (S : StrictTotalOrder k e r) where
 
@@ -18,9 +19,9 @@ open import Size
 open import Data.List.Base using (List; []; _∷_; _++_)
 import Data.List.NonEmpty as List⁺
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; maybe′)
-open import Data.Product as Prod using (∃)
+open import Data.Product.Base using (∃)
 open import Data.These.Base as These using (These)
-open import Function
+open import Function.Base using (_∘′_; const)
 open import Relation.Unary using (IUniversal; _⇒_)
 
 open StrictTotalOrder S
@@ -57,17 +58,17 @@ module _ {v} {V : Value v} where
 ------------------------------------------------------------------------
 -- Lookup
 
-  lookup : ∀ ks → Trie V ∞ → Maybe (These (Val ks) (Tries⁺ (eat V ks) ∞))
-  lookup ks t = t Maybe.>>= Trie⁺.lookup ks
+  lookup : Trie V ∞ → ∀ ks → Maybe (These (Val ks) (Tries⁺ (eat V ks) ∞))
+  lookup t ks = t Maybe.>>= λ ts → Trie⁺.lookup ts ks
 
-  lookupValue : ∀ ks → Trie V ∞ → Maybe (Val ks)
-  lookupValue ks t = t Maybe.>>= Trie⁺.lookupValue ks
+  lookupValue : Trie V ∞ → ∀ ks → Maybe (Val ks)
+  lookupValue t ks = t Maybe.>>= λ ts → Trie⁺.lookupValue ts ks
 
-  lookupTries⁺ : ∀ ks → Trie V ∞ → Maybe (Tries⁺ (eat V ks) ∞)
-  lookupTries⁺ ks t = t Maybe.>>= Trie⁺.lookupTries⁺ ks
+  lookupTries⁺ : Trie V ∞ → ∀ ks → Maybe (Tries⁺ (eat V ks) ∞)
+  lookupTries⁺ t ks = t Maybe.>>= λ ts → Trie⁺.lookupTries⁺ ts ks
 
-  lookupTrie : ∀ k → Trie V ∞ → Trie (eat V (k ∷ [])) ∞
-  lookupTrie k t = t Maybe.>>= Trie⁺.lookupTrie⁺ k
+  lookupTrie : Trie V ∞ → ∀ k → Trie (eat V (k ∷ [])) ∞
+  lookupTrie t k = t Maybe.>>= λ ts → Trie⁺.lookupTrie⁺ ts k
 
 ------------------------------------------------------------------------
 -- Construction

@@ -6,9 +6,9 @@
 -- between the key and value types.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Map
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -18,7 +18,7 @@ open import Data.Bool.Base using (Bool)
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe using (Maybe)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product as Prod using (_×_)
+open import Data.Product.Base as Prod using (_×_)
 open import Function.Base using (_∘′_)
 open import Level using (Level; _⊔_)
 
@@ -57,15 +57,14 @@ insertWith = AVL.insertWith
 delete : Key → Map V → Map V
 delete = AVL.delete
 
-lookup : Key → Map V → Maybe V
+lookup : Map V → Key → Maybe V
 lookup = AVL.lookup
 
 map : (V → W) → Map V → Map W
 map f = AVL.map f
 
-infix 4 _∈?_
-_∈?_ : Key → Map V → Bool
-_∈?_ = AVL._∈?_
+member : Key → Map V → Bool
+member = AVL.member
 
 headTail : Map V → Maybe ((Key × V) × Map V)
 headTail = Maybe.map (Prod.map₁ AVL.toPair) ∘′ AVL.headTail
@@ -115,3 +114,20 @@ intersectionsWith f = AVL.intersectionsWith f
 
 intersections : List (Map V) → Map V
 intersections = AVL.intersections
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infixl 4 _∈?_
+_∈?_ : Key → Map V → Bool
+_∈?_ = member
+{-# WARNING_ON_USAGE _∈?_
+"Warning: _∈?_ was deprecated in v2.0.
+Please use member instead."
+#-}

@@ -6,9 +6,11 @@
 -- Embeddings (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (DecPoset)
+open import Relation.Binary.Structures using (IsDecPartialOrder)
+open import Relation.Binary.Definitions using (Decidable)
 open import Agda.Builtin.Equality using (_≡_)
 
 module Data.List.Relation.Binary.Sublist.DecPropositional

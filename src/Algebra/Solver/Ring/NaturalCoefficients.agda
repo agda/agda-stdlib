@@ -5,16 +5,16 @@
 -- coefficient "ring"
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; just; nothing; map)
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Data.Nat.Base as ℕ
-open import Data.Product using (module Σ)
+open import Data.Product.Base using (module Σ)
 open import Function.Base using (id)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 module Algebra.Solver.Ring.NaturalCoefficients
   {r₁ r₂} (R : CommutativeSemiring r₁ r₂)
@@ -44,8 +44,8 @@ private
   -- There is a homomorphism from ℕ to R.
   --
   -- Note that the optimised _×_ is used rather than unoptimised _×ᵤ_.
-  -- If _×ᵤ_ were used, then Function.Related.TypeIsomorphisms.test would fail
-  -- to type-check.
+  -- If _×ᵤ_ were used, then Function.Related.TypeIsomorphisms.test
+  -- would fail to type-check.
 
   homomorphism : ℕ-ring -Raw-AlmostCommutative⟶ fromCommutativeSemiring R
   homomorphism = record

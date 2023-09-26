@@ -5,23 +5,23 @@
 -- surjections and bijections
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Related where
 
 open import Level using (_⊔_)
 open import Data.Container.Core
-import Function.Related as Related
-open import Relation.Binary
+import Function.Related.Propositional as Related
+open import Relation.Binary.Bundles using (Preorder; Setoid)
 open import Data.Container.Membership
 
 open Related public
-  using (Kind; Symmetric-kind)
+  using (Kind; SymmetricKind)
   renaming ( implication         to subset
-           ; reverse-implication to superset
+           ; reverseImplication  to superset
            ; equivalence         to set
            ; injection           to subbag
-           ; reverse-injection   to superbag
+           ; reverseInjection    to superbag
            ; bijection           to bag
            )
 
@@ -29,7 +29,7 @@ open Related public
             Preorder (s ⊔ p ⊔ ℓ) (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
 [ k ]-Order C X = Related.InducedPreorder₂ k (_∈_ {C = C} {X = X})
 
-[_]-Equality : ∀ {s p ℓ} → Symmetric-kind → Container s p → Set ℓ →
+[_]-Equality : ∀ {s p ℓ} → SymmetricKind → Container s p → Set ℓ →
                Setoid (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
 [ k ]-Equality C X = Related.InducedEquivalence₂ k (_∈_ {C = C} {X = X})
 

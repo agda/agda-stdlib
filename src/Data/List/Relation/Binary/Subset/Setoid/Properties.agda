@@ -4,14 +4,12 @@
 -- Properties of the extensional sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
-open import Relation.Binary hiding (Decidable)
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Base hiding (_∷ʳ_; find)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Membership.Setoid as Membership
@@ -22,12 +20,17 @@ import Data.List.Relation.Binary.Sublist.Setoid as Sublist
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutationₚ
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; _∘₂_)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable) renaming (_⊆_ to _⋐_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 open Setoid using (Carrier)
@@ -119,7 +122,6 @@ module ⊆-Reasoning (S : Setoid a ℓ) where
 
   open Base public
     hiding (step-∼; step-≈; step-≈˘)
-    renaming (_≈⟨⟩_ to _≋⟨⟩_)
 
   infixr 2 step-⊆ step-≋ step-≋˘
   infix 1 step-∈

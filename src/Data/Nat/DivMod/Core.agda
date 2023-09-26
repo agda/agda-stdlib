@@ -4,7 +4,7 @@
 -- Core lemmas for division and modulus operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.DivMod.Core where
 
@@ -14,14 +14,14 @@ open import Agda.Builtin.Nat using ()
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 
 open ≤-Reasoning
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Helper lemmas that have no interpretation for _%_, only for modₕ
 
 private
@@ -38,7 +38,7 @@ private
     modₕ (a + suc acc) n b 0       ≡⟨ cong (λ v → modₕ v n b 0) (+-suc a acc) ⟩
     modₕ (suc a + acc) n b 0       ∎
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Lemmas for modₕ that also have an interpretation for _%_
 
 a[modₕ]1≡0 : ∀ a → modₕ 0 0 a 0 ≡ 0
@@ -120,7 +120,7 @@ a+n[modₕ]n≡a[modₕ]n acc (suc a) (suc n) rewrite +-suc acc n = begin-equali
   mod₁ = modₕ acc       (suc acc + n)
   mod₂ = modₕ (suc acc) (suc acc + n)
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Helper lemmas that have no interpretation for `_/_`, only for `divₕ`
 
 private
@@ -176,7 +176,7 @@ private
   divₕ-offsetEq d (suc n) (suc j) (suc k) j≤d k≤d (inj₃  (eq , k<mod , mod≤1+j)) =
     divₕ-offsetEq d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₃ (eq , k<1+a[modₕ]n⇒k≤a[modₕ]n 0 (suc k) n d k<mod , 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 j n d (<-transʳ z≤n k<mod) mod≤1+j))
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Lemmas for divₕ that also have an interpretation for _/_
 
 -- The quotient and remainder are related to the dividend and
@@ -244,7 +244,7 @@ a*n[divₕ]n≡a acc (suc a) n = begin-equality
   acc + divₕ 0 (k + j) n j       ≡⟨ cong (acc +_) (divₕ-offsetEq _ n j _ (m≤n+m j k) ≤-refl case) ⟩
   acc + divₕ 0 (k + j) n (k + j) ∎
   where
-  case = inj₂′ (refl , +-cancelˡ-≤ (suc k) leq , m≤n+m j k)
+  case = inj₂′ (refl , +-cancelˡ-≤ (suc k) _ _ leq , m≤n+m j k)
 
 divₕ-mono-≤ : ∀ {acc} k {m n o p} → m ≤ n → p ≤ o → divₕ acc (k + o) m o ≤ divₕ acc (k + p) n p
 divₕ-mono-≤ {acc} k {0} {n} {_} {p} z≤n p≤o = acc≤divₕ[acc] (k + p) n p

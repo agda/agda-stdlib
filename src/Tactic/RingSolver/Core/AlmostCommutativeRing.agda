@@ -4,18 +4,18 @@
 -- Almost commutative rings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Tactic.RingSolver.Core.AlmostCommutativeRing where
 
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Structures using (IsCommutativeSemiring)
 open import Algebra.Definitions
 open import Algebra.Bundles using (RawRing; CommutativeRing; CommutativeSemiring)
 import Algebra.Morphism as Morphism
-open import Function hiding (Morphism)
+open import Function.Base using (id)
 open import Level
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 
@@ -79,6 +79,9 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   _^_ = Exp._^′_ rawSemiring
   {-# NOINLINE _^_ #-}
 
+  _-_ : Carrier → Carrier → Carrier
+  _-_ x y = x + (- y)
+
   refl : ∀ {x} → x ≈ x
   refl = IsAlmostCommutativeRing.refl isAlmostCommutativeRing
 
@@ -94,7 +97,7 @@ record _-Raw-AlmostCommutative⟶_
     ⟦_⟧    : Morphism
     +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_
     *-homo : Homomorphic₂ ⟦_⟧ F._*_ T._*_
-    -‿homo : Homomorphic₁ ⟦_⟧ F.-_  T.-_
+    -‿homo : Homomorphic₁ ⟦_⟧ (F.-_)  (T.-_)
     0-homo : Homomorphic₀ ⟦_⟧ F.0#  T.0#
     1-homo : Homomorphic₀ ⟦_⟧ F.1#  T.1#
 
@@ -134,7 +137,7 @@ fromCommutativeRing CR 0≟_ = record
   { isAlmostCommutativeRing = record
       { isCommutativeSemiring = isCommutativeSemiring
       ; -‿cong                = -‿cong
-      ; -‿*-distribˡ          = -‿*-distribˡ
+      ; -‿*-distribˡ          = λ x y → sym (-‿distribˡ-* x y)
       ; -‿+-comm              = ⁻¹-∙-comm
       }
   ; 0≟_ = 0≟_

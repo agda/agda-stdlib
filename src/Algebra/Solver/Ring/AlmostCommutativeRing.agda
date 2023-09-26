@@ -5,7 +5,7 @@
 -- commutative rings), used by the ring solver
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Solver.Ring.AlmostCommutativeRing where
 
@@ -14,9 +14,9 @@ open import Algebra.Structures
 open import Algebra.Definitions
 import Algebra.Morphism as Morphism
 import Algebra.Morphism.Definitions as MorphismDefinitions
-open import Function hiding (Morphism)
+open import Function.Base using (id)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 
 
 record IsAlmostCommutativeRing {a ℓ} {A : Set a} (_≈_ : Rel A ℓ)
@@ -124,7 +124,7 @@ fromCommutativeRing CR = record
   { isAlmostCommutativeRing = record
       { isCommutativeSemiring = isCommutativeSemiring
       ; -‿cong                = -‿cong
-      ; -‿*-distribˡ          = -‿*-distribˡ
+      ; -‿*-distribˡ          = λ x y → sym (-‿distribˡ-* x y)
       ; -‿+-comm              = ⁻¹-∙-comm
       }
   }

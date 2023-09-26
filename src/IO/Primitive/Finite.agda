@@ -5,9 +5,12 @@
 -- Everything is assumed to be finite
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module IO.Primitive.Finite where
+
+-- NOTE: the contents of this module should be accessed via `IO` or
+-- `IO.Finite`.
 
 open import Agda.Builtin.IO
 open import Agda.Builtin.String

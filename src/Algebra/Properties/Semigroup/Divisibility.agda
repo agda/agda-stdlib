@@ -4,10 +4,10 @@
 -- Properties of divisibility over semigroups
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Semigroup)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Relation.Binary.Definitions using (Transitive)
 
 module Algebra.Properties.Semigroup.Divisibility

@@ -5,6 +5,8 @@
 -- library.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --sized-types --guardedness #-}
+
 module README.Data where
 
 -- The top-level folder `Data` contains all the definitions of datatypes
@@ -155,13 +157,13 @@ import Data.Vec.Relation.Unary.All
 import Data.Maybe.Relation.Unary.All
 
 
--- 6. A `Categorical` module/folder that contains categorical
+-- 6. An `Effectful` module/folder that contains effectful
 -- interpretations of the datatype.
 
-import Data.List.Categorical
-import Data.Maybe.Categorical
-import Data.Sum.Categorical.Left
-import Data.Sum.Categorical.Right
+import Data.List.Effectful
+import Data.Maybe.Effectful
+import Data.Sum.Effectful.Left
+import Data.Sum.Effectful.Right
 
 
 -- 7. A `Function` folder that contains lifting of various types of
@@ -217,3 +219,8 @@ import README.Data.Container.Indexed
 -- remembers the things being related.
 
 import README.Data.Wrap
+
+-- Specifying the default value a function's argument should take if it
+-- is not passed explicitly.
+
+import README.Data.Default

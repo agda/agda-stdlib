@@ -4,13 +4,13 @@
 -- An explanation about how mathematical hierarchies are laid out.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --warning noMissingDefinitions #-}
+{-# OPTIONS --allow-unsolved-metas #-}
 
 module README.Design.Hierarchies where
 
-open import Data.Sum using (_⊎_)
+open import Data.Sum.Base using (_⊎_)
 open import Level using (Level; _⊔_; suc)
-open import Relation.Binary using (_Preserves₂_⟶_⟶_)
+open import Relation.Binary.Core using (_Preserves₂_⟶_⟶_)
 
 private
   variable
@@ -42,6 +42,7 @@ private
 -- all four of which are publicly re-exported by `X` itself.
 --
 -- Additionally a hierarchy `X` may contain additional files
+--   ∙ X.Bundles.Raw
 --   ∙ X.Consequences
 --   ∙ X.Constructs
 --   ∙ X.Properties
@@ -253,6 +254,33 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
+-- X.Bundles.Raw
+
+-- Sometimes it is useful to have the bundles without any accompanying
+-- laws. These correspond more or less to what the definitions would
+-- be in non-dependently typed languages like Haskell.
+
+-- Each bundle thereofre has a corresponding raw bundle that only
+-- include the laws but not the operations.
+
+record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+
+record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    ε       : Carrier
+
+------------------------------------------------------------------------
 -- X.Consequences
 
 -- The "consequences" modules contains proofs for how the different
@@ -261,9 +289,11 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 -- one to translate between left and right identities.
 
 total⇒refl : ∀ {_∼_ : Rel A ℓ} → Total _∼_ → Reflexive _∼_
+total⇒refl = {!!}
 
 idˡ+comm⇒idʳ : ∀ {_≈_ : Rel A ℓ} {e _∙_} → Commutative _≈_ _∙_ →
                LeftIdentity _≈_ e _∙_ →  RightIdentity _≈_ e _∙_
+idˡ+comm⇒idʳ = {!!}
 
 ------------------------------------------------------------------------
 -- X.Construct

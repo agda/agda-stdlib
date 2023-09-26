@@ -4,25 +4,26 @@
 -- Properties of products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Properties where
 
 open import Axiom.UniquenessOfIdentityProofs
-open import Data.Product
-open import Function
+open import Data.Product.Base
+open import Function.Base using (_∋_; _∘_; id)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
-open import Relation.Binary using (DecidableEquality)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Product
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no)
 
 private
   variable
-    a b ℓ : Level
+    a b c d ℓ : Level
     A : Set a
     B : Set b
+    C : Set c
+    D : Set d
 
 ------------------------------------------------------------------------
 -- Equality (dependent)
@@ -53,6 +54,9 @@ module _ {B : A → Set b} where
 ,-injective : ∀ {a c : A} {b d : B} → (a , b) ≡ (c , d) → a ≡ c × b ≡ d
 ,-injective refl = refl , refl
 
+map-cong : ∀ {f g : A → C} {h i : B → D} → f ≗ g → h ≗ i → map f h ≗ map g i
+map-cong f≗g h≗i (x , y) = cong₂ _,_ (f≗g x) (h≗i y)
+
 -- The following properties are definitionally true (because of η)
 -- but for symmetry with ⊎ it is convenient to define and name them.
 
@@ -62,39 +66,44 @@ swap-involutive _ = refl
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
 
-Σ-≡,≡↔≡ : {A : Set a} {B : A → Set b} {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} →
-          (∃ λ (p : a₁ ≡ a₂) → subst B p b₁ ≡ b₂) ↔ (p₁ ≡ p₂)
-Σ-≡,≡↔≡ {A = A} {B = B} = mk↔ {f = to} (right-inverse-of , left-inverse-of)
-  where
-  to : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} →
-       Σ (a₁ ≡ a₂) (λ p → subst B p b₁ ≡ b₂) → p₁ ≡ p₂
-  to (refl , refl) = refl
+module _ {A : Set a} {B : A → Set b} {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} where
+  Σ-≡,≡→≡ : Σ (a₁ ≡ a₂) (λ p → subst B p b₁ ≡ b₂) → p₁ ≡ p₂
+  Σ-≡,≡→≡ (refl , refl) = refl
 
-  from : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} →
-         p₁ ≡ p₂ → Σ (a₁ ≡ a₂) (λ p → subst B p b₁ ≡ b₂)
-  from refl = refl , refl
+  Σ-≡,≡←≡ : p₁ ≡ p₂ → Σ (a₁ ≡ a₂) (λ p → subst B p b₁ ≡ b₂)
+  Σ-≡,≡←≡ refl = refl , refl
 
-  left-inverse-of : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} →
-                    (p : Σ (a₁ ≡ a₂) (λ x → subst B x b₁ ≡ b₂)) →
-                    from (to p) ≡ p
-  left-inverse-of (refl , refl) = refl
+  private
+    left-inverse-of : (p : Σ (a₁ ≡ a₂) (λ x → subst B x b₁ ≡ b₂)) →
+                      Σ-≡,≡←≡ (Σ-≡,≡→≡ p) ≡ p
+    left-inverse-of (refl , refl) = refl
 
-  right-inverse-of : {p₁ p₂ : Σ A B} (p : p₁ ≡ p₂) → to (from p) ≡ p
-  right-inverse-of refl = refl
+    right-inverse-of : (p : p₁ ≡ p₂) → Σ-≡,≡→≡ (Σ-≡,≡←≡ p) ≡ p
+    right-inverse-of refl = refl
+
+  Σ-≡,≡↔≡ : (∃ λ (p : a₁ ≡ a₂) → subst B p b₁ ≡ b₂) ↔ p₁ ≡ p₂
+  Σ-≡,≡↔≡ = mk↔ₛ′ Σ-≡,≡→≡ Σ-≡,≡←≡ right-inverse-of left-inverse-of
 
 -- the non-dependent case. Proofs are exactly as above, and straightforward.
-×-≡,≡↔≡ : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} → (a₁ ≡ a₂ × b₁ ≡ b₂) ↔ p₁ ≡ p₂
-×-≡,≡↔≡ = mk↔′
-  (λ {(refl , refl) → refl})
-  (λ { refl         → refl , refl})
-  (λ {refl → refl})
-  (λ {(refl , refl) → refl})
+module _ {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} where
+  ×-≡,≡→≡ : (a₁ ≡ a₂ × b₁ ≡ b₂) → p₁ ≡ p₂
+  ×-≡,≡→≡ (refl , refl) = refl
+
+  ×-≡,≡←≡ : p₁ ≡ p₂ → (a₁ ≡ a₂ × b₁ ≡ b₂)
+  ×-≡,≡←≡ refl = refl , refl
+
+  ×-≡,≡↔≡ : (a₁ ≡ a₂ × b₁ ≡ b₂) ↔ p₁ ≡ p₂
+  ×-≡,≡↔≡ = mk↔ₛ′
+    ×-≡,≡→≡
+    ×-≡,≡←≡
+    (λ { refl          → refl        })
+    (λ { (refl , refl) → refl        })
 
 ------------------------------------------------------------------------
 -- The order of ∃₂ can be swapped
 
 ∃∃↔∃∃ : (R : A → B → Set ℓ) → (∃₂ λ x y → R x y) ↔ (∃₂ λ y x → R x y)
-∃∃↔∃∃ R = mk↔′ to from cong′ cong′
+∃∃↔∃∃ R = mk↔ₛ′ to from cong′ cong′
   where
   to : (∃₂ λ x y → R x y) → (∃₂ λ y x → R x y)
   to (x , y , Rxy) = (y , x , Rxy)

@@ -4,7 +4,7 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.All.Properties where
 
@@ -12,7 +12,7 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
-open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (lookup)
 open import Data.List.Properties as Listₚ using (partition-defn)
 open import Data.List.Membership.Propositional
@@ -25,25 +25,25 @@ open import Data.List.Relation.Unary.All as All using
   )
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
-open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
-open import Data.Nat.Base using (zero; suc; z≤n; s≤s; _<_)
-open import Data.Nat.Properties using (≤-refl; ≤-step)
-open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
+open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
-open import Function.Inverse using (_↔_; inverse)
-open import Function.Surjection using (_↠_; surjection)
+open import Function.Bundles
 open import Level using (Level)
-open import Relation.Binary as B using (REL; Setoid; _Respects_)
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Bundles using (Setoid)
+import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
-open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
-open import Relation.Nullary.Negation using (¬?; contradiction; decidable-stable)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable using (¬?; decidable-stable)
 open import Relation.Unary
   using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
@@ -106,7 +106,7 @@ Any¬⇒¬All (here  ¬p) = ¬p           ∘ All.head
 Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
 
 ¬Any↠All¬ : ∀ {xs} → (¬ Any P xs) ↠ All (¬_ ∘ P) xs
-¬Any↠All¬ = surjection (¬Any⇒All¬ _) All¬⇒¬Any to∘from
+¬Any↠All¬ = mk↠ₛ {to = ¬Any⇒All¬ _} (λ y → All¬⇒¬Any y , to∘from y)
   where
   to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → ¬Any⇒All¬ xs (All¬⇒¬Any ¬p) ≡ ¬p
   to∘from []         = refl
@@ -124,7 +124,7 @@ Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
     }
 
 Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-Any¬⇔¬All dec = equivalence Any¬⇒¬All (¬All⇒Any¬ dec _)
+Any¬⇔¬All dec = mk⇔ Any¬⇒¬All (¬All⇒Any¬ dec _)
 
 private
   -- If equality of functions were extensional, then the logical
@@ -247,59 +247,57 @@ lookup∘updateAt′ i j pxs i≢j =
 -- the defining properties.
 
 -- In the explanations, we make use of shorthand  f = g ↾ x
--- meaning that f and g agree at point x, i.e.  f x ≡ g x.
+-- meaning that f and g agree locally at point x, i.e.  f x ≡ g x.
 
 -- updateAt (i : x ∈ xs)  is a morphism
 -- from the monoid of endofunctions  P x → P x
 -- to the monoid of endofunctions  All P xs → All P xs.
 
--- 1a. relative identity:  f = id ↾ (lookup pxs i)
---                implies  updateAt i f = id ↾ pxs
+-- 1a. local identity:  f = id ↾ (lookup pxs i)
+--             implies  updateAt i f = id ↾ pxs
 
-updateAt-id-relative : ∀ (i : x ∈ xs) {f : P x → P x} (pxs : All P xs) →
-                       f (lookup pxs i) ≡ lookup pxs i →
-                       updateAt i f pxs ≡ pxs
-updateAt-id-relative (here refl)(px ∷ pxs) eq = cong (_∷ pxs) eq
-updateAt-id-relative (there i)  (px ∷ pxs) eq = cong (px ∷_) (updateAt-id-relative i pxs eq)
+updateAt-id-local : ∀ (i : x ∈ xs) {f : P x → P x} (pxs : All P xs) →
+                    f (lookup pxs i) ≡ lookup pxs i →
+                    updateAt i f pxs ≡ pxs
+updateAt-id-local (here refl)(px ∷ pxs) eq = cong (_∷ pxs) eq
+updateAt-id-local (there i)  (px ∷ pxs) eq = cong (px ∷_) (updateAt-id-local i pxs eq)
 
 -- 1b. identity:  updateAt i id ≗ id
 
 updateAt-id : ∀ (i : x ∈ xs) (pxs : All P xs) → updateAt i id pxs ≡ pxs
-updateAt-id i pxs = updateAt-id-relative i pxs refl
+updateAt-id i pxs = updateAt-id-local i pxs refl
 
 -- 2a. relative composition:  f ∘ g = h ↾ (lookup i pxs)
 --                   implies  updateAt i f ∘ updateAt i g = updateAt i h ↾ pxs
 
-updateAt-compose-relative : ∀ (i : x ∈ xs) {f g h : P x → P x} (pxs : All P xs) →
-                            f (g (lookup pxs i)) ≡ h (lookup pxs i) →
-                            updateAt i f (updateAt i g pxs) ≡ updateAt i h pxs
-updateAt-compose-relative (here refl) (px ∷ pxs) fg=h = cong (_∷ pxs) fg=h
-updateAt-compose-relative (there i)   (px ∷ pxs) fg=h =
-  cong (px ∷_) (updateAt-compose-relative i pxs fg=h)
+updateAt-∘-local : ∀ (i : x ∈ xs) {f g h : P x → P x} (pxs : All P xs) →
+                   f (g (lookup pxs i)) ≡ h (lookup pxs i) →
+                   updateAt i f (updateAt i g pxs) ≡ updateAt i h pxs
+updateAt-∘-local (here refl) (px ∷ pxs) fg=h = cong (_∷ pxs) fg=h
+updateAt-∘-local (there i)   (px ∷ pxs) fg=h = cong (px ∷_) (updateAt-∘-local i pxs fg=h)
 
 -- 2b. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
 
-updateAt-compose : ∀ (i : x ∈ xs) {f g : P x → P x} →
-                   updateAt {P = P} i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
-updateAt-compose (here refl) (px ∷ pxs) = refl
-updateAt-compose (there i)   (px ∷ pxs) = cong (px ∷_) (updateAt-compose i pxs)
+updateAt-∘ : ∀ (i : x ∈ xs) {f g : P x → P x} →
+             updateAt {P = P} i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+updateAt-∘ i pxs = updateAt-∘-local i pxs refl
 
 -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
 
 -- 3a.  If    f = g ↾ (lookup pxs i)
 --      then  updateAt i f = updateAt i g ↾ pxs
 
-updateAt-cong-relative : ∀ (i : x ∈ xs) {f g : P x → P x} (pxs : All P xs) →
-                         f (lookup pxs i) ≡ g (lookup pxs i) →
-                         updateAt i f pxs ≡ updateAt i g pxs
-updateAt-cong-relative (here refl) (px ∷ pxs) f=g = cong (_∷ pxs) f=g
-updateAt-cong-relative (there i)   (px ∷ pxs) f=g = cong (px ∷_) (updateAt-cong-relative i pxs f=g)
+updateAt-cong-local : ∀ (i : x ∈ xs) {f g : P x → P x} (pxs : All P xs) →
+                      f (lookup pxs i) ≡ g (lookup pxs i) →
+                      updateAt i f pxs ≡ updateAt i g pxs
+updateAt-cong-local (here refl) (px ∷ pxs) f=g = cong (_∷ pxs) f=g
+updateAt-cong-local (there i)   (px ∷ pxs) f=g = cong (px ∷_) (updateAt-cong-local i pxs f=g)
 
 -- 3b. congruence:  f ≗ g → updateAt i f ≗ updateAt i g
 
 updateAt-cong : ∀ (i : x ∈ xs) {f g : P x → P x} →
                 f ≗ g → updateAt {P = P} i f ≗ updateAt i g
-updateAt-cong i f≗g pxs = updateAt-cong-relative i pxs (f≗g (lookup pxs i))
+updateAt-cong i f≗g pxs = updateAt-cong-local i pxs (f≗g (lookup pxs i))
 
 -- The order of updates at different indices i ≢ j does not matter.
 
@@ -407,7 +405,7 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
 
 ++↔ : (All P xs × All P ys) ↔ All P (xs ++ ys)
-++↔ {xs = zs} = inverse (uncurry ++⁺) (++⁻ zs) ++⁻∘++⁺ (++⁺∘++⁻ zs)
+++↔ {xs = zs} = mk↔ₛ′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
   where
   ++⁺∘++⁻ : ∀ xs (p : All P (xs ++ ys)) → uncurry′ ++⁺ (++⁻ xs p) ≡ p
   ++⁺∘++⁻ []       p          = refl
@@ -524,15 +522,15 @@ all-takeWhile P? (x ∷ xs) with P? x
 
 applyUpTo⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyUpTo f n)
 applyUpTo⁺₁ f zero    Pf = []
-applyUpTo⁺₁ f (suc n) Pf = Pf (s≤s z≤n) ∷ applyUpTo⁺₁ (f ∘ suc) n (Pf ∘ s≤s)
+applyUpTo⁺₁ f (suc n) Pf = Pf z<s ∷ applyUpTo⁺₁ (f ∘ suc) n (Pf ∘ s<s)
 
 applyUpTo⁺₂ : ∀ f n → (∀ i → P (f i)) → All P (applyUpTo f n)
 applyUpTo⁺₂ f n Pf = applyUpTo⁺₁ f n (λ _ → Pf _)
 
 applyUpTo⁻ : ∀ f n → All P (applyUpTo f n) → ∀ {i} → i < n → P (f i)
-applyUpTo⁻ f (suc n) (px ∷ _)   (s≤s z≤n)       = px
-applyUpTo⁻ f (suc n) (_  ∷ pxs) (s≤s (s≤s i<n)) =
-  applyUpTo⁻ (f ∘ suc) n pxs (s≤s i<n)
+applyUpTo⁻ f (suc n) (px ∷ _)   z<s       = px
+applyUpTo⁻ f (suc n) (_  ∷ pxs) (s<s i<n@(s≤s _)) =
+  applyUpTo⁻ (f ∘ suc) n pxs i<n
 
 ------------------------------------------------------------------------
 -- upTo
@@ -545,7 +543,7 @@ all-upTo n = applyUpTo⁺₁ id n id
 
 applyDownFrom⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
 applyDownFrom⁺₁ f zero    Pf = []
-applyDownFrom⁺₁ f (suc n) Pf = Pf ≤-refl ∷ applyDownFrom⁺₁ f n (Pf ∘ ≤-step)
+applyDownFrom⁺₁ f (suc n) Pf = Pf ≤-refl ∷ applyDownFrom⁺₁ f n (Pf ∘ m≤n⇒m≤1+n)
 
 applyDownFrom⁺₂ : ∀ f n → (∀ i → P (f i)) → All P (applyDownFrom f n)
 applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)
@@ -556,12 +554,12 @@ applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)
 tabulate⁺ : ∀ {n} {f : Fin n → A} →
             (∀ i → P (f i)) → All P (tabulate f)
 tabulate⁺ {n = zero}  Pf = []
-tabulate⁺ {n = suc n} Pf = Pf fzero ∷ tabulate⁺ (Pf ∘ fsuc)
+tabulate⁺ {n = suc _} Pf = Pf zero ∷ tabulate⁺ (Pf ∘ suc)
 
 tabulate⁻ : ∀ {n} {f : Fin n → A} →
             All P (tabulate f) → (∀ i → P (f i))
-tabulate⁻ {n = suc n} (px ∷ _) fzero    = px
-tabulate⁻ {n = suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
+tabulate⁻ (px ∷ _) zero    = px
+tabulate⁻ (_ ∷ pf) (suc i) = tabulate⁻ pf i
 
 ------------------------------------------------------------------------
 -- remove
@@ -707,12 +705,12 @@ module _ (p : A → Bool) where
 
   all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
   all⁺ []       _     = []
-  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) ⟨$⟩ px∷xs
+  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) px∷xs
   ... | (px , pxs) = px ∷ all⁺ xs pxs
 
   all⁻ : All (T ∘ p) xs → T (all p xs)
   all⁻ []         = _
-  all⁻ (px ∷ pxs) = Equivalence.from T-∧ ⟨$⟩ (px , all⁻ pxs)
+  all⁻ (px ∷ pxs) = Equivalence.from T-∧ (px , all⁻ pxs)
 
 ------------------------------------------------------------------------
 -- All is anti-monotone.
@@ -732,7 +730,7 @@ module _ (S : Setoid c ℓ) where
   open Setoid S
   open ListEq S
 
-  respects : P Respects _≈_ → (All P) Respects _≋_
+  respects : P B.Respects _≈_ → (All P) B.Respects _≋_
   respects p≈ []            []         = []
   respects p≈ (x≈y ∷ xs≈ys) (px ∷ pxs) = p≈ x≈y px ∷ respects p≈ xs≈ys pxs
 
@@ -742,46 +740,36 @@ module _ (S : Setoid c ℓ) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.16
-
-All-all = all⁻
-{-# WARNING_ON_USAGE All-all
-"Warning: All-all was deprecated in v0.16.
-Please use all⁻ instead."
-#-}
-all-All = all⁺
-{-# WARNING_ON_USAGE all-All
-"Warning: all-All was deprecated in v0.16.
-Please use all⁺ instead."
-#-}
-All-map = map⁺
-{-# WARNING_ON_USAGE All-map
-"Warning: All-map was deprecated in v0.16.
-Please use map⁺ instead."
-#-}
-map-All = map⁻
-{-# WARNING_ON_USAGE map-All
-"Warning: map-All was deprecated in v0.16.
-Please use map⁻ instead."
-#-}
-
--- Version 1.0
-
-filter⁺₁ = all-filter
-{-# WARNING_ON_USAGE filter⁺₁
-"Warning: filter⁺₁ was deprecated in v1.0.
-Please use all-filter instead."
-#-}
-filter⁺₂ = filter⁺
-{-# WARNING_ON_USAGE filter⁺₂
-"Warning: filter⁺₂ was deprecated in v1.0.
-Please use filter⁺ instead."
-#-}
-
 -- Version 1.3
 
 Any¬→¬All = Any¬⇒¬All
 {-# WARNING_ON_USAGE Any¬→¬All
 "Warning: Any¬→¬All was deprecated in v1.3.
 Please use Any¬⇒¬All instead."
+#-}
+
+-- Version 2.0
+
+updateAt-id-relative = updateAt-id-local
+{-# WARNING_ON_USAGE updateAt-id-relative
+"Warning: updateAt-id-relative was deprecated in v2.0.
+Please use updateAt-id-local instead."
+#-}
+
+updateAt-compose-relative = updateAt-∘-local
+{-# WARNING_ON_USAGE updateAt-compose-relative
+"Warning: updateAt-compose-relative was deprecated in v2.0.
+Please use updateAt-∘-local instead."
+#-}
+
+updateAt-compose = updateAt-∘
+{-# WARNING_ON_USAGE updateAt-compose
+"Warning: updateAt-compose was deprecated in v2.0.
+Please use updateAt-∘ instead."
+#-}
+
+updateAt-cong-relative = updateAt-cong-local
+{-# WARNING_ON_USAGE updateAt-cong-relative
+"Warning: updateAt-cong-relative was deprecated in v2.0.
+Please use updateAt-cong-local instead."
 #-}

@@ -8,7 +8,7 @@
 -- Erwig's FGL. Note that this representation does not aim to be
 -- efficient.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Graph.Acyclic where
 
@@ -17,18 +17,18 @@ open import Data.Nat.Base as Nat using (ℕ; zero; suc; _<′_)
 open import Data.Nat.Induction using (<′-rec; <′-Rec)
 import Data.Nat.Properties as Nat
 open import Data.Fin as Fin
-  using (Fin; Fin′; zero; suc; #_; toℕ; _≟_) renaming (_ℕ-ℕ_ to _-_)
+  using (Fin; Fin′; zero; suc; #_; toℕ; _≟_; opposite) renaming (_ℕ-ℕ_ to _-_)
 import Data.Fin.Properties as FP
 import Data.Fin.Permutation.Components as PC
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
 open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
-open import Function
+open import Function.Base using (_$_; _∘′_; _∘_; id)
 open import Relation.Nullary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- A lemma
@@ -283,7 +283,7 @@ reverse {N = N} {E} g =
   foldl (Graph N E)
         (λ i g′ c →
            context (label c)
-                   (List.map (Prod.swap ∘ Prod.map PC.reverse id) $
+                   (List.map (Prod.swap ∘ Prod.map opposite id) $
                              preds g i)
            & g′)
         ∅ g

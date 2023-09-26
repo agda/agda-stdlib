@@ -7,14 +7,20 @@
 -- The definition of lexicographic product used here is suitable if
 -- the left-hand relation is a (non-strict) partial order.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Relation.Binary.Lex.NonStrict where
 
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Poset; DecTotalOrder; TotalOrder)
+open import Relation.Binary.Structures
+  using (IsPartialOrder; IsEquivalence; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Decidable; Antisymmetric; Total; Trichotomous; Irreflexive; Asymmetric; _Respects₂_; tri<; tri>; tri≈)
 open import Relation.Binary.Consequences
 import Relation.Binary.Construct.NonStrictToStrict as Conv
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
@@ -175,42 +181,3 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
 ×-decTotalOrder t₁ t₂ = record
   { isDecTotalOrder = ×-isDecTotalOrder O₁.isDecTotalOrder O₂.isDecTotalOrder
   } where module O₁ = DecTotalOrder t₁; module O₂ = DecTotalOrder t₂
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-_×-isPartialOrder_  = ×-isPartialOrder
-{-# WARNING_ON_USAGE _×-isPartialOrder_
-"Warning: _×-isPartialOrder_ was deprecated in v0.15.
-Please use ×-isPartialOrder instead."
-#-}
-_×-isDecTotalOrder_ = ×-isDecTotalOrder
-{-# WARNING_ON_USAGE _×-isDecTotalOrder_
-"Warning: _×-isDecTotalOrder_ was deprecated in v0.15.
-Please use ×-isDecTotalOrder instead."
-#-}
-_×-poset_           = ×-poset
-{-# WARNING_ON_USAGE _×-poset_
-"Warning: _×-poset_ was deprecated in v0.15.
-Please use ×-poset instead."
-#-}
-_×-totalOrder_      = ×-totalOrder
-{-# WARNING_ON_USAGE _×-totalOrder_
-"Warning: _×-totalOrder_ was deprecated in v0.15.
-Please use ×-totalOrder instead."
-#-}
-_×-decTotalOrder_   = ×-decTotalOrder
-{-# WARNING_ON_USAGE _×-decTotalOrder_
-"Warning: _×-decTotalOrder_ was deprecated in v0.15.
-Please use ×-decTotalOrder instead."
-#-}
-×-≈-respects₂       = ×-respects₂
-{-# WARNING_ON_USAGE ×-≈-respects₂
-"Warning: ×-≈-respects₂ was deprecated in v0.15.
-Please use ×-respects₂ instead."
-#-}

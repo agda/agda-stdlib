@@ -4,13 +4,15 @@
 -- Example use case for a fresh list: sorted list
 ------------------------------------------------------------------------
 
+{-# OPTIONS --sized-types #-}
+
 module README.Data.List.Fresh where
 
 open import Data.Nat
 open import Data.List.Base
 open import Data.List.Fresh
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
-open import Data.Product
+open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Relation.Nary using (⌊_⌋; fromWitness)
 
 -- A sorted list of natural numbers can be seen as a fresh list

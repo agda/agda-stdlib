@@ -4,14 +4,12 @@
 -- Lifting of two predicates
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Relation.Unary.All where
 
-open import Level
-open import Data.Product
-open import Function.Base
-open import Relation.Unary
+open import Level using (Level; _⊔_)
+open import Data.Product.Base using (_×_; _,_)
 
 private
   variable

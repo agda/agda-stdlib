@@ -1,18 +1,21 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of a min operator derived from a spec over a total order.
+-- Properties of a min operator derived from a spec over a total
+-- preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
 open import Algebra.Bundles
 open import Algebra.Construct.NaturalChoice.Base
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_)
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles using (TotalPreorder)
+open import Relation.Binary.Definitions using (Maximum; Minimum)
 open import Relation.Binary.Consequences
 
 module Algebra.Construct.NaturalChoice.MinOp
@@ -142,12 +145,6 @@ x⊓y≤y x y with total x y
   ; comm        = ⊓-comm
   }
 
-⊓-isSemilattice : IsSemilattice _⊓_
-⊓-isSemilattice = record
-  { isBand = ⊓-isBand
-  ; comm   = ⊓-comm
-  }
-
 ⊓-isSelectiveMagma : IsSelectiveMagma _⊓_
 ⊓-isSelectiveMagma = record
   { isMagma = ⊓-isMagma
@@ -161,7 +158,7 @@ x⊓y≤y x y with total x y
   }
 
 ------------------------------------------------------------------------
--- Raw bandles
+-- Raw bundles
 
 ⊓-rawMagma : RawMagma _ _
 ⊓-rawMagma = record { _≈_ = _≈_ ; _∙_ = _⊓_ }
@@ -187,11 +184,6 @@ x⊓y≤y x y with total x y
 ⊓-commutativeSemigroup : CommutativeSemigroup _ _
 ⊓-commutativeSemigroup = record
   { isCommutativeSemigroup = ⊓-isCommutativeSemigroup
-  }
-
-⊓-semilattice : Semilattice _ _
-⊓-semilattice = record
-  { isSemilattice = ⊓-isSemilattice
   }
 
 ⊓-selectiveMagma : SelectiveMagma _ _

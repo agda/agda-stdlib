@@ -4,14 +4,14 @@
 -- Machine words: basic type and conversion functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Word.Base where
 
 open import Level using (zero)
 import Data.Nat.Base as ℕ
-open import Function
-open import Relation.Binary using (Rel)
+open import Function.Base using (_on_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------

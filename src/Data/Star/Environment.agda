@@ -13,7 +13,7 @@ open import Data.Star.List
 open import Data.Star.Decoration
 open import Data.Star.Pointer as Pointer hiding (lookup)
 open import Data.Unit
-open import Function hiding (_∋_)
+open import Function.Base hiding (_∋_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
@@ -42,6 +42,6 @@ Env T Γ = All T Γ
 
 -- A safe lookup function for environments.
 
-lookup : ∀ {Γ σ} {T : Ty → Set} → Γ ∋ σ → Env T Γ → T σ
-lookup i ρ with Pointer.lookup i ρ
+lookup : ∀ {Γ σ} {T : Ty → Set} → Env T Γ → Γ ∋ σ → T σ
+lookup ρ i with Pointer.lookup ρ i
 ... | result refl x = x

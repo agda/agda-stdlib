@@ -1,0 +1,187 @@
+name: Ubuntu build
+on:
+  push:
+    branches:
+      - master
+      - experimental
+  pull_request:
+    branches:
+      - master
+      - experimental
+
+########################################################################
+## CONFIGURATION
+##
+## See SETTINGS for the most important configuration variable: AGDA_COMMIT.
+## It has to be defined as a build step because it is potentially branch
+## dependent.
+##
+## As for the rest:
+##
+## Basically do not touch GHC_VERSION and CABAL_VERSION as long as
+## they aren't a problem in the build. If you have time to waste, it
+## could be worth investigating whether newer versions of ghc produce
+## more efficient Agda executable and could cut down the build time.
+## Just be aware that actions are flaky and small variations are to be
+## expected.
+##
+## The CABAL_INSTALL variable only passes `-O1` optimisations to ghc
+## because github actions cannot currently handle a build using `-O2`.
+## To be experimented with again in the future to see if things have
+## gotten better.
+##
+## We use `v1-install` rather than `install` as Agda as a community
+## hasn't figured out how to manage dependencies with the new local
+## style builds (see agda/agda#4627 for details). Once this is resolved
+## we should upgrade to `install`.
+##
+## The AGDA variable specifies the command to use to build the library.
+## It currently passes the flag `-Werror` to ensure maximal compliance
+## with e.g. not relying on deprecated definitions.
+## The rest are some arbitrary runtime arguments that shape the way Agda
+## allocates and garbage collects memory. It should make things faster.
+## Limits can be bumped if the builds start erroring with out of memory
+## errors.
+##
+########################################################################
+
+env:
+  GHC_VERSION: 8.10.7
+  CABAL_VERSION: 3.6.2.0
+  CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
+  # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
+  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -i src/
+
+jobs:
+  test-stdlib:
+    runs-on: ubuntu-latest
+    steps:
+
+########################################################################
+## SETTINGS
+##
+## AGDA_COMMIT picks the version of Agda to use to build the library.
+## It can either be a hash of a specific commit (to target a bugfix for
+## instance) or a tag e.g. tags/v2.6.1.3 (to target a released version).
+##
+## AGDA_HTML_DIR picks the html/ subdir in which to publish the docs.
+## The content of the html/ directory will be deployed so we put the
+## master version at the root and the experimental in a subdirectory.
+########################################################################
+
+      - name: Initialise variables
+        run: |
+          if [[ '${{ github.ref }}' == 'refs/heads/master' \
+             || '${{ github.base_ref }}' == 'master' ]]; then
+            # Pick Agda version for master
+            echo "AGDA_COMMIT=tags/v2.6.3" >> $GITHUB_ENV;
+            echo "AGDA_HTML_DIR=html" >> $GITHUB_ENV
+          elif [[ '${{ github.ref }}' == 'refs/heads/experimental' \
+               || '${{ github.base_ref }}' == 'experimental' ]]; then
+            # Pick Agda version for experimental
+            echo "AGDA_COMMIT=4d36cb37f8bfb765339b808b13356d760aa6f0ec" >> $GITHUB_ENV;
+            echo "AGDA_HTML_DIR=html/experimental" >> $GITHUB_ENV
+          fi
+
+          if [[ '${{ github.ref }}' == 'refs/heads/master' \
+             || '${{ github.ref }}' == 'refs/heads/experimental' ]]; then
+             echo "AGDA_DEPLOY=true" >> $GITHUB_ENV
+          fi
+
+########################################################################
+## CACHING
+########################################################################
+
+
+      # This caching step allows us to save a lot of building time by only
+      # downloading ghc and cabal and rebuilding Agda if absolutely necessary
+      # i.e. if we change either the version of Agda, ghc, or cabal that we want
+      # to use for the build.
+      - name: Cache ~/.cabal directories
+        uses: actions/cache@v2
+        id: cache-cabal
+        with:
+          path: |
+            ~/.cabal/packages
+            ~/.cabal/store
+            ~/.cabal/bin
+            ~/.cabal/share
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}-cache
+
+########################################################################
+## INSTALLATION STEPS
+########################################################################
+
+      - name: Install ghc & cabal
+        uses: haskell/actions/setup@v1
+        with:
+          ghc-version: ${{ env.GHC_VERSION }}
+          cabal-version: ${{ env.CABAL_VERSION }}
+
+      - name: Put cabal programs in PATH
+        run: echo "~/.cabal/bin" >> $GITHUB_PATH
+
+      - name: Cabal update
+        run: cabal update
+
+      - name: Install alex & happy
+        run: |
+          ${{ env.CABAL_INSTALL }} alex
+          ${{ env.CABAL_INSTALL }} happy
+
+      - name: Download and install Agda from github
+        if: steps.cache-cabal.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/agda/agda
+          cd agda
+          git checkout ${{ env.AGDA_COMMIT }}
+          mkdir -p doc
+          touch doc/user-manual.pdf
+          ${{ env.CABAL_INSTALL }}
+          cd ..
+
+########################################################################
+## TESTING
+########################################################################
+
+      # By default github actions do not pull the repo
+      - name: Checkout stdlib
+        uses: actions/checkout@v2
+
+      - name: Test stdlib
+        run: |
+          cabal run GenerateEverything
+          cp travis/* .
+          ./index.sh
+          ${{ env.AGDA }} --safe EverythingSafe.agda
+          ${{ env.AGDA }} index.agda
+
+      - name: Golden testing
+        run: |
+          ${{ env.CABAL_INSTALL }} clock
+          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
+
+
+########################################################################
+## DOC DEPLOYMENT
+########################################################################
+
+      # We start by retrieving the currently deployed docs
+      # We remove the content that is in the directory we are going to populate
+      # so that stale files corresponding to deleted modules do not accumulate.
+      # We then generate the docs in the AGDA_HTML_DIR subdirectory
+      - name: Generate HTML
+        run: |
+          git clone --depth 1 --single-branch --branch gh-pages https://github.com/agda/agda-stdlib html
+          rm -f '${{ env.AGDA_HTML_DIR }}'/*.html
+          rm -f '${{ env.AGDA_HTML_DIR }}'/*.css
+          ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
+
+      - name: Deploy HTML
+        uses: JamesIves/github-pages-deploy-action@4.1.3
+        if: ${{ success() && env.AGDA_DEPLOY }}
+
+        with:
+          branch: gh-pages
+          folder: html
+          git-config-name: Github Actions

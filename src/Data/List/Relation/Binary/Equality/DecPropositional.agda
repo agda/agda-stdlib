@@ -8,9 +8,9 @@
 -- propositional equality can usually be replaced with propositional
 -- equality.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality
 
 module Data.List.Relation.Binary.Equality.DecPropositional
@@ -31,6 +31,8 @@ open DecSetoidEq (decSetoid _≟_) public
 
 ------------------------------------------------------------------------
 -- Additional proofs
+
+infix 4 _≡?_
 
 _≡?_ : Decidable (_≡_ {A = List A})
 _≡?_ = ≡-dec _≟_

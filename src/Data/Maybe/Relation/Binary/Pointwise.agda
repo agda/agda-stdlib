@@ -4,16 +4,19 @@
 -- Pointwise lifting of relations to maybes
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Binary.Pointwise where
 
 open import Level
-open import Data.Product
+open import Data.Product.Base using (∃; _×_; -,_; _,_)
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Function.Equivalence using (_⇔_; equivalence)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Function.Bundles using (_⇔_; mk⇔)
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
+open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 
@@ -35,7 +38,7 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {R : REL A B ℓ} where
   drop-just (just p) = p
 
   just-equivalence : ∀ {x y} → R x y ⇔ Pointwise R (just x) (just y)
-  just-equivalence = equivalence just drop-just
+  just-equivalence = mk⇔ just drop-just
 
   nothing-inv : ∀ {x} → Pointwise R nothing x → x ≡ nothing
   nothing-inv nothing = P.refl

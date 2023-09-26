@@ -1,39 +1,38 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of the setoid sublist relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid; _⇒_; _Preserves_⟶_)
+open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
 
-open import Level
-
 open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Relation.Unary.Any using (Any)
+import Data.Maybe.Relation.Unary.All as Maybe
+open import Data.Nat.Base using (_≤_; _≥_)
+import Data.Nat.Properties as ℕₚ
+open import Data.Product.Base using (∃; _,_; proj₂)
+open import Function.Base
+open import Function.Bundles using (_⇔_; _⤖_)
+open import Level
+open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Binary.Structures using (IsDecTotalOrder)
+open import Relation.Unary using (Pred; Decidable; Irrelevant)
+open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Decidable using (¬?; yes; no)
+
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
-open import Data.List.Relation.Unary.Any using (Any)
-
-import Data.Maybe.Relation.Unary.All as Maybe
-open import Data.Nat.Base using (_≤_; _≥_; z≤n; s≤s)
-import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃; _,_; proj₂)
-
-open import Function.Base
-open import Function.Bijection   using (_⤖_)
-open import Function.Equivalence using (_⇔_)
-
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
-open import Relation.Unary using (Pred; Decidable; Irrelevant)
-open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation using (¬?)
 
 open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl)
@@ -206,6 +205,29 @@ module _ {as bs : List A} where
 
   reverse⁻ : reverse as ⊆ reverse bs → as ⊆ bs
   reverse⁻ = HeteroProperties.reverse⁻
+
+------------------------------------------------------------------------
+-- merge
+
+module _ {ℓ′} {_≤_ : Rel A ℓ′} (_≤?_ : Decidable₂ _≤_) where
+
+  ⊆-mergeˡ : ∀ xs ys → xs ⊆ merge _≤?_ xs ys
+  ⊆-mergeˡ []       ys = minimum ys
+  ⊆-mergeˡ (x ∷ xs) [] = ⊆-refl
+  ⊆-mergeˡ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | ⊆-mergeˡ xs (y ∷ ys)
+                      | ⊆-mergeˡ (x ∷ xs) ys
+  ... | yes x≤y | rec | _   = ≈-refl ∷ rec
+  ... | no  x≰y | _   | rec = y ∷ʳ rec
+
+  ⊆-mergeʳ : ∀ xs ys → ys ⊆ merge _≤?_ xs ys
+  ⊆-mergeʳ [] ys =  ⊆-refl
+  ⊆-mergeʳ (x ∷ xs) [] = minimum (merge _≤?_ (x ∷ xs) [])
+  ⊆-mergeʳ (x ∷ xs) (y ∷ ys)
+   with x ≤? y  | ⊆-mergeʳ xs (y ∷ ys)
+                      | ⊆-mergeʳ (x ∷ xs) ys
+  ... | yes x≤y | rec | _   = x ∷ʳ rec
+  ... | no  x≰y | _   | rec = ≈-refl ∷ rec
 
 ------------------------------------------------------------------------
 -- Inversion lemmas

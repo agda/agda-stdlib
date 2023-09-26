@@ -5,20 +5,28 @@
 -- natural order.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
 open import Algebra.Core using (Op₂)
+open import Data.Product.Base using (_,_; _×_)
+open import Data.Sum.Base using (inj₁; inj₂)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Decidable)
+
+open import Relation.Nullary.Negation using (¬_)
+import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 module Relation.Binary.Construct.NaturalOrder.Right
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) (_∙_ : Op₂ A) where
 
-open import Data.Product using (_,_; _×_)
-open import Data.Sum.Base using (inj₁; inj₂)
-open import Relation.Nullary using (¬_)
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
-import Relation.Binary.Reasoning.Setoid as EqReasoning
+open import Algebra.Lattice.Structures _≈_
 
 ------------------------------------------------------------------------
 -- Definition
@@ -43,11 +51,11 @@ refl sym idem {x} = sym (idem x)
 
 antisym : IsEquivalence _≈_ → Commutative _∙_ → Antisymmetric _≈_ _≤_
 antisym isEq comm {x} {y} x≤y y≤x = begin
-  x     ≈⟨ x≤y ⟩
-  y ∙ x ≈⟨ comm y x ⟩
-  x ∙ y ≈⟨ sym y≤x ⟩
+  x     ≈⟨  x≤y ⟩
+  y ∙ x ≈⟨  comm y x ⟩
+  x ∙ y ≈˘⟨ y≤x ⟩
   y     ∎
-  where open IsEquivalence isEq; open EqReasoning (record { isEquivalence = isEq })
+  where open EqReasoning (record { isEquivalence = isEq })
 
 total : Symmetric _≈_ → Transitive _≈_ → Selective _∙_ → Commutative _∙_ → Total _≤_
 total sym trans sel comm x y with sel x y

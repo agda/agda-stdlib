@@ -4,12 +4,12 @@
 -- The Pair type which calls out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module Foreign.Haskell.Pair where
 
 open import Level
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 
 private
   variable
@@ -34,6 +34,14 @@ open Pair public
 
 toForeign : A × B → Pair A B
 toForeign (a , b) = (a , b)
+{-# WARNING_ON_USAGE toForeign
+"Warning: toForeign was deprecated in 2.0.
+Please use Foreign.Haskell.Coerce.coerce instead."
+#-}
 
 fromForeign : Pair A B → A × B
 fromForeign (a , b) = (a , b)
+{-# WARNING_ON_USAGE fromForeign
+"Warning: fromForeign was deprecated in 2.0.
+Please use Foreign.Haskell.Coerce.coerce instead."
+#-}

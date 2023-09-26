@@ -4,7 +4,7 @@
 -- Properties satisfied by Heyting Algebra
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -15,16 +15,16 @@ open HeytingAlgebra L
 
 open import Algebra.Core
 open import Algebra.Definitions _≈_
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; flip; _∘_)
 open import Level using (_⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 import Relation.Binary.Reasoning.PartialOrder as POR
-open import Relation.Binary.Properties.MeetSemilattice meetSemilattice
-open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
-import Relation.Binary.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
-open import Relation.Binary.Properties.Lattice lattice
-open import Relation.Binary.Properties.BoundedLattice boundedLattice
+open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
+open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
+import Relation.Binary.Lattice.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
+open import Relation.Binary.Lattice.Properties.Lattice lattice
+open import Relation.Binary.Lattice.Properties.BoundedLattice boundedLattice
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 ------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 -- Example use case for a trie: a wee generic lexer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module README.Data.Trie.NonDependent where
 
@@ -53,17 +53,18 @@ open import Data.Unit
 open import Data.Bool
 open import Data.Char        as Char
 import Data.Char.Properties  as Char
-open import Data.List        as List using (List; []; _∷_)
+open import Data.List.Base   as List using (List; []; _∷_)
 open import Data.List.Fresh  as List# using (List#; []; _∷#_)
 open import Data.Maybe       as Maybe
-open import Data.Product     as Prod
-open import Data.String      as String using (String)
+open import Data.Product.Base as Prod using (_×_; ∃; proj₁; _,_)
+open import Data.String.Base as String using (String)
+open import Data.String.Properties as String using (_≟_)
 open import Data.These       as These
 
 open import Function.Base using (case_of_; _$_; _∘′_; id; _on_)
 open import Relation.Nary
-open import Relation.Binary using (Rel)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Nullary.Decidable using (¬?)
 
 open import Data.Trie Char.<-strictTotalOrder
 open import Data.Tree.AVL.Value
@@ -145,14 +146,14 @@ module _ {t} (L : Lexer t) where
       -- if we are supposed to break on this character, we do
       (true , m)  → push acc $ maybe′ _∷_ id m $ start cs
       -- otherwise we see whether it leads to a recognized keyword
-      (false , _) → case lookupValue (c ∷ []) toks of λ where
+      (false , _) → case lookupValue toks (c ∷ []) of λ where
         -- if so we can forget about the current accumulator and
         -- restart the tokenizer on the rest of the input
         (just tok) → tok ∷ start cs
         -- otherwise we record the character we read in the accumulator,
         -- compute the derivative of the map of keyword candidates and
         -- keep going with the rest of the input
-        nothing    → loop (c ∷ acc) (lookupTrie c toks) cs
+        nothing    → loop (c ∷ acc) (lookupTrie toks c) cs
 
     -- Grab the accumulator and, unless it is empty, push it on top of
     -- the decoded list of tokens

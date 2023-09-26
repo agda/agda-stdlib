@@ -1,25 +1,27 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Function setoids and related constructions
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Congruent`, `IsBijection` and
--- `Bijection`. The alternative definitions found in this file will
--- eventually be deprecated.
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Equality where
 
+{-# WARNING_ON_IMPORT
+"Function.Equality was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
+
 import Function.Base as Fun
-open import Level
-open import Relation.Binary using (Setoid)
+open import Level using (Level; _⊔_)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid; _=[_]⇒_)
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
+import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Properties as P
 
 ------------------------------------------------------------------------
 -- Functions which preserve equality
@@ -121,4 +123,11 @@ flip {B = B} f = record
     { _⟨$⟩_ = λ a → f ⟨$⟩ a ⟨$⟩ b
     ; cong  = λ a₁≈a₂ → cong f a₁≈a₂ (Setoid.refl B) }
   ; cong  = λ b₁≈b₂ a₁≈a₂ → cong f a₁≈a₂ b₁≈b₂
+  }
+
+→-to-⟶ : ∀ {a b ℓ} {A : Set a} {B : Setoid b ℓ} →
+         (A → Setoid.Carrier B) → P.setoid A ⟶ B
+→-to-⟶ {B = B} to = record
+  { _⟨$⟩_ = to
+  ; cong = λ { P.refl → Setoid.refl B }
   }

@@ -1,10 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Injections
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 -- Note: use of the standard function hierarchy is encouraged. The
 -- module `Function` re-exports `Injective`, `IsInjection` and
@@ -13,9 +14,14 @@
 
 module Function.Injection where
 
-open import Function as Fun using () renaming (_∘_ to _⟨∘⟩_)
+{-# WARNING_ON_IMPORT
+"Function.Injection was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
+
+open import Function.Base as Fun using () renaming (_∘_ to _⟨∘⟩_)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_ ; Π) renaming (_∘_ to _⟪∘⟫_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -54,7 +60,10 @@ From ↣ To = Injection (P.setoid From) (P.setoid To)
 injection : ∀ {f t} {From : Set f} {To : Set t} → (to : From → To) →
             (∀ {x y} → to x ≡ to y → x ≡ y) → From ↣ To
 injection to injective = record
-  { to        = P.→-to-⟶ to
+  { to        = record
+    { _⟨$⟩_ = to
+    ; cong = P.cong to
+    }
   ; injective = injective
   }
 

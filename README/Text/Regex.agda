@@ -9,10 +9,10 @@
 module README.Text.Regex where
 
 open import Data.Bool using (true; false)
-open import Data.List using (_∷_; [])
+open import Data.List.Base using (_∷_; [])
 open import Data.String
 open import Function.Base using () renaming (_$′_ to _$_)
-open import Relation.Nullary using (yes)
+open import Relation.Nullary.Decidable using (yes)
 open import Relation.Nullary.Decidable using (True; False; from-yes)
 
 -- Our library available via the Text.Regex module is safe but it works on

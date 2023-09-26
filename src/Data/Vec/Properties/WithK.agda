@@ -12,7 +12,7 @@ module Data.Vec.Properties.WithK where
 open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc)
 open import Data.Vec.Base
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 
 ------------------------------------------------------------------------
@@ -60,17 +60,3 @@ foldl-cong : ∀ {a b} {A : Set a}
              foldl B f d xs ≅ foldl C g e xs
 foldl-cong _   d≅e []       = d≅e
 foldl-cong f≅g d≅e (x ∷ xs) = foldl-cong f≅g (f≅g d≅e) xs
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-[]=-irrelevance = []=-irrelevant
-{-# WARNING_ON_USAGE []=-irrelevance
-"Warning: []=-irrelevance was deprecated in v1.0.
-Please use []=-irrelevant instead."
-#-}

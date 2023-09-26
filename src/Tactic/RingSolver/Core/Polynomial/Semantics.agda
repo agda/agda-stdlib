@@ -4,7 +4,7 @@
 -- "Evaluating" a polynomial, using Horner's method.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 
@@ -13,11 +13,11 @@ module Tactic.RingSolver.Core.Polynomial.Semantics
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Nat     using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Vec     using (Vec; []; _∷_; uncons)
-open import Data.List    using ([]; _∷_)
-open import Data.Product using (_,_; _×_)
-open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
+open import Data.Nat          using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Vec.Base     using (Vec; []; _∷_; uncons)
+open import Data.List.Base    using ([]; _∷_)
+open import Data.Product.Base using (_,_; _×_)
+open import Data.List.Kleene  using (_+; _*; ∹_; _&_; [])
 
 open Homomorphism homo hiding (_^_)
 open import Tactic.RingSolver.Core.Polynomial.Base from
@@ -36,13 +36,14 @@ x *⟨ ρ ⟩^ zero = x
 x *⟨ ρ ⟩^ suc i = ρ ^ (suc i) * x
 {-# INLINE _*⟨_⟩^_ #-}
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Evaluation
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Why do we have three functions here? Why are they so weird looking?
 --
--- These three functions are the main bottleneck for all of the proofs: as such,
--- slight changes can dramatically affect the length of proof code.
+-- These three functions are the main bottleneck for all of the proofs:
+-- as such, slight changes can dramatically affect the length of proof
+-- code.
 
 mutual
 
@@ -59,13 +60,13 @@ mutual
   ⟦ ⅀ xs ⊐ i≤n ⟧ Ρ = ⅀⟦ xs ⟧ (drop-1 i≤n Ρ)
   {-# INLINE ⟦_⟧ #-}
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Performance
---------------------------------------------------------------------------------
--- As you might imagine, the implementation of the functions above seriously
--- affect performance. What you might not realise, though, is that the most
--- important component is the *order of the arguments*. For instance, if
--- we change:
+------------------------------------------------------------------------
+-- As you might imagine, the implementation of the functions above
+-- seriously affect performance. What you might not realise, though,
+-- is that the most important component is the *order of the arguments*.
+-- For instance, if we change:
 --
 --   (x , xs) ⟦∷⟧ (ρ , ρs) = ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
 --

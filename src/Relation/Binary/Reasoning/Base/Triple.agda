@@ -8,9 +8,12 @@
 -- See `Data.Nat.Properties` or `Relation.Binary.Reasoning.PartialOrder`
 -- for examples of how to instantiate this module.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions
+  using (Transitive; _Respects₂_; Trans; Irreflexive)
 
 module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} {_<_ : Rel A ℓ₃}
@@ -19,14 +22,15 @@ module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a
   (<-≤-trans : Trans _<_ _≤_ _<_) (≤-<-trans : Trans _≤_ _<_ _<_)
   where
 
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product.Base using (proj₁; proj₂)
 open import Function.Base using (case_of_; id)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
-open import Relation.Nullary using (Dec; yes; no; ¬_)
-open import Relation.Nullary.Decidable using (True; toWitness)
+open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core
+  using (Dec; yes; no; True; toWitness)
 
 open IsPreorder isPreorder
   renaming
@@ -96,8 +100,8 @@ begin-equality_ r {s} = extractEquality (toWitness s)
 
 
 begin-irrefl : Irreflexive _≈_ _<_ →
-                ∀ {x} (r : x IsRelatedTo x) {s : True (IsStrict? r)} →
-                ∀ {a} {A : Set a} → A
+               ∀ {x} (r : x IsRelatedTo x) {s : True (IsStrict? r)} →
+               ∀ {a} {A : Set a} → A
 begin-irrefl <-irrefl {x} r {s} =  contradiction x<x x≮x where
 
   x<x : x < x

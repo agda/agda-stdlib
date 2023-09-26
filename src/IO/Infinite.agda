@@ -4,7 +4,7 @@
 -- IO only involving infinite objects
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module IO.Infinite where
 
@@ -35,10 +35,6 @@ private
 
 getContents : IO Costring
 getContents = lift Prim.getContents
-
-private
-  lift′ : Prim.IO Unit0.⊤ → IO {a} ⊤
-  lift′ io = lift (io Prim.>>= λ _ → Prim.return _)
 
 writeFile : String → Costring → IO {a} ⊤
 writeFile f s = lift′ (Prim.writeFile f s)

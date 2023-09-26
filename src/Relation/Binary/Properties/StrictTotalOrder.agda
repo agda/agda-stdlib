@@ -4,15 +4,15 @@
 -- Properties satisfied by strict partial orders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (StrictTotalOrder; DecTotalOrder)
 
 module Relation.Binary.Properties.StrictTotalOrder
        {s₁ s₂ s₃} (STO : StrictTotalOrder s₁ s₂ s₃)
        where
 
-open Relation.Binary.StrictTotalOrder STO
+open StrictTotalOrder STO
 open import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_
 import Relation.Binary.Properties.StrictPartialOrder as SPO
 open import Relation.Binary.Consequences

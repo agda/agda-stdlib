@@ -4,7 +4,7 @@
 -- Properties of disjoint lists (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Disjoint.Setoid.Properties where
 
@@ -14,10 +14,11 @@ import Data.List.Relation.Unary.Any as Any
 open import Data.List.Relation.Unary.All as All
 open import Data.List.Relation.Unary.All.Properties using (¬Any⇒All¬)
 open import Data.List.Relation.Unary.Any.Properties using (++⁻)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Relation.Binary
-open import Relation.Nullary using (¬_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Symmetric)
+open import Relation.Nullary.Negation using (¬_)
 
 ------------------------------------------------------------------------
 -- Relational properties

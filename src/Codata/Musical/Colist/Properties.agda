@@ -4,7 +4,7 @@
 -- Properties of coinductive lists and their operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Properties where
 

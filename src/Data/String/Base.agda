@@ -4,24 +4,25 @@
 -- Strings: builtin type and basic operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.String.Base where
 
-open import Level using (zero)
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Char.Base as Char using (Char)
 open import Data.List.Base as List using (List; [_]; _∷_; [])
 open import Data.List.NonEmpty.Base as NE using (List⁺)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Core using (Lex-<; Lex-≤)
+open import Data.Maybe.Base as Maybe using (Maybe)
 open import Data.Nat.Base using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
-
+open import Data.Product.Base using (proj₁; proj₂)
 open import Function.Base using (_on_; _∘′_; _∘_)
+open import Level using (Level; 0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable.Core using (does)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -33,7 +34,8 @@ import Agda.Builtin.String as String
 
 open String public using ( String )
   renaming
-  ( primStringToList   to toList
+  ( primStringUncons   to uncons
+  ; primStringToList   to toList
   ; primStringFromList to fromList
   ; primShowString     to show
   )
@@ -44,21 +46,29 @@ open String public using ( String )
 -- Pointwise equality on Strings
 
 infix 4 _≈_
-_≈_ : Rel String zero
+_≈_ : Rel String 0ℓ
 _≈_ = Pointwise _≡_ on toList
 
 -- Lexicographic ordering on Strings
 
 infix 4 _<_
-_<_ : Rel String zero
+_<_ : Rel String 0ℓ
 _<_ = Lex-< _≡_ Char._<_ on toList
 
 infix 4 _≤_
-_≤_ : Rel String zero
+_≤_ : Rel String 0ℓ
 _≤_ = Lex-≤ _≡_ Char._<_ on toList
 
 ------------------------------------------------------------------------
 -- Operations
+
+-- List-like operations
+
+head : String → Maybe Char
+head = Maybe.map proj₁ ∘′ uncons
+
+tail : String → Maybe String
+tail = Maybe.map proj₂ ∘′ uncons
 
 -- Additional conversion functions
 
@@ -146,3 +156,32 @@ fromAlignment : Alignment → ℕ → String → String
 fromAlignment Left   = padRight ' '
 fromAlignment Center = padBoth ' ' ' '
 fromAlignment Right  = padLeft ' '
+
+------------------------------------------------------------------------
+-- Splitting strings
+
+wordsByᵇ : (Char → Bool) → String → List String
+wordsByᵇ p = List.map fromList ∘ List.wordsByᵇ p ∘ toList
+
+wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+wordsBy P? = wordsByᵇ (does ∘ P?)
+
+words : String → List String
+words = wordsByᵇ Char.isSpace
+
+-- `words` ignores contiguous whitespace
+_ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
+_ = refl
+
+linesByᵇ : (Char → Bool) → String → List String
+linesByᵇ p = List.map fromList ∘ List.linesByᵇ p ∘ toList
+
+linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+linesBy P? = linesByᵇ (does ∘ P?)
+
+lines : String → List String
+lines = linesByᵇ ('\n' Char.≈ᵇ_)
+
+-- `lines` preserves empty lines
+_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
+_ = refl

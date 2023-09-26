@@ -8,19 +8,19 @@
 -- `Any-cong` in `Data.Any.Properties` which relies on `Any↔` in this
 -- file.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Membership.Propositional.Properties.Core where
 
 open import Function.Base using (flip; id; _∘_)
-open import Function.Inverse using (_↔_; inverse)
+open import Function.Bundles
 open import Data.List.Base using (List)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
   using (_,_; proj₁; proj₂; uncurry′; ∃; _×_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
 open import Relation.Unary using (Pred; _⊆_)
 
@@ -80,7 +80,7 @@ module _ {P : Pred A p} where
   ∃∈-Any = uncurry′ lose ∘ proj₂
 
   Any↔ : ∀ {xs} → (∃ λ x → x ∈ xs × P x) ↔ Any P xs
-  Any↔ = inverse ∃∈-Any find from∘to lose∘find
+  Any↔ = mk↔ₛ′ ∃∈-Any find lose∘find from∘to
     where
     from∘to : ∀ v → find (∃∈-Any v) ≡ v
     from∘to p = find∘lose _ (proj₁ (proj₂ p)) (proj₂ (proj₂ p))

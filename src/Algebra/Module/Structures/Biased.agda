@@ -5,14 +5,17 @@
 -- structures in the Algebra.Module hierarchy.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Module.Structures.Biased where
 
 open import Algebra.Bundles
 open import Algebra.Core
+open import Algebra.Module.Core
 open import Algebra.Module.Consequences
 open import Algebra.Module.Structures
 open import Function.Base using (flip)

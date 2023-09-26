@@ -4,11 +4,13 @@
 -- Finite maps with indexed keys and values, based on AVL trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)
+open import Data.Product.Base
+  using (map₁; map₂; ∃; _×_; Σ-syntax; proj₁; _,_; -,_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsStrictTotalOrder)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 import Data.Tree.AVL.Value
 
 module Data.Tree.AVL.IndexedMap
@@ -52,7 +54,8 @@ private
   open module AVL =
     Data.Tree.AVL (record { isStrictTotalOrder = isStrictTotalOrder })
     using () renaming (Tree to Map′)
-  Map = Map′ (AVL.MkValue (Value ∘ proj₁) (subst Value ∘′ cong proj₁))
+
+Map = Map′ (AVL.MkValue (Value ∘ proj₁) (subst Value ∘′ cong proj₁))
 
 -- Repackaged functions.
 
@@ -68,19 +71,17 @@ insert k v = AVL.insert (-, k) v
 delete : ∀ {i} → Key i → Map → Map
 delete k = AVL.delete (-, k)
 
-lookup : ∀ {i} → Key i → Map → Maybe (Value i)
-lookup k m = AVL.lookup (-, k) m
+lookup : ∀ {i} → Map → Key i → Maybe (Value i)
+lookup m k = AVL.lookup m (-, k)
 
-infix 4 _∈?_
-
-_∈?_ : ∀ {i} → Key i → Map → Bool
-_∈?_ k = AVL._∈?_ (-, k)
+member : ∀ {i} → Key i → Map → Bool
+member k = AVL.member (-, k)
 
 headTail : Map → Maybe (KV × Map)
-headTail m = Maybe.map (Prod.map₁ (toKV ∘′ AVL.toPair)) (AVL.headTail m)
+headTail m = Maybe.map (map₁ (toKV ∘′ AVL.toPair)) (AVL.headTail m)
 
 initLast : Map → Maybe (Map × KV)
-initLast m = Maybe.map (Prod.map₂ (toKV ∘′ AVL.toPair)) (AVL.initLast m)
+initLast m = Maybe.map (map₂ (toKV ∘′ AVL.toPair)) (AVL.initLast m)
 
 foldr : (∀ {k} → Value k → A → A) → A → Map → A
 foldr cons = AVL.foldr cons
@@ -93,3 +94,20 @@ toList = List.map (toKV ∘′ AVL.toPair) ∘ AVL.toList
 
 size : Map → ℕ
 size = AVL.size
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+infixl 4 _∈?_
+_∈?_ : ∀ {i} → Key i → Map → Bool
+_∈?_ = member
+{-# WARNING_ON_USAGE _∈?_
+"Warning: _∈?_ was deprecated in v2.0.
+Please use member instead."
+#-}

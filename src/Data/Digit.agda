@@ -4,26 +4,25 @@
 -- Digits and digit expansions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Digit where
 
 open import Data.Nat.Base
-open import Data.Nat.Properties
-open import Data.Nat.Solver
+open import Data.Nat.Properties using (_≤?_; _<?_; ≤⇒≤′; module ≤-Reasoning; m≤m+n)
+open import Data.Nat.Solver using (module +-*-Solver)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Char using (Char)
+open import Data.Char.Base using (Char)
 open import Data.List.Base
-open import Data.Product
+open import Data.Product.Base using (∃; _,_)
 open import Data.Vec.Base as Vec using (Vec; _∷_; [])
 open import Data.Nat.DivMod
 open import Data.Nat.Induction
-open import Relation.Nullary using (does)
-open import Relation.Nullary.Decidable
-open import Relation.Binary using (Decidable)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
-open import Function
+open import Relation.Nullary.Decidable using (True; does; toWitness)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+open import Function.Base using (_$_)
 
 ------------------------------------------------------------------------
 -- Digits
@@ -51,16 +50,16 @@ Bit     = Digit 2
 
 toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
 toNatDigits base@(suc zero)    n = replicate n 1
-toNatDigits base@(suc (suc b)) n = aux (<-wellFounded n) []
+toNatDigits base@(suc (suc _)) n = aux (<-wellFounded-fast n) []
   where
   aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
-  aux {zero}        _        xs =  (0 ∷ xs)
-  aux {n@(suc n-1)} (acc wf) xs with does (0 <? n / base)
-  ... | false =  (n % base) ∷ xs
-  ... | true  =  aux (wf (n / base) q<n) ((n % base) ∷ xs)
+  aux {zero}        _      xs =  (0 ∷ xs)
+  aux {n@(suc _)} (acc wf) xs with does (0 <? n / base)
+  ... | false = (n % base) ∷ xs
+  ... | true  = aux (wf (n / base) q<n) ((n % base) ∷ xs)
     where
     q<n : n / base < n
-    q<n = m/n<m n base (s≤s z≤n) (s≤s (s≤s z≤n))
+    q<n = m/n<m n base (s<s z<s)
 
 ------------------------------------------------------------------------
 -- Converting between `ℕ` and expansions of `Digit base`
@@ -83,9 +82,9 @@ fromDigits {base} (d ∷ ds) = toℕ d + fromDigits ds * base
 
 toDigits : (base : ℕ) {base≥2 : True (2 ≤? base)} (n : ℕ) →
            ∃ λ (ds : Expansion base) → fromDigits ds ≡ n
-toDigits (suc (suc k)) n = <′-rec Pred helper n
+toDigits base@(suc (suc k)) n = <′-rec Pred helper n
   where
-  base = suc (suc k)
+
   Pred = λ n → ∃ λ ds → fromDigits ds ≡ n
 
   cons : ∀ {m} (r : Digit base) → Pred m → Pred (toℕ r + m * base)
@@ -110,7 +109,7 @@ toDigits (suc (suc k)) n = <′-rec Pred helper n
   helper n                       rec with n divMod base
   helper .(toℕ r + 0     * base) rec | result zero    r refl = ([ r ] , refl)
   helper .(toℕ r + suc x * base) rec | result (suc x) r refl =
-    cons r (rec (suc x) (lem (pred (suc x)) k (toℕ r)))
+    cons r (rec (suc x) (lem x k (toℕ r)))
 
 ------------------------------------------------------------------------
 -- Showing digits

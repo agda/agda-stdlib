@@ -7,20 +7,18 @@
 -- See README.Data.Nat for examples of how to use and reason about
 -- naturals.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Base where
 
-open import Data.Bool.Base using (Bool; true; false)
-open import Data.Empty using (⊥)
-open import Data.Unit.Base using (⊤; tt)
+open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
+open import Data.Bool.Base using (Bool; true; false; T; not)
+open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
-open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation.Core using (contradiction)
-open import Relation.Unary using (Pred)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 ------------------------------------------------------------------------
 -- Types
@@ -57,6 +55,14 @@ data _≤_ : Rel ℕ 0ℓ where
 _<_ : Rel ℕ 0ℓ
 m < n = suc m ≤ n
 
+-- Smart constructors of _<_
+
+pattern z<s {n}         = s≤s (z≤n {n})
+pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
+
+------------------------------------------------------------------------
+-- other ordering relations
+
 _≥_ : Rel ℕ 0ℓ
 m ≥ n = n ≤ m
 
@@ -78,30 +84,40 @@ a ≯ b = ¬ a > b
 ------------------------------------------------------------------------
 -- Simple predicates
 
--- Defining `NonZero` in terms of `⊤` and `⊥` allows Agda to
--- automatically infer nonZero-ness for any natural of the form
--- `suc n`. Consequently in many circumstances this eliminates the need
--- to explicitly pass a proof when the NonZero argument is either an
--- implicit or an instance argument.
---
--- It could alternatively be defined using a datatype with an instance
--- constructor but then it would not be inferrable when passed as an
--- implicit argument.
+-- Defining `NonZero` in terms of `T` and therefore ultimately `⊤` and
+-- `⊥` allows Agda to automatically infer nonZero-ness for any natural
+-- of the form `suc n`. Consequently in many circumstances this
+-- eliminates the need to explicitly pass a proof when the NonZero
+-- argument is either an implicit or an instance argument.
 --
 -- See `Data.Nat.DivMod` for an example.
 
-NonZero : ℕ → Set
-NonZero zero    = ⊥
-NonZero (suc x) = ⊤
+record NonZero (n : ℕ) : Set where
+  field
+    nonZero : T (not (n ≡ᵇ 0))
+
+-- Instances
+
+instance
+  nonZero : ∀ {n} → NonZero (suc n)
+  nonZero = _
 
 -- Constructors
 
 ≢-nonZero : ∀ {n} → n ≢ 0 → NonZero n
-≢-nonZero {zero}  0≢0 = 0≢0 refl
-≢-nonZero {suc n} n≢0 = tt
+≢-nonZero {zero}  0≢0 = contradiction refl 0≢0
+≢-nonZero {suc n} n≢0 = _
 
 >-nonZero : ∀ {n} → n > 0 → NonZero n
->-nonZero (s≤s 0<n) = tt
+>-nonZero z<s = _
+
+-- Destructors
+
+≢-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n ≢ 0
+≢-nonZero⁻¹ (suc n) ()
+
+>-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n > 0
+>-nonZero⁻¹ (suc n) = z<s
 
 ------------------------------------------------------------------------
 -- Arithmetic
@@ -109,11 +125,15 @@ NonZero (suc x) = ⊤
 open import Agda.Builtin.Nat public
   using (_+_; _*_) renaming (_-_ to _∸_)
 
+open import Agda.Builtin.Nat
+  using (div-helper; mod-helper)
+
 pred : ℕ → ℕ
 pred n = n ∸ 1
 
-infixl 7 _⊓_
-infixl 6 _+⋎_ _⊔_
+infix  8 _!
+infixl 7 _⊓_ _⊓′_ _/_ _%_
+infixl 6 _+⋎_ _⊔_ _⊔′_
 
 -- Argument-swapping addition. Used by Data.Vec._⋎_.
 
@@ -128,12 +148,35 @@ zero  ⊔ n     = n
 suc m ⊔ zero  = suc m
 suc m ⊔ suc n = suc (m ⊔ n)
 
+-- Max defined in terms of primitive operations.
+-- This is much faster than `_⊔_` but harder to reason about. For proofs
+-- involving this function, convert it to `_⊔_` with `Data.Nat.Properties.⊔≡⊔‵`.
+_⊔′_ : ℕ → ℕ → ℕ
+m ⊔′ n with m <ᵇ n
+... | false = m
+... | true  = n
+
 -- Min.
 
 _⊓_ : ℕ → ℕ → ℕ
 zero  ⊓ n     = zero
 suc m ⊓ zero  = zero
 suc m ⊓ suc n = suc (m ⊓ n)
+
+-- Min defined in terms of primitive operations.
+-- This is much faster than `_⊓_` but harder to reason about. For proofs
+-- involving this function, convert it to `_⊓_` wtih `Data.Nat.properties.⊓≡⊓′`.
+_⊓′_ : ℕ → ℕ → ℕ
+m ⊓′ n with m <ᵇ n
+... | false = n
+... | true  = m
+
+-- Parity
+
+parity : ℕ → Parity
+parity 0             = 0ℙ
+parity 1             = 1ℙ
+parity (suc (suc n)) = parity n
 
 -- Division by 2, rounded downwards.
 
@@ -149,6 +192,8 @@ suc m ⊓ suc n = suc (m ⊓ n)
 
 -- Naïve exponentiation
 
+infixr 8 _^_
+
 _^_ : ℕ → ℕ → ℕ
 x ^ zero  = 1
 x ^ suc n = x * x ^ n
@@ -159,6 +204,33 @@ x ^ suc n = x * x ^ n
 ∣ zero  - y     ∣ = y
 ∣ x     - zero  ∣ = x
 ∣ suc x - suc y ∣ = ∣ x - y ∣
+
+-- Distance in terms of primitive operations.
+-- This is much faster than `∣_-_∣` but harder to reason about.
+-- For proofs involving this function, convert it to `∣_-_∣` with
+-- `Data.Nat.Properties.∣-∣≡∣-∣′`.
+∣_-_∣′ : ℕ → ℕ → ℕ
+∣ x - y ∣′ with x <ᵇ y
+... | false = x ∸ y
+... | true  = y ∸ x
+
+-- Division
+-- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
+
+_/_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
+m / (suc n) = div-helper 0 n m n
+
+-- Remainder/modulus
+-- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
+
+_%_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
+m % (suc n) = mod-helper 0 n m n
+
+-- Factorial
+
+_! : ℕ → ℕ
+zero  ! = 1
+suc n ! = suc n * n !
 
 ------------------------------------------------------------------------
 -- Alternative definition of _≤_
@@ -174,6 +246,11 @@ data _≤′_ (m : ℕ) : ℕ → Set where
 
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
+
+-- Smart constructors of _<′_
+
+pattern <′-base          = ≤′-refl
+pattern <′-step {n} m<′n = ≤′-step {n} m<′n
 
 _≥′_ : Rel ℕ 0ℓ
 m ≥′ n = n ≤′ m
@@ -238,3 +315,52 @@ compare (suc m) (suc n) with compare m n
 ... | less    m k = less (suc m) k
 ... | equal   m   = equal (suc m)
 ... | greater n k = greater (suc n) k
+
+------------------------------------------------------------------------
+-- Raw bundles
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0
+  }
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε = 1
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = _
+  ; _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0
+  ; 1# = 1
+  }
+

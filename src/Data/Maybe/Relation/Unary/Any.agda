@@ -4,16 +4,16 @@
 -- Maybes where one of the elements satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Unary.Any where
 
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Product as Prod using (∃; _,_; -,_)
+open import Data.Product.Base as Prod using (∃; _,_; -,_)
 open import Function.Base using (id)
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
-open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; cong)
 open import Relation.Unary
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
@@ -33,7 +33,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   drop-just (just px) = px
 
   just-equivalence : ∀ {x} → P x ⇔ Any P (just x)
-  just-equivalence = equivalence just drop-just
+  just-equivalence = mk⇔ just drop-just
 
   map : ∀ {q} {Q : Pred A q} → P ⊆ Q → Any P ⊆ Any Q
   map f (just px) = just (f px)

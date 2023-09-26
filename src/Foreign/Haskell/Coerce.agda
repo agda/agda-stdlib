@@ -4,7 +4,7 @@
 -- Zero-cost coercion to cross the FFI boundary
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module Foreign.Haskell.Coerce where
 
@@ -35,15 +35,16 @@ open import Level using (Level; _⊔_)
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Int
 
-import IO.Primitive    as STD
-import Data.List.Base  as STD
-import Data.Maybe.Base as STD
-import Data.Product    as STD
-import Data.Sum.Base   as STD
+import IO.Primitive            as STD
+import Data.List.Base          as STD
+import Data.List.NonEmpty.Base as STD
+import Data.Maybe.Base         as STD
+import Data.Product.Base       as STD
+import Data.Sum.Base           as STD
 
-import Foreign.Haskell.Maybe  as FFI
-import Foreign.Haskell.Pair   as FFI
-import Foreign.Haskell.Either as FFI
+import Foreign.Haskell.Pair          as FFI
+import Foreign.Haskell.Either        as FFI
+import Foreign.Haskell.List.NonEmpty as FFI
 
 private
   variable
@@ -53,16 +54,17 @@ private
     C : Set c
     D : Set d
 
--- We define a simple indexed datatype `Coercible`. A value of `Coercible A B`
--- is a proof that ̀A` and `B` have the same underlying runtime representation.
--- The only possible proof is an incantation from the implementer begging to
--- be trusted.
+-- We define a simple indexed datatype `Coercible`. A value of
+-- `Coercible A B` is a proof that `A` and `B` have the same underlying
+-- runtime representation. The only possible proof is an incantation
+-- from the implementer begging to be trusted.
 
--- We need this type to be concrete so that overlapping instances can be checked
--- for equality: we do not care what proof we get as long as we get one.
+-- We need this type to be concrete so that overlapping instances can be
+-- checked for equality: we do not care what proof we get as long as we
+-- get one.
 
--- We need for it to be a data type rather than a record type so that Agda does
--- not mistakenly build arbitrary instances by η-expansion.
+-- We need for it to be a data type rather than a record type so that
+-- Agda does not mistakenly build arbitrary instances by η-expansion.
 
 data Coercible (A : Set a) (B : Set b) : Set where
   TrustMe : Coercible A B
@@ -70,9 +72,9 @@ data Coercible (A : Set a) (B : Set b) : Set where
 {-# FOREIGN GHC data AgdaCoercible l1 l2 a b = TrustMe #-}
 {-# COMPILE GHC Coercible = data AgdaCoercible (TrustMe) #-}
 
--- Once we get our hands on a proof that `Coercible A B` we postulate that it
--- is safe to convert an `A` into a `B`. This is done under the hood by using
--- `unsafeCoerce`.
+-- Once we get our hands on a proof that `Coercible A B` we postulate
+-- that it is safe to convert an `A` into a `B`. This is done under the
+-- hood by using `unsafeCoerce`.
 
 postulate coerce : {{_ : Coercible A B}} → A → B
 
@@ -94,9 +96,9 @@ Coercible₂ _ _ _ _ T U = ∀ {A B} → {{_ : Coercible A B}} → Coercible₁ 
 -- Nat
 
 -- Our first instance reveals one of Agda's secrets: natural numbers are
--- represented by (arbitrary precision) integers at runtime! Note that we
--- may only coerce in one direction: arbitrary integers may actually be
--- negative and will not do as mere natural numbers.
+-- represented by (arbitrary precision) integers at runtime! Note that
+-- we may only coerce in one direction: arbitrary integers may actually
+-- be negative and will not do as mere natural numbers.
 
 instance
 
@@ -106,14 +108,6 @@ instance
 -- We then proceed to state that data types from the standard library
 -- can be converted to their FFI equivalents which are bound to actual
 -- Haskell types.
-
--- Maybe
-
-  maybe-toFFI : Coercible₁ a b STD.Maybe FFI.Maybe
-  maybe-toFFI = TrustMe
-
-  maybe-fromFFI : Coercible₁ a b FFI.Maybe STD.Maybe
-  maybe-fromFFI = TrustMe
 
 -- Product
 
@@ -131,8 +125,21 @@ instance
   either-fromFFI : Coercible₂ a b c d FFI.Either STD._⊎_
   either-fromFFI = TrustMe
 
--- We follow up with purely structural rules for builtin data types which
--- already have known low-level representations.
+-- NonEmpty
+
+  nonEmpty-toFFI : Coercible₁ a b STD.List⁺ FFI.NonEmpty
+  nonEmpty-toFFI = TrustMe
+
+  nonEmpty-fromFFI : Coercible₁ a b FFI.NonEmpty STD.List⁺
+  nonEmpty-fromFFI = TrustMe
+
+-- We follow up with purely structural rules for builtin data types
+-- which already have known low-level representations.
+
+-- Maybe
+
+  coerce-maybe : Coercible₁ a b STD.Maybe STD.Maybe
+  coerce-maybe = TrustMe
 
 -- List
 
@@ -150,14 +157,15 @@ instance
   coerce-fun : {{_ : Coercible A B}} → Coercible₁ c d (λ C → B → C) (λ D → A → D)
   coerce-fun = TrustMe
 
--- Finally we add a reflexivity proof to discharge all the dangling constraints
--- involving type variables and concrete builtin types such as `Bool`.
+-- Finally we add a reflexivity proof to discharge all the dangling
+-- constraints involving type variables and concrete builtin types such
+-- as `Bool`.
 
--- This rule overlaps with the purely structural ones: when attempting to prove
--- `Coercible (List A) (List A)`, should Agda use the proof obtained by `coerce-refl`
--- or the one obtained by `coerce-list coerce-refl`? Because we are using a
--- datatype with a single constructor these distinctions do not matter: both proofs
--- are definitionally equal.
+-- This rule overlaps with the purely structural ones: when attempting
+-- to prove `Coercible (List A) (List A)`, should Agda use the proof
+-- obtained by `coerce-refl` or the one obtained by `coerce-list coerce-refl`?
+-- Because we are using a datatype with a single constructor these
+-- distinctions do not matter: both proofs are definitionally equal.
 
   coerce-refl : Coercible A A
   coerce-refl = TrustMe

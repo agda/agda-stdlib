@@ -22,14 +22,14 @@
 -- as this introduces unsolved metas as the underlying base module
 -- `Base.Single` does not require `_≈_` be symmetric.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Reasoning.MultiSetoid where
 
 open import Function.Base using (flip)
 open import Level using (_⊔_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 import Relation.Binary.Reasoning.Setoid as EqR
 

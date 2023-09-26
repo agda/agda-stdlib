@@ -4,23 +4,23 @@
 -- AVL trees where the stored values may depend on their key
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Indexed
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂) where
 
 open import Level using (Level; _⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Product using (Σ; ∃; _×_; _,_; proj₁)
+open import Data.Product.Base using (Σ; ∃; _×_; _,_; proj₁)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.List.Base as List using (List)
 open import Data.DifferenceList using (DiffList; []; _∷_; _++_)
 open import Function.Base as F hiding (const)
 open import Relation.Unary
-open import Relation.Binary using (_Respects_; Tri; tri<; tri≈; tri>)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.Definitions using (_Respects_; Tri; tri<; tri≈; tri>)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 private
   variable
@@ -240,11 +240,11 @@ module _ {v} {V : Value v} where
   -- Looks up a key. Logarithmic in the size of the tree (assuming
   -- constant-time comparisons).
 
-  lookup : ∀ {l u h} (k : Key) → Tree V l u h → l < k < u → Maybe (Val k)
-  lookup k (leaf _) l<k<u = nothing
-  lookup k (node (k′ , v) lk′ k′u _) (l<k , k<u) with compare k′ k
-  ... | tri< k′<k _ _ = lookup k k′u ([ k′<k ]ᴿ , k<u)
-  ... | tri> _ _ k′>k = lookup k lk′ (l<k , [ k′>k ]ᴿ)
+  lookup : ∀ {l u h} → Tree V l u h → (k : Key) → l < k < u → Maybe (Val k)
+  lookup (leaf _) k l<k<u = nothing
+  lookup (node (k′ , v) lk′ k′u _) k (l<k , k<u) with compare k′ k
+  ... | tri< k′<k _ _ = lookup k′u k ([ k′<k ]ᴿ , k<u)
+  ... | tri> _ _ k′>k = lookup lk′ k (l<k , [ k′>k ]ᴿ)
   ... | tri≈ _ k′≡k _ = just (V≈ k′≡k v)
 
   -- Converts the tree to an ordered list. Linear in the size of the

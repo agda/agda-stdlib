@@ -4,15 +4,17 @@
 -- Coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness --sized-types #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Conat where
 
 open import Codata.Musical.Notation
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- Re-exporting the type and basic operations
@@ -33,6 +35,8 @@ fromℕ-injective {suc m} {suc n} eq = P.cong suc (fromℕ-injective (P.cong pre
 
 ------------------------------------------------------------------------
 -- Equality
+
+infix 4 _≈_
 
 data _≈_ : Coℕ → Coℕ → Set where
   zero :                                 zero  ≈ zero
@@ -65,18 +69,3 @@ setoid = record
   trans : Transitive _≈_
   trans zero      zero      = zero
   trans (suc m≈n) (suc n≈k) = suc (♯ trans (♭ m≈n) (♭ n≈k))
-
-------------------------------------------------------------------------
--- Legacy
-
-import Codata.Conat as C
-open import Codata.Thunk
-import Size
-
-fromMusical : ∀ {i} → Coℕ → C.Conat i
-fromMusical zero    = C.zero
-fromMusical (suc n) = C.suc λ where .force → fromMusical (♭ n)
-
-toMusical : C.Conat Size.∞ → Coℕ
-toMusical C.zero    = zero
-toMusical (C.suc n) = suc (♯ toMusical (n .force))

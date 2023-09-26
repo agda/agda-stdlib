@@ -4,7 +4,7 @@
 -- Coinductive lists: base type and functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Base where
 
@@ -62,10 +62,10 @@ replicate : Coℕ → A → Colist A
 replicate zero    x = []
 replicate (suc n) x = x ∷ ♯ replicate (♭ n) x
 
-lookup : ℕ → Colist A → Maybe A
-lookup n       []       = nothing
-lookup zero    (x ∷ xs) = just x
-lookup (suc n) (x ∷ xs) = lookup n (♭ xs)
+lookup : Colist A → ℕ → Maybe A
+lookup []       _       = nothing
+lookup (x ∷ _)  zero    = just x
+lookup (_ ∷ xs) (suc n) = lookup (♭ xs) n
 
 infixr 5 _++_
 

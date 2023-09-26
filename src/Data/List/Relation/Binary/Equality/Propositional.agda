@@ -8,15 +8,16 @@
 -- propositional equality can usually be replaced with propositional
 -- equality.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
 
 module Data.List.Relation.Binary.Equality.Propositional {a} {A : Set a} where
 
 open import Data.List.Base
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
 ------------------------------------------------------------------------
 -- Re-export everything from setoid equality

@@ -4,7 +4,7 @@
 -- 1 dimensional pretty printing of binary trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 open import Level using (Level)
 open import Data.List.Base as List using (List; []; [_]; _∷_; _∷ʳ_)
