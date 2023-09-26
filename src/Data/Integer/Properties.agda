@@ -1604,13 +1604,18 @@ abs-* i j = abs-◃ _ _
   (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣ik∣≡0))
   (sym (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣jk∣≡0)))
 
-*-AlmostRightCancellative : AlmostRightCancellative 0ℤ _*_
-*-AlmostRightCancellative k i j k≢0 i*k≡j*k = *-cancelʳ-≡ i j k ⦃ ≢-nonZero k≢0 ⦄ i*k≡j*k
 *-cancelˡ-≡ : ∀ i j k .{{_ : NonZero i}} → i * j ≡ i * k → j ≡ k
 *-cancelˡ-≡ i j k rewrite *-comm i j | *-comm i k = *-cancelʳ-≡ j k i
 
+*-AlmostRightCancellative : AlmostRightCancellative 0ℤ _*_
+*-AlmostRightCancellative i j k≢0 i*k≡j*k = *-cancelʳ-≡ i j _ ⦃ ≢-nonZero k≢0 ⦄ i*k≡j*k
+
 *-AlmostLeftCancellative : AlmostLeftCancellative 0ℤ _*_
-*-AlmostLeftCancellative k i j k≢0 k*i≡k*j = {!*-cancelˡ-≡ k i j ⦃ ≢-nonZero k≢0 ⦄ k*i≡k*j!}
+*-AlmostLeftCancellative {i} j k i≢0 i*j≡i*k = *-cancelˡ-≡ i j k ⦃ ≢-nonZero i≢0 ⦄ i*j≡i*k
+
+*-AlmostCancellative : AlmostCancellative 0ℤ _*_
+*-AlmostCancellative = *-AlmostLeftCancellative , *-AlmostRightCancellative
+
 suc-* : ∀ i j → sucℤ i * j ≡ j + i * j
 suc-* i j = begin
   sucℤ i * j      ≡⟨ *-distribʳ-+ j (+ 1) i ⟩
