@@ -10,8 +10,8 @@ module Data.Vec.Properties where
 
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
-open import Data.Fin.Properties as Fin using (inject≤-irrelevant)
+open import Data.Fin.Base as Fin
+  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as Listₚ
 open import Data.Nat.Base
@@ -123,8 +123,7 @@ truncate-trans z≤n       n≤p       xs = refl
 truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
 
 truncate-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) → truncate {A = A} m≤n₁ ≗ truncate m≤n₂
-truncate-irrelevant {m = zero}  m≤n₁ m≤n₂ _        = refl
-truncate-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) (x ∷ xs) = cong (x ∷_) (truncate-irrelevant m≤n₁ m≤n₂ xs)
+truncate-irrelevant m≤n₁ m≤n₂ xs rewrite ≤-irrelevant m≤n₁ m≤n₂ = refl
 
 truncate≡take : (m≤n : m ≤ n) (xs : Vec A n) .(eq : n ≡ m + o) →
                 truncate m≤n xs ≡ take m (cast eq xs)
@@ -430,9 +429,9 @@ map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
 map-insert : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
              map f (insert xs i x) ≡ insert (map f xs) i (f x)
-map-insert f _ []        Fin.zero = refl
-map-insert f _ (x' ∷ xs) Fin.zero = refl
-map-insert f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insert f x xs i)
+map-insert f _ []        zero    = refl
+map-insert f _ (x' ∷ xs) zero    = refl
+map-insert f x (x' ∷ xs) (suc i) = cong (_ ∷_) (map-insert f x xs i)
 
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
@@ -1307,7 +1306,7 @@ lookup-inject≤-take m m≤m+n i xs = sym (begin
   lookup (take m xs) i
     ≡⟨ lookup-take-inject≤ xs i ⟩
   lookup xs (Fin.inject≤ i _)
-    ≡⟨ cong (lookup xs) (inject≤-irrelevant _ _ i) ⟩
+    ≡⟨ cong ((lookup xs) ∘ (Fin.inject≤ i)) (≤-irrelevant _ _) ⟩
   lookup xs (Fin.inject≤ i m≤m+n)
     ∎) where open ≡-Reasoning
 {-# WARNING_ON_USAGE lookup-inject≤-take
