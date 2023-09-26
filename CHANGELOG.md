@@ -2155,6 +2155,9 @@ Additions to existing modules
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
 
   fromℕ≢inject₁      : {i : Fin n} → fromℕ n ≢ inject₁ i
+
+  inject≤-trans      : inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (≤-trans m≤n n≤o)
+  inject≤-irrelevant : inject≤ i m≤n ≡ inject≤ i m≤n′
   ```
 
 * Added new functions in `Data.Integer.Base`:
