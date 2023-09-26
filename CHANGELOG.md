@@ -520,14 +520,6 @@ Non-backwards compatible changes
     - From: `∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z`
     - To: `∀ x y z → (y • x) ≈ (z • x) → y ≈ z`
 
-  - `AlmostLeftCancellative e _•_`
-    - From: `∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
-    - To: `∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
-
-  - `AlmostRightCancellative e _•_`
-    - From: `∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
-    - To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
-
 * Correspondingly some proofs of the above types will need additional arguments passed explicitly.
   Instances can easily be fixed by adding additional underscores, e.g.
   - `∙-cancelˡ x` to `∙-cancelˡ x _ _`
