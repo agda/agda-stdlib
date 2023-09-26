@@ -11,15 +11,18 @@ module Function.Properties.Surjection where
 open import Function.Base
 open import Function.Definitions
 open import Function.Bundles
+import Function.Construct.Identity as Identity
+import Function.Construct.Composition as Compose
 open import Level using (Level)
 open import Data.Product.Base using (proj₁; proj₂)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Binary using (Setoid)
+import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.Definitions
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private
   variable
-    a b ℓ : Level
+    a b c ℓ ℓ₁ ℓ₂ ℓ₃ : Level
     A B : Set a
     T S : Setoid a ℓ
 
@@ -41,12 +44,23 @@ mkSurjection f surjective = record
 ↠⇒⟶ = Surjection.function
 
 ↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ s = mk↪ {from = to} λ { refl → proj₂ (strictlySurjective _)}
+↠⇒↪ s = mk↪ {from = to} λ { P.refl → proj₂ (strictlySurjective _)}
   where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
 ↠⇒⇔ s = mk⇔ to (proj₁ ∘ surjective)
   where open Surjection s
+
+------------------------------------------------------------------------
+-- Setoid properties
+
+refl : Reflexive (Surjection {a} {ℓ})
+refl {x = x} = Identity.surjection x
+
+trans : Trans (Surjection {a} {ℓ₁} {b} {ℓ₂})
+              (Surjection {b} {ℓ₂} {c} {ℓ₃})
+              (Surjection {a} {ℓ₁} {c} {ℓ₃})
+trans = Compose.surjection
 
 ------------------------------------------------------------------------
 -- Other
