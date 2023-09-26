@@ -272,7 +272,7 @@ drop m xs = proj₁ (proj₂ (splitAt m xs))
 group : ∀ n k (xs : Vec A (n * k)) →
         ∃ λ (xss : Vec (Vec A k) n) → xs ≡ concat xss
 group zero    k []                  = ([] , refl)
-group (suc n) k xs  = 
+group (suc n) k xs  =
   let ys , zs , eq-split = splitAt k xs in
   let zss , eq-group     = group n k zs in
    (ys ∷ zss) , trans eq-split (cong (ys ++_) eq-group)
