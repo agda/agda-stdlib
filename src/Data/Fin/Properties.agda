@@ -559,7 +559,7 @@ inject≤-injective (s≤s p) (s≤s q) (suc i) (suc j) eq =
 
 inject≤-irrelevant : ∀ (m≤n m≤n′ : m ℕ.≤ n) i →
                     inject≤ i m≤n ≡ inject≤ i m≤n′
-inject≤-irrelevant m≤n m≤n′ i rewrite ℕₚ.≤-irrelevant m≤n m≤n′ = refl
+inject≤-irrelevant m≤n m≤n′ i =  cong (inject≤ i) (ℕₚ.≤-irrelevant m≤n m≤n′)
 
 ------------------------------------------------------------------------
 -- pred
