@@ -1241,6 +1241,10 @@ Deprecated names
   *-cancelˡ-<-neg  ↦  *-cancelˡ-<-nonPos
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
 
+  *-AlmostRightCancellative : AlmostRightCancellative 0ℤ _*_
+  *-AlmostLeftCancellative  : AlmostLeftCancellative 0ℤ _*_
+  *-AlmostCancellative      : AlmostCancellative 0ℤ _*_
+
   ^-semigroup-morphism ↦ ^-isMagmaHomomorphism
   ^-monoid-morphism    ↦ ^-isMonoidHomomorphism
 
