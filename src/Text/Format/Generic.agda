@@ -14,7 +14,7 @@ open import Data.Char.Base using (Char)
 open import Data.List.Base as List
 open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base
 open import Data.String.Base
@@ -49,7 +49,7 @@ module Format (spec : FormatSpec) where
 
   open FormatSpec spec
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Basic types
 
   data Chunk : Set where
@@ -59,7 +59,7 @@ module Format (spec : FormatSpec) where
   Format : Set
   Format = List Chunk
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Semantics
 
   size : Format → ℕ
@@ -72,11 +72,11 @@ module Format (spec : FormatSpec) where
   ⟦ Arg a  ∷ cs ⟧ = ArgType a , ⟦ cs ⟧
   ⟦ Raw _  ∷ cs ⟧ =             ⟦ cs ⟧
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Lexer: from Strings to Formats
 
-  -- Lexing may fail. To have a useful error message, we defined the following
-  -- enumerated type
+  -- Lexing may fail. To have a useful error message, we defined the
+  -- following enumerated type
 
   data Error : Set where
     UnexpectedEndOfString : String → Error

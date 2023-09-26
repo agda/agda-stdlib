@@ -6,11 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice
-open import Algebra.Structures
-open import Function
-open import Data.Product
-open import Relation.Binary
+open import Algebra.Lattice.Bundles using (Semilattice)
+open import Relation.Binary.Bundles using (Poset)
 import Relation.Binary.Lattice as B
 import Relation.Binary.Properties.Poset as PosetProperties
 

@@ -9,15 +9,20 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Infimum
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Minimum; Transitive; Total; Decidable; Irrelevant; Antisymmetric)
 
 module Relation.Binary.Construct.Add.Infimum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
 open import Data.Sum.Base as Sum
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum

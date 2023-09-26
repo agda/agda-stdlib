@@ -9,7 +9,7 @@
 module Data.Container.Indexed.Core where
 
 open import Level
-open import Data.Product
+open import Data.Product.Base using (Σ; Σ-syntax; _,_; ∃)
 open import Relation.Unary
 
 infix 5 _◃_/_

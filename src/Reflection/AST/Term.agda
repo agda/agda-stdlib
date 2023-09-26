@@ -8,16 +8,18 @@
 
 module Reflection.AST.Term where
 
-open import Data.List.Base as List  hiding (_++_)
-open import Data.List.Properties    using (∷-dec)
-open import Data.Nat as ℕ          using (ℕ; zero; suc)
-open import Data.Product            using (_×_; _,_; <_,_>; uncurry; map₁)
-open import Data.Product.Properties using (,-injective)
-open import Data.Maybe.Base         using (Maybe; just; nothing)
-open import Data.String as String   using (String)
-open import Relation.Nullary.Decidable            using (map′; _×-dec_; yes; no)
-open import Relation.Binary                       using (Decidable; DecidableEquality)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; cong₂)
+open import Data.List.Base as List                     hiding (_++_)
+open import Data.List.Properties                       using (∷-dec)
+open import Data.Nat.Base                              using (ℕ; zero; suc)
+import Data.Nat.Properties as ℕ
+open import Data.Product.Base                          using (_×_; _,_; <_,_>; uncurry; map₁)
+open import Data.Product.Properties                    using (,-injective)
+open import Data.Maybe.Base                            using (Maybe; just; nothing)
+open import Data.String.Base                           using (String)
+open import Data.String.Properties as String           hiding (_≟_)
+open import Relation.Nullary.Decidable                 using (map′; _×-dec_; yes; no)
+open import Relation.Binary.Definitions                using (Decidable; DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 
 open import Reflection.AST.Abstraction
 open import Reflection.AST.Argument
@@ -59,7 +61,7 @@ pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
 pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
 pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Utility functions
 
 getName : Term → Maybe Name
@@ -128,7 +130,7 @@ absurd-clause-injective = < absurd-clause-injective₁ , absurd-clause-injective
 
 infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
         _≟-Clause_ _≟-Clauses_ _≟_
-        _≟-Sort_ _≟-Pattern_ _≟-Patterns_
+        _≟-Sort_ _≟-Pattern_ _≟-Patterns_ _≟-Telescope_
 
 _≟-AbsTerm_  : DecidableEquality (Abs Term)
 _≟-AbsType_  : DecidableEquality (Abs Type)
@@ -143,9 +145,9 @@ _≟-Patterns_ : Decidable (_≡_ {A = Args Pattern})
 _≟-Pattern_  : Decidable (_≡_ {A = Pattern})
 
 -- Decidable equality 'transformers'
--- We need to inline these because the terms are not sized so termination
--- would not obvious if we were to use higher-order functions such as
--- Data.List.Properties' ≡-dec
+-- We need to inline these because the terms are not sized so
+-- termination would not obvious if we were to use higher-order
+-- functions such as Data.List.Properties' ≡-dec
 
 abs s a ≟-AbsTerm abs s′ a′ = unAbs-dec (a ≟ a′)
 abs s a ≟-AbsType abs s′ a′ = unAbs-dec (a ≟ a′)

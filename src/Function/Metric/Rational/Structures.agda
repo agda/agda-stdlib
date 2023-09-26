@@ -7,10 +7,10 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Rational.Base
-open import Function using (const)
+open import Function.Base using (const)
 open import Level using (Level; suc)
-open import Relation.Binary hiding (Symmetric)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 open import Function.Metric.Rational.Core
 open import Function.Metric.Rational.Definitions

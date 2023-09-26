@@ -1,12 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Half adjoint equivalences
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.HalfAdjointEquivalence where
+
+{-# WARNING_ON_IMPORT
+"Function.HalfAdjointEquivalence was deprecated in v2.0.
+Use Function.Properties.Inverse.HalfAdjointEquivalence instead."
+#-}
 
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
@@ -15,6 +21,8 @@ open import Level
 open import Relation.Binary.PropositionalEquality
 
 -- Half adjoint equivalences (see the HoTT book).
+
+infix 4 _≃_
 
 record _≃_ {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
   field

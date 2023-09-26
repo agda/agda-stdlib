@@ -6,14 +6,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Structures
+  using (IsDecTotalOrder; IsStrictTotalOrder)
+open import Relation.Binary.Bundles
+  using (DecTotalOrder; StrictTotalOrder)
 
 module Relation.Binary.Properties.DecTotalOrder
   {d₁ d₂ d₃} (DT : DecTotalOrder d₁ d₂ d₃) where
 
 open DecTotalOrder DT hiding (trans)
 
-import Relation.Binary.Construct.Converse as Converse
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.TotalOrder totalOrder as TotalOrderProperties
 open import Relation.Nullary.Negation using (¬_)
@@ -38,7 +41,7 @@ open TotalOrderProperties public
   )
 
 ≥-isDecTotalOrder : IsDecTotalOrder _≈_ _≥_
-≥-isDecTotalOrder = Converse.isDecTotalOrder isDecTotalOrder
+≥-isDecTotalOrder = EqAndOrd.isDecTotalOrder isDecTotalOrder
 
 ≥-decTotalOrder : DecTotalOrder _ _ _
 ≥-decTotalOrder = record

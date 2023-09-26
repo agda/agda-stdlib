@@ -35,7 +35,7 @@ pred : ∀ {i} {j : Size< i} → Conat i → Conat j
 pred zero    = zero
 pred (suc n) = n .force
 
-infixl 6 _∸_ _+_
+infixl 6 _∸_ _+_ _ℕ+_ _+ℕ_
 infixl 7 _*_
 
 _∸_ : Conat ∞ → ℕ → Conat ∞
@@ -90,6 +90,8 @@ toℕ (suc n) = suc (toℕ n)
 
 ------------------------------------------------------------------------
 -- Order wrt to Nat
+
+infix 4 _ℕ<_ _ℕ≤infinity _ℕ≤_
 
 data _ℕ≤_ : ℕ → Conat ∞ → Set where
   zℕ≤n : ∀ {n} → zero ℕ≤ n

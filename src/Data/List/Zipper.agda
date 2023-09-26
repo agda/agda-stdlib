@@ -11,7 +11,7 @@ module Data.List.Zipper where
 open import Data.Nat.Base
 open import Data.Maybe.Base as Maybe using (Maybe ; just ; nothing)
 open import Data.List.Base as List using (List ; [] ; _∷_)
-open import Function
+open import Function.Base using (_on_; flip)
 
 
 -- Definition

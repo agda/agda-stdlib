@@ -13,7 +13,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -24,7 +24,7 @@ import Data.DifferenceList as DiffList
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe; nothing; just; is-just)
 open import Data.Nat.Base using (ℕ; suc)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Function.Base as F
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (IUniversal; _⇒_)

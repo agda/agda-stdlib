@@ -20,10 +20,10 @@ open import Function.Base using (case_of_; _$′_)
 open import Relation.Nullary.Decidable using (yes; no; does; map′; _⊎-dec_)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary using (REL; _⇒_; Decidable; Trans; Antisym)
-open import Relation.Binary.PropositionalEquality using (_≢_; refl; cong)
-
-open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
+open import Relation.Binary.Core using (REL; _⇒_)
+open import Relation.Binary.Definitions using (Decidable; Trans; Antisym)
+open import Relation.Binary.PropositionalEquality.Core using (_≢_; refl; cong)
+open import Data.List.Relation.Binary.Pointwise.Base as Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Infix.Heterogeneous
 open import Data.List.Relation.Binary.Prefix.Heterogeneous
   as Prefix using (Prefix; []; _∷_)

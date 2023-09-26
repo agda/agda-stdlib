@@ -9,7 +9,7 @@
 module README.Text.Regex where
 
 open import Data.Bool using (true; false)
-open import Data.List using (_∷_; [])
+open import Data.List.Base using (_∷_; [])
 open import Data.String
 open import Function.Base using () renaming (_$′_ to _$_)
 open import Relation.Nullary.Decidable using (yes)

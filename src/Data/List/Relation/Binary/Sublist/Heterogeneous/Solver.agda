@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Reflexive; Decidable)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Reflexive; Decidable)
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
   {a r} {A : Set a} (R : Rel A r)
@@ -22,9 +23,9 @@ open import Level using (_⊔_)
 open import Data.Fin as Fin
 open import Data.Maybe.Base as M
 open import Data.Nat.Base as Nat using (ℕ)
-open import Data.Product
+open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
-open import Data.List hiding (lookup)
+open import Data.List.Base hiding (lookup)
 open import Data.List.Properties
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
   hiding (lookup)

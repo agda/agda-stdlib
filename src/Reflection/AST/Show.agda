@@ -11,16 +11,16 @@
 
 module Reflection.AST.Show where
 
-import Data.Char as Char   using (show)
-import Data.Float as Float using (show)
-open import Data.List hiding (_++_; intersperse)
-import Data.Nat.Show as ℕ using (show)
-open import Data.Product   using (_×_; _,_)
-open import Data.String as String
-  using (String; _++_; intersperse; braces; parens; parensIfSpace; _<+>_)
-import Data.Word as Word   using (toℕ)
+import Data.Char.Base as Char
+import Data.Float.Base as Float
+open import Data.List.Base hiding (_++_; intersperse)
+import Data.Nat.Show as ℕ
+open import Data.String.Base as String using (String; _++_; intersperse; braces; parens; _<+>_)
+open import Data.String as String using (parensIfSpace)
+open import Data.Product.Base using (_×_; _,_)
+import Data.Word.Base as Word
 open import Function.Base using (id; _∘′_; case_of_)
-open import Relation.Nullary.Decidable using (yes; no)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 
 open import Reflection.AST.Abstraction hiding (map)
 open import Reflection.AST.Argument hiding (map)

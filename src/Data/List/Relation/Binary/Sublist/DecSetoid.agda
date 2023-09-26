@@ -8,7 +8,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (DecSetoid; DecPoset)
+open import Relation.Binary.Structures
+  using (IsDecPartialOrder)
+open import Relation.Binary.Definitions using (Decidable)
 
 module Data.List.Relation.Binary.Sublist.DecSetoid
   {c ℓ} (S : DecSetoid c ℓ) where

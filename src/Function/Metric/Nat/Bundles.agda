@@ -13,7 +13,7 @@
 module Function.Metric.Nat.Bundles where
 
 open import Data.Nat.Base hiding (suc; _⊔_)
-open import Function using (const)
+open import Function.Base using (const)
 open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality
@@ -28,6 +28,7 @@ open import Function.Metric.Bundles as Base
 -- Proto-metric
 
 record ProtoMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  infix 4 _≈_
   field
     Carrier       : Set a
     _≈_           : Rel Carrier ℓ
@@ -40,6 +41,7 @@ record ProtoMetric a ℓ : Set (suc (a ⊔ ℓ)) where
 -- PreMetric
 
 record PreMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  infix 4 _≈_
   field
     Carrier     : Set a
     _≈_         : Rel Carrier ℓ
@@ -57,6 +59,7 @@ record PreMetric a ℓ : Set (suc (a ⊔ ℓ)) where
 -- QuasiSemiMetric
 
 record QuasiSemiMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  infix 4 _≈_
   field
     Carrier           : Set a
     _≈_               : Rel Carrier ℓ
@@ -77,6 +80,7 @@ record QuasiSemiMetric a ℓ : Set (suc (a ⊔ ℓ)) where
 -- SemiMetric
 
 record SemiMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  infix 4 _≈_
   field
     Carrier      : Set a
     _≈_          : Rel Carrier ℓ
@@ -97,6 +101,7 @@ record SemiMetric a ℓ : Set (suc (a ⊔ ℓ)) where
 -- Metrics
 
 record Metric a ℓ : Set (suc (a ⊔ ℓ)) where
+  infix 4 _≈_
   field
     Carrier  : Set a
     _≈_      : Rel Carrier ℓ
@@ -117,6 +122,7 @@ record Metric a ℓ : Set (suc (a ⊔ ℓ)) where
 -- UltraMetrics
 
 record UltraMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  infix 4 _≈_
   field
     Carrier       : Set a
     _≈_           : Rel Carrier ℓ

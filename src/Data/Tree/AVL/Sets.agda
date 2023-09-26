@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Sets
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -16,7 +16,7 @@ open import Data.Bool.Base using (Bool)
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base using (ℕ)
-open import Data.Product as Prod using (_×_; _,_; proj₁)
+open import Data.Product.Base as Prod using (_×_; _,_; proj₁)
 open import Data.Unit.Base
 open import Function.Base
 open import Level using (Level; _⊔_)

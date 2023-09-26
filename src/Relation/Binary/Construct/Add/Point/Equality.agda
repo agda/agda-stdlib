@@ -9,20 +9,26 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Point
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Decidable; Irrelevant; Substitutive)
 
 module Relation.Binary.Construct.Add.Point.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
 open import Function.Base
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as P
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Point
 import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
 -- Definition
+
+infix 4 _≈∙_
 
 data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
   ∙≈∙ :                     ∙     ≈∙ ∙

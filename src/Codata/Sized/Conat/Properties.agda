@@ -16,7 +16,7 @@ open import Codata.Sized.Conat.Bisimilarity
 open import Function.Base using (_∋_)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (map′)
-open import Relation.Binary
+open import Relation.Binary.Definitions using (Decidable)
 
 private
   variable
@@ -28,6 +28,8 @@ private
 
 sℕ≤s⁻¹ : ∀ {m n} → suc m ℕ≤ suc n → m ℕ≤ n .force
 sℕ≤s⁻¹ (sℕ≤s p) = p
+
+infix 4 _ℕ≤?_
 
 _ℕ≤?_ : Decidable _ℕ≤_
 zero  ℕ≤? n     = yes zℕ≤n

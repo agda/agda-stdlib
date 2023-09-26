@@ -16,9 +16,9 @@ open import Codata.Sized.Delay using (Delay; later; now)
 open import Codata.Sized.Stream as Stream using (Stream; _∷_)
 open import Data.Unit.Base
 open import Data.List.Base using (List; []; _∷_)
-open import Data.List.NonEmpty using (List⁺; _∷_)
+open import Data.List.NonEmpty.Base using (List⁺; _∷_)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc)
-open import Data.Product as Prod using (_×_; _,_)
+open import Data.Product.Base as Prod using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Vec.Bounded.Base as Vec≤ using (Vec≤; _,_)
@@ -38,6 +38,8 @@ private
 data Cowriter (W : Set w) (A : Set a) (i : Size) : Set (a L.⊔ w) where
   [_] : A → Cowriter W A i
   _∷_ : W → Thunk (Cowriter W A) i → Cowriter W A i
+
+infixr 5 _∷_
 
 ------------------------------------------------------------------------
 -- Relationship to Delay.
@@ -100,6 +102,8 @@ map₂ = map id
 ap : ∀ {i} → Cowriter W (A → X) i → Cowriter W A i → Cowriter W X i
 ap [ f ]    ca = map₂ f ca
 ap (w ∷ cf) ca = w ∷ λ where .force → ap (cf .force) ca
+
+infixl 1 _>>=_
 
 _>>=_ : ∀ {i} → Cowriter W A i → (A → Cowriter W X i) → Cowriter W X i
 [ a ]    >>= f = f a

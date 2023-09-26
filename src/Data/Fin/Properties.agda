@@ -18,23 +18,29 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; _∸_; _^_)
+open import Data.Nat.Base as ℕ
+  using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; _∸_; _^_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
-open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
+open import Data.Product.Base as Prod
+  using (∃; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
-open import Function.Definitions using (Injective)
-open import Function.Definitions.Core2 using (Surjective)
-open import Function.Consequences using (contraInjective)
+open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
+open import Function.Definitions using (Injective; Surjective)
+open import Function.Consequences.Propositional using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable; _⇔_)
+open import Relation.Binary.Definitions as B hiding (Decidable)
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
+open import Relation.Binary.Bundles
+  using (Preorder; Setoid; DecSetoid; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
 open import Relation.Nullary
@@ -63,13 +69,13 @@ private
 -- Bundles
 
 0↔⊥ : Fin 0 ↔ ⊥
-0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
+0↔⊥ = mk↔ₛ′ ¬Fin0 (λ ()) (λ ()) (λ ())
 
 1↔⊤ : Fin 1 ↔ ⊤
-1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
+1↔⊤ = mk↔ₛ′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
 
 2↔Bool : Fin 2 ↔ Bool
-2↔Bool = mk↔′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
+2↔Bool = mk↔ₛ′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
   (λ { false → refl ; true → refl }) (λ { 0F → refl ; 1F → refl })
 
 ------------------------------------------------------------------------
@@ -261,7 +267,7 @@ cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
 subst-is-cast : (eq : m ≡ n) (k : Fin m) → subst Fin eq k ≡ cast eq k
 subst-is-cast refl k = sym (cast-is-id refl k)
 
-cast-trans : .(eq₁ : m ≡ n) (eq₂ : n ≡ o) (k : Fin m) →
+cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (k : Fin m) →
              cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ zero = refl
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
@@ -443,6 +449,9 @@ toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
 -- inject₁
 ------------------------------------------------------------------------
 
+fromℕ≢inject₁ : fromℕ n ≢ inject₁ i
+fromℕ≢inject₁ {i = suc i} eq = fromℕ≢inject₁ {i = i} (suc-injective eq)
+
 inject₁-injective : inject₁ i ≡ inject₁ j → i ≡ j
 inject₁-injective {i = zero}  {zero}  i≡j = refl
 inject₁-injective {i = suc i} {suc j} i≡j =
@@ -562,9 +571,19 @@ splitAt-↑ˡ : ∀ m i n → splitAt m (i ↑ˡ n) ≡ inj₁ i
 splitAt-↑ˡ (suc m) zero    n = refl
 splitAt-↑ˡ (suc m) (suc i) n rewrite splitAt-↑ˡ m i n = refl
 
+splitAt⁻¹-↑ˡ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₁ j → j ↑ˡ n ≡ i
+splitAt⁻¹-↑ˡ {suc m} {n} {0F} {.0F} refl = refl
+splitAt⁻¹-↑ˡ {suc m} {n} {suc i} {j} eq with splitAt m i in splitAt[m][i]≡inj₁[j]
+... | inj₁ k with refl ← eq = cong suc (splitAt⁻¹-↑ˡ {i = i} {j = k} splitAt[m][i]≡inj₁[j])
+
 splitAt-↑ʳ : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
 splitAt-↑ʳ zero    n i = refl
 splitAt-↑ʳ (suc m) n i rewrite splitAt-↑ʳ m n i = refl
+
+splitAt⁻¹-↑ʳ : ∀ {m} {n} {i} {j} → splitAt m {n} i ≡ inj₂ j → m ↑ʳ j ≡ i
+splitAt⁻¹-↑ʳ {zero}  {n} {i} {j} refl = refl
+splitAt⁻¹-↑ʳ {suc m} {n} {suc i} {j} eq with splitAt m i in splitAt[m][i]≡inj₂[k]
+... | inj₂ k with refl ← eq = cong suc (splitAt⁻¹-↑ʳ {i = i} {j = k} splitAt[m][i]≡inj₂[k])
 
 splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
 splitAt-join m n (inj₁ x) = splitAt-↑ˡ m x n
@@ -598,7 +617,7 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 -- Bundles
 
 +↔⊎ : Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
-+↔⊎ {m} {n} = mk↔′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
++↔⊎ {m} {n} = mk↔ₛ′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
 
 ------------------------------------------------------------------------
 -- remQuot
@@ -609,16 +628,16 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 remQuot-combine : ∀ {n k} (i : Fin n) j → remQuot k (combine i j) ≡ (i , j)
 remQuot-combine {suc n} {k} zero    j rewrite splitAt-↑ˡ k j (n ℕ.* k) = refl
 remQuot-combine {suc n} {k} (suc i) j rewrite splitAt-↑ʳ k   (n ℕ.* k) (combine i j) =
-  cong (Data.Product.map₁ suc) (remQuot-combine i j)
+  cong (Prod.map₁ suc) (remQuot-combine i j)
 
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
-combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
-... | inj₁ j | P.[ eq ] = begin
+combine-remQuot {suc n} k i with splitAt k i in eq
+... | inj₁ j = begin
   join k (n ℕ.* k) (inj₁ j)      ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i) ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
   i                              ∎
   where open ≡-Reasoning
-... | inj₂ j | P.[ eq ] = begin
+... | inj₂ j = begin
   k ↑ʳ (uncurry combine (remQuot {n} k j)) ≡⟨ cong (k ↑ʳ_) (combine-remQuot {n} k j) ⟩
   join k (n ℕ.* k) (inj₂ j)                ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i)           ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
@@ -679,8 +698,8 @@ combine-injective i j k l cᵢⱼ≡cₖₗ =
   combine-injectiveʳ i j k l cᵢⱼ≡cₖₗ
 
 combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine j k ≡ i
-combine-surjective {m} {n} i with remQuot {m} n i | P.inspect (remQuot {m} n) i
-... | j , k | P.[ eq ] = j , k , (begin
+combine-surjective {m} {n} i with remQuot {m} n i in eq
+... | j , k = j , k , (begin
   combine j k                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
   uncurry combine (remQuot {m} n i) ≡⟨ combine-remQuot {m} n i ⟩
   i                                 ∎)
@@ -690,7 +709,7 @@ combine-surjective {m} {n} i with remQuot {m} n i | P.inspect (remQuot {m} n) i
 -- Bundles
 
 *↔× : Fin (m ℕ.* n) ↔ (Fin m × Fin n)
-*↔× {m} {n} = mk↔′ (remQuot {m} n) (uncurry combine)
+*↔× {m} {n} = mk↔ₛ′ (remQuot {m} n) (uncurry combine)
   (uncurry remQuot-combine)
   (combine-remQuot {m} n)
 
@@ -741,7 +760,7 @@ finToFun-funToFin {suc m} {n} f (suc i) =
 -- Bundles
 
 ^↔→ : Extensionality _ _ → Fin (m ^ n) ↔ (Fin n → Fin m)
-^↔→ {m} {n} ext = mk↔′ finToFun funToFin
+^↔→ {m} {n} ext = mk↔ₛ′ finToFun funToFin
   (ext ∘ finToFun-funToFin)
   (funToFin-finToFin {n} {m})
 
@@ -802,22 +821,13 @@ punchIn-injective (suc i) (suc j) (suc k) ↑j+1≡↑k+1 =
 punchInᵢ≢i : ∀ i (j : Fin n) → punchIn i j ≢ i
 punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 
-punchIn-mono-≤ : ∀ i (j k : Fin n) → j ≤ k → punchIn i j ≤ punchIn i k
-punchIn-mono-≤ zero    _        _      j≤k       = s≤s j≤k
-punchIn-mono-≤ (suc _) zero    _       z≤n       = z≤n
-punchIn-mono-≤ (suc i) (suc j) (suc k) (s≤s j≤k) = s≤s (punchIn-mono-≤ i j k j≤k)
-
-punchIn-cancel-≤ : ∀ i (j k : Fin n) → punchIn i j ≤ punchIn i k → j ≤ k
-punchIn-cancel-≤ zero    _       _       (s≤s j≤k)   = j≤k
-punchIn-cancel-≤ (suc _) zero    _       z≤n         = z≤n
-punchIn-cancel-≤ (suc i) (suc j) (suc k) (s≤s ↑j≤↑k) = s≤s (punchIn-cancel-≤ i j k ↑j≤↑k)
-
 ------------------------------------------------------------------------
 -- punchOut
 ------------------------------------------------------------------------
 
--- A version of 'cong' for 'punchOut' in which the inequality argument can be
--- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
+-- A version of 'cong' for 'punchOut' in which the inequality argument
+-- can be changed out arbitrarily (reflecting the proof-irrelevance of
+-- that argument).
 
 punchOut-cong : ∀ (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} →
                 j ≡ k → punchOut i≢j ≡ punchOut i≢k
@@ -827,9 +837,9 @@ punchOut-cong {_}     zero    {suc j} {suc k}            = suc-injective
 punchOut-cong {suc n} (suc i) {zero}  {zero}   _ = refl
 punchOut-cong {suc n} (suc i) {suc j} {suc k}    = cong suc ∘ punchOut-cong i ∘ suc-injective
 
--- An alternative to 'punchOut-cong' in the which the new inequality argument is
--- specific. Useful for enabling the omission of that argument during equational
--- reasoning.
+-- An alternative to 'punchOut-cong' in the which the new inequality
+-- argument is specific. Useful for enabling the omission of that
+-- argument during equational reasoning.
 
 punchOut-cong′ : ∀ (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) →
                  punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
@@ -844,22 +854,6 @@ punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong s
 punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
   cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
-
-punchOut-mono-≤ : ∀ {i j k : Fin (suc n)} (i≢j : i ≢ j) (i≢k : i ≢ k) →
-                  j ≤ k → punchOut i≢j ≤ punchOut i≢k
-punchOut-mono-≤ {_    } {zero } {zero } {_    } 0≢0 _   z≤n       = contradiction refl 0≢0
-punchOut-mono-≤ {_    } {zero } {suc _} {suc _} _   _   (s≤s j≤k) = j≤k
-punchOut-mono-≤ {suc _} {suc _} {zero } {_    } _   _   z≤n       = z≤n
-punchOut-mono-≤ {suc _} {suc _} {suc _} {suc _} i≢j i≢k (s≤s j≤k) = s≤s (punchOut-mono-≤ (i≢j ∘ cong suc) (i≢k ∘ cong suc) j≤k)
-
-punchOut-cancel-≤ : ∀ {i j k : Fin (suc n)} (i≢j : i ≢ j) (i≢k : i ≢ k) →
-                    punchOut i≢j ≤ punchOut i≢k → j ≤ k
-punchOut-cancel-≤ {_    } {zero } {zero } {_    } 0≢0 _   _           = contradiction refl 0≢0
-punchOut-cancel-≤ {_    } {zero } {suc _} {zero } _   0≢0 _           = contradiction refl 0≢0
-punchOut-cancel-≤ {suc _} {zero } {suc _} {suc _} _   _   pⱼ≤pₖ       = s≤s pⱼ≤pₖ
-punchOut-cancel-≤ {_    } {suc _} {zero } {_    } _   _   _           = z≤n
-punchOut-cancel-≤ {suc _} {suc _} {suc _} {zero } _   _   ()
-punchOut-cancel-≤ {suc _} {suc _} {suc _} {suc _} i≢j i≢k (s≤s pⱼ≤pₖ) = s≤s (punchOut-cancel-≤ (i≢j ∘ cong suc) (i≢k ∘ cong suc) pⱼ≤pₖ)
 
 punchIn-punchOut : ∀ {i j : Fin (suc n)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
@@ -883,10 +877,10 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 -- pinch
 ------------------------------------------------------------------------
 
-pinch-surjective : ∀ (i : Fin n) → Surjective _≡_ (pinch i)
-pinch-surjective _       zero    = zero , refl
-pinch-surjective zero    (suc j) = suc (suc j) , refl
-pinch-surjective (suc i) (suc j) = map suc (cong suc) (pinch-surjective i j)
+pinch-surjective : ∀ (i : Fin n) → Surjective _≡_ _≡_ (pinch i)
+pinch-surjective _       zero    = zero , λ { refl → refl }
+pinch-surjective zero    (suc j) = suc (suc j) , λ { refl → refl }
+pinch-surjective (suc i) (suc j) = map suc (λ {f refl → cong suc (f refl)}) (pinch-surjective i j)
 
 pinch-mono-≤ : ∀ (i : Fin n) → (pinch i) Preserves _≤_ ⟶ _≤_
 pinch-mono-≤ 0F      {0F}    {k}     0≤n       = z≤n
@@ -1003,8 +997,8 @@ injective⇒≤ {zero}  {_}     {f} _   = z≤n
 injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
 injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
   suc-injective (inj (punchOut-injective
-    (contraInjective _≡_ _≡_ inj 0≢1+n)
-    (contraInjective _≡_ _≡_ inj 0≢1+n) eq))))
+    (contraInjective inj 0≢1+n)
+    (contraInjective inj 0≢1+n) eq))))
 
 <⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
 <⇒notInjective n<m inj = ℕₚ.≤⇒≯ (injective⇒≤ inj) n<m
@@ -1174,4 +1168,3 @@ Please use <⇒<′ instead."
 "Warning: <′⇒≺ was deprecated in v2.0.
 Please use <′⇒< instead."
 #-}
-

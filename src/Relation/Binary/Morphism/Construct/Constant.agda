@@ -8,7 +8,9 @@
 
 open import Function.Base using (const)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.Morphism.Structures
 open import Relation.Binary.Morphism.Bundles
 

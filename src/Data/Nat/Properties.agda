@@ -23,7 +23,7 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Empty using (⊥)
 open import Data.Nat.Base
-open import Data.Product using (∄; ∃; _×_; _,_)
+open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
@@ -31,7 +31,14 @@ open import Function.Bundles using (_↣_)
 open import Function.Metric.Nat
 open import Level using (0ℓ)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary
+open import Relation.Binary.Core
+  using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles
+  using (DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsDecEquivalence; IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (DecidableEquality; Irrelevant; Reflexive; Antisymmetric; Transitive; Total; Decidable; Connex; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri>; tri<; _Respects₂_)
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
@@ -1551,7 +1558,7 @@ m≤n⇒n∸m≤n : ∀ {m n} → m ≤ n → n ∸ m ≤ n
 m≤n⇒n∸m≤n z≤n       = ≤-refl
 m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
 
----------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _∸_ and _+_
 
 +-∸-comm : ∀ {m} n {o} → o ≤ m → (m + n) ∸ o ≡ (m ∸ o) + n
@@ -1572,6 +1579,15 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
   suc (m + n) ∸ suc o  ≡⟨⟩
   (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
   m + (n ∸ o)          ∎
+
+m+n≤o⇒m≤o∸n : ∀ m n o → m + n ≤ o → m ≤ o ∸ n
+m+n≤o⇒m≤o∸n zero    n o       le       = z≤n
+m+n≤o⇒m≤o∸n (suc m) n (suc o) (s≤s le)
+  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m n o le)
+
+m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
+m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
+m≤o∸n⇒m+n≤o m {suc n} (s≤s n≤o) le rewrite +-suc m n = s≤s (m≤o∸n⇒m+n≤o m n≤o le)
 
 m≤n+m∸n : ∀ m n → m ≤ n + (m ∸ n)
 m≤n+m∸n zero    n       = z≤n
@@ -1939,6 +1955,8 @@ n≡⌈n+n/2⌉ (suc n′@(suc n)) =
 1≤n! zero    = ≤-refl
 1≤n! (suc n) = *-mono-≤ (m≤m+n 1 n) (1≤n! n)
 
+infix 4 _!≢0 _!*_!≢0
+
 _!≢0 : ∀ n → NonZero (n !)
 n !≢0 = >-nonZero (1≤n! n)
 
@@ -2161,7 +2179,7 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   ... | _      | yes (n , n<v , Pn) = yes (n , m≤n⇒m≤1+n n<v , Pn)
   ... | no ¬Pv | no ¬Pn<v           = no ¬Pn<1+v
     where
-    ¬Pn<1+v : ∄ λ n → n < suc v × P n
+    ¬Pn<1+v : (∃ λ n → n < suc v × P n) → ⊥
     ¬Pn<1+v (n , s≤s n≤v , Pn) with n ≟ v
     ... | yes refl = ¬Pv Pn
     ... | no  n≢v  = ¬Pn<v (n , ≤∧≢⇒< n≤v n≢v , Pn)
