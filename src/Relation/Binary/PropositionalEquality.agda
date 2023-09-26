@@ -11,7 +11,7 @@ module Relation.Binary.PropositionalEquality where
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base using (id; _∘_)
-open import Function.Equality using (Π; _⟶_)
+import Function.Dependent.Bundles as Dependent
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product.Base using (∃)
@@ -27,9 +27,7 @@ import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
 private
   variable
     a b c ℓ p : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Re-export contents modules that make up the parts
@@ -50,15 +48,16 @@ _≗_ : (f g : A → B) → Set _
 _≗_ {A = A} {B = B} = Setoid._≈_ (A →-setoid B)
 
 :→-to-Π : ∀ {A : Set a} {B : IndexedSetoid A b ℓ} →
-          ((x : A) → IndexedSetoid.Carrier B x) → Π (setoid A) B
+          ((x : A) → IndexedSetoid.Carrier B x) →
+          Dependent.Func (setoid A) B
 :→-to-Π {B = B} f = record
-  { _⟨$⟩_ = f
-  ; cong  = λ { refl → IndexedSetoid.refl B }
+  { to = f
+  ; cong = λ { refl → IndexedSetoid.refl B }
   }
-  where open IndexedSetoid B using (_≈_)
 
 →-to-⟶ : ∀ {A : Set a} {B : Setoid b ℓ} →
-         (A → Setoid.Carrier B) → setoid A ⟶ B
+         (A → Setoid.Carrier B) →
+         Dependent.Func (setoid A) (Trivial.indexedSetoid B)
 →-to-⟶ = :→-to-Π
 
 ------------------------------------------------------------------------

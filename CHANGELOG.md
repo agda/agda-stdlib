@@ -274,8 +274,14 @@ Non-backwards compatible changes
 
 #### Removal of the old function hierarchy
 
-* The switch to the new function hierarchy is complete and the following definitions
-  now use the new definitions instead of the old ones:
+* The switch to the new function hierarchy is complete and the following modules
+  have been completely switched over to use the new definitions:
+  ```
+  Data.Sum.Function.Setoid
+  Data.Sum.Function.Propositional
+  ```
+  
+* Additionally the following proofs now use the new definitions instead of the old ones:
   * `Algebra.Lattice.Properties.BooleanAlgebra`
   * `Algebra.Properties.CommutativeMonoid.Sum`
   * `Algebra.Properties.Lattice`
@@ -763,6 +769,30 @@ Non-backwards compatible changes
   IO.Instances
   ```
 
+### Changes to triple reasoning interface
+
+* The module `Relation.Binary.Reasoning.Base.Triple` now takes an extra proof that the strict
+  relation is irreflexive. 
+  
+* This allows the following new proof combinator:
+  ```agda
+  begin-contradiction : (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
+  ```
+  that takes a proof that a value is strictly less than itself and then applies the principle of explosion.
+  
+* Specialised versions of this combinator are available in the following derived modules:
+  ```
+  Data.Nat.Properties
+  Data.Nat.Binary.Properties
+  Data.Integer.Properties
+  Data.Rational.Unnormalised.Properties
+  Data.Rational.Properties
+  Data.Vec.Relation.Binary.Lex.Strict
+  Data.Vec.Relation.Binary.Lex.NonStrict
+  Relation.Binary.Reasoning.StrictPartialOrder
+  Relation.Binary.Reasoning.PartialOrder
+  ```
+
 ### Other
 
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
@@ -982,8 +1012,11 @@ Major improvements
   * `RawRing`
   * `RawQuasigroup`
   * `RawLoop`
+  * `RawKleeneAlgebra`
 * A new module `Algebra.Lattice.Bundles.Raw` is also introduced.
   * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
+
+* In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
 
 Deprecated modules
 ------------------
@@ -1079,6 +1112,10 @@ Deprecated modules
 ### Deprecation of `Data.Nat.Properties.Core`
 
 * The module `Data.Nat.Properties.Core` has been deprecated, and its one entry moved to `Data.Nat.Properties`
+
+### Deprecation of `Data.Product.Function.Dependent.Setoid.WithK`
+
+* This module has been deprecated, as none of its contents actually depended on axiom K. The contents has been moved to `Data.Product.Function.Dependent.Setoid`.
 
 Deprecated names
 ----------------
@@ -2051,6 +2088,9 @@ Additions to existing modules
   record IsRingWithoutOneHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   record IsRingWithoutOneMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   record IsRingWithoutOneIsoMorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsKleeneAlgebraHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsKleeneAlgebraMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsKleeneAlgebraIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
 * Added new proofs in `Data.Bool.Properties`:
@@ -3356,6 +3396,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added new function to `Data.Fin.Induction`
   ```agda
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  foldr-commMonoid : xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
   ```
 
 * Added new module to `Data.Rational.Unnormalised.Properties`
