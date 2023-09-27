@@ -104,15 +104,17 @@ module _ (_≟_ : DecidableEquality A) {x y : A} where
   ≢-≟-identity = dec-no (x ≟ y)
 
 
-
-
 ------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
+-- Inspect
 
--- Version 2.0
+-- Inspect can be used when you want to pattern match on the result r
+-- of some expression e, and you also need to "remember" that r ≡ e.
+
+-- See README.Inspect for an explanation of how/why to use this.
+
+-- Normally (but not always) the new `with ... in` syntax described at
+-- https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality
+-- can be used instead."
 
 record Reveal_·_is_ {A : Set a} {B : A → Set b}
                     (f : (x : A) → B x) (x : A) (y : B x) :
@@ -123,12 +125,3 @@ record Reveal_·_is_ {A : Set a} {B : A → Set b}
 inspect : ∀ {A : Set a} {B : A → Set b}
           (f : (x : A) → B x) (x : A) → Reveal f · x is f x
 inspect f x = [ refl ]
-
-{-# WARNING_ON_USAGE Reveal_·_is_
-"Warning: Reveal_·_is_ was deprecated in v2.0.
-Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead."
-#-}
-{-# WARNING_ON_USAGE inspect
-"Warning: inspect was deprecated in v2.0.
-Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality instead."
-#-}
