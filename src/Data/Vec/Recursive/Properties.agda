@@ -13,7 +13,7 @@ open import Data.Nat.Base hiding (_^_)
 open import Data.Product.Base
 open import Data.Vec.Recursive
 open import Data.Vec.Base using (Vec; _∷_)
-open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Relation.Binary.PropositionalEquality.Core as P
 open ≡-Reasoning
 
@@ -82,7 +82,7 @@ toVec∘fromVec {n = suc n} (x Vec.∷ xs) = begin
   tl-prf = tail-cons-identity _ x (fromVec xs)
 
 ↔Vec : ∀ n → A ^ n ↔ Vec A n
-↔Vec n = mk↔′ (toVec n) fromVec toVec∘fromVec (fromVec∘toVec n)
+↔Vec n = mk↔ₛ′ (toVec n) fromVec toVec∘fromVec (fromVec∘toVec n)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

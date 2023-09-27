@@ -11,7 +11,8 @@ module Data.Star.Decoration where
 open import Data.Unit
 open import Function.Base using (flip)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Definitions using (NonEmpty; nonEmpty)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
 -- A predicate on relation "edges" (think of the relation as a graph).
