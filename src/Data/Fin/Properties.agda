@@ -547,11 +547,19 @@ inject≤-idempotent {_} {suc n} {suc o} zero    _   _   _ = refl
 inject≤-idempotent {_} {suc n} {suc o} (suc i) (s≤s m≤n) (s≤s n≤o) (s≤s m≤o) =
   cong suc (inject≤-idempotent i m≤n n≤o m≤o)
 
+inject≤-trans : ∀ (i : Fin m) (m≤n : m ℕ.≤ n) (n≤o : n ℕ.≤ o) →
+                inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (ℕₚ.≤-trans m≤n n≤o)
+inject≤-trans i m≤n n≤o = inject≤-idempotent i m≤n n≤o _
+
 inject≤-injective : ∀ (m≤n m≤n′ : m ℕ.≤ n) i j →
                     inject≤ i m≤n ≡ inject≤ j m≤n′ → i ≡ j
 inject≤-injective (s≤s p) (s≤s q) zero    zero    eq = refl
 inject≤-injective (s≤s p) (s≤s q) (suc i) (suc j) eq =
   cong suc (inject≤-injective p q i j (suc-injective eq))
+
+inject≤-irrelevant : ∀ (m≤n m≤n′ : m ℕ.≤ n) i →
+                    inject≤ i m≤n ≡ inject≤ i m≤n′
+inject≤-irrelevant m≤n m≤n′ i =  cong (inject≤ i) (ℕₚ.≤-irrelevant m≤n m≤n′)
 
 ------------------------------------------------------------------------
 -- pred
