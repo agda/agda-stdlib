@@ -371,8 +371,11 @@ map⁻ {xs = _ ∷ _} (p ∷ ps) = p ∷ map⁻ ps
 
 -- A variant of All.map.
 
-gmap : ∀ {f : A → B} → P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
-gmap g = map⁺ ∘ All.map g
+gmap⁺ : ∀ {f : A → B} → P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
+gmap⁺ g = map⁺ ∘ All.map g
+
+gmap⁻ : ∀ {f : A → B} → Q ∘ f ⋐ P → All Q ∘ map f ⋐ All P
+gmap⁻ g = All.map g ∘ map⁻
 
 ------------------------------------------------------------------------
 -- mapMaybe
@@ -679,7 +682,7 @@ replicate⁻ (px ∷ _) = px
 
 inits⁺ : All P xs → All (All P) (inits xs)
 inits⁺ []         = [] ∷ []
-inits⁺ (px ∷ pxs) = [] ∷ gmap (px ∷_) (inits⁺ pxs)
+inits⁺ (px ∷ pxs) = [] ∷ gmap⁺ (px ∷_) (inits⁺ pxs)
 
 inits⁻ : ∀ xs → All (All P) (inits xs) → All P xs
 inits⁻ []               pxs                   = []
@@ -772,4 +775,10 @@ updateAt-cong-relative = updateAt-cong-local
 {-# WARNING_ON_USAGE updateAt-cong-relative
 "Warning: updateAt-cong-relative was deprecated in v2.0.
 Please use updateAt-cong-local instead."
+#-}
+
+gmap = gmap⁺
+{-# WARNING_ON_USAGE gmap
+"Warning: gmap was deprecated in v2.0.
+Please use gmap⁺ instead."
 #-}
