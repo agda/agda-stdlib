@@ -16,7 +16,13 @@ open import Data.Empty
 open import Function.Base using (_$_; _∘_)
 open import Level
 open import Relation.Nullary.Decidable.Core using (yes; no; map′)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; StrictPartialOrder; TotalOrder; DecTotalOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsStrictPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Asymmetric; Total; Decidable; Irreflexive; Antisymmetric; Trichotomous; _Respectsʳ_; _Respectsˡ_; _Respects₂_; tri<; tri>; tri≈)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------

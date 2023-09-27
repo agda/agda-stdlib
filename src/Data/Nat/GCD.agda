@@ -21,7 +21,7 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
-open import Relation.Binary
+open import Relation.Binary.Definitions using (tri<; tri>; tri≈; Symmetric)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; subst; cong)
 open import Relation.Nullary.Decidable.Core using (Dec; map′)

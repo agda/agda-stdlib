@@ -26,7 +26,7 @@ open Raw public
   using (RawMagma; RawMonoid; RawGroup
         ; RawNearSemiring; RawSemiring
         ; RawRingWithoutOne; RawRing
-        ; RawQuasigroup; RawLoop)
+        ; RawQuasigroup; RawLoop; RawKleeneAlgebra)
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation
@@ -892,6 +892,12 @@ record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   open AbelianGroup +-abelianGroup public
     using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
 
+  *-unitalMagma : UnitalMagma _ _
+  *-unitalMagma = record { isUnitalMagma = *-isUnitalMagma}
+
+  open UnitalMagma *-unitalMagma public
+    using () renaming (magma to *-magma; identity to *-identity)
+
 record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_
@@ -1158,3 +1164,4 @@ record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Loop loop public
     using (quasigroup)
+

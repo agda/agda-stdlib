@@ -6,7 +6,11 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
 
 module Data.List.Relation.Binary.Permutation.Setoid
   {a ℓ} (S : Setoid a ℓ) where

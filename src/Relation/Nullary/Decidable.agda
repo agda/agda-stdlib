@@ -14,7 +14,7 @@ open import Data.Product.Base as Prod hiding (map)
 open import Data.Sum.Base as Sum hiding (map)
 open import Function.Base
 open import Function.Bundles using
-  (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔′)
+  (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔ₛ′)
 open import Relation.Binary.Bundles using (Setoid; module Setoid)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary using (Irrelevant)
@@ -59,10 +59,8 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
 -- A lemma relating True and Dec
 
 True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
-True-↔ (true  because [p]) irr = let p = invert [p] in
-  mk↔′ (λ _ → p) _ (irr p) cong′
-True-↔ (false because [¬p]) _  = let ¬p = invert [¬p] in
-  mk↔′ (λ ()) ¬p (λ p → contradiction p ¬p) λ ()
+True-↔ (true  because  [p]) irr = mk↔ₛ′ (λ _ → invert [p]) _ (irr (invert [p])) cong′
+True-↔ (false because ofⁿ ¬p) _ = mk↔ₛ′ (λ ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) λ ()
 
 ------------------------------------------------------------------------
 -- Result of decidability

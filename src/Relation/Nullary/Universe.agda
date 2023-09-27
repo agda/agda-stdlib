@@ -18,11 +18,11 @@ import Relation.Binary.PropositionalEquality.Properties as PropEq
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
 open import Data.Sum.Base as Sum  hiding (map)
-open import Data.Sum.Relation.Binary.Pointwise
+open import Data.Sum.Relation.Binary.Pointwise using (_⊎ₛ_; inj₁; inj₂)
 open import Data.Product.Base as Prod hiding (map)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Function.Base using (_∘_; id)
-import Function.Equality as FunS
+open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Data.Empty
 open import Effect.Applicative
 open import Effect.Monad
@@ -53,7 +53,7 @@ mutual
   setoid (K P)     _ = PropEq.setoid P
   setoid (F₁ ∨ F₂) P = (setoid F₁ P) ⊎ₛ (setoid F₂ P)
   setoid (F₁ ∧ F₂) P = (setoid F₁ P) ×ₛ (setoid F₂ P)
-  setoid (P₁ ⇒ F₂) P = FunS.≡-setoid P₁
+  setoid (P₁ ⇒ F₂) P = ≡-setoid P₁
                          (Trivial.indexedSetoid (setoid F₂ P))
   setoid (¬¬ F)    P = Always.setoid (¬ ¬ ⟦ F ⟧ P) _
 

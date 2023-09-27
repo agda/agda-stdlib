@@ -16,7 +16,13 @@ import Data.List.Relation.Binary.Lex.Strict as StrictLex
 open import Data.String.Base
 open import Function.Base
 open import Relation.Nullary.Decidable.Core using (yes; no; map′; isYes)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; DecTotalOrder; DecPoset)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsDecPartialOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Substitutive; Decidable)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality.Properties as PropEq

@@ -21,8 +21,10 @@ open import Function.Base using (flip; _$_)
 open import Induction
 open import Induction.WellFounded as WF
 open import Level using (Level)
-open import Relation.Binary
-  using (Rel; Decidable; IsPartialOrder; IsStrictPartialOrder; StrictPartialOrder)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (StrictPartialOrder)
+open import Relation.Binary.Structures using (IsPartialOrder; IsStrictPartialOrder)
+open import Relation.Binary.Definitions using (Decidable)
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 import Relation.Binary.Construct.Flip.Ord as Ord
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict

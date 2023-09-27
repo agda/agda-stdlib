@@ -10,7 +10,8 @@ module Reflection.AST.Term where
 
 open import Data.List.Base as List                     hiding (_++_)
 open import Data.List.Properties                       using (∷-dec)
-open import Data.Nat as ℕ                              using (ℕ; zero; suc)
+open import Data.Nat.Base                              using (ℕ; zero; suc)
+import Data.Nat.Properties as ℕ
 open import Data.Product.Base                          using (_×_; _,_; <_,_>; uncurry; map₁)
 open import Data.Product.Properties                    using (,-injective)
 open import Data.Maybe.Base                            using (Maybe; just; nothing)

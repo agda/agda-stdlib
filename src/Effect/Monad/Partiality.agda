@@ -71,6 +71,9 @@ monad = record
   ; _>>=_  = bind
   }
 
+join : (A ⊥) ⊥ → A ⊥
+join = Join.join monad
+
 private module M {f} = RawMonad (monad {f})
 
 -- Non-termination.

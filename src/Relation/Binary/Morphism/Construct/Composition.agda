@@ -9,7 +9,9 @@
 open import Function.Base using (_∘_)
 open import Function.Construct.Composition using (surjective)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
+open import Relation.Binary.Definitions using (Transitive)
 open import Relation.Binary.Morphism.Bundles
 open import Relation.Binary.Morphism.Structures
 

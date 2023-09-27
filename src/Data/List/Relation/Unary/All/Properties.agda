@@ -33,10 +33,7 @@ open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
 open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
-import Function.Bundles as B
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
-open import Function.Surjection using (_↠_; surjection)
+open import Function.Bundles
 open import Level using (Level)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
@@ -109,7 +106,7 @@ Any¬⇒¬All (here  ¬p) = ¬p           ∘ All.head
 Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
 
 ¬Any↠All¬ : ∀ {xs} → (¬ Any P xs) ↠ All (¬_ ∘ P) xs
-¬Any↠All¬ = surjection (¬Any⇒All¬ _) All¬⇒¬Any to∘from
+¬Any↠All¬ = mk↠ₛ {to = ¬Any⇒All¬ _} (λ y → All¬⇒¬Any y , to∘from y)
   where
   to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → ¬Any⇒All¬ xs (All¬⇒¬Any ¬p) ≡ ¬p
   to∘from []         = refl
@@ -127,7 +124,7 @@ Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
     }
 
 Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-Any¬⇔¬All dec = equivalence Any¬⇒¬All (¬All⇒Any¬ dec _)
+Any¬⇔¬All dec = mk⇔ Any¬⇒¬All (¬All⇒Any¬ dec _)
 
 private
   -- If equality of functions were extensional, then the logical
@@ -407,8 +404,8 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ++⁻ []       p          = [] , p
 ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
 
-++↔ : (All P xs × All P ys) B.↔ All P (xs ++ ys)
-++↔ {xs = zs} = B.mk↔′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
+++↔ : (All P xs × All P ys) ↔ All P (xs ++ ys)
+++↔ {xs = zs} = mk↔ₛ′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
   where
   ++⁺∘++⁻ : ∀ xs (p : All P (xs ++ ys)) → uncurry′ ++⁺ (++⁻ xs p) ≡ p
   ++⁺∘++⁻ []       p          = refl
@@ -708,12 +705,12 @@ module _ (p : A → Bool) where
 
   all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
   all⁺ []       _     = []
-  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) ⟨$⟩ px∷xs
+  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) px∷xs
   ... | (px , pxs) = px ∷ all⁺ xs pxs
 
   all⁻ : All (T ∘ p) xs → T (all p xs)
   all⁻ []         = _
-  all⁻ (px ∷ pxs) = Equivalence.from T-∧ ⟨$⟩ (px , all⁻ pxs)
+  all⁻ (px ∷ pxs) = Equivalence.from T-∧ (px , all⁻ pxs)
 
 ------------------------------------------------------------------------
 -- All is anti-monotone.

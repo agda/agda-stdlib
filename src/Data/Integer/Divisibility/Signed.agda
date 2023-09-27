@@ -21,7 +21,11 @@ import Data.Nat.Properties as ℕ
 import Data.Sign as S
 import Data.Sign.Properties as SProp
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
+open import Relation.Binary.Bundles using (Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Decidable)
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Nullary.Decidable.Core using (yes; no; map′)

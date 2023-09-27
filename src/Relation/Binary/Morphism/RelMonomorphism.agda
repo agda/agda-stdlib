@@ -10,7 +10,10 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Function.Base
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Total; Asymmetric; Decidable)
 open import Relation.Binary.Morphism
 
 module Relation.Binary.Morphism.RelMonomorphism

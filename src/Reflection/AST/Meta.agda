@@ -8,7 +8,7 @@
 
 module Reflection.AST.Meta where
 
-import Data.Nat.Properties as ℕₚ                       using (_≟_)
+import Data.Nat.Properties as ℕₚ
 open import Function.Base                              using (_on_)
 open import Relation.Nullary.Decidable.Core            using (map′)
 open import Relation.Binary.Core                       using (Rel)
