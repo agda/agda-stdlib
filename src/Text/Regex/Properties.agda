@@ -49,6 +49,8 @@ open import Text.Regex.Properties.Core preorder public
              $ ([]∈? e) ×-dec ([]∈? f)
 []∈? (e ⋆)   = yes (star (sum (inj₁ ε)))
 
+infix 4 _∈ᴿ?_ _∉ᴿ?_ _∈?ε _∈?[_] _∈?[^_]
+
 _∈ᴿ?_ : Decidable _∈ᴿ_
 c ∈ᴿ? [ a ]     = map′ [_] (λ where [ eq ] → eq) (c ≟ a)
 c ∈ᴿ? (lb ─ ub) = map′ (uncurry _─_) (λ where (ge ─ le) → ge , le)

@@ -141,6 +141,8 @@ module RingSolverReflection (ring : Term) (numberOfVariables : ℕ) where
   `I : Term → Term
   `I x = quote Ι $ᵉ (x ⟨∷⟩ [])
 
+  infixl 6 _`⊜_
+
   _`⊜_ : Term → Term → Term
   x `⊜ y = quote _⊜_  $ʳ (`numberOfVariables ⟅∷⟆ x ⟨∷⟩ y ⟨∷⟩ [])
 
