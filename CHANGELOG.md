@@ -851,6 +851,10 @@ Non-backwards compatible changes
   found in `Data.List.NonEmpty.Properties` under the names `groupSeqs-groups`
   and `ungroupSeqs` and `groupSeqs`.
 
+* In `Data.List.Relation.Unary.Grouped.Properties` the proofs `map⁺` and `map⁻`
+  have had their preconditions weakened so the equivalences no longer require congruence
+  proofs.
+
 * The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
@@ -1347,6 +1351,11 @@ Deprecated names
   map-with-∈⁺  ↦  mapWith∈⁺
   map-with-∈⁻  ↦  mapWith∈⁻
   map-with-∈↔  ↦  mapWith∈↔
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```
+  gmap  ↦  gmap⁺
   ```
 
 * In `Data.Nat.Properties`:
@@ -3460,6 +3469,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   #-sym         : Symmetric _#_
   #-congʳ       : x ≈ y → x # z → y # z
   #-congˡ       : y ≈ z → x # y → x # z
+  ```
+
+* Added new proof to `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  gmap⁻ : Q ∘ f ⋐ P → All Q ∘ map f ⋐ All P
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Setoid.Properties`
