@@ -1117,6 +1117,10 @@ Deprecated modules
 
 * The module `Data.Nat.Properties.Core` has been deprecated, and its one entry moved to `Data.Nat.Properties`
 
+### Deprecation of `Data.Fin.Substitution.Example`
+
+* The module `Data.Fin.Substitution.Example` has been deprecated, and moved to `README.Data.Fin.Substitution.UntypedLambda`
+
 ### Deprecation of `Data.Product.Function.Dependent.Setoid.WithK`
 
 * This module has been deprecated, as none of its contents actually depended on axiom K. The contents has been moved to `Data.Product.Function.Dependent.Setoid`.
@@ -2200,6 +2204,27 @@ Additions to existing modules
   inject≤-trans      : inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (≤-trans m≤n n≤o)
   inject≤-irrelevant : inject≤ i m≤n ≡ inject≤ i m≤n′
   ```
+
+* Changed the fixity of `Data.Fin.Substitution.TermSubst._/Var_`.
+  ```agda
+  infix 8 ↦ infixl 8
+  ```
+
+* Added new lemmas in `Data.Fin.Substitution.Lemmas.TermLemmas`:
+  ```
+  map-var≡ : {ρ₁ : Sub Fin m n} {ρ₂ : Sub T m n} {f : Fin m → Fin n} →
+             (∀ x → lookup ρ₁ x ≡ f x) →
+             (∀ x → lookup ρ₂ x ≡ T.var (f x)) →
+             map T.var ρ₁ ≡ ρ₂
+  wk≡wk : map T.var VarSubst.wk ≡ T.wk {n = n}
+  id≡id : map T.var VarSubst.id ≡ T.id {n = n}
+  sub≡sub : {x : Fin n} → map T.var (VarSubst.sub x) ≡ T.sub (T.var x)
+  ↑≡↑ : {ρ : Sub Fin m n} → map T.var (ρ VarSubst.↑) ≡ map T.var ρ T.↑
+  /Var≡/ : {ρ : Sub Fin m n} {t} → t /Var ρ ≡ t T./ map T.var ρ
+  sub-renaming-commutes : {ρ : Sub T m n} →
+    t /Var VarSubst.sub x T./ ρ ≡ t T./ ρ T.↑ T./ T.sub (lookup ρ x)
+  sub-commutes-with-renaming : {ρ : Sub Fin m n} →
+    t T./ T.sub t′ /Var ρ ≡ t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)
 
 * Added new functions in `Data.Integer.Base`:
   ```
