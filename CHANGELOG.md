@@ -1547,14 +1547,6 @@ Deprecated names
 * This fixes the fact we had picked the wrong name originally. The erased modality
   corresponds to @0 whereas the irrelevance one corresponds to `.`.
 
-### Deprecated `Relation.Binary.PropositionalEquality.inspect`
-    in favour of `with ... in ...` syntax (issue #1580; PRs #1630, #1930)
-
-* In `Relation.Binary.PropositionalEquality`
-  both the record type `Reveal_·_is_`
-  and its principal mode of use, `inspect`,
-  have been deprecated in favour of the new `with ... in ...` syntax.
-  See the documentation of [with-abstraction equality](https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality)
 
 New modules
 -----------
