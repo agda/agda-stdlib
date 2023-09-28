@@ -1555,6 +1555,11 @@ Deprecated names
   invPreorder   ↦ converse-preorder
   ```
 
+* In `Relation.Nullary.Decidable.Core`:
+  ```
+  excluded-middle  ↦  ¬¬-excluded-middle
+  ```
+
 ### Renamed Data.Erased to Data.Irrelevant
 
 * This fixes the fact we had picked the wrong name originally. The erased modality
