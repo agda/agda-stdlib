@@ -12,7 +12,11 @@ open import Data.Sum.Base
 open import Data.Unit.Base
 open import Level using (0ℓ)
 open import Relation.Nullary
-open import Relation.Binary hiding (Irrelevant)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Poset; DecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions using (Decidable; Total; Antisymmetric)
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------

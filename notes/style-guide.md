@@ -461,6 +461,16 @@ word within a compound word is capitalized except for the first word.
   map⁻ : Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
   ```
 
+* When specifying a property over a container, there are usually two choices. Either
+  assume the property holds for generally (e.g. `map id xs ≡ xs`) or a assume that
+  it only holds for the elements within the container (e.g. `All (λ x → f x ≡ x) xs → map f xs ≡ xs`).
+  The naming convention is to add a `-local` suffix on to the name of the latter variety.
+  e.g.
+  ```agda
+  map-id       :  map id xs ≡ xs
+  map-id-local :  All (λ x → f x ≡ x) xs → map f xs ≡ xs
+  ```
+
 #### Keywords
 
 * If the name of something clashes with a keyword in Agda, then convention

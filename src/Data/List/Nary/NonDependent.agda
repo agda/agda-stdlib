@@ -10,7 +10,7 @@ module Data.List.Nary.NonDependent where
 
 open import Data.Nat.Base using (zero; suc)
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.Product as Prod using (_,_)
+open import Data.Product.Base as Prod using (_,_)
 open import Data.Product.Nary.NonDependent using (Product)
 open import Function.Base using ()
 open import Function.Nary.NonDependent.Base

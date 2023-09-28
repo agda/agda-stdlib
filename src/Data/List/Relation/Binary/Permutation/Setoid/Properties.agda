@@ -6,13 +6,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary as B hiding (Decidable)
+open import Relation.Binary.Core
+  using (Rel; _⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 
 module Data.List.Relation.Binary.Permutation.Setoid.Properties
   {a ℓ} (S : Setoid a ℓ)
   where
 
 open import Algebra
+import Algebra.Properties.CommutativeMonoid as ACM
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
@@ -29,14 +33,13 @@ import Data.List.Properties as Lₚ
 open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Data.Product using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
 open import Function.Base using (_∘_; _⟨_⟩_; flip)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (inverse)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)
+import Relation.Binary.Reasoning.Setoid as RelSetoid
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
 open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
@@ -473,3 +476,30 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
 ++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
 ++↭ʳ++ []       ys = ↭-refl
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (↭-shift xs ys)) (++↭ʳ++ xs (x ∷ ys))
+
+------------------------------------------------------------------------
+-- foldr of Commutative Monoid
+
+module _ {_∙_ : Op₂ A} {ε : A} (isCmonoid : IsCommutativeMonoid _≈_ _∙_ ε) where
+  open module CM = IsCommutativeMonoid isCmonoid
+
+  private
+    module S = RelSetoid setoid
+
+    cmonoid : CommutativeMonoid _ _
+    cmonoid = record { isCommutativeMonoid = isCmonoid }
+
+  open ACM cmonoid
+
+  foldr-commMonoid : ∀ {xs ys} → xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
+  foldr-commMonoid (refl []) = CM.refl
+  foldr-commMonoid (refl (x≈y ∷ xs≈ys)) = ∙-cong x≈y (foldr-commMonoid (Permutation.refl xs≈ys))
+  foldr-commMonoid (prep x≈y xs↭ys) = ∙-cong x≈y (foldr-commMonoid xs↭ys)
+  foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = S.begin
+    x ∙ (y ∙ foldr _∙_ ε xs)   S.≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
+    x ∙ (y ∙ foldr _∙_ ε ys)   S.≈˘⟨ assoc x y (foldr _∙_ ε ys) ⟩
+    (x ∙ y) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (comm x y) ⟩
+    (y ∙ x) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
+    (y′ ∙ x′) ∙ foldr _∙_ ε ys S.≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
+    y′ ∙ (x′ ∙ foldr _∙_ ε ys) S.∎
+  foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)

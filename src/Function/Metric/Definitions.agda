@@ -11,7 +11,7 @@
 module Function.Metric.Definitions where
 
 open import Algebra.Core using (Op₂)
-open import Data.Product using (∃)
+open import Data.Product.Base using (∃)
 open import Function.Metric.Core using (DistanceFunction)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
@@ -23,7 +23,7 @@ private
     A : Set a
     I : Set i
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties
 
 Congruent : Rel A ℓ₁ → Rel I ℓ₂ → DistanceFunction A I → Set _

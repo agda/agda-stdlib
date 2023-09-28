@@ -10,7 +10,7 @@ module Data.List.Relation.Binary.Subset.Propositional
   {a} {A : Set a} where
 
 import Data.List.Relation.Binary.Subset.Setoid as SetoidSubset
-open import Relation.Binary.PropositionalEquality using (setoid)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 ------------------------------------------------------------------------
 -- Re-export parameterised definitions from setoid sublists

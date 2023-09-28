@@ -7,7 +7,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions using (_Respects_; Reflexive; Transitive)
 open import Relation.Unary using (Pred)
 
 module Relation.Binary.Construct.FromPred
@@ -16,7 +19,6 @@ module Relation.Binary.Construct.FromPred
   where
 
 open import Function.Base
-open import Data.Product
 
 open module Eq = Setoid S using (_≈_) renaming (Carrier to A)
 

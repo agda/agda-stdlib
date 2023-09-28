@@ -56,7 +56,7 @@
 --
 -- We provide an options parser (`options`) that takes the list of command line
 -- arguments and constructs this for you.
----
+--
 
 ------------------------------------------------------------------------
 -- Usage
@@ -88,9 +88,10 @@ open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties using (infi
 open import Data.List.Relation.Unary.Any using (any?)
 open import Data.Maybe.Base using (Maybe; just; nothing; fromMaybe)
 open import Data.Nat.Base using (ℕ; _≡ᵇ_; _<ᵇ_; _+_; _∸_)
-import Data.Nat.Show as ℕ
-open import Data.Product using (_×_; _,_)
-open import Data.String as String using (String; lines; unlines; unwords; concat; _≟_)
+import Data.Nat.Show as ℕ using (show)
+open import Data.Product.Base using (_×_; _,_)
+open import Data.String.Base as String using (String; lines; unlines; unwords; concat)
+open import Data.String.Properties as String using (_≟_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Unit.Base using (⊤)
 

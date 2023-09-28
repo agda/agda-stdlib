@@ -27,7 +27,7 @@ open import Codata.Musical.Covec hiding (module Covec)
 open import Codata.Musical.M hiding (module M)
 open import Codata.Musical.Notation
 open import Codata.Musical.Stream hiding (module Stream)
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.Container.Core as C using (Container)
 import Size
 

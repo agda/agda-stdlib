@@ -8,224 +8,211 @@
 
 module Data.Sum.Relation.Binary.Pointwise where
 
-open import Data.Product using (_,_)
-open import Data.Sum.Base as Sum
+open import Data.Product.Base using (_,_)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Sum.Properties
-open import Level using (_⊔_)
-open import Function.Base using (_∘_; id)
-open import Function.Inverse using (Inverse)
+open import Level using (Level; _⊔_)
+open import Function.Base using (const; _∘_; id)
+open import Function.Bundles using (Inverse; mk↔)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 
-----------------------------------------------------------------------
+private
+  variable
+    a b c d ℓ₁ ℓ₂ ℓ₃ ℓ : Level
+    A B C D : Set ℓ
+    R S T U : REL A B ℓ
+    ≈₁ ≈₂ : Rel A ℓ
+
+------------------------------------------------------------------------
 -- Definition
 
-data Pointwise {a b c d r s}
-               {A : Set a} {B : Set b} {C : Set c} {D : Set d}
-               (R : REL A C r) (S : REL B D s)
-               : REL (A ⊎ B) (C ⊎ D) (a ⊔ b ⊔ c ⊔ d ⊔ r ⊔ s) where
+data Pointwise {A : Set a} {B : Set b} {C : Set c} {D : Set d}
+               (R : REL A C ℓ₁) (S : REL B D ℓ₂)
+               : REL (A ⊎ B) (C ⊎ D) (a ⊔ b ⊔ c ⊔ d ⊔ ℓ₁ ⊔ ℓ₂) where
   inj₁ : ∀ {a c} → R a c → Pointwise R S (inj₁ a) (inj₁ c)
   inj₂ : ∀ {b d} → S b d → Pointwise R S (inj₂ b) (inj₂ d)
 
 ----------------------------------------------------------------------
+-- Functions
+
+map : ∀ {f : A → C} {g : B → D} →
+      R =[ f ]⇒ T → S =[ g ]⇒ U →
+      Pointwise R S =[ Sum.map f g ]⇒ Pointwise T U
+map R⇒T _ (inj₁ x) = inj₁ (R⇒T x)
+map _ S⇒U (inj₂ x) = inj₂ (S⇒U x)
+
+------------------------------------------------------------------------
 -- Relational properties
 
-module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂}
-         {∼₁ : Rel A₁ ℓ₁} {∼₂ : Rel A₂ ℓ₂}
-         where
+drop-inj₁ : ∀ {x y} → Pointwise R S (inj₁ x) (inj₁ y) → R x y
+drop-inj₁ (inj₁ x) = x
 
-  drop-inj₁ : ∀ {x y} → Pointwise ∼₁ ∼₂ (inj₁ x) (inj₁ y) → ∼₁ x y
-  drop-inj₁ (inj₁ x) = x
+drop-inj₂ : ∀ {x y} → Pointwise R S (inj₂ x) (inj₂ y) → S x y
+drop-inj₂ (inj₂ x) = x
 
-  drop-inj₂ : ∀ {x y} → Pointwise ∼₁ ∼₂ (inj₂ x) (inj₂ y) → ∼₂ x y
-  drop-inj₂ (inj₂ x) = x
+⊎-refl : Reflexive R → Reflexive S → Reflexive (Pointwise R S)
+⊎-refl refl₁ refl₂ {inj₁ x} = inj₁ refl₁
+⊎-refl refl₁ refl₂ {inj₂ y} = inj₂ refl₂
 
-  ⊎-refl : Reflexive ∼₁ → Reflexive ∼₂ →
-           Reflexive (Pointwise ∼₁ ∼₂)
-  ⊎-refl refl₁ refl₂ {inj₁ x} = inj₁ refl₁
-  ⊎-refl refl₁ refl₂ {inj₂ y} = inj₂ refl₂
+⊎-symmetric : Symmetric R → Symmetric S →
+              Symmetric (Pointwise R S)
+⊎-symmetric sym₁ sym₂ (inj₁ x) = inj₁ (sym₁ x)
+⊎-symmetric sym₁ sym₂ (inj₂ x) = inj₂ (sym₂ x)
 
-  ⊎-symmetric : Symmetric ∼₁ → Symmetric ∼₂ →
-                Symmetric (Pointwise ∼₁ ∼₂)
-  ⊎-symmetric sym₁ sym₂ (inj₁ x) = inj₁ (sym₁ x)
-  ⊎-symmetric sym₁ sym₂ (inj₂ x) = inj₂ (sym₂ x)
+⊎-transitive : Transitive R → Transitive S →
+               Transitive (Pointwise R S)
+⊎-transitive trans₁ trans₂ (inj₁ x) (inj₁ y) = inj₁ (trans₁ x y)
+⊎-transitive trans₁ trans₂ (inj₂ x) (inj₂ y) = inj₂ (trans₂ x y)
 
-  ⊎-transitive : Transitive ∼₁ → Transitive ∼₂ →
-                 Transitive (Pointwise ∼₁ ∼₂)
-  ⊎-transitive trans₁ trans₂ (inj₁ x) (inj₁ y) = inj₁ (trans₁ x y)
-  ⊎-transitive trans₁ trans₂ (inj₂ x) (inj₂ y) = inj₂ (trans₂ x y)
+⊎-asymmetric : Asymmetric R → Asymmetric S →
+               Asymmetric (Pointwise R S)
+⊎-asymmetric asym₁ asym₂ (inj₁ x) = λ { (inj₁ y) → asym₁ x y }
+⊎-asymmetric asym₁ asym₂ (inj₂ x) = λ { (inj₂ y) → asym₂ x y }
 
-  ⊎-asymmetric : Asymmetric ∼₁ → Asymmetric ∼₂ →
-                 Asymmetric (Pointwise ∼₁ ∼₂)
-  ⊎-asymmetric asym₁ asym₂ (inj₁ x) = λ { (inj₁ y) → asym₁ x y }
-  ⊎-asymmetric asym₁ asym₂ (inj₂ x) = λ { (inj₂ y) → asym₂ x y }
+⊎-substitutive : Substitutive R ℓ₃ → Substitutive S ℓ₃ →
+                 Substitutive (Pointwise R S) ℓ₃
+⊎-substitutive subst₁ subst₂ P (inj₁ x) = subst₁ (P ∘ inj₁) x
+⊎-substitutive subst₁ subst₂ P (inj₂ x) = subst₂ (P ∘ inj₂) x
 
-  ⊎-substitutive : ∀ {ℓ₃} → Substitutive ∼₁ ℓ₃ → Substitutive ∼₂ ℓ₃ →
-                   Substitutive (Pointwise ∼₁ ∼₂) ℓ₃
-  ⊎-substitutive subst₁ subst₂ P (inj₁ x) = subst₁ (P ∘ inj₁) x
-  ⊎-substitutive subst₁ subst₂ P (inj₂ x) = subst₂ (P ∘ inj₂) x
+⊎-decidable : Decidable R → Decidable S → Decidable (Pointwise R S)
+⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x ≟₁ y)
+⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₂ y) = no λ()
+⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
+⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x ≟₂ y)
 
-  ⊎-decidable : Decidable ∼₁ → Decidable ∼₂ →
-                Decidable (Pointwise ∼₁ ∼₂)
-  ⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₁ y) = Dec.map′ inj₁ drop-inj₁ (x ≟₁ y)
-  ⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₂ y) = no λ()
-  ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
-  ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₂ y) = Dec.map′ inj₂ drop-inj₂ (x ≟₂ y)
+⊎-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S →
+              (Pointwise ≈₁ ≈₂) ⇒ (Pointwise R S)
+⊎-reflexive refl₁ refl₂ (inj₁ x) = inj₁ (refl₁ x)
+⊎-reflexive refl₁ refl₂ (inj₂ x) = inj₂ (refl₂ x)
 
-module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
-         {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}
-         {ℓ₃ ℓ₄} {∼₂ : Rel A₂ ℓ₃} {≈₂ : Rel A₂ ℓ₄} where
+⊎-irreflexive : Irreflexive ≈₁ R → Irreflexive ≈₂ S →
+                Irreflexive (Pointwise ≈₁ ≈₂) (Pointwise R S)
+⊎-irreflexive irrefl₁ irrefl₂ (inj₁ x) (inj₁ y) = irrefl₁ x y
+⊎-irreflexive irrefl₁ irrefl₂ (inj₂ x) (inj₂ y) = irrefl₂ x y
 
-  ⊎-reflexive : ≈₁ ⇒ ∼₁ → ≈₂ ⇒ ∼₂ →
-                (Pointwise ≈₁ ≈₂) ⇒ (Pointwise ∼₁ ∼₂)
-  ⊎-reflexive refl₁ refl₂ (inj₁ x) = inj₁ (refl₁ x)
-  ⊎-reflexive refl₁ refl₂ (inj₂ x) = inj₂ (refl₂ x)
+⊎-antisymmetric : Antisymmetric ≈₁ R → Antisymmetric ≈₂ S →
+                  Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise R S)
+⊎-antisymmetric antisym₁ antisym₂ (inj₁ x) (inj₁ y) = inj₁ (antisym₁ x y)
+⊎-antisymmetric antisym₁ antisym₂ (inj₂ x) (inj₂ y) = inj₂ (antisym₂ x y)
 
-  ⊎-irreflexive : Irreflexive ≈₁ ∼₁ → Irreflexive ≈₂ ∼₂ →
-                  Irreflexive (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
-  ⊎-irreflexive irrefl₁ irrefl₂ (inj₁ x) (inj₁ y) = irrefl₁ x y
-  ⊎-irreflexive irrefl₁ irrefl₂ (inj₂ x) (inj₂ y) = irrefl₂ x y
+⊎-respectsˡ : R Respectsˡ ≈₁ → S Respectsˡ ≈₂ →
+              (Pointwise R S) Respectsˡ (Pointwise ≈₁ ≈₂)
+⊎-respectsˡ resp₁ resp₂ (inj₁ x) (inj₁ y) = inj₁ (resp₁ x y)
+⊎-respectsˡ resp₁ resp₂ (inj₂ x) (inj₂ y) = inj₂ (resp₂ x y)
 
-  ⊎-antisymmetric : Antisymmetric ≈₁ ∼₁ → Antisymmetric ≈₂ ∼₂ →
-                    Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
-  ⊎-antisymmetric antisym₁ antisym₂ (inj₁ x) (inj₁ y) = inj₁ (antisym₁ x y)
-  ⊎-antisymmetric antisym₁ antisym₂ (inj₂ x) (inj₂ y) = inj₂ (antisym₂ x y)
+⊎-respectsʳ : R Respectsʳ ≈₁ → S Respectsʳ ≈₂ →
+              (Pointwise R S) Respectsʳ (Pointwise ≈₁ ≈₂)
+⊎-respectsʳ resp₁ resp₂ (inj₁ x) (inj₁ y) = inj₁ (resp₁ x y)
+⊎-respectsʳ resp₁ resp₂ (inj₂ x) (inj₂ y) = inj₂ (resp₂ x y)
 
-  ⊎-respectsˡ : ∼₁ Respectsˡ ≈₁ → ∼₂ Respectsˡ ≈₂ →
-                (Pointwise ∼₁ ∼₂) Respectsˡ (Pointwise ≈₁ ≈₂)
-  ⊎-respectsˡ resp₁ resp₂ (inj₁ x) (inj₁ y) = inj₁ (resp₁ x y)
-  ⊎-respectsˡ resp₁ resp₂ (inj₂ x) (inj₂ y) = inj₂ (resp₂ x y)
+⊎-respects₂ : R Respects₂ ≈₁ → S Respects₂ ≈₂ →
+              (Pointwise R S) Respects₂ (Pointwise ≈₁ ≈₂)
+⊎-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-respectsʳ r₁ r₂ , ⊎-respectsˡ l₁ l₂
 
-  ⊎-respectsʳ : ∼₁ Respectsʳ ≈₁ → ∼₂ Respectsʳ ≈₂ →
-                (Pointwise ∼₁ ∼₂) Respectsʳ (Pointwise ≈₁ ≈₂)
-  ⊎-respectsʳ resp₁ resp₂ (inj₁ x) (inj₁ y) = inj₁ (resp₁ x y)
-  ⊎-respectsʳ resp₁ resp₂ (inj₂ x) (inj₂ y) = inj₂ (resp₂ x y)
-
-  ⊎-respects₂ : ∼₁ Respects₂ ≈₁ → ∼₂ Respects₂ ≈₂ →
-                (Pointwise ∼₁ ∼₂) Respects₂ (Pointwise ≈₁ ≈₂)
-  ⊎-respects₂ (r₁ , l₁) (r₂ , l₂) = ⊎-respectsʳ r₁ r₂ , ⊎-respectsˡ l₁ l₂
-
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
-module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
-         {ℓ₁ ℓ₂} {≈₁ : Rel A₁ ℓ₁} {≈₂ : Rel A₂ ℓ₂}
-         where
+⊎-isEquivalence : IsEquivalence ≈₁ → IsEquivalence ≈₂ →
+                  IsEquivalence (Pointwise ≈₁ ≈₂)
+⊎-isEquivalence eq₁ eq₂ = record
+  { refl  = ⊎-refl       (refl  eq₁) (refl  eq₂)
+  ; sym   = ⊎-symmetric  (sym   eq₁) (sym   eq₂)
+  ; trans = ⊎-transitive (trans eq₁) (trans eq₂)
+  } where open IsEquivalence
 
-  ⊎-isEquivalence : IsEquivalence ≈₁ → IsEquivalence ≈₂ →
-                    IsEquivalence (Pointwise ≈₁ ≈₂)
-  ⊎-isEquivalence eq₁ eq₂ = record
-    { refl  = ⊎-refl       (refl  eq₁) (refl  eq₂)
-    ; sym   = ⊎-symmetric  (sym   eq₁) (sym   eq₂)
-    ; trans = ⊎-transitive (trans eq₁) (trans eq₂)
-    }
-    where open IsEquivalence
+⊎-isDecEquivalence : IsDecEquivalence ≈₁ → IsDecEquivalence ≈₂ →
+                     IsDecEquivalence (Pointwise ≈₁ ≈₂)
+⊎-isDecEquivalence eq₁ eq₂ = record
+  { isEquivalence =
+      ⊎-isEquivalence (isEquivalence eq₁) (isEquivalence eq₂)
+  ; _≟_           = ⊎-decidable (_≟_ eq₁) (_≟_ eq₂)
+  } where open IsDecEquivalence
 
-  ⊎-isDecEquivalence : IsDecEquivalence ≈₁ → IsDecEquivalence ≈₂ →
-                       IsDecEquivalence (Pointwise ≈₁ ≈₂)
-  ⊎-isDecEquivalence eq₁ eq₂ = record
-    { isEquivalence =
-        ⊎-isEquivalence (isEquivalence eq₁) (isEquivalence eq₂)
-    ; _≟_           = ⊎-decidable (_≟_ eq₁) (_≟_ eq₂)
-    }
-    where open IsDecEquivalence
+⊎-isPreorder : IsPreorder ≈₁ R → IsPreorder ≈₂ S →
+               IsPreorder (Pointwise ≈₁ ≈₂) (Pointwise R S)
+⊎-isPreorder pre₁ pre₂ = record
+  { isEquivalence =
+      ⊎-isEquivalence (isEquivalence pre₁) (isEquivalence pre₂)
+  ; reflexive     = ⊎-reflexive (reflexive pre₁) (reflexive pre₂)
+  ; trans         = ⊎-transitive (trans pre₁) (trans pre₂)
+  } where open IsPreorder
 
-module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
-         {ℓ₁ ℓ₂} {≈₁ : Rel A₁ ℓ₁} {∼₁ : Rel A₁ ℓ₂}
-         {ℓ₃ ℓ₄} {≈₂ : Rel A₂ ℓ₃} {∼₂ : Rel A₂ ℓ₄} where
+⊎-isPartialOrder : IsPartialOrder ≈₁ R → IsPartialOrder ≈₂ S →
+                   IsPartialOrder
+                     (Pointwise ≈₁ ≈₂) (Pointwise R S)
+⊎-isPartialOrder po₁ po₂ = record
+  { isPreorder = ⊎-isPreorder (isPreorder po₁) (isPreorder po₂)
+  ; antisym    = ⊎-antisymmetric (antisym po₁) (antisym    po₂)
+  } where open IsPartialOrder
 
-  ⊎-isPreorder : IsPreorder ≈₁ ∼₁ → IsPreorder ≈₂ ∼₂ →
-                 IsPreorder (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
-  ⊎-isPreorder pre₁ pre₂ = record
-    { isEquivalence =
-        ⊎-isEquivalence (isEquivalence pre₁) (isEquivalence pre₂)
-    ; reflexive     = ⊎-reflexive (reflexive pre₁) (reflexive pre₂)
-    ; trans         = ⊎-transitive (trans pre₁) (trans pre₂)
-    }
-    where open IsPreorder
-
-  ⊎-isPartialOrder : IsPartialOrder ≈₁ ∼₁ →
-                     IsPartialOrder ≈₂ ∼₂ →
-                     IsPartialOrder
-                       (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
-  ⊎-isPartialOrder po₁ po₂ = record
-    { isPreorder = ⊎-isPreorder (isPreorder po₁) (isPreorder po₂)
-    ; antisym    = ⊎-antisymmetric (antisym po₁) (antisym    po₂)
-    }
-    where open IsPartialOrder
-
-  ⊎-isStrictPartialOrder : IsStrictPartialOrder ≈₁ ∼₁ →
-                           IsStrictPartialOrder ≈₂ ∼₂ →
-                           IsStrictPartialOrder
-                             (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
-  ⊎-isStrictPartialOrder spo₁ spo₂ = record
-    { isEquivalence =
-        ⊎-isEquivalence (isEquivalence spo₁) (isEquivalence spo₂)
-    ; irrefl        = ⊎-irreflexive (irrefl   spo₁) (irrefl   spo₂)
-    ; trans         = ⊎-transitive  (trans    spo₁) (trans    spo₂)
-    ; <-resp-≈      = ⊎-respects₂   (<-resp-≈ spo₁) (<-resp-≈ spo₂)
-    }
-    where open IsStrictPartialOrder
+⊎-isStrictPartialOrder : IsStrictPartialOrder ≈₁ R →
+                         IsStrictPartialOrder ≈₂ S →
+                         IsStrictPartialOrder
+                           (Pointwise ≈₁ ≈₂) (Pointwise R S)
+⊎-isStrictPartialOrder spo₁ spo₂ = record
+  { isEquivalence =
+      ⊎-isEquivalence (isEquivalence spo₁) (isEquivalence spo₂)
+  ; irrefl        = ⊎-irreflexive (irrefl   spo₁) (irrefl   spo₂)
+  ; trans         = ⊎-transitive  (trans    spo₁) (trans    spo₂)
+  ; <-resp-≈      = ⊎-respects₂   (<-resp-≈ spo₁) (<-resp-≈ spo₂)
+  } where open IsStrictPartialOrder
 
 ------------------------------------------------------------------------
 -- Bundles
 
-module _ {a b c d} where
+⊎-setoid : Setoid a b → Setoid c d → Setoid _ _
+⊎-setoid s₁ s₂ = record
+  { isEquivalence =
+      ⊎-isEquivalence (isEquivalence s₁) (isEquivalence s₂)
+  } where open Setoid
 
-  ⊎-setoid : Setoid a b → Setoid c d → Setoid _ _
-  ⊎-setoid s₁ s₂ = record
-    { isEquivalence =
-        ⊎-isEquivalence (isEquivalence s₁) (isEquivalence s₂)
-    } where open Setoid
+⊎-decSetoid : DecSetoid a b → DecSetoid c d → DecSetoid _ _
+⊎-decSetoid ds₁ ds₂ = record
+  { isDecEquivalence =
+      ⊎-isDecEquivalence (isDecEquivalence ds₁) (isDecEquivalence ds₂)
+  } where open DecSetoid
 
-  ⊎-decSetoid : DecSetoid a b → DecSetoid c d → DecSetoid _ _
-  ⊎-decSetoid ds₁ ds₂ = record
-    { isDecEquivalence =
-        ⊎-isDecEquivalence (isDecEquivalence ds₁) (isDecEquivalence ds₂)
-    } where open DecSetoid
+⊎-preorder : Preorder a b ℓ₁ → Preorder c d ℓ₂ → Preorder _ _ _
+⊎-preorder p₁ p₂ = record
+  { isPreorder   =
+      ⊎-isPreorder (isPreorder p₁) (isPreorder p₂)
+  } where open Preorder
 
-  -- Some additional notation for combining setoids
-  infix 4 _⊎ₛ_
-  _⊎ₛ_ : Setoid a b → Setoid c d → Setoid _ _
-  _⊎ₛ_ = ⊎-setoid
+⊎-poset : Poset a b c → Poset a b c → Poset _ _ _
+⊎-poset po₁ po₂ = record
+  { isPartialOrder =
+      ⊎-isPartialOrder (isPartialOrder po₁) (isPartialOrder po₂)
+  } where open Poset
 
-module _ {a b c d e f} where
+------------------------------------------------------------------------
+-- Additional notation
 
-  ⊎-preorder : Preorder a b c → Preorder d e f → Preorder _ _ _
-  ⊎-preorder p₁ p₂ = record
-    { isPreorder   =
-        ⊎-isPreorder (isPreorder p₁) (isPreorder p₂)
-    } where open Preorder
-
-  ⊎-poset : Poset a b c → Poset a b c → Poset _ _ _
-  ⊎-poset po₁ po₂ = record
-    { isPartialOrder =
-        ⊎-isPartialOrder (isPartialOrder po₁) (isPartialOrder po₂)
-    } where open Poset
+-- Infix combining setoids
+infix 4 _⊎ₛ_
+_⊎ₛ_ : Setoid a b → Setoid c d → Setoid _ _
+_⊎ₛ_ = ⊎-setoid
 
 ------------------------------------------------------------------------
 -- The propositional equality setoid over products can be
 -- decomposed using Pointwise
 
-module _ {a b} {A : Set a} {B : Set b} where
+Pointwise-≡⇒≡ : (Pointwise _≡_ _≡_) ⇒ _≡_ {A = A ⊎ B}
+Pointwise-≡⇒≡ (inj₁ x) = P.cong inj₁ x
+Pointwise-≡⇒≡ (inj₂ x) = P.cong inj₂ x
 
-  Pointwise-≡⇒≡ : (Pointwise _≡_ _≡_) ⇒ _≡_ {A = A ⊎ B}
-  Pointwise-≡⇒≡ (inj₁ x) = P.cong inj₁ x
-  Pointwise-≡⇒≡ (inj₂ x) = P.cong inj₂ x
+≡⇒Pointwise-≡ : _≡_ {A = A ⊎ B} ⇒ (Pointwise _≡_ _≡_)
+≡⇒Pointwise-≡ P.refl = ⊎-refl P.refl P.refl
 
-  ≡⇒Pointwise-≡ : _≡_ {A = A ⊎ B} ⇒ (Pointwise _≡_ _≡_)
-  ≡⇒Pointwise-≡ P.refl = ⊎-refl P.refl P.refl
-
-Pointwise-≡↔≡ : ∀ {a b} (A : Set a) (B : Set b) →
-                Inverse (P.setoid A ⊎ₛ P.setoid B)
-                        (P.setoid (A ⊎ B))
+Pointwise-≡↔≡ : (A : Set a) (B : Set b) →
+                 Inverse (P.setoid A ⊎ₛ P.setoid B) (P.setoid (A ⊎ B))
 Pointwise-≡↔≡ _ _ = record
-  { to         = record { _⟨$⟩_ = id; cong = Pointwise-≡⇒≡ }
-  ; from       = record { _⟨$⟩_ = id; cong = ≡⇒Pointwise-≡ }
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → ⊎-refl P.refl P.refl
-    ; right-inverse-of = λ _ → P.refl
-    }
+  { to        = id
+  ; from      = id
+  ; to-cong   = Pointwise-≡⇒≡
+  ; from-cong = ≡⇒Pointwise-≡
+  ; inverse   = Pointwise-≡⇒≡ , ≡⇒Pointwise-≡
   }

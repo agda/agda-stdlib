@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (_Respects_)
 
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
@@ -14,7 +15,7 @@ open import Function.Base using (_∘_; id; flip)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
 open import Data.List.Relation.Unary.Any
   using (Any; index; map; here; there)
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Relation.Unary using (Pred)
 open import Relation.Nullary.Negation using (¬_)
 

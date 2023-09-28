@@ -28,7 +28,7 @@ open RawRing R₂ renaming
 
 open import Algebra.Definitions
 open import Algebra.Structures
-open import Data.Product
+open import Data.Product.Base using (proj₁; proj₂; _,_)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------

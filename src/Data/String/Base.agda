@@ -8,7 +8,6 @@
 
 module Data.String.Base where
 
-open import Level using (zero)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Char.Base as Char using (Char)
 open import Data.List.Base as List using (List; [_]; _∷_; [])
@@ -17,13 +16,13 @@ open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Core using (Lex-<; Lex-≤)
 open import Data.Maybe.Base as Maybe using (Maybe)
 open import Data.Nat.Base using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product.Base using (proj₁; proj₂)
 open import Function.Base using (_on_; _∘′_; _∘_)
-open import Level using (Level)
+open import Level using (Level; 0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable using (does)
+open import Relation.Nullary.Decidable.Core using (does)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -47,17 +46,17 @@ open String public using ( String )
 -- Pointwise equality on Strings
 
 infix 4 _≈_
-_≈_ : Rel String zero
+_≈_ : Rel String 0ℓ
 _≈_ = Pointwise _≡_ on toList
 
 -- Lexicographic ordering on Strings
 
 infix 4 _<_
-_<_ : Rel String zero
+_<_ : Rel String 0ℓ
 _<_ = Lex-< _≡_ Char._<_ on toList
 
 infix 4 _≤_
-_≤_ : Rel String zero
+_≤_ : Rel String 0ℓ
 _≤_ = Lex-≤ _≡_ Char._<_ on toList
 
 ------------------------------------------------------------------------

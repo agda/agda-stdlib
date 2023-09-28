@@ -10,12 +10,13 @@ module Relation.Binary.HeterogeneousEquality.Quotients.Examples where
 
 open import Relation.Binary.HeterogeneousEquality.Quotients
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.HeterogeneousEquality hiding (isEquivalence)
-import Relation.Binary.PropositionalEquality as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Function.Base
 
 open ≅-Reasoning
@@ -81,6 +82,8 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
 
   module _ (ext : ∀ {a b} {A : Set a} {B₁ B₂ : A → Set b} {f₁ : ∀ a → B₁ a}
                   {f₂ : ∀ a → B₂ a} → (∀ a → f₁ a ≅ f₂ a) → f₁ ≅ f₂) where
+
+    infixl 6 _+ℤ_
 
     _+ℤ_ : ℤ → ℤ → ℤ
     _+ℤ_ = Properties₂.lift₂ ext Int Int (λ i j → abs (i +² j))
