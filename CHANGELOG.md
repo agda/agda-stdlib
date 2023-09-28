@@ -1804,6 +1804,12 @@ New modules
   Algebra.Properties.Loop
   ```
 
+* Properties of (Commutative)Semiring: the Binomial Theorem
+  ```
+  Algebra.Properties.CommutativeSemiring.Binomial
+  Algebra.Properties.Semiring.Binomial
+  ```
+
 * Some n-ary functions manipulating lists
   ```
   Data.List.Nary.NonDependent
@@ -2020,7 +2026,7 @@ Additions to existing modules
 
 * Added new proof to `Algebra.Properties.Monoid.Sum`:
   ```agda
-  sum-init-last : ∀ {n} (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
+  sum-init-last : (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
   ```
 
 * Added new proofs to `Algebra.Properties.Semigroup`:
