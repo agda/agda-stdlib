@@ -26,10 +26,11 @@ open import Function.Base
 open import Function.Bundles
 open import Function.Related.Propositional
 import Function.Construct.Identity as Identity
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary hiding (_⇔_; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary using (Irrelevant)
 open import Relation.Nullary.Decidable.Core using (Dec; _because_; True)
+open import Relation.Nullary.Decidable using (True-↔)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
@@ -65,10 +66,10 @@ private
 -- × has ⊥ has its zero
 
 ×-zeroˡ : ∀ ℓ → LeftZero {ℓ = ℓ} _↔_ ⊥ _×_
-×-zeroˡ ℓ A = mk↔ₛ′ proj₁ < id , ⊥ₚ-elim > (λ _ → P.refl) (λ { () })
+×-zeroˡ ℓ A = mk↔ₛ′ proj₁ < id , ⊥-elim > (λ _ → P.refl) (λ { () })
 
 ×-zeroʳ : ∀ ℓ → RightZero {ℓ = ℓ} _↔_ ⊥ _×_
-×-zeroʳ ℓ A = mk↔ₛ′ proj₂ < ⊥ₚ-elim , id > (λ _ → P.refl) (λ { () })
+×-zeroʳ ℓ A = mk↔ₛ′ proj₂ < ⊥-elim , id > (λ _ → P.refl) (λ { () })
 
 ×-zero : ∀ ℓ → Zero _↔_ ⊥ _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
@@ -324,12 +325,8 @@ Related-cong {A = A} {B = B} {C = C} {D = D} A≈B C≈D = mk⇔
 ------------------------------------------------------------------------
 -- A lemma relating True dec and P, where dec : Dec P
 
-True↔ : ∀ {p} {P : Set p}
-        (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ ( true because  [p]) irr =
-  mk↔ₛ′ (λ _ → invert [p]) (λ _ → _) (irr _) (λ _ → P.refl)
-True↔ (false because ofⁿ ¬p) _ =
-  mk↔ₛ′ (λ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) (λ ())
+True↔ : (dec : Dec A) → Irrelevant A → True dec ↔ A
+True↔ = True-↔
 
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
@@ -358,7 +355,7 @@ module _ {a b} {A : Set a} {B : A → Set b} {p₁ p₂ : Σ A B} where
   Σ-≡,≡↔≡ : (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) →
                P.subst B p (proj₂ p₁) ≡ proj₂ p₂) ↔
             p₁ ≡ p₂
-  Σ-≡,≡↔≡ = inverse Σ-≡,≡→≡ Σ-≡,≡←≡ left-inverse-of right-inverse-of
+  Σ-≡,≡↔≡ = mk↔ₛ′ Σ-≡,≡→≡ Σ-≡,≡←≡ right-inverse-of left-inverse-of
 
 module _ {a b} {A : Set a} {B : Set b} {p₁ p₂ : A × B} where
   ×-≡,≡→≡ : (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
@@ -377,7 +374,7 @@ module _ {a b} {A : Set a} {B : Set b} {p₁ p₂ : A × B} where
     right-inverse-of P.refl = P.refl
 
   ×-≡,≡↔≡ : (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) ↔ p₁ ≡ p₂
-  ×-≡,≡↔≡ = inverse ×-≡,≡→≡ ×-≡,≡←≡ left-inverse-of right-inverse-of
+  ×-≡,≡↔≡ = mk↔ₛ′ ×-≡,≡→≡ ×-≡,≡←≡ right-inverse-of left-inverse-of
 
 ×-≡×≡↔≡,≡ : ∀ {a b} {A : Set a} {B : Set b} {x y} (p : A × B) →
             (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p

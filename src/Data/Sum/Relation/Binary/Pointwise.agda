@@ -19,6 +19,7 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
 
+
 private
   variable
     a b c d ℓ₁ ℓ₂ ℓ₃ ℓ : Level
@@ -77,8 +78,8 @@ drop-inj₂ (inj₂ x) = x
 ⊎-substitutive subst₁ subst₂ P (inj₁ x) = subst₁ (P ∘ inj₁) x
 ⊎-substitutive subst₁ subst₂ P (inj₂ x) = subst₂ (P ∘ inj₂) x
 
-⊎-decidable : Decidable ∼₁ → Decidable ∼₂ →
-              Decidable (Pointwise ∼₁ ∼₂)
+⊎-decidable : Decidable ≈₁ → Decidable ≈₂ →
+              Decidable (Pointwise ≈₁ ≈₂)
 ⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₁ y) = map′ inj₁ drop-inj₁ (x ≟₁ y)
 ⊎-decidable _≟₁_ _≟₂_ (inj₁ x) (inj₂ y) = no λ()
 ⊎-decidable _≟₁_ _≟₂_ (inj₂ x) (inj₁ y) = no λ()
