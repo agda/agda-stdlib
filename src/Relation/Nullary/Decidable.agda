@@ -10,6 +10,7 @@ module Relation.Nullary.Decidable where
 
 open import Level using (Level)
 open import Data.Bool.Base using (true; false)
+open import Data.Empty using (⊥-elim)
 open import Data.Product.Base as Prod hiding (map)
 open import Data.Sum.Base as Sum hiding (map)
 open import Function.Base
@@ -60,7 +61,7 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
 
 True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
 True-↔ (true  because  [p]) irr = mk↔ₛ′ (λ _ → invert [p]) _ (irr (invert [p])) cong′
-True-↔ (false because ofⁿ ¬p) _ = mk↔ₛ′ (λ ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) λ ()
+True-↔ (false because [¬p]) irr = mk↔ₛ′ (λ ()) (invert [¬p]) (⊥-elim ∘ (invert [¬p])) λ ()
 
 ------------------------------------------------------------------------
 -- Result of decidability
