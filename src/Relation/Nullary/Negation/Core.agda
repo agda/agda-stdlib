@@ -9,9 +9,7 @@
 module Relation.Nullary.Negation.Core where
 
 open import Data.Bool.Base using (not)
-open import Data.Empty using (⊥)
-open import Data.Empty.Irrelevant using (⊥-elim)
-open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
@@ -19,9 +17,7 @@ open import Level
 private
   variable
     a p q w : Level
-    A : Set a
-    P : Set p
-    Q : Set q
+    A B C : Set a
     Whatever : Set w
 
 ------------------------------------------------------------------------
@@ -29,48 +25,51 @@ private
 
 infix 3 ¬_
 ¬_ : Set a → Set a
-¬ P = P → ⊥
-
--- Double-negation
-DoubleNegation : Set p → Set p
-DoubleNegation P = ¬ ¬ P
-
--- Stability under double-negation.
-Stable : Set p → Set p
-Stable P = ¬ ¬ P → P
+¬ A = A → ⊥
 
 ------------------------------------------------------------------------
--- Relationship to product and sum
+-- Stability.
+
+-- Double-negation
+DoubleNegation : Set a → Set a
+DoubleNegation A = ¬ ¬ A
+
+-- Stability under double-negation.
+Stable : Set a → Set a
+Stable A = ¬ ¬ A → A
+
+------------------------------------------------------------------------
+-- Relationship to sum
 
 infixr 1 _¬-⊎_
-_¬-⊎_ : ¬ P → ¬ Q → ¬ (P ⊎ Q)
+_¬-⊎_ : ¬ A → ¬ B → ¬ (A ⊎ B)
 _¬-⊎_ = [_,_]
 
 ------------------------------------------------------------------------
 -- Uses of negation
 
-contradiction : P → ¬ P → Whatever
-contradiction p ¬p = ⊥-elim (¬p p)
+contradiction : A → ¬ A → Whatever
+contradiction a ¬a = ⊥-elim (¬a a)
 
-contradiction₂ : P ⊎ Q → ¬ P → ¬ Q → Whatever
-contradiction₂ (inj₁ p) ¬p ¬q = contradiction p ¬p
-contradiction₂ (inj₂ q) ¬p ¬q = contradiction q ¬q
+contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
+contradiction₂ (inj₁ a) ¬a ¬b = contradiction a ¬a
+contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 
-contraposition : (P → Q) → ¬ Q → ¬ P
-contraposition f ¬q p = contradiction (f p) ¬q
+contraposition : (A → B) → ¬ B → ¬ A
+contraposition f ¬b a = contradiction (f a) ¬b
+
+-- Everything is stable in the double-negation monad.
+stable : ¬ ¬ Stable A
+stable ¬[¬¬a→a] = ¬[¬¬a→a] (λ ¬¬a → ⊥-elim (¬¬a (¬[¬¬a→a] ∘ const)))
+
+-- Negated predicates are stable.
+negated-stable : Stable (¬ A)
+negated-stable ¬¬¬a a = ¬¬¬a (_$ a)
+
+¬¬-map : (A → B) → ¬ ¬ A → ¬ ¬ B
+¬¬-map f = contraposition (contraposition f)
 
 -- Note also the following use of flip:
 private
-  note : (P → ¬ Q) → Q → ¬ P
+  note : (A → ¬ B) → B → ¬ A
   note = flip
-
--- Everything is stable in the double-negation monad.
-stable : ¬ ¬ Stable P
-stable ¬[¬¬p→p] = ¬[¬¬p→p] (λ ¬¬p → ⊥-elim (¬¬p (¬[¬¬p→p] ∘ const)))
-
--- Negated predicates are stable.
-negated-stable : Stable (¬ P)
-negated-stable ¬¬¬P P = ¬¬¬P (λ ¬P → ¬P P)
-
-¬¬-map : (P → Q) → ¬ ¬ P → ¬ ¬ Q
-¬¬-map f = contraposition (contraposition f)
