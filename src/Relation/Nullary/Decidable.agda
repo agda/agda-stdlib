@@ -46,7 +46,7 @@ via-injection : {S : Setoid a ℓ₁} {T : Setoid b ℓ₂}
                 Decidable Eq₂._≈_ → Decidable Eq₁._≈_
 via-injection inj _≟_ x y = map′ injective cong (to x ≟ to y)
   where open Injection inj
-  
+
 ------------------------------------------------------------------------
 -- A lemma relating True and Dec
 
