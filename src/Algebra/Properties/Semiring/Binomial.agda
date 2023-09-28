@@ -2,6 +2,8 @@
 -- The Agda standard library
 --
 -- The Binomial Theorem for *-commuting elements in a Semiring
+--
+-- Freely adapted from PR #1287 by Maciej Piechotka (@uzytkownik)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -22,278 +24,212 @@ open import Data.Fin.Relation.Unary.Top
   using (view; ‵fromℕ; ‵inject₁; view-fromℕ; view-inject₁)
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; _≢_; cong; module ≡-Reasoning)
+  using (_≡_; _≢_; cong)
 
-module Algebra.Properties.Semiring.Binomial {a ℓ} (S : Semiring a ℓ) where
+module Algebra.Properties.Semiring.Binomial
+  {a ℓ} (S : Semiring a ℓ)
+  (open Semiring S)
+  (x y : Carrier)
+  where
 
-open Semiring S
 open import Algebra.Definitions _≈_
-open import Algebra.Structures _≈_
 open import Algebra.Properties.Semiring.Sum S
 open import Algebra.Properties.Semiring.Mult S
 open import Algebra.Properties.Semiring.Exp S
-import Relation.Binary.Reasoning.Setoid setoid as ≈-Reasoning
-
-
-------------------------------------------------------------------------
--- The Binomial Theorem for *-commuting elements in a Semiring
--- Freely adapted from PR #1287 by Maciej Piechotka (@uzytkownik)
-
-module _ (x y : Carrier) where
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Definitions
 
-  module Binomial (n : ℕ) where
+-- Note - `n` could be explicit in many of these definitions, but the
+-- code is more readable if left explicit.
 
-    module _ (i : Fin (suc n)) where
+binomial : (n : ℕ) → Fin (suc n) → Carrier
+binomial n k = (x ^ toℕ k) * (y ^ (n ∸ toℕ k))
 
-      private
-        k   = toℕ i
-        n-k = n ∸ k
+binomialTerm : (n : ℕ) → Fin (suc n) → Carrier
+binomialTerm n k = (n C toℕ k) × binomial n k
 
-      binomial : Carrier
-      binomial = (x ^ k) * (y ^ n-k)
+binomialExpansion : ℕ → Carrier
+binomialExpansion n = ∑[ k ≤ n ] (binomialTerm n k)
 
-      term : Carrier
-      term = (n C k) × binomial
+term₁ : (n : ℕ) → Fin (suc (suc n)) → Carrier
+term₁ n zero    = 0#
+term₁ n (suc k) = x * (binomialTerm n k)
 
-    expansion : Carrier
-    expansion = ∑[ i ≤ n ] term i
+term₂ : (n : ℕ) → Fin (suc (suc n)) → Carrier
+term₂ n k with view k
+... | ‵fromℕ     = 0#
+... | ‵inject₁ j = y * binomialTerm n j
 
-    term₁ : (i : Fin (suc (suc n))) → Carrier
-    term₁ zero    = 0#
-    term₁ (suc i) = x * term i
+sum₁ : ℕ → Carrier
+sum₁ n = ∑[ k ≤ suc n ] term₁ n k
 
-    sum₁ : Carrier
-    sum₁ = ∑[ i ≤ suc n ] term₁ i
-
-    term₂ : (i : Fin (suc (suc n))) → Carrier
-    term₂ i with view i
-    ... | ‵fromℕ     = 0#
-    ... | ‵inject₁ j = y * term j
-
-    sum₂ : Carrier
-    sum₂ = ∑[ i ≤ suc n ] term₂ i
+sum₂ : ℕ → Carrier
+sum₂ n = ∑[ k ≤ suc n ] term₂ n k
 
 ------------------------------------------------------------------------
 -- Properties
 
-  module BinomialLemmas (n : ℕ) where
+term₂[n,n+1]≈0# : ∀ n → term₂ n (fromℕ (suc n)) ≈ 0# 
+term₂[n,n+1]≈0# n rewrite view-fromℕ (suc n) = refl
 
-    open Binomial n
+lemma₁ : ∀ n → x * binomialExpansion n ≈ sum₁ n
+lemma₁ n = begin
+  x * binomialExpansion n                ≈⟨ *-distribˡ-sum x (binomialTerm n) ⟩
+  ∑[ i ≤ n ] (x * binomialTerm n i)      ≈˘⟨ +-identityˡ _ ⟩
+  0# + ∑[ i ≤ n ] (x * binomialTerm n i) ≡⟨⟩
+  0# + ∑[ i ≤ n ] term₁ n (suc i)        ≡⟨⟩
+  sum₁ n                                 ∎
 
-    open ≈-Reasoning
+lemma₂ : ∀ n → y * binomialExpansion n ≈ sum₂ n
+lemma₂ n = begin
+  y * binomialExpansion n                       ≈⟨ *-distribˡ-sum y (binomialTerm n) ⟩
+  ∑[ i ≤ n ] (y * binomialTerm n i)             ≈˘⟨ +-identityʳ _ ⟩
+  ∑[ i ≤ n ] (y * binomialTerm n i) + 0#        ≈⟨ +-cong (sum-cong-≋ lemma₂-inject₁) (sym (term₂[n,n+1]≈0# n)) ⟩
+  (∑[ i ≤ n ] term₂-inject₁ i) + term₂ n [n+1]  ≈˘⟨ sum-init-last (term₂ n) ⟩
+  sum (term₂ n)                                 ≡⟨⟩
+  sum₂ n                                        ∎
+  where
+    [n+1] = fromℕ (suc n)
 
-    lemma₁ : x * expansion ≈ sum₁
-    lemma₁ = begin
-      x * expansion
-        ≈⟨ *-distribˡ-sum x term ⟩
-      ∑[ i ≤ n ] (x * term i)
-        ≈˘⟨ +-identityˡ _ ⟩
-      (0# + ∑[ i ≤ n ] (x * term i))
-        ≡⟨⟩
-      (0# + ∑[ i ≤ n ] term₁ (suc i))
-        ≡⟨⟩
-      sum₁  ∎
+    term₂-inject₁ : (i : Fin (suc n)) → Carrier
+    term₂-inject₁ i = term₂ n (inject₁ i)
 
-    lemma₂ : y * expansion ≈ sum₂
-    lemma₂ = begin
-      (y * expansion)
-        ≈⟨ *-distribˡ-sum y term ⟩
-      ∑[ i ≤ n ] (y * term i)
-        ≈˘⟨ +-identityʳ _ ⟩
-      ∑[ i ≤ n ] (y * term i) + 0#
-        ≈⟨ +-cong (sum-cong-≋ lemma₂-inject₁) lemma₂-fromℕ ⟩
-      (∑[ i ≤ n ] term₂-inject₁ i) + term₂ [n+1]
-        ≈˘⟨ sum-init-last term₂ ⟩
-      sum term₂
-        ≡⟨⟩
-      sum₂  ∎
-      where
-        [n+1] = fromℕ (suc n)
-
-        lemma₂-fromℕ : 0# ≈ term₂ [n+1]
-        lemma₂-fromℕ rewrite view-fromℕ  (suc n) = refl
-
-        term₂-inject₁ : (i : Fin (suc n)) → Carrier
-        term₂-inject₁ i = term₂ (inject₁ i)
-
-        lemma₂-inject₁ : ∀ i → y * term i ≈ term₂-inject₁ i
-        lemma₂-inject₁ i rewrite view-inject₁ i = refl
+    lemma₂-inject₁ : ∀ i → y * binomialTerm n i ≈ term₂-inject₁ i
+    lemma₂-inject₁ i rewrite view-inject₁ i = refl
 
 ------------------------------------------------------------------------
 -- Next, a lemma which is independent of commutativity
 
-  module _ {n} (i : Fin (suc n)) where
-
-    open Binomial n using (term)
-
-    private
-
-      k = toℕ i
-
-    x*lemma : x * term i ≈ (n C k) × Binomial.binomial (suc n) (suc i)
-    x*lemma = begin
-      x * term i                                  ≡⟨⟩
-      x * ((n C k) × (x ^ k * y ^ (n ∸ k)))       ≈˘⟨ *-congˡ (×-assoc-* (n C k) _ _) ⟩
-      x * ((n C k) × x ^ k * y ^ (n ∸ k))         ≈˘⟨ *-assoc x ((n C k) × x ^ k) _ ⟩
-      (x * (n C k) × x ^ k) * y ^ (n ∸ k)         ≈⟨ *-congʳ (×-comm-* (n C k) _ _) ⟩
-      (n C k) × x ^ (suc k) * y ^ (n ∸ k)         ≡⟨⟩
-      (n C k) × x ^ (suc k) * y ^ (suc n ∸ suc k) ≈⟨ ×-assoc-* (n C k) _ _ ⟩
-      (n C k) × Binomial.binomial (suc n) (suc i) ∎
-      where
-        open ≈-Reasoning
-
-
+x*lemma : ∀ {n} (i : Fin (suc n)) →
+          x * binomialTerm n i ≈ (n C toℕ i) × binomial (suc n) (suc i)
+x*lemma {n} i = begin
+  x * binomialTerm n i                        ≡⟨⟩
+  x * ((n C k) × (x ^ k * y ^ (n ∸ k)))       ≈˘⟨ *-congˡ (×-assoc-* (n C k) _ _) ⟩
+  x * ((n C k) × x ^ k * y ^ (n ∸ k))         ≈˘⟨ *-assoc x ((n C k) × x ^ k) _ ⟩
+  (x * (n C k) × x ^ k) * y ^ (n ∸ k)         ≈⟨ *-congʳ (×-comm-* (n C k) _ _) ⟩
+  (n C k) × x ^ (suc k) * y ^ (n ∸ k)         ≡⟨⟩
+  (n C k) × x ^ (suc k) * y ^ (suc n ∸ suc k) ≈⟨ ×-assoc-* (n C k) _ _ ⟩
+  (n C k) × binomial (suc n) (suc i)          ∎
+  where k = toℕ i
 
 ------------------------------------------------------------------------
 -- Next, a lemma which does require commutativity
 
-  module _ (x*y≈y*x : x * y ≈ y * x) where
+y*lemma : x * y ≈ y * x → ∀ {n : ℕ} (j : Fin n) → 
+          y * binomialTerm n (suc j) ≈ (n C toℕ (suc j)) × binomial (suc n) (suc (inject₁ j))
+y*lemma x*y≈y*x {n} j = begin
+  y * binomialTerm n (suc j)
+    ≈⟨ ×-comm-* nC[j+1] y (binomial n (suc j)) ⟩
+  nC[j+1] × (y * binomial n (suc j))
+    ≈⟨ ×-congʳ nC[j+1] (y*x^m*y^n≈x^m*y^[n+1] x*y≈y*x [j+1] [n-j-1]) ⟩
+  nC[j+1] × (x ^ [j+1] * y ^ [n-j])
+    ≈˘⟨ ×-congʳ nC[j+1] (*-congʳ (^-congʳ x (cong suc k≡j))) ⟩
+  nC[j+1] × (x ^ [k+1] * y ^ [n-j])
+    ≈˘⟨ ×-congʳ nC[j+1] (*-congˡ (^-congʳ y [n-k]≡[n-j])) ⟩
+  nC[j+1] × (x ^ [k+1] * y ^ [n-k])
+    ≡⟨⟩
+  nC[j+1] × (x ^ [k+1] * y ^ [n+1]-[k+1])
+    ≡⟨⟩
+  (n C toℕ (suc j)) × binomial (suc n) (suc i) ∎
+  where
+    i           = inject₁ j
+    k           = toℕ i
+    [k+1]       = ℕ.suc k
+    [j+1]       = toℕ (suc j)
+    [n-k]       = n ∸ k
+    [n+1]-[k+1] = [n-k]
+    [n-j-1]     = n ∸ [j+1]
+    [n-j]       = ℕ.suc [n-j-1]
+    nC[j+1]     = n C [j+1]
 
-    module _ {n : ℕ} (j : Fin n) where
+    k≡j         : k ≡ toℕ j
+    k≡j         = toℕ-inject₁ j
 
-      open Binomial n using (binomial; term)
-
-      private
-
-        i = inject₁ j
-
-      y*lemma : y * term (suc j) ≈ (n C toℕ (suc j)) × Binomial.binomial (suc n) (suc i)
-      y*lemma = begin
-        y * term (suc j)
-          ≈⟨ ×-comm-* nC[j+1] y (binomial (suc j)) ⟩
-        nC[j+1] × (y * binomial (suc j))
-          ≈⟨ ×-congʳ nC[j+1] (y*x^m*y^n≈x^m*y^[n+1] x*y≈y*x [j+1] [n-j-1]) ⟩
-        nC[j+1] × (x ^ [j+1] * y ^ [n-j])
-          ≈˘⟨ ×-congʳ nC[j+1] (*-congʳ (^-congʳ x [k+1]≡[j+1])) ⟩
-        nC[j+1] × (x ^ [k+1] * y ^ [n-j])
-          ≈˘⟨ ×-congʳ nC[j+1] (*-congˡ (^-congʳ y [n-k]≡[n-j])) ⟩
-        nC[j+1] × (x ^ [k+1] * y ^ [n-k])
-          ≡⟨⟩
-        nC[j+1] × (x ^ [k+1] * y ^ [n+1]-[k+1])
-          ≡⟨⟩
-        (n C toℕ (suc j)) × Binomial.binomial (suc n) (suc i) ∎
-        where
-          k           = toℕ i
-          k≡j         : k ≡ toℕ j
-          k≡j         = toℕ-inject₁ j
-
-          [k+1]       = ℕ.suc k
-          [j+1]       = toℕ (suc j)
-          [n-k]       = n ∸ k
-          [n+1]-[k+1] = [n-k]
-          [n-j-1]     = n ∸ [j+1]
-          [n-j]       = ℕ.suc [n-j-1]
-          nC[j+1]     = n C [j+1]
-
-          [k+1]≡[j+1] : [k+1] ≡ [j+1]
-          [k+1]≡[j+1] = cong suc k≡j
-
-          [n-k]≡[n-j] : [n-k] ≡ [n-j]
-          [n-k]≡[n-j] = begin
-            [n-k]      ≡⟨ cong (n ∸_) k≡j ⟩
-            n ∸ toℕ j  ≡⟨ +-∸-assoc 1 (toℕ<n j) ⟩
-            [n-j]      ∎ where open ≡-Reasoning
-          open ≈-Reasoning
+    [n-k]≡[n-j] : [n-k] ≡ [n-j]
+    [n-k]≡[n-j] = ≡.trans (cong (n ∸_) k≡j) (+-∸-assoc 1 (toℕ<n j))
 
 ------------------------------------------------------------------------
 -- Now, a lemma characterising the sum of the term₁ and term₂ expressions
 
-    module _ n where
+private
+  n<ᵇ1+n : ∀ n → (n Nat.<ᵇ suc n) ≡ true
+  n<ᵇ1+n n with true ← n Nat.<ᵇ suc n | _ ← <⇒<ᵇ (n<1+n n) = ≡.refl
 
-      open ≈-Reasoning
+term₁+term₂≈term : x * y ≈ y * x → ∀ n i → term₁ n i + term₂ n i ≈ binomialTerm (suc n) i
 
-      open Binomial n using (term; term₁; term₂)
+term₁+term₂≈term x*y≈y*x n 0F = begin
+  term₁ n 0F + term₂ n 0F      ≡⟨⟩
+  0# + y * (1 × (1# * y ^ n))  ≈⟨ +-identityˡ _ ⟩
+  y * (1 × (1# * y ^ n))       ≈⟨ *-congˡ (+-identityʳ (1# * y ^ n)) ⟩
+  y * (1# * y ^ n)             ≈⟨ *-congˡ (*-identityˡ (y ^ n)) ⟩
+  y * y ^ n                    ≡⟨⟩
+  y ^ suc n                    ≈˘⟨ *-identityˡ (y ^ suc n) ⟩
+  1# * y ^ suc n               ≈˘⟨ +-identityʳ (1# * y ^ suc n) ⟩
+  1 × (1# * y ^ suc n)         ≡⟨⟩
+  binomialTerm (suc n) 0F      ∎
 
-      private
+term₁+term₂≈term x*y≈y*x n (suc i) with view i
+... | ‵fromℕ {n}
+{- remembering that i = fromℕ n, definitionally -}
+  rewrite toℕ-fromℕ n
+    | nCn≡1 n
+    | n∸n≡0 n
+    | n<ᵇ1+n n
+    = begin
+  x * ((x ^ n * 1#) + 0#) + 0# ≈⟨ +-identityʳ _ ⟩
+  x * ((x ^ n * 1#) + 0#)      ≈⟨ *-congˡ (+-identityʳ _) ⟩
+  x * (x ^ n * 1#)             ≈˘⟨ *-assoc _ _ _ ⟩
+  x * x ^ n * 1#               ≈˘⟨ +-identityʳ _ ⟩
+  1 × (x * x ^ n * 1#)         ∎
 
-        n<ᵇ1+n : (n Nat.<ᵇ suc n) ≡ true
-        n<ᵇ1+n with true ← n Nat.<ᵇ suc n | _ ← <⇒<ᵇ (n<1+n n) = ≡.refl
+... | ‵inject₁ j
+{- remembering that i = inject₁ j, definitionally -}
+    = begin
+  (x * binomialTerm n i) + (y * binomialTerm n (suc j))
+    ≈⟨ +-cong (x*lemma i) (y*lemma x*y≈y*x j) ⟩
+  (nCk × [x^k+1]*[y^n-k]) + (nC[j+1] × [x^k+1]*[y^n-k])
+    ≈˘⟨ +-congˡ (×-congˡ nC[k+1]≡nC[j+1]) ⟩
+  (nCk × [x^k+1]*[y^n-k]) + (nC[k+1] × [x^k+1]*[y^n-k])
+    ≈˘⟨ ×-homo-+ [x^k+1]*[y^n-k] nCk nC[k+1] ⟩
+  (nCk Nat.+ nC[k+1]) × [x^k+1]*[y^n-k]
+    ≡⟨ cong (_× [x^k+1]*[y^n-k]) (nCk+nC[k+1]≡[n+1]C[k+1] n k) ⟩
+  ((suc n) C (suc k)) × [x^k+1]*[y^n-k]
+    ≡⟨⟩
+  binomialTerm (suc n) (suc i) ∎
+  where
+    k               = toℕ i
+    [k+1]           = ℕ.suc k
+    [j+1]           = toℕ (suc j)
+    nCk             = n C k
+    nC[k+1]         = n C [k+1]
+    nC[j+1]         = n C [j+1]
+    [x^k+1]*[y^n-k] = binomial (suc n) (suc i)
 
-
-      term₁+term₂≈term : ∀ i → term₁ i + term₂ i ≈ Binomial.term (suc n) i
-
-      term₁+term₂≈term 0F = begin
-        term₁ 0F + term₂ 0F          ≡⟨⟩
-        0# + y * (1 × (1# * y ^ n))  ≈⟨ +-identityˡ _ ⟩
-        y * (1 × (1# * y ^ n))       ≈⟨ *-congˡ (+-identityʳ (1# * y ^ n)) ⟩
-        y * (1# * y ^ n)             ≈⟨ *-congˡ (*-identityˡ (y ^ n)) ⟩
-        y * y ^ n                    ≡⟨⟩
-        y ^ suc n                    ≈˘⟨ *-identityˡ (y ^ suc n) ⟩
-        1# * y ^ suc n               ≈˘⟨ +-identityʳ (1# * y ^ suc n) ⟩
-        1 × (1# * y ^ suc n)         ≡⟨⟩
-        Binomial.term (suc n) 0F     ∎
-
-      term₁+term₂≈term (suc i) with view i
-      ... | ‵fromℕ {n}
-      {- remembering that i = fromℕ n, definitionally -}
-        rewrite toℕ-fromℕ n
-          | nCn≡1 n
-          | n∸n≡0 n
-          | n<ᵇ1+n
-          = begin
-        x * ((x ^ n * 1#) + 0#) + 0# ≈⟨ +-identityʳ _ ⟩
-        x * ((x ^ n * 1#) + 0#)      ≈⟨ *-congˡ (+-identityʳ _) ⟩
-        x * (x ^ n * 1#)             ≈˘⟨ *-assoc _ _ _ ⟩
-        x * x ^ n * 1#               ≈˘⟨ +-identityʳ _ ⟩
-        1 × (x * x ^ n * 1#)         ∎
-
-      ... | ‵inject₁ j
-      {- remembering that i = inject₁ j, definitionally -}
-          = begin
-        (x * term i) + (y * term (suc j))
-          ≈⟨ +-cong (x*lemma i) (y*lemma j) ⟩
-        (nCk × [x^k+1]*[y^n-k]) + (nC[j+1] × [x^k+1]*[y^n-k])
-          ≈˘⟨ +-congˡ (×-congˡ nC[k+1]≡nC[j+1]) ⟩
-        (nCk × [x^k+1]*[y^n-k]) + (nC[k+1] × [x^k+1]*[y^n-k])
-          ≈˘⟨ ×-homo-+ [x^k+1]*[y^n-k] nCk nC[k+1] ⟩
-        (nCk Nat.+ nC[k+1]) × [x^k+1]*[y^n-k]
-          ≡⟨ cong (_× [x^k+1]*[y^n-k]) (nCk+nC[k+1]≡[n+1]C[k+1] n k) ⟩
-        ((suc n) C (suc k)) × [x^k+1]*[y^n-k]
-          ≡⟨⟩
-        Binomial.term (suc n) (suc i) ∎
-          where
-            k               = toℕ i
-            [k+1]           = ℕ.suc k
-            [j+1]           = toℕ (suc j)
-            nCk             = n C k
-            nC[k+1]         = n C [k+1]
-            nC[j+1]         = n C [j+1]
-            nC[k+1]≡nC[j+1] : nC[k+1] ≡ nC[j+1]
-            nC[k+1]≡nC[j+1] = cong ((n C_) ∘ suc) (toℕ-inject₁ j)
-            [x^k+1]*[y^n-k] : Carrier
-            [x^k+1]*[y^n-k] = Binomial.binomial (suc n) (suc i)
+    nC[k+1]≡nC[j+1] : nC[k+1] ≡ nC[j+1]
+    nC[k+1]≡nC[j+1] = cong ((n C_) ∘ suc) (toℕ-inject₁ j)
 
 ------------------------------------------------------------------------
 -- Finally, the main result
 
-    open ≈-Reasoning
-
-    theorem : ∀ n → ((x + y) ^ n) ≈ Binomial.expansion n
-
-    theorem zero    = begin
-      (x + y) ^ 0                     ≡⟨⟩
-      1#                              ≈˘⟨ 1×-identityʳ 1# ⟩
-      1 × 1#                          ≈˘⟨ *-identityʳ (1 × 1#) ⟩
-      (1 × 1#) * 1#                   ≈⟨ ×-assoc-* 1 1# 1# ⟩
-      1 × (1# * 1#)                   ≡⟨⟩
-      1 × (x ^ 0 * y ^ 0)             ≈˘⟨ +-identityʳ _ ⟩
-      1 × (x ^ 0 * y ^ 0) + 0#        ≡⟨⟩
-      (0 C 0) × (x ^ 0 * y ^ 0) + 0#  ≡⟨⟩
-      Binomial.expansion 0            ∎
-
-    theorem n+1@(suc n) = begin
-      (x + y) ^ n+1                     ≡⟨⟩
-      (x + y) * (x + y) ^ n             ≈⟨ *-congˡ (theorem n) ⟩
-      (x + y) * expansion               ≈⟨ distribʳ _ _ _ ⟩
-      x * expansion + y * expansion     ≈⟨ +-cong lemma₁ lemma₂ ⟩
-      sum₁ + sum₂                       ≈˘⟨ ∑-distrib-+ term₁ term₂ ⟩
-      ∑[ i ≤ n+1 ] (term₁ i + term₂ i)  ≈⟨ sum-cong-≋ (term₁+term₂≈term n) ⟩
-      ∑[ i ≤ n+1 ] Binomial.term n+1 i  ≡⟨⟩
-      Binomial.expansion n+1            ∎
-      where
-        open Binomial n
-        open BinomialLemmas n
-
+theorem : x * y ≈ y * x → ∀ n → (x + y) ^ n ≈ binomialExpansion n
+theorem x*y≈y*x zero    = begin
+  (x + y) ^ 0                     ≡⟨⟩
+  1#                              ≈˘⟨ 1×-identityʳ 1# ⟩
+  1 × 1#                          ≈˘⟨ *-identityʳ (1 × 1#) ⟩
+  (1 × 1#) * 1#                   ≈⟨ ×-assoc-* 1 1# 1# ⟩
+  1 × (1# * 1#)                   ≡⟨⟩
+  1 × (x ^ 0 * y ^ 0)             ≈˘⟨ +-identityʳ _ ⟩
+  1 × (x ^ 0 * y ^ 0) + 0#        ≡⟨⟩
+  (0 C 0) × (x ^ 0 * y ^ 0) + 0#  ≡⟨⟩
+  binomialExpansion 0             ∎
+theorem x*y≈y*x n+1@(suc n) = begin
+  (x + y) ^ n+1                                     ≡⟨⟩
+  (x + y) * (x + y) ^ n                             ≈⟨ *-congˡ (theorem x*y≈y*x n) ⟩
+  (x + y) * binomialExpansion n                     ≈⟨ distribʳ _ _ _ ⟩
+  x * binomialExpansion n + y * binomialExpansion n ≈⟨ +-cong (lemma₁ n) (lemma₂ n) ⟩
+  sum₁ n + sum₂ n                                   ≈˘⟨ ∑-distrib-+ (term₁ n) (term₂ n) ⟩
+  ∑[ i ≤ n+1 ] (term₁ n i + term₂ n i)              ≈⟨ sum-cong-≋ (term₁+term₂≈term x*y≈y*x n) ⟩
+  ∑[ i ≤ n+1 ] binomialTerm n+1 i                   ≡⟨⟩
+  binomialExpansion n+1                             ∎

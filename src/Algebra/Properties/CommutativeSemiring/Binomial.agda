@@ -19,6 +19,6 @@ open Binomial public hiding (theorem)
 ------------------------------------------------------------------------
 -- Here it is
 
-theorem : ∀ n x y → ((x + y) ^ n) ≈ Binomial.expansion x y n
+theorem : ∀ n x y → (x + y) ^ n ≈ binomialExpansion x y n
 theorem n x y = Binomial.theorem x y (*-comm x y) n
 
