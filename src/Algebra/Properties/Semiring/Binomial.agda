@@ -41,7 +41,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 ------------------------------------------------------------------------
 -- Definitions
 
--- Note - `n` could be explicit in many of these definitions, but the
+-- Note - `n` could be implicit in many of these definitions, but the
 -- code is more readable if left explicit.
 
 binomial : (n : ℕ) → Fin (suc n) → Carrier
@@ -144,8 +144,8 @@ y*lemma x*y≈y*x {n} j = begin
     [n-j]       = ℕ.suc [n-j-1]
     nC[j+1]     = n C [j+1]
 
-    k≡j         : k ≡ toℕ j
-    k≡j         = toℕ-inject₁ j
+    k≡j : k ≡ toℕ j
+    k≡j = toℕ-inject₁ j
 
     [n-k]≡[n-j] : [n-k] ≡ [n-j]
     [n-k]≡[n-j] = ≡.trans (cong (n ∸_) k≡j) (+-∸-assoc 1 (toℕ<n j))
