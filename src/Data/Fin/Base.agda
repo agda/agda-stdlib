@@ -20,6 +20,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 private
   variable
