@@ -3461,16 +3461,16 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new structures to `Data.Rational.Unnormalised.Properties`
   ```agda
+  <-isDenseLinearOrder : IsDenseLinearOrder _≃_ _<_
   +-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
   +-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
-  <-isDenseLinearOrder : IsDenseLinearOrder _≃_ _<_
   ```
 
 * Added new bundles to `Data.Rational.Unnormalised.Properties`
   ```agda
+  <-denseLinearOrder : DenseLinearOrder 0ℓ 0ℓ 0ℓ
   +-*-heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
   +-*-heytingField : HeytingField 0ℓ 0ℓ 0ℓ
-  <-denseLinearOrder : DenseLinearOrder 0ℓ 0ℓ 0ℓ
   ```
 
 * Added new function to `Data.Vec.Relation.Binary.Pointwise.Inductive`
