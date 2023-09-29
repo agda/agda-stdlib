@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of unnormalized Rational numbers
@@ -17,7 +17,6 @@ open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
-open import Data.Empty using (⊥-elim)
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
@@ -119,7 +118,7 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 ≠-cotransitive {x} {y} x≠y z with x ≃? z | z ≃? y
 ... | no  x≠z | _       = inj₁ x≠z
 ... | yes _   | no z≠y  = inj₂ z≠y
-... | yes x≃z | yes z≃y = ⊥-elim (x≠y (≃-trans x≃z z≃y))
+... | yes x≃z | yes z≃y = contradiction (≃-trans x≃z z≃y) x≠y
 
 ≃-isEquivalence : IsEquivalence _≃_
 ≃-isEquivalence = record
@@ -413,35 +412,37 @@ drop-*<* (*<* pq<qp) = pq<qp
 <-asym (*<* x<y) = ℤ.<-asym x<y ∘ drop-*<*
 
 <-dense : Dense _<_
-<-dense {p} {q} (*<* p<q) = mid , p<r , r<q
+<-dense {p} {q} (*<* p<q) = m , p<m , m<q
   where
   open ℤ.≤-Reasoning
-  mid : ℚᵘ
-  mid = mkℚᵘ ((↥ p) ℤ.+ (↥ q)) (pred ((↧ₙ p) ℕ.+ (↧ₙ q)))
-  p<r : p < mid
-  p<r = *<* (begin-strict
-    (↥ p) ℤ.* (↧ mid)
+  m : ℚᵘ
+  m = mkℚᵘ (↥ p ℤ.+ ↥ q) (pred (↧ₙ p ℕ.+ ↧ₙ q))
+
+  p<m : p < m
+  p<m = *<* (begin-strict
+    ↥ p ℤ.* ↧ m
       ≡⟨⟩
-    (↥ p) ℤ.* ((↧ p) ℤ.+ (↧ q))
+    ↥ p ℤ.* (↧ p ℤ.+ ↧ q)
       ≡⟨ ℤ.*-distribˡ-+ (↥ p) (↧ p) (↧ q) ⟩
-    (↥ p) ℤ.* (↧ p) ℤ.+ (↥ p) ℤ.* (↧ q)
-      <⟨ ℤ.+-monoʳ-< ((↥ p) ℤ.* (↧ p)) p<q ⟩
-    (↥ p) ℤ.* (↧ p) ℤ.+ (↥ q) ℤ.* (↧ p)
+    ↥ p ℤ.* ↧ p ℤ.+ ↥ p ℤ.* ↧ q
+      <⟨ ℤ.+-monoʳ-< (↥ p ℤ.* ↧ p) p<q ⟩
+    ↥ p ℤ.* ↧ p ℤ.+ ↥ q ℤ.* ↧ p
       ≡˘⟨ ℤ.*-distribʳ-+ (↧ p) (↥ p) (↥ q) ⟩
-    ((↥ p) ℤ.+ (↥ q)) ℤ.* (↧ p)
+    (↥ p ℤ.+ ↥ q) ℤ.* ↧ p
       ≡⟨⟩
-    (↥ mid) ℤ.* (↧ p) ∎)
-  r<q : mid < q
-  r<q = *<* (begin-strict
-    (↥ mid) ℤ.* (↧ q)
+    ↥ m ℤ.* ↧ p ∎)
+
+  m<q : m < q
+  m<q = *<* (begin-strict
+    ↥ m ℤ.* ↧ q
       ≡⟨ ℤ.*-distribʳ-+ (↧ q) (↥ p) (↥ q) ⟩
-    (↥ p) ℤ.* (↧ q) ℤ.+ (↥ q) ℤ.* (↧ q)
-      <⟨ ℤ.+-monoˡ-< ((↥ q) ℤ.* (↧ q)) p<q ⟩
-    (↥ q) ℤ.* (↧ p) ℤ.+ (↥ q) ℤ.* (↧ q)
+    ↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ q
+      <⟨ ℤ.+-monoˡ-< (↥ q ℤ.* ↧ q) p<q ⟩
+    ↥ q ℤ.* ↧ p ℤ.+ ↥ q ℤ.* ↧ q
       ≡˘⟨ ℤ.*-distribˡ-+ (↥ q) (↧ p) (↧ q) ⟩
-    (↥ q) ℤ.* ((↧ p) ℤ.+ (↧ q))
+    ↥ q ℤ.* (↧ p ℤ.+ ↧ q)
       ≡⟨⟩
-    (↥ q) ℤ.* (↧ mid) ∎)
+    ↥ q ℤ.* ↧ m ∎)
 
 ≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans {p} {q} {r} (*≤* p≤q) (*<* q<r) = *<* $
