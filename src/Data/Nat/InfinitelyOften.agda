@@ -20,7 +20,8 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
 open import Relation.Unary using (Pred; _∪_; _⊆_)
-open RawMonad (¬¬-Monad {p = 0ℓ})
+
+open RawMonad (¬¬-Monad {a = 0ℓ})
 
 private
   variable

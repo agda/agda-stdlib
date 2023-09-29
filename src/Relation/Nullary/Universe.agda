@@ -116,7 +116,7 @@ sequence {AF = AF} A extract-⊥ sequence-⇒ = helper
 -- Some lemmas about double negation.
 
 private
-  open module M {p} = RawMonad (¬¬-Monad {p = p})
+  open module M {a} = RawMonad (¬¬-Monad {a = a})
 
 ¬¬-pull : ∀ {p} (F : PropF p) {P} →
           ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P

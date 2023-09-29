@@ -67,8 +67,8 @@ take (suc n) []       = Vec≤.[]
 take (suc n) (x ∷ xs) = x Vec≤.∷ take n (♭ xs)
 
 
-module ¬¬Monad {p} where
-  open RawMonad (¬¬-Monad {p}) public
+module ¬¬Monad {a} where
+  open RawMonad (¬¬-Monad {a}) public
 open ¬¬Monad  -- we don't want the RawMonad content to be opened publicly
 
 ------------------------------------------------------------------------
