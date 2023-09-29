@@ -1306,7 +1306,7 @@ lookup-inject≤-take m m≤m+n i xs = sym (begin
   lookup (take m xs) i
     ≡⟨ lookup-take-inject≤ xs i ⟩
   lookup xs (Fin.inject≤ i _)
-    ≡⟨ cong ((lookup xs) ∘ (Fin.inject≤ i)) (≤-irrelevant _ _) ⟩
+    ≡⟨⟩
   lookup xs (Fin.inject≤ i m≤m+n)
     ∎) where open ≡-Reasoning
 {-# WARNING_ON_USAGE lookup-inject≤-take
