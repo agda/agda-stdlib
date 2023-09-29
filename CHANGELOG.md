@@ -3436,6 +3436,13 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   foldr-commMonoid : xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
   ```
 
+* Added new proof, structure, and bundle to `Data.Rational.Properties`
+  ```agda
+  <-dense              : Dense _<_
+  <-isDenseLinearOrder : IsDenseLinearOrder _≡_ _<_
+  <-denseLinearOrder   : DenseLinearOrder 0ℓ 0ℓ 0ℓ
+  ```
+
 * Added new module to `Data.Rational.Unnormalised.Properties`
   ```agda
   module ≃-Reasoning = SetoidReasoning ≃-setoid
