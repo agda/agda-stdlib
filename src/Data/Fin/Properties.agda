@@ -43,10 +43,10 @@ open import Relation.Binary.Structures
   using (IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
-open import Relation.Nullary
-  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_; _×-dec_; _⊎-dec_; contradiction)
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Decidable as Dec using (map′)
+open import Relation.Nullary.Decidable as Dec
+  using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Reflects using (Reflects; invert)
 open import Relation.Unary as U
   using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
@@ -1065,8 +1065,8 @@ private
   -- The boolean component of the result is exactly the
   -- obvious fold of boolean tests (`foldr _∧_ true`).
   note : ∀ {p} {P : Pred (Fin 3) p} (P? : Decidable P) →
-         ∃ λ z → does (all? P?) ≡ z
-  note P? = does (P? 0F) ∧ does (P? 1F) ∧ does (P? 2F) ∧ true
+         ∃ λ z → Dec.does (all? P?) ≡ z
+  note P? = Dec.does (P? 0F) ∧ Dec.does (P? 1F) ∧ Dec.does (P? 2F) ∧ true
           , refl
 
 -- If a decidable predicate P over a finite set is sometimes false,
