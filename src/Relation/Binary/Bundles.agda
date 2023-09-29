@@ -308,13 +308,14 @@ record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
     isDenseLinearOrder : IsDenseLinearOrder _≈_ _<_
 
   open IsDenseLinearOrder isDenseLinearOrder public
+    using (isStrictTotalOrder; dense)
 
   strictTotalOrder : StrictTotalOrder c ℓ₁ ℓ₂
   strictTotalOrder = record
     { isStrictTotalOrder = isStrictTotalOrder
     }
 
-  --open StrictTotalOrder strictTotalOrder public
+  open StrictTotalOrder strictTotalOrder public
 
 
 ------------------------------------------------------------------------
