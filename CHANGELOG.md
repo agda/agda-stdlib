@@ -1365,8 +1365,8 @@ Deprecated names
 * In `Data.Nat.Properties`:
   ```
   suc[pred[n]]≡n  ↦  suc-pred
-  ≤-pred ↦ s≤s⁻¹
-  <-pred ↦ s<s⁻¹
+  ≤-pred          ↦  Data.Nat.Base.s≤s⁻¹
+  <-pred          ↦  Data.Nat.Base.s<s⁻¹
   ≤-step          ↦  m≤n⇒m≤1+n
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
