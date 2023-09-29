@@ -616,11 +616,13 @@ toℚᵘ-isOrderMonomorphism-< = record
 
 <-dense : Dense _<_
 <-dense {p} {q} p<q with m , p<ᵘm , m<ᵘq ← ℚᵘ.<-dense (toℚᵘ-mono-< p<q)
-        = fromℚᵘ m , p<m , m<q
+  = fromℚᵘ m , p<m , m<q
   where
   m≃m : m ≃ᵘ toℚᵘ (fromℚᵘ m)
   m≃m = ℚᵘ.≃-sym (toℚᵘ-fromℚᵘ m)
+
   p<m = toℚᵘ-cancel-< (ℚᵘ.<-respʳ-≃ m≃m p<ᵘm)
+
   m<q = toℚᵘ-cancel-< (ℚᵘ.<-respˡ-≃ m≃m m<ᵘq)
 
 <-≤-trans : Trans _<_ _≤_ _<_
