@@ -642,7 +642,7 @@ inject≤-trans : ∀ (i : Fin m) (m≤n : m ℕ.≤ n) (n≤o : n ℕ.≤ o) �
                 inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (ℕₚ.≤-trans m≤n n≤o)
 inject≤-trans i m≤n n≤o = inject≤-idempotent i m≤n n≤o _
 
-inject≤-injective : ∀ (m≤n m≤n′ : m ℕ.≤ n) i j →
+inject≤-injective : ∀ .(m≤n m≤n′ : m ℕ.≤ n) i j →
                     inject≤ i m≤n ≡ inject≤ j m≤n′ → i ≡ j
 inject≤-injective {n = suc _} p q zero    zero    eq = refl
 inject≤-injective {n = suc _} p q (suc i) (suc j) eq =
