@@ -721,8 +721,8 @@ m<n+m : ∀ m {n} → n > 0 → m < n + m
 m<n+m m {n} n>0 rewrite +-comm n m = m<m+n m n>0
 
 m+n≮n : ∀ m n → m + n ≮ n
-m+n≮n zero    n                   = n≮n n
-m+n≮n (suc m) (suc n) (s<s m+n<n) = m+n≮n m (suc n) (m<n⇒m<1+n m+n<n)
+m+n≮n zero    n                = n≮n n
+m+n≮n (suc m) n@(suc _) sm+n<n = m+n≮n m n (m<n⇒m<1+n (s<s⁻¹ sm+n<n))
 
 m+n≮m : ∀ m n → m + n ≮ m
 m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
