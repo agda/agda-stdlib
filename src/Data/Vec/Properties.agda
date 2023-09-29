@@ -1293,7 +1293,7 @@ Please use take-map instead."
 drop-distr-zipWith = drop-zipWith
 {-# WARNING_ON_USAGE drop-distr-zipWith
 "Warning: drop-distr-zipWith was deprecated in v2.0.
-Please use tdrop-zipWith instead."
+Please use drop-zipWith instead."
 #-}
 drop-distr-map = drop-map
 {-# WARNING_ON_USAGE drop-distr-map
