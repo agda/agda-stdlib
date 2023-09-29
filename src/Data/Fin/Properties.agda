@@ -30,7 +30,7 @@ open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map; [,]-∘)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔′)
+open import Function.Bundles using (Injection; _↣_; _⇔_; _↔_; mk⇔; mk↔ₛ′)
 open import Function.Definitions using (Injective; Surjective)
 open import Function.Consequences.Propositional using (contraInjective)
 open import Function.Construct.Composition as Comp hiding (injective)
@@ -69,13 +69,13 @@ private
 -- Bundles
 
 0↔⊥ : Fin 0 ↔ ⊥
-0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
+0↔⊥ = mk↔ₛ′ ¬Fin0 (λ ()) (λ ()) (λ ())
 
 1↔⊤ : Fin 1 ↔ ⊤
-1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
+1↔⊤ = mk↔ₛ′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
 
 2↔Bool : Fin 2 ↔ Bool
-2↔Bool = mk↔′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
+2↔Bool = mk↔ₛ′ (λ { 0F → false; 1F → true }) (λ { false → 0F ; true → 1F })
   (λ { false → refl ; true → refl }) (λ { 0F → refl ; 1F → refl })
 
 ------------------------------------------------------------------------
@@ -547,11 +547,19 @@ inject≤-idempotent {_} {suc n} {suc o} zero    _   _   _ = refl
 inject≤-idempotent {_} {suc n} {suc o} (suc i) (s≤s m≤n) (s≤s n≤o) (s≤s m≤o) =
   cong suc (inject≤-idempotent i m≤n n≤o m≤o)
 
+inject≤-trans : ∀ (i : Fin m) (m≤n : m ℕ.≤ n) (n≤o : n ℕ.≤ o) →
+                inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (ℕₚ.≤-trans m≤n n≤o)
+inject≤-trans i m≤n n≤o = inject≤-idempotent i m≤n n≤o _
+
 inject≤-injective : ∀ (m≤n m≤n′ : m ℕ.≤ n) i j →
                     inject≤ i m≤n ≡ inject≤ j m≤n′ → i ≡ j
 inject≤-injective (s≤s p) (s≤s q) zero    zero    eq = refl
 inject≤-injective (s≤s p) (s≤s q) (suc i) (suc j) eq =
   cong suc (inject≤-injective p q i j (suc-injective eq))
+
+inject≤-irrelevant : ∀ (m≤n m≤n′ : m ℕ.≤ n) i →
+                    inject≤ i m≤n ≡ inject≤ i m≤n′
+inject≤-irrelevant m≤n m≤n′ i =  cong (inject≤ i) (ℕₚ.≤-irrelevant m≤n m≤n′)
 
 ------------------------------------------------------------------------
 -- pred
@@ -617,7 +625,7 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 -- Bundles
 
 +↔⊎ : Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
-+↔⊎ {m} {n} = mk↔′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
++↔⊎ {m} {n} = mk↔ₛ′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
 
 ------------------------------------------------------------------------
 -- remQuot
@@ -709,7 +717,7 @@ combine-surjective {m} {n} i with remQuot {m} n i in eq
 -- Bundles
 
 *↔× : Fin (m ℕ.* n) ↔ (Fin m × Fin n)
-*↔× {m} {n} = mk↔′ (remQuot {m} n) (uncurry combine)
+*↔× {m} {n} = mk↔ₛ′ (remQuot {m} n) (uncurry combine)
   (uncurry remQuot-combine)
   (combine-remQuot {m} n)
 
@@ -760,7 +768,7 @@ finToFun-funToFin {suc m} {n} f (suc i) =
 -- Bundles
 
 ^↔→ : Extensionality _ _ → Fin (m ^ n) ↔ (Fin n → Fin m)
-^↔→ {m} {n} ext = mk↔′ finToFun funToFin
+^↔→ {m} {n} ext = mk↔ₛ′ finToFun funToFin
   (ext ∘ finToFun-funToFin)
   (funToFin-finToFin {n} {m})
 

@@ -26,7 +26,7 @@ open Raw public
   using (RawMagma; RawMonoid; RawGroup
         ; RawNearSemiring; RawSemiring
         ; RawRingWithoutOne; RawRing
-        ; RawQuasigroup; RawLoop)
+        ; RawQuasigroup; RawLoop; RawKleeneAlgebra)
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation

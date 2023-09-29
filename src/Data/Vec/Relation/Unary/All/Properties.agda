@@ -18,7 +18,7 @@ import Data.Vec.Properties as Vecₚ
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Level using (Level)
 open import Function.Base using (_∘_; id)
-open import Function.Inverse using (_↔_; inverse)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.PropositionalEquality
@@ -98,7 +98,7 @@ gmap g = map⁺ ∘ All.map g
 
 ++↔ : {xs : Vec A m} {ys : Vec A n} →
       (All P xs × All P ys) ↔ All P (xs ++ ys)
-++↔ {xs = xs} = inverse (uncurry ++⁺) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
+++↔ {xs = xs} = mk↔ₛ′ (uncurry ++⁺) (++⁻ xs) (++⁺∘++⁻ xs) ++⁻∘++⁺
 
 ------------------------------------------------------------------------
 -- concat
