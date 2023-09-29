@@ -116,7 +116,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 -- Properties of LessThan
 ------------------------------------------------------------------------
 
-lessThan? : B.Decidable LessThan
+lessThan? : Decidable LessThan
 lessThan? m       zero    = no λ()
 lessThan? zero    (suc n) = yes _
 lessThan? (suc m) (suc n) = lessThan? m n
