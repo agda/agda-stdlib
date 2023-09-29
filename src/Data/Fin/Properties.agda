@@ -650,7 +650,7 @@ inject≤-injective {n = suc _} p q (suc i) (suc j) eq =
 
 inject≤-irrelevant : ∀ (m≤n m≤n′ : m ℕ.≤ n) i →
                     inject≤ i m≤n ≡ inject≤ i m≤n′
-inject≤-irrelevant m≤n m≤n′ i =  cong (inject≤ i) (ℕₚ.≤-irrelevant m≤n m≤n′)
+inject≤-irrelevant m≤n m≤n′ i = refl
 
 ------------------------------------------------------------------------
 -- pred
