@@ -280,7 +280,7 @@ Non-backwards compatible changes
   Data.Sum.Function.Setoid
   Data.Sum.Function.Propositional
   ```
-  
+
 * Additionally the following proofs now use the new definitions instead of the old ones:
   * `Algebra.Lattice.Properties.BooleanAlgebra`
   * `Algebra.Properties.CommutativeMonoid.Sum`
@@ -360,8 +360,8 @@ Non-backwards compatible changes
 * The module `Function.Definitions` no longer has two equalities as module arguments, as
   they did not interact as intended with the re-exports from `Function.Definitions.(Core1/Core2)`.
   The latter have been removed and their definitions folded into `Function.Definitions`.
-  
-* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective` 
+
+* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective`
   have been changed from:
   ```
   Surjective f = ∀ y → ∃ λ x → f x ≈₂ y
@@ -376,16 +376,16 @@ Non-backwards compatible changes
   ```
   This is for several reasons: i) the new definitions compose much more easily, ii) Agda
   can better infer the equalities used.
-  
+
   To ease backwards compatibility:
-   - the old definitions have been moved to the new names  `StrictlySurjective`, 
-	 `StrictlyInverseˡ` and `StrictlyInverseʳ`. 
-   - The records in  `Function.Structures` and `Function.Bundles` export proofs 
-	 of these under the names `strictlySurjective`, `strictlyInverseˡ` and 
-	 `strictlyInverseʳ`,
+   - the old definitions have been moved to the new names  `StrictlySurjective`,
+         `StrictlyInverseˡ` and `StrictlyInverseʳ`.
+   - The records in  `Function.Structures` and `Function.Bundles` export proofs
+         of these under the names `strictlySurjective`, `strictlyInverseˡ` and
+         `strictlyInverseʳ`,
    - Conversion functions have been added in both directions to
-	 `Function.Consequences(.Propositional)`. 
-  
+         `Function.Consequences(.Propositional)`.
+
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
@@ -772,14 +772,14 @@ Non-backwards compatible changes
 ### Changes to triple reasoning interface
 
 * The module `Relation.Binary.Reasoning.Base.Triple` now takes an extra proof that the strict
-  relation is irreflexive. 
-  
+  relation is irreflexive.
+
 * This allows the following new proof combinator:
   ```agda
   begin-contradiction : (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
   ```
   that takes a proof that a value is strictly less than itself and then applies the principle of explosion.
-  
+
 * Specialised versions of this combinator are available in the following derived modules:
   ```
   Data.Nat.Properties
@@ -1465,7 +1465,7 @@ Deprecated names
   take-distr-map     ↦  take-map
   drop-distr-zipWith ↦  drop-zipWith
   drop-distr-map     ↦  drop-map
-  
+
   updateAt-id-relative      ↦  updateAt-id-local
   updateAt-compose-relative ↦  updateAt-∘-local
   updateAt-compose          ↦  updateAt-∘
@@ -2349,7 +2349,7 @@ Additions to existing modules
 
   length-isMagmaHomomorphism  : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
-  
+
   take-map : take n (map f xs) ≡ map f (take n xs)
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
@@ -2376,14 +2376,6 @@ Additions to existing modules
 
   s≤s⁻¹ : suc m ≤ suc n → m ≤ n
   s<s⁻¹ : suc m < suc n → m < n
-
-  LessThan : Rel ℕ 0ℓ
-  instance lessThan : LessThan 0 (suc n)
-  lessThanSuc       : LessThan n (suc n)
-  lessThanSucSuc    : .⦃ LessThan m n ⦄ → LessThan (suc m) (suc n)
-
-  <-lessThan    : .(m < n) → LessThan m n
-  <-lessThan⁻¹  : .{{LessThan m n}} → m < n
 
   pattern <′-base          = ≤′-refl
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
