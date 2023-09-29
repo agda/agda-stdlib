@@ -56,6 +56,9 @@ monad = record
   ; _>>=_ = [ _|>′_ , const ∘′ inj₂ ]′
   }
 
+join : {A : Set (a ⊔ b)} → Sumᵣ (Sumᵣ A) → Sumᵣ A
+join = Join.join monad
+
 monadZero : B → RawMonadZero Sumᵣ
 monadZero b = record
   { rawMonad = monad

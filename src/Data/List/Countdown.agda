@@ -8,7 +8,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 

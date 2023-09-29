@@ -6,7 +6,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Structures
+  using (IsDecTotalOrder; IsStrictTotalOrder)
+open import Relation.Binary.Bundles
+  using (DecTotalOrder; StrictTotalOrder)
 
 module Relation.Binary.Properties.DecTotalOrder
   {d₁ d₂ d₃} (DT : DecTotalOrder d₁ d₂ d₃) where

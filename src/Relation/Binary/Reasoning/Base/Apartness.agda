@@ -7,7 +7,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions using (Transitive; Symmetric; Trans)
 
 module Relation.Binary.Reasoning.Base.Apartness {a ℓ₁ ℓ₂} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_#_ : Rel A ℓ₂}

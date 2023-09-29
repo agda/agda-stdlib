@@ -27,12 +27,17 @@ open import Function.Base using (_∘_; _$_; id)
 open import Function.Definitions
 open import Function.Consequences.Propositional
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder; Poset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Irreflexive; Transitive; Reflexive; Antisymmetric; Total; Trichotomous; tri≈; tri<; tri>)
+open import Relation.Binary.Structures
+  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
 open import Relation.Binary.PropositionalEquality
-import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
@@ -601,12 +606,18 @@ x ≤? y with <-cmp x y
 ------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
-module ≤-Reasoning = InequalityReasoning
-  ≤-isPreorder
-  <-trans
-  (resp₂ _<_) <⇒≤
-  <-≤-trans ≤-<-trans
-  hiding (step-≈; step-≈˘)
+module ≤-Reasoning where
+
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-irrefl
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-≤-trans
+    ≤-<-trans
+    public
+    hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------
 -- Properties of _<ℕ_

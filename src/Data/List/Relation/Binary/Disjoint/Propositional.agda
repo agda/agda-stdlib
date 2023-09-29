@@ -6,8 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
-
 module Data.List.Relation.Binary.Disjoint.Propositional
   {a} {A : Set a} where
 

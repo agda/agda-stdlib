@@ -72,7 +72,7 @@ flip f = λ y x → f x y
 
 -- Application - note that _$_ is right associative, as in Haskell.
 -- If you want a left associative infix application operator, use
--- Category.Functor._<$>_ from Category.Monad.Identity.IdentityMonad.
+-- RawFunctor._<$>_ from Effect.Functor.
 
 _$_ : ∀ {A : Set a} {B : A → Set b} →
       ((x : A) → B x) → ((x : A) → B x)

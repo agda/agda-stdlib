@@ -17,14 +17,15 @@ open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Data.Unit.Polymorphic using (⊤)
 open import Level using (Level)
-open import Function.Inverse as Inv using (_↔_)
-open import Function.Related as Related
+open import Function.Bundles using (_↔_)
+open import Function.Properties.Inverse using (↔-refl)
+open import Function.Related.Propositional as Related
 open import Function.Related.TypeIsomorphisms
 
 ------------------------------------------------------------------------
 -- The solver
 
-module ×-⊎-Solver (k : Symmetric-kind) {ℓ} =
+module ×-⊎-Solver (k : SymmetricKind) {ℓ} =
   Algebra.Solver.Ring.NaturalCoefficients.Default
     (×-⊎-commutativeSemiring k ℓ)
 
@@ -39,5 +40,5 @@ private
          (⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (⊥ ⊎ A))
   test = solve 3 (λ A B C → con 1 :* (A :* (B :+ C)) :=
                             A :* B :+ C :* (con 0 :+ A))
-                 Inv.id
+                 ↔-refl
     where open ×-⊎-Solver bijection

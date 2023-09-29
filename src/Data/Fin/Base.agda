@@ -13,7 +13,7 @@ module Data.Fin.Base where
 
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥-elim)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
@@ -129,7 +129,7 @@ inject≤ {n = suc _} (suc i) m≤n = suc (inject≤ i (ℕ.s≤s⁻¹ m≤n))
 -- lower₁ "i" _ = "i".
 
 lower₁ : ∀ (i : Fin (suc n)) → n ≢ toℕ i → Fin n
-lower₁ {zero}  zero    ne = ⊥-elim (ne refl)
+lower₁ {zero}  zero    ne = contradiction refl ne
 lower₁ {suc n} zero    _  = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i (ne ∘ cong suc))
 
@@ -260,7 +260,7 @@ opposite {suc n} (suc i) = inject₁ (opposite i)
 -- McBride's "First-order unification by structural recursion".
 
 punchOut : ∀ {i j : Fin (suc n)} → i ≢ j → Fin n
-punchOut {_}     {zero}   {zero}  i≢j = ⊥-elim (i≢j refl)
+punchOut {_}     {zero}   {zero}  i≢j = contradiction refl i≢j
 punchOut {_}     {zero}   {suc j} _   = j
 punchOut {suc _} {suc i}  {zero}  _   = zero
 punchOut {suc _} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))

@@ -23,7 +23,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Preorder)
 
 module Relation.Binary.Reasoning.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
