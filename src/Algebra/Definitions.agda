@@ -16,7 +16,6 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Nullary.Negation.Core using (¬_)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -26,9 +25,110 @@ module Algebra.Definitions
 open import Algebra.Core using (Op₁; Op₂)
 open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
+open import Function.Base using (flip; id; _∘_; _on_)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
 -- Properties of operations
+
+------------------------------------------------------------------------
+-- A generalisation: because not everything can be defined in terms of
+-- a single relation _≈_, AND because the corresponding definitions in
+-- `Relation.Binary.Core` use *implicit* quantification... so there is
+-- plenty of potential for later/downstream refactoring of this design
+
+module Monotonicity {ℓ₁ ℓ₂} (_≤₁_ : Rel A ℓ₁) (_≤₂_ : Rel A ℓ₂) where
+
+  Monotone₁ : Op₁ A → Set _
+  Monotone₁ f = ∀ x y → x ≤₁ y → (_≤₂_ on f) x y
+
+  Monotone₂ : Op₂ A → Set _
+  Monotone₂ _∙_ = ∀ x y u v → x ≤₁ y → u ≤₁ v → (x ∙ u) ≤₂ (y ∙ v)
+
+  MonotoneAt : A → Op₂ A → Set _
+  MonotoneAt x f = Monotone₁ (f x)
+
+  LeftMonotone : Op₂ A → Set _
+  LeftMonotone _∙_ = ∀ x → MonotoneAt x _∙_
+
+  RightMonotone : Op₂ A → Set _
+  RightMonotone _∙_ = ∀ x → MonotoneAt x (flip _∙_)
+
+  AlmostLeftMonotone : (Pred A ℓ) → Op₂ A → Set _
+  AlmostLeftMonotone P _∙_ = ∀ {x} → P x → MonotoneAt x _∙_
+
+  AlmostRightMonotone : (Pred A ℓ) → Op₂ A → Set _
+  AlmostRightMonotone P _∙_ = ∀ {x} → P x → MonotoneAt x (flip _∙_)
+
+------------------------------------------------------------------------
+-- A second generalisation: this could be expressed, less efficiently,
+-- in terms of Monotonicity (I think)
+
+module Cancellativity {ℓ₁ ℓ₂} (_≤₁_ : Rel A ℓ₁) (_≤₂_ : Rel A ℓ₂) where
+
+  Cancellative₁ : Op₁ A → Set _
+  Cancellative₁ f = ∀ x y → (_≤₁_ on f) x y → x ≤₂ y
+
+  Cancellative₂ : Op₂ A → Set _
+  Cancellative₂ _∙_ = ∀ x y u v → (x ∙ u) ≤₁ (y ∙ v) → x ≤₂ y × u ≤₂ v
+
+  CancellativeAt : A → Op₂ A → Set _
+  CancellativeAt x f = Cancellative₁ (f x)
+
+  LeftCancellative : Op₂ A → Set _
+  LeftCancellative _∙_ = ∀ x → CancellativeAt x _∙_
+
+  RightCancellative : Op₂ A → Set _
+  RightCancellative _∙_ = ∀ x → CancellativeAt x (flip _∙_)
+
+  AlmostLeftCancellative : (Pred A ℓ) → Op₂ A → Set _
+  AlmostLeftCancellative P _∙_ = ∀ {x} → P x → CancellativeAt x _∙_
+
+  AlmostRightCancellative : (Pred A ℓ) → Op₂ A → Set _
+  AlmostRightCancellative P _∙_ = ∀ {x} → P x → CancellativeAt x (flip _∙_)
+
+
+------------------------------------------------------------------------
+-- Properties of operations
+
+-- (Anti)Monotonicity
+
+open Monotonicity _≈_ _≈_ public
+  hiding (Monotone₂; MonotoneAt)
+  renaming (Monotone₁ to Monotone)
+
+open Monotonicity _≈_ (flip _≈_) public
+  hiding (Monotone₂; MonotoneAt)
+  renaming (Monotone₁ to AntiMonotone;
+            LeftMonotone to LeftAntiMonotone;
+            RightMonotone to RightAntiMonotone;
+            AlmostLeftMonotone to AlmostLeftAntiMonotone;
+            AlmostRightMonotone to AlomostRightAntiMonotone)
+
+-- Cancellativity
+
+open Cancellativity _≈_ _≈_ public
+  hiding (Cancellative₁; Cancellative₂; CancellativeAt;
+          AlmostLeftCancellative;
+          AlmostRightCancellative)
+
+Cancellative : Op₂ A → Set _
+Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
+
+AlmostLeftCancellative : A → Op₂ A → Set _
+AlmostLeftCancellative e
+  = Cancellativity.AlmostLeftCancellative _≈_ _≈_ λ x → ¬ x ≈ e
+
+AlmostRightCancellative : A → Op₂ A → Set _
+AlmostRightCancellative e
+  = Cancellativity.AlmostRightCancellative _≈_ _≈_ λ x → ¬ x ≈ e
+
+AlmostCancellative : A → Op₂ A → Set _
+AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
+
+------------------------------------------------------------------------
+-- The 'usual' algebraic properties
 
 Congruent₁ : Op₁ A → Set _
 Congruent₁ f = f Preserves _≈_ ⟶ _≈_
@@ -135,24 +235,6 @@ SelfInverse f = ∀ {x y} → f x ≈ y → f y ≈ x
 
 Involutive : Op₁ A → Set _
 Involutive f = ∀ x → f (f x) ≈ x
-
-LeftCancellative : Op₂ A → Set _
-LeftCancellative _•_ = ∀ x y z → (x • y) ≈ (x • z) → y ≈ z
-
-RightCancellative : Op₂ A → Set _
-RightCancellative _•_ = ∀ x y z → (y • x) ≈ (z • x) → y ≈ z
-
-Cancellative : Op₂ A → Set _
-Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
-
-AlmostLeftCancellative : A → Op₂ A → Set _
-AlmostLeftCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
-
-AlmostRightCancellative : A → Op₂ A → Set _
-AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
-
-AlmostCancellative : A → Op₂ A → Set _
-AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
 
 Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
