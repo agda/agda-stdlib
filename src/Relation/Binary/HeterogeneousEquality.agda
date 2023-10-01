@@ -10,8 +10,9 @@ module Relation.Binary.HeterogeneousEquality where
 
 import Axiom.Extensionality.Heterogeneous as Ext
 open import Data.Unit.NonEta
+open import Data.Product.Base using (_,_)
 open import Function.Base
-open import Function.Inverse using (Inverse)
+open import Function.Bundles using (Inverse)
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Unary using (Pred)
@@ -183,12 +184,11 @@ indexedSetoid B = record
 ≡↔≅ : ∀ {A : Set a} (B : A → Set b) {x : A} →
       Inverse (P.setoid (B x)) ((indexedSetoid B) atₛ x)
 ≡↔≅ B = record
-  { to         = record { _⟨$⟩_ = id; cong = ≡-to-≅ }
-  ; from       = record { _⟨$⟩_ = id; cong = ≅-to-≡ }
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → refl
-    ; right-inverse-of = λ _ → refl
-    }
+  { to         = id
+  ; to-cong    = ≡-to-≅
+  ; from       = id
+  ; from-cong  = ≅-to-≡
+  ; inverse    = (λ { P.refl → refl }) , λ { refl → P.refl }
   }
 
 decSetoid : Decidable {A = A} {B = A} (λ x y → x ≅ y) →

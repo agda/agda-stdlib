@@ -383,3 +383,43 @@ module _ {L₁ : RawLoop a ℓ₁}
     { isLoopMonomorphism = isLoopMonomorphism F.isLoopMonomorphism G.isLoopMonomorphism
     ; surjective         = Func.surjective _ _ (_≈_ L₃) F.surjective G.surjective
     } where module F = IsLoopIsomorphism f-iso; module G = IsLoopIsomorphism g-iso
+
+------------------------------------------------------------------------
+-- KleeneAlgebra
+
+module _ {K₁ : RawKleeneAlgebra a ℓ₁}
+         {K₂ : RawKleeneAlgebra b ℓ₂}
+         {K₃ : RawKleeneAlgebra c ℓ₃}
+         (open RawKleeneAlgebra)
+         (≈₃-trans : Transitive (_≈_ K₃))
+         {f : Carrier K₁ → Carrier K₂}
+         {g : Carrier K₂ → Carrier K₃}
+         where
+
+  isKleeneAlgebraHomomorphism
+    : IsKleeneAlgebraHomomorphism K₁ K₂ f
+    → IsKleeneAlgebraHomomorphism K₂ K₃ g
+    → IsKleeneAlgebraHomomorphism K₁ K₃ (g ∘ f)
+  isKleeneAlgebraHomomorphism f-homo g-homo = record
+    { isSemiringHomomorphism = isSemiringHomomorphism ≈₃-trans F.isSemiringHomomorphism G.isSemiringHomomorphism
+    ; ⋆-homo              = λ x → ≈₃-trans (G.⟦⟧-cong (F.⋆-homo x)) (G.⋆-homo (f x))
+    } where module F = IsKleeneAlgebraHomomorphism f-homo; module G = IsKleeneAlgebraHomomorphism g-homo
+
+  isKleeneAlgebraMonomorphism
+    : IsKleeneAlgebraMonomorphism K₁ K₂ f
+    → IsKleeneAlgebraMonomorphism K₂ K₃ g
+    → IsKleeneAlgebraMonomorphism K₁ K₃ (g ∘ f)
+  isKleeneAlgebraMonomorphism f-mono g-mono = record
+    { isKleeneAlgebraHomomorphism = isKleeneAlgebraHomomorphism F.isKleeneAlgebraHomomorphism G.isKleeneAlgebraHomomorphism
+    ; injective = F.injective ∘ G.injective
+    } where module F = IsKleeneAlgebraMonomorphism f-mono;  module G = IsKleeneAlgebraMonomorphism g-mono
+
+  isKleeneAlgebraIsomorphism
+    : IsKleeneAlgebraIsomorphism K₁ K₂ f
+    → IsKleeneAlgebraIsomorphism K₂ K₃ g
+    → IsKleeneAlgebraIsomorphism K₁ K₃ (g ∘ f)
+  isKleeneAlgebraIsomorphism f-iso g-iso = record
+    { isKleeneAlgebraMonomorphism = isKleeneAlgebraMonomorphism F.isKleeneAlgebraMonomorphism G.isKleeneAlgebraMonomorphism
+    ; surjective                  = Func.surjective (_≈_ K₁) (_≈_ K₂) (_≈_ K₃) F.surjective G.surjective
+    } where module F = IsKleeneAlgebraIsomorphism f-iso; module G = IsKleeneAlgebraIsomorphism g-iso
+
