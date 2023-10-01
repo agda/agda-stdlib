@@ -1609,10 +1609,10 @@ abs-* i j = abs-◃ _ _
 *-cancelˡ-≡ i j k rewrite *-comm i j | *-comm i k = *-cancelʳ-≡ j k i
 
 *-AlmostRightCancellative : AlmostRightCancellative 0ℤ _*_
-*-AlmostRightCancellative i j k≢0 i*k≡j*k = *-cancelʳ-≡ i j _ ⦃ ≢-nonZero k≢0 ⦄ i*k≡j*k
+*-AlmostRightCancellative k≢0 i j i*k≡j*k = *-cancelʳ-≡ i j _ ⦃ ≢-nonZero k≢0 ⦄ i*k≡j*k
 
 *-AlmostLeftCancellative : AlmostLeftCancellative 0ℤ _*_
-*-AlmostLeftCancellative {i} j k i≢0 i*j≡i*k = *-cancelˡ-≡ i j k ⦃ ≢-nonZero i≢0 ⦄ i*j≡i*k
+*-AlmostLeftCancellative {i} i≢0 j k i*j≡i*k = *-cancelˡ-≡ i j k ⦃ ≢-nonZero i≢0 ⦄ i*j≡i*k
 
 *-AlmostCancellative : AlmostCancellative 0ℤ _*_
 *-AlmostCancellative = *-AlmostLeftCancellative , *-AlmostRightCancellative
