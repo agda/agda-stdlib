@@ -23,7 +23,6 @@ open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as Lₚ
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
-open import Function.Inverse as Inv using (inverse)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
