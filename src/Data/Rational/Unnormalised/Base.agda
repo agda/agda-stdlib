@@ -66,8 +66,8 @@ infix 4 _≃_ _≠_
 data _≃_ : Rel ℚᵘ 0ℓ where
   *≡* : ∀ {p q} → (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p) → p ≃ q
 
-_≠_ : Rel ℚᵘ 0ℓ
-p ≠ q = ¬ (p ≃ q)
+_≄_ : Rel ℚᵘ 0ℓ
+p ≄ q = ¬ (p ≃ q)
 
 ------------------------------------------------------------------------
 -- Ordering of rationals
@@ -156,7 +156,7 @@ NonNegative p = ℤ.NonNegative (↥ p)
 -- from ℤ but it requires importing `Data.Integer.Properties` which
 -- we would like to avoid doing.
 
-≢-nonZero : ∀ {p} → p ≠ 0ℚᵘ → NonZero p
+≢-nonZero : ∀ {p} → p ≄ 0ℚᵘ → NonZero p
 ≢-nonZero {mkℚᵘ -[1+ _ ] _      } _   = _
 ≢-nonZero {mkℚᵘ +[1+ _ ] _      } _   = _
 ≢-nonZero {mkℚᵘ +0       zero   } p≢0 = contradiction (*≡* refl) p≢0
@@ -377,4 +377,9 @@ Please use +-0-rawMonoid instead."
 {-# WARNING_ON_USAGE *-rawMonoid
 "Warning: *-rawMonoid was deprecated in v2.0
 Please use *-1-rawMonoid instead."
+#-}
+_≠_ = _≄_
+{-# WARNING_ON_USAGE _≠_
+"Warning: _≠_ was deprecated in v2.0
+Please use _≄_ instead."
 #-}

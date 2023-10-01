@@ -864,7 +864,7 @@ Non-backwards compatible changes
   (issue #1437) to conform with the defined setoid equality `_≃_` on `Rational`s:
   ```agda
   step-≈  ↦  step-≃
-  step-≃˘ ↦  step-≃˘
+  step-≈˘ ↦  step-≃˘
   ```
   with corresponding associated syntax:
   ```agda
@@ -1369,6 +1369,13 @@ Deprecated names
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
   <-step          ↦  m<n⇒m<1+n
+  ```
+
+* In `Data.Rational.Unnormalised.Base`:
+  ```
+  _≠_  ↦  _≄_
+  +-rawMonoid ↦ +-0-rawMonoid
+  *-rawMonoid ↦ *-1-rawMonoid
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:
