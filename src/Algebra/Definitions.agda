@@ -104,7 +104,7 @@ open Monotonicity _≈_ (flip _≈_) public
             LeftMonotone to LeftAntiMonotone;
             RightMonotone to RightAntiMonotone;
             AlmostLeftMonotone to AlmostLeftAntiMonotone;
-            AlmostRightMonotone to AlomostRightAntiMonotone)
+            AlmostRightMonotone to AlmostRightAntiMonotone)
 
 -- Cancellativity
 
