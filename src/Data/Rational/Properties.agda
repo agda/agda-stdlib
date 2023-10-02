@@ -51,11 +51,11 @@ open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; TotalPreorder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+  using (Setoid; DecSetoid; TotalPreorder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
 open import Relation.Binary.Structures
-  using (IsPreorder; IsTotalOrder; IsTotalPreorder; IsPartialOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+  using (IsPreorder; IsTotalOrder; IsTotalPreorder; IsPartialOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
 open import Relation.Binary.Definitions
-  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri<; tri>; tri≈; _Respectsʳ_; _Respectsˡ_; _Respects₂_)
+  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Dense; Trans; Trichotomous; tri<; tri>; tri≈; _Respectsʳ_; _Respectsˡ_; _Respects₂_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
@@ -614,6 +614,20 @@ toℚᵘ-isOrderMonomorphism-< = record
 <-asym : Asymmetric _<_
 <-asym (*<* p<q) (*<* q<p) = ℤ.<-asym p<q q<p
 
+<-dense : Dense _<_
+<-dense {p} {q} p<q = let
+    m , p<ᵘm , m<ᵘq = ℚᵘ.<-dense (toℚᵘ-mono-< p<q)
+
+    m≃m : m ≃ᵘ toℚᵘ (fromℚᵘ m)
+    m≃m = ℚᵘ.≃-sym (toℚᵘ-fromℚᵘ m)
+
+    p<m : p < fromℚᵘ m
+    p<m = toℚᵘ-cancel-< (ℚᵘ.<-respʳ-≃ m≃m p<ᵘm)
+
+    m<q : fromℚᵘ m < q
+    m<q = toℚᵘ-cancel-< (ℚᵘ.<-respˡ-≃ m≃m m<ᵘq)
+  in fromℚᵘ m , p<m , m<q
+
 <-≤-trans : Trans _<_ _≤_ _<_
 <-≤-trans {p} {q} {r} (*<* p<q) (*≤* q≤r) = *<*
   (ℤ.*-cancelʳ-<-nonNeg _ (begin-strict
@@ -693,6 +707,12 @@ _>?_ = flip _<?_
   ; compare       = <-cmp
   }
 
+<-isDenseLinearOrder : IsDenseLinearOrder _≡_ _<_
+<-isDenseLinearOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  ; dense              = <-dense
+  }
+
 ------------------------------------------------------------------------
 -- Bundles
 
@@ -704,6 +724,11 @@ _>?_ = flip _<?_
 <-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
 <-strictTotalOrder = record
   { isStrictTotalOrder = <-isStrictTotalOrder
+  }
+
+<-denseLinearOrder : DenseLinearOrder 0ℓ 0ℓ 0ℓ
+<-denseLinearOrder = record
+  { isDenseLinearOrder = <-isDenseLinearOrder
   }
 
 ------------------------------------------------------------------------

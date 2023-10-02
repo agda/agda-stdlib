@@ -308,7 +308,7 @@ Non-backwards compatible changes
   Data.Sum.Function.Setoid
   Data.Sum.Function.Propositional
   ```
-  
+
 * Additionally the following proofs now use the new definitions instead of the old ones:
   * `Algebra.Lattice.Properties.BooleanAlgebra`
   * `Algebra.Properties.CommutativeMonoid.Sum`
@@ -388,8 +388,8 @@ Non-backwards compatible changes
 * The module `Function.Definitions` no longer has two equalities as module arguments, as
   they did not interact as intended with the re-exports from `Function.Definitions.(Core1/Core2)`.
   The latter have been removed and their definitions folded into `Function.Definitions`.
-  
-* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective` 
+
+* In `Function.Definitions` the types of `Surjective`, `Injective` and `Surjective`
   have been changed from:
   ```
   Surjective f = ∀ y → ∃ λ x → f x ≈₂ y
@@ -404,16 +404,16 @@ Non-backwards compatible changes
   ```
   This is for several reasons: i) the new definitions compose much more easily, ii) Agda
   can better infer the equalities used.
-  
+
   To ease backwards compatibility:
-   - the old definitions have been moved to the new names  `StrictlySurjective`, 
-	 `StrictlyInverseˡ` and `StrictlyInverseʳ`. 
-   - The records in  `Function.Structures` and `Function.Bundles` export proofs 
-	 of these under the names `strictlySurjective`, `strictlyInverseˡ` and 
-	 `strictlyInverseʳ`,
+   - the old definitions have been moved to the new names  `StrictlySurjective`,
+         `StrictlyInverseˡ` and `StrictlyInverseʳ`.
+   - The records in  `Function.Structures` and `Function.Bundles` export proofs
+         of these under the names `strictlySurjective`, `strictlyInverseˡ` and
+         `strictlyInverseʳ`,
    - Conversion functions have been added in both directions to
-	 `Function.Consequences(.Propositional)`. 
-  
+         `Function.Consequences(.Propositional)`.
+
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
@@ -800,14 +800,14 @@ Non-backwards compatible changes
 ### Changes to triple reasoning interface
 
 * The module `Relation.Binary.Reasoning.Base.Triple` now takes an extra proof that the strict
-  relation is irreflexive. 
-  
+  relation is irreflexive.
+
 * This allows the following new proof combinator:
   ```agda
   begin-contradiction : (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
   ```
   that takes a proof that a value is strictly less than itself and then applies the principle of explosion.
-  
+
 * Specialised versions of this combinator are available in the following derived modules:
   ```
   Data.Nat.Properties
@@ -1442,6 +1442,11 @@ Deprecated names
   *-rawMonoid ↦ *-1-rawMonoid
   ```
 
+* In `Data.Rational.Unnormalised.Properties`:
+  ```
+  ≤-steps  ↦  p≤q⇒p≤r+q
+  ```
+
 * In `Data.Sum.Properties`:
   ```agda
   [,]-∘-distr      ↦  [,]-∘
@@ -1491,7 +1496,7 @@ Deprecated names
   take-distr-map     ↦  take-map
   drop-distr-zipWith ↦  drop-zipWith
   drop-distr-map     ↦  drop-map
-  
+
   updateAt-id-relative      ↦  updateAt-id-local
   updateAt-compose-relative ↦  updateAt-∘-local
   updateAt-compose          ↦  updateAt-∘
@@ -2375,7 +2380,7 @@ Additions to existing modules
 
   length-isMagmaHomomorphism  : (A : Set a) → IsMagmaHomomorphism (++-rawMagma A) +-rawMagma length
   length-isMonoidHomomorphism : (A : Set a) → IsMonoidHomomorphism (++-[]-rawMonoid A) +-0-rawMonoid length
-  
+
   take-map : take n (map f xs) ≡ map f (take n xs)
   drop-map : drop n (map f xs) ≡ map f (drop n xs)
   head-map : head (map f xs) ≡ Maybe.map f (head xs)
@@ -3058,6 +3063,7 @@ Additions to existing modules
 
 * Added new definitions in `Relation.Binary.Definitions`:
   ```
+  Dense        _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
 
@@ -3072,11 +3078,13 @@ Additions to existing modules
 
 * Added new definitions in `Relation.Binary.Bundles`:
   ```
+  record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   ```
 
 * Added new definitions in `Relation.Binary.Structures`:
   ```
+  record IsDenseLinearOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   record IsApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   ```
 
@@ -3310,7 +3318,6 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   negative<positive    : ∀ {p q} → .(Negative p) → .(Positive q) → p < q
   nonNeg∧nonPos⇒0      : ∀ {p} → .(NonNegative p) → .(NonPositive p) → p ≃ 0ℚᵘ
 
-  ≤-steps : ∀ {p q r} → NonNegative r → p ≤ q → p ≤ r + q
   p≤p+q   : ∀ {p q} → NonNegative q → p ≤ p + q
   p≤q+p   : ∀ {p} → NonNegative p → ∀ {q} → q ≤ p + q
 
@@ -3468,6 +3475,13 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   foldr-commMonoid : xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
   ```
 
+* Added new proof, structure, and bundle to `Data.Rational.Properties`
+  ```agda
+  <-dense              : Dense _<_
+  <-isDenseLinearOrder : IsDenseLinearOrder _≡_ _<_
+  <-denseLinearOrder   : DenseLinearOrder 0ℓ 0ℓ 0ℓ
+  ```
+
 * Added new module to `Data.Rational.Unnormalised.Properties`
   ```agda
   module ≃-Reasoning = SetoidReasoning ≃-setoid
@@ -3480,16 +3494,20 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ≠-symmetric : Symmetric _≠_
   ≠-cotransitive : Cotransitive _≠_
   ≠⇒invertible : p ≠ q → Invertible _≃_ 1ℚᵘ _*_ (p - q)
+
+  <-dense : Dense _<_
   ```
 
 * Added new structures to `Data.Rational.Unnormalised.Properties`
   ```agda
+  <-isDenseLinearOrder : IsDenseLinearOrder _≃_ _<_
   +-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
   +-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
   ```
 
 * Added new bundles to `Data.Rational.Unnormalised.Properties`
   ```agda
+  <-denseLinearOrder : DenseLinearOrder 0ℓ 0ℓ 0ℓ
   +-*-heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
   +-*-heytingField : HeytingField 0ℓ 0ℓ 0ℓ
   ```
