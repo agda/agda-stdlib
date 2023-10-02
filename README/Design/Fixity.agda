@@ -23,6 +23,8 @@ module README.Design.Fixity where
 -- ternary reasoning infix 1 _⊢_≈_
 -- composition infixr 9 _∘_
 -- application infixr -1 _$_ _$!_
+-- combinatorics infixl 6.5 _P_ _P′_ _C_ _C′_
+-- pair infixr 4 _,_
 
 -- Reasoning:
 -- QED  infix  3 _∎
