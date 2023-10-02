@@ -975,8 +975,8 @@ reverse-++ : ∀ .(eq : m + n ≡ n + m) (xs : Vec A m) (ys : Vec A n) →
 reverse-++ {m = zero}  {n = n} eq []       ys = CastReasoning.≈-sym (++-identityʳ (sym eq) (reverse ys))
 reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin′
   reverse (x ∷ xs ++ ys)              ≂⟨ reverse-∷ x (xs ++ ys) ⟩
-  reverse (xs ++ ys) ∷ʳ x             ≈⟨ cast-∷ʳ (cong suc (+-comm m n)) x (reverse (xs ++ ys))
-                                         ≈cong[ (_∷ʳ x) ] reverse-++ _ xs ys ⟩
+  reverse (xs ++ ys) ∷ʳ x             ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (+-comm m n)) x (reverse (xs ++ ys)))
+                                                (reverse-++ _ xs ys) ⟩
   (reverse ys ++ reverse xs) ∷ʳ x     ≈⟨ ++-∷ʳ (sym (+-suc n m)) x (reverse ys) (reverse xs) ⟩
   reverse ys ++ (reverse xs ∷ʳ x)     ≂˘⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟩
   reverse ys ++ (reverse (x ∷ xs))    ∎′
@@ -986,8 +986,8 @@ cast-reverse : ∀ .(eq : m ≡ n) → cast eq ∘ reverse {A = A} {n = m} ≗ r
 cast-reverse {n = zero}  eq []       = refl
 cast-reverse {n = suc n} eq (x ∷ xs) = begin′
   reverse (x ∷ xs)           ≂⟨ reverse-∷ x xs ⟩
-  reverse xs ∷ʳ x            ≈⟨ cast-∷ʳ eq x (reverse xs)
-                                ≈cong[ (_∷ʳ x) ] cast-reverse (cong pred eq) xs ⟩
+  reverse xs ∷ʳ x            ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ eq x (reverse xs))
+                                       (cast-reverse (cong pred eq) xs) ⟩
   reverse (cast _ xs) ∷ʳ x   ≂˘⟨ reverse-∷ x (cast (cong pred eq) xs) ⟩
   reverse (x ∷ cast _ xs)    ≈⟨⟩
   reverse (cast eq (x ∷ xs)) ∎′
@@ -1034,8 +1034,8 @@ map-ʳ++ {ys = ys} f xs = begin
          cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
 ++-ʳ++ {m = m} {n} {o} eq xs {ys} {zs} = begin′
   ((xs ++ ys) ʳ++ zs)              ≂⟨ unfold-ʳ++ (xs ++ ys) zs ⟩
-  reverse (xs ++ ys) ++ zs         ≈⟨ cast-++ˡ (+-comm m n) (reverse (xs ++ ys))
-                                      ≈cong[ (_++ zs) ] reverse-++ (+-comm m n) xs ys ⟩
+  reverse (xs ++ ys) ++ zs         ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (xs ++ ys)))
+                                             (reverse-++ (+-comm m n) xs ys) ⟩
   (reverse ys ++ reverse xs) ++ zs ≈⟨ ++-assoc (trans (cong (_+ o) (+-comm n m)) eq) (reverse ys) (reverse xs) zs ⟩
   reverse ys ++ (reverse xs ++ zs) ≂˘⟨ cong (reverse ys ++_) (unfold-ʳ++ xs zs) ⟩
   reverse ys ++ (xs ʳ++ zs)        ≂˘⟨ unfold-ʳ++ ys (xs ʳ++ zs) ⟩
@@ -1047,8 +1047,8 @@ map-ʳ++ {ys = ys} f xs = begin
 ʳ++-ʳ++ {m = m} {n} {o} eq xs {ys} {zs} = begin′
   (xs ʳ++ ys) ʳ++ zs                         ≂⟨ cong (_ʳ++ zs) (unfold-ʳ++ xs ys) ⟩
   (reverse xs ++ ys) ʳ++ zs                  ≂⟨ unfold-ʳ++ (reverse xs ++ ys) zs ⟩
-  reverse (reverse xs ++ ys) ++ zs           ≈⟨ cast-++ˡ (+-comm m n) (reverse (reverse xs ++ ys))
-                                                ≈cong[ (_++ zs) ] reverse-++ (+-comm m n) (reverse xs) ys ⟩
+  reverse (reverse xs ++ ys) ++ zs           ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (reverse xs ++ ys)))
+                                                       (reverse-++ (+-comm m n) (reverse xs) ys) ⟩
   (reverse ys ++ reverse (reverse xs)) ++ zs ≂⟨ cong ((_++ zs) ∘ (reverse ys ++_)) (reverse-involutive xs) ⟩
   (reverse ys ++ xs) ++ zs                   ≈⟨ ++-assoc (+-assoc n m o) (reverse ys) xs zs ⟩
   reverse ys ++ (xs ++ zs)                   ≂˘⟨ unfold-ʳ++ ys (xs ++ zs) ⟩
@@ -1236,8 +1236,8 @@ fromList-reverse (x List.∷ xs) = begin′
   fromList (List.reverse (x List.∷ xs))         ≈⟨ cast-fromList (Listₚ.ʳ++-defn xs) ⟩
   fromList (List.reverse xs List.++ List.[ x ]) ≈⟨ fromList-++ (List.reverse xs) ⟩
   fromList (List.reverse xs) ++ [ x ]           ≈˘⟨ unfold-∷ʳ (+-comm 1 _) x (fromList (List.reverse xs)) ⟩
-  fromList (List.reverse xs) ∷ʳ x               ≈⟨ cast-∷ʳ (cong suc (Listₚ.length-reverse xs)) _ _
-                                                   ≈cong[ (_∷ʳ x) ] fromList-reverse xs ⟩
+  fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (Listₚ.length-reverse xs)) _ _)
+                                                          (fromList-reverse xs) ⟩
   reverse (fromList xs) ∷ʳ x                    ≂˘⟨ reverse-∷ x (fromList xs) ⟩
   reverse (x ∷ fromList xs)                     ≈⟨⟩
   reverse (fromList (x List.∷ xs))              ∎′

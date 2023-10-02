@@ -122,4 +122,3 @@ syntax step-≂  xs ys≈zs xs≡ys  = xs ≂⟨  xs≡ys ⟩ ys≈zs
 syntax step-≂˘ xs ys≈zs ys≡xs  = xs ≂˘⟨ ys≡xs ⟩ ys≈zs
 syntax step-≈  xs ys≈zs xs≈ys  = xs ≈⟨  xs≈ys ⟩ ys≈zs
 syntax step-≈˘ xs ys≈zs ys≈xs  = xs ≈˘⟨ ys≈xs ⟩ ys≈zs
-syntax ≈-cong  f xs≈fys ys≈zs = xs≈fys ≈cong[ f ] ys≈zs
