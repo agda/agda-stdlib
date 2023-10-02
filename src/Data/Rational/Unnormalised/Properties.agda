@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of unnormalized Rational numbers
@@ -17,7 +17,6 @@ open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
-open import Data.Empty using (⊥-elim)
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
@@ -36,11 +35,11 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction; contraposition)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+  using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
 open import Relation.Binary.Structures
-  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>)
+  using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>)
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
@@ -119,7 +118,7 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 ≠-cotransitive {x} {y} x≠y z with x ≃? z | z ≃? y
 ... | no  x≠z | _       = inj₁ x≠z
 ... | yes _   | no z≠y  = inj₂ z≠y
-... | yes x≃z | yes z≃y = ⊥-elim (x≠y (≃-trans x≃z z≃y))
+... | yes x≃z | yes z≃y = contradiction (≃-trans x≃z z≃y) x≠y
 
 ≃-isEquivalence : IsEquivalence _≃_
 ≃-isEquivalence = record
@@ -412,6 +411,39 @@ drop-*<* (*<* pq<qp) = pq<qp
 <-asym : Asymmetric _<_
 <-asym (*<* x<y) = ℤ.<-asym x<y ∘ drop-*<*
 
+<-dense : Dense _<_
+<-dense {p} {q} (*<* p<q) = m , p<m , m<q
+  where
+  open ℤ.≤-Reasoning
+  m : ℚᵘ
+  m = mkℚᵘ (↥ p ℤ.+ ↥ q) (pred (↧ₙ p ℕ.+ ↧ₙ q))
+
+  p<m : p < m
+  p<m = *<* (begin-strict
+    ↥ p ℤ.* ↧ m
+      ≡⟨⟩
+    ↥ p ℤ.* (↧ p ℤ.+ ↧ q)
+      ≡⟨ ℤ.*-distribˡ-+ (↥ p) (↧ p) (↧ q) ⟩
+    ↥ p ℤ.* ↧ p ℤ.+ ↥ p ℤ.* ↧ q
+      <⟨ ℤ.+-monoʳ-< (↥ p ℤ.* ↧ p) p<q ⟩
+    ↥ p ℤ.* ↧ p ℤ.+ ↥ q ℤ.* ↧ p
+      ≡˘⟨ ℤ.*-distribʳ-+ (↧ p) (↥ p) (↥ q) ⟩
+    (↥ p ℤ.+ ↥ q) ℤ.* ↧ p
+      ≡⟨⟩
+    ↥ m ℤ.* ↧ p ∎)
+
+  m<q : m < q
+  m<q = *<* (begin-strict
+    ↥ m ℤ.* ↧ q
+      ≡⟨ ℤ.*-distribʳ-+ (↧ q) (↥ p) (↥ q) ⟩
+    ↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ q
+      <⟨ ℤ.+-monoˡ-< (↥ q ℤ.* ↧ q) p<q ⟩
+    ↥ q ℤ.* ↧ p ℤ.+ ↥ q ℤ.* ↧ q
+      ≡˘⟨ ℤ.*-distribˡ-+ (↥ q) (↧ p) (↧ q) ⟩
+    ↥ q ℤ.* (↧ p ℤ.+ ↧ q)
+      ≡⟨⟩
+    ↥ q ℤ.* ↧ m ∎)
+
 ≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans {p} {q} {r} (*≤* p≤q) (*<* q<r) = *<* $
   ℤ.*-cancelʳ-<-nonNeg _ $ begin-strict
@@ -517,6 +549,12 @@ _>?_ = flip _<?_
   ; compare       = <-cmp
   }
 
+<-isDenseLinearOrder : IsDenseLinearOrder _≃_ _<_
+<-isDenseLinearOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  ; dense              = <-dense
+  }
+
 ------------------------------------------------------------------------
 -- Bundles
 
@@ -533,6 +571,11 @@ _>?_ = flip _<?_
 <-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
 <-strictTotalOrder = record
   { isStrictTotalOrder = <-isStrictTotalOrder
+  }
+
+<-denseLinearOrder : DenseLinearOrder 0ℓ 0ℓ 0ℓ
+<-denseLinearOrder = record
+  { isDenseLinearOrder = <-isDenseLinearOrder
   }
 
 ------------------------------------------------------------------------
