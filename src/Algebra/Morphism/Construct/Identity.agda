@@ -19,6 +19,7 @@ open import Algebra.Morphism.Structures
         ; module RingMorphisms
         ; module QuasigroupMorphisms
         ; module LoopMorphisms
+        ; module KleeneAlgebraMorphisms
         )
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
@@ -248,3 +249,28 @@ module _ (L : RawLoop c ℓ) (open RawLoop L) (refl : Reflexive _≈_) where
     { isLoopMonomorphism = isLoopMonomorphism
     ; surjective = Id.surjective _
     }
+
+------------------------------------------------------------------------
+-- KleeneAlgebra
+
+module _ (K : RawKleeneAlgebra c ℓ) (open RawKleeneAlgebra K) (refl : Reflexive _≈_) where
+  open KleeneAlgebraMorphisms K K
+
+  isKleeneAlgebraHomomorphism : IsKleeneAlgebraHomomorphism id
+  isKleeneAlgebraHomomorphism = record
+    { isSemiringHomomorphism = isSemiringHomomorphism _ refl
+    ; ⋆-homo = λ _ → refl
+    }
+
+  isKleeneAlgebraMonomorphism : IsKleeneAlgebraMonomorphism id
+  isKleeneAlgebraMonomorphism = record
+    { isKleeneAlgebraHomomorphism = isKleeneAlgebraHomomorphism
+    ; injective = id
+    }
+
+  isKleeneAlgebraIsomorphism : IsKleeneAlgebraIsomorphism id
+  isKleeneAlgebraIsomorphism = record
+    { isKleeneAlgebraMonomorphism = isKleeneAlgebraMonomorphism
+    ; surjective = Id.surjective _
+    }
+

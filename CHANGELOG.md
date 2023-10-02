@@ -120,6 +120,34 @@ Bug-fixes
   infixl  6 _+ℤ_                                             (Relation.Binary.HeterogeneousEquality.Quotients.Examples)
   infix   4 _≉_ _≈ᵢ_ _≤ᵢ_                                    (Relation.Binary.Indexed.Homogeneous.Bundles)
   infixr  5 _∷ᴹ_ _∷⁻¹ᴹ_                                      (Text.Regex.Search)
+  infixr  4 _,_                                              (Data.Refinement)
+  infixr  4 _,_                                              (Data.Container.Relation.Binary.Pointwise)
+  infixr  4 _,_                                              (Data.Tree.AVL.Value)
+  infixr  4 _,_                                              (Foreign.Haskell.Pair)
+  infixr  4 _,_                                              (Reflection.AnnotatedAST)
+  infixr  4 _,_                                              (Reflection.AST.Traversal)
+  infixl  6.5 _P′_ _P_ _C′_ _C_                              (Data.Nat.Combinatorics.Base)
+  infixl  1 _>>=-cong_ _≡->>=-cong_                          (Effect.Monad.Partiality)
+  infixl  1 _?>=′_                                           (Effect.Monad.Predicate)
+  infixl  1 _>>=-cong_ _>>=-congP_                           (Effect.Monad.Partiality.All)
+  infix   4 _∈FV_                                            (Reflection.AST.DeBruijn)
+  infixr  9 _;_                                              (Relation.Binary.Construct.Composition)
+  infixl  6 _+²_                                             (Relation.Binary.HeterogeneousEquality.Quotients.Examples)
+  infixr -1 _atₛ_                                             (Relation.Binary.Indexed.Heterogeneous.Construct.At)
+  infixr -1 _atₛ_                                             (Relation.Binary.Indexed.Homogeneous.Construct.At)
+  infix   4 _∈_ _∉_                                          (Relation.Unary.Indexed)
+  infixr  9 _⍮_                                              (Relation.Unary.PredicateTransformer)
+  infix   8 ∼_                                               (Relation.Unary.PredicateTransformer)
+  infix   2 _×?_ _⊙?_                                        (Relation.Unary.Properties)
+  infix   10 _~?                                             (Relation.Unary.Properties)
+  infixr  1 _⊎?_                                             (Relation.Unary.Properties)
+  infixr  7 _∩?_                                             (Relation.Unary.Properties)
+  infixr  6 _∪?_                                             (Relation.Unary.Properties)
+  infixl  6 _`⊜_                                             (Tactic.RingSolver)
+  infix   8 ⊝_                                               (Tactic.RingSolver.Core.Expression)
+  infix   4 _∈ᴿ?_ _∉ᴿ?_ _∈?ε _∈?[_] _∈?[^_]                  (Text.Regex.Properties)
+  infix   4 _∈?_ _∉?_                                        (Text.Regex.Derivative.Brzozowski)
+  infix   4 _∈_ _∉_ _∈?_ _∉?_                                (Text.Regex.String.Unsafe)
   ```
 
 * In `System.Exit`, the `ExitFailure` constructor is now carrying an integer
@@ -274,8 +302,14 @@ Non-backwards compatible changes
 
 #### Removal of the old function hierarchy
 
-* The switch to the new function hierarchy is complete and the following definitions
-  now use the new definitions instead of the old ones:
+* The switch to the new function hierarchy is complete and the following modules
+  have been completely switched over to use the new definitions:
+  ```
+  Data.Sum.Function.Setoid
+  Data.Sum.Function.Propositional
+  ```
+  
+* Additionally the following proofs now use the new definitions instead of the old ones:
   * `Algebra.Lattice.Properties.BooleanAlgebra`
   * `Algebra.Properties.CommutativeMonoid.Sum`
   * `Algebra.Properties.Lattice`
@@ -798,6 +832,30 @@ Non-backwards compatible changes
   `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
   etc. Ditto. the strict ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
 
+### Changes to triple reasoning interface
+
+* The module `Relation.Binary.Reasoning.Base.Triple` now takes an extra proof that the strict
+  relation is irreflexive. 
+  
+* This allows the following new proof combinator:
+  ```agda
+  begin-contradiction : (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
+  ```
+  that takes a proof that a value is strictly less than itself and then applies the principle of explosion.
+  
+* Specialised versions of this combinator are available in the following derived modules:
+  ```
+  Data.Nat.Properties
+  Data.Nat.Binary.Properties
+  Data.Integer.Properties
+  Data.Rational.Unnormalised.Properties
+  Data.Rational.Properties
+  Data.Vec.Relation.Binary.Lex.Strict
+  Data.Vec.Relation.Binary.Lex.NonStrict
+  Relation.Binary.Reasoning.StrictPartialOrder
+  Relation.Binary.Reasoning.PartialOrder
+  ```
+
 ### Other
 
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
@@ -855,6 +913,10 @@ Non-backwards compatible changes
   operations but without computing the accompanying proofs. The proofs can be
   found in `Data.List.NonEmpty.Properties` under the names `groupSeqs-groups`
   and `ungroupSeqs` and `groupSeqs`.
+
+* In `Data.List.Relation.Unary.Grouped.Properties` the proofs `map⁺` and `map⁻`
+  have had their preconditions weakened so the equivalences no longer require congruence
+  proofs.
 
 * The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
@@ -1018,8 +1080,11 @@ Major improvements
   * `RawRing`
   * `RawQuasigroup`
   * `RawLoop`
+  * `RawKleeneAlgebra`
 * A new module `Algebra.Lattice.Bundles.Raw` is also introduced.
   * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
+
+* In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
 
 Deprecated modules
 ------------------
@@ -1115,6 +1180,14 @@ Deprecated modules
 ### Deprecation of `Data.Nat.Properties.Core`
 
 * The module `Data.Nat.Properties.Core` has been deprecated, and its one entry moved to `Data.Nat.Properties`
+
+### Deprecation of `Data.Fin.Substitution.Example`
+
+* The module `Data.Fin.Substitution.Example` has been deprecated, and moved to `README.Data.Fin.Substitution.UntypedLambda`
+
+### Deprecation of `Data.Product.Function.Dependent.Setoid.WithK`
+
+* This module has been deprecated, as none of its contents actually depended on axiom K. The contents has been moved to `Data.Product.Function.Dependent.Setoid`.
 
 Deprecated names
 ----------------
@@ -1348,6 +1421,11 @@ Deprecated names
   map-with-∈↔  ↦  mapWith∈↔
   ```
 
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```
+  gmap  ↦  gmap⁺
+  ```
+
 * In `Data.Nat.Properties`:
   ```
   suc[pred[n]]≡n  ↦  suc-pred
@@ -1445,6 +1523,11 @@ Deprecated names
 
 * In `Data.Vec.Properties`:
   ```
+  take-distr-zipWith ↦  take-zipWith
+  take-distr-map     ↦  take-map
+  drop-distr-zipWith ↦  drop-zipWith
+  drop-distr-map     ↦  drop-map
+  
   updateAt-id-relative      ↦  updateAt-id-local
   updateAt-compose-relative ↦  updateAt-∘-local
   updateAt-compose          ↦  updateAt-∘
@@ -1458,6 +1541,8 @@ Deprecated names
   sum-++-commute  ↦ sum-++
 
   take-drop-id ↦ take++drop≡id
+
+  lookup-inject≤-take ↦ lookup-take-inject≤
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```
@@ -1542,6 +1627,10 @@ Deprecated names
 * Moved negated relation symbol from `Relation.Binary.Properties.TotalOrder`:
   ```
   _≮_   ↦ Relation.Binary.Bundles.StrictPartialOrder._≮_
+
+* In `Relation.Nullary.Decidable.Core`:
+  ```
+  excluded-middle  ↦  ¬¬-excluded-middle
   ```
 
 ### Renamed Data.Erased to Data.Irrelevant
@@ -1549,14 +1638,6 @@ Deprecated names
 * This fixes the fact we had picked the wrong name originally. The erased modality
   corresponds to @0 whereas the irrelevance one corresponds to `.`.
 
-### Deprecated `Relation.Binary.PropositionalEquality.inspect`
-    in favour of `with ... in ...` syntax (issue #1580; PRs #1630, #1930)
-
-* In `Relation.Binary.PropositionalEquality`
-  both the record type `Reveal_·_is_`
-  and its principal mode of use, `inspect`,
-  have been deprecated in favour of the new `with ... in ...` syntax.
-  See the documentation of [with-abstraction equality](https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality)
 
 New modules
 -----------
@@ -1624,6 +1705,11 @@ New modules
 * A small library for function arguments with default values:
   ```
   Data.Default
+  ```
+
+* A small library defining a structurally recursive view of `Fin n`:
+  ```
+  Data.Fin.Relation.Unary.Top
   ```
 
 * A small library for a non-empty fresh list:
@@ -1796,6 +1882,12 @@ New modules
   Algebra.Properties.Loop
   ```
 
+* Properties of (Commutative)Semiring: the Binomial Theorem
+  ```
+  Algebra.Properties.CommutativeSemiring.Binomial
+  Algebra.Properties.Semiring.Binomial
+  ```
+
 * Some n-ary functions manipulating lists
   ```
   Data.List.Nary.NonDependent
@@ -1811,8 +1903,8 @@ New modules
   Function.Indexed.Bundles
   ```
 
-Other minor changes
--------------------
+Additions to existing modules
+-----------------------------
 
 * Added new proof to `Data.Maybe.Properties`
   ```agda
@@ -2012,7 +2104,7 @@ Other minor changes
 
 * Added new proof to `Algebra.Properties.Monoid.Sum`:
   ```agda
-  sum-init-last : ∀ {n} (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
+  sum-init-last : (t : Vector _ (suc n)) → sum t ≈ sum (init t) + last t
   ```
 
 * Added new proofs to `Algebra.Properties.Semigroup`:
@@ -2085,6 +2177,9 @@ Other minor changes
   record IsRingWithoutOneHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   record IsRingWithoutOneMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   record IsRingWithoutOneIsoMorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsKleeneAlgebraHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsKleeneAlgebraMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsKleeneAlgebraIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
 * Added new proofs in `Data.Bool.Properties`:
@@ -2187,7 +2282,33 @@ Other minor changes
   cast-is-id    : cast eq k ≡ k
   subst-is-cast : subst Fin eq k ≡ cast eq k
   cast-trans    : cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
+
+  fromℕ≢inject₁      : {i : Fin n} → fromℕ n ≢ inject₁ i
+
+  inject≤-trans      : inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (≤-trans m≤n n≤o)
+  inject≤-irrelevant : inject≤ i m≤n ≡ inject≤ i m≤n′
   ```
+
+* Changed the fixity of `Data.Fin.Substitution.TermSubst._/Var_`.
+  ```agda
+  infix 8 ↦ infixl 8
+  ```
+
+* Added new lemmas in `Data.Fin.Substitution.Lemmas.TermLemmas`:
+  ```
+  map-var≡ : {ρ₁ : Sub Fin m n} {ρ₂ : Sub T m n} {f : Fin m → Fin n} →
+             (∀ x → lookup ρ₁ x ≡ f x) →
+             (∀ x → lookup ρ₂ x ≡ T.var (f x)) →
+             map T.var ρ₁ ≡ ρ₂
+  wk≡wk : map T.var VarSubst.wk ≡ T.wk {n = n}
+  id≡id : map T.var VarSubst.id ≡ T.id {n = n}
+  sub≡sub : {x : Fin n} → map T.var (VarSubst.sub x) ≡ T.sub (T.var x)
+  ↑≡↑ : {ρ : Sub Fin m n} → map T.var (ρ VarSubst.↑) ≡ map T.var ρ T.↑
+  /Var≡/ : {ρ : Sub Fin m n} {t} → t /Var ρ ≡ t T./ map T.var ρ
+  sub-renaming-commutes : {ρ : Sub T m n} →
+    t /Var VarSubst.sub x T./ ρ ≡ t T./ ρ T.↑ T./ T.sub (lookup ρ x)
+  sub-commutes-with-renaming : {ρ : Sub Fin m n} →
+    t T./ T.sub t′ /Var ρ ≡ t /Var ρ VarSubst.↑ T./ T.sub (t′ /Var ρ)
 
 * Added new functions in `Data.Integer.Base`:
   ```
@@ -2732,12 +2853,13 @@ Other minor changes
 
   cast-is-id    : cast eq xs ≡ xs
   subst-is-cast : subst (Vec A) eq xs ≡ cast eq xs
+  cast-sym      : cast eq xs ≡ ys → cast (sym eq) ys ≡ xs
   cast-trans    : cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
   map-cast      : map f (cast eq xs) ≡ cast eq (map f xs)
   lookup-cast   : lookup (cast eq xs) (Fin.cast eq i) ≡ lookup xs i
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
-  cast-reverse : cast eq ∘ reverse ≗ reverse ∘ cast eq
+  cast-reverse  : cast eq ∘ reverse ≗ reverse ∘ cast eq
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
@@ -2751,6 +2873,11 @@ Other minor changes
   cast-fromList : cast _ (fromList xs) ≡ fromList ys
   fromList-map  : cast _ (fromList (List.map f xs)) ≡ map f (fromList xs)
   fromList-++   : cast _ (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+
+  truncate≡take       : .(eq : n ≡ m + o) → truncate m≤n xs ≡ take m (cast eq xs)
+  take≡truncate       : take m xs ≡ truncate (m≤m+n m n) xs
+  lookup-truncate     : lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)
+  lookup-take-inject≤ : lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
   ```
 
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
@@ -3395,6 +3522,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   <-weakInduction-startingFrom : P i →  (∀ j → P (inject₁ j) → P (suc j)) → ∀ {j} → j ≥ i → P j
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  foldr-commMonoid : xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
+  ```
+
 * Added new module to `Data.Rational.Unnormalised.Properties`
   ```agda
   module ≃-Reasoning = SetoidReasoning ≃-setoid
@@ -3452,6 +3584,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   #-sym         : Symmetric _#_
   #-congʳ       : x ≈ y → x # z → y # z
   #-congˡ       : y ≈ z → x # y → x # z
+  ```
+
+* Added new proof to `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  gmap⁻ : Q ∘ f ⋐ P → All Q ∘ map f ⋐ All P
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Setoid.Properties`

@@ -29,7 +29,7 @@ private
 
 record RawPMonad {I : Set i} (M : Pt I (i ⊔ ℓ)) : Set (suc i ⊔ suc ℓ) where
 
-  infixl 1 _?>=_ _?>_ _>?>_
+  infixl 1 _?>=_ _?>_ _>?>_ _?>=′_
   infixr 1 _=<?_ _<?<_
 
   -- ``Demonic'' operations (the opponent chooses the state).
