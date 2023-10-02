@@ -2841,19 +2841,16 @@ Additions to existing modules
   cast-fromList : cast _ (fromList xs) ≡ fromList ys
   fromList-map  : cast _ (fromList (List.map f xs)) ≡ map f (fromList xs)
   fromList-++   : cast _ (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
-<<<<<<< HEAD
   fromList-reverse : cast (Listₚ.length-reverse xs) (fromList (List.reverse xs)) ≡ reverse (fromList xs)
 
   ∷-ʳ++   : cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
   ++-ʳ++  : cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
   ʳ++-ʳ++ : cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
-=======
 
   truncate≡take       : .(eq : n ≡ m + o) → truncate m≤n xs ≡ take m (cast eq xs)
   take≡truncate       : take m xs ≡ truncate (m≤m+n m n) xs
   lookup-truncate     : lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)
   lookup-take-inject≤ : lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
->>>>>>> master
   ```
 
 * Added new proofs in `Data.Vec.Membership.Propositional.Properties`:
