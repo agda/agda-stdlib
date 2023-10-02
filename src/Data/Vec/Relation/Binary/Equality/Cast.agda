@@ -1,8 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The basic code for equational reasoning about vectors with
--- different indices using cast
+-- An equational reasoning library for propositional equality over
+-- vectors of different indices using cast.
+--
+-- See README.Data.Vec.Relation.Binary.Equality.Cast for
+-- documentation and examples.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -90,8 +93,8 @@ step-≂ xs ys≈zs xs≡ys = ≈-trans (≈-reflexive xs≡ys) ys≈zs
 -- `cong` after a `_≈[_]_` step that exposes the `cast` to the `cong`
 -- operation
 ≈-cong : ∀ .{l≡o : l ≡ o} .{m≡n : m ≡ n} {xs : Vec A m} {ys zs} (f : Vec A o → Vec A n) →
-         ys ≈[ l≡o ] zs → xs ≈[ m≡n ] f (cast l≡o ys) → xs ≈[ m≡n ] f zs
-≈-cong f ys≈zs xs≈fys = trans xs≈fys (cong f ys≈zs)
+         xs ≈[ m≡n ] f (cast l≡o ys) → ys ≈[ l≡o ] zs → xs ≈[ m≡n ] f zs
+≈-cong f xs≈fys ys≈zs = trans xs≈fys (cong f ys≈zs)
 
 
 -- symmetric version of each of the operator
@@ -119,21 +122,4 @@ syntax step-≂  xs ys≈zs xs≡ys  = xs ≂⟨  xs≡ys ⟩ ys≈zs
 syntax step-≂˘ xs ys≈zs ys≡xs  = xs ≂˘⟨ ys≡xs ⟩ ys≈zs
 syntax step-≈  xs ys≈zs xs≈ys  = xs ≈⟨  xs≈ys ⟩ ys≈zs
 syntax step-≈˘ xs ys≈zs ys≈xs  = xs ≈˘⟨ ys≈xs ⟩ ys≈zs
-syntax ≈-cong  f  ys≈zs xs≈fys = xs≈fys ≈cong[ f ] ys≈zs
-
-{-
--- An equational reasoning example, demonstrating nested uses of the cong operator
-
-cast-++ˡ : ∀ .(eq : n ≡ o) (xs : Vec A n) {ys : Vec A m} →
-           cast (cong (_+ m) eq) (xs ++ ys) ≡ cast eq xs ++ ys
-
-example : ∀ .(eq : (m + 1) + n ≡ n + suc m) a (xs : Vec A m) (ys : Vec A n) →
-          cast eq (reverse ((xs ++ [ a ]) ++ ys)) ≡ ys ʳ++ reverse (xs ∷ʳ a)
-example {m = m} {n} eq a xs ys = begin
-  reverse ((xs ++ [ a ]) ++ ys)       ≈˘⟨ cast-reverse (cong (_+ n) (ℕₚ.+-comm 1 m)) ((xs ∷ʳ a) ++ ys)
-                                          ≈cong[ reverse ] cast-++ˡ (ℕₚ.+-comm 1 m) (xs ∷ʳ a)
-                                                           ≈cong[ (_++ ys) ] unfold-∷ʳ _ a xs ⟩
-  reverse ((xs ∷ʳ a) ++ ys)           ≈⟨ reverse-++ (ℕₚ.+-comm (suc m) n) (xs ∷ʳ a) ys ⟩
-  reverse ys ++ reverse (xs ∷ʳ a)     ≂˘⟨ unfold-ʳ++ ys (reverse (xs ∷ʳ a)) ⟩
-  ys ʳ++ reverse (xs ∷ʳ a)            ∎
--}
+syntax ≈-cong  f xs≈fys ys≈zs = xs≈fys ≈cong[ f ] ys≈zs
