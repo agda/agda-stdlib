@@ -358,13 +358,15 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     zero                  : Zero 0# *
 
   open IsCommutativeMonoid +-isCommutativeMonoid public
-    using (isEquivalence)
+    using (setoid)
     renaming
     ( comm                   to +-comm
     ; isMonoid               to +-isMonoid
     ; isCommutativeMagma     to +-isCommutativeMagma
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
+
+  open Setoid setoid public
 
   *-isMagma : IsMagma *
   *-isMagma = record

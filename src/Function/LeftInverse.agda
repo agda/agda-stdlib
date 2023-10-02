@@ -1,17 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Left inverses
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Inverseˡ`, `IsLeftInverse` and
--- `LeftInverse`. The alternative definitions found in this file will
--- eventually be deprecated.
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.LeftInverse where
+
+{-# WARNING_ON_IMPORT
+"Function.LeftInverse was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
 
 open import Level
 import Relation.Binary.Reasoning.Setoid as EqReasoning
@@ -96,8 +97,8 @@ leftInverse : ∀ {f t} {From : Set f} {To : Set t} →
               (∀ x → from (to x) ≡ x) →
               From ↞ To
 leftInverse to from invˡ = record
-  { to              = P.→-to-⟶ to
-  ; from            = P.→-to-⟶ from
+  { to              = Eq.→-to-⟶ to
+  ; from            = Eq.→-to-⟶ from
   ; left-inverse-of = invˡ
   }
 
