@@ -615,15 +615,18 @@ toℚᵘ-isOrderMonomorphism-< = record
 <-asym (*<* p<q) (*<* q<p) = ℤ.<-asym p<q q<p
 
 <-dense : Dense _<_
-<-dense {p} {q} p<q with m , p<ᵘm , m<ᵘq ← ℚᵘ.<-dense (toℚᵘ-mono-< p<q)
-  = fromℚᵘ m , p<m , m<q
-  where
-  m≃m : m ≃ᵘ toℚᵘ (fromℚᵘ m)
-  m≃m = ℚᵘ.≃-sym (toℚᵘ-fromℚᵘ m)
+<-dense {p} {q} p<q = let
+    m , p<ᵘm , m<ᵘq = ℚᵘ.<-dense (toℚᵘ-mono-< p<q)
 
-  p<m = toℚᵘ-cancel-< (ℚᵘ.<-respʳ-≃ m≃m p<ᵘm)
+    m≃m : m ≃ᵘ toℚᵘ (fromℚᵘ m)
+    m≃m = ℚᵘ.≃-sym (toℚᵘ-fromℚᵘ m)
 
-  m<q = toℚᵘ-cancel-< (ℚᵘ.<-respˡ-≃ m≃m m<ᵘq)
+    p<m : p < fromℚᵘ m
+    p<m = toℚᵘ-cancel-< (ℚᵘ.<-respʳ-≃ m≃m p<ᵘm)
+
+    m<q : fromℚᵘ m < q
+    m<q = toℚᵘ-cancel-< (ℚᵘ.<-respˡ-≃ m≃m m<ᵘq)
+  in fromℚᵘ m , p<m , m<q
 
 <-≤-trans : Trans _<_ _≤_ _<_
 <-≤-trans {p} {q} {r} (*<* p<q) (*≤* q≤r) = *<*
