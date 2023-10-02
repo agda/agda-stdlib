@@ -31,6 +31,7 @@ record Cxt : Set where
   field
     len     : ℕ
     context : List (String × Arg Term)
+infixr 4 _,_
 
 private
   _∷cxt_ : String × Arg Term → Cxt → Cxt

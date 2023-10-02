@@ -64,5 +64,7 @@ module _ {a i} {I : Set i} where
 
 module _ {a i} {I : Set i} where
 
+  infixr -1 _atₛ_
+
   _atₛ_ : ∀ {ℓ} → IndexedSetoid I a ℓ → I → Setoid a ℓ
   _atₛ_ = setoid
