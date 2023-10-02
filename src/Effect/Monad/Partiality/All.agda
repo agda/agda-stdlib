@@ -44,6 +44,8 @@ data All {A : Set a} (P : A → Set p) : A ⊥ → Set (a ⊔ p) where
 
 -- Bind preserves All in the following way:
 
+infixl 1 _>>=-cong_
+
 _>>=-cong_ : ∀ {p q} {P : A → Set p} {Q : B → Set q}
                {x : A ⊥} {f : A → B ⊥} →
              All P x → (∀ {x} → P x → All Q (f x)) →
@@ -117,6 +119,8 @@ module Alternative {a p : Level} where
     _≅⟨_⟩P_     : ∀ x {y} (x≅y : x ≅ y) (p : AllP P y) → AllP P x
     _≳⟨_⟩P_     : ∀ x {y} (x≳y : x ≳ y) (p : AllP P y) → AllP P x
     _⟨_⟩P       : ∀ x (p : AllP P x) → AllP P x
+
+  infixl 1 _>>=-congP_
 
   private
 
