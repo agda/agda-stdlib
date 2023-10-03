@@ -12,7 +12,7 @@ open import Data.Nat.Base using (ℕ; suc; _≤_; _<_; z≤n; s≤s; _+_)
 open import Data.Nat.Divisibility using (_∣_; _∤_; ∣-trans; ∣1⇒≡1)
 open import Data.Nat.Induction using (<-rec; <-Rec)
 open import Data.Nat.Primality using (Prime; composite?)
-open import Data.Nat.Properties using (_≟_; <-trans; ≤∧≢⇒<; m<1+n⇒m<n∨m≡n)
+open import Data.Nat.Properties using (_≟_; <-trans; ≤⇒≯; ≤∧≢⇒<; m<1+n⇒m<n∨m≡n)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_; flip)
@@ -29,8 +29,7 @@ k Rough n = ∀ {d} → 1 < d → d < k → d ∤ n
 
 -- any number is 2-rough because all primes are greater than or equal to 2
 2-rough-n : ∀ n → 2 Rough n
-2-rough-n n {1} (s≤s ()) 1<2
-2-rough-n n {suc (suc d)} 1<d (s≤s (s≤s ()))
+2-rough-n _ 1<d 2>d with () ← ≤⇒≯ 1<d 2>d
 
 extend-∤ : k Rough n → k ∤ n → suc k Rough n
 extend-∤ k-rough-n k∤n 1<d d<suc[k] with m<1+n⇒m<n∨m≡n d<suc[k]
