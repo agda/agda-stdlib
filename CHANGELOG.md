@@ -3515,12 +3515,12 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
 
-  Acc-asymm : (x : A) → (Acc _<_ x) → (y : A) → x < y → ¬ (y < x)
-  Wf-asymm : WellFounded _<_ → Asymmetric _<_
+  acc-asym : (x : A) → Acc _<_ x → (y : A) → x < y → ¬ (y < x)
+  wf-asym : WellFounded _<_ → Asymmetric _<_
     
-  Acc-irrefl : {_≈_ : Rel A ℓ} → Symmetric _≈_ → _<_ Respects₂ _≈_ → 
+  acc-irrefl : {_≈_ : Rel A ℓ} → Symmetric _≈_ → _<_ Respects₂ _≈_ → 
                (x : A) → Acc _<_ x →  (y : A) → x ≈ y → ¬ (x < y)
-  Wf-irrefl : WellFounded _<_ → {_≈_ : Rel A ℓ} → Symmetric _≈_ → 
+  wf-irrefl : WellFounded _<_ → {_≈_ : Rel A ℓ} → Symmetric _≈_ → 
               _<_ Respects₂ _≈_ → Irreflexive _≈_ _<_
   ```
 
