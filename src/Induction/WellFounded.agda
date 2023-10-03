@@ -17,6 +17,7 @@ open import Relation.Binary.Definitions
   using (Symmetric; Asymmetric; Irreflexive; _Respects₂_; 
     _Respectsʳ_; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Unary
 open import Relation.Nullary.Negation.Core using (¬_)
 
@@ -118,21 +119,16 @@ module FixPoint
 -- Well-founded relations are asymmetric and irreflexive.
 
 module _ {_<_ : Rel A r} where
-  acc-asym : ∀ {x y} → (Acc _<_ x) → x < y → ¬ (y < x)
+  acc-asym : ∀ {x y} → Acc _<_ x → x < y → ¬ (y < x)
   acc-asym {x} {y} hx = 
     (Some.wfRec _ λ x hx y x<y y<x → hx y y<x x y<x x<y) x hx y
 
   wf-asym : WellFounded _<_ → Asymmetric _<_
   wf-asym wf = acc-asym (wf _)
 
-  acc-irrefl : {_≈_ : Rel A ℓ} → Symmetric _≈_ → _<_ Respects₂ _≈_ → 
-               ∀ {x y} → Acc _<_ x → x ≈ y → ¬ (x < y)
-  acc-irrefl s r {x} {y} hx x≈y x<y = 
-    acc-asym hx x<y (proj₂ r x≈y (proj₁ r (s x≈y) x<y))
-
-  wf-irrefl : WellFounded _<_ → {_≈_ : Rel A ℓ} → Symmetric _≈_ → 
-              _<_ Respects₂ _≈_ → Irreflexive _≈_ _<_
-  wf-irrefl wf s r = acc-irrefl s r (wf _)
+  wf-irrefl : {_≈_ : Rel A ℓ} → _<_ Respects₂ _≈_ → 
+              Symmetric _≈_ → WellFounded _<_ → Irreflexive _≈_ _<_
+  wf-irrefl r s wf = asym⇒irr r s (wf-asym wf)
 
 ------------------------------------------------------------------------
 -- It might be useful to establish proofs of Acc or Well-founded using
