@@ -763,6 +763,49 @@ Non-backwards compatible changes
   IO.Instances
   ```
 
+### Standardisation of `insertAt`/`updateAt`/`removeAt`
+
+* The names and argument order of insertion, update and removal functions for various types of lists and vectors was previously wildly inconsistent.
+
+* To fix this they have all been standardised to the names `insertAt`/`updateAt`/`removeAt`.
+
+* Correspondingly the following changes have occurred:
+
+* In `Data.List.Base` we've added:
+  ```agda
+  insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
+  updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
+  
+  removeAt : (xs : List A) → Fin (length xs) → List A
+  ```
+  and deprecated
+  ```
+  _─_ ↦ removeAt
+  ```
+  
+* In `Data.Vec.Base`:
+  ```agda
+  insert ↦ insertAt
+  remove ↦ removeAt
+  
+  updateAt : Fin n → (A → A) → Vec A n → Vec A n
+    ↦
+  updateAt : Vec A n → Fin n → (A → A) → Vec A n
+  ```
+
+* In `Data.Vec.Functional`:
+  ```agda
+  remove : Fin (suc n) → Vector A (suc n) → Vector A n
+    ↦
+  removeAt : Vector A (suc n) → Fin (suc n) → Vector A n
+ 
+  updateAt : Fin n → (A → A) → Vector A n → Vector A n
+    ↦
+  updateAt : Vector A n → Fin n → (A → A) → Vector A n
+  ```
+  
+* The old names (and the names of all proofs about these functions) have been deprecated appropriately.
+
 ### Other
 
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used
@@ -1285,8 +1328,8 @@ Deprecated names
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   updateAt-id-relative      ↦  updateAt-id-local
-  updateAt-compose-relative ↦  updateAt-∘-local
-  updateAt-compose          ↦  updateAt-∘
+  updateAt-compose-relative ↦  updateAt-updateAt-local
+  updateAt-compose          ↦  updateAt-updateAt
   updateAt-cong-relative    ↦  updateAt-cong-local
   ```
 
@@ -1429,8 +1472,8 @@ Deprecated names
   drop-distr-map     ↦  drop-map
   
   updateAt-id-relative      ↦  updateAt-id-local
-  updateAt-compose-relative ↦  updateAt-∘-local
-  updateAt-compose          ↦  updateAt-∘
+  updateAt-compose-relative ↦  updateAt-updateAt-local
+  updateAt-compose          ↦  updateAt-updateAt
   updateAt-cong-relative    ↦  updateAt-cong-local
 
   []%=-compose    ↦  []%=-∘
@@ -1443,9 +1486,10 @@ Deprecated names
   take-drop-id  ↦  take++drop≡id
 
   map-insert       ↦  map-insertAt
+  
   insert-lookup    ↦  insertAt-lookup
   insert-punchIn   ↦  insertAt-punchIn
-  remove-PunchOut  ↦ removeAt-punchOut
+  remove-PunchOut  ↦  removeAt-punchOut
   remove-insert    ↦  removeAt-insertAt
   insert-remove    ↦  insertAt-removeAt
   ```
@@ -1461,11 +1505,17 @@ Deprecated names
 * In `Data.Vec.Functional.Properties`:
   ```
   updateAt-id-relative      ↦  updateAt-id-local
-  updateAt-compose-relative ↦  updateAt-∘-local
-  updateAt-compose          ↦  updateAt-∘
+  updateAt-compose-relative ↦  updateAt-updateAt-local
+  updateAt-compose          ↦  updateAt-updateAt
   updateAt-cong-relative    ↦  updateAt-cong-local
 
   map-updateAt              ↦  map-updateAt-local
+  
+  insert-lookup             ↦  insertAt-lookup
+  insert-punchIn            ↦  insertAt-punchIn
+  remove-punchOut           ↦  removeAt-punchOut
+  remove-insert             ↦  removeAt-insertAt
+  insert-remove             ↦  insertAt-removeAt
   ```
   NB. This last one is complicated by the *addition* of a 'global' property `map-updateAt`
 
@@ -2645,14 +2695,6 @@ Additions to existing modules
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
 
   cast : .(eq : m ≡ n) → Vec A m → Vec A n
-  ```
-  and the type of `updateAt` has been updated from:
-  ```
-  updateAt : Fin n → (A → A) → Vec A n → Vec A n
-  ```
-  to:
-  ```
-  updateAt : Vec A n → Fin n → (A → A) → Vec A n
   ```
 
 * Added new instance in `Data.Vec.Effectful`:
