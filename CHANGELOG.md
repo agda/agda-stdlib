@@ -777,8 +777,10 @@ Non-backwards compatible changes
 
 * Now, the symbol `_∼_` has been renamed to a new symbol `_≲_`, with `_≳_`
   introduced as a definition in `Relation.Binary.Bundles.Preorder` whose properties
-  in `Relation.Binary.Properties.Preorder` now refer to it. Backwards compatible, as
-  previous notations, and those derived from it, have been retained as deprecated. 
+  in `Relation.Binary.Properties.Preorder` now refer to it. Partial backwards compatible
+  has been achieved by redeclaring a deprecated version of the old name in the record.
+  Therefore, only _declarations_ of `PartialOrder` records will need their field names
+  updating.
 
 * NB (issues #1214 #2098) the corresponding situation regarding the `flip`ped
   relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet)
