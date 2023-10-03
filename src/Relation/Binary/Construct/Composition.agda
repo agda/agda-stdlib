@@ -26,6 +26,8 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
+infixr 9 _;_
+
 _;_ : {A : Set a} {B : Set b} {C : Set c} →
       REL A B ℓ₁ → REL B C ℓ₂ → REL A C (b ⊔ ℓ₁ ⊔ ℓ₂)
 L ; R = λ i j → ∃ λ k → L i k × R k j

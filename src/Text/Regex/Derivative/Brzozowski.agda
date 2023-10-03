@@ -107,6 +107,8 @@ eat-complete′ x (e R.⋆) (refl ∷ eq) (star (sum (inj₂ (prod (refl ∷ app
 ------------------------------------------------------------------------
 -- Consequence: matching is decidable
 
+infix 4 _∈?_ _∉?_
+
 _∈?_ : Decidable _∈_
 []       ∈? e = []∈? e
 (x ∷ xs) ∈? e = map′ (eat-sound x e) (eat-complete x e) (xs ∈? eat x e)
