@@ -280,6 +280,14 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
     using (irrefl; asym; <-respʳ-≈; <-respˡ-≈; <-resp-≈)
 
 
+record IsDenseLinearOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  field
+    isStrictTotalOrder : IsStrictTotalOrder _<_
+    dense              : Dense _<_
+
+  open IsStrictTotalOrder isStrictTotalOrder public
+
+
 ------------------------------------------------------------------------
 -- Apartness relations
 ------------------------------------------------------------------------

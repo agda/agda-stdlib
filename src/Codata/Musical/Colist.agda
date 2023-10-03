@@ -25,8 +25,7 @@ open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
+open import Function.Bundles
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Poset; Setoid; Preorder)
@@ -68,8 +67,8 @@ take (suc n) []       = Vec≤.[]
 take (suc n) (x ∷ xs) = x Vec≤.∷ take n (♭ xs)
 
 
-module ¬¬Monad {p} where
-  open RawMonad (¬¬-Monad {p}) public
+module ¬¬Monad {a} where
+  open RawMonad (¬¬-Monad {a}) public
 open ¬¬Monad  -- we don't want the RawMonad content to be opened publicly
 
 ------------------------------------------------------------------------
@@ -100,14 +99,11 @@ data _⊑_ {A : Set a} : Rel (Colist A) a where
 -- Any can be expressed using _∈_ (and vice versa).
 
 Any-∈ : ∀ {xs} → Any P xs ↔ ∃ λ x → x ∈ xs × P x
-Any-∈ {P = P} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ (λ { (x , x∈xs , p) → from x∈xs p })
-  ; inverse-of = record
-    { left-inverse-of  = from∘to
-    ; right-inverse-of = λ { (x , x∈xs , p) → to∘from x∈xs p }
-    }
-  }
+Any-∈ {P = P} = mk↔ₛ′
+  to
+  (λ { (x , x∈xs , p) → from x∈xs p })
+  (λ { (x , x∈xs , p) → to∘from x∈xs p })
+  from∘to
   where
   to : ∀ {xs} → Any P xs → ∃ λ x → x ∈ xs × P x
   to (here  p) = _ , here P.refl , p

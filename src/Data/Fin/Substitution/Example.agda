@@ -1,13 +1,19 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- An example of how Data.Fin.Substitution can be used: a definition
--- of substitution for the untyped λ-calculus, along with some lemmas
+-- This module is DEPRECATED. Please see
+-- `README.Data.Nat.Fin.Substitution.UntypedLambda` instead.
+--
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Substitution.Example where
+
+{-# WARNING_ON_IMPORT
+"Data.Fin.Substitution.Example was deprecated in v2.0.
+Please see README.Data.Nat.Fin.Substitution.UntypedLambda instead."
+#-}
 
 open import Data.Fin.Substitution
 open import Data.Fin.Substitution.Lemmas

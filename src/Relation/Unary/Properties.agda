@@ -202,6 +202,12 @@ U-Universal = λ _ → _
 ∁? : {P : Pred A ℓ} → Decidable P → Decidable (∁ P)
 ∁? P? x = ¬? (P? x)
 
+infix 2 _×?_ _⊙?_
+infix 10 _~?
+infixr 1 _⊎?_
+infixr 7 _∩?_
+infixr 6 _∪?_
+
 _∪?_ : {P : Pred A ℓ₁} {Q : Pred A ℓ₂} →
        Decidable P → Decidable Q → Decidable (P ∪ Q)
 _∪?_ P? Q? x = (P? x) ⊎-dec (Q? x)

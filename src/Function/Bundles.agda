@@ -66,7 +66,6 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsCongruent isCongruent public
       using (module Eq₁; module Eq₂)
 
-
   record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to          : A → B
@@ -95,15 +94,14 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong       : Congruent _≈₁_ _≈₂_ to
       surjective : Surjective _≈₁_ _≈₂_ to
 
-    to⁻ : B → A
-    to⁻ = proj₁ ∘ surjective
-
-    isCongruent : IsCongruent to
-    isCongruent = record
-      { cong           = cong
-      ; isEquivalence₁ = isEquivalence From
-      ; isEquivalence₂ = isEquivalence To
+    function : Func
+    function = record
+      { to   = to
+      ; cong = cong
       }
+
+    open Func function public
+      hiding (to; cong)
 
     isSurjection : IsSurjection to
     isSurjection = record
@@ -113,10 +111,14 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     open IsSurjection isSurjection public
       using
-      ( module Eq₁
-      ; module Eq₂
-      ; strictlySurjective
+      ( strictlySurjective
       )
+
+    to⁻ : B → A
+    to⁻ = proj₁ ∘ surjective
+
+    to∘to⁻ : ∀ x → to (to⁻ x) ≈₂ x
+    to∘to⁻ = proj₂ ∘ strictlySurjective
 
 
   record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -158,12 +160,38 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- Bundles with two elements
 
+module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
+
+  open Setoid From using () renaming (Carrier to A; _≈_ to _≈₁_)
+  open Setoid To   using () renaming (Carrier to B; _≈_ to _≈₂_)
+  open FunctionStructures _≈₁_ _≈₂_
+
   record Equivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to        : A → B
       from      : B → A
       to-cong   : Congruent _≈₁_ _≈₂_ to
-      from-cong : from Preserves _≈₂_ ⟶ _≈₁_
+      from-cong : Congruent _≈₂_ _≈₁_ from
+
+    toFunction : Func From To
+    toFunction = record
+      { to = to
+      ; cong = to-cong
+      }
+
+    open Func toFunction public
+      using (module Eq₁; module Eq₂)
+      renaming (isCongruent to to-isCongrunet)
+
+    fromFunction : Func To From
+    fromFunction = record
+      { to = from
+      ; cong = from-cong
+      }
+
+    open Func fromFunction public
+      using ()
+      renaming (isCongruent to from-isCongrunet)
 
 
   record LeftInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -171,7 +199,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       to        : A → B
       from      : B → A
       to-cong   : Congruent _≈₁_ _≈₂_ to
-      from-cong : from Preserves _≈₂_ ⟶ _≈₁_
+      from-cong : Congruent _≈₂_ _≈₁_ from
       inverseˡ  : Inverseˡ _≈₁_ _≈₂_ to from
 
     isCongruent : IsCongruent to
@@ -430,12 +458,16 @@ module _ {A : Set a} {B : Set b} where
     ; inverse   = inv
     }
 
+
   -- Strict variant of the above.
-  mk↔′ : ∀ (to : A → B) (from : B → A) →
+  mk↠ₛ : ∀ {to : A → B} → StrictlySurjective _≡_ to → A ↠ B
+  mk↠ₛ = mk↠ ∘ strictlySurjective⇒surjective
+
+  mk↔ₛ′ : ∀ (to : A → B) (from : B → A) →
           StrictlyInverseˡ _≡_ to from →
           StrictlyInverseʳ _≡_ to from →
           A ↔ B
-  mk↔′ to from invˡ invʳ = mk↔ {to} {from}
+  mk↔ₛ′ to from invˡ invʳ = mk↔ {to} {from}
     ( strictlyInverseˡ⇒inverseˡ to invˡ
     , strictlyInverseʳ⇒inverseʳ to invʳ
     )
