@@ -14,7 +14,7 @@ open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; quotient∣n; 
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-Rec; <-rec)
 open import Data.Nat.Primality using (Prime; euclidsLemma; ∣p⇒≡1∨≡p; Prime⇒NonZero)
-open import Data.Nat.Primality.Rough using (_Rough_; 2-rough-n; extend-∤; roughn∧∣n⇒prime)
+open import Data.Nat.Primality.Rough using (_Rough_; 2-rough; extend-∤; roughn∧∣n⇒prime)
 open import Data.Product as Π using (∃-syntax; _,_; proj₁; proj₂)
 open import Data.List.Base using (List; []; _∷_; _++_; product)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -66,7 +66,7 @@ factorise 1 = record
   ; isFactorisation = refl
   ; factorsPrime = []
   }
-factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+n) 2-rough-n
+factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+n) 2-rough
   where
 
   P : ℕ → Set
@@ -79,9 +79,9 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
     ; factorsPrime = k-rough-n ∷ []
     }
   factoriseRec (2+ n) rec {0} 2≤2+n (≤‴-step (≤‴-step k<n)) k-rough-n =
-    factoriseRec (2+ n) rec 2≤2+n k<n 2-rough-n
+    factoriseRec (2+ n) rec 2≤2+n k<n 2-rough
   factoriseRec (2+ n) rec {1} 2≤2+n (≤‴-step k<n) k-rough-n =
-    factoriseRec (2+ n) rec 2≤2+n k<n 2-rough-n
+    factoriseRec (2+ n) rec 2≤2+n k<n 2-rough
   factoriseRec (2+ n) rec {suc (suc k)} 2≤2+n (≤‴-step k<n) k-rough-n with 2 + k ∣? 2+ n
   ... | no  k∤n = factoriseRec (2+ n) rec {3 + k} 2≤2+n k<n (extend-∤ k-rough-n k∤n)
   ... | yes k∣n = record
