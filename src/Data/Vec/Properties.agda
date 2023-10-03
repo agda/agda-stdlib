@@ -10,26 +10,27 @@ module Data.Vec.Properties where
 
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
+open import Data.Fin.Base as Fin
+  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
+import Data.List.Properties as Listₚ
 open import Data.Nat.Base
 open import Data.Nat.Properties
-  using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans; suc-injective)
+  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; suc-injective; +-comm; +-suc)
 open import Data.Product.Base as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Function.Base
--- open import Function.Inverse using (_↔_; inverse)
-open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable using (Dec; does; yes; no; _×-dec_; map′)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (Dec; does; yes; no; _×-dec_; map′)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open ≡-Reasoning
 
@@ -71,86 +72,43 @@ private
 -- take
 
 unfold-take : ∀ n x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
-unfold-take n x xs with splitAt n xs
-... | xs , ys , refl = refl
+unfold-take n x xs = refl
 
-take-distr-zipWith : ∀ (f : A → B → C) →
-                     (xs : Vec A (m + n)) (ys : Vec B (m + n)) →
-                     take m (zipWith f xs ys) ≡ zipWith f (take m xs) (take m ys)
-take-distr-zipWith {m = zero}  f xs       ys       = refl
-take-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
-    take (suc m) (zipWith f (x ∷ xs) (y ∷ ys))
-  ≡⟨⟩
-    take (suc m) (f x y ∷ (zipWith f xs ys))
-  ≡⟨ unfold-take m (f x y) (zipWith f xs ys) ⟩
-    f x y ∷ take m (zipWith f xs ys)
-  ≡⟨ cong (f x y ∷_) (take-distr-zipWith f xs ys) ⟩
-    f x y ∷ (zipWith f (take m xs) (take m ys))
-  ≡⟨⟩
-    zipWith f (x ∷ (take m xs)) (y ∷ (take m ys))
-  ≡˘⟨ cong₂ (zipWith f) (unfold-take m x xs) (unfold-take m y ys) ⟩
-    zipWith f (take (suc m) (x ∷ xs)) (take (suc m) (y ∷ ys))
-  ∎
+take-zipWith : ∀ (f : A → B → C) →
+               (xs : Vec A (m + n)) (ys : Vec B (m + n)) →
+               take m (zipWith f xs ys) ≡ zipWith f (take m xs) (take m ys)
+take-zipWith {m = zero}  f xs       ys       = refl
+take-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = cong (f x y ∷_) (take-zipWith f xs ys)
 
-take-distr-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
-                 take m (map f xs) ≡ map f (take m xs)
-take-distr-map f zero xs = refl
-take-distr-map f (suc m) (x ∷ xs) = begin
-  take (suc m) (map f (x ∷ xs)) ≡⟨⟩
-  take (suc m) (f x ∷ map f xs) ≡⟨ unfold-take m (f x) (map f xs) ⟩
-  f x ∷ (take m (map f xs))     ≡⟨ cong (f x ∷_) (take-distr-map f m xs) ⟩
-  f x ∷ (map f (take m xs))     ≡⟨⟩
-  map f (x ∷ take m xs)         ≡˘⟨ cong (map f) (unfold-take m x xs) ⟩
-  map f (take (suc m) (x ∷ xs)) ∎
+take-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
+           take m (map f xs) ≡ map f (take m xs)
+take-map f zero    xs       = refl
+take-map f (suc m) (x ∷ xs) = cong (f x ∷_) (take-map f m xs)
 
 ------------------------------------------------------------------------
 -- drop
 
 unfold-drop : ∀ n x (xs : Vec A (n + m)) →
               drop (suc n) (x ∷ xs) ≡ drop n xs
-unfold-drop n x xs with splitAt n xs
-... | xs , ys , refl = refl
+unfold-drop n x xs = refl
 
-drop-distr-zipWith : (f : A → B → C) →
-                     (x : Vec A (m + n)) (y : Vec B (m + n)) →
-                     drop m (zipWith f x y) ≡ zipWith f (drop m x) (drop m y)
-drop-distr-zipWith {m = zero} f   xs       ys = refl
-drop-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
-    drop (suc m) (zipWith f (x ∷ xs) (y ∷ ys))
-  ≡⟨⟩
-    drop (suc m) (f x y ∷ (zipWith f xs ys))
-  ≡⟨ unfold-drop m (f x y) (zipWith f xs ys) ⟩
-    drop m (zipWith f xs ys)
-  ≡⟨ drop-distr-zipWith f xs ys ⟩
-    zipWith f (drop m xs) (drop m ys)
-  ≡˘⟨ cong₂ (zipWith f) (unfold-drop m x xs) (unfold-drop m y ys) ⟩
-    zipWith f (drop (suc m) (x ∷ xs)) (drop (suc m) (y ∷ ys))
-  ∎
+drop-zipWith : (f : A → B → C) →
+               (xs : Vec A (m + n)) (ys : Vec B (m + n)) →
+               drop m (zipWith f xs ys) ≡ zipWith f (drop m xs) (drop m ys)
+drop-zipWith {m = zero}  f   xs       ys     = refl
+drop-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = drop-zipWith f xs ys
 
-drop-distr-map : ∀ (f : A → B) (m : ℕ) (x : Vec A (m + n)) →
-                 drop m (map f x) ≡ map f (drop m x)
-drop-distr-map f zero x = refl
-drop-distr-map f (suc m) (x ∷ xs) = begin
-  drop (suc m) (map f (x ∷ xs)) ≡⟨⟩
-  drop (suc m) (f x ∷ map f xs) ≡⟨  unfold-drop m (f x) (map f xs) ⟩
-  drop m (map f xs)             ≡⟨  drop-distr-map f m xs ⟩
-  map f (drop m xs)             ≡˘⟨ cong (map f) (unfold-drop m x xs) ⟩
-  map f (drop (suc m) (x ∷ xs)) ∎
+drop-map : ∀ (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
+           drop m (map f xs) ≡ map f (drop m xs)
+drop-map f zero    xs       = refl
+drop-map f (suc m) (x ∷ xs) = drop-map f m xs
 
 ------------------------------------------------------------------------
 -- take and drop together
 
-take++drop≡id : ∀ (m : ℕ) (x : Vec A (m + n)) → take m x ++ drop m x ≡ x
-take++drop≡id zero x = refl
-take++drop≡id (suc m) (x ∷ xs) = begin
-    take (suc m) (x ∷ xs) ++ drop (suc m) (x ∷ xs)
-  ≡⟨ cong₂ _++_ (unfold-take m x xs) (unfold-drop m x xs) ⟩
-    (x ∷ take m xs) ++ (drop m xs)
-  ≡⟨⟩
-    x ∷ (take m xs ++ drop m xs)
-  ≡⟨ cong (x ∷_) (take++drop≡id m xs) ⟩
-    x ∷ xs
-  ∎
+take++drop≡id : ∀ (m : ℕ) (xs : Vec A (m + n)) → take m xs ++ drop m xs ≡ xs
+take++drop≡id zero    xs       = refl
+take++drop≡id (suc m) (x ∷ xs) = cong (x ∷_) (take++drop≡id m xs)
 
 ------------------------------------------------------------------------
 -- truncate
@@ -163,6 +121,19 @@ truncate-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
                  truncate (≤-trans m≤n n≤p) xs ≡ truncate m≤n (truncate n≤p xs)
 truncate-trans z≤n       n≤p       xs = refl
 truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
+
+truncate-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) → truncate {A = A} m≤n₁ ≗ truncate m≤n₂
+truncate-irrelevant m≤n₁ m≤n₂ xs = cong (λ m≤n → truncate m≤n xs) (≤-irrelevant m≤n₁ m≤n₂)
+
+truncate≡take : (m≤n : m ≤ n) (xs : Vec A n) .(eq : n ≡ m + o) →
+                truncate m≤n xs ≡ take m (cast eq xs)
+truncate≡take z≤n       _        eq = refl
+truncate≡take (s≤s m≤n) (x ∷ xs) eq = cong (x ∷_) (truncate≡take m≤n xs (suc-injective eq))
+
+take≡truncate : ∀ m (xs : Vec A (m + n)) →
+                take m xs ≡ truncate (m≤m+n m n) xs
+take≡truncate zero    _        = refl
+take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
 
 ------------------------------------------------------------------------
 -- pad
@@ -201,7 +172,7 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
 
 []=↔lookup : ∀ {i} → xs [ i ]= x ↔ lookup xs i ≡ x
 []=↔lookup {xs = ys} {i = i} =
-  mk↔′ []=⇒lookup (lookup⇒[]= i ys) ([]=⇒lookup∘lookup⇒[]= _ i) lookup⇒[]=∘[]=⇒lookup
+  mk↔ₛ′ []=⇒lookup (lookup⇒[]= i ys) ([]=⇒lookup∘lookup⇒[]= _ i) lookup⇒[]=∘[]=⇒lookup
   where
   lookup⇒[]=∘[]=⇒lookup : ∀ {i} (p : xs [ i ]= x) →
                           lookup⇒[]= i xs ([]=⇒lookup p) ≡ p
@@ -213,14 +184,20 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
 
-lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
-                      lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
-lookup-inject≤-take (suc m) m≤m+n zero (x ∷ xs)
-  rewrite unfold-take m x xs = refl
-lookup-inject≤-take (suc (suc m)) (s≤s m≤m+n) (suc zero) (x ∷ y ∷ xs)
-  rewrite unfold-take (suc m) x (y ∷ xs) | unfold-take m y xs = refl
-lookup-inject≤-take (suc (suc m)) (s≤s (s≤s m≤m+n)) (suc (suc i)) (x ∷ y ∷ xs)
-  rewrite unfold-take (suc m) x (y ∷ xs) | unfold-take m y xs = lookup-inject≤-take m m≤m+n i xs
+lookup-truncate : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
+                  lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)
+lookup-truncate (s≤s m≤m+n) (_ ∷ _)  zero    = refl
+lookup-truncate (s≤s m≤m+n) (_ ∷ xs) (suc i) = lookup-truncate m≤m+n xs i
+
+lookup-take-inject≤ : (xs : Vec A (m + n)) (i : Fin m) →
+                      lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
+lookup-take-inject≤ {m = m} {n = n} xs i = begin
+  lookup (take _ xs) i
+    ≡⟨ cong (λ ys → lookup ys i) (take≡truncate m xs) ⟩
+  lookup (truncate _ xs) i
+    ≡⟨ lookup-truncate (m≤m+n m n) xs i ⟩
+  lookup xs (Fin.inject≤ i (m≤m+n m n))
+    ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
@@ -387,17 +364,19 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 ------------------------------------------------------------------------
 -- cast
 
-toList-cast : ∀ .(eq : m ≡ n) (xs : Vec A m) → toList (cast eq xs) ≡ toList xs
-toList-cast {n = zero}  eq []       = refl
-toList-cast {n = suc _} eq (x ∷ xs) =
-  cong (x List.∷_) (toList-cast (cong pred eq) xs)
-
 cast-is-id : .(eq : m ≡ m) (xs : Vec A m) → cast eq xs ≡ xs
 cast-is-id eq []       = refl
 cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
+
+cast-sym : .(eq : m ≡ n) {xs : Vec A m} {ys : Vec A n} →
+           cast eq xs ≡ ys → cast (sym eq) ys ≡ xs
+cast-sym eq {xs = []}     {ys = []}     _ = refl
+cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs[eq]≡yys =
+  let x≡y , xs[eq]≡ys = ∷-injective xxs[eq]≡yys
+  in cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs[eq]≡ys)
 
 cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
@@ -450,9 +429,9 @@ map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
 map-insert : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
              map f (insert xs i x) ≡ insert (map f xs) i (f x)
-map-insert f _ []        Fin.zero = refl
-map-insert f _ (x' ∷ xs) Fin.zero = refl
-map-insert f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insert f x xs i)
+map-insert f _ []        zero    = refl
+map-insert f _ (x' ∷ xs) zero    = refl
+map-insert f x (x' ∷ xs) (suc i) = cong (_ ∷_) (map-insert f x xs i)
 
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
@@ -487,6 +466,15 @@ toList-map f (x ∷ xs) = cong (f x List.∷_) (toList-map f xs)
                 ws ++ ys ≡ xs ++ zs → ws ≡ xs × ys ≡ zs
 ++-injective ws xs eq =
   (++-injectiveˡ ws xs eq , ++-injectiveʳ ws xs eq)
+
+++-assoc : ∀ .(eq : (m + n) + o ≡ m + (n + o)) (xs : Vec A m) (ys : Vec A n) (zs : Vec A o) →
+           cast eq ((xs ++ ys) ++ zs) ≡ xs ++ (ys ++ zs)
+++-assoc eq []       ys zs = cast-is-id eq (ys ++ zs)
+++-assoc eq (x ∷ xs) ys zs = cong (x ∷_) (++-assoc (cong pred eq) xs ys zs)
+
+++-identityʳ : ∀ .(eq : n + zero ≡ n) (xs : Vec A n) → cast eq (xs ++ []) ≡ xs
+++-identityʳ eq []       = refl
+++-identityʳ eq (x ∷ xs) = cong (x ∷_) (++-identityʳ (cong pred eq) xs)
 
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
@@ -731,7 +719,7 @@ zip∘unzip []         = refl
 zip∘unzip (xy ∷ xys) = cong (xy ∷_) (zip∘unzip xys)
 
 ×v↔v× : (Vec A n × Vec B n) ↔ Vec (A × B) n
-×v↔v× = mk↔′ (uncurry zip) unzip zip∘unzip (uncurry unzip∘zip)
+×v↔v× = mk↔ₛ′ (uncurry zip) unzip zip∘unzip (uncurry unzip∘zip)
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -970,6 +958,20 @@ reverse-injective {xs = xs} {ys} eq = begin
   reverse (reverse ys) ≡⟨  reverse-involutive ys ⟩
   ys                   ∎
 
+-- init and last of reverse
+
+init-reverse : init ∘ reverse ≗ reverse ∘ tail {A = A} {n = n}
+init-reverse (x ∷ xs) = begin
+  init (reverse (x ∷ xs))   ≡⟨ cong init (reverse-∷ x xs) ⟩
+  init (reverse xs ∷ʳ x)    ≡⟨ init-∷ʳ x (reverse xs) ⟩
+  reverse xs                ∎
+
+last-reverse : last ∘ reverse ≗ head {A = A} {n = n}
+last-reverse (x ∷ xs) = begin
+  last (reverse (x ∷ xs))   ≡⟨ cong last (reverse-∷ x xs) ⟩
+  last (reverse xs ∷ʳ x)    ≡⟨ last-∷ʳ x (reverse xs) ⟩
+  x                         ∎
+
 -- map and reverse
 
 map-reverse : ∀ (f : A → B) (xs : Vec A n) →
@@ -982,6 +984,39 @@ map-reverse f (x ∷ xs) = begin
   reverse (map f xs) ∷ʳ f x ≡˘⟨ reverse-∷ (f x) (map f xs) ⟩
   reverse (f x ∷ map f xs)  ≡⟨⟩
   reverse (map f (x ∷ xs))  ∎
+
+-- append and reverse
+
+reverse-++ : ∀ .(eq : m + n ≡ n + m) (xs : Vec A m) (ys : Vec A n) →
+             cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs
+reverse-++ {m = zero}  {n = n} eq []       ys = begin
+  cast _ (reverse ys)                ≡˘⟨ cong (cast eq) (++-identityʳ (sym eq) (reverse ys)) ⟩
+  cast _ (cast _ (reverse ys ++ [])) ≡⟨ cast-trans (sym eq) eq (reverse ys ++ []) ⟩
+  cast _ (reverse ys ++ [])          ≡⟨ cast-is-id (trans (sym eq) eq) (reverse ys ++ []) ⟩
+  reverse ys ++ []                   ≡⟨⟩
+  reverse ys ++ reverse []           ∎
+reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin
+  cast eq (reverse (x ∷ xs ++ ys))                ≡⟨ cong (cast eq) (reverse-∷ x (xs ++ ys)) ⟩
+  cast eq (reverse (xs ++ ys) ∷ʳ x)               ≡˘⟨ cast-trans eq₂ eq₁ (reverse (xs ++ ys) ∷ʳ x) ⟩
+  (cast eq₁ ∘ cast eq₂) (reverse (xs ++ ys) ∷ʳ x) ≡⟨ cong (cast eq₁) (cast-∷ʳ _ x (reverse (xs ++ ys))) ⟩
+  cast eq₁ ((cast eq₃ (reverse (xs ++ ys))) ∷ʳ x) ≡⟨ cong (cast eq₁) (cong (_∷ʳ x) (reverse-++ _ xs ys)) ⟩
+  cast eq₁ ((reverse ys ++ reverse xs)      ∷ʳ x) ≡⟨ ++-∷ʳ _ x (reverse ys) (reverse xs) ⟩
+  reverse ys ++ (reverse xs ∷ʳ x)                 ≡˘⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟩
+  reverse ys ++ (reverse (x ∷ xs))                ∎
+  where
+  eq₁ = sym (+-suc n m)
+  eq₂ = cong suc (+-comm m n)
+  eq₃ = cong pred eq₂
+
+cast-reverse : ∀ .(eq : m ≡ n) → cast eq ∘ reverse {A = A} {n = m} ≗ reverse ∘ cast eq
+cast-reverse {n = zero}  eq []       = refl
+cast-reverse {n = suc n} eq (x ∷ xs) = begin
+  cast eq (reverse (x ∷ xs))              ≡⟨ cong (cast eq) (reverse-∷ x xs) ⟩
+  cast eq (reverse xs ∷ʳ x)               ≡⟨ cast-∷ʳ eq x (reverse xs) ⟩
+  (cast (cong pred eq) (reverse xs)) ∷ʳ x ≡⟨ cong (_∷ʳ x) (cast-reverse (cong pred eq) xs) ⟩
+  (reverse (cast (cong pred eq) xs)) ∷ʳ x ≡˘⟨ reverse-∷ x (cast (cong pred eq) xs) ⟩
+  reverse (x ∷ cast (cong pred eq) xs)    ≡⟨⟩
+  reverse (cast eq (x ∷ xs))              ∎
 
 ------------------------------------------------------------------------
 -- _ʳ++_
@@ -1161,6 +1196,29 @@ toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
 toList∘fromList List.[]       = refl
 toList∘fromList (x List.∷ xs) = cong (x List.∷_) (toList∘fromList xs)
 
+toList-cast : ∀ .(eq : m ≡ n) (xs : Vec A m) → toList (cast eq xs) ≡ toList xs
+toList-cast {n = zero}  eq []       = refl
+toList-cast {n = suc _} eq (x ∷ xs) =
+  cong (x List.∷_) (toList-cast (cong pred eq) xs)
+
+cast-fromList : ∀ {xs ys : List A} (eq : xs ≡ ys) →
+                cast (cong List.length eq) (fromList xs) ≡ fromList ys
+cast-fromList {xs = List.[]}     {ys = List.[]}     eq = refl
+cast-fromList {xs = x List.∷ xs} {ys = y List.∷ ys} eq =
+  let x≡y , xs≡ys = Listₚ.∷-injective eq in begin
+  x ∷ cast (cong (pred ∘ List.length) eq) (fromList xs) ≡⟨ cong (_ ∷_) (cast-fromList xs≡ys) ⟩
+  x ∷ fromList ys                                       ≡⟨ cong (_∷ _) x≡y ⟩
+  y ∷ fromList ys                                       ∎
+
+fromList-map : ∀ (f : A → B) (xs : List A) →
+               cast (Listₚ.length-map f xs) (fromList (List.map f xs)) ≡ map f (fromList xs)
+fromList-map f List.[]       = refl
+fromList-map f (x List.∷ xs) = cong (f x ∷_) (fromList-map f xs)
+
+fromList-++ : ∀ (xs : List A) {ys : List A} →
+              cast (Listₚ.length-++ xs) (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+fromList-++ List.[]       {ys} = cast-is-id refl (fromList ys)
+fromList-++ (x List.∷ xs) {ys} = cong (x ∷_) (fromList-++ xs)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -1217,9 +1275,42 @@ sum-++-commute = sum-++
 "Warning: sum-++-commute was deprecated in v2.0.
 Please use sum-++ instead."
 #-}
-
 take-drop-id = take++drop≡id
 {-# WARNING_ON_USAGE take-drop-id
 "Warning: take-drop-id was deprecated in v2.0.
 Please use take++drop≡id instead."
 #-}
+take-distr-zipWith = take-zipWith
+{-# WARNING_ON_USAGE take-distr-zipWith
+"Warning: take-distr-zipWith was deprecated in v2.0.
+Please use take-zipWith instead."
+#-}
+take-distr-map = take-map
+{-# WARNING_ON_USAGE take-distr-map
+"Warning: take-distr-map was deprecated in v2.0.
+Please use take-map instead."
+#-}
+drop-distr-zipWith = drop-zipWith
+{-# WARNING_ON_USAGE drop-distr-zipWith
+"Warning: drop-distr-zipWith was deprecated in v2.0.
+Please use tdrop-zipWith instead."
+#-}
+drop-distr-map = drop-map
+{-# WARNING_ON_USAGE drop-distr-map
+"Warning: drop-distr-map was deprecated in v2.0.
+Please use drop-map instead."
+#-}
+lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+                      lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
+lookup-inject≤-take m m≤m+n i xs = sym (begin
+  lookup (take m xs) i
+    ≡⟨ lookup-take-inject≤ xs i ⟩
+  lookup xs (Fin.inject≤ i _)
+    ≡⟨ cong ((lookup xs) ∘ (Fin.inject≤ i)) (≤-irrelevant _ _) ⟩
+  lookup xs (Fin.inject≤ i m≤m+n)
+    ∎) where open ≡-Reasoning
+{-# WARNING_ON_USAGE lookup-inject≤-take
+"Warning: lookup-inject≤-take was deprecated in v2.0.
+Please use lookup-take-inject≤ or lookup-truncate, take≡truncate instead."
+#-}
+

@@ -500,6 +500,7 @@ m<1+n⇒m≤n (s≤s m≤n) = m≤n
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤

@@ -234,6 +234,8 @@ _↔-∘_ = inverse
 
 -- Version v2.0
 
+infix 8 _∘-⟶_ _∘-↣_ _∘-↠_ _∘-⤖_ _∘-⇔_ _∘-↩_ _∘-↪_ _∘-↔_
+
 _∘-⟶_ = _⟶-∘_
 {-# WARNING_ON_USAGE _∘-⟶_
 "Warning: _∘-⟶_ was deprecated in v2.0.

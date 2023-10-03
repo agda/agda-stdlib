@@ -365,6 +365,7 @@ i≮i = <-irrefl refl
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤

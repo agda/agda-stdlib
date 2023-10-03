@@ -25,6 +25,8 @@ open import Data.Nat.Properties using (_!≢0)
 
 -- n P k = n ! / (n ∸ k) !
 
+infixl 6.5 _P′_ _P_
+
 -- Base definition. Only valid for k ≤ n.
 
 _P′_ : ℕ → ℕ → ℕ
@@ -43,6 +45,8 @@ n P k = if k ≤ᵇ n then n P′ k else 0
 -- from among n objects.
 
 -- n C k = n ! / (k ! * (n ∸ k) !)
+
+infixl 6.5 _C′_ _C_
 
 -- Base definition. Only valid for k ≤ n.
 

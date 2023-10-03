@@ -13,12 +13,13 @@
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions
-  using (Transitive; _Respects₂_; Trans)
+  using (Transitive; _Respects₂_; Trans; Irreflexive)
 
 module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} {_<_ : Rel A ℓ₃}
   (isPreorder : IsPreorder _≈_ _≤_)
-  (<-trans : Transitive _<_) (<-resp-≈ : _<_ Respects₂ _≈_) (<⇒≤ : _<_ ⇒ _≤_)
+  (<-irrefl : Irreflexive _≈_ _<_) (<-trans : Transitive _<_) (<-resp-≈ : _<_ Respects₂ _≈_)
+  (<⇒≤ : _<_ ⇒ _≤_)
   (<-≤-trans : Trans _<_ _≤_ _<_) (≤-<-trans : Trans _≤_ _<_ _<_)
   where
 
@@ -27,6 +28,8 @@ open import Function.Base using (case_of_; id)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
+open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable.Core
   using (Dec; yes; no; True; toWitness)
 
@@ -79,7 +82,7 @@ extractEquality (isEquality x≈y) = x≈y
 -- See `Relation.Binary.Reasoning.Base.Partial` for the design decisions
 -- behind these combinators.
 
-infix  1 begin_ begin-strict_ begin-equality_
+infix  1 begin_ begin-strict_ begin-equality_ begin-contradiction_
 infixr 2 step-< step-≤ step-≈ step-≈˘ step-≡ step-≡˘ _≡⟨⟩_
 infix  3 _∎
 
@@ -95,6 +98,13 @@ begin-strict_ r {s} = extractStrict (toWitness s)
 
 begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
 begin-equality_ r {s} = extractEquality (toWitness s)
+
+begin-contradiction_ : ∀ {x} (r : x IsRelatedTo x) {s : True (IsStrict? r)} →
+                      ∀ {a} {A : Set a} → A
+begin-contradiction_ {x} r {s} = contradiction x<x (<-irrefl Eq.refl)
+  where
+  x<x : x < x
+  x<x = extractStrict (toWitness s)
 
 -- Step with the strict relation
 

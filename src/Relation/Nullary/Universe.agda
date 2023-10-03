@@ -18,9 +18,9 @@ import Relation.Binary.PropositionalEquality.Properties as PropEq
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
 open import Data.Sum.Base as Sum  hiding (map)
-open import Data.Sum.Relation.Binary.Pointwise
+open import Data.Sum.Relation.Binary.Pointwise using (_⊎ₛ_; inj₁; inj₂)
 open import Data.Product.Base as Prod hiding (map)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Function.Base using (_∘_; id)
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Data.Empty
@@ -116,7 +116,7 @@ sequence {AF = AF} A extract-⊥ sequence-⇒ = helper
 -- Some lemmas about double negation.
 
 private
-  open module M {p} = RawMonad (¬¬-Monad {p = p})
+  open module M {a} = RawMonad (¬¬-Monad {a = a})
 
 ¬¬-pull : ∀ {p} (F : PropF p) {P} →
           ⟦ F ⟧ (¬ ¬ P) → ¬ ¬ ⟦ F ⟧ P

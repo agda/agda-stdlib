@@ -686,6 +686,47 @@ module LoopMorphisms (L₁ : RawLoop a ℓ₁) (L₂ : RawLoop b ℓ₂) where
     open IsLoopMonomorphism isLoopMonomorphism public
 
 ------------------------------------------------------------------------
+-- Morphisms over Kleene algebra structures
+------------------------------------------------------------------------
+module KleeneAlgebraMorphisms (R₁ : RawKleeneAlgebra a ℓ₁) (R₂ : RawKleeneAlgebra b ℓ₂) where
+
+  open RawKleeneAlgebra R₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; _⋆ to _⋆₁
+    ; rawSemiring to rawSemiring₁
+    )
+
+  open RawKleeneAlgebra R₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; _⋆ to _⋆₂
+    ; rawSemiring to rawSemiring₂
+    )
+
+  open MorphismDefinitions A B _≈₂_
+  open SemiringMorphisms rawSemiring₁ rawSemiring₂
+
+  record IsKleeneAlgebraHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isSemiringHomomorphism : IsSemiringHomomorphism ⟦_⟧
+      ⋆-homo :  Homomorphic₁ ⟦_⟧ _⋆₁ _⋆₂
+
+    open IsSemiringHomomorphism isSemiringHomomorphism public
+
+  record IsKleeneAlgebraMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isKleeneAlgebraHomomorphism   : IsKleeneAlgebraHomomorphism ⟦_⟧
+      injective                     : Injective  _≈₁_ _≈₂_ ⟦_⟧
+
+    open IsKleeneAlgebraHomomorphism isKleeneAlgebraHomomorphism public
+
+  record IsKleeneAlgebraIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isKleeneAlgebraMonomorphism   : IsKleeneAlgebraMonomorphism ⟦_⟧
+      surjective                    : Surjective  _≈₁_ _≈₂_ ⟦_⟧
+
+    open IsKleeneAlgebraMonomorphism isKleeneAlgebraMonomorphism public
+
+------------------------------------------------------------------------
 -- Re-export contents of modules publicly
 
 open MagmaMorphisms public
@@ -697,3 +738,4 @@ open RingWithoutOneMorphisms public
 open RingMorphisms public
 open QuasigroupMorphisms public
 open LoopMorphisms public
+open KleeneAlgebraMorphisms public

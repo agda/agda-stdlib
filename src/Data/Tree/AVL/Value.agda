@@ -34,6 +34,7 @@ record K&_ {v} (V : Value v) : Set (a ⊔ v) where
   field
     key   : Key
     value : Value.family V key
+infixr 4 _,_
 open K&_ public
 
 module _ {v} {V : Value v} where

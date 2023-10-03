@@ -13,7 +13,7 @@ module Relation.Binary.Definitions where
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Data.Maybe.Base using (Maybe)
-open import Data.Product.Base using (_×_)
+open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
 open import Level
@@ -93,6 +93,11 @@ Irreflexive _≈_ _<_ = ∀ {x y} → x ≈ y → ¬ (x < y)
 
 Asymmetric : Rel A ℓ → Set _
 Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
+
+-- Density
+
+Dense : Rel A ℓ → Set _
+Dense _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
 
 -- Generalised connex - exactly one of the two relations holds.
 
