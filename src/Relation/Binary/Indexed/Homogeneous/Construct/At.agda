@@ -68,5 +68,7 @@ preorder O index = record
 ------------------------------------------------------------------------
 -- Some useful shorthand infix notation
 
+infixr -1 _atₛ_
+
 _atₛ_ : ∀ {ℓ} → IndexedSetoid I a ℓ → I → Setoid a ℓ
 _atₛ_ = setoid

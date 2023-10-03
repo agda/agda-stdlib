@@ -45,13 +45,16 @@ module Relation.Binary.Reasoning.PartialOrder
   {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
 
 open Poset P
-import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as Strict
+open import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_
+  as Strict
+  using (_<_)
 
 ------------------------------------------------------------------------
 -- Re-export contents of base module
 
 open import Relation.Binary.Reasoning.Base.Triple
   isPreorder
+  Strict.<-irrefl
   (Strict.<-trans isPartialOrder)
   (Strict.<-resp-≈ isEquivalence ≤-resp-≈)
   Strict.<⇒≤

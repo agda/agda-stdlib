@@ -10,26 +10,27 @@ module Data.Vec.Properties where
 
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
+open import Data.Fin.Base as Fin
+  using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as Listₚ
 open import Data.Nat.Base
 open import Data.Nat.Properties
-  using (+-assoc; m≤n⇒m≤1+n; ≤-refl; ≤-trans; suc-injective; +-comm; +-suc)
+  using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; suc-injective; +-comm; +-suc)
 open import Data.Product.Base as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Function.Base
-open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable using (Dec; does; yes; no; _×-dec_; map′)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (Dec; does; yes; no; _×-dec_; map′)
+open import Relation.Nullary.Negation.Core using (contradiction)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
 open ≡-Reasoning
@@ -122,6 +123,19 @@ truncate-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
 truncate-trans z≤n       n≤p       xs = refl
 truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
 
+truncate-irrelevant : (m≤n₁ m≤n₂ : m ≤ n) → truncate {A = A} m≤n₁ ≗ truncate m≤n₂
+truncate-irrelevant m≤n₁ m≤n₂ xs = cong (λ m≤n → truncate m≤n xs) (≤-irrelevant m≤n₁ m≤n₂)
+
+truncate≡take : (m≤n : m ≤ n) (xs : Vec A n) .(eq : n ≡ m + o) →
+                truncate m≤n xs ≡ take m (cast eq xs)
+truncate≡take z≤n       _        eq = refl
+truncate≡take (s≤s m≤n) (x ∷ xs) eq = cong (x ∷_) (truncate≡take m≤n xs (suc-injective eq))
+
+take≡truncate : ∀ m (xs : Vec A (m + n)) →
+                take m xs ≡ truncate (m≤m+n m n) xs
+take≡truncate zero    _        = refl
+take≡truncate (suc m) (x ∷ xs) = cong (x ∷_) (take≡truncate m xs)
+
 ------------------------------------------------------------------------
 -- pad
 
@@ -159,7 +173,7 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
 
 []=↔lookup : ∀ {i} → xs [ i ]= x ↔ lookup xs i ≡ x
 []=↔lookup {xs = ys} {i = i} =
-  mk↔′ []=⇒lookup (lookup⇒[]= i ys) ([]=⇒lookup∘lookup⇒[]= _ i) lookup⇒[]=∘[]=⇒lookup
+  mk↔ₛ′ []=⇒lookup (lookup⇒[]= i ys) ([]=⇒lookup∘lookup⇒[]= _ i) lookup⇒[]=∘[]=⇒lookup
   where
   lookup⇒[]=∘[]=⇒lookup : ∀ {i} (p : xs [ i ]= x) →
                           lookup⇒[]= i xs ([]=⇒lookup p) ≡ p
@@ -171,10 +185,20 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    = []=⇒lookup∘lookup⇒[]= xs i p
 
-lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
-                      lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
-lookup-inject≤-take (suc m) m≤m+n zero (x ∷ xs) = refl
-lookup-inject≤-take (suc m) (s≤s m≤m+n) (suc i) (x ∷ xs) = lookup-inject≤-take m m≤m+n i xs
+lookup-truncate : (m≤n : m ≤ n) (xs : Vec A n) (i : Fin m) →
+                  lookup (truncate m≤n xs) i ≡ lookup xs (Fin.inject≤ i m≤n)
+lookup-truncate (s≤s m≤m+n) (_ ∷ _)  zero    = refl
+lookup-truncate (s≤s m≤m+n) (_ ∷ xs) (suc i) = lookup-truncate m≤m+n xs i
+
+lookup-take-inject≤ : (xs : Vec A (m + n)) (i : Fin m) →
+                      lookup (take m xs) i ≡ lookup xs (Fin.inject≤ i (m≤m+n m n))
+lookup-take-inject≤ {m = m} {n = n} xs i = begin
+  lookup (take _ xs) i
+    ≡⟨ cong (λ ys → lookup ys i) (take≡truncate m xs) ⟩
+  lookup (truncate _ xs) i
+    ≡⟨ lookup-truncate (m≤m+n m n) xs i ⟩
+  lookup xs (Fin.inject≤ i (m≤m+n m n))
+    ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
@@ -348,6 +372,13 @@ cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
 subst-is-cast refl xs = sym (cast-is-id refl xs)
 
+cast-sym : .(eq : m ≡ n) {xs : Vec A m} {ys : Vec A n} →
+           cast eq xs ≡ ys → cast (sym eq) ys ≡ xs
+cast-sym eq {xs = []}     {ys = []}     _ = refl
+cast-sym eq {xs = x ∷ xs} {ys = y ∷ ys} xxs[eq]≡yys =
+  let x≡y , xs[eq]≡ys = ∷-injective xxs[eq]≡yys
+  in cong₂ _∷_ (sym x≡y) (cast-sym (suc-injective eq) xs[eq]≡ys)
+
 cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
              cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
 cast-trans {m = zero}  {n = zero}  {o = zero}  eq₁ eq₂ [] = refl
@@ -399,9 +430,9 @@ map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
 map-insert : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
              map f (insert xs i x) ≡ insert (map f xs) i (f x)
-map-insert f _ []        Fin.zero = refl
-map-insert f _ (x' ∷ xs) Fin.zero = refl
-map-insert f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insert f x xs i)
+map-insert f _ []        zero    = refl
+map-insert f _ (x' ∷ xs) zero    = refl
+map-insert f x (x' ∷ xs) (suc i) = cong (_ ∷_) (map-insert f x xs i)
 
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
@@ -689,7 +720,7 @@ zip∘unzip []         = refl
 zip∘unzip (xy ∷ xys) = cong (xy ∷_) (zip∘unzip xys)
 
 ×v↔v× : (Vec A n × Vec B n) ↔ Vec (A × B) n
-×v↔v× = mk↔′ (uncurry zip) unzip zip∘unzip (uncurry unzip∘zip)
+×v↔v× = mk↔ₛ′ (uncurry zip) unzip zip∘unzip (uncurry unzip∘zip)
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -1268,13 +1299,11 @@ sum-++-commute = sum-++
 "Warning: sum-++-commute was deprecated in v2.0.
 Please use sum-++ instead."
 #-}
-
 take-drop-id = take++drop≡id
 {-# WARNING_ON_USAGE take-drop-id
 "Warning: take-drop-id was deprecated in v2.0.
 Please use take++drop≡id instead."
 #-}
-
 take-distr-zipWith = take-zipWith
 {-# WARNING_ON_USAGE take-distr-zipWith
 "Warning: take-distr-zipWith was deprecated in v2.0.
@@ -1295,3 +1324,17 @@ drop-distr-map = drop-map
 "Warning: drop-distr-map was deprecated in v2.0.
 Please use drop-map instead."
 #-}
+lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+                      lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
+lookup-inject≤-take m m≤m+n i xs = sym (begin
+  lookup (take m xs) i
+    ≡⟨ lookup-take-inject≤ xs i ⟩
+  lookup xs (Fin.inject≤ i _)
+    ≡⟨ cong ((lookup xs) ∘ (Fin.inject≤ i)) (≤-irrelevant _ _) ⟩
+  lookup xs (Fin.inject≤ i m≤m+n)
+    ∎) where open ≡-Reasoning
+{-# WARNING_ON_USAGE lookup-inject≤-take
+"Warning: lookup-inject≤-take was deprecated in v2.0.
+Please use lookup-take-inject≤ or lookup-truncate, take≡truncate instead."
+#-}
+

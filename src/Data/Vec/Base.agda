@@ -290,7 +290,7 @@ uncons (x ∷ xs) = x , xs
 
 -- Take the first 'm' elements of a vector.
 truncate : ∀ {m n} → m ≤ n → Vec A n → Vec A m
-truncate z≤n      _        = []
+truncate {m = zero} _ _    = []
 truncate (s≤s le) (x ∷ xs) = x ∷ (truncate le xs)
 
 -- Pad out a vector with extra elements.

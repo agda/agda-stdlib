@@ -47,7 +47,7 @@ infix  1 _⋆_
 ------------------------------------------------------------------------
 -- Type definition
 
--- The free moand can be defined as the least fixpoint `μ (C ⋆C X)`
+-- The free monad can be defined as the least fixpoint `μ (C ⋆C X)`
 
 _⋆C_ : ∀ {x s p} → Container s p → Set x → Container (s ⊔ x) p
 C ⋆C X = const X ⊎ C

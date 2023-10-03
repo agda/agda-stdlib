@@ -42,12 +42,16 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ------------------------------------------------------------------------
 -- An alternative mathematical-style syntax for sumₜ
 
-infixl 10 sum-syntax
+infixl 10 sum-syntax sum⁺-syntax
 
 sum-syntax : ∀ n → Vector Carrier n → Carrier
 sum-syntax _ = sum
 
 syntax sum-syntax n (λ i → x) = ∑[ i < n ] x
+
+sum⁺-syntax = sum-syntax ∘ suc
+
+syntax sum⁺-syntax n (λ i → x) = ∑[ i ≤ n ] x
 
 ------------------------------------------------------------------------
 -- Properties
