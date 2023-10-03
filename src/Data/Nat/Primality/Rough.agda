@@ -28,8 +28,8 @@ _Rough_ : ℕ → ℕ → Set
 k Rough n = ∀ {d} → 1 < d → d < k → d ∤ n
 
 -- any number is 2-rough because all primes are greater than or equal to 2
-2-rough-n : ∀ n → 2 Rough n
-2-rough-n _ 1<d 2>d with () ← ≤⇒≯ 1<d 2>d
+2-rough-n : 2 Rough n
+2-rough-n 1<d 2>d with () ← ≤⇒≯ 1<d 2>d
 
 extend-∤ : k Rough n → k ∤ n → suc k Rough n
 extend-∤ k-rough-n k∤n 1<d d<suc[k] with m<1+n⇒m<n∨m≡n d<suc[k]

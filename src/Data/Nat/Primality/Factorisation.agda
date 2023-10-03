@@ -66,7 +66,7 @@ factorise 1 = record
   ; isFactorisation = refl
   ; factorsPrime = []
   }
-factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+n) (2-rough-n (2 + n))
+factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+n) 2-rough-n
   where
 
   P : ℕ → Set
@@ -79,9 +79,9 @@ factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+
     ; factorsPrime = k-rough-n ∷ []
     }
   factoriseRec (2+ n) rec {0} 2≤2+n (≤‴-step (≤‴-step k<n)) k-rough-n =
-    factoriseRec (2+ n) rec 2≤2+n k<n (2-rough-n (2+ n))
+    factoriseRec (2+ n) rec 2≤2+n k<n 2-rough-n
   factoriseRec (2+ n) rec {1} 2≤2+n (≤‴-step k<n) k-rough-n =
-    factoriseRec (2+ n) rec 2≤2+n k<n (2-rough-n (2+ n))
+    factoriseRec (2+ n) rec 2≤2+n k<n 2-rough-n
   factoriseRec (2+ n) rec {suc (suc k)} 2≤2+n (≤‴-step k<n) k-rough-n with 2 + k ∣? 2+ n
   ... | no  k∤n = factoriseRec (2+ n) rec {3 + k} 2≤2+n k<n (extend-∤ k-rough-n k∤n)
   ... | yes k∣n = record
