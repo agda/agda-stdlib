@@ -72,6 +72,9 @@ monad = record
   ; _>>=_  = bind
   }
 
+join : (A ⊥) ⊥ → A ⊥
+join = Join.join monad
+
 private module M {f} = RawMonad (monad {f})
 
 -- Non-termination.
@@ -514,6 +517,8 @@ module _ {A B : Set s}
 
   -- Bind preserves all the relations.
 
+  infixl 1 _>>=-cong_
+
   _>>=-cong_ :
     ∀ {k} {x₁ x₂ : A ⊥} {f₁ f₂ : A → B ⊥} → let open M in
     Rel _∼A_ k x₁ x₂ →
@@ -574,6 +579,8 @@ module _ {A B : Set ℓ} {_∼_ : B → B → Set ℓ} where
   open Equality
 
   -- A variant of _>>=-cong_.
+
+  infixl 1 _≡->>=-cong_
 
   _≡->>=-cong_ :
     ∀ {k} {x₁ x₂ : A ⊥} {f₁ f₂ : A → B ⊥} → let open M in

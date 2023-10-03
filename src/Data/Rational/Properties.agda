@@ -49,13 +49,19 @@ import Data.Sign as S
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; TotalPreorder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsTotalOrder; IsTotalPreorder; IsPartialOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
+open import Relation.Binary.Definitions
+  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Dense; Trans; Trichotomous; tri<; tri>; tri≈; _Respectsʳ_; _Respectsˡ_; _Respects₂_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
-open import Relation.Nullary.Decidable as Dec
-  using (True; False; fromWitness; fromWitnessFalse; toWitnessFalse; yes; no; recompute; map′; _×-dec_)
-open import Relation.Nullary.Negation using (¬_; contradiction; contraposition)
+open import Relation.Nullary.Decidable.Core as Dec
+  using (yes; no; recompute; map′; _×-dec_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
@@ -608,6 +614,20 @@ toℚᵘ-isOrderMonomorphism-< = record
 <-asym : Asymmetric _<_
 <-asym (*<* p<q) (*<* q<p) = ℤ.<-asym p<q q<p
 
+<-dense : Dense _<_
+<-dense {p} {q} p<q = let
+    m , p<ᵘm , m<ᵘq = ℚᵘ.<-dense (toℚᵘ-mono-< p<q)
+
+    m≃m : m ≃ᵘ toℚᵘ (fromℚᵘ m)
+    m≃m = ℚᵘ.≃-sym (toℚᵘ-fromℚᵘ m)
+
+    p<m : p < fromℚᵘ m
+    p<m = toℚᵘ-cancel-< (ℚᵘ.<-respʳ-≃ m≃m p<ᵘm)
+
+    m<q : fromℚᵘ m < q
+    m<q = toℚᵘ-cancel-< (ℚᵘ.<-respˡ-≃ m≃m m<ᵘq)
+  in fromℚᵘ m , p<m , m<q
+
 <-≤-trans : Trans _<_ _≤_ _<_
 <-≤-trans {p} {q} {r} (*<* p<q) (*≤* q≤r) = *<*
   (ℤ.*-cancelʳ-<-nonNeg _ (begin-strict
@@ -687,6 +707,12 @@ _>?_ = flip _<?_
   ; compare       = <-cmp
   }
 
+<-isDenseLinearOrder : IsDenseLinearOrder _≡_ _<_
+<-isDenseLinearOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  ; dense              = <-dense
+  }
+
 ------------------------------------------------------------------------
 -- Bundles
 
@@ -700,6 +726,11 @@ _>?_ = flip _<?_
   { isStrictTotalOrder = <-isStrictTotalOrder
   }
 
+<-denseLinearOrder : DenseLinearOrder 0ℓ 0ℓ 0ℓ
+<-denseLinearOrder = record
+  { isDenseLinearOrder = <-isDenseLinearOrder
+  }
+
 ------------------------------------------------------------------------
 -- A specialised module for reasoning about the _≤_ and _<_ relations
 ------------------------------------------------------------------------
@@ -707,13 +738,16 @@ _>?_ = flip _<?_
 module ≤-Reasoning where
   import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤
     <-≤-trans
     ≤-<-trans
     as Triple
-  open Triple public hiding (step-≈; step-≈˘)
+
+  open Triple public
+    hiding (step-≈; step-≈˘)
 
   infixr 2 step-≃ step-≃˘
 
@@ -722,7 +756,6 @@ module ≤-Reasoning where
 
   syntax step-≃  x y∼z x≃y = x ≃⟨  x≃y ⟩ y∼z
   syntax step-≃˘ x y∼z y≃x = x ≃˘⟨ y≃x ⟩ y∼z
-
 
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_

@@ -813,10 +813,10 @@ drop-[] : ∀ m → drop {A = A} m [] ≡ []
 drop-[] zero = refl
 drop-[] (suc m) = refl
 
-take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
-take++drop zero    xs       = refl
-take++drop (suc n) []       = refl
-take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
+take++drop≡id : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
+take++drop≡id zero    xs       = refl
+take++drop≡id (suc n) []       = refl
+take++drop≡id (suc n) (x ∷ xs) = cong (x ∷_) (take++drop≡id n xs)
 
 drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
            drop m (take (suc m) xs) ≡ [ lookup xs i ]
@@ -993,11 +993,11 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
 -- Reverse-append of append is reverse-append after reverse-append.
 
-ʳ++-++ : ∀ (xs {ys zs} : List A) → (xs ++ ys) ʳ++ zs ≡ ys ʳ++ xs ʳ++ zs
-ʳ++-++ [] = refl
-ʳ++-++ (x ∷ xs) {ys} {zs} = begin
+++-ʳ++ : ∀ (xs {ys zs} : List A) → (xs ++ ys) ʳ++ zs ≡ ys ʳ++ xs ʳ++ zs
+++-ʳ++ [] = refl
+++-ʳ++ (x ∷ xs) {ys} {zs} = begin
   (x ∷ xs ++ ys) ʳ++ zs   ≡⟨⟩
-  (xs ++ ys) ʳ++ x ∷ zs   ≡⟨ ʳ++-++ xs ⟩
+  (xs ++ ys) ʳ++ x ∷ zs   ≡⟨ ++-ʳ++ xs ⟩
   ys ʳ++ xs ʳ++ x ∷ zs    ≡⟨⟩
   ys ʳ++ (x ∷ xs) ʳ++ zs  ∎
 
@@ -1073,7 +1073,7 @@ reverse-++ : (xs ys : List A) →
                      reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
 reverse-++ xs ys = begin
   reverse (xs ++ ys)         ≡⟨⟩
-  (xs ++ ys) ʳ++ []          ≡⟨ ʳ++-++ xs ⟩
+  (xs ++ ys) ʳ++ []          ≡⟨ ++-ʳ++ xs ⟩
   ys ʳ++ xs ʳ++ []           ≡⟨⟩
   ys ʳ++ reverse xs          ≡⟨ ʳ++-defn ys ⟩
   reverse ys ++ reverse xs   ∎
@@ -1211,4 +1211,16 @@ zipWith-identityʳ = zipWith-zeroʳ
 {-# WARNING_ON_USAGE zipWith-identityʳ
 "Warning: zipWith-identityʳ was deprecated in v2.0.
 Please use zipWith-zeroʳ instead."
+#-}
+
+ʳ++-++ = ++-ʳ++
+{-# WARNING_ON_USAGE ʳ++-++
+"Warning: ʳ++-++ was deprecated in v2.0.
+Please use ++-ʳ++ instead."
+#-}
+
+take++drop = take++drop≡id
+{-# WARNING_ON_USAGE take++drop
+"Warning: take++drop was deprecated in v2.0.
+Please use take++drop≡id instead."
 #-}

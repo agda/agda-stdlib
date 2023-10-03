@@ -75,7 +75,7 @@ nCk≡nC[n∸k] {k} {n} k≤n = begin-equality
     _ = k !* (n ∸ k) !≢0
     _ = (n ∸ k) !* (n ∸ (n ∸ k)) !≢0
 
-nCk≡nPk/k! : k ≤ n → n C k ≡ (n P k / k !) {{k !≢0}}
+nCk≡nPk/k! : k ≤ n → n C k ≡ ((n P k) / k !) {{k !≢0}}
 nCk≡nPk/k! {k} {n} k≤n = begin-equality
   n C k                   ≡⟨ nCk≡n!/k![n-k]! k≤n ⟩
   n ! / (k ! * (n ∸ k) !) ≡˘⟨ /-congʳ (*-comm ((n ∸ k)!) (k !)) ⟩

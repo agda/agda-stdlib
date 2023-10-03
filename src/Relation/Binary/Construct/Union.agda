@@ -12,7 +12,9 @@ open import Data.Product.Base
 open import Data.Sum.Base as Sum
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Total; Minimum; Maximum; Symmetric; Irreflexive; Decidable; _Respects_; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_)
 
 private

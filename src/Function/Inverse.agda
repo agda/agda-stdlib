@@ -1,17 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Inverses
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Inverseᵇ`, `IsInverse` and
--- `Inverse`. The alternative definitions found in this file will
--- eventually be deprecated.
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Inverse where
+
+{-# WARNING_ON_IMPORT
+"Function.Inverse was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
 
 open import Level
 open import Function.Base using (flip)
@@ -92,8 +93,8 @@ inverse : ∀ {f t} {From : Set f} {To : Set t} →
           (∀ x → to (from x) ≡ x) →
           From ↔ To
 inverse to from from∘to to∘from = record
-  { to   = P.→-to-⟶ to
-  ; from = P.→-to-⟶ from
+  { to   = F.→-to-⟶ to
+  ; from = F.→-to-⟶ from
   ; inverse-of = record
     { left-inverse-of  = from∘to
     ; right-inverse-of = to∘from

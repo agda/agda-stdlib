@@ -7,7 +7,12 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Function.Base using (flip; _∘_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
+open import Relation.Binary.Bundles using (Poset; StrictPartialOrder)
+open import Relation.Binary.Structures
+  using (IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder)
+open import Relation.Binary.Definitions
+  using (_Respectsˡ_; _Respectsʳ_; Decidable)
 import Relation.Binary.Consequences as Consequences
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
