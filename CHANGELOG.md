@@ -799,20 +799,20 @@ Non-backwards compatible changes
 
 ### Standardisation of `insertAt`/`updateAt`/`removeAt`
 
-* The names and argument order of insertion, update and removal functions for various types of lists and vectors was previously wildly inconsistent.
+* Previously, the names and argument order of index-based insertion, update and removal functions for
+  various types of lists and vectors were inconsistent.
 
-* To fix this they have all been standardised to the names `insertAt`/`updateAt`/`removeAt`.
+* To fix this the names have all been standardised to `insertAt`/`updateAt`/`removeAt`.
 
 * Correspondingly the following changes have occurred:
 
-* In `Data.List.Base` we've added:
+* In `Data.List.Base` the following have been added:
   ```agda
   insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
   updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
-  
   removeAt : (xs : List A) → Fin (length xs) → List A
   ```
-  and deprecated
+  and the following has been deprecated
   ```
   _─_ ↦ removeAt
   ```
@@ -1574,7 +1574,6 @@ Deprecated names
   idIsFold        ↦ id-is-foldr
   sum-++-commute  ↦ sum-++
 
-<<<<<<< HEAD
   take-drop-id  ↦  take++drop≡id
 
   map-insert       ↦  map-insertAt
@@ -1584,11 +1583,8 @@ Deprecated names
   remove-PunchOut  ↦  removeAt-punchOut
   remove-insert    ↦  removeAt-insertAt
   insert-remove    ↦  insertAt-removeAt
-=======
-  take-drop-id ↦ take++drop≡id
 
   lookup-inject≤-take ↦ lookup-take-inject≤
->>>>>>> master
   ```
   and the type of the proof `zipWith-comm` has been generalised from:
   ```
