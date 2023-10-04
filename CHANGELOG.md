@@ -802,12 +802,12 @@ Non-backwards compatible changes
   were introduced in the corresponding `Relation.Binary.Properties` modules, for re-export.
 
 * Now they are introduced as definitions in the corresponding `Relation.Binary.Bundles`,
-  together with, for uniformity's sake, an additional negated symbol `_≁_` for `Preorder`.
+  together with, for uniformity's sake, an additional negated symbol `_⋦_` for `Preorder`.
   NB `_≮_` is now introduced *earlier* in the hierarchy, at `StrictPartialOrder`, which
   incurs some rather complicated deprecation gymnastics...
 
-* Accordingly, in fact we now have `_⋦_` (in `TotalPreorder`) and `_≰_` (in `Poset`)
-  as renamed `public` re-exports from `_≁_` in `Preorder`.
+* Accordingly, in fact we now have `_≰_` (in `Poset`) as a renamed `public` re-export
+  from `_⋦_` in `Preorder`, with `TotalPreorder` inheriting `_⋦_` from `Preorder`.
 
 * As knock-on changes, public re-exports of `Preorder`, `Poset`, `StrictPartialOrder`
   in derived bundles also now need to re-export the various new symbols accordingly.
@@ -824,13 +824,9 @@ Non-backwards compatible changes
   only on the the underlying `Structures` such as `IsPartialOrder` etc., are unable
   to make use of the new symbols.
 
-* NB (issues #2096 #2098) the corresponding situation regarding the `flip`ped
-  relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet) been
-  addressed; to develop a parallel architecture to that above, there would need
-  to be a suitable symbol for the flipped relation `_∼_` (and its negation!) in
-  `Relation.Bundles.Preorder`, currently handled purely semantically via `flip ∼` in
-  `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
-  etc. Ditto. the strict ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
+* NB (issue #2098) the corresponding situation regarding the `flip`ped relation
+  symbols `_≥_`, `_>_` (and their negated versions!) has not (yet) been addressed.
+  Ditto. the strict ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
 
 ### Changes to triple reasoning interface
 
