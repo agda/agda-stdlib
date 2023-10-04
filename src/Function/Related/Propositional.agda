@@ -339,7 +339,7 @@ InducedRelation₁ k P = λ x y → P x ∼[ k ] P y
 InducedPreorder₁ : Kind → (P : A → Set p) → Preorder _ _ _
 InducedPreorder₁ k P = record
   { _≈_        = _≡_
-  ; _∼_        = InducedRelation₁ k P
+  ; _≲_        = InducedRelation₁ k P
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = reflexive ∘
@@ -369,7 +369,7 @@ InducedRelation₂ k _S_ = λ x y → ∀ {z} → (z S x) ∼[ k ] (z S y)
 InducedPreorder₂ : Kind → ∀ {s} → (A → B → Set s) → Preorder _ _ _
 InducedPreorder₂ k _S_ = record
   { _≈_        = _≡_
-  ; _∼_        = InducedRelation₂ k _S_
+  ; _≲_        = InducedRelation₂ k _S_
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = λ x≡y {z} →

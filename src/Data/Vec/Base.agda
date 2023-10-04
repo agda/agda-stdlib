@@ -64,28 +64,26 @@ iterate : (A → A) → A → ∀ {n} → Vec A n
 iterate s z {zero}  = []
 iterate s z {suc n} = z ∷ iterate s (s z)
 
-insert : Vec A n → Fin (suc n) → A → Vec A (suc n)
-insert xs       zero     v = v ∷ xs
-insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
+insertAt : Vec A n → Fin (suc n) → A → Vec A (suc n)
+insertAt xs       zero     v = v ∷ xs
+insertAt (x ∷ xs) (suc i)  v = x ∷ insertAt xs i v
 
-remove : Vec A (suc n) → Fin (suc n) → Vec A n
-remove (_ ∷ xs)     zero     = xs
-remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
+removeAt : Vec A (suc n) → Fin (suc n) → Vec A n
+removeAt (x ∷ xs)         zero    = xs
+removeAt (x ∷ xs@(_ ∷ _)) (suc i) = x ∷ removeAt xs i
 
-updateAt : Fin n → (A → A) → Vec A n → Vec A n
-updateAt zero    f (x ∷ xs) = f x ∷ xs
-updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
+updateAt : Vec A n → Fin n → (A → A) → Vec A n
+updateAt (x ∷ xs) zero    f = f x ∷ xs
+updateAt (x ∷ xs) (suc i) f = x   ∷ updateAt xs i f
 
 -- xs [ i ]%= f  modifies the i-th element of xs according to f
 
-infixl 6 _[_]%=_
+infixl 6 _[_]%=_ _[_]≔_
 
 _[_]%=_ : Vec A n → Fin n → (A → A) → Vec A n
-xs [ i ]%= f = updateAt i f xs
+xs [ i ]%= f = updateAt xs i f
 
 -- xs [ i ]≔ y  overwrites the i-th element of xs with y
-
-infixl 6 _[_]≔_
 
 _[_]≔_ : Vec A n → Fin n → A → Vec A n
 xs [ i ]≔ y = xs [ i ]%= const y
@@ -353,3 +351,21 @@ transpose : Vec (Vec A n) m → Vec (Vec A m) n
 transpose []         = replicate []
 transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
 
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+remove = removeAt
+{-# WARNING_ON_USAGE remove
+"Warning: remove was deprecated in v2.0.
+Please use removeAt instead."
+#-}
+insert = insertAt
+{-# WARNING_ON_USAGE insert
+"Warning: insert was deprecated in v2.0.
+Please use insertAt instead."
+#-}
