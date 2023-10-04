@@ -601,7 +601,7 @@ Non-backwards compatible changes
   raw bundles to `Data.X.Base`, this definition can now be made directly. Knock-on
   consequences include the need to retain the old constructor name, now introduced
   as a pattern synonym, and introduction of (a function equivalent to) the former
-  field name/projection function `proof` as `≤″-proof` in `Data.Nat.Properties`. 
+  field name/projection function `proof` as `≤″-proof` in `Data.Nat.Properties`.
 
 * Accordingly, the definition has been changed to:
   ```agda
@@ -867,9 +867,8 @@ Non-backwards compatible changes
   Therefore, only _declarations_ of `PartialOrder` records will need their field names
   updating.
 
-* NB (issues #1214 #2098) the corresponding situation regarding the `flip`ped
-  relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet)
-  been addressed.
+* NB (issue #2098) the corresponding situation regarding the `flip`ped
+  relation symbols `_≥_`, `_>_` has not (yet) been addressed.
 
 ### Standardisation of `insertAt`/`updateAt`/`removeAt`
 
@@ -890,12 +889,12 @@ Non-backwards compatible changes
   ```
   _─_ ↦ removeAt
   ```
-  
+
 * In `Data.Vec.Base`:
   ```agda
   insert ↦ insertAt
   remove ↦ removeAt
-  
+
   updateAt : Fin n → (A → A) → Vec A n → Vec A n
     ↦
   updateAt : Vec A n → Fin n → (A → A) → Vec A n
@@ -906,12 +905,12 @@ Non-backwards compatible changes
   remove : Fin (suc n) → Vector A (suc n) → Vector A n
     ↦
   removeAt : Vector A (suc n) → Fin (suc n) → Vector A n
- 
+
   updateAt : Fin n → (A → A) → Vector A n → Vector A n
     ↦
   updateAt : Vector A n → Fin n → (A → A) → Vector A n
   ```
-  
+
 * The old names (and the names of all proofs about these functions) have been deprecated appropriately.
 
 ### Changes to triple reasoning interface
@@ -1656,7 +1655,7 @@ Deprecated names
   take-drop-id  ↦  take++drop≡id
 
   map-insert       ↦  map-insertAt
-  
+
   insert-lookup    ↦  insertAt-lookup
   insert-punchIn   ↦  insertAt-punchIn
   remove-PunchOut  ↦  removeAt-punchOut
@@ -1682,7 +1681,7 @@ Deprecated names
   updateAt-cong-relative    ↦  updateAt-cong-local
 
   map-updateAt              ↦  map-updateAt-local
-  
+
   insert-lookup             ↦  insertAt-lookup
   insert-punchIn            ↦  insertAt-punchIn
   remove-punchOut           ↦  removeAt-punchOut
