@@ -2525,8 +2525,6 @@ Additions to existing modules
 
   length-iterate : length (iterate f x n) ≡ n
   iterate-id     : iterate id x n ≡ replicate n x
-  take-iterate   : take n (iterate f x n) ≡ iterate f x n
-  drop-iterate   : drop n (iterate f x n) ≡ []
   lookup-iterate : lookup (iterate f x n) (cast (sym (length-iterate f x n)) i) ≡ ℕ.iterate f x (toℕ i)
 
   length-insertAt   : length (insertAt xs i v) ≡ suc (length xs)
