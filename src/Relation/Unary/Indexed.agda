@@ -17,6 +17,8 @@ IPred A ℓ = ∀ {i} → A i → Set ℓ
 
 module _ {i a} {I : Set i} {A : I → Set a} where
 
+  infix 4 _∈_ _∉_
+
   _∈_ : ∀ {ℓ} → (∀ i → A i) → IPred A ℓ → Set _
   x ∈ P = ∀ i → P (x i)
 

@@ -24,6 +24,7 @@ record Pair (A : Set a) (B : Set b) : Set (a ⊔ b) where
   constructor _,_
   field  fst : A
          snd : B
+infixr 4 _,_
 open Pair public
 
 {-# FOREIGN GHC type AgdaPair l1 l2 a b = (a , b) #-}

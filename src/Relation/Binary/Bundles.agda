@@ -306,6 +306,24 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
   Please use Eq.decSetoid instead."
   #-}
 
+record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈_ _<_
+  field
+    Carrier            : Set c
+    _≈_                : Rel Carrier ℓ₁
+    _<_                : Rel Carrier ℓ₂
+    isDenseLinearOrder : IsDenseLinearOrder _≈_ _<_
+
+  open IsDenseLinearOrder isDenseLinearOrder public
+    using (isStrictTotalOrder; dense)
+
+  strictTotalOrder : StrictTotalOrder c ℓ₁ ℓ₂
+  strictTotalOrder = record
+    { isStrictTotalOrder = isStrictTotalOrder
+    }
+
+  open StrictTotalOrder strictTotalOrder public
+
 
 ------------------------------------------------------------------------
 -- Apartness relations
