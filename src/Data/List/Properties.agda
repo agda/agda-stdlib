@@ -881,21 +881,9 @@ length-iterate : ∀ f (x : A) n → length (iterate f x n) ≡ n
 length-iterate f x zero    = refl
 length-iterate f x (suc n) = cong suc (length-iterate f (f x) n)
 
-iterate-id : ∀ {x : A} n → iterate id x n ≡ replicate n x
-iterate-id zero    = refl
-iterate-id (suc n) = cong (_ ∷_) (iterate-id n)
-
-module _ f {x : A} n where
-  private
-    xs = iterate f x n
-    n≥length[xs] : n ≥ length xs
-    n≥length[xs] rewrite length-iterate f x n = ≤-refl
-
-  take-iterate : take n xs ≡ xs
-  take-iterate = take-all n xs n≥length[xs]
-
-  drop-iterate : drop n xs ≡ []
-  drop-iterate = drop-all n xs n≥length[xs]
+iterate-id : ∀ (x : A) n → iterate id x n ≡ replicate n x
+iterate-id x zero    = refl
+iterate-id x (suc n) = cong (_ ∷_) (iterate-id x n)
 
 lookup-iterate : ∀ f (x : A) n (i : Fin n) →
   lookup (iterate f x n) (cast (sym (length-iterate f x n)) i) ≡ ℕ.iterate f x (toℕ i)
