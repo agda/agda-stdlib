@@ -736,17 +736,41 @@ map-∷= (x ∷ xs) zero    v f = refl
 map-∷= (x ∷ xs) (suc k) v f = cong (f x ∷_) (map-∷= xs k v f)
 
 ------------------------------------------------------------------------
--- _─_
+-- insertAt
 
-length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
-length-─ (x ∷ xs) zero        = refl
-length-─ (x ∷ y ∷ xs) (suc k) = cong suc (length-─ (y ∷ xs) k)
+length-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v →
+                  length (insertAt xs i v) ≡ suc (length xs)
+length-insertAt xs       zero    v = refl
+length-insertAt (x ∷ xs) (suc i) v = cong suc (length-insertAt xs i v)
 
-map-─ : ∀ xs k (f : A → B) →
-        let eq = sym (length-map f xs) in
-        map f (xs ─ k) ≡ map f xs ─ cast eq k
-map-─ (x ∷ xs) zero    f = refl
-map-─ (x ∷ xs) (suc k) f = cong (f x ∷_) (map-─ xs k f)
+------------------------------------------------------------------------
+-- removeAt
+
+length-removeAt : ∀ (xs : List A) k → length (removeAt xs k) ≡ pred (length xs)
+length-removeAt (x ∷ xs) zero            = refl
+length-removeAt (x ∷ xs@(_ ∷ _)) (suc k) = cong suc (length-removeAt xs k)
+
+length-removeAt′ : ∀ (xs : List A) k → length xs ≡ suc (length (removeAt xs k))
+length-removeAt′ xs@(_ ∷ _) k rewrite length-removeAt xs k = refl
+
+map-removeAt : ∀ xs k (f : A → B) →
+            let eq = sym (length-map f xs) in
+            map f (removeAt xs k) ≡ removeAt (map f xs) (cast eq k)
+map-removeAt (x ∷ xs) zero    f = refl
+map-removeAt (x ∷ xs) (suc k) f = cong (f x ∷_) (map-removeAt xs k f)
+
+------------------------------------------------------------------------
+ -- insertAt and removeAt
+
+removeAt-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v →
+  removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
+removeAt-insertAt xs       zero    v = refl
+removeAt-insertAt (x ∷ xs) (suc i) v = cong (_ ∷_) (removeAt-insertAt xs i v)
+
+insertAt-removeAt : (xs : List A) (i : Fin (length xs)) →
+  insertAt (removeAt xs i) (cast (length-removeAt′ xs i) i) (lookup xs i) ≡ xs
+insertAt-removeAt (x ∷ xs) zero    = refl
+insertAt-removeAt (x ∷ xs) (suc i) = cong (x ∷_) (insertAt-removeAt xs i)
 
 ------------------------------------------------------------------------
 -- take
@@ -1267,4 +1291,16 @@ take++drop = take++drop≡id
 {-# WARNING_ON_USAGE take++drop
 "Warning: take++drop was deprecated in v2.0.
 Please use take++drop≡id instead."
+#-}
+
+length-─ = length-removeAt
+{-# WARNING_ON_USAGE length-─
+"Warning: length-─ was deprecated in v2.0.
+Please use length-removeAt instead."
+#-}
+
+map-─ = map-removeAt
+{-# WARNING_ON_USAGE map-─
+"Warning: map-─ was deprecated in v2.0.
+Please use map-removeAt instead."
 #-}

@@ -200,6 +200,14 @@ tails : List A → List (List A)
 tails []       = [] ∷ []
 tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
 
+insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
+insertAt xs       zero    v = v ∷ xs
+insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
+
+updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
+updateAt (x ∷ xs) zero    f = f x ∷ xs
+updateAt (x ∷ xs) (suc i) f = x ∷ updateAt xs i f
+
 -- Scans
 
 scanr : (A → B → B) → B → List A → List B
@@ -333,6 +341,10 @@ splitAt : ℕ → List A → List A × List A
 splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
 splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
+
+removeAt : (xs : List A) → Fin (length xs) → List A
+removeAt (x ∷ xs) zero     = xs
+removeAt (x ∷ xs) (suc i)  = x ∷ removeAt xs i
 
 -- The following are functions which split a list up using boolean
 -- predicates. However, in practice they are difficult to use and
@@ -473,18 +485,17 @@ findIndices P? = findIndicesᵇ (does ∘ P?)
 ------------------------------------------------------------------------
 -- Actions on single elements
 
-infixl 5 _[_]%=_ _[_]∷=_ _─_
+infixl 5 _[_]%=_ _[_]∷=_
+
+-- xs [ i ]%= f  modifies the i-th element of xs according to f
 
 _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-(x ∷ xs) [ zero  ]%= f = f x ∷ xs
-(x ∷ xs) [ suc k ]%= f = x ∷ (xs [ k ]%= f)
+xs [ i ]%= f = updateAt xs i f
+
+-- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
 _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
 xs [ k ]∷= v = xs [ k ]%= const v
-
-_─_ : (xs : List A) → Fin (length xs) → List A
-(x ∷ xs) ─ zero  = xs
-(x ∷ xs) ─ suc k = x ∷ (xs ─ k)
 
 ------------------------------------------------------------------------
 -- Conditional versions of cons and snoc
@@ -530,4 +541,13 @@ _∷ʳ'_ = InitLast._∷ʳ′_
 {-# WARNING_ON_USAGE _∷ʳ'_
 "Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
 Please use _∷ʳ′_ (ending in a prime) instead."
+#-}
+
+-- Version 2.0
+
+infixl 5 _─_
+_─_ = removeAt
+{-# WARNING_ON_USAGE _─_
+"Warning: _─_ was deprecated in v2.0.
+Please use removeAt instead."
 #-}

@@ -52,7 +52,7 @@ private
 ∷-injectiveʳ : x ∷ xs ≡ y ∷ ys → xs ≡ ys
 ∷-injectiveʳ refl = refl
 
-∷-injective : (x ∷ xs) ≡ (y ∷ ys) → x ≡ y × xs ≡ ys
+∷-injective : x ∷ xs ≡ y ∷ ys → x ≡ y × xs ≡ ys
 ∷-injective refl = refl , refl
 
 ≡-dec : DecidableEquality A → DecidableEquality (Vec A n)
@@ -206,14 +206,14 @@ lookup-take-inject≤ {m = m} {n = n} xs i = begin
 -- (+) updateAt i actually updates the element at index i.
 
 updateAt-updates : ∀ (i : Fin n) {f : A → A} (xs : Vec A n) →
-                   xs [ i ]= x → (updateAt i f xs) [ i ]= f x
+                   xs [ i ]= x → (updateAt xs i f) [ i ]= f x
 updateAt-updates zero    (x ∷ xs) here        = here
 updateAt-updates (suc i) (x ∷ xs) (there loc) = there (updateAt-updates i xs loc)
 
 -- (-) updateAt i does not touch the elements at other indices.
 
 updateAt-minimal : ∀ (i j : Fin n) {f : A → A} (xs : Vec A n) →
-                   i ≢ j → xs [ i ]= x → (updateAt j f xs) [ i ]= x
+                   i ≢ j → xs [ i ]= x → (updateAt xs j f) [ i ]= x
 updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = contradiction refl 0≢0
 updateAt-minimal zero    (suc j) (x ∷ xs) _   here        = here
 updateAt-minimal (suc i) zero    (x ∷ xs) _   (there loc) = there loc
@@ -236,29 +236,29 @@ updateAt-minimal (suc i) (suc j) (x ∷ xs) i≢j (there loc) =
 
 updateAt-id-local : ∀ (i : Fin n) {f : A → A} (xs : Vec A n) →
                     f (lookup xs i) ≡ lookup xs i →
-                    updateAt i f xs ≡ xs
+                    updateAt xs i f ≡ xs
 updateAt-id-local zero    (x ∷ xs) eq = cong (_∷ xs) eq
 updateAt-id-local (suc i) (x ∷ xs) eq = cong (x ∷_) (updateAt-id-local i xs eq)
 
 -- 1b. identity:  updateAt i id ≗ id
 
-updateAt-id : ∀ (i : Fin n) (xs : Vec A n) → updateAt i id xs ≡ xs
+updateAt-id : ∀ (i : Fin n) (xs : Vec A n) → updateAt xs i id ≡ xs
 updateAt-id i xs = updateAt-id-local i xs refl
 
 -- 2a. local composition:  f ∘ g = h ↾ (lookup xs i)
 --                implies  updateAt i f ∘ updateAt i g = updateAt i h ↾ xs
 
-updateAt-∘-local : ∀ (i : Fin n) {f g h : A → A} (xs : Vec A n) →
-                         f (g (lookup xs i)) ≡ h (lookup xs i) →
-                         updateAt i f (updateAt i g xs) ≡ updateAt i h xs
-updateAt-∘-local zero    (x ∷ xs) fg=h = cong (_∷ xs) fg=h
-updateAt-∘-local (suc i) (x ∷ xs) fg=h = cong (x ∷_) (updateAt-∘-local i xs fg=h)
+updateAt-updateAt-local : ∀ (i : Fin n) {f g h : A → A} (xs : Vec A n) →
+                          f (g (lookup xs i)) ≡ h (lookup xs i) →
+                          updateAt (updateAt xs i g) i f ≡ updateAt xs i h
+updateAt-updateAt-local zero    (x ∷ xs) fg=h = cong (_∷ xs) fg=h
+updateAt-updateAt-local (suc i) (x ∷ xs) fg=h = cong (x ∷_) (updateAt-updateAt-local i xs fg=h)
 
 -- 2b. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
 
-updateAt-∘ : ∀ (i : Fin n) {f g : A → A} →
-                   updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
-updateAt-∘ i xs = updateAt-∘-local i xs refl
+updateAt-updateAt : ∀ (i : Fin n) {f g : A → A} (xs : Vec A n) →
+                    updateAt (updateAt xs i g) i f ≡ updateAt xs i (f ∘ g)
+updateAt-updateAt i xs = updateAt-updateAt-local i xs refl
 
 -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
 
@@ -267,14 +267,14 @@ updateAt-∘ i xs = updateAt-∘-local i xs refl
 
 updateAt-cong-local : ∀ (i : Fin n) {f g : A → A} (xs : Vec A n) →
                       f (lookup xs i) ≡ g (lookup xs i) →
-                      updateAt i f xs ≡ updateAt i g xs
+                      updateAt xs i f ≡ updateAt xs i g
 updateAt-cong-local zero    (x ∷ xs) f=g = cong (_∷ xs) f=g
 updateAt-cong-local (suc i) (x ∷ xs) f=g = cong (x ∷_) (updateAt-cong-local i xs f=g)
 
 -- 3b. congruence:  f ≗ g → updateAt i f ≗ updateAt i g
 
-updateAt-cong : ∀ (i : Fin n) {f g : A → A} →
-                f ≗ g → updateAt i f ≗ updateAt i g
+updateAt-cong : ∀ (i : Fin n) {f g : A → A} → f ≗ g → (xs : Vec A n) →
+                updateAt xs i f ≡ updateAt xs i g
 updateAt-cong i f≗g xs = updateAt-cong-local i xs (f≗g (lookup xs i))
 
 -- The order of updates at different indices i ≢ j does not matter.
@@ -282,13 +282,13 @@ updateAt-cong i f≗g xs = updateAt-cong-local i xs (f≗g (lookup xs i))
 -- This a consequence of updateAt-updates and updateAt-minimal
 -- but easier to prove inductively.
 
-updateAt-commutes : ∀ (i j : Fin n) {f g : A → A} → i ≢ j →
-                    updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
+updateAt-commutes : ∀ (i j : Fin n) {f g : A → A} → i ≢ j → (xs : Vec A n) →
+                    updateAt (updateAt xs j g) i f ≡ updateAt (updateAt xs i f) j g
 updateAt-commutes zero    zero    0≢0 (x ∷ xs) = contradiction refl 0≢0
 updateAt-commutes zero    (suc j) i≢j (x ∷ xs) = refl
 updateAt-commutes (suc i) zero    i≢j (x ∷ xs) = refl
 updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
-  cong (x ∷_) (updateAt-commutes i j (i≢j ∘ cong suc) xs)
+   cong (x ∷_) (updateAt-commutes i j (i≢j ∘ cong suc) xs)
 
 -- lookup after updateAt reduces.
 
@@ -296,14 +296,14 @@ updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
 -- using []=↔lookup.
 
 lookup∘updateAt : ∀ (i : Fin n) {f : A → A} xs →
-                  lookup (updateAt i f xs) i ≡ f (lookup xs i)
+                  lookup (updateAt xs i f) i ≡ f (lookup xs i)
 lookup∘updateAt i xs =
   []=⇒lookup (updateAt-updates i xs (lookup⇒[]= i _ refl))
 
 -- For different indices it easily follows from updateAt-minimal.
 
 lookup∘updateAt′ : ∀ (i j : Fin n) {f : A → A} → i ≢ j → ∀ xs →
-                   lookup (updateAt j f xs) i ≡ lookup xs i
+                   lookup (updateAt xs j f) i ≡ lookup xs i
 lookup∘updateAt′ i j xs i≢j =
   []=⇒lookup (updateAt-minimal i j i≢j xs (lookup⇒[]= i _ refl))
 
@@ -313,10 +313,10 @@ lookup∘updateAt′ i j xs i≢j =
 []%=-id xs i = updateAt-id i xs
 
 []%=-∘ : ∀ (xs : Vec A n) (i : Fin n) {f g : A → A} →
-     xs [ i ]%= f
-        [ i ]%= g
-   ≡ xs [ i ]%= g ∘ f
-[]%=-∘ xs i = updateAt-∘ i xs
+      xs [ i ]%= f
+         [ i ]%= g
+    ≡ xs [ i ]%= g ∘ f
+[]%=-∘ xs i = updateAt-updateAt i xs
 
 
 ------------------------------------------------------------------------
@@ -326,11 +326,11 @@ lookup∘updateAt′ i j xs i≢j =
 -- are special cases of the ones for updateAt.
 
 []≔-idempotent : ∀ (xs : Vec A n) (i : Fin n) →
-                 (xs [ i ]≔ x) [ i ]≔ y ≡ xs [ i ]≔ y
-[]≔-idempotent xs i = updateAt-∘ i xs
+                  (xs [ i ]≔ x) [ i ]≔ y ≡ xs [ i ]≔ y
+[]≔-idempotent xs i = updateAt-updateAt i xs
 
 []≔-commutes : ∀ (xs : Vec A n) (i j : Fin n) → i ≢ j →
-               (xs [ i ]≔ x) [ j ]≔ y ≡ (xs [ j ]≔ y) [ i ]≔ x
+                (xs [ i ]≔ x) [ j ]≔ y ≡ (xs [ j ]≔ y) [ i ]≔ x
 []≔-commutes xs i j i≢j = updateAt-commutes j i (i≢j ∘ sym) xs
 
 []≔-updates : ∀ (xs : Vec A n) (i : Fin n) → (xs [ i ]≔ x) [ i ]= x
@@ -424,15 +424,15 @@ lookup-map (suc i) f (x ∷ xs) = lookup-map i f xs
 map-updateAt : ∀ {f : A → B} {g : A → A} {h : B → B}
                (xs : Vec A n) (i : Fin n) →
                f (g (lookup xs i)) ≡ h (f (lookup xs i)) →
-               map f (updateAt i g xs) ≡ updateAt i h (map f xs)
+               map f (updateAt xs i g) ≡ updateAt (map f xs) i h
 map-updateAt (x ∷ xs) zero    eq = cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
-map-insert : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
-             map f (insert xs i x) ≡ insert (map f xs) i (f x)
-map-insert f _ []        zero    = refl
-map-insert f _ (x' ∷ xs) zero    = refl
-map-insert f x (x' ∷ xs) (suc i) = cong (_ ∷_) (map-insert f x xs i)
+map-insertAt : ∀ (f : A → B) (x : A) (xs : Vec A n) (i : Fin (suc n)) →
+             map f (insertAt xs i x) ≡ insertAt (map f xs) i (f x)
+map-insertAt f _ []        Fin.zero = refl
+map-insertAt f _ (x' ∷ xs) Fin.zero = refl
+map-insertAt f x (x' ∷ xs) (Fin.suc i) = cong (_ ∷_) (map-insertAt f x xs i)
 
 map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
@@ -1176,42 +1176,57 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | false = m≤n⇒m≤1+n (count≤n xs)
 
 ------------------------------------------------------------------------
--- insert
+-- length
 
-insert-lookup : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
-                lookup (insert xs i v) i ≡ v
-insert-lookup xs       zero     v = refl
-insert-lookup (x ∷ xs) (suc i)  v = insert-lookup xs i v
-
-insert-punchIn : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) (j : Fin n) →
-                 lookup (insert xs i v) (Fin.punchIn i j) ≡ lookup xs j
-insert-punchIn xs       zero     v j       = refl
-insert-punchIn (x ∷ xs) (suc i)  v zero    = refl
-insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
-
-remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
-                  lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
-remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
-remove-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
-remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
-remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
-  remove-punchOut (y ∷ xs) (i≢j ∘ cong suc)
+length-toList : (xs : Vec A n) → List.length (toList xs) ≡ length xs
+length-toList []       = refl
+length-toList (x ∷ xs) = cong suc (length-toList xs)
 
 ------------------------------------------------------------------------
--- remove
+-- insertAt
 
-remove-insert : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
-                remove (insert xs i v) i ≡ xs
-remove-insert xs           zero           v = refl
-remove-insert (x ∷ xs)     (suc zero)     v = refl
-remove-insert (x ∷ y ∷ xs) (suc (suc i))  v =
-  cong (x ∷_) (remove-insert (y ∷ xs) (suc i) v)
+insertAt-lookup : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
+                  lookup (insertAt xs i v) i ≡ v
+insertAt-lookup xs       zero     v = refl
+insertAt-lookup (x ∷ xs) (suc i)  v = insertAt-lookup xs i v
 
-insert-remove : ∀ (xs : Vec A (suc n)) (i : Fin (suc n)) →
-                insert (remove xs i) i (lookup xs i) ≡ xs
-insert-remove (x ∷ xs)     zero     = refl
-insert-remove (x ∷ y ∷ xs) (suc i)  =
-  cong (x ∷_) (insert-remove (y ∷ xs) i)
+insertAt-punchIn : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) (j : Fin n) →
+                   lookup (insertAt xs i v) (Fin.punchIn i j) ≡ lookup xs j
+insertAt-punchIn xs       zero     v j       = refl
+insertAt-punchIn (x ∷ xs) (suc i)  v zero    = refl
+insertAt-punchIn (x ∷ xs) (suc i)  v (suc j) = insertAt-punchIn xs i v j
+
+toList-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
+                  toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (sym (length-toList xs))) i) v
+toList-insertAt xs       zero    v = refl
+toList-insertAt (x ∷ xs) (suc i) v = cong (_ List.∷_) (toList-insertAt xs i v)
+
+------------------------------------------------------------------------
+-- removeAt
+
+removeAt-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
+                  lookup (removeAt xs i) (Fin.punchOut i≢j) ≡ lookup xs j
+removeAt-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
+removeAt-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
+removeAt-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
+removeAt-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
+  removeAt-punchOut (y ∷ xs) (i≢j ∘ cong suc)
+
+------------------------------------------------------------------------
+-- insertAt and removeAt
+
+removeAt-insertAt : ∀ (xs : Vec A n) (i : Fin (suc n)) (v : A) →
+                    removeAt (insertAt xs i v) i ≡ xs
+removeAt-insertAt xs               zero           v = refl
+removeAt-insertAt (x ∷ xs)         (suc zero)     v = refl
+removeAt-insertAt (x ∷ xs@(_ ∷ _)) (suc (suc i))  v =
+  cong (x ∷_) (removeAt-insertAt xs (suc i) v)
+
+insertAt-removeAt : ∀ (xs : Vec A (suc n)) (i : Fin (suc n)) →
+                    insertAt (removeAt xs i) i (lookup xs i) ≡ xs
+insertAt-removeAt (x ∷ xs)         zero     = refl
+insertAt-removeAt (x ∷ xs@(_ ∷ _)) (suc i)  =
+  cong (x ∷_) (insertAt-removeAt xs i)
 
 ------------------------------------------------------------------------
 -- Conversion function
@@ -1258,16 +1273,16 @@ updateAt-id-relative = updateAt-id-local
 Please use updateAt-id-local instead."
 #-}
 
-updateAt-compose-relative = updateAt-∘-local
+updateAt-compose-relative = updateAt-updateAt-local
 {-# WARNING_ON_USAGE updateAt-compose-relative
 "Warning: updateAt-compose-relative was deprecated in v2.0.
-Please use updateAt-∘-local instead."
+Please use updateAt-updateAt-local instead."
 #-}
 
-updateAt-compose = updateAt-∘
+updateAt-compose = updateAt-updateAt
 {-# WARNING_ON_USAGE updateAt-compose
 "Warning: updateAt-compose was deprecated in v2.0.
-Please use updateAt-∘ instead."
+Please use updateAt-updateAt instead."
 #-}
 
 updateAt-cong-relative = updateAt-cong-local
@@ -1324,6 +1339,38 @@ drop-distr-map = drop-map
 "Warning: drop-distr-map was deprecated in v2.0.
 Please use drop-map instead."
 #-}
+
+map-insert = map-insertAt
+{-# WARNING_ON_USAGE map-insert
+"Warning: map-insert was deprecated in v2.0.
+Please use map-insertAt instead."
+#-}
+insert-lookup = insertAt-lookup
+{-# WARNING_ON_USAGE insert-lookup
+"Warning: insert-lookup was deprecated in v2.0.
+Please use insertAt-lookup instead."
+#-}
+insert-punchIn = insertAt-punchIn
+{-# WARNING_ON_USAGE insert-punchIn
+"Warning: insert-punchIn was deprecated in v2.0.
+Please use insertAt-punchIn instead."
+#-}
+remove-PunchOut = removeAt-punchOut
+{-# WARNING_ON_USAGE remove-PunchOut
+"Warning: remove-PunchOut was deprecated in v2.0.
+Please use removeAt-punchOut instead."
+#-}
+remove-insert = removeAt-insertAt
+{-# WARNING_ON_USAGE remove-insert
+"Warning: remove-insert was deprecated in v2.0.
+Please use removeAt-insertAt instead."
+#-}
+insert-remove = insertAt-removeAt
+{-# WARNING_ON_USAGE insert-remove
+"Warning: insert-remove was deprecated in v2.0.
+Please use insertAt-removeAt instead."
+#-}
+
 lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
                       lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
 lookup-inject≤-take m m≤m+n i xs = sym (begin
@@ -1337,4 +1384,3 @@ lookup-inject≤-take m m≤m+n i xs = sym (begin
 "Warning: lookup-inject≤-take was deprecated in v2.0.
 Please use lookup-take-inject≤ or lookup-truncate, take≡truncate instead."
 #-}
-
