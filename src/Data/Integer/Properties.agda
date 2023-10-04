@@ -16,7 +16,7 @@ import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.AbelianGroup
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base renaming (suc to sucℤ)
-open import Data.Nat as ℕ
+open import Data.Nat.Base as ℕ
   using (ℕ; suc; zero; _∸_; s≤s; z≤n; s<s; z<s; s≤s⁻¹; s<s⁻¹)
   hiding (module ℕ)
 import Data.Nat.Properties as ℕ
