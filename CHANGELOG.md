@@ -3128,11 +3128,11 @@ Additions to existing modules
   The following negated relation symbols have now been added, with their
   (obvious) intended semantics:
   ```agda
-  infix 4 _≁_ _≰_ _≮_
-  Preorder._≁_            : Rel Carrier _
+  infix 4 _⋦_ _≰_ _≮_
+  Preorder._⋦_            : Rel Carrier _
   StrictPartialOrder._≮_  : Rel Carrier _
   ```
-  Additionally, `Poset._≰_` is defined by renaming public export of `Preorder._≁_`
+  Additionally, `Poset._≰_` is defined by renaming public export of `Preorder._⋦_`
 
   The corresponding former definitions in `Relation.Binary.Properties.*`
   have been deprecated.
