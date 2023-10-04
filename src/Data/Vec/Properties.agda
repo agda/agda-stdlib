@@ -31,6 +31,7 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable.Core using (Dec; does; yes; no; _×-dec_; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)
+import Data.Nat.GeneralisedArithmetic as ℕ
 
 open ≡-Reasoning
 
@@ -1097,6 +1098,29 @@ toList-replicate : ∀ (n : ℕ) (x : A) →
                    toList (replicate {n = n} a) ≡ List.replicate n a
 toList-replicate zero    x = refl
 toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
+
+------------------------------------------------------------------------
+-- iterate
+
+iterate-id : ∀ (x : A) n → iterate id x n ≡ replicate x
+iterate-id x zero    = refl
+iterate-id x (suc n) = cong (_ ∷_) (iterate-id (id x) n)
+
+take-iterate : ∀ n f (x : A) → take n (iterate f x (n + m)) ≡ iterate f x n
+take-iterate zero    f x = refl
+take-iterate (suc n) f x = cong (_ ∷_) (take-iterate n f (f x))
+
+drop-iterate : ∀ n f (x : A) → drop n (iterate f x (n + zero)) ≡ []
+drop-iterate zero    f x = refl
+drop-iterate (suc n) f x = drop-iterate n f (f x)
+
+lookup-iterate :  ∀ f (x : A) (i : Fin n) → lookup (iterate f x n) i ≡ ℕ.iterate f x (toℕ i)
+lookup-iterate f x zero    = refl
+lookup-iterate f x (suc i) = lookup-iterate f (f x) i
+
+toList-iterate : ∀ f (x : A) n → toList (iterate f x n) ≡ List.iterate f x n
+toList-iterate f x zero    = refl
+toList-iterate f x (suc n) = cong (_ List.∷_) (toList-iterate f (f x) n)
 
 ------------------------------------------------------------------------
 -- tabulate
