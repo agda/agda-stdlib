@@ -64,7 +64,7 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
 -- ◇ is a congruence for bag and set equality and related preorders.
 
   cong : ∀ {k} {xs₁ xs₂ : ⟦ C ⟧ X} →
-         (∀ x → Related k (P₁ x) (P₂ x)) → xs₁ ∼[ k ] xs₂ →
+         (∀ x → Related k (P₁ x) (P₂ x)) → xs₁ ≲[ k ] xs₂ →
          Related k (◇ C P₁ xs₁) (◇ C P₂ xs₂)
   cong {k} {xs₁} {xs₂} P₁↔P₂ xs₁≈xs₂ =
     ◇ C P₁ xs₁               ↔⟨ ↔∈ C ⟩
@@ -185,8 +185,8 @@ module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
          {ℓ} (P : Pred Y ℓ) where
 
   map-cong : ∀ {k} {f₁ f₂ : X → Y} {xs₁ xs₂ : ⟦ C ⟧ X} →
-             f₁ ≗ f₂ → xs₁ ∼[ k ] xs₂ →
-             map f₁ xs₁ ∼[ k ] map f₂ xs₂
+             f₁ ≗ f₂ → xs₁ ≲[ k ] xs₂ →
+             map f₁ xs₁ ≲[ k ] map f₂ xs₂
   map-cong {f₁ = f₁} {f₂} {xs₁} {xs₂} f₁≗f₂ xs₁≈xs₂ {x} =
     x ∈ map f₁ xs₁           ↔⟨ map↔∘ C (_≡_ x) f₁ ⟩
     ◇ C (λ y → x ≡ f₁ y) xs₁ ∼⟨ cong (Related.↔⇒ ∘ helper) xs₁≈xs₂ ⟩
@@ -286,7 +286,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 
 module _ {s p} {C : Container s p} {x} {X : Set x} where
 
-  linear-identity : ∀ {xs : ⟦ C ⟧ X} (m : C ⊸ C) → ⟪ m ⟫⊸ xs ∼[ bag ] xs
+  linear-identity : ∀ {xs : ⟦ C ⟧ X} (m : C ⊸ C) → ⟪ m ⟫⊸ xs ≲[ bag ] xs
   linear-identity {xs} m {x} =
     x ∈ ⟪ m ⟫⊸ xs  ↔⟨ remove-linear (_≡_ x) m ⟩
     x ∈        xs  ∎

@@ -72,8 +72,8 @@ open Related public using (Kind; SymmetricKind) renaming
 
 infix 4 _∼[_]_
 
-_∼[_]_ : List A → Kind → List A → Set _
-_∼[_]_ {A = A} xs k ys = Preorder._∼_ ([ k ]-Order A) xs ys
+_∼[_]_ : ∀ {a} {A : Set a} → List A → Kind → List A → Set _
+_∼[_]_ {A = A} xs k ys = Preorder._≲_ ([ k ]-Order A) xs ys
 
 private
   module Eq  {k a} {A : Set a} = Setoid ([ k ]-Equality A)

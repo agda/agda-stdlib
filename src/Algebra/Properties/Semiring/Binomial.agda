@@ -71,7 +71,7 @@ sum₂ n = ∑[ k ≤ suc n ] term₂ n k
 ------------------------------------------------------------------------
 -- Properties
 
-term₂[n,n+1]≈0# : ∀ n → term₂ n (fromℕ (suc n)) ≈ 0# 
+term₂[n,n+1]≈0# : ∀ n → term₂ n (fromℕ (suc n)) ≈ 0#
 term₂[n,n+1]≈0# n rewrite view-fromℕ (suc n) = refl
 
 lemma₁ : ∀ n → x * binomialExpansion n ≈ sum₁ n
@@ -117,7 +117,7 @@ x*lemma {n} i = begin
 ------------------------------------------------------------------------
 -- Next, a lemma which does require commutativity
 
-y*lemma : x * y ≈ y * x → ∀ {n : ℕ} (j : Fin n) → 
+y*lemma : x * y ≈ y * x → ∀ {n : ℕ} (j : Fin n) →
           y * binomialTerm n (suc j) ≈ (n C toℕ (suc j)) × binomial (suc n) (suc (inject₁ j))
 y*lemma x*y≈y*x {n} j = begin
   y * binomialTerm n (suc j)
