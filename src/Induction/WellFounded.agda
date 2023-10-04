@@ -82,7 +82,7 @@ module Some {_<_ : Rel A r} {ℓ} where
 -- Well-founded induction for all elements, assuming they are all
 -- accessible:
 
-module All {_<_ : Rel A r} (wf : WellFounded _<_) {ℓ} where
+module All {_<_ : Rel A r} (wf : WellFounded _<_) ℓ where
 
   wfRecBuilder : RecursorBuilder (WfRec _<_ {ℓ = ℓ})
   wfRecBuilder P f x = Some.wfRecBuilder P f x (wf x)
@@ -104,10 +104,11 @@ module FixPoint
   some-wfrec-Irrelevant x = ∀ q q′ → Some.wfRec P f x q ≡ Some.wfRec P f x q′
 
   some-wfRec-irrelevant : ∀ x → some-wfrec-Irrelevant x
-  some-wfRec-irrelevant = All.wfRec wf some-wfrec-Irrelevant
+  some-wfRec-irrelevant = All.wfRec wf _ some-wfrec-Irrelevant
     λ { x IH (acc rs) (acc rs′) → f-ext x λ y<x → IH y<x (rs y<x) (rs′ y<x) }
 
-  open All wf {ℓ}
+  open All wf ℓ
+
   wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y<x ≡ wfRec P f y
   wfRecBuilder-wfRec {x} {y} y<x with acc rs ← wf x
    = some-wfRec-irrelevant y (rs y<x) (wf y)
