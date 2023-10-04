@@ -195,7 +195,7 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
     ... | inj₂ q | P.refl | q≤p =
       Prod.map there
                (P.cong (there ∘ (Inverse.from (Any-⋎P xs)) ∘ inj₂))
-               (rec {- {♭ xss , q} -} (s≤′s q≤p))
+               (rec (s≤′s q≤p))
 
   to∘from = λ p → from-injective _ _ (proj₂ (to xss (from p)))
 
