@@ -797,6 +797,23 @@ Non-backwards compatible changes
   IO.Instances
   ```
 
+### (Issue #2096) Introduction of flipped relation symbol for `Relation.Binary.Bundles.Preorder`
+
+* Previously, the relation symbol `_∼_`  was (notationally) symmetric, so that its
+  converse relation could only be discussed *semantically* in terms of `flip _∼_`
+  in `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
+
+* Now, the symbol `_∼_` has been renamed to a new symbol `_≲_`, with `_≳_`
+  introduced as a definition in `Relation.Binary.Bundles.Preorder` whose properties
+  in `Relation.Binary.Properties.Preorder` now refer to it. Partial backwards compatible
+  has been achieved by redeclaring a deprecated version of the old name in the record.
+  Therefore, only _declarations_ of `PartialOrder` records will need their field names
+  updating.
+
+* NB (issues #1214 #2098) the corresponding situation regarding the `flip`ped
+  relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet)
+  been addressed.
+
 ### Standardisation of `insertAt`/`updateAt`/`removeAt`
 
 * Previously, the names and argument order of index-based insertion, update and removal functions for
@@ -839,7 +856,6 @@ Non-backwards compatible changes
   ```
   
 * The old names (and the names of all proofs about these functions) have been deprecated appropriately.
-
 
 ### Changes to triple reasoning interface
 
@@ -1251,6 +1267,11 @@ Deprecated names
   push-function-into-if ↦ if-float
   ```
 
+* In `Data.Container.Related`:
+  ```
+  _∼[_]_  ↦  _≲[_]_
+  ```
+
 * In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ`
   for the 'left', resp. 'right' injection of a Fin m into a 'larger' type,
   `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the
@@ -1659,6 +1680,16 @@ Deprecated names
   ```
   toForeign   ↦ Foreign.Haskell.Coerce.coerce
   fromForeign ↦ Foreign.Haskell.Coerce.coerce
+  ```
+
+* In `Relation.Binary.Bundles.Preorder`:
+  ```
+  _∼_  ↦  _≲_
+  ```
+
+* In `Relation.Binary.Indexed.Heterogeneous.Bundles.Preorder`:
+  ```
+  _∼_  ↦  _≲_
   ```
 
 * In `Relation.Binary.Properties.Preorder`:
