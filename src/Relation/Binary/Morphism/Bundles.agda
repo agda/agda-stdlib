@@ -70,7 +70,7 @@ record PreorderHomomorphism (S₁ : Preorder ℓ₁ ℓ₂ ℓ₃)
   open Preorder
   field
     ⟦_⟧                 : Carrier S₁ → Carrier S₂
-    isOrderHomomorphism : IsOrderHomomorphism (_≈_ S₁) (_≈_ S₂) (_∼_ S₁) (_∼_ S₂) ⟦_⟧
+    isOrderHomomorphism : IsOrderHomomorphism (_≈_ S₁) (_≈_ S₂) (_≲_ S₁) (_≲_ S₂) ⟦_⟧
 
   open IsOrderHomomorphism isOrderHomomorphism public
 
