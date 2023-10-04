@@ -822,6 +822,22 @@ Non-backwards compatible changes
   IO.Effectful
   IO.Instances
   ```
+### (Issue #2096) Introduction of flipped relation symbol for `Relation.Binary.Bundles.Preorder`
+
+* Previously, the relation symbol `_∼_`  was (notationally) symmetric, so that its
+  converse relation could only be discussed *semantically* in terms of `flip _∼_`
+  in `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
+
+* Now, the symbol `_∼_` has been renamed to a new symbol `_≲_`, with `_≳_`
+  introduced as a definition in `Relation.Binary.Bundles.Preorder` whose properties
+  in `Relation.Binary.Properties.Preorder` now refer to it. Partial backwards compatible
+  has been achieved by redeclaring a deprecated version of the old name in the record.
+  Therefore, only _declarations_ of `PartialOrder` records will need their field names
+  updating.
+
+* NB (issue #2098) the corresponding situation regarding the `flip`ped
+  relation symbols `_≥_`, `_>_` has not (yet) been addressed.
+
 ### (Issue #1214) Reorganisation of the introduction of negated relation symbols under `Relation.Binary`
 
 * Previously, negated relation symbols `_≰_` (for `Poset`) and `_≮_` (`TotalOrder`)
@@ -853,22 +869,6 @@ Non-backwards compatible changes
 * NB (issue #2098) the corresponding situation regarding the `flip`ped relation
   symbols `_≥_`, `_>_` (and their negated versions!) has not (yet) been addressed.
   Ditto. the strict ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
-
-### (Issue #2096) Introduction of flipped relation symbol for `Relation.Binary.Bundles.Preorder`
-
-* Previously, the relation symbol `_∼_`  was (notationally) symmetric, so that its
-  converse relation could only be discussed *semantically* in terms of `flip _∼_`
-  in `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
-
-* Now, the symbol `_∼_` has been renamed to a new symbol `_≲_`, with `_≳_`
-  introduced as a definition in `Relation.Binary.Bundles.Preorder` whose properties
-  in `Relation.Binary.Properties.Preorder` now refer to it. Partial backwards compatible
-  has been achieved by redeclaring a deprecated version of the old name in the record.
-  Therefore, only _declarations_ of `PartialOrder` records will need their field names
-  updating.
-
-* NB (issue #2098) the corresponding situation regarding the `flip`ped
-  relation symbols `_≥_`, `_>_` has not (yet) been addressed.
 
 ### Standardisation of `insertAt`/`updateAt`/`removeAt`
 
