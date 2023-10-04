@@ -279,11 +279,6 @@ record _≤″_ (m n : ℕ) : Set where
     {k}   : ℕ
     proof : m + k ≡ n
 
--- Smart constructor of _<″_
-
-pattern ≤″-offset k = less-than-or-equal {k = k} refl
-pattern <″-offset k = ≤″-offset k
-
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
 _<″_ : Rel ℕ 0ℓ
@@ -294,6 +289,11 @@ m ≥″ n = n ≤″ m
 
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
+
+-- Smart constructors of _≤″_ and _<″_
+
+pattern ≤″-offset k = less-than-or-equal {k = k} refl
+pattern <″-offset k = ≤″-offset k
 
 -- Smart destructor of _<″_
 

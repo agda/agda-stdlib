@@ -2381,6 +2381,9 @@ Additions to existing modules
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
 
   pattern ≤″-offset k = less-than-or-equal {k} refl
+  pattern <″-offset k = ≤″-offset k
+
+  s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
 
   _⊔′_ : ℕ → ℕ → ℕ
   _⊓′_ : ℕ → ℕ → ℕ
