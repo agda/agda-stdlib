@@ -202,13 +202,13 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
     ×-acc : ∀ {x y} →
             Acc _<₁_ x → Acc _<₂_ y →
             WfRec _<ₗₑₓ_ (Acc _<ₗₑₓ_) (x , y)
-    ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
-      = acc (×-acc (rec₁ u u<x) (wf₂ v))
-    ×-acc acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
+    ×-acc (acc rec₁) acc₂ (inj₁ u<x)
+      = acc (×-acc (rec₁ u<x) (wf₂ _))
+    ×-acc acc₁ (acc rec₂) (inj₂ (u≈x , v<y))
       = Acc-resp-flip-≈
         (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (≡.respʳ _<₂_))
         (u≈x , ≡.refl)
-        (acc (×-acc acc₁ (rec₂ v v<y)))
+        (acc (×-acc acc₁ (rec₂ v<y)))
 
 
 module _ {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel B ℓ₂} where
