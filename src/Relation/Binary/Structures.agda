@@ -73,25 +73,25 @@ record IsDecEquivalence : Set (a ⊔ ℓ) where
 -- Preorders
 ------------------------------------------------------------------------
 
-record IsPreorder (_∼_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+record IsPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
     isEquivalence : IsEquivalence
     -- Reflexivity is expressed in terms of the underlying equality:
-    reflexive     : _≈_ ⇒ _∼_
-    trans         : Transitive _∼_
+    reflexive     : _≈_ ⇒ _≲_
+    trans         : Transitive _≲_
 
   module Eq = IsEquivalence isEquivalence
 
-  refl : Reflexive _∼_
+  refl : Reflexive _≲_
   refl = reflexive Eq.refl
 
-  ∼-respˡ-≈ : _∼_ Respectsˡ _≈_
+  ∼-respˡ-≈ : _≲_ Respectsˡ _≈_
   ∼-respˡ-≈ x≈y x∼z = trans (reflexive (Eq.sym x≈y)) x∼z
 
-  ∼-respʳ-≈ : _∼_ Respectsʳ _≈_
+  ∼-respʳ-≈ : _≲_ Respectsʳ _≈_
   ∼-respʳ-≈ x≈y z∼x = trans z∼x (reflexive x≈y)
 
-  ∼-resp-≈ : _∼_ Respects₂ _≈_
+  ∼-resp-≈ : _≲_ Respects₂ _≈_
   ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
 
 

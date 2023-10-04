@@ -2070,6 +2070,11 @@ m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 <″⇒<ᵇ : m <″ n → T (m <ᵇ n)
 <″⇒<ᵇ {m} (less-than-or-equal refl) = <⇒<ᵇ (m≤m+n (suc m) _)
 
+-- equivalence to the old definition of _≤″_
+
+≤″-proof : ∀ {m n} (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
+≤″-proof (less-than-or-equal prf) = prf
+
 -- equivalence to _≤_
 
 ≤″⇒≤ : _≤″_ ⇒ _≤_
@@ -2104,8 +2109,8 @@ _>″?_ = flip _<″?_
 ≤″-irrelevant : Irrelevant _≤″_
 ≤″-irrelevant {m} (less-than-or-equal eq₁)
                   (less-than-or-equal eq₂)
-  with +-cancelˡ-≡ m _ _ (trans eq₁ (sym eq₂))
-... | refl = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
+  with refl ← +-cancelˡ-≡ m _ _ (trans eq₁ (sym eq₂))
+  = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
 
 <″-irrelevant : Irrelevant _<″_
 <″-irrelevant = ≤″-irrelevant
@@ -2120,18 +2125,16 @@ _>″?_ = flip _<″?_
 -- Properties of _≤‴_
 ------------------------------------------------------------------------
 
-≤‴⇒≤″ : m ≤‴ n → m ≤″ n
-≤‴⇒≤″ {m = m} ≤‴-refl     = less-than-or-equal {k = 0} (+-identityʳ m)
-≤‴⇒≤″ {m = m} (≤‴-step x) = less-than-or-equal (trans (+-suc m _) (_≤″_.proof ind)) where
-  ind = ≤‴⇒≤″ x
+≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
+≤‴⇒≤″ {m = m} ≤‴-refl       = less-than-or-equal {k = 0} (+-identityʳ m)
+≤‴⇒≤″ {m = m} (≤‴-step m≤n) = less-than-or-equal (trans (+-suc m _) (≤″-proof (≤‴⇒≤″ m≤n)))
 
-m≤‴m+k : m + k ≡ n → m ≤‴ n
-m≤‴m+k {m} {k = zero} refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
-m≤‴m+k {m} {k = suc k} proof
-  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) proof))
+m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
+m≤‴m+k {m} {k = zero}  refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
+m≤‴m+k {m} {k = suc k} prf  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) prf))
 
-≤″⇒≤‴ : m ≤″ n → m ≤‴ n
-≤″⇒≤‴ (less-than-or-equal {k} proof) = m≤‴m+k proof
+≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
+≤″⇒≤‴ m≤n = m≤‴m+k (≤″-proof m≤n)
 
 0≤‴n : 0 ≤‴ n
 0≤‴n = m≤‴m+k refl
