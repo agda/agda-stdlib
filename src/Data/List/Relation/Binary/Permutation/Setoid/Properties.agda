@@ -384,17 +384,14 @@ split v as bs p = helper as bs p (<-wellFounded (steps p))
   helper (a ∷ [])     bs (refl eq)    _ = [ a ]      , bs , eq
   helper (a ∷ b ∷ as) bs (refl eq)    _ = a ∷ b ∷ as , bs , eq
   helper []           bs (prep v≈x _) _ = [] , _ , v≈x ∷ ≋-refl
-  helper (a ∷ as)     bs (prep eq as↭xs) (acc rec)
-    with ps , qs , eq₂ ← helper as bs as↭xs (rec (n<1+n _))
-    = a ∷ ps , qs , eq ∷ eq₂
+  helper (a ∷ as)     bs (prep eq as↭xs) (acc rec) with helper as bs as↭xs (rec ≤-refl)
+  ... | (ps , qs , eq₂) = a ∷ ps , qs , eq ∷ eq₂
   helper [] (b ∷ bs)     (swap x≈b y≈v _) _ = [ b ] , _     , x≈b ∷ y≈v ∷ ≋-refl
   helper (a ∷ [])     bs (swap x≈v y≈a ↭) _ = []    , a ∷ _ , x≈v ∷ y≈a ∷ ≋-refl
-  helper (a ∷ b ∷ as) bs (swap x≈b y≈a as↭xs) (acc rec)
-    with ps , qs , eq ← helper as bs as↭xs (rec (n<1+n _))
-    = b ∷ a ∷ ps , qs , x≈b ∷ y≈a ∷ eq
-  helper as           bs (trans ↭₁ ↭₂) (acc rec)
-    with ps , qs , eq ← helper as bs ↭₂ (rec (m<n+m (steps ↭₂) (0<steps ↭₁)))
-    = helper ps qs (↭-respʳ-≋ eq ↭₁)
+  helper (a ∷ b ∷ as) bs (swap x≈b y≈a as↭xs) (acc rec) with helper as bs as↭xs (rec ≤-refl)
+  ... | (ps , qs , eq) = b ∷ a ∷ ps , qs , x≈b ∷ y≈a ∷ eq
+  helper as           bs (trans ↭₁ ↭₂) (acc rec) with helper as bs ↭₂ (rec (m<n+m (steps ↭₂) (0<steps ↭₁)))
+  ... | (ps , qs , eq) = helper ps qs (↭-respʳ-≋ eq ↭₁)
       (rec (subst (_< _) (sym (steps-respʳ eq ↭₁)) (m<m+n (steps ↭₁) (0<steps ↭₂))))
 
 ------------------------------------------------------------------------
