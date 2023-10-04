@@ -797,6 +797,50 @@ Non-backwards compatible changes
   IO.Instances
   ```
 
+### Standardisation of `insertAt`/`updateAt`/`removeAt`
+
+* Previously, the names and argument order of index-based insertion, update and removal functions for
+  various types of lists and vectors were inconsistent.
+
+* To fix this the names have all been standardised to `insertAt`/`updateAt`/`removeAt`.
+
+* Correspondingly the following changes have occurred:
+
+* In `Data.List.Base` the following have been added:
+  ```agda
+  insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
+  updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
+  removeAt : (xs : List A) → Fin (length xs) → List A
+  ```
+  and the following has been deprecated
+  ```
+  _─_ ↦ removeAt
+  ```
+  
+* In `Data.Vec.Base`:
+  ```agda
+  insert ↦ insertAt
+  remove ↦ removeAt
+  
+  updateAt : Fin n → (A → A) → Vec A n → Vec A n
+    ↦
+  updateAt : Vec A n → Fin n → (A → A) → Vec A n
+  ```
+
+* In `Data.Vec.Functional`:
+  ```agda
+  remove : Fin (suc n) → Vector A (suc n) → Vector A n
+    ↦
+  removeAt : Vector A (suc n) → Fin (suc n) → Vector A n
+ 
+  updateAt : Fin n → (A → A) → Vector A n → Vector A n
+    ↦
+  updateAt : Vector A n → Fin n → (A → A) → Vector A n
+  ```
+  
+* The old names (and the names of all proofs about these functions) have been deprecated appropriately.
+
+
 ### Changes to triple reasoning interface
 
 * The module `Relation.Binary.Reasoning.Base.Triple` now takes an extra proof that the strict
@@ -1321,6 +1365,11 @@ Deprecated names
   +-isAbelianGroup ↦ +-0-isAbelianGroup
   ```
 
+* In `Data.List.Base`:
+  ```
+  _─_  ↦  removeAt
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   map-id₂         ↦  map-id-local
@@ -1337,7 +1386,10 @@ Deprecated names
 
   ʳ++-++  ↦  ++-ʳ++
 
-  take++drop ↦ take++drop≡id
+  take++drop  ↦  take++drop≡id
+
+  length-─  ↦  length-removeAt
+  map-─     ↦  map-removeAt
   ```
 
 * In `Data.List.NonEmpty.Properties`:
@@ -1350,8 +1402,8 @@ Deprecated names
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   updateAt-id-relative      ↦  updateAt-id-local
-  updateAt-compose-relative ↦  updateAt-∘-local
-  updateAt-compose          ↦  updateAt-∘
+  updateAt-compose-relative ↦  updateAt-updateAt-local
+  updateAt-compose          ↦  updateAt-updateAt
   updateAt-cong-relative    ↦  updateAt-cong-local
   ```
 
@@ -1497,6 +1549,12 @@ Deprecated names
   map-compose     ↦  map-∘
   ```
 
+* In `Data.Vec.Base`:
+  ```
+  remove  ↦  removeAt
+  insert  ↦  insertAt
+  ```
+
 * In `Data.Vec.Properties`:
   ```
   take-distr-zipWith ↦  take-zipWith
@@ -1505,8 +1563,8 @@ Deprecated names
   drop-distr-map     ↦  drop-map
 
   updateAt-id-relative      ↦  updateAt-id-local
-  updateAt-compose-relative ↦  updateAt-∘-local
-  updateAt-compose          ↦  updateAt-∘
+  updateAt-compose-relative ↦  updateAt-updateAt-local
+  updateAt-compose          ↦  updateAt-updateAt
   updateAt-cong-relative    ↦  updateAt-cong-local
 
   []%=-compose    ↦  []%=-∘
@@ -1516,7 +1574,15 @@ Deprecated names
   idIsFold        ↦ id-is-foldr
   sum-++-commute  ↦ sum-++
 
-  take-drop-id ↦ take++drop≡id
+  take-drop-id  ↦  take++drop≡id
+
+  map-insert       ↦  map-insertAt
+  
+  insert-lookup    ↦  insertAt-lookup
+  insert-punchIn   ↦  insertAt-punchIn
+  remove-PunchOut  ↦  removeAt-punchOut
+  remove-insert    ↦  removeAt-insertAt
+  insert-remove    ↦  insertAt-removeAt
 
   lookup-inject≤-take ↦ lookup-take-inject≤
   ```
@@ -1532,11 +1598,17 @@ Deprecated names
 * In `Data.Vec.Functional.Properties`:
   ```
   updateAt-id-relative      ↦  updateAt-id-local
-  updateAt-compose-relative ↦  updateAt-∘-local
-  updateAt-compose          ↦  updateAt-∘
+  updateAt-compose-relative ↦  updateAt-updateAt-local
+  updateAt-compose          ↦  updateAt-updateAt
   updateAt-cong-relative    ↦  updateAt-cong-local
 
   map-updateAt              ↦  map-updateAt-local
+  
+  insert-lookup             ↦  insertAt-lookup
+  insert-punchIn            ↦  insertAt-punchIn
+  remove-punchOut           ↦  removeAt-punchOut
+  remove-insert             ↦  removeAt-insertAt
+  insert-remove             ↦  insertAt-removeAt
   ```
   NB. This last one is complicated by the *addition* of a 'global' property `map-updateAt`
 
@@ -2312,7 +2384,7 @@ Additions to existing modules
   gcd-zero  : Zero 1ℤ gcd
   ```
 
-* Added new functions in `Data.List`:
+* Added new functions in `Data.List.Base`:
   ```agda
   takeWhileᵇ   : (A → Bool) → List A → List A
   dropWhileᵇ   : (A → Bool) → List A → List A
@@ -2331,14 +2403,14 @@ Additions to existing modules
   find         : Decidable P → List A → Maybe A
   findIndex    : Decidable P → (xs : List A) → Maybe $ Fin (length xs)
   findIndices  : Decidable P → (xs : List A) → List $ Fin (length xs)
-  ```
 
-* Added new functions and definitions to `Data.List.Base`:
-  ```agda
-  catMaybes : List (Maybe A) → List A
-  ap : List (A → B) → List A → List B
-  ++-rawMagma : Set a → RawMagma a _
+  catMaybes       : List (Maybe A) → List A
+  ap              : List (A → B) → List A → List B
+  ++-rawMagma     : Set a → RawMagma a _
   ++-[]-rawMonoid : Set a → RawMonoid a _
+
+  insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
+  updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
@@ -2405,6 +2477,11 @@ Additions to existing modules
   map-replicate : map f (replicate n x) ≡ replicate n (f x)
 
   drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
+
+  length-insertAt   : length (insertAt xs i v) ≡ suc (length xs)
+  length-removeAt′  : length xs ≡ suc (length (removeAt xs k))
+  removeAt-insertAt : removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
+  insertAt-removeAt : insertAt (removeAt xs i) (cast (sym (lengthAt-removeAt xs i)) i) (lookup xs i) ≡ xs
   ```
 
 * Added new patterns and definitions to `Data.Nat.Base`:
@@ -2840,6 +2917,9 @@ Additions to existing modules
   cast-fromList : cast _ (fromList xs) ≡ fromList ys
   fromList-map  : cast _ (fromList (List.map f xs)) ≡ map f (fromList xs)
   fromList-++   : cast _ (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+
+  length-toList   : List.length (toList xs) ≡ length xs
+  toList-insertAt : toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (sym (length-toList xs))) i) v
 
   truncate≡take       : .(eq : n ≡ m + o) → truncate m≤n xs ≡ take m (cast eq xs)
   take≡truncate       : take m xs ≡ truncate (m≤m+n m n) xs
