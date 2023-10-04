@@ -2432,11 +2432,12 @@ Additions to existing modules
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
 
-  ≤-pred        : suc m ≤ suc n → m ≤ n
   s<s-injective : ∀ {p q : m < n} → s<s p ≡ s<s q → p ≡ q
-  <-pred        : suc m < suc n → m < n
   <-step        : m < n → m < 1 + n
   m<1+n⇒m<n∨m≡n : m < suc n → m < n ⊎ m ≡ n
+
+  pred-mono-≤   : m ≤ n → pred m ≤ pred n
+  pred-mono-<   : .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
 
   z<′s : zero <′ suc n
   s<′s : m <′ n → suc m <′ suc n

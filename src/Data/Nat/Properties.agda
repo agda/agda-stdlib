@@ -1697,6 +1697,13 @@ pred[n]≤n {suc n} = n≤1+n n
 suc-pred : ∀ n .{{_ : NonZero n}} → suc (pred n) ≡ n
 suc-pred (suc n) = refl
 
+pred-mono-≤ : ∀ {m n} → m ≤ n → pred m ≤ pred n
+pred-mono-≤ {m = zero}              _   = z≤n
+pred-mono-≤ {m = suc _} {n = suc _} m≤n = s≤s⁻¹ m≤n
+
+pred-mono-< : ∀ {m n} → .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
+pred-mono-< {m = suc _} {n = suc _} = s<s⁻¹
+
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
 ------------------------------------------------------------------------
@@ -2295,12 +2302,12 @@ suc[pred[n]]≡n {suc n} _   = refl
 
 ≤-pred = s≤s⁻¹
 {-# WARNING_ON_USAGE ≤-pred
-"Warning: ≤-pred was deprecated in v2.0. Please use Data.Nat.Base.s≤s⁻¹  or Data.Nat.≤-pred instead. Note that the latter now has a different type. "
+"Warning: ≤-pred was deprecated in v2.0. Please use Data.Nat.Base.s≤s⁻¹  or pred-mono-≤ instead. Note that the latter now has a different type. "
 #-}
 
 <-pred = s<s⁻¹
-{-# WARNING_ON_USAGE ≤-pred
-"Warning: <-pred was deprecated in v2.0. Please use Data.Nat.Base.s<s⁻¹ or Data.Nat.<-pred instead. Note that the latter now has a different type using instance arguments."
+{-# WARNING_ON_USAGE <-pred
+"Warning: <-pred was deprecated in v2.0. Please use Data.Nat.Base.s<s⁻¹ or pred-mono-< instead. Note that the latter now has a different type using instance arguments."
 #-}
 
 ≤-step = m≤n⇒m≤1+n

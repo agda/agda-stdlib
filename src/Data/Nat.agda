@@ -44,12 +44,6 @@ open import Data.Nat.Properties public
 
 -- Version 2.0
 
+-- solely for the sake of exposing the deprecation warnings for these two names
 open import Data.Nat.Properties public
-  hiding (≤-pred; <-pred)
-
-≤-pred : ∀ {m n} → (m ≤ n) → pred m ≤ pred n
-≤-pred {m = zero}              _   = z≤n
-≤-pred {m = suc _} {n = suc _} m≤n = s≤s⁻¹ m≤n
-
-<-pred : ∀ {m n} → .⦃ _ : NonZero m ⦄ → (m < n) → pred m < pred n
-<-pred {m = suc _} {n = suc _} = s<s⁻¹
+  using (≤-pred; <-pred)
