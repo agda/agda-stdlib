@@ -3290,9 +3290,9 @@ Additions to existing modules
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```
-  sym⇒¬-sym       : Symmetric _∼_ → Symmetric _≁_
-  cotrans⇒¬-trans : Cotransitive _∼_ → Transitive _≁_
-  irrefl⇒¬-refl   : Reflexive _≈_ → Irreflexive _≈_ _∼_ →  Reflexive _≁_
+  sym⇒¬-sym       : Symmetric _∼_ → Symmetric (¬_ ∘₂ _∼_)
+  cotrans⇒¬-trans : Cotransitive _∼_ → Transitive (¬_ ∘₂ _∼_)
+  irrefl⇒¬-refl   : Reflexive _≈_ → Irreflexive _≈_ _∼_ →  Reflexive (¬_ ∘₂ _∼_)
   mono₂⇒cong₂     : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
                     f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
                     f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
