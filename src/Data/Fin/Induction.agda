@@ -160,7 +160,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
 ≺-wellFounded = Subrelation.wellFounded ≺⇒<′ ℕ.<′-wellFounded
 
 module _ {ℓ} where
-  open WF.All ≺-wellFounded {ℓ} public
+  open WF.All ≺-wellFounded ℓ public
     renaming
     ( wfRecBuilder to ≺-recBuilder
     ; wfRec        to ≺-rec

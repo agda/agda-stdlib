@@ -71,7 +71,7 @@ cRec = build cRecBuilder
 <′-wellFounded′ (suc n) (<′-step m<n) = <′-wellFounded′ n m<n
 
 module _ {ℓ : Level} where
-  open WF.All <′-wellFounded {ℓ} public
+  open WF.All <′-wellFounded ℓ public
     renaming ( wfRecBuilder to <′-recBuilder
              ; wfRec        to <′-rec
              )
@@ -103,7 +103,7 @@ module _ {ℓ : Level} where
   <-wellFounded-skip (suc k) (suc n) = acc λ {m} _ → <-wellFounded-skip k m
 
 module _ {ℓ : Level} where
-  open WF.All <-wellFounded {ℓ} public
+  open WF.All <-wellFounded ℓ public
     renaming ( wfRecBuilder to <-recBuilder
              ; wfRec        to <-rec
              )

@@ -178,7 +178,7 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
 
   to : ∀ xss p → InputPred (xss , p)
   to xss p =
-    WF.All.wfRec (On.wellFounded size <′-wellFounded)
+    WF.All.wfRec (On.wellFounded size <′-wellFounded) _
                  InputPred step (xss , p)
     where
     size : Input → ℕ
