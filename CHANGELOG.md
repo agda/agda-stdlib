@@ -29,6 +29,10 @@ Highlights
 Bug-fixes
 ---------
 
+* The combinators `_⟶-∘_`, `_↣-∘_`, `_↠-∘_`, `_⤖-∘_`, `_⇔-∘_`, `_↩-∘_`, `_↪-∘_`, `_↔-∘_`
+  in `Function.Construct.Composition` had their arguments in the wrong order. They have
+  been flipped so they can actually be used as a composition operator.
+
 * The following operators were missing a fixity declaration, which has now
   been fixed -
   ```
