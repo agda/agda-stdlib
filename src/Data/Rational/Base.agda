@@ -209,12 +209,6 @@ nonPositive {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonPositive {toℚᵘ p} (�
 nonNegative : ∀ {p} → p ≥ 0ℚ → NonNegative p
 nonNegative {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonNegative {toℚᵘ p} (ℚᵘ.*≤* p≤q)
 
--- Re-export base instances so that users don't have to open
--- Data.Nat.Base.
-
-open ℕ public
-  using (nonZero)
-
 ------------------------------------------------------------------------
 -- Operations on rationals
 
