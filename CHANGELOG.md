@@ -1413,7 +1413,7 @@ Deprecated names
   m<n⇒m≤pred[n]  ↦  i<j⇒i≤pred[j]
   -1*n≡-n        ↦  -1*i≡-i
   m*n≡0⇒m≡0∨n≡0  ↦  i*j≡0⇒i≡0∨j≡0
-  ∣m*n∣≡∣m∣*∣n∣     ↦  ∣i*j∣≡∣i∣*∣j∣
+  ∣m*n∣≡∣m∣*∣n∣  ↦  ∣i*j∣≡∣i∣*∣j∣
   m≤m+n          ↦  i≤i+j
   n≤m+n          ↦  i≤j+i
   m-n≤m          ↦  i≤i-j
@@ -1521,6 +1521,9 @@ Deprecated names
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
   <-step          ↦  m<n⇒m<1+n
+
+  <-transʳ        ↦  ≤-<-trans
+  <-transˡ        ↦  <-≤-trans
   ```
 
 * In `Data.Rational.Unnormalised.Base`:
@@ -3261,6 +3264,9 @@ Additions to existing modules
 
 * Added new definitions in `Relation.Binary.Definitions`:
   ```
+  RightTrans R S = Trans R S R
+  LeftTrans  S R = Trans S R R
+
   Dense        _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
