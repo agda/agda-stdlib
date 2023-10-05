@@ -60,9 +60,9 @@ lookup : Vec A n → Fin n → A
 lookup (x ∷ xs) zero    = x
 lookup (x ∷ xs) (suc i) = lookup xs i
 
-iterate : (A → A) → A → ∀ {n} → Vec A n
-iterate s z {zero}  = []
-iterate s z {suc n} = z ∷ iterate s (s z)
+iterate : (A → A) → A → ∀ n → Vec A n
+iterate s z zero    = []
+iterate s z (suc n) = z ∷ iterate s (s z) n
 
 insertAt : Vec A n → Fin (suc n) → A → Vec A (suc n)
 insertAt xs       zero     v = v ∷ xs

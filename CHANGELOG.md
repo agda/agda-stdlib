@@ -585,6 +585,21 @@ Non-backwards compatible changes
   Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
   ```
 
+### Change to the definition of `Induction.WellFounded.WfRec` (issue #2083)
+
+* Previously, the following definition was adopted
+  ```agda
+  WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
+  WfRec _<_ P x = ∀ y → y < x → P y
+  ```
+  with the consequence that all arguments involving about accesibility and
+  wellfoundedness proofs were polluted by almost-always-inferrable explicit
+  arguments for the `y` position. The definition has now been changed to
+  make that argument *implicit*, as 
+  ```agda
+  WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
+  WfRec _<_ P x = ∀ {y} → y < x → P y
+
 ### Change in the definition of `_≤″_` (issue #1919)
 
 * The definition of `_≤″_` in `Data.Nat.Base` was previously:
@@ -1058,17 +1073,20 @@ Non-backwards compatible changes
     Tactic.RingSolver
     Tactic.RingSolver.Core.NatSet
     ```
+
   * Moved & renamed from `Data.Vec.Relation.Unary.All`
     to `Data.Vec.Relation.Unary.All.Properties`:
     ```
     lookup ↦ lookup⁺
     tabulate ↦ lookup⁻
     ```
+
   * Renamed in `Data.Vec.Relation.Unary.Linked.Properties`
     and `Codata.Guarded.Stream.Relation.Binary.Pointwise`:
     ```
     lookup ↦ lookup⁺
     ```
+
   * Added the following new definitions to `Data.Vec.Relation.Unary.All`:
     ```
     lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
@@ -1076,8 +1094,15 @@ Non-backwards compatible changes
     lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
     lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
     ```
+
   * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
     `¬¬-excluded-middle`.
+
+  * `iterate` in `Data.Vec.Base` now takes `n` (the length of `Vec`) as an
+    explicit argument.
+    ```agda
+    iterate : (A → A) → A → ∀ n → Vec A n
+    ```
 
 Major improvements
 ------------------
@@ -2447,7 +2472,7 @@ Additions to existing modules
   gcd-zero  : Zero 1ℤ gcd
   ```
 
-* Added new functions in `Data.List.Base`:
+* Added new functions and definitions to `Data.List.Base`:
   ```agda
   takeWhileᵇ   : (A → Bool) → List A → List A
   dropWhileᵇ   : (A → Bool) → List A → List A
@@ -2472,6 +2497,7 @@ Additions to existing modules
   ++-rawMagma     : Set a → RawMagma a _
   ++-[]-rawMonoid : Set a → RawMonoid a _
 
+  iterate : (A → A) → A → ℕ → List A
   insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
   updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
   ```
@@ -2533,13 +2559,20 @@ Additions to existing modules
   drop-take-suc-tabulate : drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 
   take-all : n ≥ length xs → take n xs ≡ xs
+  drop-all : n ≥ length xs → drop n xs ≡ []
 
   take-[] : take m [] ≡ []
   drop-[] : drop m [] ≡ []
 
-  map-replicate : map f (replicate n x) ≡ replicate n (f x)
-
   drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
+
+  lookup-replicate  : lookup (replicate n x) i ≡ x
+  map-replicate     : map f (replicate n x) ≡ replicate n (f x)
+  zipWith-replicate : zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
+
+  length-iterate : length (iterate f x n) ≡ n
+  iterate-id     : iterate id x n ≡ replicate n x
+  lookup-iterate : lookup (iterate f x n) (cast (sym (length-iterate f x n)) i) ≡ ℕ.iterate f x (toℕ i)
 
   length-insertAt   : length (insertAt xs i v) ≡ suc (length xs)
   length-removeAt′  : length xs ≡ suc (length (removeAt xs k))
@@ -2969,6 +3002,12 @@ Additions to existing modules
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
   cast-reverse  : cast eq ∘ reverse ≗ reverse ∘ cast eq
+
+  iterate-id     : iterate id x n ≡ replicate x
+  take-iterate   : take n (iterate f x (n + m)) ≡ iterate f x n
+  drop-iterate   : drop n (iterate f x n) ≡ []
+  lookup-iterate : lookup (iterate f x n) i ≡ ℕ.iterate f x (toℕ i)
+  toList-iterate : toList (iterate f x n) ≡ List.iterate f x n
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
