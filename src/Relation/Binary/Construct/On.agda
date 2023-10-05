@@ -74,7 +74,7 @@ module _ (f : B → A) where
   trichotomous _ _ compare x y = compare (f x) (f y)
 
   accessible : ∀ {∼ : Rel A ℓ} {x} → Acc ∼ (f x) → Acc (∼ on f) x
-  accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
+  accessible (acc rs) = acc (λ fy<fx → accessible (rs fy<fx))
 
   wellFounded : {∼ : Rel A ℓ} → WellFounded ∼ → WellFounded (∼ on f)
   wellFounded wf x = accessible (wf (f x))

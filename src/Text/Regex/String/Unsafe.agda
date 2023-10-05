@@ -26,6 +26,8 @@ open import Text.Regex.String as Regex public
 ------------------------------------------------------------------------
 -- Specialised definitions
 
+infix 4 _∈_ _∉_ _∈?_ _∉?_
+
 _∈_ : String → Exp → Set
 str ∈ e = toList str Regex.∈ e
 
