@@ -32,7 +32,6 @@ private variable
 
 
 ------------------------------------------------------------------------
---
 -- Motivation
 --
 -- The `cast` function is the computational variant of `subst` for
@@ -111,10 +110,7 @@ example1b-fromList-∷ʳ x xs eq = begin
   where open CastReasoning
 
 
-
-
 ------------------------------------------------------------------------
---
 -- Combinators
 --
 -- Let `xs ≈[ m≡n ] ys` denote `cast m≡n xs ≡ ys`. We have reflexivity,
@@ -214,7 +210,6 @@ example4-cong² {m = m} {n} eq a xs ys = begin
   where open CastReasoning
 
 ------------------------------------------------------------------------
---
 -- Interoperation between `_≈[_]_` and `_≡_`
 --
 -- This library is designed to interoperate with `_≡_`. Examples in the
