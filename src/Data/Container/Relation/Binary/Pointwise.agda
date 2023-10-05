@@ -26,6 +26,7 @@ module _ {s p} (C : Container s p) where
     constructor _,_
     field shape    : proj₁ cx ≡ proj₁ cy
           position : ∀ p → R (proj₂ cx p) (proj₂ cy (subst _ shape p))
+  infixr 4 _,_
 
 module _ {s p} {C : Container s p} {x y} {X : Set x} {Y : Set y}
          {ℓ ℓ′} {R : REL X Y ℓ} {R′ : REL X Y ℓ′}

@@ -10,6 +10,7 @@
 
 module Relation.Binary.Bundles where
 
+open import Function.Base using (flip)
 open import Level
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core
@@ -73,12 +74,12 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 
 record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix 4 _≈_ _∼_
+  infix 4 _≈_ _≲_
   field
     Carrier    : Set c
     _≈_        : Rel Carrier ℓ₁  -- The underlying equality.
-    _∼_        : Rel Carrier ℓ₂  -- The relation.
-    isPreorder : IsPreorder _≈_ _∼_
+    _≲_        : Rel Carrier ℓ₂  -- The relation.
+    isPreorder : IsPreorder _≈_ _≲_
 
   open IsPreorder isPreorder public
     hiding (module Eq)
@@ -90,6 +91,12 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
       }
 
     open Setoid setoid public
+
+  infix 4 _≳_
+  _≳_ = flip _≲_
+
+  infix 4 _∼_ -- for deprecation
+  _∼_ = _≲_
 
 
 record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -107,7 +114,7 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   preorder = record { isPreorder = isPreorder }
 
   open Preorder preorder public
-    using (module Eq)
+    using (module Eq; _≳_)
 
 
 ------------------------------------------------------------------------
@@ -299,6 +306,24 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
   Please use Eq.decSetoid instead."
   #-}
 
+record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈_ _<_
+  field
+    Carrier            : Set c
+    _≈_                : Rel Carrier ℓ₁
+    _<_                : Rel Carrier ℓ₂
+    isDenseLinearOrder : IsDenseLinearOrder _≈_ _<_
+
+  open IsDenseLinearOrder isDenseLinearOrder public
+    using (isStrictTotalOrder; dense)
+
+  strictTotalOrder : StrictTotalOrder c ℓ₁ ℓ₂
+  strictTotalOrder = record
+    { isStrictTotalOrder = isStrictTotalOrder
+    }
+
+  open StrictTotalOrder strictTotalOrder public
+
 
 ------------------------------------------------------------------------
 -- Apartness relations
@@ -313,3 +338,18 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
     isApartnessRelation : IsApartnessRelation _≈_ _#_
 
   open IsApartnessRelation isApartnessRelation public
+
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+{-# WARNING_ON_USAGE Preorder._∼_
+"Warning: Preorder._∼_ was deprecated in v2.0. Please use Preorder._≲_ instead. "
+#-}

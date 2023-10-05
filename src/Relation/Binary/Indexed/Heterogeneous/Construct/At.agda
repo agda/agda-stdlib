@@ -27,9 +27,9 @@ module _ {a i} {I : Set i} {A : I → Set a} where
     }
     where open IsIndexedEquivalence isEq
 
-  isPreorder : ∀ {ℓ₁ ℓ₂} {_≈_ : IRel A ℓ₁} {_∼_ : IRel A ℓ₂} →
-               IsIndexedPreorder A _≈_ _∼_ →
-               (index : I) → IsPreorder (_≈_ {index}) _∼_
+  isPreorder : ∀ {ℓ₁ ℓ₂} {_≈_ : IRel A ℓ₁} {_≲_ : IRel A ℓ₂} →
+               IsIndexedPreorder A _≈_ _≲_ →
+               (index : I) → IsPreorder (_≈_ {index}) _≲_
   isPreorder isPreorder index = record
     { isEquivalence = isEquivalence O.isEquivalence index
     ; reflexive     = O.reflexive
@@ -54,7 +54,7 @@ module _ {a i} {I : Set i} where
   preorder O index = record
     { Carrier    = O.Carrier index
     ; _≈_        = O._≈_
-    ; _∼_        = O._∼_
+    ; _≲_        = O._≲_
     ; isPreorder = isPreorder O.isPreorder index
     }
     where module O = IndexedPreorder O
@@ -63,6 +63,8 @@ module _ {a i} {I : Set i} where
 -- Some useful shorthand infix notation
 
 module _ {a i} {I : Set i} where
+
+  infixr -1 _atₛ_
 
   _atₛ_ : ∀ {ℓ} → IndexedSetoid I a ℓ → I → Setoid a ℓ
   _atₛ_ = setoid

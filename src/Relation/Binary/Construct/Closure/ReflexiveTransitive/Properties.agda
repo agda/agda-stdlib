@@ -104,7 +104,7 @@ module _ {i t} {I : Set i} (T : Rel I t) where
   preorder : Preorder _ _ _
   preorder = record
     { _≈_        = _≡_
-    ; _∼_        = Star T
+    ; _≲_        = Star T
     ; isPreorder = isPreorder
     }
 
