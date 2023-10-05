@@ -850,7 +850,7 @@ drop-drop (suc m) n (x ∷ xs) = drop-drop m n xs
 
 drop-all : (n : ℕ) (xs : List A) → n ≥ length xs → drop n xs ≡ []
 drop-all n       []       _ = drop-[] n
-drop-all (suc n) (x ∷ xs) p = drop-all n xs (≤-pred p)
+drop-all (suc n) (x ∷ xs) p = drop-all n xs {!s≤s⁻¹ p!}
 
 ------------------------------------------------------------------------
 -- replicate
