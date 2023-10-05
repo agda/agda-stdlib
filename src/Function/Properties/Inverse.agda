@@ -55,7 +55,7 @@ isEquivalence = record
 ↔-sym = Symmetry.↔-sym
 
 ↔-trans : A ↔ B → B ↔ C → A ↔ C
-↔-trans = Composition._↔-∘_
+↔-trans = Composition.inverse
 
 -- need to η-expand for everything to line up properly
 ↔-isEquivalence : IsEquivalence {ℓ = ℓ} _↔_
