@@ -22,7 +22,8 @@ open import Data.Product.Base as Prod
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
-import Data.Vec.Relation.Binary.Equality.Cast as CastReasoning
+open import Data.Vec.Relation.Binary.Equality.Cast as VecCast
+  using (_≈[_]_; ≈-sym; module CastReasoning)
 open import Function.Base
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
@@ -363,7 +364,7 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 ------------------------------------------------------------------------
 -- cast
 
-open CastReasoning public
+open VecCast public
   using (cast-is-id; cast-trans)
 
 subst-is-cast : (eq : m ≡ n) (xs : Vec A m) → subst (Vec A) eq xs ≡ cast eq xs
@@ -1007,7 +1008,7 @@ map-reverse f (x ∷ xs) = begin
 
 reverse-++ : ∀ .(eq : m + n ≡ n + m) (xs : Vec A m) (ys : Vec A n) →
              cast eq (reverse (xs ++ ys)) ≡ reverse ys ++ reverse xs
-reverse-++ {m = zero}  {n = n} eq []       ys = CastReasoning.≈-sym (++-identityʳ (sym eq) (reverse ys))
+reverse-++ {m = zero}  {n = n} eq []       ys = ≈-sym (++-identityʳ (sym eq) (reverse ys))
 reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin
   reverse (x ∷ xs ++ ys)              ≂⟨ reverse-∷ x (xs ++ ys) ⟩
   reverse (xs ++ ys) ∷ʳ x             ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (+-comm m n)) x (reverse (xs ++ ys)))

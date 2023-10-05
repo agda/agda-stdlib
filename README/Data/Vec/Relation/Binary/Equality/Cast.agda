@@ -16,7 +16,7 @@ open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Vec.Base
 open import Data.Vec.Properties
-import Data.Vec.Relation.Binary.Equality.Cast as CastReasoning
+open import Data.Vec.Relation.Binary.Equality.Cast
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; trans; sym; cong; subst; module ≡-Reasoning)
 
@@ -89,7 +89,7 @@ example1a-fromList-∷ʳ x xs eq = begin
   cast eq (fromList (xs L.∷ʳ x))                   ≡⟨⟩
   cast eq (fromList (xs L.++ L.[ x ]))             ≡˘⟨ cast-trans eq₁ eq₂ (fromList (xs L.++ L.[ x ])) ⟩
   cast eq₂ (cast eq₁ (fromList (xs L.++ L.[ x ]))) ≡⟨ cong (cast eq₂) (fromList-++ xs) ⟩
-  cast eq₂ (fromList xs ++ [ x ])                  ≡⟨ CastReasoning.≈-sym (unfold-∷ʳ (sym eq₂) x (fromList xs)) ⟩
+  cast eq₂ (fromList xs ++ [ x ])                  ≡⟨ ≈-sym (unfold-∷ʳ (sym eq₂) x (fromList xs)) ⟩
   fromList xs ∷ʳ x                                 ∎
   where
   open ≡-Reasoning
