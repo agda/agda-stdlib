@@ -83,6 +83,7 @@ Argₐ Tyₐ = ⟪ Argₐ′ Tyₐ ⟫
 
 data Namedₐ′ (Tyₐ : Typeₐ ℓ u) : Typeₐ ℓ (⟨named⟩ u) where
   _,_ : ∀ {t} x → Tyₐ Ann t → Namedₐ′ Tyₐ Ann (x , t)
+infixr 4 _,_
 
 Namedₐ : Typeₐ ℓ u → Typeₐ ℓ (⟨named⟩ u)
 Namedₐ Tyₐ = ⟪ Namedₐ′ Tyₐ ⟫

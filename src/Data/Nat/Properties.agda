@@ -476,7 +476,7 @@ m<1+n⇒m≤n (s≤s m≤n) = m≤n
 ∀[m<n⇒m≢o]⇒n≤o (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒n≤o n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
-  rec x<m refl = m<n⇒m≢o (s<s x<m) refl
+  rec o<n refl = m<n⇒m≢o (s<s o<n) refl
 
 ------------------------------------------------------------------------
 -- A module for reasoning about the _≤_ and _<_ relations
@@ -2062,6 +2062,11 @@ m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 <″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
 <″⇒<ᵇ {m} (<″-offset k) = <⇒<ᵇ (m≤m+n (suc m) k)
 
+-- equivalence to the old definition of _≤″_
+
+≤″-proof : ∀ {m n} (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
+≤″-proof (less-than-or-equal prf) = prf
+
 -- equivalence to _≤_
 
 ≤″⇒≤ : _≤″_ ⇒ _≤_
@@ -2112,17 +2117,15 @@ _>″?_ = flip _<″?_
 ------------------------------------------------------------------------
 
 ≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
-≤‴⇒≤″ {m = m} ≤‴-refl     = less-than-or-equal {k = 0} (+-identityʳ m)
-≤‴⇒≤″ {m = m} (≤‴-step x) = less-than-or-equal (trans (+-suc m _) (_≤″_.proof ind)) where
-  ind = ≤‴⇒≤″ x
+≤‴⇒≤″ {m = m} ≤‴-refl       = less-than-or-equal {k = 0} (+-identityʳ m)
+≤‴⇒≤″ {m = m} (≤‴-step m≤n) = less-than-or-equal (trans (+-suc m _) (≤″-proof (≤‴⇒≤″ m≤n)))
 
 m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
-m≤‴m+k {m} {k = zero} refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
-m≤‴m+k {m} {k = suc k} proof
-  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) proof))
+m≤‴m+k {m} {k = zero}  refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
+m≤‴m+k {m} {k = suc k} prf  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) prf))
 
 ≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
-≤″⇒≤‴ (less-than-or-equal {k} proof) = m≤‴m+k proof
+≤″⇒≤‴ m≤n = m≤‴m+k (≤″-proof m≤n)
 
 0≤‴n : ∀{n} → 0 ≤‴ n
 0≤‴n {n} = m≤‴m+k refl

@@ -255,7 +255,7 @@ lookup-interleave-odd (suc n) as bs = lookup-interleave-odd n (as .tail) (bs .ta
 ------------------------------------------------------------------------
 -- Properties of take
 
-take-iterate : ∀ n f (x : A) → take n (iterate f x) ≡ Vec.iterate f x
+take-iterate : ∀ n f (x : A) → take n (iterate f x) ≡ Vec.iterate f x n
 take-iterate zero    f x = P.refl
 take-iterate (suc n) f x = cong (x ∷_) (take-iterate n f (f x))
 
