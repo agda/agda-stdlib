@@ -379,7 +379,7 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 <-cmp (suc i) (suc j) with <-cmp i j
 ... | tri< i<j i≢j j≮i = tri< (s<s i<j)     (i≢j ∘ suc-injective) (j≮i ∘ s<s⁻¹)
 ... | tri> i≮j i≢j j<i = tri> (i≮j ∘ s<s⁻¹) (i≢j ∘ suc-injective) (s<s j<i)
-... | tri≈ i≮j i≡j j≮i = tri≈ (i≮j ∘ s<s⁻¹) (cong suc i≡j)        (j≮i ∘ ℕₚ.≤-pred)
+... | tri≈ i≮j i≡j j≮i = tri≈ (i≮j ∘ s<s⁻¹) (cong suc i≡j)        (j≮i ∘ s<s⁻¹)
 
 <-respˡ-≡ : (_<_ {m} {n}) Respectsˡ _≡_
 <-respˡ-≡ refl x≤y = x≤y
