@@ -69,6 +69,9 @@ xs ≈[ eq ] ys = cast eq xs ≡ ys
 
 module CastReasoning where
 
+  open ≡-Reasoning public
+    renaming (begin_ to begin-≡_; _∎ to _≡-∎)
+
   begin_ : ∀ .{m≡n : m ≡ n} {xs : Vec A m} {ys} → xs ≈[ m≡n ] ys → cast m≡n xs ≡ ys
   begin xs≈ys = xs≈ys
 

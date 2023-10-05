@@ -226,22 +226,22 @@ example5-fromList-++-++′ : {xs ys zs : List A} →
                                   L.length xs + (L.length ys + L.length zs)) →
                            cast eq (fromList (xs L.++ ys L.++ zs)) ≡
                                    fromList xs ++ fromList ys ++ fromList zs
-example5-fromList-++-++′ {xs = xs} {ys} {zs} eq = begin′
+example5-fromList-++-++′ {xs = xs} {ys} {zs} eq = begin
   fromList (xs L.++ ys L.++ zs)                 ≈⟨ fromList-++ xs ⟩
   fromList xs ++ fromList (ys L.++ zs)          ≃⟨ cast-++ʳ (Lₚ.length-++ ys) (fromList xs) ⟩
   fromList xs ++ cast _ (fromList (ys L.++ zs)) ≡⟨ cong (fromList xs ++_) (fromList-++ ys) ⟩
-  fromList xs ++ fromList ys ++ fromList zs     ∎
-  where open ≡-Reasoning; open CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
+  fromList xs ++ fromList ys ++ fromList zs     ≡-∎
+  where open CastReasoning
 
 -- Of course, it is possible to start with the reasoning system of `_≡_`
 -- and then switch to the reasoning system of `_≈[_]_`.
 example6a-reverse-∷ʳ : ∀ x (xs : Vec A n) → reverse (xs ∷ʳ x) ≡ x ∷ reverse xs
-example6a-reverse-∷ʳ {n = n} x xs = begin
+example6a-reverse-∷ʳ {n = n} x xs = begin-≡
   reverse (xs ∷ʳ x)     ≡˘⟨ ≈-reflexive refl ⟩
   reverse (xs ∷ʳ x)     ≈⟨ ≈-cong reverse (cast-reverse _ _) (unfold-∷ʳ (+-comm 1 n) x xs) ⟩
   reverse (xs ++ [ x ]) ≈⟨ reverse-++ (+-comm n 1) xs [ x ] ⟩
-  x ∷ reverse xs        ∎′
-  where open ≡-Reasoning; open CastReasoning renaming (begin_ to begin′_; _∎ to _∎′)
+  x ∷ reverse xs        ∎
+  where open CastReasoning
 
 example6b-reverse-∷ʳ-by-induction : ∀ x (xs : Vec A n) → reverse (xs ∷ʳ x) ≡ x ∷ reverse xs
 example6b-reverse-∷ʳ-by-induction x []       = refl
