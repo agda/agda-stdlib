@@ -1102,7 +1102,7 @@ toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 ------------------------------------------------------------------------
 -- iterate
 
-iterate-id : ∀ (x : A) n → iterate id x n ≡ replicate x
+iterate-id : ∀ (x : A) n → iterate id x n ≡ replicate n x
 iterate-id x zero    = refl
 iterate-id x (suc n) = cong (_ ∷_) (iterate-id (id x) n)
 
