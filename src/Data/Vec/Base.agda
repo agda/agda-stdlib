@@ -91,6 +91,8 @@ xs [ i ]≔ y = xs [ i ]%= const y
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
 
+-- See README.Data.Vec.Relation.Binary.Equality.Cast for the reasoning
+-- system of `cast`-ed equality.
 cast : .(eq : m ≡ n) → Vec A m → Vec A n
 cast {n = zero}  eq []       = []
 cast {n = suc _} eq (x ∷ xs) = x ∷ cast (cong pred eq) xs

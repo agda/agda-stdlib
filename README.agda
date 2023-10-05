@@ -15,7 +15,7 @@ module README where
 -- James McKinna, Sergei Meshveliani, Eric Mertens, Darin Morrison,
 -- Guilhem Moulin, Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa,
 -- Nicolas Pouillard, Andrés Sicard-Ramírez, Lex van der Stoep,
--- Sandro Stucki, Milo Turner, Noam Zeilberger
+-- Sandro Stucki, Milo Turner, Noam Zeilberger, Shu-Hung You
 -- and other anonymous contributors.
 ------------------------------------------------------------------------
 
