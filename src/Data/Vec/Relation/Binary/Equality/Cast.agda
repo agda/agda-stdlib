@@ -25,16 +25,16 @@ private
     l m n o : ℕ
     xs ys zs : Vec A n
 
-  cast-is-id : .(eq : m ≡ m) (xs : Vec A m) → cast eq xs ≡ xs
-  cast-is-id eq []       = refl
-  cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 
-  cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
-               cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
-  cast-trans {m = zero}  {n = zero}  {o = zero}  eq₁ eq₂ [] = refl
-  cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (x ∷ xs) =
-    cong (x ∷_) (cast-trans (suc-injective eq₁) (suc-injective eq₂) xs)
+cast-is-id : .(eq : m ≡ m) (xs : Vec A m) → cast eq xs ≡ xs
+cast-is-id eq []       = refl
+cast-is-id eq (x ∷ xs) = cong (x ∷_) (cast-is-id (suc-injective eq) xs)
 
+cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (xs : Vec A m) →
+             cast eq₂ (cast eq₁ xs) ≡ cast (trans eq₁ eq₂) xs
+cast-trans {m = zero}  {n = zero}  {o = zero}  eq₁ eq₂ [] = refl
+cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (x ∷ xs) =
+  cong (x ∷_) (cast-trans (suc-injective eq₁) (suc-injective eq₂) xs)
 
 
 infix 3 _≈[_]_
