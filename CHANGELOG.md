@@ -1384,9 +1384,6 @@ Deprecated names
   been made consistent so that `m`, `n` always refer to naturals and
   `i` and `j` always refer to integers:
   ```
-  ≤-<-trans  ↦  ≤-<-transˡ
-  <-≤-trans  ↦  <-≤-transʳ
-
   ≤-steps        ↦  i≤j⇒i≤k+j
   ≤-step         ↦  i≤j⇒i≤1+j
 
@@ -1525,8 +1522,8 @@ Deprecated names
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
   <-step          ↦  m<n⇒m<1+n
 
-  <-transʳ        ↦  ≤-<-transˡ
-  <-transˡ        ↦  <-≤-transʳ
+  <-transʳ        ↦  ≤-<-trans
+  <-transˡ        ↦  <-≤-trans
   ```
 
 * In `Data.Rational.Unnormalised.Base`:

@@ -332,7 +332,7 @@ m<n*o⇒m/o<n {m} {suc n} {o} m<n*o with m <? o
 [m∸n]/n≡m/n∸1 : ∀ m n .⦃ _ : NonZero n ⦄ → (m ∸ n) / n ≡ pred (m / n)
 [m∸n]/n≡m/n∸1 m n with m <? n
 ... | yes m<n = begin-equality
-  (m ∸ n) / n  ≡⟨ m<n⇒m/n≡0 (≤-<-transˡ (m∸n≤m m n) m<n) ⟩
+  (m ∸ n) / n  ≡⟨ m<n⇒m/n≡0 (≤-<-trans (m∸n≤m m n) m<n) ⟩
   0            ≡⟨⟩
   0 ∸ 1        ≡˘⟨ cong (_∸ 1) (m<n⇒m/n≡0 m<n) ⟩
   m / n ∸ 1    ≡⟨⟩

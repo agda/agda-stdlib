@@ -360,11 +360,11 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 <-trans : Transitive _<_
 <-trans (s≤s i≤j) (s≤s j<k) = s≤s (≤-trans i≤j (≤-trans (n≤1+n _) j<k))
 
-≤-<-transˡ : LeftTrans _≤_ _<_
-≤-<-transˡ m≤n (s<s n≤o) = s≤s (≤-trans m≤n n≤o)
+≤-<-trans : LeftTrans _≤_ _<_
+≤-<-trans m≤n (s<s n≤o) = s≤s (≤-trans m≤n n≤o)
 
-<-≤-transʳ : RightTrans _<_ _≤_
-<-≤-transʳ (s<s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
+<-≤-trans : RightTrans _<_ _≤_
+<-≤-trans (s<s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
 -- NB: we use the builtin function `_<ᵇ_` here so that the function
 -- quickly decides which constructor to return. It still takes a
@@ -504,8 +504,8 @@ module ≤-Reasoning where
     <-trans
     (resp₂ _<_)
     <⇒≤
-    <-≤-transʳ
-    ≤-<-transˡ
+    <-≤-trans
+    ≤-<-trans
     public
     hiding (step-≈; step-≈˘)
 
@@ -986,7 +986,7 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m * n       ∎
 
 m<n⇒m<n*o : ∀ o .{{_ : NonZero o}} → m < n → m < n * o
-m<n⇒m<n*o {n = n} o m<n = <-≤-transʳ m<n (m≤m*n n o)
+m<n⇒m<n*o {n = n} o m<n = <-≤-trans m<n (m≤m*n n o)
 
 m<n⇒m<o*n : ∀ {m n} o .{{_ : NonZero o}} → m < n → m < o * n
 m<n⇒m<o*n {m} {n} o m<n = begin-strict
@@ -1298,10 +1298,10 @@ m<n⇒m<o⊔n : ∀ o → m < n → m < o ⊔ n
 m<n⇒m<o⊔n = m≤n⇒m≤o⊔n
 
 m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
-m⊔n<o⇒m<o m n m⊔n<o = ≤-<-transˡ (m≤m⊔n m n) m⊔n<o
+m⊔n<o⇒m<o m n m⊔n<o = ≤-<-trans (m≤m⊔n m n) m⊔n<o
 
 m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
-m⊔n<o⇒n<o m n m⊔n<o = ≤-<-transˡ (m≤n⊔m m n) m⊔n<o
+m⊔n<o⇒n<o m n m⊔n<o = ≤-<-trans (m≤n⊔m m n) m⊔n<o
 
 ⊔-mono-< : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 ⊔-mono-< = ⊔-mono-≤
@@ -1400,10 +1400,10 @@ m⊔n≤m+n m n with ⊔-sel m n
 -- Other properties of _⊓_ and _≤_/_<_
 
 m<n⇒m⊓o<n : ∀ o → m < n → m ⊓ o < n
-m<n⇒m⊓o<n o m<n = ≤-<-transˡ (m⊓n≤m _ o) m<n
+m<n⇒m⊓o<n o m<n = ≤-<-trans (m⊓n≤m _ o) m<n
 
 m<n⇒o⊓m<n : ∀ o → m < n → o ⊓ m < n
-m<n⇒o⊓m<n o m<n = ≤-<-transˡ (m⊓n≤n o _) m<n
+m<n⇒o⊓m<n o m<n = ≤-<-trans (m⊓n≤n o _) m<n
 
 m<n⊓o⇒m<n : ∀ n o → m < n ⊓ o → m < n
 m<n⊓o⇒m<n = m≤n⊓o⇒m≤n
@@ -2336,13 +2336,13 @@ suc[pred[n]]≡n {suc n} _   = refl
 open Data.Nat.Base public
   using (*-rawMagma; *-1-rawMonoid)
 
-<-transʳ = ≤-<-transˡ
+<-transʳ = ≤-<-trans
 {-# WARNING_ON_USAGE <-transʳ
-"Warning: <-transʳ was deprecated in v2.0. Please use ≤-<-transˡ instead. "
+"Warning: <-transʳ was deprecated in v2.0. Please use ≤-<-trans instead. "
 #-}
 
-<-transˡ = <-≤-transʳ
+<-transˡ = <-≤-trans
 {-# WARNING_ON_USAGE <-transˡ
-"Warning: <-transˡ was deprecated in v2.0. Please use ≤-<-transʳ instead. "
+"Warning: <-transˡ was deprecated in v2.0. Please use ≤-<-trans instead. "
 #-}
 
