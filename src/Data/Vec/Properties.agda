@@ -143,7 +143,7 @@ padRight-refl : (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
 padRight-refl a []       = refl
 padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
 
-padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate a ≡ padRight m≤n a (replicate a)
+padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate n a ≡ padRight m≤n a (replicate m a)
 padRight-replicate z≤n       a = refl
 padRight-replicate (s≤s m≤n) a = cong (a ∷_) (padRight-replicate m≤n a)
 
@@ -392,7 +392,7 @@ map-id : map id ≗ id {A = Vec A n}
 map-id []       = refl
 map-id (x ∷ xs) = cong (x ∷_) (map-id xs)
 
-map-const : ∀ (xs : Vec A n) (y : B) → map (const y) xs ≡ replicate y
+map-const : ∀ (xs : Vec A n) (y : B) → map (const y) xs ≡ replicate n y
 map-const []       _ = refl
 map-const (_ ∷ xs) y = cong (y ∷_) (map-const xs y)
 
@@ -566,25 +566,25 @@ module _ {f : A → A → A} where
 module _ {f : A → A → A} {e : A} where
 
   zipWith-identityˡ : LeftIdentity _≡_ e f →
-                      LeftIdentity _≡_ (replicate e) (zipWith {n = n} f)
+                      LeftIdentity _≡_ (replicate n e) (zipWith f)
   zipWith-identityˡ idˡ []       = refl
   zipWith-identityˡ idˡ (x ∷ xs) =
     cong₂ _∷_ (idˡ x) (zipWith-identityˡ idˡ xs)
 
   zipWith-identityʳ : RightIdentity _≡_ e f →
-                      RightIdentity _≡_ (replicate e) (zipWith {n = n} f)
+                      RightIdentity _≡_ (replicate n e) (zipWith f)
   zipWith-identityʳ idʳ []       = refl
   zipWith-identityʳ idʳ (x ∷ xs) =
     cong₂ _∷_ (idʳ x) (zipWith-identityʳ idʳ xs)
 
   zipWith-zeroˡ : LeftZero _≡_ e f →
-                  LeftZero _≡_ (replicate e) (zipWith {n = n} f)
+                  LeftZero _≡_ (replicate n e) (zipWith f)
   zipWith-zeroˡ zeˡ []       = refl
   zipWith-zeroˡ zeˡ (x ∷ xs) =
     cong₂ _∷_ (zeˡ x) (zipWith-zeroˡ zeˡ xs)
 
   zipWith-zeroʳ : RightZero _≡_ e f →
-                  RightZero _≡_ (replicate e) (zipWith {n = n} f)
+                  RightZero _≡_ (replicate n e) (zipWith f)
   zipWith-zeroʳ zeʳ []       = refl
   zipWith-zeroʳ zeʳ (x ∷ xs) =
     cong₂ _∷_ (zeʳ x) (zipWith-zeroʳ zeʳ xs)
@@ -592,13 +592,13 @@ module _ {f : A → A → A} {e : A} where
 module _ {f : A → A → A} {e : A} {⁻¹ : A → A} where
 
   zipWith-inverseˡ : LeftInverse _≡_ e ⁻¹ f →
-                     LeftInverse _≡_ (replicate {n = n} e) (map ⁻¹) (zipWith f)
+                     LeftInverse _≡_ (replicate n e) (map ⁻¹) (zipWith f)
   zipWith-inverseˡ invˡ []       = refl
   zipWith-inverseˡ invˡ (x ∷ xs) =
     cong₂ _∷_ (invˡ x) (zipWith-inverseˡ invˡ xs)
 
   zipWith-inverseʳ : RightInverse _≡_ e ⁻¹ f →
-                     RightInverse _≡_ (replicate {n = n} e) (map ⁻¹) (zipWith f)
+                     RightInverse _≡_ (replicate n e) (map ⁻¹) (zipWith f)
   zipWith-inverseʳ invʳ []       = refl
   zipWith-inverseʳ invʳ (x ∷ xs) =
     cong₂ _∷_ (invʳ x) (zipWith-inverseʳ invʳ xs)
@@ -731,7 +731,7 @@ lookup-⊛ zero    (f ∷ fs) (x ∷ xs) = refl
 lookup-⊛ (suc i) (f ∷ fs) (x ∷ xs) = lookup-⊛ i fs xs
 
 map-is-⊛ : ∀ (f : A → B) (xs : Vec A n) →
-           map f xs ≡ (replicate f ⊛ xs)
+           map f xs ≡ (replicate n f ⊛ xs)
 map-is-⊛ f []       = refl
 map-is-⊛ f (x ∷ xs) = cong (_ ∷_) (map-is-⊛ f xs)
 
@@ -741,7 +741,7 @@ map-is-⊛ f (x ∷ xs) = cong (_ ∷_) (map-is-⊛ f xs)
 ⊛-is-zipWith (f ∷ fs) (x ∷ xs) = cong (f x ∷_) (⊛-is-zipWith fs xs)
 
 zipWith-is-⊛ : ∀ (f : A → B → C) (xs : Vec A n) (ys : Vec B n) →
-               zipWith f xs ys ≡ (replicate f ⊛ xs ⊛ ys)
+               zipWith f xs ys ≡ (replicate n f ⊛ xs ⊛ ys)
 zipWith-is-⊛ f []       []       = refl
 zipWith-is-⊛ f (x ∷ xs) (y ∷ ys) = cong (_ ∷_) (zipWith-is-⊛ f xs ys)
 
@@ -1059,43 +1059,43 @@ sum-++ {ys = ys} (x ∷ xs) = begin
 ------------------------------------------------------------------------
 -- replicate
 
-lookup-replicate : ∀ (i : Fin n) (x : A) → lookup (replicate x) i ≡ x
+lookup-replicate : ∀ (i : Fin n) (x : A) → lookup (replicate n x) i ≡ x
 lookup-replicate zero    x = refl
 lookup-replicate (suc i) x = lookup-replicate i x
 
 map-replicate :  ∀ (f : A → B) (x : A) n →
-                 map f (replicate x) ≡ replicate {n = n} (f x)
+                 map f (replicate n x) ≡ replicate n (f x)
 map-replicate f x zero = refl
 map-replicate f x (suc n) = cong (f x ∷_) (map-replicate f x n)
 
 transpose-replicate : ∀ (xs : Vec A m) →
-                      transpose (replicate {n = n} xs) ≡ map replicate xs
+                      transpose (replicate n xs) ≡ map (replicate n) xs
 transpose-replicate {n = zero}  _  = sym (map-const _ [])
 transpose-replicate {n = suc n} xs = begin
-  transpose (replicate xs)                        ≡⟨⟩
-  (replicate _∷_ ⊛ xs ⊛ transpose (replicate xs)) ≡⟨ cong₂ _⊛_ (sym (map-is-⊛ _∷_ xs)) (transpose-replicate xs) ⟩
-  (map _∷_ xs ⊛ map replicate xs)                 ≡⟨ map-⊛ _∷_ replicate xs ⟩
-  map replicate xs                                ∎
+  transpose (replicate (suc n) xs)                      ≡⟨⟩
+  (replicate _ _∷_ ⊛ xs ⊛ transpose (replicate _ xs)) ≡⟨ cong₂ _⊛_ (sym (map-is-⊛ _∷_ xs)) (transpose-replicate xs) ⟩
+  (map _∷_ xs ⊛ map (replicate n) xs)                 ≡⟨ map-⊛ _∷_ (replicate n) xs ⟩
+  map (replicate (suc n)) xs                            ∎
 
 zipWith-replicate : ∀ (_⊕_ : A → B → C) (x : A) (y : B) →
-                    zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
+                    zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
 zipWith-replicate {n = zero}  _⊕_ x y = refl
 zipWith-replicate {n = suc n} _⊕_ x y = cong (x ⊕ y ∷_) (zipWith-replicate _⊕_ x y)
 
 zipWith-replicate₁ : ∀ (_⊕_ : A → B → C) (x : A) (ys : Vec B n) →
-                     zipWith _⊕_ (replicate x) ys ≡ map (x ⊕_) ys
+                     zipWith _⊕_ (replicate n x) ys ≡ map (x ⊕_) ys
 zipWith-replicate₁ _⊕_ x []       = refl
 zipWith-replicate₁ _⊕_ x (y ∷ ys) =
   cong (x ⊕ y ∷_) (zipWith-replicate₁ _⊕_ x ys)
 
 zipWith-replicate₂ : ∀ (_⊕_ : A → B → C) (xs : Vec A n) (y : B) →
-                     zipWith _⊕_ xs (replicate y) ≡ map (_⊕ y) xs
+                     zipWith _⊕_ xs (replicate n y) ≡ map (_⊕ y) xs
 zipWith-replicate₂ _⊕_ []       y = refl
 zipWith-replicate₂ _⊕_ (x ∷ xs) y =
   cong (x ⊕ y ∷_) (zipWith-replicate₂ _⊕_ xs y)
 
 toList-replicate : ∀ (n : ℕ) (x : A) →
-                   toList (replicate {n = n} a) ≡ List.replicate n a
+                   toList (replicate n a) ≡ List.replicate n a
 toList-replicate zero    x = refl
 toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 
