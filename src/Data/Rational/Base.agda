@@ -10,9 +10,7 @@ module Data.Rational.Base where
 
 open import Algebra.Bundles.Raw
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
-open import Data.Integer.Base as ℤ
-  using (ℤ; +_; +0; +[1+_]; -[1+_])
-  hiding (module ℤ)
+open import Data.Integer.Base as ℤ using (ℤ; +_; +0; +[1+_]; -[1+_])
 open import Data.Nat.GCD
 open import Data.Nat.Coprimality as C
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
@@ -178,11 +176,6 @@ NonPositive p = ℚᵘ.NonPositive (toℚᵘ p)
 NonNegative : Pred ℚ 0ℓ
 NonNegative p = ℚᵘ.NonNegative (toℚᵘ p)
 
--- Instances
-
-open ℤ public
-  using (nonZero; pos; nonNeg; nonPos0; nonPos; neg)
-
 -- Constructors
 
 ≢-nonZero : ∀ {p} → p ≢ 0ℚ → NonZero p
@@ -208,12 +201,6 @@ nonPositive {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonPositive {toℚᵘ p} (�
 
 nonNegative : ∀ {p} → p ≥ 0ℚ → NonNegative p
 nonNegative {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonNegative {toℚᵘ p} (ℚᵘ.*≤* p≤q)
-
--- Re-export base instances so that users don't have to open
--- Data.Nat.Base.
-
-open ℕ public
-  using (nonZero)
 
 ------------------------------------------------------------------------
 -- Operations on rationals

@@ -12,7 +12,6 @@ open import Algebra.Bundles.Raw
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
-  hiding (module ℤ)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
@@ -149,11 +148,6 @@ NonPositive p = ℤ.NonPositive (↥ p)
 
 NonNegative : Pred ℚᵘ 0ℓ
 NonNegative p = ℤ.NonNegative (↥ p)
-
--- Instances
-
-open ℤ public
-  using (nonZero; pos; nonNeg; nonPos0; nonPos; neg)
 
 -- Constructors and destructors
 
