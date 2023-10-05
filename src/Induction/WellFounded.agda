@@ -123,16 +123,16 @@ module FixPoint
 -- Well-founded relations are asymmetric and irreflexive.
 
 module _ {_<_ : Rel A r} where
-  acc-asym : ∀ {x y} → Acc _<_ x → x < y → ¬ (y < x)
-  acc-asym {x} {y} hx = 
-    (Some.wfRec _ λ x hx y x<y y<x → hx y y<x x y<x x<y) x hx y
+  acc⇒asym : ∀ {x y} → Acc _<_ x → x < y → ¬ (y < x)
+  acc⇒asym {x} hx =
+    Some.wfRec (λ x → ∀ {y} → x < y → ¬ (y < x)) (λ _ hx x<y y<x → hx y<x y<x x<y) _ hx
 
-  wf-asym : WellFounded _<_ → Asymmetric _<_
-  wf-asym wf = acc-asym (wf _)
+  wf⇒asym : WellFounded _<_ → Asymmetric _<_
+  wf⇒asym wf = acc⇒asym (wf _)
 
-  wf-irrefl : {_≈_ : Rel A ℓ} → _<_ Respects₂ _≈_ → 
+  wf⇒irrefl : {_≈_ : Rel A ℓ} → _<_ Respects₂ _≈_ → 
               Symmetric _≈_ → WellFounded _<_ → Irreflexive _≈_ _<_
-  wf-irrefl r s wf = asym⇒irr r s (wf-asym wf)
+  wf⇒irrefl r s wf = asym⇒irr r s (wf⇒asym wf)
 
 ------------------------------------------------------------------------
 -- It might be useful to establish proofs of Acc or Well-founded using
