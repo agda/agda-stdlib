@@ -343,7 +343,10 @@ m >″ n = n <″ m
 pattern ≤″-offset k = less-than-or-equal {k = k} refl
 pattern <″-offset k = ≤″-offset k
 
--- Smart destructor of _<″_
+-- Smart destructors of _<″_
+
+s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
+s≤″s⁻¹ (≤″-offset k) = ≤″-offset k
 
 s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
 s<″s⁻¹ (<″-offset k) = <″-offset k
