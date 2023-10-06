@@ -67,7 +67,7 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ< {m} _ = "m".
 
-fromℕ< : ∀ {m n} → .(m ℕ.< n) → Fin n
+fromℕ< : .(m ℕ.< n) → Fin n
 fromℕ< {zero}  {suc _} _   = zero
 fromℕ< {suc m} {suc _} m<n = suc (fromℕ< (ℕ.s<s⁻¹ m<n))
 
