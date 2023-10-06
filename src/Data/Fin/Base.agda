@@ -93,9 +93,9 @@ zero    ↑ʳ i = i
 
 -- reduce≥ "m + i" _ = "i".
 
-reduce≥ : ∀ (i : Fin (m ℕ.+ n)) → .(m ℕ.≤ (toℕ i)) → Fin n
+reduce≥ : ∀ (i : Fin (m ℕ.+ n)) → .(m ℕ.≤ toℕ i) → Fin n
 reduce≥ {zero}  i       _   = i
-reduce≥ {suc m} (suc i) m≤i = reduce≥ {m} i (ℕ.s≤s⁻¹ m≤i)
+reduce≥ {suc _} (suc i) m≤i = reduce≥ i (ℕ.s≤s⁻¹ m≤i)
 
 -- inject⋆ m "i" = "i".
 
