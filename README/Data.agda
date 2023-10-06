@@ -209,6 +209,11 @@ import README.Data.Record
 
 import README.Data.Trie.NonDependent
 
+-- Examples of equational reasoning about vectors of non-definitionally
+-- equal lengths.
+
+import README.Data.Vec.Relation.Binary.Equality.Cast
+
 -- Examples how (indexed) containers and constructions over them (free
 -- monad, least fixed point, etc.) can be used
 

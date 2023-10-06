@@ -1415,7 +1415,7 @@ Deprecated names
   m<n⇒m≤pred[n]  ↦  i<j⇒i≤pred[j]
   -1*n≡-n        ↦  -1*i≡-i
   m*n≡0⇒m≡0∨n≡0  ↦  i*j≡0⇒i≡0∨j≡0
-  ∣m*n∣≡∣m∣*∣n∣     ↦  ∣i*j∣≡∣i∣*∣j∣
+  ∣m*n∣≡∣m∣*∣n∣  ↦  ∣i*j∣≡∣i∣*∣j∣
   m≤m+n          ↦  i≤i+j
   n≤m+n          ↦  i≤j+i
   m-n≤m          ↦  i≤i-j
@@ -1523,6 +1523,9 @@ Deprecated names
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
   <-step          ↦  m<n⇒m<1+n
+
+  <-transʳ        ↦  ≤-<-trans
+  <-transˡ        ↦  <-≤-trans
   ```
 
 * In `Data.Rational.Unnormalised.Base`:
@@ -2024,6 +2027,11 @@ New modules
 * Relations on indexed sets
   ```
   Function.Indexed.Bundles
+  ```
+
+* Combinators for propositional equational reasoning on vectors with different indices
+  ```
+  Data.Vec.Relation.Binary.Equality.Cast
   ```
 
 Additions to existing modules
@@ -2978,6 +2986,7 @@ Additions to existing modules
   last-∷ʳ   : last (xs ∷ʳ x) ≡ x
   cast-∷ʳ   : cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
   ++-∷ʳ     : cast eq ((xs ++ ys) ∷ʳ z) ≡ xs ++ (ys ∷ʳ z)
+  ∷ʳ-++     : cast eq ((xs ∷ʳ a) ++ ys) ≡ xs ++ (a ∷ ys)
 
   reverse-∷          : reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
   reverse-involutive : Involutive _≡_ reverse
@@ -2998,6 +3007,8 @@ Additions to existing modules
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
   cast-reverse  : cast eq ∘ reverse ≗ reverse ∘ cast eq
+  cast-++ˡ      : cast (cong (_+ n) eq) (xs ++ ys) ≡ cast eq xs ++ ys
+  cast-++ʳ      : cast (cong (m +_) eq) (xs ++ ys) ≡ xs ++ cast eq ys
 
   iterate-id     : iterate id x n ≡ replicate x
   take-iterate   : take n (iterate f x (n + m)) ≡ iterate f x n
@@ -3017,6 +3028,11 @@ Additions to existing modules
   cast-fromList : cast _ (fromList xs) ≡ fromList ys
   fromList-map  : cast _ (fromList (List.map f xs)) ≡ map f (fromList xs)
   fromList-++   : cast _ (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+  fromList-reverse : cast (Listₚ.length-reverse xs) (fromList (List.reverse xs)) ≡ reverse (fromList xs)
+
+  ∷-ʳ++   : cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
+  ++-ʳ++  : cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
+  ʳ++-ʳ++ : cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
 
   length-toList   : List.length (toList xs) ≡ length xs
   toList-insertAt : toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (sym (length-toList xs))) i) v
@@ -3250,6 +3266,9 @@ Additions to existing modules
 
 * Added new definitions in `Relation.Binary.Definitions`:
   ```
+  RightTrans R S = Trans R S R
+  LeftTrans  S R = Trans S R R
+
   Dense        _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
