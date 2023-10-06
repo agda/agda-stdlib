@@ -292,13 +292,10 @@ zero  ! = 1
 suc n ! = suc n * n !
 
 ------------------------------------------------------------------------
--- Alternative definitions of _≤_/_<_
+-- Extensionally equivalent alternative definitions of _≤_/_<_ etc.
 
-------------------------------------------------------------------------
--- An alternative definition of _≤_
-
--- The following definition of _≤_ is more suitable for well-founded
--- induction (see Data.Nat.Induction)
+-- _≤′_: this definition is more suitable for well-founded induction
+-- (see Data.Nat.Induction)
 
 infix 4 _≤′_ _<′_ _≥′_ _>′_
 
@@ -320,8 +317,9 @@ m ≥′ n = n ≤′ m
 _>′_ : Rel ℕ 0ℓ
 m >′ n = n <′ m
 
-------------------------------------------------------------------------
--- Another alternative definition of _≤_
+-- _≤″_: this definition of _≤_ is used for proof-irrelevant ‵DivMod`
+-- and is a specialised instance of a general algebraic construction
+
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
 _≤″_ : (m n : ℕ)  → Set
@@ -351,10 +349,7 @@ s≤″s⁻¹ (≤″-offset k) = ≤″-offset k
 s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
 s<″s⁻¹ (<″-offset k) = <″-offset k
 
-------------------------------------------------------------------------
--- Another alternative definition of _≤_
-
--- Useful for induction when you have an upper bound.
+-- _≤‴_: this definition is useful for induction with an upper bound.
 
 data _≤‴_ : ℕ → ℕ → Set where
   ≤‴-refl : ∀{m} → m ≤‴ m
