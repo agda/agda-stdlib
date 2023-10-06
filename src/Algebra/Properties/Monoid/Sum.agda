@@ -64,15 +64,15 @@ sum-cong-≗ : ∀ {n} → sum {n} Preserves _≗_ ⟶ _≡_
 sum-cong-≗ {zero}  xs≗ys = P.refl
 sum-cong-≗ {suc n} xs≗ys = P.cong₂ _+_ (xs≗ys zero) (sum-cong-≗ (xs≗ys ∘ suc))
 
-sum-replicate : ∀ n {x} → sum {n} (replicate x) ≈ n × x
+sum-replicate : ∀ n {x} → sum (replicate n x) ≈ n × x
 sum-replicate zero    = refl
 sum-replicate (suc n) = +-congˡ (sum-replicate n)
 
 sum-replicate-idem : ∀ {x} → _+_ IdempotentOn x →
-                     ∀ n → .{{_ : NonZero n}} → sum {n} (replicate x) ≈ x
+                     ∀ n → .{{_ : NonZero n}} → sum (replicate n x) ≈ x
 sum-replicate-idem idem n = trans (sum-replicate n) (×-idem idem n)
 
-sum-replicate-zero : ∀ n → sum {n} (replicate 0#) ≈ 0#
+sum-replicate-zero : ∀ n → sum (replicate n 0#) ≈ 0#
 sum-replicate-zero zero    = refl
 sum-replicate-zero (suc n) = sum-replicate-idem (+-identityˡ 0#) (suc n)
 

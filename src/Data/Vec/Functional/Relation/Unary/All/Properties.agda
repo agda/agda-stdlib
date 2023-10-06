@@ -8,6 +8,7 @@
 
 module Data.Vec.Functional.Relation.Unary.All.Properties where
 
+open import Data.Nat.Base using (ℕ)
 open import Data.Fin.Base using (zero; suc; _↑ˡ_; _↑ʳ_; splitAt)
 open import Data.Fin.Properties using (splitAt-↑ˡ; splitAt-↑ʳ)
 open import Data.Product.Base as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
@@ -20,80 +21,73 @@ open import Relation.Unary
 
 private
   variable
-    a b c p q r ℓ : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    a p ℓ : Level
+    A B C : Set a
+    P Q R : Pred A p
+    m n : ℕ
+    x y : A
+    xs ys : Vector A n
 
 ------------------------------------------------------------------------
 -- map
 
-module _ {P : Pred A p} {Q : Pred B q} {f : A → B} where
-
-  map⁺ :  (∀ {x} → P x → Q (f x)) →
-          ∀ {n xs} → All P {n = n} xs → All Q (VF.map f xs)
-  map⁺ pq ps i = pq (ps i)
+map⁺ :  ∀ {f : A → B} → (∀ {x} → P x → Q (f x)) →
+        All P xs → All Q (VF.map f xs)
+map⁺ pq ps i = pq (ps i)
 
 ------------------------------------------------------------------------
 -- replicate
 
-module _ {P : Pred A p} {x : A} {n} where
-
-  replicate⁺ : P x → All P (replicate {n = n} x)
-  replicate⁺ = const
+replicate⁺ : P x → All P (replicate n x)
+replicate⁺ = const
 
 ------------------------------------------------------------------------
 -- _⊛_
 
-module _ {P : Pred A p} {Q : Pred B q} where
-
-  ⊛⁺ : ∀ {n} {fs : Vector (A → B) n} {xs} →
-       All (λ f → ∀ {x} → P x → Q (f x)) fs → All P xs → All Q (fs ⊛ xs)
-  ⊛⁺ pqs ps i = (pqs i) (ps i)
+⊛⁺ : ∀ {fs : Vector (A → B) n} →
+     All (λ f → ∀ {x} → P x → Q (f x)) fs →
+     All P xs → All Q (fs ⊛ xs)
+⊛⁺ pqs ps i = (pqs i) (ps i)
 
 ------------------------------------------------------------------------
 -- zipWith
 
-module _ {P : Pred A p} {Q : Pred B q} {R : Pred C r} where
-
-  zipWith⁺ : ∀ {f} → (∀ {x y} → P x → Q y → R (f x y)) → ∀ {n xs ys} →
-             All P xs → All Q ys → All R (zipWith f {n = n} xs ys)
-  zipWith⁺ pqr ps qs i = pqr (ps i) (qs i)
+zipWith⁺ : ∀ {f} → (∀ {x y} → P x → Q y → R (f x y)) →
+           All P xs → All Q ys → All R (zipWith f xs ys)
+zipWith⁺ pqr ps qs i = pqr (ps i) (qs i)
 
 ------------------------------------------------------------------------
 -- zip
 
-module _ {P : Pred A p} {Q : Pred B q} {n} {xs : Vector A n} {ys} where
+zip⁺ : All P xs → All Q ys → All (P ⟨×⟩ Q) (zip xs ys)
+zip⁺ ps qs i = ps i , qs i
 
-  zip⁺ : All P xs → All Q ys → All (P ⟨×⟩ Q) (zip xs ys)
-  zip⁺ ps qs i = ps i , qs i
-
-  zip⁻ : All (P ⟨×⟩ Q) (zip xs ys) → All P xs × All Q ys
-  zip⁻ pqs = proj₁ ∘ pqs , proj₂ ∘ pqs
+zip⁻ : All (P ⟨×⟩ Q) (zip xs ys) → All P xs × All Q ys
+zip⁻ pqs = proj₁ ∘ pqs , proj₂ ∘ pqs
 
 ------------------------------------------------------------------------
 -- head
 
-head⁺ : ∀ (P : Pred A p) {n v} → All P v → P (head {n = n} v)
+head⁺ : ∀ (P : Pred A p) → All P xs → P (head xs)
 head⁺ P ps = ps zero
 
 ------------------------------------------------------------------------
 -- tail
 
-tail⁺ : ∀ (P : Pred A p) {n v} → All P v → All P (tail {n = n} v)
-tail⁺ P ps = ps ∘ suc
+tail⁺ : ∀ (P : Pred A p) → All P xs → All P (tail xs)
+tail⁺ P xs = xs ∘ suc
 
 ------------------------------------------------------------------------
 -- ++
 
-module _ (P : Pred A p) {m n} {xs : Vector A m} {ys : Vector A n} where
+module _ (P : Pred A p) {xs : Vector A m} {ys : Vector A n} where
 
   ++⁺ : All P xs → All P ys → All P (xs ++ ys)
   ++⁺ pxs pys i with splitAt m i
   ... | inj₁ i′ = pxs i′
   ... | inj₂ j′ = pys j′
 
-module _ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} where
+module _ (P : Pred A p) (xs : Vector A m) {ys : Vector A n} where
 
   ++⁻ˡ : All P (xs ++ ys) → All P xs
   ++⁻ˡ ps i with ps (i ↑ˡ n)

@@ -49,14 +49,14 @@ fromVec v = v , ℕₚ.≤-refl
 padRight : ∀ {n} → A → Vec≤ A n → Vec A n
 padRight a (vs , m≤n)
   with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
-... | less-than-or-equal refl = vs Vec.++ Vec.replicate a
+... | less-than-or-equal refl = vs Vec.++ Vec.replicate  _ a
 
 padLeft : ∀ {n} → A → Vec≤ A n → Vec A n
 padLeft a as@(vs , m≤n)
   with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
 ... | less-than-or-equal {k} ∣as∣+k≡n
   with P.trans (ℕₚ.+-comm k (Vec≤.length as)) ∣as∣+k≡n
-... | refl = Vec.replicate a Vec.++ vs
+...   | refl = Vec.replicate k a Vec.++ vs
 
 private
   split : ∀ {m n} k → m + k ≡ n → ⌊ k /2⌋ + (m + ⌈ k /2⌉) ≡ n
@@ -72,10 +72,10 @@ padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
 padBoth aₗ aᵣ as@(vs , m≤n)
   with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
 ... | less-than-or-equal {k} ∣as∣+k≡n
-  with split k ∣as∣+k≡n
-... | refl = Vec.replicate {n = ⌊ k /2⌋} aₗ
+    with split k ∣as∣+k≡n
+... | refl = Vec.replicate ⌊ k /2⌋ aₗ
       Vec.++ vs
-      Vec.++ Vec.replicate {n = ⌈ k /2⌉} aᵣ
+      Vec.++ Vec.replicate ⌈ k /2⌉ aᵣ
 
 
 fromList : (as : List A) → Vec≤ A (List.length as)
@@ -88,7 +88,7 @@ toList = Vec.toList ∘ Vec≤.vec
 -- Creating new Vec≤ vectors
 
 replicate : ∀ {m n} .(m≤n : m ≤ n) → A → Vec≤ A n
-replicate m≤n a = Vec.replicate a , m≤n
+replicate m≤n a = Vec.replicate _ a , m≤n
 
 [] : ∀ {n} → Vec≤ A n
 [] = Vec.[] , z≤n
