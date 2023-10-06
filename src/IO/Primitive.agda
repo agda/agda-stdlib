@@ -23,6 +23,11 @@ postulate
   pure : ∀ {a} {A : Set a} → A → IO A
   _>>=_  : ∀ {a b} {A : Set a} {B : Set b} → IO A → (A → IO B) → IO B
 
+-- Alias 'return' for backwards compatibility.
+
+return : ∀ {a} {A : Set a} → A → IO A
+return = pure
+
 {-# COMPILE GHC pure = \_ _ -> return    #-}
 {-# COMPILE GHC _>>=_  = \_ _ _ _ -> (>>=) #-}
 {-# COMPILE UHC pure = \_ _ x -> UHC.Agda.Builtins.primReturn x #-}
