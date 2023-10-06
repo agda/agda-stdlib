@@ -77,8 +77,8 @@ tail xs = xs ∘ suc
 uncons : Vector A (suc n) → A × Vector A n
 uncons xs = head xs , tail xs
 
-replicate : A → Vector A n
-replicate = const
+replicate : (n : ℕ) → A → Vector A n
+replicate n = const
 
 insertAt : Vector A n → Fin (suc n) → A → Vector A (suc n)
 insertAt {n = n}     xs zero    v zero    = v

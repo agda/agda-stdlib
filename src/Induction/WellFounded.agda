@@ -8,15 +8,18 @@
 
 module Induction.WellFounded where
 
-open import Data.Product.Base using (Σ; _,_; proj₁)
+open import Data.Product.Base using (Σ; _,_; proj₁; proj₂)
 open import Function.Base using (_∘_; flip; _on_)
 open import Induction
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions
-  using (Symmetric; _Respectsʳ_; _Respects_)
+  using (Symmetric; Asymmetric; Irreflexive; _Respects₂_; 
+    _Respectsʳ_; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Unary
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
@@ -115,6 +118,21 @@ module FixPoint
 
   unfold-wfRec : ∀ {x} → wfRec P f x ≡ f x λ _ → wfRec P f _
   unfold-wfRec {x} = f-ext x wfRecBuilder-wfRec
+
+------------------------------------------------------------------------
+-- Well-founded relations are asymmetric and irreflexive.
+
+module _ {_<_ : Rel A r} where
+  acc⇒asym : ∀ {x y} → Acc _<_ x → x < y → ¬ (y < x)
+  acc⇒asym {x} hx =
+    Some.wfRec (λ x → ∀ {y} → x < y → ¬ (y < x)) (λ _ hx x<y y<x → hx y<x y<x x<y) _ hx
+
+  wf⇒asym : WellFounded _<_ → Asymmetric _<_
+  wf⇒asym wf = acc⇒asym (wf _)
+
+  wf⇒irrefl : {_≈_ : Rel A ℓ} → _<_ Respects₂ _≈_ → 
+              Symmetric _≈_ → WellFounded _<_ → Irreflexive _≈_ _<_
+  wf⇒irrefl r s wf = asym⇒irr r s (wf⇒asym wf)
 
 ------------------------------------------------------------------------
 -- It might be useful to establish proofs of Acc or Well-founded using
