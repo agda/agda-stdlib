@@ -253,10 +253,10 @@ _≥?_ = flip _≤?_
 ------------------------------------------------------------------------
 -- Other properties of _≤_
 
-≤-pred = s≤s⁻¹
-
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
+
+≤-pred = s≤s⁻¹
 
 m≤n⇒m≤1+n : ∀ {m n} → m ≤ n → m ≤ 1 + n
 m≤n⇒m≤1+n z≤n       = z≤n
@@ -280,8 +280,6 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 ------------------------------------------------------------------------
 
 -- Relationships between the various relations
-
-<-pred = s<s⁻¹
 
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ z<s               = z≤n
@@ -418,6 +416,8 @@ _>?_ = flip _<?_
 
 s<s-injective : ∀ {m n} {p q : m < n} → s<s p ≡ s<s q → p ≡ q
 s<s-injective refl = refl
+
+<-pred = s<s⁻¹
 
 m<n⇒m<1+n : ∀ {m n} → m < n → m < 1 + n
 m<n⇒m<1+n z<s               = z<s
