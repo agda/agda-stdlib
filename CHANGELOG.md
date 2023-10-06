@@ -1517,12 +1517,11 @@ Deprecated names
 * In `Data.Nat.Properties`:
   ```
   suc[pred[n]]≡n  ↦  suc-pred
-  ≤-pred          ↦  Data.Nat.Base.s≤s⁻¹
-  <-pred          ↦  Data.Nat.Base.s<s⁻¹
   ≤-step          ↦  m≤n⇒m≤1+n
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
   <-step          ↦  m<n⇒m<1+n
+  pred-mono       ↦  pred-mono-≤
   ```
 
 * In `Data.Rational.Unnormalised.Base`:

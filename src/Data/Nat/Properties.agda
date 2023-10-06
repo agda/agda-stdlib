@@ -1679,9 +1679,6 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 -- Properties of pred
 ------------------------------------------------------------------------
 
-pred-mono : pred Preserves _≤_ ⟶ _≤_
-pred-mono m≤n = ∸-mono m≤n (≤-refl {1})
-
 pred[n]≤n : ∀ {n} → pred n ≤ n
 pred[n]≤n {zero}  = z≤n
 pred[n]≤n {suc n} = n≤1+n n
@@ -1700,9 +1697,9 @@ pred[n]≤n {suc n} = n≤1+n n
 suc-pred : ∀ n .{{_ : NonZero n}} → suc (pred n) ≡ n
 suc-pred (suc n) = refl
 
-pred-mono-≤ : ∀ {m n} → m ≤ n → pred m ≤ pred n
-pred-mono-≤ {m = zero}              _   = z≤n
-pred-mono-≤ {m = suc _} {n = suc _} m≤n = s≤s⁻¹ m≤n
+pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
+pred-mono-≤ {zero}          _   = z≤n
+pred-mono-≤ {suc _} {suc _} m≤n = s≤s⁻¹ m≤n
 
 pred-mono-< : ∀ {m n} → .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
 pred-mono-< {m = suc _} {n = suc _} = s<s⁻¹
@@ -2324,6 +2321,11 @@ suc[pred[n]]≡n {suc n} _   = refl
 <-step = m<n⇒m<1+n
 {-# WARNING_ON_USAGE <-step
 "Warning: <-step was deprecated in v2.0. Please use m<n⇒m<1+n instead. "
+#-}
+
+pred-mono = pred-mono-≤
+{-# WARNING_ON_USAGE pred-mono
+"Warning: pred-mono was deprecated in v2.0. Please use pred-mono-≤ instead. "
 #-}
 
 {- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
