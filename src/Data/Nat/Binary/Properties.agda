@@ -1459,7 +1459,7 @@ pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
 pred-mono-≤ {x} {y} x≤y = begin
   pred x             ≡⟨ cong pred (sym (fromℕ-toℕ x)) ⟩
   pred (fromℕ m)     ≡⟨ sym (fromℕ-pred m) ⟩
-  fromℕ (ℕ.pred m)   ≤⟨ fromℕ-mono-≤ (ℕₚ.pred-mono (toℕ-mono-≤ x≤y)) ⟩
+  fromℕ (ℕ.pred m)   ≤⟨ fromℕ-mono-≤ (ℕₚ.pred-mono-≤ (toℕ-mono-≤ x≤y)) ⟩
   fromℕ (ℕ.pred n)   ≡⟨ fromℕ-pred n ⟩
   pred (fromℕ n)     ≡⟨ cong pred (fromℕ-toℕ y) ⟩
   pred y             ∎
