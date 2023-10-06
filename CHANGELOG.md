@@ -603,6 +603,7 @@ Non-backwards compatible changes
   ```agda
   WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
   WfRec _<_ P x = ∀ {y} → y < x → P y
+  ```
 
 ### Change in the definition of `_≤″_` (issue #1919)
 
@@ -924,7 +925,7 @@ Non-backwards compatible changes
   Data.Vec.Relation.Binary.Lex.NonStrict
   Relation.Binary.Reasoning.StrictPartialOrder
   Relation.Binary.Reasoning.PartialOrder
-  ```
+  ```	
 
 ### Other
 
@@ -1053,60 +1054,61 @@ Non-backwards compatible changes
   `List` module i.e. `lookup` takes its container first and the index (whose type may
   depend on the container value) second.
   This affects modules:
-    ```
-    Codata.Guarded.Stream
-    Codata.Guarded.Stream.Relation.Binary.Pointwise
-    Codata.Musical.Colist.Base
-    Codata.Musical.Colist.Relation.Unary.Any.Properties
-    Codata.Musical.Covec
-    Codata.Musical.Stream
-    Codata.Sized.Colist
-    Codata.Sized.Covec
-    Codata.Sized.Stream
-    Data.Vec.Relation.Unary.All
-    Data.Star.Environment
-    Data.Star.Pointer
-    Data.Star.Vec
-    Data.Trie
-    Data.Trie.NonEmpty
-    Data.Tree.AVL
-    Data.Tree.AVL.Indexed
-    Data.Tree.AVL.Map
-    Data.Tree.AVL.NonEmpty
-    Data.Vec.Recursive
-    Tactic.RingSolver
-    Tactic.RingSolver.Core.NatSet
-    ```
+  ```
+  Codata.Guarded.Stream
+  Codata.Guarded.Stream.Relation.Binary.Pointwise
+  Codata.Musical.Colist.Base
+  Codata.Musical.Colist.Relation.Unary.Any.Properties
+  Codata.Musical.Covec
+  Codata.Musical.Stream
+  Codata.Sized.Colist
+  Codata.Sized.Covec
+  Codata.Sized.Stream
+  Data.Vec.Relation.Unary.All
+  Data.Star.Environment
+  Data.Star.Pointer
+  Data.Star.Vec
+  Data.Trie
+  Data.Trie.NonEmpty
+  Data.Tree.AVL
+  Data.Tree.AVL.Indexed
+  Data.Tree.AVL.Map
+  Data.Tree.AVL.NonEmpty
+  Data.Vec.Recursive
+  Tactic.RingSolver
+  Tactic.RingSolver.Core.NatSet
+  ```
 
-  * Moved & renamed from `Data.Vec.Relation.Unary.All`
-    to `Data.Vec.Relation.Unary.All.Properties`:
-    ```
-    lookup ↦ lookup⁺
-    tabulate ↦ lookup⁻
-    ```
+* Moved & renamed from `Data.Vec.Relation.Unary.All`
+  to `Data.Vec.Relation.Unary.All.Properties`:
+  ```
+  lookup ↦ lookup⁺
+  tabulate ↦ lookup⁻
+  ```
 
-  * Renamed in `Data.Vec.Relation.Unary.Linked.Properties`
-    and `Codata.Guarded.Stream.Relation.Binary.Pointwise`:
-    ```
-    lookup ↦ lookup⁺
-    ```
+* Renamed in `Data.Vec.Relation.Unary.Linked.Properties`
+  and `Codata.Guarded.Stream.Relation.Binary.Pointwise`:
+  ```
+  lookup ↦ lookup⁺
+  ```
 
-  * Added the following new definitions to `Data.Vec.Relation.Unary.All`:
-    ```
-    lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
-    lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
-    lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
-    lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
-    ```
+* Added the following new definitions to `Data.Vec.Relation.Unary.All`:
+  ```
+  lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
+  lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
+  lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
+  lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
+  ```
 
-  * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
-    `¬¬-excluded-middle`.
+* `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
+  `¬¬-excluded-middle`.
 
-  * `iterate` in `Data.Vec.Base` now takes `n` (the length of `Vec`) as an
-    explicit argument.
-    ```agda
-    iterate : (A → A) → A → ∀ n → Vec A n
-    ```
+* `iterate` and `replicate` in `Data.Vec.Base` and `Data.Vec.Functional` 
+  now take the length of vector, `n`, as an explicit rather than an implicit argument.
+  ```agda
+  iterate : (A → A) → A → ∀ n → Vec A n
+  replicate : ∀ n → A → Vec A n
+  ```
 
 Major improvements
 ------------------

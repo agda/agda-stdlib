@@ -142,7 +142,7 @@ module _ (R : REL A B r) where
 
 module _ {R : REL A B r} {x y n} where
 
-  replicate⁺ : R x y → Pointwise R {n = n} (replicate x) (replicate y)
+  replicate⁺ : R x y → Pointwise R {n = n} (replicate n x) (replicate n y)
   replicate⁺ = const
 
 ------------------------------------------------------------------------

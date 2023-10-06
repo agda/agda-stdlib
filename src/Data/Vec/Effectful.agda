@@ -34,9 +34,9 @@ functor = record
   }
 
 applicative : RawApplicative (λ (A : Set a) → Vec A n)
-applicative = record
+applicative {n = n} = record
   { rawFunctor = functor
-  ; pure = replicate
+  ; pure = replicate n
   ; _<*>_  = Vec._⊛_
   }
 
