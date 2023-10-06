@@ -3764,6 +3764,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added new proof to `Induction.WellFounded`
   ```agda
   Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
+
+  acc⇒asym : Acc _<_ x → x < y → ¬ (y < x)
+  wf⇒asym : WellFounded _<_ → Asymmetric _<_
+  wf⇒irrefl : _<_ Respects₂ _≈_ → Symmetric _≈_ →
+              WellFounded _<_ → Irreflexive _≈_ _<_
   ```
 
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`
