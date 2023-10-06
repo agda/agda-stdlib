@@ -467,7 +467,7 @@ m mod n = fromℕ< (m%n<n m n)
 _divMod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} →
            DivMod dividend divisor
 m divMod n = result (m / n) (m mod n) $ begin-equality
-  m                             ≡⟨  m≡m%n+[m/n]*n m n ⟩
-  m % n              + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< lemma) ⟩
-  toℕ (fromℕ< lemma) + [m/n]*n  ∎
-  where [m/n]*n = m / n * n ; lemma = m%n<n m n
+  m                               ≡⟨  m≡m%n+[m/n]*n m n ⟩
+  m % n                + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< [m%n]<n) ⟩
+  toℕ (fromℕ< [m%n]<n) + [m/n]*n  ∎
+  where [m/n]*n = m / n * n ; [m%n]<n = m%n<n m n
