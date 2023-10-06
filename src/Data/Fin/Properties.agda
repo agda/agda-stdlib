@@ -535,33 +535,33 @@ inject₁≡⇒lower₁≡ n≢j i≡j = inject₁-injective (trans (inject₁-l
 ------------------------------------------------------------------------
 
 toℕ-inject≤ : ∀ i .(m≤n : m ℕ.≤ n) → toℕ (inject≤ i m≤n) ≡ toℕ i
-toℕ-inject≤ {_} {suc n} zero    _         = refl
-toℕ-inject≤ {_} {suc n} (suc i) m≤n = cong suc (toℕ-inject≤ i (ℕ.s≤s⁻¹ m≤n))
+toℕ-inject≤ {_} {suc n} zero    _ = refl
+toℕ-inject≤ {_} {suc n} (suc i) _ = cong suc (toℕ-inject≤ i _)
 
 inject≤-refl : ∀ i .(n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
-inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.s≤s⁻¹ n≤n))
+inject≤-refl {suc n} (suc i) _ = cong suc (inject≤-refl i _)
 
 inject≤-idempotent : ∀ (i : Fin m)
                      .(m≤n : m ℕ.≤ n) .(n≤o : n ℕ.≤ o) .(m≤o : m ℕ.≤ o) →
                      inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i m≤o
-inject≤-idempotent {_} {suc n} {suc o} zero    _   _   _   = refl
-inject≤-idempotent {_} {suc n} {suc o} (suc i) m≤n n≤o m≤o =
-  cong suc (inject≤-idempotent i (ℕ.s≤s⁻¹ m≤n) (ℕ.s≤s⁻¹ n≤o) (ℕ.s≤s⁻¹ m≤o))
+inject≤-idempotent {_} {suc n} {suc o} zero    _ _ _ = refl
+inject≤-idempotent {_} {suc n} {suc o} (suc i) _ _ _ =
+  cong suc (inject≤-idempotent i _ _ _)
 
-inject≤-trans : ∀ (i : Fin m) (m≤n : m ℕ.≤ n) (n≤o : n ℕ.≤ o) →
+inject≤-trans : ∀ (i : Fin m) .(m≤n : m ℕ.≤ n) .(n≤o : n ℕ.≤ o) →
                 inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (ℕₚ.≤-trans m≤n n≤o)
-inject≤-trans i m≤n n≤o = inject≤-idempotent i m≤n n≤o _
+inject≤-trans i _ _ = inject≤-idempotent i _ _ _
 
 inject≤-injective : ∀ .(m≤n m≤n′ : m ℕ.≤ n) i j →
                     inject≤ i m≤n ≡ inject≤ j m≤n′ → i ≡ j
-inject≤-injective {n = suc _} p q zero    zero    eq = refl
-inject≤-injective {n = suc _} p q (suc i) (suc j) eq =
-  cong suc (inject≤-injective (ℕ.s≤s⁻¹ p) (ℕ.s≤s⁻¹ q) i j (suc-injective eq))
+inject≤-injective {n = suc _} _ _ zero    zero    eq = refl
+inject≤-injective {n = suc _} _ _ (suc i) (suc j) eq =
+  cong suc (inject≤-injective _ _ i j (suc-injective eq))
 
-inject≤-irrelevant : ∀ (m≤n m≤n′ : m ℕ.≤ n) i →
+inject≤-irrelevant : ∀ .(m≤n m≤n′ : m ℕ.≤ n) i →
                     inject≤ i m≤n ≡ inject≤ i m≤n′
-inject≤-irrelevant m≤n m≤n′ i = refl
+inject≤-irrelevant _ _ i = refl
 
 ------------------------------------------------------------------------
 -- pred
@@ -899,7 +899,7 @@ pinch-surjective (suc i) (suc j) = map suc (λ {f refl → cong suc (f refl)}) (
 
 pinch-mono-≤ : ∀ (i : Fin n) → (pinch i) Preserves _≤_ ⟶ _≤_
 pinch-mono-≤ 0F      {0F}    {k}     0≤n = z≤n
-pinch-mono-≤ 0F      {suc j} {suc k} j≤k = (ℕ.s≤s⁻¹ j≤k)
+pinch-mono-≤ 0F      {suc j} {suc k} j≤k = ℕ.s≤s⁻¹ j≤k
 pinch-mono-≤ (suc i) {0F}    {k}     0≤n = z≤n
 pinch-mono-≤ (suc i) {suc j} {suc k} j≤k = s≤s (pinch-mono-≤ i (ℕ.s≤s⁻¹ j≤k))
 
