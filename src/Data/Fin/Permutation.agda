@@ -104,7 +104,7 @@ reverse = permutation opposite opposite PC.reverse-involutive PC.reverse-involut
 
 infixr 9 _∘ₚ_
 _∘ₚ_ : Permutation m n → Permutation n o → Permutation m o
-π₁ ∘ₚ π₂ = π₁ ↔-∘ π₂
+π₁ ∘ₚ π₂ = π₂ ↔-∘ π₁
 
 -- Flip
 

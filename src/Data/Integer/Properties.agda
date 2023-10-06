@@ -33,7 +33,7 @@ open import Relation.Binary.Bundles using
 open import Relation.Binary.Structures
   using (IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>)
+  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no; ¬_)
 import Relation.Nullary.Reflects as Reflects
@@ -276,17 +276,17 @@ drop‿-<- (-<- n<m) = n<m
 <-asym (-<- n<m) = ℕ.<-asym n<m ∘ drop‿-<-
 <-asym (+<+ m<n) = ℕ.<-asym m<n ∘ drop‿+<+
 
-≤-<-trans : Trans _≤_ _<_ _<_
-≤-<-trans (-≤- n≤m) (-<- o<n) = -<- (ℕ.<-transˡ o<n n≤m)
+≤-<-trans : LeftTrans _≤_ _<_
+≤-<-trans (-≤- n≤m) (-<- o<n) = -<- (ℕ.<-≤-trans o<n n≤m)
 ≤-<-trans (-≤- n≤m) -<+       = -<+
 ≤-<-trans -≤+       (+<+ m<o) = -<+
-≤-<-trans (+≤+ m≤n) (+<+ n<o) = +<+ (ℕ.<-transʳ m≤n n<o)
+≤-<-trans (+≤+ m≤n) (+<+ n<o) = +<+ (ℕ.≤-<-trans m≤n n<o)
 
-<-≤-trans : Trans _<_ _≤_ _<_
-<-≤-trans (-<- n<m) (-≤- o≤n) = -<- (ℕ.<-transʳ o≤n n<m)
+<-≤-trans : RightTrans _<_ _≤_
+<-≤-trans (-<- n<m) (-≤- o≤n) = -<- (ℕ.≤-<-trans o≤n n<m)
 <-≤-trans (-<- n<m) -≤+       = -<+
 <-≤-trans -<+       (+≤+ m≤n) = -<+
-<-≤-trans (+<+ m<n) (+≤+ n≤o) = +<+ (ℕ.<-transˡ m<n n≤o)
+<-≤-trans (+<+ m<n) (+≤+ n≤o) = +<+ (ℕ.<-≤-trans m<n n≤o)
 
 <-trans : Transitive _<_
 <-trans m<n n<p = ≤-<-trans (<⇒≤ m<n) n<p
@@ -614,7 +614,7 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
 
 ⊖-≥ : m ℕ.≥ n → m ⊖ n ≡ + (m ∸ n)
 ⊖-≥ {m} {n} p with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
-... | true  | q = contradiction (ℕ.<-transʳ p q) (ℕ.<-irrefl refl)
+... | true  | q = contradiction (ℕ.≤-<-trans p q) (ℕ.<-irrefl refl)
 ... | false | q = refl
 
 ≤-⊖ : m ℕ.≤ n → n ⊖ m ≡ + (n ∸ m)
