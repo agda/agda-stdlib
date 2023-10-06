@@ -167,7 +167,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≤-total : Total _≤_
 ≤-total zero    _       = inj₁ z≤n
 ≤-total _       zero    = inj₂ z≤n
-≤-total (suc m) (suc n) = [ inj₁ ∘ s≤s , inj₂ ∘ s≤s ]′ (≤-total m n)
+≤-total (suc m) (suc n) = Sum.map s≤s s≤s (≤-total m n)
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant z≤n        z≤n        = refl
@@ -453,8 +453,7 @@ m<n⇒m≤1+n = m≤n⇒m≤1+n ∘ <⇒≤
 m<1+n⇒m<n∨m≡n :  ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
 m<1+n⇒m<n∨m≡n {0}     {0}     _           = inj₂ refl
 m<1+n⇒m<n∨m≡n {0}     {suc n} _           = inj₁ 0<1+n
-m<1+n⇒m<n∨m≡n {suc m} {suc n} (s<s m<1+n)
-  = [ inj₁ ∘ s<s , inj₂ ∘ (cong suc) ]′ (m<1+n⇒m<n∨m≡n m<1+n)
+m<1+n⇒m<n∨m≡n {suc m} {suc n} (s<s m<1+n) = Sum.map s<s (cong suc) (m<1+n⇒m<n∨m≡n m<1+n)
 
 m≤n⇒m<n∨m≡n :  ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
 m≤n⇒m<n∨m≡n m≤n = m<1+n⇒m<n∨m≡n (s≤s m≤n)
