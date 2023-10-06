@@ -256,14 +256,14 @@ K-reflexive P.refl = K-refl
 K-trans : Trans (Related {a} {b} k)
                 (Related {b} {c} k)
                 (Related {a} {c} k)
-K-trans {k = implication}        = Composition._⟶-∘_
-K-trans {k = reverseImplication} = flip Composition._⟶-∘_
-K-trans {k = equivalence}        = Composition._⇔-∘_
-K-trans {k = injection}          = Composition._↣-∘_
-K-trans {k = reverseInjection}   = flip Composition._↣-∘_
-K-trans {k = leftInverse}        = Composition._↪-∘_
-K-trans {k = surjection}         = Composition._↠-∘_
-K-trans {k = bijection}          = Composition._↔-∘_
+K-trans {k = implication}        = flip Composition._⟶-∘_
+K-trans {k = reverseImplication} = Composition._⟶-∘_
+K-trans {k = equivalence}        = flip Composition._⇔-∘_
+K-trans {k = injection}          = flip Composition._↣-∘_
+K-trans {k = reverseInjection}   = Composition._↣-∘_
+K-trans {k = leftInverse}        = flip Composition._↪-∘_
+K-trans {k = surjection}         = flip Composition._↠-∘_
+K-trans {k = bijection}          = flip Composition._↔-∘_
 
 SK-sym : ∀ {k} → Sym (Related {a} {b} ⌊ k ⌋)
                      (Related {b} {a} ⌊ k ⌋)
