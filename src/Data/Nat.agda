@@ -44,6 +44,6 @@ open import Data.Nat.Properties public
 
 -- Version 2.0
 
--- solely for the sake of exposing the deprecation warnings for these two names
+-- solely for the re-export of this name, formerly in `Data.Nat.Properties.Core`
 open import Data.Nat.Properties public
-  using (≤-pred; <-pred)
+  using (≤-pred)

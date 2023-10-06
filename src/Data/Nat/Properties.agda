@@ -253,6 +253,8 @@ _≥?_ = flip _≤?_
 ------------------------------------------------------------------------
 -- Other properties of _≤_
 
+≤-pred = s≤s⁻¹
+
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
@@ -278,6 +280,8 @@ n≤1⇒n≡0∨n≡1 (s≤s z≤n) = inj₂ refl
 ------------------------------------------------------------------------
 
 -- Relationships between the various relations
+
+<-pred = s<s⁻¹
 
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ z<s               = z≤n
@@ -2300,16 +2304,6 @@ suc[pred[n]]≡n {zero}  0≢0 = contradiction refl 0≢0
 suc[pred[n]]≡n {suc n} _   = refl
 {-# WARNING_ON_USAGE suc[pred[n]]≡n
 "Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments"
-#-}
-
-≤-pred = s≤s⁻¹
-{-# WARNING_ON_USAGE ≤-pred
-"Warning: ≤-pred was deprecated in v2.0. Please use Data.Nat.Base.s≤s⁻¹  or pred-mono-≤ instead. Note that the latter now has a different type. "
-#-}
-
-<-pred = s<s⁻¹
-{-# WARNING_ON_USAGE <-pred
-"Warning: <-pred was deprecated in v2.0. Please use Data.Nat.Base.s<s⁻¹ or pred-mono-< instead. Note that the latter now has a different type using instance arguments."
 #-}
 
 ≤-step = m≤n⇒m≤1+n
