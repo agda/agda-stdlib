@@ -21,7 +21,7 @@ open import Relation.Unary
 
 private
   variable
-    a b c p q r ℓ : Level
+    a p ℓ : Level
     A B C : Set a
     P Q R : Pred A p
     m n : ℕ
