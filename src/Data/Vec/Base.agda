@@ -60,9 +60,9 @@ lookup : Vec A n → Fin n → A
 lookup (x ∷ xs) zero    = x
 lookup (x ∷ xs) (suc i) = lookup xs i
 
-iterate : (A → A) → A → ∀ {n} → Vec A n
-iterate s z {zero}  = []
-iterate s z {suc n} = z ∷ iterate s (s z)
+iterate : (A → A) → A → ∀ n → Vec A n
+iterate s z zero    = []
+iterate s z (suc n) = z ∷ iterate s (s z) n
 
 insertAt : Vec A n → Fin (suc n) → A → Vec A (suc n)
 insertAt xs       zero     v = v ∷ xs
@@ -91,6 +91,8 @@ xs [ i ]≔ y = xs [ i ]%= const y
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
 
+-- See README.Data.Vec.Relation.Binary.Equality.Cast for the reasoning
+-- system of `cast`-ed equality.
 cast : .(eq : m ≡ n) → Vec A m → Vec A n
 cast {n = zero}  eq []       = []
 cast {n = suc _} eq (x ∷ xs) = x ∷ cast (cong pred eq) xs
@@ -241,9 +243,9 @@ count P? = countᵇ (does ∘ P?)
 [_] : A → Vec A 1
 [ x ] = x ∷ []
 
-replicate : A → Vec A n
-replicate {n = zero}  x = []
-replicate {n = suc n} x = x ∷ replicate x
+replicate : (n : ℕ) → A → Vec A n
+replicate zero    x = []
+replicate (suc n) x = x ∷ replicate n x
 
 tabulate : (Fin n → A) → Vec A n
 tabulate {n = zero}  f = []
@@ -293,7 +295,7 @@ truncate (s≤s le) (x ∷ xs) = x ∷ (truncate le xs)
 
 -- Pad out a vector with extra elements.
 padRight : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
-padRight z≤n      a xs       = replicate a
+padRight z≤n      a xs       = replicate _ a
 padRight (s≤s le) a (x ∷ xs) = x ∷ padRight le a xs
 
 ------------------------------------------------------------------------
@@ -348,8 +350,8 @@ last xs = proj₁ (proj₂ (initLast xs))
 -- Other operations
 
 transpose : Vec (Vec A n) m → Vec (Vec A m) n
-transpose []         = replicate []
-transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+transpose {n = n} []          = replicate n []
+transpose {n = n} (as ∷ ass) = ((replicate n _∷_) ⊛ as) ⊛ transpose ass
 
 ------------------------------------------------------------------------
 -- DEPRECATED

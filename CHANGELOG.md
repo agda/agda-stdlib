@@ -29,6 +29,10 @@ Highlights
 Bug-fixes
 ---------
 
+* The combinators `_⟶-∘_`, `_↣-∘_`, `_↠-∘_`, `_⤖-∘_`, `_⇔-∘_`, `_↩-∘_`, `_↪-∘_`, `_↔-∘_`
+  in `Function.Construct.Composition` had their arguments in the wrong order. They have
+  been flipped so they can actually be used as a composition operator.
+
 * The following operators were missing a fixity declaration, which has now
   been fixed -
   ```
@@ -585,6 +589,22 @@ Non-backwards compatible changes
   Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
   ```
 
+### Change to the definition of `Induction.WellFounded.WfRec` (issue #2083)
+
+* Previously, the following definition was adopted
+  ```agda
+  WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
+  WfRec _<_ P x = ∀ y → y < x → P y
+  ```
+  with the consequence that all arguments involving about accesibility and
+  wellfoundedness proofs were polluted by almost-always-inferrable explicit
+  arguments for the `y` position. The definition has now been changed to
+  make that argument *implicit*, as 
+  ```agda
+  WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
+  WfRec _<_ P x = ∀ {y} → y < x → P y
+  ```
+
 ### Change in the definition of `_≤″_` (issue #1919)
 
 * The definition of `_≤″_` in `Data.Nat.Base` was previously:
@@ -935,7 +955,7 @@ Non-backwards compatible changes
   Data.Vec.Relation.Binary.Lex.NonStrict
   Relation.Binary.Reasoning.StrictPartialOrder
   Relation.Binary.Reasoning.PartialOrder
-  ```
+  ```	
 
 ### Other
 
@@ -1064,51 +1084,61 @@ Non-backwards compatible changes
   `List` module i.e. `lookup` takes its container first and the index (whose type may
   depend on the container value) second.
   This affects modules:
-    ```
-    Codata.Guarded.Stream
-    Codata.Guarded.Stream.Relation.Binary.Pointwise
-    Codata.Musical.Colist.Base
-    Codata.Musical.Colist.Relation.Unary.Any.Properties
-    Codata.Musical.Covec
-    Codata.Musical.Stream
-    Codata.Sized.Colist
-    Codata.Sized.Covec
-    Codata.Sized.Stream
-    Data.Vec.Relation.Unary.All
-    Data.Star.Environment
-    Data.Star.Pointer
-    Data.Star.Vec
-    Data.Trie
-    Data.Trie.NonEmpty
-    Data.Tree.AVL
-    Data.Tree.AVL.Indexed
-    Data.Tree.AVL.Map
-    Data.Tree.AVL.NonEmpty
-    Data.Vec.Recursive
-    Tactic.RingSolver
-    Tactic.RingSolver.Core.NatSet
-    ```
-  * Moved & renamed from `Data.Vec.Relation.Unary.All`
-    to `Data.Vec.Relation.Unary.All.Properties`:
-    ```
-    lookup ↦ lookup⁺
-    tabulate ↦ lookup⁻
-    ```
-  * Renamed in `Data.Vec.Relation.Unary.Linked.Properties`
-    and `Codata.Guarded.Stream.Relation.Binary.Pointwise`:
-    ```
-    lookup ↦ lookup⁺
-    ```
-  * Added the following new definitions to `Data.Vec.Relation.Unary.All`:
-    ```
-    lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
-    lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
-    lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
-    lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
-    ```
+  ```
+  Codata.Guarded.Stream
+  Codata.Guarded.Stream.Relation.Binary.Pointwise
+  Codata.Musical.Colist.Base
+  Codata.Musical.Colist.Relation.Unary.Any.Properties
+  Codata.Musical.Covec
+  Codata.Musical.Stream
+  Codata.Sized.Colist
+  Codata.Sized.Covec
+  Codata.Sized.Stream
+  Data.Vec.Relation.Unary.All
+  Data.Star.Environment
+  Data.Star.Pointer
+  Data.Star.Vec
+  Data.Trie
+  Data.Trie.NonEmpty
+  Data.Tree.AVL
+  Data.Tree.AVL.Indexed
+  Data.Tree.AVL.Map
+  Data.Tree.AVL.NonEmpty
+  Data.Vec.Recursive
+  Tactic.RingSolver
+  Tactic.RingSolver.Core.NatSet
+  ```
 
-  * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
-    `¬¬-excluded-middle`.
+* Moved & renamed from `Data.Vec.Relation.Unary.All`
+  to `Data.Vec.Relation.Unary.All.Properties`:
+  ```
+  lookup ↦ lookup⁺
+  tabulate ↦ lookup⁻
+  ```
+
+* Renamed in `Data.Vec.Relation.Unary.Linked.Properties`
+  and `Codata.Guarded.Stream.Relation.Binary.Pointwise`:
+  ```
+  lookup ↦ lookup⁺
+  ```
+
+* Added the following new definitions to `Data.Vec.Relation.Unary.All`:
+  ```
+  lookupAny : All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
+  lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
+  lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
+  lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
+  ```
+
+* `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
+  `¬¬-excluded-middle`.
+
+* `iterate` and `replicate` in `Data.Vec.Base` and `Data.Vec.Functional` 
+  now take the length of vector, `n`, as an explicit rather than an implicit argument.
+  ```agda
+  iterate : (A → A) → A → ∀ n → Vec A n
+  replicate : ∀ n → A → Vec A n
+  ```
 
 Major improvements
 ------------------
@@ -1419,7 +1449,7 @@ Deprecated names
   m<n⇒m≤pred[n]  ↦  i<j⇒i≤pred[j]
   -1*n≡-n        ↦  -1*i≡-i
   m*n≡0⇒m≡0∨n≡0  ↦  i*j≡0⇒i≡0∨j≡0
-  ∣m*n∣≡∣m∣*∣n∣     ↦  ∣i*j∣≡∣i∣*∣j∣
+  ∣m*n∣≡∣m∣*∣n∣  ↦  ∣i*j∣≡∣i∣*∣j∣
   m≤m+n          ↦  i≤i+j
   n≤m+n          ↦  i≤j+i
   m-n≤m          ↦  i≤i-j
@@ -1527,6 +1557,9 @@ Deprecated names
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
   <-step          ↦  m<n⇒m<1+n
+
+  <-transʳ        ↦  ≤-<-trans
+  <-transˡ        ↦  <-≤-trans
   ```
 
 * In `Data.Rational.Unnormalised.Base`:
@@ -2039,6 +2072,11 @@ New modules
   Function.Indexed.Bundles
   ```
 
+* Combinators for propositional equational reasoning on vectors with different indices
+  ```
+  Data.Vec.Relation.Binary.Equality.Cast
+  ```
+
 Additions to existing modules
 -----------------------------
 
@@ -2481,7 +2519,7 @@ Additions to existing modules
   gcd-zero  : Zero 1ℤ gcd
   ```
 
-* Added new functions in `Data.List.Base`:
+* Added new functions and definitions to `Data.List.Base`:
   ```agda
   takeWhileᵇ   : (A → Bool) → List A → List A
   dropWhileᵇ   : (A → Bool) → List A → List A
@@ -2506,6 +2544,7 @@ Additions to existing modules
   ++-rawMagma     : Set a → RawMagma a _
   ++-[]-rawMonoid : Set a → RawMonoid a _
 
+  iterate : (A → A) → A → ℕ → List A
   insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
   updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
   ```
@@ -2567,13 +2606,20 @@ Additions to existing modules
   drop-take-suc-tabulate : drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 
   take-all : n ≥ length xs → take n xs ≡ xs
+  drop-all : n ≥ length xs → drop n xs ≡ []
 
   take-[] : take m [] ≡ []
   drop-[] : drop m [] ≡ []
 
-  map-replicate : map f (replicate n x) ≡ replicate n (f x)
-
   drop-drop : drop n (drop m xs) ≡ drop (m + n) xs
+
+  lookup-replicate  : lookup (replicate n x) i ≡ x
+  map-replicate     : map f (replicate n x) ≡ replicate n (f x)
+  zipWith-replicate : zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
+
+  length-iterate : length (iterate f x n) ≡ n
+  iterate-id     : iterate id x n ≡ replicate n x
+  lookup-iterate : lookup (iterate f x n) (cast (sym (length-iterate f x n)) i) ≡ ℕ.iterate f x (toℕ i)
 
   length-insertAt   : length (insertAt xs i v) ≡ suc (length xs)
   length-removeAt′  : length xs ≡ suc (length (removeAt xs k))
@@ -2983,6 +3029,7 @@ Additions to existing modules
   last-∷ʳ   : last (xs ∷ʳ x) ≡ x
   cast-∷ʳ   : cast eq (xs ∷ʳ x) ≡ (cast (cong pred eq) xs) ∷ʳ x
   ++-∷ʳ     : cast eq ((xs ++ ys) ∷ʳ z) ≡ xs ++ (ys ∷ʳ z)
+  ∷ʳ-++     : cast eq ((xs ∷ʳ a) ++ ys) ≡ xs ++ (a ∷ ys)
 
   reverse-∷          : reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
   reverse-involutive : Involutive _≡_ reverse
@@ -3003,6 +3050,14 @@ Additions to existing modules
   lookup-cast₁  : lookup (cast eq xs) i ≡ lookup xs (Fin.cast (sym eq) i)
   lookup-cast₂  : lookup xs (Fin.cast eq i) ≡ lookup (cast (sym eq) xs) i
   cast-reverse  : cast eq ∘ reverse ≗ reverse ∘ cast eq
+  cast-++ˡ      : cast (cong (_+ n) eq) (xs ++ ys) ≡ cast eq xs ++ ys
+  cast-++ʳ      : cast (cong (m +_) eq) (xs ++ ys) ≡ xs ++ cast eq ys
+
+  iterate-id     : iterate id x n ≡ replicate x
+  take-iterate   : take n (iterate f x (n + m)) ≡ iterate f x n
+  drop-iterate   : drop n (iterate f x n) ≡ []
+  lookup-iterate : lookup (iterate f x n) i ≡ ℕ.iterate f x (toℕ i)
+  toList-iterate : toList (iterate f x n) ≡ List.iterate f x n
 
   zipwith-++ : zipWith f (xs ++ ys) (xs' ++ ys') ≡ zipWith f xs xs' ++ zipWith f ys ys'
 
@@ -3016,6 +3071,11 @@ Additions to existing modules
   cast-fromList : cast _ (fromList xs) ≡ fromList ys
   fromList-map  : cast _ (fromList (List.map f xs)) ≡ map f (fromList xs)
   fromList-++   : cast _ (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+  fromList-reverse : cast (Listₚ.length-reverse xs) (fromList (List.reverse xs)) ≡ reverse (fromList xs)
+
+  ∷-ʳ++   : cast eq ((a ∷ xs) ʳ++ ys) ≡ xs ʳ++ (a ∷ ys)
+  ++-ʳ++  : cast eq ((xs ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ʳ++ zs)
+  ʳ++-ʳ++ : cast eq ((xs ʳ++ ys) ʳ++ zs) ≡ ys ʳ++ (xs ++ zs)
 
   length-toList   : List.length (toList xs) ≡ length xs
   toList-insertAt : toList (insertAt xs i v) ≡ List.insertAt (toList xs) (Fin.cast (cong suc (sym (length-toList xs))) i) v
@@ -3263,6 +3323,9 @@ Additions to existing modules
 
 * Added new definitions in `Relation.Binary.Definitions`:
   ```
+  RightTrans R S = Trans R S R
+  LeftTrans  S R = Trans S R R
+
   Dense        _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
   Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
   Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
@@ -3760,6 +3823,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added new proof to `Induction.WellFounded`
   ```agda
   Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
+
+  acc⇒asym : Acc _<_ x → x < y → ¬ (y < x)
+  wf⇒asym : WellFounded _<_ → Asymmetric _<_
+  wf⇒irrefl : _<_ Respects₂ _≈_ → Symmetric _≈_ →
+              WellFounded _<_ → Irreflexive _≈_ _<_
   ```
 
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`

@@ -90,7 +90,7 @@ lookup as (zero {n})  = head n as
 lookup as (suc {n} k) = lookup (tail n as) k
 
 replicate : ∀ n → A → A ^ n
-replicate n a = fromVec (Vec.replicate a)
+replicate n a = fromVec (Vec.replicate n a)
 
 tabulate : ∀ n → (Fin n → A) → A ^ n
 tabulate n f = fromVec (Vec.tabulate f)
