@@ -60,7 +60,7 @@ module _ {_<_ : Rel A r} (P : Pred A ℓ) where
 
       accNoInfiniteDescent : ∀ {x} → Acc _<_ x → ¬ (P x)
       accNoInfiniteDescent ax px = ID∩.Lemma.accNoInfiniteDescent descent∩ ax (px , ax)
-        
+
         where
         P∩Acc : Pred A _
         P∩Acc = P ∩ (Acc _<_)

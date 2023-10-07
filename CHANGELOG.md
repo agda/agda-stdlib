@@ -599,7 +599,7 @@ Non-backwards compatible changes
   with the consequence that all arguments involving about accesibility and
   wellfoundedness proofs were polluted by almost-always-inferrable explicit
   arguments for the `y` position. The definition has now been changed to
-  make that argument *implicit*, as 
+  make that argument *implicit*, as
   ```agda
   WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
   WfRec _<_ P x = ∀ {y} → y < x → P y
@@ -621,7 +621,7 @@ Non-backwards compatible changes
   raw bundles to `Data.X.Base`, this definition can now be made directly. Knock-on
   consequences include the need to retain the old constructor name, now introduced
   as a pattern synonym, and introduction of (a function equivalent to) the former
-  field name/projection function `proof` as `≤″-proof` in `Data.Nat.Properties`. 
+  field name/projection function `proof` as `≤″-proof` in `Data.Nat.Properties`.
 
 * Accordingly, the definition has been changed to:
   ```agda
@@ -879,12 +879,12 @@ Non-backwards compatible changes
   ```
   _─_ ↦ removeAt
   ```
-  
+
 * In `Data.Vec.Base`:
   ```agda
   insert ↦ insertAt
   remove ↦ removeAt
-  
+
   updateAt : Fin n → (A → A) → Vec A n → Vec A n
     ↦
   updateAt : Vec A n → Fin n → (A → A) → Vec A n
@@ -895,12 +895,12 @@ Non-backwards compatible changes
   remove : Fin (suc n) → Vector A (suc n) → Vector A n
     ↦
   removeAt : Vector A (suc n) → Fin (suc n) → Vector A n
- 
+
   updateAt : Fin n → (A → A) → Vector A n → Vector A n
     ↦
   updateAt : Vector A n → Fin n → (A → A) → Vector A n
   ```
-  
+
 * The old names (and the names of all proofs about these functions) have been deprecated appropriately.
 
 ### Changes to triple reasoning interface
@@ -925,7 +925,7 @@ Non-backwards compatible changes
   Data.Vec.Relation.Binary.Lex.NonStrict
   Relation.Binary.Reasoning.StrictPartialOrder
   Relation.Binary.Reasoning.PartialOrder
-  ```	
+  ```
 
 ### Other
 
@@ -1103,7 +1103,7 @@ Non-backwards compatible changes
 * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
   `¬¬-excluded-middle`.
 
-* `iterate` and `replicate` in `Data.Vec.Base` and `Data.Vec.Functional` 
+* `iterate` and `replicate` in `Data.Vec.Base` and `Data.Vec.Functional`
   now take the length of vector, `n`, as an explicit rather than an implicit argument.
   ```agda
   iterate : (A → A) → A → ∀ n → Vec A n
@@ -1658,7 +1658,7 @@ Deprecated names
   take-drop-id  ↦  take++drop≡id
 
   map-insert       ↦  map-insertAt
-  
+
   insert-lookup    ↦  insertAt-lookup
   insert-punchIn   ↦  insertAt-punchIn
   remove-PunchOut  ↦  removeAt-punchOut
@@ -1684,7 +1684,7 @@ Deprecated names
   updateAt-cong-relative    ↦  updateAt-cong-local
 
   map-updateAt              ↦  map-updateAt-local
-  
+
   insert-lookup             ↦  insertAt-lookup
   insert-punchIn            ↦  insertAt-punchIn
   remove-punchOut           ↦  removeAt-punchOut
