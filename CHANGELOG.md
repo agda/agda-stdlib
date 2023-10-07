@@ -868,9 +868,6 @@ Non-backwards compatible changes
   NB `_≮_` is now introduced *earlier* in the hierarchy, at `StrictPartialOrder`, which
   incurs some rather complicated deprecation gymnastics...
 
-* Accordingly, in fact we now have `_≰_` (in `Poset`) as a renamed `public` re-export
-  from `_⋦_` in `Preorder`, with `TotalPreorder` inheriting `_⋦_` from `Preorder`.
-
 * As knock-on changes, public re-exports of `Preorder`, `Poset`, `StrictPartialOrder`
   in derived bundles also now need to re-export the various new symbols accordingly.
 
