@@ -1904,6 +1904,11 @@ New modules
   Function.Properties.Surjection
   ```
 
+* The 'no infinite descent' principle for (accessible elements of) well-founded relations:
+  ```
+  Induction.NoInfiniteDescent
+  ```
+
 * In order to improve modularity, the contents of `Relation.Binary.Lattice` has been
   split out into the standard:
   ```

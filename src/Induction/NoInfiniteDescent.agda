@@ -2,55 +2,80 @@
 -- The Agda standard library
 --
 -- A standard consequence of accessibility/well-foundedness:
--- the impossibility of 'infinite descent' from any x st P to
--- 'smaller' y also satisfying P
+-- the impossibility of 'infinite descent' from any (accessible)
+-- element x satisfying P to 'smaller' y also satisfying P
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Induction.NoInfiniteDescent where
 
-open import Data.Product.Base using (_,_; proj₁; proj₂; ∃-syntax; _×_)
+open import Data.Product.Base using (_,_; ∃-syntax; _×_)
 open import Function.Base using (_∘_)
-open import Induction.WellFounded
-open import Level using (Level; _⊔_)
+open import Induction.WellFounded using (WellFounded; Acc; acc-inverse; module Some)
+open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Construct.Closure.Transitive
 open import Relation.Nullary.Negation.Core using (¬_)
-open import Relation.Unary using (Pred)
+open import Relation.Unary using (Pred; _∩_)
 
 private
   variable
-    a b ℓ ℓ₁ ℓ₂ r : Level
+    a r ℓ : Level
     A : Set a
-    B : Set b
 
 ------------------------------------------------------------------------
 -- Definitions
 
-module _ {_<_ : Rel A r} (P : Pred A ℓ)  where
+module InfiniteDescent (_<_ : Rel A r) (P : Pred A ℓ)  where
 
-    private
-      _<⁺_ : Rel A _
-      z <⁺ x = z ⟨ _<_ ⟩⁺ x
+    DescentAt : Pred A _
+    DescentAt x = P x → ∃[ y ] y < x × P y
 
-    SmallerCounterexample : Pred A _
-    SmallerCounterexample x = (px : P x) → ∃[ y ] y < x × P y
+    InfiniteDescent : Set _
+    InfiniteDescent = ∀ {x} → DescentAt x
 
-    SmallerCounterexample⁺ : Pred A _
-    SmallerCounterexample⁺ x = (px : P x) → ∃[ y ] y <⁺ x × P y
+    AccInfiniteDescent : Set _
+    AccInfiniteDescent = ∀ {x} → Acc _<_ x → DescentAt x
 
 ------------------------------------------------------------------------
--- Basic result
+-- Basic result: assumes unrestricted descent
 
-    module Lemma (sce : ∀ {x} → SmallerCounterexample x) where
+    module Lemma (descent : InfiniteDescent) where
 
-      accNoSmallestCounterexample : ∀ {x} → Acc _<_ x → ¬ (P x)
-      accNoSmallestCounterexample = Some.wfRec _
-        (λ _ hy py → let z , z<y , pz = sce py in hy z<y pz) _
+      accNoInfiniteDescent : ∀ {x} → Acc _<_ x → ¬ (P x)
+      accNoInfiniteDescent = Some.wfRec (¬_ ∘ P)
+        (λ _ hy py → let z , z<y , pz = descent py in hy z<y pz) _
 
-      wfNoSmallestCounterexample : WellFounded _<_ → ∀ {x} → ¬ (P x)
-      wfNoSmallestCounterexample wf = accNoSmallestCounterexample (wf _)
+      wfNoInfiniteDescent : WellFounded _<_ → ∀ {x} → ¬ (P x)
+      wfNoInfiniteDescent wf = accNoInfiniteDescent (wf _)
 
+------------------------------------------------------------------------
+-- Extended result: assumes descent only for accessible elements
 
+module _ {_<_ : Rel A r} (P : Pred A ℓ) where
 
+    open InfiniteDescent _<_ P hiding (module Lemma)
+
+    module Corollary (descent : AccInfiniteDescent) where
+
+      accNoInfiniteDescent : ∀ {x} → Acc _<_ x → ¬ (P x)
+      accNoInfiniteDescent ax px = ID∩.Lemma.accNoInfiniteDescent descent∩ ax (px , ax)
+        
+        where
+        P∩Acc : Pred A _
+        P∩Acc = P ∩ (Acc _<_)
+
+        module ID∩ = InfiniteDescent _<_ P∩Acc
+
+        descent∩ : ID∩.InfiniteDescent
+        descent∩ (px , ax) = let y , y<x , py = descent ax px in
+          y , y<x , py , acc-inverse ax y<x
+
+      wfNoInfiniteDescent : WellFounded _<_ → ∀ {x} → ¬ (P x)
+      wfNoInfiniteDescent wf = accNoInfiniteDescent (wf _)
+
+------------------------------------------------------------------------
+-- Exports
+
+open InfiniteDescent public using (InfiniteDescent; AccInfiniteDescent; module Lemma)
+open Corollary public
