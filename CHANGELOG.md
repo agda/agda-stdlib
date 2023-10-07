@@ -869,10 +869,6 @@ Non-backwards compatible changes
   corresponding `Relation.Binary.Properties` modules, and the corresponding client
   client module `import`s being adjusted accordingly.
 
-* NB modules such as `Relation.Binary.Construct.NonStrictToStrict` which operate
-  only on the the underlying `Structures` such as `IsPartialOrder` etc., are unable
-  to make use of the new symbols.
-
 ### Standardisation of `insertAt`/`updateAt`/`removeAt`
 
 * Previously, the names and argument order of index-based insertion, update and removal functions for
