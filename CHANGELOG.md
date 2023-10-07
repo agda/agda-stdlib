@@ -868,9 +868,6 @@ Non-backwards compatible changes
   NB `_≮_` is now introduced *earlier* in the hierarchy, at `StrictPartialOrder`, which
   incurs some rather complicated deprecation gymnastics...
 
-* As knock-on changes, public re-exports of `Preorder`, `Poset`, `StrictPartialOrder`
-  in derived bundles also now need to re-export the various new symbols accordingly.
-
 * Backwards compatibility has been maintained, with deprecated definitions in the
   corresponding `Relation.Binary.Properties` modules, and the corresponding client
   client module `import`s being adjusted accordingly.
