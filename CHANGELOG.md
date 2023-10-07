@@ -875,10 +875,6 @@ Non-backwards compatible changes
   corresponding `Relation.Binary.Properties` modules, and the corresponding client
   client module `import`s being adjusted accordingly.
 
-* Elsewhere under `Relation.Binary.Properties` etc. the use of *explicitly* negated
-  relation symbols have now been replaced by their definitionally equal counterparts
-  using the new symbols accordingly.
-
 * NB modules such as `Relation.Binary.Construct.NonStrictToStrict` which operate
   only on the the underlying `Structures` such as `IsPartialOrder` etc., are unable
   to make use of the new symbols.
