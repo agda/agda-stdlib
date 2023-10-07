@@ -855,9 +855,6 @@ Non-backwards compatible changes
   Therefore, only _declarations_ of `PartialOrder` records will need their field names
   updating.
 
-* NB (issue #2098) the corresponding situation regarding the `flip`ped
-  relation symbols `_≥_`, `_>_` has not (yet) been addressed.
-
 ### (Issue #1214) Reorganisation of the introduction of negated relation symbols under `Relation.Binary`
 
 * Previously, negated relation symbols `_≰_` (for `Poset`) and `_≮_` (`TotalOrder`)
