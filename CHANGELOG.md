@@ -876,10 +876,6 @@ Non-backwards compatible changes
   only on the the underlying `Structures` such as `IsPartialOrder` etc., are unable
   to make use of the new symbols.
 
-* NB (issue #2098) the corresponding situation regarding the `flip`ped relation
-  symbols `_≥_`, `_>_` (and their negated versions!) has not (yet) been addressed.
-  Ditto. the strict ordering relation `_<_` defined in `Relation.Binary.Properties.Poset`...
-
 ### Standardisation of `insertAt`/`updateAt`/`removeAt`
 
 * Previously, the names and argument order of index-based insertion, update and removal functions for
