@@ -861,13 +861,19 @@ Non-backwards compatible changes
   were introduced in the corresponding `Relation.Binary.Properties` modules, for re-export.
 
 * Now they are introduced as definitions in the corresponding `Relation.Binary.Bundles`,
-  together with, for uniformity's sake, an additional negated symbol `_⋦_` for `Preorder`.
-  NB `_≮_` is now introduced *earlier* in the hierarchy, at `StrictPartialOrder`, which
-  incurs some rather complicated deprecation gymnastics...
+  together with, for uniformity's sake, an additional negated symbol `_⋦_` for `Preorder`,
+  with their (obvious) intended semantics:
+  ```agda
+  infix 4 _⋦_ _≰_ _≮_
+  Preorder._⋦_            : Rel Carrier _
+  StrictPartialOrder._≮_  : Rel Carrier _
+  ```
+  Additionally, `Poset._≰_` is defined by renaming public export of `Preorder._⋦_`
 
 * Backwards compatibility has been maintained, with deprecated definitions in the
   corresponding `Relation.Binary.Properties` modules, and the corresponding client
   client module `import`s being adjusted accordingly.
+
 
 ### Standardisation of `insertAt`/`updateAt`/`removeAt`
 
@@ -3161,20 +3167,6 @@ Additions to existing modules
   prependHLams : List String → Term → Term
   prependVLams : List String → Term → Term
   ```
-
-* Added new definitions to `Relation.Binary.Bundles`:
-
-  The following negated relation symbols have now been added, with their
-  (obvious) intended semantics:
-  ```agda
-  infix 4 _⋦_ _≰_ _≮_
-  Preorder._⋦_            : Rel Carrier _
-  StrictPartialOrder._≮_  : Rel Carrier _
-  ```
-  Additionally, `Poset._≰_` is defined by renaming public export of `Preorder._⋦_`
-
-  The corresponding former definitions in `Relation.Binary.Properties.*`
-  have been deprecated.
 
 * Added new operations in `Relation.Binary.Construct.Closure.Equivalence`:
   ```
