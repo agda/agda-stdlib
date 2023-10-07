@@ -1757,11 +1757,6 @@ Deprecated names
   fromForeign ↦ Foreign.Haskell.Coerce.coerce
   ```
 
-* In `Relation.Binary.Bundles.Preorder`:
-  ```
-  _∼_  ↦  _≲_
-  ```
-
 * In `Relation.Binary.Indexed.Heterogeneous.Bundles.Preorder`:
   ```
   _∼_  ↦  _≲_
