@@ -4,7 +4,8 @@
 
 module Main where
 
-import qualified Data.List as L (sortBy, group, sort)
+import qualified Data.List as List (sortBy, sort)
+import qualified Data.List.NonEmpty as List1 (group, head)
 import Data.Char (isAscii, ord)
 import Data.Function (on)
 import Numeric (showHex)
@@ -27,9 +28,9 @@ main = do
   nonAsciiChars <-
     filter (not . isAscii) . T.unpack . T.concat <$> mapM readUTF8File agdaFiles
   let table :: [(Char, Int)]
-      table = L.sortBy (flip compare `on` snd) $
-              map (\cs -> (head cs, length cs)) $
-              L.group $ L.sort $ nonAsciiChars
+      table = List.sortBy (flip compare `on` snd) $
+              map (\cs -> (List1.head cs, length cs)) $
+              List1.group $ List.sort $ nonAsciiChars
 
   let codePoint :: Char -> T.Text
       codePoint c = T.pack $ showHex (ord c) ""

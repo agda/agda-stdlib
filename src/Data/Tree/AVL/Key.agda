@@ -7,7 +7,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles
+  using (StrictTotalOrder; StrictPartialOrder)
+open import Relation.Binary.Definitions using (Reflexive)
 
 module Data.Tree.AVL.Key
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)

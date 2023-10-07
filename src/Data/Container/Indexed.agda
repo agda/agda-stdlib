@@ -15,8 +15,7 @@ open import Level
 open import Data.Product.Base as Prod hiding (map)
 open import Data.W.Indexed
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse using (_↔_; module Inverse)
+open import Function using (_↔_; Inverse)
 open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
@@ -91,7 +90,7 @@ module _ {i₁ i₂ o₁ o₂}
              Container I₁ O₁ c₁ r₁ → (I₁ → I₂) → (O₁ → O₂) →
              Container I₂ O₂ c₂ r₂ → Set _
   C₁ ⊸[ f / g ] C₂ = ContainerMorphism C₁ C₂ f g _≡_ _↔_
-                                       (λ r₂↔r₁ r₂ → Inverse.to r₂↔r₁ ⟨$⟩ r₂)
+                                       (λ r₂↔r₁ r₂ → Inverse.to r₂↔r₁ r₂)
 
   -- Cartesian container morphism.
 
@@ -168,7 +167,7 @@ module LinearMorphism
   morphism : C₁ ⇒ C₂
   morphism = record
     { command  = command m
-    ; response = _⟨$⟩_ (Inverse.to (response m))
+    ; response = Inverse.to (response m)
     ; coherent = coherent m
     }
 

@@ -9,7 +9,11 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Extrema
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Transitive; Minimum; Maximum; Total; Irrelevant; Antisymmetric)
 
 module Relation.Binary.Construct.Add.Extrema.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where

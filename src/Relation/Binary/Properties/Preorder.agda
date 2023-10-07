@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Preorder; Setoid)
+open import Relation.Binary.Structures using (IsPreorder)
 
 module Relation.Binary.Properties.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
@@ -17,10 +18,11 @@ import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 
 open Preorder P
 
-------------------------------------------------------------------------
--- The inverse relation is also a preorder.
 
-converse-isPreorder : IsPreorder _≈_ (flip _∼_)
+------------------------------------------------------------------------
+-- The converse relation is also a preorder.
+
+converse-isPreorder : IsPreorder _≈_ _≳_
 converse-isPreorder = EqAndOrd.isPreorder isPreorder
 
 converse-preorder : Preorder p₁ p₂ p₃
@@ -31,7 +33,7 @@ converse-preorder = EqAndOrd.preorder P
 
 InducedEquivalence : Setoid _ _
 InducedEquivalence = record
-  { _≈_           = λ x y → x ∼ y × y ∼ x
+  { _≈_           = λ x y → x ≲ y × x ≳ y
   ; isEquivalence = record
     { refl  = (refl , refl)
     ; sym   = swap

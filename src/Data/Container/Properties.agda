@@ -9,7 +9,7 @@
 module Data.Container.Properties where
 
 import Function.Base as F
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 
 open import Data.Container.Core
 open import Data.Container.Relation.Binary.Equality.Setoid

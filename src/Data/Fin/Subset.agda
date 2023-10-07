@@ -43,11 +43,11 @@ Subset = Vec Side
 
 -- The empty subset
 ⊥ : Subset n
-⊥ = replicate outside
+⊥ = replicate _ outside
 
 -- The full subset
 ⊤ : Subset n
-⊤ = replicate inside
+⊤ = replicate _ inside
 
 -- A singleton subset, containing just the given element.
 ⁅_⁆ : Fin n → Subset n
