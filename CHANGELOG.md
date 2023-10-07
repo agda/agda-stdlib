@@ -3167,6 +3167,11 @@ Additions to existing modules
   _⋆     : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
   ```
 
+* Added new proof in `Relation.Binary.Construct.Closure.Transitive`:
+  ```
+  transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
+  ```
+
 * Added new proofs to `Relation.Binary.Lattice.Properties.{Join,Meet}Semilattice`:
   ```agda
   isPosemigroup : IsPosemigroup _≈_ _≤_ _∨_
