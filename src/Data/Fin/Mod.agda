@@ -71,30 +71,26 @@ pred-suc≡id i with view i
 +-identityˡ : LeftIdentity {ℕ.suc n} zero _+_
 +-identityˡ _ = refl
 
-+ℕ-identityʳ-toℕ : ∀ {n′} (let n = ℕ.suc n′) (m≤n : m ℕ.≤ n′) →
-  toℕ (m ℕ+ zero {n′}) ≡ m
++ℕ-identityʳ-toℕ : (m≤n : m ℕ.≤ n) → toℕ (m ℕ+ zero {n}) ≡ m
 +ℕ-identityʳ-toℕ {ℕ.zero} m≤n = refl
-+ℕ-identityʳ-toℕ {ℕ.suc m} {n} (s≤s m≤n) = begin
++ℕ-identityʳ-toℕ {ℕ.suc m} (s≤s m≤n) = begin
   toℕ (suc (m ℕ+ zero)) ≡⟨ cong (toℕ ∘ suc) (toℕ-injective toℕm≡fromℕ<) ⟩
   toℕ (suc (inject₁ (fromℕ< (s≤s m≤n)))) ≡⟨ cong toℕ (suc-inj≡fsuc _) ⟩
   ℕ.suc (toℕ (fromℕ< (s≤s m≤n))) ≡⟨ cong ℕ.suc (toℕ-fromℕ< _) ⟩
-  -- ? ≡⟨ ? ⟩
   ℕ.suc m ∎
   where
 
   toℕm≡fromℕ< = begin
-    toℕ (m ℕ+ zero {n})        ≡⟨ +ℕ-identityʳ-toℕ (m≤n⇒m≤1+n m≤n) ⟩
+    toℕ (m ℕ+ zero)        ≡⟨ +ℕ-identityʳ-toℕ (m≤n⇒m≤1+n m≤n) ⟩
     m                       ≡˘⟨ toℕ-fromℕ< _ ⟩
     toℕ (fromℕ< (s≤s m≤n)) ≡˘⟨ toℕ-inject₁ _ ⟩
     toℕ (inject₁ (fromℕ< (s≤s m≤n))) ∎
 
-
-+ℕ-identityʳ : ∀ {n′} (let n = ℕ.suc n′) (m≤n : m ℕ.≤ n′) →
-  m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
++ℕ-identityʳ : ∀ {n} (m≤n : m ℕ.≤ n) → m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
 +ℕ-identityʳ {ℕ.zero} z≤n = refl
-+ℕ-identityʳ {ℕ.suc m} {n} (s≤s m≤n) = begin
++ℕ-identityʳ {ℕ.suc m} (s≤s m≤n) = begin
   suc (m ℕ+ zero) ≡⟨ cong suc (+ℕ-identityʳ {m} (m≤n⇒m≤1+n m≤n)) ⟩
-  suc (fromℕ< {m} {ℕ.suc n} (s≤s (m≤n⇒m≤1+n m≤n)))
+  suc (fromℕ< (s≤s (m≤n⇒m≤1+n m≤n)))
     ≡⟨ cong suc (toℕ-injective helper2) ⟩
   suc (inject₁ (fromℕ< (s≤s m≤n))) ≡⟨ helper ⟩
   F.suc (fromℕ< (s≤s m≤n)) ∎
