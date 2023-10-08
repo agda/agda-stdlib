@@ -71,7 +71,7 @@ pred-suc≡id i with view i
 +-identityˡ : LeftIdentity {ℕ.suc n} zero _+_
 +-identityˡ _ = refl
 
-+ℕ-identityʳ-toℕ : (m≤n : m ℕ.≤ n) → toℕ (m ℕ+ zero {n}) ≡ m
++ℕ-identityʳ-toℕ : m ℕ.≤ n → toℕ (m ℕ+ zero {n}) ≡ m
 +ℕ-identityʳ-toℕ {ℕ.zero} m≤n = refl
 +ℕ-identityʳ-toℕ {ℕ.suc m} (s≤s m≤n) = begin
   toℕ (suc (m ℕ+ zero)) ≡⟨ cong (toℕ ∘ suc) (toℕ-injective toℕm≡fromℕ<) ⟩
