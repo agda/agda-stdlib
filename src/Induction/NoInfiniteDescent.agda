@@ -40,7 +40,8 @@ module InfiniteDescent (_<_ : Rel A r) (P : Pred A ℓ)  where
     Descent = ∀[ DescentAt ]
 
     InfiniteDescentAt : Pred A _
-    InfiniteDescentAt x = P x → Σ[ f ∈ (ℕ → A) ] f zero ≡ x × ∀ n → f (suc n) < f n
+    InfiniteDescentAt x = P x →
+      Σ[ f ∈ (ℕ → A) ] f zero ≡ x × ∀ n → f (suc n) < f n × P (f n)
 
     AccInfiniteDescent : Set _
     AccInfiniteDescent = ∀[ Acc _<_ ⇒ InfiniteDescentAt ]
@@ -59,16 +60,17 @@ module InfiniteDescent (_<_ : Rel A r) (P : Pred A ℓ)  where
         rec : _
         rec y rec[y] py
           with z , z<y , pz ← descent py
-          with g , g0≡z , g< ← rec[y] z<y pz = f , f0≡y , f<
+          with g , g0≡z , g<P ← rec[y] z<y pz
+            = f , f0≡y , f<P
           where
           f : ℕ → A
           f zero = y
           f (suc n) = g n
           f0≡y : f zero ≡ y
           f0≡y = refl
-          f< : ∀ n → f (suc n) < f n
-          f< zero rewrite g0≡z = z<y
-          f< (suc n)           = g< n
+          f<P : ∀ n → f (suc n) < f n × P (f n)
+          f<P zero rewrite g0≡z = z<y , py
+          f<P (suc n)           = g<P n
 
       wfInfiniteDescent : WellFounded _<_ → InfiniteDescent
       wfInfiniteDescent wf = accInfiniteDescent (wf _)
@@ -105,7 +107,9 @@ module _ {_<_ : Rel A r} (P : Pred A ℓ) where
         module Lemmas∩ = ID∩.Lemmas descent∩
 
       accInfiniteDescent : AccInfiniteDescent
-      accInfiniteDescent {x} ax px = Lemmas∩.accInfiniteDescent ax (px , ax)
+      accInfiniteDescent {x} ax px =
+        let f , f0≡x , f<P∩ = Lemmas∩.accInfiniteDescent ax (px , ax)
+        in f , f0≡x , λ n → let f∘suc<f , Pf , _ = f<P∩ n in f∘suc<f , Pf
 
       wfInfiniteDescent : WellFounded _<_ → InfiniteDescent
       wfInfiniteDescent wf = accInfiniteDescent (wf _)
