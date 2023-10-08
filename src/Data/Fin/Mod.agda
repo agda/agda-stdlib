@@ -86,22 +86,11 @@ pred-suc≡id i with view i
     toℕ (fromℕ< (s≤s m≤n)) ≡˘⟨ toℕ-inject₁ _ ⟩
     toℕ (inject₁ (fromℕ< (s≤s m≤n))) ∎
 
-+ℕ-identityʳ : ∀ {n} (m≤n : m ℕ.≤ n) → m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
-+ℕ-identityʳ {ℕ.zero} z≤n = refl
-+ℕ-identityʳ {ℕ.suc m} (s≤s m≤n) = begin
-  suc (m ℕ+ zero) ≡⟨ cong suc (+ℕ-identityʳ {m} (m≤n⇒m≤1+n m≤n)) ⟩
-  suc (fromℕ< (s≤s (m≤n⇒m≤1+n m≤n)))
-    ≡⟨ cong suc (toℕ-injective helper2) ⟩
-  suc (inject₁ (fromℕ< (s≤s m≤n))) ≡⟨ helper ⟩
-  F.suc (fromℕ< (s≤s m≤n)) ∎
-
-  where
-
-  helper : suc (inject₁ (fromℕ< (s≤s m≤n))) ≡ F.suc (fromℕ< (s≤s m≤n))
-  helper rewrite view-inject₁ $ fromℕ< $ s≤s m≤n = cong F.suc
-    (view-complete (view $ fromℕ< (s≤s m≤n)))
-
-  helper2 = trans (toℕ-fromℕ< _) (sym (trans (toℕ-inject₁ _) (toℕ-fromℕ< _)))
++ℕ-identityʳ : (m≤n : m ℕ.≤ n) → m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
++ℕ-identityʳ {m} m≤n = toℕ-injective (begin
+  toℕ (m ℕ+ zero) ≡⟨ +ℕ-identityʳ-toℕ m≤n ⟩
+  m                 ≡˘⟨ toℕ-fromℕ< _ ⟩
+  toℕ (fromℕ< (s≤s m≤n)) ∎)
 
 +-identityʳ : RightIdentity {ℕ.suc n} zero _+_
 +-identityʳ {n} i rewrite +ℕ-identityʳ {m = toℕ i} {n} _ = fromℕ<-toℕ _ (toℕ≤pred[n] _)
