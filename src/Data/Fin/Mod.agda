@@ -29,7 +29,7 @@ private variable
 open module AD {n} = ADef {A = Fin n} _≡_
 open ≡-Reasoning
 
-infixl 6 _+_ _+‵_
+infixl 6 _+_ _-_
 
 suc : Fin n → Fin n
 suc i with view i
@@ -44,12 +44,8 @@ _ℕ+_ : ℕ → Fin n → Fin n
 ℕ.zero ℕ+ i = i
 ℕ.suc n ℕ+ i = suc (n ℕ+ i)
 
-
 _+_ : Fin m → Fin n → Fin n
 i + j = toℕ i ℕ+ j
-
-_+‵_ : Fin n → Fin n → Fin n
-_+‵_ = _+_
 
 _-_ : Fin n → Fin n → Fin n
 i - j  = i + opposite j
@@ -75,8 +71,26 @@ pred-suc≡id i with view i
 +-identityˡ : LeftIdentity {ℕ.suc n} zero _+_
 +-identityˡ _ = refl
 
++ℕ-identityʳ-toℕ : ∀ {n′} (let n = ℕ.suc n′) (m≤n : m ℕ.≤ n′) →
+  toℕ (m ℕ+ zero {n′}) ≡ m
++ℕ-identityʳ-toℕ {ℕ.zero} m≤n = refl
++ℕ-identityʳ-toℕ {ℕ.suc m} {n} (s≤s m≤n) = begin
+  toℕ (suc (m ℕ+ zero)) ≡⟨ cong (toℕ ∘ suc) (toℕ-injective toℕm≡fromℕ<) ⟩
+  toℕ (suc (inject₁ (fromℕ< (s≤s m≤n)))) ≡⟨ cong toℕ (suc-inj≡fsuc _) ⟩
+  ℕ.suc (toℕ (fromℕ< (s≤s m≤n))) ≡⟨ cong ℕ.suc (toℕ-fromℕ< _) ⟩
+  -- ? ≡⟨ ? ⟩
+  ℕ.suc m ∎
+  where
+
+  toℕm≡fromℕ< = begin
+    toℕ (m ℕ+ zero {n})        ≡⟨ +ℕ-identityʳ-toℕ (m≤n⇒m≤1+n m≤n) ⟩
+    m                       ≡˘⟨ toℕ-fromℕ< _ ⟩
+    toℕ (fromℕ< (s≤s m≤n)) ≡˘⟨ toℕ-inject₁ _ ⟩
+    toℕ (inject₁ (fromℕ< (s≤s m≤n))) ∎
+
+
 +ℕ-identityʳ : ∀ {n′} (let n = ℕ.suc n′) (m≤n : m ℕ.≤ n′) →
-  m ℕ+ zero {n′} ≡ fromℕ< (s≤s m≤n)
+  m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
 +ℕ-identityʳ {ℕ.zero} z≤n = refl
 +ℕ-identityʳ {ℕ.suc m} {n} (s≤s m≤n) = begin
   suc (m ℕ+ zero) ≡⟨ cong suc (+ℕ-identityʳ {m} (m≤n⇒m≤1+n m≤n)) ⟩
