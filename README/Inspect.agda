@@ -16,7 +16,7 @@ open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product.Base using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Relation.Binary.PropositionalEquality using (inspect)
+open import Relation.Binary.PropositionalEquality using (inspect; [_])
 
 ------------------------------------------------------------------------
 -- Using inspect
