@@ -169,6 +169,7 @@ module _ {_<_ : Rel A r} (P : Pred A ℓ) where
     private
       descent : ID⁺.Acc⇒Descent
       descent = descent⁺  ∘ (accessible⁻ _)
+
       module Corollaries⁺ = Corollaries _ descent
 
       sequence⁺ : ∀ {f} →
