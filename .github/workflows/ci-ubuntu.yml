@@ -1,13 +1,7 @@
 name: Ubuntu build
 on:
   push:
-    branches:
-      - master
-      - experimental
   pull_request:
-    branches:
-      - master
-      - experimental
 
 ########################################################################
 ## CONFIGURATION
@@ -46,11 +40,11 @@ on:
 ########################################################################
 
 env:
-  GHC_VERSION: 8.6.5
-  CABAL_VERSION: 3.2.0.0
+  GHC_VERSION: 9.6.3
+  CABAL_VERSION: 3.10.1.0
   CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
-  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -i src/
+  AGDA: agda -Werror +RTS -M6G -H3.5G -A128M -RTS -i. -i src/
 
 jobs:
   test-stdlib:
@@ -71,22 +65,10 @@ jobs:
 
       - name: Initialise variables
         run: |
-          if [[ '${{ github.ref }}' == 'refs/heads/master' \
-             || '${{ github.base_ref }}' == 'master' ]]; then
-            # Pick Agda version for master
-            echo "AGDA_COMMIT=tags/v2.6.1.3.20210524" >> $GITHUB_ENV;
-            echo "AGDA_HTML_DIR=html" >> $GITHUB_ENV
-          elif [[ '${{ github.ref }}' == 'refs/heads/experimental' \
-               || '${{ github.base_ref }}' == 'experimental' ]]; then
-            # Pick Agda version for experimental
-            echo "AGDA_COMMIT=9047e32a1b0cba98a299ed439a08d35bc4846f99" >> $GITHUB_ENV;
-            echo "AGDA_HTML_DIR=html/experimental" >> $GITHUB_ENV
-          fi
+          echo "AGDA_COMMIT=tags/v2.6.4"   >> "$GITHUB_ENV"
+          echo "AGDA_HTML_DIR=html/v1.7.3" >> "$GITHUB_ENV"
+          echo "AGDA_DEPLOY=true"          >> "$GITHUB_ENV"
 
-          if [[ '${{ github.ref }}' == 'refs/heads/master' \
-             || '${{ github.ref }}' == 'refs/heads/experimental' ]]; then
-             echo "AGDA_DEPLOY=true" >> $GITHUB_ENV
-          fi
 
 ########################################################################
 ## CACHING
@@ -98,7 +80,7 @@ jobs:
       # i.e. if we change either the version of Agda, ghc, or cabal that we want
       # to use for the build.
       - name: Cache cabal packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-cabal
         with:
           path: |
@@ -113,16 +95,19 @@ jobs:
 
       - name: Install cabal
         if: steps.cache-cabal.outputs.cache-hit != 'true'
-        uses: actions/setup-haskell@v1.1.3
+        uses: haskell-actions/setup@v2
         with:
           ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}
+          cabal-update: true
 
       - name: Put cabal programs in PATH
-        run: echo "~/.cabal/bin" >> $GITHUB_PATH
+        run: echo "~/.cabal/bin" >> "$GITHUB_PATH"
 
-      - name: Cabal update
-        run: cabal update
+      - name: Install alex and happy
+        if: steps.cache-cabal.outputs.cache-hit != 'true'
+        run: |
+          ${{ env.CABAL_INSTALL }} alex happy
 
       - name: Download and install Agda from github
         if: steps.cache-cabal.outputs.cache-hit != 'true'
@@ -141,7 +126,7 @@ jobs:
 
       # By default github actions do not pull the repo
       - name: Checkout stdlib
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Test stdlib
         run: |
