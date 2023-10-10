@@ -99,8 +99,13 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≳_
   _≳_ = flip _≲_
 
-  infix 4 _∼_ -- for deprecation
+  -- Deprecated.
+  infix 4 _∼_ 
   _∼_ = _≲_
+  {-# WARNING_ON_USAGE _∼_
+  "Warning: _∼_ was deprecated in v2.0.
+  Please use _≲_ instead. "
+  #-}
 
 
 record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -118,7 +123,7 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   preorder = record { isPreorder = isPreorder }
 
   open Preorder preorder public
-    using (module Eq; _≳_)
+    using (module Eq; _≳_; _⋦_)
 
 
 ------------------------------------------------------------------------
@@ -142,7 +147,8 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Preorder preorder public
-    using (module Eq) renaming (_⋦_ to _≰_)
+    using (module Eq)
+    renaming (_⋦_ to _≰_)
 
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -215,7 +221,8 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
     { isStrictPartialOrder = isStrictPartialOrder
     }
 
-  open StrictPartialOrder strictPartialOrder using (_≮_)
+  open StrictPartialOrder strictPartialOrder public
+    using (_≮_)
 
   module Eq where
 
@@ -273,14 +280,16 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     { isTotalOrder = isTotalOrder
     }
 
-  open TotalOrder totalOrder public using (poset; preorder; _≰_)
+  open TotalOrder totalOrder public
+    using (poset; preorder; _≰_)
 
   decPoset : DecPoset c ℓ₁ ℓ₂
   decPoset = record
     { isDecPartialOrder = isDecPartialOrder
     }
 
-  open DecPoset decPoset public using (module Eq)
+  open DecPoset decPoset public
+    using (module Eq)
 
 
 -- Note that these orders are decidable. The current implementation
@@ -348,18 +357,3 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
     isApartnessRelation : IsApartnessRelation _≈_ _#_
 
   open IsApartnessRelation isApartnessRelation public
-
-
-
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.0
-
-{-# WARNING_ON_USAGE Preorder._∼_
-"Warning: Preorder._∼_ was deprecated in v2.0. Please use Preorder._≲_ instead. "
-#-}

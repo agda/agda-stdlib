@@ -21,7 +21,7 @@ open import Relation.Nullary.Negation using (contradiction)
 module Relation.Binary.Properties.Poset
    {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
 
-open Poset P renaming (Carrier to A; _≰_ to _≰A_) -- issue #1214 see below
+open Poset P renaming (Carrier to A)
 
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
@@ -63,10 +63,10 @@ open Poset ≥-poset public
 ------------------------------------------------------------------------
 -- Negated order
 
-≰-respˡ-≈ : _≰A_ Respectsˡ _≈_
+≰-respˡ-≈ : _≰_ Respectsˡ _≈_
 ≰-respˡ-≈ x≈y = _∘ ≤-respˡ-≈ (Eq.sym x≈y)
 
-≰-respʳ-≈ : _≰A_ Respectsʳ _≈_
+≰-respʳ-≈ : _≰_ Respectsʳ _≈_
 ≰-respʳ-≈ x≈y = _∘ ≤-respʳ-≈ (Eq.sym x≈y)
 
 ------------------------------------------------------------------------
@@ -99,7 +99,7 @@ open StrictPartialOrder <-strictPartialOrder public
 ≤∧≉⇒< : ∀ {x y} → x ≤ y → x ≉ y → x < y
 ≤∧≉⇒< = ToStrict.≤∧≉⇒<
 
-<⇒≱ : ∀ {x y} → x < y → y ≰A x
+<⇒≱ : ∀ {x y} → x < y → y ≰ x
 <⇒≱ = ToStrict.<⇒≱ antisym
 
 ≤⇒≯ : ∀ {x y} → x ≤ y → y ≮ x
@@ -129,20 +129,3 @@ mono⇒cong = Consequences.mono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
 antimono⇒cong = Consequences.antimono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
-
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.0
-
--- issue #1214: locally to this module, we rename the relation _≰_,
--- so that we can deprecate it here, yet re-export it elsewhere
-infix 4 _≰_
-_≰_ = _≰A_
-{-# WARNING_ON_USAGE _≤_
-"Warning: export of _≰_ from this module was deprecated in v2.0, in favour of a direct public export from Relation.Binary.Bundles.Poset instead"
-#-}
