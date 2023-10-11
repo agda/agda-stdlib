@@ -91,7 +91,10 @@ jobs:
             ~/.cabal/packages
             ~/.cabal/store
             ~/.cabal/bin
-          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}-
+            ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-
 
 ########################################################################
 ## INSTALLATION STEPS
