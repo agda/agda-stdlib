@@ -1253,6 +1253,7 @@ Deprecated modules
   Relation.Binary.Properties.BoundedLattice.agda          ↦ Relation.Binary.Lattice.Properties.BoundedLattice.agda
   Relation.Binary.Properties.BoundedMeetSemilattice.agda  ↦ Relation.Binary.Lattice.Properties.BoundedMeetSemilattice.agda
   Relation.Binary.Properties.DistributiveLattice.agda     ↦ Relation.Binary.Lattice.Properties.DistributiveLattice.agda
+  Relation.Binary.Properties.HeytingAlgebra.agda         ↦ Relation.Binary.Lattice.Properties.HeytingAlgebra.agda
   Relation.Binary.Properties.JoinSemilattice.agda         ↦ Relation.Binary.Lattice.Properties.JoinSemilattice.agda
   Relation.Binary.Properties.Lattice.agda                 ↦ Relation.Binary.Lattice.Properties.Lattice.agda
   Relation.Binary.Properties.MeetSemilattice.agda         ↦ Relation.Binary.Lattice.Properties.MeetSemilattice.agda
