@@ -238,48 +238,53 @@
 
 <a id="7348" class="Keyword">import</a> <a id="7355" href="README.Nary.html" class="Module">README.Nary</a>
 
-<a id="7368" class="Comment">-- Explaining how to use the automatic solvers</a>
+<a id="7368" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
+<a id="7434" class="Comment">-- auxiliary definitions, and implementation details.</a>
 
-<a id="7416" class="Keyword">import</a> <a id="7423" href="README.Tactic.MonoidSolver.html" class="Module">README.Tactic.MonoidSolver</a>
-<a id="7450" class="Keyword">import</a> <a id="7457" href="README.Tactic.RingSolver.html" class="Module">README.Tactic.RingSolver</a>
+<a id="7489" class="Keyword">import</a> <a id="7496" href="README.Inspect.html" class="Module">README.Inspect</a>
 
-<a id="7483" class="Comment">-- Explaining how the Haskell FFI works</a>
+<a id="7512" class="Comment">-- Explaining how to use the automatic solvers</a>
 
-<a id="7524" class="Keyword">import</a> <a id="7531" href="README.Foreign.Haskell.html" class="Module">README.Foreign.Haskell</a>
+<a id="7560" class="Keyword">import</a> <a id="7567" href="README.Tactic.MonoidSolver.html" class="Module">README.Tactic.MonoidSolver</a>
+<a id="7594" class="Keyword">import</a> <a id="7601" href="README.Tactic.RingSolver.html" class="Module">README.Tactic.RingSolver</a>
 
-<a id="7555" class="Comment">-- Explaining string formats and the behaviour of printf</a>
+<a id="7627" class="Comment">-- Explaining how the Haskell FFI works</a>
 
-<a id="7613" class="Keyword">import</a> <a id="7620" href="README.Text.Printf.html" class="Module">README.Text.Printf</a>
+<a id="7668" class="Keyword">import</a> <a id="7675" href="README.Foreign.Haskell.html" class="Module">README.Foreign.Haskell</a>
 
-<a id="7640" class="Comment">-- Showcasing the pretty printing module</a>
+<a id="7699" class="Comment">-- Explaining string formats and the behaviour of printf</a>
 
-<a id="7682" class="Keyword">import</a> <a id="7689" href="README.Text.Pretty.html" class="Module">README.Text.Pretty</a>
+<a id="7757" class="Keyword">import</a> <a id="7764" href="README.Text.Printf.html" class="Module">README.Text.Printf</a>
 
-<a id="7709" class="Comment">-- Demonstrating the regular expression matching</a>
+<a id="7784" class="Comment">-- Showcasing the pretty printing module</a>
 
-<a id="7759" class="Keyword">import</a> <a id="7766" href="README.Text.Regex.html" class="Module">README.Text.Regex</a>
+<a id="7826" class="Keyword">import</a> <a id="7833" href="README.Text.Pretty.html" class="Module">README.Text.Pretty</a>
 
-<a id="7785" class="Comment">-- Explaining how to display tables of strings:</a>
+<a id="7853" class="Comment">-- Demonstrating the regular expression matching</a>
 
-<a id="7834" class="Keyword">import</a> <a id="7841" href="README.Text.Tabular.html" class="Module">README.Text.Tabular</a>
+<a id="7903" class="Keyword">import</a> <a id="7910" href="README.Text.Regex.html" class="Module">README.Text.Regex</a>
 
-<a id="7862" class="Comment">------------------------------------------------------------------------</a>
-<a id="7935" class="Comment">-- All library modules</a>
-<a id="7958" class="Comment">------------------------------------------------------------------------</a>
+<a id="7929" class="Comment">-- Explaining how to display tables of strings:</a>
 
-<a id="8032" class="Comment">-- For short descriptions of every library module, see Everything;</a>
-<a id="8099" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
+<a id="7978" class="Keyword">import</a> <a id="7985" href="README.Text.Tabular.html" class="Module">README.Text.Tabular</a>
 
-<a id="8150" class="Keyword">import</a> <a id="8157" href="Everything.html" class="Module">Everything</a>
-<a id="8168" class="Keyword">import</a> <a id="8175" href="EverythingSafe.html" class="Module">EverythingSafe</a>
+<a id="8006" class="Comment">------------------------------------------------------------------------</a>
+<a id="8079" class="Comment">-- All library modules</a>
+<a id="8102" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="8191" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
-<a id="8260" class="Comment">-- you have downloaded the library from its Git repository and want</a>
-<a id="8328" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
-<a id="8398" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
+<a id="8176" class="Comment">-- For short descriptions of every library module, see Everything;</a>
+<a id="8243" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
 
-<a id="8449" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
-<a id="8516" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
-<a id="8586" class="Comment">-- library, so these modules are located in the top-level directory</a>
-<a id="8654" class="Comment">-- instead.</a>
+<a id="8294" class="Keyword">import</a> <a id="8301" href="Everything.html" class="Module">Everything</a>
+<a id="8312" class="Keyword">import</a> <a id="8319" href="EverythingSafe.html" class="Module">EverythingSafe</a>
+
+<a id="8335" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
+<a id="8404" class="Comment">-- you have downloaded the library from its Git repository and want</a>
+<a id="8472" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
+<a id="8542" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
+
+<a id="8593" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
+<a id="8660" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
+<a id="8730" class="Comment">-- library, so these modules are located in the top-level directory</a>
+<a id="8798" class="Comment">-- instead.</a>
 </pre></body></html>
