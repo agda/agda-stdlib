@@ -15,7 +15,7 @@ open import Data.Product.Base using (_,_; proj₁)
 open import Data.Vec.Relation.Unary.Unique.Propositional using (Unique)
 import Data.Vec.Relation.Unary.Unique.Propositional.Properties as Uniqueₚ
 open import Data.Vec.Relation.Unary.AllPairs using (allPairs?)
-open import Relation.Nullary.Decidable using (True; from-yes; ¬?)
+open import Relation.Nullary.Decidable.Core using (True; from-yes; ¬?)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Function.Base using (_∘_)
 

@@ -31,7 +31,7 @@ open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable.Core using (Dec; does; yes; no; _×-dec_; map′)
+open import Relation.Nullary.Decidable.Core using (Dec; does; yes; _×-dec_; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
@@ -483,14 +483,14 @@ cast-++ʳ {m = suc m} eq (x ∷ xs) {ys} = cong (x ∷_) (cast-++ʳ eq xs)
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
               lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
-lookup-++-< (x ∷ xs) ys zero    z<s       = refl
-lookup-++-< (x ∷ xs) ys (suc i) (s<s i<m) = lookup-++-< xs ys i i<m
+lookup-++-< (x ∷ xs) ys zero    _     = refl
+lookup-++-< (x ∷ xs) ys (suc i) si<sm = lookup-++-< xs ys i (s<s⁻¹ si<sm)
 
 lookup-++-≥ : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i≥m : toℕ i ≥ m) →
               lookup (xs ++ ys) i ≡ lookup ys (Fin.reduce≥ i i≥m)
-lookup-++-≥ []       ys i       i≥m       = refl
-lookup-++-≥ (x ∷ xs) ys (suc i) (s≤s i≥m) = lookup-++-≥ xs ys i i≥m
+lookup-++-≥ []       ys i       _     = refl
+lookup-++-≥ (x ∷ xs) ys (suc i) si≥sm = lookup-++-≥ xs ys i (s≤s⁻¹ si≥sm)
 
 lookup-++ˡ : ∀ (xs : Vec A m) (ys : Vec A n) i →
              lookup (xs ++ ys) (i ↑ˡ n) ≡ lookup xs i
@@ -1396,7 +1396,7 @@ Please use take-map instead."
 drop-distr-zipWith = drop-zipWith
 {-# WARNING_ON_USAGE drop-distr-zipWith
 "Warning: drop-distr-zipWith was deprecated in v2.0.
-Please use tdrop-zipWith instead."
+Please use drop-zipWith instead."
 #-}
 drop-distr-map = drop-map
 {-# WARNING_ON_USAGE drop-distr-map
@@ -1441,7 +1441,7 @@ lookup-inject≤-take m m≤m+n i xs = sym (begin
   lookup (take m xs) i
     ≡⟨ lookup-take-inject≤ xs i ⟩
   lookup xs (Fin.inject≤ i _)
-    ≡⟨ cong ((lookup xs) ∘ (Fin.inject≤ i)) (≤-irrelevant _ _) ⟩
+    ≡⟨⟩
   lookup xs (Fin.inject≤ i m≤m+n)
     ∎) where open ≡-Reasoning
 {-# WARNING_ON_USAGE lookup-inject≤-take

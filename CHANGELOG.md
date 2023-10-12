@@ -1276,7 +1276,7 @@ Deprecated modules
 
 ### Deprecation of `Data.Nat.Properties.Core`
 
-* The module `Data.Nat.Properties.Core` has been deprecated, and its one entry moved to `Data.Nat.Properties`
+* The module `Data.Nat.Properties.Core` has been deprecated, and its one lemma moved to `Data.Nat.Base`, renamed as `s≤s⁻¹`
 
 ### Deprecation of `Data.Fin.Substitution.Example`
 
@@ -1543,6 +1543,7 @@ Deprecated names
   ≤-stepsˡ        ↦  m≤n⇒m≤o+n
   ≤-stepsʳ        ↦  m≤n⇒m≤n+o
   <-step          ↦  m<n⇒m<1+n
+  pred-mono       ↦  pred-mono-≤
 
   <-transʳ        ↦  ≤-<-trans
   <-transˡ        ↦  <-≤-trans
@@ -2618,8 +2619,17 @@ Additions to existing modules
   pattern z<s {n}         = s≤s (z≤n {n})
   pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
 
+  s≤s⁻¹ : suc m ≤ suc n → m ≤ n
+  s<s⁻¹ : suc m < suc n → m < n
+
   pattern <′-base          = ≤′-refl
   pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+
+  pattern ≤″-offset k = less-than-or-equal {k} refl
+  pattern <″-offset k = ≤″-offset k
+
+  s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
+  s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
 
   _⊔′_ : ℕ → ℕ → ℕ
   _⊓′_ : ℕ → ℕ → ℕ
@@ -2671,11 +2681,12 @@ Additions to existing modules
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
 
-  ≤-pred        : suc m ≤ suc n → m ≤ n
   s<s-injective : ∀ {p q : m < n} → s<s p ≡ s<s q → p ≡ q
-  <-pred        : suc m < suc n → m < n
   <-step        : m < n → m < 1 + n
   m<1+n⇒m<n∨m≡n : m < suc n → m < n ⊎ m ≡ n
+
+  pred-mono-≤   : m ≤ n → pred m ≤ pred n
+  pred-mono-<   : .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
 
   z<′s : zero <′ suc n
   s<′s : m <′ n → suc m <′ suc n
