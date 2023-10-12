@@ -16,8 +16,8 @@ import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.AbelianGroup
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base renaming (suc to sucℤ)
-open import Data.Nat as ℕ
-  using (ℕ; suc; zero; _∸_; s≤s; z≤n; s<s; z<s)
+open import Data.Nat.Base as ℕ
+  using (ℕ; suc; zero; _∸_; s≤s; z≤n; s<s; z<s; s≤s⁻¹; s<s⁻¹)
   hiding (module ℕ)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
@@ -302,9 +302,9 @@ drop‿-<- (-<- n<m) = n<m
 ... | tri≈ m≮n m≡n n≯m = tri≈ (n≯m ∘ drop‿-<-) (cong -[1+_] m≡n) (m≮n ∘ drop‿-<-)
 ... | tri> m≮n m≢n n>m = tri< (-<- n>m) (m≢n ∘ -[1+-injective) (m≮n ∘ drop‿-<-)
 <-cmp +[1+ m ] +[1+ n ] with ℕ.<-cmp m n
-... | tri< m<n m≢n n≯m = tri< (+<+ (s<s m<n))              (m≢n ∘ +[1+-injective) (n≯m ∘ ℕ.≤-pred ∘ drop‿+<+)
-... | tri≈ m≮n m≡n n≯m = tri≈ (m≮n ∘ ℕ.≤-pred ∘ drop‿+<+) (cong (+_ ∘ suc) m≡n)  (n≯m ∘ ℕ.≤-pred ∘ drop‿+<+)
-... | tri> m≮n m≢n n>m = tri> (m≮n ∘ ℕ.≤-pred ∘ drop‿+<+) (m≢n ∘ +[1+-injective) (+<+ (s<s n>m))
+... | tri< m<n m≢n n≯m = tri< (+<+ (s<s m<n))              (m≢n ∘ +[1+-injective) (n≯m ∘ s<s⁻¹ ∘ drop‿+<+)
+... | tri≈ m≮n m≡n n≯m = tri≈ (m≮n ∘ s<s⁻¹ ∘ drop‿+<+) (cong (+_ ∘ suc) m≡n)  (n≯m ∘ s<s⁻¹ ∘ drop‿+<+)
+... | tri> m≮n m≢n n>m = tri> (m≮n ∘ s<s⁻¹ ∘ drop‿+<+) (m≢n ∘ +[1+-injective) (+<+ (s<s n>m))
 
 infix 4 _<?_
 _<?_ : Decidable _<_
@@ -433,7 +433,7 @@ neg-mono-< { -[1+ _ ]} { -[1+ _ ]} (-<- n<m) = +<+ (s<s n<m)
 neg-mono-< { -[1+ _ ]} { +0}       -<+       = +<+ z<s
 neg-mono-< { -[1+ _ ]} { +[1+ n ]} -<+       = -<+
 neg-mono-< { +0}       { +[1+ n ]} (+<+ _)   = -<+
-neg-mono-< { +[1+ m ]} { +[1+ n ]} (+<+ m<n) = -<- (ℕ.≤-pred m<n)
+neg-mono-< { +[1+ m ]} { +[1+ n ]} (+<+ m<n) = -<- (s<s⁻¹ m<n)
 
 neg-cancel-< : - i < - j → i > j
 neg-cancel-< { +[1+ m ]} { +[1+ n ]} (-<- n<m)       = +<+ (s<s n<m)
@@ -442,7 +442,7 @@ neg-cancel-< { +[1+ m ]} { -[1+ n ]}  -<+            = -<+
 neg-cancel-< { +0}       { +0}       (+<+ ())
 neg-cancel-< { +0}       { -[1+ n ]} _               = -<+
 neg-cancel-< { -[1+ m ]} { +0}       (+<+ ())
-neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ (s<s m<n)) = -<- m<n
+neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ m<n) = -<- (s<s⁻¹ m<n)
 
 ------------------------------------------------------------------------
 -- Properties of ∣_∣
@@ -1233,12 +1233,12 @@ suc[i]≤j⇒i<j : sucℤ i ≤ j → i < j
 suc[i]≤j⇒i<j {+ i}           {+ _}       (+≤+ i≤j) = +<+ i≤j
 suc[i]≤j⇒i<j { -[1+ 0 ]}     {+ j}       p         = -<+
 suc[i]≤j⇒i<j { -[1+ suc i ]} {+ j}       -≤+       = -<+
-suc[i]≤j⇒i<j { -[1+ suc i ]} { -[1+ j ]} (-≤- j≤i) = -<- (ℕ.s≤s j≤i)
+suc[i]≤j⇒i<j { -[1+ suc i ]} { -[1+ j ]} (-≤- j≤i) = -<- (s≤s j≤i)
 
 i<j⇒suc[i]≤j : i < j → sucℤ i ≤ j
 i<j⇒suc[i]≤j {+ _}           {+ _}       (+<+ i<j) = +≤+ i<j
 i<j⇒suc[i]≤j { -[1+ 0 ]}     {+ _}       -<+       = +≤+ z≤n
-i<j⇒suc[i]≤j { -[1+ suc i ]} { -[1+ _ ]} (-<- j<i) = -≤- (ℕ.≤-pred j<i)
+i<j⇒suc[i]≤j { -[1+ suc i ]} { -[1+ _ ]} (-<- j<i) = -≤- (s≤s⁻¹ j<i)
 i<j⇒suc[i]≤j { -[1+ suc i ]} {+ _}       -<+       = -≤+
 
 ------------------------------------------------------------------------
@@ -1288,7 +1288,7 @@ i≤pred[j]⇒i<j {_} { -[1+ n ]} leq = ≤-<-trans leq (-<- ℕ.≤-refl)
 i<j⇒i≤pred[j] : i < j → i ≤ pred j
 i<j⇒i≤pred[j] {_} { +0}       -<+       = -≤- z≤n
 i<j⇒i≤pred[j] {_} { +[1+ n ]} -<+       = -≤+
-i<j⇒i≤pred[j] {_} { +[1+ n ]} (+<+ m<n) = +≤+ (ℕ.≤-pred m<n)
+i<j⇒i≤pred[j] {_} { +[1+ n ]} (+<+ m<n) = +≤+ (s≤s⁻¹ m<n)
 i<j⇒i≤pred[j] {_} { -[1+ n ]} (-<- n<m) = -≤- n<m
 
 i≤j⇒pred[i]≤j : i ≤ j → pred i ≤ j
@@ -1723,7 +1723,7 @@ neg-distribʳ-* i j = begin
 
 *-cancelʳ-≤-pos : ∀ i j k .{{_ : Positive k}} → i * k ≤ j * k → i ≤ j
 *-cancelʳ-≤-pos -[1+ m ] -[1+ n ] +[1+ o ] (-≤- n≤m) =
-  -≤- (ℕ.≤-pred (ℕ.*-cancelʳ-≤ (suc n) (suc m) (suc o) (s≤s n≤m)))
+  -≤- (s≤s⁻¹ (ℕ.*-cancelʳ-≤ (suc n) (suc m) (suc o) (s≤s n≤m)))
 *-cancelʳ-≤-pos -[1+ _ ] (+ _)    +[1+ o ] _         = -≤+
 *-cancelʳ-≤-pos +0       +0       +[1+ o ] _         = +≤+ z≤n
 *-cancelʳ-≤-pos +0       +[1+ _ ] +[1+ o ] _         = +≤+ z≤n
@@ -1738,7 +1738,7 @@ neg-distribʳ-* i j = begin
 *-monoʳ-≤-nonNeg +0 {i} {j} i≤j rewrite *-zeroʳ i | *-zeroʳ j = +≤+ z≤n
 *-monoʳ-≤-nonNeg +[1+ n ] (-≤+ {n = 0})         = -≤+
 *-monoʳ-≤-nonNeg +[1+ n ] (-≤+ {n = suc _})     = -≤+
-*-monoʳ-≤-nonNeg +[1+ n ] (-≤- n≤m) = -≤- (ℕ.≤-pred (ℕ.*-mono-≤ (s≤s n≤m) (ℕ.≤-refl {x = suc n})))
+*-monoʳ-≤-nonNeg +[1+ n ] (-≤- n≤m) = -≤- (s≤s⁻¹ (ℕ.*-mono-≤ (s≤s n≤m) (ℕ.≤-refl {x = suc n})))
 *-monoʳ-≤-nonNeg +[1+ n ] {+0}       {+0}       (+≤+ m≤n) = +≤+ m≤n
 *-monoʳ-≤-nonNeg +[1+ n ] {+0}       {+[1+ _ ]} (+≤+ m≤n) = +≤+ z≤n
 *-monoʳ-≤-nonNeg +[1+ n ] {+[1+ _ ]} {+[1+ _ ]} (+≤+ m≤n) = +≤+ (ℕ.*-monoˡ-≤ (suc n) m≤n)
@@ -1788,7 +1788,7 @@ neg-distribʳ-* i j = begin
 *-cancelˡ-<-nonNeg {+ i}       {+ j}       (+ n) leq = +<+ (ℕ.*-cancelˡ-< n _ _ (+◃-cancel-< leq))
 *-cancelˡ-<-nonNeg {+ i}       { -[1+ j ]} (+ n) leq = contradiction leq +◃≮-◃
 *-cancelˡ-<-nonNeg { -[1+ i ]} {+ j}       (+ n)leq = -<+
-*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (ℕ.≤-pred (ℕ.*-cancelˡ-< n _ _ (neg◃-cancel-< leq)))
+*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (s<s⁻¹ (ℕ.*-cancelˡ-< n _ _ (neg◃-cancel-< leq)))
 
 *-cancelʳ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → i * k < j * k → i < j
 *-cancelʳ-<-nonNeg {i} {j} k rewrite *-comm i k | *-comm j k = *-cancelˡ-<-nonNeg k

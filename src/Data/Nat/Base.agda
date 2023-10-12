@@ -62,6 +62,15 @@ m < n = suc m ≤ n
 pattern z<s {n}         = s≤s (z≤n {n})
 pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
 
+-- Smart destructors of _≤_, _<_
+
+s≤s⁻¹ : ∀ {m n} → suc m ≤ suc n → m ≤ n
+s≤s⁻¹ (s≤s m≤n) = m≤n
+
+s<s⁻¹ : ∀ {m n} → suc m < suc n → m < n
+s<s⁻¹ (s<s m<n) = m<n
+
+
 ------------------------------------------------------------------------
 -- other ordering relations
 
@@ -283,10 +292,10 @@ zero  ! = 1
 suc n ! = suc n * n !
 
 ------------------------------------------------------------------------
--- Alternative definition of _≤_
+-- Extensionally equivalent alternative definitions of _≤_/_<_ etc.
 
--- The following definition of _≤_ is more suitable for well-founded
--- induction (see Data.Nat.Induction)
+-- _≤′_: this definition is more suitable for well-founded induction
+-- (see Data.Nat.Induction)
 
 infix 4 _≤′_ _<′_ _≥′_ _>′_
 
@@ -308,8 +317,9 @@ m ≥′ n = n ≤′ m
 _>′_ : Rel ℕ 0ℓ
 m >′ n = n <′ m
 
-------------------------------------------------------------------------
--- Another alternative definition of _≤_
+-- _≤″_: this definition of _≤_ is used for proof-irrelevant ‵DivMod`
+-- and is a specialised instance of a general algebraic construction
+
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
 _≤″_ : (m n : ℕ)  → Set
@@ -326,10 +336,20 @@ m ≥″ n = n ≤″ m
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
 
-------------------------------------------------------------------------
--- Another alternative definition of _≤_
+-- Smart constructors of _≤″_ and _<″_
 
--- Useful for induction when you have an upper bound.
+pattern ≤″-offset k = less-than-or-equal {k = k} refl
+pattern <″-offset k = ≤″-offset k
+
+-- Smart destructors of _<″_
+
+s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
+s≤″s⁻¹ (≤″-offset k) = ≤″-offset k
+
+s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
+s<″s⁻¹ (<″-offset k) = <″-offset k
+
+-- _≤‴_: this definition is useful for induction with an upper bound.
 
 data _≤‴_ : ℕ → ℕ → Set where
   ≤‴-refl : ∀{m} → m ≤‴ m
