@@ -148,11 +148,11 @@ jobs:
       # - name: Checkout stdlib
       #   uses: actions/checkout@v2
 
-      # - name: Test stdlib
-      #   run: |
-      #     cabal run GenerateEverything
-      #     cp travis/* .
-      #     ./index.sh
+      - name: Test stdlib
+        run: |
+          cabal run GenerateEverything
+          cp travis/* .
+          ./index.sh
       #     ${{ env.AGDA }} --safe EverythingSafe.agda
       #     ${{ env.AGDA }} index.agda
 
