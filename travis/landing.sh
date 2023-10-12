@@ -1,6 +1,8 @@
 set -eu
 set -o pipefail
 
+rm html/index.html
+
 find html/ -name "index.html" \
   | grep -v "master\|experimental" \
   | sort \
