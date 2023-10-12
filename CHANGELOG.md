@@ -1832,13 +1832,6 @@ New modules
   Algebra.Morphism.Construct.Identity
   ```
 
-* Ordered algebraic structures (pomonoids, posemigroups, etc.)
-  ```
-  Algebra.Ordered
-  Algebra.Ordered.Bundles
-  Algebra.Ordered.Structures
-  ```
-
 * 'Optimised' tail-recursive exponentiation properties:
   ```
   Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
