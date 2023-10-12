@@ -9,3 +9,10 @@ The library has been tested using Agda 2.6.4.
   - `Data.Star.Pointer.Pointer`
   - `Reflection.AnnotatedAST.Typeₐ`
   - `Reflection.AnnotatedAST.AnnotationFun`
+
+* The following aliases have been added:
+  - `IO.Primitive.pure` as alias for `IO.Primitive.return`
+  - modules `Effect.*` as aliases for modules `Category.*`
+
+  These allow to address said objects with the new name they will have in v2.0 of the library,
+  to ease the transition from v1.7.3 to v2.0.

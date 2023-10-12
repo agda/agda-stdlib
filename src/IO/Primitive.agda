@@ -27,3 +27,6 @@ postulate
 {-# COMPILE GHC _>>=_  = \_ _ _ _ -> (>>=) #-}
 {-# COMPILE UHC return = \_ _ x -> UHC.Agda.Builtins.primReturn x #-}
 {-# COMPILE UHC _>>=_  = \_ _ _ _ x y -> UHC.Agda.Builtins.primBind x y #-}
+
+-- Forward compatibility with v2.0.
+pure = return
