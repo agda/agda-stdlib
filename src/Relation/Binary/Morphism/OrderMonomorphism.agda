@@ -105,7 +105,6 @@ isStrictPartialOrder O = record
 isStrictTotalOrder : IsStrictTotalOrder _≈₂_ _≲₂_ →
                      IsStrictTotalOrder _≈₁_ _≲₁_
 isStrictTotalOrder O = record
-  { isEquivalence = EqM.isEquivalence O.isEquivalence
-  ; trans         = trans O.trans
-  ; compare       = compare O.compare
+  { isStrictPartialOrder = isStrictPartialOrder O.isStrictPartialOrder
+  ; compare              = compare O.compare
   } where module O = IsStrictTotalOrder O

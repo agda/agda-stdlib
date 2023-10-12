@@ -235,16 +235,18 @@ record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 
 
 -- Note that these orders are decidable. The current implementation
--- of `Trichotomous` subsumes irreflexivity and asymmetry. Any reasonable
--- definition capturing these three properties implies decidability
--- as `Trichotomous` necessarily separates out the equality case.
+-- of `Trichotomous` subsumes irreflexivity and asymmetry.
 
 record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
-    isEquivalence : IsEquivalence
-    trans         : Transitive _<_
-    compare       : Trichotomous _≈_ _<_
+    isStrictPartialOrder : IsStrictPartialOrder _<_
+    compare              : Trichotomous _≈_ _<_
 
+  open IsStrictPartialOrder isStrictPartialOrder public
+    hiding (module Eq)
+
+  -- `Trichotomous` necessarily separates out the equality case so
+  --  it implies decidability.
   infix 4 _≟_ _<?_
 
   _≟_ : Decidable _≈_
@@ -253,22 +255,6 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
   _<?_ : Decidable _<_
   _<?_ = tri⇒dec< compare
 
-  isDecEquivalence : IsDecEquivalence
-  isDecEquivalence = record
-    { isEquivalence = isEquivalence
-    ; _≟_           = _≟_
-    }
-
-  module Eq = IsDecEquivalence isDecEquivalence
-
-  isStrictPartialOrder : IsStrictPartialOrder _<_
-  isStrictPartialOrder = record
-    { isEquivalence = isEquivalence
-    ; irrefl        = tri⇒irr compare
-    ; trans         = trans
-    ; <-resp-≈      = trans∧tri⇒resp Eq.sym Eq.trans trans compare
-    }
-
   isDecStrictPartialOrder : IsDecStrictPartialOrder _<_
   isDecStrictPartialOrder = record
     { isStrictPartialOrder = isStrictPartialOrder
@@ -276,9 +262,26 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
     ; _<?_                 = _<?_
     }
 
-  open IsStrictPartialOrder isStrictPartialOrder public
-    using (irrefl; asym; <-respʳ-≈; <-respˡ-≈; <-resp-≈)
+  -- Redefine the `Eq` module to include decidability proofs
+  module Eq where
 
+    isDecEquivalence : IsDecEquivalence
+    isDecEquivalence = record
+      { isEquivalence = isEquivalence
+      ; _≟_           = _≟_
+      }
+
+    open IsDecEquivalence isDecEquivalence public
+
+  isDecEquivalence : IsDecEquivalence
+  isDecEquivalence = record
+    { isEquivalence = isEquivalence
+    ; _≟_           = _≟_
+    }
+  {-# WARNING_ON_USAGE isDecEquivalence
+  "Warning: isDecEquivalence was deprecated in v2.0.
+  Please use Eq.isDecEquivalence instead. "
+  #-}
 
 record IsDenseLinearOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field

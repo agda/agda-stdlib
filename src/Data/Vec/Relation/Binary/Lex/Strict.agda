@@ -168,8 +168,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   <-isStrictTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
                          ∀ {n} → IsStrictTotalOrder (_≋_ {n} {n}) _<_
   <-isStrictTotalOrder ≺-isStrictTotalOrder {n} = record
-    { isEquivalence = Pointwise.isEquivalence O.isEquivalence n
-    ; trans         = <-trans O.Eq.isPartialEquivalence O.<-resp-≈ O.trans
+    { isStrictPartialOrder = <-isStrictPartialOrder O.isStrictPartialOrder
     ; compare       = <-cmp O.Eq.sym O.compare
     } where module O = IsStrictTotalOrder ≺-isStrictTotalOrder
 
