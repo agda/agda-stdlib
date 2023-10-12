@@ -178,24 +178,8 @@ jobs:
           rm -f '${{ env.AGDA_HTML_DIR }}'/*.css
           ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
 
-
-          echo "<h1>Development versions</h1>" >> index.html
-          echo "<ul>" >> index.html
-          echo "<li><a href=\"master\">master</a></li>" >> index.html
-          echo "<li><a href=\"experimental\">experimental</a></li>" >> index.html
-          echo "</ul>" >> index.html
-          echo "<h1>Released versions</h1>" >> index.html
-          echo "<ul>" >> index.html
-
-          find html/ -name "index.html" \
-            | grep -v "master\|experimental" \
-            | sort
-            | sed 's|html/\([^\/]*\)/index.html|<li><a href="\1">\1</a></li>|g' \
-            >> index.html
-
-          echo "</ul>"
-
-          mv index.html html/
+          cp travis/* .
+          ./landing.sh
 
       - name: Deploy HTML
         uses: JamesIves/github-pages-deploy-action@4.1.3
