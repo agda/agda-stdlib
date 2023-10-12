@@ -186,7 +186,8 @@ Bug-fixes
   type rather than encoding it as an instance of `μ`. This ensures Agda notices that
   `C ⋆ X` is strictly positive in `X` which in turn allows us to use the free monad
   when defining auxiliary (co)inductive types (cf. the `Tap` example in
-  `README.Data.Container.FreeMonad`).
+  `README.Data.Container.FreeMonad`). By contrast, `Data.Container.Indexed.FreeMonad`
+  *does* define `C ⋆ X` as an instance of  `μ`, but now with a more relaxed type.
 
 * In `Data.Maybe.Base` the fixity declaration of `_<∣>_` was missing. This has been fixed.
 
@@ -599,7 +600,7 @@ Non-backwards compatible changes
   with the consequence that all arguments involving about accesibility and
   wellfoundedness proofs were polluted by almost-always-inferrable explicit
   arguments for the `y` position. The definition has now been changed to
-  make that argument *implicit*, as 
+  make that argument *implicit*, as
   ```agda
   WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
   WfRec _<_ P x = ∀ {y} → y < x → P y
@@ -765,6 +766,7 @@ Non-backwards compatible changes
 * The `RawApplicative` and `RawMonad` type classes have been relaxed so that the underlying
   functors do not need their domain and codomain to live at the same Set level.
   This is needed for level-increasing functors like `IO : Set l → Set (suc l)`.
+  Similarly for `Effect.Applicative.Predicate` defining `RawPApplicative`.
 
 * `RawApplicative` is now `RawFunctor + pure + _<*>_` and `RawMonad` is now
   `RawApplicative` + `_>>=_` and so `return` is not used anywhere anymore.
@@ -940,7 +942,7 @@ Non-backwards compatible changes
   Data.Vec.Relation.Binary.Lex.NonStrict
   Relation.Binary.Reasoning.StrictPartialOrder
   Relation.Binary.Reasoning.PartialOrder
-  ```	
+  ```
 
 ### Other
 
@@ -1118,7 +1120,7 @@ Non-backwards compatible changes
 * `excluded-middle` in `Relation.Nullary.Decidable.Core` has been renamed to
   `¬¬-excluded-middle`.
 
-* `iterate` and `replicate` in `Data.Vec.Base` and `Data.Vec.Functional` 
+* `iterate` and `replicate` in `Data.Vec.Base` and `Data.Vec.Functional`
   now take the length of vector, `n`, as an explicit rather than an implicit argument.
   ```agda
   iterate : (A → A) → A → ∀ n → Vec A n
