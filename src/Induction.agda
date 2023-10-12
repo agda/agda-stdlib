@@ -26,6 +26,8 @@ private
     Q : Pred A ℓ
     Rec : PT A A ℓ₁ ℓ₂
 
+
+------------------------------------------------------------------------
 -- A RecStruct describes the allowed structure of recursion. The
 -- examples in Data.Nat.Induction should explain what this is all
 -- about.
