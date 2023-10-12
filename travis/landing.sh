@@ -3,7 +3,7 @@ set -o pipefail
 
 find html/ -name "index.html" \
   | grep -v "master\|experimental" \
-  | sort
+  | sort \
   | sed 's|html/\([^\/]*\)/index.html|  <li><a href="\1">\1</a></li>|g' \
   >> landing.html
 
