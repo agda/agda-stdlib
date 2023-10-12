@@ -75,7 +75,7 @@ jobs:
              || '${{ github.base_ref }}' == 'master' ]]; then
             # Pick Agda version for master
             echo "AGDA_COMMIT=tags/v2.6.4" >> $GITHUB_ENV;
-            echo "AGDA_HTML_DIR=html" >> $GITHUB_ENV
+            echo "AGDA_HTML_DIR=html/master" >> $GITHUB_ENV
           elif [[ '${{ github.ref }}' == 'refs/heads/experimental' \
                || '${{ github.base_ref }}' == 'experimental' ]]; then
             # Pick Agda version for experimental
@@ -177,9 +177,16 @@ jobs:
           rm -f '${{ env.AGDA_HTML_DIR }}'/*.css
           ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
 
+
+          rm html/index.html
+          find html/ -name "index.html" \
+            | grep -v "master\|experimental" \
+            | sed 's|html/\([^\/]*\)/index.html|<a href="\1">\1</a>|g'
+          >> html/index.html
+
       - name: Deploy HTML
         uses: JamesIves/github-pages-deploy-action@4.1.3
-        if: ${{ success() && env.AGDA_DEPLOY }}
+        # if: ${{ success() && env.AGDA_DEPLOY }}
 
         with:
           branch: gh-pages
