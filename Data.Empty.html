@@ -19,14 +19,14 @@
 <a id="576" class="Comment">-- universe polymorphic variant.</a>
 
 <a id="610" class="Keyword">private</a>
-  <a id="620" class="Keyword">data</a> <a id="Empty"></a><a id="625" href="Data.Empty.html#625" class="Datatype">Empty</a> <a id="631" class="Symbol">:</a> <a id="633" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="637" class="Keyword">where</a>
+  <a id="620" class="Keyword">data</a> <a id="Empty"></a><a id="625" href="Data.Empty.html#625" class="Datatype">Empty</a> <a id="631" class="Symbol">:</a> <a id="633" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="637" class="Keyword">where</a>
 
 <a id="644" class="Comment">-- ⊥ is defined via Data.Irrelevant (a record with a single irrelevant</a>
 <a id="715" class="Comment">-- field) so that Agda can judgementally declare that all proofs of ⊥</a>
 <a id="785" class="Comment">-- are equal to each other. In particular this means that all functions</a>
 <a id="857" class="Comment">-- returning a proof of ⊥ are equal.</a>
 
-<a id="⊥"></a><a id="895" href="Data.Empty.html#895" class="Function">⊥</a> <a id="897" class="Symbol">:</a> <a id="899" href="Agda.Primitive.html#320" class="Primitive">Set</a>
+<a id="⊥"></a><a id="895" href="Data.Empty.html#895" class="Function">⊥</a> <a id="897" class="Symbol">:</a> <a id="899" href="Agda.Primitive.html#388" class="Primitive">Set</a>
 <a id="903" href="Data.Empty.html#895" class="Function">⊥</a> <a id="905" class="Symbol">=</a> <a id="907" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a> <a id="918" href="Data.Empty.html#625" class="Datatype">Empty</a>
 
 <a id="925" class="Symbol">{-#</a> <a id="929" class="Keyword">DISPLAY</a> <a id="937" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a> <a id="948" href="Data.Empty.html#948" class="Bound">Empty</a> <a id="954" class="Pragma">=</a> <a id="956" href="Data.Empty.html#895" class="Function">⊥</a> <a id="958" class="Symbol">#-}</a>
@@ -34,6 +34,6 @@
 <a id="963" class="Comment">------------------------------------------------------------------------</a>
 <a id="1036" class="Comment">-- Functions</a>
 
-<a id="⊥-elim"></a><a id="1050" href="Data.Empty.html#1050" class="Function">⊥-elim</a> <a id="1057" class="Symbol">:</a> <a id="1059" class="Symbol">∀</a> <a id="1061" class="Symbol">{</a><a id="1062" href="Data.Empty.html#1062" class="Bound">w</a><a id="1063" class="Symbol">}</a> <a id="1065" class="Symbol">{</a><a id="1066" href="Data.Empty.html#1066" class="Bound">Whatever</a> <a id="1075" class="Symbol">:</a> <a id="1077" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="1081" href="Data.Empty.html#1062" class="Bound">w</a><a id="1082" class="Symbol">}</a> <a id="1084" class="Symbol">→</a> <a id="1086" href="Data.Empty.html#895" class="Function">⊥</a> <a id="1088" class="Symbol">→</a> <a id="1090" href="Data.Empty.html#1066" class="Bound">Whatever</a>
+<a id="⊥-elim"></a><a id="1050" href="Data.Empty.html#1050" class="Function">⊥-elim</a> <a id="1057" class="Symbol">:</a> <a id="1059" class="Symbol">∀</a> <a id="1061" class="Symbol">{</a><a id="1062" href="Data.Empty.html#1062" class="Bound">w</a><a id="1063" class="Symbol">}</a> <a id="1065" class="Symbol">{</a><a id="1066" href="Data.Empty.html#1066" class="Bound">Whatever</a> <a id="1075" class="Symbol">:</a> <a id="1077" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1081" href="Data.Empty.html#1062" class="Bound">w</a><a id="1082" class="Symbol">}</a> <a id="1084" class="Symbol">→</a> <a id="1086" href="Data.Empty.html#895" class="Function">⊥</a> <a id="1088" class="Symbol">→</a> <a id="1090" href="Data.Empty.html#1066" class="Bound">Whatever</a>
 <a id="1099" href="Data.Empty.html#1050" class="Function">⊥-elim</a> <a id="1106" class="Symbol">()</a>
 </pre></body></html>

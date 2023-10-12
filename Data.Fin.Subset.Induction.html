@@ -9,19 +9,19 @@
 
 <a id="250" class="Keyword">module</a> <a id="257" href="Data.Fin.Subset.Induction.html" class="Module">Data.Fin.Subset.Induction</a> <a id="283" class="Keyword">where</a>
 
-<a id="290" class="Keyword">open</a> <a id="295" class="Keyword">import</a> <a id="302" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="316" class="Keyword">using</a> <a id="322" class="Symbol">(</a><a id="323" href="Agda.Builtin.Nat.html#186" class="Datatype">ℕ</a><a id="324" class="Symbol">)</a>
+<a id="290" class="Keyword">open</a> <a id="295" class="Keyword">import</a> <a id="302" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="316" class="Keyword">using</a> <a id="322" class="Symbol">(</a><a id="323" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="324" class="Symbol">)</a>
 <a id="326" class="Keyword">open</a> <a id="331" class="Keyword">import</a> <a id="338" href="Data.Nat.Induction.html" class="Module">Data.Nat.Induction</a> <a id="357" class="Keyword">using</a> <a id="363" class="Symbol">(</a><a id="364" href="Data.Nat.Induction.html#2190" class="Function">&lt;-wellFounded</a><a id="377" class="Symbol">)</a>
 <a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Data.Fin.Subset.html" class="Module">Data.Fin.Subset</a> <a id="407" class="Keyword">using</a> <a id="413" class="Symbol">(</a><a id="414" href="Data.Fin.Subset.html#1064" class="Function">Subset</a><a id="420" class="Symbol">;</a> <a id="422" href="Data.Fin.Subset.html#1800" class="Function Operator">_⊂_</a><a id="425" class="Symbol">;</a> <a id="427" href="Data.Fin.Subset.html#2585" class="Function Operator">∣_∣</a><a id="430" class="Symbol">)</a>
 <a id="432" class="Keyword">open</a> <a id="437" class="Keyword">import</a> <a id="444" href="Data.Fin.Subset.Properties.html" class="Module">Data.Fin.Subset.Properties</a>
 <a id="471" class="Keyword">open</a> <a id="476" class="Keyword">import</a> <a id="483" href="Induction.html" class="Module">Induction</a>
 <a id="493" class="Keyword">open</a> <a id="498" class="Keyword">import</a> <a id="505" href="Induction.WellFounded.html" class="Module">Induction.WellFounded</a> <a id="527" class="Symbol">as</a> <a id="530" class="Module">WF</a>
-<a id="533" class="Keyword">open</a> <a id="538" class="Keyword">import</a> <a id="545" href="Level.html" class="Module">Level</a> <a id="551" class="Keyword">using</a> <a id="557" class="Symbol">(</a><a id="558" href="Agda.Primitive.html#591" class="Postulate">Level</a><a id="563" class="Symbol">)</a>
+<a id="533" class="Keyword">open</a> <a id="538" class="Keyword">import</a> <a id="545" href="Level.html" class="Module">Level</a> <a id="551" class="Keyword">using</a> <a id="557" class="Symbol">(</a><a id="558" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="563" class="Symbol">)</a>
 <a id="565" class="Keyword">import</a> <a id="572" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a> <a id="601" class="Symbol">as</a> <a id="604" class="Module">On</a>
 
 <a id="608" class="Keyword">private</a>
   <a id="618" class="Keyword">variable</a>
-    <a id="631" href="Data.Fin.Subset.Induction.html#631" class="Generalizable">ℓ</a> <a id="633" class="Symbol">:</a> <a id="635" href="Agda.Primitive.html#591" class="Postulate">Level</a>
-    <a id="645" href="Data.Fin.Subset.Induction.html#645" class="Generalizable">n</a> <a id="647" class="Symbol">:</a> <a id="649" href="Agda.Builtin.Nat.html#186" class="Datatype">ℕ</a>
+    <a id="631" href="Data.Fin.Subset.Induction.html#631" class="Generalizable">ℓ</a> <a id="633" class="Symbol">:</a> <a id="635" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="645" href="Data.Fin.Subset.Induction.html#645" class="Generalizable">n</a> <a id="647" class="Symbol">:</a> <a id="649" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
 
 <a id="652" class="Comment">------------------------------------------------------------------------</a>
 <a id="725" class="Comment">-- Re-export accessability</a>

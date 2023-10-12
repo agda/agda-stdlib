@@ -10,7 +10,7 @@
 <a id="270" class="Keyword">module</a> <a id="277" href="Data.Word.Properties.html" class="Module">Data.Word.Properties</a> <a id="298" class="Keyword">where</a>
 
 <a id="305" class="Keyword">import</a> <a id="312" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="326" class="Symbol">as</a> <a id="329" class="Module">ℕ</a>
-<a id="331" class="Keyword">open</a> <a id="336" class="Keyword">import</a> <a id="343" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="358" class="Keyword">using</a> <a id="364" class="Symbol">(</a><a id="365" href="Agda.Builtin.Bool.html#156" class="Datatype">Bool</a><a id="369" class="Symbol">)</a>
+<a id="331" class="Keyword">open</a> <a id="336" class="Keyword">import</a> <a id="343" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="358" class="Keyword">using</a> <a id="364" class="Symbol">(</a><a id="365" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a><a id="369" class="Symbol">)</a>
 <a id="371" class="Keyword">open</a> <a id="376" class="Keyword">import</a> <a id="383" href="Data.Word.Base.html" class="Module">Data.Word.Base</a>
 <a id="398" class="Keyword">import</a> <a id="405" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="425" class="Symbol">as</a> <a id="428" class="Module">ℕₚ</a>
 <a id="431" class="Keyword">open</a> <a id="436" class="Keyword">import</a> <a id="443" href="Function.Base.html" class="Module">Function.Base</a>
@@ -26,20 +26,20 @@
 <a id="889" class="Comment">-- Primitive properties</a>
 
 <a id="914" class="Keyword">open</a> <a id="919" class="Keyword">import</a> <a id="926" href="Agda.Builtin.Word.Properties.html" class="Module">Agda.Builtin.Word.Properties</a>
-  <a id="957" class="Keyword">renaming</a> <a id="966" class="Symbol">(</a><a id="967" href="Agda.Builtin.Word.Properties.html#201" class="Primitive">primWord64ToNatInjective</a> <a id="992" class="Symbol">to</a> <a id="995" class="Primitive">toℕ-injective</a><a id="1008" class="Symbol">)</a>
+  <a id="957" class="Keyword">renaming</a> <a id="966" class="Symbol">(</a><a id="967" href="Agda.Builtin.Word.Properties.html#218" class="Primitive">primWord64ToNatInjective</a> <a id="992" class="Symbol">to</a> <a id="995" class="Primitive">toℕ-injective</a><a id="1008" class="Symbol">)</a>
   <a id="1012" class="Keyword">public</a>
 
 <a id="1020" class="Comment">------------------------------------------------------------------------</a>
 <a id="1093" class="Comment">-- Properties of _≈_</a>
 
-<a id="≈⇒≡"></a><a id="1115" href="Data.Word.Properties.html#1115" class="Function">≈⇒≡</a> <a id="1119" class="Symbol">:</a> <a id="1121" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a> <a id="1125" href="Relation.Binary.Core.html#1268" class="Function Operator">⇒</a> <a id="1127" href="Agda.Builtin.Equality.html#133" class="Datatype Operator">_≡_</a>
+<a id="≈⇒≡"></a><a id="1115" href="Data.Word.Properties.html#1115" class="Function">≈⇒≡</a> <a id="1119" class="Symbol">:</a> <a id="1121" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a> <a id="1125" href="Relation.Binary.Core.html#1268" class="Function Operator">⇒</a> <a id="1127" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a>
 <a id="1131" href="Data.Word.Properties.html#1115" class="Function">≈⇒≡</a> <a id="1135" class="Symbol">=</a> <a id="1137" href="Data.Word.Properties.html#995" class="Primitive">toℕ-injective</a> <a id="1151" class="Symbol">_</a> <a id="1153" class="Symbol">_</a>
 
-<a id="≈-reflexive"></a><a id="1156" href="Data.Word.Properties.html#1156" class="Function">≈-reflexive</a> <a id="1168" class="Symbol">:</a> <a id="1170" href="Agda.Builtin.Equality.html#133" class="Datatype Operator">_≡_</a> <a id="1174" href="Relation.Binary.Core.html#1268" class="Function Operator">⇒</a> <a id="1176" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a>
+<a id="≈-reflexive"></a><a id="1156" href="Data.Word.Properties.html#1156" class="Function">≈-reflexive</a> <a id="1168" class="Symbol">:</a> <a id="1170" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a> <a id="1174" href="Relation.Binary.Core.html#1268" class="Function Operator">⇒</a> <a id="1176" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a>
 <a id="1180" href="Data.Word.Properties.html#1156" class="Function">≈-reflexive</a> <a id="1192" class="Symbol">=</a> <a id="1194" href="Relation.Binary.PropositionalEquality.Core.html#1158" class="Function">cong</a> <a id="1199" href="Data.Word.Base.html#696" class="Primitive">toℕ</a>
 
 <a id="≈-refl"></a><a id="1204" href="Data.Word.Properties.html#1204" class="Function">≈-refl</a> <a id="1211" class="Symbol">:</a> <a id="1213" href="Relation.Binary.Definitions.html#1428" class="Function">Reflexive</a> <a id="1223" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a>
-<a id="1227" href="Data.Word.Properties.html#1204" class="Function">≈-refl</a> <a id="1234" class="Symbol">=</a> <a id="1236" href="Agda.Builtin.Equality.html#190" class="InductiveConstructor">refl</a>
+<a id="1227" href="Data.Word.Properties.html#1204" class="Function">≈-refl</a> <a id="1234" class="Symbol">=</a> <a id="1236" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a>
 
 <a id="≈-sym"></a><a id="1242" href="Data.Word.Properties.html#1242" class="Function">≈-sym</a> <a id="1248" class="Symbol">:</a> <a id="1250" href="Relation.Binary.Definitions.html#1587" class="Function">Symmetric</a> <a id="1260" href="Data.Word.Base.html#748" class="Function Operator">_≈_</a>
 <a id="1264" href="Data.Word.Properties.html#1242" class="Function">≈-sym</a> <a id="1270" class="Symbol">=</a> <a id="1272" href="Relation.Binary.PropositionalEquality.Core.html#1712" class="Function">sym</a>
@@ -80,11 +80,11 @@
 <a id="2018" class="Comment">-- Properties of _≡_</a>
 
 <a id="2040" class="Keyword">infix</a> <a id="2046" class="Number">4</a> <a id="2048" href="Data.Word.Properties.html#2052" class="Function Operator">_≟_</a>
-<a id="_≟_"></a><a id="2052" href="Data.Word.Properties.html#2052" class="Function Operator">_≟_</a> <a id="2056" class="Symbol">:</a> <a id="2058" href="Relation.Binary.Definitions.html#6468" class="Function">DecidableEquality</a> <a id="2076" href="Agda.Builtin.Word.html#191" class="Postulate">Word64</a>
+<a id="_≟_"></a><a id="2052" href="Data.Word.Properties.html#2052" class="Function Operator">_≟_</a> <a id="2056" class="Symbol">:</a> <a id="2058" href="Relation.Binary.Definitions.html#6468" class="Function">DecidableEquality</a> <a id="2076" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a>
 <a id="2083" href="Data.Word.Properties.html#2083" class="Bound">x</a> <a id="2085" href="Data.Word.Properties.html#2052" class="Function Operator">≟</a> <a id="2087" href="Data.Word.Properties.html#2087" class="Bound">y</a> <a id="2089" class="Symbol">=</a> <a id="2091" href="Relation.Nullary.Decidable.Core.html#4842" class="Function">map′</a> <a id="2096" href="Data.Word.Properties.html#1115" class="Function">≈⇒≡</a> <a id="2100" href="Data.Word.Properties.html#1156" class="Function">≈-reflexive</a> <a id="2112" class="Symbol">(</a><a id="2113" href="Data.Word.Properties.html#2083" class="Bound">x</a> <a id="2115" href="Data.Word.Properties.html#1408" class="Function Operator">≈?</a> <a id="2118" href="Data.Word.Properties.html#2087" class="Bound">y</a><a id="2119" class="Symbol">)</a>
 
 <a id="≡-setoid"></a><a id="2122" href="Data.Word.Properties.html#2122" class="Function">≡-setoid</a> <a id="2131" class="Symbol">:</a> <a id="2133" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a> <a id="2140" class="Symbol">_</a> <a id="2142" class="Symbol">_</a>
-<a id="2144" href="Data.Word.Properties.html#2122" class="Function">≡-setoid</a> <a id="2153" class="Symbol">=</a> <a id="2155" href="Relation.Binary.PropositionalEquality.Properties.html#5654" class="Function">setoid</a> <a id="2162" href="Agda.Builtin.Word.html#191" class="Postulate">Word64</a>
+<a id="2144" href="Data.Word.Properties.html#2122" class="Function">≡-setoid</a> <a id="2153" class="Symbol">=</a> <a id="2155" href="Relation.Binary.PropositionalEquality.Properties.html#5654" class="Function">setoid</a> <a id="2162" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a>
 
 <a id="≡-decSetoid"></a><a id="2170" href="Data.Word.Properties.html#2170" class="Function">≡-decSetoid</a> <a id="2182" class="Symbol">:</a> <a id="2184" href="Relation.Binary.Bundles.html#1462" class="Record">DecSetoid</a> <a id="2194" class="Symbol">_</a> <a id="2196" class="Symbol">_</a>
 <a id="2198" href="Data.Word.Properties.html#2170" class="Function">≡-decSetoid</a> <a id="2210" class="Symbol">=</a> <a id="2212" href="Relation.Binary.PropositionalEquality.Properties.html#5785" class="Function">decSetoid</a> <a id="2222" href="Data.Word.Properties.html#2052" class="Function Operator">_≟_</a>
@@ -93,7 +93,7 @@
 <a id="2300" class="Comment">-- Boolean equality test.</a>
 
 <a id="2327" class="Keyword">infix</a> <a id="2333" class="Number">4</a> <a id="2335" href="Data.Word.Properties.html#2340" class="Function Operator">_==_</a>
-<a id="_==_"></a><a id="2340" href="Data.Word.Properties.html#2340" class="Function Operator">_==_</a> <a id="2345" class="Symbol">:</a> <a id="2347" href="Agda.Builtin.Word.html#191" class="Postulate">Word64</a> <a id="2354" class="Symbol">→</a> <a id="2356" href="Agda.Builtin.Word.html#191" class="Postulate">Word64</a> <a id="2363" class="Symbol">→</a> <a id="2365" href="Agda.Builtin.Bool.html#156" class="Datatype">Bool</a>
+<a id="_==_"></a><a id="2340" href="Data.Word.Properties.html#2340" class="Function Operator">_==_</a> <a id="2345" class="Symbol">:</a> <a id="2347" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a> <a id="2354" class="Symbol">→</a> <a id="2356" href="Agda.Builtin.Word.html#208" class="Postulate">Word64</a> <a id="2363" class="Symbol">→</a> <a id="2365" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
 <a id="2370" href="Data.Word.Properties.html#2370" class="Bound">w₁</a> <a id="2373" href="Data.Word.Properties.html#2340" class="Function Operator">==</a> <a id="2376" href="Data.Word.Properties.html#2376" class="Bound">w₂</a> <a id="2379" class="Symbol">=</a> <a id="2381" href="Relation.Nullary.Decidable.Core.html#3564" class="Function Operator">⌊</a> <a id="2383" href="Data.Word.Properties.html#2370" class="Bound">w₁</a> <a id="2386" href="Data.Word.Properties.html#2052" class="Function Operator">≟</a> <a id="2388" href="Data.Word.Properties.html#2376" class="Bound">w₂</a> <a id="2391" href="Relation.Nullary.Decidable.Core.html#3564" class="Function Operator">⌋</a>
 
 <a id="2394" class="Comment">------------------------------------------------------------------------</a>

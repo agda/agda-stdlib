@@ -7,7 +7,7 @@
 
 <a id="234" class="Symbol">{-#</a> <a id="238" class="Keyword">OPTIONS</a> <a id="246" class="Pragma">--cubical-compatible</a> <a id="267" class="Pragma">--safe</a> <a id="274" class="Symbol">#-}</a>
 
-<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Level.html" class="Module">Level</a> <a id="297" class="Keyword">using</a> <a id="303" class="Symbol">(</a><a id="304" href="Agda.Primitive.html#591" class="Postulate">Level</a><a id="309" class="Symbol">;</a> <a id="311" href="Agda.Primitive.html#804" class="Primitive Operator">_⊔_</a><a id="314" class="Symbol">)</a>
+<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Level.html" class="Module">Level</a> <a id="297" class="Keyword">using</a> <a id="303" class="Symbol">(</a><a id="304" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="309" class="Symbol">;</a> <a id="311" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="314" class="Symbol">)</a>
 <a id="316" class="Keyword">open</a> <a id="321" class="Keyword">import</a> <a id="328" href="Data.W.html" class="Module">Data.W</a> <a id="335" class="Keyword">using</a> <a id="341" class="Symbol">(</a><a id="342" href="Data.W.html#797" class="Datatype">W</a><a id="343" class="Symbol">)</a>
 
 <a id="346" class="Keyword">module</a> <a id="353" href="Data.Container.html" class="Module">Data.Container</a> <a id="368" class="Keyword">where</a>
@@ -42,11 +42,11 @@
 
 <a id="1454" class="Keyword">private</a>
   <a id="1464" class="Keyword">variable</a>
-    <a id="1477" href="Data.Container.html#1477" class="Generalizable">s</a> <a id="1479" href="Data.Container.html#1479" class="Generalizable">p</a> <a id="1481" class="Symbol">:</a> <a id="1483" href="Agda.Primitive.html#591" class="Postulate">Level</a>
+    <a id="1477" href="Data.Container.html#1477" class="Generalizable">s</a> <a id="1479" href="Data.Container.html#1479" class="Generalizable">p</a> <a id="1481" class="Symbol">:</a> <a id="1483" href="Agda.Primitive.html#742" class="Postulate">Level</a>
 
 <a id="1490" class="Comment">-- The least fixpoint of a container.</a>
 
-<a id="μ"></a><a id="1529" href="Data.Container.html#1529" class="Function">μ</a> <a id="1531" class="Symbol">:</a> <a id="1533" href="Data.Container.Core.html#513" class="Record">Container</a> <a id="1543" href="Data.Container.html#1477" class="Generalizable">s</a> <a id="1545" href="Data.Container.html#1479" class="Generalizable">p</a> <a id="1547" class="Symbol">→</a> <a id="1549" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="1553" class="Symbol">(</a><a id="1554" href="Data.Container.html#1477" class="Generalizable">s</a> <a id="1556" href="Agda.Primitive.html#804" class="Primitive Operator">⊔</a> <a id="1558" href="Data.Container.html#1479" class="Generalizable">p</a><a id="1559" class="Symbol">)</a>
+<a id="μ"></a><a id="1529" href="Data.Container.html#1529" class="Function">μ</a> <a id="1531" class="Symbol">:</a> <a id="1533" href="Data.Container.Core.html#513" class="Record">Container</a> <a id="1543" href="Data.Container.html#1477" class="Generalizable">s</a> <a id="1545" href="Data.Container.html#1479" class="Generalizable">p</a> <a id="1547" class="Symbol">→</a> <a id="1549" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1553" class="Symbol">(</a><a id="1554" href="Data.Container.html#1477" class="Generalizable">s</a> <a id="1556" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1558" href="Data.Container.html#1479" class="Generalizable">p</a><a id="1559" class="Symbol">)</a>
 <a id="1561" href="Data.Container.html#1529" class="Function">μ</a> <a id="1563" class="Symbol">=</a> <a id="1565" href="Data.W.html#797" class="Datatype">W</a>
 
 <a id="1568" class="Comment">-- The greatest fixpoint of a container can be found</a>
