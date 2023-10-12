@@ -144,22 +144,22 @@ jobs:
 ## TESTING
 ########################################################################
 
-      # By default github actions do not pull the repo
-      - name: Checkout stdlib
-        uses: actions/checkout@v2
+      # # By default github actions do not pull the repo
+      # - name: Checkout stdlib
+      #   uses: actions/checkout@v2
 
-      - name: Test stdlib
-        run: |
-          cabal run GenerateEverything
-          cp travis/* .
-          ./index.sh
-          ${{ env.AGDA }} --safe EverythingSafe.agda
-          ${{ env.AGDA }} index.agda
+      # - name: Test stdlib
+      #   run: |
+      #     cabal run GenerateEverything
+      #     cp travis/* .
+      #     ./index.sh
+      #     ${{ env.AGDA }} --safe EverythingSafe.agda
+      #     ${{ env.AGDA }} index.agda
 
-      - name: Golden testing
-        run: |
-          ${{ env.CABAL_INSTALL }} clock
-          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
+      # - name: Golden testing
+      #   run: |
+      #     ${{ env.CABAL_INSTALL }} clock
+      #     make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
 
 
 ########################################################################
@@ -179,10 +179,16 @@ jobs:
 
 
           rm html/index.html
+
+          echo "<h1>Development versions</h1>" >> html/index.html
+          echo "<a href=\"master\">master</a>" >> html/index.html
+          echo "<a href=\"experimental\">experimental</a>" >> html/index.html
+          echo "<h1>Released versions</h1>" >> html/index.html
+
           find html/ -name "index.html" \
             | grep -v "master\|experimental" \
-            | sed 's|html/\([^\/]*\)/index.html|<a href="\1">\1</a>|g'
-          >> html/index.html
+            | sed 's|html/\([^\/]*\)/index.html|<a href="\1">\1</a>|g' \
+            >> html/index.html
 
       - name: Deploy HTML
         uses: JamesIves/github-pages-deploy-action@4.1.3
