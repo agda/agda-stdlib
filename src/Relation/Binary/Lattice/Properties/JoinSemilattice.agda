@@ -16,8 +16,6 @@ open JoinSemilattice J
 import Algebra.Lattice as Alg
 import Algebra.Structures as Alg
 open import Algebra.Definitions _≈_
-open import Algebra.Ordered.Structures using (IsPosemigroup)
-open import Algebra.Ordered.Bundles using (Posemigroup)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; flip)
 open import Relation.Binary.Core using (_Preserves₂_⟶_⟶_)
@@ -96,26 +94,6 @@ isAlgSemilattice = record
 
 algSemilattice : Alg.Semilattice c ℓ₁
 algSemilattice = record { isSemilattice = isAlgSemilattice }
-
--- Every semilattice gives rise to a posemigroup
-
-isPosemigroup : IsPosemigroup _≈_ _≤_ _∨_
-isPosemigroup = record
-  { isPomagma        = record
-    { isPartialOrder = isPartialOrder
-    ; mono           = ∨-monotonic
-    }
-  ; assoc            = ∨-assoc
-  }
-
-posemigroup : Posemigroup c ℓ₁ ℓ₂
-posemigroup = record
-  { Carrier           = Carrier
-  ; _≈_               = _≈_
-  ; _≤_               = _≤_
-  ; _∙_               = _∨_
-  ; isPosemigroup     = isPosemigroup
-  }
 
 ------------------------------------------------------------------------
 -- The dual construction is a meet semilattice.

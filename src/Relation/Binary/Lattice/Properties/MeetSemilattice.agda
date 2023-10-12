@@ -35,7 +35,7 @@ dualJoinSemilattice = record
   }
 
 open J dualJoinSemilattice public
-  using (isAlgSemilattice; algSemilattice; isPosemigroup; posemigroup)
+  using (isAlgSemilattice; algSemilattice)
   renaming
     ( ∨-monotonic  to ∧-monotonic
     ; ∨-cong       to ∧-cong
