@@ -20,7 +20,6 @@ open import Data.Nat.Properties
 open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable using (False; toWitnessFalse)
 
 open ≤-Reasoning
 
@@ -465,12 +464,13 @@ _div_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
 _div_ = _/_
 
 _mod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → Fin divisor
-m mod n@(suc _) = fromℕ< (m%n<n m n)
+m mod n = fromℕ< (m%n<n m n)
 
 _divMod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} →
            DivMod dividend divisor
-m divMod n@(suc _) = result (m / n) (m mod n) (begin-equality
-  m                                   ≡⟨  m≡m%n+[m/n]*n m n ⟩
-  m % n                    + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< (m%n<n m n)) ⟩
-  toℕ (fromℕ< (m%n<n m n)) + [m/n]*n  ∎)
-  where [m/n]*n = m / n * n
+m divMod n = result (m / n) (m mod n) $ begin-equality
+  m                               ≡⟨  m≡m%n+[m/n]*n m n ⟩
+  m % n                + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< [m%n]<n) ⟩
+  toℕ (fromℕ< [m%n]<n) + [m/n]*n  ∎
+  where [m/n]*n = m / n * n ; [m%n]<n = m%n<n m n
+
