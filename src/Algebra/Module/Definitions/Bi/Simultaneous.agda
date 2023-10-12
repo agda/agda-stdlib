@@ -14,5 +14,5 @@ module Algebra.Module.Definitions.Bi.Simultaneous
 
 open import Algebra.Module.Core
 
-Commutative : Opₗ A B → Opᵣ A B → Set _
-Commutative _∙ₗ_ _∙ᵣ_ = ∀ x m → (x ∙ₗ m) ≈ (m ∙ᵣ x)
+Coincident : Opₗ A B → Opᵣ A B → Set _
+Coincident _∙ₗ_ _∙ᵣ_ = ∀ x m → (x ∙ₗ m) ≈ (m ∙ᵣ x)

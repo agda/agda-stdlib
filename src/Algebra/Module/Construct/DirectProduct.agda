@@ -97,7 +97,7 @@ semimodule M N = record
   { isSemimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule
       (bisemimodule M.bisemimodule N.bisemimodule)
-    ; *ₗ-*ᵣ-comm = λ x m → M.*ₗ-*ᵣ-comm x (proj₁ m) , N.*ₗ-*ᵣ-comm x (proj₂ m)
+    ; *ₗ-*ᵣ-coincident = λ x m → M.*ₗ-*ᵣ-coincident x (proj₁ m) , N.*ₗ-*ᵣ-coincident x (proj₂ m)
     }
   } where module M = Semimodule M; module N = Semimodule N
 
@@ -156,6 +156,6 @@ bimodule M N = record
 ⟨module⟩ M N = record
   { isModule = record
     { isBimodule = Bimodule.isBimodule (bimodule M.bimodule N.bimodule)
-    ; *ₗ-*ᵣ-comm = λ x m → M.*ₗ-*ᵣ-comm x (proj₁ m) , N.*ₗ-*ᵣ-comm x (proj₂ m)
+    ; *ₗ-*ᵣ-coincident = λ x m → M.*ₗ-*ᵣ-coincident x (proj₁ m) , N.*ₗ-*ᵣ-coincident x (proj₂ m)
     }
   } where module M = Module M; module N = Module N
