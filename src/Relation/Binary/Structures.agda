@@ -235,7 +235,9 @@ record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 
 
 -- Note that these orders are decidable. The current implementation
--- of `Trichotomous` subsumes irreflexivity and asymmetry.
+-- of `Trichotomous` subsumes irreflexivity and asymmetry. See
+-- `Relation.Binary.Structures.Biased` for ways of constructing this
+-- record without having to prove `isStrictPartialOrder`.
 
 record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
