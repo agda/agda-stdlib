@@ -9,7 +9,7 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Supremum
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 
 module Relation.Binary.Construct.Add.Supremum.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where

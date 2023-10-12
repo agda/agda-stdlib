@@ -14,7 +14,8 @@ module Relation.Binary.OrderMorphism where
 Use Relation.Binary.Reasoning.Morphism instead."
 #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (_=[_]⇒_)
+open import Relation.Binary.Bundles using (Poset; DecTotalOrder)
 open Poset
 import Function.Base as F
 open import Level

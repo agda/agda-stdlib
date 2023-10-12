@@ -9,30 +9,41 @@
 
 module Data.Product.Function.Dependent.Propositional.WithK where
 
-open import Data.Product.Base using (Σ)
-open import Data.Product.Function.Dependent.Setoid
+open import Data.Product.Base
+open import Data.Product.Properties
+open import Data.Product.Function.Dependent.Setoid using (injection)
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Data.Product.Relation.Binary.Pointwise.Dependent.WithK
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Injection as Inj using (_↣_; module Injection)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-import Relation.Binary.HeterogeneousEquality as H
+open import Relation.Binary.Indexed.Heterogeneous.Construct.At using (_atₛ_)
+open import Relation.Binary.HeterogeneousEquality as H
+open import Level using (Level)
+open import Function
+open import Function.Properties.Injection
+open import Function.Properties.Inverse as Inverse
+open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+
+private
+  variable
+    i a : Level
+    I J : Set i
+    A B : I → Set a
 
 ------------------------------------------------------------------------
 -- Combinator for Injection
 
-module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
-         {b₁ b₂} {B₁ : A₁ → Set b₁} {B₂ : A₂ → Set b₂}
-         where
+module _ where
+  open Injection
 
-  ↣ : ∀ (A₁↣A₂ : A₁ ↣ A₂) →
-      (∀ {x} → B₁ x ↣ B₂ (Injection.to A₁↣A₂ ⟨$⟩ x)) →
-      Σ A₁ B₁ ↣ Σ A₂ B₂
-  ↣ A₁↣A₂ B₁↣B₂ =
-    Inverse.injection Pointwise-≡↔≡ ⟨∘⟩
-    injection (H.indexedSetoid B₂) A₁↣A₂
-      (Inverse.injection (H.≡↔≅ B₂) ⟨∘⟩
-       B₁↣B₂ ⟨∘⟩
-       Inverse.injection (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
-    Inverse.injection (Inv.sym Pointwise-≡↔≡)
-    where open Inj using () renaming (_∘_ to _⟨∘⟩_)
+  Σ-↣ : (I↣J : I ↣ J) →
+         (∀ {i} → A i ↣ B (to I↣J i)) →
+         Σ I A ↣ Σ J B
+  Σ-↣ {A = A} {B = B} I↣J A↣B =
+    ↣-trans (Inverse⇒Injection (Inverse.sym Pointwise-≡↔≡)) $
+      ↣-trans (injection I↣J Aᵢ↣Bᵢ) $
+        Inverse⇒Injection Pointwise-≡↔≡
+    where
+    Aᵢ↣Bᵢ : (∀ {i} → Injection (H.indexedSetoid A atₛ i) (H.indexedSetoid B atₛ (Injection.to I↣J i)))
+    Aᵢ↣Bᵢ =
+      ↣-trans (Inverse⇒Injection (Inverse.sym (H.≡↔≅ A))) $
+        ↣-trans A↣B $
+          Inverse⇒Injection (H.≡↔≅ B)

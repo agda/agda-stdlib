@@ -16,7 +16,7 @@ open import Data.Sum.Properties
 open import Data.Unit.Polymorphic using (⊤; tt)
 open import Function.Base using (id; _∘_)
 open import Function.Properties.Inverse using (↔-isEquivalence)
-open import Function.Bundles using (_↔_; Inverse; mk↔′)
+open import Function.Bundles using (_↔_; Inverse; mk↔ₛ′)
 open import Level using (Level; suc)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong′)
@@ -38,7 +38,7 @@ private
 -- Algebraic properties
 
 ⊎-cong : A ↔ B → C ↔ D → (A ⊎ C) ↔ (B ⊎ D)
-⊎-cong i j = mk↔′ (map I.to J.to) (map I.from J.from)
+⊎-cong i j = mk↔ₛ′ (map I.to J.to) (map I.from J.from)
   [ cong inj₁ ∘ I.strictlyInverseˡ , cong inj₂ ∘ J.strictlyInverseˡ ]
   [ cong inj₁ ∘ I.strictlyInverseʳ , cong inj₂ ∘ J.strictlyInverseʳ ]
   where module I = Inverse i; module J = Inverse j
@@ -46,21 +46,21 @@ private
 -- ⊎ is commutative.
 -- We don't use Commutative because it isn't polymorphic enough.
 ⊎-comm : (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
-⊎-comm _ _ = mk↔′ swap swap swap-involutive swap-involutive
+⊎-comm _ _ = mk↔ₛ′ swap swap swap-involutive swap-involutive
 
 module _ (ℓ : Level) where
 
   -- ⊎ is associative
   ⊎-assoc : Associative {ℓ = ℓ} _↔_ _⊎_
-  ⊎-assoc _ _ _ = mk↔′ assocʳ assocˡ
+  ⊎-assoc _ _ _ = mk↔ₛ′ assocʳ assocˡ
     [ cong′ , [ cong′ , cong′ ] ] [ [ cong′ , cong′ ] , cong′ ]
 
   -- ⊥ is an identity for ⊎
   ⊎-identityˡ : LeftIdentity {ℓ = ℓ} _↔_ ⊥ _⊎_
-  ⊎-identityˡ A = mk↔′ [ ♯ , id ] inj₂ cong′ [ ♯ , cong′ ]
+  ⊎-identityˡ A = mk↔ₛ′ [ ♯ , id ] inj₂ cong′ [ ♯ , cong′ ]
 
   ⊎-identityʳ : RightIdentity {ℓ = ℓ} _↔_ ⊥ _⊎_
-  ⊎-identityʳ _ = mk↔′ [ id , ♯ ] inj₁ cong′ [ cong′ , ♯ ]
+  ⊎-identityʳ _ = mk↔ₛ′ [ id , ♯ ] inj₁ cong′ [ cong′ , ♯ ]
 
   ⊎-identity : Identity _↔_ ⊥ _⊎_
   ⊎-identity = ⊎-identityˡ , ⊎-identityʳ

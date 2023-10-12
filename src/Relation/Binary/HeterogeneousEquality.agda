@@ -10,12 +10,16 @@ module Relation.Binary.HeterogeneousEquality where
 
 import Axiom.Extensionality.Heterogeneous as Ext
 open import Data.Unit.NonEta
+open import Data.Product.Base using (_,_)
 open import Function.Base
-open import Function.Inverse using (Inverse)
+open import Function.Bundles using (Inverse)
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Unary using (Pred)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
+open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
+open import Relation.Binary.Definitions using (Substitutive; Irrelevant; Decidable; _Respects₂_)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
@@ -180,12 +184,11 @@ indexedSetoid B = record
 ≡↔≅ : ∀ {A : Set a} (B : A → Set b) {x : A} →
       Inverse (P.setoid (B x)) ((indexedSetoid B) atₛ x)
 ≡↔≅ B = record
-  { to         = record { _⟨$⟩_ = id; cong = ≡-to-≅ }
-  ; from       = record { _⟨$⟩_ = id; cong = ≅-to-≡ }
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → refl
-    ; right-inverse-of = λ _ → refl
-    }
+  { to         = id
+  ; to-cong    = ≡-to-≅
+  ; from       = id
+  ; from-cong  = ≅-to-≡
+  ; inverse    = (λ { P.refl → refl }) , λ { refl → P.refl }
   }
 
 decSetoid : Decidable {A = A} {B = A} (λ x y → x ≅ y) →
@@ -216,7 +219,7 @@ preorder : Set ℓ → Preorder ℓ ℓ ℓ
 preorder A = record
   { Carrier    = A
   ; _≈_        = _≡_
-  ; _∼_        = λ x y → x ≅ y
+  ; _≲_        = λ x y → x ≅ y
   ; isPreorder = isPreorder-≡
   }
 

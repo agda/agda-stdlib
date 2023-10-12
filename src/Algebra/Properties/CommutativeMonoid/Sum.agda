@@ -46,7 +46,7 @@ open import Algebra.Properties.Monoid.Sum monoid public
 
 -- When summing over a function from a finite set, we can pull out any
 -- value and move it to the front.
-sum-remove : ∀ {n} {i : Fin (suc n)} t → sum t ≈ t i + sum (remove i t)
+sum-remove : ∀ {n} {i : Fin (suc n)} t → sum t ≈ t i + sum (removeAt t i)
 sum-remove {_}     {zero}   xs = refl
 sum-remove {suc n} {suc i}  xs = begin
   t₀ + ∑t           ≈⟨ +-congˡ (sum-remove t) ⟩
@@ -57,7 +57,7 @@ sum-remove {suc n} {suc i}  xs = begin
   t₀ = head xs
   tᵢ = t i
   ∑t = sum t
-  ∑t′ = sum (remove i t)
+  ∑t′ = sum (removeAt t i)
 
 -- The '∑' operator distributes over addition.
 ∑-distrib-+ : ∀ {n} (f g : Vector Carrier n) → ∑[ i < n ] (f i + g i) ≈ ∑[ i < n ] f i + ∑[ i < n ] g i
@@ -93,10 +93,10 @@ sum-permute {suc m} {suc n} f π = begin
   f 0F  + sum f/0                          ≡˘⟨ P.cong (_+ sum f/0) (P.cong f (Perm.inverseʳ π)) ⟩
   πf π₀ + sum f/0                          ≈⟨ +-congˡ (sum-permute f/0 (Perm.remove π₀ π)) ⟩
   πf π₀ + sum (rearrange (π/0 ⟨$⟩ʳ_) f/0)  ≡˘⟨ P.cong (πf π₀ +_) (sum-cong-≗ (P.cong f ∘ Perm.punchIn-permute′ π 0F)) ⟩
-  πf π₀ + sum (remove π₀ πf)               ≈⟨ sym (sum-remove πf) ⟩
+  πf π₀ + sum (removeAt πf π₀)             ≈⟨ sym (sum-remove πf) ⟩
   sum πf                                   ∎
   where
-  f/0 = remove 0F f
+  f/0 = removeAt f 0F
   π₀ = π ⟨$⟩ˡ 0F
   π/0 = Perm.remove π₀ π
   πf = rearrange (π ⟨$⟩ʳ_) f

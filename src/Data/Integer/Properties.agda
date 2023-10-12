@@ -27,7 +27,13 @@ open import Data.Sign as Sign using (Sign) renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
 open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles using
+  (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no; ¬_)
 import Relation.Nullary.Reflects as Reflects
@@ -270,17 +276,17 @@ drop‿-<- (-<- n<m) = n<m
 <-asym (-<- n<m) = ℕ.<-asym n<m ∘ drop‿-<-
 <-asym (+<+ m<n) = ℕ.<-asym m<n ∘ drop‿+<+
 
-≤-<-trans : Trans _≤_ _<_ _<_
-≤-<-trans (-≤- n≤m) (-<- o<n) = -<- (ℕ.<-transˡ o<n n≤m)
+≤-<-trans : LeftTrans _≤_ _<_
+≤-<-trans (-≤- n≤m) (-<- o<n) = -<- (ℕ.<-≤-trans o<n n≤m)
 ≤-<-trans (-≤- n≤m) -<+       = -<+
 ≤-<-trans -≤+       (+<+ m<o) = -<+
-≤-<-trans (+≤+ m≤n) (+<+ n<o) = +<+ (ℕ.<-transʳ m≤n n<o)
+≤-<-trans (+≤+ m≤n) (+<+ n<o) = +<+ (ℕ.≤-<-trans m≤n n<o)
 
-<-≤-trans : Trans _<_ _≤_ _<_
-<-≤-trans (-<- n<m) (-≤- o≤n) = -<- (ℕ.<-transʳ o≤n n<m)
+<-≤-trans : RightTrans _<_ _≤_
+<-≤-trans (-<- n<m) (-≤- o≤n) = -<- (ℕ.≤-<-trans o≤n n<m)
 <-≤-trans (-<- n<m) -≤+       = -<+
 <-≤-trans -<+       (+≤+ m≤n) = -<+
-<-≤-trans (+<+ m<n) (+≤+ n≤o) = +<+ (ℕ.<-transˡ m<n n≤o)
+<-≤-trans (+<+ m<n) (+≤+ n≤o) = +<+ (ℕ.<-≤-trans m<n n≤o)
 
 <-trans : Transitive _<_
 <-trans m<n n<p = ≤-<-trans (<⇒≤ m<n) n<p
@@ -359,6 +365,7 @@ i≮i = <-irrefl refl
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤
@@ -607,7 +614,7 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
 
 ⊖-≥ : m ℕ.≥ n → m ⊖ n ≡ + (m ∸ n)
 ⊖-≥ {m} {n} p with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
-... | true  | q = contradiction (ℕ.<-transʳ p q) (ℕ.<-irrefl refl)
+... | true  | q = contradiction (ℕ.≤-<-trans p q) (ℕ.<-irrefl refl)
 ... | false | q = refl
 
 ≤-⊖ : m ℕ.≤ n → n ⊖ m ≡ + (n ∸ m)

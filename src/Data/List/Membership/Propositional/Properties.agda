@@ -23,16 +23,16 @@ open import Data.List.Effectful using (monad)
 open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
 open import Data.Nat.Properties
 open import Data.Product.Base hiding (map)
+open import Data.Product.Properties using (×-≡,≡↔≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (module Equivalence)
-open import Function.Injection using (Injection; Injective; _↣_)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-import Function.Related as Related
+open import Function.Definitions
+import Function.Related.Propositional as Related
+open import Function.Bundles
 open import Function.Related.TypeIsomorphisms
+open import Function.Construct.Identity using (↔-id)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions as B hiding (Decidable)
@@ -149,7 +149,7 @@ module _ {v : A} where
   concat-∈↔ : ∀ {xss : List (List A)} →
               (∃ λ xs → v ∈ xs × xs ∈ xss) ↔ v ∈ concat xss
   concat-∈↔ {xss} =
-    (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong Inv.id $ ×-comm _ _ ⟩
+    (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong (↔-id _) $ ×-comm _ _ ⟩
     (∃ λ xs → xs ∈ xss × v ∈ xs)  ↔⟨ Any↔ ⟩
     Any (Any (v ≡_)) xss          ↔⟨ concat↔ ⟩
     v ∈ concat xss                ∎
@@ -284,8 +284,8 @@ module _ (_≈?_ : B.Decidable {A = A} _≡_) where
 ⊛-∈↔ : ∀ (fs : List (A → B)) {xs y} →
        (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x) ↔ y ∈ (fs ⊛ xs)
 ⊛-∈↔ fs {xs} {y} =
-  (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x)       ↔⟨ Σ.cong Inv.id (∃∃↔∃∃ _) ⟩
-  (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong Inv.id ((_ ∎) ⟨ _×-cong_ ⟩ Any↔) ⟩
+  (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x)       ↔⟨ Σ.cong (↔-id _) (∃∃↔∃∃ _) ⟩
+  (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong (↔-id _) (↔-id _ ⟨ _×-cong_ ⟩ Any↔) ⟩
   (∃ λ f → f ∈ fs × Any (_≡_ y ∘ f) xs)        ↔⟨ Any↔ ⟩
   Any (λ f → Any (_≡_ y ∘ f) xs) fs            ↔⟨ ⊛↔ ⟩
   y ∈ (fs ⊛ xs)                                ∎
@@ -298,7 +298,7 @@ module _ (_≈?_ : B.Decidable {A = A} _≡_) where
        (x ∈ xs × y ∈ ys) ↔ (x , y) ∈ (xs ⊗ ys)
 ⊗-∈↔ {xs = xs} {ys} {x} {y} =
   (x ∈ xs × y ∈ ys)             ↔⟨ ⊗↔′ ⟩
-  Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong ×-≡×≡↔≡,≡ (_ ∎) ⟩
+  Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong (λ _ → ×-≡,≡↔≡) (↔-id _) ⟩
   (x , y) ∈ (xs ⊗ ys)           ∎
   where
   open Related.EquationalReasoning
@@ -343,14 +343,14 @@ module _ {_•_ : Op₂ A} where
 -- Only a finite number of distinct elements can be members of a
 -- given list.
 
-finite : (f : ℕ ↣ A) → ∀ xs → ¬ (∀ i → Injection.to f ⟨$⟩ i ∈ xs)
+finite : (inj : ℕ ↣ A) → ∀ xs → ¬ (∀ i → Injection.to inj i ∈ xs)
 finite inj []       fᵢ∈[]   = ¬Any[] (fᵢ∈[] 0)
 finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
   where
   open Injection inj renaming (injective to f-inj)
 
   f : ℕ → _
-  f = to ⟨$⟩_
+  f = to
 
   not-x : ∀ {i} → f i ≢ x → f i ∈ xs
   not-x {i} fᵢ≢x with fᵢ∈x∷xs i
@@ -377,7 +377,7 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
     ... | true  | p = ∈-if-not-i (<⇒≢ (s≤s p))
     ... | false | p = ∈-if-not-i (<⇒≢ (≰⇒> p) ∘ sym)
 
-    f′-injective′ : Injective {B = P.setoid _} (→-to-⟶ f′)
+    f′-injective′ : Injective _≡_ _≡_ f′
     f′-injective′ {j} {k} eq with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
                                 | i ≤ᵇ k | Reflects.invert (≤ᵇ-reflects-≤ i k)
     ... | true  | p | true  | q = P.cong pred (f-inj eq)
@@ -385,8 +385,10 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
     ... | false | p | true  | q = contradiction (f-inj eq) (lemma q p ∘ sym)
     ... | false | p | false | q = f-inj eq
 
+    f′-inj : ℕ ↣ _
     f′-inj = record
-      { to        = →-to-⟶ f′
+      { to        = f′
+      ; cong      = P.cong f′
       ; injective = f′-injective′
       }
 

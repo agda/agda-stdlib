@@ -1,13 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A universe which includes several kinds of "relatedness" for sets,
--- such as equivalences, surjections and bijections
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Related where
+
+{-# WARNING_ON_IMPORT
+"Function.Related was deprecated in v2.0.
+Use Function.Related.Propositional instead."
+#-}
 
 open import Level
 open import Function.Base
@@ -92,6 +97,11 @@ A ∼[ left-inverse        ] B = LeftInverse (P.setoid A) (P.setoid B)
 A ∼[ surjection          ] B = Surjection  (P.setoid A) (P.setoid B)
 A ∼[ bijection           ] B = Inverse     (P.setoid A) (P.setoid B)
 
+-- A non-infix synonym.
+
+Related : Kind → ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Set ℓ₂ → Set _
+Related k A B = A ∼[ k ] B
+
 toRelated : {K : Kind} → A R.∼[ K ] B → A ∼[ K ] B
 toRelated {K = implication}         rel = B.Func.to rel
 toRelated {K = reverse-implication} rel = lam (B.Func.to rel)
@@ -102,8 +112,8 @@ toRelated {K = left-inverse}        rel = LeftInv.leftInverse to from strictlyIn
 toRelated {K = surjection}          rel = Surj.surjection to (proj₁ ∘ strictlySurjective) (proj₂ ∘ strictlySurjective)
   where open B.Surjection rel
 toRelated {K = bijection}           rel =
-  Inv.inverse to (proj₁ ∘ strictlySurjective) (injective ∘ proj₂ ∘ strictlySurjective ∘ to) (proj₂ ∘ strictlySurjective)
-  where open B.Bijection rel
+             Inv.inverse to from strictlyInverseʳ strictlyInverseˡ
+  where open B.Inverse rel
 
 fromRelated : {K : Kind} → A ∼[ K ] B → A R.∼[ K ] B
 fromRelated {K = implication}         rel = B.mk⟶ rel
@@ -116,15 +126,8 @@ fromRelated {K = left-inverse}        record { to = to ; from = from ; left-inve
 fromRelated {K = surjection}          record { to = to ; surjective = surjective } with surjective
 ... | record { from = from ; right-inverse-of = right-inverse-of } =
   B.mk↠ {to = to ⟨$⟩_} < from ⟨$⟩_ , (λ { x P.refl → right-inverse-of x }) >
-fromRelated {K = bijection}           record { to = to ; from = from ; inverse-of = inverse-of } with inverse-of
-... | record { left-inverse-of = left-inverse-of ; right-inverse-of = right-inverse-of } = B.mk⤖
-  ((λ {x y} h → P.subst₂ P._≡_ (left-inverse-of x) (left-inverse-of y) (P.cong (from ⟨$⟩_) h)) ,
-  < from ⟨$⟩_ , (λ { x P.refl → right-inverse-of x }) >)
-
--- A non-infix synonym.
-
-Related : Kind → ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Set ℓ₂ → Set _
-Related k A B = A ∼[ k ] B
+fromRelated {K = bijection}           rel = B.mk↔ₛ′ (to ⟨$⟩_) (from ⟨$⟩_) right-inverse-of left-inverse-of
+  where open Inverse rel
 
 -- The bijective equality implies any kind of relatedness.
 
@@ -401,7 +404,7 @@ InducedPreorder₁ : Kind → ∀ {a s} {A : Set a} →
                    (A → Set s) → Preorder _ _ _
 InducedPreorder₁ k S = record
   { _≈_        = _≡_
-  ; _∼_        = InducedRelation₁ k S
+  ; _≲_        = InducedRelation₁ k S
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = reflexive ∘
@@ -434,7 +437,7 @@ InducedPreorder₂ : Kind → ∀ {a b s} {A : Set a} {B : Set b} →
                    (A → B → Set s) → Preorder _ _ _
 InducedPreorder₂ k _S_ = record
   { _≈_        = _≡_
-  ; _∼_        = InducedRelation₂ k _S_
+  ; _≲_        = InducedRelation₂ k _S_
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = λ x≡y {z} →

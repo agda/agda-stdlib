@@ -41,11 +41,11 @@ lookup-repeat-identity : (n : ℕ) (a : A) → lookup (repeat a) n ≡ a
 lookup-repeat-identity zero    a = P.refl
 lookup-repeat-identity (suc n) a = lookup-repeat-identity n a
 
-take-repeat-identity : (n : ℕ) (a : A) → take n (repeat a) ≡ Vec.replicate a
+take-repeat-identity : (n : ℕ) (a : A) → take n (repeat a) ≡ Vec.replicate n a
 take-repeat-identity zero    a = P.refl
 take-repeat-identity (suc n) a = P.cong (a Vec.∷_) (take-repeat-identity n a)
 
-splitAt-repeat-identity : (n : ℕ) (a : A) → splitAt n (repeat a) ≡ (Vec.replicate a , repeat a)
+splitAt-repeat-identity : (n : ℕ) (a : A) → splitAt n (repeat a) ≡ (Vec.replicate n a , repeat a)
 splitAt-repeat-identity zero    a = P.refl
 splitAt-repeat-identity (suc n) a = P.cong (Prod.map₁ (a ∷_)) (splitAt-repeat-identity n a)
 

@@ -17,7 +17,9 @@ module Data.Tree.AVL.NonEmpty.Propositional
 
 open import Level
 
-private strictTotalOrder = record { isStrictTotalOrder = isStrictTotalOrder}
+private
+  strictTotalOrder : StrictTotalOrder _ _ _
+  strictTotalOrder = record { isStrictTotalOrder = isStrictTotalOrder}
 open import Data.Tree.AVL.Value (StrictTotalOrder.Eq.setoid strictTotalOrder)
 import Data.Tree.AVL.NonEmpty strictTotalOrder as AVL⁺
 

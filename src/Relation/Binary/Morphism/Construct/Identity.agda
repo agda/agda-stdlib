@@ -10,7 +10,9 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
 import Function.Construct.Identity as Id
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
+open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.Morphism.Structures
 open import Relation.Binary.Morphism.Bundles
 

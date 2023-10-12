@@ -16,6 +16,7 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
   where
 
 open import Algebra
+import Algebra.Properties.CommutativeMonoid as ACM
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
@@ -34,10 +35,9 @@ open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
 open import Function.Base using (_∘_; _⟨_⟩_; flip)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (inverse)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)
+import Relation.Binary.Reasoning.Setoid as RelSetoid
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
@@ -121,7 +121,7 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 0<steps (prep eq xs↭ys)      = m<n⇒m<1+n (0<steps xs↭ys)
 0<steps (swap eq₁ eq₂ xs↭ys) = m<n⇒m<1+n (0<steps xs↭ys)
 0<steps (trans xs↭ys xs↭ys₁) =
-  <-transˡ (0<steps xs↭ys) (m≤m+n (steps xs↭ys) (steps xs↭ys₁))
+  <-≤-trans (0<steps xs↭ys) (m≤m+n (steps xs↭ys) (steps xs↭ys₁))
 
 steps-respˡ : ∀ {xs ys zs} (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) →
               steps (↭-respˡ-≋ ys≋xs ys↭zs) ≡ steps ys↭zs
@@ -384,15 +384,15 @@ split v as bs p = helper as bs p (<-wellFounded (steps p))
   helper (a ∷ [])     bs (refl eq)    _ = [ a ]      , bs , eq
   helper (a ∷ b ∷ as) bs (refl eq)    _ = a ∷ b ∷ as , bs , eq
   helper []           bs (prep v≈x _) _ = [] , _ , v≈x ∷ ≋-refl
-  helper (a ∷ as)     bs (prep eq as↭xs) (acc rec) with helper as bs as↭xs (rec _ ≤-refl)
+  helper (a ∷ as)     bs (prep eq as↭xs) (acc rec) with helper as bs as↭xs (rec ≤-refl)
   ... | (ps , qs , eq₂) = a ∷ ps , qs , eq ∷ eq₂
   helper [] (b ∷ bs)     (swap x≈b y≈v _) _ = [ b ] , _     , x≈b ∷ y≈v ∷ ≋-refl
   helper (a ∷ [])     bs (swap x≈v y≈a ↭) _ = []    , a ∷ _ , x≈v ∷ y≈a ∷ ≋-refl
-  helper (a ∷ b ∷ as) bs (swap x≈b y≈a as↭xs) (acc rec) with helper as bs as↭xs (rec _ ≤-refl)
+  helper (a ∷ b ∷ as) bs (swap x≈b y≈a as↭xs) (acc rec) with helper as bs as↭xs (rec ≤-refl)
   ... | (ps , qs , eq) = b ∷ a ∷ ps , qs , x≈b ∷ y≈a ∷ eq
-  helper as           bs (trans ↭₁ ↭₂) (acc rec) with helper as bs ↭₂ (rec _ (m<n+m (steps ↭₂) (0<steps ↭₁)))
+  helper as           bs (trans ↭₁ ↭₂) (acc rec) with helper as bs ↭₂ (rec (m<n+m (steps ↭₂) (0<steps ↭₁)))
   ... | (ps , qs , eq) = helper ps qs (↭-respʳ-≋ eq ↭₁)
-    (rec _ (subst (_< _) (sym (steps-respʳ eq ↭₁)) (m<m+n (steps ↭₁) (0<steps ↭₂))))
+      (rec (subst (_< _) (sym (steps-respʳ eq ↭₁)) (m<m+n (steps ↭₁) (0<steps ↭₂))))
 
 ------------------------------------------------------------------------
 -- filter
@@ -476,3 +476,30 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
 ++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
 ++↭ʳ++ []       ys = ↭-refl
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (↭-shift xs ys)) (++↭ʳ++ xs (x ∷ ys))
+
+------------------------------------------------------------------------
+-- foldr of Commutative Monoid
+
+module _ {_∙_ : Op₂ A} {ε : A} (isCmonoid : IsCommutativeMonoid _≈_ _∙_ ε) where
+  open module CM = IsCommutativeMonoid isCmonoid
+
+  private
+    module S = RelSetoid setoid
+
+    cmonoid : CommutativeMonoid _ _
+    cmonoid = record { isCommutativeMonoid = isCmonoid }
+
+  open ACM cmonoid
+
+  foldr-commMonoid : ∀ {xs ys} → xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
+  foldr-commMonoid (refl []) = CM.refl
+  foldr-commMonoid (refl (x≈y ∷ xs≈ys)) = ∙-cong x≈y (foldr-commMonoid (Permutation.refl xs≈ys))
+  foldr-commMonoid (prep x≈y xs↭ys) = ∙-cong x≈y (foldr-commMonoid xs↭ys)
+  foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = S.begin
+    x ∙ (y ∙ foldr _∙_ ε xs)   S.≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
+    x ∙ (y ∙ foldr _∙_ ε ys)   S.≈˘⟨ assoc x y (foldr _∙_ ε ys) ⟩
+    (x ∙ y) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (comm x y) ⟩
+    (y ∙ x) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
+    (y′ ∙ x′) ∙ foldr _∙_ ε ys S.≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
+    y′ ∙ (x′ ∙ foldr _∙_ ε ys) S.∎
+  foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)

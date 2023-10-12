@@ -25,6 +25,7 @@ open P.≡-Reasoning
 private
   variable
     ℓ : Level
+    A : Set ℓ
 
 ------------------------------------------------------------------------
 -- List applicative functor
@@ -65,6 +66,9 @@ monad = record
   { rawApplicative = applicative
   ; _>>=_  = flip concatMap
   }
+
+join : List (List A) → List A
+join = Join.join monad
 
 monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
 monadZero = record

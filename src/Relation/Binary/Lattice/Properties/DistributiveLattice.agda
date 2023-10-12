@@ -15,7 +15,7 @@ open DistributiveLattice L hiding (refl)
 
 open import Algebra.Definitions _≈_
 open import Data.Product.Base using (_,_)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary.Lattice.Properties.Lattice lattice
 open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
