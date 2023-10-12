@@ -144,9 +144,9 @@ jobs:
 ## TESTING
 ########################################################################
 
-      # # By default github actions do not pull the repo
-      # - name: Checkout stdlib
-      #   uses: actions/checkout@v2
+      # By default github actions do not pull the repo
+      - name: Checkout stdlib
+        uses: actions/checkout@v2
 
       - name: Test stdlib
         run: |
