@@ -621,7 +621,7 @@ Non-backwards compatible changes
   raw bundles to `Data.X.Base`, this definition can now be made directly. Knock-on
   consequences include the need to retain the old constructor name, now introduced
   as a pattern synonym, and introduction of (a function equivalent to) the former
-  field name/projection function `proof` as `≤″-proof` in `Data.Nat.Properties`. 
+  field name/projection function `proof` as `≤″-proof` in `Data.Nat.Properties`.
 
 * Accordingly, the definition has been changed to:
   ```agda
@@ -842,7 +842,6 @@ Non-backwards compatible changes
   IO.Effectful
   IO.Instances
   ```
-
 ### (Issue #2096) Introduction of flipped relation symbol for `Relation.Binary.Bundles.Preorder`
 
 * Previously, the relation symbol `_∼_`  was (notationally) symmetric, so that its
@@ -856,9 +855,25 @@ Non-backwards compatible changes
   Therefore, only _declarations_ of `PartialOrder` records will need their field names
   updating.
 
-* NB (issues #1214 #2098) the corresponding situation regarding the `flip`ped
-  relation symbols `_≥_`, `_>_` (and their negated versions!) has not (yet)
-  been addressed.
+### (Issue #1214) Reorganisation of the introduction of negated relation symbols under `Relation.Binary`
+
+* Previously, negated relation symbols `_≰_` (for `Poset`) and `_≮_` (`TotalOrder`)
+  were introduced in the corresponding `Relation.Binary.Properties` modules, for re-export.
+
+* Now they are introduced as definitions in the corresponding `Relation.Binary.Bundles`,
+  together with, for uniformity's sake, an additional negated symbol `_⋦_` for `Preorder`,
+  with their (obvious) intended semantics:
+  ```agda
+  infix 4 _⋦_ _≰_ _≮_
+  Preorder._⋦_            : Rel Carrier _
+  StrictPartialOrder._≮_  : Rel Carrier _
+  ```
+  Additionally, `Poset._≰_` is defined by renaming public export of `Preorder._⋦_`
+
+* Backwards compatibility has been maintained, with deprecated definitions in the
+  corresponding `Relation.Binary.Properties` modules, and the corresponding client
+  client module `import`s being adjusted accordingly.
+
 
 ### Standardisation of `insertAt`/`updateAt`/`removeAt`
 
@@ -879,12 +894,12 @@ Non-backwards compatible changes
   ```
   _─_ ↦ removeAt
   ```
-  
+
 * In `Data.Vec.Base`:
   ```agda
   insert ↦ insertAt
   remove ↦ removeAt
-  
+
   updateAt : Fin n → (A → A) → Vec A n → Vec A n
     ↦
   updateAt : Vec A n → Fin n → (A → A) → Vec A n
@@ -895,12 +910,12 @@ Non-backwards compatible changes
   remove : Fin (suc n) → Vector A (suc n) → Vector A n
     ↦
   removeAt : Vector A (suc n) → Fin (suc n) → Vector A n
- 
+
   updateAt : Fin n → (A → A) → Vector A n → Vector A n
     ↦
   updateAt : Vector A n → Fin n → (A → A) → Vector A n
   ```
-  
+
 * The old names (and the names of all proofs about these functions) have been deprecated appropriately.
 
 ### Changes to triple reasoning interface
@@ -1659,7 +1674,7 @@ Deprecated names
   take-drop-id  ↦  take++drop≡id
 
   map-insert       ↦  map-insertAt
-  
+
   insert-lookup    ↦  insertAt-lookup
   insert-punchIn   ↦  insertAt-punchIn
   remove-PunchOut  ↦  removeAt-punchOut
@@ -1685,7 +1700,7 @@ Deprecated names
   updateAt-cong-relative    ↦  updateAt-cong-local
 
   map-updateAt              ↦  map-updateAt-local
-  
+
   insert-lookup             ↦  insertAt-lookup
   insert-punchIn            ↦  insertAt-punchIn
   remove-punchOut           ↦  removeAt-punchOut
@@ -1743,11 +1758,6 @@ Deprecated names
   fromForeign ↦ Foreign.Haskell.Coerce.coerce
   ```
 
-* In `Relation.Binary.Bundles.Preorder`:
-  ```
-  _∼_  ↦  _≲_
-  ```
-
 * In `Relation.Binary.Indexed.Heterogeneous.Bundles.Preorder`:
   ```
   _∼_  ↦  _≲_
@@ -1758,6 +1768,15 @@ Deprecated names
   invIsPreorder ↦ converse-isPreorder
   invPreorder   ↦ converse-preorder
   ```
+
+* Moved negated relation symbol from `Relation.Binary.Properties.Poset`:
+  ```
+  _≰_   ↦ Relation.Binary.Bundles.Poset._≰_
+  ```
+
+* Moved negated relation symbol from `Relation.Binary.Properties.TotalOrder`:
+  ```
+  _≮_   ↦ Relation.Binary.Bundles.StrictPartialOrder._≮_
 
 * In `Relation.Nullary.Decidable.Core`:
   ```
@@ -3301,9 +3320,9 @@ Additions to existing modules
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```
-  sym⇒¬-sym       : Symmetric _∼_ → Symmetric _≁_
-  cotrans⇒¬-trans : Cotransitive _∼_ → Transitive _≁_
-  irrefl⇒¬-refl   : Reflexive _≈_ → Irreflexive _≈_ _∼_ →  Reflexive _≁_
+  sym⇒¬-sym       : Symmetric _∼_ → Symmetric (¬_ ∘₂ _∼_)
+  cotrans⇒¬-trans : Cotransitive _∼_ → Transitive (¬_ ∘₂ _∼_)
+  irrefl⇒¬-refl   : Reflexive _≈_ → Irreflexive _≈_ _∼_ →  Reflexive (¬_ ∘₂ _∼_)
   mono₂⇒cong₂     : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} →
                     f Preserves₂ ≤₁ ⟶ ≤₁ ⟶ ≤₂ →
                     f Preserves₂ ≈₁ ⟶ ≈₁ ⟶ ≈₂
