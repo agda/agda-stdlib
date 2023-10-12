@@ -6,6 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+open import Data.Product.Base using (_,_)
 open import Function.Base using (flip; _∘_)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Relation.Binary.Bundles using (Poset; StrictPartialOrder)
@@ -62,11 +63,6 @@ open Poset ≥-poset public
 ------------------------------------------------------------------------
 -- Negated order
 
-infix 4 _≰_
-
-_≰_ : Rel A p₃
-x ≰ y = ¬ (x ≤ y)
-
 ≰-respˡ-≈ : _≰_ Respectsˡ _≈_
 ≰-respˡ-≈ x≈y = _∘ ≤-respˡ-≈ (Eq.sym x≈y)
 
@@ -90,7 +86,7 @@ _<_ = ToStrict._<_
   }
 
 open StrictPartialOrder <-strictPartialOrder public
-  using ( <-resp-≈; <-respʳ-≈; <-respˡ-≈)
+  using (_≮_; <-resp-≈; <-respʳ-≈; <-respˡ-≈)
   renaming
   ( irrefl to <-irrefl
   ; asym   to <-asym
@@ -103,10 +99,10 @@ open StrictPartialOrder <-strictPartialOrder public
 ≤∧≉⇒< : ∀ {x y} → x ≤ y → x ≉ y → x < y
 ≤∧≉⇒< = ToStrict.≤∧≉⇒<
 
-<⇒≱ : ∀ {x y} → x < y → ¬ (y ≤ x)
+<⇒≱ : ∀ {x y} → x < y → y ≰ x
 <⇒≱ = ToStrict.<⇒≱ antisym
 
-≤⇒≯ : ∀ {x y} → x ≤ y → ¬ (y < x)
+≤⇒≯ : ∀ {x y} → x ≤ y → y ≮ x
 ≤⇒≯ = ToStrict.≤⇒≯ antisym
 
 ------------------------------------------------------------------------

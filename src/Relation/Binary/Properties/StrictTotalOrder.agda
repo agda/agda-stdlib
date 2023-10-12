@@ -18,7 +18,7 @@ import Relation.Binary.Properties.StrictPartialOrder as SPO
 open import Relation.Binary.Consequences
 
 ------------------------------------------------------------------------
--- _<_ - the strict version is a strict total order
+-- _<_ - the strict version is a decidable total order
 
 decTotalOrder : DecTotalOrder _ _ _
 decTotalOrder = record
