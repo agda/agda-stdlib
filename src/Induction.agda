@@ -17,45 +17,48 @@ module Induction where
 
 open import Level
 open import Relation.Unary
+open import Relation.Unary.PredicateTransformer using (PT)
+
+private
+  variable
+    a ℓ ℓ₁ ℓ₂ : Level
+    A : Set a
+    Q : Pred A ℓ
+    Rec : PT A A ℓ₁ ℓ₂
 
 -- A RecStruct describes the allowed structure of recursion. The
 -- examples in Data.Nat.Induction should explain what this is all
 -- about.
 
-RecStruct : ∀ {a} → Set a → (ℓ₁ ℓ₂ : Level) → Set _
-RecStruct A ℓ₁ ℓ₂ = Pred A ℓ₁ → Pred A ℓ₂
+RecStruct : Set a → (ℓ₁ ℓ₂ : Level) → Set _
+RecStruct A = PT A A
 
 -- A recursor builder constructs an instance of a recursion structure
 -- for a given input.
 
-RecursorBuilder : ∀ {a ℓ₁ ℓ₂} {A : Set a} → RecStruct A ℓ₁ ℓ₂ → Set _
+RecursorBuilder : RecStruct A ℓ₁ ℓ₂ → Set _
 RecursorBuilder Rec = ∀ P → Rec P ⊆′ P → Universal (Rec P)
 
 -- A recursor can be used to actually compute/prove something useful.
 
-Recursor : ∀ {a ℓ₁ ℓ₂} {A : Set a} → RecStruct A ℓ₁ ℓ₂ → Set _
+Recursor : RecStruct A ℓ₁ ℓ₂ → Set _
 Recursor Rec = ∀ P → Rec P ⊆′ P → Universal P
 
 -- And recursors can be constructed from recursor builders.
 
-build : ∀ {a ℓ₁ ℓ₂} {A : Set a} {Rec : RecStruct A ℓ₁ ℓ₂} →
-        RecursorBuilder Rec →
+build : RecursorBuilder Rec →
         Recursor Rec
 build builder P f x = f x (builder P f x)
 
 -- We can repeat the exercise above for subsets of the type we are
 -- recursing over.
 
-SubsetRecursorBuilder : ∀ {a ℓ₁ ℓ₂ ℓ₃} {A : Set a} →
-                        Pred A ℓ₁ → RecStruct A ℓ₂ ℓ₃ → Set _
+SubsetRecursorBuilder : Pred A ℓ → RecStruct A ℓ₁ ℓ₂ → Set _
 SubsetRecursorBuilder Q Rec = ∀ P → Rec P ⊆′ P → Q ⊆′ Rec P
 
-SubsetRecursor : ∀ {a ℓ₁ ℓ₂ ℓ₃} {A : Set a} →
-                 Pred A ℓ₁ → RecStruct A ℓ₂ ℓ₃ → Set _
+SubsetRecursor : Pred A ℓ → RecStruct A ℓ₁ ℓ₂ → Set _
 SubsetRecursor Q Rec = ∀ P → Rec P ⊆′ P → Q ⊆′ P
 
-subsetBuild : ∀ {a ℓ₁ ℓ₂ ℓ₃}
-                {A : Set a} {Q : Pred A ℓ₁} {Rec : RecStruct A ℓ₂ ℓ₃} →
-                SubsetRecursorBuilder Q Rec →
-                SubsetRecursor Q Rec
+subsetBuild : SubsetRecursorBuilder Q Rec →
+              SubsetRecursor Q Rec
 subsetBuild builder P f x q = f x (builder P f x q)
