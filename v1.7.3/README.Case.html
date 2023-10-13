@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Case</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Examples showing how the case expressions can be used with anonymous</a>
+<a id="178" class="Comment">-- pattern-matching lambda abstractions</a>
+<a id="218" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="292" class="Symbol">{-#</a> <a id="296" class="Keyword">OPTIONS</a> <a id="304" class="Pragma">--cubical-compatible</a> <a id="325" class="Pragma">--safe</a> <a id="332" class="Symbol">#-}</a>
+
+<a id="337" class="Keyword">module</a> <a id="344" href="README.Case.html" class="Module">README.Case</a> <a id="356" class="Keyword">where</a>
+
+<a id="363" class="Keyword">open</a> <a id="368" class="Keyword">import</a> <a id="375" href="Data.Fin.html" class="Module">Data.Fin</a>   <a id="386" class="Keyword">hiding</a> <a id="393" class="Symbol">(</a><a id="394" href="Data.Fin.Base.html#5950" class="Function">pred</a><a id="398" class="Symbol">)</a>
+<a id="400" class="Keyword">open</a> <a id="405" class="Keyword">import</a> <a id="412" href="Data.Maybe.html" class="Module">Data.Maybe</a> <a id="423" class="Keyword">hiding</a> <a id="430" class="Symbol">(</a><a id="431" href="Data.Maybe.Base.html#1915" class="Function">from-just</a><a id="440" class="Symbol">)</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Data.Nat.html" class="Module">Data.Nat</a>   <a id="465" class="Keyword">hiding</a> <a id="472" class="Symbol">(</a><a id="473" href="Data.Nat.Base.html#2889" class="Function">pred</a><a id="477" class="Symbol">)</a>
+<a id="479" class="Keyword">open</a> <a id="484" class="Keyword">import</a> <a id="491" href="Data.List.html" class="Module">Data.List</a>
+<a id="501" class="Keyword">open</a> <a id="506" class="Keyword">import</a> <a id="513" href="Data.Sum.html" class="Module">Data.Sum</a>
+<a id="522" class="Keyword">open</a> <a id="527" class="Keyword">import</a> <a id="534" href="Data.Product.html" class="Module">Data.Product</a>
+<a id="547" class="Keyword">open</a> <a id="552" class="Keyword">import</a> <a id="559" href="Function.Base.html" class="Module">Function.Base</a> <a id="573" class="Keyword">using</a> <a id="579" class="Symbol">(</a><a id="580" href="Function.Base.html#4130" class="Function Operator">case_of_</a><a id="588" class="Symbol">;</a> <a id="590" href="Function.Base.html#3043" class="Function Operator">case_return_of_</a><a id="605" class="Symbol">)</a>
+<a id="607" class="Keyword">open</a> <a id="612" class="Keyword">import</a> <a id="619" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="636" class="Keyword">open</a> <a id="641" class="Keyword">import</a> <a id="648" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="664" class="Keyword">open</a> <a id="669" class="Keyword">import</a> <a id="676" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="715" class="Comment">------------------------------------------------------------------------</a>
+<a id="788" class="Comment">-- Different types of pattern-matching lambdas</a>
+
+<a id="836" class="Comment">-- absurd pattern</a>
+
+<a id="empty"></a><a id="855" href="README.Case.html#855" class="Function">empty</a> <a id="861" class="Symbol">:</a> <a id="863" class="Symbol">∀</a> <a id="865" class="Symbol">{</a><a id="866" href="README.Case.html#866" class="Bound">a</a><a id="867" class="Symbol">}</a> <a id="869" class="Symbol">{</a><a id="870" href="README.Case.html#870" class="Bound">A</a> <a id="872" class="Symbol">:</a> <a id="874" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="878" href="README.Case.html#866" class="Bound">a</a><a id="879" class="Symbol">}</a> <a id="881" class="Symbol">→</a> <a id="883" href="Data.Fin.Base.html#1135" class="Datatype">Fin</a> <a id="887" class="Number">0</a> <a id="889" class="Symbol">→</a> <a id="891" href="README.Case.html#870" class="Bound">A</a>
+<a id="893" href="README.Case.html#855" class="Function">empty</a> <a id="899" href="README.Case.html#899" class="Bound">i</a> <a id="901" class="Symbol">=</a> <a id="903" href="Function.Base.html#4130" class="Function Operator">case</a> <a id="908" href="README.Case.html#899" class="Bound">i</a> <a id="910" href="Function.Base.html#4130" class="Function Operator">of</a> <a id="913" class="Symbol">λ</a> <a id="915" class="Symbol">()</a>
+
+<a id="919" class="Comment">-- {}-delimited and ;-separated list of clauses</a>
+<a id="967" class="Comment">-- Note that they do not need to be on different lines</a>
+
+<a id="pred"></a><a id="1023" href="README.Case.html#1023" class="Function">pred</a> <a id="1028" class="Symbol">:</a> <a id="1030" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1032" class="Symbol">→</a> <a id="1034" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="1036" href="README.Case.html#1023" class="Function">pred</a> <a id="1041" href="README.Case.html#1041" class="Bound">n</a> <a id="1043" class="Symbol">=</a> <a id="1045" href="Function.Base.html#4130" class="Function Operator">case</a> <a id="1050" href="README.Case.html#1041" class="Bound">n</a> <a id="1052" href="Function.Base.html#4130" class="Function Operator">of</a> <a id="1055" class="Symbol">λ</a>
+  <a id="1059" class="Symbol">{</a> <a id="1061" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>    <a id="1069" class="Symbol">→</a> <a id="1071" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>
+  <a id="1078" class="Symbol">;</a> <a id="1080" class="Symbol">(</a><a id="1081" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="1085" href="README.Case.html#1085" class="Bound">n</a><a id="1086" class="Symbol">)</a> <a id="1088" class="Symbol">→</a> <a id="1090" href="README.Case.html#1085" class="Bound">n</a>
+  <a id="1094" class="Symbol">}</a>
+
+<a id="1097" class="Comment">-- where-introduced and indentation-identified block of list of clauses</a>
+
+<a id="from-just"></a><a id="1170" href="README.Case.html#1170" class="Function">from-just</a> <a id="1180" class="Symbol">:</a> <a id="1182" class="Symbol">∀</a> <a id="1184" class="Symbol">{</a><a id="1185" href="README.Case.html#1185" class="Bound">a</a><a id="1186" class="Symbol">}</a> <a id="1188" class="Symbol">{</a><a id="1189" href="README.Case.html#1189" class="Bound">A</a> <a id="1191" class="Symbol">:</a> <a id="1193" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1197" href="README.Case.html#1185" class="Bound">a</a><a id="1198" class="Symbol">}</a> <a id="1200" class="Symbol">(</a><a id="1201" href="README.Case.html#1201" class="Bound">x</a> <a id="1203" class="Symbol">:</a> <a id="1205" href="Agda.Builtin.Maybe.html#135" class="Datatype">Maybe</a> <a id="1211" href="README.Case.html#1189" class="Bound">A</a><a id="1212" class="Symbol">)</a> <a id="1214" class="Symbol">→</a> <a id="1216" href="Data.Maybe.Base.html#1827" class="Function">From-just</a> <a id="1226" href="README.Case.html#1201" class="Bound">x</a>
+<a id="1228" href="README.Case.html#1170" class="Function">from-just</a> <a id="1238" href="README.Case.html#1238" class="Bound">x</a> <a id="1240" class="Symbol">=</a> <a id="1242" href="Function.Base.html#3043" class="Function Operator">case</a> <a id="1247" href="README.Case.html#1238" class="Bound">x</a> <a id="1249" href="Function.Base.html#3043" class="Function Operator">return</a> <a id="1256" href="Data.Maybe.Base.html#1827" class="Function">From-just</a> <a id="1266" href="Function.Base.html#3043" class="Function Operator">of</a> <a id="1269" class="Symbol">λ</a> <a id="1271" class="Keyword">where</a>
+  <a id="1279" class="Symbol">(</a><a id="1280" href="Agda.Builtin.Maybe.html#173" class="InductiveConstructor">just</a> <a id="1285" href="README.Case.html#1285" class="Bound">x</a><a id="1286" class="Symbol">)</a> <a id="1288" class="Symbol">→</a> <a id="1290" href="README.Case.html#1285" class="Bound">x</a>
+  <a id="1294" href="Agda.Builtin.Maybe.html#194" class="InductiveConstructor">nothing</a>  <a id="1303" class="Symbol">→</a> <a id="1305" class="Symbol">_</a>
+
+<a id="1308" class="Comment">------------------------------------------------------------------------</a>
+<a id="1381" class="Comment">-- We can define some recursive functions with case</a>
+
+<a id="plus"></a><a id="1434" href="README.Case.html#1434" class="Function">plus</a> <a id="1439" class="Symbol">:</a> <a id="1441" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1443" class="Symbol">→</a> <a id="1445" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1447" class="Symbol">→</a> <a id="1449" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="1451" href="README.Case.html#1434" class="Function">plus</a> <a id="1456" href="README.Case.html#1456" class="Bound">m</a> <a id="1458" href="README.Case.html#1458" class="Bound">n</a> <a id="1460" class="Symbol">=</a> <a id="1462" href="Function.Base.html#4130" class="Function Operator">case</a> <a id="1467" href="README.Case.html#1456" class="Bound">m</a> <a id="1469" href="Function.Base.html#4130" class="Function Operator">of</a> <a id="1472" class="Symbol">λ</a>
+   <a id="1477" class="Symbol">{</a> <a id="1479" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>    <a id="1487" class="Symbol">→</a> <a id="1489" href="README.Case.html#1458" class="Bound">n</a>
+   <a id="1494" class="Symbol">;</a> <a id="1496" class="Symbol">(</a><a id="1497" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="1501" href="README.Case.html#1501" class="Bound">m</a><a id="1502" class="Symbol">)</a> <a id="1504" class="Symbol">→</a> <a id="1506" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="1510" class="Symbol">(</a><a id="1511" href="README.Case.html#1434" class="Function">plus</a> <a id="1516" href="README.Case.html#1501" class="Bound">m</a> <a id="1518" href="README.Case.html#1458" class="Bound">n</a><a id="1519" class="Symbol">)</a>
+   <a id="1524" class="Symbol">}</a>
+
+<a id="div2"></a><a id="1527" href="README.Case.html#1527" class="Function">div2</a> <a id="1532" class="Symbol">:</a> <a id="1534" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="1536" class="Symbol">→</a> <a id="1538" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="1540" href="README.Case.html#1527" class="Function">div2</a> <a id="1545" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>    <a id="1553" class="Symbol">=</a> <a id="1555" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>
+<a id="1560" href="README.Case.html#1527" class="Function">div2</a> <a id="1565" class="Symbol">(</a><a id="1566" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="1570" href="README.Case.html#1570" class="Bound">m</a><a id="1571" class="Symbol">)</a> <a id="1573" class="Symbol">=</a> <a id="1575" href="Function.Base.html#4130" class="Function Operator">case</a> <a id="1580" href="README.Case.html#1570" class="Bound">m</a> <a id="1582" href="Function.Base.html#4130" class="Function Operator">of</a> <a id="1585" class="Symbol">λ</a> <a id="1587" class="Keyword">where</a>
+  <a id="1595" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>     <a id="1604" class="Symbol">→</a> <a id="1606" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a>
+  <a id="1613" class="Symbol">(</a><a id="1614" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="1618" href="README.Case.html#1618" class="Bound">m′</a><a id="1620" class="Symbol">)</a> <a id="1622" class="Symbol">→</a> <a id="1624" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a> <a id="1628" class="Symbol">(</a><a id="1629" href="README.Case.html#1527" class="Function">div2</a> <a id="1634" href="README.Case.html#1618" class="Bound">m′</a><a id="1636" class="Symbol">)</a>
+
+
+<a id="1640" class="Comment">-- Note that some natural uses of case are rejected by the termination</a>
+<a id="1711" class="Comment">-- checker:</a>
+
+<a id="1724" class="Comment">-- module _ {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where</a>
+
+<a id="1789" class="Comment">--  pairBy : List A → List (A ⊎ (A × A))</a>
+<a id="1830" class="Comment">--  pairBy []           = []</a>
+<a id="1859" class="Comment">--  pairBy (x ∷ [])     = inj₁ x ∷ []</a>
+<a id="1897" class="Comment">--  pairBy (x ∷ y ∷ xs) = case eq? x y of λ where</a>
+<a id="1947" class="Comment">--    (yes _) → inj₂ (x , y) ∷ pairBy xs</a>
+<a id="1988" class="Comment">--    (no _)  → inj₁ x ∷ pairBy (y ∷ xs)</a>
+</pre></body></html>

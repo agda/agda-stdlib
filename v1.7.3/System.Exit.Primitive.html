@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>System.Exit.Primitive</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Primitive System.Exit simple bindings to Haskell functions</a>
+<a id="168" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="242" class="Symbol">{-#</a> <a id="246" class="Keyword">OPTIONS</a> <a id="254" class="Pragma">--cubical-compatible</a> <a id="275" class="Symbol">#-}</a>
+
+<a id="280" class="Keyword">module</a> <a id="287" href="System.Exit.Primitive.html" class="Module">System.Exit.Primitive</a> <a id="309" class="Keyword">where</a>
+
+<a id="316" class="Keyword">open</a> <a id="321" class="Keyword">import</a> <a id="328" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="342" class="Keyword">using</a> <a id="348" class="Symbol">(</a><a id="349" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="350" class="Symbol">)</a>
+<a id="352" class="Keyword">open</a> <a id="357" class="Keyword">import</a> <a id="364" href="IO.Primitive.html" class="Module">IO.Primitive</a> <a id="377" class="Keyword">using</a> <a id="383" class="Symbol">(</a><a id="384" href="Agda.Builtin.IO.html#137" class="Postulate">IO</a><a id="386" class="Symbol">)</a>
+
+<a id="389" class="Keyword">data</a> <a id="ExitCode"></a><a id="394" href="System.Exit.Primitive.html#394" class="Datatype">ExitCode</a> <a id="403" class="Symbol">:</a> <a id="405" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="409" class="Keyword">where</a>
+  <a id="ExitCode.ExitSuccess"></a><a id="417" href="System.Exit.Primitive.html#417" class="InductiveConstructor">ExitSuccess</a> <a id="429" class="Symbol">:</a> <a id="431" href="System.Exit.Primitive.html#394" class="Datatype">ExitCode</a>
+  <a id="ExitCode.ExitFailure"></a><a id="442" href="System.Exit.Primitive.html#442" class="InductiveConstructor">ExitFailure</a> <a id="454" class="Symbol">:</a> <a id="456" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a> <a id="458" class="Symbol">→</a> <a id="460" href="System.Exit.Primitive.html#394" class="Datatype">ExitCode</a>
+
+<a id="470" class="Symbol">{-#</a> <a id="474" class="Keyword">FOREIGN</a> <a id="482" class="Pragma">GHC</a> <a id="486" class="Pragma">data</a> <a id="491" class="Pragma">AgdaExitCode</a> <a id="504" class="Pragma">=</a> <a id="506" class="Pragma">AgdaExitSuccess</a> <a id="522" class="Pragma">|</a> <a id="524" class="Pragma">AgdaExitFailure</a> <a id="540" class="Pragma">Integer</a> <a id="548" class="Symbol">#-}</a>
+<a id="552" class="Symbol">{-#</a> <a id="556" class="Keyword">COMPILE</a> <a id="564" class="Keyword">GHC</a> <a id="568" href="System.Exit.Primitive.html#394" class="Datatype">ExitCode</a> <a id="577" class="Pragma">=</a> <a id="579" class="Pragma">data</a> <a id="584" class="Pragma">AgdaExitCode</a> <a id="597" class="Pragma">(AgdaExitSuccess</a> <a id="614" class="Pragma">|</a> <a id="616" class="Pragma">AgdaExitFailure)</a> <a id="633" class="Symbol">#-}</a>
+
+<a id="638" class="Symbol">{-#</a> <a id="642" class="Keyword">FOREIGN</a> <a id="650" class="Pragma">GHC</a> <a id="654" class="Pragma">import</a> <a id="661" class="Pragma">qualified</a> <a id="671" class="Pragma">System.Exit</a> <a id="683" class="Pragma">as</a> <a id="686" class="Pragma">SE</a> <a id="689" class="Symbol">#-}</a>
+
+<a id="694" class="Symbol">{-#</a> <a id="698" class="Keyword">FOREIGN</a> <a id="706" class="Pragma">GHC</a>
+<a id="710" class="Pragma">toExitCode</a> <a id="721" class="Pragma">::</a> <a id="724" class="Pragma">AgdaExitCode</a> <a id="737" class="Pragma">-&gt;</a> <a id="740" class="Pragma">SE.ExitCode</a>
+<a id="752" class="Pragma">toExitCode</a> <a id="763" class="Pragma">AgdaExitSuccess</a> <a id="779" class="Pragma">=</a> <a id="781" class="Pragma">SE.ExitSuccess</a>
+<a id="796" class="Pragma">toExitCode</a> <a id="807" class="Pragma">(AgdaExitFailure</a> <a id="824" class="Pragma">n)</a> <a id="827" class="Pragma">=</a> <a id="829" class="Pragma">SE.ExitFailure</a> <a id="844" class="Pragma">(fromIntegral</a> <a id="858" class="Pragma">n)</a>
+<a id="861" class="Symbol">#-}</a>
+
+<a id="866" class="Keyword">postulate</a>
+  <a id="exitWith"></a><a id="878" href="System.Exit.Primitive.html#878" class="Postulate">exitWith</a> <a id="887" class="Symbol">:</a> <a id="889" class="Symbol">∀</a> <a id="891" class="Symbol">{</a><a id="892" href="System.Exit.Primitive.html#892" class="Bound">a</a><a id="893" class="Symbol">}</a> <a id="895" class="Symbol">{</a><a id="896" href="System.Exit.Primitive.html#896" class="Bound">A</a> <a id="898" class="Symbol">:</a> <a id="900" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="904" href="System.Exit.Primitive.html#892" class="Bound">a</a><a id="905" class="Symbol">}</a> <a id="907" class="Symbol">→</a> <a id="909" href="System.Exit.Primitive.html#394" class="Datatype">ExitCode</a> <a id="918" class="Symbol">→</a> <a id="920" href="Agda.Builtin.IO.html#137" class="Postulate">IO</a> <a id="923" href="System.Exit.Primitive.html#896" class="Bound">A</a>
+
+<a id="926" class="Symbol">{-#</a> <a id="930" class="Keyword">COMPILE</a> <a id="938" class="Keyword">GHC</a> <a id="942" href="System.Exit.Primitive.html#878" class="Postulate">exitWith</a> <a id="951" class="Pragma">=</a> <a id="953" class="Pragma">\</a> <a id="955" class="Pragma">_</a> <a id="957" class="Pragma">_</a> <a id="959" class="Pragma">-&gt;</a> <a id="962" class="Pragma">SE.exitWith</a> <a id="974" class="Pragma">.</a> <a id="976" class="Pragma">toExitCode</a> <a id="987" class="Symbol">#-}</a>
+</pre></body></html>

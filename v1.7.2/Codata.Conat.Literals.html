@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Codata.Conat.Literals</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Conat Literals</a>
+<a id="124" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="198" class="Symbol">{-#</a> <a id="202" class="Keyword">OPTIONS</a> <a id="210" class="Pragma">--cubical-compatible</a> <a id="231" class="Pragma">--sized-types</a> <a id="245" class="Symbol">#-}</a>
+
+<a id="250" class="Keyword">module</a> <a id="257" href="Codata.Conat.Literals.html" class="Module">Codata.Conat.Literals</a> <a id="279" class="Keyword">where</a>
+
+<a id="286" class="Keyword">open</a> <a id="291" class="Keyword">import</a> <a id="298" href="Agda.Builtin.FromNat.html" class="Module">Agda.Builtin.FromNat</a>
+<a id="319" class="Keyword">open</a> <a id="324" class="Keyword">import</a> <a id="331" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="341" class="Keyword">open</a> <a id="346" class="Keyword">import</a> <a id="353" href="Codata.Conat.html" class="Module">Codata.Conat</a>
+
+<a id="number"></a><a id="367" href="Codata.Conat.Literals.html#367" class="Function">number</a> <a id="374" class="Symbol">:</a> <a id="376" class="Symbol">∀</a> <a id="378" class="Symbol">{</a><a id="379" href="Codata.Conat.Literals.html#379" class="Bound">i</a><a id="380" class="Symbol">}</a> <a id="382" class="Symbol">→</a> <a id="384" href="Agda.Builtin.FromNat.html#179" class="Record">Number</a> <a id="391" class="Symbol">(</a><a id="392" href="Codata.Conat.html#529" class="Datatype">Conat</a> <a id="398" href="Codata.Conat.Literals.html#379" class="Bound">i</a><a id="399" class="Symbol">)</a>
+<a id="401" href="Codata.Conat.Literals.html#367" class="Function">number</a> <a id="408" class="Symbol">=</a> <a id="410" class="Keyword">record</a>
+  <a id="419" class="Symbol">{</a> <a id="421" href="Agda.Builtin.FromNat.html#235" class="Field">Constraint</a> <a id="432" class="Symbol">=</a> <a id="434" class="Symbol">λ</a> <a id="436" href="Codata.Conat.Literals.html#436" class="Bound">_</a> <a id="438" class="Symbol">→</a> <a id="440" href="Agda.Builtin.Unit.html#158" class="Record">⊤</a>
+  <a id="444" class="Symbol">;</a> <a id="446" href="Agda.Builtin.FromNat.html#264" class="Field">fromNat</a>    <a id="457" class="Symbol">=</a> <a id="459" class="Symbol">λ</a> <a id="461" href="Codata.Conat.Literals.html#461" class="Bound">n</a> <a id="463" class="Symbol">→</a> <a id="465" href="Codata.Conat.html#677" class="Function">fromℕ</a> <a id="471" href="Codata.Conat.Literals.html#461" class="Bound">n</a>
+  <a id="475" class="Symbol">}</a>
+</pre></body></html>

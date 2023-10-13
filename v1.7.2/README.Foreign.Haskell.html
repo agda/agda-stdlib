@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Foreign.Haskell</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- A simple example of a program using the foreign function interface</a>
+<a id="176" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="250" class="Symbol">{-#</a> <a id="254" class="Keyword">OPTIONS</a> <a id="262" class="Pragma">--guardedness</a> <a id="276" class="Symbol">#-}</a>
+
+<a id="281" class="Keyword">module</a> <a id="288" href="README.Foreign.Haskell.html" class="Module">README.Foreign.Haskell</a> <a id="311" class="Keyword">where</a>
+
+<a id="318" class="Comment">-- In order to be considered safe by Agda, the standard library cannot</a>
+<a id="389" class="Comment">-- add COMPILE pragmas binding the inductive types it defines to concrete</a>
+<a id="463" class="Comment">-- Haskell types.</a>
+
+<a id="482" class="Comment">-- To work around this limitation, we have defined FFI-friendly versions</a>
+<a id="555" class="Comment">-- of these types together with a zero-cost coercion `coerce`.</a>
+
+<a id="619" class="Keyword">open</a> <a id="624" class="Keyword">import</a> <a id="631" href="Level.html" class="Module">Level</a> <a id="637" class="Keyword">using</a> <a id="643" class="Symbol">(</a><a id="644" href="Agda.Primitive.html#591" class="Postulate">Level</a><a id="649" class="Symbol">)</a>
+<a id="651" class="Keyword">open</a> <a id="656" class="Keyword">import</a> <a id="663" href="Agda.Builtin.Int.html" class="Module">Agda.Builtin.Int</a>
+<a id="680" class="Keyword">open</a> <a id="685" class="Keyword">import</a> <a id="692" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+<a id="709" class="Keyword">open</a> <a id="714" class="Keyword">import</a> <a id="721" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="736" class="Keyword">using</a> <a id="742" class="Symbol">(</a><a id="743" href="Agda.Builtin.Bool.html#156" class="Datatype">Bool</a><a id="747" class="Symbol">;</a> <a id="749" href="Data.Bool.Base.html#1292" class="Function Operator">if_then_else_</a><a id="762" class="Symbol">)</a>
+<a id="764" class="Keyword">open</a> <a id="769" class="Keyword">import</a> <a id="776" href="Data.Char.html" class="Module">Data.Char</a> <a id="786" class="Symbol">as</a> <a id="789" class="Module">Char</a>
+<a id="794" class="Keyword">open</a> <a id="799" class="Keyword">import</a> <a id="806" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="821" class="Symbol">as</a> <a id="824" class="Module">List</a> <a id="829" class="Keyword">using</a> <a id="835" class="Symbol">(</a><a id="836" href="Agda.Builtin.List.html#130" class="Datatype">List</a><a id="840" class="Symbol">;</a> <a id="842" href="Agda.Builtin.List.html#182" class="InductiveConstructor Operator">_∷_</a><a id="845" class="Symbol">;</a> <a id="847" href="Data.List.Base.html#10392" class="InductiveConstructor">[]</a><a id="849" class="Symbol">;</a> <a id="851" href="Data.List.Base.html#7743" class="Function">takeWhile</a><a id="860" class="Symbol">;</a> <a id="862" href="Data.List.Base.html#7922" class="Function">dropWhile</a><a id="871" class="Symbol">)</a>
+<a id="873" class="Keyword">open</a> <a id="878" class="Keyword">import</a> <a id="885" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="901" class="Keyword">using</a> <a id="907" class="Symbol">(</a><a id="908" href="Agda.Builtin.Maybe.html#118" class="Datatype">Maybe</a><a id="913" class="Symbol">;</a> <a id="915" href="Agda.Builtin.Maybe.html#156" class="InductiveConstructor">just</a><a id="919" class="Symbol">;</a> <a id="921" href="Agda.Builtin.Maybe.html#177" class="InductiveConstructor">nothing</a><a id="928" class="Symbol">)</a>
+<a id="930" class="Keyword">open</a> <a id="935" class="Keyword">import</a> <a id="942" href="Data.Product.html" class="Module">Data.Product</a>
+<a id="955" class="Keyword">open</a> <a id="960" class="Keyword">import</a> <a id="967" href="Function.html" class="Module">Function</a>
+<a id="976" class="Keyword">open</a> <a id="981" class="Keyword">import</a> <a id="988" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
+
+<a id="1016" class="Keyword">import</a> <a id="1023" href="Foreign.Haskell.html" class="Module">Foreign.Haskell</a> <a id="1039" class="Symbol">as</a> <a id="1042" class="Module">FFI</a>
+<a id="1046" class="Keyword">open</a> <a id="1051" class="Keyword">import</a> <a id="1058" href="Foreign.Haskell.Coerce.html" class="Module">Foreign.Haskell.Coerce</a>
+
+<a id="1082" class="Keyword">private</a>
+  <a id="1092" class="Keyword">variable</a>
+    <a id="1105" href="README.Foreign.Haskell.html#1105" class="Generalizable">a</a> <a id="1107" class="Symbol">:</a> <a id="1109" href="Agda.Primitive.html#591" class="Postulate">Level</a>
+    <a id="1119" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a> <a id="1121" class="Symbol">:</a> <a id="1123" href="Agda.Primitive.html#320" class="Primitive">Set</a> <a id="1127" href="README.Foreign.Haskell.html#1105" class="Generalizable">a</a>
+
+<a id="1130" class="Comment">-- Here we use the FFI version of Pair.</a>
+
+<a id="1171" class="Keyword">postulate</a>
+  <a id="primUncons"></a><a id="1183" href="README.Foreign.Haskell.html#1183" class="Postulate">primUncons</a>    <a id="1197" class="Symbol">:</a> <a id="1199" href="Agda.Builtin.List.html#130" class="Datatype">List</a> <a id="1204" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a> <a id="1206" class="Symbol">→</a> <a id="1208" href="Agda.Builtin.Maybe.html#118" class="Datatype">Maybe</a> <a id="1214" class="Symbol">(</a><a id="1215" href="Foreign.Haskell.Pair.html#529" class="Record">FFI.Pair</a> <a id="1224" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a> <a id="1226" class="Symbol">(</a><a id="1227" href="Agda.Builtin.List.html#130" class="Datatype">List</a> <a id="1232" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a><a id="1233" class="Symbol">))</a>
+  <a id="primCatMaybes"></a><a id="1238" href="README.Foreign.Haskell.html#1238" class="Postulate">primCatMaybes</a> <a id="1252" class="Symbol">:</a> <a id="1254" href="Agda.Builtin.List.html#130" class="Datatype">List</a> <a id="1259" class="Symbol">(</a><a id="1260" href="Agda.Builtin.Maybe.html#118" class="Datatype">Maybe</a> <a id="1266" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a><a id="1267" class="Symbol">)</a> <a id="1269" class="Symbol">→</a> <a id="1271" href="Agda.Builtin.List.html#130" class="Datatype">List</a> <a id="1276" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a>
+  <a id="primTestChar"></a><a id="1280" href="README.Foreign.Haskell.html#1280" class="Postulate">primTestChar</a>  <a id="1294" class="Symbol">:</a> <a id="1296" href="Agda.Builtin.Char.html#221" class="Postulate">Char</a> <a id="1301" class="Symbol">→</a> <a id="1303" href="Agda.Builtin.Bool.html#156" class="Datatype">Bool</a>
+  <a id="primIntEq"></a><a id="1310" href="README.Foreign.Haskell.html#1310" class="Postulate">primIntEq</a>     <a id="1324" class="Symbol">:</a> <a id="1326" href="Agda.Builtin.Int.html#228" class="Datatype">Int</a> <a id="1330" class="Symbol">→</a> <a id="1332" href="Agda.Builtin.Int.html#228" class="Datatype">Int</a> <a id="1336" class="Symbol">→</a> <a id="1338" href="Agda.Builtin.Bool.html#156" class="Datatype">Bool</a>
+
+<a id="1344" class="Symbol">{-#</a> <a id="1348" class="Keyword">COMPILE</a> <a id="1356" class="Keyword">GHC</a> <a id="1360" href="README.Foreign.Haskell.html#1183" class="Postulate">primUncons</a> <a id="1371" class="Pragma">=</a> <a id="1373" class="Pragma">\</a> <a id="1375" class="Pragma">_</a> <a id="1377" class="Pragma">_</a> <a id="1379" class="Pragma">xs</a> <a id="1382" class="Pragma">-&gt;</a> <a id="1385" class="Pragma">case</a> <a id="1390" class="Pragma">xs</a> <a id="1393" class="Pragma">of</a>
+  <a id="1398" class="Pragma">{</a> <a id="1400" class="Pragma">[]</a>       <a id="1409" class="Pragma">-&gt;</a> <a id="1412" class="Pragma">Nothing</a>
+  <a id="1422" class="Pragma">;</a> <a id="1424" class="Pragma">(x</a> <a id="1427" class="Pragma">:</a> <a id="1429" class="Pragma">xs)</a> <a id="1433" class="Pragma">-&gt;</a> <a id="1436" class="Pragma">Just</a> <a id="1441" class="Pragma">(x,</a> <a id="1445" class="Pragma">xs)</a>
+  <a id="1451" class="Pragma">}</a>
+<a id="1453" class="Symbol">#-}</a>
+
+<a id="1458" class="Symbol">{-#</a> <a id="1462" class="Keyword">FOREIGN</a> <a id="1470" class="Pragma">GHC</a> <a id="1474" class="Pragma">import</a> <a id="1481" class="Pragma">Data.Maybe</a> <a id="1492" class="Symbol">#-}</a>
+<a id="1496" class="Symbol">{-#</a> <a id="1500" class="Keyword">COMPILE</a> <a id="1508" class="Keyword">GHC</a> <a id="1512" href="README.Foreign.Haskell.html#1238" class="Postulate">primCatMaybes</a> <a id="1526" class="Pragma">=</a> <a id="1528" class="Pragma">\</a> <a id="1530" class="Pragma">_</a> <a id="1532" class="Pragma">_</a> <a id="1534" class="Pragma">-&gt;</a> <a id="1537" class="Pragma">catMaybes</a> <a id="1547" class="Symbol">#-}</a>
+
+<a id="1552" class="Symbol">{-#</a> <a id="1556" class="Keyword">COMPILE</a> <a id="1564" class="Keyword">GHC</a> <a id="1568" href="README.Foreign.Haskell.html#1280" class="Postulate">primTestChar</a> <a id="1581" class="Pragma">=</a> <a id="1583" class="Pragma">(&#39;-&#39;</a> <a id="1588" class="Pragma">/=)</a> <a id="1592" class="Symbol">#-}</a>
+
+<a id="1597" class="Symbol">{-#</a> <a id="1601" class="Keyword">COMPILE</a> <a id="1609" class="Keyword">GHC</a> <a id="1613" href="README.Foreign.Haskell.html#1310" class="Postulate">primIntEq</a> <a id="1623" class="Pragma">=</a> <a id="1625" class="Pragma">(==)</a> <a id="1630" class="Symbol">#-}</a>
+
+<a id="1635" class="Comment">-- We however want to use the notion of Pair internal to the standard library.</a>
+<a id="1714" class="Comment">-- For this we use `coerce` to take use back to the types we are used to.</a>
+
+<a id="1789" class="Comment">-- The typeclass mechanism uses the coercion rules for Pair, as well as the</a>
+<a id="1865" class="Comment">-- knowledge that natural numbers are represented as integers.</a>
+<a id="1928" class="Comment">-- We additionally benefit from the congruence rules for List, Maybe, Char,</a>
+<a id="2004" class="Comment">-- Bool, and a reflexivity principle for variable A.</a>
+
+<a id="uncons"></a><a id="2058" href="README.Foreign.Haskell.html#2058" class="Function">uncons</a> <a id="2065" class="Symbol">:</a> <a id="2067" href="Agda.Builtin.List.html#130" class="Datatype">List</a> <a id="2072" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a> <a id="2074" class="Symbol">→</a> <a id="2076" href="Agda.Builtin.Maybe.html#118" class="Datatype">Maybe</a> <a id="2082" class="Symbol">(</a><a id="2083" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a> <a id="2085" href="Data.Product.html#1176" class="Function Operator">×</a> <a id="2087" href="Agda.Builtin.List.html#130" class="Datatype">List</a> <a id="2092" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a><a id="2093" class="Symbol">)</a>
+<a id="2095" href="README.Foreign.Haskell.html#2058" class="Function">uncons</a> <a id="2102" class="Symbol">=</a> <a id="2104" href="Foreign.Haskell.Coerce.html#2601" class="Postulate">coerce</a> <a id="2111" href="README.Foreign.Haskell.html#1183" class="Postulate">primUncons</a>
+
+<a id="catMaybes"></a><a id="2123" href="README.Foreign.Haskell.html#2123" class="Function">catMaybes</a> <a id="2133" class="Symbol">:</a> <a id="2135" href="Agda.Builtin.List.html#130" class="Datatype">List</a> <a id="2140" class="Symbol">(</a><a id="2141" href="Agda.Builtin.Maybe.html#118" class="Datatype">Maybe</a> <a id="2147" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a><a id="2148" class="Symbol">)</a> <a id="2150" class="Symbol">→</a> <a id="2152" href="Agda.Builtin.List.html#130" class="Datatype">List</a> <a id="2157" href="README.Foreign.Haskell.html#1119" class="Generalizable">A</a>
+<a id="2159" href="README.Foreign.Haskell.html#2123" class="Function">catMaybes</a> <a id="2169" class="Symbol">=</a> <a id="2171" href="README.Foreign.Haskell.html#1238" class="Postulate">primCatMaybes</a>
+
+<a id="testChar"></a><a id="2186" href="README.Foreign.Haskell.html#2186" class="Function">testChar</a> <a id="2195" class="Symbol">:</a> <a id="2197" href="Agda.Builtin.Char.html#221" class="Postulate">Char</a> <a id="2202" class="Symbol">→</a> <a id="2204" href="Agda.Builtin.Bool.html#156" class="Datatype">Bool</a>
+<a id="2209" href="README.Foreign.Haskell.html#2186" class="Function">testChar</a> <a id="2218" class="Symbol">=</a> <a id="2220" href="Foreign.Haskell.Coerce.html#2601" class="Postulate">coerce</a> <a id="2227" href="README.Foreign.Haskell.html#1280" class="Postulate">primTestChar</a>
+  <a id="2242" class="Comment">-- note that coerce is useless here but the proof could come from</a>
+  <a id="2310" class="Comment">-- either `coerce-fun coerce-refl coerce-refl` or `coerce-refl` alone</a>
+  <a id="2382" class="Comment">-- We (and Agda) do not care which proof we got.</a>
+
+<a id="eqNat"></a><a id="2432" href="README.Foreign.Haskell.html#2432" class="Function">eqNat</a> <a id="2438" class="Symbol">:</a> <a id="2440" href="Agda.Builtin.Nat.html#186" class="Datatype">Nat</a> <a id="2444" class="Symbol">→</a> <a id="2446" href="Agda.Builtin.Nat.html#186" class="Datatype">Nat</a> <a id="2450" class="Symbol">→</a> <a id="2452" href="Agda.Builtin.Bool.html#156" class="Datatype">Bool</a>
+<a id="2457" href="README.Foreign.Haskell.html#2432" class="Function">eqNat</a> <a id="2463" class="Symbol">=</a> <a id="2465" href="Foreign.Haskell.Coerce.html#2601" class="Postulate">coerce</a> <a id="2472" href="README.Foreign.Haskell.html#1310" class="Postulate">primIntEq</a>
+  <a id="2484" class="Comment">-- We can coerce `Nat` to `Int` but not `Int` to `Nat`. This fundamentally</a>
+  <a id="2561" class="Comment">-- relies on the fact that `Coercible` understands that functions are</a>
+  <a id="2633" class="Comment">-- contravariant.</a>
+
+<a id="2652" class="Keyword">open</a> <a id="2657" class="Keyword">import</a> <a id="2664" href="IO.html" class="Module">IO</a>
+<a id="2667" class="Keyword">open</a> <a id="2672" class="Keyword">import</a> <a id="2679" href="Codata.Musical.Notation.html" class="Module">Codata.Musical.Notation</a>
+<a id="2703" class="Keyword">open</a> <a id="2708" class="Keyword">import</a> <a id="2715" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="2732" class="Keyword">using</a> <a id="2738" class="Symbol">(</a><a id="2739" href="Data.String.Base.html#1502" class="Primitive">toList</a><a id="2745" class="Symbol">;</a> <a id="2747" href="Data.String.Base.html#1535" class="Primitive">fromList</a><a id="2755" class="Symbol">;</a> <a id="2757" href="Data.String.Base.html#2776" class="Function">unlines</a><a id="2764" class="Symbol">;</a> <a id="2766" href="Data.String.Base.html#2375" class="Function Operator">_++_</a><a id="2770" class="Symbol">)</a>
+<a id="2772" class="Keyword">open</a> <a id="2777" class="Keyword">import</a> <a id="2784" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a>
+
+<a id="2811" class="Comment">-- example program using uncons, catMaybes, and testChar</a>
+
+<a id="main"></a><a id="2869" href="README.Foreign.Haskell.html#2869" class="Function">main</a> <a id="2874" class="Symbol">=</a> <a id="2876" href="IO.Base.html#1893" class="Function">run</a> <a id="2880" href="Function.Base.html#1928" class="Function Operator">$</a> <a id="2882" class="Keyword">do</a>
+  <a id="2887" href="README.Foreign.Haskell.html#2887" class="Bound">content</a> <a id="2895" href="IO.Base.html#1413" class="Function Operator">←</a> <a id="2897" href="IO.html#2625" class="Function">readFiniteFile</a> <a id="2912" class="String">&quot;README/Foreign/Haskell.agda&quot;</a>
+  <a id="2944" class="Keyword">let</a> <a id="2948" href="README.Foreign.Haskell.html#2948" class="Bound">chars</a> <a id="2954" class="Symbol">=</a> <a id="2956" href="Data.String.Base.html#1502" class="Primitive">toList</a> <a id="2963" href="README.Foreign.Haskell.html#2887" class="Bound">content</a>
+  <a id="2973" class="Keyword">let</a> <a id="2977" href="README.Foreign.Haskell.html#2977" class="Bound">cleanup</a> <a id="2985" class="Symbol">=</a> <a id="2987" href="README.Foreign.Haskell.html#2123" class="Function">catMaybes</a> <a id="2997" href="Function.Base.html#1040" class="Function Operator">∘</a> <a id="2999" href="Data.List.Base.html#1553" class="Function">List.map</a> <a id="3008" class="Symbol">(λ</a> <a id="3011" href="README.Foreign.Haskell.html#3011" class="Bound">c</a> <a id="3013" class="Symbol">→</a> <a id="3015" href="Data.Bool.Base.html#1292" class="Function Operator">if</a> <a id="3018" href="README.Foreign.Haskell.html#2186" class="Function">testChar</a> <a id="3027" href="README.Foreign.Haskell.html#3011" class="Bound">c</a> <a id="3029" href="Data.Bool.Base.html#1292" class="Function Operator">then</a> <a id="3034" href="Agda.Builtin.Maybe.html#156" class="InductiveConstructor">just</a> <a id="3039" href="README.Foreign.Haskell.html#3011" class="Bound">c</a> <a id="3041" href="Data.Bool.Base.html#1292" class="Function Operator">else</a> <a id="3046" href="Agda.Builtin.Maybe.html#177" class="InductiveConstructor">nothing</a><a id="3053" class="Symbol">)</a>
+  <a id="3057" class="Keyword">let</a> <a id="3061" href="README.Foreign.Haskell.html#3061" class="Bound">cleaned</a> <a id="3069" class="Symbol">=</a> <a id="3071" href="Data.List.Base.html#7922" class="Function">dropWhile</a> <a id="3081" class="Symbol">(</a><a id="3082" class="String">&#39;\n&#39;</a> <a id="3087" href="Data.Char.Properties.html#1531" class="Function Operator">≟_</a><a id="3089" class="Symbol">)</a> <a id="3091" href="Function.Base.html#1928" class="Function Operator">$</a> <a id="3093" href="README.Foreign.Haskell.html#2977" class="Bound">cleanup</a> <a id="3101" href="README.Foreign.Haskell.html#2948" class="Bound">chars</a>
+  <a id="3109" href="Function.Base.html#4130" class="Function Operator">case</a> <a id="3114" href="README.Foreign.Haskell.html#2058" class="Function">uncons</a> <a id="3121" href="README.Foreign.Haskell.html#3061" class="Bound">cleaned</a> <a id="3129" href="Function.Base.html#4130" class="Function Operator">of</a> <a id="3132" class="Symbol">λ</a> <a id="3134" class="Keyword">where</a>
+    <a id="3144" href="Agda.Builtin.Maybe.html#177" class="InductiveConstructor">nothing</a>         <a id="3160" class="Symbol">→</a> <a id="3162" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="3171" class="String">&quot;I cannot believe this file is filed with dashes only!&quot;</a>
+    <a id="3231" class="Symbol">(</a><a id="3232" href="Agda.Builtin.Maybe.html#156" class="InductiveConstructor">just</a> <a id="3237" class="Symbol">(</a><a id="3238" href="README.Foreign.Haskell.html#3238" class="Bound">c</a> <a id="3240" href="Agda.Builtin.Sigma.html#218" class="InductiveConstructor Operator">,</a> <a id="3242" href="README.Foreign.Haskell.html#3242" class="Bound">cs</a><a id="3244" class="Symbol">))</a> <a id="3247" class="Symbol">→</a> <a id="3249" href="IO.Finite.html#1604" class="Function">putStrLn</a> <a id="3258" href="Function.Base.html#1928" class="Function Operator">$</a> <a id="3260" href="Data.String.Base.html#2776" class="Function">unlines</a>
+                    <a id="3288" href="Function.Base.html#1928" class="Function Operator">$</a> <a id="3290" class="Symbol">(</a><a id="3291" class="String">&quot;First (non dash) character: &quot;</a> <a id="3322" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="3325" href="Data.Char.Base.html#1245" class="Primitive">Char.show</a> <a id="3335" href="README.Foreign.Haskell.html#3238" class="Bound">c</a><a id="3336" class="Symbol">)</a>
+                    <a id="3358" href="Agda.Builtin.List.html#182" class="InductiveConstructor Operator">∷</a> <a id="3360" class="Symbol">(</a><a id="3361" class="String">&quot;Rest (dash free) of the line: &quot;</a> <a id="3394" href="Data.String.Base.html#2375" class="Function Operator">++</a> <a id="3397" href="Data.String.Base.html#1535" class="Primitive">fromList</a> <a id="3406" class="Symbol">(</a><a id="3407" href="Data.List.Base.html#7743" class="Function">takeWhile</a> <a id="3417" class="Symbol">(</a><a id="3418" href="Relation.Nullary.Negation.Core.html#1364" class="Function">¬?</a> <a id="3421" href="Function.Base.html#1040" class="Function Operator">∘</a> <a id="3423" class="Symbol">(</a><a id="3424" class="String">&#39;\n&#39;</a> <a id="3429" href="Data.Char.Properties.html#1531" class="Function Operator">≟_</a><a id="3431" class="Symbol">))</a> <a id="3434" href="README.Foreign.Haskell.html#3242" class="Bound">cs</a><a id="3436" class="Symbol">))</a>
+                    <a id="3459" href="Agda.Builtin.List.html#182" class="InductiveConstructor Operator">∷</a> <a id="3461" href="Agda.Builtin.List.html#167" class="InductiveConstructor">[]</a>
+
+<a id="3465" class="Comment">-- You can compile and run this test by writing:</a>
+<a id="3514" class="Comment">-- agda -c Haskell.agda</a>
+<a id="3538" class="Comment">-- ../../Haskell</a>
+
+<a id="3556" class="Comment">-- You should see the following text (without the indentation on the left):</a>
+<a id="3632" class="Comment">--   First (non dash) character: &#39; &#39;</a>
+<a id="3669" class="Comment">--   Rest (dash free) of the line: The Agda standard library</a>
+</pre></body></html>

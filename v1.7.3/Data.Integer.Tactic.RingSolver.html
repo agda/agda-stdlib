@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Integer.Tactic.RingSolver</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Automatic solvers for equations over integers</a>
+<a id="155" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="229" class="Comment">-- See README.Integer for examples of how to use this solver</a>
+
+<a id="291" class="Symbol">{-#</a> <a id="295" class="Keyword">OPTIONS</a> <a id="303" class="Pragma">--cubical-compatible</a> <a id="324" class="Pragma">--safe</a> <a id="331" class="Symbol">#-}</a>
+
+<a id="336" class="Keyword">module</a> <a id="343" href="Data.Integer.Tactic.RingSolver.html" class="Module">Data.Integer.Tactic.RingSolver</a> <a id="374" class="Keyword">where</a>
+
+<a id="381" class="Keyword">open</a> <a id="386" class="Keyword">import</a> <a id="393" href="Agda.Builtin.Reflection.html" class="Module">Agda.Builtin.Reflection</a>
+
+<a id="418" class="Keyword">open</a> <a id="423" class="Keyword">import</a> <a id="430" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="446" class="Keyword">using</a> <a id="452" class="Symbol">(</a><a id="453" href="Agda.Builtin.Maybe.html#173" class="InductiveConstructor">just</a><a id="457" class="Symbol">;</a> <a id="459" href="Agda.Builtin.Maybe.html#194" class="InductiveConstructor">nothing</a><a id="466" class="Symbol">)</a>
+<a id="468" class="Keyword">open</a> <a id="473" class="Keyword">import</a> <a id="480" href="Data.Integer.Base.html" class="Module">Data.Integer.Base</a>
+<a id="498" class="Keyword">open</a> <a id="503" class="Keyword">import</a> <a id="510" href="Data.Integer.Properties.html" class="Module">Data.Integer.Properties</a>
+<a id="534" class="Keyword">open</a> <a id="539" class="Keyword">import</a> <a id="546" href="Level.html" class="Module">Level</a> <a id="552" class="Keyword">using</a> <a id="558" class="Symbol">(</a><a id="559" href="Level.html#521" class="Function">0ℓ</a><a id="561" class="Symbol">)</a>
+<a id="563" class="Keyword">open</a> <a id="568" class="Keyword">import</a> <a id="575" href="Data.Unit.html" class="Module">Data.Unit</a> <a id="585" class="Keyword">using</a> <a id="591" class="Symbol">(</a><a id="592" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a><a id="593" class="Symbol">)</a>
+<a id="595" class="Keyword">open</a> <a id="600" class="Keyword">import</a> <a id="607" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+<a id="645" class="Keyword">import</a> <a id="652" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a> <a id="670" class="Symbol">as</a> <a id="673" class="Module">Solver</a>
+<a id="680" class="Keyword">import</a> <a id="687" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a> <a id="732" class="Symbol">as</a> <a id="735" class="Module">ACR</a>
+
+<a id="740" class="Comment">------------------------------------------------------------------------</a>
+<a id="813" class="Comment">-- A module for automatically solving propositional equivalences</a>
+<a id="878" class="Comment">-- containing _+_ and _*_</a>
+
+<a id="ring"></a><a id="905" href="Data.Integer.Tactic.RingSolver.html#905" class="Function">ring</a> <a id="910" class="Symbol">:</a> <a id="912" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html#1258" class="Record">ACR.AlmostCommutativeRing</a> <a id="938" href="Level.html#521" class="Function">0ℓ</a> <a id="941" href="Level.html#521" class="Function">0ℓ</a>
+<a id="944" href="Data.Integer.Tactic.RingSolver.html#905" class="Function">ring</a> <a id="949" class="Symbol">=</a> <a id="951" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html#3971" class="Function">ACR.fromCommutativeRing</a> <a id="975" href="Data.Integer.Properties.html#52202" class="Function">+-*-commutativeRing</a>
+  <a id="997" class="Symbol">λ</a> <a id="999" class="Symbol">{</a> <a id="1001" href="Data.Integer.Base.html#1453" class="InductiveConstructor">+0</a> <a id="1004" class="Symbol">→</a> <a id="1006" href="Agda.Builtin.Maybe.html#173" class="InductiveConstructor">just</a> <a id="1011" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a><a id="1015" class="Symbol">;</a> <a id="1017" class="CatchallClause Symbol">_</a> <a id="1019" class="Symbol">→</a> <a id="1021" href="Agda.Builtin.Maybe.html#194" class="InductiveConstructor">nothing</a> <a id="1029" class="Symbol">}</a>
+
+<a id="1032" class="Keyword">macro</a>
+  <a id="solve-∀"></a><a id="1040" href="Data.Integer.Tactic.RingSolver.html#1040" class="Function">solve-∀</a> <a id="1048" class="Symbol">:</a> <a id="1050" href="Agda.Builtin.Reflection.html#4993" class="Datatype">Term</a> <a id="1055" class="Symbol">→</a> <a id="1057" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a> <a id="1060" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a>
+  <a id="1064" href="Data.Integer.Tactic.RingSolver.html#1040" class="Function">solve-∀</a> <a id="1072" class="Symbol">=</a> <a id="1074" href="Tactic.RingSolver.html#7846" class="Function">Solver.solve-∀-macro</a> <a id="1095" class="Symbol">(</a><a id="1096" class="Keyword">quote</a> <a id="1102" href="Data.Integer.Tactic.RingSolver.html#905" class="Function">ring</a><a id="1106" class="Symbol">)</a>
+
+<a id="1109" class="Keyword">macro</a>
+  <a id="solve"></a><a id="1117" href="Data.Integer.Tactic.RingSolver.html#1117" class="Function">solve</a> <a id="1123" class="Symbol">:</a> <a id="1125" href="Agda.Builtin.Reflection.html#4993" class="Datatype">Term</a> <a id="1130" class="Symbol">→</a> <a id="1132" href="Agda.Builtin.Reflection.html#4993" class="Datatype">Term</a> <a id="1137" class="Symbol">→</a> <a id="1139" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a> <a id="1142" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a>
+  <a id="1146" href="Data.Integer.Tactic.RingSolver.html#1117" class="Function">solve</a> <a id="1152" href="Data.Integer.Tactic.RingSolver.html#1152" class="Bound">n</a> <a id="1154" class="Symbol">=</a> <a id="1156" href="Tactic.RingSolver.html#9491" class="Function">Solver.solve-macro</a> <a id="1175" href="Data.Integer.Tactic.RingSolver.html#1152" class="Bound">n</a> <a id="1177" class="Symbol">(</a><a id="1178" class="Keyword">quote</a> <a id="1184" href="Data.Integer.Tactic.RingSolver.html#905" class="Function">ring</a><a id="1188" class="Symbol">)</a>
+</pre></body></html>

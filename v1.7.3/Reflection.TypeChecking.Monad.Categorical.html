@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Reflection.TypeChecking.Monad.Categorical</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for TC</a>
+<a id="136" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="210" class="Symbol">{-#</a> <a id="214" class="Keyword">OPTIONS</a> <a id="222" class="Pragma">--cubical-compatible</a> <a id="243" class="Pragma">--safe</a> <a id="250" class="Symbol">#-}</a>
+
+<a id="255" class="Keyword">module</a> <a id="262" href="Reflection.TypeChecking.Monad.Categorical.html" class="Module">Reflection.TypeChecking.Monad.Categorical</a> <a id="304" class="Keyword">where</a>
+
+<a id="311" class="Keyword">open</a> <a id="316" class="Keyword">import</a> <a id="323" href="Category.Functor.html" class="Module">Category.Functor</a>
+<a id="340" class="Keyword">open</a> <a id="345" class="Keyword">import</a> <a id="352" href="Category.Applicative.html" class="Module">Category.Applicative</a>
+<a id="373" class="Keyword">open</a> <a id="378" class="Keyword">import</a> <a id="385" href="Category.Monad.html" class="Module">Category.Monad</a>
+<a id="400" class="Keyword">open</a> <a id="405" class="Keyword">import</a> <a id="412" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="427" class="Keyword">using</a> <a id="433" class="Symbol">(</a><a id="434" href="Data.List.Base.html#10392" class="InductiveConstructor">[]</a><a id="436" class="Symbol">)</a>
+<a id="438" class="Keyword">open</a> <a id="443" class="Keyword">import</a> <a id="450" href="Function.Base.html" class="Module">Function.Base</a> <a id="464" class="Keyword">using</a> <a id="470" class="Symbol">(</a><a id="471" href="Function.Base.html#1040" class="Function Operator">_∘_</a><a id="474" class="Symbol">)</a>
+<a id="476" class="Keyword">open</a> <a id="481" class="Keyword">import</a> <a id="488" href="Level.html" class="Module">Level</a>
+<a id="494" class="Keyword">open</a> <a id="499" class="Keyword">import</a> <a id="506" href="Reflection.TypeChecking.Monad.html" class="Module">Reflection.TypeChecking.Monad</a>
+
+<a id="537" class="Keyword">private</a>
+  <a id="547" class="Keyword">variable</a>
+    <a id="560" href="Reflection.TypeChecking.Monad.Categorical.html#560" class="Generalizable">ℓ</a> <a id="562" class="Symbol">:</a> <a id="564" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+
+<a id="functor"></a><a id="571" href="Reflection.TypeChecking.Monad.Categorical.html#571" class="Function">functor</a> <a id="579" class="Symbol">:</a> <a id="581" href="Category.Functor.html#508" class="Record">RawFunctor</a> <a id="592" class="Symbol">{</a><a id="593" href="Reflection.TypeChecking.Monad.Categorical.html#560" class="Generalizable">ℓ</a><a id="594" class="Symbol">}</a> <a id="596" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a>
+<a id="599" href="Reflection.TypeChecking.Monad.Categorical.html#571" class="Function">functor</a> <a id="607" class="Symbol">=</a> <a id="609" class="Keyword">record</a>
+  <a id="618" class="Symbol">{</a> <a id="620" href="Category.Functor.html#617" class="Field Operator">_&lt;$&gt;_</a> <a id="626" class="Symbol">=</a> <a id="628" class="Symbol">λ</a> <a id="630" href="Reflection.TypeChecking.Monad.Categorical.html#630" class="Bound">f</a> <a id="632" href="Reflection.TypeChecking.Monad.Categorical.html#632" class="Bound">mx</a> <a id="635" class="Symbol">→</a> <a id="637" href="Agda.Builtin.Reflection.html#8695" class="Postulate">bindTC</a> <a id="644" href="Reflection.TypeChecking.Monad.Categorical.html#632" class="Bound">mx</a> <a id="647" class="Symbol">(</a><a id="648" href="Agda.Builtin.Reflection.html#8645" class="Postulate">return</a> <a id="655" href="Function.Base.html#1040" class="Function Operator">∘</a> <a id="657" href="Reflection.TypeChecking.Monad.Categorical.html#630" class="Bound">f</a><a id="658" class="Symbol">)</a>
+  <a id="662" class="Symbol">}</a>
+
+<a id="applicative"></a><a id="665" href="Reflection.TypeChecking.Monad.Categorical.html#665" class="Function">applicative</a> <a id="677" class="Symbol">:</a> <a id="679" href="Category.Applicative.html#503" class="Function">RawApplicative</a> <a id="694" class="Symbol">{</a><a id="695" href="Reflection.TypeChecking.Monad.Categorical.html#560" class="Generalizable">ℓ</a><a id="696" class="Symbol">}</a> <a id="698" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a>
+<a id="701" href="Reflection.TypeChecking.Monad.Categorical.html#665" class="Function">applicative</a> <a id="713" class="Symbol">=</a> <a id="715" class="Keyword">record</a>
+  <a id="724" class="Symbol">{</a> <a id="726" href="Category.Applicative.Indexed.html#1012" class="Field">pure</a> <a id="731" class="Symbol">=</a> <a id="733" href="Agda.Builtin.Reflection.html#8645" class="Postulate">return</a>
+  <a id="742" class="Symbol">;</a> <a id="744" href="Category.Applicative.Indexed.html#1043" class="Field Operator">_⊛_</a>  <a id="749" class="Symbol">=</a> <a id="751" class="Symbol">λ</a> <a id="753" href="Reflection.TypeChecking.Monad.Categorical.html#753" class="Bound">mf</a> <a id="756" href="Reflection.TypeChecking.Monad.Categorical.html#756" class="Bound">mx</a> <a id="759" class="Symbol">→</a> <a id="761" href="Agda.Builtin.Reflection.html#8695" class="Postulate">bindTC</a> <a id="768" href="Reflection.TypeChecking.Monad.Categorical.html#753" class="Bound">mf</a> <a id="771" class="Symbol">λ</a> <a id="773" href="Reflection.TypeChecking.Monad.Categorical.html#773" class="Bound">f</a> <a id="775" class="Symbol">→</a> <a id="777" href="Agda.Builtin.Reflection.html#8695" class="Postulate">bindTC</a> <a id="784" href="Reflection.TypeChecking.Monad.Categorical.html#756" class="Bound">mx</a> <a id="787" class="Symbol">(</a><a id="788" href="Agda.Builtin.Reflection.html#8645" class="Postulate">return</a> <a id="795" href="Function.Base.html#1040" class="Function Operator">∘</a> <a id="797" href="Reflection.TypeChecking.Monad.Categorical.html#773" class="Bound">f</a><a id="798" class="Symbol">)</a>
+  <a id="802" class="Symbol">}</a>
+
+<a id="applicativeZero"></a><a id="805" href="Reflection.TypeChecking.Monad.Categorical.html#805" class="Function">applicativeZero</a> <a id="821" class="Symbol">:</a> <a id="823" href="Category.Applicative.html#734" class="Function">RawApplicativeZero</a> <a id="842" class="Symbol">{</a><a id="843" href="Reflection.TypeChecking.Monad.Categorical.html#560" class="Generalizable">ℓ</a><a id="844" class="Symbol">}</a> <a id="846" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a>
+<a id="849" href="Reflection.TypeChecking.Monad.Categorical.html#805" class="Function">applicativeZero</a> <a id="865" class="Symbol">=</a> <a id="867" class="Keyword">record</a>
+  <a id="876" class="Symbol">{</a> <a id="878" href="Category.Applicative.Indexed.html#1927" class="Field">applicative</a> <a id="890" class="Symbol">=</a> <a id="892" href="Reflection.TypeChecking.Monad.Categorical.html#665" class="Function">applicative</a>
+  <a id="906" class="Symbol">;</a> <a id="908" href="Category.Applicative.Indexed.html#1963" class="Field">∅</a>           <a id="920" class="Symbol">=</a> <a id="922" href="Agda.Builtin.Reflection.html#8815" class="Postulate">typeError</a> <a id="932" href="Agda.Builtin.List.html#184" class="InductiveConstructor">[]</a>
+  <a id="937" class="Symbol">}</a>
+
+<a id="alternative"></a><a id="940" href="Reflection.TypeChecking.Monad.Categorical.html#940" class="Function">alternative</a> <a id="952" class="Symbol">:</a> <a id="954" href="Category.Applicative.html#995" class="Function">RawAlternative</a> <a id="969" class="Symbol">{</a><a id="970" href="Reflection.TypeChecking.Monad.Categorical.html#560" class="Generalizable">ℓ</a><a id="971" class="Symbol">}</a> <a id="973" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a>
+<a id="976" href="Reflection.TypeChecking.Monad.Categorical.html#940" class="Function">alternative</a> <a id="988" class="Symbol">=</a> <a id="990" class="Keyword">record</a>
+  <a id="999" class="Symbol">{</a> <a id="1001" href="Category.Applicative.Indexed.html#2275" class="Field">applicativeZero</a> <a id="1017" class="Symbol">=</a> <a id="1019" href="Reflection.TypeChecking.Monad.Categorical.html#805" class="Function">applicativeZero</a>
+  <a id="1037" class="Symbol">;</a> <a id="1039" href="Category.Applicative.Indexed.html#2319" class="Field Operator">_∣_</a>             <a id="1055" class="Symbol">=</a> <a id="1057" href="Agda.Builtin.Reflection.html#9029" class="Postulate">catchTC</a>
+  <a id="1067" class="Symbol">}</a>
+
+<a id="monad"></a><a id="1070" href="Reflection.TypeChecking.Monad.Categorical.html#1070" class="Function">monad</a> <a id="1076" class="Symbol">:</a> <a id="1078" href="Category.Monad.html#457" class="Function">RawMonad</a> <a id="1087" class="Symbol">{</a><a id="1088" href="Reflection.TypeChecking.Monad.Categorical.html#560" class="Generalizable">ℓ</a><a id="1089" class="Symbol">}</a> <a id="1091" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a>
+<a id="1094" href="Reflection.TypeChecking.Monad.Categorical.html#1070" class="Function">monad</a> <a id="1100" class="Symbol">=</a> <a id="1102" class="Keyword">record</a>
+  <a id="1111" class="Symbol">{</a> <a id="1113" href="Category.Monad.Indexed.html#653" class="Field">return</a> <a id="1120" class="Symbol">=</a> <a id="1122" href="Agda.Builtin.Reflection.html#8645" class="Postulate">return</a>
+  <a id="1131" class="Symbol">;</a> <a id="1133" href="Category.Monad.Indexed.html#686" class="Field Operator">_&gt;&gt;=_</a>  <a id="1140" class="Symbol">=</a> <a id="1142" href="Agda.Builtin.Reflection.html#8695" class="Postulate">bindTC</a>
+  <a id="1151" class="Symbol">}</a>
+
+<a id="monadZero"></a><a id="1154" href="Reflection.TypeChecking.Monad.Categorical.html#1154" class="Function">monadZero</a> <a id="1164" class="Symbol">:</a> <a id="1166" href="Category.Monad.html#652" class="Function">RawMonadZero</a> <a id="1179" class="Symbol">{</a><a id="1180" href="Reflection.TypeChecking.Monad.Categorical.html#560" class="Generalizable">ℓ</a><a id="1181" class="Symbol">}</a> <a id="1183" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a>
+<a id="1186" href="Reflection.TypeChecking.Monad.Categorical.html#1154" class="Function">monadZero</a> <a id="1196" class="Symbol">=</a> <a id="1198" class="Keyword">record</a>
+  <a id="1207" class="Symbol">{</a> <a id="1209" href="Category.Monad.Indexed.html#1556" class="Field">monad</a>           <a id="1225" class="Symbol">=</a> <a id="1227" href="Reflection.TypeChecking.Monad.Categorical.html#1070" class="Function">monad</a>
+  <a id="1235" class="Symbol">;</a> <a id="1237" href="Category.Monad.Indexed.html#1590" class="Field">applicativeZero</a> <a id="1253" class="Symbol">=</a> <a id="1255" href="Reflection.TypeChecking.Monad.Categorical.html#805" class="Function">applicativeZero</a>
+  <a id="1273" class="Symbol">}</a>
+
+<a id="monadPlus"></a><a id="1276" href="Reflection.TypeChecking.Monad.Categorical.html#1276" class="Function">monadPlus</a> <a id="1286" class="Symbol">:</a> <a id="1288" href="Category.Monad.html#743" class="Function">RawMonadPlus</a> <a id="1301" class="Symbol">{</a><a id="1302" href="Reflection.TypeChecking.Monad.Categorical.html#560" class="Generalizable">ℓ</a><a id="1303" class="Symbol">}</a> <a id="1305" href="Agda.Builtin.Reflection.html#8602" class="Postulate">TC</a>
+<a id="1308" href="Reflection.TypeChecking.Monad.Categorical.html#1276" class="Function">monadPlus</a> <a id="1318" class="Symbol">=</a> <a id="1320" class="Keyword">record</a>
+  <a id="1329" class="Symbol">{</a> <a id="1331" href="Category.Monad.Indexed.html#1806" class="Field">monad</a>       <a id="1343" class="Symbol">=</a> <a id="1345" href="Reflection.TypeChecking.Monad.Categorical.html#1070" class="Function">monad</a>
+  <a id="1353" class="Symbol">;</a> <a id="1355" href="Category.Monad.Indexed.html#1836" class="Field">alternative</a> <a id="1367" class="Symbol">=</a> <a id="1369" href="Reflection.TypeChecking.Monad.Categorical.html#940" class="Function">alternative</a>
+  <a id="1383" class="Symbol">}</a>
+</pre></body></html>
