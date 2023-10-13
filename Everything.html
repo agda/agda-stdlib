@@ -2726,245 +2726,249 @@
 <a id="79627" class="Comment">-- Structures for homogeneous binary relations</a>
 <a id="79674" class="Keyword">import</a> <a id="79681" href="Relation.Binary.Structures.html" class="Module">Relation.Binary.Structures</a>
 
-<a id="79709" class="Comment">-- Typeclasses for use with instance arguments</a>
-<a id="79756" class="Keyword">import</a> <a id="79763" href="Relation.Binary.TypeClasses.html" class="Module">Relation.Binary.TypeClasses</a>
+<a id="79709" class="Comment">-- Ways to give instances of certain structures where some fields can</a>
+<a id="79779" class="Comment">-- be given in terms of others</a>
+<a id="79810" class="Keyword">import</a> <a id="79817" href="Relation.Binary.Structures.Biased.html" class="Module">Relation.Binary.Structures.Biased</a>
 
-<a id="79792" class="Comment">-- Heterogeneous N-ary Relations</a>
-<a id="79825" class="Keyword">import</a> <a id="79832" href="Relation.Nary.html" class="Module">Relation.Nary</a>
+<a id="79852" class="Comment">-- Typeclasses for use with instance arguments</a>
+<a id="79899" class="Keyword">import</a> <a id="79906" href="Relation.Binary.TypeClasses.html" class="Module">Relation.Binary.TypeClasses</a>
 
-<a id="79847" class="Comment">-- Operations on nullary relations (like negation and decidability)</a>
-<a id="79915" class="Keyword">import</a> <a id="79922" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="79935" class="Comment">-- Heterogeneous N-ary Relations</a>
+<a id="79968" class="Keyword">import</a> <a id="79975" href="Relation.Nary.html" class="Module">Relation.Nary</a>
 
-<a id="79940" class="Comment">-- Notation for freely adding extrema to any set</a>
-<a id="79989" class="Keyword">import</a> <a id="79996" href="Relation.Nullary.Construct.Add.Extrema.html" class="Module">Relation.Nullary.Construct.Add.Extrema</a>
+<a id="79990" class="Comment">-- Operations on nullary relations (like negation and decidability)</a>
+<a id="80058" class="Keyword">import</a> <a id="80065" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
 
-<a id="80036" class="Comment">-- Notation for freely adding an infimum to any set</a>
-<a id="80088" class="Keyword">import</a> <a id="80095" href="Relation.Nullary.Construct.Add.Infimum.html" class="Module">Relation.Nullary.Construct.Add.Infimum</a>
+<a id="80083" class="Comment">-- Notation for freely adding extrema to any set</a>
+<a id="80132" class="Keyword">import</a> <a id="80139" href="Relation.Nullary.Construct.Add.Extrema.html" class="Module">Relation.Nullary.Construct.Add.Extrema</a>
 
-<a id="80135" class="Comment">-- Notation for adding an additional point to any set</a>
-<a id="80189" class="Keyword">import</a> <a id="80196" href="Relation.Nullary.Construct.Add.Point.html" class="Module">Relation.Nullary.Construct.Add.Point</a>
+<a id="80179" class="Comment">-- Notation for freely adding an infimum to any set</a>
+<a id="80231" class="Keyword">import</a> <a id="80238" href="Relation.Nullary.Construct.Add.Infimum.html" class="Module">Relation.Nullary.Construct.Add.Infimum</a>
 
-<a id="80234" class="Comment">-- Notation for freely adding a supremum to any set</a>
-<a id="80286" class="Keyword">import</a> <a id="80293" href="Relation.Nullary.Construct.Add.Supremum.html" class="Module">Relation.Nullary.Construct.Add.Supremum</a>
+<a id="80278" class="Comment">-- Notation for adding an additional point to any set</a>
+<a id="80332" class="Keyword">import</a> <a id="80339" href="Relation.Nullary.Construct.Add.Point.html" class="Module">Relation.Nullary.Construct.Add.Point</a>
 
-<a id="80334" class="Comment">-- Operations on and properties of decidable relations</a>
-<a id="80389" class="Keyword">import</a> <a id="80396" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
+<a id="80377" class="Comment">-- Notation for freely adding a supremum to any set</a>
+<a id="80429" class="Keyword">import</a> <a id="80436" href="Relation.Nullary.Construct.Add.Supremum.html" class="Module">Relation.Nullary.Construct.Add.Supremum</a>
 
-<a id="80424" class="Comment">-- Negation indexed by a Level</a>
-<a id="80455" class="Keyword">import</a> <a id="80462" href="Relation.Nullary.Indexed.html" class="Module">Relation.Nullary.Indexed</a>
+<a id="80477" class="Comment">-- Operations on and properties of decidable relations</a>
+<a id="80532" class="Keyword">import</a> <a id="80539" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
 
-<a id="80488" class="Comment">-- Properties of indexed negation</a>
-<a id="80522" class="Keyword">import</a> <a id="80529" href="Relation.Nullary.Indexed.Negation.html" class="Module">Relation.Nullary.Indexed.Negation</a>
+<a id="80567" class="Comment">-- Negation indexed by a Level</a>
+<a id="80598" class="Keyword">import</a> <a id="80605" href="Relation.Nullary.Indexed.html" class="Module">Relation.Nullary.Indexed</a>
 
-<a id="80564" class="Comment">-- Properties related to negation</a>
-<a id="80598" class="Keyword">import</a> <a id="80605" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a>
+<a id="80631" class="Comment">-- Properties of indexed negation</a>
+<a id="80665" class="Keyword">import</a> <a id="80672" href="Relation.Nullary.Indexed.Negation.html" class="Module">Relation.Nullary.Indexed.Negation</a>
 
-<a id="80632" class="Comment">-- Properties of the `Reflects` construct</a>
-<a id="80674" class="Keyword">import</a> <a id="80681" href="Relation.Nullary.Reflects.html" class="Module">Relation.Nullary.Reflects</a>
+<a id="80707" class="Comment">-- Properties related to negation</a>
+<a id="80741" class="Keyword">import</a> <a id="80748" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a>
 
-<a id="80708" class="Comment">-- A universe of proposition functors, along with some properties</a>
-<a id="80774" class="Keyword">import</a> <a id="80781" href="Relation.Nullary.Universe.html" class="Module">Relation.Nullary.Universe</a>
+<a id="80775" class="Comment">-- Properties of the `Reflects` construct</a>
+<a id="80817" class="Keyword">import</a> <a id="80824" href="Relation.Nullary.Reflects.html" class="Module">Relation.Nullary.Reflects</a>
 
-<a id="80808" class="Comment">-- Unary relations</a>
-<a id="80827" class="Keyword">import</a> <a id="80834" href="Relation.Unary.html" class="Module">Relation.Unary</a>
+<a id="80851" class="Comment">-- A universe of proposition functors, along with some properties</a>
+<a id="80917" class="Keyword">import</a> <a id="80924" href="Relation.Nullary.Universe.html" class="Module">Relation.Nullary.Universe</a>
 
-<a id="80850" class="Comment">-- Algebraic properties of constructions over unary relations</a>
-<a id="80912" class="Keyword">import</a> <a id="80919" href="Relation.Unary.Algebra.html" class="Module">Relation.Unary.Algebra</a>
+<a id="80951" class="Comment">-- Unary relations</a>
+<a id="80970" class="Keyword">import</a> <a id="80977" href="Relation.Unary.html" class="Module">Relation.Unary</a>
 
-<a id="80943" class="Comment">-- Closures of a unary relation with respect to a binary one.</a>
-<a id="81005" class="Keyword">import</a> <a id="81012" href="Relation.Unary.Closure.Base.html" class="Module">Relation.Unary.Closure.Base</a>
+<a id="80993" class="Comment">-- Algebraic properties of constructions over unary relations</a>
+<a id="81055" class="Keyword">import</a> <a id="81062" href="Relation.Unary.Algebra.html" class="Module">Relation.Unary.Algebra</a>
 
-<a id="81041" class="Comment">-- Closure of a unary relation with respect to a preorder</a>
-<a id="81099" class="Keyword">import</a> <a id="81106" href="Relation.Unary.Closure.Preorder.html" class="Module">Relation.Unary.Closure.Preorder</a>
+<a id="81086" class="Comment">-- Closures of a unary relation with respect to a binary one.</a>
+<a id="81148" class="Keyword">import</a> <a id="81155" href="Relation.Unary.Closure.Base.html" class="Module">Relation.Unary.Closure.Base</a>
 
-<a id="81139" class="Comment">-- Closures of a unary relation with respect to a strict partial order</a>
-<a id="81210" class="Keyword">import</a> <a id="81217" href="Relation.Unary.Closure.StrictPartialOrder.html" class="Module">Relation.Unary.Closure.StrictPartialOrder</a>
+<a id="81184" class="Comment">-- Closure of a unary relation with respect to a preorder</a>
+<a id="81242" class="Keyword">import</a> <a id="81249" href="Relation.Unary.Closure.Preorder.html" class="Module">Relation.Unary.Closure.Preorder</a>
 
-<a id="81260" class="Comment">-- Some properties imply others</a>
-<a id="81292" class="Keyword">import</a> <a id="81299" href="Relation.Unary.Consequences.html" class="Module">Relation.Unary.Consequences</a>
+<a id="81282" class="Comment">-- Closures of a unary relation with respect to a strict partial order</a>
+<a id="81353" class="Keyword">import</a> <a id="81360" href="Relation.Unary.Closure.StrictPartialOrder.html" class="Module">Relation.Unary.Closure.StrictPartialOrder</a>
 
-<a id="81328" class="Comment">-- Indexed unary relations</a>
-<a id="81355" class="Keyword">import</a> <a id="81362" href="Relation.Unary.Indexed.html" class="Module">Relation.Unary.Indexed</a>
+<a id="81403" class="Comment">-- Some properties imply others</a>
+<a id="81435" class="Keyword">import</a> <a id="81442" href="Relation.Unary.Consequences.html" class="Module">Relation.Unary.Consequences</a>
 
-<a id="81386" class="Comment">-- Polymorphic versions of standard definitions in Relation.Unary</a>
-<a id="81452" class="Keyword">import</a> <a id="81459" href="Relation.Unary.Polymorphic.html" class="Module">Relation.Unary.Polymorphic</a>
+<a id="81471" class="Comment">-- Indexed unary relations</a>
+<a id="81498" class="Keyword">import</a> <a id="81505" href="Relation.Unary.Indexed.html" class="Module">Relation.Unary.Indexed</a>
 
-<a id="81487" class="Comment">-- Properties of polymorphic versions of standard definitions in</a>
-<a id="81552" class="Comment">-- Relation.Unary</a>
-<a id="81570" class="Keyword">import</a> <a id="81577" href="Relation.Unary.Polymorphic.Properties.html" class="Module">Relation.Unary.Polymorphic.Properties</a>
+<a id="81529" class="Comment">-- Polymorphic versions of standard definitions in Relation.Unary</a>
+<a id="81595" class="Keyword">import</a> <a id="81602" href="Relation.Unary.Polymorphic.html" class="Module">Relation.Unary.Polymorphic</a>
 
-<a id="81616" class="Comment">-- Predicate transformers</a>
-<a id="81642" class="Keyword">import</a> <a id="81649" href="Relation.Unary.PredicateTransformer.html" class="Module">Relation.Unary.PredicateTransformer</a>
+<a id="81630" class="Comment">-- Properties of polymorphic versions of standard definitions in</a>
+<a id="81695" class="Comment">-- Relation.Unary</a>
+<a id="81713" class="Keyword">import</a> <a id="81720" href="Relation.Unary.Polymorphic.Properties.html" class="Module">Relation.Unary.Polymorphic.Properties</a>
 
-<a id="81686" class="Comment">-- Properties of constructions over unary relations</a>
-<a id="81738" class="Keyword">import</a> <a id="81745" href="Relation.Unary.Properties.html" class="Module">Relation.Unary.Properties</a>
+<a id="81759" class="Comment">-- Predicate transformers</a>
+<a id="81785" class="Keyword">import</a> <a id="81792" href="Relation.Unary.PredicateTransformer.html" class="Module">Relation.Unary.PredicateTransformer</a>
 
-<a id="81772" class="Comment">-- Equality of unary relations</a>
-<a id="81803" class="Keyword">import</a> <a id="81810" href="Relation.Unary.Relation.Binary.Equality.html" class="Module">Relation.Unary.Relation.Binary.Equality</a>
+<a id="81829" class="Comment">-- Properties of constructions over unary relations</a>
+<a id="81881" class="Keyword">import</a> <a id="81888" href="Relation.Unary.Properties.html" class="Module">Relation.Unary.Properties</a>
 
-<a id="81851" class="Comment">-- Order properties of the subset relations _⊆_ and _⊂_</a>
-<a id="81907" class="Keyword">import</a> <a id="81914" href="Relation.Unary.Relation.Binary.Subset.html" class="Module">Relation.Unary.Relation.Binary.Subset</a>
+<a id="81915" class="Comment">-- Equality of unary relations</a>
+<a id="81946" class="Keyword">import</a> <a id="81953" href="Relation.Unary.Relation.Binary.Equality.html" class="Module">Relation.Unary.Relation.Binary.Equality</a>
 
-<a id="81953" class="Comment">-- Indexed unary relations over sized types</a>
-<a id="81997" class="Keyword">import</a> <a id="82004" href="Relation.Unary.Sized.html" class="Module">Relation.Unary.Sized</a>
+<a id="81994" class="Comment">-- Order properties of the subset relations _⊆_ and _⊂_</a>
+<a id="82050" class="Keyword">import</a> <a id="82057" href="Relation.Unary.Relation.Binary.Subset.html" class="Module">Relation.Unary.Relation.Binary.Subset</a>
 
-<a id="82026" class="Comment">-- Sizes for Agda&#39;s sized types</a>
-<a id="82058" class="Keyword">import</a> <a id="82065" href="Size.html" class="Module">Size</a>
+<a id="82096" class="Comment">-- Indexed unary relations over sized types</a>
+<a id="82140" class="Keyword">import</a> <a id="82147" href="Relation.Unary.Sized.html" class="Module">Relation.Unary.Sized</a>
 
-<a id="82071" class="Comment">-- Measuring time</a>
-<a id="82089" class="Keyword">import</a> <a id="82096" href="System.Clock.html" class="Module">System.Clock</a>
+<a id="82169" class="Comment">-- Sizes for Agda&#39;s sized types</a>
+<a id="82201" class="Keyword">import</a> <a id="82208" href="Size.html" class="Module">Size</a>
 
-<a id="82110" class="Comment">-- Primitive System.Clock simple bindings to Haskell functions</a>
-<a id="82173" class="Keyword">import</a> <a id="82180" href="System.Clock.Primitive.html" class="Module">System.Clock.Primitive</a>
+<a id="82214" class="Comment">-- Measuring time</a>
+<a id="82232" class="Keyword">import</a> <a id="82239" href="System.Clock.html" class="Module">System.Clock</a>
 
-<a id="82204" class="Comment">-- ANSI escape codes</a>
-<a id="82225" class="Keyword">import</a> <a id="82232" href="System.Console.ANSI.html" class="Module">System.Console.ANSI</a>
+<a id="82253" class="Comment">-- Primitive System.Clock simple bindings to Haskell functions</a>
+<a id="82316" class="Keyword">import</a> <a id="82323" href="System.Clock.Primitive.html" class="Module">System.Clock.Primitive</a>
 
-<a id="82253" class="Comment">-- Directory manipulation</a>
-<a id="82279" class="Keyword">import</a> <a id="82286" href="System.Directory.html" class="Module">System.Directory</a>
+<a id="82347" class="Comment">-- ANSI escape codes</a>
+<a id="82368" class="Keyword">import</a> <a id="82375" href="System.Console.ANSI.html" class="Module">System.Console.ANSI</a>
 
-<a id="82304" class="Comment">-- Primitive System.Direcotry simple bindings to Haskell functions</a>
-<a id="82371" class="Keyword">import</a> <a id="82378" href="System.Directory.Primitive.html" class="Module">System.Directory.Primitive</a>
+<a id="82396" class="Comment">-- Directory manipulation</a>
+<a id="82422" class="Keyword">import</a> <a id="82429" href="System.Directory.html" class="Module">System.Directory</a>
 
-<a id="82406" class="Comment">-- Miscellanous information about the system environment</a>
-<a id="82463" class="Keyword">import</a> <a id="82470" href="System.Environment.html" class="Module">System.Environment</a>
+<a id="82447" class="Comment">-- Primitive System.Direcotry simple bindings to Haskell functions</a>
+<a id="82514" class="Keyword">import</a> <a id="82521" href="System.Directory.Primitive.html" class="Module">System.Directory.Primitive</a>
 
-<a id="82490" class="Comment">-- Primitive System.Environment: simple bindings to Haskell functions</a>
-<a id="82560" class="Keyword">import</a> <a id="82567" href="System.Environment.Primitive.html" class="Module">System.Environment.Primitive</a>
+<a id="82549" class="Comment">-- Miscellanous information about the system environment</a>
+<a id="82606" class="Keyword">import</a> <a id="82613" href="System.Environment.html" class="Module">System.Environment</a>
 
-<a id="82597" class="Comment">-- Exiting the program.</a>
-<a id="82621" class="Keyword">import</a> <a id="82628" href="System.Exit.html" class="Module">System.Exit</a>
+<a id="82633" class="Comment">-- Primitive System.Environment: simple bindings to Haskell functions</a>
+<a id="82703" class="Keyword">import</a> <a id="82710" href="System.Environment.Primitive.html" class="Module">System.Environment.Primitive</a>
 
-<a id="82641" class="Comment">-- Primitive System.Exit simple bindings to Haskell functions</a>
-<a id="82703" class="Keyword">import</a> <a id="82710" href="System.Exit.Primitive.html" class="Module">System.Exit.Primitive</a>
+<a id="82740" class="Comment">-- Exiting the program.</a>
+<a id="82764" class="Keyword">import</a> <a id="82771" href="System.Exit.html" class="Module">System.Exit</a>
 
-<a id="82733" class="Comment">-- Posix filepaths</a>
-<a id="82752" class="Keyword">import</a> <a id="82759" href="System.FilePath.Posix.html" class="Module">System.FilePath.Posix</a>
+<a id="82784" class="Comment">-- Primitive System.Exit simple bindings to Haskell functions</a>
+<a id="82846" class="Keyword">import</a> <a id="82853" href="System.Exit.Primitive.html" class="Module">System.Exit.Primitive</a>
 
-<a id="82782" class="Comment">-- Primitive System.FilePath.Posix simple bindings to Haskell functions</a>
-<a id="82854" class="Keyword">import</a> <a id="82861" href="System.FilePath.Posix.Primitive.html" class="Module">System.FilePath.Posix.Primitive</a>
+<a id="82876" class="Comment">-- Posix filepaths</a>
+<a id="82895" class="Keyword">import</a> <a id="82902" href="System.FilePath.Posix.html" class="Module">System.FilePath.Posix</a>
 
-<a id="82894" class="Comment">-- Calling external processes</a>
-<a id="82924" class="Keyword">import</a> <a id="82931" href="System.Process.html" class="Module">System.Process</a>
+<a id="82925" class="Comment">-- Primitive System.FilePath.Posix simple bindings to Haskell functions</a>
+<a id="82997" class="Keyword">import</a> <a id="83004" href="System.FilePath.Posix.Primitive.html" class="Module">System.FilePath.Posix.Primitive</a>
 
-<a id="82947" class="Comment">-- Primitive System.Process simple bindings to Haskell functions</a>
-<a id="83012" class="Keyword">import</a> <a id="83019" href="System.Process.Primitive.html" class="Module">System.Process.Primitive</a>
+<a id="83037" class="Comment">-- Calling external processes</a>
+<a id="83067" class="Keyword">import</a> <a id="83074" href="System.Process.html" class="Module">System.Process</a>
 
-<a id="83045" class="Comment">-- A simple tactic for used to automatically compute the function</a>
-<a id="83111" class="Comment">-- argument to cong.</a>
-<a id="83132" class="Keyword">import</a> <a id="83139" href="Tactic.Cong.html" class="Module">Tactic.Cong</a>
+<a id="83090" class="Comment">-- Primitive System.Process simple bindings to Haskell functions</a>
+<a id="83155" class="Keyword">import</a> <a id="83162" href="System.Process.Primitive.html" class="Module">System.Process.Primitive</a>
 
-<a id="83152" class="Comment">-- Reflection-based solver for monoid equalities</a>
-<a id="83201" class="Keyword">import</a> <a id="83208" href="Tactic.MonoidSolver.html" class="Module">Tactic.MonoidSolver</a>
+<a id="83188" class="Comment">-- A simple tactic for used to automatically compute the function</a>
+<a id="83254" class="Comment">-- argument to cong.</a>
+<a id="83275" class="Keyword">import</a> <a id="83282" href="Tactic.Cong.html" class="Module">Tactic.Cong</a>
 
-<a id="83229" class="Comment">-- A solver that uses reflection to automatically obtain and solve</a>
-<a id="83296" class="Comment">-- equations over rings.</a>
-<a id="83321" class="Keyword">import</a> <a id="83328" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a>
+<a id="83295" class="Comment">-- Reflection-based solver for monoid equalities</a>
+<a id="83344" class="Keyword">import</a> <a id="83351" href="Tactic.MonoidSolver.html" class="Module">Tactic.MonoidSolver</a>
 
-<a id="83347" class="Comment">-- Almost commutative rings</a>
-<a id="83375" class="Keyword">import</a> <a id="83382" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a>
+<a id="83372" class="Comment">-- A solver that uses reflection to automatically obtain and solve</a>
+<a id="83439" class="Comment">-- equations over rings.</a>
+<a id="83464" class="Keyword">import</a> <a id="83471" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a>
 
-<a id="83428" class="Comment">-- A type for expressions over a raw ring.</a>
-<a id="83471" class="Keyword">import</a> <a id="83478" href="Tactic.RingSolver.Core.Expression.html" class="Module">Tactic.RingSolver.Core.Expression</a>
+<a id="83490" class="Comment">-- Almost commutative rings</a>
+<a id="83518" class="Keyword">import</a> <a id="83525" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a>
 
-<a id="83513" class="Comment">-- Simple implementation of sets of ℕ.</a>
-<a id="83552" class="Keyword">import</a> <a id="83559" href="Tactic.RingSolver.Core.NatSet.html" class="Module">Tactic.RingSolver.Core.NatSet</a>
+<a id="83571" class="Comment">-- A type for expressions over a raw ring.</a>
+<a id="83614" class="Keyword">import</a> <a id="83621" href="Tactic.RingSolver.Core.Expression.html" class="Module">Tactic.RingSolver.Core.Expression</a>
 
-<a id="83590" class="Comment">-- Sparse polynomials in a commutative ring, encoded in Horner normal</a>
-<a id="83660" class="Comment">-- form.</a>
-<a id="83669" class="Keyword">import</a> <a id="83676" href="Tactic.RingSolver.Core.Polynomial.Base.html" class="Module">Tactic.RingSolver.Core.Polynomial.Base</a>
+<a id="83656" class="Comment">-- Simple implementation of sets of ℕ.</a>
+<a id="83695" class="Keyword">import</a> <a id="83702" href="Tactic.RingSolver.Core.NatSet.html" class="Module">Tactic.RingSolver.Core.NatSet</a>
 
-<a id="83716" class="Comment">-- Some specialised instances of the ring solver</a>
-<a id="83765" class="Keyword">import</a> <a id="83772" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism</a>
+<a id="83733" class="Comment">-- Sparse polynomials in a commutative ring, encoded in Horner normal</a>
+<a id="83803" class="Comment">-- form.</a>
+<a id="83812" class="Keyword">import</a> <a id="83819" href="Tactic.RingSolver.Core.Polynomial.Base.html" class="Module">Tactic.RingSolver.Core.Polynomial.Base</a>
 
-<a id="83820" class="Comment">-- Homomorphism proofs for addition over polynomials</a>
-<a id="83873" class="Keyword">import</a> <a id="83880" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition</a>
+<a id="83859" class="Comment">-- Some specialised instances of the ring solver</a>
+<a id="83908" class="Keyword">import</a> <a id="83915" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism</a>
 
-<a id="83937" class="Comment">-- Homomorphism proofs for constants over polynomials</a>
-<a id="83991" class="Keyword">import</a> <a id="83998" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants</a>
+<a id="83963" class="Comment">-- Homomorphism proofs for addition over polynomials</a>
+<a id="84016" class="Keyword">import</a> <a id="84023" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition</a>
 
-<a id="84056" class="Comment">-- Homomorphism proofs for exponentiation over polynomials</a>
-<a id="84115" class="Keyword">import</a> <a id="84122" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation</a>
+<a id="84080" class="Comment">-- Homomorphism proofs for constants over polynomials</a>
+<a id="84134" class="Keyword">import</a> <a id="84141" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants</a>
 
-<a id="84185" class="Comment">-- Lemmas for use in proving the polynomial homomorphism.</a>
-<a id="84243" class="Keyword">import</a> <a id="84250" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas</a>
+<a id="84199" class="Comment">-- Homomorphism proofs for exponentiation over polynomials</a>
+<a id="84258" class="Keyword">import</a> <a id="84265" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation</a>
 
-<a id="84305" class="Comment">-- Homomorphism proofs for multiplication over polynomials</a>
-<a id="84364" class="Keyword">import</a> <a id="84371" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication</a>
+<a id="84328" class="Comment">-- Lemmas for use in proving the polynomial homomorphism.</a>
+<a id="84386" class="Keyword">import</a> <a id="84393" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas</a>
 
-<a id="84434" class="Comment">-- Homomorphism proofs for negation over polynomials</a>
-<a id="84487" class="Keyword">import</a> <a id="84494" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation</a>
+<a id="84448" class="Comment">-- Homomorphism proofs for multiplication over polynomials</a>
+<a id="84507" class="Keyword">import</a> <a id="84514" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication</a>
 
-<a id="84551" class="Comment">-- Homomorphism proofs for variables and constants over polynomials</a>
-<a id="84619" class="Keyword">import</a> <a id="84626" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables</a>
+<a id="84577" class="Comment">-- Homomorphism proofs for negation over polynomials</a>
+<a id="84630" class="Keyword">import</a> <a id="84637" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation</a>
 
-<a id="84684" class="Comment">-- Bundles of parameters for passing to the Ring Solver</a>
-<a id="84740" class="Keyword">import</a> <a id="84747" href="Tactic.RingSolver.Core.Polynomial.Parameters.html" class="Module">Tactic.RingSolver.Core.Polynomial.Parameters</a>
+<a id="84694" class="Comment">-- Homomorphism proofs for variables and constants over polynomials</a>
+<a id="84762" class="Keyword">import</a> <a id="84769" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables</a>
 
-<a id="84793" class="Comment">-- Polynomial reasoning</a>
-<a id="84817" class="Keyword">import</a> <a id="84824" href="Tactic.RingSolver.Core.Polynomial.Reasoning.html" class="Module">Tactic.RingSolver.Core.Polynomial.Reasoning</a>
+<a id="84827" class="Comment">-- Bundles of parameters for passing to the Ring Solver</a>
+<a id="84883" class="Keyword">import</a> <a id="84890" href="Tactic.RingSolver.Core.Polynomial.Parameters.html" class="Module">Tactic.RingSolver.Core.Polynomial.Parameters</a>
 
-<a id="84869" class="Comment">-- &quot;Evaluating&quot; a polynomial, using Horner&#39;s method.</a>
-<a id="84922" class="Keyword">import</a> <a id="84929" href="Tactic.RingSolver.Core.Polynomial.Semantics.html" class="Module">Tactic.RingSolver.Core.Polynomial.Semantics</a>
+<a id="84936" class="Comment">-- Polynomial reasoning</a>
+<a id="84960" class="Keyword">import</a> <a id="84967" href="Tactic.RingSolver.Core.Polynomial.Reasoning.html" class="Module">Tactic.RingSolver.Core.Polynomial.Reasoning</a>
 
-<a id="84974" class="Comment">-- An implementation of the ring solver that requires you to manually</a>
-<a id="85044" class="Comment">-- pass the equation you wish to solve.</a>
-<a id="85084" class="Keyword">import</a> <a id="85091" href="Tactic.RingSolver.NonReflective.html" class="Module">Tactic.RingSolver.NonReflective</a>
+<a id="85012" class="Comment">-- &quot;Evaluating&quot; a polynomial, using Horner&#39;s method.</a>
+<a id="85065" class="Keyword">import</a> <a id="85072" href="Tactic.RingSolver.Core.Polynomial.Semantics.html" class="Module">Tactic.RingSolver.Core.Polynomial.Semantics</a>
 
-<a id="85124" class="Comment">-- Golden testing framework</a>
-<a id="85152" class="Keyword">import</a> <a id="85159" href="Test.Golden.html" class="Module">Test.Golden</a>
+<a id="85117" class="Comment">-- An implementation of the ring solver that requires you to manually</a>
+<a id="85187" class="Comment">-- pass the equation you wish to solve.</a>
+<a id="85227" class="Keyword">import</a> <a id="85234" href="Tactic.RingSolver.NonReflective.html" class="Module">Tactic.RingSolver.NonReflective</a>
 
-<a id="85172" class="Comment">-- Format strings for Printf and Scanf</a>
-<a id="85211" class="Keyword">import</a> <a id="85218" href="Text.Format.html" class="Module">Text.Format</a>
+<a id="85267" class="Comment">-- Golden testing framework</a>
+<a id="85295" class="Keyword">import</a> <a id="85302" href="Test.Golden.html" class="Module">Test.Golden</a>
 
-<a id="85231" class="Comment">-- Format strings for Printf and Scanf</a>
-<a id="85270" class="Keyword">import</a> <a id="85277" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
+<a id="85315" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="85354" class="Keyword">import</a> <a id="85361" href="Text.Format.html" class="Module">Text.Format</a>
 
-<a id="85298" class="Comment">-- Pretty Printing</a>
-<a id="85317" class="Comment">-- This module is based on Jean-Philippe Bernardy&#39;s functional pearl</a>
-<a id="85386" class="Comment">-- &quot;A Pretty But Not Greedy Printer&quot;</a>
-<a id="85423" class="Keyword">import</a> <a id="85430" href="Text.Pretty.html" class="Module">Text.Pretty</a>
+<a id="85374" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="85413" class="Keyword">import</a> <a id="85420" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
 
-<a id="85443" class="Comment">-- Printf</a>
-<a id="85453" class="Keyword">import</a> <a id="85460" href="Text.Printf.html" class="Module">Text.Printf</a>
+<a id="85441" class="Comment">-- Pretty Printing</a>
+<a id="85460" class="Comment">-- This module is based on Jean-Philippe Bernardy&#39;s functional pearl</a>
+<a id="85529" class="Comment">-- &quot;A Pretty But Not Greedy Printer&quot;</a>
+<a id="85566" class="Keyword">import</a> <a id="85573" href="Text.Pretty.html" class="Module">Text.Pretty</a>
 
-<a id="85473" class="Comment">-- Generic printf function.</a>
-<a id="85501" class="Keyword">import</a> <a id="85508" href="Text.Printf.Generic.html" class="Module">Text.Printf.Generic</a>
+<a id="85586" class="Comment">-- Printf</a>
+<a id="85596" class="Keyword">import</a> <a id="85603" href="Text.Printf.html" class="Module">Text.Printf</a>
 
-<a id="85529" class="Comment">-- Regular expressions</a>
-<a id="85552" class="Keyword">import</a> <a id="85559" href="Text.Regex.html" class="Module">Text.Regex</a>
+<a id="85616" class="Comment">-- Generic printf function.</a>
+<a id="85644" class="Keyword">import</a> <a id="85651" href="Text.Printf.Generic.html" class="Module">Text.Printf.Generic</a>
 
-<a id="85571" class="Comment">-- Regular expressions: basic types and semantics</a>
-<a id="85621" class="Keyword">import</a> <a id="85628" href="Text.Regex.Base.html" class="Module">Text.Regex.Base</a>
+<a id="85672" class="Comment">-- Regular expressions</a>
+<a id="85695" class="Keyword">import</a> <a id="85702" href="Text.Regex.html" class="Module">Text.Regex</a>
 
-<a id="85645" class="Comment">-- Regular expressions: Brzozowski derivative</a>
-<a id="85691" class="Keyword">import</a> <a id="85698" href="Text.Regex.Derivative.Brzozowski.html" class="Module">Text.Regex.Derivative.Brzozowski</a>
+<a id="85714" class="Comment">-- Regular expressions: basic types and semantics</a>
+<a id="85764" class="Keyword">import</a> <a id="85771" href="Text.Regex.Base.html" class="Module">Text.Regex.Base</a>
 
-<a id="85732" class="Comment">-- Properties of regular expressions and their semantics</a>
-<a id="85789" class="Keyword">import</a> <a id="85796" href="Text.Regex.Properties.html" class="Module">Text.Regex.Properties</a>
+<a id="85788" class="Comment">-- Regular expressions: Brzozowski derivative</a>
+<a id="85834" class="Keyword">import</a> <a id="85841" href="Text.Regex.Derivative.Brzozowski.html" class="Module">Text.Regex.Derivative.Brzozowski</a>
 
-<a id="85819" class="Comment">-- Regular expressions: search algorithms</a>
-<a id="85861" class="Keyword">import</a> <a id="85868" href="Text.Regex.Search.html" class="Module">Text.Regex.Search</a>
+<a id="85875" class="Comment">-- Properties of regular expressions and their semantics</a>
+<a id="85932" class="Keyword">import</a> <a id="85939" href="Text.Regex.Properties.html" class="Module">Text.Regex.Properties</a>
 
-<a id="85887" class="Comment">-- Regular expressions: smart constructors</a>
-<a id="85930" class="Comment">-- Computing the Brzozowski derivative of a regular expression may lead</a>
-<a id="86002" class="Comment">-- to a blow-up in the size of the expression. To keep it tractable it</a>
-<a id="86073" class="Comment">-- is crucial to use smart constructors.</a>
-<a id="86114" class="Keyword">import</a> <a id="86121" href="Text.Regex.SmartConstructors.html" class="Module">Text.Regex.SmartConstructors</a>
+<a id="85962" class="Comment">-- Regular expressions: search algorithms</a>
+<a id="86004" class="Keyword">import</a> <a id="86011" href="Text.Regex.Search.html" class="Module">Text.Regex.Search</a>
 
-<a id="86151" class="Comment">-- Regular expressions acting on strings</a>
-<a id="86192" class="Keyword">import</a> <a id="86199" href="Text.Regex.String.html" class="Module">Text.Regex.String</a>
+<a id="86030" class="Comment">-- Regular expressions: smart constructors</a>
+<a id="86073" class="Comment">-- Computing the Brzozowski derivative of a regular expression may lead</a>
+<a id="86145" class="Comment">-- to a blow-up in the size of the expression. To keep it tractable it</a>
+<a id="86216" class="Comment">-- is crucial to use smart constructors.</a>
+<a id="86257" class="Keyword">import</a> <a id="86264" href="Text.Regex.SmartConstructors.html" class="Module">Text.Regex.SmartConstructors</a>
 
-<a id="86218" class="Comment">-- Regular expressions acting on strings, using unsafe features</a>
-<a id="86282" class="Keyword">import</a> <a id="86289" href="Text.Regex.String.Unsafe.html" class="Module">Text.Regex.String.Unsafe</a>
+<a id="86294" class="Comment">-- Regular expressions acting on strings</a>
+<a id="86335" class="Keyword">import</a> <a id="86342" href="Text.Regex.String.html" class="Module">Text.Regex.String</a>
 
-<a id="86315" class="Comment">-- Fancy display functions for List-based tables</a>
-<a id="86364" class="Keyword">import</a> <a id="86371" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
+<a id="86361" class="Comment">-- Regular expressions acting on strings, using unsafe features</a>
+<a id="86425" class="Keyword">import</a> <a id="86432" href="Text.Regex.String.Unsafe.html" class="Module">Text.Regex.String.Unsafe</a>
 
-<a id="86390" class="Comment">-- Fancy display functions for List-based tables</a>
-<a id="86439" class="Keyword">import</a> <a id="86446" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a>
+<a id="86458" class="Comment">-- Fancy display functions for List-based tables</a>
+<a id="86507" class="Keyword">import</a> <a id="86514" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
 
-<a id="86465" class="Comment">-- Fancy display functions for Vec-based tables</a>
-<a id="86513" class="Keyword">import</a> <a id="86520" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>
+<a id="86533" class="Comment">-- Fancy display functions for List-based tables</a>
+<a id="86582" class="Keyword">import</a> <a id="86589" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a>
+
+<a id="86608" class="Comment">-- Fancy display functions for Vec-based tables</a>
+<a id="86656" class="Keyword">import</a> <a id="86663" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>
 
 </pre></body></html>
