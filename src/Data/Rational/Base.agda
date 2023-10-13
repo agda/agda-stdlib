@@ -10,7 +10,9 @@ module Data.Rational.Base where
 
 open import Algebra.Bundles.Raw
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
-open import Data.Integer.Base as ℤ using (ℤ; +_; +0; +[1+_]; -[1+_])
+open import Data.Integer.Base as ℤ
+  using (ℤ; +_; +0; +[1+_]; -[1+_])
+  hiding (module ℤ)
 open import Data.Nat.GCD
 open import Data.Nat.Coprimality as C
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
@@ -19,8 +21,8 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ)
 open import Data.Sum.Base using (inj₂)
 open import Function.Base using (id)
 open import Level using (0ℓ)
-open import Relation.Nullary using (¬_; recompute)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable.Core using (recompute)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -143,7 +145,7 @@ toℚᵘ (mkℚ n d-1 _) = mkℚᵘ n d-1
 fromℚᵘ : ℚᵘ → ℚ
 fromℚᵘ (mkℚᵘ n d-1) = n / suc d-1
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some constants
 
 0ℚ : ℚ
@@ -176,6 +178,11 @@ NonPositive p = ℚᵘ.NonPositive (toℚᵘ p)
 NonNegative : Pred ℚ 0ℓ
 NonNegative p = ℚᵘ.NonNegative (toℚᵘ p)
 
+-- Instances
+
+open ℤ public
+  using (nonZero; pos; nonNeg; nonPos0; nonPos; neg)
+
 -- Constructors
 
 ≢-nonZero : ∀ {p} → p ≢ 0ℚ → NonZero p
@@ -202,11 +209,11 @@ nonPositive {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonPositive {toℚᵘ p} (�
 nonNegative : ∀ {p} → p ≥ 0ℚ → NonNegative p
 nonNegative {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonNegative {toℚᵘ p} (ℚᵘ.*≤* p≤q)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Operations on rationals
 
--- For explanation of the `@record{}` annotations see notes in the equivalent
--- place in `Data.Rational.Unnormalised.Base`.
+-- For explanation of the `@record{}` annotations see notes in the
+-- equivalent place in `Data.Rational.Unnormalised.Base`.
 
 infix  8 -_ 1/_
 infixl 7 _*_ _÷_ _⊓_

@@ -8,7 +8,7 @@
 +      - .github/workflows/haskell-ci.yml
 +      - agda-stdlib-utils.cabal
 +      - cabal.haskell-ci
-+      - *.hs
++      - "*.hs"
    pull_request:
      branches:
        - master
@@ -17,7 +17,7 @@
 +      - .github/workflows/haskell-ci.yml
 +      - agda-stdlib-utils.cabal
 +      - cabal.haskell-ci
-+      - *.hs
++      - "*.hs"
  jobs:
    linux:
      name: Haskell-CI - Linux - ${{ matrix.compiler }}

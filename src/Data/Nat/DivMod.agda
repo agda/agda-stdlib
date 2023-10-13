@@ -17,14 +17,15 @@ open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Function using (_$_)
+open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable using (False; toWitnessFalse)
-
-import Algebra.Properties.CommutativeSemigroup *-commutativeSemigroup as *-CS
 
 open ≤-Reasoning
+
+private
+  variable
+    m n o p : ℕ
 
 ------------------------------------------------------------------------
 -- Definitions
@@ -48,10 +49,10 @@ m%n≡m∸m/n*n m n = begin-equality
 ------------------------------------------------------------------------
 -- Properties of _%_
 
-%-congˡ : ∀ {m n o} .⦃ _ : NonZero o ⦄ → m ≡ n → m % o ≡ n % o
+%-congˡ : .⦃ _ : NonZero o ⦄ → m ≡ n → m % o ≡ n % o
 %-congˡ refl = refl
 
-%-congʳ : ∀ {m n o} .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ≡ n →
+%-congʳ : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ≡ n →
           o % m ≡ o % n
 %-congʳ refl = refl
 
@@ -75,7 +76,7 @@ m%n%n≡m%n m (suc n-1) = modₕ-idem 0 m n-1
   (m + n)           % n ≡⟨ [m+n]%n≡m%n m n ⟩
   m                 % n ∎
 
-m≤n⇒[n∸m]%m≡n%m : ∀ {m n} .⦃ _ : NonZero m ⦄ → m ≤ n →
+m≤n⇒[n∸m]%m≡n%m : .⦃ _ : NonZero m ⦄ → m ≤ n →
                   (n ∸ m) % m ≡ n % m
 m≤n⇒[n∸m]%m≡n%m {m} {n} m≤n = begin-equality
   (n ∸ m) % m     ≡˘⟨ [m+n]%n≡m%n (n ∸ m) m ⟩
@@ -91,7 +92,8 @@ m*n≤o⇒[o∸m*n]%n≡o%n m {n} {o} m*n≤o = begin-equality
 
 m∣n⇒o%n%m≡o%m : ∀ m n o .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ∣ n →
                 o % n % m ≡ o % m
-m∣n⇒o%n%m≡o%m m n o (divides p refl) = begin-equality
+m∣n⇒o%n%m≡o%m m n@.(p * m) o (divides-refl p) = begin-equality
+  o % n % m                ≡⟨⟩
   o % pm % m               ≡⟨ %-congˡ (m%n≡m∸m/n*n o pm) ⟩
   (o ∸ o / pm * pm) % m    ≡˘⟨ cong (λ # → (o ∸ #) % m) (*-assoc (o / pm) p m) ⟩
   (o ∸ o / pm * p * m) % m ≡⟨ m*n≤o⇒[o∸m*n]%n≡o%n (o / pm * p) lem ⟩
@@ -109,7 +111,7 @@ m∣n⇒o%n%m≡o%m m n o (divides p refl) = begin-equality
     o                    ∎
 
 m*n%n≡0 : ∀ m n .{{_ : NonZero n}} → (m * n) % n ≡ 0
-m*n%n≡0 m (suc n-1) = [m+kn]%n≡m%n 0 m (suc n-1)
+m*n%n≡0 m n@(suc _) = [m+kn]%n≡m%n 0 m n
 
 m%n<n : ∀ m n .{{_ : NonZero n}} → m % n < n
 m%n<n m (suc n-1) = s≤s (a[modₕ]n<n 0 m n-1)
@@ -120,12 +122,12 @@ m%n≤n m n = <⇒≤ (m%n<n m n)
 m%n≤m : ∀ m n .{{_ : NonZero n}} → m % n ≤ m
 m%n≤m m (suc n-1) = a[modₕ]n≤a 0 m n-1
 
-m≤n⇒m%n≡m : ∀ {m n} → m ≤ n → m % suc n ≡ m
-m≤n⇒m%n≡m {m} {n} m≤n with ≤⇒≤″ m≤n
-... | less-than-or-equal {k} refl = a≤n⇒a[modₕ]n≡a 0 (m + k) m k
+m≤n⇒m%n≡m : m ≤ n → m % suc n ≡ m
+m≤n⇒m%n≡m {m = m} m≤n with less-than-or-equal {k} refl ← ≤⇒≤″ m≤n
+  = a≤n⇒a[modₕ]n≡a 0 (m + k) m k
 
-m<n⇒m%n≡m : ∀ {m n} .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
-m<n⇒m%n≡m {m} {suc n} m<n = m≤n⇒m%n≡m (<⇒≤pred m<n)
+m<n⇒m%n≡m : .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
+m<n⇒m%n≡m {n = suc _} m<n = m≤n⇒m%n≡m (<⇒≤pred m<n)
 
 %-pred-≡0 : ∀ {m n} .{{_ : NonZero n}} → (suc m % n) ≡ 0 → (m % n) ≡ n ∸ 1
 %-pred-≡0 {m} {suc n-1} eq = a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 n-1 m eq
@@ -171,7 +173,8 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
     m′ * n′ + (m′ * j + (n′ + j * d) * k) * d         ∎
 
 %-remove-+ˡ : ∀ {m} n {d} .{{_ : NonZero d}} → d ∣ m → (m + n) % d ≡ n % d
-%-remove-+ˡ {m} n {d@(suc d-1)} (divides p refl) = begin-equality
+%-remove-+ˡ {m@.(p * d)} n {d@(suc _)} (divides-refl p) = begin-equality
+  (m + n)     % d ≡⟨⟩
   (p * d + n) % d ≡⟨ cong (_% d) (+-comm (p * d) n) ⟩
   (n + p * d) % d ≡⟨ [m+kn]%n≡m%n n p d ⟩
   n           % d ∎
@@ -182,16 +185,14 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 ------------------------------------------------------------------------
 -- Properties of _/_
 
-/-congˡ : ∀ {m n o : ℕ} .{{_ : NonZero o}} →
-          m ≡ n → m / o ≡ n / o
+/-congˡ : .{{_ : NonZero o}} → m ≡ n → m / o ≡ n / o
 /-congˡ refl = refl
 
-/-congʳ : ∀ {m n o : ℕ} .{{_ : NonZero n}} .{{_ : NonZero o}} →
-          n ≡ o → m / n ≡ m / o
+/-congʳ : .{{_ : NonZero n}} .{{_ : NonZero o}} → n ≡ o → m / n ≡ m / o
 /-congʳ refl = refl
 
 0/n≡0 : ∀ n .{{_ : NonZero n}} → 0 / n ≡ 0
-0/n≡0 (suc n-1) = refl
+0/n≡0 (suc _) = refl
 
 n/1≡n : ∀ n → n / 1 ≡ n
 n/1≡n n = a[divₕ]1≡a 0 n
@@ -203,9 +204,9 @@ m*n/n≡m : ∀ m n .{{_ : NonZero n}} → m * n / n ≡ m
 m*n/n≡m m (suc n-1) = a*n[divₕ]n≡a 0 m n-1
 
 m/n*n≡m : ∀ {m n} .{{_ : NonZero n}} → n ∣ m → m / n * n ≡ m
-m/n*n≡m {_} {n@(suc n-1)} (divides q refl) = cong (_* n) (m*n/n≡m q n)
+m/n*n≡m {_} {n@(suc _)} (divides-refl q) = cong (_* n) (m*n/n≡m q n)
 
-m*[n/m]≡n : ∀ {m n} .{{_ : NonZero m}} → m ∣ n → m * (n / m) ≡ n
+m*[n/m]≡n : .{{_ : NonZero m}} → m ∣ n → m * (n / m) ≡ n
 m*[n/m]≡n {m} m∣n = trans (*-comm m (_ / m)) (m/n*n≡m m∣n)
 
 m/n*n≤m : ∀ m n .{{_ : NonZero n}} → (m / n) * n ≤ m
@@ -227,11 +228,11 @@ m/n<m m n n≥2 = *-cancelʳ-< _ (m / n) m (begin-strict
   m           <⟨ m<m*n m n n≥2 ⟩
   m * n       ∎)
 
-/-mono-≤ : ∀ {m n o p} .{{_ : NonZero o}} .{{_ : NonZero p}} →
+/-mono-≤ : .{{_ : NonZero o}} .{{_ : NonZero p}} →
            m ≤ n → o ≥ p → m / o ≤ n / p
 /-mono-≤ m≤n (s≤s o≥p) = divₕ-mono-≤ 0 m≤n o≥p
 
-/-monoˡ-≤ : ∀ {m n} o .{{_ : NonZero o}} → m ≤ n → m / o ≤ n / o
+/-monoˡ-≤ : ∀ o .{{_ : NonZero o}} → m ≤ n → m / o ≤ n / o
 /-monoˡ-≤ o m≤n = /-mono-≤ m≤n (≤-refl {o})
 
 /-monoʳ-≤ : ∀ m {n o} .{{_ : NonZero n}} .{{_ : NonZero o}} →
@@ -261,14 +262,16 @@ m≥n⇒m/n>0 {m@(suc _)} {n@(suc _)} m≥n = begin
 
 +-distrib-/-∣ˡ : ∀ {m} n {d} .{{_ : NonZero d}} →
                  d ∣ m → (m + n) / d ≡ m / d + n / d
-+-distrib-/-∣ˡ {m} n {d} (divides p refl) = +-distrib-/ m n (begin-strict
++-distrib-/-∣ˡ {m@.(p * d)} n {d} (divides-refl p) = +-distrib-/ m n (begin-strict
+  m % d + n % d     ≡⟨⟩
   p * d % d + n % d ≡⟨ cong (_+ n % d) (m*n%n≡0 p d) ⟩
   n % d             <⟨ m%n<n n d ⟩
   d                 ∎)
 
 +-distrib-/-∣ʳ : ∀ m {n} {d} .{{_ : NonZero d}} →
                  d ∣ n → (m + n) / d ≡ m / d + n / d
-+-distrib-/-∣ʳ m {n} {d} (divides p refl) = +-distrib-/ m n (begin-strict
++-distrib-/-∣ʳ m {n@.(p * d)} {d} (divides-refl p) = +-distrib-/ m n (begin-strict
+  m % d + n % d     ≡⟨⟩
   m % d + p * d % d ≡⟨ cong (m % d +_) (m*n%n≡0 p d) ⟩
   m % d + 0         ≡⟨ +-identityʳ _ ⟩
   m % d             <⟨ m%n<n m d ⟩
@@ -284,7 +287,7 @@ m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} m≥n = begin-equality
 
 m*n/m*o≡n/o : ∀ m n o .{{_ : NonZero o}} .{{_ : NonZero (m * o)}} →
               (m * n) / (m * o) ≡ n / o
-m*n/m*o≡n/o m@(suc m-1) n o = helper (<-wellFounded n)
+m*n/m*o≡n/o m@(suc _) n o = helper (<-wellFounded n)
   where
   helper : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
   helper {n} (acc rec) with n <? o
@@ -292,7 +295,7 @@ m*n/m*o≡n/o m@(suc m-1) n o = helper (<-wellFounded n)
   ... | no  n≮o = begin-equality
     (m * n) / (m * o)             ≡⟨  m/n≡1+[m∸n]/n (*-monoʳ-≤ m (≮⇒≥ n≮o)) ⟩
     1 + (m * n ∸ m * o) / (m * o) ≡˘⟨ cong (λ v → 1 + v / (m * o)) (*-distribˡ-∸ m n o) ⟩
-    1 + (m * (n ∸ o)) / (m * o)   ≡⟨  cong suc (helper (rec (n ∸ o) n∸o<n)) ⟩
+    1 + (m * (n ∸ o)) / (m * o)   ≡⟨  cong suc (helper (rec n∸o<n)) ⟩
     1 + (n ∸ o) / o               ≡˘⟨ cong₂ _+_ (n/n≡1 o) refl ⟩
     o / o + (n ∸ o) / o           ≡˘⟨ +-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o)))) ⟩
     (o + (n ∸ o)) / o             ≡⟨  cong (_/ o) (m+[n∸m]≡n (≮⇒≥ n≮o)) ⟩
@@ -328,7 +331,7 @@ m<n*o⇒m/o<n {m} {suc n} {o} m<n*o with m <? o
 [m∸n]/n≡m/n∸1 : ∀ m n .⦃ _ : NonZero n ⦄ → (m ∸ n) / n ≡ pred (m / n)
 [m∸n]/n≡m/n∸1 m n with m <? n
 ... | yes m<n = begin-equality
-  (m ∸ n) / n  ≡⟨ m<n⇒m/n≡0 (<-transʳ (m∸n≤m m n) m<n) ⟩
+  (m ∸ n) / n  ≡⟨ m<n⇒m/n≡0 (≤-<-trans (m∸n≤m m n) m<n) ⟩
   0            ≡⟨⟩
   0 ∸ 1        ≡˘⟨ cong (_∸ 1) (m<n⇒m/n≡0 m<n) ⟩
   m / n ∸ 1    ≡⟨⟩
@@ -354,7 +357,7 @@ m/n/o≡m/[n*o] m n o = begin-equality
   m / n / o                             ≡⟨ /-congˡ {o = o} (/-congˡ (m≡m%n+[m/n]*n m n*o)) ⟩
   (m % n*o + m / n*o * n*o) / n / o     ≡⟨ /-congˡ (+-distrib-/-∣ʳ (m % n*o) lem₁) ⟩
   (m % n*o / n + m / n*o * n*o / n) / o ≡⟨ cong (λ # → (m % n*o / n + #) / o) lem₂ ⟩
-  (m % n*o / n + m / n*o * o) / o       ≡⟨ +-distrib-/-∣ʳ (m % n*o / n) (divides (m / n*o) refl) ⟩
+  (m % n*o / n + m / n*o * o) / o       ≡⟨ +-distrib-/-∣ʳ (m % n*o / n) (divides-refl (m / n*o)) ⟩
   m % n*o / n / o + m / n*o * o / o     ≡⟨ cong (m % n*o / n / o +_) (m*n/n≡m (m / n*o) o) ⟩
   m % n*o / n / o + m / n*o             ≡⟨ cong (_+ m / n*o) (m<n⇒m/n≡0 (m<n*o⇒m/o<n {n = o} lem₃)) ⟩
   m / n*o                               ∎
@@ -461,12 +464,13 @@ _div_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
 _div_ = _/_
 
 _mod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → Fin divisor
-m mod (suc n) = fromℕ< (m%n<n m (suc n))
+m mod n = fromℕ< (m%n<n m n)
 
 _divMod_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} →
            DivMod dividend divisor
-m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
-  m                                   ≡⟨  m≡m%n+[m/n]*n m n ⟩
-  m % n                    + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< (m%n<n m n)) ⟩
-  toℕ (fromℕ< (m%n<n m n)) + [m/n]*n  ∎)
-  where [m/n]*n = m / n * n
+m divMod n = result (m / n) (m mod n) $ begin-equality
+  m                               ≡⟨  m≡m%n+[m/n]*n m n ⟩
+  m % n                + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< [m%n]<n) ⟩
+  toℕ (fromℕ< [m%n]<n) + [m/n]*n  ∎
+  where [m/n]*n = m / n * n ; [m%n]<n = m%n<n m n
+

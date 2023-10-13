@@ -70,7 +70,7 @@ record PreorderHomomorphism (S₁ : Preorder ℓ₁ ℓ₂ ℓ₃)
   open Preorder
   field
     ⟦_⟧                 : Carrier S₁ → Carrier S₂
-    isOrderHomomorphism : IsOrderHomomorphism (_≈_ S₁) (_≈_ S₂) (_∼_ S₁) (_∼_ S₂) ⟦_⟧
+    isOrderHomomorphism : IsOrderHomomorphism (_≈_ S₁) (_≈_ S₂) (_≲_ S₁) (_≲_ S₂) ⟦_⟧
 
   open IsOrderHomomorphism isOrderHomomorphism public
 
@@ -92,8 +92,8 @@ module _ (P : Poset ℓ₁ ℓ₂ ℓ₃) (Q : Poset ℓ₄ ℓ₅ ℓ₆) where
     open IsOrderHomomorphism isOrderHomomorphism public
 
 
-  -- Smart constructor that automatically constructs the congruence proof
-  -- from the monotonicity proof
+  -- Smart constructor that automatically constructs the congruence
+  -- proof from the monotonicity proof
   mkPosetHomo : ∀ f → f Preserves P._≤_ ⟶ Q._≤_ → PosetHomomorphism
   mkPosetHomo f mono = record
     { ⟦_⟧ = f

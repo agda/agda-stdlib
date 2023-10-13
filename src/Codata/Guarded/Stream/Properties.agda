@@ -16,11 +16,11 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
 import Data.Nat.GeneralisedArithmetic as ℕ
-open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_×_; _,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function.Base using (const; flip; id; _∘′_; _$′_; _⟨_⟩_; _∘₂′_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; cong; cong₂)
 
 private
   variable
@@ -80,11 +80,11 @@ lookup-repeat : ∀ n (a : A) → lookup (repeat a) n ≡ a
 lookup-repeat zero    a = P.refl
 lookup-repeat (suc n) a = lookup-repeat n a
 
-splitAt-repeat : ∀ n (a : A) → splitAt n (repeat a) ≡ (Vec.replicate a , repeat a)
+splitAt-repeat : ∀ n (a : A) → splitAt n (repeat a) ≡ (Vec.replicate n a , repeat a)
 splitAt-repeat zero    a = P.refl
 splitAt-repeat (suc n) a = cong (Prod.map₁ (a ∷_)) (splitAt-repeat n a)
 
-take-repeat : ∀ n (a : A) → take n (repeat a) ≡ Vec.replicate a
+take-repeat : ∀ n (a : A) → take n (repeat a) ≡ Vec.replicate n a
 take-repeat n a = cong proj₁ (splitAt-repeat n a)
 
 drop-repeat : ∀ n (a : A) → drop n (repeat a) ≡ repeat a
@@ -115,17 +115,17 @@ zipWith-repeat : ∀ (f : A → B → C) a b →
 zipWith-repeat f a b .head = P.refl
 zipWith-repeat f a b .tail = zipWith-repeat f a b
 
-chunksOf-repeat : ∀ n (a : A) → chunksOf n (repeat a) ≈ repeat (Vec.replicate a)
+chunksOf-repeat : ∀ n (a : A) → chunksOf n (repeat a) ≈ repeat (Vec.replicate n a)
 chunksOf-repeat n a = begin go where
 
   open ≈-Reasoning
 
-  go : chunksOf n (repeat a) ≈∞ repeat (Vec.replicate a)
+  go : chunksOf n (repeat a) ≈∞ repeat (Vec.replicate n a)
   go .head = take-repeat n a
   go .tail =
     chunksOf n (drop n (repeat a)) ≡⟨ P.cong (chunksOf n) (drop-repeat n a) ⟩
     chunksOf n (repeat a)          ↺⟨ go ⟩
-    repeat (Vec.replicate a)       ∎
+    repeat (Vec.replicate n a)     ∎
 
 ------------------------------------------------------------------------
 -- Properties of map
@@ -255,7 +255,7 @@ lookup-interleave-odd (suc n) as bs = lookup-interleave-odd n (as .tail) (bs .ta
 ------------------------------------------------------------------------
 -- Properties of take
 
-take-iterate : ∀ n f (x : A) → take n (iterate f x) ≡ Vec.iterate f x
+take-iterate : ∀ n f (x : A) → take n (iterate f x) ≡ Vec.iterate f x n
 take-iterate zero    f x = P.refl
 take-iterate (suc n) f x = cong (x ∷_) (take-iterate n f (f x))
 
@@ -268,9 +268,9 @@ take-zipWith (suc n) f as bs =
 ------------------------------------------------------------------------
 -- Properties of drop
 
-drop-fusion : ∀ m n (as : Stream A) → drop n (drop m as) ≡ drop (m + n) as
-drop-fusion zero    n as = P.refl
-drop-fusion (suc m) n as = drop-fusion m n (as .tail)
+drop-drop : ∀ m n (as : Stream A) → drop n (drop m as) ≡ drop (m + n) as
+drop-drop zero    n as = P.refl
+drop-drop (suc m) n as = drop-drop m n (as .tail)
 
 drop-zipWith : ∀ n (f : A → B → C) as bs →
                drop n (zipWith f as bs) ≡ zipWith f (drop n as) (drop n bs)
@@ -330,4 +330,10 @@ map-fusion = map-∘
 {-# WARNING_ON_USAGE map-fusion
 "Warning: map-fusion was deprecated in v2.0.
 Please use map-∘ instead."
+#-}
+
+drop-fusion = drop-drop
+{-# WARNING_ON_USAGE drop-fusion
+"Warning: drop-fusion was deprecated in v2.0.
+Please use drop-drop instead."
 #-}

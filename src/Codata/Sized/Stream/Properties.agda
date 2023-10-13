@@ -20,11 +20,11 @@ open import Data.Nat.GeneralisedArithmetic using (fold; fold-pull)
 open import Data.List.Base as List using ([]; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 import Data.List.Relation.Binary.Equality.Propositional as Eq
-open import Data.Product as Prod using (_,_)
+open import Data.Product.Base as Prod using (_,_)
 open import Data.Vec.Base as Vec using (_∷_)
 
 open import Function.Base using (id; _$_; _∘′_; const)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; _≢_)
 
 private
   variable
@@ -41,11 +41,11 @@ lookup-repeat-identity : (n : ℕ) (a : A) → lookup (repeat a) n ≡ a
 lookup-repeat-identity zero    a = P.refl
 lookup-repeat-identity (suc n) a = lookup-repeat-identity n a
 
-take-repeat-identity : (n : ℕ) (a : A) → take n (repeat a) ≡ Vec.replicate a
+take-repeat-identity : (n : ℕ) (a : A) → take n (repeat a) ≡ Vec.replicate n a
 take-repeat-identity zero    a = P.refl
 take-repeat-identity (suc n) a = P.cong (a Vec.∷_) (take-repeat-identity n a)
 
-splitAt-repeat-identity : (n : ℕ) (a : A) → splitAt n (repeat a) ≡ (Vec.replicate a , repeat a)
+splitAt-repeat-identity : (n : ℕ) (a : A) → splitAt n (repeat a) ≡ (Vec.replicate n a , repeat a)
 splitAt-repeat-identity zero    a = P.refl
 splitAt-repeat-identity (suc n) a = P.cong (Prod.map₁ (a ∷_)) (splitAt-repeat-identity n a)
 

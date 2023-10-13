@@ -10,13 +10,13 @@ module Data.List.Fresh.Relation.Unary.Any where
 
 open import Level using (Level; _⊔_; Lift)
 open import Data.Empty
-open import Data.Product using (∃; _,_; -,_)
+open import Data.Product.Base using (∃; _,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Unary  as U
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 
 open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 

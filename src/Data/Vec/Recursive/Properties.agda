@@ -10,11 +10,11 @@ module Data.Vec.Recursive.Properties where
 
 open import Level using (Level)
 open import Data.Nat.Base hiding (_^_)
-open import Data.Product
+open import Data.Product.Base
 open import Data.Vec.Recursive
 open import Data.Vec.Base using (Vec; _∷_)
-open import Function.Inverse using (_↔_; inverse)
-open import Relation.Binary.PropositionalEquality as P
+open import Function.Bundles using (_↔_; mk↔ₛ′)
+open import Relation.Binary.PropositionalEquality.Core as P
 open ≡-Reasoning
 
 private
@@ -82,7 +82,7 @@ toVec∘fromVec {n = suc n} (x Vec.∷ xs) = begin
   tl-prf = tail-cons-identity _ x (fromVec xs)
 
 ↔Vec : ∀ n → A ^ n ↔ Vec A n
-↔Vec n = inverse (toVec n) fromVec (fromVec∘toVec n) toVec∘fromVec
+↔Vec n = mk↔ₛ′ (toVec n) fromVec toVec∘fromVec (fromVec∘toVec n)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

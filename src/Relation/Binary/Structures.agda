@@ -15,7 +15,7 @@ module Relation.Binary.Structures
   (_≈_ : Rel A ℓ)   -- The underlying equality relation
   where
 
-open import Data.Product using (proj₁; proj₂; _,_)
+open import Data.Product.Base using (proj₁; proj₂; _,_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
@@ -73,25 +73,25 @@ record IsDecEquivalence : Set (a ⊔ ℓ) where
 -- Preorders
 ------------------------------------------------------------------------
 
-record IsPreorder (_∼_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+record IsPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
     isEquivalence : IsEquivalence
     -- Reflexivity is expressed in terms of the underlying equality:
-    reflexive     : _≈_ ⇒ _∼_
-    trans         : Transitive _∼_
+    reflexive     : _≈_ ⇒ _≲_
+    trans         : Transitive _≲_
 
   module Eq = IsEquivalence isEquivalence
 
-  refl : Reflexive _∼_
+  refl : Reflexive _≲_
   refl = reflexive Eq.refl
 
-  ∼-respˡ-≈ : _∼_ Respectsˡ _≈_
+  ∼-respˡ-≈ : _≲_ Respectsˡ _≈_
   ∼-respˡ-≈ x≈y x∼z = trans (reflexive (Eq.sym x≈y)) x∼z
 
-  ∼-respʳ-≈ : _∼_ Respectsʳ _≈_
+  ∼-respʳ-≈ : _≲_ Respectsʳ _≈_
   ∼-respʳ-≈ x≈y z∼x = trans z∼x (reflexive x≈y)
 
-  ∼-resp-≈ : _∼_ Respects₂ _≈_
+  ∼-resp-≈ : _≲_ Respects₂ _≈_
   ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
 
 
@@ -278,6 +278,14 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
 
   open IsStrictPartialOrder isStrictPartialOrder public
     using (irrefl; asym; <-respʳ-≈; <-respˡ-≈; <-resp-≈)
+
+
+record IsDenseLinearOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  field
+    isStrictTotalOrder : IsStrictTotalOrder _<_
+    dense              : Dense _<_
+
+  open IsStrictTotalOrder isStrictTotalOrder public
 
 
 ------------------------------------------------------------------------

@@ -9,10 +9,18 @@ module README.Data.Nat.Induction where
 
 open import Data.Nat
 open import Data.Nat.Induction
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_)
 open import Induction.WellFounded
 open import Relation.Binary.PropositionalEquality
+
+private
+
+  n<′1+n : ∀ {n} → n <′ suc n
+  n<′1+n = ≤′-refl
+
+  n<′2+n : ∀ {n} → n <′ suc (suc n)
+  n<′2+n = ≤′-step ≤′-refl
 
 -- Doubles its input.
 
@@ -46,7 +54,7 @@ mutual
   half₂-step = λ
     { zero          _   → zero
     ; (suc zero)    _   → zero
-    ; (suc (suc n)) rec → suc (rec n (≤′-step ≤′-refl))
+    ; (suc (suc n)) rec → suc (rec n<′2+n)
     }
 
   half₂ : ℕ → ℕ
@@ -92,21 +100,21 @@ half₂-2+ n = begin
 
   half₂-step (2 + n) (<′-recBuilder _ half₂-step (2 + n))     ≡⟨⟩
 
-  1 + <′-recBuilder _ half₂-step (2 + n) n (≤′-step ≤′-refl)  ≡⟨⟩
+  1 + <′-recBuilder _ half₂-step (2 + n) n<′2+n  ≡⟨⟩
 
   1 + Some.wfRecBuilder _ half₂-step (2 + n)
-        (<′-wellFounded (2 + n)) n (≤′-step ≤′-refl)          ≡⟨⟩
+        (<′-wellFounded (2 + n)) n<′2+n          ≡⟨⟩
 
   1 + Some.wfRecBuilder _ half₂-step (2 + n)
-        (acc (<′-wellFounded′ (2 + n))) n (≤′-step ≤′-refl)   ≡⟨⟩
+        (acc (<′-wellFounded′ (2 + n))) n<′2+n   ≡⟨⟩
 
   1 + half₂-step n
         (Some.wfRecBuilder _ half₂-step n
-           (<′-wellFounded′ (2 + n) n (≤′-step ≤′-refl)))     ≡⟨⟩
+           (<′-wellFounded′ (2 + n) n<′2+n))     ≡⟨⟩
 
   1 + half₂-step n
         (Some.wfRecBuilder _ half₂-step n
-           (<′-wellFounded′ (1 + n) n ≤′-refl))               ≡⟨⟩
+           (<′-wellFounded′ (1 + n) n<′1+n))               ≡⟨⟩
 
   1 + half₂-step n
         (Some.wfRecBuilder _ half₂-step n (<′-wellFounded n)) ≡⟨⟩
@@ -146,7 +154,7 @@ half₁-+₂ = <′-rec _ λ
   { zero          _   → refl
   ; (suc zero)    _   → refl
   ; (suc (suc n)) rec →
-      cong (suc ∘ suc) (rec n (≤′-step ≤′-refl))
+      cong (suc ∘ suc) (rec n<′2+n)
   }
 
 half₂-+₂ : ∀ n → half₂ (twice n) ≡ n
@@ -154,6 +162,6 @@ half₂-+₂ = <′-rec _ λ
   { zero          _   → refl
   ; (suc zero)    _   → refl
   ; (suc (suc n)) rec →
-      cong (suc ∘ suc) (rec n (≤′-step ≤′-refl))
+      cong (suc ∘ suc) (rec n<′2+n)
   }
 

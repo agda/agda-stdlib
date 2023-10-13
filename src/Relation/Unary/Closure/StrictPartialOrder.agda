@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (StrictPartialOrder)
 
 module Relation.Unary.Closure.StrictPartialOrder
        {a r e} (P : StrictPartialOrder a e r) where

@@ -48,7 +48,7 @@ lem₅ = refl
 open import Data.List.Properties
 
 lem₆ : ∀ n (xs : List ℕ) → take n xs ++ drop n xs ≡ xs
-lem₆ = take++drop
+lem₆ = take++drop≡id
 
 lem₇ : ∀ (xs : List ℕ) → reverse (reverse xs) ≡ xs
 lem₇ = reverse-involutive

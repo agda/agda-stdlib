@@ -16,7 +16,7 @@ open import Data.Nat.DivMod
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
 open import Data.Nat.Combinatorics.Base
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; trans; _≢_)
 open import Relation.Nullary.Decidable using (yes; no; does)
@@ -57,20 +57,20 @@ nP′k≡n[n∸1P′k∸1] : ∀ n k → .{{NonZero n}} → .{{NonZero k}} →
 nP′k≡n[n∸1P′k∸1] n           (suc zero)            = refl
 nP′k≡n[n∸1P′k∸1] n@(suc n-1) k@(suc k-1@(suc k-2)) = begin-equality
   n P′ k                        ≡⟨⟩
-  (n ∸ k-1) * n P′ k-1          ≡⟨ cong ((n ∸ k-1) *_) (nP′k≡n[n∸1P′k∸1] n k-1) ⟩
-  (n ∸ k-1) * (n * n-1 P′ k-2)  ≡⟨ x∙yz≈y∙xz (n ∸ k-1) n (n-1 P′ k-2) ⟩
-  n * ((n ∸ k-1) * n-1 P′ k-2)  ≡⟨⟩
-  n * n-1 P′ k-1                ∎
+  (n ∸ k-1) * (n P′ k-1)        ≡⟨ cong ((n ∸ k-1) *_) (nP′k≡n[n∸1P′k∸1] n k-1) ⟩
+  (n ∸ k-1) * (n * (n-1 P′ k-2))  ≡⟨ x∙yz≈y∙xz (n ∸ k-1) n (n-1 P′ k-2) ⟩
+  n * ((n ∸ k-1) * (n-1 P′ k-2))  ≡⟨⟩
+  n * (n-1 P′ k-1)              ∎
   where open ≤-Reasoning; open *-CS
 
 P′-rec : ∀ {n k} → k ≤ n → .{{NonZero k}} →
         n P′ k ≡ k * (pred n P′ pred k) + pred n P′ k
 P′-rec n@{suc n-1} k@{suc k-1} k≤n = begin-equality
-  n P′ k                                      ≡⟨ nP′k≡n[n∸1P′k∸1] n k ⟩
-  n * n-1 P′ k-1                              ≡˘⟨ cong (_* n-1 P′ k-1) (m+[n∸m]≡n {k} {n} k≤n) ⟩
-  (k + (n ∸ k)) * n-1 P′ k-1                  ≡⟨ *-distribʳ-+ (n-1 P′ k-1) k (n ∸ k) ⟩
-  k * (n-1 P′ k-1) + (n-1 ∸ k-1) * n-1 P′ k-1 ≡⟨⟩
-  k * (n-1 P′ k-1) + n-1 P′ k                 ∎
+  n P′ k                                        ≡⟨ nP′k≡n[n∸1P′k∸1] n k ⟩
+  n * (n-1 P′ k-1)                              ≡˘⟨ cong (_* (n-1 P′ k-1)) (m+[n∸m]≡n {k} {n} k≤n) ⟩
+  (k + (n ∸ k)) * (n-1 P′ k-1)                  ≡⟨ *-distribʳ-+ (n-1 P′ k-1) k (n ∸ k) ⟩
+  k * (n-1 P′ k-1) + (n-1 ∸ k-1) * (n-1 P′ k-1) ≡⟨⟩
+  k * (n-1 P′ k-1) + (n-1 P′ k)                 ∎
   where open ≤-Reasoning
 
 nP′n≡n! : ∀ n → n P′ n ≡ n !

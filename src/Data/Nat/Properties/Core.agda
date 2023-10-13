@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- This module is DEPRECATED. Please use
--- `Data.Nat.Properties` directly.
+-- `Data.Nat.Base directly.
 --
 ------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ module Data.Nat.Properties.Core where
 
 {-# WARNING_ON_IMPORT
 "Data.Nat.Properties.Core was deprecated in v2.0.
-Use Data.Nat.Properties instead."
+Use Data.Nat.Base instead."
 #-}
 
 open import Data.Nat.Base
@@ -22,4 +22,4 @@ open import Data.Nat.Base
 ------------------------------------------------------------------------
 
 ≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
-≤-pred (s≤s m≤n) = m≤n
+≤-pred = s≤s⁻¹

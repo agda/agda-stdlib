@@ -17,10 +17,11 @@ open import Data.Bool.Base as Bool
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product as Prod using (_×_; _,_; map₁; map₂′)
+open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)
+open import Function.Base
+  using (id; _∘_ ; _∘′_; _∘₂_; _$_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary.Decidable.Core using (does; ¬?)
 open import Relation.Unary using (Pred; Decidable)
@@ -187,6 +188,10 @@ replicate : ℕ → A → List A
 replicate zero    x = []
 replicate (suc n) x = x ∷ replicate n x
 
+iterate : (A → A) → A → ℕ → List A
+iterate f e zero    = []
+iterate f e (suc n) = e ∷ iterate f (f e) n
+
 inits : List A → List (List A)
 inits []       = [] ∷ []
 inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
@@ -194,6 +199,14 @@ inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
 tails : List A → List (List A)
 tails []       = [] ∷ []
 tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
+
+insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
+insertAt xs       zero    v = v ∷ xs
+insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
+
+updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
+updateAt (x ∷ xs) zero    f = f x ∷ xs
+updateAt (x ∷ xs) (suc i) f = x ∷ updateAt xs i f
 
 -- Scans
 
@@ -329,6 +342,10 @@ splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
 splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
 
+removeAt : (xs : List A) → Fin (length xs) → List A
+removeAt (x ∷ xs) zero     = xs
+removeAt (x ∷ xs) (suc i)  = x ∷ removeAt xs i
+
 -- The following are functions which split a list up using boolean
 -- predicates. However, in practice they are difficult to use and
 -- prove properties about, and are mainly provided for advanced use
@@ -395,6 +412,26 @@ deduplicateᵇ : (A → A → Bool) → List A → List A
 deduplicateᵇ r [] = []
 deduplicateᵇ r (x ∷ xs) = x ∷ filterᵇ (not ∘ r x) (deduplicateᵇ r xs)
 
+-- Finds the first element satisfying the boolean predicate
+findᵇ : (A → Bool) → List A → Maybe A
+findᵇ p []       = nothing
+findᵇ p (x ∷ xs) = if p x then just x else findᵇ p xs
+
+-- Finds the index of the first element satisfying the boolean predicate
+findIndexᵇ : (A → Bool) → (xs : List A) → Maybe $ Fin (length xs)
+findIndexᵇ p []       = nothing
+findIndexᵇ p (x ∷ xs) = if p x
+  then just zero
+  else Maybe.map suc (findIndexᵇ p xs)
+
+-- Finds indices of all the elements satisfying the boolean predicate
+findIndicesᵇ : (A → Bool) → (xs : List A) → List $ Fin (length xs)
+findIndicesᵇ p []       = []
+findIndicesᵇ p (x ∷ xs) = if p x
+  then zero ∷ indices
+  else indices
+    where indices = map suc (findIndicesᵇ p xs)
+
 -- Equivalent functions that use a decidable predicate instead of a
 -- boolean function.
 
@@ -436,21 +473,29 @@ derun R? = derunᵇ (does ∘₂ R?)
 deduplicate : ∀ {R : Rel A p} → B.Decidable R → List A → List A
 deduplicate R? = deduplicateᵇ (does ∘₂ R?)
 
+find : ∀ {P : Pred A p} → Decidable P → List A → Maybe A
+find P? = findᵇ (does ∘ P?)
+
+findIndex : ∀ {P : Pred A p} → Decidable P → (xs : List A) → Maybe $ Fin (length xs)
+findIndex P? = findIndexᵇ (does ∘ P?)
+
+findIndices : ∀ {P : Pred A p} → Decidable P → (xs : List A) → List $ Fin (length xs)
+findIndices P? = findIndicesᵇ (does ∘ P?)
+
 ------------------------------------------------------------------------
 -- Actions on single elements
 
-infixl 5 _[_]%=_ _[_]∷=_ _─_
+infixl 5 _[_]%=_ _[_]∷=_
+
+-- xs [ i ]%= f  modifies the i-th element of xs according to f
 
 _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-(x ∷ xs) [ zero  ]%= f = f x ∷ xs
-(x ∷ xs) [ suc k ]%= f = x ∷ (xs [ k ]%= f)
+xs [ i ]%= f = updateAt xs i f
+
+-- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
 _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
 xs [ k ]∷= v = xs [ k ]%= const v
-
-_─_ : (xs : List A) → Fin (length xs) → List A
-(x ∷ xs) ─ zero  = xs
-(x ∷ xs) ─ suc k = x ∷ (xs ─ k)
 
 ------------------------------------------------------------------------
 -- Conditional versions of cons and snoc
@@ -496,4 +541,13 @@ _∷ʳ'_ = InitLast._∷ʳ′_
 {-# WARNING_ON_USAGE _∷ʳ'_
 "Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
 Please use _∷ʳ′_ (ending in a prime) instead."
+#-}
+
+-- Version 2.0
+
+infixl 5 _─_
+_─_ = removeAt
+{-# WARNING_ON_USAGE _─_
+"Warning: _─_ was deprecated in v2.0.
+Please use removeAt instead."
 #-}

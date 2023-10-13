@@ -15,7 +15,7 @@ open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_)
-open import Data.Product using (_×_; uncurry)
+open import Data.Product.Base using (_×_; uncurry)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
 open import Function.Base using (_∘_)
@@ -33,6 +33,10 @@ module Algebra.Solver.IdempotentCommutativeMonoid
 
 open IdempotentCommutativeMonoid M
 open EqReasoning setoid
+
+private
+  variable
+    n : ℕ
 
 ------------------------------------------------------------------------
 -- Monoid expressions
@@ -71,7 +75,7 @@ Normal n = Vec Bool n
 
 -- The semantics of a normal form.
 
-⟦_⟧⇓ : ∀ {n} → Normal n → Env n → Carrier
+⟦_⟧⇓ : Normal n → Env n → Carrier
 ⟦ []    ⟧⇓ _ = ε
 ⟦ b ∷ v ⟧⇓ (a ∷ ρ) = if b then a ∙ (⟦ v ⟧⇓ ρ) else (⟦ v ⟧⇓ ρ)
 
@@ -80,18 +84,18 @@ Normal n = Vec Bool n
 
 -- The empty set.
 
-empty : ∀{n} → Normal n
-empty = replicate false
+empty : Normal n
+empty = replicate _ false
 
 -- A singleton set.
 
-sg : ∀{n} (i : Fin n) → Normal n
+sg : (i : Fin n) → Normal n
 sg zero    = true ∷ empty
 sg (suc i) = false ∷ sg i
 
 -- The composition of normal forms.
 
-_•_  : ∀{n} (v w : Normal n) → Normal n
+_•_ : (v w : Normal n) → Normal n
 []      • []      = []
 (l ∷ v) • (m ∷ w) = (l ∨ m) ∷ v • w
 
@@ -100,13 +104,13 @@ _•_  : ∀{n} (v w : Normal n) → Normal n
 
 -- The empty set stands for the unit ε.
 
-empty-correct : ∀{n} (ρ : Env n) → ⟦ empty ⟧⇓ ρ ≈ ε
+empty-correct : (ρ : Env n) → ⟦ empty ⟧⇓ ρ ≈ ε
 empty-correct []      = refl
 empty-correct (a ∷ ρ) = empty-correct ρ
 
 -- The singleton set stands for a single variable.
 
-sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
+sg-correct : (x : Fin n) (ρ : Env n) → ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
     x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
     x ∙ ε              ≈⟨ identityʳ _ ⟩
@@ -132,7 +136,7 @@ distr a b c = begin
     a ∙ (b ∙ (a ∙ c))  ≈⟨ sym (assoc _ _ _) ⟩
     (a ∙ b) ∙ (a ∙ c)  ∎
 
-comp-correct : ∀ {n} (v w : Normal n) (ρ : Env n) →
+comp-correct : ∀ (v w : Normal n) (ρ : Env n) →
               ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 comp-correct [] [] ρ = sym (identityˡ _)
 comp-correct (true ∷ v) (true ∷ w) (a ∷ ρ) =
@@ -149,14 +153,14 @@ comp-correct (false ∷ v) (false ∷ w) (a ∷ ρ) =
 
 -- A normaliser.
 
-normalise : ∀ {n} → Expr n → Normal n
+normalise : Expr n → Normal n
 normalise (var x)   = sg x
 normalise id        = empty
 normalise (e₁ ⊕ e₂) = normalise e₁ • normalise e₂
 
 -- The normaliser preserves the semantics of the expression.
 
-normalise-correct : ∀ {n} (e : Expr n) (ρ : Env n) →
+normalise-correct : (e : Expr n) (ρ : Env n) →
     ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
 normalise-correct (var x)   ρ = sg-correct x ρ
 normalise-correct id        ρ = empty-correct ρ
@@ -184,14 +188,14 @@ open module R = Reflection
 
 infix 5 _≟_
 
-_≟_ : ∀ {n} (nf₁ nf₂ : Normal n) → Dec (nf₁ ≡ nf₂)
+_≟_ : (nf₁ nf₂ : Normal n) → Dec (nf₁ ≡ nf₂)
 nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable Bool._≟_ nf₁ nf₂)
   where open Pointwise
 
 -- We can also give a sound, but not necessarily complete, procedure
 -- for determining if two expressions have the same semantics.
 
-prove′ : ∀ {n} (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
+prove′ : (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
 prove′ e₁ e₂ =
   Maybe.map lemma (decToMaybe (normalise e₁ ≟ normalise e₂))
   where

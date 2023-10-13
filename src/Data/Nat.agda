@@ -42,5 +42,8 @@ open import Data.Nat.Properties public
 
 -- Version 0.17
 
+-- Version 2.0
+
+-- solely for the re-export of this name, formerly in `Data.Nat.Properties.Core`
 open import Data.Nat.Properties public
   using (≤-pred)

@@ -12,13 +12,14 @@ module README where
 -- Liang-Ting Chen, Dominique Devriese, Dan Doel, Érdi Gergő,
 -- Zack Grannan, Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu,
 -- Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
--- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
--- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,
--- Noam Zeilberger and other anonymous contributors.
+-- James McKinna, Sergei Meshveliani, Eric Mertens, Darin Morrison,
+-- Guilhem Moulin, Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa,
+-- Nicolas Pouillard, Andrés Sicard-Ramírez, Lex van der Stoep,
+-- Sandro Stucki, Milo Turner, Noam Zeilberger, Shu-Hung You
+-- and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.2.
+-- This version of the library has been tested using Agda 2.6.3.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.

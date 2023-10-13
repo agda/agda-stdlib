@@ -17,6 +17,7 @@ open import Algebra
 infixl 6 _⊕_
 infixl 7 _⊗_
 infixr 8 _⊛_
+infix 8 ⊝_
 
 data Expr {a} (A : Set a) (n : ℕ) : Set a where
   Κ   : A → Expr A n                   -- Constant

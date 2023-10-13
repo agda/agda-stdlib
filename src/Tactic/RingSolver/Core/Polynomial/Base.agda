@@ -50,15 +50,15 @@ module Tactic.RingSolver.Core.Polynomial.Base
 
 open RawCoeff coeffs
 
-open import Data.Bool              using (Bool; true; false; T)
+open import Data.Bool.Base         using (Bool; true; false; T)
 open import Data.Empty             using (⊥)
 open import Data.Fin.Base as Fin        using (Fin; zero; suc)
 open import Data.List.Kleene
 open import Data.Nat.Base as ℕ          using (ℕ; suc; zero; _≤′_; compare; ≤′-refl; ≤′-step; _<′_)
 open import Data.Nat.Properties    using (z≤′n; ≤′-trans)
 open import Data.Nat.Induction
-open import Data.Product           using (_×_; _,_; map₁; curry; uncurry)
-open import Data.Unit              using (⊤; tt)
+open import Data.Product.Base      using (_×_; _,_; map₁; curry; uncurry)
+open import Data.Unit.Base         using (⊤; tt)
 open import Function.Base
 open import Relation.Nullary       using (¬_; Dec; yes; no)
 
@@ -106,9 +106,9 @@ space≤′n : ∀ {n} (x : Fin n) → space x ≤′ n
 space≤′n zero    = ≤′-refl
 space≤′n (suc x) = ≤′-step (space≤′n x)
 
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 infixl 6 _Δ_
 record PowInd {c} (C : Set c) : Set c where
@@ -168,7 +168,7 @@ Normalised (_ Δ suc _ & _)   = ⊤
 open NonZero public
 open Poly public
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Special operations
 
 -- Decision procedure for Zero
@@ -212,17 +212,17 @@ _⊐↓_ : ∀ {i n} → Coeff i * → suc i ≤′ n → Poly n
 (∹ (x    Δ suc j & xs  )) ⊐↓ i≤n = ⅀ (x Δ suc j & xs)   ⊐ i≤n
 {-# INLINE _⊐↓_ #-}
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Standard operations
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Folds
 
--- These folds allow us to abstract over the proofs later: we try to avoid
--- using ∷↓ and ⊐↓ directly anywhere except here, so if we prove that this fold
--- acts the same on a normalised or non-normalised polynomial, we can prove th
--- same about any operation which uses it.
+-- These folds allow us to abstract over the proofs later: we try to
+-- avoid using ∷↓ and ⊐↓ directly anywhere except here, so if we prove
+-- that this fold acts the same on a normalised or non-normalised
+-- polynomial, we can prove th same about any operation which uses it.
 
 PolyF : ℕ → Set ℓ₁
 PolyF i = Poly i × Coeff i *
@@ -238,7 +238,7 @@ poly-map : ∀ {i} → (Poly i → Poly i) → Coeff i + → Coeff i *
 poly-map f = para (map₁ f)
 {-# INLINE poly-map #-}
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Addition
 
 -- The reason the following code is so verbose is termination
@@ -255,8 +255,8 @@ poly-map f = para (map₁ f)
 -- a list that was already pattern-matched on, the recursive call
 -- does not strictly decrease the size of its argument.
 --
--- Interestingly, if --cubical-compatible is turned off, we don't need the
--- helper function ⊞-coeffs; we could pattern match on _⊞_ directly.
+-- Interestingly, if --cubical-compatible is turned off, we don't need
+-- the helper function ⊞-coeffs; we could pattern match on _⊞_ directly.
 --
 -- _⊞_ {zero} (lift x) (lift y) = lift (x + y)
 -- _⊞_ {suc n} [] ys = ys
@@ -308,7 +308,7 @@ mutual
   ⊞-zip-r x i xs [] = ∹ x Δ i & xs
   ⊞-zip-r x i xs (∹ y Δ j & ys) = ⊞-zip (compare i j) x xs y ys
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Negation
 
 -- recurse on acc directly
@@ -316,13 +316,13 @@ mutual
 
 ⊟-step : ∀ {n} → Acc _<′_ n → Poly n → Poly n
 ⊟-step (acc wf) (Κ x  ⊐ i≤n) = Κ (- x) ⊐ i≤n
-⊟-step (acc wf) (⅀ xs ⊐ i≤n) = poly-map (⊟-step (wf _ i≤n)) xs ⊐↓ i≤n
+⊟-step (acc wf) (⅀ xs ⊐ i≤n) = poly-map (⊟-step (wf i≤n)) xs ⊐↓ i≤n
 
 ⊟_ : ∀ {n} → Poly n → Poly n
 ⊟_ = ⊟-step (<′-wellFounded _)
 {-# INLINE ⊟_ #-}
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Multiplication
 
 mutual
@@ -335,12 +335,12 @@ mutual
 
   ⊠-Κ : ∀ {n} → Acc _<′_ n → Carrier → Poly n → Poly n
   ⊠-Κ (acc _ ) x (Κ y  ⊐ i≤n) = Κ (x * y) ⊐ i≤n
-  ⊠-Κ (acc wf) x (⅀ xs ⊐ i≤n) = ⊠-Κ-inj (wf _ i≤n) x xs ⊐↓ i≤n
+  ⊠-Κ (acc wf) x (⅀ xs ⊐ i≤n) = ⊠-Κ-inj (wf i≤n) x xs ⊐↓ i≤n
   {-# INLINE ⊠-Κ #-}
 
   ⊠-⅀ : ∀ {i n} → Acc _<′_ n → Coeff i + → i <′ n → Poly n → Poly n
   ⊠-⅀ (acc wf) xs i≤n (⅀ ys ⊐ j≤n) = ⊠-match  (acc wf) (inj-compare i≤n j≤n) xs ys
-  ⊠-⅀ (acc wf) xs i≤n (Κ y ⊐ _)    = ⊠-Κ-inj (wf _ i≤n) y xs ⊐↓ i≤n
+  ⊠-⅀ (acc wf) xs i≤n (Κ y ⊐ _)    = ⊠-Κ-inj (wf i≤n) y xs ⊐↓ i≤n
 
   ⊠-Κ-inj : ∀ {i}  → Acc _<′_ i → Carrier → Coeff i + → Coeff i *
   ⊠-Κ-inj a x xs = poly-map (⊠-Κ a x) (xs)
@@ -352,7 +352,7 @@ mutual
           → Poly k
           → Poly k
   ⊠-⅀-inj (acc wf) i≤k x (⅀ y ⊐ j≤k) = ⊠-match (acc wf) (inj-compare i≤k j≤k) x y
-  ⊠-⅀-inj (acc wf) i≤k x (Κ y ⊐ j≤k) = ⊠-Κ-inj (wf _ i≤k) y x ⊐↓ i≤k
+  ⊠-⅀-inj (acc wf) i≤k x (Κ y ⊐ j≤k) = ⊠-Κ-inj (wf i≤k) y x ⊐↓ i≤k
 
   ⊠-match : ∀ {i j n}
           → Acc _<′_ n
@@ -362,9 +362,9 @@ mutual
           → Coeff i +
           → Coeff j +
           → Poly n
-  ⊠-match (acc wf) (inj-eq i&j≤n)     xs ys = ⊠-coeffs (wf _ i&j≤n) xs ys               ⊐↓ i&j≤n
-  ⊠-match (acc wf) (inj-lt i≤j-1 j≤n) xs ys = poly-map (⊠-⅀-inj (wf _ j≤n) i≤j-1 xs) (ys) ⊐↓ j≤n
-  ⊠-match (acc wf) (inj-gt i≤n j≤i-1) xs ys = poly-map (⊠-⅀-inj (wf _ i≤n) j≤i-1 ys) (xs) ⊐↓ i≤n
+  ⊠-match (acc wf) (inj-eq i&j≤n)     xs ys = ⊠-coeffs (wf i&j≤n) xs ys               ⊐↓ i&j≤n
+  ⊠-match (acc wf) (inj-lt i≤j-1 j≤n) xs ys = poly-map (⊠-⅀-inj (wf j≤n) i≤j-1 xs) (ys) ⊐↓ j≤n
+  ⊠-match (acc wf) (inj-gt i≤n j≤i-1) xs ys = poly-map (⊠-⅀-inj (wf i≤n) j≤i-1 ys) (xs) ⊐↓ i≤n
 
   ⊠-coeffs : ∀ {n} → Acc _<′_ n → Coeff n + → Coeff n + → Coeff n *
   ⊠-coeffs a (xs) (y ≠0 Δ j & [])   = poly-map (⊠-step′ a y) (xs) ⍓* j
@@ -385,7 +385,7 @@ _⊠_ : ∀ {n} → Poly n → Poly n → Poly n
 _⊠_ = ⊠-step′ (<′-wellFounded _)
 {-# INLINE _⊠_ #-}
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Constants and variables
 
 -- The constant polynomial
@@ -398,7 +398,7 @@ _⊠_ = ⊠-step′ (<′-wellFounded _)
 ι i = (κ 1# Δ 1 ∷↓ []) ⊐↓ space≤′n i
 {-# INLINE ι #-}
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Exponentiation
 
 -- We try very hard to never do things like multiply by 1

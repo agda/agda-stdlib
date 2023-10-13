@@ -16,8 +16,8 @@ open import Data.Star.Decoration
 open import Data.Star.Pointer
 open import Data.Star.List using (List)
 open import Data.Unit
-open import Function
-open import Relation.Binary
+open import Function.Base using (const)
+open import Relation.Binary.Core using (_=[_]⇒_)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 

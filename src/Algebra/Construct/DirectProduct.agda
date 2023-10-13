@@ -16,7 +16,7 @@
 module Algebra.Construct.DirectProduct where
 
 open import Algebra
-open import Data.Product
+open import Data.Product.Base using (_×_; zip; _,_; map; _<*>_; uncurry)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level using (Level; _⊔_)
 
@@ -60,6 +60,16 @@ rawSemiring R S = record
   ; 0#      = R.0# , S.0#
   ; 1#      = R.1# , S.1#
   } where module R = RawSemiring R; module S = RawSemiring S
+
+rawRingWithoutOne : RawRingWithoutOne a ℓ₁ → RawRingWithoutOne b ℓ₂ → RawRingWithoutOne (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+rawRingWithoutOne R S = record
+  { Carrier = R.Carrier × S.Carrier
+  ; _≈_     = Pointwise R._≈_ S._≈_
+  ; _+_     = zip R._+_ S._+_
+  ; _*_     = zip R._*_ S._*_
+  ; -_      = map R.-_ S.-_
+  ; 0#      = R.0# , S.0#
+  } where module R = RawRingWithoutOne R; module S = RawRingWithoutOne S
 
 rawRing : RawRing a ℓ₁ → RawRing b ℓ₂ → RawRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 rawRing R S = record
@@ -316,6 +326,59 @@ kleeneAlgebra K L = record
                         , (λ a b x x₁ → (K.starDestructiveʳ  , L.starDestructiveʳ) <*> a <*> b <*> x <*> x₁)
       }
   } where module K = KleeneAlgebra K;  module L = KleeneAlgebra L
+
+ringWithoutOne : RingWithoutOne a ℓ₁ → RingWithoutOne b ℓ₂ → RingWithoutOne (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+ringWithoutOne R S = record
+  { isRingWithoutOne = record
+      { +-isAbelianGroup = AbelianGroup.isAbelianGroup ((abelianGroup R.+-abelianGroup S.+-abelianGroup))
+      ; *-cong           = Semigroup.∙-cong (semigroup R.*-semigroup S.*-semigroup)
+      ; *-assoc          = Semigroup.assoc (semigroup R.*-semigroup S.*-semigroup)
+      ; distrib          = (λ x y z → (R.distribˡ , S.distribˡ) <*> x <*> y <*> z)
+                            , (λ x y z → (R.distribʳ , S.distribʳ) <*> x <*> y <*> z)
+      ; zero             = uncurry (λ x y → R.zeroˡ x , S.zeroˡ y)
+                            , uncurry (λ x y → R.zeroʳ x , S.zeroʳ y)
+      }
+
+  } where module R = RingWithoutOne R; module S = RingWithoutOne S
+
+nonAssociativeRing : NonAssociativeRing a ℓ₁ → NonAssociativeRing b ℓ₂ → NonAssociativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+nonAssociativeRing R S = record
+  { isNonAssociativeRing = record
+      { +-isAbelianGroup = AbelianGroup.isAbelianGroup ((abelianGroup R.+-abelianGroup S.+-abelianGroup))
+      ; *-cong           = UnitalMagma.∙-cong (unitalMagma R.*-unitalMagma S.*-unitalMagma)
+      ; *-identity       = UnitalMagma.identity (unitalMagma R.*-unitalMagma S.*-unitalMagma)
+      ; distrib          = (λ x y z → (R.distribˡ , S.distribˡ) <*> x <*> y <*> z)
+                            , (λ x y z → (R.distribʳ , S.distribʳ) <*> x <*> y <*> z)
+      ; zero             = uncurry (λ x y → R.zeroˡ x , S.zeroˡ y)
+                            , uncurry (λ x y → R.zeroʳ x , S.zeroʳ y)
+      }
+
+  } where module R = NonAssociativeRing R; module S = NonAssociativeRing S
+
+quasiring : Quasiring a ℓ₁ → Quasiring b ℓ₂ → Quasiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+quasiring R S = record
+  { isQuasiring = record
+      { +-isMonoid = Monoid.isMonoid ((monoid R.+-monoid S.+-monoid))
+      ; *-cong           = Monoid.∙-cong (monoid R.*-monoid S.*-monoid)
+      ; *-assoc          = Monoid.assoc (monoid R.*-monoid S.*-monoid)
+      ; *-identity       = Monoid.identity ((monoid R.*-monoid S.*-monoid))
+      ; distrib          = (λ x y z → (R.distribˡ , S.distribˡ) <*> x <*> y <*> z)
+                            , (λ x y z → (R.distribʳ , S.distribʳ) <*> x <*> y <*> z)
+      ; zero             = uncurry (λ x y → R.zeroˡ x , S.zeroˡ y)
+                            , uncurry (λ x y → R.zeroʳ x , S.zeroʳ y)
+      }
+
+  } where module R = Quasiring R; module S = Quasiring S
+
+nearring : Nearring a ℓ₁ → Nearring b ℓ₂ → Nearring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+nearring R S =  record
+  { isNearring = record
+      { isQuasiring = Quasiring.isQuasiring (quasiring R.quasiring S.quasiring)
+      ; +-inverse   = (λ x → (R.+-inverseˡ , S.+-inverseˡ) <*> x)
+                      , (λ x → (R.+-inverseʳ , S.+-inverseʳ) <*> x)
+      ; ⁻¹-cong     = map R.⁻¹-cong S.⁻¹-cong
+      }
+  } where module R = Nearring R; module S = Nearring S
 
 ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 ring R S = record

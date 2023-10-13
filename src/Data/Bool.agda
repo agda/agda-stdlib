@@ -9,9 +9,7 @@
 module Data.Bool where
 
 open import Relation.Nullary
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as PropEq
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- The boolean type and some operations

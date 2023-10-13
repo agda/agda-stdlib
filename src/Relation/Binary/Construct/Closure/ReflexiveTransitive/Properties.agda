@@ -8,11 +8,15 @@
 
 module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 
-open import Function
-open import Relation.Binary
+open import Function.Base using (id; _∘_; _$_)
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Bundles using (Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions using (Transitive; Reflexive)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; refl; sym; cong; cong₂)
+import Relation.Binary.PropositionalEquality.Properties as PropEq
 import Relation.Binary.Reasoning.Preorder as PreR
 
 ------------------------------------------------------------------------
@@ -100,7 +104,7 @@ module _ {i t} {I : Set i} (T : Rel I t) where
   preorder : Preorder _ _ _
   preorder = record
     { _≈_        = _≡_
-    ; _∼_        = Star T
+    ; _≲_        = Star T
     ; isPreorder = isPreorder
     }
 

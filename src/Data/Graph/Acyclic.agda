@@ -20,15 +20,15 @@ open import Data.Fin as Fin
   using (Fin; Fin′; zero; suc; #_; toℕ; _≟_; opposite) renaming (_ℕ-ℕ_ to _-_)
 import Data.Fin.Properties as FP
 import Data.Fin.Permutation.Components as PC
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
 open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
-open import Function
+open import Function.Base using (_$_; _∘′_; _∘_; id)
 open import Relation.Nullary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- A lemma
@@ -313,7 +313,7 @@ module _ {ℓ e} {N : Set ℓ} {E : Set e} where
     expand n rec (c & g) =
       node (label c)
            (List.map
-              (Prod.map id (λ i → rec (n - suc i) (lemma n i) (g [ i ])))
+              (Prod.map id (λ i → rec (lemma n i) (g [ i ])))
               (successors c))
 
 -- Performs the toTree expansion once for each node.

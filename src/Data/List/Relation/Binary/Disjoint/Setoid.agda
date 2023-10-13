@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Binary.Disjoint.Setoid {c ℓ} (S : Setoid c ℓ) where
 
@@ -15,7 +16,7 @@ open import Relation.Nullary.Negation using (¬_)
 open import Function.Base using (_∘_)
 open import Data.List.Base using (List; []; [_]; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 
 open Setoid S renaming (Carrier to A)
 open import Data.List.Membership.Setoid S using (_∈_; _∉_)

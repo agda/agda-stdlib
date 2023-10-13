@@ -11,13 +11,13 @@ import Data.Char.Properties as Charₚ
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Fin.Properties using (inject≤-injective)
-open import Data.Product using (_,_; proj₁)
+open import Data.Product.Base using (_,_; proj₁)
 open import Data.Vec.Relation.Unary.Unique.Propositional using (Unique)
 import Data.Vec.Relation.Unary.Unique.Propositional.Properties as Uniqueₚ
 open import Data.Vec.Relation.Unary.AllPairs using (allPairs?)
-open import Relation.Nullary.Decidable using (True; from-yes; ¬?)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
-open import Function using (_∘_)
+open import Relation.Nullary.Decidable.Core using (True; from-yes; ¬?)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Function.Base using (_∘_)
 
 module Data.Digit.Properties where
 

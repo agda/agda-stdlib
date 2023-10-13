@@ -13,7 +13,8 @@ module Relation.Binary.Lattice.Bundles where
 
 open import Algebra.Core
 open import Level using (suc; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Poset; Setoid)
 open import Relation.Binary.Lattice.Structures
 
 ------------------------------------------------------------------------

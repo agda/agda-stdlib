@@ -15,24 +15,29 @@ open import Algebra.Consequences.Propositional
 open import Data.Bool.Base using (if_then_else_; Bool; true; false)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Binary.Base
-open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
+open import Data.Nat as ℕ using (ℕ; z≤n; s≤s; s<s⁻¹)
 open import Data.Nat.DivMod using (_%_; _/_; m/n≤m; +-distrib-/-∣ˡ)
 open import Data.Nat.Divisibility using (∣-refl)
 import Data.Nat.Base as ℕᵇ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
-open import Function.Definitions using (Injective)
-open import Function.Definitions.Core2 using (Surjective)
+open import Function.Definitions
+open import Function.Consequences.Propositional
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder; Poset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Irreflexive; Transitive; Reflexive; Antisymmetric; Total; Trichotomous; tri≈; tri<; tri>)
+open import Relation.Binary.Structures
+  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
 open import Relation.Binary.PropositionalEquality
-import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
@@ -196,8 +201,8 @@ toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   xN≡yN   = ℕₚ.*-cancelˡ-≡ _ _ 2 2xN≡2yN
   x≡y     = toℕ-injective xN≡yN
 
-toℕ-surjective : Surjective _≡_ toℕ
-toℕ-surjective n = (fromℕ n , toℕ-fromℕ n)
+toℕ-surjective : Surjective _≡_ _≡_ toℕ
+toℕ-surjective = strictlySurjective⇒surjective (λ n → fromℕ n , toℕ-fromℕ n)
 
 toℕ-isRelHomomorphism : IsRelHomomorphism _≡_ _≡_ toℕ
 toℕ-isRelHomomorphism = record
@@ -214,6 +219,15 @@ fromℕ-injective {x} {y} f[x]≡f[y] = begin
 
 fromℕ-toℕ : fromℕ ∘ toℕ ≗ id
 fromℕ-toℕ = toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
+
+toℕ-inverseˡ : Inverseˡ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseˡ = strictlyInverseˡ⇒inverseˡ {f⁻¹ = fromℕ} toℕ toℕ-fromℕ
+
+toℕ-inverseʳ : Inverseʳ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseʳ = strictlyInverseʳ⇒inverseʳ toℕ fromℕ-toℕ
+
+toℕ-inverseᵇ : Inverseᵇ _≡_ _≡_ toℕ fromℕ
+toℕ-inverseᵇ = toℕ-inverseˡ , toℕ-inverseʳ
 
 fromℕ-pred : ∀ n → fromℕ (ℕ.pred n) ≡ pred (fromℕ n)
 fromℕ-pred n = begin
@@ -273,7 +287,7 @@ x≢0⇒x>0 {1+[2 _ ]} _   =  0<odd
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ = inj₁
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _<_ and toℕ & fromℕ.
 
 toℕ-mono-< : toℕ Preserves _<_ ⟶ ℕ._<_
@@ -303,17 +317,17 @@ toℕ-cancel-< : ∀ {x y} → toℕ x ℕ.< toℕ y → x < y
 toℕ-cancel-< {zero}     {2[1+ y ]} x<y = 0<even
 toℕ-cancel-< {zero}     {1+[2 y ]} x<y = 0<odd
 toℕ-cancel-< {2[1+ x ]} {2[1+ y ]} x<y =
-  even<even (toℕ-cancel-< (ℕ.≤-pred (ℕₚ.*-cancelˡ-< 2 _ _ x<y)))
+  even<even (toℕ-cancel-< (s<s⁻¹ (ℕₚ.*-cancelˡ-< 2 _ _ x<y)))
 toℕ-cancel-< {2[1+ x ]} {1+[2 y ]} x<y
   rewrite ℕₚ.*-distribˡ-+ 2 1 (toℕ x) =
-  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (ℕₚ.≤-pred x<y))))
+  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (s<s⁻¹ x<y))))
 toℕ-cancel-< {1+[2 x ]} {2[1+ y ]} x<y with toℕ x ℕₚ.≟ toℕ y
 ... | yes x≡y = odd<even (inj₂ (toℕ-injective x≡y))
 ... | no  x≢y
   rewrite ℕₚ.+-suc (toℕ y) (toℕ y ℕ.+ 0) =
   odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 2 (ℕₚ.+-cancelˡ-≤ 2 _ _ x<y)) x≢y)))
 toℕ-cancel-< {1+[2 x ]} {1+[2 y ]} x<y =
-  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕ.≤-pred x<y)))
+  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (s<s⁻¹ x<y)))
 
 fromℕ-cancel-< : ∀ {x y} → fromℕ x < fromℕ y → x ℕ.< y
 fromℕ-cancel-< = subst₂ ℕ._<_ (toℕ-fromℕ _) (toℕ-fromℕ _) ∘ toℕ-mono-<
@@ -334,7 +348,7 @@ toℕ-isMonomorphism-< = record
   ; cancel              = toℕ-cancel-<
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties of _<_
 
 <-irrefl : Irreflexive _≡_ _<_
@@ -387,7 +401,7 @@ toℕ-isMonomorphism-< = record
 _<?_ : Decidable _<_
 _<?_ = tri⇒dec< <-cmp
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures for _<_
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
@@ -405,7 +419,7 @@ _<?_ = tri⇒dec< <-cmp
   ; compare       = <-cmp
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles for _<_
 
 <-strictPartialOrder : StrictPartialOrder _ _ _
@@ -418,7 +432,7 @@ _<?_ = tri⇒dec< <-cmp
   { isStrictTotalOrder =  <-isStrictTotalOrder
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Other properties of _<_
 
 x<2[1+x] : ∀ x → x < 2[1+ x ]
@@ -432,9 +446,9 @@ x<1+[2x] zero     = 0<odd
 x<1+[2x] 2[1+ x ] = even<odd (x<2[1+x] x)
 x<1+[2x] 1+[2 x ] = odd<odd (x<1+[2x] x)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _≤_
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Basic properties
 
 <⇒≱ : _<_ ⇒ _≱_
@@ -468,7 +482,7 @@ x<1+[2x] 1+[2 x ] = odd<odd (x<1+[2x] x)
 x≤0⇒x≡0 : x ≤ zero → x ≡ zero
 x≤0⇒x≡0 (inj₂ x≡0) = x≡0
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _<_ and toℕ & fromℕ.
 
 fromℕ-mono-≤ : fromℕ Preserves ℕ._≤_ ⟶ _≤_
@@ -499,7 +513,7 @@ toℕ-isMonomorphism-≤ = record
   ; cancel              = toℕ-cancel-≤
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Relational properties of _≤_
 
 ≤-refl : Reflexive _≤_
@@ -537,7 +551,7 @@ x ≤? y with <-cmp x y
 ... | tri> _   _   y<x = no (<⇒≱ y<x)
 
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Structures
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
@@ -566,7 +580,7 @@ x ≤? y with <-cmp x y
   ; _≤?_         = _≤?_
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
@@ -589,19 +603,25 @@ x ≤? y with <-cmp x y
   { isDecTotalOrder = ≤-isDecTotalOrder
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
-module ≤-Reasoning = InequalityReasoning
-  ≤-isPreorder
-  <-trans
-  (resp₂ _<_) <⇒≤
-  <-≤-trans ≤-<-trans
-  hiding (step-≈; step-≈˘)
+module ≤-Reasoning where
 
-------------------------------------------------------------------------------
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-irrefl
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-≤-trans
+    ≤-<-trans
+    public
+    hiding (step-≈; step-≈˘)
+
+------------------------------------------------------------------------
 -- Properties of _<ℕ_
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 <⇒<ℕ : ∀ {x y} → x < y → x <ℕ y
 <⇒<ℕ x<y = toℕ-mono-< x<y
@@ -799,7 +819,7 @@ private
 
 module Bin+CSemigroup = CommSemigProp +-commutativeSemigroup
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
 
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
@@ -1309,6 +1329,18 @@ double-suc x = begin
 -- Properties of suc
 ------------------------------------------------------------------------
 
+suc≢0 : suc x ≢ zero
+suc≢0 {zero}     ()
+suc≢0 {2[1+ _ ]} ()
+suc≢0 {1+[2 _ ]} ()
+
+suc-injective : Injective _≡_ _≡_ suc
+suc-injective {zero} {zero} p = refl
+suc-injective {zero} {2[1+ y ]} p = contradiction 1+[2 p ]-injective (suc≢0 ∘ sym)
+suc-injective {2[1+ x ]} {zero} p = contradiction 1+[2 p ]-injective suc≢0
+suc-injective {2[1+ x ]} {2[1+ y ]} p = cong 2[1+_] (suc-injective 1+[2 p ]-injective)
+suc-injective {1+[2 x ]} {1+[2 y ]} refl = refl
+
 2[1+_]-double-suc : 2[1+_] ≗ double ∘ suc
 2[1+_]-double-suc zero     = refl
 2[1+_]-double-suc 2[1+ x ] = cong 2[1+_] (2[1+_]-double-suc x)
@@ -1324,11 +1356,6 @@ double-suc x = begin
   suc (double (suc 2x))   ≡⟨ cong (suc ∘ double) (sym (1+[2_]-suc-double x)) ⟩
   suc (double 1+[2 x ])   ∎
   where open ≡-Reasoning;  2x = double x
-
-suc≢0 : suc x ≢ zero
-suc≢0 {zero}     ()
-suc≢0 {2[1+ _ ]} ()
-suc≢0 {1+[2 _ ]} ()
 
 x+suc[y]≡suc[x]+y : ∀ x y → x + suc y ≡ suc x + y
 x+suc[y]≡suc[x]+y x y = begin
@@ -1432,7 +1459,7 @@ pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
 pred-mono-≤ {x} {y} x≤y = begin
   pred x             ≡⟨ cong pred (sym (fromℕ-toℕ x)) ⟩
   pred (fromℕ m)     ≡⟨ sym (fromℕ-pred m) ⟩
-  fromℕ (ℕ.pred m)   ≤⟨ fromℕ-mono-≤ (ℕₚ.pred-mono (toℕ-mono-≤ x≤y)) ⟩
+  fromℕ (ℕ.pred m)   ≤⟨ fromℕ-mono-≤ (ℕₚ.pred-mono-≤ (toℕ-mono-≤ x≤y)) ⟩
   fromℕ (ℕ.pred n)   ≡⟨ fromℕ-pred n ⟩
   pred (fromℕ n)     ≡⟨ cong pred (fromℕ-toℕ y) ⟩
   pred y             ∎

@@ -11,10 +11,11 @@ module Effect.Monad.Partiality.All where
 open import Effect.Monad
 open import Effect.Monad.Partiality as Partiality using (_⊥; ⇒≈)
 open import Codata.Musical.Notation
-open import Function
+open import Function.Base using (flip; _∘_)
 open import Level
-open import Relation.Binary using (_Respects_; IsEquivalence)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Definitions using (_Respects_)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 open Partiality._⊥
 open Partiality.Equality using (Rel)
@@ -42,6 +43,8 @@ data All {A : Set a} (P : A → Set p) : A ⊥ → Set (a ⊔ p) where
   later : ∀ {x} (p : ∞ (All P (♭ x))) → All P (later x)
 
 -- Bind preserves All in the following way:
+
+infixl 1 _>>=-cong_
 
 _>>=-cong_ : ∀ {p q} {P : A → Set p} {Q : B → Set q}
                {x : A ⊥} {f : A → B ⊥} →
@@ -116,6 +119,8 @@ module Alternative {a p : Level} where
     _≅⟨_⟩P_     : ∀ x {y} (x≅y : x ≅ y) (p : AllP P y) → AllP P x
     _≳⟨_⟩P_     : ∀ x {y} (x≳y : x ≳ y) (p : AllP P y) → AllP P x
     _⟨_⟩P       : ∀ x (p : AllP P x) → AllP P x
+
+  infixl 1 _>>=-congP_
 
   private
 

@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Definitions hiding (Decidable)
+open import Relation.Binary.Structures using (IsPreorder)
 
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
@@ -25,17 +26,16 @@ open import Data.List.Relation.Binary.Subset.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 open import Data.Nat using (ℕ; _≤_)
-import Data.Product as Prod
+import Data.Product.Base as Prod
 import Data.Sum.Base as Sum
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; _$_)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-open import Function.Equivalence using (module Equivalence)
+open import Function.Bundles using (_↔_; Inverse; Equivalence)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
-open import Relation.Binary using (_⇒_; _Respects_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
@@ -129,9 +129,9 @@ All-resp-⊇ = Setoidₚ.All-resp-⊇ (setoid _) (subst _)
 
 map⁺ : ∀ (f : A → B) → xs ⊆ ys → map f xs ⊆ map f ys
 map⁺ f xs⊆ys =
-  _⟨$⟩_ (Inverse.to (map-∈↔ f)) ∘
+  Inverse.to (map-∈↔ f) ∘
   Prod.map₂ (Prod.map₁ xs⊆ys) ∘
-  _⟨$⟩_ (Inverse.from (map-∈↔ f))
+  Inverse.from (map-∈↔ f)
 
 ------------------------------------------------------------------------
 -- ∷
@@ -170,9 +170,9 @@ module _ {xss yss : List (List A)} where
 
   concat⁺ : xss ⊆ yss → concat xss ⊆ concat yss
   concat⁺ xss⊆yss =
-    _⟨$⟩_ (Inverse.to concat-∈↔) ∘
+    Inverse.to concat-∈↔ ∘
     Prod.map₂ (Prod.map₂ xss⊆yss) ∘
-    _⟨$⟩_ (Inverse.from concat-∈↔)
+    Inverse.from concat-∈↔
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -187,9 +187,9 @@ module _ {A B : Set a} (f g : A → List B) where
 
   >>=⁺ : xs ⊆ ys → (∀ {x} → f x ⊆ g x) → (xs >>= f) ⊆ (ys >>= g)
   >>=⁺ xs⊆ys f⊆g =
-    _⟨$⟩_ (Inverse.to >>=-∈↔) ∘
+    Inverse.to >>=-∈↔ ∘
     Prod.map₂ (Prod.map xs⊆ys f⊆g) ∘
-    _⟨$⟩_ (Inverse.from >>=-∈↔)
+    Inverse.from >>=-∈↔
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -198,9 +198,9 @@ module _ {A B : Set a} {fs gs : List (A → B)} where
 
   ⊛⁺ : fs ⊆ gs → xs ⊆ ys → (fs ⊛ xs) ⊆ (gs ⊛ ys)
   ⊛⁺ fs⊆gs xs⊆ys =
-    _⟨$⟩_ (Inverse.to $ ⊛-∈↔ gs) ∘
+    (Inverse.to $ ⊛-∈↔ gs) ∘
     Prod.map₂ (Prod.map₂ (Prod.map fs⊆gs (Prod.map₁ xs⊆ys))) ∘
-    _⟨$⟩_ (Inverse.from $ ⊛-∈↔ fs)
+    (Inverse.from $ ⊛-∈↔ fs)
 
 ------------------------------------------------------------------------
 -- _⊗_
@@ -209,9 +209,9 @@ module _ {A B : Set a} {ws xs : List A} {ys zs : List B} where
 
   ⊗⁺ : ws ⊆ xs → ys ⊆ zs → (ws ⊗ ys) ⊆ (xs ⊗ zs)
   ⊗⁺ ws⊆xs ys⊆zs =
-    _⟨$⟩_ (Inverse.to ⊗-∈↔) ∘
+    Inverse.to ⊗-∈↔ ∘
     Prod.map ws⊆xs ys⊆zs ∘
-    _⟨$⟩_ (Inverse.from ⊗-∈↔)
+    Inverse.from ⊗-∈↔
 
 ------------------------------------------------------------------------
 -- any
@@ -220,9 +220,9 @@ module _ (p : A → Bool) {xs ys} where
 
   any⁺ : xs ⊆ ys → T (any p xs) → T (any p ys)
   any⁺ xs⊆ys =
-    _⟨$⟩_ (Equivalence.to Any.any⇔) ∘
+    Equivalence.to Any.any⇔ ∘
     Any-resp-⊆ xs⊆ys ∘
-    _⟨$⟩_ (Equivalence.from Any.any⇔)
+    Equivalence.from Any.any⇔
 
 ------------------------------------------------------------------------
 -- mapWith∈
@@ -234,12 +234,12 @@ module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
   mapWith∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
                 mapWith∈ xs f ⊆ mapWith∈ ys g
   mapWith∈⁺ xs⊆ys f≈g {x} =
-    _⟨$⟩_ (Inverse.to Any.mapWith∈↔) ∘
+    Inverse.to Any.mapWith∈↔ ∘
     Prod.map₂ (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
       x               ≡⟨ x≡fx∈xs ⟩
       f x∈xs          ≡⟨ f≈g x∈xs ⟩
       g (xs⊆ys x∈xs)  ∎)) ∘
-    _⟨$⟩_ (Inverse.from Any.mapWith∈↔)
+    Inverse.from Any.mapWith∈↔
     where open ≡-Reasoning
 
 ------------------------------------------------------------------------

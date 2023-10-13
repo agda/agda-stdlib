@@ -3,9 +3,10 @@
 --
 -- Annotated reflected syntax.
 --
--- NOTE: This file does not check under --cubical-compatible due to restrictions
---       in the termination checker. In particular recursive functions
---       over a universe of types is not supported by --cubical-compatible.
+-- NOTE: This file does not check under --cubical-compatible due to
+--       restrictions in the termination checker. In particular
+--       recursive functions over a universe of types is not supported
+--       by --cubical-compatible.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --with-K #-}
@@ -17,7 +18,7 @@ open import Effect.Applicative           using (RawApplicative)
 open import Data.Bool.Base               using (Bool; false; true; if_then_else_)
 open import Data.List.Base               using (List; []; _∷_)
 open import Data.List.Relation.Unary.All using (All; _∷_; [])
-open import Data.Product                 using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base            using (_×_; _,_; proj₁; proj₂)
 open import Data.String.Base             using (String)
 
 open import Reflection                   hiding (pure)
@@ -35,8 +36,8 @@ Annotation : ∀ ℓ → Set (suc ℓ)
 Annotation ℓ = ∀ {u} → ⟦ u ⟧ → Set ℓ
 
 -- An annotated type is a family over an Annotation and a reflected term.
-Typeₐ : ∀ ℓ → Univ → Set (suc ℓ)
-Typeₐ ℓ u = Annotation ℓ → ⟦ u ⟧ → Set ℓ
+Typeₐ : ∀ ℓ → Univ → Set (suc (suc ℓ))
+Typeₐ ℓ u = Annotation ℓ → ⟦ u ⟧ → Set (suc ℓ)
 
 private
   variable
@@ -82,6 +83,7 @@ Argₐ Tyₐ = ⟪ Argₐ′ Tyₐ ⟫
 
 data Namedₐ′ (Tyₐ : Typeₐ ℓ u) : Typeₐ ℓ (⟨named⟩ u) where
   _,_ : ∀ {t} x → Tyₐ Ann t → Namedₐ′ Tyₐ Ann (x , t)
+infixr 4 _,_
 
 Namedₐ : Typeₐ ℓ u → Typeₐ ℓ (⟨named⟩ u)
 Namedₐ Tyₐ = ⟪ Namedₐ′ Tyₐ ⟫
@@ -168,7 +170,7 @@ mutual
 
 -- An annotation function computes the top-level annotation given a
 -- term annotated at all sub-terms.
-AnnotationFun : Annotation ℓ → Set ℓ
+AnnotationFun : Annotation ℓ → Set (suc ℓ)
 AnnotationFun Ann = ∀ u {t : ⟦ u ⟧} → Annotated′ Ann t → Ann t
 
 

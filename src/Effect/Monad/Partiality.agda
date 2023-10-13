@@ -19,9 +19,16 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
-open import Relation.Binary as B hiding (Rel; _⇔_)
+open import Relation.Binary.Core as B hiding (Rel; _⇔_)
+open import Relation.Binary.Definitions
+  using (Decidable; Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsEquivalence)
+open import Relation.Binary.Bundles
+  using (Preorder; Setoid; Poset)
 import Relation.Binary.Properties.Setoid as SetoidProperties
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as P
 open import Relation.Nullary
 open import Relation.Nullary.Decidable hiding (map)
 open import Relation.Nullary.Negation
@@ -64,6 +71,9 @@ monad = record
   { rawApplicative = applicative
   ; _>>=_  = bind
   }
+
+join : (A ⊥) ⊥ → A ⊥
+join = Join.join monad
 
 private module M {f} = RawMonad (monad {f})
 
@@ -291,7 +301,7 @@ module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
   preorder pre k = record
     { Carrier    = A ⊥
     ; _≈_        = _≡_
-    ; _∼_        = Rel k
+    ; _≲_        = Rel k
     ; isPreorder = record
       { isEquivalence = P.isEquivalence
       ; reflexive     = refl′
@@ -394,7 +404,7 @@ module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
   now-or-never : Reflexive _∼_ →
                  ∀ {k} (x : A ⊥) →
                  ¬ ¬ ((∃ λ y → x ⇓[ other k ] y) ⊎ x ⇑[ other k ])
-  now-or-never refl x = helper <$> excluded-middle
+  now-or-never refl x = helper <$> ¬¬-excluded-middle
     where
     open RawMonad ¬¬-Monad
 
@@ -507,6 +517,8 @@ module _ {A B : Set s}
 
   -- Bind preserves all the relations.
 
+  infixl 1 _>>=-cong_
+
   _>>=-cong_ :
     ∀ {k} {x₁ x₂ : A ⊥} {f₁ f₂ : A → B ⊥} → let open M in
     Rel _∼A_ k x₁ x₂ →
@@ -567,6 +579,8 @@ module _ {A B : Set ℓ} {_∼_ : B → B → Set ℓ} where
   open Equality
 
   -- A variant of _>>=-cong_.
+
+  infixl 1 _≡->>=-cong_
 
   _≡->>=-cong_ :
     ∀ {k} {x₁ x₂ : A ⊥} {f₁ f₂ : A → B ⊥} → let open M in

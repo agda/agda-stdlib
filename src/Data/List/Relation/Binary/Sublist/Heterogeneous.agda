@@ -11,8 +11,9 @@
 open import Data.List.Base using (List; []; _∷_; [_])
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Level using (_⊔_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (REL; _⇒_)
+open import Relation.Binary.Definitions using (_⟶_Respects_; Min)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Unary using (Pred)
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous

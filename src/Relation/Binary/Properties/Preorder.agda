@@ -6,32 +6,34 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Preorder; Setoid)
+open import Relation.Binary.Structures using (IsPreorder)
 
 module Relation.Binary.Properties.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
 
-open import Function.Base
-open import Data.Product as Prod
-import Relation.Binary.Construct.Converse as Converse
+open import Function.Base using (flip)
+open import Data.Product.Base as Prod using (_×_; _,_; swap)
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 
 open Preorder P
 
-------------------------------------------------------------------------
--- The inverse relation is also a preorder.
 
-converse-isPreorder : IsPreorder _≈_ (flip _∼_)
-converse-isPreorder = Converse.isPreorder isPreorder
+------------------------------------------------------------------------
+-- The converse relation is also a preorder.
+
+converse-isPreorder : IsPreorder _≈_ _≳_
+converse-isPreorder = EqAndOrd.isPreorder isPreorder
 
 converse-preorder : Preorder p₁ p₂ p₃
-converse-preorder = Converse.preorder P
+converse-preorder = EqAndOrd.preorder P
 
 ------------------------------------------------------------------------
 -- For every preorder there is an induced equivalence
 
 InducedEquivalence : Setoid _ _
 InducedEquivalence = record
-  { _≈_           = λ x y → x ∼ y × y ∼ x
+  { _≈_           = λ x y → x ≲ y × x ≳ y
   ; isEquivalence = record
     { refl  = (refl , refl)
     ; sym   = swap

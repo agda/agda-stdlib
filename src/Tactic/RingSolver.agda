@@ -18,7 +18,7 @@ open import Data.Nat.Base              using (ℕ; suc; zero; _<ᵇ_)
 open import Data.Bool.Base             using (Bool; if_then_else_; true; false)
 open import Data.Unit.Base             using (⊤)
 open import Data.String.Base as String using (String; _++_; parens)
-open import Data.Product               using (_,_; proj₁)
+open import Data.Product.Base          using (_,_; proj₁)
 open import Function.Base
 open import Relation.Nullary.Decidable
 
@@ -140,6 +140,8 @@ module RingSolverReflection (ring : Term) (numberOfVariables : ℕ) where
 
   `I : Term → Term
   `I x = quote Ι $ᵉ (x ⟨∷⟩ [])
+
+  infixl 6 _`⊜_
 
   _`⊜_ : Term → Term → Term
   x `⊜ y = quote _⊜_  $ʳ (`numberOfVariables ⟅∷⟆ x ⟨∷⟩ y ⟨∷⟩ [])
@@ -349,9 +351,9 @@ constructSolution `ring opTerms variables `lhs `rhs = do
     t' ← convertTerm `ring numVars opTerms varMap t
     pure $ `correct `ring numVars t' ρ
 
--- Use this macro when you want to solve something *under* a lambda. For example:
--- say you have a long proof, and you just want the solver to deal with an
--- intermediate step. Call it like so:
+-- Use this macro when you want to solve something *under* a lambda.
+-- For example: say you have a long proof, and you just want the solver
+-- to deal with an intermediate step. Call it like so:
 --
 --   lemma₃ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
 --   lemma₃ x y = begin
