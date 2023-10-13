@@ -154,13 +154,13 @@ jobs:
           cabal run GenerateEverything
           cp travis/* .
           ./index.sh
-      #     ${{ env.AGDA }} --safe EverythingSafe.agda
-      #     ${{ env.AGDA }} index.agda
+          ${{ env.AGDA }} --safe EverythingSafe.agda
+          ${{ env.AGDA }} index.agda
 
-      # - name: Golden testing
-      #   run: |
-      #     ${{ env.CABAL_INSTALL }} clock
-      #     make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
+      - name: Golden testing
+        run: |
+          ${{ env.CABAL_INSTALL }} clock
+          make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
 
 
 ########################################################################
@@ -183,7 +183,7 @@ jobs:
 
       - name: Deploy HTML
         uses: JamesIves/github-pages-deploy-action@4.1.3
-        # if: ${{ success() && env.AGDA_DEPLOY }}
+        if: ${{ success() && env.AGDA_DEPLOY }}
 
         with:
           branch: gh-pages
