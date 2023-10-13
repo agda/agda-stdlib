@@ -49,13 +49,7 @@ import Data.Sign as S
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
-open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; TotalPreorder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
-open import Relation.Binary.Structures
-  using (IsPreorder; IsTotalOrder; IsTotalPreorder; IsPartialOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
-open import Relation.Binary.Definitions
-  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Dense; Trans; Trichotomous; tri<; tri>; tri≈; _Respectsʳ_; _Respectsˡ_; _Respects₂_)
+open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
@@ -738,7 +732,7 @@ _>?_ = flip _<?_
 module ≤-Reasoning where
   import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
-    <-irrefl
+    <-asym
     <-trans
     (resp₂ _<_)
     <⇒≤
@@ -748,14 +742,6 @@ module ≤-Reasoning where
 
   open Triple public
     hiding (step-≈; step-≈˘)
-
-  infixr 2 step-≃ step-≃˘
-
-  step-≃  = Triple.step-≈
-  step-≃˘ = Triple.step-≈˘
-
-  syntax step-≃  x y∼z x≃y = x ≃⟨  x≃y ⟩ y∼z
-  syntax step-≃˘ x y∼z y≃x = x ≃˘⟨ y≃x ⟩ y∼z
 
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_

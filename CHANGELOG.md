@@ -1182,6 +1182,15 @@ Major improvements
 
 * In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
 
+### More modular design of equational reasoning.
+
+* Have introduced a new module `Relation.Binary.Reasoning.Syntax` which exports 
+  a range of modules containing pre-existing reasoning combinator syntax.
+
+* This makes it possible to add new or rename existing reasoning combinators to a 
+  pre-existing `Reasoning` module in just a couple of lines 
+  (e.g. see `∣-Reasoning` in `Data.Nat.Divisibility`)
+
 Deprecated modules
 ------------------
 
@@ -1753,6 +1762,11 @@ Deprecated names
   sym-↔   ↦   ↔-sym
   ```
 
+* In `Function.Related.Propositional.Reasoning`:
+  ```agda
+  _↔⟨⟩_  ↦  _≡⟨⟩_
+  ```
+  
 * In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
   ```
   toForeign   ↦ Foreign.Haskell.Coerce.coerce
@@ -2640,6 +2654,8 @@ Additions to existing modules
   toℕ-inverseˡ  : Inverseˡ _≡_ _≡_ toℕ fromℕ
   toℕ-inverseʳ  : Inverseʳ _≡_ _≡_ toℕ fromℕ
   toℕ-inverseᵇ  : Inverseᵇ _≡_ _≡_ toℕ fromℕ
+  
+  <-asym : Asymmetric _<_
   ```
 
 * Added a new pattern synonym to `Data.Nat.Divisibility.Core`:

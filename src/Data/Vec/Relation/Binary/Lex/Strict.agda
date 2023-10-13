@@ -325,23 +325,21 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 -- Equational Reasoning
 ------------------------------------------------------------------------
 
-module ≤-Reasoning {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
-                   (≈-isEquivalence : IsEquivalence _≈_)
-                   (≺-irrefl : Irreflexive _≈_ _≺_)
-                   (≺-trans : Transitive _≺_)
-                   (≺-resp-≈ : _≺_ Respects₂ _≈_)
-                   (n : ℕ)
-                   where
+module ≤-Reasoning
+  {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
+  (≺-isStrictPartialOrder : IsStrictPartialOrder _≈_ _≺_)
+  (n : ℕ)
+  where
 
-  private
-    ≈-isPartialEquivalence = IsEquivalence.isPartialEquivalence ≈-isEquivalence
+  open IsStrictPartialOrder ≺-isStrictPartialOrder
 
   open import Relation.Binary.Reasoning.Base.Triple
-    (≤-isPreorder ≈-isEquivalence ≺-trans ≺-resp-≈)
-    (<-irrefl ≺-irrefl)
-    (<-trans ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
-    (<-respects₂ ≈-isPartialEquivalence ≺-resp-≈)
+    (≤-isPreorder isEquivalence trans <-resp-≈)
+    (<-asym Eq.sym <-resp-≈ asym)
+    (<-trans Eq.isPartialEquivalence <-resp-≈ trans)
+    (<-respects₂ Eq.isPartialEquivalence <-resp-≈)
     (<⇒≤ {m = n})
-    (<-transˡ ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
-    (<-transʳ ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
+    (<-transˡ Eq.isPartialEquivalence <-resp-≈ trans)
+    (<-transʳ Eq.isPartialEquivalence <-resp-≈ trans)
     public
+
