@@ -5,7 +5,7 @@ rm html/index.html
 
 find html/ -name "index.html" \
   | grep -v "master\|experimental" \
-  | sort \
+  | sort -r \
   | sed 's|html/\([^\/]*\)/index.html|  <li><a href="\1">\1</a></li>|g' \
   >> landing.html
 
