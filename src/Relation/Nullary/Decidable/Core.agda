@@ -12,19 +12,19 @@
 module Relation.Nullary.Decidable.Core where
 
 open import Level using (Level; Lift)
-open import Data.Bool.Base using (Bool; false; true; not; T; _∧_; _∨_)
+open import Data.Bool.Base
 open import Data.Unit.Base using (⊤)
-open import Data.Empty using (⊥)
-open import Data.Empty.Irrelevant using (⊥-elim)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
-open import Relation.Nullary.Reflects
+open import Relation.Nullary.Reflects as Reflects
+  using (Reflects; ofʸ; ofⁿ; of; of⁻¹; Recomputable)
 open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction; Stable; DoubleNegation; negated-stable)
 
 private
   variable
-    a b : Level
+    a : Level
     A B : Set a
 
 ------------------------------------------------------------------------
@@ -48,8 +48,13 @@ record Dec (A : Set a) : Set a where
 
 open Dec public
 
-pattern yes a =  true because ofʸ  a
-pattern no ¬a = false because ofⁿ ¬a
+-- lazier versions of `yes` and `no`
+pattern yes′ [a] =  true because  [a]
+pattern no′ [¬a] = false because [¬a]
+
+-- now these are derived patterns, but could be re-expressed using `of`
+pattern yes  a  = yes′ (ofʸ a)
+pattern no [¬a] = no′ (ofⁿ [¬a])
 
 ------------------------------------------------------------------------
 -- Flattening
@@ -57,12 +62,10 @@ pattern no ¬a = false because ofⁿ ¬a
 module _ {A : Set a} where
 
   From-yes : Dec A → Set a
-  From-yes (true  because _) = A
-  From-yes (false because _) = Lift a ⊤
+  From-yes a? = if (does a?) then A else Lift a ⊤
 
   From-no : Dec A → Set a
-  From-no (false because _) = ¬ A
-  From-no (true  because _) = Lift a ⊤
+  From-no  a? = if (does a?) then Lift a ⊤ else ¬ A
 
 ------------------------------------------------------------------------
 -- Recompute
@@ -70,8 +73,7 @@ module _ {A : Set a} where
 -- Given an irrelevant proof of a decidable type, a proof can
 -- be recomputed and subsequently used in relevant contexts.
 recompute : Dec A → .A → A
-recompute (yes a) _ = a
-recompute (no ¬a) a = ⊥-elim (¬a a)
+recompute = Reflects.recompute ∘ proof
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
@@ -81,19 +83,19 @@ infixr 2 _×-dec_ _→-dec_
 
 ¬? : Dec A → Dec (¬ A)
 does  (¬? a?) = not (does a?)
-proof (¬? a?) = ¬-reflects (proof a?)
+proof (¬? a?) = Reflects.¬-reflects (proof a?)
 
 _×-dec_ : Dec A → Dec B → Dec (A × B)
 does  (a? ×-dec b?) = does a? ∧ does b?
-proof (a? ×-dec b?) = proof a? ×-reflects proof b?
+proof (a? ×-dec b?) = proof a? Reflects.×-reflects proof b?
 
 _⊎-dec_ : Dec A → Dec B → Dec (A ⊎ B)
 does  (a? ⊎-dec b?) = does a? ∨ does b?
-proof (a? ⊎-dec b?) = proof a? ⊎-reflects proof b?
+proof (a? ⊎-dec b?) = proof a? Reflects.⊎-reflects proof b?
 
 _→-dec_ : Dec A → Dec B → Dec (A → B)
 does  (a? →-dec b?) = not (does a?) ∨ does b?
-proof (a? →-dec b?) = proof a? →-reflects proof b?
+proof (a? →-dec b?) = proof a? Reflects.→-reflects proof b?
 
 ------------------------------------------------------------------------
 -- Relationship with booleans
@@ -104,8 +106,8 @@ proof (a? →-dec b?) = proof a? →-reflects proof b?
 -- for proof automation.
 
 isYes : Dec A → Bool
-isYes (true  because _) = true
-isYes (false because _) = false
+isYes (yes′ _) = true
+isYes (no′  _) = false
 
 isNo : Dec A → Bool
 isNo = not ∘ isYes
@@ -124,42 +126,42 @@ False = T ∘ isNo
 
 -- Gives a witness to the "truth".
 toWitness : {a? : Dec A} → True a? → A
-toWitness {a? = true  because [a]} _  = invert [a]
-toWitness {a? = false because  _ } ()
+toWitness {a? = yes′ [a]} _ = of⁻¹ [a]
+toWitness {a? = no′  _ } ()
 
 -- Establishes a "truth", given a witness.
 fromWitness : {a? : Dec A} → A → True a?
-fromWitness {a? = true  because   _ } = const _
-fromWitness {a? = false because [¬a]} = invert [¬a]
+fromWitness {a? = yes′  _ } = const _
+fromWitness {a? = no′ [¬a]} = of⁻¹ [¬a]
 
 -- Variants for False.
 toWitnessFalse : {a? : Dec A} → False a? → ¬ A
-toWitnessFalse {a? = true  because   _ } ()
-toWitnessFalse {a? = false because [¬a]} _  = invert [¬a]
+toWitnessFalse {a? = yes′  _ } ()
+toWitnessFalse {a? = no′ [¬a]} _  = of⁻¹ [¬a]
 
 fromWitnessFalse : {a? : Dec A} → ¬ A → False a?
-fromWitnessFalse {a? = true  because [a]} = flip _$_ (invert [a])
-fromWitnessFalse {a? = false because  _ } = const _
+fromWitnessFalse {a? = yes′ [a]} = flip _$_ (of⁻¹ [a])
+fromWitnessFalse {a? = no′   _ } = const _
 
 -- If a decision procedure returns "yes", then we can extract the
 -- proof using from-yes.
 from-yes : (a? : Dec A) → From-yes a?
-from-yes (true  because [a]) = invert [a]
-from-yes (false because _ ) = _
+from-yes (yes′ [a]) = of⁻¹ [a]
+from-yes (no′   _ ) = _
 
 -- If a decision procedure returns "no", then we can extract the proof
 -- using from-no.
 from-no : (a? : Dec A) → From-no a?
-from-no (false because [¬a]) = invert [¬a]
-from-no (true  because   _ ) = _
+from-no (no′ [¬a]) = of⁻¹ [¬a]
+from-no (yes′  _ ) = _
 
 ------------------------------------------------------------------------
 -- Maps
 
 map′ : (A → B) → (B → A) → Dec A → Dec B
-does  (map′ A→B B→A a?)                   = does a?
-proof (map′ A→B B→A (true  because  [a])) = ofʸ (A→B (invert [a]))
-proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A)
+does  (map′ A→B B→A a?)        = does a?
+proof (map′ A→B B→A (yes′ [a])) = of (A→B (of⁻¹ [a]))
+proof (map′ A→B B→A (no′ [¬a])) = of (of⁻¹ [¬a] ∘ B→A)
 
 ------------------------------------------------------------------------
 -- Relationship with double-negation
@@ -167,8 +169,8 @@ proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A
 -- Decidable predicates are stable.
 
 decidable-stable : Dec A → Stable A
-decidable-stable (yes a) ¬¬a = a
-decidable-stable (no ¬a) ¬¬a = ⊥-elim (¬¬a ¬a)
+decidable-stable (yes′ [a]) ¬¬a = of⁻¹ [a]
+decidable-stable (no′ [¬a]) ¬¬a = contradiction (of⁻¹ [¬a]) ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
 ¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
