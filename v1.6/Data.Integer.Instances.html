@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Integer.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Instances for integers</a>
+<a id="132" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="206" class="Symbol">{-#</a> <a id="210" class="Keyword">OPTIONS</a> <a id="218" class="Pragma">--without-K</a> <a id="230" class="Pragma">--safe</a> <a id="237" class="Symbol">#-}</a>
+
+<a id="242" class="Keyword">module</a> <a id="249" href="Data.Integer.Instances.html" class="Module">Data.Integer.Instances</a> <a id="272" class="Keyword">where</a>
+
+<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Data.Integer.Properties.html" class="Module">Data.Integer.Properties</a>
+<a id="315" class="Keyword">open</a> <a id="320" class="Keyword">import</a> <a id="327" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+  <a id="378" class="Keyword">using</a> <a id="384" class="Symbol">(</a><a id="385" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a><a id="401" class="Symbol">)</a>
+
+<a id="404" class="Keyword">instance</a>
+  <a id="ℤ-≡-isDecEquivalence"></a><a id="415" href="Data.Integer.Instances.html#415" class="Function">ℤ-≡-isDecEquivalence</a> <a id="436" class="Symbol">=</a> <a id="438" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a> <a id="455" href="Data.Integer.Properties.html#2102" class="Function Operator">_≟_</a>
+  <a id="ℤ-≤-isDecTotalOrder"></a><a id="461" href="Data.Integer.Instances.html#461" class="Function">ℤ-≤-isDecTotalOrder</a> <a id="481" class="Symbol">=</a> <a id="483" href="Data.Integer.Properties.html#4679" class="Function">≤-isDecTotalOrder</a>
+</pre></body></html>

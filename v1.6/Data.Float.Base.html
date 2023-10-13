@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Float.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Floats: basic types and operations</a>
+<a id="144" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="218" class="Symbol">{-#</a> <a id="222" class="Keyword">OPTIONS</a> <a id="230" class="Pragma">--without-K</a> <a id="242" class="Pragma">--safe</a> <a id="249" class="Symbol">#-}</a>
+
+<a id="254" class="Keyword">module</a> <a id="261" href="Data.Float.Base.html" class="Module">Data.Float.Base</a> <a id="277" class="Keyword">where</a>
+
+<a id="284" class="Keyword">open</a> <a id="289" class="Keyword">import</a> <a id="296" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="317" class="Keyword">using</a> <a id="323" class="Symbol">(</a><a id="324" href="Relation.Binary.Core.html#882" class="Function">Rel</a><a id="327" class="Symbol">)</a>
+<a id="329" class="Keyword">import</a> <a id="336" href="Data.Word.Base.html" class="Module">Data.Word.Base</a> <a id="351" class="Symbol">as</a> <a id="354" class="Module">Word</a>
+<a id="359" class="Keyword">open</a> <a id="364" class="Keyword">import</a> <a id="371" href="Function.Base.html" class="Module">Function.Base</a> <a id="385" class="Keyword">using</a> <a id="391" class="Symbol">(</a><a id="392" href="Function.Base.html#6285" class="Function Operator">_on_</a><a id="396" class="Symbol">)</a>
+<a id="398" class="Keyword">open</a> <a id="403" class="Keyword">import</a> <a id="410" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
+
+<a id="433" class="Comment">------------------------------------------------------------------------</a>
+<a id="506" class="Comment">-- Re-export built-ins publically</a>
+
+<a id="541" class="Keyword">open</a> <a id="546" class="Keyword">import</a> <a id="553" href="Agda.Builtin.Float.html" class="Module">Agda.Builtin.Float</a> <a id="572" class="Keyword">public</a>
+  <a id="581" class="Keyword">using</a> <a id="587" class="Symbol">(</a><a id="588" href="Agda.Builtin.Float.html#292" class="Postulate">Float</a><a id="593" class="Symbol">)</a>
+  <a id="597" class="Keyword">renaming</a>
+  <a id="608" class="Comment">-- Relations</a>
+  <a id="623" class="Symbol">(</a> <a id="625" href="Agda.Builtin.Float.html#382" class="Primitive">primFloatEquality</a>          <a id="652" class="Symbol">to</a> <a id="primFloatEquality"></a><a id="655" href="Data.Float.Base.html#655" class="Primitive">_≡ᵇ_</a>
+  <a id="662" class="Symbol">;</a> <a id="664" href="Agda.Builtin.Float.html#425" class="Primitive">primFloatLess</a>              <a id="691" class="Symbol">to</a> <a id="primFloatLess"></a><a id="694" href="Data.Float.Base.html#694" class="Primitive">_≤ᵇ_</a>
+  <a id="701" class="Symbol">;</a> <a id="703" href="Agda.Builtin.Float.html#468" class="Primitive">primFloatNumericalEquality</a> <a id="730" class="Symbol">to</a> <a id="primFloatNumericalEquality"></a><a id="733" href="Data.Float.Base.html#733" class="Primitive">_≈ᵇ_</a>
+  <a id="740" class="Symbol">;</a> <a id="742" href="Agda.Builtin.Float.html#520" class="Primitive">primFloatNumericalLess</a>     <a id="769" class="Symbol">to</a> <a id="primFloatNumericalLess"></a><a id="772" href="Data.Float.Base.html#772" class="Primitive">_≲ᵇ_</a>
+  <a id="779" class="Comment">-- Conversions</a>
+  <a id="796" class="Symbol">;</a> <a id="798" href="Agda.Builtin.Float.html#1288" class="Primitive">primShowFloat</a>     <a id="816" class="Symbol">to</a> <a id="primShowFloat"></a><a id="819" href="Data.Float.Base.html#819" class="Primitive">show</a>
+  <a id="826" class="Symbol">;</a> <a id="828" href="Agda.Builtin.Float.html#345" class="Primitive">primFloatToWord64</a> <a id="846" class="Symbol">to</a> <a id="primFloatToWord64"></a><a id="849" href="Data.Float.Base.html#849" class="Primitive">toWord</a>
+  <a id="858" class="Symbol">;</a> <a id="860" href="Agda.Builtin.Float.html#572" class="Primitive">primNatToFloat</a>    <a id="878" class="Symbol">to</a> <a id="primNatToFloat"></a><a id="881" href="Data.Float.Base.html#881" class="Primitive">fromℕ</a>
+  <a id="889" class="Comment">-- Operations</a>
+  <a id="905" class="Symbol">;</a> <a id="907" href="Agda.Builtin.Float.html#606" class="Primitive">primFloatPlus</a>   <a id="923" class="Symbol">to</a> <a id="926" class="Keyword">infixl</a> <a id="933" class="Number">6</a> <a id="primFloatPlus"></a><a id="935" href="Data.Float.Base.html#935" class="Primitive">_+_</a>
+  <a id="941" class="Symbol">;</a> <a id="943" href="Agda.Builtin.Float.html#650" class="Primitive">primFloatMinus</a>  <a id="959" class="Symbol">to</a> <a id="962" class="Keyword">infixl</a> <a id="969" class="Number">6</a> <a id="primFloatMinus"></a><a id="971" href="Data.Float.Base.html#971" class="Primitive">_-_</a>
+  <a id="977" class="Symbol">;</a> <a id="979" href="Agda.Builtin.Float.html#694" class="Primitive">primFloatTimes</a>  <a id="995" class="Symbol">to</a> <a id="998" class="Keyword">infixl</a> <a id="1005" class="Number">7</a> <a id="primFloatTimes"></a><a id="1007" href="Data.Float.Base.html#1007" class="Primitive">_*_</a>
+  <a id="1013" class="Symbol">;</a> <a id="1015" href="Agda.Builtin.Float.html#774" class="Primitive">primFloatDiv</a>    <a id="1031" class="Symbol">to</a> <a id="1034" class="Keyword">infixl</a> <a id="1041" class="Number">7</a> <a id="primFloatDiv"></a><a id="1043" href="Data.Float.Base.html#1043" class="Primitive">_÷_</a>
+  <a id="1049" class="Symbol">;</a> <a id="1051" href="Agda.Builtin.Float.html#738" class="Primitive">primFloatNegate</a> <a id="1067" class="Symbol">to</a> <a id="primFloatNegate"></a><a id="1070" href="Data.Float.Base.html#1070" class="Primitive">-_</a>
+  <a id="1075" class="Symbol">;</a> <a id="1077" href="Agda.Builtin.Float.html#818" class="Primitive">primFloatSqrt</a>   <a id="1093" class="Symbol">to</a> <a id="primFloatSqrt"></a><a id="1096" href="Data.Float.Base.html#1096" class="Primitive">sqrt</a>
+  <a id="1103" class="Symbol">;</a> <a id="1105" href="Agda.Builtin.Float.html#854" class="Primitive">primRound</a>       <a id="1121" class="Symbol">to</a> <a id="primRound"></a><a id="1124" href="Data.Float.Base.html#1124" class="Primitive">round</a>
+  <a id="1132" class="Symbol">;</a> <a id="1134" href="Agda.Builtin.Float.html#888" class="Primitive">primFloor</a>       <a id="1150" class="Symbol">to</a> <a id="primFloor"></a><a id="1153" href="Data.Float.Base.html#1153" class="Primitive">⌊_⌋</a>
+  <a id="1159" class="Symbol">;</a> <a id="1161" href="Agda.Builtin.Float.html#922" class="Primitive">primCeiling</a>     <a id="1177" class="Symbol">to</a> <a id="primCeiling"></a><a id="1180" href="Data.Float.Base.html#1180" class="Primitive">⌈_⌉</a>
+  <a id="1186" class="Symbol">;</a> <a id="1188" href="Agda.Builtin.Float.html#956" class="Primitive">primExp</a>         <a id="1204" class="Symbol">to</a> <a id="primExp"></a><a id="1207" href="Data.Float.Base.html#1207" class="Primitive">e^_</a>
+  <a id="1213" class="Symbol">;</a> <a id="1215" href="Agda.Builtin.Float.html#992" class="Primitive">primLog</a>         <a id="1231" class="Symbol">to</a> <a id="primLog"></a><a id="1234" href="Data.Float.Base.html#1234" class="Primitive">log</a>
+  <a id="1240" class="Symbol">;</a> <a id="1242" href="Agda.Builtin.Float.html#1028" class="Primitive">primSin</a>         <a id="1258" class="Symbol">to</a> <a id="primSin"></a><a id="1261" href="Data.Float.Base.html#1261" class="Primitive">sin</a>
+  <a id="1267" class="Symbol">;</a> <a id="1269" href="Agda.Builtin.Float.html#1064" class="Primitive">primCos</a>         <a id="1285" class="Symbol">to</a> <a id="primCos"></a><a id="1288" href="Data.Float.Base.html#1288" class="Primitive">cos</a>
+  <a id="1294" class="Symbol">;</a> <a id="1296" href="Agda.Builtin.Float.html#1100" class="Primitive">primTan</a>         <a id="1312" class="Symbol">to</a> <a id="primTan"></a><a id="1315" href="Data.Float.Base.html#1315" class="Primitive">tan</a>
+  <a id="1321" class="Symbol">;</a> <a id="1323" href="Agda.Builtin.Float.html#1136" class="Primitive">primASin</a>        <a id="1339" class="Symbol">to</a> <a id="primASin"></a><a id="1342" href="Data.Float.Base.html#1342" class="Primitive">asin</a>
+  <a id="1349" class="Symbol">;</a> <a id="1351" href="Agda.Builtin.Float.html#1172" class="Primitive">primACos</a>        <a id="1367" class="Symbol">to</a> <a id="primACos"></a><a id="1370" href="Data.Float.Base.html#1370" class="Primitive">acos</a>
+  <a id="1377" class="Symbol">;</a> <a id="1379" href="Agda.Builtin.Float.html#1208" class="Primitive">primATan</a>        <a id="1395" class="Symbol">to</a> <a id="primATan"></a><a id="1398" href="Data.Float.Base.html#1398" class="Primitive">atan</a>
+  <a id="1405" class="Symbol">)</a>
+
+<a id="_≈_"></a><a id="1408" href="Data.Float.Base.html#1408" class="Function Operator">_≈_</a> <a id="1412" class="Symbol">:</a> <a id="1414" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="1418" href="Agda.Builtin.Float.html#292" class="Postulate">Float</a> <a id="1424" class="Symbol">_</a>
+<a id="1426" href="Data.Float.Base.html#1408" class="Function Operator">_≈_</a> <a id="1430" class="Symbol">=</a> <a id="1432" href="Data.Word.Base.html#716" class="Function Operator">Word._≈_</a> <a id="1441" href="Function.Base.html#6285" class="Function Operator">on</a> <a id="1444" href="Data.Float.Base.html#849" class="Primitive">toWord</a>
+
+<a id="_&lt;_"></a><a id="1452" href="Data.Float.Base.html#1452" class="Function Operator">_&lt;_</a> <a id="1456" class="Symbol">:</a> <a id="1458" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="1462" href="Agda.Builtin.Float.html#292" class="Postulate">Float</a> <a id="1468" class="Symbol">_</a>
+<a id="1470" href="Data.Float.Base.html#1452" class="Function Operator">_&lt;_</a> <a id="1474" class="Symbol">=</a> <a id="1476" href="Data.Word.Base.html#768" class="Function Operator">Word._&lt;_</a> <a id="1485" href="Function.Base.html#6285" class="Function Operator">on</a> <a id="1488" href="Data.Float.Base.html#849" class="Primitive">toWord</a>
+</pre></body></html>
