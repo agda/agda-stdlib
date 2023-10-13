@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Construct.Never</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The empty binary relation</a>
+<a id="135" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="209" class="Symbol">{-#</a> <a id="213" class="Keyword">OPTIONS</a> <a id="221" class="Pragma">--cubical-compatible</a> <a id="242" class="Pragma">--safe</a> <a id="249" class="Symbol">#-}</a>
+
+<a id="254" class="Keyword">module</a> <a id="261" href="Relation.Binary.Construct.Never.html" class="Module">Relation.Binary.Construct.Never</a> <a id="293" class="Keyword">where</a>
+
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a>
+<a id="333" class="Keyword">open</a> <a id="338" class="Keyword">import</a> <a id="345" href="Relation.Binary.Construct.Constant.html" class="Module">Relation.Binary.Construct.Constant</a>
+<a id="380" class="Keyword">open</a> <a id="385" class="Keyword">import</a> <a id="392" href="Data.Empty.Polymorphic.html" class="Module">Data.Empty.Polymorphic</a> <a id="415" class="Keyword">using</a> <a id="421" class="Symbol">(</a><a id="422" href="Data.Empty.Polymorphic.html#340" class="Function">⊥</a><a id="423" class="Symbol">)</a>
+
+<a id="426" class="Comment">------------------------------------------------------------------------</a>
+<a id="499" class="Comment">-- Definition</a>
+
+<a id="Never"></a><a id="514" href="Relation.Binary.Construct.Never.html#514" class="Function">Never</a> <a id="520" class="Symbol">:</a> <a id="522" class="Symbol">∀</a> <a id="524" class="Symbol">{</a><a id="525" href="Relation.Binary.Construct.Never.html#525" class="Bound">a</a> <a id="527" href="Relation.Binary.Construct.Never.html#527" class="Bound">ℓ</a><a id="528" class="Symbol">}</a> <a id="530" class="Symbol">{</a><a id="531" href="Relation.Binary.Construct.Never.html#531" class="Bound">A</a> <a id="533" class="Symbol">:</a> <a id="535" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="539" href="Relation.Binary.Construct.Never.html#525" class="Bound">a</a><a id="540" class="Symbol">}</a> <a id="542" class="Symbol">→</a> <a id="544" href="Relation.Binary.Core.html#891" class="Function">Rel</a> <a id="548" href="Relation.Binary.Construct.Never.html#531" class="Bound">A</a> <a id="550" href="Relation.Binary.Construct.Never.html#527" class="Bound">ℓ</a>
+<a id="552" href="Relation.Binary.Construct.Never.html#514" class="Function">Never</a> <a id="558" class="Symbol">=</a> <a id="560" href="Relation.Binary.Construct.Constant.Core.html#542" class="Function">Const</a> <a id="566" href="Data.Empty.Polymorphic.html#340" class="Function">⊥</a>
+</pre></body></html>

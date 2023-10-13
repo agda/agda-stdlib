@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.Size</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--cubical-compatible</a> <a id="34" class="Pragma">--no-universe-polymorphism</a> <a id="61" class="Pragma">--sized-types</a>
+            <a id="87" class="Pragma">--no-guardedness</a> <a id="104" class="Pragma">--level-universe</a> <a id="121" class="Symbol">#-}</a>
+
+<a id="126" class="Keyword">module</a> <a id="133" href="Agda.Builtin.Size.html" class="Module">Agda.Builtin.Size</a> <a id="151" class="Keyword">where</a>
+
+<a id="158" class="Symbol">{-#</a> <a id="162" class="Keyword">BUILTIN</a> <a id="170" class="Keyword">SIZEUNIV</a> <a id="SizeUniv"></a><a id="179" href="Agda.Builtin.Size.html#179" class="Postulate">SizeUniv</a> <a id="188" class="Symbol">#-}</a>
+<a id="192" class="Symbol">{-#</a> <a id="196" class="Keyword">BUILTIN</a> <a id="204" class="Keyword">SIZE</a>     <a id="Size"></a><a id="213" href="Agda.Builtin.Size.html#213" class="Postulate">Size</a>     <a id="222" class="Symbol">#-}</a>
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">BUILTIN</a> <a id="238" class="Keyword">SIZELT</a>   <a id="Size&lt;_"></a><a id="247" href="Agda.Builtin.Size.html#247" class="Postulate Operator">Size&lt;_</a>   <a id="256" class="Symbol">#-}</a>
+<a id="260" class="Symbol">{-#</a> <a id="264" class="Keyword">BUILTIN</a> <a id="272" class="Keyword">SIZESUC</a>  <a id="↑_"></a><a id="281" href="Agda.Builtin.Size.html#281" class="Postulate Operator">↑_</a>       <a id="290" class="Symbol">#-}</a>
+<a id="294" class="Symbol">{-#</a> <a id="298" class="Keyword">BUILTIN</a> <a id="306" class="Keyword">SIZEINF</a>  <a id="∞"></a><a id="315" href="Agda.Builtin.Size.html#315" class="Postulate">∞</a>        <a id="324" class="Symbol">#-}</a>
+<a id="328" class="Symbol">{-#</a> <a id="332" class="Keyword">BUILTIN</a> <a id="340" class="Keyword">SIZEMAX</a>  <a id="_⊔ˢ_"></a><a id="349" href="Agda.Builtin.Size.html#349" class="Postulate Operator">_⊔ˢ_</a>     <a id="358" class="Symbol">#-}</a>
+
+<a id="363" class="Symbol">{-#</a> <a id="367" class="Keyword">FOREIGN</a> <a id="375" class="Pragma">GHC</a>
+  <a id="381" class="Pragma">type</a> <a id="386" class="Pragma">SizeLT</a> <a id="393" class="Pragma">i</a> <a id="395" class="Pragma">=</a> <a id="397" class="Pragma">()</a>
+  <a id="402" class="Symbol">#-}</a>
+
+<a id="407" class="Symbol">{-#</a> <a id="411" class="Keyword">COMPILE</a> <a id="419" class="Keyword">GHC</a> <a id="423" href="Agda.Builtin.Size.html#213" class="Postulate">Size</a>   <a id="430" class="Pragma">=</a> <a id="432" class="Pragma">type</a> <a id="437" class="Pragma">()</a>     <a id="444" class="Symbol">#-}</a>
+<a id="448" class="Symbol">{-#</a> <a id="452" class="Keyword">COMPILE</a> <a id="460" class="Keyword">GHC</a> <a id="464" href="Agda.Builtin.Size.html#247" class="Postulate Operator">Size&lt;_</a> <a id="471" class="Pragma">=</a> <a id="473" class="Pragma">type</a> <a id="478" class="Pragma">SizeLT</a> <a id="485" class="Symbol">#-}</a>
+<a id="489" class="Symbol">{-#</a> <a id="493" class="Keyword">COMPILE</a> <a id="501" class="Keyword">GHC</a> <a id="505" href="Agda.Builtin.Size.html#281" class="Postulate Operator">↑_</a>     <a id="512" class="Pragma">=</a> <a id="514" class="Pragma">\_</a> <a id="517" class="Pragma">-&gt;</a> <a id="520" class="Pragma">()</a>    <a id="526" class="Symbol">#-}</a>
+<a id="530" class="Symbol">{-#</a> <a id="534" class="Keyword">COMPILE</a> <a id="542" class="Keyword">GHC</a> <a id="546" href="Agda.Builtin.Size.html#315" class="Postulate">∞</a>      <a id="553" class="Pragma">=</a> <a id="555" class="Pragma">()</a>          <a id="567" class="Symbol">#-}</a>
+<a id="571" class="Symbol">{-#</a> <a id="575" class="Keyword">COMPILE</a> <a id="583" class="Keyword">GHC</a> <a id="587" href="Agda.Builtin.Size.html#349" class="Postulate Operator">_⊔ˢ_</a>   <a id="594" class="Pragma">=</a> <a id="596" class="Pragma">\_</a> <a id="599" class="Pragma">_</a> <a id="601" class="Pragma">-&gt;</a> <a id="604" class="Pragma">()</a>  <a id="608" class="Symbol">#-}</a>
+</pre></body></html>
