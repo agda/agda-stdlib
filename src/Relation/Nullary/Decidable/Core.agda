@@ -18,7 +18,7 @@ open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Reflects as Reflects
-  using (Reflects; ofʸ; ofⁿ; of; of⁻¹; Recomputable)
+  using (Reflects; ofʸ; ofⁿ; of; invert; Recomputable)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction; Stable; DoubleNegation; negated-stable)
 
@@ -126,33 +126,33 @@ False = T ∘ isNo
 
 -- Gives a witness to the "truth".
 toWitness : {a? : Dec A} → True a? → A
-toWitness {a? = yes′ [a]} _ = of⁻¹ [a]
+toWitness {a? = yes′ [a]} _ = invert [a]
 toWitness {a? = no′  _ } ()
 
 -- Establishes a "truth", given a witness.
 fromWitness : {a? : Dec A} → A → True a?
 fromWitness {a? = yes′  _ } = const _
-fromWitness {a? = no′ [¬a]} = of⁻¹ [¬a]
+fromWitness {a? = no′ [¬a]} = invert [¬a]
 
 -- Variants for False.
 toWitnessFalse : {a? : Dec A} → False a? → ¬ A
 toWitnessFalse {a? = yes′  _ } ()
-toWitnessFalse {a? = no′ [¬a]} _  = of⁻¹ [¬a]
+toWitnessFalse {a? = no′ [¬a]} _  = invert [¬a]
 
 fromWitnessFalse : {a? : Dec A} → ¬ A → False a?
-fromWitnessFalse {a? = yes′ [a]} = flip _$_ (of⁻¹ [a])
+fromWitnessFalse {a? = yes′ [a]} = flip _$_ (invert [a])
 fromWitnessFalse {a? = no′   _ } = const _
 
 -- If a decision procedure returns "yes", then we can extract the
 -- proof using from-yes.
 from-yes : (a? : Dec A) → From-yes a?
-from-yes (yes′ [a]) = of⁻¹ [a]
+from-yes (yes′ [a]) = invert [a]
 from-yes (no′   _ ) = _
 
 -- If a decision procedure returns "no", then we can extract the proof
 -- using from-no.
 from-no : (a? : Dec A) → From-no a?
-from-no (no′ [¬a]) = of⁻¹ [¬a]
+from-no (no′ [¬a]) = invert [¬a]
 from-no (yes′  _ ) = _
 
 ------------------------------------------------------------------------
@@ -160,8 +160,8 @@ from-no (yes′  _ ) = _
 
 map′ : (A → B) → (B → A) → Dec A → Dec B
 does  (map′ A→B B→A a?)        = does a?
-proof (map′ A→B B→A (yes′ [a])) = of (A→B (of⁻¹ [a]))
-proof (map′ A→B B→A (no′ [¬a])) = of (of⁻¹ [¬a] ∘ B→A)
+proof (map′ A→B B→A (yes′ [a])) = of (A→B (invert [a]))
+proof (map′ A→B B→A (no′ [¬a])) = of (invert [¬a] ∘ B→A)
 
 ------------------------------------------------------------------------
 -- Relationship with double-negation
@@ -169,8 +169,8 @@ proof (map′ A→B B→A (no′ [¬a])) = of (of⁻¹ [¬a] ∘ B→A)
 -- Decidable predicates are stable.
 
 decidable-stable : Dec A → Stable A
-decidable-stable (yes′ [a]) ¬¬a = of⁻¹ [a]
-decidable-stable (no′ [¬a]) ¬¬a = contradiction (of⁻¹ [¬a]) ¬¬a
+decidable-stable (yes′ [a]) ¬¬a = invert [a]
+decidable-stable (no′ [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
 ¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
