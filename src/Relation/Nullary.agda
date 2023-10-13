@@ -21,12 +21,12 @@ open import Relation.Nullary.Negation.Core public using
   )
 
 open import Relation.Nullary.Reflects public using
-  ( Reflects; ofʸ; ofⁿ; of; invert; Recomputable
+  ( Reflects; ofʸ; ofⁿ; reflects; reflects′; of; invert; Recomputable
   ; _×-reflects_; _⊎-reflects_; _→-reflects_
   )
 
 open import Relation.Nullary.Decidable.Core public using
-  ( Dec; does; proof; yes; no; _because_; recompute
+  ( Dec; _because_; does; proof; yes′; no′; yes; no; recompute
   ; ¬?; _×-dec_; _⊎-dec_; _→-dec_
   )
 
