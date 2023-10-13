@@ -59,7 +59,7 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ *ₗ (flip *ₗ)
     isSemimodule = record
       { isBisemimodule = isBisemimodule
-      ; *ₗ-*ᵣ-comm = λ _ _ → ≈ᴹ-refl
+      ; *ₗ-*ᵣ-coincident = λ _ _ → ≈ᴹ-refl
       }
 
   -- Similarly, a right semimodule over a commutative semiring
@@ -93,7 +93,7 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ (flip *ᵣ) *ᵣ
     isSemimodule = record
       { isBisemimodule = isBisemimodule
-      ; *ₗ-*ᵣ-comm = λ _ _ → ≈ᴹ-refl
+      ; *ₗ-*ᵣ-coincident = λ _ _ → ≈ᴹ-refl
       }
 
 
@@ -119,7 +119,7 @@ module _ (commutativeRing : CommutativeRing r ℓr) where
         ; -ᴹ‿cong = -ᴹ‿cong
         ; -ᴹ‿inverse = -ᴹ‿inverse
         }
-      ; *ₗ-*ᵣ-comm = λ _ _ → ≈ᴹ-refl
+      ; *ₗ-*ᵣ-coincident = λ _ _ → ≈ᴹ-refl
       }
 
   -- Similarly, a right module over a commutative ring is already a module.
@@ -141,5 +141,5 @@ module _ (commutativeRing : CommutativeRing r ℓr) where
         ; -ᴹ‿cong = -ᴹ‿cong
         ; -ᴹ‿inverse = -ᴹ‿inverse
         }
-      ; *ₗ-*ᵣ-comm = λ _ _ → ≈ᴹ-refl
+      ; *ₗ-*ᵣ-coincident = λ _ _ → ≈ᴹ-refl
       }
