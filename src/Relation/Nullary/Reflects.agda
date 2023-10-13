@@ -11,17 +11,17 @@ module Relation.Nullary.Reflects where
 open import Agda.Builtin.Equality
 
 open import Data.Bool.Base
-open import Data.Empty
+open import Data.Empty.Irrelevant using (⊥-elim)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
-open import Function.Base using (_$_; _∘_; const)
+open import Function.Base using (id; _$_; _∘_; const; flip)
 
-open import Relation.Nullary.Negation.Core
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; _¬-⊎_)
 
 private
   variable
-    a : Level
+    a c : Level
     A B : Set a
 
 ------------------------------------------------------------------------
@@ -40,24 +40,57 @@ data Reflects (A : Set a) : Bool → Set a where
 -- These lemmas are intended to be used mostly when `b` is a value, so
 -- that the `if` expressions have already been evaluated away.
 -- In this case, `of` works like the relevant constructor (`ofⁿ` or
--- `ofʸ`), and `invert` strips off the constructor to just give either
+-- `ofʸ`), and `of⁻¹` strips off the constructor to just give either
 -- the proof of `A` or the proof of `¬ A`.
+
+-- NB. not the maximally dependent eliminator, but mostly sufficent
+
+reflects : (C : Bool → Set c) → (A → C true) → (¬ A → C false) →
+           ∀ {b} → Reflects A b → C b
+reflects C t f (ofⁿ ¬a) = f ¬a
+reflects C t f (ofʸ  a) = t a
+
+reflects′ : (A → B) → (¬ A → B) → ∀ {b} → Reflects A b → B
+reflects′ {B = B} = reflects (const B)
 
 of : ∀ {b} → if b then A else ¬ A → Reflects A b
 of {b = false} ¬a = ofⁿ ¬a
 of {b = true }  a = ofʸ a
 
-invert : ∀ {b} → Reflects A b → if b then A else ¬ A
-invert (ofʸ  a) = a
-invert (ofⁿ ¬a) = ¬a
+of⁻¹ : ∀ {b} → Reflects A b → if b then A else ¬ A
+of⁻¹ {A = A} = reflects (λ b → if b then A else ¬ A) id id
+
+invert = of⁻¹ -- against subsequent deprecation
+
+-- in lieu of a distinct `Reflects.Properties` module
+
+of⁻¹∘of≗id : ∀ {b} (r : if b then A else ¬ A) → of⁻¹ (of {b = b} r) ≡ r
+of⁻¹∘of≗id {b = false} _ = refl
+of⁻¹∘of≗id {b = true}  _ = refl
+
+of∘of⁻¹≗id : ∀ {b} (r : Reflects A b) → of (of⁻¹ r) ≡ r
+of∘of⁻¹≗id (ofʸ a)  = refl
+of∘of⁻¹≗id (ofⁿ ¬a) = refl
+
+
+------------------------------------------------------------------------
+-- Recomputable/recompute
+
+Recomputable : (A : Set a) → Set a
+Recomputable A = .A → A
+
+-- Given an irrelevant proof of a reflected type, a proof can
+-- be recomputed and subsequently used in relevant contexts.
+
+recompute : ∀ {b} → Reflects A b → Recomputable A
+recompute {A = A} = reflects (const (.A → A)) (λ a _ → a) (λ ¬a a → ⊥-elim (¬a a))
 
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
 
 -- If we can decide A, then we can decide its negation.
 ¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
-¬-reflects (ofʸ  a) = ofⁿ (_$ a)
-¬-reflects (ofⁿ ¬a) = ofʸ ¬a
+¬-reflects {A = A} = reflects (λ b → Reflects (¬ A) (not b)) (ofⁿ ∘ flip _$_) ofʸ
 
 -- If we can decide A and Q then we can decide their product
 infixr 2 _×-reflects_
@@ -66,7 +99,6 @@ _×-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
 ofʸ  a ×-reflects ofʸ  b = ofʸ (a , b)
 ofʸ  a ×-reflects ofⁿ ¬b = ofⁿ (¬b ∘ proj₂)
 ofⁿ ¬a ×-reflects _      = ofⁿ (¬a ∘ proj₁)
-
 
 infixr 1 _⊎-reflects_
 _⊎-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
@@ -80,7 +112,8 @@ _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                 Reflects (A → B) (not a ∨ b)
 ofʸ  a →-reflects ofʸ  b = ofʸ (const b)
 ofʸ  a →-reflects ofⁿ ¬b = ofⁿ (¬b ∘ (_$ a))
-ofⁿ ¬a →-reflects _      = ofʸ (⊥-elim ∘ ¬a)
+ofⁿ ¬a →-reflects _      = ofʸ (flip contradiction ¬a)
+
 
 ------------------------------------------------------------------------
 -- Other lemmas
@@ -95,3 +128,13 @@ det (ofʸ  a) (ofʸ  _) = refl
 det (ofʸ  a) (ofⁿ ¬a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofʸ  a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofⁿ  _) = refl
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.1
+
