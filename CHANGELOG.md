@@ -3801,6 +3801,15 @@ This is a full list of proofs that have changed form to use irrelevant instance 
               WellFounded _<_ → Irreflexive _≈_ _<_
   ```
 
+* Added new types and operations to `Reflection.TCM`:
+  ```
+  Blocker : Set
+  blockerMeta : Meta → Blocker
+  blockerAny : List Blocker → Blocker
+  blockerAll : List Blocker → Blocker
+  blockTC : Blocker → TC A
+  ```
+  
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`
 
   This is how to use it:
