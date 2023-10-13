@@ -9,16 +9,14 @@
 module Relation.Nullary.Decidable where
 
 open import Level using (Level)
-open import Data.Bool.Base using (true; false; if_then_else_)
-open import Data.Empty using (⊥-elim)
+open import Data.Bool.Base using (true; false)
 open import Data.Product.Base using (∃; _,_)
 open import Function.Base
 open import Function.Bundles using
   (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔ₛ′)
 open import Relation.Binary.Bundles using (Setoid; module Setoid)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary
-open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (invert; ¬_; contradiction; Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong′)
 
 private
@@ -51,23 +49,23 @@ via-injection inj _≟_ x y = map′ injective cong (to x ≟ to y)
 -- A lemma relating True and Dec
 
 True-↔ : (a? : Dec A) → Irrelevant A → True a? ↔ A
-True-↔ (true  because [a]) irr = mk↔ₛ′ (λ _ → invert [a]) _ (irr (invert [a])) cong′
-True-↔ (false because ofⁿ ¬a) _ = mk↔ₛ′ (λ ()) (invert (ofⁿ ¬a)) (⊥-elim ∘ ¬a) λ ()
+True-↔ (yes′ [a]) irr = let  a = invert  [a] in mk↔ₛ′ (λ _ → a) _ (irr a) cong′
+True-↔ (no′ [¬a]) _   = let ¬a = invert [¬a] in mk↔ₛ′ (λ ()) ¬a (λ a → contradiction a ¬a) λ ()
 
 ------------------------------------------------------------------------
 -- Result of decidability
 
 isYes≗does : (a? : Dec A) → isYes a? ≡ does a?
-isYes≗does (true  because _) = refl
-isYes≗does (false because _) = refl
+isYes≗does (yes′ _) = refl
+isYes≗does (no′  _) = refl
 
 dec-true : (a? : Dec A) → A → does a? ≡ true
-dec-true (true  because   _ ) a = refl
-dec-true (false because [¬a]) a = ⊥-elim (invert [¬a] a)
+dec-true (yes′  _ ) a = refl
+dec-true (no′ [¬a]) a = contradiction a (invert [¬a])
 
 dec-false : (a? : Dec A) → ¬ A → does a? ≡ false
-dec-false (false because  _ ) ¬a = refl
-dec-false (true  because [a]) ¬a = ⊥-elim (¬a (invert [a]))
+dec-false (no′   _ ) ¬a = refl
+dec-false (yes′ [a]) ¬a = contradiction (invert [a]) ¬a
 
 dec-yes : (a? : Dec A) → A → ∃ λ a → a? ≡ yes a
 dec-yes a? a with dec-true a? a
