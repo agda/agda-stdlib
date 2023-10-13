@@ -8,7 +8,7 @@
 
 module Reflection.TCM where
 
-open import Agda.Builtin.Reflection as Builtin using (Meta)
+import Agda.Builtin.Reflection as Builtin
 
 open import Reflection.AST.Term
 import Reflection.TCM.Format as Format
@@ -29,9 +29,9 @@ open Builtin public
   ; catchTC; quoteTC; unquoteTC
   ; getContext; extendContext; inContext; freshName
   ; declareDef; declarePostulate; defineFun; getType; getDefinition
-  ; commitTC; isMacro; withNormalisation
+  ; blockOnMeta; commitTC; isMacro; withNormalisation
   ; debugPrint; noConstraints; runSpeculative
-  ; Blocker ; blockTC; blockerMeta ; blockerAny ; blockerAll
+  ; Blocker; blockerMeta; blockerAny; blockerAll; blockTC
   )
   renaming (returnTC to pure)
 
@@ -43,6 +43,3 @@ open Format public
 
 newMeta : Type → TC Term
 newMeta = checkType unknown
-
-blockOnMeta : ∀ {a} {A : Set a} → Meta → TC A
-blockOnMeta m = blockTC (blockerMeta m)
