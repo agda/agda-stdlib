@@ -100,7 +100,7 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   _≳_ = flip _≲_
 
   -- Deprecated.
-  infix 4 _∼_ 
+  infix 4 _∼_
   _∼_ = _≲_
   {-# WARNING_ON_USAGE _∼_
   "Warning: _∼_ was deprecated in v2.0.

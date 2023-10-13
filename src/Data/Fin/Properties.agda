@@ -406,9 +406,8 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 
 <-isStrictTotalOrder : IsStrictTotalOrder {A = Fin n} _≡_ _<_
 <-isStrictTotalOrder = record
-  { isEquivalence = P.isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  ; compare              = <-cmp
   }
 
 ------------------------------------------------------------------------

@@ -153,9 +153,8 @@ module _ {e} {_≈_ : Rel A e} where
 <₋-isStrictTotalOrder-≡ : IsStrictTotalOrder _≡_ _<_ →
                           IsStrictTotalOrder _≡_ _<₋_
 <₋-isStrictTotalOrder-≡ strictot = record
-  { isEquivalence = P.isEquivalence
-  ; trans         = <₋-trans trans
-  ; compare       = <₋-cmp-≡ compare
+  { isStrictPartialOrder = <₋-isStrictPartialOrder-≡ isStrictPartialOrder
+  ; compare              = <₋-cmp-≡ compare
   } where open IsStrictTotalOrder strictot
 
 ------------------------------------------------------------------------
@@ -185,7 +184,6 @@ module _ {e} {_≈_ : Rel A e} where
   <₋-isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_ →
                           IsStrictTotalOrder _≈₋_ _<₋_
   <₋-isStrictTotalOrder strictot = record
-    { isEquivalence = ≈₋-isEquivalence isEquivalence
-    ; trans         = <₋-trans trans
-    ; compare       = <₋-cmp compare
+    { isStrictPartialOrder = <₋-isStrictPartialOrder isStrictPartialOrder
+    ; compare              = <₋-cmp compare
     } where open IsStrictTotalOrder strictot

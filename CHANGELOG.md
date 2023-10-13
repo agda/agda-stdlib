@@ -918,6 +918,46 @@ Non-backwards compatible changes
 
 * The old names (and the names of all proofs about these functions) have been deprecated appropriately.
 
+### Changes to definition of `IsStrictTotalOrder`
+
+* The previous definition of the record `IsStrictTotalOrder` did not build upon `IsStrictPartialOrder`
+  as would be expected. Instead it omitted several fields like irreflexivity as they were derivable from the
+  proof of trichotomy. However, this led to problems further up the hierarchy where bundles such as `StrictTotalOrder`
+  which contained multiple distinct proofs of `IsStrictPartialOrder`.
+  
+* To remedy this the definition of `IsStrictTotalOrder` has been changed to so that it builds upon 
+  `IsStrictPartialOrder` as would be expected. 
+
+* To aid migration, the old record definition has been moved to `Relation.Binary.Structures.Biased`
+  which contains the `isStrictTotalOrderᶜ` smart constructor (which is re-exported by `Relation.Binary`) . 
+  Therefore the old code:
+  ```agda
+  <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+  <-isStrictTotalOrder = record
+	{ isEquivalence = isEquivalence
+	; trans         = <-trans
+	; compare       = <-cmp
+	}
+  ```
+  can be migrated either by updating to the new record fields if you have a proof of `IsStrictPartialOrder`
+  available:
+  ```agda
+  <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+  <-isStrictTotalOrder = record
+	{ isStrictPartialOrder = <-isStrictPartialOrder
+	; compare              = <-cmp
+	}
+  ```
+  or simply applying the smart constructor to the record definition as follows:
+  ```agda
+  <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+  <-isStrictTotalOrder = isStrictTotalOrderᶜ record
+	{ isEquivalence = isEquivalence
+	; trans         = <-trans
+	; compare       = <-cmp
+	}
+  ```
+  
 ### Changes to triple reasoning interface
 
 * The module `Relation.Binary.Reasoning.Base.Triple` now takes an extra proof that the strict

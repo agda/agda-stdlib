@@ -14,7 +14,7 @@ open import Induction
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions
-  using (Symmetric; Asymmetric; Irreflexive; _Respects₂_; 
+  using (Symmetric; Asymmetric; Irreflexive; _Respects₂_;
     _Respectsʳ_; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Binary.Consequences using (asym⇒irr)
@@ -130,7 +130,7 @@ module _ {_<_ : Rel A r} where
   wf⇒asym : WellFounded _<_ → Asymmetric _<_
   wf⇒asym wf = acc⇒asym (wf _)
 
-  wf⇒irrefl : {_≈_ : Rel A ℓ} → _<_ Respects₂ _≈_ → 
+  wf⇒irrefl : {_≈_ : Rel A ℓ} → _<_ Respects₂ _≈_ →
               Symmetric _≈_ → WellFounded _<_ → Irreflexive _≈_ _<_
   wf⇒irrefl r s wf = asym⇒irr r s (wf⇒asym wf)
 
