@@ -8,14 +8,18 @@
 
 module Axiom.UniquenessOfIdentityProofs where
 
-open import Data.Bool.Base using (true; false)
-open import Data.Empty
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary hiding (Irrelevant)
+open import Function.Base using (id; const; flip)
+open import Level using (Level)
+open import Relation.Nullary using (contradiction; reflects′; proof)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
+
+private
+  variable
+    a : Level
+    A : Set a
 
 ------------------------------------------------------------------------
 -- Definition
@@ -24,7 +28,7 @@ open import Relation.Binary.PropositionalEquality.Properties
 -- equality are themselves equal. In other words, the equality relation
 -- is irrelevant. Here we define UIP relative to a given type.
 
-UIP : ∀ {a} (A : Set a) → Set a
+UIP : (A : Set a) → Set a
 UIP A = Irrelevant {A = A} _≡_
 
 ------------------------------------------------------------------------
@@ -38,12 +42,11 @@ UIP A = Irrelevant {A = A} _≡_
 -- proof to its image via this function which we then know is equal to
 -- the image of any other proof.
 
-module Constant⇒UIP
-  {a} {A : Set a} (f : _≡_ {A = A} ⇒ _≡_)
-  (f-constant : ∀ {a b} (p q : a ≡ b) → f p ≡ f q)
+module Constant⇒UIP (f : _≡_ {A = A} ⇒ _≡_)
+                    (f-constant : ∀ {x y} (p q : x ≡ y) → f p ≡ f q)
   where
 
-  ≡-canonical : ∀ {a b} (p : a ≡ b) → trans (sym (f refl)) (f p) ≡ p
+  ≡-canonical : ∀ {x y} (p : x ≡ y) → trans (sym (f refl)) (f p) ≡ p
   ≡-canonical refl = trans-symˡ (f refl)
 
   ≡-irrelevant : UIP A
@@ -59,19 +62,14 @@ module Constant⇒UIP
 -- function over proofs of equality which is constant: it returns the
 -- proof produced by the decision procedure.
 
-module Decidable⇒UIP
-  {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_)
-  where
+module Decidable⇒UIP (_≟_ : Decidable {A = A} _≡_) where
 
   ≡-normalise : _≡_ {A = A} ⇒ _≡_
-  ≡-normalise {a} {b} a≡b with a ≟ b
-  ... | true  because  [p] = invert [p]
-  ... | false because [¬p] = ⊥-elim (invert [¬p] a≡b)
+  ≡-normalise {a} {b} a≡b = reflects′ id (contradiction a≡b) (proof (a ≟ b))
 
   ≡-normalise-constant : ∀ {a b} (p q : a ≡ b) → ≡-normalise p ≡ ≡-normalise q
-  ≡-normalise-constant {a} {b} p q with a ≟ b
-  ... | true  because   _  = refl
-  ... | false because [¬p] = ⊥-elim (invert [¬p] p)
+  ≡-normalise-constant {a} {b} a≡b _
+    = reflects′ (λ _ → refl) (contradiction a≡b) (proof (a ≟ b))
 
   ≡-irrelevant : UIP A
   ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant
