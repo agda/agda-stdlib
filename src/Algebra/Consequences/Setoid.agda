@@ -157,8 +157,8 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
 
   comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _•_ →
                                      AlmostRightCancellative e _•_
-  comm+almostCancelˡ⇒almostCancelʳ cancelˡ-nonZero x y z x≉e yx≈zx =
-    cancelˡ-nonZero x y z x≉e $ begin
+  comm+almostCancelˡ⇒almostCancelʳ cancelˡ-nonZero {x} x≉e y z yx≈zx =
+    cancelˡ-nonZero x≉e y z $ begin
       x • y ≈⟨ comm x y ⟩
       y • x ≈⟨ yx≈zx ⟩
       z • x ≈⟨ comm z x ⟩
@@ -166,8 +166,8 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
 
   comm+almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _•_ →
                                      AlmostLeftCancellative e _•_
-  comm+almostCancelʳ⇒almostCancelˡ cancelʳ-nonZero x y z x≉e xy≈xz =
-    cancelʳ-nonZero x y z x≉e $ begin
+  comm+almostCancelʳ⇒almostCancelˡ cancelʳ-nonZero {x} x≉e y z xy≈xz =
+    cancelʳ-nonZero x≉e y z $ begin
       y • x ≈⟨ comm y x ⟩
       x • y ≈⟨ xy≈xz ⟩
       x • z ≈⟨ comm x z ⟩

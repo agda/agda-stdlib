@@ -186,6 +186,12 @@ nonNegative : ∀ {i} → i ≥ 0ℤ → NonNegative i
 nonNegative {+0}       _ = _
 nonNegative {+[1+ n ]} _ = _
 
+-- Destructors -- mostly see `Data.Integer.Properties`
+
+≢-nonZero⁻¹ : ∀ i → .{{NonZero i}} → i ≢ 0ℤ
+≢-nonZero⁻¹ +0 ⦃ () ⦄
+≢-nonZero⁻¹ +[1+ n ] ()
+
 ------------------------------------------------------------------------
 -- A view of integers as sign + absolute value
 

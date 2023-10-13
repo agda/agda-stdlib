@@ -127,7 +127,7 @@ normalize m n = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n) (coprime-/gcd m n)
       g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
       n/g≢0 = ℕ.≢-nonZero (n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
--- A constructor for ℚ that (unlike mkℚ) automatically normalises it's
+-- A constructor for ℚ that (unlike mkℚ) automatically normalises its
 -- arguments. See the constants section below for how to use this operator.
 
 infixl 7 _/_
@@ -208,6 +208,11 @@ nonPositive {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonPositive {toℚᵘ p} (�
 
 nonNegative : ∀ {p} → p ≥ 0ℚ → NonNegative p
 nonNegative {p@(mkℚ _ _ _)} (*≤* p≤q) = ℚᵘ.nonNegative {toℚᵘ p} (ℚᵘ.*≤* p≤q)
+
+-- Destructor -- mostly see `Data.Rational.Properties`
+
+≢-nonZero⁻¹ : ∀ p → .{{NonZero p}} → p ≢ 0ℚ
+≢-nonZero⁻¹ _ ⦃ () ⦄ refl
 
 ------------------------------------------------------------------------
 -- Operations on rationals
