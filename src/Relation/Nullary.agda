@@ -21,7 +21,7 @@ open import Relation.Nullary.Negation.Core public using
   )
 
 open import Relation.Nullary.Reflects public using
-  ( Reflects; ofʸ; ofⁿ
+  ( Reflects; ofʸ; ofⁿ; of; invert; Recomputable
   ; _×-reflects_; _⊎-reflects_; _→-reflects_
   )
 
