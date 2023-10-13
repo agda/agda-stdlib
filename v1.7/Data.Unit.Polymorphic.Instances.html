@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Unit.Polymorphic.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Instances for the polymorphic unit type</a>
+<a id="149" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="223" class="Symbol">{-#</a> <a id="227" class="Keyword">OPTIONS</a> <a id="235" class="Pragma">--without-K</a> <a id="247" class="Pragma">--safe</a> <a id="254" class="Symbol">#-}</a>
+
+<a id="259" class="Keyword">module</a> <a id="266" href="Data.Unit.Polymorphic.Instances.html" class="Module">Data.Unit.Polymorphic.Instances</a> <a id="298" class="Keyword">where</a>
+
+<a id="305" class="Keyword">open</a> <a id="310" class="Keyword">import</a> <a id="317" href="Data.Unit.Polymorphic.Base.html" class="Module">Data.Unit.Polymorphic.Base</a>
+<a id="344" class="Keyword">open</a> <a id="349" class="Keyword">import</a> <a id="356" href="Data.Unit.Polymorphic.Properties.html" class="Module">Data.Unit.Polymorphic.Properties</a>
+<a id="389" class="Keyword">open</a> <a id="394" class="Keyword">import</a> <a id="401" href="Level.html" class="Module">Level</a>
+<a id="407" class="Keyword">open</a> <a id="412" class="Keyword">import</a> <a id="419" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a>
+<a id="462" class="Keyword">open</a> <a id="467" class="Keyword">import</a> <a id="474" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+  <a id="525" class="Keyword">using</a> <a id="531" class="Symbol">(</a><a id="532" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a><a id="548" class="Symbol">)</a>
+<a id="550" class="Keyword">open</a> <a id="555" class="Keyword">import</a> <a id="562" href="Relation.Binary.TypeClasses.html" class="Module">Relation.Binary.TypeClasses</a>
+  <a id="592" class="Keyword">using</a> <a id="598" class="Symbol">(</a><a id="599" href="Relation.Binary.Structures.html#1824" class="Record">IsDecEquivalence</a><a id="615" class="Symbol">;</a> <a id="617" href="Relation.Binary.Structures.html#5614" class="Record">IsDecTotalOrder</a><a id="632" class="Symbol">)</a>
+
+<a id="635" class="Keyword">private</a>
+  <a id="645" class="Keyword">variable</a>
+    <a id="658" href="Data.Unit.Polymorphic.Instances.html#658" class="Generalizable">a</a> <a id="660" class="Symbol">:</a> <a id="662" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+
+<a id="669" class="Keyword">instance</a>
+  <a id="⊤-≡-isDecEquivalence"></a><a id="680" href="Data.Unit.Polymorphic.Instances.html#680" class="Function">⊤-≡-isDecEquivalence</a> <a id="701" class="Symbol">:</a> <a id="703" href="Relation.Binary.Structures.html#1824" class="Record">IsDecEquivalence</a> <a id="720" class="Symbol">{</a><a id="721" class="Argument">A</a> <a id="723" class="Symbol">=</a> <a id="725" href="Data.Unit.Polymorphic.Base.html#480" class="Function">⊤</a> <a id="727" class="Symbol">{</a><a id="728" href="Data.Unit.Polymorphic.Instances.html#658" class="Generalizable">a</a><a id="729" class="Symbol">}}</a> <a id="732" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+  <a id="738" href="Data.Unit.Polymorphic.Instances.html#680" class="Function">⊤-≡-isDecEquivalence</a> <a id="759" class="Symbol">=</a> <a id="761" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a> <a id="778" href="Data.Unit.Polymorphic.Properties.html#791" class="Function Operator">_≟_</a>
+
+  <a id="⊤-≤-isDecTotalOrder"></a><a id="785" href="Data.Unit.Polymorphic.Instances.html#785" class="Function">⊤-≤-isDecTotalOrder</a> <a id="805" class="Symbol">:</a> <a id="807" href="Relation.Binary.Structures.html#5614" class="Record">IsDecTotalOrder</a> <a id="823" class="Symbol">{</a><a id="824" class="Argument">A</a> <a id="826" class="Symbol">=</a> <a id="828" href="Data.Unit.Polymorphic.Base.html#480" class="Function">⊤</a> <a id="830" class="Symbol">{</a><a id="831" href="Data.Unit.Polymorphic.Instances.html#658" class="Generalizable">a</a><a id="832" class="Symbol">}}</a> <a id="835" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="839" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+  <a id="845" href="Data.Unit.Polymorphic.Instances.html#785" class="Function">⊤-≤-isDecTotalOrder</a> <a id="865" class="Symbol">=</a> <a id="867" href="Data.Unit.Polymorphic.Properties.html#1787" class="Function">≡-isDecTotalOrder</a> <a id="885" class="Symbol">_</a>
+</pre></body></html>
