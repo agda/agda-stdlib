@@ -5,7 +5,7 @@
 -- for forward compatibility with v2.0.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --safe --guardedness #-}
 
 module Effect.Monad.Partiality.Instances where
 

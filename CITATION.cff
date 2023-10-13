@@ -4,5 +4,5 @@ authors:
 - name: "The Agda Community"
 title: "Agda Standard Library"
 version: 1.7.3
-date-released: 2023-10-15
+date-released: 2023-10-13
 url: "https://github.com/agda/agda-stdlib"

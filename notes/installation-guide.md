@@ -1,7 +1,7 @@
 Installation instructions
 =========================
 
-Use version v1.7.3 of the standard library with Agda 2.6.4.
+Use version v1.7.3 of the standard library with Agda 2.6.3 or 2.6.4.
 
 1. Navigate to a suitable directory `$HERE` (replace appropriately) where
    you would like to install the library.
