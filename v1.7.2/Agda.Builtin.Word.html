@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.Word</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--cubical-compatible</a> <a id="34" class="Pragma">--safe</a> <a id="41" class="Pragma">--no-universe-polymorphism</a>
+            <a id="80" class="Pragma">--no-sized-types</a> <a id="97" class="Pragma">--no-guardedness</a> <a id="114" class="Symbol">#-}</a>
+
+<a id="119" class="Keyword">module</a> <a id="126" href="Agda.Builtin.Word.html" class="Module">Agda.Builtin.Word</a> <a id="144" class="Keyword">where</a>
+
+<a id="151" class="Keyword">open</a> <a id="156" class="Keyword">import</a> <a id="163" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+
+<a id="181" class="Keyword">postulate</a> <a id="Word64"></a><a id="191" href="Agda.Builtin.Word.html#191" class="Postulate">Word64</a> <a id="198" class="Symbol">:</a> <a id="200" href="Agda.Primitive.html#320" class="Primitive">Set</a>
+<a id="204" class="Symbol">{-#</a> <a id="208" class="Keyword">BUILTIN</a> <a id="216" class="Keyword">WORD64</a> <a id="223" href="Agda.Builtin.Word.html#191" class="Postulate">Word64</a> <a id="230" class="Symbol">#-}</a>
+
+<a id="235" class="Keyword">primitive</a>
+  <a id="primWord64ToNat"></a><a id="247" href="Agda.Builtin.Word.html#247" class="Primitive">primWord64ToNat</a>   <a id="265" class="Symbol">:</a> <a id="267" href="Agda.Builtin.Word.html#191" class="Postulate">Word64</a> <a id="274" class="Symbol">→</a> <a id="276" href="Agda.Builtin.Nat.html#186" class="Datatype">Nat</a>
+  <a id="primWord64FromNat"></a><a id="282" href="Agda.Builtin.Word.html#282" class="Primitive">primWord64FromNat</a> <a id="300" class="Symbol">:</a> <a id="302" href="Agda.Builtin.Nat.html#186" class="Datatype">Nat</a> <a id="306" class="Symbol">→</a> <a id="308" href="Agda.Builtin.Word.html#191" class="Postulate">Word64</a>
+</pre></body></html>

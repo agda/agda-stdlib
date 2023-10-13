@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>IO.Primitive.Infinite</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Primitive IO: simple bindings to Haskell types and functions</a>
+<a id="170" class="Comment">-- manipulating potentially infinite objects</a>
+<a id="215" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="289" class="Symbol">{-#</a> <a id="293" class="Keyword">OPTIONS</a> <a id="301" class="Pragma">--cubical-compatible</a> <a id="322" class="Pragma">--guardedness</a> <a id="336" class="Symbol">#-}</a>
+
+<a id="341" class="Keyword">module</a> <a id="348" href="IO.Primitive.Infinite.html" class="Module">IO.Primitive.Infinite</a> <a id="370" class="Keyword">where</a>
+
+<a id="377" class="Comment">-- NOTE: the contents of this module should be accessed via `IO` or</a>
+<a id="445" class="Comment">-- `IO.Infinite`.</a>
+
+<a id="464" class="Keyword">open</a> <a id="469" class="Keyword">import</a> <a id="476" href="Codata.Musical.Costring.html" class="Module">Codata.Musical.Costring</a>
+<a id="500" class="Keyword">open</a> <a id="505" class="Keyword">import</a> <a id="512" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a>
+<a id="532" class="Keyword">open</a> <a id="537" class="Keyword">import</a> <a id="544" href="Agda.Builtin.Unit.html" class="Module">Agda.Builtin.Unit</a> <a id="562" class="Keyword">renaming</a> <a id="571" class="Symbol">(</a><a id="572" href="Agda.Builtin.Unit.html#158" class="Record">⊤</a> <a id="574" class="Symbol">to</a> <a id="577" class="Record">Unit</a><a id="581" class="Symbol">)</a>
+
+<a id="584" class="Comment">------------------------------------------------------------------------</a>
+<a id="657" class="Comment">-- The IO monad</a>
+
+<a id="674" class="Keyword">open</a> <a id="679" class="Keyword">import</a> <a id="686" href="Agda.Builtin.IO.html" class="Module">Agda.Builtin.IO</a> <a id="702" class="Keyword">public</a> <a id="709" class="Keyword">using</a> <a id="715" class="Symbol">(</a><a id="716" href="Agda.Builtin.IO.html#120" class="Postulate">IO</a><a id="718" class="Symbol">)</a>
+
+<a id="721" class="Comment">------------------------------------------------------------------------</a>
+<a id="794" class="Comment">-- Simple lazy IO</a>
+
+<a id="813" class="Comment">-- Note that the functions below produce commands which, when</a>
+<a id="875" class="Comment">-- executed, may raise exceptions.</a>
+
+<a id="911" class="Comment">-- Note also that the semantics of these functions depends on the</a>
+<a id="977" class="Comment">-- version of the Haskell base library. If the version is 4.2.0.0 (or</a>
+<a id="1047" class="Comment">-- later?), then the functions use the character encoding specified by</a>
+<a id="1118" class="Comment">-- the locale. For older versions of the library (going back to at</a>
+<a id="1185" class="Comment">-- least version 3) the functions use ISO-8859-1.</a>
+
+
+<a id="1237" class="Keyword">postulate</a>
+  <a id="getContents"></a><a id="1249" href="IO.Primitive.Infinite.html#1249" class="Postulate">getContents</a> <a id="1261" class="Symbol">:</a> <a id="1263" href="Agda.Builtin.IO.html#120" class="Postulate">IO</a> <a id="1266" href="Codata.Musical.Costring.html#511" class="Function">Costring</a>
+  <a id="readFile"></a><a id="1277" href="IO.Primitive.Infinite.html#1277" class="Postulate">readFile</a>    <a id="1289" class="Symbol">:</a> <a id="1291" href="Agda.Builtin.String.html#318" class="Postulate">String</a> <a id="1298" class="Symbol">→</a> <a id="1300" href="Agda.Builtin.IO.html#120" class="Postulate">IO</a> <a id="1303" href="Codata.Musical.Costring.html#511" class="Function">Costring</a>
+  <a id="writeFile"></a><a id="1314" href="IO.Primitive.Infinite.html#1314" class="Postulate">writeFile</a>   <a id="1326" class="Symbol">:</a> <a id="1328" href="Agda.Builtin.String.html#318" class="Postulate">String</a> <a id="1335" class="Symbol">→</a> <a id="1337" href="Codata.Musical.Costring.html#511" class="Function">Costring</a> <a id="1346" class="Symbol">→</a> <a id="1348" href="Agda.Builtin.IO.html#120" class="Postulate">IO</a> <a id="1351" href="IO.Primitive.Infinite.html#577" class="Record">Unit</a>
+  <a id="appendFile"></a><a id="1358" href="IO.Primitive.Infinite.html#1358" class="Postulate">appendFile</a>  <a id="1370" class="Symbol">:</a> <a id="1372" href="Agda.Builtin.String.html#318" class="Postulate">String</a> <a id="1379" class="Symbol">→</a> <a id="1381" href="Codata.Musical.Costring.html#511" class="Function">Costring</a> <a id="1390" class="Symbol">→</a> <a id="1392" href="Agda.Builtin.IO.html#120" class="Postulate">IO</a> <a id="1395" href="IO.Primitive.Infinite.html#577" class="Record">Unit</a>
+  <a id="putStr"></a><a id="1402" href="IO.Primitive.Infinite.html#1402" class="Postulate">putStr</a>      <a id="1414" class="Symbol">:</a> <a id="1416" href="Codata.Musical.Costring.html#511" class="Function">Costring</a> <a id="1425" class="Symbol">→</a> <a id="1427" href="Agda.Builtin.IO.html#120" class="Postulate">IO</a> <a id="1430" href="IO.Primitive.Infinite.html#577" class="Record">Unit</a>
+  <a id="putStrLn"></a><a id="1437" href="IO.Primitive.Infinite.html#1437" class="Postulate">putStrLn</a>    <a id="1449" class="Symbol">:</a> <a id="1451" href="Codata.Musical.Costring.html#511" class="Function">Costring</a> <a id="1460" class="Symbol">→</a> <a id="1462" href="Agda.Builtin.IO.html#120" class="Postulate">IO</a> <a id="1465" href="IO.Primitive.Infinite.html#577" class="Record">Unit</a>
+
+<a id="1471" class="Symbol">{-#</a> <a id="1475" class="Keyword">FOREIGN</a> <a id="1483" class="Pragma">GHC</a> <a id="1487" class="Pragma">import</a> <a id="1494" class="Pragma">qualified</a> <a id="1504" class="Pragma">Data.Text</a>    <a id="1517" class="Symbol">#-}</a>
+
+<a id="1522" class="Symbol">{-#</a> <a id="1526" class="Keyword">FOREIGN</a> <a id="1534" class="Pragma">GHC</a>
+
+  <a id="1541" class="Pragma">fromColist</a> <a id="1552" class="Pragma">::</a> <a id="1555" class="Pragma">MAlonzo.Code.Codata.Musical.Colist.Base.AgdaColist</a> <a id="1606" class="Pragma">a</a> <a id="1608" class="Pragma">-&gt;</a> <a id="1611" class="Pragma">[a]</a>
+  <a id="1617" class="Pragma">fromColist</a> <a id="1628" class="Pragma">MAlonzo.Code.Codata.Musical.Colist.Base.Nil</a>         <a id="1680" class="Pragma">=</a> <a id="1682" class="Pragma">[]</a>
+  <a id="1687" class="Pragma">fromColist</a> <a id="1698" class="Pragma">(MAlonzo.Code.Codata.Musical.Colist.Base.Cons</a> <a id="1744" class="Pragma">x</a> <a id="1746" class="Pragma">xs)</a> <a id="1750" class="Pragma">=</a>
+    <a id="1756" class="Pragma">x</a> <a id="1758" class="Pragma">:</a> <a id="1760" class="Pragma">fromColist</a> <a id="1771" class="Pragma">(MAlonzo.RTE.flat</a> <a id="1789" class="Pragma">xs)</a>
+
+  <a id="1796" class="Pragma">toColist</a> <a id="1805" class="Pragma">::</a> <a id="1808" class="Pragma">[a]</a> <a id="1812" class="Pragma">-&gt;</a> <a id="1815" class="Pragma">MAlonzo.Code.Codata.Musical.Colist.Base.AgdaColist</a> <a id="1866" class="Pragma">a</a>
+  <a id="1870" class="Pragma">toColist</a> <a id="1879" class="Pragma">[]</a>       <a id="1888" class="Pragma">=</a> <a id="1890" class="Pragma">MAlonzo.Code.Codata.Musical.Colist.Base.Nil</a>
+  <a id="1936" class="Pragma">toColist</a> <a id="1945" class="Pragma">(x</a> <a id="1948" class="Pragma">:</a> <a id="1950" class="Pragma">xs)</a> <a id="1954" class="Pragma">=</a>
+    <a id="1960" class="Pragma">MAlonzo.Code.Codata.Musical.Colist.Base.Cons</a> <a id="2005" class="Pragma">x</a> <a id="2007" class="Pragma">(MAlonzo.RTE.Sharp</a> <a id="2026" class="Pragma">(toColist</a> <a id="2036" class="Pragma">xs))</a>
+<a id="2041" class="Symbol">#-}</a>
+
+<a id="2046" class="Symbol">{-#</a> <a id="2050" class="Keyword">COMPILE</a> <a id="2058" class="Keyword">GHC</a> <a id="2062" href="IO.Primitive.Infinite.html#1249" class="Postulate">getContents</a>    <a id="2077" class="Pragma">=</a> <a id="2079" class="Pragma">fmap</a> <a id="2084" class="Pragma">toColist</a> <a id="2093" class="Pragma">getContents</a>                          <a id="2130" class="Symbol">#-}</a>
+<a id="2134" class="Symbol">{-#</a> <a id="2138" class="Keyword">COMPILE</a> <a id="2146" class="Keyword">GHC</a> <a id="2150" href="IO.Primitive.Infinite.html#1277" class="Postulate">readFile</a>       <a id="2165" class="Pragma">=</a> <a id="2167" class="Pragma">fmap</a> <a id="2172" class="Pragma">toColist</a> <a id="2181" class="Pragma">.</a> <a id="2183" class="Pragma">readFile</a> <a id="2192" class="Pragma">.</a> <a id="2194" class="Pragma">Data.Text.unpack</a>        <a id="2218" class="Symbol">#-}</a>
+<a id="2222" class="Symbol">{-#</a> <a id="2226" class="Keyword">COMPILE</a> <a id="2234" class="Keyword">GHC</a> <a id="2238" href="IO.Primitive.Infinite.html#1314" class="Postulate">writeFile</a>      <a id="2253" class="Pragma">=</a> <a id="2255" class="Pragma">\x</a> <a id="2258" class="Pragma">-&gt;</a> <a id="2261" class="Pragma">writeFile</a> <a id="2271" class="Pragma">(Data.Text.unpack</a> <a id="2289" class="Pragma">x)</a> <a id="2292" class="Pragma">.</a> <a id="2294" class="Pragma">fromColist</a>  <a id="2306" class="Symbol">#-}</a>
+<a id="2310" class="Symbol">{-#</a> <a id="2314" class="Keyword">COMPILE</a> <a id="2322" class="Keyword">GHC</a> <a id="2326" href="IO.Primitive.Infinite.html#1358" class="Postulate">appendFile</a>     <a id="2341" class="Pragma">=</a> <a id="2343" class="Pragma">\x</a> <a id="2346" class="Pragma">-&gt;</a> <a id="2349" class="Pragma">appendFile</a> <a id="2360" class="Pragma">(Data.Text.unpack</a> <a id="2378" class="Pragma">x)</a> <a id="2381" class="Pragma">.</a> <a id="2383" class="Pragma">fromColist</a> <a id="2394" class="Symbol">#-}</a>
+<a id="2398" class="Symbol">{-#</a> <a id="2402" class="Keyword">COMPILE</a> <a id="2410" class="Keyword">GHC</a> <a id="2414" href="IO.Primitive.Infinite.html#1402" class="Postulate">putStr</a>         <a id="2429" class="Pragma">=</a> <a id="2431" class="Pragma">putStr</a> <a id="2438" class="Pragma">.</a> <a id="2440" class="Pragma">fromColist</a>                                <a id="2482" class="Symbol">#-}</a>
+<a id="2486" class="Symbol">{-#</a> <a id="2490" class="Keyword">COMPILE</a> <a id="2498" class="Keyword">GHC</a> <a id="2502" href="IO.Primitive.Infinite.html#1437" class="Postulate">putStrLn</a>       <a id="2517" class="Pragma">=</a> <a id="2519" class="Pragma">putStrLn</a> <a id="2528" class="Pragma">.</a> <a id="2530" class="Pragma">fromColist</a>                              <a id="2570" class="Symbol">#-}</a>
+<a id="2574" class="Symbol">{-#</a> <a id="2578" class="Keyword">COMPILE</a> <a id="2586" class="Keyword">UHC</a> <a id="2590" href="IO.Primitive.Infinite.html#1249" class="Postulate">getContents</a>    <a id="2605" class="Pragma">=</a> <a id="2607" class="Pragma">UHC.Agda.Builtins.primGetContents</a>     <a id="2645" class="Symbol">#-}</a>
+<a id="2649" class="Symbol">{-#</a> <a id="2653" class="Keyword">COMPILE</a> <a id="2661" class="Keyword">UHC</a> <a id="2665" href="IO.Primitive.Infinite.html#1277" class="Postulate">readFile</a>       <a id="2680" class="Pragma">=</a> <a id="2682" class="Pragma">UHC.Agda.Builtins.primReadFile</a>        <a id="2720" class="Symbol">#-}</a>
+<a id="2724" class="Symbol">{-#</a> <a id="2728" class="Keyword">COMPILE</a> <a id="2736" class="Keyword">UHC</a> <a id="2740" href="IO.Primitive.Infinite.html#1314" class="Postulate">writeFile</a>      <a id="2755" class="Pragma">=</a> <a id="2757" class="Pragma">UHC.Agda.Builtins.primWriteFile</a>       <a id="2795" class="Symbol">#-}</a>
+<a id="2799" class="Symbol">{-#</a> <a id="2803" class="Keyword">COMPILE</a> <a id="2811" class="Keyword">UHC</a> <a id="2815" href="IO.Primitive.Infinite.html#1358" class="Postulate">appendFile</a>     <a id="2830" class="Pragma">=</a> <a id="2832" class="Pragma">UHC.Agda.Builtins.primAppendFile</a>      <a id="2870" class="Symbol">#-}</a>
+<a id="2874" class="Symbol">{-#</a> <a id="2878" class="Keyword">COMPILE</a> <a id="2886" class="Keyword">UHC</a> <a id="2890" href="IO.Primitive.Infinite.html#1402" class="Postulate">putStr</a>         <a id="2905" class="Pragma">=</a> <a id="2907" class="Pragma">UHC.Agda.Builtins.primPutStr</a>          <a id="2945" class="Symbol">#-}</a>
+<a id="2949" class="Symbol">{-#</a> <a id="2953" class="Keyword">COMPILE</a> <a id="2961" class="Keyword">UHC</a> <a id="2965" href="IO.Primitive.Infinite.html#1437" class="Postulate">putStrLn</a>       <a id="2980" class="Pragma">=</a> <a id="2982" class="Pragma">UHC.Agda.Builtins.primPutStrLn</a>        <a id="3020" class="Symbol">#-}</a>
+</pre></body></html>

@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Codata.Covec.Categorical</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- A categorical view of Covec</a>
+<a id="137" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="211" class="Symbol">{-#</a> <a id="215" class="Keyword">OPTIONS</a> <a id="223" class="Pragma">--cubical-compatible</a> <a id="244" class="Pragma">--sized-types</a> <a id="258" class="Symbol">#-}</a>
+
+<a id="263" class="Keyword">module</a> <a id="270" href="Codata.Covec.Categorical.html" class="Module">Codata.Covec.Categorical</a> <a id="295" class="Keyword">where</a>
+
+<a id="302" class="Keyword">open</a> <a id="307" class="Keyword">import</a> <a id="314" href="Codata.Conat.html" class="Module">Codata.Conat</a>
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Codata.Covec.html" class="Module">Codata.Covec</a>
+
+<a id="353" class="Keyword">open</a> <a id="358" class="Keyword">import</a> <a id="365" href="Category.Functor.html" class="Module">Category.Functor</a>
+<a id="382" class="Keyword">open</a> <a id="387" class="Keyword">import</a> <a id="394" href="Category.Applicative.html" class="Module">Category.Applicative</a>
+
+<a id="functor"></a><a id="416" href="Codata.Covec.Categorical.html#416" class="Function">functor</a> <a id="424" class="Symbol">:</a> <a id="426" class="Symbol">∀</a> <a id="428" class="Symbol">{</a><a id="429" href="Codata.Covec.Categorical.html#429" class="Bound">ℓ</a> <a id="431" href="Codata.Covec.Categorical.html#431" class="Bound">i</a> <a id="433" href="Codata.Covec.Categorical.html#433" class="Bound">n</a><a id="434" class="Symbol">}</a> <a id="436" class="Symbol">→</a> <a id="438" href="Category.Functor.html#508" class="Record">RawFunctor</a> <a id="449" class="Symbol">{</a><a id="450" href="Codata.Covec.Categorical.html#429" class="Bound">ℓ</a><a id="451" class="Symbol">}</a> <a id="453" class="Symbol">(λ</a> <a id="456" href="Codata.Covec.Categorical.html#456" class="Bound">A</a> <a id="458" class="Symbol">→</a> <a id="460" href="Codata.Covec.html#674" class="Datatype">Covec</a> <a id="466" href="Codata.Covec.Categorical.html#456" class="Bound">A</a> <a id="468" href="Codata.Covec.Categorical.html#433" class="Bound">n</a> <a id="470" href="Codata.Covec.Categorical.html#431" class="Bound">i</a><a id="471" class="Symbol">)</a>
+<a id="473" href="Codata.Covec.Categorical.html#416" class="Function">functor</a> <a id="481" class="Symbol">=</a> <a id="483" class="Keyword">record</a> <a id="490" class="Symbol">{</a> <a id="492" href="Category.Functor.html#617" class="Field Operator">_&lt;$&gt;_</a> <a id="498" class="Symbol">=</a> <a id="500" href="Codata.Covec.html#2182" class="Function">map</a> <a id="504" class="Symbol">}</a>
+
+<a id="applicative"></a><a id="507" href="Codata.Covec.Categorical.html#507" class="Function">applicative</a> <a id="519" class="Symbol">:</a> <a id="521" class="Symbol">∀</a> <a id="523" class="Symbol">{</a><a id="524" href="Codata.Covec.Categorical.html#524" class="Bound">ℓ</a> <a id="526" href="Codata.Covec.Categorical.html#526" class="Bound">i</a> <a id="528" href="Codata.Covec.Categorical.html#528" class="Bound">n</a><a id="529" class="Symbol">}</a> <a id="531" class="Symbol">→</a> <a id="533" href="Category.Applicative.html#503" class="Function">RawApplicative</a> <a id="548" class="Symbol">{</a><a id="549" href="Codata.Covec.Categorical.html#524" class="Bound">ℓ</a><a id="550" class="Symbol">}</a> <a id="552" class="Symbol">(λ</a> <a id="555" href="Codata.Covec.Categorical.html#555" class="Bound">A</a> <a id="557" class="Symbol">→</a> <a id="559" href="Codata.Covec.html#674" class="Datatype">Covec</a> <a id="565" href="Codata.Covec.Categorical.html#555" class="Bound">A</a> <a id="567" href="Codata.Covec.Categorical.html#528" class="Bound">n</a> <a id="569" href="Codata.Covec.Categorical.html#526" class="Bound">i</a><a id="570" class="Symbol">)</a>
+<a id="572" href="Codata.Covec.Categorical.html#507" class="Function">applicative</a> <a id="584" class="Symbol">=</a> <a id="586" class="Keyword">record</a>
+  <a id="595" class="Symbol">{</a> <a id="597" href="Category.Applicative.Indexed.html#1012" class="Field">pure</a> <a id="602" class="Symbol">=</a> <a id="604" href="Codata.Covec.html#1112" class="Function">replicate</a> <a id="614" class="Symbol">_</a>
+  <a id="618" class="Symbol">;</a> <a id="620" href="Category.Applicative.Indexed.html#1043" class="Field Operator">_⊛_</a>  <a id="625" class="Symbol">=</a> <a id="627" href="Codata.Covec.html#2318" class="Function">ap</a>
+  <a id="632" class="Symbol">}</a>
+</pre></body></html>

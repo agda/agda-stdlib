@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Equality.DecSetoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Pointwise decidable equality over lists parameterised by a setoid</a>
+<a id="175" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="249" class="Symbol">{-#</a> <a id="253" class="Keyword">OPTIONS</a> <a id="261" class="Pragma">--cubical-compatible</a> <a id="282" class="Pragma">--safe</a> <a id="289" class="Symbol">#-}</a>
+
+<a id="294" class="Keyword">open</a> <a id="299" class="Keyword">import</a> <a id="306" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="323" class="Keyword">module</a> <a id="330" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">Data.List.Relation.Binary.Equality.DecSetoid</a>
+  <a id="377" class="Symbol">{</a><a id="378" href="Data.List.Relation.Binary.Equality.DecSetoid.html#378" class="Bound">a</a> <a id="380" href="Data.List.Relation.Binary.Equality.DecSetoid.html#380" class="Bound">ℓ</a><a id="381" class="Symbol">}</a> <a id="383" class="Symbol">(</a><a id="384" href="Data.List.Relation.Binary.Equality.DecSetoid.html#384" class="Bound">DS</a> <a id="387" class="Symbol">:</a> <a id="389" href="Relation.Binary.Bundles.html#1400" class="Record">DecSetoid</a> <a id="399" href="Data.List.Relation.Binary.Equality.DecSetoid.html#378" class="Bound">a</a> <a id="401" href="Data.List.Relation.Binary.Equality.DecSetoid.html#380" class="Bound">ℓ</a><a id="402" class="Symbol">)</a> <a id="404" class="Keyword">where</a>
+
+<a id="411" class="Keyword">import</a> <a id="418" href="Data.List.Relation.Binary.Equality.Setoid.html" class="Module">Data.List.Relation.Binary.Equality.Setoid</a> <a id="460" class="Symbol">as</a> <a id="463" class="Module">SetoidEquality</a>
+<a id="478" class="Keyword">import</a> <a id="485" href="Data.List.Relation.Binary.Pointwise.html" class="Module">Data.List.Relation.Binary.Pointwise</a> <a id="521" class="Symbol">as</a> <a id="524" class="Module">PW</a>
+<a id="527" class="Keyword">open</a> <a id="532" class="Keyword">import</a> <a id="539" href="Level.html" class="Module">Level</a>
+<a id="545" class="Keyword">open</a> <a id="550" class="Keyword">import</a> <a id="557" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="573" class="Keyword">using</a> <a id="579" class="Symbol">(</a><a id="580" href="Relation.Binary.Definitions.html#4584" class="Function">Decidable</a><a id="589" class="Symbol">)</a>
+<a id="591" class="Keyword">open</a> <a id="596" href="Relation.Binary.Bundles.html#1400" class="Module">DecSetoid</a> <a id="606" href="Data.List.Relation.Binary.Equality.DecSetoid.html#384" class="Bound">DS</a>
+
+<a id="610" class="Comment">------------------------------------------------------------------------</a>
+<a id="683" class="Comment">-- Make all definitions from setoid equality available</a>
+
+<a id="739" class="Keyword">open</a> <a id="744" href="Data.List.Relation.Binary.Equality.Setoid.html" class="Module">SetoidEquality</a> <a id="759" href="Relation.Binary.Bundles.html#1624" class="Function">setoid</a> <a id="766" class="Keyword">public</a>
+
+<a id="774" class="Comment">------------------------------------------------------------------------</a>
+<a id="847" class="Comment">-- Additional properties</a>
+
+<a id="873" class="Keyword">infix</a> <a id="879" class="Number">4</a> <a id="881" href="Data.List.Relation.Binary.Equality.DecSetoid.html#887" class="Function Operator">_≋?_</a>
+
+<a id="_≋?_"></a><a id="887" href="Data.List.Relation.Binary.Equality.DecSetoid.html#887" class="Function Operator">_≋?_</a> <a id="892" class="Symbol">:</a> <a id="894" href="Relation.Binary.Definitions.html#4584" class="Function">Decidable</a> <a id="904" href="Data.List.Relation.Binary.Equality.Setoid.html#1182" class="Function Operator">_≋_</a>
+<a id="908" href="Data.List.Relation.Binary.Equality.DecSetoid.html#887" class="Function Operator">_≋?_</a> <a id="913" class="Symbol">=</a> <a id="915" href="Data.List.Relation.Binary.Pointwise.Properties.html#2339" class="Function">PW.decidable</a> <a id="928" href="Relation.Binary.Structures.html#1930" class="Function Operator">_≟_</a>
+
+<a id="≋-isDecEquivalence"></a><a id="933" href="Data.List.Relation.Binary.Equality.DecSetoid.html#933" class="Function">≋-isDecEquivalence</a> <a id="952" class="Symbol">:</a> <a id="954" href="Relation.Binary.Structures.html#1833" class="Record">IsDecEquivalence</a> <a id="971" href="Data.List.Relation.Binary.Equality.Setoid.html#1182" class="Function Operator">_≋_</a>
+<a id="975" href="Data.List.Relation.Binary.Equality.DecSetoid.html#933" class="Function">≋-isDecEquivalence</a> <a id="994" class="Symbol">=</a> <a id="996" href="Data.List.Relation.Binary.Pointwise.html#2181" class="Function">PW.isDecEquivalence</a> <a id="1016" href="Relation.Binary.Bundles.html#1532" class="Field">isDecEquivalence</a>
+
+<a id="≋-decSetoid"></a><a id="1034" href="Data.List.Relation.Binary.Equality.DecSetoid.html#1034" class="Function">≋-decSetoid</a> <a id="1046" class="Symbol">:</a> <a id="1048" href="Relation.Binary.Bundles.html#1400" class="Record">DecSetoid</a> <a id="1058" href="Data.List.Relation.Binary.Equality.DecSetoid.html#378" class="Bound">a</a> <a id="1060" class="Symbol">(</a><a id="1061" href="Data.List.Relation.Binary.Equality.DecSetoid.html#378" class="Bound">a</a> <a id="1063" href="Agda.Primitive.html#804" class="Primitive Operator">⊔</a> <a id="1065" href="Data.List.Relation.Binary.Equality.DecSetoid.html#380" class="Bound">ℓ</a><a id="1066" class="Symbol">)</a>
+<a id="1068" href="Data.List.Relation.Binary.Equality.DecSetoid.html#1034" class="Function">≋-decSetoid</a> <a id="1080" class="Symbol">=</a> <a id="1082" href="Data.List.Relation.Binary.Pointwise.html#3151" class="Function">PW.decSetoid</a> <a id="1095" href="Data.List.Relation.Binary.Equality.DecSetoid.html#384" class="Bound">DS</a>
+</pre></body></html>
