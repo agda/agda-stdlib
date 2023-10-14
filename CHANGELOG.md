@@ -3154,6 +3154,12 @@ Additions to existing modules
   execState : State s a → s → s
   ```
 
+* Added new application operator synonym to `Function.Bundles`:
+  ```agda
+  _⟨$⟩_ : Func From To → Carrier From → Carrier To
+  _⟨$⟩_ = Func.to 
+  ```
+  
 * Added new proofs in `Function.Construct.Symmetry`:
   ```
   bijective     : Bijective ≈₁ ≈₂ f → Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ f⁻¹
