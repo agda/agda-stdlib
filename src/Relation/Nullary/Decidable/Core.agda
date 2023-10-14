@@ -35,8 +35,8 @@ private
 -- reflects the boolean result. This definition allows the boolean
 -- part of the decision procedure to compute independently from the
 -- proof. This leads to better computational behaviour when we only care
--- about the result and not the proof. See README.Decidability for
--- further details.
+-- about the result and not the proof. See README.Design.Decidability
+-- for further details.
 
 infix 2 _because_
 
