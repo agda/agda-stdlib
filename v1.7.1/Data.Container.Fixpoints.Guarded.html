@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Container.Fixpoints.Guarded</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Fixpoints for containers - using guardedness</a>
+<a id="154" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="228" class="Symbol">{-#</a> <a id="232" class="Keyword">OPTIONS</a> <a id="240" class="Pragma">--safe</a> <a id="247" class="Pragma">--without-K</a> <a id="259" class="Pragma">--guardedness</a> <a id="273" class="Symbol">#-}</a>
+
+<a id="278" class="Keyword">module</a> <a id="285" href="Data.Container.Fixpoints.Guarded.html" class="Module">Data.Container.Fixpoints.Guarded</a> <a id="318" class="Keyword">where</a>
+
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Level.html" class="Module">Level</a> <a id="343" class="Keyword">using</a> <a id="349" class="Symbol">(</a><a id="350" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="355" class="Symbol">;</a> <a id="357" href="Agda.Primitive.html#810" class="Primitive Operator">_⊔_</a><a id="360" class="Symbol">)</a>
+<a id="362" class="Keyword">open</a> <a id="367" class="Keyword">import</a> <a id="374" href="Codata.Musical.M.html" class="Module">Codata.Musical.M</a> <a id="391" class="Keyword">using</a> <a id="397" class="Symbol">(</a><a id="398" href="Codata.Musical.M.html#469" class="Datatype">M</a><a id="399" class="Symbol">)</a>
+<a id="401" class="Keyword">open</a> <a id="406" class="Keyword">import</a> <a id="413" href="Data.Container.html" class="Module">Data.Container</a> <a id="428" class="Keyword">using</a> <a id="434" class="Symbol">(</a><a id="435" href="Data.Container.Core.html#558" class="Record">Container</a><a id="444" class="Symbol">)</a>
+
+<a id="447" class="Keyword">private</a>
+  <a id="457" class="Keyword">variable</a>
+    <a id="470" href="Data.Container.Fixpoints.Guarded.html#470" class="Generalizable">s</a> <a id="472" href="Data.Container.Fixpoints.Guarded.html#472" class="Generalizable">p</a> <a id="474" class="Symbol">:</a> <a id="476" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+
+<a id="483" class="Comment">-- The least fixpoint can be found in `Data.Container`</a>
+
+<a id="539" class="Keyword">open</a> <a id="544" href="Data.Container.html" class="Module">Data.Container</a> <a id="559" class="Keyword">public</a>
+  <a id="568" class="Keyword">using</a> <a id="574" class="Symbol">(</a><a id="575" href="Data.Container.html#1520" class="Function">μ</a><a id="576" class="Symbol">)</a>
+
+<a id="579" class="Comment">-- This lives in its own module due to its use of guardedness.</a>
+
+<a id="ν"></a><a id="643" href="Data.Container.Fixpoints.Guarded.html#643" class="Function">ν</a> <a id="645" class="Symbol">:</a> <a id="647" href="Data.Container.Core.html#558" class="Record">Container</a> <a id="657" href="Data.Container.Fixpoints.Guarded.html#470" class="Generalizable">s</a> <a id="659" href="Data.Container.Fixpoints.Guarded.html#472" class="Generalizable">p</a> <a id="661" class="Symbol">→</a> <a id="663" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="667" class="Symbol">(</a><a id="668" href="Data.Container.Fixpoints.Guarded.html#470" class="Generalizable">s</a> <a id="670" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="672" href="Data.Container.Fixpoints.Guarded.html#472" class="Generalizable">p</a><a id="673" class="Symbol">)</a>
+<a id="675" href="Data.Container.Fixpoints.Guarded.html#643" class="Function">ν</a> <a id="677" href="Data.Container.Fixpoints.Guarded.html#677" class="Bound">C</a> <a id="679" class="Symbol">=</a> <a id="681" href="Codata.Musical.M.html#469" class="Datatype">M</a> <a id="683" href="Data.Container.Fixpoints.Guarded.html#677" class="Bound">C</a>
+</pre></body></html>

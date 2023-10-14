@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Empty.Polymorphic</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Level polymorphic Empty type</a>
+<a id="138" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="212" class="Symbol">{-#</a> <a id="216" class="Keyword">OPTIONS</a> <a id="224" class="Pragma">--without-K</a> <a id="236" class="Pragma">--safe</a> <a id="243" class="Symbol">#-}</a>
+
+<a id="248" class="Keyword">module</a> <a id="255" href="Data.Empty.Polymorphic.html" class="Module">Data.Empty.Polymorphic</a> <a id="278" class="Keyword">where</a>
+
+<a id="285" class="Keyword">import</a> <a id="292" href="Data.Empty.html" class="Module">Data.Empty</a> <a id="303" class="Symbol">as</a> <a id="306" class="Module">Empty</a>
+<a id="312" class="Keyword">open</a> <a id="317" class="Keyword">import</a> <a id="324" href="Level.html" class="Module">Level</a>
+
+<a id="⊥"></a><a id="331" href="Data.Empty.Polymorphic.html#331" class="Function">⊥</a> <a id="333" class="Symbol">:</a> <a id="335" class="Symbol">{</a><a id="336" href="Data.Empty.Polymorphic.html#336" class="Bound">ℓ</a> <a id="338" class="Symbol">:</a> <a id="340" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="345" class="Symbol">}</a> <a id="347" class="Symbol">→</a> <a id="349" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="353" href="Data.Empty.Polymorphic.html#336" class="Bound">ℓ</a>
+<a id="355" href="Data.Empty.Polymorphic.html#331" class="Function">⊥</a> <a id="357" class="Symbol">{</a><a id="358" href="Data.Empty.Polymorphic.html#358" class="Bound">ℓ</a><a id="359" class="Symbol">}</a> <a id="361" class="Symbol">=</a> <a id="363" href="Level.html#400" class="Record">Lift</a> <a id="368" href="Data.Empty.Polymorphic.html#358" class="Bound">ℓ</a> <a id="370" href="Data.Empty.html#526" class="Datatype">Empty.⊥</a>
+
+<a id="379" class="Comment">-- make ⊥-elim dependent too, as it does seem useful</a>
+<a id="⊥-elim"></a><a id="432" href="Data.Empty.Polymorphic.html#432" class="Function">⊥-elim</a> <a id="439" class="Symbol">:</a> <a id="441" class="Symbol">∀</a> <a id="443" class="Symbol">{</a><a id="444" href="Data.Empty.Polymorphic.html#444" class="Bound">w</a> <a id="446" href="Data.Empty.Polymorphic.html#446" class="Bound">ℓ</a><a id="447" class="Symbol">}</a> <a id="449" class="Symbol">{</a><a id="450" href="Data.Empty.Polymorphic.html#450" class="Bound">Whatever</a> <a id="459" class="Symbol">:</a> <a id="461" href="Data.Empty.Polymorphic.html#331" class="Function">⊥</a> <a id="463" class="Symbol">{</a><a id="464" href="Data.Empty.Polymorphic.html#446" class="Bound">ℓ</a><a id="465" class="Symbol">}</a> <a id="467" class="Symbol">→</a> <a id="469" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="473" href="Data.Empty.Polymorphic.html#444" class="Bound">w</a><a id="474" class="Symbol">}</a> <a id="476" class="Symbol">→</a> <a id="478" class="Symbol">(</a><a id="479" href="Data.Empty.Polymorphic.html#479" class="Bound">witness</a> <a id="487" class="Symbol">:</a> <a id="489" href="Data.Empty.Polymorphic.html#331" class="Function">⊥</a> <a id="491" class="Symbol">{</a><a id="492" href="Data.Empty.Polymorphic.html#446" class="Bound">ℓ</a><a id="493" class="Symbol">})</a> <a id="496" class="Symbol">→</a> <a id="498" href="Data.Empty.Polymorphic.html#450" class="Bound">Whatever</a> <a id="507" href="Data.Empty.Polymorphic.html#479" class="Bound">witness</a>
+<a id="515" href="Data.Empty.Polymorphic.html#432" class="Function">⊥-elim</a> <a id="522" class="Symbol">()</a>
+</pre></body></html>

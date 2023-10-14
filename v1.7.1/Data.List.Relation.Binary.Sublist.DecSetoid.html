@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Sublist.DecSetoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An inductive definition of the sublist relation with respect to a</a>
+<a id="175" class="Comment">-- setoid which is decidable. This is a generalisation of what is</a>
+<a id="241" class="Comment">-- commonly known as Order Preserving Embeddings (OPE).</a>
+<a id="297" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="371" class="Symbol">{-#</a> <a id="375" class="Keyword">OPTIONS</a> <a id="383" class="Pragma">--without-K</a> <a id="395" class="Pragma">--safe</a> <a id="402" class="Symbol">#-}</a>
+
+<a id="407" class="Keyword">open</a> <a id="412" class="Keyword">import</a> <a id="419" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="436" class="Keyword">module</a> <a id="443" href="Data.List.Relation.Binary.Sublist.DecSetoid.html" class="Module">Data.List.Relation.Binary.Sublist.DecSetoid</a>
+  <a id="489" class="Symbol">{</a><a id="490" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#490" class="Bound">c</a> <a id="492" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#492" class="Bound">ℓ</a><a id="493" class="Symbol">}</a> <a id="495" class="Symbol">(</a><a id="496" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#496" class="Bound">S</a> <a id="498" class="Symbol">:</a> <a id="500" href="Relation.Binary.Bundles.html#1391" class="Record">DecSetoid</a> <a id="510" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#490" class="Bound">c</a> <a id="512" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#492" class="Bound">ℓ</a><a id="513" class="Symbol">)</a> <a id="515" class="Keyword">where</a>
+
+<a id="522" class="Keyword">import</a> <a id="529" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">Data.List.Relation.Binary.Equality.DecSetoid</a> <a id="574" class="Symbol">as</a> <a id="577" class="Module">DecSetoidEquality</a>
+<a id="595" class="Keyword">import</a> <a id="602" href="Data.List.Relation.Binary.Sublist.Setoid.html" class="Module">Data.List.Relation.Binary.Sublist.Setoid</a> <a id="643" class="Symbol">as</a> <a id="646" class="Module">SetoidSublist</a>
+<a id="660" class="Keyword">import</a> <a id="667" href="Data.List.Relation.Binary.Sublist.Heterogeneous.Properties.html" class="Module">Data.List.Relation.Binary.Sublist.Heterogeneous.Properties</a>
+  <a id="728" class="Symbol">as</a> <a id="731" class="Module">HeterogeneousProperties</a>
+<a id="755" class="Keyword">open</a> <a id="760" class="Keyword">import</a> <a id="767" href="Level.html" class="Module">Level</a> <a id="773" class="Keyword">using</a> <a id="779" class="Symbol">(</a><a id="780" href="Agda.Primitive.html#810" class="Primitive Operator">_⊔_</a><a id="783" class="Symbol">)</a>
+
+<a id="786" class="Keyword">open</a> <a id="791" href="Relation.Binary.Bundles.html#1391" class="Module">DecSetoid</a> <a id="801" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#496" class="Bound">S</a>
+<a id="803" class="Keyword">open</a> <a id="808" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">DecSetoidEquality</a> <a id="826" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#496" class="Bound">S</a>
+
+<a id="829" class="Keyword">infix</a> <a id="835" class="Number">4</a> <a id="837" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1091" class="Function Operator">_⊆?_</a>
+
+<a id="843" class="Comment">------------------------------------------------------------------------</a>
+<a id="916" class="Comment">-- Re-export core definitions</a>
+
+<a id="947" class="Keyword">open</a> <a id="952" href="Data.List.Relation.Binary.Sublist.Setoid.html" class="Module">SetoidSublist</a> <a id="966" href="Relation.Binary.Bundles.html#1615" class="Function">setoid</a> <a id="973" class="Keyword">public</a>
+
+<a id="981" class="Comment">------------------------------------------------------------------------</a>
+<a id="1054" class="Comment">-- Additional relational properties</a>
+
+<a id="_⊆?_"></a><a id="1091" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1091" class="Function Operator">_⊆?_</a> <a id="1096" class="Symbol">:</a> <a id="1098" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="1108" href="Data.List.Relation.Binary.Sublist.Setoid.html#1349" class="Function Operator">_⊆_</a>
+<a id="1112" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1091" class="Function Operator">_⊆?_</a> <a id="1117" class="Symbol">=</a> <a id="1119" href="Data.List.Relation.Binary.Sublist.Heterogeneous.Properties.html#16019" class="Function">HeterogeneousProperties.sublist?</a> <a id="1152" href="Relation.Binary.Structures.html#1921" class="Function Operator">_≟_</a>
+
+<a id="⊆-isDecPartialOrder"></a><a id="1157" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1157" class="Function">⊆-isDecPartialOrder</a> <a id="1177" class="Symbol">:</a> <a id="1179" href="Relation.Binary.Structures.html#3461" class="Record">IsDecPartialOrder</a> <a id="1197" href="Data.List.Relation.Binary.Equality.Setoid.html#1173" class="Function Operator">_≋_</a> <a id="1201" href="Data.List.Relation.Binary.Sublist.Setoid.html#1349" class="Function Operator">_⊆_</a>
+<a id="1205" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1157" class="Function">⊆-isDecPartialOrder</a> <a id="1225" class="Symbol">=</a> <a id="1227" class="Keyword">record</a>
+  <a id="1236" class="Symbol">{</a> <a id="1238" href="Relation.Binary.Structures.html#3552" class="Field">isPartialOrder</a> <a id="1253" class="Symbol">=</a> <a id="1255" href="Data.List.Relation.Binary.Sublist.Setoid.html#2969" class="Function">⊆-isPartialOrder</a>
+  <a id="1274" class="Symbol">;</a> <a id="1276" href="Relation.Binary.Structures.html#3592" class="Field Operator">_≟_</a>            <a id="1291" class="Symbol">=</a> <a id="1293" href="Data.List.Relation.Binary.Equality.DecSetoid.html#878" class="Function Operator">_≋?_</a>
+  <a id="1300" class="Symbol">;</a> <a id="1302" href="Relation.Binary.Structures.html#3627" class="Field Operator">_≤?_</a>           <a id="1317" class="Symbol">=</a> <a id="1319" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1091" class="Function Operator">_⊆?_</a>
+  <a id="1326" class="Symbol">}</a>
+
+<a id="⊆-decPoset"></a><a id="1329" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1329" class="Function">⊆-decPoset</a> <a id="1340" class="Symbol">:</a> <a id="1342" href="Relation.Binary.Bundles.html#3462" class="Record">DecPoset</a> <a id="1351" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#490" class="Bound">c</a> <a id="1353" class="Symbol">(</a><a id="1354" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#490" class="Bound">c</a> <a id="1356" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="1358" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#492" class="Bound">ℓ</a><a id="1359" class="Symbol">)</a> <a id="1361" class="Symbol">(</a><a id="1362" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#490" class="Bound">c</a> <a id="1364" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="1366" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#492" class="Bound">ℓ</a><a id="1367" class="Symbol">)</a>
+<a id="1369" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1329" class="Function">⊆-decPoset</a> <a id="1380" class="Symbol">=</a> <a id="1382" class="Keyword">record</a>
+  <a id="1391" class="Symbol">{</a> <a id="1393" href="Relation.Binary.Bundles.html#3649" class="Field">isDecPartialOrder</a> <a id="1411" class="Symbol">=</a> <a id="1413" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#1157" class="Function">⊆-isDecPartialOrder</a>
+  <a id="1435" class="Symbol">}</a>
+</pre></body></html>

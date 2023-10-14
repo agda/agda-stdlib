@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Relation.Unary.Unique.Setoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Vectors made up entirely of unique elements (setoid equality)</a>
+<a id="171" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="245" class="Symbol">{-#</a> <a id="249" class="Keyword">OPTIONS</a> <a id="257" class="Pragma">--without-K</a> <a id="269" class="Pragma">--safe</a> <a id="276" class="Symbol">#-}</a>
+
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="309" class="Keyword">using</a> <a id="315" class="Symbol">(</a><a id="316" href="Relation.Binary.Core.html#882" class="Function">Rel</a><a id="319" class="Symbol">;</a> <a id="321" href="Relation.Binary.Bundles.html#1009" class="Record">Setoid</a><a id="327" class="Symbol">)</a>
+
+<a id="330" class="Keyword">module</a> <a id="337" href="Data.Vec.Relation.Unary.Unique.Setoid.html" class="Module">Data.Vec.Relation.Unary.Unique.Setoid</a> <a id="375" class="Symbol">{</a><a id="376" href="Data.Vec.Relation.Unary.Unique.Setoid.html#376" class="Bound">a</a> <a id="378" href="Data.Vec.Relation.Unary.Unique.Setoid.html#378" class="Bound">ℓ</a><a id="379" class="Symbol">}</a> <a id="381" class="Symbol">(</a><a id="382" href="Data.Vec.Relation.Unary.Unique.Setoid.html#382" class="Bound">S</a> <a id="384" class="Symbol">:</a> <a id="386" href="Relation.Binary.Bundles.html#1009" class="Record">Setoid</a> <a id="393" href="Data.Vec.Relation.Unary.Unique.Setoid.html#376" class="Bound">a</a> <a id="395" href="Data.Vec.Relation.Unary.Unique.Setoid.html#378" class="Bound">ℓ</a><a id="396" class="Symbol">)</a> <a id="398" class="Keyword">where</a>
+
+<a id="405" class="Keyword">open</a> <a id="410" href="Relation.Binary.Bundles.html#1009" class="Module">Setoid</a> <a id="417" href="Data.Vec.Relation.Unary.Unique.Setoid.html#382" class="Bound">S</a> <a id="419" class="Keyword">renaming</a> <a id="428" class="Symbol">(</a><a id="429" href="Relation.Binary.Bundles.html#1072" class="Field">Carrier</a> <a id="437" class="Symbol">to</a> <a id="440" class="Field">A</a><a id="441" class="Symbol">)</a>
+
+<a id="444" class="Keyword">open</a> <a id="449" class="Keyword">import</a> <a id="456" href="Data.Vec.Base.html" class="Module">Data.Vec.Base</a>
+<a id="470" class="Keyword">import</a> <a id="477" href="Data.Vec.Relation.Unary.AllPairs.html" class="Module">Data.Vec.Relation.Unary.AllPairs</a> <a id="510" class="Symbol">as</a> <a id="513" class="Module">AllPairsM</a>
+<a id="523" class="Keyword">open</a> <a id="528" class="Keyword">import</a> <a id="535" href="Level.html" class="Module">Level</a> <a id="541" class="Keyword">using</a> <a id="547" class="Symbol">(</a><a id="548" href="Agda.Primitive.html#810" class="Primitive Operator">_⊔_</a><a id="551" class="Symbol">)</a>
+<a id="553" class="Keyword">open</a> <a id="558" class="Keyword">import</a> <a id="565" href="Relation.Unary.html" class="Module">Relation.Unary</a> <a id="580" class="Keyword">using</a> <a id="586" class="Symbol">(</a><a id="587" href="Relation.Unary.html#1101" class="Function">Pred</a><a id="591" class="Symbol">)</a>
+<a id="593" class="Keyword">open</a> <a id="598" class="Keyword">import</a> <a id="605" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="622" class="Keyword">using</a> <a id="628" class="Symbol">(</a><a id="629" href="Relation.Nullary.html#656" class="Function Operator">¬_</a><a id="631" class="Symbol">)</a>
+
+
+<a id="635" class="Comment">------------------------------------------------------------------------</a>
+<a id="708" class="Comment">-- Definition</a>
+
+<a id="723" class="Keyword">private</a>
+  <a id="Distinct"></a><a id="733" href="Data.Vec.Relation.Unary.Unique.Setoid.html#733" class="Function">Distinct</a> <a id="742" class="Symbol">:</a> <a id="744" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="748" href="Data.Vec.Relation.Unary.Unique.Setoid.html#440" class="Field">A</a> <a id="750" href="Data.Vec.Relation.Unary.Unique.Setoid.html#378" class="Bound">ℓ</a>
+  <a id="754" href="Data.Vec.Relation.Unary.Unique.Setoid.html#733" class="Function">Distinct</a> <a id="763" href="Data.Vec.Relation.Unary.Unique.Setoid.html#763" class="Bound">x</a> <a id="765" href="Data.Vec.Relation.Unary.Unique.Setoid.html#765" class="Bound">y</a> <a id="767" class="Symbol">=</a> <a id="769" href="Relation.Nullary.html#656" class="Function Operator">¬</a> <a id="771" class="Symbol">(</a><a id="772" href="Data.Vec.Relation.Unary.Unique.Setoid.html#763" class="Bound">x</a> <a id="774" href="Relation.Binary.Bundles.html#1098" class="Field Operator">≈</a> <a id="776" href="Data.Vec.Relation.Unary.Unique.Setoid.html#765" class="Bound">y</a><a id="777" class="Symbol">)</a>
+
+<a id="780" class="Keyword">open</a> <a id="785" class="Keyword">import</a> <a id="792" href="Data.Vec.Relation.Unary.AllPairs.Core.html" class="Module">Data.Vec.Relation.Unary.AllPairs.Core</a> <a id="830" href="Data.Vec.Relation.Unary.Unique.Setoid.html#733" class="Function">Distinct</a> <a id="839" class="Keyword">public</a>
+     <a id="851" class="Keyword">renaming</a> <a id="860" class="Symbol">(</a><a id="861" href="Data.Vec.Relation.Unary.AllPairs.Core.html#942" class="Datatype">AllPairs</a> <a id="870" class="Symbol">to</a> <a id="873" class="Datatype">Unique</a><a id="879" class="Symbol">)</a>
+
+<a id="882" class="Keyword">open</a> <a id="887" class="Keyword">import</a> <a id="894" href="Data.Vec.Relation.Unary.AllPairs.html" class="Module">Data.Vec.Relation.Unary.AllPairs</a> <a id="927" class="Symbol">{</a><a id="928" class="Argument">R</a> <a id="930" class="Symbol">=</a> <a id="932" href="Data.Vec.Relation.Unary.Unique.Setoid.html#733" class="Function">Distinct</a><a id="940" class="Symbol">}</a> <a id="942" class="Keyword">public</a>
+     <a id="954" class="Keyword">using</a> <a id="960" class="Symbol">(</a><a id="961" href="Data.Vec.Relation.Unary.AllPairs.html#1320" class="Function">head</a><a id="965" class="Symbol">;</a> <a id="967" href="Data.Vec.Relation.Unary.AllPairs.html#1430" class="Function">tail</a><a id="971" class="Symbol">)</a>
+</pre></body></html>
