@@ -66,6 +66,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsCongruent isCongruent public
       using (module Eq₁; module Eq₂)
 
+
   record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       to          : A → B
@@ -472,3 +473,15 @@ module _ {A : Set a} {B : Set b} where
     , strictlyInverseʳ⇒inverseʳ to invʳ
     )
 
+------------------------------------------------------------------------
+-- Other
+------------------------------------------------------------------------
+
+-- Alternative syntax for the application of functions
+
+module _ {From : Setoid a ℓ₁} {To : Setoid b ℓ₂} where
+  open Setoid
+  
+  infixl 5 _⟨$⟩_
+  _⟨$⟩_ : Func From To → Carrier From → Carrier To
+  _⟨$⟩_ = Func.to
