@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Empty</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Empty type, judgementally proof irrelevant</a>
+<a id="152" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--cubical-compatible</a> <a id="259" class="Pragma">--safe</a> <a id="266" class="Symbol">#-}</a>
+
+<a id="271" class="Keyword">module</a> <a id="278" href="Data.Empty.html" class="Module">Data.Empty</a> <a id="289" class="Keyword">where</a>
+
+<a id="296" class="Keyword">open</a> <a id="301" class="Keyword">import</a> <a id="308" href="Data.Irrelevant.html" class="Module">Data.Irrelevant</a> <a id="324" class="Keyword">using</a> <a id="330" class="Symbol">(</a><a id="331" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a><a id="341" class="Symbol">)</a>
+
+<a id="344" class="Comment">------------------------------------------------------------------------</a>
+<a id="417" class="Comment">-- Definition</a>
+
+<a id="432" class="Comment">-- Note that by default the empty type is not universe polymorphic as it</a>
+<a id="505" class="Comment">-- often results in unsolved metas. See `Data.Empty.Polymorphic` for a</a>
+<a id="576" class="Comment">-- universe polymorphic variant.</a>
+
+<a id="610" class="Keyword">private</a>
+  <a id="620" class="Keyword">data</a> <a id="Empty"></a><a id="625" href="Data.Empty.html#625" class="Datatype">Empty</a> <a id="631" class="Symbol">:</a> <a id="633" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="637" class="Keyword">where</a>
+
+<a id="644" class="Comment">-- ⊥ is defined via Data.Irrelevant (a record with a single irrelevant</a>
+<a id="715" class="Comment">-- field) so that Agda can judgementally declare that all proofs of ⊥</a>
+<a id="785" class="Comment">-- are equal to each other. In particular this means that all functions</a>
+<a id="857" class="Comment">-- returning a proof of ⊥ are equal.</a>
+
+<a id="⊥"></a><a id="895" href="Data.Empty.html#895" class="Function">⊥</a> <a id="897" class="Symbol">:</a> <a id="899" href="Agda.Primitive.html#388" class="Primitive">Set</a>
+<a id="903" href="Data.Empty.html#895" class="Function">⊥</a> <a id="905" class="Symbol">=</a> <a id="907" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a> <a id="918" href="Data.Empty.html#625" class="Datatype">Empty</a>
+
+<a id="925" class="Symbol">{-#</a> <a id="929" class="Keyword">DISPLAY</a> <a id="937" href="Data.Irrelevant.html#725" class="Record">Irrelevant</a> <a id="948" href="Data.Empty.html#948" class="Bound">Empty</a> <a id="954" class="Pragma">=</a> <a id="956" href="Data.Empty.html#895" class="Function">⊥</a> <a id="958" class="Symbol">#-}</a>
+
+<a id="963" class="Comment">------------------------------------------------------------------------</a>
+<a id="1036" class="Comment">-- Functions</a>
+
+<a id="⊥-elim"></a><a id="1050" href="Data.Empty.html#1050" class="Function">⊥-elim</a> <a id="1057" class="Symbol">:</a> <a id="1059" class="Symbol">∀</a> <a id="1061" class="Symbol">{</a><a id="1062" href="Data.Empty.html#1062" class="Bound">w</a><a id="1063" class="Symbol">}</a> <a id="1065" class="Symbol">{</a><a id="1066" href="Data.Empty.html#1066" class="Bound">Whatever</a> <a id="1075" class="Symbol">:</a> <a id="1077" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1081" href="Data.Empty.html#1062" class="Bound">w</a><a id="1082" class="Symbol">}</a> <a id="1084" class="Symbol">→</a> <a id="1086" href="Data.Empty.html#895" class="Function">⊥</a> <a id="1088" class="Symbol">→</a> <a id="1090" href="Data.Empty.html#1066" class="Bound">Whatever</a>
+<a id="1099" href="Data.Empty.html#1050" class="Function">⊥-elim</a> <a id="1106" class="Symbol">()</a>
+</pre></body></html>
