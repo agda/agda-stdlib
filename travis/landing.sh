@@ -7,8 +7,9 @@ cat landing-top.html >> landing.html
 
 find html/ -name "index.html" \
   | grep -v "master\|experimental" \
+  | sed 's|html/\([^\/]*\)/index.html|\1|g' \
   | sort -r \
-  | sed 's|html/\([^\/]*\)/index.html|        <li><a href="\1">\1</a></li>|g' \
+  | sed 's|^\(.*\)$|        <li><a href="\1">\1</a></li>|g' \
   >> landing.html
 
 cat landing-bottom.html >> landing.html
