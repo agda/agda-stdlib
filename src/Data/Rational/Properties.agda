@@ -753,7 +753,7 @@ module ≤-Reasoning where
   ≃-go = Triple.≈-go ∘′ ≃⇒≡
   
   open ≃-syntax _IsRelatedTo_ _IsRelatedTo_ ≃-go (λ {x y} → ≃-sym {x} {y}) public
-{-
+
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
 
@@ -1728,4 +1728,3 @@ Please use neg<pos instead."
 open Data.Rational.Base public
   using (+-rawMagma; +-0-rawGroup; *-rawMagma; +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
   renaming (+-0-rawMonoid to +-rawMonoid; *-1-rawMonoid to *-rawMonoid)
--}
