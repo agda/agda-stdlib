@@ -14,13 +14,15 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (_,_; proj₁; ∃-syntax; _×_)
 open import Function.Base using (_∘_)
-open import Induction.WellFounded using (WellFounded; Acc; acc; acc-inverse; module Some)
+open import Induction.WellFounded
+  using (WellFounded; Acc; acc; acc-inverse; module Some)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.Transitive
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Nullary.Negation.Core as Negation using (¬_)
-open import Relation.Unary using (Pred; _∩_; _⇒_; Universal; IUniversal; Stable)
+open import Relation.Unary
+  using (Pred; ∁; _∩_; _⇒_; Universal; IUniversal; Stable)
 
 private
   variable
@@ -199,14 +201,9 @@ module FurtherCorollaries {_<_ : Rel A r} (P : Pred A ℓ) where
 ------------------------------------------------------------------------
 -- Finally:  the (classical) 'no smallest counterexample' principle itself
 
--- these belong in Relation.Unary
-
-CounterExample : Pred A ℓ → Pred A ℓ
-CounterExample P = ¬_ ∘ P
-
 module _ {_<_ : Rel A r} {P : Pred A ℓ} (stable : Stable P) where
 
-  open FurtherCorollaries {_<_ = _<_} (CounterExample P)
+  open FurtherCorollaries {_<_ = _<_} (∁ P)
     using (acc⇒noInfiniteDescent⁺; wf⇒noInfiniteDescent⁺)
     renaming (Acc⇒Descent⁺ to NoSmallestCounterExample)
 
