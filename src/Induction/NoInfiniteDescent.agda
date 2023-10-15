@@ -19,7 +19,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.Transitive
 open import Relation.Binary.PropositionalEquality.Core
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core as Negation using (¬_)
 open import Relation.Unary using (Pred; _∩_; _⇒_; Universal; IUniversal)
 
 private
@@ -99,43 +99,43 @@ module InfiniteDescent (_<_ : Rel A r) (P : Pred A ℓ)  where
 
 module _ {_<_ : Rel A r} (P : Pred A ℓ) where
 
-    open InfiniteDescent _<_ P public
+  open InfiniteDescent _<_ P public
 
-    module Corollaries (descent : Acc⇒Descent) where
+  module Corollaries (descent : Acc⇒Descent) where
 
-      private
+    private
 
-        P∩Acc : Pred A _
-        P∩Acc = P ∩ (Acc _<_)
+      P∩Acc : Pred A _
+      P∩Acc = P ∩ (Acc _<_)
 
-        module ID∩ = InfiniteDescent _<_ P∩Acc
+      module ID∩ = InfiniteDescent _<_ P∩Acc
 
-        descent∩ : ID∩.Descent
-        descent∩ (px , acc[x]) =
-          let y , y<x , py = descent acc[x] px
-          in y , y<x , py , acc-inverse acc[x] y<x
+      descent∩ : ID∩.Descent
+      descent∩ (px , acc[x]) =
+        let y , y<x , py = descent acc[x] px
+        in y , y<x , py , acc-inverse acc[x] y<x
 
-        module Lemmas∩ = ID∩.Lemmas descent∩
+      module Lemmas∩ = ID∩.Lemmas descent∩
 
-      acc⇒infiniteDescent : Acc⇒InfiniteDescent
-      acc⇒infiniteDescent acc[x] px =
-        let f , Π[[P∩Acc]∘f] , sequence[f] = Lemmas∩.acc⇒infiniteDescent acc[x] (px , acc[x])
-        in f , proj₁ ∘ Π[[P∩Acc]∘f] , sequence[f]
+    acc⇒infiniteDescent : Acc⇒InfiniteDescent
+    acc⇒infiniteDescent acc[x] px =
+      let f , Π[[P∩Acc]∘f] , sequence[f] = Lemmas∩.acc⇒infiniteDescent acc[x] (px , acc[x])
+      in f , proj₁ ∘ Π[[P∩Acc]∘f] , sequence[f]
 
-      wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent
-      wf⇒infiniteDescent wf = acc⇒infiniteDescent (wf _)
+    wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent
+    wf⇒infiniteDescent wf = acc⇒infiniteDescent (wf _)
 
-      acc⇒noInfiniteDescent : ∀[ Acc _<_ ⇒ ¬_ ∘ P ]
-      acc⇒noInfiniteDescent acc[x] px = Lemmas∩.acc⇒noInfiniteDescent acc[x] (px , acc[x])
+    acc⇒noInfiniteDescent : ∀[ Acc _<_ ⇒ ¬_ ∘ P ]
+    acc⇒noInfiniteDescent acc[x] px = Lemmas∩.acc⇒noInfiniteDescent acc[x] (px , acc[x])
 
-      wf⇒noInfiniteDescent : WellFounded _<_ → ∀[ ¬_ ∘ P ]
-      wf⇒noInfiniteDescent wf = acc⇒noInfiniteDescent (wf _)
+    wf⇒noInfiniteDescent : WellFounded _<_ → ∀[ ¬_ ∘ P ]
+    wf⇒noInfiniteDescent wf = acc⇒noInfiniteDescent (wf _)
 
 
 ------------------------------------------------------------------------
 -- Further corollaries: assume _<⁺_ descent only for Acc _<⁺_  elements
 
-module _ {_<_ : Rel A r} (P : Pred A ℓ) where
+module FurtherCorollaries {_<_ : Rel A r} (P : Pred A ℓ) where
 
   private
 
@@ -197,6 +197,31 @@ module _ {_<_ : Rel A r} (P : Pred A ℓ) where
 
 
 ------------------------------------------------------------------------
+-- Finally:  the (classical) 'no smallest counterexample' principle itself
+
+-- these belong in Relation.Unary
+
+CounterExample : Pred A ℓ → Pred A ℓ
+CounterExample P = ¬_ ∘ P
+
+Stable : Pred A ℓ → Set _
+Stable P = ∀ {x} → Negation.Stable (P x)
+
+module _ {_<_ : Rel A r} {P : Pred A ℓ} (stable : Stable P) where
+
+  open FurtherCorollaries {_<_ = _<_} (CounterExample P)
+    using (acc⇒noInfiniteDescent⁺; wf⇒noInfiniteDescent⁺)
+    renaming (Acc⇒Descent⁺ to NoSmallestCounterExample)
+
+  acc⇒noSmallestCounterExample : NoSmallestCounterExample → ∀[ Acc _<_ ⇒ P ]
+  acc⇒noSmallestCounterExample noSmallest = stable ∘ (acc⇒noInfiniteDescent⁺ noSmallest)
+
+  wf⇒noSmallestCounterExample : WellFounded _<_ → NoSmallestCounterExample → ∀[ P ]
+  wf⇒noSmallestCounterExample wf noSmallest = stable (wf⇒noInfiniteDescent⁺ noSmallest wf)
+
+------------------------------------------------------------------------
 -- Exports
 
 open Corollaries public
+open FurtherCorollaries public
+
