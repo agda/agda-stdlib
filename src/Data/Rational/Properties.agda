@@ -56,6 +56,7 @@ import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
 open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Binary.Reasoning.Syntax
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
@@ -130,11 +131,14 @@ mkℚ+-pos (suc n) (suc d) = _
 -- Numerator and denominator equality
 ------------------------------------------------------------------------
 
+drop-*≡* : p ≃ q → ↥ p ℤ.* ↧ q ≡ ↥ q ℤ.* ↧ p
+drop-*≡* (*≡* eq) = eq
+
 ≡⇒≃ : _≡_ ⇒ _≃_
-≡⇒≃ refl = refl
+≡⇒≃ refl = *≡* refl
 
 ≃⇒≡ : _≃_ ⇒ _≡_
-≃⇒≡ {x = mkℚ n₁ d₁ c₁} {y = mkℚ n₂ d₂ c₂} eq = helper
+≃⇒≡ {x = mkℚ n₁ d₁ c₁} {y = mkℚ n₂ d₂ c₂} (*≡* eq) = helper
   where
   open ≡-Reasoning
 
@@ -158,6 +162,9 @@ mkℚ+-pos (suc n) (suc d) = _
   helper with ∣-antisym 1+d₁∣1+d₂ 1+d₂∣1+d₁
   ... | refl with ℤ.*-cancelʳ-≡ n₁ n₂ (+ suc d₁) eq
   ...   | refl = refl
+
+≃-sym : Symmetric _≃_
+≃-sym = ≡⇒≃ ∘′ sym ∘′ ≃⇒≡ 
 
 ------------------------------------------------------------------------
 -- Properties of ↥
@@ -412,7 +419,7 @@ private
 ↧ᵘ-toℚᵘ p@record{} = refl
 
 toℚᵘ-injective : Injective _≡_ _≃ᵘ_ toℚᵘ
-toℚᵘ-injective {x@record{}} {y@record{}} (*≡* eq) = ≃⇒≡ eq
+toℚᵘ-injective {x@record{}} {y@record{}} (*≡* eq) = ≃⇒≡ (*≡* eq)
 
 fromℚᵘ-injective : Injective _≃ᵘ_ _≡_ fromℚᵘ
 fromℚᵘ-injective {p@record{}} {q@record{}} = /-injective-≃ p q
@@ -491,7 +498,7 @@ private
 ≤-trans = ≤-Monomorphism.trans ℚᵘ.≤-trans
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym (*≤* le₁) (*≤* le₂) = ≃⇒≡ (ℤ.≤-antisym le₁ le₂)
+≤-antisym (*≤* le₁) (*≤* le₂) = ≃⇒≡ (*≡* (ℤ.≤-antisym le₁ le₂))
 
 ≤-total : Total _≤_
 ≤-total p q = [ inj₁ ∘ *≤* , inj₂ ∘ *≤* ]′ (ℤ.≤-total (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p))
@@ -600,7 +607,7 @@ toℚᵘ-isOrderMonomorphism-< = record
 ≰⇒> {p} {q} p≰q = *<* (ℤ.≰⇒> (p≰q ∘ *≤*))
 
 <⇒≢ : _<_ ⇒ _≢_
-<⇒≢ {p} {q} (*<* p<q) = ℤ.<⇒≢ p<q ∘ ≡⇒≃
+<⇒≢ {p} {q} (*<* p<q) = ℤ.<⇒≢ p<q ∘ drop-*≡* ∘ ≡⇒≃
 
 <-irrefl : Irreflexive _≡_ _<_
 <-irrefl refl (*<* p<p) = ℤ.<-irrefl refl p<p
@@ -667,9 +674,9 @@ _>?_ = flip _<?_
 
 <-cmp : Trichotomous _≡_ _<_
 <-cmp p q with ℤ.<-cmp (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
-... | tri< < ≢ ≯ = tri< (*<* <)        (≢ ∘ ≡⇒≃) (≯ ∘ drop-*<*)
-... | tri≈ ≮ ≡ ≯ = tri≈ (≮ ∘ drop-*<*) (≃⇒≡ ≡)   (≯ ∘ drop-*<*)
-... | tri> ≮ ≢ > = tri> (≮ ∘ drop-*<*) (≢ ∘ ≡⇒≃) (*<* >)
+... | tri< < ≢ ≯ = tri< (*<* <)        (≢ ∘ drop-*≡* ∘ ≡⇒≃) (≯ ∘ drop-*<*)
+... | tri≈ ≮ ≡ ≯ = tri≈ (≮ ∘ drop-*<*) (≃⇒≡ (*≡* ≡))   (≯ ∘ drop-*<*)
+... | tri> ≮ ≢ > = tri> (≮ ∘ drop-*<*) (≢ ∘ drop-*≡* ∘ ≡⇒≃) (*<* >)
 
 <-irrelevant : Irrelevant _<_
 <-irrelevant (*<* p<q₁) (*<* p<q₂) = cong *<* (ℤ.<-irrelevant p<q₁ p<q₂)
@@ -740,9 +747,13 @@ module ≤-Reasoning where
     ≤-<-trans
     as Triple
 
-  open Triple public
-    hiding (step-≈; step-≈˘)
+  open Triple public hiding (step-≈; step-≈˘)
 
+  ≃-go : Trans _≃_ _IsRelatedTo_ _IsRelatedTo_
+  ≃-go = Triple.≈-go ∘′ ≃⇒≡
+  
+  open ≃-syntax _IsRelatedTo_ _IsRelatedTo_ ≃-go (λ {x y} → ≃-sym {x} {y}) public
+{-
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
 
@@ -1717,3 +1728,4 @@ Please use neg<pos instead."
 open Data.Rational.Base public
   using (+-rawMagma; +-0-rawGroup; *-rawMagma; +-*-rawNearSemiring; +-*-rawSemiring; +-*-rawRing)
   renaming (+-0-rawMonoid to +-rawMonoid; *-1-rawMonoid to *-rawMonoid)
+-}

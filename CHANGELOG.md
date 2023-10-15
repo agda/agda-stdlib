@@ -33,6 +33,9 @@ Bug-fixes
   in `Function.Construct.Composition` had their arguments in the wrong order. They have
   been flipped so they can actually be used as a composition operator.
 
+* The combinators `_≃⟨_⟩_` and `_≃˘⟨_⟩_` in `Data.Rational.Properties.≤-Reasoning`
+  now correctly accepts proofs of type `_≃_` instead of the previous proofs of type `_≡_`.
+
 * The following operators were missing a fixity declaration, which has now
   been fixed -
   ```
@@ -535,6 +538,10 @@ Non-backwards compatible changes
      terms involving those parameters.
   3. Finally, if the above approaches are not viable then you may be forced to explicitly
      use `cong` combined with a lemma that proves the old reduction behaviour.
+
+* Similarly, in order to prevent reduction, the equality `_≃_` in `Data.Rational.Base` 
+  has been made into a data type with the single constructor `*≡*`. The destructor `drop-*≡*`
+  has been added to `Data.Rational.Properties`.
 
 ### Change to the definition of `LeftCancellative` and `RightCancellative`
 
