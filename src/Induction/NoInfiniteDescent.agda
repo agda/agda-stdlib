@@ -20,7 +20,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.Transitive
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Nullary.Negation.Core as Negation using (¬_)
-open import Relation.Unary using (Pred; _∩_; _⇒_; Universal; IUniversal)
+open import Relation.Unary using (Pred; _∩_; _⇒_; Universal; IUniversal; Stable)
 
 private
   variable
@@ -204,9 +204,6 @@ module FurtherCorollaries {_<_ : Rel A r} (P : Pred A ℓ) where
 CounterExample : Pred A ℓ → Pred A ℓ
 CounterExample P = ¬_ ∘ P
 
-Stable : Pred A ℓ → Set _
-Stable P = ∀ {x} → Negation.Stable (P x)
-
 module _ {_<_ : Rel A r} {P : Pred A ℓ} (stable : Stable P) where
 
   open FurtherCorollaries {_<_ = _<_} (CounterExample P)
@@ -214,10 +211,10 @@ module _ {_<_ : Rel A r} {P : Pred A ℓ} (stable : Stable P) where
     renaming (Acc⇒Descent⁺ to NoSmallestCounterExample)
 
   acc⇒noSmallestCounterExample : NoSmallestCounterExample → ∀[ Acc _<_ ⇒ P ]
-  acc⇒noSmallestCounterExample noSmallest = stable ∘ (acc⇒noInfiniteDescent⁺ noSmallest)
+  acc⇒noSmallestCounterExample noSmallest = stable _ ∘ acc⇒noInfiniteDescent⁺ noSmallest
 
   wf⇒noSmallestCounterExample : WellFounded _<_ → NoSmallestCounterExample → ∀[ P ]
-  wf⇒noSmallestCounterExample wf noSmallest = stable (wf⇒noInfiniteDescent⁺ noSmallest wf)
+  wf⇒noSmallestCounterExample wf noSmallest = stable _ (wf⇒noInfiniteDescent⁺ noSmallest wf)
 
 ------------------------------------------------------------------------
 -- Exports

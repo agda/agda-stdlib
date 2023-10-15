@@ -3213,6 +3213,7 @@ Additions to existing modules
   _≐_  : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   _≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   _∖_  : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
+  Stable : Pred A ℓ → Set _
   ```
 
 * Added new proofs in `Relation.Unary.Properties`:

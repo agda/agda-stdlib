@@ -15,7 +15,7 @@ open import Data.Sum.Base using (_⊎_; [_,_])
 open import Function.Base using (_∘_; _|>_)
 open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
 open import Relation.Nullary.Decidable.Core using (Dec; True)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core as Negation using (¬_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
@@ -161,6 +161,11 @@ IUniversal : Pred A ℓ → Set _
 IUniversal P = ∀ {x} → x ∈ P
 
 syntax IUniversal P = ∀[ P ]
+
+-- Stability - instances of P are stable wrt double negation
+
+Stable : Pred A ℓ → Set _
+Stable P = ∀ x → Negation.Stable (P x)
 
 -- Decidability - it is possible to determine if an arbitrary element
 -- satisfies P.
