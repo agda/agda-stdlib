@@ -110,10 +110,10 @@ f $- = f _
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).
 
-case_return_of_ : ∀ {A : Set a} (x : A) (B : A → Set b) →
+case_returning_of_ : ∀ {A : Set a} (x : A) (B : A → Set b) →
                   ((x : A) → B x) → B x
-case x return B of f = f x
-{-# INLINE case_return_of_ #-}
+case x returning B of f = f x
+{-# INLINE case_returning_of_ #-}
 
 ------------------------------------------------------------------------
 -- Non-dependent versions of dependent operations
@@ -156,7 +156,7 @@ _|>′_ = _|>_
 -- README.Case).
 
 case_of_ : A → (A → B) → B
-case x of f = case x return _ of f
+case x of f = case x returning _ of f
 {-# INLINE case_of_ #-}
 
 ------------------------------------------------------------------------
@@ -247,10 +247,24 @@ _*_ on f = f -⟨ _*_ ⟩- f
 
 
 ------------------------------------------------------------------------
--- Deprecated
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.4
 
 _-[_]-_ = _-⟪_⟫-_
 {-# WARNING_ON_USAGE _-[_]-_
 "Warning: Function._-[_]-_ was deprecated in v1.4.
 Please use _-⟪_⟫-_ instead."
 #-}
+
+-- Version 2.0
+
+case_return_of_ = case_returning_of_
+{-# WARNING_ON_USAGE case_return_of_
+"case_return_of_ was deprecated in v2.0.
+Please use case_returning_of_ instead."
+#-}
+
