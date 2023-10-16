@@ -302,8 +302,8 @@ module _
       infixr 2 step-↔ step-↔-sym
       step-↔ = forward
       step-↔-sym = backward
-      syntax step-↔ x yRz x⤖y = x ↔⟨ x⤖y ⟩ yRz
-      syntax step-↔-sym x yRz y⤖x = x ↔˘⟨ y⤖x ⟩ yRz
+      syntax step-↔ x yRz x↔y = x ↔⟨ x↔y ⟩ yRz
+      syntax step-↔-sym x yRz y↔x = x ↔˘⟨ y↔x ⟩ yRz
 
 
     -- Inverse syntax
@@ -311,8 +311,8 @@ module _
       infixr 2 step-↭ step-↭-sym
       step-↭ = forward
       step-↭-sym = backward
-      syntax step-↭ x yRz x⤖y = x ↭⟨ x⤖y ⟩ yRz
-      syntax step-↭-sym x yRz y⤖x = x ↭˘⟨ y⤖x ⟩ yRz
+      syntax step-↭ x yRz x↭y = x ↭⟨ x↭y ⟩ yRz
+      syntax step-↭-sym x yRz y↭x = x ↭˘⟨ y↭x ⟩ yRz
 
 ------------------------------------------------------------------------
 -- Propositional equality
