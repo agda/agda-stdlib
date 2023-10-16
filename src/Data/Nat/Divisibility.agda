@@ -120,9 +120,11 @@ suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m (suc n)) (m % suc n ≟ 0)
 module ∣-Reasoning where
   private module Base = PreorderReasoning ∣-preorder
 
-  open Base public hiding (step-≈; step-≈˘; step-∼)
+  open Base public
+    hiding (step-≈; step-≈˘; step-∼; step-≲)
+    renaming (≲-go to ∣-go)
 
-  open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ Base.∼-go public
+  open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ ∣-go public
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_
