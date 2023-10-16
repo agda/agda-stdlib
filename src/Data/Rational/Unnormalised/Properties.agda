@@ -155,6 +155,19 @@ proj₂ (≄-tight p q) p≃q p≄q = p≄q p≃q
 
 module ≃-Reasoning = SetoidReasoning ≃-setoid
 
+↥p≡0⇒p≃0 : ∀ p → ↥ p ≡ 0ℤ → p ≃ 0ℚᵘ
+↥p≡0⇒p≃0 p ↥p≡0 = *≡* (cong (ℤ._* (↧ 0ℚᵘ)) ↥p≡0)
+
+p≃0⇒↥p≡0 : ∀ p → p ≃ 0ℚᵘ → ↥ p ≡ 0ℤ
+p≃0⇒↥p≡0 p (*≡* eq) = begin
+  ↥ p          ≡˘⟨ ℤ.*-identityʳ (↥ p) ⟩
+  ↥ p ℤ.* 1ℤ  ≡⟨ eq ⟩
+  0ℤ           ∎
+  where open ≡-Reasoning
+  
+↥p≡↥q≡0⇒p≃q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
+↥p≡↥q≡0⇒p≃q p q ↥p≡0 ↥q≡0 = ≃-trans (↥p≡0⇒p≃0 p ↥p≡0) (≃-sym (↥p≡0⇒p≃0 _ ↥q≡0))
+
 ------------------------------------------------------------------------
 -- Properties of -_
 ------------------------------------------------------------------------
