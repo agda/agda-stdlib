@@ -17,7 +17,8 @@ open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 import Relation.Binary.PropositionalEquality.Properties as PropEq
-import Relation.Binary.Reasoning.Preorder as PreR
+import Relation.Binary.Reasoning.Preorder as PreorderReasoning
+open import Relation.Binary.Reasoning.Syntax
 
 ------------------------------------------------------------------------
 -- _◅◅_
@@ -112,17 +113,9 @@ module _ {i t} {I : Set i} (T : Rel I t) where
 -- Preorder reasoning for Star
 
 module StarReasoning {i t} {I : Set i} (T : Rel I t) where
-  private module Base = PreR (preorder T)
+  private module Base = PreorderReasoning (preorder T)
 
-  open Base public
-    hiding (step-≈; step-∼)
+  open Base public hiding (step-≈; step-∼)
 
-  infixr 2 step-⟶ step-⟶⋆
-
-  step-⟶⋆ = Base.step-∼
-
-  step-⟶ : ∀ x {y z} → y IsRelatedTo z → T x y → x IsRelatedTo z
-  step-⟶ x y⟶⋆z x⟶y = step-⟶⋆ x y⟶⋆z (x⟶y ◅ ε)
-
-  syntax step-⟶⋆ x y⟶⋆z x⟶⋆y = x ⟶⋆⟨ x⟶⋆y ⟩ y⟶⋆z
-  syntax step-⟶  x y⟶⋆z x⟶y  = x ⟶⟨ x⟶y ⟩ y⟶⋆z
+  open ⟶-syntax _IsRelatedTo_ _IsRelatedTo_ (Base.∼-go ∘ (_◅ ε)) public
+  open ⟶*-syntax _IsRelatedTo_ _IsRelatedTo_ Base.∼-go public

@@ -37,11 +37,13 @@ open import Function.Related.TypeIsomorphisms
 open import Function.Properties.Inverse using (↔-sym; ↔-trans; to-from)
 open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions using (Trans)
 open import Relation.Binary.Bundles using (Preorder; Setoid)
 import Relation.Binary.Reasoning.Setoid as EqR
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl)
+open import Relation.Binary.Reasoning.Syntax
 open import Relation.Nullary
 open import Data.List.Membership.Propositional.Properties
 
@@ -90,29 +92,22 @@ bag-=⇒ xs≈ys = ↔⇒ xs≈ys
 ------------------------------------------------------------------------
 -- "Equational" reasoning for _⊆_ along with an additional relatedness
 
-module ⊆-Reasoning where
-  private
-    module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
+module ⊆-Reasoning {A : Set a} where
+  private module Base = PreorderReasoning (⊆-preorder A)
 
-  open PreOrder public
+  open Base public
     hiding (step-≈; step-≈˘; step-∼)
+    renaming (∼-go to ⊆-go)
 
-  infixr 2 step-∼ step-⊆
-  infix  1 step-∈
+  open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → begin x) public
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
 
-  step-⊆ = PreOrder.step-∼
+  module _ {k : Related.ForwardKind} where
+    ∼-go : Trans _∼[ ⌊ k ⌋→ ]_ _IsRelatedTo_ _IsRelatedTo_
+    ∼-go eq = ⊆-go (⇒→ eq)
 
-  step-∈ : ∀ x {xs ys : List A} →
-           xs IsRelatedTo ys → x ∈ xs → x ∈ ys
-  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+    open ∼-syntax _IsRelatedTo_ _IsRelatedTo_ ∼-go public
 
-  step-∼ : ∀ {k} xs {ys zs : List A} →
-           ys IsRelatedTo zs → xs ∼[ ⌊ k ⌋→ ] ys → xs IsRelatedTo zs
-  step-∼ xs ys⊆zs xs≈ys = step-⊆ xs ys⊆zs (⇒→ xs≈ys)
-
-  syntax step-∈ x  xs⊆ys x∈xs  = x ∈⟨ x∈xs ⟩ xs⊆ys
-  syntax step-∼ xs ys⊆zs xs≈ys = xs ∼⟨ xs≈ys ⟩ ys⊆zs
-  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
 -- Congruence lemmas

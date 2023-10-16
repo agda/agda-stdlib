@@ -43,6 +43,7 @@ import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+open import Relation.Binary.Reasoning.Syntax
 
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
@@ -153,6 +154,19 @@ proj₂ (≄-tight p q) p≃q p≄q = p≄q p≃q
   }
 
 module ≃-Reasoning = SetoidReasoning ≃-setoid
+
+↥p≡0⇒p≃0 : ∀ p → ↥ p ≡ 0ℤ → p ≃ 0ℚᵘ
+↥p≡0⇒p≃0 p ↥p≡0 = *≡* (cong (ℤ._* (↧ 0ℚᵘ)) ↥p≡0)
+
+p≃0⇒↥p≡0 : ∀ p → p ≃ 0ℚᵘ → ↥ p ≡ 0ℤ
+p≃0⇒↥p≡0 p (*≡* eq) = begin
+  ↥ p          ≡˘⟨ ℤ.*-identityʳ (↥ p) ⟩
+  ↥ p ℤ.* 1ℤ  ≡⟨ eq ⟩
+  0ℤ           ∎
+  where open ≡-Reasoning
+  
+↥p≡↥q≡0⇒p≃q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
+↥p≡↥q≡0⇒p≃q p q ↥p≡0 ↥q≡0 = ≃-trans (↥p≡0⇒p≃0 p ↥p≡0) (≃-sym (↥p≡0⇒p≃0 _ ↥q≡0))
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -582,7 +596,7 @@ _>?_ = flip _<?_
 module ≤-Reasoning where
   import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
-    <-irrefl
+    <-asym
     <-trans
     <-resp-≃
     <⇒≤
@@ -593,13 +607,7 @@ module ≤-Reasoning where
   open Triple public
     hiding (step-≈; step-≈˘)
 
-  infixr 2 step-≃ step-≃˘
-
-  step-≃  = Triple.step-≈
-  step-≃˘ = Triple.step-≈˘
-
-  syntax step-≃  x y∼z x≃y = x ≃⟨  x≃y ⟩ y∼z
-  syntax step-≃˘ x y∼z y≃x = x ≃˘⟨ y≃x ⟩ y∼z
+  open ≃-syntax _IsRelatedTo_ _IsRelatedTo_  Triple.≈-go ≃-sym public
 
 ------------------------------------------------------------------------
 -- Properties of ↥_/↧_
