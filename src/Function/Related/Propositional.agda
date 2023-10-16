@@ -10,11 +10,12 @@ module Function.Related.Propositional where
 
 open import Level
 open import Relation.Binary
-  using (Sym; Reflexive; Trans; IsEquivalence; Setoid; IsPreorder; Preorder)
+  using (Rel; REL; Sym; Reflexive; Trans; IsEquivalence; Setoid; IsPreorder; Preorder)
 open import Function.Bundles
 open import Function.Base
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.Reasoning.Syntax
 
 open import Function.Properties.Surjection   using (↠⇒↪; ↠⇒⇔)
 open import Function.Properties.RightInverse using (↪⇒↠)
@@ -293,41 +294,39 @@ K-preorder k ℓ = record { isPreorder = K-isPreorder k }
 ------------------------------------------------------------------------
 -- Equational reasoning
 
--- Equational reasoning for related things.
+-- Equational reasoning for related things. Note that we don't use
+-- the `Relation.Binary.Reasoning.Syntax` for this as this relation
+-- is heterogeneous.
 
-module EquationalReasoning where
+module EquationalReasoning {k : Kind} where
 
-  infix  3 _∎
-  infixr 2 _∼⟨_⟩_ _⤖⟨_⟩_ _↔⟨_⟩_ _↔⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_
-  infix  1 begin_
+  -- Combinators with one heterogeneous relation
+  module _ {a b : Level} where
+    open begin-syntax (Related {a} {b} k) id public
+    open ≡-noncomputing-syntax (Related {a} {b} k) public
 
-  begin_ : ∀ {k} → A ∼[ k ] B → A ∼[ k ] B
-  begin_ x∼y = x∼y
+  -- Combinators with two heterogeneous relations
+  module _ {a b c : Level} where
+    private
+      rel1 = Related {b} {c} k
+      rel2 = Related {a} {c} k
 
-  _∼⟨_⟩_ : (A : Set a) → A ∼[ k ] B → B ∼[ k ] C → A ∼[ k ] C
-  _ ∼⟨ A↝B ⟩ B↝C = K-trans A↝B B↝C
+    open ∼-syntax rel1 rel2 K-trans public
+    open ⤖-syntax rel1 rel2 (K-trans ∘′ ↔⇒ ∘′ ⤖⇒↔) Symmetry.⤖-sym public
+    open ↔-syntax rel1 rel2 (K-trans ∘′ ↔⇒) Symmetry.↔-sym public
 
-  -- Isomorphisms and bijections can be combined with any other kind of
-  -- relatedness.
+  -- Combinators with homogeneous relations
+  module _ {a : Level} where
+    open end-syntax (Related {a} k) K-refl public
 
-  _⤖⟨_⟩_ : (A : Set a) → A ⤖ B → B ∼[ k ] C → A ∼[ k ] C
-  A ⤖⟨ A⤖B ⟩ B⇔C = A ∼⟨ ↔⇒ (⤖⇒↔ A⤖B) ⟩ B⇔C
 
-  _↔⟨_⟩_ : (A : Set a) → A ↔ B → B ∼[ k ] C → A ∼[ k ] C
-  A ↔⟨ A↔B ⟩ B⇔C = A ∼⟨ ↔⇒ A↔B ⟩ B⇔C
-
+  infixr 2 _↔⟨⟩_
   _↔⟨⟩_ : (A : Set a) → A ∼[ k ] B → A ∼[ k ] B
   A ↔⟨⟩ A⇔B = A⇔B
-
-  _≡⟨_⟩_ : (A : Set a) → A ≡ B → B ∼[ k ] C → A ∼[ k ] C
-  A ≡⟨ A≡B ⟩ B⇔C = A ∼⟨ ≡⇒ A≡B ⟩ B⇔C
-
-  _≡˘⟨_⟩_ : (A : Set a) → B ≡ A → B ∼[ k ] C → A ∼[ k ] C
-  A ≡˘⟨ B≡A ⟩ B⇔C = A ∼⟨ ≡⇒ (P.sym B≡A) ⟩ B⇔C
-
-  _∎ : (A : Set a) → A ∼[ k ] A
-  A ∎ = K-refl
-
+  {-# WARNING_ON_USAGE _↔⟨⟩_
+  "Warning: _↔⟨⟩_ was deprecated in v2.0.
+  Please use _≡⟨⟩_ instead. "
+  #-}
 
 ------------------------------------------------------------------------
 -- Every unary relation induces a preorder and, for symmetric kinds,

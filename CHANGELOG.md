@@ -33,6 +33,9 @@ Bug-fixes
   in `Function.Construct.Composition` had their arguments in the wrong order. They have
   been flipped so they can actually be used as a composition operator.
 
+* The combinators `_≃⟨_⟩_` and `_≃˘⟨_⟩_` in `Data.Rational.Properties.≤-Reasoning`
+  now correctly accepts proofs of type `_≃_` instead of the previous proofs of type `_≡_`.
+
 * The following operators were missing a fixity declaration, which has now
   been fixed -
   ```
@@ -535,6 +538,10 @@ Non-backwards compatible changes
      terms involving those parameters.
   3. Finally, if the above approaches are not viable then you may be forced to explicitly
      use `cong` combined with a lemma that proves the old reduction behaviour.
+
+* Similarly, in order to prevent reduction, the equality `_≃_` in `Data.Rational.Base` 
+  has been made into a data type with the single constructor `*≡*`. The destructor `drop-*≡*`
+  has been added to `Data.Rational.Properties`.
 
 ### Change to the definition of `LeftCancellative` and `RightCancellative`
 
@@ -1222,6 +1229,15 @@ Major improvements
 
 * In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
 
+### More modular design of equational reasoning.
+
+* Have introduced a new module `Relation.Binary.Reasoning.Syntax` which exports 
+  a range of modules containing pre-existing reasoning combinator syntax.
+
+* This makes it possible to add new or rename existing reasoning combinators to a 
+  pre-existing `Reasoning` module in just a couple of lines 
+  (e.g. see `∣-Reasoning` in `Data.Nat.Divisibility`)
+
 Deprecated modules
 ------------------
 
@@ -1793,6 +1809,11 @@ Deprecated names
   sym-↔   ↦   ↔-sym
   ```
 
+* In `Function.Related.Propositional.Reasoning`:
+  ```agda
+  _↔⟨⟩_  ↦  _≡⟨⟩_
+  ```
+  
 * In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
   ```
   toForeign   ↦ Foreign.Haskell.Coerce.coerce
@@ -2690,6 +2711,8 @@ Additions to existing modules
   toℕ-inverseˡ  : Inverseˡ _≡_ _≡_ toℕ fromℕ
   toℕ-inverseʳ  : Inverseʳ _≡_ _≡_ toℕ fromℕ
   toℕ-inverseᵇ  : Inverseᵇ _≡_ _≡_ toℕ fromℕ
+  
+  <-asym : Asymmetric _<_
   ```
 
 * Added a new pattern synonym to `Data.Nat.Divisibility.Core`:
@@ -2859,6 +2882,7 @@ Additions to existing modules
   ```agda
   ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
   ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
+  ↥p≡↥q≡0⇒p≡q : ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≡ q
 
   _≥?_ : Decidable _≥_
   _>?_ : Decidable _>_
@@ -2883,6 +2907,10 @@ Additions to existing modules
 
 * Added new definitions in `Data.Rational.Unnormalised.Properties`:
   ```agda
+  ↥p≡0⇒p≃0 : ↥ p ≡ 0ℤ → p ≃ 0ℚᵘ
+  p≃0⇒↥p≡0 : p ≃ 0ℚᵘ → ↥ p ≡ 0ℤ
+  ↥p≡↥q≡0⇒p≃q : ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
+
   +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
 

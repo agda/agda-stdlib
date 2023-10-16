@@ -27,13 +27,7 @@ open import Function.Base using (_∘_; _$_; id)
 open import Function.Definitions
 open import Function.Consequences.Propositional
 open import Level using (0ℓ)
-open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder; Poset; TotalOrder; DecTotalOrder)
-open import Relation.Binary.Definitions
-  using (Decidable; Irreflexive; Transitive; Reflexive; Antisymmetric; Total; Trichotomous; tri≈; tri<; tri>)
-open import Relation.Binary.Structures
-  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
@@ -371,6 +365,9 @@ toℕ-isMonomorphism-< = record
 <-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
 <-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
 
+<-asym : Asymmetric _<_
+<-asym {x} {y} = trans∧irr⇒asym refl <-trans <-irrefl {x} {y}
+
 -- Should not be implemented via the morphism `toℕ` in order to
 -- preserve O(log n) time requirement.
 <-cmp : Trichotomous _≡_ _<_
@@ -609,7 +606,7 @@ module ≤-Reasoning where
 
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
-    <-irrefl
+    <-asym
     <-trans
     (resp₂ _<_)
     <⇒≤

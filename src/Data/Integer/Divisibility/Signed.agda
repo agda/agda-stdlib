@@ -30,6 +30,7 @@ open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Nullary.Decidable using (yes; no)
 import Relation.Nullary.Decidable as DEC
+open import Relation.Binary.Reasoning.Syntax
 
 ------------------------------------------------------------------------
 -- Type
@@ -118,15 +119,11 @@ open _∣_ using (quotient) public
 -- Divisibility reasoning
 
 module ∣-Reasoning where
-  private
-    module Base = PreorderReasoning ∣-preorder
+  private module Base = PreorderReasoning ∣-preorder
 
-  open Base public
-    hiding (step-∼; step-≈; step-≈˘)
+  open Base public hiding (step-∼; step-≈; step-≈˘)
 
-  infixr 2 step-∣
-  step-∣ = Base.step-∼
-  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
+  open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ ∼-go public
 
 ------------------------------------------------------------------------
 -- Other properties of _∣_
