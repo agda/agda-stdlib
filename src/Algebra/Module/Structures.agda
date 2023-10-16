@@ -166,14 +166,16 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr)
   open CommutativeSemiring commutativeSemiring renaming (Carrier to R)
 
   -- An R-semimodule is an R-R-bisemimodule where R is commutative.
-  -- This means that *ₗ and *ᵣ coincide up to mathematical equality,
-  -- though it may be that they do not coincide up to definitional
-  -- equality.
+  -- We enforce that *ₗ and *ᵣ coincide up to mathematical equality, though it
+  -- may be that they do not coincide up to definitional equality.
+
+  open SimultaneousBiDefs R ≈ᴹ
 
   record IsSemimodule (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M)
                       : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     field
       isBisemimodule : IsBisemimodule semiring semiring ≈ᴹ +ᴹ 0ᴹ *ₗ *ᵣ
+      *ₗ-*ᵣ-coincident : Coincident *ₗ *ᵣ
 
     open IsBisemimodule isBisemimodule public
 
@@ -282,15 +284,17 @@ module _ (commutativeRing : CommutativeRing r ℓr)
   open CommutativeRing commutativeRing renaming (Carrier to R)
 
   -- An R-module is an R-R-bimodule where R is commutative.
-  -- This means that *ₗ and *ᵣ coincide up to mathematical equality,
-  -- though it may be that they do not coincide up to definitional
-  -- equality.
+  -- We enforce that *ₗ and *ᵣ coincide up to mathematical equality, though it
+  -- may be that they do not coincide up to definitional equality.
+
+  open SimultaneousBiDefs R ≈ᴹ
 
   record IsModule (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     field
       isBimodule : IsBimodule ring ring ≈ᴹ +ᴹ 0ᴹ -ᴹ *ₗ *ᵣ
+      *ₗ-*ᵣ-coincident : Coincident *ₗ *ᵣ
 
     open IsBimodule isBimodule public
 
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ *ₗ *ᵣ
-    isSemimodule = record { isBisemimodule = isBisemimodule }
+    isSemimodule = record { isBisemimodule = isBisemimodule; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident }
