@@ -1843,6 +1843,11 @@ New modules
   Algebra.Module.Core
   ```
 
+* Definitions for module-like algebraic structures with left- and right- multiplication over the same scalars:
+  ```
+  Algebra.Module.Definitions.Bi.Simultaneous
+  ```
+
 * Constructive algebraic structures with apartness relations:
   ```
   Algebra.Apartness
