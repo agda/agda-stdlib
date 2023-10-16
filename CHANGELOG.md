@@ -539,7 +539,7 @@ Non-backwards compatible changes
   3. Finally, if the above approaches are not viable then you may be forced to explicitly
      use `cong` combined with a lemma that proves the old reduction behaviour.
 
-* Similarly, in order to prevent reduction, the equality `_≃_` in `Data.Rational.Base` 
+* Similarly, in order to prevent reduction, the equality `_≃_` in `Data.Rational.Base`
   has been made into a data type with the single constructor `*≡*`. The destructor `drop-*≡*`
   has been added to `Data.Rational.Properties`.
 
@@ -931,40 +931,40 @@ Non-backwards compatible changes
   as would be expected. Instead it omitted several fields like irreflexivity as they were derivable from the
   proof of trichotomy. However, this led to problems further up the hierarchy where bundles such as `StrictTotalOrder`
   which contained multiple distinct proofs of `IsStrictPartialOrder`.
-  
-* To remedy this the definition of `IsStrictTotalOrder` has been changed to so that it builds upon 
-  `IsStrictPartialOrder` as would be expected. 
+
+* To remedy this the definition of `IsStrictTotalOrder` has been changed to so that it builds upon
+  `IsStrictPartialOrder` as would be expected.
 
 * To aid migration, the old record definition has been moved to `Relation.Binary.Structures.Biased`
-  which contains the `isStrictTotalOrderᶜ` smart constructor (which is re-exported by `Relation.Binary`) . 
+  which contains the `isStrictTotalOrderᶜ` smart constructor (which is re-exported by `Relation.Binary`) .
   Therefore the old code:
   ```agda
   <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
   <-isStrictTotalOrder = record
-	{ isEquivalence = isEquivalence
-	; trans         = <-trans
-	; compare       = <-cmp
-	}
+        { isEquivalence = isEquivalence
+        ; trans         = <-trans
+        ; compare       = <-cmp
+        }
   ```
   can be migrated either by updating to the new record fields if you have a proof of `IsStrictPartialOrder`
   available:
   ```agda
   <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
   <-isStrictTotalOrder = record
-	{ isStrictPartialOrder = <-isStrictPartialOrder
-	; compare              = <-cmp
-	}
+        { isStrictPartialOrder = <-isStrictPartialOrder
+        ; compare              = <-cmp
+        }
   ```
   or simply applying the smart constructor to the record definition as follows:
   ```agda
   <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
   <-isStrictTotalOrder = isStrictTotalOrderᶜ record
-	{ isEquivalence = isEquivalence
-	; trans         = <-trans
-	; compare       = <-cmp
-	}
+        { isEquivalence = isEquivalence
+        ; trans         = <-trans
+        ; compare       = <-cmp
+        }
   ```
-  
+
 ### Changes to triple reasoning interface
 
 * The module `Relation.Binary.Reasoning.Base.Triple` now takes an extra proof that the strict
@@ -1231,11 +1231,11 @@ Major improvements
 
 ### More modular design of equational reasoning.
 
-* Have introduced a new module `Relation.Binary.Reasoning.Syntax` which exports 
+* Have introduced a new module `Relation.Binary.Reasoning.Syntax` which exports
   a range of modules containing pre-existing reasoning combinator syntax.
 
-* This makes it possible to add new or rename existing reasoning combinators to a 
-  pre-existing `Reasoning` module in just a couple of lines 
+* This makes it possible to add new or rename existing reasoning combinators to a
+  pre-existing `Reasoning` module in just a couple of lines
   (e.g. see `∣-Reasoning` in `Data.Nat.Divisibility`)
 
 Deprecated modules
@@ -1813,7 +1813,7 @@ Deprecated names
   ```agda
   _↔⟨⟩_  ↦  _≡⟨⟩_
   ```
-  
+
 * In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
   ```
   toForeign   ↦ Foreign.Haskell.Coerce.coerce
@@ -2711,7 +2711,7 @@ Additions to existing modules
   toℕ-inverseˡ  : Inverseˡ _≡_ _≡_ toℕ fromℕ
   toℕ-inverseʳ  : Inverseʳ _≡_ _≡_ toℕ fromℕ
   toℕ-inverseᵇ  : Inverseᵇ _≡_ _≡_ toℕ fromℕ
-  
+
   <-asym : Asymmetric _<_
   ```
 
@@ -3168,7 +3168,7 @@ Additions to existing modules
                 ∀ {m n} → _Respectsʳ_ (_<_ {m} {n}) _≋_
   <-wellFounded : Transitive _≈_ → _≺_ Respectsʳ _≈_ → WellFounded _≺_ →
                   ∀ {n} → WellFounded (_<_ {n})
-```
+  ```
 
 * Added new functions in `Data.Vec.Relation.Unary.Any`:
   ```
@@ -3195,9 +3195,9 @@ Additions to existing modules
 * Added new application operator synonym to `Function.Bundles`:
   ```agda
   _⟨$⟩_ : Func From To → Carrier From → Carrier To
-  _⟨$⟩_ = Func.to 
+  _⟨$⟩_ = Func.to
   ```
-  
+
 * Added new proofs in `Function.Construct.Symmetry`:
   ```
   bijective     : Bijective ≈₁ ≈₂ f → Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ f⁻¹
@@ -3899,7 +3899,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   blockerAll : List Blocker → Blocker
   blockTC : Blocker → TC A
   ```
-  
+
 * Added new file `Relation.Binary.Reasoning.Base.Apartness`
 
   This is how to use it:
