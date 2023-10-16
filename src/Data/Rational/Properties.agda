@@ -49,19 +49,14 @@ import Data.Sign as S
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
-open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; TotalPreorder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
-open import Relation.Binary.Structures
-  using (IsPreorder; IsTotalOrder; IsTotalPreorder; IsPartialOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
-open import Relation.Binary.Definitions
-  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; Dense; Trans; Trichotomous; tri<; tri>; tri≈; _Respectsʳ_; _Respectsˡ_; _Respects₂_)
+open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
 open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Binary.Reasoning.Syntax
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
@@ -136,11 +131,14 @@ mkℚ+-pos (suc n) (suc d) = _
 -- Numerator and denominator equality
 ------------------------------------------------------------------------
 
+drop-*≡* : p ≃ q → ↥ p ℤ.* ↧ q ≡ ↥ q ℤ.* ↧ p
+drop-*≡* (*≡* eq) = eq
+
 ≡⇒≃ : _≡_ ⇒ _≃_
-≡⇒≃ refl = refl
+≡⇒≃ refl = *≡* refl
 
 ≃⇒≡ : _≃_ ⇒ _≡_
-≃⇒≡ {x = mkℚ n₁ d₁ c₁} {y = mkℚ n₂ d₂ c₂} eq = helper
+≃⇒≡ {x = mkℚ n₁ d₁ c₁} {y = mkℚ n₂ d₂ c₂} (*≡* eq) = helper
   where
   open ≡-Reasoning
 
@@ -165,6 +163,9 @@ mkℚ+-pos (suc n) (suc d) = _
   ... | refl with ℤ.*-cancelʳ-≡ n₁ n₂ (+ suc d₁) eq
   ...   | refl = refl
 
+≃-sym : Symmetric _≃_
+≃-sym = ≡⇒≃ ∘′ sym ∘′ ≃⇒≡ 
+
 ------------------------------------------------------------------------
 -- Properties of ↥
 ------------------------------------------------------------------------
@@ -175,6 +176,9 @@ mkℚ+-pos (suc n) (suc d) = _
 
 p≡0⇒↥p≡0 : ∀ p → p ≡ 0ℚ → ↥ p ≡ 0ℤ
 p≡0⇒↥p≡0 p refl = refl
+
+↥p≡↥q≡0⇒p≡q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≡ q
+↥p≡↥q≡0⇒p≡q p q ↥p≡0 ↥q≡0 = trans (↥p≡0⇒p≡0 p ↥p≡0) (sym (↥p≡0⇒p≡0 q ↥q≡0))
 
 ------------------------------------------------------------------------
 -- Basic properties of sign predicates
@@ -418,7 +422,7 @@ private
 ↧ᵘ-toℚᵘ p@record{} = refl
 
 toℚᵘ-injective : Injective _≡_ _≃ᵘ_ toℚᵘ
-toℚᵘ-injective {x@record{}} {y@record{}} (*≡* eq) = ≃⇒≡ eq
+toℚᵘ-injective {x@record{}} {y@record{}} (*≡* eq) = ≃⇒≡ (*≡* eq)
 
 fromℚᵘ-injective : Injective _≃ᵘ_ _≡_ fromℚᵘ
 fromℚᵘ-injective {p@record{}} {q@record{}} = /-injective-≃ p q
@@ -497,7 +501,7 @@ private
 ≤-trans = ≤-Monomorphism.trans ℚᵘ.≤-trans
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym (*≤* le₁) (*≤* le₂) = ≃⇒≡ (ℤ.≤-antisym le₁ le₂)
+≤-antisym (*≤* le₁) (*≤* le₂) = ≃⇒≡ (*≡* (ℤ.≤-antisym le₁ le₂))
 
 ≤-total : Total _≤_
 ≤-total p q = [ inj₁ ∘ *≤* , inj₂ ∘ *≤* ]′ (ℤ.≤-total (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p))
@@ -606,7 +610,7 @@ toℚᵘ-isOrderMonomorphism-< = record
 ≰⇒> {p} {q} p≰q = *<* (ℤ.≰⇒> (p≰q ∘ *≤*))
 
 <⇒≢ : _<_ ⇒ _≢_
-<⇒≢ {p} {q} (*<* p<q) = ℤ.<⇒≢ p<q ∘ ≡⇒≃
+<⇒≢ {p} {q} (*<* p<q) = ℤ.<⇒≢ p<q ∘ drop-*≡* ∘ ≡⇒≃
 
 <-irrefl : Irreflexive _≡_ _<_
 <-irrefl refl (*<* p<p) = ℤ.<-irrefl refl p<p
@@ -673,9 +677,9 @@ _>?_ = flip _<?_
 
 <-cmp : Trichotomous _≡_ _<_
 <-cmp p q with ℤ.<-cmp (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
-... | tri< < ≢ ≯ = tri< (*<* <)        (≢ ∘ ≡⇒≃) (≯ ∘ drop-*<*)
-... | tri≈ ≮ ≡ ≯ = tri≈ (≮ ∘ drop-*<*) (≃⇒≡ ≡)   (≯ ∘ drop-*<*)
-... | tri> ≮ ≢ > = tri> (≮ ∘ drop-*<*) (≢ ∘ ≡⇒≃) (*<* >)
+... | tri< < ≢ ≯ = tri< (*<* <)        (≢ ∘ drop-*≡* ∘ ≡⇒≃) (≯ ∘ drop-*<*)
+... | tri≈ ≮ ≡ ≯ = tri≈ (≮ ∘ drop-*<*) (≃⇒≡ (*≡* ≡))   (≯ ∘ drop-*<*)
+... | tri> ≮ ≢ > = tri> (≮ ∘ drop-*<*) (≢ ∘ drop-*≡* ∘ ≡⇒≃) (*<* >)
 
 <-irrelevant : Irrelevant _<_
 <-irrelevant (*<* p<q₁) (*<* p<q₂) = cong *<* (ℤ.<-irrelevant p<q₁ p<q₂)
@@ -737,7 +741,7 @@ _>?_ = flip _<?_
 module ≤-Reasoning where
   import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
-    <-irrefl
+    <-asym
     <-trans
     (resp₂ _<_)
     <⇒≤
@@ -745,16 +749,12 @@ module ≤-Reasoning where
     ≤-<-trans
     as Triple
 
-  open Triple public
-    hiding (step-≈; step-≈˘)
+  open Triple public hiding (step-≈; step-≈˘)
 
-  infixr 2 step-≃ step-≃˘
-
-  step-≃  = Triple.step-≈
-  step-≃˘ = Triple.step-≈˘
-
-  syntax step-≃  x y∼z x≃y = x ≃⟨  x≃y ⟩ y∼z
-  syntax step-≃˘ x y∼z y≃x = x ≃˘⟨ y≃x ⟩ y∼z
+  ≃-go : Trans _≃_ _IsRelatedTo_ _IsRelatedTo_
+  ≃-go = Triple.≈-go ∘′ ≃⇒≡
+  
+  open ≃-syntax _IsRelatedTo_ _IsRelatedTo_ ≃-go (λ {x y} → ≃-sym {x} {y}) public
 
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
@@ -848,14 +848,14 @@ toℚᵘ-homo-+ p@record{} q@record{} with +-nf p q ℤ.≟ 0ℤ
   eq : ↥ (p + q) ≡ 0ℤ
   eq rewrite eq2 = cong ↥_ (0/n≡0 (↧ₙ p ℕ.* ↧ₙ q))
 
-... | no  nf[p,q]≢0 = *≡* $ ℤ.*-cancelʳ-≡ _ _ (+-nf p q) {{ℤ.≢-nonZero nf[p,q]≢0}} $ begin
+... | no  nf[p,q]≢0 = *≡* (ℤ.*-cancelʳ-≡ _ _ (+-nf p q) {{ℤ.≢-nonZero nf[p,q]≢0}} $ begin
     (↥ᵘ (toℚᵘ (p + q))) ℤ.* ↧+ᵘ p q  ℤ.* +-nf p q ≡⟨ cong (λ v → v ℤ.* ↧+ᵘ p q ℤ.* +-nf p q) (↥ᵘ-toℚᵘ (p + q)) ⟩
     ↥ (p + q) ℤ.* ↧+ᵘ p q ℤ.* +-nf p q            ≡⟨ xy∙z≈xz∙y (↥ (p + q)) _ _ ⟩
     ↥ (p + q) ℤ.* +-nf p q ℤ.* ↧+ᵘ p q            ≡⟨ cong (ℤ._* ↧+ᵘ p q) (↥-+ p q) ⟩
     ↥+ᵘ p q ℤ.* ↧+ᵘ p q                           ≡⟨ cong (↥+ᵘ p q ℤ.*_) (sym (↧-+ p q)) ⟩
     ↥+ᵘ p q ℤ.* (↧ (p + q) ℤ.* +-nf p q)          ≡⟨ x∙yz≈xy∙z (↥+ᵘ p q) _ _ ⟩
     ↥+ᵘ p q ℤ.* ↧ (p + q)  ℤ.* +-nf p q           ≡˘⟨ cong (λ v → ↥+ᵘ p q ℤ.* v ℤ.* +-nf p q) (↧ᵘ-toℚᵘ (p + q)) ⟩
-    ↥+ᵘ p q ℤ.* ↧ᵘ (toℚᵘ (p + q)) ℤ.* +-nf p q    ∎
+    ↥+ᵘ p q ℤ.* ↧ᵘ (toℚᵘ (p + q)) ℤ.* +-nf p q    ∎)
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
 toℚᵘ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℚᵘ.+-rawMagma toℚᵘ
@@ -1059,14 +1059,14 @@ toℚᵘ-homo-* p@record{} q@record{} with *-nf p q ℤ.≟ 0ℤ
 
   eq : ↥ (p * q) ≡ 0ℤ
   eq rewrite eq2 = cong ↥_ (0/n≡0 (↧ₙ p ℕ.* ↧ₙ q))
-... | no nf[p,q]≢0 = *≡* $ ℤ.*-cancelʳ-≡ _ _ (*-nf p q) {{ℤ.≢-nonZero nf[p,q]≢0}} $ begin
+... | no nf[p,q]≢0 = *≡* (ℤ.*-cancelʳ-≡ _ _ (*-nf p q) {{ℤ.≢-nonZero nf[p,q]≢0}} $ begin
   ↥ᵘ (toℚᵘ (p * q)) ℤ.* (↧ p ℤ.* ↧ q) ℤ.* *-nf p q     ≡⟨ cong (λ v → v ℤ.* (↧ p ℤ.* ↧ q) ℤ.* *-nf p q) (↥ᵘ-toℚᵘ (p * q)) ⟩
   ↥ (p * q)         ℤ.* (↧ p ℤ.* ↧ q) ℤ.* *-nf p q     ≡⟨ xy∙z≈xz∙y (↥ (p * q)) _ _ ⟩
   ↥ (p * q)         ℤ.* *-nf p q ℤ.* (↧ p ℤ.* ↧ q)     ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q)) (↥-* p q) ⟩
   (↥ p ℤ.* ↥ q)     ℤ.* (↧ p ℤ.* ↧ q)                  ≡⟨ cong ((↥ p ℤ.* ↥ q) ℤ.*_) (sym (↧-* p q)) ⟩
   (↥ p ℤ.* ↥ q)     ℤ.* (↧ (p * q) ℤ.* *-nf p q)       ≡⟨ x∙yz≈xy∙z (↥ p ℤ.* ↥ q) _ _ ⟩
   (↥ p ℤ.* ↥ q)     ℤ.* ↧ (p * q)  ℤ.* *-nf p q        ≡˘⟨ cong (λ v → (↥ p ℤ.* ↥ q) ℤ.* v ℤ.* *-nf p q) (↧ᵘ-toℚᵘ (p * q)) ⟩
-  (↥ p ℤ.* ↥ q)     ℤ.* ↧ᵘ (toℚᵘ (p * q)) ℤ.* *-nf p q ∎
+  (↥ p ℤ.* ↥ q)     ℤ.* ↧ᵘ (toℚᵘ (p * q)) ℤ.* *-nf p q ∎)
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
 toℚᵘ-homo-1/ : ∀ p .{{_ : NonZero p}} → toℚᵘ (1/ p) ℚᵘ.≃ (ℚᵘ.1/ toℚᵘ p)

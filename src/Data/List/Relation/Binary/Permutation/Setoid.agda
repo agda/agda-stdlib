@@ -6,11 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+open import Function.Base using (_∘′_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Reasoning.Syntax
 
 module Data.List.Relation.Binary.Permutation.Setoid
   {a ℓ} (S : Setoid a ℓ) where
@@ -86,24 +88,16 @@ steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 
 module PermutationReasoning where
 
-  private
-    module Base = SetoidReasoning ↭-setoid
+  private module Base = SetoidReasoning ↭-setoid
 
-  open SetoidReasoning ↭-setoid public
-    hiding (step-≈; step-≈˘)
+  open Base public hiding (step-≈; step-≈˘)
 
-  infixr 2 step-↭  step-↭˘ step-≋ step-≋˘ step-swap step-prep
+  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ Base.∼-go ↭-sym public
+  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ (Base.∼-go ∘′ refl) ≋-sym public
 
-  step-↭  = Base.step-≈
-  step-↭˘ = Base.step-≈˘
+  -- Some extra combinators that allow us to skip certain elements
 
-  -- Step with pointwise list equality
-  step-≋ : ∀ x {y z} → y IsRelatedTo z → x ≋ y → x IsRelatedTo z
-  step-≋ x (relTo y↔z) x≋y = relTo (trans (refl x≋y) y↔z)
-
-  -- Step with flipped pointwise list equality
-  step-≋˘ : ∀ x {y z} → y IsRelatedTo z → y ≋ x → x IsRelatedTo z
-  step-≋˘ x y↭z y≋x = x ≋⟨ ≋-sym y≋x ⟩ y↭z
+  infixr 2 step-swap step-prep
 
   -- Skip reasoning on the first element
   step-prep : ∀ x xs {ys zs : List A} → (x ∷ ys) IsRelatedTo zs →
@@ -115,9 +109,5 @@ module PermutationReasoning where
               xs ↭ ys → (x ∷ y ∷ xs) IsRelatedTo zs
   step-swap x y xs rel xs↭ys = relTo (trans (swap Eq.refl Eq.refl xs↭ys) (begin rel))
 
-  syntax step-↭  x y↭z x↭y = x ↭⟨  x↭y ⟩ y↭z
-  syntax step-↭˘ x y↭z y↭x = x ↭˘⟨  y↭x ⟩ y↭z
-  syntax step-≋  x y↭z x≋y = x ≋⟨  x≋y ⟩ y↭z
-  syntax step-≋˘ x y↭z y≋x = x ≋˘⟨  y≋x ⟩ y↭z
   syntax step-prep x xs y↭z x↭y = x ∷ xs <⟨ x↭y ⟩ y↭z
   syntax step-swap x y xs y↭z x↭y = x ∷ y ∷ xs <<⟨ x↭y ⟩ y↭z

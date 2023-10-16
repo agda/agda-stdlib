@@ -27,6 +27,7 @@ open import Relation.Binary.Definitions
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
+open import Relation.Binary.Reasoning.Syntax
 import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 ------------------------------------------------------------------------
@@ -117,15 +118,11 @@ suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m (suc n)) (m % suc n ≟ 0)
 -- A reasoning module for the _∣_ relation
 
 module ∣-Reasoning where
-  private
-    module Base = PreorderReasoning ∣-preorder
+  private module Base = PreorderReasoning ∣-preorder
 
-  open Base public
-    hiding (step-≈; step-≈˘; step-∼)
+  open Base public hiding (step-≈; step-≈˘; step-∼)
 
-  infixr 2 step-∣
-  step-∣ = Base.step-∼
-  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
+  open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ Base.∼-go public
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_

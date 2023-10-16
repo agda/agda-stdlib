@@ -127,10 +127,14 @@ module _ {A : Set a} where
 
 ------------------------------------------------------------------------
 -- Pointwise DSL
+--
 -- A guardedness check does not play well with compositional proofs.
 -- Luckily we can learn from Nils Anders Danielsson's
 -- Beating the Productivity Checker Using Embedded Languages
 -- and design a little compositional DSL to define such proofs
+--
+-- NOTE: also because of the guardedness check we can't use the standard
+-- `Relation.Binary.Reasoning.Syntax` approach.
 
 module pw-Reasoning (S : Setoid a ℓ) where
   private module S = Setoid S
