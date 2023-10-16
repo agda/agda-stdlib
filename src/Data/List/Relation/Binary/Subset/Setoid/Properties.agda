@@ -117,11 +117,13 @@ module ⊆-Reasoning (S : Setoid a ℓ) where
 
   private module Base = PreorderReasoning (⊆-preorder S)
 
-  open Base public hiding (step-∼; step-≈; step-≈˘)
+  open Base public
+    hiding (step-≲; step-≈; step-≈˘; step-∼)
+    renaming (≲-go to ⊆-go; ≈-go to ≋-go)
 
   open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → Base.begin x) public
-  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ Base.∼-go public
-  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ Base.≈-go public
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
+  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ ≋-go public
 
 ------------------------------------------------------------------------
 -- Relationship with other binary relations

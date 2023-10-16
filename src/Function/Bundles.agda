@@ -481,7 +481,7 @@ module _ {A : Set a} {B : Set b} where
 
 module _ {From : Setoid a ℓ₁} {To : Setoid b ℓ₂} where
   open Setoid
-  
+
   infixl 5 _⟨$⟩_
   _⟨$⟩_ : Func From To → Carrier From → Carrier To
   _⟨$⟩_ = Func.to

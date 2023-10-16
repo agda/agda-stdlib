@@ -190,10 +190,12 @@ module ⊑-Reasoning {a} {A : Set a} where
 module ⊆-Reasoning {A : Set a} where
   private module Base = PreR (⊆-Preorder A)
 
-  open Base public hiding (step-∼)
+  open Base public
+    hiding (step-≲; step-∼)
+    renaming (≲-go to ⊆-go)
 
   open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → begin x)
-  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ Base.∼-go public
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
 
 
 -- take returns a prefix.

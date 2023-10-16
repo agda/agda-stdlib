@@ -164,7 +164,7 @@ drop-*≡* (*≡* eq) = eq
   ...   | refl = refl
 
 ≃-sym : Symmetric _≃_
-≃-sym = ≡⇒≃ ∘′ sym ∘′ ≃⇒≡ 
+≃-sym = ≡⇒≃ ∘′ sym ∘′ ≃⇒≡
 
 ------------------------------------------------------------------------
 -- Properties of ↥
@@ -753,7 +753,7 @@ module ≤-Reasoning where
 
   ≃-go : Trans _≃_ _IsRelatedTo_ _IsRelatedTo_
   ≃-go = Triple.≈-go ∘′ ≃⇒≡
-  
+
   open ≃-syntax _IsRelatedTo_ _IsRelatedTo_ ≃-go (λ {x y} → ≃-sym {x} {y}) public
 
 ------------------------------------------------------------------------

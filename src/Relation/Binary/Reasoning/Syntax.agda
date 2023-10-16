@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Syntax for the building blocks of equational reasoning modules 
+-- Syntax for the building blocks of equational reasoning modules
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -26,7 +26,7 @@ open import Relation.Binary.PropositionalEquality.Core as P
 --   Codata/Guarded/Stream/Relation/Binary/Pointwise
 --   Codata/Sized/Stream/Bisimilarity
 --   Function/Reasoning
- 
+
 module Relation.Binary.Reasoning.Syntax where
 
 private
@@ -170,12 +170,18 @@ module _
   forward : ∀ (x : A) {y z} → S y z → R x y → T x z
   forward x yRz x∼y = step {x} x∼y yRz
 
-
-  -- Preorder syntax
+  -- Arbitrary relation syntax
   module ∼-syntax where
     infixr 2 step-∼
     step-∼ = forward
     syntax step-∼ x yRz x∼y = x ∼⟨ x∼y ⟩ yRz
+
+
+  -- Preorder syntax
+  module ≲-syntax where
+    infixr 2 step-≲
+    step-≲ = forward
+    syntax step-≲ x yRz x≲y = x ≲⟨ x≲y ⟩ yRz
 
 
   -- Partial order syntax

@@ -21,7 +21,7 @@ open import Relation.Binary.Reasoning.Syntax
 
 
 module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
-  {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} (isPreorder : IsPreorder _≈_ _∼_)
+  {_≈_ : Rel A ℓ₁} {_≲_ : Rel A ℓ₂} (isPreorder : IsPreorder _≈_ _≲_)
   where
 
 open IsPreorder isPreorder
@@ -32,24 +32,24 @@ open IsPreorder isPreorder
 infix 4 _IsRelatedTo_
 
 data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
-  nonstrict : (x∼y : x ∼ y) → x IsRelatedTo y
+  nonstrict : (x≲y : x ≲ y) → x IsRelatedTo y
   equals    : (x≈y : x ≈ y) → x IsRelatedTo y
 
-start : _IsRelatedTo_ ⇒ _∼_
+start : _IsRelatedTo_ ⇒ _≲_
 start (equals x≈y) = reflexive x≈y
-start (nonstrict x∼y) = x∼y
+start (nonstrict x≲y) = x≲y
 
 ≡-go : Trans _≡_ _IsRelatedTo_ _IsRelatedTo_
 ≡-go x≡y (equals y≈z) = equals (case x≡y of λ where P.refl → y≈z)
 ≡-go x≡y (nonstrict y≤z) = nonstrict (case x≡y of λ where P.refl → y≤z)
 
-∼-go : Trans _∼_ _IsRelatedTo_ _IsRelatedTo_
-∼-go x∼y (equals y≈z) = nonstrict (∼-respʳ-≈ y≈z x∼y)
-∼-go x∼y (nonstrict y∼z) = nonstrict (trans x∼y y∼z)
+≲-go : Trans _≲_ _IsRelatedTo_ _IsRelatedTo_
+≲-go x≲y (equals y≈z) = nonstrict (∼-respʳ-≈ y≈z x≲y)
+≲-go x≲y (nonstrict y≲z) = nonstrict (trans x≲y y≲z)
 
 ≈-go : Trans _≈_ _IsRelatedTo_ _IsRelatedTo_
 ≈-go x≈y (equals y≈z) = equals (Eq.trans x≈y y≈z)
-≈-go x≈y (nonstrict y∼z) = nonstrict (∼-respˡ-≈ (Eq.sym x≈y) y∼z)
+≈-go x≈y (nonstrict y≲z) = nonstrict (∼-respˡ-≈ (Eq.sym x≈y) y≲z)
 
 stop : Reflexive _IsRelatedTo_
 stop = equals Eq.refl
@@ -81,6 +81,21 @@ equalitySubRelation = record
 open begin-syntax  _IsRelatedTo_ start public
 open begin-equality-syntax  _IsRelatedTo_ equalitySubRelation public
 open ≡-syntax _IsRelatedTo_ ≡-go public
-open ∼-syntax _IsRelatedTo_ _IsRelatedTo_ ∼-go public
 open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ ≈-go Eq.sym public
+open ≲-syntax _IsRelatedTo_ _IsRelatedTo_ ≲-go public
 open end-syntax _IsRelatedTo_ stop public
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+open ∼-syntax _IsRelatedTo_ _IsRelatedTo_ ≲-go public
+{-# WARNING_ON_USAGE step-∼
+"Warning: step-∼ and _∼⟨_⟩_ syntax was deprecated in v2.0.
+Please use step-≲ and _≲⟨_⟩_ instead. "
+#-}
