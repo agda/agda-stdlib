@@ -1776,6 +1776,11 @@ Deprecated names
   map-++-commute ↦  map-++
   ```
 
+* In `Function.Base`:
+  ```
+  case_return_of_   ↦   case_returning_of_
+  ```
+
 * In `Function.Construct.Composition`:
   ```
   _∘-⟶_   ↦   _⟶-∘_
