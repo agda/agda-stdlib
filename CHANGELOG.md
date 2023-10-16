@@ -2832,6 +2832,7 @@ Additions to existing modules
   ```agda
   ↥ᵘ-toℚᵘ : ↥ᵘ (toℚᵘ p) ≡ ↥ p
   ↧ᵘ-toℚᵘ : ↧ᵘ (toℚᵘ p) ≡ ↧ p
+  ↥p≡↥q≡0⇒p≡q : ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≡ q
 
   _≥?_ : Decidable _≥_
   _>?_ : Decidable _>_
@@ -2856,6 +2857,10 @@ Additions to existing modules
 
 * Added new definitions in `Data.Rational.Unnormalised.Properties`:
   ```agda
+  ↥p≡0⇒p≃0 : ↥ p ≡ 0ℤ → p ≃ 0ℚᵘ
+  p≃0⇒↥p≡0 : p ≃ 0ℚᵘ → ↥ p ≡ 0ℤ
+  ↥p≡↥q≡0⇒p≃q : ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
+
   +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
 

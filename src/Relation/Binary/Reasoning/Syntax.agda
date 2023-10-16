@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The basic code for equational reasoning with a single relation
+-- Syntax for the building blocks of equational reasoning modules 
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
