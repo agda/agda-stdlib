@@ -182,7 +182,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     open Func toFunction public
       using (module Eq₁; module Eq₂)
-      renaming (isCongruent to to-isCongrunet)
+      renaming (isCongruent to to-isCongruent)
 
     fromFunction : Func To From
     fromFunction = record
@@ -192,7 +192,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     open Func fromFunction public
       using ()
-      renaming (isCongruent to from-isCongrunet)
+      renaming (isCongruent to from-isCongruent)
 
 
   record LeftInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
