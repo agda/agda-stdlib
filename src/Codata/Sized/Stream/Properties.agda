@@ -25,6 +25,8 @@ open import Data.Vec.Base as Vec using (_∷_)
 
 open import Function.Base using (id; _$_; _∘′_; const)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; _≢_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable
@@ -116,7 +118,7 @@ lookup-iterate-identity (suc n)  f a = begin
   lookup (iterate f (f a)) n   ≡⟨ lookup-iterate-identity n f (f a) ⟩
   fold (f a) f n               ≡⟨ fold-pull a f (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
   f (fold a f n)               ≡⟨⟩
-  fold a f (suc n)             ∎ where open P.≡-Reasoning
+  fold a f (suc n)             ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- DEPRECATED

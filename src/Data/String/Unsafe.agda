@@ -16,8 +16,11 @@ open import Data.Product.Base using (proj₂)
 open import Data.String.Base
 open import Function.Base using (_∘′_)
 
-open import Relation.Binary.PropositionalEquality.Core; open ≡-Reasoning
+open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Binary.PropositionalEquality.TrustMe using (trustMe)
+open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of tail

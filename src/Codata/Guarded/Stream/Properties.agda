@@ -21,6 +21,8 @@ open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function.Base using (const; flip; id; _∘′_; _$′_; _⟨_⟩_; _∘₂′_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable
@@ -218,7 +220,7 @@ lookup-transpose n (as ∷ ass) = begin
   lookup as n ∷ lookup (transpose ass) n     ≡⟨ cong (lookup as n ∷_) (lookup-transpose n ass) ⟩
   lookup as n ∷ List.map (flip lookup n) ass ≡⟨⟩
   List.map (flip lookup n) (as ∷ ass)        ∎
-  where open P.≡-Reasoning
+  where open ≡-Reasoning
 
 lookup-transpose⁺ : ∀ n (ass : List⁺ (Stream A)) →
                     lookup (transpose⁺ ass) n ≡ List⁺.map (flip lookup n) ass
@@ -228,7 +230,7 @@ lookup-transpose⁺ n (as ∷ ass) = begin
   lookup as n ∷ lookup (transpose ass) n     ≡⟨ cong (lookup as n ∷_) (lookup-transpose n ass) ⟩
   lookup as n ∷ List.map (flip lookup n) ass ≡⟨⟩
   List⁺.map (flip lookup n) (as ∷ ass)       ∎
-  where open P.≡-Reasoning
+  where open ≡-Reasoning
 
 lookup-tails : ∀ n (as : Stream A) → lookup (tails as) n ≈ ℕ.iterate tail as n
 lookup-tails zero    as = B.refl
