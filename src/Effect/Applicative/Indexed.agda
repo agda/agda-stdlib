@@ -16,6 +16,8 @@ open import Data.Product.Base using (_×_; _,_)
 open import Function.Base
 open import Level
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable
@@ -111,4 +113,4 @@ record Morphism {I : Set i} {F₁ F₂ : IFun I f}
     op (A₁._⊛_ (A₁.pure f) x)       ≡⟨ op-⊛ _ _ ⟩
     A₂._⊛_ (op (A₁.pure f)) (op x)  ≡⟨ P.cong₂ A₂._⊛_ (op-pure _) P.refl ⟩
     A₂._⊛_ (A₂.pure f) (op x)       ∎
-    where open P.≡-Reasoning
+    where open ≡-Reasoning

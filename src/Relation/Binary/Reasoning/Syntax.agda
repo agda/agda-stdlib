@@ -22,7 +22,6 @@ open import Relation.Binary.PropositionalEquality.Core as P
 --   Relation/Binary/HeterogeneousEquality
 --   Effect/Monad/Partiality
 --   Effect/Monad/Partiality/All
---   Relation/Binary/PropositionalEquality/Core
 --   Codata/Guarded/Stream/Relation/Binary/Pointwise
 --   Codata/Sized/Stream/Bisimilarity
 --   Function/Reasoning

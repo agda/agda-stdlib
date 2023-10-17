@@ -18,7 +18,9 @@ open import Data.Nat.GCD
 open import Data.Product.Base using (_×_; _,_; uncurry′; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality.Core as P
-  using (_≡_; refl; sym; trans; cong; cong₂; module ≡-Reasoning)
+  using (_≡_; refl; sym; trans; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
 
 private

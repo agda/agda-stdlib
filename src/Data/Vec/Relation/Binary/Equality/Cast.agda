@@ -18,7 +18,9 @@ open import Data.Vec.Base
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions using (Sym; Trans)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; trans; sym; cong; module ≡-Reasoning)
+  using (_≡_; refl; trans; sym; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable

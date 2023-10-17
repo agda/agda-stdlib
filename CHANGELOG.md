@@ -1238,6 +1238,12 @@ Major improvements
   pre-existing `Reasoning` module in just a couple of lines
   (e.g. see `∣-Reasoning` in `Data.Nat.Divisibility`)
 
+* One pre-requisite for that is that `≡-Reasoning` has been moved from
+  `Relation.Binary.PropositionalEquality.Core` (which shouldn't be
+  imported anyway as it's a `Core` module) to 
+  `Relation.Binary.PropositionalEquality.Properties`.
+  It is still exported by `Relation.Binary.PropositionalEquality`.
+  
 Deprecated modules
 ------------------
 

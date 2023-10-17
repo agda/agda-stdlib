@@ -29,6 +29,8 @@ open import Function.Related.Propositional
 import Function.Construct.Identity as Identity
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ)
 import Relation.Nullary.Indexed as I
@@ -284,7 +286,7 @@ private
     from C↔D (to C↔D (f (from A↔B (to A↔B x))))  ≡⟨ strictlyInverseʳ C↔D _ ⟩
     f (from A↔B (to A↔B x))                        ≡⟨ P.cong f $ strictlyInverseʳ A↔B x ⟩
     f x                                              ∎)
-  where open Inverse; open P.≡-Reasoning
+  where open Inverse; open ≡-Reasoning
 
 →-cong :  Extensionality a c → Extensionality b d →
           ∀ {k} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
