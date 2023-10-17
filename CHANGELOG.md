@@ -1276,7 +1276,6 @@ Major improvements
   * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
 
 * In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
-
   
 Deprecated modules
 ------------------
