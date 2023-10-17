@@ -86,7 +86,7 @@ example1a-fromList-∷ʳ : ∀ (x : A) xs .(eq : L.length (xs L.∷ʳ x) ≡ suc
                         cast eq (fromList (xs L.∷ʳ x)) ≡ fromList xs ∷ʳ x
 example1a-fromList-∷ʳ x xs eq = begin
   cast eq (fromList (xs L.∷ʳ x))                   ≡⟨⟩
-  cast eq (fromList (xs L.++ L.[ x ]))             ≡˘⟨ cast-trans eq₁ eq₂ (fromList (xs L.++ L.[ x ])) ⟩
+  cast eq (fromList (xs L.++ L.[ x ]))             ≡⟨ cast-trans eq₁ eq₂ (fromList (xs L.++ L.[ x ])) ⟨
   cast eq₂ (cast eq₁ (fromList (xs L.++ L.[ x ]))) ≡⟨ cong (cast eq₂) (fromList-++ xs) ⟩
   cast eq₂ (fromList xs ++ [ x ])                  ≡⟨ ≈-sym (unfold-∷ʳ (sym eq₂) x (fromList xs)) ⟩
   fromList xs ∷ʳ x                                 ∎
@@ -105,7 +105,7 @@ example1b-fromList-∷ʳ : ∀ (x : A) xs .(eq : L.length (xs L.∷ʳ x) ≡ suc
 example1b-fromList-∷ʳ x xs eq = begin
   fromList (xs L.∷ʳ x)       ≈⟨⟩
   fromList (xs L.++ L.[ x ]) ≈⟨ fromList-++ xs ⟩
-  fromList xs ++ [ x ]       ≈˘⟨ unfold-∷ʳ (+-comm 1 (L.length xs)) x (fromList xs) ⟩
+  fromList xs ++ [ x ]       ≈⟨ unfold-∷ʳ (+-comm 1 (L.length xs)) x (fromList xs) ⟨
   fromList xs ∷ʳ x           ∎
   where open CastReasoning
 
@@ -149,7 +149,7 @@ example2b eq xs a ys = begin
   (a ∷ xs) ʳ++ ys         ≂⟨ unfold-ʳ++ (a ∷ xs) ys ⟩          -- index: suc m + n
   reverse (a ∷ xs) ++ ys  ≂⟨ cong (_++ ys) (reverse-∷ a xs) ⟩  -- index: suc m + n
   (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++ eq a (reverse xs) ⟩         -- index: suc m + n
-  reverse xs ++ (a ∷ ys)  ≂˘⟨ unfold-ʳ++ xs (a ∷ ys) ⟩         -- index: m + suc n
+  reverse xs ++ (a ∷ ys)  ≂⟨ unfold-ʳ++ xs (a ∷ ys) ⟨         -- index: m + suc n
   xs ʳ++ (a ∷ ys)         ∎                                    -- index: m + suc n
   where open CastReasoning
 
@@ -201,11 +201,11 @@ example3b-fromList-++-++′ {xs = xs} {ys} {zs} eq = begin
 example4-cong² : ∀ .(eq : (m + 1) + n ≡ n + suc m) a (xs : Vec A m) ys →
           cast eq (reverse ((xs ++ [ a ]) ++ ys)) ≡ ys ʳ++ reverse (xs ∷ʳ a)
 example4-cong² {m = m} {n} eq a xs ys = begin
-  reverse ((xs ++ [ a ]) ++ ys)   ≈˘⟨ ≈-cong reverse (cast-reverse (cong (_+ n) (+-comm 1 m)) ((xs ∷ʳ a) ++ ys))
+  reverse ((xs ++ [ a ]) ++ ys)   ≈⟨ ≈-cong reverse (cast-reverse (cong (_+ n) (+-comm 1 m)) ((xs ∷ʳ a) ++ ys))
                                              (≈-cong (_++ ys) (cast-++ˡ (+-comm 1 m) (xs ∷ʳ a))
-                                                     (unfold-∷ʳ _ a xs)) ⟩
+                                                     (unfold-∷ʳ _ a xs)) ⟨
   reverse ((xs ∷ʳ a) ++ ys)       ≈⟨ reverse-++ (+-comm (suc m) n) (xs ∷ʳ a) ys ⟩
-  reverse ys ++ reverse (xs ∷ʳ a) ≂˘⟨ unfold-ʳ++ ys (reverse (xs ∷ʳ a)) ⟩
+  reverse ys ++ reverse (xs ∷ʳ a) ≂⟨ unfold-ʳ++ ys (reverse (xs ∷ʳ a)) ⟨
   ys ʳ++ reverse (xs ∷ʳ a)        ∎
   where open CastReasoning
 
@@ -237,7 +237,7 @@ example5-fromList-++-++′ {xs = xs} {ys} {zs} eq = begin
 -- and then switch to the reasoning system of `_≈[_]_`.
 example6a-reverse-∷ʳ : ∀ x (xs : Vec A n) → reverse (xs ∷ʳ x) ≡ x ∷ reverse xs
 example6a-reverse-∷ʳ {n = n} x xs = begin-≡
-  reverse (xs ∷ʳ x)     ≡˘⟨ ≈-reflexive refl ⟩
+  reverse (xs ∷ʳ x)     ≡⟨ ≈-reflexive refl ⟨
   reverse (xs ∷ʳ x)     ≈⟨ ≈-cong reverse (cast-reverse _ _) (unfold-∷ʳ (+-comm 1 n) x xs) ⟩
   reverse (xs ++ [ x ]) ≈⟨ reverse-++ (+-comm n 1) xs [ x ] ⟩
   x ∷ reverse xs        ∎
@@ -249,6 +249,6 @@ example6b-reverse-∷ʳ-by-induction x (y ∷ xs) = begin
   reverse (y ∷ (xs ∷ʳ x)) ≡⟨ reverse-∷ y (xs ∷ʳ x) ⟩
   reverse (xs ∷ʳ x) ∷ʳ y  ≡⟨ cong (_∷ʳ y) (example6b-reverse-∷ʳ-by-induction x xs) ⟩
   (x ∷ reverse xs) ∷ʳ y   ≡⟨⟩
-  x ∷ (reverse xs ∷ʳ y)   ≡˘⟨ cong (x ∷_) (reverse-∷ y xs) ⟩
+  x ∷ (reverse xs ∷ʳ y)   ≡⟨ cong (x ∷_) (reverse-∷ y xs) ⟨
   x ∷ reverse (y ∷ xs)    ∎
   where open ≡-Reasoning

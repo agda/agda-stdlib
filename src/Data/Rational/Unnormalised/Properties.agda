@@ -605,9 +605,10 @@ module ≤-Reasoning where
     as Triple
 
   open Triple public
-    hiding (step-≈; step-≈˘)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
+    renaming (≈-go to ≃-go)
 
-  open ≃-syntax _IsRelatedTo_ _IsRelatedTo_  Triple.≈-go ≃-sym public
+  open ≃-syntax _IsRelatedTo_ _IsRelatedTo_ ≃-go ≃-sym public
 
 ------------------------------------------------------------------------
 -- Properties of ↥_/↧_
@@ -776,9 +777,9 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 
 +-cancelˡ : ∀ {r p q} → r + p ≃ r + q → p ≃ q
 +-cancelˡ {r} {p} {q} r+p≃r+q = begin-equality
-  p            ≃˘⟨ +-identityʳ p ⟩
-  p + 0ℚᵘ      ≃˘⟨ +-congʳ p (+-inverseʳ r) ⟩
-  p + (r - r)  ≃˘⟨ +-assoc p r (- r) ⟩
+  p            ≃⟨ +-identityʳ p ⟨
+  p + 0ℚᵘ      ≃⟨ +-congʳ p (+-inverseʳ r) ⟨
+  p + (r - r)  ≃⟨ +-assoc p r (- r) ⟨
   (p + r) - r  ≃⟨ +-congˡ (- r) (+-comm p r) ⟩
   (r + p) - r  ≃⟨ +-congˡ (- r) r+p≃r+q ⟩
   (r + q) - r  ≃⟨ +-congˡ (- r) (+-comm r q) ⟩
@@ -1233,11 +1234,11 @@ private
 
 *-cancelʳ-≤-neg : ∀ r .{{_ : Negative r}} → p * r ≤ q * r → q ≤ p
 *-cancelʳ-≤-neg {p} {q} r@(mkℚᵘ -[1+ _ ] _) pr≤qr = neg-cancel-≤ (*-cancelʳ-≤-pos (- r) (begin
-  - p * - r    ≃˘⟨ neg-distribˡ-* p (- r) ⟩
-  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - p * - r    ≃⟨ neg-distribˡ-* p (- r) ⟨
+  - (p * - r)  ≃⟨ -‿cong (neg-distribʳ-* p r) ⟨
   - - (p * r)  ≃⟨ neg-involutive (p * r) ⟩
   p * r        ≤⟨ pr≤qr ⟩
-  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  q * r        ≃⟨ neg-involutive (q * r) ⟨
   - - (q * r)  ≃⟨ -‿cong (neg-distribʳ-* q r) ⟩
   - (q * - r)  ≃⟨ neg-distribˡ-* q (- r) ⟩
   - q * - r    ∎))
@@ -1269,10 +1270,10 @@ private
 
 *-monoˡ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → (_* r) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-nonPos r {p} {q} p≤q = begin
-  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  q * r        ≃⟨ neg-involutive (q * r) ⟨
   - - (q * r)  ≃⟨  -‿cong (neg-distribʳ-* q r) ⟩
   - (q * - r)  ≤⟨  neg-mono-≤ (*-monoˡ-≤-nonNeg (- r) {{ -r≥0}} p≤q) ⟩
-  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - (p * - r)  ≃⟨ -‿cong (neg-distribʳ-* p r) ⟨
   - - (p * r)  ≃⟨  neg-involutive (p * r) ⟩
   p * r        ∎
   where open ≤-Reasoning; -r≥0 = nonNegative (neg-mono-≤ (nonPositive⁻¹ r))
@@ -1314,10 +1315,10 @@ private
 
 *-monoˡ-<-neg : ∀ r .{{_ :  Negative r}} → (_* r) Preserves _<_ ⟶ _>_
 *-monoˡ-<-neg r {p} {q} p<q = begin-strict
-  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  q * r        ≃⟨ neg-involutive (q * r) ⟨
   - - (q * r)  ≃⟨ -‿cong (neg-distribʳ-* q r) ⟩
   - (q * - r)  <⟨ neg-mono-< (*-monoˡ-<-pos (- r) {{ -r>0}} p<q) ⟩
-  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - (p * - r)  ≃⟨ -‿cong (neg-distribʳ-* p r) ⟨
   - - (p * r)  ≃⟨ neg-involutive (p * r) ⟩
   p * r        ∎
   where open ≤-Reasoning; -r>0 = positive (neg-mono-< (negative⁻¹ r))
@@ -1328,7 +1329,7 @@ private
 *-cancelˡ-<-nonPos : ∀ r .{{_ : NonPositive r}} → r * p < r * q → q < p
 *-cancelˡ-<-nonPos {p} {q} r rp<rq =
   *-cancelˡ-<-nonNeg (- r) {{ -r≥0}} $ begin-strict
-    - r * q    ≃˘⟨ neg-distribˡ-* r q ⟩
+    - r * q    ≃⟨ neg-distribˡ-* r q ⟨
     - (r * q)  <⟨ neg-mono-< rp<rq ⟩
     - (r * p)  ≃⟨ neg-distribˡ-* r p ⟩
     - r * p    ∎
@@ -1495,8 +1496,8 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
 1/-antimono-≤-pos : ∀ {p q} .{{_ : Positive p}} .{{_ : Positive q}} →
                     p ≤ q → (1/ q) {{pos⇒nonZero q}} ≤ (1/ p) {{pos⇒nonZero p}}
 1/-antimono-≤-pos {p} {q} p≤q = begin
-  1/q              ≃˘⟨ *-identityˡ 1/q ⟩
-  1ℚᵘ * 1/q        ≃˘⟨ *-congʳ (*-inverseˡ p) ⟩
+  1/q              ≃⟨ *-identityˡ 1/q ⟨
+  1ℚᵘ * 1/q        ≃⟨ *-congʳ (*-inverseˡ p) ⟨
   (1/p * p) * 1/q  ≤⟨  *-monoˡ-≤-nonNeg 1/q (*-monoʳ-≤-nonNeg 1/p p≤q) ⟩
   (1/p * q) * 1/q  ≃⟨  *-assoc 1/p q 1/q ⟩
   1/p * (q * 1/q)  ≃⟨  *-congˡ {1/p} (*-inverseʳ q) ⟩

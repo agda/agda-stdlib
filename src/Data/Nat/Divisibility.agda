@@ -121,7 +121,7 @@ module ∣-Reasoning where
   private module Base = PreorderReasoning ∣-preorder
 
   open Base public
-    hiding (step-≈; step-≈˘; step-∼; step-≲)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
     renaming (≲-go to ∣-go)
 
   open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ ∣-go public

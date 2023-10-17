@@ -96,7 +96,7 @@ module ⊆-Reasoning {A : Set a} where
   private module Base = PreorderReasoning (⊆-preorder A)
 
   open Base public
-    hiding (step-≈; step-≈˘; step-∼; step-≲)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
     renaming (≲-go to ⊆-go)
 
   open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → begin x) public

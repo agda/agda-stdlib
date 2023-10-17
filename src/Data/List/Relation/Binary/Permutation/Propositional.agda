@@ -76,9 +76,11 @@ module PermutationReasoning where
 
   private module Base = EqReasoning ↭-setoid
 
-  open Base public hiding (step-≈; step-≈˘)
+  open Base public
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
+    renaming (∼-go to ↭-go)
 
-  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ Base.∼-go ↭-sym public
+  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym public
 
   -- Some extra combinators that allow us to skip certain elements
 

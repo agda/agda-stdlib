@@ -23,7 +23,6 @@ open import Relation.Binary.PropositionalEquality.Core as P
 --   Effect/Monad/Partiality
 --   Effect/Monad/Partiality/All
 --   Codata/Guarded/Stream/Relation/Binary/Pointwise
---   Codata/Sized/Stream/Bisimilarity
 --   Function/Reasoning
 
 module Relation.Binary.Reasoning.Syntax where
@@ -259,37 +258,80 @@ module _
 
     -- Setoid equality syntax
     module ≈-syntax where
+      infixr 2 step-≈-⟩ step-≈-⟨
+      step-≈-⟩ = forward
+      step-≈-⟨ = backward
+      syntax step-≈-⟩ x yRz x≈y = x ≈⟨ x≈y ⟩ yRz
+      syntax step-≈-⟨ x yRz y≈x = x ≈⟨ y≈x ⟨ yRz
+
+      -- Deprecated
       infixr 2 step-≈ step-≈˘
-      step-≈ = forward
-      step-≈˘ = backward
-      syntax step-≈  x yRz x≈y = x ≈⟨ x≈y ⟩ yRz
+      step-≈ = step-≈-⟩
+      {-# WARNING_ON_USAGE step-≈
+      "Warning: step-≈ was deprecated in v2.0.
+      Please use step-≈-⟩ instead."
+      #-}
+      step-≈˘ = step-≈-⟨
+      {-# WARNING_ON_USAGE step-≈˘
+      "Warning: step-≈˘ and _≈˘⟨_⟩_ was deprecated in v2.0.
+      Please use step-≈-⟨ and _≈⟨_⟨_ instead."
+      #-}
       syntax step-≈˘ x yRz y≈x = x ≈˘⟨ y≈x ⟩ yRz
 
 
     -- Container equality syntax
     module ≋-syntax where
+      infixr 2 step-≋-⟩ step-≋-⟨
+      step-≋-⟩ = forward
+      step-≋-⟨ = backward
+      syntax step-≋-⟩ x yRz x≋y = x ≋⟨ x≋y ⟩ yRz
+      syntax step-≋-⟨ x yRz y≋x = x ≋⟨ y≋x ⟨ yRz
+
+
+      -- Don't remove until https://github.com/agda/agda/issues/5617 fixed.
       infixr 2 step-≋ step-≋˘
-      step-≋ = forward
-      step-≋˘ = backward
-      syntax step-≋  x yRz x≋y = x ≋⟨ x≋y ⟩ yRz
+      step-≋ = step-≋-⟩
+      {-# WARNING_ON_USAGE step-≋
+      "Warning: step-≋ was deprecated in v2.0.
+      Please use step-≋-⟩ instead."
+      #-}
+      step-≋˘ = step-≋-⟨
+      {-# WARNING_ON_USAGE step-≋˘
+      "Warning: step-≋˘ and _≋˘⟨_⟩_ was deprecated in v2.0.
+      Please use step-≋-⟨ and _≋⟨_⟨_ instead."
+      #-}
       syntax step-≋˘ x yRz y≋x = x ≋˘⟨ y≋x ⟩ yRz
 
 
     -- Other equality syntax
     module ≃-syntax where
-      infixr 2 step-≃ step-≃˘
-      step-≃ = forward
-      step-≃˘ = backward
-      syntax step-≃  x yRz x≃y = x ≃⟨ x≃y ⟩ yRz
-      syntax step-≃˘ x yRz y≃x = x ≃˘⟨ y≃x ⟩ yRz
+      infixr 2 step-≃-⟩ step-≃-⟨
+      step-≃-⟩ = forward
+      step-≃-⟨ = backward
+      syntax step-≃-⟩ x yRz x≃y = x ≃⟨ x≃y ⟩ yRz
+      syntax step-≃-⟨ x yRz y≃x = x ≃⟨ y≃x ⟨ yRz
 
 
     -- Apartness relation syntax
     module #-syntax where
+      infixr 2 step-#-⟩ step-#-⟨
+      step-#-⟩ = forward
+      step-#-⟨ = backward
+      syntax step-#-⟩ x yRz x#y = x #⟨ x#y ⟩ yRz
+      syntax step-#-⟨ x yRz y#x = x #⟨ y#x ⟨ yRz
+
+      -- Don't remove until https://github.com/agda/agda/issues/5617 fixed.
       infixr 2 step-# step-#˘
-      step-# = forward
-      step-#˘ = backward
-      syntax step-#  x yRz x#y = x #⟨ x#y ⟩ yRz
+      step-# = step-#-⟩
+      {-# WARNING_ON_USAGE step-#
+      "Warning: step-# was deprecated in v2.0.
+      Please use step-#-⟩ instead."
+      #-}
+      step-#˘ = step-#-⟨
+      {-# WARNING_ON_USAGE step-#˘
+      "Warning: step-#˘ and _#˘⟨_⟩_ was deprecated in v2.0.
+      Please use step-#-⟨ and _#⟨_⟨_ instead."
+      #-}
       syntax step-#˘ x yRz y#x = x #˘⟨ y#x ⟩ yRz
 
 
@@ -304,20 +346,35 @@ module _
 
     -- Inverse syntax
     module ↔-syntax where
-      infixr 2 step-↔ step-↔-sym
-      step-↔ = forward
-      step-↔-sym = backward
-      syntax step-↔ x yRz x↔y = x ↔⟨ x↔y ⟩ yRz
-      syntax step-↔-sym x yRz y↔x = x ↔˘⟨ y↔x ⟩ yRz
+      infixr 2 step-↔-⟩ step-↔-⟨
+      step-↔-⟩ = forward
+      step-↔-⟨ = backward
+      syntax step-↔-⟩ x yRz x↔y = x ↔⟨ x↔y ⟩ yRz
+      syntax step-↔-⟨ x yRz y↔x = x ↔⟨ y↔x ⟨ yRz
 
 
     -- Inverse syntax
     module ↭-syntax where
-      infixr 2 step-↭ step-↭-sym
+      infixr 2 step-↭-⟩ step-↭-⟨
+      step-↭-⟩ = forward
+      step-↭-⟨ = backward
+      syntax step-↭-⟩ x yRz x↭y = x ↭⟨ x↭y ⟩ yRz
+      syntax step-↭-⟨ x yRz y↭x = x ↭⟨ y↭x ⟨ yRz
+
+
+      -- Don't remove until https://github.com/agda/agda/issues/5617 fixed.
+      infixr 2 step-↭ step-↭˘
       step-↭ = forward
-      step-↭-sym = backward
-      syntax step-↭ x yRz x↭y = x ↭⟨ x↭y ⟩ yRz
-      syntax step-↭-sym x yRz y↭x = x ↭˘⟨ y↭x ⟩ yRz
+      {-# WARNING_ON_USAGE step-↭
+      "Warning: step-↭ was deprecated in v2.0.
+      Please use step-↭-⟩ instead."
+      #-}
+      step-↭˘ = backward
+      {-# WARNING_ON_USAGE step-↭˘
+      "Warning: step-↭˘ and _↭˘⟨_⟩_ was deprecated in v2.0.
+      Please use step-↭-⟨ and _↭⟨_⟨_ instead."
+      #-}
+      syntax step-↭˘ x yRz y↭x = x ↭˘⟨ y↭x ⟩ yRz
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -332,16 +389,32 @@ module ≡-syntax
   (step : Trans _≡_ R R)
   where
 
-  infixr 2 step-≡ step-≡-refl step-≡˘
-  step-≡ = forward R R step
-  step-≡˘ = backward R R step P.sym
+  infixr 2 step-≡-⟩  step-≡-∣ step-≡-⟨
+  step-≡-⟩ = forward R R step
 
-  step-≡-refl : ∀ x {y} → R x y → R x y
-  step-≡-refl x xRy = xRy
+  step-≡-∣ : ∀ x {y} → R x y → R x y
+  step-≡-∣ x xRy = xRy
 
-  syntax step-≡-refl x xRy     = x ≡⟨⟩ xRy
-  syntax step-≡˘     x yRz y≡x = x ≡˘⟨ y≡x ⟩ yRz
-  syntax step-≡      x yRz x≡y = x ≡⟨ x≡y ⟩ yRz
+  step-≡-⟨ = backward R R step P.sym
+
+  syntax step-≡-⟩ x yRz x≡y = x ≡⟨ x≡y ⟩ yRz
+  syntax step-≡-∣ x xRy     = x ≡⟨⟩ xRy
+  syntax step-≡-⟨ x yRz y≡x = x ≡⟨ y≡x ⟨ yRz
+
+
+  -- Don't remove until https://github.com/agda/agda/issues/5617 fixed.
+  infixr 2 step-≡ step-≡˘
+  step-≡ = step-≡-⟩
+  {-# WARNING_ON_USAGE step-≡
+  "Warning: step-≡ was deprecated in v2.0.
+  Please use step-≡-⟩ instead."
+  #-}
+  step-≡˘ = step-≡-⟨
+  {-# WARNING_ON_USAGE step-≡˘
+  "Warning: step-≡˘ and _≡˘⟨_⟩_ was deprecated in v2.0.
+  Please use step-≡-⟨ and _≡⟨_⟨_ instead."
+  #-}
+  syntax step-≡˘ x yRz y≡x = x ≡˘⟨ y≡x ⟩ yRz
 
 
 -- Unlike ≡-syntax above, chains of reasoning using this syntax will not
