@@ -43,6 +43,8 @@ open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ; yes; no)
@@ -219,7 +221,7 @@ Any-×⁻ pq with Prod.map₂ (Prod.map₂ find) (find pq)
      (Any P xs × Any Q ys) ↔ Any (λ x → Any (λ y → P x × Q y) ys) xs
 ×↔ {P = P} {Q = Q} {xs} {ys} = mk↔ₛ′ Any-×⁺ Any-×⁻ to∘from from∘to
   where
-  open P.≡-Reasoning
+  open ≡-Reasoning
 
   from∘to : ∀ pq → Any-×⁻ (Any-×⁺ pq) ≡ pq
   from∘to (p , q) =

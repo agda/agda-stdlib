@@ -31,8 +31,8 @@ open import Relation.Nullary
 open import Relation.Nullary.Decidable using (dec-true; dec-false)
 open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; _≢_; refl; cong)
-open PropEq.≡-Reasoning
 import Relation.Binary.PropositionalEquality.Properties as PropEq
+open PropEq.≡-Reasoning
 
 private
   open module D = DecSetoid D

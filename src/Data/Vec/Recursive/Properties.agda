@@ -15,6 +15,8 @@ open import Data.Vec.Recursive
 open import Data.Vec.Base using (Vec; _∷_)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Relation.Binary.PropositionalEquality.Core as P
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open ≡-Reasoning
 
 private
