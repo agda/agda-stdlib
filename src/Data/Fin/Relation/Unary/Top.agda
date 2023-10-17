@@ -16,6 +16,8 @@ module Data.Fin.Relation.Unary.Top where
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc; fromℕ; inject₁)
 open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable
