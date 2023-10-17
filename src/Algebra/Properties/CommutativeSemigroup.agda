@@ -29,10 +29,10 @@ open import Algebra.Properties.Semigroup semigroup public
 interchange : Interchangable _∙_ _∙_
 interchange a b c d = begin
   (a ∙ b) ∙ (c ∙ d)  ≈⟨  assoc a b (c ∙ d) ⟩
-  a ∙ (b ∙ (c ∙ d))  ≈˘⟨ ∙-congˡ (assoc b c d) ⟩
+  a ∙ (b ∙ (c ∙ d))  ≈⟨ ∙-congˡ (assoc b c d) ⟨
   a ∙ ((b ∙ c) ∙ d)  ≈⟨  ∙-congˡ (∙-congʳ (comm b c)) ⟩
   a ∙ ((c ∙ b) ∙ d)  ≈⟨  ∙-congˡ (assoc c b d) ⟩
-  a ∙ (c ∙ (b ∙ d))  ≈˘⟨ assoc a c (b ∙ d) ⟩
+  a ∙ (c ∙ (b ∙ d))  ≈⟨ assoc a c (b ∙ d) ⟨
   (a ∙ c) ∙ (b ∙ d)  ∎
 
 ------------------------------------------------------------------------

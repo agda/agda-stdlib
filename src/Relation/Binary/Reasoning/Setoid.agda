@@ -35,7 +35,9 @@ import Relation.Binary.Reasoning.Base.Single _≈_ refl trans
 
 -- Export the combinators for single relation reasoning, hiding the
 -- single misnamed combinator.
-open SingleRelReasoning public hiding (step-∼)
+open SingleRelReasoning public
+  hiding (step-∼)
+  renaming (∼-go to ≈-go)
 
 -- Re-export the equality-based combinators instead
-open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ SingleRelReasoning.∼-go sym public
+open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ ≈-go sym public

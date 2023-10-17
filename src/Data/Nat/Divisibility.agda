@@ -293,9 +293,9 @@ m∣n*o⇒m/n∣o {m@.(p * n)} {n@(suc _)} {o} (divides-refl p) pn∣on = begin
   divides (a ∸ m / n * b) $ begin-equality
     m % n                   ≡⟨  m%n≡m∸m/n*n m n ⟩
     m ∸ m / n * n           ≡⟨  cong (λ v → m ∸ m / n * v) 1+n≡bd ⟩
-    m ∸ m / n * (b * d)     ≡˘⟨ cong (m ∸_) (*-assoc (m / n) b d) ⟩
+    m ∸ m / n * (b * d)     ≡⟨ cong (m ∸_) (*-assoc (m / n) b d) ⟨
     m  ∸ (m / n * b) * d    ≡⟨⟩
-    a * d ∸ (m / n * b) * d ≡˘⟨ *-distribʳ-∸ d a (m / n * b) ⟩
+    a * d ∸ (m / n * b) * d ≡⟨ *-distribʳ-∸ d a (m / n * b) ⟨
     (a ∸ m / n * b) * d     ∎
   where open ≤-Reasoning
 

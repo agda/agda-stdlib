@@ -918,7 +918,7 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 [m*n]*[o*p]≡[m*o]*[n*p] m n o p = begin-equality
   (m * n) * (o * p) ≡⟨  *-assoc m n (o * p) ⟩
   m * (n * (o * p)) ≡⟨  cong (m *_) (x∙yz≈y∙xz n o p) ⟩
-  m * (o * (n * p)) ≡˘⟨ *-assoc m o (n * p) ⟩
+  m * (o * (n * p)) ≡⟨ *-assoc m o (n * p) ⟨
   (m * o) * (n * p) ∎
   where open CommSemigroupProperties *-commutativeSemigroup
 
@@ -1325,15 +1325,15 @@ m⊔n≤m+n m n with ⊔-sel m n
 *-distribˡ-⊔ m zero o = sym (cong (_⊔ m * o) (*-zeroʳ m))
 *-distribˡ-⊔ m (suc n) zero = begin-equality
   m * (suc n ⊔ zero)         ≡⟨⟩
-  m * suc n                  ≡˘⟨ ⊔-identityʳ (m * suc n) ⟩
-  m * suc n ⊔ zero           ≡˘⟨ cong (m * suc n ⊔_) (*-zeroʳ m) ⟩
+  m * suc n                  ≡⟨ ⊔-identityʳ (m * suc n) ⟨
+  m * suc n ⊔ zero           ≡⟨ cong (m * suc n ⊔_) (*-zeroʳ m) ⟨
   m * suc n ⊔ m * zero       ∎
 *-distribˡ-⊔ m (suc n) (suc o) = begin-equality
   m * (suc n ⊔ suc o)        ≡⟨⟩
   m * suc (n ⊔ o)            ≡⟨ *-suc m (n ⊔ o) ⟩
   m + m * (n ⊔ o)            ≡⟨ cong (m +_) (*-distribˡ-⊔ m n o) ⟩
   m + (m * n ⊔ m * o)        ≡⟨ +-distribˡ-⊔ m (m * n) (m * o) ⟩
-  (m + m * n) ⊔ (m + m * o)  ≡˘⟨ cong₂ _⊔_ (*-suc m n) (*-suc m o) ⟩
+  (m + m * n) ⊔ (m + m * o)  ≡⟨ cong₂ _⊔_ (*-suc m n) (*-suc m o) ⟨
   (m * suc n) ⊔ (m * suc o)  ∎
 
 *-distribʳ-⊔ : _*_ DistributesOverʳ _⊔_
@@ -1434,20 +1434,20 @@ m⊓n≤m+n m n with ⊓-sel m n
   m * (0 ⊓ o)               ≡⟨⟩
   m * 0                     ≡⟨ *-zeroʳ m ⟩
   0                         ≡⟨⟩
-  0 ⊓ (m * o)               ≡˘⟨ cong (_⊓ (m * o)) (*-zeroʳ m) ⟩
+  0 ⊓ (m * o)               ≡⟨ cong (_⊓ (m * o)) (*-zeroʳ m) ⟨
   (m * 0) ⊓ (m * o)         ∎
 *-distribˡ-⊓ m (suc n) 0 = begin-equality
   m * (suc n ⊓ 0)           ≡⟨⟩
   m * 0                     ≡⟨ *-zeroʳ m ⟩
-  0                         ≡˘⟨ ⊓-zeroʳ (m * suc n) ⟩
-  (m * suc n) ⊓ 0           ≡˘⟨ cong (m * suc n ⊓_) (*-zeroʳ m) ⟩
+  0                         ≡⟨ ⊓-zeroʳ (m * suc n) ⟨
+  (m * suc n) ⊓ 0           ≡⟨ cong (m * suc n ⊓_) (*-zeroʳ m) ⟨
   (m * suc n) ⊓ (m * 0)     ∎
 *-distribˡ-⊓ m (suc n) (suc o) = begin-equality
   m * (suc n ⊓ suc o)       ≡⟨⟩
   m * suc (n ⊓ o)           ≡⟨ *-suc m (n ⊓ o) ⟩
   m + m * (n ⊓ o)           ≡⟨ cong (m +_) (*-distribˡ-⊓ m n o) ⟩
   m + (m * n) ⊓ (m * o)     ≡⟨ +-distribˡ-⊓ m (m * n) (m * o) ⟩
-  (m + m * n) ⊓ (m + m * o) ≡˘⟨ cong₂ _⊓_ (*-suc m n) (*-suc m o) ⟩
+  (m + m * n) ⊓ (m + m * o) ≡⟨ cong₂ _⊓_ (*-suc m n) (*-suc m o) ⟨
   (m * suc n) ⊓ (m * suc o) ∎
 
 *-distribʳ-⊓ : _*_ DistributesOverʳ _⊓_

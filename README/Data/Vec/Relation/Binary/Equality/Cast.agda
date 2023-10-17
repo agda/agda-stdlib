@@ -120,10 +120,10 @@ example1b-fromList-∷ʳ x xs eq = begin
 --     ≈-trans     : xs ≈[ m≡n ] ys → ys ≈[ n≡o ] zs → xs ≈[ trans m≡n n≡o ] zs
 -- Accordingly, `_≈[_]_` admits the standard set of equational reasoning
 -- combinators. Suppose `≈-eqn : xs ≈[ m≡n ] ys`,
---     xs ≈⟨ ≈-eqn  ⟩   -- `_≈⟨_⟩_` takes a `_≈[_]_` step, adjusting
---     ys               -- the index at the same time
+--     xs ≈⟨ ≈-eqn ⟩   -- `_≈⟨_⟩_` takes a `_≈[_]_` step, adjusting
+--     ys              -- the index at the same time
 --
---     ys ≈˘⟨ ≈-eqn ⟩   -- `_≈˘⟨_⟩_` takes a symmetric `_≈[_]_` step
+--     ys ≈⟨ ≈-eqn ⟨   -- `_≈⟨_⟨_` takes a symmetric `_≈[_]_` step
 --     xs
 example2a : ∀ .(eq : suc m + n ≡ m + suc n) (xs : Vec A m) a ys →
             cast eq ((reverse xs ∷ʳ a) ++ ys) ≡ reverse xs ++ (a ∷ ys)
@@ -138,7 +138,7 @@ example2a eq xs a ys = begin
 --     xs ≂⟨ ≡-eqn  ⟩    -- Takes a `_≡_` step; no change to the index
 --     ys
 --
---     ys ≂˘⟨ ≡-eqn ⟩    -- Takes a symmetric `_≡_` step
+--     ys ≂⟨ ≡-eqn ⟨    -- Takes a symmetric `_≡_` step
 --     xs
 -- Equivalently, `≈-reflexive` injects `_≡_` into `_≈[_]_`. That is,
 -- `xs ≂⟨ ≡-eqn ⟩ ys` is the same as `xs ≈⟨ ≈-reflexive ≡-eqn ⟩ ys`.

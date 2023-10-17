@@ -246,7 +246,7 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ suc i & []) =
     ⅀?⟦ y Δ suc i ∷↓ ys ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-s y i ys ρ ρs ⟩
     (ρ ^ suc i) * ((y , ys) ⟦∷⟧ (ρ , ρs))
-  ≈˘⟨ *≫ ⟦∷⟧?-hom y ys ρ ρs ⟩
+  ≈⟨ *≫ ⟦∷⟧?-hom y ys ρ ρs ⟨
     (ρ ^ suc i) * ((y , ys) ⟦∷⟧? (ρ , ρs))
   ≈⟨ *≫ step x [] (sym base) ⟩
     (ρ ^ suc i) * e ((x , []) ⟦∷⟧? (ρ , ρs))
@@ -265,7 +265,7 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ suc i & ∹ xs) =
     ⅀?⟦ y Δ suc i ∷↓ zs ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-s y i zs ρ ρs ⟩
     (ρ ^ suc i) * ((y , zs) ⟦∷⟧ (ρ , ρs))
-  ≈˘⟨ *≫ ⟦∷⟧?-hom y zs ρ ρs ⟩
+  ≈⟨ *≫ ⟦∷⟧?-hom y zs ρ ρs ⟨
     (ρ ^ suc i) * ((y , zs) ⟦∷⟧? (ρ , ρs))
   ≈⟨ *≫ step x (∹ xs) (poly-foldR ρ ρs f e cng dist step base xs) ⟩
     (ρ ^ suc i) * e ((x , (∹ xs )) ⟦∷⟧? (ρ , ρs))
@@ -283,7 +283,7 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ ℕ.zero & []) =
     ⅀?⟦ y Δ ℕ.zero ∷↓ zs ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-0 y zs ρ ρs ⟩
     ((y , zs) ⟦∷⟧ (ρ , ρs))
-  ≈˘⟨ ⟦∷⟧?-hom y zs ρ ρs ⟩
+  ≈⟨ ⟦∷⟧?-hom y zs ρ ρs ⟨
     ((y , zs) ⟦∷⟧? (ρ , ρs))
   ≈⟨ step x [] (sym base) ⟩
     e ((x , []) ⟦∷⟧? (ρ , ρs))
@@ -300,7 +300,7 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ ℕ.zero & (∹ xs )) =
     ⅀?⟦ y Δ ℕ.zero ∷↓ zs ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-0 y zs ρ ρs ⟩
     ((y , zs) ⟦∷⟧ (ρ , ρs))
-  ≈˘⟨ ⟦∷⟧?-hom y zs ρ ρs ⟩
+  ≈⟨ ⟦∷⟧?-hom y zs ρ ρs ⟨
     ((y , zs) ⟦∷⟧? (ρ , ρs))
   ≈⟨ step x (∹ xs ) (poly-foldR ρ ρs f e cng dist step base xs) ⟩
     e ((x , (∹ xs )) ⟦∷⟧ (ρ , ρs))

@@ -1023,6 +1023,20 @@ Non-backwards compatible changes
   don't fire correctly. We will not remove the old combinators before the above issue is
   addressed. However, we still encourage migrating to the new combinators!
 
+* On a Linux-based system, the following command was used to globally migrate all uses of the
+  old combinators to the new ones in the standard library itself. 
+  It *may* be useful when trying to migrate your own code:
+  ```bash
+  find . -type f -name "*.agda" -print0 | xargs -0 sed -i -e 's/˘⟨\(.*\)⟩/⟨\1⟨/g'
+  ```
+  USUAL CAVEATS: It has not been widely tested and the standard library developers are not 
+  responsible for the results of this command. It is strongly recommended you back up your 
+  work before you attempt to run it.
+  
+* NOTE: this refactoring may require some extra bracketing around the operator `_⟨_⟩_` from 
+  `Function.Base` if the `_⟨_⟩_` operator is used within the reasoning proof. The symptom
+  for this is a `Don't know how to parse` error.
+
 ### Other
 
 * In accordance with changes to the flags in Agda 2.6.3, all modules that previously used

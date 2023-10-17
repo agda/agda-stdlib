@@ -314,7 +314,7 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
   (begin
     (m ℕ.* d) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ≡⟨  ℕ./-*-interchange gcd[m,c]∣m gcd[n,d]∣d ⟩
     (m ℕ./ gcd[m,c]) ℕ.* (d ℕ./ gcd[n,d]) ≡⟨  cong₂ ℕ._*_ m/gcd[m,c]≡n/gcd[n,d] (sym c/gcd[m,c]≡d/gcd[n,d]) ⟩
-    (n ℕ./ gcd[n,d]) ℕ.* (c ℕ./ gcd[m,c]) ≡˘⟨ ℕ./-*-interchange gcd[n,d]∣n gcd[m,c]∣c ⟩
+    (n ℕ./ gcd[n,d]) ℕ.* (c ℕ./ gcd[m,c]) ≡⟨ ℕ./-*-interchange gcd[n,d]∣n gcd[m,c]∣c ⟨
     (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨  ℕ./-congʳ (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
     (n ℕ.* c) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ∎)
   where
@@ -855,7 +855,7 @@ toℚᵘ-homo-+ p@record{} q@record{} with +-nf p q ℤ.≟ 0ℤ
     ↥ (p + q) ℤ.* +-nf p q ℤ.* ↧+ᵘ p q            ≡⟨ cong (ℤ._* ↧+ᵘ p q) (↥-+ p q) ⟩
     ↥+ᵘ p q ℤ.* ↧+ᵘ p q                           ≡⟨ cong (↥+ᵘ p q ℤ.*_) (sym (↧-+ p q)) ⟩
     ↥+ᵘ p q ℤ.* (↧ (p + q) ℤ.* +-nf p q)          ≡⟨ x∙yz≈xy∙z (↥+ᵘ p q) _ _ ⟩
-    ↥+ᵘ p q ℤ.* ↧ (p + q)  ℤ.* +-nf p q           ≡˘⟨ cong (λ v → ↥+ᵘ p q ℤ.* v ℤ.* +-nf p q) (↧ᵘ-toℚᵘ (p + q)) ⟩
+    ↥+ᵘ p q ℤ.* ↧ (p + q)  ℤ.* +-nf p q           ≡⟨ cong (λ v → ↥+ᵘ p q ℤ.* v ℤ.* +-nf p q) (↧ᵘ-toℚᵘ (p + q)) ⟨
     ↥+ᵘ p q ℤ.* ↧ᵘ (toℚᵘ (p + q)) ℤ.* +-nf p q    ∎)
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
@@ -1066,7 +1066,7 @@ toℚᵘ-homo-* p@record{} q@record{} with *-nf p q ℤ.≟ 0ℤ
   ↥ (p * q)         ℤ.* *-nf p q ℤ.* (↧ p ℤ.* ↧ q)     ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q)) (↥-* p q) ⟩
   (↥ p ℤ.* ↥ q)     ℤ.* (↧ p ℤ.* ↧ q)                  ≡⟨ cong ((↥ p ℤ.* ↥ q) ℤ.*_) (sym (↧-* p q)) ⟩
   (↥ p ℤ.* ↥ q)     ℤ.* (↧ (p * q) ℤ.* *-nf p q)       ≡⟨ x∙yz≈xy∙z (↥ p ℤ.* ↥ q) _ _ ⟩
-  (↥ p ℤ.* ↥ q)     ℤ.* ↧ (p * q)  ℤ.* *-nf p q        ≡˘⟨ cong (λ v → (↥ p ℤ.* ↥ q) ℤ.* v ℤ.* *-nf p q) (↧ᵘ-toℚᵘ (p * q)) ⟩
+  (↥ p ℤ.* ↥ q)     ℤ.* ↧ (p * q)  ℤ.* *-nf p q        ≡⟨ cong (λ v → (↥ p ℤ.* ↥ q) ℤ.* v ℤ.* *-nf p q) (↧ᵘ-toℚᵘ (p * q)) ⟨
   (↥ p ℤ.* ↥ q)     ℤ.* ↧ᵘ (toℚᵘ (p * q)) ℤ.* *-nf p q ∎)
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
@@ -1489,17 +1489,17 @@ mono-<-distrib-⊓ : ∀ {f} → f Preserves _<_ ⟶ _<_ →
 mono-<-distrib-⊓ {f} f-mono-< p q with <-cmp p q
 ... | tri< p<q p≢r  p≯q = begin
   f (p ⊓ q)  ≡⟨ cong f (p≤q⇒p⊓q≡p (<⇒≤ p<q)) ⟩
-  f p        ≡˘⟨ p≤q⇒p⊓q≡p (<⇒≤ (f-mono-< p<q)) ⟩
+  f p        ≡⟨ p≤q⇒p⊓q≡p (<⇒≤ (f-mono-< p<q)) ⟨
   f p ⊓ f q  ∎
   where open ≡-Reasoning
 ... | tri≈ p≮q refl p≯q = begin
   f (p ⊓ q)  ≡⟨ cong f (⊓-idem p) ⟩
-  f p        ≡˘⟨ ⊓-idem (f p) ⟩
+  f p        ≡⟨ ⊓-idem (f p) ⟨
   f p ⊓ f q  ∎
   where open ≡-Reasoning
 ... | tri> p≮q p≡r  p>q = begin
   f (p ⊓ q)  ≡⟨ cong f (p≥q⇒p⊓q≡q (<⇒≤ p>q)) ⟩
-  f q        ≡˘⟨ p≥q⇒p⊓q≡q (<⇒≤ (f-mono-< p>q)) ⟩
+  f q        ≡⟨ p≥q⇒p⊓q≡q (<⇒≤ (f-mono-< p>q)) ⟨
   f p ⊓ f q  ∎
   where open ≡-Reasoning
 
@@ -1508,17 +1508,17 @@ mono-<-distrib-⊔ : ∀ {f} → f Preserves _<_ ⟶ _<_ →
 mono-<-distrib-⊔ {f} f-mono-< p q with <-cmp p q
 ... | tri< p<q p≢r  p≯q = begin
   f (p ⊔ q)  ≡⟨ cong f (p≤q⇒p⊔q≡q (<⇒≤ p<q)) ⟩
-  f q        ≡˘⟨ p≤q⇒p⊔q≡q (<⇒≤ (f-mono-< p<q)) ⟩
+  f q        ≡⟨ p≤q⇒p⊔q≡q (<⇒≤ (f-mono-< p<q)) ⟨
   f p ⊔ f q  ∎
   where open ≡-Reasoning
 ... | tri≈ p≮q refl p≯q = begin
   f (p ⊔ q)  ≡⟨ cong f (⊔-idem p) ⟩
-  f q        ≡˘⟨ ⊔-idem (f p) ⟩
+  f q        ≡⟨ ⊔-idem (f p) ⟨
   f p ⊔ f q  ∎
   where open ≡-Reasoning
 ... | tri> p≮q p≡r  p>q = begin
   f (p ⊔ q)  ≡⟨ cong f (p≥q⇒p⊔q≡p (<⇒≤ p>q)) ⟩
-  f p        ≡˘⟨ p≥q⇒p⊔q≡p (<⇒≤ (f-mono-< p>q)) ⟩
+  f p        ≡⟨ p≥q⇒p⊔q≡p (<⇒≤ (f-mono-< p>q)) ⟨
   f p ⊔ f q  ∎
   where open ≡-Reasoning
 
@@ -1606,7 +1606,7 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 0≤∣p∣ p@record{} = *≤* (begin
   (↥ 0ℚ) ℤ.* (↧ ∣ p ∣)  ≡⟨ ℤ.*-zeroˡ (↧ ∣ p ∣) ⟩
   0ℤ                    ≤⟨ ℤ.+≤+ ℕ.z≤n ⟩
-  ↥ ∣ p ∣               ≡˘⟨ ℤ.*-identityʳ (↥ ∣ p ∣) ⟩
+  ↥ ∣ p ∣               ≡⟨ ℤ.*-identityʳ (↥ ∣ p ∣) ⟨
   ↥ ∣ p ∣ ℤ.* 1ℤ        ∎)
   where open ℤ.≤-Reasoning
 

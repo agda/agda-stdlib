@@ -955,13 +955,13 @@ foldr-reverse B f {e} xs = foldl-fusion (foldr B f e) refl (λ _ _ → refl) xs
 reverse-involutive : Involutive {A = Vec A n} _≡_ reverse
 reverse-involutive xs = begin
   reverse (reverse xs)    ≡⟨  foldl-reverse (Vec _) (flip _∷_) xs ⟩
-  foldr (Vec _) _∷_ [] xs ≡˘⟨ id-is-foldr xs ⟩
+  foldr (Vec _) _∷_ [] xs ≡⟨ id-is-foldr xs ⟨
   xs                      ∎
   where open ≡-Reasoning
 
 reverse-reverse : reverse xs ≡ ys → reverse ys ≡ xs
 reverse-reverse {xs = xs} {ys} eq =  begin
-  reverse ys           ≡˘⟨ cong reverse eq ⟩
+  reverse ys           ≡⟨ cong reverse eq ⟨
   reverse (reverse xs) ≡⟨  reverse-involutive xs ⟩
   xs                   ∎
   where open ≡-Reasoning
@@ -970,7 +970,7 @@ reverse-reverse {xs = xs} {ys} eq =  begin
 
 reverse-injective : reverse xs ≡ reverse ys → xs ≡ ys
 reverse-injective {xs = xs} {ys} eq = begin
-  xs                   ≡˘⟨ reverse-reverse eq ⟩
+  xs                   ≡⟨ reverse-reverse eq ⟨
   reverse (reverse ys) ≡⟨  reverse-involutive ys ⟩
   ys                   ∎
   where open ≡-Reasoning
@@ -1000,7 +1000,7 @@ map-reverse f (x ∷ xs) = begin
   map f (reverse (x ∷ xs))  ≡⟨  cong (map f) (reverse-∷ x xs) ⟩
   map f (reverse xs ∷ʳ x)   ≡⟨  map-∷ʳ f x (reverse xs) ⟩
   map f (reverse xs) ∷ʳ f x ≡⟨  cong (_∷ʳ f x) (map-reverse f xs ) ⟩
-  reverse (map f xs) ∷ʳ f x ≡˘⟨ reverse-∷ (f x) (map f xs) ⟩
+  reverse (map f xs) ∷ʳ f x ≡⟨ reverse-∷ (f x) (map f xs) ⟨
   reverse (f x ∷ map f xs)  ≡⟨⟩
   reverse (map f (x ∷ xs))  ∎
   where open ≡-Reasoning
@@ -1054,7 +1054,7 @@ map-ʳ++ {ys = ys} f xs = begin
   map f (xs ʳ++ ys)              ≡⟨  cong (map f) (unfold-ʳ++ xs ys) ⟩
   map f (reverse xs ++ ys)       ≡⟨  map-++ f (reverse xs) ys ⟩
   map f (reverse xs) ++ map f ys ≡⟨  cong (_++ map f ys) (map-reverse f xs) ⟩
-  reverse (map f xs) ++ map f ys ≡˘⟨ unfold-ʳ++ (map f xs) (map f ys) ⟩
+  reverse (map f xs) ++ map f ys ≡⟨ unfold-ʳ++ (map f xs) (map f ys) ⟨
   map f xs ʳ++ map f ys          ∎
   where open ≡-Reasoning
 
@@ -1100,7 +1100,7 @@ sum-++ : ∀ (xs : Vec ℕ m) → sum (xs ++ ys) ≡ sum xs + sum ys
 sum-++ {_}       []       = refl
 sum-++ {ys = ys} (x ∷ xs) = begin
   x + sum (xs ++ ys)     ≡⟨  cong (x +_) (sum-++ xs) ⟩
-  x + (sum xs + sum ys)  ≡˘⟨ +-assoc x (sum xs) (sum ys) ⟩
+  x + (sum xs + sum ys)  ≡⟨ +-assoc x (sum xs) (sum ys) ⟨
   sum (x ∷ xs) + sum ys  ∎
   where open ≡-Reasoning
 
@@ -1209,7 +1209,7 @@ tabulate-allFin f = tabulate-∘ f id
 
 map-lookup-allFin : ∀ (xs : Vec A n) → map (lookup xs) (allFin n) ≡ xs
 map-lookup-allFin {n = n} xs = begin
-  map (lookup xs) (allFin n) ≡˘⟨ tabulate-∘ (lookup xs) id ⟩
+  map (lookup xs) (allFin n) ≡⟨ tabulate-∘ (lookup xs) id ⟨
   tabulate (lookup xs)       ≡⟨ tabulate∘lookup xs ⟩
   xs                         ∎
   where open ≡-Reasoning

@@ -78,7 +78,7 @@ module PermutationReasoning where
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
-    renaming (∼-go to ↭-go)
+    renaming (≈-go to ↭-go)
 
   open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym public
 
