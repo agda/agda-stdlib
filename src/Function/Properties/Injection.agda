@@ -15,13 +15,14 @@ import Function.Construct.Identity as Identity
 import Function.Construct.Composition as Compose
 open import Level using (Level)
 open import Data.Product.Base using (proj₁; proj₂)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Definitions
+open import Relation.Binary.PropositionalEquality using ()
 open import Relation.Binary using (Setoid)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private
   variable
-    a b ℓ : Level
+    a b c ℓ ℓ₁ ℓ₂ ℓ₃ : Level
     A B : Set a
     T S U : Setoid a ℓ
 
@@ -43,10 +44,21 @@ mkInjection f injective = record
 ↣⇒⟶ = Injection.function
 
 ------------------------------------------------------------------------
--- Properties
+-- Setoid properties
+
+refl : Reflexive (Injection {a} {ℓ})
+refl {x = x} = Identity.injection x
+
+trans : Trans (Injection {a} {ℓ₁} {b} {ℓ₂})
+              (Injection {b} {ℓ₂} {c} {ℓ₃})
+              (Injection {a} {ℓ₁} {c} {ℓ₃})
+trans = Compose.injection
+
+------------------------------------------------------------------------
+-- Propositonal properties
 
 ↣-refl : Injection S S
-↣-refl = Identity.injection _
+↣-refl = refl
 
 ↣-trans : Injection S T → Injection T U → Injection S U
-↣-trans = Compose.injection
+↣-trans = trans

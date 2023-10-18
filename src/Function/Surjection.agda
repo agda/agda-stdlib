@@ -33,6 +33,10 @@ record Surjective {f₁ f₂ t₁ t₂}
   field
     from             : To ⟶ From
     right-inverse-of : from RightInverseOf to
+{-# WARNING_ON_USAGE Surjective
+"Warning: Surjective was deprecated in v2.0.
+Please use Function.(Definitions.)Surjective instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all surjections from one setoid to another.
@@ -67,6 +71,10 @@ record Surjection {f₁ f₂ t₁ t₂}
     { to   = to
     ; from = from
     }
+{-# WARNING_ON_USAGE Surjection
+"Warning: Surjection was deprecated in v2.0.
+Please use Function.(Bundles.)Surjection instead."
+#-}
 
 -- Right inverses can be turned into surjections.
 
@@ -80,6 +88,10 @@ fromRightInverse r = record
     ; right-inverse-of = left-inverse-of
     }
   } where open LeftInverse r
+{-# WARNING_ON_USAGE fromRightInverse
+"Warning: fromRightInverse was deprecated in v2.0.
+Please use Function.(Properties.)RightInverse.RightInverse⇒Surjection instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all surjections from one set to another (i.e. sujections
@@ -89,6 +101,10 @@ infix 3 _↠_
 
 _↠_ : ∀ {f t} → Set f → Set t → Set _
 From ↠ To = Surjection (P.setoid From) (P.setoid To)
+{-# WARNING_ON_USAGE _↠_
+"Warning: _↠_ was deprecated in v2.0.
+Please use Function.(Bundles.)_↠_ instead."
+#-}
 
 surjection : ∀ {f t} {From : Set f} {To : Set t} →
              (to : From → To) (from : To → From) →
@@ -101,6 +117,10 @@ surjection to from surjective = record
     ; right-inverse-of = surjective
     }
   }
+{-# WARNING_ON_USAGE surjection
+"Warning: surjection was deprecated in v2.0.
+Please use Function.(Bundles.)mk↠ instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Identity and composition.
@@ -113,6 +133,11 @@ id {S = S} = record
     ; right-inverse-of = LeftInverse.left-inverse-of id′
     }
   } where id′ = Left.id {S = S}
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v2.0.
+Please use Function.Properties.Surjection.refl or
+Function.Construct.Identity.surjection instead."
+#-}
 
 infixr 9 _∘_
 
@@ -129,3 +154,8 @@ f ∘ g = record
   where
   open Surjection
   g∘f = Left._∘_ (right-inverse g) (right-inverse f)
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v2.0.
+Please use Function.Properties.Surjection.trans or
+Function.Construct.Composition.surjection instead."
+#-}

@@ -1993,6 +1993,7 @@ New modules
   Function.Properties.Bijection
   Function.Properties.RightInverse
   Function.Properties.Surjection
+  Function.Construct.Constant
   ```
 
 * In order to improve modularity, the contents of `Relation.Binary.Lattice` has been

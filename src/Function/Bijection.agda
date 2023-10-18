@@ -38,6 +38,10 @@ record Bijective {f₁ f₂ t₁ t₂}
 
   left-inverse-of : from LeftInverseOf to
   left-inverse-of x = injective (right-inverse-of (to ⟨$⟩ x))
+{-# WARNING_ON_USAGE Bijective
+"Warning: Bijective was deprecated in v2.0.
+Please use Function.(Structures.)IsBijection instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all bijections between two setoids.
@@ -74,6 +78,10 @@ record Bijection {f₁ f₂ t₁ t₂}
     }
 
   open LeftInverse left-inverse public using (to-from)
+{-# WARNING_ON_USAGE Bijection
+"Warning: Bijection was deprecated in v2.0.
+Please use Function.(Bundles.)Bijection instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all bijections between two sets (i.e. bijections with
@@ -83,6 +91,10 @@ infix 3 _⤖_
 
 _⤖_ : ∀ {f t} → Set f → Set t → Set _
 From ⤖ To = Bijection (P.setoid From) (P.setoid To)
+{-# WARNING_ON_USAGE _⤖_
+"Warning: _⤖_ was deprecated in v2.0.
+Please use Function.(Bundles.)mk⤖ instead."
+#-}
 
 bijection : ∀ {f t} {From : Set f} {To : Set t} →
             (to : From → To) (from : To → From) →
@@ -99,6 +111,11 @@ bijection to from inj invʳ = record
       }
     }
   }
+{-# WARNING_ON_USAGE bijection
+"Warning: bijection was deprecated in v2.0.
+Please use either Function.Properties.Bijection.trans or
+Function.Construct.Composition.bijection instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Identity and composition. (Note that these proofs are superfluous,
@@ -112,6 +129,11 @@ id {S = S} = record
     ; surjective = Surjection.surjective (Surj.id {S = S})
     }
   }
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v2.0.
+Please use either Function.Properties.Bijection.refl or
+Function.Construct.Identity.bijection instead."
+#-}
 
 infixr 9 _∘_
 
@@ -125,3 +147,8 @@ f ∘ g = record
     ; surjective = Surjection.surjective (Surj._∘_ (surjection f) (surjection g))
     }
   } where open Bijection
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v2.0.
+Please use either Function.Properties.Bijection.trans or
+Function.Construct.Composition.bijection instead."
+#-}
