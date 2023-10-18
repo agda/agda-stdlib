@@ -30,11 +30,6 @@ open Eq using (_≉_)
 ------------------------------------------------------------------------
 -- The _≥_ relation is also a poset.
 
-infix 4 _≥_
-
-_≥_ : Rel A p₃
-x ≥ y = y ≤ x
-
 open PreorderProperties public
   using () renaming
   ( converse-isPreorder to ≥-isPreorder
