@@ -31,11 +31,19 @@ _LeftInverseOf_ :
   To ⟶ From → From ⟶ To → Set _
 _LeftInverseOf_ {From = From} f g = ∀ x → f ⟨$⟩ (g ⟨$⟩ x) ≈ x
   where open Setoid From
+{-# WARNING_ON_USAGE _LeftInverseOf_
+"Warning: _LeftInverseOf_ was deprecated in v2.0.
+Please use Function.(Structures.)IsRightInverse instead."
+#-}
 
 _RightInverseOf_ :
   ∀ {f₁ f₂ t₁ t₂} {From : Setoid f₁ f₂} {To : Setoid t₁ t₂} →
   To ⟶ From → From ⟶ To → Set _
 f RightInverseOf g = g LeftInverseOf f
+{-# WARNING_ON_USAGE _RightInverseOf_
+"Warning: _RightInverseOf_ was deprecated in v2.0.
+Please use Function.(Structures.)IsLeftInverse instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all left inverses between two setoids.
@@ -74,12 +82,20 @@ record LeftInverse {f₁ f₂ t₁ t₂}
     from ⟨$⟩ y           ≈⟨ Eq.cong from (T.sym to-x≈y) ⟩
     from ⟨$⟩ (to ⟨$⟩ x)  ≈⟨ left-inverse-of x ⟩
     x                    ∎
+{-# WARNING_ON_USAGE LeftInverse
+"Warning: LeftInverse was deprecated in v2.0.
+Please use Function.(Bundles.)RightInverse instead."
+#-}
 
 -- The set of all right inverses between two setoids.
 
 RightInverse : ∀ {f₁ f₂ t₁ t₂}
                (From : Setoid f₁ f₂) (To : Setoid t₁ t₂) → Set _
 RightInverse From To = LeftInverse To From
+{-# WARNING_ON_USAGE RightInverse
+"Warning: RightInverse was deprecated in v2.0.
+Please use Function.(Bundles.)LeftInverse instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all left inverses from one set to another (i.e. left
@@ -91,6 +107,10 @@ infix 3 _↞_
 
 _↞_ : ∀ {f t} → Set f → Set t → Set _
 From ↞ To = LeftInverse (P.setoid From) (P.setoid To)
+{-# WARNING_ON_USAGE _↞_
+"Warning: _↞_ was deprecated in v2.0.
+Please use Function.(Bundles.)_↪_ instead."
+#-}
 
 leftInverse : ∀ {f t} {From : Set f} {To : Set t} →
               (to : From → To) (from : To → From) →
@@ -101,6 +121,10 @@ leftInverse to from invˡ = record
   ; from            = Eq.→-to-⟶ from
   ; left-inverse-of = invˡ
   }
+{-# WARNING_ON_USAGE leftInverse
+"Warning: leftInverse was deprecated in v2.0.
+Please use Function.(Bundles.)mk↪ instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Identity and composition.
@@ -111,6 +135,11 @@ id {S = S} = record
   ; from            = Eq.id
   ; left-inverse-of = λ _ → Setoid.refl S
   }
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v2.0.
+Please use either Function.Properties.RightInverse.refl or
+Function.Construct.Identity.rightInverse instead."
+#-}
 
 infixr 9 _∘_
 
@@ -128,3 +157,8 @@ _∘_ {F = F} f g = record
   where
   open LeftInverse
   open EqReasoning F
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v2.0.
+Please use either Function.Properties.RightInverse.trans or
+Function.Construct.Composition.rightInverse instead."
+#-}

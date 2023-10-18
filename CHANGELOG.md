@@ -1993,6 +1993,7 @@ New modules
   Function.Properties.Bijection
   Function.Properties.RightInverse
   Function.Properties.Surjection
+  Function.Construct.Constant
   ```
 
 * The 'no infinite descent' principle for (accessible elements of) well-founded relations:
