@@ -42,7 +42,7 @@ module _
 
   open Structures ≈₁ ≈₂
   open B.IsEquivalence
-  
+
   isCongruent : ∀ b → IsCongruent (const b)
   isCongruent b = record
     { cong           = congruent ≈₁ ≈₂ (refl isEq₂)

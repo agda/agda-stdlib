@@ -16,11 +16,10 @@ open import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
 open import Level using (Level)
 open import Function
 open import Function.Consequences
-open import Function.Properties.Injection
-open import Function.Properties.Surjection
-open import Function.Properties.Equivalence
-open import Function.Properties.RightInverse
-import Function.Properties.Inverse as InverseProperties
+open import Function.Properties.Injection using (mkInjection)
+open import Function.Properties.Surjection using (mkSurjection; ↠⇒⇔)
+open import Function.Properties.Equivalence using (mkEquivalence; ⇔⇒⟶; ⇔⇒⟵)
+open import Function.Properties.RightInverse using (mkRightInverse)
 open import Relation.Binary.Core using (_=[_]⇒_)
 open import Relation.Binary.Bundles as B
 open import Relation.Binary.Indexed.Heterogeneous
