@@ -35,6 +35,10 @@ record _InverseOf_ {f₁ f₂ t₁ t₂}
   field
     left-inverse-of  : from LeftInverseOf  to
     right-inverse-of : from RightInverseOf to
+{-# WARNING_ON_USAGE _InverseOf_
+"Warning: _InverseOf_ was deprecated in v2.0.
+Please use Function.(Structures.)IsInverse instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all inverses between two setoids
@@ -74,6 +78,10 @@ record Inverse {f₁ f₂ t₁ t₂}
   open Bijection bijection public
     using (equivalence; surjective; surjection; right-inverse;
            to-from; from-to)
+{-# WARNING_ON_USAGE Inverse
+"Warning: Inverse was deprecated in v2.0.
+Please use Function.(Bundles.)Inverse instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all inverses between two sets (i.e. inverses with
@@ -83,9 +91,17 @@ infix 3 _↔_ _↔̇_
 
 _↔_ : ∀ {f t} → Set f → Set t → Set _
 From ↔ To = Inverse (P.setoid From) (P.setoid To)
+{-# WARNING_ON_USAGE _↔_
+"Warning: _↔_ was deprecated in v2.0.
+Please use Function.(Bundles.)_↔_ instead."
+#-}
 
 _↔̇_ : ∀ {i f t} {I : Set i} → Pred I f → Pred I t → Set _
 From ↔̇ To = ∀ {i} → From i ↔ To i
+{-# WARNING_ON_USAGE _↔̇_
+"Warning: _↔̇_ was deprecated in v2.0.
+Please use Function.Indexed.(Bundles.)_↔ᵢ_ instead."
+#-}
 
 inverse : ∀ {f t} {From : Set f} {To : Set t} →
           (to : From → To) (from : To → From) →
@@ -100,6 +116,10 @@ inverse to from from∘to to∘from = record
     ; right-inverse-of = to∘from
     }
   }
+{-# WARNING_ON_USAGE inverse
+"Warning: inverse was deprecated in v2.0.
+Please use Function.(Bundles.)mk↔ instead."
+#-}
 
 ------------------------------------------------------------------------
 -- If two setoids are in bijective correspondence, then there is an
@@ -131,6 +151,11 @@ id {x = S} = record
     ; right-inverse-of = LeftInverse.left-inverse-of id′
     }
   } where id′ = Left.id {S = S}
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v2.0.
+Please use either Function.Properties.Inverse.refl or
+Function.Construct.Identity.inverse instead."
+#-}
 
 -- Transitivity
 
@@ -148,6 +173,11 @@ f ∘ g = record
     ; right-inverse-of = LeftInverse.left-inverse-of (Left._∘_ (right-inverse g) (right-inverse f))
     }
   } where open Inverse
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v2.0.
+Please use either Function.Properties.Inverse.trans or
+Function.Construct.Composition.inverse instead."
+#-}
 
 -- Symmetry.
 
@@ -161,6 +191,11 @@ sym inv = record
     ; right-inverse-of = left-inverse-of
     }
   } where open Inverse inv
+{-# WARNING_ON_USAGE sym
+"Warning: sym was deprecated in v2.0.
+Please use either Function.Properties.Inverse.sym or
+Function.Construct.Symmetry.inverse instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Transformations
