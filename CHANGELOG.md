@@ -855,7 +855,7 @@ Non-backwards compatible changes
   and negated versions of the operators exposed. In some cases they could obtained by opening the
   relevant `Relation.Binary.Properties.X` file but usually they had to be redefined every time.
   
-* To fix this, these bundles now all export all 4 versons of the operator: normal, converse, negated,
+* To fix this, these bundles now all export all 4 versions of the operator: normal, converse, negated,
   converse-negated. Accordingly they are no longer exported from the corresponding `Properties` file.
 
 * To make this work for `Preorder`, it was necessary to change the name of the relation symbol.
