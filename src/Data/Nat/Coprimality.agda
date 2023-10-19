@@ -20,10 +20,11 @@ open import Data.Product.Base as Prod
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality.Core as P
-  using (_≡_; _≢_; refl; trans; cong; subst; module ≡-Reasoning)
+  using (_≡_; _≢_; refl; trans; cong; subst)
 open import Relation.Nullary as Nullary hiding (recompute)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Symmetric; Decidable)
 
 open ≤-Reasoning
 
@@ -145,4 +146,4 @@ prime⇒coprime (suc (suc _)) p _ _ _ {0} (0∣m , _) =
 prime⇒coprime (suc (suc _)) _ _ _ _ {1} _         = refl
 prime⇒coprime (suc (suc _)) p (suc _) _ n<m {(suc (suc _))} (d∣m , d∣n) =
   contradiction d∣m (p 2≤d d<m)
-  where 2≤d = s≤s (s≤s z≤n); d<m = <-transˡ (s≤s (∣⇒≤ d∣n)) n<m
+  where 2≤d = s≤s (s≤s z≤n); d<m = <-≤-trans (s≤s (∣⇒≤ d∣n)) n<m

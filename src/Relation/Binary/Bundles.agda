@@ -10,6 +10,7 @@
 
 module Relation.Binary.Bundles where
 
+open import Function.Base using (flip)
 open import Level
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core
@@ -73,12 +74,12 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 
 record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix 4 _≈_ _∼_
+  infix 4 _≈_ _≲_
   field
     Carrier    : Set c
     _≈_        : Rel Carrier ℓ₁  -- The underlying equality.
-    _∼_        : Rel Carrier ℓ₂  -- The relation.
-    isPreorder : IsPreorder _≈_ _∼_
+    _≲_        : Rel Carrier ℓ₂  -- The relation.
+    isPreorder : IsPreorder _≈_ _≲_
 
   open IsPreorder isPreorder public
     hiding (module Eq)
@@ -90,6 +91,21 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
       }
 
     open Setoid setoid public
+
+  infix 4 _⋦_
+  _⋦_ : Rel Carrier _
+  x ⋦ y = ¬ (x ≲ y)
+
+  infix 4 _≳_
+  _≳_ = flip _≲_
+
+  -- Deprecated.
+  infix 4 _∼_
+  _∼_ = _≲_
+  {-# WARNING_ON_USAGE _∼_
+  "Warning: _∼_ was deprecated in v2.0.
+  Please use _≲_ instead. "
+  #-}
 
 
 record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -107,7 +123,7 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   preorder = record { isPreorder = isPreorder }
 
   open Preorder preorder public
-    using (module Eq)
+    using (module Eq; _≳_; _⋦_)
 
 
 ------------------------------------------------------------------------
@@ -132,6 +148,7 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open Preorder preorder public
     using (module Eq)
+    renaming (_⋦_ to _≰_)
 
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -152,7 +169,7 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Poset poset public
-    using (preorder)
+    using (preorder; _≰_)
 
   module Eq where
     decSetoid : DecSetoid c ℓ₁
@@ -182,6 +199,10 @@ record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) 
 
     open Setoid setoid public
 
+  infix 4 _≮_
+  _≮_ : Rel Carrier _
+  x ≮ y = ¬ (x < y)
+
 
 record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_
@@ -199,6 +220,9 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
   strictPartialOrder = record
     { isStrictPartialOrder = isStrictPartialOrder
     }
+
+  open StrictPartialOrder strictPartialOrder public
+    using (_≮_)
 
   module Eq where
 
@@ -231,7 +255,7 @@ record TotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Poset poset public
-    using (module Eq; preorder)
+    using (module Eq; preorder; _≰_)
 
   totalPreorder : TotalPreorder c ℓ₁ ℓ₂
   totalPreorder = record
@@ -256,14 +280,16 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     { isTotalOrder = isTotalOrder
     }
 
-  open TotalOrder totalOrder public using (poset; preorder)
+  open TotalOrder totalOrder public
+    using (poset; preorder; _≰_)
 
   decPoset : DecPoset c ℓ₁ ℓ₂
   decPoset = record
     { isDecPartialOrder = isDecPartialOrder
     }
 
-  open DecPoset decPoset public using (module Eq)
+  open DecPoset decPoset public
+    using (module Eq)
 
 
 -- Note that these orders are decidable. The current implementation
@@ -288,7 +314,7 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
     }
 
   open StrictPartialOrder strictPartialOrder public
-    using (module Eq)
+    using (module Eq; _≮_)
 
   decSetoid : DecSetoid c ℓ₁
   decSetoid = record
@@ -298,6 +324,24 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
   "Warning: decSetoid was deprecated in v1.3.
   Please use Eq.decSetoid instead."
   #-}
+
+record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈_ _<_
+  field
+    Carrier            : Set c
+    _≈_                : Rel Carrier ℓ₁
+    _<_                : Rel Carrier ℓ₂
+    isDenseLinearOrder : IsDenseLinearOrder _≈_ _<_
+
+  open IsDenseLinearOrder isDenseLinearOrder public
+    using (isStrictTotalOrder; dense)
+
+  strictTotalOrder : StrictTotalOrder c ℓ₁ ℓ₂
+  strictTotalOrder = record
+    { isStrictTotalOrder = isStrictTotalOrder
+    }
+
+  open StrictTotalOrder strictTotalOrder public
 
 
 ------------------------------------------------------------------------

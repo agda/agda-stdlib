@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Preorder)
 
 module Relation.Unary.Closure.Preorder {a r e} (P : Preorder a e r) where
 

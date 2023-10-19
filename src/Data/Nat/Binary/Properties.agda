@@ -15,7 +15,7 @@ open import Algebra.Consequences.Propositional
 open import Data.Bool.Base using (if_then_else_; Bool; true; false)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Binary.Base
-open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
+open import Data.Nat as ℕ using (ℕ; z≤n; s≤s; s<s⁻¹)
 open import Data.Nat.DivMod using (_%_; _/_; m/n≤m; +-distrib-/-∣ˡ)
 open import Data.Nat.Divisibility using (∣-refl)
 import Data.Nat.Base as ℕᵇ
@@ -32,7 +32,6 @@ open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
 open import Relation.Binary.PropositionalEquality
-import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
@@ -157,9 +156,9 @@ fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
   tail-homo ℕ.zero = refl
   tail-homo (ℕ.suc ℕ.zero) = refl
   tail-homo (ℕ.suc (ℕ.suc n)) = begin
-    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡˘⟨ tail-suc (fromℕ' n) ⟩
+    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡⟨ tail-suc (fromℕ' n) ⟨
     suc (tail (suc (fromℕ' n)))            ≡⟨ cong suc (tail-homo n) ⟩
-    fromℕ' (ℕ.suc (n / 2))                 ≡˘⟨ cong fromℕ' (+-distrib-/-∣ˡ {2} n ∣-refl) ⟩
+    fromℕ' (ℕ.suc (n / 2))                 ≡⟨ cong fromℕ' (+-distrib-/-∣ˡ {2} n ∣-refl) ⟨
     fromℕ' (ℕ.suc (ℕ.suc n) / 2)           ∎
 
   fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ.helper n n w ≡ fromℕ' n
@@ -168,7 +167,7 @@ fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
     split-injective (begin
       split (fromℕ.helper n (ℕ.suc n) (ℕ.suc w))         ≡⟨ split-if _ _ ⟩
       just (n % 2 ℕ.≡ᵇ 0) , fromℕ.helper n (n / 2) w     ≡⟨ cong (_ ,_) rec-n/2 ⟩
-      just (n % 2 ℕ.≡ᵇ 0) , fromℕ' (n / 2)               ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
+      just (n % 2 ℕ.≡ᵇ 0) , fromℕ' (n / 2)               ≡⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟨
       head (fromℕ' (ℕ.suc n)) , tail (fromℕ' (ℕ.suc n))  ≡⟨⟩
       split (fromℕ' (ℕ.suc n))                           ∎)
     where rec-n/2 = fromℕ-helper≡fromℕ' (n / 2) w (ℕₚ.≤-trans (m/n≤m n 2) n≤w)
@@ -312,17 +311,17 @@ toℕ-cancel-< : ∀ {x y} → toℕ x ℕ.< toℕ y → x < y
 toℕ-cancel-< {zero}     {2[1+ y ]} x<y = 0<even
 toℕ-cancel-< {zero}     {1+[2 y ]} x<y = 0<odd
 toℕ-cancel-< {2[1+ x ]} {2[1+ y ]} x<y =
-  even<even (toℕ-cancel-< (ℕ.≤-pred (ℕₚ.*-cancelˡ-< 2 _ _ x<y)))
+  even<even (toℕ-cancel-< (s<s⁻¹ (ℕₚ.*-cancelˡ-< 2 _ _ x<y)))
 toℕ-cancel-< {2[1+ x ]} {1+[2 y ]} x<y
   rewrite ℕₚ.*-distribˡ-+ 2 1 (toℕ x) =
-  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (ℕₚ.≤-pred x<y))))
+  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (s<s⁻¹ x<y))))
 toℕ-cancel-< {1+[2 x ]} {2[1+ y ]} x<y with toℕ x ℕₚ.≟ toℕ y
 ... | yes x≡y = odd<even (inj₂ (toℕ-injective x≡y))
 ... | no  x≢y
   rewrite ℕₚ.+-suc (toℕ y) (toℕ y ℕ.+ 0) =
   odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 2 (ℕₚ.+-cancelˡ-≤ 2 _ _ x<y)) x≢y)))
 toℕ-cancel-< {1+[2 x ]} {1+[2 y ]} x<y =
-  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (ℕ.≤-pred x<y)))
+  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 _ _ (s<s⁻¹ x<y)))
 
 fromℕ-cancel-< : ∀ {x y} → fromℕ x < fromℕ y → x ℕ.< y
 fromℕ-cancel-< = subst₂ ℕ._<_ (toℕ-fromℕ _) (toℕ-fromℕ _) ∘ toℕ-mono-<
@@ -365,6 +364,9 @@ toℕ-isMonomorphism-< = record
 <-trans (odd<odd x<y) (odd<even (inj₁ y<z))    =  odd<even (inj₁ (<-trans x<y y<z))
 <-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
 <-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
+
+<-asym : Asymmetric _<_
+<-asym {x} {y} = trans∧irr⇒asym refl <-trans <-irrefl {x} {y}
 
 -- Should not be implemented via the morphism `toℕ` in order to
 -- preserve O(log n) time requirement.
@@ -409,9 +411,8 @@ _<?_ = tri⇒dec< <-cmp
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  ; compare              = <-cmp
   }
 
 ------------------------------------------------------------------------
@@ -601,12 +602,18 @@ x ≤? y with <-cmp x y
 ------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
-module ≤-Reasoning = InequalityReasoning
-  ≤-isPreorder
-  <-trans
-  (resp₂ _<_) <⇒≤
-  <-≤-trans ≤-<-trans
-  hiding (step-≈; step-≈˘)
+module ≤-Reasoning where
+
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-asym
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-≤-trans
+    ≤-<-trans
+    public
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
 
 ------------------------------------------------------------------------
 -- Properties of _<ℕ_
@@ -1448,7 +1455,7 @@ pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
 pred-mono-≤ {x} {y} x≤y = begin
   pred x             ≡⟨ cong pred (sym (fromℕ-toℕ x)) ⟩
   pred (fromℕ m)     ≡⟨ sym (fromℕ-pred m) ⟩
-  fromℕ (ℕ.pred m)   ≤⟨ fromℕ-mono-≤ (ℕₚ.pred-mono (toℕ-mono-≤ x≤y)) ⟩
+  fromℕ (ℕ.pred m)   ≤⟨ fromℕ-mono-≤ (ℕₚ.pred-mono-≤ (toℕ-mono-≤ x≤y)) ⟩
   fromℕ (ℕ.pred n)   ≡⟨ fromℕ-pred n ⟩
   pred (fromℕ n)     ≡⟨ cong pred (fromℕ-toℕ y) ⟩
   pred y             ∎

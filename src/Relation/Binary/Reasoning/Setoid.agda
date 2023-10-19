@@ -20,27 +20,24 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Reasoning.Syntax
 
 module Relation.Binary.Reasoning.Setoid {s₁ s₂} (S : Setoid s₁ s₂) where
 
 open Setoid S
 
+import Relation.Binary.Reasoning.Base.Single _≈_ refl trans
+  as SingleRelReasoning
+
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
-open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans as Base public
+-- Export the combinators for single relation reasoning, hiding the
+-- single misnamed combinator.
+open SingleRelReasoning public
   hiding (step-∼)
+  renaming (∼-go to ≈-go)
 
-infixr 2 step-≈ step-≈˘
-
--- A step using an equality
-
-step-≈ = Base.step-∼
-syntax step-≈ x y≈z x≈y = x ≈⟨ x≈y ⟩ y≈z
-
--- A step using a symmetric equality
-
-step-≈˘ : ∀ x {y z} → y IsRelatedTo z → y ≈ x → x IsRelatedTo z
-step-≈˘ x y∼z y≈x = x ≈⟨ sym y≈x ⟩ y∼z
-syntax step-≈˘ x y≈z y≈x = x ≈˘⟨ y≈x ⟩ y≈z
+-- Re-export the equality-based combinators instead
+open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ ≈-go sym public

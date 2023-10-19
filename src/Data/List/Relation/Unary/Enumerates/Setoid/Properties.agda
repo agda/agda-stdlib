@@ -22,7 +22,7 @@ open import Function.Bundles using (Surjection)
 open import Function.Definitions using (Surjective)
 open import Function.Consequences using (strictlySurjective⇒surjective)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Properties.Setoid using (respʳ-flip)
 

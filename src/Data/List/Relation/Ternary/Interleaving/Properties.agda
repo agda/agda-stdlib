@@ -14,11 +14,11 @@ open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Properties using (reverse-involutive)
 open import Data.List.Relation.Ternary.Interleaving hiding (map)
 open import Function.Base using (_$_)
-open import Relation.Binary
---open import Relation.Binary.PropositionalEquality
---  using (_≡_; refl; sym; cong; module ≡-Reasoning)
+open import Relation.Binary.Core using (REL)
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; module ≡-Reasoning)
+  using (_≡_; refl; sym; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open ≡-Reasoning
 
 ------------------------------------------------------------------------

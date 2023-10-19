@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.List.Base hiding (_∷ʳ_)
+open import Data.List.Base hiding (_∷ʳ_; find)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Membership.Setoid as Membership
@@ -26,8 +26,13 @@ open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable) renaming (_⊆_ to _⋐_)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
+open import Relation.Binary.Reasoning.Syntax
 
 open Setoid using (Carrier)
 
@@ -108,31 +113,17 @@ module _ (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 
 module ⊆-Reasoning (S : Setoid a ℓ) where
+  open Membership S using (_∈_)
 
-  open Setoid S renaming (Carrier to A)
-  open Subset S
-  open Membership S
-
-  private
-    module Base = PreorderReasoning (⊆-preorder S)
+  private module Base = PreorderReasoning (⊆-preorder S)
 
   open Base public
-    hiding (step-∼; step-≈; step-≈˘)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-≲; step-∼)
+    renaming (≲-go to ⊆-go; ≈-go to ≋-go)
 
-  infixr 2 step-⊆ step-≋ step-≋˘
-  infix 1 step-∈
-
-  step-∈ : ∀ x {xs ys} → xs IsRelatedTo ys → x ∈ xs → x ∈ ys
-  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
-
-  step-⊆  = Base.step-∼
-  step-≋  = Base.step-≈
-  step-≋˘ = Base.step-≈˘
-
-  syntax step-∈  x  xs⊆ys x∈xs  = x  ∈⟨  x∈xs  ⟩ xs⊆ys
-  syntax step-⊆  xs ys⊆zs xs⊆ys = xs ⊆⟨  xs⊆ys ⟩ ys⊆zs
-  syntax step-≋  xs ys⊆zs xs≋ys = xs ≋⟨  xs≋ys ⟩ ys⊆zs
-  syntax step-≋˘ xs ys⊆zs xs≋ys = xs ≋˘⟨ xs≋ys ⟩ ys⊆zs
+  open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → Base.begin x) public
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
+  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ ≋-go public
 
 ------------------------------------------------------------------------
 -- Relationship with other binary relations

@@ -30,7 +30,7 @@ open import Data.Unit.Polymorphic.Properties using (⊤↔⊤*)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Data.Vec.N-ary using (N-ary)
 open import Function.Base using (_∘′_; _∘_; id; const)
-open import Function.Bundles using (_↔_; mk↔′; mk↔)
+open import Function.Bundles using (_↔_; mk↔ₛ′; mk↔)
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
 open import Level using (Level; lift)
 open import Relation.Unary using (IUniversal; Universal; _⇒_)
@@ -90,7 +90,7 @@ lookup as (zero {n})  = head n as
 lookup as (suc {n} k) = lookup (tail n as) k
 
 replicate : ∀ n → A → A ^ n
-replicate n a = fromVec (Vec.replicate a)
+replicate n a = fromVec (Vec.replicate n a)
 
 tabulate : ∀ n → (Fin n → A) → A ^ n
 tabulate n f = fromVec (Vec.tabulate f)
@@ -155,7 +155,7 @@ unzip : ∀ n → (A × B) ^ n → A ^ n × B ^ n
 unzip = unzipWith id
 
 lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
-lift↔ 0               A↔B = mk↔′ _ _ (const refl) (const refl)
+lift↔ 0               A↔B = mk↔ₛ′ _ _ (const refl) (const refl)
 lift↔ 1               A↔B = A↔B
 lift↔ (suc n@(suc _)) A↔B = ×-cong A↔B (lift↔ n A↔B)
 

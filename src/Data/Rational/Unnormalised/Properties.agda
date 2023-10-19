@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of unnormalized Rational numbers
@@ -17,7 +17,6 @@ open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
-open import Data.Empty using (⊥-elim)
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
@@ -31,15 +30,20 @@ open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
 import Data.Sign as Sign
 open import Function.Base using (_on_; _$_; _∘_; flip)
 open import Level using (0ℓ)
-open import Relation.Nullary using (¬_; yes; no)
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction; contraposition)
-open import Relation.Binary
+open import Relation.Nullary.Decidable.Core as Dec using (yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder; DenseLinearOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsApartnessRelation; IsTotalPreorder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder; IsDenseLinearOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Cotransitive; Tight; Decidable; Antisymmetric; Asymmetric; Dense; Total; Trans; Trichotomous; Irreflexive; Irrelevant; _Respectsˡ_; _Respectsʳ_; _Respects₂_; tri≈; tri<; tri>)
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
-open import Relation.Nullary using (yes; no)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+open import Relation.Binary.Reasoning.Syntax
 
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
@@ -100,20 +104,20 @@ infix 4 _≃?_
 _≃?_ : Decidable _≃_
 p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p)
 
-0≠1 : 0ℚᵘ ≠ 1ℚᵘ
-0≠1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
+0≄1 : 0ℚᵘ ≄ 1ℚᵘ
+0≄1 = Dec.from-no (0ℚᵘ ≃? 1ℚᵘ)
 
-≃-≠-irreflexive : Irreflexive _≃_ _≠_
-≃-≠-irreflexive x≃y x≠y = x≠y x≃y
+≃-≄-irreflexive : Irreflexive _≃_ _≄_
+≃-≄-irreflexive x≃y x≄y = x≄y x≃y
 
-≠-symmetric : Symmetric _≠_
-≠-symmetric x≠y y≃x = x≠y (≃-sym y≃x)
+≄-symmetric : Symmetric _≄_
+≄-symmetric x≄y y≃x = x≄y (≃-sym y≃x)
 
-≠-cotransitive : Cotransitive _≠_
-≠-cotransitive {x} {y} x≠y z with x ≃? z | z ≃? y
-... | no  x≠z | _       = inj₁ x≠z
-... | yes _   | no z≠y  = inj₂ z≠y
-... | yes x≃z | yes z≃y = ⊥-elim (x≠y (≃-trans x≃z z≃y))
+≄-cotransitive : Cotransitive _≄_
+≄-cotransitive {x} {y} x≄y z with x ≃? z | z ≃? y
+... | no  x≄z | _       = inj₁ x≄z
+... | yes _   | no z≄y  = inj₂ z≄y
+... | yes x≃z | yes z≃y = contradiction (≃-trans x≃z z≃y) x≄y
 
 ≃-isEquivalence : IsEquivalence _≃_
 ≃-isEquivalence = record
@@ -128,16 +132,16 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
   ; _≟_           = _≃?_
   }
 
-≠-isApartnessRelation : IsApartnessRelation _≃_ _≠_
-≠-isApartnessRelation = record
-  { irrefl  = ≃-≠-irreflexive
-  ; sym     = ≠-symmetric
-  ; cotrans = ≠-cotransitive
+≄-isApartnessRelation : IsApartnessRelation _≃_ _≄_
+≄-isApartnessRelation = record
+  { irrefl  = ≃-≄-irreflexive
+  ; sym     = ≄-symmetric
+  ; cotrans = ≄-cotransitive
   }
 
-≠-tight : Tight _≃_ _≠_
-proj₁ (≠-tight p q) ¬p≠q = Dec.decidable-stable (p ≃? q) ¬p≠q
-proj₂ (≠-tight p q) p≃q p≠q = p≠q p≃q
+≄-tight : Tight _≃_ _≄_
+proj₁ (≄-tight p q) ¬p≄q = Dec.decidable-stable (p ≃? q) ¬p≄q
+proj₂ (≄-tight p q) p≃q p≄q = p≄q p≃q
 
 ≃-setoid : Setoid 0ℓ 0ℓ
 ≃-setoid = record
@@ -151,6 +155,19 @@ proj₂ (≠-tight p q) p≃q p≠q = p≠q p≃q
 
 module ≃-Reasoning = SetoidReasoning ≃-setoid
 
+↥p≡0⇒p≃0 : ∀ p → ↥ p ≡ 0ℤ → p ≃ 0ℚᵘ
+↥p≡0⇒p≃0 p ↥p≡0 = *≡* (cong (ℤ._* (↧ 0ℚᵘ)) ↥p≡0)
+
+p≃0⇒↥p≡0 : ∀ p → p ≃ 0ℚᵘ → ↥ p ≡ 0ℤ
+p≃0⇒↥p≡0 p (*≡* eq) = begin
+  ↥ p          ≡⟨ ℤ.*-identityʳ (↥ p) ⟨
+  ↥ p ℤ.* 1ℤ  ≡⟨ eq ⟩
+  0ℤ           ∎
+  where open ≡-Reasoning
+
+↥p≡↥q≡0⇒p≃q : ∀ p q → ↥ p ≡ 0ℤ → ↥ q ≡ 0ℤ → p ≃ q
+↥p≡↥q≡0⇒p≃q p q ↥p≡0 ↥q≡0 = ≃-trans (↥p≡0⇒p≃0 p ↥p≡0) (≃-sym (↥p≡0⇒p≃0 _ ↥q≡0))
+
 ------------------------------------------------------------------------
 -- Properties of -_
 ------------------------------------------------------------------------
@@ -163,14 +180,14 @@ neg-involutive p rewrite neg-involutive-≡ p = ≃-refl
 
 -‿cong : Congruent₁ _≃_ (-_)
 -‿cong {p@record{}} {q@record{}} (*≡* p≡q) = *≡* (begin
-  ↥(- p) ℤ.* ↧ q            ≡˘⟨ ℤ.*-identityˡ (ℤ.- (↥ p) ℤ.* ↧ q) ⟩
-  1ℤ ℤ.* (↥(- p) ℤ.* ↧ q)   ≡˘⟨ ℤ.*-assoc 1ℤ (↥ (- p)) (↧ q) ⟩
-  (1ℤ ℤ.* ℤ.-(↥ p)) ℤ.* ↧ q ≡˘⟨ cong (ℤ._* ↧ q) (ℤ.neg-distribʳ-* 1ℤ (↥ p)) ⟩
+  ↥(- p) ℤ.* ↧ q            ≡⟨ ℤ.*-identityˡ (ℤ.- (↥ p) ℤ.* ↧ q) ⟨
+  1ℤ ℤ.* (↥(- p) ℤ.* ↧ q)   ≡⟨ ℤ.*-assoc 1ℤ (↥ (- p)) (↧ q) ⟨
+  (1ℤ ℤ.* ℤ.-(↥ p)) ℤ.* ↧ q ≡⟨ cong (ℤ._* ↧ q) (ℤ.neg-distribʳ-* 1ℤ (↥ p)) ⟨
   ℤ.-(1ℤ ℤ.* ↥ p) ℤ.* ↧ q   ≡⟨  cong (ℤ._* ↧ q) (ℤ.neg-distribˡ-* 1ℤ (↥ p)) ⟩
   (-1ℤ ℤ.* ↥ p) ℤ.* ↧ q     ≡⟨  ℤ.*-assoc ℤ.-1ℤ (↥ p) (↧ q) ⟩
   -1ℤ ℤ.* (↥ p ℤ.* ↧ q)     ≡⟨  cong (ℤ.-1ℤ ℤ.*_) p≡q ⟩
-  -1ℤ ℤ.* (↥ q ℤ.* ↧ p)     ≡˘⟨ ℤ.*-assoc ℤ.-1ℤ (↥ q) (↧ p) ⟩
-  (-1ℤ ℤ.* ↥ q) ℤ.* ↧ p     ≡˘⟨ cong (ℤ._* ↧ p) (ℤ.neg-distribˡ-* 1ℤ (↥ q)) ⟩
+  -1ℤ ℤ.* (↥ q ℤ.* ↧ p)     ≡⟨ ℤ.*-assoc ℤ.-1ℤ (↥ q) (↧ p) ⟨
+  (-1ℤ ℤ.* ↥ q) ℤ.* ↧ p     ≡⟨ cong (ℤ._* ↧ p) (ℤ.neg-distribˡ-* 1ℤ (↥ q)) ⟨
   ℤ.-(1ℤ ℤ.* ↥ q) ℤ.* ↧ p   ≡⟨  cong (ℤ._* ↧ p) (ℤ.neg-distribʳ-* 1ℤ (↥ q)) ⟩
   (1ℤ ℤ.* ↥(- q)) ℤ.* ↧ p   ≡⟨  ℤ.*-assoc 1ℤ (ℤ.- (↥ q)) (↧ p) ⟩
   1ℤ ℤ.* (↥(- q) ℤ.* ↧ p)   ≡⟨  ℤ.*-identityˡ (↥ (- q) ℤ.* ↧ p) ⟩
@@ -179,7 +196,7 @@ neg-involutive p rewrite neg-involutive-≡ p = ≃-refl
 
 neg-mono-< : -_ Preserves  _<_ ⟶ _>_
 neg-mono-< {p@record{}} {q@record{}} (*<* p<q) = *<* $ begin-strict
-  ℤ.-  ↥ q ℤ.* ↧ p     ≡˘⟨ ℤ.neg-distribˡ-* (↥ q) (↧ p) ⟩
+  ℤ.-  ↥ q ℤ.* ↧ p     ≡⟨ ℤ.neg-distribˡ-* (↥ q) (↧ p) ⟨
   ℤ.- (↥ q ℤ.* ↧ p)    <⟨ ℤ.neg-mono-< p<q ⟩
   ℤ.- (↥ p ℤ.* ↧ q)    ≡⟨ ℤ.neg-distribˡ-* (↥ p) (↧ q) ⟩
   ↥ (- p) ℤ.* ↧ (- q)  ∎
@@ -187,10 +204,10 @@ neg-mono-< {p@record{}} {q@record{}} (*<* p<q) = *<* $ begin-strict
 
 neg-cancel-< : ∀ {p q} → - p < - q → q < p
 neg-cancel-< {p@record{}} {q@record{}} (*<* -↥p↧q<-↥q↧p) = *<* $ begin-strict
-  ↥ q ℤ.* ↧ p              ≡˘⟨ ℤ.neg-involutive (↥ q ℤ.* ↧ p) ⟩
+  ↥ q ℤ.* ↧ p              ≡⟨ ℤ.neg-involutive (↥ q ℤ.* ↧ p) ⟨
   ℤ.- ℤ.- (↥ q ℤ.* ↧ p)    ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ q) (↧ p)) ⟩
   ℤ.- ((ℤ.- ↥ q) ℤ.* ↧ p)  <⟨ ℤ.neg-mono-< -↥p↧q<-↥q↧p ⟩
-  ℤ.- ((ℤ.- ↥ p) ℤ.* ↧ q)  ≡˘⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ p) (↧ q)) ⟩
+  ℤ.- ((ℤ.- ↥ p) ℤ.* ↧ q)  ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ p) (↧ q)) ⟨
   ℤ.- ℤ.- (↥ p ℤ.* ↧ q)    ≡⟨ ℤ.neg-involutive (↥ p ℤ.* ↧ q) ⟩
   ↥ p ℤ.* ↧ q              ∎
   where open ℤ.≤-Reasoning
@@ -218,12 +235,12 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
   ℤ.*-cancelʳ-≤-pos (n₁ ℤ.* d₃) (n₃ ℤ.* d₁) d₂ $ begin
   (n₁  ℤ.* d₃) ℤ.* d₂  ≡⟨ ℤ.*-assoc n₁ d₃ d₂ ⟩
   n₁   ℤ.* (d₃ ℤ.* d₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm d₃ d₂) ⟩
-  n₁   ℤ.* (d₂ ℤ.* d₃) ≡˘⟨ ℤ.*-assoc n₁ d₂ d₃ ⟩
+  n₁   ℤ.* (d₂ ℤ.* d₃) ≡⟨ ℤ.*-assoc n₁ d₂ d₃ ⟨
   (n₁  ℤ.* d₂) ℤ.* d₃  ≤⟨ ℤ.*-monoʳ-≤-nonNeg d₃ eq₁ ⟩
   (n₂  ℤ.* d₁) ℤ.* d₃  ≡⟨ cong (ℤ._* d₃) (ℤ.*-comm n₂ d₁) ⟩
   (d₁ ℤ.* n₂)  ℤ.* d₃  ≡⟨ ℤ.*-assoc d₁ n₂ d₃ ⟩
   d₁  ℤ.* (n₂  ℤ.* d₃) ≤⟨ ℤ.*-monoˡ-≤-nonNeg d₁ eq₂ ⟩
-  d₁  ℤ.* (n₃  ℤ.* d₂) ≡˘⟨ ℤ.*-assoc d₁ n₃ d₂ ⟩
+  d₁  ℤ.* (n₃  ℤ.* d₂) ≡⟨ ℤ.*-assoc d₁ n₃ d₂ ⟨
   (d₁ ℤ.* n₃)  ℤ.* d₂  ≡⟨ cong (ℤ._* d₂) (ℤ.*-comm d₁ n₃) ⟩
   (n₃  ℤ.* d₁) ℤ.* d₂  ∎ where open ℤ.≤-Reasoning
 
@@ -406,17 +423,50 @@ drop-*<* (*<* pq<qp) = pq<qp
 <-asym : Asymmetric _<_
 <-asym (*<* x<y) = ℤ.<-asym x<y ∘ drop-*<*
 
+<-dense : Dense _<_
+<-dense {p} {q} (*<* p<q) = m , p<m , m<q
+  where
+  open ℤ.≤-Reasoning
+  m : ℚᵘ
+  m = mkℚᵘ (↥ p ℤ.+ ↥ q) (pred (↧ₙ p ℕ.+ ↧ₙ q))
+
+  p<m : p < m
+  p<m = *<* (begin-strict
+    ↥ p ℤ.* ↧ m
+      ≡⟨⟩
+    ↥ p ℤ.* (↧ p ℤ.+ ↧ q)
+      ≡⟨ ℤ.*-distribˡ-+ (↥ p) (↧ p) (↧ q) ⟩
+    ↥ p ℤ.* ↧ p ℤ.+ ↥ p ℤ.* ↧ q
+      <⟨ ℤ.+-monoʳ-< (↥ p ℤ.* ↧ p) p<q ⟩
+    ↥ p ℤ.* ↧ p ℤ.+ ↥ q ℤ.* ↧ p
+      ≡⟨ ℤ.*-distribʳ-+ (↧ p) (↥ p) (↥ q) ⟨
+    (↥ p ℤ.+ ↥ q) ℤ.* ↧ p
+      ≡⟨⟩
+    ↥ m ℤ.* ↧ p ∎)
+
+  m<q : m < q
+  m<q = *<* (begin-strict
+    ↥ m ℤ.* ↧ q
+      ≡⟨ ℤ.*-distribʳ-+ (↧ q) (↥ p) (↥ q) ⟩
+    ↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ q
+      <⟨ ℤ.+-monoˡ-< (↥ q ℤ.* ↧ q) p<q ⟩
+    ↥ q ℤ.* ↧ p ℤ.+ ↥ q ℤ.* ↧ q
+      ≡⟨ ℤ.*-distribˡ-+ (↥ q) (↧ p) (↧ q) ⟨
+    ↥ q ℤ.* (↧ p ℤ.+ ↧ q)
+      ≡⟨⟩
+    ↥ q ℤ.* ↧ m ∎)
+
 ≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans {p} {q} {r} (*≤* p≤q) (*<* q<r) = *<* $
   ℤ.*-cancelʳ-<-nonNeg _ $ begin-strict
   n₁ ℤ.*  d₃ ℤ.* d₂  ≡⟨ ℤ.*-assoc n₁ d₃ d₂ ⟩
   n₁ ℤ.* (d₃ ℤ.* d₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm d₃ d₂) ⟩
-  n₁ ℤ.* (d₂ ℤ.* d₃) ≡˘⟨ ℤ.*-assoc n₁ d₂ d₃ ⟩
+  n₁ ℤ.* (d₂ ℤ.* d₃) ≡⟨ ℤ.*-assoc n₁ d₂ d₃ ⟨
   n₁ ℤ.*  d₂ ℤ.* d₃  ≤⟨ ℤ.*-monoʳ-≤-nonNeg (↧ r) p≤q ⟩
   n₂ ℤ.*  d₁ ℤ.* d₃  ≡⟨ cong (ℤ._* d₃) (ℤ.*-comm n₂ d₁) ⟩
   d₁ ℤ.*  n₂ ℤ.* d₃  ≡⟨ ℤ.*-assoc d₁ n₂ d₃ ⟩
   d₁ ℤ.* (n₂ ℤ.* d₃) <⟨ ℤ.*-monoˡ-<-pos (↧ p) q<r ⟩
-  d₁ ℤ.* (n₃ ℤ.* d₂) ≡˘⟨ ℤ.*-assoc d₁ n₃ d₂ ⟩
+  d₁ ℤ.* (n₃ ℤ.* d₂) ≡⟨ ℤ.*-assoc d₁ n₃ d₂ ⟨
   d₁ ℤ.*  n₃ ℤ.* d₂  ≡⟨ cong (ℤ._* d₂) (ℤ.*-comm d₁ n₃) ⟩
   n₃ ℤ.*  d₁ ℤ.* d₂  ∎
   where open ℤ.≤-Reasoning
@@ -427,12 +477,12 @@ drop-*<* (*<* pq<qp) = pq<qp
   ℤ.*-cancelʳ-<-nonNeg _ $ begin-strict
   n₁ ℤ.*  d₃ ℤ.* d₂  ≡⟨ ℤ.*-assoc n₁ d₃ d₂ ⟩
   n₁ ℤ.* (d₃ ℤ.* d₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm d₃ d₂) ⟩
-  n₁ ℤ.* (d₂ ℤ.* d₃) ≡˘⟨ ℤ.*-assoc n₁ d₂ d₃ ⟩
+  n₁ ℤ.* (d₂ ℤ.* d₃) ≡⟨ ℤ.*-assoc n₁ d₂ d₃ ⟨
   n₁ ℤ.*  d₂ ℤ.* d₃  <⟨ ℤ.*-monoʳ-<-pos (↧ r) p<q ⟩
   n₂ ℤ.*  d₁ ℤ.* d₃  ≡⟨ cong (ℤ._* d₃) (ℤ.*-comm n₂ d₁) ⟩
   d₁ ℤ.*  n₂ ℤ.* d₃  ≡⟨ ℤ.*-assoc d₁ n₂ d₃ ⟩
   d₁ ℤ.* (n₂ ℤ.* d₃) ≤⟨ ℤ.*-monoˡ-≤-nonNeg (↧ p) q≤r ⟩
-  d₁ ℤ.* (n₃ ℤ.* d₂) ≡˘⟨ ℤ.*-assoc d₁ n₃ d₂ ⟩
+  d₁ ℤ.* (n₃ ℤ.* d₂) ≡⟨ ℤ.*-assoc d₁ n₃ d₂ ⟨
   d₁ ℤ.*  n₃ ℤ.* d₂  ≡⟨ cong (ℤ._* d₂) (ℤ.*-comm d₁ n₃) ⟩
   n₃ ℤ.*  d₁ ℤ.* d₂  ∎
   where open ℤ.≤-Reasoning
@@ -463,15 +513,15 @@ _>?_ = flip _<?_
   ℤ.*-cancelʳ-<-nonNeg _ $ begin-strict
   n₁ ℤ.*  d₃ ℤ.* d₂  ≡⟨ ℤ.*-assoc n₁ d₃ d₂ ⟩
   n₁ ℤ.* (d₃ ℤ.* d₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm d₃ d₂) ⟩
-  n₁ ℤ.* (d₂ ℤ.* d₃) ≡˘⟨ ℤ.*-assoc n₁ d₂ d₃ ⟩
+  n₁ ℤ.* (d₂ ℤ.* d₃) ≡⟨ ℤ.*-assoc n₁ d₂ d₃ ⟨
   n₁ ℤ.*  d₂ ℤ.* d₃  <⟨ ℤ.*-monoʳ-<-pos (↧ r) p<q ⟩
   n₂ ℤ.*  d₁ ℤ.* d₃  ≡⟨ ℤ.*-assoc n₂ d₁ d₃ ⟩
   n₂ ℤ.* (d₁ ℤ.* d₃) ≡⟨ cong (n₂ ℤ.*_) (ℤ.*-comm d₁ d₃) ⟩
-  n₂ ℤ.* (d₃ ℤ.* d₁) ≡˘⟨ ℤ.*-assoc n₂ d₃ d₁ ⟩
+  n₂ ℤ.* (d₃ ℤ.* d₁) ≡⟨ ℤ.*-assoc n₂ d₃ d₁ ⟨
   n₂ ℤ.*  d₃ ℤ.* d₁  ≡⟨ cong (ℤ._* d₁) q≡r ⟩
   n₃ ℤ.*  d₂ ℤ.* d₁  ≡⟨ ℤ.*-assoc n₃ d₂ d₁ ⟩
   n₃ ℤ.* (d₂ ℤ.* d₁) ≡⟨ cong (n₃ ℤ.*_) (ℤ.*-comm d₂ d₁) ⟩
-  n₃ ℤ.* (d₁ ℤ.* d₂) ≡˘⟨ ℤ.*-assoc n₃ d₁ d₂ ⟩
+  n₃ ℤ.* (d₁ ℤ.* d₂) ≡⟨ ℤ.*-assoc n₃ d₁ d₂ ⟨
   n₃ ℤ.*  d₁ ℤ.* d₂  ∎
   where open ℤ.≤-Reasoning
         n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; d₁ = ↧ p; d₂ = ↧ q; d₃ = ↧ r
@@ -506,9 +556,14 @@ _>?_ = flip _<?_
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≃_ _<_
 <-isStrictTotalOrder = record
-  { isEquivalence = ≃-isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  ; compare              = <-cmp
+  }
+
+<-isDenseLinearOrder : IsDenseLinearOrder _≃_ _<_
+<-isDenseLinearOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  ; dense              = <-dense
   }
 
 ------------------------------------------------------------------------
@@ -529,6 +584,11 @@ _>?_ = flip _<?_
   { isStrictTotalOrder = <-isStrictTotalOrder
   }
 
+<-denseLinearOrder : DenseLinearOrder 0ℓ 0ℓ 0ℓ
+<-denseLinearOrder = record
+  { isDenseLinearOrder = <-isDenseLinearOrder
+  }
+
 ------------------------------------------------------------------------
 -- A specialised module for reasoning about the _≤_ and _<_ relations
 ------------------------------------------------------------------------
@@ -536,22 +596,19 @@ _>?_ = flip _<?_
 module ≤-Reasoning where
   import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-asym
     <-trans
     <-resp-≃
     <⇒≤
     <-≤-trans
     ≤-<-trans
     as Triple
-  open Triple public hiding (step-≈; step-≈˘)
 
-  infixr 2 step-≃ step-≃˘
+  open Triple public
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
+    renaming (≈-go to ≃-go)
 
-  step-≃  = Triple.step-≈
-  step-≃˘ = Triple.step-≈˘
-
-  syntax step-≃  x y∼z x≃y = x ≃⟨  x≃y ⟩ y∼z
-  syntax step-≃˘ x y∼z y≃x = x ≃˘⟨ y≃x ⟩ y∼z
-
+  open ≃-syntax _IsRelatedTo_ _IsRelatedTo_ ≃-go ≃-sym public
 
 ------------------------------------------------------------------------
 -- Properties of ↥_/↧_
@@ -704,14 +761,14 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 +-inverseˡ : LeftInverse _≃_ 0ℚᵘ -_ _+_
 +-inverseˡ p@record{} = *≡* let n = ↥ p; d = ↧ p in
   ((ℤ.- n) ℤ.* d ℤ.+ n ℤ.* d) ℤ.* 1ℤ ≡⟨ ℤ.*-identityʳ ((ℤ.- n) ℤ.* d ℤ.+ n ℤ.* d) ⟩
-  (ℤ.- n) ℤ.* d ℤ.+ n ℤ.* d          ≡˘⟨ cong (ℤ._+ (n ℤ.* d)) (ℤ.neg-distribˡ-* n d) ⟩
+  (ℤ.- n) ℤ.* d ℤ.+ n ℤ.* d          ≡⟨ cong (ℤ._+ (n ℤ.* d)) (ℤ.neg-distribˡ-* n d) ⟨
   ℤ.- (n ℤ.* d) ℤ.+ n ℤ.* d          ≡⟨ ℤ.+-inverseˡ (n ℤ.* d) ⟩
   0ℤ                                 ∎ where open ≡-Reasoning
 
 +-inverseʳ : RightInverse _≃_ 0ℚᵘ -_ _+_
 +-inverseʳ p@record{} = *≡* let n = ↥ p; d = ↧ p in
   (n ℤ.* d ℤ.+ (ℤ.- n) ℤ.* d) ℤ.* 1ℤ ≡⟨ ℤ.*-identityʳ (n ℤ.* d ℤ.+ (ℤ.- n) ℤ.* d) ⟩
-  n ℤ.* d ℤ.+ (ℤ.- n) ℤ.* d          ≡˘⟨ cong (λ n+d → n ℤ.* d ℤ.+ n+d) (ℤ.neg-distribˡ-* n d) ⟩
+  n ℤ.* d ℤ.+ (ℤ.- n) ℤ.* d          ≡⟨ cong (λ n+d → n ℤ.* d ℤ.+ n+d) (ℤ.neg-distribˡ-* n d) ⟨
   n ℤ.* d ℤ.+ ℤ.- (n ℤ.* d)          ≡⟨ ℤ.+-inverseʳ (n ℤ.* d) ⟩
   0ℤ                                 ∎ where open ≡-Reasoning
 
@@ -720,9 +777,9 @@ neg⇒nonZero (mkℚᵘ (-[1+ _ ]) _) = _
 
 +-cancelˡ : ∀ {r p q} → r + p ≃ r + q → p ≃ q
 +-cancelˡ {r} {p} {q} r+p≃r+q = begin-equality
-  p            ≃˘⟨ +-identityʳ p ⟩
-  p + 0ℚᵘ      ≃˘⟨ +-congʳ p (+-inverseʳ r) ⟩
-  p + (r - r)  ≃˘⟨ +-assoc p r (- r) ⟩
+  p            ≃⟨ +-identityʳ p ⟨
+  p + 0ℚᵘ      ≃⟨ +-congʳ p (+-inverseʳ r) ⟨
+  p + (r - r)  ≃⟨ +-assoc p r (- r) ⟨
   (p + r) - r  ≃⟨ +-congˡ (- r) (+-comm p r) ⟩
   (r + p) - r  ≃⟨ +-congˡ (- r) r+p≃r+q ⟩
   (r + q) - r  ≃⟨ +-congˡ (- r) (+-comm r q) ⟩
@@ -859,26 +916,26 @@ p≃q⇒p-q≃0 p q p≃q = begin-equality
 
 p-q≃0⇒p≃q : ∀ p q → p - q ≃ 0ℚᵘ → p ≃ q
 p-q≃0⇒p≃q p q p-q≃0 = begin-equality
-  p             ≡˘⟨ +-identityʳ-≡ p ⟩
+  p             ≡⟨ +-identityʳ-≡ p ⟨
   p + 0ℚᵘ       ≃⟨ +-congʳ p (≃-sym (+-inverseˡ q)) ⟩
-  p + (- q + q) ≡˘⟨ +-assoc-≡ p (- q) q ⟩
+  p + (- q + q) ≡⟨ +-assoc-≡ p (- q) q ⟨
   (p - q) + q   ≃⟨ +-congˡ q p-q≃0 ⟩
   0ℚᵘ + q       ≡⟨ +-identityˡ-≡ q ⟩
   q             ∎ where open ≤-Reasoning
 
 neg-mono-≤ : -_ Preserves _≤_ ⟶ _≥_
 neg-mono-≤ {p@record{}} {q@record{}} (*≤* p≤q) = *≤* $ begin
-  ℤ.- ↥ q ℤ.* ↧ p   ≡˘⟨ ℤ.neg-distribˡ-* (↥ q) (↧ p) ⟩
+  ℤ.- ↥ q ℤ.* ↧ p   ≡⟨ ℤ.neg-distribˡ-* (↥ q) (↧ p) ⟨
   ℤ.- (↥ q ℤ.* ↧ p) ≤⟨ ℤ.neg-mono-≤ p≤q ⟩
   ℤ.- (↥ p ℤ.* ↧ q) ≡⟨ ℤ.neg-distribˡ-* (↥ p) (↧ q) ⟩
   ℤ.- ↥ p ℤ.* ↧ q   ∎ where open ℤ.≤-Reasoning
 
 neg-cancel-≤ : ∀ {p q} → - p ≤ - q → q ≤ p
 neg-cancel-≤ {p@record{}} {q@record{}} (*≤* -↥p↧q≤-↥q↧p) = *≤* $ begin
-  ↥ q ℤ.* ↧ p             ≡˘⟨ ℤ.neg-involutive (↥ q ℤ.* ↧ p) ⟩
+  ↥ q ℤ.* ↧ p             ≡⟨ ℤ.neg-involutive (↥ q ℤ.* ↧ p) ⟨
   ℤ.- ℤ.- (↥ q ℤ.* ↧ p)   ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ q) (↧ p)) ⟩
   ℤ.- ((ℤ.- ↥ q) ℤ.* ↧ p) ≤⟨ ℤ.neg-mono-≤ -↥p↧q≤-↥q↧p ⟩
-  ℤ.- ((ℤ.- ↥ p) ℤ.* ↧ q) ≡˘⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ p) (↧ q)) ⟩
+  ℤ.- ((ℤ.- ↥ p) ℤ.* ↧ q) ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ p) (↧ q)) ⟨
   ℤ.- ℤ.- (↥ p ℤ.* ↧ q)   ≡⟨ ℤ.neg-involutive (↥ p ℤ.* ↧ q) ⟩
   ↥ p ℤ.* ↧ q             ∎
   where
@@ -892,9 +949,9 @@ p≤q⇒p-q≤0 {p} {q} p≤q = begin
 
 p-q≤0⇒p≤q : ∀ {p q} → p - q ≤ 0ℚᵘ → p ≤ q
 p-q≤0⇒p≤q {p} {q} p-q≤0 = begin
-  p             ≡˘⟨ +-identityʳ-≡ p ⟩
+  p             ≡⟨ +-identityʳ-≡ p ⟨
   p + 0ℚᵘ       ≃⟨ +-congʳ p (≃-sym (+-inverseˡ q)) ⟩
-  p + (- q + q) ≡˘⟨ +-assoc-≡ p (- q) q ⟩
+  p + (- q + q) ≡⟨ +-assoc-≡ p (- q) q ⟨
   (p - q) + q   ≤⟨ +-monoˡ-≤ q p-q≤0 ⟩
   0ℚᵘ + q       ≡⟨ +-identityˡ-≡ q ⟩
   q             ∎ where open ≤-Reasoning
@@ -907,7 +964,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 
 0≤q-p⇒p≤q : ∀ {p q} → 0ℚᵘ ≤ q - p → p ≤ q
 0≤q-p⇒p≤q {p} {q} 0≤p-q = begin
-  p             ≡˘⟨ +-identityˡ-≡ p ⟩
+  p             ≡⟨ +-identityˡ-≡ p ⟨
   0ℚᵘ + p       ≤⟨ +-monoˡ-≤ p 0≤p-q ⟩
   q - p + p     ≡⟨ +-assoc-≡ q (- p) p ⟩
   q + (- p + p) ≃⟨ +-congʳ q (+-inverseˡ p) ⟩
@@ -1069,18 +1126,18 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
   (n ℕ.+ d ℕ.* suc n)       ≡⟨ cong (n ℕ.+_) (ℕ.*-suc d n) ⟩
   (n ℕ.+ (d ℕ.+ d ℕ.* n))   ≡⟨ solve 2 (λ n d → n :+ (d :+ d :* n) := d :+ (n :+ n :* d)) refl n d ⟩
   (d ℕ.+ (n ℕ.+ n ℕ.* d))   ≡⟨ cong (d ℕ.+_) (sym (ℕ.*-suc n d)) ⟩
-  d ℕ.+ n ℕ.* suc d         ≡˘⟨ ℕ.+-identityʳ _ ⟩
+  d ℕ.+ n ℕ.* suc d         ≡⟨ ℕ.+-identityʳ _ ⟨
   d ℕ.+ n ℕ.* suc d ℕ.+ 0   ∎
   where open ≡-Reasoning; open ℕ-solver
 
 *-inverseʳ : ∀ p .{{_ : NonZero p}} → p * 1/ p ≃ 1ℚᵘ
 *-inverseʳ p = ≃-trans (*-comm p (1/ p)) (*-inverseˡ p)
 
-≠⇒invertible : p ≠ q → Invertible _≃_ 1ℚᵘ _*_ (p - q)
-≠⇒invertible {p} {q} p≠q = _ , *-inverseˡ (p - q) , *-inverseʳ (p - q)
+≄⇒invertible : p ≄ q → Invertible _≃_ 1ℚᵘ _*_ (p - q)
+≄⇒invertible {p} {q} p≄q = _ , *-inverseˡ (p - q) , *-inverseʳ (p - q)
   where instance
   _ : NonZero (p - q)
-  _ = ≢-nonZero (p≠q ∘ p-q≃0⇒p≃q p q)
+  _ = ≢-nonZero (p≄q ∘ p-q≃0⇒p≃q p q)
 
 *-zeroˡ : LeftZero _≃_ 0ℚᵘ _*_
 *-zeroˡ p@record{} = *≡* refl
@@ -1091,10 +1148,10 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-zero : Zero _≃_ 0ℚᵘ _*_
 *-zero = *-zeroˡ , *-zeroʳ
 
-invertible⇒≠ : Invertible _≃_ 1ℚᵘ _*_ (p - q) → p ≠ q
-invertible⇒≠ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≠1 (begin
-  0ℚᵘ             ≈˘⟨ *-zeroˡ 1/p-q ⟩
-  0ℚᵘ * 1/p-q     ≈˘⟨ *-congʳ (p≃q⇒p-q≃0 p q p≃q) ⟩
+invertible⇒≄ : Invertible _≃_ 1ℚᵘ _*_ (p - q) → p ≄ q
+invertible⇒≄ {p} {q} (1/p-q , 1/x*x≃1 , x*1/x≃1) p≃q = 0≄1 (begin
+  0ℚᵘ             ≈⟨ *-zeroˡ 1/p-q ⟨
+  0ℚᵘ * 1/p-q     ≈⟨ *-congʳ (p≃q⇒p-q≃0 p q p≃q) ⟨
   (p - q) * 1/p-q ≈⟨ x*1/x≃1 ⟩
   1ℚᵘ             ∎)
   where open ≃-Reasoning
@@ -1138,9 +1195,9 @@ neg-distribʳ-* p@record{} q@record{} =
   (↥ ((ℤ.+ p ℤ.* q) / (p ℕ.* r))) ℤ.* (↧ (q / r)) ≡⟨  cong (ℤ._* ↧ (q / r)) (↥[n/d]≡n (ℤ.+ p ℤ.* q) (p ℕ.* r)) ⟩
   (ℤ.+ p ℤ.* q) ℤ.* (↧ (q / r))                   ≡⟨  cong ((ℤ.+ p ℤ.* q) ℤ.*_) (↧[n/d]≡d q r) ⟩
   (ℤ.+ p ℤ.* q) ℤ.* ℤ.+ r                         ≡⟨  xy∙z≈y∙xz (ℤ.+ p) q (ℤ.+ r) ⟩
-  (q ℤ.* (ℤ.+ p ℤ.* ℤ.+ r))                       ≡˘⟨ cong (ℤ._* (ℤ.+ p ℤ.* ℤ.+ r)) (↥[n/d]≡n q r) ⟩
-  (↥ (q / r)) ℤ.* (ℤ.+ p ℤ.* ℤ.+ r)               ≡˘⟨  cong (↥ (q / r) ℤ.*_) (ℤ.pos-* p r) ⟩
-  (↥ (q / r)) ℤ.* (ℤ.+ (p ℕ.* r))                 ≡˘⟨ cong (↥ (q / r) ℤ.*_) (↧[n/d]≡d (ℤ.+ p ℤ.* q) (p ℕ.* r)) ⟩
+  (q ℤ.* (ℤ.+ p ℤ.* ℤ.+ r))                       ≡⟨ cong (ℤ._* (ℤ.+ p ℤ.* ℤ.+ r)) (↥[n/d]≡n q r) ⟨
+  (↥ (q / r)) ℤ.* (ℤ.+ p ℤ.* ℤ.+ r)               ≡⟨  cong (↥ (q / r) ℤ.*_) (ℤ.pos-* p r) ⟨
+  (↥ (q / r)) ℤ.* (ℤ.+ (p ℕ.* r))                 ≡⟨ cong (↥ (q / r) ℤ.*_) (↧[n/d]≡d (ℤ.+ p ℤ.* q) (p ℕ.* r)) ⟨
   (↥ (q / r)) ℤ.* (↧ ((ℤ.+ p ℤ.* q) / (p ℕ.* r))) ∎)
   where open ℤ.≤-Reasoning
 
@@ -1177,11 +1234,11 @@ private
 
 *-cancelʳ-≤-neg : ∀ r .{{_ : Negative r}} → p * r ≤ q * r → q ≤ p
 *-cancelʳ-≤-neg {p} {q} r@(mkℚᵘ -[1+ _ ] _) pr≤qr = neg-cancel-≤ (*-cancelʳ-≤-pos (- r) (begin
-  - p * - r    ≃˘⟨ neg-distribˡ-* p (- r) ⟩
-  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - p * - r    ≃⟨ neg-distribˡ-* p (- r) ⟨
+  - (p * - r)  ≃⟨ -‿cong (neg-distribʳ-* p r) ⟨
   - - (p * r)  ≃⟨ neg-involutive (p * r) ⟩
   p * r        ≤⟨ pr≤qr ⟩
-  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  q * r        ≃⟨ neg-involutive (q * r) ⟨
   - - (q * r)  ≃⟨ -‿cong (neg-distribʳ-* q r) ⟩
   - (q * - r)  ≃⟨ neg-distribˡ-* q (- r) ⟩
   - q * - r    ∎))
@@ -1193,7 +1250,7 @@ private
 *-monoˡ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → (_* r) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-nonNeg r@(mkℚᵘ (ℤ.+ n) _) {p@record{}} {q@record{}} (*≤* x<y) = *≤* $ begin
   ↥ p ℤ.* ↥ r ℤ.* (↧ q   ℤ.* ↧ r)  ≡⟨  reorder₂ (↥ p) _ _ _ ⟩
-  l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡˘⟨  cong (l₁ ℤ.*_) (ℤ.pos-* n _) ⟩
+  l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨  cong (l₁ ℤ.*_) (ℤ.pos-* n _) ⟨
   l₁          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≤⟨  ℤ.*-monoʳ-≤-nonNeg (ℤ.+ (n ℕ.* ↧ₙ r)) x<y ⟩
   l₂          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≡⟨ cong (l₂ ℤ.*_) (ℤ.pos-* n _) ⟩
   l₂          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨  reorder₂ (↥ q) _ _ _ ⟩
@@ -1213,10 +1270,10 @@ private
 
 *-monoˡ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → (_* r) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-nonPos r {p} {q} p≤q = begin
-  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  q * r        ≃⟨ neg-involutive (q * r) ⟨
   - - (q * r)  ≃⟨  -‿cong (neg-distribʳ-* q r) ⟩
   - (q * - r)  ≤⟨  neg-mono-≤ (*-monoˡ-≤-nonNeg (- r) {{ -r≥0}} p≤q) ⟩
-  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - (p * - r)  ≃⟨ -‿cong (neg-distribʳ-* p r) ⟨
   - - (p * r)  ≃⟨  neg-involutive (p * r) ⟩
   p * r        ∎
   where open ≤-Reasoning; -r≥0 = nonNegative (neg-mono-≤ (nonPositive⁻¹ r))
@@ -1231,7 +1288,7 @@ private
 *-monoˡ-<-pos r@record{} {p@record{}} {q@record{}} (*<* x<y) = *<* $ begin-strict
   ↥ p ℤ.*  ↥ r ℤ.* (↧ q  ℤ.* ↧ r) ≡⟨ reorder₁ (↥ p) _ _ _ ⟩
   ↥ p ℤ.*  ↧ q ℤ.*  ↥ r  ℤ.* ↧ r  <⟨ ℤ.*-monoʳ-<-pos (↧ r) (ℤ.*-monoʳ-<-pos (↥ r) x<y) ⟩
-  ↥ q ℤ.*  ↧ p ℤ.*  ↥ r  ℤ.* ↧ r  ≡˘⟨ reorder₁ (↥ q) _ _ _ ⟩
+  ↥ q ℤ.*  ↧ p ℤ.*  ↥ r  ℤ.* ↧ r  ≡⟨ reorder₁ (↥ q) _ _ _ ⟨
   ↥ q ℤ.*  ↥ r ℤ.* (↧ p  ℤ.* ↧ r) ∎ where open ℤ.≤-Reasoning
 
 *-monoʳ-<-pos : ∀ r .{{_ : Positive r}} → (r *_) Preserves _<_ ⟶ _<_
@@ -1258,10 +1315,10 @@ private
 
 *-monoˡ-<-neg : ∀ r .{{_ :  Negative r}} → (_* r) Preserves _<_ ⟶ _>_
 *-monoˡ-<-neg r {p} {q} p<q = begin-strict
-  q * r        ≃˘⟨ neg-involutive (q * r) ⟩
+  q * r        ≃⟨ neg-involutive (q * r) ⟨
   - - (q * r)  ≃⟨ -‿cong (neg-distribʳ-* q r) ⟩
   - (q * - r)  <⟨ neg-mono-< (*-monoˡ-<-pos (- r) {{ -r>0}} p<q) ⟩
-  - (p * - r)  ≃˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - (p * - r)  ≃⟨ -‿cong (neg-distribʳ-* p r) ⟨
   - - (p * r)  ≃⟨ neg-involutive (p * r) ⟩
   p * r        ∎
   where open ≤-Reasoning; -r>0 = positive (neg-mono-< (negative⁻¹ r))
@@ -1272,7 +1329,7 @@ private
 *-cancelˡ-<-nonPos : ∀ r .{{_ : NonPositive r}} → r * p < r * q → q < p
 *-cancelˡ-<-nonPos {p} {q} r rp<rq =
   *-cancelˡ-<-nonNeg (- r) {{ -r≥0}} $ begin-strict
-    - r * q    ≃˘⟨ neg-distribˡ-* r q ⟩
+    - r * q    ≃⟨ neg-distribˡ-* r q ⟨
     - (r * q)  <⟨ neg-mono-< rp<rq ⟩
     - (r * p)  ≃⟨ neg-distribˡ-* r p ⟩
     - r * p    ∎
@@ -1339,18 +1396,18 @@ nonNeg*nonNeg⇒nonNeg p q = nonNegative
   ; *-comm = *-comm
   }
 
-+-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isHeytingCommutativeRing : IsHeytingCommutativeRing _≃_ _≄_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
 +-*-isHeytingCommutativeRing = record
   { isCommutativeRing   = +-*-isCommutativeRing
-  ; isApartnessRelation = ≠-isApartnessRelation
-  ; #⇒invertible        = ≠⇒invertible
-  ; invertible⇒#        = invertible⇒≠
+  ; isApartnessRelation = ≄-isApartnessRelation
+  ; #⇒invertible        = ≄⇒invertible
+  ; invertible⇒#        = invertible⇒≄
   }
 
-+-*-isHeytingField : IsHeytingField _≃_ _≠_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isHeytingField : IsHeytingField _≃_ _≄_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
 +-*-isHeytingField = record
   { isHeytingCommutativeRing = +-*-isHeytingCommutativeRing
-  ; tight                    = ≠-tight
+  ; tight                    = ≄-tight
   }
 
 ------------------------------------------------------------------------
@@ -1439,8 +1496,8 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
 1/-antimono-≤-pos : ∀ {p q} .{{_ : Positive p}} .{{_ : Positive q}} →
                     p ≤ q → (1/ q) {{pos⇒nonZero q}} ≤ (1/ p) {{pos⇒nonZero p}}
 1/-antimono-≤-pos {p} {q} p≤q = begin
-  1/q              ≃˘⟨ *-identityˡ 1/q ⟩
-  1ℚᵘ * 1/q        ≃˘⟨ *-congʳ (*-inverseˡ p) ⟩
+  1/q              ≃⟨ *-identityˡ 1/q ⟨
+  1ℚᵘ * 1/q        ≃⟨ *-congʳ (*-inverseˡ p) ⟨
   (1/p * p) * 1/q  ≤⟨  *-monoˡ-≤-nonNeg 1/q (*-monoʳ-≤-nonNeg 1/p p≤q) ⟩
   (1/p * q) * 1/q  ≃⟨  *-assoc 1/p q 1/q ⟩
   1/p * (q * 1/q)  ≃⟨  *-congˡ {1/p} (*-inverseʳ q) ⟩
@@ -1719,7 +1776,7 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
   ℤ.- ℤ.- (↥ ∣ p ∣ ℤ.* ↧ q)  ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ ∣ p ∣) (↧ q)) ⟩
   ℤ.- (↥ p ℤ.* ↧ q)          ≡⟨ cong ℤ.-_ ↥p↧q≡↥q↧p ⟩
   ℤ.- (↥ q ℤ.* ↧ p)          ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ ∣ q ∣) (↧ p)) ⟩
-  ℤ.- ℤ.- (↥ ∣ q ∣ ℤ.* ↧ p)  ≡˘⟨ ℤ.neg-involutive _ ⟩
+  ℤ.- ℤ.- (↥ ∣ q ∣ ℤ.* ↧ p)  ≡⟨ ℤ.neg-involutive _ ⟨
   ↥ ∣ q ∣ ℤ.* ↧ p            ∎)
   where open ≡-Reasoning
 
@@ -1751,7 +1808,7 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
 ∣p∣≡p⇒0≤p {mkℚᵘ (ℤ.+ n) d-1} ∣p∣≡p = *≤* (begin
   0ℤ ℤ.* +[1+ d-1 ]  ≡⟨ ℤ.*-zeroˡ (ℤ.+ d-1) ⟩
   0ℤ                 ≤⟨ ℤ.+≤+ ℕ.z≤n ⟩
-  ℤ.+ n              ≡˘⟨ ℤ.*-identityʳ (ℤ.+ n) ⟩
+  ℤ.+ n              ≡⟨ ℤ.*-identityʳ (ℤ.+ n) ⟨
   ℤ.+ n ℤ.* 1ℤ       ∎)
   where open ℤ.≤-Reasoning
 
@@ -1770,7 +1827,7 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
   ↥ ∣ (↥p↧q ℤ.+ ↥q↧p) / ↧p↧q ∣ ℤ.* ℤ.+ ↧p↧q        ≡⟨⟩
   ↥ (ℤ.+ ℤ.∣ ↥p↧q ℤ.+ ↥q↧p ∣ / ↧p↧q) ℤ.* ℤ.+ ↧p↧q  ≡⟨ cong (ℤ._* ℤ.+ ↧p↧q) (↥[n/d]≡n (ℤ.+ ℤ.∣ ↥p↧q ℤ.+ ↥q↧p ∣) ↧p↧q) ⟩
   ℤ.+ ℤ.∣ ↥p↧q ℤ.+ ↥q↧p ∣ ℤ.* ℤ.+ ↧p↧q             ≤⟨ ℤ.*-monoʳ-≤-nonNeg (ℤ.+ ↧p↧q) (ℤ.+≤+ (ℤ.∣i+j∣≤∣i∣+∣j∣ ↥p↧q ↥q↧p)) ⟩
-  (ℤ.+ ℤ.∣ ↥p↧q ∣ ℤ.+ ℤ.+ ℤ.∣ ↥q↧p ∣) ℤ.* ℤ.+ ↧p↧q ≡˘⟨ cong₂ (λ h₁ h₂ → (h₁ ℤ.+ h₂) ℤ.* ℤ.+ ↧p↧q) ∣↥p∣↧q≡∣↥p↧q∣ ∣↥q∣↧p≡∣↥q↧p∣ ⟩
+  (ℤ.+ ℤ.∣ ↥p↧q ∣ ℤ.+ ℤ.+ ℤ.∣ ↥q↧p ∣) ℤ.* ℤ.+ ↧p↧q ≡⟨ cong₂ (λ h₁ h₂ → (h₁ ℤ.+ h₂) ℤ.* ℤ.+ ↧p↧q) ∣↥p∣↧q≡∣↥p↧q∣ ∣↥q∣↧p≡∣↥q↧p∣ ⟨
   (∣↥p∣↧q ℤ.+ ∣↥q∣↧p) ℤ.* ℤ.+ ↧p↧q                 ≡⟨⟩
   (↥∣p∣↧q ℤ.+ ↥∣q∣↧p) ℤ.* ℤ.+ ↧p↧q                 ≡⟨ cong (ℤ._* ℤ.+ ↧p↧q) (↥[n/d]≡n (↥∣p∣↧q ℤ.+ ↥∣q∣↧p) ↧p↧q) ⟩
   ↥ ((↥∣p∣↧q ℤ.+ ↥∣q∣↧p) / ↧p↧q) ℤ.* ℤ.+ ↧p↧q      ≡⟨⟩
@@ -1787,9 +1844,9 @@ pos⊔pos⇒pos p q = positive (⊔-mono-< (positive⁻¹ p) (positive⁻¹ q))
     ∣m∣n≡∣mn∣ : ∀ m n → ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ n ≡ ℤ.+ ℤ.∣ m ℤ.* ℤ.+ n ∣
     ∣m∣n≡∣mn∣ m n = begin-equality
       ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ n                        ≡⟨⟩
-      ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ ℤ.∣ ℤ.+ n ∣              ≡˘⟨ ℤ.pos-* ℤ.∣ m ∣ ℤ.∣ ℤ.+ n ∣ ⟩
+      ℤ.+ ℤ.∣ m ∣ ℤ.* ℤ.+ ℤ.∣ ℤ.+ n ∣              ≡⟨ ℤ.pos-* ℤ.∣ m ∣ ℤ.∣ ℤ.+ n ∣ ⟨
       ℤ.+ (ℤ.∣ m ∣ ℕ.* n)                          ≡⟨⟩
-      ℤ.+ (ℤ.∣ m ∣ ℕ.* ℤ.∣ ℤ.+ n ∣)                ≡˘⟨ cong ℤ.+_ (ℤ.∣i*j∣≡∣i∣*∣j∣ m (ℤ.+ n)) ⟩
+      ℤ.+ (ℤ.∣ m ∣ ℕ.* ℤ.∣ ℤ.+ n ∣)                ≡⟨ cong ℤ.+_ (ℤ.∣i*j∣≡∣i∣*∣j∣ m (ℤ.+ n)) ⟨
       ℤ.+ (ℤ.∣ m ℤ.* ℤ.+ n ∣)                      ∎
     ∣↥p∣↧q≡∣↥p↧q∣ : ∣↥p∣↧q ≡ ℤ.+ ℤ.∣ ↥p↧q ∣
     ∣↥p∣↧q≡∣↥p↧q∣ = ∣m∣n≡∣mn∣ (↥ p) (↧ₙ q)

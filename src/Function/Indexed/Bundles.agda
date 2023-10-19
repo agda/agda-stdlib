@@ -15,36 +15,38 @@ open import Level using (Level)
 
 private
   variable
-    a b ℓ₁ ℓ₂ : Level
+    a b i : Level
+    I : Set i
 
 ------------------------------------------------------------------------
 -- Bundles specialised for lifting relations to indexed sets
 ------------------------------------------------------------------------
 
 infix 3 _⟶ᵢ_ _↣ᵢ_ _↠ᵢ_ _⤖ᵢ_ _⇔ᵢ_ _↩ᵢ_ _↪ᵢ_ _↩↪ᵢ_ _↔ᵢ_
-_⟶ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+
+_⟶ᵢ_ : Pred I a → Pred I b → Set _
 A ⟶ᵢ B = ∀ {i} → A i ⟶ B i
 
-_↣ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+_↣ᵢ_ : Pred I a → Pred I b → Set _
 A ↣ᵢ B = ∀ {i} → A i ↣ B i
 
-_↠ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+_↠ᵢ_ : Pred I a → Pred I b → Set _
 A ↠ᵢ B = ∀ {i} → A i ↠ B i
 
-_⤖ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+_⤖ᵢ_ : Pred I a → Pred I b → Set _
 A ⤖ᵢ B = ∀ {i} → A i ⤖ B i
 
-_⇔ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+_⇔ᵢ_ : Pred I a → Pred I b → Set _
 A ⇔ᵢ B = ∀ {i} → A i ⇔ B i
 
-_↩ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+_↩ᵢ_ : Pred I a → Pred I b → Set _
 A ↩ᵢ B = ∀ {i} → A i ↩ B i
 
-_↪ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+_↪ᵢ_ : Pred I a → Pred I b → Set _
 A ↪ᵢ B = ∀ {i} → A i ↪ B i
 
-_↩↪ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+_↩↪ᵢ_ : Pred I a → Pred I b → Set _
 A ↩↪ᵢ B = ∀ {i} → A i ↩↪ B i
 
-_↔ᵢ_ : ∀ {i} {I : Set i} → Pred I a → Pred I b → Set _
+_↔ᵢ_ : Pred I a → Pred I b → Set _
 A ↔ᵢ B = ∀ {i} → A i ↔ B i

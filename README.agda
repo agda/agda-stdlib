@@ -15,7 +15,7 @@ module README where
 -- James McKinna, Sergei Meshveliani, Eric Mertens, Darin Morrison,
 -- Guilhem Moulin, Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa,
 -- Nicolas Pouillard, Andrés Sicard-Ramírez, Lex van der Stoep,
--- Sandro Stucki, Milo Turner, Noam Zeilberger
+-- Sandro Stucki, Milo Turner, Noam Zeilberger, Shu-Hung You
 -- and other anonymous contributors.
 ------------------------------------------------------------------------
 
@@ -236,6 +236,11 @@ import README.Debug.Trace
 -- n-ary heterogeneous products
 
 import README.Nary
+
+-- Explaining the inspect idiom: use case, equivalent handwritten
+-- auxiliary definitions, and implementation details.
+
+import README.Inspect
 
 -- Explaining how to use the automatic solvers
 

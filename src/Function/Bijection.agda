@@ -1,20 +1,21 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Bijections
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Bijective`, `IsBijection` and
--- `Bijection`. The alternative definitions found in this file will
--- eventually be deprecated.
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Bijection where
 
+{-# WARNING_ON_IMPORT
+"Function.Bijection was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
+
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality as P
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
@@ -37,6 +38,10 @@ record Bijective {f₁ f₂ t₁ t₂}
 
   left-inverse-of : from LeftInverseOf to
   left-inverse-of x = injective (right-inverse-of (to ⟨$⟩ x))
+{-# WARNING_ON_USAGE Bijective
+"Warning: Bijective was deprecated in v2.0.
+Please use Function.(Structures.)IsBijection instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all bijections between two setoids.
@@ -73,6 +78,10 @@ record Bijection {f₁ f₂ t₁ t₂}
     }
 
   open LeftInverse left-inverse public using (to-from)
+{-# WARNING_ON_USAGE Bijection
+"Warning: Bijection was deprecated in v2.0.
+Please use Function.(Bundles.)Bijection instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all bijections between two sets (i.e. bijections with
@@ -82,6 +91,10 @@ infix 3 _⤖_
 
 _⤖_ : ∀ {f t} → Set f → Set t → Set _
 From ⤖ To = Bijection (P.setoid From) (P.setoid To)
+{-# WARNING_ON_USAGE _⤖_
+"Warning: _⤖_ was deprecated in v2.0.
+Please use Function.(Bundles.)mk⤖ instead."
+#-}
 
 bijection : ∀ {f t} {From : Set f} {To : Set t} →
             (to : From → To) (from : To → From) →
@@ -89,15 +102,20 @@ bijection : ∀ {f t} {From : Set f} {To : Set t} →
             (∀ x → to (from x) ≡ x) →
             From ⤖ To
 bijection to from inj invʳ = record
-  { to        = P.→-to-⟶ to
+  { to        = F.→-to-⟶ to
   ; bijective = record
     { injective  = inj
     ; surjective = record
-      { from             = P.→-to-⟶ from
+      { from             = F.→-to-⟶ from
       ; right-inverse-of = invʳ
       }
     }
   }
+{-# WARNING_ON_USAGE bijection
+"Warning: bijection was deprecated in v2.0.
+Please use either Function.Properties.Bijection.trans or
+Function.Construct.Composition.bijection instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Identity and composition. (Note that these proofs are superfluous,
@@ -111,6 +129,11 @@ id {S = S} = record
     ; surjective = Surjection.surjective (Surj.id {S = S})
     }
   }
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v2.0.
+Please use either Function.Properties.Bijection.refl or
+Function.Construct.Identity.bijection instead."
+#-}
 
 infixr 9 _∘_
 
@@ -124,3 +147,8 @@ f ∘ g = record
     ; surjective = Surjection.surjective (Surj._∘_ (surjection f) (surjection g))
     }
   } where open Bijection
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v2.0.
+Please use either Function.Properties.Bijection.trans or
+Function.Construct.Composition.bijection instead."
+#-}

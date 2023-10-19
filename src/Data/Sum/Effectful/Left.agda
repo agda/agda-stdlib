@@ -62,6 +62,9 @@ monad = record
   ; _>>=_ = [ const ∘′ inj₁ , _|>′_ ]′
   }
 
+join : {B : Set (a ⊔ b)} → Sumₗ (Sumₗ B) → Sumₗ B
+join = Join.join monad
+
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 

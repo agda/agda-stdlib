@@ -7,7 +7,15 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Level using (Level; _⊔_)
+open import Function using (case_of_)
+open import Relation.Nullary.Decidable using (Dec; yes; no)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Transitive; Symmetric; Trans)
+open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.Reasoning.Syntax
+
 
 module Relation.Binary.Reasoning.Base.Apartness {a ℓ₁ ℓ₂} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_#_ : Rel A ℓ₂}
@@ -16,18 +24,10 @@ module Relation.Binary.Reasoning.Base.Apartness {a ℓ₁ ℓ₂} {A : Set a}
   (#-≈-trans : Trans _#_ _≈_ _#_) (≈-#-trans : Trans _≈_ _#_ _#_)
   where
 
-open import Level using (Level; _⊔_)
-open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym)
-open import Relation.Nullary.Decidable using (Dec; yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
+module Eq = IsEquivalence ≈-equiv
 
-open IsEquivalence ≈-equiv
-  renaming
-  ( refl  to ≈-refl
-  ; sym   to ≈-sym
-  ; trans to ≈-trans
-  )
+------------------------------------------------------------------------
+-- A datatype to hide the current relation type
 
 infix 4 _IsRelatedTo_
 
@@ -35,6 +35,27 @@ data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   nothing   :                 x IsRelatedTo y
   apartness : (x#y : x # y) → x IsRelatedTo y
   equals    : (x≈y : x ≈ y) → x IsRelatedTo y
+
+≡-go : Trans _≡_ _IsRelatedTo_ _IsRelatedTo_
+≡-go x≡y nothing = nothing
+≡-go x≡y (apartness y#z) = apartness (case x≡y of λ where P.refl → y#z)
+≡-go x≡y (equals y≈z) = equals (case x≡y of λ where P.refl → y≈z)
+
+≈-go  : Trans _≈_ _IsRelatedTo_ _IsRelatedTo_
+≈-go x≈y nothing         = nothing
+≈-go x≈y (apartness y#z) = apartness (≈-#-trans x≈y y#z)
+≈-go x≈y (equals    y≈z) = equals    (Eq.trans   x≈y y≈z)
+
+#-go : Trans _#_ _IsRelatedTo_ _IsRelatedTo_
+#-go x#y nothing         = nothing
+#-go x#y (apartness y#z) = nothing
+#-go x#y (equals    y≈z) = apartness (#-≈-trans x#y y≈z)
+
+stop : Reflexive _IsRelatedTo_
+stop = equals Eq.refl
+
+------------------------------------------------------------------------
+-- Apartness subrelation
 
 data IsApartness {x y} : x IsRelatedTo y → Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   isApartness : ∀ x#y → IsApartness (apartness x#y)
@@ -47,6 +68,16 @@ IsApartness? (equals x≈y)    = no (λ ())
 extractApartness : ∀ {x y} {x#y : x IsRelatedTo y} → IsApartness x#y → x # y
 extractApartness (isApartness x#y) = x#y
 
+apartnessRelation : SubRelation _IsRelatedTo_ _ _
+apartnessRelation = record
+  { IsS = IsApartness
+  ; IsS? = IsApartness?
+  ; extract = extractApartness
+  }
+
+------------------------------------------------------------------------
+-- Equality subrelation
+
 data IsEquality {x y} : x IsRelatedTo y → Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   isEquality : ∀ x≈y → IsEquality (equals x≈y)
 
@@ -58,49 +89,19 @@ IsEquality? (equals  x≈y) = yes (isEquality x≈y)
 extractEquality : ∀ {x y} {x≲y : x IsRelatedTo y} → IsEquality x≲y → x ≈ y
 extractEquality (isEquality x≈y) = x≈y
 
-infix  1 begin-apartness_ begin-equality_
-infixr 2 step-≈ step-≈˘ step-≡ step-≡˘ step-# step-#˘ _≡⟨⟩_
-infix  3 _∎
+eqRelation : SubRelation _IsRelatedTo_ _ _
+eqRelation = record
+  { IsS = IsEquality
+  ; IsS? = IsEquality?
+  ; extract = extractEquality
+  }
 
-begin-apartness_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsApartness? r)} → x # y
-begin-apartness_ _ {s} = extractApartness (toWitness s)
+------------------------------------------------------------------------
+-- Reasoning combinators
 
-begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
-begin-equality_ _ {s} = extractEquality (toWitness s)
-
-step-# : ∀ (x : A) {y z} → y IsRelatedTo z → x # y → x IsRelatedTo z
-step-# x nothing  _          = nothing
-step-# x (apartness y#z) x#y = nothing
-step-# x (equals    y≈z) x#y = apartness (#-≈-trans x#y y≈z)
-
-step-#˘ : ∀ (x : A) {y z} → y IsRelatedTo z → y # x → x IsRelatedTo z
-step-#˘ x y-z y#x = step-# x y-z (#-sym y#x)
-
-step-≈  : ∀ (x : A) {y z} → y IsRelatedTo z → x ≈ y → x IsRelatedTo z
-step-≈ x nothing         x≈y = nothing
-step-≈ x (apartness y#z) x≈y = apartness (≈-#-trans x≈y y#z)
-step-≈ x (equals    y≈z) x≈y = equals    (≈-trans   x≈y y≈z)
-
-step-≈˘ : ∀ x {y z} → y IsRelatedTo z → y ≈ x → x IsRelatedTo z
-step-≈˘ x y∼z x≈y = step-≈ x y∼z (≈-sym x≈y)
-
-step-≡ : ∀ (x : A) {y z} → y IsRelatedTo z → x ≡ y → x IsRelatedTo z
-step-≡ x nothing _            = nothing
-step-≡ x (apartness x#y) refl = apartness x#y
-step-≡ x (equals    x≈y) refl = equals    x≈y
-
-step-≡˘ : ∀ x {y z} → y IsRelatedTo z → y ≡ x → x IsRelatedTo z
-step-≡˘ x y∼z x≡y = step-≡ x y∼z (sym x≡y)
-
-_≡⟨⟩_ : ∀ (x : A) {y} → x IsRelatedTo y → x IsRelatedTo y
-x ≡⟨⟩ x-y = x-y
-
-_∎ : ∀ x → x IsRelatedTo x
-x ∎ = equals ≈-refl
-
-syntax step-#  x y∼z x#y = x #⟨  x#y ⟩ y∼z
-syntax step-#˘ x y∼z x#y = x #˘⟨ x#y ⟩ y∼z
-syntax step-≈  x y∼z x≈y = x ≈⟨  x≈y ⟩ y∼z
-syntax step-≈˘ x y∼z y≈x = x ≈˘⟨ y≈x ⟩ y∼z
-syntax step-≡  x y∼z x≡y = x ≡⟨  x≡y ⟩ y∼z
-syntax step-≡˘ x y∼z y≡x = x ≡˘⟨ y≡x ⟩ y∼z
+open begin-apartness-syntax _IsRelatedTo_ apartnessRelation public
+open begin-equality-syntax _IsRelatedTo_ eqRelation public
+open ≡-syntax _IsRelatedTo_ ≡-go public
+open #-syntax _IsRelatedTo_ _IsRelatedTo_ #-go #-sym public
+open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ ≈-go Eq.sym public
+open end-syntax _IsRelatedTo_ stop public

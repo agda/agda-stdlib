@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (StrictPartialOrder; Poset)
 
 module Relation.Binary.Properties.StrictPartialOrder
        {s₁ s₂ s₃} (SPO : StrictPartialOrder s₁ s₂ s₃) where
@@ -14,10 +14,10 @@ module Relation.Binary.Properties.StrictPartialOrder
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 import Relation.Binary.Construct.StrictToNonStrict
 
-open Relation.Binary.StrictPartialOrder SPO
+open StrictPartialOrder SPO
 
 ------------------------------------------------------------------------
--- The inverse relation is also a strict partial order.
+-- The converse relation is also a strict partial order.
 
 >-strictPartialOrder : StrictPartialOrder s₁ s₂ s₃
 >-strictPartialOrder = EqAndOrd.strictPartialOrder SPO

@@ -14,7 +14,7 @@ module Algebra.Bundles where
 import Algebra.Bundles.Raw as Raw
 open import Algebra.Core
 open import Algebra.Structures
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
 open import Function.Base
 import Relation.Nullary as N
 open import Level
@@ -26,7 +26,7 @@ open Raw public
   using (RawMagma; RawMonoid; RawGroup
         ; RawNearSemiring; RawSemiring
         ; RawRingWithoutOne; RawRing
-        ; RawQuasigroup; RawLoop)
+        ; RawQuasigroup; RawLoop; RawKleeneAlgebra)
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation
@@ -504,7 +504,7 @@ record SemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open NearSemiring nearSemiring public
     using
-    ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-semigroup
+    ( +-rawMagma; +-magma; +-unitalMagma; +-semigroup
     ; +-rawMonoid; +-monoid
     ; *-rawMagma; *-magma; *-semigroup
     ; rawNearSemiring
@@ -542,7 +542,7 @@ record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open SemiringWithoutOne semiringWithoutOne public
     using
-    ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-semigroup; +-commutativeSemigroup
+    ( +-rawMagma; +-magma; +-unitalMagma; +-semigroup; +-commutativeSemigroup
     ; *-rawMagma; *-magma; *-semigroup
     ; +-rawMonoid; +-monoid; +-commutativeMonoid
     ; nearSemiring; rawNearSemiring
@@ -892,6 +892,12 @@ record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   open AbelianGroup +-abelianGroup public
     using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
 
+  *-unitalMagma : UnitalMagma _ _
+  *-unitalMagma = record { isUnitalMagma = *-isUnitalMagma}
+
+  open UnitalMagma *-unitalMagma public
+    using () renaming (magma to *-magma; identity to *-identity)
+
 record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_
@@ -1158,3 +1164,4 @@ record MiddleBolLoop c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Loop loop public
     using (quasigroup)
+

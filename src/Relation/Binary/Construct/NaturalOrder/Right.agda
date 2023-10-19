@@ -10,7 +10,14 @@
 open import Algebra.Core using (Op₂)
 open import Data.Product.Base using (_,_; _×_)
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Decidable)
+
 open import Relation.Nullary.Negation using (¬_)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
@@ -46,7 +53,7 @@ antisym : IsEquivalence _≈_ → Commutative _∙_ → Antisymmetric _≈_ _≤
 antisym isEq comm {x} {y} x≤y y≤x = begin
   x     ≈⟨  x≤y ⟩
   y ∙ x ≈⟨  comm y x ⟩
-  x ∙ y ≈˘⟨ y≤x ⟩
+  x ∙ y ≈⟨ y≤x ⟨
   y     ∎
   where open EqReasoning (record { isEquivalence = isEq })
 

@@ -14,7 +14,6 @@ open import Data.Star.Decoration
 open import Data.Star.Pointer as Pointer hiding (lookup)
 open import Data.Star.List using (List)
 open import Level using (Level)
-open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Function.Base
 open import Data.Unit

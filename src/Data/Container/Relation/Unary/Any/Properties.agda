@@ -11,22 +11,21 @@ module Data.Container.Relation.Unary.Any.Properties where
 open import Level
 open import Algebra
 open import Data.Product.Base using (∃; _×_; ∃₂; _,_; proj₂)
+open import Data.Product.Properties using (Σ-≡,≡→≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (equivalence)
-open import Function.HalfAdjointEquivalence using (_≃_; ↔→≃)
-open import Function.Inverse as Inv using (_↔_; inverse; module Inverse)
-open import Function.Related as Related using (Related; SK-sym)
+open import Function.Bundles
+open import Function.Properties.Inverse using (↔-refl)
+open import Function.Properties.Inverse.HalfAdjointEquivalence using (_≃_; ↔⇒≃)
+open import Function.Related.Propositional as Related using (Related; SK-sym)
 open import Function.Related.TypeIsomorphisms
 open import Relation.Unary using (Pred ; _∪_ ; _∩_)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_; refl)
 
-open Related.EquationalReasoning hiding (_≡⟨_⟩_)
 private
   module ×⊎ {k ℓ} = CommutativeSemiring (×-⊎-commutativeSemiring k ℓ)
 
@@ -43,12 +42,12 @@ module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 -- ◇ can be unwrapped to reveal the Σ type
 
   ↔Σ : ∀ {xs : ⟦ C ⟧ X} → ◇ C P xs ↔ ∃ λ p → P (proj₂ xs p)
-  ↔Σ {xs} = inverse ◇.proof any (λ _ → P.refl) (λ _ → P.refl)
+  ↔Σ {xs} = mk↔ₛ′ ◇.proof any (λ _ → P.refl) (λ _ → P.refl)
 
 -- ◇ can be expressed using _∈_.
 
   ↔∈ : ∀ {xs : ⟦ C ⟧ X} → ◇ C P xs ↔ (∃ λ x → x ∈ xs × P x)
-  ↔∈ {xs} = inverse to from (λ _ → P.refl) (to∘from) where
+  ↔∈ {xs} = mk↔ₛ′ to from to∘from (λ _ → P.refl) where
 
     to : ◇ C P xs → ∃ λ x → x ∈ xs × P x
     to (any (p , Px)) = (proj₂ xs p , (any (p , P.refl)) , Px)
@@ -64,13 +63,14 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
 -- ◇ is a congruence for bag and set equality and related preorders.
 
   cong : ∀ {k} {xs₁ xs₂ : ⟦ C ⟧ X} →
-         (∀ x → Related k (P₁ x) (P₂ x)) → xs₁ ∼[ k ] xs₂ →
+         (∀ x → Related k (P₁ x) (P₂ x)) → xs₁ ≲[ k ] xs₂ →
          Related k (◇ C P₁ xs₁) (◇ C P₂ xs₂)
   cong {k} {xs₁} {xs₂} P₁↔P₂ xs₁≈xs₂ =
     ◇ C P₁ xs₁               ↔⟨ ↔∈ C ⟩
-    (∃ λ x → x ∈ xs₁ × P₁ x) ∼⟨ Σ.cong Inv.id (xs₁≈xs₂ ×-cong P₁↔P₂ _) ⟩
+    (∃ λ x → x ∈ xs₁ × P₁ x) ∼⟨ Σ.cong ↔-refl (xs₁≈xs₂ ×-cong P₁↔P₂ _) ⟩
     (∃ λ x → x ∈ xs₂ × P₂ x) ↔⟨ SK-sym (↔∈ C) ⟩
     ◇ C P₂ xs₂               ∎
+    where open Related.EquationalReasoning
 
 -- Nested occurrences of ◇ can sometimes be swapped.
 
@@ -83,18 +83,19 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
          ◈ xs (◈ ys ∘ P) ↔ ◈ ys (◈ xs ∘ flip P)
   swap {xs} {ys} =
     ◇ _ (λ x → ◇ _ (P x) ys) xs                ↔⟨ ↔∈ C₁ ⟩
-    (∃ λ x → x ∈ xs × ◇ _ (P x) ys)            ↔⟨ Σ.cong Inv.id $ Σ.cong Inv.id $ ↔∈ C₂ ⟩
-    (∃ λ x → x ∈ xs × ∃ λ y → y ∈ ys × P x y)  ↔⟨ Σ.cong Inv.id (λ {x} → ∃∃↔∃∃ (λ _ y → y ∈ ys × P x y)) ⟩
+    (∃ λ x → x ∈ xs × ◇ _ (P x) ys)            ↔⟨ Σ.cong ↔-refl $ Σ.cong ↔-refl $ ↔∈ C₂ ⟩
+    (∃ λ x → x ∈ xs × ∃ λ y → y ∈ ys × P x y)  ↔⟨ Σ.cong ↔-refl (λ {x} → ∃∃↔∃∃ (λ _ y → y ∈ ys × P x y)) ⟩
     (∃₂ λ x y → x ∈ xs × y ∈ ys × P x y)       ↔⟨ ∃∃↔∃∃ (λ x y → x ∈ xs × y ∈ ys × P x y) ⟩
-    (∃₂ λ y x → x ∈ xs × y ∈ ys × P x y)       ↔⟨ Σ.cong Inv.id (λ {y} → Σ.cong Inv.id (λ {x} →
+    (∃₂ λ y x → x ∈ xs × y ∈ ys × P x y)       ↔⟨ Σ.cong ↔-refl (λ {y} → Σ.cong ↔-refl (λ {x} →
       (x ∈ xs × y ∈ ys × P x y)                     ↔⟨ SK-sym Σ-assoc ⟩
-      ((x ∈ xs × y ∈ ys) × P x y)                   ↔⟨ Σ.cong (×-comm _ _) Inv.id ⟩
+      ((x ∈ xs × y ∈ ys) × P x y)                   ↔⟨ Σ.cong (×-comm _ _) ↔-refl ⟩
       ((y ∈ ys × x ∈ xs) × P x y)                   ↔⟨ Σ-assoc ⟩
       (y ∈ ys × x ∈ xs × P x y)                     ∎)) ⟩
-    (∃₂ λ y x → y ∈ ys × x ∈ xs × P x y)       ↔⟨ Σ.cong Inv.id (λ {y} → ∃∃↔∃∃ {B = y ∈ ys} (λ x _ → x ∈ xs × P x y)) ⟩
-    (∃ λ y → y ∈ ys × ∃ λ x → x ∈ xs × P x y)  ↔⟨ Σ.cong Inv.id (Σ.cong Inv.id (SK-sym (↔∈ C₁))) ⟩
+    (∃₂ λ y x → y ∈ ys × x ∈ xs × P x y)       ↔⟨ Σ.cong ↔-refl (λ {y} → ∃∃↔∃∃ {B = y ∈ ys} (λ x _ → x ∈ xs × P x y)) ⟩
+    (∃ λ y → y ∈ ys × ∃ λ x → x ∈ xs × P x y)  ↔⟨ Σ.cong ↔-refl (Σ.cong ↔-refl (SK-sym (↔∈ C₁))) ⟩
     (∃ λ y → y ∈ ys × ◇ _ (flip P y) xs)       ↔⟨ SK-sym (↔∈ C₂) ⟩
     ◇ _ (λ y → ◇ _ (flip P y) xs) ys           ∎
+    where open Related.EquationalReasoning
 
 -- Nested occurrences of ◇ can sometimes be flattened.
 
@@ -103,16 +104,16 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 
   flatten : ∀ (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
             ◇ C₁ (◇ C₂ P) xss ↔
-            ◇ (C₁ C.∘ C₂) P (Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss)
-  flatten xss = inverse t f (λ _ → P.refl) (λ _ → P.refl) where
+            ◇ (C₁ C.∘ C₂) P (Inverse.from (Composition.correct C₁ C₂) xss)
+  flatten xss = mk↔ₛ′ t f (λ _ → P.refl) (λ _ → P.refl) where
 
     ◇₁ = ◇ C₁; ◇₂ = ◇ C₂; ◇₁₂ = ◇ (C₁ C.∘ C₂)
     open Inverse
 
-    t : ◇₁ (◇₂ P) xss → ◇₁₂ P (from (Composition.correct C₁ C₂) ⟨$⟩ xss)
+    t : ◇₁ (◇₂ P) xss → ◇₁₂ P (from (Composition.correct C₁ C₂) xss)
     t (any (p₁ , (any (p₂ , p)))) = any (any (p₁ , p₂) , p)
 
-    f : ◇₁₂ P (from (Composition.correct C₁ C₂) ⟨$⟩ xss) → ◇₁ (◇₂ P) xss
+    f : ◇₁₂ P (from (Composition.correct C₁ C₂) xss) → ◇₁ (◇₂ P) xss
     f (any (any (p₁ , p₂) , p)) = any (p₁ , any (p₂ , p))
 
 -- Sums commute with ◇ (for a fixed instance of a given container).
@@ -121,7 +122,7 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
          {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} where
 
   ◇⊎↔⊎◇ : ∀ {xs : ⟦ C ⟧ X} → ◇ C (P ∪ Q) xs ↔ (◇ C P xs ⊎ ◇ C Q xs)
-  ◇⊎↔⊎◇ {xs} = inverse to from from∘to to∘from
+  ◇⊎↔⊎◇ {xs} = mk↔ₛ′ to from to∘from from∘to
     where
     to : ◇ C (λ x → P x ⊎ Q x) xs → ◇ C P xs ⊎ ◇ C Q xs
     to (any (pos , inj₁ p)) = inj₁ (any (pos , p))
@@ -144,7 +145,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 
   ×◇↔◇◇× : ∀ {xs : ⟦ C₁ ⟧ X} {ys : ⟦ C₂ ⟧ Y} →
            ◇ C₁ (λ x → ◇ C₂ (λ y → P x × Q y) ys) xs ↔ (◇ C₁ P xs × ◇ C₂ Q ys)
-  ×◇↔◇◇× {xs} {ys} = inverse to from (λ _ → P.refl) (λ _ → P.refl)
+  ×◇↔◇◇× {xs} {ys} = mk↔ₛ′ to from (λ _ → P.refl) (λ _ → P.refl)
     where
     ◇₁ = ◇ C₁; ◇₂ = ◇ C₂
 
@@ -162,9 +163,10 @@ module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
   map↔∘ : ∀ {xs : ⟦ C ⟧ X} (f : X → Y) → ◇ C P (map f xs) ↔ ◇ C (P ∘′ f) xs
   map↔∘ {xs} f =
    ◇ C P (map f xs)          ↔⟨ ↔Σ C ⟩
-   ∃ (P ∘′ proj₂ (map f xs)) ↔⟨⟩
+   ∃ (P ∘′ proj₂ (map f xs)) ≡⟨⟩
    ∃ (P ∘′ f ∘′ proj₂ xs)    ↔⟨ SK-sym (↔Σ C) ⟩
    ◇ C (P ∘′ f) xs           ∎
+   where open Related.EquationalReasoning
 
 -- Membership in a mapped container can be expressed without reference
 -- to map.
@@ -178,6 +180,7 @@ module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
     y ∈ map f xs               ↔⟨ map↔∘ C (y ≡_) f ⟩
     ◇ C (λ x → y ≡ f x) xs     ↔⟨ ↔∈ C ⟩
     ∃ (λ x → x ∈ xs × y ≡ f x) ∎
+    where open Related.EquationalReasoning
 
 -- map is a congruence for bag and set equality and related preorders.
 
@@ -185,16 +188,17 @@ module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
          {ℓ} (P : Pred Y ℓ) where
 
   map-cong : ∀ {k} {f₁ f₂ : X → Y} {xs₁ xs₂ : ⟦ C ⟧ X} →
-             f₁ ≗ f₂ → xs₁ ∼[ k ] xs₂ →
-             map f₁ xs₁ ∼[ k ] map f₂ xs₂
+             f₁ ≗ f₂ → xs₁ ≲[ k ] xs₂ →
+             map f₁ xs₁ ≲[ k ] map f₂ xs₂
   map-cong {f₁ = f₁} {f₂} {xs₁} {xs₂} f₁≗f₂ xs₁≈xs₂ {x} =
     x ∈ map f₁ xs₁           ↔⟨ map↔∘ C (_≡_ x) f₁ ⟩
     ◇ C (λ y → x ≡ f₁ y) xs₁ ∼⟨ cong (Related.↔⇒ ∘ helper) xs₁≈xs₂ ⟩
     ◇ C (λ y → x ≡ f₂ y) xs₂ ↔⟨ SK-sym (map↔∘ C (_≡_ x) f₂) ⟩
     x ∈ map f₂ xs₂           ∎
     where
+    open Related.EquationalReasoning
     helper : ∀ y → (x ≡ f₁ y) ↔ (x ≡ f₂ y)
-    helper y rewrite f₁≗f₂ y = Inv.id
+    helper y rewrite f₁≗f₂ y = ↔-refl
 
 -- Uses of linear morphisms can be removed.
 
@@ -202,13 +206,13 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
          {x} {X : Set x} {ℓ} (P : Pred X ℓ) where
 
   remove-linear : ∀ {xs : ⟦ C₁ ⟧ X} (m : C₁ ⊸ C₂) → ◇ C₂ P (⟪ m ⟫⊸ xs) ↔ ◇ C₁ P xs
-  remove-linear {xs} m = Inv.inverse t f f∘t t∘f
+  remove-linear {xs} m = mk↔ₛ′ t f t∘f f∘t
     where
     open _≃_
-    open P.≡-Reasoning renaming (_∎ to _∎′)
+    open P.≡-Reasoning
 
     position⊸m : ∀ {s} → Position C₂ (shape⊸ m s) ≃ Position C₁ s
-    position⊸m = ↔→≃ (position⊸ m)
+    position⊸m = ↔⇒≃ (position⊸ m)
 
     ◇₁ = ◇ C₁; ◇₂ = ◇ C₂
 
@@ -259,7 +263,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 
          P.subst (P ∘ proj₂ xs) P.refl p                        ≡⟨⟩
 
-        p                                                       ∎′)
+        p                                                       ∎)
       )
 
     t∘f : t ∘ f ≗ id
@@ -279,17 +283,18 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
                                                                      (P.trans-symˡ (right-inverse-of position⊸m _)) ⟩
          P.subst (P ∘ proj₂ xs) P.refl p                        ≡⟨⟩
 
-        p                                                       ∎′)
+        p                                                       ∎)
       )
 
 -- Linear endomorphisms are identity functions if bag equality is used.
 
 module _ {s p} {C : Container s p} {x} {X : Set x} where
 
-  linear-identity : ∀ {xs : ⟦ C ⟧ X} (m : C ⊸ C) → ⟪ m ⟫⊸ xs ∼[ bag ] xs
+  linear-identity : ∀ {xs : ⟦ C ⟧ X} (m : C ⊸ C) → ⟪ m ⟫⊸ xs ≲[ bag ] xs
   linear-identity {xs} m {x} =
     x ∈ ⟪ m ⟫⊸ xs  ↔⟨ remove-linear (_≡_ x) m ⟩
     x ∈        xs  ∎
+    where open Related.EquationalReasoning
 
 -- If join can be expressed using a linear morphism (in a certain
 -- way), then it can be absorbed by the predicate.
@@ -301,10 +306,12 @@ module _ {s₁ s₂ s₃ p₁ p₂ p₃}
   join↔◇ : (join′ : (C₁ C.∘ C₂) ⊸ C₃) (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
            let join : ∀ {X} → ⟦ C₁ ⟧ (⟦ C₂ ⟧ X) → ⟦ C₃ ⟧ X
                join = λ {_} → ⟪ join′ ⟫⊸ ∘
-                      _⟨$⟩_ (Inverse.from (Composition.correct C₁ C₂)) in
+                      (Inverse.from (Composition.correct C₁ C₂)) in
            ◇ C₃ P (join xss) ↔ ◇ C₁ (◇ C₂ P) xss
   join↔◇ join xss =
     ◇ C₃ P (⟪ join ⟫⊸ xss′) ↔⟨ remove-linear P join ⟩
     ◇ (C₁ C.∘ C₂) P xss′    ↔⟨ SK-sym $ flatten P xss ⟩
     ◇ C₁ (◇ C₂ P) xss       ∎
-    where xss′ = Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss
+    where
+    open Related.EquationalReasoning
+    xss′ = Inverse.from (Composition.correct C₁ C₂) xss

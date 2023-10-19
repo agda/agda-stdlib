@@ -13,7 +13,8 @@ open import Size
 open import Codata.Sized.Thunk
 open import Codata.Sized.Conat hiding (_⊔_)
 open import Codata.Sized.Covec
-open import Relation.Binary
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Sym; Trans)
 open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
 
 data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) (i : Size) :

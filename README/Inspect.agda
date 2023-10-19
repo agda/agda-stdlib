@@ -1,22 +1,19 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module is DEPRECATED.
+-- Explaining how to use the inspect idiom and elaborating on the way
+-- it is implemented in the standard library.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module README.Inspect where
 
-{-# WARNING_ON_IMPORT
-"README.Inspect was deprecated in v2.0."
-#-}
-
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product.Base using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-open import Relation.Binary.PropositionalEquality using (inspect)
+open import Relation.Binary.PropositionalEquality using (inspect; [_])
 
 ------------------------------------------------------------------------
 -- Using inspect
