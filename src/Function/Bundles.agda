@@ -197,7 +197,10 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
     isSplitSurjection : IsSplitSurjection to
-    isSplitSurjection = record { from = from ; isLeftInverse = isLeftInverse }
+    isSplitSurjection = record
+      { from = from
+      ; isLeftInverse = isLeftInverse
+      }
 
     surjection : Surjection
     surjection = record
@@ -206,35 +209,6 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; surjective = λ y → from y , inverseˡ
       }
 
-  -- A left inverse is also known as a “split surjection”.
-  -- As the name implies, a split surjection is a special kind of surjection, as
-  -- shown by the definition `LeftInverse.surjection` above.
-  -- The difference is the `from-cong` law --- generally, the section (called
-  -- `Surjection.to⁻` or `SplitSurjection.from`) of a surjection need not
-  -- respect equality, whereas it must in a split surjection.
-  --
-  -- The two notions coincide when the equivalence relation on `B` is
-  -- propositional equality (because all functions respect propositional
-  -- equality).
-  --
-  -- For further background on (split) surjections, one may consult any general
-  -- mathematical references which work without the principle of choice.
-  -- For example, https://ncatlab.org/nlab/show/split+epimorphism.
-  -- The connection to set-theoretic notions with the same names is justified by
-  -- the setoid type theory/homotopy type theory observation/definition that
-  -- (∃x : A. P) = ∥ Σx : A. P ∥ --- i.e., that we can read set-theoretic ∃ as
-  -- squashed/propositionally truncated Σ.
-  -- We see working with setoids as working in the MLTT model of a setoid type
-  -- theory, in which ∥ X ∥ is interpreted as the setoid with carrier set X and
-  -- the equivalence relation that relates all elements.
-  -- All maps into ∥ X ∥ respect equality, so in the idiomatic definitions here,
-  -- we drop the corresponding trivial `cong` field completely.
-
-  SplitSurjection : Set _
-  SplitSurjection = LeftInverse
-
-  module SplitSurjection (splitSurjection : SplitSurjection) =
-    LeftInverse splitSurjection
 
 
   record RightInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -356,6 +330,45 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; from₂-cong = from₂-cong
       }
 
+------------------------------------------------------------------------
+-- Other
+
+  -- A left inverse is also known as a “split surjection”.
+  --
+  -- As the name implies, a split surjection is a special kind of
+  -- surjection where the witness generated in the domain in the
+  -- function for elements `x₁` and `x₂` are equal if `x₁ ≈ x₂` .
+  --
+  -- The difference is the `from-cong` law --- generally, the section
+  -- (called `Surjection.to⁻` or `SplitSurjection.from`) of a surjection
+  -- need not respect equality, whereas it must in a split surjection.
+  --
+  -- The two notions coincide when the equivalence relation on `B` is
+  -- propositional equality (because all functions respect propositional
+  -- equality).
+  --
+  -- For further background on (split) surjections, one may consult any
+  -- general mathematical references which work without the principle
+  -- of choice. For example:
+  -- 
+  --   https://ncatlab.org/nlab/show/split+epimorphism.
+  --
+  -- The connection to set-theoretic notions with the same names is
+  -- justified by the setoid type theory/homotopy type theory
+  -- observation/definition that (∃x : A. P) = ∥ Σx : A. P ∥ --- i.e.,
+  -- we can read set-theoretic ∃ as squashed/propositionally truncated Σ.
+  --
+  -- We see working with setoids as working in the MLTT model of a setoid
+  -- type theory, in which ∥ X ∥ is interpreted as the setoid with carrier
+  -- set X and the equivalence relation that relates all elements.
+  -- All maps into ∥ X ∥ respect equality, so in the idiomatic definitions
+  -- here, we drop the corresponding trivial `cong` field completely.
+
+  SplitSurjection : Set _
+  SplitSurjection = LeftInverse
+
+  module SplitSurjection (splitSurjection : SplitSurjection) =
+    LeftInverse splitSurjection
 
 ------------------------------------------------------------------------
 -- Bundles specialised for propositional equality

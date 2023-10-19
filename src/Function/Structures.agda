@@ -111,16 +111,6 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
     ; surjective = λ y → from y , inverseˡ
     }
 
--- See the comment on `SplitSurjection` in `Function.Bundles` for an explanation
--- of (split) surjections.
-
-record IsSplitSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
-  field
-    from : B → A
-    isLeftInverse : IsLeftInverse f from
-
-  open IsLeftInverse isLeftInverse public
-
 
 record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
@@ -182,3 +172,17 @@ record IsBiInverse
 
   open IsCongruent to-isCongruent public
     renaming (cong to to-cong)
+
+
+------------------------------------------------------------------------
+-- Other
+------------------------------------------------------------------------
+
+-- See the comment on `SplitSurjection` in `Function.Bundles` for an
+-- explanation of (split) surjections.
+record IsSplitSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    from : B → A
+    isLeftInverse : IsLeftInverse f from
+
+  open IsLeftInverse isLeftInverse public
