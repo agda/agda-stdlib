@@ -85,8 +85,8 @@ zero  ≟₁ suc n = no λ ()
 suc m ≟₁ zero  = no λ ()
 does  (suc m ≟₁ suc n) = does (m ≟₁ n)
 proof (suc m ≟₁ suc n) with m ≟₁ n
-... | yes p = ofʸ (cong suc p)
-... | no ¬p = ofⁿ (¬p ∘ suc-injective)
+... | yes p = of (cong suc p)
+... | no ¬p = of (¬p ∘ suc-injective)
 
 -- We now get definitional equalities such as the following.
 
