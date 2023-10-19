@@ -26,8 +26,7 @@ open import Relation.Nullary.Negation using (¬_)
 
 open TotalOrderProperties public
   using
-  ( _≥_
-  ; ≥-refl
+  ( ≥-refl
   ; ≥-reflexive
   ; ≥-trans
   ; ≥-antisym

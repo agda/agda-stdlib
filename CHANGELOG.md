@@ -852,18 +852,24 @@ Non-backwards compatible changes
   IO.Instances
   ```
 
-### (Issue #2096) Introduction of flipped relation symbol for `Relation.Binary.Bundles.Preorder`
+### (Issue #2096) Introduction of flipped and negated relation symbols to bundles in `Relation.Binary.Bundles`
 
-* Previously, the relation symbol `_∼_`  was (notationally) symmetric, so that its
-  converse relation could only be discussed *semantically* in terms of `flip _∼_`
-  in `Relation.Binary.Properties.Preorder`, `Relation.Binary.Construct.Flip.{Ord|EqAndOrd}`
+* Previously, bundles such as `Preorder`, `Poset`, `TotalOrder` etc. did not have the flipped 
+  and negated versions of the operators exposed. In some cases they could obtained by opening the
+  relevant `Relation.Binary.Properties.X` file but usually they had to be redefined every time.
+  
+* To fix this, these bundles now all export all 4 versions of the operator: normal, converse, negated,
+  converse-negated. Accordingly they are no longer exported from the corresponding `Properties` file.
 
-* Now, the symbol `_∼_` has been renamed to a new symbol `_≲_`, with `_≳_`
-  introduced as a definition in `Relation.Binary.Bundles.Preorder` whose properties
-  in `Relation.Binary.Properties.Preorder` now refer to it. Partial backwards compatible
-  has been achieved by redeclaring a deprecated version of the old name in the record.
-  Therefore, only _declarations_ of `PartialOrder` records will need their field names
-  updating.
+* To make this work for `Preorder`, it was necessary to change the name of the relation symbol.
+  Previously, the symbol was `_∼_`  which is (notationally) symmetric, so that its
+  converse relation could only be discussed *semantically* in terms of `flip _∼_`.
+
+* Now, the `Preorder` record field `_∼_` has been renamed to `_≲_`, with `_≳_`
+  introduced as a definition in `Relation.Binary.Bundles.Preorder`. 
+  Partial backwards compatible has been achieved by redeclaring a deprecated version 
+  of the old symbol in the record. Therefore, only _declarations_ of `PartialOrder` records will 
+  need their field names updating.
 
 ### (Issue #1214) Reorganisation of the introduction of negated relation symbols under `Relation.Binary`
 

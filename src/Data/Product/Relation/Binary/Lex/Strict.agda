@@ -240,7 +240,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
                           (isEquivalence pre₁) (isEquivalence pre₂)
       ; reflexive     = ×-reflexive _≈₁_ _<₁_ _<₂_ (reflexive pre₂)
       ; trans         = ×-transitive {_<₂_ = _<₂_}
-                          (isEquivalence pre₁) (∼-resp-≈ pre₁)
+                          (isEquivalence pre₁) (≲-resp-≈ pre₁)
                           (trans pre₁) (trans pre₂)
       }
     where open IsPreorder
