@@ -253,38 +253,38 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 -- Bundle re-exporting --
 -------------------------
 
-In general ensuring that bundles re-export everything in their
-sub-bundles can get a little tricky.
+-- In general ensuring that bundles re-export everything in their
+-- sub-bundles can get a little tricky.
 
-Imagine we have the following general scenario where bundle A is a
-direct refinement of bundle C (i.e. the record `IsA` has a `IsC` field)
-but is also morally a refinement of bundles B and D.
+-- Imagine we have the following general scenario where bundle A is a
+-- direct refinement of bundle C (i.e. the record `IsA` has a `IsC` field)
+-- but is also morally a refinement of bundles B and D.
 
-  Structures               Bundles
-  ==========               =======
-      IsA                     A
-   /  ||   \               /  ||  \
-IsB   IsC   IsD          B    C    D
+--   Structures               Bundles
+--   ==========               =======
+--       IsA                     A
+--    /  ||   \               /  ||  \
+-- IsB   IsC   IsD          B    C    D
+ 
+-- The procedure for re-exports in the bundles is as follows:
 
-The procedure for re-exports in the bundles is as follows:
+-- 1. `open IsA isA public using (IsC, M)` where `M` is everything
+--    exported by `IsA` that is not exported by `IsC`.
 
-1. `open IsA isA public using (IsC, M)` where `M` is everything exported
-   by `IsA` that is not exported by `IsC`.
+-- 2. Construct `c : C` via the `isC` obtained in step 1.
 
-2. Construct `c : C` via the `isC` obtained in step 1.
+-- 3. `open C c public hiding (N)` where `N` is the list of fields
+--    shared by both `A` and `C`.
 
-3. `open C c public hiding (N)` where `N` is the list of fields shared
-   by both `A` and `C`.
+-- 4. Construct `b : B` via the `isB` obtained in step 1.
 
-4. Construct `b : B` via the `isB` obtained in step 1.
+-- 5. `open B b public using (O)` where `O` is everything exported
+--    by `B` but not exported by `IsA`.
+ 
+-- 6. Construct `d : D` via the `isC` obtained in step 1.
 
-5. `open B b public using (O)` where `O` is everything exported by `B`
-   but not exported by `IsA`.
-   
-6. Construct `d : D` via the `isC` obtained in step 1.
-
-7. `open D d public using (P)` where `P` is everything exported by `D`
-   but not exported by IsA
+-- 7. `open D d public using (P)` where `P` is everything exported
+--    by `D` but not exported by `IsA`
 
 ------------------------------------------------------------------------
 -- Other hierarchy modules
