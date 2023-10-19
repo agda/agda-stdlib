@@ -3233,6 +3233,13 @@ Additions to existing modules
   evalState : State s a → s → a
   execState : State s a → s → s
   ```
+  
+* Added new proofs and definitions in `Function.Bundles`:
+  ```agda
+  LeftInverse.isSplitSurjection : LeftInverse → IsSplitSurjection to
+  LeftInverse.surjection        : LeftInverse → Surjection
+  SplitSurjection               = LeftInverse
+  ```
 
 * Added new application operator synonym to `Function.Bundles`:
   ```agda
@@ -3254,6 +3261,12 @@ Additions to existing modules
   ```
   _!|>_  : (a : A) → (∀ a → B a) → B a
   _!|>′_ : A → (A → B) → B
+  ```
+  
+* Added new proof and record in `Function.Structures`:
+  ```agda
+  IsLeftInverse.isSurjection : IsLeftInverse to from → IsSurjection to
+  record IsSplitSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
 * Added new definition to the `Surjection` module in `Function.Related.Surjection`:
