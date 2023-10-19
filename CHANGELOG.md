@@ -774,8 +774,7 @@ Non-backwards compatible changes
   This is needed for level-increasing functors like `IO : Set l → Set (suc l)`.
 
 * `RawApplicative` is now `RawFunctor + pure + _<*>_` and `RawMonad` is now
-  `RawApplicative` + `_>>=_` and so `return` is not used anywhere anymore.
-  This fixes the conflict with `case_return_of` (#356)
+  `RawApplicative` + `_>>=_`.
   This reorganisation means in particular that the functor/applicative of a monad
   are not computed using `_>>=_`. This may break proofs.
 
