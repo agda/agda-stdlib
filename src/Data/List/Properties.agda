@@ -280,7 +280,7 @@ module _ (f : A → B → C) where
   cartesianProductWith-distribʳ-++ (x ∷ xs) ys zs = begin
     prod (x ∷ xs ++ ys) zs ≡⟨⟩
     map (f x) zs ++ prod (xs ++ ys) zs ≡⟨ cong (map (f x) zs ++_) (cartesianProductWith-distribʳ-++ xs ys zs) ⟩
-    map (f x) zs ++ prod xs zs ++ prod ys zs ≡˘⟨ ++-assoc (map (f x) zs) (prod xs zs) (prod ys zs) ⟩
+    map (f x) zs ++ prod xs zs ++ prod ys zs ≡⟨ ++-assoc (map (f x) zs) (prod xs zs) (prod ys zs) ⟨
     (map (f x) zs ++ prod xs zs) ++ prod ys zs ≡⟨⟩
     prod (x ∷ xs) zs ++ prod ys zs ∎
 
@@ -590,7 +590,7 @@ map-concatMap f g xs = begin
   map f (concatMap g xs)
     ≡⟨⟩
   map f (concat (map g xs))
-    ≡˘⟨ concat-map (map g xs) ⟩
+    ≡⟨ concat-map (map g xs) ⟨
   concat (map (map f) (map g xs))
     ≡⟨ cong concat
          {x = map (map f) (map g xs)}

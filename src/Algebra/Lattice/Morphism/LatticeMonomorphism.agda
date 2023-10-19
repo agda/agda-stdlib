@@ -97,8 +97,8 @@ module _ (⊔-⊓-isLattice : IsLattice _≈₂_ _⊔_ _⊓_) where
     ⟦ y ∧ z ∨ x ⟧                        ≈⟨ ∨-homo (y ∧ z) x ⟩
     ⟦ y ∧ z ⟧ ⊔ ⟦ x ⟧                    ≈⟨ ⊔-congʳ (∧-homo y z) ⟩
     ⟦ y ⟧ ⊓ ⟦ z ⟧ ⊔ ⟦ x ⟧                ≈⟨ distribʳ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
-    (⟦ y ⟧ ⊔ ⟦ x ⟧) ⊓ (⟦ z ⟧ ⊔ ⟦ x ⟧)    ≈˘⟨ ⊓-cong (∨-homo y x) (∨-homo z x) ⟩
-    ⟦ y ∨ x ⟧ ⊓ ⟦ z ∨ x ⟧                ≈˘⟨ ∧-homo (y ∨ x) (z ∨ x) ⟩
+    (⟦ y ⟧ ⊔ ⟦ x ⟧) ⊓ (⟦ z ⟧ ⊔ ⟦ x ⟧)    ≈⟨ ⊓-cong (∨-homo y x) (∨-homo z x) ⟨
+    ⟦ y ∨ x ⟧ ⊓ ⟦ z ∨ x ⟧                ≈⟨ ∧-homo (y ∨ x) (z ∨ x) ⟨
     ⟦ (y ∨ x) ∧ (z ∨ x) ⟧                ∎)
 
 isLattice : IsLattice _≈₂_ _⊔_ _⊓_ → IsLattice _≈₁_ _∨_ _∧_

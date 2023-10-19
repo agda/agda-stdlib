@@ -100,8 +100,8 @@ module _ {_≈_ : Rel B ℓ} {_∙_ : Op₂ B}
 
     assoc : Associative _≈_ _∙_ → Associative _≈′_ _◦_
     assoc ∙-assoc x y z = f-injective (begin
-      f ((x ◦ y) ◦ z)   ≈˘⟨ distrib f (x ◦ y) z ⟩
-      f (x ◦ y) ∙ f z   ≈˘⟨ ∙-congʳ (distrib f x y) ⟩
+      f ((x ◦ y) ◦ z)   ≈⟨ distrib f (x ◦ y) z ⟨
+      f (x ◦ y) ∙ f z   ≈⟨ ∙-congʳ (distrib f x y) ⟨
       (f x ∙ f y) ∙ f z ≈⟨  ∙-assoc (f x) (f y) (f z) ⟩
       f x ∙ (f y ∙ f z) ≈⟨  ∙-congˡ (distrib f y z) ⟩
       f x ∙ f (y ◦ z)   ≈⟨  distrib f x (y ◦ z) ⟩
@@ -109,7 +109,7 @@ module _ {_≈_ : Rel B ℓ} {_∙_ : Op₂ B}
 
     comm : Commutative _≈_ _∙_ → Commutative _≈′_ _◦_
     comm ∙-comm x y = f-injective (begin
-      f (x ◦ y) ≈˘⟨ distrib f x y ⟩
+      f (x ◦ y) ≈⟨ distrib f x y ⟨
       f x ∙ f y ≈⟨  ∙-comm (f x) (f y) ⟩
       f y ∙ f x ≈⟨  distrib f y x ⟩
       f (y ◦ x) ∎)

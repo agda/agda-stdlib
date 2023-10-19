@@ -180,7 +180,7 @@ module pw-Reasoning (S : Setoid a ℓ) where
   run `rs .tail = run (`tail `rs)
 
   infix  1 begin_
-  infixr 2 _↺⟨_⟩_ _↺˘⟨_⟩_ _∼⟨_⟩_ _∼˘⟨_⟩_ _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
+  infixr 2 _↺⟨_⟩_ _↺⟨_⟨_ _∼⟨_⟩_ _∼⟨_⟨_ _≈⟨_⟩_ _≈⟨_⟨_ _≡⟨_⟩_ _≡⟨_⟨_ _≡⟨⟩_
   infix  3 _∎
 
   -- Beginning of a proof
@@ -189,15 +189,40 @@ module pw-Reasoning (S : Setoid a ℓ) where
   (begin `rs) .tail = run (`rs .tail)
 
   pattern _↺⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`step as∼bs) bs∼cs
-  pattern _↺˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`step bs∼as)) bs∼cs
+  pattern _↺⟨_⟨_ as bs∼as bs∼cs = `trans {as = as} (`sym (`step bs∼as)) bs∼cs
   pattern _∼⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`lift as∼bs) bs∼cs
-  pattern _∼˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`lift bs∼as)) bs∼cs
+  pattern _∼⟨_⟨_ as bs∼as bs∼cs = `trans {as = as} (`sym (`lift bs∼as)) bs∼cs
   pattern _≈⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`bisim as∼bs) bs∼cs
-  pattern _≈˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`bisim bs∼as)) bs∼cs
+  pattern _≈⟨_⟨_ as bs∼as bs∼cs = `trans {as = as} (`sym (`bisim bs∼as)) bs∼cs
   pattern _≡⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`refl as∼bs) bs∼cs
-  pattern _≡˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`refl bs∼as)) bs∼cs
+  pattern _≡⟨_⟨_ as bs∼as bs∼cs = `trans {as = as} (`sym (`refl bs∼as)) bs∼cs
   pattern _≡⟨⟩_   as as∼bs       = `trans {as = as} (`refl P.refl) as∼bs
   pattern _∎      as             = `refl  {as = as} P.refl
+
+
+  -- Deprecated v2.0
+  infixr 2 _↺˘⟨_⟩_ _∼˘⟨_⟩_ _≈˘⟨_⟩_ _≡˘⟨_⟩_
+  pattern _↺˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`step bs∼as)) bs∼cs
+  pattern _∼˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`lift bs∼as)) bs∼cs
+  pattern _≈˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`bisim bs∼as)) bs∼cs
+  pattern _≡˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`refl bs∼as)) bs∼cs
+  {-# WARNING_ON_USAGE _↺˘⟨_⟩_
+  "Warning: _↺˘⟨_⟩_ was deprecated in v2.0.
+  Please use _↺⟨_⟨_ instead."
+  #-}
+  {-# WARNING_ON_USAGE _∼˘⟨_⟩_
+  "Warning: _∼˘⟨_⟩_ was deprecated in v2.0.
+  Please use _∼⟨_⟨_ instead."
+  #-}
+  {-# WARNING_ON_USAGE _≈˘⟨_⟩_
+  "Warning: _≈˘⟨_⟩_ was deprecated in v2.0.
+  Please use _≈⟨_⟨_ instead."
+  #-}
+  {-# WARNING_ON_USAGE _≡˘⟨_⟩_
+  "Warning: _≡˘⟨_⟩_ was deprecated in v2.0.
+  Please use _≡⟨_⟨_ instead."
+  #-}
+
 
 module ≈-Reasoning {a} {A : Set a} where
 

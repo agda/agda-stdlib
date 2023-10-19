@@ -116,7 +116,7 @@ module StarReasoning {i t} {I : Set i} (T : Rel I t) where
   private module Base = PreorderReasoning (preorder T)
 
   open Base public
-    hiding (step-≈; step-∼; step-≲)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
     renaming (≲-go to ⟶-go)
 
   open ⟶-syntax _IsRelatedTo_ _IsRelatedTo_ (⟶-go ∘ (_◅ ε)) public

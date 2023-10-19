@@ -56,11 +56,11 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
     y⁻¹*x⁻¹*x*y≈1 = begin
       y⁻¹ * x⁻¹ * (x * y - 0#)     ≈⟨ *-congˡ (x-0≈x (x * y)) ⟩
       y⁻¹ * x⁻¹ * (x * y)          ≈⟨ *-assoc y⁻¹ x⁻¹ (x * y) ⟩
-      y⁻¹ * (x⁻¹ * (x * y))       ≈˘⟨ *-congˡ (*-assoc x⁻¹ x y) ⟩
-      y⁻¹ * ((x⁻¹ * x) * y)       ≈˘⟨ *-congˡ (*-congʳ (*-congˡ (x-0≈x x))) ⟩
+      y⁻¹ * (x⁻¹ * (x * y))       ≈⟨ *-congˡ (*-assoc x⁻¹ x y) ⟨
+      y⁻¹ * ((x⁻¹ * x) * y)       ≈⟨ *-congˡ (*-congʳ (*-congˡ (x-0≈x x))) ⟨
       y⁻¹ * ((x⁻¹ * (x - 0#)) * y) ≈⟨ *-congˡ (*-congʳ x⁻¹*x≈1) ⟩
       y⁻¹ * (1# * y)               ≈⟨ *-congˡ (*-identityˡ y) ⟩
-      y⁻¹ * y                     ≈˘⟨ *-congˡ (x-0≈x y) ⟩
+      y⁻¹ * y                     ≈⟨ *-congˡ (x-0≈x y) ⟨
       y⁻¹ * (y - 0#)               ≈⟨ y⁻¹*y≈1 ⟩
       1# ∎
 
@@ -75,15 +75,15 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
 
   y-x≈-[x-y] : y - x ≈ - (x - y)
   y-x≈-[x-y] = begin
-    y - x     ≈˘⟨ +-congʳ (-‿involutive y) ⟩
-    - - y - x ≈˘⟨ -‿anti-homo-+ x (- y) ⟩
+    y - x     ≈⟨ +-congʳ (-‿involutive y) ⟨
+    - - y - x ≈⟨ -‿anti-homo-+ x (- y) ⟨
     - (x - y) ∎
 
   x-y⁻¹*y-x≈1 : (- x-y⁻¹) * (y - x) ≈ 1#
   x-y⁻¹*y-x≈1 = begin
-    (- x-y⁻¹) * (y - x)   ≈˘⟨ -‿distribˡ-* x-y⁻¹ (y - x) ⟩
+    (- x-y⁻¹) * (y - x)   ≈⟨ -‿distribˡ-* x-y⁻¹ (y - x) ⟨
     - (x-y⁻¹ * (y - x))    ≈⟨ -‿cong (*-congˡ y-x≈-[x-y]) ⟩
-    - (x-y⁻¹ * - (x - y)) ≈˘⟨ -‿cong (-‿distribʳ-* x-y⁻¹ (x - y)) ⟩
+    - (x-y⁻¹ * - (x - y)) ≈⟨ -‿cong (-‿distribʳ-* x-y⁻¹ (x - y)) ⟨
     - - (x-y⁻¹ * (x - y))  ≈⟨ -‿involutive (x-y⁻¹ * ((x - y))) ⟩
     x-y⁻¹ * (x - y)        ≈⟨ InvX-Y .proj₂ .proj₁ ⟩
     1# ∎
@@ -100,7 +100,7 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
 
     x-z⁻¹*y-z≈1 : x-z⁻¹ * (y - z) ≈ 1#
     x-z⁻¹*y-z≈1 = begin
-      x-z⁻¹ * (y - z) ≈˘⟨ *-congˡ (+-congʳ x≈y) ⟩
+      x-z⁻¹ * (y - z) ≈⟨ *-congˡ (+-congʳ x≈y) ⟨
       x-z⁻¹ * (x - z)  ≈⟨ x-z⁻¹*x-z≈1# ⟩
       1# ∎
 
