@@ -232,7 +232,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isLeftInverse = isLeftInverse
       }
 
-    surjection : Surjection
+    surjection : Surjection From To
     surjection = record
       { to = to
       ; cong = to-cong
