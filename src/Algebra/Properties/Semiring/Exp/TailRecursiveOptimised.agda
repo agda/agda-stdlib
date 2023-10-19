@@ -72,7 +72,7 @@ x^[m+1]≈x*[x^m] x m = x^[m]*[x*y]≈x*x^[m]*y x m 1#
 x^[m+n]≈[x^m]*[x^n] : ∀ x m n → x ^ (m ℕ.+ n) ≈ x ^ m * x ^ n
 x^[m+n]≈[x^m]*[x^n] x m n = begin
   x ^ (m  ℕ.+ n)   ≈⟨ x^[m+n]*y≈x^[m]*x^[n]*y x m n 1# ⟩
-  x ^[ m ]* (x ^ n) ≈˘⟨ x^m*y≈x^[m]*y x m (x ^ n) ⟩
+  x ^[ m ]* (x ^ n) ≈⟨ x^m*y≈x^[m]*y x m (x ^ n) ⟨
   x ^ m * x ^ n    ∎
 
 ^≈^ᵘ : ∀ x m → x ^ m ≈ x ^ᵘ m

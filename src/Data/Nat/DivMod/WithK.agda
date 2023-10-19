@@ -36,6 +36,6 @@ _divMod_ : (dividend divisor : ℕ) → .{{ NonZero divisor }} →
            DivMod dividend divisor
 m divMod n = result (m / n) (m mod n) $ ≡-erase $ begin
   m                                 ≡⟨ m≡m%n+[m/n]*n m n ⟩
-  m % n                  + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ<″ lemma″) ⟩
+  m % n                  + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) (toℕ-fromℕ<″ lemma″) ⟨
   toℕ (fromℕ<″ _ lemma″) + [m/n]*n  ∎
   where [m/n]*n = m / n * n ; lemma″ = ≤″-erase (≤⇒≤″ (m%n<n m n))

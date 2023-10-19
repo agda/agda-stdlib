@@ -53,7 +53,7 @@ antisym : IsEquivalence _≈_ → Commutative _∙_ → Antisymmetric _≈_ _≤
 antisym isEq comm {x} {y} x≤y y≤x = begin
   x     ≈⟨  x≤y ⟩
   y ∙ x ≈⟨  comm y x ⟩
-  x ∙ y ≈˘⟨ y≤x ⟩
+  x ∙ y ≈⟨ y≤x ⟨
   y     ∎
   where open EqReasoning (record { isEquivalence = isEq })
 

@@ -156,9 +156,9 @@ fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
   tail-homo ℕ.zero = refl
   tail-homo (ℕ.suc ℕ.zero) = refl
   tail-homo (ℕ.suc (ℕ.suc n)) = begin
-    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡˘⟨ tail-suc (fromℕ' n) ⟩
+    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡⟨ tail-suc (fromℕ' n) ⟨
     suc (tail (suc (fromℕ' n)))            ≡⟨ cong suc (tail-homo n) ⟩
-    fromℕ' (ℕ.suc (n / 2))                 ≡˘⟨ cong fromℕ' (+-distrib-/-∣ˡ {2} n ∣-refl) ⟩
+    fromℕ' (ℕ.suc (n / 2))                 ≡⟨ cong fromℕ' (+-distrib-/-∣ˡ {2} n ∣-refl) ⟨
     fromℕ' (ℕ.suc (ℕ.suc n) / 2)           ∎
 
   fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ.helper n n w ≡ fromℕ' n
@@ -167,7 +167,7 @@ fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
     split-injective (begin
       split (fromℕ.helper n (ℕ.suc n) (ℕ.suc w))         ≡⟨ split-if _ _ ⟩
       just (n % 2 ℕ.≡ᵇ 0) , fromℕ.helper n (n / 2) w     ≡⟨ cong (_ ,_) rec-n/2 ⟩
-      just (n % 2 ℕ.≡ᵇ 0) , fromℕ' (n / 2)               ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
+      just (n % 2 ℕ.≡ᵇ 0) , fromℕ' (n / 2)               ≡⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟨
       head (fromℕ' (ℕ.suc n)) , tail (fromℕ' (ℕ.suc n))  ≡⟨⟩
       split (fromℕ' (ℕ.suc n))                           ∎)
     where rec-n/2 = fromℕ-helper≡fromℕ' (n / 2) w (ℕₚ.≤-trans (m/n≤m n 2) n≤w)
@@ -613,7 +613,7 @@ module ≤-Reasoning where
     <-≤-trans
     ≤-<-trans
     public
-    hiding (step-≈; step-≈˘)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
 
 ------------------------------------------------------------------------
 -- Properties of _<ℕ_

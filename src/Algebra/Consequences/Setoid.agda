@@ -88,7 +88,7 @@ module _ {f : Op₁ A} (self : SelfInverse f) where
 
   selfInverse⇒injective : Injective _≈_ _≈_ f
   selfInverse⇒injective {x} {y} x≈y = begin
-    x       ≈˘⟨ self x≈y ⟩
+    x       ≈⟨ self x≈y ⟨
     f (f y) ≈⟨ selfInverse⇒involutive y ⟩
     y       ∎
 
@@ -267,12 +267,12 @@ module _ {_•_ _◦_ : Op₂ A}
                              _◦_ DistributesOver _•_ →
                              _•_ DistributesOverˡ _◦_
   distrib+absorbs⇒distribˡ •-absorbs-◦ ◦-absorbs-• (◦-distribˡ-• , ◦-distribʳ-•) x y z = begin
-    x • (y ◦ z)                    ≈˘⟨ •-cong (•-absorbs-◦ _ _) refl ⟩
+    x • (y ◦ z)                    ≈⟨ •-cong (•-absorbs-◦ _ _) refl ⟨
     (x • (x ◦ y)) • (y ◦ z)        ≈⟨  •-cong (•-cong refl (◦-comm _ _)) refl ⟩
     (x • (y ◦ x)) • (y ◦ z)        ≈⟨  •-assoc _ _ _ ⟩
-    x • ((y ◦ x) • (y ◦ z))        ≈˘⟨ •-cong refl (◦-distribˡ-• _ _ _) ⟩
-    x • (y ◦ (x • z))              ≈˘⟨ •-cong (◦-absorbs-• _ _) refl ⟩
-    (x ◦ (x • z)) • (y ◦ (x • z))  ≈˘⟨ ◦-distribʳ-• _ _ _ ⟩
+    x • ((y ◦ x) • (y ◦ z))        ≈⟨ •-cong refl (◦-distribˡ-• _ _ _) ⟨
+    x • (y ◦ (x • z))              ≈⟨ •-cong (◦-absorbs-• _ _) refl ⟨
+    (x ◦ (x • z)) • (y ◦ (x • z))  ≈⟨ ◦-distribʳ-• _ _ _ ⟨
     (x • y) ◦ (x • z)              ∎
 
 ------------------------------------------------------------------------

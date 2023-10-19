@@ -686,7 +686,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ f → Any (P ∘ f) xs) fs                ↔⟨ Any-cong (λ _ → Any-cong (λ _ → pure↔) (_ ∎)) (_ ∎) ⟩
   Any (λ f → Any (Any P ∘ pure ∘ f) xs) fs     ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
   Any (λ f → Any P (xs >>= pure ∘ f)) fs       ↔⟨ >>=↔ ⟩
-  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡˘⟨ P.cong (Any P) (Listₑ.Applicative.unfold-⊛ fs xs) ⟩
+  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡⟨ P.cong (Any P) (Listₑ.Applicative.unfold-⊛ fs xs) ⟨
   Any P (fs ⊛ xs)                               ∎
   where open Related.EquationalReasoning
 
@@ -706,7 +706,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ x → Any (λ y → P (x , y)) ys) xs                           ↔⟨ pure↔ ⟩
   Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (pure _,_)  ↔⟨ ⊛↔ ⟩
   Any (λ x, → Any (P ∘ x,) ys) (pure _,_ ⊛ xs)                      ↔⟨ ⊛↔ ⟩
-  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡˘⟨ P.cong (Any P ∘′ (_⊛ ys)) (Listₑ.Applicative.unfold-<$> _,_ xs) ⟩
+  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡⟨ P.cong (Any P ∘′ (_⊛ ys)) (Listₑ.Applicative.unfold-<$> _,_ xs) ⟨
   Any P (xs ⊗ ys)                                                   ∎
   where open Related.EquationalReasoning
 

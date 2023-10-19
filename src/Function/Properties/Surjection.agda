@@ -72,7 +72,7 @@ injective⇒to⁻-cong : (surj : Surjection S T) →
 injective⇒to⁻-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
   to (to⁻ x) ≈⟨ to∘to⁻ x ⟩
   x          ≈⟨ x≈y ⟩
-  y          ≈˘⟨ to∘to⁻ y ⟩
+  y          ≈⟨ to∘to⁻ y ⟨
   to (to⁻ y) ∎
   where
   open SetoidReasoning T

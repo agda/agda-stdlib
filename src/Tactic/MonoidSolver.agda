@@ -132,7 +132,7 @@ module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
   homo′ [ x ↑] y   = ∙-congʳ (identityʳ x)
   homo′ (x ∙′ y) z = begin
     [ x ∙′ y ⇓] ∙ z       ≡⟨⟩
-    [ x ⇓]′ [ y ⇓] ∙ z    ≈˘⟨ ∙-congʳ (homo′ x [ y ⇓]) ⟩
+    [ x ⇓]′ [ y ⇓] ∙ z    ≈⟨ ∙-congʳ (homo′ x [ y ⇓]) ⟨
     ([ x ⇓] ∙ [ y ⇓]) ∙ z ≈⟨ assoc [ x ⇓] [ y ⇓] z ⟩
     [ x ⇓] ∙ ([ y ⇓] ∙ z) ≈⟨ ∙-congˡ (homo′ y z) ⟩
     [ x ⇓] ∙ ([ y ⇓]′ z)  ≈⟨ homo′ x ([ y ⇓]′ z) ⟩
@@ -143,7 +143,7 @@ module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
   homo [ x ↑]   = identityʳ x
   homo (x ∙′ y) = begin
     [ x ∙′ y ⇓]     ≡⟨⟩
-    [ x ⇓]′ [ y ⇓]  ≈˘⟨ homo′ x [ y ⇓] ⟩
+    [ x ⇓]′ [ y ⇓]  ≈⟨ homo′ x [ y ⇓] ⟨
     [ x ⇓] ∙ [ y ⇓] ≈⟨ ∙-cong (homo x) (homo y) ⟩
     [ x ↓] ∙ [ y ↓] ∎
 
