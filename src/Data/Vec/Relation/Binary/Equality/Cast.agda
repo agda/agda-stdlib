@@ -52,7 +52,7 @@ xs ≈[ eq ] ys = cast eq xs ≡ ys
 
 ≈-sym : .{m≡n : m ≡ n} → Sym _≈[ m≡n ]_ _≈[ sym m≡n ]_
 ≈-sym {m≡n = m≡n} {xs} {ys} xs≈ys = begin
-  cast (sym m≡n) ys             ≡˘⟨ cong (cast (sym m≡n)) xs≈ys ⟩
+  cast (sym m≡n) ys             ≡⟨ cong (cast (sym m≡n)) xs≈ys ⟨
   cast (sym m≡n) (cast m≡n xs)  ≡⟨ cast-trans m≡n (sym m≡n) xs ⟩
   cast (trans m≡n (sym m≡n)) xs ≡⟨ cast-is-id (trans m≡n (sym m≡n)) xs ⟩
   xs                            ∎
@@ -60,7 +60,7 @@ xs ≈[ eq ] ys = cast eq xs ≡ ys
 
 ≈-trans : ∀ .{m≡n : m ≡ n} .{n≡o : n ≡ o} → Trans _≈[ m≡n ]_ _≈[ n≡o ]_ _≈[ trans m≡n n≡o ]_
 ≈-trans {m≡n = m≡n} {n≡o} {xs} {ys} {zs} xs≈ys ys≈zs = begin
-  cast (trans m≡n n≡o) xs ≡˘⟨ cast-trans m≡n n≡o xs ⟩
+  cast (trans m≡n n≡o) xs ≡⟨ cast-trans m≡n n≡o xs ⟨
   cast n≡o (cast m≡n xs)  ≡⟨ cong (cast n≡o) xs≈ys ⟩
   cast n≡o ys             ≡⟨ ys≈zs ⟩
   zs                      ∎
@@ -84,18 +84,28 @@ module CastReasoning where
   xs ≈⟨⟩ xs≈ys = xs≈ys
 
   -- composition of _≈[_]_
-  step-≈ : ∀ .{m≡n : m ≡ n}.{m≡o : m ≡ o} (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} →
+  step-≈-⟩ : ∀ .{m≡n : m ≡ n}.{m≡o : m ≡ o} (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} →
            ys ≈[ trans (sym m≡n) m≡o ] zs → xs ≈[ m≡n ] ys → xs ≈[ m≡o ] zs
-  step-≈ xs ys≈zs xs≈ys = ≈-trans xs≈ys ys≈zs
+  step-≈-⟩ xs ys≈zs xs≈ys = ≈-trans xs≈ys ys≈zs
+
+  step-≈-⟨ : ∀ .{n≡m : n ≡ m}.{m≡o : m ≡ o} (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} →
+           ys ≈[ trans n≡m m≡o ] zs → ys ≈[ n≡m ] xs → xs ≈[ m≡o ] zs
+  step-≈-⟨ xs ys≈zs ys≈xs = step-≈-⟩ xs ys≈zs (≈-sym ys≈xs)
 
   -- composition of the equality type on the right-hand side of _≈[_]_,
   -- or escaping to ordinary _≡_
-  step-≃ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≡ zs → xs ≈[ m≡n ] ys → xs ≈[ m≡n ] zs
-  step-≃ xs ys≡zs xs≈ys = ≈-trans xs≈ys (≈-reflexive ys≡zs)
+  step-≃-⟩ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≡ zs → xs ≈[ m≡n ] ys → xs ≈[ m≡n ] zs
+  step-≃-⟩ xs ys≡zs xs≈ys = ≈-trans xs≈ys (≈-reflexive ys≡zs)
+
+  step-≃-⟨ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≡ zs → ys ≈[ sym m≡n ] xs → xs ≈[ m≡n ] zs
+  step-≃-⟨ xs ys≡zs ys≈xs = step-≃-⟩ xs ys≡zs (≈-sym ys≈xs)
 
   -- composition of the equality type on the left-hand side of _≈[_]_
-  step-≂ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≈[ m≡n ] zs → xs ≡ ys → xs ≈[ m≡n ] zs
-  step-≂ xs ys≈zs xs≡ys = ≈-trans (≈-reflexive xs≡ys) ys≈zs
+  step-≂-⟩ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≈[ m≡n ] zs → xs ≡ ys → xs ≈[ m≡n ] zs
+  step-≂-⟩ xs ys≈zs xs≡ys = ≈-trans (≈-reflexive xs≡ys) ys≈zs
+
+  step-≂-⟨ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≈[ m≡n ] zs → ys ≡ xs → xs ≈[ m≡n ] zs
+  step-≂-⟨ xs ys≈zs ys≡xs = step-≂-⟩ xs ys≈zs (sym ys≡xs)
 
   -- `cong` after a `_≈[_]_` step that exposes the `cast` to the `cong`
   -- operation
@@ -103,29 +113,16 @@ module CastReasoning where
            xs ≈[ m≡n ] f (cast l≡o ys) → ys ≈[ l≡o ] zs → xs ≈[ m≡n ] f zs
   ≈-cong f xs≈fys ys≈zs = trans xs≈fys (cong f ys≈zs)
 
-
-  -- symmetric version of each of the operator
-  step-≈˘ : ∀ .{n≡m : n ≡ m}.{m≡o : m ≡ o} (xs : Vec A m) {ys : Vec A n} {zs : Vec A o} →
-           ys ≈[ trans n≡m m≡o ] zs → ys ≈[ n≡m ] xs → xs ≈[ m≡o ] zs
-  step-≈˘ xs ys≈zs ys≈xs = step-≈ xs ys≈zs (≈-sym ys≈xs)
-
-  step-≃˘ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≡ zs → ys ≈[ sym m≡n ] xs → xs ≈[ m≡n ] zs
-  step-≃˘ xs ys≡zs ys≈xs = step-≃ xs ys≡zs (≈-sym ys≈xs)
-
-  step-≂˘ : ∀ .{m≡n : m ≡ n} (xs : Vec A m) {ys zs} → ys ≈[ m≡n ] zs → ys ≡ xs → xs ≈[ m≡n ] zs
-  step-≂˘ xs ys≈zs ys≡xs = step-≂ xs ys≈zs (sym ys≡xs)
-
-
   ------------------------------------------------------------------------
   -- convenient syntax for ‘equational’ reasoning
 
   infix 1 begin_
-  infixr 2 step-≃ step-≂ step-≃˘ step-≂˘ step-≈ step-≈˘ _≈⟨⟩_ ≈-cong
+  infixr 2 step-≃-⟩ step-≃-⟨ step-≂-⟩ step-≂-⟨ step-≈-⟩ step-≈-⟨ _≈⟨⟩_ ≈-cong
   infix 3 _∎
 
-  syntax step-≃  xs ys≡zs xs≈ys  = xs ≃⟨  xs≈ys ⟩ ys≡zs
-  syntax step-≃˘ xs ys≡zs xs≈ys  = xs ≃˘⟨ xs≈ys ⟩ ys≡zs
-  syntax step-≂  xs ys≈zs xs≡ys  = xs ≂⟨  xs≡ys ⟩ ys≈zs
-  syntax step-≂˘ xs ys≈zs ys≡xs  = xs ≂˘⟨ ys≡xs ⟩ ys≈zs
-  syntax step-≈  xs ys≈zs xs≈ys  = xs ≈⟨  xs≈ys ⟩ ys≈zs
-  syntax step-≈˘ xs ys≈zs ys≈xs  = xs ≈˘⟨ ys≈xs ⟩ ys≈zs
+  syntax step-≃-⟩ xs ys≡zs xs≈ys  = xs ≃⟨ xs≈ys ⟩ ys≡zs
+  syntax step-≃-⟨ xs ys≡zs xs≈ys  = xs ≃⟨ xs≈ys ⟨ ys≡zs
+  syntax step-≂-⟩ xs ys≈zs xs≡ys  = xs ≂⟨ xs≡ys ⟩ ys≈zs
+  syntax step-≂-⟨ xs ys≈zs ys≡xs  = xs ≂⟨ ys≡xs ⟨ ys≈zs
+  syntax step-≈-⟩ xs ys≈zs xs≈ys  = xs ≈⟨ xs≈ys ⟩ ys≈zs
+  syntax step-≈-⟨ xs ys≈zs ys≈xs  = xs ≈⟨ ys≈xs ⟨ ys≈zs

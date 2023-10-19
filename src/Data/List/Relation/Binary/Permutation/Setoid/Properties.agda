@@ -200,7 +200,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
   x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
-  x ∷ ys ++ xs   ↭˘⟨ ↭-shift ys xs ⟩
+  x ∷ ys ++ xs   ↭⟨ ↭-shift ys xs ⟨
   ys ++ (x ∷ xs) ∎
 
 -- Structures
@@ -262,7 +262,7 @@ inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (↭-prep _ xs↭zs)) (++⁺ʳ _ ws�
 
 shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
 shifts xs ys {zs} = begin
-   xs ++ ys  ++ zs ↭˘⟨ ++-assoc xs ys zs ⟩
+   xs ++ ys  ++ zs ↭⟨ ++-assoc xs ys zs ⟨
   (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
   (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
    ys ++ xs  ++ zs ∎
@@ -297,19 +297,19 @@ dropMiddleElement {v} ws xs {ys} {zs} p = helper p ws xs ≋-refl ≋-refl
   helper {_ ∷ as} {_ ∷ bs} (prep _ as↭bs) [] [] {ys} {zs} (_ ∷ ys≋as) (_ ∷ zs≋bs) = begin
     ys               ≋⟨  ys≋as ⟩
     as               ↭⟨  as↭bs ⟩
-    bs               ≋˘⟨ zs≋bs ⟩
+    bs               ≋⟨ zs≋bs ⟨
     zs               ∎
   helper {_ ∷ as} {_ ∷ bs} (prep a≈b as↭bs) [] (x ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨  ≋₁ ⟩
     as               ↭⟨  as↭bs ⟩
-    bs               ≋˘⟨ ≋₂ ⟩
+    bs               ≋⟨ ≋₂ ⟨
     xs ++ v ∷ zs     ↭⟨  shift (lemma ≈₁ a≈b ≈₂) xs zs ⟩
     x ∷ xs ++ zs     ∎
   helper {_ ∷ as} {_ ∷ bs} (prep v≈w p) (w ∷ ws) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     w ∷ ws ++ ys     ↭⟨  ↭-sym (shift (lemma ≈₂ (≈-sym v≈w) ≈₁) ws ys) ⟩
     ws ++ v ∷ ys     ≋⟨  ≋₁ ⟩
     as               ↭⟨  p ⟩
-    bs               ≋˘⟨ ≋₂ ⟩
+    bs               ≋⟨ ≋₂ ⟨
     zs               ∎
   helper {_ ∷ as} {_ ∷ bs} (prep w≈x p) (w ∷ ws) (x ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     w ∷ ws ++ ys     ↭⟨ prep (lemma ≈₁ w≈x ≈₂) (helper p ws xs ≋₁ ≋₂) ⟩
@@ -317,12 +317,12 @@ dropMiddleElement {v} ws xs {ys} {zs} p = helper p ws xs ≋-refl ≋-refl
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈x y≈v p) [] [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨  ≋₁ ⟩
     a ∷ as           ↭⟨  prep (≈-trans (≈-trans (≈-trans y≈v (≈-sym ≈₂)) ≈₁) v≈x) p ⟩
-    b ∷ bs           ≋˘⟨ ≋₂ ⟩
+    b ∷ bs           ≋⟨ ≋₂ ⟨
     zs               ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈w y≈w p) [] (x ∷ []) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨  ≋₁ ⟩
     a ∷ as           ↭⟨  prep y≈w p ⟩
-    _ ∷ bs           ≋˘⟨ ≈₂ ∷ tail ≋₂ ⟩
+    _ ∷ bs           ≋⟨ ≈₂ ∷ tail ≋₂ ⟨
     x ∷ zs           ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈w y≈x p) [] (x ∷ w ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨ ≋₁ ⟩
@@ -455,8 +455,8 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
   ... | true  | rec | _   = ↭-prep x rec
   ... | false | _   | rec = begin
     y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
-    y ∷ x ∷ xs ++ ys         ↭˘⟨ ↭-shift (x ∷ xs) ys ⟩
-    (x ∷ xs) ++ y ∷ ys       ≡˘⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟩
+    y ∷ x ∷ xs ++ ys         ↭⟨ ↭-shift (x ∷ xs) ys ⟨
+    (x ∷ xs) ++ y ∷ ys       ≡⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
 
@@ -497,7 +497,7 @@ module _ {_∙_ : Op₂ A} {ε : A} (isCmonoid : IsCommutativeMonoid _≈_ _∙_
   foldr-commMonoid (prep x≈y xs↭ys) = ∙-cong x≈y (foldr-commMonoid xs↭ys)
   foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = S.begin
     x ∙ (y ∙ foldr _∙_ ε xs)   S.≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
-    x ∙ (y ∙ foldr _∙_ ε ys)   S.≈˘⟨ assoc x y (foldr _∙_ ε ys) ⟩
+    x ∙ (y ∙ foldr _∙_ ε ys)   S.≈⟨ assoc x y (foldr _∙_ ε ys) ⟨
     (x ∙ y) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (comm x y) ⟩
     (y ∙ x) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
     (y′ ∙ x′) ∙ foldr _∙_ ε ys S.≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩

@@ -96,7 +96,7 @@ module ⊆-Reasoning {A : Set a} where
   private module Base = PreorderReasoning (⊆-preorder A)
 
   open Base public
-    hiding (step-≈; step-≈˘; step-∼; step-≲)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
     renaming (≲-go to ⊆-go)
 
   open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → begin x) public
@@ -199,7 +199,7 @@ module _ {k} {A B : Set a} {fs gs : List (A → B)} {xs ys} where
     x ∈ (fs >>= λ f → xs >>= λ x → pure (f x))
       ∼⟨ >>=-cong fs≈gs (λ f → >>=-cong xs≈ys λ x → K-refl) ⟩
     x ∈ (gs >>= λ g → ys >>= λ y → pure (g y))
-      ≡˘⟨ P.cong (x ∈_) (Applicative.unfold-⊛ gs ys) ⟩
+      ≡⟨ P.cong (x ∈_) (Applicative.unfold-⊛ gs ys) ⟨
     x ∈ (gs ⊛ ys) ∎
     where open Related.EquationalReasoning
 
@@ -284,7 +284,7 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
                 (xs₂ >>= pure ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
 
   (fs >>= λ f → xs₁ >>= pure ∘ f) ++
-  (fs >>= λ f → xs₂ >>= pure ∘ f)         ≡˘⟨ P.cong₂ _++_ (Applicative.unfold-⊛ fs xs₁) (Applicative.unfold-⊛ fs xs₂) ⟩
+  (fs >>= λ f → xs₂ >>= pure ∘ f)         ≡⟨ P.cong₂ _++_ (Applicative.unfold-⊛ fs xs₁) (Applicative.unfold-⊛ fs xs₂) ⟨
 
   (fs ⊛ xs₁) ++ (fs ⊛ xs₂)                ∎
   where open EqR ([ bag ]-Equality B)
@@ -592,7 +592,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 ... | zs₁ , zs₂ , p rewrite p = begin
   x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
   x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-  x ∷ (zs₁ ++ zs₂) ↭˘⟨ shift x zs₁ zs₂ ⟩
+  x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
   zs₁ ++ x ∷ zs₂   ∎
   where
   open CommutativeMonoid (commutativeMonoid bag A)

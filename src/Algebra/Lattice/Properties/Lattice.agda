@@ -27,7 +27,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 
 ∧-idem : Idempotent _∧_
 ∧-idem x = begin
-  x ∧ x            ≈˘⟨ ∧-congˡ (∨-absorbs-∧ _ _) ⟩
+  x ∧ x            ≈⟨ ∧-congˡ (∨-absorbs-∧ _ _) ⟨
   x ∧ (x ∨ x ∧ x)  ≈⟨  ∧-absorbs-∨ _ _ ⟩
   x                ∎
 
@@ -73,7 +73,7 @@ open SemilatticeProperties ∧-semilattice public
 
 ∨-idem : Idempotent _∨_
 ∨-idem x = begin
-  x ∨ x      ≈˘⟨ ∨-congˡ (∧-idem _) ⟩
+  x ∨ x      ≈⟨ ∨-congˡ (∧-idem _) ⟨
   x ∨ x ∧ x  ≈⟨  ∨-absorbs-∧ _ _ ⟩
   x          ∎
 
