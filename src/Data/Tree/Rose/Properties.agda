@@ -39,7 +39,7 @@ map-∘ f g (node a ts) = cong (node (g (f a))) $ begin
 
 depth-map : (f : A → B) (t : Rose A i) → depth {i = i} (map {i = i} f t) ≡ depth {i = i} t
 depth-map f (node a ts) = cong (suc ∘′ max 0) $ begin
-  List.map depth (List.map (map f) ts) ≡˘⟨ Listₚ.map-∘ ts ⟩
+  List.map depth (List.map (map f) ts) ≡⟨ Listₚ.map-∘ ts ⟨
   List.map (depth ∘′ map f) ts         ≡⟨ Listₚ.map-cong (depth-map f) ts ⟩
   List.map depth ts ∎
 
@@ -49,7 +49,7 @@ depth-map f (node a ts) = cong (suc ∘′ max 0) $ begin
 foldr-map : (f : A → B) (n : B → List C → C) (ts : Rose A i) →
             foldr {i = i} n (map {i = i} f ts) ≡ foldr {i = i} (n ∘′ f) ts
 foldr-map f n (node a ts) = cong (n (f a)) $ begin
-  List.map (foldr n) (List.map (map f) ts) ≡˘⟨ Listₚ.map-∘ ts ⟩
+  List.map (foldr n) (List.map (map f) ts) ≡⟨ Listₚ.map-∘ ts ⟨
   List.map (foldr n ∘′ map f) ts           ≡⟨ Listₚ.map-cong (foldr-map f n) ts ⟩
   List.map (foldr (n ∘′ f)) ts             ∎
 

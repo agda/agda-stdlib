@@ -255,15 +255,23 @@ module ≅-Reasoning where
   -- Can't create syntax in the standard `Syntax` module for
   -- heterogeneous steps because it would force that module to use
   -- the `--with-k` option.
-  infixr 2 _≅⟨_⟩_ _≅˘⟨_⟩_
+  infixr 2 _≅⟨_⟩_ _≅⟨_⟨_
 
   _≅⟨_⟩_ : ∀ (x : A) {y : B} {z : C} →
            x ≅ y → y IsRelatedTo z → x IsRelatedTo z
   _ ≅⟨ x≅y ⟩ relTo y≅z = relTo (trans x≅y y≅z)
 
-  _≅˘⟨_⟩_ : ∀ (x : A) {y : B} {z : C} →
+  _≅⟨_⟨_ : ∀ (x : A) {y : B} {z : C} →
             y ≅ x → y IsRelatedTo z → x IsRelatedTo z
-  _ ≅˘⟨ y≅x ⟩ relTo y≅z = relTo (trans (sym y≅x) y≅z)
+  _ ≅⟨ y≅x ⟨ relTo y≅z = relTo (trans (sym y≅x) y≅z)
+
+  -- Deprecated
+  infixr 2 _≅˘⟨_⟩_
+  _≅˘⟨_⟩_ = _≅⟨_⟨_
+  {-# WARNING_ON_USAGE _≅˘⟨_⟩_
+  "Warning: _≅˘⟨_⟩_ was deprecated in v2.0.
+  Please use _≅⟨_⟨_ instead."
+  #-}
 
 ------------------------------------------------------------------------
 -- Inspect

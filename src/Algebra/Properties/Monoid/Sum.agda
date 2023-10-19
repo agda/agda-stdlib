@@ -81,11 +81,11 @@ sum-replicate-zero (suc n) = sum-replicate-idem (+-identityˡ 0#) (suc n)
 sum-init-last : ∀ {n} (t : Vector Carrier (suc n)) → sum t ≈ sum (init t) + last t
 sum-init-last {zero} t  = begin
   t₀ + 0# ≈⟨ +-identityʳ t₀ ⟩
-  t₀      ≈˘⟨ +-identityˡ t₀ ⟩
+  t₀      ≈⟨ +-identityˡ t₀ ⟨
   0# + t₀ ∎ where t₀ = t zero
 sum-init-last {suc n} t = begin
   t₀ + ∑t             ≈⟨ +-congˡ (sum-init-last (tail t)) ⟩
-  t₀ + (∑t′ + tₗ)     ≈˘⟨ +-assoc _ _ _ ⟩
+  t₀ + (∑t′ + tₗ)     ≈⟨ +-assoc _ _ _ ⟨
   (t₀ + ∑t′) + tₗ     ∎
   where
     t₀ = head t

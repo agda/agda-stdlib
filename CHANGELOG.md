@@ -849,6 +849,7 @@ Non-backwards compatible changes
   IO.Effectful
   IO.Instances
   ```
+
 ### (Issue #2096) Introduction of flipped relation symbol for `Relation.Binary.Bundles.Preorder`
 
 * Previously, the relation symbol `_∼_`  was (notationally) symmetric, so that its
@@ -988,6 +989,53 @@ Non-backwards compatible changes
   Relation.Binary.Reasoning.StrictPartialOrder
   Relation.Binary.Reasoning.PartialOrder
   ```
+
+### More modular design of equational reasoning.
+
+* Have introduced a new module `Relation.Binary.Reasoning.Syntax` which exports
+  a range of modules containing pre-existing reasoning combinator syntax.
+
+* This makes it possible to add new or rename existing reasoning combinators to a
+  pre-existing `Reasoning` module in just a couple of lines
+  (e.g. see `∣-Reasoning` in `Data.Nat.Divisibility`)
+
+* One pre-requisite for that is that `≡-Reasoning` has been moved from
+  `Relation.Binary.PropositionalEquality.Core` (which shouldn't be
+  imported anyway as it's a `Core` module) to 
+  `Relation.Binary.PropositionalEquality.Properties`.
+  It is still exported by `Relation.Binary.PropositionalEquality`.
+
+### Renaming of symmetric combinators for equational reasoning
+
+* We've had various complaints about the symmetric version of reasoning combinators 
+  that use the syntax `_R˘⟨_⟩_` for some relation `R`, (e.g. `_≡˘⟨_⟩_` and `_≃˘⟨_⟩_`)
+  introduced in `v1.0`. In particular:
+  1. The symbol `˘` is hard to type.
+  2. The symbol `˘` doesn't convey the direction of the equality
+  3. The left brackets aren't vertically aligned with the left brackets of the non-symmetric version.
+  
+* To address these problems we have renamed all the symmetric versions of the 
+  combinators from `_R˘⟨_⟩_` to `_R⟨_⟨_` (the direction of the last bracket is flipped
+  to indicate the quality goes from right to left).
+  
+* The old combinators still exist but have been deprecated. However due to 
+  [Agda issue #5617](https://github.com/agda/agda/issues/5617), the deprecation warnings
+  don't fire correctly. We will not remove the old combinators before the above issue is
+  addressed. However, we still encourage migrating to the new combinators!
+
+* On a Linux-based system, the following command was used to globally migrate all uses of the
+  old combinators to the new ones in the standard library itself. 
+  It *may* be useful when trying to migrate your own code:
+  ```bash
+  find . -type f -name "*.agda" -print0 | xargs -0 sed -i -e 's/˘⟨\(.*\)⟩/⟨\1⟨/g'
+  ```
+  USUAL CAVEATS: It has not been widely tested and the standard library developers are not 
+  responsible for the results of this command. It is strongly recommended you back up your 
+  work before you attempt to run it.
+  
+* NOTE: this refactoring may require some extra bracketing around the operator `_⟨_⟩_` from 
+  `Function.Base` if the `_⟨_⟩_` operator is used within the reasoning proof. The symptom
+  for this is a `Don't know how to parse` error.
 
 ### Other
 
@@ -1228,21 +1276,6 @@ Major improvements
   * `RawLattice` has been moved from `Algebra.Lattice.Bundles` to this new module.
 
 * In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
-
-### More modular design of equational reasoning.
-
-* Have introduced a new module `Relation.Binary.Reasoning.Syntax` which exports
-  a range of modules containing pre-existing reasoning combinator syntax.
-
-* This makes it possible to add new or rename existing reasoning combinators to a
-  pre-existing `Reasoning` module in just a couple of lines
-  (e.g. see `∣-Reasoning` in `Data.Nat.Divisibility`)
-
-* One pre-requisite for that is that `≡-Reasoning` has been moved from
-  `Relation.Binary.PropositionalEquality.Core` (which shouldn't be
-  imported anyway as it's a `Core` module) to 
-  `Relation.Binary.PropositionalEquality.Properties`.
-  It is still exported by `Relation.Binary.PropositionalEquality`.
   
 Deprecated modules
 ------------------

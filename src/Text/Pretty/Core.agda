@@ -190,7 +190,7 @@ private
     isBlock ∣x∣ ∣y∣ with blocky
     ... | nothing        = begin
       size blockx         ≡⟨ ∣x∣ ⟩
-      x.height            ≡˘⟨ +-identityʳ x.height ⟩
+      x.height            ≡⟨ +-identityʳ x.height ⟨
       x.height + 0        ≡⟨ cong (_ +_) ∣y∣ ⟩
       x.height + y.height ∎ where open ≡-Reasoning
     ... | just (hd , tl) = begin

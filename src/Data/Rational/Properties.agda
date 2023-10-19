@@ -314,7 +314,7 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
   (begin
     (m ℕ.* d) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ≡⟨  ℕ./-*-interchange gcd[m,c]∣m gcd[n,d]∣d ⟩
     (m ℕ./ gcd[m,c]) ℕ.* (d ℕ./ gcd[n,d]) ≡⟨  cong₂ ℕ._*_ m/gcd[m,c]≡n/gcd[n,d] (sym c/gcd[m,c]≡d/gcd[n,d]) ⟩
-    (n ℕ./ gcd[n,d]) ℕ.* (c ℕ./ gcd[m,c]) ≡˘⟨ ℕ./-*-interchange gcd[n,d]∣n gcd[m,c]∣c ⟩
+    (n ℕ./ gcd[n,d]) ℕ.* (c ℕ./ gcd[m,c]) ≡⟨ ℕ./-*-interchange gcd[n,d]∣n gcd[m,c]∣c ⟨
     (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨  ℕ./-congʳ (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
     (n ℕ.* c) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ∎)
   where
@@ -441,7 +441,7 @@ fromℚᵘ-cong : fromℚᵘ Preserves _≃ᵘ_ ⟶ _≡_
 fromℚᵘ-cong {p} {q} p≃q = toℚᵘ-injective (begin-equality
   toℚᵘ (fromℚᵘ p)  ≃⟨  toℚᵘ-fromℚᵘ p ⟩
   p                ≃⟨  p≃q ⟩
-  q                ≃˘⟨ toℚᵘ-fromℚᵘ q ⟩
+  q                ≃⟨ toℚᵘ-fromℚᵘ q ⟨
   toℚᵘ (fromℚᵘ q)  ∎)
   where open ℚᵘ.≤-Reasoning
 
@@ -749,7 +749,8 @@ module ≤-Reasoning where
     ≤-<-trans
     as Triple
 
-  open Triple public hiding (step-≈; step-≈˘)
+  open Triple public
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
 
   ≃-go : Trans _≃_ _IsRelatedTo_ _IsRelatedTo_
   ≃-go = Triple.≈-go ∘′ ≃⇒≡
@@ -854,7 +855,7 @@ toℚᵘ-homo-+ p@record{} q@record{} with +-nf p q ℤ.≟ 0ℤ
     ↥ (p + q) ℤ.* +-nf p q ℤ.* ↧+ᵘ p q            ≡⟨ cong (ℤ._* ↧+ᵘ p q) (↥-+ p q) ⟩
     ↥+ᵘ p q ℤ.* ↧+ᵘ p q                           ≡⟨ cong (↥+ᵘ p q ℤ.*_) (sym (↧-+ p q)) ⟩
     ↥+ᵘ p q ℤ.* (↧ (p + q) ℤ.* +-nf p q)          ≡⟨ x∙yz≈xy∙z (↥+ᵘ p q) _ _ ⟩
-    ↥+ᵘ p q ℤ.* ↧ (p + q)  ℤ.* +-nf p q           ≡˘⟨ cong (λ v → ↥+ᵘ p q ℤ.* v ℤ.* +-nf p q) (↧ᵘ-toℚᵘ (p + q)) ⟩
+    ↥+ᵘ p q ℤ.* ↧ (p + q)  ℤ.* +-nf p q           ≡⟨ cong (λ v → ↥+ᵘ p q ℤ.* v ℤ.* +-nf p q) (↧ᵘ-toℚᵘ (p + q)) ⟨
     ↥+ᵘ p q ℤ.* ↧ᵘ (toℚᵘ (p + q)) ℤ.* +-nf p q    ∎)
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
@@ -1065,7 +1066,7 @@ toℚᵘ-homo-* p@record{} q@record{} with *-nf p q ℤ.≟ 0ℤ
   ↥ (p * q)         ℤ.* *-nf p q ℤ.* (↧ p ℤ.* ↧ q)     ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q)) (↥-* p q) ⟩
   (↥ p ℤ.* ↥ q)     ℤ.* (↧ p ℤ.* ↧ q)                  ≡⟨ cong ((↥ p ℤ.* ↥ q) ℤ.*_) (sym (↧-* p q)) ⟩
   (↥ p ℤ.* ↥ q)     ℤ.* (↧ (p * q) ℤ.* *-nf p q)       ≡⟨ x∙yz≈xy∙z (↥ p ℤ.* ↥ q) _ _ ⟩
-  (↥ p ℤ.* ↥ q)     ℤ.* ↧ (p * q)  ℤ.* *-nf p q        ≡˘⟨ cong (λ v → (↥ p ℤ.* ↥ q) ℤ.* v ℤ.* *-nf p q) (↧ᵘ-toℚᵘ (p * q)) ⟩
+  (↥ p ℤ.* ↥ q)     ℤ.* ↧ (p * q)  ℤ.* *-nf p q        ≡⟨ cong (λ v → (↥ p ℤ.* ↥ q) ℤ.* v ℤ.* *-nf p q) (↧ᵘ-toℚᵘ (p * q)) ⟨
   (↥ p ℤ.* ↥ q)     ℤ.* ↧ᵘ (toℚᵘ (p * q)) ℤ.* *-nf p q ∎)
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
@@ -1242,7 +1243,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 
 *-cancelʳ-≤-pos : ∀ r .{{_ : Positive r}} → p * r ≤ q * r → p ≤ q
 *-cancelʳ-≤-pos {p} {q} r pr≤qr = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelʳ-≤-pos (toℚᵘ r) (begin
-  toℚᵘ p ℚᵘ.* toℚᵘ r  ≃˘⟨ toℚᵘ-homo-* p r ⟩
+  toℚᵘ p ℚᵘ.* toℚᵘ r  ≃⟨ toℚᵘ-homo-* p r ⟨
   toℚᵘ (p * r)        ≤⟨  toℚᵘ-mono-≤ pr≤qr ⟩
   toℚᵘ (q * r)        ≃⟨  toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  ∎))
@@ -1255,7 +1256,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoʳ-≤-nonNeg r {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
   toℚᵘ (p * r)        ≃⟨  toℚᵘ-homo-* p r ⟩
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≤⟨  ℚᵘ.*-monoˡ-≤-nonNeg (toℚᵘ r) (toℚᵘ-mono-≤ p≤q) ⟩
-  toℚᵘ q ℚᵘ.* toℚᵘ r  ≃˘⟨ toℚᵘ-homo-* q r ⟩
+  toℚᵘ q ℚᵘ.* toℚᵘ r  ≃⟨ toℚᵘ-homo-* q r ⟨
   toℚᵘ (q * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
@@ -1266,7 +1267,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoʳ-≤-nonPos r {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
   toℚᵘ (q * r)        ≃⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  ≤⟨ ℚᵘ.*-monoˡ-≤-nonPos (toℚᵘ r) (toℚᵘ-mono-≤ p≤q) ⟩
-  toℚᵘ p ℚᵘ.* toℚᵘ r  ≃˘⟨ toℚᵘ-homo-* p r ⟩
+  toℚᵘ p ℚᵘ.* toℚᵘ r  ≃⟨ toℚᵘ-homo-* p r ⟨
   toℚᵘ (p * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
@@ -1275,9 +1276,9 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 
 *-cancelʳ-≤-neg : ∀ r .{{_ : Negative r}} → p * r ≤ q * r → p ≥ q
 *-cancelʳ-≤-neg {p} {q} r pr≤qr = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelʳ-≤-neg _ (begin
-  toℚᵘ p ℚᵘ.* toℚᵘ r  ≃˘⟨ toℚᵘ-homo-* p r ⟩
-  toℚᵘ (p * r)        ≤⟨  toℚᵘ-mono-≤ pr≤qr ⟩
-  toℚᵘ (q * r)        ≃⟨  toℚᵘ-homo-* q r ⟩
+  toℚᵘ p ℚᵘ.* toℚᵘ r  ≃⟨ toℚᵘ-homo-* p r ⟨
+  toℚᵘ (p * r)        ≤⟨ toℚᵘ-mono-≤ pr≤qr ⟩
+  toℚᵘ (q * r)        ≃⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  ∎))
   where open ℚᵘ.≤-Reasoning
 
@@ -1291,7 +1292,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoˡ-<-pos r {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
   toℚᵘ (p * r)        ≃⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ p ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-pos (toℚᵘ r) (toℚᵘ-mono-< p<q) ⟩
-  toℚᵘ q ℚᵘ.* toℚᵘ r  ≃˘⟨ toℚᵘ-homo-* q r ⟩
+  toℚᵘ q ℚᵘ.* toℚᵘ r  ≃⟨ toℚᵘ-homo-* q r ⟨
   toℚᵘ (q * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
@@ -1300,7 +1301,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 
 *-cancelˡ-<-nonNeg : ∀ r .{{_ : NonNegative r}} → ∀ {p q} → r * p < r * q → p < q
 *-cancelˡ-<-nonNeg r {p} {q} rp<rq = toℚᵘ-cancel-< (ℚᵘ.*-cancelˡ-<-nonNeg (toℚᵘ r) (begin-strict
-  toℚᵘ r ℚᵘ.* toℚᵘ p  ≃˘⟨ toℚᵘ-homo-* r p ⟩
+  toℚᵘ r ℚᵘ.* toℚᵘ p  ≃⟨ toℚᵘ-homo-* r p ⟨
   toℚᵘ (r * p)        <⟨ toℚᵘ-mono-< rp<rq ⟩
   toℚᵘ (r * q)        ≃⟨ toℚᵘ-homo-* r q ⟩
   toℚᵘ r ℚᵘ.* toℚᵘ q  ∎))
@@ -1313,7 +1314,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoˡ-<-neg r {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
   toℚᵘ (q * r)        ≃⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-neg (toℚᵘ r) (toℚᵘ-mono-< p<q) ⟩
-  toℚᵘ p ℚᵘ.* toℚᵘ r  ≃˘⟨ toℚᵘ-homo-* p r ⟩
+  toℚᵘ p ℚᵘ.* toℚᵘ r  ≃⟨ toℚᵘ-homo-* p r ⟨
   toℚᵘ (p * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
@@ -1322,7 +1323,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 
 *-cancelˡ-<-nonPos : ∀ r .{{_ : NonPositive r}} → r * p < r * q → p > q
 *-cancelˡ-<-nonPos {p} {q} r rp<rq = toℚᵘ-cancel-< (ℚᵘ.*-cancelˡ-<-nonPos (toℚᵘ r) (begin-strict
-  toℚᵘ r ℚᵘ.* toℚᵘ p  ≃˘⟨ toℚᵘ-homo-* r p ⟩
+  toℚᵘ r ℚᵘ.* toℚᵘ p  ≃⟨ toℚᵘ-homo-* r p ⟨
   toℚᵘ (r * p)        <⟨  toℚᵘ-mono-< rp<rq ⟩
   toℚᵘ (r * q)        ≃⟨  toℚᵘ-homo-* r q ⟩
   toℚᵘ r ℚᵘ.* toℚᵘ q  ∎))
@@ -1488,17 +1489,17 @@ mono-<-distrib-⊓ : ∀ {f} → f Preserves _<_ ⟶ _<_ →
 mono-<-distrib-⊓ {f} f-mono-< p q with <-cmp p q
 ... | tri< p<q p≢r  p≯q = begin
   f (p ⊓ q)  ≡⟨ cong f (p≤q⇒p⊓q≡p (<⇒≤ p<q)) ⟩
-  f p        ≡˘⟨ p≤q⇒p⊓q≡p (<⇒≤ (f-mono-< p<q)) ⟩
+  f p        ≡⟨ p≤q⇒p⊓q≡p (<⇒≤ (f-mono-< p<q)) ⟨
   f p ⊓ f q  ∎
   where open ≡-Reasoning
 ... | tri≈ p≮q refl p≯q = begin
   f (p ⊓ q)  ≡⟨ cong f (⊓-idem p) ⟩
-  f p        ≡˘⟨ ⊓-idem (f p) ⟩
+  f p        ≡⟨ ⊓-idem (f p) ⟨
   f p ⊓ f q  ∎
   where open ≡-Reasoning
 ... | tri> p≮q p≡r  p>q = begin
   f (p ⊓ q)  ≡⟨ cong f (p≥q⇒p⊓q≡q (<⇒≤ p>q)) ⟩
-  f q        ≡˘⟨ p≥q⇒p⊓q≡q (<⇒≤ (f-mono-< p>q)) ⟩
+  f q        ≡⟨ p≥q⇒p⊓q≡q (<⇒≤ (f-mono-< p>q)) ⟨
   f p ⊓ f q  ∎
   where open ≡-Reasoning
 
@@ -1507,17 +1508,17 @@ mono-<-distrib-⊔ : ∀ {f} → f Preserves _<_ ⟶ _<_ →
 mono-<-distrib-⊔ {f} f-mono-< p q with <-cmp p q
 ... | tri< p<q p≢r  p≯q = begin
   f (p ⊔ q)  ≡⟨ cong f (p≤q⇒p⊔q≡q (<⇒≤ p<q)) ⟩
-  f q        ≡˘⟨ p≤q⇒p⊔q≡q (<⇒≤ (f-mono-< p<q)) ⟩
+  f q        ≡⟨ p≤q⇒p⊔q≡q (<⇒≤ (f-mono-< p<q)) ⟨
   f p ⊔ f q  ∎
   where open ≡-Reasoning
 ... | tri≈ p≮q refl p≯q = begin
   f (p ⊔ q)  ≡⟨ cong f (⊔-idem p) ⟩
-  f q        ≡˘⟨ ⊔-idem (f p) ⟩
+  f q        ≡⟨ ⊔-idem (f p) ⟨
   f p ⊔ f q  ∎
   where open ≡-Reasoning
 ... | tri> p≮q p≡r  p>q = begin
   f (p ⊔ q)  ≡⟨ cong f (p≥q⇒p⊔q≡p (<⇒≤ p>q)) ⟩
-  f p        ≡˘⟨ p≥q⇒p⊔q≡p (<⇒≤ (f-mono-< p>q)) ⟩
+  f p        ≡⟨ p≥q⇒p⊔q≡p (<⇒≤ (f-mono-< p>q)) ⟨
   f p ⊔ f q  ∎
   where open ≡-Reasoning
 
@@ -1605,7 +1606,7 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 0≤∣p∣ p@record{} = *≤* (begin
   (↥ 0ℚ) ℤ.* (↧ ∣ p ∣)  ≡⟨ ℤ.*-zeroˡ (↧ ∣ p ∣) ⟩
   0ℤ                    ≤⟨ ℤ.+≤+ ℕ.z≤n ⟩
-  ↥ ∣ p ∣               ≡˘⟨ ℤ.*-identityʳ (↥ ∣ p ∣) ⟩
+  ↥ ∣ p ∣               ≡⟨ ℤ.*-identityʳ (↥ ∣ p ∣) ⟨
   ↥ ∣ p ∣ ℤ.* 1ℤ        ∎)
   where open ℤ.≤-Reasoning
 
@@ -1633,8 +1634,8 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
   toℚᵘ ∣ p + q ∣                    ≃⟨ toℚᵘ-homo-∣-∣ (p + q) ⟩
   ℚᵘ.∣ toℚᵘ (p + q) ∣               ≃⟨ ℚᵘ.∣-∣-cong (toℚᵘ-homo-+ p q) ⟩
   ℚᵘ.∣ toℚᵘ p ℚᵘ.+ toℚᵘ q ∣         ≤⟨ ℚᵘ.∣p+q∣≤∣p∣+∣q∣ (toℚᵘ p) (toℚᵘ q) ⟩
-  ℚᵘ.∣ toℚᵘ p ∣ ℚᵘ.+ ℚᵘ.∣ toℚᵘ q ∣  ≃˘⟨ ℚᵘ.+-cong (toℚᵘ-homo-∣-∣ p) (toℚᵘ-homo-∣-∣ q) ⟩
-  toℚᵘ ∣ p ∣ ℚᵘ.+ toℚᵘ ∣ q ∣        ≃˘⟨ toℚᵘ-homo-+ ∣ p ∣ ∣ q ∣ ⟩
+  ℚᵘ.∣ toℚᵘ p ∣ ℚᵘ.+ ℚᵘ.∣ toℚᵘ q ∣  ≃⟨ ℚᵘ.+-cong (toℚᵘ-homo-∣-∣ p) (toℚᵘ-homo-∣-∣ q) ⟨
+  toℚᵘ ∣ p ∣ ℚᵘ.+ toℚᵘ ∣ q ∣        ≃⟨ toℚᵘ-homo-+ ∣ p ∣ ∣ q ∣ ⟨
   toℚᵘ (∣ p ∣ + ∣ q ∣)              ∎)
   where open ℚᵘ.≤-Reasoning
 
@@ -1650,8 +1651,8 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
   toℚᵘ ∣ p * q ∣                    ≃⟨ toℚᵘ-homo-∣-∣ (p * q) ⟩
   ℚᵘ.∣ toℚᵘ (p * q) ∣               ≃⟨ ℚᵘ.∣-∣-cong (toℚᵘ-homo-* p q) ⟩
   ℚᵘ.∣ toℚᵘ p ℚᵘ.* toℚᵘ q ∣         ≃⟨ ℚᵘ.∣p*q∣≃∣p∣*∣q∣ (toℚᵘ p) (toℚᵘ q) ⟩
-  ℚᵘ.∣ toℚᵘ p ∣ ℚᵘ.* ℚᵘ.∣ toℚᵘ q ∣  ≃˘⟨ ℚᵘ.*-cong (toℚᵘ-homo-∣-∣ p) (toℚᵘ-homo-∣-∣ q) ⟩
-  toℚᵘ ∣ p ∣ ℚᵘ.* toℚᵘ ∣ q ∣        ≃˘⟨ toℚᵘ-homo-* ∣ p ∣ ∣ q ∣ ⟩
+  ℚᵘ.∣ toℚᵘ p ∣ ℚᵘ.* ℚᵘ.∣ toℚᵘ q ∣  ≃⟨ ℚᵘ.*-cong (toℚᵘ-homo-∣-∣ p) (toℚᵘ-homo-∣-∣ q) ⟨
+  toℚᵘ ∣ p ∣ ℚᵘ.* toℚᵘ ∣ q ∣        ≃⟨ toℚᵘ-homo-* ∣ p ∣ ∣ q ∣ ⟨
   toℚᵘ (∣ p ∣ * ∣ q ∣)              ∎)
   where open ℚᵘ.≤-Reasoning
 

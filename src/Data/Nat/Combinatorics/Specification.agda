@@ -40,7 +40,7 @@ nP′k≡n!/[n∸k]! : ∀ {n k} → k ≤ n → n P′ k ≡ (n ! / (n ∸ k) !
 nP′k≡n!/[n∸k]! {n} {zero}  z≤n = sym (n/n≡1 (n !) {{n !≢0}})
 nP′k≡n!/[n∸k]! {n} {suc k} k<n = begin-equality
   (n ∸ k) * (n P′ k)             ≡⟨ cong ((n ∸ k) *_) (nP′k≡n!/[n∸k]! (<⇒≤ k<n)) ⟩
-  (n ∸ k) * (n ! / (n ∸ k) !)    ≡˘⟨ *-/-assoc (n ∸ k) (m≤n⇒m!∣n! (m∸n≤m n k)) ⟩
+  (n ∸ k) * (n ! / (n ∸ k) !)    ≡⟨ *-/-assoc (n ∸ k) (m≤n⇒m!∣n! (m∸n≤m n k)) ⟨
   (((n ∸ k) * n !) / (n ∸ k) !)  ≡⟨ m*n/m!≡n/[m∸1]! (n ∸ k) (n !) ⟩
   (n ! / (pred (n ∸ k) !))       ≡⟨ /-congʳ (cong _! (pred[m∸n]≡m∸[1+n] n k)) ⟩
   (n ! / (n ∸ suc k) !)          ∎
@@ -67,7 +67,7 @@ P′-rec : ∀ {n k} → k ≤ n → .{{NonZero k}} →
         n P′ k ≡ k * (pred n P′ pred k) + pred n P′ k
 P′-rec n@{suc n-1} k@{suc k-1} k≤n = begin-equality
   n P′ k                                        ≡⟨ nP′k≡n[n∸1P′k∸1] n k ⟩
-  n * (n-1 P′ k-1)                              ≡˘⟨ cong (_* (n-1 P′ k-1)) (m+[n∸m]≡n {k} {n} k≤n) ⟩
+  n * (n-1 P′ k-1)                              ≡⟨ cong (_* (n-1 P′ k-1)) (m+[n∸m]≡n {k} {n} k≤n) ⟨
   (k + (n ∸ k)) * (n-1 P′ k-1)                  ≡⟨ *-distribʳ-+ (n-1 P′ k-1) k (n ∸ k) ⟩
   k * (n-1 P′ k-1) + (n-1 ∸ k-1) * (n-1 P′ k-1) ≡⟨⟩
   k * (n-1 P′ k-1) + (n-1 P′ k)                 ∎
@@ -89,7 +89,7 @@ k!∣nP′k n@{suc n-1} k@{suc k-1} k≤n@(s≤s k-1≤n-1) with k-1 ≟ n-1
 ... | no  k≢n  = begin
   k !                           ≡⟨⟩
   k * k-1 !                     ∣⟨ ∣m∣n⇒∣m+n (*-monoʳ-∣ k (k!∣nP′k k-1≤n-1)) ( k!∣nP′k (≤∧≢⇒< k-1≤n-1 k≢n)) ⟩
-  k * (n-1 P′ k-1) + (n-1 P′ k) ≡˘⟨ P′-rec k≤n ⟩
+  k * (n-1 P′ k-1) + (n-1 P′ k) ≡⟨ P′-rec k≤n ⟨
   n P′ k                        ∎
   where open ∣-Reasoning
 
@@ -134,7 +134,7 @@ C′-sym {n} {k} k≤n = begin-equality
   n C′ (n ∸ k)                        ≡⟨ nC′k≡n!/k![n-k]! {n} {n ∸ k} (m≤n⇒n∸m≤n k≤n) ⟩
   n ! / ((n ∸ k) ! * (n ∸ (n ∸ k)) !) ≡⟨ /-congʳ (cong ((n ∸ k) ! *_) (cong _! (m∸[m∸n]≡n k≤n))) ⟩
   n ! / ((n ∸ k) ! * k !)             ≡⟨ /-congʳ (*-comm ((n ∸ k) !) (k !)) ⟩
-  n ! / (k ! * (n ∸ k) !)             ≡˘⟨ nC′k≡n!/k![n-k]! k≤n ⟩
+  n ! / (k ! * (n ∸ k) !)             ≡⟨ nC′k≡n!/k![n-k]! k≤n ⟨
   n C′ k                              ∎
   where
   open ≤-Reasoning
