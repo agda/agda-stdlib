@@ -85,14 +85,30 @@ record IsPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   refl : Reflexive _≲_
   refl = reflexive Eq.refl
 
-  ∼-respˡ-≈ : _≲_ Respectsˡ _≈_
-  ∼-respˡ-≈ x≈y x∼z = trans (reflexive (Eq.sym x≈y)) x∼z
+  ≲-respˡ-≈ : _≲_ Respectsˡ _≈_
+  ≲-respˡ-≈ x≈y x∼z = trans (reflexive (Eq.sym x≈y)) x∼z
 
-  ∼-respʳ-≈ : _≲_ Respectsʳ _≈_
-  ∼-respʳ-≈ x≈y z∼x = trans z∼x (reflexive x≈y)
+  ≲-respʳ-≈ : _≲_ Respectsʳ _≈_
+  ≲-respʳ-≈ x≈y z∼x = trans z∼x (reflexive x≈y)
 
-  ∼-resp-≈ : _≲_ Respects₂ _≈_
-  ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
+  ≲-resp-≈ : _≲_ Respects₂ _≈_
+  ≲-resp-≈ = ≲-respʳ-≈ , ≲-respˡ-≈
+
+  ∼-respˡ-≈ = ≲-respˡ-≈
+  {-# WARNING_ON_USAGE ∼-respˡ-≈
+  "Warning: ∼-respˡ-≈ was deprecated in v2.0.
+  Please use ≲-respˡ-≈ instead. "
+  #-}
+  ∼-respʳ-≈ = ≲-respʳ-≈
+  {-# WARNING_ON_USAGE ∼-respʳ-≈
+  "Warning: ∼-respʳ-≈ was deprecated in v2.0.
+  Please use ≲-respʳ-≈ instead. "
+  #-}
+  ∼-resp-≈ = ≲-resp-≈
+  {-# WARNING_ON_USAGE ∼-resp-≈
+  "Warning: ∼-resp-≈ was deprecated in v2.0.
+  Please use ≲-resp-≈ instead. "
+  #-}
 
 
 record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
@@ -101,11 +117,6 @@ record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
     total      : Total _≲_
 
   open IsPreorder isPreorder public
-    renaming
-    ( ∼-respˡ-≈ to ≲-respˡ-≈
-    ; ∼-respʳ-≈ to ≲-respʳ-≈
-    ; ∼-resp-≈  to ≲-resp-≈
-    )
 
 
 ------------------------------------------------------------------------
