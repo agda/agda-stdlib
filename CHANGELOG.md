@@ -33,6 +33,9 @@ Bug-fixes
   in `Function.Construct.Composition` had their arguments in the wrong order. They have
   been flipped so they can actually be used as a composition operator.
 
+* The operations `_∷=_` and `_─_` exported from `Data.List.Membership.Setoid` 
+  had an extraneous `{A : Set a}` parameter. This has been removed.
+
 * The combinators `_≃⟨_⟩_` and `_≃˘⟨_⟩_` in `Data.Rational.Properties.≤-Reasoning`
   now correctly accepts proofs of type `_≃_` instead of the previous proofs of type `_≡_`.
 
