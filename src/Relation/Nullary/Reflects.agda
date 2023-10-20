@@ -60,8 +60,6 @@ of {b = true }  a = ofʸ a
 of⁻¹ : ∀ {b} → Reflects A b → if b then A else ¬ A
 of⁻¹ {A = A} = reflects (λ b → if b then A else ¬ A) id id
 
-invert = of⁻¹ -- against subsequent deprecation
-
 -- in lieu of a distinct `Reflects.Properties` module
 
 of⁻¹∘of≗id : ∀ {b} (r : if b then A else ¬ A) → of⁻¹ (of {b = b} r) ≡ r
@@ -83,7 +81,7 @@ Recomputable A = .A → A
 -- be recomputed and subsequently used in relevant contexts.
 
 recompute : ∀ {b} → Reflects A b → Recomputable A
-recompute {A = A} = reflects (const (.A → A)) (λ a _ → a) (λ ¬a a → ⊥-elim (¬a a))
+recompute {A = A} = reflects′ {B = Recomputable A} (λ a _ → a) (λ ¬a a → ⊥-elim (¬a a))
 
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
@@ -137,4 +135,6 @@ det (ofⁿ ¬a) (ofⁿ  _) = refl
 -- not guaranteed.
 
 -- Version 2.1
+
+invert = of⁻¹ -- against subsequent deprecation; no warning issued yet
 
