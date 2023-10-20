@@ -8,7 +8,7 @@
 
 module Data.Fin.Mod where
 
-open import Function using (_$_; _∘_)
+open import Function using (id; _$_; _∘_)
 open import Data.Bool using (true; false)
 open import Data.Product
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s)
@@ -16,12 +16,14 @@ open import Data.Nat.Properties as ℕ
   using (m≤n⇒m≤1+n; 1+n≰n; module ≤-Reasoning)
 open import Data.Fin.Base as F hiding (suc; pred; _+_; _-_)
 open import Data.Fin.Properties
+open import Data.Fin.Induction using (<-weakInduction)
 open import Data.Fin.Relation.Unary.Top
 open import Relation.Nullary.Decidable.Core using (Dec; yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; sym; trans; cong; module ≡-Reasoning)
 import Algebra.Definitions as ADef
+open import Relation.Unary using (Pred)
 
 private variable
   m n : ℕ
@@ -74,9 +76,9 @@ pred-suc≡id i with view i
 +ℕ-identityʳ-toℕ : m ℕ.≤ n → toℕ (m ℕ+ zero {n}) ≡ m
 +ℕ-identityʳ-toℕ {ℕ.zero} m≤n = refl
 +ℕ-identityʳ-toℕ {ℕ.suc m} (s≤s m≤n) = begin
-  toℕ (suc (m ℕ+ zero)) ≡⟨ cong (toℕ ∘ suc) (toℕ-injective toℕm≡fromℕ<) ⟩
+  toℕ (suc (m ℕ+ zero))                  ≡⟨ cong (toℕ ∘ suc) (toℕ-injective toℕm≡fromℕ<) ⟩
   toℕ (suc (inject₁ (fromℕ< (s≤s m≤n)))) ≡⟨ cong toℕ (suc-inj≡fsuc _) ⟩
-  ℕ.suc (toℕ (fromℕ< (s≤s m≤n))) ≡⟨ cong ℕ.suc (toℕ-fromℕ< _) ⟩
+  ℕ.suc (toℕ (fromℕ< (s≤s m≤n)))         ≡⟨ cong ℕ.suc (toℕ-fromℕ< _) ⟩
   ℕ.suc m ∎
   where
 
@@ -94,3 +96,16 @@ pred-suc≡id i with view i
 
 +-identityʳ : RightIdentity {ℕ.suc n} zero _+_
 +-identityʳ {n} i rewrite +ℕ-identityʳ {m = toℕ i} {n} _ = fromℕ<-toℕ _ (toℕ≤pred[n] _)
+
+induction : ∀ {ℓ} (P : Pred (Fin (ℕ.suc n)) ℓ)
+  → P zero
+  → (∀ {i} → P i → P (suc i))
+  → ∀ i → P i
+induction P P₀ Pᵢ⇒Pᵢ₊₁ i = <-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁′ i
+  where
+
+  PInj : ∀ {i} → P (suc (inject₁ i)) → P (F.suc i)
+  PInj {i} rewrite suc-inj≡fsuc i = id
+
+  Pᵢ⇒Pᵢ₊₁′ : ∀ i → P (inject₁ i) → P (F.suc i)
+  Pᵢ⇒Pᵢ₊₁′ _ Pi = PInj (Pᵢ⇒Pᵢ₊₁ Pi)

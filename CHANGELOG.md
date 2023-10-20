@@ -3804,4 +3804,5 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   +ℕ-identityʳ-toℕ : m ℕ.≤ n → toℕ (m ℕ+ zero) ≡ m
   +ℕ-identityʳ : (m≤n : m ℕ.≤ n) → m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
   +-identityʳ : RightIdentity zero _+_
+  induction : P zero → (P i → P (suc i)) → ∀ i → P i
   ```
