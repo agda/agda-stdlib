@@ -84,7 +84,7 @@ pred-suc≡id i with view i
 
   toℕm≡fromℕ< = begin
     toℕ (m ℕ+ zero)        ≡⟨ +ℕ-identityʳ-toℕ (m≤n⇒m≤1+n m≤n) ⟩
-    m                       ≡˘⟨ toℕ-fromℕ< _ ⟩
+    m                      ≡˘⟨ toℕ-fromℕ< _ ⟩
     toℕ (fromℕ< (s≤s m≤n)) ≡˘⟨ toℕ-inject₁ _ ⟩
     toℕ (inject₁ (fromℕ< (s≤s m≤n))) ∎
 
