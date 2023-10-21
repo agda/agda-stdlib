@@ -2342,6 +2342,6 @@ open Data.Nat.Base public
 
 <-transˡ = <-≤-trans
 {-# WARNING_ON_USAGE <-transˡ
-"Warning: <-transˡ was deprecated in v2.0. Please use ≤-<-trans instead. "
+"Warning: <-transˡ was deprecated in v2.0. Please use <-≤-trans instead. "
 #-}
 
