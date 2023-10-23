@@ -141,9 +141,7 @@ coprime-factors c (divides q₁ eq₁ , divides q₂ eq₂) with coprime-Bézout
 
 prime⇒coprime : ∀ m → Prime m →
                 ∀ n → 0 < n → n < m → Coprime m n
-prime⇒coprime (suc (suc _)) p _ _ _ {0} (0∣m , _) =
-  contradiction (0∣⇒≡0 0∣m) λ()
-prime⇒coprime (suc (suc _)) _ _ _ _ {1} _         = refl
-prime⇒coprime (suc (suc _)) p (suc _) _ n<m {(suc (suc _))} (d∣m , d∣n) =
-  contradiction d∣m (p 2≤d d<m)
-  where 2≤d = s≤s (s≤s z≤n); d<m = <-≤-trans (s≤s (∣⇒≤ d∣n)) n<m
+prime⇒coprime _ (prime p) _ _ _ {0} (0∣m , _) = contradiction (0∣⇒≡0 0∣m) λ()
+prime⇒coprime _ _         _ _ _ {1} _         = refl
+prime⇒coprime _ (prime p) (suc _) _ n<m {(suc (suc _))} (d∣m , d∣n) =
+  contradiction d∣m (p 1<2+n (<-≤-trans (s≤s (∣⇒≤ d∣n)) n<m))
