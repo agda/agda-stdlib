@@ -86,7 +86,7 @@ Irreducible n = ∀[ IrreducibleAt n ]
 
 -- 1 is always rough
 _rough-1 : ∀ k → k Rough 1
-(_ rough-1) (boundedComposite 1<d _ d∣1) = contradiction d∣1 (>⇒∤ 1<d)
+(_ rough-1) (boundedComposite 1<d _ d∣1) = >⇒∤ 1<d d∣1
 
 -- Any number is 2-rough because all factors d > 1 are greater than or equal to 2
 2-rough : 2 Rough n
@@ -152,15 +152,6 @@ irreducible[2] {suc _} d∣2 with ∣⇒≤ d∣2
 ... | s<s z<s = inj₂ refl
 
 ------------------------------------------------------------------------
--- NonZero
-
-Prime⇒NonZero : Prime n → NonZero n
-Prime⇒NonZero (prime _) = _
-
-Composite⇒NonZero : Composite n → NonZero n
-Composite⇒NonZero {suc _} _ = _
-
-------------------------------------------------------------------------
 -- Decidability
 
 composite? : Decidable Composite
@@ -211,10 +202,8 @@ prime⇒¬composite (prime p) (d , composite[d]) = p composite[d]
   decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime 1<n)
 
 prime⇒irreducible : Prime p → Irreducible p
-prime⇒irreducible  p-prime  {0} 0∣p
-  = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _ {{Prime⇒NonZero p-prime}})
-prime⇒irreducible  p-prime  {1} 1∣p
-  = inj₁ refl
+prime⇒irreducible (prime p) {0} 0∣p = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _)
+prime⇒irreducible  p-prime  {1} 1∣p = inj₁ refl
 prime⇒irreducible (prime p) {suc (suc _)} m∣p
   = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → p (boundedComposite>1 m<p m∣p))
 
