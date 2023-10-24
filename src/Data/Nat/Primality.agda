@@ -11,7 +11,6 @@ module Data.Nat.Primality where
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
-open import Data.Nat.Induction using (<-rec; <-Rec)
 open import Data.Nat.Properties
 open import Data.Product.Base using (_×_; map₂; _,_; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
