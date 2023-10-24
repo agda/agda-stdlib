@@ -88,6 +88,10 @@ Irreducible n = ∀[ IrreducibleAt n ]
 _rough-1 : ∀ k → k Rough 1
 (_ rough-1) (boundedComposite 1<d _ d∣1) = >⇒∤ 1<d d∣1
 
+-- Any number is 1-rough
+1-rough : 1 Rough n
+1-rough (boundedComposite 1<d d<1 _) = <-asym 1<d d<1
+
 -- Any number is 2-rough because all factors d > 1 are greater than or equal to 2
 2-rough : 2 Rough n
 2-rough (boundedComposite 1<d d<2 _) with () ← ≤⇒≯ 1<d d<2
@@ -182,7 +186,7 @@ irreducible? n@(suc _) = Dec.map′ bounded-irr⇒irr irr⇒bounded-irr
   ... | inj₂ m≡n = inj₂ m≡n
   irr⇒bounded-irr : Irreducible n → BoundedIrreducible n
   irr⇒bounded-irr irr m<n m∣n = irr m∣n
-  
+
 ------------------------------------------------------------------------
 -- Relationships between compositeness, primality, and irreducibility
 
