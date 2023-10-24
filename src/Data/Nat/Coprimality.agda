@@ -8,7 +8,6 @@
 
 module Data.Nat.Coprimality where
 
-open import Data.Empty
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD
