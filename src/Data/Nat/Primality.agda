@@ -16,7 +16,7 @@ open import Data.Product.Base using (_×_; map₂; _,_; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (flip; _∘_; _∘′_)
 open import Relation.Nullary.Decidable as Dec
-  using (yes; no; from-yes; ¬?; decidable-stable; _×-dec_; _→-dec_)
+  using (yes; no; from-yes; ¬?; decidable-stable; _×-dec_; _⊎-dec_; _→-dec_)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; Decidable; IUniversal; Satisfiable)
 open import Relation.Binary.PropositionalEquality
@@ -26,25 +26,29 @@ private
   variable
     k m n p : ℕ
 
+pattern 1<2+n {n} = s<s (z<s {n})
+
 
 ------------------------------------------------------------------------
 -- Definitions
 
 -- Definition of 'not rough'-ness
 
-record SmoothAt (k n d : ℕ) : Set where
-  constructor mkSmoothAt
+record BoundedCompositeAt (k n d : ℕ) : Set where
+  constructor boundedComposite
   field
     1<d : 1 < d
     d<k : d < k
     d∣n : d ∣ n
 
-open SmoothAt public
+open BoundedCompositeAt public
+
+pattern boundedComposite>1 {d} d<k d∣n = boundedComposite (1<2+n {d}) d<k d∣n
 
 -- Definition of compositeness
 
 CompositeAt : ℕ → Pred ℕ _
-CompositeAt n = SmoothAt n n
+CompositeAt n = BoundedCompositeAt n n
 
 Composite : ℕ → Set
 Composite n = ∃⟨ CompositeAt n ⟩
@@ -53,7 +57,7 @@ Composite n = ∃⟨ CompositeAt n ⟩
 -- if all its factors d > 1 are greater than or equal to k
 
 _RoughAt_ : ℕ → ℕ → Pred ℕ _
-k RoughAt n = ¬_ ∘ SmoothAt k n
+k RoughAt n = ¬_ ∘ BoundedCompositeAt k n
 
 _Rough_ : ℕ → ℕ → Set
 k Rough n = ∀[ k RoughAt n ]
@@ -66,11 +70,9 @@ PrimeAt n = n RoughAt n
 Prime : ℕ → Set
 Prime n = 1 < n × ∀[ PrimeAt n ]
 
-pattern 1<2+n {n} = s<s (z<s {n})
-
 pattern prime {n} p = 1<2+n {n} , p
 
--- Definition of irreducibility.
+-- Definition of irreducibility
 
 IrreducibleAt : ℕ → Pred ℕ _
 IrreducibleAt n m = m ∣ n → m ≡ 1 ⊎ m ≡ n
@@ -84,22 +86,22 @@ Irreducible n = ∀[ IrreducibleAt n ]
 
 -- 1 is always rough
 _rough-1 : ∀ k → k Rough 1
-(_ rough-1) (mkSmoothAt 1<d _ d∣1) = contradiction 1<d (≤⇒≯ (∣⇒≤ d∣1))
+(_ rough-1) (boundedComposite 1<d _ d∣1) = contradiction d∣1 (>⇒∤ 1<d)
 
 -- Any number is 2-rough because all factors d > 1 are greater than or equal to 2
 2-rough : 2 Rough n
-2-rough (mkSmoothAt 1<d d<2 _) with () ← ≤⇒≯ 1<d d<2
+2-rough (boundedComposite 1<d d<2 _) with () ← ≤⇒≯ 1<d d<2
 
 -- If a number n is k-rough, and k ∤ n, then n is (suc k)-rough
 ∤⇒rough-suc : k ∤ n → k Rough n → suc k Rough n
-∤⇒rough-suc k∤n rough (mkSmoothAt 1<d d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
-... | inj₁ d<k  = rough (mkSmoothAt 1<d d<k d∣n)
-... | inj₂ refl = contradiction d∣n k∤n
+∤⇒rough-suc k∤n rough (boundedComposite 1<d d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
+... | inj₁ d<k             = rough (boundedComposite 1<d d<k d∣n)
+... | inj₂ d≡k rewrite d≡k = contradiction d∣n k∤n
 
 -- If a number is k-rough, then so are all of its divisors
 rough⇒∣⇒rough : k Rough m → n ∣ m → k Rough n
-rough⇒∣⇒rough rough n∣m (mkSmoothAt 1<d d<k d∣n)
-  = rough (mkSmoothAt 1<d d<k (∣-trans d∣n n∣m))
+rough⇒∣⇒rough rough n∣m (boundedComposite 1<d d<k d∣n)
+  = rough (boundedComposite 1<d d<k (∣-trans d∣n n∣m))
 
 ------------------------------------------------------------------------
 -- Corollary: relationship between roughness and primality
@@ -109,7 +111,7 @@ rough⇒∣⇒prime : 1 < k → k Rough n → k ∣ n → Prime k
 rough⇒∣⇒prime 1<k rough k∣n = 1<k , rough⇒∣⇒rough rough k∣n
 
 ------------------------------------------------------------------------
--- Basic instances of Composite
+-- Basic (non-)instances of Composite
 
 ¬composite[0] : ¬ Composite 0
 ¬composite[0] (_ , composite[0]) with () ← d<k composite[0]
@@ -120,10 +122,10 @@ rough⇒∣⇒prime 1<k rough k∣n = 1<k , rough⇒∣⇒rough rough k∣n
     in <-asym 1<d d<1
 
 composite[4] : Composite 4
-composite[4] = 2 , mkSmoothAt 1<2+n (s<s 1<2+n) (divides-refl 2)
+composite[4] = 2 , boundedComposite>1 (s<s 1<2+n) (divides-refl 2)
 
 ------------------------------------------------------------------------
--- Basic instances of Prime
+-- Basic (non-)instances of Prime
 
 ¬prime[0] : ¬ Prime 0
 ¬prime[0] (() , _)
@@ -132,10 +134,13 @@ composite[4] = 2 , mkSmoothAt 1<2+n (s<s 1<2+n) (divides-refl 2)
 ¬prime[1] (s<s () , _)
 
 prime[2] : Prime 2
-prime[2] = prime λ (mkSmoothAt 1<d d<2 _) → ≤⇒≯ 1<d d<2
+prime[2] = prime λ (boundedComposite 1<d d<2 _) → ≤⇒≯ 1<d d<2
 
 ------------------------------------------------------------------------
--- Basic instances of Irreducible
+-- Basic (non-)instances of Irreducible
+
+¬irreducible[0] : ¬ Irreducible 0
+¬irreducible[0] irr = [ (λ ()) , (λ ()) ]′ (irr {2} (divides-refl 0))
 
 irreducible[1] : Irreducible 1
 irreducible[1] m|1 = inj₁ (∣1⇒≡1 m|1)
@@ -159,11 +164,9 @@ Composite⇒NonZero {suc _} _ = _
 -- Decidability
 
 composite? : Decidable Composite
-composite? 0               = no ¬composite[0]
-composite? 1               = no ¬composite[1]
-composite? n@(suc (suc _)) = Dec.map′
-  (map₂ λ (d<n , 1<d , d∣n) → mkSmoothAt 1<d d<n d∣n)
-  (map₂ λ (mkSmoothAt 1<d d<n d∣n) → d<n , 1<d , d∣n)
+composite? n = Dec.map′
+  (map₂ λ (d<n , 1<d , d∣n) → boundedComposite 1<d d<n d∣n)
+  (map₂ λ (boundedComposite 1<d d<n d∣n) → d<n , 1<d , d∣n)
   (anyUpTo? (λ d → 1 <? d ×-dec d ∣? n) n)
 
 prime? : Decidable Prime
@@ -171,10 +174,24 @@ prime? 0               = no ¬prime[0]
 prime? 1               = no ¬prime[1]
 prime? n@(suc (suc _))
   = (yes 1<2+n) ×-dec Dec.map′
-      (λ h (mkSmoothAt 1<d d<n d∣n) → h d<n 1<d d∣n)
-      (λ h {d} d<n 1<d d∣n → h (mkSmoothAt 1<d d<n d∣n))
+      (λ h (boundedComposite 1<d d<n d∣n) → h d<n 1<d d∣n)
+      (λ h {d} d<n 1<d d∣n → h (boundedComposite 1<d d<n d∣n))
       (allUpTo? (λ d → 1 <? d →-dec ¬? (d ∣? n)) n)
 
+irreducible? : Decidable Irreducible
+irreducible? zero      = no ¬irreducible[0]
+irreducible? n@(suc _) = Dec.map′ bounded-irr⇒irr irr⇒bounded-irr
+  (allUpTo? (λ m → (m ∣? n) →-dec ((m ≟ 1) ⊎-dec m ≟ n)) n)
+  where
+  BoundedIrreducible : Pred ℕ _
+  BoundedIrreducible n = ∀ {m} → m < n → m ∣ n → m ≡ 1 ⊎ m ≡ n
+  bounded-irr⇒irr : BoundedIrreducible n → Irreducible n
+  bounded-irr⇒irr bounded-irr m∣n with m≤n⇒m<n∨m≡n (∣⇒≤ m∣n)
+  ... | inj₁ m<n = bounded-irr m<n m∣n
+  ... | inj₂ m≡n = inj₂ m≡n
+  irr⇒bounded-irr : Irreducible n → BoundedIrreducible n
+  irr⇒bounded-irr irr m<n m∣n = irr m∣n
+  
 ------------------------------------------------------------------------
 -- Relationships between compositeness, primality, and irreducibility
 
@@ -199,11 +216,11 @@ prime⇒irreducible  p-prime  {0} 0∣p
 prime⇒irreducible  p-prime  {1} 1∣p
   = inj₁ refl
 prime⇒irreducible (prime p) {suc (suc _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → p (mkSmoothAt 1<2+n m<p m∣p))
+  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → p (boundedComposite>1 m<p m∣p))
 
 irreducible⇒prime : Irreducible p → 1 < p → Prime p
 irreducible⇒prime irr 1<p
-  = 1<p , λ (mkSmoothAt 1<d d<p d∣p) → [ (>⇒≢ 1<d) , (<⇒≢ d<p) ]′ (irr d∣p)
+  = 1<p , λ (boundedComposite 1<d d<p d∣p) → [ (>⇒≢ 1<d) , (<⇒≢ d<p) ]′ (irr d∣p)
 
 ------------------------------------------------------------------------
 -- Euclid's lemma
@@ -250,7 +267,7 @@ euclidsLemma m n {p} (prime p-prime) p∣m*n = result
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(suc (suc _)) g _ with d ≟ p
   ...   | yes d≡p rewrite d≡p = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p = contradiction d∣p λ d∣p → p-prime (mkSmoothAt 1<2+n d<p d∣p)
+  ...   | no  d≢p = contradiction d∣p λ d∣p → p-prime (boundedComposite>1 d<p d∣p)
     where
     d∣p : d ∣ p
     d∣p = GCD.gcd∣n g
