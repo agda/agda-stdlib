@@ -20,8 +20,7 @@ open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; refl; trans; cong; subst)
-open import Relation.Nullary as Nullary hiding (recompute)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary as Nullary using (¬_; contradiction; yes ; no)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Symmetric; Decidable)
 
