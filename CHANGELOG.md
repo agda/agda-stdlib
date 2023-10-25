@@ -2761,7 +2761,7 @@ Additions to existing modules
 * Added new definitions and proofs to `Data.Nat.Primality`:
   ```agda
   Composite        : ℕ → Set
-  composite?       : Decidable composite
+  composite?       : Decidable Composite
   composite⇒¬prime : Composite n → ¬ Prime n
   ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
   prime⇒¬composite : Prime n → ¬ Composite n
