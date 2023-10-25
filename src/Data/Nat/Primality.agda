@@ -136,8 +136,8 @@ rough⇒∣⇒prime 1<p r p∣n = 1<p , rough⇒∣⇒rough r p∣n
 ¬composite[1] : ¬ Composite 1
 ¬composite[1] (_ , composite[1]) = 1-rough composite[1]
 
-composite[2+k≢n≢0] : .{{NonZero n}} → let d = suc (suc k) in
-  d ≢ n → d ∣ n → CompositeAt n d
+composite[2+k≢n≢0] : .{{NonZero n}} →
+  let d = suc (suc k) in d ≢ n → d ∣ n → CompositeAt n d
 composite[2+k≢n≢0] d≢n d∣n = boundedComposite>1 (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 composite[4] : Composite 4
