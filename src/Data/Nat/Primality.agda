@@ -16,15 +16,15 @@ open import Data.Product.Base using (_×_; map₂; _,_; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (flip; _∘_; _∘′_)
 open import Relation.Nullary.Decidable as Dec
-  using (yes; no; from-yes; ¬?; decidable-stable; _×-dec_; _⊎-dec_; _→-dec_)
+  using (yes; no; from-yes; from-no; ¬?; decidable-stable; _×-dec_; _⊎-dec_; _→-dec_)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; Decidable; IUniversal; Satisfiable)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong)
+  using (_≡_; _≢_; refl; cong)
 
 private
   variable
-    k m n p : ℕ
+    d k m n p : ℕ
 
 pattern 1<2+n {n} = s<s (z<s {n})
 
@@ -74,12 +74,12 @@ Prime n = 1 < n × ∀[ PrimeAt n ]
 -- this takes a proof p that n = suc (suc _) is n-Rough
 -- and thereby enforces that n is a fortiori NonZero
 
-pattern prime {n} p = 1<2+n {n} , p
+pattern prime {n} r = 1<2+n {n} , r
 
 -- smart destructor
 
 prime⁻¹ : Prime n → n Rough n
-prime⁻¹ (prime p) = p
+prime⁻¹ (prime r) = r
 
 -- Definition of irreducibility
 
@@ -111,21 +111,21 @@ _rough-1 : ∀ k → k Rough 1
 
 -- If a number n is k-rough, and k ∤ n, then n is (suc k)-rough
 ∤⇒rough-suc : k ∤ n → k Rough n → suc k Rough n
-∤⇒rough-suc k∤n rough (boundedComposite 1<d d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
-... | inj₁ d<k             = rough (boundedComposite 1<d d<k d∣n)
+∤⇒rough-suc k∤n r (boundedComposite 1<d d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
+... | inj₁ d<k             = r (boundedComposite 1<d d<k d∣n)
 ... | inj₂ d≡k rewrite d≡k = contradiction d∣n k∤n
 
 -- If a number is k-rough, then so are all of its divisors
 rough⇒∣⇒rough : k Rough m → n ∣ m → k Rough n
-rough⇒∣⇒rough rough n∣m (boundedComposite 1<d d<k d∣n)
-  = rough (boundedComposite 1<d d<k (∣-trans d∣n n∣m))
+rough⇒∣⇒rough r n∣m (boundedComposite 1<d d<k d∣n)
+  = r (boundedComposite 1<d d<k (∣-trans d∣n n∣m))
 
 ------------------------------------------------------------------------
 -- Corollary: relationship between roughness and primality
 
--- If a number n is k-rough, and k > 1 divides n, then k must be prime
-rough⇒∣⇒prime : 1 < k → k Rough n → k ∣ n → Prime k
-rough⇒∣⇒prime 1<k rough k∣n = 1<k , rough⇒∣⇒rough rough k∣n
+-- If a number n is p-rough, and p > 1 divides n, then p must be prime
+rough⇒∣⇒prime : 1 < p → p Rough n → p ∣ n → Prime p
+rough⇒∣⇒prime 1<p r p∣n = 1<p , rough⇒∣⇒rough r p∣n
 
 ------------------------------------------------------------------------
 -- Basic (non-)instances of Composite
@@ -136,8 +136,12 @@ rough⇒∣⇒prime 1<k rough k∣n = 1<k , rough⇒∣⇒rough rough k∣n
 ¬composite[1] : ¬ Composite 1
 ¬composite[1] (_ , composite[1]) = 1-rough composite[1]
 
+composite[2+k≢n≢0] : .{{NonZero n}} → let d = suc (suc k) in
+  d ≢ n → d ∣ n → CompositeAt n d
+composite[2+k≢n≢0] d≢n d∣n = boundedComposite>1 (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+
 composite[4] : Composite 4
-composite[4] = 2 , boundedComposite>1 (s<s 1<2+n) (divides-refl 2)
+composite[4] = 2 , composite[2+k≢n≢0] (from-no (2 ≟ 4)) (divides-refl 2)
 
 ------------------------------------------------------------------------
 -- Basic (non-)instances of Prime
@@ -202,14 +206,14 @@ irreducible? n@(suc _) = Dec.map′ bounded-irr⇒irr irr⇒bounded-irr
 -- Relationships between compositeness, primality, and irreducibility
 
 composite⇒¬prime : Composite n → ¬ Prime n
-composite⇒¬prime (d , composite[d]) (prime p) = p composite[d]
+composite⇒¬prime (d , composite[d]) (prime r) = r composite[d]
 
 ¬composite⇒prime : 1 < n → ¬ Composite n → Prime n
 ¬composite⇒prime 1<n ¬composite[n]
   = 1<n , λ {d} composite[d] → ¬composite[n] (d , composite[d])
 
 prime⇒¬composite : Prime n → ¬ Composite n
-prime⇒¬composite (prime p) (d , composite[d]) = p composite[d]
+prime⇒¬composite (prime r) (d , composite[d]) = r composite[d]
 
 -- note that this has to recompute the factor!
 ¬prime⇒composite : 1 < n → ¬ Prime n → Composite n
@@ -217,10 +221,10 @@ prime⇒¬composite (prime p) (d , composite[d]) = p composite[d]
   decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime 1<n)
 
 prime⇒irreducible : Prime p → Irreducible p
-prime⇒irreducible (prime p) {0} 0∣p = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _)
+prime⇒irreducible (prime r) {0} 0∣p = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _)
 prime⇒irreducible  p-prime  {1} 1∣p = inj₁ refl
-prime⇒irreducible (prime p) {suc (suc _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → p (boundedComposite>1 m<p m∣p))
+prime⇒irreducible (prime r) {suc (suc _)} m∣p
+  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → r (boundedComposite>1 m<p m∣p))
 
 irreducible⇒prime : Irreducible p → 1 < p → Prime p
 irreducible⇒prime irr 1<p
@@ -234,7 +238,7 @@ irreducible⇒prime irr 1<p
 -- the ring theoretic definition of a prime element of the semiring ℕ.
 -- This is useful for proving many other theorems involving prime numbers.
 euclidsLemma : ∀ m n {p} → Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
-euclidsLemma m n {p} (prime p-prime) p∣m*n = result
+euclidsLemma m n {p} (prime pr) p∣m*n = result
   where
   open ∣-Reasoning
 
@@ -271,12 +275,10 @@ euclidsLemma m n {p} (prime p-prime) p∣m*n = result
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(suc (suc _)) g _ with d ≟ p
   ...   | yes d≡p rewrite d≡p = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p = contradiction d∣p λ d∣p → p-prime (boundedComposite>1 d<p d∣p)
+  ...   | no  d≢p = contradiction d∣p λ d∣p → pr (composite[2+k≢n≢0] d≢p d∣p)
     where
     d∣p : d ∣ p
     d∣p = GCD.gcd∣n g
-    d<p : d < p
-    d<p = ≤∧≢⇒< (∣⇒≤ d∣p) d≢p
 
 private
 
