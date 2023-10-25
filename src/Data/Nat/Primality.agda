@@ -70,12 +70,21 @@ PrimeAt n = n RoughAt n
 Prime : ℕ → Set
 Prime n = 1 < n × ∀[ PrimeAt n ]
 
+-- smart constructor: prime 
+-- this takes a proof p that n = suc (suc _) is n-Rough
+-- and thereby enforces that n is a fortiori NonZero
+
 pattern prime {n} p = 1<2+n {n} , p
+
+-- smart destructor
+
+prime⁻¹ : Prime n → n Rough n
+prime⁻¹ (prime p) = p
 
 -- Definition of irreducibility
 
 IrreducibleAt : ℕ → Pred ℕ _
-IrreducibleAt n m = m ∣ n → m ≡ 1 ⊎ m ≡ n
+IrreducibleAt n d = d ∣ n → d ≡ 1 ⊎ d ≡ n
 
 Irreducible : ℕ → Set
 Irreducible n = ∀[ IrreducibleAt n ]
@@ -87,6 +96,10 @@ Irreducible n = ∀[ IrreducibleAt n ]
 -- 1 is always rough
 _rough-1 : ∀ k → k Rough 1
 (_ rough-1) (boundedComposite 1<d _ d∣1) = >⇒∤ 1<d d∣1
+
+-- Any number is 0-rough
+0-rough : 0 Rough n
+0-rough (boundedComposite 1<d d<0 _) with () ← d<0
 
 -- Any number is 1-rough
 1-rough : 1 Rough n
@@ -110,7 +123,7 @@ rough⇒∣⇒rough rough n∣m (boundedComposite 1<d d<k d∣n)
 ------------------------------------------------------------------------
 -- Corollary: relationship between roughness and primality
 
--- If a number is k-rough, and k > 1 divides it, then k must be prime
+-- If a number n is k-rough, and k > 1 divides n, then k must be prime
 rough⇒∣⇒prime : 1 < k → k Rough n → k ∣ n → Prime k
 rough⇒∣⇒prime 1<k rough k∣n = 1<k , rough⇒∣⇒rough rough k∣n
 
@@ -118,12 +131,10 @@ rough⇒∣⇒prime 1<k rough k∣n = 1<k , rough⇒∣⇒rough rough k∣n
 -- Basic (non-)instances of Composite
 
 ¬composite[0] : ¬ Composite 0
-¬composite[0] (_ , composite[0]) with () ← d<k composite[0]
+¬composite[0] (_ , composite[0]) = 0-rough composite[0]
 
 ¬composite[1] : ¬ Composite 1
-¬composite[1] (_ , composite[1])
-  = let record { 1<d = 1<d ; d<k = d<1 ; d∣n = _ } = composite[1]
-    in <-asym 1<d d<1
+¬composite[1] (_ , composite[1]) = 1-rough composite[1]
 
 composite[4] : Composite 4
 composite[4] = 2 , boundedComposite>1 (s<s 1<2+n) (divides-refl 2)
@@ -138,7 +149,7 @@ composite[4] = 2 , boundedComposite>1 (s<s 1<2+n) (divides-refl 2)
 ¬prime[1] (s<s () , _)
 
 prime[2] : Prime 2
-prime[2] = prime λ (boundedComposite 1<d d<2 _) → ≤⇒≯ 1<d d<2
+prime[2] = prime 2-rough
 
 ------------------------------------------------------------------------
 -- Basic (non-)instances of Irreducible
@@ -271,7 +282,7 @@ private
 
   -- Example: 2 is prime.
   2-is-prime : Prime 2
-  2-is-prime = prime (proj₂ (from-yes (prime? 2)))
+  2-is-prime = from-yes (prime? 2)
 
 
   -- Example: 6 is composite
