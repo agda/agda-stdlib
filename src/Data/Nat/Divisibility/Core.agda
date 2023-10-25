@@ -18,7 +18,7 @@ open import Level using (0ℓ)
 open import Relation.Nullary.Negation using (¬_; contraposition)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; trans; cong; cong₂; subst; module ≡-Reasoning)
+  using (_≡_; refl; trans; cong; cong₂; module ≡-Reasoning)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -43,10 +43,7 @@ record _∣_ (m n : ℕ) : Set where
   quotient≢0 = ≢-nonZero (contraposition quotient≡0⇒n≡0 (≢-nonZero⁻¹ n))
 
   n≡m*quotient : n ≡ m * quotient
-  n≡m*quotient = begin
-    n            ≡⟨ equality ⟩
-    quotient * m ≡⟨ *-comm quotient m ⟩
-    m * quotient ∎ where open ≡-Reasoning
+  n≡m*quotient = trans equality (*-comm quotient m)
 
   module _ (1<m : 1 < m) where
 
@@ -75,7 +72,7 @@ pattern divides-refl q = divides q refl
 
 -- smart destructor
 
-module _ {m n} (m∣n : m ∣ n) (open _∣_ m∣n) where
+module _ {m n} (m∣n : m ∣ n) (open _∣_ m∣n using (quotient; n≡m*quotient)) where
 
   quotient∣ : quotient ∣ n
   quotient∣ = divides m n≡m*quotient
