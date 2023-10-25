@@ -12,13 +12,13 @@
 
 module Data.Nat.Divisibility.Core where
 
-open import Data.Nat.Base using (ℕ; _*_)
+open import Data.Nat.Base using (ℕ; _*_; NonZero; ≢-nonZero; ≢-nonZero⁻¹; _<_)
 open import Data.Nat.Properties
 open import Level using (0ℓ)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation using (¬_; contraposition)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; sym; cong₂; module ≡-Reasoning)
+  using (_≡_; refl; cong; cong₂; subst; module ≡-Reasoning)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -35,7 +35,37 @@ record _∣_ (m n : ℕ) : Set where
   constructor divides
   field quotient : ℕ
         equality : n ≡ quotient * m
-open _∣_ using (quotient) public
+
+  quotient≡0⇒n≡0 : quotient ≡ 0 → n ≡ 0
+  quotient≡0⇒n≡0 q≡0 = subst (λ q → n ≡ q * m) q≡0 equality
+
+  instance
+    quotient≢0 : .{{NonZero n}} → NonZero quotient
+    quotient≢0 = ≢-nonZero (contraposition quotient≡0⇒n≡0 (≢-nonZero⁻¹ n))
+
+  n≡m*quotient : n ≡ m * quotient
+  n≡m*quotient = begin
+    n            ≡⟨ equality ⟩
+    quotient * m ≡⟨ *-comm quotient m ⟩
+    m * quotient ∎ where open ≡-Reasoning
+
+  module _ (1<m : 1 < m) where
+
+    open ≤-Reasoning
+
+    quotient>1 :  (m<n : m < n) → 1 < quotient
+    quotient>1 m<n = ≰⇒> λ q≤1 → n≮n n (begin-strict
+        n            ≡⟨ equality ⟩
+        quotient * m ≤⟨ *-monoˡ-≤ m q≤1 ⟩
+        1 * m        ≡⟨ *-identityˡ m ⟩
+        m            <⟨ m<n ⟩
+        n            ∎)
+
+    quotient< : .{{NonZero n}} → quotient < n
+    quotient< = begin-strict
+      quotient     <⟨ m<m*n quotient m 1<m ⟩
+      quotient * m ≡⟨ equality ⟨
+      n            ∎
 
 _∤_ : Rel ℕ 0ℓ
 m ∤ n = ¬ (m ∣ n)
@@ -43,6 +73,17 @@ m ∤ n = ¬ (m ∣ n)
 -- smart constructor
 
 pattern divides-refl q = divides q refl
+
+-- smart destructor
+
+module _ {m n} (m∣n : m ∣ n) (open _∣_ m∣n) where
+
+  quotient∣ : quotient ∣ n
+  quotient∣ = divides m n≡m*quotient
+
+-- exports
+
+open _∣_ using (quotient; quotient≢0; quotient>1; quotient<) public
 
 ------------------------------------------------------------------------
 -- Basic properties
