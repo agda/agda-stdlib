@@ -142,4 +142,4 @@ prime⇒coprime : ∀ m → Prime m →
 prime⇒coprime _ (prime p) _ _   _   {0} (0∣m , _) = contradiction (0∣⇒≡0 0∣m) λ()
 prime⇒coprime _ _         _ _   _   {1} _         = refl
 prime⇒coprime _ (prime p) _ z<s n<m {suc (suc _)} (d∣m , d∣n) = contradiction d∣m
-  λ d∣m → p (boundedComposite 1<2+n (<-≤-trans (s≤s (∣⇒≤ d∣n)) n<m) d∣m)
+  λ d∣m → p (boundedComposite>1 (<-≤-trans (s≤s (∣⇒≤ d∣n)) n<m) d∣m)
