@@ -45,17 +45,21 @@ record _∣_ (m n : ℕ) : Set where
   n≡m*quotient : n ≡ m * quotient
   n≡m*quotient rewrite *-comm m quotient = equality
 
-  module _ (1<m : 1 < m) where
+  module _ (m<n : m < n) where
 
     open ≤-Reasoning
 
-    quotient>1 :  (m<n : m < n) → 1 < quotient
-    quotient>1 m<n = ≰⇒> λ q≤1 → n≮n n (begin-strict
+    quotient>1 :  1 < quotient
+    quotient>1 = ≰⇒> λ q≤1 → n≮n n (begin-strict
         n            ≡⟨ equality ⟩
         quotient * m ≤⟨ *-monoˡ-≤ m q≤1 ⟩
         1 * m        ≡⟨ *-identityˡ m ⟩
         m            <⟨ m<n ⟩
         n            ∎)
+
+  module _ (1<m : 1 < m) where
+
+    open ≤-Reasoning
 
     quotient< : .{{NonZero n}} → quotient < n
     quotient< = begin-strict
