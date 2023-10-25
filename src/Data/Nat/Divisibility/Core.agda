@@ -18,7 +18,7 @@ open import Level using (0ℓ)
 open import Relation.Nullary.Negation using (¬_; contraposition)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; trans; cong; cong₂; module ≡-Reasoning)
+  using (_≡_; refl; cong₂; module ≡-Reasoning)
 
 ------------------------------------------------------------------------
 -- Definition
