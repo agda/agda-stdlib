@@ -18,7 +18,7 @@ open import Level using (0ℓ)
 open import Relation.Nullary.Negation using (¬_; contraposition)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; cong₂; subst; module ≡-Reasoning)
+  using (_≡_; refl; trans; cong; cong₂; subst; module ≡-Reasoning)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -37,7 +37,7 @@ record _∣_ (m n : ℕ) : Set where
         equality : n ≡ quotient * m
 
   quotient≡0⇒n≡0 : quotient ≡ 0 → n ≡ 0
-  quotient≡0⇒n≡0 q≡0 = subst (λ q → n ≡ q * m) q≡0 equality
+  quotient≡0⇒n≡0 q≡0 = trans equality (cong (_* m) q≡0)
 
   quotient≢0 : .{{NonZero n}} → NonZero quotient
   quotient≢0 = ≢-nonZero (contraposition quotient≡0⇒n≡0 (≢-nonZero⁻¹ n))
