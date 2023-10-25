@@ -2753,13 +2753,12 @@ Additions to existing modules
   <-asym : Asymmetric _<_
   ```
 
-* Added new definitions, a new NonZero instance, and a new pattern synonym to `Data.Nat.Divisibility.Core`:
+* Added new definitions and a new pattern synonym to `Data.Nat.Divisibility.Core`:
   ```agda
   pattern divides-refl q = divides q refl
 
-  instance quotient≢0 : .{{NonZero n}} → NonZero quotient
-
   quotient≡0⇒n≡0 : quotient ≡ 0 → n ≡ 0
+  quotient≢0 : .{{NonZero n}} → NonZero quotient
   n≡m*quotient   : n ≡ m * quotient
   quotient>1     : (1<m : 1 < m)  → (m<n : m < n) → 1 < quotient
   quotient<      : (1<m : 1 < m)  → .{{NonZero n}} → quotient < n

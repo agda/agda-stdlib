@@ -39,9 +39,8 @@ record _∣_ (m n : ℕ) : Set where
   quotient≡0⇒n≡0 : quotient ≡ 0 → n ≡ 0
   quotient≡0⇒n≡0 q≡0 = subst (λ q → n ≡ q * m) q≡0 equality
 
-  instance
-    quotient≢0 : .{{NonZero n}} → NonZero quotient
-    quotient≢0 = ≢-nonZero (contraposition quotient≡0⇒n≡0 (≢-nonZero⁻¹ n))
+  quotient≢0 : .{{NonZero n}} → NonZero quotient
+  quotient≢0 = ≢-nonZero (contraposition quotient≡0⇒n≡0 (≢-nonZero⁻¹ n))
 
   n≡m*quotient : n ≡ m * quotient
   n≡m*quotient = begin
@@ -65,8 +64,8 @@ record _∣_ (m n : ℕ) : Set where
     quotient< = begin-strict
       quotient     <⟨ m<m*n quotient m 1<m ⟩
       quotient * m ≡⟨ equality ⟨
-      n            ∎
-
+      n            ∎ where instance _ = quotient≢0
+    
 _∤_ : Rel ℕ 0ℓ
 m ∤ n = ¬ (m ∣ n)
 
