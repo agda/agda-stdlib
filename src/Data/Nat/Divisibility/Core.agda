@@ -37,13 +37,13 @@ record _∣_ (m n : ℕ) : Set where
         equality : n ≡ quotient * m
 
   quotient≡0⇒n≡0 : quotient ≡ 0 → n ≡ 0
-  quotient≡0⇒n≡0 q≡0 = trans equality (cong (_* m) q≡0)
+  quotient≡0⇒n≡0 q≡0 rewrite equality | q≡0 = refl
 
   quotient≢0 : .{{NonZero n}} → NonZero quotient
   quotient≢0 = ≢-nonZero (contraposition quotient≡0⇒n≡0 (≢-nonZero⁻¹ n))
 
   n≡m*quotient : n ≡ m * quotient
-  n≡m*quotient = trans equality (*-comm quotient m)
+  n≡m*quotient rewrite *-comm m quotient = equality
 
   module _ (1<m : 1 < m) where
 
