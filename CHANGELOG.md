@@ -2758,9 +2758,9 @@ Additions to existing modules
   pattern divides-refl q = divides q refl
 
   quotient≡0⇒n≡0 : quotient ≡ 0 → n ≡ 0
-  quotient≢0 : .{{NonZero n}} → NonZero quotient
+  quotient≢0     : .{{NonZero n}} → NonZero quotient
   n≡m*quotient   : n ≡ m * quotient
-  quotient>1     : (1<m : 1 < m)  → (m<n : m < n) → 1 < quotient
+  quotient>1     : (m<n : m < n) → 1 < quotient
   quotient<      : (1<m : 1 < m)  → .{{NonZero n}} → quotient < n
   ```
 
