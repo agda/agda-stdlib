@@ -57,11 +57,11 @@ record _∣_ (m n : ℕ) : Set where
         m            <⟨ m<n ⟩
         n            ∎)
 
-  module _ (1<m : 1 < m) where
+  module _ (1<m : 1 < m) .{{_ : NonZero n}} where
 
     open ≤-Reasoning
 
-    quotient< : .{{NonZero n}} → quotient < n
+    quotient< : quotient < n
     quotient< = begin-strict
       quotient     <⟨ m<m*n quotient m 1<m ⟩
       quotient * m ≡⟨ equality ⟨
