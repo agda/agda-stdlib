@@ -2753,6 +2753,11 @@ Additions to existing modules
   <-asym : Asymmetric _<_
   ```
 
+* Added a new definition to `Data.Nat.Coprimality`:
+  ```agda
+  prime⇒coprime≢0 : Prime p → .{{_ : NonZero n}} → n < p → Coprime p n
+  ```
+
 * Added a new pattern synonym to `Data.Nat.Divisibility.Core`:
   ```agda
   pattern divides-refl q = divides q refl

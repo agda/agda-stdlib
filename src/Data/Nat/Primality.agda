@@ -70,7 +70,7 @@ PrimeAt n = n RoughAt n
 Prime : ℕ → Set
 Prime n = 1 < n × ∀[ PrimeAt n ]
 
--- smart constructor: prime 
+-- smart constructor: prime
 -- this takes a proof p that n = suc (suc _) is n-Rough
 -- and thereby enforces that n is a fortiori NonZero
 
@@ -136,8 +136,8 @@ rough⇒∣⇒prime 1<p r p∣n = 1<p , rough⇒∣⇒rough r p∣n
 ¬composite[1] : ¬ Composite 1
 ¬composite[1] (_ , composite[1]) = 1-rough composite[1]
 
-composite[2+k≢n≢0] : .{{NonZero n}} →
-  let d = suc (suc k) in d ≢ n → d ∣ n → CompositeAt n d
+composite[2+k≢n≢0] : .{{NonZero n}} → let d = suc (suc k) in
+  d ≢ n → d ∣ n → CompositeAt n d
 composite[2+k≢n≢0] d≢n d∣n = boundedComposite>1 (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 composite[4] : Composite 4
@@ -196,9 +196,8 @@ irreducible? n@(suc _) = Dec.map′ bounded-irr⇒irr irr⇒bounded-irr
   BoundedIrreducible : Pred ℕ _
   BoundedIrreducible n = ∀ {m} → m < n → m ∣ n → m ≡ 1 ⊎ m ≡ n
   bounded-irr⇒irr : BoundedIrreducible n → Irreducible n
-  bounded-irr⇒irr bounded-irr m∣n with m≤n⇒m<n∨m≡n (∣⇒≤ m∣n)
-  ... | inj₁ m<n = bounded-irr m<n m∣n
-  ... | inj₂ m≡n = inj₂ m≡n
+  bounded-irr⇒irr bounded-irr m∣n
+    = [ flip bounded-irr m∣n , inj₂ ]′ (m≤n⇒m<n∨m≡n (∣⇒≤ m∣n))
   irr⇒bounded-irr : Irreducible n → BoundedIrreducible n
   irr⇒bounded-irr irr m<n m∣n = irr m∣n
 
@@ -254,6 +253,7 @@ euclidsLemma m n {p} (prime pr) p∣m*n = result
   -- if the GCD of m and p is zero then p must be zero, which is
   -- impossible as p is a prime
   ... | Bézout.result 0 g _ = contradiction (0∣⇒≡0 (GCD.gcd∣n g)) λ()
+  -- this should be a typechecker-rejectable case!?
 
   -- if the GCD of m and p is one then m and p is coprime, and we know
   -- that for some integers s and r, sm + rp = 1. We can use this fact

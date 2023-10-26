@@ -16,6 +16,7 @@ open import Data.Nat.Primality
 open import Data.Nat.Properties
 open import Data.Nat.DivMod
 open import Data.Product.Base as Prod
+open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality.Core as P
@@ -137,9 +138,14 @@ coprime-factors c (divides q₁ eq₁ , divides q₂ eq₂) with coprime-Bézout
 ------------------------------------------------------------------------
 -- Primality implies coprimality.
 
+prime⇒coprime≢0 : ∀ {p} → Prime p →
+                 ∀ {n} .{{_ : NonZero n}} → n < p → Coprime p n
+prime⇒coprime≢0 {p} pr@(prime _) n<p {d} (d∣p , d∣n)
+  with prime⇒irreducible pr d∣p
+... | inj₁ d≡1 = d≡1
+... | inj₂ refl with () ← ≤⇒≯ (∣⇒≤ d∣n) n<p
+
 prime⇒coprime : ∀ m → Prime m →
                 ∀ n → 0 < n → n < m → Coprime m n
-prime⇒coprime _ (prime p) _ _   _   {0} (0∣m , _) = contradiction (0∣⇒≡0 0∣m) λ()
-prime⇒coprime _ _         _ _   _   {1} _         = refl
-prime⇒coprime _ (prime p) _ z<s n<m {suc (suc _)} (d∣m , d∣n) = contradiction d∣m
-  λ d∣m → p (boundedComposite>1 (<-≤-trans (s≤s (∣⇒≤ d∣n)) n<m) d∣m)
+prime⇒coprime _ p _ z<s = prime⇒coprime≢0 p
+
