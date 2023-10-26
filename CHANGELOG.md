@@ -504,7 +504,7 @@ Non-backwards compatible changes
   and `Codata.Guarded.Stream.Relation.Binary.Pointwise`, the proofs
   called `lookup` have been renamed `lookup⁺`.
 
-#### Changes to `Data.(Nat/Integer/Rational)` proofs of `NonZero`/`Positive`/`Negative` to instance arguments
+#### Changes to `Data.(Nat/Integer/Rational)` proofs of `NonZero`/`Positive`/`Negative` to use instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
   and various proofs require their arguments to be non-zero/positive/negative etc.
