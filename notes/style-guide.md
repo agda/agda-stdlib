@@ -443,6 +443,44 @@ word within a compound word is capitalized except for the first word.
   relations should be used over the `¬` symbol (e.g. `m+n≮n` should be
   used instead of `¬m+n<n`).
 
+#### Symbols for operators
+
+* The stdlib aims to use a consistent set of notations, governed by a
+  consistent set of conventions, but sometimes, different
+  Unicode/emacs-input-method symbols neverthless can be rendered by
+  identical-*seeming* symbols, so this is an attempt to document these.
+
+* The typical binary operator in the `Algebra` hierarchy, inheriting
+  from the root `Structure`/`Bundle` `isMagma`/`Magma`, is written as
+  infix `∙`, obtained as `\.`, NOT as `\bu2`. Nevertheless, there is
+  also a 'generic' operator, written as infix `·`, obtained as
+  `\cdot`. Do NOT attempt to use related, but typographically
+  indistinguishable, symbols.
+
+* Similarly, 'primed' names and symbols, used to standardise names
+  apart, or to provide (more) simply-typed versions of
+  dependently-typed operations, should be written using `\'`, NOT the
+  unmarked `'` character.
+
+* Likewise, standard infix symbols for eg, divisibility on numeric
+  datatypes/algebraic structure, should be written `\|`, NOT the
+  unmarked `|` character. An exception to this is the *strict*
+  ordering relation, written using `<`, NOT `\<` as might be expected.
+
+* Since v2.0, the `Algebra` hierarchy systematically introduces
+  consistent symbolic notation for the negated versions of the usual
+  binary predicates for equality, ordering etc. These are obtained
+  from the corresponding input sequence by adding `n` to the symbol
+  name, so that `≤`, obtained as `\le`, becomes `≰` obtained as
+  `\len`, etc.
+
+* Correspondingly, the flipped symbols (and their negations) for the
+  converse relations are systematically introduced, eg `≥` as `\ge`
+  and `≱` as `\gen`.
+
+* Any exceptions to these conventions should be flagged on the GitHub
+  `agda-stdlib` issue tracker in the usual way.
+
 #### Functions and relations over specific datatypes
 
 * When defining a new relation `P` over a datatype `X` in a `Data.X.Relation` module,
