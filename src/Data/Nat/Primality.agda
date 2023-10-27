@@ -120,6 +120,9 @@ rough⇒∣⇒rough : k Rough m → n ∣ m → k Rough n
 rough⇒∣⇒rough r n∣m (boundedComposite 1<d d<k d∣n)
   = r (boundedComposite 1<d d<k (∣-trans d∣n n∣m))
 
+rough⇒≤ : 1 < n → k Rough n → k ≤ n
+rough⇒≤ {n} {k} 1<n rough = ≮⇒≥ λ k>n → rough (boundedComposite 1<n k>n ∣-refl)
+
 ------------------------------------------------------------------------
 -- Corollary: relationship between roughness and primality
 
@@ -141,7 +144,7 @@ composite[2+k≢n≢0] : .{{NonZero n}} → let d = suc (suc k) in
 composite[2+k≢n≢0] d≢n d∣n = boundedComposite>1 (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 composite[4] : Composite 4
-composite[4] = 2 , composite[2+k≢n≢0] (from-no (2 ≟ 4)) (divides-refl 2)
+composite[4] = 2 , composite[2+k≢n≢0] (λ()) (divides-refl 2)
 
 ------------------------------------------------------------------------
 -- Basic (non-)instances of Prime
