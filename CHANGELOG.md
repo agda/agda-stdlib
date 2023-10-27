@@ -2757,7 +2757,6 @@ Additions to existing modules
   ```agda
   pattern divides-refl q = divides q refl
 
-  quotient≡0⇒n≡0 : quotient ≡ 0 → n ≡ 0
   quotient≢0     : .{{NonZero n}} → NonZero quotient
   n≡m*quotient   : n ≡ m * quotient
   quotient>1     : (m<n : m < n) → 1 < quotient
