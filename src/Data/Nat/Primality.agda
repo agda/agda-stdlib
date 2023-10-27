@@ -121,7 +121,7 @@ rough⇒∣⇒rough r n∣m (boundedComposite 1<d d<k d∣n)
   = r (boundedComposite 1<d d<k (∣-trans d∣n n∣m))
 
 rough⇒≤ : 1 < n → k Rough n → k ≤ n
-rough⇒≤ {n} {k} 1<n rough = ≮⇒≥ λ k>n → rough (boundedComposite 1<n k>n ∣-refl)
+rough⇒≤ 1<n rough = ≮⇒≥ λ k>n → rough (boundedComposite 1<n k>n ∣-refl)
 
 ------------------------------------------------------------------------
 -- Corollary: relationship between roughness and primality
