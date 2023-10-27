@@ -120,6 +120,7 @@ rough⇒∣⇒rough : k Rough m → n ∣ m → k Rough n
 rough⇒∣⇒rough r n∣m (boundedComposite 1<d d<k d∣n)
   = r (boundedComposite 1<d d<k (∣-trans d∣n n∣m))
 
+-- If a number n > 1 is k-rough, then k ≤ n
 rough⇒≤ : 1 < n → k Rough n → k ≤ n
 rough⇒≤ 1<n rough = ≮⇒≥ λ k>n → rough (boundedComposite 1<n k>n ∣-refl)
 
