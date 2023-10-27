@@ -2784,6 +2784,8 @@ Additions to existing modules
   n>0⇒n≢0   : n > 0 → n ≢ 0
   m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+  m*n≢0⇒m≢0 : .{{NonZero (m * n)}} → NonZero m
+  m*n≢0⇒n≢0 : .{{NonZero (m * n)}} → NonZero n
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
 
   s<s-injective : s<s p ≡ s<s q → p ≡ q

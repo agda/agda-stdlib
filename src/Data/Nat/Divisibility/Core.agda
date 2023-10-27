@@ -36,14 +36,11 @@ record _∣_ (m n : ℕ) : Set where
   field quotient : ℕ
         equality : n ≡ quotient * m
 
-  quotient≡0⇒n≡0 : quotient ≡ 0 → n ≡ 0
-  quotient≡0⇒n≡0 q≡0 rewrite equality | q≡0 = refl
-
   quotient≢0 : .{{NonZero n}} → NonZero quotient
-  quotient≢0 = ≢-nonZero (contraposition quotient≡0⇒n≡0 (≢-nonZero⁻¹ n))
+  quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
 
   n≡m*quotient : n ≡ m * quotient
-  n≡m*quotient rewrite *-comm m quotient = equality
+  n≡m*quotient rewrite equality = *-comm quotient m
 
   quotient>1 :  (m<n : m < n) → 1 < quotient
   quotient>1 m<n = ≰⇒> λ q≤1 → n≮n n (begin-strict

@@ -905,6 +905,12 @@ m*n≢0 (suc m) (suc n) = _
 m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
 m*n≡0⇒m≡0 zero (suc _) eq = refl
 
+m*n≢0⇒m≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero m
+m*n≢0⇒m≢0 (suc _) = _
+
+m*n≢0⇒n≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero n
+m*n≢0⇒n≢0 m {n} rewrite *-comm m n = m*n≢0⇒m≢0 n {m}
+
 m*n≡1⇒m≡1 : ∀ m n → m * n ≡ 1 → m ≡ 1
 m*n≡1⇒m≡1 (suc zero)    n          _  = refl
 m*n≡1⇒m≡1 (suc (suc m)) (suc zero) ()
