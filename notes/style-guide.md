@@ -347,12 +347,12 @@ line of code, indented by two spaces.
 
 #### Variables
 
-* `Level` and `Set`s can always be generalized using the keyword `variable`.
+* `Level` and `Set`s can always be generalised using the keyword `variable`.
 
 * A file may only declare variables of other types if those types are used
   in the definition of the main type that the file concerns itself with.
-  At the moment the policy is *not* to generalize over any other types to
-  minimize the amount of information that users have to keep in their head
+  At the moment the policy is *not* to generalise over any other types to
+  minimise the amount of information that users have to keep in their head
   concurrently.
 
 * Example 1: the main type in `Data.List.Properties` is `List A` where `A : Set a`.
@@ -443,11 +443,11 @@ word within a compound word is capitalized except for the first word.
   relations should be used over the `¬` symbol (e.g. `m+n≮n` should be
   used instead of `¬m+n<n`).
 
-#### Symbols for operators
+#### Symbols for operators and relations
 
 * The stdlib aims to use a consistent set of notations, governed by a
   consistent set of conventions, but sometimes, different
-  Unicode/emacs-input-method symbols neverthless can be rendered by
+  Unicode/emacs-input-method symbols nevertheless can be rendered by
   identical-*seeming* symbols, so this is an attempt to document these.
 
 * The typical binary operator in the `Algebra` hierarchy, inheriting
