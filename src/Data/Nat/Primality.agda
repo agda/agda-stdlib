@@ -82,11 +82,14 @@ record BoundedComposite (k n d : ℕ) : Set where
     d<k : d < k
     d∣n : d ∣ n
 
--- smart constructor
+-- smart constructors
 
 boundedComposite≢ : .{{NonZero n}} → {{NonTrivial d}} →
                     d ≢ n → d ∣ n → BoundedComposite n n d
 boundedComposite≢ d≢n d∣n = boundedComposite (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+
+boundedComposite>1 : 1 < d → d < n → d ∣ n → BoundedComposite n n d
+boundedComposite>1 1<d = boundedComposite ⦃ n>1⇒nonTrivial 1<d ⦄
 
 -- Definition of compositeness
 
@@ -100,7 +103,7 @@ composite : .{{NonZero n}} → {{NonTrivial d}} →
 composite {d = d} d≢n d∣n = d , boundedComposite≢ d≢n d∣n
 
 -- Definition of 'rough': a number is k-rough
--- if all its non-trivial factors d 1 are greater than or equal to k
+-- if all its non-trivial factors d are bounded below by k
 
 Rough : ℕ → Pred ℕ _
 Rough k n = ∀[  ¬_ ∘ BoundedComposite k n ]
@@ -193,7 +196,7 @@ prime[2] = prime 2-rough
 -- Basic (non-)instances of Irreducible
 
 ¬irreducible[0] : ¬ Irreducible 0
-¬irreducible[0] irr = [ (λ ()) , (λ ()) ]′ (irr {2} (divides-refl 0))
+¬irreducible[0] irr[0] = [ (λ ()) , (λ ()) ]′ (irr[0] {2} (divides-refl 0))
 
 irreducible[1] : Irreducible 1
 irreducible[1] m|1 = inj₁ (∣1⇒≡1 m|1)
@@ -204,21 +207,37 @@ irreducible[2] {suc _} d∣2 with ∣⇒≤ d∣2
 ... | z<s     = inj₁ refl
 ... | s<s z<s = inj₂ refl
 
+
+------------------------------------------------------------------------
+-- NonTrivial
+
+composite⇒nonTrivial : Composite n → NonTrivial n
+composite⇒nonTrivial {1}      = flip contradiction ¬composite[1]
+composite⇒nonTrivial {2+ _} _ = _
+
+prime⇒nonTrivial : Prime p → NonTrivial p
+prime⇒nonTrivial (prime ⦃ nt ⦄ _) = nt
+
 ------------------------------------------------------------------------
 -- NonZero
 
 composite⇒nonZero : Composite n → NonZero n
-composite⇒nonZero {n@(suc _)} _ = _
+composite⇒nonZero {suc _} _ = _
 
 prime⇒nonZero : Prime p → NonZero p
 prime⇒nonZero (prime _) = nonTrivial⇒nonZero
+
+irreducible⇒nonZero : Irreducible n → NonZero n
+irreducible⇒nonZero {zero} = flip contradiction ¬irreducible[0]
+irreducible⇒nonZero {suc _} _ = _
+
 
 ------------------------------------------------------------------------
 -- Decidability
 
 composite? : Decidable Composite
 composite? n = Dec.map′
-  (map₂ λ (d<n , 1<d , d∣n) → boundedComposite ⦃ n>1⇒nonTrivial 1<d ⦄ d<n d∣n)
+  (map₂ λ (d<n , 1<d , d∣n) → boundedComposite>1 1<d d<n d∣n)
   (map₂ λ (boundedComposite d<n d∣n) → d<n , nonTrivial⇒n>1 , d∣n)
   (anyUpTo? (λ d → 1 <? d ×-dec d ∣? n) n)
 
@@ -227,7 +246,7 @@ prime? 0       = no ¬prime[0]
 prime? 1       = no ¬prime[1]
 prime? n@(2+ _) = Dec.map′
   (λ r → prime λ (boundedComposite d<n d∣n) → r d<n nonTrivial⇒n>1 d∣n)
-  (λ (prime p) {d} d<n 1<d d∣n → p {d} (boundedComposite ⦃ n>1⇒nonTrivial 1<d ⦄  d<n d∣n))
+  (λ (prime p) {d} d<n 1<d d∣n → p {d} (boundedComposite>1 1<d d<n d∣n))
   (allUpTo? (λ d → 1 <? d →-dec ¬? (d ∣? n)) n)
 
 irreducible? : Decidable Irreducible
@@ -262,16 +281,16 @@ prime⇒¬composite (prime p) (d , composite[d]) = p composite[d]
   decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime)
 
 prime⇒irreducible : Prime p → Irreducible p
-prime⇒irreducible (prime ⦃ nt ⦄ r) {0} 0∣p
+prime⇒irreducible (prime r) {0}        0∣p
   = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _)
   where instance _ = nonTrivial⇒nonZero
-prime⇒irreducible     _            {1}    1∣p = inj₁ refl
-prime⇒irreducible (prime ⦃ nt ⦄ r) {m@(2+ k)} m∣p
+prime⇒irreducible     _     {1}        1∣p = inj₁ refl
+prime⇒irreducible (prime r) {m@(2+ _)} m∣p
   = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → r (boundedComposite m<p m∣p))
   where instance _ = nonTrivial⇒nonZero
 
-irreducible⇒prime : Irreducible p → ⦃ NonTrivial p ⦄ → Prime p
-irreducible⇒prime irr ⦃ nt ⦄
+irreducible⇒prime : ⦃ NonTrivial p ⦄ → Irreducible p → Prime p
+irreducible⇒prime irr
   = prime λ (boundedComposite d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
 
 ------------------------------------------------------------------------
@@ -320,7 +339,7 @@ euclidsLemma m n {p} (prime pr) p∣m*n = result
 
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(suc (suc _)) g _ with d ≟ p
-  ...   | yes d≡p rewrite d≡p = inj₁ (GCD.gcd∣m g)
+  ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
   ...   | no  d≢p = contradiction d∣p λ d∣p → pr (boundedComposite≢ d≢p d∣p)
     where
     d∣p : d ∣ p
