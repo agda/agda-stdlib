@@ -43,12 +43,11 @@ record _∣_ (m n : ℕ) : Set where
   n≡m*quotient rewrite equality = *-comm quotient m
 
   quotient>1 : m < n → 1 < quotient
-  quotient>1 m<n = ≰⇒> λ q≤1 → n≮n n (begin-strict
-      n            ≡⟨ equality ⟩
-      quotient * m ≤⟨ *-monoˡ-≤ m q≤1 ⟩
-      1 * m        ≡⟨ *-identityˡ m ⟩
-      m            <⟨ m<n ⟩
-      n            ∎) where open ≤-Reasoning
+  quotient>1 m<n = *-cancelˡ-< m 1 quotient (begin-strict
+      m * 1 ≡⟨ *-identityʳ m ⟩
+      m     <⟨ m<n ⟩
+      n     ≡⟨ n≡m*quotient ⟩
+      m * quotient ∎) where open ≤-Reasoning
 
   quotient< : 1 < m → .{{_ : NonZero n}} → quotient < n
   quotient< 1<m = begin-strict
