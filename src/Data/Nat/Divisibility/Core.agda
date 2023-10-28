@@ -47,13 +47,15 @@ record _∣_ (m n : ℕ) : Set where
       m * 1 ≡⟨ *-identityʳ m ⟩
       m     <⟨ m<n ⟩
       n     ≡⟨ n≡m*quotient ⟩
-      m * quotient ∎) where open ≤-Reasoning
+      m * quotient ∎)
+      where open ≤-Reasoning
 
   quotient< : 1 < m → .{{_ : NonZero n}} → quotient < n
   quotient< 1<m = begin-strict
     quotient     <⟨ m<m*n quotient m 1<m ⟩
     quotient * m ≡⟨ equality ⟨
-    n            ∎ where open ≤-Reasoning; instance _ = quotient≢0
+    n            ∎
+    where open ≤-Reasoning; instance _ = quotient≢0
 
 
 _∤_ : Rel ℕ 0ℓ
