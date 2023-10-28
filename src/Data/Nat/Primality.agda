@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Nat.PrimalityINSTANCE where
+module Data.Nat.Primality where
 
 open import Data.Bool.Base using (Bool; true; false; not; T)
 open import Data.Nat.Base
@@ -73,9 +73,9 @@ n>1⇒nonTrivial 1<2+n = _
 ------------------------------------------------------------------------
 -- Definitions
 
--- Definition of 'not rough'-ness
+-- Definition of having a non-trivil divispr below a given bound
 
-record _BoundedComposite_ (k n d : ℕ) : Set where
+record BoundedComposite (k n d : ℕ) : Set where
   constructor boundedComposite
   field
     {{nt}} : NonTrivial d
@@ -85,13 +85,13 @@ record _BoundedComposite_ (k n d : ℕ) : Set where
 -- smart constructor
 
 boundedComposite≢ : .{{NonZero n}} → {{NonTrivial d}} →
-                    d ≢ n → d ∣ n → (n BoundedComposite n) d
+                    d ≢ n → d ∣ n → BoundedComposite n n d
 boundedComposite≢ d≢n d∣n = boundedComposite (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 -- Definition of compositeness
 
 Composite : Pred ℕ _
-Composite n = ∃⟨ n BoundedComposite n ⟩
+Composite n = ∃⟨ BoundedComposite n n ⟩
 
 -- smart constructor
 
@@ -103,12 +103,12 @@ composite {d = d} d≢n d∣n = d , boundedComposite≢ d≢n d∣n
 -- if all its non-trivial factors d 1 are greater than or equal to k
 
 _Rough_ : ℕ → Pred ℕ _
-k Rough n = ∀[  ¬_ ∘ k BoundedComposite n ]
+k Rough n = ∀[  ¬_ ∘ BoundedComposite k n ]
 
 -- Definition of primality: complement of Composite
--- Constructor: prime
--- takes a proof isPrime that NonTrivial p is p-Rough
--- and thereby enforces that p is a fortiori NonZero
+-- Constructor `prime` takes a proof isPrime that 
+-- NonTrivial p is p-Rough, and thereby enforces that
+-- p is a fortiori NonZero and NonUnit
 
 record Prime (p : ℕ) : Set where
   constructor prime
@@ -118,11 +118,8 @@ record Prime (p : ℕ) : Set where
 
 -- Definition of irreducibility
 
-IrreducibleAt : ℕ → Pred ℕ _
-IrreducibleAt n d = d ∣ n → d ≡ 1 ⊎ d ≡ n
-
 Irreducible : ℕ → Set
-Irreducible n = ∀[ IrreducibleAt n ]
+Irreducible n = ∀[ (λ d →  d ∣ n → d ≡ 1 ⊎ d ≡ n) ]
 
 
 ------------------------------------------------------------------------
@@ -132,15 +129,14 @@ Irreducible n = ∀[ IrreducibleAt n ]
 _rough-1 : ∀ k → k Rough 1
 (_ rough-1) {2+ _} (boundedComposite _ d∣1@(divides q@(suc _) ()))
 
--- Any number is 0-rough
+-- Any number is 0-, 1- and 2-rough,
+-- because no non-trivial factor d can be less than 0 , 1, 2
 0-rough : 0 Rough n
 0-rough (boundedComposite () _)
 
--- Any number is 1-rough
 1-rough : 1 Rough n
 1-rough (boundedComposite ⦃()⦄ z<s _)
 
--- Any number is 2-rough because all factors d > 1 are greater than or equal to 2
 2-rough : 2 Rough n
 2-rough (boundedComposite ⦃()⦄ (s<s z<s) _)
 
