@@ -143,6 +143,10 @@ rough-1 _ {2+ _} (boundedComposite _ d∣1@(divides q@(suc _) ()))
 2-rough : Rough 2 n
 2-rough (boundedComposite ⦃()⦄ (s<s z<s) _)
 
+-- If a number n > 1 is k-rough, then k ≤ n
+rough⇒≤ : ⦃ NonTrivial n ⦄ → Rough k n → k ≤ n
+rough⇒≤ rough = ≮⇒≥ λ k>n → rough (boundedComposite k>n ∣-refl)
+
 -- If a number n is k-rough, and k ∤ n, then n is (suc k)-rough
 ∤⇒rough-suc : k ∤ n → Rough k n → Rough (suc k) n
 ∤⇒rough-suc k∤n r (boundedComposite d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
