@@ -64,7 +64,7 @@ nonTrivial⇒nonZero {n = 2+ k} = _
 pattern 1<2+n {n} = s<s (z<s {n})
 
 nonTrivial⇒n>1 : .{{NonTrivial n}} → 1 < n
-nonTrivial⇒n>1 {n = 2+ _} = 1<2+n 
+nonTrivial⇒n>1 {n = 2+ _} = 1<2+n
 
 n>1⇒nonTrivial : 1 < n → NonTrivial n
 n>1⇒nonTrivial 1<2+n = _
@@ -73,7 +73,7 @@ n>1⇒nonTrivial 1<2+n = _
 ------------------------------------------------------------------------
 -- Definitions
 
--- Definition of having a non-trivil divispr below a given bound
+-- Definition of having a non-trivial divisor below a given bound
 
 record BoundedComposite (k n d : ℕ) : Set where
   constructor boundedComposite
@@ -102,11 +102,11 @@ composite {d = d} d≢n d∣n = d , boundedComposite≢ d≢n d∣n
 -- Definition of 'rough': a number is k-rough
 -- if all its non-trivial factors d 1 are greater than or equal to k
 
-_Rough_ : ℕ → Pred ℕ _
-k Rough n = ∀[  ¬_ ∘ BoundedComposite k n ]
+Rough : ℕ → Pred ℕ _
+Rough k n = ∀[  ¬_ ∘ BoundedComposite k n ]
 
 -- Definition of primality: complement of Composite
--- Constructor `prime` takes a proof isPrime that 
+-- Constructor `prime` takes a proof isPrime that
 -- NonTrivial p is p-Rough, and thereby enforces that
 -- p is a fortiori NonZero and NonUnit
 
@@ -114,40 +114,43 @@ record Prime (p : ℕ) : Set where
   constructor prime
   field
     {{nt}}  : NonTrivial p
-    isPrime : p Rough p
+    isPrime : Rough p p
 
 -- Definition of irreducibility
 
-Irreducible : ℕ → Set
-Irreducible n = ∀[ (λ d →  d ∣ n → d ≡ 1 ⊎ d ≡ n) ]
+Irreducible : Pred ℕ _
+Irreducible n = ∀[ irreducible n ]
+  where
+  irreducible : ℕ → Pred ℕ _
+  irreducible n d = d ∣ n → d ≡ 1 ⊎ d ≡ n
 
 
 ------------------------------------------------------------------------
 -- Basic properties of Rough
 
 -- 1 is always rough
-_rough-1 : ∀ k → k Rough 1
-(_ rough-1) {2+ _} (boundedComposite _ d∣1@(divides q@(suc _) ()))
+rough-1 : ∀ k → Rough k 1
+rough-1 _ {2+ _} (boundedComposite _ d∣1@(divides q@(suc _) ()))
 
 -- Any number is 0-, 1- and 2-rough,
--- because no non-trivial factor d can be less than 0 , 1, 2
-0-rough : 0 Rough n
+-- because no non-trivial factor d can be less than 0, 1, or 2
+0-rough : Rough 0 n
 0-rough (boundedComposite () _)
 
-1-rough : 1 Rough n
+1-rough : Rough 1 n
 1-rough (boundedComposite ⦃()⦄ z<s _)
 
-2-rough : 2 Rough n
+2-rough : Rough 2 n
 2-rough (boundedComposite ⦃()⦄ (s<s z<s) _)
 
 -- If a number n is k-rough, and k ∤ n, then n is (suc k)-rough
-∤⇒rough-suc : k ∤ n → k Rough n → suc k Rough n
+∤⇒rough-suc : k ∤ n → Rough k n → Rough (suc k) n
 ∤⇒rough-suc k∤n r (boundedComposite d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
 ... | inj₁ d<k      = r (boundedComposite d<k d∣n)
 ... | inj₂ d≡k@refl = contradiction d∣n k∤n
 
 -- If a number is k-rough, then so are all of its divisors
-rough⇒∣⇒rough : k Rough m → n ∣ m → k Rough n
+rough⇒∣⇒rough : Rough k m → n ∣ m → Rough k n
 rough⇒∣⇒rough r n∣m (boundedComposite d<k d∣n)
   = r (boundedComposite d<k (∣-trans d∣n n∣m))
 
@@ -155,7 +158,7 @@ rough⇒∣⇒rough r n∣m (boundedComposite d<k d∣n)
 -- Corollary: relationship between roughness and primality
 
 -- If a number n is p-rough, and p > 1 divides n, then p must be prime
-rough⇒∣⇒prime : ⦃ NonTrivial p ⦄ → p Rough n → p ∣ n → Prime p
+rough⇒∣⇒prime : ⦃ NonTrivial p ⦄ → Rough p n → p ∣ n → Prime p
 rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 
 ------------------------------------------------------------------------
