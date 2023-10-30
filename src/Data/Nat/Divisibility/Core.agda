@@ -12,10 +12,9 @@
 
 module Data.Nat.Divisibility.Core where
 
-open import Data.Nat.Base using (ℕ; _*_; NonZero; ≢-nonZero; ≢-nonZero⁻¹; _<_)
+open import Data.Nat.Base using (ℕ; _*_)
 open import Data.Nat.Properties
-open import Level using (0ℓ)
-open import Relation.Nullary.Negation using (¬_; contraposition)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong₂; module ≡-Reasoning)
@@ -35,54 +34,29 @@ record _∣_ (m n : ℕ) : Set where
   constructor divides
   field quotient : ℕ
         equality : n ≡ quotient * m
-
-  quotient≢0 : .{{NonZero n}} → NonZero quotient
-  quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
-
-  n≡m*quotient : n ≡ m * quotient
-  n≡m*quotient rewrite equality = *-comm quotient m
-
-  quotient>1 : m < n → 1 < quotient
-  quotient>1 m<n = *-cancelˡ-< m 1 quotient (begin-strict
-      m * 1 ≡⟨ *-identityʳ m ⟩
-      m     <⟨ m<n ⟩
-      n     ≡⟨ n≡m*quotient ⟩
-      m * quotient ∎)
-      where open ≤-Reasoning
-
-  quotient< : 1 < m → .{{_ : NonZero n}} → quotient < n
-  quotient< 1<m = begin-strict
-    quotient     <⟨ m<m*n quotient m 1<m ⟩
-    quotient * m ≡⟨ equality ⟨
-    n            ∎
-    where open ≤-Reasoning; instance _ = quotient≢0
+  equalityᵒ : n ≡ m * quotient
+  equalityᵒ rewrite equality = *-comm quotient m
 
 
-_∤_ : Rel ℕ 0ℓ
+_∤_ : Rel ℕ _
 m ∤ n = ¬ (m ∣ n)
 
 -- smart constructor
 
 pattern divides-refl q = divides q refl
 
--- smart destructor
-
-module _ {m n} (m∣n : m ∣ n) (open _∣_ m∣n using (quotient; n≡m*quotient)) where
-
-  quotient∣ : quotient ∣ n
-  quotient∣ = divides m n≡m*quotient
-
--- exports
-
-open _∣_ using (quotient; quotient≢0; quotient>1; quotient<) public
-
 ------------------------------------------------------------------------
 -- Basic properties
 
 *-pres-∣ : ∀ {m n o p} → o ∣ m → p ∣ n → o * p ∣ m * n
-*-pres-∣ {m} {n} {o} {p} (divides c m≡c*o) (divides d n≡d*p) =
+*-pres-∣ {m@.(c * o)} {n@.(d * p)} {o} {p} (divides-refl c) (divides-refl d) =
   divides (c * d) (begin
-    m * n             ≡⟨ cong₂ _*_ m≡c*o n≡d*p ⟩
+    m * n             ≡⟨⟩
     (c * o) * (d * p) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] c o d p ⟩
     (c * d) * (o * p) ∎)
   where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Exports
+
+open _∣_ using (quotient) public
