@@ -24,7 +24,7 @@ setup: Everything.agda
 
 .PHONY: Everything.agda
 Everything.agda:
-	cabal run GenerateEverything
+	cabal run GenerateEverything -- --out-dir doc
 
 .PHONY: listings
 listings: Everything.agda
@@ -32,3 +32,4 @@ listings: Everything.agda
 
 clean :
 	find . -type f -name '*.agdai' -delete
+	rm -f Everything.agda EverythingSafe.agda
