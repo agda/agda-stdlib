@@ -24,9 +24,10 @@ open import Relation.Binary.Definitions
   using (Reflexive; Transitive; Antisymmetric; Decidable)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
+  using (_≡_; refl; sym; cong; cong₂; subst)
 open import Relation.Binary.Reasoning.Syntax
-import Relation.Binary.PropositionalEquality.Properties as PropEq
+open import Relation.Binary.PropositionalEquality.Properties
+  using (isEquivalence; module ≡-Reasoning)
 
 private
   variable d m n o : ℕ
@@ -67,11 +68,11 @@ module _ (m∣n : m ∣ n) where
 -- Relationship with _%_
 
 m%n≡0⇒n∣m : ∀ m n .⦃ _ : NonZero n ⦄ → m % n ≡ 0 → n ∣ m
-m%n≡0⇒n∣m m n eq = divides (m / n) $ begin-equality
+m%n≡0⇒n∣m m n eq = divides (m / n) $ begin
   m                  ≡⟨ m≡m%n+[m/n]*n m n ⟩
   m % n + m / n * n  ≡⟨ cong₂ (_+_) eq refl ⟩
   m / n * n          ∎
-  where open ≤-Reasoning
+  where open ≡-Reasoning
 
 n∣m⇒m%n≡0 : ∀ m n .⦃ _ : NonZero n ⦄ → n ∣ m → m % n ≡ 0
 n∣m⇒m%n≡0 .(q * n) n (divides-refl q) = m*n%n≡0 q n
@@ -90,7 +91,7 @@ m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
   where open ≤-Reasoning
 
 >⇒∤ : .⦃ _ : NonZero n ⦄ → m > n → m ∤ n
->⇒∤ (s<s m>n) m∣n = contradiction (∣⇒≤ m∣n) (≤⇒≯ m>n)
+>⇒∤ {n@(suc _)} n<m@(s<s _) m∣n = contradiction (∣⇒≤ m∣n) (<⇒≱ n<m)
 
 ------------------------------------------------------------------------
 -- _∣_ is a partial order
@@ -121,7 +122,7 @@ n@(suc _) ∣? m  = Dec.map (m%n≡0⇔n∣m m n) (m % n ≟ 0)
 
 ∣-isPreorder : IsPreorder _≡_ _∣_
 ∣-isPreorder = record
-  { isEquivalence = PropEq.isEquivalence
+  { isEquivalence = isEquivalence
   ; reflexive     = ∣-reflexive
   ; trans         = ∣-trans
   }
@@ -159,16 +160,16 @@ open ∣-Reasoning
 ------------------------------------------------------------------------
 -- Simple properties of _∣_
 
-infix 10 1∣_ _∣0
-
-1∣_ : ∀ n → 1 ∣ n
-1∣ n = divides n (sym (*-identityʳ n))
+infix 10 _∣0 1∣_
 
 _∣0 : ∀ n → n ∣ 0
 n ∣0 = divides-refl 0
 
 0∣⇒≡0 : 0 ∣ n → n ≡ 0
 0∣⇒≡0 {n} 0∣n = ∣-antisym (n ∣0) 0∣n
+
+1∣_ : ∀ n → 1 ∣ n
+1∣ n = divides n (sym (*-identityʳ n))
 
 ∣1⇒≡1 : n ∣ 1 → n ≡ 1
 ∣1⇒≡1 {n} n∣1 = ∣-antisym n∣1 (1∣ n)
