@@ -9,6 +9,7 @@
 module Data.String.Base where
 
 open import Data.Bool.Base using (Bool; true; false)
+open import Data.Bool.Properties using (T?)
 open import Data.Char.Base as Char using (Char)
 open import Data.List.Base as List using (List; [_]; _∷_; [])
 open import Data.List.NonEmpty.Base as NE using (List⁺)
@@ -160,11 +161,11 @@ fromAlignment Right  = padLeft ' '
 ------------------------------------------------------------------------
 -- Splitting strings
 
-wordsByᵇ : (Char → Bool) → String → List String
-wordsByᵇ p = List.map fromList ∘ List.wordsByᵇ p ∘ toList
-
 wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-wordsBy P? = wordsByᵇ (does ∘ P?)
+wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
+
+wordsByᵇ : (Char → Bool) → String → List String
+wordsByᵇ p = wordsBy (T? ∘ p)
 
 words : String → List String
 words = wordsByᵇ Char.isSpace
@@ -173,11 +174,11 @@ words = wordsByᵇ Char.isSpace
 _ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
 _ = refl
 
-linesByᵇ : (Char → Bool) → String → List String
-linesByᵇ p = List.map fromList ∘ List.linesByᵇ p ∘ toList
-
 linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-linesBy P? = linesByᵇ (does ∘ P?)
+linesBy P? = List.map fromList ∘ List.linesBy P? ∘ toList
+
+linesByᵇ : (Char → Bool) → String → List String
+linesByᵇ p = linesBy (T? ∘ p)
 
 lines : String → List String
 lines = linesByᵇ ('\n' Char.≈ᵇ_)
