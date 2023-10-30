@@ -42,19 +42,19 @@ module _ (m∣n : m ∣ n) where
   open _∣_ m∣n renaming (quotient to q)
   open ≤-Reasoning
 
+  instance
+    quotient≢0 : .⦃ NonZero n ⦄ → NonZero q
+    quotient≢0 rewrite equality = m*n≢0⇒m≢0 q
+
+  quotient∣ : q ∣ n
+  quotient∣ = divides m equalityᵒ
+
   quotient>1 : m < n → 1 < q
   quotient>1 m<n = *-cancelˡ-< m 1 q $ begin-strict
       m * 1 ≡⟨ *-identityʳ m ⟩
       m     <⟨ m<n ⟩
       n     ≡⟨ equalityᵒ ⟩
       m * q ∎
-
-  quotient∣ : q ∣ n
-  quotient∣ = divides m equalityᵒ
-
-  instance
-    quotient≢0 : .⦃ NonZero n ⦄ → NonZero q
-    quotient≢0 rewrite equality = m*n≢0⇒m≢0 q
 
   quotient< : 1 < m → .⦃ NonZero n ⦄ → q < n
   quotient< 1<m = begin-strict
