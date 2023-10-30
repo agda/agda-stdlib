@@ -5,6 +5,10 @@ on:
       - master
       - experimental
   pull_request:
+    branches:
+      - master
+      - experimental
+  merge_group:
 
 ########################################################################
 ## CONFIGURATION
