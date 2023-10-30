@@ -24,9 +24,6 @@ on:
       - cabal.haskell-ci
       - "*.hs"
   pull_request:
-    branches:
-      - master
-      - experimental
     paths:
       - .github/workflows/haskell-ci.yml
       - agda-stdlib-utils.cabal
