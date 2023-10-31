@@ -79,9 +79,9 @@ recompute (no ¬a) a = ⊥-elim (¬a a)
 infixr 1 _⊎-dec_
 infixr 2 _×-dec_ _→-dec_
 
-T? : ∀ b → Dec (T b)
-does  (T? b) = b
-proof (T? b) = T-reflects b
+T? : ∀ x → Dec (T x)
+does  (T? x) = x
+proof (T? x) = T-reflects x
 
 ¬? : Dec A → Dec (¬ A)
 does  (¬? a?) = not (does a?)
