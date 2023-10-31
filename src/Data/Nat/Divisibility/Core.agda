@@ -12,12 +12,16 @@
 
 module Data.Nat.Divisibility.Core where
 
-open import Data.Nat.Base using (ℕ; _*_)
+open import Data.Nat.Base using (ℕ; _*_; NonZero)
 open import Data.Nat.Properties
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong₂; module ≡-Reasoning)
+
+
+private
+  variable m n o p : ℕ
 
 ------------------------------------------------------------------------
 -- Definition
@@ -48,12 +52,12 @@ pattern divides-refl q = divides q refl
 ------------------------------------------------------------------------
 -- Basic properties
 
-*-pres-∣ : ∀ {m n o p} → o ∣ m → p ∣ n → o * p ∣ m * n
-*-pres-∣ {m@.(c * o)} {n@.(d * p)} {o} {p} (divides-refl c) (divides-refl d) =
-  divides (c * d) (begin
+*-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
+*-pres-∣ {o} {m@.(q * o)} {p} {n@.(r * p)} (divides-refl q) (divides-refl r) =
+  divides (q * r) (begin
     m * n             ≡⟨⟩
-    (c * o) * (d * p) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] c o d p ⟩
-    (c * d) * (o * p) ∎)
+    (q * o) * (r * p) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] q o r p ⟩
+    (q * r) * (o * p) ∎)
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
