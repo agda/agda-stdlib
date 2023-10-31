@@ -2764,10 +2764,10 @@ Additions to existing modules
   ```agda
   instance quotient≢0 : .{{NonZero n}} → NonZero quotient
 
-  quotient∣  : q ∣ n
-  quotient>1 : m < n → 1 < quotient
-  quotient<  : 1 < m → .{{NonZero n}} → quotient < n
-  n/m≡quotient : .{{ _ : NonZero m }} → n / m ≡ quotient
+  quotient∣    : m ∣ n → quotient ∣ n
+  quotient>1   : m ∣ n → m < n → 1 < quotient
+  quotient<    : m ∣ n → 1 < m → .{{NonZero n}} → quotient < n
+  n/m≡quotient : m ∣ n → .{{ _ : NonZero m }} → n / m ≡ quotient
   ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
