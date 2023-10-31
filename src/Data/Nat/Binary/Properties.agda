@@ -27,13 +27,7 @@ open import Function.Base using (_∘_; _$_; id)
 open import Function.Definitions
 open import Function.Consequences.Propositional
 open import Level using (0ℓ)
-open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.Bundles
-  using (Setoid; DecSetoid; StrictPartialOrder; StrictTotalOrder; Preorder; Poset; TotalOrder; DecTotalOrder)
-open import Relation.Binary.Definitions
-  using (Decidable; Irreflexive; Transitive; Reflexive; Antisymmetric; Total; Trichotomous; tri≈; tri<; tri>)
-open import Relation.Binary.Structures
-  using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
@@ -162,9 +156,9 @@ fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
   tail-homo ℕ.zero = refl
   tail-homo (ℕ.suc ℕ.zero) = refl
   tail-homo (ℕ.suc (ℕ.suc n)) = begin
-    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡˘⟨ tail-suc (fromℕ' n) ⟩
+    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡⟨ tail-suc (fromℕ' n) ⟨
     suc (tail (suc (fromℕ' n)))            ≡⟨ cong suc (tail-homo n) ⟩
-    fromℕ' (ℕ.suc (n / 2))                 ≡˘⟨ cong fromℕ' (+-distrib-/-∣ˡ {2} n ∣-refl) ⟩
+    fromℕ' (ℕ.suc (n / 2))                 ≡⟨ cong fromℕ' (+-distrib-/-∣ˡ {2} n ∣-refl) ⟨
     fromℕ' (ℕ.suc (ℕ.suc n) / 2)           ∎
 
   fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ.helper n n w ≡ fromℕ' n
@@ -173,7 +167,7 @@ fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
     split-injective (begin
       split (fromℕ.helper n (ℕ.suc n) (ℕ.suc w))         ≡⟨ split-if _ _ ⟩
       just (n % 2 ℕ.≡ᵇ 0) , fromℕ.helper n (n / 2) w     ≡⟨ cong (_ ,_) rec-n/2 ⟩
-      just (n % 2 ℕ.≡ᵇ 0) , fromℕ' (n / 2)               ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
+      just (n % 2 ℕ.≡ᵇ 0) , fromℕ' (n / 2)               ≡⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟨
       head (fromℕ' (ℕ.suc n)) , tail (fromℕ' (ℕ.suc n))  ≡⟨⟩
       split (fromℕ' (ℕ.suc n))                           ∎)
     where rec-n/2 = fromℕ-helper≡fromℕ' (n / 2) w (ℕₚ.≤-trans (m/n≤m n 2) n≤w)
@@ -371,6 +365,9 @@ toℕ-isMonomorphism-< = record
 <-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
 <-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
 
+<-asym : Asymmetric _<_
+<-asym {x} {y} = trans∧irr⇒asym refl <-trans <-irrefl {x} {y}
+
 -- Should not be implemented via the morphism `toℕ` in order to
 -- preserve O(log n) time requirement.
 <-cmp : Trichotomous _≡_ _<_
@@ -414,9 +411,8 @@ _<?_ = tri⇒dec< <-cmp
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  ; compare              = <-cmp
   }
 
 ------------------------------------------------------------------------
@@ -610,14 +606,14 @@ module ≤-Reasoning where
 
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
-    <-irrefl
+    <-asym
     <-trans
     (resp₂ _<_)
     <⇒≤
     <-≤-trans
     ≤-<-trans
     public
-    hiding (step-≈; step-≈˘)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
 
 ------------------------------------------------------------------------
 -- Properties of _<ℕ_

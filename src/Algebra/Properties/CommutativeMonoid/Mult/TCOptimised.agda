@@ -40,7 +40,7 @@ open import Algebra.Properties.Monoid.Mult.TCOptimised monoid public
 
 ×-distrib-+ : ∀ x y n → n × (x + y) ≈ n × x + n × y
 ×-distrib-+ x y n = begin
-  n ×  (x + y)    ≈˘⟨ ×ᵤ≈× n (x + y) ⟩
+  n ×  (x + y)    ≈⟨ ×ᵤ≈× n (x + y) ⟨
   n ×ᵤ (x + y)    ≈⟨  U.×-distrib-+ x y n ⟩
   n ×ᵤ x + n ×ᵤ y ≈⟨  +-cong (×ᵤ≈× n x) (×ᵤ≈× n y) ⟩
   n ×  x + n ×  y ∎

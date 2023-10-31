@@ -24,6 +24,8 @@ open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary.Definitions using (tri<; tri>; tri≈; Symmetric)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; subst; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable using (Dec)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
@@ -190,7 +192,7 @@ c*gcd[m,n]≡gcd[cm,cn] c@(suc _) m n = begin
   c * gcd m n                   ≡⟨ cong (c *_) (P.sym (gcd[cm,cn]/c≡gcd[m,n] c m n)) ⟩
   c * (gcd (c * m) (c * n) / c) ≡⟨ m*[n/m]≡n (gcd-greatest (m∣m*n m) (m∣m*n n)) ⟩
   gcd (c * m) (c * n)           ∎
-  where open P.≡-Reasoning
+  where open ≡-Reasoning
 
 gcd[m,n]≤n : ∀ m n .{{_ : NonZero n}} → gcd m n ≤ n
 gcd[m,n]≤n m n = ∣⇒≤ (gcd[m,n]∣n m n)

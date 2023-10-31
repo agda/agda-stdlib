@@ -60,9 +60,9 @@ toTree-#nodes (mkZipper c v) = helper c v
       #ctx = sum (List.map (suc ∘ BT.#nodes ∘ getTree) ctx)
       #foc = BT.#nodes foc
       #l = BT.#nodes l in begin
-      #foc + (1 + (#l + #ctx))             ≡˘⟨ +-assoc #foc 1 (#l + #ctx) ⟩
+      #foc + (1 + (#l + #ctx))             ≡⟨ +-assoc #foc 1 (#l + #ctx) ⟨
       #foc + 1 + (#l + #ctx)               ≡⟨ cong (_+ (#l + #ctx)) (+-comm #foc 1) ⟩
-      1 + #foc + (#l + #ctx)               ≡˘⟨ +-assoc (1 + #foc) #l #ctx ⟩
+      1 + #foc + (#l + #ctx)               ≡⟨ +-assoc (1 + #foc) #l #ctx ⟨
       1 + #foc + #l + #ctx                 ≡⟨ cong (_+ #ctx) (+-comm (1 + #foc) #l) ⟩
       #nodes (mkZipper ctx (node l m foc)) ≡⟨ helper ctx (node l m foc) ⟩
       BT.#nodes (toTree (mkZipper cs foc)) ∎
@@ -70,8 +70,8 @@ toTree-#nodes (mkZipper c v) = helper c v
       #ctx = sum (List.map (suc ∘ BT.#nodes ∘ getTree) ctx)
       #foc = BT.#nodes foc
       #r = BT.#nodes r in begin
-      #foc + (1 + (#r + #ctx))             ≡˘⟨ cong (#foc +_) (+-assoc 1 #r #ctx) ⟩
-      #foc + (1 + #r + #ctx)               ≡˘⟨ +-assoc #foc (suc #r) #ctx ⟩
+      #foc + (1 + (#r + #ctx))             ≡⟨ cong (#foc +_) (+-assoc 1 #r #ctx) ⟨
+      #foc + (1 + #r + #ctx)               ≡⟨ +-assoc #foc (suc #r) #ctx ⟨
       #nodes (mkZipper ctx (node foc m r)) ≡⟨ helper ctx (node foc m r) ⟩
       BT.#nodes (toTree (mkZipper cs foc)) ∎
 
@@ -86,7 +86,7 @@ toTree-#leaves (mkZipper c v) = helper c v
       #ctx = sum (List.map (BT.#leaves ∘ getTree) ctx)
       #foc = BT.#leaves foc
       #l = BT.#leaves l in begin
-      #foc + (#l + #ctx)                    ≡˘⟨ +-assoc #foc #l #ctx ⟩
+      #foc + (#l + #ctx)                    ≡⟨ +-assoc #foc #l #ctx ⟨
       #foc + #l + #ctx                      ≡⟨ cong (_+ #ctx) (+-comm #foc #l) ⟩
       #leaves (mkZipper ctx (node l m foc)) ≡⟨ helper ctx (node l m foc) ⟩
       BT.#leaves (toTree (mkZipper cs foc)) ∎
@@ -94,7 +94,7 @@ toTree-#leaves (mkZipper c v) = helper c v
       #ctx = sum (List.map (BT.#leaves ∘ getTree) ctx)
       #foc = BT.#leaves foc
       #r = BT.#leaves r in begin
-      #foc + (#r + #ctx)                    ≡˘⟨ +-assoc #foc #r #ctx ⟩
+      #foc + (#r + #ctx)                    ≡⟨ +-assoc #foc #r #ctx ⟨
       #leaves (mkZipper ctx (node foc m r)) ≡⟨ helper ctx (node foc m r) ⟩
       BT.#leaves (toTree (mkZipper cs foc)) ∎
 

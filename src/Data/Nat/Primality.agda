@@ -99,7 +99,7 @@ euclidsLemma m n {p@(suc (suc _))} p-prime p∣m*n = result
   p∣rmn r = begin
     p           ∣⟨ p∣m*n ⟩
     m * n       ∣⟨ n∣m*n r ⟩
-    r * (m * n) ≡˘⟨ *-assoc r m n ⟩
+    r * (m * n) ≡⟨ *-assoc r m n ⟨
     r * m * n   ∎
 
   result : p ∣ m ⊎ p ∣ n
@@ -114,14 +114,14 @@ euclidsLemma m n {p@(suc (suc _))} p-prime p∣m*n = result
   ... | Bézout.result 1 _ (Bézout.+- r s 1+sp≡rm) =
     inj₂ (flip ∣m+n∣m⇒∣n (n∣m*n*o s n) (begin
       p             ∣⟨ p∣rmn r ⟩
-      r * m * n     ≡˘⟨ cong (_* n) 1+sp≡rm ⟩
+      r * m * n     ≡⟨ cong (_* n) 1+sp≡rm ⟨
       n + s * p * n ≡⟨ +-comm n (s * p * n) ⟩
       s * p * n + n ∎))
 
   ... | Bézout.result 1 _ (Bézout.-+ r s 1+rm≡sp) =
     inj₂ (flip ∣m+n∣m⇒∣n (p∣rmn r) (begin
       p             ∣⟨ n∣m*n*o s n ⟩
-      s * p * n     ≡˘⟨ cong (_* n) 1+rm≡sp ⟩
+      s * p * n     ≡⟨ cong (_* n) 1+rm≡sp ⟨
       n + r * m * n ≡⟨ +-comm n (r * m * n) ⟩
       r * m * n + n ∎))
 

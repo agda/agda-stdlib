@@ -132,7 +132,7 @@ length-scanl c n (a ∷ as) = suc λ { .force → begin
   length (scanl c (c n a) (as .force))
     ≈⟨ length-scanl c (c n a) (as .force) ⟩
   1 ℕ+ length (as .force)
-    ≈˘⟨ length-∷ a as ⟩
+    ≈⟨ length-∷ a as ⟨
   length (a ∷ as) ∎ } where open coℕᵇ.≈-Reasoning
 
 module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
@@ -153,7 +153,7 @@ module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
     (cons nil b ∷ _)
      ≈⟨ Eq.refl ∷ (λ where .force → refl) ⟩
     (cons nil b ∷ _)
-     ≈˘⟨ unfold-just (Maybeₚ.map-just eq) ⟩
+     ≈⟨ unfold-just (Maybeₚ.map-just eq) ⟨
     unfold alg′ (a , nil) ∎ } where open ≈-Reasoning
 
 ------------------------------------------------------------------------

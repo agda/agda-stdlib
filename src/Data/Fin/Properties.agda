@@ -406,9 +406,8 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 
 <-isStrictTotalOrder : IsStrictTotalOrder {A = Fin n} _≡_ _<_
 <-isStrictTotalOrder = record
-  { isEquivalence = P.isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  ; compare              = <-cmp
   }
 
 ------------------------------------------------------------------------
@@ -608,7 +607,7 @@ join-splitAt zero    n i       = refl
 join-splitAt (suc m) n zero    = refl
 join-splitAt (suc m) n (suc i) = begin
   [ _↑ˡ n , (suc m) ↑ʳ_ ]′ (splitAt (suc m) (suc i)) ≡⟨ [,]-map (splitAt m i) ⟩
-  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡˘⟨ [,]-∘ suc (splitAt m i) ⟩
+  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡⟨ [,]-∘ suc (splitAt m i) ⟨
   suc ([ _↑ˡ n , m ↑ʳ_ ]′ (splitAt m i))             ≡⟨ cong suc (join-splitAt m n i) ⟩
   suc i                                                         ∎
   where open ≡-Reasoning
@@ -647,13 +646,13 @@ remQuot-combine {suc n} {k} (suc i) j rewrite splitAt-↑ʳ k   (n ℕ.* k) (com
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
 combine-remQuot {suc n} k i with splitAt k i in eq
 ... | inj₁ j = begin
-  join k (n ℕ.* k) (inj₁ j)      ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (inj₁ j)      ≡⟨ cong (join k (n ℕ.* k)) eq ⟨
   join k (n ℕ.* k) (splitAt k i) ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
   i                              ∎
   where open ≡-Reasoning
 ... | inj₂ j = begin
   k ↑ʳ (uncurry combine (remQuot {n} k j)) ≡⟨ cong (k ↑ʳ_) (combine-remQuot {n} k j) ⟩
-  join k (n ℕ.* k) (inj₂ j)                ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (inj₂ j)                ≡⟨ cong (join k (n ℕ.* k)) eq ⟨
   join k (n ℕ.* k) (splitAt k i)           ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
   i                                        ∎
   where open ≡-Reasoning
@@ -663,7 +662,7 @@ toℕ-combine {suc m} {n} i@0F j = begin
   toℕ (combine i j)          ≡⟨⟩
   toℕ (j ↑ˡ (m ℕ.* n))       ≡⟨ toℕ-↑ˡ j (m ℕ.* n) ⟩
   toℕ j                      ≡⟨⟩
-  0 ℕ.+ toℕ j                ≡˘⟨ cong (ℕ._+ toℕ j) (ℕₚ.*-zeroʳ n) ⟩
+  0 ℕ.+ toℕ j                ≡⟨ cong (ℕ._+ toℕ j) (ℕₚ.*-zeroʳ n) ⟨
   n ℕ.* toℕ i ℕ.+ toℕ j      ∎
   where open ≡-Reasoning
 toℕ-combine {suc m} {n} (suc i) j = begin
@@ -684,7 +683,7 @@ combine-monoˡ-< {m} {n} {i} {j} k l i<j = begin-strict
   n ℕ.+ toℕ i ℕ.* n      ≡⟨ ℕₚ.*-comm (suc (toℕ i)) n ⟩
   n ℕ.* suc (toℕ i)      ≤⟨ ℕₚ.*-monoʳ-≤ n (toℕ-mono-< i<j) ⟩
   n ℕ.* toℕ j            ≤⟨ ℕₚ.m≤m+n (n ℕ.* toℕ j) (toℕ l) ⟩
-  n ℕ.* toℕ j ℕ.+ toℕ l  ≡˘⟨ toℕ-combine j l ⟩
+  n ℕ.* toℕ j ℕ.+ toℕ l  ≡⟨ toℕ-combine j l ⟨
   toℕ (combine j l)      ∎
   where open ℕₚ.≤-Reasoning; open +-*-Solver
 
@@ -700,7 +699,7 @@ combine-injectiveʳ : ∀ (i : Fin m) (j : Fin n) (k : Fin m) (l : Fin n) →
 combine-injectiveʳ {m} {n} i j k l cᵢⱼ≡cₖₗ
   with refl ← combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ
   = toℕ-injective (ℕₚ.+-cancelˡ-≡ (n ℕ.* toℕ i) _ _ (begin
-  n ℕ.* toℕ i ℕ.+ toℕ j ≡˘⟨ toℕ-combine i j ⟩
+  n ℕ.* toℕ i ℕ.+ toℕ j ≡⟨ toℕ-combine i j ⟨
   toℕ (combine i j)     ≡⟨ cong toℕ cᵢⱼ≡cₖₗ ⟩
   toℕ (combine i l)     ≡⟨ toℕ-combine i l ⟩
   n ℕ.* toℕ i ℕ.+ toℕ l ∎))
@@ -715,7 +714,7 @@ combine-injective i j k l cᵢⱼ≡cₖₗ =
 combine-surjective : ∀ (i : Fin (m ℕ.* n)) → ∃₂ λ j k → combine j k ≡ i
 combine-surjective {m} {n} i with j , k ← remQuot {m} n i in eq
   = j , k , (begin
-  combine j k                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
+  combine j k                       ≡⟨ uncurry (cong₂ combine) (,-injective eq) ⟨
   uncurry combine (remQuot {m} n i) ≡⟨ combine-remQuot {m} n i ⟩
   i                                 ∎)
   where open ≡-Reasoning
@@ -1093,7 +1092,7 @@ opposite-suc {n} i = begin
   toℕ (opposite (suc i))     ≡⟨ opposite-prop (suc i) ⟩
   suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
   n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡˘⟨ opposite-prop i ⟩
+  n ∸ suc (toℕ i)            ≡⟨ opposite-prop i ⟨
   toℕ (opposite i)           ∎
   where open ≡-Reasoning
 

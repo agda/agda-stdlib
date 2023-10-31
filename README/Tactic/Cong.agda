@@ -33,7 +33,7 @@ verbose-example m n eq =
     suc (suc m) + m
   ≡⟨ cong (λ ϕ → suc (suc (ϕ + ϕ))) eq ⟩
     suc (suc n) + n
-  ≡˘⟨ cong (λ ϕ → suc (suc (n + ϕ))) (+-identityʳ n) ⟩
+  ≡⟨ cong (λ ϕ → suc (suc (n + ϕ))) (+-identityʳ n) ⟨
     suc (suc n) + (n + 0)
   ∎
 
@@ -51,7 +51,7 @@ succinct-example m n eq =
     suc (suc m) + m
   ≡⟨ cong! eq ⟩
     suc (suc n) + n
-  ≡˘⟨ cong! (+-identityʳ n) ⟩
+  ≡⟨ cong! (+-identityʳ n) ⟨
     suc (suc n) + (n + 0)
   ∎
 
@@ -124,7 +124,7 @@ module EquationalReasoningTests where
       suc (suc m) + m
     ≡⟨ cong! eq ⟩
       suc (suc n) + n
-    ≡˘⟨ cong! (+-identityʳ n) ⟩
+    ≡⟨ cong! (+-identityʳ n) ⟨
       suc (suc n) + (n + 0)
     ∎
 

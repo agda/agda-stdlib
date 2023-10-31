@@ -51,11 +51,11 @@ open import Algebra.Construct.NaturalChoice.MaxOp maxOp public
 ⊓-distribˡ-⊔ x y z with total y z
 ... | inj₁ y≤z = begin-equality
   x ⊓ (y ⊔ z)       ≈⟨  ⊓-congˡ x (x≤y⇒x⊔y≈y y≤z) ⟩
-  x ⊓ z             ≈˘⟨ x≤y⇒x⊔y≈y (⊓-monoʳ-≤ x y≤z) ⟩
+  x ⊓ z             ≈⟨ x≤y⇒x⊔y≈y (⊓-monoʳ-≤ x y≤z) ⟨
   (x ⊓ y) ⊔ (x ⊓ z) ∎
 ... | inj₂ y≥z = begin-equality
   x ⊓ (y ⊔ z)       ≈⟨  ⊓-congˡ x (x≥y⇒x⊔y≈x y≥z) ⟩
-  x ⊓ y             ≈˘⟨ x≥y⇒x⊔y≈x (⊓-monoʳ-≤ x y≥z) ⟩
+  x ⊓ y             ≈⟨ x≥y⇒x⊔y≈x (⊓-monoʳ-≤ x y≥z) ⟨
   (x ⊓ y) ⊔ (x ⊓ z) ∎
 
 ⊓-distribʳ-⊔ : _⊓_ DistributesOverʳ _⊔_
@@ -68,11 +68,11 @@ open import Algebra.Construct.NaturalChoice.MaxOp maxOp public
 ⊔-distribˡ-⊓ x y z with total y z
 ... | inj₁ y≤z = begin-equality
   x ⊔ (y ⊓ z)       ≈⟨  ⊔-congˡ x (x≤y⇒x⊓y≈x y≤z) ⟩
-  x ⊔ y             ≈˘⟨ x≤y⇒x⊓y≈x (⊔-monoʳ-≤ x y≤z) ⟩
+  x ⊔ y             ≈⟨ x≤y⇒x⊓y≈x (⊔-monoʳ-≤ x y≤z) ⟨
   (x ⊔ y) ⊓ (x ⊔ z) ∎
 ... | inj₂ y≥z = begin-equality
   x ⊔ (y ⊓ z)       ≈⟨  ⊔-congˡ x (x≥y⇒x⊓y≈y y≥z) ⟩
-  x ⊔ z             ≈˘⟨ x≥y⇒x⊓y≈y (⊔-monoʳ-≤ x y≥z) ⟩
+  x ⊔ z             ≈⟨ x≥y⇒x⊓y≈y (⊔-monoʳ-≤ x y≥z) ⟨
   (x ⊔ y) ⊓ (x ⊔ z) ∎
 
 ⊔-distribʳ-⊓ : _⊔_ DistributesOverʳ _⊓_
@@ -119,11 +119,11 @@ antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≈_ ⟶ _≈_ → f Preserv
 antimono-≤-distrib-⊓ {f} cong antimono x y with total x y
 ... | inj₁ x≤y = begin-equality
   f (x ⊓ y)  ≈⟨ cong (x≤y⇒x⊓y≈x x≤y) ⟩
-  f x        ≈˘⟨ x≥y⇒x⊔y≈x (antimono x≤y) ⟩
+  f x        ≈⟨ x≥y⇒x⊔y≈x (antimono x≤y) ⟨
   f x ⊔ f y  ∎
 ... | inj₂ y≤x = begin-equality
   f (x ⊓ y)  ≈⟨ cong (x≥y⇒x⊓y≈y y≤x) ⟩
-  f y        ≈˘⟨ x≤y⇒x⊔y≈y (antimono y≤x) ⟩
+  f y        ≈⟨ x≤y⇒x⊔y≈y (antimono y≤x) ⟨
   f x ⊔ f y  ∎
 
 antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≈_ ⟶ _≈_ → f Preserves _≤_ ⟶ _≥_ →
@@ -131,11 +131,11 @@ antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≈_ ⟶ _≈_ → f Preserv
 antimono-≤-distrib-⊔ {f} cong antimono x y with total x y
 ... | inj₁ x≤y = begin-equality
   f (x ⊔ y)  ≈⟨ cong (x≤y⇒x⊔y≈y x≤y) ⟩
-  f y        ≈˘⟨ x≥y⇒x⊓y≈y (antimono x≤y) ⟩
+  f y        ≈⟨ x≥y⇒x⊓y≈y (antimono x≤y) ⟨
   f x ⊓ f y  ∎
 ... | inj₂ y≤x = begin-equality
   f (x ⊔ y)  ≈⟨ cong (x≥y⇒x⊔y≈x y≤x) ⟩
-  f x        ≈˘⟨ x≤y⇒x⊓y≈x (antimono y≤x) ⟩
+  f x        ≈⟨ x≤y⇒x⊓y≈x (antimono y≤x) ⟨
   f x ⊓ f y  ∎
 
 x⊓y≤x⊔y : ∀ x y → x ⊓ y ≤ x ⊔ y

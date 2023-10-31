@@ -12,7 +12,7 @@ module README.Case where
 open import Data.Fin   hiding (pred)
 open import Data.Maybe hiding (from-just)
 open import Data.Nat   hiding (pred)
-open import Function.Base using (case_of_; case_return_of_)
+open import Function.Base using (case_of_; case_returning_of_)
 open import Relation.Nullary
 
 ------------------------------------------------------------------------
@@ -35,7 +35,7 @@ pred n = case n of λ
 -- where-introduced and indentation-identified block of list of clauses
 
 from-just : ∀ {a} {A : Set a} (x : Maybe A) → From-just x
-from-just x = case x return From-just of λ where
+from-just x = case x returning From-just of λ where
   (just x) → x
   nothing  → _
 
