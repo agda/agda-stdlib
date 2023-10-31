@@ -59,8 +59,3 @@ pattern divides-refl q = divides q refl
     (q * o) * (r * p) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] q o r p ⟩
     (q * r) * (o * p) ∎)
   where open ≡-Reasoning
-
-------------------------------------------------------------------------
--- Exports
-
-open _∣_ using (quotient) public
