@@ -3781,3 +3781,8 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} → (1/p : Positive (1/ p)) → Positive p
   1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
   ```
+
+* In `Data.List.Relation.Unary.AllPairs.Properties`:
+  ```
+  tabulate⁺< : (∀ {i j} → i F.< j → R (f i) (f j)) → AllPairs R (tabulate f)
+  ```
