@@ -2767,6 +2767,7 @@ Additions to existing modules
   quotient∣  : q ∣ n
   quotient>1 : m < n → 1 < quotient
   quotient<  : 1 < m → .{{NonZero n}} → quotient < n
+  n/m≡quotient : .{{ _ : NonZero m }} → n / m ≡ quotient
   ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:

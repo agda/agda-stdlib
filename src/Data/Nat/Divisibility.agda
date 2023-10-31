@@ -11,7 +11,7 @@ module Data.Nat.Divisibility where
 open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
-open import Function.Base using (_∘′_; _$_; flip)
+open import Function.Base using (_∘′_; _$_; flip; case_returning_of_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
 import Relation.Nullary.Decidable as Dec
@@ -40,28 +40,41 @@ open import Data.Nat.Divisibility.Core public
 
 module _ (m∣n : m ∣ n) where
 
-  open _∣_ m∣n renaming (quotient to q)
+  open _∣_ m∣n
   open ≤-Reasoning
 
   instance
-    quotient≢0 : .⦃ NonZero n ⦄ → NonZero q
-    quotient≢0 rewrite equality = m*n≢0⇒m≢0 q
+    quotient≢0 : .⦃ NonZero n ⦄ → NonZero quotient
+    quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
 
-  quotient∣ : q ∣ n
+  quotient∣ : quotient ∣ n
   quotient∣ = divides m equalityᵒ
 
-  quotient>1 : m < n → 1 < q
-  quotient>1 m<n = *-cancelˡ-< m 1 q $ begin-strict
-      m * 1 ≡⟨ *-identityʳ m ⟩
-      m     <⟨ m<n ⟩
-      n     ≡⟨ equalityᵒ ⟩
-      m * q ∎
+  quotient>1 : m < n → 1 < quotient
+  quotient>1 m<n = *-cancelˡ-< m 1 quotient $ begin-strict
+      m * 1        ≡⟨ *-identityʳ m ⟩
+      m            <⟨ m<n ⟩
+      n            ≡⟨ equalityᵒ ⟩
+      m * quotient ∎
 
-  quotient< : 1 < m → .⦃ NonZero n ⦄ → q < n
+  quotient< : 1 < m → .⦃ NonZero n ⦄ → quotient < n
   quotient< 1<m = begin-strict
-    q     <⟨ m<m*n q m 1<m ⟩
-    q * m ≡⟨ equality ⟨
-    n     ∎
+    quotient     <⟨ m<m*n quotient m 1<m ⟩
+    quotient * m ≡⟨ equality ⟨
+    n            ∎
+
+-- defining equation for _/_
+
+  n/m≡quotient : .⦃ _ : NonZero m ⦄ → n / m ≡ quotient
+  n/m≡quotient = *-cancelʳ-≡ _ _ m $ begin-equality
+    n / m * m    ≡⟨ m/n*n≡m m∣n ⟩
+    n            ≡⟨ equality ⟩
+    quotient * m ∎
+
+------------------------------------------------------------------------
+-- Exports
+
+open _∣_ using (quotient) public
 
 
 ------------------------------------------------------------------------
