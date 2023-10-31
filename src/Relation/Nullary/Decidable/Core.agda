@@ -12,7 +12,7 @@
 module Relation.Nullary.Decidable.Core where
 
 open import Level using (Level; Lift)
-open import Data.Bool.Base using (Bool; false; true; not; T; _∧_; _∨_)
+open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
 open import Data.Empty using (⊥)
 open import Data.Empty.Irrelevant using (⊥-elim)
@@ -78,6 +78,10 @@ recompute (no ¬a) a = ⊥-elim (¬a a)
 
 infixr 1 _⊎-dec_
 infixr 2 _×-dec_ _→-dec_
+
+T? : ∀ b → Dec (T b)
+does  (T? b) = b
+proof (T? b) = T-reflects b
 
 ¬? : Dec A → Dec (¬ A)
 does  (¬? a?) = not (does a?)
