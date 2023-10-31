@@ -32,6 +32,7 @@ on:
       - agda-stdlib-utils.cabal
       - cabal.haskell-ci
       - "*.hs"
+  merge_group:
 jobs:
   linux:
     name: Haskell-CI - Linux - ${{ matrix.compiler }}
