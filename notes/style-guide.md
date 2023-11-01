@@ -402,7 +402,7 @@ word within a compound word is capitalized except for the first word.
 
 * Rational variables are named `p`, `q`, `r`, ... (default `p`)
 
-* All other variables, including `Bool`, should be named `x`, `y`, `z`.
+* All other variables should be named `x`, `y`, `z`.
 
 * Collections of elements are usually indicated by appending an `s`
   (e.g. if you are naming your variables `x` and `y` then lists
