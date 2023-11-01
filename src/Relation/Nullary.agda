@@ -15,20 +15,9 @@ open import Agda.Builtin.Equality
 ------------------------------------------------------------------------
 -- Re-exports
 
-open import Relation.Nullary.Negation.Core public using
-  ( ¬_; _¬-⊎_
-  ; contradiction; contradiction₂; contraposition
-  )
-
-open import Relation.Nullary.Reflects public using
-  ( Reflects; ofʸ; ofⁿ
-  ; _×-reflects_; _⊎-reflects_; _→-reflects_
-  )
-
-open import Relation.Nullary.Decidable.Core public using
-  ( Dec; does; proof; yes; no; _because_; recompute
-  ; ¬?; _×-dec_; _⊎-dec_; _→-dec_
-  )
+open import Relation.Nullary.Negation.Core public
+open import Relation.Nullary.Reflects public
+open import Relation.Nullary.Decidable.Core public
 
 ------------------------------------------------------------------------
 -- Irrelevant types
