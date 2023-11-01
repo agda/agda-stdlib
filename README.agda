@@ -7,7 +7,7 @@ module README where
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
--- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,
+-- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy, Joachim Breitner,
 -- Samuel Bronson, Daniel Brown, Jacques Carette, James Chapman,
 -- Liang-Ting Chen, Dominique Devriese, Dan Doel, Érdi Gergő,
 -- Zack Grannan, Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu,
