@@ -11,7 +11,7 @@ module Data.Nat.Divisibility where
 open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
-open import Function.Base using (_∘′_; _$_; flip; case_returning_of_)
+open import Function.Base using (_∘′_; _$_; flip)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
 import Relation.Nullary.Decidable as Dec
