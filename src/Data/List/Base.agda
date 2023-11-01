@@ -14,7 +14,6 @@ module Data.List.Base where
 open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
-open import Data.Bool.Properties using (T?)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
@@ -24,11 +23,11 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base
   using (id; _∘_ ; _∘′_; _∘₂_; _$_; const; flip)
 open import Level using (Level)
-open import Relation.Nullary.Decidable using (does; ¬?)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Nullary.Decidable.Core using (T?; does; ¬?)
 
 private
   variable

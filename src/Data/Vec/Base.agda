@@ -9,7 +9,6 @@
 module Data.Vec.Base where
 
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
-open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
@@ -18,7 +17,7 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; trans; cong)
-open import Relation.Nullary.Decidable.Core using (does)
+open import Relation.Nullary.Decidable.Core using (does; T?)
 open import Relation.Unary using (Pred; Decidable)
 
 private

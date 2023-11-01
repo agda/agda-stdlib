@@ -9,7 +9,6 @@
 module Data.String.Base where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Bool.Properties using (T?)
 open import Data.Char.Base as Char using (Char)
 open import Data.List.Base as List using (List; [_]; _∷_; [])
 open import Data.List.NonEmpty.Base as NE using (List⁺)
@@ -23,7 +22,7 @@ open import Level using (Level; 0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable.Core using (does)
+open import Relation.Nullary.Decidable.Core using (does; T?)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
