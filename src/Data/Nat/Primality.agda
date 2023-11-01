@@ -13,11 +13,11 @@ open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
 open import Data.Nat.Properties
-open import Data.Product.Base using (_×_; map₂; _,_; proj₂)
+open import Data.Product.Base using (_×_; map₂; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (flip; _∘_; _∘′_)
 open import Relation.Nullary.Decidable as Dec
-  using (yes; no; from-yes; from-no; ¬?; decidable-stable; _×-dec_; _⊎-dec_; _→-dec_)
+  using (yes; no; from-yes; ¬?; _×-dec_; _⊎-dec_; _→-dec_; decidable-stable)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; Decidable; IUniversal; Satisfiable)
 open import Relation.Binary.PropositionalEquality
@@ -178,7 +178,7 @@ rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 ¬composite[1] (_ , composite[1]) = 1-rough composite[1]
 
 composite[4] : Composite 4
-composite[4] = composite {d = 2} (λ ()) (divides 2 refl)
+composite[4] = composite {d = 2} (λ ()) (divides-refl 2)
 
 ------------------------------------------------------------------------
 -- Basic (non-)instances of Prime
@@ -320,7 +320,7 @@ euclidsLemma m n {p} (prime pr) p∣m*n = result
   ... | Bézout.result 0 g _ = contradiction (0∣⇒≡0 (GCD.gcd∣n g)) (≢-nonZero⁻¹ _)
   -- this should be a typechecker-rejectable case!?
 
-  -- if the GCD of m and p is one then m and p is coprime, and we know
+  -- if the GCD of m and p is one then m and p are coprime, and we know
   -- that for some integers s and r, sm + rp = 1. We can use this fact
   -- to determine that p divides n
   ... | Bézout.result 1 _ (Bézout.+- r s 1+sp≡rm) =
