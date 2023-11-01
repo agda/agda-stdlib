@@ -24,7 +24,6 @@ private
   variable
     a : Level
     A B : Set a
-    x y : Bool
 
 ------------------------------------------------------------------------
 -- `Reflects` idiom.
@@ -45,11 +44,11 @@ data Reflects (A : Set a) : Bool → Set a where
 -- `ofʸ`), and `invert` strips off the constructor to just give either
 -- the proof of `A` or the proof of `¬ A`.
 
-of : if x then A else ¬ A → Reflects A x
-of {x = false} ¬a = ofⁿ ¬a
-of {x = true }  a = ofʸ a
+of : ∀ {b} → if b then A else ¬ A → Reflects A b
+of {b = false} ¬a = ofⁿ ¬a
+of {b = true }  a = ofʸ a
 
-invert : Reflects A x → if x then A else ¬ A
+invert : ∀ {b} → Reflects A b → if b then A else ¬ A
 invert (ofʸ  a) = a
 invert (ofⁿ ¬a) = ¬a
 
@@ -59,27 +58,30 @@ invert (ofⁿ ¬a) = ¬a
 infixr 1 _⊎-reflects_
 infixr 2 _×-reflects_ _→-reflects_
 
-T-reflects : ∀ x → Reflects (T x) x
+T-reflects : ∀ b → Reflects (T b) b
 T-reflects true  = of _
 T-reflects false = of id
 
 -- If we can decide A, then we can decide its negation.
-¬-reflects : Reflects A x → Reflects (¬ A) (not x)
+¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
 ¬-reflects (ofʸ  a) = ofⁿ (_$ a)
 ¬-reflects (ofⁿ ¬a) = ofʸ ¬a
 
 -- If we can decide A and Q then we can decide their product
-_×-reflects_ : Reflects A x → Reflects B y → Reflects (A × B) (x ∧ y)
+_×-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
+               Reflects (A × B) (a ∧ b)
 ofʸ  a ×-reflects ofʸ  b = ofʸ (a , b)
 ofʸ  a ×-reflects ofⁿ ¬b = ofⁿ (¬b ∘ proj₂)
 ofⁿ ¬a ×-reflects _      = ofⁿ (¬a ∘ proj₁)
 
-_⊎-reflects_ : Reflects A x → Reflects B y → Reflects (A ⊎ B) (x ∨ y)
+_⊎-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
+               Reflects (A ⊎ B) (a ∨ b)
 ofʸ  a ⊎-reflects      _ = ofʸ (inj₁ a)
 ofⁿ ¬a ⊎-reflects ofʸ  b = ofʸ (inj₂ b)
 ofⁿ ¬a ⊎-reflects ofⁿ ¬b = ofⁿ (¬a ¬-⊎ ¬b)
 
-_→-reflects_ : Reflects A x → Reflects B y → Reflects (A → B) (not x ∨ y)
+_→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
+                Reflects (A → B) (not a ∨ b)
 ofʸ  a →-reflects ofʸ  b = ofʸ (const b)
 ofʸ  a →-reflects ofⁿ ¬b = ofⁿ (¬b ∘ (_$ a))
 ofⁿ ¬a →-reflects _      = ofʸ (⊥-elim ∘ ¬a)
@@ -87,13 +89,16 @@ ofⁿ ¬a →-reflects _      = ofʸ (⊥-elim ∘ ¬a)
 ------------------------------------------------------------------------
 -- Other lemmas
 
-fromEquivalence : (T x → A) → (A → T x) → Reflects A x
-fromEquivalence {x = true}  sound complete = ofʸ (sound _)
-fromEquivalence {x = false} sound complete = ofⁿ complete
+fromEquivalence : ∀ {b} → (T b → A) → (A → T b) → Reflects A b
+fromEquivalence {b = true}  sound complete = ofʸ (sound _)
+fromEquivalence {b = false} sound complete = ofⁿ complete
 
 -- `Reflects` is deterministic.
-det : Reflects A x → Reflects A y → x ≡ y
+det : ∀ {b b′} → Reflects A b → Reflects A b′ → b ≡ b′
 det (ofʸ  a) (ofʸ  _) = refl
 det (ofʸ  a) (ofⁿ ¬a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofʸ  a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofⁿ  _) = refl
+
+T-reflects-elim : ∀ {a b} → Reflects (T a) b → b ≡ a
+T-reflects-elim {a} r = det r (T-reflects a)

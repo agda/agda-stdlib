@@ -3569,6 +3569,7 @@ Additions to existing modules
 * Added new proof in `Relation.Nullary.Reflects`:
   ```agda
   T-reflects : Reflects (T b) b
+  T-reflects-elim : Reflects (T a) b → b ≡ a
   ```
 
 * Added new operations in `System.Exit`:
