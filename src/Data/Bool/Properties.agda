@@ -28,8 +28,7 @@ open import Relation.Binary.Definitions
   using (Decidable; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
-open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
-open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no; fromWitness)
+open import Relation.Nullary.Decidable.Core using (True; yes; no; fromWitness)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_

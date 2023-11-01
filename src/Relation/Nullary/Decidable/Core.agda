@@ -80,8 +80,7 @@ infixr 1 _⊎-dec_
 infixr 2 _×-dec_ _→-dec_
 
 T? : ∀ x → Dec (T x)
-does  (T? x) = x
-proof (T? x) = T-reflects x
+T? x = x because T-reflects x
 
 ¬? : Dec A → Dec (¬ A)
 does  (¬? a?) = not (does a?)
