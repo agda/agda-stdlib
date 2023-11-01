@@ -504,7 +504,7 @@ Non-backwards compatible changes
   and `Codata.Guarded.Stream.Relation.Binary.Pointwise`, the proofs
   called `lookup` have been renamed `lookup⁺`.
 
-#### Changes to `Data.(Nat/Integer/Rational)` proofs of `NonZero`/`Positive`/`Negative` to instance arguments
+#### Changes to `Data.(Nat/Integer/Rational)` proofs of `NonZero`/`Positive`/`Negative` to use instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
   and various proofs require their arguments to be non-zero/positive/negative etc.
@@ -2761,7 +2761,7 @@ Additions to existing modules
 * Added new definitions and proofs to `Data.Nat.Primality`:
   ```agda
   Composite        : ℕ → Set
-  composite?       : Decidable composite
+  composite?       : Decidable Composite
   composite⇒¬prime : Composite n → ¬ Prime n
   ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
   prime⇒¬composite : Prime n → ¬ Composite n
