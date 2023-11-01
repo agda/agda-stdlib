@@ -2762,7 +2762,7 @@ Additions to existing modules
 
 * Added  a new instance and new definitions to `Data.Nat.Divisibility`:
   ```agda
-  instance quotient≢0 : .{{NonZero n}} → NonZero quotient
+  instance quotient≢0 : m ∣ n → .{{NonZero n}} → NonZero quotient
 
   quotient∣    : m ∣ n → quotient ∣ n
   quotient>1   : m ∣ n → m < n → 1 < quotient
