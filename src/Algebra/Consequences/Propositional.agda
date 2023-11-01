@@ -44,16 +44,16 @@ open Base public
 ------------------------------------------------------------------------
 -- Group-like structures
 
-module _ {_•_ _⁻¹ ε} where
+module _ {_∙_ _⁻¹ ε} where
 
-  assoc+id+invʳ⇒invˡ-unique : Associative _•_ → Identity ε _•_ →
-                              RightInverse ε _⁻¹ _•_ →
-                              ∀ x y → (x • y) ≡ ε → x ≡ (y ⁻¹)
+  assoc+id+invʳ⇒invˡ-unique : Associative _∙_ → Identity ε _∙_ →
+                              RightInverse ε _⁻¹ _∙_ →
+                              ∀ x y → (x ∙ y) ≡ ε → x ≡ (y ⁻¹)
   assoc+id+invʳ⇒invˡ-unique = Base.assoc+id+invʳ⇒invˡ-unique (cong₂ _)
 
-  assoc+id+invˡ⇒invʳ-unique : Associative _•_ → Identity ε _•_ →
-                              LeftInverse ε _⁻¹ _•_ →
-                              ∀ x y → (x • y) ≡ ε → y ≡ (x ⁻¹)
+  assoc+id+invˡ⇒invʳ-unique : Associative _∙_ → Identity ε _∙_ →
+                              LeftInverse ε _⁻¹ _∙_ →
+                              ∀ x y → (x ∙ y) ≡ ε → y ≡ (x ⁻¹)
   assoc+id+invˡ⇒invʳ-unique = Base.assoc+id+invˡ⇒invʳ-unique (cong₂ _)
 
 ------------------------------------------------------------------------
@@ -76,43 +76,43 @@ module _ {_+_ _*_ -_ 0#} where
 ------------------------------------------------------------------------
 -- Bisemigroup-like structures
 
-module _ {_•_ _◦_ : Op₂ A} (•-comm : Commutative _•_) where
+module _ {_∙_ _◦_ : Op₂ A} (∙-comm : Commutative _∙_) where
 
-  comm+distrˡ⇒distrʳ : _•_ DistributesOverˡ _◦_ → _•_ DistributesOverʳ _◦_
-  comm+distrˡ⇒distrʳ = Base.comm+distrˡ⇒distrʳ (cong₂ _) •-comm
+  comm+distrˡ⇒distrʳ : _∙_ DistributesOverˡ _◦_ → _∙_ DistributesOverʳ _◦_
+  comm+distrˡ⇒distrʳ = Base.comm+distrˡ⇒distrʳ (cong₂ _) ∙-comm
 
-  comm+distrʳ⇒distrˡ : _•_ DistributesOverʳ _◦_ → _•_ DistributesOverˡ _◦_
-  comm+distrʳ⇒distrˡ = Base.comm+distrʳ⇒distrˡ (cong₂ _) •-comm
+  comm+distrʳ⇒distrˡ : _∙_ DistributesOverʳ _◦_ → _∙_ DistributesOverˡ _◦_
+  comm+distrʳ⇒distrˡ = Base.comm+distrʳ⇒distrˡ (cong₂ _) ∙-comm
 
-  comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y • z)) ≡ ((x ◦ y) • (x ◦ z)))
-  comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _◦_) •-comm
+  comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y ∙ z)) ≡ ((x ◦ y) ∙ (x ◦ z)))
+  comm⇒sym[distribˡ] = Base.comm⇒sym[distribˡ] (cong₂ _◦_) ∙-comm
 
 ------------------------------------------------------------------------
 -- Selectivity
 
-module _ {_•_ : Op₂ A} where
+module _ {_∙_ : Op₂ A} where
 
-  sel⇒idem : Selective _•_ → Idempotent _•_
+  sel⇒idem : Selective _∙_ → Idempotent _∙_
   sel⇒idem = Base.sel⇒idem _≡_
 
 ------------------------------------------------------------------------
 -- Middle-Four Exchange
 
-module _ {_•_ : Op₂ A} where
+module _ {_∙_ : Op₂ A} where
 
-  comm+assoc⇒middleFour : Commutative _•_ → Associative _•_ →
-                          _•_ MiddleFourExchange _•_
-  comm+assoc⇒middleFour = Base.comm+assoc⇒middleFour (cong₂ _•_)
+  comm+assoc⇒middleFour : Commutative _∙_ → Associative _∙_ →
+                          _∙_ MiddleFourExchange _∙_
+  comm+assoc⇒middleFour = Base.comm+assoc⇒middleFour (cong₂ _∙_)
 
-  identity+middleFour⇒assoc : {e : A} → Identity e _•_ →
-                              _•_ MiddleFourExchange _•_ →
-                              Associative _•_
-  identity+middleFour⇒assoc = Base.identity+middleFour⇒assoc (cong₂ _•_)
+  identity+middleFour⇒assoc : {e : A} → Identity e _∙_ →
+                              _∙_ MiddleFourExchange _∙_ →
+                              Associative _∙_
+  identity+middleFour⇒assoc = Base.identity+middleFour⇒assoc (cong₂ _∙_)
 
   identity+middleFour⇒comm : {_+_ : Op₂ A} {e : A} → Identity e _+_ →
-                             _•_ MiddleFourExchange _+_ →
-                             Commutative _•_
-  identity+middleFour⇒comm = Base.identity+middleFour⇒comm (cong₂ _•_)
+                             _∙_ MiddleFourExchange _+_ →
+                             Commutative _∙_
+  identity+middleFour⇒comm = Base.identity+middleFour⇒comm (cong₂ _∙_)
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality
