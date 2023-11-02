@@ -54,8 +54,4 @@ pattern divides-refl q = divides q refl
 
 *-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
 *-pres-∣ {o} {m@.(q * o)} {p} {n@.(r * p)} (divides-refl q) (divides-refl r) =
-  divides (q * r) (begin
-    m * n             ≡⟨⟩
-    (q * o) * (r * p) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] q o r p ⟩
-    (q * r) * (o * p) ∎)
-  where open ≡-Reasoning
+  divides (q * r) ([m*n]*[o*p]≡[m*o]*[n*p] q o r p)
