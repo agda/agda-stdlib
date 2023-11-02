@@ -16,6 +16,7 @@ module Function.Consequences.Setoid
   where
 
 open import Function.Definitions
+open import Relation.Nullary.Negation.Core
 
 import Function.Consequences as C
 
@@ -30,8 +31,10 @@ private
 ------------------------------------------------------------------------
 -- Injective
 
-open C public
-  using (contraInjective)
+-- For some reason, exporting this doesn't
+contraInjective : Injective ≈₁ ≈₂ f →
+                  ∀ {x y} → ¬ (≈₁ x y) → ¬ (≈₂ (f x) (f y))
+contraInjective = C.contraInjective ≈₂
 
 ------------------------------------------------------------------------
 -- Inverseˡ

@@ -2013,6 +2013,7 @@ New modules
   ```
   Function.Consequences
   Function.Consequences.Setoid
+  Function.Consequences.Propositional
   Function.Properties.Bijection
   Function.Properties.RightInverse
   Function.Properties.Surjection
