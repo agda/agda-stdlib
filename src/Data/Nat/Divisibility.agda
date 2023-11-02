@@ -47,6 +47,9 @@ module _ (m∣n : m ∣ n) where
     quotient≢0 : .⦃ NonZero n ⦄ → NonZero quotient
     quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
 
+  equalityᵒ : n ≡ m * quotient
+  equalityᵒ rewrite equality = *-comm quotient m
+
   quotient∣ : quotient ∣ n
   quotient∣ = divides m equalityᵒ
 
@@ -115,8 +118,8 @@ m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
   divides (q * p) (sym (*-assoc q p _))
 
 ∣-antisym : Antisymmetric _≡_ _∣_
-∣-antisym {m}     {zero}   _  q∣p = equalityᵒ where open _∣_ q∣p
-∣-antisym {zero}  {n}     p∣q  _  = sym equalityᵒ where open _∣_ p∣q
+∣-antisym {m}     {zero}   _  q∣p = equalityᵒ q∣p
+∣-antisym {zero}  {n}     p∣q  _  = sym (equalityᵒ p∣q)
 ∣-antisym {suc m} {suc n} p∣q q∣p = ≤-antisym (∣⇒≤ p∣q) (∣⇒≤ q∣p)
 
 infix 4 _∣?_
@@ -231,11 +234,11 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
 *-cancelˡ-∣ : ∀ k .⦃ _ : NonZero k ⦄ → k * m ∣ k * n → m ∣ n
 *-cancelˡ-∣ {m} {n} k k*m∣k*n = divides q $ *-cancelˡ-≡ n (q * m) k $ begin-equality
-  k * n       ≡⟨ equalityᵒ ⟩
+  k * n       ≡⟨ equalityᵒ k*m∣k*n ⟩
   k * m * q   ≡⟨ *-assoc k m q ⟩
   k * (m * q) ≡⟨ cong (k *_) (*-comm q m) ⟨
   k * (q * m) ∎
-  where open _∣_ k*m∣k*n renaming (quotient to q)
+  where q = quotient k*m∣k*n
 
 *-cancelʳ-∣ : ∀ k .⦃ _ : NonZero k ⦄ → m * k ∣ n * k → m ∣ n
 *-cancelʳ-∣ {m} {n} k rewrite *-comm m k | *-comm n k = *-cancelˡ-∣ k

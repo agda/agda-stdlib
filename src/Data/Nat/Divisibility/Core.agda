@@ -38,9 +38,6 @@ record _∣_ (m n : ℕ) : Set where
   constructor divides
   field quotient : ℕ
         equality : n ≡ quotient * m
-  equalityᵒ : n ≡ m * quotient
-  equalityᵒ rewrite equality = *-comm quotient m
-
 
 _∤_ : Rel ℕ _
 m ∤ n = ¬ (m ∣ n)
