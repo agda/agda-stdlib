@@ -199,7 +199,7 @@ module _ where
     strictlyInvʳ (i , x) = strictlyInverseʳ I↪J i , IndexedSetoid.trans A (strictlyInverseʳ A↪B _) (cast-eq A (strictlyInverseʳ I↪J i))
 
     invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) (Equivalence.to equiv) (Equivalence.from equiv)
-    invʳ = strictlyInverseʳ⇒inverseʳ (I ×ₛ A) (J ×ₛ B) (Equivalence.from-cong equiv) strictlyInvʳ -- (Equivalence.from equiv)
+    invʳ = strictlyInverseʳ⇒inverseʳ (I ×ₛ A) (J ×ₛ B) (Equivalence.from-cong equiv) strictlyInvʳ
 
 
 ------------------------------------------------------------------------
