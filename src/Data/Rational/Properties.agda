@@ -311,12 +311,12 @@ normalize-injective-≃ : ∀ m n c d {{_ : ℕ.NonZero c}} {{_ : ℕ.NonZero d}
 normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
   md∣gcd[m,c]gcd[n,d]
   nc∣gcd[m,c]gcd[n,d]
-  (begin
+  $ begin
     (m ℕ.* d) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ≡⟨  ℕ./-*-interchange gcd[m,c]∣m gcd[n,d]∣d ⟩
     (m ℕ./ gcd[m,c]) ℕ.* (d ℕ./ gcd[n,d]) ≡⟨  cong₂ ℕ._*_ m/gcd[m,c]≡n/gcd[n,d] (sym c/gcd[m,c]≡d/gcd[n,d]) ⟩
     (n ℕ./ gcd[n,d]) ℕ.* (c ℕ./ gcd[m,c]) ≡⟨ ℕ./-*-interchange gcd[n,d]∣n gcd[m,c]∣c ⟨
-    (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨  ℕ./-congʳ (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
-    (n ℕ.* c) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ∎)
+    (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨ ℕ./-congʳ (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
+    (n ℕ.* c) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ∎ 
   where
   open ≡-Reasoning
   gcd[m,c]   = ℕ.gcd m c
@@ -331,14 +331,13 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
 
   gcd[m,c]≢0′          = ℕ.gcd[m,n]≢0 m c (inj₂ (ℕ.≢-nonZero⁻¹ c))
   gcd[n,d]≢0′          = ℕ.gcd[m,n]≢0 n d (inj₂ (ℕ.≢-nonZero⁻¹ d))
-  gcd[m,c]*gcd[n,d]≢0′ = Sum.[ gcd[m,c]≢0′ , gcd[n,d]≢0′ ] ∘ ℕ.m*n≡0⇒m≡0∨n≡0 _
   instance
     gcd[m,c]≢0   = ℕ.≢-nonZero gcd[m,c]≢0′
     gcd[n,d]≢0   = ℕ.≢-nonZero gcd[n,d]≢0′
     c/gcd[m,c]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m c {{gcd≢0 = gcd[m,c]≢0}})
     d/gcd[n,d]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 n d {{gcd≢0 = gcd[n,d]≢0}})
-    gcd[m,c]*gcd[n,d]≢0 = ℕ.≢-nonZero gcd[m,c]*gcd[n,d]≢0′
-    gcd[n,d]*gcd[m,c]≢0 = ℕ.≢-nonZero (subst (_≢ 0) (ℕ.*-comm gcd[m,c] gcd[n,d]) gcd[m,c]*gcd[n,d]≢0′)
+    gcd[m,c]*gcd[n,d]≢0 = ℕ.m*n≢0 gcd[m,c] gcd[n,d]
+    gcd[n,d]*gcd[m,c]≢0 = ℕ.m*n≢0 gcd[n,d] gcd[m,c]
 
   div = mkℚ+-injective eq
   m/gcd[m,c]≡n/gcd[n,d] = proj₁ div
