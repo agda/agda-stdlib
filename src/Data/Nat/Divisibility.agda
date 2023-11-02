@@ -249,11 +249,11 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 -- Properties of _∣_ and _∸_
 
 ∣m∸n∣n⇒∣m : ∀ d → n ≤ m → d ∣ m ∸ n → d ∣ n → d ∣ m
-∣m∸n∣n⇒∣m {n} {m} d n≤m (divides p m∸n≡p*d) (divides q n≡q*o) =
+∣m∸n∣n⇒∣m {n} {m} d n≤m (divides p m∸n≡p*d) (divides-refl q) =
   divides (p + q) $ begin-equality
     m             ≡⟨ m+[n∸m]≡n n≤m ⟨
     n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
-    m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*d n≡q*o ⟩
+    m ∸ n + n     ≡⟨ cong (_+ n) m∸n≡p*d ⟩
     p * d + q * d ≡⟨ *-distribʳ-+ d p q ⟨
     (p + q) * d   ∎
 
