@@ -3784,5 +3784,5 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.List.Relation.Unary.AllPairs.Properties`:
   ```
-  tabulate⁺< : (∀ {i j} → i F.< j → R (f i) (f j)) → AllPairs R (tabulate f)
+  tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
   ```

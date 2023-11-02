@@ -115,16 +115,16 @@ module _ {R : Rel A ℓ} where
 
 module _ {R : Rel A ℓ} where
 
-  tabulate⁺< : ∀ {n} {f : Fin n → A} → (∀ {i j} → i F.< j → R (f i) (f j)) →
+  tabulate⁺-< : ∀ {n} {f : Fin n → A} → (∀ {i j} → i F.< j → R (f i) (f j)) →
               AllPairs R (tabulate f)
-  tabulate⁺< {zero}  fᵢ~fⱼ = AllPairs.[]
-  tabulate⁺< {suc n} fᵢ~fⱼ =
-    All.tabulate⁺ (λ _ → fᵢ~fⱼ z<s) AllPairs.∷
-    tabulate⁺< (fᵢ~fⱼ ∘ s<s)
+  tabulate⁺-< {zero}  fᵢ~fⱼ = []
+  tabulate⁺-< {suc n} fᵢ~fⱼ =
+    All.tabulate⁺ (λ _ → fᵢ~fⱼ z<s) ∷
+    tabulate⁺-< (fᵢ~fⱼ ∘ s<s)
 
   tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → i ≢ j → R (f i) (f j)) →
               AllPairs R (tabulate f)
-  tabulate⁺ fᵢ~fⱼ = tabulate⁺< (fᵢ~fⱼ ∘ <⇒≢)
+  tabulate⁺ fᵢ~fⱼ = tabulate⁺-< (fᵢ~fⱼ ∘ <⇒≢)
 
 ------------------------------------------------------------------------
 -- filter
