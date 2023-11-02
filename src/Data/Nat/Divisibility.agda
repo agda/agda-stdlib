@@ -196,11 +196,11 @@ n∣n {n} = ∣-refl
   divides (p + q) (sym (*-distribʳ-+ _ p q))
 
 ∣m+n∣m⇒∣n : d ∣ m + n → d ∣ m → d ∣ n
-∣m+n∣m⇒∣n {d} {m} {n} (divides p m+n≡p*d) (divides q m≡q*d) =
+∣m+n∣m⇒∣n {d} {m} {n} (divides p m+n≡p*d) (divides-refl q) =
   divides (p ∸ q) $ begin-equality
     n             ≡⟨ m+n∸n≡m n m ⟨
     n + m ∸ m     ≡⟨ cong (_∸ m) (+-comm n m) ⟩
-    m + n ∸ m     ≡⟨ cong₂ _∸_ m+n≡p*d m≡q*d ⟩
+    m + n ∸ m     ≡⟨ cong (_∸ m) m+n≡p*d ⟩
     p * d ∸ q * d ≡⟨ *-distribʳ-∸ d p q ⟨
     (p ∸ q) * d   ∎
 
