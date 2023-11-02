@@ -63,19 +63,17 @@ module _ (m∣n : m ∣ n) where
     quotient * m ≡⟨ equality ⟨
     n            ∎
 
--- defining equation for _/_
-
-  n/m≡quotient : .⦃ _ : NonZero m ⦄ → n / m ≡ quotient
-  n/m≡quotient = *-cancelʳ-≡ _ _ m $ begin-equality
-    n / m * m    ≡⟨ m/n*n≡m m∣n ⟩
-    n            ≡⟨ equality ⟩
-    quotient * m ∎
 
 ------------------------------------------------------------------------
 -- Exports
 
 open _∣_ using (quotient) public
 
+------------------------------------------------------------------------
+-- defining equation for _/_
+
+n/m≡quotient : (m∣n : m ∣ n) .⦃ _ : NonZero m ⦄ → n / m ≡ quotient m∣n
+n/m≡quotient {m = m} (divides-refl q) = m*n/n≡m q m
 
 ------------------------------------------------------------------------
 -- Relationship with _%_
