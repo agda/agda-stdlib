@@ -31,7 +31,6 @@ private
 ------------------------------------------------------------------------
 -- Injective
 
--- For some reason, exporting this doesn't
 contraInjective : Injective ≈₁ ≈₂ f →
                   ∀ {x y} → ¬ (≈₁ x y) → ¬ (≈₂ (f x) (f y))
 contraInjective = C.contraInjective ≈₂

@@ -17,11 +17,7 @@ open import Relation.Binary.PropositionalEquality.Properties
 open import Function.Definitions
 open import Relation.Nullary.Negation.Core using (contraposition)
 
-import Function.Consequences.Setoid (setoid A) (setoid B)
-  as Setoid
-
-------------------------------------------------------------------------
--- Re-export basic properties
+import Function.Consequences.Setoid (setoid A) (setoid B) as Setoid
 
 ------------------------------------------------------------------------
 -- Re-export setoid properties
