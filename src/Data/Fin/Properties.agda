@@ -1010,7 +1010,7 @@ injective⇒≤ {zero}  {_}     {f} _   = z≤n
 injective⇒≤ {suc _} {zero}  {f} _   = contradiction (f zero) ¬Fin0
 injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
   suc-injective (inj (punchOut-injective
-    (contraInjective inj 0≢1+n) --(contraInjective inj 0≢1+n)
+    (contraInjective inj 0≢1+n)
     (contraInjective inj 0≢1+n) eq))))
 
 <⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
