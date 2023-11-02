@@ -2756,14 +2756,13 @@ Additions to existing modules
 * Added a new pattern synonym and a new proof to `Data.Nat.Divisibility.Core`:
   ```agda
   pattern divides-refl q = divides q refl
-
-  equalityᵒ : n ≡ m * quotient
   ```
 
 * Added  a new instance and new definitions to `Data.Nat.Divisibility`:
   ```agda
   instance quotient≢0 : m ∣ n → .{{NonZero n}} → NonZero quotient
 
+  equalityᵒ    : m ∣ n → n ≡ m * quotient
   quotient∣    : m ∣ n → quotient ∣ n
   quotient>1   : m ∣ n → m < n → 1 < quotient
   quotient<    : m ∣ n → 1 < m → .{{NonZero n}} → quotient < n
