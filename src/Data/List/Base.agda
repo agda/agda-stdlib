@@ -405,9 +405,9 @@ partitionᵇ p = partition (T? ∘ p)
 
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 span P? []       = ([] , [])
-span P? (x ∷ xs) with does (P? x)
+span P? ys@(x ∷ xs) with does (P? x)
 ... | true  = Prod.map (x ∷_) id (span P? xs)
-... | false = ([] , x ∷ xs)
+... | false = ([] , ys)
 
 
 spanᵇ : (A → Bool) → List A → List A × List A
@@ -458,7 +458,7 @@ wordsByᵇ p = wordsBy (T? ∘ p)
 derun : ∀ {R : Rel A p} → B.Decidable R → List A → List A
 derun R? [] = []
 derun R? (x ∷ []) = x ∷ []
-derun R? (x ∷ y ∷ xs) with does (R? x y) | derun R? (y ∷ xs)
+derun R? (x ∷ xs@(y ∷ _)) with does (R? x y) | derun R? xs
 ... | true  | ys = ys
 ... | false | ys = x ∷ ys
 
