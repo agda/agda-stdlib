@@ -911,6 +911,12 @@ m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
 m*n≢0 (suc m) (suc n) = _
 
+m*n≢0⇒m≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero m
+m*n≢0⇒m≢0 (suc _) = _
+
+m*n≢0⇒n≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero n
+m*n≢0⇒n≢0 m {n} rewrite *-comm m n = m*n≢0⇒m≢0 n {m}
+
 m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
 m*n≡0⇒m≡0 zero (suc _) eq = refl
 
@@ -930,6 +936,12 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
   m * (o * (n * p)) ≡⟨ *-assoc m o (n * p) ⟨
   (m * o) * (n * p) ∎
   where open CommSemigroupProperties *-commutativeSemigroup
+
+m≢0∧n>1⇒m*n>1 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
+m≢0∧n>1⇒m*n>1 (suc m) (2+ n) = _
+
+n≢0∧m>1⇒m*n>1 : ∀ m n → .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
+n≢0∧m>1⇒m*n>1 m n rewrite *-comm m n = m≢0∧n>1⇒m*n>1 n m
 
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_
