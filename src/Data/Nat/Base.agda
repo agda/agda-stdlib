@@ -159,6 +159,9 @@ nonZero⇒≢1⇒nonTrivial : ∀ {n} → .⦃ NonZero n ⦄ → n ≢ 1 → Non
 nonZero⇒≢1⇒nonTrivial {1}    = contradiction refl
 nonZero⇒≢1⇒nonTrivial {2+ _} = _
 
+recompute-nonTrivial : ∀ {n} → .⦃ NonTrivial n ⦄ → NonTrivial n
+recompute-nonTrivial {2+ _} = _
+
 -- Destructors
 
 nonTrivial⇒nonZero : ∀ {n} → .⦃ NonTrivial n ⦄ → NonZero n

@@ -34,15 +34,15 @@ private
 record BoundedComposite (k n d : ℕ) : Set where
   constructor boundedComposite
   field
-    {{nt}} : NonTrivial d
+    .{{nt}} : NonTrivial d
     d<k : d < k
     d∣n : d ∣ n
 
 -- smart constructors
 
-boundedComposite≢ : {{NonTrivial d}} → .{{NonZero n}} →
+boundedComposite≢ : .{{NonTrivial d}} → .{{NonZero n}} →
                     d ≢ n → d ∣ n → BoundedComposite n n d
-boundedComposite≢ ⦃ nt ⦄ d≢n d∣n = boundedComposite ⦃ nt ⦄ (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+boundedComposite≢ d≢n d∣n = boundedComposite (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 boundedComposite>1 : 1 < d → d < n → d ∣ n → BoundedComposite n n d
 boundedComposite>1 1<d = boundedComposite ⦃ n>1⇒nonTrivial 1<d ⦄
@@ -54,9 +54,9 @@ Composite n = ∃⟨ BoundedComposite n n ⟩
 
 -- smart constructor
 
-composite : {{NonTrivial d}} → .{{NonZero n}} →
+composite : .{{NonTrivial d}} → .{{NonZero n}} →
             d ≢ n → d ∣ n → Composite n
-composite {d = d} ⦃ nt ⦄ d≢n d∣n = d , boundedComposite≢ ⦃ nt ⦄ d≢n d∣n
+composite {d = d} d≢n d∣n = d , boundedComposite≢ d≢n d∣n
 
 -- Definition of 'rough': a number is k-rough
 -- if all its non-trivial factors d are bounded below by k
@@ -72,7 +72,7 @@ Rough k n = ∀[  ¬_ ∘ BoundedComposite k n ]
 record Prime (p : ℕ) : Set where
   constructor prime
   field
-    {{nt}}  : NonTrivial p
+    .{{nt}}  : NonTrivial p
     isPrime : Rough p p
 
 -- Definition of irreducibility
@@ -172,7 +172,7 @@ composite⇒nonTrivial {1}      = flip contradiction ¬composite[1]
 composite⇒nonTrivial {2+ _} _ = _
 
 prime⇒nonTrivial : Prime p → NonTrivial p
-prime⇒nonTrivial (prime ⦃ nt ⦄ _) = nt
+prime⇒nonTrivial (prime _) = recompute-nonTrivial
 
 ------------------------------------------------------------------------
 -- NonZero

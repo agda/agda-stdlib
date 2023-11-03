@@ -2736,6 +2736,7 @@ Additions to existing modules
   instance nonTrivial   : NonTrivial (2+ n)
   n>1⇒nonTrivial        : 1 < n → NonTrivial n
   nonZero⇒≢1⇒nonTrivial : .⦃ NonZero n ⦄ → n ≢ 1 → NonTrivial n
+  recompute-nonTrivial  : .⦃ NonTrivial n ⦄ → NonTrivial n
   nonTrivial⇒nonZero    : .⦃ NonTrivial n ⦄ → NonZero n
   nonTrivial⇒n>1        : .⦃ NonTrivial n ⦄ → 1 < n
   nonTrivial⇒≢1         : .⦃ NonTrivial n ⦄ → n ≢ 1
