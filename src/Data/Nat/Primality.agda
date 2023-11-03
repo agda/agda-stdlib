@@ -211,8 +211,8 @@ irreducible[2] {suc _} d∣2 with ∣⇒≤ d∣2
 -- NonTrivial
 
 composite⇒nonTrivial : Composite n → NonTrivial n
-composite⇒nonTrivial {1}      = flip contradiction ¬composite[1]
-composite⇒nonTrivial {2+ _} _ = _
+composite⇒nonTrivial {1}    composite[1] = contradiction composite[1] ¬composite[1]
+composite⇒nonTrivial {2+ _} _            = _
 
 prime⇒nonTrivial : Prime p → NonTrivial p
 prime⇒nonTrivial (prime _) = recompute-nonTrivial
@@ -227,7 +227,7 @@ prime⇒nonZero : Prime p → NonZero p
 prime⇒nonZero (prime _) = nonTrivial⇒nonZero
 
 irreducible⇒nonZero : Irreducible n → NonZero n
-irreducible⇒nonZero {zero} = flip contradiction ¬irreducible[0]
+irreducible⇒nonZero {zero}    = flip contradiction ¬irreducible[0]
 irreducible⇒nonZero {suc _} _ = _
 
 
