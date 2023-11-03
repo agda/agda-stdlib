@@ -164,7 +164,7 @@ rough⇒∣⇒prime : .⦃ NonTrivial p ⦄ → Rough p n → p ∣ n → Prime 
 rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 
 ------------------------------------------------------------------------
--- Basic (non-)instances of Composite
+-- Basic (counter-)examples of Composite
 
 ¬composite[0] : ¬ Composite 0
 ¬composite[0] composite[0] = 0-rough composite[0]
@@ -180,7 +180,7 @@ composite[6] = composite≢ 3 (λ()) (divides-refl 2)
 
 
 ------------------------------------------------------------------------
--- Basic (non-)instances of Prime
+-- Basic (counter-)examples of Prime
 
 ¬prime[0] : ¬ Prime 0
 ¬prime[0] ()
@@ -192,7 +192,7 @@ prime[2] : Prime 2
 prime[2] = prime 2-rough
 
 ------------------------------------------------------------------------
--- Basic (non-)instances of Irreducible
+-- Basic (counter-)examples of Irreducible
 
 ¬irreducible[0] : ¬ Irreducible 0
 ¬irreducible[0] irr[0] = [ (λ ()) , (λ ()) ]′ (irr[0] {2} (divides-refl 0))
