@@ -112,21 +112,21 @@ Non-backwards compatible changes
   always true and cannot be assumed in user's code.
 
 * Therefore the definitions have been changed as follows to make all their arguments explicit:
-  - `LeftCancellative _•_`
-    - From: `∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z`
-    - To: `∀ x y z → (x • y) ≈ (x • z) → y ≈ z`
+  - `LeftCancellative _∙_`
+    - From: `∀ x {y z} → (x ∙ y) ≈ (x ∙ z) → y ≈ z`
+    - To: `∀ x y z → (x ∙ y) ≈ (x ∙ z) → y ≈ z`
 
-  - `RightCancellative _•_`
-    - From: `∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z`
-    - To: `∀ x y z → (y • x) ≈ (z • x) → y ≈ z`
+  - `RightCancellative _∙_`
+    - From: `∀ {x} y z → (y ∙ x) ≈ (z ∙ x) → y ≈ z`
+    - To: `∀ x y z → (y ∙ x) ≈ (z ∙ x) → y ≈ z`
 
-  - `AlmostLeftCancellative e _•_`
-    - From: `∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
-    - To: `∀ x y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z`
+  - `AlmostLeftCancellative e _∙_`
+    - From: `∀ {x} y z → ¬ x ≈ e → (x ∙ y) ≈ (x ∙ z) → y ≈ z`
+    - To: `∀ x y z → ¬ x ≈ e → (x ∙ y) ≈ (x ∙ z) → y ≈ z`
 
-  - `AlmostRightCancellative e _•_`
-    - From: `∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
-    - To: `∀ x y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z`
+  - `AlmostRightCancellative e _∙_`
+    - From: `∀ {x} y z → ¬ x ≈ e → (y ∙ x) ≈ (z ∙ x) → y ≈ z`
+    - To: `∀ x y z → ¬ x ≈ e → (y ∙ x) ≈ (z ∙ x) → y ≈ z`
 
 * Correspondingly some proofs of the above types will need additional arguments passed explicitly.
   Instances can easily be fixed by adding additional underscores, e.g.
@@ -504,7 +504,7 @@ Non-backwards compatible changes
   and `Codata.Guarded.Stream.Relation.Binary.Pointwise`, the proofs
   called `lookup` have been renamed `lookup⁺`.
 
-#### Changes to `Data.(Nat/Integer/Rational)` proofs of `NonZero`/`Positive`/`Negative` to instance arguments
+#### Changes to `Data.(Nat/Integer/Rational)` proofs of `NonZero`/`Positive`/`Negative` to use instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero,
   and various proofs require their arguments to be non-zero/positive/negative etc.
@@ -838,6 +838,9 @@ Non-backwards compatible changes
 
   4. The modules `Relation.Nullary.(Product/Sum/Implication)` have been deprecated
          and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`.
+		 
+  5. The proof `T?` has been moved from `Data.Bool.Properties` to `Relation.Nullary.Decidable.Core`
+	 (but is still re-exported by the former).
 
   as well as the following breaking changes:
 
@@ -2152,16 +2155,16 @@ Additions to existing modules
 
 * Added new proofs to `Algebra.Consequences.Propositional`:
   ```agda
-  comm+assoc⇒middleFour     : Commutative _•_ → Associative _•_ → _•_ MiddleFourExchange _•_
-  identity+middleFour⇒assoc : Identity e _•_ → _•_ MiddleFourExchange _•_ → Associative _•_
-  identity+middleFour⇒comm  : Identity e _+_ → _•_ MiddleFourExchange _+_ → Commutative _•_
+  comm+assoc⇒middleFour     : Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
+  identity+middleFour⇒assoc : Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
+  identity+middleFour⇒comm  : Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
   ```
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
-  comm+assoc⇒middleFour     : Congruent₂ _•_ → Commutative _•_ → Associative _•_ → _•_ MiddleFourExchange _•_
-  identity+middleFour⇒assoc : Congruent₂ _•_ → Identity e _•_ → _•_ MiddleFourExchange _•_ → Associative _•_
-  identity+middleFour⇒comm  : Congruent₂ _•_ → Identity e _+_ → _•_ MiddleFourExchange _+_ → Commutative _•_
+  comm+assoc⇒middleFour     : Congruent₂ _∙_ → Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
+  identity+middleFour⇒assoc : Congruent₂ _∙_ → Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
+  identity+middleFour⇒comm  : Congruent₂ _∙_ → Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
 
   involutive⇒surjective  : Involutive f  → Surjective f
   selfInverse⇒involutive : SelfInverse f → Involutive f
@@ -2171,15 +2174,15 @@ Additions to existing modules
   selfInverse⇒injective  : SelfInverse f → Injective f
   selfInverse⇒bijective  : SelfInverse f → Bijective f
 
-  comm+idˡ⇒id              : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
-  comm+idʳ⇒id              : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
-  comm+zeˡ⇒ze              : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
-  comm+zeʳ⇒ze              : Commutative _•_ → RightZero     e _•_ → Zero     e _•_
-  comm+invˡ⇒inv            : Commutative _•_ → LeftInverse  e _⁻¹ _•_ → Inverse e _⁻¹ _•_
-  comm+invʳ⇒inv            : Commutative _•_ → RightInverse e _⁻¹ _•_ → Inverse e _⁻¹ _•_
-  comm+distrˡ⇒distr        : Commutative _•_ → _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
-  comm+distrʳ⇒distr        : Commutative _•_ → _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
-  distrib+absorbs⇒distribˡ : Associative _•_ → Commutative _◦_ → _•_ Absorbs _◦_ → _◦_ Absorbs _•_ → _◦_ DistributesOver _•_ → _•_ DistributesOverˡ _◦_
+  comm+idˡ⇒id              : Commutative _∙_ → LeftIdentity  e _∙_ → Identity e _∙_
+  comm+idʳ⇒id              : Commutative _∙_ → RightIdentity e _∙_ → Identity e _∙_
+  comm+zeˡ⇒ze              : Commutative _∙_ → LeftZero      e _∙_ → Zero     e _∙_
+  comm+zeʳ⇒ze              : Commutative _∙_ → RightZero     e _∙_ → Zero     e _∙_
+  comm+invˡ⇒inv            : Commutative _∙_ → LeftInverse  e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
+  comm+invʳ⇒inv            : Commutative _∙_ → RightInverse e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
+  comm+distrˡ⇒distr        : Commutative _∙_ → _∙_ DistributesOverˡ _◦_ → _∙_ DistributesOver _◦_
+  comm+distrʳ⇒distr        : Commutative _∙_ → _∙_ DistributesOverʳ _◦_ → _∙_ DistributesOver _◦_
+  distrib+absorbs⇒distribˡ : Associative _∙_ → Commutative _◦_ → _∙_ Absorbs _◦_ → _◦_ Absorbs _∙_ → _◦_ DistributesOver _∙_ → _∙_ DistributesOverˡ _◦_
   ```
 
 * Added new functions to `Algebra.Construct.DirectProduct`:
@@ -3587,6 +3590,12 @@ Additions to existing modules
 
   isPartialOrder : IsPartialOrder _≡_ _≡_
   poset          : Set a → Poset _ _ _
+  ```
+
+* Added new proof in `Relation.Nullary.Reflects`:
+  ```agda
+  T-reflects : Reflects (T b) b
+  T-reflects-elim : Reflects (T a) b → b ≡ a
   ```
 
 * Added new operations in `System.Exit`:
