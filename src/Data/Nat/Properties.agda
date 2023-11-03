@@ -937,10 +937,10 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
   (m * o) * (n * p) ∎
   where open CommSemigroupProperties *-commutativeSemigroup
 
-m≢0∧n>1⇒m*n>1 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
+m≢0∧n>1⇒m*n>1 : ∀ m n .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
 m≢0∧n>1⇒m*n>1 (suc m) (2+ n) = _
 
-n≢0∧m>1⇒m*n>1 : ∀ m n → .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
+n≢0∧m>1⇒m*n>1 : ∀ m n .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
 n≢0∧m>1⇒m*n>1 m n rewrite *-comm m n = m≢0∧n>1⇒m*n>1 n m
 
 ------------------------------------------------------------------------

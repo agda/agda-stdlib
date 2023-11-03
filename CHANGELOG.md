@@ -2778,13 +2778,17 @@ Additions to existing modules
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
   ```agda
-  Composite        : ℕ → Set
-  composite?       : Decidable composite
-  composite⇒¬prime : Composite n → ¬ Prime n
-  ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
-  prime⇒¬composite : Prime n → ¬ Composite n
-  ¬prime⇒composite : 2 ≤ n → ¬ Prime n → Composite n
-  euclidsLemma     : Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
+  Composite         : ℕ → Set
+  composite?        : Decidable Composite
+  Irreducible       : ℕ → Set
+  irreducible?      : Decidable Irreducible
+  composite⇒¬prime  : Composite n → ¬ Prime n
+  ¬composite⇒prime  : .{{NonTrivial n} → ¬ Composite n → Prime n
+  prime⇒¬composite  : Prime n → ¬ Composite n
+  ¬prime⇒composite  : .{{NonTrivial n} → ¬ Prime n → Composite n
+  prime⇒irreducible : Prime p → Irreducible p
+  irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
+  euclidsLemma      : Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
   ```
 
 * Added new proofs in `Data.Nat.Properties`:
@@ -2794,8 +2798,12 @@ Additions to existing modules
   n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
   n>0⇒n≢0   : n > 0 → n ≢ 0
-  m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+  m*n≢0⇒m≢0 : .{{NonZero (m * n)}} → NonZero m
+  m*n≢0⇒n≢0 : .{{NonZero (m * n)}} → NonZero n
+  m≢0∧n>1⇒m*n>1 : .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
+  n≢0∧m>1⇒m*n>1 : .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
+  m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
 
   s<s-injective : s<s p ≡ s<s q → p ≡ q

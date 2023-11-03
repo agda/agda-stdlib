@@ -8,7 +8,7 @@
 
 module Data.Nat.Primality where
 
-open import Data.Nat.Base hiding (less-than-or-equal)
+open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
 open import Data.Nat.Properties
@@ -35,27 +35,33 @@ private
 
 -- Definition of having a non-trivial divisor below a given bound
 
-record HasBoundedDivisor (k n d : ℕ) : Set where
-  constructor hasBoundedDivisor
+record HasBoundedNonTrivialDivisor (k n : ℕ) : Set where
+  constructor hasBoundedNonTrivialDivisor
   field
-    .{{nt}} : NonTrivial d
-    d<k : d < k
-    d∣n : d ∣ n
+    {divisor} : ℕ
+    .{{nt}} : NonTrivial divisor
+    d<k     : divisor < k
+    d∣n     : divisor ∣ n
 
 -- smart constructors
 
-hasBoundedDivisor≢ : .{{NonTrivial d}} → .{{NonZero n}} →
-                    d ≢ n → d ∣ n → HasBoundedDivisor n n d
-hasBoundedDivisor≢ d≢n d∣n = hasBoundedDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+hasBoundedNonTrivialDivisor≢ : .{{NonTrivial d}} → .{{NonZero n}} →
+                    d ≢ n → d ∣ n → HasBoundedNonTrivialDivisor n n
+hasBoundedNonTrivialDivisor≢ d≢n d∣n = hasBoundedNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
-hasBoundedDivisor>1 : 1 < d → d < n → d ∣ n → HasBoundedDivisor n n d
-hasBoundedDivisor>1 1<d = hasBoundedDivisor
+hasBoundedNonTrivialDivisor>1 : 1 < d → d < n → d ∣ n → HasBoundedNonTrivialDivisor n n
+hasBoundedNonTrivialDivisor>1 1<d = hasBoundedNonTrivialDivisor
   where instance _ = n>1⇒nonTrivial 1<d
+
+hasBoundedNonTrivialDivisor∣ : HasBoundedNonTrivialDivisor k m → m ∣ n →
+                               HasBoundedNonTrivialDivisor k n
+hasBoundedNonTrivialDivisor∣ (hasBoundedNonTrivialDivisor d<k d∣m) m∣n
+  = hasBoundedNonTrivialDivisor d<k (∣-trans d∣m m∣n)
 
 -- Definition of compositeness
 
 Composite : Pred ℕ _
-Composite n = ∃⟨ HasBoundedDivisor n n ⟩
+Composite n = HasBoundedNonTrivialDivisor n n
 
 -- bounded equivalent
 CompositeUpTo : Pred ℕ _
@@ -67,16 +73,23 @@ CompositeUpTo n = ∃⟨ (_< n) ∩ HasNonTrivialDivisor ⟩
 -- smart constructors
 
 composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
-composite {d = d} d<n d∣n = d , hasBoundedDivisor d<n d∣n
+composite {d = d} = hasBoundedNonTrivialDivisor {divisor = d}
 
 composite≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
-composite≢ d d≢n d∣n = d , hasBoundedDivisor≢ d≢n d∣n
+composite≢ d d≢n d∣n = hasBoundedNonTrivialDivisor≢ {d} d≢n d∣n
+
+composite∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
+composite∣ (hasBoundedNonTrivialDivisor {d} d<k d∣n) m∣n@(divides-refl q)
+  = hasBoundedNonTrivialDivisor (*-monoʳ-< q d<k) (*-monoʳ-∣ q d∣n)
+  where instance
+    _ = m≢0∧n>1⇒m*n>1 q d
+    _ = m*n≢0⇒m≢0 q
 
 -- Definition of 'rough': a number is k-rough
 -- if all its non-trivial factors d are bounded below by k
 
 Rough : ℕ → Pred ℕ _
-Rough k n = ∀[  ¬_ ∘ HasBoundedDivisor k n ]
+Rough k n = ¬ HasBoundedNonTrivialDivisor k n
 
 -- Definition of primality: complement of Composite
 -- Constructor `prime` takes a proof isPrime that
@@ -116,33 +129,32 @@ module _ (n : ℕ) where
 
 -- 1 is always rough
 rough-1 : ∀ k → Rough k 1
-rough-1 _ {2+ _} (hasBoundedDivisor _ d∣1@(divides q@(suc _) ()))
+rough-1 _ (hasBoundedNonTrivialDivisor _ d∣1) = contradiction (∣1⇒≡1 d∣1) nonTrivial⇒≢1
 
 -- Any number is 0-, 1- and 2-rough,
 -- because no non-trivial factor d can be less than 0, 1, or 2
 0-rough : Rough 0 n
-0-rough (hasBoundedDivisor () _)
+0-rough (hasBoundedNonTrivialDivisor () _)
 
 1-rough : Rough 1 n
-1-rough (hasBoundedDivisor ⦃()⦄ z<s _)
+1-rough (hasBoundedNonTrivialDivisor ⦃()⦄ z<s _)
 
 2-rough : Rough 2 n
-2-rough (hasBoundedDivisor ⦃()⦄ (s<s z<s) _)
+2-rough (hasBoundedNonTrivialDivisor ⦃()⦄ (s<s z<s) _)
 
 -- If a number n > 1 is k-rough, then k ≤ n
 rough⇒≤ : .⦃ NonTrivial n ⦄ → Rough k n → k ≤ n
-rough⇒≤ rough = ≮⇒≥ λ k>n → rough (hasBoundedDivisor k>n ∣-refl)
+rough⇒≤ rough = ≮⇒≥ λ k>n → rough (hasBoundedNonTrivialDivisor k>n ∣-refl)
 
 -- If a number n is k-rough, and k ∤ n, then n is (suc k)-rough
 ∤⇒rough-suc : k ∤ n → Rough k n → Rough (suc k) n
-∤⇒rough-suc k∤n r (hasBoundedDivisor d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
-... | inj₁ d<k      = r (hasBoundedDivisor d<k d∣n)
+∤⇒rough-suc k∤n r (hasBoundedNonTrivialDivisor d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
+... | inj₁ d<k      = r (hasBoundedNonTrivialDivisor d<k d∣n)
 ... | inj₂ d≡k@refl = contradiction d∣n k∤n
 
 -- If a number is k-rough, then so are all of its divisors
 rough⇒∣⇒rough : Rough k m → n ∣ m → Rough k n
-rough⇒∣⇒rough r n∣m (hasBoundedDivisor d<k d∣n)
-  = r (hasBoundedDivisor d<k (∣-trans d∣n n∣m))
+rough⇒∣⇒rough r n∣m hbntd = r (hasBoundedNonTrivialDivisor∣ hbntd n∣m)
 
 ------------------------------------------------------------------------
 -- Corollary: relationship between roughness and primality
@@ -155,10 +167,10 @@ rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 -- Basic (non-)instances of Composite
 
 ¬composite[0] : ¬ Composite 0
-¬composite[0] (_ , composite[0]) = 0-rough composite[0]
+¬composite[0] composite[0] = 0-rough composite[0]
 
 ¬composite[1] : ¬ Composite 1
-¬composite[1] (_ , composite[1]) = 1-rough composite[1]
+¬composite[1] composite[1] = 1-rough composite[1]
 
 composite[4] : Composite 4
 composite[4] = composite≢ 2 (λ()) (divides-refl 2)
@@ -229,10 +241,10 @@ composite? : Decidable Composite
 composite? n = Dec.map′ comp-upto⇒comp comp⇒comp-upto (compositeUpTo? n)
   where
   comp-upto⇒comp : CompositeUpTo n → Composite n
-  comp-upto⇒comp = map₂ λ (d<n , ntd , d∣n) → hasBoundedDivisor ⦃ ntd ⦄ d<n d∣n
+  comp-upto⇒comp = λ (_ , d<n , ntd , d∣n) → hasBoundedNonTrivialDivisor ⦃ ntd ⦄ d<n d∣n
 
   comp⇒comp-upto : Composite n → CompositeUpTo n
-  comp⇒comp-upto = map₂ λ (hasBoundedDivisor d<n d∣n) → d<n , recompute-nonTrivial , d∣n
+  comp⇒comp-upto = λ (hasBoundedNonTrivialDivisor d<n d∣n) → _ , d<n , recompute-nonTrivial , d∣n
 
 primeUpTo? : Decidable PrimeUpTo
 primeUpTo? n = allUpTo? (λ d → nonTrivial? d →-dec ¬? (d ∣? n)) n
@@ -244,10 +256,10 @@ prime? n@(2+ _) = Dec.map′ prime-upto⇒prime prime⇒prime-upto (primeUpTo? n
   where
   prime-upto⇒prime : PrimeUpTo n → Prime n
   prime-upto⇒prime upto = prime
-    λ {d} (hasBoundedDivisor d<n d∣n) → upto d<n recompute-nonTrivial d∣n
+    λ (hasBoundedNonTrivialDivisor d<n d∣n) → upto d<n recompute-nonTrivial d∣n
 
   prime⇒prime-upto : Prime n → PrimeUpTo n
-  prime⇒prime-upto (prime p) {d} d<n ntd d∣n = p {d} (hasBoundedDivisor ⦃ ntd ⦄ d<n d∣n)
+  prime⇒prime-upto (prime p) {d} d<n ntd d∣n = p (hasBoundedNonTrivialDivisor ⦃ ntd ⦄ d<n d∣n)
 
 irreducibleUpTo? : Decidable IrreducibleUpTo
 irreducibleUpTo? n = allUpTo? (λ m → (m ∣? n) →-dec ((m ≟ 1) ⊎-dec m ≟ n)) n
@@ -296,14 +308,13 @@ private
 -- Relationships between compositeness, primality, and irreducibility
 
 composite⇒¬prime : Composite n → ¬ Prime n
-composite⇒¬prime (d , composite[d]) (prime p) = p composite[d]
+composite⇒¬prime composite[d] (prime p) = p composite[d]
 
 ¬composite⇒prime : .⦃ NonTrivial n ⦄ → ¬ Composite n → Prime n
-¬composite⇒prime ¬composite[n] = prime
-  λ {d} composite[d] → ¬composite[n] (d , composite[d])
+¬composite⇒prime = prime
 
 prime⇒¬composite : Prime n → ¬ Composite n
-prime⇒¬composite (prime p) (d , composite[d]) = p composite[d]
+prime⇒¬composite (prime p) = p
 
 -- note that this has to recompute the factor!
 ¬prime⇒composite : .⦃ NonTrivial n ⦄ → ¬ Prime n → Composite n
@@ -316,12 +327,12 @@ prime⇒irreducible (prime r) {0}        0∣p
   where instance _ = nonTrivial⇒nonZero
 prime⇒irreducible     _     {1}        1∣p = inj₁ refl
 prime⇒irreducible (prime r) {m@(2+ _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → r (hasBoundedDivisor m<p m∣p))
+  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → r (hasBoundedNonTrivialDivisor m<p m∣p))
   where instance _ = nonTrivial⇒nonZero
 
 irreducible⇒prime : .⦃ NonTrivial p ⦄ → Irreducible p → Prime p
 irreducible⇒prime irr
-  = prime λ (hasBoundedDivisor d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
+  = prime λ (hasBoundedNonTrivialDivisor d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
 
 ------------------------------------------------------------------------
 -- Euclid's lemma
@@ -331,7 +342,7 @@ irreducible⇒prime irr
 -- the ring theoretic definition of a prime element of the semiring ℕ.
 -- This is useful for proving many other theorems involving prime numbers.
 euclidsLemma : ∀ m n {p} → Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
-euclidsLemma m n {p} (prime pr) p∣m*n = result
+euclidsLemma m n {p} (prime prp) p∣m*n = result
   where
   open ∣-Reasoning
   instance _ = nonTrivial⇒nonZero -- for NonZero p
@@ -370,7 +381,7 @@ euclidsLemma m n {p} (prime pr) p∣m*n = result
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(2+ _) g _ with d ≟ p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p = contradiction (hasBoundedDivisor≢ d≢p d∣p) pr
+  ...   | no  d≢p = contradiction (hasBoundedNonTrivialDivisor≢ d≢p d∣p) prp
     where
     d∣p : d ∣ p
     d∣p = GCD.gcd∣n g
