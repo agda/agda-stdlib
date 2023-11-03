@@ -66,11 +66,11 @@ CompositeUpTo n = ∃⟨ (_< n) ∩ HasNonTrivialDivisor ⟩
 
 -- smart constructors
 
-composite≢ : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
-composite≢ {d = d} d≢n d∣n = d , hasBoundedDivisor≢ d≢n d∣n
-
 composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
 composite {d = d} d<n d∣n = d , hasBoundedDivisor d<n d∣n
+
+composite≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
+composite≢ d d≢n d∣n = d , hasBoundedDivisor≢ d≢n d∣n
 
 -- Definition of 'rough': a number is k-rough
 -- if all its non-trivial factors d are bounded below by k
@@ -161,10 +161,10 @@ rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 ¬composite[1] (_ , composite[1]) = 1-rough composite[1]
 
 composite[4] : Composite 4
-composite[4] = composite≢ {d = 2} (λ()) (divides-refl 2)
+composite[4] = composite≢ 2 (λ()) (divides-refl 2)
 
 composite[6] : Composite 6
-composite[6] = composite≢ {d = 3} (λ()) (divides-refl 2)
+composite[6] = composite≢ 3 (λ()) (divides-refl 2)
 
 
 ------------------------------------------------------------------------
