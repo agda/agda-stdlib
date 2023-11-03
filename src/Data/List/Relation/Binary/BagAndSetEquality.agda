@@ -44,7 +44,7 @@ import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl)
 open import Relation.Binary.Reasoning.Syntax
-open import Relation.Nullary
+open import Relation.Nullary.Negation using (¬_)
 open import Data.List.Membership.Propositional.Properties
 
 private

@@ -838,6 +838,9 @@ Non-backwards compatible changes
 
   4. The modules `Relation.Nullary.(Product/Sum/Implication)` have been deprecated
          and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`.
+		 
+  5. The proof `T?` has been moved from `Data.Bool.Properties` to `Relation.Nullary.Decidable.Core`
+	 (but is still re-exported by the former).
 
   as well as the following breaking changes:
 
@@ -3561,6 +3564,12 @@ Additions to existing modules
 
   isPartialOrder : IsPartialOrder _≡_ _≡_
   poset          : Set a → Poset _ _ _
+  ```
+
+* Added new proof in `Relation.Nullary.Reflects`:
+  ```agda
+  T-reflects : Reflects (T b) b
+  T-reflects-elim : Reflects (T a) b → b ≡ a
   ```
 
 * Added new operations in `System.Exit`:
