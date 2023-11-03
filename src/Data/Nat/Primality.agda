@@ -8,7 +8,7 @@
 
 module Data.Nat.Primality where
 
-open import Data.Nat.Base
+open import Data.Nat.Base hiding (less-than-or-equal)
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
 open import Data.Nat.Properties
@@ -16,9 +16,9 @@ open import Data.Product.Base using (_×_; map₂; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (flip; _∘_; _∘′_)
 open import Relation.Nullary.Decidable as Dec
-  using (yes; no; from-yes; ¬?; _×-dec_; _⊎-dec_; _→-dec_; decidable-stable)
+  using (yes; no; from-yes; from-no; ¬?; _×-dec_; _⊎-dec_; _→-dec_; decidable-stable)
 open import Relation.Nullary.Negation using (¬_; contradiction)
-open import Relation.Unary using (Pred; Decidable; IUniversal; Satisfiable)
+open import Relation.Unary using (Pred; Decidable; IUniversal; Satisfiable; _∩_; _⇒_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; cong)
 
@@ -35,8 +35,8 @@ private
 
 -- Definition of having a non-trivial divisor below a given bound
 
-record BoundedComposite (k n d : ℕ) : Set where
-  constructor boundedComposite
+record HasBoundedDivisor (k n d : ℕ) : Set where
+  constructor hasBoundedDivisor
   field
     .{{nt}} : NonTrivial d
     d<k : d < k
@@ -44,32 +44,39 @@ record BoundedComposite (k n d : ℕ) : Set where
 
 -- smart constructors
 
-boundedComposite≢ : .{{NonTrivial d}} → .{{NonZero n}} →
-                    d ≢ n → d ∣ n → BoundedComposite n n d
-boundedComposite≢ d≢n d∣n = boundedComposite (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+hasBoundedDivisor≢ : .{{NonTrivial d}} → .{{NonZero n}} →
+                    d ≢ n → d ∣ n → HasBoundedDivisor n n d
+hasBoundedDivisor≢ d≢n d∣n = hasBoundedDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
-boundedComposite>1 : 1 < d → d < n → d ∣ n → BoundedComposite n n d
-boundedComposite>1 1<d = boundedComposite
+hasBoundedDivisor>1 : 1 < d → d < n → d ∣ n → HasBoundedDivisor n n d
+hasBoundedDivisor>1 1<d = hasBoundedDivisor
   where instance _ = n>1⇒nonTrivial 1<d
 
 -- Definition of compositeness
 
 Composite : Pred ℕ _
-Composite n = ∃⟨ BoundedComposite n n ⟩
+Composite n = ∃⟨ HasBoundedDivisor n n ⟩
+
+-- bounded equivalent
+CompositeUpTo : Pred ℕ _
+CompositeUpTo n = ∃⟨ (_< n) ∩ HasNonTrivialDivisor ⟩
+  where
+  HasNonTrivialDivisor : Pred ℕ _
+  HasNonTrivialDivisor d = NonTrivial d × d ∣ n
 
 -- smart constructors
 
 composite≢ : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
-composite≢ {d = d} d≢n d∣n = d , boundedComposite≢ d≢n d∣n
+composite≢ {d = d} d≢n d∣n = d , hasBoundedDivisor≢ d≢n d∣n
 
 composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
-composite {d = d} d<n d∣n = d , boundedComposite d<n d∣n
+composite {d = d} d<n d∣n = d , hasBoundedDivisor d<n d∣n
 
 -- Definition of 'rough': a number is k-rough
 -- if all its non-trivial factors d are bounded below by k
 
 Rough : ℕ → Pred ℕ _
-Rough k n = ∀[  ¬_ ∘ BoundedComposite k n ]
+Rough k n = ∀[  ¬_ ∘ HasBoundedDivisor k n ]
 
 -- Definition of primality: complement of Composite
 -- Constructor `prime` takes a proof isPrime that
@@ -82,47 +89,60 @@ record Prime (p : ℕ) : Set where
     .{{nt}}  : NonTrivial p
     isPrime : Rough p p
 
+-- bounded equivalent
+PrimeUpTo : Pred ℕ _
+PrimeUpTo n = ∀[ (_< n) ⇒ HasNoNonTrivialDivisor ]
+  where
+  HasNoNonTrivialDivisor : Pred ℕ _
+  HasNoNonTrivialDivisor d = NonTrivial d → d ∤ n
+
 -- Definition of irreducibility
 
-Irreducible : Pred ℕ _
-Irreducible n = ∀[ irreducible n ]
-  where
-  irreducible : ℕ → Pred ℕ _
-  irreducible n d = d ∣ n → d ≡ 1 ⊎ d ≡ n
+module _ (n : ℕ) where
 
+  private
+
+    irreducible : Pred ℕ _
+    irreducible d = d ∣ n → d ≡ 1 ⊎ d ≡ n
+  
+  Irreducible : Set
+  Irreducible = ∀[ irreducible ]
+
+  IrreducibleUpTo : Set
+  IrreducibleUpTo = ∀[ (_< n) ⇒ irreducible ]
 
 ------------------------------------------------------------------------
 -- Basic properties of Rough
 
 -- 1 is always rough
 rough-1 : ∀ k → Rough k 1
-rough-1 _ {2+ _} (boundedComposite _ d∣1@(divides q@(suc _) ()))
+rough-1 _ {2+ _} (hasBoundedDivisor _ d∣1@(divides q@(suc _) ()))
 
 -- Any number is 0-, 1- and 2-rough,
 -- because no non-trivial factor d can be less than 0, 1, or 2
 0-rough : Rough 0 n
-0-rough (boundedComposite () _)
+0-rough (hasBoundedDivisor () _)
 
 1-rough : Rough 1 n
-1-rough (boundedComposite ⦃()⦄ z<s _)
+1-rough (hasBoundedDivisor ⦃()⦄ z<s _)
 
 2-rough : Rough 2 n
-2-rough (boundedComposite ⦃()⦄ (s<s z<s) _)
+2-rough (hasBoundedDivisor ⦃()⦄ (s<s z<s) _)
 
 -- If a number n > 1 is k-rough, then k ≤ n
 rough⇒≤ : .⦃ NonTrivial n ⦄ → Rough k n → k ≤ n
-rough⇒≤ rough = ≮⇒≥ λ k>n → rough (boundedComposite k>n ∣-refl)
+rough⇒≤ rough = ≮⇒≥ λ k>n → rough (hasBoundedDivisor k>n ∣-refl)
 
 -- If a number n is k-rough, and k ∤ n, then n is (suc k)-rough
 ∤⇒rough-suc : k ∤ n → Rough k n → Rough (suc k) n
-∤⇒rough-suc k∤n r (boundedComposite d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
-... | inj₁ d<k      = r (boundedComposite d<k d∣n)
+∤⇒rough-suc k∤n r (hasBoundedDivisor d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
+... | inj₁ d<k      = r (hasBoundedDivisor d<k d∣n)
 ... | inj₂ d≡k@refl = contradiction d∣n k∤n
 
 -- If a number is k-rough, then so are all of its divisors
 rough⇒∣⇒rough : Rough k m → n ∣ m → Rough k n
-rough⇒∣⇒rough r n∣m (boundedComposite d<k d∣n)
-  = r (boundedComposite d<k (∣-trans d∣n n∣m))
+rough⇒∣⇒rough r n∣m (hasBoundedDivisor d<k d∣n)
+  = r (hasBoundedDivisor d<k (∣-trans d∣n n∣m))
 
 ------------------------------------------------------------------------
 -- Corollary: relationship between roughness and primality
@@ -142,6 +162,9 @@ rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 
 composite[4] : Composite 4
 composite[4] = composite≢ {d = 2} (λ()) (divides-refl 2)
+
+composite[6] : Composite 6
+composite[6] = composite≢ {d = 3} (λ()) (divides-refl 2)
 
 
 ------------------------------------------------------------------------
@@ -199,34 +222,75 @@ irreducible⇒nonZero {suc _} _ = _
 ------------------------------------------------------------------------
 -- Decidability
 
+compositeUpTo? : Decidable CompositeUpTo
+compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
+
 composite? : Decidable Composite
-composite? n = Dec.map′
-  (map₂ λ (d<n , 1<d , d∣n) → boundedComposite>1 1<d d<n d∣n)
-  (map₂ λ {d} (boundedComposite d<n d∣n) → d<n , nonTrivial⇒n>1 d , d∣n)
-  (anyUpTo? (λ d → 1 <? d ×-dec d ∣? n) n)
+composite? n = Dec.map′ comp-upto⇒comp comp⇒comp-upto (compositeUpTo? n)
+  where
+  comp-upto⇒comp : CompositeUpTo n → Composite n
+  comp-upto⇒comp = map₂ λ (d<n , ntd , d∣n) → hasBoundedDivisor ⦃ ntd ⦄ d<n d∣n
+
+  comp⇒comp-upto : Composite n → CompositeUpTo n
+  comp⇒comp-upto = map₂ λ (hasBoundedDivisor d<n d∣n) → d<n , recompute-nonTrivial , d∣n
+
+primeUpTo? : Decidable PrimeUpTo
+primeUpTo? n = allUpTo? (λ d → nonTrivial? d →-dec ¬? (d ∣? n)) n
 
 prime? : Decidable Prime
-prime? 0       = no ¬prime[0]
-prime? 1       = no ¬prime[1]
-prime? n@(2+ _) = Dec.map′
-  (λ r → prime λ {d} (boundedComposite d<n d∣n) → r d<n (nonTrivial⇒n>1 d) d∣n)
-  (λ (prime p) {d} d<n 1<d d∣n → p {d} (boundedComposite>1 1<d d<n d∣n))
-  (allUpTo? (λ d → 1 <? d →-dec ¬? (d ∣? n)) n)
+prime? 0        = no ¬prime[0]
+prime? 1        = no ¬prime[1]
+prime? n@(2+ _) = Dec.map′ prime-upto⇒prime prime⇒prime-upto (primeUpTo? n)
+  where
+  prime-upto⇒prime : PrimeUpTo n → Prime n
+  prime-upto⇒prime upto = prime
+    λ {d} (hasBoundedDivisor d<n d∣n) → upto d<n recompute-nonTrivial d∣n
+
+  prime⇒prime-upto : Prime n → PrimeUpTo n
+  prime⇒prime-upto (prime p) {d} d<n ntd d∣n = p {d} (hasBoundedDivisor ⦃ ntd ⦄ d<n d∣n)
+
+irreducibleUpTo? : Decidable IrreducibleUpTo
+irreducibleUpTo? n = allUpTo? (λ m → (m ∣? n) →-dec ((m ≟ 1) ⊎-dec m ≟ n)) n
 
 irreducible? : Decidable Irreducible
 irreducible? zero      = no ¬irreducible[0]
-irreducible? n@(suc _) = Dec.map′ bounded-irr⇒irr irr⇒bounded-irr
-  (allUpTo? (λ m → (m ∣? n) →-dec ((m ≟ 1) ⊎-dec m ≟ n)) n)
+irreducible? n@(suc _) = Dec.map′ irr-upto⇒irr irr⇒irr-upto (irreducibleUpTo? n)
   where
-  BoundedIrreducible : Pred ℕ _
-  BoundedIrreducible n = ∀ {m} → m < n → m ∣ n → m ≡ 1 ⊎ m ≡ n
+  irr-upto⇒irr : IrreducibleUpTo n → Irreducible n
+  irr-upto⇒irr irr-upto m∣n
+    = [ flip irr-upto m∣n , inj₂ ]′ (m≤n⇒m<n∨m≡n (∣⇒≤ m∣n))
 
-  bounded-irr⇒irr : BoundedIrreducible n → Irreducible n
-  bounded-irr⇒irr bounded-irr m∣n
-    = [ flip bounded-irr m∣n , inj₂ ]′ (m≤n⇒m<n∨m≡n (∣⇒≤ m∣n))
+  irr⇒irr-upto : Irreducible n → IrreducibleUpTo n
+  irr⇒irr-upto irr m<n m∣n = irr m∣n
 
-  irr⇒bounded-irr : Irreducible n → BoundedIrreducible n
-  irr⇒bounded-irr irr m<n m∣n = irr m∣n
+-- Examples
+--
+-- Once we have the above decision procdures, then instead of constructing proofs
+-- of eg Prime-ness by hand, we call the appropriate function, and use the witness
+-- extraction functions `from-yes`, `from-no` to return the checked proofs
+
+private
+
+  -- Example: 2 is prime, but not-composite.
+  2-is-prime : Prime 2
+  2-is-prime = from-yes (prime? 2)
+
+  2-is-not-composite : ¬ Composite 2
+  2-is-not-composite = from-no (composite? 2)
+
+
+  -- Example: 4 and 6 are composite, hence not-prime
+  4-is-composite : Composite 4
+  4-is-composite = from-yes (composite? 4)
+
+  4-is-not-prime : ¬ Prime 4
+  4-is-not-prime = from-no (prime? 4)
+
+  6-is-composite : Composite 6
+  6-is-composite = from-yes (composite? 6)
+
+  6-is-not-prime : ¬ Prime 6
+  6-is-not-prime = from-no (prime? 6)
 
 ------------------------------------------------------------------------
 -- Relationships between compositeness, primality, and irreducibility
@@ -252,12 +316,12 @@ prime⇒irreducible (prime r) {0}        0∣p
   where instance _ = nonTrivial⇒nonZero
 prime⇒irreducible     _     {1}        1∣p = inj₁ refl
 prime⇒irreducible (prime r) {m@(2+ _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → r (boundedComposite m<p m∣p))
+  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → r (hasBoundedDivisor m<p m∣p))
   where instance _ = nonTrivial⇒nonZero
 
 irreducible⇒prime : .⦃ NonTrivial p ⦄ → Irreducible p → Prime p
 irreducible⇒prime irr
-  = prime λ (boundedComposite d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
+  = prime λ (hasBoundedDivisor d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
 
 ------------------------------------------------------------------------
 -- Euclid's lemma
@@ -306,18 +370,7 @@ euclidsLemma m n {p} (prime pr) p∣m*n = result
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(2+ _) g _ with d ≟ p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p = contradiction d∣p λ d∣p → pr (boundedComposite≢ d≢p d∣p)
+  ...   | no  d≢p = contradiction d∣p λ d∣p → pr (hasBoundedDivisor≢ d≢p d∣p)
     where
     d∣p : d ∣ p
     d∣p = GCD.gcd∣n g
-
-private
-
-  -- Example: 2 is prime.
-  2-is-prime : Prime 2
-  2-is-prime = from-yes (prime? 2)
-
-
-  -- Example: 6 is composite
-  6-is-composite : Composite 6
-  6-is-composite = from-yes (composite? 6)
