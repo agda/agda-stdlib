@@ -26,6 +26,10 @@ private
   variable
     d k m n p : ℕ
 
+  instance
+    nt[2] : NonTrivial 2
+    nt[2] = nonTrivial {0}
+
 ------------------------------------------------------------------------
 -- Definitions
 
@@ -45,18 +49,21 @@ boundedComposite≢ : .{{NonTrivial d}} → .{{NonZero n}} →
 boundedComposite≢ d≢n d∣n = boundedComposite (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 boundedComposite>1 : 1 < d → d < n → d ∣ n → BoundedComposite n n d
-boundedComposite>1 1<d = boundedComposite ⦃ n>1⇒nonTrivial 1<d ⦄
+boundedComposite>1 1<d = boundedComposite
+  where instance _ = n>1⇒nonTrivial 1<d
 
 -- Definition of compositeness
 
 Composite : Pred ℕ _
 Composite n = ∃⟨ BoundedComposite n n ⟩
 
--- smart constructor
+-- smart constructors
 
-composite : .{{NonTrivial d}} → .{{NonZero n}} →
-            d ≢ n → d ∣ n → Composite n
-composite {d = d} d≢n d∣n = d , boundedComposite≢ d≢n d∣n
+composite≢ : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
+composite≢ {d = d} d≢n d∣n = d , boundedComposite≢ d≢n d∣n
+
+composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
+composite {d = d} d<n d∣n = d , boundedComposite d<n d∣n
 
 -- Definition of 'rough': a number is k-rough
 -- if all its non-trivial factors d are bounded below by k
@@ -103,7 +110,7 @@ rough-1 _ {2+ _} (boundedComposite _ d∣1@(divides q@(suc _) ()))
 2-rough (boundedComposite ⦃()⦄ (s<s z<s) _)
 
 -- If a number n > 1 is k-rough, then k ≤ n
-rough⇒≤ : ⦃ NonTrivial n ⦄ → Rough k n → k ≤ n
+rough⇒≤ : .⦃ NonTrivial n ⦄ → Rough k n → k ≤ n
 rough⇒≤ rough = ≮⇒≥ λ k>n → rough (boundedComposite k>n ∣-refl)
 
 -- If a number n is k-rough, and k ∤ n, then n is (suc k)-rough
@@ -121,7 +128,7 @@ rough⇒∣⇒rough r n∣m (boundedComposite d<k d∣n)
 -- Corollary: relationship between roughness and primality
 
 -- If a number n is p-rough, and p > 1 divides n, then p must be prime
-rough⇒∣⇒prime : ⦃ NonTrivial p ⦄ → Rough p n → p ∣ n → Prime p
+rough⇒∣⇒prime : .⦃ NonTrivial p ⦄ → Rough p n → p ∣ n → Prime p
 rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 
 ------------------------------------------------------------------------
@@ -134,7 +141,8 @@ rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 ¬composite[1] (_ , composite[1]) = 1-rough composite[1]
 
 composite[4] : Composite 4
-composite[4] = composite {d = 2} ⦃ nonTrivial {2} ⦄ (λ ()) (divides-refl 2)
+composite[4] = composite≢ {d = 2} (λ()) (divides-refl 2)
+
 
 ------------------------------------------------------------------------
 -- Basic (non-)instances of Prime
@@ -146,7 +154,7 @@ composite[4] = composite {d = 2} ⦃ nonTrivial {2} ⦄ (λ ()) (divides-refl 2)
 ¬prime[1] ()
 
 prime[2] : Prime 2
-prime[2] = prime ⦃ nonTrivial {2} ⦄ 2-rough
+prime[2] = prime 2-rough
 
 ------------------------------------------------------------------------
 -- Basic (non-)instances of Irreducible
@@ -201,7 +209,7 @@ prime? : Decidable Prime
 prime? 0       = no ¬prime[0]
 prime? 1       = no ¬prime[1]
 prime? n@(2+ _) = Dec.map′
-  (λ r → prime ⦃ nonTrivial {n} ⦄ λ {d} (boundedComposite d<n d∣n) → r d<n (nonTrivial⇒n>1 d) d∣n)
+  (λ r → prime λ {d} (boundedComposite d<n d∣n) → r d<n (nonTrivial⇒n>1 d) d∣n)
   (λ (prime p) {d} d<n 1<d d∣n → p {d} (boundedComposite>1 1<d d<n d∣n))
   (allUpTo? (λ d → 1 <? d →-dec ¬? (d ∣? n)) n)
 
@@ -226,15 +234,15 @@ irreducible? n@(suc _) = Dec.map′ bounded-irr⇒irr irr⇒bounded-irr
 composite⇒¬prime : Composite n → ¬ Prime n
 composite⇒¬prime (d , composite[d]) (prime p) = p composite[d]
 
-¬composite⇒prime : ⦃ NonTrivial n ⦄ → ¬ Composite n → Prime n
-¬composite⇒prime ⦃ nt ⦄ ¬composite[n] = prime ⦃ nt ⦄
+¬composite⇒prime : .⦃ NonTrivial n ⦄ → ¬ Composite n → Prime n
+¬composite⇒prime ¬composite[n] = prime
   λ {d} composite[d] → ¬composite[n] (d , composite[d])
 
 prime⇒¬composite : Prime n → ¬ Composite n
 prime⇒¬composite (prime p) (d , composite[d]) = p composite[d]
 
 -- note that this has to recompute the factor!
-¬prime⇒composite : ⦃ NonTrivial n ⦄ → ¬ Prime n → Composite n
+¬prime⇒composite : .⦃ NonTrivial n ⦄ → ¬ Prime n → Composite n
 ¬prime⇒composite {n} ¬prime[n] =
   decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime)
 
@@ -244,10 +252,10 @@ prime⇒irreducible (prime r) {0}        0∣p
   where instance _ = nonTrivial⇒nonZero
 prime⇒irreducible     _     {1}        1∣p = inj₁ refl
 prime⇒irreducible (prime r) {m@(2+ _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → r (boundedComposite ⦃ nonTrivial {m} ⦄ m<p m∣p))
+  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → r (boundedComposite m<p m∣p))
   where instance _ = nonTrivial⇒nonZero
 
-irreducible⇒prime : ⦃ NonTrivial p ⦄ → Irreducible p → Prime p
+irreducible⇒prime : .⦃ NonTrivial p ⦄ → Irreducible p → Prime p
 irreducible⇒prime irr
   = prime λ (boundedComposite d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
 
@@ -296,9 +304,9 @@ euclidsLemma m n {p} (prime pr) p∣m*n = result
       r * m * n + n ∎))
 
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
-  ... | Bézout.result d@(suc (suc _)) g _ with d ≟ p
+  ... | Bézout.result d@(2+ _) g _ with d ≟ p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p = contradiction d∣p λ d∣p → pr (boundedComposite≢ ⦃ nonTrivial {d} ⦄ d≢p d∣p)
+  ...   | no  d≢p = contradiction d∣p λ d∣p → pr (boundedComposite≢ d≢p d∣p)
     where
     d∣p : d ∣ p
     d∣p = GCD.gcd∣n g
