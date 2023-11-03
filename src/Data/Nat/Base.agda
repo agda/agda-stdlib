@@ -16,11 +16,13 @@ open import Algebra.Definitions.RawMagma using (_∣ˡ_)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
 open import Data.Product.Base using (_,_)
+open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
 -- Types
@@ -129,6 +131,44 @@ instance
 
 >-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n > 0
 >-nonZero⁻¹ (suc n) = z<s
+
+-- The property of being a non-zero, non-unit
+
+pattern 2+ n = suc (suc n)
+
+trivial : ℕ → Bool
+trivial 0      = true
+trivial 1      = true
+trivial (2+ _) = false
+
+NonTrivial : Pred ℕ 0ℓ
+NonTrivial = T ∘ not ∘ trivial
+
+instance
+  nonTrivial : ∀ {n} → NonTrivial (2+ n)
+  nonTrivial = _
+
+pattern 1<2+n {n} = s<s (z<s {n})
+
+-- Constructors
+
+n>1⇒nonTrivial : ∀ {n} → 1 < n → NonTrivial n
+n>1⇒nonTrivial 1<2+n = _
+
+nonZero⇒≢1⇒nonTrivial : ∀ {n} → .⦃ NonZero n ⦄ → n ≢ 1 → NonTrivial n
+nonZero⇒≢1⇒nonTrivial {1}    = contradiction refl
+nonZero⇒≢1⇒nonTrivial {2+ _} = _
+
+-- Destructors
+
+nonTrivial⇒nonZero : ∀ {n} → .⦃ NonTrivial n ⦄ → NonZero n
+nonTrivial⇒nonZero {n = 2+ k} = _
+
+nonTrivial⇒n>1 : ∀ n → .⦃ NonTrivial n ⦄ → 1 < n
+nonTrivial⇒n>1 (2+ _) = 1<2+n
+
+nonTrivial⇒≢1 : ∀ {n} → .⦃ NonTrivial n ⦄ → n ≢ 1
+nonTrivial⇒≢1 ⦃()⦄ refl
 
 ------------------------------------------------------------------------
 -- Raw bundles
