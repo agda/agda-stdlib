@@ -102,14 +102,14 @@ module _ (n : ℕ) where
 
   private
 
-    irreducible : Pred ℕ _
-    irreducible d = d ∣ n → d ≡ 1 ⊎ d ≡ n
+    Irreducible′ : Pred ℕ _
+    Irreducible′ d = d ∣ n → d ≡ 1 ⊎ d ≡ n
   
   Irreducible : Set
-  Irreducible = ∀[ irreducible ]
+  Irreducible = ∀[ Irreducible′ ]
 
   IrreducibleUpTo : Set
-  IrreducibleUpTo = ∀[ (_< n) ⇒ irreducible ]
+  IrreducibleUpTo = ∀[ (_< n) ⇒ Irreducible′ ]
 
 ------------------------------------------------------------------------
 -- Basic properties of Rough
@@ -370,7 +370,7 @@ euclidsLemma m n {p} (prime pr) p∣m*n = result
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(2+ _) g _ with d ≟ p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p = contradiction d∣p λ d∣p → pr (hasBoundedDivisor≢ d≢p d∣p)
+  ...   | no  d≢p = contradiction (hasBoundedDivisor≢ d≢p d∣p) pr
     where
     d∣p : d ∣ p
     d∣p = GCD.gcd∣n g
