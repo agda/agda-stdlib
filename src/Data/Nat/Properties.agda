@@ -34,7 +34,6 @@ open import Relation.Binary.Core
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
---open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable
   using (Dec; yes; no; T?; True; via-injection; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
