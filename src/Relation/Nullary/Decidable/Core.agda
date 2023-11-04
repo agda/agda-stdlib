@@ -12,7 +12,7 @@
 module Relation.Nullary.Decidable.Core where
 
 open import Level using (Level; Lift)
-open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
+open import Data.Bool.Base
 open import Data.Unit.Base using (⊤)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
@@ -82,7 +82,7 @@ infixr 1 _⊎-dec_
 infixr 2 _×-dec_ _→-dec_
 
 T? : ∀ x → Dec (T x)
-T? x = x because T-reflects x
+T? x = x because Reflects.T-reflects x
 
 ¬? : Dec A → Dec (¬ A)
 does  (¬? a?) = not (does a?)
