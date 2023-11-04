@@ -53,9 +53,11 @@ reflects C t f (ofʸ  a) = t a
 reflects′ : (A → B) → (¬ A → B) → ∀ {b} → Reflects A b → B
 reflects′ {B = B} = reflects (const B)
 
+-- a 'computed constructor' and its inverse
+
 of : ∀ {b} → if b then A else ¬ A → Reflects A b
-of {b = false} ¬a = ofⁿ ¬a
-of {b = true }  a = ofʸ a
+of {b = false} = ofⁿ
+of {b = true } = ofʸ
 
 of⁻¹ : ∀ {b} → Reflects A b → if b then A else ¬ A
 of⁻¹ {A = A} = reflects (λ b → if b then A else ¬ A) id id
