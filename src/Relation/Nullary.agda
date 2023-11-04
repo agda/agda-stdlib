@@ -17,7 +17,7 @@ open import Agda.Builtin.Equality
 
 open import Relation.Nullary.Negation.Core public
 open import Relation.Nullary.Reflects public
-  hiding (recompute)
+  hiding (recompute; fromEquivalence)
 open import Relation.Nullary.Decidable.Core public
 
 ------------------------------------------------------------------------
