@@ -1909,6 +1909,11 @@ New modules
   Codata.Guarded.M
   ```
 
+* An implementation of M-types with `--guardedness` flag:
+  ```
+  Codata.Guarded.M
+  ```
+
 * A definition of infinite streams using coinductive records:
   ```
   Codata.Guarded.Stream
@@ -2699,7 +2704,6 @@ Additions to existing modules
   ```agda
   drop+ : ℕ → List⁺ A → List⁺ A
   ```
-
 * Added new proofs in `Data.List.NonEmpty.Properties`:
   ```agda
   length-++⁺      : length (xs ++⁺ ys) ≡ length xs + length ys
