@@ -16,9 +16,9 @@ open import Data.Bool.Base
 open import Data.Unit.Base using (⊤)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
-open import Function.Base using (_∘_; const; _$_; flip)
+open import Function.Base using (id; _∘_; const; _$_; flip)
 open import Relation.Nullary.Reflects as Reflects
-  using (Reflects; ofʸ; ofⁿ; of; invert; Recomputable)
+  using (Reflects; of; invert; Recomputable)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction; Stable; DoubleNegation; negated-stable)
 
@@ -48,13 +48,39 @@ record Dec (A : Set a) : Set a where
 
 open Dec public
 
--- lazier versions of `yes` and `no`
-pattern yes′ [a] =  true because  [a]
-pattern no′ [¬a] = false because [¬a]
+-- lazier 'pattern' _ᵖ versions of `yes` and `no`
+pattern yesᵖ [a] =  true because  [a]
+pattern noᵖ [¬a] = false because [¬a]
 
--- now these are derived patterns, but could be re-expressed using `of`
-pattern yes  a  = yes′ (ofʸ a)
-pattern no [¬a] = no′ (ofⁿ [¬a])
+-- now these original forms are derived patterns
+pattern yes a = yesᵖ (Reflects.ofʸ a)
+pattern no ¬a = noᵖ (Reflects.ofⁿ ¬a)
+
+-- but can be re-expressed as term constructions _ᵗ using `of`
+yesᵗ : A → Dec A
+yesᵗ a = yesᵖ (of a)
+
+noᵗ : ¬ A → Dec A
+noᵗ ¬a = noᵖ (of ¬a)
+
+------------------------------------------------------------------------
+-- Characterisation : Dec A iff there is a Bool b reflecting it via T
+
+-- forwards direction: use `does`
+
+does-complete : ∀ (A? : Dec A) → A → T (does A?)
+does-complete (yesᵖ  _ ) _ = _
+does-complete (noᵖ [¬a]) a = contradiction a (invert [¬a])
+
+does-sound : ∀ (A? : Dec A) → T (does A?) → A
+does-sound (yesᵖ [a]) _ = invert [a]
+does-sound (noᵖ   _ ) ()
+
+-- backwards direction: inherit from `Reflects`
+
+fromEquivalence : ∀ {b} → (T b → A) → (A → T b) → Dec A
+fromEquivalence {b = b} sound complete
+  = b because (Reflects.fromEquivalence sound complete)
 
 ------------------------------------------------------------------------
 -- Flattening
@@ -72,7 +98,7 @@ module _ {A : Set a} where
 
 -- Given an irrelevant proof of a decidable type, a proof can
 -- be recomputed and subsequently used in relevant contexts.
-recompute : Dec A → .A → A
+recompute : Dec A → Recomputable A
 recompute = Reflects.recompute ∘ proof
 
 ------------------------------------------------------------------------
@@ -81,8 +107,8 @@ recompute = Reflects.recompute ∘ proof
 infixr 1 _⊎-dec_
 infixr 2 _×-dec_ _→-dec_
 
-T? : ∀ x → Dec (T x)
-T? x = x because Reflects.T-reflects x
+T? : ∀ b → Dec (T b)
+T? b = b because Reflects.T-reflects b -- ≗ fromEquivalence id id
 
 ¬? : Dec A → Dec (¬ A)
 does  (¬? a?) = not (does a?)
@@ -109,8 +135,8 @@ proof (a? →-dec b?) = proof a? Reflects.→-reflects proof b?
 -- for proof automation.
 
 isYes : Dec A → Bool
-isYes (yes′ _) = true
-isYes (no′  _) = false
+isYes (yesᵖ _) = true
+isYes (noᵖ  _) = false
 
 isNo : Dec A → Bool
 isNo = not ∘ isYes
@@ -129,42 +155,42 @@ False = T ∘ isNo
 
 -- Gives a witness to the "truth".
 toWitness : {a? : Dec A} → True a? → A
-toWitness {a? = yes′ [a]} _ = invert [a]
-toWitness {a? = no′  _ } ()
+toWitness {a? = yesᵖ [a]} _ = invert [a]
+toWitness {a? = noᵖ  _ } ()
 
 -- Establishes a "truth", given a witness.
 fromWitness : {a? : Dec A} → A → True a?
-fromWitness {a? = yes′  _ } = const _
-fromWitness {a? = no′ [¬a]} = invert [¬a]
+fromWitness {a? = yesᵖ  _ } = const _
+fromWitness {a? = noᵖ [¬a]} = invert [¬a]
 
 -- Variants for False.
 toWitnessFalse : {a? : Dec A} → False a? → ¬ A
-toWitnessFalse {a? = yes′  _ } ()
-toWitnessFalse {a? = no′ [¬a]} _  = invert [¬a]
+toWitnessFalse {a? = yesᵖ  _ } ()
+toWitnessFalse {a? = noᵖ [¬a]} _  = invert [¬a]
 
 fromWitnessFalse : {a? : Dec A} → ¬ A → False a?
-fromWitnessFalse {a? = yes′ [a]} = flip _$_ (invert [a])
-fromWitnessFalse {a? = no′   _ } = const _
+fromWitnessFalse {a? = yesᵖ [a]} = flip _$_ (invert [a])
+fromWitnessFalse {a? = noᵖ   _ } = const _
 
 -- If a decision procedure returns "yes", then we can extract the
 -- proof using from-yes.
 from-yes : (a? : Dec A) → From-yes a?
-from-yes (yes′ [a]) = invert [a]
-from-yes (no′   _ ) = _
+from-yes (yesᵖ [a]) = invert [a]
+from-yes (noᵖ   _ ) = _
 
 -- If a decision procedure returns "no", then we can extract the proof
 -- using from-no.
 from-no : (a? : Dec A) → From-no a?
-from-no (no′ [¬a]) = invert [¬a]
-from-no (yes′  _ ) = _
+from-no (noᵖ [¬a]) = invert [¬a]
+from-no (yesᵖ  _ ) = _
 
 ------------------------------------------------------------------------
 -- Maps
 
 map′ : (A → B) → (B → A) → Dec A → Dec B
-does  (map′ A→B B→A a?)        = does a?
-proof (map′ A→B B→A (yes′ [a])) = of (A→B (invert [a]))
-proof (map′ A→B B→A (no′ [¬a])) = of (invert [¬a] ∘ B→A)
+does  (map′ A→B B→A a?)         = does a?
+proof (map′ A→B B→A (yesᵖ [a])) = of (A→B (invert [a]))
+proof (map′ A→B B→A (noᵖ [¬a])) = of (invert [¬a] ∘ B→A)
 
 ------------------------------------------------------------------------
 -- Relationship with double-negation
@@ -172,8 +198,8 @@ proof (map′ A→B B→A (no′ [¬a])) = of (invert [¬a] ∘ B→A)
 -- Decidable predicates are stable.
 
 decidable-stable : Dec A → Stable A
-decidable-stable (yes′ [a]) ¬¬a = invert [a]
-decidable-stable (no′ [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
+decidable-stable (yesᵖ [a]) ¬¬a = invert [a]
+decidable-stable (noᵖ [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
 ¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
@@ -182,7 +208,7 @@ decidable-stable (no′ [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
 -- nullary relation is decidable in the double-negation monad).
 
 ¬¬-excluded-middle : DoubleNegation (Dec A)
-¬¬-excluded-middle ¬?a = ¬?a (no (λ a → ¬?a (yes a)))
+¬¬-excluded-middle ¬?a = ¬?a (noᵗ (λ a → ¬?a (yesᵗ a)))
 
 
 ------------------------------------------------------------------------
