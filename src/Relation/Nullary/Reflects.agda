@@ -38,10 +38,7 @@ data Reflects (A : Set a) : Bool → Set a where
 -- Constructors and destructors
 
 -- These lemmas are intended to be used mostly when `b` is a value, so
--- that the `if` expressions have already been evaluated away.
--- In this case, `of` works like the relevant constructor (`ofⁿ` or
--- `ofʸ`), and `of⁻¹` strips off the constructor to just give either
--- the proof of `A` or the proof of `¬ A`.
+-- that the conditional expressions have already been evaluated away.
 
 -- NB. not the maximally dependent eliminator, but mostly sufficent
 
@@ -53,14 +50,16 @@ reflects C t f (ofʸ  a) = t a
 reflects′ : (A → B) → (¬ A → B) → ∀ {b} → Reflects A b → B
 reflects′ {B = B} = reflects (const B)
 
--- a 'computed constructor' and its inverse
+-- In this case, `of` works like the relevant 'computed constructor'
+-- (`ofⁿ` or `ofʸ`), and its inverse `of⁻¹` strips off the constructor
+-- to just give either the proof of `A` or the proof of `¬ A`.
 
 of : ∀ {b} → if b then A else ¬ A → Reflects A b
 of {b = false} = ofⁿ
 of {b = true } = ofʸ
 
 of⁻¹ : ∀ {b} → Reflects A b → if b then A else ¬ A
-of⁻¹ {A = A} = reflects (λ b → if b then A else ¬ A) id id
+of⁻¹ {A = A} = reflects (if_then A else ¬ A) id id
 
 -- in lieu of a distinct `Reflects.Properties` module
 
@@ -97,9 +96,9 @@ T-reflects false = of id
 
 -- If we can decide A, then we can decide its negation.
 ¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
-¬-reflects {A = A} = reflects (λ b → Reflects (¬ A) (not b)) (of ∘ flip _$_) of
+¬-reflects {A = A} = reflects (Reflects (¬ A) ∘ not) (of ∘ flip _$_) of
 
--- If we can decide A and Q then we can decide their product
+-- If we can decide A and B then we can decide their product, sum and implication
 _×-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A × B) (a ∧ b)
 ofʸ  a ×-reflects ofʸ  b = of (a , b)
@@ -113,7 +112,7 @@ ofⁿ ¬a ⊎-reflects ofʸ  b = of (inj₂ b)
 ofⁿ ¬a ⊎-reflects ofⁿ ¬b = of (¬a ¬-⊎ ¬b)
 
 _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
-                Reflects (A → B) (not a ∨ b)
+               Reflects (A → B) (not a ∨ b)
 ofʸ  a →-reflects ofʸ  b = of (const b)
 ofʸ  a →-reflects ofⁿ ¬b = of (¬b ∘ (_$ a))
 ofⁿ ¬a →-reflects _      = of (flip contradiction ¬a)
