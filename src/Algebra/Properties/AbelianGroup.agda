@@ -33,6 +33,6 @@ xyx⁻¹≈y x y = begin
 
 ⁻¹-∙-comm : ∀ x y → x ⁻¹ ∙ y ⁻¹ ≈ (x ∙ y) ⁻¹
 ⁻¹-∙-comm x y = begin
-  x ⁻¹ ∙ y ⁻¹ ≈˘⟨ ⁻¹-anti-homo-∙ y x ⟩
+  x ⁻¹ ∙ y ⁻¹ ≈⟨ ⁻¹-anti-homo-∙ y x ⟨
   (y ∙ x) ⁻¹  ≈⟨ ⁻¹-cong $ comm y x ⟩
   (x ∙ y) ⁻¹  ∎

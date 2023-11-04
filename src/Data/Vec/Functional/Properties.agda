@@ -181,20 +181,20 @@ module _ {ys ys′ : Vector A m} where
   ... | yes i<n = begin
     (xs ++ ys) i      ≡⟨ lookup-++-< xs ys i i<n ⟩
     xs (fromℕ< i<n)   ≡⟨ eq₁ (fromℕ< i<n) ⟩
-    xs′ (fromℕ< i<n)  ≡˘⟨ lookup-++-< xs′ ys′ i i<n ⟩
+    xs′ (fromℕ< i<n)  ≡⟨ lookup-++-< xs′ ys′ i i<n ⟨
     (xs′ ++ ys′) i    ∎
     where open ≡-Reasoning
   ... | no i≮n = begin
     (xs ++ ys) i               ≡⟨ lookup-++-≥ xs ys i (ℕₚ.≮⇒≥ i≮n) ⟩
     ys (reduce≥ i (ℕₚ.≮⇒≥ i≮n))   ≡⟨ eq₂ (reduce≥ i (ℕₚ.≮⇒≥ i≮n)) ⟩
-    ys′ (reduce≥ i (ℕₚ.≮⇒≥ i≮n))  ≡˘⟨ lookup-++-≥ xs′ ys′ i (ℕₚ.≮⇒≥ i≮n) ⟩
+    ys′ (reduce≥ i (ℕₚ.≮⇒≥ i≮n))  ≡⟨ lookup-++-≥ xs′ ys′ i (ℕₚ.≮⇒≥ i≮n) ⟨
     (xs′ ++ ys′) i             ∎
     where open ≡-Reasoning
 
   ++-injectiveˡ : ∀ (xs xs′ : Vector A n) →
                   xs ++ ys ≗ xs′ ++ ys′ → xs ≗ xs′
   ++-injectiveˡ xs xs′ eq i = begin
-    xs i                   ≡˘⟨ lookup-++ˡ xs ys i ⟩
+    xs i                   ≡⟨ lookup-++ˡ xs ys i ⟨
     (xs ++ ys) (i ↑ˡ m)    ≡⟨ eq (i ↑ˡ m) ⟩
     (xs′ ++ ys′) (i ↑ˡ m)  ≡⟨ lookup-++ˡ xs′ ys′ i ⟩
     xs′ i                  ∎
@@ -202,7 +202,7 @@ module _ {ys ys′ : Vector A m} where
 
   ++-injectiveʳ : ∀ (xs xs′ : Vector A n) → xs ++ ys ≗ xs′ ++ ys′ → ys ≗ ys′
   ++-injectiveʳ {n} xs xs′ eq i = begin
-    ys i                   ≡˘⟨ lookup-++ʳ xs ys i ⟩
+    ys i                   ≡⟨ lookup-++ʳ xs ys i ⟨
     (xs ++ ys) (n ↑ʳ i)    ≡⟨ eq (n ↑ʳ i)   ⟩
     (xs′ ++ ys′) (n ↑ʳ i)  ≡⟨ lookup-++ʳ xs′ ys′ i ⟩
     ys′ i                  ∎

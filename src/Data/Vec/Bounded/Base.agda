@@ -22,6 +22,8 @@ open import Function.Base using (_∘_; id; _$_)
 open import Level using (Level)
 open import Relation.Nullary.Decidable.Core using (recompute)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable
@@ -66,7 +68,7 @@ private
     m + (⌈ k /2⌉ + ⌊ k /2⌋) ≡⟨ P.cong (m +_) (ℕₚ.+-comm ⌈ k /2⌉ ⌊ k /2⌋) ⟩
     m + (⌊ k /2⌋ + ⌈ k /2⌉) ≡⟨ P.cong (m +_) (ℕₚ.⌊n/2⌋+⌈n/2⌉≡n k) ⟩
     m + k                   ≡⟨ eq ⟩
-    n                       ∎ where open P.≡-Reasoning
+    n                       ∎ where open ≡-Reasoning
 
 padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
 padBoth aₗ aᵣ as@(vs , m≤n)

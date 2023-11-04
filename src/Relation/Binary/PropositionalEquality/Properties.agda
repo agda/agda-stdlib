@@ -23,6 +23,8 @@ open import Relation.Binary.Definitions
 import Relation.Binary.Properties.Setoid as Setoid
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Unary using (Pred)
+open import Relation.Binary.Reasoning.Syntax
+
 
 private
   variable
@@ -188,3 +190,16 @@ preorder A = Setoid.≈-preorder (setoid A)
 
 poset : Set a → Poset _ _ _
 poset A = Setoid.≈-poset (setoid A)
+
+------------------------------------------------------------------------
+-- Reasoning
+
+-- This is a special instance of `Relation.Binary.Reasoning.Setoid`.
+-- Rather than instantiating the latter with (setoid A), we reimplement
+-- equation chains from scratch since then goals are printed much more
+-- readably.
+module ≡-Reasoning {a} {A : Set a} where
+
+  open begin-syntax {A = A} _≡_ id public
+  open ≡-syntax {A = A} _≡_ trans public
+  open end-syntax {A = A} _≡_ refl public

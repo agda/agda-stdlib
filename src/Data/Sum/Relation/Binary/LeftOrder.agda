@@ -192,9 +192,8 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
                            IsStrictTotalOrder ≈₂ ∼₂ →
                            IsStrictTotalOrder (Pointwise ≈₁ ≈₂) (∼₁ ⊎-< ∼₂)
   ⊎-<-isStrictTotalOrder sto₁ sto₂ = record
-    { isEquivalence = PW.⊎-isEquivalence (isEquivalence sto₁) (isEquivalence sto₂)
-    ; trans         = ⊎-<-transitive (trans sto₁) (trans sto₂)
-    ; compare       = ⊎-<-trichotomous (compare sto₁) (compare sto₂)
+    { isStrictPartialOrder = ⊎-<-isStrictPartialOrder (isStrictPartialOrder sto₁) (isStrictPartialOrder sto₂)
+    ; compare              = ⊎-<-trichotomous (compare sto₁) (compare sto₂)
     }
     where open IsStrictTotalOrder
 

@@ -27,8 +27,8 @@
 --      w  <⟨ w<x ⟩
 --      x  ≤⟨ x≤y ⟩
 --      y  <⟨ y<z ⟩
---      z  ≡˘⟨ d≡z ⟩
---      d  ≈˘⟨ e≈d ⟩
+--      z  ≡⟨ d≡z ⟨
+--      d  ≈⟨ e≈d ⟨
 --      e  ∎
 --
 --    u≈w : u ≈ w
@@ -54,7 +54,7 @@ open import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_
 
 open import Relation.Binary.Reasoning.Base.Triple
   isPreorder
-  Strict.<-irrefl
+  (Strict.<-asym antisym)
   (Strict.<-trans isPartialOrder)
   (Strict.<-resp-≈ isEquivalence ≤-resp-≈)
   Strict.<⇒≤

@@ -86,26 +86,30 @@ recompute {A = A} = reflects′ {B = Recomputable A} (λ a _ → a) (λ ¬a a �
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
 
+infixr 1 _⊎-reflects_
+infixr 2 _×-reflects_ _→-reflects_
+
+T-reflects : ∀ b → Reflects (T b) b
+T-reflects true  = of _
+T-reflects false = of id
+
 -- If we can decide A, then we can decide its negation.
 ¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
 ¬-reflects {A = A} = reflects (λ b → Reflects (¬ A) (not b)) (of ∘ flip _$_) of
 
 -- If we can decide A and Q then we can decide their product
-infixr 2 _×-reflects_
 _×-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A × B) (a ∧ b)
 ofʸ  a ×-reflects ofʸ  b = of (a , b)
 ofʸ  a ×-reflects ofⁿ ¬b = of (¬b ∘ proj₂)
 ofⁿ ¬a ×-reflects _      = of (¬a ∘ proj₁)
 
-infixr 1 _⊎-reflects_
 _⊎-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A ⊎ B) (a ∨ b)
 ofʸ  a ⊎-reflects      _ = of (inj₁ a)
 ofⁿ ¬a ⊎-reflects ofʸ  b = of (inj₂ b)
 ofⁿ ¬a ⊎-reflects ofⁿ ¬b = of (¬a ¬-⊎ ¬b)
 
-infixr 2 _→-reflects_
 _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                 Reflects (A → B) (not a ∨ b)
 ofʸ  a →-reflects ofʸ  b = of (const b)
@@ -127,6 +131,9 @@ det (ofʸ  a) (ofⁿ ¬a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofʸ  a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofⁿ  _) = refl
 
+T-reflects-elim : ∀ {a b} → Reflects (T a) b → b ≡ a
+T-reflects-elim {a} r = det r (T-reflects a)
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -137,4 +144,3 @@ det (ofⁿ ¬a) (ofⁿ  _) = refl
 -- Version 2.1
 
 invert = of⁻¹ -- against subsequent deprecation; no warning issued yet
-

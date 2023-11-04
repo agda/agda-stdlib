@@ -66,8 +66,11 @@ mkℚ+ n (suc d) coprime = mkℚ (+ n) d coprime
 
 infix 4 _≃_
 
-_≃_ : Rel ℚ 0ℓ
-p ≃ q = (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p)
+data _≃_ : Rel ℚ 0ℓ where
+  *≡* : ∀ {p q} → (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p) → p ≃ q
+
+_≄_ : Rel ℚ 0ℓ
+p ≄ q = ¬ (p ≃ q)
 
 ------------------------------------------------------------------------
 -- Ordering of rationals

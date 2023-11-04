@@ -76,8 +76,8 @@ opposite-prop {suc n} i with view i
 ... | ‵fromℕ  rewrite toℕ-fromℕ n | n∸n≡0 n = refl
 ... | ‵inject₁ j = begin
   suc (toℕ (opposite j)) ≡⟨ cong suc (opposite-prop j) ⟩
-  suc (n ∸ suc (toℕ j))  ≡˘⟨ +-∸-assoc 1 (toℕ<n j) ⟩
-  n ∸ toℕ j              ≡˘⟨ cong (n ∸_) (toℕ-inject₁ j) ⟩
+  suc (n ∸ suc (toℕ j))  ≡⟨ +-∸-assoc 1 (toℕ<n j) ⟨
+  n ∸ toℕ j              ≡⟨ cong (n ∸_) (toℕ-inject₁ j) ⟨
   n ∸ toℕ (inject₁ j)    ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------

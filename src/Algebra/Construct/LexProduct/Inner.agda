@@ -82,8 +82,8 @@ module NaturalOrder where
 
   ≤∙ˡ-trans : Associative _≈₁_ _∙_ → (a ∙ b) ≈₁ b → (b ∙ c) ≈₁ c → (a ∙ c) ≈₁ c
   ≤∙ˡ-trans {a} {b} {c} ∙-assoc ab≈b bc≈c = begin
-    a ∙ c        ≈˘⟨ ∙-congˡ bc≈c ⟩
-    a ∙ (b ∙ c)  ≈˘⟨ ∙-assoc a b c ⟩
+    a ∙ c        ≈⟨ ∙-congˡ bc≈c ⟨
+    a ∙ (b ∙ c)  ≈⟨ ∙-assoc a b c ⟨
     (a ∙ b) ∙ c  ≈⟨  ∙-congʳ ab≈b ⟩
     b ∙ c        ≈⟨  bc≈c ⟩
     c            ∎
@@ -179,51 +179,51 @@ assoc ∙-assoc ∙-comm ∙-sel ◦-assoc a b c x y z
 ... | no ab≉a  | yes ab≈b | yes bc≈b | yes bc≈c = begin
   lex (a ∙ b) c y z        ≈⟨  cong₁ ab≈b ⟩
   lex b c y z              ≈⟨  case₃ bc≈b bc≈c ⟩
-  y ◦ z                    ≈˘⟨ case₂ ab≉a ab≈b ⟩
-  lex a b x (y ◦ z)        ≈˘⟨ cong₂ bc≈b ⟩
+  y ◦ z                    ≈⟨ case₂ ab≉a ab≈b ⟨
+  lex a b x (y ◦ z)        ≈⟨ cong₂ bc≈b ⟨
   lex a (b ∙ c) x (y ◦ z)  ∎
 ... | no ab≉a  | yes ab≈b | yes bc≈b | no bc≉c = begin
   lex (a ∙ b) c y z        ≈⟨  cong₁ ab≈b ⟩
   lex b c y z              ≈⟨  case₁ bc≈b bc≉c ⟩
-  y                        ≈˘⟨ case₂ ab≉a ab≈b ⟩
-  lex a b x y              ≈˘⟨ cong₂ bc≈b ⟩
+  y                        ≈⟨ case₂ ab≉a ab≈b ⟨
+  lex a b x y              ≈⟨ cong₂ bc≈b ⟨
   lex a (b ∙ c) x y        ∎
 ... | yes ab≈a | yes ab≈b | yes bc≈b | no bc≉c = begin
   lex (a ∙ b) c (x ◦ y) z  ≈⟨  cong₁ ab≈b ⟩
   lex b c (x ◦ y) z        ≈⟨  case₁ bc≈b bc≉c ⟩
-  x ◦ y                    ≈˘⟨ case₃ ab≈a ab≈b ⟩
-  lex a b x y              ≈˘⟨ cong₂ bc≈b ⟩
+  x ◦ y                    ≈⟨ case₃ ab≈a ab≈b ⟨
+  lex a b x y              ≈⟨ cong₂ bc≈b ⟨
   lex a (b ∙ c) x y        ∎
 ... | yes ab≈a | yes ab≈b | yes bc≈b | yes bc≈c = begin
   lex (a ∙ b) c (x ◦ y) z  ≈⟨  cong₁ ab≈b ⟩
   lex b c (x ◦ y) z        ≈⟨  case₃ bc≈b bc≈c  ⟩
   (x ◦ y) ◦ z              ≈⟨  ◦-assoc x y z ⟩
-  x ◦ (y ◦ z)              ≈˘⟨ case₃ ab≈a ab≈b ⟩
-  lex a b x (y ◦ z)        ≈˘⟨ cong₂ bc≈b ⟩
+  x ◦ (y ◦ z)              ≈⟨ case₃ ab≈a ab≈b ⟨
+  lex a b x (y ◦ z)        ≈⟨ cong₂ bc≈b ⟨
   lex a (b ∙ c) x (y ◦ z)  ∎
 ... | yes ab≈a | yes ab≈b | no bc≉b | yes bc≈c = begin
   lex (a ∙ b) c (x ◦ y) z  ≈⟨  cong₁ ab≈b ⟩
   lex b c (x ◦ y) z        ≈⟨  case₂ bc≉b bc≈c ⟩
-  z                        ≈˘⟨ case₂ bc≉b bc≈c ⟩
-  lex b c x z              ≈˘⟨ cong₁₂ (M.trans (M.sym ab≈a) ab≈b) bc≈c ⟩
+  z                        ≈⟨ case₂ bc≉b bc≈c ⟨
+  lex b c x z              ≈⟨ cong₁₂ (M.trans (M.sym ab≈a) ab≈b) bc≈c ⟨
   lex a (b ∙ c) x z        ∎
 ... | yes ab≈a | no ab≉b | yes bc≈b | yes bc≈c = begin
   lex (a ∙ b) c x z        ≈⟨  cong₁₂ ab≈a (M.trans (M.sym bc≈c) bc≈b) ⟩
   lex a b x z              ≈⟨  case₁ ab≈a ab≉b ⟩
-  x                        ≈˘⟨ case₁ ab≈a ab≉b ⟩
-  lex a b x (y ◦ z)        ≈˘⟨ cong₂ bc≈b ⟩
+  x                        ≈⟨ case₁ ab≈a ab≉b ⟨
+  lex a b x (y ◦ z)        ≈⟨ cong₂ bc≈b ⟨
   lex a (b ∙ c) x (y ◦ z)  ∎
 ... | no ab≉a | yes ab≈b | no bc≉b | yes bc≈c = begin
   lex (a ∙ b) c y z        ≈⟨  cong₁ ab≈b ⟩
   lex b c y z              ≈⟨  case₂ bc≉b bc≈c ⟩
-  z                        ≈˘⟨ uncurry′ case₂ (<∙ˡ-trans ∙-assoc ∙-comm ab≈b ab≉a bc≈c) ⟩
-  lex a c x z              ≈˘⟨ cong₂ bc≈c ⟩
+  z                        ≈⟨ uncurry′ case₂ (<∙ˡ-trans ∙-assoc ∙-comm ab≈b ab≉a bc≈c) ⟨
+  lex a c x z              ≈⟨ cong₂ bc≈c ⟨
   lex a (b ∙ c) x z        ∎
 ... | yes ab≈a | no ab≉b | yes bc≈b | no bc≉c = begin
   lex (a ∙ b) c x z        ≈⟨  cong₁ ab≈a ⟩
   lex a c x z              ≈⟨  uncurry′ case₁ (<∙ʳ-trans ∙-assoc ∙-comm ab≈a bc≈b bc≉c) ⟩
-  x                        ≈˘⟨ case₁ ab≈a ab≉b ⟩
-  lex a b x y              ≈˘⟨ cong₂ bc≈b ⟩
+  x                        ≈⟨ case₁ ab≈a ab≉b ⟨
+  lex a b x y              ≈⟨ cong₂ bc≈b ⟨
   lex a (b ∙ c) x y        ∎
 
 comm : Commutative _≈₁_ _∙_ → Commutative _≈₂_ _◦_ →

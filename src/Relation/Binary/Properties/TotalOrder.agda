@@ -39,8 +39,7 @@ decTotalOrder ≟ = record
 
 open PosetProperties public
   using
-  ( _≥_
-  ; ≥-refl
+  ( ≥-refl
   ; ≥-reflexive
   ; ≥-trans
   ; ≥-antisym
@@ -59,7 +58,7 @@ open PosetProperties public
   }
 
 open TotalOrder ≥-totalOrder public
-  using () renaming (total to ≥-total; _≰_ to _≱_)
+  using () renaming (total to ≥-total)
 
 ------------------------------------------------------------------------
 -- _<_ - the strict version is a strict partial order

@@ -30,8 +30,8 @@ module _ {α α= β β=} (M₁ : Magma α α=) (M₂ : Magma β β=) where
                       Homomorphic₂ _ _ _≈₂_ f _∙₁_ _∙₂_  →
                       Homomorphic₂ _ _ _≈₁_ g _∙₂_ _∙₁_
   homomorphic₂-inv {f} {g} g-cong (invˡ , invʳ) homo x y = begin
-    g (x ∙₂ y)             ≈˘⟨ g-cong (M₂.∙-cong (invˡ M₁.refl) (invˡ M₁.refl)) ⟩
-    g (f (g x) ∙₂ f (g y)) ≈˘⟨ g-cong (homo (g x) (g y)) ⟩
+    g (x ∙₂ y)             ≈⟨ g-cong (M₂.∙-cong (invˡ M₁.refl) (invˡ M₁.refl)) ⟨
+    g (f (g x) ∙₂ f (g y)) ≈⟨ g-cong (homo (g x) (g y)) ⟨
     g (f (g x ∙₁ g y))     ≈⟨ invʳ M₂.refl ⟩
     g x ∙₁ g y             ∎
     where open EqR M₁.setoid
@@ -42,7 +42,7 @@ module _ {α α= β β=} (M₁ : Magma α α=) (M₂ : Magma β β=) where
                       Homomorphic₂ _ _ _≈₁_ g _∙₂_ _∙₁_
   homomorphic₂-inj {f} {g} inj invˡ homo x y = inj (begin
     f (g (x ∙₂ y))      ≈⟨ invˡ M₁.refl ⟩
-    x ∙₂ y              ≈˘⟨ M₂.∙-cong (invˡ M₁.refl) (invˡ M₁.refl) ⟩
-    f (g x) ∙₂ f (g y)  ≈˘⟨ homo (g x) (g y) ⟩
+    x ∙₂ y              ≈⟨ M₂.∙-cong (invˡ M₁.refl) (invˡ M₁.refl) ⟨
+    f (g x) ∙₂ f (g y)  ≈⟨ homo (g x) (g y) ⟨
     f (g x ∙₁ g y)      ∎)
     where open EqR M₂.setoid

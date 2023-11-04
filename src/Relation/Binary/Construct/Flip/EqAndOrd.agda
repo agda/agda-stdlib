@@ -145,9 +145,8 @@ isStrictPartialOrder {< = <} O = record
 isStrictTotalOrder : IsStrictTotalOrder ≈ < →
                      IsStrictTotalOrder ≈ (flip <)
 isStrictTotalOrder {< = <} O = record
-  { isEquivalence = O.isEquivalence
-  ; trans         = trans < O.trans
-  ; compare       = compare _ O.compare
+  { isStrictPartialOrder = isStrictPartialOrder O.isStrictPartialOrder
+  ; compare              = compare _ O.compare
   } where module O = IsStrictTotalOrder O
 
 ------------------------------------------------------------------------

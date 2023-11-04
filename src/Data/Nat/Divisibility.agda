@@ -27,6 +27,7 @@ open import Relation.Binary.Definitions
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
+open import Relation.Binary.Reasoning.Syntax
 import Relation.Binary.PropositionalEquality.Properties as PropEq
 
 ------------------------------------------------------------------------
@@ -117,15 +118,13 @@ suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m (suc n)) (m % suc n ≟ 0)
 -- A reasoning module for the _∣_ relation
 
 module ∣-Reasoning where
-  private
-    module Base = PreorderReasoning ∣-preorder
+  private module Base = PreorderReasoning ∣-preorder
 
   open Base public
-    hiding (step-≈; step-≈˘; step-∼)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
+    renaming (≲-go to ∣-go)
 
-  infixr 2 step-∣
-  step-∣ = Base.step-∼
-  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
+  open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ ∣-go public
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_
@@ -294,9 +293,9 @@ m∣n*o⇒m/n∣o {m@.(p * n)} {n@(suc _)} {o} (divides-refl p) pn∣on = begin
   divides (a ∸ m / n * b) $ begin-equality
     m % n                   ≡⟨  m%n≡m∸m/n*n m n ⟩
     m ∸ m / n * n           ≡⟨  cong (λ v → m ∸ m / n * v) 1+n≡bd ⟩
-    m ∸ m / n * (b * d)     ≡˘⟨ cong (m ∸_) (*-assoc (m / n) b d) ⟩
+    m ∸ m / n * (b * d)     ≡⟨ cong (m ∸_) (*-assoc (m / n) b d) ⟨
     m  ∸ (m / n * b) * d    ≡⟨⟩
-    a * d ∸ (m / n * b) * d ≡˘⟨ *-distribʳ-∸ d a (m / n * b) ⟩
+    a * d ∸ (m / n * b) * d ≡⟨ *-distribʳ-∸ d a (m / n * b) ⟨
     (a ∸ m / n * b) * d     ∎
   where open ≤-Reasoning
 
