@@ -51,7 +51,7 @@ env:
   CABAL_VERSION: 3.6.2.0
   CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
-  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -i src/
+  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -isrc -idoc
 
 jobs:
   test-stdlib:
@@ -152,7 +152,7 @@ jobs:
       - name: Test stdlib
         run: |
           cabal run GenerateEverything
-          cp travis/* .
+          cp .github/tooling/* .
           ./index.sh
           ${{ env.AGDA }} --safe EverythingSafe.agda
           ${{ env.AGDA }} index.agda
@@ -178,7 +178,7 @@ jobs:
           rm -f '${{ env.AGDA_HTML_DIR }}'/*.css
           ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
 
-          cp travis/* .
+          cp .github/tooling/* .
           ./landing.sh
 
       - name: Deploy HTML
