@@ -1196,6 +1196,17 @@ Other major improvements
 
 * We have then moved raw bundles defined in `Data.X.Properties` to `Data.X.Base` for
   `X` = `Nat`/`Nat.Binary`/`Integer`/`Rational`/`Rational.Unnormalised`.
+  
+### Upgrades to `README` sub-library
+
+* The `README` sub-library has been moved to `doc/README` and a new `doc/standard-library-doc.agda-lib` has been added.
+
+* The first consequence is that `README` files now can be type-checked in Emacs
+  using an out-of-the-box standard Agda installation without altering the main
+  `standard-library.agda-lib` file.
+
+* The second is that the `README` files are now their own first-class library 
+  and can be imported like an other library.
 
 Deprecated modules
 ------------------

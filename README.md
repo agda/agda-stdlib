@@ -1,6 +1,6 @@
-![Travis (.org) branch](https://img.shields.io/travis/agda/agda-stdlib/master?label=master)
-![Travis (.org) branch](https://img.shields.io/travis/agda/agda-stdlib/experimental?label=experimental)
+[![Ubuntu build](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml/badge.svg)](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml)
 
+[![Ubuntu build](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml/badge.svg?branch=experimental)](https://github.com/agda/agda-stdlib/actions/workflows/ci-ubuntu.yml)
 
 The Agda standard library
 =========================
