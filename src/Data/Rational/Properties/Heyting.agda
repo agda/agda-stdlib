@@ -8,6 +8,8 @@
 
 module Data.Rational.Properties.Heyting where
 
+open import Level using (0ℓ)
+
 open import Data.Rational using (ℚ; ≢-nonZero; 1/_)
 open import Data.Rational.Properties
   using (≡-decSetoid; +-*-commutativeRing; *-inverseˡ; *-inverseʳ)
@@ -15,7 +17,12 @@ open import Relation.Binary.Bundles using (DecSetoid)
 
 open import Relation.Binary.Properties.DecSetoid ≡-decSetoid
 
-open import Algebra.Apartness.Structures
+open import Algebra.Apartness
+  using
+  ( IsHeytingCommutativeRing; IsHeytingField
+  ; HeytingCommutativeRing; HeytingField
+  )
+
 open import Algebra using (CommutativeRing; Invertible)
 
 open CommutativeRing +-*-commutativeRing hiding (_≉_)
@@ -98,3 +105,10 @@ isHeytingField =
   { isHeytingCommutativeRing = isHeytingCommutativeRing
   ; tight = ≉-tight
   }
+
+heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+heytingCommutativeRing =
+  record { isHeytingCommutativeRing = isHeytingCommutativeRing }
+
+heytingField : HeytingField 0ℓ 0ℓ 0ℓ
+heytingField = record { isHeytingField = isHeytingField }
