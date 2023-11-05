@@ -13,7 +13,6 @@ open import Level using (0ℓ)
 open import Data.Rational using (ℚ; ≢-nonZero; 1/_)
 open import Data.Rational.Properties
   using (≡-decSetoid; +-*-commutativeRing; *-inverseˡ; *-inverseʳ)
-open import Relation.Binary.Bundles using (DecSetoid)
 
 open import Relation.Binary.Properties.DecSetoid ≡-decSetoid
 

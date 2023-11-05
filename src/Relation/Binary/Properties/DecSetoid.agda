@@ -36,8 +36,7 @@ x ≉ y = ¬ x ≈ y
 ≉-cotrans {x} {y} x≉y z with x ≟ z | z ≟ y
 ≉-cotrans {x} {y} x≉y z | _ | no z≉y = inj₂ z≉y
 ≉-cotrans {x} {y} x≉y z | no x≉z | _ = inj₁ x≉z
-≉-cotrans {x} {y} x≉y z | yes x≈z | yes z≈y with trans x≈z z≈y
-≉-cotrans {x} {y} x≉y z | yes x≈z | yes z≈y | x≈y = inj₁ λ _ → x≉y x≈y
+≉-cotrans {x} {y} x≉y z | yes x≈z | yes z≈y = inj₁ λ _ → x≉y (trans x≈z z≈y) 
 
 ≉-sym : Symmetric _≉_
 ≉-sym x≉y y≈x = x≉y (sym y≈x)
