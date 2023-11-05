@@ -54,5 +54,4 @@ x ≉ y = ¬ x ≈ y
 ≉-apartnessRelation = record { isApartnessRelation = ≉-isApartnessRelation }
 
 ≉-tight : Tight _≈_ _≉_
-≉-tight x y with x ≟ y
-≉-tight x y | d = decidable-stable d , ≉-irrefl
+≉-tight x y = decidable-stable (x ≟ y) , ≉-irrefl
