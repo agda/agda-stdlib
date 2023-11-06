@@ -30,6 +30,9 @@ open import Relation.Unary using (Pred)
 open import Agda.Builtin.Nat public
   using (zero; suc) renaming (Nat to ℕ)
 
+--smart constructor
+pattern 2+ n = suc (suc n)
+
 ------------------------------------------------------------------------
 -- Boolean equality relation
 
@@ -63,6 +66,7 @@ m < n = suc m ≤ n
 
 pattern z<s {n}         = s≤s (z≤n {n})
 pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
+pattern 1<2+n {n}       = s<s (z<s {n})
 
 -- Smart destructors of _≤_, _<_
 
@@ -134,21 +138,18 @@ instance
 
 -- The property of being a non-zero, non-unit
 
-pattern 2+ n = suc (suc n)
-
-trivial : ℕ → Bool
-trivial 0      = true
-trivial 1      = true
-trivial (2+ _) = false
-
 NonTrivial : Pred ℕ 0ℓ
 NonTrivial = T ∘ not ∘ trivial
+  where
+  trivial : ℕ → Bool
+  trivial 0      = true
+  trivial 1      = true
+  trivial (2+ _) = false
+
 
 instance
   nonTrivial : ∀ {n} → NonTrivial (2+ n)
   nonTrivial = _
-
-pattern 1<2+n {n} = s<s (z<s {n})
 
 -- Constructors
 
