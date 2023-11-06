@@ -93,7 +93,7 @@ private
   CompositeUpTo⇔Composite = mk⇔ comp-upto⇒comp comp⇒comp-upto
     where
     comp-upto⇒comp : CompositeUpTo n → Composite n
-    comp-upto⇒comp (_ , d<n , ntd , d∣n) = hasBoundedNonTrivialDivisor ⦃ ntd ⦄ d<n d∣n
+    comp-upto⇒comp (_ , d<n , ntd , d∣n) = hasBoundedNonTrivialDivisor {{ntd}} d<n d∣n
     comp⇒comp-upto : Composite n → CompositeUpTo n
     comp⇒comp-upto (hasBoundedNonTrivialDivisor d<n d∣n) = _ , d<n , recompute-nonTrivial , d∣n
 
@@ -146,7 +146,7 @@ private
 
     prime⇒prime-upto : Prime n → PrimeUpTo n
     prime⇒prime-upto (prime p) {d} d<n ntd d∣n
-      = p (hasBoundedNonTrivialDivisor ⦃ ntd ⦄ d<n d∣n)
+      = p (hasBoundedNonTrivialDivisor {{ntd}} d<n d∣n)
 
 -- Definition of irreducibility: kindergarten version of `Prime`
 
@@ -191,7 +191,7 @@ rough-1 _ (hasBoundedNonTrivialDivisor _ d∣1) = contradiction (∣1⇒≡1 d�
 2-rough (hasBoundedNonTrivialDivisor ⦃()⦄ (s<s z<s) _)
 
 -- If a number n > 1 is m-rough, then m ≤ n
-rough⇒≤ : .⦃ NonTrivial n ⦄ → Rough m n → m ≤ n
+rough⇒≤ : .{{NonTrivial n}} → Rough m n → m ≤ n
 rough⇒≤ rough = ≮⇒≥ λ m>n → rough (hasBoundedNonTrivialDivisor m>n ∣-refl)
 
 -- If a number n is m-rough, and m ∤ n, then n is (suc m)-rough
@@ -208,7 +208,7 @@ rough⇒∣⇒rough r n∣o hbntd = r (hasBoundedNonTrivialDivisor-∣ hbntd n�
 -- Corollary: relationship between roughness and primality
 
 -- If a number n is p-rough, and p > 1 divides n, then p must be prime
-rough⇒∣⇒prime : .⦃ NonTrivial p ⦄ → Rough p n → p ∣ n → Prime p
+rough⇒∣⇒prime : .{{NonTrivial p}} → Rough p n → p ∣ n → Prime p
 rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 
 ------------------------------------------------------------------------
@@ -338,14 +338,14 @@ private
 composite⇒¬prime : Composite n → ¬ Prime n
 composite⇒¬prime composite[d] (prime p) = p composite[d]
 
-¬composite⇒prime : .⦃ NonTrivial n ⦄ → ¬ Composite n → Prime n
+¬composite⇒prime : .{{NonTrivial n}} → ¬ Composite n → Prime n
 ¬composite⇒prime = prime
 
 prime⇒¬composite : Prime n → ¬ Composite n
 prime⇒¬composite (prime p) = p
 
 -- note that this has to recompute the factor!
-¬prime⇒composite : .⦃ NonTrivial n ⦄ → ¬ Prime n → Composite n
+¬prime⇒composite : .{{NonTrivial n}} → ¬ Prime n → Composite n
 ¬prime⇒composite {n} ¬prime[n] =
   decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime)
 
@@ -358,7 +358,7 @@ prime⇒irreducible pp@(prime pr) {m@(2+ _)} m∣p
   = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → pr (hasBoundedNonTrivialDivisor m<p m∣p))
   where instance _ = prime⇒nonZero pp
 
-irreducible⇒prime : .⦃ NonTrivial p ⦄ → Irreducible p → Prime p
+irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
 irreducible⇒prime irr = prime
   λ (hasBoundedNonTrivialDivisor d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
 
