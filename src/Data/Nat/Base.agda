@@ -152,7 +152,7 @@ instance
 
 -- Constructors
 
-n>1⇒nonTrivial : ∀ {n} → 1 < n → NonTrivial n
+n>1⇒nonTrivial : ∀ {n} → n > 1 → NonTrivial n
 n>1⇒nonTrivial 1<2+n = _
 
 recompute-nonTrivial : ∀ {n} → .⦃ NonTrivial n ⦄ → NonTrivial n
@@ -163,7 +163,7 @@ recompute-nonTrivial {2+ _} = _
 nonTrivial⇒nonZero : ∀ {n} → .⦃ NonTrivial n ⦄ → NonZero n
 nonTrivial⇒nonZero {n = 2+ k} = _
 
-nonTrivial⇒n>1 : ∀ n → .⦃ NonTrivial n ⦄ → 1 < n
+nonTrivial⇒n>1 : ∀ n → .⦃ NonTrivial n ⦄ → n > 1
 nonTrivial⇒n>1 (2+ _) = 1<2+n
 
 nonTrivial⇒≢1 : ∀ {n} → .⦃ NonTrivial n ⦄ → n ≢ 1
