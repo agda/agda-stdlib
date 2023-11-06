@@ -155,9 +155,6 @@ instance
 n>1⇒nonTrivial : ∀ {n} → n > 1 → NonTrivial n
 n>1⇒nonTrivial 1<2+n = _
 
-recompute-nonTrivial : ∀ {n} → .⦃ NonTrivial n ⦄ → NonTrivial n
-recompute-nonTrivial {2+ _} = _
-
 -- Destructors
 
 nonTrivial⇒nonZero : ∀ {n} → .⦃ NonTrivial n ⦄ → NonZero n
