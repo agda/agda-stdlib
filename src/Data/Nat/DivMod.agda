@@ -318,7 +318,7 @@ m*n/m*o≡n/o m n o = helper (<-wellFounded n)
     n≥o = ≮⇒≥ n≮o
     n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (≢-nonZero⁻¹ o)) n≥o
 
-m*n/o*n≡m/o : ∀ m n o .{{_ : NonZero n}} {{_ : NonZero o}} →
+m*n/o*n≡m/o : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} →
               let instance _ = m*n≢0 o n in
               m * n / (o * n) ≡ m / o
 m*n/o*n≡m/o m n o = begin-equality
@@ -356,8 +356,9 @@ m<n*o⇒m/o<n {m} {suc n} {o} m<n*o with m <? o
   m / o ∸ 1 ∸ n         ≡⟨ ∸-+-assoc (m / o) 1 n ⟩
   m / o ∸ suc n         ∎
 
-m/n/o≡m/[n*o] : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}}
-                .{{_ : NonZero (n * o)}} → m / n / o ≡ m / (n * o)
+m/n/o≡m/[n*o] : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} →
+                let instance _ = m*n≢0 n o in
+                m / n / o ≡ m / (n * o)
 m/n/o≡m/[n*o] m n o = begin-equality
   m / n / o                             ≡⟨ /-congˡ {o = o} (/-congˡ (m≡m%n+[m/n]*n m n*o)) ⟩
   (m % n*o + m / n*o * n*o) / n / o     ≡⟨ /-congˡ (+-distrib-/-∣ʳ (m % n*o) lem₁) ⟩
@@ -369,6 +370,8 @@ m/n/o≡m/[n*o] m n o = begin-equality
   where
   n*o = n * o
   o*n = o * n
+  instance _ = m*n≢0 n o
+  instance _ = m*n≢0 o n
 
   lem₁ : n ∣ m / n*o * n*o
   lem₁ = divides (m / n*o * o) $ begin-equality
@@ -424,7 +427,7 @@ m%[n*o]/o≡m/o%n m n o = begin-equality
   m / o % n                         ∎
   where instance _ = m*n≢0 n o; instance _ = m*n≢0 o n
 
-m%n*o≡m*o%[n*o] : ∀ m n o {{_ : NonZero n}} {{_ : NonZero o}} →
+m%n*o≡m*o%[n*o] : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} →
                   let instance _ = m*n≢0 n o in
                   m % n * o ≡ m * o % (n * o)
 m%n*o≡m*o%[n*o] m n o = begin-equality
@@ -436,7 +439,7 @@ m%n*o≡m*o%[n*o] m n o = begin-equality
   m * o % (n * o)                   ∎
   where instance _ = m*n≢0 n o
 
-[m*n+o]%[p*n]≡[m*n]%[p*n]+o : ∀ m {n o} p {{_ : NonZero n}} {{_ : NonZero p}} →
+[m*n+o]%[p*n]≡[m*n]%[p*n]+o : ∀ m {n o} p .{{_ : NonZero n}} .{{_ : NonZero p}} →
                               let instance _ = m*n≢0 p n in o < n →
                               (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
 [m*n+o]%[p*n]≡[m*n]%[p*n]+o m {n} {o} p@(suc p-1) {{ p*n≢0 }} o<n = begin-equality
