@@ -24,8 +24,7 @@ open import Relation.Binary.PropositionalEquality
 
 private
   variable
-    d k m n p : ℕ
-
+    d m n o p : ℕ
   instance
     nt[2] : NonTrivial 2
     nt[2] = nonTrivial {0}
@@ -35,13 +34,13 @@ private
 
 -- Definition of having a non-trivial divisor below a given bound
 
-record HasBoundedNonTrivialDivisor (k n : ℕ) : Set where
+record HasBoundedNonTrivialDivisor (m n : ℕ) : Set where
   constructor hasBoundedNonTrivialDivisor
   field
     {divisor} : ℕ
-    .{{nt}} : NonTrivial divisor
-    d<k     : divisor < k
-    d∣n     : divisor ∣ n
+    .{{nt}}   : NonTrivial divisor
+    d<m       : divisor < m
+    d∣n       : divisor ∣ n
 
 -- smart constructors
 
@@ -49,14 +48,14 @@ hasBoundedNonTrivialDivisor≢ : .{{NonTrivial d}} → .{{NonZero n}} →
                     d ≢ n → d ∣ n → HasBoundedNonTrivialDivisor n n
 hasBoundedNonTrivialDivisor≢ d≢n d∣n = hasBoundedNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
-hasBoundedNonTrivialDivisor>1 : 1 < d → d < n → d ∣ n → HasBoundedNonTrivialDivisor n n
+hasBoundedNonTrivialDivisor>1 : 1 < d → d < m → d ∣ n → HasBoundedNonTrivialDivisor m n
 hasBoundedNonTrivialDivisor>1 1<d = hasBoundedNonTrivialDivisor
   where instance _ = n>1⇒nonTrivial 1<d
 
-hasBoundedNonTrivialDivisor∣ : HasBoundedNonTrivialDivisor k m → m ∣ n →
-                               HasBoundedNonTrivialDivisor k n
-hasBoundedNonTrivialDivisor∣ (hasBoundedNonTrivialDivisor d<k d∣m) m∣n
-  = hasBoundedNonTrivialDivisor d<k (∣-trans d∣m m∣n)
+hasBoundedNonTrivialDivisor-∣ : HasBoundedNonTrivialDivisor m n → n ∣ o →
+                               HasBoundedNonTrivialDivisor m o
+hasBoundedNonTrivialDivisor-∣ (hasBoundedNonTrivialDivisor d<m d∣n) n∣o
+  = hasBoundedNonTrivialDivisor d<m (∣-trans d∣n n∣o)
 
 -- Definition of compositeness
 
@@ -75,21 +74,21 @@ CompositeUpTo n = ∃⟨ (_< n) ∩ HasNonTrivialDivisor ⟩
 composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
 composite {d = d} = hasBoundedNonTrivialDivisor {divisor = d}
 
-composite≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
-composite≢ d d≢n d∣n = hasBoundedNonTrivialDivisor≢ {d} d≢n d∣n
+composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
+composite-≢ d d≢n d∣n = hasBoundedNonTrivialDivisor≢ {d} d≢n d∣n
 
-composite∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
-composite∣ (hasBoundedNonTrivialDivisor {d} d<k d∣n) m∣n@(divides-refl q)
-  = hasBoundedNonTrivialDivisor (*-monoʳ-< q d<k) (*-monoʳ-∣ q d∣n)
+composite-∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
+composite-∣ (hasBoundedNonTrivialDivisor {d} d<m d∣n) m∣n@(divides-refl q)
+  = hasBoundedNonTrivialDivisor (*-monoʳ-< q d<m) (*-monoʳ-∣ q d∣n)
   where instance
     _ = m≢0∧n>1⇒m*n>1 q d
     _ = m*n≢0⇒m≢0 q
 
--- Definition of 'rough': a number is k-rough
--- if all its non-trivial factors d are bounded below by k
+-- Definition of 'rough': a number is m-rough
+-- if all its non-trivial factors d are bounded below by m
 
 Rough : ℕ → Pred ℕ _
-Rough k n = ¬ HasBoundedNonTrivialDivisor k n
+Rough m n = ¬ HasBoundedNonTrivialDivisor m n
 
 -- Definition of primality: complement of Composite
 -- Constructor `prime` takes a proof isPrime that
@@ -128,7 +127,7 @@ module _ (n : ℕ) where
 -- Basic properties of Rough
 
 -- 1 is always rough
-rough-1 : ∀ k → Rough k 1
+rough-1 : ∀ m → Rough m 1
 rough-1 _ (hasBoundedNonTrivialDivisor _ d∣1) = contradiction (∣1⇒≡1 d∣1) nonTrivial⇒≢1
 
 -- Any number is 0-, 1- and 2-rough,
@@ -142,19 +141,19 @@ rough-1 _ (hasBoundedNonTrivialDivisor _ d∣1) = contradiction (∣1⇒≡1 d�
 2-rough : Rough 2 n
 2-rough (hasBoundedNonTrivialDivisor ⦃()⦄ (s<s z<s) _)
 
--- If a number n > 1 is k-rough, then k ≤ n
-rough⇒≤ : .⦃ NonTrivial n ⦄ → Rough k n → k ≤ n
-rough⇒≤ rough = ≮⇒≥ λ k>n → rough (hasBoundedNonTrivialDivisor k>n ∣-refl)
+-- If a number n > 1 is m-rough, then m ≤ n
+rough⇒≤ : .⦃ NonTrivial n ⦄ → Rough m n → m ≤ n
+rough⇒≤ rough = ≮⇒≥ λ m>n → rough (hasBoundedNonTrivialDivisor m>n ∣-refl)
 
--- If a number n is k-rough, and k ∤ n, then n is (suc k)-rough
-∤⇒rough-suc : k ∤ n → Rough k n → Rough (suc k) n
-∤⇒rough-suc k∤n r (hasBoundedNonTrivialDivisor d<1+k d∣n) with m<1+n⇒m<n∨m≡n d<1+k
-... | inj₁ d<k      = r (hasBoundedNonTrivialDivisor d<k d∣n)
-... | inj₂ d≡k@refl = contradiction d∣n k∤n
+-- If a number n is m-rough, and m ∤ n, then n is (suc m)-rough
+∤⇒rough-suc : m ∤ n → Rough m n → Rough (suc m) n
+∤⇒rough-suc m∤n r (hasBoundedNonTrivialDivisor d<1+m d∣n) with m<1+n⇒m<n∨m≡n d<1+m
+... | inj₁ d<m      = r (hasBoundedNonTrivialDivisor d<m d∣n)
+... | inj₂ d≡m@refl = contradiction d∣n m∤n
 
--- If a number is k-rough, then so are all of its divisors
-rough⇒∣⇒rough : Rough k m → n ∣ m → Rough k n
-rough⇒∣⇒rough r n∣m hbntd = r (hasBoundedNonTrivialDivisor∣ hbntd n∣m)
+-- If a number is m-rough, then so are all of its divisors
+rough⇒∣⇒rough : Rough m o → n ∣ o → Rough m n
+rough⇒∣⇒rough r n∣o hbntd = r (hasBoundedNonTrivialDivisor-∣ hbntd n∣o)
 
 ------------------------------------------------------------------------
 -- Corollary: relationship between roughness and primality
@@ -173,10 +172,10 @@ rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 ¬composite[1] composite[1] = 1-rough composite[1]
 
 composite[4] : Composite 4
-composite[4] = composite≢ 2 (λ()) (divides-refl 2)
+composite[4] = composite-≢ 2 (λ()) (divides-refl 2)
 
 composite[6] : Composite 6
-composite[6] = composite≢ 3 (λ()) (divides-refl 2)
+composite[6] = composite-≢ 3 (λ()) (divides-refl 2)
 
 
 ------------------------------------------------------------------------
