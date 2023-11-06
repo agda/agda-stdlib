@@ -92,7 +92,7 @@ coprime? m n with mkGCD m n
 0-coprimeTo-m⇒m≡1 {m} coprime = coprime (m ∣0 , ∣-refl)
 
 ¬0-coprimeTo-2+ : .{{NonTrivial n}} → ¬ Coprime 0 n
-¬0-coprimeTo-2+ coprime = contradiction (0-coprimeTo-m⇒m≡1 coprime) nonTrivial⇒≢1
+¬0-coprimeTo-2+ {n} coprime = contradiction (0-coprimeTo-m⇒m≡1 coprime) (nonTrivial⇒≢1 {n})
 
 -- If m and n are coprime, then n + m and n are also coprime.
 
