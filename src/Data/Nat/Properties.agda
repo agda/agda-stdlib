@@ -1725,7 +1725,7 @@ pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
 pred-mono-≤ {zero}          _   = z≤n
 pred-mono-≤ {suc _} {suc _} m≤n = s≤s⁻¹ m≤n
 
-pred-mono-< : .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
+pred-mono-< : .{{NonZero m}} → m < n → pred m < pred n
 pred-mono-< {m = suc _} {n = suc _} = s<s⁻¹
 
 ------------------------------------------------------------------------

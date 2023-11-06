@@ -186,10 +186,10 @@ rough-1 _ (hasBoundedNonTrivialDivisor _ d∣1) = contradiction (∣1⇒≡1 d�
 0-rough (hasBoundedNonTrivialDivisor () _)
 
 1-rough : Rough 1 n
-1-rough (hasBoundedNonTrivialDivisor ⦃()⦄ z<s _)
+1-rough (hasBoundedNonTrivialDivisor {{()}} z<s _)
 
 2-rough : Rough 2 n
-2-rough (hasBoundedNonTrivialDivisor ⦃()⦄ (s<s z<s) _)
+2-rough (hasBoundedNonTrivialDivisor {{()}} (s<s z<s) _)
 
 -- If a number n > 1 is m-rough, then m ≤ n
 rough⇒≤ : .{{NonTrivial n}} → Rough m n → m ≤ n

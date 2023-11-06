@@ -157,14 +157,14 @@ n>1⇒nonTrivial 1<2+n = _
 
 -- Destructors
 
-nonTrivial⇒nonZero : ∀ n → .⦃ NonTrivial n ⦄ → NonZero n
+nonTrivial⇒nonZero : ∀ n → .{{NonTrivial n}} → NonZero n
 nonTrivial⇒nonZero (2+ _) = _
 
-nonTrivial⇒n>1 : ∀ n → .⦃ NonTrivial n ⦄ → n > 1
+nonTrivial⇒n>1 : ∀ n → .{{NonTrivial n}} → n > 1
 nonTrivial⇒n>1 (2+ _) = 1<2+n
 
-nonTrivial⇒≢1 : ∀ {n} → .⦃ NonTrivial n ⦄ → n ≢ 1
-nonTrivial⇒≢1 ⦃()⦄ refl
+nonTrivial⇒≢1 : ∀ {n} → .{{NonTrivial n}} → n ≢ 1
+nonTrivial⇒≢1 {{()}} refl
 
 ------------------------------------------------------------------------
 -- Raw bundles
