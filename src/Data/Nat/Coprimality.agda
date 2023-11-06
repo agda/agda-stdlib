@@ -26,7 +26,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Symmetric; Decidable)
 
 private
-  variable d k m n p : ℕ
+  variable d m n o p : ℕ
 
 open ≤-Reasoning
 
@@ -88,11 +88,11 @@ coprime? m n with mkGCD m n
 
 -- Nothing except for 1 is coprime to 0.
 
-0-coprimeTo-m⇒m≡1 : ∀ {m} → Coprime 0 m → m ≡ 1
+0-coprimeTo-m⇒m≡1 : Coprime 0 m → m ≡ 1
 0-coprimeTo-m⇒m≡1 {m} coprime = coprime (m ∣0 , ∣-refl)
 
-¬0-coprimeTo-2+ : ∀ {n} → ¬ Coprime 0 (2+ n)
-¬0-coprimeTo-2+ coprime = contradiction (0-coprimeTo-m⇒m≡1 coprime) λ()
+¬0-coprimeTo-2+ : .{{NonTrivial n}} → ¬ Coprime 0 n
+¬0-coprimeTo-2+ coprime = contradiction (0-coprimeTo-m⇒m≡1 coprime) nonTrivial⇒≢1
 
 -- If m and n are coprime, then n + m and n are also coprime.
 
@@ -110,7 +110,7 @@ recompute {n} {d} coprime = Nullary.recompute (coprime? n d) coprime
 -- If the "gcd" in Bézout's identity is non-zero, then the "other"
 -- divisors are coprime.
 
-Bézout-coprime : .{{_ : NonZero d}} →
+Bézout-coprime : .{{NonZero d}} →
                  Bézout.Identity d (m * d) (n * d) → Coprime m n
 Bézout-coprime {d = suc _} (Bézout.+- x y eq) (divides-refl q₁ , divides-refl q₂) =
   lem₁₀ y q₂ x q₁ eq
@@ -122,17 +122,17 @@ Bézout-coprime {d = suc _} (Bézout.-+ x y eq) (divides-refl q₁ , divides-ref
 coprime-Bézout : Coprime m n → Bézout.Identity 1 m n
 coprime-Bézout = Bézout.identity ∘ coprime⇒GCD≡1
 
--- If i divides jk and is coprime to j, then it divides k.
+-- If m divides n*o and is coprime to n, then it divides o.
 
-coprime-divisor : Coprime m n → m ∣ n * k → m ∣ k
-coprime-divisor {k = k} c (divides q eq′) with coprime-Bézout c
-... | Bézout.+- x y eq = divides (x * k ∸ y * q) (lem₈ x y eq eq′)
-... | Bézout.-+ x y eq = divides (y * q ∸ x * k) (lem₉ x y eq eq′)
+coprime-divisor : Coprime m n → m ∣ n * o → m ∣ o
+coprime-divisor {o = o} c (divides q eq′) with coprime-Bézout c
+... | Bézout.+- x y eq = divides (x * o ∸ y * q) (lem₈ x y eq eq′)
+... | Bézout.-+ x y eq = divides (y * q ∸ x * o) (lem₉ x y eq eq′)
 
--- If d is a common divisor of mk and nk, and m and n are coprime,
--- then d divides k.
+-- If d is a common divisor of m*o and n*o, and m and n are coprime,
+-- then d divides o.
 
-coprime-factors : Coprime m n → d ∣ m * k × d ∣ n * k → d ∣ k
+coprime-factors : Coprime m n → d ∣ m * o × d ∣ n * o → d ∣ o
 coprime-factors c (divides q₁ eq₁ , divides q₂ eq₂) with coprime-Bézout c
 ... | Bézout.+- x y eq = divides (x * q₁ ∸ y * q₂) (lem₁₁ x y eq eq₁ eq₂)
 ... | Bézout.-+ x y eq = divides (y * q₂ ∸ x * q₁) (lem₁₁ y x eq eq₂ eq₁)
@@ -140,12 +140,7 @@ coprime-factors c (divides q₁ eq₁ , divides q₂ eq₂) with coprime-Bézout
 ------------------------------------------------------------------------
 -- Primality implies coprimality.
 
-prime⇒coprime≢0 : Prime p → .{{_ : NonZero n}} → n < p → Coprime p n
-prime⇒coprime≢0 p n<p (d∣p , d∣n) with prime⇒irreducible p d∣p
+prime⇒coprime : Prime p → .{{NonZero n}} → n < p → Coprime p n
+prime⇒coprime p n<p (d∣p , d∣n) with prime⇒irreducible p d∣p
 ... | inj₁ d≡1      = d≡1
 ... | inj₂ d≡p@refl with () ← ≤⇒≯ (∣⇒≤ d∣n) n<p
-
-prime⇒coprime : ∀ m → Prime m →
-                ∀ n → 0 < n → n < m → Coprime m n
-prime⇒coprime _ p _ z<s = prime⇒coprime≢0 p
-

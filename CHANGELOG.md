@@ -3633,6 +3633,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * In `Data.Nat.Coprimality`:
   ```
   Bézout-coprime : ∀ {i j d} → Bézout.Identity (suc d) (i * suc d) (j * suc d) → Coprime i j
+  prime⇒coprime : ∀ m → Prime m → ∀ n → 0 < n → n < m → Coprime m n
   ```
 
 * In `Data.Nat.Divisibility`
