@@ -146,7 +146,6 @@ NonTrivial = T ∘ not ∘ trivial
   trivial 1      = true
   trivial (2+ _) = false
 
-
 instance
   nonTrivial : ∀ {n} → NonTrivial (2+ n)
   nonTrivial = _
@@ -155,10 +154,6 @@ instance
 
 n>1⇒nonTrivial : ∀ {n} → 1 < n → NonTrivial n
 n>1⇒nonTrivial 1<2+n = _
-
-nonZero⇒≢1⇒nonTrivial : ∀ {n} → .⦃ NonZero n ⦄ → n ≢ 1 → NonTrivial n
-nonZero⇒≢1⇒nonTrivial {1}    = contradiction refl
-nonZero⇒≢1⇒nonTrivial {2+ _} = _
 
 recompute-nonTrivial : ∀ {n} → .⦃ NonTrivial n ⦄ → NonTrivial n
 recompute-nonTrivial {2+ _} = _
