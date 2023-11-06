@@ -37,23 +37,21 @@ private
 record HasBoundedNonTrivialDivisor (m n : ℕ) : Set where
   constructor hasBoundedNonTrivialDivisor
   field
-    {divisor} : ℕ
-    .{{nt}}   : NonTrivial divisor
-    d<m       : divisor < m
-    d∣n       : divisor ∣ n
+    {divisor}       : ℕ
+    .{{nontrivial}} : NonTrivial divisor
+    divisor-<       : divisor < m
+    divisor-∣       : divisor ∣ n
 
 -- smart constructors
 
-hasBoundedNonTrivialDivisor≢ : .{{NonTrivial d}} → .{{NonZero n}} →
-                    d ≢ n → d ∣ n → HasBoundedNonTrivialDivisor n n
-hasBoundedNonTrivialDivisor≢ d≢n d∣n = hasBoundedNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
-
-hasBoundedNonTrivialDivisor>1 : 1 < d → d < m → d ∣ n → HasBoundedNonTrivialDivisor m n
-hasBoundedNonTrivialDivisor>1 1<d = hasBoundedNonTrivialDivisor
-  where instance _ = n>1⇒nonTrivial 1<d
+hasBoundedNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} →
+                                d ≢ n → d ∣ n →
+                                HasBoundedNonTrivialDivisor n n
+hasBoundedNonTrivialDivisor-≢ d≢n d∣n
+  = hasBoundedNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 hasBoundedNonTrivialDivisor-∣ : HasBoundedNonTrivialDivisor m n → n ∣ o →
-                               HasBoundedNonTrivialDivisor m o
+                                HasBoundedNonTrivialDivisor m o
 hasBoundedNonTrivialDivisor-∣ (hasBoundedNonTrivialDivisor d<m d∣n) n∣o
   = hasBoundedNonTrivialDivisor d<m (∣-trans d∣n n∣o)
 
@@ -75,7 +73,7 @@ composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
 composite {d = d} = hasBoundedNonTrivialDivisor {divisor = d}
 
 composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
-composite-≢ d d≢n d∣n = hasBoundedNonTrivialDivisor≢ {d} d≢n d∣n
+composite-≢ d d≢n d∣n = hasBoundedNonTrivialDivisor-≢ {d} d≢n d∣n
 
 composite-∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
 composite-∣ (hasBoundedNonTrivialDivisor {d} d<m d∣n) m∣n@(divides-refl q)
@@ -380,7 +378,7 @@ euclidsLemma m n {p} (prime prp) p∣m*n = result
   -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
   ... | Bézout.result d@(2+ _) g _ with d ≟ p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p = contradiction (hasBoundedNonTrivialDivisor≢ d≢p d∣p) prp
+  ...   | no  d≢p = contradiction (hasBoundedNonTrivialDivisor-≢ d≢p d∣p) prp
     where
     d∣p : d ∣ p
     d∣p = GCD.gcd∣n g
