@@ -44,7 +44,7 @@ module _ (m∣n : m ∣ n) where
   open ≤-Reasoning
 
   instance
-    quotient≢0 : .⦃ NonZero n ⦄ → NonZero quotient
+    quotient≢0 : .{{NonZero n}} → NonZero quotient
     quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
 
   equalityᵒ : n ≡ m * quotient
@@ -60,7 +60,7 @@ module _ (m∣n : m ∣ n) where
       n            ≡⟨ equalityᵒ ⟩
       m * quotient ∎
 
-  quotient< : 1 < m → .⦃ NonZero n ⦄ → quotient < n
+  quotient< : 1 < m → .{{NonZero n}} → quotient < n
   quotient< 1<m = begin-strict
     quotient     <⟨ m<m*n quotient m 1<m ⟩
     quotient * m ≡⟨ equality ⟨
@@ -74,32 +74,32 @@ open _∣_ using (quotient) public
 ------------------------------------------------------------------------
 -- defining equation for _/_
 
-n/m≡quotient : (m∣n : m ∣ n) .⦃ _ : NonZero m ⦄ → n / m ≡ quotient m∣n
+n/m≡quotient : (m∣n : m ∣ n) .{{_ : NonZero m}} → n / m ≡ quotient m∣n
 n/m≡quotient {m = m} (divides-refl q) = m*n/n≡m q m
 
 ------------------------------------------------------------------------
 -- Relationship with _%_
 
-m%n≡0⇒n∣m : ∀ m n .⦃ _ : NonZero n ⦄ → m % n ≡ 0 → n ∣ m
+m%n≡0⇒n∣m : ∀ m n .{{_ : NonZero n}} → m % n ≡ 0 → n ∣ m
 m%n≡0⇒n∣m m n eq = divides (m / n) $ begin
   m                ≡⟨ m≡m%n+[m/n]*n m n ⟩
   m % n + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) eq ⟩
   [m/n]*n          ∎
   where open ≡-Reasoning; [m/n]*n = m / n * n
 
-n∣m⇒m%n≡0 : ∀ m n .⦃ _ : NonZero n ⦄ → n ∣ m → m % n ≡ 0
+n∣m⇒m%n≡0 : ∀ m n .{{_ : NonZero n}} → n ∣ m → m % n ≡ 0
 n∣m⇒m%n≡0 .(q * n) n (divides-refl q) = m*n%n≡0 q n
 
-m%n≡0⇔n∣m : ∀ m n .⦃ _ : NonZero n ⦄ → m % n ≡ 0 ⇔ n ∣ m
+m%n≡0⇔n∣m : ∀ m n .{{_ : NonZero n}} → m % n ≡ 0 ⇔ n ∣ m
 m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _≤_
 
-∣⇒≤ : .⦃ _ : NonZero n ⦄ → m ∣ n → m ≤ n
+∣⇒≤ : .{{_ : NonZero n}} → m ∣ n → m ≤ n
 ∣⇒≤ {n@.(q * m)} {m} (divides-refl q@(suc p)) = m≤m+n m (p * m)
 
->⇒∤ : .⦃ _ : NonZero n ⦄ → m > n → m ∤ n
+>⇒∤ : .{{_ : NonZero n}} → m > n → m ∤ n
 >⇒∤ {n@(suc _)} n<m@(s<s _) m∣n = contradiction (∣⇒≤ m∣n) (<⇒≱ n<m)
 
 ------------------------------------------------------------------------
@@ -232,7 +232,7 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 *-monoˡ-∣ : ∀ k → m ∣ n → m * k ∣ n * k
 *-monoˡ-∣ k = flip *-pres-∣ (∣-refl {k})
 
-*-cancelˡ-∣ : ∀ k .⦃ _ : NonZero k ⦄ → k * m ∣ k * n → m ∣ n
+*-cancelˡ-∣ : ∀ k .{{_ : NonZero k}} → k * m ∣ k * n → m ∣ n
 *-cancelˡ-∣ {m} {n} k k*m∣k*n = divides q $ *-cancelˡ-≡ n (q * m) k $ begin-equality
   k * n       ≡⟨ equalityᵒ k*m∣k*n ⟩
   k * m * q   ≡⟨ *-assoc k m q ⟩
@@ -240,7 +240,7 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
   k * (q * m) ∎
   where q = quotient k*m∣k*n
 
-*-cancelʳ-∣ : ∀ k .⦃ _ : NonZero k ⦄ → m * k ∣ n * k → m ∣ n
+*-cancelʳ-∣ : ∀ k .{{_ : NonZero k}} → m * k ∣ n * k → m ∣ n
 *-cancelʳ-∣ {m} {n} k rewrite *-comm m k | *-comm n k = *-cancelˡ-∣ k
 
 ------------------------------------------------------------------------
@@ -258,7 +258,7 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _/_
 
-m/n∣m : .⦃ _ : NonZero n ⦄ → n ∣ m → m / n ∣ m
+m/n∣m : .{{_ : NonZero n}} → n ∣ m → m / n ∣ m
 m/n∣m {n} {m@.(p * n)} (divides-refl p) = begin
   m / n     ≡⟨⟩
   p * n / n ≡⟨ m*n/n≡m p n ⟩
@@ -266,29 +266,29 @@ m/n∣m {n} {m@.(p * n)} (divides-refl p) = begin
   p * n     ≡⟨⟩
   m         ∎
 
-m*n∣o⇒m∣o/n : ∀ m n .⦃ _ : NonZero n ⦄ → m * n ∣ o → m ∣ o / n
+m*n∣o⇒m∣o/n : ∀ m n .{{_ : NonZero n}} → m * n ∣ o → m ∣ o / n
 m*n∣o⇒m∣o/n m n (divides-refl p) = divides p $ begin-equality
   p * (m * n) / n   ≡⟨ *-/-assoc p (n∣m*n m) ⟩
   p * ((m * n) / n) ≡⟨ cong (p *_) (m*n/n≡m m n) ⟩
   p * m ∎
 
-m*n∣o⇒n∣o/m : ∀ m n .⦃ _ : NonZero m ⦄ → m * n ∣ o → n ∣ (o / m)
+m*n∣o⇒n∣o/m : ∀ m n .{{_ : NonZero m}} → m * n ∣ o → n ∣ (o / m)
 m*n∣o⇒n∣o/m m n rewrite *-comm m n = m*n∣o⇒m∣o/n n m
 
-m∣n/o⇒m*o∣n : .⦃ _ : NonZero o ⦄ → o ∣ n → m ∣ n / o → m * o ∣ n
+m∣n/o⇒m*o∣n : .{{_ : NonZero o}} → o ∣ n → m ∣ n / o → m * o ∣ n
 m∣n/o⇒m*o∣n {o} {n@.(p * o)} {m} (divides-refl p) m∣p*o/o = begin
   m * o ∣⟨ *-monoˡ-∣ o (subst (m ∣_) (m*n/n≡m p o) m∣p*o/o) ⟩
   p * o ∎
 
-m∣n/o⇒o*m∣n : .⦃ _ : NonZero o ⦄ → o ∣ n → m ∣ n / o → o * m ∣ n
+m∣n/o⇒o*m∣n : .{{_ : NonZero o}} → o ∣ n → m ∣ n / o → o * m ∣ n
 m∣n/o⇒o*m∣n {o} {_} {m} rewrite *-comm o m = m∣n/o⇒m*o∣n
 
-m/n∣o⇒m∣o*n : .⦃ _ : NonZero n ⦄ → n ∣ m → m / n ∣ o → m ∣ o * n
+m/n∣o⇒m∣o*n : .{{_ : NonZero n}} → n ∣ m → m / n ∣ o → m ∣ o * n
 m/n∣o⇒m∣o*n {n} {m@.(p * n)} {o} (divides-refl p) p*n/n∣o = begin
   p * n ∣⟨ *-monoˡ-∣ n (subst (_∣ o) (m*n/n≡m p n) p*n/n∣o) ⟩
   o * n ∎
 
-m∣n*o⇒m/n∣o : .⦃ _ : NonZero n ⦄ → n ∣ m → m ∣ o * n → m / n ∣ o
+m∣n*o⇒m/n∣o : .{{_ : NonZero n}} → n ∣ m → m ∣ o * n → m / n ∣ o
 m∣n*o⇒m/n∣o {n} {m@.(p * n)} {o} (divides-refl p) pn∣on = begin
   m / n     ≡⟨⟩
   p * n / n ≡⟨ m*n/n≡m p n ⟩
@@ -298,7 +298,7 @@ m∣n*o⇒m/n∣o {n} {m@.(p * n)} {o} (divides-refl p) pn∣on = begin
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
 
-∣n∣m%n⇒∣m : .⦃ _ : NonZero n ⦄ → d ∣ n → d ∣ m % n → d ∣ m
+∣n∣m%n⇒∣m : .{{_ : NonZero n}} → d ∣ n → d ∣ m % n → d ∣ m
 ∣n∣m%n⇒∣m {n@.(p * d)} {d} {m} (divides-refl p) (divides q m%n≡qd) =
   divides (q + (m / n) * p) $ begin-equality
     m                         ≡⟨ m≡m%n+[m/n]*n m n ⟩
@@ -308,7 +308,7 @@ m∣n*o⇒m/n∣o {n} {m@.(p * n)} {o} (divides-refl p) pn∣on = begin
     q * d + ((m / n) * p) * d ≡⟨ *-distribʳ-+ d q _ ⟨
     (q + (m / n) * p) * d     ∎
 
-%-presˡ-∣ : .⦃ _ : NonZero n ⦄ → d ∣ m → d ∣ n → d ∣ m % n
+%-presˡ-∣ : .{{_ : NonZero n}} → d ∣ m → d ∣ n → d ∣ m % n
 %-presˡ-∣ {n} {d} {m@.(p * d)} (divides-refl p) (divides q 1+n≡qd) =
   divides (p ∸ m / n * q) $ begin-equality
     m % n                   ≡⟨ m%n≡m∸m/n*n m n ⟩
