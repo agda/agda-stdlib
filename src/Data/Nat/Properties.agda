@@ -899,7 +899,7 @@ m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 
-m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+m*n≢0 : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
 m*n≢0 (suc m) (suc n) = _
 
 m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
@@ -932,9 +932,9 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 -- Other properties of _*_ and _≤_/_<_
 
 *-cancelʳ-≤ : ∀ m n o .{{_ : NonZero o}} → m * o ≤ n * o → m ≤ n
-*-cancelʳ-≤ zero    _       (suc o) _  = z≤n
-*-cancelʳ-≤ (suc m) (suc n) (suc o) le =
-  s≤s (*-cancelʳ-≤ m n (suc o) (+-cancelˡ-≤ _ _ _ le))
+*-cancelʳ-≤ zero    _       _         _  = z≤n
+*-cancelʳ-≤ (suc m) (suc n) o@(suc _) le =
+  s≤s (*-cancelʳ-≤ m n o (+-cancelˡ-≤ _ _ _ le))
 
 *-cancelˡ-≤ : ∀ o .{{_ : NonZero o}} → o * m ≤ o * n → m ≤ n
 *-cancelˡ-≤ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≤ m n o
@@ -954,14 +954,12 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 *-mono-< (s<s m<n@(s≤s _)) u<v@(s≤s _) = +-mono-< u<v (*-mono-< m<n u<v)
 
 *-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_* n) Preserves _<_ ⟶ _<_
-*-monoˡ-< (suc n) z<s       = 0<1+n
-*-monoˡ-< (suc n) (s<s m<o@(s≤s _)) =
-  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) m<o)
+*-monoˡ-< n@(suc _) z<s               = 0<1+n
+*-monoˡ-< n@(suc _) (s<s m<o@(s≤s _)) = +-mono-≤-< ≤-refl (*-monoˡ-< n m<o)
 
 *-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
 *-monoʳ-< (suc zero)      m<o@(s≤s _) = +-mono-≤ m<o z≤n
-*-monoʳ-< (suc n@(suc _)) m<o@(s≤s _) =
-  +-mono-≤ m<o (<⇒≤ (*-monoʳ-< n m<o))
+*-monoʳ-< (suc n@(suc _)) m<o@(s≤s _) = +-mono-≤ m<o (<⇒≤ (*-monoʳ-< n m<o))
 
 m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
 m≤m*n m n@(suc _) = begin
