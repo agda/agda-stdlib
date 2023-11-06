@@ -264,7 +264,7 @@ composite⇒nonTrivial {1}    composite[1] = contradiction composite[1] ¬compos
 composite⇒nonTrivial {2+ _} _            = _
 
 prime⇒nonTrivial : Prime p → NonTrivial p
-prime⇒nonTrivial (prime _) = recompute-nonTrivial
+prime⇒nonTrivial _ = recompute-nonTrivial
 
 ------------------------------------------------------------------------
 -- NonZero

@@ -2738,11 +2738,11 @@ Additions to existing modules
   NonTrivial            : Pred ℕ 0ℓ
   instance nonTrivial   : NonTrivial (2+ n)
   n>1⇒nonTrivial        : 1 < n → NonTrivial n
-  nonZero⇒≢1⇒nonTrivial : .⦃ NonZero n ⦄ → n ≢ 1 → NonTrivial n
-  recompute-nonTrivial  : .⦃ NonTrivial n ⦄ → NonTrivial n
-  nonTrivial⇒nonZero    : .⦃ NonTrivial n ⦄ → NonZero n
-  nonTrivial⇒n>1        : .⦃ NonTrivial n ⦄ → 1 < n
-  nonTrivial⇒≢1         : .⦃ NonTrivial n ⦄ → n ≢ 1
+  nonZero⇒≢1⇒nonTrivial : .{{NonZero n}} → n ≢ 1 → NonTrivial n
+  recompute-nonTrivial  : .{{NonTrivial n}} → NonTrivial n
+  nonTrivial⇒nonZero    : .{{NonTrivial n}} → NonZero n
+  nonTrivial⇒n>1        : .{{NonTrivial n}} → 1 < n
+  nonTrivial⇒≢1         : .{{NonTrivial n}} → n ≢ 1
 
   _⊔′_ : ℕ → ℕ → ℕ
   _⊓′_ : ℕ → ℕ → ℕ
@@ -2814,7 +2814,7 @@ Additions to existing modules
   m<1+n⇒m<n∨m≡n : m < suc n → m < n ⊎ m ≡ n
 
   pred-mono-≤   : m ≤ n → pred m ≤ pred n
-  pred-mono-<   : .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
+  pred-mono-<   : .{{_ : NonZero m}} → m < n → pred m < pred n
 
   z<′s : zero <′ suc n
   s<′s : m <′ n → suc m <′ suc n
@@ -2881,21 +2881,21 @@ Additions to existing modules
   m%n≤n           : .{{_ : NonZero n}} → m % n ≤ n
   m*n/m!≡n/[m∸1]! : .{{_ : NonZero m}} → m * n / m ! ≡ n / (pred m) !
 
-  %-congˡ             : .⦃ _ : NonZero o ⦄ → m ≡ n → m % o ≡ n % o
-  %-congʳ             : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ≡ n → o % m ≡ o % n
-  m≤n⇒[n∸m]%m≡n%m     : .⦃ _ : NonZero m ⦄ → m ≤ n → (n ∸ m) % m ≡ n % m
-  m*n≤o⇒[o∸m*n]%n≡o%n : .⦃ _ : NonZero n ⦄ → m * n ≤ o → (o ∸ m * n) % n ≡ o % n
-  m∣n⇒o%n%m≡o%m       : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ∣ n → o % n % m ≡ o % m
-  m<n⇒m%n≡m           : .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
-  m*n/o*n≡m/o         : .⦃ _ : NonZero o ⦄ ⦃ _ : NonZero (o * n) ⦄ → m * n / (o * n) ≡ m / o
-  m<n*o⇒m/o<n         : .⦃ _ : NonZero o ⦄ → m < n * o → m / o < n
-  [m∸n]/n≡m/n∸1       : .⦃ _ : NonZero n ⦄ → (m ∸ n) / n ≡ pred (m / n)
-  [m∸n*o]/o≡m/o∸n     : .⦃ _ : NonZero o ⦄ → (m ∸ n * o) / o ≡ m / o ∸ n
-  m/n/o≡m/[n*o]       : .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄ .⦃ _ : NonZero (n * o) ⦄ → m / n / o ≡ m / (n * o)
-  m%[n*o]/o≡m/o%n     : .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄ ⦃ _ : NonZero (n * o) ⦄ → m % (n * o) / o ≡ m / o % n
-  m%n*o≡m*o%[n*o]     : .⦃ _ : NonZero n ⦄ ⦃ _ : NonZero (n * o) ⦄ → m % n * o ≡ m * o % (n * o)
+  %-congˡ             : .{{_ : NonZero o}} → m ≡ n → m % o ≡ n % o
+  %-congʳ             : .{{_ : NonZero m}} .{{_ : NonZero n}} → m ≡ n → o % m ≡ o % n
+  m≤n⇒[n∸m]%m≡n%m     : .{{_ : NonZero m}} → m ≤ n → (n ∸ m) % m ≡ n % m
+  m*n≤o⇒[o∸m*n]%n≡o%n : .{{_ : NonZero n}} → m * n ≤ o → (o ∸ m * n) % n ≡ o % n
+  m∣n⇒o%n%m≡o%m       : .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ n → o % n % m ≡ o % m
+  m<n⇒m%n≡m           : .{{_ : NonZero n}} → m < n → m % n ≡ m
+  m*n/o*n≡m/o         : .{{_ : NonZero o}} {{_ : NonZero (o * n)}} → m * n / (o * n) ≡ m / o
+  m<n*o⇒m/o<n         : .{{_ : NonZero o}} → m < n * o → m / o < n
+  [m∸n]/n≡m/n∸1       : .{{_ : NonZero n}} → (m ∸ n) / n ≡ pred (m / n)
+  [m∸n*o]/o≡m/o∸n     : .{{_ : NonZero o}} → (m ∸ n * o) / o ≡ m / o ∸ n
+  m/n/o≡m/[n*o]       : .{{_ : NonZero n}} .{{_ : NonZero o}} .{{_ : NonZero (n * o)}} → m / n / o ≡ m / (n * o)
+  m%[n*o]/o≡m/o%n     : .{{_ : NonZero n}} .{{_ : NonZero o}} {{_ : NonZero (n * o)}} → m % (n * o) / o ≡ m / o % n
+  m%n*o≡m*o%[n*o]     : .{{_ : NonZero n}} {{_ : NonZero (n * o)}} → m % n * o ≡ m * o % (n * o)
 
-  [m*n+o]%[p*n]≡[m*n]%[p*n]+o : ⦃ _ : NonZero (p * n) ⦄ → o < n → (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
+  [m*n+o]%[p*n]≡[m*n]%[p*n]+o : {{_ : NonZero (p * n)}} → o < n → (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
   ```
 
 * Added new proofs in `Data.Nat.Divisibility`:
