@@ -27,6 +27,7 @@ open import Relation.Binary.PropositionalEquality
 private
   variable
     d m n o p : ℕ
+
   instance
     nt[2] : NonTrivial 2
     nt[2] = nonTrivial {0}
