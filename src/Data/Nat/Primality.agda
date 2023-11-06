@@ -273,7 +273,7 @@ composite⇒nonZero : Composite n → NonZero n
 composite⇒nonZero {suc _} _ = _
 
 prime⇒nonZero : Prime p → NonZero p
-prime⇒nonZero (prime _) = nonTrivial⇒nonZero
+prime⇒nonZero _ = nonTrivial⇒nonZero _
 
 irreducible⇒nonZero : Irreducible n → NonZero n
 irreducible⇒nonZero {zero}    = flip contradiction ¬irreducible[0]
