@@ -16,7 +16,7 @@ open import Agda.Builtin.Equality
 -- Re-exports
 
 open import Relation.Nullary.Negation.Core public
-open import Relation.Nullary.Reflects public
+open import Relation.Nullary.Reflects public hiding (recompute)
 open import Relation.Nullary.Decidable.Core public
 
 ------------------------------------------------------------------------

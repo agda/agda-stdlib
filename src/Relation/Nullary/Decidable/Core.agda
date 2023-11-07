@@ -14,13 +14,12 @@ module Relation.Nullary.Decidable.Core where
 open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
-open import Data.Empty using (⊥)
-open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Empty using (Recomputable; ⊥-elim-irr)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Negation.Core
+open import Relation.Nullary.Reflects hiding (recompute)
+open import Relation.Nullary.Negation.Core as Negation
 
 private
   variable
@@ -69,9 +68,9 @@ module _ {A : Set a} where
 
 -- Given an irrelevant proof of a decidable type, a proof can
 -- be recomputed and subsequently used in relevant contexts.
-recompute : Dec A → .A → A
+recompute : Dec A → Recomputable A
 recompute (yes a) _ = a
-recompute (no ¬a) a = ⊥-elim (¬a a)
+recompute (no ¬a) a = weak-contradiction a ¬a
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
@@ -171,7 +170,7 @@ proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A
 
 decidable-stable : Dec A → Stable A
 decidable-stable (yes a) ¬¬a = a
-decidable-stable (no ¬a) ¬¬a = ⊥-elim (¬¬a ¬a)
+decidable-stable (no ¬a) ¬¬a = ⊥-elim-irr (¬¬a ¬a)
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
 ¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)

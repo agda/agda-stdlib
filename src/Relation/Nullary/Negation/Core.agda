@@ -9,7 +9,7 @@
 module Relation.Nullary.Negation.Core where
 
 open import Data.Bool.Base using (not)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥; ⊥-elim; ⊥-elim-irr; Recomputable)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
@@ -73,3 +73,12 @@ negated-stable ¬¬¬a a = ¬¬¬a (_$ a)
 private
   note : (A → ¬ B) → B → ¬ A
   note = flip
+
+------------------------------------------------------------------------
+-- recompute: negated propositions are recomputable
+
+¬-recompute : Recomputable (¬ A)
+¬-recompute ¬a a = ⊥-elim-irr (¬a a)
+
+weak-contradiction : .A → ¬ A → Whatever
+weak-contradiction a ¬a = ⊥-elim-irr (¬a a)

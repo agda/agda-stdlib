@@ -31,7 +31,21 @@ private
 {-# DISPLAY Irrelevant Empty = ⊥ #-}
 
 ------------------------------------------------------------------------
+-- Recomputable/recompute
+
+Recomputable : ∀ {a} (A : Set a) → Set a
+Recomputable A = .A → A
+
+-- ⊥ is Recomputable
+
+⊥-recompute : Recomputable ⊥
+⊥-recompute ()
+
+------------------------------------------------------------------------
 -- Functions
 
 ⊥-elim : ∀ {w} {Whatever : Set w} → ⊥ → Whatever
 ⊥-elim ()
+
+⊥-elim-irr : ∀ {w} {Whatever : Set w} → .⊥ → Whatever
+⊥-elim-irr bot = ⊥-elim (⊥-recompute bot)

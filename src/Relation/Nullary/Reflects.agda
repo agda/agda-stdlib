@@ -53,6 +53,16 @@ invert (ofʸ  a) = a
 invert (ofⁿ ¬a) = ¬a
 
 ------------------------------------------------------------------------
+-- recompute
+
+-- Given an irrelevant proof of a reflected type, a proof can
+-- be recomputed and subsequently used in relevant contexts.
+
+recompute : ∀ {b} → Reflects A b → Recomputable A
+recompute (ofʸ  a) _ = a
+recompute (ofⁿ ¬a) a = ⊥-elim-irr (¬a a)
+
+------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
 
 infixr 1 _⊎-reflects_
