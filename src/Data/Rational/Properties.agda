@@ -21,6 +21,7 @@ import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphisms
 import Algebra.Morphism.RingMonomorphism   as RingMonomorphisms
 import Algebra.Lattice.Morphism.LatticeMonomorphism as LatticeMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
+open import Algebra.Apartness
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
@@ -94,6 +95,9 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ = map′
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
+
+1≢0 : 1ℚ ≢ 0ℚ
+1≢0 = λ ()
 
 ------------------------------------------------------------------------
 -- mkℚ+
@@ -1238,6 +1242,63 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
   { isCommutativeRing = +-*-isCommutativeRing
   }
 
+
+------------------------------------------------------------------------
+-- Field-like structures and bundles
+module _ where
+  open CommutativeRing +-*-commutativeRing using (+-group)
+  open import Algebra.Properties.Group +-group
+
+  isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingCommutativeRing =
+    record
+    { isCommutativeRing = isCommutativeRing
+    ; isApartnessRelation = ≉-isApartnessRelation
+    ; #⇒invertible = #⇒invertible
+    ; invertible⇒# = invertible⇒#
+    }
+    where
+      x*y≈z→x≉0 : ∀ x y z → z ≉ 0# → x * y ≈ z → x ≉ 0#
+      x*y≈z→x≉0 x y z z≉0 x*y≈z x≈0 =
+        z≉0
+        $ begin
+            z
+          ≈⟨ sym x*y≈z ⟩
+            x * y
+          ≈⟨ *-congʳ x≈0 ⟩
+            0# * y
+          ≈⟨ zeroˡ y ⟩
+            0#
+          ∎
+        where
+          open import Function using (_$_)
+
+      #⇒invertible : {x y : ℚ} → x ≢ y → Invertible _≡_ 1ℚ _*_ (x - y)
+      #⇒invertible {x} {y} x≉y =
+        ( 1/_ (x - y) ⦃ nz ⦄
+        , *-inverseˡ (x - y) ⦃ nz ⦄ , *-inverseʳ (x - y) ⦃ nz ⦄
+        )
+        where nz = ≢-nonZero (x≉y→x∙y⁻¹≉ε +-group x y x≉y)
+
+      invertible⇒# : ∀ {x y} → Invertible _≡_ 1ℚ _*_ (x - y) → x ≢ y
+      invertible⇒# {x} {y} (1/[x-y] , _ , [x-y]/[x-y]≈1) x≈y =
+        x*y≈z→x≉0 +-*-commutativeRing (x - y) 1/[x-y] 1# 1≢0 [x-y]/[x-y]≈1 (x≈y→x∙y⁻¹≈ε +-group x y x≈y)
+
+  isHeytingField : IsHeytingField _≈_ _≉_ _+_ _*_ -_ 0# 1#
+  isHeytingField =
+    record
+    { isHeytingCommutativeRing = isHeytingCommutativeRing
+    ; tight = ≉-tight
+    }
+
+  heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  heytingCommutativeRing =
+    record { isHeytingCommutativeRing = isHeytingCommutativeRing }
+
+  heytingField : HeytingField 0ℓ 0ℓ 0ℓ
+  heytingField = record { isHeytingField = isHeytingField }
+
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
 
@@ -1663,6 +1724,7 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 
 ∣∣p∣∣≡∣p∣ : ∀ p → ∣ ∣ p ∣ ∣ ≡ ∣ p ∣
 ∣∣p∣∣≡∣p∣ p = 0≤p⇒∣p∣≡p (0≤∣p∣ p)
+
 
 
 ------------------------------------------------------------------------
