@@ -34,7 +34,7 @@ in the library except the deprecated ones.
 
 ## Installation instructions
 
-See the [installation instructions](https://github.com/agda/agda-stdlib/blob/master/notes/installation-guide.md) for the latest version of the standard library.
+See the [installation instructions](https://github.com/agda/agda-stdlib/blob/master/doc/installation-guide.md) for the latest version of the standard library.
 
 #### Old versions of Agda
 
