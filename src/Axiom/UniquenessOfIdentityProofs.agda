@@ -65,11 +65,11 @@ module Constant⇒UIP (f : _≡_ {A = A} ⇒ _≡_)
 module Decidable⇒UIP (_≟_ : Decidable {A = A} _≡_) where
 
   ≡-normalise : _≡_ {A = A} ⇒ _≡_
-  ≡-normalise {a} {b} a≡b = reflects′ id (contradiction a≡b) (proof (a ≟ b))
+  ≡-normalise {x} {y} x≡y = reflects′ id (contradiction x≡y) (proof (x ≟ y))
 
-  ≡-normalise-constant : ∀ {a b} (p q : a ≡ b) → ≡-normalise p ≡ ≡-normalise q
-  ≡-normalise-constant {a} {b} a≡b _
-    = reflects′ (λ _ → refl) (contradiction a≡b) (proof (a ≟ b))
+  ≡-normalise-constant : ∀ {x y} (p q : x ≡ y) → ≡-normalise p ≡ ≡-normalise q
+  ≡-normalise-constant {x} {y} x≡y _
+    = reflects′ (λ _ → refl) (contradiction x≡y) (proof (x ≟ y))
 
   ≡-irrelevant : UIP A
   ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant
