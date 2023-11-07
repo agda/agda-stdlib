@@ -12,7 +12,7 @@ open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
 open import Relation.Binary.Definitions
-  using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+  using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Irreflexive)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
@@ -76,6 +76,9 @@ preorder = record
 
 ≉-resp₂ : _≉_ Respects₂ _≈_
 ≉-resp₂ = ≉-respʳ , ≉-respˡ
+
+≉-irrefl : Irreflexive _≈_ _≉_
+≉-irrefl x≈y x≉y = x≉y x≈y
 
 ------------------------------------------------------------------------
 -- Other properties
