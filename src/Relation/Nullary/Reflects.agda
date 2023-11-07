@@ -42,34 +42,35 @@ data Reflects (A : Set a) : Bool → Set a where
 
 -- NB. not the maximally dependent eliminator, but mostly sufficent
 
-reflects : (C : Bool → Set c) → (A → C true) → (¬ A → C false) →
-           ∀ {b} → Reflects A b → C b
-reflects C t f (ofⁿ ¬a) = f ¬a
-reflects C t f (ofʸ  a) = t a
+reflects⁻ : (C : Bool → Set c) → (A → C true) → (¬ A → C false) →
+            ∀ {b} → Reflects A b → C b
+reflects⁻ C t f (ofⁿ ¬a) = f ¬a
+reflects⁻ C t f (ofʸ  a) = t a
 
-reflects′ : (A → B) → (¬ A → B) → ∀ {b} → Reflects A b → B
-reflects′ {B = B} = reflects (const B)
+reflects′ : ∀ (C : Set c) → (A → C) → (¬ A → C) → ∀ {b} → Reflects A b → C
+reflects′ C = reflects⁻ (const C)
 
 -- In this case, `of` works like the relevant 'computed constructor'
--- (`ofⁿ` or `ofʸ`), and its inverse `of⁻¹` strips off the constructor
+-- (`ofⁿ` or `ofʸ`), and its inverse `reflects⁻¹` strips off the constructor
 -- to just give either the proof of `A` or the proof of `¬ A`.
 
-of : ∀ {b} → if b then A else ¬ A → Reflects A b
-of {b = false} = ofⁿ
-of {b = true } = ofʸ
+reflects : ∀ {b} → if b then A else ¬ A → Reflects A b
+reflects {b = false} = ofⁿ
+reflects {b = true } = ofʸ
 
-of⁻¹ : ∀ {b} → Reflects A b → if b then A else ¬ A
-of⁻¹ {A = A} = reflects (if_then A else ¬ A) id id
+reflects⁻¹ : ∀ {b} → Reflects A b → if b then A else ¬ A
+reflects⁻¹ {A = A} = reflects⁻ (if_then A else ¬ A) id id
 
 -- in lieu of a distinct `Reflects.Properties` module
 
-of⁻¹∘of≗id : ∀ {b} (r : if b then A else ¬ A) → of⁻¹ (of {b = b} r) ≡ r
-of⁻¹∘of≗id {b = false} _ = refl
-of⁻¹∘of≗id {b = true}  _ = refl
+reflects⁻¹∘reflects≗id : ∀ {b} (r : if b then A else ¬ A) →
+                         reflects⁻¹ (reflects {b = b} r) ≡ r
+reflects⁻¹∘reflects≗id {b = false} _ = refl
+reflects⁻¹∘reflects≗id {b = true}  _ = refl
 
-of∘of⁻¹≗id : ∀ {b} (r : Reflects A b) → of (of⁻¹ r) ≡ r
-of∘of⁻¹≗id (ofʸ a)  = refl
-of∘of⁻¹≗id (ofⁿ ¬a) = refl
+reflects∘reflects⁻¹≗id : ∀ {b} (r : Reflects A b) → reflects (reflects⁻¹ r) ≡ r
+reflects∘reflects⁻¹≗id (ofʸ a)  = refl
+reflects∘reflects⁻¹≗id (ofⁿ ¬a) = refl
 
 
 ------------------------------------------------------------------------
@@ -82,7 +83,7 @@ Recomputable A = .A → A
 -- be recomputed and subsequently used in relevant contexts.
 
 recompute : ∀ {b} → Reflects A b → Recomputable A
-recompute {A = A} = reflects′ {B = Recomputable A} (λ a _ → a) (λ ¬a a → ⊥-elim (¬a a))
+recompute {A = A} = reflects′ (Recomputable A) (λ a _ → a) (λ ¬a a → ⊥-elim (¬a a))
 
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
@@ -91,39 +92,39 @@ infixr 1 _⊎-reflects_
 infixr 2 _×-reflects_ _→-reflects_
 
 T-reflects : ∀ b → Reflects (T b) b
-T-reflects true  = of _
-T-reflects false = of id
+T-reflects true  = reflects _
+T-reflects false = reflects id
 
 -- If we can decide A, then we can decide its negation.
 ¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
-¬-reflects {A = A} = reflects (Reflects (¬ A) ∘ not) (of ∘ flip _$_) of
+¬-reflects {A = A} = reflects⁻ (Reflects (¬ A) ∘ not) (reflects ∘ flip _$_) reflects
 
 -- If we can decide A and B then we can decide their product, sum and implication
 _×-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A × B) (a ∧ b)
-ofʸ  a ×-reflects ofʸ  b = of (a , b)
-ofʸ  a ×-reflects ofⁿ ¬b = of (¬b ∘ proj₂)
-ofⁿ ¬a ×-reflects _      = of (¬a ∘ proj₁)
+ofʸ  a ×-reflects ofʸ  b = reflects (a , b)
+ofʸ  a ×-reflects ofⁿ ¬b = reflects (¬b ∘ proj₂)
+ofⁿ ¬a ×-reflects _      = reflects (¬a ∘ proj₁)
 
 _⊎-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A ⊎ B) (a ∨ b)
-ofʸ  a ⊎-reflects      _ = of (inj₁ a)
-ofⁿ ¬a ⊎-reflects ofʸ  b = of (inj₂ b)
-ofⁿ ¬a ⊎-reflects ofⁿ ¬b = of (¬a ¬-⊎ ¬b)
+ofʸ  a ⊎-reflects      _ = reflects (inj₁ a)
+ofⁿ ¬a ⊎-reflects ofʸ  b = reflects (inj₂ b)
+ofⁿ ¬a ⊎-reflects ofⁿ ¬b = reflects (¬a ¬-⊎ ¬b)
 
 _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A → B) (not a ∨ b)
-ofʸ  a →-reflects ofʸ  b = of (const b)
-ofʸ  a →-reflects ofⁿ ¬b = of (¬b ∘ (_$ a))
-ofⁿ ¬a →-reflects _      = of (flip contradiction ¬a)
+ofʸ  a →-reflects ofʸ  b = reflects (const b)
+ofʸ  a →-reflects ofⁿ ¬b = reflects (¬b ∘ (_$ a))
+ofⁿ ¬a →-reflects _      = reflects (flip contradiction ¬a)
 
 
 ------------------------------------------------------------------------
 -- Other lemmas
 
 fromEquivalence : ∀ {b} → (T b → A) → (A → T b) → Reflects A b
-fromEquivalence {b = true}  sound complete = of (sound _)
-fromEquivalence {b = false} sound complete = of complete
+fromEquivalence {b = true}  sound complete = reflects (sound _)
+fromEquivalence {b = false} sound complete = reflects complete
 
 -- `Reflects` is deterministic.
 det : ∀ {b b′} → Reflects A b → Reflects A b′ → b ≡ b′
@@ -144,4 +145,6 @@ T-reflects-elim {a} r = det r (T-reflects a)
 
 -- Version 2.1
 
-invert = of⁻¹ -- against subsequent deprecation; no warning issued yet
+-- against subsequent deprecation; no warnings issued yet
+invert = reflects⁻¹
+of = reflects
