@@ -18,9 +18,9 @@ If you're looking to find your way around the library, there are several
 different ways to get started:
 
 - The library's structure and the associated design choices are described
-in the [README.agda](https://github.com/agda/agda-stdlib/tree/master/README.agda).
+in the [README.agda](https://github.com/agda/agda-stdlib/tree/master/doc/README.agda).
 
-- The [README folder](https://github.com/agda/agda-stdlib/tree/master/README),
+- The [README folder](https://github.com/agda/agda-stdlib/tree/master/doc/README),
 which mirrors the structure of the main library, contains examples of how to
 use some of the more common modules. Feel free to [open a new issue](https://github.com/agda/agda-stdlib/issues/new) if there's a particular module you feel could do with
 some more documentation.
