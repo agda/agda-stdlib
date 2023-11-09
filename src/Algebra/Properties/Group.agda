@@ -108,24 +108,16 @@ inverseʳ-unique x y eq = begin
   x ⁻¹    ∎
 
 x∙y⁻¹≈ε→x≈y : (x y : Carrier) → (x ∙ y ⁻¹) ≈ ε → x ≈ y
-x∙y⁻¹≈ε→x≈y x y x∙y⁻¹≈ε =
-  begin
-    x
-  ≈⟨ inverseˡ-unique x (y ⁻¹) x∙y⁻¹≈ε ⟩
-    (y ⁻¹) ⁻¹
-  ≈⟨ ⁻¹-involutive y ⟩
-    y
-  ∎
+x∙y⁻¹≈ε→x≈y x y x∙y⁻¹≈ε = begin
+  x         ≈⟨ inverseˡ-unique x (y ⁻¹) x∙y⁻¹≈ε ⟩
+  y ⁻¹ ⁻¹  ≈⟨ ⁻¹-involutive y ⟩
+  y         ∎
 
 x≈y→x∙y⁻¹≈ε : (x y : Carrier) → x ≈ y → (x ∙ y ⁻¹) ≈ ε
-x≈y→x∙y⁻¹≈ε x y x≈y =
-  begin
-    x ∙ y ⁻¹
-  ≈⟨ ∙-congʳ x≈y ⟩
-    y ∙ y ⁻¹
-  ≈⟨ inverseʳ y ⟩
-    ε
-  ∎
+x≈y→x∙y⁻¹≈ε x y x≈y = begin
+  x ∙ y ⁻¹ ≈⟨ ∙-congʳ x≈y ⟩
+  y ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
+  ε        ∎
 
 x≉y→x∙y⁻¹≉ε : (x y : Carrier) → x ≉ y → (x ∙ y ⁻¹) ≉ ε
 x≉y→x∙y⁻¹≉ε x y x≉y x∙y⁻¹≈ε = x≉y (x∙y⁻¹≈ε→x≈y x y x∙y⁻¹≈ε)

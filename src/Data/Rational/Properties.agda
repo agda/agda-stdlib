@@ -1246,8 +1246,12 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 ------------------------------------------------------------------------
 -- Field-like structures and bundles
 module _ where
-  open CommutativeRing +-*-commutativeRing using (+-group)
+  open CommutativeRing +-*-commutativeRing
+    using (+-group; zeroˡ; *-congʳ; isCommutativeRing)
+
   open import Algebra.Properties.Group +-group
+  open import Relation.Binary.Reasoning.Setoid ≡-setoid
+  open import Relation.Binary.Properties.DecSetoid ≡-decSetoid
 
   isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
   isHeytingCommutativeRing =
@@ -1258,33 +1262,40 @@ module _ where
     ; invertible⇒# = invertible⇒#
     }
     where
-      x*y≈z→x≉0 : ∀ x y z → z ≉ 0# → x * y ≈ z → x ≉ 0#
-      x*y≈z→x≉0 x y z z≉0 x*y≈z x≈0 =
+      x*y≡z→x≢0 : ∀ x y z → z ≢ 0ℚ → x * y ≡ z → x ≢ 0ℚ
+      x*y≡z→x≢0 x y z z≉0 x*y≡z x≡0 =
         z≉0
         $ begin
             z
-          ≈⟨ sym x*y≈z ⟩
+          ≈⟨ sym x*y≡z ⟩
             x * y
-          ≈⟨ *-congʳ x≈0 ⟩
-            0# * y
+          ≈⟨ *-congʳ x≡0 ⟩
+            0ℚ * y
           ≈⟨ zeroˡ y ⟩
-            0#
+            0ℚ
           ∎
         where
           open import Function using (_$_)
 
-      #⇒invertible : {x y : ℚ} → x ≢ y → Invertible _≡_ 1ℚ _*_ (x - y)
-      #⇒invertible {x} {y} x≉y =
+      #⇒invertible : {x y : ℚ} → x ≢ y → Invertible 1ℚ _*_ (x - y)
+      #⇒invertible {x} {y} x≢y =
         ( 1/_ (x - y) ⦃ nz ⦄
         , *-inverseˡ (x - y) ⦃ nz ⦄ , *-inverseʳ (x - y) ⦃ nz ⦄
         )
-        where nz = ≢-nonZero (x≉y→x∙y⁻¹≉ε +-group x y x≉y)
+        where
+          nz = ≢-nonZero (x≉y→x∙y⁻¹≉ε x y x≢y)
 
-      invertible⇒# : ∀ {x y} → Invertible _≡_ 1ℚ _*_ (x - y) → x ≢ y
-      invertible⇒# {x} {y} (1/[x-y] , _ , [x-y]/[x-y]≈1) x≈y =
-        x*y≈z→x≉0 +-*-commutativeRing (x - y) 1/[x-y] 1# 1≢0 [x-y]/[x-y]≈1 (x≈y→x∙y⁻¹≈ε +-group x y x≈y)
+      invertible⇒# : ∀ {i j} → Invertible 1ℚ _*_ (i - j) → i ≢ j
+      invertible⇒# {i} {j} (1/[i-j] , _ , [i-j]/[i-j]≡1) i≡j =
+        x*y≡z→x≢0
+          (i - j)
+          1/[i-j]
+          1ℚ
+          1≢0
+          [i-j]/[i-j]≡1
+          (x≈y→x∙y⁻¹≈ε i j i≡j)
 
-  isHeytingField : IsHeytingField _≈_ _≉_ _+_ _*_ -_ 0# 1#
+  isHeytingField : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
   isHeytingField =
     record
     { isHeytingCommutativeRing = isHeytingCommutativeRing
