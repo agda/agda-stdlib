@@ -1279,11 +1279,12 @@ module _ where
 
       #⇒invertible : {x y : ℚ} → x ≢ y → Invertible 1ℚ _*_ (x - y)
       #⇒invertible {x} {y} x≢y =
-        ( 1/_ (x - y) ⦃ nz ⦄
-        , *-inverseˡ (x - y) ⦃ nz ⦄ , *-inverseʳ (x - y) ⦃ nz ⦄
-        )
-        where
-          nz = ≢-nonZero (x≉y→x∙y⁻¹≉ε x y x≢y)
+        let instance _ = ≢-nonZero (x≉y→x∙y⁻¹≉ε x y x≢y)
+        in
+          ( 1/_ (x - y)
+          , *-inverseˡ (x - y)
+          , *-inverseʳ (x - y)
+          )
 
       invertible⇒# : ∀ {i j} → Invertible 1ℚ _*_ (i - j) → i ≢ j
       invertible⇒# {i} {j} (1/[i-j] , _ , [i-j]/[i-j]≡1) i≡j =
