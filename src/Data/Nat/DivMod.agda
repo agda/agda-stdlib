@@ -401,10 +401,12 @@ m/n/o≡m/[n*o] m n o = begin-equality
                   (m * n) / (o * p) ≡ (m / o) * (n / p)
 /-*-interchange {o} {p} {m@.(q * o)} {n@.(r * p)} (divides-refl q) (divides-refl r)
   = let instance _ = m*n≢0 o p in begin-equality
+  (m * n) / (o * p) ≡⟨⟩
   q * o * (r * p) / (o * p) ≡⟨ /-congˡ ([m*n]*[o*p]≡[m*o]*[n*p] q o r p) ⟩
   q * r * (o * p) / (o * p) ≡⟨ m*n/n≡m (q * r) (o * p) ⟩
   q * r                     ≡⟨ cong₂ _*_ (m*n/n≡m q o) (m*n/n≡m r p) ⟨
-  (q * o / o) * (r * p / p) ∎
+  (q * o / o) * (r * p / p) ≡⟨⟩
+  (m / o) * (n / p)         ∎
 
 m*n/m!≡n/[m∸1]! : ∀ m n .{{_ : NonZero m}} →
                   let instance _ = m !≢0 ; instance _ = (pred m) !≢0 in
