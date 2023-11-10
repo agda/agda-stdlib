@@ -47,8 +47,18 @@ m ∤ n = ¬ (m ∣ n)
 pattern divides-refl q = divides q refl
 
 ------------------------------------------------------------------------
--- Basic properties
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.1
 
 *-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
 *-pres-∣ {o} {m@.(q * o)} {p} {n@.(r * p)} (divides-refl q) (divides-refl r) =
   divides (q * r) ([m*n]*[o*p]≡[m*o]*[n*p] q o r p)
+
+{-# WARNING_ON_USAGE *-pres-∣
+"Warning: *-pres-∣ was deprecated in v2.1.
+ Please use Data.Nat.Divisibility.*-pres-∣ instead."
+#-}

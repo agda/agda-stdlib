@@ -1081,7 +1081,7 @@ Non-backwards compatible changes
   have had their preconditions weakened so the equivalences no longer require congruence
   proofs.
 
-* In `Data.Nat.Divisibility` the proof `m/n/o≡m/[n*o]` has been removed. In it's
+* In `Data.Nat.Divisibility` the proof `m/n/o≡m/[n*o]` has been removed. In its
   place a new more general proof `m/n/o≡m/[n*o]` has been added to `Data.Nat.DivMod`
   that doesn't require the `n * o ∣ m` pre-condition.
 
@@ -1480,6 +1480,11 @@ Deprecated names
   map-compose    ↦  map-∘
 
   map-<∣>-commute ↦  map-<∣>
+  ```
+
+* In `Data.Nat.Divisibility.Core`:
+  ```agda
+  *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
   ```
 
 * In `Data.Nat.Properties`:

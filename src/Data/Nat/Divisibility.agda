@@ -30,13 +30,13 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (isEquivalence; module ≡-Reasoning)
 
 private
-  variable d m n o : ℕ
+  variable d m n o p : ℕ
 
 
 ------------------------------------------------------------------------
 -- Definition and derived properties
 
-open import Data.Nat.Divisibility.Core public
+open import Data.Nat.Divisibility.Core public hiding (*-pres-∣)
 
 module _ (m∣n : m ∣ n) where
 
@@ -225,6 +225,10 @@ m*n∣⇒m∣ m n (divides-refl q) = ∣n⇒∣m*n q (m∣m*n n)
 
 m*n∣⇒n∣ : ∀ m n → m * n ∣ d → n ∣ d
 m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
+
+*-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
+*-pres-∣ {o} {m@.(q * o)} {p} {n@.(r * p)} (divides-refl q) (divides-refl r) =
+  divides (q * r) ([m*n]*[o*p]≡[m*o]*[n*p] q o r p)
 
 *-monoʳ-∣ : ∀ k → m ∣ n → k * m ∣ k * n
 *-monoʳ-∣ k = *-pres-∣ (∣-refl {k})
