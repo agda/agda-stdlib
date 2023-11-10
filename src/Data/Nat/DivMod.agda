@@ -396,17 +396,6 @@ m/n/o≡m/[n*o] m n o = begin-equality
   n / d + (m * n) / d ≡⟨ cong (n / d +_) (*-/-assoc m d∣n) ⟩
   n / d + m * (n / d) ∎
 
-{-
-/-*-interchange : ∀ {m n o p} .{{_ : NonZero o}} .{{_ : NonZero p}} →
-                  let instance _ = m*n≢0 o p in o ∣ m → p ∣ n →
-                  (m * n) / (o * p) ≡ (m / o) * (n / p)
-/-*-interchange {m} {n} {o} {p} o∣m p∣n =
-  let instance _ = m*n≢0 o p in *-cancelˡ-≡ _ _ (o * p) $ begin-equality
-  (o * p) * ((m * n) / (o * p)) ≡⟨ m*[n/m]≡n (*-pres-∣ o∣m p∣n) ⟩
-  m * n                         ≡⟨ cong₂ _*_ (m*[n/m]≡n o∣m) (m*[n/m]≡n p∣n) ⟨
-  (o * (m / o)) * (p * (n / p)) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] o (m / o) p (n / p) ⟩
-  (o * p) * ((m / o) * (n / p)) ∎
--}
 /-*-interchange : .{{_ : NonZero o}} .{{_ : NonZero p}} →
                   let instance _ = m*n≢0 o p in o ∣ m → p ∣ n →
                   (m * n) / (o * p) ≡ (m / o) * (n / p)
