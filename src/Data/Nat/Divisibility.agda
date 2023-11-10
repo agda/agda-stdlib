@@ -10,6 +10,7 @@ module Data.Nat.Divisibility where
 
 open import Data.Nat.Base
 open import Data.Nat.DivMod
+  using (m≡m%n+[m/n]*n; m%n≡m∸m/n*n; m*n/n≡m; m*n%n≡0; *-/-assoc)
 open import Data.Nat.Properties
 open import Function.Base using (_∘′_; _$_; flip)
 open import Function.Bundles using (_⇔_; mk⇔)
