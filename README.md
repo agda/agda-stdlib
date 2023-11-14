@@ -25,12 +25,8 @@ which mirrors the structure of the main library, contains examples of how to
 use some of the more common modules. Feel free to [open a new issue](https://github.com/agda/agda-stdlib/issues/new) if there's a particular module you feel could do with
 some more documentation.
 
-- You can [browse the library's source code](https://agda.github.io/agda-stdlib/README.html)
+- You can [browse the library's source code](https://agda.github.io/agda-stdlib/)
 in glorious clickable HTML.
-
-- Finally, you can get an overview of the entire library by looking at the
-[index](https://agda.github.io/agda-stdlib/), which lists all modules
-in the library except the deprecated ones.
 
 ## Installation instructions
 
