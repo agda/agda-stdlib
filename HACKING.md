@@ -4,7 +4,7 @@ Contributing to the library
 Thank you for your interest in contributing to the Agda standard library.
 Hopefully this guide should make it easy to do so! Feel free to ask any
 questions on the Agda mailing list. Before you start please read the
-[style-guide](https://github.com/agda/agda-stdlib/blob/master/notes/style-guide.md).
+[style-guide](https://github.com/agda/agda-stdlib/blob/master/doc/style-guide.md).
 
 What is an acceptable contribution?
 ===================================
@@ -124,7 +124,7 @@ git push USER -u new_feature
 
 You can then proceed to make your changes. Please follow existing
 conventions in the library, see
-[style-guide](https://github.com/agda/agda-stdlib/blob/master/notes/style-guide.md).
+[style-guide](https://github.com/agda/agda-stdlib/blob/master/doc/style-guide.md).
 for details. Document your changes in `agda-stdlib-fork/CHANGELOG.md`.
 
 If you are creating new modules, please make sure you are having a

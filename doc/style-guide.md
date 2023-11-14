@@ -333,6 +333,16 @@ line of code, indented by two spaces.
   ...                  | false = filter p xs
   ```
 
+* Instance arguments, and their types, should use the vanilla ASCII/UTF-8 `{{_}}`
+  syntax in preference to the Unicode `⦃_⦄` syntax (written using `\{{`/`\}}`),
+  which moreover requires additional whitespace to parse correctly.
+  NB. Even for irrelevant instances, such as typically for `NonZero` arguments,
+  neverthelesss it is necessary to supply an underscore binding `{{_ : NonZero n}}`
+  if subsequent terms occurring in the type rely on that argument to be well-formed:
+  eg in `Data.Nat.DivMod`, in the use of `_/ n` and `_% n`
+  ```agda
+  m≡m%n+[m/n]*n : ∀ m n .{{_ : NonZero n}} → m ≡ m % n + (m / n) * n
+  ```
 
 ## Types
 
