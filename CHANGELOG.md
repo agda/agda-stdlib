@@ -1727,6 +1727,11 @@ Deprecated names
   invPreorder   ↦ converse-preorder
   ```
 
+* In `Relation.Unary.Consequences`:
+  ```agda
+  dec⟶recomputable  ↦  dec⇒recomputable
+  ```
+
 ## Missing fixity declarations added
 
 * An effort has been made to add sensible fixities for many declarations:
