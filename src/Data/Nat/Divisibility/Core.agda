@@ -49,8 +49,8 @@ pattern divides-refl q = divides q refl
 
 -- Relation for having a non-trivial divisor below a given bound.
 -- Useful when reasoning about primality.
-record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
-  constructor hasNonTrivialDivisorLessThan
+record _BoundedNonTrivialDivisor_ (m n : ℕ) : Set where
+  constructor boundedNonTrivialDivisor
   field
     {divisor}       : ℕ
     .{{nontrivial}} : NonTrivial divisor

@@ -12,7 +12,7 @@ open import Algebra
 open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
-open import Data.Unit.Base using (tt)
+--open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘′_; _$_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
@@ -310,15 +310,14 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)
 
 ------------------------------------------------------------------------
--- Properties of _HasNonTrivialDivisorLessThan_
+-- Properties of _BoundedNonTrivialDivisor_
 
-hasNonTrivialDivisorLessThan-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
-                                d ≢ n → d ∣ n →
-                                n HasNonTrivialDivisorLessThan n
-hasNonTrivialDivisorLessThan-≢ d≢n d∣n
-  = hasNonTrivialDivisorLessThan (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+boundedNonTrivialDivisor-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
+                         d ≢ n → d ∣ n → n BoundedNonTrivialDivisor n
+boundedNonTrivialDivisor-≢ d≢n d∣n
+  = boundedNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
-hasNonTrivialDivisorLessThan-∣ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → n ∣ o →
-                               m HasNonTrivialDivisorLessThan o
-hasNonTrivialDivisorLessThan-∣ (hasNonTrivialDivisorLessThan d<m d∣n) n∣o
-  = hasNonTrivialDivisorLessThan d<m (∣-trans d∣n n∣o)
+boundedNonTrivialDivisor-∣ : ∀ {m n o} → m BoundedNonTrivialDivisor n → n ∣ o →
+                         m BoundedNonTrivialDivisor o
+boundedNonTrivialDivisor-∣ (boundedNonTrivialDivisor d<m d∣n) n∣o
+  = boundedNonTrivialDivisor d<m (∣-trans d∣n n∣o)

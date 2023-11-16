@@ -2777,8 +2777,8 @@ Additions to existing modules
   ```agda
   pattern divides-refl q = divides q refl
 
-  record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
-    constructor hasNonTrivialDivisorLessThan
+  record _BoundedNonTrivialDivisor_ (m n : ℕ) : Set where
+    constructor boundedNonTrivialDivisor
     field
       {divisor}       : ℕ
       .{{nontrivial}} : NonTrivial divisor
