@@ -2787,9 +2787,9 @@ Additions to existing modules
   instance quotient≢0 : m ∣ n → .{{NonZero n}} → NonZero quotient
 
   equalityᵒ    : m ∣ n → n ≡ m * quotient
-  quotient∣    : m ∣ n → quotient ∣ n
+  quotient-∣   : m ∣ n → quotient ∣ n
   quotient>1   : m ∣ n → m < n → 1 < quotient
-  quotient<    : m ∣ n → 1 < m → .{{NonZero n}} → quotient < n
+  quotient-<   : m ∣ n → 1 < m → .{{NonZero n}} → quotient < n
   n/m≡quotient : m ∣ n → .{{_ : NonZero m}} → n / m ≡ quotient
   ```
 

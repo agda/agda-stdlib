@@ -51,8 +51,8 @@ module _ (m∣n : m ∣ n) where
   equalityᵒ : n ≡ m * quotient
   equalityᵒ rewrite equality = *-comm quotient m
 
-  quotient∣ : quotient ∣ n
-  quotient∣ = divides m equalityᵒ
+  quotient-∣ : quotient ∣ n
+  quotient-∣ = divides m equalityᵒ
 
   quotient>1 : m < n → 1 < quotient
   quotient>1 m<n = *-cancelˡ-< m 1 quotient $ begin-strict
@@ -61,8 +61,8 @@ module _ (m∣n : m ∣ n) where
       n            ≡⟨ equalityᵒ ⟩
       m * quotient ∎
 
-  quotient< : 1 < m → .{{NonZero n}} → quotient < n
-  quotient< 1<m = begin-strict
+  quotient-< : 1 < m → .{{NonZero n}} → quotient < n
+  quotient-< 1<m = begin-strict
     quotient     <⟨ m<m*n quotient m 1<m ⟩
     quotient * m ≡⟨ equality ⟨
     n            ∎
@@ -264,12 +264,10 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 -- Properties of _∣_ and _/_
 
 m/n∣m : .{{_ : NonZero n}} → n ∣ m → m / n ∣ m
-m/n∣m {n} {m@.(p * n)} (divides-refl p) = begin
-  m / n     ≡⟨⟩
-  p * n / n ≡⟨ m*n/n≡m p n ⟩
-  p         ∣⟨ m∣m*n n ⟩
-  p * n     ≡⟨⟩
-  m         ∎
+m/n∣m {n} {m} n∣m = begin
+  m / n        ≡⟨ n/m≡quotient n∣m ⟩
+  quotient n∣m ∣⟨ quotient-∣ n∣m ⟩
+  m            ∎
 
 m*n∣o⇒m∣o/n : ∀ m n .{{_ : NonZero n}} → m * n ∣ o → m ∣ o / n
 m*n∣o⇒m∣o/n m n (divides-refl p) = divides p $ begin-equality
