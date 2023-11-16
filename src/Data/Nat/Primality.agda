@@ -18,7 +18,7 @@ open import Function.Base using (flip; _∘_; _∘′_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Nullary.Decidable as Dec
   using (yes; no; from-yes; from-no; ¬?; _×-dec_; _⊎-dec_; _→-dec_; decidable-stable)
-open import Relation.Nullary.Negation using (¬_; contradiction)
+open import Relation.Nullary.Negation using (¬_; contradiction; contradiction₂)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
@@ -29,7 +29,8 @@ private
     d m n o p : ℕ
 
   recompute-nonTrivial : .{{NonTrivial n}} → NonTrivial n
-  recompute-nonTrivial {n} {{nontrivial}} = Dec.recompute (nonTrivial? n) nontrivial
+  recompute-nonTrivial {n} {{nontrivial}} =
+    Dec.recompute (nonTrivial? n) nontrivial
 
 ------------------------------------------------------------------------
 -- Definitions
@@ -93,7 +94,8 @@ Irreducible n = ∀ {d} → d ∣ n → d ≡ 1 ⊎ d ≡ n
 
 -- 1 is always n-rough
 rough-1 : ∀ n → Rough n 1
-rough-1 _ (hasNonTrivialDivisorLessThan _ d∣1) = contradiction (∣1⇒≡1 d∣1) nonTrivial⇒≢1
+rough-1 _ (hasNonTrivialDivisorLessThan _ d∣1) =
+  contradiction (∣1⇒≡1 d∣1) nonTrivial⇒≢1
 
 -- Any number is 0-, 1- and 2-rough,
 -- because no non-trivial factor d can be less than 0, 1, or 2
@@ -108,11 +110,13 @@ rough-1 _ (hasNonTrivialDivisorLessThan _ d∣1) = contradiction (∣1⇒≡1 d�
 
 -- If a number n > 1 is m-rough, then m ≤ n
 rough⇒≤ : .{{NonTrivial n}} → Rough m n → m ≤ n
-rough⇒≤ rough = ≮⇒≥ λ m>n → rough (hasNonTrivialDivisorLessThan m>n ∣-refl)
-
+rough⇒≤ rough = ≮⇒≥ n≮m
+  where n≮m = λ m>n → rough (hasNonTrivialDivisorLessThan m>n ∣-refl)
+  
 -- If a number n is m-rough, and m ∤ n, then n is (suc m)-rough
 ∤⇒rough-suc : m ∤ n → Rough m n → Rough (suc m) n
-∤⇒rough-suc m∤n r (hasNonTrivialDivisorLessThan d<1+m d∣n) with m<1+n⇒m<n∨m≡n d<1+m
+∤⇒rough-suc m∤n r (hasNonTrivialDivisorLessThan d<1+m d∣n)
+  with m<1+n⇒m<n∨m≡n d<1+m
 ... | inj₁ d<m      = r (hasNonTrivialDivisorLessThan d<m d∣n)
 ... | inj₂ d≡m@refl = contradiction d∣n m∤n
 
@@ -150,10 +154,10 @@ prime? 0        = no ¬prime[0]
 prime? 1        = no ¬prime[1]
 prime? n@(2+ _) = Dec.map PrimeUpTo⇔Prime (primeUpTo? n)
   where
-  -- For technical reasons, in order to be able to prove decidability via
-  -- the `all?` and `any?` combinators for *bounded* predicates on ℕ, we
-  -- further define the bounded counterparts to predicates `P...` as
-  -- `P...UpTo` and show the equivalence of the two.
+  -- For technical reasons, in order to be able to prove decidability
+  -- via the `all?` and `any?` combinators for *bounded* predicates on
+  -- `ℕ`, we further define the bounded counterparts to predicates
+  -- `P...` as `P...UpTo` and show the equivalence of the two.
 
   -- An equivalent bounded predicate definition
   PrimeUpTo : Pred ℕ _
@@ -175,10 +179,8 @@ prime? n@(2+ _) = Dec.map PrimeUpTo⇔Prime (primeUpTo? n)
   primeUpTo? : Decidable PrimeUpTo
   primeUpTo? n = allUpTo? (λ d → nonTrivial? d →-dec ¬? (d ∣? n)) n
 
-------------------------------------------------------------------------
--- Euclid's lemma
-
--- For p prime, if p ∣ m * n, then either p ∣ m or p ∣ n.
+-- Euclid's lemma - for p prime, if p ∣ m * n, then either p ∣ m or p ∣ n.
+--
 -- This demonstrates that the usual definition of prime numbers matches
 -- the ring theoretic definition of a prime element of the semiring ℕ.
 -- This is useful for proving many other theorems involving prime numbers.
@@ -198,9 +200,10 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
   result : p ∣ m ⊎ p ∣ n
   result with Bézout.lemma m p
   -- if the GCD of m and p is zero then p must be zero, which is
-  -- impossible as p is a prime
-  ... | Bézout.result 0 g _ = contradiction (0∣⇒≡0 (GCD.gcd∣n g)) (≢-nonZero⁻¹ _)
-  -- this should be a typechecker-rejectable case!?
+  -- impossible as p is a prime.
+  -- note: this should be a typechecker-rejectable case!?
+  ... | Bézout.result 0 g _ =
+    contradiction (0∣⇒≡0 (GCD.gcd∣n g)) (≢-nonZero⁻¹ _)
 
   -- if the GCD of m and p is one then m and p are coprime, and we know
   -- that for some integers s and r, sm + rp = 1. We can use this fact
@@ -219,10 +222,12 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
       n + r * m * n ≡⟨ +-comm n (r * m * n) ⟩
       r * m * n + n ∎))
 
-  -- if the GCD of m and p is greater than one, then it must be p and hence p ∣ m.
+  -- if the GCD of m and p is greater than one, then it must be p and
+  -- hence p ∣ m.
   ... | Bézout.result d@(2+ _) g _ with d ≟ p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
-  ...   | no  d≢p = contradiction (hasNonTrivialDivisorLessThan-≢ d≢p (GCD.gcd∣n g)) pr
+  ...   | no  d≢p =
+    contradiction (hasNonTrivialDivisorLessThan-≢ d≢p (GCD.gcd∣n g)) pr
 
 ------------------------------------------------------------------------
 -- Compositeness
@@ -232,7 +237,8 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
 composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
 composite {d = d} = hasNonTrivialDivisorLessThan {divisor = d}
 
-composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
+composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} →
+               d ≢ n → d ∣ n → Composite n
 composite-≢ d = hasNonTrivialDivisorLessThan-≢ {d}
 
 composite-∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
@@ -260,22 +266,25 @@ composite⇒nonZero : Composite n → NonZero n
 composite⇒nonZero {suc _} _ = _
 
 composite⇒nonTrivial : Composite n → NonTrivial n
-composite⇒nonTrivial {1}    composite[1] = contradiction composite[1] ¬composite[1]
+composite⇒nonTrivial {1}    composite[1] =
+  contradiction composite[1] ¬composite[1]
 composite⇒nonTrivial {2+ _} _            = _
 
 composite? : Decidable Composite
 composite? n = Dec.map CompositeUpTo⇔Composite (compositeUpTo? n)
   where
-  -- equivalent bounded predicate definition
+  -- Equivalent bounded predicate definition
   CompositeUpTo : Pred ℕ _
   CompositeUpTo n = ∃[ d ] d < n × NonTrivial d × d ∣ n
 
-  -- proof of equivalence
+  -- Proof of equivalence
   comp-upto⇒comp : CompositeUpTo n → Composite n
-  comp-upto⇒comp (_ , d<n , ntd , d∣n) = hasNonTrivialDivisorLessThan {{ntd}} d<n d∣n
+  comp-upto⇒comp (_ , d<n , ntd , d∣n) =
+    hasNonTrivialDivisorLessThan {{ntd}} d<n d∣n
 
   comp⇒comp-upto : Composite n → CompositeUpTo n
-  comp⇒comp-upto (hasNonTrivialDivisorLessThan d<n d∣n) = _ , d<n , recompute-nonTrivial , d∣n
+  comp⇒comp-upto (hasNonTrivialDivisorLessThan d<n d∣n) =
+    _ , d<n , recompute-nonTrivial , d∣n
 
   CompositeUpTo⇔Composite : CompositeUpTo n ⇔ Composite n
   CompositeUpTo⇔Composite = mk⇔ comp-upto⇒comp comp⇒comp-upto
@@ -302,8 +311,9 @@ prime⇒¬composite (prime p) = p
 -- Basic (counter-)examples of Irreducible
 
 ¬irreducible[0] : ¬ Irreducible 0
-¬irreducible[0] irr[0] = [ (λ ()) , (λ ()) ]′ (irr[0] {2} (divides-refl 0))
-
+¬irreducible[0] irr[0] = contradiction₂ 2≡1⊎2≡0 (λ ()) (λ ())
+  where 2≡1⊎2≡0 = irr[0] {2} (divides-refl 0)
+  
 irreducible[1] : Irreducible 1
 irreducible[1] m|1 = inj₁ (∣1⇒≡1 m|1)
 
@@ -319,7 +329,8 @@ irreducible⇒nonZero {suc _} _ = _
 
 irreducible? : Decidable Irreducible
 irreducible? zero      = no ¬irreducible[0]
-irreducible? n@(suc _) = Dec.map IrreducibleUpTo⇔Irreducible (irreducibleUpTo? n)
+irreducible? n@(suc _) =
+  Dec.map IrreducibleUpTo⇔Irreducible (irreducibleUpTo? n)
   where
   -- Equivalent bounded predicate definition
   IrreducibleUpTo : Pred ℕ _
@@ -333,23 +344,27 @@ irreducible? n@(suc _) = Dec.map IrreducibleUpTo⇔Irreducible (irreducibleUpTo?
   irr⇒irr-upto : Irreducible n → IrreducibleUpTo n
   irr⇒irr-upto irr m<n m∣n = irr m∣n
 
-  IrreducibleUpTo⇔Irreducible : .{{NonZero n}} → IrreducibleUpTo n ⇔ Irreducible n
+  IrreducibleUpTo⇔Irreducible : .{{NonZero n}} →
+                                 IrreducibleUpTo n ⇔ Irreducible n
   IrreducibleUpTo⇔Irreducible = mk⇔ irr-upto⇒irr irr⇒irr-upto
 
   -- Decidability
   irreducibleUpTo? : Decidable IrreducibleUpTo
-  irreducibleUpTo? n = allUpTo? (λ m → (m ∣? n) →-dec (m ≟ 1 ⊎-dec m ≟ n)) n
+  irreducibleUpTo? n = allUpTo?
+    (λ m → (m ∣? n) →-dec (m ≟ 1 ⊎-dec m ≟ n)) n
 
 prime⇒irreducible : Prime p → Irreducible p
 prime⇒irreducible pp@(prime _) {0}        0∣p
   = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _ {{prime⇒nonZero pp}})
 prime⇒irreducible     _     {1}        1∣p = inj₁ refl
 prime⇒irreducible pp@(prime pr) {m@(2+ _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤  {{prime⇒nonZero pp}} m∣p) λ m<p → pr (hasNonTrivialDivisorLessThan m<p m∣p))
-
+  = inj₂ (≤∧≮⇒≡ (∣⇒≤ {{prime⇒nonZero pp}} m∣p) m≮p)
+  where m≮p = λ m<p → pr (hasNonTrivialDivisorLessThan m<p m∣p)
+  
 irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
 irreducible⇒prime irr = prime
-  λ (hasNonTrivialDivisorLessThan d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
+  λ (hasNonTrivialDivisorLessThan d<p d∣p) →
+    [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
 
 ------------------------------------------------------------------------
 -- Using decidability
