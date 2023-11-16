@@ -57,25 +57,25 @@ Rough : ℕ → Pred ℕ _
 Rough m n = ¬ (m HasNonTrivialDivisorLessThan n)
 
 ------------------------------------------------------------------------
--- Primality
-
--- Prime as the diagonal of Rough (and hence the complement of Composite
--- as defined below). The constructor `prime` takes a proof `isPrime`
--- that NonTrivial p is p-Rough and thereby enforces that:
--- * p is a fortiori NonZero and NonUnit
--- * any non-trivial divisor of p must be at least p, i.e. p itself
-record Prime (p : ℕ) : Set where
-  constructor prime
-  field
-    .{{nontrivial}} : NonTrivial p
-    isPrime         : Rough p p
-
-------------------------------------------------------------------------
 -- Compositeness
 
 -- A number is composite if it has a proper non-trivial divisor.
 Composite : Pred ℕ _
 Composite n = n HasNonTrivialDivisorLessThan n
+
+------------------------------------------------------------------------
+-- Primality
+
+-- Prime as the complement of Composite (and hence the diagonal of Rough
+-- as defined above). The constructor `prime` takes a proof `notComposite`
+-- that NonTrivial p is not composite and thereby enforces that:
+-- * p is a fortiori NonZero and NonUnit
+-- * p is p-Rough, i.e. any proper divisor must be at least p, i.e. p itself
+record Prime (p : ℕ) : Set where
+  constructor prime
+  field
+    .{{nontrivial}} : NonTrivial p
+    notComposite    : ¬ Composite p
 
 ------------------------------------------------------------------------
 -- Irreducibility

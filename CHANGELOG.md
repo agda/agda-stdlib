@@ -645,10 +645,14 @@ Non-backwards compatible changes
 * To make it easier to use, reason about and read, the definition has been
   changed to:
   ```agda
-  Prime 0 = ⊥
-  Prime 1 = ⊥
-  Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
+  record Prime (p : ℕ) : Set where
+    constructor prime
+    field
+      .{{nontrivial}} : NonTrivial p
+      notComposite    : ¬ Composite p
   ```
+  where `Composite` is now defined as the diagonal of the relation
+  `Divisibility.Core.HasNonTrivialDivisorLessThan`
 
 ### Changes to operation reduction behaviour in `Data.Rational(.Unnormalised)`
 
@@ -2769,9 +2773,17 @@ Additions to existing modules
   <-asym : Asymmetric _<_
   ```
 
-* Added a new pattern synonym to `Data.Nat.Divisibility.Core`:
+* Added a new pattern synonym and a new definition to `Data.Nat.Divisibility.Core`:
   ```agda
   pattern divides-refl q = divides q refl
+
+  record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
+    constructor hasNonTrivialDivisorLessThan
+    field
+      {divisor}       : ℕ
+      .{{nontrivial}} : NonTrivial divisor
+      divisor-<       : divisor < m
+      divisor-∣       : divisor ∣ n
   ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
