@@ -33,24 +33,72 @@ private
 
 ------------------------------------------------------------------------
 -- Definitions
+------------------------------------------------------------------------
 
--- The definitions of `Prime` and `Composite` in this module are intended to
--- be built up as complementary pairs of `Decidable` predicates, with `Prime`
--- given *negatively* as the universal closure of the negation of `Composite`,
--- where this is given *positively* as an existential witnessing a non-trivial
--- divisor, where such quantification is proxied by an explicit `record` type.
+-- The definitions of `Prime` and `Composite` in this module are
+-- intended to be built up as complementary pairs of `Decidable`
+-- predicates, with `Prime` given *negatively* as the universal closure
+-- of the negation of `Composite`, where this is given *positively* as
+-- an existential witnessing a non-trivial divisor, where such
+-- quantification is proxied by an explicit `record` type.
 
--- For technical reasons, in order to be able to prove decidability via the
--- `all?` and `any?` combinators for *bounded* predicates on ℕ, we further
--- define the bounded counterparts to predicates `P...` as `P...UpTo` and show
--- the equivalence of the two.
+-- For technical reasons, in order to be able to prove decidability via
+-- the `all?` and `any?` combinators for *bounded* predicates on ℕ, we
+-- further define the bounded counterparts to predicates `P...` as
+-- `P...UpTo` and show the equivalence of the two.
 
--- Finally, the definitions of the predicates `Composite` and `Prime` as the
--- 'diagonal' instances of relations involving such bounds on the possible
--- non-trivial divisors leads to the following positive/existential predicate
--- as the basis for the whole development.
+-- Finally, the definitions of the predicates `Composite` and `Prime`
+-- as the 'diagonal' instances of relations involving such bounds on
+-- the possible non-trivial divisors leads to the following
+-- positive/existential predicate as the basis for the whole development.
 
--- Definition of compositeness
+------------------------------------------------------------------------
+-- Roughness
+
+-- Definition of 'rough': a number is m-rough if all its non-trivial
+-- divisors are bounded below by m.
+
+Rough : ℕ → Pred ℕ _
+Rough m n = ¬ (m HasNonTrivialDivisorLessThan n)
+
+------------------------------------------------------------------------
+-- Primality
+
+-- Definition of Prime as the diagonal of Rough (and hence the
+-- complement of Composite below).
+
+-- Constructor `prime` takes a proof isPrime that NonTrivial p is p-Rough
+-- and thereby enforces that:
+-- * p is a fortiori NonZero and NonUnit
+-- * any non-trivial divisor of p must be at least p, ie p itself
+
+record Prime (p : ℕ) : Set where
+  constructor prime
+  field
+    .{{nontrivial}} : NonTrivial p
+    isPrime         : Rough p p
+
+-- equivalent bounded predicate definition; proof of equivalence
+
+private
+  PrimeUpTo : Pred ℕ _
+  PrimeUpTo n = ∀ {d} → d < n → NonTrivial d → d ∤ n
+
+  PrimeUpTo⇔Prime : .{{NonTrivial n}} → PrimeUpTo n ⇔ Prime n
+  PrimeUpTo⇔Prime = mk⇔ prime-upto⇒prime prime⇒prime-upto
+    where
+    prime-upto⇒prime : .{{NonTrivial n}} → PrimeUpTo n → Prime n
+    prime-upto⇒prime upto = prime
+      λ (hasNonTrivialDivisorLessThan d<n d∣n) → upto d<n recompute-nonTrivial d∣n
+
+    prime⇒prime-upto : Prime n → PrimeUpTo n
+    prime⇒prime-upto (prime p) {d} d<n ntd d∣n
+      = p (hasNonTrivialDivisorLessThan {{ntd}} d<n d∣n)
+
+------------------------------------------------------------------------
+-- Compositeness
+
+-- Definition
 
 Composite : Pred ℕ _
 Composite n = n HasNonTrivialDivisorLessThan n
@@ -86,41 +134,8 @@ composite-∣ (hasNonTrivialDivisorLessThan {d} d<m d∣n) m∣n@(divides-refl q
     _ = m≢0∧n>1⇒m*n>1 q d
     _ = m*n≢0⇒m≢0 q
 
--- Definition of 'rough': a number is m-rough
--- if all its non-trivial divisors d are bounded below by m
-
-Rough : ℕ → Pred ℕ _
-Rough m n = ¬ (m HasNonTrivialDivisorLessThan n)
-
--- Definition of Prime as the complement of Composite, via diagonal of Rough
-
--- Constructor `prime` takes a proof isPrime that NonTrivial p is p-Rough
--- and thereby enforces that:
--- * p is a fortiori NonZero and NonUnit
--- * any non-trivial divisor of p must be at least p, ie p itself
-
-record Prime (p : ℕ) : Set where
-  constructor prime
-  field
-    .{{nontrivial}} : NonTrivial p
-    isPrime         : Rough p p
-
--- equivalent bounded predicate definition; proof of equivalence
-
-private
-  PrimeUpTo : Pred ℕ _
-  PrimeUpTo n = ∀ {d} → d < n → NonTrivial d → d ∤ n
-
-  PrimeUpTo⇔Prime : .{{NonTrivial n}} → PrimeUpTo n ⇔ Prime n
-  PrimeUpTo⇔Prime = mk⇔ prime-upto⇒prime prime⇒prime-upto
-    where
-    prime-upto⇒prime : .{{NonTrivial n}} → PrimeUpTo n → Prime n
-    prime-upto⇒prime upto = prime
-      λ (hasNonTrivialDivisorLessThan d<n d∣n) → upto d<n recompute-nonTrivial d∣n
-
-    prime⇒prime-upto : Prime n → PrimeUpTo n
-    prime⇒prime-upto (prime p) {d} d<n ntd d∣n
-      = p (hasNonTrivialDivisorLessThan {{ntd}} d<n d∣n)
+------------------------------------------------------------------------
+-- Irreducibility
 
 -- Definition of irreducibility: kindergarten version of `Prime`
 
@@ -147,7 +162,11 @@ private
     irr⇒irr-upto irr m<n m∣n = irr m∣n
 
 ------------------------------------------------------------------------
--- Basic properties of Rough
+-- Properties
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Roughness
 
 -- 1 is always n-rough
 rough-1 : ∀ n → Rough n 1
@@ -178,31 +197,11 @@ rough⇒≤ rough = ≮⇒≥ λ m>n → rough (hasNonTrivialDivisorLessThan m>n
 rough⇒∣⇒rough : Rough m o → n ∣ o → Rough m n
 rough⇒∣⇒rough r n∣o hbntd = r (hasNonTrivialDivisorLessThan-∣ hbntd n∣o)
 
-------------------------------------------------------------------------
--- Corollary: relationship between roughness and primality
-
--- If a number n is p-rough, and p > 1 divides n, then p must be prime
-rough⇒∣⇒prime : .{{NonTrivial p}} → Rough p n → p ∣ n → Prime p
-rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 
 ------------------------------------------------------------------------
--- Basic (counter-)examples of Composite
+-- Prime
 
-¬composite[0] : ¬ Composite 0
-¬composite[0] composite[0] = 0-rough composite[0]
-
-¬composite[1] : ¬ Composite 1
-¬composite[1] composite[1] = 1-rough composite[1]
-
-composite[4] : Composite 4
-composite[4] = composite-≢ 2 (λ()) (divides-refl 2)
-
-composite[6] : Composite 6
-composite[6] = composite-≢ 3 (λ()) (divides-refl 2)
-
-
-------------------------------------------------------------------------
--- Basic (counter-)examples of Prime
+-- Basic (counter-)examples
 
 ¬prime[0] : ¬ Prime 0
 ¬prime[0] ()
@@ -213,55 +212,17 @@ composite[6] = composite-≢ 3 (λ()) (divides-refl 2)
 prime[2] : Prime 2
 prime[2] = prime 2-rough
 
-------------------------------------------------------------------------
--- Basic (counter-)examples of Irreducible
-
-¬irreducible[0] : ¬ Irreducible 0
-¬irreducible[0] irr[0] = [ (λ ()) , (λ ()) ]′ (irr[0] {2} (divides-refl 0))
-
-irreducible[1] : Irreducible 1
-irreducible[1] m|1 = inj₁ (∣1⇒≡1 m|1)
-
-irreducible[2] : Irreducible 2
-irreducible[2] {zero}  0∣2 with () ← 0∣⇒≡0 0∣2
-irreducible[2] {suc _} d∣2 with ∣⇒≤ d∣2
-... | z<s     = inj₁ refl
-... | s<s z<s = inj₂ refl
-
-
-------------------------------------------------------------------------
--- NonTrivial
-
-composite⇒nonTrivial : Composite n → NonTrivial n
-composite⇒nonTrivial {1}    composite[1] = contradiction composite[1] ¬composite[1]
-composite⇒nonTrivial {2+ _} _            = _
-
-prime⇒nonTrivial : Prime p → NonTrivial p
-prime⇒nonTrivial _ = recompute-nonTrivial
-
-------------------------------------------------------------------------
--- NonZero
-
-composite⇒nonZero : Composite n → NonZero n
-composite⇒nonZero {suc _} _ = _
+-- Relationship between roughness and primality.
+-- If a number n is p-rough, and p > 1 divides n, then p must be prime
+rough⇒∣⇒prime : .{{NonTrivial p}} → Rough p n → p ∣ n → Prime p
+rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
 
 prime⇒nonZero : Prime p → NonZero p
 prime⇒nonZero _ = nonTrivial⇒nonZero _
 
-irreducible⇒nonZero : Irreducible n → NonZero n
-irreducible⇒nonZero {zero}    = flip contradiction ¬irreducible[0]
-irreducible⇒nonZero {suc _} _ = _
+prime⇒nonTrivial : Prime p → NonTrivial p
+prime⇒nonTrivial _ = recompute-nonTrivial
 
-
-------------------------------------------------------------------------
--- Decidability
-
-composite? : Decidable Composite
-composite? n = Dec.map (CompositeUpTo⇔Composite {n}) (compositeUpTo? n)
-  where
-  compositeUpTo? : Decidable CompositeUpTo
-  compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
-  
 prime? : Decidable Prime
 prime? 0        = no ¬prime[0]
 prime? 1        = no ¬prime[1]
@@ -269,70 +230,6 @@ prime? n@(2+ _) = Dec.map PrimeUpTo⇔Prime (primeUpTo? n)
   where
   primeUpTo? : Decidable PrimeUpTo
   primeUpTo? n = allUpTo? (λ d → nonTrivial? d →-dec ¬? (d ∣? n)) n
-
-irreducible? : Decidable Irreducible
-irreducible? zero      = no ¬irreducible[0]
-irreducible? n@(suc _) = Dec.map (IrreducibleUpTo⇔Irreducible {n}) (irreducibleUpTo? n)
-  where
-  irreducibleUpTo? : Decidable IrreducibleUpTo
-  irreducibleUpTo? n = allUpTo? (λ m → (m ∣? n) →-dec (m ≟ 1 ⊎-dec m ≟ n)) n
-
--- Examples
---
--- Once we have the above decision procedures, then instead of constructing proofs
--- of eg Prime-ness by hand, we call the appropriate function, and use the witness
--- extraction functions `from-yes`, `from-no` to return the checked proofs
-
-private
-
-  -- Example: 2 is prime, but not-composite.
-  2-is-prime : Prime 2
-  2-is-prime = from-yes (prime? 2)
-
-  2-is-not-composite : ¬ Composite 2
-  2-is-not-composite = from-no (composite? 2)
-
-
-  -- Example: 4 and 6 are composite, hence not-prime
-  4-is-composite : Composite 4
-  4-is-composite = from-yes (composite? 4)
-
-  4-is-not-prime : ¬ Prime 4
-  4-is-not-prime = from-no (prime? 4)
-
-  6-is-composite : Composite 6
-  6-is-composite = from-yes (composite? 6)
-
-  6-is-not-prime : ¬ Prime 6
-  6-is-not-prime = from-no (prime? 6)
-
-------------------------------------------------------------------------
--- Relationships between compositeness, primality, and irreducibility
-
-composite⇒¬prime : Composite n → ¬ Prime n
-composite⇒¬prime composite[d] (prime p) = p composite[d]
-
-¬composite⇒prime : .{{NonTrivial n}} → ¬ Composite n → Prime n
-¬composite⇒prime = prime
-
-prime⇒¬composite : Prime n → ¬ Composite n
-prime⇒¬composite (prime p) = p
-
--- note that this has to recompute the factor!
-¬prime⇒composite : .{{NonTrivial n}} → ¬ Prime n → Composite n
-¬prime⇒composite {n} ¬prime[n] =
-  decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime)
-
-prime⇒irreducible : Prime p → Irreducible p
-prime⇒irreducible pp@(prime _) {0}        0∣p
-  = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _ {{prime⇒nonZero pp}})
-prime⇒irreducible     _     {1}        1∣p = inj₁ refl
-prime⇒irreducible pp@(prime pr) {m@(2+ _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤  {{prime⇒nonZero pp}} m∣p) λ m<p → pr (hasNonTrivialDivisorLessThan m<p m∣p))
-
-irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
-irreducible⇒prime irr = prime
-  λ (hasNonTrivialDivisorLessThan d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
 
 ------------------------------------------------------------------------
 -- Euclid's lemma
@@ -382,3 +279,114 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
   ... | Bézout.result d@(2+ _) g _ with d ≟ p
   ...   | yes d≡p@refl = inj₁ (GCD.gcd∣m g)
   ...   | no  d≢p = contradiction (hasNonTrivialDivisorLessThan-≢ d≢p (GCD.gcd∣n g)) pr
+
+------------------------------------------------------------------------
+-- Compositeness
+
+-- Basic (counter-)examples of Composite
+
+¬composite[0] : ¬ Composite 0
+¬composite[0] composite[0] = 0-rough composite[0]
+
+¬composite[1] : ¬ Composite 1
+¬composite[1] composite[1] = 1-rough composite[1]
+
+composite[4] : Composite 4
+composite[4] = composite-≢ 2 (λ()) (divides-refl 2)
+
+composite[6] : Composite 6
+composite[6] = composite-≢ 3 (λ()) (divides-refl 2)
+
+composite⇒nonZero : Composite n → NonZero n
+composite⇒nonZero {suc _} _ = _
+
+composite⇒nonTrivial : Composite n → NonTrivial n
+composite⇒nonTrivial {1}    composite[1] = contradiction composite[1] ¬composite[1]
+composite⇒nonTrivial {2+ _} _            = _
+
+composite? : Decidable Composite
+composite? n = Dec.map (CompositeUpTo⇔Composite {n}) (compositeUpTo? n)
+  where
+  compositeUpTo? : Decidable CompositeUpTo
+  compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
+
+composite⇒¬prime : Composite n → ¬ Prime n
+composite⇒¬prime composite[d] (prime p) = p composite[d]
+
+¬composite⇒prime : .{{NonTrivial n}} → ¬ Composite n → Prime n
+¬composite⇒prime = prime
+
+prime⇒¬composite : Prime n → ¬ Composite n
+prime⇒¬composite (prime p) = p
+
+-- Note that this has to recompute the factor!
+¬prime⇒composite : .{{NonTrivial n}} → ¬ Prime n → Composite n
+¬prime⇒composite {n} ¬prime[n] =
+  decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime)
+
+------------------------------------------------------------------------
+-- Basic (counter-)examples of Irreducible
+
+¬irreducible[0] : ¬ Irreducible 0
+¬irreducible[0] irr[0] = [ (λ ()) , (λ ()) ]′ (irr[0] {2} (divides-refl 0))
+
+irreducible[1] : Irreducible 1
+irreducible[1] m|1 = inj₁ (∣1⇒≡1 m|1)
+
+irreducible[2] : Irreducible 2
+irreducible[2] {zero}  0∣2 with () ← 0∣⇒≡0 0∣2
+irreducible[2] {suc _} d∣2 with ∣⇒≤ d∣2
+... | z<s     = inj₁ refl
+... | s<s z<s = inj₂ refl
+
+irreducible⇒nonZero : Irreducible n → NonZero n
+irreducible⇒nonZero {zero}    = flip contradiction ¬irreducible[0]
+irreducible⇒nonZero {suc _} _ = _
+
+irreducible? : Decidable Irreducible
+irreducible? zero      = no ¬irreducible[0]
+irreducible? n@(suc _) = Dec.map (IrreducibleUpTo⇔Irreducible {n}) (irreducibleUpTo? n)
+  where
+  irreducibleUpTo? : Decidable IrreducibleUpTo
+  irreducibleUpTo? n = allUpTo? (λ m → (m ∣? n) →-dec (m ≟ 1 ⊎-dec m ≟ n)) n
+
+prime⇒irreducible : Prime p → Irreducible p
+prime⇒irreducible pp@(prime _) {0}        0∣p
+  = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _ {{prime⇒nonZero pp}})
+prime⇒irreducible     _     {1}        1∣p = inj₁ refl
+prime⇒irreducible pp@(prime pr) {m@(2+ _)} m∣p
+  = inj₂ (≤∧≮⇒≡ (∣⇒≤  {{prime⇒nonZero pp}} m∣p) λ m<p → pr (hasNonTrivialDivisorLessThan m<p m∣p))
+
+irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
+irreducible⇒prime irr = prime
+  λ (hasNonTrivialDivisorLessThan d<p d∣p) → [ nonTrivial⇒≢1 , (<⇒≢ d<p) ]′ (irr d∣p)
+
+------------------------------------------------------------------------
+-- Using decidability
+
+-- Once we have the above decision procedures, then instead of
+-- constructing proofs of e.g. Prime-ness by hand, we call the
+-- appropriate function, and use the witness extraction functions
+-- `from-yes`, `from-no` to return the checked proofs.
+
+private
+
+  -- Example: 2 is prime, but not-composite.
+  2-is-prime : Prime 2
+  2-is-prime = from-yes (prime? 2)
+
+  2-is-not-composite : ¬ Composite 2
+  2-is-not-composite = from-no (composite? 2)
+
+  -- Example: 4 and 6 are composite, hence not-prime
+  4-is-composite : Composite 4
+  4-is-composite = from-yes (composite? 4)
+
+  4-is-not-prime : ¬ Prime 4
+  4-is-not-prime = from-no (prime? 4)
+
+  6-is-composite : Composite 6
+  6-is-composite = from-yes (composite? 6)
+
+  6-is-not-prime : ¬ Prime 6
+  6-is-not-prime = from-no (prime? 6)
