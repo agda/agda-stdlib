@@ -652,7 +652,7 @@ Non-backwards compatible changes
       notComposite    : ¬ Composite p
   ```
   where `Composite` is now defined as the diagonal of the relation
-  `Divisibility.Core.HasNonTrivialDivisorLessThan`
+  `Divisibility.Core.BoundedNonTrivialDivisor`
 
 ### Changes to operation reduction behaviour in `Data.Rational(.Unnormalised)`
 
