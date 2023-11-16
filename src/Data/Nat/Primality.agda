@@ -42,12 +42,7 @@ private
 -- an existential witnessing a non-trivial divisor, where such
 -- quantification is proxied by an explicit `record` type.
 
--- For technical reasons, in order to be able to prove decidability via
--- the `all?` and `any?` combinators for *bounded* predicates on ℕ, we
--- further define the bounded counterparts to predicates `P...` as
--- `P...UpTo` and show the equivalence of the two.
-
--- Finally, the definitions of the predicates `Composite` and `Prime`
+-- The definitions of the predicates `Composite` and `Prime`
 -- as the 'diagonal' instances of relations involving such bounds on
 -- the possible non-trivial divisors leads to the following
 -- positive/existential predicate as the basis for the whole development.
@@ -55,22 +50,19 @@ private
 ------------------------------------------------------------------------
 -- Roughness
 
--- Definition of 'rough': a number is m-rough if all its non-trivial
--- divisors are bounded below by m.
-
+-- A number is m-rough if all its non-trivial divisors are bounded below
+-- by m.
 Rough : ℕ → Pred ℕ _
 Rough m n = ¬ (m HasNonTrivialDivisorLessThan n)
 
 ------------------------------------------------------------------------
 -- Primality
 
--- Definition of Prime as the diagonal of Rough (and hence the
--- complement of Composite below).
-
--- Constructor `prime` takes a proof isPrime that NonTrivial p is p-Rough
--- and thereby enforces that:
+-- Prime as the diagonal of Rough (and hence the complement of Composite
+-- as defined below). The constructor `prime` takes a proof `isPrime`
+-- that NonTrivial p is p-Rough and thereby enforces that:
 -- * p is a fortiori NonZero and NonUnit
--- * any non-trivial divisor of p must be at least p, ie p itself
+-- * any non-trivial divisor of p must be at least p, i.e. p itself
 
 record Prime (p : ℕ) : Set where
   constructor prime
@@ -78,88 +70,19 @@ record Prime (p : ℕ) : Set where
     .{{nontrivial}} : NonTrivial p
     isPrime         : Rough p p
 
--- equivalent bounded predicate definition; proof of equivalence
-
-private
-  PrimeUpTo : Pred ℕ _
-  PrimeUpTo n = ∀ {d} → d < n → NonTrivial d → d ∤ n
-
-  PrimeUpTo⇔Prime : .{{NonTrivial n}} → PrimeUpTo n ⇔ Prime n
-  PrimeUpTo⇔Prime = mk⇔ prime-upto⇒prime prime⇒prime-upto
-    where
-    prime-upto⇒prime : .{{NonTrivial n}} → PrimeUpTo n → Prime n
-    prime-upto⇒prime upto = prime
-      λ (hasNonTrivialDivisorLessThan d<n d∣n) → upto d<n recompute-nonTrivial d∣n
-
-    prime⇒prime-upto : Prime n → PrimeUpTo n
-    prime⇒prime-upto (prime p) {d} d<n ntd d∣n
-      = p (hasNonTrivialDivisorLessThan {{ntd}} d<n d∣n)
-
 ------------------------------------------------------------------------
 -- Compositeness
 
--- Definition
-
+-- A number is composite if it has a proper non-trivial divisor.
 Composite : Pred ℕ _
 Composite n = n HasNonTrivialDivisorLessThan n
-
--- equivalent bounded predicate definition
-
-private
-  CompositeUpTo : Pred ℕ _
-  CompositeUpTo n = ∃[ d ] d < n × NonTrivial d × d ∣ n
-
--- proof of equivalence
-
-  CompositeUpTo⇔Composite : CompositeUpTo n ⇔ Composite n
-  CompositeUpTo⇔Composite = mk⇔ comp-upto⇒comp comp⇒comp-upto
-    where
-    comp-upto⇒comp : CompositeUpTo n → Composite n
-    comp-upto⇒comp (_ , d<n , ntd , d∣n) = hasNonTrivialDivisorLessThan {{ntd}} d<n d∣n
-    comp⇒comp-upto : Composite n → CompositeUpTo n
-    comp⇒comp-upto (hasNonTrivialDivisorLessThan d<n d∣n) = _ , d<n , recompute-nonTrivial , d∣n
-
--- smart constructors
-
-composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
-composite {d = d} = hasNonTrivialDivisorLessThan {divisor = d}
-
-composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
-composite-≢ d = hasNonTrivialDivisorLessThan-≢ {d}
-
-composite-∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
-composite-∣ (hasNonTrivialDivisorLessThan {d} d<m d∣n) m∣n@(divides-refl q)
-  = hasNonTrivialDivisorLessThan (*-monoʳ-< q d<m) (*-monoʳ-∣ q d∣n)
-  where instance
-    _ = m≢0∧n>1⇒m*n>1 q d
-    _ = m*n≢0⇒m≢0 q
 
 ------------------------------------------------------------------------
 -- Irreducibility
 
 -- Definition of irreducibility: kindergarten version of `Prime`
-
-Irreducible′ : Rel ℕ _
-Irreducible′ d n = d ∣ n → d ≡ 1 ⊎ d ≡ n
-
 Irreducible : Pred ℕ _
-Irreducible n = ∀ {d} → Irreducible′ d n
-
--- equivalent bounded predicate definition; proof of equivalence
-
-private
-  IrreducibleUpTo : Pred ℕ _
-  IrreducibleUpTo n = ∀ {d} → d < n → Irreducible′ d n
-
-  IrreducibleUpTo⇔Irreducible : .{{NonZero n}} → IrreducibleUpTo n ⇔ Irreducible n
-  IrreducibleUpTo⇔Irreducible = mk⇔ irr-upto⇒irr irr⇒irr-upto
-    where
-    irr-upto⇒irr : .{{NonZero n}} → IrreducibleUpTo n → Irreducible n
-    irr-upto⇒irr irr-upto m∣n
-      = [ flip irr-upto m∣n , inj₂ ]′ (m≤n⇒m<n∨m≡n (∣⇒≤ m∣n))
-
-    irr⇒irr-upto : Irreducible n → IrreducibleUpTo n
-    irr⇒irr-upto irr m<n m∣n = irr m∣n
+Irreducible n = ∀ {d} → d ∣ n → d ≡ 1 ⊎ d ≡ n
 
 ------------------------------------------------------------------------
 -- Properties
@@ -197,7 +120,6 @@ rough⇒≤ rough = ≮⇒≥ λ m>n → rough (hasNonTrivialDivisorLessThan m>n
 rough⇒∣⇒rough : Rough m o → n ∣ o → Rough m n
 rough⇒∣⇒rough r n∣o hbntd = r (hasNonTrivialDivisorLessThan-∣ hbntd n∣o)
 
-
 ------------------------------------------------------------------------
 -- Prime
 
@@ -228,6 +150,28 @@ prime? 0        = no ¬prime[0]
 prime? 1        = no ¬prime[1]
 prime? n@(2+ _) = Dec.map PrimeUpTo⇔Prime (primeUpTo? n)
   where
+  -- For technical reasons, in order to be able to prove decidability via
+  -- the `all?` and `any?` combinators for *bounded* predicates on ℕ, we
+  -- further define the bounded counterparts to predicates `P...` as
+  -- `P...UpTo` and show the equivalence of the two.
+
+  -- An equivalent bounded predicate definition
+  PrimeUpTo : Pred ℕ _
+  PrimeUpTo n = ∀ {d} → d < n → NonTrivial d → d ∤ n
+  
+  -- Proof of equvialence
+  prime⇒prime-upto : Prime n → PrimeUpTo n
+  prime⇒prime-upto (prime p) {d} d<n ntd d∣n
+    = p (hasNonTrivialDivisorLessThan {{ntd}} d<n d∣n)
+
+  prime-upto⇒prime : .{{NonTrivial n}} → PrimeUpTo n → Prime n
+  prime-upto⇒prime upto = prime
+    λ (hasNonTrivialDivisorLessThan d<n d∣n) → upto d<n recompute-nonTrivial d∣n
+
+  PrimeUpTo⇔Prime : .{{NonTrivial n}} → PrimeUpTo n ⇔ Prime n
+  PrimeUpTo⇔Prime = mk⇔ prime-upto⇒prime prime⇒prime-upto
+
+  -- Proof of decidability
   primeUpTo? : Decidable PrimeUpTo
   primeUpTo? n = allUpTo? (λ d → nonTrivial? d →-dec ¬? (d ∣? n)) n
 
@@ -283,6 +227,21 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
 ------------------------------------------------------------------------
 -- Compositeness
 
+-- Smart constructors
+
+composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
+composite {d = d} = hasNonTrivialDivisorLessThan {divisor = d}
+
+composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
+composite-≢ d = hasNonTrivialDivisorLessThan-≢ {d}
+
+composite-∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
+composite-∣ (hasNonTrivialDivisorLessThan {d} d<m d∣n) m∣n@(divides-refl q)
+  = hasNonTrivialDivisorLessThan (*-monoʳ-< q d<m) (*-monoʳ-∣ q d∣n)
+  where instance
+    _ = m≢0∧n>1⇒m*n>1 q d
+    _ = m*n≢0⇒m≢0 q
+
 -- Basic (counter-)examples of Composite
 
 ¬composite[0] : ¬ Composite 0
@@ -305,8 +264,23 @@ composite⇒nonTrivial {1}    composite[1] = contradiction composite[1] ¬compos
 composite⇒nonTrivial {2+ _} _            = _
 
 composite? : Decidable Composite
-composite? n = Dec.map (CompositeUpTo⇔Composite {n}) (compositeUpTo? n)
+composite? n = Dec.map CompositeUpTo⇔Composite (compositeUpTo? n)
   where
+  -- equivalent bounded predicate definition
+  CompositeUpTo : Pred ℕ _
+  CompositeUpTo n = ∃[ d ] d < n × NonTrivial d × d ∣ n
+
+  -- proof of equivalence
+  comp-upto⇒comp : CompositeUpTo n → Composite n
+  comp-upto⇒comp (_ , d<n , ntd , d∣n) = hasNonTrivialDivisorLessThan {{ntd}} d<n d∣n
+
+  comp⇒comp-upto : Composite n → CompositeUpTo n
+  comp⇒comp-upto (hasNonTrivialDivisorLessThan d<n d∣n) = _ , d<n , recompute-nonTrivial , d∣n
+
+  CompositeUpTo⇔Composite : CompositeUpTo n ⇔ Composite n
+  CompositeUpTo⇔Composite = mk⇔ comp-upto⇒comp comp⇒comp-upto
+
+  -- Proof of decidability
   compositeUpTo? : Decidable CompositeUpTo
   compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
 
@@ -345,8 +319,24 @@ irreducible⇒nonZero {suc _} _ = _
 
 irreducible? : Decidable Irreducible
 irreducible? zero      = no ¬irreducible[0]
-irreducible? n@(suc _) = Dec.map (IrreducibleUpTo⇔Irreducible {n}) (irreducibleUpTo? n)
+irreducible? n@(suc _) = Dec.map IrreducibleUpTo⇔Irreducible (irreducibleUpTo? n)
   where
+  -- Equivalent bounded predicate definition
+  IrreducibleUpTo : Pred ℕ _
+  IrreducibleUpTo n = ∀ {d} → d < n → d ∣ n → d ≡ 1 ⊎ d ≡ n
+
+  -- Proof of equivalence
+  irr-upto⇒irr : .{{NonZero n}} → IrreducibleUpTo n → Irreducible n
+  irr-upto⇒irr irr-upto m∣n
+    = [ flip irr-upto m∣n , inj₂ ]′ (m≤n⇒m<n∨m≡n (∣⇒≤ m∣n))
+
+  irr⇒irr-upto : Irreducible n → IrreducibleUpTo n
+  irr⇒irr-upto irr m<n m∣n = irr m∣n
+
+  IrreducibleUpTo⇔Irreducible : .{{NonZero n}} → IrreducibleUpTo n ⇔ Irreducible n
+  IrreducibleUpTo⇔Irreducible = mk⇔ irr-upto⇒irr irr⇒irr-upto
+
+  -- Decidability
   irreducibleUpTo? : Decidable IrreducibleUpTo
   irreducibleUpTo? n = allUpTo? (λ m → (m ∣? n) →-dec (m ≟ 1 ⊎-dec m ≟ n)) n
 
