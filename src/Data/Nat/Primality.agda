@@ -64,7 +64,6 @@ Rough m n = ¬ (m HasNonTrivialDivisorLessThan n)
 -- that NonTrivial p is p-Rough and thereby enforces that:
 -- * p is a fortiori NonZero and NonUnit
 -- * any non-trivial divisor of p must be at least p, i.e. p itself
-
 record Prime (p : ℕ) : Set where
   constructor prime
   field
@@ -98,7 +97,7 @@ rough-1 _ (hasNonTrivialDivisorLessThan _ d∣1) =
   contradiction (∣1⇒≡1 d∣1) nonTrivial⇒≢1
 
 -- Any number is 0-, 1- and 2-rough,
--- because no non-trivial factor d can be less than 0, 1, or 2
+-- because no non-trivial factor d can be strictly less than 0, 1, or 2
 0-rough : Rough 0 n
 0-rough (hasNonTrivialDivisorLessThan () _)
 
@@ -121,8 +120,8 @@ rough⇒≤ rough = ≮⇒≥ n≮m
 ... | inj₂ d≡m@refl = contradiction d∣n m∤n
 
 -- If a number is m-rough, then so are all of its divisors
-rough⇒∣⇒rough : Rough m o → n ∣ o → Rough m n
-rough⇒∣⇒rough r n∣o hbntd = r (hasNonTrivialDivisorLessThan-∣ hbntd n∣o)
+rough∧∣⇒rough : Rough m o → n ∣ o → Rough m n
+rough∧∣⇒rough r n∣o hbntd = r (hasNonTrivialDivisorLessThan-∣ hbntd n∣o)
 
 ------------------------------------------------------------------------
 -- Prime
@@ -140,8 +139,8 @@ prime[2] = prime 2-rough
 
 -- Relationship between roughness and primality.
 -- If a number n is p-rough, and p > 1 divides n, then p must be prime
-rough⇒∣⇒prime : .{{NonTrivial p}} → Rough p n → p ∣ n → Prime p
-rough⇒∣⇒prime r p∣n = prime (rough⇒∣⇒rough r p∣n)
+rough∧∣⇒prime : .{{NonTrivial p}} → Rough p n → p ∣ n → Prime p
+rough∧∣⇒prime r p∣n = prime (rough∧∣⇒rough r p∣n)
 
 prime⇒nonZero : Prime p → NonZero p
 prime⇒nonZero _ = nonTrivial⇒nonZero _
