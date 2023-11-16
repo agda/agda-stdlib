@@ -1,5 +1,6 @@
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE RecordWildCards #-}
 
 import Control.Applicative
 import Control.Monad
@@ -299,18 +300,37 @@ checkFilePaths cat fps = forM_ fps $ \ fp -> do
   unless b $
     die $ fp ++ " is listed as " ++ cat ++ " but does not exist."
 
+data Options = Options
+  { includeDeprecated :: Bool
+  , outputDirectory :: FilePath
+  }
+
+initOptions :: Options
+initOptions = Options
+  { includeDeprecated = False
+  , outputDirectory = "."
+  }
+
+parseOptions :: [String] -> Options -> Maybe Options
+parseOptions [] opts = pure opts
+parseOptions ("--include-deprecated" : rest) opts
+  = parseOptions rest (opts { includeDeprecated = True })
+parseOptions ("--out-dir" : dir : rest) opts
+  = parseOptions rest (opts { outputDirectory = dir })
+parseOptions _ _ = Nothing
+
 ---------------------------------------------------------------------------
 -- Collecting all non-Core library files, analysing them and generating
--- 4 files:
+-- 2 files:
 -- Everything.agda                 all the modules
 -- EverythingSafe.agda             all the safe modules
 
+main :: IO ()
 main = do
   args <- getArgs
-  includeDeprecated <- case args of
-    [] -> return False
-    ["--include-deprecated"] -> return True
-    _  -> hPutStr stderr usage >> exitFailure
+  Options{..} <- case parseOptions args initOptions of
+    Just opts -> pure opts
+    Nothing -> hPutStr stderr usage >> exitFailure
 
   checkFilePaths "unsafe" unsafeModules
   checkFilePaths "using K" withKModules
@@ -325,14 +345,14 @@ main = do
 
   let mkModule str = "module " ++ str ++ " where"
 
-  writeFileUTF8 (allOutputFile ++ ".agda") $
+  writeFileUTF8 (outputDirectory ++ "/" ++ allOutputFile ++ ".agda") $
     unlines [ header
             , "{-# OPTIONS --rewriting --guardedness --sized-types #-}\n"
             , mkModule allOutputFile
             , format libraryfiles
             ]
 
-  writeFileUTF8 (safeOutputFile ++ ".agda") $
+  writeFileUTF8 (outputDirectory ++ "/" ++ safeOutputFile ++ ".agda") $
     unlines [ header
             , "{-# OPTIONS --safe --guardedness #-}\n"
             , mkModule safeOutputFile
@@ -353,6 +373,9 @@ usage = unlines
   , "The program generates documentation for the library by extracting"
   , "headers from library modules. The output is written to " ++ allOutputFile
   , "with the file " ++ headerFile ++ " inserted verbatim at the beginning."
+  , ""
+  , "If the option --out-dir is used then the output is placed in the"
+  , "subdirectory thus selected."
   ]
 
 

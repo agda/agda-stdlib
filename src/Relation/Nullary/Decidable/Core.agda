@@ -12,7 +12,7 @@
 module Relation.Nullary.Decidable.Core where
 
 open import Level using (Level; Lift)
-open import Data.Bool.Base using (Bool; false; true; not; T; _∧_; _∨_)
+open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
 open import Data.Empty using (⊥)
 open import Data.Empty.Irrelevant using (⊥-elim)
@@ -35,8 +35,8 @@ private
 -- reflects the boolean result. This definition allows the boolean
 -- part of the decision procedure to compute independently from the
 -- proof. This leads to better computational behaviour when we only care
--- about the result and not the proof. See README.Decidability for
--- further details.
+-- about the result and not the proof. See README.Design.Decidability
+-- for further details.
 
 infix 2 _because_
 
@@ -78,6 +78,9 @@ recompute (no ¬a) a = ⊥-elim (¬a a)
 
 infixr 1 _⊎-dec_
 infixr 2 _×-dec_ _→-dec_
+
+T? : ∀ x → Dec (T x)
+T? x = x because T-reflects x
 
 ¬? : Dec A → Dec (¬ A)
 does  (¬? a?) = not (does a?)
