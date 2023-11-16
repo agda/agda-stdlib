@@ -308,3 +308,17 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   help : ∀ {m n} → m ≤′ n → m ! ∣ n !
   help {m} {n}     ≤′-refl        = ∣-refl
   help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)
+
+------------------------------------------------------------------------
+-- Properties of _HasNonTrivialDivisorLessThan_
+
+hasNonTrivialDivisorLessThan-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
+                                d ≢ n → d ∣ n →
+                                n HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisorLessThan-≢ d≢n d∣n
+  = hasNonTrivialDivisorLessThan (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+
+hasNonTrivialDivisorLessThan-∣ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → n ∣ o →
+                               m HasNonTrivialDivisorLessThan o
+hasNonTrivialDivisorLessThan-∣ (hasNonTrivialDivisorLessThan d<m d∣n) n∣o
+  = hasNonTrivialDivisorLessThan d<m (∣-trans d∣n n∣o)

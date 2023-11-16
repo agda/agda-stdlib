@@ -50,29 +50,6 @@ private
 -- non-trivial divisors leads to the following positive/existential predicate
 -- as the basis for the whole development.
 
--- Definition of having a non-trivial divisor below a given bound
-
-record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
-  constructor hasNonTrivialDivisorLessThan
-  field
-    {divisor}       : ℕ
-    .{{nontrivial}} : NonTrivial divisor
-    divisor-<       : divisor < m
-    divisor-∣       : divisor ∣ n
-
--- smart constructors
-
-hasNonTrivialDivisorLessThan-≢ : .{{NonTrivial d}} → .{{NonZero n}} →
-                                d ≢ n → d ∣ n →
-                                n HasNonTrivialDivisorLessThan n
-hasNonTrivialDivisorLessThan-≢ d≢n d∣n
-  = hasNonTrivialDivisorLessThan (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
-
-hasNonTrivialDivisorLessThan-∣ : m HasNonTrivialDivisorLessThan n → n ∣ o →
-                               m HasNonTrivialDivisorLessThan o
-hasNonTrivialDivisorLessThan-∣ (hasNonTrivialDivisorLessThan d<m d∣n) n∣o
-  = hasNonTrivialDivisorLessThan d<m (∣-trans d∣n n∣o)
-
 -- Definition of compositeness
 
 Composite : Pred ℕ _
@@ -279,26 +256,26 @@ irreducible⇒nonZero {suc _} _ = _
 ------------------------------------------------------------------------
 -- Decidability
 
-compositeUpTo? : Decidable CompositeUpTo
-compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
-
 composite? : Decidable Composite
 composite? n = Dec.map (CompositeUpTo⇔Composite {n}) (compositeUpTo? n)
-
-primeUpTo? : Decidable PrimeUpTo
-primeUpTo? n = allUpTo? (λ d → nonTrivial? d →-dec ¬? (d ∣? n)) n
-
+  where
+  compositeUpTo? : Decidable CompositeUpTo
+  compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
+  
 prime? : Decidable Prime
 prime? 0        = no ¬prime[0]
 prime? 1        = no ¬prime[1]
 prime? n@(2+ _) = Dec.map PrimeUpTo⇔Prime (primeUpTo? n)
-
-irreducibleUpTo? : Decidable IrreducibleUpTo
-irreducibleUpTo? n = allUpTo? (λ m → (m ∣? n) →-dec ((m ≟ 1) ⊎-dec m ≟ n)) n
+  where
+  primeUpTo? : Decidable PrimeUpTo
+  primeUpTo? n = allUpTo? (λ d → nonTrivial? d →-dec ¬? (d ∣? n)) n
 
 irreducible? : Decidable Irreducible
 irreducible? zero      = no ¬irreducible[0]
 irreducible? n@(suc _) = Dec.map (IrreducibleUpTo⇔Irreducible {n}) (irreducibleUpTo? n)
+  where
+  irreducibleUpTo? : Decidable IrreducibleUpTo
+  irreducibleUpTo? n = allUpTo? (λ m → (m ∣? n) →-dec (m ≟ 1 ⊎-dec m ≟ n)) n
 
 -- Examples
 --
@@ -348,12 +325,10 @@ prime⇒¬composite (prime p) = p
 
 prime⇒irreducible : Prime p → Irreducible p
 prime⇒irreducible pp@(prime _) {0}        0∣p
-  = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _)
-  where instance _ = prime⇒nonZero pp
+  = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _ {{prime⇒nonZero pp}})
 prime⇒irreducible     _     {1}        1∣p = inj₁ refl
 prime⇒irreducible pp@(prime pr) {m@(2+ _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤ m∣p) λ m<p → pr (hasNonTrivialDivisorLessThan m<p m∣p))
-  where instance _ = prime⇒nonZero pp
+  = inj₂ (≤∧≮⇒≡ (∣⇒≤  {{prime⇒nonZero pp}} m∣p) λ m<p → pr (hasNonTrivialDivisorLessThan m<p m∣p))
 
 irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
 irreducible⇒prime irr = prime
