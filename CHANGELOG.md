@@ -652,7 +652,7 @@ Non-backwards compatible changes
       notComposite    : ¬ Composite p
   ```
   where `Composite` is now defined as the diagonal of the relation
-  `Divisibility.Core.BoundedNonTrivialDivisor`
+  `Data.Nat.Divisibility.Core.BoundedNonTrivialDivisor` defined below.
 
 ### Changes to operation reduction behaviour in `Data.Rational(.Unnormalised)`
 
@@ -2738,7 +2738,6 @@ Additions to existing modules
   pattern 2+ n = suc (suc n)
   pattern 1<2+n {n} = s<s (z<s {n})
 
-  trivial               : ℕ → Bool
   NonTrivial            : Pred ℕ 0ℓ
   instance nonTrivial   : NonTrivial (2+ n)
   n>1⇒nonTrivial        : 1 < n → NonTrivial n
