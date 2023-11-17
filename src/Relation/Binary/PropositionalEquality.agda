@@ -61,12 +61,6 @@ _≗_ {A = A} {B = B} = Setoid._≈_ (A →-setoid B)
 →-to-⟶ = :→-to-Π
 
 ------------------------------------------------------------------------
--- Propositionality
-
-isPropositional : Set a → Set a
-isPropositional A = (a b : A) → a ≡ b
-
-------------------------------------------------------------------------
 -- More complex rearrangement lemmas
 
 -- A lemma that is very similar to Lemma 2.4.3 from the HoTT book.
@@ -125,3 +119,22 @@ record Reveal_·_is_ {A : Set a} {B : A → Set b}
 inspect : ∀ {A : Set a} {B : A → Set b}
           (f : (x : A) → B x) (x : A) → Reveal f · x is f x
 inspect f x = [ refl ]
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+isPropositional : Set a → Set a
+isPropositional A = (a b : A) → a ≡ b
+
+{-# WARNING_ON_USAGE isPropositional
+"Warning: isPropositional was deprecated in v2.0.
+Please use Relation.Nullary.Irrelevant instead. "
+#-}
+
+
