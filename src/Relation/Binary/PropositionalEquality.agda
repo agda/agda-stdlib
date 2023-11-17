@@ -8,14 +8,12 @@
 
 module Relation.Binary.PropositionalEquality where
 
-import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base using (id; _∘_)
 import Function.Dependent.Bundles as Dependent
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
 open import Level using (Level; _⊔_)
-open import Data.Product.Base using (∃)
-
+open import Relation.Nullary using (Irrelevant)
 open import Relation.Nullary.Decidable using (yes; no; dec-yes-irr; dec-no)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (DecidableEquality)
@@ -130,7 +128,7 @@ inspect f x = [ refl ]
 -- Version 2.0
 
 isPropositional : Set a → Set a
-isPropositional A = (a b : A) → a ≡ b
+isPropositional = Irrelevant
 
 {-# WARNING_ON_USAGE isPropositional
 "Warning: isPropositional was deprecated in v2.0.
