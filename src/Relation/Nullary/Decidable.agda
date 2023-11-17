@@ -10,7 +10,6 @@ module Relation.Nullary.Decidable where
 
 open import Level using (Level)
 open import Data.Bool.Base using (true; false; if_then_else_)
-open import Data.Empty using (⊥-elim)
 open import Data.Product.Base using (∃; _,_)
 open import Function.Base
 open import Function.Bundles using
@@ -52,7 +51,7 @@ via-injection inj _≟_ x y = map′ injective cong (to x ≟ to y)
 
 True-↔ : (a? : Dec A) → Irrelevant A → True a? ↔ A
 True-↔ (true  because [a]) irr = mk↔ₛ′ (λ _ → invert [a]) _ (irr (invert [a])) cong′
-True-↔ (false because ofⁿ ¬a) _ = mk↔ₛ′ (λ ()) (invert (ofⁿ ¬a)) (⊥-elim ∘ ¬a) λ ()
+True-↔ (false because ofⁿ ¬a) _ = mk↔ₛ′ (λ ()) (invert (ofⁿ ¬a)) (λ a → contradiction a ¬a) λ ()
 
 ------------------------------------------------------------------------
 -- Result of decidability
@@ -63,11 +62,11 @@ isYes≗does (false because _) = refl
 
 dec-true : (a? : Dec A) → A → does a? ≡ true
 dec-true (true  because   _ ) a = refl
-dec-true (false because [¬a]) a = ⊥-elim (invert [¬a] a)
+dec-true (false because [¬a]) a = contradiction a (invert [¬a])
 
 dec-false : (a? : Dec A) → ¬ A → does a? ≡ false
 dec-false (false because  _ ) ¬a = refl
-dec-false (true  because [a]) ¬a = ⊥-elim (¬a (invert [a]))
+dec-false (true  because [a]) ¬a = contradiction (invert [a]) ¬a
 
 dec-yes : (a? : Dec A) → A → ∃ λ a → a? ≡ yes a
 dec-yes a? a with dec-true a? a

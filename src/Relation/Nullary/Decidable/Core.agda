@@ -14,10 +14,10 @@ module Relation.Nullary.Decidable.Core where
 open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Base using (⊤)
-open import Data.Empty using (Recomputable)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
+open import Relation.Nullary.Recomputable
 open import Relation.Nullary.Reflects hiding (recompute)
 open import Relation.Nullary.Negation.Core as Negation
 

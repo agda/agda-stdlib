@@ -9,10 +9,11 @@
 module Relation.Nullary.Negation.Core where
 
 open import Data.Bool.Base using (not)
-open import Data.Empty using (⊥; ⊥-elim; ⊥-elim-irr; Recomputable)
+open import Data.Empty using (⊥; ⊥-elim; ⊥-elim-irr)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
+open import Relation.Nullary.Recomputable
 
 private
   variable
@@ -58,6 +59,9 @@ contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 contraposition : (A → B) → ¬ B → ¬ A
 contraposition f ¬b a = contradiction (f a) ¬b
 
+weak-contradiction : .A → ¬ A → Whatever
+weak-contradiction a ¬a = ⊥-elim-irr (¬a a)
+
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
 stable ¬[¬¬a→a] = ¬[¬¬a→a] (λ ¬¬a → ⊥-elim (¬¬a (¬[¬¬a→a] ∘ const)))
@@ -75,10 +79,8 @@ private
   note = flip
 
 ------------------------------------------------------------------------
--- recompute: negated propositions are recomputable
+-- recompute: negated propositions are Recomputable
 
 ¬-recompute : Recomputable (¬ A)
 ¬-recompute ¬a a = ⊥-elim-irr (¬a a)
 
-weak-contradiction : .A → ¬ A → Whatever
-weak-contradiction a ¬a = ⊥-elim-irr (¬a a)
