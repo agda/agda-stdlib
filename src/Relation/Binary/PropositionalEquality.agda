@@ -105,7 +105,7 @@ module _ (_≟_ : DecidableEquality A) {x y : A} where
 -- See README.Inspect for an explanation of how/why to use this.
 
 -- Normally (but not always) the new `with ... in` syntax described at
--- https://agda.readthedocs.io/en/v2.6.3/language/with-abstraction.html#with-abstraction-equality
+-- https://agda.readthedocs.io/en/v2.6.4/language/with-abstraction.html#with-abstraction-equality
 -- can be used instead."
 
 record Reveal_·_is_ {A : Set a} {B : A → Set b}
