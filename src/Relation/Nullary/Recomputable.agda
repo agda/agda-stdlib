@@ -24,7 +24,7 @@ Recomputable : (A : Set a) → Set a
 Recomputable A = .A → A
 
 ------------------------------------------------------------------------
--- Algebra
+-- Constructions
 
 _×-recompute_ : Recomputable A → Recomputable B → Recomputable (A × B)
 (rA ×-recompute rB) p = rA (p .proj₁) , rB (p .proj₂)
@@ -37,6 +37,3 @@ _→-recompute_ : (A : Set a) → Recomputable B → Recomputable (A → B)
 
 ∀-recompute : (B : A → Set b) → (∀ {x} → Recomputable (B x)) → Recomputable (∀ {x} → B x)
 ∀-recompute B rB f = rB f
-
-
-
