@@ -36,7 +36,7 @@ record IsCommutativeMonoidˡ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   isCommutativeMonoid = record
     { isMonoid = record
       { isSemigroup = isSemigroup
-      ; identity    = comm+idˡ⇒id setoid comm identityˡ
+      ; identity    = comm∧idˡ⇒id setoid comm identityˡ
       }
     ; comm = comm
     } where open IsSemigroup isSemigroup
@@ -55,7 +55,7 @@ record IsCommutativeMonoidʳ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   isCommutativeMonoid = record
     { isMonoid = record
       { isSemigroup = isSemigroup
-      ; identity    = comm+idʳ⇒id setoid comm identityʳ
+      ; identity    = comm∧idʳ⇒id setoid comm identityʳ
       }
     ; comm = comm
     } where open IsSemigroup isSemigroup
@@ -146,9 +146,9 @@ record IsCommutativeSemiringˡ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
         ; *-cong                = *.∙-cong
         ; *-assoc               = *.assoc
         ; *-identity            = *.identity
-        ; distrib               = comm+distrʳ⇒distr +.setoid +.∙-cong *.comm distribʳ
+        ; distrib               = comm∧distrʳ⇒distr +.setoid +.∙-cong *.comm distribʳ
         }
-      ; zero = comm+zeˡ⇒ze +.setoid *.comm zeroˡ
+      ; zero = comm∧zeˡ⇒ze +.setoid *.comm zeroˡ
       }
     ; *-comm = *.comm
     }
@@ -175,9 +175,9 @@ record IsCommutativeSemiringʳ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
         ; *-cong                = *.∙-cong
         ; *-assoc               = *.assoc
         ; *-identity            = *.identity
-        ; distrib               = comm+distrˡ⇒distr +.setoid +.∙-cong *.comm distribˡ
+        ; distrib               = comm∧distrˡ⇒distr +.setoid +.∙-cong *.comm distribˡ
         }
-      ; zero = comm+zeʳ⇒ze +.setoid *.comm zeroʳ
+      ; zero = comm∧zeʳ⇒ze +.setoid *.comm zeroʳ
       }
     ; *-comm = *.comm
     }
@@ -207,11 +207,11 @@ record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
   open * using ()       renaming (∙-cong to *-cong)
 
   zeroˡ : LeftZero 0# *
-  zeroˡ = assoc+distribʳ+idʳ+invʳ⇒zeˡ setoid
+  zeroˡ = assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ setoid
             +-cong *-cong +.assoc (proj₂ distrib) +.identityʳ +.inverseʳ
 
   zeroʳ : RightZero 0# *
-  zeroʳ = assoc+distribˡ+idʳ+invʳ⇒zeʳ setoid
+  zeroʳ = assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ setoid
             +-cong *-cong +.assoc (proj₁ distrib) +.identityʳ +.inverseʳ
 
   zero : Zero 0# *
