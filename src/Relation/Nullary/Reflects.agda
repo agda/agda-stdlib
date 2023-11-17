@@ -11,12 +11,11 @@ module Relation.Nullary.Reflects where
 open import Agda.Builtin.Equality
 
 open import Data.Bool.Base
-open import Data.Unit.Base using (⊤)
-open import Data.Empty
+open import Data.Empty using (Recomputable)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
-open import Function.Base using (_$_; _∘_; const; id)
+open import Function.Base using (_$_; _∘_; const; id; flip)
 
 open import Relation.Nullary.Negation.Core
 
@@ -60,7 +59,7 @@ invert (ofⁿ ¬a) = ¬a
 
 recompute : ∀ {b} → Reflects A b → Recomputable A
 recompute (ofʸ  a) _ = a
-recompute (ofⁿ ¬a) a = ⊥-elim-irr (¬a a)
+recompute (ofⁿ ¬a) a = weak-contradiction a ¬a
 
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
@@ -94,7 +93,7 @@ _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                 Reflects (A → B) (not a ∨ b)
 ofʸ  a →-reflects ofʸ  b = ofʸ (const b)
 ofʸ  a →-reflects ofⁿ ¬b = ofⁿ (¬b ∘ (_$ a))
-ofⁿ ¬a →-reflects _      = ofʸ (⊥-elim ∘ ¬a)
+ofⁿ ¬a →-reflects _      = ofʸ (flip contradiction ¬a)
 
 ------------------------------------------------------------------------
 -- Other lemmas
