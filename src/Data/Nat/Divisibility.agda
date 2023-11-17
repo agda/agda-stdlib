@@ -73,7 +73,7 @@ open _∣_ using (quotient) public
 
 
 ------------------------------------------------------------------------
--- defining equation for _/_
+-- Defining equation for _/_
 
 n/m≡quotient : (m∣n : m ∣ n) .{{_ : NonZero m}} → n / m ≡ quotient m∣n
 n/m≡quotient {m = m} (divides-refl q) = m*n/n≡m q m
