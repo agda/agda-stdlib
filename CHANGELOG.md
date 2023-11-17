@@ -752,7 +752,7 @@ Non-backwards compatible changes
          of these under the names `strictlySurjective`, `strictlyInverseˡ` and
          `strictlyInverseʳ`,
    - Conversion functions have been added in both directions to
-         `Function.Consequences(.Propositional)`.
+         `Function.Consequences(.Propositional/Setoid)`.
 
 ### New `Function.Strict`
 
@@ -2028,6 +2028,8 @@ New modules
 * Properties of various types of functions:
   ```
   Function.Consequences
+  Function.Consequences.Setoid
+  Function.Consequences.Propositional
   Function.Properties.Bijection
   Function.Properties.RightInverse
   Function.Properties.Surjection
