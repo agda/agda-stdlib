@@ -2785,6 +2785,16 @@ Additions to existing modules
       divisor-∣       : divisor ∣ n
   ```
 
+* Added new proofs to `Data.Nat.Divisibility`:
+  ```agda
+  boundedNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} →
+                               d ≢ n → d ∣ n → n BoundedNonTrivialDivisor n
+  boundedNonTrivialDivisor-∣ : m BoundedNonTrivialDivisor n → n ∣ o →
+                               m BoundedNonTrivialDivisor o
+  boundedNonTrivialDivisor-≤ : m BoundedNonTrivialDivisor n → m ≤ o →
+                               o BoundedNonTrivialDivisor n
+  ```
+
 * Added new definitions and proofs to `Data.Nat.Primality`:
   ```agda
   Composite         : ℕ → Set

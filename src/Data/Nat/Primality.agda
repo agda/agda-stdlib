@@ -142,10 +142,10 @@ composite-∣ (boundedNonTrivialDivisor {d} d<m d∣n) m∣n@(divides-refl q)
 -- Basic (counter-)examples of Composite
 
 ¬composite[0] : ¬ Composite 0
-¬composite[0] composite[0] = 0-rough composite[0]
+¬composite[0] = 0-rough
 
 ¬composite[1] : ¬ Composite 1
-¬composite[1] composite[1] = 1-rough composite[1]
+¬composite[1] = 1-rough
 
 composite[4] : Composite 4
 composite[4] = composite-≢ 2 (λ()) (divides-refl 2)
@@ -285,6 +285,9 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
     contradiction (boundedNonTrivialDivisor-≢ d≢p (GCD.gcd∣n g)) pr
 
 -- Relationship between roughness and primality.
+prime⇒rough : Prime p → Rough p p
+prime⇒rough (prime pr) = pr
+
 -- If a number n is p-rough, and p > 1 divides n, then p must be prime
 rough∧∣⇒prime : .{{NonTrivial p}} → Rough p n → p ∣ n → Prime p
 rough∧∣⇒prime r p∣n = prime (rough∧∣⇒rough r p∣n)

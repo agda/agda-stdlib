@@ -12,11 +12,10 @@ open import Algebra
 open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
---open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘′_; _$_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
-open import Relation.Nullary.Decidable as Dec using (False; yes; no)
+open import Relation.Nullary.Decidable as Dec using (yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
@@ -312,12 +311,23 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
 ------------------------------------------------------------------------
 -- Properties of _BoundedNonTrivialDivisor_
 
+-- Smart constructor
+
 boundedNonTrivialDivisor-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
                          d ≢ n → d ∣ n → n BoundedNonTrivialDivisor n
 boundedNonTrivialDivisor-≢ d≢n d∣n
   = boundedNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
+-- Monotonicity wrt ∣
+
 boundedNonTrivialDivisor-∣ : ∀ {m n o} → m BoundedNonTrivialDivisor n → n ∣ o →
                          m BoundedNonTrivialDivisor o
 boundedNonTrivialDivisor-∣ (boundedNonTrivialDivisor d<m d∣n) n∣o
   = boundedNonTrivialDivisor d<m (∣-trans d∣n n∣o)
+
+-- Monotonicity wrt ≤
+
+boundedNonTrivialDivisor-≤ : ∀ {m n o} → m BoundedNonTrivialDivisor n → m ≤ o →
+                             o BoundedNonTrivialDivisor n
+boundedNonTrivialDivisor-≤ (boundedNonTrivialDivisor d<m d∣n) m≤o =
+  boundedNonTrivialDivisor (<-≤-trans d<m m≤o) d∣n
