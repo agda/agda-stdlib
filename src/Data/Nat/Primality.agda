@@ -36,17 +36,15 @@ private
 -- Definitions
 ------------------------------------------------------------------------
 
--- The definitions of `Prime` and `Composite` in this module are
--- intended to be built up as complementary pairs of `Decidable`
--- predicates, with `Prime` given *negatively* as the universal closure
--- of the negation of `Composite`, where this is given *positively* as
--- an existential witnessing a non-trivial divisor, where such
--- quantification is proxied by an explicit `record` type.
+-- The positive/existential relation `BoundedNonTrivialDivisor` is
+-- the basis for the whole development, as it captures the possible
+-- non-trivial divisors of a given number; its complement, `Rough`,
+-- therefore sets *lower* bounds on any possible such divisors. 
 
--- The definitions of the predicates `Composite` and `Prime`
--- as the 'diagonal' instances of relations involving such bounds on
--- the possible non-trivial divisors leads to the following
--- positive/existential predicate as the basis for the whole development.
+-- The predicate `Composite` is then defined as the 'diagonal' instance
+-- of `BoundedNonTrivialDivisor`, while `Prime` is essentially defined as
+-- the complement of `Composite`. Finally, `Irreducible` is the positive
+-- analogue of `Prime`.
 
 ------------------------------------------------------------------------
 -- Roughness
@@ -80,7 +78,6 @@ record Prime (p : ℕ) : Set where
 ------------------------------------------------------------------------
 -- Irreducibility
 
--- Definition of irreducibility: kindergarten version of `Prime`
 Irreducible : Pred ℕ _
 Irreducible n = ∀ {d} → d ∣ n → d ≡ 1 ⊎ d ≡ n
 
@@ -97,7 +94,7 @@ rough-1 _ (boundedNonTrivialDivisor _ d∣1) =
   contradiction (∣1⇒≡1 d∣1) nonTrivial⇒≢1
 
 -- Any number is 0-, 1- and 2-rough,
--- because no non-trivial factor d can be strictly less than 0, 1, or 2
+-- because no proper divisor d can be strictly less than 0, 1, or 2
 0-rough : Rough 0 n
 0-rough (boundedNonTrivialDivisor () _)
 
@@ -121,10 +118,79 @@ rough⇒≤ rough = ≮⇒≥ n≮m
 
 -- If a number is m-rough, then so are all of its divisors
 rough∧∣⇒rough : Rough m o → n ∣ o → Rough m n
-rough∧∣⇒rough r n∣o hbntd = r (boundedNonTrivialDivisor-∣ hbntd n∣o)
+rough∧∣⇒rough r n∣o bntd = r (boundedNonTrivialDivisor-∣ bntd n∣o)
 
 ------------------------------------------------------------------------
--- Prime
+-- Compositeness
+
+-- Smart constructors
+
+composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
+composite {d = d} = boundedNonTrivialDivisor {divisor = d}
+
+composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} →
+              d ≢ n → d ∣ n → Composite n
+composite-≢ d = boundedNonTrivialDivisor-≢ {d}
+
+composite-∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
+composite-∣ (boundedNonTrivialDivisor {d} d<m d∣n) m∣n@(divides-refl q)
+  = boundedNonTrivialDivisor (*-monoʳ-< q d<m) (*-monoʳ-∣ q d∣n)
+  where instance
+    _ = m≢0∧n>1⇒m*n>1 q d
+    _ = m*n≢0⇒m≢0 q
+
+-- Basic (counter-)examples of Composite
+
+¬composite[0] : ¬ Composite 0
+¬composite[0] composite[0] = 0-rough composite[0]
+
+¬composite[1] : ¬ Composite 1
+¬composite[1] composite[1] = 1-rough composite[1]
+
+composite[4] : Composite 4
+composite[4] = composite-≢ 2 (λ()) (divides-refl 2)
+
+composite[6] : Composite 6
+composite[6] = composite-≢ 3 (λ()) (divides-refl 2)
+
+composite⇒nonZero : Composite n → NonZero n
+composite⇒nonZero {suc _} _ = _
+
+composite⇒nonTrivial : Composite n → NonTrivial n
+composite⇒nonTrivial {1}    composite[1] =
+  contradiction composite[1] ¬composite[1]
+composite⇒nonTrivial {2+ _} _            = _
+
+composite? : Decidable Composite
+composite? n = Dec.map CompositeUpTo⇔Composite (compositeUpTo? n)
+  where
+  -- For technical reasons, in order to be able to prove decidability
+  -- via the `all?` and `any?` combinators for *bounded* predicates on
+  -- `ℕ`, we further define the bounded counterparts to predicates
+  -- `P...` as `P...UpTo` and show the equivalence of the two.
+
+  -- Equivalent bounded predicate definition
+  CompositeUpTo : Pred ℕ _
+  CompositeUpTo n = ∃[ d ] d < n × NonTrivial d × d ∣ n
+
+  -- Proof of equivalence
+  comp-upto⇒comp : CompositeUpTo n → Composite n
+  comp-upto⇒comp (_ , d<n , ntd , d∣n) =
+    boundedNonTrivialDivisor {{ntd}} d<n d∣n
+
+  comp⇒comp-upto : Composite n → CompositeUpTo n
+  comp⇒comp-upto (boundedNonTrivialDivisor d<n d∣n) =
+    _ , d<n , recompute-nonTrivial , d∣n
+
+  CompositeUpTo⇔Composite : CompositeUpTo n ⇔ Composite n
+  CompositeUpTo⇔Composite = mk⇔ comp-upto⇒comp comp⇒comp-upto
+
+  -- Proof of decidability
+  compositeUpTo? : Decidable CompositeUpTo
+  compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
+
+------------------------------------------------------------------------
+-- Primality
 
 -- Basic (counter-)examples
 
@@ -137,11 +203,6 @@ rough∧∣⇒rough r n∣o hbntd = r (boundedNonTrivialDivisor-∣ hbntd n∣o)
 prime[2] : Prime 2
 prime[2] = prime 2-rough
 
--- Relationship between roughness and primality.
--- If a number n is p-rough, and p > 1 divides n, then p must be prime
-rough∧∣⇒prime : .{{NonTrivial p}} → Rough p n → p ∣ n → Prime p
-rough∧∣⇒prime r p∣n = prime (rough∧∣⇒rough r p∣n)
-
 prime⇒nonZero : Prime p → NonZero p
 prime⇒nonZero _ = nonTrivial⇒nonZero _
 
@@ -153,12 +214,7 @@ prime? 0        = no ¬prime[0]
 prime? 1        = no ¬prime[1]
 prime? n@(2+ _) = Dec.map PrimeUpTo⇔Prime (primeUpTo? n)
   where
-  -- For technical reasons, in order to be able to prove decidability
-  -- via the `all?` and `any?` combinators for *bounded* predicates on
-  -- `ℕ`, we further define the bounded counterparts to predicates
-  -- `P...` as `P...UpTo` and show the equivalence of the two.
-
-  -- An equivalent bounded predicate definition
+  -- Equivalent bounded predicate definition
   PrimeUpTo : Pred ℕ _
   PrimeUpTo n = ∀ {d} → d < n → NonTrivial d → d ∤ n
   
@@ -228,70 +284,12 @@ euclidsLemma m n {p} pp@(prime pr) p∣m*n = result
   ...   | no  d≢p =
     contradiction (boundedNonTrivialDivisor-≢ d≢p (GCD.gcd∣n g)) pr
 
-------------------------------------------------------------------------
--- Compositeness
+-- Relationship between roughness and primality.
+-- If a number n is p-rough, and p > 1 divides n, then p must be prime
+rough∧∣⇒prime : .{{NonTrivial p}} → Rough p n → p ∣ n → Prime p
+rough∧∣⇒prime r p∣n = prime (rough∧∣⇒rough r p∣n)
 
--- Smart constructors
-
-composite : .{{NonTrivial d}} → d < n → d ∣ n → Composite n
-composite {d = d} = boundedNonTrivialDivisor {divisor = d}
-
-composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} →
-               d ≢ n → d ∣ n → Composite n
-composite-≢ d = boundedNonTrivialDivisor-≢ {d}
-
-composite-∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
-composite-∣ (boundedNonTrivialDivisor {d} d<m d∣n) m∣n@(divides-refl q)
-  = boundedNonTrivialDivisor (*-monoʳ-< q d<m) (*-monoʳ-∣ q d∣n)
-  where instance
-    _ = m≢0∧n>1⇒m*n>1 q d
-    _ = m*n≢0⇒m≢0 q
-
--- Basic (counter-)examples of Composite
-
-¬composite[0] : ¬ Composite 0
-¬composite[0] composite[0] = 0-rough composite[0]
-
-¬composite[1] : ¬ Composite 1
-¬composite[1] composite[1] = 1-rough composite[1]
-
-composite[4] : Composite 4
-composite[4] = composite-≢ 2 (λ()) (divides-refl 2)
-
-composite[6] : Composite 6
-composite[6] = composite-≢ 3 (λ()) (divides-refl 2)
-
-composite⇒nonZero : Composite n → NonZero n
-composite⇒nonZero {suc _} _ = _
-
-composite⇒nonTrivial : Composite n → NonTrivial n
-composite⇒nonTrivial {1}    composite[1] =
-  contradiction composite[1] ¬composite[1]
-composite⇒nonTrivial {2+ _} _            = _
-
-composite? : Decidable Composite
-composite? n = Dec.map CompositeUpTo⇔Composite (compositeUpTo? n)
-  where
-  -- Equivalent bounded predicate definition
-  CompositeUpTo : Pred ℕ _
-  CompositeUpTo n = ∃[ d ] d < n × NonTrivial d × d ∣ n
-
-  -- Proof of equivalence
-  comp-upto⇒comp : CompositeUpTo n → Composite n
-  comp-upto⇒comp (_ , d<n , ntd , d∣n) =
-    boundedNonTrivialDivisor {{ntd}} d<n d∣n
-
-  comp⇒comp-upto : Composite n → CompositeUpTo n
-  comp⇒comp-upto (boundedNonTrivialDivisor d<n d∣n) =
-    _ , d<n , recompute-nonTrivial , d∣n
-
-  CompositeUpTo⇔Composite : CompositeUpTo n ⇔ Composite n
-  CompositeUpTo⇔Composite = mk⇔ comp-upto⇒comp comp⇒comp-upto
-
-  -- Proof of decidability
-  compositeUpTo? : Decidable CompositeUpTo
-  compositeUpTo? n = anyUpTo? (λ d → nonTrivial? d ×-dec d ∣? n) n
-
+-- Relationship between compositeness and primality.
 composite⇒¬prime : Composite n → ¬ Prime n
 composite⇒¬prime composite[d] (prime p) = p composite[d]
 
@@ -352,10 +350,11 @@ irreducible? n@(suc _) =
   irreducibleUpTo? n = allUpTo?
     (λ m → (m ∣? n) →-dec (m ≟ 1 ⊎-dec m ≟ n)) n
 
+-- Relationship between primality and irreducibility.
 prime⇒irreducible : Prime p → Irreducible p
-prime⇒irreducible pp@(prime _) {0}        0∣p
+prime⇒irreducible pp@(prime  _) {0}        0∣p
   = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _ {{prime⇒nonZero pp}})
-prime⇒irreducible     _     {1}        1∣p = inj₁ refl
+prime⇒irreducible     _         {1}        1∣p = inj₁ refl
 prime⇒irreducible pp@(prime pr) {m@(2+ _)} m∣p
   = inj₂ (≤∧≮⇒≡ (∣⇒≤ {{prime⇒nonZero pp}} m∣p) m≮p)
   where m≮p = λ m<p → pr (boundedNonTrivialDivisor m<p m∣p)
