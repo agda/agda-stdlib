@@ -352,13 +352,16 @@ irreducible? n@(suc _) =
 
 -- Relationship between primality and irreducibility.
 prime⇒irreducible : Prime p → Irreducible p
-prime⇒irreducible pp@(prime  _) {0}        0∣p
-  = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ _ {{prime⇒nonZero pp}})
-prime⇒irreducible     _         {1}        1∣p = inj₁ refl
-prime⇒irreducible pp@(prime pr) {m@(2+ _)} m∣p
-  = inj₂ (≤∧≮⇒≡ (∣⇒≤ {{prime⇒nonZero pp}} m∣p) m≮p)
-  where m≮p = λ m<p → pr (boundedNonTrivialDivisor m<p m∣p)
-  
+prime⇒irreducible {p} pp@(prime pr) = irr
+  where
+  instance _ = prime⇒nonZero pp
+  irr : .{{NonZero p}} → Irreducible p
+  irr {0}    0∣p = contradiction (0∣⇒≡0 0∣p) (≢-nonZero⁻¹ p)
+  irr {1}    1∣p = inj₁ refl
+  irr {2+ _} d∣p = inj₂ (≤∧≮⇒≡ (∣⇒≤ d∣p) d≮p)
+    where d≮p = λ d<p → pr (boundedNonTrivialDivisor d<p d∣p)
+
+
 irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
 irreducible⇒prime irr = prime
   λ (boundedNonTrivialDivisor d<p d∣p) →
