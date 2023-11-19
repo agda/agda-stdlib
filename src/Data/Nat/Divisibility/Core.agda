@@ -19,7 +19,7 @@ open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong₂; module ≡-Reasoning)
-   
+
 ------------------------------------------------------------------------
 -- Main definition
 --

@@ -39,7 +39,7 @@ private
 -- The positive/existential relation `BoundedNonTrivialDivisor` is
 -- the basis for the whole development, as it captures the possible
 -- non-trivial divisors of a given number; its complement, `Rough`,
--- therefore sets *lower* bounds on any possible such divisors. 
+-- therefore sets *lower* bounds on any possible such divisors.
 
 -- The predicate `Composite` is then defined as the 'diagonal' instance
 -- of `BoundedNonTrivialDivisor`, while `Prime` is essentially defined as
@@ -110,7 +110,7 @@ rough-1 _ (boundedNonTrivialDivisor _ d∣1) =
 rough⇒≤ : .{{NonTrivial n}} → m Rough n → m ≤ n
 rough⇒≤ rough = ≮⇒≥ n≮m
   where n≮m = λ m>n → rough (boundedNonTrivialDivisor m>n ∣-refl)
-  
+
 -- If a number n is m-rough, and m ∤ n, then n is (suc m)-rough
 ∤⇒rough-suc : m ∤ n → m Rough n → (suc m) Rough n
 ∤⇒rough-suc m∤n r (boundedNonTrivialDivisor d<1+m d∣n)
@@ -218,7 +218,7 @@ prime? n@(2+ _) = Dec.map PrimeUpTo⇔Prime (primeUpTo? n)
   -- Equivalent bounded predicate definition
   PrimeUpTo : Pred ℕ _
   PrimeUpTo n = ∀ {d} → d < n → NonTrivial d → d ∤ n
-  
+
   -- Proof of equivalence
   prime⇒prime-upto : Prime n → PrimeUpTo n
   prime⇒prime-upto (prime p) {d} d<n ntd d∣n
@@ -313,7 +313,7 @@ prime⇒¬composite (prime p) = p
 ¬irreducible[0] : ¬ Irreducible 0
 ¬irreducible[0] irr[0] = contradiction₂ 2≡1⊎2≡0 (λ ()) (λ ())
   where 2≡1⊎2≡0 = irr[0] {2} (divides-refl 0)
-  
+
 irreducible[1] : Irreducible 1
 irreducible[1] m|1 = inj₁ (∣1⇒≡1 m|1)
 

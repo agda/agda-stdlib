@@ -2776,8 +2776,9 @@ Additions to existing modules
   ```agda
   pattern divides-refl q = divides q refl
 
+  infix 10 _BoundedNonTrivialDivisor_
   record _BoundedNonTrivialDivisor_ (m n : ℕ) : Set where
-    constructor boundedNonTrivialDivisor
+    constructor boundedNonTrivialDivisor 
     field
       {divisor}       : ℕ
       .{{nontrivial}} : NonTrivial divisor
@@ -2795,9 +2796,20 @@ Additions to existing modules
                                o BoundedNonTrivialDivisor n
   ```
 
-* Added new definitions and proofs to `Data.Nat.Primality`:
+* Added new definitions, smart constructors and proofs to `Data.Nat.Primality`:
   ```agda
+  infix 10 _Rough_
+  _Rough_           : ℕ → Pred ℕ _
+  0-rough           : 0 Rough n
+  1-rough           : 1 Rough n
+  2-rough           : 2 Rough n
+  rough⇒≤           : .{{NonTrivial n}} → m Rough n → m ≤ n
+  ∤⇒rough-suc        : m ∤ n → m Rough n → (suc m) Rough n
+  rough∧∣⇒rough     : m Rough o → n ∣ o → m Rough n
   Composite         : ℕ → Set
+  composite-≢       : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n →
+	              Composite n
+  composite-∣       : .{{NonZero n}} → Composite m → m ∣ n → Composite n
   composite?        : Decidable Composite
   Irreducible       : ℕ → Set
   irreducible?      : Decidable Irreducible
@@ -2871,7 +2883,7 @@ Additions to existing modules
   ⊓≡⊓′ : m ⊓ n ≡ m ⊓′ n
   ∣-∣≡∣-∣′ : ∣ m - n ∣ ≡ ∣ m - n ∣′
 
-  nonZero? : Decidable NonZero
+  nonTrivial? : Decidable NonTrivial
   eq? : A ↣ ℕ → DecidableEquality A
   ≤-<-connex : Connex _≤_ _<_
   ≥->-connex : Connex _≥_ _>_
