@@ -143,4 +143,4 @@ coprime-factors c (divides q₁ eq₁ , divides q₂ eq₂) with coprime-Bézout
 prime⇒coprime : Prime p → .{{NonZero n}} → n < p → Coprime p n
 prime⇒coprime p n<p (d∣p , d∣n) with prime⇒irreducible p d∣p
 ... | inj₁ d≡1      = d≡1
-... | inj₂ d≡p@refl with () ← ≤⇒≯ (∣⇒≤ d∣n) n<p
+... | inj₂ d≡p@refl = contradiction n<p (≤⇒≯ (∣⇒≤ d∣n))
