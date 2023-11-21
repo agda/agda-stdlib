@@ -188,3 +188,6 @@ _ = refl
 
 map : (Char → Char) → String → String
 map f = fromList ∘ List.map f ∘ toList
+
+_ : map Char.toUpper "abc" ≡ "ABC"
+_ = refl
