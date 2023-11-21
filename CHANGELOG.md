@@ -1727,6 +1727,11 @@ Deprecated names
   invPreorder   ↦ converse-preorder
   ```
 
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  isPropositional ↦ Relation.Nullary.Irrelevant
+  ```
+
 * In `Relation.Unary.Consequences`:
   ```agda
   dec⟶recomputable  ↦  dec⇒recomputable
