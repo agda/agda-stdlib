@@ -63,9 +63,9 @@ m < n = suc m ≤ n
 
 -- Smart constructors of _<_
 
-pattern z<s {n}         = s≤s (z≤n {n})
+pattern z<s     {n}     = s≤s (z≤n {n})
 pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
-pattern 1<2+n {n}       = s<s (z<s {n})
+pattern sz<ss   {n}     = s<s (z<s {n})
 
 -- Smart destructors of _≤_, _<_
 
@@ -156,7 +156,7 @@ instance
 -- Constructors
 
 n>1⇒nonTrivial : ∀ {n} → n > 1 → NonTrivial n
-n>1⇒nonTrivial 1<2+n = _
+n>1⇒nonTrivial sz<ss = _
 
 -- Destructors
 
@@ -164,7 +164,7 @@ nonTrivial⇒nonZero : ∀ n → .{{NonTrivial n}} → NonZero n
 nonTrivial⇒nonZero (2+ _) = _
 
 nonTrivial⇒n>1 : ∀ n → .{{NonTrivial n}} → n > 1
-nonTrivial⇒n>1 (2+ _) = 1<2+n
+nonTrivial⇒n>1 (2+ _) = sz<ss
 
 nonTrivial⇒≢1 : ∀ {n} → .{{NonTrivial n}} → n ≢ 1
 nonTrivial⇒≢1 {{()}} refl

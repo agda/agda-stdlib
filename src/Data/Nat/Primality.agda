@@ -63,6 +63,11 @@ m Rough n = ¬ (m BoundedNonTrivialDivisor n)
 Composite : Pred ℕ _
 Composite n = n BoundedNonTrivialDivisor n
 
+-- A shorter pattern synonym for the record constructor producing a
+-- witness for `Composite`.
+pattern
+  composite {d} d<n d∣n = boundedNonTrivialDivisor {divisor = d} d<n d∣n
+
 ------------------------------------------------------------------------
 -- Primality
 
@@ -126,9 +131,6 @@ rough∧∣⇒rough r n∣o bntd = r (boundedNonTrivialDivisor-∣ bntd n∣o)
 -- Compositeness
 
 -- Smart constructors
-
-pattern
-  composite {d} d<n d∣n = boundedNonTrivialDivisor {divisor = d} d<n d∣n
 
 composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} →
               d ≢ n → d ∣ n → Composite n
