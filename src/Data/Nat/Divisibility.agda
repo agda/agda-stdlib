@@ -25,7 +25,7 @@ open import Relation.Binary.Definitions
   using (Reflexive; Transitive; Antisymmetric; Decidable)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym; cong; subst)
+  using (_≡_; _≢_; refl; sym; cong; subst)
 open import Relation.Binary.Reasoning.Syntax
 open import Relation.Binary.PropositionalEquality.Properties
   using (isEquivalence; module ≡-Reasoning)
