@@ -12,7 +12,7 @@
 
 module Data.Nat.Divisibility.Core where
 
-open import Data.Nat.Base using (ℕ; _*_)
+open import Data.Nat.Base using (ℕ; _*_; _<_; NonTrivial)
 open import Data.Nat.Properties
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core using (Rel)
@@ -24,7 +24,7 @@ private
   variable m n o p : ℕ
 
 ------------------------------------------------------------------------
--- Definition
+-- Main definition
 --
 -- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and
 -- Wright's "An Introduction to the Theory of Numbers", require m to
@@ -42,9 +42,24 @@ record _∣_ (m n : ℕ) : Set where
 _∤_ : Rel ℕ _
 m ∤ n = ¬ (m ∣ n)
 
--- smart constructor
+-- Smart constructor
 
 pattern divides-refl q = divides q refl
+
+------------------------------------------------------------------------
+-- Restricted divisor relation
+
+-- Relation for having a non-trivial divisor below a given bound.
+-- Useful when reasoning about primality.
+infix 10 _HasNonTrivialDivisorLessThan_
+
+record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
+  constructor hasNonTrivialDivisor
+  field
+    {divisor}       : ℕ
+    .{{nontrivial}} : NonTrivial divisor
+    divisor-<       : divisor < n
+    divisor-∣       : divisor ∣ m
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

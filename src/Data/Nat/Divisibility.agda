@@ -330,3 +330,27 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   help : m ≤′ n → m ! ∣ n !
   help         ≤′-refl       = ∣-refl
   help {n = n} (≤′-step m≤n) = ∣n⇒∣m*n n (help m≤n)
+
+------------------------------------------------------------------------
+-- Properties of _BoundedNonTrivialDivisor_
+
+-- Smart constructor
+
+hasNonTrivialDivisor-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
+                         d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisor-≢ d≢n d∣n
+  = hasNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+
+-- Monotonicity wrt ∣
+
+hasNonTrivialDivisor-∣ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → m ∣ o →
+                         o HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisor-∣ (hasNonTrivialDivisor d<n d∣m) n∣o
+  = hasNonTrivialDivisor d<n (∣-trans d∣m n∣o)
+
+-- Monotonicity wrt ≤
+
+hasNonTrivialDivisor-≤ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → n ≤ o →
+                             m HasNonTrivialDivisorLessThan o
+hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) m≤o =
+  hasNonTrivialDivisor (<-≤-trans d<n m≤o) d∣m

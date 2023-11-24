@@ -645,10 +645,14 @@ Non-backwards compatible changes
 * To make it easier to use, reason about and read, the definition has been
   changed to:
   ```agda
-  Prime 0 = ⊥
-  Prime 1 = ⊥
-  Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
+  record Prime (p : ℕ) : Set where
+    constructor prime
+    field
+      .{{nontrivial}} : NonTrivial p
+      notComposite    : ¬ Composite p
   ```
+  where `Composite` is now defined as the diagonal of the new relation
+  `_HasNonTrivialDivisorLessThan_` in `Data.Nat.Divisibility.Core`.
 
 ### Changes to operation reduction behaviour in `Data.Rational(.Unnormalised)`
 
@@ -752,7 +756,7 @@ Non-backwards compatible changes
          of these under the names `strictlySurjective`, `strictlyInverseˡ` and
          `strictlyInverseʳ`,
    - Conversion functions have been added in both directions to
-         `Function.Consequences(.Propositional)`.
+         `Function.Consequences(.Propositional/Setoid)`.
 
 ### New `Function.Strict`
 
@@ -1732,6 +1736,11 @@ Deprecated names
   invPreorder   ↦ converse-preorder
   ```
 
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  isPropositional ↦ Relation.Nullary.Irrelevant
+  ```
+
 * In `Relation.Unary.Consequences`:
   ```agda
   dec⟶recomputable  ↦  dec⇒recomputable
@@ -2033,6 +2042,8 @@ New modules
 * Properties of various types of functions:
   ```
   Function.Consequences
+  Function.Consequences.Setoid
+  Function.Consequences.Propositional
   Function.Properties.Bijection
   Function.Properties.RightInverse
   Function.Properties.Surjection
@@ -2752,6 +2763,18 @@ Additions to existing modules
   s≤″s⁻¹ : suc m ≤″ suc n → m ≤″ n
   s<″s⁻¹ : suc m <″ suc n → m <″ n
 
+  pattern 2+ n = suc (suc n)
+  pattern 1<2+n {n} = s<s (z<s {n})
+
+  NonTrivial            : Pred ℕ 0ℓ
+  instance nonTrivial   : NonTrivial (2+ n)
+  n>1⇒nonTrivial        : 1 < n → NonTrivial n
+  nonZero⇒≢1⇒nonTrivial : .{{NonZero n}} → n ≢ 1 → NonTrivial n
+  recompute-nonTrivial  : .{{NonTrivial n}} → NonTrivial n
+  nonTrivial⇒nonZero    : .{{NonTrivial n}} → NonZero n
+  nonTrivial⇒n>1        : .{{NonTrivial n}} → 1 < n
+  nonTrivial⇒≢1         : .{{NonTrivial n}} → n ≢ 1
+
   _⊔′_ : ℕ → ℕ → ℕ
   _⊓′_ : ℕ → ℕ → ℕ
   ∣_-_∣′ : ℕ → ℕ → ℕ
@@ -2777,12 +2800,13 @@ Additions to existing modules
   <-asym : Asymmetric _<_
   ```
 
-* Added a new pattern synonym to `Data.Nat.Divisibility.Core`:
+* Added a new pattern synonym and a new definition to `Data.Nat.Divisibility.Core`:
   ```agda
   pattern divides-refl q = divides q refl
+  record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
   ```
 
-* Added  a new instance and new definitions to `Data.Nat.Divisibility`:
+* Added  a new instance, new definitions, and new proofs to `Data.Nat.Divisibility`:
   ```agda
   instance quotient≢0 : m ∣ n → .{{NonZero n}} → NonZero quotient
 
@@ -2791,17 +2815,35 @@ Additions to existing modules
   quotient>1   : m ∣ n → m < n → 1 < quotient
   quotient-<   : m ∣ n → 1 < m → .{{NonZero n}} → quotient < n
   n/m≡quotient : m ∣ n → .{{_ : NonZero m}} → n / m ≡ quotient
+
+  hasNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
+  hasNonTrivialDivisor-∣ : m HasNonTrivialDivisorLessThan n → m ∣ o → o HasNonTrivialDivisorLessThan n
+  hasNonTrivialDivisor-≤ : m HasNonTrivialDivisorLessThan n → n ≤ o → m HasNonTrivialDivisorLessThan o
   ```
 
-* Added new definitions and proofs to `Data.Nat.Primality`:
+* Added new definitions, smart constructors and proofs to `Data.Nat.Primality`:
   ```agda
-  Composite        : ℕ → Set
-  composite?       : Decidable Composite
-  composite⇒¬prime : Composite n → ¬ Prime n
-  ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
-  prime⇒¬composite : Prime n → ¬ Composite n
-  ¬prime⇒composite : 2 ≤ n → ¬ Prime n → Composite n
-  euclidsLemma     : Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
+  infix 10 _Rough_
+  _Rough_           : ℕ → Pred ℕ _
+  0-rough           : 0 Rough n
+  1-rough           : 1 Rough n
+  2-rough           : 2 Rough n
+  rough⇒≤           : .{{NonTrivial n}} → m Rough n → m ≤ n
+  ∤⇒rough-suc        : m ∤ n → m Rough n → (suc m) Rough n
+  rough∧∣⇒rough     : m Rough o → n ∣ o → m Rough n
+  Composite         : ℕ → Set
+  composite-≢       : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
+  composite-∣       : .{{NonZero n}} → Composite m → m ∣ n → Composite n
+  composite?        : Decidable Composite
+  Irreducible       : ℕ → Set
+  irreducible?      : Decidable Irreducible
+  composite⇒¬prime  : Composite n → ¬ Prime n
+  ¬composite⇒prime  : .{{NonTrivial n} → ¬ Composite n → Prime n
+  prime⇒¬composite  : Prime n → ¬ Composite n
+  ¬prime⇒composite  : .{{NonTrivial n} → ¬ Prime n → Composite n
+  prime⇒irreducible : Prime p → Irreducible p
+  irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
+  euclidsLemma      : Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
   ```
 
 * Added new proofs in `Data.Nat.Properties`:
@@ -2811,10 +2853,12 @@ Additions to existing modules
   n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
   n>0⇒n≢0   : n > 0 → n ≢ 0
-  m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
   m*n≢0⇒m≢0 : .{{NonZero (m * n)}} → NonZero m
   m*n≢0⇒n≢0 : .{{NonZero (m * n)}} → NonZero n
+  m≢0∧n>1⇒m*n>1 : .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
+  n≢0∧m>1⇒m*n>1 : .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
+  m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
 
   s<s-injective : s<s p ≡ s<s q → p ≡ q
@@ -2863,7 +2907,7 @@ Additions to existing modules
   ⊓≡⊓′ : m ⊓ n ≡ m ⊓′ n
   ∣-∣≡∣-∣′ : ∣ m - n ∣ ≡ ∣ m - n ∣′
 
-  nonZero? : Decidable NonZero
+  nonTrivial? : Decidable NonTrivial
   eq? : A ↣ ℕ → DecidableEquality A
   ≤-<-connex : Connex _≤_ _<_
   ≥->-connex : Connex _≥_ _>_
@@ -3642,7 +3686,9 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Nat.Coprimality`:
   ```
-  Bézout-coprime : ∀ {i j d} → Bézout.Identity (suc d) (i * suc d) (j * suc d) → Coprime i j
+  ¬0-coprimeTo-2+ : ∀ {n} → ¬ Coprime 0 (2 + n)
+  Bézout-coprime  : ∀ {i j d} → Bézout.Identity (suc d) (i * suc d) (j * suc d) → Coprime i j
+  prime⇒coprime   : ∀ m → Prime m → ∀ n → 0 < n → n < m → Coprime m n
   ```
 
 * In `Data.Nat.Divisibility`
