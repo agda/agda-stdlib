@@ -39,6 +39,17 @@ open Base public
   ; subst∧comm⇒sym
   ; wlog
   ; sel⇒idem
+-- plus all the deprecated versions of the above
+  ; comm+assoc⇒middleFour
+  ; identity+middleFour⇒assoc
+  ; identity+middleFour⇒comm
+  ; assoc+distribʳ+idʳ+invʳ⇒zeˡ
+  ; assoc+distribˡ+idʳ+invʳ⇒zeʳ
+  ; assoc+id+invʳ⇒invˡ-unique
+  ; assoc+id+invˡ⇒invʳ-unique
+  ; comm+distrˡ⇒distrʳ
+  ; comm+distrʳ⇒distrˡ
+  ; subst+comm⇒sym
   )
 
 ------------------------------------------------------------------------
@@ -137,4 +148,54 @@ module _ {p} {P : Pred A p} where
 -- not guaranteed.
 
 -- Version 2.0
--- See all the names deprecated in Algebra.Consequences.{Base|Setoid}
+
+comm+assoc⇒middleFour = comm∧assoc⇒middleFour
+{-# WARNING_ON_USAGE comm+assoc⇒middleFour
+"Warning: comm+assoc⇒middleFour was deprecated in v2.0.
+Please use comm∧assoc⇒middleFour instead."
+#-}
+identity+middleFour⇒assoc = identity∧middleFour⇒assoc
+{-# WARNING_ON_USAGE identity+middleFour⇒assoc
+"Warning: identity+middleFour⇒assoc was deprecated in v2.0.
+Please use identity∧middleFour⇒assoc instead."
+#-}
+identity+middleFour⇒comm = identity∧middleFour⇒comm
+{-# WARNING_ON_USAGE identity+middleFour⇒comm
+"Warning: identity+middleFour⇒comm was deprecated in v2.0.
+Please use identity∧middleFour⇒comm instead."
+#-}
+comm+distrˡ⇒distrʳ = comm∧distrˡ⇒distrʳ
+{-# WARNING_ON_USAGE comm+distrˡ⇒distrʳ
+"Warning: comm+distrˡ⇒distrʳ was deprecated in v2.0.
+Please use comm∧distrˡ⇒distrʳ instead."
+#-}
+comm+distrʳ⇒distrˡ = comm∧distrʳ⇒distrˡ
+{-# WARNING_ON_USAGE comm+distrʳ⇒distrˡ
+"Warning: comm+distrʳ⇒distrˡ was deprecated in v2.0.
+Please use comm∧distrʳ⇒distrˡ instead."
+#-}
+assoc+distribʳ+idʳ+invʳ⇒zeˡ = assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ
+{-# WARNING_ON_USAGE assoc+distribʳ+idʳ+invʳ⇒zeˡ
+"Warning: assoc+distribʳ+idʳ+invʳ⇒zeˡ was deprecated in v2.0.
+Please use assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ instead."
+#-}
+assoc+distribˡ+idʳ+invʳ⇒zeʳ = assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ
+{-# WARNING_ON_USAGE assoc+distribˡ+idʳ+invʳ⇒zeʳ
+"Warning: assoc+distribˡ+idʳ+invʳ⇒zeʳ was deprecated in v2.0.
+Please use assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ instead."
+#-}
+assoc+id+invʳ⇒invˡ-unique = assoc∧id∧invʳ⇒invˡ-unique
+{-# WARNING_ON_USAGE assoc+id+invʳ⇒invˡ-unique
+"Warning: assoc+id+invʳ⇒invˡ-unique was deprecated in v2.0.
+Please use assoc∧id∧invʳ⇒invˡ-unique instead."
+#-}
+assoc+id+invˡ⇒invʳ-unique = assoc∧id∧invˡ⇒invʳ-unique
+{-# WARNING_ON_USAGE assoc+id+invˡ⇒invʳ-unique
+"Warning: assoc+id+invˡ⇒invʳ-unique was deprecated in v2.0.
+Please use assoc∧id∧invˡ⇒invʳ-unique instead."
+#-}
+subst+comm⇒sym = subst∧comm⇒sym
+{-# WARNING_ON_USAGE subst+comm⇒sym
+"Warning: subst+comm⇒sym was deprecated in v2.0.
+Please use subst∧comm⇒sym instead."
+#-}

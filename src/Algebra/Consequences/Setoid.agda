@@ -333,6 +333,21 @@ module _ {p} {f : Op₂ A} {P : Pred A p}
 
 -- Version 2.0
 
+comm+assoc⇒middleFour = comm∧assoc⇒middleFour
+{-# WARNING_ON_USAGE comm+assoc⇒middleFour
+"Warning: comm+assoc⇒middleFour was deprecated in v2.0.
+Please use comm∧assoc⇒middleFour instead."
+#-}
+identity+middleFour⇒assoc = identity∧middleFour⇒assoc
+{-# WARNING_ON_USAGE identity+middleFour⇒assoc
+"Warning: identity+middleFour⇒assoc was deprecated in v2.0.
+Please use identity∧middleFour⇒assoc instead."
+#-}
+identity+middleFour⇒comm = identity∧middleFour⇒comm
+{-# WARNING_ON_USAGE identity+middleFour⇒comm
+"Warning: identity+middleFour⇒comm was deprecated in v2.0.
+Please use identity∧middleFour⇒comm instead."
+#-}
 comm+cancelˡ⇒cancelʳ = comm∧cancelˡ⇒cancelʳ
 {-# WARNING_ON_USAGE comm+cancelˡ⇒cancelʳ
 "Warning: comm+cancelˡ⇒cancelʳ was deprecated in v2.0.

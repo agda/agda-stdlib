@@ -1272,8 +1272,25 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Consequences.Propositional`:
+  ```agda
+  comm+assoc⇒middleFour             ↦  comm∧assoc⇒middleFour
+  identity+middleFour⇒assoc         ↦  identity∧middleFour⇒assoc
+  identity+middleFour⇒comm          ↦  identity∧middleFour⇒comm
+  comm+distrˡ⇒distrʳ                ↦  comm∧distrˡ⇒distrʳ
+  comm+distrʳ⇒distrˡ                ↦  comm∧distrʳ⇒distrˡ
+  assoc+distribʳ+idʳ+invʳ⇒zeˡ       ↦  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ
+  assoc+distribˡ+idʳ+invʳ⇒zeʳ       ↦  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ
+  assoc+id+invʳ⇒invˡ-unique         ↦  assoc∧id∧invʳ⇒invˡ-unique
+  assoc+id+invˡ⇒invʳ-unique         ↦  assoc∧id∧invˡ⇒invʳ-unique
+  subst+comm⇒sym                    ↦  subst∧comm⇒sym
+  ```
+
 * In `Algebra.Consequences.Setoid`:
   ```agda
+  comm+assoc⇒middleFour             ↦  comm∧assoc⇒middleFour
+  identity+middleFour⇒assoc         ↦  identity∧middleFour⇒assoc
+  identity+middleFour⇒comm          ↦  identity∧middleFour⇒comm
   comm+cancelˡ⇒cancelʳ              ↦  comm∧cancelˡ⇒cancelʳ
   comm+cancelʳ⇒cancelˡ              ↦  comm∧cancelʳ⇒cancelˡ
   comm+almostCancelˡ⇒almostCancelʳ  ↦  comm∧almostCancelˡ⇒almostCancelʳ
