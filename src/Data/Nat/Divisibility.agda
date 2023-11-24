@@ -313,21 +313,21 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
 
 -- Smart constructor
 
-boundedNonTrivialDivisor-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
-                         d ≢ n → d ∣ n → n BoundedNonTrivialDivisor n
-boundedNonTrivialDivisor-≢ d≢n d∣n
-  = boundedNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+hasNonTrivialDivisor-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
+                         d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisor-≢ d≢n d∣n
+  = hasNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 -- Monotonicity wrt ∣
 
-boundedNonTrivialDivisor-∣ : ∀ {m n o} → m BoundedNonTrivialDivisor n → n ∣ o →
-                         m BoundedNonTrivialDivisor o
-boundedNonTrivialDivisor-∣ (boundedNonTrivialDivisor d<m d∣n) n∣o
-  = boundedNonTrivialDivisor d<m (∣-trans d∣n n∣o)
+hasNonTrivialDivisor-∣ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → m ∣ o →
+                         o HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisor-∣ (hasNonTrivialDivisor d<n d∣m) n∣o
+  = hasNonTrivialDivisor d<n (∣-trans d∣m n∣o)
 
 -- Monotonicity wrt ≤
 
-boundedNonTrivialDivisor-≤ : ∀ {m n o} → m BoundedNonTrivialDivisor n → m ≤ o →
-                             o BoundedNonTrivialDivisor n
-boundedNonTrivialDivisor-≤ (boundedNonTrivialDivisor d<m d∣n) m≤o =
-  boundedNonTrivialDivisor (<-≤-trans d<m m≤o) d∣n
+hasNonTrivialDivisor-≤ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → n ≤ o →
+                             m HasNonTrivialDivisorLessThan o
+hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) m≤o =
+  hasNonTrivialDivisor (<-≤-trans d<n m≤o) d∣m

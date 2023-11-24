@@ -54,19 +54,19 @@ private
 infix 10 _Rough_
 
 _Rough_ : ℕ → Pred ℕ _
-m Rough n = ¬ (m BoundedNonTrivialDivisor n)
+m Rough n = ¬ (n HasNonTrivialDivisorLessThan m)
 
 ------------------------------------------------------------------------
 -- Compositeness
 
 -- A number is composite if it has a proper non-trivial divisor.
 Composite : Pred ℕ _
-Composite n = n BoundedNonTrivialDivisor n
+Composite n = n HasNonTrivialDivisorLessThan n
 
 -- A shorter pattern synonym for the record constructor producing a
 -- witness for `Composite`.
 pattern
-  composite {d} d<n d∣n = boundedNonTrivialDivisor {divisor = d} d<n d∣n
+  composite {d} d<n d∣n = hasNonTrivialDivisor {divisor = d} d<n d∣n
 
 ------------------------------------------------------------------------
 -- Primality
@@ -97,35 +97,35 @@ Irreducible n = ∀ {d} → d ∣ n → d ≡ 1 ⊎ d ≡ n
 
 -- 1 is always n-rough
 rough-1 : ∀ n → n Rough 1
-rough-1 _ (boundedNonTrivialDivisor _ d∣1) =
+rough-1 _ (hasNonTrivialDivisor _ d∣1) =
   contradiction (∣1⇒≡1 d∣1) nonTrivial⇒≢1
 
 -- Any number is 0-, 1- and 2-rough,
 -- because no proper divisor d can be strictly less than 0, 1, or 2
 0-rough : 0 Rough n
-0-rough (boundedNonTrivialDivisor () _)
+0-rough (hasNonTrivialDivisor () _)
 
 1-rough : 1 Rough n
-1-rough (boundedNonTrivialDivisor {{()}} z<s _)
+1-rough (hasNonTrivialDivisor {{()}} z<s _)
 
 2-rough : 2 Rough n
-2-rough (boundedNonTrivialDivisor {{()}} (s<s z<s) _)
+2-rough (hasNonTrivialDivisor {{()}} (s<s z<s) _)
 
 -- If a number n > 1 is m-rough, then m ≤ n
 rough⇒≤ : .{{NonTrivial n}} → m Rough n → m ≤ n
 rough⇒≤ rough = ≮⇒≥ n≮m
-  where n≮m = λ m>n → rough (boundedNonTrivialDivisor m>n ∣-refl)
+  where n≮m = λ m>n → rough (hasNonTrivialDivisor m>n ∣-refl)
 
 -- If a number n is m-rough, and m ∤ n, then n is (suc m)-rough
 ∤⇒rough-suc : m ∤ n → m Rough n → (suc m) Rough n
-∤⇒rough-suc m∤n r (boundedNonTrivialDivisor d<1+m d∣n)
+∤⇒rough-suc m∤n r (hasNonTrivialDivisor d<1+m d∣n)
   with m<1+n⇒m<n∨m≡n d<1+m
-... | inj₁ d<m      = r (boundedNonTrivialDivisor d<m d∣n)
+... | inj₁ d<m      = r (hasNonTrivialDivisor d<m d∣n)
 ... | inj₂ d≡m@refl = contradiction d∣n m∤n
 
 -- If a number is m-rough, then so are all of its divisors
 rough∧∣⇒rough : m Rough o → n ∣ o → m Rough n
-rough∧∣⇒rough r n∣o bntd = r (boundedNonTrivialDivisor-∣ bntd n∣o)
+rough∧∣⇒rough r n∣o bntd = r (hasNonTrivialDivisor-∣ bntd n∣o)
 
 ------------------------------------------------------------------------
 -- Compositeness
@@ -134,7 +134,7 @@ rough∧∣⇒rough r n∣o bntd = r (boundedNonTrivialDivisor-∣ bntd n∣o)
 
 composite-≢ : ∀ d → .{{NonTrivial d}} → .{{NonZero n}} →
               d ≢ n → d ∣ n → Composite n
-composite-≢ d = boundedNonTrivialDivisor-≢ {d}
+composite-≢ d = hasNonTrivialDivisor-≢ {d}
 
 composite-∣ : .{{NonZero n}} → Composite m → m ∣ n → Composite n
 composite-∣ (composite {d} d<m d∣n) m∣n@(divides-refl q)
