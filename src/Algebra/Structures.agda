@@ -806,7 +806,6 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     *-assoc          : Associative *
     *-identity       : Identity 1# *
     distrib          : * DistributesOver +
-    zero             : Zero 0# *
 
   open IsAbelianGroup +-isAbelianGroup public
     renaming
@@ -862,10 +861,15 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     )
 
   zeroˡ : LeftZero 0# *
-  zeroˡ = proj₁ zero
+  zeroˡ = Consequences.assoc+distribʳ+idʳ+invʳ⇒zeˡ setoid
+    +-cong *-cong +-assoc (proj₂ distrib) +-identityʳ -‿inverseʳ
 
   zeroʳ : RightZero 0# *
-  zeroʳ = proj₂ zero
+  zeroʳ = Consequences.assoc+distribˡ+idʳ+invʳ⇒zeʳ setoid
+    +-cong *-cong +-assoc (proj₁ distrib) +-identityʳ -‿inverseʳ
+
+  zero : Zero 0# *
+  zero = zeroˡ , zeroʳ
 
   isSemiringWithoutAnnihilatingZero
     : IsSemiringWithoutAnnihilatingZero + * 0# 1#

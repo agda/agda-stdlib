@@ -389,7 +389,6 @@ ring R S = record
       ; *-assoc          = Semiring.*-assoc Semi
       ; *-identity       = Semiring.*-identity Semi
       ; distrib          = Semiring.distrib Semi
-      ; zero             = Semiring.zero Semi
       }
   }
   where
