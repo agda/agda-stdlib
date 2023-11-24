@@ -842,9 +842,9 @@ Non-backwards compatible changes
 
   4. The modules `Relation.Nullary.(Product/Sum/Implication)` have been deprecated
          and their contents moved to `Relation.Nullary.(Negation/Reflects/Decidable)`.
-		 
+
   5. The proof `T?` has been moved from `Data.Bool.Properties` to `Relation.Nullary.Decidable.Core`
-	 (but is still re-exported by the former).
+         (but is still re-exported by the former).
 
   as well as the following breaking changes:
 
@@ -1200,7 +1200,7 @@ Other major improvements
 
 * We have then moved raw bundles defined in `Data.X.Properties` to `Data.X.Base` for
   `X` = `Nat`/`Nat.Binary`/`Integer`/`Rational`/`Rational.Unnormalised`.
-  
+
 ### Upgrades to `README` sub-library
 
 * The `README` sub-library has been moved to `doc/README` and a new `doc/standard-library-doc.agda-lib` has been added.
@@ -1209,7 +1209,7 @@ Other major improvements
   using an out-of-the-box standard Agda installation without altering the main
   `standard-library.agda-lib` file.
 
-* The second is that the `README` files are now their own first-class library 
+* The second is that the `README` files are now their own first-class library
   and can be imported like an other library.
 
 Deprecated modules
@@ -2813,7 +2813,7 @@ Additions to existing modules
   equalityᵒ    : m ∣ n → n ≡ m * quotient
   quotient-∣   : m ∣ n → quotient ∣ n
   quotient>1   : m ∣ n → m < n → 1 < quotient
-  quotient-<   : m ∣ n → 1 < m → .{{NonZero n}} → quotient < n
+  quotient-<   : m ∣ n → .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
   n/m≡quotient : m ∣ n → .{{_ : NonZero m}} → n / m ≡ quotient
 
   hasNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
@@ -2948,7 +2948,7 @@ Additions to existing modules
   m%n*o≡m*o%[n*o]     : .{{_ : NonZero n}} .{{_ : NonZero o}} → m % n * o ≡ m * o % (n * o)
 
   [m*n+o]%[p*n]≡[m*n]%[p*n]+o : .{{_ : NonZero n}} .{{_ : NonZero p}} → o < n →
-	                        (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
+                                (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
   ```
 
 * Added new proofs in `Data.Nat.Divisibility`:
@@ -2958,7 +2958,7 @@ Additions to existing modules
   m*n∣⇒n∣       : m * n ∣ i → n ∣ i
   m≤n⇒m!∣n!     : m ≤ n → m ! ∣ n !
   m/n/o≡m/[n*o] : .{{_ : NonZero n}} .{{_ : NonZero o}} →
-	          n * o ∣ m → (m / n) / o ≡ m / (n * o)
+                  n * o ∣ m → (m / n) / o ≡ m / (n * o)
   ```
 
 * Added new proofs in `Data.Nat.GCD`:
