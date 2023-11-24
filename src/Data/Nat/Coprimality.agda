@@ -21,8 +21,9 @@ open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; refl; trans; cong; subst)
-open import Relation.Nullary as Nullary hiding (recompute)
-open import Relation.Nullary.Negation using (contradiction)
+import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Negation using (¬_; contradiction)
+import Relation.Nullary as Nullary
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Symmetric; Decidable)
 
@@ -63,18 +64,8 @@ coprime-/gcd m n = GCD≡1⇒coprime (GCD-/gcd m n)
 sym : Symmetric Coprime
 sym c = c ∘ swap
 
-private
-  0≢1 : 0 ≢ 1
-  0≢1 ()
-
-  2+≢1 : ∀ {n} → suc (suc n) ≢ 1
-  2+≢1 ()
-
 coprime? : Decidable Coprime
-coprime? i j with mkGCD i j
-... | (0           , g) = no  (0≢1  ∘ GCD.unique g ∘ coprime⇒GCD≡1)
-... | (1           , g) = yes (GCD≡1⇒coprime g)
-... | (suc (suc d) , g) = no  (2+≢1 ∘ GCD.unique g ∘ coprime⇒GCD≡1)
+coprime? m n = Dec.map′ gcd≡1⇒coprime coprime⇒gcd≡1 (gcd m n ≟ 1)
 
 ------------------------------------------------------------------------
 -- Other basic properties
