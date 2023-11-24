@@ -3117,6 +3117,7 @@ Additions to existing modules
   ```agda
   wordsByᵇ : (Char → Bool) → String → List String
   linesByᵇ : (Char → Bool) → String → List String
+  map      : (Char → Char) → String → String
   ```
 
 * Added new proofs in `Data.String.Properties`:
