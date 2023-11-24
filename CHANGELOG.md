@@ -33,7 +33,7 @@ Highlights
 Bug-fixes
 ---------
 
-* In `Algebra.Structures` the record `IsRing` contained an unnecessary field
+* In `Algebra.Structures` the records `IsRing` and `IsRingWithoutOne` contained an unnecessary field
   `zero : RightZero 0# *`, which could be derived from the other ring axioms.
   Consequently this field has been removed from the record, and the record
   `IsRingWithoutAnnihilatingZero` in `Algebra.Structures.Biased` has been
