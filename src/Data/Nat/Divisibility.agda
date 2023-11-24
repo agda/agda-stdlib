@@ -61,9 +61,9 @@ module _ (m∣n : m ∣ n) where
       n            ≡⟨ equalityᵒ ⟩
       m * quotient ∎
 
-  quotient-< : 1 < m → .{{NonZero n}} → quotient < n
-  quotient-< 1<m = begin-strict
-    quotient     <⟨ m<m*n quotient m 1<m ⟩
+  quotient-< : .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
+  quotient-<     = begin-strict
+    quotient     <⟨ m<m*n quotient m (nonTrivial⇒n>1 m) ⟩
     quotient * m ≡⟨ equality ⟨
     n            ∎
 
