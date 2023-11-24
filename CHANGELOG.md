@@ -751,8 +751,10 @@ Non-backwards compatible changes
    - The records in  `Function.Structures` and `Function.Bundles` export proofs
          of these under the names `strictlySurjective`, `strictlyInverseˡ` and
          `strictlyInverseʳ`,
-   - Conversion functions have been added in both directions to
-         `Function.Consequences(.Propositional/Setoid)`.
+   - Conversion functions for the definitions have been added in both directions 
+		 to `Function.Consequences(.Propositional/Setoid)`.
+   - Conversion functions for structures have been added in 
+		 `Function.Structures.Biased`.
 
 ### New `Function.Strict`
 
