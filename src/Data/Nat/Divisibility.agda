@@ -12,11 +12,10 @@ open import Algebra
 open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
-open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘′_; _$_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
-open import Relation.Nullary.Decidable as Dec using (False; yes; no)
+open import Relation.Nullary.Decidable as Dec using (yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
@@ -308,3 +307,27 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   help : ∀ {m n} → m ≤′ n → m ! ∣ n !
   help {m} {n}     ≤′-refl        = ∣-refl
   help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)
+
+------------------------------------------------------------------------
+-- Properties of _BoundedNonTrivialDivisor_
+
+-- Smart constructor
+
+hasNonTrivialDivisor-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
+                         d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisor-≢ d≢n d∣n
+  = hasNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+
+-- Monotonicity wrt ∣
+
+hasNonTrivialDivisor-∣ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → m ∣ o →
+                         o HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisor-∣ (hasNonTrivialDivisor d<n d∣m) n∣o
+  = hasNonTrivialDivisor d<n (∣-trans d∣m n∣o)
+
+-- Monotonicity wrt ≤
+
+hasNonTrivialDivisor-≤ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → n ≤ o →
+                             m HasNonTrivialDivisorLessThan o
+hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) m≤o =
+  hasNonTrivialDivisor (<-≤-trans d<n m≤o) d∣m

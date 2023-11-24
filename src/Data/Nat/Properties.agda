@@ -61,6 +61,15 @@ nonZero? zero    = no NonZero.nonZero
 nonZero? (suc n) = yes _
 
 ------------------------------------------------------------------------
+-- Properties of NonTrivial
+------------------------------------------------------------------------
+
+nonTrivial? : U.Decidable NonTrivial
+nonTrivial? 0      = no λ()
+nonTrivial? 1      = no λ()
+nonTrivial? (2+ n) = yes _
+
+------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
 
@@ -902,6 +911,12 @@ m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
 m*n≢0 (suc m) (suc n) = _
 
+m*n≢0⇒m≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero m
+m*n≢0⇒m≢0 (suc _) = _
+
+m*n≢0⇒n≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero n
+m*n≢0⇒n≢0 m {n} rewrite *-comm m n = m*n≢0⇒m≢0 n {m}
+
 m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
 m*n≡0⇒m≡0 zero (suc _) eq = refl
 
@@ -921,6 +936,12 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
   m * (o * (n * p)) ≡⟨ *-assoc m o (n * p) ⟨
   (m * o) * (n * p) ∎
   where open CommSemigroupProperties *-commutativeSemigroup
+
+m≢0∧n>1⇒m*n>1 : ∀ m n .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
+m≢0∧n>1⇒m*n>1 (suc m) (2+ n) = _
+
+n≢0∧m>1⇒m*n>1 : ∀ m n .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
+n≢0∧m>1⇒m*n>1 m n rewrite *-comm m n = m≢0∧n>1⇒m*n>1 n m
 
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_
@@ -1704,7 +1725,7 @@ pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
 pred-mono-≤ {zero}          _   = z≤n
 pred-mono-≤ {suc _} {suc _} m≤n = s≤s⁻¹ m≤n
 
-pred-mono-< : .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
+pred-mono-< : .{{NonZero m}} → m < n → pred m < pred n
 pred-mono-< {m = suc _} {n = suc _} = s<s⁻¹
 
 ------------------------------------------------------------------------
