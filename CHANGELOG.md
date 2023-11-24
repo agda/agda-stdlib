@@ -651,8 +651,8 @@ Non-backwards compatible changes
       .{{nontrivial}} : NonTrivial p
       notComposite    : ¬ Composite p
   ```
-  where `Composite` is now defined as the diagonal of the relation
-  `Data.Nat.Divisibility.Core.BoundedNonTrivialDivisor` defined below.
+  where `Composite` is now defined as the diagonal of the new relation
+  `_HasNonTrivialDivisorLessThan_` in `Data.Nat.Divisibility.Core`.
 
 ### Changes to operation reduction behaviour in `Data.Rational(.Unnormalised)`
 
@@ -2775,25 +2775,14 @@ Additions to existing modules
 * Added a new pattern synonym and a new definition to `Data.Nat.Divisibility.Core`:
   ```agda
   pattern divides-refl q = divides q refl
-
-  infix 10 _BoundedNonTrivialDivisor_
-  record _BoundedNonTrivialDivisor_ (m n : ℕ) : Set where
-    constructor boundedNonTrivialDivisor 
-    field
-      {divisor}       : ℕ
-      .{{nontrivial}} : NonTrivial divisor
-      divisor-<       : divisor < m
-      divisor-∣       : divisor ∣ n
+  record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
   ```
 
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
-  boundedNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} →
-                               d ≢ n → d ∣ n → n BoundedNonTrivialDivisor n
-  boundedNonTrivialDivisor-∣ : m BoundedNonTrivialDivisor n → n ∣ o →
-                               m BoundedNonTrivialDivisor o
-  boundedNonTrivialDivisor-≤ : m BoundedNonTrivialDivisor n → m ≤ o →
-                               o BoundedNonTrivialDivisor n
+  hasNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
+  hasNonTrivialDivisor-∣ : m HasNonTrivialDivisorLessThan n → m ∣ o → o HasNonTrivialDivisorLessThan n
+  hasNonTrivialDivisor-≤ : m HasNonTrivialDivisorLessThan n → n ≤ o → m HasNonTrivialDivisorLessThan o
   ```
 
 * Added new definitions, smart constructors and proofs to `Data.Nat.Primality`:
@@ -2807,8 +2796,7 @@ Additions to existing modules
   ∤⇒rough-suc        : m ∤ n → m Rough n → (suc m) Rough n
   rough∧∣⇒rough     : m Rough o → n ∣ o → m Rough n
   Composite         : ℕ → Set
-  composite-≢       : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n →
-	              Composite n
+  composite-≢       : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
   composite-∣       : .{{NonZero n}} → Composite m → m ∣ n → Composite n
   composite?        : Decidable Composite
   Irreducible       : ℕ → Set
