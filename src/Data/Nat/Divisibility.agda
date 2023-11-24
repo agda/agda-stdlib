@@ -231,22 +231,22 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 *-pres-∣ {o} {m@.(q * o)} {p} {n@.(r * p)} (divides-refl q) (divides-refl r) =
   divides (q * r) ([m*n]*[o*p]≡[m*o]*[n*p] q o r p)
 
-*-monoʳ-∣ : ∀ k → m ∣ n → k * m ∣ k * n
-*-monoʳ-∣ k = *-pres-∣ (∣-refl {k})
+*-monoʳ-∣ : ∀ o → m ∣ n → o * m ∣ o * n
+*-monoʳ-∣ o = *-pres-∣ (∣-refl {o})
 
-*-monoˡ-∣ : ∀ k → m ∣ n → m * k ∣ n * k
-*-monoˡ-∣ k = flip *-pres-∣ (∣-refl {k})
+*-monoˡ-∣ : ∀ o → m ∣ n → m * o ∣ n * o
+*-monoˡ-∣ o = flip *-pres-∣ (∣-refl {o})
 
-*-cancelˡ-∣ : ∀ k .{{_ : NonZero k}} → k * m ∣ k * n → m ∣ n
-*-cancelˡ-∣ {m} {n} k k*m∣k*n = divides q $ *-cancelˡ-≡ n (q * m) k $ begin-equality
-  k * n       ≡⟨ equalityᵒ k*m∣k*n ⟩
-  k * m * q   ≡⟨ *-assoc k m q ⟩
-  k * (m * q) ≡⟨ cong (k *_) (*-comm q m) ⟨
-  k * (q * m) ∎
-  where q = quotient k*m∣k*n
+*-cancelˡ-∣ : ∀ o .{{_ : NonZero o}} → o * m ∣ o * n → m ∣ n
+*-cancelˡ-∣ {m} {n} o o*m∣o*n = divides q $ *-cancelˡ-≡ n (q * m) o $ begin-equality
+  o * n       ≡⟨ equalityᵒ o*m∣o*n ⟩
+  o * m * q   ≡⟨ *-assoc o m q ⟩
+  o * (m * q) ≡⟨ cong (o *_) (*-comm q m) ⟨
+  o * (q * m) ∎
+  where q = quotient o*m∣o*n
 
-*-cancelʳ-∣ : ∀ k .{{_ : NonZero k}} → m * k ∣ n * k → m ∣ n
-*-cancelʳ-∣ {m} {n} k rewrite *-comm m k | *-comm n k = *-cancelˡ-∣ k
+*-cancelʳ-∣ : ∀ o .{{_ : NonZero o}} → m * o ∣ n * o → m ∣ n
+*-cancelʳ-∣ {m} {n} o rewrite *-comm m o | *-comm n o = *-cancelˡ-∣ o
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _∸_
