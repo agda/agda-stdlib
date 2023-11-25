@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- Ways to give instances of certain structures where some fields can
--- be given in terms of others
+-- be given in terms of others. Re-exported via `Algebra`.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
