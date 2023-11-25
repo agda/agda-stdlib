@@ -790,7 +790,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   suc n * m + o * m   ∎
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
+*-distribˡ-+ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -1329,7 +1329,7 @@ m⊔n<o⇒n<o m n m⊔n<o = ≤-<-trans (m≤n⊔m m n) m⊔n<o
 +-distribˡ-⊔ (suc m) n o = cong suc (+-distribˡ-⊔ m n o)
 
 +-distribʳ-⊔ : _+_ DistributesOverʳ _⊔_
-+-distribʳ-⊔ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊔
++-distribʳ-⊔ = comm∧distrˡ⇒distrʳ +-comm +-distribˡ-⊔
 
 +-distrib-⊔ : _+_ DistributesOver _⊔_
 +-distrib-⊔ = +-distribˡ-⊔ , +-distribʳ-⊔
@@ -1358,7 +1358,7 @@ m⊔n≤m+n m n with ⊔-sel m n
   (m * suc n) ⊔ (m * suc o)  ∎
 
 *-distribʳ-⊔ : _*_ DistributesOverʳ _⊔_
-*-distribʳ-⊔ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊔
+*-distribʳ-⊔ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-⊔
 
 *-distrib-⊔ : _*_ DistributesOver _⊔_
 *-distrib-⊔ = *-distribˡ-⊔ , *-distribʳ-⊔
@@ -1437,7 +1437,7 @@ m<n⊓o⇒m<o = m≤n⊓o⇒m≤o
 +-distribˡ-⊓ (suc m) n o = cong suc (+-distribˡ-⊓ m n o)
 
 +-distribʳ-⊓ : _+_ DistributesOverʳ _⊓_
-+-distribʳ-⊓ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊓
++-distribʳ-⊓ = comm∧distrˡ⇒distrʳ +-comm +-distribˡ-⊓
 
 +-distrib-⊓ : _+_ DistributesOver _⊓_
 +-distrib-⊓ = +-distribˡ-⊓ , +-distribʳ-⊓
@@ -1472,7 +1472,7 @@ m⊓n≤m+n m n with ⊓-sel m n
   (m * suc n) ⊓ (m * suc o) ∎
 
 *-distribʳ-⊓ : _*_ DistributesOverʳ _⊓_
-*-distribʳ-⊓ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊓
+*-distribʳ-⊓ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-⊓
 
 *-distrib-⊓ : _*_ DistributesOver _⊓_
 *-distrib-⊓ = *-distribˡ-⊓ , *-distribʳ-⊓
@@ -1660,7 +1660,7 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
   m + n * m ∸ (m + o * m) ∎
 
 *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
-*-distribˡ-∸ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-∸
+*-distribˡ-∸ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-∸
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
@@ -1822,7 +1822,7 @@ private
   ∣ a * m - a * n ∣ ∎
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
-*-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
+*-distribʳ-∣-∣ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
 
 *-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
 *-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣
