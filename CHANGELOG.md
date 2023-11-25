@@ -205,10 +205,9 @@ Non-backwards compatible changes
 * Added new `IsBoundedSemilattice`/`BoundedSemilattice` records.
 
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
-  which can be used to indicate meet/join-ness of the original structures.
-  
-* The field names in `IsSemilattice` have been renamed from `∧-cong` to `∙-cong`
-  to indicate the undirected nature of it.
+  which can be used to indicate meet/join-ness of the original structures, and
+  the field names in `IsSemilattice` and `Semilattice` have been renamed from 
+  `∧-cong` to `∙-cong`to indicate their undirected nature.
 
 * Finally, the following auxiliary files have been moved:
   ```agda
