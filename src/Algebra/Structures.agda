@@ -264,11 +264,11 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   inverseʳ = proj₂ inverse
 
   uniqueˡ-⁻¹ : ∀ x y → (x ∙ y) ≈ ε → x ≈ (y ⁻¹)
-  uniqueˡ-⁻¹ = Consequences.assoc+id+invʳ⇒invˡ-unique
+  uniqueˡ-⁻¹ = Consequences.assoc∧id∧invʳ⇒invˡ-unique
                 setoid ∙-cong assoc identity inverseʳ
 
   uniqueʳ-⁻¹ : ∀ x y → (x ∙ y) ≈ ε → y ≈ (x ⁻¹)
-  uniqueʳ-⁻¹ = Consequences.assoc+id+invˡ⇒invʳ-unique
+  uniqueʳ-⁻¹ = Consequences.assoc∧id∧invˡ⇒invʳ-unique
                 setoid ∙-cong assoc identity inverseˡ
 
   isInvertibleMagma : IsInvertibleMagma _∙_ ε _⁻¹
