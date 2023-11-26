@@ -130,11 +130,11 @@ _>>=_ : ∀ {i t u} {I : Set i} {T : Rel I t} {U : Rel I u} {j k} →
 m >>= f = (f ⋆) m
 
 -- Note that the monad-like structure above is not an indexed monad
--- (as defined in Category.Monad.Indexed). If it were, then _>>=_
+-- (as defined in Effect.Monad.Indexed). If it were, then _>>=_
 -- would have a type similar to
 --
 --   ∀ {I} {T U : Rel I t} {i j k} →
 --   Star T i j → (T i j → Star U j k) → Star U i k.
 --                  ^^^^^
 -- Note, however, that there is no scope for applying T to any indices
--- in the definition used in Category.Monad.Indexed.
+-- in the definition used in Effect.Monad.Indexed.
