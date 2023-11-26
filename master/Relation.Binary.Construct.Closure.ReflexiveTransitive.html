@@ -131,12 +131,12 @@
 <a id="4075" href="Relation.Binary.Construct.Closure.ReflexiveTransitive.html#4075" class="Bound">m</a> <a id="4077" href="Relation.Binary.Construct.Closure.ReflexiveTransitive.html#3964" class="Function Operator">&gt;&gt;=</a> <a id="4081" href="Relation.Binary.Construct.Closure.ReflexiveTransitive.html#4081" class="Bound">f</a> <a id="4083" class="Symbol">=</a> <a id="4085" class="Symbol">(</a><a id="4086" href="Relation.Binary.Construct.Closure.ReflexiveTransitive.html#4081" class="Bound">f</a> <a id="4088" href="Relation.Binary.Construct.Closure.ReflexiveTransitive.html#3836" class="Function Operator">⋆</a><a id="4089" class="Symbol">)</a> <a id="4091" href="Relation.Binary.Construct.Closure.ReflexiveTransitive.html#4075" class="Bound">m</a>
 
 <a id="4094" class="Comment">-- Note that the monad-like structure above is not an indexed monad</a>
-<a id="4162" class="Comment">-- (as defined in Category.Monad.Indexed). If it were, then _&gt;&gt;=_</a>
-<a id="4228" class="Comment">-- would have a type similar to</a>
-<a id="4260" class="Comment">--</a>
-<a id="4263" class="Comment">--   ∀ {I} {T U : Rel I t} {i j k} →</a>
-<a id="4300" class="Comment">--   Star T i j → (T i j → Star U j k) → Star U i k.</a>
-<a id="4353" class="Comment">--                  ^^^^^</a>
-<a id="4379" class="Comment">-- Note, however, that there is no scope for applying T to any indices</a>
-<a id="4450" class="Comment">-- in the definition used in Category.Monad.Indexed.</a>
+<a id="4162" class="Comment">-- (as defined in Effect.Monad.Indexed). If it were, then _&gt;&gt;=_</a>
+<a id="4226" class="Comment">-- would have a type similar to</a>
+<a id="4258" class="Comment">--</a>
+<a id="4261" class="Comment">--   ∀ {I} {T U : Rel I t} {i j k} →</a>
+<a id="4298" class="Comment">--   Star T i j → (T i j → Star U j k) → Star U i k.</a>
+<a id="4351" class="Comment">--                  ^^^^^</a>
+<a id="4377" class="Comment">-- Note, however, that there is no scope for applying T to any indices</a>
+<a id="4448" class="Comment">-- in the definition used in Effect.Monad.Indexed.</a>
 </pre></body></html>
