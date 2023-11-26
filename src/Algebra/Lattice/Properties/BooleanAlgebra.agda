@@ -516,7 +516,6 @@ module XorRing
     ; *-assoc = ∧-assoc
     ; *-identity = ∧-identity
     ; distrib = ∧-distrib-⊕
-    ; zero = ∧-zero
     }
 
   ⊕-∧-isCommutativeRing : IsCommutativeRing _⊕_ _∧_ id ⊥ ⊤

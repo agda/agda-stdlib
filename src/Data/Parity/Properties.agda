@@ -371,7 +371,6 @@ p+p≡0ℙ 1ℙ = refl
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
-  ; zero             = *-zero
   }
 
 +-*-ring : Ring 0ℓ 0ℓ

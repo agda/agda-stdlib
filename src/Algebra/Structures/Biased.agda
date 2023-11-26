@@ -192,6 +192,33 @@ open IsCommutativeSemiringʳ public
 ------------------------------------------------------------------------
 -- IsRing
 
+record IsRing* (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isAbelianGroup : IsAbelianGroup + 0# -_
+    *-isMonoid       : IsMonoid * 1#
+    distrib          : * DistributesOver +
+    zero             : Zero 0# *
+
+  isRing : IsRing + * -_ 0# 1#
+  isRing = record
+    { +-isAbelianGroup = +-isAbelianGroup
+    ; *-cong = ∙-cong
+    ; *-assoc = assoc
+    ; *-identity = identity
+    ; distrib = distrib
+    } where open IsMonoid *-isMonoid
+
+open IsRing* public
+  using () renaming (isRing to isRing*)
+
+
+
+------------------------------------------------------------------------
+-- Deprecated
+------------------------------------------------------------------------
+
+-- Version 2.0
+
 -- We can recover a ring without proving that 0# annihilates *.
 record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
                                      : Set (a ⊔ ℓ) where
@@ -224,28 +251,16 @@ record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
     ; *-assoc          = *.assoc
     ; *-identity       = *.identity
     ; distrib          = distrib
-    ; zero             = zero
     }
 
 open IsRingWithoutAnnihilatingZero public
   using () renaming (isRing to isRingWithoutAnnihilatingZero)
 
-record IsRing* (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
-  field
-    +-isAbelianGroup : IsAbelianGroup + 0# -_
-    *-isMonoid       : IsMonoid * 1#
-    distrib          : * DistributesOver +
-    zero             : Zero 0# *
-
-  isRing : IsRing + * -_ 0# 1#
-  isRing = record
-    { +-isAbelianGroup = +-isAbelianGroup
-    ; *-cong = ∙-cong
-    ; *-assoc = assoc
-    ; *-identity = identity
-    ; distrib = distrib
-    ; zero = zero
-    } where open IsMonoid *-isMonoid
-
-open IsRing* public
-  using () renaming (isRing to isRing*)
+{-# WARNING_ON_USAGE IsRingWithoutAnnihilatingZero
+"Warning: IsRingWithoutAnnihilatingZero was deprecated in v2.0.
+Please use the standard `IsRing` instead."
+#-}
+{-# WARNING_ON_USAGE isRingWithoutAnnihilatingZero
+"Warning: isRingWithoutAnnihilatingZero was deprecated in v2.0.
+Please use the standard `IsRing` instead."
+#-}
