@@ -1532,7 +1532,6 @@ private
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
-  ; zero             = *-zero
   }
 
 +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℤ 1ℤ

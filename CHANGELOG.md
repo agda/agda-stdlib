@@ -33,6 +33,12 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Structures` the records `IsRing` and `IsRingWithoutOne` contained an unnecessary field
+  `zero : RightZero 0# *`, which could be derived from the other ring axioms.
+  Consequently this field has been removed from the record, and the record
+  `IsRingWithoutAnnihilatingZero` in `Algebra.Structures.Biased` has been
+  deprecated as it is now identical to is `IsRing`.
+  
 * In `Algebra.Definitions.RawSemiring` the record `Prime` did not
   enforce that the number was not divisible by `1#`. To fix this
   `p∤1 : p ∤ 1#` has been added as a field.
