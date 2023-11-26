@@ -685,11 +685,11 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
   distribʳ = proj₂ distrib
 
   zeroˡ : LeftZero 0# *
-  zeroˡ = Consequences.assoc+distribʳ+idʳ+invʳ⇒zeˡ setoid
+  zeroˡ = Consequences.assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ setoid
     +-cong *-cong +-assoc distribʳ +-identityʳ -‿inverseʳ
 
   zeroʳ : RightZero 0# *
-  zeroʳ = Consequences.assoc+distribˡ+idʳ+invʳ⇒zeʳ setoid
+  zeroʳ = Consequences.assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ setoid
     +-cong *-cong +-assoc distribˡ +-identityʳ -‿inverseʳ
 
   zero : Zero 0# *
