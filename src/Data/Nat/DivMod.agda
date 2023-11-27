@@ -17,9 +17,11 @@ open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Function.Base using (_$_)
+open import Data.Sum.Base using (inj₁; inj₂)
+open import Function.Base using (_$_; _∘_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 
 open ≤-Reasoning
 
@@ -202,11 +204,13 @@ m/n≤m m n = *-cancelʳ-≤ (m / n) m n (begin
   m           ≤⟨ m≤m*n m n ⟩
   m * n       ∎)
 
-m/n<m : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero n}} → 1 < n → m / n < m
-m/n<m m n 1<n = *-cancelʳ-< _ (m / n) m $ begin-strict
+m/n<m : ∀ m n .{{_ : NonZero m}} .{{_ : NonTrivial n}} →
+        let instance _ = Nat.nonTrivial⇒nonZero n in m / n < m
+m/n<m m n     = *-cancelʳ-< _ (m / n) m $ begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
-  m           <⟨ m<m*n m n 1<n ⟩
+  m           <⟨ m<m*n m n {!nonTrivial⇒n>1 n!} ⟩
   m * n       ∎
+  where instance _ = Nat.nonTrivial⇒nonZero n
 
 /-mono-≤ : .{{_ : NonZero o}} .{{_ : NonZero p}} →
            m ≤ n → o ≥ p → m / o ≤ n / p
