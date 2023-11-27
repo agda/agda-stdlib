@@ -3024,6 +3024,7 @@ Additions to existing modules
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
+  m<n+o⇒m∸n<o : ∀ m n o → .{{NonZero o}} → m < n + o → m ∸ n < o
   pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
   pred-cancel-< : pred m < pred n → m < n
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
