@@ -281,18 +281,16 @@ m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} m≥n = begin-equality
   1 + (m ∸ n) / n                    ∎
 
 [m∸n]/n≡m/n∸1 : ∀ m n .{{_ : NonZero n}} → (m ∸ n) / n ≡ pred (m / n)
-[m∸n]/n≡m/n∸1 m n with m <? n
-... | yes m<n = begin-equality
+[m∸n]/n≡m/n∸1 m n with <-≤-connex m n
+... | inj₁ m<n = begin-equality
   (m ∸ n) / n  ≡⟨ m<n⇒m/n≡0 (≤-<-trans (m∸n≤m m n) m<n) ⟩
   0            ≡⟨⟩
-  0 ∸ 1        ≡⟨ cong (_∸ 1) (m<n⇒m/n≡0 m<n) ⟨
-  m / n ∸ 1    ≡⟨⟩
+  pred 0       ≡⟨ cong pred (m<n⇒m/n≡0 m<n) ⟨
   pred (m / n) ∎
-... | no m≮n = begin-equality
-  (m ∸ n) / n           ≡⟨⟩
-  suc ((m ∸ n) / n) ∸ 1 ≡⟨ cong (_∸ 1) (m/n≡1+[m∸n]/n (≮⇒≥ m≮n)) ⟨
-  m / n ∸ 1             ≡⟨⟩
-  pred (m / n)          ∎
+... | inj₂ n≥m = begin-equality
+  (m ∸ n) / n            ≡⟨⟩
+  pred (1 + (m ∸ n) / n) ≡⟨ cong pred (m/n≡1+[m∸n]/n n≥m) ⟨
+  pred (m / n)           ∎
 
 m∣n⇒o%n%m≡o%m : ∀ m n o .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ n →
                 o % n % m ≡ o % m
@@ -318,17 +316,15 @@ m*n/m*o≡n/o m n o = helper (<-wellFounded n)
   where
   instance _ = m*n≢0 m o
   helper : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
-  helper {n} (acc rec) with n <? o
-  ... | yes n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m n<o)) (sym (m<n⇒m/n≡0 n<o))
-  ... | no  n≮o = begin-equality
+  helper {n} (acc rec) with <-≤-connex n o
+  ... | inj₁ n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m n<o)) (sym (m<n⇒m/n≡0 n<o))
+  ... | inj₂ n≥o = begin-equality
     (m * n) / (m * o)             ≡⟨ m/n≡1+[m∸n]/n (*-monoʳ-≤ m n≥o) ⟩
-    1 + (m * n ∸ m * o) / (m * o) ≡⟨ cong (λ v → 1 + v / (m * o)) (*-distribˡ-∸ m n o) ⟨
+    1 + (m * n ∸ m * o) / (m * o) ≡⟨ cong (suc ∘ (_/ (m * o))) (*-distribˡ-∸ m n o) ⟨
     1 + (m * (n ∸ o)) / (m * o)   ≡⟨ cong suc (helper (rec n∸o<n)) ⟩
     1 + (n ∸ o) / o               ≡⟨ m/n≡1+[m∸n]/n n≥o ⟨
     n / o                         ∎
-    where
-    n≥o = ≮⇒≥ n≮o
-    n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (≢-nonZero⁻¹ o)) n≥o
+    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (≢-nonZero⁻¹ o)) n≥o
 
 m*n/o*n≡m/o : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} →
               let instance _ = m*n≢0 o n in
