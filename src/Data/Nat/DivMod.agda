@@ -226,8 +226,8 @@ m/n<m m n     = *-cancelʳ-< _ (m / n) m $ begin-strict
               o ∣ m → o ∣ n → m / o ≡ n / o → m ≡ n
 /-cancelʳ-≡ {m} {n} {o} o∣m o∣n m/o≡n/o = begin-equality
   m           ≡⟨ m*[n/m]≡n {o} {m} o∣m ⟨
-  o * (m / o) ≡⟨  cong (o *_) m/o≡n/o ⟩
-  o * (n / o) ≡⟨  m*[n/m]≡n {o} {n} o∣n ⟩
+  o * (m / o) ≡⟨ cong (o *_) m/o≡n/o ⟩
+  o * (n / o) ≡⟨ m*[n/m]≡n {o} {n} o∣n ⟩
   n           ∎
 
 m<n⇒m/n≡0 : ∀ {m n} .{{_ : NonZero n}} → m < n → m / n ≡ 0

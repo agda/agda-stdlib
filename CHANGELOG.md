@@ -38,7 +38,7 @@ Bug-fixes
   Consequently this field has been removed from the record, and the record
   `IsRingWithoutAnnihilatingZero` in `Algebra.Structures.Biased` has been
   deprecated as it is now identical to is `IsRing`.
-  
+
 * In `Algebra.Definitions.RawSemiring` the record `Prime` did not
   enforce that the number was not divisible by `1#`. To fix this
   `p∤1 : p ∤ 1#` has been added as a field.
@@ -212,7 +212,7 @@ Non-backwards compatible changes
 
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
   which can be used to indicate meet/join-ness of the original structures, and
-  the field names in `IsSemilattice` and `Semilattice` have been renamed from 
+  the field names in `IsSemilattice` and `Semilattice` have been renamed from
   `∧-cong` to `∙-cong`to indicate their undirected nature.
 
 * Finally, the following auxiliary files have been moved:
@@ -763,10 +763,10 @@ Non-backwards compatible changes
    - The records in  `Function.Structures` and `Function.Bundles` export proofs
          of these under the names `strictlySurjective`, `strictlyInverseˡ` and
          `strictlyInverseʳ`,
-   - Conversion functions for the definitions have been added in both directions 
-		 to `Function.Consequences(.Propositional/Setoid)`.
-   - Conversion functions for structures have been added in 
-		 `Function.Structures.Biased`.
+   - Conversion functions for the definitions have been added in both directions
+                 to `Function.Consequences(.Propositional/Setoid)`.
+   - Conversion functions for structures have been added in
+                 `Function.Structures.Biased`.
 
 ### New `Function.Strict`
 
@@ -3024,6 +3024,7 @@ Additions to existing modules
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
+  m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
   m<n+o⇒m∸n<o : ∀ m n o → .{{NonZero o}} → m < n + o → m ∸ n < o
   pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
   pred-cancel-< : pred m < pred n → m < n
