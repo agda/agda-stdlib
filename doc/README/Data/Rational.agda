@@ -39,3 +39,14 @@ eqEx = refl
 
 eqEx' : expr ≃ 3/4
 eqEx' = *≡* refl
+
+-- we can automaticaly prove equations using RingSolver
+
+open import Data.Rational.Tactic.RingSolver
+
+lemma : ∀ (x y : ℚ) → x + y + 1/4 + ½ ≃ 3/4 + y + x
+{-
+Malformed call to solve.Expected target type to be like: ∀ x y → x + y ≈ y + x.Instead: _19
+when checking that the expression unquote solve-∀ has type _19
+-}
+lemma = {! solve-∀  !}
