@@ -1726,6 +1726,25 @@ pred-mono-≤ {suc _} {suc _} m≤n = s≤s⁻¹ m≤n
 pred-mono-< : .{{NonZero m}} → m < n → pred m < pred n
 pred-mono-< {m = suc _} {n = suc _} = s<s⁻¹
 
+pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
+pred-cancel-≤ {m = zero}  {n = zero}  _  = inj₂ z≤n
+pred-cancel-≤ {m = zero}  {n = suc _} _  = inj₂ z≤n
+pred-cancel-≤ {m = suc _} {n = zero} z≤n = inj₁ (refl , refl)
+pred-cancel-≤ {m = suc _} {n = suc _} le = inj₂ (s≤s le)
+
+pred-cancel-< : pred m < pred n → m < n
+pred-cancel-< {m = zero}  {n = suc _} _ = z<s
+pred-cancel-< {m = suc _} {n = suc _}   = s<s
+
+pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
+pred-injective {suc m} {suc n} = cong suc
+
+pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+pred-cancel-≡ {m = zero}  {n = zero}  _    = inj₂ refl
+pred-cancel-≡ {m = zero}  {n = suc _} refl = inj₁ (inj₁ (refl , refl))
+pred-cancel-≡ {m = suc _} {n = zero}  refl = inj₁ (inj₂ (refl , refl))
+pred-cancel-≡ {m = suc _} {n = suc _}      = inj₂ ∘ pred-injective
+
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
 ------------------------------------------------------------------------

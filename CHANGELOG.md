@@ -3022,6 +3022,14 @@ Additions to existing modules
   gcd-zero      : Zero 1 gcd
   ```
 
+* Added new proofs in `Data.Nat.Properties`:
+  ```agda
+  pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
+  pred-cancel-< : pred m < pred n → m < n
+  pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
+  pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+  ```
+
 * Added new patterns in `Data.Nat.Reflection`:
   ```agda
   pattern `ℕ     = def (quote ℕ) []
