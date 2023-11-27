@@ -33,3 +33,15 @@ expr = (1/4 + ½) * 1ℚᵘ - 0ℚᵘ
 
 expr2 : expr ≃ 3/4
 expr2 = *≡* refl
+
+-- We can automatically proove equations using Ring
+
+open import Data.Rational.Unnormalised.Tactic.RingSolver
+
+lemma₁ : ∀ (x y : ℚᵘ) → (x + y) ≡ (y + x) -- TODO should we use ≃
+{-
+TODO fails with:
+Malformed call to solve.Expected target type to be like: ∀ x y → x + y ≈ y + x.Instead: _25
+when checking that the expression unquote solve-∀ has type _25
+-}
+lemma₁ = {! solve-∀  !}
