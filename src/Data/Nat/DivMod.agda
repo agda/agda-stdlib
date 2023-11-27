@@ -20,7 +20,6 @@ open import Data.Nat.Properties
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 
 open ≤-Reasoning
@@ -339,21 +338,15 @@ m*n/o*n≡m/o m n o = begin-equality
   instance _ = m*n≢0 n o
 
 m<n*o⇒m/o<n : ∀ {m n o} .{{_ : NonZero o}} → m < n * o → m / o < n
-m<n*o⇒m/o<n {m} {suc n} {o} m<n*o with m <? o
-... | yes m<o = begin-strict
+m<n*o⇒m/o<n {m} {1} {o} m<o rewrite *-identityˡ o = begin-strict
   m / o ≡⟨ m<n⇒m/n≡0 m<o ⟩
   0     <⟨ z<s ⟩
-  suc n ∎
-... | no m≮o = begin-strict
-  m / o             ≡⟨ m/n≡1+[m∸n]/n (≮⇒≥ m≮o) ⟩
-  suc ((m ∸ o) / o) <⟨ s<s (m<n*o⇒m/o<n lem) ⟩
-  suc n             ∎
-  where
-  lem : m ∸ o < n * o
-  lem = begin-strict
-    m ∸ o         <⟨ ∸-monoˡ-< m<n*o (≮⇒≥ m≮o) ⟩
-    o + n * o ∸ o ≡⟨ m+n∸m≡n o (n * o) ⟩
-    n * o         ∎
+  1 ∎
+m<n*o⇒m/o<n {m} {suc n@(suc _)} {o} m<n*o = pred-cancel-< $ begin-strict
+  pred (m / o) ≡⟨ [m∸n]/n≡m/n∸1 m o ⟨
+  (m ∸ o) / o  <⟨ m<n*o⇒m/o<n (m<n+o⇒m∸n<o m o (n * o) m<n*o) ⟩
+  n ∎
+  where instance _ = m*n≢0 n o
 
 [m∸n*o]/o≡m/o∸n : ∀ m n o .{{_ : NonZero o}} → (m ∸ n * o) / o ≡ m / o ∸ n
 [m∸n*o]/o≡m/o∸n m zero    o = refl
