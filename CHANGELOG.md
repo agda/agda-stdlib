@@ -33,6 +33,12 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Structures` the records `IsRing` and `IsRingWithoutOne` contained an unnecessary field
+  `zero : RightZero 0# *`, which could be derived from the other ring axioms.
+  Consequently this field has been removed from the record, and the record
+  `IsRingWithoutAnnihilatingZero` in `Algebra.Structures.Biased` has been
+  deprecated as it is now identical to is `IsRing`.
+  
 * In `Algebra.Definitions.RawSemiring` the record `Prime` did not
   enforce that the number was not divisible by `1#`. To fix this
   `p∤1 : p ∤ 1#` has been added as a field.
@@ -205,7 +211,9 @@ Non-backwards compatible changes
 * Added new `IsBoundedSemilattice`/`BoundedSemilattice` records.
 
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
-  which can be used to indicate meet/join-ness of the original structures.
+  which can be used to indicate meet/join-ness of the original structures, and
+  the field names in `IsSemilattice` and `Semilattice` have been renamed from 
+  `∧-cong` to `∙-cong`to indicate their undirected nature.
 
 * Finally, the following auxiliary files have been moved:
   ```agda
@@ -755,8 +763,10 @@ Non-backwards compatible changes
    - The records in  `Function.Structures` and `Function.Bundles` export proofs
          of these under the names `strictlySurjective`, `strictlyInverseˡ` and
          `strictlyInverseʳ`,
-   - Conversion functions have been added in both directions to
-         `Function.Consequences(.Propositional/Setoid)`.
+   - Conversion functions for the definitions have been added in both directions 
+		 to `Function.Consequences(.Propositional/Setoid)`.
+   - Conversion functions for structures have been added in 
+		 `Function.Structures.Biased`.
 
 ### New `Function.Strict`
 
@@ -1275,6 +1285,44 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Consequences.Propositional`:
+  ```agda
+  comm+assoc⇒middleFour             ↦  comm∧assoc⇒middleFour
+  identity+middleFour⇒assoc         ↦  identity∧middleFour⇒assoc
+  identity+middleFour⇒comm          ↦  identity∧middleFour⇒comm
+  comm+distrˡ⇒distrʳ                ↦  comm∧distrˡ⇒distrʳ
+  comm+distrʳ⇒distrˡ                ↦  comm∧distrʳ⇒distrˡ
+  assoc+distribʳ+idʳ+invʳ⇒zeˡ       ↦  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ
+  assoc+distribˡ+idʳ+invʳ⇒zeʳ       ↦  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ
+  assoc+id+invʳ⇒invˡ-unique         ↦  assoc∧id∧invʳ⇒invˡ-unique
+  assoc+id+invˡ⇒invʳ-unique         ↦  assoc∧id∧invˡ⇒invʳ-unique
+  subst+comm⇒sym                    ↦  subst∧comm⇒sym
+  ```
+
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  comm+assoc⇒middleFour             ↦  comm∧assoc⇒middleFour
+  identity+middleFour⇒assoc         ↦  identity∧middleFour⇒assoc
+  identity+middleFour⇒comm          ↦  identity∧middleFour⇒comm
+  comm+cancelˡ⇒cancelʳ              ↦  comm∧cancelˡ⇒cancelʳ
+  comm+cancelʳ⇒cancelˡ              ↦  comm∧cancelʳ⇒cancelˡ
+  comm+almostCancelˡ⇒almostCancelʳ  ↦  comm∧almostCancelˡ⇒almostCancelʳ
+  comm+almostCancelʳ⇒almostCancelˡ  ↦  comm∧almostCancelʳ⇒almostCancelˡ
+  comm+idˡ⇒idʳ                      ↦  comm∧idˡ⇒idʳ
+  comm+idʳ⇒idˡ                      ↦  comm∧idʳ⇒idˡ
+  comm+zeˡ⇒zeʳ                      ↦  comm∧zeˡ⇒zeʳ
+  comm+zeʳ⇒zeˡ                      ↦  comm∧zeʳ⇒zeˡ
+  comm+invˡ⇒invʳ                    ↦  comm∧invˡ⇒invʳ
+  comm+invʳ⇒invˡ                    ↦  comm∧invʳ⇒invˡ
+  comm+distrˡ⇒distrʳ                ↦  comm∧distrˡ⇒distrʳ
+  comm+distrʳ⇒distrˡ                ↦  comm∧distrʳ⇒distrˡ
+  assoc+distribʳ+idʳ+invʳ⇒zeˡ       ↦  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ
+  assoc+distribˡ+idʳ+invʳ⇒zeʳ       ↦  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ
+  assoc+id+invʳ⇒invˡ-unique         ↦  assoc∧id∧invʳ⇒invˡ-unique
+  assoc+id+invˡ⇒invʳ-unique         ↦  assoc∧id∧invˡ⇒invʳ-unique
+  subst+comm⇒sym                    ↦  subst∧comm⇒sym
+  ```
 
 * In `Algebra.Construct.Zero`:
   ```agda
@@ -2182,21 +2230,21 @@ Additions to existing modules
 
 * Added new proof to `Algebra.Consequences.Base`:
   ```agda
-  reflexive+selfInverse⇒involutive : Reflexive _≈_ → SelfInverse _≈_ f → Involutive _≈_ f
+  reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse _≈_ f → Involutive _≈_ f
   ```
 
 * Added new proofs to `Algebra.Consequences.Propositional`:
   ```agda
-  comm+assoc⇒middleFour     : Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
-  identity+middleFour⇒assoc : Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
-  identity+middleFour⇒comm  : Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
+  comm∧assoc⇒middleFour     : Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
+  identity∧middleFour⇒assoc : Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
+  identity∧middleFour⇒comm  : Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
   ```
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
-  comm+assoc⇒middleFour     : Congruent₂ _∙_ → Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
-  identity+middleFour⇒assoc : Congruent₂ _∙_ → Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
-  identity+middleFour⇒comm  : Congruent₂ _∙_ → Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
+  comm∧assoc⇒middleFour     : Congruent₂ _∙_ → Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
+  identity∧middleFour⇒assoc : Congruent₂ _∙_ → Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
+  identity∧middleFour⇒comm  : Congruent₂ _∙_ → Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
 
   involutive⇒surjective  : Involutive f  → Surjective f
   selfInverse⇒involutive : SelfInverse f → Involutive f
@@ -2206,15 +2254,15 @@ Additions to existing modules
   selfInverse⇒injective  : SelfInverse f → Injective f
   selfInverse⇒bijective  : SelfInverse f → Bijective f
 
-  comm+idˡ⇒id              : Commutative _∙_ → LeftIdentity  e _∙_ → Identity e _∙_
-  comm+idʳ⇒id              : Commutative _∙_ → RightIdentity e _∙_ → Identity e _∙_
-  comm+zeˡ⇒ze              : Commutative _∙_ → LeftZero      e _∙_ → Zero     e _∙_
-  comm+zeʳ⇒ze              : Commutative _∙_ → RightZero     e _∙_ → Zero     e _∙_
-  comm+invˡ⇒inv            : Commutative _∙_ → LeftInverse  e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
-  comm+invʳ⇒inv            : Commutative _∙_ → RightInverse e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
-  comm+distrˡ⇒distr        : Commutative _∙_ → _∙_ DistributesOverˡ _◦_ → _∙_ DistributesOver _◦_
-  comm+distrʳ⇒distr        : Commutative _∙_ → _∙_ DistributesOverʳ _◦_ → _∙_ DistributesOver _◦_
-  distrib+absorbs⇒distribˡ : Associative _∙_ → Commutative _◦_ → _∙_ Absorbs _◦_ → _◦_ Absorbs _∙_ → _◦_ DistributesOver _∙_ → _∙_ DistributesOverˡ _◦_
+  comm∧idˡ⇒id              : Commutative _∙_ → LeftIdentity  e _∙_ → Identity e _∙_
+  comm∧idʳ⇒id              : Commutative _∙_ → RightIdentity e _∙_ → Identity e _∙_
+  comm∧zeˡ⇒ze              : Commutative _∙_ → LeftZero      e _∙_ → Zero     e _∙_
+  comm∧zeʳ⇒ze              : Commutative _∙_ → RightZero     e _∙_ → Zero     e _∙_
+  comm∧invˡ⇒inv            : Commutative _∙_ → LeftInverse  e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
+  comm∧invʳ⇒inv            : Commutative _∙_ → RightInverse e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
+  comm∧distrˡ⇒distr        : Commutative _∙_ → _∙_ DistributesOverˡ _◦_ → _∙_ DistributesOver _◦_
+  comm∧distrʳ⇒distr        : Commutative _∙_ → _∙_ DistributesOverʳ _◦_ → _∙_ DistributesOver _◦_
+  distrib∧absorbs⇒distribˡ : Associative _∙_ → Commutative _◦_ → _∙_ Absorbs _◦_ → _◦_ Absorbs _∙_ → _◦_ DistributesOver _∙_ → _∙_ DistributesOverˡ _◦_
   ```
 
 * Added new functions to `Algebra.Construct.DirectProduct`:
