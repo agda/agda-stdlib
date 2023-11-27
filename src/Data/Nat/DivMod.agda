@@ -208,7 +208,7 @@ m/n<m : ∀ m n .{{_ : NonZero m}} .{{_ : NonTrivial n}} →
         let instance _ = Nat.nonTrivial⇒nonZero n in m / n < m
 m/n<m m n     = *-cancelʳ-< _ (m / n) m $ begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
-  m           <⟨ m<m*n m n {!nonTrivial⇒n>1 n!} ⟩
+  m           <⟨ m<m*n m n (nonTrivial⇒n>1 n) ⟩
   m * n       ∎
   where instance _ = Nat.nonTrivial⇒nonZero n
 
@@ -239,6 +239,17 @@ m≥n⇒m/n>0 {m@(suc _)} {n@(suc _)} m≥n = begin
   1     ≡⟨ n/n≡1 m ⟨
   m / m ≤⟨ /-monoʳ-≤ m m≥n ⟩
   m / n ∎
+
+m/n≡0⇒m<n : ∀ {m n} .{{_ : NonZero n}} → m / n ≡ 0 → m < n
+m/n≡0⇒m<n {m} {n@(suc _)} m/n≢0  with <-≤-connex m n
+... | inj₁ m<n = m<n
+... | inj₂ n≤m = contradiction m/n≢0 (≢-nonZero⁻¹ _)
+  where instance _ =  >-nonZero (m≥n⇒m/n>0 n≤m)
+
+m/n≢0⇒n≤m : ∀ {m n} .{{_ : NonZero n}} → .{{NonZero (m / n)}} → n ≤ m
+m/n≢0⇒n≤m {m@(suc _)} {n@(suc _)} with <-≤-connex m n
+... | inj₁ m<n = contradiction (m<n⇒m/n≡0 m<n) (≢-nonZero⁻¹ _)
+... | inj₂ n≤m = n≤m
 
 +-distrib-/ : ∀ m n {d} .{{_ : NonZero d}} → m % d + n % d < d →
               (m + n) / d ≡ m / d + n / d

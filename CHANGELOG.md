@@ -2983,6 +2983,8 @@ Additions to existing modules
 
   %-congˡ             : .{{_ : NonZero o}} → m ≡ n → m % o ≡ n % o
   %-congʳ             : .{{_ : NonZero m}} .{{_ : NonZero n}} → m ≡ n → o % m ≡ o % n
+  m/n≡0⇒m<n           : .{{_ : NonZero n}} → m / n ≡ 0 → m < n
+  m/n≢0⇒n≤m           : .{{_ : NonZero n}} → .{{NonZero (m / n)}} → n ≤ m
   m≤n⇒[n∸m]%m≡n%m     : .{{_ : NonZero m}} → m ≤ n → (n ∸ m) % m ≡ n % m
   m*n≤o⇒[o∸m*n]%n≡o%n : .{{_ : NonZero n}} → m * n ≤ o → (o ∸ m * n) % n ≡ o % n
   m∣n⇒o%n%m≡o%m       : .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ n → o % n % m ≡ o % m
