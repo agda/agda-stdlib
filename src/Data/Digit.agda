@@ -55,11 +55,8 @@ toNatDigits base@(suc (suc _)) n = aux (<-wellFounded-fast n) []
   aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
   aux {zero}        _      xs =  (0 ∷ xs)
   aux {n@(suc _)} (acc wf) xs with does (0 <? n / base)
-  ... | false = (n % base) ∷ xs
-  ... | true  = aux (wf q<n) ((n % base) ∷ xs)
-    where
-    q<n : n / base < n
-    q<n = m/n<m n base (s<s z<s)
+  ... | false = (n % base) ∷ xs -- n here is already sufficient?
+  ... | true  = aux (wf (m/n<m n base)) ((n % base) ∷ xs)
 
 ------------------------------------------------------------------------
 -- Converting between `ℕ` and expansions of `Digit base`
