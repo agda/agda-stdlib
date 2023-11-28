@@ -1048,6 +1048,10 @@ Non-backwards compatible changes
 
 * In `Algebra.Core` the operations `Opₗ` and `Opᵣ` have moved to `Algebra.Module.Core`.
 
+* In `Algebra.Definitions.RawMagma.Divisibility` the definitions for `_∣ˡ_` and `_∣ʳ_`
+  have been changed from being defined as raw products to being defined as records. However,
+  the record constructors are called `_,_` so the changes required are minimal.
+
 * In `Codata.Guarded.Stream` the following functions have been modified to have simpler definitions:
   * `cycle`
   * `interleave⁺`
