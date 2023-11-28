@@ -33,6 +33,12 @@ Highlights
 Bug-fixes
 ---------
 
+* In `Algebra.Structures` the records `IsRing` and `IsRingWithoutOne` contained an unnecessary field
+  `zero : RightZero 0# *`, which could be derived from the other ring axioms.
+  Consequently this field has been removed from the record, and the record
+  `IsRingWithoutAnnihilatingZero` in `Algebra.Structures.Biased` has been
+  deprecated as it is now identical to is `IsRing`.
+  
 * In `Algebra.Definitions.RawSemiring` the record `Prime` did not
   enforce that the number was not divisible by `1#`. To fix this
   `p∤1 : p ∤ 1#` has been added as a field.
@@ -205,7 +211,9 @@ Non-backwards compatible changes
 * Added new `IsBoundedSemilattice`/`BoundedSemilattice` records.
 
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
-  which can be used to indicate meet/join-ness of the original structures.
+  which can be used to indicate meet/join-ness of the original structures, and
+  the field names in `IsSemilattice` and `Semilattice` have been renamed from 
+  `∧-cong` to `∙-cong`to indicate their undirected nature.
 
 * Finally, the following auxiliary files have been moved:
   ```agda
@@ -645,10 +653,14 @@ Non-backwards compatible changes
 * To make it easier to use, reason about and read, the definition has been
   changed to:
   ```agda
-  Prime 0 = ⊥
-  Prime 1 = ⊥
-  Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
+  record Prime (p : ℕ) : Set where
+    constructor prime
+    field
+      .{{nontrivial}} : NonTrivial p
+      notComposite    : ¬ Composite p
   ```
+  where `Composite` is now defined as the diagonal of the new relation
+  `_HasNonTrivialDivisorLessThan_` in `Data.Nat.Divisibility.Core`.
 
 ### Changes to operation reduction behaviour in `Data.Rational(.Unnormalised)`
 
@@ -751,8 +763,10 @@ Non-backwards compatible changes
    - The records in  `Function.Structures` and `Function.Bundles` export proofs
          of these under the names `strictlySurjective`, `strictlyInverseˡ` and
          `strictlyInverseʳ`,
-   - Conversion functions have been added in both directions to
-         `Function.Consequences(.Propositional)`.
+   - Conversion functions for the definitions have been added in both directions 
+		 to `Function.Consequences(.Propositional/Setoid)`.
+   - Conversion functions for structures have been added in 
+		 `Function.Structures.Biased`.
 
 ### New `Function.Strict`
 
@@ -1272,6 +1286,44 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Consequences.Propositional`:
+  ```agda
+  comm+assoc⇒middleFour             ↦  comm∧assoc⇒middleFour
+  identity+middleFour⇒assoc         ↦  identity∧middleFour⇒assoc
+  identity+middleFour⇒comm          ↦  identity∧middleFour⇒comm
+  comm+distrˡ⇒distrʳ                ↦  comm∧distrˡ⇒distrʳ
+  comm+distrʳ⇒distrˡ                ↦  comm∧distrʳ⇒distrˡ
+  assoc+distribʳ+idʳ+invʳ⇒zeˡ       ↦  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ
+  assoc+distribˡ+idʳ+invʳ⇒zeʳ       ↦  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ
+  assoc+id+invʳ⇒invˡ-unique         ↦  assoc∧id∧invʳ⇒invˡ-unique
+  assoc+id+invˡ⇒invʳ-unique         ↦  assoc∧id∧invˡ⇒invʳ-unique
+  subst+comm⇒sym                    ↦  subst∧comm⇒sym
+  ```
+
+* In `Algebra.Consequences.Setoid`:
+  ```agda
+  comm+assoc⇒middleFour             ↦  comm∧assoc⇒middleFour
+  identity+middleFour⇒assoc         ↦  identity∧middleFour⇒assoc
+  identity+middleFour⇒comm          ↦  identity∧middleFour⇒comm
+  comm+cancelˡ⇒cancelʳ              ↦  comm∧cancelˡ⇒cancelʳ
+  comm+cancelʳ⇒cancelˡ              ↦  comm∧cancelʳ⇒cancelˡ
+  comm+almostCancelˡ⇒almostCancelʳ  ↦  comm∧almostCancelˡ⇒almostCancelʳ
+  comm+almostCancelʳ⇒almostCancelˡ  ↦  comm∧almostCancelʳ⇒almostCancelˡ
+  comm+idˡ⇒idʳ                      ↦  comm∧idˡ⇒idʳ
+  comm+idʳ⇒idˡ                      ↦  comm∧idʳ⇒idˡ
+  comm+zeˡ⇒zeʳ                      ↦  comm∧zeˡ⇒zeʳ
+  comm+zeʳ⇒zeˡ                      ↦  comm∧zeʳ⇒zeˡ
+  comm+invˡ⇒invʳ                    ↦  comm∧invˡ⇒invʳ
+  comm+invʳ⇒invˡ                    ↦  comm∧invʳ⇒invˡ
+  comm+distrˡ⇒distrʳ                ↦  comm∧distrˡ⇒distrʳ
+  comm+distrʳ⇒distrˡ                ↦  comm∧distrʳ⇒distrˡ
+  assoc+distribʳ+idʳ+invʳ⇒zeˡ       ↦  assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ
+  assoc+distribˡ+idʳ+invʳ⇒zeʳ       ↦  assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ
+  assoc+id+invʳ⇒invˡ-unique         ↦  assoc∧id∧invʳ⇒invˡ-unique
+  assoc+id+invˡ⇒invʳ-unique         ↦  assoc∧id∧invˡ⇒invʳ-unique
+  subst+comm⇒sym                    ↦  subst∧comm⇒sym
+  ```
+
 * In `Algebra.Construct.Zero`:
   ```agda
   rawMagma   ↦  Algebra.Construct.Terminal.rawMagma
@@ -1727,6 +1779,16 @@ Deprecated names
   invPreorder   ↦ converse-preorder
   ```
 
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  isPropositional ↦ Relation.Nullary.Irrelevant
+  ```
+
+* In `Relation.Unary.Consequences`:
+  ```agda
+  dec⟶recomputable  ↦  dec⇒recomputable
+  ```
+
 ## Missing fixity declarations added
 
 * An effort has been made to add sensible fixities for many declarations:
@@ -2023,6 +2085,8 @@ New modules
 * Properties of various types of functions:
   ```
   Function.Consequences
+  Function.Consequences.Setoid
+  Function.Consequences.Propositional
   Function.Properties.Bijection
   Function.Properties.RightInverse
   Function.Properties.Surjection
@@ -2161,21 +2225,21 @@ Additions to existing modules
 
 * Added new proof to `Algebra.Consequences.Base`:
   ```agda
-  reflexive+selfInverse⇒involutive : Reflexive _≈_ → SelfInverse _≈_ f → Involutive _≈_ f
+  reflexive∧selfInverse⇒involutive : Reflexive _≈_ → SelfInverse _≈_ f → Involutive _≈_ f
   ```
 
 * Added new proofs to `Algebra.Consequences.Propositional`:
   ```agda
-  comm+assoc⇒middleFour     : Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
-  identity+middleFour⇒assoc : Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
-  identity+middleFour⇒comm  : Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
+  comm∧assoc⇒middleFour     : Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
+  identity∧middleFour⇒assoc : Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
+  identity∧middleFour⇒comm  : Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
   ```
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
-  comm+assoc⇒middleFour     : Congruent₂ _∙_ → Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
-  identity+middleFour⇒assoc : Congruent₂ _∙_ → Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
-  identity+middleFour⇒comm  : Congruent₂ _∙_ → Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
+  comm∧assoc⇒middleFour     : Congruent₂ _∙_ → Commutative _∙_ → Associative _∙_ → _∙_ MiddleFourExchange _∙_
+  identity∧middleFour⇒assoc : Congruent₂ _∙_ → Identity e _∙_ → _∙_ MiddleFourExchange _∙_ → Associative _∙_
+  identity∧middleFour⇒comm  : Congruent₂ _∙_ → Identity e _+_ → _∙_ MiddleFourExchange _+_ → Commutative _∙_
 
   involutive⇒surjective  : Involutive f  → Surjective f
   selfInverse⇒involutive : SelfInverse f → Involutive f
@@ -2185,15 +2249,15 @@ Additions to existing modules
   selfInverse⇒injective  : SelfInverse f → Injective f
   selfInverse⇒bijective  : SelfInverse f → Bijective f
 
-  comm+idˡ⇒id              : Commutative _∙_ → LeftIdentity  e _∙_ → Identity e _∙_
-  comm+idʳ⇒id              : Commutative _∙_ → RightIdentity e _∙_ → Identity e _∙_
-  comm+zeˡ⇒ze              : Commutative _∙_ → LeftZero      e _∙_ → Zero     e _∙_
-  comm+zeʳ⇒ze              : Commutative _∙_ → RightZero     e _∙_ → Zero     e _∙_
-  comm+invˡ⇒inv            : Commutative _∙_ → LeftInverse  e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
-  comm+invʳ⇒inv            : Commutative _∙_ → RightInverse e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
-  comm+distrˡ⇒distr        : Commutative _∙_ → _∙_ DistributesOverˡ _◦_ → _∙_ DistributesOver _◦_
-  comm+distrʳ⇒distr        : Commutative _∙_ → _∙_ DistributesOverʳ _◦_ → _∙_ DistributesOver _◦_
-  distrib+absorbs⇒distribˡ : Associative _∙_ → Commutative _◦_ → _∙_ Absorbs _◦_ → _◦_ Absorbs _∙_ → _◦_ DistributesOver _∙_ → _∙_ DistributesOverˡ _◦_
+  comm∧idˡ⇒id              : Commutative _∙_ → LeftIdentity  e _∙_ → Identity e _∙_
+  comm∧idʳ⇒id              : Commutative _∙_ → RightIdentity e _∙_ → Identity e _∙_
+  comm∧zeˡ⇒ze              : Commutative _∙_ → LeftZero      e _∙_ → Zero     e _∙_
+  comm∧zeʳ⇒ze              : Commutative _∙_ → RightZero     e _∙_ → Zero     e _∙_
+  comm∧invˡ⇒inv            : Commutative _∙_ → LeftInverse  e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
+  comm∧invʳ⇒inv            : Commutative _∙_ → RightInverse e _⁻¹ _∙_ → Inverse e _⁻¹ _∙_
+  comm∧distrˡ⇒distr        : Commutative _∙_ → _∙_ DistributesOverˡ _◦_ → _∙_ DistributesOver _◦_
+  comm∧distrʳ⇒distr        : Commutative _∙_ → _∙_ DistributesOverʳ _◦_ → _∙_ DistributesOver _◦_
+  distrib∧absorbs⇒distribˡ : Associative _∙_ → Commutative _◦_ → _∙_ Absorbs _◦_ → _◦_ Absorbs _∙_ → _◦_ DistributesOver _∙_ → _∙_ DistributesOverˡ _◦_
   ```
 
 * Added new functions to `Algebra.Construct.DirectProduct`:
@@ -2742,6 +2806,18 @@ Additions to existing modules
   s≤″s⁻¹ : suc m ≤″ suc n → m ≤″ n
   s<″s⁻¹ : suc m <″ suc n → m <″ n
 
+  pattern 2+ n = suc (suc n)
+  pattern 1<2+n {n} = s<s (z<s {n})
+
+  NonTrivial            : Pred ℕ 0ℓ
+  instance nonTrivial   : NonTrivial (2+ n)
+  n>1⇒nonTrivial        : 1 < n → NonTrivial n
+  nonZero⇒≢1⇒nonTrivial : .{{NonZero n}} → n ≢ 1 → NonTrivial n
+  recompute-nonTrivial  : .{{NonTrivial n}} → NonTrivial n
+  nonTrivial⇒nonZero    : .{{NonTrivial n}} → NonZero n
+  nonTrivial⇒n>1        : .{{NonTrivial n}} → 1 < n
+  nonTrivial⇒≢1         : .{{NonTrivial n}} → n ≢ 1
+
   _⊔′_ : ℕ → ℕ → ℕ
   _⊓′_ : ℕ → ℕ → ℕ
   ∣_-_∣′ : ℕ → ℕ → ℕ
@@ -2767,20 +2843,42 @@ Additions to existing modules
   <-asym : Asymmetric _<_
   ```
 
-* Added a new pattern synonym to `Data.Nat.Divisibility.Core`:
+* Added a new pattern synonym and a new definition to `Data.Nat.Divisibility.Core`:
   ```agda
   pattern divides-refl q = divides q refl
+  record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
   ```
 
-* Added new definitions and proofs to `Data.Nat.Primality`:
+* Added new proofs to `Data.Nat.Divisibility`:
   ```agda
-  Composite        : ℕ → Set
-  composite?       : Decidable Composite
-  composite⇒¬prime : Composite n → ¬ Prime n
-  ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
-  prime⇒¬composite : Prime n → ¬ Composite n
-  ¬prime⇒composite : 2 ≤ n → ¬ Prime n → Composite n
-  euclidsLemma     : Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
+  hasNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
+  hasNonTrivialDivisor-∣ : m HasNonTrivialDivisorLessThan n → m ∣ o → o HasNonTrivialDivisorLessThan n
+  hasNonTrivialDivisor-≤ : m HasNonTrivialDivisorLessThan n → n ≤ o → m HasNonTrivialDivisorLessThan o
+  ```
+
+* Added new definitions, smart constructors and proofs to `Data.Nat.Primality`:
+  ```agda
+  infix 10 _Rough_
+  _Rough_           : ℕ → Pred ℕ _
+  0-rough           : 0 Rough n
+  1-rough           : 1 Rough n
+  2-rough           : 2 Rough n
+  rough⇒≤           : .{{NonTrivial n}} → m Rough n → m ≤ n
+  ∤⇒rough-suc        : m ∤ n → m Rough n → (suc m) Rough n
+  rough∧∣⇒rough     : m Rough o → n ∣ o → m Rough n
+  Composite         : ℕ → Set
+  composite-≢       : .{{NonTrivial d}} → .{{NonZero n}} → d ≢ n → d ∣ n → Composite n
+  composite-∣       : .{{NonZero n}} → Composite m → m ∣ n → Composite n
+  composite?        : Decidable Composite
+  Irreducible       : ℕ → Set
+  irreducible?      : Decidable Irreducible
+  composite⇒¬prime  : Composite n → ¬ Prime n
+  ¬composite⇒prime  : .{{NonTrivial n} → ¬ Composite n → Prime n
+  prime⇒¬composite  : Prime n → ¬ Composite n
+  ¬prime⇒composite  : .{{NonTrivial n} → ¬ Prime n → Composite n
+  prime⇒irreducible : Prime p → Irreducible p
+  irreducible⇒prime : .{{NonTrivial p}} → Irreducible p → Prime p
+  euclidsLemma      : Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
   ```
 
 * Added new proofs in `Data.Nat.Properties`:
@@ -2790,8 +2888,12 @@ Additions to existing modules
   n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
   n>0⇒n≢0   : n > 0 → n ≢ 0
-  m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+  m*n≢0⇒m≢0 : .{{NonZero (m * n)}} → NonZero m
+  m*n≢0⇒n≢0 : .{{NonZero (m * n)}} → NonZero n
+  m≢0∧n>1⇒m*n>1 : .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
+  n≢0∧m>1⇒m*n>1 : .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
+  m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
 
   s<s-injective : s<s p ≡ s<s q → p ≡ q
@@ -2799,7 +2901,7 @@ Additions to existing modules
   m<1+n⇒m<n∨m≡n : m < suc n → m < n ⊎ m ≡ n
 
   pred-mono-≤   : m ≤ n → pred m ≤ pred n
-  pred-mono-<   : .⦃ _ : NonZero m ⦄ → m < n → pred m < pred n
+  pred-mono-<   : .{{_ : NonZero m}} → m < n → pred m < pred n
 
   z<′s : zero <′ suc n
   s<′s : m <′ n → suc m <′ suc n
@@ -2840,7 +2942,7 @@ Additions to existing modules
   ⊓≡⊓′ : m ⊓ n ≡ m ⊓′ n
   ∣-∣≡∣-∣′ : ∣ m - n ∣ ≡ ∣ m - n ∣′
 
-  nonZero? : Decidable NonZero
+  nonTrivial? : Decidable NonTrivial
   eq? : A ↣ ℕ → DecidableEquality A
   ≤-<-connex : Connex _≤_ _<_
   ≥->-connex : Connex _≥_ _>_
@@ -2866,21 +2968,21 @@ Additions to existing modules
   m%n≤n           : .{{_ : NonZero n}} → m % n ≤ n
   m*n/m!≡n/[m∸1]! : .{{_ : NonZero m}} → m * n / m ! ≡ n / (pred m) !
 
-  %-congˡ             : .⦃ _ : NonZero o ⦄ → m ≡ n → m % o ≡ n % o
-  %-congʳ             : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ≡ n → o % m ≡ o % n
-  m≤n⇒[n∸m]%m≡n%m     : .⦃ _ : NonZero m ⦄ → m ≤ n → (n ∸ m) % m ≡ n % m
-  m*n≤o⇒[o∸m*n]%n≡o%n : .⦃ _ : NonZero n ⦄ → m * n ≤ o → (o ∸ m * n) % n ≡ o % n
-  m∣n⇒o%n%m≡o%m       : .⦃ _ : NonZero m ⦄ .⦃ _ : NonZero n ⦄ → m ∣ n → o % n % m ≡ o % m
-  m<n⇒m%n≡m           : .⦃ _ : NonZero n ⦄ → m < n → m % n ≡ m
-  m*n/o*n≡m/o         : .⦃ _ : NonZero o ⦄ ⦃ _ : NonZero (o * n) ⦄ → m * n / (o * n) ≡ m / o
-  m<n*o⇒m/o<n         : .⦃ _ : NonZero o ⦄ → m < n * o → m / o < n
-  [m∸n]/n≡m/n∸1       : .⦃ _ : NonZero n ⦄ → (m ∸ n) / n ≡ pred (m / n)
-  [m∸n*o]/o≡m/o∸n     : .⦃ _ : NonZero o ⦄ → (m ∸ n * o) / o ≡ m / o ∸ n
-  m/n/o≡m/[n*o]       : .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄ .⦃ _ : NonZero (n * o) ⦄ → m / n / o ≡ m / (n * o)
-  m%[n*o]/o≡m/o%n     : .⦃ _ : NonZero n ⦄ .⦃ _ : NonZero o ⦄ ⦃ _ : NonZero (n * o) ⦄ → m % (n * o) / o ≡ m / o % n
-  m%n*o≡m*o%[n*o]     : .⦃ _ : NonZero n ⦄ ⦃ _ : NonZero (n * o) ⦄ → m % n * o ≡ m * o % (n * o)
+  %-congˡ             : .{{_ : NonZero o}} → m ≡ n → m % o ≡ n % o
+  %-congʳ             : .{{_ : NonZero m}} .{{_ : NonZero n}} → m ≡ n → o % m ≡ o % n
+  m≤n⇒[n∸m]%m≡n%m     : .{{_ : NonZero m}} → m ≤ n → (n ∸ m) % m ≡ n % m
+  m*n≤o⇒[o∸m*n]%n≡o%n : .{{_ : NonZero n}} → m * n ≤ o → (o ∸ m * n) % n ≡ o % n
+  m∣n⇒o%n%m≡o%m       : .{{_ : NonZero m}} .{{_ : NonZero n}} → m ∣ n → o % n % m ≡ o % m
+  m<n⇒m%n≡m           : .{{_ : NonZero n}} → m < n → m % n ≡ m
+  m*n/o*n≡m/o         : .{{_ : NonZero o}} {{_ : NonZero (o * n)}} → m * n / (o * n) ≡ m / o
+  m<n*o⇒m/o<n         : .{{_ : NonZero o}} → m < n * o → m / o < n
+  [m∸n]/n≡m/n∸1       : .{{_ : NonZero n}} → (m ∸ n) / n ≡ pred (m / n)
+  [m∸n*o]/o≡m/o∸n     : .{{_ : NonZero o}} → (m ∸ n * o) / o ≡ m / o ∸ n
+  m/n/o≡m/[n*o]       : .{{_ : NonZero n}} .{{_ : NonZero o}} .{{_ : NonZero (n * o)}} → m / n / o ≡ m / (n * o)
+  m%[n*o]/o≡m/o%n     : .{{_ : NonZero n}} .{{_ : NonZero o}} {{_ : NonZero (n * o)}} → m % (n * o) / o ≡ m / o % n
+  m%n*o≡m*o%[n*o]     : .{{_ : NonZero n}} {{_ : NonZero (n * o)}} → m % n * o ≡ m * o % (n * o)
 
-  [m*n+o]%[p*n]≡[m*n]%[p*n]+o : ⦃ _ : NonZero (p * n) ⦄ → o < n → (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
+  [m*n+o]%[p*n]≡[m*n]%[p*n]+o : {{_ : NonZero (p * n)}} → o < n → (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
   ```
 
 * Added new proofs in `Data.Nat.Divisibility`:
@@ -3617,7 +3719,9 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Nat.Coprimality`:
   ```
-  Bézout-coprime : ∀ {i j d} → Bézout.Identity (suc d) (i * suc d) (j * suc d) → Coprime i j
+  ¬0-coprimeTo-2+ : ∀ {n} → ¬ Coprime 0 (2 + n)
+  Bézout-coprime  : ∀ {i j d} → Bézout.Identity (suc d) (i * suc d) (j * suc d) → Coprime i j
+  prime⇒coprime   : ∀ m → Prime m → ∀ n → 0 < n → n < m → Coprime m n
   ```
 
 * In `Data.Nat.Divisibility`

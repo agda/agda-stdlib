@@ -150,7 +150,6 @@ isRing isRing = record
   ; *-assoc          = *-assoc R.*-isMagma R.*-assoc
   ; *-identity       = *-identity R.*-isMagma R.*-identity
   ; distrib          = distrib R.+-isGroup R.*-isMagma R.distrib
-  ; zero             = zero R.+-isGroup R.*-isMagma R.zero
   } where module R = IsRing isRing
 
 isCommutativeRing : IsCommutativeRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ →
