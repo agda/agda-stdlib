@@ -15,7 +15,6 @@ open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; Raw
 open import Algebra.Definitions.RawMagma using (_∣ˡ_; _,_)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
-open import Data.Product.Base using (_,_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
