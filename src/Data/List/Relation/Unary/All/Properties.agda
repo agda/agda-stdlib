@@ -29,6 +29,7 @@ open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
+open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
 open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -387,6 +388,13 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ... | nothing = mapMaybe⁺ pxs
 ... | just v with px
 ...   | just pv = pv ∷ mapMaybe⁺ pxs
+
+------------------------------------------------------------------------
+-- catMaybes
+
+catMaybes⁺ : ∀ {xs : List (Maybe A)} → All (Maybe.Any P) xs → All P (catMaybes xs)
+catMaybes⁺ [] = []
+catMaybes⁺ (just px ∷ pxs) = px ∷ catMaybes⁺ pxs
 
 ------------------------------------------------------------------------
 -- _++_

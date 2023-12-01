@@ -10,9 +10,12 @@ module Data.List.Relation.Unary.AllPairs.Properties where
 
 open import Data.List.Base hiding (any)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
-import Data.List.Relation.Unary.All.Properties as All
+open import Data.List.Relation.Unary.All.Properties as All using (catMaybes⁺)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
+open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Data.Bool.Base using (true; false)
+open import Data.Maybe using (Maybe; nothing; just)
+open import Data.Maybe.Relation.Binary.Pointwise using (Pointwise; just)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
@@ -22,7 +25,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (DecSetoid)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_)
-open import Relation.Unary using (Pred; Decidable)
+open import Relation.Unary using (Pred; Decidable; _⊆_)
 open import Relation.Nullary.Decidable using (does)
 
 private
@@ -132,3 +135,16 @@ module _ {R : Rel A ℓ} {P : Pred A p} (P? : Decidable P) where
   filter⁺ {x ∷ xs} (x∉xs ∷ xs!) with does (P? x)
   ... | false = filter⁺ xs!
   ... | true  = All.filter⁺ P? x∉xs ∷ filter⁺ xs!
+
+------------------------------------------------------------------------
+-- pointwise
+
+module _ {R : Rel A ℓ}  where
+
+  pointwise⁺ : {xs : List (Maybe A)} → AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
+  pointwise⁺ {xs = []} [] = []
+  pointwise⁺ {xs = nothing ∷  _} (x∼xs ∷ pxs) = pointwise⁺ pxs
+  pointwise⁺ {xs = just x  ∷ xs} (x∼xs ∷ pxs) = catMaybes⁺ (All.map helper x∼xs) ∷ pointwise⁺ pxs
+    where
+    helper : Pointwise R (just x) ⊆ Any (R x)
+    helper (just Rxy) = just Rxy

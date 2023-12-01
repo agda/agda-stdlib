@@ -3909,3 +3909,13 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} → (1/p : Positive (1/ p)) → Positive p
   1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
   ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+```
+  catMaybes⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
+```
+
+* In `Data.List.Relation.Unary.AllPairs.Properties`:
+```
+  pointwise⁺ : AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
+```
