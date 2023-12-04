@@ -3910,6 +3910,11 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
   ```
 
+* In `Data.Maybe.Relation.Binary.Pointwise`:
+```agda
+  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
+```
+
 * In `Data.List.Relation.Unary.All.Properties`:
 ```
   catMaybes⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)

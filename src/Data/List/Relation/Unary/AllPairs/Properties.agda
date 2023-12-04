@@ -12,10 +12,9 @@ open import Data.List.Base hiding (any)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties as All using (catMaybes⁺)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
-open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Data.Bool.Base using (true; false)
 open import Data.Maybe using (Maybe; nothing; just)
-open import Data.Maybe.Relation.Binary.Pointwise using (Pointwise; just)
+open import Data.Maybe.Relation.Binary.Pointwise using (pointwise⊆any; Pointwise)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
@@ -144,7 +143,4 @@ module _ {R : Rel A ℓ}  where
   pointwise⁺ : {xs : List (Maybe A)} → AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
   pointwise⁺ {xs = []} [] = []
   pointwise⁺ {xs = nothing ∷  _} (x∼xs ∷ pxs) = pointwise⁺ pxs
-  pointwise⁺ {xs = just x  ∷ xs} (x∼xs ∷ pxs) = catMaybes⁺ (All.map helper x∼xs) ∷ pointwise⁺ pxs
-    where
-    helper : Pointwise R (just x) ⊆ Any (R x)
-    helper (just Rxy) = just Rxy
+  pointwise⁺ {xs = just x  ∷ xs} (x∼xs ∷ pxs) = catMaybes⁺ (All.map pointwise⊆any x∼xs) ∷ pointwise⁺ pxs
