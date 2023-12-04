@@ -3917,7 +3917,8 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.List.Relation.Unary.All.Properties`:
 ```
-  catMaybes⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
+  catMaybesAll⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
+  catMaybesAny⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
 ```
 
 * In `Data.List.Relation.Unary.AllPairs.Properties`:
