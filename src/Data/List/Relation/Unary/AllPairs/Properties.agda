@@ -10,7 +10,7 @@ module Data.List.Relation.Unary.AllPairs.Properties where
 
 open import Data.List.Base hiding (any)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
-open import Data.List.Relation.Unary.All.Properties as All using (catMaybes⁺)
+open import Data.List.Relation.Unary.All.Properties as All using (catMaybesAny⁺)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
 open import Data.Bool.Base using (true; false)
 open import Data.Maybe using (Maybe; nothing; just)
@@ -143,4 +143,4 @@ module _ {R : Rel A ℓ}  where
   pointwise⁺ : {xs : List (Maybe A)} → AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
   pointwise⁺ {xs = []} [] = []
   pointwise⁺ {xs = nothing ∷  _} (x∼xs ∷ pxs) = pointwise⁺ pxs
-  pointwise⁺ {xs = just x  ∷ xs} (x∼xs ∷ pxs) = catMaybes⁺ (All.map pointwise⊆any x∼xs) ∷ pointwise⁺ pxs
+  pointwise⁺ {xs = just x  ∷ xs} (x∼xs ∷ pxs) = catMaybesAny⁺ (All.map pointwise⊆any x∼xs) ∷ pointwise⁺ pxs
