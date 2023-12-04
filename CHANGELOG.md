@@ -2529,6 +2529,8 @@ Additions to existing modules
 
 * Added new proofs in `Data.Fin.Properties`:
   ```
+  nonZeroIndex       : Fin n → ℕ.NonZero n
+
   1↔⊤                : Fin 1 ↔ ⊤
   2↔Bool             : Fin 2 ↔ Bool
 
@@ -2999,6 +3001,8 @@ Additions to existing modules
 
   [m*n+o]%[p*n]≡[m*n]%[p*n]+o : .{{_ : NonZero n}} .{{_ : NonZero p}} → o < n →
                                 (m * n + o) % (p * n) ≡ (m * n) % (p * n) + o
+
+  nonZero : DivMod dividend divisor → NonZero divisor
   ```
 
 * Added new proofs in `Data.Nat.Divisibility`:

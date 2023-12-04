@@ -11,8 +11,8 @@ module Data.Nat.DivMod where
 open import Agda.Builtin.Nat using (div-helper; mod-helper)
 
 open import Data.Fin.Base using (Fin; toℕ; fromℕ<)
-open import Data.Fin.Properties using (toℕ-fromℕ<)
-open import Data.Nat.Base as Nat
+open import Data.Fin.Properties using (nonZeroIndex; toℕ-fromℕ<)
+open import Data.Nat.Base as Nat hiding (nonZero)
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
@@ -476,6 +476,10 @@ record DivMod (dividend divisor : ℕ) : Set where
     quotient  : ℕ
     remainder : Fin divisor
     property  : dividend ≡ toℕ remainder + quotient * divisor
+
+  nonZero : NonZero divisor
+  nonZero = nonZeroIndex remainder
+
 
 infixl 7 _div_ _mod_ _divMod_
 
