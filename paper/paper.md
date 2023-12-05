@@ -33,17 +33,16 @@ bibliography: paper.bib
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+Agda CITE is a programming language used as a platform for cutting-edge 
+research into programming language technology. 
+Agda functions both as a traditional programming language and as an interactive 
+theorem prover, allowing users to  write proofs as well as programs. 
+The Agda standard library therefore provides a foundation for Agda users to develop proofs and programs. 
+Unlike standard libraries of traditional programming languages, the Agda standard library must provide not
+just standard utility functions and data structures, but also large parts of basic mathematics
+that are essential for proving the correctness of programs.
 
-# Statement of need
+# Design
 
 `Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
 enables wrapping low-level languages (e.g., C) for speed without losing
@@ -107,7 +106,9 @@ Figure sizes can be customized by adding an optional second parameter:
 
 # Acknowledgements
 
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
+We acknowledge the work of the core Agda development team who are not authors
+on this paper including, but not limited to, Andreas Abel, Ulf Norell, 
+Nils Anders Danielsson, Andrés Sicard-Ramírez, Jesper Cockx and Andrea Vezzosi,
+without whom Agda itself would not exist.
 
 # References
