@@ -33,11 +33,11 @@ bibliography: paper.bib
 
 # Summary
 
-Agda CITE is a programming language used as a platform for cutting-edge 
-research into programming language technology. 
-Agda functions both as a traditional programming language and as an interactive 
-theorem prover, allowing users to  write proofs as well as programs. 
-The Agda standard library therefore provides a foundation for Agda users to develop proofs and programs. 
+Agda CITE is a programming language used as a platform for cutting-edge
+research into programming language technology.
+Agda functions both as a traditional programming language and as an interactive
+theorem prover, allowing users to  write proofs as well as programs.
+The Agda standard library therefore provides a foundation for Agda users to develop proofs and programs.
 Unlike standard libraries of traditional programming languages, the Agda standard library must provide not
 just standard utility functions and data structures, but also large parts of basic mathematics
 that are essential for proving the correctness of programs.
@@ -107,7 +107,7 @@ Figure sizes can be customized by adding an optional second parameter:
 # Acknowledgements
 
 We acknowledge the work of the core Agda development team who are not authors
-on this paper including, but not limited to, Andreas Abel, Ulf Norell, 
+on this paper including, but not limited to, Andreas Abel, Ulf Norell,
 Nils Anders Danielsson, Andrés Sicard-Ramírez, Jesper Cockx and Andrea Vezzosi,
 without whom Agda itself would not exist.
 
