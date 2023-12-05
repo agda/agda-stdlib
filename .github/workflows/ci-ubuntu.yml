@@ -153,8 +153,8 @@ jobs:
         run: |
           # Including deprecated modules purely for testing
           cabal run GenerateEverything -- --include-deprecated
-          ${{ env.AGDA }} --safe EverythingSafe.agda
-          ${{ env.AGDA }} Everything.agda
+          ${{ env.AGDA }} -WnoUserWarning --safe EverythingSafe.agda
+          ${{ env.AGDA }} -WnoUserWarning Everything.agda
 
       - name: Prepare HTML index
         run: |
