@@ -151,10 +151,19 @@ jobs:
 
       - name: Test stdlib
         run: |
+          # Including deprecated modules purely for testing
+          cabal run GenerateEverything -- --include-deprecated
+          ${{ env.AGDA }} -WnoUserWarning --safe EverythingSafe.agda
+          ${{ env.AGDA }} -WnoUserWarning Everything.agda
+
+      - name: Prepare HTML index
+        run: |
+          # Regenerating the Everything files without the deprecated modules
           cabal run GenerateEverything
           cp .github/tooling/* .
           ./index.sh
           ${{ env.AGDA }} --safe EverythingSafe.agda
+          ${{ env.AGDA }} Everything.agda
           ${{ env.AGDA }} index.agda
 
       - name: Golden testing
@@ -177,7 +186,6 @@ jobs:
           rm -f '${{ env.AGDA_HTML_DIR }}'/*.html
           rm -f '${{ env.AGDA_HTML_DIR }}'/*.css
           ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
-
           cp .github/tooling/* .
           ./landing.sh
 
