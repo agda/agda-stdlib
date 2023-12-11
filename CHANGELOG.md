@@ -1,7 +1,7 @@
 Version 2.0
 ===========
 
-The library has been tested using Agda 2.6.4.
+The library has been tested using Agda 2.6.4 and 2.6.4.1.
 
 NOTE: Version `2.0` contains various breaking changes and is not backwards
 compatible with code written with version `1.X` of the library.
