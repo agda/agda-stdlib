@@ -64,7 +64,7 @@ procedure should be followed:
 * Generate and upload documentation for the released version:
 
     cp .github/tooling/* .
-    runhaskell GenerateEverything.hs
+    cabal run GenerateEverything.hs
     ./index.sh
     agda -i. -idoc -isrc --html index.agda
     mv html v$VERSION
@@ -81,5 +81,3 @@ procedure should be followed:
 * Move the CHANGELOG.md into the old CHANGELOG folders
 
 * Create new CHANGELOG.md file
-
-* Revert changes in README.md to reference development version
