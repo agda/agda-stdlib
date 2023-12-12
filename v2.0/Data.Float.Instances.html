@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Float.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Instances for floating point numbers</a>
+<a id="146" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="220" class="Symbol">{-#</a> <a id="224" class="Keyword">OPTIONS</a> <a id="232" class="Pragma">--cubical-compatible</a> <a id="253" class="Pragma">--safe</a> <a id="260" class="Symbol">#-}</a>
+
+<a id="265" class="Keyword">module</a> <a id="272" href="Data.Float.Instances.html" class="Module">Data.Float.Instances</a> <a id="293" class="Keyword">where</a>
+
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Data.Float.Properties.html" class="Module">Data.Float.Properties</a>
+<a id="334" class="Keyword">open</a> <a id="339" class="Keyword">import</a> <a id="346" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+  <a id="397" class="Keyword">using</a> <a id="403" class="Symbol">(</a><a id="404" href="Relation.Binary.PropositionalEquality.Properties.html#5543" class="Function">isDecEquivalence</a><a id="420" class="Symbol">)</a>
+
+<a id="423" class="Keyword">instance</a>
+  <a id="Float-≡-isDecEquivalence"></a><a id="434" href="Data.Float.Instances.html#434" class="Function">Float-≡-isDecEquivalence</a> <a id="459" class="Symbol">=</a> <a id="461" href="Relation.Binary.PropositionalEquality.Properties.html#5543" class="Function">isDecEquivalence</a> <a id="478" href="Data.Float.Properties.html#2386" class="Function Operator">_≟_</a>
+</pre></body></html>

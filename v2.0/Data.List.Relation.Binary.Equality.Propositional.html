@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Equality.Propositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Pointwise equality over lists using propositional equality</a>
+<a id="168" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="242" class="Comment">-- Note think carefully about using this module as pointwise</a>
+<a id="303" class="Comment">-- propositional equality can usually be replaced with propositional</a>
+<a id="372" class="Comment">-- equality.</a>
+
+<a id="386" class="Symbol">{-#</a> <a id="390" class="Keyword">OPTIONS</a> <a id="398" class="Pragma">--cubical-compatible</a> <a id="419" class="Pragma">--safe</a> <a id="426" class="Symbol">#-}</a>
+
+<a id="431" class="Keyword">open</a> <a id="436" class="Keyword">import</a> <a id="443" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="464" class="Keyword">using</a> <a id="470" class="Symbol">(</a><a id="471" href="Relation.Binary.Core.html#1268" class="Function Operator">_⇒_</a><a id="474" class="Symbol">)</a>
+
+<a id="477" class="Keyword">module</a> <a id="484" href="Data.List.Relation.Binary.Equality.Propositional.html" class="Module">Data.List.Relation.Binary.Equality.Propositional</a> <a id="533" class="Symbol">{</a><a id="534" href="Data.List.Relation.Binary.Equality.Propositional.html#534" class="Bound">a</a><a id="535" class="Symbol">}</a> <a id="537" class="Symbol">{</a><a id="538" href="Data.List.Relation.Binary.Equality.Propositional.html#538" class="Bound">A</a> <a id="540" class="Symbol">:</a> <a id="542" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="546" href="Data.List.Relation.Binary.Equality.Propositional.html#534" class="Bound">a</a><a id="547" class="Symbol">}</a> <a id="549" class="Keyword">where</a>
+
+<a id="556" class="Keyword">open</a> <a id="561" class="Keyword">import</a> <a id="568" href="Data.List.Base.html" class="Module">Data.List.Base</a>
+<a id="583" class="Keyword">import</a> <a id="590" href="Data.List.Relation.Binary.Equality.Setoid.html" class="Module">Data.List.Relation.Binary.Equality.Setoid</a> <a id="632" class="Symbol">as</a> <a id="635" class="Module">SetoidEquality</a>
+<a id="650" class="Keyword">open</a> <a id="655" class="Keyword">import</a> <a id="662" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a> <a id="705" class="Symbol">as</a> <a id="708" class="Module">P</a> <a id="710" class="Keyword">using</a> <a id="716" class="Symbol">(</a><a id="717" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a><a id="720" class="Symbol">)</a>
+<a id="722" class="Keyword">import</a> <a id="729" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a> <a id="778" class="Symbol">as</a> <a id="781" class="Module">P</a>
+
+<a id="784" class="Comment">------------------------------------------------------------------------</a>
+<a id="857" class="Comment">-- Re-export everything from setoid equality</a>
+
+<a id="903" class="Keyword">open</a> <a id="908" href="Data.List.Relation.Binary.Equality.Setoid.html" class="Module">SetoidEquality</a> <a id="923" class="Symbol">(</a><a id="924" href="Relation.Binary.PropositionalEquality.Properties.html#5700" class="Function">P.setoid</a> <a id="933" href="Data.List.Relation.Binary.Equality.Propositional.html#538" class="Bound">A</a><a id="934" class="Symbol">)</a> <a id="936" class="Keyword">public</a>
+
+<a id="944" class="Comment">------------------------------------------------------------------------</a>
+<a id="1017" class="Comment">-- ≋ is propositional</a>
+
+<a id="≋⇒≡"></a><a id="1040" href="Data.List.Relation.Binary.Equality.Propositional.html#1040" class="Function">≋⇒≡</a> <a id="1044" class="Symbol">:</a> <a id="1046" href="Data.List.Relation.Binary.Equality.Setoid.html#1361" class="Function Operator">_≋_</a> <a id="1050" href="Relation.Binary.Core.html#1268" class="Function Operator">⇒</a> <a id="1052" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a>
+<a id="1056" href="Data.List.Relation.Binary.Equality.Propositional.html#1040" class="Function">≋⇒≡</a> <a id="1060" href="Data.List.Relation.Binary.Pointwise.Base.html#917" class="InductiveConstructor">[]</a>               <a id="1077" class="Symbol">=</a> <a id="1079" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">P.refl</a>
+<a id="1086" href="Data.List.Relation.Binary.Equality.Propositional.html#1040" class="Function">≋⇒≡</a> <a id="1090" class="Symbol">(</a><a id="1091" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">P.refl</a> <a id="1098" href="Data.List.Relation.Binary.Pointwise.Base.html#943" class="InductiveConstructor Operator">∷</a> <a id="1100" href="Data.List.Relation.Binary.Equality.Propositional.html#1100" class="Bound">xs≈ys</a><a id="1105" class="Symbol">)</a> <a id="1107" class="Symbol">=</a> <a id="1109" href="Relation.Binary.PropositionalEquality.Core.html#1158" class="Function">P.cong</a> <a id="1116" class="Symbol">(_</a> <a id="1119" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷_</a><a id="1121" class="Symbol">)</a> <a id="1123" class="Symbol">(</a><a id="1124" href="Data.List.Relation.Binary.Equality.Propositional.html#1040" class="Function">≋⇒≡</a> <a id="1128" href="Data.List.Relation.Binary.Equality.Propositional.html#1100" class="Bound">xs≈ys</a><a id="1133" class="Symbol">)</a>
+
+<a id="≡⇒≋"></a><a id="1136" href="Data.List.Relation.Binary.Equality.Propositional.html#1136" class="Function">≡⇒≋</a> <a id="1140" class="Symbol">:</a> <a id="1142" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a> <a id="1146" href="Relation.Binary.Core.html#1268" class="Function Operator">⇒</a> <a id="1148" href="Data.List.Relation.Binary.Equality.Setoid.html#1361" class="Function Operator">_≋_</a>
+<a id="1152" href="Data.List.Relation.Binary.Equality.Propositional.html#1136" class="Function">≡⇒≋</a> <a id="1156" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">P.refl</a> <a id="1163" class="Symbol">=</a> <a id="1165" href="Data.List.Relation.Binary.Equality.Setoid.html#1616" class="Function">≋-refl</a>
+</pre></body></html>

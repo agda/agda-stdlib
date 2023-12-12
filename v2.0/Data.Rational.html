@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Rational</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Rational numbers</a>
+<a id="126" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="200" class="Symbol">{-#</a> <a id="204" class="Keyword">OPTIONS</a> <a id="212" class="Pragma">--cubical-compatible</a> <a id="233" class="Pragma">--safe</a> <a id="240" class="Symbol">#-}</a>
+
+<a id="245" class="Keyword">module</a> <a id="252" href="Data.Rational.html" class="Module">Data.Rational</a> <a id="266" class="Keyword">where</a>
+
+<a id="273" class="Comment">------------------------------------------------------------------------</a>
+<a id="346" class="Comment">-- Publicly re-export contents of core module and queries</a>
+
+<a id="405" class="Keyword">open</a> <a id="410" class="Keyword">import</a> <a id="417" href="Data.Rational.Base.html" class="Module">Data.Rational.Base</a> <a id="436" class="Keyword">public</a>
+<a id="443" class="Keyword">open</a> <a id="448" class="Keyword">import</a> <a id="455" href="Data.Rational.Properties.html" class="Module">Data.Rational.Properties</a> <a id="480" class="Keyword">public</a>
+  <a id="489" class="Keyword">using</a> <a id="495" class="Symbol">(</a><a id="496" href="Data.Rational.Properties.html#3433" class="Function Operator">_≟_</a><a id="499" class="Symbol">;</a> <a id="501" href="Data.Rational.Properties.html#18983" class="Function Operator">_≤?_</a><a id="505" class="Symbol">;</a> <a id="507" href="Data.Rational.Properties.html#23772" class="Function Operator">_&lt;?_</a><a id="511" class="Symbol">;</a> <a id="513" href="Data.Rational.Properties.html#19067" class="Function Operator">_≥?_</a><a id="517" class="Symbol">;</a> <a id="519" href="Data.Rational.Properties.html#23860" class="Function Operator">_&gt;?_</a><a id="523" class="Symbol">)</a>
+
+<a id="526" class="Comment">------------------------------------------------------------------------</a>
+<a id="599" class="Comment">-- Deprecated</a>
+
+<a id="614" class="Comment">-- Version 1.0</a>
+
+<a id="630" class="Keyword">open</a> <a id="635" class="Keyword">import</a> <a id="642" href="Data.Rational.Properties.html" class="Module">Data.Rational.Properties</a> <a id="667" class="Keyword">public</a>
+  <a id="676" class="Keyword">using</a> <a id="682" class="Symbol">(</a><a id="683" href="Data.Rational.Properties.html#17622" class="Function">drop-*≤*</a><a id="691" class="Symbol">;</a> <a id="693" href="Data.Rational.Properties.html#5100" class="Function">≃⇒≡</a><a id="696" class="Symbol">;</a> <a id="698" href="Data.Rational.Properties.html#5063" class="Function">≡⇒≃</a><a id="701" class="Symbol">)</a>
+
+<a id="704" class="Comment">-- Version 1.5</a>
+
+<a id="720" class="Keyword">import</a> <a id="727" href="Data.Integer.Show.html" class="Module">Data.Integer.Show</a> <a id="745" class="Symbol">as</a> <a id="748" class="Module">ℤ</a>
+<a id="750" class="Keyword">open</a> <a id="755" class="Keyword">import</a> <a id="762" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="779" class="Keyword">using</a> <a id="785" class="Symbol">(</a><a id="786" href="Agda.Builtin.String.html#335" class="Postulate">String</a><a id="792" class="Symbol">;</a> <a id="794" href="Data.String.Base.html#2404" class="Function Operator">_++_</a><a id="798" class="Symbol">)</a>
+
+<a id="show"></a><a id="801" href="Data.Rational.html#801" class="Function">show</a> <a id="806" class="Symbol">:</a> <a id="808" href="Data.Rational.Base.html#1342" class="Record">ℚ</a> <a id="810" class="Symbol">→</a> <a id="812" href="Agda.Builtin.String.html#335" class="Postulate">String</a>
+<a id="819" href="Data.Rational.html#801" class="Function">show</a> <a id="824" href="Data.Rational.html#824" class="Bound">p</a> <a id="826" class="Symbol">=</a> <a id="828" href="Data.Integer.Show.html#615" class="Function">ℤ.show</a> <a id="835" class="Symbol">(</a><a id="836" href="Data.Rational.Base.html#1905" class="Field Operator">↥</a> <a id="838" href="Data.Rational.html#824" class="Bound">p</a><a id="839" class="Symbol">)</a> <a id="841" href="Data.String.Base.html#2404" class="Function Operator">++</a> <a id="844" class="String">&quot;/&quot;</a> <a id="848" href="Data.String.Base.html#2404" class="Function Operator">++</a> <a id="851" href="Data.Integer.Show.html#615" class="Function">ℤ.show</a> <a id="858" class="Symbol">(</a><a id="859" href="Data.Rational.Base.html#1928" class="Function Operator">↧</a> <a id="861" href="Data.Rational.html#824" class="Bound">p</a><a id="862" class="Symbol">)</a>
+
+<a id="865" class="Symbol">{-#</a> <a id="869" class="Keyword">WARNING_ON_USAGE</a> <a id="886" class="Pragma">show</a>
+<a id="891" class="String">&quot;Warning: show was deprecated in v1.5.
+Please use Data.Rational.Show&#39;s show instead.&quot;</a>
+<a id="977" class="Symbol">#-}</a>
+</pre></body></html>

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data.List.Relation.Unary.Any</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Documentation for the `Any` predicate over `List`</a>
+<a id="159" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="233" class="Keyword">module</a> <a id="240" href="README.Data.List.Relation.Unary.Any.html" class="Module">README.Data.List.Relation.Unary.Any</a> <a id="276" class="Keyword">where</a>
+
+<a id="283" class="Keyword">open</a> <a id="288" class="Keyword">import</a> <a id="295" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="310" class="Keyword">using</a> <a id="316" class="Symbol">(</a><a id="317" href="Data.List.Base.html#7793" class="InductiveConstructor">[]</a><a id="319" class="Symbol">;</a> <a id="321" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">_∷_</a><a id="324" class="Symbol">)</a>
+<a id="326" class="Keyword">open</a> <a id="331" class="Keyword">import</a> <a id="338" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="352" class="Keyword">using</a> <a id="358" class="Symbol">(</a><a id="359" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="360" class="Symbol">;</a> <a id="362" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a><a id="365" class="Symbol">;</a> <a id="367" href="Data.Nat.Base.html#1801" class="Function Operator">_&lt;_</a><a id="370" class="Symbol">;</a> <a id="372" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a><a id="375" class="Symbol">;</a> <a id="377" href="Data.Nat.Base.html#1714" class="InductiveConstructor">z≤n</a><a id="380" class="Symbol">;</a> <a id="382" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a><a id="385" class="Symbol">;</a> <a id="387" href="Data.Nat.Base.html#4456" class="Primitive Operator">_∸_</a><a id="390" class="Symbol">;</a> <a id="392" href="Data.Nat.Base.html#1691" class="Datatype Operator">_≤_</a><a id="395" class="Symbol">)</a>
+<a id="397" class="Keyword">open</a> <a id="402" class="Keyword">import</a> <a id="409" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="429" class="Keyword">using</a> <a id="435" class="Symbol">(</a><a id="436" href="Data.Nat.Properties.html#5425" class="Function">≤-trans</a><a id="443" class="Symbol">;</a> <a id="445" href="Data.Nat.Properties.html#7948" class="Function">n≤1+n</a><a id="450" class="Symbol">)</a>
+
+<a id="453" class="Comment">------------------------------------------------------------------------</a>
+<a id="526" class="Comment">-- Any</a>
+
+<a id="534" class="Comment">-- The predicate `Any` encodes the idea of at least one element of a</a>
+<a id="603" class="Comment">-- given list satisfying a given property (or more formally a</a>
+<a id="665" class="Comment">-- predicate, see the `Pred` type in `Relation.Unary`).</a>
+
+<a id="722" class="Keyword">open</a> <a id="727" class="Keyword">import</a> <a id="734" href="Data.List.Relation.Unary.Any.html" class="Module">Data.List.Relation.Unary.Any</a> <a id="763" class="Symbol">as</a> <a id="766" class="Module">Any</a>
+
+<a id="771" class="Comment">-- A proof of type Any consists of a sequence of the &quot;there&quot;</a>
+<a id="832" class="Comment">-- constructors, which says that the element lies in the remainder of</a>
+<a id="902" class="Comment">-- the list, followed by a single &quot;here&quot; constructor which indicates</a>
+<a id="971" class="Comment">-- that the head of the list satisfies the predicate and takes a proof</a>
+<a id="1042" class="Comment">-- that it does so.</a>
+
+<a id="1063" class="Comment">-- For example a proof that a given list of natural numbers contains</a>
+<a id="1132" class="Comment">-- at least one number greater than or equal to 4 can be written as</a>
+<a id="1200" class="Comment">-- follows:</a>
+
+<a id="lem₁"></a><a id="1213" href="README.Data.List.Relation.Unary.Any.html#1213" class="Function">lem₁</a> <a id="1218" class="Symbol">:</a> <a id="1220" href="Data.List.Relation.Unary.Any.html#1163" class="Datatype">Any</a> <a id="1224" class="Symbol">(</a><a id="1225" class="Number">4</a> <a id="1227" href="Data.Nat.Base.html#1691" class="Datatype Operator">≤_</a><a id="1229" class="Symbol">)</a> <a id="1231" class="Symbol">(</a><a id="1232" class="Number">3</a> <a id="1234" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1236" class="Number">5</a> <a id="1238" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1240" class="Number">1</a> <a id="1242" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1244" class="Number">6</a> <a id="1246" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1248" class="InductiveConstructor">[]</a><a id="1250" class="Symbol">)</a>
+<a id="1252" href="README.Data.List.Relation.Unary.Any.html#1213" class="Function">lem₁</a> <a id="1257" class="Symbol">=</a> <a id="1259" href="Data.List.Relation.Unary.Any.html#1279" class="InductiveConstructor">there</a> <a id="1265" class="Symbol">(</a><a id="1266" href="Data.List.Relation.Unary.Any.html#1226" class="InductiveConstructor">here</a> <a id="1271" href="README.Data.List.Relation.Unary.Any.html#1286" class="Function">4≤5</a><a id="1274" class="Symbol">)</a>
+  <a id="1278" class="Keyword">where</a>
+  <a id="1286" href="README.Data.List.Relation.Unary.Any.html#1286" class="Function">4≤5</a> <a id="1290" class="Symbol">=</a> <a id="1292" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a> <a id="1296" class="Symbol">(</a><a id="1297" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a> <a id="1301" class="Symbol">(</a><a id="1302" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a> <a id="1306" class="Symbol">(</a><a id="1307" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a> <a id="1311" href="Data.Nat.Base.html#1714" class="InductiveConstructor">z≤n</a><a id="1314" class="Symbol">)))</a>
+
+<a id="1319" class="Comment">-- Note that nothing requires that the proof of `Any` points at the</a>
+<a id="1387" class="Comment">-- first such element in the list. There is therefore an alternative</a>
+<a id="1456" class="Comment">-- proof for the above lemma which points to 6 instead of 5.</a>
+
+<a id="lem₂"></a><a id="1518" href="README.Data.List.Relation.Unary.Any.html#1518" class="Function">lem₂</a> <a id="1523" class="Symbol">:</a> <a id="1525" href="Data.List.Relation.Unary.Any.html#1163" class="Datatype">Any</a> <a id="1529" class="Symbol">(</a><a id="1530" class="Number">4</a> <a id="1532" href="Data.Nat.Base.html#1691" class="Datatype Operator">≤_</a><a id="1534" class="Symbol">)</a> <a id="1536" class="Symbol">(</a><a id="1537" class="Number">3</a> <a id="1539" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1541" class="Number">5</a> <a id="1543" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1545" class="Number">1</a> <a id="1547" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1549" class="Number">6</a> <a id="1551" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1553" class="InductiveConstructor">[]</a><a id="1555" class="Symbol">)</a>
+<a id="1557" href="README.Data.List.Relation.Unary.Any.html#1518" class="Function">lem₂</a> <a id="1562" class="Symbol">=</a> <a id="1564" href="Data.List.Relation.Unary.Any.html#1279" class="InductiveConstructor">there</a> <a id="1570" class="Symbol">(</a><a id="1571" href="Data.List.Relation.Unary.Any.html#1279" class="InductiveConstructor">there</a> <a id="1577" class="Symbol">(</a><a id="1578" href="Data.List.Relation.Unary.Any.html#1279" class="InductiveConstructor">there</a> <a id="1584" class="Symbol">(</a><a id="1585" href="Data.List.Relation.Unary.Any.html#1226" class="InductiveConstructor">here</a> <a id="1590" href="README.Data.List.Relation.Unary.Any.html#1607" class="Function">4≤6</a><a id="1593" class="Symbol">)))</a>
+  <a id="1599" class="Keyword">where</a>
+  <a id="1607" href="README.Data.List.Relation.Unary.Any.html#1607" class="Function">4≤6</a> <a id="1611" class="Symbol">=</a> <a id="1613" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a> <a id="1617" class="Symbol">(</a><a id="1618" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a> <a id="1622" class="Symbol">(</a><a id="1623" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a> <a id="1627" class="Symbol">(</a><a id="1628" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a> <a id="1632" href="Data.Nat.Base.html#1714" class="InductiveConstructor">z≤n</a><a id="1635" class="Symbol">)))</a>
+
+<a id="1640" class="Comment">-- There also exist various operations over proofs of `Any` whose names</a>
+<a id="1712" class="Comment">-- shadow the corresponding list operation. The standard way of using</a>
+<a id="1782" class="Comment">-- these is to use `as` to name the module:</a>
+
+<a id="1827" class="Keyword">import</a> <a id="1834" href="Data.List.Relation.Unary.Any.html" class="Module">Data.List.Relation.Unary.Any</a> <a id="1863" class="Symbol">as</a> <a id="1866" class="Module">Any</a>
+
+<a id="1871" class="Comment">-- and then use the qualified name `Any.map`. For example, map can</a>
+<a id="1938" class="Comment">-- be used to change the predicate of `Any`:</a>
+
+<a id="lem₃"></a><a id="1984" href="README.Data.List.Relation.Unary.Any.html#1984" class="Function">lem₃</a> <a id="1989" class="Symbol">:</a> <a id="1991" href="Data.List.Relation.Unary.Any.html#1163" class="Datatype">Any</a> <a id="1995" class="Symbol">(</a><a id="1996" class="Number">3</a> <a id="1998" href="Data.Nat.Base.html#1691" class="Datatype Operator">≤_</a><a id="2000" class="Symbol">)</a> <a id="2002" class="Symbol">(</a><a id="2003" class="Number">3</a> <a id="2005" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="2007" class="Number">5</a> <a id="2009" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="2011" class="Number">1</a> <a id="2013" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="2015" class="Number">6</a> <a id="2017" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="2019" class="InductiveConstructor">[]</a><a id="2021" class="Symbol">)</a>
+<a id="2023" href="README.Data.List.Relation.Unary.Any.html#1984" class="Function">lem₃</a> <a id="2028" class="Symbol">=</a> <a id="2030" href="Data.List.Relation.Unary.Any.html#1650" class="Function">Any.map</a> <a id="2038" href="README.Data.List.Relation.Unary.Any.html#2061" class="Function">4≤x⇒3≤x</a> <a id="2046" href="README.Data.List.Relation.Unary.Any.html#1518" class="Function">lem₂</a>
+  <a id="2053" class="Keyword">where</a>
+  <a id="2061" href="README.Data.List.Relation.Unary.Any.html#2061" class="Function">4≤x⇒3≤x</a> <a id="2069" class="Symbol">:</a> <a id="2071" class="Symbol">∀</a> <a id="2073" class="Symbol">{</a><a id="2074" href="README.Data.List.Relation.Unary.Any.html#2074" class="Bound">x</a><a id="2075" class="Symbol">}</a> <a id="2077" class="Symbol">→</a> <a id="2079" class="Number">4</a> <a id="2081" href="Data.Nat.Base.html#1691" class="Datatype Operator">≤</a> <a id="2083" href="README.Data.List.Relation.Unary.Any.html#2074" class="Bound">x</a> <a id="2085" class="Symbol">→</a> <a id="2087" class="Number">3</a> <a id="2089" href="Data.Nat.Base.html#1691" class="Datatype Operator">≤</a> <a id="2091" href="README.Data.List.Relation.Unary.Any.html#2074" class="Bound">x</a>
+  <a id="2095" href="README.Data.List.Relation.Unary.Any.html#2061" class="Function">4≤x⇒3≤x</a> <a id="2103" class="Symbol">=</a> <a id="2105" href="Data.Nat.Properties.html#5425" class="Function">≤-trans</a> <a id="2113" class="Symbol">(</a><a id="2114" href="Data.Nat.Properties.html#7948" class="Function">n≤1+n</a> <a id="2120" class="Number">3</a><a id="2121" class="Symbol">)</a>
+
+<a id="2124" class="Comment">-- Properties of how list functions interact with `Any` can be</a>
+<a id="2187" class="Comment">-- found in:</a>
+
+<a id="2201" class="Keyword">import</a> <a id="2208" href="Data.List.Relation.Unary.Any.Properties.html" class="Module">Data.List.Relation.Unary.Any.Properties</a>
+</pre></body></html>

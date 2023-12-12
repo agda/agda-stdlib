@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.PropositionalEquality.WithK</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Some code related to propositional equality that relies on the K</a>
+<a id="174" class="Comment">-- rule</a>
+<a id="182" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="256" class="Symbol">{-#</a> <a id="260" class="Keyword">OPTIONS</a> <a id="268" class="Pragma">--with-K</a> <a id="277" class="Pragma">--safe</a> <a id="284" class="Symbol">#-}</a>
+
+<a id="289" class="Keyword">module</a> <a id="296" href="Relation.Binary.PropositionalEquality.WithK.html" class="Module">Relation.Binary.PropositionalEquality.WithK</a> <a id="340" class="Keyword">where</a>
+
+<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Axiom.UniquenessOfIdentityProofs.WithK.html" class="Module">Axiom.UniquenessOfIdentityProofs.WithK</a>
+<a id="398" class="Keyword">open</a> <a id="403" class="Keyword">import</a> <a id="410" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a> <a id="438" class="Keyword">using</a> <a id="444" class="Symbol">(</a><a id="445" href="Relation.Binary.Definitions.html#6651" class="Function">Irrelevant</a><a id="455" class="Symbol">)</a>
+<a id="457" class="Keyword">open</a> <a id="462" class="Keyword">import</a> <a id="469" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a>
+
+<a id="513" class="Comment">------------------------------------------------------------------------</a>
+<a id="586" class="Comment">-- Re-exporting safe erasure function</a>
+
+<a id="625" class="Comment">-- ≡-erase ignores its `x ≡ y` argument and reduces to refl whenever</a>
+<a id="694" class="Comment">-- x and y are judgmentally equal. This is useful when the computation</a>
+<a id="765" class="Comment">-- producing the proof `x ≡ y` is expensive.</a>
+
+<a id="811" class="Keyword">open</a> <a id="816" class="Keyword">import</a> <a id="823" href="Agda.Builtin.Equality.Erase.html" class="Module">Agda.Builtin.Equality.Erase</a>
+  <a id="853" class="Keyword">using</a> <a id="859" class="Symbol">()</a>
+  <a id="864" class="Keyword">renaming</a> <a id="873" class="Symbol">(</a> <a id="875" href="Agda.Builtin.Equality.Erase.html#172" class="Primitive">primEraseEquality</a> <a id="893" class="Symbol">to</a> <a id="896" class="Primitive">≡-erase</a> <a id="904" class="Symbol">)</a>
+  <a id="908" class="Keyword">public</a>
+
+<a id="916" class="Comment">------------------------------------------------------------------------</a>
+<a id="989" class="Comment">-- Proof irrelevance</a>
+
+<a id="≡-irrelevant"></a><a id="1011" href="Relation.Binary.PropositionalEquality.WithK.html#1011" class="Function">≡-irrelevant</a> <a id="1024" class="Symbol">:</a> <a id="1026" class="Symbol">∀</a> <a id="1028" class="Symbol">{</a><a id="1029" href="Relation.Binary.PropositionalEquality.WithK.html#1029" class="Bound">a</a><a id="1030" class="Symbol">}</a> <a id="1032" class="Symbol">{</a><a id="1033" href="Relation.Binary.PropositionalEquality.WithK.html#1033" class="Bound">A</a> <a id="1035" class="Symbol">:</a> <a id="1037" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1041" href="Relation.Binary.PropositionalEquality.WithK.html#1029" class="Bound">a</a><a id="1042" class="Symbol">}</a> <a id="1044" class="Symbol">→</a> <a id="1046" href="Relation.Binary.Definitions.html#6651" class="Function">Irrelevant</a> <a id="1057" class="Symbol">{</a><a id="1058" class="Argument">A</a> <a id="1060" class="Symbol">=</a> <a id="1062" href="Relation.Binary.PropositionalEquality.WithK.html#1033" class="Bound">A</a><a id="1063" class="Symbol">}</a> <a id="1065" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a>
+<a id="1069" href="Relation.Binary.PropositionalEquality.WithK.html#1011" class="Function">≡-irrelevant</a> <a id="1082" class="Symbol">=</a> <a id="1084" href="Axiom.UniquenessOfIdentityProofs.WithK.html#458" class="Function">uip</a>
+</pre></body></html>

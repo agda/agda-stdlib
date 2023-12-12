@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data.List.Membership</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Documentation for List membership</a>
+<a id="143" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="217" class="Keyword">module</a> <a id="224" href="README.Data.List.Membership.html" class="Module">README.Data.List.Membership</a> <a id="252" class="Keyword">where</a>
+
+<a id="259" class="Keyword">open</a> <a id="264" class="Keyword">import</a> <a id="271" href="Data.Char.Base.html" class="Module">Data.Char.Base</a> <a id="286" class="Keyword">using</a> <a id="292" class="Symbol">(</a><a id="293" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a><a id="297" class="Symbol">;</a> <a id="299" href="Data.Char.Base.html#1157" class="Primitive">fromℕ</a><a id="304" class="Symbol">)</a>
+<a id="306" class="Keyword">open</a> <a id="311" class="Keyword">import</a> <a id="318" href="Data.Char.Properties.html" class="Module">Data.Char.Properties</a> <a id="339" class="Symbol">as</a> <a id="342" class="Module">CharProp</a> <a id="351" class="Keyword">hiding</a> <a id="358" class="Symbol">(</a><a id="359" href="Data.Char.Properties.html#2151" class="Function">setoid</a><a id="365" class="Symbol">)</a>
+<a id="367" class="Keyword">open</a> <a id="372" class="Keyword">import</a> <a id="379" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="388" class="Symbol">as</a> <a id="391" class="Module">ℕ</a> <a id="393" class="Keyword">using</a> <a id="399" class="Symbol">(</a><a id="400" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="401" class="Symbol">;</a> <a id="403" href="Agda.Builtin.Nat.html#336" class="Primitive Operator">_+_</a><a id="406" class="Symbol">;</a> <a id="408" href="Data.Nat.Base.html#1801" class="Function Operator">_&lt;_</a><a id="411" class="Symbol">;</a> <a id="413" href="Data.Nat.Base.html#1756" class="InductiveConstructor">s≤s</a><a id="416" class="Symbol">;</a> <a id="418" href="Data.Nat.Base.html#1714" class="InductiveConstructor">z≤n</a><a id="421" class="Symbol">;</a> <a id="423" href="Agda.Builtin.Nat.html#539" class="Primitive Operator">_*_</a><a id="426" class="Symbol">;</a> <a id="428" href="Data.Nat.Base.html#4456" class="Primitive Operator">_∸_</a><a id="431" class="Symbol">;</a> <a id="433" href="Data.Nat.Base.html#1691" class="Datatype Operator">_≤_</a><a id="436" class="Symbol">)</a>
+<a id="438" class="Keyword">open</a> <a id="443" class="Keyword">import</a> <a id="450" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="465" class="Keyword">using</a> <a id="471" class="Symbol">(</a><a id="472" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="476" class="Symbol">;</a> <a id="478" href="Data.List.Base.html#7793" class="InductiveConstructor">[]</a><a id="480" class="Symbol">;</a> <a id="482" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">_∷_</a><a id="485" class="Symbol">;</a> <a id="487" href="Data.List.Base.html#1631" class="Function">map</a><a id="490" class="Symbol">)</a>
+<a id="492" class="Keyword">open</a> <a id="497" class="Keyword">import</a> <a id="504" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+  <a id="544" class="Keyword">using</a> <a id="550" class="Symbol">(</a><a id="551" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a><a id="554" class="Symbol">;</a> <a id="556" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a><a id="560" class="Symbol">;</a> <a id="562" href="Relation.Binary.PropositionalEquality.Core.html#1712" class="Function">sym</a><a id="565" class="Symbol">;</a> <a id="567" href="Relation.Binary.PropositionalEquality.Core.html#1158" class="Function">cong</a><a id="571" class="Symbol">;</a> <a id="573" href="Relation.Binary.PropositionalEquality.Properties.html#5700" class="Function">setoid</a><a id="579" class="Symbol">)</a>
+
+<a id="582" class="Comment">------------------------------------------------------------------------</a>
+<a id="655" class="Comment">-- Membership</a>
+
+<a id="670" class="Comment">-- Membership of a list is simply a special case of `Any` where</a>
+<a id="734" class="Comment">-- `x ∈ xs` is defined as `Any (x ≈_) xs`.</a>
+
+<a id="778" class="Comment">-- Just like pointwise equality of lists, the exact membership module</a>
+<a id="848" class="Comment">-- that should be used depends on whether the equality on the</a>
+<a id="910" class="Comment">-- underlying elements of the list is i) propositional or setoid-based</a>
+<a id="981" class="Comment">-- and ii) decidable.</a>
+
+<a id="1004" class="Keyword">import</a> <a id="1011" href="Data.List.Membership.Setoid.html" class="Module">Data.List.Membership.Setoid</a> <a id="1039" class="Symbol">as</a> <a id="1042" class="Module">SetoidMembership</a>
+<a id="1059" class="Keyword">import</a> <a id="1066" href="Data.List.Membership.DecSetoid.html" class="Module">Data.List.Membership.DecSetoid</a> <a id="1097" class="Symbol">as</a> <a id="1100" class="Module">DecSetoidMembership</a>
+<a id="1120" class="Keyword">import</a> <a id="1127" href="Data.List.Membership.Propositional.html" class="Module">Data.List.Membership.Propositional</a> <a id="1162" class="Symbol">as</a> <a id="1165" class="Module">PropMembership</a>
+<a id="1180" class="Keyword">import</a> <a id="1187" href="Data.List.Membership.DecPropositional.html" class="Module">Data.List.Membership.DecPropositional</a> <a id="1225" class="Symbol">as</a> <a id="1228" class="Module">DecPropMembership</a>
+
+<a id="1247" class="Comment">-- For example if we want to reason about membership for `List ℕ`</a>
+<a id="1313" class="Comment">-- then you would use the `DecPropMembership` as we use</a>
+<a id="1369" class="Comment">-- propositional equality over `ℕ` and it is also decidable. Therefore</a>
+<a id="1440" class="Comment">-- the module `DecPropMembership` should be opened as follows:</a>
+
+<a id="1504" class="Keyword">open</a> <a id="1509" href="Data.List.Membership.DecPropositional.html" class="Module">DecPropMembership</a> <a id="1527" href="Data.Nat.Properties.html#3311" class="Function Operator">ℕ._≟_</a>
+
+<a id="1534" class="Comment">-- As membership is just an instance of `Any` we also need to import</a>
+<a id="1603" class="Comment">-- the constructors `here` and `there`. (See issue #553 on Github for</a>
+<a id="1673" class="Comment">-- why we&#39;re struggling to have `here` and `there` automatically</a>
+<a id="1738" class="Comment">-- re-exported by the membership modules).</a>
+
+<a id="1782" class="Keyword">open</a> <a id="1787" class="Keyword">import</a> <a id="1794" href="Data.List.Relation.Unary.Any.html" class="Module">Data.List.Relation.Unary.Any</a> <a id="1823" class="Keyword">using</a> <a id="1829" class="Symbol">(</a><a id="1830" href="Data.List.Relation.Unary.Any.html#1226" class="InductiveConstructor">here</a><a id="1834" class="Symbol">;</a> <a id="1836" href="Data.List.Relation.Unary.Any.html#1279" class="InductiveConstructor">there</a><a id="1841" class="Symbol">)</a>
+
+<a id="1844" class="Comment">-- These modules provide the infix notation `_∈_` which can be used</a>
+<a id="1912" class="Comment">-- as follows:</a>
+
+<a id="lem₁"></a><a id="1928" href="README.Data.List.Membership.html#1928" class="Function">lem₁</a> <a id="1933" class="Symbol">:</a> <a id="1935" class="Number">1</a> <a id="1937" href="Data.List.Membership.Setoid.html#950" class="Function Operator">∈</a> <a id="1939" class="Number">2</a> <a id="1941" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1943" class="Number">1</a> <a id="1945" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1947" class="Number">3</a> <a id="1949" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="1951" class="InductiveConstructor">[]</a>
+<a id="1954" href="README.Data.List.Membership.html#1928" class="Function">lem₁</a> <a id="1959" class="Symbol">=</a> <a id="1961" href="Data.List.Relation.Unary.Any.html#1279" class="InductiveConstructor">there</a> <a id="1967" class="Symbol">(</a><a id="1968" href="Data.List.Relation.Unary.Any.html#1226" class="InductiveConstructor">here</a> <a id="1973" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">refl</a><a id="1977" class="Symbol">)</a>
+
+<a id="1980" class="Comment">-- Properties of the membership relation can be found in the following</a>
+<a id="2051" class="Comment">-- two files:</a>
+
+<a id="2066" class="Keyword">import</a> <a id="2073" href="Data.List.Membership.Setoid.Properties.html" class="Module">Data.List.Membership.Setoid.Properties</a> <a id="2112" class="Symbol">as</a> <a id="2115" class="Module">SetoidProperties</a>
+<a id="2132" class="Keyword">import</a> <a id="2139" href="Data.List.Membership.Propositional.Properties.html" class="Module">Data.List.Membership.Propositional.Properties</a> <a id="2185" class="Symbol">as</a> <a id="2188" class="Module">PropProperties</a>
+
+<a id="2204" class="Comment">-- As of yet there are no corresponding files for properties of</a>
+<a id="2268" class="Comment">-- membership for decidable versions of setoid and propositional</a>
+<a id="2333" class="Comment">-- equality as we have no properties that only hold when equality is</a>
+<a id="2402" class="Comment">-- decidable.</a>
+
+<a id="2417" class="Comment">-- These `Properties` modules are NOT parameterised in the same way as</a>
+<a id="2488" class="Comment">-- the main membership modules as some of the properties relate</a>
+<a id="2552" class="Comment">-- membership proofs for lists of different types. For example in the</a>
+<a id="2622" class="Comment">-- following the first `∈` refers to lists of type `List ℕ` whereas</a>
+<a id="2690" class="Comment">-- the second `∈` refers to lists of type `List Char`.</a>
+
+<a id="2746" class="Keyword">open</a> <a id="2751" href="Data.List.Membership.DecPropositional.html" class="Module">DecPropMembership</a> <a id="2769" href="Data.Char.Properties.html#2071" class="Function Operator">CharProp._≟_</a> <a id="2782" class="Keyword">renaming</a> <a id="2791" class="Symbol">(</a><a id="2792" href="Data.List.Membership.Setoid.html#950" class="Function Operator">_∈_</a> <a id="2796" class="Symbol">to</a> <a id="2799" class="Function Operator">_∈ᶜ_</a><a id="2803" class="Symbol">)</a>
+<a id="2805" class="Keyword">open</a> <a id="2810" href="Data.List.Membership.Setoid.Properties.html" class="Module">SetoidProperties</a> <a id="2827" class="Keyword">using</a> <a id="2833" class="Symbol">(</a><a id="2834" href="Data.List.Membership.Setoid.Properties.html#5983" class="Function">∈-map⁺</a><a id="2840" class="Symbol">)</a>
+
+<a id="lem₂"></a><a id="2843" href="README.Data.List.Membership.html#2843" class="Function">lem₂</a> <a id="2848" class="Symbol">:</a> <a id="2850" class="Symbol">{</a><a id="2851" href="README.Data.List.Membership.html#2851" class="Bound">v</a> <a id="2853" class="Symbol">:</a> <a id="2855" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="2856" class="Symbol">}</a> <a id="2858" class="Symbol">{</a><a id="2859" href="README.Data.List.Membership.html#2859" class="Bound">xs</a> <a id="2862" class="Symbol">:</a> <a id="2864" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="2869" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="2870" class="Symbol">}</a> <a id="2872" class="Symbol">→</a> <a id="2874" href="README.Data.List.Membership.html#2851" class="Bound">v</a> <a id="2876" href="Data.List.Membership.Setoid.html#950" class="Function Operator">∈</a> <a id="2878" href="README.Data.List.Membership.html#2859" class="Bound">xs</a> <a id="2881" class="Symbol">→</a> <a id="2883" href="Data.Char.Base.html#1157" class="Primitive">fromℕ</a> <a id="2889" href="README.Data.List.Membership.html#2851" class="Bound">v</a> <a id="2891" href="README.Data.List.Membership.html#2799" class="Function Operator">∈ᶜ</a> <a id="2894" href="Data.List.Base.html#1631" class="Function">map</a> <a id="2898" href="Data.Char.Base.html#1157" class="Primitive">fromℕ</a> <a id="2904" href="README.Data.List.Membership.html#2859" class="Bound">xs</a>
+<a id="2907" href="README.Data.List.Membership.html#2843" class="Function">lem₂</a> <a id="2912" class="Symbol">=</a> <a id="2914" href="Data.List.Membership.Setoid.Properties.html#5983" class="Function">∈-map⁺</a> <a id="2921" class="Symbol">(</a><a id="2922" href="Relation.Binary.PropositionalEquality.Properties.html#5700" class="Function">setoid</a> <a id="2929" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="2930" class="Symbol">)</a> <a id="2932" class="Symbol">(</a><a id="2933" href="Relation.Binary.PropositionalEquality.Properties.html#5700" class="Function">setoid</a> <a id="2940" href="Agda.Builtin.Char.html#238" class="Postulate">Char</a><a id="2944" class="Symbol">)</a> <a id="2946" class="Symbol">(</a><a id="2947" href="Relation.Binary.PropositionalEquality.Core.html#1158" class="Function">cong</a> <a id="2952" href="Data.Char.Base.html#1157" class="Primitive">fromℕ</a><a id="2957" class="Symbol">)</a>
+</pre></body></html>

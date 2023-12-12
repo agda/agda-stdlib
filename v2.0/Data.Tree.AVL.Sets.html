@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Tree.AVL.Sets</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Finite sets, based on AVL trees</a>
+<a id="141" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="215" class="Symbol">{-#</a> <a id="219" class="Keyword">OPTIONS</a> <a id="227" class="Pragma">--cubical-compatible</a> <a id="248" class="Pragma">--safe</a> <a id="255" class="Symbol">#-}</a>
+
+<a id="260" class="Keyword">open</a> <a id="265" class="Keyword">import</a> <a id="272" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="296" class="Keyword">using</a> <a id="302" class="Symbol">(</a><a id="303" href="Relation.Binary.Bundles.html#8031" class="Record">StrictTotalOrder</a><a id="319" class="Symbol">)</a>
+
+<a id="322" class="Keyword">module</a> <a id="329" href="Data.Tree.AVL.Sets.html" class="Module">Data.Tree.AVL.Sets</a>
+  <a id="350" class="Symbol">{</a><a id="351" href="Data.Tree.AVL.Sets.html#351" class="Bound">a</a> <a id="353" href="Data.Tree.AVL.Sets.html#353" class="Bound">ℓ₁</a> <a id="356" href="Data.Tree.AVL.Sets.html#356" class="Bound">ℓ₂</a><a id="358" class="Symbol">}</a> <a id="360" class="Symbol">(</a><a id="361" href="Data.Tree.AVL.Sets.html#361" class="Bound">strictTotalOrder</a> <a id="378" class="Symbol">:</a> <a id="380" href="Relation.Binary.Bundles.html#8031" class="Record">StrictTotalOrder</a> <a id="397" href="Data.Tree.AVL.Sets.html#351" class="Bound">a</a> <a id="399" href="Data.Tree.AVL.Sets.html#353" class="Bound">ℓ₁</a> <a id="402" href="Data.Tree.AVL.Sets.html#356" class="Bound">ℓ₂</a><a id="404" class="Symbol">)</a>
+  <a id="408" class="Keyword">where</a>
+
+<a id="415" class="Keyword">open</a> <a id="420" class="Keyword">import</a> <a id="427" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="442" class="Keyword">using</a> <a id="448" class="Symbol">(</a><a id="449" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a><a id="453" class="Symbol">)</a>
+<a id="455" class="Keyword">open</a> <a id="460" class="Keyword">import</a> <a id="467" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="482" class="Symbol">as</a> <a id="485" class="Module">List</a> <a id="490" class="Keyword">using</a> <a id="496" class="Symbol">(</a><a id="497" href="Agda.Builtin.List.html#147" class="Datatype">List</a><a id="501" class="Symbol">)</a>
+<a id="503" class="Keyword">open</a> <a id="508" class="Keyword">import</a> <a id="515" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="531" class="Symbol">as</a> <a id="534" class="Module">Maybe</a>
+<a id="540" class="Keyword">open</a> <a id="545" class="Keyword">import</a> <a id="552" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="566" class="Keyword">using</a> <a id="572" class="Symbol">(</a><a id="573" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a><a id="574" class="Symbol">)</a>
+<a id="576" class="Keyword">open</a> <a id="581" class="Keyword">import</a> <a id="588" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="606" class="Symbol">as</a> <a id="609" class="Module">Prod</a> <a id="614" class="Keyword">using</a> <a id="620" class="Symbol">(</a><a id="621" href="Data.Product.Base.html#1618" class="Function Operator">_×_</a><a id="624" class="Symbol">;</a> <a id="626" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">_,_</a><a id="629" class="Symbol">;</a> <a id="631" href="Data.Product.Base.html#636" class="Field">proj₁</a><a id="636" class="Symbol">)</a>
+<a id="638" class="Keyword">open</a> <a id="643" class="Keyword">import</a> <a id="650" href="Data.Unit.Base.html" class="Module">Data.Unit.Base</a>
+<a id="665" class="Keyword">open</a> <a id="670" class="Keyword">import</a> <a id="677" href="Function.Base.html" class="Module">Function.Base</a>
+<a id="691" class="Keyword">open</a> <a id="696" class="Keyword">import</a> <a id="703" href="Level.html" class="Module">Level</a> <a id="709" class="Keyword">using</a> <a id="715" class="Symbol">(</a><a id="716" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="721" class="Symbol">;</a> <a id="723" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="726" class="Symbol">)</a>
+
+<a id="729" class="Keyword">private</a>
+  <a id="739" class="Keyword">variable</a>
+    <a id="752" href="Data.Tree.AVL.Sets.html#752" class="Generalizable">b</a> <a id="754" class="Symbol">:</a> <a id="756" href="Agda.Primitive.html#742" class="Postulate">Level</a>
+    <a id="766" href="Data.Tree.AVL.Sets.html#766" class="Generalizable">B</a> <a id="768" class="Symbol">:</a> <a id="770" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="774" href="Data.Tree.AVL.Sets.html#752" class="Generalizable">b</a>
+
+<a id="777" class="Keyword">import</a> <a id="784" href="Data.Tree.AVL.Map.html" class="Module">Data.Tree.AVL.Map</a> <a id="802" href="Data.Tree.AVL.Sets.html#361" class="Bound">strictTotalOrder</a> as <a id="AVL"></a><a id="822" href="Data.Tree.AVL.Sets.html#822" class="Module">AVL</a>
+<a id="826" class="Keyword">open</a> <a id="831" href="Relation.Binary.Bundles.html#8031" class="Module">StrictTotalOrder</a> <a id="848" href="Data.Tree.AVL.Sets.html#361" class="Bound">strictTotalOrder</a> <a id="865" class="Keyword">renaming</a> <a id="874" class="Symbol">(</a><a id="875" href="Relation.Binary.Bundles.html#8118" class="Field">Carrier</a> <a id="883" class="Symbol">to</a> <a id="886" class="Field">A</a><a id="887" class="Symbol">)</a>
+
+<a id="890" class="Comment">------------------------------------------------------------------------</a>
+<a id="963" class="Comment">-- The set type (note that Set is a reserved word)</a>
+
+<a id="⟨Set⟩"></a><a id="1015" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1021" class="Symbol">:</a> <a id="1023" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1027" class="Symbol">(</a><a id="1028" href="Data.Tree.AVL.Sets.html#351" class="Bound">a</a> <a id="1030" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1032" href="Data.Tree.AVL.Sets.html#356" class="Bound">ℓ₂</a><a id="1034" class="Symbol">)</a>
+<a id="1036" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1042" class="Symbol">=</a> <a id="1044" href="Data.Tree.AVL.Map.html#1133" class="Function">AVL.Map</a> <a id="1052" href="Agda.Builtin.Unit.html#175" class="Record">⊤</a>
+
+<a id="1055" class="Comment">------------------------------------------------------------------------</a>
+<a id="1128" class="Comment">-- Repackaged functions</a>
+
+<a id="empty"></a><a id="1153" href="Data.Tree.AVL.Sets.html#1153" class="Function">empty</a> <a id="1159" class="Symbol">:</a> <a id="1161" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="1167" href="Data.Tree.AVL.Sets.html#1153" class="Function">empty</a> <a id="1173" class="Symbol">=</a> <a id="1175" href="Data.Tree.AVL.Map.html#1300" class="Function">AVL.empty</a>
+
+<a id="singleton"></a><a id="1186" href="Data.Tree.AVL.Sets.html#1186" class="Function">singleton</a> <a id="1196" class="Symbol">:</a> <a id="1198" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a> <a id="1200" class="Symbol">→</a> <a id="1202" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="1208" href="Data.Tree.AVL.Sets.html#1186" class="Function">singleton</a> <a id="1218" href="Data.Tree.AVL.Sets.html#1218" class="Bound">k</a> <a id="1220" class="Symbol">=</a> <a id="1222" href="Data.Tree.AVL.Map.html#1333" class="Function">AVL.singleton</a> <a id="1236" href="Data.Tree.AVL.Sets.html#1218" class="Bound">k</a> <a id="1238" class="Symbol">_</a>
+
+<a id="insert"></a><a id="1241" href="Data.Tree.AVL.Sets.html#1241" class="Function">insert</a> <a id="1248" class="Symbol">:</a> <a id="1250" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a> <a id="1252" class="Symbol">→</a> <a id="1254" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1260" class="Symbol">→</a> <a id="1262" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="1268" href="Data.Tree.AVL.Sets.html#1241" class="Function">insert</a> <a id="1275" href="Data.Tree.AVL.Sets.html#1275" class="Bound">k</a> <a id="1277" class="Symbol">=</a> <a id="1279" href="Data.Tree.AVL.Map.html#1388" class="Function">AVL.insert</a> <a id="1290" href="Data.Tree.AVL.Sets.html#1275" class="Bound">k</a> <a id="1292" class="Symbol">_</a>
+
+<a id="delete"></a><a id="1295" href="Data.Tree.AVL.Sets.html#1295" class="Function">delete</a> <a id="1302" class="Symbol">:</a> <a id="1304" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a> <a id="1306" class="Symbol">→</a> <a id="1308" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1314" class="Symbol">→</a> <a id="1316" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="1322" href="Data.Tree.AVL.Sets.html#1295" class="Function">delete</a> <a id="1329" class="Symbol">=</a> <a id="1331" href="Data.Tree.AVL.Map.html#1520" class="Function">AVL.delete</a>
+
+<a id="member"></a><a id="1343" href="Data.Tree.AVL.Sets.html#1343" class="Function">member</a> <a id="1350" class="Symbol">:</a> <a id="1352" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a> <a id="1354" class="Symbol">→</a> <a id="1356" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1362" class="Symbol">→</a> <a id="1364" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
+<a id="1369" href="Data.Tree.AVL.Sets.html#1343" class="Function">member</a> <a id="1376" class="Symbol">=</a> <a id="1378" href="Data.Tree.AVL.Map.html#1671" class="Function">AVL.member</a>
+
+<a id="headTail"></a><a id="1390" href="Data.Tree.AVL.Sets.html#1390" class="Function">headTail</a> <a id="1399" class="Symbol">:</a> <a id="1401" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1407" class="Symbol">→</a> <a id="1409" href="Agda.Builtin.Maybe.html#135" class="Datatype">Maybe</a> <a id="1415" class="Symbol">(</a><a id="1416" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a> <a id="1418" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="1420" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a><a id="1425" class="Symbol">)</a>
+<a id="1427" href="Data.Tree.AVL.Sets.html#1390" class="Function">headTail</a> <a id="1436" href="Data.Tree.AVL.Sets.html#1436" class="Bound">s</a> <a id="1438" class="Symbol">=</a> <a id="1440" href="Data.Maybe.Base.html#2049" class="Function">Maybe.map</a> <a id="1450" class="Symbol">(</a><a id="1451" href="Data.Product.Base.html#2312" class="Function">Prod.map₁</a> <a id="1461" href="Data.Product.Base.html#636" class="Field">proj₁</a><a id="1466" class="Symbol">)</a> <a id="1468" class="Symbol">(</a><a id="1469" href="Data.Tree.AVL.Map.html#1720" class="Function">AVL.headTail</a> <a id="1482" href="Data.Tree.AVL.Sets.html#1436" class="Bound">s</a><a id="1483" class="Symbol">)</a>
+
+<a id="initLast"></a><a id="1486" href="Data.Tree.AVL.Sets.html#1486" class="Function">initLast</a> <a id="1495" class="Symbol">:</a> <a id="1497" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1503" class="Symbol">→</a> <a id="1505" href="Agda.Builtin.Maybe.html#135" class="Datatype">Maybe</a> <a id="1511" class="Symbol">(</a><a id="1512" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1518" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="1520" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a><a id="1521" class="Symbol">)</a>
+<a id="1523" href="Data.Tree.AVL.Sets.html#1486" class="Function">initLast</a> <a id="1532" href="Data.Tree.AVL.Sets.html#1532" class="Bound">s</a> <a id="1534" class="Symbol">=</a> <a id="1536" href="Data.Maybe.Base.html#2049" class="Function">Maybe.map</a> <a id="1546" class="Symbol">(</a><a id="1547" href="Data.Product.Base.html#2362" class="Function">Prod.map₂</a> <a id="1557" href="Data.Product.Base.html#636" class="Field">proj₁</a><a id="1562" class="Symbol">)</a> <a id="1564" class="Symbol">(</a><a id="1565" href="Data.Tree.AVL.Map.html#1826" class="Function">AVL.initLast</a> <a id="1578" href="Data.Tree.AVL.Sets.html#1532" class="Bound">s</a><a id="1579" class="Symbol">)</a>
+
+<a id="fromList"></a><a id="1582" href="Data.Tree.AVL.Sets.html#1582" class="Function">fromList</a> <a id="1591" class="Symbol">:</a> <a id="1593" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="1598" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a> <a id="1600" class="Symbol">→</a> <a id="1602" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="1608" href="Data.Tree.AVL.Sets.html#1582" class="Function">fromList</a> <a id="1617" class="Symbol">=</a> <a id="1619" href="Data.Tree.AVL.Map.html#2015" class="Function">AVL.fromList</a> <a id="1632" href="Function.Base.html#1115" class="Function Operator">∘</a> <a id="1634" href="Data.List.Base.html#1631" class="Function">List.map</a> <a id="1643" class="Symbol">(</a><a id="1644" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">_,</a> <a id="1647" class="Symbol">_)</a>
+
+<a id="toList"></a><a id="1651" href="Data.Tree.AVL.Sets.html#1651" class="Function">toList</a> <a id="1658" class="Symbol">:</a> <a id="1660" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1666" class="Symbol">→</a> <a id="1668" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="1673" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a>
+<a id="1675" href="Data.Tree.AVL.Sets.html#1651" class="Function">toList</a> <a id="1682" class="Symbol">=</a> <a id="1684" href="Data.List.Base.html#1631" class="Function">List.map</a> <a id="1693" href="Data.Product.Base.html#636" class="Field">proj₁</a> <a id="1699" href="Function.Base.html#1115" class="Function Operator">∘</a> <a id="1701" href="Data.Tree.AVL.Map.html#2099" class="Function">AVL.toList</a>
+
+<a id="foldr"></a><a id="1713" href="Data.Tree.AVL.Sets.html#1713" class="Function">foldr</a> <a id="1719" class="Symbol">:</a> <a id="1721" class="Symbol">(</a><a id="1722" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a> <a id="1724" class="Symbol">→</a> <a id="1726" href="Data.Tree.AVL.Sets.html#766" class="Generalizable">B</a> <a id="1728" class="Symbol">→</a> <a id="1730" href="Data.Tree.AVL.Sets.html#766" class="Generalizable">B</a><a id="1731" class="Symbol">)</a> <a id="1733" class="Symbol">→</a> <a id="1735" href="Data.Tree.AVL.Sets.html#766" class="Generalizable">B</a> <a id="1737" class="Symbol">→</a> <a id="1739" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1745" class="Symbol">→</a> <a id="1747" href="Data.Tree.AVL.Sets.html#766" class="Generalizable">B</a>
+<a id="1749" href="Data.Tree.AVL.Sets.html#1713" class="Function">foldr</a> <a id="1755" href="Data.Tree.AVL.Sets.html#1755" class="Bound">cons</a> <a id="1760" href="Data.Tree.AVL.Sets.html#1760" class="Bound">nil</a> <a id="1764" class="Symbol">=</a> <a id="1766" href="Data.Tree.AVL.Map.html#1932" class="Function">AVL.foldr</a> <a id="1776" class="Symbol">(</a><a id="1777" href="Function.Base.html#725" class="Function">const</a> <a id="1783" href="Function.Base.html#3626" class="Function Operator">∘′</a> <a id="1786" href="Data.Tree.AVL.Sets.html#1755" class="Bound">cons</a><a id="1790" class="Symbol">)</a> <a id="1792" href="Data.Tree.AVL.Sets.html#1760" class="Bound">nil</a>
+
+<a id="size"></a><a id="1797" href="Data.Tree.AVL.Sets.html#1797" class="Function">size</a> <a id="1802" class="Symbol">:</a> <a id="1804" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1810" class="Symbol">→</a> <a id="1812" href="Agda.Builtin.Nat.html#203" class="Datatype">ℕ</a>
+<a id="1814" href="Data.Tree.AVL.Sets.html#1797" class="Function">size</a> <a id="1819" class="Symbol">=</a> <a id="1821" href="Data.Tree.AVL.Map.html#2175" class="Function">AVL.size</a>
+
+<a id="1831" class="Comment">------------------------------------------------------------------------</a>
+<a id="1904" class="Comment">-- Naïve implementations of union and intersection</a>
+
+<a id="union"></a><a id="1956" href="Data.Tree.AVL.Sets.html#1956" class="Function">union</a> <a id="1962" class="Symbol">:</a> <a id="1964" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1970" class="Symbol">→</a> <a id="1972" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="1978" class="Symbol">→</a> <a id="1980" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="1986" href="Data.Tree.AVL.Sets.html#1956" class="Function">union</a> <a id="1992" class="Symbol">=</a> <a id="1994" href="Data.Tree.AVL.Map.html#2414" class="Function">AVL.union</a>
+
+<a id="unions"></a><a id="2005" href="Data.Tree.AVL.Sets.html#2005" class="Function">unions</a> <a id="2012" class="Symbol">:</a> <a id="2014" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="2019" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="2025" class="Symbol">→</a> <a id="2027" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="2033" href="Data.Tree.AVL.Sets.html#2005" class="Function">unions</a> <a id="2040" class="Symbol">=</a> <a id="2042" href="Data.Tree.AVL.Map.html#2550" class="Function">AVL.unions</a>
+
+<a id="intersection"></a><a id="2054" href="Data.Tree.AVL.Sets.html#2054" class="Function">intersection</a> <a id="2067" class="Symbol">:</a> <a id="2069" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="2075" class="Symbol">→</a> <a id="2077" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="2083" class="Symbol">→</a> <a id="2085" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="2091" href="Data.Tree.AVL.Sets.html#2054" class="Function">intersection</a> <a id="2104" class="Symbol">=</a> <a id="2106" href="Data.Tree.AVL.Map.html#2816" class="Function">AVL.intersection</a>
+
+<a id="intersections"></a><a id="2124" href="Data.Tree.AVL.Sets.html#2124" class="Function">intersections</a> <a id="2138" class="Symbol">:</a> <a id="2140" href="Agda.Builtin.List.html#147" class="Datatype">List</a> <a id="2145" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="2151" class="Symbol">→</a> <a id="2153" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a>
+<a id="2159" href="Data.Tree.AVL.Sets.html#2124" class="Function">intersections</a> <a id="2173" class="Symbol">=</a> <a id="2175" href="Data.Tree.AVL.Map.html#2988" class="Function">AVL.intersections</a>
+
+
+<a id="2195" class="Comment">------------------------------------------------------------------------</a>
+<a id="2268" class="Comment">-- DEPRECATED</a>
+<a id="2282" class="Comment">------------------------------------------------------------------------</a>
+<a id="2355" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="2426" class="Comment">-- not guaranteed.</a>
+
+<a id="2446" class="Comment">-- Version 2.0</a>
+
+<a id="2462" class="Keyword">infixl</a> <a id="2469" class="Number">4</a> <a id="2471" href="Data.Tree.AVL.Sets.html#2476" class="Function Operator">_∈?_</a>
+<a id="_∈?_"></a><a id="2476" href="Data.Tree.AVL.Sets.html#2476" class="Function Operator">_∈?_</a> <a id="2481" class="Symbol">:</a> <a id="2483" href="Data.Tree.AVL.Sets.html#886" class="Field">A</a> <a id="2485" class="Symbol">→</a> <a id="2487" href="Data.Tree.AVL.Sets.html#1015" class="Function">⟨Set⟩</a> <a id="2493" class="Symbol">→</a> <a id="2495" href="Agda.Builtin.Bool.html#173" class="Datatype">Bool</a>
+<a id="2500" href="Data.Tree.AVL.Sets.html#2476" class="Function Operator">_∈?_</a> <a id="2505" class="Symbol">=</a> <a id="2507" href="Data.Tree.AVL.Sets.html#1343" class="Function">member</a>
+<a id="2514" class="Symbol">{-#</a> <a id="2518" class="Keyword">WARNING_ON_USAGE</a> <a id="2535" class="Pragma">_∈?_</a>
+<a id="2540" class="String">&quot;Warning: _∈?_ was deprecated in v2.0.
+Please use member instead.&quot;</a>
+<a id="2607" class="Symbol">#-}</a>
+</pre></body></html>
