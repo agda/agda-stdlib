@@ -319,7 +319,7 @@ compare (suc i) (suc j) with compare i j
 raise = _↑ʳ_
 {-# WARNING_ON_USAGE raise
 "Warning: raise was deprecated in v2.0.
-Please use _↑_ʳ instead."
+Please use _↑ʳ_ instead."
 #-}
 inject+ : ∀ {m} n → Fin m → Fin (m ℕ.+ n)
 inject+ n i = i ↑ˡ n
