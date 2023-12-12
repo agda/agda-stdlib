@@ -2062,6 +2062,12 @@ New modules
   Data.Rational.Unnormalised.Show
   ```
 
+* Added RingSolver for Data.Rational (issue #1879):
+  ```
+  Data.Rational.Tactic.RingSolver
+  Data.Rational.Unnormalised.Tactic.RingSolver
+  ```
+
 * Membership relations for maps and sets
   ```
   Data.Tree.AVL.Map.Membership.Propositional
