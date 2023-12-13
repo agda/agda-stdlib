@@ -50,7 +50,7 @@ Additions to existing modules
   m/n≡0⇒m<n    : .{{_ : NonZero n}} → m / n ≡ 0 → m < n
   m/n≢0⇒n≤m    : .{{_ : NonZero n}} → m / n ≢ 0 → n ≤ m
 
-  nonZero      : DivMod dividend divisor → NonZero divisor
+  nonZeroDivisor : DivMod dividend divisor → NonZero divisor
   ```
 
 * Added new proofs in `Data.Nat.Properties`:
