@@ -244,9 +244,9 @@ m/n≡0⇒m<n {m} {n@(suc _)} m/n≡0  with <-≤-connex m n
 ... | inj₂ n≤m = contradiction m/n≡0 (≢-nonZero⁻¹ _)
   where instance _ =  >-nonZero (m≥n⇒m/n>0 n≤m)
 
-m/n≢0⇒n≤m : ∀ {m n} .{{_ : NonZero n}} → .{{NonZero (m / n)}} → n ≤ m
-m/n≢0⇒n≤m {m@(suc _)} {n@(suc _)} with <-≤-connex m n
-... | inj₁ m<n = contradiction (m<n⇒m/n≡0 m<n) (≢-nonZero⁻¹ _)
+m/n≢0⇒n≤m : ∀ {m n} .{{_ : NonZero n}} → m / n ≢ 0 → n ≤ m
+m/n≢0⇒n≤m {m} {n@(suc _)} m/n≢0 with <-≤-connex m n
+... | inj₁ m<n = contradiction (m<n⇒m/n≡0 m<n) m/n≢0
 ... | inj₂ n≤m = n≤m
 
 +-distrib-/ : ∀ m n {d} .{{_ : NonZero d}} → m % d + n % d < d →
