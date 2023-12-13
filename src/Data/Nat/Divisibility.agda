@@ -44,9 +44,8 @@ module _ (m∣n : m ∣ n) where
   open _∣_ m∣n
   open ≤-Reasoning
 
-  instance
-    quotient≢0 : .{{NonZero n}} → NonZero quotient
-    quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
+  quotient≢0 : .{{NonZero n}} → NonZero quotient
+  quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
 
   equalityᵒ : n ≡ m * quotient
   equalityᵒ rewrite equality = *-comm quotient m
@@ -66,6 +65,7 @@ module _ (m∣n : m ∣ n) where
     quotient     <⟨ m<m*n quotient m (nonTrivial⇒n>1 m) ⟩
     quotient * m ≡⟨ equality ⟨
     n            ∎
+    where instance _ = quotient≢0
 
 -- Exports
 
