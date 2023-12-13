@@ -1601,15 +1601,15 @@ m≤n+o⇒m∸n≤o      m  zero    le = le
 m≤n+o⇒m∸n≤o zero    (suc n)  _ = z≤n
 m≤n+o⇒m∸n≤o (suc m) (suc n) le = m≤n+o⇒m∸n≤o m n (s≤s⁻¹ le)
 
-m+n≤o⇒m≤o∸n : ∀ m n o → m + n ≤ o → m ≤ o ∸ n
-m+n≤o⇒m≤o∸n zero    n o       le       = z≤n
-m+n≤o⇒m≤o∸n (suc m) n (suc o) (s≤s le)
-  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m n o le)
+m<n+o⇒m∸n<o : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
+m<n+o⇒m∸n<o      m  zero                lt = lt
+m<n+o⇒m∸n<o zero    (suc n) {o@(suc _)} lt = z<s
+m<n+o⇒m∸n<o (suc m) (suc n)             lt = m<n+o⇒m∸n<o m n  (s<s⁻¹ lt)
 
-m<n+o⇒m∸n<o : ∀ m n o → .{{NonZero o}} → m < n + o → m ∸ n < o
-m<n+o⇒m∸n<o      m  zero    o         lt = lt
-m<n+o⇒m∸n<o zero    (suc n) o@(suc _)  _ = z<s
-m<n+o⇒m∸n<o (suc m) (suc n) o         lt = m<n+o⇒m∸n<o m n o (s<s⁻¹ lt)
+m+n≤o⇒m≤o∸n : ∀ m {n o} → m + n ≤ o → m ≤ o ∸ n
+m+n≤o⇒m≤o∸n zero    le       = z≤n
+m+n≤o⇒m≤o∸n (suc m) (s≤s le)
+  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m le)
 
 m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
 m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
