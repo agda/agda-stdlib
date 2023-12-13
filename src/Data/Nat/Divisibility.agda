@@ -165,7 +165,6 @@ module ∣-Reasoning where
 
   open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ ∣-go public
 
-open ∣-Reasoning
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_
@@ -202,6 +201,7 @@ n∣n = ∣-refl
     m + n ∸ m     ≡⟨ cong (_∸ m) m+n≡p*d ⟩
     p * d ∸ q * d ≡⟨ *-distribʳ-∸ d p q ⟨
     (p ∸ q) * d   ∎
+    where open ∣-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _*_
@@ -243,7 +243,9 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
   o * m * q   ≡⟨ *-assoc o m q ⟩
   o * (m * q) ≡⟨ cong (o *_) (*-comm q m) ⟨
   o * (q * m) ∎
-  where q = quotient o*m∣o*n
+  where
+  open ∣-Reasoning
+  q = quotient o*m∣o*n
 
 *-cancelʳ-∣ : ∀ o .{{_ : NonZero o}} → m * o ∣ n * o → m ∣ n
 *-cancelʳ-∣ {m} {n} o rewrite *-comm m o | *-comm n o = *-cancelˡ-∣ o
@@ -259,6 +261,7 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
     m ∸ n + n     ≡⟨ cong (_+ n) m∸n≡p*d ⟩
     p * d + q * d ≡⟨ *-distribʳ-+ d p q ⟨
     (p + q) * d   ∎
+  where open ∣-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _/_
@@ -268,12 +271,14 @@ m/n∣m {n} {m} n∣m = begin
   m / n        ≡⟨ n/m≡quotient n∣m ⟩
   quotient n∣m ∣⟨ quotient-∣ n∣m ⟩
   m            ∎
+  where open ∣-Reasoning
 
 m*n∣o⇒m∣o/n : ∀ m n .{{_ : NonZero n}} → m * n ∣ o → m ∣ o / n
 m*n∣o⇒m∣o/n m n (divides-refl p) = divides p $ begin-equality
   p * (m * n) / n   ≡⟨ *-/-assoc p (n∣m*n m) ⟩
   p * ((m * n) / n) ≡⟨ cong (p *_) (m*n/n≡m m n) ⟩
   p * m ∎
+  where open ∣-Reasoning
 
 m*n∣o⇒n∣o/m : ∀ m n .{{_ : NonZero m}} → m * n ∣ o → n ∣ (o / m)
 m*n∣o⇒n∣o/m m n rewrite *-comm m n = m*n∣o⇒m∣o/n n m
@@ -282,6 +287,7 @@ m∣n/o⇒m*o∣n : .{{_ : NonZero o}} → o ∣ n → m ∣ n / o → m * o ∣
 m∣n/o⇒m*o∣n {o} {n@.(p * o)} {m} (divides-refl p) m∣p*o/o = begin
   m * o ∣⟨ *-monoˡ-∣ o (subst (m ∣_) (m*n/n≡m p o) m∣p*o/o) ⟩
   p * o ∎
+  where open ∣-Reasoning
 
 m∣n/o⇒o*m∣n : .{{_ : NonZero o}} → o ∣ n → m ∣ n / o → o * m ∣ n
 m∣n/o⇒o*m∣n {o} {_} {m} rewrite *-comm o m = m∣n/o⇒m*o∣n
@@ -290,6 +296,7 @@ m/n∣o⇒m∣o*n : .{{_ : NonZero n}} → n ∣ m → m / n ∣ o → m ∣ o *
 m/n∣o⇒m∣o*n {n} {m@.(p * n)} {o} (divides-refl p) p*n/n∣o = begin
   p * n ∣⟨ *-monoˡ-∣ n (subst (_∣ o) (m*n/n≡m p n) p*n/n∣o) ⟩
   o * n ∎
+  where open ∣-Reasoning
 
 m∣n*o⇒m/n∣o : .{{_ : NonZero n}} → n ∣ m → m ∣ o * n → m / n ∣ o
 m∣n*o⇒m/n∣o {n} {m@.(p * n)} {o} (divides-refl p) pn∣on = begin
@@ -297,6 +304,7 @@ m∣n*o⇒m/n∣o {n} {m@.(p * n)} {o} (divides-refl p) pn∣on = begin
   p * n / n ≡⟨ m*n/n≡m p n ⟩
   p         ∣⟨ *-cancelʳ-∣ n pn∣on ⟩
   o         ∎
+  where open ∣-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
@@ -310,6 +318,7 @@ m∣n*o⇒m/n∣o {n} {m@.(p * n)} {o} (divides-refl p) pn∣on = begin
     q * d + (m / n) * (p * d) ≡⟨ cong (q * d +_) (*-assoc (m / n) p d) ⟨
     q * d + ((m / n) * p) * d ≡⟨ *-distribʳ-+ d q _ ⟨
     (q + (m / n) * p) * d     ∎
+  where open ∣-Reasoning
 
 %-presˡ-∣ : .{{_ : NonZero n}} → d ∣ m → d ∣ n → d ∣ m % n
 %-presˡ-∣ {n} {d} {m@.(p * d)} (divides-refl p) (divides q 1+n≡qd) =
@@ -320,6 +329,7 @@ m∣n*o⇒m/n∣o {n} {m@.(p * n)} {o} (divides-refl p) pn∣on = begin
     m  ∸ (m / n * q) * d    ≡⟨⟩
     p * d ∸ (m / n * q) * d ≡⟨ *-distribʳ-∸ d p (m / n * q) ⟨
     (p ∸ m / n * q) * d     ∎
+  where open ∣-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and !_
