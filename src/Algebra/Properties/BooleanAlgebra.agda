@@ -28,8 +28,7 @@ import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
 
 open import Algebra.Structures _≈_
 open import Relation.Binary
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (_⇔_; module Equivalence)
+open import Function.Bundles using (module Equivalence; _⇔_)
 open import Data.Product.Base using (_,_)
 
 ------------------------------------------------------------------------
@@ -47,9 +46,9 @@ replace-equality {_≈′_} ≈⇔≈′ = record
   { isBooleanAlgebra = record
     { isDistributiveLattice = DistributiveLattice.isDistributiveLattice
         (DistribLatticeProperties.replace-equality distributiveLattice ≈⇔≈′)
-    ; ∨-complement          = ((λ x → to ⟨$⟩ ∨-complementˡ x) , λ x → to ⟨$⟩ ∨-complementʳ x)
-    ; ∧-complement          = ((λ x → to ⟨$⟩ ∧-complementˡ x) , λ x → to ⟨$⟩ ∧-complementʳ x)
-    ; ¬-cong                = λ i≈j → to ⟨$⟩ ¬-cong (from ⟨$⟩ i≈j)
+    ; ∨-complement          = ((λ x → to (∨-complementˡ x)) , λ x → to (∨-complementʳ x))
+    ; ∧-complement          = ((λ x → to (∧-complementˡ x)) , λ x → to (∧-complementʳ x))
+    ; ¬-cong                = λ i≈j → to (¬-cong (from i≈j))
     }
   } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
 {-# WARNING_ON_USAGE replace-equality
