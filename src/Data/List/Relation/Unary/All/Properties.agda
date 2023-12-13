@@ -392,14 +392,14 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ------------------------------------------------------------------------
 -- catMaybes
 
-catMaybesAll⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
-catMaybesAll⁺ [] = []
-catMaybesAll⁺ (just px ∷ pxs) = px ∷ catMaybesAll⁺ pxs
-catMaybesAll⁺ (nothing ∷ pxs) = catMaybesAll⁺ pxs
+All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
+All-catMaybes⁺ [] = []
+All-catMaybes⁺ (just px ∷ pxs) = px ∷ All-catMaybes⁺ pxs
+All-catMaybes⁺ (nothing ∷ pxs) = All-catMaybes⁺ pxs
 
-catMaybesAny⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
-catMaybesAny⁺ [] = []
-catMaybesAny⁺ (just px ∷ pxs) = px ∷ catMaybesAny⁺ pxs
+Any-catMaybes⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
+Any-catMaybes⁺ [] = []
+Any-catMaybes⁺ (just px ∷ pxs) = px ∷ Any-catMaybes⁺ pxs
 
 ------------------------------------------------------------------------
 -- _++_

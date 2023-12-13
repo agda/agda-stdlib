@@ -138,9 +138,9 @@ module _ {R : Rel A ℓ} {P : Pred A p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- pointwise
 
-module _ {R : Rel A ℓ}  where
+module _ {R : Rel A ℓ} where
 
-  pointwise⁺ : {xs : List (Maybe A)} → AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
-  pointwise⁺ {xs = []} [] = []
-  pointwise⁺ {xs = nothing ∷  _} (x∼xs ∷ pxs) = pointwise⁺ pxs
-  pointwise⁺ {xs = just x  ∷ xs} (x∼xs ∷ pxs) = catMaybesAny⁺ (All.map pointwise⊆any x∼xs) ∷ pointwise⁺ pxs
+  catMaybes⁺ : {xs : List (Maybe A)} → AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
+  catMaybes⁺ {xs = []} [] = []
+  catMaybes⁺ {xs = nothing ∷  _} (x∼xs ∷ pxs) = catMaybes⁺ pxs
+  catMaybes⁺ {xs = just x  ∷ xs} (x∼xs ∷ pxs) = catMaybesAny⁺ (All.map catMaybes⊆any x∼xs) ∷ catMaybes⁺ pxs
