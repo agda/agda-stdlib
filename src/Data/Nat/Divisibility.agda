@@ -73,7 +73,7 @@ open _∣_ using (quotient) public
 
 
 ------------------------------------------------------------------------
--- Defining equation for _/_
+-- Relating _/_ and _∣_.quotient
 
 n/m≡quotient : (m∣n : m ∣ n) .{{_ : NonZero m}} → n / m ≡ quotient m∣n
 n/m≡quotient {m = m} (divides-refl q) = m*n/n≡m q m
@@ -362,5 +362,5 @@ hasNonTrivialDivisor-∣ (hasNonTrivialDivisor d<n d∣m) n∣o
 
 hasNonTrivialDivisor-≤ : m HasNonTrivialDivisorLessThan n → n ≤ o →
                          m HasNonTrivialDivisorLessThan o
-hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) m≤o =
-  hasNonTrivialDivisor (<-≤-trans d<n m≤o) d∣m
+hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) m≤o
+  = hasNonTrivialDivisor (<-≤-trans d<n m≤o) d∣m
