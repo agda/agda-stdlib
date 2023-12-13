@@ -346,21 +346,21 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
 
 -- Smart constructor
 
-hasNonTrivialDivisor-≢ : ∀ {d n} → .{{NonTrivial d}} → .{{NonZero n}} →
+hasNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} →
                          d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
 hasNonTrivialDivisor-≢ d≢n d∣n
   = hasNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
 
 -- Monotonicity wrt ∣
 
-hasNonTrivialDivisor-∣ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → m ∣ o →
+hasNonTrivialDivisor-∣ : m HasNonTrivialDivisorLessThan n → m ∣ o →
                          o HasNonTrivialDivisorLessThan n
 hasNonTrivialDivisor-∣ (hasNonTrivialDivisor d<n d∣m) n∣o
   = hasNonTrivialDivisor d<n (∣-trans d∣m n∣o)
 
 -- Monotonicity wrt ≤
 
-hasNonTrivialDivisor-≤ : ∀ {m n o} → m HasNonTrivialDivisorLessThan n → n ≤ o →
-                             m HasNonTrivialDivisorLessThan o
+hasNonTrivialDivisor-≤ : m HasNonTrivialDivisorLessThan n → n ≤ o →
+                         m HasNonTrivialDivisorLessThan o
 hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) m≤o =
   hasNonTrivialDivisor (<-≤-trans d<n m≤o) d∣m
