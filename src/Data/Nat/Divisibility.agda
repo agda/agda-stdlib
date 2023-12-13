@@ -342,7 +342,7 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   help {n = n} (≤′-step m≤n) = ∣n⇒∣m*n n (help m≤n)
 
 ------------------------------------------------------------------------
--- Properties of _BoundedNonTrivialDivisor_
+-- Properties of _HasNonTrivialDivisorLessThan_
 
 -- Smart constructor
 
