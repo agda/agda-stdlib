@@ -203,13 +203,12 @@ m/n≤m m n = *-cancelʳ-≤ (m / n) m n (begin
   m           ≤⟨ m≤m*n m n ⟩
   m * n       ∎)
 
-m/n<m : ∀ m n .{{_ : NonZero m}} .{{_ : NonTrivial n}} →
-        let instance _ = Nat.nonTrivial⇒nonZero n in m / n < m
-m/n<m m n     = *-cancelʳ-< _ (m / n) m $ begin-strict
+m/n<m : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero n}} →
+        1 < n → m / n < m
+m/n<m m n 1<n = *-cancelʳ-< _ (m / n) m $ begin-strict
   m / n * n ≤⟨ m/n*n≤m m n ⟩
-  m         <⟨ m<m*n m n (nonTrivial⇒n>1 n) ⟩
+  m         <⟨ m<m*n m n 1<n ⟩
   m * n     ∎
-  where instance _ = Nat.nonTrivial⇒nonZero n
 
 /-mono-≤ : .{{_ : NonZero o}} .{{_ : NonZero p}} →
            m ≤ n → o ≥ p → m / o ≤ n / p
@@ -344,7 +343,7 @@ m<n*o⇒m/o<n {m} {1} {o} m<o rewrite *-identityˡ o = begin-strict
   1 ∎
 m<n*o⇒m/o<n {m} {suc n@(suc _)} {o} m<n*o = pred-cancel-< $ begin-strict
   pred (m / o) ≡⟨ [m∸n]/n≡m/n∸1 m o ⟨
-  (m ∸ o) / o  <⟨ m<n*o⇒m/o<n (m<n+o⇒m∸n<o m o (n * o) m<n*o) ⟩
+  (m ∸ o) / o  <⟨ m<n*o⇒m/o<n (m<n+o⇒m∸n<o m o m<n*o) ⟩
   n ∎
   where instance _ = m*n≢0 n o
 
