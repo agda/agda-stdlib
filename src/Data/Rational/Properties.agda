@@ -316,7 +316,7 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
     (m ℕ./ gcd[m,c]) ℕ.* (d ℕ./ gcd[n,d]) ≡⟨  cong₂ ℕ._*_ m/gcd[m,c]≡n/gcd[n,d] (sym c/gcd[m,c]≡d/gcd[n,d]) ⟩
     (n ℕ./ gcd[n,d]) ℕ.* (c ℕ./ gcd[m,c]) ≡⟨ ℕ./-*-interchange gcd[n,d]∣n gcd[m,c]∣c ⟨
     (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨ ℕ./-congʳ (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
-    (n ℕ.* c) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ∎ 
+    (n ℕ.* c) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ∎
   where
   open ≡-Reasoning
   gcd[m,c]   = ℕ.gcd m c
