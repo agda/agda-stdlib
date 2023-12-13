@@ -28,7 +28,7 @@ import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _�
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
-open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
+open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing; fromAny)
 open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
@@ -398,8 +398,7 @@ All-catMaybes⁺ (just px ∷ pxs) = px ∷ All-catMaybes⁺ pxs
 All-catMaybes⁺ (nothing ∷ pxs) = All-catMaybes⁺ pxs
 
 Any-catMaybes⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
-Any-catMaybes⁺ [] = []
-Any-catMaybes⁺ (just px ∷ pxs) = px ∷ Any-catMaybes⁺ pxs
+Any-catMaybes⁺ = All-catMaybes⁺ ∘ All.map fromAny
 
 ------------------------------------------------------------------------
 -- _++_
