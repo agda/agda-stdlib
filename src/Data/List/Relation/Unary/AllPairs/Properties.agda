@@ -136,7 +136,7 @@ module _ {R : Rel A ℓ} {P : Pred A p} (P? : Decidable P) where
   ... | true  = All.filter⁺ P? x∉xs ∷ filter⁺ xs!
 
 ------------------------------------------------------------------------
--- pointwise
+-- catMaybes
 
 module _ {R : Rel A ℓ} where
 
