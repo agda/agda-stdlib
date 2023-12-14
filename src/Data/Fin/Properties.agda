@@ -65,6 +65,9 @@ private
 ¬Fin0 : ¬ Fin 0
 ¬Fin0 ()
 
+nonZeroIndex : Fin n → ℕ.NonZero n
+nonZeroIndex {n = suc _} _ = _
+
 ------------------------------------------------------------------------
 -- Bundles
 
