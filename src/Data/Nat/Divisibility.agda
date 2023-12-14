@@ -39,43 +39,32 @@ private
 
 open import Data.Nat.Divisibility.Core public hiding (*-pres-∣)
 
-module _ (m∣n : m ∣ n) where
+quotient≢0 : (m∣n : m ∣ n) → .{{NonZero n}} → NonZero (quotient m∣n)
+quotient≢0 m∣n rewrite _∣_.equality m∣n = m*n≢0⇒m≢0 (quotient m∣n)
 
-  open _∣_ m∣n
+equalityᵒ : (m∣n : m ∣ n) → n ≡ m * (quotient m∣n)
+equalityᵒ {m = m} m∣n rewrite _∣_.equality m∣n = *-comm (quotient m∣n) m
 
-  quotient≢0 : .{{NonZero n}} → NonZero quotient
-  quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
+quotient-∣ : (m∣n : m ∣ n) → (quotient m∣n) ∣ n
+quotient-∣ {m = m} m∣n = divides m (equalityᵒ m∣n)
 
-  equalityᵒ : n ≡ m * quotient
-  equalityᵒ rewrite equality = *-comm quotient m
+quotient>1 : (m∣n : m ∣ n) → m < n → 1 < quotient m∣n
+quotient>1 {m} {n} m∣n m<n = *-cancelˡ-< m 1 (quotient m∣n) $ begin-strict
+    m * 1        ≡⟨ *-identityʳ m ⟩
+    m            <⟨ m<n ⟩
+    n            ≡⟨ equalityᵒ m∣n ⟩
+    m * quotient m∣n ∎
+  where open ≤-Reasoning
 
-  quotient-∣ : quotient ∣ n
-  quotient-∣ = divides m equalityᵒ
-
-  quotient>1 : m < n → 1 < quotient
-  quotient>1 m<n = *-cancelˡ-< m 1 quotient $ begin-strict
-      m * 1        ≡⟨ *-identityʳ m ⟩
-      m            <⟨ m<n ⟩
-      n            ≡⟨ equalityᵒ ⟩
-      m * quotient ∎
-    where open ≤-Reasoning
-
-  quotient-< : .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
-  quotient-<     = begin-strict
-    quotient     <⟨ m<m*n quotient m (nonTrivial⇒n>1 m) ⟩
-    quotient * m ≡⟨ equality ⟨
-    n            ∎
-    where
-    open ≤-Reasoning
-    instance _ = quotient≢0
-
--- Exports
-
-open _∣_ using (quotient) public
-
+quotient-< : (m∣n : m ∣ n) → .{{NonTrivial m}} → .{{NonZero n}} → quotient m∣n < n
+quotient-< {m} {n} m∣n = begin-strict
+  quotient m∣n     <⟨ m<m*n (quotient m∣n) m (nonTrivial⇒n>1 m) ⟩
+  quotient m∣n * m ≡⟨ _∣_.equality m∣n ⟨
+  n                ∎
+  where open ≤-Reasoning; instance _ = quotient≢0 m∣n
 
 ------------------------------------------------------------------------
--- Relating _/_ and _∣_.quotient
+-- Relating _/_ and quotient
 
 n/m≡quotient : (m∣n : m ∣ n) .{{_ : NonZero m}} → n / m ≡ quotient m∣n
 n/m≡quotient {m = m} (divides-refl q) = m*n/n≡m q m

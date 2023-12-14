@@ -46,6 +46,8 @@ m ∤ n = ¬ (m ∣ n)
 
 pattern divides-refl q = divides q refl
 
+open _∣_ using (quotient) public
+
 ------------------------------------------------------------------------
 -- Restricted divisor relation
 
