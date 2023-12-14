@@ -55,7 +55,7 @@ toNatDigits base@(suc (suc _)) n = aux (<-wellFounded-fast n) []
   aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
   aux {zero}        _      xs =  (0 ∷ xs)
   aux {n@(suc _)} (acc wf) xs with does (0 <? n / base)
-  ... | false = (n % base) ∷ xs -- n here is already sufficient?
+  ... | false = (n % base) ∷ xs -- Could this more simply be n ∷ xs here?
   ... | true  = aux (wf (m/n<m n base sz<ss)) ((n % base) ∷ xs)
 
 ------------------------------------------------------------------------
