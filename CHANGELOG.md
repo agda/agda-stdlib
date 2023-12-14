@@ -41,4 +41,5 @@ Additions to existing modules
 * In `Data.List.Relation.Unary.AllPairs.Properties`:
   ```
   catMaybes⁺ : AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
+  tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
   ```

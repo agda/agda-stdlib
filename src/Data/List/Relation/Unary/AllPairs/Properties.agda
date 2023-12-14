@@ -15,9 +15,9 @@ open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _
 open import Data.Bool.Base using (true; false)
 open import Data.Maybe using (Maybe; nothing; just)
 open import Data.Maybe.Relation.Binary.Pointwise using (pointwise⊆any; Pointwise)
-open import Data.Fin.Base using (Fin)
-open import Data.Fin.Properties using (suc-injective)
-open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Fin.Base as F using (Fin)
+open import Data.Fin.Properties using (suc-injective; <⇒≢)
+open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m<n⇒m<1+n)
 open import Function.Base using (_∘_; flip)
 open import Level using (Level)
@@ -117,12 +117,16 @@ module _ {R : Rel A ℓ} where
 
 module _ {R : Rel A ℓ} where
 
+  tabulate⁺-< : ∀ {n} {f : Fin n → A} → (∀ {i j} → i F.< j → R (f i) (f j)) →
+              AllPairs R (tabulate f)
+  tabulate⁺-< {zero}  fᵢ~fⱼ = []
+  tabulate⁺-< {suc n} fᵢ~fⱼ =
+    All.tabulate⁺ (λ _ → fᵢ~fⱼ z<s) ∷
+    tabulate⁺-< (fᵢ~fⱼ ∘ s<s)
+
   tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → i ≢ j → R (f i) (f j)) →
               AllPairs R (tabulate f)
-  tabulate⁺ {zero}  fᵢ~fⱼ = []
-  tabulate⁺ {suc n} fᵢ~fⱼ =
-    All.tabulate⁺ (λ j → fᵢ~fⱼ λ()) ∷
-    tabulate⁺ (fᵢ~fⱼ ∘ (_∘ suc-injective))
+  tabulate⁺ fᵢ~fⱼ = tabulate⁺-< (fᵢ~fⱼ ∘ <⇒≢)
 
 ------------------------------------------------------------------------
 -- filter
