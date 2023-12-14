@@ -14,11 +14,14 @@ module Data.Nat.Divisibility.Core where
 
 open import Data.Nat.Base using (ℕ; _*_; _<_; NonTrivial)
 open import Data.Nat.Properties
-open import Level using (0ℓ)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; sym; cong₂; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl)
+
+
+private
+  variable m n o p : ℕ
 
 ------------------------------------------------------------------------
 -- Main definition
@@ -35,14 +38,15 @@ record _∣_ (m n : ℕ) : Set where
   constructor divides
   field quotient : ℕ
         equality : n ≡ quotient * m
-open _∣_ using (quotient) public
 
-_∤_ : Rel ℕ 0ℓ
+_∤_ : Rel ℕ _
 m ∤ n = ¬ (m ∣ n)
 
 -- Smart constructor
 
 pattern divides-refl q = divides q refl
+
+open _∣_ using (quotient) public
 
 ------------------------------------------------------------------------
 -- Restricted divisor relation
@@ -60,12 +64,18 @@ record _HasNonTrivialDivisorLessThan_ (m n : ℕ) : Set where
     divisor-∣       : divisor ∣ m
 
 ------------------------------------------------------------------------
--- Basic properties
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-*-pres-∣ : ∀ {m n o p} → o ∣ m → p ∣ n → o * p ∣ m * n
-*-pres-∣ {m} {n} {o} {p} (divides c m≡c*o) (divides d n≡d*p) =
-  divides (c * d) (begin
-    m * n             ≡⟨ cong₂ _*_ m≡c*o n≡d*p ⟩
-    (c * o) * (d * p) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] c o d p ⟩
-    (c * d) * (o * p) ∎)
-  where open ≡-Reasoning
+-- Version 2.1
+
+*-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
+*-pres-∣ {o} {m@.(q * o)} {p} {n@.(r * p)} (divides-refl q) (divides-refl r) =
+  divides (q * r) ([m*n]*[o*p]≡[m*o]*[n*p] q o r p)
+
+{-# WARNING_ON_USAGE *-pres-∣
+"Warning: *-pres-∣ was deprecated in v2.1.
+ Please use Data.Nat.Divisibility.*-pres-∣ instead."
+#-}
