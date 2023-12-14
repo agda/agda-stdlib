@@ -42,7 +42,6 @@ open import Data.Nat.Divisibility.Core public hiding (*-pres-∣)
 module _ (m∣n : m ∣ n) where
 
   open _∣_ m∣n
-  open ≤-Reasoning
 
   quotient≢0 : .{{NonZero n}} → NonZero quotient
   quotient≢0 rewrite equality = m*n≢0⇒m≢0 quotient
@@ -59,13 +58,16 @@ module _ (m∣n : m ∣ n) where
       m            <⟨ m<n ⟩
       n            ≡⟨ equalityᵒ ⟩
       m * quotient ∎
+    where open ≤-Reasoning
 
   quotient-< : .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
   quotient-<     = begin-strict
     quotient     <⟨ m<m*n quotient m (nonTrivial⇒n>1 m) ⟩
     quotient * m ≡⟨ equality ⟨
     n            ∎
-    where instance _ = quotient≢0
+    where
+    open ≤-Reasoning
+    instance _ = quotient≢0
 
 -- Exports
 
