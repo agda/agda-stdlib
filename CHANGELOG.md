@@ -26,3 +26,8 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* In `Data.List.Relation.Unary.AllPairs.Properties`:
+  ```
+  tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
+  ```
