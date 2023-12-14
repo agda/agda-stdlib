@@ -42,6 +42,9 @@ open import Data.Nat.Divisibility.Core public hiding (*-pres-∣)
 quotient≢0 : (m∣n : m ∣ n) → .{{NonZero n}} → NonZero (quotient m∣n)
 quotient≢0 m∣n rewrite _∣_.equality m∣n = m*n≢0⇒m≢0 (quotient m∣n)
 
+m|n⇒n≡quotient*m : (m∣n : m ∣ n) → n ≡ (quotient m∣n) * m
+m|n⇒n≡quotient*m m∣n = _∣_.equality m∣n
+
 m|n⇒n≡m*quotient : (m∣n : m ∣ n) → n ≡ m * (quotient m∣n)
 m|n⇒n≡m*quotient {m = m} m∣n rewrite _∣_.equality m∣n = *-comm (quotient m∣n) m
 
