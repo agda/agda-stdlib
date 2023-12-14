@@ -42,17 +42,17 @@ open import Data.Nat.Divisibility.Core public hiding (*-pres-∣)
 quotient≢0 : (m∣n : m ∣ n) → .{{NonZero n}} → NonZero (quotient m∣n)
 quotient≢0 m∣n rewrite _∣_.equality m∣n = m*n≢0⇒m≢0 (quotient m∣n)
 
-equalityᵒ : (m∣n : m ∣ n) → n ≡ m * (quotient m∣n)
-equalityᵒ {m = m} m∣n rewrite _∣_.equality m∣n = *-comm (quotient m∣n) m
+m|n⇒n≡m*quotient : (m∣n : m ∣ n) → n ≡ m * (quotient m∣n)
+m|n⇒n≡m*quotient {m = m} m∣n rewrite _∣_.equality m∣n = *-comm (quotient m∣n) m
 
 quotient-∣ : (m∣n : m ∣ n) → (quotient m∣n) ∣ n
-quotient-∣ {m = m} m∣n = divides m (equalityᵒ m∣n)
+quotient-∣ {m = m} m∣n = divides m (m|n⇒n≡m*quotient m∣n)
 
 quotient>1 : (m∣n : m ∣ n) → m < n → 1 < quotient m∣n
 quotient>1 {m} {n} m∣n m<n = *-cancelˡ-< m 1 (quotient m∣n) $ begin-strict
     m * 1        ≡⟨ *-identityʳ m ⟩
     m            <⟨ m<n ⟩
-    n            ≡⟨ equalityᵒ m∣n ⟩
+    n            ≡⟨ m|n⇒n≡m*quotient m∣n ⟩
     m * quotient m∣n ∎
   where open ≤-Reasoning
 
@@ -110,8 +110,8 @@ m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
   divides (q * p) (sym (*-assoc q p _))
 
 ∣-antisym : Antisymmetric _≡_ _∣_
-∣-antisym {m}     {zero}   _  q∣p = equalityᵒ q∣p
-∣-antisym {zero}  {n}     p∣q  _  = sym (equalityᵒ p∣q)
+∣-antisym {m}     {zero}   _  q∣p = m|n⇒n≡m*quotient q∣p
+∣-antisym {zero}  {n}     p∣q  _  = sym (m|n⇒n≡m*quotient p∣q)
 ∣-antisym {suc m} {suc n} p∣q q∣p = ≤-antisym (∣⇒≤ p∣q) (∣⇒≤ q∣p)
 
 infix 4 _∣?_
@@ -230,7 +230,7 @@ m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
 *-cancelˡ-∣ : ∀ o .{{_ : NonZero o}} → o * m ∣ o * n → m ∣ n
 *-cancelˡ-∣ {m} {n} o o*m∣o*n = divides q $ *-cancelˡ-≡ n (q * m) o $ begin-equality
-  o * n       ≡⟨ equalityᵒ o*m∣o*n ⟩
+  o * n       ≡⟨ m|n⇒n≡m*quotient o*m∣o*n ⟩
   o * m * q   ≡⟨ *-assoc o m q ⟩
   o * (m * q) ≡⟨ cong (o *_) (*-comm q m) ⟨
   o * (q * m) ∎

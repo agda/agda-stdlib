@@ -43,13 +43,13 @@ Additions to existing modules
 
 * In `Data.Nat.Divisibility`:
   ```agda
-  quotient≢0   : m ∣ n → .{{NonZero n}} → NonZero quotient
+  quotient≢0       : m ∣ n → .{{NonZero n}} → NonZero quotient
 
-  equalityᵒ    : m ∣ n → n ≡ m * quotient
-  quotient-∣   : m ∣ n → quotient ∣ n
-  quotient>1   : m ∣ n → m < n → 1 < quotient
-  quotient-<   : m ∣ n → .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
-  n/m≡quotient : m ∣ n → .{{_ : NonZero m}} → n / m ≡ quotient
+  m|n⇒n≡m*quotient : m ∣ n → n ≡ m * quotient
+  quotient-∣       : m ∣ n → quotient ∣ n
+  quotient>1       : m ∣ n → m < n → 1 < quotient
+  quotient-<       : m ∣ n → .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
+  n/m≡quotient     : m ∣ n → .{{_ : NonZero m}} → n / m ≡ quotient
 
   m/n≡0⇒m<n    : .{{_ : NonZero n}} → m / n ≡ 0 → m < n
   m/n≢0⇒n≤m    : .{{_ : NonZero n}} → m / n ≢ 0 → n ≤ m
