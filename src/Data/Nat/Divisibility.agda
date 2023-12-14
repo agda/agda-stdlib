@@ -15,7 +15,7 @@ open import Data.Nat.Properties
 open import Function.Base using (_∘′_; _$_; flip)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (yes; no)
 open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
@@ -117,8 +117,8 @@ m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 infix 4 _∣?_
 
 _∣?_ : Decidable _∣_
-zero  ∣? zero   = Dec.yes (divides-refl 0)
-zero  ∣? suc m  = Dec.no ((λ()) ∘′ ∣-antisym (divides-refl 0))
+zero  ∣? zero   = yes (divides-refl 0)
+zero  ∣? suc m  = no ((λ()) ∘′ ∣-antisym (divides-refl 0))
 n@(suc _) ∣? m  = Dec.map (m%n≡0⇔n∣m m n) (m % n ≟ 0)
 
 ∣-isPreorder : IsPreorder _≡_ _∣_
