@@ -11,6 +11,7 @@ module Data.Maybe.Relation.Binary.Pointwise where
 open import Level
 open import Data.Product.Base using (∃; _×_; -,_; _,_)
 open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid)
@@ -18,6 +19,7 @@ open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
 open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Nullary
+open import Relation.Unary using (_⊆_)
 import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
@@ -92,6 +94,9 @@ module _ {a r} {A : Set a} {R : Rel A r} where
     { isEquivalence = isEquivalence R.isEquivalence
     ; _≟_           = dec R._≟_
     } where module R = IsDecEquivalence R-isDecEquivalence
+
+  pointwise⊆any : ∀ {x} → Pointwise R (just x) ⊆ Any (R x)
+  pointwise⊆any (just Rxy) = just Rxy
 
 module _ {c ℓ} where
 
