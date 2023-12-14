@@ -37,6 +37,10 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
+* In `Data.List.Relation.Unary.AllPairs.Properties`:
+  ```
+  tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
+
 * In `Data.Nat.Divisibility`:
   ```agda
   quotient≢0   : m ∣ n → .{{NonZero n}} → NonZero quotient
