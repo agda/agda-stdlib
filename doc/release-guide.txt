@@ -81,3 +81,5 @@ procedure should be followed:
 * Move the CHANGELOG.md into the old CHANGELOG folders
 
 * Create new CHANGELOG.md file
+
+* Update `standard-library.agda-lib` to the new version/milestone on `master`
