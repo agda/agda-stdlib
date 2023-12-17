@@ -37,7 +37,6 @@ New modules
 Additions to existing modules
 -----------------------------
 
-<<<<<<< HEAD
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
