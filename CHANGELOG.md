@@ -37,6 +37,7 @@ New modules
 Additions to existing modules
 -----------------------------
 
+<<<<<<< HEAD
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
@@ -85,4 +86,13 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
-  
+
+* Added new definition in `Relation.Binary.Construct.Closure.Transitive`
+  ```
+  transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
+  ```
+
+* Added new definition in `Relation.Unary`
+  ```
+  Stable : Pred A ℓ → Set _
+  ```
