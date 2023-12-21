@@ -10,11 +10,10 @@ module Data.Nat.Primality.Factorisation where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; quotient∣n; ∣-trans; ∣1⇒≡1; divides)
+open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; quotient∣n; ∣-trans; ∣1⇒≡1; divides; quotient-<; m|n⇒n≡m*quotient; hasNonTrivialDivisor; quotient≢0; quotient-∣; quotient>1)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-Rec; <-rec)
-open import Data.Nat.Primality using (Prime; euclidsLemma; ∣p⇒≡1∨≡p; Prime⇒NonZero)
-open import Data.Nat.Primality.Rough using (_Rough_; 2-rough; extend-∤; roughn∧∣n⇒prime)
+open import Data.Nat.Primality using (Prime; prime; euclidsLemma; prime⇒irreducible; prime⇒nonZero; _Rough_; 2-rough; ∤⇒rough-suc; rough∧∣⇒prime; ¬prime[1]; rough∧∣⇒rough)
 open import Data.Product as Π using (∃-syntax; _,_; proj₁; proj₂)
 open import Data.List.Base using (List; []; _∷_; _++_; product)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -28,7 +27,7 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; trans; cong; module ≡-Reasoning)
 
 ------------------------------------------------------------------------
 -- Core definition
@@ -48,9 +47,9 @@ open PrimeFactorisation
 -- this builds up three important things:
 -- * a proof that every number we've gotten to so far has increasingly higher
 --   possible least prime factor, so we don't have to repeat smaller factores
---   over and over (this is the "k" and "k-rough-n" parameters)
+--   over and over (this is the "m" and "rough" parameters)
 -- * a witness that this limit is getting closer to the number of interest, in a
---   way that helps the termination checker (the k≤n parameter)
+--   way that helps the termination checker (the "k" and "eq" parameters)
 -- * a proof that we can factorise any smaller number, which is useful when we
 --   encounter a factor, as we can then divide by that factor and continue from
 --   there without termination issues
@@ -66,74 +65,53 @@ factorise 1 = record
   ; isFactorisation = refl
   ; factorsPrime = []
   }
-factorise (2+ n) = <-rec P factoriseRec (2 + n) {2} 2≤2+n (≤⇒≤‴ 2≤2+n) 2-rough
+factorise (2+ n₀) = <-rec P facRec (2+ n₀) 2-rough n₀ refl
   where
-
   P : ℕ → Set
-  P n′ = ∀ {k} → 2 ≤ n′ → k ≤‴ n′ → k Rough n′ → PrimeFactorisation n′
+  P n = ∀ {m} → .{{NonTrivial n}} → .{{NonTrivial m}} → m Rough n → (k : ℕ) → (n ≡ m + k) → PrimeFactorisation n
 
-  factoriseRec : ∀ n → <-Rec P n → P n
-  factoriseRec (2+ n) rec (s≤s (s≤s n≤z)) ≤‴-refl k-rough-n = record
-    { factors = 2 + n ∷ []
-    ; isFactorisation = *-identityʳ (2 + n)
-    ; factorsPrime = k-rough-n ∷ []
+  facRec : ∀ n → <-Rec P n → P n
+  -- Case 1: m = n, ∴ Prime n
+  facRec (2+ _) rec {m} rough zero eq rewrite eq | +-identityʳ m = record
+    { factors = m ∷ []
+    ; isFactorisation = *-identityʳ m
+    ; factorsPrime = prime rough ∷ []
     }
-  factoriseRec (2+ n) rec {0} 2≤2+n (≤‴-step (≤‴-step k<n)) k-rough-n =
-    factoriseRec (2+ n) rec 2≤2+n k<n 2-rough
-  factoriseRec (2+ n) rec {1} 2≤2+n (≤‴-step k<n) k-rough-n =
-    factoriseRec (2+ n) rec 2≤2+n k<n 2-rough
-  factoriseRec (2+ n) rec {suc (suc k)} 2≤2+n (≤‴-step k<n) k-rough-n with 2 + k ∣? 2+ n
-  ... | no  k∤n = factoriseRec (2+ n) rec {3 + k} 2≤2+n k<n (extend-∤ k-rough-n k∤n)
-  ... | yes k∣n = record
-    { factors = 2 + k ∷ factors res
-    ; isFactorisation = prop
-    ; factorsPrime = roughn∧∣n⇒prime k-rough-n 2≤2+n k∣n ∷ factorsPrime res
+  facRec n@(2+ _) rec {m@(2+ _)} rough (suc k) eq with m ∣? n
+  -- Case 2: m ∤ n, try larger m
+  ... | no m∤n = facRec n rec (∤⇒rough-suc m∤n rough) k (trans eq (+-suc m k))
+  -- Case 3: m ∣ n: record m and recurse on the quotient
+  ... | yes m∣n = record
+    { factors = m ∷ ps
+    ; isFactorisation = m*Πps≡n
+    ; factorsPrime = rough∧∣⇒prime rough m∣n ∷ primes
     }
     where
-      open ≤-Reasoning
+      m<n : m < n
+      m<n = begin-strict
+        m         <⟨ m<m+n m (s≤s z≤n) ⟩
+        m + suc k ≡˘⟨ eq ⟩
+        n ∎
+        where open ≤-Reasoning
+      q = quotient m∣n
+      q<n = quotient-< m∣n
+      n≡m*q = m|n⇒n≡m*quotient m∣n
+      instance _ = n>1⇒nonTrivial (quotient>1 m∣n m<n)
+      m≤q = ≮⇒≥ (λ q<m → rough record { divisor-< = q<m; divisor-∣ = quotient-∣ m∣n})
 
-      q : ℕ
-      q = quotient k∣n
+      factorisation[q] : PrimeFactorisation q
+      factorisation[q] = rec q<n (rough∧∣⇒rough rough (quotient-∣ m∣n)) (q ∸ m) (sym (m+[n∸m]≡n m≤q)) 
 
-      -- we know that k < n, so if q is 0 or 1 then q * k < n
-      2≤q : 2 ≤ q
-      2≤q = ≮⇒≥ (λ q<2 → contradiction (_∣_.equality k∣n) (>⇒≢ (prf (≤-pred q<2)))) where
+      ps = factors factorisation[q]
+      primes = factorsPrime factorisation[q]
+      Πps≡q = isFactorisation factorisation[q]
 
-        prf : q ≤ 1 → q * 2+ k < 2 + n
-        prf q≤1 = begin-strict
-          q * 2+ k  ≤⟨ *-monoˡ-≤ (2 + k) q≤1 ⟩
-          2 + k + 0 ≡⟨ +-identityʳ (2 + k) ⟩
-          2 + k     <⟨ ≤‴⇒≤ k<n ⟩
-          2 + n     ∎
-
-      0<q : 0 < q
-      0<q = begin-strict
-        0 <⟨ s≤s z≤n ⟩
-        2 ≤⟨ 2≤q ⟩
-        q ∎
-
-      q<n : q < 2 + n
-      q<n = begin-strict
-        q           <⟨ m<m*n q (2 + k) ⦃ >-nonZero 0<q ⦄ 2≤2+n ⟩
-        q * (2 + k) ≡˘⟨ _∣_.equality k∣n ⟩
-        2 + n       ∎
-
-      q≮2+k : q ≮ 2 + k
-      q≮2+k q<k = k-rough-n 2≤q q<k (quotient∣n k∣n)
-
-      res : PrimeFactorisation q
-      res = rec q q<n {2 + k} 2≤q (≤⇒≤‴ (≮⇒≥ q≮2+k))
-          $ λ {d} d<k d-prime → k-rough-n d<k d-prime ∘ flip ∣-trans (quotient∣n k∣n)
-
-      prop : (2 + k) * product (factors res) ≡ 2 + n
-      prop = begin-equality
-        (2 + k) * product (factors res)
-          ≡⟨ cong ((2 + k) *_) (isFactorisation res) ⟩
-        (2 + k) * q
-          ≡⟨ *-comm (2 + k) q ⟩
-        q * (2 + k)
-          ≡˘⟨ _∣_.equality k∣n ⟩
-        2 + n ∎
+      m*Πps≡n : m * product ps ≡ n
+      m*Πps≡n = begin
+        m * product ps ≡⟨ cong (m *_) Πps≡q ⟩
+        m * q          ≡˘⟨ n≡m*q ⟩
+        n ∎
+        where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of a factorisation
@@ -146,8 +124,8 @@ factorisationHasAllPrimeFactors : ∀ {as} {p} → Prime p → p ∣ product as 
 factorisationHasAllPrimeFactors {[]} {2+ p} pPrime p∣Πas [] = contradiction (∣1⇒≡1 p∣Πas) λ ()
 factorisationHasAllPrimeFactors {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPrime) with euclidsLemma a (product as) pPrime p∣aΠas
 ... | inj₂ p∣Πas = there (factorisationHasAllPrimeFactors pPrime p∣Πas asPrime)
-... | inj₁ p∣a with ∣p⇒≡1∨≡p p aPrime p∣a
-...   | inj₁ refl = ⊥-elim pPrime
+... | inj₁ p∣a with prime⇒irreducible aPrime p∣a
+...   | inj₁ refl = contradiction pPrime ¬prime[1]
 ...   | inj₂ refl = here refl
 
 factorisationUnique′ : (as bs : List ℕ) → product as ≡ product bs → All Prime as → All Prime bs → as ↭ bs
@@ -182,7 +160,7 @@ factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = 
     bs↭a∷bs′ = proj₂ shuffle
 
     Πas≡Πbs′ : product as ≡ product bs′
-    Πas≡Πbs′ = *-cancelˡ-≡ (product as) (product bs′) a {{Prime⇒NonZero aPrime}} $ begin
+    Πas≡Πbs′ = *-cancelˡ-≡ (product as) (product bs′) a {{prime⇒nonZero aPrime}} $ begin
       a * product as  ≡⟨ Πas≡Πbs ⟩
       product bs      ≡⟨ product-↭ bs↭a∷bs′ ⟩
       a * product bs′ ∎
