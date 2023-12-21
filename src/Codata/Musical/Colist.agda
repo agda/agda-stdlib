@@ -34,6 +34,7 @@ import Relation.Binary.Construct.FromRel as Ind
 import Relation.Binary.Reasoning.Preorder as PreR
 import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Reasoning.Syntax
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
@@ -165,12 +166,11 @@ Any-∈ {P = P} = mk↔ₛ′
 module ⊑-Reasoning {a} {A : Set a} where
   private module Base = POR (⊑-Poset A)
 
-  open Base public
-    hiding (step-<; begin-strict_; step-≤)
+  open Base public hiding (step-<; step-≤)
 
-  infixr 2 step-⊑
-  step-⊑ = Base.step-≤
-  syntax step-⊑ x ys⊑zs xs⊑ys = x ⊑⟨ xs⊑ys ⟩ ys⊑zs
+  open ⊑-syntax _IsRelatedTo_ _IsRelatedTo_ Base.≤-go public
+  open ⊏-syntax _IsRelatedTo_ _IsRelatedTo_ Base.<-go public
+
 
 -- The subset relation forms a preorder.
 
@@ -179,22 +179,24 @@ module ⊑-Reasoning {a} {A : Set a} where
                  (λ xs≈ys → ⊑⇒⊆ (⊑P.reflexive xs≈ys))
   where module ⊑P = Poset (⊑-Poset A)
 
+-- Example uses:
+--
+--    x∈zs : x ∈ zs
+--    x∈zs =
+--      x  ∈⟨ x∈xs ⟩
+--      xs ⊆⟨ xs⊆ys ⟩
+--      ys ≡⟨ ys≡zs ⟩
+--      zs  ∎
 module ⊆-Reasoning {A : Set a} where
   private module Base = PreR (⊆-Preorder A)
 
   open Base public
-    hiding (step-∼)
+    hiding (step-≲; step-∼)
+    renaming (≲-go to ⊆-go)
 
-  infixr 2 step-⊆
-  infix  1 step-∈
+  open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → begin x)
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
 
-  step-⊆ = Base.step-∼
-
-  step-∈ : ∀ (x : A) {xs ys} → xs IsRelatedTo ys → x ∈ xs → x ∈ ys
-  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
-
-  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
-  syntax step-∈ x  xs⊆ys x∈xs  = x  ∈⟨ x∈xs  ⟩ xs⊆ys
 
 -- take returns a prefix.
 take-⊑ : ∀ n (xs : Colist A) →

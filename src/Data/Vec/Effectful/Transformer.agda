@@ -40,7 +40,7 @@ functor M = record
 applicative : RawApplicative M → RawApplicative {f} (VecT n M)
 applicative M = record
   { rawFunctor = functor rawFunctor
-  ; pure = mkVecT ∘′ pure ∘′ Vec.replicate
+  ; pure = mkVecT ∘′ pure ∘′ Vec.replicate _
   ; _<*>_  = λ mf ma → mkVecT (Vec.zipWith _$_ <$> runVecT mf <*> runVecT ma)
   } where open RawApplicative M
 
@@ -55,6 +55,6 @@ monad {f} {g} M = record
 
 monadT : RawMonadT {f} {g} (VecT n)
 monadT M = record
-  { lift = mkVecT ∘′ (Vec.replicate <$>_)
+  { lift = mkVecT ∘′ (Vec.replicate _ <$>_)
   ; rawMonad = monad M
   } where open RawMonad M

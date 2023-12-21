@@ -18,7 +18,7 @@
 --    u≈w = begin-equality
 --      u  ≈⟨ u≈v ⟩
 --      v  ≡⟨ v≡w ⟩
---      w  ≡˘⟨ x≡w ⟩
+--      w  ≡⟨ x≡w ⟨
 --      x  ∎
 
 {-# OPTIONS --cubical-compatible --safe #-}

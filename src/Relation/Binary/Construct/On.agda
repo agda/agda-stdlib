@@ -74,7 +74,7 @@ module _ (f : B → A) where
   trichotomous _ _ compare x y = compare (f x) (f y)
 
   accessible : ∀ {∼ : Rel A ℓ} {x} → Acc ∼ (f x) → Acc (∼ on f) x
-  accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
+  accessible (acc rs) = acc (λ fy<fx → accessible (rs fy<fx))
 
   wellFounded : {∼ : Rel A ℓ} → WellFounded ∼ → WellFounded (∼ on f)
   wellFounded wf x = accessible (wf (f x))
@@ -150,9 +150,8 @@ module _ (f : B → A) {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
   isStrictTotalOrder : IsStrictTotalOrder ≈ ∼ →
                        IsStrictTotalOrder (≈ on f) (∼ on f)
   isStrictTotalOrder sto = record
-    { isEquivalence = isEquivalence f Sto.isEquivalence
-    ; trans         = transitive f ∼ Sto.trans
-    ; compare       = trichotomous f ≈ ∼ Sto.compare
+    { isStrictPartialOrder = isStrictPartialOrder Sto.isStrictPartialOrder
+    ; compare              = trichotomous _ _ _ Sto.compare
     } where module Sto = IsStrictTotalOrder sto
 
 ------------------------------------------------------------------------

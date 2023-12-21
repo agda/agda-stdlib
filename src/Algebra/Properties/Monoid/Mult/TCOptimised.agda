@@ -55,14 +55,14 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×ᵤ≈× 0       x = refl
 ×ᵤ≈× (suc n) x = begin
   x + n ×ᵤ x  ≈⟨ +-congˡ (×ᵤ≈× n x) ⟩
-  x + n ×  x  ≈˘⟨ 1+× n x ⟩
+  x + n ×  x  ≈⟨ 1+× n x ⟨
   suc n ×  x  ∎
 
 -- _×_ is homomorphic with respect to _ℕ.+_/_+_.
 
 ×-homo-+ : ∀ c m n → (m ℕ.+ n) × c ≈ m × c + n × c
 ×-homo-+ c m n = begin
-  (m ℕ.+ n) ×  c   ≈˘⟨ ×ᵤ≈× (m ℕ.+ n) c ⟩
+  (m ℕ.+ n) ×  c   ≈⟨ ×ᵤ≈× (m ℕ.+ n) c ⟨
   (m ℕ.+ n) ×ᵤ c   ≈⟨ U.×-homo-+ c m n ⟩
   m ×ᵤ c + n ×ᵤ c  ≈⟨ +-cong (×ᵤ≈× m c) (×ᵤ≈× n c) ⟩
   m ×  c + n ×  c  ∎
@@ -79,8 +79,8 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 
 ×-assocˡ : ∀ x m n → m × (n × x) ≈ (m ℕ.* n) × x
 ×-assocˡ x m n = begin
-  m ×  (n ×  x)  ≈˘⟨ ×-congʳ m (×ᵤ≈× n x) ⟩
-  m ×  (n ×ᵤ x)  ≈˘⟨ ×ᵤ≈× m (n ×ᵤ x) ⟩
+  m ×  (n ×  x)  ≈⟨ ×-congʳ m (×ᵤ≈× n x) ⟨
+  m ×  (n ×ᵤ x)  ≈⟨ ×ᵤ≈× m (n ×ᵤ x) ⟨
   m ×ᵤ (n ×ᵤ x)  ≈⟨  U.×-assocˡ x m n ⟩
   (m ℕ.* n) ×ᵤ x ≈⟨  ×ᵤ≈× (m ℕ.* n) x ⟩
   (m ℕ.* n) ×  x ∎

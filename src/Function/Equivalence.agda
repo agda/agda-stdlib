@@ -31,6 +31,10 @@ record Equivalence {f₁ f₂ t₁ t₂}
   field
     to   : From ⟶ To
     from : To ⟶ From
+{-# WARNING_ON_USAGE Equivalence
+"Warning: Equivalence was deprecated in v2.0.
+Please use Function.(Bundles.)Equivalence instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all equivalences between two sets (i.e. equivalences
@@ -40,6 +44,10 @@ infix 3 _⇔_
 
 _⇔_ : ∀ {f t} → Set f → Set t → Set _
 From ⇔ To = Equivalence (P.setoid From) (P.setoid To)
+{-# WARNING_ON_USAGE _⇔_
+"Warning: _⇔_ was deprecated in v2.0.
+Please use Function.(Bundles.)_⇔_ instead."
+#-}
 
 equivalence : ∀ {f t} {From : Set f} {To : Set t} →
               (From → To) → (To → From) → From ⇔ To
@@ -47,6 +55,10 @@ equivalence to from = record
   { to   = →-to-⟶ to
   ; from = →-to-⟶ from
   }
+{-# WARNING_ON_USAGE equivalence
+"Warning: equivalence was deprecated in v2.0.
+Please use Function.Properties.Equivalence.mkEquivalence instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Equivalence is an equivalence relation
@@ -58,6 +70,11 @@ id {x = S} = record
   { to   = F.id
   ; from = F.id
   }
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v2.0.
+Please use Function.Properties.Equivalence.refl or
+Function.Construct.Identity.equivalence instead."
+#-}
 
 infixr 9 _∘_
 
@@ -69,6 +86,11 @@ f ∘ g = record
   { to   = to   f ⟪∘⟫ to   g
   ; from = from g ⟪∘⟫ from f
   } where open Equivalence
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v2.0.
+Please use Function.Properties.Equivalence.trans or
+Function.Construct.Composition.equivalence instead."
+#-}
 
 -- Symmetry.
 
@@ -79,6 +101,11 @@ sym eq = record
   { from       = to
   ; to         = from
   } where open Equivalence eq
+{-# WARNING_ON_USAGE sym
+"Warning: sym was deprecated in v2.0.
+Please use Function.Properties.Equivalence.sym or
+Function.Construct.Symmetry.equivalence instead."
+#-}
 
 -- For fixed universe levels we can construct setoids.
 
@@ -92,6 +119,10 @@ setoid s₁ s₂ = record
     ; trans = flip _∘_
     }
   }
+{-# WARNING_ON_USAGE setoid
+"Warning: setoid was deprecated in v2.0.
+Please use Function.Properties.Equivalence.setoid instead."
+#-}
 
 ⇔-setoid : (ℓ : Level) → Setoid (suc ℓ) ℓ
 ⇔-setoid ℓ = record
@@ -103,6 +134,10 @@ setoid s₁ s₂ = record
     ; trans = flip _∘_
     }
   }
+{-# WARNING_ON_USAGE ⇔-setoid
+"Warning: ⇔-setoid was deprecated in v2.0.
+Please use Function.Properties.Equivalence.⇔-setoid instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Transformations

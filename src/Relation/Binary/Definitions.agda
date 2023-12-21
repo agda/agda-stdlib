@@ -58,6 +58,12 @@ Symmetric _∼_ = Sym _∼_ _∼_
 Trans : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
 Trans P Q R = ∀ {i j k} → P i j → Q j k → R i k
 
+RightTrans : REL A B ℓ₁ → REL B B ℓ₂ → Set _
+RightTrans R S = Trans R S R
+
+LeftTrans : REL A A ℓ₁ → REL A B ℓ₂ → Set _
+LeftTrans S R = Trans S R R
+
 -- A flipped variant of generalised transitivity.
 
 TransFlip : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
@@ -93,7 +99,7 @@ Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 Dense : Rel A ℓ → Set _
 Dense _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
 
--- Generalised connex - exactly one of the two relations holds.
+-- Generalised connex - at least one of the two relations holds.
 
 Connex : REL A B ℓ₁ → REL B A ℓ₂ → Set _
 Connex P Q = ∀ x y → P x y ⊎ Q y x

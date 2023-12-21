@@ -121,9 +121,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     <-isStrictTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
                            IsStrictTotalOrder _≋_ _<_
     <-isStrictTotalOrder sto = record
-      { isEquivalence = Pointwise.isEquivalence isEquivalence
-      ; trans         = <-transitive isEquivalence <-resp-≈ trans
-      ; compare       = <-compare Eq.sym compare
+      { isStrictPartialOrder = <-isStrictPartialOrder isStrictPartialOrder
+      ; compare              = <-compare Eq.sym compare
       } where open IsStrictTotalOrder sto
 
 <-strictPartialOrder : ∀ {a ℓ₁ ℓ₂} → StrictPartialOrder a ℓ₁ ℓ₂ →

@@ -13,7 +13,7 @@ open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (lookup)
+open import Data.List.Base as List hiding (lookup; updateAt)
 open import Data.List.Properties as Listₚ using (partition-defn)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
@@ -28,7 +28,8 @@ import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _�
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
-open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
+open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing; fromAny)
+open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
 open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -387,6 +388,17 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ... | nothing = mapMaybe⁺ pxs
 ... | just v with px
 ...   | just pv = pv ∷ mapMaybe⁺ pxs
+
+------------------------------------------------------------------------
+-- catMaybes
+
+All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
+All-catMaybes⁺ [] = []
+All-catMaybes⁺ (just px ∷ pxs) = px ∷ All-catMaybes⁺ pxs
+All-catMaybes⁺ (nothing ∷ pxs) = All-catMaybes⁺ pxs
+
+Any-catMaybes⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
+Any-catMaybes⁺ = All-catMaybes⁺ ∘ All.map fromAny
 
 ------------------------------------------------------------------------
 -- _++_

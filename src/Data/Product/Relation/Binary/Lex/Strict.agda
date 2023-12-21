@@ -202,13 +202,13 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
     ×-acc : ∀ {x y} →
             Acc _<₁_ x → Acc _<₂_ y →
             WfRec _<ₗₑₓ_ (Acc _<ₗₑₓ_) (x , y)
-    ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
-      = acc (×-acc (rec₁ u u<x) (wf₂ v))
-    ×-acc acc₁ (acc rec₂) (u , v) (inj₂ (u≈x , v<y))
+    ×-acc (acc rec₁) acc₂ (inj₁ u<x)
+      = acc (×-acc (rec₁ u<x) (wf₂ _))
+    ×-acc acc₁ (acc rec₂) (inj₂ (u≈x , v<y))
       = Acc-resp-flip-≈
         (×-respectsʳ {_<₁_ = _<₁_} {_<₂_ = _<₂_} trans resp (≡.respʳ _<₂_))
         (u≈x , ≡.refl)
-        (acc (×-acc acc₁ (rec₂ v v<y)))
+        (acc (×-acc acc₁ (rec₂ v<y)))
 
 
 module _ {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel B ℓ₂} where
@@ -240,7 +240,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
                           (isEquivalence pre₁) (isEquivalence pre₂)
       ; reflexive     = ×-reflexive _≈₁_ _<₁_ _<₂_ (reflexive pre₂)
       ; trans         = ×-transitive {_<₂_ = _<₂_}
-                          (isEquivalence pre₁) (∼-resp-≈ pre₁)
+                          (isEquivalence pre₁) (≲-resp-≈ pre₁)
                           (trans pre₁) (trans pre₂)
       }
     where open IsPreorder
@@ -269,12 +269,9 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
                          IsStrictTotalOrder _≋_ _<ₗₑₓ_
   ×-isStrictTotalOrder spo₁ spo₂ =
     record
-      { isEquivalence = Pointwise.×-isEquivalence
-                          (isEquivalence spo₁) (isEquivalence spo₂)
-      ; trans         = ×-transitive {_<₁_ = _<₁_} {_<₂_ = _<₂_}
-                          (isEquivalence spo₁)
-                          (<-resp-≈ spo₁) (trans spo₁)
-                          (trans spo₂)
+      { isStrictPartialOrder = ×-isStrictPartialOrder
+                                 (isStrictPartialOrder spo₁)
+                                 (isStrictPartialOrder spo₂)
       ; compare       = ×-compare (Eq.sym spo₁) (compare spo₁)
                                                 (compare spo₂)
       }

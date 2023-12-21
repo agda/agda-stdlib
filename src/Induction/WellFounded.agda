@@ -8,15 +8,18 @@
 
 module Induction.WellFounded where
 
-open import Data.Product.Base using (Σ; _,_; proj₁)
+open import Data.Product.Base using (Σ; _,_; proj₁; proj₂)
 open import Function.Base using (_∘_; flip; _on_)
 open import Induction
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions
-  using (Symmetric; _Respectsʳ_; _Respects_)
+  using (Symmetric; Asymmetric; Irreflexive; _Respects₂_;
+    _Respectsʳ_; _Respects_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Relation.Binary.Consequences using (asym⇒irr)
 open import Relation.Unary
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
@@ -32,7 +35,7 @@ private
 -- well-founded.
 
 WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
-WfRec _<_ P x = ∀ y → y < x → P y
+WfRec _<_ P x = ∀ {y} → y < x → P y
 
 -- The accessibility predicate: x is accessible if everything which is
 -- smaller than x is also accessible (inductively).
@@ -51,13 +54,13 @@ WellFounded _<_ = ∀ x → Acc _<_ x
 -- Basic properties
 
 acc-inverse : ∀ {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
-              (y : A) → y < x → Acc _<_ y
-acc-inverse (acc rs) y y<x = rs y y<x
+              WfRec _<_ (Acc _<_) x
+acc-inverse (acc rs) y<x = rs y<x
 
 module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
 
   Acc-resp-flip-≈ : _<_ Respectsʳ (flip _≈_) → (Acc _<_) Respects _≈_
-  Acc-resp-flip-≈ respʳ x≈y (acc rec) = acc λ z z<y → rec z (respʳ x≈y z<y)
+  Acc-resp-flip-≈ respʳ x≈y (acc rec) = acc λ z<y → rec (respʳ x≈y z<y)
 
   Acc-resp-≈ : Symmetric _≈_ → _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
   Acc-resp-≈ sym respʳ x≈y wf = Acc-resp-flip-≈ (respʳ ∘ sym) x≈y wf
@@ -68,14 +71,13 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
 module Some {_<_ : Rel A r} {ℓ} where
 
   wfRecBuilder : SubsetRecursorBuilder (Acc _<_) (WfRec _<_ {ℓ = ℓ})
-  wfRecBuilder P f x (acc rs) = λ y y<x →
-    f y (wfRecBuilder P f y (rs y y<x))
+  wfRecBuilder P f x (acc rs) = λ y<x → f _ (wfRecBuilder P f _ (rs y<x))
 
   wfRec : SubsetRecursor (Acc _<_) (WfRec _<_)
   wfRec = subsetBuild wfRecBuilder
 
   unfold-wfRec : (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P) {x : A} (q : Acc _<_ x) →
-                 wfRec P f x q ≡ f x (λ y y<x → wfRec P f y (acc-inverse q y y<x))
+                 wfRec P f x q ≡ f x λ y<x → wfRec P f _ (acc-inverse q y<x)
   unfold-wfRec P f (acc rs) = refl
 
 
@@ -96,22 +98,41 @@ module All {_<_ : Rel A r} (wf : WellFounded _<_) ℓ where
 module FixPoint
   {_<_ : Rel A r} (wf : WellFounded _<_)
   (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P)
-  (f-ext : (x : A) {IH IH′ : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH′ y y<x) → f x IH ≡ f x IH′)
+  (f-ext : (x : A) {IH IH′ : WfRec _<_ P x} →
+           (∀ {y} y<x → IH {y} y<x ≡ IH′ y<x) →
+           f x IH ≡ f x IH′)
   where
 
-  some-wfRec-irrelevant : ∀ x → (q q′ : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q′
-  some-wfRec-irrelevant = All.wfRec wf _
-                                   (λ x → (q q′ : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q′)
-                                   (λ { x IH (acc rs) (acc rs′) → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs′ _ y<x)) })
+  some-wfrec-Irrelevant : Pred A _
+  some-wfrec-Irrelevant x = ∀ q q′ → Some.wfRec P f x q ≡ Some.wfRec P f x q′
+
+  some-wfRec-irrelevant : ∀ x → some-wfrec-Irrelevant x
+  some-wfRec-irrelevant = All.wfRec wf _ some-wfrec-Irrelevant
+    λ { x IH (acc rs) (acc rs′) → f-ext x λ y<x → IH y<x (rs y<x) (rs′ y<x) }
 
   open All wf ℓ
-  wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y y<x ≡ wfRec P f y
-  wfRecBuilder-wfRec {x} {y} y<x with wf x
-  ... | acc rs = some-wfRec-irrelevant y (rs y y<x) (wf y)
 
-  unfold-wfRec : ∀ {x} → wfRec P f x ≡ f x (λ y _ → wfRec P f y)
+  wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y<x ≡ wfRec P f y
+  wfRecBuilder-wfRec {x} {y} y<x with acc rs ← wf x
+   = some-wfRec-irrelevant y (rs y<x) (wf y)
+
+  unfold-wfRec : ∀ {x} → wfRec P f x ≡ f x λ _ → wfRec P f _
   unfold-wfRec {x} = f-ext x wfRecBuilder-wfRec
 
+------------------------------------------------------------------------
+-- Well-founded relations are asymmetric and irreflexive.
+
+module _ {_<_ : Rel A r} where
+  acc⇒asym : ∀ {x y} → Acc _<_ x → x < y → ¬ (y < x)
+  acc⇒asym {x} hx =
+    Some.wfRec (λ x → ∀ {y} → x < y → ¬ (y < x)) (λ _ hx x<y y<x → hx y<x y<x x<y) _ hx
+
+  wf⇒asym : WellFounded _<_ → Asymmetric _<_
+  wf⇒asym wf = acc⇒asym (wf _)
+
+  wf⇒irrefl : {_≈_ : Rel A ℓ} → _<_ Respects₂ _≈_ →
+              Symmetric _≈_ → WellFounded _<_ → Irreflexive _≈_ _<_
+  wf⇒irrefl r s wf = asym⇒irr r s (wf⇒asym wf)
 
 ------------------------------------------------------------------------
 -- It might be useful to establish proofs of Acc or Well-founded using
@@ -123,7 +144,7 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
                    (<₁⇒<₂ : ∀ {x y} → x <₁ y → x <₂ y) where
 
   accessible : Acc _<₂_ ⊆ Acc _<₁_
-  accessible (acc rs) = acc λ y y<x → accessible (rs y (<₁⇒<₂ y<x))
+  accessible (acc rs) = acc λ y<x → accessible (rs (<₁⇒<₂ y<x))
 
   wellFounded : WellFounded _<₂_ → WellFounded _<₁_
   wellFounded wf = λ x → accessible (wf x)
@@ -134,7 +155,7 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
 module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
 
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
-  accessible (acc rs) = acc λ y fy<fx → accessible (rs (f y) fy<fx)
+  accessible (acc rs) = acc λ fy<fx → accessible (rs fy<fx)
 
   wellFounded : WellFounded _<_ → WellFounded (_<_ on f)
   wellFounded wf = λ x → accessible (wf (f x))
@@ -161,7 +182,7 @@ module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
     trans : ∀ {x y z} (x<y : x <⁺ y) (y<z : y <⁺ z) → x <⁺ z
 
   downwardsClosed : ∀ {x y} → Acc _<⁺_ y → x <⁺ y → Acc _<⁺_ x
-  downwardsClosed (acc rs) x<y = acc λ z z<x → rs z (trans z<x x<y)
+  downwardsClosed (acc rs) x<y = acc λ z<x → rs (trans z<x x<y)
 
   mutual
 
@@ -169,9 +190,9 @@ module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
     accessible acc-x = acc (accessible′ acc-x)
 
     accessible′ : ∀ {x} → Acc _<_ x → WfRec _<⁺_ (Acc _<⁺_) x
-    accessible′ (acc rs) y [ y<x ]         = accessible (rs y y<x)
-    accessible′ acc-x    y (trans y<z z<x) =
-      downwardsClosed (accessible′ acc-x _ z<x) y<z
+    accessible′ (acc rs) [ y<x ]         = accessible (rs y<x)
+    accessible′ acc-x    (trans y<z z<x) =
+      downwardsClosed (accessible′ acc-x z<x) y<z
 
   wellFounded : WellFounded _<_ → WellFounded _<⁺_
   wellFounded wf = λ x → accessible (wf x)
@@ -205,9 +226,9 @@ module Lexicographic {A : Set a} {B : A → Set b}
       ∀ {x y} →
       Acc RelA x → Acc (RelB x) y → (∀ {x} → WellFounded (RelB x)) →
       WfRec _<_ (Acc _<_) (x , y)
-    accessible′ (acc rsA) _    wfB ._ (left  x′<x) = accessible (rsA _ x′<x) wfB
-    accessible′ accA (acc rsB) wfB ._ (right y′<y) =
-      acc (accessible′ accA (rsB _ y′<y) wfB)
+    accessible′ (acc rsA) _    wfB (left  x′<x) = accessible (rsA x′<x) wfB
+    accessible′ accA (acc rsB) wfB (right y′<y) =
+      acc (accessible′ accA (rsB y′<y) wfB)
 
   wellFounded : WellFounded RelA → (∀ {x} → WellFounded (RelB x)) →
                 WellFounded _<_

@@ -138,9 +138,8 @@ x < y = x ≤ y × x ≉ y
 <-isStrictTotalOrder₁ : Decidable _≈_ → IsTotalOrder _≈_ _≤_ →
                         IsStrictTotalOrder _≈_ _<_
 <-isStrictTotalOrder₁ ≟ tot = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans isPartialOrder
-  ; compare       = <-trichotomous Eq.sym ≟ antisym total
+  { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
+  ; compare              = <-trichotomous Eq.sym ≟ antisym total
   } where open IsTotalOrder tot
 
 <-isStrictTotalOrder₂ : IsDecTotalOrder _≈_ _≤_ →

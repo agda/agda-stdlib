@@ -11,17 +11,16 @@
 
 module Data.Fin.Base where
 
-open import Data.Bool.Base using (Bool; true; false; T; not)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
+open import Data.Bool.Base using (Bool; T)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
-open import Relation.Nullary.Negation.Core using (contradiction)
-open import Relation.Nullary.Decidable.Core using (yes; no; True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 private
   variable
@@ -68,16 +67,15 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ< {m} _ = "m".
 
-fromℕ< : m ℕ.< n → Fin n
-fromℕ< {zero}  {suc n} z<s = zero
-fromℕ< {suc m} {suc n} (s<s m<n) = suc (fromℕ< m<n)
+fromℕ< : .(m ℕ.< n) → Fin n
+fromℕ< {zero}  {suc _} _   = zero
+fromℕ< {suc m} {suc _} m<n = suc (fromℕ< (ℕ.s<s⁻¹ m<n))
 
 -- fromℕ<″ m _ = "m".
 
-fromℕ<″ : ∀ m {n} → m ℕ.<″ n → Fin n
-fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero
-fromℕ<″ (suc m) (ℕ.less-than-or-equal refl) =
-  suc (fromℕ<″ m (ℕ.less-than-or-equal refl))
+fromℕ<″ : ∀ m {n} → .(m ℕ.<″ n) → Fin n
+fromℕ<″ zero    {suc _} _    = zero
+fromℕ<″ (suc m) {suc _} m<″n = suc (fromℕ<″ m (ℕ.s<″s⁻¹ m<″n))
 
 -- canonical liftings of i:Fin m to larger index
 
@@ -95,9 +93,9 @@ zero    ↑ʳ i = i
 
 -- reduce≥ "m + i" _ = "i".
 
-reduce≥ : ∀ (i : Fin (m ℕ.+ n)) (i≥m : toℕ i ℕ.≥ m) → Fin n
-reduce≥ {zero}  i       i≥m       = i
-reduce≥ {suc m} (suc i) (s≤s i≥m) = reduce≥ i i≥m
+reduce≥ : ∀ (i : Fin (m ℕ.+ n)) → .(m ℕ.≤ toℕ i) → Fin n
+reduce≥ {zero}  i       _   = i
+reduce≥ {suc _} (suc i) m≤i = reduce≥ i (ℕ.s≤s⁻¹ m≤i)
 
 -- inject⋆ m "i" = "i".
 
@@ -106,16 +104,16 @@ inject {i = suc i} zero    = zero
 inject {i = suc i} (suc j) = suc (inject j)
 
 inject! : ∀ {i : Fin (suc n)} → Fin′ i → Fin n
-inject! {n = suc _} {i = suc _}  zero    = zero
-inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
+inject! {n = suc _} {i = suc _} zero    = zero
+inject! {n = suc _} {i = suc _} (suc j) = suc (inject! j)
 
 inject₁ : Fin n → Fin (suc n)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
-inject≤ : Fin m → m ℕ.≤ n → Fin n
-inject≤ {_} {suc n} zero    _         =  zero
-inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
+inject≤ : Fin m → .(m ℕ.≤ n) → Fin n
+inject≤ {n = suc _} zero    _   = zero
+inject≤ {n = suc _} (suc i) m≤n = suc (inject≤ i (ℕ.s≤s⁻¹ m≤n))
 
 -- lower₁ "i" _ = "i".
 
@@ -166,12 +164,12 @@ combine {suc m} {n} zero    j = j ↑ˡ (m ℕ.* n)
 combine {suc m} {n} (suc i) j = n ↑ʳ (combine i j)
 
 -- Next in progression after splitAt and remQuot
-finToFun : Fin (m ^ n) → (Fin n → Fin m)
-finToFun {m} {suc n} i zero    = quotient (m ^ n) i
-finToFun {m} {suc n} i (suc j) = finToFun (remainder {m} (m ^ n) i) j
+finToFun : Fin (m ℕ.^ n) → (Fin n → Fin m)
+finToFun {m} {suc n} i zero    = quotient (m ℕ.^ n) i
+finToFun {m} {suc n} i (suc j) = finToFun (remainder {m} (m ℕ.^ n) i) j
 
 -- inverse of above function
-funToFin : (Fin m → Fin n) → Fin (n ^ m)
+funToFin : (Fin m → Fin n) → Fin (n ℕ.^ m)
 funToFin {zero}  f = zero
 funToFin {suc m} f = combine (f zero) (funToFin (f ∘ suc))
 
@@ -319,7 +317,7 @@ compare (suc i) (suc j) with compare i j
 raise = _↑ʳ_
 {-# WARNING_ON_USAGE raise
 "Warning: raise was deprecated in v2.0.
-Please use _↑_ʳ instead."
+Please use _↑ʳ_ instead."
 #-}
 inject+ : ∀ {m} n → Fin m → Fin (m ℕ.+ n)
 inject+ n i = i ↑ˡ n

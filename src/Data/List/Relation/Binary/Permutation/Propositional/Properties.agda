@@ -29,7 +29,8 @@ open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Definitions using (_Respects_; Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_ ; refl ; cong; cong₂; _≢_; module ≡-Reasoning)
+  using (_≡_ ; refl ; cong; cong₂; _≢_)
+open import Relation.Binary.PropositionalEquality.Properties using (module ≡-Reasoning)
 open import Relation.Nullary
 
 private
@@ -245,7 +246,7 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
   x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
-  x ∷ ys ++ xs   ↭˘⟨ shift x ys xs ⟩
+  x ∷ ys ++ xs   ↭⟨ shift x ys xs ⟨
   ys ++ (x ∷ xs) ∎
   where open PermutationReasoning
 
@@ -299,7 +300,7 @@ module _ {a} {A : Set a} where
 
 shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
 shifts xs ys {zs} = begin
-   xs ++ ys  ++ zs ↭˘⟨ ++-assoc xs ys zs ⟩
+   xs ++ ys  ++ zs ↭⟨ ++-assoc xs ys zs ⟨
   (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
   (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
    ys ++ xs  ++ zs ∎
@@ -335,7 +336,7 @@ drop-∷ = drop-mid [] []
 ↭-reverse [] = ↭-refl
 ↭-reverse (x ∷ xs) = begin
   reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
-  reverse xs ∷ʳ x ↭˘⟨ ∷↭∷ʳ x (reverse xs) ⟩
+  reverse xs ∷ʳ x ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
   x ∷ reverse xs   ↭⟨ prep x (↭-reverse xs) ⟩
   x ∷ xs ∎
   where open PermutationReasoning
@@ -354,8 +355,8 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
   ... | true  | rec | _   = prep x rec
   ... | false | _   | rec = begin
     y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
-    y ∷ x ∷ xs ++ ys         ↭˘⟨ shift y (x ∷ xs) ys ⟩
-    (x ∷ xs) ++ y ∷ ys       ≡˘⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟩
+    y ∷ x ∷ xs ++ ys         ↭⟨ shift y (x ∷ xs) ys ⟨
+    (x ∷ xs) ++ y ∷ ys       ≡⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
 

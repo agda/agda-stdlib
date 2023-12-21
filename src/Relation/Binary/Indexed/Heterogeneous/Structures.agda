@@ -34,13 +34,13 @@ record IsIndexedEquivalence : Set (i ⊔ a ⊔ ℓ) where
   reflexive P.refl = refl
 
 
-record IsIndexedPreorder {ℓ₂} (_∼_ : IRel A ℓ₂) : Set (i ⊔ a ⊔ ℓ ⊔ ℓ₂) where
+record IsIndexedPreorder {ℓ₂} (_≲_ : IRel A ℓ₂) : Set (i ⊔ a ⊔ ℓ ⊔ ℓ₂) where
   field
     isEquivalence : IsIndexedEquivalence
-    reflexive     : ∀ {i j} → (_≈_ {i} {j}) ⟨ _⇒_ ⟩ _∼_
-    trans         : Transitive A _∼_
+    reflexive     : ∀ {i j} → (_≈_ {i} {j}) ⟨ _⇒_ ⟩ _≲_
+    trans         : Transitive A _≲_
 
   module Eq = IsIndexedEquivalence isEquivalence
 
-  refl : Reflexive A _∼_
+  refl : Reflexive A _≲_
   refl = reflexive Eq.refl

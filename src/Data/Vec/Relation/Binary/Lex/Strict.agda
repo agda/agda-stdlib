@@ -134,7 +134,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     where
 
     <-wellFounded : ∀ {n} → WellFounded (_<_ {n})
-    <-wellFounded {0}     [] = acc λ ys ys<[] → ⊥-elim (xs≮[] ys<[])
+    <-wellFounded {0}     [] = acc λ ys<[] → ⊥-elim (xs≮[] ys<[])
+
     <-wellFounded {suc n} xs = Subrelation.wellFounded <⇒uncons-Lex uncons-Lex-wellFounded xs
       where
         <⇒uncons-Lex : {xs ys : Vec A (suc n)} → xs < ys → (×-Lex _≈_ _≺_ _<_ on uncons) xs ys
@@ -167,8 +168,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   <-isStrictTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
                          ∀ {n} → IsStrictTotalOrder (_≋_ {n} {n}) _<_
   <-isStrictTotalOrder ≺-isStrictTotalOrder {n} = record
-    { isEquivalence = Pointwise.isEquivalence O.isEquivalence n
-    ; trans         = <-trans O.Eq.isPartialEquivalence O.<-resp-≈ O.trans
+    { isStrictPartialOrder = <-isStrictPartialOrder O.isStrictPartialOrder
     ; compare       = <-cmp O.Eq.sym O.compare
     } where module O = IsStrictTotalOrder ≺-isStrictTotalOrder
 
@@ -324,23 +324,21 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 -- Equational Reasoning
 ------------------------------------------------------------------------
 
-module ≤-Reasoning {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
-                   (≈-isEquivalence : IsEquivalence _≈_)
-                   (≺-irrefl : Irreflexive _≈_ _≺_)
-                   (≺-trans : Transitive _≺_)
-                   (≺-resp-≈ : _≺_ Respects₂ _≈_)
-                   (n : ℕ)
-                   where
+module ≤-Reasoning
+  {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
+  (≺-isStrictPartialOrder : IsStrictPartialOrder _≈_ _≺_)
+  (n : ℕ)
+  where
 
-  private
-    ≈-isPartialEquivalence = IsEquivalence.isPartialEquivalence ≈-isEquivalence
+  open IsStrictPartialOrder ≺-isStrictPartialOrder
 
   open import Relation.Binary.Reasoning.Base.Triple
-    (≤-isPreorder ≈-isEquivalence ≺-trans ≺-resp-≈)
-    (<-irrefl ≺-irrefl)
-    (<-trans ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
-    (<-respects₂ ≈-isPartialEquivalence ≺-resp-≈)
+    (≤-isPreorder isEquivalence trans <-resp-≈)
+    (<-asym Eq.sym <-resp-≈ asym)
+    (<-trans Eq.isPartialEquivalence <-resp-≈ trans)
+    (<-respects₂ Eq.isPartialEquivalence <-resp-≈)
     (<⇒≤ {m = n})
-    (<-transˡ ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
-    (<-transʳ ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
+    (<-transˡ Eq.isPartialEquivalence <-resp-≈ trans)
+    (<-transʳ Eq.isPartialEquivalence <-resp-≈ trans)
     public
+

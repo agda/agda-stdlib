@@ -27,8 +27,8 @@ import Relation.Binary.Construct.NaturalOrder.Left _≈_ _∧_
 poset : Poset c ℓ ℓ
 poset = LeftNaturalOrder.poset isSemilattice
 
-open Poset poset using (_≤_; isPartialOrder)
-open PosetProperties poset using (_≥_; ≥-isPartialOrder)
+open Poset poset using (_≤_; _≥_; isPartialOrder)
+open PosetProperties poset using (≥-isPartialOrder)
 
 ------------------------------------------------------------------------
 -- Every algebraic semilattice can be turned into an order-theoretic one.

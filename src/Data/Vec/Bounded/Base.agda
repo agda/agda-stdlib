@@ -22,6 +22,8 @@ open import Function.Base using (_∘_; id; _$_)
 open import Level using (Level)
 open import Relation.Nullary.Decidable.Core using (recompute)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable
@@ -49,14 +51,14 @@ fromVec v = v , ℕₚ.≤-refl
 padRight : ∀ {n} → A → Vec≤ A n → Vec A n
 padRight a (vs , m≤n)
   with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
-... | less-than-or-equal refl = vs Vec.++ Vec.replicate a
+... | less-than-or-equal refl = vs Vec.++ Vec.replicate  _ a
 
 padLeft : ∀ {n} → A → Vec≤ A n → Vec A n
 padLeft a as@(vs , m≤n)
   with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
 ... | less-than-or-equal {k} ∣as∣+k≡n
   with P.trans (ℕₚ.+-comm k (Vec≤.length as)) ∣as∣+k≡n
-... | refl = Vec.replicate a Vec.++ vs
+...   | refl = Vec.replicate k a Vec.++ vs
 
 private
   split : ∀ {m n} k → m + k ≡ n → ⌊ k /2⌋ + (m + ⌈ k /2⌉) ≡ n
@@ -66,16 +68,16 @@ private
     m + (⌈ k /2⌉ + ⌊ k /2⌋) ≡⟨ P.cong (m +_) (ℕₚ.+-comm ⌈ k /2⌉ ⌊ k /2⌋) ⟩
     m + (⌊ k /2⌋ + ⌈ k /2⌉) ≡⟨ P.cong (m +_) (ℕₚ.⌊n/2⌋+⌈n/2⌉≡n k) ⟩
     m + k                   ≡⟨ eq ⟩
-    n                       ∎ where open P.≡-Reasoning
+    n                       ∎ where open ≡-Reasoning
 
 padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
 padBoth aₗ aᵣ as@(vs , m≤n)
   with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
 ... | less-than-or-equal {k} ∣as∣+k≡n
-  with split k ∣as∣+k≡n
-... | refl = Vec.replicate {n = ⌊ k /2⌋} aₗ
+    with split k ∣as∣+k≡n
+... | refl = Vec.replicate ⌊ k /2⌋ aₗ
       Vec.++ vs
-      Vec.++ Vec.replicate {n = ⌈ k /2⌉} aᵣ
+      Vec.++ Vec.replicate ⌈ k /2⌉ aᵣ
 
 
 fromList : (as : List A) → Vec≤ A (List.length as)
@@ -88,7 +90,7 @@ toList = Vec.toList ∘ Vec≤.vec
 -- Creating new Vec≤ vectors
 
 replicate : ∀ {m n} .(m≤n : m ≤ n) → A → Vec≤ A n
-replicate m≤n a = Vec.replicate a , m≤n
+replicate m≤n a = Vec.replicate _ a , m≤n
 
 [] : ∀ {n} → Vec≤ A n
 [] = Vec.[] , z≤n
@@ -131,12 +133,12 @@ align = alignWith id
 take : ∀ {m} n → Vec≤ A m → Vec≤ A (n ⊓ m)
 take             zero    _                = []
 take             (suc n) (Vec.[] , p)     = []
-take {m = suc m} (suc n) (a Vec.∷ as , p) = a ∷ take n (as , ℕₚ.≤-pred p)
+take {m = suc m} (suc n) (a Vec.∷ as , p) = a ∷ take n (as , s≤s⁻¹ p)
 
 drop : ∀ {m} n → Vec≤ A m → Vec≤ A (m ∸ n)
 drop             zero    v                = v
 drop             (suc n) (Vec.[] , p)     = []
-drop {m = suc m} (suc n) (a Vec.∷ as , p) = drop n (as , ℕₚ.≤-pred p)
+drop {m = suc m} (suc n) (a Vec.∷ as , p) = drop n (as , s≤s⁻¹ p)
 
 ------------------------------------------------------------------------
 -- Lifting a collection of bounded vectors to the same size

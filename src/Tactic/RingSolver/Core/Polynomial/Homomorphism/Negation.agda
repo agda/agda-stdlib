@@ -42,10 +42,10 @@ open import Tactic.RingSolver.Core.Polynomial.Semantics homo
         ∎
   in
   begin
-    ⟦ poly-map (⊟-step (wf _ i≤n)) xs ⊐↓ i≤n ⟧ ρ′
-  ≈⟨ ⊐↓-hom (poly-map (⊟-step (wf _ i≤n)) xs) i≤n ρ′ ⟩
-    ⅀?⟦ poly-map (⊟-step  (wf _ i≤n)) xs ⟧ (ρ , ρs)
-  ≈⟨ poly-mapR ρ ρs (⊟-step (wf _ i≤n)) -_ (-‿cong) (λ x y → *-comm x (- y) ⟨ trans ⟩ -‿*-distribˡ y x ⟨ trans ⟩ -‿cong (*-comm _ _)) (λ x y → sym (-‿+-comm x y)) (flip (⊟-step-hom (wf _ i≤n)) ρs) (sym neg-zero ) xs ⟩
+    ⟦ poly-map (⊟-step (wf i≤n)) xs ⊐↓ i≤n ⟧ ρ′
+  ≈⟨ ⊐↓-hom (poly-map (⊟-step (wf i≤n)) xs) i≤n ρ′ ⟩
+    ⅀?⟦ poly-map (⊟-step  (wf i≤n)) xs ⟧ (ρ , ρs)
+  ≈⟨ poly-mapR ρ ρs (⊟-step (wf i≤n)) -_ (-‿cong) (λ x y → *-comm x (- y) ⟨ trans ⟩ -‿*-distribˡ y x ⟨ trans ⟩ -‿cong (*-comm _ _)) (λ x y → sym (-‿+-comm x y)) (flip (⊟-step-hom (wf i≤n)) ρs) (sym neg-zero ) xs ⟩
     - ⅀⟦ xs ⟧ (ρ , ρs)
   ∎
 
