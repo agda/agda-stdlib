@@ -73,16 +73,6 @@ n/m≡quotient : (m∣n : m ∣ n) .{{_ : NonZero m}} → n / m ≡ quotient m�
 n/m≡quotient {m = m} (divides-refl q) = m*n/n≡m q m
 
 ------------------------------------------------------------------------
--- Properties of quotient
-
-quotient∣n : ∀ {m n} (m∣n : m ∣ n) → quotient m∣n ∣ n
-quotient∣n {m = m} {n = n} m∣n = divides m $ begin-equality
-  n                ≡⟨ _∣_.equality m∣n ⟩
-  quotient m∣n * m ≡⟨ *-comm (quotient m∣n) m ⟩
-  m * quotient m∣n ∎
-  where open ≤-Reasoning
-
-------------------------------------------------------------------------
 -- Relationship with _%_
 
 m%n≡0⇒n∣m : ∀ m n .{{_ : NonZero n}} → m % n ≡ 0 → n ∣ m

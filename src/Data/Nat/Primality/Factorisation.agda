@@ -10,7 +10,7 @@ module Data.Nat.Primality.Factorisation where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; quotient∣n; ∣-trans; ∣1⇒≡1; divides; quotient-<; m|n⇒n≡m*quotient; hasNonTrivialDivisor; quotient≢0; quotient-∣; quotient>1)
+open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; ∣-trans; ∣1⇒≡1; divides; quotient-<; m|n⇒n≡m*quotient; hasNonTrivialDivisor; quotient≢0; quotient-∣; quotient>1)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-Rec; <-rec; <-recBuilder)
 open import Data.Nat.Primality using (Prime; prime; euclidsLemma; prime⇒irreducible; prime⇒nonZero; _Rough_; 2-rough; ∤⇒rough-suc; rough∧∣⇒prime; ¬prime[1]; rough∧∣⇒rough; rough∧>square⇒prime)
