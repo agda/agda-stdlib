@@ -10,7 +10,7 @@ module Data.Nat.Primality.Factorisation where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; ∣-trans; ∣1⇒≡1; divides; quotient-<; m|n⇒n≡m*quotient; hasNonTrivialDivisor; quotient≢0; quotient-∣; quotient>1)
+open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; ∣1⇒≡1; divides; quotient-<; m|n⇒n≡m*quotient; hasNonTrivialDivisor; quotient-∣; quotient>1)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-Rec; <-rec; <-recBuilder)
 open import Data.Nat.Primality using (Prime; prime; euclidsLemma; prime⇒irreducible; prime⇒nonZero; _Rough_; 2-rough; ∤⇒rough-suc; rough∧∣⇒prime; ¬prime[1]; rough∧∣⇒rough; rough∧>square⇒prime)
@@ -81,14 +81,13 @@ factorise n₀@(2+ _) = build [ <-recBuilder ⊗ <-recBuilder ] P facRec (n₀ ,
     }
   facRec (n@(2+ _) , suc k) (recFactor , recQuotient) {m@(2+ _)} rough eq with m ∣? n
   -- Case 2: m ∤ n, try larger m, reducing k accordingly
-  ... | no m∤n = recFactor (≤-<-trans (m∸n≤m k (2 * m)) (n<1+n k)) {suc m} (∤⇒rough-suc m∤n rough) $ begin
+  ... | no m∤n = recFactor (≤-<-trans (m∸n≤m k (m + m)) (n<1+n k)) {suc m} (∤⇒rough-suc m∤n rough) $ begin
     suc n ∸ (suc m + m * suc m)   ≡⟨ cong (λ # → suc n ∸ (suc m + #)) (*-suc m m) ⟩
     suc n ∸ (suc m + (m + m * m)) ≡˘⟨ cong (suc n ∸_) (+-assoc (suc m) m (m * m)) ⟩
     suc n ∸ (suc (m + m) + m * m) ≡⟨ cong (suc n ∸_) (+-comm (suc (m + m)) (m * m)) ⟩
-    suc n ∸ (m * m + suc (m + m)) ≡˘⟨ cong (λ # → suc n ∸ (m * m + suc (m + #))) (+-identityʳ m) ⟩
-    suc n ∸ (m * m + suc (2 * m)) ≡˘⟨ ∸-+-assoc (suc n) (m * m) (suc (2 * m)) ⟩
-    (suc n ∸ m * m) ∸ suc (2 * m) ≡⟨ cong (_∸ suc (2 * m)) eq ⟩
-    suc k ∸ suc (2 * m)           ∎
+    suc n ∸ (m * m + suc (m + m)) ≡˘⟨ ∸-+-assoc (suc n) (m * m) (suc (m + m)) ⟩
+    (suc n ∸ m * m) ∸ suc (m + m) ≡⟨ cong (_∸ suc (m + m)) eq ⟩
+    suc k ∸ suc (m + m)           ∎
     where open ≡-Reasoning
   -- Case 3: m ∣ n, record m and recurse on the quotient
   ... | yes m∣n = record
