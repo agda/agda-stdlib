@@ -12,9 +12,9 @@ open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; quotient∣n; ∣-trans; ∣1⇒≡1; divides; quotient-<; m|n⇒n≡m*quotient; hasNonTrivialDivisor; quotient≢0; quotient-∣; quotient>1)
 open import Data.Nat.Properties
-open import Data.Nat.Induction using (<-Rec; <-rec)
-open import Data.Nat.Primality using (Prime; prime; euclidsLemma; prime⇒irreducible; prime⇒nonZero; _Rough_; 2-rough; ∤⇒rough-suc; rough∧∣⇒prime; ¬prime[1]; rough∧∣⇒rough)
-open import Data.Product as Π using (∃-syntax; _,_; proj₁; proj₂)
+open import Data.Nat.Induction using (<-Rec; <-rec; <-recBuilder)
+open import Data.Nat.Primality using (Prime; prime; euclidsLemma; prime⇒irreducible; prime⇒nonZero; _Rough_; 2-rough; ∤⇒rough-suc; rough∧∣⇒prime; ¬prime[1]; rough∧∣⇒rough; rough∧>square⇒prime)
+open import Data.Product as Π using (∃-syntax; _×_; _,_; proj₁; proj₂)
 open import Data.List.Base using (List; []; _∷_; _++_; product)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Membership.Propositional.Properties using (∈-∃++)
@@ -25,6 +25,8 @@ open import Data.List.Relation.Binary.Permutation.Propositional as ↭
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (product-↭; All-resp-↭; shift)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
+open import Induction using (build)
+open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; trans; cong; module ≡-Reasoning)
@@ -65,22 +67,30 @@ factorise 1 = record
   ; isFactorisation = refl
   ; factorsPrime = []
   }
-factorise (2+ n₀) = <-rec P facRec (2+ n₀) 2-rough n₀ refl
+factorise n₀@(2+ _) = build [ <-recBuilder ⊗ <-recBuilder ] P facRec (n₀ , suc n₀ ∸ 4) 2-rough refl
   where
-  P : ℕ → Set
-  P n = ∀ {m} → .{{NonTrivial n}} → .{{NonTrivial m}} → m Rough n → (k : ℕ) → (n ≡ m + k) → PrimeFactorisation n
+  P : ℕ × ℕ → Set
+  P (n , k) = ∀ {m} → .{{NonTrivial n}} → .{{NonTrivial m}} → m Rough n → suc n ∸ m * m ≡ k → PrimeFactorisation n
 
-  facRec : ∀ n → <-Rec P n → P n
-  -- Case 1: m = n, ∴ Prime n
-  facRec (2+ _) rec {m} rough zero eq rewrite eq | +-identityʳ m = record
-    { factors = m ∷ []
-    ; isFactorisation = *-identityʳ m
-    ; factorsPrime = prime rough ∷ []
+  facRec : ∀ n×k → (<-Rec ⊗ <-Rec) P n×k → P n×k
+  -- Case 1: m * m > n, ∴ Prime n
+  facRec (n , zero) _ rough eq = record
+    { factors = n ∷ []
+    ; isFactorisation = *-identityʳ n
+    ; factorsPrime = rough∧>square⇒prime rough (m∸n≡0⇒m≤n eq) ∷ []
     }
-  facRec n@(2+ _) rec {m@(2+ _)} rough (suc k) eq with m ∣? n
-  -- Case 2: m ∤ n, try larger m
-  ... | no m∤n = facRec n rec (∤⇒rough-suc m∤n rough) k (trans eq (+-suc m k))
-  -- Case 3: m ∣ n: record m and recurse on the quotient
+  facRec (n@(2+ _) , suc k) (recFactor , recQuotient) {m@(2+ _)} rough eq with m ∣? n
+  -- Case 2: m ∤ n, try larger m, reducing k accordingly
+  ... | no m∤n = recFactor (≤-<-trans (m∸n≤m k (2 * m)) (n<1+n k)) {suc m} (∤⇒rough-suc m∤n rough) $ begin
+    suc n ∸ (suc m + m * suc m)   ≡⟨ cong (λ # → suc n ∸ (suc m + #)) (*-suc m m) ⟩
+    suc n ∸ (suc m + (m + m * m)) ≡˘⟨ cong (suc n ∸_) (+-assoc (suc m) m (m * m)) ⟩
+    suc n ∸ (suc (m + m) + m * m) ≡⟨ cong (suc n ∸_) (+-comm (suc (m + m)) (m * m)) ⟩
+    suc n ∸ (m * m + suc (m + m)) ≡˘⟨ cong (λ # → suc n ∸ (m * m + suc (m + #))) (+-identityʳ m) ⟩
+    suc n ∸ (m * m + suc (2 * m)) ≡˘⟨ ∸-+-assoc (suc n) (m * m) (suc (2 * m)) ⟩
+    (suc n ∸ m * m) ∸ suc (2 * m) ≡⟨ cong (_∸ suc (2 * m)) eq ⟩
+    suc k ∸ suc (2 * m)           ∎
+    where open ≡-Reasoning
+  -- Case 3: m ∣ n, record m and recurse on the quotient
   ... | yes m∣n = record
     { factors = m ∷ ps
     ; isFactorisation = m*Πps≡n
@@ -89,28 +99,22 @@ factorise (2+ n₀) = <-rec P facRec (2+ n₀) 2-rough n₀ refl
     where
       m<n : m < n
       m<n = begin-strict
-        m         <⟨ m<m+n m (s≤s z≤n) ⟩
-        m + suc k ≡˘⟨ eq ⟩
-        n ∎
+        m            <⟨ s≤s (≤-trans (m≤n+m m _) (+-monoʳ-≤ _ (m≤m+n m _))) ⟩
+        pred (m * m) <⟨ s<s⁻¹ (m∸n≢0⇒n<m λ eq′ → 0≢1+n (trans (sym eq′) eq)) ⟩
+        n            ∎
         where open ≤-Reasoning
       q = quotient m∣n
-      q<n = quotient-< m∣n
-      n≡m*q = m|n⇒n≡m*quotient m∣n
-      instance _ = n>1⇒nonTrivial (quotient>1 m∣n m<n)
-      m≤q = ≮⇒≥ (λ q<m → rough record { divisor-< = q<m; divisor-∣ = quotient-∣ m∣n})
-
+      instance _  = n>1⇒nonTrivial (quotient>1 m∣n m<n)
       factorisation[q] : PrimeFactorisation q
-      factorisation[q] = rec q<n (rough∧∣⇒rough rough (quotient-∣ m∣n)) (q ∸ m) (sym (m+[n∸m]≡n m≤q)) 
-
+      factorisation[q] = recQuotient (quotient-< m∣n) (suc q ∸ m * m) (rough∧∣⇒rough rough (quotient-∣ m∣n)) refl
       ps = factors factorisation[q]
       primes = factorsPrime factorisation[q]
       Πps≡q = isFactorisation factorisation[q]
-
       m*Πps≡n : m * product ps ≡ n
       m*Πps≡n = begin
         m * product ps ≡⟨ cong (m *_) Πps≡q ⟩
-        m * q          ≡˘⟨ n≡m*q ⟩
-        n ∎
+        m * q          ≡˘⟨ m|n⇒n≡m*quotient m∣n ⟩
+        n              ∎
         where open ≡-Reasoning
 
 ------------------------------------------------------------------------

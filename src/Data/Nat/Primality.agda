@@ -294,6 +294,17 @@ prime⇒rough (prime pr) = pr
 rough∧∣⇒prime : .{{NonTrivial p}} → p Rough n → p ∣ n → Prime p
 rough∧∣⇒prime r p∣n = prime (rough∧∣⇒rough r p∣n)
 
+-- If a number n is m-rough, and m * m > n, then n must be prime.
+rough∧>square⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
+rough∧>square⇒prime rough m*m>n = prime ¬composite
+  where
+    ¬composite : ¬ Composite _
+    ¬composite (hasNonTrivialDivisor d<n d∣n) = contradiction (m|n⇒n≡quotient*m d∣n)
+      (<⇒≢ (<-≤-trans m*m>n (*-mono-≤
+        (≮⇒≥ λ q<m → rough (hasNonTrivialDivisor q<m (quotient-∣ d∣n)))
+        (≮⇒≥ λ d<m → rough (hasNonTrivialDivisor d<m d∣n)))))
+      where instance _ = n>1⇒nonTrivial (quotient>1 d∣n d<n)
+
 -- Relationship between compositeness and primality.
 composite⇒¬prime : Composite n → ¬ Prime n
 composite⇒¬prime composite[d] (prime p) = p composite[d]
