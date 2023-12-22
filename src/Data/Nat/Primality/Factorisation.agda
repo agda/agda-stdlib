@@ -56,11 +56,6 @@ open PrimeFactorisation
 --   encounter a factor, as we can then divide by that factor and continue from
 --   there without termination issues
 
-private
-  pattern 2+ n = suc (suc n)
-  pattern 2≤2+n = s≤s (s≤s z≤n)
-  pattern 1<2+n = 2≤2+n
-
 factorise : ∀ n → .{{NonZero n}} → PrimeFactorisation n
 factorise 1 = record
   { factors = []
@@ -139,7 +134,7 @@ factorisationUnique′ [] (suc (suc b) ∷ bs) Πas≡Πbs asPrime (bPrime ∷ b
     Πas<Πbs : product [] < product (2+ b ∷ bs)
     Πas<Πbs = begin-strict
       1                    ≡⟨⟩
-      1       * 1          <⟨ *-monoˡ-< 1 {1} {2 + b} 1<2+n ⟩
+      1       * 1          <⟨ *-monoˡ-< 1 {1} {2 + b} sz<ss ⟩
       (2 + b) * 1          ≤⟨ *-monoʳ-≤ (2 + b) (factorisation≥1 bsPrime) ⟩
       2+ b    * product bs ≡⟨⟩
       product (2+ b ∷ bs)  ∎
