@@ -85,3 +85,6 @@ Additions to existing modules
   ```agda
   map : (Char → Char) → String → String
   ```
+
+* In `Function.Bundles`, added `_➙_` as a synonym for `Func` that can
+  be used infix.
