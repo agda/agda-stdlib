@@ -32,17 +32,12 @@ open import Level using (0ℓ)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core
   using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.Bundles
-  using (DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
-open import Relation.Binary.Structures
-  using (IsDecEquivalence; IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.Definitions
-  using (DecidableEquality; Irrelevant; Reflexive; Antisymmetric; Transitive; Total; Decidable; Connex; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri>; tri<; _Respects₂_)
+open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
-open import Relation.Nullary.Negation using (contradiction; contradiction₂)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open import Algebra.Definitions {A = ℕ} _≡_
@@ -64,6 +59,15 @@ private
 nonZero? : U.Decidable NonZero
 nonZero? zero    = no NonZero.nonZero
 nonZero? (suc n) = yes _
+
+------------------------------------------------------------------------
+-- Properties of NonTrivial
+------------------------------------------------------------------------
+
+nonTrivial? : U.Decidable NonTrivial
+nonTrivial? 0      = no λ()
+nonTrivial? 1      = no λ()
+nonTrivial? (2+ n) = yes _
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -173,9 +177,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≤-total : Total _≤_
 ≤-total zero    _       = inj₁ z≤n
 ≤-total _       zero    = inj₂ z≤n
-≤-total (suc m) (suc n) with ≤-total m n
-... | inj₁ m≤n = inj₁ (s≤s m≤n)
-... | inj₂ n≤m = inj₂ (s≤s n≤m)
+≤-total (suc m) (suc n) = Sum.map s≤s s≤s (≤-total m n)
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant z≤n        z≤n        = refl
@@ -265,7 +267,7 @@ s≤s-injective : {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
 ≤-pred : suc m ≤ suc n → m ≤ n
-≤-pred (s≤s m≤n) = m≤n
+≤-pred = s≤s⁻¹
 
 m≤n⇒m≤1+n : m ≤ n → m ≤ 1 + n
 m≤n⇒m≤1+n z≤n       = z≤n
@@ -404,7 +406,7 @@ _>?_ = flip _<?_
   }
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
-<-isStrictTotalOrder = record
+<-isStrictTotalOrder = isStrictTotalOrderᶜ record
   { isEquivalence = isEquivalence
   ; trans         = <-trans
   ; compare       = <-cmp
@@ -427,7 +429,7 @@ s<s-injective : {p q : m < n} → s<s p ≡ s<s q → p ≡ q
 s<s-injective refl = refl
 
 <-pred : suc m < suc n → m < n
-<-pred (s<s m<n) = m<n
+<-pred = s<s⁻¹
 
 m<n⇒m<1+n : m < n → m < 1 + n
 m<n⇒m<1+n z<s               = z<s
@@ -464,12 +466,10 @@ m<n⇒n≢0 (s≤s m≤n) ()
 m<n⇒m≤1+n : m < n → m ≤ suc n
 m<n⇒m≤1+n = m≤n⇒m≤1+n ∘ <⇒≤
 
-m<1+n⇒m<n∨m≡n : m < suc n → m < n ⊎ m ≡ n
-m<1+n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
-m<1+n⇒m<n∨m≡n {0}     {suc n} _          =  inj₁ 0<1+n
-m<1+n⇒m<n∨m≡n {suc m} {suc n} (s<s m<1+n)  with m<1+n⇒m<n∨m≡n m<1+n
-... | inj₂ m≡n = inj₂ (cong suc m≡n)
-... | inj₁ m<n = inj₁ (s<s m<n)
+m<1+n⇒m<n∨m≡n :  ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
+m<1+n⇒m<n∨m≡n {0}     {0}     _           = inj₂ refl
+m<1+n⇒m<n∨m≡n {0}     {suc n} _           = inj₁ 0<1+n
+m<1+n⇒m<n∨m≡n {suc m} {suc n} (s<s m<1+n) = Sum.map s<s (cong suc) (m<1+n⇒m<n∨m≡n m<1+n)
 
 m≤n⇒m<n∨m≡n : m ≤ n → m < n ⊎ m ≡ n
 m≤n⇒m<n∨m≡n m≤n = m<1+n⇒m<n∨m≡n (s≤s m≤n)
@@ -500,14 +500,14 @@ m<1+n⇒m≤n (s≤s m≤n) = m≤n
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
-    <-irrefl
+    <-asym
     <-trans
     (resp₂ _<_)
     <⇒≤
     <-≤-trans
     ≤-<-trans
     public
-    hiding (step-≈; step-≈˘)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
 
 open ≤-Reasoning
 
@@ -717,7 +717,7 @@ m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 +-monoʳ-< (suc n) m≤o = s≤s (+-monoʳ-< n m≤o)
 
 m+1+n≰m : ∀ m {n} → m + suc n ≰ m
-m+1+n≰m (suc m) (s≤s m+1+n≤m) = m+1+n≰m m m+1+n≤m
+m+1+n≰m (suc m) m+1+n≤m = m+1+n≰m m (s≤s⁻¹ m+1+n≤m)
 
 m<m+n : ∀ m {n} → n > 0 → m < m + n
 m<m+n zero    n>0 = n>0
@@ -727,8 +727,8 @@ m<n+m : ∀ m {n} → n > 0 → m < n + m
 m<n+m m {n} n>0 rewrite +-comm n m = m<m+n m n>0
 
 m+n≮n : ∀ m n → m + n ≮ n
-m+n≮n zero    n                   = n≮n n
-m+n≮n (suc m) (suc n) (s<s m+n<n) = m+n≮n m (suc n) (m<n⇒m<1+n m+n<n)
+m+n≮n zero    n                = n≮n n
+m+n≮n (suc m) n@(suc _) sm+n<n = m+n≮n m n (m<n⇒m<1+n (s<s⁻¹ sm+n<n))
 
 m+n≮m : ∀ m n → m + n ≮ m
 m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
@@ -790,7 +790,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   suc n * m + o * m   ∎
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
+*-distribˡ-+ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -908,8 +908,14 @@ m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 
-m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+m*n≢0 : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
 m*n≢0 (suc m) (suc n) = _
+
+m*n≢0⇒m≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero m
+m*n≢0⇒m≢0 (suc _) = _
+
+m*n≢0⇒n≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero n
+m*n≢0⇒n≢0 m {n} rewrite *-comm m n = m*n≢0⇒m≢0 n {m}
 
 m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
 m*n≡0⇒m≡0 zero (suc _) eq = refl
@@ -927,17 +933,23 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 [m*n]*[o*p]≡[m*o]*[n*p] m n o p = begin-equality
   (m * n) * (o * p) ≡⟨  *-assoc m n (o * p) ⟩
   m * (n * (o * p)) ≡⟨  cong (m *_) (x∙yz≈y∙xz n o p) ⟩
-  m * (o * (n * p)) ≡˘⟨ *-assoc m o (n * p) ⟩
+  m * (o * (n * p)) ≡⟨ *-assoc m o (n * p) ⟨
   (m * o) * (n * p) ∎
   where open CommSemigroupProperties *-commutativeSemigroup
+
+m≢0∧n>1⇒m*n>1 : ∀ m n .{{_ : NonZero m}} .{{_ : NonTrivial n}} → NonTrivial (m * n)
+m≢0∧n>1⇒m*n>1 (suc m) (2+ n) = _
+
+n≢0∧m>1⇒m*n>1 : ∀ m n .{{_ : NonZero n}} .{{_ : NonTrivial m}} → NonTrivial (m * n)
+n≢0∧m>1⇒m*n>1 m n rewrite *-comm m n = m≢0∧n>1⇒m*n>1 n m
 
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_
 
 *-cancelʳ-≤ : ∀ m n o .{{_ : NonZero o}} → m * o ≤ n * o → m ≤ n
-*-cancelʳ-≤ zero    _       (suc o) _  = z≤n
-*-cancelʳ-≤ (suc m) (suc n) (suc o) le =
-  s≤s (*-cancelʳ-≤ m n (suc o) (+-cancelˡ-≤ _ _ _ le))
+*-cancelʳ-≤ zero    _       _         _  = z≤n
+*-cancelʳ-≤ (suc m) (suc n) o@(suc _) le =
+  s≤s (*-cancelʳ-≤ m n o (+-cancelˡ-≤ _ _ _ le))
 
 *-cancelˡ-≤ : ∀ o .{{_ : NonZero o}} → o * m ≤ o * n → m ≤ n
 *-cancelˡ-≤ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≤ m n o
@@ -957,14 +969,12 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 *-mono-< (s<s m<n@(s≤s _)) u<v@(s≤s _) = +-mono-< u<v (*-mono-< m<n u<v)
 
 *-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_* n) Preserves _<_ ⟶ _<_
-*-monoˡ-< (suc n) z<s       = 0<1+n
-*-monoˡ-< (suc n) (s<s m<o@(s≤s _)) =
-  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) m<o)
+*-monoˡ-< n@(suc _) z<s               = 0<1+n
+*-monoˡ-< n@(suc _) (s<s m<o@(s≤s _)) = +-mono-≤-< ≤-refl (*-monoˡ-< n m<o)
 
 *-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
 *-monoʳ-< (suc zero)      m<o@(s≤s _) = +-mono-≤ m<o z≤n
-*-monoʳ-< (suc n@(suc _)) m<o@(s≤s _) =
-  +-mono-≤ m<o (<⇒≤ (*-monoʳ-< n m<o))
+*-monoʳ-< (suc n@(suc _)) m<o@(s≤s _) = +-mono-≤ m<o (<⇒≤ (*-monoʳ-< n m<o))
 
 m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
 m≤m*n m n@(suc _) = begin
@@ -1317,7 +1327,7 @@ m⊔n<o⇒n<o m n m⊔n<o = ≤-<-trans (m≤n⊔m m n) m⊔n<o
 +-distribˡ-⊔ (suc m) n o = cong suc (+-distribˡ-⊔ m n o)
 
 +-distribʳ-⊔ : _+_ DistributesOverʳ _⊔_
-+-distribʳ-⊔ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊔
++-distribʳ-⊔ = comm∧distrˡ⇒distrʳ +-comm +-distribˡ-⊔
 
 +-distrib-⊔ : _+_ DistributesOver _⊔_
 +-distrib-⊔ = +-distribˡ-⊔ , +-distribʳ-⊔
@@ -1334,19 +1344,19 @@ m⊔n≤m+n m n with ⊔-sel m n
 *-distribˡ-⊔ m zero o = sym (cong (_⊔ m * o) (*-zeroʳ m))
 *-distribˡ-⊔ m (suc n) zero = begin-equality
   m * (suc n ⊔ zero)         ≡⟨⟩
-  m * suc n                  ≡˘⟨ ⊔-identityʳ (m * suc n) ⟩
-  m * suc n ⊔ zero           ≡˘⟨ cong (m * suc n ⊔_) (*-zeroʳ m) ⟩
+  m * suc n                  ≡⟨ ⊔-identityʳ (m * suc n) ⟨
+  m * suc n ⊔ zero           ≡⟨ cong (m * suc n ⊔_) (*-zeroʳ m) ⟨
   m * suc n ⊔ m * zero       ∎
 *-distribˡ-⊔ m (suc n) (suc o) = begin-equality
   m * (suc n ⊔ suc o)        ≡⟨⟩
   m * suc (n ⊔ o)            ≡⟨ *-suc m (n ⊔ o) ⟩
   m + m * (n ⊔ o)            ≡⟨ cong (m +_) (*-distribˡ-⊔ m n o) ⟩
   m + (m * n ⊔ m * o)        ≡⟨ +-distribˡ-⊔ m (m * n) (m * o) ⟩
-  (m + m * n) ⊔ (m + m * o)  ≡˘⟨ cong₂ _⊔_ (*-suc m n) (*-suc m o) ⟩
+  (m + m * n) ⊔ (m + m * o)  ≡⟨ cong₂ _⊔_ (*-suc m n) (*-suc m o) ⟨
   (m * suc n) ⊔ (m * suc o)  ∎
 
 *-distribʳ-⊔ : _*_ DistributesOverʳ _⊔_
-*-distribʳ-⊔ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊔
+*-distribʳ-⊔ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-⊔
 
 *-distrib-⊔ : _*_ DistributesOver _⊔_
 *-distrib-⊔ = *-distribˡ-⊔ , *-distribʳ-⊔
@@ -1425,7 +1435,7 @@ m<n⊓o⇒m<o = m≤n⊓o⇒m≤o
 +-distribˡ-⊓ (suc m) n o = cong suc (+-distribˡ-⊓ m n o)
 
 +-distribʳ-⊓ : _+_ DistributesOverʳ _⊓_
-+-distribʳ-⊓ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊓
++-distribʳ-⊓ = comm∧distrˡ⇒distrʳ +-comm +-distribˡ-⊓
 
 +-distrib-⊓ : _+_ DistributesOver _⊓_
 +-distrib-⊓ = +-distribˡ-⊓ , +-distribʳ-⊓
@@ -1443,24 +1453,24 @@ m⊓n≤m+n m n with ⊓-sel m n
   m * (0 ⊓ o)               ≡⟨⟩
   m * 0                     ≡⟨ *-zeroʳ m ⟩
   0                         ≡⟨⟩
-  0 ⊓ (m * o)               ≡˘⟨ cong (_⊓ (m * o)) (*-zeroʳ m) ⟩
+  0 ⊓ (m * o)               ≡⟨ cong (_⊓ (m * o)) (*-zeroʳ m) ⟨
   (m * 0) ⊓ (m * o)         ∎
 *-distribˡ-⊓ m (suc n) 0 = begin-equality
   m * (suc n ⊓ 0)           ≡⟨⟩
   m * 0                     ≡⟨ *-zeroʳ m ⟩
-  0                         ≡˘⟨ ⊓-zeroʳ (m * suc n) ⟩
-  (m * suc n) ⊓ 0           ≡˘⟨ cong (m * suc n ⊓_) (*-zeroʳ m) ⟩
+  0                         ≡⟨ ⊓-zeroʳ (m * suc n) ⟨
+  (m * suc n) ⊓ 0           ≡⟨ cong (m * suc n ⊓_) (*-zeroʳ m) ⟨
   (m * suc n) ⊓ (m * 0)     ∎
 *-distribˡ-⊓ m (suc n) (suc o) = begin-equality
   m * (suc n ⊓ suc o)       ≡⟨⟩
   m * suc (n ⊓ o)           ≡⟨ *-suc m (n ⊓ o) ⟩
   m + m * (n ⊓ o)           ≡⟨ cong (m +_) (*-distribˡ-⊓ m n o) ⟩
   m + (m * n) ⊓ (m * o)     ≡⟨ +-distribˡ-⊓ m (m * n) (m * o) ⟩
-  (m + m * n) ⊓ (m + m * o) ≡˘⟨ cong₂ _⊓_ (*-suc m n) (*-suc m o) ⟩
+  (m + m * n) ⊓ (m + m * o) ≡⟨ cong₂ _⊓_ (*-suc m n) (*-suc m o) ⟨
   (m * suc n) ⊓ (m * suc o) ∎
 
 *-distribʳ-⊓ : _*_ DistributesOverʳ _⊓_
-*-distribʳ-⊓ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊓
+*-distribʳ-⊓ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-⊓
 
 *-distrib-⊓ : _*_ DistributesOver _⊓_
 *-distrib-⊓ = *-distribˡ-⊓ , *-distribʳ-⊓
@@ -1586,10 +1596,20 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
   (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
   m + (n ∸ o)          ∎
 
-m+n≤o⇒m≤o∸n : ∀ m n o → m + n ≤ o → m ≤ o ∸ n
-m+n≤o⇒m≤o∸n zero    n o       le       = z≤n
-m+n≤o⇒m≤o∸n (suc m) n (suc o) (s≤s le)
-  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m n o le)
+m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
+m≤n+o⇒m∸n≤o      m  zero    le = le
+m≤n+o⇒m∸n≤o zero    (suc n)  _ = z≤n
+m≤n+o⇒m∸n≤o (suc m) (suc n) le = m≤n+o⇒m∸n≤o m n (s≤s⁻¹ le)
+
+m<n+o⇒m∸n<o : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
+m<n+o⇒m∸n<o      m  zero                lt = lt
+m<n+o⇒m∸n<o zero    (suc n) {o@(suc _)} lt = z<s
+m<n+o⇒m∸n<o (suc m) (suc n)             lt = m<n+o⇒m∸n<o m n  (s<s⁻¹ lt)
+
+m+n≤o⇒m≤o∸n : ∀ m {n o} → m + n ≤ o → m ≤ o ∸ n
+m+n≤o⇒m≤o∸n zero    le       = z≤n
+m+n≤o⇒m≤o∸n (suc m) (s≤s le)
+  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m le)
 
 m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
 m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
@@ -1648,7 +1668,7 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
   m + n * m ∸ (m + o * m) ∎
 
 *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
-*-distribˡ-∸ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-∸
+*-distribˡ-∸ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-∸
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
@@ -1691,9 +1711,6 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 -- Properties of pred
 ------------------------------------------------------------------------
 
-pred-mono : pred Preserves _≤_ ⟶ _≤_
-pred-mono m≤n = ∸-mono m≤n (≤-refl {1})
-
 pred[n]≤n : pred n ≤ n
 pred[n]≤n {zero}  = z≤n
 pred[n]≤n {suc n} = n≤1+n n
@@ -1711,6 +1728,32 @@ pred[n]≤n {suc n} = n≤1+n n
 
 suc-pred : ∀ n .{{_ : NonZero n}} → suc (pred n) ≡ n
 suc-pred (suc n) = refl
+
+pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
+pred-mono-≤ {zero}          _   = z≤n
+pred-mono-≤ {suc _} {suc _} m≤n = s≤s⁻¹ m≤n
+
+pred-mono-< : .{{NonZero m}} → m < n → pred m < pred n
+pred-mono-< {m = suc _} {n = suc _} = s<s⁻¹
+
+pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
+pred-cancel-≤ {m = zero}  {n = zero}  _  = inj₂ z≤n
+pred-cancel-≤ {m = zero}  {n = suc _} _  = inj₂ z≤n
+pred-cancel-≤ {m = suc _} {n = zero} z≤n = inj₁ (refl , refl)
+pred-cancel-≤ {m = suc _} {n = suc _} le = inj₂ (s≤s le)
+
+pred-cancel-< : pred m < pred n → m < n
+pred-cancel-< {m = zero}  {n = suc _} _ = z<s
+pred-cancel-< {m = suc _} {n = suc _}   = s<s
+
+pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
+pred-injective {suc m} {suc n} = cong suc
+
+pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+pred-cancel-≡ {m = zero}  {n = zero}  _    = inj₂ refl
+pred-cancel-≡ {m = zero}  {n = suc _} refl = inj₁ (inj₁ (refl , refl))
+pred-cancel-≡ {m = suc _} {n = zero}  refl = inj₁ (inj₂ (refl , refl))
+pred-cancel-≡ {m = suc _} {n = suc _}      = inj₂ ∘ pred-injective
 
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
@@ -1806,7 +1849,7 @@ private
   ∣ a * m - a * n ∣ ∎
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
-*-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
+*-distribʳ-∣-∣ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
 
 *-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
 *-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣
@@ -2067,8 +2110,8 @@ m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 <ᵇ⇒<″ : T (m <ᵇ n) → m <″ n
 <ᵇ⇒<″ {m} {n} leq = less-than-or-equal (m+[n∸m]≡n (<ᵇ⇒< m n leq))
 
-<″⇒<ᵇ : m <″ n → T (m <ᵇ n)
-<″⇒<ᵇ {m} (less-than-or-equal refl) = <⇒<ᵇ (m≤m+n (suc m) _)
+<″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
+<″⇒<ᵇ {m} (<″-offset k) = <⇒<ᵇ (m≤m+n (suc m) k)
 
 -- equivalence to the old definition of _≤″_
 
@@ -2078,9 +2121,8 @@ m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 -- equivalence to _≤_
 
 ≤″⇒≤ : _≤″_ ⇒ _≤_
-≤″⇒≤ {zero}  (less-than-or-equal refl) = z≤n
-≤″⇒≤ {suc m} (less-than-or-equal refl) =
-  s≤s (≤″⇒≤ (less-than-or-equal refl))
+≤″⇒≤ {zero}  (≤″-offset k) = z≤n {k}
+≤″⇒≤ {suc m} (≤″-offset k) = s≤s (≤″⇒≤ (≤″-offset k))
 
 ≤⇒≤″ : _≤_ ⇒ _≤″_
 ≤⇒≤″ = less-than-or-equal ∘ m+[n∸m]≡n
@@ -2097,7 +2139,7 @@ _<″?_ : Decidable _<″_
 m <″? n = map′ <ᵇ⇒<″ <″⇒<ᵇ (T? (m <ᵇ n))
 
 _≤″?_ : Decidable _≤″_
-zero  ≤″? n = yes (less-than-or-equal refl)
+zero  ≤″? n = yes (≤″-offset n)
 suc m ≤″? n = m <″? n
 
 _≥″?_ : Decidable _≥″_
@@ -2332,6 +2374,11 @@ suc[pred[n]]≡n {suc n} _   = refl
 "Warning: <-step was deprecated in v2.0. Please use m<n⇒m<1+n instead. "
 #-}
 
+pred-mono = pred-mono-≤
+{-# WARNING_ON_USAGE pred-mono
+"Warning: pred-mono was deprecated in v2.0. Please use pred-mono-≤ instead. "
+#-}
+
 {- issue1844/issue1755: raw bundles have moved to `Data.X.Base` -}
 open Data.Nat.Base public
   using (*-rawMagma; *-1-rawMonoid)
@@ -2343,6 +2390,6 @@ open Data.Nat.Base public
 
 <-transˡ = <-≤-trans
 {-# WARNING_ON_USAGE <-transˡ
-"Warning: <-transˡ was deprecated in v2.0. Please use ≤-<-trans instead. "
+"Warning: <-transˡ was deprecated in v2.0. Please use <-≤-trans instead. "
 #-}
 

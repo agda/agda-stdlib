@@ -17,7 +17,7 @@ import Relation.Binary.Construct.StrictToNonStrict
 open StrictPartialOrder SPO
 
 ------------------------------------------------------------------------
--- The inverse relation is also a strict partial order.
+-- The converse relation is also a strict partial order.
 
 >-strictPartialOrder : StrictPartialOrder s₁ s₂ s₃
 >-strictPartialOrder = EqAndOrd.strictPartialOrder SPO

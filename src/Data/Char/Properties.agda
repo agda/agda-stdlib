@@ -123,9 +123,8 @@ _<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
-  { isEquivalence = PropEq.isEquivalence
-  ; trans         = λ {a} {b} {c} → <-trans {a} {b} {c}
-  ; compare       = <-cmp
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  ; compare              = <-cmp
   }
 
 <-strictPartialOrder : StrictPartialOrder _ _ _

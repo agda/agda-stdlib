@@ -240,7 +240,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
                           (isEquivalence pre₁) (isEquivalence pre₂)
       ; reflexive     = ×-reflexive _≈₁_ _<₁_ _<₂_ (reflexive pre₂)
       ; trans         = ×-transitive {_<₂_ = _<₂_}
-                          (isEquivalence pre₁) (∼-resp-≈ pre₁)
+                          (isEquivalence pre₁) (≲-resp-≈ pre₁)
                           (trans pre₁) (trans pre₂)
       }
     where open IsPreorder
@@ -269,12 +269,9 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
                          IsStrictTotalOrder _≋_ _<ₗₑₓ_
   ×-isStrictTotalOrder spo₁ spo₂ =
     record
-      { isEquivalence = Pointwise.×-isEquivalence
-                          (isEquivalence spo₁) (isEquivalence spo₂)
-      ; trans         = ×-transitive {_<₁_ = _<₁_} {_<₂_ = _<₂_}
-                          (isEquivalence spo₁)
-                          (<-resp-≈ spo₁) (trans spo₁)
-                          (trans spo₂)
+      { isStrictPartialOrder = ×-isStrictPartialOrder
+                                 (isStrictPartialOrder spo₁)
+                                 (isStrictPartialOrder spo₂)
       ; compare       = ×-compare (Eq.sym spo₁) (compare spo₁)
                                                 (compare spo₂)
       }

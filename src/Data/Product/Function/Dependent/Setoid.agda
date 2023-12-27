@@ -15,12 +15,11 @@ open import Data.Product.Base using (map; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
 open import Level using (Level)
 open import Function
-open import Function.Consequences
-open import Function.Properties.Injection
-open import Function.Properties.Surjection
-open import Function.Properties.Equivalence
-open import Function.Properties.RightInverse
-import Function.Properties.Inverse as InverseProperties
+open import Function.Consequences.Setoid
+open import Function.Properties.Injection using (mkInjection)
+open import Function.Properties.Surjection using (mkSurjection; ↠⇒⇔)
+open import Function.Properties.Equivalence using (mkEquivalence; ⇔⇒⟶; ⇔⇒⟵)
+open import Function.Properties.RightInverse using (mkRightInverse)
 open import Relation.Binary.Core using (_=[_]⇒_)
 open import Relation.Binary.Bundles as B
 open import Relation.Binary.Indexed.Heterogeneous
@@ -177,7 +176,7 @@ module _ where
       to∘to⁻ I↠J j , IndexedSetoid.trans B (to∘to⁻ A↠B _) (cast-eq B (to∘to⁻ I↠J j))
 
     surj : Surjective (Func.Eq₁._≈_ func) (Func.Eq₂._≈_ func) (Func.to func)
-    surj = strictlySurjective⇒surjective (trans (J ×ₛ B)) (Func.cong func) strictlySurj
+    surj = strictlySurjective⇒surjective (I ×ₛ A) (J ×ₛ B) (Func.cong func) strictlySurj
 
 ------------------------------------------------------------------------
 -- LeftInverse
@@ -200,7 +199,7 @@ module _ where
     strictlyInvʳ (i , x) = strictlyInverseʳ I↪J i , IndexedSetoid.trans A (strictlyInverseʳ A↪B _) (cast-eq A (strictlyInverseʳ I↪J i))
 
     invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) (Equivalence.to equiv) (Equivalence.from equiv)
-    invʳ = strictlyInverseʳ⇒inverseʳ {f⁻¹ = Equivalence.from equiv} (trans (I ×ₛ A)) (Equivalence.from-cong equiv) strictlyInvʳ
+    invʳ = strictlyInverseʳ⇒inverseʳ (I ×ₛ A) (J ×ₛ B) (Equivalence.from-cong equiv) strictlyInvʳ
 
 
 ------------------------------------------------------------------------
@@ -239,7 +238,7 @@ module _ where
           (cast-eq B (strictlyInverseˡ I↔J i))
 
     invˡ : Inverseˡ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′ from′
-    invˡ = strictlyInverseˡ⇒inverseˡ {≈₁ = _≈_ (I ×ₛ A)} {f⁻¹ = from′} (trans (J ×ₛ B)) to′-cong strictlyInvˡ
+    invˡ = strictlyInverseˡ⇒inverseˡ (I ×ₛ A) (J ×ₛ B) to′-cong strictlyInvˡ
 
     lem : ∀ {i j} → i ≡ j → ∀ {x : IndexedSetoid.Carrier B (to I↔J i)} {y : IndexedSetoid.Carrier B (to I↔J j)} →
           IndexedSetoid._≈_ B x y →
@@ -251,5 +250,5 @@ module _ where
       IndexedSetoid.trans A (lem (strictlyInverseʳ I↔J _) (cast-eq B (strictlyInverseˡ I↔J _))) (strictlyInverseʳ A↔B _)
 
     invʳ : Inverseʳ (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′ from′
-    invʳ = strictlyInverseʳ⇒inverseʳ {f⁻¹ = from′} (trans (I ×ₛ A)) from′-cong strictlyInvʳ
+    invʳ = strictlyInverseʳ⇒inverseʳ (I ×ₛ A) (J ×ₛ B) from′-cong strictlyInvʳ
 

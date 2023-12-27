@@ -12,21 +12,24 @@
 module Data.Nat.Base where
 
 open import Algebra.Bundles.Raw using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
-open import Algebra.Definitions.RawMagma using (_∣ˡ_)
+open import Algebra.Definitions.RawMagma using (_∣ˡ_; _,_)
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Parity.Base using (Parity; 0ℙ; 1ℙ)
-open import Data.Product.Base using (_,_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
 -- Types
 
 open import Agda.Builtin.Nat public
   using (zero; suc) renaming (Nat to ℕ)
+
+--smart constructor
+pattern 2+ n = suc (suc n)
 
 ------------------------------------------------------------------------
 -- Boolean equality relation
@@ -59,11 +62,21 @@ m < n = suc m ≤ n
 
 -- Smart constructors of _<_
 
-pattern z<s {n}         = s≤s (z≤n {n})
+pattern z<s     {n}     = s≤s (z≤n {n})
 pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
+pattern sz<ss   {n}     = s<s (z<s {n})
+
+-- Smart destructors of _≤_, _<_
+
+s≤s⁻¹ : ∀ {m n} → suc m ≤ suc n → m ≤ n
+s≤s⁻¹ (s≤s m≤n) = m≤n
+
+s<s⁻¹ : ∀ {m n} → suc m < suc n → m < n
+s<s⁻¹ (s<s m<n) = m<n
+
 
 ------------------------------------------------------------------------
--- other ordering relations
+-- Other derived ordering relations
 
 _≥_ : Rel ℕ 0ℓ
 m ≥ n = n ≤ m
@@ -86,13 +99,19 @@ a ≯ b = ¬ a > b
 ------------------------------------------------------------------------
 -- Simple predicates
 
--- Defining `NonZero` in terms of `T` and therefore ultimately `⊤` and
--- `⊥` allows Agda to automatically infer nonZero-ness for any natural
--- of the form `suc n`. Consequently in many circumstances this
--- eliminates the need to explicitly pass a proof when the NonZero
--- argument is either an implicit or an instance argument.
+-- Defining these predicates in terms of `T` and therefore ultimately
+-- `⊤` and `⊥` allows Agda to automatically infer them for any natural
+-- of the correct form. Consequently in many circumstances this
+-- eliminates the need to explicitly pass a proof when the predicate
+-- argument is either an implicit or an instance argument. See `_/_`
+-- and `_%_` further down this file for examples.
 --
--- See `Data.Nat.DivMod` for an example.
+-- Furthermore, defining these predicates as single-field records
+-- (rather defining them directly as the type of their field) is
+-- necessary as the current version of Agda is far better at
+-- reconstructing meta-variable values for the record parameters.
+
+-- A predicate saying that a number is not equal to 0.
 
 record NonZero (n : ℕ) : Set where
   field
@@ -120,6 +139,34 @@ instance
 
 >-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n > 0
 >-nonZero⁻¹ (suc n) = z<s
+
+-- The property of being a non-zero, non-unit
+
+record NonTrivial (n : ℕ) : Set where
+  field
+    nonTrivial : T (1 <ᵇ n)
+
+-- Instances
+
+instance
+  nonTrivial : ∀ {n} → NonTrivial (2+ n)
+  nonTrivial = _
+
+-- Constructors
+
+n>1⇒nonTrivial : ∀ {n} → n > 1 → NonTrivial n
+n>1⇒nonTrivial sz<ss = _
+
+-- Destructors
+
+nonTrivial⇒nonZero : ∀ n → .{{NonTrivial n}} → NonZero n
+nonTrivial⇒nonZero (2+ _) = _
+
+nonTrivial⇒n>1 : ∀ n → .{{NonTrivial n}} → n > 1
+nonTrivial⇒n>1 (2+ _) = sz<ss
+
+nonTrivial⇒≢1 : ∀ {n} → .{{NonTrivial n}} → n ≢ 1
+nonTrivial⇒≢1 {{()}} refl
 
 ------------------------------------------------------------------------
 -- Raw bundles
@@ -283,10 +330,10 @@ zero  ! = 1
 suc n ! = suc n * n !
 
 ------------------------------------------------------------------------
--- Alternative definition of _≤_
+-- Extensionally equivalent alternative definitions of _≤_/_<_ etc.
 
--- The following definition of _≤_ is more suitable for well-founded
--- induction (see Data.Nat.Induction)
+-- _≤′_: this definition is more suitable for well-founded induction
+-- (see Data.Nat.Induction)
 
 infix 4 _≤′_ _<′_ _≥′_ _>′_
 
@@ -308,8 +355,9 @@ m ≥′ n = n ≤′ m
 _>′_ : Rel ℕ 0ℓ
 m >′ n = n <′ m
 
-------------------------------------------------------------------------
--- Another alternative definition of _≤_
+-- _≤″_: this definition of _≤_ is used for proof-irrelevant ‵DivMod`
+-- and is a specialised instance of a general algebraic construction
+
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
 _≤″_ : (m n : ℕ)  → Set
@@ -326,10 +374,20 @@ m ≥″ n = n ≤″ m
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
 
-------------------------------------------------------------------------
--- Another alternative definition of _≤_
+-- Smart constructors of _≤″_ and _<″_
 
--- Useful for induction when you have an upper bound.
+pattern ≤″-offset k = less-than-or-equal {k = k} refl
+pattern <″-offset k = ≤″-offset k
+
+-- Smart destructors of _<″_
+
+s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
+s≤″s⁻¹ (≤″-offset k) = ≤″-offset k
+
+s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
+s<″s⁻¹ (<″-offset k) = <″-offset k
+
+-- _≤‴_: this definition is useful for induction with an upper bound.
 
 data _≤‴_ : ℕ → ℕ → Set where
   ≤‴-refl : ∀{m} → m ≤‴ m

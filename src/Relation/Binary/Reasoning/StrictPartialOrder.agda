@@ -28,8 +28,8 @@
 --      w  <⟨ w<x ⟩
 --      x  ≤⟨ x≤y ⟩
 --      y  <⟨ y<z ⟩
---      z  ≡˘⟨ d≡z ⟩
---      d  ≈˘⟨ e≈d ⟩
+--      z  ≡⟨ d≡z ⟨
+--      d  ≈⟨ e≈d ⟨
 --      e  ∎
 --
 --    u≈w : u ≈ w
@@ -53,7 +53,7 @@ import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_ as NonStrict
 
 open import Relation.Binary.Reasoning.Base.Triple
   (NonStrict.isPreorder₂ isStrictPartialOrder)
-  irrefl
+  asym
   trans
   <-resp-≈
   NonStrict.<⇒≤

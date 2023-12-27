@@ -28,9 +28,9 @@ private
 ------------------------------------------------------------------------
 -- Injective
 
-contraInjective : Injective ≈₁ ≈₂ f →
+contraInjective : ∀ (≈₂ : Rel B ℓ₂) → Injective ≈₁ ≈₂ f →
                   ∀ {x y} → ¬ (≈₁ x y) → ¬ (≈₂ (f x) (f y))
-contraInjective inj p = contraposition inj p
+contraInjective _ inj p = contraposition inj p
 
 ------------------------------------------------------------------------
 -- Inverseˡ

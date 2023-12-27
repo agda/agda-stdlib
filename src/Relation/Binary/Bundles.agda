@@ -43,13 +43,15 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
     isEquivalence : IsEquivalence _≈_
 
   open IsEquivalence isEquivalence public
+    using (refl; reflexive; isPartialEquivalence)
 
   partialSetoid : PartialSetoid c ℓ
   partialSetoid = record
     { isPartialEquivalence = isPartialEquivalence
     }
 
-  open PartialSetoid partialSetoid public using (_≉_)
+  open PartialSetoid partialSetoid public
+    hiding (Carrier; _≈_; isPartialEquivalence)
 
 
 record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -60,14 +62,15 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
     isDecEquivalence : IsDecEquivalence _≈_
 
   open IsDecEquivalence isDecEquivalence public
+    using (_≟_; isEquivalence)
 
   setoid : Setoid c ℓ
   setoid = record
     { isEquivalence = isEquivalence
     }
 
-  open Setoid setoid public using (partialSetoid; _≉_)
-
+  open Setoid setoid public
+    hiding (Carrier; _≈_; isEquivalence)
 
 ------------------------------------------------------------------------
 -- Preorders
@@ -92,11 +95,23 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
     open Setoid setoid public
 
+  infix 4 _⋦_
+  _⋦_ : Rel Carrier _
+  x ⋦ y = ¬ (x ≲ y)
+
   infix 4 _≳_
   _≳_ = flip _≲_
 
-  infix 4 _∼_ -- for deprecation
+  infix 4 _⋧_
+  _⋧_ = flip _⋦_
+
+  -- Deprecated.
+  infix 4 _∼_
   _∼_ = _≲_
+  {-# WARNING_ON_USAGE _∼_
+  "Warning: _∼_ was deprecated in v2.0.
+  Please use _≲_ instead. "
+  #-}
 
 
 record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -108,14 +123,15 @@ record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     isTotalPreorder : IsTotalPreorder _≈_ _≲_
 
   open IsTotalPreorder isTotalPreorder public
-    hiding (module Eq)
+    using (total; isPreorder)
 
   preorder : Preorder c ℓ₁ ℓ₂
-  preorder = record { isPreorder = isPreorder }
+  preorder = record
+    { isPreorder = isPreorder
+    }
 
   open Preorder preorder public
-    using (module Eq; _≳_)
-
+    hiding (Carrier; _≈_; _≲_; isPreorder)
 
 ------------------------------------------------------------------------
 -- Partial orders
@@ -130,7 +146,7 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     isPartialOrder : IsPartialOrder _≈_ _≤_
 
   open IsPartialOrder isPartialOrder public
-    hiding (module Eq)
+    using (antisym; isPreorder)
 
   preorder : Preorder c ℓ₁ ℓ₂
   preorder = record
@@ -138,7 +154,13 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Preorder preorder public
-    using (module Eq)
+    hiding (Carrier; _≈_; _≲_; isPreorder)
+    renaming
+    ( _⋦_ to _≰_; _≳_ to _≥_; _⋧_ to _≱_
+    ; ≲-respˡ-≈ to ≤-respˡ-≈
+    ; ≲-respʳ-≈ to ≤-respʳ-≈
+    ; ≲-resp-≈  to ≤-resp-≈
+    )
 
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -149,9 +171,10 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     _≤_               : Rel Carrier ℓ₂
     isDecPartialOrder : IsDecPartialOrder _≈_ _≤_
 
-  private
-    module DPO = IsDecPartialOrder isDecPartialOrder
-  open DPO public hiding (module Eq)
+  private module DPO = IsDecPartialOrder isDecPartialOrder
+
+  open DPO public
+    using (_≟_; _≤?_; isPartialOrder)
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record
@@ -159,7 +182,7 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Poset poset public
-    using (preorder)
+    hiding (Carrier; _≈_; _≤_; isPartialOrder; module Eq)
 
   module Eq where
     decSetoid : DecSetoid c ℓ₁
@@ -189,6 +212,16 @@ record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) 
 
     open Setoid setoid public
 
+  infix 4 _≮_
+  _≮_ : Rel Carrier _
+  x ≮ y = ¬ (x < y)
+
+  infix 4 _>_
+  _>_ = flip _<_
+
+  infix 4 _≯_
+  _≯_ = flip _≮_
+
 
 record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_
@@ -198,14 +231,18 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
     _<_                     : Rel Carrier ℓ₂
     isDecStrictPartialOrder : IsDecStrictPartialOrder _≈_ _<_
 
-  private
-    module DSPO = IsDecStrictPartialOrder isDecStrictPartialOrder
-  open DSPO public hiding (module Eq)
+  private module DSPO = IsDecStrictPartialOrder isDecStrictPartialOrder
+
+  open DSPO public
+    using (_<?_; _≟_; isStrictPartialOrder)
 
   strictPartialOrder : StrictPartialOrder c ℓ₁ ℓ₂
   strictPartialOrder = record
     { isStrictPartialOrder = isStrictPartialOrder
     }
+
+  open StrictPartialOrder strictPartialOrder public
+    hiding (Carrier; _≈_; _<_; isStrictPartialOrder; module Eq)
 
   module Eq where
 
@@ -230,7 +267,7 @@ record TotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     isTotalOrder : IsTotalOrder _≈_ _≤_
 
   open IsTotalOrder isTotalOrder public
-    hiding (module Eq)
+    using (total; isPartialOrder; isTotalPreorder)
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record
@@ -238,7 +275,7 @@ record TotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     }
 
   open Poset poset public
-    using (module Eq; preorder)
+    hiding (Carrier; _≈_; _≤_; isPartialOrder)
 
   totalPreorder : TotalPreorder c ℓ₁ ℓ₂
   totalPreorder = record
@@ -254,23 +291,26 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     _≤_             : Rel Carrier ℓ₂
     isDecTotalOrder : IsDecTotalOrder _≈_ _≤_
 
-  private
-    module DTO = IsDecTotalOrder isDecTotalOrder
-  open DTO public hiding (module Eq)
+  private module DTO = IsDecTotalOrder isDecTotalOrder
+
+  open DTO public
+    using (_≟_; _≤?_; isTotalOrder; isDecPartialOrder)
 
   totalOrder : TotalOrder c ℓ₁ ℓ₂
   totalOrder = record
     { isTotalOrder = isTotalOrder
     }
 
-  open TotalOrder totalOrder public using (poset; preorder)
+  open TotalOrder totalOrder public
+    hiding (Carrier; _≈_; _≤_; isTotalOrder; module Eq)
 
   decPoset : DecPoset c ℓ₁ ℓ₂
   decPoset = record
     { isDecPartialOrder = isDecPartialOrder
     }
 
-  open DecPoset decPoset public using (module Eq)
+  open DecPoset decPoset public
+    using (module Eq)
 
 
 -- Note that these orders are decidable. The current implementation
@@ -287,7 +327,10 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
     isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_
 
   open IsStrictTotalOrder isStrictTotalOrder public
-    hiding (module Eq)
+    using
+    ( _≟_; _<?_; compare; isStrictPartialOrder
+    ; isDecStrictPartialOrder; isDecEquivalence
+    )
 
   strictPartialOrder : StrictPartialOrder c ℓ₁ ℓ₂
   strictPartialOrder = record
@@ -295,16 +338,25 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
     }
 
   open StrictPartialOrder strictPartialOrder public
+    hiding (Carrier; _≈_; _<_; isStrictPartialOrder; module Eq)
+
+  decStrictPartialOrder : DecStrictPartialOrder c ℓ₁ ℓ₂
+  decStrictPartialOrder = record
+    { isDecStrictPartialOrder = isDecStrictPartialOrder
+    }
+
+  open DecStrictPartialOrder decStrictPartialOrder public
     using (module Eq)
 
   decSetoid : DecSetoid c ℓ₁
   decSetoid = record
-    { isDecEquivalence = isDecEquivalence
+    { isDecEquivalence = Eq.isDecEquivalence
     }
   {-# WARNING_ON_USAGE decSetoid
   "Warning: decSetoid was deprecated in v1.3.
   Please use Eq.decSetoid instead."
   #-}
+
 
 record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_
@@ -323,6 +375,7 @@ record DenseLinearOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
     }
 
   open StrictTotalOrder strictTotalOrder public
+    hiding (Carrier; _≈_; _<_; isStrictTotalOrder)
 
 
 ------------------------------------------------------------------------
@@ -338,18 +391,3 @@ record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) w
     isApartnessRelation : IsApartnessRelation _≈_ _#_
 
   open IsApartnessRelation isApartnessRelation public
-
-
-
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.0
-
-{-# WARNING_ON_USAGE Preorder._∼_
-"Warning: Preorder._∼_ was deprecated in v2.0. Please use Preorder._≲_ instead. "
-#-}

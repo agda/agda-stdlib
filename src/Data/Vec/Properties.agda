@@ -31,7 +31,7 @@ open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable.Core using (Dec; does; yes; no; _×-dec_; map′)
+open import Relation.Nullary.Decidable.Core using (Dec; does; yes; _×-dec_; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
@@ -483,14 +483,14 @@ cast-++ʳ {m = suc m} eq (x ∷ xs) {ys} = cong (x ∷_) (cast-++ʳ eq xs)
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
               lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
-lookup-++-< (x ∷ xs) ys zero    z<s       = refl
-lookup-++-< (x ∷ xs) ys (suc i) (s<s i<m) = lookup-++-< xs ys i i<m
+lookup-++-< (x ∷ xs) ys zero    _     = refl
+lookup-++-< (x ∷ xs) ys (suc i) si<sm = lookup-++-< xs ys i (s<s⁻¹ si<sm)
 
 lookup-++-≥ : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i≥m : toℕ i ≥ m) →
               lookup (xs ++ ys) i ≡ lookup ys (Fin.reduce≥ i i≥m)
-lookup-++-≥ []       ys i       i≥m       = refl
-lookup-++-≥ (x ∷ xs) ys (suc i) (s≤s i≥m) = lookup-++-≥ xs ys i i≥m
+lookup-++-≥ []       ys i       _     = refl
+lookup-++-≥ (x ∷ xs) ys (suc i) si≥sm = lookup-++-≥ xs ys i (s≤s⁻¹ si≥sm)
 
 lookup-++ˡ : ∀ (xs : Vec A m) (ys : Vec A n) i →
              lookup (xs ++ ys) (i ↑ˡ n) ≡ lookup xs i
@@ -955,13 +955,13 @@ foldr-reverse B f {e} xs = foldl-fusion (foldr B f e) refl (λ _ _ → refl) xs
 reverse-involutive : Involutive {A = Vec A n} _≡_ reverse
 reverse-involutive xs = begin
   reverse (reverse xs)    ≡⟨  foldl-reverse (Vec _) (flip _∷_) xs ⟩
-  foldr (Vec _) _∷_ [] xs ≡˘⟨ id-is-foldr xs ⟩
+  foldr (Vec _) _∷_ [] xs ≡⟨ id-is-foldr xs ⟨
   xs                      ∎
   where open ≡-Reasoning
 
 reverse-reverse : reverse xs ≡ ys → reverse ys ≡ xs
 reverse-reverse {xs = xs} {ys} eq =  begin
-  reverse ys           ≡˘⟨ cong reverse eq ⟩
+  reverse ys           ≡⟨ cong reverse eq ⟨
   reverse (reverse xs) ≡⟨  reverse-involutive xs ⟩
   xs                   ∎
   where open ≡-Reasoning
@@ -970,7 +970,7 @@ reverse-reverse {xs = xs} {ys} eq =  begin
 
 reverse-injective : reverse xs ≡ reverse ys → xs ≡ ys
 reverse-injective {xs = xs} {ys} eq = begin
-  xs                   ≡˘⟨ reverse-reverse eq ⟩
+  xs                   ≡⟨ reverse-reverse eq ⟨
   reverse (reverse ys) ≡⟨  reverse-involutive ys ⟩
   ys                   ∎
   where open ≡-Reasoning
@@ -1000,7 +1000,7 @@ map-reverse f (x ∷ xs) = begin
   map f (reverse (x ∷ xs))  ≡⟨  cong (map f) (reverse-∷ x xs) ⟩
   map f (reverse xs ∷ʳ x)   ≡⟨  map-∷ʳ f x (reverse xs) ⟩
   map f (reverse xs) ∷ʳ f x ≡⟨  cong (_∷ʳ f x) (map-reverse f xs ) ⟩
-  reverse (map f xs) ∷ʳ f x ≡˘⟨ reverse-∷ (f x) (map f xs) ⟩
+  reverse (map f xs) ∷ʳ f x ≡⟨ reverse-∷ (f x) (map f xs) ⟨
   reverse (f x ∷ map f xs)  ≡⟨⟩
   reverse (map f (x ∷ xs))  ∎
   where open ≡-Reasoning
@@ -1015,7 +1015,7 @@ reverse-++ {m = suc m} {n = n} eq (x ∷ xs) ys = begin
   reverse (xs ++ ys) ∷ʳ x             ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (+-comm m n)) x (reverse (xs ++ ys)))
                                                 (reverse-++ _ xs ys) ⟩
   (reverse ys ++ reverse xs) ∷ʳ x     ≈⟨ ++-∷ʳ (sym (+-suc n m)) x (reverse ys) (reverse xs) ⟩
-  reverse ys ++ (reverse xs ∷ʳ x)     ≂˘⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟩
+  reverse ys ++ (reverse xs ∷ʳ x)     ≂⟨ cong (reverse ys ++_) (reverse-∷ x xs) ⟨
   reverse ys ++ (reverse (x ∷ xs))    ∎
   where open CastReasoning
 
@@ -1025,7 +1025,7 @@ cast-reverse {n = suc n} eq (x ∷ xs) = begin
   reverse (x ∷ xs)           ≂⟨ reverse-∷ x xs ⟩
   reverse xs ∷ʳ x            ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ eq x (reverse xs))
                                        (cast-reverse (cong pred eq) xs) ⟩
-  reverse (cast _ xs) ∷ʳ x   ≂˘⟨ reverse-∷ x (cast (cong pred eq) xs) ⟩
+  reverse (cast _ xs) ∷ʳ x   ≂⟨ reverse-∷ x (cast (cong pred eq) xs) ⟨
   reverse (x ∷ cast _ xs)    ≈⟨⟩
   reverse (cast eq (x ∷ xs)) ∎
   where open CastReasoning
@@ -1054,7 +1054,7 @@ map-ʳ++ {ys = ys} f xs = begin
   map f (xs ʳ++ ys)              ≡⟨  cong (map f) (unfold-ʳ++ xs ys) ⟩
   map f (reverse xs ++ ys)       ≡⟨  map-++ f (reverse xs) ys ⟩
   map f (reverse xs) ++ map f ys ≡⟨  cong (_++ map f ys) (map-reverse f xs) ⟩
-  reverse (map f xs) ++ map f ys ≡˘⟨ unfold-ʳ++ (map f xs) (map f ys) ⟩
+  reverse (map f xs) ++ map f ys ≡⟨ unfold-ʳ++ (map f xs) (map f ys) ⟨
   map f xs ʳ++ map f ys          ∎
   where open ≡-Reasoning
 
@@ -1064,7 +1064,7 @@ map-ʳ++ {ys = ys} f xs = begin
   (a ∷ xs) ʳ++ ys         ≂⟨ unfold-ʳ++ (a ∷ xs) ys ⟩
   reverse (a ∷ xs) ++ ys  ≂⟨ cong (_++ ys) (reverse-∷ a xs) ⟩
   (reverse xs ∷ʳ a) ++ ys ≈⟨ ∷ʳ-++ eq a (reverse xs) ⟩
-  reverse xs ++ (a ∷ ys)  ≂˘⟨ unfold-ʳ++ xs (a ∷ ys) ⟩
+  reverse xs ++ (a ∷ ys)  ≂⟨ unfold-ʳ++ xs (a ∷ ys) ⟨
   xs ʳ++ (a ∷ ys)         ∎
   where open CastReasoning
 
@@ -1075,8 +1075,8 @@ map-ʳ++ {ys = ys} f xs = begin
   reverse (xs ++ ys) ++ zs         ≈⟨ ≈-cong (_++ zs) (cast-++ˡ (+-comm m n) (reverse (xs ++ ys)))
                                              (reverse-++ (+-comm m n) xs ys) ⟩
   (reverse ys ++ reverse xs) ++ zs ≈⟨ ++-assoc (trans (cong (_+ o) (+-comm n m)) eq) (reverse ys) (reverse xs) zs ⟩
-  reverse ys ++ (reverse xs ++ zs) ≂˘⟨ cong (reverse ys ++_) (unfold-ʳ++ xs zs) ⟩
-  reverse ys ++ (xs ʳ++ zs)        ≂˘⟨ unfold-ʳ++ ys (xs ʳ++ zs) ⟩
+  reverse ys ++ (reverse xs ++ zs) ≂⟨ cong (reverse ys ++_) (unfold-ʳ++ xs zs) ⟨
+  reverse ys ++ (xs ʳ++ zs)        ≂⟨ unfold-ʳ++ ys (xs ʳ++ zs) ⟨
   ys ʳ++ (xs ʳ++ zs)               ∎
   where open CastReasoning
 
@@ -1089,7 +1089,7 @@ map-ʳ++ {ys = ys} f xs = begin
                                                        (reverse-++ (+-comm m n) (reverse xs) ys) ⟩
   (reverse ys ++ reverse (reverse xs)) ++ zs ≂⟨ cong ((_++ zs) ∘ (reverse ys ++_)) (reverse-involutive xs) ⟩
   (reverse ys ++ xs) ++ zs                   ≈⟨ ++-assoc (+-assoc n m o) (reverse ys) xs zs ⟩
-  reverse ys ++ (xs ++ zs)                   ≂˘⟨ unfold-ʳ++ ys (xs ++ zs) ⟩
+  reverse ys ++ (xs ++ zs)                   ≂⟨ unfold-ʳ++ ys (xs ++ zs) ⟨
   ys ʳ++ (xs ++ zs)                          ∎
   where open CastReasoning
 
@@ -1100,7 +1100,7 @@ sum-++ : ∀ (xs : Vec ℕ m) → sum (xs ++ ys) ≡ sum xs + sum ys
 sum-++ {_}       []       = refl
 sum-++ {ys = ys} (x ∷ xs) = begin
   x + sum (xs ++ ys)     ≡⟨  cong (x +_) (sum-++ xs) ⟩
-  x + (sum xs + sum ys)  ≡˘⟨ +-assoc x (sum xs) (sum ys) ⟩
+  x + (sum xs + sum ys)  ≡⟨ +-assoc x (sum xs) (sum ys) ⟨
   sum (x ∷ xs) + sum ys  ∎
   where open ≡-Reasoning
 
@@ -1209,7 +1209,7 @@ tabulate-allFin f = tabulate-∘ f id
 
 map-lookup-allFin : ∀ (xs : Vec A n) → map (lookup xs) (allFin n) ≡ xs
 map-lookup-allFin {n = n} xs = begin
-  map (lookup xs) (allFin n) ≡˘⟨ tabulate-∘ (lookup xs) id ⟩
+  map (lookup xs) (allFin n) ≡⟨ tabulate-∘ (lookup xs) id ⟨
   tabulate (lookup xs)       ≡⟨ tabulate∘lookup xs ⟩
   xs                         ∎
   where open ≡-Reasoning
@@ -1315,10 +1315,10 @@ fromList-reverse List.[] = refl
 fromList-reverse (x List.∷ xs) = begin
   fromList (List.reverse (x List.∷ xs))         ≈⟨ cast-fromList (Listₚ.ʳ++-defn xs) ⟩
   fromList (List.reverse xs List.++ List.[ x ]) ≈⟨ fromList-++ (List.reverse xs) ⟩
-  fromList (List.reverse xs) ++ [ x ]           ≈˘⟨ unfold-∷ʳ (+-comm 1 _) x (fromList (List.reverse xs)) ⟩
+  fromList (List.reverse xs) ++ [ x ]           ≈⟨ unfold-∷ʳ (+-comm 1 _) x (fromList (List.reverse xs)) ⟨
   fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (Listₚ.length-reverse xs)) _ _)
                                                           (fromList-reverse xs) ⟩
-  reverse (fromList xs) ∷ʳ x                    ≂˘⟨ reverse-∷ x (fromList xs) ⟩
+  reverse (fromList xs) ∷ʳ x                    ≂⟨ reverse-∷ x (fromList xs) ⟨
   reverse (x ∷ fromList xs)                     ≈⟨⟩
   reverse (fromList (x List.∷ xs))              ∎
   where open CastReasoning
@@ -1396,7 +1396,7 @@ Please use take-map instead."
 drop-distr-zipWith = drop-zipWith
 {-# WARNING_ON_USAGE drop-distr-zipWith
 "Warning: drop-distr-zipWith was deprecated in v2.0.
-Please use tdrop-zipWith instead."
+Please use drop-zipWith instead."
 #-}
 drop-distr-map = drop-map
 {-# WARNING_ON_USAGE drop-distr-map
@@ -1441,7 +1441,7 @@ lookup-inject≤-take m m≤m+n i xs = sym (begin
   lookup (take m xs) i
     ≡⟨ lookup-take-inject≤ xs i ⟩
   lookup xs (Fin.inject≤ i _)
-    ≡⟨ cong ((lookup xs) ∘ (Fin.inject≤ i)) (≤-irrelevant _ _) ⟩
+    ≡⟨⟩
   lookup xs (Fin.inject≤ i m≤m+n)
     ∎) where open ≡-Reasoning
 {-# WARNING_ON_USAGE lookup-inject≤-take

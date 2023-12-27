@@ -139,9 +139,8 @@ isStrictPartialOrder {≈ = ≈} {< = <} O = record
 isStrictTotalOrder : IsStrictTotalOrder ≈ < →
                      IsStrictTotalOrder (flip ≈) (flip <)
 isStrictTotalOrder {≈ = ≈} {< = <} O = record
-  { isEquivalence = isEquivalence O.isEquivalence
-  ; trans         = transitive < O.trans
-  ; compare       = trichotomous ≈ < O.compare
+  { isStrictPartialOrder = isStrictPartialOrder O.isStrictPartialOrder
+  ; compare              = trichotomous ≈ < O.compare
   } where module O = IsStrictTotalOrder O
 
 ------------------------------------------------------------------------
