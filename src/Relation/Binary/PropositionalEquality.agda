@@ -135,4 +135,3 @@ isPropositional = Irrelevant
 Please use Relation.Nullary.Irrelevant instead. "
 #-}
 
-

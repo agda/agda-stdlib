@@ -790,7 +790,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   suc n * m + o * m   ∎
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
+*-distribˡ-+ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -908,7 +908,7 @@ m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 
-m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+m*n≢0 : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
 m*n≢0 (suc m) (suc n) = _
 
 m*n≢0⇒m≢0 : ∀ m {n} → .{{NonZero (m * n)}} → NonZero m
@@ -947,9 +947,9 @@ n≢0∧m>1⇒m*n>1 m n rewrite *-comm m n = m≢0∧n>1⇒m*n>1 n m
 -- Other properties of _*_ and _≤_/_<_
 
 *-cancelʳ-≤ : ∀ m n o .{{_ : NonZero o}} → m * o ≤ n * o → m ≤ n
-*-cancelʳ-≤ zero    _       (suc o) _  = z≤n
-*-cancelʳ-≤ (suc m) (suc n) (suc o) le =
-  s≤s (*-cancelʳ-≤ m n (suc o) (+-cancelˡ-≤ _ _ _ le))
+*-cancelʳ-≤ zero    _       _         _  = z≤n
+*-cancelʳ-≤ (suc m) (suc n) o@(suc _) le =
+  s≤s (*-cancelʳ-≤ m n o (+-cancelˡ-≤ _ _ _ le))
 
 *-cancelˡ-≤ : ∀ o .{{_ : NonZero o}} → o * m ≤ o * n → m ≤ n
 *-cancelˡ-≤ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≤ m n o
@@ -969,14 +969,12 @@ n≢0∧m>1⇒m*n>1 m n rewrite *-comm m n = m≢0∧n>1⇒m*n>1 n m
 *-mono-< (s<s m<n@(s≤s _)) u<v@(s≤s _) = +-mono-< u<v (*-mono-< m<n u<v)
 
 *-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_* n) Preserves _<_ ⟶ _<_
-*-monoˡ-< (suc n) z<s       = 0<1+n
-*-monoˡ-< (suc n) (s<s m<o@(s≤s _)) =
-  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) m<o)
+*-monoˡ-< n@(suc _) z<s               = 0<1+n
+*-monoˡ-< n@(suc _) (s<s m<o@(s≤s _)) = +-mono-≤-< ≤-refl (*-monoˡ-< n m<o)
 
 *-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
 *-monoʳ-< (suc zero)      m<o@(s≤s _) = +-mono-≤ m<o z≤n
-*-monoʳ-< (suc n@(suc _)) m<o@(s≤s _) =
-  +-mono-≤ m<o (<⇒≤ (*-monoʳ-< n m<o))
+*-monoʳ-< (suc n@(suc _)) m<o@(s≤s _) = +-mono-≤ m<o (<⇒≤ (*-monoʳ-< n m<o))
 
 m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
 m≤m*n m n@(suc _) = begin
@@ -1329,7 +1327,7 @@ m⊔n<o⇒n<o m n m⊔n<o = ≤-<-trans (m≤n⊔m m n) m⊔n<o
 +-distribˡ-⊔ (suc m) n o = cong suc (+-distribˡ-⊔ m n o)
 
 +-distribʳ-⊔ : _+_ DistributesOverʳ _⊔_
-+-distribʳ-⊔ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊔
++-distribʳ-⊔ = comm∧distrˡ⇒distrʳ +-comm +-distribˡ-⊔
 
 +-distrib-⊔ : _+_ DistributesOver _⊔_
 +-distrib-⊔ = +-distribˡ-⊔ , +-distribʳ-⊔
@@ -1358,7 +1356,7 @@ m⊔n≤m+n m n with ⊔-sel m n
   (m * suc n) ⊔ (m * suc o)  ∎
 
 *-distribʳ-⊔ : _*_ DistributesOverʳ _⊔_
-*-distribʳ-⊔ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊔
+*-distribʳ-⊔ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-⊔
 
 *-distrib-⊔ : _*_ DistributesOver _⊔_
 *-distrib-⊔ = *-distribˡ-⊔ , *-distribʳ-⊔
@@ -1437,7 +1435,7 @@ m<n⊓o⇒m<o = m≤n⊓o⇒m≤o
 +-distribˡ-⊓ (suc m) n o = cong suc (+-distribˡ-⊓ m n o)
 
 +-distribʳ-⊓ : _+_ DistributesOverʳ _⊓_
-+-distribʳ-⊓ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊓
++-distribʳ-⊓ = comm∧distrˡ⇒distrʳ +-comm +-distribˡ-⊓
 
 +-distrib-⊓ : _+_ DistributesOver _⊓_
 +-distrib-⊓ = +-distribˡ-⊓ , +-distribʳ-⊓
@@ -1472,7 +1470,7 @@ m⊓n≤m+n m n with ⊓-sel m n
   (m * suc n) ⊓ (m * suc o) ∎
 
 *-distribʳ-⊓ : _*_ DistributesOverʳ _⊓_
-*-distribʳ-⊓ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊓
+*-distribʳ-⊓ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-⊓
 
 *-distrib-⊓ : _*_ DistributesOver _⊓_
 *-distrib-⊓ = *-distribˡ-⊓ , *-distribʳ-⊓
@@ -1598,10 +1596,20 @@ m≤n⇒n∸m≤n (s≤s m≤n) = m≤n⇒m≤1+n (m≤n⇒n∸m≤n m≤n)
   (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
   m + (n ∸ o)          ∎
 
-m+n≤o⇒m≤o∸n : ∀ m n o → m + n ≤ o → m ≤ o ∸ n
-m+n≤o⇒m≤o∸n zero    n o       le       = z≤n
-m+n≤o⇒m≤o∸n (suc m) n (suc o) (s≤s le)
-  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m n o le)
+m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
+m≤n+o⇒m∸n≤o      m  zero    le = le
+m≤n+o⇒m∸n≤o zero    (suc n)  _ = z≤n
+m≤n+o⇒m∸n≤o (suc m) (suc n) le = m≤n+o⇒m∸n≤o m n (s≤s⁻¹ le)
+
+m<n+o⇒m∸n<o : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
+m<n+o⇒m∸n<o      m  zero                lt = lt
+m<n+o⇒m∸n<o zero    (suc n) {o@(suc _)} lt = z<s
+m<n+o⇒m∸n<o (suc m) (suc n)             lt = m<n+o⇒m∸n<o m n  (s<s⁻¹ lt)
+
+m+n≤o⇒m≤o∸n : ∀ m {n o} → m + n ≤ o → m ≤ o ∸ n
+m+n≤o⇒m≤o∸n zero    le       = z≤n
+m+n≤o⇒m≤o∸n (suc m) (s≤s le)
+  rewrite +-∸-assoc 1 (m+n≤o⇒n≤o m le) = s≤s (m+n≤o⇒m≤o∸n m le)
 
 m≤o∸n⇒m+n≤o : ∀ m {n o} (n≤o : n ≤ o) → m ≤ o ∸ n → m + n ≤ o
 m≤o∸n⇒m+n≤o m         z≤n       le rewrite +-identityʳ m = le
@@ -1660,7 +1668,7 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
   m + n * m ∸ (m + o * m) ∎
 
 *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
-*-distribˡ-∸ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-∸
+*-distribˡ-∸ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-∸
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
@@ -1727,6 +1735,25 @@ pred-mono-≤ {suc _} {suc _} m≤n = s≤s⁻¹ m≤n
 
 pred-mono-< : .{{NonZero m}} → m < n → pred m < pred n
 pred-mono-< {m = suc _} {n = suc _} = s<s⁻¹
+
+pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
+pred-cancel-≤ {m = zero}  {n = zero}  _  = inj₂ z≤n
+pred-cancel-≤ {m = zero}  {n = suc _} _  = inj₂ z≤n
+pred-cancel-≤ {m = suc _} {n = zero} z≤n = inj₁ (refl , refl)
+pred-cancel-≤ {m = suc _} {n = suc _} le = inj₂ (s≤s le)
+
+pred-cancel-< : pred m < pred n → m < n
+pred-cancel-< {m = zero}  {n = suc _} _ = z<s
+pred-cancel-< {m = suc _} {n = suc _}   = s<s
+
+pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
+pred-injective {suc m} {suc n} = cong suc
+
+pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+pred-cancel-≡ {m = zero}  {n = zero}  _    = inj₂ refl
+pred-cancel-≡ {m = zero}  {n = suc _} refl = inj₁ (inj₁ (refl , refl))
+pred-cancel-≡ {m = suc _} {n = zero}  refl = inj₁ (inj₂ (refl , refl))
+pred-cancel-≡ {m = suc _} {n = suc _}      = inj₂ ∘ pred-injective
 
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
@@ -1822,7 +1849,7 @@ private
   ∣ a * m - a * n ∣ ∎
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
-*-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
+*-distribʳ-∣-∣ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
 
 *-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
 *-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣

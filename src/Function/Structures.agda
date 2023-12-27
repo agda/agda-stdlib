@@ -120,7 +120,7 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
     inverseʳ    : Inverseʳ _≈₁_ _≈₂_ to from
 
   open IsCongruent isCongruent public
-    renaming (cong to cong₁)
+    renaming (cong to to-cong)
 
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
   strictlyInverseʳ x = inverseʳ Eq₂.refl

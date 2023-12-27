@@ -99,21 +99,21 @@ module _ (semi : IsSemilattice _∙_) where
 
   x∙y≤x : ∀ x y → (x ∙ y) ≤ x
   x∙y≤x x y = begin
-    x ∙ y       ≈⟨ ∧-cong (sym (idem x)) S.refl ⟩
+    x ∙ y       ≈⟨ ∙-cong (sym (idem x)) S.refl ⟩
     (x ∙ x) ∙ y ≈⟨ assoc x x y ⟩
     x ∙ (x ∙ y) ≈⟨ comm x (x ∙ y) ⟩
     (x ∙ y) ∙ x ∎
 
   x∙y≤y : ∀ x y → (x ∙ y) ≤ y
   x∙y≤y x y = begin
-    x ∙ y        ≈⟨ ∧-cong S.refl (sym (idem y)) ⟩
+    x ∙ y        ≈⟨ ∙-cong S.refl (sym (idem y)) ⟩
     x ∙ (y ∙ y)  ≈⟨ sym (assoc x y y) ⟩
     (x ∙ y) ∙ y  ∎
 
   ∙-presʳ-≤ : ∀ {x y} z → z ≤ x → z ≤ y → z ≤ (x ∙ y)
   ∙-presʳ-≤ {x} {y} z z≤x z≤y = begin
     z            ≈⟨ z≤y ⟩
-    z ∙ y        ≈⟨ ∧-cong z≤x S.refl ⟩
+    z ∙ y        ≈⟨ ∙-cong z≤x S.refl ⟩
     (z ∙ x) ∙ y  ≈⟨ assoc z x y ⟩
     z ∙ (x ∙ y)  ∎
 
