@@ -349,12 +349,12 @@ hasNonTrivialDivisor-≢ d≢n d∣n
 
 hasNonTrivialDivisor-∣ : m HasNonTrivialDivisorLessThan n → m ∣ o →
                          o HasNonTrivialDivisorLessThan n
-hasNonTrivialDivisor-∣ (hasNonTrivialDivisor d<n d∣m) n∣o
-  = hasNonTrivialDivisor d<n (∣-trans d∣m n∣o)
+hasNonTrivialDivisor-∣ (hasNonTrivialDivisor d<n d∣m) m∣o
+  = hasNonTrivialDivisor d<n (∣-trans d∣m m∣o)
 
 -- Monotonicity wrt ≤
 
 hasNonTrivialDivisor-≤ : m HasNonTrivialDivisorLessThan n → n ≤ o →
                          m HasNonTrivialDivisorLessThan o
-hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) m≤o
-  = hasNonTrivialDivisor (<-≤-trans d<n m≤o) d∣m
+hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) n≤o
+  = hasNonTrivialDivisor (<-≤-trans d<n n≤o) d∣m
