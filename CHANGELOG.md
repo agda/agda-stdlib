@@ -29,6 +29,15 @@ Deprecated names
 New modules
 -----------
 
+* `Function.Relation.Binary.Equality`
+  ```agda
+  setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
+  ```
+  and a convenient infix version
+  ```agda
+  _⇨_ = setoid
+  ```
+  
 Additions to existing modules
 -----------------------------
 
