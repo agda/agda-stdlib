@@ -33,13 +33,6 @@ open SymInterior public
 ------------------------------------------------------------------------
 -- Properties
 
--- A reflexive transitive relation _≤_ gives rise to a poset in which the
--- equivalence relation is SymInterior _≤_.
-record IsProset {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) : Set (a ⊔ ℓ) where
-  field
-    refl : Reflexive _≤_
-    trans : Transitive _≤_
-
 -- The symmetric interior is symmetric.
 symmetric : Symmetric (SymInterior R)
 symmetric (r , r′) = r′ , r
@@ -64,32 +57,28 @@ transitive tr = trans tr tr
 asymmetric⇒empty : Asymmetric R → Empty (SymInterior R)
 asymmetric⇒empty asym (r , r′) = asym r r′
 
-record Proset c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix 4 _≤_
-  field
-    Carrier : Set c
-    _≤_ : Rel Carrier ℓ
-    isProset : IsProset _≤_
+-- A reflexive transitive relation _≤_ gives rise to a poset in which the
+-- equivalence relation is SymInterior _≤_.
 
 isEquivalence : ∀ {a ℓ} {A : Set a} {≤ : Rel A ℓ} →
-  IsProset ≤ → IsEquivalence (SymInterior ≤)
-isEquivalence isProset = record
+  Reflexive ≤ → Transitive ≤ → IsEquivalence (SymInterior ≤)
+isEquivalence ≤-refl ≤-trans = record
   { refl = reflexive ≤-refl
   ; sym = symmetric
   ; trans = transitive ≤-trans
-  } where open IsProset isProset renaming (refl to ≤-refl; trans to ≤-trans)
+  }
 
 isPartialOrder : ∀ {a ℓ} {A : Set a} {≤ : Rel A ℓ} →
-  IsProset ≤ → IsPartialOrder (SymInterior ≤) ≤
-isPartialOrder isProset = record
+  Reflexive ≤ → Transitive ≤ → IsPartialOrder (SymInterior ≤) ≤
+isPartialOrder ≤-refl ≤-trans = record
   { isPreorder = record
-    { isEquivalence = isEquivalence isProset
+    { isEquivalence = isEquivalence ≤-refl ≤-trans
     ; reflexive = lhs≤rhs
     ; trans = ≤-trans
     }
   ; antisym = _,_
-  } where open IsProset isProset renaming (trans to ≤-trans)
+  }
 
 poset : Proset c ℓ → Poset c ℓ ℓ
-poset record { isProset = isProset } =
-  record { isPartialOrder = isPartialOrder isProset }
+poset record { _≤_ = ≤; refl = refl; trans = trans } =
+  record { _≤_ = ≤; isPartialOrder = isPartialOrder refl trans }

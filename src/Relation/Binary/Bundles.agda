@@ -76,6 +76,15 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
 -- Preorders
 ------------------------------------------------------------------------
 
+record Proset c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix 4 _≤_
+  field
+    Carrier : Set c
+    _≤_ : Rel Carrier ℓ
+    refl : Reflexive _≤_
+    trans : Transitive _≤_
+
+
 record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _≲_
   field
