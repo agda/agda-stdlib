@@ -29,7 +29,7 @@ private
 ------------------------------------------------------------------------
 -- Constructors
 
-mkInjection : (f : Func S T) (open Func f) →
+mkInjection : (f : S ⟶ₛ T) (open Func f) →
               Injective Eq₁._≈_ Eq₂._≈_ to  →
               Injection S T
 mkInjection f injective = record

@@ -11,8 +11,8 @@ module Data.Sum.Function.Setoid where
 open import Data.Product.Base as Prod using (_,_)
 open import Data.Sum.Base as Sum
 open import Data.Sum.Relation.Binary.Pointwise as Pointwise
-open import Relation.Binary
-open import Function.Base
+open import Relation.Binary using (Setoid; Rel)
+open import Function.Base using (_$_; _∘_)
 open import Function.Bundles
 open import Function.Definitions
 open import Level
@@ -28,13 +28,13 @@ private
 ------------------------------------------------------------------------
 -- Combinators for equality preserving functions
 
-inj₁ₛ : Func S (S ⊎ₛ T)
+inj₁ₛ : S ⟶ₛ (S ⊎ₛ T)
 inj₁ₛ = record { to = inj₁ ; cong = inj₁ }
 
-inj₂ₛ : Func T (S ⊎ₛ T)
+inj₂ₛ : T ⟶ₛ (S ⊎ₛ T)
 inj₂ₛ = record { to = inj₂ ; cong = inj₂ }
 
-[_,_]ₛ : Func S U → Func T U → Func (S ⊎ₛ T) U
+[_,_]ₛ : S ⟶ₛ U → T ⟶ₛ U → S ⊎ₛ T ⟶ₛ U
 [ f , g ]ₛ = record
   { to   = [ to f , to g ]
   ; cong = λ where
@@ -42,7 +42,7 @@ inj₂ₛ = record { to = inj₂ ; cong = inj₂ }
     (inj₂ x∼₂y) → cong g x∼₂y
   } where open Func
 
-swapₛ : Func (S ⊎ₛ T) (T ⊎ₛ S)
+swapₛ : (S ⊎ₛ T) ⟶ₛ (T ⊎ₛ S)
 swapₛ = [ inj₂ₛ , inj₁ₛ ]ₛ
 
 ------------------------------------------------------------------------

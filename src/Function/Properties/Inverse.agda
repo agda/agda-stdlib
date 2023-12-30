@@ -68,11 +68,11 @@ isEquivalence = record
 ------------------------------------------------------------------------
 -- Conversion functions
 
-toFunction : Inverse S T → Func S T
+toFunction : Inverse S T → S ⟶ₛ T
 toFunction I = record { to = to ; cong = to-cong }
   where open Inverse I
 
-fromFunction : Inverse S T → Func T S
+fromFunction : Inverse S T → T ⟶ₛ S
 fromFunction I = record { to = from ; cong = from-cong }
   where open Inverse I
 

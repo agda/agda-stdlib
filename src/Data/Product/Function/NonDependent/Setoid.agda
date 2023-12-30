@@ -10,10 +10,10 @@
 module Data.Product.Function.NonDependent.Setoid where
 
 open import Data.Product.Base as Prod
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Level using (Level)
-open import Relation.Binary
-open import Function
+open import Relation.Binary using (Setoid)
+open import Function.Bundles -- much of it is used
 
 private
   variable
@@ -24,25 +24,25 @@ private
 ------------------------------------------------------------------------
 -- Combinators for equality preserving functions
 
-proj₁ₛ : Func (A ×ₛ B) A
+proj₁ₛ : A ×ₛ B ⟶ₛ A
 proj₁ₛ = record { to = proj₁ ; cong = proj₁ }
 
-proj₂ₛ : Func (A ×ₛ B) B
+proj₂ₛ : A ×ₛ B ⟶ₛ B
 proj₂ₛ = record { to = proj₂ ; cong = proj₂ }
 
-<_,_>ₛ : Func A B → Func A C → Func A (B ×ₛ C)
+<_,_>ₛ : A ⟶ₛ B → A ⟶ₛ C → A ⟶ₛ B ×ₛ C
 < f , g >ₛ = record
   { to   = < to   f , to   g >
   ; cong = < cong f , cong g >
   } where open Func
 
-swapₛ : Func (A ×ₛ B) (B ×ₛ A)
+swapₛ : A ×ₛ B ⟶ₛ B ×ₛ A
 swapₛ = < proj₂ₛ , proj₁ₛ >ₛ
 
 ------------------------------------------------------------------------
 -- Function bundles
 
-_×-function_ : Func A B → Func C D → Func (A ×ₛ C) (B ×ₛ D)
+_×-function_ : A ⟶ₛ B → C ⟶ₛ D → A ×ₛ C ⟶ₛ B ×ₛ D
 f ×-function g = record
   { to    = Prod.map (to f) (to g)
   ; cong  = Prod.map (cong f) (cong g)
