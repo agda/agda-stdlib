@@ -61,8 +61,8 @@ transitive : Transitive R → Transitive (SymInterior R)
 transitive tr = trans tr tr
 
 -- The symmetric interior of a strict relation is empty.
-Empty-SymInterior : Asymmetric R → Empty (SymInterior R)
-Empty-SymInterior asym (r , r′) = asym r r′
+asymmetric⇒empty : Asymmetric R → Empty (SymInterior R)
+asymmetric⇒empty asym (r , r′) = asym r r′
 
 record Proset c ℓ : Set (suc (c ⊔ ℓ)) where
   infix 4 _≤_

@@ -90,3 +90,8 @@ Additions to existing modules
   ```agda
   map : (Char → Char) → String → String
   ```
+
+* Added new definitions in `Relation.Binary.Definitions`:
+  ```agda
+  Empty _∼_ = ∀ {x y} → x ∼ y → ⊥
+  ```
