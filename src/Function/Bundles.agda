@@ -401,15 +401,6 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     LeftInverse splitSurjection
 
 ------------------------------------------------------------------------
--- Inline bbreviations for oft-used items
-------------------------------------------------------------------------
-
--- Since ⟶ is taken below, use a thick arrow instead
-infixr 0 _➙_
-_➙_ : Setoid a ℓ₁ → Setoid b ℓ₂ → Set _
-_➙_ = Func
-
-------------------------------------------------------------------------
 -- Bundles specialised for propositional equality
 ------------------------------------------------------------------------
 
@@ -534,6 +525,16 @@ module _ {A : Set a} {B : Set b} where
     ( strictlyInverseˡ⇒inverseˡ to invˡ
     , strictlyInverseʳ⇒inverseʳ to invʳ
     )
+
+------------------------------------------------------------------------
+-- Inline bbreviations for oft-used items
+--  (but one define the ones that recur)
+------------------------------------------------------------------------
+
+-- Same convention as above, with appended ₛ (for 'S'etoid)
+infixr 0 _⟶ₛ_
+_⟶ₛ_ : Setoid a ℓ₁ → Setoid b ℓ₂ → Set _
+_⟶ₛ_ = Func
 
 ------------------------------------------------------------------------
 -- Other
