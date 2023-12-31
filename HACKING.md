@@ -124,7 +124,7 @@ git pull
 
 The second step is to create a branch for that feature based off `master`.
 Make sure to pick a fresh name in place of `new_feature`. We promptly push
-this new branch to our fork using the `-u` option fo `push`.
+this new branch to our fork using the `-u` option for `push`.
 
 ```shell
 git checkout -b new_feature
