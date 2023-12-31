@@ -22,7 +22,7 @@ open import Relation.Binary.Construct.Closure.Transitive
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Nullary.Negation.Core as Negation using (¬_)
 open import Relation.Unary
-  using (Pred; ∁; _∩_; _⇒_; Universal; IUniversal; Stable)
+  using (Pred; _∩_; _⇒_; Universal; IUniversal; Stable)
 
 private
   variable
@@ -216,15 +216,18 @@ module FurtherCorollaries (_<_ : Rel A r) (P : Pred A ℓ) where
 
 module _ (_<_ : Rel A r) {P : Pred A ℓ} (stable : Stable P) where
 
-  open FurtherCorollaries _<_ (∁ P)
-    using (acc⇒noInfiniteDescent⁺; wf⇒noInfiniteDescent⁺)
+  private
+    module FC = FurtherCorollaries _<_ (¬_ ∘ P)
+
+  open FC public
+    using ()
     renaming (Acc⇒Descent⁺ to NoSmallestCounterExample)
 
   acc⇒noSmallestCounterExample : NoSmallestCounterExample → ∀ {x} → Acc _<_ x → P x
-  acc⇒noSmallestCounterExample noSmallest = stable _ ∘ acc⇒noInfiniteDescent⁺ noSmallest
+  acc⇒noSmallestCounterExample noSmallest = stable _ ∘ FC.acc⇒noInfiniteDescent⁺ noSmallest
 
   wf⇒noSmallestCounterExample : WellFounded _<_ → NoSmallestCounterExample → ∀ {x} → P x
-  wf⇒noSmallestCounterExample wf noSmallest = stable _ (wf⇒noInfiniteDescent⁺ noSmallest wf)
+  wf⇒noSmallestCounterExample wf noSmallest = stable _ (FC.wf⇒noInfiniteDescent⁺ noSmallest wf)
 
 ------------------------------------------------------------------------
 -- Exports
