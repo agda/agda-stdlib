@@ -29,7 +29,7 @@ private
 ------------------------------------------------------------------------
 -- Constructors
 
-mkEquivalence : S ⟶ₛ T → T ⟶ₛ S → Equivalence S T
+mkEquivalence : Func S T → Func T S → Equivalence S T
 mkEquivalence f g = record
   { to = to f
   ; from = to g

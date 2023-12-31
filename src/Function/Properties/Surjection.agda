@@ -29,7 +29,7 @@ private
 ------------------------------------------------------------------------
 -- Constructors
 
-mkSurjection : (f : S ⟶ₛ T) (open Func f) →
+mkSurjection : (f : Func S T) (open Func f) →
               Surjective Eq₁._≈_ Eq₂._≈_ to  →
               Surjection S T
 mkSurjection f surjective = record

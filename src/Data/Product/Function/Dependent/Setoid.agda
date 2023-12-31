@@ -14,9 +14,7 @@ module Data.Product.Function.Dependent.Setoid where
 open import Data.Product.Base using (map; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
 open import Level using (Level)
-open import Function.Base using (_$_; _∘_)
-open import Function.Bundles
-open import Function.Definitions
+open import Function
 open import Function.Consequences.Setoid
 open import Function.Properties.Injection using (mkInjection)
 open import Function.Properties.Surjection using (mkSurjection; ↠⇒⇔)
@@ -69,8 +67,8 @@ module _ where
 
   function :
     (f : I ⟶ J) →
-    (∀ {i} → (A atₛ i) ⟶ₛ (B atₛ (to f i))) →
-    I ×ₛ A ⟶ₛ J ×ₛ B
+    (∀ {i} → Func (A atₛ i) (B atₛ (to f i))) →
+    Func (I ×ₛ A) (J ×ₛ B)
   function {I = I} {J = J} {A = A} {B = B} I⟶J A⟶B = record
     { to    = to′
     ; cong  = cong′
