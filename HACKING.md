@@ -27,6 +27,18 @@ What is an acceptable contribution?
 In general, if something is in a general undergraduate Computer Science or Mathematics
 textbook it is probably (!) contributable.
 
+Note on contributions to related/'coupled' modules
+==================================================
+
+Before making changes to a `Data` module please have a look at related modules
+and see if they have any content along similar lines. If so, then please 
+follow those conventions (e.g. naming, argument order).
+For example, if working on `Data.Rational`, please check `Data.Rational.Unnormalised`
+or if working on `Data.Vec` please check `Data.List` and vice versa.
+Likewise, if adding to such modules, please try to make companion additions
+to the related ones, or at least to make a task-list in the comments on your PR,
+indicating what outstanding work may be left for subsequent contributions/contributors.
+
 Setup
 =====
 
@@ -110,7 +122,7 @@ git checkout master
 git pull
 ```
 
-The second step is to create a branch for that feature based off of `master`.
+The second step is to create a branch for that feature based off `master`.
 Make sure to pick a fresh name in place of `new_feature`. We promptly push
 this new branch to our fork using the `-u` option fo `push`.
 
