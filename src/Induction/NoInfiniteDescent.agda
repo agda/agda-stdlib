@@ -32,31 +32,57 @@ private
 ------------------------------------------------------------------------
 -- Definitions
 
+module _ (f : ℕ → A) where
+
+  module _ (_<_ : Rel A r) where
+
+    InfiniteDescendingSequence : Set _
+    InfiniteDescendingSequence = ∀ n → f (suc n) < f n
+
+    InfiniteSequenceFrom : Pred A _
+    InfiniteSequenceFrom x = f zero ≡ x × InfiniteDescendingSequence
+
+  module _ (_<_ : Rel A r) where
+
+    private
+
+      _<⁺_ = TransClosure _<_
+
+    InfiniteDescendingSequence⁺ : Set _
+    InfiniteDescendingSequence⁺ = ∀ {m n} → m ℕ.< n → f n <⁺ f m
+
+    InfiniteSequence⁺From : Pred A _
+    InfiniteSequence⁺From x = f zero ≡ x × InfiniteDescendingSequence⁺
+
+    sequence⁺ : InfiniteDescendingSequence _<⁺_ → InfiniteDescendingSequence⁺
+    sequence⁺ seq[f] = seq⁺[f]′ ∘ ℕ.<⇒<′
+      where
+      seq⁺[f]′ : ∀ {m n} → m ℕ.<′ n → f n <⁺ f m
+      seq⁺[f]′ ℕ.<′-base        = seq[f] _
+      seq⁺[f]′ (ℕ.<′-step m<′n) = seq[f] _ ++ seq⁺[f]′ m<′n
+
+    sequence⁻ : InfiniteDescendingSequence⁺ → InfiniteDescendingSequence _<⁺_
+    sequence⁻ seq[f] = seq[f] ∘ n<1+n
+
 module InfiniteDescent (_<_ : Rel A r) (P : Pred A ℓ)  where
 
     DescentAt : Pred A _
     DescentAt x = P x → ∃[ y ] y < x × P y
 
     Acc⇒Descent : Set _
-    Acc⇒Descent = ∀[ Acc _<_ ⇒ DescentAt ]
+    Acc⇒Descent = ∀ {x} → Acc _<_ x → DescentAt x
 
     Descent : Set _
-    Descent = ∀[ DescentAt ]
-
-    InfiniteDescendingSequence : (f : ℕ → A) → Set _
-    InfiniteDescendingSequence f = ∀ n → f (suc n) < f n
-
-    InfiniteSequence_From_ : (f : ℕ → A) → Pred A _
-    InfiniteSequence f From x = f zero ≡ x × InfiniteDescendingSequence f
+    Descent = ∀ {x} → DescentAt x
 
     InfiniteDescentAt : Pred A _
-    InfiniteDescentAt x = P x → ∃[ f ] Π[ P ∘ f ] × InfiniteSequence f From x
+    InfiniteDescentAt x = P x → ∃[ f ] InfiniteSequenceFrom f _<_ x × ∀ z → P (f z)
 
     Acc⇒InfiniteDescent : Set _
-    Acc⇒InfiniteDescent = ∀[ Acc _<_ ⇒ InfiniteDescentAt ]
+    Acc⇒InfiniteDescent = ∀ {x} → Acc _<_ x → InfiniteDescentAt x
 
     InfiniteDescent : Set _
-    InfiniteDescent = ∀[ InfiniteDescentAt ]
+    InfiniteDescent = ∀ {x} → InfiniteDescentAt x
 
 ------------------------------------------------------------------------
 -- Basic lemmas: assume unrestricted descent
@@ -69,39 +95,42 @@ module InfiniteDescent (_<_ : Rel A r) (P : Pred A ℓ)  where
         rec : _
         rec y rec[y] py
           with z , z<y , pz ← descent py
-          with g , Π[P∘g] , g0≡z , g<P ← rec[y] z<y pz
-             = f , Π[P∘f] , f0≡y , f<P
+          with g , (g0≡z , g<P) , Π[P∘g] ← rec[y] z<y pz
+             = f , (f0≡y , f<P) , Π[P∘f]
           where
           f : ℕ → A
           f zero = y
           f (suc n) = g n
+
           f0≡y : f zero ≡ y
           f0≡y = refl
+
           f<P : ∀ n → f (suc n) < f n
           f<P zero rewrite g0≡z = z<y
           f<P (suc n)           = g<P n
-          Π[P∘f] : Π[ P ∘ f ]
+
+          Π[P∘f] : ∀ n →  P (f n)
           Π[P∘f] zero rewrite g0≡z = py
           Π[P∘f] (suc n)           = Π[P∘g] n
 
       wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent
       wf⇒infiniteDescent wf = acc⇒infiniteDescent (wf _)
 
-      acc⇒noInfiniteDescent : ∀[ Acc _<_ ⇒ ¬_ ∘ P ]
+      acc⇒noInfiniteDescent : ∀ {x} → Acc _<_ x → ¬ P x
       acc⇒noInfiniteDescent {x} = Some.wfRec (¬_ ∘ P) rec x
         where
         rec : _
         rec y rec[y] py = let z , z<y , pz = descent py in rec[y] z<y pz
 
-      wf⇒noInfiniteDescent : WellFounded _<_ → ∀[ ¬_ ∘ P ]
+      wf⇒noInfiniteDescent : WellFounded _<_ → ∀ {x} → ¬ P x
       wf⇒noInfiniteDescent wf = acc⇒noInfiniteDescent (wf _)
 
 ------------------------------------------------------------------------
 -- Corollaries: assume descent only for Acc _<_ elements
 
-module _ {_<_ : Rel A r} (P : Pred A ℓ) where
+module _ (_<_ : Rel A r) (P : Pred A ℓ) where
 
-  open InfiniteDescent _<_ P public
+  open InfiniteDescent _<_ P
 
   module Corollaries (descent : Acc⇒Descent) where
 
@@ -121,23 +150,23 @@ module _ {_<_ : Rel A r} (P : Pred A ℓ) where
 
     acc⇒infiniteDescent : Acc⇒InfiniteDescent
     acc⇒infiniteDescent acc[x] px =
-      let f , Π[[P∩Acc]∘f] , sequence[f] = Lemmas∩.acc⇒infiniteDescent acc[x] (px , acc[x])
-      in f , proj₁ ∘ Π[[P∩Acc]∘f] , sequence[f]
+      let f , sequence[f] , Π[[P∩Acc]∘f] = Lemmas∩.acc⇒infiniteDescent acc[x] (px , acc[x])
+      in f , sequence[f] , proj₁ ∘ Π[[P∩Acc]∘f]
 
     wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent
     wf⇒infiniteDescent wf = acc⇒infiniteDescent (wf _)
 
-    acc⇒noInfiniteDescent : ∀[ Acc _<_ ⇒ ¬_ ∘ P ]
+    acc⇒noInfiniteDescent : ∀ {x} → Acc _<_ x → ¬ P x
     acc⇒noInfiniteDescent acc[x] px = Lemmas∩.acc⇒noInfiniteDescent acc[x] (px , acc[x])
 
-    wf⇒noInfiniteDescent : WellFounded _<_ → ∀[ ¬_ ∘ P ]
+    wf⇒noInfiniteDescent : WellFounded _<_ → ∀ {x} → ¬ P x
     wf⇒noInfiniteDescent wf = acc⇒noInfiniteDescent (wf _)
 
 
 ------------------------------------------------------------------------
 -- Further corollaries: assume _<⁺_ descent only for Acc _<⁺_  elements
 
-module FurtherCorollaries {_<_ : Rel A r} (P : Pred A ℓ) where
+module FurtherCorollaries (_<_ : Rel A r) (P : Pred A ℓ) where
 
   private
 
@@ -149,22 +178,16 @@ module FurtherCorollaries {_<_ : Rel A r} (P : Pred A ℓ) where
     Descent⁺     = ID⁺.Descent
 
   Acc⇒Descent⁺ : Set _
-  Acc⇒Descent⁺ = ∀[ Acc _<_ ⇒ DescentAt⁺ ]
-
-  InfiniteDescendingSequence⁺ : (f : ℕ → A) → Set _
-  InfiniteDescendingSequence⁺ f = ∀ {m n} → m ℕ.< n → f n <⁺ f m
-
-  InfiniteSequence⁺_From_ : (f : ℕ → A) → Pred A _
-  InfiniteSequence⁺ f From x = f zero ≡ x × InfiniteDescendingSequence⁺ f
+  Acc⇒Descent⁺ = ∀ {x} → Acc _<_ x → DescentAt⁺ x
 
   InfiniteDescentAt⁺ : Pred A _
-  InfiniteDescentAt⁺ x = P x → ∃[ f ] Π[ P ∘ f ] × InfiniteSequence⁺ f From x
+  InfiniteDescentAt⁺ x = P x → ∃[ f ] InfiniteSequence⁺From f _<_ x × ∀ z → P (f z)
 
   Acc⇒InfiniteDescent⁺ : Set _
-  Acc⇒InfiniteDescent⁺ = ∀[ Acc _<_ ⇒ InfiniteDescentAt⁺ ]
+  Acc⇒InfiniteDescent⁺ = ∀ {x} → Acc _<_ x → InfiniteDescentAt⁺ x
 
   InfiniteDescent⁺ : Set _
-  InfiniteDescent⁺ = ∀[ InfiniteDescentAt⁺ ]
+  InfiniteDescent⁺ = ∀ {x} → InfiniteDescentAt⁺ x
 
   module _ (descent⁺ : Acc⇒Descent⁺) where
 
@@ -172,50 +195,41 @@ module FurtherCorollaries {_<_ : Rel A r} (P : Pred A ℓ) where
       descent : ID⁺.Acc⇒Descent
       descent = descent⁺  ∘ (accessible⁻ _)
 
-      module Corollaries⁺ = Corollaries _ descent
-
-      sequence⁺ : ∀ {f} →
-                  ID⁺.InfiniteDescendingSequence f → InfiniteDescendingSequence⁺ f
-      sequence⁺ {f} seq[f] = seq⁺[f]′ ∘ ℕ.<⇒<′
-        where
-        seq⁺[f]′ : ∀ {m n} → m ℕ.<′ n → f n <⁺ f m
-        seq⁺[f]′ ℕ.<′-base        = seq[f] _
-        seq⁺[f]′ (ℕ.<′-step m<′n) = seq[f] _ ++ seq⁺[f]′ m<′n
-
+      module Corollaries⁺ = Corollaries _ _ descent
 
     acc⇒infiniteDescent⁺ : Acc⇒InfiniteDescent⁺
     acc⇒infiniteDescent⁺ acc[x] px
-      with f , Π[P∘f] , f0≡x , sequence[f] ← Corollaries⁺.acc⇒infiniteDescent (accessible _ acc[x]) px
-         = f , Π[P∘f] , f0≡x , sequence⁺ sequence[f]
+      with f , (f0≡x , sequence[f]) , Π[P∘f] ← Corollaries⁺.acc⇒infiniteDescent (accessible _ acc[x]) px
+         = f , (f0≡x , sequence⁺ _ _ sequence[f]) , Π[P∘f]
 
     wf⇒infiniteDescent⁺ : WellFounded _<_ → InfiniteDescent⁺
     wf⇒infiniteDescent⁺ wf = acc⇒infiniteDescent⁺ (wf _)
 
-    acc⇒noInfiniteDescent⁺ : ∀[ Acc _<_ ⇒ ¬_ ∘ P ]
+    acc⇒noInfiniteDescent⁺ : ∀ {x} → Acc _<_ x → ¬ P x
     acc⇒noInfiniteDescent⁺ = Corollaries⁺.acc⇒noInfiniteDescent ∘ (accessible _)
 
-    wf⇒noInfiniteDescent⁺ : WellFounded _<_ → ∀[ ¬_ ∘ P ]
+    wf⇒noInfiniteDescent⁺ : WellFounded _<_ → ∀ {x} → ¬ P x
     wf⇒noInfiniteDescent⁺ = Corollaries⁺.wf⇒noInfiniteDescent ∘ (wellFounded _)
-
 
 ------------------------------------------------------------------------
 -- Finally:  the (classical) 'no smallest counterexample' principle itself
 
-module _ {_<_ : Rel A r} {P : Pred A ℓ} (stable : Stable P) where
+module _ (_<_ : Rel A r) {P : Pred A ℓ} (stable : Stable P) where
 
-  open FurtherCorollaries {_<_ = _<_} (∁ P)
+  open FurtherCorollaries _<_ (∁ P)
     using (acc⇒noInfiniteDescent⁺; wf⇒noInfiniteDescent⁺)
     renaming (Acc⇒Descent⁺ to NoSmallestCounterExample)
 
-  acc⇒noSmallestCounterExample : NoSmallestCounterExample → ∀[ Acc _<_ ⇒ P ]
+  acc⇒noSmallestCounterExample : NoSmallestCounterExample → ∀ {x} → Acc _<_ x → P x
   acc⇒noSmallestCounterExample noSmallest = stable _ ∘ acc⇒noInfiniteDescent⁺ noSmallest
 
-  wf⇒noSmallestCounterExample : WellFounded _<_ → NoSmallestCounterExample → ∀[ P ]
+  wf⇒noSmallestCounterExample : WellFounded _<_ → NoSmallestCounterExample → ∀ {x} → P x
   wf⇒noSmallestCounterExample wf noSmallest = stable _ (wf⇒noInfiniteDescent⁺ noSmallest wf)
 
 ------------------------------------------------------------------------
 -- Exports
 
+open InfiniteDescent public
 open Corollaries public
 open FurtherCorollaries public
 
