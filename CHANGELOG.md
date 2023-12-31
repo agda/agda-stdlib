@@ -63,8 +63,8 @@ Additions to existing modules
   ```agda
   quotient≢0       : m ∣ n → .{{NonZero n}} → NonZero quotient
 
-  m|n⇒n≡quotient*m : m ∣ n → n ≡ quotient * m
-  m|n⇒n≡m*quotient : m ∣ n → n ≡ m * quotient
+  m∣n⇒n≡quotient*m : m ∣ n → n ≡ quotient * m
+  m∣n⇒n≡m*quotient : m ∣ n → n ≡ m * quotient
   quotient-∣       : m ∣ n → quotient ∣ n
   quotient>1       : m ∣ n → m < n → 1 < quotient
   quotient-<       : m ∣ n → .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
@@ -85,6 +85,10 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
+
+* Added new functions in `Data.String.Base`:
+  ```agda
+  map : (Char → Char) → String → String
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
   ```
