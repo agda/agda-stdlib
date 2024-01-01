@@ -18,7 +18,7 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product.Base using (_,_)
 open import Data.W.Indexed
 open import Relation.Unary
-open import Relation.Unary.PredicateTransformer using (PT)
+open import Relation.Unary.PredicateTransformer
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 
 ------------------------------------------------------------------------
@@ -26,17 +26,17 @@ open import Relation.Binary.PropositionalEquality.Core using (refl)
 infixl 9 _⋆C_
 infix  9 _⋆_
 
-_⋆C_ : ∀ {i o c r ℓ} {I : Set i} {O : Set o} →
-       Container I O c r → Pred O ℓ → Container I O _ _
+_⋆C_ : ∀ {i o c r} {I : Set i} {O : Set o} →
+       Container I O c r → Pred O c → Container I O _ _
 C ⋆C X = const X ⊎′ C
 
-_⋆_ : ∀ {c r ℓ} {O : Set ℓ} → Container O O c r → PT O O c _
+_⋆_ : ∀ {ℓ} {O : Set ℓ} → Container O O ℓ ℓ → Pt O ℓ
 C ⋆ X = μ (C ⋆C X)
 
 pattern returnP x = (inj₁ x , _)
 pattern doP c k   = (inj₂ c , k)
 
-inn : ∀ {c r ℓ} {O : Set ℓ} {C : Container O O c r} {X} →
+inn : ∀ {ℓ} {O : Set ℓ} {C : Container O O ℓ ℓ} {X} →
       ⟦ C ⟧ (C ⋆ X) ⊆ C ⋆ X
 inn (c , k) = sup (doP c k)
 
