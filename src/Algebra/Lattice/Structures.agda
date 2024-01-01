@@ -37,20 +37,15 @@ record IsSemilattice (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     comm   : Commutative ∙
 
   open IsBand isBand public
-    renaming
-    ( ∙-cong  to ∧-cong
-    ; ∙-congˡ to ∧-congˡ
-    ; ∙-congʳ to ∧-congʳ
-    )
 
 -- Used to bring names appropriate for a meet semilattice into scope.
 IsMeetSemilattice = IsSemilattice
 module IsMeetSemilattice {∧} (L : IsMeetSemilattice ∧) where
   open IsSemilattice L public
     renaming
-    ( ∧-cong  to ∧-cong
-    ; ∧-congˡ to ∧-congˡ
-    ; ∧-congʳ to ∧-congʳ
+    ( ∙-cong  to ∧-cong
+    ; ∙-congˡ to ∧-congˡ
+    ; ∙-congʳ to ∧-congʳ
     )
 
 -- Used to bring names appropriate for a join semilattice into scope.
@@ -58,9 +53,9 @@ IsJoinSemilattice = IsSemilattice
 module IsJoinSemilattice {∨} (L : IsJoinSemilattice ∨) where
   open IsSemilattice L public
     renaming
-    ( ∧-cong  to ∨-cong
-    ; ∧-congˡ to ∨-congˡ
-    ; ∧-congʳ to ∨-congʳ
+    ( ∙-cong  to ∨-cong
+    ; ∙-congˡ to ∨-congˡ
+    ; ∙-congʳ to ∨-congʳ
     )
 
 ------------------------------------------------------------------------

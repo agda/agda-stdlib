@@ -16,7 +16,7 @@ open import Data.Integer.Base as ℤ
 open import Data.Nat.GCD
 open import Data.Nat.Coprimality as C
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; 2+) hiding (module ℕ)
 open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ)
 open import Data.Sum.Base using (inj₂)
 open import Function.Base using (id)
@@ -66,8 +66,11 @@ mkℚ+ n (suc d) coprime = mkℚ (+ n) d coprime
 
 infix 4 _≃_
 
-_≃_ : Rel ℚ 0ℓ
-p ≃ q = (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p)
+data _≃_ : Rel ℚ 0ℓ where
+  *≡* : ∀ {p q} → (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p) → p ≃ q
+
+_≄_ : Rel ℚ 0ℓ
+p ≄ q = ¬ (p ≃ q)
 
 ------------------------------------------------------------------------
 -- Ordering of rationals
@@ -186,10 +189,11 @@ open ℤ public
 -- Constructors
 
 ≢-nonZero : ∀ {p} → p ≢ 0ℚ → NonZero p
-≢-nonZero {mkℚ -[1+ _ ] _       _} _   = _
-≢-nonZero {mkℚ +[1+ _ ] _       _} _   = _
-≢-nonZero {mkℚ +0       zero    _} p≢0 = contradiction refl p≢0
-≢-nonZero {mkℚ +0       (suc d) c} p≢0 = contradiction (λ {i} → C.recompute c {i}) ¬0-coprimeTo-2+
+≢-nonZero {mkℚ -[1+ _ ] _         _} _   = _
+≢-nonZero {mkℚ +[1+ _ ] _         _} _   = _
+≢-nonZero {mkℚ +0       zero      _} p≢0 = contradiction refl p≢0
+≢-nonZero {mkℚ +0       d@(suc m) c} p≢0 =
+  contradiction (λ {d} → C.recompute c {d}) (¬0-coprimeTo-2+ {{ℕ.nonTrivial {m}}})
 
 >-nonZero : ∀ {p} → p > 0ℚ → NonZero p
 >-nonZero {p@(mkℚ _ _ _)} (*<* p<q) = ℚᵘ.>-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)

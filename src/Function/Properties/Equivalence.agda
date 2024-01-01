@@ -11,6 +11,7 @@ module Function.Properties.Equivalence where
 
 open import Function.Bundles
 open import Level
+open import Relation.Binary.Definitions
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 import Relation.Binary.PropositionalEquality.Properties as Eq
@@ -21,7 +22,7 @@ import Function.Construct.Composition as Composition
 
 private
   variable
-    a ℓ : Level
+    a b c ℓ ℓ₁ ℓ₂ ℓ₃ : Level
     A B : Set a
     S T : Setoid a ℓ
 
@@ -36,13 +37,37 @@ mkEquivalence f g = record
   ; from-cong = cong g
   } where open Func
 
+⟶×⟵⇒⇔ : A ⟶ B → B ⟶ A → A ⇔ B
+⟶×⟵⇒⇔ = mkEquivalence
+
+------------------------------------------------------------------------
+-- Destructors
+
+⇔⇒⟶ : A ⇔ B → A ⟶ B
+⇔⇒⟶ = Equivalence.toFunction
+
+⇔⇒⟵ : A ⇔ B → B ⟶ A
+⇔⇒⟵ = Equivalence.fromFunction
+
 ------------------------------------------------------------------------
 -- Setoid bundles
 
+refl : Reflexive (Equivalence {a} {ℓ})
+refl {x = x} = Identity.equivalence x
+
+sym : Sym (Equivalence {a} {ℓ₁} {b} {ℓ₂})
+          (Equivalence {b} {ℓ₂} {a} {ℓ₁})
+sym = Symmetry.equivalence
+
+trans : Trans (Equivalence {a} {ℓ₁} {b} {ℓ₂})
+              (Equivalence {b} {ℓ₂} {c} {ℓ₃})
+              (Equivalence {a} {ℓ₁} {c} {ℓ₃})
+trans = Composition.equivalence
+
 isEquivalence : IsEquivalence (Equivalence {a} {ℓ})
 isEquivalence = record
-  { refl = λ {x} → Identity.equivalence x
-  ; sym = Symmetry.equivalence
+  { refl = refl
+  ; sym = sym
   ; trans = Composition.equivalence
   }
 
@@ -69,12 +94,3 @@ setoid s₁ s₂ = record
   ; _≈_           = _⇔_
   ; isEquivalence = ⇔-isEquivalence
   }
-
-⟶×⟵⇒⇔ : A ⟶ B → B ⟶ A → A ⇔ B
-⟶×⟵⇒⇔ = mkEquivalence
-
-⇔⇒⟶ : A ⇔ B → A ⟶ B
-⇔⇒⟶ = Equivalence.toFunction
-
-⇔⇒⟵ : A ⇔ B → B ⟶ A
-⇔⇒⟵ = Equivalence.fromFunction
