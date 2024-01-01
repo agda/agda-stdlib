@@ -16,16 +16,16 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (const; constᵣ)
 open import Level
 open import Relation.Unary
-open import Relation.Unary.PredicateTransformer using (PT)
+open import Relation.Unary.PredicateTransformer using (Pt)
 
 private
   variable
-    i ℓ ℓ₁ ℓ₂ : Level
+    i ℓ : Level
 
 ------------------------------------------------------------------------
 
-record RawPApplicative {I : Set i} (F : PT I I ℓ₁ ℓ₂) :
-                       Set (i ⊔ suc ℓ₁ ⊔ ℓ₂) where
+record RawPApplicative {I : Set i} (F : Pt I ℓ) :
+                       Set (i ⊔ suc ℓ) where
   infixl 4 _⊛_ _<⊛_ _⊛>_
   infix  4 _⊗_
 
