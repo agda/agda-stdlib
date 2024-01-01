@@ -37,13 +37,14 @@ See the [installation instructions](https://github.com/agda/agda-stdlib/blob/mas
 If you're using an old version of Agda, you can download the corresponding version
 of the standard library on the [Agda wiki](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary).
 The module index for older versions of the library is also available. For example,
-version 0.17 can be found at https://agda.github.io/agda-stdlib/v0.17/, just
-replace in the URL 0.17 with the version that you need.
+version 1.7 can be found at https://agda.github.io/agda-stdlib/v1.7/, just
+replace in the URL 1.7 with the version that you need.
 
 #### Development version of Agda
 
 If you're using a development version of Agda rather than the latest official release,
 you should use the `experimental` branch of the standard library rather than `master`.
+[Instructions for updating the `experimental` branch](https://github.com/agda/agda-stdlib/blob/master/doc/updating-experimental.txt).
 The `experimental` branch contains non-backward compatible patches for upcoming
 changes to the language.
 
@@ -52,14 +53,14 @@ changes to the language.
 #### The `--safe` flag
 
 Most of the library can be type-checked using the `--safe` flag. Please consult
-[GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L23)
+[GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L32-L82)
 for a full list of modules that use unsafe features.
 
-#### The `--without-k` flag
+#### The `--cubical-compatible` flag
 
-Most of the library can be type-checked using the `--without-k` flag. Please consult
-[GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L74)
-for a full list of modules that use axiom K.
+Most of the library can be type-checked using the `--cubical-compatible` flag, which since Agda v2.6.3 supersedes the former `--without-K` flag. Please consult
+[GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L91-L111)
+for a full list of modules that use axiom K, requiring the `--with-K` flag.
 
 ## Contributing to the library
 
