@@ -185,3 +185,9 @@ lines = linesByᵇ ('\n' Char.≈ᵇ_)
 -- `lines` preserves empty lines
 _ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
 _ = refl
+
+map : (Char → Char) → String → String
+map f = fromList ∘ List.map f ∘ toList
+
+_ : map Char.toUpper "abc" ≡ "ABC"
+_ = refl

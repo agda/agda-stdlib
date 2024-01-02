@@ -15,7 +15,7 @@ open import Data.Maybe.Base hiding (map)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base hiding (map)
 open import Data.Product.Nary.NonDependent
-open import Data.String.Base
+open import Data.String.Base using (String)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Unit.Base using (⊤)
 open import Function.Nary.NonDependent

@@ -18,7 +18,7 @@ open Magma M
 -- Re-export divisibility relations publicly
 
 open import Algebra.Definitions.RawMagma rawMagma public
-  using (_∣_; _∤_; _∣∣_; _∤∤_; _∣ˡ_; _∤ˡ_; _∣ʳ_; _∤ʳ_)
+  using (_∣_; _∤_; _∣∣_; _∤∤_; _∣ˡ_; _∤ˡ_; _∣ʳ_; _∤ʳ_; _,_)
 
 ------------------------------------------------------------------------
 -- Properties of divisibility
