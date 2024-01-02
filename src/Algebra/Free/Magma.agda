@@ -326,7 +326,7 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
     open Uniqueness 𝓚 renaming (isUnique⟦_⟧ to isUnique⟦_⟧ᴷ)
 
     isUnique⟦_⟧ :  ∀ t → ⟦ t ⟧ᴴ M.≈ ⟦ t ⟧ᴷ
-    isUnique⟦ t ⟧ = begin ⟦ t ⟧ᴴ ≈⟨ isUnique⟦ t ⟧ᴴ ⟩ ⟦ t ⟧η ≈˘⟨ isUnique⟦ t ⟧ᴷ ⟩ ⟦ t ⟧ᴷ ∎
+    isUnique⟦ t ⟧ = begin ⟦ t ⟧ᴴ ≈⟨ isUnique⟦ t ⟧ᴴ ⟩ ⟦ t ⟧η ≈⟨ isUnique⟦ t ⟧ᴷ ⟨ ⟦ t ⟧ᴷ ∎
 
 ------------------------------------------------------------------------
 -- Immediate corollary: alg is in fact a MagmaHomomorphism
