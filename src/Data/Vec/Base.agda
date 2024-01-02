@@ -17,7 +17,7 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; trans; cong)
-open import Relation.Nullary.Decidable.Core using (does)
+open import Relation.Nullary.Decidable.Core using (does; T?)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -60,32 +60,30 @@ lookup : Vec A n → Fin n → A
 lookup (x ∷ xs) zero    = x
 lookup (x ∷ xs) (suc i) = lookup xs i
 
-iterate : (A → A) → A → ∀ {n} → Vec A n
-iterate s z {zero}  = []
-iterate s z {suc n} = z ∷ iterate s (s z)
+iterate : (A → A) → A → ∀ n → Vec A n
+iterate s z zero    = []
+iterate s z (suc n) = z ∷ iterate s (s z) n
 
-insert : Vec A n → Fin (suc n) → A → Vec A (suc n)
-insert xs       zero     v = v ∷ xs
-insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
+insertAt : Vec A n → Fin (suc n) → A → Vec A (suc n)
+insertAt xs       zero     v = v ∷ xs
+insertAt (x ∷ xs) (suc i)  v = x ∷ insertAt xs i v
 
-remove : Vec A (suc n) → Fin (suc n) → Vec A n
-remove (_ ∷ xs)     zero     = xs
-remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
+removeAt : Vec A (suc n) → Fin (suc n) → Vec A n
+removeAt (x ∷ xs)         zero    = xs
+removeAt (x ∷ xs@(_ ∷ _)) (suc i) = x ∷ removeAt xs i
 
-updateAt : Fin n → (A → A) → Vec A n → Vec A n
-updateAt zero    f (x ∷ xs) = f x ∷ xs
-updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
+updateAt : Vec A n → Fin n → (A → A) → Vec A n
+updateAt (x ∷ xs) zero    f = f x ∷ xs
+updateAt (x ∷ xs) (suc i) f = x   ∷ updateAt xs i f
 
 -- xs [ i ]%= f  modifies the i-th element of xs according to f
 
-infixl 6 _[_]%=_
+infixl 6 _[_]%=_ _[_]≔_
 
 _[_]%=_ : Vec A n → Fin n → (A → A) → Vec A n
-xs [ i ]%= f = updateAt i f xs
+xs [ i ]%= f = updateAt xs i f
 
 -- xs [ i ]≔ y  overwrites the i-th element of xs with y
-
-infixl 6 _[_]≔_
 
 _[_]≔_ : Vec A n → Fin n → A → Vec A n
 xs [ i ]≔ y = xs [ i ]%= const y
@@ -93,6 +91,8 @@ xs [ i ]≔ y = xs [ i ]%= const y
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
 
+-- See README.Data.Vec.Relation.Binary.Equality.Cast for the reasoning
+-- system of `cast`-ed equality.
 cast : .(eq : m ≡ n) → Vec A m → Vec A n
 cast {n = zero}  eq []       = []
 cast {n = suc _} eq (x ∷ xs) = x ∷ cast (cong pred eq) xs
@@ -230,12 +230,14 @@ foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 sum : Vec ℕ n → ℕ
 sum = foldr _ _+_ 0
 
-countᵇ : (A → Bool) → Vec A n → ℕ
-countᵇ p []       = zero
-countᵇ p (x ∷ xs) = if p x then suc (countᵇ p xs) else countᵇ p xs
-
 count : ∀ {P : Pred A p} → Decidable P → Vec A n → ℕ
-count P? = countᵇ (does ∘ P?)
+count P? []       = zero
+count P? (x ∷ xs) with does (P? x)
+... | true  = suc (count P? xs)
+... | false = count P? xs
+
+countᵇ : (A → Bool) → Vec A n → ℕ
+countᵇ p = count (T? ∘ p)
 
 ------------------------------------------------------------------------
 -- Operations for building vectors
@@ -243,9 +245,9 @@ count P? = countᵇ (does ∘ P?)
 [_] : A → Vec A 1
 [ x ] = x ∷ []
 
-replicate : A → Vec A n
-replicate {n = zero}  x = []
-replicate {n = suc n} x = x ∷ replicate x
+replicate : (n : ℕ) → A → Vec A n
+replicate zero    x = []
+replicate (suc n) x = x ∷ replicate n x
 
 tabulate : (Fin n → A) → Vec A n
 tabulate {n = zero}  f = []
@@ -295,7 +297,7 @@ truncate (s≤s le) (x ∷ xs) = x ∷ (truncate le xs)
 
 -- Pad out a vector with extra elements.
 padRight : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
-padRight z≤n      a xs       = replicate a
+padRight z≤n      a xs       = replicate _ a
 padRight (s≤s le) a (x ∷ xs) = x ∷ padRight le a xs
 
 ------------------------------------------------------------------------
@@ -350,6 +352,24 @@ last xs = proj₁ (proj₂ (initLast xs))
 -- Other operations
 
 transpose : Vec (Vec A n) m → Vec (Vec A m) n
-transpose []         = replicate []
-transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+transpose {n = n} []          = replicate n []
+transpose {n = n} (as ∷ ass) = ((replicate n _∷_) ⊛ as) ⊛ transpose ass
 
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+remove = removeAt
+{-# WARNING_ON_USAGE remove
+"Warning: remove was deprecated in v2.0.
+Please use removeAt instead."
+#-}
+insert = insertAt
+{-# WARNING_ON_USAGE insert
+"Warning: insert was deprecated in v2.0.
+Please use insertAt instead."
+#-}

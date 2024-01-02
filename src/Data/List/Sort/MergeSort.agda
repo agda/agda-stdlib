@@ -21,7 +21,7 @@ open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Perm
 open import Data.Maybe.Base using (just)
 open import Relation.Nullary.Decidable using (does)
-open import Data.Nat using (_<_; _>_; z<s; s<s)
+open import Data.Nat.Base using (_<_; _>_; z<s; s<s)
 open import Data.Nat.Induction
 open import Data.Nat.Properties using (m<n⇒m<1+n)
 open import Data.Product.Base as Prod using (_,_)
@@ -36,7 +36,7 @@ open DecTotalOrder O renaming (Carrier to A)
 
 open import Data.List.Sort.Base totalOrder
 open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder hiding (head)
-open import Relation.Binary.Properties.DecTotalOrder O using (_≰_; ≰⇒≥; ≰-respˡ-≈)
+open import Relation.Binary.Properties.DecTotalOrder O using (≰⇒≥; ≰-respˡ-≈)
 
 open PermutationReasoning
 
@@ -44,20 +44,21 @@ open PermutationReasoning
 -- Definition
 
 mergePairs : List (List A) → List (List A)
-mergePairs (xs ∷ ys ∷ xss) = merge _≤?_ xs ys ∷ mergePairs xss
+mergePairs (xs ∷ ys ∷ yss) = merge _≤?_ xs ys ∷ mergePairs yss
 mergePairs xss             = xss
 
 private
-  length-mergePairs : ∀ xs ys xss → length (mergePairs (xs ∷ ys ∷ xss)) < length (xs ∷ ys ∷ xss)
+  length-mergePairs : ∀ xs ys yss → let zss = xs ∷ ys ∷ yss in
+                      length (mergePairs zss) < length zss
   length-mergePairs _ _ []              = s<s z<s
-  length-mergePairs _ _ (xss ∷ [])      = s<s (s<s z<s)
-  length-mergePairs _ _ (xs ∷ ys ∷ xss) = s<s (m<n⇒m<1+n (length-mergePairs xs ys xss))
+  length-mergePairs _ _ (xs ∷ [])       = s<s (s<s z<s)
+  length-mergePairs _ _ (xs ∷ ys ∷ yss) = s<s (m<n⇒m<1+n (length-mergePairs xs ys yss))
 
 mergeAll : (xss : List (List A)) → Acc _<_ (length xss) → List A
 mergeAll []        _               = []
 mergeAll (xs ∷ []) _               = xs
-mergeAll (xs ∷ ys ∷ xss) (acc rec) = mergeAll
-  (mergePairs (xs ∷ ys ∷ xss)) (rec _ (length-mergePairs xs ys xss))
+mergeAll xss@(xs ∷ ys ∷ yss) (acc rec) = mergeAll
+  (mergePairs xss) (rec (length-mergePairs xs ys yss))
 
 sort : List A → List A
 sort xs = mergeAll (map [_] xs) (<-wellFounded-fast _)

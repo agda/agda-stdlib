@@ -80,8 +80,8 @@ module _ (_∼_ : Rel A ℓ) where
   accessible acc[x] = acc (wf-acc acc[x])
     where
     wf-acc : ∀ {x} → Acc _∼_ x → WfRec _∼⁺_ (Acc _∼⁺_) x
-    wf-acc (acc rec) _ [ y∼x ]   = acc (wf-acc (rec _ y∼x))
-    wf-acc acc[x] _ (y∼z ∷ z∼⁺x) = acc-inverse (wf-acc acc[x] _ z∼⁺x) _ [ y∼z ]
+    wf-acc (acc rec) [ y∼x ]   = acc (wf-acc (rec y∼x))
+    wf-acc acc[x] (y∼z ∷ z∼⁺x) = acc-inverse (wf-acc acc[x] z∼⁺x) [ y∼z ]
 
   wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
   wellFounded wf x = accessible (wf x)

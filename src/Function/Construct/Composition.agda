@@ -9,7 +9,7 @@
 module Function.Construct.Composition where
 
 open import Data.Product.Base as Product using (_,_)
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; flip)
 open import Function.Bundles
 open import Function.Definitions
 open import Function.Structures
@@ -199,31 +199,33 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} {T : Setoid c ℓ₃} where
 ------------------------------------------------------------------------
 -- Propositional bundles
 
+-- Notice the flipped order of the arguments to mirror composition.
+
 infix 8 _⟶-∘_ _↣-∘_ _↠-∘_ _⤖-∘_ _⇔-∘_ _↩-∘_ _↪-∘_ _↔-∘_
 
-_⟶-∘_ : (A ⟶ B) → (B ⟶ C) → (A ⟶ C)
-_⟶-∘_ = function
+_⟶-∘_ : (B ⟶ C) → (A ⟶ B) → (A ⟶ C)
+_⟶-∘_ = flip function
 
-_↣-∘_ : A ↣ B → B ↣ C → A ↣ C
-_↣-∘_ = injection
+_↣-∘_ : B ↣ C → A ↣ B → A ↣ C
+_↣-∘_ = flip injection
 
-_↠-∘_ : A ↠ B → B ↠ C → A ↠ C
-_↠-∘_ = surjection
+_↠-∘_ : B ↠ C → A ↠ B → A ↠ C
+_↠-∘_ = flip surjection
 
-_⤖-∘_ : A ⤖ B → B ⤖ C → A ⤖ C
-_⤖-∘_ = bijection
+_⤖-∘_ : B ⤖ C → A ⤖ B → A ⤖ C
+_⤖-∘_ = flip bijection
 
-_⇔-∘_ : A ⇔ B → B ⇔ C → A ⇔ C
-_⇔-∘_ = equivalence
+_⇔-∘_ : B ⇔ C → A ⇔ B → A ⇔ C
+_⇔-∘_ = flip equivalence
 
-_↩-∘_ : A ↩ B → B ↩ C → A ↩ C
-_↩-∘_ = leftInverse
+_↩-∘_ : B ↩ C → A ↩ B → A ↩ C
+_↩-∘_ = flip leftInverse
 
-_↪-∘_  : A ↪ B → B ↪ C → A ↪ C
-_↪-∘_ = rightInverse
+_↪-∘_  : B ↪ C → A ↪ B → A ↪ C
+_↪-∘_ = flip rightInverse
 
-_↔-∘_ : A ↔ B → B ↔ C → A ↔ C
-_↔-∘_ = inverse
+_↔-∘_ : B ↔ C → A ↔ B → A ↔ C
+_↔-∘_ = flip inverse
 
 
 ------------------------------------------------------------------------
@@ -233,6 +235,8 @@ _↔-∘_ = inverse
 -- not guaranteed.
 
 -- Version v2.0
+
+infix 8 _∘-⟶_ _∘-↣_ _∘-↠_ _∘-⤖_ _∘-⇔_ _∘-↩_ _∘-↪_ _∘-↔_
 
 _∘-⟶_ = _⟶-∘_
 {-# WARNING_ON_USAGE _∘-⟶_

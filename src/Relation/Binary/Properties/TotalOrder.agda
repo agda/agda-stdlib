@@ -39,8 +39,7 @@ decTotalOrder ≟ = record
 
 open PosetProperties public
   using
-  ( _≥_
-  ; ≥-refl
+  ( ≥-refl
   ; ≥-reflexive
   ; ≥-trans
   ; ≥-antisym
@@ -90,8 +89,7 @@ open PosetProperties public
 
 open PosetProperties public
   using
-  ( _≰_
-  ; ≰-respʳ-≈
+  ( ≰-respʳ-≈
   ; ≰-respˡ-≈
   )
 

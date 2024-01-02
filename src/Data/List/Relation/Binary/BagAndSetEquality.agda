@@ -37,12 +37,14 @@ open import Function.Related.TypeIsomorphisms
 open import Function.Properties.Inverse using (↔-sym; ↔-trans; to-from)
 open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions using (Trans)
 open import Relation.Binary.Bundles using (Preorder; Setoid)
 import Relation.Binary.Reasoning.Setoid as EqR
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl)
-open import Relation.Nullary
+open import Relation.Binary.Reasoning.Syntax
+open import Relation.Nullary.Negation using (¬_)
 open import Data.List.Membership.Propositional.Properties
 
 private
@@ -72,8 +74,8 @@ open Related public using (Kind; SymmetricKind) renaming
 
 infix 4 _∼[_]_
 
-_∼[_]_ : List A → Kind → List A → Set _
-_∼[_]_ {A = A} xs k ys = Preorder._∼_ ([ k ]-Order A) xs ys
+_∼[_]_ : ∀ {a} {A : Set a} → List A → Kind → List A → Set _
+_∼[_]_ {A = A} xs k ys = Preorder._≲_ ([ k ]-Order A) xs ys
 
 private
   module Eq  {k a} {A : Set a} = Setoid ([ k ]-Equality A)
@@ -90,29 +92,22 @@ bag-=⇒ xs≈ys = ↔⇒ xs≈ys
 ------------------------------------------------------------------------
 -- "Equational" reasoning for _⊆_ along with an additional relatedness
 
-module ⊆-Reasoning where
-  private
-    module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
+module ⊆-Reasoning {A : Set a} where
+  private module Base = PreorderReasoning (⊆-preorder A)
 
-  open PreOrder public
-    hiding (step-≈; step-≈˘; step-∼)
+  open Base public
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
+    renaming (≲-go to ⊆-go)
 
-  infixr 2 step-∼ step-⊆
-  infix  1 step-∈
+  open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → begin x) public
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
 
-  step-⊆ = PreOrder.step-∼
+  module _ {k : Related.ForwardKind} where
+    ∼-go : Trans _∼[ ⌊ k ⌋→ ]_ _IsRelatedTo_ _IsRelatedTo_
+    ∼-go eq = ⊆-go (⇒→ eq)
 
-  step-∈ : ∀ x {xs ys : List A} →
-           xs IsRelatedTo ys → x ∈ xs → x ∈ ys
-  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+    open ∼-syntax _IsRelatedTo_ _IsRelatedTo_ ∼-go public
 
-  step-∼ : ∀ {k} xs {ys zs : List A} →
-           ys IsRelatedTo zs → xs ∼[ ⌊ k ⌋→ ] ys → xs IsRelatedTo zs
-  step-∼ xs ys⊆zs xs≈ys = step-⊆ xs ys⊆zs (⇒→ xs≈ys)
-
-  syntax step-∈ x  xs⊆ys x∈xs  = x ∈⟨ x∈xs ⟩ xs⊆ys
-  syntax step-∼ xs ys⊆zs xs≈ys = xs ∼⟨ xs≈ys ⟩ ys⊆zs
-  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
 -- Congruence lemmas
@@ -204,7 +199,7 @@ module _ {k} {A B : Set a} {fs gs : List (A → B)} {xs ys} where
     x ∈ (fs >>= λ f → xs >>= λ x → pure (f x))
       ∼⟨ >>=-cong fs≈gs (λ f → >>=-cong xs≈ys λ x → K-refl) ⟩
     x ∈ (gs >>= λ g → ys >>= λ y → pure (g y))
-      ≡˘⟨ P.cong (x ∈_) (Applicative.unfold-⊛ gs ys) ⟩
+      ≡⟨ P.cong (x ∈_) (Applicative.unfold-⊛ gs ys) ⟨
     x ∈ (gs ⊛ ys) ∎
     where open Related.EquationalReasoning
 
@@ -289,7 +284,7 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
                 (xs₂ >>= pure ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
 
   (fs >>= λ f → xs₁ >>= pure ∘ f) ++
-  (fs >>= λ f → xs₂ >>= pure ∘ f)         ≡˘⟨ P.cong₂ _++_ (Applicative.unfold-⊛ fs xs₁) (Applicative.unfold-⊛ fs xs₂) ⟩
+  (fs >>= λ f → xs₂ >>= pure ∘ f)         ≡⟨ P.cong₂ _++_ (Applicative.unfold-⊛ fs xs₁) (Applicative.unfold-⊛ fs xs₂) ⟨
 
   (fs ⊛ xs₁) ++ (fs ⊛ xs₂)                ∎
   where open EqR ([ bag ]-Equality B)
@@ -597,7 +592,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 ... | zs₁ , zs₂ , p rewrite p = begin
   x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
   x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-  x ∷ (zs₁ ++ zs₂) ↭˘⟨ shift x zs₁ zs₂ ⟩
+  x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
   zs₁ ++ x ∷ zs₂   ∎
   where
   open CommutativeMonoid (commutativeMonoid bag A)

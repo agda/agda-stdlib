@@ -13,7 +13,7 @@ module Relation.Binary.Definitions where
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Data.Maybe.Base using (Maybe)
-open import Data.Product.Base using (_×_)
+open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
 open import Level
@@ -58,6 +58,12 @@ Symmetric _∼_ = Sym _∼_ _∼_
 Trans : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
 Trans P Q R = ∀ {i j k} → P i j → Q j k → R i k
 
+RightTrans : REL A B ℓ₁ → REL B B ℓ₂ → Set _
+RightTrans R S = Trans R S R
+
+LeftTrans : REL A A ℓ₁ → REL A B ℓ₂ → Set _
+LeftTrans S R = Trans S R R
+
 -- A flipped variant of generalised transitivity.
 
 TransFlip : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
@@ -88,7 +94,12 @@ Irreflexive _≈_ _<_ = ∀ {x y} → x ≈ y → ¬ (x < y)
 Asymmetric : Rel A ℓ → Set _
 Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 
--- Generalised connex - exactly one of the two relations holds.
+-- Density
+
+Dense : Rel A ℓ → Set _
+Dense _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
+
+-- Generalised connex - at least one of the two relations holds.
 
 Connex : REL A B ℓ₁ → REL B A ℓ₂ → Set _
 Connex P Q = ∀ x y → P x y ⊎ Q y x

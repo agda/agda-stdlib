@@ -26,6 +26,6 @@ open Semiring S
 -- Re-exports
 
 open MonoidOperations +-commutativeMonoid public
-open import Algebra.Properties.Semiring.Exponentiation S public
-open import Algebra.Properties.Semiring.Multiplication S public
-  using (×1-homo-*; ×′1-homo-*)
+open import Algebra.Properties.Semiring.Exp S public
+open import Algebra.Properties.Semiring.Mult S public
+  using (×1-homo-*)

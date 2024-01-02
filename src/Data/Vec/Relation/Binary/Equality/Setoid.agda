@@ -96,8 +96,8 @@ open PW public using (concat⁺; concat⁻)
 -- replicate
 
 replicate-shiftʳ : ∀ {m} n x (xs : Vec A m) →
-                  replicate {n = n}     x ++ (x ∷ xs) ≋
-                  replicate {n = 1 + n} x ++      xs
+                  replicate n       x ++ (x ∷ xs) ≋
+                  replicate (1 + n) x ++       xs
 replicate-shiftʳ zero    x xs = ≋-refl
 replicate-shiftʳ (suc n) x xs = refl ∷ (replicate-shiftʳ n x xs)
 

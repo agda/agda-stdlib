@@ -26,6 +26,8 @@ open import Level
 open import Relation.Unary using (Pred)
 import Induction.WellFounded as WF
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 import Relation.Binary.Construct.On as On
 
 private
@@ -132,7 +134,7 @@ merge xss = ⟦ merge′ xss ⟧P
 Any-merge : ∀ xss → Any P (merge xss) ↔ Any (λ { (x , xs) → P x ⊎ Any P xs }) xss
 Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂ ∘ to xss)
   where
-  open P.≡-Reasoning
+  open ≡-Reasoning
 
   -- The from function.
 
@@ -195,7 +197,7 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
     ... | inj₂ q | P.refl | q≤p =
       Prod.map there
                (P.cong (there ∘ (Inverse.from (Any-⋎P xs)) ∘ inj₂))
-               (rec (♭ xss , q) (s≤′s q≤p))
+               (rec (s≤′s q≤p))
 
   to∘from = λ p → from-injective _ _ (proj₂ (to xss (from p)))
 

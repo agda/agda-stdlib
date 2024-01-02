@@ -784,7 +784,7 @@ p─q─r≡p─r─q : ∀ (p q r : Subset n) → p ─ q ─ r ≡ p ─ r ─
 p─q─r≡p─r─q p q r = begin
   (p ─ q) ─ r  ≡⟨  p─q─r≡p─q∪r p q r ⟩
   p ─ (q ∪ r)  ≡⟨  cong (p ─_) (∪-comm q r) ⟩
-  p ─ (r ∪ q)  ≡˘⟨ p─q─r≡p─q∪r p r q ⟩
+  p ─ (r ∪ q)  ≡⟨ p─q─r≡p─q∪r p r q ⟨
   (p ─ r) ─ q  ∎
   where open ≡-Reasoning
 

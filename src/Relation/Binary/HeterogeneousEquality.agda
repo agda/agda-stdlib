@@ -19,15 +19,16 @@ open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
 open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
-open import Relation.Binary.Definitions using (Substitutive; Irrelevant; Decidable; _Respects₂_)
+open import Relation.Binary.Definitions using (Substitutive; Irrelevant; Decidable; _Respects₂_; Trans; Reflexive)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.Reasoning.Syntax
 
+import Relation.Binary.PropositionalEquality.Properties as P
 import Relation.Binary.HeterogeneousEquality.Core as Core
 
 private
@@ -219,7 +220,7 @@ preorder : Set ℓ → Preorder ℓ ℓ ℓ
 preorder A = record
   { Carrier    = A
   ; _≈_        = _≡_
-  ; _∼_        = λ x y → x ≅ y
+  ; _≲_        = λ x y → x ≅ y
   ; isPreorder = isPreorder-≡
   }
 
@@ -231,39 +232,46 @@ module ≅-Reasoning where
   -- The code in `Relation.Binary.Reasoning.Setoid` cannot handle
   -- heterogeneous equalities, hence the code duplication here.
 
-  infix  4 _IsRelatedTo_
-  infix  3 _∎
-  infixr 2 _≅⟨_⟩_ _≅˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
-  infix  1 begin_
+  infix 4 _IsRelatedTo_
 
-  data _IsRelatedTo_ {A : Set ℓ} (x : A) {B : Set ℓ} (y : B) :
-                     Set ℓ where
+  data _IsRelatedTo_ {A : Set ℓ} {B : Set ℓ} (x : A) (y : B) : Set ℓ where
     relTo : (x≅y : x ≅ y) → x IsRelatedTo y
 
-  begin_ : ∀ {x : A} {y : B} → x IsRelatedTo y → x ≅ y
-  begin relTo x≅y = x≅y
+  start : ∀ {x : A} {y : B} → x IsRelatedTo y → x ≅ y
+  start (relTo x≅y) = x≅y
+
+  ≡-go : ∀ {A : Set a} → Trans {A = A} {C = A} _≡_ _IsRelatedTo_ _IsRelatedTo_
+  ≡-go x≡y (relTo y≅z) = relTo (trans (reflexive x≡y) y≅z)
+
+  -- Combinators with one heterogeneous relation
+  module _ {A : Set ℓ} {B : Set ℓ} where
+    open begin-syntax (_IsRelatedTo_ {A = A} {B}) start public
+
+  -- Combinators with homogeneous relations
+  module _ {A : Set ℓ} where
+    open ≡-syntax (_IsRelatedTo_ {A = A}) ≡-go public
+    open end-syntax (_IsRelatedTo_ {A = A}) (relTo refl) public
+
+  -- Can't create syntax in the standard `Syntax` module for
+  -- heterogeneous steps because it would force that module to use
+  -- the `--with-k` option.
+  infixr 2 _≅⟨_⟩_ _≅⟨_⟨_
 
   _≅⟨_⟩_ : ∀ (x : A) {y : B} {z : C} →
            x ≅ y → y IsRelatedTo z → x IsRelatedTo z
   _ ≅⟨ x≅y ⟩ relTo y≅z = relTo (trans x≅y y≅z)
 
-  _≅˘⟨_⟩_ : ∀ (x : A) {y : B} {z : C} →
+  _≅⟨_⟨_ : ∀ (x : A) {y : B} {z : C} →
             y ≅ x → y IsRelatedTo z → x IsRelatedTo z
-  _ ≅˘⟨ y≅x ⟩ relTo y≅z = relTo (trans (sym y≅x) y≅z)
+  _ ≅⟨ y≅x ⟨ relTo y≅z = relTo (trans (sym y≅x) y≅z)
 
-  _≡⟨_⟩_ : ∀ (x : A) {y : A} {z : C} →
-           x ≡ y → y IsRelatedTo z → x IsRelatedTo z
-  _ ≡⟨ x≡y ⟩ relTo y≅z = relTo (trans (reflexive x≡y) y≅z)
-
-  _≡˘⟨_⟩_ : ∀ (x : A) {y : A} {z : C} →
-            y ≡ x → y IsRelatedTo z → x IsRelatedTo z
-  _ ≡˘⟨ y≡x ⟩ relTo y≅z = relTo (trans (sym (reflexive y≡x)) y≅z)
-
-  _≡⟨⟩_ : ∀ (x : A) {y : B} → x IsRelatedTo y → x IsRelatedTo y
-  _ ≡⟨⟩ x≅y = x≅y
-
-  _∎ : ∀ (x : A) → x IsRelatedTo x
-  _∎ _ = relTo refl
+  -- Deprecated
+  infixr 2 _≅˘⟨_⟩_
+  _≅˘⟨_⟩_ = _≅⟨_⟨_
+  {-# WARNING_ON_USAGE _≅˘⟨_⟩_
+  "Warning: _≅˘⟨_⟩_ was deprecated in v2.0.
+  Please use _≅⟨_⟨_ instead."
+  #-}
 
 ------------------------------------------------------------------------
 -- Inspect

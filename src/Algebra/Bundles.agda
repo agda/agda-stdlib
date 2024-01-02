@@ -504,7 +504,7 @@ record SemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open NearSemiring nearSemiring public
     using
-    ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-semigroup
+    ( +-rawMagma; +-magma; +-unitalMagma; +-semigroup
     ; +-rawMonoid; +-monoid
     ; *-rawMagma; *-magma; *-semigroup
     ; rawNearSemiring
@@ -542,7 +542,7 @@ record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open SemiringWithoutOne semiringWithoutOne public
     using
-    ( _≉_; +-rawMagma; +-magma; +-unitalMagma; +-semigroup; +-commutativeSemigroup
+    ( +-rawMagma; +-magma; +-unitalMagma; +-semigroup; +-commutativeSemigroup
     ; *-rawMagma; *-magma; *-semigroup
     ; +-rawMonoid; +-monoid; +-commutativeMonoid
     ; nearSemiring; rawNearSemiring
@@ -943,6 +943,9 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
+
+  ringWithoutOne : RingWithoutOne _ _
+  ringWithoutOne = record { isRingWithoutOne = isRingWithoutOne }
 
   semiring : Semiring _ _
   semiring = record { isSemiring = isSemiring }
