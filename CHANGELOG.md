@@ -41,7 +41,7 @@ Additions to existing modules
 * In `Data.Empty`:
   ```agda
   ⊥-recompute : Recomputable ⊥
-  ⊥-elim-irr : ∀ {w} {Whatever : Set w} → .⊥ → Whatever
+  ⊥-elim-irr  : .⊥ → Whatever
   ```
 
 * In `Data.Fin.Properties`:

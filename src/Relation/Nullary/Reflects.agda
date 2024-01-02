@@ -15,7 +15,6 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
 open import Function.Base using (_$_; _∘_; const; id; flip)
-
 open import Relation.Nullary.Negation.Core
 open import Relation.Nullary.Recomputable
 
@@ -73,34 +72,34 @@ T-reflects false = of id
 
 -- If we can decide A, then we can decide its negation.
 ¬-reflects : ∀ {b} → Reflects A b → Reflects (¬ A) (not b)
-¬-reflects (ofʸ  a) = ofⁿ (_$ a)
-¬-reflects (ofⁿ ¬a) = ofʸ ¬a
+¬-reflects (ofʸ  a) = of (_$ a)
+¬-reflects (ofⁿ ¬a) = of ¬a
 
 -- If we can decide A and Q then we can decide their product
 _×-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A × B) (a ∧ b)
-ofʸ  a ×-reflects ofʸ  b = ofʸ (a , b)
-ofʸ  a ×-reflects ofⁿ ¬b = ofⁿ (¬b ∘ proj₂)
-ofⁿ ¬a ×-reflects _      = ofⁿ (¬a ∘ proj₁)
+ofʸ  a ×-reflects ofʸ  b = of (a , b)
+ofʸ  a ×-reflects ofⁿ ¬b = of (¬b ∘ proj₂)
+ofⁿ ¬a ×-reflects _      = of (¬a ∘ proj₁)
 
 _⊎-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                Reflects (A ⊎ B) (a ∨ b)
-ofʸ  a ⊎-reflects      _ = ofʸ (inj₁ a)
-ofⁿ ¬a ⊎-reflects ofʸ  b = ofʸ (inj₂ b)
-ofⁿ ¬a ⊎-reflects ofⁿ ¬b = ofⁿ (¬a ¬-⊎ ¬b)
+ofʸ  a ⊎-reflects      _ = of (inj₁ a)
+ofⁿ ¬a ⊎-reflects ofʸ  b = of (inj₂ b)
+ofⁿ ¬a ⊎-reflects ofⁿ ¬b = of (¬a ¬-⊎ ¬b)
 
 _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                 Reflects (A → B) (not a ∨ b)
-ofʸ  a →-reflects ofʸ  b = ofʸ (const b)
-ofʸ  a →-reflects ofⁿ ¬b = ofⁿ (¬b ∘ (_$ a))
-ofⁿ ¬a →-reflects _      = ofʸ (flip contradiction ¬a)
+ofʸ  a →-reflects ofʸ  b = of (const b)
+ofʸ  a →-reflects ofⁿ ¬b = of (¬b ∘ (_$ a))
+ofⁿ ¬a →-reflects _      = of (contradictionᵒ ¬a)
 
 ------------------------------------------------------------------------
 -- Other lemmas
 
 fromEquivalence : ∀ {b} → (T b → A) → (A → T b) → Reflects A b
-fromEquivalence {b = true}  sound complete = ofʸ (sound _)
-fromEquivalence {b = false} sound complete = ofⁿ complete
+fromEquivalence {b = true}  sound complete = of (sound _)
+fromEquivalence {b = false} sound complete = of complete
 
 -- `Reflects` is deterministic.
 det : ∀ {b b′} → Reflects A b → Reflects A b′ → b ≡ b′
