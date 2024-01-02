@@ -16,6 +16,7 @@ open import Function.Base using (_∘_; _|>_)
 open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
 open import Relation.Nullary.Decidable.Core using (Dec; True)
 open import Relation.Nullary.Negation.Core using (¬_)
+import Relation.Nullary as Nullary
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
@@ -178,13 +179,13 @@ Decidable P = ∀ x → Dec (P x)
 -- indistinguishable.
 
 Irrelevant : Pred A ℓ → Set _
-Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
+Irrelevant P = ∀ {x} → Nullary.Irrelevant (P x)
 
 -- Recomputability - we can rebuild a relevant proof given an
 -- irrelevant one.
 
 Recomputable : Pred A ℓ → Set _
-Recomputable P = ∀ {x} → .(P x) → P x
+Recomputable P = ∀ {x} → Nullary.Recomputable (P x)
 
 ------------------------------------------------------------------------
 -- Operations on sets

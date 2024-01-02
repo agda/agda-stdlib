@@ -50,8 +50,8 @@ via-injection inj _≟_ x y = map′ injective cong (to x ≟ to y)
 -- A lemma relating True and Dec
 
 True-↔ : (a? : Dec A) → Irrelevant A → True a? ↔ A
-True-↔ (true  because [a]) irr = mk↔ₛ′ (λ _ → invert [a]) _ (irr (invert [a])) cong′
-True-↔ (false because ofⁿ ¬a) _ = mk↔ₛ′ (λ ()) (invert (ofⁿ ¬a)) (λ a → contradiction a ¬a) λ ()
+True-↔ (true  because [a]) irr = let a = invert [a] in mk↔ₛ′ (λ _ → a) _ (irr a) cong′
+True-↔ (false because [¬a]) _  = let ¬a = invert [¬a] in mk↔ₛ′ (λ ()) ¬a (λ a → contradiction a ¬a) λ ()
 
 ------------------------------------------------------------------------
 -- Result of decidability

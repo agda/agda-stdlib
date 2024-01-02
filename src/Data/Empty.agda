@@ -44,4 +44,4 @@ private
 ⊥-elim ()
 
 ⊥-elim-irr : ∀ {w} {Whatever : Set w} → .⊥ → Whatever
-⊥-elim-irr bot = ⊥-elim (⊥-recompute bot)
+⊥-elim-irr ()

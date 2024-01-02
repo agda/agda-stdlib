@@ -29,8 +29,20 @@ Deprecated names
 New modules
 -----------
 
+* Systematise the use of `Recomputable A = .A → A`:
+  ```agda
+  Relation.Nullary.Recomputable
+  ```
+  with `Recomputable` exported publicly from `Relation.Nullary`.
+
 Additions to existing modules
 -----------------------------
+
+* In `Data.Empty`:
+  ```agda
+  ⊥-recompute : Recomputable ⊥
+  ⊥-elim-irr : ∀ {w} {Whatever : Set w} → .⊥ → Whatever
+  ```
 
 * In `Data.Fin.Properties`:
   ```agda
@@ -88,3 +100,11 @@ Additions to existing modules
 
 * In `Function.Bundles`, added `_➙_` as a synonym for `Func` that can
   be used infix.
+
+* Added new definitions in `Relation.Nullary.Negation.Core`:
+  ```agda
+  contradictionᵒ     : ¬ A → A → Whatever
+  weak-contradiction : .A → ¬ A → Whatever
+  irr-contradiction  : .A → .(¬ A) → Whatever
+  ¬-recompute        : Recomputable (¬ A)
+  ```

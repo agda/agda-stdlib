@@ -18,8 +18,8 @@ open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Recomputable
-open import Relation.Nullary.Reflects hiding (recompute)
-open import Relation.Nullary.Negation.Core as Negation
+open import Relation.Nullary.Reflects as Reflects hiding (recompute)
+open import Relation.Nullary.Negation.Core
 
 private
   variable
@@ -69,8 +69,7 @@ module _ {A : Set a} where
 -- Given an irrelevant proof of a decidable type, a proof can
 -- be recomputed and subsequently used in relevant contexts.
 recompute : Dec A → Recomputable A
-recompute (yes a) _ = a
-recompute (no ¬a) a = weak-contradiction a ¬a
+recompute = Reflects.recompute ∘ proof
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
