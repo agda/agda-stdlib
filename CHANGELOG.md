@@ -86,5 +86,5 @@ Additions to existing modules
   map : (Char → Char) → String → String
   ```
 
-* In `Function.Bundles`, added `_➙_` as a synonym for `Func` that can
+* In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
