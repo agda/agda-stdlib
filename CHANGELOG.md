@@ -58,8 +58,8 @@ Additions to existing modules
   ```agda
   quotient≢0       : m ∣ n → .{{NonZero n}} → NonZero quotient
 
-  m|n⇒n≡quotient*m : m ∣ n → n ≡ quotient * m
-  m|n⇒n≡m*quotient : m ∣ n → n ≡ m * quotient
+  m∣n⇒n≡quotient*m : m ∣ n → n ≡ quotient * m
+  m∣n⇒n≡m*quotient : m ∣ n → n ≡ m * quotient
   quotient-∣       : m ∣ n → quotient ∣ n
   quotient>1       : m ∣ n → m < n → 1 < quotient
   quotient-<       : m ∣ n → .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
