@@ -29,6 +29,11 @@ Deprecated names
 New modules
 -----------
 
+* Nagata's construction of the "idealization of a module":
+  ```agda
+  Algebra.Module.Construct.Nagata
+  ```
+
 Additions to existing modules
 -----------------------------
 
