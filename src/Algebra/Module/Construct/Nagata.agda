@@ -157,7 +157,6 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
     ; *-assoc = *ᴺ-assoc
     ; *-identity = *ᴺ-identity
     ; distrib = *ᴺ-distrib-+ᴺ
-    --; zero = zeroᴺ
     }
 
 ------------------------------------------------------------------------
