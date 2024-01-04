@@ -13,8 +13,8 @@
 -- no consistent notation in the literature, consists of:
 -- * carrier: pairs |R| × |M|
 -- * with additive structure that of the direct sum R ⊕ M _of modules_
--- * but with multiplication _*ᴺ_ such that M forms an _ideal_ of N
--- * moreover satisfying 'm *ᴺ m ≈ 0' for every m ∈ M ⊆ N
+-- * but with multiplication _*_ such that M forms an _ideal_ of N
+-- * moreover satisfying 'm * m ≈ 0' for every m ∈ M ⊆ N
 --
 -- The fundamental lemma (proved here) is that N, in fact, defines a Ring:
 -- this ring is essentially the 'ring of dual numbers' construction R[M]
@@ -57,6 +57,7 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
   private
     open module R = Ring ring
+      using ()
       renaming (Carrier to R)
 
     open module M = Bimodule bimodule
@@ -73,10 +74,10 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
       using ()
       renaming (Carrierᴹ to N
                ; _≈ᴹ_ to _≈ᴺ_
-               ; _+ᴹ_ to _+ᴺ_
-               ; 0ᴹ to 0ᴺ
-               ; -ᴹ_ to -ᴺ_
-               ; +ᴹ-isAbelianGroup to +ᴺ-isAbelianGroup
+               ; _+ᴹ_ to _+_
+               ; 0ᴹ to 0#
+               ; -ᴹ_ to -_
+               ; +ᴹ-isAbelianGroup to +-isAbelianGroup
                )
 
     open Definitions _≈ᴺ_
@@ -91,43 +92,43 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
 -- Multiplicative unit
 
-  1ᴺ : N
-  1ᴺ = ιᴿ R.1#
+  1# : N
+  1# = ιᴿ R.1#
 
 -- Multiplication
 
-  infixl 7 _*ᴺ_
+  infixl 7 _*_
 
-  _*ᴺ_ : Op₂ N
-  (r₁ , m₁) *ᴺ (r₂ , m₂) = r₁ R.* r₂ , r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂
+  _*_ : Op₂ N
+  (r₁ , m₁) * (r₂ , m₂) = r₁ R.* r₂ , r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂
 
 -- Properties: because we work in the direct sum, every proof has
 -- * an 'R'-component, which inherits directly from R, and
 -- * an 'M'-component, where the work happens
 
-  *ᴺ-cong : Congruent₂ _*ᴺ_
-  *ᴺ-cong (r₁ , m₁) (r₂ , m₂) = R.*-cong r₁ r₂ , +ᴹ-cong (*ₗ-cong r₁ m₂) (*ᵣ-cong m₁ r₂)
+  *-cong : Congruent₂ _*_
+  *-cong (r₁ , m₁) (r₂ , m₂) = R.*-cong r₁ r₂ , +ᴹ-cong (*ₗ-cong r₁ m₂) (*ᵣ-cong m₁ r₂)
 
-  *ᴺ-identityˡ : LeftIdentity 1ᴺ _*ᴺ_
-  *ᴺ-identityˡ (r , m) = R.*-identityˡ r , (begin
+  *-identityˡ : LeftIdentity 1# _*_
+  *-identityˡ (r , m) = R.*-identityˡ r , (begin
 
       R.1# *ₗ m +ᴹ 0ᴹ *ᵣ r ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
       m +ᴹ 0ᴹ              ≈⟨ +ᴹ-identityʳ m ⟩
       m                    ∎)
 
-  *ᴺ-identityʳ : RightIdentity 1ᴺ _*ᴺ_
-  *ᴺ-identityʳ (r , m) = R.*-identityʳ r , (begin
+  *-identityʳ : RightIdentity 1# _*_
+  *-identityʳ (r , m) = R.*-identityʳ r , (begin
 
       r *ₗ 0ᴹ +ᴹ m *ᵣ R.1# ≈⟨ +ᴹ-cong (*ₗ-zeroʳ r) (*ᵣ-identityʳ m) ⟩
       0ᴹ +ᴹ m              ≈⟨ +ᴹ-identityˡ m ⟩
       m                    ∎)
 
 
-  *ᴺ-identity : Identity 1ᴺ _*ᴺ_
-  *ᴺ-identity = *ᴺ-identityˡ , *ᴺ-identityʳ
+  *-identity : Identity 1# _*_
+  *-identity = *-identityˡ , *-identityʳ
 
-  *ᴺ-assoc : Associative _*ᴺ_
-  *ᴺ-assoc (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.*-assoc r₁ r₂ r₃ , (begin
+  *-assoc : Associative _*_
+  *-assoc (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.*-assoc r₁ r₂ r₃ , (begin
 
     (r₁ R.* r₂) *ₗ m₃ +ᴹ (r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂) *ᵣ r₃
       ≈⟨ +ᴹ-cong (*ₗ-assoc r₁ r₂ m₃) (*ᵣ-distribʳ r₃ (r₁ *ₗ m₂) (m₁ *ᵣ r₂)) ⟩
@@ -139,8 +140,8 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
       ≈⟨ +ᴹ-cong (symᴹ (*ₗ-distribˡ r₁ (r₂ *ₗ m₃) (m₂ *ᵣ r₃))) (*ᵣ-assoc m₁ r₂ r₃) ⟩
     r₁ *ₗ (r₂ *ₗ m₃ +ᴹ m₂ *ᵣ r₃) +ᴹ m₁ *ᵣ (r₂ R.* r₃) ∎)
 
-  *ᴺ-distribˡ-+ᴺ : _*ᴺ_ DistributesOverˡ _+ᴺ_
-  *ᴺ-distribˡ-+ᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribˡ r₁ r₂ r₃ , (begin
+  distribˡ : _*_ DistributesOverˡ _+_
+  distribˡ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribˡ r₁ r₂ r₃ , (begin
 
       r₁ *ₗ (m₂ +ᴹ m₃) +ᴹ m₁ *ᵣ (r₂ R.+ r₃)
         ≈⟨ +ᴹ-cong (*ₗ-distribˡ r₁ m₂ m₃) (*ᵣ-distribˡ m₁ r₂ r₃) ⟩
@@ -149,8 +150,8 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
       (r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂) +ᴹ (r₁ *ₗ m₃ +ᴹ m₁ *ᵣ r₃) ∎)
 
 
-  *ᴺ-distribʳ-+ᴺ : _*ᴺ_ DistributesOverʳ _+ᴺ_
-  *ᴺ-distribʳ-+ᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribʳ r₁ r₂ r₃ , (begin
+  distribʳ : _*_ DistributesOverʳ _+_
+  distribʳ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribʳ r₁ r₂ r₃ , (begin
 
       (r₂ R.+ r₃) *ₗ m₁ +ᴹ (m₂ +ᴹ m₃) *ᵣ r₁
         ≈⟨ +ᴹ-cong (*ₗ-distribʳ m₁ r₂ r₃) (*ᵣ-distribʳ r₁ m₂ m₃) ⟩
@@ -158,8 +159,8 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
         ≈⟨ +ᴹ-middleFour (r₂ *ₗ m₁) (r₃ *ₗ m₁) (m₂ *ᵣ r₁) (m₃ *ᵣ r₁) ⟩
       (r₂ *ₗ m₁ +ᴹ m₂ *ᵣ r₁) +ᴹ (r₃ *ₗ m₁ +ᴹ m₃ *ᵣ r₁) ∎)
 
-  *ᴺ-distrib-+ᴺ : _*ᴺ_ DistributesOver _+ᴺ_
-  *ᴺ-distrib-+ᴺ = *ᴺ-distribˡ-+ᴺ , *ᴺ-distribʳ-+ᴺ
+  distrib : _*_ DistributesOver _+_
+  distrib = distribˡ , distribʳ
 
 
 ------------------------------------------------------------------------
@@ -167,13 +168,13 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
 -- Structure
 
-  isRingᴺ : IsRing _≈ᴺ_ _+ᴺ_ _*ᴺ_ -ᴺ_ 0ᴺ  1ᴺ
+  isRingᴺ : IsRing _≈ᴺ_ _+_ _*_ -_ 0#  1#
   isRingᴺ = record
-    { +-isAbelianGroup = +ᴺ-isAbelianGroup
-    ; *-cong = *ᴺ-cong
-    ; *-assoc = *ᴺ-assoc
-    ; *-identity = *ᴺ-identity
-    ; distrib = *ᴺ-distrib-+ᴺ
+    { +-isAbelianGroup = +-isAbelianGroup
+    ; *-cong = *-cong
+    ; *-assoc = *-assoc
+    ; *-identity = *-identity
+    ; distrib = distrib
     }
 
 -- Bundle
@@ -184,14 +185,14 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 ------------------------------------------------------------------------
 -- M is an ideal of R ⋉ M satisying m * m ≈ 0#
 
-  idealˡ-M : (n : N) (m : M) → ∃[ n*m ] n *ᴺ ιᴹ m ≈ᴺ ιᴹ n*m
-  idealˡ-M n@(r , _) m = _ , zeroʳ r , ≈ᴹ-refl
+  idealˡ-M : (n : N) (m : M) → ∃[ n*m ] n * ιᴹ m ≈ᴺ ιᴹ n*m
+  idealˡ-M n@(r , _) m = _ , R.zeroʳ r , ≈ᴹ-refl
 
-  idealʳ-M : (m : M) (n : N) → ∃[ m*n ] ιᴹ m *ᴺ n ≈ᴺ ιᴹ m*n
-  idealʳ-M m n@(r , _) = _ , zeroˡ r , ≈ᴹ-refl
+  idealʳ-M : (m : M) (n : N) → ∃[ m*n ] ιᴹ m * n ≈ᴺ ιᴹ m*n
+  idealʳ-M m n@(r , _) = _ , R.zeroˡ r , ≈ᴹ-refl
 
-  m*m≈0 : (m : M) → ιᴹ m *ᴺ ιᴹ m ≈ᴺ 0ᴺ
-  m*m≈0 m = zeroˡ R.0# , (begin
+  m*m≈0 : (m : M) → ιᴹ m * ιᴹ m ≈ᴺ 0#
+  m*m≈0 m = R.zeroˡ R.0# , (begin
 
     R.0# *ₗ m +ᴹ m *ᵣ R.0# ≈⟨ +ᴹ-cong (*ₗ-zeroˡ m) (*ᵣ-zeroʳ m) ⟩
     0ᴹ +ᴹ 0ᴹ               ≈⟨ +ᴹ-identityˡ 0ᴹ ⟩
