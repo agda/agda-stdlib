@@ -29,6 +29,8 @@ Deprecated names
 New modules
 -----------
 
+* Added new file `Data.Fin.Mod`
+
 Additions to existing modules
 -----------------------------
 
