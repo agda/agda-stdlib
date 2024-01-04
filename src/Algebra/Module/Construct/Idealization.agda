@@ -31,7 +31,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Algebra.Module.Construct.Nagata where
+module Algebra.Module.Construct.Idealization where
 
 open import Algebra.Bundles using (AbelianGroup; Ring)
 open import Algebra.Core
