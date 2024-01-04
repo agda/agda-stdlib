@@ -184,7 +184,7 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
   ringᴺ = record { isRing = isRingᴺ }
 
 ------------------------------------------------------------------------
--- M is an ideal of R ⋉ M satisying m * m ≈ 0#
+-- M is an ideal of R ⋉ M satisfying m₁ * m₂ ≈ 0#
 
   ιᴹ-idealˡ : (n : N) (m : M) → ∃[ n*m ] n * ιᴹ m ≈ ιᴹ n*m
   ιᴹ-idealˡ n@(r , _) m = _ , R.zeroʳ r , ≈ᴹ-refl
