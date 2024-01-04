@@ -1,29 +1,43 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The non-commutative analogue of Nagata's construction
--- of the "idealization of a module", defined here
--- on R-R-*bi*modules M over a ring R.
+-- The non-commutative analogue of Nagata's construction of
+-- the "idealization of a module", (Local Rings, 1962; Wiley)
+-- defined here on R-R-*bi*modules M over a ring R, as used in
+-- "Forward- or reverse-mode automatic differentiation: What's the difference?"
+-- (Van den Berg, Schrijvers, McKinna, Vandenbroucke;
+-- Science of Computer Programming, Vol. 234, January 2024
+-- https://doi.org/10.1016/j.scico.2023.103010)
 --
--- Elements of R ⋉ M are pairs |R| × |M|
+-- The construction N =def R ⋉ M , for which there is unfortunately
+-- no consistent notation in the literature, consists of:
+-- * carrier: pairs |R| × |M|
+-- * with additive structure that of the direct sum R ⊕ M _of modules_
+-- * but with multiplication _*ᴺ_ such that M forms an _ideal_ of N
+-- * moreover satisfying 'm *ᴺ m ≈ 0' for every m ∈ M ⊆ N
+--
+-- The fundamental lemma (proved here) is that N, in fact, defines a Ring.
+--
+-- Nagata's more fundamental insight (not yet shown here) is that
+-- the lattice of R-submodules of M is in order-isomorphism with
+-- the lattice of _ideals_ of R ⋉ M , and hence that the study of
+-- modules can be reduced to that of ideals of a ring, and vice versa.
+--
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Construct.Nagata where
 
-open import Algebra.Bundles
+open import Algebra.Bundles using (AbelianGroup; Ring)
 open import Algebra.Core
 import Algebra.Consequences.Setoid as Consequences
 import Algebra.Definitions as Definitions
-open import Algebra.Module.Bundles
-open import Algebra.Module.Core
-open import Algebra.Module.Definitions
+open import Algebra.Module.Bundles using (Bimodule)
 import Algebra.Module.Construct.DirectProduct as DirectProduct
 import Algebra.Module.Construct.TensorUnit as TensorUnit
-open import Algebra.Structures
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
+open import Algebra.Structures using (IsAbelianGroup; IsRing)
+open import Data.Product using (_,_; ∃-syntax)
 open import Level using (Level; _⊔_)
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -74,39 +88,53 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
              ; +ᴹ-abelianGroup to +ᴺ-abelianGroup
              )
 
+  open AbelianGroup +ᴺ-abelianGroup
+    renaming (isAbelianGroup to +ᴺ-isAbelianGroup)
+
+  open Definitions _≈ᴺ_
+
+-- injections ι from the components of the direct sum
+-- ιᴹ in fact exhibits M as an _ideal_ of R ⋉ M (not yet shown)
   ιᴿ : R → N
   ιᴿ r = r , 0ᴹ
 
   ιᴹ : M → N
   ιᴹ m = 0ᴿ , m
 
+-- multiplicative unit
+
   1ᴺ : N
   1ᴺ = ιᴿ 1ᴿ
 
-  open AbelianGroup +ᴺ-abelianGroup
-    renaming (isAbelianGroup to +ᴺ-isAbelianGroup)
-
-  open Definitions _≈ᴺ_
+-- multiplication
 
   infixl 7 _*ᴺ_
 
   _*ᴺ_ : Op₂ N
   (r₁ , m₁) *ᴺ (r₂ , m₂) = r₁ *ᴿ r₂ , r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂
 
+-- properties: because we work in the direct sum, every proof
+-- has an 'R'-component, which inherits directly from R,
+-- and an 'M'-component, where the work happens
+
+  open ≈-Reasoning setoidᴹ
+
+  private
+    +ᴹ-middleFour = Consequences.comm∧assoc⇒middleFour setoidᴹ +ᴹ-cong +ᴹ-comm +ᴹ-assoc
+
   *ᴺ-identity : Identity 1ᴺ _*ᴺ_
   *ᴺ-identity = lᴺ , rᴺ
     where
-      open ≈-Reasoning setoidᴹ
       lᴺ : LeftIdentity 1ᴺ _*ᴺ_
-      lᴺ (r , m) = (*ᴿ-identityˡ r) , (begin
-        (1ᴿ *ₗ m +ᴹ 0ᴹ *ᵣ r) ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
-        (m +ᴹ 0ᴹ) ≈⟨ +ᴹ-identityʳ m ⟩
-        m ∎)
+      lᴺ (r , m) = *ᴿ-identityˡ r , (begin
+        1ᴿ *ₗ m +ᴹ 0ᴹ *ᵣ r ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
+        m +ᴹ 0ᴹ            ≈⟨ +ᴹ-identityʳ m ⟩
+        m                  ∎)
       rᴺ : RightIdentity 1ᴺ _*ᴺ_
       rᴺ (r , m) = (*ᴿ-identityʳ r) , (begin
         r *ₗ 0ᴹ +ᴹ m *ᵣ 1ᴿ ≈⟨ +ᴹ-cong (*ₗ-zeroʳ r) (*ᵣ-identityʳ m) ⟩
-        0ᴹ +ᴹ m ≈⟨ +ᴹ-identityˡ m ⟩
-        m ∎)
+        0ᴹ +ᴹ m            ≈⟨ +ᴹ-identityˡ m ⟩
+        m                  ∎)
 
   *ᴺ-cong : Congruent₂ _*ᴺ_
   *ᴺ-cong (r₁ , m₁) (r₂ , m₂) = *ᴿ-cong r₁ r₂ , +ᴹ-cong (*ₗ-cong r₁ m₂) (*ᵣ-cong m₁ r₂)
@@ -122,15 +150,10 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
     (r₁ *ₗ (r₂ *ₗ m₃) +ᴹ r₁ *ₗ (m₂ *ᵣ r₃)) +ᴹ (m₁ *ᵣ r₂) *ᵣ r₃
       ≈⟨ +ᴹ-cong (symᴹ (*ₗ-distribˡ r₁ (r₂ *ₗ m₃) (m₂ *ᵣ r₃))) (*ᵣ-assoc m₁ r₂ r₃) ⟩
     r₁ *ₗ (r₂ *ₗ m₃ +ᴹ m₂ *ᵣ r₃) +ᴹ m₁ *ᵣ (r₂ *ᴿ r₃) ∎)
-    where
-      open ≈-Reasoning setoidᴹ
 
   *ᴺ-distrib-+ᴺ : _*ᴺ_ DistributesOver _+ᴺ_
   *ᴺ-distrib-+ᴺ = lᴺ , rᴺ
     where
-      open ≈-Reasoning setoidᴹ
-      open Consequences setoidᴹ
-      +ᴹ-middleFour = comm∧assoc⇒middleFour +ᴹ-cong +ᴹ-comm +ᴹ-assoc
       lᴺ : _*ᴺ_ DistributesOverˡ _+ᴺ_
       lᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = *ᴿ-distribˡ-+ᴿ r₁ r₂ r₃ , (begin
         r₁ *ₗ (m₂ +ᴹ m₃) +ᴹ m₁ *ᵣ (r₂ +ᴿ r₃)
@@ -148,7 +171,7 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
 
 ------------------------------------------------------------------------
--- The Fundamental Lemma, due to Nagata
+-- The Fundamental Lemma
 
   isRingᴺ : IsRing _≈ᴺ_ _+ᴺ_ _*ᴺ_ -ᴺ_ 0ᴺ  1ᴺ
   isRingᴺ = record
