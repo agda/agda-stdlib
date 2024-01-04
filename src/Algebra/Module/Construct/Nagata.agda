@@ -105,25 +105,26 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 -- * an 'R'-component, which inherits directly from R, and
 -- * an 'M'-component, where the work happens
 
-  *ᴺ-identity : Identity 1ᴺ _*ᴺ_
-  *ᴺ-identity = lᴺ , rᴺ
-    where
-    lᴺ : LeftIdentity 1ᴺ _*ᴺ_
-    lᴺ (r , m) = R.*-identityˡ r , (begin
+  *ᴺ-cong : Congruent₂ _*ᴺ_
+  *ᴺ-cong (r₁ , m₁) (r₂ , m₂) = R.*-cong r₁ r₂ , +ᴹ-cong (*ₗ-cong r₁ m₂) (*ᵣ-cong m₁ r₂)
+
+  *ᴺ-identityˡ : LeftIdentity 1ᴺ _*ᴺ_
+  *ᴺ-identityˡ (r , m) = R.*-identityˡ r , (begin
 
       R.1# *ₗ m +ᴹ 0ᴹ *ᵣ r ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
       m +ᴹ 0ᴹ              ≈⟨ +ᴹ-identityʳ m ⟩
       m                    ∎)
 
-    rᴺ : RightIdentity 1ᴺ _*ᴺ_
-    rᴺ (r , m) = R.*-identityʳ r , (begin
+  *ᴺ-identityʳ : RightIdentity 1ᴺ _*ᴺ_
+  *ᴺ-identityʳ (r , m) = R.*-identityʳ r , (begin
 
       r *ₗ 0ᴹ +ᴹ m *ᵣ R.1# ≈⟨ +ᴹ-cong (*ₗ-zeroʳ r) (*ᵣ-identityʳ m) ⟩
       0ᴹ +ᴹ m              ≈⟨ +ᴹ-identityˡ m ⟩
       m                    ∎)
 
-  *ᴺ-cong : Congruent₂ _*ᴺ_
-  *ᴺ-cong (r₁ , m₁) (r₂ , m₂) = R.*-cong r₁ r₂ , +ᴹ-cong (*ₗ-cong r₁ m₂) (*ᵣ-cong m₁ r₂)
+
+  *ᴺ-identity : Identity 1ᴺ _*ᴺ_
+  *ᴺ-identity = *ᴺ-identityˡ , *ᴺ-identityʳ
 
   *ᴺ-assoc : Associative _*ᴺ_
   *ᴺ-assoc (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.*-assoc r₁ r₂ r₃ , (begin
@@ -138,11 +139,8 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
       ≈⟨ +ᴹ-cong (symᴹ (*ₗ-distribˡ r₁ (r₂ *ₗ m₃) (m₂ *ᵣ r₃))) (*ᵣ-assoc m₁ r₂ r₃) ⟩
     r₁ *ₗ (r₂ *ₗ m₃ +ᴹ m₂ *ᵣ r₃) +ᴹ m₁ *ᵣ (r₂ R.* r₃) ∎)
 
-  *ᴺ-distrib-+ᴺ : _*ᴺ_ DistributesOver _+ᴺ_
-  *ᴺ-distrib-+ᴺ = lᴺ , rᴺ
-    where
-    lᴺ : _*ᴺ_ DistributesOverˡ _+ᴺ_
-    lᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribˡ r₁ r₂ r₃ , (begin
+  *ᴺ-distribˡ-+ᴺ : _*ᴺ_ DistributesOverˡ _+ᴺ_
+  *ᴺ-distribˡ-+ᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribˡ r₁ r₂ r₃ , (begin
 
       r₁ *ₗ (m₂ +ᴹ m₃) +ᴹ m₁ *ᵣ (r₂ R.+ r₃)
         ≈⟨ +ᴹ-cong (*ₗ-distribˡ r₁ m₂ m₃) (*ᵣ-distribˡ m₁ r₂ r₃) ⟩
@@ -150,14 +148,18 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
         ≈⟨ +ᴹ-middleFour (r₁ *ₗ m₂) (r₁ *ₗ m₃) (m₁ *ᵣ r₂) (m₁ *ᵣ r₃) ⟩
       (r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂) +ᴹ (r₁ *ₗ m₃ +ᴹ m₁ *ᵣ r₃) ∎)
 
-    rᴺ : _*ᴺ_ DistributesOverʳ _+ᴺ_
-    rᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribʳ r₁ r₂ r₃ , (begin
+
+  *ᴺ-distribʳ-+ᴺ : _*ᴺ_ DistributesOverʳ _+ᴺ_
+  *ᴺ-distribʳ-+ᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribʳ r₁ r₂ r₃ , (begin
 
       (r₂ R.+ r₃) *ₗ m₁ +ᴹ (m₂ +ᴹ m₃) *ᵣ r₁
         ≈⟨ +ᴹ-cong (*ₗ-distribʳ m₁ r₂ r₃) (*ᵣ-distribʳ r₁ m₂ m₃) ⟩
       (r₂ *ₗ m₁ +ᴹ r₃ *ₗ m₁) +ᴹ (m₂ *ᵣ r₁ +ᴹ m₃ *ᵣ r₁)
         ≈⟨ +ᴹ-middleFour (r₂ *ₗ m₁) (r₃ *ₗ m₁) (m₂ *ᵣ r₁) (m₃ *ᵣ r₁) ⟩
       (r₂ *ₗ m₁ +ᴹ m₂ *ᵣ r₁) +ᴹ (r₃ *ₗ m₁ +ᴹ m₃ *ᵣ r₁) ∎)
+
+  *ᴺ-distrib-+ᴺ : _*ᴺ_ DistributesOver _+ᴺ_
+  *ᴺ-distrib-+ᴺ = *ᴺ-distribˡ-+ᴺ , *ᴺ-distribʳ-+ᴺ
 
 
 ------------------------------------------------------------------------
