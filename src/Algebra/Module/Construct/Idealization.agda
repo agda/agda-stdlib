@@ -64,16 +64,15 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
       renaming (Carrierᴹ to M)
 
     open AbelianGroup M.+ᴹ-abelianGroup
-      renaming (setoid to setoidᴹ; sym to symᴹ)
       hiding (_≈_)
 
-    +ᴹ-middleFour = Consequences.comm∧assoc⇒middleFour setoidᴹ +ᴹ-cong +ᴹ-comm +ᴹ-assoc
+    +ᴹ-middleFour = Consequences.comm∧assoc⇒middleFour ≈ᴹ-setoid +ᴹ-cong +ᴹ-comm +ᴹ-assoc
 
-    open ≈-Reasoning setoidᴹ
+    open ≈-Reasoning ≈ᴹ-setoid
 
     open module N = Bimodule (DirectProduct.bimodule TensorUnit.bimodule bimodule)
       using ()
-      renaming (Carrierᴹ to N
+      renaming ( Carrierᴹ to N
                ; _≈ᴹ_ to _≈_
                ; _+ᴹ_ to _+_
                ; 0ᴹ to 0#
@@ -138,7 +137,7 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
     r₁ *ₗ (r₂ *ₗ m₃) +ᴹ (r₁ *ₗ (m₂ *ᵣ r₃) +ᴹ (m₁ *ᵣ r₂) *ᵣ r₃)
       ≈⟨ +ᴹ-assoc (r₁ *ₗ (r₂ *ₗ m₃)) (r₁ *ₗ (m₂ *ᵣ r₃)) ((m₁ *ᵣ r₂) *ᵣ r₃) ⟨
     (r₁ *ₗ (r₂ *ₗ m₃) +ᴹ r₁ *ₗ (m₂ *ᵣ r₃)) +ᴹ (m₁ *ᵣ r₂) *ᵣ r₃
-      ≈⟨ +ᴹ-cong (symᴹ (*ₗ-distribˡ r₁ (r₂ *ₗ m₃) (m₂ *ᵣ r₃))) (*ᵣ-assoc m₁ r₂ r₃) ⟩
+      ≈⟨ +ᴹ-cong (≈ᴹ-sym (*ₗ-distribˡ r₁ (r₂ *ₗ m₃) (m₂ *ᵣ r₃))) (*ᵣ-assoc m₁ r₂ r₃) ⟩
     r₁ *ₗ (r₂ *ₗ m₃ +ᴹ m₂ *ᵣ r₃) +ᴹ m₁ *ᵣ (r₂ R.* r₃) ∎)
 
   distribˡ : _*_ DistributesOverˡ _+_
