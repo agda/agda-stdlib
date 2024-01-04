@@ -31,7 +31,7 @@ New modules
 
 * Nagata's construction of the "idealization of a module":
   ```agda
-  Algebra.Module.Construct.Nagata
+  Algebra.Module.Construct.Idealization
   ```
 
 Additions to existing modules
