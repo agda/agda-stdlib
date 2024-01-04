@@ -65,6 +65,7 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
     open AbelianGroup M.+ᴹ-abelianGroup
       renaming (setoid to setoidᴹ; sym to symᴹ)
+      hiding (_≈_)
 
     +ᴹ-middleFour = Consequences.comm∧assoc⇒middleFour setoidᴹ +ᴹ-cong +ᴹ-comm +ᴹ-assoc
 
@@ -73,14 +74,14 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
     open module N = Bimodule (DirectProduct.bimodule TensorUnit.bimodule bimodule)
       using ()
       renaming (Carrierᴹ to N
-               ; _≈ᴹ_ to _≈ᴺ_
+               ; _≈ᴹ_ to _≈_
                ; _+ᴹ_ to _+_
                ; 0ᴹ to 0#
                ; -ᴹ_ to -_
                ; +ᴹ-isAbelianGroup to +-isAbelianGroup
                )
 
-    open Definitions _≈ᴺ_
+    open Definitions _≈_
 
 -- Injections ι from the components of the direct sum
 -- ιᴹ in fact exhibits M as an _ideal_ of R ⋉ M (see below)
@@ -168,7 +169,7 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
 -- Structure
 
-  isRingᴺ : IsRing _≈ᴺ_ _+_ _*_ -_ 0#  1#
+  isRingᴺ : IsRing _≈_ _+_ _*_ -_ 0#  1#
   isRingᴺ = record
     { +-isAbelianGroup = +-isAbelianGroup
     ; *-cong = *-cong
@@ -185,13 +186,13 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 ------------------------------------------------------------------------
 -- M is an ideal of R ⋉ M satisying m * m ≈ 0#
 
-  idealˡ-M : (n : N) (m : M) → ∃[ n*m ] n * ιᴹ m ≈ᴺ ιᴹ n*m
+  idealˡ-M : (n : N) (m : M) → ∃[ n*m ] n * ιᴹ m ≈ ιᴹ n*m
   idealˡ-M n@(r , _) m = _ , R.zeroʳ r , ≈ᴹ-refl
 
-  idealʳ-M : (m : M) (n : N) → ∃[ m*n ] ιᴹ m * n ≈ᴺ ιᴹ m*n
+  idealʳ-M : (m : M) (n : N) → ∃[ m*n ] ιᴹ m * n ≈ ιᴹ m*n
   idealʳ-M m n@(r , _) = _ , R.zeroˡ r , ≈ᴹ-refl
 
-  m*m≈0 : (m : M) → ιᴹ m * ιᴹ m ≈ᴺ 0#
+  m*m≈0 : (m : M) → ιᴹ m * ιᴹ m ≈ 0#
   m*m≈0 m = R.zeroˡ R.0# , (begin
 
     R.0# *ₗ m +ᴹ m *ᵣ R.0# ≈⟨ +ᴹ-cong (*ₗ-zeroˡ m) (*ᵣ-zeroʳ m) ⟩
