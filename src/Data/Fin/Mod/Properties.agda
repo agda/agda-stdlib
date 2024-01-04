@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Properties related to mod fin
+------------------------------------------------------------------------
+
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Mod.Properties where
