@@ -50,8 +50,8 @@ pred-suc i with view i
 ... | ‵fromℕ = refl
 ... | ‵inj₁ p = cong inject₁ (view-complete p)
 
-+-identityˡ : LeftIdentity {ℕ.suc n} zero _+_
-+-identityˡ _ = refl
++-identityˡ : .⦃ _ : NonZero n ⦄ → LeftIdentity zeroFromNonZero _+_
++-identityˡ {ℕ.suc _} _ = refl
 
 +ℕ-identityʳ-toℕ : m ℕ.≤ n → toℕ (m ℕ+ zero {n}) ≡ m
 +ℕ-identityʳ-toℕ {ℕ.zero} m≤n = refl
@@ -74,7 +74,7 @@ pred-suc i with view i
   m                 ≡˘⟨ toℕ-fromℕ< _ ⟩
   toℕ (fromℕ< (s≤s m≤n)) ∎)
 
-+-identityʳ : .⦃ n≢0 : NonZero n ⦄ → RightIdentity {n = n} zeroFromNonZero _+_
++-identityʳ : .⦃ _ : NonZero n ⦄ → RightIdentity {n = n} zeroFromNonZero _+_
 +-identityʳ {ℕ.suc n} i rewrite +ℕ-identityʳ {m = toℕ i} {n} _ = fromℕ<-toℕ _ (toℕ≤pred[n] _)
 
 induction : ∀ {ℓ} (P : Pred (Fin (ℕ.suc n)) ℓ)

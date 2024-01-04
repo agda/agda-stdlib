@@ -29,7 +29,7 @@ Deprecated names
 New modules
 -----------
 
-* Added new file `Data.Fin.Mod`
+* Added new files `Data.Fin.Mod` and `Data.Fin.Mod.Properties`
 
 Additions to existing modules
 -----------------------------
@@ -81,4 +81,32 @@ Additions to existing modules
   pred-cancel-< : pred m < pred n → m < n
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+  ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  zeroFromNonZero : .⦃ NonZero n ⦄ → Fin n
+  ```
+
+* In `Data.Fin.Mod`:
+  ```agda
+  sucAbsorb  : Fin n → Fin n
+  predAbsorb : Fin n → Fin n
+  _ℕ+_       : ℕ → Fin n → Fin n
+  _+_        : Fin m → Fin n → Fin n
+  _-_        : Fin m → Fin n → Fin m
+  ```
+
+* In `Data.Fin.Mod.Properties`:
+  ```agda
+  suc-inject₁      : ∀ i → sucAbsorb (inject₁ i) ≡ F.suc i
+  suc-fromℕ        : ∀ n → sucAbsorb (fromℕ n) ≡ zero
+  pred-sucAbsorb   : ∀ i → predAbsorb (F.suc i) ≡ inject₁ i
+  suc-pred≡id      : ∀ i → sucAbsorb (predAbsorb i) ≡ i
+  pred-suc         : ∀ i → predAbsorb (sucAbsorb i) ≡ i
+  +-identityˡ      : .⦃ NonZero n ⦄ → LeftIdentity zeroFromNonZero _+_
+  +ℕ-identityʳ-toℕ : m ℕ.≤ n → toℕ (m ℕ+ zero {n}) ≡ m
+  +ℕ-identityʳ     : ∀ m≤n → m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
+  +-identityʳ      : .⦃ NonZero n ⦄ → RightIdentity zeroFromNonZero _+_
+  induction        : ∀ P → P zero → (P i → P (sucAbsorb i)) → ∀ i → P i
   ```
