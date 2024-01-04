@@ -192,12 +192,15 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
   ιᴹ-idealʳ : (m : M) (n : N) → ∃[ m*n ] ιᴹ m * n ≈ ιᴹ m*n
   ιᴹ-idealʳ m n@(r , _) = _ , R.zeroˡ r , ≈ᴹ-refl
 
-  m*m≈0 : (m : M) → ιᴹ m * ιᴹ m ≈ 0#
-  m*m≈0 m = R.zeroˡ R.0# , (begin
+  *-annihilates-ιᴹ : (m₁ m₂ : M) → ιᴹ m₁ * ιᴹ m₂ ≈ 0#
+  *-annihilates-ιᴹ m₁ m₂ = R.zeroˡ R.0# , (begin
 
-    R.0# *ₗ m +ᴹ m *ᵣ R.0# ≈⟨ +ᴹ-cong (*ₗ-zeroˡ m) (*ᵣ-zeroʳ m) ⟩
-    0ᴹ +ᴹ 0ᴹ               ≈⟨ +ᴹ-identityˡ 0ᴹ ⟩
-    0ᴹ                     ∎)
+    R.0# *ₗ m₂ +ᴹ m₁ *ᵣ R.0# ≈⟨ +ᴹ-cong (*ₗ-zeroˡ m₂) (*ᵣ-zeroʳ m₁) ⟩
+    0ᴹ +ᴹ 0ᴹ                 ≈⟨ +ᴹ-identityˡ 0ᴹ ⟩
+    0ᴹ                       ∎)
+  
+  m*m≈0 : (m : M) → ιᴹ m * ιᴹ m ≈ 0#
+  m*m≈0 m = *-annihilates-ιᴹ m m
   
 ------------------------------------------------------------------------
 -- Export
