@@ -16,7 +16,11 @@
 -- * but with multiplication _*ᴺ_ such that M forms an _ideal_ of N
 -- * moreover satisfying 'm *ᴺ m ≈ 0' for every m ∈ M ⊆ N
 --
--- The fundamental lemma (proved here) is that N, in fact, defines a Ring.
+-- The fundamental lemma (proved here) is that N, in fact, defines a Ring:
+-- this ring is essentially the 'ring of dual numbers' construction R[M]
+-- (Clifford, 1874; generalised!) for an ideal M, and thus the synthetic/algebraic
+-- analogue of the tangent space of M (considered as a 'vector space' over R)
+-- in differential geometry, hence its application to Automatic Differentiation.
 --
 -- Nagata's more fundamental insight (not yet shown here) is that
 -- the lattice of R-submodules of M is in order-isomorphism with
@@ -64,7 +68,6 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
              ; distribˡ to *ᴿ-distribˡ-+ᴿ
              ; distribʳ to *ᴿ-distribʳ-+ᴿ
              )
-    --hiding (zero; zeroˡ; zeroʳ)
 
   open Bimodule bimodule
     renaming (Carrierᴹ to M
@@ -94,7 +97,7 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 
   open Definitions _≈ᴺ_
 
--- injections ι from the components of the direct sum
+-- Injections ι from the components of the direct sum
 -- ιᴹ in fact exhibits M as an _ideal_ of R ⋉ M (not yet shown)
   ιᴿ : R → N
   ιᴿ r = r , 0ᴹ
@@ -102,21 +105,21 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
   ιᴹ : M → N
   ιᴹ m = 0ᴿ , m
 
--- multiplicative unit
+-- Multiplicative unit
 
   1ᴺ : N
   1ᴺ = ιᴿ 1ᴿ
 
--- multiplication
+-- Multiplication
 
   infixl 7 _*ᴺ_
 
   _*ᴺ_ : Op₂ N
   (r₁ , m₁) *ᴺ (r₂ , m₂) = r₁ *ᴿ r₂ , r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂
 
--- properties: because we work in the direct sum, every proof
--- has an 'R'-component, which inherits directly from R,
--- and an 'M'-component, where the work happens
+-- Properties: because we work in the direct sum, every proof has
+-- * an 'R'-component, which inherits directly from R, and
+-- * an 'M'-component, where the work happens
 
   open ≈-Reasoning setoidᴹ
 
@@ -126,28 +129,32 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
   *ᴺ-identity : Identity 1ᴺ _*ᴺ_
   *ᴺ-identity = lᴺ , rᴺ
     where
-      lᴺ : LeftIdentity 1ᴺ _*ᴺ_
-      lᴺ (r , m) = *ᴿ-identityˡ r , (begin
-        1ᴿ *ₗ m +ᴹ 0ᴹ *ᵣ r ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
-        m +ᴹ 0ᴹ            ≈⟨ +ᴹ-identityʳ m ⟩
-        m                  ∎)
-      rᴺ : RightIdentity 1ᴺ _*ᴺ_
-      rᴺ (r , m) = (*ᴿ-identityʳ r) , (begin
-        r *ₗ 0ᴹ +ᴹ m *ᵣ 1ᴿ ≈⟨ +ᴹ-cong (*ₗ-zeroʳ r) (*ᵣ-identityʳ m) ⟩
-        0ᴹ +ᴹ m            ≈⟨ +ᴹ-identityˡ m ⟩
-        m                  ∎)
+    lᴺ : LeftIdentity 1ᴺ _*ᴺ_
+    lᴺ (r , m) = *ᴿ-identityˡ r , (begin
+
+      1ᴿ *ₗ m +ᴹ 0ᴹ *ᵣ r ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
+      m +ᴹ 0ᴹ            ≈⟨ +ᴹ-identityʳ m ⟩
+      m                  ∎)
+
+    rᴺ : RightIdentity 1ᴺ _*ᴺ_
+    rᴺ (r , m) = *ᴿ-identityʳ r , (begin
+
+      r *ₗ 0ᴹ +ᴹ m *ᵣ 1ᴿ ≈⟨ +ᴹ-cong (*ₗ-zeroʳ r) (*ᵣ-identityʳ m) ⟩
+      0ᴹ +ᴹ m            ≈⟨ +ᴹ-identityˡ m ⟩
+      m                  ∎)
 
   *ᴺ-cong : Congruent₂ _*ᴺ_
   *ᴺ-cong (r₁ , m₁) (r₂ , m₂) = *ᴿ-cong r₁ r₂ , +ᴹ-cong (*ₗ-cong r₁ m₂) (*ᵣ-cong m₁ r₂)
 
   *ᴺ-assoc : Associative _*ᴺ_
   *ᴺ-assoc (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = *ᴿ-assoc r₁ r₂ r₃ , (begin
+
     (r₁ *ᴿ r₂) *ₗ m₃ +ᴹ (r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂) *ᵣ r₃
       ≈⟨ +ᴹ-cong (*ₗ-assoc r₁ r₂ m₃) (*ᵣ-distribʳ r₃ (r₁ *ₗ m₂) (m₁ *ᵣ r₂)) ⟩
     r₁ *ₗ (r₂ *ₗ m₃) +ᴹ ((r₁ *ₗ m₂) *ᵣ r₃ +ᴹ (m₁ *ᵣ r₂) *ᵣ r₃)
        ≈⟨ +ᴹ-congˡ (+ᴹ-congʳ (*ₗ-*ᵣ-assoc r₁ m₂ r₃)) ⟩
     r₁ *ₗ (r₂ *ₗ m₃) +ᴹ (r₁ *ₗ (m₂ *ᵣ r₃) +ᴹ (m₁ *ᵣ r₂) *ᵣ r₃)
-      ≈⟨ symᴹ (+ᴹ-assoc (r₁ *ₗ (r₂ *ₗ m₃)) (r₁ *ₗ (m₂ *ᵣ r₃)) ((m₁ *ᵣ r₂) *ᵣ r₃)) ⟩
+      ≈⟨ +ᴹ-assoc (r₁ *ₗ (r₂ *ₗ m₃)) (r₁ *ₗ (m₂ *ᵣ r₃)) ((m₁ *ᵣ r₂) *ᵣ r₃) ⟨
     (r₁ *ₗ (r₂ *ₗ m₃) +ᴹ r₁ *ₗ (m₂ *ᵣ r₃)) +ᴹ (m₁ *ᵣ r₂) *ᵣ r₃
       ≈⟨ +ᴹ-cong (symᴹ (*ₗ-distribˡ r₁ (r₂ *ₗ m₃) (m₂ *ᵣ r₃))) (*ᵣ-assoc m₁ r₂ r₃) ⟩
     r₁ *ₗ (r₂ *ₗ m₃ +ᴹ m₂ *ᵣ r₃) +ᴹ m₁ *ᵣ (r₂ *ᴿ r₃) ∎)
@@ -155,24 +162,29 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
   *ᴺ-distrib-+ᴺ : _*ᴺ_ DistributesOver _+ᴺ_
   *ᴺ-distrib-+ᴺ = lᴺ , rᴺ
     where
-      lᴺ : _*ᴺ_ DistributesOverˡ _+ᴺ_
-      lᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = *ᴿ-distribˡ-+ᴿ r₁ r₂ r₃ , (begin
-        r₁ *ₗ (m₂ +ᴹ m₃) +ᴹ m₁ *ᵣ (r₂ +ᴿ r₃)
-          ≈⟨ +ᴹ-cong (*ₗ-distribˡ r₁ m₂ m₃) (*ᵣ-distribˡ m₁ r₂ r₃) ⟩
-        (r₁ *ₗ m₂ +ᴹ r₁ *ₗ m₃) +ᴹ (m₁ *ᵣ r₂ +ᴹ m₁ *ᵣ r₃)
-          ≈⟨ +ᴹ-middleFour (r₁ *ₗ m₂) (r₁ *ₗ m₃) (m₁ *ᵣ r₂) (m₁ *ᵣ r₃) ⟩
-        (r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂) +ᴹ (r₁ *ₗ m₃ +ᴹ m₁ *ᵣ r₃) ∎)
-      rᴺ : _*ᴺ_ DistributesOverʳ _+ᴺ_
-      rᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = *ᴿ-distribʳ-+ᴿ r₁ r₂ r₃ , (begin
-        (r₂ +ᴿ r₃) *ₗ m₁ +ᴹ (m₂ +ᴹ m₃) *ᵣ r₁
-          ≈⟨ +ᴹ-cong (*ₗ-distribʳ m₁ r₂ r₃) (*ᵣ-distribʳ r₁ m₂ m₃) ⟩
-        (r₂ *ₗ m₁ +ᴹ r₃ *ₗ m₁) +ᴹ (m₂ *ᵣ r₁ +ᴹ m₃ *ᵣ r₁)
-          ≈⟨ +ᴹ-middleFour (r₂ *ₗ m₁) (r₃ *ₗ m₁) (m₂ *ᵣ r₁) (m₃ *ᵣ r₁) ⟩
-        (r₂ *ₗ m₁ +ᴹ m₂ *ᵣ r₁) +ᴹ (r₃ *ₗ m₁ +ᴹ m₃ *ᵣ r₁) ∎)
+    lᴺ : _*ᴺ_ DistributesOverˡ _+ᴺ_
+    lᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = *ᴿ-distribˡ-+ᴿ r₁ r₂ r₃ , (begin
+
+      r₁ *ₗ (m₂ +ᴹ m₃) +ᴹ m₁ *ᵣ (r₂ +ᴿ r₃)
+        ≈⟨ +ᴹ-cong (*ₗ-distribˡ r₁ m₂ m₃) (*ᵣ-distribˡ m₁ r₂ r₃) ⟩
+      (r₁ *ₗ m₂ +ᴹ r₁ *ₗ m₃) +ᴹ (m₁ *ᵣ r₂ +ᴹ m₁ *ᵣ r₃)
+        ≈⟨ +ᴹ-middleFour (r₁ *ₗ m₂) (r₁ *ₗ m₃) (m₁ *ᵣ r₂) (m₁ *ᵣ r₃) ⟩
+      (r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂) +ᴹ (r₁ *ₗ m₃ +ᴹ m₁ *ᵣ r₃) ∎)
+
+    rᴺ : _*ᴺ_ DistributesOverʳ _+ᴺ_
+    rᴺ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = *ᴿ-distribʳ-+ᴿ r₁ r₂ r₃ , (begin
+
+      (r₂ +ᴿ r₃) *ₗ m₁ +ᴹ (m₂ +ᴹ m₃) *ᵣ r₁
+        ≈⟨ +ᴹ-cong (*ₗ-distribʳ m₁ r₂ r₃) (*ᵣ-distribʳ r₁ m₂ m₃) ⟩
+      (r₂ *ₗ m₁ +ᴹ r₃ *ₗ m₁) +ᴹ (m₂ *ᵣ r₁ +ᴹ m₃ *ᵣ r₁)
+        ≈⟨ +ᴹ-middleFour (r₂ *ₗ m₁) (r₃ *ₗ m₁) (m₂ *ᵣ r₁) (m₃ *ᵣ r₁) ⟩
+      (r₂ *ₗ m₁ +ᴹ m₂ *ᵣ r₁) +ᴹ (r₃ *ₗ m₁ +ᴹ m₃ *ᵣ r₁) ∎)
 
 
 ------------------------------------------------------------------------
 -- The Fundamental Lemma
+
+-- Structure
 
   isRingᴺ : IsRing _≈ᴺ_ _+ᴺ_ _*ᴺ_ -ᴺ_ 0ᴺ  1ᴺ
   isRingᴺ = record
@@ -183,27 +195,33 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
     ; distrib = *ᴺ-distrib-+ᴺ
     }
 
+-- Bundle
+
+  ringᴺ : Ring (r ⊔ m) (ℓr ⊔ ℓm)
+  ringᴺ = record { isRing = isRingᴺ }
+
 ------------------------------------------------------------------------
 -- M is an ideal of R ⋉ M satisying m * m ≈ 0
 
   idealˡ-M : (n : N) (m : M) → ∃[ n*m ] n *ᴺ ιᴹ m ≈ᴺ ιᴹ n*m
   idealˡ-M (r₀ , m₀) m = _ , zeroʳ r₀ , ≈ᴹ-refl
 
-  idealʳ-M : (n : N) (m : M) → ∃[ m*n ] ιᴹ m *ᴺ n ≈ᴺ ιᴹ m*n
-  idealʳ-M (r₀ , m₀) m = _ , zeroˡ r₀ , ≈ᴹ-refl
+  idealʳ-M : (m : M) (n : N) → ∃[ m*n ] ιᴹ m *ᴺ n ≈ᴺ ιᴹ m*n
+  idealʳ-M m (r₀ , m₀) = _ , zeroˡ r₀ , ≈ᴹ-refl
 
   m*m≈0 : (m : M) → ιᴹ m *ᴺ ιᴹ m ≈ᴺ 0ᴺ
   m*m≈0 m = zeroˡ 0ᴿ , (begin
+
     0ᴿ *ₗ m +ᴹ m *ᵣ 0ᴿ ≈⟨ +ᴹ-cong (*ₗ-zeroˡ m) (*ᵣ-zeroʳ m) ⟩
     0ᴹ +ᴹ 0ᴹ           ≈⟨ +ᴹ-identityˡ 0ᴹ ⟩
     0ᴹ                 ∎)
   
 ------------------------------------------------------------------------
--- Bundle
+-- Export
 
 infixl 4 _⋉_
 
 _⋉_ : (R : Ring r ℓr) (M : Bimodule R R m ℓm) → Ring (r ⊔ m) (ℓr ⊔ ℓm)
 
-R ⋉ M = record { isRing = isRingᴺ } where open Nagata R M
+R ⋉ M = ringᴺ where open Nagata R M
 
