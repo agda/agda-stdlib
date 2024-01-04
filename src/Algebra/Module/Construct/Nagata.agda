@@ -64,6 +64,7 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
              ; distribˡ to *ᴿ-distribˡ-+ᴿ
              ; distribʳ to *ᴿ-distribʳ-+ᴿ
              )
+    --hiding (zero; zeroˡ; zeroʳ)
 
   open Bimodule bimodule
     renaming (Carrierᴹ to M
@@ -182,6 +183,21 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
     ; distrib = *ᴺ-distrib-+ᴺ
     }
 
+------------------------------------------------------------------------
+-- M is an ideal of R ⋉ M satisying m * m ≈ 0
+
+  idealˡ-M : (n : N) (m : M) → ∃[ n*m ] n *ᴺ ιᴹ m ≈ᴺ ιᴹ n*m
+  idealˡ-M (r₀ , m₀) m = _ , zeroʳ r₀ , ≈ᴹ-refl
+
+  idealʳ-M : (n : N) (m : M) → ∃[ m*n ] ιᴹ m *ᴺ n ≈ᴺ ιᴹ m*n
+  idealʳ-M (r₀ , m₀) m = _ , zeroˡ r₀ , ≈ᴹ-refl
+
+  m*m≈0 : (m : M) → ιᴹ m *ᴺ ιᴹ m ≈ᴺ 0ᴺ
+  m*m≈0 m = zeroˡ 0ᴿ , (begin
+    0ᴿ *ₗ m +ᴹ m *ᵣ 0ᴿ ≈⟨ +ᴹ-cong (*ₗ-zeroˡ m) (*ᵣ-zeroʳ m) ⟩
+    0ᴹ +ᴹ 0ᴹ           ≈⟨ +ᴹ-identityˡ 0ᴹ ⟩
+    0ᴹ                 ∎)
+  
 ------------------------------------------------------------------------
 -- Bundle
 
