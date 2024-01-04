@@ -186,11 +186,11 @@ module Nagata (ring : Ring r ℓr) (bimodule : Bimodule ring ring m ℓm) where
 ------------------------------------------------------------------------
 -- M is an ideal of R ⋉ M satisying m * m ≈ 0#
 
-  idealˡ-M : (n : N) (m : M) → ∃[ n*m ] n * ιᴹ m ≈ ιᴹ n*m
-  idealˡ-M n@(r , _) m = _ , R.zeroʳ r , ≈ᴹ-refl
+  ιᴹ-idealˡ : (n : N) (m : M) → ∃[ n*m ] n * ιᴹ m ≈ ιᴹ n*m
+  ιᴹ-idealˡ n@(r , _) m = _ , R.zeroʳ r , ≈ᴹ-refl
 
-  idealʳ-M : (m : M) (n : N) → ∃[ m*n ] ιᴹ m * n ≈ ιᴹ m*n
-  idealʳ-M m n@(r , _) = _ , R.zeroˡ r , ≈ᴹ-refl
+  ιᴹ-idealʳ : (m : M) (n : N) → ∃[ m*n ] ιᴹ m * n ≈ ιᴹ m*n
+  ιᴹ-idealʳ m n@(r , _) = _ , R.zeroˡ r , ≈ᴹ-refl
 
   m*m≈0 : (m : M) → ιᴹ m * ιᴹ m ≈ 0#
   m*m≈0 m = R.zeroˡ R.0# , (begin
