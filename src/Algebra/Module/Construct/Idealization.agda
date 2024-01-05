@@ -192,10 +192,10 @@ ringᴺ = record { isRing = isRingᴺ }
   R.0# *ₗ m₂ +ᴹ m₁ *ᵣ R.0# ≈⟨ +ᴹ-cong (*ₗ-zeroˡ m₂) (*ᵣ-zeroʳ m₁) ⟩
   0ᴹ +ᴹ 0ᴹ                 ≈⟨ +ᴹ-identityˡ 0ᴹ ⟩
   0ᴹ                       ∎)
-  
+
 m*m≈0 : (m : M) → ιᴹ m * ιᴹ m ≈ 0#
 m*m≈0 m = *-annihilates-ιᴹ m m
-  
+
 ------------------------------------------------------------------------
 -- Export notation
 
