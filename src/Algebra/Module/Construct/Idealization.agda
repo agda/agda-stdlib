@@ -201,7 +201,5 @@ m*m≈0 m = *-annihilates-ιᴹ m m
 
 infixl 4 _⋉_
 
-_⋉_ : (R : Ring r ℓr) → Bimodule R R m ℓm → Ring (r ⊔ m) (ℓr ⊔ ℓm)
-
-R ⋉ M = ringᴺ
+_⋉_ = ringᴺ
 
