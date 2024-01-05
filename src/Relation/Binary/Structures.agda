@@ -16,6 +16,7 @@ module Relation.Binary.Structures
   where
 
 open import Data.Product.Base using (proj₁; proj₂; _,_)
+open import Function.Base using (flip)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
@@ -33,15 +34,28 @@ private
 -- as a module parameter at the top of this file.
 
 record IsPartialEquivalence : Set (a ⊔ ℓ) where
+  infixr 5 _⊗_ _ᵒ⊗_ _⊗ᵒ_
   field
     sym   : Symmetric _≈_
     trans : Transitive _≈_
+
+  _⊗_ = trans
+
+  transᵒ : RightTrans _≈_ (flip _≈_)
+  transᵒ eq₁ eq₂ = trans eq₁ (sym eq₂)
+
+  _⊗ᵒ_ = transᵒ
+
+  ᵒtrans : Trans (flip _≈_) _≈_  _≈_
+  ᵒtrans eq₁ eq₂ = trans (sym eq₁) eq₂
+
+  _ᵒ⊗_ = ᵒtrans
 
 -- The preorders of this library are defined in terms of an underlying
 -- equivalence relation, and hence equivalence relations are not
 -- defined in terms of preorders.
 
--- To preserve backwards compatability, equivalence relations are
+-- To preserve backwards compatibility, equivalence relations are
 -- not defined in terms of their partial counterparts.
 
 record IsEquivalence : Set (a ⊔ ℓ) where
@@ -59,6 +73,8 @@ record IsEquivalence : Set (a ⊔ ℓ) where
     ; trans = trans
     }
 
+  open IsPartialEquivalence isPartialEquivalence public
+    using (transᵒ; ᵒtrans; _⊗_; _ᵒ⊗_; _⊗ᵒ_)
 
 record IsDecEquivalence : Set (a ⊔ ℓ) where
   infix 4 _≟_
