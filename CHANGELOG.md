@@ -32,6 +32,16 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Structures.IsGroup`:
+  ```agda
+  infixl 6 _∙⁻¹_
+  infixr 6 _⁻¹∙_
+  _∙⁻¹_ : Op₂ A
+  x ∙⁻¹ y = x ∙ (y ⁻¹)
+  _⁻¹∙_ : Op₂ A
+  x ⁻¹∙  y = (x ⁻¹) ∙ y
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
