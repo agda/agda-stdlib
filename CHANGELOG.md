@@ -32,6 +32,13 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
+  ```agda
+  rawNearSemiring   : RawNearSemiring _ _
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  +-rawGroup        : RawGroup _ _
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
