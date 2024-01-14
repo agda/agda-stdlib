@@ -31,6 +31,7 @@ private
     A : Set a
     B : Set b
     C : Set c
+    m n : ℕ
 
 ------------------------------------------------------------------------
 -- Types
@@ -45,15 +46,15 @@ record Vec≤ (A : Set a) (n : ℕ) : Set a where
 ------------------------------------------------------------------------
 -- Conversion functions
 
-fromVec : ∀ {n} → Vec A n → Vec≤ A n
+fromVec : Vec A n → Vec≤ A n
 fromVec v = v , ℕ.≤-refl
 
-padRight : ∀ {n} → A → Vec≤ A n → Vec A n
+padRight : A → Vec≤ A n → Vec A n
 padRight a (vs , m≤n)
   with ≤″-offset k ← recompute (_ ℕ.≤″? _) (ℕ.≤⇒≤″ m≤n)
   = vs Vec.++ Vec.replicate k a
 
-padLeft : ∀ {n} → A → Vec≤ A n → Vec A n
+padLeft : A → Vec≤ A n → Vec A n
 padLeft a record { length = m ; vec = vs ; bound = m≤n }
   with ≤″-offset k ← recompute (_ ℕ.≤″? _) (ℕ.≤⇒≤″ m≤n)
   rewrite ℕ.+-comm m k
@@ -69,7 +70,7 @@ private
     ⌊ k /2⌋ + (m + ⌈ k /2⌉) ∎
     where open ≡-Reasoning
 
-padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
+padBoth : A → A → Vec≤ A n → Vec A n
 padBoth aₗ aᵣ record { length = m ; vec = vs ; bound = m≤n }
   with ≤″-offset k ← recompute (_ ℕ.≤″? _) (ℕ.≤⇒≤″ m≤n)
   rewrite split m k
@@ -81,59 +82,59 @@ padBoth aₗ aᵣ record { length = m ; vec = vs ; bound = m≤n }
 fromList : (as : List A) → Vec≤ A (List.length as)
 fromList = fromVec ∘ Vec.fromList
 
-toList : ∀ {n} → Vec≤ A n → List A
+toList : Vec≤ A n → List A
 toList = Vec.toList ∘ Vec≤.vec
 
 ------------------------------------------------------------------------
 -- Creating new Vec≤ vectors
 
-replicate : ∀ {m n} .(m≤n : m ≤ n) → A → Vec≤ A n
+replicate : .(m≤n : m ≤ n) → A → Vec≤ A n
 replicate m≤n a = Vec.replicate _ a , m≤n
 
-[] : ∀ {n} → Vec≤ A n
+[] : Vec≤ A n
 [] = Vec.[] , z≤n
 
 infixr 5 _∷_
-_∷_ : ∀ {n} → A → Vec≤ A n → Vec≤ A (suc n)
+_∷_ : A → Vec≤ A n → Vec≤ A (suc n)
 a ∷ (as , p) = a Vec.∷ as , s≤s p
 
 ------------------------------------------------------------------------
 -- Modifying Vec≤ vectors
 
-≤-cast : ∀ {m n} → .(m≤n : m ≤ n) → Vec≤ A m → Vec≤ A n
+≤-cast : .(m≤n : m ≤ n) → Vec≤ A m → Vec≤ A n
 ≤-cast m≤n (v , p) = v , ℕ.≤-trans p m≤n
 
-≡-cast : ∀ {m n} → .(eq : m ≡ n) → Vec≤ A m → Vec≤ A n
+≡-cast : .(eq : m ≡ n) → Vec≤ A m → Vec≤ A n
 ≡-cast m≡n = ≤-cast (ℕ.≤-reflexive m≡n)
 
-map : (A → B) → ∀ {n} → Vec≤ A n → Vec≤ B n
+map : (A → B) → Vec≤ A n → Vec≤ B n
 map f (v , p) = Vec.map f v , p
 
-reverse : ∀ {n} → Vec≤ A n → Vec≤ A n
+reverse : Vec≤ A n → Vec≤ A n
 reverse (v , p) = Vec.reverse v , p
 
 -- Align and Zip.
 
-alignWith : (These A B → C) → ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ C n
+alignWith : (These A B → C) → Vec≤ A n → Vec≤ B n → Vec≤ C n
 alignWith f (as , p) (bs , q) = Vec.alignWith f as bs , ℕ.⊔-lub p q
 
-zipWith : (A → B → C) → ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ C n
+zipWith : (A → B → C) → Vec≤ A n → Vec≤ B n → Vec≤ C n
 zipWith f (as , p) (bs , q) = Vec.restrictWith f as bs , ℕ.m≤n⇒m⊓o≤n _ p
 
-zip : ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ (A × B) n
+zip : Vec≤ A n → Vec≤ B n → Vec≤ (A × B) n
 zip = zipWith _,_
 
-align : ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ (These A B) n
+align : Vec≤ A n → Vec≤ B n → Vec≤ (These A B) n
 align = alignWith id
 
 -- take and drop
 
-take : ∀ {m} n → Vec≤ A m → Vec≤ A (n ⊓ m)
+take : ∀ n → Vec≤ A m → Vec≤ A (n ⊓ m)
 take             zero    _                = []
 take             (suc n) (Vec.[] , p)     = []
 take {m = suc m} (suc n) (a Vec.∷ as , p) = a ∷ take n (as , s≤s⁻¹ p)
 
-drop : ∀ {m} n → Vec≤ A m → Vec≤ A (m ∸ n)
+drop : ∀ n → Vec≤ A m → Vec≤ A (m ∸ n)
 drop             zero    v                = v
 drop             (suc n) (Vec.[] , p)     = []
 drop {m = suc m} (suc n) (a Vec.∷ as , p) = drop n (as , s≤s⁻¹ p)
