@@ -93,7 +93,7 @@ Additions to existing modules
   sucAbsorb  : Fin n → Fin n
   predAbsorb : Fin n → Fin n
   _ℕ+_       : ℕ → Fin n → Fin n
-  _+_        : Fin m → Fin n → Fin n
+  _+_        : Fin n → Fin m → Fin n
   _-_        : Fin m → Fin n → Fin m
   ```
 
