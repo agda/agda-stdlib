@@ -85,10 +85,10 @@ sucMod-predMod (suc i) = sucMod-inject₁ i
 -- _+_
 
 +-identityˡ : .{{ _ : NonZero n }} → LeftIdentity zeroFromNonZero _+_
-+-identityˡ {suc _} _ = refl
++-identityˡ {suc n} i rewrite +ℕ-identityʳ {m = toℕ i} {n} _ = fromℕ<-toℕ _ (toℕ≤pred[n] _)
 
 +-identityʳ : .{{ _ : NonZero n }} → RightIdentity zeroFromNonZero _+_
-+-identityʳ {suc n} i rewrite +ℕ-identityʳ {m = toℕ i} {n} _ = fromℕ<-toℕ _ (toℕ≤pred[n] _)
++-identityʳ {suc _} _ = refl
 
 induction :
   ∀ {ℓ} (P : Pred (Fin (ℕ.suc n)) ℓ) →
