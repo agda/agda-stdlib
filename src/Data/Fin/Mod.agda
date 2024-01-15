@@ -8,8 +8,9 @@
 
 module Data.Fin.Mod where
 
-open import Data.Nat.Base as ℕ using (ℕ)
-open import Data.Fin.Base as F hiding (_+_; _-_)
+open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Fin.Base
+  using (Fin; zero; suc; toℕ; fromℕ; inject₁; opposite)
 open import Data.Fin.Relation.Unary.Top
 
 private variable
@@ -17,18 +18,18 @@ private variable
 
 infixl 6 _+_ _-_
 
-sucAbsorb : Fin n → Fin n
-sucAbsorb i with view i
+sucMod : Fin n → Fin n
+sucMod i with view i
 ... | ‵fromℕ = zero
-... | ‵inj₁ i = F.suc ⟦ i ⟧
+... | ‵inj₁ i = suc ⟦ i ⟧
 
-predAbsorb : Fin n → Fin n
-predAbsorb zero = fromℕ _
-predAbsorb (F.suc i) = inject₁ i
+predMod : Fin n → Fin n
+predMod zero = fromℕ _
+predMod (suc i) = inject₁ i
 
 _ℕ+_ : ℕ → Fin n → Fin n
-ℕ.zero ℕ+ i = i
-ℕ.suc n ℕ+ i = sucAbsorb (n ℕ+ i)
+zero  ℕ+ i = i
+suc n ℕ+ i = sucMod (n ℕ+ i)
 
 _+_ : Fin m → Fin n → Fin n
 i + j = toℕ i ℕ+ j
