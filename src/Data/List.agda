@@ -36,13 +36,11 @@ module _ {a b} {A : Set a} {B : Set b} where
     go []       = e ∷ []
     go (x ∷ xs) = let y ∷ ys = go xs in f x y ∷ y ∷ ys
 
-
 -- property
 
   scanr-defn : ∀ (f : A → B → B) (e : B) →
                scanr f e ≗ map (foldr f e) ∘ tails
   scanr-defn f e []                 = refl
   scanr-defn f e (x ∷ [])           = refl
-  scanr-defn f e (x ∷ y∷xs@(_ ∷ _)) = let eq = scanr-defn f e y∷xs in
+  scanr-defn f e (x ∷ y∷ys@(_ ∷ _)) = let eq = scanr-defn f e y∷ys in
     cong₂ (λ z → f x z ∷_) (List.∷-injectiveˡ eq) eq
-
