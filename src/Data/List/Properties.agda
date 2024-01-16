@@ -8,6 +8,7 @@
 -- equalities than _≡_.
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated `scanr` (PR #2258)
 
 module Data.List.Properties where
 
@@ -617,18 +618,6 @@ sum-++ (x ∷ xs) ys = begin
 ∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
 ∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
 ∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
-
-------------------------------------------------------------------------
--- scanr
-
-scanr-defn : ∀ (f : A → B → B) (e : B) →
-             scanr f e ≗ map (foldr f e) ∘ tails
-scanr-defn f e []             = refl
-scanr-defn f e (x ∷ [])       = refl
-scanr-defn f e (x ∷ y∷xs@(_ ∷ _))
-  with eq ← scanr-defn f e y∷xs
-  with z ∷ zs ← scanr f e y∷xs
-  = let z≡fy⦇f⦈xs , _ = ∷-injective eq in cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
 
 ------------------------------------------------------------------------
 -- scanl
@@ -1292,3 +1281,19 @@ map-─ = map-removeAt
 "Warning: map-─ was deprecated in v2.0.
 Please use map-removeAt instead."
 #-}
+
+-- Version 2.1
+
+scanr-defn : ∀ (f : A → B → B) (e : B) →
+             scanr f e ≗ map (foldr f e) ∘ tails
+scanr-defn f e []             = refl
+scanr-defn f e (x ∷ [])       = refl
+scanr-defn f e (x ∷ y∷xs@(_ ∷ _))
+  with eq ← scanr-defn f e y∷xs
+  with z ∷ zs ← scanr f e y∷xs
+  = let z≡fy⦇f⦈xs , _ = ∷-injective eq in cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
+{-# WARNING_ON_USAGE scanr-defn
+"Warning: scanr-defn was deprecated in v2.1.
+Please use List.NonEmpty.Properties.scanr-defn instead."
+#-}
+

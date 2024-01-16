@@ -26,6 +26,11 @@ Deprecated names
   scanr  : (A → B → B) → B → List A → List B
   ```
 
+* In `Data.List.Properties`:
+  ```agda
+  scanr-defn : scanr f e ≗ map (foldr f e) ∘ tails
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -46,6 +51,11 @@ Additions to existing modules
   ```agda
   scanr⁺ : (A → B → B) → B → List A → List⁺ B
   scanr  : (A → B → B) → B → List A → List B
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  scanr-defn : scanr f e ≗ List.map (List.foldr f e) ∘ List.tails
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

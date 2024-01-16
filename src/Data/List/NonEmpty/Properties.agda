@@ -114,6 +114,16 @@ map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
 
 ------------------------------------------------------------------------
+-- scanr
+
+scanr-defn : ∀ (f : A → B → B) (e : B) →
+             scanr f e ≗ List.map (List.foldr f e) ∘ List.tails
+scanr-defn f e []                 = refl
+scanr-defn f e (x ∷ [])           = refl
+scanr-defn f e (x ∷ y∷xs@(_ ∷ _)) = let eq = scanr-defn f e y∷xs in
+  cong₂ (λ z → f x z ∷_) (List.∷-injectiveˡ eq) eq
+
+------------------------------------------------------------------------
 -- groupSeqs
 
 -- Groups all contiguous elements for which the predicate returns the
