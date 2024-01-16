@@ -21,6 +21,11 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Data.List.Base`:
+  ```agda
+  scanr  : (A → B → B) → B → List A → List B
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -35,6 +40,12 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  scanr⁺ : (A → B → B) → B → List A → List⁺ B
+  scanr  : (A → B → B) → B → List A → List B
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

@@ -121,6 +121,15 @@ foldl c s (x ∷ xs) = List.foldl c (s x) xs
 foldl₁ : (A → A → A) → List⁺ A → A
 foldl₁ f = foldl f id
 
+scanr⁺ : (A → B → B) → B → List A → List⁺ B
+scanr⁺ {A = A} {B = B} f e xs = go xs where
+  go : List A → List⁺ B
+  go []       = e ∷ []
+  go (x ∷ xs) = let y ∷ ys = go xs in f x y ∷ y ∷ ys
+
+scanr  : (A → B → B) → B → List A → List B
+scanr f e xs = toList (scanr⁺ f e xs)
+
 -- Append (several variants).
 
 infixr 5 _⁺++⁺_ _++⁺_ _⁺++_

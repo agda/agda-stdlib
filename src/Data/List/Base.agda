@@ -210,12 +210,6 @@ updateAt (x ∷ xs) (suc i) f = x ∷ updateAt xs i f
 
 -- Scans
 
-scanr : (A → B → B) → B → List A → List B
-scanr f e []       = e ∷ []
-scanr f e (x ∷ xs) with scanr f e xs
-... | []     = []                -- dead branch
-... | y ∷ ys = f x y ∷ y ∷ ys
-
 scanl : (A → B → A) → A → List B → List A
 scanl f e []       = e ∷ []
 scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
@@ -570,3 +564,16 @@ _─_ = removeAt
 "Warning: _─_ was deprecated in v2.0.
 Please use removeAt instead."
 #-}
+
+-- Version 2.1
+
+scanr : (A → B → B) → B → List A → List B
+scanr f e []       = e ∷ []
+scanr f e (x ∷ xs) with scanr f e xs
+... | []     = []                -- dead branch
+... | y ∷ ys = f x y ∷ y ∷ ys
+{-# WARNING_ON_USAGE scanr
+"Warning: scanr was deprecated in v2.1.
+Please use List.NonEmpty.base.scanr instead."
+#-}
+
