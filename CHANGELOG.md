@@ -90,28 +90,28 @@ Additions to existing modules
 
 * In `Data.Fin.Mod`:
   ```agda
-  sucAbsorb  : Fin n → Fin n
-  predAbsorb : Fin n → Fin n
-  _ℕ+_       : ℕ → Fin n → Fin n
-  _+_        : Fin n → Fin m → Fin n
-  _-_        : Fin m → Fin n → Fin m
+  sucMod  : Fin n → Fin n
+  predMod : Fin n → Fin n
+  _ℕ+_    : ℕ → Fin n → Fin n
+  _+_     : Fin n → Fin m → Fin n
+  _-_     : Fin n → Fin m → Fin n
   ```
 
 * In `Data.Fin.Mod.Properties`:
   ```agda
-  suc-inject₁      : ∀ i → sucAbsorb (inject₁ i) ≡ F.suc i
-  suc-fromℕ        : ∀ n → sucAbsorb (fromℕ n) ≡ zero
-  pred-sucAbsorb   : ∀ i → predAbsorb (F.suc i) ≡ inject₁ i
-  suc-pred≡id      : ∀ i → sucAbsorb (predAbsorb i) ≡ i
-  pred-suc         : ∀ i → predAbsorb (sucAbsorb i) ≡ i
+  suc-inject₁      : ∀ i → sucMod (inject₁ i) ≡ F.suc i
+  suc-fromℕ        : ∀ n → sucMod (fromℕ n) ≡ zero
+  pred-sucMod      : ∀ i → predMod (F.suc i) ≡ inject₁ i
+  suc-pred≡id      : ∀ i → sucMod (predMod i) ≡ i
+  pred-suc         : ∀ i → predMod (sucMod i) ≡ i
   +-identityˡ      : .⦃ NonZero n ⦄ → LeftIdentity zeroFromNonZero _+_
   +ℕ-identityʳ-toℕ : m ℕ.≤ n → toℕ (m ℕ+ zero {n}) ≡ m
   +ℕ-identityʳ     : ∀ m≤n → m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
   +-identityʳ      : .⦃ NonZero n ⦄ → RightIdentity zeroFromNonZero _+_
-  induction        : ∀ P → P zero → (P i → P (sucAbsorb i)) → ∀ i → P i
+  induction        : ∀ P → P zero → (P i → P (sucMod i)) → ∀ i → P i
   ```
 
 * In `Data.Fin.Mod.Induction`:
   ```agda
-  induction : ∀ P → P k → (P i → P (sucAbsorb i)) → ∀ i → P i
+  induction : ∀ P → P k → (P i → P (sucMod i)) → ∀ i → P i
   ```
