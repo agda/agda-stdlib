@@ -50,12 +50,12 @@ Additions to existing modules
 * In `Data.List.NonEmpty.Base`:
   ```agda
   scanr⁺ : (A → B → B) → B → List A → List⁺ B
-  scanr  : (A → B → B) → B → List A → List B
   ```
 
-* In `Data.List.NonEmpty.Properties`:
+* In `Data.List`:
   ```agda
-  scanr-defn : scanr f e ≗ List.map (List.foldr f e) ∘ List.tails
+  scanr      : (A → B → B) → B → List A → List B
+  scanr-defn : scanr f e ≗ map (foldr f e) ∘ tails
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
