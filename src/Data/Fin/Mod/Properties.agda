@@ -90,15 +90,3 @@ sucMod-predMod (suc i) = sucMod-inject₁ i
 +-identityʳ : .{{ _ : NonZero n }} → RightIdentity zeroFromNonZero _+_
 +-identityʳ {suc _} _ = refl
 
-induction :
-  ∀ {ℓ} (P : Pred (Fin (ℕ.suc n)) ℓ) →
-  P zero →
-  (∀ {i} → P i → P (sucMod i)) →
-  ∀ i → P i
-induction P P₀ Pᵢ⇒Pᵢ₊₁ i = <-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁′ i
-  where
-  PInj : ∀ {i} → P (sucMod (inject₁ i)) → P (suc i)
-  PInj {i} rewrite sucMod-inject₁ i = id
-
-  Pᵢ⇒Pᵢ₊₁′ : ∀ i → P (inject₁ i) → P (suc i)
-  Pᵢ⇒Pᵢ₊₁′ _ Pᵢ = PInj (Pᵢ⇒Pᵢ₊₁ Pᵢ)
