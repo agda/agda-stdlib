@@ -570,8 +570,8 @@ Please use removeAt instead."
 scanr : (A → B → B) → B → List A → List B
 scanr f e []       = e ∷ []
 scanr f e (x ∷ xs) with scanr f e xs
-... | []     = []                -- dead branch
-... | y ∷ ys = f x y ∷ y ∷ ys
+... | []         = []                -- dead branch
+... | ys@(y ∷ _) = f x y ∷ ys
 {-# WARNING_ON_USAGE scanr
 "Warning: scanr was deprecated in v2.1.
 Please use List.scanr instead."
