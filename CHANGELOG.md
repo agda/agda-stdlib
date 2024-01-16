@@ -110,3 +110,8 @@ Additions to existing modules
   +-identityʳ      : .⦃ NonZero n ⦄ → RightIdentity zeroFromNonZero _+_
   induction        : ∀ P → P zero → (P i → P (sucAbsorb i)) → ∀ i → P i
   ```
+
+* In `Data.Fin.Mod.Induction`:
+  ```agda
+  induction : ∀ P → P k → (P i → P (sucAbsorb i)) → ∀ i → P i
+  ```
