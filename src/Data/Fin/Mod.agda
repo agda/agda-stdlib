@@ -34,5 +34,5 @@ suc n ℕ+ i = sucMod (n ℕ+ i)
 _+_ : Fin n → Fin m → Fin n
 i + j = toℕ j ℕ+ i
 
-_-_ : Fin m → Fin n → Fin m
-i - j  = opposite i + j
+_-_ : Fin n → Fin m → Fin n
+i - j  = i + opposite j
