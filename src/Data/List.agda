@@ -11,7 +11,7 @@
 
 module Data.List where
 
-import Data.List.NonEmpty as List⁺
+import Data.List.NonEmpty.Base as List⁺
 import Data.List.Properties as List
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality using (refl; cong₂; _≗_)
@@ -26,10 +26,16 @@ open import Data.List.Base public hiding (scanr)
 
 module _ {a b} {A : Set a} {B : Set b} where
 
+  open List⁺ using (List⁺; _∷_; toList)
+
 -- definition
 
   scanr  : (A → B → B) → B → List A → List B
-  scanr f e = List⁺.toList ∘ List⁺.scanr⁺ f e
+  scanr f e = toList ∘ go where
+    go : List A → List⁺ B
+    go []       = e ∷ []
+    go (x ∷ xs) = let y ∷ ys = go xs in f x y ∷ y ∷ ys
+
 
 -- property
 

@@ -47,11 +47,6 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
-* In `Data.List.NonEmpty.Base`:
-  ```agda
-  scanr⁺ : (A → B → B) → B → List A → List⁺ B
-  ```
-
 * In `Data.List`:
   ```agda
   scanr      : (A → B → B) → B → List A → List B
