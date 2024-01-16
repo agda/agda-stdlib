@@ -574,6 +574,6 @@ scanr f e (x ∷ xs) with scanr f e xs
 ... | y ∷ ys = f x y ∷ y ∷ ys
 {-# WARNING_ON_USAGE scanr
 "Warning: scanr was deprecated in v2.1.
-Please use List.NonEmpty.base.scanr instead."
+Please use List.NonEmpty.Base.scanr instead."
 #-}
 
