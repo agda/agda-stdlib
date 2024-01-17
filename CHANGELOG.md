@@ -88,3 +88,20 @@ Additions to existing modules
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
+
+* Added new definitions in `Relation.Binary`
+  ```
+  Stable          : Pred A ℓ → Set _
+  ```
+
+* Added new definitions in `Relation.Nullary`
+  ```
+  Recomputable    : Set _
+  WeaklyDecidable : Set _
+  ```
+
+* Added new definitions in `Relation.Unary`
+  ```
+  Stable          : Pred A ℓ → Set _
+  WeaklyDecidable : Pred A ℓ → Set _
+  ```
