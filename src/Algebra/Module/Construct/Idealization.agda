@@ -108,16 +108,16 @@ _*_ : Op₂ N
 *-identityˡ : LeftIdentity 1# _*_
 *-identityˡ (r , m) = R.*-identityˡ r , (begin
 
-    R.1# *ₗ m +ᴹ 0ᴹ *ᵣ r ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
-    m +ᴹ 0ᴹ              ≈⟨ +ᴹ-identityʳ m ⟩
-    m                    ∎)
+  R.1# *ₗ m +ᴹ 0ᴹ *ᵣ r ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
+  m +ᴹ 0ᴹ              ≈⟨ +ᴹ-identityʳ m ⟩
+  m                    ∎)
 
 *-identityʳ : RightIdentity 1# _*_
 *-identityʳ (r , m) = R.*-identityʳ r , (begin
 
-    r *ₗ 0ᴹ +ᴹ m *ᵣ R.1# ≈⟨ +ᴹ-cong (*ₗ-zeroʳ r) (*ᵣ-identityʳ m) ⟩
-    0ᴹ +ᴹ m              ≈⟨ +ᴹ-identityˡ m ⟩
-    m                    ∎)
+  r *ₗ 0ᴹ +ᴹ m *ᵣ R.1# ≈⟨ +ᴹ-cong (*ₗ-zeroʳ r) (*ᵣ-identityʳ m) ⟩
+  0ᴹ +ᴹ m              ≈⟨ +ᴹ-identityˡ m ⟩
+  m                    ∎)
 
 *-identity : Identity 1# _*_
 *-identity = *-identityˡ , *-identityʳ
