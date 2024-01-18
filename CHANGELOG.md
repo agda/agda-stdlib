@@ -37,6 +37,19 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  record NonNull (xs : List A) : Set
+  instance nonNull : NonNull (x ∷ xs)
+  ≢-nonNull        : xs ≢ [] → NonNull xs
+  >-nonNull        : length xs > 0 → NonNull xs
+  ≢-nonNull⁻¹      : .{{NonNull xs}} → xs ≢ []
+  nonNull⇒nonZero  : .{{NonNull xs}} → ℕ.NonZero (length xs)
+  >-nonNull⁻¹      : .{{NonNull xs}} → length xs > 0
+  nonNull-head     : .{{NonNull xs}} → A
+  nonNull-tail     : .{{NonNull xs}} → List A
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
