@@ -36,11 +36,12 @@ private variable
 -- sucMod
 
 sucMod-inject₁ : (i : Fin n) → sucMod (inject₁ i) ≡ suc i
-sucMod-inject₁ i rewrite view-inject₁ i =
-  cong suc (view-complete (view i))
+sucMod-inject₁ zero = refl
+sucMod-inject₁ (suc i) rewrite sucMod-inject₁ i = refl
 
 sucMod-fromℕ : ∀ n → sucMod (fromℕ n) ≡ zero
-sucMod-fromℕ n rewrite view-fromℕ n = refl
+sucMod-fromℕ zero = refl
+sucMod-fromℕ (suc n) rewrite sucMod-fromℕ n = refl
 
 ------------------------------------------------------------------------
 -- predMod
@@ -49,9 +50,11 @@ predMod-suc : (i : Fin n) → predMod (suc i) ≡ inject₁ i
 predMod-suc _ = refl
 
 predMod-sucMod : (i : Fin n) → predMod (sucMod i) ≡ i
-predMod-sucMod i with view i
-... | ‵fromℕ = refl
-... | ‵inj₁ p = cong inject₁ (view-complete p)
+predMod-sucMod {suc zero} zero = refl
+predMod-sucMod {suc (suc n)} zero = refl
+predMod-sucMod {suc (suc n)} (suc i) with sucMod i | predMod-sucMod i
+... | zero   | eq rewrite eq = refl
+... | suc c1 | eq rewrite eq = refl
 
 sucMod-predMod : (i : Fin n) → sucMod (predMod i) ≡ i
 sucMod-predMod zero = sucMod-fromℕ _
@@ -80,7 +83,7 @@ sucMod-predMod (suc i) = sucMod-inject₁ i
   toℕ (m ℕ+ zero)        ≡⟨ +ℕ-identityʳ-toℕ m≤n ⟩
   m                        ≡⟨ toℕ-fromℕ< _ ⟨
   toℕ (fromℕ< (s≤s m≤n)) ∎)
-  
+
 ------------------------------------------------------------------------
 -- _+_
 
@@ -89,4 +92,3 @@ sucMod-predMod (suc i) = sucMod-inject₁ i
 
 +-identityʳ : .{{ _ : NonZero n }} → RightIdentity zeroFromNonZero _+_
 +-identityʳ {suc _} _ = refl
-

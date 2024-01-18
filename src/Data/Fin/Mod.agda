@@ -19,12 +19,14 @@ private variable
 infixl 6 _+_ _-_
 
 sucMod : Fin n → Fin n
-sucMod i with view i
-... | ‵fromℕ = zero
-... | ‵inj₁ i = suc ⟦ i ⟧
+sucMod {suc zero}    zero = zero
+sucMod {suc (suc n)} zero = suc zero
+sucMod {suc n@(suc _)} (suc i) with sucMod {n} i
+... | zero      = zero
+... | j@(suc _) = suc j
 
 predMod : Fin n → Fin n
-predMod zero = fromℕ _
+predMod zero    = fromℕ _
 predMod (suc i) = inject₁ i
 
 _ℕ+_ : ℕ → Fin n → Fin n
