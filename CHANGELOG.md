@@ -99,16 +99,13 @@ Additions to existing modules
 
 * In `Data.Fin.Mod.Properties`:
   ```agda
-  suc-inject₁      : ∀ i → sucMod (inject₁ i) ≡ F.suc i
-  suc-fromℕ        : ∀ n → sucMod (fromℕ n) ≡ zero
-  pred-sucMod      : ∀ i → predMod (F.suc i) ≡ inject₁ i
-  suc-pred≡id      : ∀ i → sucMod (predMod i) ≡ i
-  pred-suc         : ∀ i → predMod (sucMod i) ≡ i
-  +-identityˡ      : .⦃ NonZero n ⦄ → LeftIdentity zeroFromNonZero _+_
-  +ℕ-identityʳ-toℕ : m ℕ.≤ n → toℕ (m ℕ+ zero {n}) ≡ m
-  +ℕ-identityʳ     : ∀ m≤n → m ℕ+ zero ≡ fromℕ< (s≤s m≤n)
-  +-identityʳ      : .⦃ NonZero n ⦄ → RightIdentity zeroFromNonZero _+_
-  induction        : ∀ P → P zero → (P i → P (sucMod i)) → ∀ i → P i
+  suc-inject₁           : ∀ i → sucMod (inject₁ i) ≡ F.suc i
+  sucMod-fromℕ          : ∀ n → sucMod (fromℕ n) ≡ zero
+  suc[fromℕ]≡zero       : ∀ n → sucMod (fromℕ n) ≡ zero
+  suc[fromℕ]≡zero⁻¹     : ∀ i : Fin (ℕ.suc n)) → (sucMod i ≡ zero) → i ≡ fromℕ n
+  suc[inject₁]≡suc[j]   : ∀ j → sucMod (inject₁ j) ≡ suc j
+  suc[inject₁]≡suc[j]⁻¹ : ∀ i j → (sucMod i ≡ suc j) → i ≡ inject₁ j
+  suc-injective         : ∀ {i j} → sucMod i ≡ sucMod j → i ≡ j
   ```
 
 * In `Data.Fin.Mod.Induction`:
