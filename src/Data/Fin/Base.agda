@@ -35,6 +35,11 @@ data Fin : ℕ → Set where
   zero : Fin (suc n)
   suc  : (i : Fin n) → Fin (suc n)
 
+-- Homogeneous Constructors
+
+zero⁺ : .⦃ _ : ℕ.NonZero n ⦄ → Fin n
+zero⁺ {n = suc _} = zero
+
 -- A conversion: toℕ "i" = i.
 
 toℕ : Fin n → ℕ

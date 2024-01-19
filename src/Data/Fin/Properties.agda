@@ -68,9 +68,6 @@ private
 nonZeroIndex : Fin n → ℕ.NonZero n
 nonZeroIndex {n = suc _} _ = _
 
-zeroFromNonZero : .⦃ _ : ℕ.NonZero n ⦄ → Fin n
-zeroFromNonZero {n = suc _} = zero
-
 ------------------------------------------------------------------------
 -- Bundles
 

@@ -83,9 +83,9 @@ Additions to existing modules
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
 
-* In `Data.Fin.Properties`:
+* In `Data.Fin.Base`:
   ```agda
-  zeroFromNonZero : .⦃ NonZero n ⦄ → Fin n
+  zero⁺ : .⦃ NonZero n ⦄ → Fin n
   ```
 
 * In `Data.Fin.Mod`:
