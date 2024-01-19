@@ -86,6 +86,7 @@ Additions to existing modules
 * In `Data.Fin.Base`:
   ```agda
   zero⁺ : .⦃ NonZero n ⦄ → Fin n
+  suc⁺  : .⦃ NonZero n ⦄ → Fin (pred n) → Fin n
   ```
 
 * In `Data.Fin.Mod`:
