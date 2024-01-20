@@ -25,7 +25,7 @@ private
     xs : List A
 
 ------------------------------------------------------------------------
--- A predicate saying that a list is not equal to [].
+-- Definition
 
 record NonNull {A : Set a} (xs : List A) : Set a where
   field
