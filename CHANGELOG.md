@@ -9,6 +9,10 @@ Highlights
 Bug-fixes
 ---------
 
+* Fix statement of `Data.Vec.Properties.toList-replicate`, where `replicate`
+  was mistakenly applied to the level of the type `A` instead of the
+  variable `x` of type `A`.
+
 Non-backwards compatible changes
 --------------------------------
 
