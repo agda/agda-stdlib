@@ -12,9 +12,12 @@ open import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as Fin
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_; _on_)
+open import Function.Bundles using (_⤖_; mk⤖)
+open import Function.Definitions using (Bijective; Injective; Surjective)
 open import Relation.Binary.Core using (_⇒_)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; refl)
 open import Relation.Nullary.Decidable.Core using (recompute)
 open import Relation.Nullary.Negation.Core using (¬_)
 
@@ -25,45 +28,56 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-record BoundedNat (n : ℕ) : Set where
-  constructor ⟦_⟧<
+record ℕ< (n : ℕ) : Set where
+  constructor ⟦_⟧<_
   field
     value : ℕ
-    .{{bounded}} : value < n
+    .bounded : value < n
 
-open BoundedNat public using () renaming (value to ⟦_⟧)
+open ℕ< public using () renaming (value to ⟦_⟧)
 
 -- Constructor
 
-⟦0⟧< : ∀ n → .{{ NonZero n }} → BoundedNat n
-⟦0⟧< (n@(suc _)) = ⟦ zero ⟧< where instance _ = z<s
+⟦0⟧< : ∀ n → .{{ NonZero n }} → ℕ< n
+⟦0⟧< (n@(suc _)) = ⟦ zero ⟧< z<s
 
 -- Destructors
 
-¬BoundedNat[0] : ¬ BoundedNat 0
-¬BoundedNat[0] ()
+¬ℕ<[0] : ¬ ℕ< 0
+¬ℕ<[0] ()
 
-isBounded : (i : BoundedNat n) → ⟦ i ⟧ < n
-isBounded (⟦ _ ⟧< {{bounded}}) = recompute (_ ℕ.<? _) bounded
+isBounded : (i : ℕ< n) → ⟦ i ⟧ < n
+isBounded (⟦ _ ⟧< i<n) = recompute (_ ℕ.<? _) i<n
 
 -- Equality on values is propositional equality
 
-bounded≡⇒⟦⟧≡⟦⟧ : _≡_ {A = BoundedNat n} ⇒ (_≡_ on ⟦_⟧)
+bounded≡⇒⟦⟧≡⟦⟧ : _≡_ {A = ℕ< n} ⇒ (_≡_ on ⟦_⟧)
 bounded≡⇒⟦⟧≡⟦⟧ = ≡.cong ⟦_⟧
 
-⟦⟧≡⟦⟧⇒bounded≡ :  (_≡_ on ⟦_⟧) ⇒ _≡_ {A = BoundedNat n}
+⟦⟧≡⟦⟧⇒bounded≡ :  (_≡_ on ⟦_⟧) ⇒ _≡_ {A = ℕ< n}
 ⟦⟧≡⟦⟧⇒bounded≡ refl = refl
 
 ------------------------------------------------------------------------
 -- Conversion to and from `Fin n`
 
-toFin : BoundedNat n → Fin n
-toFin ⟦ i ⟧< = fromℕ< i
-  where -- a better version of `Data.Fin.Base.fromℕ<`?
-  fromℕ< : ∀ m → .{{ m < n }} → Fin n
-  fromℕ< {n = suc _} zero            = zero
-  fromℕ< {n = suc _} (suc m) {{m<n}} = suc (fromℕ< m {{s<s⁻¹ m<n}})
+toFin : ℕ< n → Fin n
+toFin (⟦ _ ⟧< i<n) = Fin.fromℕ< i<n
 
-fromFin : Fin n → BoundedNat n
-fromFin i = ⟦ toℕ i ⟧< where instance _ = Fin.toℕ<n i
+fromFin : Fin n → ℕ< n
+fromFin i = ⟦ toℕ i ⟧< (Fin.toℕ<n i)
 
+toFin∘fromFin≐id : toFin ∘ fromFin ≡.≗ id {A = Fin n}
+toFin∘fromFin≐id i = Fin.fromℕ<-toℕ i (Fin.toℕ<n i)
+
+fromFin∘toFin≐id : fromFin ∘ toFin ≡.≗ id {A = ℕ< n}
+fromFin∘toFin≐id (⟦ _ ⟧< i<n) = ⟦⟧≡⟦⟧⇒bounded≡ (Fin.toℕ-fromℕ< i<n)
+
+{-
+boundedNat⤖Fin : ℕ< n ⤖ Fin n
+boundedNat⤖Fin = mk⤖ {to = toFin} {!bij!}
+why isn't there an 'easy' proof of
+bij: Bijective _≡_ _≡_ toFin
+from
+toFin∘fromFin≐id and fromFin∘toFin≐id
+???
+-}

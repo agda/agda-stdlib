@@ -29,7 +29,8 @@ Deprecated names
 New modules
 -----------
 
-* Equivalence of `Fin` and an 'obvious' definition of 'bounded natural number' type, in:
+* Isomorphism between `Fin` and an 'obvious' definition `ℕ<` of
+  'bounded natural number' type, in:
   ```agda
   Data.Nat.Bounded
   ```
