@@ -13,10 +13,10 @@ module Data.List.Base where
 
 open import Algebra.Bundles.Raw using (RawMagma; RawMonoid)
 open import Data.Bool.Base as Bool
-  using (Bool; false; true; not; _∧_; _∨_; if_then_else_; T)
+  using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s; _>_; z<s)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
 open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
@@ -26,11 +26,8 @@ open import Level using (Level)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
-open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; _≢_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Nullary.Decidable.Core using (T?; does; ¬?)
-open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Unary using (Pred)
 
 
 private
@@ -550,53 +547,6 @@ module _ (A : Set a) where
     ; ε = []
     }
 
-------------------------------------------------------------------------
--- Simple predicates, on the model of `Data.Nat.Base.NonZero`
-
-private
-  variable
-    x  : A
-    xs : List A
-
--- A predicate saying that a list is not equal to [].
-
-record NonNull (xs : List A) : Set where
-  field
-    nonNull : T (not (null xs))
-
--- Instances
-
-instance
-  nonNull : NonNull (x ∷ xs)
-  nonNull = _
-
--- Constructors
-
-≢-nonNull : xs ≢ [] → NonNull xs
-≢-nonNull {xs = []}    []≢[] = contradiction refl []≢[]
-≢-nonNull {xs = _ ∷ _} xs≢[] = _
-
->-nonNull : length xs > 0 → NonNull xs
->-nonNull {xs = _ ∷ _} _ = _
-
--- Destructors
-
-≢-nonNull⁻¹ : .{{NonNull xs}} → xs ≢ []
-≢-nonNull⁻¹ {xs = _ ∷ _} ()
-
-nonNull⇒nonZero : (xs : List A) → .{{NonNull xs}} → ℕ.NonZero (length xs)
-nonNull⇒nonZero xs@(_ ∷ _) = _
-
->-nonNull⁻¹ : (xs : List A) → .{{NonNull xs}} → length xs > 0
->-nonNull⁻¹ xs = ℕ.>-nonZero⁻¹ _ where instance _ = nonNull⇒nonZero xs
-
--- Specimen uses
-
-nonNull-head : ∀ xs → .{{NonNull xs}} → A
-nonNull-head xs@(y ∷ _)  = y
-
-nonNull-tail : ∀ xs → .{{NonNull xs}} → List A
-nonNull-tail xs@(_ ∷ ys) = ys
 
 ------------------------------------------------------------------------
 -- DEPRECATED

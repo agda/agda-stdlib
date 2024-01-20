@@ -29,25 +29,17 @@ Deprecated names
 New modules
 -----------
 
+* Non-null lists, on the model of `Data.Nat.Base.NonZero` in:
+  ```agda
+  Data.List.Relation.Unary.NonNull
+  ```
+
 Additions to existing modules
 -----------------------------
 
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
-  ```
-
-* In `Data.List.Base`:
-  ```agda
-  record NonNull (xs : List A) : Set
-  instance nonNull : NonNull (x ∷ xs)
-  ≢-nonNull        : xs ≢ [] → NonNull xs
-  >-nonNull        : length xs > 0 → NonNull xs
-  ≢-nonNull⁻¹      : .{{NonNull xs}} → xs ≢ []
-  nonNull⇒nonZero  : .{{NonNull xs}} → ℕ.NonZero (length xs)
-  >-nonNull⁻¹      : .{{NonNull xs}} → length xs > 0
-  nonNull-head     : .{{NonNull xs}} → A
-  nonNull-tail     : .{{NonNull xs}} → List A
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
