@@ -29,7 +29,6 @@ import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Nullary.Decidable.Core using (T?; does; ¬?)
 
-
 private
   variable
     a b c p ℓ : Level
