@@ -96,5 +96,11 @@ Additions to existing modules
   map : (Char → Char) → String → String
   ```
 
+* Added new functions in `Data.Vec.Bounded.Base`:
+  ```agda
+  isBounded : (as : Vec≤ A n) → Vec≤.length as ≤ n
+  toVec     : (as : Vec≤ A n) → Vec A (Vec≤.length as)
+  ```
+
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
