@@ -2101,6 +2101,32 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 -- Properties of _≤″_ and _<″_
 ------------------------------------------------------------------------
 
+-- equivalence of  _≤″_ to _≤_
+
+≤⇒≤″ : _≤_ ⇒ _≤″_
+≤⇒≤″ = less-than-or-equal ∘ m+[n∸m]≡n
+
+<⇒<″ : _<_ ⇒ _<″_
+<⇒<″ = ≤⇒≤″
+
+≤″⇒≤ : _≤″_ ⇒ _≤_
+≤″⇒≤ (≤″-offset k) = m≤m+n _ k
+
+-- equivalence to the old definition of _≤″_
+
+≤″-proof : (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
+≤″-proof (less-than-or-equal prf) = prf
+
+-- yielding corresponding proof and `pattern` aliases for _≤″_/_<_
+
+≤-proof : m ≤ n → ∃ λ k → m + k ≡ n
+≤-proof le = _ , ≤″-proof (≤⇒≤″ le)
+
+pattern ≤-offset k = k , refl
+pattern <-offset k = ≤-offset k
+
+-- equivalence of _<″_ to _<ᵇ_
+
 m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
 m<ᵇn⇒1+m+[n-1+m]≡n m n lt = m+[n∸m]≡n (<ᵇ⇒< m n lt)
 
@@ -2108,24 +2134,10 @@ m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
 m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 
 <ᵇ⇒<″ : T (m <ᵇ n) → m <″ n
-<ᵇ⇒<″ {m} {n} leq = less-than-or-equal (m+[n∸m]≡n (<ᵇ⇒< m n leq))
+<ᵇ⇒<″ {m} {n} = <⇒<″ ∘ (<ᵇ⇒< m n)
 
 <″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
 <″⇒<ᵇ {m} (<″-offset k) = <⇒<ᵇ (m≤m+n (suc m) k)
-
--- equivalence to the old definition of _≤″_
-
-≤″-proof : ∀ {m n} (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
-≤″-proof (less-than-or-equal prf) = prf
-
--- equivalence to _≤_
-
-≤″⇒≤ : _≤″_ ⇒ _≤_
-≤″⇒≤ {zero}  (≤″-offset k) = z≤n {k}
-≤″⇒≤ {suc m} (≤″-offset k) = s≤s (≤″⇒≤ (≤″-offset k))
-
-≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ = less-than-or-equal ∘ m+[n∸m]≡n
 
 -- NB: we use the builtin function `_<ᵇ_ : (m n : ℕ) → Bool` here so
 -- that the function quickly decides whether to return `yes` or `no`.
