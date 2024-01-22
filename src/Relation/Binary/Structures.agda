@@ -34,12 +34,10 @@ private
 -- as a module parameter at the top of this file.
 
 record IsPartialEquivalence : Set (a ⊔ ℓ) where
-  infixr 5 _⊗_ _ᵒ⊗_ _⊗ᵒ_
+  infixr 5 _ᵒ⊗_ _⊗ᵒ_
   field
     sym   : Symmetric _≈_
     trans : Transitive _≈_
-
-  _⊗_ = trans
 
   transᵒ : RightTrans _≈_ (flip _≈_)
   transᵒ eq₁ eq₂ = trans eq₁ (sym eq₂)
