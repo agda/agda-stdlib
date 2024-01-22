@@ -47,6 +47,9 @@ open ℕ< public using () renaming (value to ⟦_⟧)
 ¬ℕ<[0] : ¬ ℕ< 0
 ¬ℕ<[0] ()
 
+nonZeroIndex : ℕ< n → NonZero n
+nonZeroIndex {n = suc _} _ = _
+
 isBounded : (i : ℕ< n) → ⟦ i ⟧ < n
 isBounded (⟦ _ ⟧< i<n) = recompute (_ ℕ.<? _) i<n
 
