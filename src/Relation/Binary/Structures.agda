@@ -72,7 +72,7 @@ record IsEquivalence : Set (a ⊔ ℓ) where
     }
 
   open IsPartialEquivalence isPartialEquivalence public
-    using (transᵒ; ᵒtrans; _⊗_; _ᵒ⊗_; _⊗ᵒ_)
+    using (transᵒ; ᵒtrans; _ᵒ⊗_; _⊗ᵒ_)
 
 record IsDecEquivalence : Set (a ⊔ ℓ) where
   infix 4 _≟_
