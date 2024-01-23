@@ -8,6 +8,7 @@
 
 module Data.Nat.Bounded where
 
+open import Data.Bool.Base using (T)
 open import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
@@ -68,7 +69,7 @@ toFin : ℕ< n → Fin n
 toFin (⟦ _ ⟧< i<n) = Fin.fromℕ< i<n
 
 fromFin : Fin n → ℕ< n
-fromFin i = ⟦ toℕ i ⟧< (Fin.toℕ<n i)
+fromFin i = ⟦ toℕ i ⟧< Fin.toℕ<n i
 
 toFin∘fromFin≐id : toFin ∘ fromFin ≗ id {A = Fin n}
 toFin∘fromFin≐id i = Fin.fromℕ<-toℕ i (Fin.toℕ<n i)
@@ -81,4 +82,15 @@ boundedNat⤖Fin = mk⤖ $ inverseᵇ⇒bijective $
   strictlyInverseˡ⇒inverseˡ {f⁻¹ = fromFin} toFin toFin∘fromFin≐id
   ,
   strictlyInverseʳ⇒inverseʳ {f⁻¹ = fromFin} toFin fromFin∘toFin≐id
+
+------------------------------------------------------------------------
+-- Literals
+
+module Literals n where
+
+  Constraint : ℕ → Set
+  Constraint m = T (m <ᵇ n)
+
+  fromNat : ∀ m → {{Constraint m}} → ℕ< n
+  fromNat m {{lt}} = ⟦ m ⟧< ℕ.<ᵇ⇒< m n lt
 

@@ -33,6 +33,7 @@ New modules
   'bounded natural number' type, in:
   ```agda
   Data.Nat.Bounded
+  Data.Nat.Bounded.Literals
   ```
 
 Additions to existing modules
