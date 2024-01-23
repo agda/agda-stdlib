@@ -33,8 +33,12 @@ Deprecated names
 New modules
 -----------
 
+* `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
+
 Additions to existing modules
 -----------------------------
+
+* In `Algebra.Module.Bundles`, the bundles expose their raw counterparts.
 
 * In `Data.Fin.Properties`:
   ```agda
