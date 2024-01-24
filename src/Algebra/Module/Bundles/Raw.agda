@@ -209,9 +209,21 @@ record RawBimodule (R : Set r) (S : Set s) m ℓm : Set (r ⊔ s ⊔ suc (m ⊔ 
     ; 0ᴹ = 0ᴹ
     ; -ᴹ_ = -ᴹ_
     }
- 
+
+  rawBisemimodule : RawBisemimodule R S m ℓm
+  rawBisemimodule = record
+    { _≈ᴹ_ = _≈ᴹ_
+    ; _+ᴹ_ = _+ᴹ_
+    ; _*ₗ_ = _*ₗ_
+    ; _*ᵣ_ = _*ᵣ_
+    ; 0ᴹ = 0ᴹ
+    }
+
+  open RawBisemimodule rawBisemimodule public
+    using (+ᴹ-rawMagma; +ᴹ-rawMonoid; rawLeftSemimodule; rawRightSemimodule; _≉ᴹ_)
+
   open RawLeftModule rawLeftModule public
-    using (+ᴹ-rawMagma; +ᴹ-rawMonoid; +ᴹ-rawGroup; _≉ᴹ_)
+    using (+ᴹ-rawGroup)
 
 ------------------------------------------------------------------------
 -- Modules over commutative structures
