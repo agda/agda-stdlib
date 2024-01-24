@@ -28,7 +28,7 @@ module Algebra.Module.Bundles where
 open import Algebra.Bundles
 open import Algebra.Core
 open import Algebra.Definitions using (Involutive)
-open import Algebra.Module.Bundles.Raw
+import Algebra.Module.Bundles.Raw as Raw
 open import Algebra.Module.Core
 open import Algebra.Module.Structures
 open import Algebra.Module.Definitions
@@ -42,6 +42,16 @@ import Relation.Binary.Reasoning.Setoid as SetR
 private
   variable
     r ℓr s ℓs : Level
+
+------------------------------------------------------------------------
+-- Re-export definitions of 'raw' bundles
+
+open Raw public
+  using ( RawLeftSemimodule; RawLeftModule
+        ; RawRightSemimodule; RawRightModule
+        ; RawBisemimodule; RawBimodule
+        ; RawSemimodule; RawModule
+        )
 
 ------------------------------------------------------------------------
 -- Left modules
