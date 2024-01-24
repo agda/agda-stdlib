@@ -33,6 +33,17 @@ Deprecated names
 New modules
 -----------
 
+* Adding a distinguished point `•` (\bu2) to `Monoid`, and using it to define
+  abstract 'literals' for any `PointedMonoid`, with the intended mode-of-use
+  being to instantiate the point with `1#` from any (semi)ring-like structure:
+  ```agda
+  module Algebra.Bundles.Literals
+  module Algebra.Bundles.Pointed
+  module Algebra.Structures.Literals
+  module Algebra.Structures.Pointed
+  module Algebra.Literals
+  ```
+
 Additions to existing modules
 -----------------------------
 
