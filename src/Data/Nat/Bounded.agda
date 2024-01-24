@@ -65,7 +65,7 @@ bounded≡⇒⟦⟧≡⟦⟧ = cong ⟦_⟧
 
 infix 4 _≟_
 _≟_ : DecidableEquality (ℕ< n)
-i ≟ j = map′ ⟦⟧≡⟦⟧⇒bounded≡ bounded≡⇒⟦⟧≡⟦⟧ {!⟦ i ⟧ ℕ.≟ ⟦ j ⟧!} -- (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
+i ≟ j = map′ ⟦⟧≡⟦⟧⇒bounded≡ bounded≡⇒⟦⟧≡⟦⟧ (⟦ i ⟧ ℕ.≟ ⟦ j ⟧)
 
 
 ------------------------------------------------------------------------
