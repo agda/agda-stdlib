@@ -256,8 +256,7 @@ record Bisemimodule (R-semiring : Semiring r ℓr) (S-semiring : Semiring s ℓs
 
   rawBisemimodule : RawBisemimodule R.Carrier S.Carrier m ℓm
   rawBisemimodule = record
-    { Carrierᴹ = Carrierᴹ
-    ; _≈ᴹ_ = _≈ᴹ_
+    { _≈ᴹ_ = _≈ᴹ_
     ; _+ᴹ_ = _+ᴹ_
     ; _*ₗ_ = _*ₗ_
     ; _*ᵣ_ = _*ᵣ_
