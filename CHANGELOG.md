@@ -40,7 +40,7 @@ Additions to existing modules
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
 
-* In `Algebra.Module.Cosntruct.DirectProduct`:
+* In `Algebra.Module.Construct.DirectProduct`:
   ```agda
   rawLeftSemimodule  : RawLeftSemimodule R m ℓm → RawLeftSemimodule m′ ℓm′ → RawLeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
   rawLeftModule      : RawLeftModule R m ℓm → RawLeftModule m′ ℓm′ → RawLeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
