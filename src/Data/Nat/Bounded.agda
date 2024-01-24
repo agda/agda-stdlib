@@ -19,8 +19,9 @@ open import Function.Bundles using (_⤖_; mk⤖)
 open import Function.Consequences.Propositional
   using (inverseᵇ⇒bijective; strictlyInverseˡ⇒inverseˡ; strictlyInverseʳ⇒inverseʳ)
 open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; _≗_)
-open import Relation.Nullary.Decidable.Core using (recompute)
+open import Relation.Nullary.Decidable.Core using (recompute; map′)
 open import Relation.Nullary.Negation.Core using (¬_)
 
 private
@@ -61,6 +62,11 @@ bounded≡⇒⟦⟧≡⟦⟧ = cong ⟦_⟧
 
 ⟦⟧≡⟦⟧⇒bounded≡ :  (_≡_ on ⟦_⟧) ⇒ _≡_ {A = ℕ< n}
 ⟦⟧≡⟦⟧⇒bounded≡ refl = refl
+
+infix 4 _≟_
+_≟_ : DecidableEquality (ℕ< n)
+i ≟ j = map′ ⟦⟧≡⟦⟧⇒bounded≡ bounded≡⇒⟦⟧≡⟦⟧ {!⟦ i ⟧ ℕ.≟ ⟦ j ⟧!} -- (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
+
 
 ------------------------------------------------------------------------
 -- Conversion to and from `Fin n`
