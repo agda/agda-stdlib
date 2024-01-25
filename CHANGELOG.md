@@ -16,6 +16,10 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The modules and morphisms in `Algebra.Module.Morphism.Structures` are now
+  parametrized by _raw_ bundles rather than lawful bundles, in line with other
+  modules defining morphism structures.
+
 Other major improvements
 ------------------------
 
