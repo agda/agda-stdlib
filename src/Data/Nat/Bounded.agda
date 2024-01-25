@@ -10,6 +10,7 @@ module Data.Nat.Bounded where
 
 open import Data.Bool.Base using (T)
 open import Data.Nat.Base as ℕ
+import Data.Nat.DivMod as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as Fin
@@ -39,10 +40,19 @@ record ℕ< (n : ℕ) : Set where
 
 open ℕ< public using () renaming (value to ⟦_⟧)
 
--- Constructor
+-- Constructors: '0 mod n', 'n-1 mod n', '1 mod n'
 
-⟦0⟧< : ∀ n → .{{ NonZero n }} → ℕ< n
-⟦0⟧< (n@(suc _)) = ⟦ zero ⟧< z<s
+⟦0⟧< ⟦-1⟧< : .{{ NonZero n }} → ℕ< n
+⟦0⟧<              = ⟦ 0 ⟧< >-nonZero⁻¹ _
+⟦-1⟧< {n = suc m} = ⟦ m ⟧< ℕ.n<1+n m
+
+⟦1⟧< : .{{ NonTrivial n }} → ℕ< n
+⟦1⟧< = ⟦ 1 ⟧< nonTrivial⇒n>1 _
+
+-- Projection from ℕ
+
+π : .{{ NonZero n }} → ℕ → ℕ< n
+π {n} m = ⟦ m % n ⟧< ℕ.m%n<n m n
 
 -- Destructors
 
@@ -66,7 +76,6 @@ bounded≡⇒⟦⟧≡⟦⟧ = cong ⟦_⟧
 infix 4 _≟_
 _≟_ : DecidableEquality (ℕ< n)
 i ≟ j = map′ ⟦⟧≡⟦⟧⇒bounded≡ bounded≡⇒⟦⟧≡⟦⟧ (⟦ i ⟧ ℕ.≟ ⟦ j ⟧)
-
 
 ------------------------------------------------------------------------
 -- Conversion to and from `Fin n`
