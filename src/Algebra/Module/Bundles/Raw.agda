@@ -232,9 +232,20 @@ record RawBimodule (R : Set r) (S : Set s) m ℓm : Set (r ⊔ s ⊔ suc (m ⊔ 
 RawSemimodule : ∀ (R : Set r) m ℓm → Set (r ⊔ suc (m ⊔ ℓm))
 RawSemimodule R = RawBisemimodule R R
 
-module RawSemimodule = RawBisemimodule
+module RawSemimodule {R : Set r} {m ℓm} (M : RawSemimodule R m ℓm) where
+  open RawBisemimodule M public
+
+  rawBisemimodule : RawBisemimodule R R m ℓm
+  rawBisemimodule = M
 
 RawModule : ∀ (R : Set r) m ℓm → Set (r ⊔ suc(m ⊔ ℓm))
 RawModule R = RawBimodule R R
 
-module RawModule = RawBimodule
+module RawModule {R : Set r} {m ℓm} (M : RawModule R m ℓm) where
+  open RawBimodule M public
+
+  rawBimodule : RawBimodule R R m ℓm
+  rawBimodule = M
+
+  rawSemimodule : RawSemimodule R m ℓm
+  rawSemimodule = rawBisemimodule
