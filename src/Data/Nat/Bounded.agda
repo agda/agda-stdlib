@@ -46,8 +46,9 @@ open ℕ< public using () renaming (value to ⟦_⟧)
 ⟦0⟧<              = ⟦ 0 ⟧< >-nonZero⁻¹ _
 ⟦-1⟧< {n = suc m} = ⟦ m ⟧< ℕ.n<1+n m
 
-⟦1⟧< : .{{ NonTrivial n }} → ℕ< n
-⟦1⟧< = ⟦ 1 ⟧< nonTrivial⇒n>1 _
+⟦1⟧< : .{{ NonZero n }} → ℕ< n
+⟦1⟧< {n = 1}    = ⟦0⟧<
+⟦1⟧< {n = 2+ _} = ⟦ 1 ⟧< nonTrivial⇒n>1 _
 
 -- Projection from ℕ
 
