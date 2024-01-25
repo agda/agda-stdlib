@@ -14,7 +14,7 @@ module Data.Integer.Modulo (n : ℕ) .{{_ : NonTrivial n}} where
 open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
-open import Data.Nat.Bounded as Bounded hiding (π; module Literals)
+open import Data.Nat.Bounded as ℕ< hiding (π; module Literals)
 open import Data.Nat.DivMod as ℕ using (_%_)
 open import Data.Nat.Properties as ℕ
 import Data.Sign.Base as Sign
@@ -51,16 +51,16 @@ infixl 6 _+_
 
 -- Addition
 _+_ : ℤmod → ℤmod → ℤmod
-i + j = Bounded.π (⟦ i ⟧ ℕ.+ ⟦ j ⟧)
+i + j = ℕ<.π (⟦ i ⟧ ℕ.+ ⟦ j ⟧)
 
 -- Multiplication
 _*_ : ℤmod → ℤmod → ℤmod
-i * j = Bounded.π (⟦ i ⟧ ℕ.* ⟦ j ⟧)
+i * j = ℕ<.π (⟦ i ⟧ ℕ.* ⟦ j ⟧)
 
 ------------------------------------------------------------------------
 -- Projection from ℤ
 π : ℤ → ℤmod
-π i with s ◂ ∣i∣ ← signAbs i with j ← Bounded.π ∣i∣ | s
+π i with s ◂ ∣i∣ ← signAbs i with j ← ℕ<.π ∣i∣ | s
 ... | Sign.+ = j
 ... | Sign.- = - j
 
@@ -100,5 +100,5 @@ module Literals where
   Constraint _ = ⊤
 
   fromNat : ∀ m → {{Constraint m}} → ℤmod
-  fromNat m = Bounded.π m
+  fromNat m = ℕ<.π m
 
