@@ -12,7 +12,7 @@ open import Data.Nat.Base as ℕ
 module Data.Integer.Modulo (n : ℕ) .{{_ : NonTrivial n}} where
 
 open import Algebra.Bundles.Raw
-  using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring)
+  using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
 open import Data.Nat.Bounded as Bounded hiding (π; module Literals)
 open import Data.Nat.DivMod as ℕ using (_%_)
@@ -23,8 +23,8 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
-    m o p : ℕ
-    i j   : ℕ< n
+    m o : ℕ
+    i j : ℕ< n
 
   instance
     _ = ℕ.nonTrivial⇒nonZero n
@@ -51,11 +51,11 @@ infixl 6 _+_
 
 -- Addition
 _+_ : ℤmod → ℤmod → ℤmod
-⟦ o ⟧< _ + ⟦ p ⟧< _ = Bounded.π (o ℕ.+ p)
+i + j = Bounded.π (⟦ i ⟧ ℕ.+ ⟦ j ⟧)
 
 -- Multiplication
 _*_ : ℤmod → ℤmod → ℤmod
-⟦ o ⟧< _ * ⟦ p ⟧< _ = Bounded.π (o ℕ.* p)
+i * j = Bounded.π (⟦ i ⟧ ℕ.* ⟦ j ⟧)
 
 ------------------------------------------------------------------------
 -- Projection from ℤ
@@ -73,20 +73,22 @@ syntax Mod {n = n} i = i mod n
 ------------------------------------------------------------------------
 -- Raw bundles
 
-+-*-rawSemiring : RawSemiring _ _
-+-*-rawSemiring = record
++-*-rawRing : RawRing _ _
++-*-rawRing = record
   { _≈_ = _≡_
   ; _+_ = _+_
   ; _*_ = _*_
+  ; -_ = -_
   ; 0# = ⟦0⟧<
   ; 1# = ⟦1⟧<
   }
 
-open RawSemiring +-*-rawSemiring public
+open RawRing +-*-rawRing public
   using (+-rawMagma; *-rawMagma)
   renaming ( +-rawMonoid to +-0-rawMonoid
            ; *-rawMonoid to *-1-rawMonoid
            ; rawNearSemiring to +-*-rawNearSemiring
+           ; rawSemiring to +-*-rawSemiring
            )
 
 ------------------------------------------------------------------------
