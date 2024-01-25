@@ -490,7 +490,7 @@ module SemimoduleMorphisms
 
   open RawSemimodule M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
   open RawSemimodule M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
-  open BisemimoduleMorphisms M₁ M₂
+  open BisemimoduleMorphisms (RawSemimodule.rawBisemimodule M₁) (RawSemimodule.rawBisemimodule M₂)
 
   record IsSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -542,7 +542,7 @@ module ModuleMorphisms
 
   open RawModule M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
   open RawModule M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
-  open BimoduleMorphisms M₁ M₂
+  open BimoduleMorphisms (RawModule.rawBimodule M₁) (RawModule.rawBimodule M₂)
   open SemimoduleMorphisms (RawModule.rawBisemimodule M₁) (RawModule.rawBisemimodule M₂)
 
   record IsModuleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
