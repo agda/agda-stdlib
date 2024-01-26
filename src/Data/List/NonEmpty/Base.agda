@@ -143,6 +143,21 @@ concatMap f = concat ∘′ map f
 ap : List⁺ (A → B) → List⁺ A → List⁺ B
 ap fs as = concatMap (λ f → map f as) fs
 
+-- Tails
+
+tails⁺ : List A → List⁺ (List A)
+tails⁺ xs = xs ∷ go xs
+  where
+  go : List A → List (List A)
+  go []       = []
+  go (x ∷ xs) = xs ∷ go xs
+
+-- Scanr
+
+scanr⁺ : (f : A → B → B) (e : B) → List A → List⁺ B
+scanr⁺ f e []       = e ∷ []
+scanr⁺ f e (x ∷ xs) = let y ∷ ys = scanr⁺ f e xs in f x y ∷ y ∷ ys
+
 -- Reverse
 
 reverse : List⁺ A → List⁺ A
