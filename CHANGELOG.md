@@ -81,6 +81,12 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Properties.Group`:
+  ```agda
+  isQuasigroup : IsQuasigroup _∙_ _\\_ _//_
+  isLoop : IsLoop _∙_ _\\_ _//_ ε
+  ```
+
 * In `Algebra.Structures.IsGroup`:
   ```agda
   infixl 6 _//_
@@ -88,6 +94,7 @@ Additions to existing modules
   _//_ _\\_ : Op₂ A
   x // y = x ∙ (y ⁻¹)
   x \\ y = (x ⁻¹) ∙ y
+  ```
 
 * In `Data.Fin.Properties`:
   ```agda
