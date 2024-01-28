@@ -63,26 +63,18 @@ isQuasigroup = record
 isLoop : IsLoop _∙_ _\\_ _//_ ε
 isLoop = record { isQuasigroup = isQuasigroup ; identity = identity }
 
-private
-
-  left-helper : ∀ x y → x ≈ (x ∙ y) ∙ y ⁻¹
-  left-helper x y = sym (rightDividesʳ y x)
-
-  right-helper : ∀ x y → y ≈ x ⁻¹ ∙ (x ∙ y)
-  right-helper x y = sym (leftDividesʳ x y)
-
 ∙-cancelˡ : LeftCancellative _∙_
 ∙-cancelˡ x y z eq = begin
-              y  ≈⟨ right-helper x y ⟩
+              y  ≈⟨ leftDividesʳ x y ⟨
   x ⁻¹ ∙ (x ∙ y) ≈⟨ ∙-congˡ eq ⟩
-  x ⁻¹ ∙ (x ∙ z) ≈⟨ right-helper x z ⟨
+  x ⁻¹ ∙ (x ∙ z) ≈⟨ leftDividesʳ x z ⟩
               z  ∎
 
 ∙-cancelʳ : RightCancellative _∙_
 ∙-cancelʳ x y z eq = begin
-  y            ≈⟨ left-helper y x ⟩
+  y            ≈⟨ rightDividesʳ x y ⟨
   y ∙ x ∙ x ⁻¹ ≈⟨ ∙-congʳ eq ⟩
-  z ∙ x ∙ x ⁻¹ ≈⟨ left-helper z x ⟨
+  z ∙ x ∙ x ⁻¹ ≈⟨ rightDividesʳ x z ⟩
   z            ∎
 
 ∙-cancel : Cancellative _∙_
@@ -92,7 +84,7 @@ private
 ⁻¹-involutive x = begin
   x ⁻¹ ⁻¹              ≈⟨ identityʳ _ ⟨
   x ⁻¹ ⁻¹ ∙ ε          ≈⟨ ∙-congˡ $ inverseˡ _ ⟨
-  x ⁻¹ ⁻¹ ∙ (x ⁻¹ ∙ x) ≈⟨ right-helper (x ⁻¹) x ⟨
+  x ⁻¹ ⁻¹ ∙ (x ⁻¹ ∙ x) ≈⟨ leftDividesʳ (x ⁻¹) x ⟩
   x                    ∎
 
 ⁻¹-injective : ∀ {x y} → x ⁻¹ ≈ y ⁻¹ → x ≈ y
@@ -106,21 +98,21 @@ private
 ⁻¹-anti-homo-∙ x y = ∙-cancelˡ _ _ _ ( begin
   x ∙ y ∙ (x ∙ y) ⁻¹    ≈⟨ inverseʳ _ ⟩
   ε                     ≈⟨ inverseʳ _ ⟨
-  x ∙ x ⁻¹              ≈⟨ ∙-congʳ (left-helper x y) ⟩
+  x ∙ x ⁻¹              ≈⟨ ∙-congʳ (rightDividesʳ y x) ⟨
   (x ∙ y) ∙ y ⁻¹ ∙ x ⁻¹ ≈⟨ assoc (x ∙ y) (y ⁻¹) (x ⁻¹) ⟩
   x ∙ y ∙ (y ⁻¹ ∙ x ⁻¹) ∎ )
 
 identityˡ-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
 identityˡ-unique x y eq = begin
-  x              ≈⟨ left-helper x y ⟩
+  x              ≈⟨ rightDividesʳ y x ⟨
   (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congʳ eq ⟩
        y  ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
   ε              ∎
 
 identityʳ-unique : ∀ x y → x ∙ y ≈ x → y ≈ ε
 identityʳ-unique x y eq = begin
-  y              ≈⟨ right-helper x y ⟩
-  x ⁻¹ ∙ (x ∙ y) ≈⟨ refl ⟨ ∙-cong ⟩ eq ⟩
+  y              ≈⟨ leftDividesʳ x y ⟨
+  x ⁻¹ ∙ (x ∙ y) ≈⟨ ∙-congˡ  eq ⟩
   x ⁻¹ ∙  x      ≈⟨ inverseˡ x ⟩
   ε              ∎
 
@@ -129,7 +121,7 @@ identity-unique {x} id = identityˡ-unique x x (proj₂ id x)
 
 inverseˡ-unique : ∀ x y → x ∙ y ≈ ε → x ≈ y ⁻¹
 inverseˡ-unique x y eq = begin
-  x              ≈⟨ left-helper x y ⟩
+  x              ≈⟨ rightDividesʳ y x ⟨
   (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congʳ eq ⟩
        ε  ∙ y ⁻¹ ≈⟨ identityˡ (y ⁻¹) ⟩
             y ⁻¹ ∎
