@@ -12,6 +12,7 @@ module Algebra.Properties.Group {g₁ g₂} (G : Group g₁ g₂) where
 
 open Group G
 open import Algebra.Definitions _≈_
+open import Algebra.Structures _≈_ using (IsLoop; IsQuasigroup)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Function.Base using (_$_; _⟨_⟩_)
 open import Data.Product.Base using (_,_; proj₂)
@@ -22,21 +23,53 @@ open import Data.Product.Base using (_,_; proj₂)
   ε ⁻¹ ∙ ε  ≈⟨ inverseˡ ε ⟩
   ε         ∎
 
+leftDividesˡ : ∀ x y → x ∙ (x \\ y) ≈ y
+leftDividesˡ x y = begin
+  x  ∙ (x \\ y)  ≈⟨ assoc x (x ⁻¹) y ⟨
+  x ∙ x ⁻¹ ∙ y   ≈⟨ ∙-congʳ (inverseʳ x) ⟩
+  ε ∙ y          ≈⟨ identityˡ y ⟩
+  y              ∎
+
+leftDividesʳ : ∀ x y → x \\ x ∙ y ≈ y
+leftDividesʳ x y = begin
+  x \\ x ∙ y     ≈⟨ assoc (x ⁻¹) x y ⟨
+  x ⁻¹ ∙ x ∙ y   ≈⟨ ∙-congʳ (inverseˡ x) ⟩
+  ε ∙ y          ≈⟨ identityˡ y ⟩
+  y              ∎
+
+rightDividesˡ : ∀ x y → (y // x) ∙ x ≈ y
+rightDividesˡ x y = begin
+  (y // x) ∙ x    ≈⟨ assoc y (x ⁻¹) x ⟩
+  y ∙ (x ⁻¹ ∙ x)  ≈⟨ ∙-congˡ (inverseˡ x) ⟩
+  y ∙ ε           ≈⟨ identityʳ y ⟩
+  y               ∎
+
+rightDividesʳ : ∀ x y → y ∙ x // x ≈ y
+rightDividesʳ x y = begin
+  y ∙ x // x    ≈⟨ assoc y x (x ⁻¹) ⟩
+  y ∙ (x // x)  ≈⟨ ∙-congˡ (inverseʳ x) ⟩
+  y ∙ ε         ≈⟨ identityʳ y ⟩
+  y             ∎
+
+isQuasigroup : IsQuasigroup _∙_ _\\_ _//_
+isQuasigroup = record
+                 { isMagma = isMagma
+                 ; \\-cong = λ x≈y u≈v → ∙-cong (⁻¹-cong x≈y) u≈v
+                 ; //-cong = λ x≈y u≈v → ∙-cong x≈y (⁻¹-cong u≈v)
+                 ; leftDivides = leftDividesˡ , leftDividesʳ
+                 ; rightDivides = rightDividesˡ , rightDividesʳ
+                 }
+
+isLoop : IsLoop _∙_ _\\_ _//_ ε
+isLoop = record { isQuasigroup = isQuasigroup ; identity = identity }
+
 private
 
   left-helper : ∀ x y → x ≈ (x ∙ y) ∙ y ⁻¹
-  left-helper x y = begin
-    x              ≈⟨ sym (identityʳ x) ⟩
-    x ∙ ε          ≈⟨ ∙-congˡ $ sym (inverseʳ y) ⟩
-    x ∙ (y ∙ y ⁻¹) ≈⟨ sym (assoc x y (y ⁻¹)) ⟩
-    (x ∙ y) ∙ y ⁻¹ ∎
+  left-helper x y = sym (rightDividesʳ y x)
 
   right-helper : ∀ x y → y ≈ x ⁻¹ ∙ (x ∙ y)
-  right-helper x y = begin
-    y              ≈⟨ sym (identityˡ y) ⟩
-    ε          ∙ y ≈⟨ ∙-congʳ $ sym (inverseˡ x) ⟩
-    (x ⁻¹ ∙ x) ∙ y ≈⟨ assoc (x ⁻¹) x y ⟩
-    x ⁻¹ ∙ (x ∙ y) ∎
+  right-helper x y = sym (leftDividesʳ x y)
 
 ∙-cancelˡ : LeftCancellative _∙_
 ∙-cancelˡ x y z eq = begin
@@ -106,3 +139,13 @@ inverseʳ-unique x y eq = begin
   y       ≈⟨ sym (⁻¹-involutive y) ⟩
   y ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong (sym (inverseˡ-unique x y eq)) ⟩
   x ⁻¹    ∎
+{-
+\\≗//⇒comm : (∀ {x y} → x \\ y ≈ x // y) → Commutative _∙_
+\\≗//⇒comm \\≗// x y = begin
+  x ∙ y ≈⟨ {!inverseʳ y!} ⟩
+  {!!} ≈⟨ {!!} ⟩
+  {!!} ≈⟨ {!!} ⟩
+  {!!} ≈⟨ {!!} ⟩
+  {!!} ≈⟨ {!!} ⟩
+  y ∙ x ∎
+-}
