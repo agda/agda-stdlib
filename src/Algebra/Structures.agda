@@ -253,16 +253,20 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
 
   open IsMonoid isMonoid public
 
-  infixl 6 _∙⁻¹_
-  infixr 6 _⁻¹∙_
-  _∙⁻¹_ : Op₂ A
-  x ∙⁻¹ y = x ∙ (y ⁻¹)
-  _⁻¹∙_ : Op₂ A
-  x ⁻¹∙  y = (x ⁻¹) ∙ y
+  infixl 6 _//_
+  infixr 6 _\\_
+  _//_ _\\_ : Op₂ A
+  x // y = x ∙ (y ⁻¹)
+  x \\ y = (x ⁻¹) ∙ y
 
+  -- Deprecated.
   infixl 6 _-_
   _-_ : Op₂ A
-  _-_ = _∙⁻¹_
+  _-_ = _//_
+  {-# WARNING_ON_USAGE _-_
+  "Warning: _-_ was deprecated in v2.1.
+  Please use _//_ instead. "
+  #-}
 
   inverseˡ : LeftInverse ε _⁻¹ _∙_
   inverseˡ = proj₁ inverse
@@ -298,7 +302,7 @@ record IsAbelianGroup (∙ : Op₂ A)
     isGroup : IsGroup ∙ ε ⁻¹
     comm    : Commutative ∙
 
-  open IsGroup isGroup public hiding (_∙⁻¹_; _⁻¹∙_)
+  open IsGroup isGroup public renaming (_//_ to _-_) hiding (_\\_; _-_)
 
   isCommutativeMonoid : IsCommutativeMonoid ∙ ε
   isCommutativeMonoid = record

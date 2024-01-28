@@ -25,6 +25,11 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Structures.IsGroup`:
+  ```agda
+  _-_  ↦  _//_
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -78,12 +83,11 @@ Additions to existing modules
 
 * In `Algebra.Structures.IsGroup`:
   ```agda
-  infixl 6 _∙⁻¹_
+  infixl 6 _//_
   infixr 6 _⁻¹∙_
-  _∙⁻¹_ : Op₂ A
-  x ∙⁻¹ y = x ∙ (y ⁻¹)
-  _⁻¹∙_ : Op₂ A
-  x ⁻¹∙  y = (x ⁻¹) ∙ y
+  _//_ _\\_ : Op₂ A
+  x // y = x ∙ (y ⁻¹)
+  x \\ y = (x ⁻¹) ∙ y
 
 * In `Data.Fin.Properties`:
   ```agda
