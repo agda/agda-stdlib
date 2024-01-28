@@ -1144,7 +1144,7 @@ zipWith-replicate₂ _⊕_ (x ∷ xs) y =
   cong (x ⊕ y ∷_) (zipWith-replicate₂ _⊕_ xs y)
 
 toList-replicate : ∀ (n : ℕ) (x : A) →
-                   toList (replicate n a) ≡ List.replicate n a
+                   toList (replicate n x) ≡ List.replicate n x
 toList-replicate zero    x = refl
 toList-replicate (suc n) x = cong (_ List.∷_) (toList-replicate n x)
 
