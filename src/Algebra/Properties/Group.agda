@@ -17,12 +17,6 @@ open import Relation.Binary.Reasoning.Setoid setoid
 open import Function.Base using (_$_; _⟨_⟩_)
 open import Data.Product.Base using (_,_; proj₂)
 
-ε⁻¹≈ε : ε ⁻¹ ≈ ε
-ε⁻¹≈ε = begin
-  ε ⁻¹      ≈⟨ sym $ identityʳ (ε ⁻¹) ⟩
-  ε ⁻¹ ∙ ε  ≈⟨ inverseˡ ε ⟩
-  ε         ∎
-
 leftDividesˡ : ∀ x y → x ∙ (x \\ y) ≈ y
 leftDividesˡ x y = begin
   x  ∙ (x \\ y)  ≈⟨ assoc x (x ⁻¹) y ⟨
@@ -63,6 +57,12 @@ isQuasigroup = record
 isLoop : IsLoop _∙_ _\\_ _//_ ε
 isLoop = record { isQuasigroup = isQuasigroup ; identity = identity }
 
+ε⁻¹≈ε : ε ⁻¹ ≈ ε
+ε⁻¹≈ε = begin
+  ε ⁻¹      ≈⟨ identityʳ (ε ⁻¹) ⟨
+  ε ⁻¹ ∙ ε  ≈⟨ inverseˡ ε ⟩
+  ε         ∎
+
 ∙-cancelˡ : LeftCancellative _∙_
 ∙-cancelˡ x y z eq = begin
               y  ≈⟨ leftDividesʳ x y ⟨
@@ -88,19 +88,19 @@ isLoop = record { isQuasigroup = isQuasigroup ; identity = identity }
   x                    ∎
 
 ⁻¹-injective : ∀ {x y} → x ⁻¹ ≈ y ⁻¹ → x ≈ y
-⁻¹-injective {x} {y} eq = ∙-cancelʳ _ _ _ ( begin
+⁻¹-injective {x} {y} eq = ∙-cancelʳ _ _ _ $ begin
   x ∙ x ⁻¹ ≈⟨ inverseʳ x ⟩
   ε        ≈⟨ inverseʳ y ⟨
   y ∙ y ⁻¹ ≈⟨ ∙-congˡ eq ⟨
-  y ∙ x ⁻¹ ∎ )
+  y ∙ x ⁻¹ ∎
 
 ⁻¹-anti-homo-∙ : ∀ x y → (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
-⁻¹-anti-homo-∙ x y = ∙-cancelˡ _ _ _ ( begin
+⁻¹-anti-homo-∙ x y = ∙-cancelˡ _ _ _ $ begin
   x ∙ y ∙ (x ∙ y) ⁻¹    ≈⟨ inverseʳ _ ⟩
   ε                     ≈⟨ inverseʳ _ ⟨
   x ∙ x ⁻¹              ≈⟨ ∙-congʳ (rightDividesʳ y x) ⟨
   (x ∙ y) ∙ y ⁻¹ ∙ x ⁻¹ ≈⟨ assoc (x ∙ y) (y ⁻¹) (x ⁻¹) ⟩
-  x ∙ y ∙ (y ⁻¹ ∙ x ⁻¹) ∎ )
+  x ∙ y ∙ (y ⁻¹ ∙ x ⁻¹) ∎
 
 identityˡ-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
 identityˡ-unique x y eq = begin
@@ -128,16 +128,17 @@ inverseˡ-unique x y eq = begin
 
 inverseʳ-unique : ∀ x y → x ∙ y ≈ ε → y ≈ x ⁻¹
 inverseʳ-unique x y eq = begin
-  y       ≈⟨ sym (⁻¹-involutive y) ⟩
-  y ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong (sym (inverseˡ-unique x y eq)) ⟩
+  y       ≈⟨ ⁻¹-involutive y ⟨
+  y ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong (inverseˡ-unique x y eq) ⟨
   x ⁻¹    ∎
-{-
-\\≗//⇒comm : (∀ {x y} → x \\ y ≈ x // y) → Commutative _∙_
-\\≗//⇒comm \\≗// x y = begin
-  x ∙ y ≈⟨ {!inverseʳ y!} ⟩
-  {!!} ≈⟨ {!!} ⟩
-  {!!} ≈⟨ {!!} ⟩
-  {!!} ≈⟨ {!!} ⟩
-  {!!} ≈⟨ {!!} ⟩
-  y ∙ x ∎
--}
+
+\\≗//ᵒ⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
+\\≗//ᵒ⇒comm \\≗//ᵒ x y = begin
+  x ∙ y                ≈⟨ identityʳ _ ⟨
+  (x ∙ y) ∙ ε          ≈⟨ ∙-congˡ (inverseˡ x) ⟨
+  (x ∙ y) ∙ (x ⁻¹ ∙ x) ≈⟨ assoc (x ∙ y) (x ⁻¹) x ⟨
+  (x ∙ y) ∙ x ⁻¹ ∙ x   ≈⟨ ∙-congʳ (assoc x y (x ⁻¹)) ⟩
+  x ∙ (y // x) ∙ x     ≈⟨ ∙-congʳ (∙-congˡ (\\≗//ᵒ x y)) ⟨
+  x ∙ (x \\ y) ∙ x     ≈⟨ ∙-congʳ (leftDividesˡ x y) ⟩
+  y ∙ x                ∎
+

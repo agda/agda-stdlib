@@ -85,6 +85,7 @@ Additions to existing modules
   ```agda
   isQuasigroup : IsQuasigroup _∙_ _\\_ _//_
   isLoop : IsLoop _∙_ _\\_ _//_ ε
+  \\≗//ᵒ⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
   ```
 
 * In `Algebra.Structures.IsGroup`:
