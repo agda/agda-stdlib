@@ -116,6 +116,9 @@ map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
 
+toList-map : (f : A → B) → toList ∘ map f ≗ List.map f ∘ toList
+toList-map f (x ∷ xs) = refl
+
 ------------------------------------------------------------------------
 -- tails
 
@@ -129,16 +132,19 @@ toList-tails⁺ ys@(_ ∷ xs) = cong (ys ∷_) (toList-tails⁺ xs)
 module _ (f : A → B → B) (e : B) where
 
   scanr⁺-defn : scanr⁺ f e ≗ map (List.foldr f e) ∘ tails⁺
-  scanr⁺-defn []                = refl
-  scanr⁺-defn (x ∷ [])          = refl
-  scanr⁺-defn (x ∷ xs@(_ ∷ _)) = let eq = scanr⁺-defn xs
+  scanr⁺-defn []       = refl
+  scanr⁺-defn (x ∷ xs) = let eq = scanr⁺-defn xs
     in cong₂ (λ z → f x z ∷_) (cong head eq) (cong toList eq)
 
   toList-scanr⁺ : toList ∘ scanr⁺ f e ≗ List.map (List.foldr f e) ∘ List.tails
-  toList-scanr⁺ []                = refl
-  toList-scanr⁺ (x ∷ [])          = refl
-  toList-scanr⁺ (x ∷ xs@(_ ∷ _)) = let eq = toList-scanr⁺ xs
-    in cong₂ (λ z → f x z ∷_) (List.∷-injectiveˡ eq) eq
+  toList-scanr⁺ xs = begin
+    toList (scanr⁺ f e xs)
+      ≡⟨ cong toList (scanr⁺-defn xs) ⟩
+    toList (map (List.foldr f e) (tails⁺ xs))
+      ≡⟨ toList-map _ (tails⁺ xs) ⟩
+    List.map (List.foldr f e) (toList (tails⁺ xs))
+      ≡⟨ cong (List.map (List.foldr f e)) (toList-tails⁺ xs) ⟩
+    List.map (List.foldr f e) (List.tails xs) ∎
 
 ------------------------------------------------------------------------
 -- groupSeqs
