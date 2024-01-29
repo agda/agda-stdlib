@@ -124,6 +124,30 @@ toList-inits⁺ []       = refl
 toList-inits⁺ (x ∷ xs) = cong (([] ∷_) ∘ List.map (x ∷_)) (toList-inits⁺ xs)
 
 ------------------------------------------------------------------------
+-- scanl
+
+module _ (f : A → B → A) where
+  
+  private
+    h = List.foldl f
+
+  scanl⁺-defn : (e : A) → scanl⁺ f e ≗ map (h e) ∘ inits⁺
+  scanl⁺-defn e []       = refl
+  scanl⁺-defn e (x ∷ xs) = let eq = scanl⁺-defn (f e x) xs in
+    cong (e ∷_) $ cong (f e x ∷_) (trans (cong tail eq) (List.map-∘ _))
+
+  toList-scanl⁺ : (e : A) →
+                  toList ∘ scanl⁺ f e ≗ List.map (List.foldl f e) ∘ List.inits
+  toList-scanl⁺ e xs          = begin
+    toList (scanl⁺ f e xs)
+      ≡⟨ cong toList (scanl⁺-defn e xs) ⟩
+    toList (map (h e) (inits⁺ xs))
+      ≡⟨ toList-map (h e) (inits⁺ xs) ⟩
+    List.map (h e) (toList (inits⁺ xs))
+      ≡⟨ cong (List.map (h e)) (toList-inits⁺ xs) ⟩
+    List.map (h e) (List.inits xs) ∎
+
+------------------------------------------------------------------------
 -- groupSeqs
 
 -- Groups all contiguous elements for which the predicate returns the
