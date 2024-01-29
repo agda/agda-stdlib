@@ -90,7 +90,7 @@ Additions to existing modules
 * In `Algebra.Structures.IsGroup`:
   ```agda
   infixl 6 _//_
-  infixr 6 _⁻¹∙_
+  infixr 6 _\\_
   _//_ _\\_ : Op₂ A
   x // y = x ∙ (y ⁻¹)
   x \\ y = (x ⁻¹) ∙ y
