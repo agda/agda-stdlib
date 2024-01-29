@@ -628,7 +628,7 @@ scanr-defn f e (x ∷ [])       = refl
 scanr-defn f e (x ∷ y∷xs@(_ ∷ _))
   with eq ← scanr-defn f e y∷xs
   with z ∷ zs ← scanr f e y∷xs
-  = let z≡fy⦇f⦈xs , _ = ∷-injective eq in cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
+  = cong₂ (λ z → f x z ∷_) (∷-injectiveˡ eq) eq
 
 ------------------------------------------------------------------------
 -- scanl
