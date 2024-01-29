@@ -9,10 +9,6 @@ Highlights
 Bug-fixes
 ---------
 
-* Fix statement of `Data.Vec.Properties.toList-replicate`, where `replicate`
-  was mistakenly applied to the level of the type `A` instead of the
-  variable `x` of type `A`.
-
 Non-backwards compatible changes
 --------------------------------
 
@@ -33,52 +29,26 @@ Deprecated names
 New modules
 -----------
 
-* `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
-
 Additions to existing modules
 -----------------------------
-
-* In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
-
-* In `Algebra.Module.Construct.DirectProduct`:
-  ```agda
-  rawLeftSemimodule  : RawLeftSemimodule R m ℓm → RawLeftSemimodule m′ ℓm′ → RawLeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
-  rawLeftModule      : RawLeftModule R m ℓm → RawLeftModule m′ ℓm′ → RawLeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
-  rawRightSemimodule : RawRightSemimodule R m ℓm → RawRightSemimodule m′ ℓm′ → RawRightSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
-  rawRightModule     : RawRightModule R m ℓm → RawRightModule m′ ℓm′ → RawRightModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
-  rawBisemimodule    : RawBisemimodule R m ℓm → RawBisemimodule m′ ℓm′ → RawBisemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
-  rawBimodule        : RawBimodule R m ℓm → RawBimodule m′ ℓm′ → RawBimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
-  rawSemimodule      : RawSemimodule R m ℓm → RawSemimodule m′ ℓm′ → RawSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
-  rawModule          : RawModule R m ℓm → RawModule m′ ℓm′ → RawModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
-  ```
-
-* In `Algebra.Module.Construct.TensorUnit`:
-  ```agda
-  rawLeftSemimodule  : RawLeftSemimodule _ c ℓ
-  rawLeftModule      : RawLeftModule _ c ℓ
-  rawRightSemimodule : RawRightSemimodule _ c ℓ
-  rawRightModule     : RawRightModule _ c ℓ
-  rawBisemimodule    : RawBisemimodule _ _ c ℓ
-  rawBimodule        : RawBimodule _ _ c ℓ
-  rawSemimodule      : RawSemimodule _ c ℓ
-  rawModule          : RawModule _ c ℓ
-  ```
-
-* In `Algebra.Module.Construct.Zero`:
-  ```agda
-  rawLeftSemimodule  : RawLeftSemimodule R c ℓ
-  rawLeftModule      : RawLeftModule R c ℓ
-  rawRightSemimodule : RawRightSemimodule R c ℓ
-  rawRightModule     : RawRightModule R c ℓ
-  rawBisemimodule    : RawBisemimodule R c ℓ
-  rawBimodule        : RawBimodule R c ℓ
-  rawSemimodule      : RawSemimodule R c ℓ
-  rawModule          : RawModule R c ℓ
-  ```
 
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits⁺     : List A → List⁺ (List A)
+  scanl⁺     : (A → B → A) → A → List B → List⁺ A
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-map    : (f : A → B) → toList ∘ map f ≗ List.map f ∘ toList
+  toList-inits⁺ : toList ∘ inits⁺ ≗ List.inits
+  scanl⁺-defn   : scanl⁺ f e ≗ map (List.foldl f e) ∘ inits⁺
+  toList-scanl⁺ : toList ∘ scanl⁺ f e ≗ List.map (List.foldl f e) ∘ List.inits
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
