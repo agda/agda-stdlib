@@ -114,6 +114,13 @@ map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
 
 ------------------------------------------------------------------------
+-- inits
+
+toList-inits⁺ : (xs : List A) → toList (inits⁺ xs) ≡ List.inits xs
+toList-inits⁺ []       = refl
+toList-inits⁺ (x ∷ xs) = cong ([] ∷_) (cong (List.map (x ∷_)) (toList-inits⁺ xs))
+
+------------------------------------------------------------------------
 -- groupSeqs
 
 -- Groups all contiguous elements for which the predicate returns the

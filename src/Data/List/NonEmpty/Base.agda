@@ -143,6 +143,24 @@ concatMap f = concat ∘′ map f
 ap : List⁺ (A → B) → List⁺ A → List⁺ B
 ap fs as = concatMap (λ f → map f as) fs
 
+-- Inits
+
+inits⁺ : List A → List⁺ (List A)
+inits⁺ {A = A} xs = [] ∷ go xs
+  where
+  go : List A → List (List A)
+  go []       = []
+  go (x ∷ xs) = List.[ x ] ∷ List.map (x ∷_) (go xs)
+
+-- Scanl
+
+scanl⁺ : (A → B → A) → A → List B → List⁺ A
+scanl⁺ {A = A} {B = B} f e xs = e ∷ go e xs
+  where
+  go : A → List B → List A
+  go _ []       = []
+  go e (x ∷ xs) = let fex = f e x in fex ∷ go fex xs
+
 -- Reverse
 
 reverse : List⁺ A → List⁺ A

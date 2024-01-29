@@ -636,7 +636,7 @@ scanr-defn f e (x ∷ y∷xs@(_ ∷ _))
 scanl-defn : ∀ (f : A → B → A) (e : A) →
              scanl f e ≗ map (foldl f e) ∘ inits
 scanl-defn f e []       = refl
-scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
+scanl-defn f e (x ∷ xs) = cong (e ∷_) $ begin
    scanl f (f e x) xs
  ≡⟨ scanl-defn f (f e x) xs ⟩
    map (foldl f (f e x)) (inits xs)
@@ -644,7 +644,7 @@ scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
    map (foldl f e ∘ (x ∷_)) (inits xs)
  ≡⟨ map-∘ (inits xs) ⟩
    map (foldl f e) (map (x ∷_) (inits xs))
- ∎)
+ ∎
 
 ------------------------------------------------------------------------
 -- applyUpTo
