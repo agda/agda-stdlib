@@ -81,6 +81,11 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Properties.AbelianGroup`:
+  ```agda
+  \\≗//ᵒ : ∀ x y → x \\ y ≈ y // x
+  ```
+
 * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup : IsQuasigroup _∙_ _\\_ _//_

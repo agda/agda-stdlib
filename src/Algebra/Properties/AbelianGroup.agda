@@ -36,3 +36,13 @@ xyx⁻¹≈y x y = begin
   x ⁻¹ ∙ y ⁻¹ ≈⟨ ⁻¹-anti-homo-∙ y x ⟨
   (y ∙ x) ⁻¹  ≈⟨ ⁻¹-cong $ comm y x ⟩
   (x ∙ y) ⁻¹  ∎
+
+module _ where
+  open IsGroup isGroup using (_//_; _\\_)
+
+  \\≗//ᵒ : ∀ x y → x \\ y ≈ y // x
+  \\≗//ᵒ x y = begin
+    x \\ y    ≈⟨ refl ⟩
+    x ⁻¹ ∙ y  ≈⟨ comm _ _ ⟩
+    y ∙ x ⁻¹  ≈⟨ refl ⟩
+    y // x    ∎
