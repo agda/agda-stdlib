@@ -131,20 +131,23 @@ toList-tails⁺ ys@(_ ∷ xs) = cong (ys ∷_) (toList-tails⁺ xs)
 
 module _ (f : A → B → B) (e : B) where
 
-  scanr⁺-defn : scanr⁺ f e ≗ map (List.foldr f e) ∘ tails⁺
+  private
+    h = List.foldr f e
+
+  scanr⁺-defn : scanr⁺ f e ≗ map h ∘ tails⁺
   scanr⁺-defn []       = refl
   scanr⁺-defn (x ∷ xs) = let eq = scanr⁺-defn xs
     in cong₂ (λ z → f x z ∷_) (cong head eq) (cong toList eq)
 
-  toList-scanr⁺ : toList ∘ scanr⁺ f e ≗ List.map (List.foldr f e) ∘ List.tails
+  toList-scanr⁺ : toList ∘ scanr⁺ f e ≗ List.map h ∘ List.tails
   toList-scanr⁺ xs = begin
     toList (scanr⁺ f e xs)
       ≡⟨ cong toList (scanr⁺-defn xs) ⟩
-    toList (map (List.foldr f e) (tails⁺ xs))
-      ≡⟨ toList-map _ (tails⁺ xs) ⟩
-    List.map (List.foldr f e) (toList (tails⁺ xs))
-      ≡⟨ cong (List.map (List.foldr f e)) (toList-tails⁺ xs) ⟩
-    List.map (List.foldr f e) (List.tails xs) ∎
+    toList (map h (tails⁺ xs))
+      ≡⟨ toList-map h (tails⁺ xs) ⟩
+    List.map h (toList (tails⁺ xs))
+      ≡⟨ cong (List.map h) (toList-tails⁺ xs) ⟩
+    List.map h (List.tails xs) ∎
 
 ------------------------------------------------------------------------
 -- groupSeqs
