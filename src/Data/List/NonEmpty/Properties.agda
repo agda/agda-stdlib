@@ -113,12 +113,15 @@ map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
 
+toList-map : ∀ (f : A → B) xs → toList (map f xs) ≡ List.map f (toList xs)
+toList-map f (x ∷ xs) = refl
+
 ------------------------------------------------------------------------
 -- inits
 
 toList-inits⁺ : (xs : List A) → toList (inits⁺ xs) ≡ List.inits xs
 toList-inits⁺ []       = refl
-toList-inits⁺ (x ∷ xs) = cong ([] ∷_) (cong (List.map (x ∷_)) (toList-inits⁺ xs))
+toList-inits⁺ (x ∷ xs) = cong (([] ∷_) ∘ List.map (x ∷_)) (toList-inits⁺ xs)
 
 ------------------------------------------------------------------------
 -- groupSeqs
