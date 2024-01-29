@@ -134,11 +134,9 @@ inverseʳ-unique x y eq = begin
 
 \\≗//ᵒ⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
 \\≗//ᵒ⇒comm \\≗//ᵒ x y = begin
-  x ∙ y                ≈⟨ identityʳ _ ⟨
-  (x ∙ y) ∙ ε          ≈⟨ ∙-congˡ (inverseˡ x) ⟨
-  (x ∙ y) ∙ (x ⁻¹ ∙ x) ≈⟨ assoc (x ∙ y) (x ⁻¹) x ⟨
-  (x ∙ y) ∙ x ⁻¹ ∙ x   ≈⟨ ∙-congʳ (assoc x y (x ⁻¹)) ⟩
-  x ∙ (y // x) ∙ x     ≈⟨ ∙-congʳ (∙-congˡ (\\≗//ᵒ x y)) ⟨
+  x ∙ y                ≈⟨ ∙-congˡ (rightDividesˡ x y) ⟨
+  x ∙ ((y // x) ∙ x)   ≈⟨ ∙-congˡ (∙-congʳ (\\≗//ᵒ x y)) ⟨
+  x ∙ ((x \\ y) ∙ x)   ≈⟨ assoc x (x \\ y) x ⟨
   x ∙ (x \\ y) ∙ x     ≈⟨ ∙-congʳ (leftDividesˡ x y) ⟩
   y ∙ x                ∎
 
