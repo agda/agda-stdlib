@@ -61,7 +61,7 @@ Additions to existing modules
 * In `Data.List.NonEmpty.Properties`:
   ```agda
   toList-injective : toList xs ≡ toList ys → xs ≡ ys
-  
+
   toList-tails⁺ : toList ∘ tails⁺ ≗ List.tails
   scanr⁺-defn   : scanr⁺ f e ≗ map (List.foldr f e) ∘ tails⁺
   toList-scanr⁺ : toList ∘ scanr⁺ f e ≗ List.map (List.foldr f e) ∘ List.tails
