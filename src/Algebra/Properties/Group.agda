@@ -17,6 +17,12 @@ open import Relation.Binary.Reasoning.Setoid setoid
 open import Function.Base using (_$_; _⟨_⟩_)
 open import Data.Product.Base using (_,_; proj₂)
 
+\\-cong₂ : Congruent₂ _\\_
+\\-cong₂ x≈y u≈v = ∙-cong (⁻¹-cong x≈y) u≈v
+
+//-cong₂ : Congruent₂ _//_
+//-cong₂ x≈y u≈v = ∙-cong x≈y (⁻¹-cong u≈v)
+
 leftDividesˡ : ∀ x y → x ∙ (x \\ y) ≈ y
 leftDividesˡ x y = begin
   x  ∙ (x \\ y)  ≈⟨ assoc x (x ⁻¹) y ⟨
@@ -47,12 +53,12 @@ rightDividesʳ x y = begin
 
 isQuasigroup : IsQuasigroup _∙_ _\\_ _//_
 isQuasigroup = record
-                 { isMagma = isMagma
-                 ; \\-cong = λ x≈y u≈v → ∙-cong (⁻¹-cong x≈y) u≈v
-                 ; //-cong = λ x≈y u≈v → ∙-cong x≈y (⁻¹-cong u≈v)
-                 ; leftDivides = leftDividesˡ , leftDividesʳ
-                 ; rightDivides = rightDividesˡ , rightDividesʳ
-                 }
+  { isMagma = isMagma
+  ; \\-cong = \\-cong₂
+  ; //-cong = //-cong₂
+  ; leftDivides = leftDividesˡ , leftDividesʳ
+  ; rightDivides = rightDividesˡ , rightDividesʳ
+  }
 
 isLoop : IsLoop _∙_ _\\_ _//_ ε
 isLoop = record { isQuasigroup = isQuasigroup ; identity = identity }
