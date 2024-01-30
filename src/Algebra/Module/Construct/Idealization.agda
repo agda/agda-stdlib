@@ -180,7 +180,6 @@ ringᴺ = record { isRing = isRingᴺ }
 
 *-annihilates-ιᴹ : (m₁ m₂ : M) → ιᴹ m₁ * ιᴹ m₂ ≈ 0#
 *-annihilates-ιᴹ m₁ m₂ = R.zeroˡ R.0# , (begin
-
   R.0# *ₗ m₂ +ᴹ m₁ *ᵣ R.0# ≈⟨ +ᴹ-cong (*ₗ-zeroˡ m₂) (*ᵣ-zeroʳ m₁) ⟩
   0ᴹ +ᴹ 0ᴹ                 ≈⟨ +ᴹ-identityˡ 0ᴹ ⟩
   0ᴹ                       ∎)
@@ -192,5 +191,4 @@ m*m≈0 m = *-annihilates-ιᴹ m m
 -- Infix notation for when opening the module unparameterised
 
 infixl 4 _⋉_
-
 _⋉_ = ringᴺ
