@@ -19,6 +19,62 @@ private
   variable
     c ℓ : Level
 
+------------------------------------------------------------------------
+-- Raw bundles
+
+rawLeftSemimodule : {R : RawSemiring c ℓ} → RawLeftSemimodule _ c ℓ
+rawLeftSemimodule {R = R} = record
+  { _≈ᴹ_ = _≈_
+  ; _+ᴹ_ = _+_
+  ; _*ₗ_ = _*_
+  ; 0ᴹ = 0#
+  } where open RawSemiring R
+
+rawLeftModule : {R : RawRing c ℓ} → RawLeftModule _ c ℓ
+rawLeftModule {R = R} = record
+  { RawLeftSemimodule (rawLeftSemimodule {R = rawSemiring})
+  ; -ᴹ_ = -_
+  } where open RawRing R
+
+rawRightSemimodule : {R : RawSemiring c ℓ} → RawRightSemimodule _ c ℓ
+rawRightSemimodule {R = R} = record
+  { _≈ᴹ_ = _≈_
+  ; _+ᴹ_ = _+_
+  ; _*ᵣ_ = _*_
+  ; 0ᴹ = 0#
+  } where open RawSemiring R
+
+rawRightModule : {R : RawRing c ℓ} → RawRightModule _ c ℓ
+rawRightModule {R = R} = record
+  { RawRightSemimodule (rawRightSemimodule {R = rawSemiring})
+  ; -ᴹ_ = -_
+  } where open RawRing R
+
+rawBisemimodule : {R : RawSemiring c ℓ} → RawBisemimodule _ _ c ℓ
+rawBisemimodule {R = R} = record
+  { _≈ᴹ_ = _≈_
+  ; _+ᴹ_ = _+_
+  ; _*ₗ_ = _*_
+  ; _*ᵣ_ = _*_
+  ; 0ᴹ = 0#
+  } where open RawSemiring R
+
+rawBimodule : {R : RawRing c ℓ} → RawBimodule _ _ c ℓ
+rawBimodule {R = R} = record
+  { RawBisemimodule (rawBisemimodule {R = rawSemiring})
+  ; -ᴹ_ = -_
+  } where open RawRing R
+
+
+rawSemimodule : {R : RawSemiring c ℓ} → RawSemimodule _ c ℓ
+rawSemimodule {R = R} = rawBisemimodule {R = R}
+
+rawModule : {R : RawRing c ℓ} → RawModule _ c ℓ
+rawModule {R = R} = rawBimodule {R = R}
+
+------------------------------------------------------------------------
+-- Bundles
+
 leftSemimodule : {R : Semiring c ℓ} → LeftSemimodule R c ℓ
 leftSemimodule {R = semiring} = record
   { Carrierᴹ = Carrier
