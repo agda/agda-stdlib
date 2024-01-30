@@ -253,11 +253,13 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
 
   open IsMonoid isMonoid public
 
-  infixl 6 _//_
   infixr 6 _\\_
-  _//_ _\\_ : Op₂ A
-  x // y = x ∙ (y ⁻¹)
+  _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
+
+  infixl 6 _//_
+  _//_ : Op₂ A
+  x // y = x ∙ (y ⁻¹)
 
   -- Deprecated.
   infixl 6 _-_
