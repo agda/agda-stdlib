@@ -138,16 +138,16 @@ inverseʳ-unique x y eq = begin
   y ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong (inverseˡ-unique x y eq) ⟨
   x ⁻¹    ∎
 
-\\≗//ᵒ⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
-\\≗//ᵒ⇒comm \\≗//ᵒ x y = begin
+\\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
+\\≗flip-//⇒comm \\≗//ᵒ x y = begin
   x ∙ y                ≈⟨ ∙-congˡ (rightDividesˡ x y) ⟨
   x ∙ ((y // x) ∙ x)   ≈⟨ ∙-congˡ (∙-congʳ (\\≗//ᵒ x y)) ⟨
   x ∙ ((x \\ y) ∙ x)   ≈⟨ assoc x (x \\ y) x ⟨
   x ∙ (x \\ y) ∙ x     ≈⟨ ∙-congʳ (leftDividesˡ x y) ⟩
   y ∙ x                ∎
 
-comm⇒\\≗//ᵒ : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
-comm⇒\\≗//ᵒ comm x y = begin
+comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
+comm⇒\\≗flip-// comm x y = begin
   x \\ y    ≈⟨ refl ⟩
   x ⁻¹ ∙ y  ≈⟨ comm _ _ ⟩
   y ∙ x ⁻¹  ≈⟨ refl ⟩
