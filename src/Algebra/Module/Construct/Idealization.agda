@@ -59,12 +59,7 @@ private
   open module M = Bimodule bimodule
     renaming (Carrierᴹ to M)
 
-  open AbelianGroup M.+ᴹ-abelianGroup
-    hiding (_≈_)
-
   +ᴹ-middleFour = Consequences.comm∧assoc⇒middleFour ≈ᴹ-setoid +ᴹ-cong +ᴹ-comm +ᴹ-assoc
-
-  open ≈-Reasoning ≈ᴹ-setoid
 
   open module N = Bimodule (DirectProduct.bimodule TensorUnit.bimodule bimodule)
     using ()
@@ -76,7 +71,9 @@ private
              ; +ᴹ-isAbelianGroup to +-isAbelianGroup
              )
 
-  open Definitions _≈_
+open AbelianGroup M.+ᴹ-abelianGroup hiding (_≈_)
+open ≈-Reasoning ≈ᴹ-setoid
+open Definitions _≈_
 
 -- Injections ι from the components of the direct sum
 -- ιᴹ in fact exhibits M as an _ideal_ of R ⋉ M (see below)
@@ -107,14 +104,12 @@ _*_ : Op₂ N
 
 *-identityˡ : LeftIdentity 1# _*_
 *-identityˡ (r , m) = R.*-identityˡ r , (begin
-
   R.1# *ₗ m +ᴹ 0ᴹ *ᵣ r ≈⟨ +ᴹ-cong (*ₗ-identityˡ m) (*ᵣ-zeroˡ r) ⟩
   m +ᴹ 0ᴹ              ≈⟨ +ᴹ-identityʳ m ⟩
   m                    ∎)
 
 *-identityʳ : RightIdentity 1# _*_
 *-identityʳ (r , m) = R.*-identityʳ r , (begin
-
   r *ₗ 0ᴹ +ᴹ m *ᵣ R.1# ≈⟨ +ᴹ-cong (*ₗ-zeroʳ r) (*ᵣ-identityʳ m) ⟩
   0ᴹ +ᴹ m              ≈⟨ +ᴹ-identityˡ m ⟩
   m                    ∎)
@@ -124,7 +119,6 @@ _*_ : Op₂ N
 
 *-assoc : Associative _*_
 *-assoc (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.*-assoc r₁ r₂ r₃ , (begin
-
   (r₁ R.* r₂) *ₗ m₃ +ᴹ (r₁ *ₗ m₂ +ᴹ m₁ *ᵣ r₂) *ᵣ r₃
     ≈⟨ +ᴹ-cong (*ₗ-assoc r₁ r₂ m₃) (*ᵣ-distribʳ r₃ (r₁ *ₗ m₂) (m₁ *ᵣ r₂)) ⟩
   r₁ *ₗ (r₂ *ₗ m₃) +ᴹ ((r₁ *ₗ m₂) *ᵣ r₃ +ᴹ (m₁ *ᵣ r₂) *ᵣ r₃)
@@ -137,7 +131,6 @@ _*_ : Op₂ N
 
 distribˡ : _*_ DistributesOverˡ _+_
 distribˡ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribˡ r₁ r₂ r₃ , (begin
-
   r₁ *ₗ (m₂ +ᴹ m₃) +ᴹ m₁ *ᵣ (r₂ R.+ r₃)
     ≈⟨ +ᴹ-cong (*ₗ-distribˡ r₁ m₂ m₃) (*ᵣ-distribˡ m₁ r₂ r₃) ⟩
   (r₁ *ₗ m₂ +ᴹ r₁ *ₗ m₃) +ᴹ (m₁ *ᵣ r₂ +ᴹ m₁ *ᵣ r₃)
@@ -147,7 +140,6 @@ distribˡ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribˡ r₁ r₂ r₃
 
 distribʳ : _*_ DistributesOverʳ _+_
 distribʳ (r₁ , m₁) (r₂ , m₂) (r₃ , m₃) = R.distribʳ r₁ r₂ r₃ , (begin
-
   (r₂ R.+ r₃) *ₗ m₁ +ᴹ (m₂ +ᴹ m₃) *ᵣ r₁
     ≈⟨ +ᴹ-cong (*ₗ-distribʳ m₁ r₂ r₃) (*ᵣ-distribʳ r₁ m₂ m₃) ⟩
   (r₂ *ₗ m₁ +ᴹ r₃ *ₗ m₁) +ᴹ (m₂ *ᵣ r₁ +ᴹ m₃ *ᵣ r₁)
@@ -197,9 +189,8 @@ m*m≈0 : (m : M) → ιᴹ m * ιᴹ m ≈ 0#
 m*m≈0 m = *-annihilates-ιᴹ m m
 
 ------------------------------------------------------------------------
--- Export notation
+-- Infix notation for when opening the module unparameterised
 
 infixl 4 _⋉_
 
 _⋉_ = ringᴺ
-
