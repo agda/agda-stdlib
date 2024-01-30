@@ -140,3 +140,9 @@ inverseʳ-unique x y eq = begin
   x ∙ (x \\ y) ∙ x     ≈⟨ ∙-congʳ (leftDividesˡ x y) ⟩
   y ∙ x                ∎
 
+comm⇒\\≗//ᵒ : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
+comm⇒\\≗//ᵒ comm x y = begin
+  x \\ y    ≈⟨ refl ⟩
+  x ⁻¹ ∙ y  ≈⟨ comm _ _ ⟩
+  y ∙ x ⁻¹  ≈⟨ refl ⟩
+  y // x    ∎
