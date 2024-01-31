@@ -13,7 +13,7 @@ open import Data.Nat.Base
 open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; ∣1⇒≡1; divides; quotient-<; m|n⇒n≡m*quotient; hasNonTrivialDivisor; quotient-∣; quotient>1)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-Rec; <-rec; <-recBuilder)
-open import Data.Nat.Primality using (Prime; prime; euclidsLemma; prime⇒irreducible; prime⇒nonZero; _Rough_; 2-rough; ∤⇒rough-suc; rough∧∣⇒prime; ¬prime[1]; rough∧∣⇒rough; rough∧>square⇒prime)
+open import Data.Nat.Primality using (Prime; prime; euclidsLemma; prime⇒irreducible; prime⇒nonZero; _Rough_; 2-rough; ∤⇒rough-suc; rough∧∣⇒prime; ¬prime[1]; rough∧∣⇒rough; rough∧square>⇒prime)
 open import Data.Product as Π using (∃-syntax; _×_; _,_; proj₁; proj₂)
 open import Data.List.Base using (List; []; _∷_; _++_; product)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -72,7 +72,7 @@ factorise n₀@(2+ _) = build [ <-recBuilder ⊗ <-recBuilder ] P facRec (n₀ ,
   facRec (n , zero) _ rough eq = record
     { factors = n ∷ []
     ; isFactorisation = *-identityʳ n
-    ; factorsPrime = rough∧>square⇒prime rough (m∸n≡0⇒m≤n eq) ∷ []
+    ; factorsPrime = rough∧square>⇒prime rough (m∸n≡0⇒m≤n eq) ∷ []
     }
   facRec (n@(2+ _) , suc k) (recFactor , recQuotient) {m@(2+ _)} rough eq with m ∣? n
   -- Case 2: m ∤ n, try larger m, reducing k accordingly
