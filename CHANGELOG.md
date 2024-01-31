@@ -140,3 +140,14 @@ Additions to existing modules
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
+
+* In `Relation.Binary.Structures.IsPartialEquivalence`, added
+  commonly occurring derived combinations of `trans` and `sym`:
+  ```agda
+  infixr 5 _ᵒ⊗_ _⊗ᵒ_
+  transᵒ : RightTrans _≈_ (flip _≈_)
+  _⊗ᵒ_ = transᵒ
+  ᵒtrans : Trans (flip _≈_) _≈_  _≈_
+  _ᵒ⊗_ = ᵒtrans
+  ```
+
