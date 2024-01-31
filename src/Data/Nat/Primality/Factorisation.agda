@@ -128,16 +128,16 @@ factorisationHasAllPrimeFactors {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPr
 
 factorisationUnique′ : (as bs : List ℕ) → product as ≡ product bs → All Prime as → All Prime bs → as ↭ bs
 factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = refl
-factorisationUnique′ [] (suc (suc b) ∷ bs) Πas≡Πbs asPrime (bPrime ∷ bsPrime) =
+factorisationUnique′ [] (b@(2+ _) ∷ bs) Πas≡Πbs asPrime (bPrime ∷ bsPrime) =
   contradiction Πas≡Πbs (<⇒≢ Πas<Πbs)
   where
-    Πas<Πbs : product [] < product (2+ b ∷ bs)
+    Πas<Πbs : product [] < product (b ∷ bs)
     Πas<Πbs = begin-strict
-      1                    ≡⟨⟩
-      1       * 1          <⟨ *-monoˡ-< 1 {1} {2 + b} sz<ss ⟩
-      (2 + b) * 1          ≤⟨ *-monoʳ-≤ (2 + b) (factorisation≥1 bsPrime) ⟩
-      2+ b    * product bs ≡⟨⟩
-      product (2+ b ∷ bs)  ∎
+      1                ≡⟨⟩
+      1 * 1            <⟨ *-monoˡ-< 1 {1} {b} sz<ss ⟩
+      b * 1            ≤⟨ *-monoʳ-≤ b (factorisation≥1 bsPrime) ⟩
+      b * product bs   ≡⟨⟩
+      product (b ∷ bs) ∎
       where open ≤-Reasoning
 
 factorisationUnique′ (a ∷ as) bs Πas≡Πbs (aPrime ∷ asPrime) bsPrime = a∷as↭bs
