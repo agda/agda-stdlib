@@ -131,14 +131,13 @@ module _ (f : A → B → A) where
   private
     h = List.foldl f
 
-  scanl⁺-defn : (e : A) → scanl⁺ f e ≗ map (h e) ∘ inits⁺
+  scanl⁺-defn : ∀ e → scanl⁺ f e ≗ map (h e) ∘ inits⁺
   scanl⁺-defn e []       = refl
   scanl⁺-defn e (x ∷ xs) = let eq = scanl⁺-defn (f e x) xs in
-    cong (e ∷_) $ cong (f e x ∷_) (trans (cong tail eq) (List.map-∘ _))
+    cong (e ∷_) $ cong (f e x ∷_) $ trans (cong tail eq) (List.map-∘ _)
 
-  toList-scanl⁺ : (e : A) →
-                  toList ∘ scanl⁺ f e ≗ List.map (List.foldl f e) ∘ List.inits
-  toList-scanl⁺ e xs          = begin
+  toList-scanl⁺ : ∀ e → toList ∘ scanl⁺ f e ≗ List.map (h e) ∘ List.inits
+  toList-scanl⁺ e xs = begin
     toList (scanl⁺ f e xs)
       ≡⟨ cong toList (scanl⁺-defn e xs) ⟩
     toList (map (h e) (inits⁺ xs))
