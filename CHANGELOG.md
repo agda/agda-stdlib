@@ -16,6 +16,14 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The modules and morphisms in `Algebra.Module.Morphism.Structures` are now
+  parametrized by _raw_ bundles rather than lawful bundles, in line with other
+  modules defining morphism structures.
+* The definitions in `Algebra.Module.Morphism.Construct.Composition` are now
+  parametrized by _raw_ bundles, and as such take a proof of transitivity.
+* The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
+  parametrized by _raw_ bundles, and as such take a proof of reflexivity.
+
 Other major improvements
 ------------------------
 
