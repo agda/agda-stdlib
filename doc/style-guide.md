@@ -532,3 +532,22 @@ word within a compound word is capitalized except for the first word.
 
 * The names of patterns for reflected syntax are also *appended* with an
   additional backtick.
+
+#### Specific pragmatics/idiomatic patterns
+
+## Use of `with` notation
+
+Thinking on this has changed since the early days of the library, with
+a desire to avoid 'unnecessary' uses of `with`: see Issues
+[#1937](https://github.com/agda/agda-stdlib/issues/1937) and
+[#2123](https://github.com/agda/agda-stdlib/issues/2123).
+
+## Proving instances of `Decidable` for sets, predicates, relations, ...
+
+Issue [#803](https://github.com/agda/agda-stdlib/issues/803)
+articulates a programming pattern for writing proofs of decidability,
+used successfully in PR
+[#799](https://github.com/agda/agda-stdlib/pull/799) and made
+systematic for `Nary` relations in PR
+[#811](https://github.com/agda/agda-stdlib/pull/811)
+
