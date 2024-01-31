@@ -14,7 +14,7 @@ open Group G
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_ using (IsLoop; IsQuasigroup)
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Function.Base using (_$_; _⟨_⟩_)
+open import Function.Base using (_$_)
 open import Data.Product.Base using (_,_; proj₂)
 
 \\-cong₂ : Congruent₂ _\\_
@@ -148,7 +148,7 @@ inverseʳ-unique x y eq = begin
 
 comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
 comm⇒\\≗flip-// comm x y = begin
-  x \\ y    ≈⟨ refl ⟩
+  x \\ y    ≡⟨⟩
   x ⁻¹ ∙ y  ≈⟨ comm _ _ ⟩
-  y ∙ x ⁻¹  ≈⟨ refl ⟩
+  y ∙ x ⁻¹  ≡⟨⟩
   y // x    ∎
