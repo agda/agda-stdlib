@@ -41,7 +41,18 @@ Deprecated names
 New modules
 -----------
 
+* Algebraic structures obtained as the free thing (for their signature):
+  ```
+  Algebra.Free
+  Algebra.Free.Magma
+  ```
+
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
+
+* Bundled morphisms between algebraic structures:
+  ```
+  Algebra.Morphism.Bundles
+  ```
 
 Additions to existing modules
 -----------------------------
@@ -83,6 +94,16 @@ Additions to existing modules
   rawSemimodule      : RawSemimodule R c ℓ
   rawModule          : RawModule R c ℓ
   ```
+
+* In `Algebra.Morphism.Construct.Composition`:
+  ```
+  magmaHomomorphism : MagmaHomomorphism M₁ M₂ → MagmaHomomorphism M₂ M₃ →
+                      MagmaHomomorphism M₁ M₃
+  ```
+
+* In `Algebra.Morphism.Construct.Identity`:
+  ```
+  magmaHomomorphism : MagmaHomomorphism M M
 
 * In `Data.Fin.Properties`:
   ```agda

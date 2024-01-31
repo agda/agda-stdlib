@@ -9,6 +9,7 @@
 module Algebra.Morphism.Construct.Composition where
 
 open import Algebra.Bundles
+open import Algebra.Morphism.Bundles
 open import Algebra.Morphism.Structures
 open import Function.Base using (_∘_)
 import Function.Construct.Composition as Func
@@ -423,3 +424,24 @@ module _ {K₁ : RawKleeneAlgebra a ℓ₁}
     ; surjective                  = Func.surjective (_≈_ K₁) (_≈_ K₂) (_≈_ K₃) F.surjective G.surjective
     } where module F = IsKleeneAlgebraIsomorphism f-iso; module G = IsKleeneAlgebraIsomorphism g-iso
 
+------------------------------------------------------------------------
+-- Bundled morphisms between algebras
+
+------------------------------------------------------------------------
+-- Magma
+
+module _ {M₁ : Magma a ℓ₁}
+         {M₂ : Magma b ℓ₂}
+         {M₃ : Magma c ℓ₃}
+         (f : MagmaHomomorphism M₁ M₂)
+         (g : MagmaHomomorphism M₂ M₃)
+         where
+
+  private
+    module F = MagmaHomomorphism f
+    module G = MagmaHomomorphism g
+
+  magmaHomomorphism : MagmaHomomorphism M₁ M₃
+  magmaHomomorphism = record
+    { ⟦_⟧ = G.⟦_⟧ ∘ F.⟦_⟧
+    ; isMagmaHomomorphism = isMagmaHomomorphism (Magma.trans M₃) F.isMagmaHomomorphism G.isMagmaHomomorphism }
