@@ -35,14 +35,33 @@ module ℤero where
   _≈ᴹ_     : Rel Carrierᴹ ℓ
   _ ≈ᴹ _ = ⊤
 
-open ℤero
-
 ------------------------------------------------------------------------
--- Raw bundles NOT YET IMPLEMENTED issue #1828
-{-
-rawModule : RawModule c ℓ
+-- Raw bundles
+
+rawLeftSemimodule : {R : Set r} → RawLeftSemimodule R c ℓ
+rawLeftSemimodule = record { ℤero }
+
+rawLeftModule : {R : Set r} → RawLeftModule R c ℓ
+rawLeftModule = record { ℤero }
+
+rawRightSemimodule : {R : Set r} → RawRightSemimodule R c ℓ
+rawRightSemimodule = record { ℤero }
+
+rawRightModule : {R : Set r} → RawRightModule R c ℓ
+rawRightModule = record { ℤero }
+
+rawBisemimodule : {R : Set r} {S : Set s} → RawBisemimodule R S c ℓ
+rawBisemimodule = record { ℤero }
+
+rawBimodule : {R : Set r} {S : Set s} → RawBimodule R S c ℓ
+rawBimodule = record { ℤero }
+
+rawSemimodule : {R : Set r} → RawSemimodule R c ℓ
+rawSemimodule = record { ℤero }
+
+rawModule : {R : Set r} → RawModule R c ℓ
 rawModule = record { ℤero }
--}
+
 ------------------------------------------------------------------------
 -- Bundles
 

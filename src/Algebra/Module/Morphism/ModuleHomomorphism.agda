@@ -17,10 +17,10 @@ module Algebra.Module.Morphism.ModuleHomomorphism
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
   (modA modB  : Module ring m ℓm)
-  (open Module modA using () renaming (Carrierᴹ to A))
-  (open Module modB using () renaming (Carrierᴹ to B))
+  (open Module modA using () renaming (Carrierᴹ to A; rawModule to rawModA))
+  (open Module modB using () renaming (Carrierᴹ to B; rawModule to rawModB))
   {f : A → B}
-  (open MorphismStructures.ModuleMorphisms modA modB)
+  (open MorphismStructures.ModuleMorphisms rawModA rawModB)
   (isModuleHomomorphism : IsModuleHomomorphism f)
   where
 
