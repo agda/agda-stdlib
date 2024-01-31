@@ -48,7 +48,7 @@ open PrimeFactorisation
 
 -- this builds up three important things:
 -- * a proof that every number we've gotten to so far has increasingly higher
---   possible least prime factor, so we don't have to repeat smaller factores
+--   possible least prime factor, so we don't have to repeat smaller factors
 --   over and over (this is the "m" and "rough" parameters)
 -- * a witness that this limit is getting closer to the number of interest, in a
 --   way that helps the termination checker (the "k" and "eq" parameters)
