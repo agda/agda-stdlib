@@ -58,11 +58,14 @@ _*_ : ℤmod → ℤmod → ℤmod
 i * j = ℕ<.π (⟦ i ⟧ ℕ.* ⟦ j ⟧)
 
 ------------------------------------------------------------------------
--- Projection from ℤ
+-- Quotient map from ℤ
+
+_◃_ : Sign → ℤmod → ℤmod
+Sign.+ ◃ j = j
+Sign.- ◃ j = - j
+
 π : ℤ → ℤmod
-π i with s ◂ ∣i∣ ← signAbs i with j ← ℕ<.π ∣i∣ | s
-... | Sign.+ = j
-... | Sign.- = - j
+π i with s ◂ ∣i∣ ← signAbs i = s ◃ ℕ<.π ∣i∣ 
 
 -- the _mod_ syntax
 Mod : ℤ → ℤmod
