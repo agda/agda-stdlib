@@ -328,7 +328,7 @@ prime⇒¬composite (prime p) = p
   where 2≡1⊎2≡0 = irr[0] {2} (divides-refl 0)
 
 irreducible[1] : Irreducible 1
-irreducible[1] m|1 = inj₁ (∣1⇒≡1 m|1)
+irreducible[1] m∣1 = inj₁ (∣1⇒≡1 m∣1)
 
 irreducible[2] : Irreducible 2
 irreducible[2] {zero}  0∣2 with () ← 0∣⇒≡0 0∣2
