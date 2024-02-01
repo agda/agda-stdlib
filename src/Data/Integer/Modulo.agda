@@ -17,7 +17,7 @@ open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
 open import Data.Nat.Bounded as ℕ< hiding (π; module Literals)
 open import Data.Nat.DivMod as ℕ using (_%_)
 open import Data.Nat.Properties as ℕ
-import Data.Sign.Base as Sign
+open import Data.Sign.Base as Sign using (Sign)
 open import Data.Unit.Base using (⊤)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
@@ -41,34 +41,34 @@ infixl 7 _*_
 infixl 6 _+_
 
 -- Type definition
-ℤmod : Set
-ℤmod = ℕ< n
+ℤmod_ : Set
+ℤmod_ = ℕ< n
 
 -- Negation
--_ : ℤmod → ℤmod
+-_ : ℤmod_ → ℤmod_
 - ⟦ m@zero ⟧< _    = ⟦0⟧<
 - ⟦ m@(suc _) ⟧< _ = ⟦ n ∸ m ⟧< m∸n<m _ _
 
 -- Addition
-_+_ : ℤmod → ℤmod → ℤmod
+_+_ : ℤmod_ → ℤmod_ → ℤmod_
 i + j = ℕ<.π (⟦ i ⟧ ℕ.+ ⟦ j ⟧)
 
 -- Multiplication
-_*_ : ℤmod → ℤmod → ℤmod
+_*_ : ℤmod_ → ℤmod_ → ℤmod_
 i * j = ℕ<.π (⟦ i ⟧ ℕ.* ⟦ j ⟧)
 
 ------------------------------------------------------------------------
 -- Quotient map from ℤ
 
-_◃_ : Sign → ℤmod → ℤmod
+_◃_ : Sign → ℤmod_ → ℤmod_
 Sign.+ ◃ j = j
 Sign.- ◃ j = - j
 
-π : ℤ → ℤmod
+π : ℤ → ℤmod_
 π i with s ◂ ∣i∣ ← signAbs i = s ◃ ℕ<.π ∣i∣ 
 
 -- the _mod_ syntax
-Mod : ℤ → ℤmod
+Mod : ℤ → ℤmod_
 Mod = π
 
 syntax Mod {n = n} i = i mod n
@@ -90,7 +90,7 @@ open RawRing +-*-rawRing public
   using (+-rawMagma; *-rawMagma)
   renaming ( +-rawMonoid to +-0-rawMonoid
            ; *-rawMonoid to *-1-rawMonoid
-           ; rawNearSemiring to +-*-rawNearSemiring
+           --; rawNearSemiring to +-*-rawNearSemiring
            ; rawSemiring to +-*-rawSemiring
            )
 
@@ -102,6 +102,12 @@ module Literals where
   Constraint : ℕ → Set
   Constraint _ = ⊤
 
-  fromNat : ∀ m → {{Constraint m}} → ℤmod
+  fromNat : ∀ m → {{Constraint m}} → ℤmod_
   fromNat m = ℕ<.π m
+
+------------------------------------------------------------------------
+-- -- Postfix notation for when opening the module unparameterised
+
+0ℤmod_ = ⟦0⟧<
+1ℤmod_ = ⟦1⟧<
 
