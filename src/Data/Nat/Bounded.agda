@@ -40,15 +40,13 @@ record ℕ< (n : ℕ) : Set where
 
 open ℕ< public using () renaming (value to ⟦_⟧)
 
--- Constructors: '0 mod n', 'n-1 mod n', '1 mod n'
+-- Constructors: 'n-1 mod n', '0 mod n', '1 mod n'
 
-⟦0⟧< ⟦-1⟧< : .{{ NonZero n }} → ℕ< n
-⟦0⟧<              = ⟦ 0 ⟧< >-nonZero⁻¹ _
+⟦-1⟧< ⟦0⟧< ⟦1⟧< : .{{ NonZero n }} → ℕ< n
 ⟦-1⟧< {n = suc m} = ⟦ m ⟧< ℕ.n<1+n m
-
-⟦1⟧< : .{{ NonZero n }} → ℕ< n
-⟦1⟧< {n = 1}    = ⟦0⟧<
-⟦1⟧< {n = 2+ _} = ⟦ 1 ⟧< nonTrivial⇒n>1 _
+⟦0⟧<              = ⟦ 0 ⟧< >-nonZero⁻¹ _
+⟦1⟧<  {n = 1}     = ⟦0⟧<
+⟦1⟧<  {n = 2+ _}  = ⟦ 1 ⟧< nonTrivial⇒n>1 _
 
 -- Projection from ℕ
 
