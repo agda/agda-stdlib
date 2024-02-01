@@ -10,7 +10,7 @@ module Data.Nat.Primality.Factorisation where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; ∣1⇒≡1; divides; quotient-<; m|n⇒n≡m*quotient; hasNonTrivialDivisor; quotient-∣; quotient>1)
+open import Data.Nat.Divisibility using (_∣_; _∣?_; quotient; ∣1⇒≡1; divides; quotient-<; m∣n⇒n≡m*quotient; hasNonTrivialDivisor; quotient-∣; quotient>1)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-Rec; <-rec; <-recBuilder)
 open import Data.Nat.Primality
@@ -107,7 +107,7 @@ factorise n₀@(2+ _) = build [ <-recBuilder ⊗ <-recBuilder ] P facRec (n₀ ,
       m*Πps≡n : m * product ps ≡ n
       m*Πps≡n = begin
         m * product ps ≡⟨ cong (m *_) Πps≡q ⟩
-        m * q          ≡˘⟨ m|n⇒n≡m*quotient m∣n ⟩
+        m * q          ≡˘⟨ m∣n⇒n≡m*quotient m∣n ⟩
         n              ∎
         where open ≡-Reasoning
 

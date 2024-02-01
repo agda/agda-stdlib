@@ -299,7 +299,7 @@ rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prim
 rough∧square>⇒prime rough m*m>n = prime ¬composite
   where
     ¬composite : ¬ Composite _
-    ¬composite (hasNonTrivialDivisor d<n d∣n) = contradiction (m|n⇒n≡quotient*m d∣n)
+    ¬composite (hasNonTrivialDivisor d<n d∣n) = contradiction (m∣n⇒n≡quotient*m d∣n)
       (<⇒≢ (<-≤-trans m*m>n (*-mono-≤
         (rough⇒≤ (rough∧∣⇒rough rough (quotient-∣ d∣n)))
         (rough⇒≤ (rough∧∣⇒rough rough d∣n)))))
