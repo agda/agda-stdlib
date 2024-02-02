@@ -36,8 +36,8 @@ open import Algebra.Properties.Monoid.Mult +-monoid public
 
 -- (0 ×_) is (0# *_)
 
-×-homo-0 : ∀ x → 0 × x ≈ 0# * x
-×-homo-0 x = sym (zeroˡ x)
+×-homo-0# : ∀ x → 0 × x ≈ 0# * x
+×-homo-0# x = sym (zeroˡ x)
 
 -- (n ×_) commutes with _*_
 
