@@ -58,20 +58,18 @@ open import Algebra.Properties.Monoid.Mult +-monoid public
 
 -- (_× x) is homomorphic with respect to _ℕ.*_/_*_ for idempotent x.
 
-module _ {x} (idem : _*_ IdempotentOn x) where
-
-  idem-×-homo-* : ∀ m n → (m × x) * (n × x) ≈ (m ℕ.* n) × x
-  idem-×-homo-* m n = begin
-    (m × x) * (n × x)   ≈⟨ ×-assoc-* m x (n × x) ⟩
-    m × (x * (n × x))   ≈⟨ ×-congʳ m (×-comm-* n x x) ⟩
-    m × (n × (x * x))   ≈⟨ ×-assocˡ _ m n ⟩
-    (m ℕ.* n) × (x * x) ≈⟨ ×-congʳ (m ℕ.* n) idem ⟩
-    (m ℕ.* n) × x       ∎
+idem-×-homo-* : ∀ m n {x} → (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
+idem-×-homo-* m n {x} idem = begin
+  (m × x) * (n × x)   ≈⟨ ×-assoc-* m x (n × x) ⟩
+  m × (x * (n × x))   ≈⟨ ×-congʳ m (×-comm-* n x x) ⟩
+  m × (n × (x * x))   ≈⟨ ×-assocˡ _ m n ⟩
+  (m ℕ.* n) × (x * x) ≈⟨ ×-congʳ (m ℕ.* n) idem ⟩
+  (m ℕ.* n) × x       ∎
 
 -- (_× 1#) is homomorphic with respect to _ℕ.*_/_*_.
 
 ×1-homo-* : ∀ m n → (m ℕ.* n) × 1# ≈ (m × 1#) * (n × 1#)
-×1-homo-* m n = sym (idem-×-homo-* (*-identityʳ 1#) m n)
+×1-homo-* m n = sym (idem-×-homo-* m n (*-identityʳ 1#))
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
