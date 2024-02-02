@@ -216,7 +216,7 @@ term₁+term₂≈term x*y≈y*x n (suc i) with view i
 theorem : x * y ≈ y * x → ∀ n → (x + y) ^ n ≈ binomialExpansion n
 theorem x*y≈y*x zero    = begin
   (x + y) ^ 0                     ≡⟨⟩
-  1#                              ≈⟨ 1×-identityʳ 1# ⟨
+  1#                              ≈⟨ +-identityʳ 1# ⟨
   1 × 1#                          ≈⟨ *-identityʳ (1 × 1#) ⟨
   (1 × 1#) * 1#                   ≈⟨ ×-assoc-* 1 1# 1# ⟩
   1 × (1# * 1#)                   ≡⟨⟩

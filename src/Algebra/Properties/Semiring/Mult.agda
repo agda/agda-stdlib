@@ -28,16 +28,16 @@ open import Algebra.Properties.Monoid.Mult +-monoid public
 ×1-homo-* : ∀ m n → (m ℕ.* n) × 1# ≈ (m × 1#) * (n × 1#)
 ×1-homo-* 0       n = sym (zeroˡ (n × 1#))
 ×1-homo-* (suc m) n = begin
-  (n ℕ.+ m ℕ.* n) × 1#                ≈⟨  ×-homo-+ 1# n (m ℕ.* n) ⟩
-  n × 1# + (m ℕ.* n) × 1#             ≈⟨  +-congˡ (×1-homo-* m n) ⟩
+  (n ℕ.+ m ℕ.* n) × 1#                ≈⟨ ×-homo-+ 1# n (m ℕ.* n) ⟩
+  n × 1# + (m ℕ.* n) × 1#             ≈⟨ +-congˡ (×1-homo-* m n) ⟩
   n × 1# + (m × 1#) * (n × 1#)        ≈⟨ +-congʳ (*-identityˡ _) ⟨
   1# * (n × 1#) + (m × 1#) * (n × 1#) ≈⟨ distribʳ (n × 1#) 1# (m × 1#) ⟨
   (1# + m × 1#) * (n × 1#)            ∎
 
--- (1 ×_) is the identity
+-- (0 ×_) is (0# *_)
 
-1×-identityʳ : ∀ x → 1 × x ≈ x
-1×-identityʳ = +-identityʳ
+×-homo-0 : ∀ x → 0 × x ≈ 0# * x
+×-homo-0 x = sym (zeroˡ x)
 
 -- (n ×_) commutes with _*_
 
@@ -60,3 +60,18 @@ open import Algebra.Properties.Monoid.Mult +-monoid public
   x * y + (n × x) * y   ≈⟨ +-congˡ (×-assoc-* n _ _) ⟩
   x * y + n × (x * y)   ≡⟨⟩
   suc n × (x * y)       ∎
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.1
+
+1×-identityʳ = ×-homo-1
+
+{-# WARNING_ON_USAGE 1×-identityʳ
+"Warning: 1×-identityʳ was deprecated in v2.1.
+Please use Algebra.Properties.Monoid.Mult.×-homo-1 instead. "
+#-}

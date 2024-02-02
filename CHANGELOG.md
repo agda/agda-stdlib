@@ -33,6 +33,11 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  1×-identityʳ  ↦  Algebra.Properties.Monoid.Mult.×-homo-1
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -82,6 +87,17 @@ Additions to existing modules
   rawBimodule        : RawBimodule R c ℓ
   rawSemimodule      : RawSemimodule R c ℓ
   rawModule          : RawModule R c ℓ
+  ```
+
+* In `Algebra.Properties.Monoid.Mult`:
+  ```agda
+  ×-homo-0 : ∀ x → 0 × x ≈ 0#
+  ×-homo-1 : ∀ x → 1 × x ≈ x
+  ```
+
+* In `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  ×-homo-0 : ∀ x → 0 × x ≈ 0# * x
   ```
 
 * In `Data.Fin.Properties`:
