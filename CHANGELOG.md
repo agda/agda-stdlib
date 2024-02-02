@@ -98,6 +98,7 @@ Additions to existing modules
 * In `Algebra.Properties.Semiring.Mult`:
   ```agda
   ×-homo-0# : ∀ x → 0 × x ≈ 0# * x
+  ×-homo-1# : ∀ x → 1 × x ≈ 1# * x
   ```
 
 * In `Data.Fin.Properties`:

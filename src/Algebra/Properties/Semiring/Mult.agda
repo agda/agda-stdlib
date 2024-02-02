@@ -23,6 +23,16 @@ open import Algebra.Properties.Monoid.Mult +-monoid public
 ------------------------------------------------------------------------
 -- Properties of _×_
 
+-- (0 ×_) is (0# *_)
+
+×-homo-0# : ∀ x → 0 × x ≈ 0# * x
+×-homo-0# x = sym (zeroˡ x)
+
+-- (1 ×_) is (1# *_)
+
+×-homo-1# : ∀ x → 1 × x ≈ 1# * x
+×-homo-1# x = trans (×-homo-1 x) (sym (*-identityˡ x))
+
 -- (_× 1#) is homomorphic with respect to _ℕ.*_/_*_.
 
 ×1-homo-* : ∀ m n → (m ℕ.* n) × 1# ≈ (m × 1#) * (n × 1#)
@@ -33,11 +43,6 @@ open import Algebra.Properties.Monoid.Mult +-monoid public
   n × 1# + (m × 1#) * (n × 1#)        ≈⟨ +-congʳ (*-identityˡ _) ⟨
   1# * (n × 1#) + (m × 1#) * (n × 1#) ≈⟨ distribʳ (n × 1#) 1# (m × 1#) ⟨
   (1# + m × 1#) * (n × 1#)            ∎
-
--- (0 ×_) is (0# *_)
-
-×-homo-0# : ∀ x → 0 × x ≈ 0# * x
-×-homo-0# x = sym (zeroˡ x)
 
 -- (n ×_) commutes with _*_
 
