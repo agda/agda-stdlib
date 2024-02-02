@@ -97,8 +97,9 @@ Additions to existing modules
 
 * In `Algebra.Properties.Semiring.Mult`:
   ```agda
-  ×-homo-0# : ∀ x → 0 × x ≈ 0# * x
-  ×-homo-1# : ∀ x → 1 × x ≈ 1# * x
+  ×-homo-0#     : ∀ x → 0 × x ≈ 0# * x
+  ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
+  idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
 * In `Data.Fin.Properties`:
