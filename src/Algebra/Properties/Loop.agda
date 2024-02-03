@@ -12,7 +12,7 @@ module Algebra.Properties.Loop {l₁ l₂} (L : Loop l₁ l₂) where
 
 open Loop L
 open import Algebra.Definitions _≈_
-open import Algebra.Properties.Quasigroup
+open import Algebra.Properties.Quasigroup quasigroup
 open import Data.Product.Base using (proj₂)
 open import Relation.Binary.Reasoning.Setoid setoid
 
@@ -42,17 +42,15 @@ x//ε≈x x = begin
 
 identityˡ-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
 identityˡ-unique x y eq = begin
-  x            ≈⟨ rightDividesʳ y x ⟨
-  (x ∙ y) // y ≈⟨ //-congʳ eq ⟩
-       y  // y ≈⟨ x//x≈ε y ⟩
-  ε            ∎
+  x      ≈⟨ x≈z//y x y y eq ⟩
+  y // y ≈⟨ x//x≈ε y ⟩
+  ε      ∎
 
 identityʳ-unique : ∀ x y → x ∙ y ≈ x → y ≈ ε
 identityʳ-unique x y eq = begin
-  y            ≈⟨ leftDividesʳ x y ⟨
-  x \\ (x ∙ y) ≈⟨ \\-congˡ  eq ⟩
-  x \\ x       ≈⟨ x\\x≈ε x ⟩
-  ε            ∎
+  y       ≈⟨ y≈x\\z x y x eq ⟩
+  x \\ x  ≈⟨ x\\x≈ε x ⟩
+  ε       ∎
 
 identity-unique : ∀ {x} → Identity x _∙_ → x ≈ ε
 identity-unique {x} id = identityˡ-unique x x (proj₂ id x)

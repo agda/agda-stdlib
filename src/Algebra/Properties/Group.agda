@@ -15,9 +15,9 @@ open import Algebra.Definitions _≈_
 import Algebra.Properties.Loop as LoopProperties
 import Algebra.Properties.Quasigroup as QuasigroupProperties
 open import Algebra.Structures _≈_ using (IsLoop; IsQuasigroup)
-open import Relation.Binary.Reasoning.Setoid setoid
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_)
-open import Data.Product.Base using (_,_; proj₂)
+open import Relation.Binary.Reasoning.Setoid setoid
 
 \\-cong₂ : Congruent₂ _\\_
 \\-cong₂ x≈y u≈v = ∙-cong (⁻¹-cong x≈y) u≈v
@@ -66,7 +66,7 @@ quasigroup : Quasigroup _ _
 quasigroup = record { isQuasigroup = isQuasigroup }
 
 open QuasigroupProperties quasigroup public
-  using ()
+  using (x≈z//y; y≈x\\z)
   renaming (cancelˡ to ∙-cancelˡ; cancelʳ to ∙-cancelʳ; cancel to ∙-cancel)
 
 isLoop : IsLoop _∙_ _\\_ _//_ ε
@@ -83,6 +83,12 @@ open LoopProperties loop public
   ε ⁻¹      ≈⟨ identityʳ (ε ⁻¹) ⟨
   ε ⁻¹ ∙ ε  ≈⟨ inverseˡ ε ⟩
   ε         ∎
+
+inverseˡ-unique : ∀ x y → x ∙ y ≈ ε → x ≈ y ⁻¹
+inverseˡ-unique x y eq = trans (x≈z//y x y ε eq) (identityˡ _)
+
+inverseʳ-unique : ∀ x y → x ∙ y ≈ ε → y ≈ x ⁻¹
+inverseʳ-unique x y eq = trans (y≈x\\z x y ε eq) (identityʳ _)
 
 ⁻¹-involutive : ∀ x → x ⁻¹ ⁻¹ ≈ x
 ⁻¹-involutive x = begin
@@ -105,19 +111,6 @@ open LoopProperties loop public
   x ∙ x ⁻¹              ≈⟨ ∙-congʳ (rightDividesʳ y x) ⟨
   (x ∙ y) ∙ y ⁻¹ ∙ x ⁻¹ ≈⟨ assoc (x ∙ y) (y ⁻¹) (x ⁻¹) ⟩
   x ∙ y ∙ (y ⁻¹ ∙ x ⁻¹) ∎
-
-inverseˡ-unique : ∀ x y → x ∙ y ≈ ε → x ≈ y ⁻¹
-inverseˡ-unique x y eq = begin
-  x              ≈⟨ rightDividesʳ y x ⟨
-  (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congʳ eq ⟩
-       ε  ∙ y ⁻¹ ≈⟨ identityˡ (y ⁻¹) ⟩
-            y ⁻¹ ∎
-
-inverseʳ-unique : ∀ x y → x ∙ y ≈ ε → y ≈ x ⁻¹
-inverseʳ-unique x y eq = begin
-  y       ≈⟨ ⁻¹-involutive y ⟨
-  y ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong (inverseˡ-unique x y eq) ⟨
-  x ⁻¹    ∎
 
 \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
 \\≗flip-//⇒comm \\≗//ᵒ x y = begin
