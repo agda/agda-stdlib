@@ -6,8 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core
-
 module Algebra.Morphism.Structures where
 
 open import Algebra.Core
@@ -15,11 +13,57 @@ open import Algebra.Bundles
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)
 open import Function.Definitions
+open import Relation.Binary.Core
 open import Relation.Binary.Morphism.Structures
 
 private
   variable
     a b ℓ₁ ℓ₂ : Level
+
+------------------------------------------------------------------------
+-- Morphisms over NNO-like structures
+------------------------------------------------------------------------
+
+module NNOMorphisms (N₁ : RawNNO a ℓ₁) (N₂ : RawNNO b ℓ₂) where
+
+  open RawNNO N₁ renaming (Carrier to A; _≈_ to _≈₁_; _+1# to _+1#₁; 0# to 0#₁)
+  open RawNNO N₂ renaming (Carrier to B; _≈_ to _≈₂_; _+1# to _+1#₂; 0# to 0#₂)
+  open MorphismDefinitions A B _≈₂_
+  
+
+  record IsNNOHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
+      +1#-homo          : Homomorphic₁ ⟦_⟧ _+1#₁ _+1#₂
+      0#-homo           : Homomorphic₀ ⟦_⟧ 0#₁ 0#₂
+
+  record IsNNOMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isNNOHomomorphism : IsNNOHomomorphism ⟦_⟧
+      injective         : Injective _≈₁_ _≈₂_ ⟦_⟧
+
+    open IsNNOHomomorphism isNNOHomomorphism public
+
+    isRelMonomorphism : IsRelMonomorphism _≈₁_ _≈₂_ ⟦_⟧
+    isRelMonomorphism = record
+      { isHomomorphism = isRelHomomorphism
+      ; injective      = injective
+      }
+
+
+  record IsNNOIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isNNOMonomorphism : IsNNOMonomorphism ⟦_⟧
+      surjective        : Surjective _≈₁_ _≈₂_ ⟦_⟧
+
+    open IsNNOMonomorphism isNNOMonomorphism public
+
+    isRelIsomorphism : IsRelIsomorphism _≈₁_ _≈₂_ ⟦_⟧
+    isRelIsomorphism = record
+      { isMonomorphism = isRelMonomorphism
+      ; surjective     = surjective
+      }
+
 
 ------------------------------------------------------------------------
 -- Morphisms over magma-like structures

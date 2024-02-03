@@ -46,6 +46,16 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Bundles`
+  ```agda
+  record NNO c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* In `Algebra.Bundles.Raw`
+  ```agda
+  record RawNNO c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
 
 * In `Algebra.Module.Construct.DirectProduct`:
@@ -82,6 +92,19 @@ Additions to existing modules
   rawBimodule        : RawBimodule R c ℓ
   rawSemimodule      : RawSemimodule R c ℓ
   rawModule          : RawModule R c ℓ
+  ```
+
+* In `Algebra.Morphism.Structures`
+  ```agda
+  module NNOMorphisms (N₁ : RawNNO a ℓ₁) (N₂ : RawNNO b ℓ₂) where
+    record IsNNOHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsNNOMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsNNOIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+  ```
+
+* In `Algebra.Structures`
+  ```agda
+  record IsNNO (+1# : Op₁ A) (0# : A) : Set _
   ```
 
 * In `Data.Fin.Properties`:
