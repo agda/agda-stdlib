@@ -120,7 +120,6 @@ module _ (⊕ᴹ-isMonoid : IsMonoid _≈ᴹ₂_ _⊕ᴹ_ 0ᴹ₂) where
 -- Structures
 
 isLeftSemimodule :
-  {_≈_ : Rel R ℓr} {_+_ _*_ : Op₂ R} {0# 1# : R}
   (R-isSemiring : IsSemiring _≈_ _+_ _*_ 0# 1#)
   (let R-semiring = record { isSemiring = R-isSemiring })
   → IsLeftSemimodule R-semiring _≈ᴹ₂_ _⊕ᴹ_ 0ᴹ₂ _⊛ₗ_
