@@ -14,6 +14,21 @@ open import Level using (suc; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
+-- Raw bundles with 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+-- A raw NNO is a NNO without any laws.
+
+record RawNNO c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 _+1#
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _+1#    : Op₁ Carrier
+    0#      : Carrier
+
+------------------------------------------------------------------------
 -- Raw bundles with 1 binary operation
 ------------------------------------------------------------------------
 
