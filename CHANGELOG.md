@@ -87,6 +87,7 @@ Additions to existing modules
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
+  ⁻¹-selfInverse  : SelfInverse _⁻¹
   \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
   comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
   ```
