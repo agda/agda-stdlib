@@ -83,10 +83,19 @@ Additions to existing modules
 
 * In `Algebra.Properties.Group`:
   ```agda
-  isQuasigroup : IsQuasigroup _∙_ _\\_ _//_
-  isLoop : IsLoop _∙_ _\\_ _//_ ε
+  isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
+  quasigroup      : Quasigroup _ _
+  isLoop          : IsLoop _∙_ _\\_ _//_ ε
+  loop            : Loop _ _
   \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
   comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
+  ```
+
+* In `Algebra.Properties.Loop`:
+  ```agda
+  identityˡ-unique : x ∙ y ≈ y → x ≈ ε
+  identityʳ-unique : x ∙ y ≈ x → y ≈ ε
+  identity-unique  : Identity x _∙_ → x ≈ ε
   ```
 
 * In `Algebra.Structures.IsGroup`:

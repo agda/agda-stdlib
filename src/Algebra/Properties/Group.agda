@@ -12,6 +12,8 @@ module Algebra.Properties.Group {g₁ g₂} (G : Group g₁ g₂) where
 
 open Group G
 open import Algebra.Definitions _≈_
+import Algebra.Properties.Loop as LoopProperties
+import Algebra.Properties.Quasigroup as QuasigroupProperties
 open import Algebra.Structures _≈_ using (IsLoop; IsQuasigroup)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Function.Base using (_$_)
@@ -60,31 +62,27 @@ isQuasigroup = record
   ; rightDivides = rightDividesˡ , rightDividesʳ
   }
 
+quasigroup : Quasigroup _ _
+quasigroup = record { isQuasigroup = isQuasigroup }
+
+open QuasigroupProperties quasigroup public
+  using ()
+  renaming (cancelˡ to ∙-cancelˡ; cancelʳ to ∙-cancelʳ; cancel to ∙-cancel)
+
 isLoop : IsLoop _∙_ _\\_ _//_ ε
 isLoop = record { isQuasigroup = isQuasigroup ; identity = identity }
+
+loop : Loop _ _
+loop = record { isLoop = isLoop }
+
+open LoopProperties loop public
+  using (identityˡ-unique; identityʳ-unique; identity-unique)
 
 ε⁻¹≈ε : ε ⁻¹ ≈ ε
 ε⁻¹≈ε = begin
   ε ⁻¹      ≈⟨ identityʳ (ε ⁻¹) ⟨
   ε ⁻¹ ∙ ε  ≈⟨ inverseˡ ε ⟩
   ε         ∎
-
-∙-cancelˡ : LeftCancellative _∙_
-∙-cancelˡ x y z eq = begin
-              y  ≈⟨ leftDividesʳ x y ⟨
-  x ⁻¹ ∙ (x ∙ y) ≈⟨ ∙-congˡ eq ⟩
-  x ⁻¹ ∙ (x ∙ z) ≈⟨ leftDividesʳ x z ⟩
-              z  ∎
-
-∙-cancelʳ : RightCancellative _∙_
-∙-cancelʳ x y z eq = begin
-  y            ≈⟨ rightDividesʳ x y ⟨
-  y ∙ x ∙ x ⁻¹ ≈⟨ ∙-congʳ eq ⟩
-  z ∙ x ∙ x ⁻¹ ≈⟨ rightDividesʳ x z ⟩
-  z            ∎
-
-∙-cancel : Cancellative _∙_
-∙-cancel = ∙-cancelˡ , ∙-cancelʳ
 
 ⁻¹-involutive : ∀ x → x ⁻¹ ⁻¹ ≈ x
 ⁻¹-involutive x = begin
@@ -107,23 +105,6 @@ isLoop = record { isQuasigroup = isQuasigroup ; identity = identity }
   x ∙ x ⁻¹              ≈⟨ ∙-congʳ (rightDividesʳ y x) ⟨
   (x ∙ y) ∙ y ⁻¹ ∙ x ⁻¹ ≈⟨ assoc (x ∙ y) (y ⁻¹) (x ⁻¹) ⟩
   x ∙ y ∙ (y ⁻¹ ∙ x ⁻¹) ∎
-
-identityˡ-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
-identityˡ-unique x y eq = begin
-  x              ≈⟨ rightDividesʳ y x ⟨
-  (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congʳ eq ⟩
-       y  ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
-  ε              ∎
-
-identityʳ-unique : ∀ x y → x ∙ y ≈ x → y ≈ ε
-identityʳ-unique x y eq = begin
-  y              ≈⟨ leftDividesʳ x y ⟨
-  x ⁻¹ ∙ (x ∙ y) ≈⟨ ∙-congˡ  eq ⟩
-  x ⁻¹ ∙  x      ≈⟨ inverseˡ x ⟩
-  ε              ∎
-
-identity-unique : ∀ {x} → Identity x _∙_ → x ≈ ε
-identity-unique {x} id = identityˡ-unique x x (proj₂ id x)
 
 inverseˡ-unique : ∀ x y → x ∙ y ≈ ε → x ≈ y ⁻¹
 inverseˡ-unique x y eq = begin
