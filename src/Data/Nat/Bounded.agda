@@ -50,8 +50,8 @@ open ℕ< public using () renaming (value to ⟦_⟧)
 
 -- Projection from ℕ
 
-π : .{{ NonZero n }} → ℕ → ℕ< n
-π {n} m = ⟦ m % n ⟧< ℕ.m%n<n m n
+fromℕ : .{{ NonZero n }} → ℕ → ℕ< n
+fromℕ {n} m = ⟦ m % n ⟧< ℕ.m%n<n m n
 
 -- Destructors
 
