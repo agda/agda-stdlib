@@ -11,7 +11,7 @@ open import Data.Nat.Base using (ℕ; NonTrivial)
 module Data.Integer.Modulo.Literals (n : ℕ) .{{_ : NonTrivial n}} where
 
 open import Agda.Builtin.FromNat using (Number)
-open import Data.Integer.Modulo using (ℤmod; module Literals)
+open import Data.Integer.Modulo using (ℤmod_; module Literals)
 
 number : Number (ℤmod n)
 number = record { Literals n }

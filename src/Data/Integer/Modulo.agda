@@ -14,7 +14,7 @@ module Data.Integer.Modulo (n : ℕ) .{{_ : NonTrivial n}} where
 open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
-open import Data.Nat.Bounded as ℕ< hiding (π; module Literals)
+open import Data.Nat.Bounded as ℕ< hiding (module Literals)
 open import Data.Nat.DivMod as ℕ using (_%_)
 open import Data.Nat.Properties as ℕ
 open import Data.Sign.Base as Sign using (Sign)
@@ -51,11 +51,11 @@ infixl 6 _+_
 
 -- Addition
 _+_ : ℤmod_ → ℤmod_ → ℤmod_
-i + j = ℕ<.π (⟦ i ⟧ ℕ.+ ⟦ j ⟧)
+i + j = fromℕ (⟦ i ⟧ ℕ.+ ⟦ j ⟧)
 
 -- Multiplication
 _*_ : ℤmod_ → ℤmod_ → ℤmod_
-i * j = ℕ<.π (⟦ i ⟧ ℕ.* ⟦ j ⟧)
+i * j = fromℕ (⟦ i ⟧ ℕ.* ⟦ j ⟧)
 
 ------------------------------------------------------------------------
 -- Quotient map from ℤ
@@ -64,12 +64,12 @@ _◃_ : Sign → ℤmod_ → ℤmod_
 Sign.+ ◃ j = j
 Sign.- ◃ j = - j
 
-π : ℤ → ℤmod_
-π i with s ◂ ∣i∣ ← signAbs i = s ◃ ℕ<.π ∣i∣ 
+fromℤ : ℤ → ℤmod_
+fromℤ i with s ◂ ∣i∣ ← signAbs i = s ◃ fromℕ ∣i∣ 
 
 -- the _mod_ syntax
 Mod : ℤ → ℤmod_
-Mod = π
+Mod = fromℤ
 
 syntax Mod {n = n} i = i mod n
 
@@ -103,7 +103,7 @@ module Literals where
   Constraint _ = ⊤
 
   fromNat : ∀ m → {{Constraint m}} → ℤmod_
-  fromNat m = ℕ<.π m
+  fromNat m = fromℕ m
 
 ------------------------------------------------------------------------
 -- -- Postfix notation for when opening the module unparameterised
