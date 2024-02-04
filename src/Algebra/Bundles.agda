@@ -23,7 +23,7 @@ open import Level
 -- Re-export definitions of 'raw' bundles
 
 open Raw public
-  using ( RawNNO; RawMagma; RawMonoid; RawGroup
+  using ( RawSuccessorSet; RawMagma; RawMonoid; RawGroup
         ; RawNearSemiring; RawSemiring
         ; RawRingWithoutOne; RawRing
         ; RawQuasigroup; RawLoop; RawKleeneAlgebra)
@@ -32,22 +32,22 @@ open Raw public
 -- Bundles with 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
-record NNO c ℓ : Set (suc (c ⊔ ℓ)) where
+record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _+1#
   infix  4 _≈_
   field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _+1#    : Op₁ Carrier
-    0#      : Carrier
-    isNNO   : IsNNO _≈_ _+1# 0#
+    Carrier          : Set c
+    _≈_              : Rel Carrier ℓ
+    _+1#             : Op₁ Carrier
+    0#               : Carrier
+    isSuccessorSet   : IsSuccessorSet _≈_ _+1# 0#
 
-  open IsNNO isNNO public
+  open IsSuccessorSet isSuccessorSet public
 
-  rawNNO : RawNNO _ _
-  rawNNO = record { _≈_ = _≈_; _+1# = _+1#; 0# = 0# }
+  rawSuccessorSet : RawSuccessorSet _ _
+  rawSuccessorSet = record { _≈_ = _≈_; _+1# = _+1#; 0# = 0# }
 
-  open RawNNO rawNNO public
+  open RawSuccessorSet rawSuccessorSet public
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation

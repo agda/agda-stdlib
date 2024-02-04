@@ -48,12 +48,12 @@ Additions to existing modules
 
 * In `Algebra.Bundles`
   ```agda
-  record NNO c ℓ : Set (suc (c ⊔ ℓ))
+  record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * In `Algebra.Bundles.Raw`
   ```agda
-  record RawNNO c ℓ : Set (suc (c ⊔ ℓ))
+  record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
@@ -96,15 +96,15 @@ Additions to existing modules
 
 * In `Algebra.Morphism.Structures`
   ```agda
-  module NNOMorphisms (N₁ : RawNNO a ℓ₁) (N₂ : RawNNO b ℓ₂) where
-    record IsNNOHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsNNOMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsNNOIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+  module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
+    record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
   ```
 
 * In `Algebra.Structures`
   ```agda
-  record IsNNO (+1# : Op₁ A) (0# : A) : Set _
+  record IsSuccessorSet (+1# : Op₁ A) (0# : A) : Set _
   ```
 
 * In `Data.Fin.Properties`:

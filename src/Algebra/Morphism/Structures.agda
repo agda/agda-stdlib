@@ -21,28 +21,32 @@ private
     a b ℓ₁ ℓ₂ : Level
 
 ------------------------------------------------------------------------
--- Morphisms over NNO-like structures
+-- Morphisms over SuccessorSet-like structures
 ------------------------------------------------------------------------
 
-module NNOMorphisms (N₁ : RawNNO a ℓ₁) (N₂ : RawNNO b ℓ₂) where
+module SuccessorSetMorphisms
+  (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂)
+  where
 
-  open RawNNO N₁ renaming (Carrier to A; _≈_ to _≈₁_; _+1# to _+1#₁; 0# to 0#₁)
-  open RawNNO N₂ renaming (Carrier to B; _≈_ to _≈₂_; _+1# to _+1#₂; 0# to 0#₂)
+  open RawSuccessorSet N₁
+    renaming (Carrier to A; _≈_ to _≈₁_; _+1# to _+1#₁; 0# to 0#₁)
+  open RawSuccessorSet N₂
+    renaming (Carrier to B; _≈_ to _≈₂_; _+1# to _+1#₂; 0# to 0#₂)
   open MorphismDefinitions A B _≈₂_
-  
 
-  record IsNNOHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+
+  record IsSuccessorSetHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
       +1#-homo          : Homomorphic₁ ⟦_⟧ _+1#₁ _+1#₂
       0#-homo           : Homomorphic₀ ⟦_⟧ 0#₁ 0#₂
 
-  record IsNNOMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  record IsSuccessorSetMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      isNNOHomomorphism : IsNNOHomomorphism ⟦_⟧
-      injective         : Injective _≈₁_ _≈₂_ ⟦_⟧
+      isSuccessorSetHomomorphism : IsSuccessorSetHomomorphism ⟦_⟧
+      injective                  : Injective _≈₁_ _≈₂_ ⟦_⟧
 
-    open IsNNOHomomorphism isNNOHomomorphism public
+    open IsSuccessorSetHomomorphism isSuccessorSetHomomorphism public
 
     isRelMonomorphism : IsRelMonomorphism _≈₁_ _≈₂_ ⟦_⟧
     isRelMonomorphism = record
@@ -51,12 +55,12 @@ module NNOMorphisms (N₁ : RawNNO a ℓ₁) (N₂ : RawNNO b ℓ₂) where
       }
 
 
-  record IsNNOIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  record IsSuccessorSetIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      isNNOMonomorphism : IsNNOMonomorphism ⟦_⟧
-      surjective        : Surjective _≈₁_ _≈₂_ ⟦_⟧
+      isSuccessorSetMonomorphism : IsSuccessorSetMonomorphism ⟦_⟧
+      surjective                 : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
-    open IsNNOMonomorphism isNNOMonomorphism public
+    open IsSuccessorSetMonomorphism isSuccessorSetMonomorphism public
 
     isRelIsomorphism : IsRelIsomorphism _≈₁_ _≈₂_ ⟦_⟧
     isRelIsomorphism = record

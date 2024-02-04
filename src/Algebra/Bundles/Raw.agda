@@ -17,9 +17,9 @@ open import Relation.Nullary.Negation.Core using (¬_)
 -- Raw bundles with 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
--- A raw NNO is a NNO without any laws.
+-- A raw SuccessorSet is a SuccessorSet without any laws.
 
-record RawNNO c ℓ : Set (suc (c ⊔ ℓ)) where
+record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _+1#
   infix  4 _≈_
   field

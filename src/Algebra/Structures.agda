@@ -31,7 +31,7 @@ open import Level using (_⊔_)
 -- Structures with 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
-record IsNNO (+1# : Op₁ A) (0# : A) : Set (a ⊔ ℓ) where
+record IsSuccessorSet (+1# : Op₁ A) (0# : A) : Set (a ⊔ ℓ) where
   field
     isEquivalence : IsEquivalence _≈_
     +1#-cong      : Congruent₁ +1#
