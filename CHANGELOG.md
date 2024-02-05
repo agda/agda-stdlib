@@ -35,7 +35,7 @@ Deprecated names
 
 * In `Algebra.Properties.Semiring.Mult`:
   ```agda
-  1×-identityʳ  ↦  Algebra.Properties.Monoid.Mult.×-homo-1
+  1×-identityʳ  ↦  ×-homo-1
   ```
 
 * In `Data.Nat.Divisibility.Core`:

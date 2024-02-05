@@ -82,5 +82,5 @@ idem-×-homo-* m n {x} idem = begin
 1×-identityʳ = ×-homo-1
 {-# WARNING_ON_USAGE 1×-identityʳ
 "Warning: 1×-identityʳ was deprecated in v2.1.
-Please use Algebra.Properties.Monoid.Mult.×-homo-1 instead. "
+Please use ×-homo-1 instead. "
 #-}
