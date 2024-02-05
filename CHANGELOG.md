@@ -16,6 +16,14 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The modules and morphisms in `Algebra.Module.Morphism.Structures` are now
+  parametrized by _raw_ bundles rather than lawful bundles, in line with other
+  modules defining morphism structures.
+* The definitions in `Algebra.Module.Morphism.Construct.Composition` are now
+  parametrized by _raw_ bundles, and as such take a proof of transitivity.
+* The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
+  parametrized by _raw_ bundles, and as such take a proof of reflexivity.
+
 Other major improvements
 ------------------------
 
@@ -24,6 +32,11 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  1×-identityʳ  ↦  ×-homo-1
+  ```
 
 * In `Algebra.Structures.IsGroup`:
   ```agda
@@ -42,6 +55,12 @@ New modules
 
 Additions to existing modules
 -----------------------------
+
+* Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
+  ```agda
+  rawNearSemiring   : RawNearSemiring _ _
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  +-rawGroup        : RawGroup _ _
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
 
@@ -97,6 +116,19 @@ Additions to existing modules
   identityˡ-unique : x ∙ y ≈ y → x ≈ ε
   identityʳ-unique : x ∙ y ≈ x → y ≈ ε
   identity-unique  : Identity x _∙_ → x ≈ ε
+  ```
+
+* In `Algebra.Properties.Monoid.Mult`:
+  ```agda
+  ×-homo-0 : ∀ x → 0 × x ≈ 0#
+  ×-homo-1 : ∀ x → 1 × x ≈ x
+  ```
+
+* In `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  ×-homo-0#     : ∀ x → 0 × x ≈ 0# * x
+  ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
+  idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
 * In `Algebra.Structures.IsGroup`:
@@ -165,3 +197,25 @@ Additions to existing modules
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
+
+* Added new definitions in `Relation.Binary`
+  ```
+  Stable          : Pred A ℓ → Set _
+  ```
+
+* Added new definitions in `Relation.Nullary`
+  ```
+  Recomputable    : Set _
+  WeaklyDecidable : Set _
+  ```
+
+* Added new definitions in `Relation.Unary`
+  ```
+  Stable          : Pred A ℓ → Set _
+  WeaklyDecidable : Pred A ℓ → Set _
+  ```
+
+* Added new proof in `Relation.Nullary.Decidable`:
+  ```agda
+  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```

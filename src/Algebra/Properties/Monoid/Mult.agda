@@ -51,6 +51,12 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 
 -- _×_ is homomorphic with respect to _ℕ+_/_+_.
 
+×-homo-0 : ∀ x → 0 × x ≈ 0#
+×-homo-0 x = refl
+
+×-homo-1 : ∀ x → 1 × x ≈ x
+×-homo-1 = +-identityʳ
+
 ×-homo-+ : ∀ x m n → (m ℕ.+ n) × x ≈ m × x + n × x
 ×-homo-+ x 0       n = sym (+-identityˡ (n × x))
 ×-homo-+ x (suc m) n = begin
