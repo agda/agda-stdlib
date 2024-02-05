@@ -21,7 +21,8 @@ open import Function.Consequences.Propositional
   using (inverseᵇ⇒bijective; strictlyInverseˡ⇒inverseˡ; strictlyInverseʳ⇒inverseʳ)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Definitions
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; _≗_)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; sym; trans; cong; subst; _≗_)
 open import Relation.Nullary.Decidable.Core using (recompute; map′)
 open import Relation.Nullary.Negation.Core using (¬_)
 
@@ -64,6 +65,7 @@ nonZeroIndex {n = suc _} _ = _
 isBounded : (i : ℕ< n) → ⟦ i ⟧ < n
 isBounded (⟦ _ ⟧< i<n) = recompute (_ ℕ.<? _) i<n
 
+------------------------------------------------------------------------
 -- Equality on values is propositional equality
 
 bounded≡⇒⟦⟧≡⟦⟧ : _≡_ {A = ℕ< n} ⇒ (_≡_ on ⟦_⟧)
@@ -99,6 +101,27 @@ boundedNat⤖Fin = mk⤖ $ inverseᵇ⇒bijective $
 
 boundedNat↔Fin : ℕ< n ↔ Fin n
 boundedNat↔Fin = mk↔ₛ′ toFin fromFin toFin∘fromFin≐id fromFin∘toFin≐id
+
+------------------------------------------------------------------------
+-- Inverting `fromℕ`: a graph view
+
+data _/∼≡_ : ℕ → ℕ< n → Set where
+  ‵fromℕ : ∀ m (i : ℕ< n) → (⟦ i ⟧ + m * n) /∼≡ i
+
+module _ {n} .{{_ : NonZero n}} m where
+
+  private i = fromℕ {n} m
+
+  _/∼≡fromℕ : m /∼≡ i
+  _/∼≡fromℕ = subst (_/∼≡ i) (sym (ℕ.m≡m%n+[m/n]*n m n)) (‵fromℕ (m / n) i)
+
+module _ {n} {m} {i : ℕ< n} where
+
+  private instance _ = nonZeroIndex i
+
+  _/∼≡fromℕ⁻¹ : m /∼≡ i → fromℕ m ≡ i
+  (‵fromℕ {n = n} m i) /∼≡fromℕ⁻¹ = ⟦⟧≡⟦⟧⇒bounded≡ $
+    trans (ℕ.[m+kn]%n≡m%n ⟦ i ⟧ m n) (ℕ.m<n⇒m%n≡m (isBounded i))
 
 ------------------------------------------------------------------------
 -- Literals
