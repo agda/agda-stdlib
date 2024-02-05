@@ -18,17 +18,22 @@ open import Algebra.Bundles
 import Algebra.Definitions as Definitions
 import Algebra.Structures as Structures
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
---open import Data.Nat.Bounded as ℕ< hiding (π; module Literals)
+open import Data.Nat.Bounded as ℕ< hiding (module Literals)
 import Data.Nat.DivMod as ℕ
 import Data.Nat.Properties as ℕ
+open import Data.Product.Base as Product using (_,_)
 open import Data.Sign.Base as Sign using (Sign)
 open import Data.Unit.Base using (⊤)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong₂)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; cong; cong₂; isEquivalence; module ≡-Reasoning)
 
 open import Data.Integer.Modulo n as Modulo using (ℤmod_; +-*-rawRing)
 open Definitions (_≡_ {A = ℤmod_})
 open Structures (_≡_ {A = ℤmod_})
-  using (IsMagma; IsMonoid; IsAbelianGroup; IsNearSemiring; IsSemiring; IsRing)
+  using ( IsMagma; IsSemigroup; IsMonoid
+        ; IsGroup; IsAbelianGroup
+        ; IsNearSemiring; IsSemiring
+        ; IsRing)
 
 private
   variable
@@ -39,18 +44,78 @@ private
     _ = ℕ.nonTrivial⇒nonZero n
 
 open RawRing +-*-rawRing
+open ≡-Reasoning
+
++-cong₂ : Congruent₂ _+_
++-cong₂ = cong₂ _+_
+
++-isMagma : IsMagma _+_
++-isMagma = record { isEquivalence = isEquivalence ; ∙-cong = +-cong₂ }
+
++-assoc : Associative _+_
++-assoc x y z = begin
+  x + y + z ≡⟨⟩
+  fromℕ (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧) ≡⟨ {!!} ⟩
+  {!!} ≡⟨ {!!} ⟩
+  {!!} ≡⟨ {!!} ⟩
+  {!!} ≡⟨ {!!} ⟩
+  fromℕ (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n)) ≡⟨⟩
+  x + (y + z) ∎
+
++-isSemigroup : IsSemigroup _+_
++-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
+
++-identityˡ : LeftIdentity 0# _+_
++-identityˡ = {!!}
+
++-identityʳ : RightIdentity 0# _+_
++-identityʳ = {!!}
+
++-identity : Identity 0# _+_
++-identity = +-identityˡ , +-identityʳ
+
++-isMonoid : IsMonoid _+_ 0#
++-isMonoid = record { isSemigroup = +-isSemigroup ; identity = +-identity }
+
++-inverseˡ : LeftInverse 0# -_ _+_
++-inverseˡ = {!!}
+
++-inverseʳ : RightInverse 0# -_ _+_
++-inverseʳ = {!!}
+
++-inverse : Inverse 0# -_ _+_
++-inverse = +-inverseˡ , +-inverseʳ
+
++-0-isGroup : IsGroup _+_ 0# -_
++-0-isGroup = record { isMonoid = +-isMonoid ; inverse = {!+-inverse!} ; ⁻¹-cong = cong -_ }
+
++-comm : Commutative _+_
++-comm x y = cong fromℕ (ℕ.+-comm ⟦ x ⟧ ⟦ y ⟧)
 
 +-0-isAbelianGroup : IsAbelianGroup _+_ 0# -_
-+-0-isAbelianGroup = {!!}
++-0-isAbelianGroup = record { isGroup = +-0-isGroup ; comm = +-comm }
 
 *-cong₂ : Congruent₂ _*_
 *-cong₂ = cong₂ _*_
 
 *-assoc : Associative _*_
-*-assoc x y z = {!!}
+*-assoc x y z = begin
+  x * y * z ≡⟨⟩
+  fromℕ (((⟦ x ⟧ ℕ.* ⟦ y ⟧) ℕ.% n) ℕ.* ⟦ z ⟧) ≡⟨ {!!} ⟩
+  {!!} ≡⟨ {!!} ⟩
+  {!!} ≡⟨ {!!} ⟩
+  {!!} ≡⟨ {!!} ⟩
+  fromℕ (⟦ x ⟧ ℕ.* ((⟦ y ⟧ ℕ.* ⟦ z ⟧) ℕ.% n)) ≡⟨⟩
+  x * (y * z) ∎
+
+*-identityˡ : LeftIdentity 1# _*_
+*-identityˡ = {!!}
+
+*-identityʳ : RightIdentity 1# _*_
+*-identityʳ = {!!}
 
 *-identity : Identity 1# _*_
-*-identity = {!!}
+*-identity = *-identityˡ , *-identityʳ
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = {!!}
