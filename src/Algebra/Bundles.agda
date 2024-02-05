@@ -982,6 +982,9 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semiringWithoutAnnihilatingZero
     )
 
+  open NearSemiring nearSemiring public
+    using (rawNearSemiring)
+
   open AbelianGroup +-abelianGroup public
     using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
 
@@ -994,6 +997,9 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; 0#  = 0#
     ; 1#  = 1#
     }
+
+  open RawRing rawRing public
+    using (rawRingWithoutOne; +-rawGroup)
 
 
 record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
