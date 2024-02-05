@@ -16,7 +16,7 @@ open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as Fin
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_; _$_; _on_)
-open import Function.Bundles using (_⤖_; mk⤖)
+open import Function.Bundles using (_⤖_; mk⤖; _↔_; mk↔ₛ′)
 open import Function.Consequences.Propositional
   using (inverseᵇ⇒bijective; strictlyInverseˡ⇒inverseˡ; strictlyInverseʳ⇒inverseʳ)
 open import Relation.Binary.Core using (_⇒_)
@@ -96,6 +96,9 @@ boundedNat⤖Fin = mk⤖ $ inverseᵇ⇒bijective $
   strictlyInverseˡ⇒inverseˡ {f⁻¹ = fromFin} toFin toFin∘fromFin≐id
   ,
   strictlyInverseʳ⇒inverseʳ {f⁻¹ = fromFin} toFin fromFin∘toFin≐id
+
+boundedNat↔Fin : ℕ< n ↔ Fin n
+boundedNat↔Fin = mk↔ₛ′ toFin fromFin toFin∘fromFin≐id fromFin∘toFin≐id
 
 ------------------------------------------------------------------------
 -- Literals
