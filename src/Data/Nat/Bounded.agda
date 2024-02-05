@@ -19,7 +19,7 @@ open import Function.Base using (id; _∘_; _$_; _on_)
 open import Function.Bundles using (_⤖_; mk⤖; _↔_; mk↔ₛ′)
 open import Function.Consequences.Propositional
   using (inverseᵇ⇒bijective; strictlyInverseˡ⇒inverseˡ; strictlyInverseʳ⇒inverseʳ)
-open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; trans; cong; subst; _≗_)
@@ -108,12 +108,11 @@ boundedNat↔Fin = mk↔ₛ′ toFin fromFin toFin∘fromFin≐id fromFin∘toFi
 data _/∼≡_ : ℕ → ℕ< n → Set where
   ‵fromℕ : ∀ m (i : ℕ< n) → (⟦ i ⟧ + m * n) /∼≡ i
 
-module _ {n} .{{_ : NonZero n}} m where
+module _ {n} .{{_ : NonZero n}} {m} {i : ℕ< n} where
 
-  private i = fromℕ {n} m
-
-  _/∼≡fromℕ : m /∼≡ i
-  _/∼≡fromℕ = subst (_/∼≡ i) (sym (ℕ.m≡m%n+[m/n]*n m n)) (‵fromℕ (m / n) i)
+  _/∼≡fromℕ : fromℕ {n} m ≡ i → m /∼≡ i
+  _/∼≡fromℕ refl = let i = fromℕ {n} m in
+    subst (_/∼≡ i) (sym (ℕ.m≡m%n+[m/n]*n m n)) (‵fromℕ (m / n) i)
 
 module _ {n} {m} {i : ℕ< n} where
 
@@ -122,6 +121,42 @@ module _ {n} {m} {i : ℕ< n} where
   _/∼≡fromℕ⁻¹ : m /∼≡ i → fromℕ m ≡ i
   (‵fromℕ {n = n} m i) /∼≡fromℕ⁻¹ = ⟦⟧≡⟦⟧⇒bounded≡ $
     trans (ℕ.[m+kn]%n≡m%n ⟦ i ⟧ m n) (ℕ.m<n⇒m%n≡m (isBounded i))
+
+/∼≡-injective : ∀ {m} {i j : ℕ< n} → m /∼≡ i → m /∼≡ j → i ≡ j
+/∼≡-injective m/∼≡i m/∼≡j = trans (sym (m/∼≡i /∼≡fromℕ⁻¹)) (m/∼≡j /∼≡fromℕ⁻¹)
+
+------------------------------------------------------------------------
+-- Quotient equivalence relation on ℕ induced by `fromℕ`
+
+record _∼_ {n} (lhs rhs : ℕ) : Set where
+  constructor _,_
+  field
+    {i}    : ℕ< n
+    lhs/∼≡ : lhs /∼≡ i
+    rhs/∼≡ : rhs /∼≡ i
+
+≡-Mod : ℕ → Rel ℕ _
+≡-Mod n i j = _∼_ {n} i j
+
+syntax ≡-Mod n i j = i ≡ j mod n
+
+≡-mod-refl : .{{NonZero n}} → Reflexive (≡-Mod n)
+≡-mod-refl {n} {m} = let r = refl /∼≡fromℕ in r , r
+
+≡-mod-sym : Symmetric (≡-Mod n)
+≡-mod-sym (lhs , rhs) = rhs , lhs
+
+≡-mod-trans : Transitive (≡-Mod n)
+≡-mod-trans (lhs₁ , rhs₁) (lhs₂ , rhs₂)
+  with refl ← /∼≡-injective rhs₁ lhs₂ = lhs₁ , rhs₂
+
+≡-mod⇒fromℕ≡fromℕ : ∀ {x y} (p : x ≡ y mod n) →
+                    let _,_ {i} _ _ = p ; instance _ = nonZeroIndex i
+                    in fromℕ {n} x ≡ fromℕ y
+≡-mod⇒fromℕ≡fromℕ (lhs/∼≡ , rhs/∼≡) = trans (lhs/∼≡ /∼≡fromℕ⁻¹) (sym (rhs/∼≡ /∼≡fromℕ⁻¹))
+
+fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ {n}) ⇒ ≡-Mod n
+fromℕ≡fromℕ⇒≡-mod fromℕ[x]≡fromℕ[y] = (fromℕ[x]≡fromℕ[y] /∼≡fromℕ) , (refl /∼≡fromℕ)
 
 ------------------------------------------------------------------------
 -- Literals
