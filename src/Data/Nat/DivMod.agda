@@ -104,7 +104,7 @@ m%n≤m : ∀ m n .{{_ : NonZero n}} → m % n ≤ m
 m%n≤m m (suc n-1) = a[modₕ]n≤a 0 m n-1
 
 m≤n⇒m%n≡m : m ≤ n → m % suc n ≡ m
-m≤n⇒m%n≡m {m = m} m≤n with ≤″-offset k ← ≤⇒≤″ m≤n
+m≤n⇒m%n≡m {m = m} m≤n with ≤-offset k ← ≤-proof m≤n
   = a≤n⇒a[modₕ]n≡a 0 (m + k) m k
 
 m<n⇒m%n≡m : .{{_ : NonZero n}} → m < n → m % n ≡ m
