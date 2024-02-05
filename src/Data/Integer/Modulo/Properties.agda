@@ -25,7 +25,7 @@ open import Data.Product.Base as Product using (_,_)
 open import Data.Sign.Base as Sign using (Sign)
 open import Data.Unit.Base using (⊤)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; cong; cong₂; isEquivalence; module ≡-Reasoning)
+  using (_≡_; refl; cong; cong₂; isEquivalence; module ≡-Reasoning)
 
 open import Data.Integer.Modulo n as Modulo using (ℤmod_; +-*-rawRing)
 open Definitions (_≡_ {A = ℤmod_})
@@ -66,10 +66,10 @@ open ≡-Reasoning
 +-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
 
 +-identityˡ : LeftIdentity 0# _+_
-+-identityˡ = {!!}
++-identityˡ x = {!!}
 
 +-identityʳ : RightIdentity 0# _+_
-+-identityʳ = {!!}
++-identityʳ x = {!!}
 
 +-identity : Identity 0# _+_
 +-identity = +-identityˡ , +-identityʳ
@@ -87,7 +87,7 @@ open ≡-Reasoning
 +-inverse = +-inverseˡ , +-inverseʳ
 
 +-0-isGroup : IsGroup _+_ 0# -_
-+-0-isGroup = record { isMonoid = +-isMonoid ; inverse = {!+-inverse!} ; ⁻¹-cong = cong -_ }
++-0-isGroup = record { isMonoid = +-isMonoid ; inverse = +-inverse ; ⁻¹-cong = cong -_ }
 
 +-comm : Commutative _+_
 +-comm x y = cong fromℕ (ℕ.+-comm ⟦ x ⟧ ⟦ y ⟧)
