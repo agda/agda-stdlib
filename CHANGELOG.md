@@ -46,6 +46,12 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
+  ```agda
+  rawNearSemiring   : RawNearSemiring _ _
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  +-rawGroup        : RawGroup _ _
+
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
 
 * In `Algebra.Module.Construct.DirectProduct`:
