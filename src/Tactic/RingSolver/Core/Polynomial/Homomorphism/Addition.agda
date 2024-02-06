@@ -13,12 +13,12 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Nat            as ℕ  using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Nat.Properties as ℕₚ using (≤′-trans)
-open import Data.Product.Base         using (_,_; _×_; proj₂)
-open import Data.List.Base            using (_∷_; [])
+open import Data.Nat            as ℕ using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Properties as ℕ using (≤′-trans)
+open import Data.Product.Base        using (_,_; _×_; proj₂)
+open import Data.List.Base           using (_∷_; [])
 open import Data.List.Kleene
-open import Data.Vec.Base             using (Vec)
+open import Data.Vec.Base            using (Vec)
 open import Function.Base using (_⟨_⟩_; flip)
 open import Relation.Unary
 
@@ -206,7 +206,7 @@ mutual
             ρ ^ suc j * ((ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ k)
           ≈⟨ pow-add _ _ k j ⟩
             (ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ (k ℕ.+ suc j)
-            ≡⟨ ≡.cong (λ i → (ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ i) (ℕₚ.+-comm k (suc j)) ⟩
+            ≡⟨ ≡.cong (λ i → (ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ i) (ℕ.+-comm k (suc j)) ⟩
             (ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ (suc j ℕ.+ k)
           ∎)
     ⟩
