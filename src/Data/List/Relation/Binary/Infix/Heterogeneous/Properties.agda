@@ -13,7 +13,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.List.Base as List using (List; []; _∷_; length; map; filter; replicate)
 open import Data.Nat.Base using (zero; suc; _≤_)
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (case_of_; _$′_)
 
@@ -68,7 +68,7 @@ module _ {c t} {C : Set c} {T : REL A C t} where
 
 length-mono : ∀ {as bs} → Infix R as bs → length as ≤ length bs
 length-mono (here pref) = Prefixₚ.length-mono pref
-length-mono (there p)   = ℕₚ.m≤n⇒m≤1+n (length-mono p)
+length-mono (there p)   = ℕ.m≤n⇒m≤1+n (length-mono p)
 
 ------------------------------------------------------------------------
 -- As an order
@@ -98,20 +98,20 @@ module _ {c t} {C : Set c} {T : REL A C t} where
   antisym : Antisym R S T → Antisym (Infix R) (Infix S) (Pointwise T)
   antisym asym (here p) (here q) = Prefixₚ.antisym asym p q
   antisym asym {i = a ∷ as} {j = bs} p@(here _) (there q)
-    = ⊥-elim $′ ℕₚ.<-irrefl refl $′ begin-strict
+    = ⊥-elim $′ ℕ.<-irrefl refl $′ begin-strict
       length as <⟨ length-mono p ⟩
       length bs ≤⟨ length-mono q ⟩
-      length as ∎ where open ℕₚ.≤-Reasoning
+      length as ∎ where open ℕ.≤-Reasoning
   antisym asym {i = as} {j = b ∷ bs} (there p) q@(here _)
-    = ⊥-elim $′ ℕₚ.<-irrefl refl $′ begin-strict
+    = ⊥-elim $′ ℕ.<-irrefl refl $′ begin-strict
       length bs <⟨ length-mono q ⟩
       length as ≤⟨ length-mono p ⟩
-      length bs ∎ where open ℕₚ.≤-Reasoning
+      length bs ∎ where open ℕ.≤-Reasoning
   antisym asym {i = a ∷ as} {j = b ∷ bs} (there p) (there q)
-    = ⊥-elim $′ ℕₚ.<-irrefl refl $′ begin-strict
+    = ⊥-elim $′ ℕ.<-irrefl refl $′ begin-strict
       length as <⟨ length-mono p ⟩
       length bs <⟨ length-mono q ⟩
-      length as ∎ where open ℕₚ.≤-Reasoning
+      length as ∎ where open ℕ.≤-Reasoning
 
 ------------------------------------------------------------------------
 -- map

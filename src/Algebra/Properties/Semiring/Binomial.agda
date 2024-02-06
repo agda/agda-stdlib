@@ -10,10 +10,10 @@
 
 open import Algebra.Bundles using (Semiring)
 open import Data.Bool.Base using (true)
-open import Data.Nat.Base as Nat hiding (_+_; _*_; _^_)
+open import Data.Nat.Base as ℕ hiding (_+_; _*_; _^_)
 open import Data.Nat.Combinatorics
   using (_C_; nCn≡1; nC1≡n; nCk+nC[k+1]≡[n+1]C[k+1])
-open import Data.Nat.Properties as Nat
+open import Data.Nat.Properties as ℕ
   using (<⇒<ᵇ; n<1+n; n∸n≡0; +-∸-assoc)
 open import Data.Fin.Base as Fin
   using (Fin; zero; suc; toℕ; fromℕ; inject₁)
@@ -154,8 +154,8 @@ y*lemma x*y≈y*x {n} j = begin
 -- Now, a lemma characterising the sum of the term₁ and term₂ expressions
 
 private
-  n<ᵇ1+n : ∀ n → (n Nat.<ᵇ suc n) ≡ true
-  n<ᵇ1+n n with true ← n Nat.<ᵇ suc n | _ ← <⇒<ᵇ (n<1+n n) = ≡.refl
+  n<ᵇ1+n : ∀ n → (n ℕ.<ᵇ suc n) ≡ true
+  n<ᵇ1+n n with true ← n ℕ.<ᵇ suc n | _ ← <⇒<ᵇ (n<1+n n) = ≡.refl
 
 term₁+term₂≈term : x * y ≈ y * x → ∀ n i → term₁ n i + term₂ n i ≈ binomialTerm (suc n) i
 
@@ -193,7 +193,7 @@ term₁+term₂≈term x*y≈y*x n (suc i) with view i
     ≈⟨ +-congˡ (×-congˡ nC[k+1]≡nC[j+1]) ⟨
   (nCk × [x^k+1]*[y^n-k]) + (nC[k+1] × [x^k+1]*[y^n-k])
     ≈⟨ ×-homo-+ [x^k+1]*[y^n-k] nCk nC[k+1] ⟨
-  (nCk Nat.+ nC[k+1]) × [x^k+1]*[y^n-k]
+  (nCk ℕ.+ nC[k+1]) × [x^k+1]*[y^n-k]
     ≡⟨ cong (_× [x^k+1]*[y^n-k]) (nCk+nC[k+1]≡[n+1]C[k+1] n k) ⟩
   ((suc n) C (suc k)) × [x^k+1]*[y^n-k]
     ≡⟨⟩
