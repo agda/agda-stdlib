@@ -11,7 +11,7 @@ module Data.Char.Properties where
 open import Data.Bool.Base using (Bool)
 open import Data.Char.Base
 import Data.Nat.Base as ℕ
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (_,_)
 
 open import Function.Base
@@ -56,7 +56,7 @@ open import Agda.Builtin.Char.Properties
 
 infix 4 _≟_
 _≟_ : Decidable {A = Char} _≡_
-x ≟ y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕₚ.≟ toℕ y)
+x ≟ y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕ.≟ toℕ y)
 
 setoid : Setoid _ _
 setoid = PropEq.setoid Char
@@ -95,22 +95,22 @@ private
 
 infix 4 _<?_
 _<?_ : Decidable _<_
-_<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
+_<?_ = On.decidable toℕ ℕ._<_ ℕ._<?_
 
 <-cmp : Trichotomous _≡_ _<_
-<-cmp c d with ℕₚ.<-cmp (toℕ c) (toℕ d)
+<-cmp c d with ℕ.<-cmp (toℕ c) (toℕ d)
 ... | tri< lt ¬eq ¬gt = tri< lt (≉⇒≢ ¬eq) ¬gt
 ... | tri≈ ¬lt eq ¬gt = tri≈ ¬lt (≈⇒≡ eq) ¬gt
 ... | tri> ¬lt ¬eq gt = tri> ¬lt (≉⇒≢ ¬eq) gt
 
 <-irrefl : Irreflexive _≡_ _<_
-<-irrefl = ℕₚ.<-irrefl ∘′ cong toℕ
+<-irrefl = ℕ.<-irrefl ∘′ cong toℕ
 
 <-trans : Transitive _<_
-<-trans {c} {d} {e} = On.transitive toℕ ℕ._<_ ℕₚ.<-trans {c} {d} {e}
+<-trans {c} {d} {e} = On.transitive toℕ ℕ._<_ ℕ.<-trans {c} {d} {e}
 
 <-asym : Asymmetric _<_
-<-asym {c} {d} = On.asymmetric toℕ ℕ._<_ ℕₚ.<-asym {c} {d}
+<-asym {c} {d} = On.asymmetric toℕ ℕ._<_ ℕ.<-asym {c} {d}
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
 <-isStrictPartialOrder = record
@@ -151,7 +151,7 @@ _≤?_ = Reflₚ.decidable <-cmp
 ≤-trans = Reflₚ.trans (λ {a} {b} {c} → <-trans {a} {b} {c})
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym = Reflₚ.antisym _≡_ refl ℕₚ.<-asym
+≤-antisym = Reflₚ.antisym _≡_ refl ℕ.<-asym
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record
@@ -220,7 +220,7 @@ Please use Propositional Equality's subst instead."
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = toℕ x ℕₚ.≟ toℕ y
+x ≈? y = toℕ x ℕ.≟ toℕ y
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -277,28 +277,28 @@ Please use decSetoid instead."
 #-}
 
 <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
-<-isStrictPartialOrder-≈ = On.isStrictPartialOrder toℕ ℕₚ.<-isStrictPartialOrder
+<-isStrictPartialOrder-≈ = On.isStrictPartialOrder toℕ ℕ.<-isStrictPartialOrder
 {-# WARNING_ON_USAGE <-isStrictPartialOrder-≈
 "Warning: <-isStrictPartialOrder-≈ was deprecated in v1.5.
 Please use <-isStrictPartialOrder instead."
 #-}
 
 <-isStrictTotalOrder-≈ : IsStrictTotalOrder _≈_ _<_
-<-isStrictTotalOrder-≈ = On.isStrictTotalOrder toℕ ℕₚ.<-isStrictTotalOrder
+<-isStrictTotalOrder-≈ = On.isStrictTotalOrder toℕ ℕ.<-isStrictTotalOrder
 {-# WARNING_ON_USAGE <-isStrictTotalOrder-≈
 "Warning: <-isStrictTotalOrder-≈ was deprecated in v1.5.
 Please use <-isStrictTotalOrder instead."
 #-}
 
 <-strictPartialOrder-≈ : StrictPartialOrder _ _ _
-<-strictPartialOrder-≈ = On.strictPartialOrder ℕₚ.<-strictPartialOrder toℕ
+<-strictPartialOrder-≈ = On.strictPartialOrder ℕ.<-strictPartialOrder toℕ
 {-# WARNING_ON_USAGE <-strictPartialOrder-≈
 "Warning: <-strictPartialOrder-≈ was deprecated in v1.5.
 Please use <-strictPartialOrder instead."
 #-}
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
-<-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+<-strictTotalOrder-≈ = On.strictTotalOrder ℕ.<-strictTotalOrder toℕ
 {-# WARNING_ON_USAGE <-strictTotalOrder-≈
 "Warning: <-strictTotalOrder-≈ was deprecated in v1.5.
 Please use <-strictTotalOrder instead."
