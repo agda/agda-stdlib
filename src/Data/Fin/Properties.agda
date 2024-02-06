@@ -20,7 +20,7 @@ open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ
   using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; s<s⁻¹; _∸_; _^_)
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
 open import Data.Product.Base as Prod
@@ -174,14 +174,14 @@ toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 
 toℕ≤n : ∀ (i : Fin n) → toℕ i ℕ.≤ n
-toℕ≤n {suc n} i = ℕₚ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
+toℕ≤n {suc n} i = ℕ.m≤n⇒m≤1+n (toℕ≤pred[n] i)
 
 -- A simpler implementation of toℕ≤pred[n],
 -- however, with a different reduction behavior.
 -- If no one needs the reduction behavior of toℕ≤pred[n],
 -- it can be removed in favor of toℕ≤pred[n]′.
 toℕ≤pred[n]′ : ∀ (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
-toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
+toℕ≤pred[n]′ i = ℕ.<⇒≤pred (toℕ<n i)
 
 toℕ-mono-< : i < j → toℕ i ℕ.< toℕ j
 toℕ-mono-< i<j = i<j
@@ -223,7 +223,7 @@ toℕ-fromℕ< {m = zero}  {n = suc _} _   = refl
 toℕ-fromℕ< {m = suc m} {n = suc _} m<n = cong suc (toℕ-fromℕ< (ℕ.s<s⁻¹ m<n))
 
 -- fromℕ is a special case of fromℕ<.
-fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕₚ.≤-refl
+fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕ.≤-refl
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
 
@@ -231,7 +231,7 @@ fromℕ<-cong : ∀ m n {o} → m ≡ n → .(m<o : m ℕ.< o) .(n<o : n ℕ.< o
               fromℕ< m<o ≡ fromℕ< n<o
 fromℕ<-cong 0       0                   _ _   _   = refl
 fromℕ<-cong (suc _) (suc _) {o = suc _} r m<n n<o
-  = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) (ℕ.s<s⁻¹ m<n) (ℕ.s<s⁻¹ n<o))
+  = cong suc (fromℕ<-cong _ _ (ℕ.suc-injective r) (ℕ.s<s⁻¹ m<n) (ℕ.s<s⁻¹ n<o))
 
 fromℕ<-injective : ∀ m n {o} → .(m<o : m ℕ.< o) .(n<o : n ℕ.< o) →
                    fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
@@ -252,8 +252,8 @@ fromℕ<≡fromℕ<″ {m = suc m} m<n (ℕ.<″-offset _)
 
 toℕ-fromℕ<″ : ∀ (m<n : m ℕ.<″ n) → toℕ (fromℕ<″ m m<n) ≡ m
 toℕ-fromℕ<″ {m} {n} m<n = begin
-  toℕ (fromℕ<″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ<≡fromℕ<″ (ℕₚ.≤″⇒≤ m<n) m<n)) ⟩
-  toℕ (fromℕ< _)       ≡⟨ toℕ-fromℕ< (ℕₚ.≤″⇒≤ m<n) ⟩
+  toℕ (fromℕ<″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ<≡fromℕ<″ (ℕ.≤″⇒≤ m<n) m<n)) ⟩
+  toℕ (fromℕ< _)       ≡⟨ toℕ-fromℕ< (ℕ.≤″⇒≤ m<n) ⟩
   m                    ∎
   where open ≡-Reasoning
 
@@ -267,7 +267,7 @@ toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
 
 cast-is-id : .(eq : m ≡ m) (k : Fin m) → cast eq k ≡ k
 cast-is-id eq zero    = refl
-cast-is-id eq (suc k) = cong suc (cast-is-id (ℕₚ.suc-injective eq) k)
+cast-is-id eq (suc k) = cong suc (cast-is-id (ℕ.suc-injective eq) k)
 
 subst-is-cast : (eq : m ≡ n) (k : Fin m) → subst Fin eq k ≡ cast eq k
 subst-is-cast refl k = sym (cast-is-id refl k)
@@ -276,7 +276,7 @@ cast-trans : .(eq₁ : m ≡ n) .(eq₂ : n ≡ o) (k : Fin m) →
              cast eq₂ (cast eq₁ k) ≡ cast (trans eq₁ eq₂) k
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ zero = refl
 cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
-  cong suc (cast-trans (ℕₚ.suc-injective eq₁) (ℕₚ.suc-injective eq₂) k)
+  cong suc (cast-trans (ℕ.suc-injective eq₁) (ℕ.suc-injective eq₂) k)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -284,30 +284,30 @@ cast-trans {m = suc _} {n = suc _} {o = suc _} eq₁ eq₂ (suc k) =
 -- Relational properties
 
 ≤-reflexive : _≡_ ⇒ (_≤_ {n})
-≤-reflexive refl = ℕₚ.≤-refl
+≤-reflexive refl = ℕ.≤-refl
 
 ≤-refl : Reflexive (_≤_ {n})
 ≤-refl = ≤-reflexive refl
 
 ≤-trans : Transitive (_≤_ {n})
-≤-trans = ℕₚ.≤-trans
+≤-trans = ℕ.≤-trans
 
 ≤-antisym : Antisymmetric _≡_ (_≤_ {n})
-≤-antisym x≤y y≤x = toℕ-injective (ℕₚ.≤-antisym x≤y y≤x)
+≤-antisym x≤y y≤x = toℕ-injective (ℕ.≤-antisym x≤y y≤x)
 
 ≤-total : Total (_≤_ {n})
-≤-total x y = ℕₚ.≤-total (toℕ x) (toℕ y)
+≤-total x y = ℕ.≤-total (toℕ x) (toℕ y)
 
 ≤-irrelevant : Irrelevant (_≤_ {m} {n})
-≤-irrelevant = ℕₚ.≤-irrelevant
+≤-irrelevant = ℕ.≤-irrelevant
 
 infix 4 _≤?_ _<?_
 
 _≤?_ : B.Decidable (_≤_ {m} {n})
-a ≤? b = toℕ a ℕₚ.≤? toℕ b
+a ≤? b = toℕ a ℕ.≤? toℕ b
 
 _<?_ : B.Decidable (_<_ {m} {n})
-m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
+m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 ------------------------------------------------------------------------
 -- Structures
@@ -367,13 +367,13 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 -- Relational properties
 
 <-irrefl : Irreflexive _≡_ (_<_ {n})
-<-irrefl refl = ℕₚ.<-irrefl refl
+<-irrefl refl = ℕ.<-irrefl refl
 
 <-asym : Asymmetric (_<_ {n})
-<-asym = ℕₚ.<-asym
+<-asym = ℕ.<-asym
 
 <-trans : Transitive (_<_ {n})
-<-trans = ℕₚ.<-trans
+<-trans = ℕ.<-trans
 
 <-cmp : Trichotomous _≡_ (_<_ {n})
 <-cmp zero    zero    = tri≈ (λ()) refl  (λ())
@@ -394,7 +394,7 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 <-resp₂-≡ = <-respʳ-≡ , <-respˡ-≡
 
 <-irrelevant : Irrelevant (_<_ {m} {n})
-<-irrelevant = ℕₚ.<-irrelevant
+<-irrelevant = ℕ.<-irrelevant
 
 ------------------------------------------------------------------------
 -- Structures
@@ -430,10 +430,10 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 -- Other properties
 
 i<1+i : ∀ (i : Fin n) → i < suc i
-i<1+i = ℕₚ.n<1+n ∘ toℕ
+i<1+i = ℕ.n<1+n ∘ toℕ
 
 <⇒≢ : i < j → i ≢ j
-<⇒≢ i<i refl = ℕₚ.n≮n _ i<i
+<⇒≢ i<i refl = ℕ.n≮n _ i<i
 
 ≤∧≢⇒< : i ≤ j → i ≢ j → i < j
 ≤∧≢⇒< {i = zero}  {zero}  _         0≢0   = contradiction refl 0≢0
@@ -466,13 +466,13 @@ toℕ-inject₁ zero    = refl
 toℕ-inject₁ (suc i) = cong suc (toℕ-inject₁ i)
 
 toℕ-inject₁-≢ : ∀ (i : Fin n) → n ≢ toℕ (inject₁ i)
-toℕ-inject₁-≢ (suc i) = toℕ-inject₁-≢ i ∘ ℕₚ.suc-injective
+toℕ-inject₁-≢ (suc i) = toℕ-inject₁-≢ i ∘ ℕ.suc-injective
 
 inject₁ℕ< : ∀ (i : Fin n) → toℕ (inject₁ i) ℕ.< n
 inject₁ℕ< i rewrite toℕ-inject₁ i = toℕ<n i
 
 inject₁ℕ≤ : ∀ (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
-inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
+inject₁ℕ≤ = ℕ.<⇒≤ ∘ inject₁ℕ<
 
 ≤̄⇒inject₁< : i ≤ j → inject₁ i < suc j
 ≤̄⇒inject₁< {i = i} i≤j rewrite sym (toℕ-inject₁ i) = s<s i≤j
@@ -482,7 +482,7 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 
 i≤inject₁[j]⇒i≤1+j : i ≤ inject₁ j → i ≤ suc j
 i≤inject₁[j]⇒i≤1+j {i = zero}              _   = z≤n
-i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} i≤j = s≤s (ℕₚ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) (ℕ.s≤s⁻¹ i≤j)))
+i≤inject₁[j]⇒i≤1+j {i = suc i} {j = suc j} i≤j = s≤s (ℕ.m≤n⇒m≤1+n (subst (toℕ i ℕ.≤_) (toℕ-inject₁ j) (ℕ.s≤s⁻¹ i≤j)))
 
 ------------------------------------------------------------------------
 -- lower₁
@@ -552,7 +552,7 @@ inject≤-idempotent {_} {suc n} {suc o} (suc i) _ _ _ =
   cong suc (inject≤-idempotent i _ _ _)
 
 inject≤-trans : ∀ (i : Fin m) .(m≤n : m ℕ.≤ n) .(n≤o : n ℕ.≤ o) →
-                inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (ℕₚ.≤-trans m≤n n≤o)
+                inject≤ (inject≤ i m≤n) n≤o ≡ inject≤ i (ℕ.≤-trans m≤n n≤o)
 inject≤-trans i _ _ = inject≤-idempotent i _ _ _
 
 inject≤-injective : ∀ .(m≤n m≤n′ : m ℕ.≤ n) i j →
@@ -571,7 +571,7 @@ inject≤-irrelevant _ _ i = refl
 
 pred< : ∀ (i : Fin (suc n)) → i ≢ zero → pred i < i
 pred< zero    i≢0 = contradiction refl i≢0
-pred< (suc i) _   = ≤̄⇒inject₁< ℕₚ.≤-refl
+pred< (suc i) _   = ≤̄⇒inject₁< ℕ.≤-refl
 
 ------------------------------------------------------------------------
 -- splitAt
@@ -665,7 +665,7 @@ toℕ-combine {suc m} {n} i@0F j = begin
   toℕ (combine i j)          ≡⟨⟩
   toℕ (j ↑ˡ (m ℕ.* n))       ≡⟨ toℕ-↑ˡ j (m ℕ.* n) ⟩
   toℕ j                      ≡⟨⟩
-  0 ℕ.+ toℕ j                ≡⟨ cong (ℕ._+ toℕ j) (ℕₚ.*-zeroʳ n) ⟨
+  0 ℕ.+ toℕ j                ≡⟨ cong (ℕ._+ toℕ j) (ℕ.*-zeroʳ n) ⟨
   n ℕ.* toℕ i ℕ.+ toℕ j      ∎
   where open ≡-Reasoning
 toℕ-combine {suc m} {n} (suc i) j = begin
@@ -680,15 +680,15 @@ combine-monoˡ-< : ∀ {i j : Fin m} (k l : Fin n) →
                   i < j → combine i k < combine j l
 combine-monoˡ-< {m} {n} {i} {j} k l i<j = begin-strict
   toℕ (combine i k)      ≡⟨ toℕ-combine i k ⟩
-  n ℕ.* toℕ i ℕ.+ toℕ k  <⟨ ℕₚ.+-monoʳ-< (n ℕ.* toℕ i) (toℕ<n k) ⟩
-  n ℕ.* toℕ i ℕ.+ n      ≡⟨ ℕₚ.+-comm _ n ⟩
-  n ℕ.+ n ℕ.* toℕ i      ≡⟨ cong (n ℕ.+_) (ℕₚ.*-comm n _) ⟩
-  n ℕ.+ toℕ i ℕ.* n      ≡⟨ ℕₚ.*-comm (suc (toℕ i)) n ⟩
-  n ℕ.* suc (toℕ i)      ≤⟨ ℕₚ.*-monoʳ-≤ n (toℕ-mono-< i<j) ⟩
-  n ℕ.* toℕ j            ≤⟨ ℕₚ.m≤m+n (n ℕ.* toℕ j) (toℕ l) ⟩
+  n ℕ.* toℕ i ℕ.+ toℕ k  <⟨ ℕ.+-monoʳ-< (n ℕ.* toℕ i) (toℕ<n k) ⟩
+  n ℕ.* toℕ i ℕ.+ n      ≡⟨ ℕ.+-comm _ n ⟩
+  n ℕ.+ n ℕ.* toℕ i      ≡⟨ cong (n ℕ.+_) (ℕ.*-comm n _) ⟩
+  n ℕ.+ toℕ i ℕ.* n      ≡⟨ ℕ.*-comm (suc (toℕ i)) n ⟩
+  n ℕ.* suc (toℕ i)      ≤⟨ ℕ.*-monoʳ-≤ n (toℕ-mono-< i<j) ⟩
+  n ℕ.* toℕ j            ≤⟨ ℕ.m≤m+n (n ℕ.* toℕ j) (toℕ l) ⟩
   n ℕ.* toℕ j ℕ.+ toℕ l  ≡⟨ toℕ-combine j l ⟨
   toℕ (combine j l)      ∎
-  where open ℕₚ.≤-Reasoning; open +-*-Solver
+  where open ℕ.≤-Reasoning; open +-*-Solver
 
 combine-injectiveˡ : ∀ (i : Fin m) (j : Fin n) (k : Fin m) (l : Fin n) →
                      combine i j ≡ combine k l → i ≡ k
@@ -701,7 +701,7 @@ combine-injectiveʳ : ∀ (i : Fin m) (j : Fin n) (k : Fin m) (l : Fin n) →
                      combine i j ≡ combine k l → j ≡ l
 combine-injectiveʳ {m} {n} i j k l cᵢⱼ≡cₖₗ
   with refl ← combine-injectiveˡ i j k l cᵢⱼ≡cₖₗ
-  = toℕ-injective (ℕₚ.+-cancelˡ-≡ (n ℕ.* toℕ i) _ _ (begin
+  = toℕ-injective (ℕ.+-cancelˡ-≡ (n ℕ.* toℕ i) _ _ (begin
   n ℕ.* toℕ i ℕ.+ toℕ j ≡⟨ toℕ-combine i j ⟨
   toℕ (combine i j)     ≡⟨ cong toℕ cᵢⱼ≡cₖₗ ⟩
   toℕ (combine i l)     ≡⟨ toℕ-combine i l ⟩
@@ -817,12 +817,12 @@ toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 ℕ-ℕ≡toℕ‿ℕ- (suc n) (suc i) = ℕ-ℕ≡toℕ‿ℕ- n i
 
 nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ.≤ n
-nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
+nℕ-ℕi≤n n       zero     = ℕ.≤-refl
 nℕ-ℕi≤n (suc n) (suc i)  = begin
   n ℕ-ℕ i  ≤⟨ nℕ-ℕi≤n n i ⟩
-  n        ≤⟨ ℕₚ.n≤1+n n ⟩
+  n        ≤⟨ ℕ.n≤1+n n ⟩
   suc n    ∎
-  where open ℕₚ.≤-Reasoning
+  where open ℕ.≤-Reasoning
 
 ------------------------------------------------------------------------
 -- punchIn
@@ -1017,10 +1017,10 @@ injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
     (contraInjective inj 0≢1+n) eq))))
 
 <⇒notInjective : ∀ {f : Fin m → Fin n} → n ℕ.< m → ¬ (Injective _≡_ _≡_ f)
-<⇒notInjective n<m inj = ℕₚ.≤⇒≯ (injective⇒≤ inj) n<m
+<⇒notInjective n<m inj = ℕ.≤⇒≯ (injective⇒≤ inj) n<m
 
 ℕ→Fin-notInjective : ∀ (f : ℕ → Fin n) → ¬ (Injective _≡_ _≡_ f)
-ℕ→Fin-notInjective f inj = ℕₚ.<-irrefl refl
+ℕ→Fin-notInjective f inj = ℕ.<-irrefl refl
   (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
 
 -- Cantor-Schröder-Bernstein for finite sets
@@ -1028,7 +1028,7 @@ injective⇒≤ {suc _} {suc _} {f} inj = s≤s (injective⇒≤ (λ eq →
 cantor-schröder-bernstein : ∀ {f : Fin m → Fin n} {g : Fin n → Fin m} →
                             Injective _≡_ _≡_ f → Injective _≡_ _≡_ g →
                             m ≡ n
-cantor-schröder-bernstein f-inj g-inj = ℕₚ.≤-antisym
+cantor-schröder-bernstein f-inj g-inj = ℕ.≤-antisym
   (injective⇒≤ f-inj) (injective⇒≤ g-inj)
 
 ------------------------------------------------------------------------
@@ -1086,7 +1086,7 @@ opposite-involutive : Involutive {A = Fin n} _≡_ opposite
 opposite-involutive {suc n} i = toℕ-injective (begin
   toℕ (opposite (opposite i)) ≡⟨ opposite-prop (opposite i) ⟩
   n ∸ (toℕ (opposite i))      ≡⟨ cong (n ∸_) (opposite-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))           ≡⟨ ℕₚ.m∸[m∸n]≡n (toℕ≤pred[n] i) ⟩
+  n ∸ (n ∸ (toℕ i))           ≡⟨ ℕ.m∸[m∸n]≡n (toℕ≤pred[n] i) ⟩
   toℕ i                       ∎)
   where open ≡-Reasoning
 
@@ -1172,14 +1172,14 @@ private
   ≺⇒< (n ≻toℕ i) = toℕ<n i
 
 ≺⇒<′ : _≺_ ⇒ ℕ._<′_
-≺⇒<′ lt = ℕₚ.<⇒<′ (≺⇒< lt)
+≺⇒<′ lt = ℕ.<⇒<′ (≺⇒< lt)
 {-# WARNING_ON_USAGE ≺⇒<′
 "Warning: ≺⇒<′ was deprecated in v2.0.
 Please use <⇒<′ instead."
 #-}
 
 <′⇒≺ : ℕ._<′_ ⇒ _≺_
-<′⇒≺ lt = <⇒≺ (ℕₚ.<′⇒< lt)
+<′⇒≺ lt = <⇒≺ (ℕ.<′⇒< lt)
 {-# WARNING_ON_USAGE <′⇒≺
 "Warning: <′⇒≺ was deprecated in v2.0.
 Please use <′⇒< instead."

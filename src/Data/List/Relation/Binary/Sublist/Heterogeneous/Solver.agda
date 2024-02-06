@@ -21,8 +21,8 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
-open import Data.Maybe.Base as M
-open import Data.Nat.Base as Nat using (ℕ)
+open import Data.Maybe.Base as Maybe
+open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
 open import Data.List.Base hiding (lookup)
@@ -124,8 +124,8 @@ private
 
 -- Solver for items
 solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)
-solveI (var k) (var l) = M.map var $ decToMaybe (k Fin.≟ l)
-solveI (val a) (val b) = M.map val $ decToMaybe (R? a b)
+solveI (var k) (var l) = Maybe.map var $ decToMaybe (k Fin.≟ l)
+solveI (val a) (val b) = Maybe.map val $ decToMaybe (R? a b)
 solveI _ _ = nothing
 
 -- Solver for linearised expressions
@@ -135,8 +135,8 @@ solveR [] e  = just (λ ρ → minimum _)
 solveR d  [] = nothing
 -- actual work
 solveR (a ∷ d) (b ∷ e) with solveI a b
-... | just it = M.map (keep-it it d e) (solveR d e)
-... | nothing = M.map (skip-it b (a ∷ d) e) (solveR (a ∷ d) e)
+... | just it = Maybe.map (keep-it it d e) (solveR d e)
+... | nothing = Maybe.map (skip-it b (a ∷ d) e) (solveR (a ∷ d) e)
 
 -- Coming back to ASTs thanks to flatten
 
