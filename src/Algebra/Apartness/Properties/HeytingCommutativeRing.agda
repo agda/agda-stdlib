@@ -21,7 +21,7 @@ open CommutativeRing commutativeRing using (ring; *-commutativeMonoid)
 open import Algebra.Properties.Ring ring
   using (-0#≈0#; -‿distribˡ-*; -‿distribʳ-*; -‿anti-homo-+; -‿involutive)
 open import Relation.Binary.Definitions using (Symmetric)
-import Relation.Binary.Reasoning.Setoid as ReasonSetoid
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Algebra.Properties.CommutativeMonoid *-commutativeMonoid
 
 private variable
@@ -50,7 +50,7 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
   helper (x⁻¹ , x⁻¹*x≈1 , x*x⁻¹≈1) (y⁻¹ , y⁻¹*y≈1 , y*y⁻¹≈1)
     = invertibleˡ⇒# (y⁻¹ * x⁻¹ , y⁻¹*x⁻¹*x*y≈1)
     where
-    open ReasonSetoid setoid
+    open ≈-Reasoning setoid
 
     y⁻¹*x⁻¹*x*y≈1 : y⁻¹ * x⁻¹ * (x * y - 0#) ≈ 1#
     y⁻¹*x⁻¹*x*y≈1 = begin
@@ -67,7 +67,7 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
 #-sym : Symmetric _#_
 #-sym {x} {y} x#y = invertibleˡ⇒# (- x-y⁻¹ , x-y⁻¹*y-x≈1)
   where
-  open ReasonSetoid setoid
+  open ≈-Reasoning setoid
   InvX-Y : Invertible _≈_ 1# _*_ (x - y)
   InvX-Y = #⇒invertible x#y
 
@@ -96,7 +96,7 @@ x#0y#0→xy#0 {x} {y} x#0 y#0 = helper (#⇒invertible x#0) (#⇒invertible y#0)
   helper (x-z⁻¹ , x-z⁻¹*x-z≈1# , x-z*x-z⁻¹≈1#)
     = invertibleˡ⇒# (x-z⁻¹ , x-z⁻¹*y-z≈1)
     where
-    open ReasonSetoid setoid
+    open ≈-Reasoning setoid
 
     x-z⁻¹*y-z≈1 : x-z⁻¹ * (y - z) ≈ 1#
     x-z⁻¹*y-z≈1 = begin

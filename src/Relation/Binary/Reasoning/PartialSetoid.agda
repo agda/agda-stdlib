@@ -15,14 +15,14 @@ module Relation.Binary.Reasoning.PartialSetoid
 open PartialSetoid S
 
 import Relation.Binary.Reasoning.Base.Partial _≈_ trans
-  as PartialReasoning
+  as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
 -- Export the combinators for partial relation reasoning, hiding the
 -- single misnamed combinator.
-open PartialReasoning public hiding (step-∼)
+open ≈-Reasoning public hiding (step-∼)
 
 -- Re-export the equality-based combinators instead
-open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ PartialReasoning.∼-go sym public
+open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ ≈-Reasoning.∼-go sym public

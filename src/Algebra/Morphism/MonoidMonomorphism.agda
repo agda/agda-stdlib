@@ -25,7 +25,7 @@ open RawMonoid M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; �
 open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Product.Base using (map)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Re-export all properties of magma monomorphisms
@@ -39,7 +39,7 @@ open import Algebra.Morphism.MagmaMonomorphism
 module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   identityˡ : LeftIdentity _≈₂_ ε₂ _◦_ → LeftIdentity _≈₁_ ε₁ _∙_
   identityˡ idˡ x = injective (begin

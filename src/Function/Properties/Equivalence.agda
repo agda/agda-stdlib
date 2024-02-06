@@ -14,7 +14,7 @@ open import Level
 open import Relation.Binary.Definitions
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
-import Relation.Binary.PropositionalEquality.Properties as Eq
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 import Function.Construct.Identity as Identity
 import Function.Construct.Symmetry as Symmetry
@@ -83,7 +83,7 @@ setoid s₁ s₂ = record
 
 ⇔-isEquivalence : IsEquivalence {ℓ = ℓ} _⇔_
 ⇔-isEquivalence = record
-  { refl = λ {x} → Identity.equivalence (Eq.setoid x)
+  { refl = λ {x} → Identity.equivalence (≡.setoid x)
   ; sym = Symmetry.equivalence
   ; trans = Composition.equivalence
   }
