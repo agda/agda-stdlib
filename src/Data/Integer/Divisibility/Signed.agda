@@ -69,8 +69,8 @@ open _∣_ using (quotient) public
 
   sign-eq : sign i ≡ sign (ikq * k)
   sign-eq = sym $ begin
-    sign (ikq * k)                  ≡⟨ sign-◃ (sign ikq Sign.* sign k) (∣ ikq ∣ ℕ.* ∣ k ∣) ⟩
-    sign ikq Sign.* sign k             ≡⟨ cong (Sign._* sign k) (sign-◃ (sign i Sign.* sign k) q) ⟩
+    sign (ikq * k)                        ≡⟨ sign-◃ (sign ikq Sign.* sign k) (∣ ikq ∣ ℕ.* ∣ k ∣) ⟩
+    sign ikq Sign.* sign k                ≡⟨ cong (Sign._* sign k) (sign-◃ (sign i Sign.* sign k) q) ⟩
     (sign i Sign.* sign k) Sign.* sign k  ≡⟨ Sign.*-assoc (sign i) (sign k) (sign k) ⟩
     sign i Sign.* (sign k Sign.* sign k)  ≡⟨ cong (sign i Sign.*_) (Sign.s*s≡+ (sign k)) ⟩
     sign i Sign.* Sign.+                  ≡⟨ Sign.*-identityʳ (sign i) ⟩
