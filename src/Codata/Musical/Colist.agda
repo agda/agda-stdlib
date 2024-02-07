@@ -21,7 +21,7 @@ open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
-open import Data.Product.Base as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function.Base
@@ -108,7 +108,7 @@ Any-∈ {P = P} = mk↔ₛ′
   where
   to : ∀ {xs} → Any P xs → ∃ λ x → x ∈ xs × P x
   to (here  p) = _ , here P.refl , p
-  to (there p) = Prod.map id (Prod.map there id) (to p)
+  to (there p) = Product.map id (Product.map there id) (to p)
 
   from : ∀ {x xs} → x ∈ xs → P x → Any P xs
   from (here P.refl) p = here p
@@ -118,7 +118,7 @@ Any-∈ {P = P} = mk↔ₛ′
             to (from x∈xs p) ≡ (x , x∈xs , p)
   to∘from (here P.refl) p = P.refl
   to∘from (there x∈xs)  p =
-    P.cong (Prod.map id (Prod.map there id)) (to∘from x∈xs p)
+    P.cong (Product.map id (Product.map there id)) (to∘from x∈xs p)
 
   from∘to : ∀ {xs} (p : Any P xs) →
             let (x , x∈xs , px) = to p in from x∈xs px ≡ p
