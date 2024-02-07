@@ -15,7 +15,7 @@ open import Data.List.Base using ([]; _∷_)
 import Data.List.Relation.Unary.Any as List
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Product.Base as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
 open import Data.Vec.Base hiding (here; there)
 open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
@@ -365,7 +365,7 @@ module _ {P : Pred A p} where
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               Any P (tabulate f) → ∃ λ i → P (f i)
   tabulate⁻ (here p)  = zero , p
-  tabulate⁻ (there p) = Prod.map suc id (tabulate⁻ p)
+  tabulate⁻ (there p) = Product.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- mapWith∈
@@ -384,7 +384,7 @@ module _ {P : Pred B p} where
               ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)
   mapWith∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
   mapWith∈⁻ (y ∷ xs) f (there p) =
-    Prod.map id (Prod.map there id) $ mapWith∈⁻ xs (f ∘ there) p
+    Product.map id (Product.map there id) $ mapWith∈⁻ xs (f ∘ there) p
 
   mapWith∈↔ : ∀ {n} {xs : Vec A n} {f : ∀ {x} → x ∈ xs → B} →
     (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (mapWith∈ xs f)

@@ -13,7 +13,7 @@ module Relation.Binary.Properties.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
 
 open import Function.Base using (flip)
-open import Data.Product.Base as Prod using (_×_; _,_; swap)
+open import Data.Product.Base as Product using (_×_; _,_; swap)
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 
 open Preorder P
@@ -37,7 +37,7 @@ InducedEquivalence = record
   ; isEquivalence = record
     { refl  = (refl , refl)
     ; sym   = swap
-    ; trans = Prod.zip trans (flip trans)
+    ; trans = Product.zip trans (flip trans)
     }
   }
 

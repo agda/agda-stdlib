@@ -15,7 +15,7 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.Empty.Polymorphic using (⊥) renaming (⊥-elim to ⊥ₚ-elim)
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
   using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃)
 open import Data.Product.Function.NonDependent.Propositional
 open import Data.Sum.Base as Sum
@@ -47,12 +47,12 @@ private
 -- Σ is associative
 Σ-assoc : ∀ {A : Set a} {B : A → Set b} {C : (a : A) → B a → Set c} →
           Σ (Σ A B) (uncurry C) ↔ Σ A (λ a → Σ (B a) (C a))
-Σ-assoc = mk↔ₛ′ Prod.assocʳ Prod.assocˡ (λ _ → P.refl) (λ _ → P.refl)
+Σ-assoc = mk↔ₛ′ Product.assocʳ Product.assocˡ (λ _ → P.refl) (λ _ → P.refl)
 
 -- × is commutative
 
 ×-comm : ∀ (A : Set a) (B : Set b) → (A × B) ↔ (B × A)
-×-comm _ _ = mk↔ₛ′ Prod.swap Prod.swap (λ _ → P.refl) λ _ → P.refl
+×-comm _ _ = mk↔ₛ′ Product.swap Product.swap (λ _ → P.refl) λ _ → P.refl
 
 -- × has ⊤ as its identity
 
@@ -114,14 +114,14 @@ private
 ×-distribˡ-⊎ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
 ×-distribˡ-⊎ ℓ _ _ _ = mk↔ₛ′
   (uncurry λ x → [ inj₁ ∘′ (x ,_) , inj₂ ∘′ (x ,_) ]′)
-  [ Prod.map₂ inj₁ , Prod.map₂ inj₂ ]′
+  [ Product.map₂ inj₁ , Product.map₂ inj₂ ]′
   [ (λ _ → P.refl) , (λ _ → P.refl) ]
   (uncurry λ _ → [ (λ _ → P.refl) , (λ _ → P.refl) ])
 
 ×-distribʳ-⊎ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
 ×-distribʳ-⊎ ℓ _ _ _ = mk↔ₛ′
   (uncurry [ curry inj₁ , curry inj₂ ]′)
-  [ Prod.map₁ inj₁ , Prod.map₁ inj₂ ]′
+  [ Product.map₁ inj₁ , Product.map₁ inj₂ ]′
   [ (λ _ → P.refl) , (λ _ → P.refl) ]
   (uncurry [ (λ _ _ → P.refl) , (λ _ _ → P.refl) ])
 
