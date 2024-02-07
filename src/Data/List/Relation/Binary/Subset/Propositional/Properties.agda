@@ -21,7 +21,7 @@ open import Data.List.Effectful
 open import Data.List.Relation.Unary.Any using (Any)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
-import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
+import Data.List.Relation.Binary.Subset.Setoid.Properties as Subset
 open import Data.List.Relation.Binary.Subset.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
@@ -79,7 +79,7 @@ module _ (A : Set a) where
 ------------------------------------------------------------------------
 -- Relational properties with _↭_ (permutation)
 ------------------------------------------------------------------------
--- See issue #1354 for why these proofs can't be taken from `Setoidₚ`
+-- See issue #1354 for why these proofs can't be taken from `Subset`
 
 ⊆-reflexive-↭ : _↭_ {A = A} ⇒ _⊆_
 ⊆-reflexive-↭ xs↭ys = Permutation.∈-resp-↭ xs↭ys
@@ -109,7 +109,7 @@ module _ (A : Set a) where
 ------------------------------------------------------------------------
 
 module ⊆-Reasoning (A : Set a) where
-  open Setoidₚ.⊆-Reasoning (setoid A) public
+  open Subset.⊆-Reasoning (setoid A) public
     hiding (step-≋; step-≋˘)
 
 ------------------------------------------------------------------------
@@ -117,10 +117,10 @@ module ⊆-Reasoning (A : Set a) where
 ------------------------------------------------------------------------
 
 Any-resp-⊆ : ∀ {P : Pred A p} → (Any P) Respects _⊆_
-Any-resp-⊆ = Setoidₚ.Any-resp-⊆ (setoid _) (subst _)
+Any-resp-⊆ = Subset.Any-resp-⊆ (setoid _) (subst _)
 
 All-resp-⊇ : ∀ {P : Pred A p} → (All P) Respects _⊇_
-All-resp-⊇ = Setoidₚ.All-resp-⊇ (setoid _) (subst _)
+All-resp-⊇ = Subset.All-resp-⊇ (setoid _) (subst _)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
@@ -137,31 +137,31 @@ map⁺ f xs⊆ys =
 -- ∷
 
 xs⊆x∷xs : ∀ (xs : List A) x → xs ⊆ x ∷ xs
-xs⊆x∷xs = Setoidₚ.xs⊆x∷xs (setoid _)
+xs⊆x∷xs = Subset.xs⊆x∷xs (setoid _)
 
 ∷⁺ʳ : ∀ x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
-∷⁺ʳ = Setoidₚ.∷⁺ʳ (setoid _)
+∷⁺ʳ = Subset.∷⁺ʳ (setoid _)
 
 ∈-∷⁺ʳ : ∀ {x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
-∈-∷⁺ʳ = Setoidₚ.∈-∷⁺ʳ (setoid _)
+∈-∷⁺ʳ = Subset.∈-∷⁺ʳ (setoid _)
 
 ------------------------------------------------------------------------
 -- _++_
 
 xs⊆xs++ys : ∀ (xs ys : List A) → xs ⊆ xs ++ ys
-xs⊆xs++ys = Setoidₚ.xs⊆xs++ys (setoid _)
+xs⊆xs++ys = Subset.xs⊆xs++ys (setoid _)
 
 xs⊆ys++xs : ∀ (xs ys : List A) → xs ⊆ ys ++ xs
-xs⊆ys++xs = Setoidₚ.xs⊆ys++xs (setoid _)
+xs⊆ys++xs = Subset.xs⊆ys++xs (setoid _)
 
 ++⁺ʳ : ∀ zs → xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
-++⁺ʳ = Setoidₚ.++⁺ʳ (setoid _)
+++⁺ʳ = Subset.++⁺ʳ (setoid _)
 
 ++⁺ˡ : ∀ zs → xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
-++⁺ˡ = Setoidₚ.++⁺ˡ (setoid _)
+++⁺ˡ = Subset.++⁺ˡ (setoid _)
 
 ++⁺ : ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
-++⁺ = Setoidₚ.++⁺ (setoid _)
+++⁺ = Subset.++⁺ (setoid _)
 
 ------------------------------------------------------------------------
 -- concat
@@ -178,7 +178,7 @@ module _ {xss yss : List (List A)} where
 -- applyUpTo
 
 applyUpTo⁺ : ∀ (f : ℕ → A) {m n} → m ≤ n → applyUpTo f m ⊆ applyUpTo f n
-applyUpTo⁺ = Setoidₚ.applyUpTo⁺ (setoid _)
+applyUpTo⁺ = Subset.applyUpTo⁺ (setoid _)
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -248,12 +248,12 @@ module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
 module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-⊆ : ∀ xs → filter P? xs ⊆ xs
-  filter-⊆ = Setoidₚ.filter-⊆ (setoid A) P?
+  filter-⊆ = Subset.filter-⊆ (setoid A) P?
 
   module _ {Q : Pred A q} (Q? : Decidable Q) where
 
     filter⁺′ : P ⋐ Q → ∀ {xs ys} → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
-    filter⁺′ = Setoidₚ.filter⁺′ (setoid A) P? (resp P) Q? (resp Q)
+    filter⁺′ = Subset.filter⁺′ (setoid A) P? (resp P) Q? (resp Q)
 
 
 ------------------------------------------------------------------------

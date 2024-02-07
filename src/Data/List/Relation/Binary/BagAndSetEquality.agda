@@ -15,7 +15,7 @@ open import Data.Empty
 open import Data.Fin.Base
 open import Data.List.Base
 open import Data.List.Effectful using (monad; module Applicative; module MonadProperties)
-import Data.List.Properties as LP
+import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties hiding (++-comm)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -232,7 +232,7 @@ commutativeMonoid {a} k A = record
         ; ∙-cong        = ++-cong
         }
       ; assoc         = λ xs ys zs →
-                          Eq.reflexive (LP.++-assoc xs ys zs)
+                          Eq.reflexive (List.++-assoc xs ys zs)
       }
     ; identityˡ = λ xs → K-refl
     ; comm      = λ xs ys → ↔⇒ (++↔++ xs ys)
