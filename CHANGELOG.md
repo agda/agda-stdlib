@@ -56,6 +56,7 @@ Additions to existing modules
   rawNearSemiring   : RawNearSemiring _ _
   rawRingWithoutOne : RawRingWithoutOne _ _
   +-rawGroup        : RawGroup _ _
+  ```
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
 
