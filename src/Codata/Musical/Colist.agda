@@ -31,8 +31,8 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Poset; Setoid; Preorder)
 open import Relation.Binary.Definitions using (Transitive; Antisymmetric)
 import Relation.Binary.Construct.FromRel as Ind
-import Relation.Binary.Reasoning.Preorder as PreR
-import Relation.Binary.Reasoning.PartialOrder as POR
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Binary.Reasoning.Syntax
 open import Relation.Nullary.Reflects using (invert)
@@ -164,7 +164,7 @@ Any-∈ {P = P} = mk↔ₛ′
   antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
 module ⊑-Reasoning {a} {A : Set a} where
-  private module Base = POR (⊑-Poset A)
+  private module Base = ≤-Reasoning (⊑-Poset A)
 
   open Base public hiding (step-<; step-≤)
 
@@ -188,7 +188,7 @@ module ⊑-Reasoning {a} {A : Set a} where
 --      ys ≡⟨ ys≡zs ⟩
 --      zs  ∎
 module ⊆-Reasoning {A : Set a} where
-  private module Base = PreR (⊆-Preorder A)
+  private module Base = ≲-Reasoning (⊆-Preorder A)
 
   open Base public
     hiding (step-≲; step-∼)
