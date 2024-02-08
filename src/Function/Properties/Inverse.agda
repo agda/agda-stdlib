@@ -16,9 +16,9 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Function.Consequences.Setoid as Consequences
 
 import Function.Construct.Identity as Identity
@@ -148,8 +148,8 @@ module _ (ext : ∀ {a b} → Extensionality a b) where
   ↔-fun A↔B C↔D = mk↔ₛ′
     (λ a→c b → to C↔D (a→c (from A↔B b)))
     (λ b→d a → from C↔D (b→d (to A↔B a)))
-    (λ b→d → ext λ _ → P.trans (strictlyInverseˡ C↔D _ ) (P.cong b→d (strictlyInverseˡ A↔B _)))
-    (λ a→c → ext λ _ → P.trans (strictlyInverseʳ C↔D _ ) (P.cong a→c (strictlyInverseʳ A↔B _)))
+    (λ b→d → ext λ _ → ≡.trans (strictlyInverseˡ C↔D _ ) (≡.cong b→d (strictlyInverseˡ A↔B _)))
+    (λ a→c → ext λ _ → ≡.trans (strictlyInverseʳ C↔D _ ) (≡.cong a→c (strictlyInverseʳ A↔B _)))
     where open Inverse
 
 module _ (I : Inverse S T) where

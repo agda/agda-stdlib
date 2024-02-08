@@ -38,7 +38,7 @@ open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})

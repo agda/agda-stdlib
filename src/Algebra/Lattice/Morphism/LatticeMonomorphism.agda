@@ -18,7 +18,7 @@ import Algebra.Lattice.Properties.Lattice as LatticeProperties
 open import Data.Product.Base using (_,_; map)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Morphism.RelMonomorphism as RelMonomorphisms
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 module Algebra.Lattice.Morphism.LatticeMonomorphism
   {a b ℓ₁ ℓ₂} {L₁ : RawLattice a ℓ₁} {L₂ : RawLattice b ℓ₂} {⟦_⟧}
@@ -73,7 +73,7 @@ module _ (⊔-⊓-isLattice : IsLattice _≈₂_ _⊔_ _⊓_) where
   setoid : Setoid b ℓ₂
   setoid = record { isEquivalence = isEquivalence }
 
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   ∨-absorbs-∧ : _Absorbs_ _≈₁_ _∨_ _∧_
   ∨-absorbs-∧ x y = injective (begin
