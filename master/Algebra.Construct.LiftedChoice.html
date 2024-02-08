@@ -21,7 +21,7 @@
 <a id="724" class="Keyword">open</a> <a id="729" class="Keyword">import</a> <a id="736" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a> <a id="779" class="Symbol">as</a> <a id="782" class="Module">P</a> <a id="784" class="Keyword">using</a> <a id="790" class="Symbol">(</a><a id="791" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">_≡_</a><a id="794" class="Symbol">)</a>
 <a id="796" class="Keyword">open</a> <a id="801" class="Keyword">import</a> <a id="808" href="Relation.Unary.html" class="Module">Relation.Unary</a> <a id="823" class="Keyword">using</a> <a id="829" class="Symbol">(</a><a id="830" href="Relation.Unary.html#1178" class="Function">Pred</a><a id="834" class="Symbol">)</a>
 
-<a id="837" class="Keyword">import</a> <a id="844" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="877" class="Symbol">as</a> <a id="880" class="Module">EqReasoning</a>
+<a id="837" class="Keyword">import</a> <a id="844" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="877" class="Symbol">as</a> <a id="880" class="Module">≈-Reasoning</a>
 
 <a id="893" class="Keyword">private</a>
   <a id="903" class="Keyword">variable</a>
@@ -47,7 +47,7 @@
 
   <a id="1424" class="Keyword">private</a> <a id="1432" class="Keyword">module</a> <a id="1439" href="Algebra.Construct.LiftedChoice.html#1439" class="Module">M</a> <a id="1441" class="Symbol">=</a> <a id="1443" href="Algebra.Structures.html#2750" class="Module">IsSelectiveMagma</a> <a id="1460" href="Algebra.Construct.LiftedChoice.html#1368" class="Bound">∙-isSelectiveMagma</a>
   <a id="1481" class="Keyword">open</a> <a id="1486" href="Algebra.Construct.LiftedChoice.html#1439" class="Module">M</a> <a id="1488" class="Keyword">hiding</a> <a id="1495" class="Symbol">(</a><a id="1496" href="Algebra.Structures.html#2835" class="Field">sel</a><a id="1499" class="Symbol">;</a> <a id="1501" href="Algebra.Structures.html#2811" class="Field">isMagma</a><a id="1508" class="Symbol">)</a>
-  <a id="1512" class="Keyword">open</a> <a id="1517" href="Relation.Binary.Reasoning.Setoid.html" class="Module">EqReasoning</a> <a id="1529" href="Algebra.Structures.html#1390" class="Function">setoid</a>
+  <a id="1512" class="Keyword">open</a> <a id="1517" href="Relation.Binary.Reasoning.Setoid.html" class="Module">≈-Reasoning</a> <a id="1529" href="Algebra.Structures.html#1390" class="Function">setoid</a>
 
   <a id="1539" class="Keyword">module</a> <a id="1546" href="Algebra.Construct.LiftedChoice.html#1546" class="Module">_</a> <a id="1548" class="Symbol">(</a><a id="1549" href="Algebra.Construct.LiftedChoice.html#1549" class="Bound">f</a> <a id="1551" class="Symbol">:</a> <a id="1553" href="Algebra.Construct.LiftedChoice.html#936" class="Generalizable">A</a> <a id="1555" class="Symbol">→</a> <a id="1557" href="Algebra.Construct.LiftedChoice.html#1339" class="Bound">B</a><a id="1558" class="Symbol">)</a> <a id="1560" class="Keyword">where</a>
 
