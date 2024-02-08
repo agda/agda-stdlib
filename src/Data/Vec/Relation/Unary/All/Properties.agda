@@ -14,7 +14,6 @@ open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec.Base as Vec
-import Data.Vec.Properties as Vecₚ
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Level using (Level)
 open import Function.Base using (_∘_; id)

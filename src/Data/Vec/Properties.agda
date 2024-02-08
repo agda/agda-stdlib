@@ -13,7 +13,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin
   using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
-import Data.List.Properties as Listₚ
+import Data.List.Properties as List
 open import Data.Nat.Base
 open import Data.Nat.Properties
   using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; suc-injective; +-comm; +-suc)
@@ -1294,29 +1294,29 @@ cast-fromList : ∀ {xs ys : List A} (eq : xs ≡ ys) →
                 cast (cong List.length eq) (fromList xs) ≡ fromList ys
 cast-fromList {xs = List.[]}     {ys = List.[]}     eq = refl
 cast-fromList {xs = x List.∷ xs} {ys = y List.∷ ys} eq =
-  let x≡y , xs≡ys = Listₚ.∷-injective eq in begin
+  let x≡y , xs≡ys = List.∷-injective eq in begin
   x ∷ cast (cong (pred ∘ List.length) eq) (fromList xs) ≡⟨ cong (_ ∷_) (cast-fromList xs≡ys) ⟩
   x ∷ fromList ys                                       ≡⟨ cong (_∷ _) x≡y ⟩
   y ∷ fromList ys                                       ∎
   where open ≡-Reasoning
 
 fromList-map : ∀ (f : A → B) (xs : List A) →
-               cast (Listₚ.length-map f xs) (fromList (List.map f xs)) ≡ map f (fromList xs)
+               cast (List.length-map f xs) (fromList (List.map f xs)) ≡ map f (fromList xs)
 fromList-map f List.[]       = refl
 fromList-map f (x List.∷ xs) = cong (f x ∷_) (fromList-map f xs)
 
 fromList-++ : ∀ (xs : List A) {ys : List A} →
-              cast (Listₚ.length-++ xs) (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
+              cast (List.length-++ xs) (fromList (xs List.++ ys)) ≡ fromList xs ++ fromList ys
 fromList-++ List.[]       {ys} = cast-is-id refl (fromList ys)
 fromList-++ (x List.∷ xs) {ys} = cong (x ∷_) (fromList-++ xs)
 
-fromList-reverse : (xs : List A) → cast (Listₚ.length-reverse xs) (fromList (List.reverse xs)) ≡ reverse (fromList xs)
+fromList-reverse : (xs : List A) → cast (List.length-reverse xs) (fromList (List.reverse xs)) ≡ reverse (fromList xs)
 fromList-reverse List.[] = refl
 fromList-reverse (x List.∷ xs) = begin
-  fromList (List.reverse (x List.∷ xs))         ≈⟨ cast-fromList (Listₚ.ʳ++-defn xs) ⟩
+  fromList (List.reverse (x List.∷ xs))         ≈⟨ cast-fromList (List.ʳ++-defn xs) ⟩
   fromList (List.reverse xs List.++ List.[ x ]) ≈⟨ fromList-++ (List.reverse xs) ⟩
   fromList (List.reverse xs) ++ [ x ]           ≈⟨ unfold-∷ʳ (+-comm 1 _) x (fromList (List.reverse xs)) ⟨
-  fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (Listₚ.length-reverse xs)) _ _)
+  fromList (List.reverse xs) ∷ʳ x               ≈⟨ ≈-cong (_∷ʳ x) (cast-∷ʳ (cong suc (List.length-reverse xs)) _ _)
                                                           (fromList-reverse xs) ⟩
   reverse (fromList xs) ∷ʳ x                    ≂⟨ reverse-∷ x (fromList xs) ⟨
   reverse (x ∷ fromList xs)                     ≈⟨⟩

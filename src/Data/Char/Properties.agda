@@ -27,10 +27,10 @@ open import Relation.Binary.Definitions
 import Relation.Binary.Construct.On as On
 import Relation.Binary.Construct.Subst.Equality as Subst
 import Relation.Binary.Construct.Closure.Reflexive as Refl
-import Relation.Binary.Construct.Closure.Reflexive.Properties as Reflₚ
-open import Relation.Binary.PropositionalEquality.Core as PropEq
+import Relation.Binary.Construct.Closure.Reflexive.Properties as Refl
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; cong; sym; trans; subst)
-import Relation.Binary.PropositionalEquality.Properties as PropEq
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 ------------------------------------------------------------------------
 -- Primitive properties
@@ -59,13 +59,13 @@ _≟_ : Decidable {A = Char} _≡_
 x ≟ y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕ.≟ toℕ y)
 
 setoid : Setoid _ _
-setoid = PropEq.setoid Char
+setoid = ≡.setoid Char
 
 decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
+decSetoid = ≡.decSetoid _≟_
 
 isDecEquivalence : IsDecEquivalence _≡_
-isDecEquivalence = PropEq.isDecEquivalence _≟_
+isDecEquivalence = ≡.isDecEquivalence _≟_
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
@@ -114,11 +114,11 @@ _<?_ = On.decidable toℕ ℕ._<_ ℕ._<?_
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
 <-isStrictPartialOrder = record
-  { isEquivalence = PropEq.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; irrefl        = <-irrefl
   ; trans         = λ {a} {b} {c} → <-trans {a} {b} {c}
-  ; <-resp-≈      = (λ {c} → PropEq.subst (c <_))
-                  , (λ {c} → PropEq.subst (_< c))
+  ; <-resp-≈      = (λ {c} → ≡.subst (c <_))
+                  , (λ {c} → ≡.subst (_< c))
   }
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
@@ -142,20 +142,20 @@ _<?_ = On.decidable toℕ ℕ._<_ ℕ._<?_
 
 infix 4 _≤?_
 _≤?_ : Decidable _≤_
-_≤?_ = Reflₚ.decidable <-cmp
+_≤?_ = Refl.decidable <-cmp
 
 ≤-reflexive : _≡_ ⇒ _≤_
 ≤-reflexive = Refl.reflexive
 
 ≤-trans : Transitive _≤_
-≤-trans = Reflₚ.trans (λ {a} {b} {c} → <-trans {a} {b} {c})
+≤-trans = Refl.trans (λ {a} {b} {c} → <-trans {a} {b} {c})
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym = Reflₚ.antisym _≡_ refl ℕ.<-asym
+≤-antisym = Refl.antisym _≡_ refl ℕ.<-asym
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record
-  { isEquivalence = PropEq.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; reflexive     = ≤-reflexive
   ; trans         = ≤-trans
   }
