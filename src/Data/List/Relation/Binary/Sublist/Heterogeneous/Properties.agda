@@ -15,13 +15,13 @@ open import Data.Empty
 open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
-import Data.List.Properties as Lₚ
+import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
 open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
 
-open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
+open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
@@ -90,9 +90,9 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   tail-Sublist : ∀ {as bs} → Sublist R as bs →
-                 MAll.All (λ as → Sublist R as bs) (tail as)
+                 Maybe.All (λ as → Sublist R as bs) (tail as)
   tail-Sublist []        = nothing
-  tail-Sublist (b ∷ʳ ps) = MAll.map (b ∷ʳ_) (tail-Sublist ps)
+  tail-Sublist (b ∷ʳ ps) = Maybe.map (b ∷ʳ_) (tail-Sublist ps)
   tail-Sublist (p ∷ ps)  = just (_ ∷ʳ ps)
 
   take-Sublist : ∀ {as bs} n → Sublist R as bs → Sublist R (take n as) bs
@@ -308,7 +308,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   reverse⁻ : ∀ {as bs} → Sublist R (reverse as) (reverse bs) → Sublist R as bs
   reverse⁻ {as} {bs} p = cast (reverse⁺ p) where
-    cast = P.subst₂ (Sublist R) (Lₚ.reverse-involutive as) (Lₚ.reverse-involutive bs)
+    cast = P.subst₂ (Sublist R) (List.reverse-involutive as) (List.reverse-involutive bs)
 
 ------------------------------------------------------------------------
 -- Inversion lemmas

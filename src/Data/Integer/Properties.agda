@@ -24,7 +24,7 @@ open import Data.Nat.Solver
 open import Data.Product.Base using (proj₁; proj₂; _,_; _×_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _𝕊*_)
-import Data.Sign.Properties as 𝕊ₚ
+import Data.Sign.Properties as Sign
 open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
@@ -1597,7 +1597,7 @@ abs-* i j = abs-◃ _ _
 *-cancelʳ-≡ : ∀ i j k .{{_ : NonZero k}} → i * k ≡ j * k → i ≡ j
 *-cancelʳ-≡ i j k eq with sign-cong′ eq
 ... | inj₁ s[ik]≡s[jk] = ◃-cong
-  (𝕊ₚ.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
+  (Sign.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
   (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ _ (abs-cong eq))
 ... | inj₂ (∣ik∣≡0 , ∣jk∣≡0) = trans
   (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣ik∣≡0))
@@ -1709,7 +1709,7 @@ neg-distribʳ-* i j = begin
 ◃-distrib-* s t zero    (suc n) = refl
 ◃-distrib-* s t (suc m) zero    =
   trans
-    (cong₂ _◃_ (𝕊ₚ.*-comm s t) (ℕ.*-comm m 0))
+    (cong₂ _◃_ (Sign.*-comm s t) (ℕ.*-comm m 0))
     (*-comm (t ◃ zero) (s ◃ suc m))
 ◃-distrib-* s t (suc m) (suc n) =
   sym (cong₂ _◃_

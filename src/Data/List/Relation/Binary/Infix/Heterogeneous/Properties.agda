@@ -27,7 +27,7 @@ open import Data.List.Relation.Binary.Pointwise.Base as Pointwise using (Pointwi
 open import Data.List.Relation.Binary.Infix.Heterogeneous
 open import Data.List.Relation.Binary.Prefix.Heterogeneous
   as Prefix using (Prefix; []; _∷_)
-import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties as Prefixₚ
+import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties as Prefix
 open import Data.List.Relation.Binary.Suffix.Heterogeneous
   as Suffix using (Suffix; here; there)
 
@@ -43,7 +43,7 @@ private
 -- Conversion functions
 
 fromPointwise : ∀ {as bs} → Pointwise R as bs → Infix R as bs
-fromPointwise pw = here (Prefixₚ.fromPointwise pw)
+fromPointwise pw = here (Prefix.fromPointwise pw)
 
 fromSuffix : ∀ {as bs} → Suffix R as bs → Infix R as bs
 fromSuffix (here pw) = fromPointwise pw
@@ -52,11 +52,11 @@ fromSuffix (there p) = there (fromSuffix p)
 module _ {c t} {C : Set c} {T : REL A C t} where
 
   fromPrefixSuffix : Trans R S T → Trans (Prefix R) (Suffix S) (Infix T)
-  fromPrefixSuffix tr p (here q)  = here (Prefixₚ.trans tr p (Prefixₚ.fromPointwise q))
+  fromPrefixSuffix tr p (here q)  = here (Prefix.trans tr p (Prefix.fromPointwise q))
   fromPrefixSuffix tr p (there q) = there (fromPrefixSuffix tr p q)
 
   fromSuffixPrefix : Trans R S T → Trans (Suffix R) (Prefix S) (Infix T)
-  fromSuffixPrefix tr (here p)  q       = here (Prefixₚ.trans tr (Prefixₚ.fromPointwise p) q)
+  fromSuffixPrefix tr (here p)  q       = here (Prefix.trans tr (Prefix.fromPointwise p) q)
   fromSuffixPrefix tr (there p) (_ ∷ q) = there (fromSuffixPrefix tr p q)
 
 ∷⁻ : ∀ {as b bs} → Infix R as (b ∷ bs) → Prefix R as (b ∷ bs) ⊎ Infix R as bs
@@ -67,7 +67,7 @@ module _ {c t} {C : Set c} {T : REL A C t} where
 -- length
 
 length-mono : ∀ {as bs} → Infix R as bs → length as ≤ length bs
-length-mono (here pref) = Prefixₚ.length-mono pref
+length-mono (here pref) = Prefix.length-mono pref
 length-mono (there p)   = ℕ.m≤n⇒m≤1+n (length-mono p)
 
 ------------------------------------------------------------------------
@@ -76,11 +76,11 @@ length-mono (there p)   = ℕ.m≤n⇒m≤1+n (length-mono p)
 module _ {c t} {C : Set c} {T : REL A C t} where
 
   Prefix-Infix-trans : Trans R S T → Trans (Prefix R) (Infix S) (Infix T)
-  Prefix-Infix-trans tr p (here q)  = here (Prefixₚ.trans tr p q)
+  Prefix-Infix-trans tr p (here q)  = here (Prefix.trans tr p q)
   Prefix-Infix-trans tr p (there q) = there (Prefix-Infix-trans tr p q)
 
   Infix-Prefix-trans : Trans R S T → Trans (Infix R) (Prefix S) (Infix T)
-  Infix-Prefix-trans tr (here p)  q       = here (Prefixₚ.trans tr p q)
+  Infix-Prefix-trans tr (here p)  q       = here (Prefix.trans tr p q)
   Infix-Prefix-trans tr (there p) (_ ∷ q) = there (Infix-Prefix-trans tr p q)
 
   Suffix-Infix-trans : Trans R S T → Trans (Suffix R) (Infix S) (Infix T)
@@ -88,7 +88,7 @@ module _ {c t} {C : Set c} {T : REL A C t} where
   Suffix-Infix-trans tr p (there q) = there (Suffix-Infix-trans tr p q)
 
   Infix-Suffix-trans : Trans R S T → Trans (Infix R) (Suffix S) (Infix T)
-  Infix-Suffix-trans tr p (here q)  = Infix-Prefix-trans tr p (Prefixₚ.fromPointwise q)
+  Infix-Suffix-trans tr p (here q)  = Infix-Prefix-trans tr p (Prefix.fromPointwise q)
   Infix-Suffix-trans tr p (there q) = there (Infix-Suffix-trans tr p q)
 
   trans : Trans R S T → Trans (Infix R) (Infix S) (Infix T)
@@ -96,7 +96,7 @@ module _ {c t} {C : Set c} {T : REL A C t} where
   trans tr p (there q) = there (trans tr p q)
 
   antisym : Antisym R S T → Antisym (Infix R) (Infix S) (Pointwise T)
-  antisym asym (here p) (here q) = Prefixₚ.antisym asym p q
+  antisym asym (here p) (here q) = Prefix.antisym asym p q
   antisym asym {i = a ∷ as} {j = bs} p@(here _) (there q)
     = ⊥-elim $′ ℕ.<-irrefl refl $′ begin-strict
       length as <⟨ length-mono p ⟩
@@ -121,14 +121,14 @@ module _ {c d r} {C : Set c} {D : Set d} {R : REL C D r} where
   map⁺ : ∀ {as bs} (f : A → C) (g : B → D) →
          Infix (λ a b → R (f a) (g b)) as bs →
          Infix R (List.map f as) (List.map g bs)
-  map⁺ f g (here p)  = here (Prefixₚ.map⁺ f g p)
+  map⁺ f g (here p)  = here (Prefix.map⁺ f g p)
   map⁺ f g (there p) = there (map⁺ f g p)
 
   map⁻ : ∀ {as bs} (f : A → C) (g : B → D) →
          Infix R (List.map f as) (List.map g bs) →
          Infix (λ a b → R (f a) (g b)) as bs
-  map⁻ {bs = []}     f g (here p)  = here (Prefixₚ.map⁻ f g p)
-  map⁻ {bs = b ∷ bs} f g (here p)  = here (Prefixₚ.map⁻ f g p)
+  map⁻ {bs = []}     f g (here p)  = here (Prefix.map⁻ f g p)
+  map⁻ {bs = b ∷ bs} f g (here p)  = here (Prefix.map⁻ f g p)
   map⁻ {bs = b ∷ bs} f g (there p) = there (map⁻ f g p)
 
 ------------------------------------------------------------------------
@@ -139,7 +139,7 @@ module _ {p q} {P : Pred A p} {Q : Pred B q} (P? : U.Decidable P) (Q? : U.Decida
          where
 
   filter⁺ : ∀ {as bs} → Infix R as bs → Infix R (filter P? as) (filter Q? bs)
-  filter⁺ (here p) = here (Prefixₚ.filter⁺ P? Q? (λ _ → P⇒Q) (λ _ → Q⇒P) p)
+  filter⁺ (here p) = here (Prefix.filter⁺ P? Q? (λ _ → P⇒Q) (λ _ → Q⇒P) p)
   filter⁺ {bs = b ∷ bs} (there p) with does (Q? b)
   ... | true = there (filter⁺ p)
   ... | false = filter⁺ p
@@ -149,12 +149,12 @@ module _ {p q} {P : Pred A p} {Q : Pred B q} (P? : U.Decidable P) (Q? : U.Decida
 
 replicate⁺ : ∀ {m n a b} → m ≤ n → R a b →
              Infix R (replicate m a) (replicate n b)
-replicate⁺ m≤n r = here (Prefixₚ.replicate⁺ m≤n r)
+replicate⁺ m≤n r = here (Prefix.replicate⁺ m≤n r)
 
 replicate⁻ : ∀ {m n a b} → m ≢ 0 →
              Infix R (replicate m a) (replicate n b) → R a b
-replicate⁻ {m = m} {n = zero}  m≢0 (here p)  = Prefixₚ.replicate⁻ m≢0 p
-replicate⁻ {m = m} {n = suc n} m≢0 (here p)  = Prefixₚ.replicate⁻ m≢0 p
+replicate⁻ {m = m} {n = zero}  m≢0 (here p)  = Prefix.replicate⁻ m≢0 p
+replicate⁻ {m = m} {n = suc n} m≢0 (here p)  = Prefix.replicate⁻ m≢0 p
 replicate⁻ {m = m} {n = suc n} m≢0 (there p) = replicate⁻ m≢0 p
 
 ------------------------------------------------------------------------
@@ -165,4 +165,4 @@ infix? R? [] [] = yes (here [])
 infix? R? (a ∷ as) [] = no (λ where (here ()))
 infix? R? as bbs@(_ ∷ bs) =
   map′ [ here , there ]′ ∷⁻
-  (Prefixₚ.prefix? R? as bbs ⊎-dec infix? R? as bs)
+  (Prefix.prefix? R? as bbs ⊎-dec infix? R? as bs)

@@ -9,9 +9,9 @@
 module Data.Vec.Relation.Unary.AllPairs.Properties where
 
 open import Data.Vec
-import Data.Vec.Properties as Vecₚ
+import Data.Vec.Properties as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
-import Data.Vec.Relation.Unary.All.Properties as Allₚ
+import Data.Vec.Relation.Unary.All.Properties as All
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin)
@@ -39,7 +39,7 @@ module _ {R : Rel A ℓ} {f : B → A} where
   map⁺ : ∀ {n xs} → AllPairs (λ x y → R (f x) (f y)) {n} xs →
          AllPairs R {n} (map f xs)
   map⁺ []           = []
-  map⁺ (x∉xs ∷ xs!) = Allₚ.map⁺ x∉xs ∷ map⁺ xs!
+  map⁺ (x∉xs ∷ xs!) = All.map⁺ x∉xs ∷ map⁺ xs!
 
 ------------------------------------------------------------------------
 -- ++
@@ -49,7 +49,7 @@ module _ {R : Rel A ℓ} where
   ++⁺ : ∀ {n m xs ys} → AllPairs R {n} xs → AllPairs R {m} ys →
         All (λ x → All (R x) ys) xs → AllPairs R (xs ++ ys)
   ++⁺ []         Rys _              = Rys
-  ++⁺ (px ∷ Rxs) Rys (Rxys ∷ Rxsys) = Allₚ.++⁺ px Rxys ∷ ++⁺ Rxs Rys Rxsys
+  ++⁺ (px ∷ Rxs) Rys (Rxys ∷ Rxsys) = All.++⁺ px Rxys ∷ ++⁺ Rxs Rys Rxsys
 
 ------------------------------------------------------------------------
 -- concat
@@ -61,7 +61,7 @@ module _ {R : Rel A ℓ} where
             AllPairs R (concat xss)
   concat⁺ []           []              = []
   concat⁺ (pxs ∷ pxss) (Rxsxss ∷ Rxss) = ++⁺ pxs (concat⁺ pxss Rxss)
-    (All.map Allₚ.concat⁺ (Allₚ.All-swap Rxsxss))
+    (All.map All.concat⁺ (All.All-swap Rxsxss))
 
 ------------------------------------------------------------------------
 -- take and drop
@@ -70,7 +70,7 @@ module _ {R : Rel A ℓ} where
 
   take⁺ : ∀ {n} m {xs} → AllPairs R {m + n} xs → AllPairs R {m} (take m xs)
   take⁺ zero pxs = []
-  take⁺ (suc m) {x ∷ xs} (px ∷ pxs) = Allₚ.take⁺ m px ∷ take⁺ m pxs
+  take⁺ (suc m) {x ∷ xs} (px ∷ pxs) = All.take⁺ m px ∷ take⁺ m pxs
 
   drop⁺ : ∀ {n} m {xs} → AllPairs R {m + n} xs → AllPairs R {n} (drop m xs)
   drop⁺ zero pxs = pxs
@@ -85,5 +85,5 @@ module _ {R : Rel A ℓ} where
               AllPairs R (tabulate f)
   tabulate⁺ {zero}  fᵢ~fⱼ = []
   tabulate⁺ {suc n} fᵢ~fⱼ =
-    Allₚ.tabulate⁺ (λ j → fᵢ~fⱼ λ()) ∷
+    All.tabulate⁺ (λ j → fᵢ~fⱼ λ()) ∷
     tabulate⁺ (fᵢ~fⱼ ∘ (_∘ suc-injective))
