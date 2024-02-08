@@ -8,7 +8,7 @@
 
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
 open import Data.Sum.Base as Sum
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Function.Base using (id)
@@ -103,7 +103,7 @@ module _ {_~_ : Rel A ℓ} {P : Pred A p} where
 module _ {_~_ : Rel A ℓ} {P : Rel A p} where
 
   resp₂ : P Respects₂ _~_ → P Respects₂ (ReflClosure _~_)
-  resp₂ = Prod.map respˡ respʳ
+  resp₂ = Product.map respˡ respʳ
 
 ------------------------------------------------------------------------
 -- Structures

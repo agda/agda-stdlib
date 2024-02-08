@@ -17,7 +17,7 @@ import Data.List.Properties as Listₚ
 open import Data.Nat.Base
 open import Data.Nat.Properties
   using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; suc-injective; +-comm; +-suc)
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map)
@@ -689,7 +689,7 @@ map-<,>-zip f g []       = refl
 map-<,>-zip f g (x ∷ xs) = cong (_ ∷_) (map-<,>-zip f g xs)
 
 map-zip : ∀ (f : A → B) (g : C → D) (xs : Vec A n) (ys : Vec C n) →
-          map (Prod.map f g) (zip xs ys) ≡ zip (map f xs) (map g ys)
+          map (Product.map f g) (zip xs ys) ≡ zip (map f xs) (map g ys)
 map-zip f g []       []       = refl
 map-zip f g (x ∷ xs) (y ∷ ys) = cong (_ ∷_) (map-zip f g xs ys)
 
@@ -705,10 +705,10 @@ lookup-unzip (suc i) ((x , y) ∷ xys) = lookup-unzip i xys
 
 map-unzip : ∀ (f : A → B) (g : C → D) (xys : Vec (A × C) n) →
             let xs , ys = unzip xys
-            in (map f xs , map g ys) ≡ unzip (map (Prod.map f g) xys)
+            in (map f xs , map g ys) ≡ unzip (map (Product.map f g) xys)
 map-unzip f g []              = refl
 map-unzip f g ((x , y) ∷ xys) =
-  cong (Prod.map (f x ∷_) (g y ∷_)) (map-unzip f g xys)
+  cong (Product.map (f x ∷_) (g y ∷_)) (map-unzip f g xys)
 
 -- Products of vectors are isomorphic to vectors of products.
 
@@ -716,7 +716,7 @@ unzip∘zip : ∀ (xs : Vec A n) (ys : Vec B n) →
             unzip (zip xs ys) ≡ (xs , ys)
 unzip∘zip [] []             = refl
 unzip∘zip (x ∷ xs) (y ∷ ys) =
-  cong (Prod.map (x ∷_) (y ∷_)) (unzip∘zip xs ys)
+  cong (Product.map (x ∷_) (y ∷_)) (unzip∘zip xs ys)
 
 zip∘unzip : ∀ (xys : Vec (A × B) n) → uncurry zip (unzip xys) ≡ xys
 zip∘unzip []         = refl
@@ -869,7 +869,7 @@ unfold-∷ʳ eq x (y ∷ xs) = cong (y ∷_) (unfold-∷ʳ (cong pred eq) x xs)
 ∷ʳ-injective : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
 ∷ʳ-injective []       []        refl = (refl , refl)
 ∷ʳ-injective (x ∷ xs) (y  ∷ ys) eq   with ∷-injective eq
-... | refl , eq′ = Prod.map₁ (cong (x ∷_)) (∷ʳ-injective xs ys eq′)
+... | refl , eq′ = Product.map₁ (cong (x ∷_)) (∷ʳ-injective xs ys eq′)
 
 ∷ʳ-injectiveˡ : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
 ∷ʳ-injectiveˡ xs ys eq = proj₁ (∷ʳ-injective xs ys eq)

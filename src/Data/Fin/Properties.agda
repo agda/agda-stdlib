@@ -23,7 +23,7 @@ open import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
   using (∃; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
 open import Data.Product.Algebra using (×-cong)
@@ -644,7 +644,7 @@ splitAt-≥ (suc m) (suc i) i≥m = cong (Sum.map suc id) (splitAt-≥ m i (ℕ.
 remQuot-combine : ∀ {n k} (i : Fin n) j → remQuot k (combine i j) ≡ (i , j)
 remQuot-combine {suc n} {k} zero    j rewrite splitAt-↑ˡ k j (n ℕ.* k) = refl
 remQuot-combine {suc n} {k} (suc i) j rewrite splitAt-↑ʳ k   (n ℕ.* k) (combine i j) =
-  cong (Prod.map₁ suc) (remQuot-combine i j)
+  cong (Product.map₁ suc) (remQuot-combine i j)
 
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
 combine-remQuot {suc n} k i with splitAt k i in eq

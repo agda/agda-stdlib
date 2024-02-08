@@ -13,7 +13,7 @@ open import Codata.Musical.Colist as Colist hiding (_⋎_)
 open import Data.Nat.Base
 open import Data.Nat.Induction using (<′-wellFounded)
 open import Data.Nat.Properties
-open import Data.Product.Base as Prod using (_×_; _,_; ∃; ∃₂; proj₁; proj₂)
+open import Data.Product.Base as Product using (_×_; _,_; ∃; ∃₂; proj₁; proj₂)
 open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
@@ -195,7 +195,7 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
          | index-Any-⋎P xs p
     ... | inj₁ q | P.refl | _   = here (inj₂ q) , P.refl
     ... | inj₂ q | P.refl | q≤p =
-      Prod.map there
+      Product.map there
                (P.cong (there ∘ (Inverse.from (Any-⋎P xs)) ∘ inj₂))
                (rec (s≤′s q≤p))
 

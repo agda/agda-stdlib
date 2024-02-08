@@ -27,7 +27,7 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybeₚ
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
 open import Data.Nat.Base as ℕ using (zero; suc; z≤n; s≤s)
-open import Data.Product.Base as Prod using (_×_; _,_; uncurry)
+open import Data.Product.Base as Product using (_×_; _,_; uncurry)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
@@ -106,7 +106,7 @@ lookup-replicate (suc k) (suc n) a = lookup-replicate k (n .force) a
 -- Properties of unfold
 
 map-unfold : ∀ (f : B → C) (alg : A → Maybe (A × B)) a →
-             i ⊢ map f (unfold alg a) ≈ unfold (Maybe.map (Prod.map₂ f) ∘ alg) a
+             i ⊢ map f (unfold alg a) ≈ unfold (Maybe.map (Product.map₂ f) ∘ alg) a
 map-unfold f alg a with alg a
 ... | nothing       = []
 ... | just (a′ , b) = Eq.refl ∷ λ where .force → map-unfold f alg a′
