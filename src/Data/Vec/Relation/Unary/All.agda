@@ -9,7 +9,7 @@
 module Data.Vec.Relation.Unary.All where
 
 open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
-open import Data.Product.Base as Prod using (_×_; _,_; uncurry; <_,_>)
+open import Data.Product.Base as Product using (_×_; _,_; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
@@ -71,7 +71,7 @@ zip (px ∷ pxs , qx ∷ qxs) = (px , qx) ∷ zip (pxs , qxs)
 
 unzip : All (P ∩ Q) {n} ⊆ All P ∩ All Q
 unzip []           = [] , []
-unzip (pqx ∷ pqxs) = Prod.zip _∷_ _∷_ pqx (unzip pqxs)
+unzip (pqx ∷ pqxs) = Product.zip _∷_ _∷_ pqx (unzip pqxs)
 
 module _ {P : Pred A p} {Q : Pred B q} {R : Pred C r} where
 
@@ -91,7 +91,7 @@ lookupAny (px ∷ pxs) (here qx) = px , qx
 lookupAny (px ∷ pxs) (there i) = lookupAny pxs i
 
 lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
-lookupWith f pxs i = Prod.uncurry f (lookupAny pxs i)
+lookupWith f pxs i = Product.uncurry f (lookupAny pxs i)
 
 lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
 lookup pxs = lookupWith (λ { px P.refl → px }) pxs
@@ -121,7 +121,7 @@ irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
 
 satisfiable : Satisfiable P → ∀ {n} → Satisfiable (All P {n})
 satisfiable (x , p) {zero}  = [] , []
-satisfiable (x , p) {suc n} = Prod.map (x ∷_) (p ∷_) (satisfiable (x , p))
+satisfiable (x , p) {suc n} = Product.map (x ∷_) (p ∷_) (satisfiable (x , p))
 
 ------------------------------------------------------------------------
 -- Generalised decidability procedure

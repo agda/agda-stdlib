@@ -19,7 +19,7 @@ open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_
 open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix hiding (PrefixView; _++_)
 open import Data.Nat.Base using (ℕ; zero; suc; _≤_; z≤n; s≤s)
 open import Data.Nat.Properties using (suc-injective)
-open import Data.Product.Base as Prod using (_×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Function.Base
 
 open import Relation.Nullary.Negation using (¬_)

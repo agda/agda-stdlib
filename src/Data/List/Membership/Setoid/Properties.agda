@@ -21,7 +21,7 @@ import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.Nat.Base using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
-open import Data.Product.Base as Prod using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
+open import Data.Product.Base as Product using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_$_; flip; _∘_; _∘′_; id)
@@ -342,10 +342,10 @@ module _ (S : Setoid c ℓ) {P : Pred (Carrier S) p}
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ {xs = x ∷ xs} v∈f[x∷xs] with P? x
-  ... | false because  _   = Prod.map there id (∈-filter⁻ v∈f[x∷xs])
+  ... | false because  _   = Product.map there id (∈-filter⁻ v∈f[x∷xs])
   ... |  true because [Px] with v∈f[x∷xs]
   ...   | here  v≈x   = here v≈x , resp (sym v≈x) (invert [Px])
-  ...   | there v∈fxs = Prod.map there id (∈-filter⁻ v∈fxs)
+  ...   | there v∈fxs = Product.map there id (∈-filter⁻ v∈fxs)
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
