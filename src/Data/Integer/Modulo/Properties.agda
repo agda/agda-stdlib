@@ -66,10 +66,10 @@ open ≡-Reasoning
 +-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
 
 +-identityˡ : LeftIdentity 0# _+_
-+-identityˡ x = ⟦⟧≡⟦⟧⇒bounded≡ (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
++-identityˡ x = ⟦⟧≡⟦⟧⇒≡ (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 +-identityʳ : RightIdentity 0# _+_
-+-identityʳ x = ⟦⟧≡⟦⟧⇒bounded≡ $
++-identityʳ x = ⟦⟧≡⟦⟧⇒≡ $
   trans (cong (ℕ._% n) (ℕ.+-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 +-identity : Identity 0# _+_
@@ -110,12 +110,12 @@ open ≡-Reasoning
   x * (y * z) ∎
 
 *-identityˡ : LeftIdentity 1# _*_
-*-identityˡ x = ⟦⟧≡⟦⟧⇒bounded≡ $
-  {!!}
+*-identityˡ x with eq ← ⟦1⟧≡1 {n = n} rewrite eq = ⟦⟧≡⟦⟧⇒≡ $
+  trans (cong (ℕ._% n) (trans (ℕ.*-identityˡ _) {!!})) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 *-identityʳ : RightIdentity 1# _*_
-*-identityʳ x with eq ← ⟦1⟧≡1 {n = n} = ⟦⟧≡⟦⟧⇒bounded≡ $
-  {!trans (cong (ℕ._% n) (ℕ.*-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))!}
+*-identityʳ x with eq ← ⟦1⟧≡1 {n = n} rewrite eq = ⟦⟧≡⟦⟧⇒≡ $
+  trans (cong (ℕ._% n) (ℕ.*-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 *-identity : Identity 1# _*_
 *-identity = *-identityˡ , *-identityʳ
