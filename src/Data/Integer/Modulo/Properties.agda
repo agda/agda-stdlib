@@ -18,14 +18,14 @@ open import Algebra.Bundles
 import Algebra.Definitions as Definitions
 import Algebra.Structures as Structures
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
-open import Data.Nat.Bounded as ℕ< hiding (module Literals)
+open import Data.Nat.BoundedORIG as ℕ< hiding (module Literals)
 import Data.Nat.DivMod as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base as Product using (_,_)
 open import Data.Sign.Base as Sign using (Sign)
-open import Data.Unit.Base using (⊤)
+open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; cong₂; isEquivalence; module ≡-Reasoning)
+  using (_≡_; refl; sym; trans; cong; cong₂; isEquivalence; module ≡-Reasoning)
 
 open import Data.Integer.Modulo n as Modulo using (ℤmod_; +-*-rawRing)
 open Definitions (_≡_ {A = ℤmod_})
@@ -66,10 +66,11 @@ open ≡-Reasoning
 +-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
 
 +-identityˡ : LeftIdentity 0# _+_
-+-identityˡ x = {!!}
++-identityˡ x = ⟦⟧≡⟦⟧⇒bounded≡ (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 +-identityʳ : RightIdentity 0# _+_
-+-identityʳ x = {!!}
++-identityʳ x = ⟦⟧≡⟦⟧⇒bounded≡ $
+  trans (cong (ℕ._% n) (ℕ.+-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 +-identity : Identity 0# _+_
 +-identity = +-identityˡ , +-identityʳ
@@ -109,10 +110,12 @@ open ≡-Reasoning
   x * (y * z) ∎
 
 *-identityˡ : LeftIdentity 1# _*_
-*-identityˡ = {!!}
+*-identityˡ x = ⟦⟧≡⟦⟧⇒bounded≡ $
+  {!!}
 
 *-identityʳ : RightIdentity 1# _*_
-*-identityʳ = {!!}
+*-identityʳ x with eq ← ⟦1⟧≡1 {n = n} = ⟦⟧≡⟦⟧⇒bounded≡ $
+  {!trans (cong (ℕ._% n) (ℕ.*-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))!}
 
 *-identity : Identity 1# _*_
 *-identity = *-identityˡ , *-identityʳ
