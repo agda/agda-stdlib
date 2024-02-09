@@ -36,6 +36,13 @@ private
 ------------------------------------------------------------------------
 -- Equality on values is propositional equality
 
+⟦0⟧≡0 : .{{_ : NonZero n}} → ⟦ ⟦0⟧< {n = n} ⟧ ≡ 0
+⟦0⟧≡0 {n = suc _} = refl
+
+⟦1⟧≡1 : .{{_ : NonTrivial n}} →
+        let instance _ = nonTrivial⇒nonZero n in ⟦ ⟦1⟧< {n = n} ⟧ ≡ 1
+⟦1⟧≡1 {n = 2+ _} = refl
+
 ≡⇒⟦⟧≡⟦⟧ : _≡_ {A = ℕ< n} ⇒ (_≡_ on ⟦_⟧)
 ≡⇒⟦⟧≡⟦⟧ = cong ⟦_⟧
 
