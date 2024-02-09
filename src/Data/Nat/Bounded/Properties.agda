@@ -74,7 +74,7 @@ module _ {m} {i : ℕ< n} where
   _/∼≡fromℕ : fromℕ m ≡ i → m /∼≡ i
   _/∼≡fromℕ = _/∼≡fromℕ′
     where
-    _/∼≡fromℕ′ : .{{_ : NonZero n}} → fromℕ {n} m ≡ i → m /∼≡ i
+    _/∼≡fromℕ′ : .{{_ : NonZero n}} → fromℕ m ≡ i → m /∼≡ i
     _/∼≡fromℕ′ refl = subst (_/∼≡ i) (sym (ℕ.m≡m%n+[m/n]*n m n)) (‵fromℕ (m / n) i)
 
 
