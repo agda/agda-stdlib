@@ -1,15 +1,29 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- ℕ< Literals
+-- Literals for bounded natural numbers ℕ<
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.Nat.Bounded.Literals where
+open import Data.Nat.Base as ℕ using (ℕ)
 
-open import Agda.Builtin.FromNat
-open import Data.Nat.Bounded using (ℕ<; module Literals)
+module Data.Nat.Bounded.Literals (n : ℕ) where
 
-number : ∀ n → Number (ℕ< n)
-number n = record { Literals n }
+open import Agda.Builtin.FromNat using (Number)
+open import Data.Bool.Base using (T)
+import Data.Nat.Properties as ℕ
+
+open import Data.Nat.Bounded using (ℕ<; ⟦_⟧<_)
+
+------------------------------------------------------------------------
+-- Literals
+
+Constraint : ℕ → Set
+Constraint m = T (m ℕ.<ᵇ n)
+
+fromNat : ∀ m → {{Constraint m}} → ℕ< n
+fromNat m {{lt}} = ⟦ m ⟧< ℕ.<ᵇ⇒< m n lt
+
+number : Number (ℕ< n)
+number = record { Constraint = Constraint ; fromNat = fromNat }
