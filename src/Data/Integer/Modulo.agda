@@ -7,17 +7,19 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat.Base as ℕ
-  using (ℕ; zero; suc; NonZero; NonTrivial; _<_; _∸_)
+  using (ℕ; zero; suc; NonZero; NonTrivial; nonTrivial⇒nonZero; _<_; _∸_)
 
-module Data.Integer.Modulo (n : ℕ) .{{_ : NonTrivial n}} where
+module Data.Integer.Modulo n .{{_ : NonTrivial n}} where
 
 open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
-open import Data.Nat.BoundedORIG as ℕ< hiding (module Literals)
-open import Data.Nat.Properties as ℕ
+open import Data.Nat.BoundedORIG as ℕ< hiding (fromℕ; _∼_; ≡-Mod)
+import Data.Nat.Properties as ℕ
 open import Data.Sign.Base as Sign using (Sign)
 open import Data.Unit.Base using (⊤)
+open import Function.Base using (id; _∘_; _$_; _on_)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
@@ -26,10 +28,10 @@ private
     i j : ℕ< n
 
   instance
-    _ = ℕ.nonTrivial⇒nonZero n
+    _ = nonTrivial⇒nonZero n
 
   m∸n<m : ∀ m n → .{{NonZero m}} → .{{NonZero n}} → m ∸ n < m
-  m∸n<m m@(suc _) n@(suc o) = ℕ.s≤s (m∸n≤m _ o)
+  m∸n<m m@(suc _) n@(suc o) = ℕ.s≤s (ℕ.m∸n≤m _ o)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -40,37 +42,52 @@ infixl 7 _*_
 infixl 6 _+_
 
 -- Type definition
-ℤmod_ : Set
-ℤmod_ = ℕ< n
+ℤmod : Set
+ℤmod = ℕ< n
+
+-- Re-export
+fromℕ : ℕ → ℤmod
+fromℕ = ℕ<.fromℕ
 
 -- Negation
--_ : ℤmod_ → ℤmod_
+-_ : ℤmod → ℤmod
 - ⟦ m@zero ⟧< _    = ⟦0⟧<
 - ⟦ m@(suc _) ⟧< _ = ⟦ n ∸ m ⟧< m∸n<m _ _
 
 -- Addition
-_+_ : ℤmod_ → ℤmod_ → ℤmod_
+_+_ : ℤmod → ℤmod → ℤmod
 i + j = fromℕ (⟦ i ⟧ ℕ.+ ⟦ j ⟧)
 
 -- Multiplication
-_*_ : ℤmod_ → ℤmod_ → ℤmod_
+_*_ : ℤmod → ℤmod → ℤmod
 i * j = fromℕ (⟦ i ⟧ ℕ.* ⟦ j ⟧)
 
 ------------------------------------------------------------------------
 -- Quotient map from ℤ
 
-_◃_ : Sign → ℤmod_ → ℤmod_
+_◃_ : Sign → ℤmod → ℤmod
 Sign.+ ◃ j = j
 Sign.- ◃ j = - j
 
-fromℤ : ℤ → ℤmod_
-fromℤ i with s ◂ ∣i∣ ← signAbs i = s ◃ fromℕ ∣i∣ 
+fromℤ : ℤ → ℤmod
+fromℤ i with s ◂ ∣i∣ ← signAbs i = s ◃ fromℕ ∣i∣
 
 -- the _mod_ syntax
-Mod : ℤ → ℤmod_
+Mod : ℤ → ℤmod
 Mod = fromℤ
 
 syntax Mod {n = n} i = i mod n
+
+-- Quotient equivalence relation on ℤ induced by `fromℤ`
+
+_∼_ : Rel ℤ _
+_∼_ = _≡_ on fromℤ
+
+≡-Mod : ∀ n .{{_ : NonTrivial n}} → Rel ℤ _
+≡-Mod n i j = i ∼ j
+
+syntax ≡-Mod n i j = i ≡ j mod n
+
 
 ------------------------------------------------------------------------
 -- Raw bundles
@@ -94,19 +111,8 @@ open RawRing +-*-rawRing public
            )
 
 ------------------------------------------------------------------------
--- Literals
-
-module Literals where
-
-  Constraint : ℕ → Set
-  Constraint _ = ⊤
-
-  fromNat : ∀ m → {{Constraint m}} → ℤmod_
-  fromNat m = fromℕ m
-
-------------------------------------------------------------------------
 -- -- Postfix notation for when opening the module unparameterised
 
-0ℤmod_ = ⟦0⟧<
-1ℤmod_ = ⟦1⟧<
+0ℤmod = ⟦0⟧<
+1ℤmod = ⟦1⟧<
 
