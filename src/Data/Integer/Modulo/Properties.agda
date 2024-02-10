@@ -9,7 +9,7 @@
 open import Data.Nat.Base as ℕ
   using (ℕ; zero; suc; NonZero; NonTrivial; _<_; _∸_)
 
-module Data.Integer.Modulo.Properties (n : ℕ) .{{_ : NonTrivial n}} where
+module Data.Integer.Modulo.Properties n .{{_ : NonTrivial n}} where
 
 open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring; RawRing)
@@ -18,7 +18,8 @@ open import Algebra.Bundles
 import Algebra.Definitions as Definitions
 import Algebra.Structures as Structures
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
-open import Data.Nat.BoundedORIG as ℕ< hiding (module Literals)
+open import Data.Nat.Bounded.Base as ℕ< hiding (fromℕ; _∼_; ≡-Mod)
+import Data.Nat.Bounded.Properties as ℕ< hiding ()
 import Data.Nat.DivMod as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base as Product using (_,_)
@@ -27,9 +28,11 @@ open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; trans; cong; cong₂; isEquivalence; module ≡-Reasoning)
 
-open import Data.Integer.Modulo n as Modulo using (ℤmod_; +-*-rawRing)
-open Definitions (_≡_ {A = ℤmod_})
-open Structures (_≡_ {A = ℤmod_})
+open import Data.Integer.Modulo n as Modulo
+  using (ℤmod; fromℕ; fromℤ; _∼_; ≡-Mod; +-*-rawRing)
+
+open Definitions (_≡_ {A = ℤmod})
+open Structures (_≡_ {A = ℤmod})
   using ( IsMagma; IsSemigroup; IsMonoid
         ; IsGroup; IsAbelianGroup
         ; IsNearSemiring; IsSemiring
@@ -38,7 +41,7 @@ open Structures (_≡_ {A = ℤmod_})
 private
   variable
     m o : ℕ
-    i j k : ℤmod_
+    i j k : ℤmod
 
   instance
     _ = ℕ.nonTrivial⇒nonZero n
@@ -66,10 +69,10 @@ open ≡-Reasoning
 +-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
 
 +-identityˡ : LeftIdentity 0# _+_
-+-identityˡ x = ⟦⟧≡⟦⟧⇒≡ (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
++-identityˡ x = ℕ<.⟦⟧≡⟦⟧⇒≡ (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 +-identityʳ : RightIdentity 0# _+_
-+-identityʳ x = ⟦⟧≡⟦⟧⇒≡ $
++-identityʳ x = ℕ<.⟦⟧≡⟦⟧⇒≡ $
   trans (cong (ℕ._% n) (ℕ.+-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 +-identity : Identity 0# _+_
@@ -110,11 +113,11 @@ open ≡-Reasoning
   x * (y * z) ∎
 
 *-identityˡ : LeftIdentity 1# _*_
-*-identityˡ x with eq ← ⟦1⟧≡1 {n = n} rewrite eq = ⟦⟧≡⟦⟧⇒≡ $
+*-identityˡ x with eq ← ℕ<.⟦1⟧≡1 {n = n} rewrite eq = ℕ<.⟦⟧≡⟦⟧⇒≡ $
   trans (cong (ℕ._% n) (trans (ℕ.*-identityˡ _) {!!})) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 *-identityʳ : RightIdentity 1# _*_
-*-identityʳ x with eq ← ⟦1⟧≡1 {n = n} rewrite eq = ⟦⟧≡⟦⟧⇒≡ $
+*-identityʳ x with eq ← ℕ<.⟦1⟧≡1 {n = n} rewrite eq = ℕ<.⟦⟧≡⟦⟧⇒≡ $
   trans (cong (ℕ._% n) (ℕ.*-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
 
 *-identity : Identity 1# _*_
