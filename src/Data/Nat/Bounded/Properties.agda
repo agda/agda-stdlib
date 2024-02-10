@@ -49,6 +49,11 @@ private
 ⟦⟧≡⟦⟧⇒≡ :  (_≡_ on ⟦_⟧) ⇒ _≡_ {A = ℕ< n}
 ⟦⟧≡⟦⟧⇒≡ refl = refl
 
+fromℕ∘toℕ≐id : (i : ℕ< n) → let instance _ = nonZeroIndex i
+               in fromℕ ⟦ i ⟧ ≡ i
+fromℕ∘toℕ≐id i = let instance _ = nonZeroIndex i
+  in ⟦⟧≡⟦⟧⇒≡ $ ℕ.m<n⇒m%n≡m $ ℕ<.isBounded i
+
 infix 4 _≟_
 _≟_ : DecidableEquality (ℕ< n)
 i ≟ j = map′ ⟦⟧≡⟦⟧⇒≡ ≡⇒⟦⟧≡⟦⟧ (⟦ i ⟧ ℕ.≟ ⟦ j ⟧)
@@ -128,4 +133,7 @@ setoid = record { isEquivalence = isEquivalence }
 
 fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ {n}) ⇒ ≡-Mod n
 fromℕ≡fromℕ⇒≡-mod fromℕ[x]≡fromℕ[y] = (fromℕ[x]≡fromℕ[y] /∼≡fromℕ) , (refl /∼≡fromℕ)
+
+toℕ∘fromℕ≐id : .{{_ : NonZero n}} → (m : ℕ) → ⟦ fromℕ {n} m ⟧ ≡ m mod n
+toℕ∘fromℕ≐id {{it}} m = fromℕ≡fromℕ⇒≡-mod {{it}} (fromℕ∘toℕ≐id (fromℕ m))
 
