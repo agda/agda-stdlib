@@ -14,7 +14,7 @@ module Data.Integer.Modulo n .{{_ : NonTrivial n}} where
 open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
-open import Data.Nat.BoundedORIG as ℕ< hiding (fromℕ; _∼_; ≡-Mod)
+open import Data.Nat.Bounded.Base as ℕ< hiding (fromℕ; _∼_; ≡-Mod)
 import Data.Nat.Properties as ℕ
 open import Data.Sign.Base as Sign using (Sign)
 open import Data.Unit.Base using (⊤)
