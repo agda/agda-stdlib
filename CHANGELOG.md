@@ -129,7 +129,7 @@ Additions to existing modules
 
 * In `Algebra.Structures`
   ```agda
-  record IsSuccessorSet (+1# : Op₁ A) (0# : A) : Set _
+  record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _
   ```
 
 * In `Data.Fin.Properties`:
