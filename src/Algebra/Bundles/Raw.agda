@@ -20,13 +20,12 @@ open import Relation.Nullary.Negation.Core using (¬_)
 -- A raw SuccessorSet is a SuccessorSet without any laws.
 
 record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 _+1#
   infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
-    _+1#    : Op₁ Carrier
-    0#      : Carrier
+    suc#    : Op₁ Carrier
+    zero#   : Carrier
 
 ------------------------------------------------------------------------
 -- Raw bundles with 1 binary operation

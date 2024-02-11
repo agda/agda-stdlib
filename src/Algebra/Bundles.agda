@@ -33,19 +33,18 @@ open Raw public
 ------------------------------------------------------------------------
 
 record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 _+1#
   infix  4 _≈_
   field
     Carrier          : Set c
     _≈_              : Rel Carrier ℓ
-    _+1#             : Op₁ Carrier
-    0#               : Carrier
-    isSuccessorSet   : IsSuccessorSet _≈_ _+1# 0#
+    suc#             : Op₁ Carrier
+    zero#            : Carrier
+    isSuccessorSet   : IsSuccessorSet _≈_ suc# zero#
 
   open IsSuccessorSet isSuccessorSet public
 
   rawSuccessorSet : RawSuccessorSet _ _
-  rawSuccessorSet = record { _≈_ = _≈_; _+1# = _+1#; 0# = 0# }
+  rawSuccessorSet = record { _≈_ = _≈_; suc# = suc#; zero# = zero# }
 
   open RawSuccessorSet rawSuccessorSet public
 

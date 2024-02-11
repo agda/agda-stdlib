@@ -29,17 +29,17 @@ module SuccessorSetMorphisms
   where
 
   open RawSuccessorSet N₁
-    renaming (Carrier to A; _≈_ to _≈₁_; _+1# to _+1#₁; 0# to 0#₁)
+    renaming (Carrier to A; _≈_ to _≈₁_; suc# to suc#₁; zero# to zero#₁)
   open RawSuccessorSet N₂
-    renaming (Carrier to B; _≈_ to _≈₂_; _+1# to _+1#₂; 0# to 0#₂)
+    renaming (Carrier to B; _≈_ to _≈₂_; suc# to suc#₂; zero# to zero#₂)
   open MorphismDefinitions A B _≈₂_
 
 
   record IsSuccessorSetHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
-      +1#-homo          : Homomorphic₁ ⟦_⟧ _+1#₁ _+1#₂
-      0#-homo           : Homomorphic₀ ⟦_⟧ 0#₁ 0#₂
+      suc#-homo         : Homomorphic₁ ⟦_⟧ suc#₁ suc#₂
+      zero#-homo        : Homomorphic₀ ⟦_⟧ zero#₁ zero#₂
 
   record IsSuccessorSetMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field

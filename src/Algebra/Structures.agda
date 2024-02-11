@@ -31,10 +31,10 @@ open import Level using (_⊔_)
 -- Structures with 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
-record IsSuccessorSet (+1# : Op₁ A) (0# : A) : Set (a ⊔ ℓ) where
+record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set (a ⊔ ℓ) where
   field
     isEquivalence : IsEquivalence _≈_
-    +1#-cong      : Congruent₁ +1#
+    suc#-cong     : Congruent₁ suc#
 
   open IsEquivalence isEquivalence public
 
