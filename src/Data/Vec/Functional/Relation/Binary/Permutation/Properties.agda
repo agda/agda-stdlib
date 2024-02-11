@@ -25,7 +25,7 @@ private
     ℓ : Level
     A : Set ℓ
     n : ℕ
-    xs ys zs : Vector A n
+    xs ys : Vector A n
 
 ↭-refl : Reflexive (Vector A) _↭_
 ↭-refl = id , λ _ → refl
