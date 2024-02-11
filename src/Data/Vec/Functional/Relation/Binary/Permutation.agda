@@ -13,7 +13,7 @@ open import Data.Product.Base using (Σ-syntax)
 open import Data.Fin.Permutation using (Permutation; _⟨$⟩ʳ_)
 open import Data.Vec.Functional using (Vector)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
