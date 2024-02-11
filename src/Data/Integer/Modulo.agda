@@ -73,6 +73,7 @@ fromℤ : ℤ → ℤmod
 fromℤ i with s ◂ ∣i∣ ← signAbs i = s ◃ fromℕ ∣i∣
 
 -- the _mod_ syntax
+
 Mod : ℤ → ℤmod
 Mod = fromℤ
 
@@ -83,11 +84,10 @@ syntax Mod {n = n} i = i mod n
 _∼_ : Rel ℤ _
 _∼_ = _≡_ on fromℤ
 
-≡-Mod : ∀ n .{{_ : NonTrivial n}} → Rel ℤ _
-≡-Mod n i j = i ∼ j
+≡-Mod : Rel ℤ _
+≡-Mod i j = i ∼ j
 
 syntax ≡-Mod n i j = i ≡ j mod n
-
 
 ------------------------------------------------------------------------
 -- Raw bundles

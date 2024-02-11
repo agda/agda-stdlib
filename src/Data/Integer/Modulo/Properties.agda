@@ -19,7 +19,7 @@ import Algebra.Definitions as Definitions
 import Algebra.Structures as Structures
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
 open import Data.Nat.Bounded.Base as ℕ< hiding (fromℕ; _∼_; ≡-Mod)
-import Data.Nat.Bounded.Properties as ℕ< hiding ()
+import Data.Nat.Bounded.Properties as ℕ<
 import Data.Nat.DivMod as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base as Product using (_,_)
@@ -69,7 +69,7 @@ open ≡-Reasoning
 +-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
 
 +-identityˡ : LeftIdentity 0# _+_
-+-identityˡ x = ℕ<.⟦⟧≡⟦⟧⇒≡ (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
++-identityˡ = ℕ<.fromℕ∘toℕ≐id
 
 +-identityʳ : RightIdentity 0# _+_
 +-identityʳ x = ℕ<.⟦⟧≡⟦⟧⇒≡ $
@@ -82,7 +82,9 @@ open ≡-Reasoning
 +-isMonoid = record { isSemigroup = +-isSemigroup ; identity = +-identity }
 
 +-inverseˡ : LeftInverse 0# -_ _+_
-+-inverseˡ = {!!}
++-inverseˡ (⟦ zero ⟧<      _) = +-identityˡ 0#
++-inverseˡ i@(⟦ m@(suc _) ⟧< _) = {!!}
+-- trans (cong fromℕ (ℕ.m+[n∸m]≡n (ℕ.<⇒≤ (ℕ<.isBounded i)))) {!ℕ<.n≡0-mod!}
 
 +-inverseʳ : RightInverse 0# -_ _+_
 +-inverseʳ = {!!}
@@ -94,7 +96,7 @@ open ≡-Reasoning
 +-0-isGroup = record { isMonoid = +-isMonoid ; inverse = +-inverse ; ⁻¹-cong = cong -_ }
 
 +-comm : Commutative _+_
-+-comm x y = cong fromℕ (ℕ.+-comm ⟦ x ⟧ ⟦ y ⟧)
++-comm i j = cong fromℕ (ℕ.+-comm ⟦ i ⟧ ⟦ j ⟧)
 
 +-0-isAbelianGroup : IsAbelianGroup _+_ 0# -_
 +-0-isAbelianGroup = record { isGroup = +-0-isGroup ; comm = +-comm }
