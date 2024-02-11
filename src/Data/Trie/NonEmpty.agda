@@ -13,7 +13,7 @@ module Data.Trie.NonEmpty {k e r} (S : StrictTotalOrder k e r) where
 open import Level
 open import Size
 open import Effect.Monad
-open import Data.Product.Base as Prod using (∃; uncurry; -,_)
+open import Data.Product.Base as Product using (∃; uncurry; -,_)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
@@ -125,7 +125,7 @@ toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
   where
 
   fromVal    = [_] ∘′ -,_
-  fromTrie⁺  = λ (k , v) → List⁺.map (Prod.map (k ∷_) id) (toList⁺ v)
+  fromTrie⁺  = λ (k , v) → List⁺.map (Product.map (k ∷_) id) (toList⁺ v)
   fromTries⁺ = concatMap fromTrie⁺ ∘′ Tree⁺.toList⁺
 
 ------------------------------------------------------------------------

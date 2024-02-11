@@ -14,10 +14,10 @@ open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions using (Transitive; Reflexive)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.PropositionalEquality.Core as PropEq
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; cong; cong₂)
-import Relation.Binary.PropositionalEquality.Properties as PropEq
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
+import Relation.Binary.PropositionalEquality.Properties as ≡
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 
 ------------------------------------------------------------------------
@@ -82,7 +82,7 @@ fold-◅◅ P _⊕_ ∅ left-unit assoc (x ◅ xs) ys = begin
                                                    fold-◅◅ P _⊕_ ∅ left-unit assoc xs ys ⟩
   (x ⊕ (fold P _⊕_ ∅ xs  ⊕ fold P _⊕_ ∅ ys))  ≡⟨ sym (assoc x _ _) ⟩
   ((x ⊕ fold P _⊕_ ∅ xs) ⊕ fold P _⊕_ ∅ ys)   ∎
-  where open PropEq.≡-Reasoning
+  where open ≡.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -97,7 +97,7 @@ module _ {i t} {I : Set i} (T : Rel I t) where
 
   isPreorder : IsPreorder _≡_ (Star T)
   isPreorder = record
-    { isEquivalence = PropEq.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = reflexive
     ; trans         = trans
     }
@@ -113,7 +113,7 @@ module _ {i t} {I : Set i} (T : Rel I t) where
 -- Preorder reasoning for Star
 
 module StarReasoning {i t} {I : Set i} (T : Rel I t) where
-  private module Base = PreorderReasoning (preorder T)
+  private module Base = ≲-Reasoning (preorder T)
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)

@@ -9,7 +9,7 @@
 
 module Data.Product.Function.Dependent.Propositional where
 
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
 open import Data.Product.Function.NonDependent.Setoid using ()
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using ()
 open import Data.Product.Properties using (Σ-≡,≡→≡; Σ-≡,≡↔≡; Σ-≡,≡←≡)
@@ -41,7 +41,7 @@ module _ where
   Σ-⟶ : (I⟶J : I ⟶ J) →
          (∀ {i} → A i ⟶ B (to I⟶J i)) →
          Σ I A ⟶ Σ J B
-  Σ-⟶ I⟶J A⟶B = mk⟶ $ Prod.map (to I⟶J) (to A⟶B)
+  Σ-⟶ I⟶J A⟶B = mk⟶ $ Product.map (to I⟶J) (to A⟶B)
 
 ------------------------------------------------------------------------
 -- Equivalences
@@ -117,7 +117,7 @@ module _ where
     open Injection
 
     to′ : Σ I A → Σ J B
-    to′ = Prod.map (_≃_.to I≃J) (to A↣B)
+    to′ = Product.map (_≃_.to I≃J) (to A↣B)
 
     to-injective : Injective _≡_ _≡_ to′
     to-injective {(x₁ , x₂)} {(y₁ , y₂)} =

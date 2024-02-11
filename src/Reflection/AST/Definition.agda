@@ -8,8 +8,8 @@
 
 module Reflection.AST.Definition where
 
-import Data.List.Properties as Listₚ                   using (≡-dec)
-import Data.Nat.Properties as ℕₚ                       using (_≟_)
+import Data.List.Properties as List                    using (≡-dec)
+import Data.Nat.Properties as ℕ                        using (_≟_)
 open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
 open import Relation.Nullary.Decidable.Core            using (map′; _×-dec_; yes; no)
 open import Relation.Binary.Definitions                using (DecidableEquality)
@@ -66,10 +66,10 @@ function cs       ≟ function cs′        =
   map′ (cong function) function-injective (cs Term.≟-Clauses cs′)
 data-type pars cs ≟ data-type pars′ cs′ =
   map′ (uncurry (cong₂ data-type)) data-type-injective
-           (pars ℕₚ.≟ pars′ ×-dec Listₚ.≡-dec Name._≟_ cs cs′)
+           (pars ℕ.≟ pars′ ×-dec List.≡-dec Name._≟_ cs cs′)
 record′ c fs      ≟ record′ c′ fs′      =
   map′ (uncurry (cong₂ record′)) record′-injective
-           (c Name.≟ c′ ×-dec Listₚ.≡-dec (Arg.≡-dec Name._≟_) fs fs′)
+           (c Name.≟ c′ ×-dec List.≡-dec (Arg.≡-dec Name._≟_) fs fs′)
 constructor′ d    ≟ constructor′ d′     =
   map′ (cong constructor′) constructor′-injective (d Name.≟ d′)
 axiom             ≟ axiom               = yes refl

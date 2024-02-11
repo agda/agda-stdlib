@@ -11,7 +11,7 @@ module Data.Vec.N-ary where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Function.Bundles using (_↔_; Inverse; mk↔ₛ′)
 open import Data.Nat.Base hiding (_⊔_)
-open import Data.Product.Base as Prod using (∃; _,_)
+open import Data.Product.Base as Product using (∃; _,_)
 open import Data.Vec.Base using (Vec; []; _∷_; head; tail)
 open import Function.Base using (_∘_; id; flip; constᵣ)
 open import Function.Bundles using (_⇔_; mk⇔)
@@ -126,7 +126,7 @@ uncurry-∃ⁿ {a} {A} {ℓ} n = mk⇔ (⇒ n) (⇐ n)
   ⇒ : ∀ n {P : N-ary n A (Set ℓ)} →
       ∃ⁿ n P → (∃ λ (xs : Vec A n) → P $ⁿ xs)
   ⇒ zero    p       = ([] , p)
-  ⇒ (suc n) (x , p) = Prod.map (_∷_ x) id (⇒ n p)
+  ⇒ (suc n) (x , p) = Product.map (_∷_ x) id (⇒ n p)
 
   ⇐ : ∀ n {P : N-ary n A (Set ℓ)} →
       (∃ λ (xs : Vec A n) → P $ⁿ xs) → ∃ⁿ n P

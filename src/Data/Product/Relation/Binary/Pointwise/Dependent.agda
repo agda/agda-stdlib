@@ -8,7 +8,7 @@
 
 module Data.Product.Relation.Binary.Pointwise.Dependent where
 
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
 open import Level
 open import Function.Base
 open import Relation.Binary.Core using (Rel; REL; _⇒_)

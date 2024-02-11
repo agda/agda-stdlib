@@ -16,7 +16,7 @@ open import Relation.Nullary.Decidable.Core using (Dec; yes; no)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Definitions using (Reflexive; Trans)
 open import Relation.Binary.Structures using (IsPreorder)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Reasoning.Syntax
 
 
@@ -40,8 +40,8 @@ start (equals x≈y) = reflexive x≈y
 start (nonstrict x≲y) = x≲y
 
 ≡-go : Trans _≡_ _IsRelatedTo_ _IsRelatedTo_
-≡-go x≡y (equals y≈z) = equals (case x≡y of λ where P.refl → y≈z)
-≡-go x≡y (nonstrict y≤z) = nonstrict (case x≡y of λ where P.refl → y≤z)
+≡-go x≡y (equals y≈z) = equals (case x≡y of λ where ≡.refl → y≈z)
+≡-go x≡y (nonstrict y≤z) = nonstrict (case x≡y of λ where ≡.refl → y≤z)
 
 ≲-go : Trans _≲_ _IsRelatedTo_ _IsRelatedTo_
 ≲-go x≲y (equals y≈z) = nonstrict (∼-respʳ-≈ y≈z x≲y)

@@ -31,7 +31,7 @@ open import Data.Char.Base   as Char  using (toℕ)
 open import Data.Float.Base  as Float using (_≡ᵇ_)
 open import Data.List.Base   as List  using ([]; _∷_)
 open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
-open import Data.Nat.Base    as Nat   using (ℕ; zero; suc; _≡ᵇ_; _+_)
+open import Data.Nat.Base    as ℕ     using (ℕ; zero; suc; _≡ᵇ_; _+_)
 open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
@@ -62,7 +62,7 @@ open import Reflection.TCM.Syntax
 private
   -- Descend past a variable.
   varDescend : ℕ → ℕ → ℕ
-  varDescend ϕ x = if ϕ Nat.≤ᵇ x then suc x else x
+  varDescend ϕ x = if ϕ ℕ.≤ᵇ x then suc x else x
 
   -- Descend a variable underneath pattern variables.
   patternDescend : ℕ → Pattern → Pattern × ℕ
@@ -136,7 +136,7 @@ private
   antiUnifyClauses : ℕ → Clauses → Clauses → Maybe Clauses
   antiUnifyClause  : ℕ → Clause → Clause → Maybe Clause
 
-  antiUnify ϕ (var x args) (var y args') with x Nat.≡ᵇ y | antiUnifyArgs ϕ args args'
+  antiUnify ϕ (var x args) (var y args') with x ℕ.≡ᵇ y | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ uargs
   ... | true  | just uargs = var (varDescend ϕ x) uargs
@@ -158,13 +158,13 @@ private
     Π[ s ∶ arg i (antiUnify ϕ a a') ] antiUnify (suc ϕ) b b'
   antiUnify ϕ (sort (set t)) (sort (set t')) =
     sort (set (antiUnify ϕ t t'))
-  antiUnify ϕ (sort (lit n)) (sort (lit n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (lit n)) (sort (lit n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (lit n)
   ... | false = var ϕ []
-  antiUnify ϕ (sort (propLit n)) (sort (propLit n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (propLit n)) (sort (propLit n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (propLit n)
   ... | false = var ϕ []
-  antiUnify ϕ (sort (inf n)) (sort (inf n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (inf n)) (sort (inf n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (inf n)
   ... | false = var ϕ []
   antiUnify ϕ (sort unknown) (sort unknown) =
