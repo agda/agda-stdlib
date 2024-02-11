@@ -9,8 +9,8 @@
 module Data.Vec.Functional.Relation.Binary.Permutation.Properties where
 
 open import Level using (Level)
-open import Data.Product using (_,_; proj₁; proj₂)
-open import Data.Nat using (ℕ)
+open import Data.Product.Base using (_,_; proj₁; proj₂)
+open import Data.Nat.Base using (ℕ)
 open import Data.Fin.Permutation using (id; flip; _⟨$⟩ʳ_; inverseʳ; _∘ₚ_)
 open import Data.Vec.Functional
 open import Data.Vec.Functional.Relation.Binary.Permutation
