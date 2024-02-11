@@ -16,6 +16,7 @@ open import Data.Vec.Functional
 open import Data.Vec.Functional.Relation.Binary.Permutation
 open import Relation.Binary.PropositionalEquality
   using (refl; trans; _≡_; cong; module ≡-Reasoning)
+open import Relation.Binary.Indexed.Heterogeneous.Definitions
 
 open ≡-Reasoning
 
@@ -26,19 +27,19 @@ private
     n : ℕ
     xs ys zs : Vector A n
 
-↭-refl : xs ↭ xs
+↭-refl : Reflexive (Vector A) _↭_
 ↭-refl = id , λ _ → refl
 
 ↭-reflexive : xs ≡ ys → xs ↭ ys
 ↭-reflexive refl = ↭-refl
 
-↭-sym : xs ↭ ys → ys ↭ xs
+↭-sym : Symmetric (Vector A) _↭_
 proj₁ (↭-sym (xs↭ys , _)) = flip xs↭ys
-proj₂ (↭-sym {xs = xs} {ys = ys} (xs↭ys , xs↭ys≡)) i = begin
+proj₂ (↭-sym {x = xs} {ys} (xs↭ys , xs↭ys≡)) i = begin
   ys (flip xs↭ys ⟨$⟩ʳ i)             ≡˘⟨ xs↭ys≡ _ ⟩
   xs (xs↭ys ⟨$⟩ʳ (flip xs↭ys ⟨$⟩ʳ i)) ≡⟨ cong xs (inverseʳ xs↭ys) ⟩
   xs i ∎
 
-↭-trans : xs ↭ ys → ys ↭ zs → xs ↭ zs
+↭-trans : Transitive (Vector A) _↭_
 proj₁ (↭-trans (xs↭ys , _) (ys↭zs , _))   = ys↭zs ∘ₚ xs↭ys
 proj₂ (↭-trans (_ , xs↭ys) (_ , ys↭zs)) _ = trans (xs↭ys _) (ys↭zs _)
