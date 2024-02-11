@@ -9,7 +9,7 @@
 module Data.Vec.Functional.Relation.Binary.Permutation where
 
 open import Level using (Level)
-open import Data.Product using (Σ-syntax)
+open import Data.Product.Base using (Σ-syntax)
 open import Data.Fin.Permutation using (Permutation; _⟨$⟩ʳ_)
 open import Data.Vec.Functional using (Vector)
 open import Relation.Binary.Indexed.Heterogeneous.Core using (IRel)
