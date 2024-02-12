@@ -90,4 +90,4 @@ record _∼_ {n} (lhs rhs : ℕ) : Set where
 ≡-Mod : ℕ → Rel ℕ _
 ≡-Mod n i j = _∼_ {n} i j
 
-syntax ≡-Mod n i j = i ≡ j mod n
+syntax ≡-Mod n i j = i ≡ j modℕ n
