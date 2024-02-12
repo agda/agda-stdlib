@@ -109,7 +109,7 @@ module _ {m} {i : ℕ< n} where
 ------------------------------------------------------------------------
 -- Properties of the quotient on ℕ induced by `fromℕ`
 
-n≡0-mod : .{{_ : NonZero n}} → n ≡ 0 mod n
+n≡0-mod : .{{_ : NonZero n}} → n ≡ 0 modℕ n
 n≡0-mod = let r = fromℕ[n]≡0 /∼≡fromℕ in r , ‵fromℕ 0 ⟦0⟧<
 
 ≡-mod-refl : .{{NonZero n}} → Reflexive (≡-Mod n)
@@ -138,12 +138,12 @@ isEquivalence {n} = record
 setoid : .{{NonZero n}} → Setoid _ _
 setoid = record { isEquivalence = isEquivalence }
 
-≡-mod⇒fromℕ≡fromℕ : (eq : m ≡ o mod n) →
+≡-mod⇒fromℕ≡fromℕ : (eq : m ≡ o modℕ n) →
                     let _,_ {k} _ _ = eq ; instance _ = nonZeroIndex k
                     in fromℕ {n} m ≡ fromℕ o
 ≡-mod⇒fromℕ≡fromℕ (lhs/∼≡ , rhs/∼≡) = trans (lhs/∼≡ /∼≡fromℕ⁻¹) (sym (rhs/∼≡ /∼≡fromℕ⁻¹))
 
-≡-mod⇒≡ : m ≡ o mod n → m < n → o < n → m ≡ o
+≡-mod⇒≡ : m ≡ o modℕ n → m < n → o < n → m ≡ o
 ≡-mod⇒≡ {m} {o} eq m<n o<n = cong ⟦_⟧ $ begin
   ⟦ m ⟧< m<n      ≡⟨ fromℕ≐⟦⟧< m<n ⟨
   fromℕ {{0<m}} m ≡⟨ ≡-mod⇒fromℕ≡fromℕ eq ⟩
@@ -158,6 +158,6 @@ setoid = record { isEquivalence = isEquivalence }
 fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ {n}) ⇒ ≡-Mod n
 fromℕ≡fromℕ⇒≡-mod eq = eq /∼≡fromℕ , refl /∼≡fromℕ
 
-toℕ∘fromℕ≐id : .{{_ : NonZero n}} → (m : ℕ) → ⟦ fromℕ m ⟧ ≡ m mod n
+toℕ∘fromℕ≐id : .{{_ : NonZero n}} → (m : ℕ) → ⟦ fromℕ m ⟧ ≡ m modℕ n
 toℕ∘fromℕ≐id m = fromℕ≡fromℕ⇒≡-mod (fromℕ∘toℕ≐id (fromℕ m))
 
