@@ -13,7 +13,7 @@ open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List hiding (lookup)
+open import Data.List.Base as List hiding (lookup; updateAt)
 open import Data.List.Properties as Listₚ using (partition-defn)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
@@ -28,17 +28,17 @@ import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _�
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
-open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
+open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing; fromAny)
+open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
 open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
-import Function.Bundles as B
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
-open import Function.Surjection using (_↠_; surjection)
+open import Function.Bundles
 open import Level using (Level)
-open import Relation.Binary as B using (REL; Setoid; _Respects_)
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Bundles using (Setoid)
+import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Nullary
@@ -107,7 +107,7 @@ Any¬⇒¬All (here  ¬p) = ¬p           ∘ All.head
 Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
 
 ¬Any↠All¬ : ∀ {xs} → (¬ Any P xs) ↠ All (¬_ ∘ P) xs
-¬Any↠All¬ = surjection (¬Any⇒All¬ _) All¬⇒¬Any to∘from
+¬Any↠All¬ = mk↠ₛ {to = ¬Any⇒All¬ _} (λ y → All¬⇒¬Any y , to∘from y)
   where
   to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → ¬Any⇒All¬ xs (All¬⇒¬Any ¬p) ≡ ¬p
   to∘from []         = refl
@@ -125,7 +125,7 @@ Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
     }
 
 Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-Any¬⇔¬All dec = equivalence Any¬⇒¬All (¬All⇒Any¬ dec _)
+Any¬⇔¬All dec = mk⇔ Any¬⇒¬All (¬All⇒Any¬ dec _)
 
 private
   -- If equality of functions were extensional, then the logical
@@ -372,8 +372,11 @@ map⁻ {xs = _ ∷ _} (p ∷ ps) = p ∷ map⁻ ps
 
 -- A variant of All.map.
 
-gmap : ∀ {f : A → B} → P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
-gmap g = map⁺ ∘ All.map g
+gmap⁺ : ∀ {f : A → B} → P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
+gmap⁺ g = map⁺ ∘ All.map g
+
+gmap⁻ : ∀ {f : A → B} → Q ∘ f ⋐ P → All Q ∘ map f ⋐ All P
+gmap⁻ g = All.map g ∘ map⁻
 
 ------------------------------------------------------------------------
 -- mapMaybe
@@ -385,6 +388,17 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ... | nothing = mapMaybe⁺ pxs
 ... | just v with px
 ...   | just pv = pv ∷ mapMaybe⁺ pxs
+
+------------------------------------------------------------------------
+-- catMaybes
+
+All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
+All-catMaybes⁺ [] = []
+All-catMaybes⁺ (just px ∷ pxs) = px ∷ All-catMaybes⁺ pxs
+All-catMaybes⁺ (nothing ∷ pxs) = All-catMaybes⁺ pxs
+
+Any-catMaybes⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
+Any-catMaybes⁺ = All-catMaybes⁺ ∘ All.map fromAny
 
 ------------------------------------------------------------------------
 -- _++_
@@ -405,8 +419,8 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ++⁻ []       p          = [] , p
 ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
 
-++↔ : (All P xs × All P ys) B.↔ All P (xs ++ ys)
-++↔ {xs = zs} = B.mk↔′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
+++↔ : (All P xs × All P ys) ↔ All P (xs ++ ys)
+++↔ {xs = zs} = mk↔ₛ′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
   where
   ++⁺∘++⁻ : ∀ xs (p : All P (xs ++ ys)) → uncurry′ ++⁺ (++⁻ xs p) ≡ p
   ++⁺∘++⁻ []       p          = refl
@@ -680,7 +694,7 @@ replicate⁻ (px ∷ _) = px
 
 inits⁺ : All P xs → All (All P) (inits xs)
 inits⁺ []         = [] ∷ []
-inits⁺ (px ∷ pxs) = [] ∷ gmap (px ∷_) (inits⁺ pxs)
+inits⁺ (px ∷ pxs) = [] ∷ gmap⁺ (px ∷_) (inits⁺ pxs)
 
 inits⁻ : ∀ xs → All (All P) (inits xs) → All P xs
 inits⁻ []               pxs                   = []
@@ -706,12 +720,12 @@ module _ (p : A → Bool) where
 
   all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
   all⁺ []       _     = []
-  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) ⟨$⟩ px∷xs
+  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) px∷xs
   ... | (px , pxs) = px ∷ all⁺ xs pxs
 
   all⁻ : All (T ∘ p) xs → T (all p xs)
   all⁻ []         = _
-  all⁻ (px ∷ pxs) = Equivalence.from T-∧ ⟨$⟩ (px , all⁻ pxs)
+  all⁻ (px ∷ pxs) = Equivalence.from T-∧ (px , all⁻ pxs)
 
 ------------------------------------------------------------------------
 -- All is anti-monotone.
@@ -731,7 +745,7 @@ module _ (S : Setoid c ℓ) where
   open Setoid S
   open ListEq S
 
-  respects : P Respects _≈_ → (All P) Respects _≋_
+  respects : P B.Respects _≈_ → (All P) B.Respects _≋_
   respects p≈ []            []         = []
   respects p≈ (x≈y ∷ xs≈ys) (px ∷ pxs) = p≈ x≈y px ∷ respects p≈ xs≈ys pxs
 
@@ -773,4 +787,10 @@ updateAt-cong-relative = updateAt-cong-local
 {-# WARNING_ON_USAGE updateAt-cong-relative
 "Warning: updateAt-cong-relative was deprecated in v2.0.
 Please use updateAt-cong-local instead."
+#-}
+
+gmap = gmap⁺
+{-# WARNING_ON_USAGE gmap
+"Warning: gmap was deprecated in v2.0.
+Please use gmap⁺ instead."
 #-}

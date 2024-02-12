@@ -20,7 +20,13 @@ import Data.Vec.Relation.Binary.Lex.Strict as Strict
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
   using (Pointwise; []; _∷_; head; tail)
 open import Function.Base using (id)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Poset; StrictPartialOrder; DecPoset; DecStrictPartialOrder; DecTotalOrder; StrictTotalOrder; Preorder; TotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPartialOrder; IsStrictPartialOrder; IsDecPartialOrder; IsDecStrictPartialOrder; IsDecTotalOrder; IsStrictTotalOrder; IsPreorder; IsTotalOrder)
+open import Relation.Binary.Definitions
+  using (Irreflexive; _Respects₂_; Antisymmetric; Asymmetric; Symmetric; Trans; Decidable; Total; Trichotomous)
 import Relation.Binary.Construct.NonStrictToStrict as Conv
 open import Relation.Nullary hiding (Irrelevant)
 open import Level using (Level; _⊔_)
@@ -255,6 +261,7 @@ module ≤-Reasoning  {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂}
 
   open import Relation.Binary.Reasoning.Base.Triple
     (≤-isPreorder ≼-po {n})
+    (<-asym isEquivalence ≤-resp-≈ antisym)
     (<-trans ≼-po)
     (<-resp₂ isEquivalence ≤-resp-≈)
     <⇒≤

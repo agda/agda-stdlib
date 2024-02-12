@@ -10,7 +10,13 @@
 open import Algebra.Core
 open import Data.Product.Base using (_,_; _×_)
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; DecPoset; TotalOrder; DecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Reflexive; Antisymmetric; Total; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Decidable)
 open import Relation.Nullary.Negation using (¬_)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 open import Relation.Binary.Lattice using (Infimum)
@@ -93,21 +99,21 @@ module _ (semi : IsSemilattice _∙_) where
 
   x∙y≤x : ∀ x y → (x ∙ y) ≤ x
   x∙y≤x x y = begin
-    x ∙ y       ≈⟨ ∧-cong (sym (idem x)) S.refl ⟩
+    x ∙ y       ≈⟨ ∙-cong (sym (idem x)) S.refl ⟩
     (x ∙ x) ∙ y ≈⟨ assoc x x y ⟩
     x ∙ (x ∙ y) ≈⟨ comm x (x ∙ y) ⟩
     (x ∙ y) ∙ x ∎
 
   x∙y≤y : ∀ x y → (x ∙ y) ≤ y
   x∙y≤y x y = begin
-    x ∙ y        ≈⟨ ∧-cong S.refl (sym (idem y)) ⟩
+    x ∙ y        ≈⟨ ∙-cong S.refl (sym (idem y)) ⟩
     x ∙ (y ∙ y)  ≈⟨ sym (assoc x y y) ⟩
     (x ∙ y) ∙ y  ∎
 
   ∙-presʳ-≤ : ∀ {x y} z → z ≤ x → z ≤ y → z ≤ (x ∙ y)
   ∙-presʳ-≤ {x} {y} z z≤x z≤y = begin
     z            ≈⟨ z≤y ⟩
-    z ∙ y        ≈⟨ ∧-cong z≤x S.refl ⟩
+    z ∙ y        ≈⟨ ∙-cong z≤x S.refl ⟩
     (z ∙ x) ∙ y  ≈⟨ assoc z x y ⟩
     z ∙ (x ∙ y)  ∎
 

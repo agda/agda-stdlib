@@ -30,7 +30,12 @@ open import Data.Vec.Properties
 open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable; _⇔_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsStrictPartialOrder; IsDecStrictPartialOrder)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; StrictPartialOrder; DecStrictPartialOrder)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Nullary.Negation using (contradiction)
@@ -779,7 +784,7 @@ p─q─r≡p─r─q : ∀ (p q r : Subset n) → p ─ q ─ r ≡ p ─ r ─
 p─q─r≡p─r─q p q r = begin
   (p ─ q) ─ r  ≡⟨  p─q─r≡p─q∪r p q r ⟩
   p ─ (q ∪ r)  ≡⟨  cong (p ─_) (∪-comm q r) ⟩
-  p ─ (r ∪ q)  ≡˘⟨ p─q─r≡p─q∪r p r q ⟩
+  p ─ (r ∪ q)  ≡⟨ p─q─r≡p─q∪r p r q ⟨
   (p ─ r) ─ q  ∎
   where open ≡-Reasoning
 

@@ -10,7 +10,8 @@ module Relation.Binary.HeterogeneousEquality.Quotients.Examples where
 
 open import Relation.Binary.HeterogeneousEquality.Quotients
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.HeterogeneousEquality hiding (isEquivalence)
 import Relation.Binary.PropositionalEquality.Core as ≡
 open import Data.Nat.Base
@@ -58,10 +59,12 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
 
   open Quotient Int renaming (Q to ℤ)
 
+  infixl 6 _+²_
+
   _+²_ : ℕ² → ℕ² → ℕ²
   (x₁ , y₁) +² (x₂ , y₂) = x₁ + x₂ , y₁ + y₂
 
-  +²-cong : ∀{a b a′ b′} → a ∼ a′ → b ∼ b′ → a +² b ∼ a′ +² b′
+  +²-cong : ∀{a b a′ b′} → a ∼ a′ → b ∼ b′ → (a +² b) ∼ (a′ +² b′)
   +²-cong {a₁ , b₁} {c₁ , d₁} {a₂ , b₂} {c₂ , d₂} ab∼cd₁ ab∼cd₂ = begin
     (a₁ + c₁) + (b₂ + d₂) ≡⟨ ≡.cong (_+ (b₂ + d₂)) (+-comm a₁ c₁) ⟩
     (c₁ + a₁) + (b₂ + d₂) ≡⟨ +-assoc c₁ a₁ (b₂ + d₂) ⟩
@@ -127,7 +130,7 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
         abs (zero² +² a)   ≅⟨ compat-abs (+²-identityˡ a) ⟩
         abs a              ∎
 
-    +²-assoc : (i j k : ℕ²) → (i +² j) +² k ∼ i +² (j +² k)
+    +²-assoc : (i j k : ℕ²) → ((i +² j) +² k) ∼ (i +² (j +² k))
     +²-assoc (a , b) (c , d) (e , f) = begin
       ((a + c) + e) + (b + (d + f)) ≡⟨ ≡.cong (_+ (b + (d + f))) (+-assoc a c e) ⟩
       (a + (c + e)) + (b + (d + f)) ≡⟨ ≡.cong ((a + (c + e)) +_) (≡.sym (+-assoc b d f)) ⟩

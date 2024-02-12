@@ -30,8 +30,8 @@ open import Algebra.Properties.Monoid.Mult +-monoid public
 ×1-homo-* (suc m) n = begin
   (n ℕ.+ m ℕ.* n) × 1#                ≈⟨  ×-homo-+ 1# n (m ℕ.* n) ⟩
   n × 1# + (m ℕ.* n) × 1#             ≈⟨  +-congˡ (×1-homo-* m n) ⟩
-  n × 1# + (m × 1#) * (n × 1#)        ≈˘⟨ +-congʳ (*-identityˡ _) ⟩
-  1# * (n × 1#) + (m × 1#) * (n × 1#) ≈˘⟨ distribʳ (n × 1#) 1# (m × 1#) ⟩
+  n × 1# + (m × 1#) * (n × 1#)        ≈⟨ +-congʳ (*-identityˡ _) ⟨
+  1# * (n × 1#) + (m × 1#) * (n × 1#) ≈⟨ distribʳ (n × 1#) 1# (m × 1#) ⟨
   (1# + m × 1#) * (n × 1#)            ∎
 
 -- (1 ×_) is the identity

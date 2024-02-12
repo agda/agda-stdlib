@@ -21,11 +21,16 @@ import Data.Nat.Properties as ℕ
 import Data.Sign as S
 import Data.Sign.Properties as SProp
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
+open import Relation.Binary.Bundles using (Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Decidable)
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Nullary.Decidable using (yes; no)
 import Relation.Nullary.Decidable as DEC
+open import Relation.Binary.Reasoning.Syntax
 
 ------------------------------------------------------------------------
 -- Type
@@ -114,15 +119,13 @@ open _∣_ using (quotient) public
 -- Divisibility reasoning
 
 module ∣-Reasoning where
-  private
-    module Base = PreorderReasoning ∣-preorder
+  private module Base = PreorderReasoning ∣-preorder
 
   open Base public
-    hiding (step-∼; step-≈; step-≈˘)
+    hiding (step-≲; step-∼; step-≈; step-≈˘)
+    renaming (≲-go to ∣-go)
 
-  infixr 2 step-∣
-  step-∣ = Base.step-∼
-  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
+  open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ ∣-go public
 
 ------------------------------------------------------------------------
 -- Other properties of _∣_

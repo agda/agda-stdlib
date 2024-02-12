@@ -1,25 +1,28 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Function setoids and related constructions
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Congruent`, `IsBijection` and
--- `Bijection`. The alternative definitions found in this file will
--- eventually be deprecated.
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Equality where
 
+{-# WARNING_ON_IMPORT
+"Function.Equality was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
+
 import Function.Base as Fun
 open import Level using (Level; _⊔_)
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid; _=[_]⇒_)
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
+import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Properties as P
 
 ------------------------------------------------------------------------
 -- Functions which preserve equality
@@ -32,6 +35,10 @@ record Π {f₁ f₂ t₁ t₂}
   field
     _⟨$⟩_ : (x : Setoid.Carrier From) → IndexedSetoid.Carrier To x
     cong  : Setoid._≈_ From =[ _⟨$⟩_ ]⇒ IndexedSetoid._≈_ To
+{-# WARNING_ON_USAGE Π
+"Warning: Π was deprecated in v2.0.
+Please use Function.Dependent.Bundles.Func instead."
+#-}
 
 open Π public
 
@@ -39,12 +46,20 @@ infixr 0 _⟶_
 
 _⟶_ : ∀ {f₁ f₂ t₁ t₂} → Setoid f₁ f₂ → Setoid t₁ t₂ → Set _
 From ⟶ To = Π From (Trivial.indexedSetoid To)
+{-# WARNING_ON_USAGE _⟶_
+"Warning: _⟶_ was deprecated in v2.0.
+Please use Function.(Bundles.)Func instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Identity and composition.
 
 id : ∀ {a₁ a₂} {A : Setoid a₁ a₂} → A ⟶ A
 id = record { _⟨$⟩_ = Fun.id; cong = Fun.id }
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v2.0.
+Please use Function.Construct.Identity.function instead."
+#-}
 
 infixr 9 _∘_
 
@@ -56,6 +71,10 @@ f ∘ g = record
   { _⟨$⟩_ = Fun._∘_ (_⟨$⟩_ f) (_⟨$⟩_ g)
   ; cong  = Fun._∘_ (cong  f) (cong  g)
   }
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v2.0.
+Please use Function.Construct.Composition.function instead."
+#-}
 
 -- Constant equality-preserving function.
 
@@ -66,6 +85,10 @@ const {B = B} b = record
   { _⟨$⟩_ = Fun.const b
   ; cong  = Fun.const (Setoid.refl B)
   }
+{-# WARNING_ON_USAGE const
+"Warning: const was deprecated in v2.0.
+Please use Function.Construct.Constant.function instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Function setoids
@@ -121,4 +144,11 @@ flip {B = B} f = record
     { _⟨$⟩_ = λ a → f ⟨$⟩ a ⟨$⟩ b
     ; cong  = λ a₁≈a₂ → cong f a₁≈a₂ (Setoid.refl B) }
   ; cong  = λ b₁≈b₂ a₁≈a₂ → cong f a₁≈a₂ b₁≈b₂
+  }
+
+→-to-⟶ : ∀ {a b ℓ} {A : Set a} {B : Setoid b ℓ} →
+         (A → Setoid.Carrier B) → P.setoid A ⟶ B
+→-to-⟶ {B = B} to = record
+  { _⟨$⟩_ = to
+  ; cong = λ { P.refl → Setoid.refl B }
   }

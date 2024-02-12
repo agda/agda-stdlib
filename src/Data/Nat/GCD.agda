@@ -21,9 +21,11 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
-open import Relation.Binary
+open import Relation.Binary.Definitions using (tri<; tri>; tri≈; Symmetric)
 open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_; _≢_; subst; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable using (Dec)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
@@ -43,7 +45,7 @@ open import Algebra.Definitions {A = ℕ} _≡_ as Algebra
 
 gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
 gcd′ m zero      _         _   = m
-gcd′ m n@(suc _) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (m%n<n m n)
+gcd′ m n@(suc _) (acc rec) n<m = gcd′ n (m % n) (rec n<m) (m%n<n m n)
 
 gcd : ℕ → ℕ → ℕ
 gcd m n with <-cmp m n
@@ -55,15 +57,15 @@ gcd m n with <-cmp m n
 -- Core properties of gcd′
 
 gcd′[m,n]∣m,n : ∀ {m n} rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
-gcd′[m,n]∣m,n {m} {zero}  rec       n<m = ∣-refl , m ∣0
-gcd′[m,n]∣m,n {m} {suc n} (acc rec) n<m
-  with gcd∣n , gcd∣m%n ← gcd′[m,n]∣m,n (rec _ n<m) (m%n<n m (suc n))
+gcd′[m,n]∣m,n {m} {zero}      rec       n<m = ∣-refl , m ∣0
+gcd′[m,n]∣m,n {m} {n@(suc _)} (acc rec) n<m
+  with gcd∣n , gcd∣m%n ← gcd′[m,n]∣m,n (rec n<m) (m%n<n m n)
   = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
 
 gcd′-greatest : ∀ {m n c} rec n<m → c ∣ m → c ∣ n → c ∣ gcd′ m n rec n<m
-gcd′-greatest {m} {zero}  rec       n<m c∣m c∣n = c∣m
-gcd′-greatest {m} {suc n} (acc rec) n<m c∣m c∣n =
-  gcd′-greatest (rec _ n<m) (m%n<n m (suc n)) c∣n (%-presˡ-∣ c∣m c∣n)
+gcd′-greatest {m} {zero}      rec       n<m c∣m c∣n = c∣m
+gcd′-greatest {m} {n@(suc _)} (acc rec) n<m c∣m c∣n =
+  gcd′-greatest (rec n<m) (m%n<n m n) c∣n (%-presˡ-∣ c∣m c∣n)
 
 ------------------------------------------------------------------------
 -- Core properties of gcd
@@ -190,7 +192,7 @@ c*gcd[m,n]≡gcd[cm,cn] c@(suc _) m n = begin
   c * gcd m n                   ≡⟨ cong (c *_) (P.sym (gcd[cm,cn]/c≡gcd[m,n] c m n)) ⟩
   c * (gcd (c * m) (c * n) / c) ≡⟨ m*[n/m]≡n (gcd-greatest (m∣m*n m) (m∣m*n n)) ⟩
   gcd (c * m) (c * n)           ∎
-  where open P.≡-Reasoning
+  where open ≡-Reasoning
 
 gcd[m,n]≤n : ∀ m n .{{_ : NonZero n}} → gcd m n ≤ n
 gcd[m,n]≤n m n = ∣⇒≤ (gcd[m,n]∣n m n)
@@ -387,13 +389,13 @@ module Bézout where
     P (m , n) = Lemma m n
 
     gcd″ : ∀ p → (<′-Rec ⊗ <′-Rec) P p → P p
-    gcd″ (zero  , n)     rec = Lemma.base n
-    gcd″ (suc m , zero)  rec = Lemma.sym (Lemma.base (suc m))
-    gcd″ (suc m , suc n) rec with compare m n
-    ... | equal m     = Lemma.refl (suc m)
-    ... | less m k    = Lemma.stepˡ $ proj₁ rec (suc k) (lem₁ k m)
+    gcd″ (zero      , n)     rec = Lemma.base n
+    gcd″ (m@(suc _) , zero)  rec = Lemma.sym (Lemma.base m)
+    gcd″ (m′@(suc m) , n′@(suc n)) rec with compare m n
+    ... | equal m     = Lemma.refl m′
+    ... | less m k    = Lemma.stepˡ $ proj₁ rec (lem₁ k m)
                       -- "gcd (suc m) (suc k)"
-    ... | greater n k = Lemma.stepʳ $ proj₂ rec (suc k) (lem₁ k n) (suc n)
+    ... | greater n k = Lemma.stepʳ $ proj₂ rec (lem₁ k n) n′
                       -- "gcd (suc k) (suc n)"
 
   -- Bézout's identity can be recovered from the GCD.

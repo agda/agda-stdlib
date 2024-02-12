@@ -8,7 +8,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 
@@ -31,8 +31,8 @@ open import Relation.Nullary
 open import Relation.Nullary.Decidable using (dec-true; dec-false)
 open import Relation.Binary.PropositionalEquality.Core as PropEq
   using (_≡_; _≢_; refl; cong)
-open PropEq.≡-Reasoning
 import Relation.Binary.PropositionalEquality.Properties as PropEq
+open PropEq.≡-Reasoning
 
 private
   open module D = DecSetoid D

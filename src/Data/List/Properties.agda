@@ -43,6 +43,7 @@ open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradi
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋; ¬?; _×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
+import Data.Nat.GeneralisedArithmetic as ℕ
 
 
 open ≡-Reasoning
@@ -117,10 +118,6 @@ map-injective finj {[]} {[]} eq = refl
 map-injective finj {x ∷ xs} {y ∷ ys} eq =
   let fx≡fy , fxs≡fys = ∷-injective eq in
   cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
-
-map-replicate : ∀ (f : A → B) n x → map f (replicate n x) ≡ replicate n (f x)
-map-replicate f zero    x = refl
-map-replicate f (suc n) x = cong (_ ∷_) (map-replicate f n x)
 
 ------------------------------------------------------------------------
 -- mapMaybe
@@ -283,7 +280,7 @@ module _ (f : A → B → C) where
   cartesianProductWith-distribʳ-++ (x ∷ xs) ys zs = begin
     prod (x ∷ xs ++ ys) zs ≡⟨⟩
     map (f x) zs ++ prod (xs ++ ys) zs ≡⟨ cong (map (f x) zs ++_) (cartesianProductWith-distribʳ-++ xs ys zs) ⟩
-    map (f x) zs ++ prod xs zs ++ prod ys zs ≡˘⟨ ++-assoc (map (f x) zs) (prod xs zs) (prod ys zs) ⟩
+    map (f x) zs ++ prod xs zs ++ prod ys zs ≡⟨ ++-assoc (map (f x) zs) (prod xs zs) (prod ys zs) ⟨
     (map (f x) zs ++ prod xs zs) ++ prod ys zs ≡⟨⟩
     prod (x ∷ xs) zs ++ prod ys zs ∎
 
@@ -593,7 +590,7 @@ map-concatMap f g xs = begin
   map f (concatMap g xs)
     ≡⟨⟩
   map f (concat (map g xs))
-    ≡˘⟨ concat-map (map g xs) ⟩
+    ≡⟨ concat-map (map g xs) ⟨
   concat (map (map f) (map g xs))
     ≡⟨ cong concat
          {x = map (map f) (map g xs)}
@@ -620,13 +617,6 @@ sum-++ (x ∷ xs) ys = begin
 ∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
 ∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
 ∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
-
-------------------------------------------------------------------------
--- replicate
-
-length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
-length-replicate zero    = refl
-length-replicate (suc n) = cong suc (length-replicate n)
 
 ------------------------------------------------------------------------
 -- scanr
@@ -746,17 +736,41 @@ map-∷= (x ∷ xs) zero    v f = refl
 map-∷= (x ∷ xs) (suc k) v f = cong (f x ∷_) (map-∷= xs k v f)
 
 ------------------------------------------------------------------------
--- _─_
+-- insertAt
 
-length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
-length-─ (x ∷ xs) zero        = refl
-length-─ (x ∷ y ∷ xs) (suc k) = cong suc (length-─ (y ∷ xs) k)
+length-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v →
+                  length (insertAt xs i v) ≡ suc (length xs)
+length-insertAt xs       zero    v = refl
+length-insertAt (x ∷ xs) (suc i) v = cong suc (length-insertAt xs i v)
 
-map-─ : ∀ xs k (f : A → B) →
-        let eq = sym (length-map f xs) in
-        map f (xs ─ k) ≡ map f xs ─ cast eq k
-map-─ (x ∷ xs) zero    f = refl
-map-─ (x ∷ xs) (suc k) f = cong (f x ∷_) (map-─ xs k f)
+------------------------------------------------------------------------
+-- removeAt
+
+length-removeAt : ∀ (xs : List A) k → length (removeAt xs k) ≡ pred (length xs)
+length-removeAt (x ∷ xs) zero            = refl
+length-removeAt (x ∷ xs@(_ ∷ _)) (suc k) = cong suc (length-removeAt xs k)
+
+length-removeAt′ : ∀ (xs : List A) k → length xs ≡ suc (length (removeAt xs k))
+length-removeAt′ xs@(_ ∷ _) k rewrite length-removeAt xs k = refl
+
+map-removeAt : ∀ xs k (f : A → B) →
+            let eq = sym (length-map f xs) in
+            map f (removeAt xs k) ≡ removeAt (map f xs) (cast eq k)
+map-removeAt (x ∷ xs) zero    f = refl
+map-removeAt (x ∷ xs) (suc k) f = cong (f x ∷_) (map-removeAt xs k f)
+
+------------------------------------------------------------------------
+ -- insertAt and removeAt
+
+removeAt-insertAt : ∀ (xs : List A) (i : Fin (suc (length xs))) v →
+  removeAt (insertAt xs i v) ((cast (sym (length-insertAt xs i v)) i)) ≡ xs
+removeAt-insertAt xs       zero    v = refl
+removeAt-insertAt (x ∷ xs) (suc i) v = cong (_ ∷_) (removeAt-insertAt xs i v)
+
+insertAt-removeAt : (xs : List A) (i : Fin (length xs)) →
+  insertAt (removeAt xs i) (cast (length-removeAt′ xs i) i) (lookup xs i) ≡ xs
+insertAt-removeAt (x ∷ xs) zero    = refl
+insertAt-removeAt (x ∷ xs) (suc i) = cong (x ∷_) (insertAt-removeAt xs i)
 
 ------------------------------------------------------------------------
 -- take
@@ -784,7 +798,7 @@ take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym
 
 -- If you take at least as many elements from a list as it has, you get
 -- the whole list.
-take-all :(n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
+take-all : (n : ℕ) (xs : List A) → n ≥ length xs → take n xs ≡ xs
 take-all zero [] _ = refl
 take-all (suc _) [] _ = refl
 take-all (suc n) (x ∷ xs) (s≤s pf) = cong (x ∷_) (take-all n xs pf)
@@ -813,10 +827,10 @@ drop-[] : ∀ m → drop {A = A} m [] ≡ []
 drop-[] zero = refl
 drop-[] (suc m) = refl
 
-take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
-take++drop zero    xs       = refl
-take++drop (suc n) []       = refl
-take++drop (suc n) (x ∷ xs) = cong (x ∷_) (take++drop n xs)
+take++drop≡id : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
+take++drop≡id zero    xs       = refl
+take++drop≡id (suc n) []       = refl
+take++drop≡id (suc n) (x ∷ xs) = cong (x ∷_) (take++drop≡id n xs)
 
 drop-take-suc : (xs : List A) (i : Fin (length xs)) → let m = toℕ i in
            drop m (take (suc m) xs) ≡ [ lookup xs i ]
@@ -827,6 +841,54 @@ drop-take-suc-tabulate : ∀ {n} (f : Fin n → A) (i : Fin n) → let m = toℕ
                   drop m (take (suc m) (tabulate f)) ≡ [ f i ]
 drop-take-suc-tabulate f i rewrite sym (toℕ-cast (sym (length-tabulate f)) i) | sym (lookup-tabulate f i)
   = drop-take-suc (tabulate f) (cast _ i)
+
+-- Dropping m elements and then n elements is same as dropping m+n elements
+drop-drop : (m n : ℕ) → (xs : List A) → drop n (drop m xs) ≡ drop (m + n) xs
+drop-drop zero n xs = refl
+drop-drop (suc m) n [] = drop-[] n
+drop-drop (suc m) n (x ∷ xs) = drop-drop m n xs
+
+drop-all : (n : ℕ) (xs : List A) → n ≥ length xs → drop n xs ≡ []
+drop-all n       []       _ = drop-[] n
+drop-all (suc n) (x ∷ xs) p = drop-all n xs (s≤s⁻¹ p)
+
+------------------------------------------------------------------------
+-- replicate
+
+length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
+length-replicate zero    = refl
+length-replicate (suc n) = cong suc (length-replicate n)
+
+lookup-replicate : ∀ n (x : A) (i : Fin n) →
+                   lookup (replicate n x) (cast (sym (length-replicate n)) i) ≡ x
+lookup-replicate (suc n) x zero    = refl
+lookup-replicate (suc n) x (suc i) = lookup-replicate n x i
+
+map-replicate :  ∀ (f : A → B) n (x : A) →
+                 map f (replicate n x) ≡ replicate n (f x)
+map-replicate f zero    x = refl
+map-replicate f (suc n) x = cong (_ ∷_) (map-replicate f n x)
+
+zipWith-replicate : ∀ n (_⊕_ : A → B → C) (x : A) (y : B) →
+                    zipWith _⊕_ (replicate n x) (replicate n y) ≡ replicate n (x ⊕ y)
+zipWith-replicate zero    _⊕_ x y = refl
+zipWith-replicate (suc n) _⊕_ x y = cong (x ⊕ y ∷_) (zipWith-replicate n _⊕_ x y)
+
+------------------------------------------------------------------------
+-- iterate
+
+length-iterate : ∀ f (x : A) n → length (iterate f x n) ≡ n
+length-iterate f x zero    = refl
+length-iterate f x (suc n) = cong suc (length-iterate f (f x) n)
+
+iterate-id : ∀ (x : A) n → iterate id x n ≡ replicate n x
+iterate-id x zero    = refl
+iterate-id x (suc n) = cong (_ ∷_) (iterate-id x n)
+
+lookup-iterate : ∀ f (x : A) n (i : Fin n) →
+  lookup (iterate f x n) (cast (sym (length-iterate f x n)) i) ≡ ℕ.iterate f x (toℕ i)
+lookup-iterate f x (suc n) zero    = refl
+lookup-iterate f x (suc n) (suc i) = lookup-iterate f (f x) n i
 
 ------------------------------------------------------------------------
 -- splitAt
@@ -987,11 +1049,11 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
 -- Reverse-append of append is reverse-append after reverse-append.
 
-ʳ++-++ : ∀ (xs {ys zs} : List A) → (xs ++ ys) ʳ++ zs ≡ ys ʳ++ xs ʳ++ zs
-ʳ++-++ [] = refl
-ʳ++-++ (x ∷ xs) {ys} {zs} = begin
+++-ʳ++ : ∀ (xs {ys zs} : List A) → (xs ++ ys) ʳ++ zs ≡ ys ʳ++ xs ʳ++ zs
+++-ʳ++ [] = refl
+++-ʳ++ (x ∷ xs) {ys} {zs} = begin
   (x ∷ xs ++ ys) ʳ++ zs   ≡⟨⟩
-  (xs ++ ys) ʳ++ x ∷ zs   ≡⟨ ʳ++-++ xs ⟩
+  (xs ++ ys) ʳ++ x ∷ zs   ≡⟨ ++-ʳ++ xs ⟩
   ys ʳ++ xs ʳ++ x ∷ zs    ≡⟨⟩
   ys ʳ++ (x ∷ xs) ʳ++ zs  ∎
 
@@ -1067,7 +1129,7 @@ reverse-++ : (xs ys : List A) →
                      reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
 reverse-++ xs ys = begin
   reverse (xs ++ ys)         ≡⟨⟩
-  (xs ++ ys) ʳ++ []          ≡⟨ ʳ++-++ xs ⟩
+  (xs ++ ys) ʳ++ []          ≡⟨ ++-ʳ++ xs ⟩
   ys ʳ++ xs ʳ++ []           ≡⟨⟩
   ys ʳ++ reverse xs          ≡⟨ ʳ++-defn ys ⟩
   reverse ys ++ reverse xs   ∎
@@ -1205,4 +1267,28 @@ zipWith-identityʳ = zipWith-zeroʳ
 {-# WARNING_ON_USAGE zipWith-identityʳ
 "Warning: zipWith-identityʳ was deprecated in v2.0.
 Please use zipWith-zeroʳ instead."
+#-}
+
+ʳ++-++ = ++-ʳ++
+{-# WARNING_ON_USAGE ʳ++-++
+"Warning: ʳ++-++ was deprecated in v2.0.
+Please use ++-ʳ++ instead."
+#-}
+
+take++drop = take++drop≡id
+{-# WARNING_ON_USAGE take++drop
+"Warning: take++drop was deprecated in v2.0.
+Please use take++drop≡id instead."
+#-}
+
+length-─ = length-removeAt
+{-# WARNING_ON_USAGE length-─
+"Warning: length-─ was deprecated in v2.0.
+Please use length-removeAt instead."
+#-}
+
+map-─ = map-removeAt
+{-# WARNING_ON_USAGE map-─
+"Warning: map-─ was deprecated in v2.0.
+Please use map-removeAt instead."
 #-}

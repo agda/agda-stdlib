@@ -8,7 +8,8 @@
 
 open import Data.Product.Base
   using (map₁; map₂; ∃; _×_; Σ-syntax; proj₁; _,_; -,_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 import Data.Tree.AVL.Value
 

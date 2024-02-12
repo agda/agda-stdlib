@@ -19,7 +19,10 @@ open import Level using (_⊔_)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; yes; no; _×-dec_; _⊎-dec_)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Irreflexive; Asymmetric; Antisymmetric; Decidable; _Respects₂_; _Respects_)
 open import Data.List.Relation.Binary.Pointwise.Base
    using (Pointwise; []; _∷_; head; tail)
 

@@ -7,8 +7,7 @@
 
 module Algebra.Module.Morphism.Structures where
 
-open import Algebra.Bundles
-open import Algebra.Module.Bundles
+open import Algebra.Module.Bundles.Raw
 import Algebra.Module.Morphism.Definitions as MorphismDefinitions
 import Algebra.Morphism.Structures as MorphismStructures
 open import Function.Definitions
@@ -16,19 +15,18 @@ open import Level
 
 private
   variable
-    r ℓr s ℓs m₁ m₂ ℓm₁ ℓm₂ : Level
+    r s m₁ m₂ ℓm₁ ℓm₂ : Level
 
 module LeftSemimoduleMorphisms
-  {semiring : Semiring r ℓr}
-  (M₁ : LeftSemimodule semiring m₁ ℓm₁)
-  (M₂ : LeftSemimodule semiring m₂ ℓm₂)
+  {R : Set r}
+  (M₁ : RawLeftSemimodule R m₁ ℓm₁)
+  (M₂ : RawLeftSemimodule R m₂ ℓm₂)
   where
 
-  open Semiring semiring renaming (Carrier to R)
-  open LeftSemimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _≈ᴹ_ to _≈ᴹ₁_)
-  open LeftSemimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open RawLeftSemimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RawLeftSemimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
-  open MorphismStructures.MonoidMorphisms (LeftSemimodule.+ᴹ-rawMonoid M₁) (LeftSemimodule.+ᴹ-rawMonoid M₂)
+  open MorphismStructures.MonoidMorphisms (RawLeftSemimodule.+ᴹ-rawMonoid M₁) (RawLeftSemimodule.+ᴹ-rawMonoid M₂)
 
   record IsLeftSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -74,17 +72,16 @@ module LeftSemimoduleMorphisms
       renaming (isMagmaIsomorphism to +ᴹ-isMagmaIsomorphism)
 
 module LeftModuleMorphisms
-  {ring : Ring r ℓr}
-  (M₁ : LeftModule ring m₁ ℓm₁)
-  (M₂ : LeftModule ring m₂ ℓm₂)
+  {R : Set r}
+  (M₁ : RawLeftModule R m₁ ℓm₁)
+  (M₂ : RawLeftModule R m₂ ℓm₂)
   where
 
-  open Ring ring renaming (Carrier to R)
-  open LeftModule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _≈ᴹ_ to _≈ᴹ₁_)
-  open LeftModule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open RawLeftModule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RawLeftModule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
-  open MorphismStructures.GroupMorphisms (LeftModule.+ᴹ-rawGroup M₁) (LeftModule.+ᴹ-rawGroup M₂)
-  open LeftSemimoduleMorphisms (LeftModule.leftSemimodule M₁) (LeftModule.leftSemimodule M₂)
+  open MorphismStructures.GroupMorphisms (RawLeftModule.+ᴹ-rawGroup M₁) (RawLeftModule.+ᴹ-rawGroup M₂)
+  open LeftSemimoduleMorphisms (RawLeftModule.rawLeftSemimodule M₁) (RawLeftModule.rawLeftSemimodule M₂)
 
   record IsLeftModuleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -148,16 +145,15 @@ module LeftModuleMorphisms
       }
 
 module RightSemimoduleMorphisms
-  {semiring : Semiring r ℓr}
-  (M₁ : RightSemimodule semiring m₁ ℓm₁)
-  (M₂ : RightSemimodule semiring m₂ ℓm₂)
+  {R : Set r}
+  (M₁ : RawRightSemimodule R m₁ ℓm₁)
+  (M₂ : RawRightSemimodule R m₂ ℓm₂)
   where
 
-  open Semiring semiring renaming (Carrier to R)
-  open RightSemimodule M₁ renaming (Carrierᴹ to A; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
-  open RightSemimodule M₂ renaming (Carrierᴹ to B; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open RawRightSemimodule M₁ renaming (Carrierᴹ to A; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RawRightSemimodule M₂ renaming (Carrierᴹ to B; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
-  open MorphismStructures.MonoidMorphisms (RightSemimodule.+ᴹ-rawMonoid M₁) (RightSemimodule.+ᴹ-rawMonoid M₂)
+  open MorphismStructures.MonoidMorphisms (RawRightSemimodule.+ᴹ-rawMonoid M₁) (RawRightSemimodule.+ᴹ-rawMonoid M₂)
 
   record IsRightSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -203,17 +199,16 @@ module RightSemimoduleMorphisms
       renaming (isMagmaIsomorphism to +ᴹ-isMagmaIsomorphism)
 
 module RightModuleMorphisms
-  {ring : Ring r ℓr}
-  (M₁ : RightModule ring m₁ ℓm₁)
-  (M₂ : RightModule ring m₂ ℓm₂)
+  {R : Set r}
+  (M₁ : RawRightModule R m₁ ℓm₁)
+  (M₂ : RawRightModule R m₂ ℓm₂)
   where
 
-  open Ring ring renaming (Carrier to R)
-  open RightModule M₁ renaming (Carrierᴹ to A; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
-  open RightModule M₂ renaming (Carrierᴹ to B; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open RawRightModule M₁ renaming (Carrierᴹ to A; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RawRightModule M₂ renaming (Carrierᴹ to B; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
-  open MorphismStructures.GroupMorphisms (RightModule.+ᴹ-rawGroup M₁) (RightModule.+ᴹ-rawGroup M₂)
-  open RightSemimoduleMorphisms (RightModule.rightSemimodule M₁) (RightModule.rightSemimodule M₂)
+  open MorphismStructures.GroupMorphisms (RawRightModule.+ᴹ-rawGroup M₁) (RawRightModule.+ᴹ-rawGroup M₂)
+  open RightSemimoduleMorphisms (RawRightModule.rawRightSemimodule M₁) (RawRightModule.rawRightSemimodule M₂)
 
   record IsRightModuleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -276,21 +271,19 @@ module RightModuleMorphisms
       }
 
 module BisemimoduleMorphisms
-  {R-semiring : Semiring r ℓr}
-  {S-semiring : Semiring s ℓs}
-  (M₁ : Bisemimodule R-semiring S-semiring m₁ ℓm₁)
-  (M₂ : Bisemimodule R-semiring S-semiring m₂ ℓm₂)
+  {R : Set r}
+  {S : Set s}
+  (M₁ : RawBisemimodule R S m₁ ℓm₁)
+  (M₂ : RawBisemimodule R S m₂ ℓm₂)
   where
 
-  open Semiring R-semiring renaming (Carrier to R)
-  open Semiring S-semiring renaming (Carrier to S)
-  open Bisemimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
-  open Bisemimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open RawBisemimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RawBisemimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_ using (Homomorphicₗ)
   open MorphismDefinitions S A B _≈ᴹ₂_ using (Homomorphicᵣ)
-  open MorphismStructures.MonoidMorphisms (Bisemimodule.+ᴹ-rawMonoid M₁) (Bisemimodule.+ᴹ-rawMonoid M₂)
-  open LeftSemimoduleMorphisms (Bisemimodule.leftSemimodule M₁) (Bisemimodule.leftSemimodule M₂)
-  open RightSemimoduleMorphisms (Bisemimodule.rightSemimodule M₁) (Bisemimodule.rightSemimodule M₂)
+  open MorphismStructures.MonoidMorphisms (RawBisemimodule.+ᴹ-rawMonoid M₁) (RawBisemimodule.+ᴹ-rawMonoid M₂)
+  open LeftSemimoduleMorphisms (RawBisemimodule.rawLeftSemimodule M₁) (RawBisemimodule.rawLeftSemimodule M₂)
+  open RightSemimoduleMorphisms (RawBisemimodule.rawRightSemimodule M₁) (RawBisemimodule.rawRightSemimodule M₂)
 
   record IsBisemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -358,22 +351,20 @@ module BisemimoduleMorphisms
       }
 
 module BimoduleMorphisms
-  {R-ring : Ring r ℓr}
-  {S-ring : Ring s ℓs}
-  (M₁ : Bimodule R-ring S-ring m₁ ℓm₁)
-  (M₂ : Bimodule R-ring S-ring m₂ ℓm₂)
+  {R : Set r}
+  {S : Set s}
+  (M₁ : RawBimodule R S m₁ ℓm₁)
+  (M₂ : RawBimodule R S m₂ ℓm₂)
   where
 
-  open Ring R-ring renaming (Carrier to R)
-  open Ring S-ring renaming (Carrier to S)
-  open Bimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
-  open Bimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open RawBimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RawBimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_ using (Homomorphicₗ)
   open MorphismDefinitions S A B _≈ᴹ₂_ using (Homomorphicᵣ)
-  open MorphismStructures.GroupMorphisms (Bimodule.+ᴹ-rawGroup M₁) (Bimodule.+ᴹ-rawGroup M₂)
-  open LeftModuleMorphisms (Bimodule.leftModule M₁) (Bimodule.leftModule M₂)
-  open RightModuleMorphisms (Bimodule.rightModule M₁) (Bimodule.rightModule M₂)
-  open BisemimoduleMorphisms (Bimodule.bisemimodule M₁) (Bimodule.bisemimodule M₂)
+  open MorphismStructures.GroupMorphisms (RawBimodule.+ᴹ-rawGroup M₁) (RawBimodule.+ᴹ-rawGroup M₂)
+  open LeftModuleMorphisms (RawBimodule.rawLeftModule M₁) (RawBimodule.rawLeftModule M₂)
+  open RightModuleMorphisms (RawBimodule.rawRightModule M₁) (RawBimodule.rawRightModule M₂)
+  open BisemimoduleMorphisms (RawBimodule.rawBisemimodule M₁) (RawBimodule.rawBisemimodule M₂)
 
   record IsBimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -492,14 +483,14 @@ module BimoduleMorphisms
       }
 
 module SemimoduleMorphisms
-  {commutativeSemiring : CommutativeSemiring r ℓr}
-  (M₁ : Semimodule commutativeSemiring m₁ ℓm₁)
-  (M₂ : Semimodule commutativeSemiring m₂ ℓm₂)
+  {R : Set r}
+  (M₁ : RawSemimodule R m₁ ℓm₁)
+  (M₂ : RawSemimodule R m₂ ℓm₂)
   where
 
-  open Semimodule M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
-  open Semimodule M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
-  open BisemimoduleMorphisms (Semimodule.bisemimodule M₁) (Semimodule.bisemimodule M₂)
+  open RawSemimodule M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
+  open RawSemimodule M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
+  open BisemimoduleMorphisms (RawSemimodule.rawBisemimodule M₁) (RawSemimodule.rawBisemimodule M₂)
 
   record IsSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
@@ -544,15 +535,15 @@ module SemimoduleMorphisms
             )
 
 module ModuleMorphisms
-  {commutativeRing : CommutativeRing r ℓr}
-  (M₁ : Module commutativeRing m₁ ℓm₁)
-  (M₂ : Module commutativeRing m₂ ℓm₂)
+  {R : Set r}
+  (M₁ : RawModule R m₁ ℓm₁)
+  (M₂ : RawModule R m₂ ℓm₂)
   where
 
-  open Module M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
-  open Module M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
-  open BimoduleMorphisms (Module.bimodule M₁) (Module.bimodule M₂)
-  open SemimoduleMorphisms (Module.semimodule M₁) (Module.semimodule M₂)
+  open RawModule M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
+  open RawModule M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
+  open BimoduleMorphisms (RawModule.rawBimodule M₁) (RawModule.rawBimodule M₂)
+  open SemimoduleMorphisms (RawModule.rawBisemimodule M₁) (RawModule.rawBisemimodule M₂)
 
   record IsModuleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field

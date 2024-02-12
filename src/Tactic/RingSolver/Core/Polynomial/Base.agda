@@ -316,7 +316,7 @@ mutual
 
 ⊟-step : ∀ {n} → Acc _<′_ n → Poly n → Poly n
 ⊟-step (acc wf) (Κ x  ⊐ i≤n) = Κ (- x) ⊐ i≤n
-⊟-step (acc wf) (⅀ xs ⊐ i≤n) = poly-map (⊟-step (wf _ i≤n)) xs ⊐↓ i≤n
+⊟-step (acc wf) (⅀ xs ⊐ i≤n) = poly-map (⊟-step (wf i≤n)) xs ⊐↓ i≤n
 
 ⊟_ : ∀ {n} → Poly n → Poly n
 ⊟_ = ⊟-step (<′-wellFounded _)
@@ -335,12 +335,12 @@ mutual
 
   ⊠-Κ : ∀ {n} → Acc _<′_ n → Carrier → Poly n → Poly n
   ⊠-Κ (acc _ ) x (Κ y  ⊐ i≤n) = Κ (x * y) ⊐ i≤n
-  ⊠-Κ (acc wf) x (⅀ xs ⊐ i≤n) = ⊠-Κ-inj (wf _ i≤n) x xs ⊐↓ i≤n
+  ⊠-Κ (acc wf) x (⅀ xs ⊐ i≤n) = ⊠-Κ-inj (wf i≤n) x xs ⊐↓ i≤n
   {-# INLINE ⊠-Κ #-}
 
   ⊠-⅀ : ∀ {i n} → Acc _<′_ n → Coeff i + → i <′ n → Poly n → Poly n
   ⊠-⅀ (acc wf) xs i≤n (⅀ ys ⊐ j≤n) = ⊠-match  (acc wf) (inj-compare i≤n j≤n) xs ys
-  ⊠-⅀ (acc wf) xs i≤n (Κ y ⊐ _)    = ⊠-Κ-inj (wf _ i≤n) y xs ⊐↓ i≤n
+  ⊠-⅀ (acc wf) xs i≤n (Κ y ⊐ _)    = ⊠-Κ-inj (wf i≤n) y xs ⊐↓ i≤n
 
   ⊠-Κ-inj : ∀ {i}  → Acc _<′_ i → Carrier → Coeff i + → Coeff i *
   ⊠-Κ-inj a x xs = poly-map (⊠-Κ a x) (xs)
@@ -352,7 +352,7 @@ mutual
           → Poly k
           → Poly k
   ⊠-⅀-inj (acc wf) i≤k x (⅀ y ⊐ j≤k) = ⊠-match (acc wf) (inj-compare i≤k j≤k) x y
-  ⊠-⅀-inj (acc wf) i≤k x (Κ y ⊐ j≤k) = ⊠-Κ-inj (wf _ i≤k) y x ⊐↓ i≤k
+  ⊠-⅀-inj (acc wf) i≤k x (Κ y ⊐ j≤k) = ⊠-Κ-inj (wf i≤k) y x ⊐↓ i≤k
 
   ⊠-match : ∀ {i j n}
           → Acc _<′_ n
@@ -362,9 +362,9 @@ mutual
           → Coeff i +
           → Coeff j +
           → Poly n
-  ⊠-match (acc wf) (inj-eq i&j≤n)     xs ys = ⊠-coeffs (wf _ i&j≤n) xs ys               ⊐↓ i&j≤n
-  ⊠-match (acc wf) (inj-lt i≤j-1 j≤n) xs ys = poly-map (⊠-⅀-inj (wf _ j≤n) i≤j-1 xs) (ys) ⊐↓ j≤n
-  ⊠-match (acc wf) (inj-gt i≤n j≤i-1) xs ys = poly-map (⊠-⅀-inj (wf _ i≤n) j≤i-1 ys) (xs) ⊐↓ i≤n
+  ⊠-match (acc wf) (inj-eq i&j≤n)     xs ys = ⊠-coeffs (wf i&j≤n) xs ys               ⊐↓ i&j≤n
+  ⊠-match (acc wf) (inj-lt i≤j-1 j≤n) xs ys = poly-map (⊠-⅀-inj (wf j≤n) i≤j-1 xs) (ys) ⊐↓ j≤n
+  ⊠-match (acc wf) (inj-gt i≤n j≤i-1) xs ys = poly-map (⊠-⅀-inj (wf i≤n) j≤i-1 ys) (xs) ⊐↓ i≤n
 
   ⊠-coeffs : ∀ {n} → Acc _<′_ n → Coeff n + → Coeff n + → Coeff n *
   ⊠-coeffs a (xs) (y ≠0 Δ j & [])   = poly-map (⊠-step′ a y) (xs) ⍓* j

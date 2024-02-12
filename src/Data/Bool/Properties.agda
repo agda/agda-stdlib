@@ -16,16 +16,19 @@ open import Data.Empty
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_⟨_⟩_; const; id)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence
-  using (_⇔_; equivalence; module Equivalence)
+open import Function.Bundles hiding (LeftInverse; RightInverse; Inverse)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level; 0ℓ)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Poset; Preorder; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
-open import Relation.Nullary.Reflects using (ofʸ; ofⁿ)
-open import Relation.Nullary.Decidable.Core using (True; does; proof; yes; no)
+open import Relation.Nullary.Decidable.Core using (True; yes; no; fromWitness)
 import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
@@ -191,8 +194,8 @@ true  <? _     = no  (λ())
 <-wellFounded : WellFounded _<_
 <-wellFounded _ = acc <-acc
   where
-    <-acc : ∀ {x} y → y < x → Acc _<_ y
-    <-acc false f<t = acc (λ _ → λ())
+    <-acc : ∀ {x y} → y < x → Acc _<_ y
+    <-acc f<t = acc λ ()
 
 -- Structures
 
@@ -206,9 +209,8 @@ true  <? _     = no  (λ())
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  ; compare              = <-cmp
   }
 
 -- Bundles
@@ -723,46 +725,64 @@ xor-∧-commutativeRing = ⊕-∧-commutativeRing
   open XorRing _xor_ xor-is-ok
 
 ------------------------------------------------------------------------
--- Miscellaneous other properties
+-- Properties of if_then_else_
 
-⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
-⇔→≡ {true } {true }         hyp = refl
-⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
-⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp ⟨$⟩ refl
-⇔→≡ {false} {true } {true } hyp = Equivalence.from hyp ⟨$⟩ refl
-⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
-⇔→≡ {false} {false}         hyp = refl
+if-float : ∀ (f : A → B) b {x y} →
+           f (if b then x else y) ≡ (if b then f x else f y)
+if-float _ true  = refl
+if-float _ false = refl
+
+------------------------------------------------------------------------
+-- Properties of T
+
+open Relation.Nullary.Decidable.Core public using (T?)
 
 T-≡ : ∀ {x} → T x ⇔ x ≡ true
-T-≡ {false} = equivalence (λ ())       (λ ())
-T-≡ {true}  = equivalence (const refl) (const _)
+T-≡ {false} = mk⇔ (λ ())       (λ ())
+T-≡ {true}  = mk⇔ (const refl) (const _)
 
 T-not-≡ : ∀ {x} → T (not x) ⇔ x ≡ false
-T-not-≡ {false} = equivalence (const refl) (const _)
-T-not-≡ {true}  = equivalence (λ ())       (λ ())
+T-not-≡ {false} = mk⇔ (const refl) (const _)
+T-not-≡ {true}  = mk⇔ (λ ())       (λ ())
 
 T-∧ : ∀ {x y} → T (x ∧ y) ⇔ (T x × T y)
-T-∧ {true}  {true}  = equivalence (const (_ , _)) (const _)
-T-∧ {true}  {false} = equivalence (λ ())          proj₂
-T-∧ {false} {_}     = equivalence (λ ())          proj₁
+T-∧ {true}  {true}  = mk⇔ (const (_ , _)) (const _)
+T-∧ {true}  {false} = mk⇔ (λ ())          proj₂
+T-∧ {false} {_}     = mk⇔ (λ ())          proj₁
 
 T-∨ : ∀ {x y} → T (x ∨ y) ⇔ (T x ⊎ T y)
-T-∨ {true}  {_}     = equivalence inj₁ (const _)
-T-∨ {false} {true}  = equivalence inj₂ (const _)
-T-∨ {false} {false} = equivalence inj₁ [ id , id ]
+T-∨ {true}  {_}     = mk⇔ inj₁ (const _)
+T-∨ {false} {true}  = mk⇔ inj₂ (const _)
+T-∨ {false} {false} = mk⇔ inj₁ [ id , id ]
 
 T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
 
-T? : U.Decidable T
-does  (T? b) = b
-proof (T? true ) = ofʸ _
-proof (T? false) = ofⁿ λ()
-
 T?-diag : ∀ b → T b → True (T? b)
-T?-diag true  _ = _
+T?-diag b = fromWitness
 
-push-function-into-if : ∀ (f : A → B) x {y z} →
-                        f (if x then y else z) ≡ (if x then f y else f z)
-push-function-into-if _ true  = refl
-push-function-into-if _ false = refl
+------------------------------------------------------------------------
+-- Miscellaneous other properties
+
+⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
+⇔→≡ {true } {true }         hyp = refl
+⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp refl)
+⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp refl
+⇔→≡ {false} {true } {true } hyp = Equivalence.from hyp refl
+⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp refl)
+⇔→≡ {false} {false}         hyp = refl
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+push-function-into-if = if-float
+{-# WARNING_ON_USAGE push-function-into-if
+"Warning: push-function-into-if was deprecated in v2.0.
+Please use if-float instead."
+#-}

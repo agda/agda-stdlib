@@ -63,7 +63,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ ε₁ ∙ x ⟧     ≈⟨  homo ε₁ x ⟩
     ⟦ ε₁ ⟧ ◦ ⟦ x ⟧ ≈⟨  ◦-cong ε-homo refl ⟩
     ε₂   ◦ ⟦ x ⟧   ≈⟨  zeˡ ⟦ x ⟧ ⟩
-    ε₂             ≈˘⟨ ε-homo ⟩
+    ε₂             ≈⟨ ε-homo ⟨
     ⟦ ε₁ ⟧         ∎)
 
   zeroʳ : RightZero _≈₂_ ε₂ _◦_ → RightZero _≈₁_ ε₁ _∙_
@@ -71,7 +71,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ x ∙ ε₁ ⟧     ≈⟨  homo x ε₁ ⟩
     ⟦ x ⟧ ◦ ⟦ ε₁ ⟧ ≈⟨  ◦-cong refl ε-homo ⟩
     ⟦ x ⟧ ◦ ε₂     ≈⟨  zeʳ ⟦ x ⟧ ⟩
-    ε₂             ≈˘⟨ ε-homo ⟩
+    ε₂             ≈⟨ ε-homo ⟨
     ⟦ ε₁ ⟧         ∎)
 
   zero : Zero _≈₂_ ε₂ _◦_ → Zero _≈₁_ ε₁ _∙_

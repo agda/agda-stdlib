@@ -10,7 +10,7 @@ module Data.Vec.Functional.Relation.Binary.Pointwise where
 
 open import Data.Vec.Functional as VF hiding (map)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; _⇒_)
 
 private
   variable

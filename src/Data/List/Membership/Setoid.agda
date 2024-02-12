@@ -6,13 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (_Respects_)
 
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Function.Base using (_∘_; id; flip)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
-open import Data.List.Relation.Unary.Any
+open import Data.List.Relation.Unary.Any as Any
   using (Any; index; map; here; there)
 open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Relation.Unary using (Pred)
@@ -34,7 +35,8 @@ x ∉ xs = ¬ x ∈ xs
 ------------------------------------------------------------------------
 -- Operations
 
-open Data.List.Relation.Unary.Any using (_∷=_; _─_) public
+_∷=_ = Any._∷=_ {A = A}
+_─_ = Any._─_ {A = A}
 
 mapWith∈ : ∀ {b} {B : Set b}
            (xs : List A) → (∀ {x} → x ∈ xs → B) → List B

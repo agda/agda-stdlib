@@ -48,7 +48,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ x ⁻¹₁ ∙ x ⟧     ≈⟨ ∙-homo (x ⁻¹₁ ) x ⟩
     ⟦ x ⁻¹₁ ⟧ ◦ ⟦ x ⟧ ≈⟨ ◦-cong (⁻¹-homo x) refl ⟩
     ⟦ x ⟧ ⁻¹₂ ◦ ⟦ x ⟧ ≈⟨ invˡ ⟦ x ⟧ ⟩
-    ε₂                ≈˘⟨ ε-homo ⟩
+    ε₂                ≈⟨ ε-homo ⟨
     ⟦ ε₁ ⟧ ∎)
 
   inverseʳ : RightInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → RightInverse _≈₁_ ε₁ _⁻¹₁ _∙_
@@ -56,7 +56,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ x ∙ x ⁻¹₁ ⟧     ≈⟨ ∙-homo x (x ⁻¹₁) ⟩
     ⟦ x ⟧ ◦ ⟦ x ⁻¹₁ ⟧ ≈⟨ ◦-cong refl (⁻¹-homo x) ⟩
     ⟦ x ⟧ ◦ ⟦ x ⟧ ⁻¹₂ ≈⟨ invʳ ⟦ x ⟧ ⟩
-    ε₂                ≈˘⟨ ε-homo ⟩
+    ε₂                ≈⟨ ε-homo ⟨
     ⟦ ε₁ ⟧ ∎)
 
   inverse : Inverse _≈₂_ ε₂ _⁻¹₂ _◦_ → Inverse _≈₁_ ε₁ _⁻¹₁ _∙_
@@ -66,7 +66,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
   ⁻¹-cong ⁻¹-cong {x} {y} x≈y = injective (begin
     ⟦ x ⁻¹₁ ⟧ ≈⟨ ⁻¹-homo x ⟩
     ⟦ x ⟧ ⁻¹₂ ≈⟨ ⁻¹-cong (⟦⟧-cong x≈y) ⟩
-    ⟦ y ⟧ ⁻¹₂ ≈˘⟨ ⁻¹-homo y ⟩
+    ⟦ y ⟧ ⁻¹₂ ≈⟨ ⁻¹-homo y ⟨
     ⟦ y ⁻¹₁ ⟧ ∎)
 
 module _ (◦-isAbelianGroup : IsAbelianGroup _≈₂_ _◦_ ε₂ _⁻¹₂) where

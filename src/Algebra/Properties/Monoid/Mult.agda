@@ -8,7 +8,7 @@
 
 open import Algebra.Bundles using (Monoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 module Algebra.Properties.Monoid.Mult {a ℓ} (M : Monoid a ℓ) where
@@ -70,5 +70,5 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×-assocˡ x zero    n = refl
 ×-assocˡ x (suc m) n = begin
   n × x + m × n × x     ≈⟨ +-congˡ (×-assocˡ x m n) ⟩
-  n × x + (m ℕ.* n) × x ≈˘⟨ ×-homo-+ x n (m ℕ.* n) ⟩
+  n × x + (m ℕ.* n) × x ≈⟨ ×-homo-+ x n (m ℕ.* n) ⟨
   (suc m ℕ.* n) × x     ∎

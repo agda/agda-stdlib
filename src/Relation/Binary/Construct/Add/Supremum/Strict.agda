@@ -9,7 +9,11 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Supremum
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures
+  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans; Trichotomous; tri≈; tri>; tri<; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 
 module Relation.Binary.Construct.Add.Supremum.Strict
   {a r} {A : Set a} (_<_ : Rel A r) where
@@ -150,9 +154,8 @@ module _ {e} {_≈_ : Rel A e} where
 <⁺-isStrictTotalOrder-≡ : IsStrictTotalOrder _≡_ _<_ →
                           IsStrictTotalOrder _≡_ _<⁺_
 <⁺-isStrictTotalOrder-≡ strictot = record
-  { isEquivalence = P.isEquivalence
-  ; trans         = <⁺-trans trans
-  ; compare       = <⁺-cmp-≡ compare
+  { isStrictPartialOrder = <⁺-isStrictPartialOrder-≡ isStrictPartialOrder
+  ; compare              = <⁺-cmp-≡ compare
   } where open IsStrictTotalOrder strictot
 
 ------------------------------------------------------------------------
@@ -182,7 +185,6 @@ module _ {e} {_≈_ : Rel A e} where
   <⁺-isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_ →
                           IsStrictTotalOrder _≈⁺_ _<⁺_
   <⁺-isStrictTotalOrder strictot = record
-    { isEquivalence = ≈⁺-isEquivalence isEquivalence
-    ; trans         = <⁺-trans trans
-    ; compare       = <⁺-cmp compare
+    { isStrictPartialOrder = <⁺-isStrictPartialOrder isStrictPartialOrder
+    ; compare              = <⁺-cmp compare
     } where open IsStrictTotalOrder strictot

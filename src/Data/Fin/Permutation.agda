@@ -16,12 +16,11 @@ open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product.Base using (_,_; proj₂)
-open import Function.Bundles using (_↔_; Injection; Inverse; mk↔′)
+open import Function.Bundles using (_↔_; Injection; Inverse; mk↔ₛ′)
 open import Function.Construct.Composition using (_↔-∘_)
 open import Function.Construct.Identity using (↔-id)
 open import Function.Construct.Symmetry using (↔-sym)
 open import Function.Definitions
-open import Function.Equality using (_⟨$⟩_)
 open import Function.Properties.Inverse using (↔⇒↣)
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
@@ -58,7 +57,7 @@ Permutation′ n = Permutation n n
 
 permutation : ∀ (f : Fin m → Fin n) (g : Fin n → Fin m) →
               StrictlyInverseˡ _≡_ f g → StrictlyInverseʳ _≡_ f g → Permutation m n
-permutation = mk↔′
+permutation = mk↔ₛ′
 
 infixl 5 _⟨$⟩ʳ_ _⟨$⟩ˡ_
 _⟨$⟩ʳ_ : Permutation m n → Fin m → Fin n
@@ -105,7 +104,7 @@ reverse = permutation opposite opposite PC.reverse-involutive PC.reverse-involut
 
 infixr 9 _∘ₚ_
 _∘ₚ_ : Permutation m n → Permutation n o → Permutation m o
-π₁ ∘ₚ π₂ = π₁ ↔-∘ π₂
+π₁ ∘ₚ π₂ = π₂ ↔-∘ π₁
 
 -- Flip
 

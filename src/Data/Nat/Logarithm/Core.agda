@@ -23,7 +23,7 @@ open import Data.Unit
 ⌊log2⌋ : ∀ n → Acc _<_ n → ℕ
 ⌊log2⌋ 0          _        = 0
 ⌊log2⌋ 1          _        = 0
-⌊log2⌋ (suc n′@(suc n)) (acc rs) = 1 + ⌊log2⌋ (suc ⌊ n /2⌋) (rs _ (⌊n/2⌋<n n′))
+⌊log2⌋ (suc n′@(suc n)) (acc rs) = 1 + ⌊log2⌋ (suc ⌊ n /2⌋) (rs (⌊n/2⌋<n n′))
 
 
 -- Ceil version
@@ -31,7 +31,7 @@ open import Data.Unit
 ⌈log2⌉ : ∀ n → Acc _<_ n → ℕ
 ⌈log2⌉ 0                _        = 0
 ⌈log2⌉ 1                _        = 0
-⌈log2⌉ (suc (suc n)) (acc rs) = 1 + ⌈log2⌉ (suc ⌈ n /2⌉) (rs _ (⌈n/2⌉<n n))
+⌈log2⌉ (suc (suc n)) (acc rs) = 1 + ⌈log2⌉ (suc ⌈ n /2⌉) (rs (⌈n/2⌉<n n))
 
 ------------------------------------------------------------------------
 -- Properties of ⌊log2⌋

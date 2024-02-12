@@ -8,7 +8,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Function.Structures {a b ℓ₁ ℓ₂}
   {A : Set a} (_≈₁_ : Rel A ℓ₁) -- Equality over the domain
@@ -18,7 +20,6 @@ module Function.Structures {a b ℓ₁ ℓ₂}
 open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Function.Base
 open import Function.Definitions
-open import Function.Consequences
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
@@ -105,6 +106,12 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
   strictlyInverseˡ : StrictlyInverseˡ _≈₂_ to from
   strictlyInverseˡ x = inverseˡ Eq₁.refl
 
+  isSurjection : IsSurjection to
+  isSurjection = record
+    { isCongruent = isCongruent
+    ; surjective = λ y → from y , inverseˡ
+    }
+
 
 record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
@@ -113,7 +120,7 @@ record IsRightInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ 
     inverseʳ    : Inverseʳ _≈₁_ _≈₂_ to from
 
   open IsCongruent isCongruent public
-    renaming (cong to cong₁)
+    renaming (cong to to-cong)
 
   strictlyInverseʳ : StrictlyInverseʳ _≈₁_ to from
   strictlyInverseʳ x = inverseʳ Eq₂.refl
@@ -166,3 +173,17 @@ record IsBiInverse
 
   open IsCongruent to-isCongruent public
     renaming (cong to to-cong)
+
+
+------------------------------------------------------------------------
+-- Other
+------------------------------------------------------------------------
+
+-- See the comment on `SplitSurjection` in `Function.Bundles` for an
+-- explanation of (split) surjections.
+record IsSplitSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    from : B → A
+    isLeftInverse : IsLeftInverse f from
+
+  open IsLeftInverse isLeftInverse public
