@@ -199,3 +199,4 @@ Additions to existing modules
   ↭-reflexive : xs ≡ ys → xs ↭ ys
   ↭-sym       : Symmetric (Vector A) _↭_
   ↭-trans     : Transitive (Vector A) _↭_
+  ```
