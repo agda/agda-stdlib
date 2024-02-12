@@ -58,13 +58,19 @@ open ≡-Reasoning
 
 +-assoc : Associative _+_
 +-assoc x y z = begin
-  x + y + z ≡⟨⟩
-  fromℕ (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧) ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ eq ⟩
-  fromℕ (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n)) ≡⟨⟩
+  x + y + z
+   ≡⟨⟩
+  fromℕ (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧)
+   ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ ≡-mod ⟩
+  fromℕ (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n))
+   ≡⟨⟩
   x + (y + z) ∎
   where
-  eq : (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧) ≡ (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n)) modℕ n
-  eq = {!!}
+  ≡-mod : (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧)
+          ≡
+          (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n))
+          modℕ n
+  ≡-mod = {!%-distribˡ-+!}
 
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
@@ -82,14 +88,12 @@ open ≡-Reasoning
 +-isMonoid = record { isSemigroup = +-isSemigroup ; identity = +-identity }
 
 +-inverseˡ : LeftInverse 0# -_ _+_
-+-inverseˡ (⟦ zero ⟧<        _) = +-identityˡ 0#
-+-inverseˡ i@(⟦ m@(suc _) ⟧< _)
-  = trans (cong fromℕ (ℕ.m∸n+n≡m (ℕ.<⇒≤ (ℕ<.isBounded i)))) ℕ<.fromℕ[n]≡0
++-inverseˡ (⟦ zero ⟧<    _) = +-identityˡ 0#
++-inverseˡ i@(⟦ suc _ ⟧< _) = ℕ<.+-inverseˡ (ℕ<.isBounded i)
 
 +-inverseʳ : RightInverse 0# -_ _+_
 +-inverseʳ (⟦ zero ⟧<        _) = +-identityʳ 0#
-+-inverseʳ i@(⟦ m@(suc _) ⟧< _)
-  = trans (cong fromℕ (ℕ.m+[n∸m]≡n (ℕ.<⇒≤ (ℕ<.isBounded i)))) ℕ<.fromℕ[n]≡0
++-inverseʳ i@(⟦ m@(suc _) ⟧< _) = ℕ<.+-inverseʳ (ℕ<.isBounded i)
 
 +-inverse : Inverse 0# -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
@@ -107,14 +111,20 @@ open ≡-Reasoning
 *-cong₂ = cong₂ _*_
 
 *-assoc : Associative _*_
-*-assoc x y z = begin
-  x * y * z ≡⟨⟩
-  fromℕ (((⟦ x ⟧ ℕ.* ⟦ y ⟧) ℕ.% n) ℕ.* ⟦ z ⟧) ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ eq ⟩
-  fromℕ (⟦ x ⟧ ℕ.* ((⟦ y ⟧ ℕ.* ⟦ z ⟧) ℕ.% n)) ≡⟨⟩
-  x * (y * z) ∎
+*-assoc i j k = begin
+  i * j * k
+   ≡⟨⟩
+  fromℕ (((⟦ i ⟧ ℕ.* ⟦ j ⟧) ℕ.% n) ℕ.* ⟦ k ⟧)
+   ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ ≡-mod ⟩
+  fromℕ (⟦ i ⟧ ℕ.* ((⟦ j ⟧ ℕ.* ⟦ k ⟧) ℕ.% n))
+   ≡⟨⟩
+  i * (j * k) ∎
   where
-  eq : (((⟦ x ⟧ ℕ.* ⟦ y ⟧) ℕ.% n) ℕ.* ⟦ z ⟧) ≡ (⟦ x ⟧ ℕ.* ((⟦ y ⟧ ℕ.* ⟦ z ⟧) ℕ.% n)) modℕ n
-  eq = {!!}
+  ≡-mod : (((⟦ i ⟧ ℕ.* ⟦ j ⟧) ℕ.% n) ℕ.* ⟦ k ⟧)
+          ≡
+          (⟦ i ⟧ ℕ.* ((⟦ j ⟧ ℕ.* ⟦ k ⟧) ℕ.% n))
+          modℕ n
+  ≡-mod = {!!}
 
 *-identityˡ : LeftIdentity 1# _*_
 *-identityˡ i with eq ← ℕ<.⟦1⟧≡1 {n = n} rewrite eq
@@ -128,10 +138,22 @@ open ≡-Reasoning
 *-identity = *-identityˡ , *-identityʳ
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ i j k = {!!}
+*-distribˡ-+ i j k = ℕ<.≡-mod⇒fromℕ≡fromℕ ≡-mod
+  where
+  ≡-mod : (⟦ i ⟧ ℕ.* ⟦ j + k ⟧)
+          ≡
+          (⟦ i * j ⟧ ℕ.+ ⟦ i * k ⟧)
+          modℕ n
+  ≡-mod = {!ℕ.%-distribˡ-*!}
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
-*-distribʳ-+ i j k = {!!}
+*-distribʳ-+ i j k = ℕ<.≡-mod⇒fromℕ≡fromℕ ≡-mod
+  where
+  ≡-mod : (⟦ j + k ⟧ ℕ.* ⟦ i ⟧)
+          ≡
+          (⟦ j * i ⟧ ℕ.+ ⟦ k * i ⟧)
+          modℕ n
+  ≡-mod = {!ℕ.%-distribʳ-*!}
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+

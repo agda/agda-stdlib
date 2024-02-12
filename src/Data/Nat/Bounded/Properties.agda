@@ -8,6 +8,7 @@
 
 module Data.Nat.Bounded.Properties where
 
+import Algebra.Definitions as Definitions
 open import Data.Fin.Base as Fin using (Fin)
 import Data.Fin.Properties as Fin
 open import Data.Nat.Base as ℕ
@@ -51,13 +52,20 @@ private
 ⟦⟧≡⟦⟧⇒≡ refl = refl
 
 fromℕ[n]≡0 : .{{_ : NonZero n}} → fromℕ n ≡ ⟦0⟧<
-fromℕ[n]≡0 {n = n@(suc _)} = ⟦⟧≡⟦⟧⇒≡ (ℕ.n%n≡0 n)
+fromℕ[n]≡0 {n} = ⟦⟧≡⟦⟧⇒≡ (ℕ.n%n≡0 n)
 
-fromℕ≐⟦⟧< : (m<n : m < n) →
-            let instance _ = ℕ.>-nonZero (ℕ.m<n⇒0<n m<n)
-            in fromℕ m ≡ ⟦ m ⟧< m<n
-fromℕ≐⟦⟧< m<n = let instance _ = ℕ.>-nonZero (ℕ.m<n⇒0<n m<n)
-  in ⟦⟧≡⟦⟧⇒≡ $ ℕ.m<n⇒m%n≡m m<n
+module _ (m<n : m < n) where
+
+  private instance _ = ℕ.>-nonZero (ℕ.m<n⇒0<n m<n)
+
+  +-inverseˡ : fromℕ (n ∸ m + m) ≡ ⟦0⟧<
+  +-inverseˡ = trans (cong fromℕ (ℕ.m∸n+n≡m (ℕ.<⇒≤ m<n))) fromℕ[n]≡0
+  
+  +-inverseʳ : fromℕ (m + (n ∸ m)) ≡ ⟦0⟧<
+  +-inverseʳ = trans (cong fromℕ (ℕ.m+[n∸m]≡n (ℕ.<⇒≤ m<n))) fromℕ[n]≡0
+
+  fromℕ≐⟦⟧< : fromℕ m ≡ ⟦ m ⟧< m<n
+  fromℕ≐⟦⟧< = ⟦⟧≡⟦⟧⇒≡ $ ℕ.m<n⇒m%n≡m m<n
 
 fromℕ∘toℕ≐id : (i : ℕ< n) → let instance _ = nonZeroIndex i
                in fromℕ ⟦ i ⟧ ≡ i
