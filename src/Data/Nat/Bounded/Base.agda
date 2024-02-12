@@ -87,10 +87,10 @@ record _∼_ {n} (lhs rhs : ℕ) : Set where
     lhs/∼≡ : lhs /∼≡ k
     rhs/∼≡ : rhs /∼≡ k
 
-≡-Mod : ℕ → Rel ℕ _
-≡-Mod n = _∼_ {n}
+≡-Modℕ : ℕ → Rel ℕ _
+≡-Modℕ n = _∼_ {n}
 
-syntax ≡-Mod n m o = m ≡ o modℕ n
+syntax ≡-Modℕ n m o = m ≡ o modℕ n
 
 nonZeroModulus : (m ≡ o modℕ n) → NonZero n
 nonZeroModulus eq = nonZeroIndex k where open _∼_ eq

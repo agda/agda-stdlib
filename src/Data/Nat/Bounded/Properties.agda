@@ -60,7 +60,7 @@ module _ (m<n : m < n) where
 
   +-inverseˡ : fromℕ (n ∸ m + m) ≡ ⟦0⟧<
   +-inverseˡ = trans (cong fromℕ (ℕ.m∸n+n≡m (ℕ.<⇒≤ m<n))) fromℕ[n]≡0
-  
+
   +-inverseʳ : fromℕ (m + (n ∸ m)) ≡ ⟦0⟧<
   +-inverseʳ = trans (cong fromℕ (ℕ.m+[n∸m]≡n (ℕ.<⇒≤ m<n))) fromℕ[n]≡0
 
@@ -120,23 +120,23 @@ module _ {m} {i : ℕ< n} where
 n≡0-mod : .{{_ : NonZero n}} → n ≡ 0 modℕ n
 n≡0-mod = let r = fromℕ[n]≡0 /∼≡fromℕ in r , ‵fromℕ 0 ⟦0⟧<
 
-≡-mod-refl : .{{NonZero n}} → Reflexive (≡-Mod n)
+≡-mod-refl : .{{NonZero n}} → Reflexive (≡-Modℕ n)
 ≡-mod-refl {n} {m} = let r = erefl (fromℕ m) /∼≡fromℕ in r , r
 
-≡-mod-sym : Symmetric (≡-Mod n)
+≡-mod-sym : Symmetric (≡-Modℕ n)
 ≡-mod-sym (lhs , rhs) = rhs , lhs
 
-≡-mod-trans : Transitive (≡-Mod n)
+≡-mod-trans : Transitive (≡-Modℕ n)
 ≡-mod-trans (lhs₁ , rhs₁) (lhs₂ , rhs₂)
   with refl ← /∼≡-injective rhs₁ lhs₂ = lhs₁ , rhs₂
 
-isPartialEquivalence : IsPartialEquivalence (≡-Mod n)
+isPartialEquivalence : IsPartialEquivalence (≡-Modℕ n)
 isPartialEquivalence = record { sym = ≡-mod-sym ; trans = ≡-mod-trans }
 
 partialSetoid : ℕ → PartialSetoid _ _
-partialSetoid n = record { _≈_ = ≡-Mod n ; isPartialEquivalence = isPartialEquivalence }
+partialSetoid n = record { _≈_ = ≡-Modℕ n ; isPartialEquivalence = isPartialEquivalence }
 
-isEquivalence : .{{NonZero n}} → IsEquivalence (≡-Mod n)
+isEquivalence : .{{NonZero n}} → IsEquivalence (≡-Modℕ n)
 isEquivalence {n} = record
   { refl = ≡-mod-refl
   ; sym = ≡-mod-sym
@@ -151,21 +151,40 @@ setoid = record { isEquivalence = isEquivalence }
                     in fromℕ m ≡ fromℕ o
 ≡-mod⇒fromℕ≡fromℕ (lhs/∼≡ , rhs/∼≡) = trans (lhs/∼≡ /∼≡fromℕ⁻¹) (sym (rhs/∼≡ /∼≡fromℕ⁻¹))
 
-≡-mod⇒≡ : m ≡ o modℕ n → m < n → o < n → m ≡ o
-≡-mod⇒≡ {m} {o} eq m<n o<n = cong ⟦_⟧ $ begin
-  ⟦ m ⟧< m<n      ≡⟨ fromℕ≐⟦⟧< m<n ⟨
-  fromℕ {{0<m}} m ≡⟨ ≡-mod⇒fromℕ≡fromℕ eq ⟩
-  fromℕ {{0<o}} o ≡⟨ fromℕ≐⟦⟧< o<n ⟩
-  ⟦ o ⟧< o<n      ∎
-  where
-  open ≡-Reasoning
-  instance
-    0<m = ℕ.>-nonZero (ℕ.m<n⇒0<n m<n)
-    0<o = ℕ.>-nonZero (ℕ.m<n⇒0<n o<n)
-
-fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ {n}) ⇒ ≡-Mod n
+fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ {n}) ⇒ ≡-Modℕ n
 fromℕ≡fromℕ⇒≡-mod eq = eq /∼≡fromℕ , refl /∼≡fromℕ
 
 toℕ∘fromℕ≐id : .{{_ : NonZero n}} → (m : ℕ) → ⟦ fromℕ m ⟧ ≡ m modℕ n
 toℕ∘fromℕ≐id m = fromℕ≡fromℕ⇒≡-mod (fromℕ∘toℕ≐id (fromℕ m))
 
+------------------------------------------------------------------------
+-- Arithmetic properties of bounded numbers
+
+module _ (m<n : m < n) (o<n : o < n) where
+
+  private
+    instance
+      n≢ₘ0 = ℕ.>-nonZero (ℕ.m<n⇒0<n m<n)
+      n≢ₒ0 = ℕ.>-nonZero (ℕ.m<n⇒0<n o<n)
+
+  open ≡-Reasoning
+
+  ≡-mod⇒≡ : m ≡ o modℕ n → m ≡ o
+  ≡-mod⇒≡ eq = ≡⇒⟦⟧≡⟦⟧ $ begin
+    ⟦ m ⟧< m<n       ≡⟨ fromℕ≐⟦⟧< m<n ⟨
+    fromℕ {{n≢ₘ0}} m ≡⟨ ≡-mod⇒fromℕ≡fromℕ eq ⟩
+    fromℕ {{n≢ₒ0}} o ≡⟨ fromℕ≐⟦⟧< o<n ⟩
+    ⟦ o ⟧< o<n       ∎
+{-
+  +-distribˡ-% : ((m ℕ.% n) + o) ≡ ((m + o) ℕ.% n) modℕ n
+  +-distribˡ-% = ≡-mod-trans {!!} (≡-mod-sym (toℕ∘fromℕ≐id (m + o)))
+
+  +-distribʳ-% : (m + (o ℕ.% n)) ≡ ((m + o) ℕ.% n) modℕ n
+  +-distribʳ-% = {!!}
+
+  *-distribˡ-% : ((m ℕ.% n) * o) ≡ ((m * o) ℕ.% n) modℕ n
+  *-distribˡ-% = {!!}
+
+  *-distribʳ-% : (m * (o ℕ.% n)) ≡ ((m * o) ℕ.% n) modℕ n
+  *-distribʳ-% = {!!}
+-}

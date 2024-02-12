@@ -18,8 +18,7 @@ open import Algebra.Bundles
 import Algebra.Definitions as Definitions
 import Algebra.Structures as Structures
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
-open import Data.Nat.Bounded.Base as ℕ<
-   renaming (≡-Mod to ≡-Modℕ) hiding (fromℕ; _∼_)
+open import Data.Nat.Bounded.Base as ℕ< hiding (fromℕ; _∼_)
 import Data.Nat.Bounded.Properties as ℕ<
 import Data.Nat.DivMod as ℕ
 import Data.Nat.Properties as ℕ
@@ -57,18 +56,18 @@ open ≡-Reasoning
 +-isMagma = record { isEquivalence = isEquivalence ; ∙-cong = +-cong₂ }
 
 +-assoc : Associative _+_
-+-assoc x y z = begin
-  x + y + z
++-assoc i j k = begin
+  i + j + k
    ≡⟨⟩
-  fromℕ (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧)
+  fromℕ (((⟦ i ⟧ ℕ.+ ⟦ j ⟧) ℕ.% n) ℕ.+ ⟦ k ⟧)
    ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ ≡-mod ⟩
-  fromℕ (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n))
+  fromℕ (⟦ i ⟧ ℕ.+ ((⟦ j ⟧ ℕ.+ ⟦ k ⟧) ℕ.% n))
    ≡⟨⟩
-  x + (y + z) ∎
+  i + (j + k) ∎
   where
-  ≡-mod : (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧)
+  ≡-mod : (((⟦ i ⟧ ℕ.+ ⟦ j ⟧) ℕ.% n) ℕ.+ ⟦ k ⟧)
           ≡
-          (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n))
+          (⟦ i ⟧ ℕ.+ ((⟦ j ⟧ ℕ.+ ⟦ k ⟧) ℕ.% n))
           modℕ n
   ≡-mod = {!%-distribˡ-+!}
 
