@@ -139,8 +139,8 @@ setoid : .{{NonZero n}} → Setoid _ _
 setoid = record { isEquivalence = isEquivalence }
 
 ≡-mod⇒fromℕ≡fromℕ : (eq : m ≡ o modℕ n) →
-                    let _,_ {k} _ _ = eq ; instance _ = nonZeroIndex k
-                    in fromℕ {n} m ≡ fromℕ o
+                    let instance _ = nonZeroModulus eq
+                    in fromℕ m ≡ fromℕ o
 ≡-mod⇒fromℕ≡fromℕ (lhs/∼≡ , rhs/∼≡) = trans (lhs/∼≡ /∼≡fromℕ⁻¹) (sym (rhs/∼≡ /∼≡fromℕ⁻¹))
 
 ≡-mod⇒≡ : m ≡ o modℕ n → m < n → o < n → m ≡ o
