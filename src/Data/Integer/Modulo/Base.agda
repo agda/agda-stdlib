@@ -9,7 +9,7 @@
 open import Data.Nat.Base as ℕ
   using (ℕ; zero; suc; NonZero; NonTrivial; nonTrivial⇒nonZero; _<_; _∸_)
 
-module Data.Integer.Modulo n .{{_ : NonTrivial n}} where
+module Data.Integer.Modulo.Base n .{{_ : NonTrivial n}} where
 
 open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawNearSemiring; RawSemiring; RawRing)

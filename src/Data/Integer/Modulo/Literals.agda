@@ -12,7 +12,7 @@ module Data.Integer.Modulo.Literals n .{{_ : NonTrivial n}} where
 
 open import Agda.Builtin.FromNat using (Number)
 open import Data.Unit.Base using (⊤)
-open import Data.Integer.Modulo using (ℤmod; fromℕ)
+open import Data.Integer.Modulo.Base using (ℤmod; fromℕ)
 
 ------------------------------------------------------------------------
 -- Definitions

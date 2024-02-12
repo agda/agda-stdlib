@@ -28,7 +28,7 @@ open import Function.Base using (_$_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; trans; cong; cong₂; isEquivalence; module ≡-Reasoning)
 
-open import Data.Integer.Modulo n as Modulo
+open import Data.Integer.Modulo.Base n as Modulo
   using (ℤmod; fromℕ; fromℤ; _∼_; ≡-Mod; +-*-rawRing)
 
 open Definitions (_≡_ {A = ℤmod})
