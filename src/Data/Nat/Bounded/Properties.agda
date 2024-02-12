@@ -151,8 +151,16 @@ setoid = record { isEquivalence = isEquivalence }
                     in fromℕ m ≡ fromℕ o
 ≡-mod⇒fromℕ≡fromℕ (lhs/∼≡ , rhs/∼≡) = trans (lhs/∼≡ /∼≡fromℕ⁻¹) (sym (rhs/∼≡ /∼≡fromℕ⁻¹))
 
-fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ {n}) ⇒ ≡-Modℕ n
+≡-mod⇒%≡% : (eq : m ≡ o modℕ n) →
+            let instance _ = nonZeroModulus eq
+            in m % n ≡ o % n
+≡-mod⇒%≡% = ≡⇒⟦⟧≡⟦⟧ ∘ ≡-mod⇒fromℕ≡fromℕ
+
+fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ) ⇒ ≡-Modℕ n
 fromℕ≡fromℕ⇒≡-mod eq = eq /∼≡fromℕ , refl /∼≡fromℕ
+
+%≡%⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on _% n) ⇒ ≡-Modℕ n
+%≡%⇒≡-mod eq = fromℕ≡fromℕ⇒≡-mod (⟦⟧≡⟦⟧⇒≡ eq)
 
 toℕ∘fromℕ≐id : .{{_ : NonZero n}} → (m : ℕ) → ⟦ fromℕ m ⟧ ≡ m modℕ n
 toℕ∘fromℕ≐id m = fromℕ≡fromℕ⇒≡-mod (fromℕ∘toℕ≐id (fromℕ m))
@@ -175,16 +183,35 @@ module _ (m<n : m < n) (o<n : o < n) where
     fromℕ {{n≢ₘ0}} m ≡⟨ ≡-mod⇒fromℕ≡fromℕ eq ⟩
     fromℕ {{n≢ₒ0}} o ≡⟨ fromℕ≐⟦⟧< o<n ⟩
     ⟦ o ⟧< o<n       ∎
-{-
-  +-distribˡ-% : ((m ℕ.% n) + o) ≡ ((m + o) ℕ.% n) modℕ n
-  +-distribˡ-% = ≡-mod-trans {!!} (≡-mod-sym (toℕ∘fromℕ≐id (m + o)))
 
-  +-distribʳ-% : (m + (o ℕ.% n)) ≡ ((m + o) ℕ.% n) modℕ n
-  +-distribʳ-% = {!!}
+module _ .{{_ : NonZero n}} (m o : ℕ) where
 
-  *-distribˡ-% : ((m ℕ.% n) * o) ≡ ((m * o) ℕ.% n) modℕ n
-  *-distribˡ-% = {!!}
+  open ≡-Reasoning
 
-  *-distribʳ-% : (m * (o ℕ.% n)) ≡ ((m * o) ℕ.% n) modℕ n
-  *-distribʳ-% = {!!}
--}
+  +-distribˡ-% : ((m % n) + o) ≡ (m + o) modℕ n
+  +-distribˡ-% = %≡%⇒≡-mod $ begin
+    (m % n + o) % n         ≡⟨ ℕ.%-distribˡ-+ (m % n) o n ⟩
+    (m % n % n + o % n) % n ≡⟨ cong ((_% n) ∘ (_+ o % n)) (ℕ.m%n%n≡m%n m n) ⟩
+    (m % n + o % n) % n     ≡⟨ ℕ.%-distribˡ-+ m o n ⟨
+    (m + o) % n             ∎
+
+  +-distribʳ-% : (m + (o % n)) ≡ (m + o) modℕ n
+  +-distribʳ-% = %≡%⇒≡-mod $ begin
+    (m + o % n) % n         ≡⟨ ℕ.%-distribˡ-+ m (o % n) n ⟩
+    (m % n + o % n % n) % n ≡⟨ cong ((_% n) ∘ (m % n +_)) (ℕ.m%n%n≡m%n o n) ⟩
+    (m % n + o % n) % n     ≡⟨ ℕ.%-distribˡ-+ m o n ⟨
+    (m + o) % n             ∎
+
+  *-distribˡ-% : ((m % n) * o) ≡ (m * o) modℕ n
+  *-distribˡ-% = %≡%⇒≡-mod $ begin
+    (m % n * o) % n           ≡⟨ ℕ.%-distribˡ-* (m % n) o n ⟩
+    (m % n % n * (o % n)) % n ≡⟨ cong ((_% n) ∘ (_* (o % n))) (ℕ.m%n%n≡m%n m n) ⟩
+    (m % n * (o % n)) % n     ≡⟨ ℕ.%-distribˡ-* m o n ⟨
+    (m * o) % n               ∎
+
+  *-distribʳ-% : (m * (o % n)) ≡ (m * o) modℕ n
+  *-distribʳ-% = %≡%⇒≡-mod $ begin
+    (m * (o % n)) % n         ≡⟨ ℕ.%-distribˡ-* m (o % n) n ⟩
+    (m % n * (o % n % n)) % n ≡⟨ cong ((_% n) ∘ (m % n *_)) (ℕ.m%n%n≡m%n o n) ⟩
+    (m % n * (o % n)) % n     ≡⟨ ℕ.%-distribˡ-* m o n ⟨
+    (m * o) % n               ∎
