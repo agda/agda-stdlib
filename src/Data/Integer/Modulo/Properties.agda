@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat.Base as ℕ
-  using (ℕ; zero; suc; NonZero; NonTrivial; _<_; _∸_)
+  using (ℕ; zero; suc; NonZero; NonTrivial; _<_; _∸_; _%_)
 
 module Data.Integer.Modulo.Properties n .{{_ : NonTrivial n}} where
 
@@ -59,17 +59,19 @@ open ≡-Reasoning
 +-assoc i j k = begin
   i + j + k
    ≡⟨⟩
-  fromℕ (((⟦ i ⟧ ℕ.+ ⟦ j ⟧) ℕ.% n) ℕ.+ ⟦ k ⟧)
+  fromℕ (((⟦ i ⟧ ℕ.+ ⟦ j ⟧) % n) ℕ.+ ⟦ k ⟧)
    ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ ≡-mod ⟩
-  fromℕ (⟦ i ⟧ ℕ.+ ((⟦ j ⟧ ℕ.+ ⟦ k ⟧) ℕ.% n))
+  fromℕ (⟦ i ⟧ ℕ.+ ((⟦ j ⟧ ℕ.+ ⟦ k ⟧) % n))
    ≡⟨⟩
   i + (j + k) ∎
   where
-  ≡-mod : (((⟦ i ⟧ ℕ.+ ⟦ j ⟧) ℕ.% n) ℕ.+ ⟦ k ⟧)
+  ≡-mod : (((⟦ i ⟧ ℕ.+ ⟦ j ⟧) % n) ℕ.+ ⟦ k ⟧)
           ≡
-          (⟦ i ⟧ ℕ.+ ((⟦ j ⟧ ℕ.+ ⟦ k ⟧) ℕ.% n))
+          (⟦ i ⟧ ℕ.+ ((⟦ j ⟧ ℕ.+ ⟦ k ⟧) % n))
           modℕ n
-  ≡-mod = {!%-distribˡ-+!}
+  ≡-mod = ℕ<.≡-mod-trans (ℕ<.+-distribˡ-% (⟦ i ⟧ ℕ.+ ⟦ j ⟧) ⟦ k ⟧)
+          (ℕ<.≡-mod-trans (ℕ<.≡-mod-reflexive (ℕ.+-assoc ⟦ i ⟧ ⟦ j ⟧ ⟦ k ⟧))
+           (ℕ<.≡-mod-sym (ℕ<.+-distribʳ-% ⟦ i ⟧ (⟦ j ⟧ ℕ.+ ⟦ k ⟧))))
 
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
@@ -113,17 +115,19 @@ open ≡-Reasoning
 *-assoc i j k = begin
   i * j * k
    ≡⟨⟩
-  fromℕ (((⟦ i ⟧ ℕ.* ⟦ j ⟧) ℕ.% n) ℕ.* ⟦ k ⟧)
+  fromℕ (((⟦ i ⟧ ℕ.* ⟦ j ⟧) % n) ℕ.* ⟦ k ⟧)
    ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ ≡-mod ⟩
-  fromℕ (⟦ i ⟧ ℕ.* ((⟦ j ⟧ ℕ.* ⟦ k ⟧) ℕ.% n))
+  fromℕ (⟦ i ⟧ ℕ.* ((⟦ j ⟧ ℕ.* ⟦ k ⟧) % n))
    ≡⟨⟩
   i * (j * k) ∎
   where
-  ≡-mod : (((⟦ i ⟧ ℕ.* ⟦ j ⟧) ℕ.% n) ℕ.* ⟦ k ⟧)
+  ≡-mod : (((⟦ i ⟧ ℕ.* ⟦ j ⟧) % n) ℕ.* ⟦ k ⟧)
           ≡
-          (⟦ i ⟧ ℕ.* ((⟦ j ⟧ ℕ.* ⟦ k ⟧) ℕ.% n))
+          (⟦ i ⟧ ℕ.* ((⟦ j ⟧ ℕ.* ⟦ k ⟧) % n))
           modℕ n
-  ≡-mod = {!!}
+  ≡-mod = ℕ<.≡-mod-trans (ℕ<.*-distribˡ-% (⟦ i ⟧ ℕ.* ⟦ j ⟧) ⟦ k ⟧)
+          (ℕ<.≡-mod-trans (ℕ<.≡-mod-reflexive (ℕ.*-assoc ⟦ i ⟧ ⟦ j ⟧ ⟦ k ⟧))
+           (ℕ<.≡-mod-sym (ℕ<.*-distribʳ-% ⟦ i ⟧ (⟦ j ⟧ ℕ.* ⟦ k ⟧))))
 
 *-identityˡ : LeftIdentity 1# _*_
 *-identityˡ i with eq ← ℕ<.⟦1⟧≡1 {n = n} rewrite eq
@@ -143,7 +147,9 @@ open ≡-Reasoning
           ≡
           (⟦ i * j ⟧ ℕ.+ ⟦ i * k ⟧)
           modℕ n
-  ≡-mod = {!ℕ.%-distribˡ-*!}
+  ≡-mod = ℕ<.≡-mod-trans (ℕ<.*-distribʳ-% ⟦ i ⟧ (⟦ j ⟧ ℕ.+ ⟦ k ⟧))
+          (ℕ<.≡-mod-trans (ℕ<.≡-mod-reflexive (ℕ.*-distribˡ-+ ⟦ i ⟧ ⟦ j ⟧ ⟦ k ⟧))
+           (ℕ<.≡-mod-sym (ℕ<.+-distrib-% (⟦ i ⟧ ℕ.* ⟦ j ⟧) (⟦ i ⟧ ℕ.* ⟦ k ⟧))))
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
 *-distribʳ-+ i j k = ℕ<.≡-mod⇒fromℕ≡fromℕ ≡-mod
@@ -152,7 +158,9 @@ open ≡-Reasoning
           ≡
           (⟦ j * i ⟧ ℕ.+ ⟦ k * i ⟧)
           modℕ n
-  ≡-mod = {!ℕ.%-distribʳ-*!}
+  ≡-mod = ℕ<.≡-mod-trans (ℕ<.*-distribˡ-% (⟦ j ⟧ ℕ.+ ⟦ k ⟧) ⟦ i ⟧)
+          (ℕ<.≡-mod-trans (ℕ<.≡-mod-reflexive (ℕ.*-distribʳ-+ ⟦ i ⟧ ⟦ j ⟧ ⟦ k ⟧))
+           (ℕ<.≡-mod-sym (ℕ<.+-distrib-% (⟦ j ⟧ ℕ.* ⟦ i ⟧) (⟦ k ⟧ ℕ.* ⟦ i ⟧))))
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -165,3 +173,6 @@ open ≡-Reasoning
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
   }
+
+ring : Ring _ _
+ring = record { isRing = +-*-isRing }
