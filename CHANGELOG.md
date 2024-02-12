@@ -3360,8 +3360,8 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
   ```agda
-  ↭-refl : xs ↭ xs
+  ↭-refl      : Reflexive (Vector A) _↭_
   ↭-reflexive : xs ≡ ys → xs ↭ ys
-  ↭-sym : xs ↭ ys → ys ↭ xs
-  ↭-trans : xs ↭ ys → ys ↭ zs → xs ↭ zs
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
   ```
