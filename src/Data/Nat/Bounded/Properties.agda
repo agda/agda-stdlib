@@ -120,9 +120,6 @@ module _ {m} {i : ℕ< n} where
 n≡0-mod : .{{_ : NonZero n}} → n ≡ 0 modℕ n
 n≡0-mod = let r = fromℕ[n]≡0 /∼≡fromℕ in r , ‵fromℕ 0 ⟦0⟧<
 
-≡-mod-refl : .{{NonZero n}} → Reflexive (≡-Modℕ n)
-≡-mod-refl {n} {m} = let r = erefl (fromℕ m) /∼≡fromℕ in r , r
-
 ≡-mod-sym : Symmetric (≡-Modℕ n)
 ≡-mod-sym (lhs , rhs) = rhs , lhs
 
@@ -136,6 +133,9 @@ isPartialEquivalence = record { sym = ≡-mod-sym ; trans = ≡-mod-trans }
 partialSetoid : ℕ → PartialSetoid _ _
 partialSetoid n = record { _≈_ = ≡-Modℕ n ; isPartialEquivalence = isPartialEquivalence }
 
+≡-mod-refl : .{{NonZero n}} → Reflexive (≡-Modℕ n)
+≡-mod-refl {n} {m} = let r = erefl (fromℕ m) /∼≡fromℕ in r , r
+
 isEquivalence : .{{NonZero n}} → IsEquivalence (≡-Modℕ n)
 isEquivalence {n} = record
   { refl = ≡-mod-refl
@@ -145,6 +145,9 @@ isEquivalence {n} = record
 
 setoid : .{{NonZero n}} → Setoid _ _
 setoid = record { isEquivalence = isEquivalence }
+
+≡-mod-reflexive : .{{NonZero n}} → _≡_ {A = ℕ} ⇒ (≡-Modℕ n)
+≡-mod-reflexive = reflexive where open IsEquivalence isEquivalence
 
 ≡-mod⇒fromℕ≡fromℕ : (eq : m ≡ o modℕ n) →
                     let instance _ = nonZeroModulus eq
@@ -200,6 +203,11 @@ module _ .{{_ : NonZero n}} (m o : ℕ) where
     (m + o % n) % n         ≡⟨ ℕ.%-distribˡ-+ m (o % n) n ⟩
     (m % n + o % n % n) % n ≡⟨ cong ((_% n) ∘ (m % n +_)) (ℕ.m%n%n≡m%n o n) ⟩
     (m % n + o % n) % n     ≡⟨ ℕ.%-distribˡ-+ m o n ⟨
+    (m + o) % n             ∎
+
+  +-distrib-% : ((m % n) + (o % n)) ≡ (m + o) modℕ n
+  +-distrib-% = %≡%⇒≡-mod $ begin
+    (m % n + o % n) % n ≡⟨ ℕ.%-distribˡ-+ m o n ⟨
     (m + o) % n             ∎
 
   *-distribˡ-% : ((m % n) * o) ≡ (m * o) modℕ n
