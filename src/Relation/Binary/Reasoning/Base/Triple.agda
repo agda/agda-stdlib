@@ -19,7 +19,7 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions
   using (Transitive; _Respects₂_; Reflexive; Trans; Irreflexive; Asymmetric)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Reasoning.Syntax
 
 module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a}
@@ -48,9 +48,9 @@ start (nonstrict x≤y) = x≤y
 start (strict x<y) = <⇒≤ x<y
 
 ≡-go : Trans _≡_ _IsRelatedTo_ _IsRelatedTo_
-≡-go x≡y (equals y≈z) = equals (case x≡y of λ where P.refl → y≈z)
-≡-go x≡y (nonstrict y≤z) = nonstrict (case x≡y of λ where P.refl → y≤z)
-≡-go x≡y (strict y<z) = strict (case x≡y of λ where P.refl → y<z)
+≡-go x≡y (equals y≈z) = equals (case x≡y of λ where ≡.refl → y≈z)
+≡-go x≡y (nonstrict y≤z) = nonstrict (case x≡y of λ where ≡.refl → y≤z)
+≡-go x≡y (strict y<z) = strict (case x≡y of λ where ≡.refl → y<z)
 
 ≈-go : Trans _≈_ _IsRelatedTo_ _IsRelatedTo_
 ≈-go x≈y (equals y≈z) = equals (Eq.trans x≈y y≈z)

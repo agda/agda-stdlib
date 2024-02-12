@@ -13,13 +13,12 @@
 module Data.Graph.Acyclic where
 
 open import Level using (_⊔_)
-open import Data.Nat.Base as Nat using (ℕ; zero; suc; _<′_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _<′_)
 open import Data.Nat.Induction using (<′-rec; <′-Rec)
-import Data.Nat.Properties as Nat
+import Data.Nat.Properties as ℕ
 open import Data.Fin as Fin
   using (Fin; Fin′; zero; suc; #_; toℕ; _≟_; opposite) renaming (_ℕ-ℕ_ to _-_)
-import Data.Fin.Properties as FP
-import Data.Fin.Permutation.Components as PC
+import Data.Fin.Properties as Fin
 open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
 open import Data.Empty
@@ -36,7 +35,7 @@ open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 private
 
   lemma : ∀ n (i : Fin n) → n - suc i <′ n
-  lemma (suc n) i  = Nat.≤⇒≤′ $ Nat.s≤s $ FP.nℕ-ℕi≤n n i
+  lemma (suc n) i  = ℕ.≤⇒≤′ $ ℕ.s≤s $ Fin.nℕ-ℕi≤n n i
 
 ------------------------------------------------------------------------
 -- Node contexts
@@ -253,7 +252,7 @@ private
 -- Weakens a node label.
 
 weaken : ∀ {n} {i : Fin n} → Fin (n - suc i) → Fin n
-weaken {n} {i} j = Fin.inject≤ j (FP.nℕ-ℕi≤n n (suc i))
+weaken {n} {i} j = Fin.inject≤ j (Fin.nℕ-ℕi≤n n (suc i))
 
 -- Labels each node with its node number.
 

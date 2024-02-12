@@ -12,7 +12,7 @@ module Data.Tree.AVL.Relation.Unary.Any
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Product.Base as Prod using (∃)
+open import Data.Product.Base as Product using (∃)
 open import Function.Base using (_∘_; _$_)
 open import Level using (Level; _⊔_)
 
@@ -68,5 +68,5 @@ any? : Decidable P → Decidable (Any {V = V} P)
 any? P? (tree p) = map′ tree (λ where (tree p) → p) (AVLₚ.any? P? p)
 
 satisfiable : (k : Key) → Satisfiable (P ∘ (k ,_)) → Satisfiable (Any {V = V} P)
-satisfiable k sat = Prod.map tree tree
+satisfiable k sat = Product.map tree tree
                   $ AVLₚ.satisfiable Indexed.⊥⁺<[ k ] Indexed.[ k ]<⊤⁺ sat

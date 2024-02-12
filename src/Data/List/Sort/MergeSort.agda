@@ -24,7 +24,7 @@ open import Relation.Nullary.Decidable using (does)
 open import Data.Nat.Base using (_<_; _>_; z<s; s<s)
 open import Data.Nat.Induction
 open import Data.Nat.Properties using (m<n⇒m<1+n)
-open import Data.Product.Base as Prod using (_,_)
+open import Data.Product.Base as Product using (_,_)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Bundles using (DecTotalOrder)
 open import Relation.Nullary.Negation using (¬_)

@@ -20,7 +20,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 open import Relation.Unary using (Pred)
 
-import Relation.Binary.Reasoning.Setoid as EqReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
@@ -46,7 +46,7 @@ module _ {_≈_ : Rel B ℓ} {_∙_ : Op₂ B}
 
   private module M = IsSelectiveMagma ∙-isSelectiveMagma
   open M hiding (sel; isMagma)
-  open EqReasoning setoid
+  open ≈-Reasoning setoid
 
   module _ (f : A → B) where
 

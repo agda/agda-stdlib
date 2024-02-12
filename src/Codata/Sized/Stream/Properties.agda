@@ -20,7 +20,7 @@ open import Data.Nat.GeneralisedArithmetic using (fold; fold-pull)
 open import Data.List.Base as List using ([]; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 import Data.List.Relation.Binary.Equality.Propositional as Eq
-open import Data.Product.Base as Prod using (_,_)
+open import Data.Product.Base as Product using (_,_)
 open import Data.Vec.Base as Vec using (_∷_)
 
 open import Function.Base using (id; _$_; _∘′_; const)
@@ -49,7 +49,7 @@ take-repeat-identity (suc n) a = P.cong (a Vec.∷_) (take-repeat-identity n a)
 
 splitAt-repeat-identity : (n : ℕ) (a : A) → splitAt n (repeat a) ≡ (Vec.replicate n a , repeat a)
 splitAt-repeat-identity zero    a = P.refl
-splitAt-repeat-identity (suc n) a = P.cong (Prod.map₁ (a ∷_)) (splitAt-repeat-identity n a)
+splitAt-repeat-identity (suc n) a = P.cong (Product.map₁ (a ∷_)) (splitAt-repeat-identity n a)
 
 replicate-repeat : ∀ {i} (n : ℕ) (a : A) → i ⊢ List.replicate n a ++ repeat a ≈ repeat a
 replicate-repeat zero    a = refl
@@ -103,10 +103,10 @@ map-∘ f g (a ∷ as) = P.refl ∷ λ where .force → map-∘ f g (as .force)
 -- splitAt
 
 splitAt-map : ∀ n (f : A → B) xs →
-  splitAt n (map f xs) ≡ Prod.map (Vec.map f) (map f) (splitAt n xs)
+  splitAt n (map f xs) ≡ Product.map (Vec.map f) (map f) (splitAt n xs)
 splitAt-map zero    f xs       = P.refl
 splitAt-map (suc n) f (x ∷ xs) =
-  P.cong (Prod.map₁ (f x Vec.∷_)) (splitAt-map n f (xs .force))
+  P.cong (Product.map₁ (f x Vec.∷_)) (splitAt-map n f (xs .force))
 
 ------------------------------------------------------------------------
 -- iterate

@@ -8,7 +8,7 @@
 
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
 open import Data.Product.Properties using (≡-dec)
 open import Data.Sum.Base
 open import Data.Unit.Base using (⊤)
@@ -35,7 +35,7 @@ Pointwise R S = (R on proj₁) -×- (S on proj₂)
 -- Pointwise preserves many relational properties
 
 ×-reflexive : ≈₁ ⇒ R → ≈₂ ⇒ S → Pointwise ≈₁ ≈₂ ⇒ Pointwise R S
-×-reflexive refl₁ refl₂ = Prod.map refl₁ refl₂
+×-reflexive refl₁ refl₂ = Product.map refl₁ refl₂
 
 ×-refl : Reflexive R → Reflexive S → Reflexive (Pointwise R S)
 ×-refl refl₁ refl₂ = refl₁ , refl₂
@@ -49,14 +49,14 @@ Pointwise R S = (R on proj₁) -×- (S on proj₂)
 ×-irreflexive₂ ir x≈y x<y = ir (proj₂ x≈y) (proj₂ x<y)
 
 ×-symmetric : Symmetric R → Symmetric S → Symmetric (Pointwise R S)
-×-symmetric sym₁ sym₂ = Prod.map sym₁ sym₂
+×-symmetric sym₁ sym₂ = Product.map sym₁ sym₂
 
 ×-transitive : Transitive R → Transitive S → Transitive (Pointwise R S)
-×-transitive trans₁ trans₂ = Prod.zip trans₁ trans₂
+×-transitive trans₁ trans₂ = Product.zip trans₁ trans₂
 
 ×-antisymmetric : Antisymmetric ≈₁ R → Antisymmetric ≈₂ S →
                   Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise R S)
-×-antisymmetric antisym₁ antisym₂ = Prod.zip antisym₁ antisym₂
+×-antisymmetric antisym₁ antisym₂ = Product.zip antisym₁ antisym₂
 
 ×-asymmetric₁ : Asymmetric R → Asymmetric (Pointwise R S)
 ×-asymmetric₁ asym₁ x<y y<x = asym₁ (proj₁ x<y) (proj₁ y<x)
@@ -66,15 +66,15 @@ Pointwise R S = (R on proj₁) -×- (S on proj₂)
 
 ×-respectsʳ : R Respectsʳ ≈₁ → S Respectsʳ ≈₂ →
              (Pointwise R S) Respectsʳ (Pointwise ≈₁ ≈₂)
-×-respectsʳ resp₁ resp₂ = Prod.zip resp₁ resp₂
+×-respectsʳ resp₁ resp₂ = Product.zip resp₁ resp₂
 
 ×-respectsˡ : R Respectsˡ ≈₁ → S Respectsˡ ≈₂ →
              (Pointwise R S) Respectsˡ (Pointwise ≈₁ ≈₂)
-×-respectsˡ resp₁ resp₂ = Prod.zip resp₁ resp₂
+×-respectsˡ resp₁ resp₂ = Product.zip resp₁ resp₂
 
 ×-respects₂ : R Respects₂ ≈₁ → S Respects₂ ≈₂ →
               (Pointwise R S) Respects₂ (Pointwise ≈₁ ≈₂)
-×-respects₂ = Prod.zip ×-respectsʳ ×-respectsˡ
+×-respects₂ = Product.zip ×-respectsʳ ×-respectsˡ
 
 ×-total : Symmetric R → Total R → Total S → Total (Pointwise R S)
 ×-total sym₁ total₁ total₂ (x₁ , x₂) (y₁ , y₂)
