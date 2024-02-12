@@ -25,7 +25,7 @@ open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
 open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
@@ -214,7 +214,7 @@ Any-×⁺ (p , q) = Any.map (λ p → Any.map (λ q → (p , q)) q) p
 
 Any-×⁻ : Any (λ x → Any (λ y → P x × Q y) ys) xs →
          Any P xs × Any Q ys
-Any-×⁻ pq with Prod.map₂ (Prod.map₂ find) (find pq)
+Any-×⁻ pq with Product.map₂ (Product.map₂ find) (find pq)
 ... | (x , x∈xs , y , y∈ys , p , q) = lose x∈xs p , lose y∈ys q
 
 ×↔ : ∀ {xs ys} →
@@ -286,7 +286,7 @@ module _ {_~_ : REL A B r} where
 
   Any-Σ⁻ʳ : Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
   Any-Σ⁻ʳ (here (b , x)) = b , here x
-  Any-Σ⁻ʳ (there xs) = Prod.map₂ there $ Any-Σ⁻ʳ xs
+  Any-Σ⁻ʳ (there xs) = Product.map₂ there $ Any-Σ⁻ʳ xs
 
 ------------------------------------------------------------------------
 -- Invertible introduction (⁺) and elimination (⁻) rules for various
@@ -514,7 +514,7 @@ tabulate⁺ (suc i) p = there (tabulate⁺ i p)
 
 tabulate⁻ : ∀ {n} {f : Fin n → A} → Any P (tabulate f) → ∃ λ i → P (f i)
 tabulate⁻ {n = suc _} (here p)  = zero , p
-tabulate⁻ {n = suc _} (there p) = Prod.map suc id (tabulate⁻ p)
+tabulate⁻ {n = suc _} (there p) = Product.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- filter
@@ -593,7 +593,7 @@ module _ {P : B → Set p} where
                 ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)
   mapWith∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
   mapWith∈⁻ (y ∷ xs) f (there p) =
-    Prod.map₂ (Prod.map there id) $ mapWith∈⁻ xs (f ∘ there) p
+    Product.map₂ (Product.map there id) $ mapWith∈⁻ xs (f ∘ there) p
 
   mapWith∈↔ : ∀ {xs : List A} {f : ∀ {x} → x ∈ xs → B} →
                 (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (mapWith∈ xs f)

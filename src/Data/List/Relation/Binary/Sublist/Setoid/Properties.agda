@@ -16,7 +16,7 @@ open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Relation.Unary.Any using (Any)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (_≤_; _≥_)
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
@@ -159,7 +159,7 @@ module _ {m n} {xs : List A} where
 module _ {xs ys : List A} where
 
   drop⁺-⊆ : ∀ n → xs ⊆ ys → drop n xs ⊆ drop n ys
-  drop⁺-⊆ n xs⊆ys = drop⁺ {n} ℕₚ.≤-refl xs⊆ys
+  drop⁺-⊆ n xs⊆ys = drop⁺ {n} ℕ.≤-refl xs⊆ys
 
 ------------------------------------------------------------------------
 -- takeWhile / dropWhile

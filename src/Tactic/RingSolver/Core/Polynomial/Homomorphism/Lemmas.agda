@@ -15,7 +15,7 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas
 
 open import Data.Bool                                       using (Bool;true;false)
 open import Data.Nat.Base as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Nat.Properties as ℕₚ                       using (≤′-trans)
+open import Data.Nat.Properties as ℕ                        using (≤′-trans)
 open import Data.Vec.Base as Vec                            using (Vec; _∷_)
 open import Data.Fin                                        using (Fin; zero; suc)
 open import Data.List.Base                                  using (_∷_; [])
@@ -65,7 +65,7 @@ pow-hom : ∀ {n} i
         → (xs : Coeff n +)
         → ∀ ρ ρs
         → ⅀⟦ xs ⟧ (ρ , ρs) *⟨ ρ ⟩^ i ≈ ⅀⟦ xs ⍓+ i ⟧ (ρ , ρs)
-pow-hom zero (x Δ j & xs) ρ ρs rewrite ℕₚ.+-identityʳ j = refl
+pow-hom zero (x Δ j & xs) ρ ρs rewrite ℕ.+-identityʳ j = refl
 pow-hom (suc i) (x ≠0 Δ j & xs) ρ ρs =
   begin
     ρ ^ (suc i) * (((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ j)

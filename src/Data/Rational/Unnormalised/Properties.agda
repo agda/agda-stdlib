@@ -42,7 +42,7 @@ open import Relation.Binary.Definitions
 import Relation.Binary.Consequences as BC
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.Poset as PosetProperties
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 
 open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
@@ -153,7 +153,7 @@ proj₂ (≄-tight p q) p≃q p≄q = p≄q p≃q
   { isDecEquivalence = ≃-isDecEquivalence
   }
 
-module ≃-Reasoning = SetoidReasoning ≃-setoid
+module ≃-Reasoning = ≈-Reasoning ≃-setoid
 
 ↥p≡0⇒p≃0 : ∀ p → ↥ p ≡ 0ℤ → p ≃ 0ℚᵘ
 ↥p≡0⇒p≃0 p ↥p≡0 = *≡* (cong (ℤ._* (↧ 0ℚᵘ)) ↥p≡0)

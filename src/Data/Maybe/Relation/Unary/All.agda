@@ -12,7 +12,7 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (Any; just)
-open import Data.Product.Base as Prod using (_,_)
+open import Data.Product.Base as Product using (_,_)
 open import Function.Base using (id; _∘′_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
@@ -56,7 +56,7 @@ module _ {a p q r} {A : Set a} {P : Pred A p} {Q : Pred A q} {R : Pred A r} wher
   zipWith f (nothing , nothing) = nothing
 
   unzipWith : P ⊆ Q ∩ R → All P ⊆ All Q ∩ All R
-  unzipWith f (just px) = Prod.map just just (f px)
+  unzipWith f (just px) = Product.map just just (f px)
   unzipWith f nothing   = nothing , nothing
 
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where

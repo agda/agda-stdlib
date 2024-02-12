@@ -15,10 +15,10 @@ import Function.Construct.Identity as Identity
 import Function.Construct.Composition as Compose
 open import Level using (Level)
 open import Data.Product.Base using (proj₁; proj₂)
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality as ≡
 open import Relation.Binary.Definitions
 open import Relation.Binary.Bundles using (Setoid)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
@@ -44,7 +44,7 @@ mkSurjection f surjective = record
 ↠⇒⟶ = Surjection.function
 
 ↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ s = mk↪ {from = to} λ { P.refl → proj₂ (strictlySurjective _)}
+↠⇒↪ s = mk↪ {from = to} λ { ≡.refl → proj₂ (strictlySurjective _)}
   where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
@@ -75,6 +75,6 @@ injective⇒to⁻-cong {T = T} surj injective {x} {y} x≈y = injective $ begin
   y          ≈⟨ to∘to⁻ y ⟨
   to (to⁻ y) ∎
   where
-  open SetoidReasoning T
+  open ≈-Reasoning T
   open Surjection surj
 

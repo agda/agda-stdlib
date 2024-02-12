@@ -16,7 +16,7 @@ open import Function.Base using (flip)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
-import Relation.Binary.Reasoning.Setoid as Rea
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
@@ -27,7 +27,7 @@ private
 module _ (_≈ᴬ_ : Rel {a} A ℓa) (S : Setoid c ℓ) where
 
   open Setoid S
-  open Rea S
+  open ≈-Reasoning S
   open Defs _≈ᴬ_
 
   private
