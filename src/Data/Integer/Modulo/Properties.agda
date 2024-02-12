@@ -18,7 +18,8 @@ open import Algebra.Bundles
 import Algebra.Definitions as Definitions
 import Algebra.Structures as Structures
 open import Data.Integer.Base as ℤ using (ℤ; _◂_; signAbs)
-open import Data.Nat.Bounded.Base as ℕ< hiding (fromℕ; _∼_; ≡-Mod)
+open import Data.Nat.Bounded.Base as ℕ<
+   renaming (≡-Mod to ≡-Modℕ) hiding (fromℕ; _∼_)
 import Data.Nat.Bounded.Properties as ℕ<
 import Data.Nat.DivMod as ℕ
 import Data.Nat.Properties as ℕ
@@ -58,12 +59,12 @@ open ≡-Reasoning
 +-assoc : Associative _+_
 +-assoc x y z = begin
   x + y + z ≡⟨⟩
-  fromℕ (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧) ≡⟨ {!!} ⟩
-  {!!} ≡⟨ {!!} ⟩
-  {!!} ≡⟨ {!!} ⟩
-  {!!} ≡⟨ {!!} ⟩
+  fromℕ (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧) ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ eq ⟩
   fromℕ (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n)) ≡⟨⟩
   x + (y + z) ∎
+  where
+  eq : (((⟦ x ⟧ ℕ.+ ⟦ y ⟧) ℕ.% n) ℕ.+ ⟦ z ⟧) ≡ (⟦ x ⟧ ℕ.+ ((⟦ y ⟧ ℕ.+ ⟦ z ⟧) ℕ.% n)) modℕ n
+  eq = {!!}
 
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record { isMagma = +-isMagma ; assoc = +-assoc }
@@ -72,8 +73,7 @@ open ≡-Reasoning
 +-identityˡ = ℕ<.fromℕ∘toℕ≐id
 
 +-identityʳ : RightIdentity 0# _+_
-+-identityʳ x = ℕ<.⟦⟧≡⟦⟧⇒≡ $
-  trans (cong (ℕ._% n) (ℕ.+-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
++-identityʳ i = trans (cong fromℕ (ℕ.+-identityʳ _)) (ℕ<.fromℕ∘toℕ≐id i)
 
 +-identity : Identity 0# _+_
 +-identity = +-identityˡ , +-identityʳ
@@ -82,12 +82,14 @@ open ≡-Reasoning
 +-isMonoid = record { isSemigroup = +-isSemigroup ; identity = +-identity }
 
 +-inverseˡ : LeftInverse 0# -_ _+_
-+-inverseˡ (⟦ zero ⟧<      _) = +-identityˡ 0#
-+-inverseˡ i@(⟦ m@(suc _) ⟧< _) = {!!}
--- trans (cong fromℕ (ℕ.m+[n∸m]≡n (ℕ.<⇒≤ (ℕ<.isBounded i)))) {!ℕ<.n≡0-mod!}
++-inverseˡ (⟦ zero ⟧<        _) = +-identityˡ 0#
++-inverseˡ i@(⟦ m@(suc _) ⟧< _)
+  = trans (cong fromℕ (ℕ.m∸n+n≡m (ℕ.<⇒≤ (ℕ<.isBounded i)))) ℕ<.fromℕ[n]≡0
 
 +-inverseʳ : RightInverse 0# -_ _+_
-+-inverseʳ = {!!}
++-inverseʳ (⟦ zero ⟧<        _) = +-identityʳ 0#
++-inverseʳ i@(⟦ m@(suc _) ⟧< _)
+  = trans (cong fromℕ (ℕ.m+[n∸m]≡n (ℕ.<⇒≤ (ℕ<.isBounded i)))) ℕ<.fromℕ[n]≡0
 
 +-inverse : Inverse 0# -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
@@ -107,26 +109,32 @@ open ≡-Reasoning
 *-assoc : Associative _*_
 *-assoc x y z = begin
   x * y * z ≡⟨⟩
-  fromℕ (((⟦ x ⟧ ℕ.* ⟦ y ⟧) ℕ.% n) ℕ.* ⟦ z ⟧) ≡⟨ {!!} ⟩
-  {!!} ≡⟨ {!!} ⟩
-  {!!} ≡⟨ {!!} ⟩
-  {!!} ≡⟨ {!!} ⟩
+  fromℕ (((⟦ x ⟧ ℕ.* ⟦ y ⟧) ℕ.% n) ℕ.* ⟦ z ⟧) ≡⟨ ℕ<.≡-mod⇒fromℕ≡fromℕ eq ⟩
   fromℕ (⟦ x ⟧ ℕ.* ((⟦ y ⟧ ℕ.* ⟦ z ⟧) ℕ.% n)) ≡⟨⟩
   x * (y * z) ∎
+  where
+  eq : (((⟦ x ⟧ ℕ.* ⟦ y ⟧) ℕ.% n) ℕ.* ⟦ z ⟧) ≡ (⟦ x ⟧ ℕ.* ((⟦ y ⟧ ℕ.* ⟦ z ⟧) ℕ.% n)) modℕ n
+  eq = {!!}
 
 *-identityˡ : LeftIdentity 1# _*_
-*-identityˡ x with eq ← ℕ<.⟦1⟧≡1 {n = n} rewrite eq = ℕ<.⟦⟧≡⟦⟧⇒≡ $
-  trans (cong (ℕ._% n) (trans (ℕ.*-identityˡ _) {!!})) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
+*-identityˡ i with eq ← ℕ<.⟦1⟧≡1 {n = n} rewrite eq
+  = trans (cong fromℕ (ℕ.*-identityˡ _)) (ℕ<.fromℕ≐⟦⟧< (ℕ<.isBounded i))
 
 *-identityʳ : RightIdentity 1# _*_
-*-identityʳ x with eq ← ℕ<.⟦1⟧≡1 {n = n} rewrite eq = ℕ<.⟦⟧≡⟦⟧⇒≡ $
-  trans (cong (ℕ._% n) (ℕ.*-identityʳ _)) (ℕ.m<n⇒m%n≡m (ℕ<.isBounded x))
+*-identityʳ i with eq ← ℕ<.⟦1⟧≡1 {n = n} rewrite eq
+  = trans (cong fromℕ (ℕ.*-identityʳ _)) (ℕ<.fromℕ≐⟦⟧< (ℕ<.isBounded i))
 
 *-identity : Identity 1# _*_
 *-identity = *-identityˡ , *-identityʳ
 
+*-distribˡ-+ : _*_ DistributesOverˡ _+_
+*-distribˡ-+ i j k = {!!}
+
+*-distribʳ-+ : _*_ DistributesOverʳ _+_
+*-distribʳ-+ i j k = {!!}
+
 *-distrib-+ : _*_ DistributesOver _+_
-*-distrib-+ = {!!}
+*-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
 +-*-isRing : IsRing _+_ _*_ -_ 0# 1#
 +-*-isRing = record
