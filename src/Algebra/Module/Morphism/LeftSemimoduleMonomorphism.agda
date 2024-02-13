@@ -15,11 +15,11 @@ module Algebra.Module.Morphism.LeftSemimoduleMonomorphism
   where
 
 open IsLeftSemimoduleMonomorphism isLeftSemimoduleMonomorphism
-open RawLeftSemimodule M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_; _+ᴹ_ to _+ᴹ_; 0ᴹ to 0ᴹ₁; _*ₗ_ to _*ₗ_)
-open RawLeftSemimodule M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_; _+ᴹ_ to _⊕ᴹ_; 0ᴹ to 0ᴹ₂; _*ₗ_ to _⊛ₗ_)
+module M = RawLeftSemimodule M₁
+module N = RawLeftSemimodule M₂
 
 open import Algebra.Core
-open import Algebra.Module.Definitions.Left
+import Algebra.Module.Definitions.Left as LeftDefs
 open import Algebra.Module.Structures
 open import Algebra.Structures
 open import Function.Base
@@ -56,65 +56,68 @@ open import Algebra.Morphism.MonoidMonomorphism
 ----------------------------------------------------------------------------------
 -- Properties
 
-module _ (⊕ᴹ-isMonoid : IsMonoid _≈ᴹ₂_ _⊕ᴹ_ 0ᴹ₂) where
+module _ (⊕ᴹ-isMonoid : IsMonoid N._≈ᴹ_ N._+ᴹ_ N.0ᴹ) where
 
   open IsMonoid ⊕ᴹ-isMonoid
     using (setoid)
-    renaming (∙-cong to ⊕ᴹ-cong)
+    renaming (∙-cong to +ᴹ-cong′)
   open SetoidReasoning setoid
 
-  *ₗ-cong : Congruent R _≈ᴹ₂_ _≈_ _⊛ₗ_ → Congruent R _≈ᴹ₁_ _≈_ _*ₗ_
-  *ₗ-cong ⊛ₗ-cong {x} {y} {u} {v} x≈y u≈ᴹv = injective $ begin
-    ⟦ x *ₗ u ⟧ ≈⟨ *ₗ-homo x u ⟩
-    x ⊛ₗ ⟦ u ⟧ ≈⟨ ⊛ₗ-cong x≈y (⟦⟧-cong u≈ᴹv) ⟩
-    y ⊛ₗ ⟦ v ⟧ ≈˘⟨ *ₗ-homo y v ⟩
-    ⟦ y *ₗ v ⟧ ∎
+  module MDefs = LeftDefs R M._≈ᴹ_
+  module NDefs = LeftDefs R N._≈ᴹ_
 
-  *ₗ-zeroˡ : LeftZero R _≈ᴹ₂_ 0# 0ᴹ₂ _⊛ₗ_ → LeftZero R _≈ᴹ₁_ 0# 0ᴹ₁ _*ₗ_
-  *ₗ-zeroˡ {0# = 0#} ⊛ₗ-zeroˡ x = injective $ begin
-    ⟦ 0# *ₗ x ⟧ ≈⟨ *ₗ-homo 0# x ⟩
-    0# ⊛ₗ ⟦ x ⟧ ≈⟨ ⊛ₗ-zeroˡ ⟦ x ⟧ ⟩
-    0ᴹ₂         ≈˘⟨ 0ᴹ-homo ⟩
-    ⟦ 0ᴹ₁ ⟧     ∎
+  *ₗ-cong : NDefs.Congruent _≈_ N._*ₗ_ → MDefs.Congruent _≈_ M._*ₗ_
+  *ₗ-cong *ₗ-cong {x} {y} {u} {v} x≈y u≈ᴹv = injective $ begin
+    ⟦ x M.*ₗ u ⟧ ≈⟨ *ₗ-homo x u ⟩
+    x N.*ₗ ⟦ u ⟧ ≈⟨ *ₗ-cong x≈y (⟦⟧-cong u≈ᴹv) ⟩
+    y N.*ₗ ⟦ v ⟧ ≈˘⟨ *ₗ-homo y v ⟩
+    ⟦ y M.*ₗ v ⟧ ∎
 
-  *ₗ-distribʳ : _DistributesOverʳ_⟶_ R _≈ᴹ₂_ _⊛ₗ_ _+_ _⊕ᴹ_ → _DistributesOverʳ_⟶_ R _≈ᴹ₁_ _*ₗ_ _+_ _+ᴹ_
-  *ₗ-distribʳ {_+_ = _+_} ⊛ₗ-distribʳ x m n = injective $ begin
-    ⟦ (m + n) *ₗ x ⟧         ≈⟨ *ₗ-homo (m + n) x ⟩
-    (m + n) ⊛ₗ ⟦ x ⟧         ≈⟨ ⊛ₗ-distribʳ ⟦ x ⟧ m n ⟩
-    m ⊛ₗ ⟦ x ⟧ ⊕ᴹ n ⊛ₗ ⟦ x ⟧ ≈˘⟨ ⊕ᴹ-cong (*ₗ-homo m x) (*ₗ-homo n x) ⟩
-    ⟦ m *ₗ x ⟧ ⊕ᴹ ⟦ n *ₗ x ⟧ ≈˘⟨ +ᴹ-homo (m *ₗ x) (n *ₗ x) ⟩
-    ⟦ m *ₗ x +ᴹ n *ₗ x ⟧     ∎
+  *ₗ-zeroˡ : NDefs.LeftZero 0# N.0ᴹ N._*ₗ_ → MDefs.LeftZero 0# M.0ᴹ M._*ₗ_
+  *ₗ-zeroˡ {0# = 0#} *ₗ-zeroˡ x = injective $ begin
+    ⟦ 0# M.*ₗ x ⟧ ≈⟨ *ₗ-homo 0# x ⟩
+    0# N.*ₗ ⟦ x ⟧ ≈⟨ *ₗ-zeroˡ ⟦ x ⟧ ⟩
+    N.0ᴹ          ≈˘⟨ 0ᴹ-homo ⟩
+    ⟦ M.0ᴹ ⟧      ∎
 
-  *ₗ-identityˡ : LeftIdentity R _≈ᴹ₂_ 1# _⊛ₗ_ → LeftIdentity R _≈ᴹ₁_ 1# _*ₗ_
-  *ₗ-identityˡ {1# = 1#} ⊛ₗ-identityˡ m = injective $ begin
-    ⟦ 1# *ₗ m ⟧ ≈⟨ *ₗ-homo 1# m ⟩
-    1# ⊛ₗ ⟦ m ⟧ ≈⟨ ⊛ₗ-identityˡ ⟦ m ⟧ ⟩
-    ⟦ m ⟧       ∎
+  *ₗ-distribʳ : N._*ₗ_ NDefs.DistributesOverʳ _+_ ⟶ N._+ᴹ_ → M._*ₗ_ MDefs.DistributesOverʳ _+_ ⟶ M._+ᴹ_
+  *ₗ-distribʳ {_+_ = _+_} *ₗ-distribʳ x m n = injective $ begin
+    ⟦ (m + n) M.*ₗ x ⟧             ≈⟨ *ₗ-homo (m + n) x ⟩
+    (m + n) N.*ₗ ⟦ x ⟧             ≈⟨ *ₗ-distribʳ ⟦ x ⟧ m n ⟩
+    m N.*ₗ ⟦ x ⟧ N.+ᴹ n N.*ₗ ⟦ x ⟧ ≈˘⟨ +ᴹ-cong′ (*ₗ-homo m x) (*ₗ-homo n x) ⟩
+    ⟦ m M.*ₗ x ⟧ N.+ᴹ ⟦ n M.*ₗ x ⟧ ≈˘⟨ +ᴹ-homo (m M.*ₗ x) (n M.*ₗ x) ⟩
+    ⟦ m M.*ₗ x M.+ᴹ n M.*ₗ x ⟧     ∎
 
-  *ₗ-assoc : LeftCongruent R _≈ᴹ₂_ _⊛ₗ_ → Associative R _≈ᴹ₂_ _*_ _⊛ₗ_ → Associative R _≈ᴹ₁_ _*_ _*ₗ_
-  *ₗ-assoc {_*_ = _*_} ⊛ₗ-congˡ ⊛ₗ-assoc x y m = injective $ begin
-    ⟦ (x * y) *ₗ m ⟧ ≈⟨ *ₗ-homo (x * y) m ⟩
-    (x * y) ⊛ₗ ⟦ m ⟧ ≈⟨ ⊛ₗ-assoc x y ⟦ m ⟧ ⟩
-    x ⊛ₗ y ⊛ₗ ⟦ m ⟧  ≈˘⟨ ⊛ₗ-congˡ (*ₗ-homo y m) ⟩
-    x ⊛ₗ ⟦ y *ₗ m ⟧  ≈˘⟨ *ₗ-homo x (y *ₗ m) ⟩
-    ⟦ x *ₗ y *ₗ m ⟧  ∎
+  *ₗ-identityˡ : NDefs.LeftIdentity 1# N._*ₗ_ → MDefs.LeftIdentity 1# M._*ₗ_
+  *ₗ-identityˡ {1# = 1#} *ₗ-identityˡ m = injective $ begin
+    ⟦ 1# M.*ₗ m ⟧ ≈⟨ *ₗ-homo 1# m ⟩
+    1# N.*ₗ ⟦ m ⟧ ≈⟨ *ₗ-identityˡ ⟦ m ⟧ ⟩
+    ⟦ m ⟧         ∎
 
-  *ₗ-zeroʳ : LeftCongruent R _≈ᴹ₂_ _⊛ₗ_ → RightZero R _≈ᴹ₂_ 0ᴹ₂ _⊛ₗ_ → RightZero R _≈ᴹ₁_ 0ᴹ₁ _*ₗ_
-  *ₗ-zeroʳ ⊛ₗ-congˡ ⊛ₗ-zeroʳ x = injective $ begin
-    ⟦ x *ₗ 0ᴹ₁ ⟧ ≈⟨ *ₗ-homo x 0ᴹ₁ ⟩
-    x ⊛ₗ ⟦ 0ᴹ₁ ⟧ ≈⟨ ⊛ₗ-congˡ 0ᴹ-homo ⟩
-    x ⊛ₗ 0ᴹ₂     ≈⟨ ⊛ₗ-zeroʳ x ⟩
-    0ᴹ₂          ≈˘⟨ 0ᴹ-homo ⟩
-    ⟦ 0ᴹ₁ ⟧      ∎
+  *ₗ-assoc : NDefs.LeftCongruent N._*ₗ_ → NDefs.Associative _*_ N._*ₗ_ → MDefs.Associative _*_ M._*ₗ_
+  *ₗ-assoc {_*_ = _*_} *ₗ-congˡ *ₗ-assoc x y m = injective $ begin
+    ⟦ (x * y) M.*ₗ m ⟧  ≈⟨ *ₗ-homo (x * y) m ⟩
+    (x * y) N.*ₗ ⟦ m ⟧  ≈⟨ *ₗ-assoc x y ⟦ m ⟧ ⟩
+    x N.*ₗ y N.*ₗ ⟦ m ⟧ ≈˘⟨ *ₗ-congˡ (*ₗ-homo y m) ⟩
+    x N.*ₗ ⟦ y M.*ₗ m ⟧ ≈˘⟨ *ₗ-homo x (y M.*ₗ m) ⟩
+    ⟦ x M.*ₗ y M.*ₗ m ⟧ ∎
 
-  *ₗ-distribˡ : LeftCongruent R _≈ᴹ₂_ _⊛ₗ_ → _DistributesOverˡ_ R _≈ᴹ₂_ _⊛ₗ_ _⊕ᴹ_ → _DistributesOverˡ_ R _≈ᴹ₁_ _*ₗ_ _+ᴹ_
-  *ₗ-distribˡ ⊛ₗ-congˡ ⊛ₗ-distribˡ x m n = injective $ begin
-    ⟦ x *ₗ (m +ᴹ n) ⟧        ≈⟨ *ₗ-homo x (m +ᴹ n) ⟩
-    x ⊛ₗ ⟦ m +ᴹ n ⟧          ≈⟨ ⊛ₗ-congˡ (+ᴹ-homo m n) ⟩
-    x ⊛ₗ (⟦ m ⟧ ⊕ᴹ ⟦ n ⟧)    ≈⟨ ⊛ₗ-distribˡ x ⟦ m ⟧ ⟦ n ⟧ ⟩
-    x ⊛ₗ ⟦ m ⟧ ⊕ᴹ x ⊛ₗ ⟦ n ⟧ ≈˘⟨ ⊕ᴹ-cong (*ₗ-homo x m) (*ₗ-homo x n) ⟩
-    ⟦ x *ₗ m ⟧ ⊕ᴹ ⟦ x *ₗ n ⟧ ≈˘⟨ +ᴹ-homo (x *ₗ m) (x *ₗ n) ⟩
-    ⟦ x *ₗ m +ᴹ x *ₗ n ⟧     ∎
+  *ₗ-zeroʳ : NDefs.LeftCongruent N._*ₗ_ → NDefs.RightZero N.0ᴹ N._*ₗ_ → MDefs.RightZero M.0ᴹ M._*ₗ_
+  *ₗ-zeroʳ *ₗ-congˡ *ₗ-zeroʳ x = injective $ begin
+    ⟦ x M.*ₗ M.0ᴹ ⟧ ≈⟨ *ₗ-homo x M.0ᴹ ⟩
+    x N.*ₗ ⟦ M.0ᴹ ⟧ ≈⟨ *ₗ-congˡ 0ᴹ-homo ⟩
+    x N.*ₗ N.0ᴹ     ≈⟨ *ₗ-zeroʳ x ⟩
+    N.0ᴹ            ≈˘⟨ 0ᴹ-homo ⟩
+    ⟦ M.0ᴹ ⟧        ∎
+
+  *ₗ-distribˡ : NDefs.LeftCongruent N._*ₗ_ → N._*ₗ_ NDefs.DistributesOverˡ N._+ᴹ_ → M._*ₗ_ MDefs.DistributesOverˡ M._+ᴹ_
+  *ₗ-distribˡ *ₗ-congˡ *ₗ-distribˡ x m n = injective $ begin
+    ⟦ x M.*ₗ (m M.+ᴹ n) ⟧          ≈⟨ *ₗ-homo x (m M.+ᴹ n) ⟩
+    x N.*ₗ ⟦ m M.+ᴹ n ⟧            ≈⟨ *ₗ-congˡ (+ᴹ-homo m n) ⟩
+    x N.*ₗ (⟦ m ⟧ N.+ᴹ ⟦ n ⟧)      ≈⟨ *ₗ-distribˡ x ⟦ m ⟧ ⟦ n ⟧ ⟩
+    x N.*ₗ ⟦ m ⟧ N.+ᴹ x N.*ₗ ⟦ n ⟧ ≈˘⟨ +ᴹ-cong′ (*ₗ-homo x m) (*ₗ-homo x n) ⟩
+    ⟦ x M.*ₗ m ⟧ N.+ᴹ ⟦ x M.*ₗ n ⟧ ≈˘⟨ +ᴹ-homo (x M.*ₗ m) (x M.*ₗ n) ⟩
+    ⟦ x M.*ₗ m M.+ᴹ x M.*ₗ n ⟧     ∎
 
 ------------------------------------------------------------------------
 -- Structures
@@ -122,17 +125,17 @@ module _ (⊕ᴹ-isMonoid : IsMonoid _≈ᴹ₂_ _⊕ᴹ_ 0ᴹ₂) where
 isLeftSemimodule :
   (R-isSemiring : IsSemiring _≈_ _+_ _*_ 0# 1#)
   (let R-semiring = record { isSemiring = R-isSemiring })
-  → IsLeftSemimodule R-semiring _≈ᴹ₂_ _⊕ᴹ_ 0ᴹ₂ _⊛ₗ_
-  → IsLeftSemimodule R-semiring _≈ᴹ₁_ _+ᴹ_ 0ᴹ₁ _*ₗ_
+  → IsLeftSemimodule R-semiring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N._*ₗ_
+  → IsLeftSemimodule R-semiring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M._*ₗ_
 isLeftSemimodule isSemiring isLeftSemimodule = record
-  { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid M.+ᴹ-isCommutativeMonoid
+  { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid NN.+ᴹ-isCommutativeMonoid
   ; isPreleftSemimodule = record
-    { *ₗ-cong = *ₗ-cong M.+ᴹ-isMonoid M.*ₗ-cong
-    ; *ₗ-zeroˡ = *ₗ-zeroˡ M.+ᴹ-isMonoid M.*ₗ-zeroˡ
-    ; *ₗ-distribʳ = *ₗ-distribʳ M.+ᴹ-isMonoid M.*ₗ-distribʳ
-    ; *ₗ-identityˡ = *ₗ-identityˡ M.+ᴹ-isMonoid M.*ₗ-identityˡ
-    ; *ₗ-assoc = *ₗ-assoc M.+ᴹ-isMonoid M.*ₗ-congˡ M.*ₗ-assoc
-    ; *ₗ-zeroʳ = *ₗ-zeroʳ M.+ᴹ-isMonoid M.*ₗ-congˡ M.*ₗ-zeroʳ
-    ; *ₗ-distribˡ = *ₗ-distribˡ M.+ᴹ-isMonoid M.*ₗ-congˡ M.*ₗ-distribˡ
+    { *ₗ-cong = *ₗ-cong NN.+ᴹ-isMonoid NN.*ₗ-cong
+    ; *ₗ-zeroˡ = *ₗ-zeroˡ NN.+ᴹ-isMonoid NN.*ₗ-zeroˡ
+    ; *ₗ-distribʳ = *ₗ-distribʳ NN.+ᴹ-isMonoid NN.*ₗ-distribʳ
+    ; *ₗ-identityˡ = *ₗ-identityˡ NN.+ᴹ-isMonoid NN.*ₗ-identityˡ
+    ; *ₗ-assoc = *ₗ-assoc NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-assoc
+    ; *ₗ-zeroʳ = *ₗ-zeroʳ NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-zeroʳ
+    ; *ₗ-distribˡ = *ₗ-distribˡ NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-distribˡ
     }
-  } where module M = IsLeftSemimodule isLeftSemimodule
+  } where module NN = IsLeftSemimodule isLeftSemimodule
