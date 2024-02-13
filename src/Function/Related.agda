@@ -27,8 +27,8 @@ open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
 open import Relation.Binary.Definitions using (Reflexive; Trans; Sym)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Data.Product.Base using (_,_; proj₁; proj₂; <_,_>)
 
 import Function.Related.Propositional as R
@@ -90,12 +90,12 @@ infix 4 _∼[_]_
 _∼[_]_ : ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Kind → Set ℓ₂ → Set _
 A ∼[ implication         ] B = A → B
 A ∼[ reverse-implication ] B = A ← B
-A ∼[ equivalence         ] B = Equivalence (P.setoid A) (P.setoid B)
-A ∼[ injection           ] B = Injection   (P.setoid A) (P.setoid B)
+A ∼[ equivalence         ] B = Equivalence (≡.setoid A) (≡.setoid B)
+A ∼[ injection           ] B = Injection   (≡.setoid A) (≡.setoid B)
 A ∼[ reverse-injection   ] B = A ↢ B
-A ∼[ left-inverse        ] B = LeftInverse (P.setoid A) (P.setoid B)
-A ∼[ surjection          ] B = Surjection  (P.setoid A) (P.setoid B)
-A ∼[ bijection           ] B = Inverse     (P.setoid A) (P.setoid B)
+A ∼[ left-inverse        ] B = LeftInverse (≡.setoid A) (≡.setoid B)
+A ∼[ surjection          ] B = Surjection  (≡.setoid A) (≡.setoid B)
+A ∼[ bijection           ] B = Inverse     (≡.setoid A) (≡.setoid B)
 
 -- A non-infix synonym.
 
@@ -125,7 +125,7 @@ fromRelated {K = left-inverse}        record { to = to ; from = from ; left-inve
   B.mk↪ {to = to ⟨$⟩_} {from = from ⟨$⟩_} (strictlyInverseʳ⇒inverseʳ (to ⟨$⟩_) left-inverse-of)
 fromRelated {K = surjection}          record { to = to ; surjective = surjective } with surjective
 ... | record { from = from ; right-inverse-of = right-inverse-of } =
-  B.mk↠ {to = to ⟨$⟩_} < from ⟨$⟩_ , (λ { x P.refl → right-inverse-of x }) >
+  B.mk↠ {to = to ⟨$⟩_} < from ⟨$⟩_ , (λ { x ≡.refl → right-inverse-of x }) >
 fromRelated {K = bijection}           rel = B.mk↔ₛ′ (to ⟨$⟩_) (from ⟨$⟩_) right-inverse-of left-inverse-of
   where open Inverse rel
 
@@ -145,7 +145,7 @@ fromRelated {K = bijection}           rel = B.mk↔ₛ′ (to ⟨$⟩_) (from �
 -- Actual equality also implies any kind of relatedness.
 
 ≡⇒ : ∀ {k ℓ} {X Y : Set ℓ} → X ≡ Y → X ∼[ k ] Y
-≡⇒ P.refl = ↔⇒ Inv.id
+≡⇒ ≡.refl = ↔⇒ Inv.id
 
 ------------------------------------------------------------------------
 -- Special kinds of kinds
@@ -313,7 +313,7 @@ K-refl {surjection}          = Surj.id
 K-refl {bijection}           = Inv.id
 
 K-reflexive : ∀ {k ℓ} → _≡_ ⇒ Related k {ℓ}
-K-reflexive P.refl = K-refl
+K-reflexive ≡.refl = K-refl
 
 K-trans : ∀ {k ℓ₁ ℓ₂ ℓ₃} → Trans (Related k {ℓ₁} {ℓ₂})
                                 (Related k {ℓ₂} {ℓ₃})
@@ -383,7 +383,7 @@ module EquationalReasoning where
 
   _≡˘⟨_⟩_ : ∀ {k ℓ z} (X : Set ℓ) {Y : Set ℓ} {Z : Set z} →
             Y ≡ X → Y ∼[ k ] Z → X ∼[ k ] Z
-  X ≡˘⟨ Y≡X ⟩ Y⇔Z = X ∼⟨ ≡⇒ (P.sym Y≡X) ⟩ Y⇔Z
+  X ≡˘⟨ Y≡X ⟩ Y⇔Z = X ∼⟨ ≡⇒ (≡.sym Y≡X) ⟩ Y⇔Z
 
   _≡⟨_⟩_ : ∀ {k ℓ z} (X : Set ℓ) {Y : Set ℓ} {Z : Set z} →
            X ≡ Y → Y ∼[ k ] Z → X ∼[ k ] Z
@@ -406,10 +406,10 @@ InducedPreorder₁ k S = record
   { _≈_        = _≡_
   ; _≲_        = InducedRelation₁ k S
   ; isPreorder = record
-    { isEquivalence = P.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = reflexive ∘
                       K-reflexive ∘
-                      P.cong S
+                      ≡.cong S
     ; trans         = K-trans
     }
   } where open Preorder (K-preorder _ _)
@@ -439,11 +439,11 @@ InducedPreorder₂ k _S_ = record
   { _≈_        = _≡_
   ; _≲_        = InducedRelation₂ k _S_
   ; isPreorder = record
-    { isEquivalence = P.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = λ x≡y {z} →
                         reflexive $
                         K-reflexive $
-                        P.cong (_S_ z) x≡y
+                        ≡.cong (_S_ z) x≡y
 
     ; trans         = λ i↝j j↝k → K-trans i↝j j↝k
     }

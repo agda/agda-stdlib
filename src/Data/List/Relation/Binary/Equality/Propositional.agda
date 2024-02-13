@@ -16,20 +16,20 @@ module Data.List.Relation.Binary.Equality.Propositional {a} {A : Set a} where
 
 open import Data.List.Base
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 ------------------------------------------------------------------------
 -- Re-export everything from setoid equality
 
-open SetoidEquality (P.setoid A) public
+open SetoidEquality (≡.setoid A) public
 
 ------------------------------------------------------------------------
 -- ≋ is propositional
 
 ≋⇒≡ : _≋_ ⇒ _≡_
-≋⇒≡ []               = P.refl
-≋⇒≡ (P.refl ∷ xs≈ys) = P.cong (_ ∷_) (≋⇒≡ xs≈ys)
+≋⇒≡ []               = ≡.refl
+≋⇒≡ (≡.refl ∷ xs≈ys) = ≡.cong (_ ∷_) (≋⇒≡ xs≈ys)
 
 ≡⇒≋ : _≡_ ⇒ _≋_
-≡⇒≋ P.refl = ≋-refl
+≡⇒≋ ≡.refl = ≋-refl

@@ -16,7 +16,7 @@ open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.Core using (_⇒_; Rel)
 open import Relation.Binary.Bundles as B
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Binary.Indexed.Homogeneous.Core
 open import Relation.Binary.Indexed.Homogeneous.Structures

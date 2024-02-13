@@ -25,10 +25,10 @@ open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
 open import Relation.Binary.Reasoning.Syntax
 
-import Relation.Binary.PropositionalEquality.Properties as P
+import Relation.Binary.PropositionalEquality.Properties as ≡
 import Relation.Binary.HeterogeneousEquality.Core as Core
 
 private
@@ -59,7 +59,7 @@ open Core public using (≅-to-≡; ≡-to-≅)
 ≅-to-type-≡ refl = refl
 
 ≅-to-subst-≡ : ∀ {A B : Set a} {x : A} {y : B} → (p : x ≅ y) →
-               P.subst (λ x → x) (≅-to-type-≡ p) x ≡ y
+               ≡.subst (λ x → x) (≅-to-type-≡ p) x ≡ y
 ≅-to-subst-≡ refl = refl
 
 ------------------------------------------------------------------------
@@ -89,7 +89,7 @@ subst₂-removable : ∀ (_∼_ : REL A B r) {x y u v} (eq₁ : x ≅ y) (eq₂ 
 subst₂-removable _∼_ refl refl z = refl
 
 ≡-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≡ y) (z : P x) →
-                    P.subst P eq z ≅ z
+                    ≡.subst P eq z ≅ z
 ≡-subst-removable P refl z = refl
 
 cong : ∀ {A : Set a} {B : A → Set b} {x y}
@@ -133,7 +133,7 @@ module _ {I : Set ℓ} (A : I → Set a) {B : {k : I} → A k → Set b} where
   icong-≡-subst-removable : {i j : I} (eq : i ≡ j)
                             (f : {k : I} → (z : A k) → B z)
                             (x : A i) →
-                            f (P.subst A eq x) ≅ f x
+                            f (≡.subst A eq x) ≅ f x
   icong-≡-subst-removable refl _ _ = refl
 
 ------------------------------------------------------------------------
@@ -183,13 +183,13 @@ indexedSetoid B = record
   }
 
 ≡↔≅ : ∀ {A : Set a} (B : A → Set b) {x : A} →
-      Inverse (P.setoid (B x)) ((indexedSetoid B) atₛ x)
+      Inverse (≡.setoid (B x)) ((indexedSetoid B) atₛ x)
 ≡↔≅ B = record
   { to         = id
   ; to-cong    = ≡-to-≅
   ; from       = id
   ; from-cong  = ≅-to-≡
-  ; inverse    = (λ { P.refl → refl }) , λ { refl → P.refl }
+  ; inverse    = (λ { ≡.refl → refl }) , λ { refl → ≡.refl }
   }
 
 decSetoid : Decidable {A = A} {B = A} (λ x y → x ≅ y) →
@@ -211,7 +211,7 @@ isPreorder = record
 
 isPreorder-≡ : IsPreorder {A = A} _≡_ (λ x y → x ≅ y)
 isPreorder-≡ = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; reflexive     = reflexive
   ; trans         = trans
   }
