@@ -12,7 +12,7 @@ open import Data.Product.Base using (_,_; Σ-syntax; -,_; proj₁; proj₂)
 open import Function.Base using (_∘_)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (REL; _⇒_)
-open import Relation.Binary.PropositionalEquality.Core as P
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; subst; cong)
 
 open import Data.Container.Core using (Container; ⟦_⟧)

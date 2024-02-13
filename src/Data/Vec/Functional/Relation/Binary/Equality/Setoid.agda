@@ -17,7 +17,7 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 module Data.Vec.Functional.Relation.Binary.Equality.Setoid
   {a ℓ} (S : Setoid a ℓ) where
@@ -41,7 +41,7 @@ _≋_ = Pointwise _≈_
 ≋-refl {n} = PW.refl {R = _≈_} refl
 
 ≋-reflexive : ∀ {n} → _≡_ ⇒ (_≋_ {n = n})
-≋-reflexive P.refl = ≋-refl
+≋-reflexive ≡.refl = ≋-refl
 
 ≋-sym : ∀ {n} → Symmetric (_≋_ {n = n})
 ≋-sym = PW.sym {R = _≈_} sym

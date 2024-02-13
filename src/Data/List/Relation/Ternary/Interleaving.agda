@@ -16,7 +16,7 @@ open import Data.Product.Base as Product using (∃; ∃₂; _×_; uncurry; _,_;
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base
 open import Relation.Binary.Core using (REL; _⇒_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -60,9 +60,9 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
           Interleaving _≡_ _≡_ csl csr cs × Pointwise L l csl × Pointwise R r csr
   break []        = -, [] , [] , []
   break (l ∷ˡ sp) = let (_ , eq , pwl , pwr) = break sp in
-                    -, P.refl ∷ˡ eq , l ∷ pwl , pwr
+                    -, ≡.refl ∷ˡ eq , l ∷ pwl , pwr
   break (r ∷ʳ sp) = let (_ , eq , pwl , pwr) = break sp in
-                    -, P.refl ∷ʳ eq , pwl , r ∷ pwr
+                    -, ≡.refl ∷ʳ eq , pwl , r ∷ pwr
 
 -- map
 

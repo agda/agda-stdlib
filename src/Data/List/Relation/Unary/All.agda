@@ -25,8 +25,8 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (_Respects_)
-open import Relation.Binary.PropositionalEquality.Core as P
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -124,7 +124,7 @@ module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
   tabulateₛ {x ∷ xs} hyp = hyp (here refl₁) ∷ tabulateₛ (hyp ∘ there)
 
 tabulate : (∀ {x} → x ∈ₚ xs → P x) → All P xs
-tabulate = tabulateₛ (P.setoid _)
+tabulate = tabulateₛ (≡.setoid _)
 
 self : ∀ {xs : List A} → All (const A) xs
 self = tabulate (λ {x} _ → x)
@@ -213,9 +213,9 @@ universal u []       = []
 universal u (x ∷ xs) = u x ∷ universal u xs
 
 irrelevant : Irrelevant P → Irrelevant (All P)
-irrelevant irr []           []           = P.refl
+irrelevant irr []           []           = ≡.refl
 irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
-  P.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)
+  ≡.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)
 
 satisfiable : Satisfiable (All P)
 satisfiable = [] , []

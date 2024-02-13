@@ -33,7 +33,7 @@ open import Relation.Binary.Definitions
   using (Irreflexive; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Antisymmetric; Asymmetric; Symmetric; Trans; Decidable; Total; Trichotomous; Transitive; Irrelevant; tri≈; tri>; tri<)
 open import Relation.Binary.Consequences
 open import Relation.Binary.Construct.On as On using (wellFounded)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Level using (Level; _⊔_)
 
 private
@@ -103,8 +103,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     <-cmp : ∀ {n} → Trichotomous _≋_ (_<_ {n})
     <-cmp [] [] = tri≈ ¬[]<[] [] ¬[]<[]
     <-cmp (x ∷ xs) (y ∷ ys) with ≺-cmp x y
-    ... | tri< x≺y x≉y x⊁y = tri< (this x≺y P.refl) (x≉y ∘ head) (≰-this (x≉y ∘ ≈-sym) x⊁y)
-    ... | tri> x⊀y x≉y x≻y = tri> (≰-this x≉y x⊀y) (x≉y ∘ head) (this x≻y P.refl)
+    ... | tri< x≺y x≉y x⊁y = tri< (this x≺y ≡.refl) (x≉y ∘ head) (≰-this (x≉y ∘ ≈-sym) x⊁y)
+    ... | tri> x⊀y x≉y x≻y = tri> (≰-this x≉y x⊀y) (x≉y ∘ head) (this x≻y ≡.refl)
     ... | tri≈ x⊀y x≈y x⊁y with <-cmp xs ys
     ...   | tri< xs<ys xs≋̸ys xs≯ys = tri< (next x≈y xs<ys) (xs≋̸ys ∘ tail) (≰-next x⊁y xs≯ys)
     ...   | tri≈ xs≮ys xs≋ys xs≯ys = tri≈ (≰-next x⊀y xs≮ys) (x≈y ∷ xs≋ys) (≰-next x⊁y xs≯ys)
@@ -237,8 +237,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     ≤-total : ∀ {n} → Total (_≤_ {n} {n})
     ≤-total [] [] = inj₁ (base tt)
     ≤-total (x ∷ xs) (y ∷ ys) with ≺-cmp x y
-    ... | tri< x≺y _   _   = inj₁ (this x≺y P.refl)
-    ... | tri> _   _   x≻y = inj₂ (this x≻y P.refl)
+    ... | tri< x≺y _   _   = inj₁ (this x≺y ≡.refl)
+    ... | tri> _   _   x≻y = inj₂ (this x≻y ≡.refl)
     ... | tri≈ _   x≈y _ with ≤-total xs ys
     ...   | inj₁ xs<ys = inj₁ (next x≈y xs<ys)
     ...   | inj₂ xs>ys = inj₂ (next (≈-sym x≈y) xs>ys)

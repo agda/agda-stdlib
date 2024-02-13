@@ -24,7 +24,7 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsStrictPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
   using (Reflexive; Transitive; Asymmetric; Total; Decidable; Irreflexive; Antisymmetric; Trichotomous; _Respectsʳ_; _Respectsˡ_; _Respects₂_; tri<; tri>; tri≈)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 ------------------------------------------------------------------------
 -- Definition

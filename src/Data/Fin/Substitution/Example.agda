@@ -22,7 +22,7 @@ open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; refl; sym; cong; cong₂)
-open PropEq.≡-Reasoning
+open ≡.≡-Reasoning
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (Star; ε; _◅_)
 
