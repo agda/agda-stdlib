@@ -20,7 +20,7 @@ open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
-    m n : ℕ
+    m n o : ℕ
 
 ------------------------------------------------------------------------
 -- Definition
@@ -87,8 +87,10 @@ record _∼_ {n} (lhs rhs : ℕ) : Set where
     lhs/∼≡ : lhs /∼≡ k
     rhs/∼≡ : rhs /∼≡ k
 
-≡-Mod : ℕ → Rel ℕ _
-≡-Mod n i j = _∼_ {n} i j
+≡-Modℕ : ℕ → Rel ℕ _
+≡-Modℕ n = _∼_ {n}
 
-syntax ≡-Mod n i j = i ≡ j mod n
+syntax ≡-Modℕ n m o = m ≡ o modℕ n
 
+nonZeroModulus : (m ≡ o modℕ n) → NonZero n
+nonZeroModulus eq = nonZeroIndex k where open _∼_ eq
