@@ -15,8 +15,9 @@ module Algebra.Module.Morphism.LeftSemimoduleMonomorphism
   where
 
 open IsLeftSemimoduleMonomorphism isLeftSemimoduleMonomorphism
-module M = RawLeftSemimodule M₁
-module N = RawLeftSemimodule M₂
+private
+  module M = RawLeftSemimodule M₁
+  module N = RawLeftSemimodule M₂
 
 open import Algebra.Core
 import Algebra.Module.Definitions.Left as LeftDefs
