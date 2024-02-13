@@ -8,6 +8,7 @@
 
 module Data.Nat.Bounded.Properties where
 
+import Algebra.Definitions as Definitions
 open import Data.Fin.Base as Fin using (Fin)
 import Data.Fin.Properties as Fin
 open import Data.Nat.Base as ℕ
@@ -23,15 +24,16 @@ open import Relation.Binary.Structures using (IsPartialEquivalence; IsEquivalenc
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; erefl; sym; trans; cong; subst; _≗_)
+  hiding (isEquivalence; setoid)
 open import Relation.Nullary.Decidable.Core using (map′)
 
 open import Data.Nat.Bounded.Base as ℕ<
 
 private
   variable
-    m n : ℕ
-    i j : ℕ< n
+    m n o : ℕ
+    i j k : ℕ< n
+
 
 ------------------------------------------------------------------------
 -- Equality on values is propositional equality
@@ -49,10 +51,25 @@ private
 ⟦⟧≡⟦⟧⇒≡ :  (_≡_ on ⟦_⟧) ⇒ _≡_ {A = ℕ< n}
 ⟦⟧≡⟦⟧⇒≡ refl = refl
 
+fromℕ[n]≡0 : .{{_ : NonZero n}} → fromℕ n ≡ ⟦0⟧<
+fromℕ[n]≡0 {n} = ⟦⟧≡⟦⟧⇒≡ (ℕ.n%n≡0 n)
+
+module _ (m<n : m < n) where
+
+  private instance _ = ℕ.>-nonZero (ℕ.m<n⇒0<n m<n)
+
+  +-inverseˡ : fromℕ (n ∸ m + m) ≡ ⟦0⟧<
+  +-inverseˡ = trans (cong fromℕ (ℕ.m∸n+n≡m (ℕ.<⇒≤ m<n))) fromℕ[n]≡0
+
+  +-inverseʳ : fromℕ (m + (n ∸ m)) ≡ ⟦0⟧<
+  +-inverseʳ = trans (cong fromℕ (ℕ.m+[n∸m]≡n (ℕ.<⇒≤ m<n))) fromℕ[n]≡0
+
+  fromℕ≐⟦⟧< : fromℕ m ≡ ⟦ m ⟧< m<n
+  fromℕ≐⟦⟧< = ⟦⟧≡⟦⟧⇒≡ $ ℕ.m<n⇒m%n≡m m<n
+
 fromℕ∘toℕ≐id : (i : ℕ< n) → let instance _ = nonZeroIndex i
                in fromℕ ⟦ i ⟧ ≡ i
-fromℕ∘toℕ≐id i = let instance _ = nonZeroIndex i
-  in ⟦⟧≡⟦⟧⇒≡ $ ℕ.m<n⇒m%n≡m $ ℕ<.isBounded i
+fromℕ∘toℕ≐id i = fromℕ≐⟦⟧< (ℕ<.isBounded i)
 
 infix 4 _≟_
 _≟_ : DecidableEquality (ℕ< n)
@@ -100,23 +117,26 @@ module _ {m} {i : ℕ< n} where
 ------------------------------------------------------------------------
 -- Properties of the quotient on ℕ induced by `fromℕ`
 
-≡-mod-refl : .{{NonZero n}} → Reflexive (≡-Mod n)
-≡-mod-refl {n} {m} = let r = erefl (fromℕ m) /∼≡fromℕ in r , r
+n≡0-mod : .{{_ : NonZero n}} → n ≡ 0 modℕ n
+n≡0-mod = let r = fromℕ[n]≡0 /∼≡fromℕ in r , ‵fromℕ 0 ⟦0⟧<
 
-≡-mod-sym : Symmetric (≡-Mod n)
+≡-mod-sym : Symmetric (≡-Modℕ n)
 ≡-mod-sym (lhs , rhs) = rhs , lhs
 
-≡-mod-trans : Transitive (≡-Mod n)
+≡-mod-trans : Transitive (≡-Modℕ n)
 ≡-mod-trans (lhs₁ , rhs₁) (lhs₂ , rhs₂)
   with refl ← /∼≡-injective rhs₁ lhs₂ = lhs₁ , rhs₂
 
-isPartialEquivalence : IsPartialEquivalence (≡-Mod n)
+isPartialEquivalence : IsPartialEquivalence (≡-Modℕ n)
 isPartialEquivalence = record { sym = ≡-mod-sym ; trans = ≡-mod-trans }
 
 partialSetoid : ℕ → PartialSetoid _ _
-partialSetoid n = record { _≈_ = ≡-Mod n ; isPartialEquivalence = isPartialEquivalence }
+partialSetoid n = record { _≈_ = ≡-Modℕ n ; isPartialEquivalence = isPartialEquivalence }
 
-isEquivalence : .{{NonZero n}} → IsEquivalence (≡-Mod n)
+≡-mod-refl : .{{NonZero n}} → Reflexive (≡-Modℕ n)
+≡-mod-refl {n} {m} = let r = erefl (fromℕ m) /∼≡fromℕ in r , r
+
+isEquivalence : .{{NonZero n}} → IsEquivalence (≡-Modℕ n)
 isEquivalence {n} = record
   { refl = ≡-mod-refl
   ; sym = ≡-mod-sym
@@ -126,14 +146,80 @@ isEquivalence {n} = record
 setoid : .{{NonZero n}} → Setoid _ _
 setoid = record { isEquivalence = isEquivalence }
 
-≡-mod⇒fromℕ≡fromℕ : ∀ {x y} (p : x ≡ y mod n) →
-                    let _,_ {i} _ _ = p ; instance _ = nonZeroIndex i
-                    in fromℕ {n} x ≡ fromℕ y
+≡-mod-reflexive : .{{NonZero n}} → _≡_ {A = ℕ} ⇒ (≡-Modℕ n)
+≡-mod-reflexive = reflexive where open IsEquivalence isEquivalence
+
+≡-mod⇒fromℕ≡fromℕ : (eq : m ≡ o modℕ n) →
+                    let instance _ = nonZeroModulus eq
+                    in fromℕ m ≡ fromℕ o
 ≡-mod⇒fromℕ≡fromℕ (lhs/∼≡ , rhs/∼≡) = trans (lhs/∼≡ /∼≡fromℕ⁻¹) (sym (rhs/∼≡ /∼≡fromℕ⁻¹))
 
-fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ {n}) ⇒ ≡-Mod n
-fromℕ≡fromℕ⇒≡-mod fromℕ[x]≡fromℕ[y] = (fromℕ[x]≡fromℕ[y] /∼≡fromℕ) , (refl /∼≡fromℕ)
+≡-mod⇒%≡% : (eq : m ≡ o modℕ n) →
+            let instance _ = nonZeroModulus eq
+            in m % n ≡ o % n
+≡-mod⇒%≡% = ≡⇒⟦⟧≡⟦⟧ ∘ ≡-mod⇒fromℕ≡fromℕ
 
-toℕ∘fromℕ≐id : .{{_ : NonZero n}} → (m : ℕ) → ⟦ fromℕ {n} m ⟧ ≡ m mod n
-toℕ∘fromℕ≐id {{it}} m = fromℕ≡fromℕ⇒≡-mod {{it}} (fromℕ∘toℕ≐id (fromℕ m))
+fromℕ≡fromℕ⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on fromℕ) ⇒ ≡-Modℕ n
+fromℕ≡fromℕ⇒≡-mod eq = eq /∼≡fromℕ , refl /∼≡fromℕ
 
+%≡%⇒≡-mod : .{{_ : NonZero n}} → (_≡_ on _% n) ⇒ ≡-Modℕ n
+%≡%⇒≡-mod eq = fromℕ≡fromℕ⇒≡-mod (⟦⟧≡⟦⟧⇒≡ eq)
+
+toℕ∘fromℕ≐id : .{{_ : NonZero n}} → (m : ℕ) → ⟦ fromℕ m ⟧ ≡ m modℕ n
+toℕ∘fromℕ≐id m = fromℕ≡fromℕ⇒≡-mod (fromℕ∘toℕ≐id (fromℕ m))
+
+------------------------------------------------------------------------
+-- Arithmetic properties of bounded numbers
+
+module _ (m<n : m < n) (o<n : o < n) where
+
+  private
+    instance
+      n≢ₘ0 = ℕ.>-nonZero (ℕ.m<n⇒0<n m<n)
+      n≢ₒ0 = ℕ.>-nonZero (ℕ.m<n⇒0<n o<n)
+
+  open ≡-Reasoning
+
+  ≡-mod⇒≡ : m ≡ o modℕ n → m ≡ o
+  ≡-mod⇒≡ eq = ≡⇒⟦⟧≡⟦⟧ $ begin
+    ⟦ m ⟧< m<n       ≡⟨ fromℕ≐⟦⟧< m<n ⟨
+    fromℕ {{n≢ₘ0}} m ≡⟨ ≡-mod⇒fromℕ≡fromℕ eq ⟩
+    fromℕ {{n≢ₒ0}} o ≡⟨ fromℕ≐⟦⟧< o<n ⟩
+    ⟦ o ⟧< o<n       ∎
+
+module _ .{{_ : NonZero n}} (m o : ℕ) where
+
+  open ≡-Reasoning
+
+  +-distribˡ-% : ((m % n) + o) ≡ (m + o) modℕ n
+  +-distribˡ-% = %≡%⇒≡-mod $ begin
+    (m % n + o) % n         ≡⟨ ℕ.%-distribˡ-+ (m % n) o n ⟩
+    (m % n % n + o % n) % n ≡⟨ cong ((_% n) ∘ (_+ o % n)) (ℕ.m%n%n≡m%n m n) ⟩
+    (m % n + o % n) % n     ≡⟨ ℕ.%-distribˡ-+ m o n ⟨
+    (m + o) % n             ∎
+
+  +-distribʳ-% : (m + (o % n)) ≡ (m + o) modℕ n
+  +-distribʳ-% = %≡%⇒≡-mod $ begin
+    (m + o % n) % n         ≡⟨ ℕ.%-distribˡ-+ m (o % n) n ⟩
+    (m % n + o % n % n) % n ≡⟨ cong ((_% n) ∘ (m % n +_)) (ℕ.m%n%n≡m%n o n) ⟩
+    (m % n + o % n) % n     ≡⟨ ℕ.%-distribˡ-+ m o n ⟨
+    (m + o) % n             ∎
+
+  +-distrib-% : ((m % n) + (o % n)) ≡ (m + o) modℕ n
+  +-distrib-% = %≡%⇒≡-mod $ begin
+    (m % n + o % n) % n ≡⟨ ℕ.%-distribˡ-+ m o n ⟨
+    (m + o) % n             ∎
+
+  *-distribˡ-% : ((m % n) * o) ≡ (m * o) modℕ n
+  *-distribˡ-% = %≡%⇒≡-mod $ begin
+    (m % n * o) % n           ≡⟨ ℕ.%-distribˡ-* (m % n) o n ⟩
+    (m % n % n * (o % n)) % n ≡⟨ cong ((_% n) ∘ (_* (o % n))) (ℕ.m%n%n≡m%n m n) ⟩
+    (m % n * (o % n)) % n     ≡⟨ ℕ.%-distribˡ-* m o n ⟨
+    (m * o) % n               ∎
+
+  *-distribʳ-% : (m * (o % n)) ≡ (m * o) modℕ n
+  *-distribʳ-% = %≡%⇒≡-mod $ begin
+    (m * (o % n)) % n         ≡⟨ ℕ.%-distribˡ-* m (o % n) n ⟩
+    (m % n * (o % n % n)) % n ≡⟨ cong ((_% n) ∘ (m % n *_)) (ℕ.m%n%n≡m%n o n) ⟩
+    (m % n * (o % n)) % n     ≡⟨ ℕ.%-distribˡ-* m o n ⟨
+    (m * o) % n               ∎
