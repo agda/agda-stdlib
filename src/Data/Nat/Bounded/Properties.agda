@@ -24,7 +24,7 @@ open import Relation.Binary.Structures using (IsPartialEquivalence; IsEquivalenc
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality
-  hiding (isEquivalence; setoid)
+  using (_≡_; refl; erefl; sym; trans; cong; subst; _≗_; module ≡-Reasoning)
 open import Relation.Nullary.Decidable.Core using (map′)
 
 open import Data.Nat.Bounded.Base as ℕ<
