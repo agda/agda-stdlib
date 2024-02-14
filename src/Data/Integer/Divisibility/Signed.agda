@@ -11,9 +11,7 @@ module Data.Integer.Divisibility.Signed where
 open import Function.Base using (_⟨_⟩_; _$_; _$′_; _∘_; _∘′_)
 open import Data.Integer.Base
 open import Data.Integer.Properties
-open import Data.Integer.Divisibility as Unsigned
-  using (divides)
-  renaming (_∣_ to _∣ᵤ_)
+import Data.Integer.Divisibility as Unsigned
 import Data.Nat.Base as ℕ
 import Data.Nat.Divisibility as ℕ
 import Data.Nat.Coprimality as ℕ
@@ -45,9 +43,9 @@ open _∣_ using (quotient) public
 ------------------------------------------------------------------------
 -- Conversion between signed and unsigned divisibility
 
-∣ᵤ⇒∣ : ∀ {k i} → k ∣ᵤ i → k ∣ i
-∣ᵤ⇒∣ {k} {i} (divides 0           eq) = divides (+ 0) (∣i∣≡0⇒i≡0 eq)
-∣ᵤ⇒∣ {k} {i} (divides q@(ℕ.suc _) eq) with k ≟ +0
+∣ᵤ⇒∣ : ∀ {k i} → k Unsigned.∣ i → k ∣ i
+∣ᵤ⇒∣ {k} {i} (ℕ.divides 0           eq) = divides (+ 0) (∣i∣≡0⇒i≡0 eq)
+∣ᵤ⇒∣ {k} {i} (ℕ.divides q@(ℕ.suc _) eq) with k ≟ +0
 ... | yes refl = divides +0 (∣i∣≡0⇒i≡0 (trans eq (ℕ.*-zeroʳ q)))
 ... | no  neq  = divides (sign i Sign.* sign k ◃ q) (◃-cong sign-eq abs-eq)
   where
@@ -85,8 +83,8 @@ open _∣_ using (quotient) public
     ∣ i ∣              ∎
     where open ≡-Reasoning
 
-∣⇒∣ᵤ : ∀ {k i} → k ∣ i → k ∣ᵤ i
-∣⇒∣ᵤ {k} {i} (divides q eq) = divides ∣ q ∣ $′ begin
+∣⇒∣ᵤ : ∀ {k i} → k ∣ i → k Unsigned.∣ i
+∣⇒∣ᵤ {k} {i} (divides q eq) = ℕ.divides ∣ q ∣ $′ begin
   ∣ i ∣           ≡⟨ cong ∣_∣ eq ⟩
   ∣ q * k ∣       ≡⟨ abs-* q k ⟩
   ∣ q ∣ ℕ.* ∣ k ∣ ∎
