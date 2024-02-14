@@ -30,7 +30,8 @@ open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (_Respects_)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong)
 
 private
   variable
@@ -93,15 +94,15 @@ module _ {P : Pred A p} where
 map-id : ∀ {P : Pred A p} (f : P ⊆ P) {n xs} →
          (∀ {x} (p : P x) → f p ≡ p) →
          (p : Any P {n} xs) → Any.map f p ≡ p
-map-id f hyp (here  p) = ≡.cong here (hyp p)
-map-id f hyp (there p) = ≡.cong there $ map-id f hyp p
+map-id f hyp (here  p) = cong here (hyp p)
+map-id f hyp (there p) = cong there $ map-id f hyp p
 
 map-∘ : ∀ {P : Pred A p} {Q : A → Set q} {R : A → Set r}
         (f : Q ⊆ R) (g : P ⊆ Q)
         {n xs} (p : Any P {n} xs) →
         Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
 map-∘ f g (here  p) = refl
-map-∘ f g (there p) = ≡.cong there $ map-∘ f g p
+map-∘ f g (there p) = cong there $ map-∘ f g p
 
 ------------------------------------------------------------------------
 -- Swapping
@@ -117,7 +118,7 @@ module _ {P : A → B → Set ℓ} where
   swap-there : ∀ {n m x xs ys} → (any : Any (λ x → Any (P x) {n} ys) {m} xs) →
                swap (Any.map (there {x = x}) any) ≡ there (swap any)
   swap-there (here  pys)  = refl
-  swap-there (there pxys) = ≡.cong (Any.map there) (swap-there pxys)
+  swap-there (there pxys) = cong (Any.map there) (swap-there pxys)
 
 module _ {P : A → B → Set ℓ} where
 
@@ -125,9 +126,9 @@ module _ {P : A → B → Set ℓ} where
                (any : Any (λ x → Any (P x) ys) xs) →
                swap (swap any) ≡ any
   swap-invol (here (here _)) = refl
-  swap-invol (here (there pys)) = ≡.cong (Any.map there) (swap-invol (here pys))
-  swap-invol (there pxys) = ≡.trans (swap-there (swap pxys))
-                          $ ≡.cong there (swap-invol pxys)
+  swap-invol (here (there pys)) = cong (Any.map there) (swap-invol (here pys))
+  swap-invol (there pxys) = trans (swap-there (swap pxys))
+                          $ cong there (swap-invol pxys)
 
 module _ {P : A → B → Set ℓ} where
 
@@ -237,12 +238,12 @@ module _ {f : A → B} where
   map⁺∘map⁻ : ∀ {P : Pred B p} {n} {xs : Vec A n} →
               (p : Any P (map f xs)) → map⁺ (map⁻ p) ≡ p
   map⁺∘map⁻ {xs = x ∷ xs} (here  p) = refl
-  map⁺∘map⁻ {xs = x ∷ xs} (there p) = ≡.cong there (map⁺∘map⁻ p)
+  map⁺∘map⁻ {xs = x ∷ xs} (there p) = cong there (map⁺∘map⁻ p)
 
   map⁻∘map⁺ : ∀ (P : Pred B p) {n} {xs : Vec A n} →
               (p : Any (P ∘ f) xs) → map⁻ {P = P} (map⁺ p) ≡ p
   map⁻∘map⁺ P (here  p) = refl
-  map⁻∘map⁺ P (there p) = ≡.cong there (map⁻∘map⁺ P p)
+  map⁻∘map⁺ P (there p) = cong there (map⁻∘map⁺ P p)
 
   map↔ : ∀ {P : Pred B p} {n} {xs : Vec A n} →
          Any (P ∘ f) xs ↔ Any P (map f xs)
@@ -271,8 +272,8 @@ module _ {P : Pred A p} where
   ++⁺∘++⁻ []       p         = refl
   ++⁺∘++⁻ (x ∷ xs) (here  p) = refl
   ++⁺∘++⁻ (x ∷ xs) (there p) with ++⁻ xs p | ++⁺∘++⁻ xs p
-  ++⁺∘++⁻ (x ∷ xs) (there p) | inj₁ p′ | ih = ≡.cong there ih
-  ++⁺∘++⁻ (x ∷ xs) (there p) | inj₂ p′ | ih = ≡.cong there ih
+  ++⁺∘++⁻ (x ∷ xs) (there p) | inj₁ p′ | ih = cong there ih
+  ++⁺∘++⁻ (x ∷ xs) (there p) | inj₂ p′ | ih = cong there ih
 
   ++⁻∘++⁺ : ∀ {n m} (xs : Vec A n) {ys : Vec A m} (p : Any P xs ⊎ Any P ys) →
             ++⁻ xs ([ ++⁺ˡ , ++⁺ʳ xs ]′ p) ≡ p
@@ -336,10 +337,10 @@ module _ {P : Pred A p} where
                    concat⁺ (concat⁻ xss p) ≡ p
   concat⁺∘concat⁻ (xs ∷ xss) p  with ++⁻ xs p in eq
   ... | inj₁ pxs
-    = ≡.trans (≡.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (≡.sym eq))
+    = trans (cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (sym eq))
     $ ++⁺∘++⁻ xs p
   ... | inj₂ pxss rewrite concat⁺∘concat⁻ xss pxss
-    = ≡.trans (≡.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (≡.sym eq))
+    = trans (cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (sym eq))
     $ ++⁺∘++⁻ xs p
 
   concat⁻∘concat⁺ : ∀ {n m} {xss : Vec (Vec A n) m} (p : Any (Any P) xss) →
@@ -402,7 +403,7 @@ module _ {P : Pred B p} where
               mapWith∈⁺ f (mapWith∈⁻ xs f p) ≡ p
     to∘from (y ∷ xs) f (here  p) = refl
     to∘from (y ∷ xs) f (there p) =
-      ≡.cong there $ to∘from xs (f ∘ there) p
+      cong there $ to∘from xs (f ∘ there) p
 
 ------------------------------------------------------------------------
 -- _∷_

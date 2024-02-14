@@ -23,8 +23,7 @@ open import Data.Product.Base using (_,_; map)
 open import Function.Base
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; subst)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary.Construct.Add.Supremum
 import Relation.Binary.Construct.Add.Supremum.Equality as Equality
@@ -59,8 +58,8 @@ data _<⁺_ : Rel (A ⁺) (a ⊔ r) where
 <⁺-dec _<?_ ⊤⁺    ⊤⁺    = no (λ ())
 
 <⁺-irrelevant : Irrelevant _<_ → Irrelevant _<⁺_
-<⁺-irrelevant <-irr [ p ]    [ q ]    = ≡.cong _ (<-irr p q)
-<⁺-irrelevant <-irr [ k ]<⊤⁺ [ k ]<⊤⁺ = ≡.refl
+<⁺-irrelevant <-irr [ p ]    [ q ]    = cong _ (<-irr p q)
+<⁺-irrelevant <-irr [ k ]<⊤⁺ [ k ]<⊤⁺ = refl
 
 
 module _ {r} {_≤_ : Rel A r} where
@@ -92,10 +91,10 @@ module _ {r} {_≤_ : Rel A r} where
 <⁺-irrefl-≡ <-irrefl refl [ x ] = <-irrefl refl x
 
 <⁺-respˡ-≡ : _<⁺_ Respectsˡ _≡_
-<⁺-respˡ-≡ = ≡.subst (_<⁺ _)
+<⁺-respˡ-≡ = subst (_<⁺ _)
 
 <⁺-respʳ-≡ : _<⁺_ Respectsʳ _≡_
-<⁺-respʳ-≡ = ≡.subst (_ <⁺_)
+<⁺-respʳ-≡ = subst (_ <⁺_)
 
 <⁺-resp-≡ : _<⁺_ Respects₂ _≡_
 <⁺-resp-≡ = <⁺-respʳ-≡ , <⁺-respˡ-≡

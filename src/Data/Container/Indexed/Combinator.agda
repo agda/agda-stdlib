@@ -21,8 +21,8 @@ open import Function.Indexed.Bundles using (_↔ᵢ_)
 open import Level
 open import Relation.Unary using (Pred; _⊆_; _∪_; _∩_; ⋃; ⋂)
   renaming (_⟨×⟩_ to _⟪×⟫_; _⟨⊙⟩_ to _⟪⊙⟫_; _⟨⊎⟩_ to _⟪⊎⟫_)
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≗_; refl)
+open import Relation.Binary.PropositionalEquality
+  using (_≗_; refl; cong)
 
 private
   variable
@@ -167,7 +167,7 @@ module Constant (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
     from = < F.id , F.const ⊥-elim >
 
     to∘from : _
-    to∘from xs = ≡.cong (proj₁ xs ,_) (ext ⊥-elim)
+    to∘from xs = cong (proj₁ xs ,_) (ext ⊥-elim)
 
 module Duality where
 
@@ -202,7 +202,7 @@ module Product (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
 
     from∘to : from ⟨∘⟩ to ≗ F.id
     from∘to (c , _) =
-      ≡.cong (c ,_) (ext [ (λ _ → refl) , (λ _ → refl) ])
+      cong (c ,_) (ext [ (λ _ → refl) , (λ _ → refl) ])
 
 module IndexedProduct where
 
@@ -231,8 +231,8 @@ module Sum (ext : ∀ {ℓ₁ ℓ₂} → Extensionality ℓ₁ ℓ₂) where
     from (inj₂ (c , f)) = inj₂ c , λ{ (All.inj₂ r) → f r}
 
     from∘to : from ⟨∘⟩ to ≗ F.id
-    from∘to (inj₁ _ , _) = ≡.cong (inj₁ _ ,_) (ext λ{ (All.inj₁ r) → refl})
-    from∘to (inj₂ _ , _) = ≡.cong (inj₂ _ ,_) (ext λ{ (All.inj₂ r) → refl})
+    from∘to (inj₁ _ , _) = cong (inj₁ _ ,_) (ext λ{ (All.inj₁ r) → refl})
+    from∘to (inj₂ _ , _) = cong (inj₂ _ ,_) (ext λ{ (All.inj₂ r) → refl})
 
     to∘from : to ⟨∘⟩ from ≗ F.id
     to∘from =  [ (λ _ → refl) , (λ _ → refl) ]

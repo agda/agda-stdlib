@@ -19,7 +19,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Symmetric; Transitive; Reflexive; Asymmetric; Antisymmetric; Trichotomous; Total; Decidable; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects_; _Respects₂_)
 open import Relation.Binary.Construct.Closure.Reflexive
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec

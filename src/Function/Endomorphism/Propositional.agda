@@ -21,7 +21,7 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘′_; _∋_)
 open import Function.Equality using (_⟨$⟩_)
 open import Relation.Binary.Core using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 
 import Function.Endomorphism.Setoid (≡.setoid A) as Setoid
@@ -38,7 +38,7 @@ fromSetoidEndo = _⟨$⟩_
 toSetoidEndo : Endo → Setoid.Endo
 toSetoidEndo f = record
   { _⟨$⟩_ = f
-  ; cong  = ≡.cong f
+  ; cong  = cong f
   }
 
 ------------------------------------------------------------------------
@@ -52,7 +52,7 @@ f ^ suc n = f ∘′ (f ^ n)
 
 ^-homo : ∀ f → Homomorphic₂ ℕ Endo _≡_ (f ^_) _+_ _∘′_
 ^-homo f zero    n = refl
-^-homo f (suc m) n = ≡.cong (f ∘′_) (^-homo f m n)
+^-homo f (suc m) n = cong (f ∘′_) (^-homo f m n)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -60,7 +60,7 @@ f ^ suc n = f ∘′ (f ^ n)
 ∘-isMagma : IsMagma _≡_ (Op₂ Endo ∋ _∘′_)
 ∘-isMagma = record
   { isEquivalence = ≡.isEquivalence
-  ; ∙-cong        = ≡.cong₂ _∘′_
+  ; ∙-cong        = cong₂ _∘′_
   }
 
 ∘-magma : Magma _ _
@@ -89,7 +89,7 @@ f ^ suc n = f ∘′ (f ^ n)
 
 ^-isSemigroupMorphism : ∀ f → IsSemigroupMorphism +-semigroup ∘-semigroup (f ^_)
 ^-isSemigroupMorphism f = record
-  { ⟦⟧-cong = ≡.cong (f ^_)
+  { ⟦⟧-cong = cong (f ^_)
   ; ∙-homo  = ^-homo f
   }
 

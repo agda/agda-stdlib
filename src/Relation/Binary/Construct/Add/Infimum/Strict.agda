@@ -21,8 +21,7 @@ module Relation.Binary.Construct.Add.Infimum.Strict
 open import Level using (_⊔_)
 open import Data.Product.Base using (_,_; map)
 open import Function.Base
-open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; subst)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
@@ -59,8 +58,8 @@ data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
 <₋-dec _<?_ [ k ] [ l ] = Dec.map′ [_] [<]-injective (k <? l)
 
 <₋-irrelevant : Irrelevant _<_ → Irrelevant _<₋_
-<₋-irrelevant <-irr ⊥₋<[ l ] ⊥₋<[ l ] = ≡.refl
-<₋-irrelevant <-irr [ p ]    [ q ]    = ≡.cong _ (<-irr p q)
+<₋-irrelevant <-irr ⊥₋<[ l ] ⊥₋<[ l ] = refl
+<₋-irrelevant <-irr [ p ]    [ q ]    = cong _ (<-irr p q)
 
 module _ {r} {_≤_ : Rel A r} where
 
@@ -91,10 +90,10 @@ module _ {r} {_≤_ : Rel A r} where
 <₋-irrefl-≡ <-irrefl refl [ x ] = <-irrefl refl x
 
 <₋-respˡ-≡ : _<₋_ Respectsˡ _≡_
-<₋-respˡ-≡ = ≡.subst (_<₋ _)
+<₋-respˡ-≡ = subst (_<₋ _)
 
 <₋-respʳ-≡ : _<₋_ Respectsʳ _≡_
-<₋-respʳ-≡ = ≡.subst (_ <₋_)
+<₋-respʳ-≡ = subst (_ <₋_)
 
 <₋-resp-≡ : _<₋_ Respects₂ _≡_
 <₋-resp-≡ = <₋-respʳ-≡ , <₋-respˡ-≡

@@ -25,7 +25,7 @@ open import Function.Related.TypeIsomorphisms
 open import Level
 open import Relation.Unary using (Pred)
 import Induction.WellFounded as WF
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 import Relation.Binary.Construct.On as On
@@ -149,9 +149,9 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
 
   from-injective : ∀ {xss} (p₁ p₂ : Any Q xss) →
                    from p₁ ≡ from p₂ → p₁ ≡ p₂
-  from-injective (here (inj₁ p))  (here (inj₁ .p)) ≡.refl = ≡.refl
+  from-injective (here (inj₁ p))  (here (inj₁ .p)) refl = refl
   from-injective (here (inj₂ p₁)) (here (inj₂ p₂)) eq     =
-    ≡.cong (here ∘ inj₂) $
+    cong (here ∘ inj₂) $
     inj₁-injective $
     Injection.injective (↔⇒↣ (↔-sym (Any-⋎P _))) $
     there-injective eq
@@ -166,7 +166,7 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
                            (there-injective eq)
   ... | ()
   from-injective (there {x = _ , xs} p₁) (there p₂) eq =
-    ≡.cong there $
+    cong there $
     from-injective p₁ p₂ $
     inj₂-injective $
     Injection.injective (↔⇒↣ (↔-sym (Any-⋎P xs))) $
@@ -188,15 +188,15 @@ Any-merge {P = P} xss = mk↔ₛ′ (proj₁ ∘ to xss) from to∘from (proj₂
 
     step : ∀ p → WF.WfRec (_<′_ on size) InputPred p → InputPred p
     step ([]             , ())      rec
-    step ((x , xs) ∷ xss , here  p) rec = here (inj₁ p) , ≡.refl
+    step ((x , xs) ∷ xss , here  p) rec = here (inj₁ p) , refl
     step ((x , xs) ∷ xss , there p) rec
       with Inverse.to (Any-⋎P xs) p
          | Inverse.strictlyInverseʳ (Any-⋎P xs) p
          | index-Any-⋎P xs p
-    ... | inj₁ q | ≡.refl | _   = here (inj₂ q) , ≡.refl
-    ... | inj₂ q | ≡.refl | q≤p =
+    ... | inj₁ q | refl | _   = here (inj₂ q) , refl
+    ... | inj₂ q | refl | q≤p =
       Product.map there
-               (≡.cong (there ∘ (Inverse.from (Any-⋎P xs)) ∘ inj₂))
+               (cong (there ∘ (Inverse.from (Any-⋎P xs)) ∘ inj₂))
                (rec (s≤′s q≤p))
 
   to∘from = λ p → from-injective _ _ (proj₂ (to xss (from p)))

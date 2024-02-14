@@ -33,7 +33,7 @@ open import Relation.Binary.Definitions using (Transitive; Antisymmetric)
 import Relation.Binary.Construct.FromRel as Ind
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.Reasoning.Syntax
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
@@ -107,23 +107,23 @@ Any-∈ {P = P} = mk↔ₛ′
   from∘to
   where
   to : ∀ {xs} → Any P xs → ∃ λ x → x ∈ xs × P x
-  to (here  p) = _ , here ≡.refl , p
+  to (here  p) = _ , here refl , p
   to (there p) = Product.map id (Product.map there id) (to p)
 
   from : ∀ {x xs} → x ∈ xs → P x → Any P xs
-  from (here ≡.refl) p = here p
+  from (here refl) p = here p
   from (there x∈xs)  p = there (from x∈xs p)
 
   to∘from : ∀ {x xs} (x∈xs : x ∈ xs) (p : P x) →
             to (from x∈xs p) ≡ (x , x∈xs , p)
-  to∘from (here ≡.refl) p = ≡.refl
+  to∘from (here refl) p = refl
   to∘from (there x∈xs)  p =
-    ≡.cong (Product.map id (Product.map there id)) (to∘from x∈xs p)
+    cong (Product.map id (Product.map there id)) (to∘from x∈xs p)
 
   from∘to : ∀ {xs} (p : Any P xs) →
             let (x , x∈xs , px) = to p in from x∈xs px ≡ p
-  from∘to (here _)  = ≡.refl
-  from∘to (there p) = ≡.cong there (from∘to p)
+  from∘to (here _)  = refl
+  from∘to (there p) = cong there (from∘to p)
 
 -- Prefixes are subsets.
 
@@ -220,7 +220,7 @@ infixr 5 _∷_
 module Finite-injective where
 
  ∷-injective : ∀ {x : A} {xs p q} → (Finite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
- ∷-injective ≡.refl = ≡.refl
+ ∷-injective refl = refl
 
 -- Infinite xs means that xs has infinite length.
 
@@ -230,7 +230,7 @@ data Infinite {A : Set a} : Colist A → Set a where
 module Infinite-injective where
 
  ∷-injective : ∀ {x : A} {xs p q} → (Infinite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
- ∷-injective ≡.refl = ≡.refl
+ ∷-injective refl = refl
 
 -- Colists which are not finite are infinite.
 

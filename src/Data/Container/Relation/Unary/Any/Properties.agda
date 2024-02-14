@@ -42,21 +42,21 @@ module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 -- ◇ can be unwrapped to reveal the Σ type
 
   ↔Σ : ∀ {xs : ⟦ C ⟧ X} → ◇ C P xs ↔ ∃ λ p → P (proj₂ xs p)
-  ↔Σ {xs} = mk↔ₛ′ ◇.proof any (λ _ → ≡.refl) (λ _ → ≡.refl)
+  ↔Σ {xs} = mk↔ₛ′ ◇.proof any (λ _ → refl) (λ _ → refl)
 
 -- ◇ can be expressed using _∈_.
 
   ↔∈ : ∀ {xs : ⟦ C ⟧ X} → ◇ C P xs ↔ (∃ λ x → x ∈ xs × P x)
-  ↔∈ {xs} = mk↔ₛ′ to from to∘from (λ _ → ≡.refl) where
+  ↔∈ {xs} = mk↔ₛ′ to from to∘from (λ _ → refl) where
 
     to : ◇ C P xs → ∃ λ x → x ∈ xs × P x
-    to (any (p , Px)) = (proj₂ xs p , (any (p , ≡.refl)) , Px)
+    to (any (p , Px)) = (proj₂ xs p , (any (p , refl)) , Px)
 
     from : (∃ λ x → x ∈ xs × P x) → ◇ C P xs
     from (.(proj₂ xs p) , (any (p , refl)) , Px) = any (p , Px)
 
     to∘from : to ∘ from ≗ id
-    to∘from (.(proj₂ xs p) , any (p , refl) , Px) = ≡.refl
+    to∘from (.(proj₂ xs p) , any (p , refl) , Px) = refl
 
 module _ {s p} {C : Container s p} {x} {X : Set x}
          {ℓ₁ ℓ₂} {P₁ : Pred X ℓ₁} {P₂ : Pred X ℓ₂} where
@@ -105,7 +105,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
   flatten : ∀ (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
             ◇ C₁ (◇ C₂ P) xss ↔
             ◇ (C₁ C.∘ C₂) P (Inverse.from (Composition.correct C₁ C₂) xss)
-  flatten xss = mk↔ₛ′ t f (λ _ → ≡.refl) (λ _ → ≡.refl) where
+  flatten xss = mk↔ₛ′ t f (λ _ → refl) (λ _ → refl) where
 
     ◇₁ = ◇ C₁; ◇₂ = ◇ C₂; ◇₁₂ = ◇ (C₁ C.∘ C₂)
     open Inverse
@@ -132,11 +132,11 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
     from = [ Any.map₂ inj₁ , Any.map₂ inj₂ ]
 
     from∘to : from ∘ to ≗ id
-    from∘to (any (pos , inj₁ p)) = ≡.refl
-    from∘to (any (pos , inj₂ q)) = ≡.refl
+    from∘to (any (pos , inj₁ p)) = refl
+    from∘to (any (pos , inj₂ q)) = refl
 
     to∘from : to ∘ from ≗ id
-    to∘from = [ (λ _ → ≡.refl) , (λ _ → ≡.refl) ]
+    to∘from = [ (λ _ → refl) , (λ _ → refl) ]
 
 -- Products "commute" with ◇.
 
@@ -145,7 +145,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 
   ×◇↔◇◇× : ∀ {xs : ⟦ C₁ ⟧ X} {ys : ⟦ C₂ ⟧ Y} →
            ◇ C₁ (λ x → ◇ C₂ (λ y → P x × Q y) ys) xs ↔ (◇ C₁ P xs × ◇ C₂ Q ys)
-  ×◇↔◇◇× {xs} {ys} = mk↔ₛ′ to from (λ _ → ≡.refl) (λ _ → ≡.refl)
+  ×◇↔◇◇× {xs} {ys} = mk↔ₛ′ to from (λ _ → refl) (λ _ → refl)
     where
     ◇₁ = ◇ C₁; ◇₂ = ◇ C₂
 

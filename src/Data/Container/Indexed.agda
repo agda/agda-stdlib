@@ -18,7 +18,7 @@ open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Function using (_↔_; Inverse)
 open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary.Core using (Rel; REL)
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; _≗_; refl)
+open import Relation.Binary.PropositionalEquality using (_≡_; _≗_; refl; trans; subst)
 
 ------------------------------------------------------------------------
 
@@ -98,7 +98,7 @@ module _ {i₁ i₂ o₁ o₂}
               Container I₁ O₁ c₁ r → (I₁ → I₂) → (O₁ → O₂) →
               Container I₂ O₂ c₂ r → Set _
   C₁ ⇒C[ f / g ] C₂ = ContainerMorphism C₁ C₂ f g _≡_ (λ R₂ R₁ → R₂ ≡ R₁)
-                                        (λ r₂≡r₁ r₂ → ≡.subst ⟨id⟩ r₂≡r₁ r₂)
+                                        (λ r₂≡r₁ r₂ → subst ⟨id⟩ r₂≡r₁ r₂)
 
 -- Degenerate cases where no reindexing is performed.
 
@@ -123,7 +123,7 @@ module _ {i o c r} {I : Set i} {O : Set o} where
 ⟪_⟫ : ∀ {i o c r ℓ} {I : Set i} {O : Set o} {C₁ C₂ : Container I O c r} →
       C₁ ⇒ C₂ → (X : Pred I ℓ) → ⟦ C₁ ⟧ X ⊆ ⟦ C₂ ⟧ X
 ⟪ m ⟫ X (c , k) = command m c , λ r₂ →
-  ≡.subst X (coherent m) (k (response m r₂))
+  subst X (coherent m) (k (response m r₂))
 
 module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
 
@@ -145,7 +145,7 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
   f ∘ g = record
     { command  = command  f ⟨∘⟩ command g
     ; response = response g ⟨∘⟩ response f
-    ; coherent = coherent g ⟨ ≡.trans ⟩ coherent f
+    ; coherent = coherent g ⟨ trans ⟩ coherent f
     }
 
   -- Identity commutes with ⟪_⟫.
@@ -187,7 +187,7 @@ module CartesianMorphism
   morphism : C₁ ⇒ C₂
   morphism = record
     { command  = command m
-    ; response = ≡.subst ⟨id⟩ (response m)
+    ; response = subst ⟨id⟩ (response m)
     ; coherent = coherent m
     }
 

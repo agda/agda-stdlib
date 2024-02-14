@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat.Base using (ℕ)
-open import Data.Vec.Functional as VF hiding (map)
+open import Data.Vec.Functional hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
   using (Pointwise)
 import Data.Vec.Functional.Relation.Binary.Pointwise.Properties as PW

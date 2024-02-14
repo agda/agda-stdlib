@@ -17,8 +17,8 @@ open import Data.Nat.Properties
 open import Data.Nat.GCD
 open import Data.Product.Base using (_×_; _,_; uncurry′; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; refl; sym; trans; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong; cong₂; subst)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
@@ -32,8 +32,8 @@ private
 -- Definition
 
 lcm : ℕ → ℕ → ℕ
-lcm zero        n = zero
-lcm m@(suc m-1) n = m * (n / gcd m n)
+lcm zero      n = zero
+lcm m@(suc _) n = m * (n / gcd m n)
   where instance _ = gcd≢0ˡ {m} {n}
 
 ------------------------------------------------------------------------
@@ -62,7 +62,7 @@ n∣lcm[m,n] m@(suc m-1) n = begin
 
 lcm-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
 lcm-least {zero}      {n} {c} 0∣c _   = 0∣c
-lcm-least {m@(suc _)} {n} {c} m∣c n∣c = ≡.subst (_∣ c) (sym (rearrange m n))
+lcm-least {m@(suc _)} {n} {c} m∣c n∣c = subst (_∣ c) (sym (rearrange m n))
   (m∣n*o⇒m/n∣o gcd[m,n]∣m*n mn∣c*gcd)
   where
   instance _ = gcd≢0ˡ {m} {n}
@@ -73,7 +73,7 @@ lcm-least {m@(suc _)} {n} {c} m∣c n∣c = ≡.subst (_∣ c) (sym (rearrange m
 
   mn∣c*gcd : m * n ∣ c * gcd m n
   mn∣c*gcd = begin
-    m * n               ∣⟨  gcd-greatest (≡.subst (_∣ c * m) (*-comm n m) (*-monoˡ-∣ m n∣c)) (*-monoˡ-∣ n m∣c) ⟩
+    m * n               ∣⟨  gcd-greatest (subst (_∣ c * m) (*-comm n m) (*-monoˡ-∣ m n∣c)) (*-monoˡ-∣ n m∣c) ⟩
     gcd (c * m) (c * n) ≡⟨ c*gcd[m,n]≡gcd[cm,cn] c m n ⟨
     c * gcd m n         ∎
 

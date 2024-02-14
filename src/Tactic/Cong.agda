@@ -36,7 +36,7 @@ open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
 
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the
 -- builtin for maximum speed.

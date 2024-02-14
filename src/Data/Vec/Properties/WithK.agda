@@ -12,7 +12,7 @@ module Data.Vec.Properties.WithK where
 open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc)
 open import Data.Vec.Base
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.HeterogeneousEquality as ≅ using (_≅_; refl)
 
 ------------------------------------------------------------------------
@@ -24,7 +24,7 @@ module _ {a} {A : Set a} where
                     (p q : xs [ i ]= x) → p ≡ q
   []=-irrelevant here            here             = refl
   []=-irrelevant (there xs[i]=x) (there xs[i]=x′) =
-    ≡.cong there ([]=-irrelevant xs[i]=x xs[i]=x′)
+    cong there ([]=-irrelevant xs[i]=x xs[i]=x′)
 
 ------------------------------------------------------------------------
 -- _++_

@@ -16,7 +16,7 @@ open import Data.Product.Base as Product using (_,_)
 open import Function.Base using (id; _∘′_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Unary
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
@@ -114,7 +114,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 
   irrelevant : Irrelevant P → Irrelevant (All P)
   irrelevant P-irrelevant (just p) (just q) = cong just (P-irrelevant p q)
-  irrelevant P-irrelevant nothing  nothing  = ≡.refl
+  irrelevant P-irrelevant nothing  nothing  = refl
 
   satisfiable : Satisfiable (All P)
   satisfiable = nothing , nothing
