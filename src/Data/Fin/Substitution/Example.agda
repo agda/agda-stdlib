@@ -12,7 +12,7 @@ module Data.Fin.Substitution.Example where
 
 {-# WARNING_ON_IMPORT
 "Data.Fin.Substitution.Example was deprecated in v2.0.
-Please see README.Data.Nat.Fin.Substitution.UntypedLambda instead."
+Please see README.Data.Fin.Substitution.UntypedLambda instead."
 #-}
 
 open import Data.Fin.Substitution
@@ -20,9 +20,9 @@ open import Data.Fin.Substitution.Lemmas
 open import Data.Nat.Base hiding (_/_)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; refl; sym; cong; cong₂)
-open ≡.≡-Reasoning
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; sym; cong; cong₂; module ≡-Reasoning)
+open ≡-Reasoning
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (Star; ε; _◅_)
 
