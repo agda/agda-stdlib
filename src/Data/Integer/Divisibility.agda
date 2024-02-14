@@ -27,6 +27,8 @@ infix 4 _∣_
 _∣_ : Rel ℤ 0ℓ
 _∣_ = ℕ._∣_ on ∣_∣
 
+pattern divides k eq  = ℕ.divides k eq
+
 ------------------------------------------------------------------------
 -- Properties of divisibility
 
