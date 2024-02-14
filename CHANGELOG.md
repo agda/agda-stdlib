@@ -48,6 +48,12 @@ New modules
 
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
+* The unique morphism from the initial, resp. terminal, algebra:
+  ```agda
+  Algebra.Morphism.Construct.Initial
+  Algebra.Morphism.Construct.Terminal
+  ```
+
 Additions to existing modules
 -----------------------------
 
