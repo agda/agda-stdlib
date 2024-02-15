@@ -114,6 +114,11 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
+* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+  ```agda
+  pattern divides k eq = Data.Nat.Divisibility.divides k eq
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)

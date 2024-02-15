@@ -44,8 +44,8 @@ open _∣_ using (quotient) public
 -- Conversion between signed and unsigned divisibility
 
 ∣ᵤ⇒∣ : ∀ {k i} → k Unsigned.∣ i → k ∣ i
-∣ᵤ⇒∣ {k} {i} (ℕ.divides 0           eq) = divides (+ 0) (∣i∣≡0⇒i≡0 eq)
-∣ᵤ⇒∣ {k} {i} (ℕ.divides q@(ℕ.suc _) eq) with k ≟ +0
+∣ᵤ⇒∣ {k} {i} (Unsigned.divides 0           eq) = divides (+ 0) (∣i∣≡0⇒i≡0 eq)
+∣ᵤ⇒∣ {k} {i} (Unsigned.divides q@(ℕ.suc _) eq) with k ≟ +0
 ... | yes refl = divides +0 (∣i∣≡0⇒i≡0 (trans eq (ℕ.*-zeroʳ q)))
 ... | no  neq  = divides (sign i Sign.* sign k ◃ q) (◃-cong sign-eq abs-eq)
   where
@@ -84,7 +84,7 @@ open _∣_ using (quotient) public
     where open ≡-Reasoning
 
 ∣⇒∣ᵤ : ∀ {k i} → k ∣ i → k Unsigned.∣ i
-∣⇒∣ᵤ {k} {i} (divides q eq) = ℕ.divides ∣ q ∣ $′ begin
+∣⇒∣ᵤ {k} {i} (divides q eq) = Unsigned.divides ∣ q ∣ $′ begin
   ∣ i ∣           ≡⟨ cong ∣_∣ eq ⟩
   ∣ q * k ∣       ≡⟨ abs-* q k ⟩
   ∣ q ∣ ℕ.* ∣ k ∣ ∎
