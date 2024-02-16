@@ -5,7 +5,7 @@
 -- In mathematics, this is usually called 0.
 --
 -- From monoids up, these are zero-objects – i.e, the initial
--- object is the terminal object in the relevant category.
+-- object is *also* the terminal object in the relevant category.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
