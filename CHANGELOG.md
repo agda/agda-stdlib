@@ -104,7 +104,8 @@ Additions to existing modules
 
 * In `Algebra.Construct.Terminal`:
   ```agda
-  nearSemiring : NearSemiring c ℓ
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Properties.Monoid.Mult`:
