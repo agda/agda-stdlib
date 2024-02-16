@@ -107,12 +107,12 @@ module _ (G : Group a ℓa) where
 module _ (N : NearSemiring a ℓa) where
 
   private module N = NearSemiring N
-  open NearSemiringMorphisms N.rawNearSemiring {!rawNearSemiring!}
-  open 𝕆neMorphism {!N.rawMonoid!}
+  open NearSemiringMorphisms N.rawNearSemiring rawNearSemiring
+  open 𝕆neMorphism N.+-rawMonoid
 
   isNearSemiringHomomorphism : IsNearSemiringHomomorphism one
   isNearSemiringHomomorphism = record
-    { +-isMonoidHomomorphism = {!!}
+    { +-isMonoidHomomorphism = isMonoidHomomorphism N.+-monoid
     ; *-homo = λ _ _ → _
     }
 
@@ -123,11 +123,11 @@ module _ (S : Semiring a ℓa) where
 
   private module S = Semiring S
   open SemiringMorphisms S.rawSemiring rawSemiring
-  open 𝕆neMorphism {!S.rawMonoid!}
+  open 𝕆neMorphism S.+-rawMonoid
 
   isSemiringHomomorphism : IsSemiringHomomorphism one
   isSemiringHomomorphism = record
-    { isNearSemiringHomomorphism = isNearSemiringHomomorphism {!!}
+    { isNearSemiringHomomorphism = isNearSemiringHomomorphism S.nearSemiring
     ; 1#-homo = _
     }
 
@@ -138,9 +138,9 @@ module _ (R : Ring a ℓa) where
 
   private module R = Ring R
   open RingMorphisms R.rawRing rawRing
-  open 𝕆neMorphism {!R.rawMonoid!}
+  open 𝕆neMorphism R.+-rawMonoid
   isRingHomomorphism : IsRingHomomorphism one
   isRingHomomorphism = record
-    { isSemiringHomomorphism = isSemiringHomomorphism {!!}
+    { isSemiringHomomorphism = isSemiringHomomorphism R.semiring
     ; -‿homo = λ _ → _
     }
