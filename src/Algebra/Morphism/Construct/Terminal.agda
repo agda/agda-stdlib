@@ -41,7 +41,7 @@ private
 ------------------------------------------------------------------------
 -- The underlying data of the morphism
 
-module 𝕆neMorphism (M : RawMonoid a ℓa) where
+module TheMorphism (M : RawMonoid a ℓa) where
 
   private module M = RawMonoid M
   open MorphismDefinitions M.Carrier 𝕆ne.Carrier 𝕆ne._≈_
@@ -78,7 +78,7 @@ module _ (M : Monoid a ℓa) where
 
   private module M = Monoid M
   open MonoidMorphisms M.rawMonoid rawMonoid
-  open 𝕆neMorphism M.rawMonoid
+  open TheMorphism M.rawMonoid
 
   isMonoidHomomorphism : IsMonoidHomomorphism one
   isMonoidHomomorphism = record
@@ -93,7 +93,7 @@ module _ (G : Group a ℓa) where
 
   private module G = Group G
   open GroupMorphisms G.rawGroup rawGroup
-  open 𝕆neMorphism G.rawMonoid
+  open TheMorphism G.rawMonoid
 
   isGroupHomomorphism : IsGroupHomomorphism one
   isGroupHomomorphism = record
@@ -108,7 +108,7 @@ module _ (N : NearSemiring a ℓa) where
 
   private module N = NearSemiring N
   open NearSemiringMorphisms N.rawNearSemiring rawNearSemiring
-  open 𝕆neMorphism N.+-rawMonoid
+  open TheMorphism N.+-rawMonoid
 
   isNearSemiringHomomorphism : IsNearSemiringHomomorphism one
   isNearSemiringHomomorphism = record
@@ -123,7 +123,7 @@ module _ (S : Semiring a ℓa) where
 
   private module S = Semiring S
   open SemiringMorphisms S.rawSemiring rawSemiring
-  open 𝕆neMorphism S.+-rawMonoid
+  open TheMorphism S.+-rawMonoid
 
   isSemiringHomomorphism : IsSemiringHomomorphism one
   isSemiringHomomorphism = record
@@ -138,7 +138,7 @@ module _ (R : Ring a ℓa) where
 
   private module R = Ring R
   open RingMorphisms R.rawRing rawRing
-  open 𝕆neMorphism R.+-rawMonoid
+  open TheMorphism R.+-rawMonoid
   isRingHomomorphism : IsRingHomomorphism one
   isRingHomomorphism = record
     { isSemiringHomomorphism = isSemiringHomomorphism R.semiring
