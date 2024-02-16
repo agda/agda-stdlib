@@ -39,26 +39,33 @@ private
 
 module 𝕆neMorphism (M : RawMonoid a ℓa) where
 
-  open RawMonoid M
-  open MorphismDefinitions Carrier 𝕆ne.Carrier 𝕆ne._≈_
+  private module M = RawMonoid M
+  open MorphismDefinitions M.Carrier 𝕆ne.Carrier 𝕆ne._≈_
+  open MagmaMorphisms M.rawMagma rawMagma
 
-  one : Carrier → 𝕆ne.Carrier
+  one : M.Carrier → 𝕆ne.Carrier
   one _ = _
 
-  cong : Definitions.Homomorphic₂ Carrier 𝕆ne.Carrier _≈_ 𝕆ne._≈_ one
+  cong : Definitions.Homomorphic₂ M.Carrier 𝕆ne.Carrier M._≈_ 𝕆ne._≈_ one
   cong _ = _
 
-  isRelHomomorphism : IsRelHomomorphism _≈_ 𝕆ne._≈_ one
+  isRelHomomorphism : IsRelHomomorphism M._≈_ 𝕆ne._≈_ one
   isRelHomomorphism = record { cong = cong }
 
-  homo : Homomorphic₂ one _∙_ _
+  homo : Homomorphic₂ one M._∙_ _
   homo _ = _
 
-  ε-homo : Homomorphic₀ one ε _
+  ε-homo : Homomorphic₀ one M.ε _
   ε-homo = _
 
+  isMagmaHomomorphism : IsMagmaHomomorphism one
+  isMagmaHomomorphism = record
+    { isRelHomomorphism = isRelHomomorphism
+    ; homo = homo
+    }
+
   strictlySurjective : StrictlySurjective 𝕆ne._≈_ one
-  strictlySurjective _ = ε , _
+  strictlySurjective _ = M.ε , _
 
 ------------------------------------------------------------------------
 -- Monoid
@@ -67,14 +74,7 @@ module _ (M : Monoid a ℓa) where
 
   private module M = Monoid M
   open MonoidMorphisms M.rawMonoid rawMonoid
-  open MagmaMorphisms M.rawMagma rawMagma
   open 𝕆neMorphism M.rawMonoid
-
-  isMagmaHomomorphism : IsMagmaHomomorphism one
-  isMagmaHomomorphism = record
-    { isRelHomomorphism = isRelHomomorphism
-    ; homo = homo
-    }
 
   isMonoidHomomorphism : IsMonoidHomomorphism one
   isMonoidHomomorphism = record
