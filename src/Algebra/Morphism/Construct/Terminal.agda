@@ -15,7 +15,7 @@ open import Level using (Level)
 
 module Algebra.Morphism.Construct.Terminal {c ℓ : Level} where
 
-open import Algebra.Bundles using (Monoid; Group)
+open import Algebra.Bundles using (Monoid; Group; NearSemiring; Semiring; Ring)
 open import Algebra.Bundles.Raw using (RawMonoid; RawGroup)
 open import Algebra.Construct.Terminal {c} {ℓ}
 import Algebra.Morphism.Definitions as MorphismDefinitions
@@ -23,6 +23,10 @@ open import Algebra.Morphism.Structures
   using ( module MagmaMorphisms
         ; module MonoidMorphisms
         ; module GroupMorphisms
+        ; module NearSemiringMorphisms
+        ; module SemiringMorphisms
+        ; module RingWithoutOneMorphisms
+        ; module RingMorphisms
         )
 open import Data.Product.Base using (_,_)
 open import Function.Definitions using (StrictlySurjective)
@@ -95,4 +99,48 @@ module _ (G : Group a ℓa) where
   isGroupHomomorphism = record
     { isMonoidHomomorphism = isMonoidHomomorphism G.monoid
     ; ⁻¹-homo = λ _ → _
+    }
+
+------------------------------------------------------------------------
+-- NearSemiring
+
+module _ (N : NearSemiring a ℓa) where
+
+  private module N = NearSemiring N
+  open NearSemiringMorphisms N.rawNearSemiring {!rawNearSemiring!}
+  open 𝕆neMorphism {!N.rawMonoid!}
+
+  isNearSemiringHomomorphism : IsNearSemiringHomomorphism one
+  isNearSemiringHomomorphism = record
+    { +-isMonoidHomomorphism = {!!}
+    ; *-homo = λ _ _ → _
+    }
+
+------------------------------------------------------------------------
+-- Semiring
+
+module _ (S : Semiring a ℓa) where
+
+  private module S = Semiring S
+  open SemiringMorphisms S.rawSemiring rawSemiring
+  open 𝕆neMorphism {!S.rawMonoid!}
+
+  isSemiringHomomorphism : IsSemiringHomomorphism one
+  isSemiringHomomorphism = record
+    { isNearSemiringHomomorphism = isNearSemiringHomomorphism {!!}
+    ; 1#-homo = _
+    }
+
+------------------------------------------------------------------------
+-- Ring
+
+module _ (R : Ring a ℓa) where
+
+  private module R = Ring R
+  open RingMorphisms R.rawRing rawRing
+  open 𝕆neMorphism {!R.rawMonoid!}
+  isRingHomomorphism : IsRingHomomorphism one
+  isRingHomomorphism = record
+    { isSemiringHomomorphism = isSemiringHomomorphism {!!}
+    ; -‿homo = λ _ → _
     }
