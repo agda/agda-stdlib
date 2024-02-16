@@ -42,6 +42,9 @@ rawMonoid = record { 𝕆ne }
 rawGroup : RawGroup c ℓ
 rawGroup = record { 𝕆ne }
 
+rawNearSemiring : RawNearSemiring c ℓ
+rawNearSemiring = record { 𝕆ne }
+
 rawSemiring : RawSemiring c ℓ
 rawSemiring = record { 𝕆ne }
 
@@ -77,6 +80,9 @@ group = record { 𝕆ne }
 
 abelianGroup : AbelianGroup c ℓ
 abelianGroup = record { 𝕆ne }
+
+nearSemiring : NearSemiring c ℓ
+nearSemiring = record { 𝕆ne }
 
 semiring : Semiring c ℓ
 semiring = record { 𝕆ne }
