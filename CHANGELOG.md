@@ -102,6 +102,11 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  nearSemiring : NearSemiring c ℓ
+  ```
+
 * In `Algebra.Properties.Monoid.Mult`:
   ```agda
   ×-homo-0 : ∀ x → 0 × x ≈ 0#
