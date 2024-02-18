@@ -187,3 +187,8 @@ Additions to existing modules
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
   ```
+
+* Added new definition in `Data.Maybe.Relation.Unary.AllBoth`:
+  ```agda
+  data AllBoth (P : Pred A p) (Q : Set q) : Pred (Maybe A) (a ⊔ p ⊔ q)
+  ```
