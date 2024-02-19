@@ -31,7 +31,7 @@ private
 ------------------------------------------------------------------------
 -- The underlying data of the morphism
 
-module TheMorphism (M : RawMagma m ℓm) where
+module UniqueMorphism (M : RawMagma m ℓm) where
 
   open RawMagma M
   open MorphismDefinitions ℤero.Carrier Carrier _≈_
@@ -58,7 +58,7 @@ module _ (M : Magma m ℓm) where
 
   private module M = Magma M
   open MagmaMorphisms rawMagma M.rawMagma
-  open TheMorphism M.rawMagma
+  open UniqueMorphism M.rawMagma
 
   isMagmaHomomorphism : IsMagmaHomomorphism zero
   isMagmaHomomorphism = record
