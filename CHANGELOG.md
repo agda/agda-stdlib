@@ -48,6 +48,8 @@ New modules
 
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
+* `Effect.Foldable`: implementation of haskell-like typeclass
+
 Additions to existing modules
 -----------------------------
 
