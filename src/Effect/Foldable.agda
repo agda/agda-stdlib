@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Applicative functors
+-- Foldable functors
 ------------------------------------------------------------------------
 
 -- Note that currently the applicative functor laws are not included
@@ -24,8 +24,6 @@ open import Function.Base using (id; flip)
 import Function.Endomorphism.Propositional as Endomorphism-≡
 open import Level using (Level; suc; _⊔_; Setω)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial as Trivial
 
 private
   variable
@@ -53,7 +51,7 @@ record RawFoldable (F : Set f → Set g) : Setω where
 
 
 ------------------------------------------------------------------------
--- The type of raw Foldables, with default implementations
+-- The type of raw Foldables, with default implementations a la haskell
 
 record RawFoldableWithDefaults (F : Set f → Set g) : Setω where
   field
