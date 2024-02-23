@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.List.Effectful/Foldable where
+module Data.List.Effectful.Foldable where
 
 open import Algebra.Bundles.Raw using (RawMonoid)
 open import Data.List.Base
