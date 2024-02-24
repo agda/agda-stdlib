@@ -8,14 +8,16 @@
 
 module Data.List.Effectful.Foldable where
 
+open import Algebra.Bundles using (Monoid)
 open import Algebra.Bundles.Raw using (RawMonoid)
+open import Algebra.Morphism.Structures using (IsMonoidHomomorphism)
 open import Data.List.Base
 open import Data.List.Properties
 open import Effect.Foldable
 open import Function.Base
 open import Level
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; _≢_; _≗_; refl; module ≡-Reasoning)
+import Relation.Binary.PropositionalEquality as ≡
+--  using (_≡_; _≢_; _≗_; refl; module ≡-Reasoning)
 
 private
   variable
@@ -50,3 +52,28 @@ foldable = record
   ; foldl = foldl
   ; toList = id
   }
+
+------------------------------------------------------------------------
+-- Properties
+
+module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
+
+  open Monoid M using (_∙_; _≈_; identityˡ; ∙-congˡ)
+    renaming (rawMonoid to M₀)
+
+  ++-foldMap : ∀ xs {ys} →
+               foldMap M₀ f (xs ++ ys) ≈ foldMap M₀ f xs ∙ foldMap M₀ f ys
+  ++-foldMap []       = Monoid.sym M (identityˡ _)
+  ++-foldMap (x ∷ xs) = Monoid.trans M
+    (∙-congˡ (++-foldMap xs))
+    (Monoid.sym M (Monoid.assoc M _ _ _))
+
+  foldMap-morphism : IsMonoidHomomorphism (++-[]-rawMonoid A) M₀ (foldMap M₀ f)
+  foldMap-morphism = record
+    { isMagmaHomomorphism = record
+      { isRelHomomorphism = record
+        { cong = Monoid.reflexive M ∘ ≡.cong (foldMap M₀ f) }
+      ; homo = λ xs _ → ++-foldMap xs
+      }
+    ; ε-homo = Monoid.refl M
+    }
