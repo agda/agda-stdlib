@@ -4,8 +4,7 @@
 -- Foldable functors
 ------------------------------------------------------------------------
 
--- Note that currently the applicative functor laws are not included
--- here.
+-- Note that currently the Foldable laws are not included here.
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
@@ -21,8 +20,8 @@ import Data.List.Properties as List
 open import Effect.Functor as Fun using (RawFunctor)
 
 open import Function.Base using (id; flip)
-import Function.Endomorphism.Propositional as Endomorphism-≡
-open import Level using (Level; suc; _⊔_; Setω)
+open import Function.Endomorphism.Propositional using (∘-id-monoid)
+open import Level using (Level; Setω)
 open import Relation.Binary.Bundles using (Setoid)
 
 private
@@ -60,11 +59,11 @@ record RawFoldableWithDefaults (F : Set f → Set g) : Setω where
 
   foldr : (A -> C -> C) -> C -> F A -> C
   foldr {C = C} f z t = foldMap (Monoid.rawMonoid M) f t z
-    where M = Endomorphism-≡.∘-id-monoid C
+    where M = ∘-id-monoid C
 
   foldl : (C -> A -> C) -> C -> F A -> C
   foldl {C = C} f z t = foldMap (Monoid.rawMonoid M) (flip f) t z
-    where M = Op.monoid (Endomorphism-≡.∘-id-monoid C)
+    where M = Op.monoid (∘-id-monoid C)
 
   toList : F A → List A
   toList {A = A} = foldMap (List.++-[]-rawMonoid A) [_]
