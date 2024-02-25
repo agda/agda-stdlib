@@ -27,8 +27,8 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Definitions as B
   using (Trans; Antisym; Irrelevant)
-open import Relation.Binary.PropositionalEquality.Core as P
-  using (_≡_; _≢_; refl; sym; subst; subst₂)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl; sym; cong; subst; subst₂)
 
 import Data.List.Properties as List
 import Data.List.Relation.Binary.Prefix.Heterogeneous.Properties as Prefix
@@ -199,10 +199,10 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   irrelevant : Irrelevant R → Irrelevant (Suffix R)
-  irrelevant irr (here  rs)   (here  rs₁)   = P.cong here $ Pw.irrelevant irr rs rs₁
+  irrelevant irr (here  rs)   (here  rs₁)   = cong here $ Pw.irrelevant irr rs rs₁
   irrelevant irr (here  rs)   (there rsuf)  = contradiction (Pointwise-length rs) (S[as][bs]⇒∣as∣≢1+∣bs∣ rsuf)
   irrelevant irr (there rsuf) (here  rs)    = contradiction (Pointwise-length rs) (S[as][bs]⇒∣as∣≢1+∣bs∣ rsuf)
-  irrelevant irr (there rsuf) (there rsuf₁) = P.cong there $ irrelevant irr rsuf rsuf₁
+  irrelevant irr (there rsuf) (there rsuf₁) = cong there $ irrelevant irr rsuf rsuf₁
 
 ------------------------------------------------------------------------
 -- Decidability

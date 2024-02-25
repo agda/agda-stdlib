@@ -20,7 +20,7 @@ open import Function.Base using (_∘_; id)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Negation using (contradiction; contraposition)
 
 private
@@ -71,7 +71,7 @@ module _ (S : Setoid a ℓ) where
   open Setoid S
 
   lookup-injective : ∀ {n xs} → Unique S {n} xs → ∀ i j → lookup xs i ≈ lookup xs j → i ≡ j
-  lookup-injective (px ∷ pxs) zero zero eq = P.refl
+  lookup-injective (px ∷ pxs) zero zero eq = ≡.refl
   lookup-injective (px ∷ pxs) zero (suc j) eq = contradiction eq (All.lookup⁺ px j)
   lookup-injective (px ∷ pxs) (suc i) zero eq = contradiction (sym eq) (All.lookup⁺ px i)
-  lookup-injective (px ∷ pxs) (suc i) (suc j) eq = P.cong suc (lookup-injective pxs i j eq)
+  lookup-injective (px ∷ pxs) (suc i) (suc j) eq = ≡.cong suc (lookup-injective pxs i j eq)
