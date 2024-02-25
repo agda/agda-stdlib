@@ -87,43 +87,44 @@ sequence⁻ seq[f] = seq[f] ∘ n<1+n
 ------------------------------------------------------------------------
 -- Results about unrestricted descent
 
-descent+acc⇒infiniteDescentFrom : Descent _<_ P → (Acc _<_) ⊆ (InfiniteDescentFrom _<_ P)
-descent+acc⇒infiniteDescentFrom {_<_ = _<_} {P = P} descent {x} =
-  Some.wfRec (InfiniteDescentFrom _<_ P) rec x
-  where
-  rec : _
-  rec y rec[y] py
-    with z , z<y , pz ← descent py
-    with g , (g0≡z , g<P) , Π[P∘g] ← rec[y] z<y pz
-       = h , (h0≡y , h<P) , Π[P∘h]
+module _ (descent : Descent _<_ P) where
+
+  descent+acc⇒infiniteDescentFrom : (Acc _<_) ⊆ (InfiniteDescentFrom _<_ P)
+  descent+acc⇒infiniteDescentFrom {x} =
+    Some.wfRec (InfiniteDescentFrom _<_ P) rec x
     where
-    h : ℕ → _
-    h zero = y
-    h (suc n) = g n
+    rec : _
+    rec y rec[y] py
+      with z , z<y , pz ← descent py
+      with g , (g0≡z , g<P) , Π[P∘g] ← rec[y] z<y pz
+         = h , (h0≡y , h<P) , Π[P∘h]
+      where
+      h : ℕ → _
+      h zero = y
+      h (suc n) = g n
 
-    h0≡y : h zero ≡ y
-    h0≡y = refl
+      h0≡y : h zero ≡ y
+      h0≡y = refl
 
-    h<P : ∀ n → h (suc n) < h n
-    h<P zero rewrite g0≡z = z<y
-    h<P (suc n)           = g<P n
+      h<P : ∀ n → h (suc n) < h n
+      h<P zero rewrite g0≡z = z<y
+      h<P (suc n)           = g<P n
 
-    Π[P∘h] : ∀ n →  P (h n)
-    Π[P∘h] zero rewrite g0≡z = py
-    Π[P∘h] (suc n)           = Π[P∘g] n
+      Π[P∘h] : ∀ n →  P (h n)
+      Π[P∘h] zero rewrite g0≡z = py
+      Π[P∘h] (suc n)           = Π[P∘g] n
 
-descent+wf⇒infiniteDescent : Descent _<_ P → WellFounded _<_ → InfiniteDescent _<_ P
-descent+wf⇒infiniteDescent descent wf = descent+acc⇒infiniteDescentFrom descent (wf _)
+  descent+wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent _<_ P
+  descent+wf⇒infiniteDescent wf = descent+acc⇒infiniteDescentFrom (wf _)
 
-descent+acc⇒notHold : Descent _<_ P → Acc _<_ ⊆ ∁ P
-descent+acc⇒notHold {P = P} descent {x} = Some.wfRec (∁ P) rec x
-  where
-  rec : _
-  rec y rec[y] py = let z , z<y , pz = descent py in rec[y] z<y pz
+  descent+acc⇒notHold : Acc _<_ ⊆ ∁ P
+  descent+acc⇒notHold {x} = Some.wfRec (∁ P) rec x
+    where
+    rec : _
+    rec y rec[y] py = let z , z<y , pz = descent py in rec[y] z<y pz
 
-descent+wf⇒empty : Descent _<_ P → WellFounded _<_ → Empty P
-descent+wf⇒empty descent wf x =
-  descent+acc⇒notHold descent (wf x)
+  descent+wf⇒empty : WellFounded _<_ → Empty P
+  descent+wf⇒empty wf x = descent+acc⇒notHold (wf x)
 
 ------------------------------------------------------------------------
 -- Results about descent only from accessible elements
