@@ -39,7 +39,7 @@ open import Relation.Binary.Definitions
   using (Reflexive; Trans; Antisym; Decidable; Irrelevant; Irreflexive)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 ------------------------------------------------------------------------
 -- Injectivity of constructors
@@ -48,15 +48,15 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   ∷-injectiveˡ : ∀ {x y xs ys} {px qx : R x y} {pxs qxs : Sublist R xs ys} →
                  (Sublist R (x ∷ xs) (y ∷ ys) ∋ px ∷ pxs) ≡ (qx ∷ qxs) → px ≡ qx
-  ∷-injectiveˡ P.refl = P.refl
+  ∷-injectiveˡ ≡.refl = ≡.refl
 
   ∷-injectiveʳ : ∀ {x y xs ys} {px qx : R x y} {pxs qxs : Sublist R xs ys} →
                  (Sublist R (x ∷ xs) (y ∷ ys) ∋ px ∷ pxs) ≡ (qx ∷ qxs) → pxs ≡ qxs
-  ∷-injectiveʳ P.refl = P.refl
+  ∷-injectiveʳ ≡.refl = ≡.refl
 
   ∷ʳ-injective : ∀ {y xs ys} {pxs qxs : Sublist R xs ys} →
                  (Sublist R xs (y ∷ ys) ∋ y ∷ʳ pxs) ≡ (y ∷ʳ qxs) → pxs ≡ qxs
-  ∷ʳ-injective P.refl = P.refl
+  ∷ʳ-injective ≡.refl = ≡.refl
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
@@ -308,7 +308,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   reverse⁻ : ∀ {as bs} → Sublist R (reverse as) (reverse bs) → Sublist R as bs
   reverse⁻ {as} {bs} p = cast (reverse⁺ p) where
-    cast = P.subst₂ (Sublist R) (List.reverse-involutive as) (List.reverse-involutive bs)
+    cast = ≡.subst₂ (Sublist R) (List.reverse-involutive as) (List.reverse-involutive bs)
 
 ------------------------------------------------------------------------
 -- Inversion lemmas
@@ -327,27 +327,27 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a as b bs} where
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   Sublist-[]-irrelevant : U.Irrelevant (Sublist R [])
-  Sublist-[]-irrelevant []       []        = P.refl
-  Sublist-[]-irrelevant (y ∷ʳ p) (.y ∷ʳ q) = P.cong (y ∷ʳ_) (Sublist-[]-irrelevant p q)
+  Sublist-[]-irrelevant []       []        = ≡.refl
+  Sublist-[]-irrelevant (y ∷ʳ p) (.y ∷ʳ q) = ≡.cong (y ∷ʳ_) (Sublist-[]-irrelevant p q)
 
 ------------------------------------------------------------------------
 -- (to/from)Any is a bijection
 
   toAny-injective : ∀ {xs x} {p q : Sublist R [ x ] xs} → toAny p ≡ toAny q → p ≡ q
   toAny-injective {p = y ∷ʳ p} {y ∷ʳ q} =
-    P.cong (y ∷ʳ_) ∘′ toAny-injective ∘′ there-injective
+    ≡.cong (y ∷ʳ_) ∘′ toAny-injective ∘′ there-injective
   toAny-injective {p = _ ∷ p}  {_ ∷ q}  =
-    P.cong₂ (flip _∷_) (Sublist-[]-irrelevant p q) ∘′ here-injective
+    ≡.cong₂ (flip _∷_) (Sublist-[]-irrelevant p q) ∘′ here-injective
 
   fromAny-injective : ∀ {xs x} {p q : Any (R x) xs} →
                       fromAny {R = R} p ≡ fromAny q → p ≡ q
-  fromAny-injective {p = here px} {here qx} = P.cong here ∘′ ∷-injectiveˡ
+  fromAny-injective {p = here px} {here qx} = ≡.cong here ∘′ ∷-injectiveˡ
   fromAny-injective {p = there p} {there q} =
-    P.cong there ∘′ fromAny-injective ∘′ ∷ʳ-injective
+    ≡.cong there ∘′ fromAny-injective ∘′ ∷ʳ-injective
 
   toAny∘fromAny≗id : ∀ {xs x} (p : Any (R x) xs) → toAny (fromAny {R = R} p) ≡ p
-  toAny∘fromAny≗id (here px) = P.refl
-  toAny∘fromAny≗id (there p) = P.cong there (toAny∘fromAny≗id p)
+  toAny∘fromAny≗id (here px) = ≡.refl
+  toAny∘fromAny≗id (there p) = ≡.cong there (toAny∘fromAny≗id p)
 
   Sublist-[x]-bijection : ∀ {x xs} → (Sublist R [ x ] xs) ⤖ (Any (R x) xs)
   Sublist-[x]-bijection = mk⤖ (toAny-injective , strictlySurjective⇒surjective < fromAny , toAny∘fromAny≗id >)
@@ -360,10 +360,10 @@ module Reflexivity
     (R-refl : Reflexive R) where
 
   reflexive : _≡_ ⇒ Sublist R
-  reflexive P.refl = fromPointwise (Pw.refl R-refl)
+  reflexive ≡.refl = fromPointwise (Pw.refl R-refl)
 
   refl : Reflexive (Sublist R)
-  refl = reflexive P.refl
+  refl = reflexive ≡.refl
 
 open Reflexivity public
 
@@ -392,18 +392,18 @@ module Antisymmetry
   antisym (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs ss
   -- impossible cases
   antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷ʳ_ {ys₂} {zs} z ss) =
-    ⊥-elim $ ℕ.<-irrefl P.refl $ begin
+    ⊥-elim $ ℕ.<-irrefl ≡.refl $ begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length zs        ≤⟨ ℕ.n≤1+n (length zs) ⟩
     length (z ∷ zs)  ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎
   antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
-    ⊥-elim $ ℕ.<-irrefl P.refl $ begin
+    ⊥-elim $ ℕ.<-irrefl ≡.refl $ begin
     length (z ∷ zs) ≤⟨ length-mono-≤ rs ⟩
     length ys₁      ≤⟨ length-mono-≤ ss ⟩
     length zs       ∎
   antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
-    ⊥-elim $ ℕ.<-irrefl P.refl $ begin
+    ⊥-elim $ ℕ.<-irrefl ≡.refl $ begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length xs        ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎
@@ -506,10 +506,10 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   -- Disjoint is proof-irrelevant
 
   Disjoint-irrelevant : ∀{xs ys zs} → Irrelevant (Disjoint {R = R} {xs} {ys} {zs})
-  Disjoint-irrelevant [] [] = P.refl
-  Disjoint-irrelevant (y   ∷ₙ d₁) (.y   ∷ₙ d₂) = P.cong (y ∷ₙ_) (Disjoint-irrelevant d₁ d₂)
-  Disjoint-irrelevant (x≈y ∷ₗ d₁) (.x≈y ∷ₗ d₂) = P.cong (x≈y ∷ₗ_) (Disjoint-irrelevant d₁ d₂)
-  Disjoint-irrelevant (x≈y ∷ᵣ d₁) (.x≈y ∷ᵣ d₂) = P.cong (x≈y ∷ᵣ_) (Disjoint-irrelevant d₁ d₂)
+  Disjoint-irrelevant [] [] = ≡.refl
+  Disjoint-irrelevant (y   ∷ₙ d₁) (.y   ∷ₙ d₂) = ≡.cong (y ∷ₙ_) (Disjoint-irrelevant d₁ d₂)
+  Disjoint-irrelevant (x≈y ∷ₗ d₁) (.x≈y ∷ₗ d₂) = ≡.cong (x≈y ∷ₗ_) (Disjoint-irrelevant d₁ d₂)
+  Disjoint-irrelevant (x≈y ∷ᵣ d₁) (.x≈y ∷ᵣ d₂) = ≡.cong (x≈y ∷ᵣ_) (Disjoint-irrelevant d₁ d₂)
 
   -- Note: DisjointUnion is not proof-irrelevant unless the underlying relation R is.
   -- The proof is not entirely trivial, thus, we leave it for future work:
@@ -525,7 +525,7 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   Disjoint-irrefl′ (y ∷ₙ d) = Disjoint-irrefl′ d
 
   Disjoint-irrefl : ∀{x xs ys} → Irreflexive {A = x ∷ xs ⊆ ys } _≡_ Disjoint
-  Disjoint-irrefl P.refl x with Disjoint-irrefl′ x
+  Disjoint-irrefl ≡.refl x with Disjoint-irrefl′ x
   ... | () ∷ _
 
   -- Symmetry

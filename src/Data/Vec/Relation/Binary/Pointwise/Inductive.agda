@@ -22,7 +22,7 @@ open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence)
 open import Relation.Binary.Definitions
   using (Trans; Decidable; Reflexive; Sym)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Decidable using (yes; no; _×-dec_; map′)
 open import Relation.Unary using (Pred)
 
@@ -52,8 +52,8 @@ data Pointwise {a b ℓ} {A : Set a} {B : Set b} (_∼_ : REL A B ℓ) :
 
 length-equal : ∀ {m n} {_∼_ : REL A B ℓ} {xs : Vec A m} {ys : Vec B n} →
                Pointwise _∼_ xs ys → m ≡ n
-length-equal []          = P.refl
-length-equal (_ ∷ xs∼ys) = P.cong suc (length-equal xs∼ys)
+length-equal []          = ≡.refl
+length-equal (_ ∷ xs∼ys) = ≡.cong suc (length-equal xs∼ys)
 
 ------------------------------------------------------------------------
 -- Operations
@@ -261,11 +261,11 @@ module _ {P : Pred A ℓ} where
 -- Pointwise _≡_ is equivalent to _≡_
 
 Pointwise-≡⇒≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys → xs ≡ ys
-Pointwise-≡⇒≡ []               = P.refl
-Pointwise-≡⇒≡ (P.refl ∷ xs∼ys) = P.cong (_ ∷_) (Pointwise-≡⇒≡ xs∼ys)
+Pointwise-≡⇒≡ []               = ≡.refl
+Pointwise-≡⇒≡ (≡.refl ∷ xs∼ys) = ≡.cong (_ ∷_) (Pointwise-≡⇒≡ xs∼ys)
 
 ≡⇒Pointwise-≡ : ∀ {n} {xs ys : Vec A n} → xs ≡ ys → Pointwise _≡_ xs ys
-≡⇒Pointwise-≡ P.refl = refl P.refl
+≡⇒Pointwise-≡ ≡.refl = refl ≡.refl
 
 Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
 Pointwise-≡↔≡ = mk⇔ Pointwise-≡⇒≡ ≡⇒Pointwise-≡

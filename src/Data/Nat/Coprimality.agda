@@ -19,7 +19,7 @@ open import Data.Product.Base as Prod
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality.Core as P
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; trans; cong; subst)
 open import Relation.Nullary as Nullary using (¬_; contradiction; map′)
 open import Relation.Binary.Core using (Rel)
@@ -47,7 +47,7 @@ coprime⇒GCD≡1 {m} {n} coprime = GCD.is (1∣ m , 1∣ n) (∣-reflexive ∘ 
 
 GCD≡1⇒coprime : GCD m n 1 → Coprime m n
 GCD≡1⇒coprime g cd with divides q eq ← GCD.greatest g cd
-  = m*n≡1⇒n≡1 q _ (P.sym eq)
+  = m*n≡1⇒n≡1 q _ (≡.sym eq)
 
 coprime⇒gcd≡1 : Coprime m n → gcd m n ≡ 1
 coprime⇒gcd≡1 coprime = GCD.unique (gcd-GCD _ _) (coprime⇒GCD≡1 coprime)

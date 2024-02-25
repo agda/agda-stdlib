@@ -29,7 +29,7 @@ open import Data.Product.Base using (∃; ∃₂; _×_; _,_; proj₂)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 
 open Setoid S renaming (Carrier to A)

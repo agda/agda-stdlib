@@ -9,7 +9,7 @@
 open import Algebra.Bundles using (Monoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 module Algebra.Properties.Monoid.Mult {a ℓ} (M : Monoid a ℓ) where
 
@@ -44,7 +44,7 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×-congʳ (suc n) x≈x′ = +-cong x≈x′ (×-congʳ n x≈x′)
 
 ×-cong : _×_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
-×-cong {n} P.refl x≈x′ = ×-congʳ n x≈x′
+×-cong {n} ≡.refl x≈x′ = ×-congʳ n x≈x′
 
 ×-congˡ : ∀ {x} → (_× x) Preserves _≡_ ⟶ _≈_
 ×-congˡ m≡n = ×-cong m≡n refl

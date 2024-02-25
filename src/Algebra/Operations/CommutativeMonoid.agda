@@ -12,7 +12,7 @@ open import Data.Fin.Base using (Fin; zero)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 module Algebra.Operations.CommutativeMonoid
   {s₁ s₂} (CM : CommutativeMonoid s₁ s₂)
@@ -58,7 +58,7 @@ suc n ×′ x = x + n ×′ x
 ×-congʳ (suc n) x≈x′ = +-cong x≈x′ (×-congʳ n x≈x′)
 
 ×-cong : _×_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
-×-cong {u} P.refl x≈x′ = ×-congʳ u x≈x′
+×-cong {u} ≡.refl x≈x′ = ×-congʳ u x≈x′
 
 -- _×_ is homomorphic with respect to _ℕ+_/_+_.
 
@@ -98,7 +98,7 @@ suc n ×′ x = x + n ×′ x
 -- _×′_ preserves equality.
 
 ×′-cong : _×′_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
-×′-cong {n} {_} {x} {y} P.refl x≈y = begin
+×′-cong {n} {_} {x} {y} ≡.refl x≈y = begin
   n  ×′ x ≈⟨ sym (×≈×′ n x) ⟩
   n  ×  x ≈⟨ ×-congʳ n x≈y ⟩
   n  ×  y ≈⟨ ×≈×′ n y ⟩

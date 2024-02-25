@@ -54,6 +54,11 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
+* Nagata's construction of the "idealization of a module":
+  ```agda
+  Algebra.Module.Construct.Idealization
+  ```
+
 Additions to existing modules
 -----------------------------
 
@@ -198,4 +203,17 @@ Additions to existing modules
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
+* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
+  ```agda
+  _↭_ : IRel (Vector A) _
+  ```
+
+* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
   ```
