@@ -17,7 +17,6 @@ module Algebra.Morphism.Construct.Terminal {c ℓ : Level} where
 
 open import Algebra.Bundles using (Monoid; Group; NearSemiring; Semiring; Ring)
 open import Algebra.Bundles.Raw using (RawMonoid; RawGroup)
-open import Algebra.Construct.Terminal {c} {ℓ}
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Algebra.Morphism.Structures
   using ( module MagmaMorphisms
@@ -32,6 +31,8 @@ open import Data.Product.Base using (_,_)
 open import Function.Definitions using (StrictlySurjective)
 import Relation.Binary.Morphism.Definitions as Definitions
 open import Relation.Binary.Morphism.Structures
+
+open import Algebra.Construct.Terminal {c} {ℓ}
 
 private
   variable

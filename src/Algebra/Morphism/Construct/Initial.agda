@@ -16,12 +16,13 @@ module Algebra.Morphism.Construct.Initial {c ℓ : Level} where
 
 open import Algebra.Bundles using (Magma)
 open import Algebra.Bundles.Raw using (RawMagma)
-open import Algebra.Construct.Initial {c} {ℓ}
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Algebra.Morphism.Structures using (module MagmaMorphisms)
 open import Function.Definitions using (Injective)
 import Relation.Binary.Morphism.Definitions as Definitions
 open import Relation.Binary.Morphism.Structures
+
+open import Algebra.Construct.Initial {c} {ℓ}
 
 private
   variable
