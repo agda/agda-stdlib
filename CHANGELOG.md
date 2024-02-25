@@ -187,3 +187,16 @@ Additions to existing modules
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
   ```
+
+* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
+  ```agda
+  _↭_ : IRel (Vector A) _
+  ```
+
+* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  ```
