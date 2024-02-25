@@ -140,6 +140,7 @@ module _ (R : Ring a ℓa) where
   private module R = Ring R
   open RingMorphisms R.rawRing rawRing
   open UniqueMorphism R.+-rawMonoid
+
   isRingHomomorphism : IsRingHomomorphism one
   isRingHomomorphism = record
     { isSemiringHomomorphism = isSemiringHomomorphism R.semiring
