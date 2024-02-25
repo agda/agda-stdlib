@@ -13,7 +13,7 @@ open import Data.Container.Core
 open import Data.Container.Combinator
 open import Data.Container.Relation.Unary.Any
 open import Data.Empty using (⊥-elim)
-open import Data.Product.Base as Prod using (∃; _,_; proj₁; proj₂; <_,_>; uncurry; curry)
+open import Data.Product.Base as P using (∃; _,_; proj₁; proj₂; <_,_>; uncurry; curry)
 open import Data.Sum.Base as S using (inj₁; inj₂; [_,_]′; [_,_])
 open import Function.Base as F using (_∘′_)
 open import Function.Bundles
@@ -45,7 +45,7 @@ module Composition {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Co
 module Product (ext : ∀ {ℓ ℓ′} → Extensionality ℓ ℓ′)
        {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) where
 
-  correct : ∀ {x} {X : Set x} →  ⟦ C₁ × C₂ ⟧ X ↔ (⟦ C₁ ⟧ X Prod.× ⟦ C₂ ⟧ X)
+  correct : ∀ {x} {X : Set x} →  ⟦ C₁ × C₂ ⟧ X ↔ (⟦ C₁ ⟧ X P.× ⟦ C₂ ⟧ X)
   correct {X = X} = mk↔ₛ′ (from-× C₁ C₂) (to-× C₁ C₂) (λ _ → refl) from∘to
     where
     from∘to : (to-× C₁ C₂) F.∘ (from-× C₁ C₂) ≗ F.id
