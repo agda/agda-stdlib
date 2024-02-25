@@ -15,58 +15,48 @@ open import Level using (Level)
 module Algebra.Morphism.Construct.Initial {c ℓ : Level} where
 
 open import Algebra.Bundles.Raw using (RawMagma)
-import Algebra.Morphism.Definitions as MorphismDefinitions
-open import Algebra.Morphism.Structures using (module MagmaMorphisms)
+open import Algebra.Morphism.Structures
 open import Function.Definitions using (Injective)
-import Relation.Binary.Morphism.Definitions as Definitions
+import Relation.Binary.Morphism.Definitions as Rel
 open import Relation.Binary.Morphism.Structures
+open import Relation.Binary.Core using (Rel)
 
 open import Algebra.Construct.Initial {c} {ℓ}
 
 private
   variable
-    m ℓm : Level
-
-
-------------------------------------------------------------------------
--- The underlying data of the morphism
-
-module UniqueMorphism (M : RawMagma m ℓm) where
-
-  open RawMagma M
-  open MorphismDefinitions ℤero.Carrier Carrier _≈_
-
-  zero : ℤero.Carrier → Carrier
-  zero ()
-
-  cong : Definitions.Homomorphic₂ ℤero.Carrier Carrier ℤero._≈_ _≈_ zero
-  cong {x = ()}
-
-  isRelHomomorphism : IsRelHomomorphism ℤero._≈_ _≈_ zero
-  isRelHomomorphism = record { cong = cong }
-
-  homo : Homomorphic₂ zero ℤero._∙_ _∙_
-  homo ()
-
-  injective : Injective ℤero._≈_ _≈_ zero
-  injective {x = ()}
+    a m ℓm : Level
+    A : Set a
+    ≈ : Rel A ℓm
 
 ------------------------------------------------------------------------
--- Magma
+-- The unique morphism
 
-module _ (M : RawMagma m ℓm) where
+zero : ℤero.Carrier → A
+zero ()
 
-  open MagmaMorphisms rawMagma M
-  open UniqueMorphism M
+------------------------------------------------------------------------
+-- Basic properties
 
-  isMagmaHomomorphism : IsMagmaHomomorphism zero
-  isMagmaHomomorphism = record
-    { isRelHomomorphism = isRelHomomorphism
-    ; homo = homo
-    }
+cong : (≈ : Rel A ℓm) → Rel.Homomorphic₂ ℤero.Carrier A ℤero._≈_ ≈ zero
+cong _ {x = ()} 
 
-  isMagmaMonomorphism : IsMagmaMonomorphism zero
-  isMagmaMonomorphism = record
-    { isMagmaHomomorphism = isMagmaHomomorphism
-    ; injective = injective
-    }
+injective : (≈ : Rel A ℓm) → Injective ℤero._≈_ ≈ zero
+injective _ {x = ()}
+
+------------------------------------------------------------------------
+-- Morphism structures
+
+isMagmaHomomorphism : (M : RawMagma m ℓm) →
+                      IsMagmaHomomorphism rawMagma M zero
+isMagmaHomomorphism M = record
+  { isRelHomomorphism = record { cong = cong (RawMagma._≈_ M) }
+  ; homo = λ()
+  } 
+
+isMagmaMonomorphism : (M : RawMagma m ℓm) →
+                      IsMagmaMonomorphism rawMagma M zero
+isMagmaMonomorphism M = record
+  { isMagmaHomomorphism = isMagmaHomomorphism M
+  ; injective = injective (RawMagma._≈_ M)
+  }
