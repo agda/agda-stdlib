@@ -32,7 +32,7 @@ open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing; fromAny
 open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
-open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base
 open import Function.Bundles
 open import Level using (Level)
@@ -417,7 +417,7 @@ Any-catMaybes⁺ = All-catMaybes⁺ ∘ All.map fromAny
 
 ++⁻ : ∀ xs {ys} → All P (xs ++ ys) → All P xs × All P ys
 ++⁻ []       p          = [] , p
-++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
+++⁻ (x ∷ xs) (px ∷ pxs) = Product.map (px ∷_) id (++⁻ _ pxs)
 
 ++↔ : (All P xs × All P ys) ↔ All P (xs ++ ys)
 ++↔ {xs = zs} = mk↔ₛ′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
@@ -448,7 +448,7 @@ concat⁻ {xss = xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
 ∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
 
 ∷ʳ⁻ : All P (xs ∷ʳ x) → All P xs × P x
-∷ʳ⁻ pxs = Prod.map₂ singleton⁻ $ ++⁻ _ pxs
+∷ʳ⁻ pxs = Product.map₂ singleton⁻ $ ++⁻ _ pxs
 
 -- unsnoc
 
@@ -656,7 +656,7 @@ module _ {R : A → A → Set q} (R? : B.Decidable R) where
     where
     aux : ∀ {z} → z ∈ filter (¬? ∘ ¬? ∘ R? x) (deduplicate R? xs) → P z
     aux {z = z} z∈filter = resp (decidable-stable (R? x z)
-      (Prod.proj₂ (∈-filter⁻ (¬? ∘ ¬? ∘ R? x) {z} {deduplicate R? xs} z∈filter))) px
+      (Product.proj₂ (∈-filter⁻ (¬? ∘ ¬? ∘ R? x) {z} {deduplicate R? xs} z∈filter))) px
 
 ------------------------------------------------------------------------
 -- zipWith

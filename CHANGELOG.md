@@ -33,6 +33,11 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  1×-identityʳ  ↦  ×-homo-1
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -48,8 +53,20 @@ New modules
   Induction.NoInfiniteDescent
   ```
 
+* Nagata's construction of the "idealization of a module":
+  ```agda
+  Algebra.Module.Construct.Idealization
+  ```
+
 Additions to existing modules
 -----------------------------
+
+* Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
+  ```agda
+  rawNearSemiring   : RawNearSemiring _ _
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  +-rawGroup        : RawGroup _ _
+  ```
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
 
@@ -87,6 +104,19 @@ Additions to existing modules
   rawBimodule        : RawBimodule R c ℓ
   rawSemimodule      : RawSemimodule R c ℓ
   rawModule          : RawModule R c ℓ
+  ```
+
+* In `Algebra.Properties.Monoid.Mult`:
+  ```agda
+  ×-homo-0 : ∀ x → 0 × x ≈ 0#
+  ×-homo-1 : ∀ x → 1 × x ≈ x
+  ```
+
+* In `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  ×-homo-0#     : ∀ x → 0 × x ≈ 0# * x
+  ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
+  idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
 * In `Data.Fin.Properties`:
@@ -154,3 +184,38 @@ Additions to existing modules
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
+
+* Added new definitions in `Relation.Binary`
+  ```
+  Stable          : Pred A ℓ → Set _
+  ```
+
+* Added new definitions in `Relation.Nullary`
+  ```
+  Recomputable    : Set _
+  WeaklyDecidable : Set _
+  ```
+
+* Added new definitions in `Relation.Unary`
+  ```
+  Stable          : Pred A ℓ → Set _
+  WeaklyDecidable : Pred A ℓ → Set _
+  ```
+
+* Added new proof in `Relation.Nullary.Decidable`:
+  ```agda
+  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
+* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
+  ```agda
+  _↭_ : IRel (Vector A) _
+  ```
+
+* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  ```

@@ -15,7 +15,7 @@ open import Level
 open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
   variable
@@ -106,7 +106,7 @@ data Plus {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
 module _ {_∼_ : Rel A ℓ} where
 
  []-injective : ∀ {x y p q} → (x [ _∼_ ]⁺ y ∋ [ p ]) ≡ [ q ] → p ≡ q
- []-injective P.refl = P.refl
+ []-injective ≡.refl = ≡.refl
 
  -- See also ∼⁺⟨⟩-injectiveˡ and ∼⁺⟨⟩-injectiveʳ in
  -- Relation.Binary.Construct.Closure.Transitive.WithK.

@@ -28,9 +28,9 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (does; ¬_; yes; no)
 open import Relation.Nullary.Decidable using (dec-yes; dec-no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; trans; sym; →-to-⟶; cong; cong₂)
-open P.≡-Reasoning
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; _≢_; refl; sym; trans; subst; →-to-⟶; cong; cong₂; module ≡-Reasoning)
+open ≡-Reasoning
 
 private
   variable
@@ -67,10 +67,10 @@ _⟨$⟩ˡ_ : Permutation m n → Fin n → Fin m
 _⟨$⟩ˡ_ = Inverse.from
 
 inverseˡ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ˡ (π ⟨$⟩ʳ i) ≡ i
-inverseˡ π = Inverse.inverseʳ π P.refl
+inverseˡ π = Inverse.inverseʳ π refl
 
 inverseʳ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ʳ (π ⟨$⟩ˡ i) ≡ i
-inverseʳ π = Inverse.inverseˡ π P.refl
+inverseʳ π = Inverse.inverseˡ π refl
 
 ------------------------------------------------------------------------
 -- Equality
@@ -251,7 +251,7 @@ module _ (π : Permutation (suc m) (suc n)) where
 ↔⇒≡ {suc m} {suc n} π = cong suc (↔⇒≡ (remove 0F π))
 
 fromPermutation : Permutation m n → Permutation′ m
-fromPermutation π = P.subst (Permutation _) (sym (↔⇒≡ π)) π
+fromPermutation π = subst (Permutation _) (sym (↔⇒≡ π)) π
 
 refute : m ≢ n → ¬ Permutation m n
 refute m≢n π = contradiction (↔⇒≡ π) m≢n

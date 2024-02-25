@@ -29,8 +29,8 @@ open import Relation.Binary.Core renaming (Rel to Rel₂)
 open import Relation.Binary.Definitions using (_Respects_; _Respects₂_)
 open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder; Poset)
 open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence; IsPartialOrder; IsPreorder)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -129,8 +129,8 @@ AllPairs-resp-Pointwise resp@(respₗ , respᵣ) (x∼y ∷ xs) (px ∷ pxs) =
 -- length
 
 Pointwise-length : Pointwise R xs ys → length xs ≡ length ys
-Pointwise-length []            = P.refl
-Pointwise-length (x∼y ∷ xs∼ys) = P.cong ℕ.suc (Pointwise-length xs∼ys)
+Pointwise-length []            = ≡.refl
+Pointwise-length (x∼y ∷ xs∼ys) = ≡.cong ℕ.suc (Pointwise-length xs∼ys)
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -162,9 +162,9 @@ tabulate⁻ {n = suc n} (x∼y ∷ xs∼ys) (fsuc i) = tabulate⁻ xs∼ys i
 ++-cancelʳ (y ∷ ys) (z ∷ zs) (y∼z ∷ ys∼zs) = y∼z ∷ (++-cancelʳ ys zs ys∼zs)
 -- Impossible cases
 ++-cancelʳ {xs = xs}     []       (z ∷ zs) eq   =
-  contradiction (P.trans (Pointwise-length eq) (length-++ (z ∷ zs))) (m≢1+n+m (length xs))
+  contradiction (≡.trans (Pointwise-length eq) (length-++ (z ∷ zs))) (m≢1+n+m (length xs))
 ++-cancelʳ {xs = xs}     (y ∷ ys) []       eq   =
-  contradiction (P.trans (P.sym (length-++ (y ∷ ys))) (Pointwise-length eq)) (m≢1+n+m (length xs) ∘ P.sym)
+  contradiction (≡.trans (≡.sym (length-++ (y ∷ ys))) (Pointwise-length eq)) (m≢1+n+m (length xs) ∘ ≡.sym)
 
 ------------------------------------------------------------------------
 -- concat
@@ -246,8 +246,8 @@ lookup⁻ : length xs ≡ length ys →
           (∀ {i j} → toℕ i ≡ toℕ j → R (lookup xs i) (lookup ys j)) →
           Pointwise R xs ys
 lookup⁻ {xs = []}    {ys = []}    _             _  = []
-lookup⁻ {xs = _ ∷ _} {ys = _ ∷ _} |xs|≡|ys| eq = eq {fzero} P.refl ∷
-  lookup⁻ (suc-injective |xs|≡|ys|) (eq ∘ P.cong ℕ.suc)
+lookup⁻ {xs = _ ∷ _} {ys = _ ∷ _} |xs|≡|ys| eq = eq {fzero} ≡.refl ∷
+  lookup⁻ (suc-injective |xs|≡|ys|) (eq ∘ ≡.cong ℕ.suc)
 
 lookup⁺ : ∀ (Rxys : Pointwise R xs ys) →
           ∀ i → (let j = cast (Pointwise-length Rxys) i) →
@@ -260,14 +260,14 @@ lookup⁺ (_   ∷ Rxys) (fsuc i) = lookup⁺ Rxys i
 ------------------------------------------------------------------------
 
 Pointwise-≡⇒≡ : Pointwise {A = A} _≡_ ⇒ _≡_
-Pointwise-≡⇒≡ []               = P.refl
-Pointwise-≡⇒≡ (P.refl ∷ xs∼ys) with Pointwise-≡⇒≡ xs∼ys
-... | P.refl = P.refl
+Pointwise-≡⇒≡ []               = ≡.refl
+Pointwise-≡⇒≡ (≡.refl ∷ xs∼ys) with Pointwise-≡⇒≡ xs∼ys
+... | ≡.refl = ≡.refl
 
 ≡⇒Pointwise-≡ :  _≡_ ⇒ Pointwise {A = A} _≡_
-≡⇒Pointwise-≡ P.refl = refl P.refl
+≡⇒Pointwise-≡ ≡.refl = refl ≡.refl
 
-Pointwise-≡↔≡ : Inverse (setoid (P.setoid A)) (P.setoid (List A))
+Pointwise-≡↔≡ : Inverse (setoid (≡.setoid A)) (≡.setoid (List A))
 Pointwise-≡↔≡ = record
   { to = id
   ; from = id

@@ -162,10 +162,27 @@ IUniversal P = ∀ {x} → x ∈ P
 
 syntax IUniversal P = ∀[ P ]
 
+-- Irrelevance - any two proofs that an element satifies P are
+-- indistinguishable.
+
+Irrelevant : Pred A ℓ → Set _
+Irrelevant P = ∀ {x} → Nullary.Irrelevant (P x)
+
+-- Recomputability - we can rebuild a relevant proof given an
+-- irrelevant one.
+
+Recomputable : Pred A ℓ → Set _
+Recomputable P = ∀ {x} → Nullary.Recomputable (P x)
+
 -- Stability - instances of P are stable wrt double negation
 
 Stable : Pred A ℓ → Set _
 Stable P = ∀ x → Nullary.Stable (P x)
+
+-- Weak Decidability
+
+WeaklyDecidable : Pred A ℓ → Set _
+WeaklyDecidable P = ∀ x → Nullary.WeaklyDecidable (P x)
 
 -- Decidability - it is possible to determine if an arbitrary element
 -- satisfies P.
@@ -178,18 +195,6 @@ Decidable P = ∀ x → Dec (P x)
 
 ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
 ⌊ P? ⌋ a = Lift _ (True (P? a))
-
--- Irrelevance - any two proofs that an element satifies P are
--- indistinguishable.
-
-Irrelevant : Pred A ℓ → Set _
-Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
-
--- Recomputability - we can rebuild a relevant proof given an
--- irrelevant one.
-
-Recomputable : Pred A ℓ → Set _
-Recomputable P = ∀ {x} → .(P x) → P x
 
 ------------------------------------------------------------------------
 -- Operations on sets
