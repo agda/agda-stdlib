@@ -48,9 +48,9 @@ New modules
 
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
-* The 'no infinite descent' principle for (accessible elements of) well-founded relations:
-  ```
-  Induction.NoInfiniteDescent
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
   ```
 
 * Nagata's construction of the "idealization of a module":

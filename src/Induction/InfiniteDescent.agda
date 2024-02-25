@@ -178,10 +178,10 @@ module _ (accDescent⁺ : Acc _<_ ⊆ DescentFrom (TransClosure _<_) P) where
 
 module _ (stable : Stable P) where
 
-  acc⇒noSmallestCounterExample : NoSmallestCounterExample _<_ P → Acc _<_ ⊆ P
-  acc⇒noSmallestCounterExample noSmallest =
+  noSmallestCounterExample+acc⇒holds : NoSmallestCounterExample _<_ P → Acc _<_ ⊆ P
+  noSmallestCounterExample+acc⇒holds noSmallest =
     stable _ ∘ accDescent⁺+acc⇒notHold noSmallest
 
-  wf⇒noSmallestCounterExample : WellFounded _<_ → NoSmallestCounterExample _<_ P → Universal P
-  wf⇒noSmallestCounterExample wf noSmallest =
+  noSmallestCounterExample+wf⇒universal : NoSmallestCounterExample _<_ P → WellFounded _<_ → Universal P
+  noSmallestCounterExample+wf⇒universal noSmallest wf =
     stable _ ∘ accDescent⁺+wf⇒empty noSmallest wf
