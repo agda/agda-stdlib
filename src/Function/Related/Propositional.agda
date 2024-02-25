@@ -13,8 +13,8 @@ open import Relation.Binary
   using (Rel; REL; Sym; Reflexive; Trans; IsEquivalence; Setoid; IsPreorder; Preorder)
 open import Function.Bundles
 open import Function.Base
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Reasoning.Syntax
 
 open import Function.Properties.Surjection   using (↠⇒↪; ↠⇒⇔)
@@ -86,7 +86,7 @@ Related k A B = A ∼[ k ] B
 -- Propositional equality also implies any kind of relatedness.
 
 ≡⇒ : A ≡ B → A ∼[ k ] B
-≡⇒ P.refl = ↔⇒ (Identity.↔-id _)
+≡⇒ ≡.refl = ↔⇒ (Identity.↔-id _)
 
 ------------------------------------------------------------------------
 -- Special kinds of kinds
@@ -252,7 +252,7 @@ K-refl {k = surjection}         = Identity.↠-id _
 K-refl {k = bijection}          = Identity.↔-id _
 
 K-reflexive : _≡_ Relation.Binary.⇒ Related {a} k
-K-reflexive P.refl = K-refl
+K-reflexive ≡.refl = K-refl
 
 K-trans : Trans (Related {a} {b} k)
                 (Related {b} {c} k)
@@ -340,10 +340,10 @@ InducedPreorder₁ k P = record
   { _≈_        = _≡_
   ; _≲_        = InducedRelation₁ k P
   ; isPreorder = record
-    { isEquivalence = P.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = reflexive ∘
                       K-reflexive ∘
-                      P.cong P
+                      ≡.cong P
     ; trans         = K-trans
     }
   } where open Preorder (K-preorder _ _)
@@ -370,11 +370,11 @@ InducedPreorder₂ k _S_ = record
   { _≈_        = _≡_
   ; _≲_        = InducedRelation₂ k _S_
   ; isPreorder = record
-    { isEquivalence = P.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = λ x≡y {z} →
                         reflexive $
                         K-reflexive $
-                        P.cong (_S_ z) x≡y
+                        ≡.cong (_S_ z) x≡y
 
     ; trans         = λ i↝j j↝k → K-trans i↝j j↝k
     }

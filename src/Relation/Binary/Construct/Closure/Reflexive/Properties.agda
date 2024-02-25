@@ -19,8 +19,8 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Symmetric; Transitive; Reflexive; Asymmetric; Antisymmetric; Trichotomous; Total; Decidable; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects_; _Respects₂_)
 open import Relation.Binary.Construct.Closure.Reflexive
-open import Relation.Binary.PropositionalEquality.Core as PropEq using (_≡_; refl)
-import Relation.Binary.PropositionalEquality.Properties as PropEq
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary using (Pred)
@@ -115,7 +115,7 @@ module _ {_~_ : Rel A ℓ} where
 
   isPreorder : Transitive _~_ → IsPreorder _≡_ _~ᵒ_
   isPreorder ~-trans = record
-    { isEquivalence = PropEq.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = λ { refl → refl }
     ; trans         = trans ~-trans
     }

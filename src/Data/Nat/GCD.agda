@@ -22,7 +22,7 @@ open import Function.Base using (_$_; _∘_)
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary.Definitions using (tri<; tri>; tri≈; Symmetric)
-open import Relation.Binary.PropositionalEquality.Core as P
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; subst; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
@@ -79,7 +79,7 @@ gcd[m,n]∣m m n with <-cmp m n
 gcd[m,n]∣n : ∀ m n → gcd m n ∣ n
 gcd[m,n]∣n m n with <-cmp m n
 ... | tri< n<m _    _ = proj₁ (gcd′[m,n]∣m,n {n} {m} _ _)
-... | tri≈ _ P.refl _ = ∣-refl
+... | tri≈ _ ≡.refl _ = ∣-refl
 ... | tri> _ _    m<n = proj₂ (gcd′[m,n]∣m,n {m} {n} _ _)
 
 gcd-greatest : ∀ {m n c} → c ∣ m → c ∣ n → c ∣ gcd m n
@@ -102,11 +102,11 @@ gcd[m,n]≢0 m n (inj₁ m≢0) eq = m≢0 (0∣⇒≡0 (subst (_∣ m) eq (gcd[
 gcd[m,n]≢0 m n (inj₂ n≢0) eq = n≢0 (0∣⇒≡0 (subst (_∣ n) eq (gcd[m,n]∣n m n)))
 
 gcd[m,n]≡0⇒m≡0 : ∀ {m n} → gcd m n ≡ 0 → m ≡ 0
-gcd[m,n]≡0⇒m≡0 {zero}  {n} eq = P.refl
+gcd[m,n]≡0⇒m≡0 {zero}  {n} eq = ≡.refl
 gcd[m,n]≡0⇒m≡0 {suc m} {n} eq = contradiction eq (gcd[m,n]≢0 (suc m) n (inj₁ λ()))
 
 gcd[m,n]≡0⇒n≡0 : ∀ m {n} → gcd m n ≡ 0 → n ≡ 0
-gcd[m,n]≡0⇒n≡0 m {zero}  eq = P.refl
+gcd[m,n]≡0⇒n≡0 m {zero}  eq = ≡.refl
 gcd[m,n]≡0⇒n≡0 m {suc n} eq = contradiction eq (gcd[m,n]≢0 m (suc n) (inj₂ λ()))
 
 gcd-comm : Commutative gcd
@@ -140,12 +140,12 @@ gcd-assoc m n p = ∣-antisym
       p               ∎
 
 gcd-identityˡ : LeftIdentity 0 gcd
-gcd-identityˡ zero = P.refl
-gcd-identityˡ (suc _) = P.refl
+gcd-identityˡ zero = ≡.refl
+gcd-identityˡ (suc _) = ≡.refl
 
 gcd-identityʳ : RightIdentity 0 gcd
-gcd-identityʳ zero = P.refl
-gcd-identityʳ (suc _) = P.refl
+gcd-identityʳ zero = ≡.refl
+gcd-identityʳ (suc _) = ≡.refl
 
 gcd-identity : Algebra.Identity 0 gcd
 gcd-identity = gcd-identityˡ , gcd-identityʳ
@@ -187,9 +187,9 @@ gcd[cm,cn]/c≡gcd[m,n] c m n = gcd-universality forwards backwards
       *-cancelˡ-∣ c (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣n (c * m) _))
 
 c*gcd[m,n]≡gcd[cm,cn] : ∀ c m n → c * gcd m n ≡ gcd (c * m) (c * n)
-c*gcd[m,n]≡gcd[cm,cn] zero      m n = P.sym gcd[0,0]≡0
+c*gcd[m,n]≡gcd[cm,cn] zero      m n = ≡.sym gcd[0,0]≡0
 c*gcd[m,n]≡gcd[cm,cn] c@(suc _) m n = begin
-  c * gcd m n                   ≡⟨ cong (c *_) (P.sym (gcd[cm,cn]/c≡gcd[m,n] c m n)) ⟩
+  c * gcd m n                   ≡⟨ cong (c *_) (≡.sym (gcd[cm,cn]/c≡gcd[m,n] c m n)) ⟩
   c * (gcd (c * m) (c * n) / c) ≡⟨ m*[n/m]≡n (gcd-greatest (m∣m*n m) (m∣m*n n)) ⟩
   gcd (c * m) (c * n)           ∎
   where open ≡-Reasoning
@@ -282,7 +282,7 @@ mkGCD m n = gcd m n , gcd-GCD m n
 
 gcd? : (m n d : ℕ) → Dec (GCD m n d)
 gcd? m n d =
-  Dec.map′ (λ { P.refl → gcd-GCD m n }) (GCD.unique (gcd-GCD m n))
+  Dec.map′ (λ { ≡.refl → gcd-GCD m n }) (GCD.unique (gcd-GCD m n))
            (gcd m n ≟ d)
 
 GCD-* : ∀ {m n d c} .{{_ : NonZero c}} → GCD (m * c) (n * c) (d * c) → GCD m n d
@@ -297,7 +297,7 @@ GCD-/ {m} {n} {d} {c} {{x}}
   rewrite m*n/n≡m p c {{x}} | m*n/n≡m q c {{x}} | m*n/n≡m r c {{x}} = GCD-* gcd
 
 GCD-/gcd : ∀ m n .{{_ : NonZero (gcd m n)}} → GCD (m / gcd m n) (n / gcd m n) 1
-GCD-/gcd m n rewrite P.sym (n/n≡1 (gcd m n)) =
+GCD-/gcd m n rewrite ≡.sym (n/n≡1 (gcd m n)) =
   GCD-/ (gcd[m,n]∣m m n) (gcd[m,n]∣n m n) ∣-refl (gcd-GCD m n)
 
 ------------------------------------------------------------------------
@@ -327,10 +327,10 @@ module Bézout where
     sym (-+ x y eq) = +- y x eq
 
     refl : ∀ {d} → Identity d d d
-    refl = -+ 0 1 P.refl
+    refl = -+ 0 1 ≡.refl
 
     base : ∀ {d} → Identity d 0 d
-    base = -+ 0 1 P.refl
+    base = -+ 0 1 ≡.refl
 
     private
       infixl 7 _⊕_

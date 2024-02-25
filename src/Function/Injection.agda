@@ -19,7 +19,7 @@ open import Level
 open import Relation.Binary.Bundles using (Setoid)
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_ ; Π) renaming (_∘_ to _⟪∘⟫_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
 ------------------------------------------------------------------------
 -- Injective functions
@@ -58,7 +58,7 @@ Please use Function.(Bundles.)Injection instead."
 infix 3 _↣_
 
 _↣_ : ∀ {f t} → Set f → Set t → Set _
-From ↣ To = Injection (P.setoid From) (P.setoid To)
+From ↣ To = Injection (≡.setoid From) (≡.setoid To)
 {-# WARNING_ON_USAGE _↣_
 "Warning: _↣_ was deprecated in v2.0.
 Please use Function.(Bundles.)_↣_ instead."
@@ -69,7 +69,7 @@ injection : ∀ {f t} {From : Set f} {To : Set t} → (to : From → To) →
 injection to injective = record
   { to        = record
     { _⟨$⟩_ = to
-    ; cong = P.cong to
+    ; cong = ≡.cong to
     }
   ; injective = injective
   }

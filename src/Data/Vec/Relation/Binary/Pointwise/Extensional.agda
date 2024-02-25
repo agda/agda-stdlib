@@ -22,7 +22,7 @@ open import Relation.Binary.Core using (Rel; REL; _⇒_; _=[_]⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
 open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
 open import Relation.Nullary
@@ -134,12 +134,12 @@ isDecEquivalence decEquiv = record
 -- Pointwise _≡_ is equivalent to _≡_.
 
 Pointwise-≡⇒≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys → xs ≡ ys
-Pointwise-≡⇒≡ {xs = []}     {[]}     (ext app) = P.refl
+Pointwise-≡⇒≡ {xs = []}     {[]}     (ext app) = ≡.refl
 Pointwise-≡⇒≡ {xs = x ∷ xs} {y ∷ ys} xs∼ys     =
-  P.cong₂ _∷_ (head xs∼ys) (Pointwise-≡⇒≡ (tail xs∼ys))
+  ≡.cong₂ _∷_ (head xs∼ys) (Pointwise-≡⇒≡ (tail xs∼ys))
 
 ≡⇒Pointwise-≡ : ∀ {n} {xs ys : Vec A n} → xs ≡ ys → Pointwise _≡_ xs ys
-≡⇒Pointwise-≡ P.refl = refl P.refl
+≡⇒Pointwise-≡ ≡.refl = refl ≡.refl
 
 Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
 Pointwise-≡↔≡ {ℓ} {A} = mk⇔ Pointwise-≡⇒≡ ≡⇒Pointwise-≡

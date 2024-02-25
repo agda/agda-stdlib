@@ -17,8 +17,8 @@ open import Function.Bundles using (Inverse; mk↔)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -201,14 +201,14 @@ _⊎ₛ_ = ⊎-setoid
 -- decomposed using Pointwise
 
 Pointwise-≡⇒≡ : (Pointwise _≡_ _≡_) ⇒ _≡_ {A = A ⊎ B}
-Pointwise-≡⇒≡ (inj₁ x) = P.cong inj₁ x
-Pointwise-≡⇒≡ (inj₂ x) = P.cong inj₂ x
+Pointwise-≡⇒≡ (inj₁ x) = ≡.cong inj₁ x
+Pointwise-≡⇒≡ (inj₂ x) = ≡.cong inj₂ x
 
 ≡⇒Pointwise-≡ : _≡_ {A = A ⊎ B} ⇒ (Pointwise _≡_ _≡_)
-≡⇒Pointwise-≡ P.refl = ⊎-refl P.refl P.refl
+≡⇒Pointwise-≡ ≡.refl = ⊎-refl ≡.refl ≡.refl
 
 Pointwise-≡↔≡ : (A : Set a) (B : Set b) →
-                 Inverse (P.setoid A ⊎ₛ P.setoid B) (P.setoid (A ⊎ B))
+                 Inverse (≡.setoid A ⊎ₛ ≡.setoid B) (≡.setoid (A ⊎ B))
 Pointwise-≡↔≡ _ _ = record
   { to        = id
   ; from      = id

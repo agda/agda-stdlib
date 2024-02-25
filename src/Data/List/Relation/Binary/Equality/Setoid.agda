@@ -20,7 +20,7 @@ open import Data.List.Relation.Unary.Unique.Setoid S using (Unique)
 open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary.Core renaming (Rel to Rel₂)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Unary as U using (Pred)
 
@@ -50,7 +50,7 @@ open PW public
 ≋-refl = PW.refl refl
 
 ≋-reflexive : _≡_ ⇒ _≋_
-≋-reflexive P.refl = ≋-refl
+≋-reflexive ≡.refl = ≋-refl
 
 ≋-sym : Symmetric _≋_
 ≋-sym = PW.symmetric sym

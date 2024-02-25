@@ -16,8 +16,8 @@ open import Level using (Level; _⊔_; 0ℓ)
 open import Function
 open import Relation.Nullary.Decidable using (_×-dec_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -188,12 +188,12 @@ _×ₛ_ = ×-setoid
 -- decomposed using ×-Rel
 
 ≡×≡⇒≡ : Pointwise _≡_ _≡_ ⇒ _≡_ {A = A × B}
-≡×≡⇒≡ (P.refl , P.refl) = P.refl
+≡×≡⇒≡ (≡.refl , ≡.refl) = ≡.refl
 
 ≡⇒≡×≡ : _≡_ {A = A × B} ⇒ Pointwise _≡_ _≡_
-≡⇒≡×≡ P.refl = (P.refl , P.refl)
+≡⇒≡×≡ ≡.refl = (≡.refl , ≡.refl)
 
-Pointwise-≡↔≡ : Inverse (P.setoid A ×ₛ P.setoid B) (P.setoid (A × B))
+Pointwise-≡↔≡ : Inverse (≡.setoid A ×ₛ ≡.setoid B) (≡.setoid (A × B))
 Pointwise-≡↔≡ = record
   { to         = id
   ; from       = id
