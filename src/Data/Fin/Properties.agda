@@ -41,7 +41,7 @@ open import Relation.Binary.Bundles
   using (Preorder; Setoid; DecSetoid; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Structures
   using (IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
@@ -104,7 +104,7 @@ suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 
 ≡-isDecEquivalence : IsDecEquivalence {A = Fin n} _≡_
 ≡-isDecEquivalence = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; _≟_           = _≟_
   }
 
@@ -112,10 +112,10 @@ suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 -- Bundles
 
 ≡-preorder : ℕ → Preorder _ _ _
-≡-preorder n = P.preorder (Fin n)
+≡-preorder n = ≡.preorder (Fin n)
 
 ≡-setoid : ℕ → Setoid _ _
-≡-setoid n = P.setoid (Fin n)
+≡-setoid n = ≡.setoid (Fin n)
 
 ≡-decSetoid : ℕ → DecSetoid _ _
 ≡-decSetoid n = record
@@ -314,7 +314,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 ≤-isPreorder : IsPreorder {A = Fin n} _≡_ _≤_
 ≤-isPreorder = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; reflexive     = ≤-reflexive
   ; trans         = ≤-trans
   }
@@ -401,7 +401,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 <-isStrictPartialOrder : IsStrictPartialOrder {A = Fin n} _≡_ _<_
 <-isStrictPartialOrder = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; irrefl        = <-irrefl
   ; trans         = <-trans
   ; <-resp-≈      = <-resp₂-≡

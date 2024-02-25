@@ -10,7 +10,7 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Binary.Core using (_⇒_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
 open import Relation.Binary.Definitions
   using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
@@ -28,9 +28,9 @@ open Setoid S
 isPreorder : IsPreorder _≡_ _≈_
 isPreorder = record
   { isEquivalence = record
-    { refl  = P.refl
-    ; sym   = P.sym
-    ; trans = P.trans
+    { refl  = ≡.refl
+    ; sym   = ≡.sym
+    ; trans = ≡.trans
     }
   ; reflexive     = reflexive
   ; trans         = trans

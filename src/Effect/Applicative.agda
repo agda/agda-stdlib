@@ -21,7 +21,7 @@ open import Effect.Functor as Fun using (RawFunctor)
 
 open import Function.Base using (const; flip; _∘′_)
 open import Level using (Level; suc; _⊔_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
