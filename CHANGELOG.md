@@ -48,6 +48,11 @@ New modules
 
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
+* Nagata's construction of the "idealization of a module":
+  ```agda
+  Algebra.Module.Construct.Idealization
+  ```
+
 Additions to existing modules
 -----------------------------
 
