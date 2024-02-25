@@ -17,7 +17,7 @@ open import Relation.Binary.Construct.Composition using (_;_)
 private
   variable
     a b c ℓ : Level
-    A B C : Set a
+    A B : Set a
     x y : A
     xs ys : List A
     R S : REL A B ℓ
