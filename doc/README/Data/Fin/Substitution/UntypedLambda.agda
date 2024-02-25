@@ -14,7 +14,7 @@ open import Data.Fin.Substitution.Lemmas
 open import Data.Nat.Base hiding (_/_)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; cong₂; module ≡-Reasoning)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (Star; ε; _◅_)

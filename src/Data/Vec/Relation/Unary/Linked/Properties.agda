@@ -10,7 +10,7 @@ module Data.Vec.Relation.Unary.Linked.Properties where
 
 open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
-import Data.Vec.Relation.Unary.All.Properties as Allₚ
+import Data.Vec.Relation.Unary.All.Properties as All
 open import Data.Vec.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
 open import Data.Fin.Base using (zero; suc; _<_)
@@ -43,7 +43,7 @@ module _ (trans : Transitive R) where
   lookup⁺ : ∀ {i j} {xs : Vec _ n} →
            Linked R xs → i < j →
            R (lookup xs i) (lookup xs j)
-  lookup⁺ {i = zero}  {j = suc j} (rx ∷ rxs) i<j = Allₚ.lookup⁺ (Linked⇒All rx rxs) j
+  lookup⁺ {i = zero}  {j = suc j} (rx ∷ rxs) i<j = All.lookup⁺ (Linked⇒All rx rxs) j
   lookup⁺ {i = suc i} {j = suc j} (_  ∷ rxs) i<j = lookup⁺ rxs (s<s⁻¹ i<j)
 
 ------------------------------------------------------------------------

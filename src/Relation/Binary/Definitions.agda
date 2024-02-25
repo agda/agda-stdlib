@@ -19,8 +19,7 @@ open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
 open import Level
 open import Relation.Binary.Core
-open import Relation.Nullary.Decidable.Core using (Dec)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary as Nullary using (¬_; Dec)
 
 private
   variable
@@ -207,34 +206,39 @@ P Respects₂ _∼_ = (P Respectsʳ _∼_) × (P Respectsˡ _∼_)
 Substitutive : Rel A ℓ₁ → (ℓ₂ : Level) → Set _
 Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
 
+-- Irrelevancy - all proofs that a given pair of elements are related
+-- are indistinguishable.
+
+Irrelevant : REL A B ℓ → Set _
+Irrelevant _∼_ = ∀ {x y} → Nullary.Irrelevant (x ∼ y)
+
+-- Recomputability - we can rebuild a relevant proof given an
+-- irrelevant one.
+
+Recomputable : REL A B ℓ → Set _
+Recomputable _∼_ = ∀ {x y} → Nullary.Recomputable (x ∼ y)
+
+-- Stability
+
+Stable : REL A B ℓ → Set _
+Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
+
+-- Weak decidability - it is sometimes possible to determine if a given
+-- pair of elements are related.
+
+WeaklyDecidable : REL A B ℓ → Set _
+WeaklyDecidable _∼_ = ∀ x y → Nullary.WeaklyDecidable (x ∼ y)
+
 -- Decidability - it is possible to determine whether a given pair of
 -- elements are related.
 
 Decidable : REL A B ℓ → Set _
 Decidable _∼_ = ∀ x y → Dec (x ∼ y)
 
--- Weak decidability - it is sometimes possible to determine if a given
--- pair of elements are related.
-
-WeaklyDecidable : REL A B ℓ → Set _
-WeaklyDecidable _∼_ = ∀ x y → Maybe (x ∼ y)
-
 -- Propositional equality is decidable for the type.
 
 DecidableEquality : (A : Set a) → Set _
 DecidableEquality A = Decidable {A = A} _≡_
-
--- Irrelevancy - all proofs that a given pair of elements are related
--- are indistinguishable.
-
-Irrelevant : REL A B ℓ → Set _
-Irrelevant _∼_ = ∀ {x y} (a b : x ∼ y) → a ≡ b
-
--- Recomputability - we can rebuild a relevant proof given an
--- irrelevant one.
-
-Recomputable : REL A B ℓ → Set _
-Recomputable _∼_ = ∀ {x y} → .(x ∼ y) → x ∼ y
 
 -- Universal - all pairs of elements are related
 

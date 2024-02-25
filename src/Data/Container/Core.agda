@@ -9,7 +9,7 @@
 module Data.Container.Core where
 
 open import Level
-open import Data.Product.Base as Prod using (Σ-syntax)
+open import Data.Product.Base as Product using (Σ-syntax)
 open import Function.Base
 open import Function using (Inverse; _↔_)
 open import Relation.Unary using (Pred; _⊆_)
@@ -33,7 +33,7 @@ open Container public
 
 map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
       (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
-map f = Prod.map₂ (f ∘_)
+map f = Product.map₂ (f ∘_)
 
 -- Representation of container morphisms.
 
@@ -47,7 +47,7 @@ record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Containe
     position : ∀ {s} → Position C₂ (shape s) → Position C₁ s
 
   ⟪_⟫ : ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
-  ⟪_⟫ = Prod.map shape (_∘′ position)
+  ⟪_⟫ = Product.map shape (_∘′ position)
 
 open _⇒_ public
 
