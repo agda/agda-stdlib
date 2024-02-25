@@ -20,7 +20,7 @@ module Relation.Binary.Construct.Add.Point.Equality
 
 open import Level using (_⊔_)
 open import Function.Base
-import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Point
 import Relation.Nullary.Decidable as Dec
@@ -59,8 +59,8 @@ data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
 ≈∙-dec _≟_ [ k ] [ l ] = Dec.map′ [_] [≈]-injective (k ≟ l)
 
 ≈∙-irrelevant : Irrelevant _≈_ → Irrelevant _≈∙_
-≈∙-irrelevant ≈-irr ∙≈∙   ∙≈∙   = P.refl
-≈∙-irrelevant ≈-irr [ p ] [ q ] = P.cong _ (≈-irr p q)
+≈∙-irrelevant ≈-irr ∙≈∙   ∙≈∙   = ≡.refl
+≈∙-irrelevant ≈-irr [ p ] [ q ] = ≡.cong _ (≈-irr p q)
 
 ≈∙-substitutive : ∀ {ℓ} → Substitutive _≈_ ℓ → Substitutive _≈∙_ ℓ
 ≈∙-substitutive ≈-subst P ∙≈∙   = id

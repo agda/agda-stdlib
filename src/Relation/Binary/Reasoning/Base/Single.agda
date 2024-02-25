@@ -10,7 +10,7 @@ open import Level using (_⊔_)
 open import Function.Base using (case_of_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Definitions using (Reflexive; Transitive; Trans)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Reasoning.Syntax
 
 module Relation.Binary.Reasoning.Base.Single
@@ -36,7 +36,7 @@ start (relTo x∼y) = x∼y
 ∼-go x∼y (relTo y∼z) = relTo (trans x∼y y∼z)
 
 ≡-go : Trans _≡_ _IsRelatedTo_ _IsRelatedTo_
-≡-go x≡y (relTo y∼z) = relTo (case x≡y of λ where P.refl → y∼z)
+≡-go x≡y (relTo y∼z) = relTo (case x≡y of λ where ≡.refl → y∼z)
 
 stop : Reflexive _IsRelatedTo_
 stop = relTo refl

@@ -11,13 +11,13 @@ module Data.Vec.Functional.Properties where
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Nat as ℕ
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
-open import Data.List.Base as L using (List)
-import Data.List.Properties as Lₚ
+open import Data.List.Base as List using (List)
+import Data.List.Properties as List
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Vec.Base as V using (Vec)
-import Data.Vec.Properties as Vₚ
+open import Data.Vec.Base as Vec using (Vec)
+import Data.Vec.Properties as Vec
 open import Data.Vec.Functional
 open import Function.Base
 open import Level using (Level)
@@ -177,7 +177,7 @@ module _ {ys ys′ : Vector A m} where
 
   ++-cong : ∀ (xs xs′ : Vector A n) →
             xs ≗ xs′ → ys ≗ ys′ → xs ++ ys ≗ xs′ ++ ys′
-  ++-cong {n} xs xs′ eq₁ eq₂ i with toℕ i ℕₚ.<? n
+  ++-cong {n} xs xs′ eq₁ eq₂ i with toℕ i ℕ.<? n
   ... | yes i<n = begin
     (xs ++ ys) i      ≡⟨ lookup-++-< xs ys i i<n ⟩
     xs (fromℕ< i<n)   ≡⟨ eq₁ (fromℕ< i<n) ⟩
@@ -185,9 +185,9 @@ module _ {ys ys′ : Vector A m} where
     (xs′ ++ ys′) i    ∎
     where open ≡-Reasoning
   ... | no i≮n = begin
-    (xs ++ ys) i               ≡⟨ lookup-++-≥ xs ys i (ℕₚ.≮⇒≥ i≮n) ⟩
-    ys (reduce≥ i (ℕₚ.≮⇒≥ i≮n))   ≡⟨ eq₂ (reduce≥ i (ℕₚ.≮⇒≥ i≮n)) ⟩
-    ys′ (reduce≥ i (ℕₚ.≮⇒≥ i≮n))  ≡⟨ lookup-++-≥ xs′ ys′ i (ℕₚ.≮⇒≥ i≮n) ⟨
+    (xs ++ ys) i               ≡⟨ lookup-++-≥ xs ys i (ℕ.≮⇒≥ i≮n) ⟩
+    ys (reduce≥ i (ℕ.≮⇒≥ i≮n))   ≡⟨ eq₂ (reduce≥ i (ℕ.≮⇒≥ i≮n)) ⟩
+    ys′ (reduce≥ i (ℕ.≮⇒≥ i≮n))  ≡⟨ lookup-++-≥ xs′ ys′ i (ℕ.≮⇒≥ i≮n) ⟨
     (xs′ ++ ys′) i             ∎
     where open ≡-Reasoning
 
@@ -255,13 +255,13 @@ insertAt-removeAt {n = suc n} xs (suc i) (suc j) = insertAt-removeAt (tail xs) i
 -- Conversion functions
 
 toVec∘fromVec : (xs : Vec A n) → toVec (fromVec xs) ≡ xs
-toVec∘fromVec = Vₚ.tabulate∘lookup
+toVec∘fromVec = Vec.tabulate∘lookup
 
 fromVec∘toVec : (xs : Vector A n) → fromVec (toVec xs) ≗ xs
-fromVec∘toVec = Vₚ.lookup∘tabulate
+fromVec∘toVec = Vec.lookup∘tabulate
 
 toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
-toList∘fromList = Lₚ.tabulate-lookup
+toList∘fromList = List.tabulate-lookup
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

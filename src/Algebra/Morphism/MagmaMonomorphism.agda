@@ -27,7 +27,7 @@ open import Algebra.Structures
 open import Algebra.Definitions
 open import Data.Product.Base using (map)
 open import Data.Sum.Base using (inj₁; inj₂)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Morphism.RelMonomorphism isRelMonomorphism as RelMorphism
 
 ------------------------------------------------------------------------
@@ -36,7 +36,7 @@ import Relation.Binary.Morphism.RelMonomorphism isRelMonomorphism as RelMorphism
 module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   cong : Congruent₂ _≈₁_ _∙_
   cong {x} {y} {u} {v} x≈y u≈v = injective (begin

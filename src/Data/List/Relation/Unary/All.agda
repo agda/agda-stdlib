@@ -15,7 +15,7 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_)
 import Data.List.Membership.Setoid as SetoidMembership
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Function.Base using (_∘_; _∘′_; id; const)
@@ -25,8 +25,8 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (_Respects_)
-open import Relation.Binary.PropositionalEquality.Core as P
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -88,7 +88,7 @@ reduce f (px ∷ pxs) = f px ∷ reduce f pxs
 
 construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
 construct f []       = [] , []
-construct f (x ∷ xs) = Prod.zip _∷_ _∷_ (f x) (construct f xs)
+construct f (x ∷ xs) = Product.zip _∷_ _∷_ (f x) (construct f xs)
 
 fromList : (xs : List (∃ P)) → All P (List.map proj₁ xs)
 fromList []              = []
@@ -107,7 +107,7 @@ zipWith f (px ∷ pxs , qx ∷ qxs) = f (px , qx) ∷ zipWith f (pxs , qxs)
 
 unzipWith : R ⊆ P ∩ Q → All R ⊆ All P ∩ All Q
 unzipWith f []         = [] , []
-unzipWith f (rx ∷ rxs) = Prod.zip _∷_ _∷_ (f rx) (unzipWith f rxs)
+unzipWith f (rx ∷ rxs) = Product.zip _∷_ _∷_ (f rx) (unzipWith f rxs)
 
 zip : All P ∩ All Q ⊆ All (P ∩ Q)
 zip = zipWith id
@@ -124,7 +124,7 @@ module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
   tabulateₛ {x ∷ xs} hyp = hyp (here refl₁) ∷ tabulateₛ (hyp ∘ there)
 
 tabulate : (∀ {x} → x ∈ₚ xs → P x) → All P xs
-tabulate = tabulateₛ (P.setoid _)
+tabulate = tabulateₛ (≡.setoid _)
 
 self : ∀ {xs : List A} → All (const A) xs
 self = tabulate (λ {x} _ → x)
@@ -189,7 +189,7 @@ lookupAny (px ∷ pxs) (here qx) = px , qx
 lookupAny (px ∷ pxs) (there i) = lookupAny pxs i
 
 lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
-lookupWith f pxs i = Prod.uncurry f (lookupAny pxs i)
+lookupWith f pxs i = Product.uncurry f (lookupAny pxs i)
 
 lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
 lookup pxs = lookupWith (λ { px refl → px }) pxs
@@ -213,9 +213,9 @@ universal u []       = []
 universal u (x ∷ xs) = u x ∷ universal u xs
 
 irrelevant : Irrelevant P → Irrelevant (All P)
-irrelevant irr []           []           = P.refl
+irrelevant irr []           []           = ≡.refl
 irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
-  P.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)
+  ≡.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)
 
 satisfiable : Satisfiable (All P)
 satisfiable = [] , []

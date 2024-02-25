@@ -14,7 +14,7 @@ import Algebra.Properties.Group as GroupP
 open import Function.Base
 open import Level
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
-import Relation.Binary.Reasoning.Setoid as EqR
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
@@ -137,7 +137,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     open IsMonoidMorphism mn-homo public
 
     ⁻¹-homo : Homomorphic₁ ⟦_⟧ F._⁻¹ T._⁻¹
-    ⁻¹-homo x = let open EqR T.setoid in T.uniqueˡ-⁻¹ ⟦ x F.⁻¹ ⟧ ⟦ x ⟧ $ begin
+    ⁻¹-homo x = let open ≈-Reasoning T.setoid in T.uniqueˡ-⁻¹ ⟦ x F.⁻¹ ⟧ ⟦ x ⟧ $ begin
       ⟦ x F.⁻¹ ⟧ T.∙ ⟦ x ⟧ ≈⟨ T.sym (∙-homo (x F.⁻¹) x) ⟩
       ⟦ x F.⁻¹ F.∙ x ⟧     ≈⟨ ⟦⟧-cong (F.inverseˡ x) ⟩
       ⟦ F.ε ⟧              ≈⟨ ε-homo ⟩
