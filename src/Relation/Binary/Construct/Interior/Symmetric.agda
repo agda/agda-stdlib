@@ -16,9 +16,7 @@ private
   variable
     a b c ℓ r s t : Level
     A : Set a
-    R : Rel A r
-    S : Rel A s
-    T : Rel A t
+    R S T : Rel A r
 
 ------------------------------------------------------------------------
 -- Definition
@@ -28,6 +26,7 @@ record SymInterior (R : Rel A ℓ) (x y : A) : Set ℓ where
   field
     lhs≤rhs : R x y
     rhs≤lhs : R y x
+
 open SymInterior public
 
 ------------------------------------------------------------------------
@@ -60,25 +59,25 @@ asymmetric⇒empty asym (r , r′) = asym r r′
 -- A reflexive transitive relation _≤_ gives rise to a poset in which the
 -- equivalence relation is SymInterior _≤_.
 
-isEquivalence : ∀ {a ℓ} {A : Set a} {≤ : Rel A ℓ} →
-  Reflexive ≤ → Transitive ≤ → IsEquivalence (SymInterior ≤)
-isEquivalence ≤-refl ≤-trans = record
-  { refl = reflexive ≤-refl
+isEquivalence : Reflexive R → Transitive R → IsEquivalence (SymInterior R)
+isEquivalence refl trans = record
+  { refl = reflexive refl
   ; sym = symmetric
-  ; trans = transitive ≤-trans
+  ; trans = transitive trans
   }
 
-isPartialOrder : ∀ {a ℓ} {A : Set a} {≤ : Rel A ℓ} →
-  Reflexive ≤ → Transitive ≤ → IsPartialOrder (SymInterior ≤) ≤
-isPartialOrder ≤-refl ≤-trans = record
+isPartialOrder : Reflexive R → Transitive R → IsPartialOrder (SymInterior R) R
+isPartialOrder refl trans = record
   { isPreorder = record
-    { isEquivalence = isEquivalence ≤-refl ≤-trans
+    { isEquivalence = isEquivalence refl trans
     ; reflexive = lhs≤rhs
-    ; trans = ≤-trans
+    ; trans = trans
     }
   ; antisym = _,_
   }
 
-poset : Proset c ℓ → Poset c ℓ ℓ
-poset record { _≤_ = ≤; refl = refl; trans = trans } =
-  record { _≤_ = ≤; isPartialOrder = isPartialOrder refl trans }
+poset : ∀ {a} {A : Set a} {R : Rel A ℓ} → Reflexive R → Transitive R → Poset a ℓ ℓ
+poset {R = R} refl trans = record
+  { _≤_ = R
+  ; isPartialOrder = isPartialOrder refl trans
+  }
