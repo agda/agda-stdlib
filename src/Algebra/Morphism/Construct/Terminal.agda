@@ -15,8 +15,9 @@ open import Level using (Level)
 
 module Algebra.Morphism.Construct.Terminal {c ℓ : Level} where
 
-open import Algebra.Bundles using (Monoid; Group; NearSemiring; Semiring; Ring)
-open import Algebra.Bundles.Raw using (RawMonoid; RawGroup)
+
+open import Algebra.Bundles.Raw
+  using (RawMonoid; RawGroup; RawNearSemiring; RawSemiring; RawRing)
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Algebra.Morphism.Structures
   using ( module MagmaMorphisms
@@ -75,11 +76,10 @@ module UniqueMorphism (M : RawMonoid a ℓa) where
 ------------------------------------------------------------------------
 -- Monoid
 
-module _ (M : Monoid a ℓa) where
+module _ (M : RawMonoid a ℓa) where
 
-  private module M = Monoid M
-  open MonoidMorphisms M.rawMonoid rawMonoid
-  open UniqueMorphism M.rawMonoid
+  open MonoidMorphisms M rawMonoid
+  open UniqueMorphism M
 
   isMonoidHomomorphism : IsMonoidHomomorphism one
   isMonoidHomomorphism = record
@@ -90,59 +90,59 @@ module _ (M : Monoid a ℓa) where
 ------------------------------------------------------------------------
 -- Group
 
-module _ (G : Group a ℓa) where
+module _ (G : RawGroup a ℓa) where
 
-  private module G = Group G
-  open GroupMorphisms G.rawGroup rawGroup
+  private module G = RawGroup G
+  open GroupMorphisms G rawGroup
   open UniqueMorphism G.rawMonoid
 
   isGroupHomomorphism : IsGroupHomomorphism one
   isGroupHomomorphism = record
-    { isMonoidHomomorphism = isMonoidHomomorphism G.monoid
+    { isMonoidHomomorphism = isMonoidHomomorphism G.rawMonoid
     ; ⁻¹-homo = λ _ → _
     }
 
 ------------------------------------------------------------------------
 -- NearSemiring
 
-module _ (N : NearSemiring a ℓa) where
+module _ (N : RawNearSemiring a ℓa) where
 
-  private module N = NearSemiring N
-  open NearSemiringMorphisms N.rawNearSemiring rawNearSemiring
+  private module N = RawNearSemiring N
+  open NearSemiringMorphisms N rawNearSemiring
   open UniqueMorphism N.+-rawMonoid
 
   isNearSemiringHomomorphism : IsNearSemiringHomomorphism one
   isNearSemiringHomomorphism = record
-    { +-isMonoidHomomorphism = isMonoidHomomorphism N.+-monoid
+    { +-isMonoidHomomorphism = isMonoidHomomorphism N.+-rawMonoid
     ; *-homo = λ _ _ → _
     }
 
 ------------------------------------------------------------------------
 -- Semiring
 
-module _ (S : Semiring a ℓa) where
+module _ (S : RawSemiring a ℓa) where
 
-  private module S = Semiring S
-  open SemiringMorphisms S.rawSemiring rawSemiring
+  private module S = RawSemiring S
+  open SemiringMorphisms S rawSemiring
   open UniqueMorphism S.+-rawMonoid
 
   isSemiringHomomorphism : IsSemiringHomomorphism one
   isSemiringHomomorphism = record
-    { isNearSemiringHomomorphism = isNearSemiringHomomorphism S.nearSemiring
+    { isNearSemiringHomomorphism = isNearSemiringHomomorphism S.rawNearSemiring
     ; 1#-homo = _
     }
 
 ------------------------------------------------------------------------
 -- Ring
 
-module _ (R : Ring a ℓa) where
+module _ (R : RawRing a ℓa) where
 
-  private module R = Ring R
-  open RingMorphisms R.rawRing rawRing
+  private module R = RawRing R
+  open RingMorphisms R rawRing
   open UniqueMorphism R.+-rawMonoid
 
   isRingHomomorphism : IsRingHomomorphism one
   isRingHomomorphism = record
-    { isSemiringHomomorphism = isSemiringHomomorphism R.semiring
+    { isSemiringHomomorphism = isSemiringHomomorphism R.rawSemiring
     ; -‿homo = λ _ → _
     }
