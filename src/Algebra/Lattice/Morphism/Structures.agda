@@ -12,7 +12,7 @@ open import Algebra.Morphism
 open import Algebra.Lattice.Bundles
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)
-import Function.Definitions as FunctionDefinitions
+open import Function.Definitions
 open import Relation.Binary.Morphism.Structures
 open import Relation.Binary.Core
 
@@ -44,7 +44,6 @@ module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂
   module ∧ = MagmaMorphisms ∧-rawMagma₁ ∧-rawMagma₂
 
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
 
 
   record IsLatticeHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -71,7 +70,7 @@ module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂
   record IsLatticeMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isLatticeHomomorphism : IsLatticeHomomorphism ⟦_⟧
-      injective             : Injective ⟦_⟧
+      injective             : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsLatticeHomomorphism isLatticeHomomorphism public
 
@@ -94,7 +93,7 @@ module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂
   record IsLatticeIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isLatticeMonomorphism : IsLatticeMonomorphism ⟦_⟧
-      surjective            : Surjective ⟦_⟧
+      surjective            : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsLatticeMonomorphism isLatticeMonomorphism public
 

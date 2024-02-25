@@ -4,13 +4,13 @@
 -- Vectors defined by recursion
 ------------------------------------------------------------------------
 
--- What is the point of this module? The n-ary products below are intended
--- to be used with a fixed n, in which case the nil constructor can be
--- avoided: pairs are represented as pairs (x , y), not as triples
--- (x , y , unit).
--- Additionally, vectors defined by recursion enjoy η-rules. That is to say
--- that two vectors of known length are definitionally equal whenever their
--- elements are.
+-- What is the point of this module? The n-ary products below are
+-- intended to be used with a fixed n, in which case the nil constructor
+-- can be avoided: pairs are represented as pairs (x , y), not as
+-- triples (x , y , unit).
+-- Additionally, vectors defined by recursion enjoy η-rules. That is to
+-- say that two vectors of known length are definitionally equal
+-- whenever their elements are.
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
@@ -21,7 +21,7 @@ open import Data.Nat.Properties using (+-comm; *-comm)
 open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.Fin.Properties using (1↔⊤; *↔×)
-open import Data.Product.Base as Prod using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Algebra using (×-cong)
 open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.Unit.Base using (tt)
@@ -29,8 +29,8 @@ open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Unit.Polymorphic.Properties using (⊤↔⊤*)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Data.Vec.N-ary using (N-ary)
-open import Function.Base using (_∘′_; _∘_; id)
-open import Function.Bundles using (_↔_; mk↔′; mk↔)
+open import Function.Base using (_∘′_; _∘_; id; const)
+open import Function.Bundles using (_↔_; mk↔ₛ′; mk↔)
 open import Function.Properties.Inverse using (↔-isEquivalence; ↔-refl; ↔-sym; ↔-trans)
 open import Level using (Level; lift)
 open import Relation.Unary using (IUniversal; Universal; _⇒_)
@@ -44,8 +44,8 @@ private
     B : Set b
     C : Set c
 
--- Types and patterns
 ------------------------------------------------------------------------
+-- Types and patterns
 
 infix 8 _^_
 _^_ : Set a → ℕ → Set a
@@ -61,8 +61,8 @@ a ∈[ 0    ] as               = ⊥
 a ∈[ 1    ] a′               = a ≡ a′
 a ∈[ suc n@(suc _) ] a′ , as = a ≡ a′ ⊎ a ∈[ n ] as
 
--- Basic operations
 ------------------------------------------------------------------------
+-- Basic operations
 
 cons : ∀ n → A → A ^ n → A ^ suc n
 cons 0       a _  = a
@@ -90,7 +90,7 @@ lookup as (zero {n})  = head n as
 lookup as (suc {n} k) = lookup (tail n as) k
 
 replicate : ∀ n → A → A ^ n
-replicate n a = fromVec (Vec.replicate a)
+replicate n a = fromVec (Vec.replicate n a)
 
 tabulate : ∀ n → (Fin n → A) → A ^ n
 tabulate n f = fromVec (Vec.tabulate f)
@@ -106,9 +106,8 @@ splitAt (suc m) n xs =
   let (ys , zs) = splitAt m n (tail (m Nat.+ n) xs) in
   cons m (head (m Nat.+ n) xs) ys , zs
 
-
--- Manipulating N-ary products
 ------------------------------------------------------------------------
+-- Manipulating N-ary products
 
 map : (A → B) → ∀ n → A ^ n → B ^ n
 map f 0      as       = lift tt
@@ -147,7 +146,7 @@ zipWith f ((suc n@(suc _))) (a , as) (b , bs) = f a b , zipWith f n as bs
 unzipWith : (A → B × C) → ∀ n → A ^ n → B ^ n × C ^ n
 unzipWith f 0               as       = [] , []
 unzipWith f 1               a        = f a
-unzipWith f (suc n@(suc _)) (a , as) = Prod.zip _,_ _,_ (f a) (unzipWith f n as)
+unzipWith f (suc n@(suc _)) (a , as) = Product.zip _,_ _,_ (f a) (unzipWith f n as)
 
 zip : ∀ n → A ^ n → B ^ n → (A × B) ^ n
 zip = zipWith _,_
@@ -156,7 +155,7 @@ unzip : ∀ n → (A × B) ^ n → A ^ n × B ^ n
 unzip = unzipWith id
 
 lift↔ : ∀ n → A ↔ B → A ^ n ↔ B ^ n
-lift↔ 0               A↔B = mk↔ ((λ { [] → refl }) , (λ{ [] → refl }))
+lift↔ 0               A↔B = mk↔ₛ′ _ _ (const refl) (const refl)
 lift↔ 1               A↔B = A↔B
 lift↔ (suc n@(suc _)) A↔B = ×-cong A↔B (lift↔ n A↔B)
 

@@ -12,10 +12,11 @@ open import Algebra.Bundles
 open import Data.Empty
 open import Data.Nat.Base as ℕ using (zero; suc; parity)
 open import Data.Parity.Base as ℙ using (Parity; 0ℙ; 1ℙ; _⁻¹; toSign; fromSign)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sign.Base as 𝕊
 open import Function.Base using (_$_; id)
-open import Function.Definitions using (Injective; Surjective)
+open import Function.Definitions
+open import Function.Consequences.Propositional
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
@@ -27,7 +28,7 @@ open import Relation.Nullary using (yes; no)
 open import Algebra.Structures {A = Parity} _≡_
 open import Algebra.Definitions {A = Parity} _≡_
 open import Algebra.Consequences.Propositional
-  using (selfInverse⇒involutive; selfInverse⇒injective; comm+distrˡ⇒distrʳ)
+  using (selfInverse⇒involutive; selfInverse⇒injective; comm∧distrˡ⇒distrʳ)
 open import Algebra.Morphism.Structures
 
 ------------------------------------------------------------------------
@@ -253,7 +254,7 @@ p+p≡0ℙ 1ℙ = refl
 *-distribˡ-+ 1ℙ 1ℙ 1ℙ = refl
 
 *-distribʳ-+ : ℙ._*_ DistributesOverʳ ℙ._+_
-*-distribʳ-+ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-+
+*-distribʳ-+ = comm∧distrˡ⇒distrʳ *-comm *-distribˡ-+
 
 *-distrib-+ : ℙ._*_ DistributesOver ℙ._+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -370,7 +371,6 @@ p+p≡0ℙ 1ℙ = refl
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
-  ; zero             = *-zero
   }
 
 +-*-ring : Ring 0ℓ 0ℓ
@@ -402,23 +402,19 @@ p+p≡0ℙ 1ℙ = refl
 ⁻¹-homo-opposite 0ℙ = refl
 ⁻¹-homo-opposite 1ℙ = refl
 
-toSign-inverts-fromSign : ∀ {p s} → toSign p ≡ s → fromSign s ≡ p
-toSign-inverts-fromSign {0ℙ} refl = refl
-toSign-inverts-fromSign {1ℙ} refl = refl
+toSign-inverseʳ : Inverseʳ _≡_ _≡_ toSign fromSign
+toSign-inverseʳ {0ℙ} refl = refl
+toSign-inverseʳ {1ℙ} refl = refl
 
-fromSign-inverts-toSign : ∀ {s p} → fromSign s ≡ p → toSign p ≡ s
-fromSign-inverts-toSign { + }  refl = refl
-fromSign-inverts-toSign { - } refl = refl
+toSign-inverseˡ : Inverseˡ _≡_ _≡_ toSign fromSign
+toSign-inverseˡ { + }  refl = refl
+toSign-inverseˡ { - } refl = refl
 
 toSign-injective : Injective _≡_ _≡_ toSign
-toSign-injective {p} {q} eq = begin
-  p                   ≡⟨ sym (toSign-inverts-fromSign {p} refl) ⟩
-  fromSign (toSign p) ≡⟨ cong fromSign eq ⟩
-  fromSign (toSign q) ≡⟨ toSign-inverts-fromSign {q} refl ⟩
-  q ∎ where open ≡-Reasoning
+toSign-injective = inverseʳ⇒injective toSign toSign-inverseʳ
 
 toSign-surjective : Surjective _≡_ _≡_ toSign
-toSign-surjective s = (fromSign s) , fromSign-inverts-toSign {s} refl
+toSign-surjective = inverseˡ⇒surjective toSign-inverseˡ
 
 toSign-isMagmaHomomorphism : IsMagmaHomomorphism ℙ.+-rawMagma 𝕊.*-rawMagma toSign
 toSign-isMagmaHomomorphism = record
@@ -477,7 +473,7 @@ toSign-isGroupIsomorphism = record
 
 
 ------------------------------------------------------------------------
--- relating Nat and Parity
+-- Relating Nat and Parity
 
 -- successor and (_⁻¹)
 

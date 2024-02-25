@@ -67,8 +67,8 @@ cRec = build cRecBuilder
 
 <′-wellFounded n = acc (<′-wellFounded′ n)
 
-<′-wellFounded′ (suc n) n <′-base       = <′-wellFounded n
-<′-wellFounded′ (suc n) m (<′-step m<n) = <′-wellFounded′ n m m<n
+<′-wellFounded′ (suc n) <′-base       = <′-wellFounded n
+<′-wellFounded′ (suc n) (<′-step m<n) = <′-wellFounded′ n m<n
 
 module _ {ℓ : Level} where
   open WF.All <′-wellFounded ℓ public
@@ -90,17 +90,17 @@ module _ {ℓ : Level} where
 -- the first billion proofs. Use this when you require the function
 -- using the proof of well-foundedness to evaluate fast.
 --
--- IMPORTANT: You have to be a little bit careful when using this to always
--- make the function be strict in some other argument than the accessibility
--- proof, otherwise you will have neutral terms unfolding a billion times
--- before getting stuck.
+-- IMPORTANT: You have to be a little bit careful when using this to
+-- always make the function be strict in some other argument than the
+-- accessibility proof, otherwise you will have neutral terms unfolding
+-- a billion times before getting stuck.
 <-wellFounded-fast : WellFounded _<_
 <-wellFounded-fast = <-wellFounded-skip 1000000000
   where
   <-wellFounded-skip : ∀ (k : ℕ) → WellFounded _<_
   <-wellFounded-skip zero    n       = <-wellFounded n
   <-wellFounded-skip (suc k) zero    = <-wellFounded 0
-  <-wellFounded-skip (suc k) (suc n) = acc (λ m _ → <-wellFounded-skip k m)
+  <-wellFounded-skip (suc k) (suc n) = acc λ {m} _ → <-wellFounded-skip k m
 
 module _ {ℓ : Level} where
   open WF.All <-wellFounded ℓ public

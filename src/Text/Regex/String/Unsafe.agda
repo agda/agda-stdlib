@@ -12,7 +12,8 @@ open import Data.String.Base using (String; toList; fromList)
 import Data.String.Unsafe as Stringₚ
 open import Function.Base using (_on_; id)
 open import Level using (0ℓ)
-open import Relation.Binary using (Rel; Decidable)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; sym; subst)
 open import Relation.Nullary.Decidable using (map′)
 
@@ -24,6 +25,8 @@ open import Text.Regex.String as Regex public
 
 ------------------------------------------------------------------------
 -- Specialised definitions
+
+infix 4 _∈_ _∉_ _∈?_ _∉?_
 
 _∈_ : String → Exp → Set
 str ∈ e = toList str Regex.∈ e

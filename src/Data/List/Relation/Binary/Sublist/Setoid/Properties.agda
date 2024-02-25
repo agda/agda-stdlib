@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of the setoid sublist relation
@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; _⇒_; _Preserves_⟶_)
+open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
@@ -15,12 +16,12 @@ open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Relation.Unary.Any using (Any)
 import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat.Base using (_≤_; _≥_)
-import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃; _,_; proj₂)
+import Data.Nat.Properties as ℕ
+open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
-open import Relation.Binary using () renaming (Decidable to Decidable₂)
+open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
@@ -158,7 +159,7 @@ module _ {m n} {xs : List A} where
 module _ {xs ys : List A} where
 
   drop⁺-⊆ : ∀ n → xs ⊆ ys → drop n xs ⊆ drop n ys
-  drop⁺-⊆ n xs⊆ys = drop⁺ {n} ℕₚ.≤-refl xs⊆ys
+  drop⁺-⊆ n xs⊆ys = drop⁺ {n} ℕ.≤-refl xs⊆ys
 
 ------------------------------------------------------------------------
 -- takeWhile / dropWhile

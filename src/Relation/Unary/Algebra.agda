@@ -14,8 +14,8 @@ open import Algebra.Lattice.Bundles
 import Algebra.Lattice.Structures as AlgebraicLatticeStructures
 import Algebra.Structures as AlgebraicStructures
 open import Data.Empty.Polymorphic using (⊥-elim)
-open import Data.Product as Product using (_,_; proj₁; proj₂; <_,_>; curry; uncurry)
-open import Data.Sum as Sum using (inj₁; inj₂; [_,_])
+open import Data.Product.Base as Product using (_,_; proj₁; proj₂; <_,_>; curry; uncurry)
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
 open import Data.Unit.Polymorphic using (tt)
 open import Function.Base using (id; const; _∘_)
 open import Level

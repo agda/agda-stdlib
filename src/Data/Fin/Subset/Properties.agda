@@ -22,7 +22,7 @@ open import Data.Fin.Base using (Fin; suc; zero)
 open import Data.Fin.Subset
 open import Data.Fin.Properties using (any?; decFinSubset)
 open import Data.Nat.Base hiding (∣_-_∣)
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Data.Product as Product using (∃; ∄; _×_; _,_; proj₁)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Base
@@ -30,7 +30,12 @@ open import Data.Vec.Properties
 open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable; _⇔_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsStrictPartialOrder; IsDecStrictPartialOrder)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; StrictPartialOrder; DecStrictPartialOrder)
+open import Relation.Binary.Definitions as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Nullary.Negation using (contradiction)
@@ -129,8 +134,8 @@ nonempty? p = any? (_∈? p)
 ∣p∣≤n = count≤n (_≟ inside)
 
 ∣p∣≤∣x∷p∣ : ∀ x (p : Subset n)  → ∣ p ∣ ≤ ∣ x ∷ p ∣
-∣p∣≤∣x∷p∣ outside p = ℕₚ.≤-refl
-∣p∣≤∣x∷p∣ inside  p = ℕₚ.n≤1+n ∣ p ∣
+∣p∣≤∣x∷p∣ outside p = ℕ.≤-refl
+∣p∣≤∣x∷p∣ inside  p = ℕ.n≤1+n ∣ p ∣
 
 ------------------------------------------------------------------------
 -- ⊥
@@ -161,8 +166,8 @@ nonempty? p = any? (_∈? p)
 
 ∣p∣≡n⇒p≡⊤ : ∣ p ∣ ≡ n → p ≡ ⊤ {n}
 ∣p∣≡n⇒p≡⊤ {p = []}          _     = refl
-∣p∣≡n⇒p≡⊤ {p = outside ∷ p} |p|≡n = contradiction |p|≡n (ℕₚ.<⇒≢ (s≤s (∣p∣≤n p)))
-∣p∣≡n⇒p≡⊤ {p = inside  ∷ p} |p|≡n = cong (inside ∷_) (∣p∣≡n⇒p≡⊤ (ℕₚ.suc-injective |p|≡n))
+∣p∣≡n⇒p≡⊤ {p = outside ∷ p} |p|≡n = contradiction |p|≡n (ℕ.<⇒≢ (s≤s (∣p∣≤n p)))
+∣p∣≡n⇒p≡⊤ {p = inside  ∷ p} |p|≡n = cong (inside ∷_) (∣p∣≡n⇒p≡⊤ (ℕ.suc-injective |p|≡n))
 
 ------------------------------------------------------------------------
 -- ⁅_⁆
@@ -252,7 +257,7 @@ module _ (n : ℕ) where
 p⊆q⇒∣p∣≤∣q∣ : p ⊆ q → ∣ p ∣ ≤ ∣ q ∣
 p⊆q⇒∣p∣≤∣q∣ {p = []}          {[]}          p⊆q = z≤n
 p⊆q⇒∣p∣≤∣q∣ {p = outside ∷ p} {outside ∷ q} p⊆q = p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q)
-p⊆q⇒∣p∣≤∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ℕₚ.m≤n⇒m≤1+n (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q))
+p⊆q⇒∣p∣≤∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ℕ.m≤n⇒m≤1+n (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q))
 p⊆q⇒∣p∣≤∣q∣ {p = inside  ∷ p} {outside ∷ q} p⊆q = contradiction (p⊆q here) λ()
 p⊆q⇒∣p∣≤∣q∣ {p = inside  ∷ p} {inside  ∷ q} p⊆q = s≤s (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q))
 
@@ -353,7 +358,7 @@ p∪∁p≡⊤ (inside  ∷ p) = cong (inside ∷_) (p∪∁p≡⊤ p)
 ∣∁p∣≡n∸∣p∣ (inside  ∷ p) = ∣∁p∣≡n∸∣p∣ p
 ∣∁p∣≡n∸∣p∣ (outside ∷ p) = begin
   suc ∣ ∁ p ∣     ≡⟨ cong suc (∣∁p∣≡n∸∣p∣ p) ⟩
-  suc (_ ∸ ∣ p ∣) ≡⟨ sym (ℕₚ.+-∸-assoc 1 (∣p∣≤n p)) ⟩
+  suc (_ ∸ ∣ p ∣) ≡⟨ sym (ℕ.+-∸-assoc 1 (∣p∣≤n p)) ⟩
   suc  _ ∸ ∣ p ∣  ∎
   where open ≡-Reasoning
 
@@ -510,7 +515,7 @@ x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
 ∣p∩q∣≤∣q∣ p q = p⊆q⇒∣p∣≤∣q∣ (p∩q⊆q p q)
 
 ∣p∩q∣≤∣p∣⊓∣q∣ : ∀ (p q : Subset n) → ∣ p ∩ q ∣ ≤ ∣ p ∣ ⊓ ∣ q ∣
-∣p∩q∣≤∣p∣⊓∣q∣ p q = ℕₚ.⊓-glb (∣p∩q∣≤∣p∣ p q) (∣p∩q∣≤∣q∣ p q)
+∣p∩q∣≤∣p∣⊓∣q∣ p q = ℕ.⊓-glb (∣p∩q∣≤∣p∣ p q) (∣p∩q∣≤∣q∣ p q)
 
 ------------------------------------------------------------------------
 -- _∪_
@@ -748,7 +753,7 @@ x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 ∣q∣≤∣p∪q∣ p q = p⊆q⇒∣p∣≤∣q∣ (q⊆p∪q p q)
 
 ∣p∣⊔∣q∣≤∣p∪q∣ : ∀ (p q : Subset n) → ∣ p ∣ ⊔ ∣ q ∣ ≤ ∣ p ∪ q ∣
-∣p∣⊔∣q∣≤∣p∪q∣ p q = ℕₚ.⊔-lub (∣p∣≤∣p∪q∣ p q) (∣q∣≤∣p∪q∣ p q)
+∣p∣⊔∣q∣≤∣p∪q∣ p q = ℕ.⊔-lub (∣p∣≤∣p∪q∣ p q) (∣q∣≤∣p∪q∣ p q)
 
 ------------------------------------------------------------------------
 -- Properties of _─_
@@ -779,7 +784,7 @@ p─q─r≡p─r─q : ∀ (p q r : Subset n) → p ─ q ─ r ≡ p ─ r ─
 p─q─r≡p─r─q p q r = begin
   (p ─ q) ─ r  ≡⟨  p─q─r≡p─q∪r p q r ⟩
   p ─ (q ∪ r)  ≡⟨  cong (p ─_) (∪-comm q r) ⟩
-  p ─ (r ∪ q)  ≡˘⟨ p─q─r≡p─q∪r p r q ⟩
+  p ─ (r ∪ q)  ≡⟨ p─q─r≡p─q∪r p r q ⟨
   (p ─ r) ─ q  ∎
   where open ≡-Reasoning
 

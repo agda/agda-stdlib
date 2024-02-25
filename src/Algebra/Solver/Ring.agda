@@ -39,7 +39,6 @@ open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧′)
 open import Algebra.Properties.Semiring.Exp semiring
 
-open import Relation.Binary
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Binary.Reasoning.Setoid setoid
 import Relation.Binary.PropositionalEquality.Core as PropEq
@@ -49,7 +48,7 @@ open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup)
 open import Data.Maybe.Base using (just; nothing)
-open import Function
+open import Function.Base using (_⟨_⟩_; _$_)
 open import Level using (_⊔_)
 
 infix  9 :-_ -H_ -N_

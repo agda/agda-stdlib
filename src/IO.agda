@@ -11,7 +11,7 @@ module IO where
 open import Codata.Musical.Notation
 open import Codata.Musical.Costring
 open import Data.Unit.Polymorphic.Base
-open import Data.String.Base
+open import Data.String.Base using (String)
 import Data.Unit.Base as Unit0
 open import Function.Base using (_∘_; flip)
 import IO.Primitive as Prim

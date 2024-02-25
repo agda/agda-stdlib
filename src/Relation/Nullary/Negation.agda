@@ -11,20 +11,18 @@ module Relation.Nullary.Negation where
 open import Effect.Monad using (RawMonad; mkRawMonad)
 open import Data.Bool.Base using (Bool; false; true; if_then_else_; not)
 open import Data.Empty using (⊥-elim)
-open import Data.Product.Base as Prod using (_,_; Σ; Σ-syntax; ∃; curry; uncurry)
+open import Data.Product.Base as Product using (_,_; Σ; Σ-syntax; ∃; curry; uncurry)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (flip; _∘_; const; _∘′_)
 open import Level using (Level)
-open import Relation.Nullary.Decidable.Core using (Dec; yes; no; excluded-middle)
-open import Relation.Unary using (Universal)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; ¬¬-excluded-middle)
+open import Relation.Unary using (Universal; Pred)
 
 private
   variable
-    a p q r w : Level
-    A : Set a
-    P : Set p
-    Q : Set q
-    R : Set r
+    a b c d p w : Level
+    A B C D : Set a
+    P : Pred A p
     Whatever : Set w
 
 ------------------------------------------------------------------------
@@ -35,22 +33,20 @@ open import Relation.Nullary.Negation.Core public
 ------------------------------------------------------------------------
 -- Quantifier juggling
 
-module _ {P : A → Set p} where
+∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
+∃⟶¬∀¬ = flip uncurry
 
-  ∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
-  ∃⟶¬∀¬ = flip uncurry
+∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
+∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
 
-  ∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
-  ∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
+¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
+¬∃⟶∀¬ = curry
 
-  ¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
-  ¬∃⟶∀¬ = curry
+∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
+∀¬⟶¬∃ = uncurry
 
-  ∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
-  ∀¬⟶¬∃ = uncurry
-
-  ∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
-  ∃¬⟶¬∀ = flip ∀⟶¬∃¬
+∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
+∃¬⟶¬∀ = flip ∀⟶¬∃¬
 
 ------------------------------------------------------------------------
 -- Double Negation
@@ -58,15 +54,14 @@ module _ {P : A → Set p} where
 -- Double-negation is a monad (if we assume that all elements of ¬ ¬ P
 -- are equal).
 
-¬¬-Monad : RawMonad {p} DoubleNegation
+¬¬-Monad : RawMonad {a} DoubleNegation
 ¬¬-Monad = mkRawMonad
   DoubleNegation
   contradiction
   (λ x f → negated-stable (¬¬-map f x))
 
-¬¬-push : {Q : P → Set q} →
-          DoubleNegation Π[ Q ] → Π[ DoubleNegation ∘ Q ]
-¬¬-push ¬¬P⟶Q P ¬Q = ¬¬P⟶Q (λ P⟶Q → ¬Q (P⟶Q P))
+¬¬-push : DoubleNegation Π[ P ] → Π[ DoubleNegation ∘ P ]
+¬¬-push ¬¬∀P a ¬Pa = ¬¬∀P (λ ∀P → ¬Pa (∀P a))
 
 -- If Whatever is instantiated with ¬ ¬ something, then this function
 -- is call with current continuation in the double-negation monad, or,
@@ -77,26 +72,25 @@ module _ {P : A → Set p} where
 -- that case this function can be used (with Whatever instantiated to
 -- ⊥).
 
-call/cc : ((P → Whatever) → DoubleNegation P) → DoubleNegation P
-call/cc hyp ¬p = hyp (λ p → ⊥-elim (¬p p)) ¬p
+call/cc : ((A → Whatever) → DoubleNegation A) → DoubleNegation A
+call/cc hyp ¬a = hyp (λ a → ⊥-elim (¬a a)) ¬a
 
 -- The "independence of premise" rule, in the double-negation monad.
--- It is assumed that the index set (Q) is inhabited.
+-- It is assumed that the index set (A) is inhabited.
 
-independence-of-premise : {R : Q → Set r} →
-                          Q → (P → Σ Q R) → DoubleNegation (Σ[ x ∈ Q ] (P → R x))
-independence-of-premise {P = P} q f = ¬¬-map helper excluded-middle
+independence-of-premise : A → (B → Σ A P) → DoubleNegation (Σ[ x ∈ A ] (B → P x))
+independence-of-premise {A = A} {B = B} {P = P} q f = ¬¬-map helper ¬¬-excluded-middle
   where
-  helper : Dec P → _
-  helper (yes p) = Prod.map₂ const (f p)
+  helper : Dec B → Σ[ x ∈ A ] (B → P x)
+  helper (yes p) = Product.map₂ const (f p)
   helper (no ¬p) = (q , ⊥-elim ∘′ ¬p)
 
 -- The independence of premise rule for binary sums.
 
-independence-of-premise-⊎ : (P → Q ⊎ R) → DoubleNegation ((P → Q) ⊎ (P → R))
-independence-of-premise-⊎ {P = P} f = ¬¬-map helper excluded-middle
+independence-of-premise-⊎ : (A → B ⊎ C) → DoubleNegation ((A → B) ⊎ (A → C))
+independence-of-premise-⊎ {A = A} {B = B} {C = C} f = ¬¬-map helper ¬¬-excluded-middle
   where
-  helper : Dec P → _
+  helper : Dec A → (A → B) ⊎ (A → C)
   helper (yes p) = Sum.map const const (f p)
   helper (no ¬p) = inj₁ (⊥-elim ∘′ ¬p)
 
@@ -106,12 +100,10 @@ private
   -- independence-of-premise (for simplicity it is assumed that Q and
   -- R have the same type here):
 
-  corollary : {Q R : Set q} →
-              (P → Q ⊎ R) → DoubleNegation ((P → Q) ⊎ (P → R))
-  corollary {P = P} {Q} {R} f =
-    ¬¬-map helper (independence-of-premise
-                     true ([ _,_ true , _,_ false ] ∘′ f))
+  corollary : {B C : Set b} → (A → B ⊎ C) → DoubleNegation ((A → B) ⊎ (A → C))
+  corollary {A = A} {B = B} {C = C} f =
+    ¬¬-map helper (independence-of-premise true ([ _,_ true , _,_ false ] ∘′ f))
     where
-    helper : ∃ (λ b → P → if b then Q else R) → (P → Q) ⊎ (P → R)
+    helper : ∃ (λ b → A → if b then B else C) → (A → B) ⊎ (A → C)
     helper (true  , f) = inj₁ f
     helper (false , f) = inj₂ f

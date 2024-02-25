@@ -8,7 +8,7 @@
 
 open import Algebra using (CommutativeSemigroup)
 open import Data.Product.Base using (_,_)
-import Relation.Binary.Reasoning.Setoid as EqReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 module Algebra.Properties.CommutativeSemigroup.Divisibility
   {a ℓ} (CS : CommutativeSemigroup a ℓ)
@@ -16,20 +16,20 @@ module Algebra.Properties.CommutativeSemigroup.Divisibility
 
 open CommutativeSemigroup CS
 open import Algebra.Properties.CommutativeSemigroup CS using (x∙yz≈xz∙y; x∙yz≈y∙xz)
-open EqReasoning setoid
+open ≈-Reasoning setoid
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-export the contents of divisibility over semigroups
 
 open import Algebra.Properties.Semigroup.Divisibility semigroup public
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-export the contents of divisibility over commutative magmas
 
 open import Algebra.Properties.CommutativeMagma.Divisibility commutativeMagma public
   using (x∣xy; xy≈z⇒x∣z; ∣-factors; ∣-factors-≈)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- New properties
 
 x∣y∧z∣x/y⇒xz∣y : ∀ {x y z} → ((x/y , _) : x ∣ y) → z ∣ x/y → x ∙ z ∣ y

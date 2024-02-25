@@ -9,8 +9,8 @@
 module Reflection.AST.Argument.Information where
 
 open import Data.Product.Base                          using (_×_; <_,_>; uncurry)
-open import Relation.Nullary.Decidable                 using (map′; _×-dec_)
-open import Relation.Binary                            using (DecidableEquality)
+open import Relation.Nullary.Decidable.Core            using (map′; _×-dec_)
+open import Relation.Binary.Definitions                using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 
 open import Reflection.AST.Argument.Modality as Modality using (Modality)

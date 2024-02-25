@@ -14,8 +14,8 @@ open import Effect.Applicative.Indexed
 open import Effect.Monad
 open import Effect.Monad.Indexed
 open import Data.Unit
-open import Data.Product
-open import Function
+open import Data.Product.Base using (_,_)
+open import Function.Base using (const; id; _∘_)
 open import Level
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
@@ -29,7 +29,7 @@ private
 
 record RawPMonad {I : Set i} (M : Pt I (i ⊔ ℓ)) : Set (suc i ⊔ suc ℓ) where
 
-  infixl 1 _?>=_ _?>_ _>?>_
+  infixl 1 _?>=_ _?>_ _>?>_ _?>=′_
   infixr 1 _=<?_ _<?<_
 
   -- ``Demonic'' operations (the opponent chooses the state).

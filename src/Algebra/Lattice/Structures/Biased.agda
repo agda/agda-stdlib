@@ -16,7 +16,9 @@ open import Algebra.Core
 open import Algebra.Consequences.Setoid
 open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_)
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Lattice.Structures.Biased
   {a ℓ} {A : Set a}  -- The underlying set
@@ -80,9 +82,9 @@ record IsDistributiveLatticeʳʲᵐ (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   setoid : Setoid a ℓ
   setoid = record { isEquivalence = isEquivalence }
 
-  ∨-distrib-∧  = comm+distrʳ⇒distr setoid ∧-cong ∨-comm ∨-distribʳ-∧
-  ∧-distribˡ-∨ = distrib+absorbs⇒distribˡ setoid ∧-cong ∧-assoc ∨-comm ∧-absorbs-∨ ∨-absorbs-∧ ∨-distrib-∧
-  ∧-distrib-∨  = comm+distrˡ⇒distr setoid ∨-cong ∧-comm ∧-distribˡ-∨
+  ∨-distrib-∧  = comm∧distrʳ⇒distr setoid ∧-cong ∨-comm ∨-distribʳ-∧
+  ∧-distribˡ-∨ = distrib∧absorbs⇒distribˡ setoid ∧-cong ∧-assoc ∨-comm ∧-absorbs-∨ ∨-absorbs-∧ ∨-distrib-∧
+  ∧-distrib-∨  = comm∧distrˡ⇒distr setoid ∨-cong ∧-comm ∧-distribˡ-∨
 
   isDistributiveLatticeʳʲᵐ : IsDistributiveLattice ∨ ∧
   isDistributiveLatticeʳʲᵐ = record
@@ -113,8 +115,8 @@ record IsBooleanAlgebraʳ
   isBooleanAlgebraʳ : IsBooleanAlgebra  ∨ ∧ ¬ ⊤ ⊥
   isBooleanAlgebraʳ = record
     { isDistributiveLattice = isDistributiveLattice
-    ; ∨-complement          = comm+invʳ⇒inv setoid ∨-comm ∨-complementʳ
-    ; ∧-complement          = comm+invʳ⇒inv setoid ∧-comm ∧-complementʳ
+    ; ∨-complement          = comm∧invʳ⇒inv setoid ∨-comm ∨-complementʳ
+    ; ∧-complement          = comm∧invʳ⇒inv setoid ∧-comm ∧-complementʳ
     ; ¬-cong                = ¬-cong
     }
 

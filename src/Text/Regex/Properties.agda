@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecPoset)
+open import Relation.Binary.Bundles using (DecPoset)
 
 module Text.Regex.Properties {a e r} (P? : DecPoset a e r) where
 
@@ -23,12 +23,11 @@ open import Relation.Nullary.Negation
   using (¬_; contradiction)
 
 import Relation.Unary  as U
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 
 open DecPoset P? renaming (Carrier to A)
 open import Text.Regex.Base preorder
-
-open import Data.List.Relation.Binary.Pointwise using ([])
+open import Data.List.Relation.Binary.Pointwise.Base using ([])
 open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 open import Data.List.Relation.Ternary.Appending.Propositional.Properties {A = A}
 
@@ -49,6 +48,8 @@ open import Text.Regex.Properties.Core preorder public
 []∈? (e ∙ f) = map′ (uncurry (prod ([]++ []))) []∈e∙f-inv
              $ ([]∈? e) ×-dec ([]∈? f)
 []∈? (e ⋆)   = yes (star (sum (inj₁ ε)))
+
+infix 4 _∈ᴿ?_ _∉ᴿ?_ _∈?ε _∈?[_] _∈?[^_]
 
 _∈ᴿ?_ : Decidable _∈ᴿ_
 c ∈ᴿ? [ a ]     = map′ [_] (λ where [ eq ] → eq) (c ≟ a)

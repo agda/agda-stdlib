@@ -12,13 +12,12 @@ open import Data.Product.Base as Σ using (_×_; _,_; <_,_>; ∃-syntax)
 open import Data.List.Base using (List; []; _∷_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; _⇒_)
+open import Relation.Binary.Construct.Composition using (_;_)
 
 private
   variable
     a b c ℓ : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    A B C : Set a
     x y : A
     xs ys : List A
     R S : REL A B ℓ
@@ -60,8 +59,6 @@ map : R ⇒ S → Pointwise R ⇒ Pointwise S
 map R⇒S []            = []
 map R⇒S (Rxy ∷ Rxsys) = R⇒S Rxy ∷ map R⇒S Rxsys
 
-unzip : ∀ {r s} {R : REL A B r} {S : REL B C s} {xs zs} →
-  Pointwise (λ x z → ∃[ y ] R x y × S y z) xs zs →
-  ∃[ ys ] Pointwise R xs ys × Pointwise S ys zs
+unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
 unzip [] = [] , [] , []
-unzip ((y , r , s) ∷ xs∼zs) = Σ.map (y ∷_) (Σ.map (r ∷_) (s ∷_)) (unzip xs∼zs)
+unzip ((y , r , s) ∷ xs∼ys) = Σ.map (y ∷_) (Σ.map (r ∷_) (s ∷_)) (unzip xs∼ys)

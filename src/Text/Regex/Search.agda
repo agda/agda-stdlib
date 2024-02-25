@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecPoset)
+open import Relation.Binary.Bundles using (DecPoset)
 
 module Text.Regex.Search {a e r} (P? : DecPoset a e r) where
 
@@ -29,7 +29,8 @@ open import Data.List.Relation.Binary.Suffix.Heterogeneous
 open import Relation.Nullary using (Dec; ¬_; yes; no)
 open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary using (Rel; Decidable; _⇒_)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality.Core
 
 open DecPoset P? using (preorder) renaming (Carrier to A)
@@ -40,9 +41,9 @@ open import Text.Regex.Derivative.Brzozowski P?
 ------------------------------------------------------------------------
 -- Type corresponding to a match
 
--- Users have control over whether the match should start at the beginning
--- or stop at the end. So we have a precise type of spans ensuring their
--- demands are respected
+-- Users have control over whether the match should start at the
+-- beginning or stop at the end. So we have a precise type of spans
+-- ensuring their demands are respected
 Span : ∀ {r} → Regex → Rel A r → Rel (List A) (a ⊔ r)
 Span regex =
   if Regex.fromStart regex
@@ -143,8 +144,8 @@ module Infix where
   step⁻¹ {e} {acc} x []∉e []∉acc (inj₂ (mkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
     = inj₂ (mkMatch ys (eat-complete x (acc ∣ e) (sum (inj₁ ys∈e))) p)
 
-  -- search non-deterministically: at each step, the `acc` regex is changed
-  -- to accomodate the fact the match may be starting just now
+  -- search non-deterministically: at each step, the `acc` regex is
+  -- changed to accomodate the fact the match may be starting just now
   searchND : ∀ xs e acc → [] ∉ e → Dec (Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs acc)
   searchND xs e acc []∉e with []∈? acc
   ... | yes []∈acc with Prefix.longest xs acc -- get the best match possible

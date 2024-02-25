@@ -8,13 +8,17 @@
 
 module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 
-open import Function
-open import Relation.Binary
+open import Function.Base using (id; _∘_; _$_)
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Bundles using (Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions using (Transitive; Reflexive)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.PropositionalEquality.Core as PropEq
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; cong; cong₂)
-import Relation.Binary.PropositionalEquality.Properties as PropEq
-import Relation.Binary.Reasoning.Preorder as PreR
+import Relation.Binary.PropositionalEquality.Properties as ≡
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+open import Relation.Binary.Reasoning.Syntax
 
 ------------------------------------------------------------------------
 -- _◅◅_
@@ -78,7 +82,7 @@ fold-◅◅ P _⊕_ ∅ left-unit assoc (x ◅ xs) ys = begin
                                                    fold-◅◅ P _⊕_ ∅ left-unit assoc xs ys ⟩
   (x ⊕ (fold P _⊕_ ∅ xs  ⊕ fold P _⊕_ ∅ ys))  ≡⟨ sym (assoc x _ _) ⟩
   ((x ⊕ fold P _⊕_ ∅ xs) ⊕ fold P _⊕_ ∅ ys)   ∎
-  where open PropEq.≡-Reasoning
+  where open ≡.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -93,7 +97,7 @@ module _ {i t} {I : Set i} (T : Rel I t) where
 
   isPreorder : IsPreorder _≡_ (Star T)
   isPreorder = record
-    { isEquivalence = PropEq.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = reflexive
     ; trans         = trans
     }
@@ -101,7 +105,7 @@ module _ {i t} {I : Set i} (T : Rel I t) where
   preorder : Preorder _ _ _
   preorder = record
     { _≈_        = _≡_
-    ; _∼_        = Star T
+    ; _≲_        = Star T
     ; isPreorder = isPreorder
     }
 
@@ -109,17 +113,11 @@ module _ {i t} {I : Set i} (T : Rel I t) where
 -- Preorder reasoning for Star
 
 module StarReasoning {i t} {I : Set i} (T : Rel I t) where
-  private module Base = PreR (preorder T)
+  private module Base = ≲-Reasoning (preorder T)
 
   open Base public
-    hiding (step-≈; step-∼)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
+    renaming (≲-go to ⟶-go)
 
-  infixr 2 step-⟶ step-⟶⋆
-
-  step-⟶⋆ = Base.step-∼
-
-  step-⟶ : ∀ x {y z} → y IsRelatedTo z → T x y → x IsRelatedTo z
-  step-⟶ x y⟶⋆z x⟶y = step-⟶⋆ x y⟶⋆z (x⟶y ◅ ε)
-
-  syntax step-⟶⋆ x y⟶⋆z x⟶⋆y = x ⟶⋆⟨ x⟶⋆y ⟩ y⟶⋆z
-  syntax step-⟶  x y⟶⋆z x⟶y  = x ⟶⟨ x⟶y ⟩ y⟶⋆z
+  open ⟶-syntax _IsRelatedTo_ _IsRelatedTo_ (⟶-go ∘ (_◅ ε)) public
+  open ⟶*-syntax _IsRelatedTo_ _IsRelatedTo_ ⟶-go public

@@ -15,15 +15,15 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas
 
 open import Data.Bool                                       using (Bool;true;false)
 open import Data.Nat.Base as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Nat.Properties as ℕₚ                       using (≤′-trans)
+open import Data.Nat.Properties as ℕ                        using (≤′-trans)
 open import Data.Vec.Base as Vec                            using (Vec; _∷_)
 open import Data.Fin                                        using (Fin; zero; suc)
 open import Data.List.Base                                  using (_∷_; [])
 open import Data.Unit using (tt)
 open import Data.List.Kleene
-open import Data.Product                                    using (_,_; proj₁; proj₂; map₁; _×_)
+open import Data.Product.Base                               using (_,_; proj₁; proj₂; map₁; _×_)
 open import Data.Maybe                                      using (nothing; just)
-open import Function
+open import Function.Base                                   using (_⟨_⟩_)
 open import Level                                           using (lift)
 open import Relation.Nullary                                using (Dec; yes; no)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
@@ -59,13 +59,13 @@ pow-add x y (suc i) j = go x y i j
     y ^ suc (suc i ℕ.+ suc j) * x          ∎
 
 -- Here we show a homomorphism on exponentiation, i.e. that using the
--- exponentiation function on polynomials and then evaluating is the same
--- as evaluating and then exponentiating.
+-- exponentiation function on polynomials and then evaluating is the
+-- same as evaluating and then exponentiating.
 pow-hom : ∀ {n} i
         → (xs : Coeff n +)
         → ∀ ρ ρs
         → ⅀⟦ xs ⟧ (ρ , ρs) *⟨ ρ ⟩^ i ≈ ⅀⟦ xs ⍓+ i ⟧ (ρ , ρs)
-pow-hom zero (x Δ j & xs) ρ ρs rewrite ℕₚ.+-identityʳ j = refl
+pow-hom zero (x Δ j & xs) ρ ρs rewrite ℕ.+-identityʳ j = refl
 pow-hom (suc i) (x ≠0 Δ j & xs) ρ ρs =
   begin
     ρ ^ (suc i) * (((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ j)
@@ -93,10 +93,10 @@ pow-sucʳ : ∀ x i → x ^ suc i ≈ x ^ i * x
 pow-sucʳ x zero  = sym (*-identityˡ _)
 pow-sucʳ x (suc i) = refl
 
--- In the proper evaluation function, we avoid ever inserting an unnecessary 0#
--- like we do here. However, it is easier to prove with the form that does insert
--- 0#. So we write one here, and then prove that it's equivalent to the one that
--- adds a 0#.
+-- In the proper evaluation function, we avoid ever inserting an
+-- unnecessary 0# like we do here. However, it is easier to prove with
+-- the form that does insert 0#. So we write one here, and then prove
+-- that it's equivalent to the one that adds a 0#.
 ⅀?⟦_⟧ : ∀ {n} (xs : Coeff n *) → Carrier × Vec Carrier n → Carrier
 ⅀?⟦ []  ⟧ _ = 0#
 ⅀?⟦ ∹ x ⟧   = ⅀⟦ x ⟧
@@ -117,8 +117,8 @@ pow′-hom zero [] ρ ρs = refl
 pow′-hom (suc i) [] ρ ρs = zeroʳ _
 
 -- Here, we show that the normalising cons is correct.
--- This lets us prove with respect to the non-normalising form, especially
--- when we're using the folds.
+-- This lets us prove with respect to the non-normalising form,
+-- especially when we're using the folds.
 ∷↓-hom-0 : ∀ {n} (x : Poly n) → ∀ xs ρ ρs → ⅀?⟦ x Δ 0 ∷↓ xs ⟧ (ρ , ρs) ≈ (x , xs) ⟦∷⟧ (ρ , ρs)
 ∷↓-hom-0 x xs      ρ ρs with zero? x
 ∷↓-hom-0 x xs      ρ ρs | no ¬p = refl
@@ -161,9 +161,9 @@ pow′-hom (suc i) [] ρ ρs = zeroʳ _
 ⟦∷⟧-hom x []     ρ ρs = sym ((≪+ zeroʳ _) ⟨ trans ⟩ +-identityˡ _)
 ⟦∷⟧-hom x (∹ xs) ρ ρs = refl
 
--- This proves that injecting a polynomial into more variables is correct.
--- Basically, we show that if a polynomial doesn't care about the first few
--- variables, we can drop them from the input vector.
+-- This proves that injecting a polynomial into more variables is
+-- correct. Basically, we show that if a polynomial doesn't care about
+-- the first few variables, we can drop them from the input vector.
 ⅀-⊐↑-hom : ∀ {i n m}
          → (xs : Coeff i +)
          → (si≤n : suc i ≤′ n)
@@ -222,11 +222,12 @@ drop-1⇒lookup : ∀ {n} (i : Fin n) (ρs : Vec Carrier n) →
 drop-1⇒lookup zero    (ρ ∷ ρs) = ≡.refl
 drop-1⇒lookup (suc i) (ρ ∷ ρs) = drop-1⇒lookup i ρs
 
--- The fold: this function saves us hundreds of lines of proofs in the rest of the
--- homomorphism proof.
--- Many of the functions on polynomials are defined using para: this function allows
--- us to prove properties of those functions (in a foldr-fusion style) *ignoring*
--- optimisations we have made to the polynomial structure.
+-- The fold: this function saves us hundreds of lines of proofs in the
+-- rest of the homomorphism proof.
+-- Many of the functions on polynomials are defined using para: this
+-- function allows us to prove properties of those functions (in a
+-- foldr-fusion style) *ignoring* optimisations we have made to the
+-- polynomial structure.
 poly-foldR : ∀ {n} ρ ρs
         → ([f] : Fold n)
         → (f : Carrier → Carrier)
@@ -245,7 +246,7 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ suc i & []) =
     ⅀?⟦ y Δ suc i ∷↓ ys ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-s y i ys ρ ρs ⟩
     (ρ ^ suc i) * ((y , ys) ⟦∷⟧ (ρ , ρs))
-  ≈˘⟨ *≫ ⟦∷⟧?-hom y ys ρ ρs ⟩
+  ≈⟨ *≫ ⟦∷⟧?-hom y ys ρ ρs ⟨
     (ρ ^ suc i) * ((y , ys) ⟦∷⟧? (ρ , ρs))
   ≈⟨ *≫ step x [] (sym base) ⟩
     (ρ ^ suc i) * e ((x , []) ⟦∷⟧? (ρ , ρs))
@@ -264,7 +265,7 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ suc i & ∹ xs) =
     ⅀?⟦ y Δ suc i ∷↓ zs ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-s y i zs ρ ρs ⟩
     (ρ ^ suc i) * ((y , zs) ⟦∷⟧ (ρ , ρs))
-  ≈˘⟨ *≫ ⟦∷⟧?-hom y zs ρ ρs ⟩
+  ≈⟨ *≫ ⟦∷⟧?-hom y zs ρ ρs ⟨
     (ρ ^ suc i) * ((y , zs) ⟦∷⟧? (ρ , ρs))
   ≈⟨ *≫ step x (∹ xs) (poly-foldR ρ ρs f e cng dist step base xs) ⟩
     (ρ ^ suc i) * e ((x , (∹ xs )) ⟦∷⟧? (ρ , ρs))
@@ -282,7 +283,7 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ ℕ.zero & []) =
     ⅀?⟦ y Δ ℕ.zero ∷↓ zs ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-0 y zs ρ ρs ⟩
     ((y , zs) ⟦∷⟧ (ρ , ρs))
-  ≈˘⟨ ⟦∷⟧?-hom y zs ρ ρs ⟩
+  ≈⟨ ⟦∷⟧?-hom y zs ρ ρs ⟨
     ((y , zs) ⟦∷⟧? (ρ , ρs))
   ≈⟨ step x [] (sym base) ⟩
     e ((x , []) ⟦∷⟧? (ρ , ρs))
@@ -299,7 +300,7 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ ℕ.zero & (∹ xs )) =
     ⅀?⟦ y Δ ℕ.zero ∷↓ zs ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-0 y zs ρ ρs ⟩
     ((y , zs) ⟦∷⟧ (ρ , ρs))
-  ≈˘⟨ ⟦∷⟧?-hom y zs ρ ρs ⟩
+  ≈⟨ ⟦∷⟧?-hom y zs ρ ρs ⟨
     ((y , zs) ⟦∷⟧? (ρ , ρs))
   ≈⟨ step x (∹ xs ) (poly-foldR ρ ρs f e cng dist step base xs) ⟩
     e ((x , (∹ xs )) ⟦∷⟧ (ρ , ρs))

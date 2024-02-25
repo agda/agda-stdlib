@@ -16,9 +16,9 @@ import Algebra.Consequences.Setoid as Consequences
 import Algebra.Morphism.MagmaMonomorphism as MagmaMonomorphisms
 import Algebra.Lattice.Properties.Lattice as LatticeProperties
 open import Data.Product.Base using (_,_; map)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Morphism.RelMonomorphism as RelMonomorphisms
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 module Algebra.Lattice.Morphism.LatticeMonomorphism
   {a b ℓ₁ ℓ₂} {L₁ : RawLattice a ℓ₁} {L₂ : RawLattice b ℓ₂} {⟦_⟧}
@@ -73,7 +73,7 @@ module _ (⊔-⊓-isLattice : IsLattice _≈₂_ _⊔_ _⊓_) where
   setoid : Setoid b ℓ₂
   setoid = record { isEquivalence = isEquivalence }
 
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   ∨-absorbs-∧ : _Absorbs_ _≈₁_ _∨_ _∧_
   ∨-absorbs-∧ x y = injective (begin
@@ -97,8 +97,8 @@ module _ (⊔-⊓-isLattice : IsLattice _≈₂_ _⊔_ _⊓_) where
     ⟦ y ∧ z ∨ x ⟧                        ≈⟨ ∨-homo (y ∧ z) x ⟩
     ⟦ y ∧ z ⟧ ⊔ ⟦ x ⟧                    ≈⟨ ⊔-congʳ (∧-homo y z) ⟩
     ⟦ y ⟧ ⊓ ⟦ z ⟧ ⊔ ⟦ x ⟧                ≈⟨ distribʳ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
-    (⟦ y ⟧ ⊔ ⟦ x ⟧) ⊓ (⟦ z ⟧ ⊔ ⟦ x ⟧)    ≈˘⟨ ⊓-cong (∨-homo y x) (∨-homo z x) ⟩
-    ⟦ y ∨ x ⟧ ⊓ ⟦ z ∨ x ⟧                ≈˘⟨ ∧-homo (y ∨ x) (z ∨ x) ⟩
+    (⟦ y ⟧ ⊔ ⟦ x ⟧) ⊓ (⟦ z ⟧ ⊔ ⟦ x ⟧)    ≈⟨ ⊓-cong (∨-homo y x) (∨-homo z x) ⟨
+    ⟦ y ∨ x ⟧ ⊓ ⟦ z ∨ x ⟧                ≈⟨ ∧-homo (y ∨ x) (z ∨ x) ⟨
     ⟦ (y ∨ x) ∧ (z ∨ x) ⟧                ∎)
 
 isLattice : IsLattice _≈₂_ _⊔_ _⊓_ → IsLattice _≈₁_ _∨_ _∧_

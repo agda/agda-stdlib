@@ -16,19 +16,24 @@ import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.AbelianGroup
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base renaming (suc to sucℤ)
-open import Data.Nat as ℕ
-  using (ℕ; suc; zero; _∸_; s≤s; z≤n; s<s; z<s)
+open import Data.Nat.Base as ℕ
+  using (ℕ; suc; zero; _∸_; s≤s; z≤n; s<s; z<s; s≤s⁻¹; s<s⁻¹)
   hiding (module ℕ)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
-open import Data.Product using (proj₁; proj₂; _,_)
+open import Data.Product.Base using (proj₁; proj₂; _,_; _×_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _𝕊*_)
-import Data.Sign.Properties as 𝕊ₚ
-open import Data.Product using (_×_)
+import Data.Sign.Properties as Sign
 open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles using
+  (Setoid; DecSetoid; Preorder; TotalPreorder; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no; ¬_)
 import Relation.Nullary.Reflects as Reflects
@@ -271,17 +276,17 @@ drop‿-<- (-<- n<m) = n<m
 <-asym (-<- n<m) = ℕ.<-asym n<m ∘ drop‿-<-
 <-asym (+<+ m<n) = ℕ.<-asym m<n ∘ drop‿+<+
 
-≤-<-trans : Trans _≤_ _<_ _<_
-≤-<-trans (-≤- n≤m) (-<- o<n) = -<- (ℕ.<-transˡ o<n n≤m)
+≤-<-trans : LeftTrans _≤_ _<_
+≤-<-trans (-≤- n≤m) (-<- o<n) = -<- (ℕ.<-≤-trans o<n n≤m)
 ≤-<-trans (-≤- n≤m) -<+       = -<+
 ≤-<-trans -≤+       (+<+ m<o) = -<+
-≤-<-trans (+≤+ m≤n) (+<+ n<o) = +<+ (ℕ.<-transʳ m≤n n<o)
+≤-<-trans (+≤+ m≤n) (+<+ n<o) = +<+ (ℕ.≤-<-trans m≤n n<o)
 
-<-≤-trans : Trans _<_ _≤_ _<_
-<-≤-trans (-<- n<m) (-≤- o≤n) = -<- (ℕ.<-transʳ o≤n n<m)
+<-≤-trans : RightTrans _<_ _≤_
+<-≤-trans (-<- n<m) (-≤- o≤n) = -<- (ℕ.≤-<-trans o≤n n<m)
 <-≤-trans (-<- n<m) -≤+       = -<+
 <-≤-trans -<+       (+≤+ m≤n) = -<+
-<-≤-trans (+<+ m<n) (+≤+ n≤o) = +<+ (ℕ.<-transˡ m<n n≤o)
+<-≤-trans (+<+ m<n) (+≤+ n≤o) = +<+ (ℕ.<-≤-trans m<n n≤o)
 
 <-trans : Transitive _<_
 <-trans m<n n<p = ≤-<-trans (<⇒≤ m<n) n<p
@@ -297,9 +302,9 @@ drop‿-<- (-<- n<m) = n<m
 ... | tri≈ m≮n m≡n n≯m = tri≈ (n≯m ∘ drop‿-<-) (cong -[1+_] m≡n) (m≮n ∘ drop‿-<-)
 ... | tri> m≮n m≢n n>m = tri< (-<- n>m) (m≢n ∘ -[1+-injective) (m≮n ∘ drop‿-<-)
 <-cmp +[1+ m ] +[1+ n ] with ℕ.<-cmp m n
-... | tri< m<n m≢n n≯m = tri< (+<+ (s<s m<n))              (m≢n ∘ +[1+-injective) (n≯m ∘ ℕ.≤-pred ∘ drop‿+<+)
-... | tri≈ m≮n m≡n n≯m = tri≈ (m≮n ∘ ℕ.≤-pred ∘ drop‿+<+) (cong (+_ ∘ suc) m≡n)  (n≯m ∘ ℕ.≤-pred ∘ drop‿+<+)
-... | tri> m≮n m≢n n>m = tri> (m≮n ∘ ℕ.≤-pred ∘ drop‿+<+) (m≢n ∘ +[1+-injective) (+<+ (s<s n>m))
+... | tri< m<n m≢n n≯m = tri< (+<+ (s<s m<n))              (m≢n ∘ +[1+-injective) (n≯m ∘ s<s⁻¹ ∘ drop‿+<+)
+... | tri≈ m≮n m≡n n≯m = tri≈ (m≮n ∘ s<s⁻¹ ∘ drop‿+<+) (cong (+_ ∘ suc) m≡n)  (n≯m ∘ s<s⁻¹ ∘ drop‿+<+)
+... | tri> m≮n m≢n n>m = tri> (m≮n ∘ s<s⁻¹ ∘ drop‿+<+) (m≢n ∘ +[1+-injective) (+<+ (s<s n>m))
 
 infix 4 _<?_
 _<?_ : Decidable _<_
@@ -326,9 +331,8 @@ _<?_ : Decidable _<_
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  ; compare              = <-cmp
   }
 
 ------------------------------------------------------------------------
@@ -360,13 +364,14 @@ i≮i = <-irrefl refl
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-asym
     <-trans
     (resp₂ _<_)
     <⇒≤
     <-≤-trans
     ≤-<-trans
     public
-    hiding (step-≈; step-≈˘)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
 
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
@@ -398,7 +403,7 @@ neg-involutive +[1+ n ] = refl
 
 neg-injective : - i ≡ - j → i ≡ j
 neg-injective {i} {j} -i≡-j = begin
-  i     ≡˘⟨ neg-involutive i ⟩
+  i     ≡⟨ neg-involutive i ⟨
   - - i ≡⟨  cong -_ -i≡-j ⟩
   - - j ≡⟨  neg-involutive j ⟩
   j     ∎ where open ≡-Reasoning
@@ -427,7 +432,7 @@ neg-mono-< { -[1+ _ ]} { -[1+ _ ]} (-<- n<m) = +<+ (s<s n<m)
 neg-mono-< { -[1+ _ ]} { +0}       -<+       = +<+ z<s
 neg-mono-< { -[1+ _ ]} { +[1+ n ]} -<+       = -<+
 neg-mono-< { +0}       { +[1+ n ]} (+<+ _)   = -<+
-neg-mono-< { +[1+ m ]} { +[1+ n ]} (+<+ m<n) = -<- (ℕ.≤-pred m<n)
+neg-mono-< { +[1+ m ]} { +[1+ n ]} (+<+ m<n) = -<- (s<s⁻¹ m<n)
 
 neg-cancel-< : - i < - j → i > j
 neg-cancel-< { +[1+ m ]} { +[1+ n ]} (-<- n<m)       = +<+ (s<s n<m)
@@ -436,7 +441,7 @@ neg-cancel-< { +[1+ m ]} { -[1+ n ]}  -<+            = -<+
 neg-cancel-< { +0}       { +0}       (+<+ ())
 neg-cancel-< { +0}       { -[1+ n ]} _               = -<+
 neg-cancel-< { -[1+ m ]} { +0}       (+<+ ())
-neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ (s<s m<n)) = -<- m<n
+neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ m<n) = -<- (s<s⁻¹ m<n)
 
 ------------------------------------------------------------------------
 -- Properties of ∣_∣
@@ -536,7 +541,7 @@ signᵢ◃∣i∣≡i -[1+ n ] = refl
 sign-cong : .{{_ : ℕ.NonZero m}} .{{_ : ℕ.NonZero n}} →
             s ◃ m ≡ t ◃ n → s ≡ t
 sign-cong {n@(suc _)} {m@(suc _)} {s} {t} eq = begin
-  s             ≡˘⟨ sign-◃ s n ⟩
+  s             ≡⟨ sign-◃ s n ⟨
   sign (s ◃ n)  ≡⟨  cong sign eq ⟩
   sign (t ◃ m)  ≡⟨  sign-◃ t m ⟩
   t             ∎ where open ≡-Reasoning
@@ -551,7 +556,7 @@ sign-cong′ {s}       {suc m} {t}       {suc n} eq = inj₁ (sign-cong eq)
 
 abs-cong : s ◃ m ≡ t ◃ n → m ≡ n
 abs-cong {s} {m} {t} {n} eq = begin
-  m          ≡˘⟨ abs-◃ s m ⟩
+  m          ≡⟨ abs-◃ s m ⟨
   ∣ s ◃ m ∣  ≡⟨  cong ∣_∣ eq ⟩
   ∣ t ◃ n ∣  ≡⟨  abs-◃ t n ⟩
   n          ∎ where open ≡-Reasoning
@@ -603,12 +608,12 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
 ⊖-swap (suc m) (suc n) = begin
   suc m ⊖ suc n     ≡⟨ [1+m]⊖[1+n]≡m⊖n m n ⟩
   m ⊖ n             ≡⟨ ⊖-swap m n ⟩
-  - (n ⊖ m)         ≡˘⟨ cong -_ ([1+m]⊖[1+n]≡m⊖n n m) ⟩
+  - (n ⊖ m)         ≡⟨ cong -_ ([1+m]⊖[1+n]≡m⊖n n m) ⟨
   - (suc n ⊖ suc m) ∎ where open ≡-Reasoning
 
 ⊖-≥ : m ℕ.≥ n → m ⊖ n ≡ + (m ∸ n)
 ⊖-≥ {m} {n} p with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
-... | true  | q = contradiction (ℕ.<-transʳ p q) (ℕ.<-irrefl refl)
+... | true  | q = contradiction (ℕ.≤-<-trans p q) (ℕ.<-irrefl refl)
 ... | false | q = refl
 
 ≤-⊖ : m ℕ.≤ n → n ⊖ m ≡ + (n ∸ m)
@@ -661,12 +666,12 @@ m-n≡m⊖n (suc m) (suc n) = refl
 -[n⊖m]≡-m+n m n with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
 ... | true  | p = begin
   - (- (+ (n ∸ m))) ≡⟨ neg-involutive (+ (n ∸ m)) ⟩
-  + (n ∸ m)         ≡˘⟨ ⊖-≥ (ℕ.≤-trans (ℕ.m≤n+m m 1) p) ⟩
-  n ⊖ m             ≡˘⟨ -m+n≡n⊖m m n ⟩
+  + (n ∸ m)         ≡⟨ ⊖-≥ (ℕ.≤-trans (ℕ.m≤n+m m 1) p) ⟨
+  n ⊖ m             ≡⟨ -m+n≡n⊖m m n ⟨
   - (+ m) + + n     ∎ where open ≡-Reasoning
 ... | false | p = begin
-  - (+ (m ∸ n))     ≡˘⟨ ⊖-≤ (ℕ.≮⇒≥ p) ⟩
-  n ⊖ m             ≡˘⟨ -m+n≡n⊖m m n ⟩
+  - (+ (m ∸ n))     ≡⟨ ⊖-≤ (ℕ.≮⇒≥ p) ⟨
+  n ⊖ m             ≡⟨ -m+n≡n⊖m m n ⟨
   - (+ m) + + n     ∎ where open ≡-Reasoning
 
 ∣m⊖n∣≡∣n⊖m∣ : ∀ m n → ∣ m ⊖ n ∣ ≡ ∣ n ⊖ m ∣
@@ -707,14 +712,14 @@ m⊖1+n<m (suc m) (suc n) = begin-strict
 -1+m<n⊖m (suc m) (suc n) = begin-strict
   -[1+ suc m ]  <⟨ -<- ℕ.≤-refl ⟩
   -[1+ m ]      <⟨ -1+m<n⊖m m n ⟩
-  n ⊖ m         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n n m ⟩
+  n ⊖ m         ≡⟨ [1+m]⊖[1+n]≡m⊖n n m ⟨
   suc n ⊖ suc m ∎ where open ≤-Reasoning
 
 -[1+m]≤n⊖m+1 : ∀ m n → -[1+ m ] ≤ n ⊖ suc m
 -[1+m]≤n⊖m+1 m zero    = ≤-refl
 -[1+m]≤n⊖m+1 m (suc n) = begin
   -[1+ m ]      ≤⟨ <⇒≤ (-1+m<n⊖m m n) ⟩
-  n ⊖ m         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n n m ⟩
+  n ⊖ m         ≡⟨ [1+m]⊖[1+n]≡m⊖n n m ⟨
   suc n ⊖ suc m ∎ where open ≤-Reasoning
 
 -1+m≤n⊖m : ∀ m n → -[1+ m ] ≤ n ⊖ m
@@ -745,7 +750,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
 ⊖-monoʳ-≥-≤ (suc n) {suc m} {suc o} (s≤s m≤o) = begin
   suc n ⊖ suc m ≡⟨  [1+m]⊖[1+n]≡m⊖n n m ⟩
   n ⊖ m         ≤⟨  ⊖-monoʳ-≥-≤ n m≤o ⟩
-  n ⊖ o         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n n o ⟩
+  n ⊖ o         ≡⟨ [1+m]⊖[1+n]≡m⊖n n o ⟨
   suc n ⊖ suc o ∎ where open ≤-Reasoning
 
 ⊖-monoˡ-≤ : ∀ n → (_⊖ n) Preserves ℕ._≤_ ⟶ _≤_
@@ -754,12 +759,12 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
 ⊖-monoˡ-≤ (suc n) {_} {suc o} z≤n = begin
   zero ⊖ suc n  ≤⟨  ⊖-monoʳ-≥-≤ 0 (ℕ.n≤1+n n) ⟩
   zero ⊖ n      ≤⟨  ⊖-monoˡ-≤ n z≤n ⟩
-  o ⊖ n         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n o n ⟩
+  o ⊖ n         ≡⟨ [1+m]⊖[1+n]≡m⊖n o n ⟨
   suc o ⊖ suc n ∎ where open ≤-Reasoning
 ⊖-monoˡ-≤ (suc n) {suc m} {suc o} (s≤s m≤o) = begin
   suc m ⊖ suc n ≡⟨  [1+m]⊖[1+n]≡m⊖n m n ⟩
   m ⊖ n         ≤⟨  ⊖-monoˡ-≤ n m≤o ⟩
-  o ⊖ n         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n o n ⟩
+  o ⊖ n         ≡⟨ [1+m]⊖[1+n]≡m⊖n o n ⟨
   suc o ⊖ suc n ∎ where open ≤-Reasoning
 
 ⊖-monoʳ->-< : ∀ p → (p ⊖_) Preserves ℕ._>_ ⟶ _<_
@@ -772,19 +777,19 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
 ⊖-monoʳ->-< (suc p) {suc m} {suc n} (s<s m<n@(s≤s _)) = begin-strict
   suc p ⊖ suc m ≡⟨  [1+m]⊖[1+n]≡m⊖n p m ⟩
   p ⊖ m         <⟨  ⊖-monoʳ->-< p m<n ⟩
-  p ⊖ n         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n p n ⟩
+  p ⊖ n         ≡⟨ [1+m]⊖[1+n]≡m⊖n p n ⟨
   suc p ⊖ suc n ∎ where open ≤-Reasoning
 
 ⊖-monoˡ-< : ∀ n → (_⊖ n) Preserves ℕ._<_ ⟶ _<_
 ⊖-monoˡ-< zero    m<o             = +<+ m<o
 ⊖-monoˡ-< (suc n) {_} {suc o} z<s = begin-strict
   -[1+ n ]      <⟨  -1+m<n⊖m n _ ⟩
-  o ⊖ n         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n o n ⟩
+  o ⊖ n         ≡⟨ [1+m]⊖[1+n]≡m⊖n o n ⟨
   suc o ⊖ suc n ∎ where open ≤-Reasoning
 ⊖-monoˡ-< (suc n) {suc m} {suc (suc o)} (s<s m<o@(s≤s _)) = begin-strict
   suc m ⊖ suc n       ≡⟨  [1+m]⊖[1+n]≡m⊖n m n ⟩
   m ⊖ n               <⟨  ⊖-monoˡ-< n m<o ⟩
-  suc o ⊖ n           ≡˘⟨ [1+m]⊖[1+n]≡m⊖n (suc o) n ⟩
+  suc o ⊖ n           ≡⟨ [1+m]⊖[1+n]≡m⊖n (suc o) n ⟨
   suc (suc o) ⊖ suc n ∎ where open ≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -805,7 +810,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
 +-identityˡ (+ _)    = refl
 
 +-identityʳ : RightIdentity +0 _+_
-+-identityʳ = comm+idˡ⇒idʳ +-comm +-identityˡ
++-identityʳ = comm∧idˡ⇒idʳ +-comm +-identityˡ
 
 +-identity : Identity +0 _+_
 +-identity = +-identityˡ , +-identityʳ
@@ -817,7 +822,7 @@ distribˡ-⊖-+-pos _ (suc _) zero    = refl
 distribˡ-⊖-+-pos m (suc n) (suc o) = begin
   suc n ⊖ suc o + + m   ≡⟨ cong (_+ + m) ([1+m]⊖[1+n]≡m⊖n n o) ⟩
   n ⊖ o + + m           ≡⟨ distribˡ-⊖-+-pos m n o ⟩
-  n ℕ.+ m ⊖ o           ≡˘⟨ [1+m]⊖[1+n]≡m⊖n (n ℕ.+ m) o ⟩
+  n ℕ.+ m ⊖ o           ≡⟨ [1+m]⊖[1+n]≡m⊖n (n ℕ.+ m) o ⟨
   suc (n ℕ.+ m) ⊖ suc o ∎ where open ≡-Reasoning
 
 distribˡ-⊖-+-neg : ∀ m n o → n ⊖ o + -[1+ m ] ≡ n ⊖ (suc o ℕ.+ m)
@@ -827,7 +832,7 @@ distribˡ-⊖-+-neg _ (suc _) zero    = refl
 distribˡ-⊖-+-neg m (suc n) (suc o) = begin
   suc n ⊖ suc o + -[1+ m ]    ≡⟨ cong (_+ -[1+ m ]) ([1+m]⊖[1+n]≡m⊖n n o) ⟩
   n ⊖ o + -[1+ m ]            ≡⟨ distribˡ-⊖-+-neg m n o ⟩
-  n ⊖ (suc o ℕ.+ m)           ≡˘⟨ [1+m]⊖[1+n]≡m⊖n n (suc o ℕ.+ m) ⟩
+  n ⊖ (suc o ℕ.+ m)           ≡⟨ [1+m]⊖[1+n]≡m⊖n n (suc o ℕ.+ m) ⟨
   suc n ⊖ (suc (suc o) ℕ.+ m) ∎ where open ≡-Reasoning
 
 distribʳ-⊖-+-pos : ∀ m n o → + m + (n ⊖ o) ≡ m ℕ.+ n ⊖ o
@@ -850,18 +855,18 @@ distribʳ-⊖-+-neg m n o = begin
 +-assoc i j +0 rewrite +-identityʳ (i + j) | +-identityʳ  j      = refl
 +-assoc -[1+ m ] -[1+ n ] +[1+ o ] = begin
   suc o ⊖ suc (suc (m ℕ.+ n)) ≡⟨ [1+m]⊖[1+n]≡m⊖n o (suc m ℕ.+ n) ⟩
-  o ⊖ (suc m ℕ.+ n)           ≡˘⟨ distribʳ-⊖-+-neg m o n ⟩
-  -[1+ m ] + (o ⊖ n)          ≡˘⟨ cong (λ z → -[1+ m ] + z) ([1+m]⊖[1+n]≡m⊖n o n) ⟩
+  o ⊖ (suc m ℕ.+ n)           ≡⟨ distribʳ-⊖-+-neg m o n ⟨
+  -[1+ m ] + (o ⊖ n)          ≡⟨ cong (λ z → -[1+ m ] + z) ([1+m]⊖[1+n]≡m⊖n o n) ⟨
   -[1+ m ] + (suc o ⊖ suc n)  ∎ where open ≡-Reasoning
 +-assoc -[1+ m ] +[1+ n ] +[1+ o ] = begin
   suc n ⊖ suc m + +[1+ o ]  ≡⟨ cong (_+ +[1+ o ]) ([1+m]⊖[1+n]≡m⊖n n m) ⟩
   (n ⊖ m) + +[1+ o ]        ≡⟨ distribˡ-⊖-+-pos (suc o) n m ⟩
-  n ℕ.+ suc o ⊖ m           ≡˘⟨ [1+m]⊖[1+n]≡m⊖n (n ℕ.+ suc o) m ⟩
+  n ℕ.+ suc o ⊖ m           ≡⟨ [1+m]⊖[1+n]≡m⊖n (n ℕ.+ suc o) m ⟨
   suc (n ℕ.+ suc o) ⊖ suc m ∎ where open ≡-Reasoning
 +-assoc +[1+ m ] -[1+ n ] -[1+ o ] = begin
   (suc m ⊖ suc n) + -[1+ o ]  ≡⟨ cong (_+ -[1+ o ]) ([1+m]⊖[1+n]≡m⊖n m n) ⟩
   (m ⊖ n) + -[1+ o ]          ≡⟨ distribˡ-⊖-+-neg o m n ⟩
-  m ⊖ suc (n ℕ.+ o)           ≡˘⟨ [1+m]⊖[1+n]≡m⊖n m (suc n ℕ.+ o) ⟩
+  m ⊖ suc (n ℕ.+ o)           ≡⟨ [1+m]⊖[1+n]≡m⊖n m (suc n ℕ.+ o) ⟨
   suc m ⊖ suc (suc (n ℕ.+ o)) ∎ where open ≡-Reasoning
 +-assoc +[1+ m ] -[1+ n ] +[1+ o ]
   rewrite [1+m]⊖[1+n]≡m⊖n m n
@@ -899,7 +904,7 @@ distribʳ-⊖-+-neg m n o = begin
 +-inverseˡ +[1+ n ] = n⊖n≡0 (suc n)
 
 +-inverseʳ : RightInverse +0 -_ _+_
-+-inverseʳ = comm+invˡ⇒invʳ +-comm +-inverseˡ
++-inverseʳ = comm∧invˡ⇒invʳ +-comm +-inverseˡ
 
 +-inverse : Inverse +0 -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
@@ -1082,8 +1087,8 @@ neg-minus-pos (suc m) (suc n) = cong (-[1+_] ∘ suc) (ℕ.+-comm (suc m) n)
 +-minus-telescope : ∀ i j k → (i - j) + (j - k) ≡ i - k
 +-minus-telescope i j k = begin
   (i - j) + (j - k)   ≡⟨  +-assoc i (- j) (j - k) ⟩
-  i + (- j + (j - k)) ≡˘⟨ cong (λ v → i + v) (+-assoc (- j) j _) ⟩
-  i + ((- j + j) - k) ≡˘⟨ +-assoc i (- j + j) (- k) ⟩
+  i + (- j + (j - k)) ≡⟨ cong (λ v → i + v) (+-assoc (- j) j _) ⟨
+  i + ((- j + j) - k) ≡⟨ +-assoc i (- j + j) (- k) ⟨
   i + (- j + j) - k   ≡⟨  cong (λ a → i + a - k) (+-inverseˡ j) ⟩
   i + 0ℤ - k          ≡⟨  cong (_- k) (+-identityʳ i) ⟩
   i - k               ∎ where open ≡-Reasoning
@@ -1098,16 +1103,16 @@ neg-minus-pos (suc m) (suc n) = cong (-[1+_] ∘ suc) (ℕ.+-comm (suc m) n)
 ∣i-j∣≡∣j-i∣ -[1+ m ] -[1+ n ] = ∣m⊖n∣≡∣n⊖m∣ (suc n) (suc m)
 ∣i-j∣≡∣j-i∣ -[1+ m ] (+ n)    = begin
   ∣ -[1+ m ] - (+ n) ∣  ≡⟨  cong ∣_∣ (neg-minus-pos m n) ⟩
-  suc (n ℕ.+ m)         ≡˘⟨ ℕ.+-suc n m ⟩
+  suc (n ℕ.+ m)         ≡⟨ ℕ.+-suc n m ⟨
   n ℕ.+ suc m           ∎ where open ≡-Reasoning
 ∣i-j∣≡∣j-i∣ (+ m) -[1+ n ] = begin
   m ℕ.+ suc n          ≡⟨  ℕ.+-suc m n ⟩
-  suc (m ℕ.+ n)        ≡˘⟨ cong ∣_∣ (neg-minus-pos n m) ⟩
+  suc (m ℕ.+ n)        ≡⟨ cong ∣_∣ (neg-minus-pos n m) ⟨
   ∣ -[1+ n ] + - + m ∣ ∎ where open ≡-Reasoning
 ∣i-j∣≡∣j-i∣ (+ m) (+ n) = begin
   ∣ + m - + n ∣  ≡⟨  cong ∣_∣ ([+m]-[+n]≡m⊖n m n) ⟩
   ∣ m ⊖ n ∣      ≡⟨  ∣m⊖n∣≡∣n⊖m∣ m n ⟩
-  ∣ n ⊖ m ∣      ≡˘⟨ cong ∣_∣ ([+m]-[+n]≡m⊖n n m) ⟩
+  ∣ n ⊖ m ∣      ≡⟨ cong ∣_∣ ([+m]-[+n]≡m⊖n n m) ⟨
   ∣ + n - + m ∣  ∎ where open ≡-Reasoning
 
 ∣-∣-≤ : i ≤ j → + ∣ i - j ∣ ≡ j - i
@@ -1135,9 +1140,9 @@ i≡j⇒i-j≡0 {i} refl = +-inverseʳ i
 
 i-j≡0⇒i≡j : ∀ i j → i - j ≡ 0ℤ → i ≡ j
 i-j≡0⇒i≡j i j i-j≡0 = begin
-  i             ≡˘⟨ +-identityʳ i ⟩
-  i + 0ℤ        ≡˘⟨ cong (_+_ i) (+-inverseˡ j) ⟩
-  i + (- j + j) ≡˘⟨ +-assoc i (- j) j ⟩
+  i             ≡⟨ +-identityʳ i ⟨
+  i + 0ℤ        ≡⟨ cong (_+_ i) (+-inverseˡ j) ⟨
+  i + (- j + j) ≡⟨ +-assoc i (- j) j ⟨
   (i - j) + j   ≡⟨  cong (_+ j) i-j≡0 ⟩
   0ℤ + j        ≡⟨  +-identityˡ j ⟩
   j             ∎ where open ≡-Reasoning
@@ -1167,9 +1172,9 @@ i≤j⇒i-j≤0 {+[1+ m ]} {+[1+ n ]} (+≤+ (s≤s m≤n)) = begin
 
 i-j≤0⇒i≤j : i - j ≤ 0ℤ → i ≤ j
 i-j≤0⇒i≤j {i} {j} i-j≤0 = begin
-  i             ≡˘⟨ +-identityʳ i ⟩
-  i + 0ℤ        ≡˘⟨ cong (_+_ i) (+-inverseˡ j) ⟩
-  i + (- j + j) ≡˘⟨ +-assoc i (- j) j ⟩
+  i             ≡⟨ +-identityʳ i ⟨
+  i + 0ℤ        ≡⟨ cong (_+_ i) (+-inverseˡ j) ⟨
+  i + (- j + j) ≡⟨ +-assoc i (- j) j ⟨
   (i - j) + j   ≤⟨  +-monoˡ-≤ j i-j≤0 ⟩
   0ℤ + j        ≡⟨  +-identityˡ j ⟩
   j             ∎
@@ -1177,14 +1182,14 @@ i-j≤0⇒i≤j {i} {j} i-j≤0 = begin
 
 i≤j⇒0≤j-i : i ≤ j → 0ℤ ≤ j - i
 i≤j⇒0≤j-i {i} {j} i≤j = begin
-  0ℤ    ≡˘⟨ +-inverseʳ i ⟩
+  0ℤ    ≡⟨ +-inverseʳ i ⟨
   i - i ≤⟨  +-monoˡ-≤ (- i) i≤j ⟩
   j - i ∎
   where open ≤-Reasoning
 
 0≤i-j⇒j≤i : 0ℤ ≤ i - j → j ≤ i
 0≤i-j⇒j≤i {i} {j} 0≤i-j = begin
-  j             ≡˘⟨ +-identityˡ j ⟩
+  j             ≡⟨ +-identityˡ j ⟨
   0ℤ + j        ≤⟨  +-monoˡ-≤ j 0≤i-j ⟩
   i - j + j     ≡⟨  +-assoc i (- j) j ⟩
   i + (- j + j) ≡⟨  cong (_+_ i) (+-inverseˡ j) ⟩
@@ -1227,12 +1232,12 @@ suc[i]≤j⇒i<j : sucℤ i ≤ j → i < j
 suc[i]≤j⇒i<j {+ i}           {+ _}       (+≤+ i≤j) = +<+ i≤j
 suc[i]≤j⇒i<j { -[1+ 0 ]}     {+ j}       p         = -<+
 suc[i]≤j⇒i<j { -[1+ suc i ]} {+ j}       -≤+       = -<+
-suc[i]≤j⇒i<j { -[1+ suc i ]} { -[1+ j ]} (-≤- j≤i) = -<- (ℕ.s≤s j≤i)
+suc[i]≤j⇒i<j { -[1+ suc i ]} { -[1+ j ]} (-≤- j≤i) = -<- (s≤s j≤i)
 
 i<j⇒suc[i]≤j : i < j → sucℤ i ≤ j
 i<j⇒suc[i]≤j {+ _}           {+ _}       (+<+ i<j) = +≤+ i<j
 i<j⇒suc[i]≤j { -[1+ 0 ]}     {+ _}       -<+       = +≤+ z≤n
-i<j⇒suc[i]≤j { -[1+ suc i ]} { -[1+ _ ]} (-<- j<i) = -≤- (ℕ.≤-pred j<i)
+i<j⇒suc[i]≤j { -[1+ suc i ]} { -[1+ _ ]} (-<- j<i) = -≤- (s≤s⁻¹ j<i)
 i<j⇒suc[i]≤j { -[1+ suc i ]} {+ _}       -<+       = -≤+
 
 ------------------------------------------------------------------------
@@ -1241,19 +1246,19 @@ i<j⇒suc[i]≤j { -[1+ suc i ]} {+ _}       -<+       = -≤+
 
 suc-pred : ∀ i → sucℤ (pred i) ≡ i
 suc-pred i = begin
-  sucℤ (pred i) ≡˘⟨ +-assoc 1ℤ -1ℤ i ⟩
+  sucℤ (pred i) ≡⟨ +-assoc 1ℤ -1ℤ i ⟨
   0ℤ + i        ≡⟨  +-identityˡ i ⟩
   i             ∎ where open ≡-Reasoning
 
 pred-suc : ∀ i → pred (sucℤ i) ≡ i
 pred-suc i = begin
-  pred (sucℤ i) ≡˘⟨ +-assoc -1ℤ 1ℤ i ⟩
+  pred (sucℤ i) ≡⟨ +-assoc -1ℤ 1ℤ i ⟨
   0ℤ + i        ≡⟨  +-identityˡ i ⟩
   i             ∎ where open ≡-Reasoning
 
 +-pred : ∀ i j → i + pred j ≡ pred (i + j)
 +-pred i j = begin
-  i + (-1ℤ + j) ≡˘⟨ +-assoc i -1ℤ j ⟩
+  i + (-1ℤ + j) ≡⟨ +-assoc i -1ℤ j ⟨
   i + -1ℤ + j   ≡⟨  cong (_+ j) (+-comm i -1ℤ) ⟩
   -1ℤ + i + j   ≡⟨  +-assoc -1ℤ i j ⟩
   -1ℤ + (i + j) ∎ where open ≡-Reasoning
@@ -1282,7 +1287,7 @@ i≤pred[j]⇒i<j {_} { -[1+ n ]} leq = ≤-<-trans leq (-<- ℕ.≤-refl)
 i<j⇒i≤pred[j] : i < j → i ≤ pred j
 i<j⇒i≤pred[j] {_} { +0}       -<+       = -≤- z≤n
 i<j⇒i≤pred[j] {_} { +[1+ n ]} -<+       = -≤+
-i<j⇒i≤pred[j] {_} { +[1+ n ]} (+<+ m<n) = +≤+ (ℕ.≤-pred m<n)
+i<j⇒i≤pred[j] {_} { +[1+ n ]} (+<+ m<n) = +≤+ (s≤s⁻¹ m<n)
 i<j⇒i≤pred[j] {_} { -[1+ n ]} (-<- n<m) = -≤- n<m
 
 i≤j⇒pred[i]≤j : i ≤ j → pred i ≤ j
@@ -1314,7 +1319,7 @@ pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
 *-identityˡ +[1+ n ] rewrite ℕ.+-identityʳ n = refl
 
 *-identityʳ : RightIdentity 1ℤ _*_
-*-identityʳ = comm+idˡ⇒idʳ *-comm *-identityˡ
+*-identityʳ = comm∧idˡ⇒idʳ *-comm *-identityˡ
 
 *-identity : Identity 1ℤ _*_
 *-identity = *-identityˡ , *-identityʳ
@@ -1323,7 +1328,7 @@ pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
 *-zeroˡ _ = refl
 
 *-zeroʳ : RightZero 0ℤ _*_
-*-zeroʳ = comm+zeˡ⇒zeʳ *-comm *-zeroˡ
+*-zeroʳ = comm∧zeˡ⇒zeʳ *-comm *-zeroˡ
 
 *-zero : Zero 0ℤ _*_
 *-zero = *-zeroˡ , *-zeroʳ
@@ -1414,12 +1419,12 @@ private
 *-distribʳ-+ -[1+ m ] -[1+ n ] +[1+ o ] = begin
   (suc o ⊖ suc n) * -[1+ m ]                ≡⟨ cong (_* -[1+ m ]) ([1+m]⊖[1+n]≡m⊖n o n) ⟩
   (o ⊖ n) * -[1+ m ]                        ≡⟨ distrib-lemma m n o ⟩
-  m ℕ.+ n ℕ.* suc m ⊖ (m ℕ.+ o ℕ.* suc m)   ≡˘⟨ [1+m]⊖[1+n]≡m⊖n (m ℕ.+ n ℕ.* suc m) (m ℕ.+ o ℕ.* suc m) ⟩
+  m ℕ.+ n ℕ.* suc m ⊖ (m ℕ.+ o ℕ.* suc m)   ≡⟨ [1+m]⊖[1+n]≡m⊖n (m ℕ.+ n ℕ.* suc m) (m ℕ.+ o ℕ.* suc m) ⟨
   -[1+ n ] * -[1+ m ] + +[1+ o ] * -[1+ m ] ∎ where open ≡-Reasoning
 *-distribʳ-+ -[1+ m ] +[1+ n ] -[1+ o ] = begin
   (+[1+ n ] + -[1+ o ]) * -[1+ m ]          ≡⟨ cong (_* -[1+ m ]) ([1+m]⊖[1+n]≡m⊖n n o) ⟩
   (n ⊖ o) * -[1+ m ]                        ≡⟨ distrib-lemma m o n ⟩
-  m ℕ.+ o ℕ.* suc m ⊖ (m ℕ.+ n ℕ.* suc m)   ≡˘⟨ [1+m]⊖[1+n]≡m⊖n (m ℕ.+ o ℕ.* suc m) (m ℕ.+ n ℕ.* suc m) ⟩
+  m ℕ.+ o ℕ.* suc m ⊖ (m ℕ.+ n ℕ.* suc m)   ≡⟨ [1+m]⊖[1+n]≡m⊖n (m ℕ.+ o ℕ.* suc m) (m ℕ.+ n ℕ.* suc m) ⟨
   +[1+ n ] * -[1+ m ] + -[1+ o ] * -[1+ m ] ∎ where open ≡-Reasoning
 *-distribʳ-+ +[1+ m ] -[1+ n ] +[1+ o ] with n ℕ.≤? o
 ... | yes n≤o
@@ -1464,7 +1469,7 @@ private
         = refl
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
+*-distribˡ-+ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -1527,7 +1532,6 @@ private
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
-  ; zero             = *-zero
   }
 
 +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℤ 1ℤ
@@ -1593,7 +1597,7 @@ abs-* i j = abs-◃ _ _
 *-cancelʳ-≡ : ∀ i j k .{{_ : NonZero k}} → i * k ≡ j * k → i ≡ j
 *-cancelʳ-≡ i j k eq with sign-cong′ eq
 ... | inj₁ s[ik]≡s[jk] = ◃-cong
-  (𝕊ₚ.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
+  (Sign.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
   (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ _ (abs-cong eq))
 ... | inj₂ (∣ik∣≡0 , ∣jk∣≡0) = trans
   (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣ik∣≡0))
@@ -1685,8 +1689,8 @@ pos-* (suc m) (suc n) = refl
 
 neg-distribˡ-* : ∀ i j → - (i * j) ≡ (- i) * j
 neg-distribˡ-* i j = begin
-  - (i * j)      ≡˘⟨ -1*i≡-i (i * j) ⟩
-  -1ℤ * (i * j)  ≡˘⟨ *-assoc -1ℤ i j ⟩
+  - (i * j)      ≡⟨ -1*i≡-i (i * j) ⟨
+  -1ℤ * (i * j)  ≡⟨ *-assoc -1ℤ i j ⟨
   -1ℤ * i * j    ≡⟨ cong (_* j) (-1*i≡-i i) ⟩
   - i * j        ∎ where open ≡-Reasoning
 
@@ -1705,7 +1709,7 @@ neg-distribʳ-* i j = begin
 ◃-distrib-* s t zero    (suc n) = refl
 ◃-distrib-* s t (suc m) zero    =
   trans
-    (cong₂ _◃_ (𝕊ₚ.*-comm s t) (ℕ.*-comm m 0))
+    (cong₂ _◃_ (Sign.*-comm s t) (ℕ.*-comm m 0))
     (*-comm (t ◃ zero) (s ◃ suc m))
 ◃-distrib-* s t (suc m) (suc n) =
   sym (cong₂ _◃_
@@ -1717,7 +1721,7 @@ neg-distribʳ-* i j = begin
 
 *-cancelʳ-≤-pos : ∀ i j k .{{_ : Positive k}} → i * k ≤ j * k → i ≤ j
 *-cancelʳ-≤-pos -[1+ m ] -[1+ n ] +[1+ o ] (-≤- n≤m) =
-  -≤- (ℕ.≤-pred (ℕ.*-cancelʳ-≤ (suc n) (suc m) (suc o) (s≤s n≤m)))
+  -≤- (s≤s⁻¹ (ℕ.*-cancelʳ-≤ (suc n) (suc m) (suc o) (s≤s n≤m)))
 *-cancelʳ-≤-pos -[1+ _ ] (+ _)    +[1+ o ] _         = -≤+
 *-cancelʳ-≤-pos +0       +0       +[1+ o ] _         = +≤+ z≤n
 *-cancelʳ-≤-pos +0       +[1+ _ ] +[1+ o ] _         = +≤+ z≤n
@@ -1732,7 +1736,7 @@ neg-distribʳ-* i j = begin
 *-monoʳ-≤-nonNeg +0 {i} {j} i≤j rewrite *-zeroʳ i | *-zeroʳ j = +≤+ z≤n
 *-monoʳ-≤-nonNeg +[1+ n ] (-≤+ {n = 0})         = -≤+
 *-monoʳ-≤-nonNeg +[1+ n ] (-≤+ {n = suc _})     = -≤+
-*-monoʳ-≤-nonNeg +[1+ n ] (-≤- n≤m) = -≤- (ℕ.≤-pred (ℕ.*-mono-≤ (s≤s n≤m) (ℕ.≤-refl {x = suc n})))
+*-monoʳ-≤-nonNeg +[1+ n ] (-≤- n≤m) = -≤- (s≤s⁻¹ (ℕ.*-mono-≤ (s≤s n≤m) (ℕ.≤-refl {x = suc n})))
 *-monoʳ-≤-nonNeg +[1+ n ] {+0}       {+0}       (+≤+ m≤n) = +≤+ m≤n
 *-monoʳ-≤-nonNeg +[1+ n ] {+0}       {+[1+ _ ]} (+≤+ m≤n) = +≤+ z≤n
 *-monoʳ-≤-nonNeg +[1+ n ] {+[1+ _ ]} {+[1+ _ ]} (+≤+ m≤n) = +≤+ (ℕ.*-monoˡ-≤ (suc n) m≤n)
@@ -1742,10 +1746,10 @@ neg-distribʳ-* i j = begin
 
 *-cancelˡ-≤-neg : ∀ i j k .{{_ : Negative i}} → i * j ≤ i * k → j ≥ k
 *-cancelˡ-≤-neg i@(-[1+ _ ]) j k ij≤ik = neg-cancel-≤ (*-cancelˡ-≤-pos (- j) (- k) (- i) (begin
-  - i * - j   ≡˘⟨ neg-distribʳ-* (- i) j ⟩
+  - i * - j   ≡⟨ neg-distribʳ-* (- i) j ⟨
   -(- i * j)  ≡⟨  neg-distribˡ-* (- i) j ⟩
   i * j       ≤⟨  ij≤ik ⟩
-  i * k       ≡˘⟨ neg-distribˡ-* (- i) k ⟩
+  i * k       ≡⟨ neg-distribˡ-* (- i) k ⟨
   -(- i * k)  ≡⟨  neg-distribʳ-* (- i) k ⟩
   - i * - k   ∎))
   where open ≤-Reasoning
@@ -1756,10 +1760,10 @@ neg-distribʳ-* i j = begin
 *-monoˡ-≤-nonPos : ∀ i .{{_ : NonPositive i}} → (i *_) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-nonPos +0           {j} {k} j≤k = +≤+ z≤n
 *-monoˡ-≤-nonPos i@(-[1+ m ]) {j} {k} j≤k = begin
-  i * k        ≡˘⟨ neg-distribˡ-* (- i) k ⟩
+  i * k        ≡⟨ neg-distribˡ-* (- i) k ⟨
   -(- i * k)   ≡⟨  neg-distribʳ-* (- i) k ⟩
   - i * - k    ≤⟨  *-monoˡ-≤-nonNeg (- i) (neg-mono-≤ j≤k) ⟩
-  - i * - j    ≡˘⟨ neg-distribʳ-* (- i) j ⟩
+  - i * - j    ≡⟨ neg-distribʳ-* (- i) j ⟨
   -(- i * j)   ≡⟨  neg-distribˡ-* (- i) j ⟩
   i * j        ∎
   where open ≤-Reasoning
@@ -1782,17 +1786,17 @@ neg-distribʳ-* i j = begin
 *-cancelˡ-<-nonNeg {+ i}       {+ j}       (+ n) leq = +<+ (ℕ.*-cancelˡ-< n _ _ (+◃-cancel-< leq))
 *-cancelˡ-<-nonNeg {+ i}       { -[1+ j ]} (+ n) leq = contradiction leq +◃≮-◃
 *-cancelˡ-<-nonNeg { -[1+ i ]} {+ j}       (+ n)leq = -<+
-*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (ℕ.≤-pred (ℕ.*-cancelˡ-< n _ _ (neg◃-cancel-< leq)))
+*-cancelˡ-<-nonNeg { -[1+ i ]} { -[1+ j ]} (+ n) leq = -<- (s<s⁻¹ (ℕ.*-cancelˡ-< n _ _ (neg◃-cancel-< leq)))
 
 *-cancelʳ-<-nonNeg : ∀ k .{{_ : NonNegative k}} → i * k < j * k → i < j
 *-cancelʳ-<-nonNeg {i} {j} k rewrite *-comm i k | *-comm j k = *-cancelˡ-<-nonNeg k
 
 *-monoˡ-<-neg : ∀ i .{{_ : Negative i}} → (i *_) Preserves _<_ ⟶ _>_
 *-monoˡ-<-neg i@(-[1+ _ ]) {j} {k} j<k = begin-strict
-  i * k        ≡˘⟨ neg-distribˡ-* (- i) k ⟩
+  i * k        ≡⟨ neg-distribˡ-* (- i) k ⟨
   -(- i * k)   ≡⟨  neg-distribʳ-* (- i) k ⟩
   - i * - k    <⟨  *-monoˡ-<-pos (- i) (neg-mono-< j<k) ⟩
-  - i * - j    ≡˘⟨ neg-distribʳ-* (- i) j ⟩
+  - i * - j    ≡⟨ neg-distribʳ-* (- i) j ⟨
   - (- i * j)  ≡⟨  neg-distribˡ-* (- i) j ⟩
   i * j        ∎
   where open ≤-Reasoning
@@ -1803,10 +1807,10 @@ neg-distribʳ-* i j = begin
 *-cancelˡ-<-nonPos : ∀ k .{{_ : NonPositive k}} → k * i < k * j → i > j
 *-cancelˡ-<-nonPos {i} {j} +0           (+<+ ())
 *-cancelˡ-<-nonPos {i} {j} k@(-[1+ _ ]) ki<kj = neg-cancel-< (*-cancelˡ-<-nonNeg (- k) (begin-strict
-  - k * - i   ≡˘⟨ neg-distribʳ-* (- k) i ⟩
+  - k * - i   ≡⟨ neg-distribʳ-* (- k) i ⟨
   -(- k * i)  ≡⟨  neg-distribˡ-* (- k) i ⟩
   k * i       <⟨  ki<kj ⟩
-  k * j       ≡˘⟨ neg-distribˡ-* (- k) j ⟩
+  k * j       ≡⟨ neg-distribˡ-* (- k) j ⟨
   -(- k * j)  ≡⟨  neg-distribʳ-* (- k) j ⟩
   - k * - j   ∎))
   where open ≤-Reasoning

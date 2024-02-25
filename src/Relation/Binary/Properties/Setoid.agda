@@ -1,24 +1,29 @@
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Additional properties for setoids
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
+open import Relation.Binary.Definitions
+  using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
+open import Relation.Binary.Construct.Composition using (_;_)
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S
 
-------------------------------------------------------------------------------
--- Every setoid is a preorder and partial order with respect to propositional
--- equality
+------------------------------------------------------------------------
+-- Every setoid is a preorder and partial order with respect to
+-- propositional equality
 
 isPreorder : IsPreorder _≡_ _≈_
 isPreorder = record
@@ -59,7 +64,7 @@ preorder = record
   { isPartialOrder = ≈-isPartialOrder
   }
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of _≉_
 
 ≉-sym :  Symmetric _≉_
@@ -74,7 +79,16 @@ preorder = record
 ≉-resp₂ : _≉_ Respects₂ _≈_
 ≉-resp₂ = ≉-respʳ , ≉-respˡ
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
+-- Equality is closed under composition
+
+≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
+≈;≈⇒≈ (_ , p , q) = trans p q
+
+≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
+≈⇒≈;≈ q = _ , q , refl
+
+------------------------------------------------------------------------
 -- Other properties
 
 respʳ-flip : _≈_ Respectsʳ (flip _≈_)

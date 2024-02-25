@@ -17,16 +17,17 @@ open import Data.Bool.Base as Bool
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
+open import Data.Product.Base as Product using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Function.Base using (id; _∘_ ; _∘′_; _∘₂_; const; flip)
+open import Function.Base
+  using (id; _∘_ ; _∘′_; _∘₂_; _$_; const; flip)
 open import Level using (Level)
-open import Relation.Nullary.Decidable.Core using (does; ¬?)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Nullary.Decidable.Core using (T?; does; ¬?)
 
 private
   variable
@@ -95,13 +96,13 @@ zipWith f _        _        = []
 unalignWith : (A → These B C) → List A → List B × List C
 unalignWith f []       = [] , []
 unalignWith f (a ∷ as) with f a
-... | this b    = Prod.map₁ (b ∷_) (unalignWith f as)
-... | that c    = Prod.map₂ (c ∷_) (unalignWith f as)
-... | these b c = Prod.map (b ∷_) (c ∷_) (unalignWith f as)
+... | this b    = Product.map₁ (b ∷_) (unalignWith f as)
+... | that c    = Product.map₂ (c ∷_) (unalignWith f as)
+... | these b c = Product.map (b ∷_) (c ∷_) (unalignWith f as)
 
 unzipWith : (A → B × C) → List A → List B × List C
 unzipWith f []         = [] , []
-unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
+unzipWith f (xy ∷ xys) = Product.zip _∷_ _∷_ (f xy) (unzipWith f xys)
 
 partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
 partitionSumsWith f = unalignWith (These.fromSum ∘′ f)
@@ -187,6 +188,10 @@ replicate : ℕ → A → List A
 replicate zero    x = []
 replicate (suc n) x = x ∷ replicate n x
 
+iterate : (A → A) → A → ℕ → List A
+iterate f e zero    = []
+iterate f e (suc n) = e ∷ iterate f (f e) n
+
 inits : List A → List (List A)
 inits []       = [] ∷ []
 inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
@@ -194,6 +199,14 @@ inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
 tails : List A → List (List A)
 tails []       = [] ∷ []
 tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
+
+insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
+insertAt xs       zero    v = v ∷ xs
+insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
+
+updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
+updateAt (x ∷ xs) zero    f = f x ∷ xs
+updateAt (x ∷ xs) (suc i) f = x ∷ updateAt xs i f
 
 -- Scans
 
@@ -327,130 +340,181 @@ drop (suc n) (x ∷ xs) = drop n xs
 splitAt : ℕ → List A → List A × List A
 splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
-splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
+splitAt (suc n) (x ∷ xs) = Product.map₁ (x ∷_) (splitAt n xs)
 
--- The following are functions which split a list up using boolean
--- predicates. However, in practice they are difficult to use and
--- prove properties about, and are mainly provided for advanced use
--- cases where one wants to minimise dependencies. In most cases
--- you probably want to use the versions defined below based on
--- decidable predicates. e.g. use `takeWhile (_≤? 10) xs`
--- instead of `takeWhileᵇ (_≤ᵇ 10) xs`
+removeAt : (xs : List A) → Fin (length xs) → List A
+removeAt (x ∷ xs) zero     = xs
+removeAt (x ∷ xs) (suc i)  = x ∷ removeAt xs i
 
-takeWhileᵇ : (A → Bool) → List A → List A
-takeWhileᵇ p []       = []
-takeWhileᵇ p (x ∷ xs) = if p x then x ∷ takeWhileᵇ p xs else []
+------------------------------------------------------------------------
+-- Operations for filtering lists
 
-dropWhileᵇ : (A → Bool) → List A → List A
-dropWhileᵇ p []       = []
-dropWhileᵇ p (x ∷ xs) = if p x then dropWhileᵇ p xs else x ∷ xs
-
-filterᵇ : (A → Bool) → List A → List A
-filterᵇ p []       = []
-filterᵇ p (x ∷ xs) = if p x then x ∷ filterᵇ p xs else filterᵇ p xs
-
-partitionᵇ : (A → Bool) → List A → List A × List A
-partitionᵇ p []       = ([] , [])
-partitionᵇ p (x ∷ xs) = (if p x then Prod.map₁ else Prod.map₂′) (x ∷_) (partitionᵇ p xs)
-
-spanᵇ : (A → Bool) → List A → List A × List A
-spanᵇ p []       = ([] , [])
-spanᵇ p (x ∷ xs) = if p x
-  then Prod.map₁ (x ∷_) (spanᵇ p xs)
-  else ([] , x ∷ xs)
-
-breakᵇ : (A → Bool) → List A → List A × List A
-breakᵇ p = spanᵇ (not ∘ p)
-
-linesByᵇ : (A → Bool) → List A → List (List A)
-linesByᵇ {A = A} p = go nothing
-  where
-  go : Maybe (List A) → List A → List (List A)
-  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
-  go acc (c ∷ cs) with p c
-  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
-  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
-
-wordsByᵇ : (A → Bool) → List A → List (List A)
-wordsByᵇ {A = A} p = go []
-  where
-  cons : List A → List (List A) → List (List A)
-  cons [] ass = ass
-  cons as ass = reverse as ∷ ass
-
-  go : List A → List A → List (List A)
-  go acc []       = cons acc []
-  go acc (c ∷ cs) with p c
-  ... | true  = cons acc (go [] cs)
-  ... | false = go (c ∷ acc) cs
-
-derunᵇ : (A → A → Bool) → List A → List A
-derunᵇ r []           = []
-derunᵇ r (x ∷ [])     = x ∷ []
-derunᵇ r (x ∷ y ∷ xs) = if r x y
-  then derunᵇ r (y ∷ xs)
-  else x ∷ derunᵇ r (y ∷ xs)
-
-deduplicateᵇ : (A → A → Bool) → List A → List A
-deduplicateᵇ r [] = []
-deduplicateᵇ r (x ∷ xs) = x ∷ filterᵇ (not ∘ r x) (deduplicateᵇ r xs)
-
--- Equivalent functions that use a decidable predicate instead of a
--- boolean function.
+-- The following are a variety of functions that can be used to
+-- construct sublists using a predicate.
+--
+-- Each function has two forms. The first main variant uses a
+-- proof-relevant decidable predicate, while the second variant uses
+-- a irrelevant boolean predicate and are suffixed with a `ᵇ` character,
+-- typed as \^b.
+--
+-- The decidable versions have several advantages: 1) easier to prove
+-- properties, 2) better meta-variable inference and 3) most of the rest
+-- of the library is set-up to work with decidable predicates. However,
+-- in rare cases the boolean versions can be useful, mainly when one
+-- wants to minimise dependencies.
+--
+-- In summary, in most cases you probably want to use the decidable
+-- versions over the boolean versions, e.g. use `takeWhile (_≤? 10) xs`
+-- rather than `takeWhileᵇ (_≤ᵇ 10) xs`.
 
 takeWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
-takeWhile P? = takeWhileᵇ (does ∘ P?)
+takeWhile P? []       = []
+takeWhile P? (x ∷ xs) with does (P? x)
+... | true  = x ∷ takeWhile P? xs
+... | false = []
+
+takeWhileᵇ : (A → Bool) → List A → List A
+takeWhileᵇ p = takeWhile (T? ∘ p)
 
 dropWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
-dropWhile P? = dropWhileᵇ (does ∘ P?)
+dropWhile P? []       = []
+dropWhile P? (x ∷ xs) with does (P? x)
+... | true  = dropWhile P? xs
+... | false = x ∷ xs
+
+dropWhileᵇ : (A → Bool) → List A → List A
+dropWhileᵇ p = dropWhile (T? ∘ p)
 
 filter : ∀ {P : Pred A p} → Decidable P → List A → List A
-filter P? = filterᵇ (does ∘ P?)
+filter P? [] = []
+filter P? (x ∷ xs) with does (P? x)
+... | false = filter P? xs
+... | true  = x ∷ filter P? xs
+
+filterᵇ : (A → Bool) → List A → List A
+filterᵇ p = filter (T? ∘ p)
 
 partition : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-partition P? = partitionᵇ (does ∘ P?)
+partition P? []       = ([] , [])
+partition P? (x ∷ xs) with does (P? x) | partition P? xs
+... | true  | (ys , zs) = (x ∷ ys , zs)
+... | false | (ys , zs) = (ys , x ∷ zs)
+
+partitionᵇ : (A → Bool) → List A → List A × List A
+partitionᵇ p = partition (T? ∘ p)
 
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-span P? = spanᵇ (does ∘ P?)
+span P? []       = ([] , [])
+span P? ys@(x ∷ xs) with does (P? x)
+... | true  = Product.map (x ∷_) id (span P? xs)
+... | false = ([] , ys)
+
+
+spanᵇ : (A → Bool) → List A → List A × List A
+spanᵇ p = span (T? ∘ p)
 
 break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-break P? = breakᵇ (does ∘ P?)
+break P? = span (¬? ∘ P?)
+
+breakᵇ : (A → Bool) → List A → List A × List A
+breakᵇ p = break (T? ∘ p)
 
 -- The predicate `P` represents the notion of newline character for the
 -- type `A`. It is used to split the input list into a list of lines.
 -- Some lines may be empty if the input contains at least two
 -- consecutive newline characters.
 linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
-linesBy P? = linesByᵇ (does ∘ P?)
+linesBy {A = A} P? = go nothing where
+
+  go : Maybe (List A) → List A → List (List A)
+  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  go acc (c ∷ cs) with does (P? c)
+  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
+  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+
+linesByᵇ : (A → Bool) → List A → List (List A)
+linesByᵇ p = linesBy (T? ∘ p)
 
 -- The predicate `P` represents the notion of space character for the
 -- type `A`. It is used to split the input list into a list of words.
 -- All the words are non empty and the output does not contain any space
 -- characters.
 wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
-wordsBy P? = wordsByᵇ (does ∘ P?)
+wordsBy {A = A} P? = go [] where
+
+  cons : List A → List (List A) → List (List A)
+  cons [] ass = ass
+  cons as ass = reverse as ∷ ass
+
+  go : List A → List A → List (List A)
+  go acc []       = cons acc []
+  go acc (c ∷ cs) with does (P? c)
+  ... | true  = cons acc (go [] cs)
+  ... | false = go (c ∷ acc) cs
+
+wordsByᵇ : (A → Bool) → List A → List (List A)
+wordsByᵇ p = wordsBy (T? ∘ p)
 
 derun : ∀ {R : Rel A p} → B.Decidable R → List A → List A
-derun R? = derunᵇ (does ∘₂ R?)
+derun R? [] = []
+derun R? (x ∷ []) = x ∷ []
+derun R? (x ∷ xs@(y ∷ _)) with does (R? x y) | derun R? xs
+... | true  | ys = ys
+... | false | ys = x ∷ ys
+
+derunᵇ : (A → A → Bool) → List A → List A
+derunᵇ r = derun (T? ∘₂ r)
 
 deduplicate : ∀ {R : Rel A p} → B.Decidable R → List A → List A
-deduplicate R? = deduplicateᵇ (does ∘₂ R?)
+deduplicate R? [] = []
+deduplicate R? (x ∷ xs) = x ∷ filter (¬? ∘ R? x) (deduplicate R? xs)
+
+deduplicateᵇ : (A → A → Bool) → List A → List A
+deduplicateᵇ r = deduplicate (T? ∘₂ r)
+
+-- Finds the first element satisfying the boolean predicate
+find : ∀ {P : Pred A p} → Decidable P → List A → Maybe A
+find P? []       = nothing
+find P? (x ∷ xs) = if does (P? x) then just x else find P? xs
+
+findᵇ : (A → Bool) → List A → Maybe A
+findᵇ p = find (T? ∘ p)
+
+-- Finds the index of the first element satisfying the boolean predicate
+findIndex : ∀ {P : Pred A p} → Decidable P → (xs : List A) → Maybe $ Fin (length xs)
+findIndex P? [] = nothing
+findIndex P? (x ∷ xs) = if does (P? x)
+  then just zero
+  else Maybe.map suc (findIndex P? xs)
+
+findIndexᵇ : (A → Bool) → (xs : List A) → Maybe $ Fin (length xs)
+findIndexᵇ p = findIndex (T? ∘ p)
+
+-- Finds indices of all the elements satisfying the boolean predicate
+findIndices : ∀ {P : Pred A p} → Decidable P → (xs : List A) → List $ Fin (length xs)
+findIndices P? []       = []
+findIndices P? (x ∷ xs) = if does (P? x)
+  then zero ∷ indices
+  else indices
+    where indices = map suc (findIndices P? xs)
+
+findIndicesᵇ : (A → Bool) → (xs : List A) → List $ Fin (length xs)
+findIndicesᵇ p = findIndices (T? ∘ p)
 
 ------------------------------------------------------------------------
 -- Actions on single elements
 
-infixl 5 _[_]%=_ _[_]∷=_ _─_
+infixl 5 _[_]%=_ _[_]∷=_
+
+-- xs [ i ]%= f  modifies the i-th element of xs according to f
 
 _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-(x ∷ xs) [ zero  ]%= f = f x ∷ xs
-(x ∷ xs) [ suc k ]%= f = x ∷ (xs [ k ]%= f)
+xs [ i ]%= f = updateAt xs i f
+
+-- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
 _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
 xs [ k ]∷= v = xs [ k ]%= const v
-
-_─_ : (xs : List A) → Fin (length xs) → List A
-(x ∷ xs) ─ zero  = xs
-(x ∷ xs) ─ suc k = x ∷ (xs ─ k)
 
 ------------------------------------------------------------------------
 -- Conditional versions of cons and snoc
@@ -496,4 +560,13 @@ _∷ʳ'_ = InitLast._∷ʳ′_
 {-# WARNING_ON_USAGE _∷ʳ'_
 "Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
 Please use _∷ʳ′_ (ending in a prime) instead."
+#-}
+
+-- Version 2.0
+
+infixl 5 _─_
+_─_ = removeAt
+{-# WARNING_ON_USAGE _─_
+"Warning: _─_ was deprecated in v2.0.
+Please use removeAt instead."
 #-}

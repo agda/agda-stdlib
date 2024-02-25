@@ -6,8 +6,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
-open import Relation.Binary
+open import Data.Product.Base
+  using (map₁; map₂; ∃; _×_; Σ-syntax; proj₁; _,_; -,_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 import Data.Tree.AVL.Value
 
@@ -76,10 +78,10 @@ member : ∀ {i} → Key i → Map → Bool
 member k = AVL.member (-, k)
 
 headTail : Map → Maybe (KV × Map)
-headTail m = Maybe.map (Prod.map₁ (toKV ∘′ AVL.toPair)) (AVL.headTail m)
+headTail m = Maybe.map (map₁ (toKV ∘′ AVL.toPair)) (AVL.headTail m)
 
 initLast : Map → Maybe (Map × KV)
-initLast m = Maybe.map (Prod.map₂ (toKV ∘′ AVL.toPair)) (AVL.initLast m)
+initLast m = Maybe.map (map₂ (toKV ∘′ AVL.toPair)) (AVL.initLast m)
 
 foldr : (∀ {k} → Value k → A → A) → A → Map → A
 foldr cons = AVL.foldr cons

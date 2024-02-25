@@ -73,13 +73,13 @@
 module Tactic.MonoidSolver where
 
 open import Algebra
-open import Function
+open import Function.Base using (_⟨_⟩_)
 
 open import Data.Bool         as Bool    using (Bool; _∨_; if_then_else_)
 open import Data.Maybe        as Maybe   using (Maybe; just; nothing; maybe)
 open import Data.List.Base    as List    using (List; _∷_; [])
 open import Data.Nat          as ℕ       using (ℕ; suc; zero)
-open import Data.Product      as Product using (_×_; _,_)
+open import Data.Product.Base as Product using (_×_; _,_)
 
 open import Reflection.AST
 open import Reflection.AST.Term
@@ -88,11 +88,11 @@ import Reflection.AST.Name as Name
 open import Reflection.TCM
 open import Reflection.TCM.Syntax
 
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Expr type with homomorphism proofs
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 infixl 7 _∙′_
 data Expr {a} (A : Set a) : Set a where
@@ -103,7 +103,7 @@ data Expr {a} (A : Set a) : Set a where
 module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
 
   open Monoid monoid
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   -- Convert the AST to an expression (i.e. evaluate it) without
   -- normalising.
@@ -132,7 +132,7 @@ module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
   homo′ [ x ↑] y   = ∙-congʳ (identityʳ x)
   homo′ (x ∙′ y) z = begin
     [ x ∙′ y ⇓] ∙ z       ≡⟨⟩
-    [ x ⇓]′ [ y ⇓] ∙ z    ≈˘⟨ ∙-congʳ (homo′ x [ y ⇓]) ⟩
+    [ x ⇓]′ [ y ⇓] ∙ z    ≈⟨ ∙-congʳ (homo′ x [ y ⇓]) ⟨
     ([ x ⇓] ∙ [ y ⇓]) ∙ z ≈⟨ assoc [ x ⇓] [ y ⇓] z ⟩
     [ x ⇓] ∙ ([ y ⇓] ∙ z) ≈⟨ ∙-congˡ (homo′ y z) ⟩
     [ x ⇓] ∙ ([ y ⇓]′ z)  ≈⟨ homo′ x ([ y ⇓]′ z) ⟩
@@ -143,13 +143,13 @@ module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
   homo [ x ↑]   = identityʳ x
   homo (x ∙′ y) = begin
     [ x ∙′ y ⇓]     ≡⟨⟩
-    [ x ⇓]′ [ y ⇓]  ≈˘⟨ homo′ x [ y ⇓] ⟩
+    [ x ⇓]′ [ y ⇓]  ≈⟨ homo′ x [ y ⇓] ⟨
     [ x ⇓] ∙ [ y ⇓] ≈⟨ ∙-cong (homo x) (homo y) ⟩
     [ x ↓] ∙ [ y ↓] ∎
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Helpers for reflection
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 getArgs : Term → Maybe (Term × Term)
 getArgs (def _ xs) = go xs
@@ -160,9 +160,9 @@ getArgs (def _ xs) = go xs
   go _                      = nothing
 getArgs _ = nothing
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Getting monoid names
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 -- We try to be flexible here, by matching two kinds of names.
 -- The first is the field accessor for the monoid record itself.
@@ -191,9 +191,9 @@ findMonoidNames mon = do
     ; is-ε = buildMatcher (quote Monoid.ε)   (getName ε-altName)
     }
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Building Expr
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 -- We now define a function that takes an AST representing the LHS
 -- or RHS of the equation to solve and converts it into an AST
@@ -231,9 +231,9 @@ module _ (names : MonoidNames) where
     else [ t ↑]′
   buildExpr t = quote [_↑] ⟨ con ⟩ (t ⟨∷⟩ [])
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Constructing the solution
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 -- This function joins up the two homomorphism proofs. It constructs
 -- a proof of the following form:
@@ -252,9 +252,9 @@ constructSoln mon names lhs rhs =
     (quote homo ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ buildExpr names rhs ⟨∷⟩ []) ⟨∷⟩
     []
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Macro
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 solve-macro : Term → Term → TC _
 solve-macro mon hole = do

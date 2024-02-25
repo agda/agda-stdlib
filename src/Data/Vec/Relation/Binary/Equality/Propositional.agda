@@ -6,8 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
-
 module Data.Vec.Relation.Binary.Equality.Propositional {a} {A : Set a} where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)

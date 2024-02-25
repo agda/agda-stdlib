@@ -12,7 +12,7 @@ open import Level hiding (suc)
 open import Data.Nat.Base
 open import Function.Base
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.List.NonEmpty.Base as List⁺ using (List⁺; _∷_)
 open import Algebra.Core

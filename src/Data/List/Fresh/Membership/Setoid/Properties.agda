@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Fresh.Membership.Setoid.Properties {c ℓ} (S : Setoid c ℓ) where
 
@@ -14,22 +15,21 @@ open import Level using (Level; _⊔_)
 open import Data.Empty
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Product using (∃; _×_; _,_)
+open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
 
 open import Function.Base using (id; _∘′_; _$_)
 open import Relation.Nullary
-open import Relation.Unary as U using (Pred)
-import Relation.Binary as B
-import Relation.Binary.PropositionalEquality.Core as P
+open import Relation.Unary as Unary using (Pred)
+import Relation.Binary.Definitions as Binary
+import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Nary
 
 open import Data.List.Fresh
 open import Data.List.Fresh.Properties
 open import Data.List.Fresh.Membership.Setoid S
 open import Data.List.Fresh.Relation.Unary.Any using (Any; here; there; _─_)
-import Data.List.Fresh.Relation.Unary.Any.Properties as Anyₚ
-import Data.List.Fresh.Relation.Unary.All.Properties as Allₚ
+import Data.List.Fresh.Relation.Unary.Any.Properties as List#
 
 open Setoid S renaming (Carrier to A)
 
@@ -81,7 +81,7 @@ module _ {R : Rel A r} where
 module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≉⇒R : ∀[ _≉_ ⇒ R ]) where
 
   private
-    R≈ : R B.Respectsˡ _≈_
+    R≈ : R Binary.Respectsˡ _≈_
     R≈ x≈y Rxz = ≉⇒R (R⇒≉ Rxz ∘′ trans x≈y)
 
   fresh-remove : ∀ {x} {xs : List# A R} (x∈xs : x ∈ xs) → x # (xs ─ x∈xs)
@@ -102,7 +102,7 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
   injection {[]}                 {ys} inj = z≤n
   injection {xxs@(cons x xs pr)} {ys} inj = begin
     length xxs               ≤⟨ s≤s (injection step) ⟩
-    suc (length (ys ─ x∈ys)) ≡⟨ P.sym (Anyₚ.length-remove x∈ys) ⟩
+    suc (length (ys ─ x∈ys)) ≡⟨ ≡.sym (List#.length-remove x∈ys) ⟩
     length ys                ∎
 
     where
@@ -122,7 +122,7 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
    (∃ λ x → x ∈ ys × x ∉ xs) → length xs < length ys
   strict-injection {xs} {ys} inj (x , x∈ys , x∉xs) = begin
     suc (length xs)          ≤⟨ s≤s (injection step) ⟩
-    suc (length (ys ─ x∈ys)) ≡⟨ P.sym (Anyₚ.length-remove x∈ys) ⟩
+    suc (length (ys ─ x∈ys)) ≡⟨ ≡.sym (List#.length-remove x∈ys) ⟩
     length ys                ∎
 
     where
@@ -137,12 +137,12 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
 ------------------------------------------------------------------------
 -- proof irrelevance
 
-module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≈-irrelevant : B.Irrelevant _≈_) where
+module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≈-irrelevant : Binary.Irrelevant _≈_) where
 
   ∈-irrelevant : ∀ {x} {xs : List# A R} → Irrelevant (x ∈ xs)
   -- positive cases
-  ∈-irrelevant (here x≈y₁)   (here x≈y₂)   = P.cong here (≈-irrelevant x≈y₁ x≈y₂)
-  ∈-irrelevant (there x∈xs₁) (there x∈xs₂) = P.cong there (∈-irrelevant x∈xs₁ x∈xs₂)
+  ∈-irrelevant (here x≈y₁)   (here x≈y₂)   = ≡.cong here (≈-irrelevant x≈y₁ x≈y₂)
+  ∈-irrelevant (there x∈xs₁) (there x∈xs₂) = ≡.cong there (∈-irrelevant x∈xs₁ x∈xs₂)
   -- absurd cases
   ∈-irrelevant {xs = cons x xs pr} (here x≈y)    (there x∈xs₂) =
     ⊥-elim (distinct x∈xs₂ (fresh⇒∉ R⇒≉ pr) x≈y)

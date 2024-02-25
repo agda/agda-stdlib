@@ -8,8 +8,7 @@
 
 module Algebra.Module.Morphism.Construct.Identity where
 
-open import Algebra.Bundles
-open import Algebra.Module.Bundles
+open import Algebra.Module.Bundles.Raw
 open import Algebra.Module.Morphism.Structures
   using ( module LeftSemimoduleMorphisms
         ; module LeftModuleMorphisms
@@ -23,14 +22,15 @@ open import Algebra.Module.Morphism.Structures
 open import Algebra.Morphism.Construct.Identity
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id)
+import Function.Construct.Identity as Id
 open import Level using (Level)
+open import Relation.Binary.Definitions using (Reflexive)
 
 private
   variable
-    r ℓr s ℓs m ℓm : Level
+    r s m ℓm : Level
 
-module _ {semiring : Semiring r ℓr} (M : LeftSemimodule semiring m ℓm) where
-  open LeftSemimodule M using (≈ᴹ-refl)
+module _ {R : Set r} (M : RawLeftSemimodule R m ℓm) (open RawLeftSemimodule M) (≈ᴹ-refl : Reflexive _≈ᴹ_) where
   open LeftSemimoduleMorphisms M M
 
   isLeftSemimoduleHomomorphism : IsLeftSemimoduleHomomorphism id
@@ -48,11 +48,10 @@ module _ {semiring : Semiring r ℓr} (M : LeftSemimodule semiring m ℓm) where
   isLeftSemimoduleIsomorphism : IsLeftSemimoduleIsomorphism id
   isLeftSemimoduleIsomorphism = record
     { isLeftSemimoduleMonomorphism = isLeftSemimoduleMonomorphism
-    ; surjective                   = _, ≈ᴹ-refl
+    ; surjective                   = Id.surjective _
     }
 
-module _ {ring : Ring r ℓr} (M : LeftModule ring m ℓm) where
-  open LeftModule M using (≈ᴹ-refl)
+module _ {R : Set r} (M : RawLeftModule R m ℓm) (open RawLeftModule M) (≈ᴹ-refl : Reflexive _≈ᴹ_)  where
   open LeftModuleMorphisms M M
 
   isLeftModuleHomomorphism : IsLeftModuleHomomorphism id
@@ -70,11 +69,10 @@ module _ {ring : Ring r ℓr} (M : LeftModule ring m ℓm) where
   isLeftModuleIsomorphism : IsLeftModuleIsomorphism id
   isLeftModuleIsomorphism = record
     { isLeftModuleMonomorphism = isLeftModuleMonomorphism
-    ; surjective               = _, ≈ᴹ-refl
+    ; surjective               = Id.surjective _
     }
 
-module _ {semiring : Semiring r ℓr} (M : RightSemimodule semiring m ℓm) where
-  open RightSemimodule M using (≈ᴹ-refl)
+module _ {R : Set r} (M : RawRightSemimodule R m ℓm) (open RawRightSemimodule M) (≈ᴹ-refl : Reflexive _≈ᴹ_) where
   open RightSemimoduleMorphisms M M
 
   isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism id
@@ -92,11 +90,10 @@ module _ {semiring : Semiring r ℓr} (M : RightSemimodule semiring m ℓm) wher
   isRightSemimoduleIsomorphism : IsRightSemimoduleIsomorphism id
   isRightSemimoduleIsomorphism = record
     { isRightSemimoduleMonomorphism = isRightSemimoduleMonomorphism
-    ; surjective                    = _, ≈ᴹ-refl
+    ; surjective                    = Id.surjective _
     }
 
-module _ {ring : Ring r ℓr} (M : RightModule ring m ℓm) where
-  open RightModule M using (≈ᴹ-refl)
+module _ {R : Set r} (M : RawRightModule R m ℓm) (open RawRightModule M) (≈ᴹ-refl : Reflexive _≈ᴹ_) where
   open RightModuleMorphisms M M
 
   isRightModuleHomomorphism : IsRightModuleHomomorphism id
@@ -114,11 +111,10 @@ module _ {ring : Ring r ℓr} (M : RightModule ring m ℓm) where
   isRightModuleIsomorphism : IsRightModuleIsomorphism id
   isRightModuleIsomorphism = record
     { isRightModuleMonomorphism = isRightModuleMonomorphism
-    ; surjective                = _, ≈ᴹ-refl
+    ; surjective                = Id.surjective _
     }
 
-module _ {R-semiring : Semiring r ℓr} {S-semiring : Semiring s ℓs} (M : Bisemimodule R-semiring S-semiring m ℓm) where
-  open Bisemimodule M using (≈ᴹ-refl)
+module _ {R : Set r} {S : Set s} (M : RawBisemimodule R S m ℓm) (open RawBisemimodule M) (≈ᴹ-refl : Reflexive _≈ᴹ_) where
   open BisemimoduleMorphisms M M
 
   isBisemimoduleHomomorphism : IsBisemimoduleHomomorphism id
@@ -137,11 +133,10 @@ module _ {R-semiring : Semiring r ℓr} {S-semiring : Semiring s ℓs} (M : Bise
   isBisemimoduleIsomorphism : IsBisemimoduleIsomorphism id
   isBisemimoduleIsomorphism = record
     { isBisemimoduleMonomorphism = isBisemimoduleMonomorphism
-    ; surjective                 = _, ≈ᴹ-refl
+    ; surjective                 = Id.surjective _
     }
 
-module _ {R-ring : Ring r ℓr} {S-ring : Ring r ℓr} (M : Bimodule R-ring S-ring m ℓm) where
-  open Bimodule M using (≈ᴹ-refl)
+module _ {R : Set r} {S : Set s} (M : RawBimodule R S m ℓm) (open RawBimodule M) (≈ᴹ-refl : Reflexive _≈ᴹ_) where
   open BimoduleMorphisms M M
 
   isBimoduleHomomorphism : IsBimoduleHomomorphism id
@@ -160,16 +155,15 @@ module _ {R-ring : Ring r ℓr} {S-ring : Ring r ℓr} (M : Bimodule R-ring S-ri
   isBimoduleIsomorphism : IsBimoduleIsomorphism id
   isBimoduleIsomorphism = record
     { isBimoduleMonomorphism = isBimoduleMonomorphism
-    ; surjective             = _, ≈ᴹ-refl
+    ; surjective             = Id.surjective _
     }
 
-module _ {commutativeSemiring : CommutativeSemiring r ℓr} (M : Semimodule commutativeSemiring m ℓm) where
-  open Semimodule M using (≈ᴹ-refl)
+module _ {R : Set r} (M : RawSemimodule R m ℓm) (open RawSemimodule M) (≈ᴹ-refl : Reflexive _≈ᴹ_)  where
   open SemimoduleMorphisms M M
 
   isSemimoduleHomomorphism : IsSemimoduleHomomorphism id
   isSemimoduleHomomorphism = record
-    { isBisemimoduleHomomorphism = isBisemimoduleHomomorphism _
+    { isBisemimoduleHomomorphism = isBisemimoduleHomomorphism _ ≈ᴹ-refl
     }
 
   isSemimoduleMonomorphism : IsSemimoduleMonomorphism id
@@ -181,16 +175,15 @@ module _ {commutativeSemiring : CommutativeSemiring r ℓr} (M : Semimodule comm
   isSemimoduleIsomorphism : IsSemimoduleIsomorphism id
   isSemimoduleIsomorphism = record
     { isSemimoduleMonomorphism = isSemimoduleMonomorphism
-    ; surjective               = _, ≈ᴹ-refl
+    ; surjective               = Id.surjective _
     }
 
-module _ {commutativeRing : CommutativeRing r ℓr} (M : Module commutativeRing m ℓm) where
-  open Module M using (≈ᴹ-refl)
+module _ {R : Set r} (M : RawModule R m ℓm) (open RawModule M) (≈ᴹ-refl : Reflexive _≈ᴹ_) where
   open ModuleMorphisms M M
 
   isModuleHomomorphism : IsModuleHomomorphism id
   isModuleHomomorphism = record
-    { isBimoduleHomomorphism = isBimoduleHomomorphism _
+    { isBimoduleHomomorphism = isBimoduleHomomorphism _ ≈ᴹ-refl
     }
 
   isModuleMonomorphism : IsModuleMonomorphism id
@@ -202,5 +195,5 @@ module _ {commutativeRing : CommutativeRing r ℓr} (M : Module commutativeRing 
   isModuleIsomorphism : IsModuleIsomorphism id
   isModuleIsomorphism = record
     { isModuleMonomorphism = isModuleMonomorphism
-    ; surjective           = _, ≈ᴹ-refl
+    ; surjective           = Id.surjective _
     }

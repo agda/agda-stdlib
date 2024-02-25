@@ -12,13 +12,13 @@ open import Level using (Level; _⊔_; Lift)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘′_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Unary  as U using (Pred)
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nary
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 

@@ -13,11 +13,11 @@
 module Data.List.Membership.Propositional.Properties.Core where
 
 open import Function.Base using (flip; id; _∘_)
-open import Function.Inverse using (_↔_; inverse)
+open import Function.Bundles
 open import Data.List.Base using (List)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
-open import Data.Product as Prod
+open import Data.Product.Base as Product
   using (_,_; proj₁; proj₂; uncurry′; ∃; _×_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core as P
@@ -42,7 +42,7 @@ map∘find (there p) hyp = P.cong there (map∘find p hyp)
 
 find∘map : ∀ {P : Pred A p} {Q : Pred A q}
            {xs : List A} (p : Any P xs) (f : P ⊆ Q) →
-           find (Any.map f p) ≡ Prod.map id (Prod.map id f) (find p)
+           find (Any.map f p) ≡ Product.map id (Product.map id f) (find p)
 find∘map (here  p) f = refl
 find∘map (there p) f rewrite find∘map p f = refl
 
@@ -80,7 +80,7 @@ module _ {P : Pred A p} where
   ∃∈-Any = uncurry′ lose ∘ proj₂
 
   Any↔ : ∀ {xs} → (∃ λ x → x ∈ xs × P x) ↔ Any P xs
-  Any↔ = inverse ∃∈-Any find from∘to lose∘find
+  Any↔ = mk↔ₛ′ ∃∈-Any find lose∘find from∘to
     where
     from∘to : ∀ v → find (∃∈-Any v) ≡ v
     from∘to p = find∘lose _ (proj₁ (proj₂ p)) (proj₂ (proj₂ p))

@@ -11,7 +11,8 @@ module Data.List.Membership.Setoid.Properties where
 open import Algebra using (Op₂; Selective)
 open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base
+open import Data.Fin.Properties using (suc-injective)
+open import Data.List.Base hiding (find)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any
@@ -20,15 +21,17 @@ import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.Nat.Base using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
-open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
+open import Data.Product.Base as Product using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_$_; flip; _∘_; _∘′_; id)
-open import Function.Inverse using (_↔_)
+open import Function.Bundles using (_↔_)
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-open import Relation.Unary as U using (Decidable; Pred)
+open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_; _Preserves_⟶_)
+open import Relation.Binary.Definitions as Binary hiding (Decidable)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Unary as Unary using (Decidable; Pred)
 open import Relation.Nullary using (¬_; does; _because_; yes; no)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation using (contradiction)
@@ -62,6 +65,13 @@ module _ (S : Setoid c ℓ) where
   ∉-resp-≋ : ∀ {x} → (x ∉_) Respects _≋_
   ∉-resp-≋ xs≋ys v∉xs v∈ys = v∉xs (∈-resp-≋ (≋-sym xs≋ys) v∈ys)
 
+  -- index is injective in its first argument.
+
+  index-injective : ∀ {x₁ x₂ xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
+                    Any.index x₁∈xs ≡ Any.index x₂∈xs → x₁ ≈ x₂
+  index-injective (here x₁≈x)   (here x₂≈x)   _  = trans x₁≈x (sym x₂≈x)
+  index-injective (there x₁∈xs) (there x₂∈xs) eq = index-injective x₁∈xs x₂∈xs (suc-injective eq)
+
 ------------------------------------------------------------------------
 -- Irrelevance
 
@@ -75,11 +85,11 @@ module _ (S : Setoid c ℓ) where
     ∉×∈⇒≉ : ∀ {x y xs} → All (y ≉_) xs → x ∈ xs → x ≉ y
     ∉×∈⇒≉ = All.lookupWith λ y≉z x≈z x≈y → y≉z (trans (sym x≈y) x≈z)
 
-  unique⇒irrelevant : B.Irrelevant _≈_ → ∀ {xs} → Unique xs → U.Irrelevant (_∈ xs)
+  unique⇒irrelevant : Binary.Irrelevant _≈_ → ∀ {xs} → Unique xs → Unary.Irrelevant (_∈ xs)
   unique⇒irrelevant ≈-irr _        (here p)  (here q)  =
-    P.cong here (≈-irr p q)
+    ≡.cong here (≈-irr p q)
   unique⇒irrelevant ≈-irr (_  ∷ u) (there p) (there q) =
-    P.cong there (unique⇒irrelevant ≈-irr u p q)
+    ≡.cong there (unique⇒irrelevant ≈-irr u p q)
   unique⇒irrelevant ≈-irr (≉s ∷ _) (here p)  (there q) =
     contradiction p (∉×∈⇒≉ ≉s q)
   unique⇒irrelevant ≈-irr (≉s ∷ _) (there p) (here q)  =
@@ -120,18 +130,18 @@ module _ (S : Setoid c ℓ) where
 
   length-mapWith∈ : ∀ {a} {A : Set a} xs {f : ∀ {x} → x ∈ xs → A} →
                     length (mapWith∈ xs f) ≡ length xs
-  length-mapWith∈ []       = P.refl
-  length-mapWith∈ (x ∷ xs) = P.cong suc (length-mapWith∈ xs)
+  length-mapWith∈ []       = ≡.refl
+  length-mapWith∈ (x ∷ xs) = ≡.cong suc (length-mapWith∈ xs)
 
   mapWith∈-id : ∀ xs → mapWith∈ xs (λ {x} _ → x) ≡ xs
-  mapWith∈-id []       = P.refl
-  mapWith∈-id (x ∷ xs) = P.cong (x ∷_) (mapWith∈-id xs)
+  mapWith∈-id []       = ≡.refl
+  mapWith∈-id (x ∷ xs) = ≡.cong (x ∷_) (mapWith∈-id xs)
 
   map-mapWith∈ : ∀ {a b} {A : Set a} {B : Set b} →
                  ∀ xs (f : ∀ {x} → x ∈ xs → A) (g : A → B) →
                  map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
-  map-mapWith∈ []       f g = P.refl
-  map-mapWith∈ (x ∷ xs) f g = P.cong (_ ∷_) (map-mapWith∈ xs (f ∘ there) g)
+  map-mapWith∈ []       f g = ≡.refl
+  map-mapWith∈ (x ∷ xs) f g = ≡.cong (_ ∷_) (map-mapWith∈ xs (f ∘ there) g)
 
 ------------------------------------------------------------------------
 -- map
@@ -154,8 +164,8 @@ module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
   map-∷= : ∀ {f} (f≈ : f Preserves _≈₁_ ⟶ _≈₂_)
            {xs x v} → (x∈xs : x ∈₁ xs) →
            map f (x∈xs M₁.∷= v) ≡ ∈-map⁺ f≈ x∈xs M₂.∷= f v
-  map-∷= f≈ (here x≈y)   = P.refl
-  map-∷= f≈ (there x∈xs) = P.cong (_ ∷_) (map-∷= f≈ x∈xs)
+  map-∷= f≈ (here x≈y)   = ≡.refl
+  map-∷= f≈ (there x∈xs) = ≡.cong (_ ∷_) (map-∷= f≈ x∈xs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -332,15 +342,15 @@ module _ (S : Setoid c ℓ) {P : Pred (Carrier S) p}
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ {xs = x ∷ xs} v∈f[x∷xs] with P? x
-  ... | false because  _   = Prod.map there id (∈-filter⁻ v∈f[x∷xs])
+  ... | false because  _   = Product.map there id (∈-filter⁻ v∈f[x∷xs])
   ... |  true because [Px] with v∈f[x∷xs]
   ...   | here  v≈x   = here v≈x , resp (sym v≈x) (invert [Px])
-  ...   | there v∈fxs = Prod.map there id (∈-filter⁻ v∈fxs)
+  ...   | there v∈fxs = Product.map there id (∈-filter⁻ v∈fxs)
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
 
-module _ (S : Setoid c ℓ) {R : Rel (Carrier S) ℓ₂} (R? : B.Decidable R) where
+module _ (S : Setoid c ℓ) {R : Rel (Carrier S) ℓ₂} (R? : Binary.Decidable R) where
 
   open Setoid S using (_≈_)
   open Membership S using (_∈_)

@@ -73,26 +73,42 @@ record IsDecEquivalence : Set (a ⊔ ℓ) where
 -- Preorders
 ------------------------------------------------------------------------
 
-record IsPreorder (_∼_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+record IsPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
     isEquivalence : IsEquivalence
     -- Reflexivity is expressed in terms of the underlying equality:
-    reflexive     : _≈_ ⇒ _∼_
-    trans         : Transitive _∼_
+    reflexive     : _≈_ ⇒ _≲_
+    trans         : Transitive _≲_
 
   module Eq = IsEquivalence isEquivalence
 
-  refl : Reflexive _∼_
+  refl : Reflexive _≲_
   refl = reflexive Eq.refl
 
-  ∼-respˡ-≈ : _∼_ Respectsˡ _≈_
-  ∼-respˡ-≈ x≈y x∼z = trans (reflexive (Eq.sym x≈y)) x∼z
+  ≲-respˡ-≈ : _≲_ Respectsˡ _≈_
+  ≲-respˡ-≈ x≈y x∼z = trans (reflexive (Eq.sym x≈y)) x∼z
 
-  ∼-respʳ-≈ : _∼_ Respectsʳ _≈_
-  ∼-respʳ-≈ x≈y z∼x = trans z∼x (reflexive x≈y)
+  ≲-respʳ-≈ : _≲_ Respectsʳ _≈_
+  ≲-respʳ-≈ x≈y z∼x = trans z∼x (reflexive x≈y)
 
-  ∼-resp-≈ : _∼_ Respects₂ _≈_
-  ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
+  ≲-resp-≈ : _≲_ Respects₂ _≈_
+  ≲-resp-≈ = ≲-respʳ-≈ , ≲-respˡ-≈
+
+  ∼-respˡ-≈ = ≲-respˡ-≈
+  {-# WARNING_ON_USAGE ∼-respˡ-≈
+  "Warning: ∼-respˡ-≈ was deprecated in v2.0.
+  Please use ≲-respˡ-≈ instead. "
+  #-}
+  ∼-respʳ-≈ = ≲-respʳ-≈
+  {-# WARNING_ON_USAGE ∼-respʳ-≈
+  "Warning: ∼-respʳ-≈ was deprecated in v2.0.
+  Please use ≲-respʳ-≈ instead. "
+  #-}
+  ∼-resp-≈ = ≲-resp-≈
+  {-# WARNING_ON_USAGE ∼-resp-≈
+  "Warning: ∼-resp-≈ was deprecated in v2.0.
+  Please use ≲-resp-≈ instead. "
+  #-}
 
 
 record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
@@ -101,11 +117,6 @@ record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
     total      : Total _≲_
 
   open IsPreorder isPreorder public
-    renaming
-    ( ∼-respˡ-≈ to ≲-respˡ-≈
-    ; ∼-respʳ-≈ to ≲-respʳ-≈
-    ; ∼-resp-≈  to ≲-resp-≈
-    )
 
 
 ------------------------------------------------------------------------
@@ -235,16 +246,20 @@ record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 
 
 -- Note that these orders are decidable. The current implementation
--- of `Trichotomous` subsumes irreflexivity and asymmetry. Any reasonable
--- definition capturing these three properties implies decidability
--- as `Trichotomous` necessarily separates out the equality case.
+-- of `Trichotomous` subsumes irreflexivity and asymmetry. See
+-- `Relation.Binary.Structures.Biased` for ways of constructing this
+-- record without having to prove `isStrictPartialOrder`.
 
 record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
-    isEquivalence : IsEquivalence
-    trans         : Transitive _<_
-    compare       : Trichotomous _≈_ _<_
+    isStrictPartialOrder : IsStrictPartialOrder _<_
+    compare              : Trichotomous _≈_ _<_
 
+  open IsStrictPartialOrder isStrictPartialOrder public
+    hiding (module Eq)
+
+  -- `Trichotomous` necessarily separates out the equality case so
+  --  it implies decidability.
   infix 4 _≟_ _<?_
 
   _≟_ : Decidable _≈_
@@ -253,22 +268,6 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
   _<?_ : Decidable _<_
   _<?_ = tri⇒dec< compare
 
-  isDecEquivalence : IsDecEquivalence
-  isDecEquivalence = record
-    { isEquivalence = isEquivalence
-    ; _≟_           = _≟_
-    }
-
-  module Eq = IsDecEquivalence isDecEquivalence
-
-  isStrictPartialOrder : IsStrictPartialOrder _<_
-  isStrictPartialOrder = record
-    { isEquivalence = isEquivalence
-    ; irrefl        = tri⇒irr compare
-    ; trans         = trans
-    ; <-resp-≈      = trans∧tri⇒resp Eq.sym Eq.trans trans compare
-    }
-
   isDecStrictPartialOrder : IsDecStrictPartialOrder _<_
   isDecStrictPartialOrder = record
     { isStrictPartialOrder = isStrictPartialOrder
@@ -276,8 +275,33 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
     ; _<?_                 = _<?_
     }
 
-  open IsStrictPartialOrder isStrictPartialOrder public
-    using (irrefl; asym; <-respʳ-≈; <-respˡ-≈; <-resp-≈)
+  -- Redefine the `Eq` module to include decidability proofs
+  module Eq where
+
+    isDecEquivalence : IsDecEquivalence
+    isDecEquivalence = record
+      { isEquivalence = isEquivalence
+      ; _≟_           = _≟_
+      }
+
+    open IsDecEquivalence isDecEquivalence public
+
+  isDecEquivalence : IsDecEquivalence
+  isDecEquivalence = record
+    { isEquivalence = isEquivalence
+    ; _≟_           = _≟_
+    }
+  {-# WARNING_ON_USAGE isDecEquivalence
+  "Warning: isDecEquivalence was deprecated in v2.0.
+  Please use Eq.isDecEquivalence instead. "
+  #-}
+
+record IsDenseLinearOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  field
+    isStrictTotalOrder : IsStrictTotalOrder _<_
+    dense              : Dense _<_
+
+  open IsStrictTotalOrder isStrictTotalOrder public
 
 
 ------------------------------------------------------------------------

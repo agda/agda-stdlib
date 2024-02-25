@@ -23,11 +23,11 @@ open import Data.String.Base using (String; fromList; replicate)
 open import Function.Base using (_∘_; _∘′_; _$_)
 
 open import Effect.Monad using (RawMonad)
-import Data.List.Effectful as Cat
-open RawMonad (Cat.monad {Level.zero})
+import Data.List.Effectful as List
+open RawMonad (List.monad {Level.zero})
 
-import Data.Nat.Properties as ℕₚ
-open import Data.List.Extrema.Core ℕₚ.≤-totalOrder using (⊓ᴸ)
+import Data.Nat.Properties as ℕ
+open import Data.List.Extrema.Core ℕ.≤-totalOrder using (⊓ᴸ)
 
 ------------------------------------------------------------------------
 -- Internal representation of documents and rendering function

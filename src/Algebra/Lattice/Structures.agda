@@ -16,7 +16,9 @@
 open import Algebra.Core
 open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_)
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Lattice.Structures
   {a ℓ} {A : Set a}  -- The underlying set
@@ -35,20 +37,15 @@ record IsSemilattice (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     comm   : Commutative ∙
 
   open IsBand isBand public
-    renaming
-    ( ∙-cong  to ∧-cong
-    ; ∙-congˡ to ∧-congˡ
-    ; ∙-congʳ to ∧-congʳ
-    )
 
 -- Used to bring names appropriate for a meet semilattice into scope.
 IsMeetSemilattice = IsSemilattice
 module IsMeetSemilattice {∧} (L : IsMeetSemilattice ∧) where
   open IsSemilattice L public
     renaming
-    ( ∧-cong  to ∧-cong
-    ; ∧-congˡ to ∧-congˡ
-    ; ∧-congʳ to ∧-congʳ
+    ( ∙-cong  to ∧-cong
+    ; ∙-congˡ to ∧-congˡ
+    ; ∙-congʳ to ∧-congʳ
     )
 
 -- Used to bring names appropriate for a join semilattice into scope.
@@ -56,9 +53,9 @@ IsJoinSemilattice = IsSemilattice
 module IsJoinSemilattice {∨} (L : IsJoinSemilattice ∨) where
   open IsSemilattice L public
     renaming
-    ( ∧-cong  to ∨-cong
-    ; ∧-congˡ to ∨-congˡ
-    ; ∧-congʳ to ∨-congʳ
+    ( ∙-cong  to ∨-cong
+    ; ∙-congˡ to ∨-congˡ
+    ; ∙-congʳ to ∨-congʳ
     )
 
 ------------------------------------------------------------------------

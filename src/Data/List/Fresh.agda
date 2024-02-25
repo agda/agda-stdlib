@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Fresh lists, a proof relevant variant of Catarina Coquand's contexts in
--- "A Formalised Proof of the Soundness and Completeness of a Simply Typed
--- Lambda-Calculus with Explicit Substitutions"
+-- Fresh lists, a proof relevant variant of Catarina Coquand's contexts
+-- in "A Formalised Proof of the Soundness and Completeness of a Simply
+-- Typed Lambda-Calculus with Explicit Substitutions"
 ------------------------------------------------------------------------
 
 -- See README.Data.List.Fresh and README.Data.Trie.NonDependent for
@@ -22,9 +22,10 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘′_; flip; id; _on_)
-open import Relation.Nullary      using (does)
-open import Relation.Unary   as U using (Pred)
-open import Relation.Binary  as B using (Rel)
+open import Relation.Nullary using (does)
+open import Relation.Unary as U using (Pred)
+open import Relation.Binary.Core using (Rel)
+import Relation.Binary.Definitions as B
 open import Relation.Nary
 
 private
@@ -52,8 +53,8 @@ module _ {a} (A : Set a) (R : Rel A r) where
   -- the erasure ⌊_⌋ of a decidable predicate, cf. Relation.Nary) or we
   -- do not care about the proof, it is convenient to get back list syntax.
 
-  -- We use a different symbol to avoid conflict when importing both Data.List
-  -- and Data.List.Fresh.
+  -- We use a different symbol to avoid conflict when importing both
+  -- Data.List and Data.List.Fresh.
   infixr 5 _∷#_
   pattern _∷#_ x xs = cons x xs _
 

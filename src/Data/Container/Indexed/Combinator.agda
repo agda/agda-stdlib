@@ -12,11 +12,12 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Container.Indexed
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Unit.Polymorphic.Base using (⊤)
-open import Data.Product as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
-open import Data.Sum renaming (_⊎_ to _⟨⊎⟩_)
+open import Data.Product.Base as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
+open import Data.Sum.Base renaming (_⊎_ to _⟨⊎⟩_)
 open import Data.Sum.Relation.Unary.All as All using (All)
 open import Function.Base as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
-open import Function.Inverse using (_↔̇_; inverse)
+open import Function.Bundles using (mk↔ₛ′)
+open import Function.Indexed.Bundles using (_↔ᵢ_)
 open import Level
 open import Relation.Unary using (Pred; _⊆_; _∪_; _∩_; ⋃; ⋂)
   renaming (_⟨×⟩_ to _⟪×⟫_; _⟨⊙⟩_ to _⟪⊙⟫_; _⟨⊎⟩_ to _⟪⊎⟫_)
@@ -145,8 +146,8 @@ const[ X ]⟶ C = Π {X = X} (F.const C)
 
 module Identity where
 
-  correct : {X : Pred O ℓ} → ⟦ id {c = c}{r} ⟧ X ↔̇ F.id X
-  correct {X = X} = inverse to from (λ _ → refl) (λ _ → refl)
+  correct : {X : Pred O ℓ} → ⟦ id {c = c}{r} ⟧ X ↔ᵢ F.id X
+  correct {X = X} = mk↔ₛ′ to from (λ _ → refl) (λ _ → refl)
     where
     to : ∀ {x} → ⟦ id ⟧ X x → F.id X x
     to xs = proj₂ xs _
@@ -156,15 +157,8 @@ module Identity where
 
 module Constant (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
 
-  correct : (X : Pred O ℓ₁) {Y : Pred O ℓ₂} → ⟦ const X ⟧ Y ↔̇ F.const X Y
-  correct X {Y} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { right-inverse-of = λ _ → refl
-      ; left-inverse-of  = to∘from
-      }
-    }
+  correct : (X : Pred O ℓ₁) {Y : Pred O ℓ₂} → ⟦ const X ⟧ Y ↔ᵢ F.const X Y
+  correct X {Y} = mk↔ₛ′ to from (λ _ → refl) to∘from
     where
     to : ⟦ const X ⟧ Y ⊆ X
     to = proj₁
@@ -178,15 +172,15 @@ module Constant (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
 module Duality where
 
   correct : (C : Container I O c r) (X : Pred I ℓ) →
-            ⟦ C ^⊥ ⟧ X ↔̇ (λ o → (c : Command C o) → ∃ λ r → X (next C c r))
-  correct C X = inverse (λ { (f , g) → < f , g > }) (λ f → proj₁ ⟨∘⟩ f , proj₂ ⟨∘⟩ f)
+            ⟦ C ^⊥ ⟧ X ↔ᵢ (λ o → (c : Command C o) → ∃ λ r → X (next C c r))
+  correct C X = mk↔ₛ′ (λ { (f , g) → < f , g > }) (λ f → proj₁ ⟨∘⟩ f , proj₂ ⟨∘⟩ f)
                         (λ _ → refl) (λ _ → refl)
 
 module Composition where
 
   correct : (C₁ : Container J K c r) (C₂ : Container I J c r) →
-            {X : Pred I ℓ} → ⟦ C₁ ∘ C₂ ⟧ X ↔̇ (⟦ C₁ ⟧ ⟨∘⟩ ⟦ C₂ ⟧) X
-  correct C₁ C₂ {X} = inverse to from (λ _ → refl) (λ _ → refl)
+            {X : Pred I ℓ} → ⟦ C₁ ∘ C₂ ⟧ X ↔ᵢ (⟦ C₁ ⟧ ⟨∘⟩ ⟦ C₂ ⟧) X
+  correct C₁ C₂ {X} = mk↔ₛ′ to from (λ _ → refl) (λ _ → refl)
     where
     to : ⟦ C₁ ∘ C₂ ⟧ X ⊆ ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)
     to ((c , f) , g) = (c , < f , curry g >)
@@ -197,8 +191,8 @@ module Composition where
 module Product (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
 
   correct : (C₁ C₂ : Container I O c r) {X : Pred I _} →
-            ⟦ C₁ × C₂ ⟧ X ↔̇ (⟦ C₁ ⟧ X ∩ ⟦ C₂ ⟧ X)
-  correct C₁ C₂ {X} = inverse to from from∘to (λ _ → refl)
+            ⟦ C₁ × C₂ ⟧ X ↔ᵢ (⟦ C₁ ⟧ X ∩ ⟦ C₂ ⟧ X)
+  correct C₁ C₂ {X} = mk↔ₛ′ to from (λ _ → refl) from∘to
     where
     to : ⟦ C₁ × C₂ ⟧ X ⊆ ⟦ C₁ ⟧ X ∩ ⟦ C₂ ⟧ X
     to ((c₁ , c₂) , k) = ((c₁ , k ⟨∘⟩ inj₁) , (c₂ , k ⟨∘⟩ inj₂))
@@ -213,8 +207,8 @@ module Product (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
 module IndexedProduct where
 
   correct : (C : X → Container I O c r) {Y : Pred I ℓ} →
-            ⟦ Π C ⟧ Y ↔̇ ⋂[ x ∶ X ] ⟦ C x ⟧ Y
-  correct {X = X} C {Y} = inverse to from (λ _ → refl) (λ _ → refl)
+            ⟦ Π C ⟧ Y ↔ᵢ ⋂[ x ∶ X ] ⟦ C x ⟧ Y
+  correct {X = X} C {Y} = mk↔ₛ′ to from (λ _ → refl) (λ _ → refl)
     where
     to : ⟦ Π C ⟧ Y ⊆ ⋂[ x ∶ X ] ⟦ C x ⟧ Y
     to (c , k) = λ x → (c x , λ r → k (x , r))
@@ -225,8 +219,8 @@ module IndexedProduct where
 module Sum (ext : ∀ {ℓ₁ ℓ₂} → Extensionality ℓ₁ ℓ₂) where
 
   correct : (C₁ C₂ : Container I O c r) {X : Pred I ℓ} →
-            ⟦ C₁ ⊎ C₂ ⟧ X ↔̇ (⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X)
-  correct C₁ C₂ {X} = inverse to from from∘to to∘from
+            ⟦ C₁ ⊎ C₂ ⟧ X ↔ᵢ (⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X)
+  correct C₁ C₂ {X} = mk↔ₛ′ to from to∘from from∘to
     where
     to : ⟦ C₁ ⊎ C₂ ⟧ X ⊆ ⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X
     to (inj₁ c₁ , k) = inj₁ (c₁ , λ r → k (All.inj₁ r))
@@ -246,8 +240,8 @@ module Sum (ext : ∀ {ℓ₁ ℓ₂} → Extensionality ℓ₁ ℓ₂) where
 module Sum′ where
 
   correct : (C₁ C₂ : Container I O c r) {X : Pred I ℓ} →
-            ⟦ C₁ ⊎′ C₂ ⟧ X ↔̇ (⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X)
-  correct C₁ C₂ {X} = inverse to from from∘to to∘from
+            ⟦ C₁ ⊎′ C₂ ⟧ X ↔ᵢ (⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X)
+  correct C₁ C₂ {X} = mk↔ₛ′ to from to∘from from∘to
     where
     to : ⟦ C₁ ⊎′ C₂ ⟧ X ⊆ ⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X
     to (inj₁ c₁ , k) = inj₁ (c₁ , k)
@@ -266,8 +260,8 @@ module Sum′ where
 module IndexedSum where
 
   correct : (C : X → Container I O c r) {Y : Pred I ℓ} →
-            ⟦ Σ C ⟧ Y ↔̇ ⋃[ x ∶ X ] ⟦ C x ⟧ Y
-  correct {X = X} C {Y} = inverse to from (λ _ → refl) (λ _ → refl)
+            ⟦ Σ C ⟧ Y ↔ᵢ ⋃[ x ∶ X ] ⟦ C x ⟧ Y
+  correct {X = X} C {Y} = mk↔ₛ′ to from (λ _ → refl) (λ _ → refl)
     where
     to : ⟦ Σ C ⟧ Y ⊆ ⋃[ x ∶ X ] ⟦ C x ⟧ Y
     to ((x , c) , k) = (x , (c , k))
@@ -278,5 +272,5 @@ module IndexedSum where
 module ConstantExponentiation where
 
   correct : (C : Container I O c r) {Y : Pred I ℓ} →
-            ⟦ const[ X ]⟶ C ⟧ Y ↔̇ (⋂ X (F.const (⟦ C ⟧ Y)))
+            ⟦ const[ X ]⟶ C ⟧ Y ↔ᵢ (⋂ X (F.const (⟦ C ⟧ Y)))
   correct C {Y} = IndexedProduct.correct (F.const C) {Y}

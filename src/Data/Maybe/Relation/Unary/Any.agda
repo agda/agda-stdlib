@@ -9,7 +9,7 @@
 module Data.Maybe.Relation.Unary.Any where
 
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Product as Prod using (∃; _,_; -,_)
+open import Data.Product.Base as Product using (∃; _,_; -,_)
 open import Function.Base using (id)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
@@ -50,7 +50,7 @@ module _ {a p q r} {A : Set a} {P : Pred A p} {Q : Pred A q} {R : Pred A r} wher
   zipWith f (just px , just qx) = just (f (px , qx))
 
   unzipWith : P ⊆ Q ∩ R → Any P ⊆ Any Q ∩ Any R
-  unzipWith f (just px) = Prod.map just just (f px)
+  unzipWith f (just px) = Product.map just just (f px)
 
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
@@ -73,4 +73,4 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   irrelevant P-irrelevant (just p) (just q) = cong just (P-irrelevant p q)
 
   satisfiable : Satisfiable P → Satisfiable (Any P)
-  satisfiable P-satisfiable = Prod.map just just P-satisfiable
+  satisfiable P-satisfiable = Product.map just just P-satisfiable

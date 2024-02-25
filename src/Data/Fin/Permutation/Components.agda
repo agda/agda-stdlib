@@ -12,8 +12,7 @@ open import Data.Bool.Base using (Bool; true; false)
 open import Data.Fin.Base
 open import Data.Fin.Properties
 open import Data.Nat.Base as ℕ using (zero; suc; _∸_)
-import Data.Nat.Properties as ℕₚ
-open import Data.Product using (proj₂)
+open import Data.Product.Base using (proj₂)
 open import Function.Base using (_∘_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (does; _because_; yes; no)
@@ -22,9 +21,9 @@ open import Relation.Binary.PropositionalEquality
 open import Algebra.Definitions using (Involutive)
 open ≡-Reasoning
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 --  Functions
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 -- 'tranpose i j' swaps the places of 'i' and 'j'.
 
@@ -35,9 +34,9 @@ transpose i j k with does (k ≟ i)
 ...   | true  = i
 ...   | false = k
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 --  Properties
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 transpose-inverse : ∀ {n} (i j : Fin n) {k} →
                     transpose i j (transpose j i k) ≡ k

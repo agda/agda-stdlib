@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Properties of the heterogeneous sublist relation
@@ -15,25 +15,30 @@ open import Data.Empty
 open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
-import Data.List.Properties as Lₚ
+import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any.Properties
   using (here-injective; there-injective)
 open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
 
-open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
+open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ; _≤_; _≥_); open ℕ; open _≤_
-import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
+import Data.Nat.Properties as ℕ
+open import Data.Product.Base using (∃₂; _×_; _,_; <_,_>; proj₂; uncurry)
 
 open import Function.Base
 open import Function.Bundles using (_⤖_; _⇔_ ; mk⤖; mk⇔)
-
+open import Function.Consequences.Propositional using (strictlySurjective⇒surjective)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Decidable as Dec using (¬?)
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Bundles using (Preorder; Poset; DecPoset)
+open import Relation.Binary.Definitions
+  using (Reflexive; Trans; Antisym; Decidable; Irrelevant; Irreflexive)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
 
 ------------------------------------------------------------------------
@@ -57,7 +62,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   length-mono-≤ : ∀ {as bs} → Sublist R as bs → length as ≤ length bs
   length-mono-≤ []        = z≤n
-  length-mono-≤ (y ∷ʳ rs) = ℕₚ.m≤n⇒m≤1+n (length-mono-≤ rs)
+  length-mono-≤ (y ∷ʳ rs) = ℕ.m≤n⇒m≤1+n (length-mono-≤ rs)
   length-mono-≤ (r ∷ rs)  = s≤s (length-mono-≤ rs)
 
 ------------------------------------------------------------------------
@@ -70,24 +75,24 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toPointwise : ∀ {as bs} → length as ≡ length bs →
                 Sublist R as bs → Pointwise R as bs
   toPointwise {bs = []}     eq []         = []
-  toPointwise {bs = b ∷ bs} eq (r ∷ rs)   = r ∷ toPointwise (ℕₚ.suc-injective eq) rs
+  toPointwise {bs = b ∷ bs} eq (r ∷ rs)   = r ∷ toPointwise (ℕ.suc-injective eq) rs
   toPointwise {bs = b ∷ bs} eq (b ∷ʳ rs) =
-    ⊥-elim $ ℕₚ.<-irrefl eq (s≤s (length-mono-≤ rs))
+    ⊥-elim $ ℕ.<-irrefl eq (s≤s (length-mono-≤ rs))
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
 
 -- These lemmas are generalisations of results of the form `f xs ⊆ xs`.
--- (where _⊆_ stands for Sublist R). If R is reflexive then we can indeed
--- obtain `f xs ⊆ xs` from `xs ⊆ ys → f xs ⊆ ys`. The other direction is
--- only true if R is both reflexive and transitive.
+-- (where _⊆_ stands for Sublist R). If R is reflexive then we can
+-- indeed obtain `f xs ⊆ xs` from `xs ⊆ ys → f xs ⊆ ys`. The other
+-- direction is only true if R is both reflexive and transitive.
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   tail-Sublist : ∀ {as bs} → Sublist R as bs →
-                 MAll.All (λ as → Sublist R as bs) (tail as)
+                 Maybe.All (λ as → Sublist R as bs) (tail as)
   tail-Sublist []        = nothing
-  tail-Sublist (b ∷ʳ ps) = MAll.map (b ∷ʳ_) (tail-Sublist ps)
+  tail-Sublist (b ∷ʳ ps) = Maybe.map (b ∷ʳ_) (tail-Sublist ps)
   tail-Sublist (p ∷ ps)  = just (_ ∷ʳ ps)
 
   take-Sublist : ∀ {as bs} n → Sublist R as bs → Sublist R (take n as) bs
@@ -185,7 +190,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ++⁻ : ∀ {as bs cs ds} → length as ≡ length bs →
         Sublist R (as ++ cs) (bs ++ ds) → Sublist R cs ds
   ++⁻ {[]}     {[]}     eq rs = rs
-  ++⁻ {a ∷ as} {b ∷ bs} eq rs = ++⁻ (ℕₚ.suc-injective eq) (∷⁻ rs)
+  ++⁻ {a ∷ as} {b ∷ bs} eq rs = ++⁻ (ℕ.suc-injective eq) (∷⁻ rs)
 
   ++ˡ : ∀ {as bs} (cs : List B) → Sublist R as bs → Sublist R as (cs ++ bs)
   ++ˡ zs = ++⁺ (minimum zs)
@@ -218,7 +223,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
           Sublist R (drop m as) (drop n bs)
   drop⁺ {m} z≤n       rs        = drop-Sublist m rs
   drop⁺     (s≤s m≥n) []        = []
-  drop⁺     (s≤s m≥n) (y ∷ʳ rs) = drop⁺ (ℕₚ.m≤n⇒m≤1+n m≥n) rs
+  drop⁺     (s≤s m≥n) (y ∷ʳ rs) = drop⁺ (ℕ.m≤n⇒m≤1+n m≥n) rs
   drop⁺     (s≤s m≥n) (r ∷ rs)  = drop⁺ m≥n rs
 
   drop⁺-≥ : ∀ {m n as bs} → m ≥ n → Pointwise R as bs →
@@ -227,7 +232,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   drop⁺-⊆ : ∀ {as bs} m → Sublist R as bs →
             Sublist R (drop m as) (drop m bs)
-  drop⁺-⊆ m = drop⁺ (ℕₚ.≤-refl {m})
+  drop⁺-⊆ m = drop⁺ (ℕ.≤-refl {m})
 
 module _ {a b r p q} {A : Set a} {B : Set b}
          {R : REL A B r} {P : Pred A p} {Q : Pred B q}
@@ -303,7 +308,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   reverse⁻ : ∀ {as bs} → Sublist R (reverse as) (reverse bs) → Sublist R as bs
   reverse⁻ {as} {bs} p = cast (reverse⁺ p) where
-    cast = P.subst₂ (Sublist R) (Lₚ.reverse-involutive as) (Lₚ.reverse-involutive bs)
+    cast = P.subst₂ (Sublist R) (List.reverse-involutive as) (List.reverse-involutive bs)
 
 ------------------------------------------------------------------------
 -- Inversion lemmas
@@ -345,7 +350,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toAny∘fromAny≗id (there p) = P.cong there (toAny∘fromAny≗id p)
 
   Sublist-[x]-bijection : ∀ {x xs} → (Sublist R [ x ] xs) ⤖ (Any (R x) xs)
-  Sublist-[x]-bijection = mk⤖ (toAny-injective , < fromAny , toAny∘fromAny≗id >)
+  Sublist-[x]-bijection = mk⤖ (toAny-injective , strictlySurjective⇒surjective < fromAny , toAny∘fromAny≗id >)
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -380,25 +385,25 @@ module Antisymmetry
     {R : REL A B r} {S : REL B A s} {E : REL A B e}
     (rs⇒e : Antisym R S E) where
 
-  open ℕₚ.≤-Reasoning
+  open ℕ.≤-Reasoning
 
   antisym : Antisym (Sublist R) (Sublist S) (Pointwise E)
   antisym []        []        = []
   antisym (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs ss
   -- impossible cases
   antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷ʳ_ {ys₂} {zs} z ss) =
-    ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
+    ⊥-elim $ ℕ.<-irrefl P.refl $ begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
-    length zs        ≤⟨ ℕₚ.n≤1+n (length zs) ⟩
+    length zs        ≤⟨ ℕ.n≤1+n (length zs) ⟩
     length (z ∷ zs)  ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎
   antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
-    ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
+    ⊥-elim $ ℕ.<-irrefl P.refl $ begin
     length (z ∷ zs) ≤⟨ length-mono-≤ rs ⟩
     length ys₁      ≤⟨ length-mono-≤ ss ⟩
     length zs       ∎
   antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
-    ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
+    ⊥-elim $ ℕ.<-irrefl P.refl $ begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length xs        ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎

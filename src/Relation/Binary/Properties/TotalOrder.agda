@@ -6,7 +6,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (TotalOrder; DecTotalOrder)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.Structures using (IsTotalOrder)
 
 module Relation.Binary.Properties.TotalOrder
   {t₁ t₂ t₃} (T : TotalOrder t₁ t₂ t₃) where
@@ -37,8 +39,7 @@ decTotalOrder ≟ = record
 
 open PosetProperties public
   using
-  ( _≥_
-  ; ≥-refl
+  ( ≥-refl
   ; ≥-reflexive
   ; ≥-trans
   ; ≥-antisym
@@ -88,8 +89,7 @@ open PosetProperties public
 
 open PosetProperties public
   using
-  ( _≰_
-  ; ≰-respʳ-≈
+  ( ≰-respʳ-≈
   ; ≰-respˡ-≈
   )
 

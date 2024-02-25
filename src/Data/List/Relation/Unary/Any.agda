@@ -10,8 +10,8 @@ module Data.List.Relation.Unary.Any where
 
 open import Data.Empty
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List using (List; []; [_]; _∷_)
-open import Data.Product.Base as Prod using (∃; _,_)
+open import Data.List.Base as List using (List; []; [_]; _∷_; removeAt)
+open import Data.Product.Base as Product using (∃; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary using (¬_; yes; no; _⊎-dec_)
@@ -69,7 +69,7 @@ _∷=_ {xs = xs} x∈xs v = xs List.[ index x∈xs ]∷= v
 
 infixl 4 _─_
 _─_ : {P : Pred A p} → ∀ xs → Any P xs → List A
-xs ─ x∈xs = xs List.─ index x∈xs
+xs ─ x∈xs = removeAt xs (index x∈xs)
 
 -- If any element satisfies P, then P is satisfied.
 

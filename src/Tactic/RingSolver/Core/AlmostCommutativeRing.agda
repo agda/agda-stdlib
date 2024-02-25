@@ -9,7 +9,7 @@
 module Tactic.RingSolver.Core.AlmostCommutativeRing where
 
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Structures using (IsCommutativeSemiring)
 open import Algebra.Definitions
