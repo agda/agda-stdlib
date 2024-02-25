@@ -14,7 +14,6 @@ open import Level using (Level)
 
 module Algebra.Morphism.Construct.Initial {c ℓ : Level} where
 
-open import Algebra.Bundles using (Magma)
 open import Algebra.Bundles.Raw using (RawMagma)
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Algebra.Morphism.Structures using (module MagmaMorphisms)
@@ -55,11 +54,10 @@ module UniqueMorphism (M : RawMagma m ℓm) where
 ------------------------------------------------------------------------
 -- Magma
 
-module _ (M : Magma m ℓm) where
+module _ (M : RawMagma m ℓm) where
 
-  private module M = Magma M
-  open MagmaMorphisms rawMagma M.rawMagma
-  open UniqueMorphism M.rawMagma
+  open MagmaMorphisms rawMagma M
+  open UniqueMorphism M
 
   isMagmaHomomorphism : IsMagmaHomomorphism zero
   isMagmaHomomorphism = record
