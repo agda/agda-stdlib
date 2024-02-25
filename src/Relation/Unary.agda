@@ -15,7 +15,7 @@ open import Data.Sum.Base using (_⊎_; [_,_])
 open import Function.Base using (_∘_; _|>_)
 open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
 open import Relation.Nullary.Decidable.Core using (Dec; True)
-open import Relation.Nullary.Negation.Core as Nullary using (¬_)
+open import Relation.Nullary as Nullary using (¬_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
