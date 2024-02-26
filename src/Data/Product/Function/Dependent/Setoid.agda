@@ -26,8 +26,8 @@ open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -43,20 +43,20 @@ private module _ (A : IndexedSetoid I a ℓ₁) where
   open IndexedSetoid A
 
   cast : ∀ {i j} → j ≡ i → Carrier i → Carrier j
-  cast j≡i = P.subst Carrier (P.sym $ j≡i)
+  cast j≡i = ≡.subst Carrier (≡.sym $ j≡i)
 
   cast-cong : ∀ {i j} {x y : Carrier i}
                (j≡i : j ≡ i) →
                x ≈ y →
                cast j≡i x ≈ cast j≡i y
-  cast-cong P.refl p = p
+  cast-cong ≡.refl p = p
 
   cast-eq : ∀ {i j x} (eq : i ≡ j) → cast eq x ≈ x
-  cast-eq P.refl = IndexedSetoid.refl A
+  cast-eq ≡.refl = IndexedSetoid.refl A
 
 private
   _×ₛ_ : (I : Set i) → IndexedSetoid I a ℓ₁ → Setoid _ _
-  I ×ₛ A = Σ.setoid (P.setoid I) A
+  I ×ₛ A = Σ.setoid (≡.setoid I) A
 
 ------------------------------------------------------------------------
 -- Functions
@@ -77,7 +77,7 @@ module _ where
     to′ = map (to I⟶J) (to A⟶B)
 
     cong′ : Congruent (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′
-    cong′ (P.refl , ∼) = (P.refl , cong A⟶B ∼)
+    cong′ (≡.refl , ∼) = (≡.refl , cong A⟶B ∼)
 
 ------------------------------------------------------------------------
 -- Equivalences
@@ -149,7 +149,7 @@ module _ where
           i ≡ j →
           (_≈_ B (to A↣B x) (to A↣B y)) →
           _≈_ A x y
-      lemma P.refl = Injection.injective A↣B
+      lemma ≡.refl = Injection.injective A↣B
 
 ------------------------------------------------------------------------
 -- Surjections
@@ -224,13 +224,13 @@ module _ where
     to′ (i , x) = to I↔J i , to A↔B x
 
     to′-cong : Congruent (_≈_ (I ×ₛ A)) (_≈_ (J ×ₛ B)) to′
-    to′-cong (P.refl , x≈y) = to-cong I↔J P.refl , to-cong A↔B x≈y
+    to′-cong (≡.refl , x≈y) = to-cong I↔J ≡.refl , to-cong A↔B x≈y
 
     from′ : Carrier (J ×ₛ B) → Carrier (I ×ₛ A)
     from′ (j , y) = from I↔J j , from A↔B (cast B (strictlyInverseˡ I↔J _) y)
 
     from′-cong : Congruent (_≈_ (J ×ₛ B)) (_≈_ (I ×ₛ A)) from′
-    from′-cong (P.refl , x≈y) = from-cong I↔J P.refl , from-cong A↔B (cast-cong B (strictlyInverseˡ I↔J _) x≈y)
+    from′-cong (≡.refl , x≈y) = from-cong I↔J ≡.refl , from-cong A↔B (cast-cong B (strictlyInverseˡ I↔J _) x≈y)
 
     strictlyInvˡ : StrictlyInverseˡ (_≈_ (J ×ₛ B)) to′ from′
     strictlyInvˡ (i , x) = strictlyInverseˡ I↔J i ,
@@ -243,7 +243,7 @@ module _ where
     lem : ∀ {i j} → i ≡ j → ∀ {x : IndexedSetoid.Carrier B (to I↔J i)} {y : IndexedSetoid.Carrier B (to I↔J j)} →
           IndexedSetoid._≈_ B x y →
           IndexedSetoid._≈_ A (from A↔B x) (from A↔B y)
-    lem P.refl x≈y = from-cong A↔B x≈y
+    lem ≡.refl x≈y = from-cong A↔B x≈y
 
     strictlyInvʳ : StrictlyInverseʳ (_≈_ (I ×ₛ A)) to′ from′
     strictlyInvʳ (i , x) = strictlyInverseʳ I↔J i ,

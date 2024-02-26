@@ -21,7 +21,7 @@ open import Function.Equality as Eq
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
 open import Function.Equivalence using (Equivalence)
 open import Function.Injection using (Injective; Injection)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
 ------------------------------------------------------------------------
 -- Left and right inverses.
@@ -106,7 +106,7 @@ Please use Function.(Bundles.)LeftInverse instead."
 infix 3 _↞_
 
 _↞_ : ∀ {f t} → Set f → Set t → Set _
-From ↞ To = LeftInverse (P.setoid From) (P.setoid To)
+From ↞ To = LeftInverse (≡.setoid From) (≡.setoid To)
 {-# WARNING_ON_USAGE _↞_
 "Warning: _↞_ was deprecated in v2.0.
 Please use Function.(Bundles.)_↪_ instead."
