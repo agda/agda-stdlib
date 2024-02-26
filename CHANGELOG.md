@@ -141,28 +141,28 @@ Additions to existing modules
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
-  through→ : ∃[ xs ] Pointwise _≈_ as xs × Appending xs bs cs → 
+  through→ : ∃[ xs ] Pointwise _≈_ as xs × Appending xs bs cs →
              ∃[ ys ] Appending as bs ys × Pointwise _≈_ ys cs
-  through← : ∃[ ys ] Appending as bs ys × Pointwise _≈_ ys cs → 
+  through← : ∃[ ys ] Appending as bs ys × Pointwise _≈_ ys cs →
              ∃[ xs ] Pointwise _≈_ as xs × Appending xs bs cs
-  assoc→   : ∃[ xs ] Appending as bs xs × Appending xs cs ds → 
+  assoc→   : ∃[ xs ] Appending as bs xs × Appending xs cs ds →
              ∃[ ys ] Appending bs cs ys × Appending as ys ds
   ```
 
 * In `Data.List.Relation.Ternary.Appending.Properties`:
   ```agda
-  through→ : (R ⇒ (S ; T)) → ((U ; V) ⇒ (W ; T)) → 
-	         ∃[ xs ] Pointwise U as xs × Appending V R xs bs cs → 
-			 ∃[ ys ] Appending W S as bs ys × Pointwise T ys cs
-  through← : ((R ; S) ⇒ T) → ((U ; S) ⇒ (V ; W)) → 
-	         ∃[ ys ] Appending U R as bs ys × Pointwise S ys cs → 
-			 ∃[ xs ] Pointwise V as xs × Appending W T xs bs cs
-  assoc→ :   (R ⇒ (S ; T)) → ((U ; V) ⇒ (W ; T)) → ((Y ; V) ⇒ X) → 
-		     ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds → 
-			 ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds
-  assoc← :   ((S ; T) ⇒ R) → ((W ; T) ⇒ (U ; V)) → (X ⇒ (Y ; V)) → 
-             ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds → 
-			 ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds
+  through→ : (R ⇒ (S ; T)) → ((U ; V) ⇒ (W ; T)) →
+                 ∃[ xs ] Pointwise U as xs × Appending V R xs bs cs →
+                         ∃[ ys ] Appending W S as bs ys × Pointwise T ys cs
+  through← : ((R ; S) ⇒ T) → ((U ; S) ⇒ (V ; W)) →
+                 ∃[ ys ] Appending U R as bs ys × Pointwise S ys cs →
+                         ∃[ xs ] Pointwise V as xs × Appending W T xs bs cs
+  assoc→ :   (R ⇒ (S ; T)) → ((U ; V) ⇒ (W ; T)) → ((Y ; V) ⇒ X) →
+                     ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds →
+                         ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds
+  assoc← :   ((S ; T) ⇒ R) → ((W ; T) ⇒ (U ; V)) → (X ⇒ (Y ; V)) →
+             ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds →
+                         ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds
   ```
 
 * In `Data.List.Relation.Binary.Pointwise.Base`:
@@ -209,6 +209,11 @@ Additions to existing modules
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
+
+* Added new proofs in `Relation.Binary.Construct.Composition`:
+  ```agda
+  transitive⇒≈;≈⊆≈ : Transitive ≈ → (≈ ; ≈) ⇒ ≈
+  ```
 
 * Added new definitions in `Relation.Binary.Definitions`
   ```
