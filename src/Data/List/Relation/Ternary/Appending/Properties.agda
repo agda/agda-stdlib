@@ -11,7 +11,7 @@ module Data.List.Relation.Ternary.Appending.Properties where
 open import Data.List.Base using (List; [])
 open import Data.List.Relation.Ternary.Appending
 open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
-open import Data.Product.Base as Σ using (∃-syntax; _×_; _,_)
+open import Data.Product.Base as Product using (∃-syntax; _×_; _,_)
 open import Function.Base using (id)
 open import Data.List.Relation.Binary.Pointwise.Base as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Properties as Pw using (transitive)
@@ -59,7 +59,7 @@ through→ f g (_ , [] , []++ rs) =
   _ , []++ rs′ , ps′
 through→ f g (_ , p ∷ ps , l ∷ lrs) =
   let _ , l′ , p′ = g (_ , p , l) in
-  Σ.map _ (Σ.map (l′ ∷_) (p′ ∷_)) (through→ f g (_ , ps , lrs))
+  Product.map _ (Product.map (l′ ∷_) (p′ ∷_)) (through→ f g (_ , ps , lrs))
 
 through← :
   ((R ; S) ⇒ T) →
@@ -70,7 +70,7 @@ through← f g (_ , []++ rs′ , ps′) =
   _ , [] , []++ (Pw.transitive (λ r′ p′ → f (_ , r′ , p′)) rs′ ps′)
 through← f g (_ , l′ ∷ lrs′ , p′ ∷ ps′) =
   let _ , p , l = g (_ , l′ , p′) in
-  Σ.map _ (Σ.map (p ∷_) (l ∷_)) (through← f g (_ , lrs′ , ps′))
+  Product.map _ (Product.map (p ∷_) (l ∷_)) (through← f g (_ , lrs′ , ps′))
 
 assoc→ :
   (R ⇒ (S ; T)) →
@@ -82,7 +82,7 @@ assoc→ f g h (_ , []++ rs , lrs′) =
   let _ , mss , ss′ = through→ f g (_ , rs , lrs′) in
   _ , mss , []++ ss′
 assoc→ f g h (_ , l ∷ lrs , l′ ∷ lrs′) =
-  Σ.map id (Σ.map id (h (_ , l , l′) ∷_)) (assoc→ f g h (_ , lrs , lrs′))
+  Product.map₂ (Product.map₂ (h (_ , l , l′) ∷_)) (assoc→ f g h (_ , lrs , lrs′))
 
 assoc← :
   ((S ; T) ⇒ R) →
@@ -95,4 +95,4 @@ assoc← f g h (_ , mss , []++ ss′) =
   _ , []++ rs , lrs′
 assoc← f g h (_ , mss , m′ ∷ mss′) =
   let _ , l , l′ = h m′ in
-  Σ.map _ (Σ.map (l ∷_) (l′ ∷_)) (assoc← f g h (_ , mss , mss′))
+  Product.map _ (Product.map (l ∷_) (l′ ∷_)) (assoc← f g h (_ , mss , mss′))

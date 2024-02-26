@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Binary.Pointwise.Base where
 
-open import Data.Product.Base as Σ using (_×_; _,_; <_,_>; ∃-syntax)
+open import Data.Product.Base as Product using (_×_; _,_; <_,_>; ∃-syntax)
 open import Data.List.Base using (List; []; _∷_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; _⇒_)
@@ -61,4 +61,5 @@ map R⇒S (Rxy ∷ Rxsys) = R⇒S Rxy ∷ map R⇒S Rxsys
 
 unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
 unzip [] = [] , [] , []
-unzip ((y , r , s) ∷ xs∼ys) = Σ.map (y ∷_) (Σ.map (r ∷_) (s ∷_)) (unzip xs∼ys)
+unzip ((y , r , s) ∷ xs∼ys) =
+  Product.map (y ∷_) (Product.map (r ∷_) (s ∷_)) (unzip xs∼ys)
