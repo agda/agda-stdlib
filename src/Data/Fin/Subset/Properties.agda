@@ -35,7 +35,7 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsStrictPartialOrder; IsDecStrictPartialOrder)
 open import Relation.Binary.Bundles
   using (Preorder; Poset; StrictPartialOrder; DecStrictPartialOrder)
-open import Relation.Binary.Definitions as B hiding (Decidable)
+open import Relation.Binary.Definitions as B hiding (Decidable; Empty)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Nullary.Negation using (contradiction)
