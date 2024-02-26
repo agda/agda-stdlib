@@ -54,13 +54,13 @@ Descent : Rel A r → Pred A ℓ → Set _
 Descent _<_ P = ∀ {x} → DescentFrom _<_ P x
 
 InfiniteDescentFrom : Rel A r → Pred A ℓ → Pred A _
-InfiniteDescentFrom _<_ P x = P x → ∃[ f ] InfiniteDescendingSequenceFrom _<_ f x × ∀ z → P (f z)
+InfiniteDescentFrom _<_ P x = P x → ∃[ f ] InfiniteDescendingSequenceFrom _<_ f x × ∀ n → P (f n)
 
 InfiniteDescent : Rel A r → Pred A ℓ →  Set _
 InfiniteDescent _<_ P = ∀ {x} → InfiniteDescentFrom _<_ P x
 
 InfiniteDescentFrom⁺ : Rel A r → Pred A ℓ → Pred A _
-InfiniteDescentFrom⁺ _<_ P x = P x → ∃[ f ] InfiniteDescendingSequenceFrom⁺ _<_ f x × ∀ z → P (f z)
+InfiniteDescentFrom⁺ _<_ P x = P x → ∃[ f ] InfiniteDescendingSequenceFrom⁺ _<_ f x × ∀ n → P (f n)
 
 InfiniteDescent⁺ : Rel A r → Pred A ℓ → Set _
 InfiniteDescent⁺ _<_ P = ∀ {x} → InfiniteDescentFrom⁺ _<_ P x
@@ -89,8 +89,8 @@ sequence⁻ seq[f] = seq[f] ∘ n<1+n
 
 module _ (descent : Descent _<_ P) where
 
-  descent+acc⇒infiniteDescentFrom : (Acc _<_) ⊆ (InfiniteDescentFrom _<_ P)
-  descent+acc⇒infiniteDescentFrom {x} =
+  descent∧acc⇒infiniteDescentFrom : (Acc _<_) ⊆ (InfiniteDescentFrom _<_ P)
+  descent∧acc⇒infiniteDescentFrom {x} =
     Some.wfRec (InfiniteDescentFrom _<_ P) rec x
     where
     rec : _
@@ -114,17 +114,17 @@ module _ (descent : Descent _<_ P) where
       Π[P∘h] zero rewrite g0≡z = py
       Π[P∘h] (suc n)           = Π[P∘g] n
 
-  descent+wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent _<_ P
-  descent+wf⇒infiniteDescent wf = descent+acc⇒infiniteDescentFrom (wf _)
+  descent∧wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent _<_ P
+  descent∧wf⇒infiniteDescent wf = descent∧acc⇒infiniteDescentFrom (wf _)
 
-  descent+acc⇒notHold : Acc _<_ ⊆ ∁ P
-  descent+acc⇒notHold {x} = Some.wfRec (∁ P) rec x
+  descent∧acc⇒unsatisfiable : Acc _<_ ⊆ ∁ P
+  descent∧acc⇒unsatisfiable {x} = Some.wfRec (∁ P) rec x
     where
     rec : _
     rec y rec[y] py = let z , z<y , pz = descent py in rec[y] z<y pz
 
-  descent+wf⇒empty : WellFounded _<_ → Empty P
-  descent+wf⇒empty wf x = descent+acc⇒notHold (wf x)
+  descent∧wf⇒empty : WellFounded _<_ → Empty P
+  descent∧wf⇒empty wf x = descent∧acc⇒unsatisfiable (wf x)
 
 ------------------------------------------------------------------------
 -- Results about descent only from accessible elements
@@ -137,19 +137,19 @@ module _ (accDescent : Acc _<_ ⊆ DescentFrom _<_ P) where
       let y , y<x , py = accDescent acc[x] px
       in  y , y<x , py , acc-inverse acc[x] y<x
 
-  accDescent+acc⇒infiniteDescentFrom : Acc _<_ ⊆ InfiniteDescentFrom _<_ P
-  accDescent+acc⇒infiniteDescentFrom acc[x] px =
-    let f , sequence[f] , Π[[P∩Acc]∘f] = descent+acc⇒infiniteDescentFrom descent∩ acc[x] (px , acc[x])
+  accDescent∧acc⇒infiniteDescentFrom : Acc _<_ ⊆ InfiniteDescentFrom _<_ P
+  accDescent∧acc⇒infiniteDescentFrom acc[x] px =
+    let f , sequence[f] , Π[[P∩Acc]∘f] = descent∧acc⇒infiniteDescentFrom descent∩ acc[x] (px , acc[x])
     in f , sequence[f] , proj₁ ∘ Π[[P∩Acc]∘f]
 
-  accDescent+wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent _<_ P
-  accDescent+wf⇒infiniteDescent wf = accDescent+acc⇒infiniteDescentFrom (wf _)
+  accDescent∧wf⇒infiniteDescent : WellFounded _<_ → InfiniteDescent _<_ P
+  accDescent∧wf⇒infiniteDescent wf = accDescent∧acc⇒infiniteDescentFrom (wf _)
 
-  accDescent+acc⇒notHold : Acc _<_ ⊆ ∁ P
-  accDescent+acc⇒notHold acc[x] px = descent+acc⇒notHold descent∩ acc[x] (px , acc[x])
+  accDescent∧acc⇒unsatisfiable : Acc _<_ ⊆ ∁ P
+  accDescent∧acc⇒unsatisfiable acc[x] px = descent∧acc⇒unsatisfiable descent∩ acc[x] (px , acc[x])
 
   wf⇒empty : WellFounded _<_ → Empty P
-  wf⇒empty wf x = accDescent+acc⇒notHold (wf x)
+  wf⇒empty wf x = accDescent∧acc⇒unsatisfiable (wf x)
 
 ------------------------------------------------------------------------
 -- Results about transitively-closed descent only from accessible elements
@@ -160,29 +160,30 @@ module _ (accDescent⁺ : Acc _<_ ⊆ DescentFrom (TransClosure _<_) P) where
     descent : Acc (TransClosure _<_) ⊆ DescentFrom (TransClosure _<_) P
     descent = accDescent⁺  ∘ accessible⁻ _
 
-  accDescent⁺+acc⇒infiniteDescentFrom⁺ : Acc _<_ ⊆ InfiniteDescentFrom⁺ _<_ P
-  accDescent⁺+acc⇒infiniteDescentFrom⁺ acc[x] px
-    with f , (f0≡x , sequence[f]) , Π[P∘f] ← accDescent+acc⇒infiniteDescentFrom descent (accessible _ acc[x]) px
+  accDescent⁺∧acc⇒infiniteDescentFrom⁺ : Acc _<_ ⊆ InfiniteDescentFrom⁺ _<_ P
+  accDescent⁺∧acc⇒infiniteDescentFrom⁺ acc[x] px
+    with f , (f0≡x , sequence[f]) , Π[P∘f]
+       ← accDescent∧acc⇒infiniteDescentFrom descent (accessible _ acc[x]) px
        = f , (f0≡x , sequence⁺ sequence[f]) , Π[P∘f]
 
-  accDescent⁺+wf⇒infiniteDescent⁺ : WellFounded _<_ → InfiniteDescent⁺ _<_ P
-  accDescent⁺+wf⇒infiniteDescent⁺ wf = accDescent⁺+acc⇒infiniteDescentFrom⁺ (wf _)
+  accDescent⁺∧wf⇒infiniteDescent⁺ : WellFounded _<_ → InfiniteDescent⁺ _<_ P
+  accDescent⁺∧wf⇒infiniteDescent⁺ wf = accDescent⁺∧acc⇒infiniteDescentFrom⁺ (wf _)
 
-  accDescent⁺+acc⇒notHold : Acc _<_ ⊆ ∁ P
-  accDescent⁺+acc⇒notHold = accDescent+acc⇒notHold descent ∘ accessible _
+  accDescent⁺∧acc⇒unsatisfiable : Acc _<_ ⊆ ∁ P
+  accDescent⁺∧acc⇒unsatisfiable = accDescent∧acc⇒unsatisfiable descent ∘ accessible _
 
-  accDescent⁺+wf⇒empty : WellFounded _<_ → Empty P
-  accDescent⁺+wf⇒empty = wf⇒empty descent ∘ (wellFounded _)
+  accDescent⁺∧wf⇒empty : WellFounded _<_ → Empty P
+  accDescent⁺∧wf⇒empty = wf⇒empty descent ∘ (wellFounded _)
 
 ------------------------------------------------------------------------
 -- Finally: the (classical) no smallest counterexample principle itself
 
-module _ (stable : Stable P) where
+module _ (stable : Stable P) (noSmallest : NoSmallestCounterExample _<_ P) where
 
-  noSmallestCounterExample+acc⇒holds : NoSmallestCounterExample _<_ P → Acc _<_ ⊆ P
-  noSmallestCounterExample+acc⇒holds noSmallest =
-    stable _ ∘ accDescent⁺+acc⇒notHold noSmallest
+  noSmallestCounterExample∧acc⇒satisfiable : Acc _<_ ⊆ P
+  noSmallestCounterExample∧acc⇒satisfiable =
+    stable _ ∘ accDescent⁺∧acc⇒unsatisfiable noSmallest
 
-  noSmallestCounterExample+wf⇒universal : NoSmallestCounterExample _<_ P → WellFounded _<_ → Universal P
-  noSmallestCounterExample+wf⇒universal noSmallest wf =
-    stable _ ∘ accDescent⁺+wf⇒empty noSmallest wf
+  noSmallestCounterExample∧wf⇒universal : WellFounded _<_ → Universal P
+  noSmallestCounterExample∧wf⇒universal wf =
+    stable _ ∘ accDescent⁺∧wf⇒empty noSmallest wf
