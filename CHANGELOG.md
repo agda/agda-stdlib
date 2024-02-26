@@ -49,6 +49,11 @@ Deprecated names
 New modules
 -----------
 
+* Symmetric interior of a binary relation
+  ```
+  Relation.Binary.Construct.Interior.Symmetric
+  ```
+
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
 * Nagata's construction of the "idealization of a module":
@@ -205,9 +210,10 @@ Additions to existing modules
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
 
-* Added new definitions in `Relation.Binary`
+* Added new definitions in `Relation.Binary.Definitions`
   ```
-  Stable          : Pred A ℓ → Set _
+  Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
+  Empty  _∼_ = ∀ {x y} → x ∼ y → ⊥
   ```
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
