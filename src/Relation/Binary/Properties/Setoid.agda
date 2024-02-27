@@ -15,7 +15,8 @@ open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
 open import Relation.Binary.Definitions
   using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Binary.Construct.Composition using (_;_)
+open import Relation.Binary.Construct.Composition
+  using (_;_; impliesˡ; transitive⇒≈;≈⊆≈)
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 
@@ -83,10 +84,10 @@ preorder = record
 -- Equality is closed under composition
 
 ≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
-≈;≈⇒≈ (_ , p , q) = trans p q
+≈;≈⇒≈ = transitive⇒≈;≈⊆≈ _ trans
 
 ≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
-≈⇒≈;≈ q = _ , q , refl
+≈⇒≈;≈ = impliesˡ _≈_ _≈_ refl id
 
 ------------------------------------------------------------------------
 -- Other properties
