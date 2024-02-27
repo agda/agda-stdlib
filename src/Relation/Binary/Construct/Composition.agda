@@ -82,3 +82,6 @@ module _ (L : Rel A ℓ₁) (R : Rel A ℓ₂) (comm : R ; L ⇒ L ; R) where
     ; trans         = transitive Oˡ.trans Oʳ.trans
     }
     where module Oˡ = IsPreorder Oˡ; module Oʳ = IsPreorder Oʳ
+
+transitive⇒≈;≈⊆≈ : (≈ : Rel A ℓ) → Transitive ≈ → (≈ ; ≈) ⇒ ≈
+transitive⇒≈;≈⊆≈ _ trans (_ , l , r) = trans l r
