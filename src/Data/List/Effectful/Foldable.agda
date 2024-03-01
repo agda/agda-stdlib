@@ -57,20 +57,20 @@ foldable = record
 
 module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
 
-  open Monoid M renaming (rawMonoid to M₀)
+  open Monoid M
 
-  ++-foldMap : ∀ xs {ys} →
-               foldMap M₀ f (xs ++ ys) ≈ foldMap M₀ f xs ∙ foldMap M₀ f ys
+  private
+    h = foldMap rawMonoid f
+
+  ++-foldMap : ∀ xs {ys} → h (xs ++ ys) ≈ h xs ∙ h ys
   ++-foldMap []       = sym (identityˡ _)
-  ++-foldMap (x ∷ xs) = trans
-    (∙-congˡ (++-foldMap xs))
-    (sym (assoc _ _ _))
+  ++-foldMap (x ∷ xs) = trans (∙-congˡ (++-foldMap xs)) (sym (assoc _ _ _))
 
-  foldMap-morphism : IsMonoidHomomorphism (++-[]-rawMonoid A) M₀ (foldMap M₀ f)
+  foldMap-morphism : IsMonoidHomomorphism (++-[]-rawMonoid A) rawMonoid h
   foldMap-morphism = record
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record
-        { cong = reflexive ∘ ≡.cong (foldMap M₀ f) }
+        { cong = reflexive ∘ ≡.cong h }
       ; homo = λ xs _ → ++-foldMap xs
       }
     ; ε-homo = refl
