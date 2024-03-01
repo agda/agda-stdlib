@@ -15,7 +15,6 @@ open import Algebra.Bundles using (Monoid)
 import Algebra.Construct.Flip.Op as Op
 
 open import Data.List.Base as List using (List; [_]; _++_)
-import Data.List.Properties as List
 
 open import Effect.Functor as Fun using (RawFunctor)
 
