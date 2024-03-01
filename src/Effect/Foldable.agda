@@ -57,12 +57,12 @@ record RawFoldableWithDefaults (F : Set f → Set g) : Setω where
               (A → Carrier) → F A → Carrier
 
   foldr : (A -> C -> C) -> C -> F A -> C
-  foldr {C = C} f z t = foldMap (Monoid.rawMonoid M) f t z
-    where M = ∘-id-monoid C
+  foldr {C = C} f z t = foldMap M₀ f t z
+    where M = ∘-id-monoid C ; M₀ = Monoid.rawMonoid M
 
   foldl : (C -> A -> C) -> C -> F A -> C
-  foldl {C = C} f z t = foldMap (Monoid.rawMonoid M) (flip f) t z
-    where M = Op.monoid (∘-id-monoid C)
+  foldl {C = C} f z t = foldMap M₀ (flip f) t z
+    where M = Op.monoid (∘-id-monoid C) ; M₀ = Monoid.rawMonoid M
 
   toList : F A → List A
   toList {A = A} = foldMap (List.++-[]-rawMonoid A) [_]

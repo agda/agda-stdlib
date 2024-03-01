@@ -11,7 +11,7 @@ module Data.List.Effectful.Foldable where
 open import Algebra.Bundles using (Monoid)
 open import Algebra.Bundles.Raw using (RawMonoid)
 open import Algebra.Morphism.Structures using (IsMonoidHomomorphism)
-open import Data.List.Base
+open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Effect.Foldable
 open import Function.Base
 open import Level
@@ -47,8 +47,8 @@ foldableWithDefaults = record { foldMap = λ M → foldMap M }
 foldable : RawFoldable (List {a})
 foldable = record
   { foldMap = λ M → foldMap M
-  ; foldr = foldr
-  ; foldl = foldl
+  ; foldr = List.foldr
+  ; foldl = List.foldl
   ; toList = id
   }
 
@@ -69,7 +69,7 @@ module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
   ++-homo []       = sym (identityˡ _)
   ++-homo (x ∷ xs) = trans (∙-congˡ (++-homo xs)) (sym (assoc _ _ _))
 
-  foldMap-morphism : IsMonoidHomomorphism (++-[]-rawMonoid A) rawMonoid h
+  foldMap-morphism : IsMonoidHomomorphism (List.++-[]-rawMonoid A) rawMonoid h
   foldMap-morphism = record
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record
