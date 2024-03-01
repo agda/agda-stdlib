@@ -62,16 +62,19 @@ module _ (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
   private
     h = foldMap rawMonoid f
 
-  ++-foldMap : ∀ xs {ys} → h (xs ++ ys) ≈ h xs ∙ h ys
-  ++-foldMap []       = sym (identityˡ _)
-  ++-foldMap (x ∷ xs) = trans (∙-congˡ (++-foldMap xs)) (sym (assoc _ _ _))
+  []-homo : h [] ≈ ε
+  []-homo = refl
+
+  ++-homo : ∀ xs {ys} → h (xs ++ ys) ≈ h xs ∙ h ys
+  ++-homo []       = sym (identityˡ _)
+  ++-homo (x ∷ xs) = trans (∙-congˡ (++-homo xs)) (sym (assoc _ _ _))
 
   foldMap-morphism : IsMonoidHomomorphism (++-[]-rawMonoid A) rawMonoid h
   foldMap-morphism = record
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record
         { cong = reflexive ∘ ≡.cong h }
-      ; homo = λ xs _ → ++-foldMap xs
+      ; homo = λ xs _ → ++-homo xs
       }
-    ; ε-homo = refl
+    ; ε-homo = []-homo
     }
