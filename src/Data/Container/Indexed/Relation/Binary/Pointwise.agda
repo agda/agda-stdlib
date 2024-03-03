@@ -4,7 +4,7 @@
 -- Pointwise equality for indexed containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Indexed.Relation.Binary.Pointwise where
 
@@ -20,7 +20,17 @@ private variable
   ℓᵉ ℓᵉ′ ℓᵖ ℓˢ ℓˣ ℓʸ : Level
   I O : Set _
 
+------------------------------------------------------------------------
 -- Equality, parametrised on an underlying relation.
+
+-- Since ⟦_⟧ is a Σ-type, not a record, I'd say Pointwise should also be
+-- a Σ-type, not a record. Maybe we need to update module
+-- `Data.Container.Relation.Binary.Pointwise` accordingly...
+--
+-- record Pointwise  : Set (ℓˢ ⊔ ℓᵖ ⊔ ℓᵉ) where
+--   constructor _,_
+--   field shape    : c ≡ c'
+--         position : Eqs shape xs ys
 
 module _ (C : Container I O ℓˢ ℓᵖ)
          {X : I → Set ℓˣ} {Y : I → Set ℓʸ} (R : (i : I) → REL (X i) (Y i) ℓᵉ)
@@ -35,13 +45,8 @@ module _ (C : Container I O ℓˢ ℓᵖ)
 
   Pointwise = Σ[ eq ∈ c ≡ c' ] Eqs eq xs ys
 
-  -- Since ⟦_⟧ is a Σ-type, not a record, I'd say Pointwise should also be a Σ-type, not a record.
-  -- Maybe we need to update module Data.Container.Relation.Binary.Pointwise accordinly
-  --
-  -- record Pointwise  : Set (ℓˢ ⊔ ℓᵖ ⊔ ℓᵉ) where
-  --   constructor _,_
-  --   field shape    : c ≡ c'
-  --         position : Eqs shape xs ys
+------------------------------------------------------------------------
+-- Operations
 
 module _ {C : Container I O ℓˢ ℓᵖ}
          {X : I → Set ℓˣ} {Y : I → Set ℓʸ}

@@ -1,39 +1,40 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Multi-sorted algebras as indexed containers
+-- Example of multi-sorted algebras as indexed containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}  -- forced by Agda-2.6.2-rc1
+{-# OPTIONS --safe --cubical-compatible #-}
 
-module Data.Container.Indexed.Examples.MultiSortedAlgebra where
+module README.Data.Container.Indexed.MultiSortedAlgebraExample where
 
+------------------------------------------------------------------------
 -- Preliminaries
--- =============
-
--- We import library content for indexed containers, standard types, and setoids.
+------------------------------------------------------------------------
+-- We import library content for indexed containers, standard types,
+-- and setoids.
 
 open import Level
 
-open import Data.Container.Indexed.Core            using (Container; ⟦_⟧; _◃_/_)
-open import Data.Container.Indexed.FreeMonad       using (_⋆C_)
-open import Data.W.Indexed                         using (W; sup)
+open import Data.Container.Indexed.Core using (Container; ⟦_⟧; _◃_/_)
+open import Data.Container.Indexed.FreeMonad using (_⋆C_)
+open import Data.W.Indexed using (W; sup)
 
-open import Data.Product                           using (Σ; _×_; _,_; Σ-syntax); open Σ
-open import Data.Sum                               using (_⊎_; inj₁; inj₂; [_,_])
-open import Data.Empty.Polymorphic                 using (⊥; ⊥-elim)
+open import Data.Product using (Σ; _×_; _,_; Σ-syntax)
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 
-open import Function                               using (_∘_)
-open import Function.Bundles                       using (Func)
+open import Function using (_∘_)
+open import Function.Bundles using (Func)
 
-open import Relation.Binary                        using (Setoid; IsEquivalence)
-open import Relation.Binary.PropositionalEquality  using (_≡_; refl)
+open import Relation.Binary using (Setoid; IsEquivalence)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 import Data.Container.Indexed.Relation.Binary.Equality.Setoid as ICSetoid
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 open Setoid using (Carrier; _≈_; isEquivalence)
-open Func renaming (f to apply)
+open Func renaming (to to apply)
 
 -- Letter ℓ denotes universe levels.
 
@@ -42,6 +43,7 @@ variable
   I : Set ℓⁱ
   S : Set ℓˢ
 
+------------------------------------------------------------------------
 -- The interpretation of a container (Op ◃ Ar / sort) is
 --
 --   ⟦ Op ◃ Ar / sort ⟧ X s = Σ[ o ∈ Op s ] ((i : Ar o) → X (sort o i))
@@ -57,9 +59,9 @@ variable
 ⟦_⟧s : (C : Container I S ℓᵒ ℓᵃ) (ξ : I → Setoid ℓᵐ ℓᵉ) → S → Setoid _ _
 ⟦ C ⟧s ξ = ICSetoid.setoid ξ C
 
+------------------------------------------------------------------------
 -- Multi-sorted algebras
--- =====================
---
+--------------------------------------------------------------------------
 -- A multi-sorted algebra is an indexed container.
 --
 -- * Sorts are indexes.
@@ -86,8 +88,8 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
     s s'    : Sort
     op op'  : Op s
 
-  -- Models
-  ---------
+------------------------------------------------------------------------
+-- Models
 
   -- A model is given by an interpretation (Den $s$) for each sort $s$
   -- plus an interpretation (den $o$) for each operator $o$.
@@ -106,8 +108,9 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
       Den  :  Sort → Setoid ℓᵐ ℓᵉ
       den  :  {s : Sort} → Func (⟦ Ops ⟧s Den s) (Den s)
 
-  -- Terms
-  -- =====
+
+------------------------------------------------------------------------
+-- Terms
 
   -- To obtain terms with free variables, we add additional nullary
   -- operators, each representing a variable.
@@ -153,8 +156,8 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
     t t' t₁ t₂ t₃  :  Tm Γ s
     ts ts'         :  (i : Arity op) → Tm Γ (sort _ i)
 
-  -- Parallel substitutions
-  -------------------------
+------------------------------------------------------------------------
+-- Parallel substitutions
 
   -- A substitution from Δ to Γ holds a term in Γ for each variable in Δ.
 
@@ -172,8 +175,9 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
   variable
     σ σ' : Sub Γ Δ
 
-  -- Interpretation of terms in a model
-  -- ==================================
+------------------------------------------------------------------------
+-- Interpretation of terms in a model
+------------------------------------------------------------------------
 
   -- Given an algebra $M$ of set-size $ℓ^m$ and equality-size $ℓ^e$,
   -- we define the interpretation of an $s$-sorted term $t$ as element
@@ -220,8 +224,8 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
     isEquiv {s = s} .IsEquivalence.sym   e ρ     = Den s .Setoid.sym (e ρ)
     isEquiv {s = s} .IsEquivalence.trans e e' ρ  = Den s .Setoid.trans (e ρ) (e' ρ)
 
-    -- Substitution lemma
-    ---------------------
+------------------------------------------------------------------------
+-- Substitution lemma
 
     -- Evaluation of a substitution gives an environment.
 
@@ -235,8 +239,8 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
     substitution (var x)    σ ρ = Den _ .Setoid.refl
     substitution (op ∙ ts)  σ ρ = den .cong (refl , λ i → substitution (ts i) σ ρ)
 
-  -- Equations
-  -- =========
+------------------------------------------------------------------------
+-- Equations
 
   -- An equation is a pair $t ≐ t'$ of terms of the same sort in the same context.
 
@@ -299,8 +303,8 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
               E ⊢ Γ ▹ t₂ ≡ t₃ →
               E ⊢ Γ ▹ t₁ ≡ t₃
 
-  -- Soundness of the inference rules
-  -----------------------------------
+------------------------------------------------------------------------
+-- Soundness of the inference rules
 
   -- We assume a model $M$ that validates all equations in $E$.
 
@@ -318,7 +322,7 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
     sound (sub {t = t} {t' = t'} e σ) ρ  =  begin
       ⦅ t [ σ ]   ⦆ .apply ρ   ≈⟨ substitution {M = M} t σ ρ ⟩
       ⦅ t         ⦆ .apply ρ'  ≈⟨ sound e ρ' ⟩
-      ⦅ t'        ⦆ .apply ρ'  ≈˘⟨ substitution {M = M} t' σ ρ ⟩
+      ⦅ t'        ⦆ .apply ρ'  ≈⟨ substitution {M = M} t' σ ρ ⟨
       ⦅ t' [ σ ]  ⦆ .apply ρ   ∎
       where
       open SetoidReasoning (Den _)
@@ -333,8 +337,10 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
                   {t₃ = t₃} e e')        =  isEquiv {M = M} .IsEquivalence.trans
                                             {i = t₁} {j = t₂} {k = t₃} (sound e) (sound e')
 
-  -- Birkhoff's completeness theorem
-  -- ===============================
+
+------------------------------------------------------------------------
+-- Birkhoff's completeness theorem
+------------------------------------------------------------------------
 
   -- Birkhoff proved that any equation $t ≐ t'$ is derivable from $E$
   -- when it is valid in all models satisfying $E$.  His proof (for
@@ -344,8 +350,8 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
   -- quotiented by derivable equality $E ⊢ Γ ▹ \_ ≡ \_$.  It then
   -- suffices to prove that this model satisfies all equations in $E$.
 
-  -- Universal model
-  ------------------
+------------------------------------------------------------------------
+-- Universal model
 
   -- A term model for $E$ and $Γ$ interprets sort $s$ by (Tm Γ s) quotiented by $E ⊢ Γ ▹ \_ ≡ \_$.
 
@@ -398,18 +404,18 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
     satisfies i σ = begin
       ⦅ tₗ ⦆ .apply σ  ≈⟨ evaluation tₗ σ ⟩
       tₗ [ σ ]         ≈⟨ sub (hyp i) σ ⟩
-      tᵣ [ σ ]         ≈˘⟨ evaluation tᵣ σ ⟩
+      tᵣ [ σ ]         ≈⟨ evaluation tᵣ σ ⟨
       ⦅ tᵣ ⦆ .apply σ  ∎
       where
       open SetoidReasoning (TmSetoid _ _)
       tₗ  = E i .Eq.lhs
       tᵣ = E i .Eq.rhs
 
-  -- Completeness
-  ---------------
+------------------------------------------------------------------------
+-- Completeness
 
-  -- Birkhoff's completeness theorem \citeyearpar{birkhoff:1935}:
-  -- Any valid consequence is derivable in the equational theory.
+-- Birkhoff's completeness theorem \citeyearpar{birkhoff:1935}:
+-- Any valid consequence is derivable in the equational theory.
 
   module Completeness {I : Set ℓⁱ} (E : I → Eq) {Γ s} {t t' : Tm Γ s} where
     open TermModel E
@@ -423,11 +429,3 @@ module _ (Sort : Set ℓˢ) (Ops : Container Sort Sort ℓᵒ ℓᵃ) where
       t' [ σ₀ ]          ≈⟨ identity t' ⟩
       t'                 ∎
       where open SetoidReasoning (TmSetoid Γ s)
-
-{- Q.E.D 2021-05-28 -}
-
--- -}
--- -}
--- -}
--- -}
--- -}

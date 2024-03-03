@@ -17,6 +17,9 @@ private variable
   I : Set i
   O : Set o
 
+------------------------------------------------------------------------
+-- Definition
+
 infix 5 _◃_/_
 
 record Container (I : Set i) (O : Set o) c r : Set (i ⊔ o ⊔ suc c ⊔ suc r) where
@@ -26,6 +29,7 @@ record Container (I : Set i) (O : Set o) c r : Set (i ⊔ o ⊔ suc c ⊔ suc r)
     Response : ∀ {o} → Command o → Set r
     next     : ∀ {o} (c : Command o) → Response c → I
 
+------------------------------------------------------------------------
 -- The semantics ("extension") of an indexed container.
 
 module _ (C : Container I O c r) (X : Pred I ℓ) where

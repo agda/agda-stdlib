@@ -4,7 +4,7 @@
 -- Equality over indexed container extensions parametrised by a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary using (Setoid)
 
@@ -18,9 +18,10 @@ open import Relation.Binary
 
 open import Data.Container.Indexed.Core
 open import Data.Container.Indexed.Relation.Binary.Pointwise
-import Data.Container.Indexed.Relation.Binary.Pointwise.Properties as Pw
+import Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  as Pointwise
 
-open Setoid using (Carrier) renaming (_≈_ to Equality)
+open Setoid using (Carrier; _≈_)
 
 private variable
   ℓˢ ℓᵖ : Level
@@ -32,19 +33,19 @@ private variable
 module _ (C : Container I O ℓˢ ℓᵖ) (o : O) where
 
   Eq : Rel (⟦ C ⟧ (Carrier ∘ S) o) (ℓᵉ ⊔ ℓˢ ⊔ ℓᵖ)
-  Eq = Pointwise C (Equality ∘ S) o
+  Eq = Pointwise C (_≈_ ∘ S) o
 
 ------------------------------------------------------------------------
 -- Relational properties
 
   refl : Reflexive Eq
-  refl = Pw.refl C _ (Setoid.refl ∘ S)
+  refl = Pointwise.refl C _ (Setoid.refl ∘ S)
 
   sym : Symmetric Eq
-  sym = Pw.sym C _ (Setoid.sym ∘ S)
+  sym = Pointwise.sym C _ (Setoid.sym ∘ S)
 
   trans : Transitive Eq
-  trans = Pw.trans C _ (Setoid.trans ∘ S)
+  trans = Pointwise.trans C _ (Setoid.trans ∘ S)
 
   isEquivalence : IsEquivalence Eq
   isEquivalence = record
