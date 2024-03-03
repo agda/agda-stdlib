@@ -13,21 +13,21 @@ open import Data.Nat.Base using (ℕ)
 module Text.Pretty (width : ℕ) where
 
 import Level
-open import Data.Char.Base     using (Char)
+open import Data.Char.Base using (Char)
 open import Data.List.Base
   using (List; _∷_; []; [_]; uncons; _++_; map; filter)
 open import Data.List.NonEmpty as List⁺ using (foldr₁)
-open import Data.Maybe.Base    using (maybe′)
-open import Data.Product       using (uncurry)
-open import Data.String.Base   using (String; fromList; replicate)
-open import Function.Base
+open import Data.Maybe.Base using (maybe′)
+open import Data.Product.Base using (uncurry)
+open import Data.String.Base using (String; fromList; replicate)
+open import Function.Base using (_∘_; _∘′_; _$_)
 
 open import Effect.Monad using (RawMonad)
-import Data.List.Effectful as Cat
-open RawMonad (Cat.monad {Level.zero})
+import Data.List.Effectful as List
+open RawMonad (List.monad {Level.zero})
 
-import Data.Nat.Properties as ℕₚ
-open import Data.List.Extrema.Core ℕₚ.≤-totalOrder using (⊓ᴸ)
+import Data.Nat.Properties as ℕ
+open import Data.List.Extrema.Core ℕ.≤-totalOrder using (⊓ᴸ)
 
 ------------------------------------------------------------------------
 -- Internal representation of documents and rendering function

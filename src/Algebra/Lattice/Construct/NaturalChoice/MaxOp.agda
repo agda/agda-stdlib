@@ -5,11 +5,11 @@
 -- preorder.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Lattice.Construct.NaturalChoice.MinOp as MinOp
-open import Relation.Binary
+open import Relation.Binary.Bundles using (TotalPreorder)
 
 module Algebra.Lattice.Construct.NaturalChoice.MaxOp
   {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂} (maxOp : MaxOperator O)

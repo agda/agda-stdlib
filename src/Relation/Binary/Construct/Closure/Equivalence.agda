@@ -5,13 +5,17 @@
 -- relation (aka the equivalence closure).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Closure.Equivalence where
 
 open import Function.Base using (flip; id; _∘_; _on_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Symmetric)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive as Star
   using (Star; ε; _◅◅_; reverse)
 open import Relation.Binary.Construct.Closure.Symmetric as SC

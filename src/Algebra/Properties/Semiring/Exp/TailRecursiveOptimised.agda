@@ -4,12 +4,12 @@
 -- Exponentiation over a semiring optimised for tail-recursion.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Nat.Base as ℕ using (zero; suc)
 import Data.Nat.Properties as ℕ
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 
 module Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
   {a ℓ} (S : Semiring a ℓ) where
@@ -72,7 +72,7 @@ x^[m+1]≈x*[x^m] x m = x^[m]*[x*y]≈x*x^[m]*y x m 1#
 x^[m+n]≈[x^m]*[x^n] : ∀ x m n → x ^ (m ℕ.+ n) ≈ x ^ m * x ^ n
 x^[m+n]≈[x^m]*[x^n] x m n = begin
   x ^ (m  ℕ.+ n)   ≈⟨ x^[m+n]*y≈x^[m]*x^[n]*y x m n 1# ⟩
-  x ^[ m ]* (x ^ n) ≈˘⟨ x^m*y≈x^[m]*y x m (x ^ n) ⟩
+  x ^[ m ]* (x ^ n) ≈⟨ x^m*y≈x^[m]*y x m (x ^ n) ⟨
   x ^ m * x ^ n    ∎
 
 ^≈^ᵘ : ∀ x m → x ^ m ≈ x ^ᵘ m

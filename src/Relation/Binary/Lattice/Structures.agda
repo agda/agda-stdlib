@@ -7,9 +7,11 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Lattice`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsPartialOrder)
+open import Relation.Binary.Definitions using (Minimum; Maximum)
 
 module Relation.Binary.Lattice.Structures
  {a ℓ₁ ℓ₂} {A : Set a}
@@ -19,7 +21,7 @@ module Relation.Binary.Lattice.Structures
 
 open import Algebra.Core
 open import Algebra.Definitions
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Level using (suc; _⊔_)
 
 open import Relation.Binary.Lattice.Definitions

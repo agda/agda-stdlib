@@ -7,20 +7,97 @@
 -- product and a coproduct in the category of R-modules.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Construct.DirectProduct where
 
 open import Algebra.Bundles
 open import Algebra.Construct.DirectProduct
 open import Algebra.Module.Bundles
-open import Data.Product
+open import Data.Product.Base using (map; zip; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Level
 
 private
   variable
     r s ℓr ℓs m m′ ℓm ℓm′ : Level
+
+------------------------------------------------------------------------
+-- Raw bundles
+
+rawLeftSemimodule : {R : Set r} →
+                    RawLeftSemimodule R m ℓm →
+                    RawLeftSemimodule R m′ ℓm′ →
+                    RawLeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+rawLeftSemimodule M N = record
+  { _≈ᴹ_ = Pointwise M._≈ᴹ_ N._≈ᴹ_
+  ; _+ᴹ_ = zip M._+ᴹ_ N._+ᴹ_
+  ; _*ₗ_ = λ r → map (r M.*ₗ_) (r N.*ₗ_)
+  ; 0ᴹ = M.0ᴹ , N.0ᴹ
+  } where module M = RawLeftSemimodule M; module N = RawLeftSemimodule N
+
+rawLeftModule : {R : Set r} →
+                RawLeftModule R m ℓm →
+                RawLeftModule R m′ ℓm′ →
+                RawLeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+rawLeftModule M N = record
+  { RawLeftSemimodule (rawLeftSemimodule M.rawLeftSemimodule N.rawLeftSemimodule)
+  ; -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
+  } where module M = RawLeftModule M; module N = RawLeftModule N
+
+
+rawRightSemimodule : {R : Set r} →
+                    RawRightSemimodule R m ℓm →
+                    RawRightSemimodule R m′ ℓm′ →
+                    RawRightSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+rawRightSemimodule M N = record
+  { _≈ᴹ_ = Pointwise M._≈ᴹ_ N._≈ᴹ_
+  ; _+ᴹ_ = zip M._+ᴹ_ N._+ᴹ_
+  ; _*ᵣ_ = λ mn r → map (M._*ᵣ r) (N._*ᵣ r) mn
+  ; 0ᴹ = M.0ᴹ , N.0ᴹ
+  } where module M = RawRightSemimodule M; module N = RawRightSemimodule N
+
+rawRightModule : {R : Set r} →
+                RawRightModule R m ℓm →
+                RawRightModule R m′ ℓm′ →
+                RawRightModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+rawRightModule M N = record
+  { RawRightSemimodule (rawRightSemimodule M.rawRightSemimodule N.rawRightSemimodule)
+  ; -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
+  } where module M = RawRightModule M; module N = RawRightModule N
+
+rawBisemimodule : {R : Set r} {S : Set s} →
+                    RawBisemimodule R S m ℓm →
+                    RawBisemimodule R S m′ ℓm′ →
+                    RawBisemimodule R S (m ⊔ m′) (ℓm ⊔ ℓm′)
+rawBisemimodule M N = record
+  { _≈ᴹ_ = Pointwise M._≈ᴹ_ N._≈ᴹ_
+  ; _+ᴹ_ = zip M._+ᴹ_ N._+ᴹ_
+  ; _*ₗ_ = λ r → map (r M.*ₗ_) (r N.*ₗ_)
+  ; _*ᵣ_ = λ mn r → map (M._*ᵣ r) (N._*ᵣ r) mn
+  ; 0ᴹ = M.0ᴹ , N.0ᴹ
+  } where module M = RawBisemimodule M; module N = RawBisemimodule N
+
+rawBimodule : {R : Set r} {S : Set s} →
+                RawBimodule R S m ℓm →
+                RawBimodule R S m′ ℓm′ →
+                RawBimodule R S (m ⊔ m′) (ℓm ⊔ ℓm′)
+rawBimodule M N = record
+  { RawBisemimodule (rawBisemimodule M.rawBisemimodule N.rawBisemimodule)
+  ; -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
+  } where module M = RawBimodule M; module N = RawBimodule N
+
+rawSemimodule : {R : Set r} →
+                RawSemimodule R m ℓm →
+                RawSemimodule R m′ ℓm′ →
+                RawSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+rawSemimodule M N = rawBisemimodule M N
+
+rawModule : {R : Set r} →
+            RawModule R m ℓm →
+            RawModule R m′ ℓm′ →
+            RawModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+rawModule M N = rawBimodule M N
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -97,6 +174,7 @@ semimodule M N = record
   { isSemimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule
       (bisemimodule M.bisemimodule N.bisemimodule)
+    ; *ₗ-*ᵣ-coincident = λ x m → M.*ₗ-*ᵣ-coincident x (proj₁ m) , N.*ₗ-*ᵣ-coincident x (proj₂ m)
     }
   } where module M = Semimodule M; module N = Semimodule N
 
@@ -155,5 +233,6 @@ bimodule M N = record
 ⟨module⟩ M N = record
   { isModule = record
     { isBimodule = Bimodule.isBimodule (bimodule M.bimodule N.bimodule)
+    ; *ₗ-*ᵣ-coincident = λ x m → M.*ₗ-*ᵣ-coincident x (proj₁ m) , N.*ₗ-*ᵣ-coincident x (proj₂ m)
     }
   } where module M = Module M; module N = Module N

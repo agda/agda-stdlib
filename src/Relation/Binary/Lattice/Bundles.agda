@@ -7,13 +7,14 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Lattice`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Lattice.Bundles where
 
 open import Algebra.Core
 open import Level using (suc; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Poset; Setoid)
 open import Relation.Binary.Lattice.Structures
 
 ------------------------------------------------------------------------
@@ -225,4 +226,3 @@ record BooleanAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wher
 
   open HeytingAlgebra heytingAlgebra public
     hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥)
-

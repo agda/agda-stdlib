@@ -4,7 +4,7 @@
 -- Intersection of two binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Intersection where
 
@@ -12,7 +12,11 @@ open import Data.Product.Base
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsStrictPartialOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Antisymmetric; Decidable; _Respects_; _Respectsˡ_; _Respectsʳ_; _Respects₂_; Minimum; Maximum; Irreflexive)
 open import Relation.Nullary.Decidable using (yes; no; _×-dec_)
 
 private
@@ -23,6 +27,8 @@ private
 
 ------------------------------------------------------------------------
 -- Definition
+
+infixl 6 _∩_
 
 _∩_ : REL A B ℓ₁ → REL A B ℓ₂ → REL A B (ℓ₁ ⊔ ℓ₂)
 L ∩ R = λ i j → L i j × R i j

@@ -7,13 +7,12 @@
 -- For more general transformations between algebraic lattice structures
 -- see `Algebra.Lattice.Morphisms`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions
 open import Algebra.Lattice.Structures
-import Data.Sum as Sum
-open import Data.Product as Prod
+open import Data.Product.Base using (_,_)
 open import Function.Base
 open import Relation.Binary.Core
 

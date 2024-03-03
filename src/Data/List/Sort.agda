@@ -7,10 +7,10 @@
 -- See `Data.List.Relation.Unary.Sorted` for the property of a list
 -- being sorted.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.List.Base using (List)
-open import Relation.Binary using (DecTotalOrder)
+open import Relation.Binary.Bundles using (DecTotalOrder)
 
 module Data.List.Sort
   {a ℓ₁ ℓ₂} (O : DecTotalOrder a ℓ₁ ℓ₂)

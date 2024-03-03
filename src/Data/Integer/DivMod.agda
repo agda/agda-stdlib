@@ -4,7 +4,7 @@
 -- Integer division
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.DivMod where
 
@@ -75,7 +75,7 @@ a≡a%ℕn+[a/ℕn]*n n@(-[1+ _ ]) d with ∣ n ∣ ℕ.% d in eq
 [n/ℕd]*d≤n : ∀ n d .{{_ : ℕ.NonZero d}} → (n /ℕ d) * + d ≤ n
 [n/ℕd]*d≤n n d = let q = n /ℕ d; r = n %ℕ d in begin
   q * + d        ≤⟨  i≤j+i _ (+ r) ⟩
-  + r + q * + d  ≡˘⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
+  + r + q * + d  ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟨
   n              ∎
 
 div-pos-is-/ℕ : ∀ n d .{{_ : ℕ.NonZero d}} →

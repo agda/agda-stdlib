@@ -4,9 +4,9 @@
 -- Automatic solvers for equations over naturals
 ------------------------------------------------------------------------
 
--- See README.Nat for examples of how to use this solver
+-- See README.Data.Nat for examples of how to use this solver
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Solver where
 

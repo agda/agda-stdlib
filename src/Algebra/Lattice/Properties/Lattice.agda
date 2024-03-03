@@ -4,14 +4,14 @@
 -- Some derivable properties of lattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Lattice.Bundles
 import Algebra.Lattice.Properties.Semilattice as SemilatticeProperties
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Poset)
 import Relation.Binary.Lattice as R
 open import Function.Base
-open import Data.Product using (_,_; swap)
+open import Data.Product.Base using (_,_; swap)
 
 module Algebra.Lattice.Properties.Lattice
   {l₁ l₂} (L : Lattice l₁ l₂) where
@@ -27,7 +27,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 
 ∧-idem : Idempotent _∧_
 ∧-idem x = begin
-  x ∧ x            ≈˘⟨ ∧-congˡ (∨-absorbs-∧ _ _) ⟩
+  x ∧ x            ≈⟨ ∧-congˡ (∨-absorbs-∧ _ _) ⟨
   x ∧ (x ∨ x ∧ x)  ≈⟨  ∧-absorbs-∨ _ _ ⟩
   x                ∎
 
@@ -73,7 +73,7 @@ open SemilatticeProperties ∧-semilattice public
 
 ∨-idem : Idempotent _∨_
 ∨-idem x = begin
-  x ∨ x      ≈˘⟨ ∨-congˡ (∧-idem _) ⟩
+  x ∨ x      ≈⟨ ∨-congˡ (∧-idem _) ⟨
   x ∨ x ∧ x  ≈⟨  ∨-absorbs-∧ _ _ ⟩
   x          ∎
 

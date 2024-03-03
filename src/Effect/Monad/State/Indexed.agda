@@ -4,7 +4,7 @@
 -- The indexed state monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.State.Indexed where
 
@@ -12,7 +12,7 @@ open import Effect.Applicative.Indexed
 open import Effect.Monad
 open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Monad.Indexed
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_; uncurry)
 open import Data.Unit
 open import Function.Base
 open import Level

@@ -4,7 +4,7 @@
 -- Some theory for Semigroup
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Semigroup)
 
@@ -12,7 +12,7 @@ module Algebra.Properties.Semigroup {a ℓ} (S : Semigroup a ℓ) where
 
 open Semigroup S
 open import Algebra.Definitions _≈_
-open import Data.Product
+open import Data.Product.Base using (_,_)
 
 x∙yz≈xy∙z : ∀ x y z → x ∙ (y ∙ z) ≈ (x ∙ y) ∙ z
 x∙yz≈xy∙z x y z = sym (assoc x y z)

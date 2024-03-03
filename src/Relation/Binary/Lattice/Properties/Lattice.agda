@@ -4,7 +4,7 @@
 -- Properties satisfied by lattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -16,14 +16,13 @@ open Lattice L
 import Algebra.Lattice as Alg
 import Algebra.Structures as Alg
 open import Algebra.Definitions _≈_
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (flip)
-open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice as J
 import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice as M
-import Relation.Binary.Reasoning.Setoid as EqReasoning
-import Relation.Binary.Reasoning.PartialOrder as POR
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
 
 ∨-absorbs-∧ : _∨_ Absorbs _∧_
 ∨-absorbs-∧ x y =
@@ -45,7 +44,7 @@ absorptive = ∨-absorbs-∧ , ∧-absorbs-∨
   x ∧ y ≤⟨ x∧y≤x x y ⟩
   x     ≤⟨ x≤x∨y x y ⟩
   x ∨ y ∎
-  where open POR poset
+  where open ≤-Reasoning poset
 
 -- two quadrilateral arguments
 
@@ -56,14 +55,14 @@ quadrilateral₁ {x} {y} x∨y≈x = begin
   y ∧ (x ∨ y) ≈⟨ M.∧-cong Eq.refl (J.∨-comm _ _) ⟩
   y ∧ (y ∨ x) ≈⟨ ∧-absorbs-∨ _ _ ⟩
   y           ∎
-  where open EqReasoning setoid
+  where open ≈-Reasoning setoid
 
 quadrilateral₂ : ∀ {x y} → x ∧ y ≈ y → x ∨ y ≈ x
 quadrilateral₂ {x} {y} x∧y≈y = begin
   x ∨ y       ≈⟨ J.∨-cong Eq.refl (Eq.sym x∧y≈y) ⟩
   x ∨ (x ∧ y) ≈⟨ ∨-absorbs-∧ _ _ ⟩
   x           ∎
-  where open EqReasoning setoid
+  where open ≈-Reasoning setoid
 
 -- collapsing sublattice
 
@@ -76,7 +75,7 @@ collapse₁ {x} {y} x≈y = begin
   x ∨ y ∎
   where
   y≤x = reflexive (Eq.sym x≈y)
-  open EqReasoning setoid
+  open ≈-Reasoning setoid
 
 -- this can also be proved by quadrilateral argument, but it's much less symmetric.
 collapse₂ : ∀ {x y} → x ∨ y ≤ x ∧ y → x ≈ y
@@ -89,7 +88,7 @@ collapse₂ {x} {y} ∨≤∧ = antisym
          x ∨ y ≤⟨ ∨≤∧ ⟩
          x ∧ y ≤⟨ x∧y≤x _ _ ⟩
          x     ∎)
-  where open POR poset
+  where open ≤-Reasoning poset
 
 ------------------------------------------------------------------------
 -- The dual construction is also a lattice.

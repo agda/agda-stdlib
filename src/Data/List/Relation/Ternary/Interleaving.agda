@@ -5,18 +5,18 @@
 -- order-preserving manner
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Ternary.Interleaving where
 
 open import Level
 open import Data.List.Base as List using (List; []; _∷_; _++_)
-open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
-open import Data.Product as Prod using (∃; ∃₂; _×_; uncurry; _,_; -,_; proj₂)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
+open import Data.Product.Base as Product using (∃; ∃₂; _×_; uncurry; _,_; -,_; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (REL; _⇒_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -60,9 +60,9 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
           Interleaving _≡_ _≡_ csl csr cs × Pointwise L l csl × Pointwise R r csr
   break []        = -, [] , [] , []
   break (l ∷ˡ sp) = let (_ , eq , pwl , pwr) = break sp in
-                    -, P.refl ∷ˡ eq , l ∷ pwl , pwr
+                    -, refl ∷ˡ eq , l ∷ pwl , pwr
   break (r ∷ʳ sp) = let (_ , eq , pwl , pwr) = break sp in
-                    -, P.refl ∷ʳ eq , pwl , r ∷ pwr
+                    -, refl ∷ʳ eq , pwl , r ∷ pwr
 
 -- map
 
@@ -95,11 +95,11 @@ module _ {a b l r} {A : Set a} {B : Set b} {L : REL A B l} {R : REL A B r} where
   split : ∀ {as bs} → Pointwise (λ a b → L a b ⊎ R a b) as bs →
           ∃₂ λ asr asl → Interleaving L R asl asr bs
   split []            = [] , [] , []
-  split (inj₁ l ∷ pw) = Prod.map _ (Prod.map _ (l ∷ˡ_)) (split pw)
-  split (inj₂ r ∷ pw) = Prod.map _ (Prod.map _ (r ∷ʳ_)) (split pw)
+  split (inj₁ l ∷ pw) = Product.map _ (Product.map _ (l ∷ˡ_)) (split pw)
+  split (inj₂ r ∷ pw) = Product.map _ (Product.map _ (r ∷ʳ_)) (split pw)
 
   unsplit : ∀ {l r as} → Interleaving L R l r as →
             ∃ λ bs → Pointwise (λ a b → L a b ⊎ R a b) bs as
   unsplit []        = -, []
-  unsplit (l ∷ˡ sp) = Prod.map _ (inj₁ l ∷_) (unsplit sp)
-  unsplit (r ∷ʳ sp) = Prod.map _ (inj₂ r ∷_) (unsplit sp)
+  unsplit (l ∷ˡ sp) = Product.map _ (inj₁ l ∷_) (unsplit sp)
+  unsplit (r ∷ʳ sp) = Product.map _ (inj₂ r ∷_) (unsplit sp)

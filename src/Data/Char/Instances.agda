@@ -4,7 +4,7 @@
 -- Instances for characters
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Char.Instances where
 

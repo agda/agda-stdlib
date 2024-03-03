@@ -4,17 +4,18 @@
 -- An All predicate for the partiality monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --cubical-compatible --safe --guardedness #-}
 
 module Effect.Monad.Partiality.All where
 
 open import Effect.Monad
 open import Effect.Monad.Partiality as Partiality using (_⊥; ⇒≈)
 open import Codata.Musical.Notation
-open import Function
+open import Function.Base using (flip; _∘_)
 open import Level
-open import Relation.Binary using (_Respects_; IsEquivalence)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Definitions using (_Respects_)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 open Partiality._⊥
 open Partiality.Equality using (Rel)
@@ -42,6 +43,8 @@ data All {A : Set a} (P : A → Set p) : A ⊥ → Set (a ⊔ p) where
   later : ∀ {x} (p : ∞ (All P (♭ x))) → All P (later x)
 
 -- Bind preserves All in the following way:
+
+infixl 1 _>>=-cong_
 
 _>>=-cong_ : ∀ {p q} {P : A → Set p} {Q : B → Set q}
                {x : A ⊥} {f : A → B ⊥} →
@@ -79,7 +82,7 @@ module Reasoning {P : A → Set p}
   infixr 2 _≡⟨_⟩_ _∼⟨_⟩_
 
   _≡⟨_⟩_ : ∀ x {y} → x ≡ y → All P y → All P x
-  _ ≡⟨ P.refl ⟩ p = p
+  _ ≡⟨ ≡.refl ⟩ p = p
 
   _∼⟨_⟩_ : ∀ {k} x {y} → Rel _∼_ k x y → All P y → All P x
   _ ∼⟨ x∼y ⟩ p = respects-flip resp (⇒≈ x∼y) p
@@ -95,7 +98,7 @@ module Reasoning {P : A → Set p}
 -- equality.
 
 module Reasoning-≡ {a p} {A : Set a} {P : A → Set p}
-  = Reasoning {P = P} {_∼_ = _≡_} (P.subst P ∘ P.sym)
+  = Reasoning {P = P} {_∼_ = _≡_} (≡.subst P ∘ ≡.sym)
 
 ------------------------------------------------------------------------
 -- An alternative, but equivalent, formulation of All
@@ -117,6 +120,8 @@ module Alternative {a p : Level} where
     _≳⟨_⟩P_     : ∀ x {y} (x≳y : x ≳ y) (p : AllP P y) → AllP P x
     _⟨_⟩P       : ∀ x (p : AllP P x) → AllP P x
 
+  infixl 1 _>>=-congP_
+
   private
 
     -- WHNFs.
@@ -135,12 +140,12 @@ module Alternative {a p : Level} where
 
     trans-≅ : {P : A → Set p} {x y : A ⊥} →
               x ≅ y → AllW P y → AllW P x
-    trans-≅ (now P.refl) (now   p) = now p
+    trans-≅ (now ≡.refl) (now   p) = now p
     trans-≅ (later  x≅y) (later p) = later (_ ≅⟨ ♭ x≅y ⟩P p)
 
     trans-≳ : {P : A → Set p} {x y : A ⊥} →
               x ≳ y → AllW P y → AllW P x
-    trans-≳ (now P.refl) (now   p) = now p
+    trans-≳ (now ≡.refl) (now   p) = now p
     trans-≳ (later  x≳y) (later p) = later (_ ≳⟨ ♭ x≳y ⟩P p)
     trans-≳ (laterˡ x≳y)        p  = later (_ ≳⟨   x≳y ⟩P program p)
 

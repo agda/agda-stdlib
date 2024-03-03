@@ -4,14 +4,14 @@
 -- Properties related to Pointwise
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 
 open import Data.Fin.Base using (zero; suc; _↑ˡ_; _↑ʳ_; splitAt)
 open import Data.Fin.Properties using (all?; splitAt-↑ˡ; splitAt-↑ʳ)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using () renaming (Pointwise to ×-Pointwise)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
@@ -19,8 +19,13 @@ open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
 open import Function.Base
 open import Level using (Level)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Bundles using (Setoid; DecSetoid)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Symmetric; Decidable)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
@@ -137,7 +142,7 @@ module _ (R : REL A B r) where
 
 module _ {R : REL A B r} {x y n} where
 
-  replicate⁺ : R x y → Pointwise R {n = n} (replicate x) (replicate y)
+  replicate⁺ : R x y → Pointwise R {n = n} (replicate n x) (replicate n y)
   replicate⁺ = const
 
 ------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 -- Instances for strings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.String.Instances where
 

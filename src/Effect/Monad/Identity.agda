@@ -4,7 +4,7 @@
 -- An effectful view of the identity function
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Identity where
 
@@ -18,6 +18,7 @@ open import Level
 private
   variable
     a : Level
+    A : Set a
 
 record Identity (A : Set a) : Set a where
   constructor mkIdentity
@@ -47,3 +48,6 @@ comonad = record
   { extract = runIdentity
   ; extend  = λ f a → mkIdentity (f a)
   }
+
+join : Identity (Identity A) → Identity A
+join = Join.join monad

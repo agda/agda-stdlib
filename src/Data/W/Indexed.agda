@@ -4,13 +4,13 @@
 -- Indexed W-types aka Petersson-Synek trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.W.Indexed where
 
 open import Level
 open import Data.Container.Indexed.Core
-open import Data.Product
+open import Data.Product.Base using (_,_; Σ)
 open import Relation.Unary
 
 -- The family of indexed W-types.

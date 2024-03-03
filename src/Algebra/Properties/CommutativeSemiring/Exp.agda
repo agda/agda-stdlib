@@ -4,7 +4,7 @@
 -- Exponentiation defined over a commutative semiring as repeated multiplication
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 

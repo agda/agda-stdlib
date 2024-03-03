@@ -4,7 +4,7 @@
 -- The Cowriter type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Cowriter where
 
@@ -16,9 +16,9 @@ open import Codata.Sized.Delay using (Delay; later; now)
 open import Codata.Sized.Stream as Stream using (Stream; _∷_)
 open import Data.Unit.Base
 open import Data.List.Base using (List; []; _∷_)
-open import Data.List.NonEmpty using (List⁺; _∷_)
-open import Data.Nat.Base as Nat using (ℕ; zero; suc)
-open import Data.Product as Prod using (_×_; _,_)
+open import Data.List.NonEmpty.Base using (List⁺; _∷_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
+open import Data.Product.Base as Product using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Vec.Bounded.Base as Vec≤ using (Vec≤; _,_)
@@ -38,6 +38,8 @@ private
 data Cowriter (W : Set w) (A : Set a) (i : Size) : Set (a L.⊔ w) where
   [_] : A → Cowriter W A i
   _∷_ : W → Thunk (Cowriter W A) i → Cowriter W A i
+
+infixr 5 _∷_
 
 ------------------------------------------------------------------------
 -- Relationship to Delay.
@@ -66,11 +68,11 @@ length (w ∷ cw) = suc λ where .force → length (cw .force)
 splitAt : ∀ (n : ℕ) → Cowriter W A ∞ → (Vec W n × Cowriter W A ∞) ⊎ (Vec≤ W n × A)
 splitAt zero    cw       = inj₁ ([] , cw)
 splitAt (suc n) [ a ]    = inj₂ (Vec≤.[] , a)
-splitAt (suc n) (w ∷ cw) = Sum.map (Prod.map₁ (w ∷_)) (Prod.map₁ (w Vec≤.∷_))
+splitAt (suc n) (w ∷ cw) = Sum.map (Product.map₁ (w ∷_)) (Product.map₁ (w Vec≤.∷_))
                          $ splitAt n (cw .force)
 
 take : ∀ (n : ℕ) → Cowriter W A ∞ → Vec W n ⊎ (Vec≤ W n × A)
-take n = Sum.map₁ Prod.proj₁ ∘′ splitAt n
+take n = Sum.map₁ Product.proj₁ ∘′ splitAt n
 
 infixr 5 _++_ _⁺++_
 _++_ : ∀ {i} → List W → Cowriter W A i → Cowriter W A i
@@ -100,6 +102,8 @@ map₂ = map id
 ap : ∀ {i} → Cowriter W (A → X) i → Cowriter W A i → Cowriter W X i
 ap [ f ]    ca = map₂ f ca
 ap (w ∷ cf) ca = w ∷ λ where .force → ap (cf .force) ca
+
+infixl 1 _>>=_
 
 _>>=_ : ∀ {i} → Cowriter W A i → (A → Cowriter W X i) → Cowriter W X i
 [ a ]    >>= f = f a

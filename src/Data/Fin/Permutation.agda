@@ -4,7 +4,7 @@
 -- Bijections on finite sets (i.e. permutations).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Permutation where
 
@@ -15,23 +15,22 @@ open import Data.Fin.Patterns
 open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Product using (_,_; proj₂)
-open import Function.Bundles using (_↔_; Injection; Inverse; mk↔′)
+open import Data.Product.Base using (_,_; proj₂)
+open import Function.Bundles using (_↔_; Injection; Inverse; mk↔ₛ′)
 open import Function.Construct.Composition using (_↔-∘_)
 open import Function.Construct.Identity using (↔-id)
 open import Function.Construct.Symmetry using (↔-sym)
-open import Function.Definitions using (Inverseˡ; Inverseʳ)
-open import Function.Equality using (_⟨$⟩_)
+open import Function.Definitions
 open import Function.Properties.Inverse using (↔⇒↣)
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary using (does; ¬_; yes; no)
 open import Relation.Nullary.Decidable using (dec-yes; dec-no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; trans; sym; →-to-⟶; cong; cong₂)
-open P.≡-Reasoning
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; _≢_; refl; sym; trans; subst; →-to-⟶; cong; cong₂; module ≡-Reasoning)
+open ≡-Reasoning
 
 private
   variable
@@ -57,8 +56,8 @@ Permutation′ n = Permutation n n
 -- Helper functions
 
 permutation : ∀ (f : Fin m → Fin n) (g : Fin n → Fin m) →
-              Inverseˡ _≡_ _≡_ f g → Inverseʳ _≡_ _≡_ f g → Permutation m n
-permutation = mk↔′
+              StrictlyInverseˡ _≡_ f g → StrictlyInverseʳ _≡_ f g → Permutation m n
+permutation = mk↔ₛ′
 
 infixl 5 _⟨$⟩ʳ_ _⟨$⟩ˡ_
 _⟨$⟩ʳ_ : Permutation m n → Fin m → Fin n
@@ -68,10 +67,10 @@ _⟨$⟩ˡ_ : Permutation m n → Fin n → Fin m
 _⟨$⟩ˡ_ = Inverse.from
 
 inverseˡ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ˡ (π ⟨$⟩ʳ i) ≡ i
-inverseˡ π = Inverse.inverseʳ π _
+inverseˡ π = Inverse.inverseʳ π refl
 
 inverseʳ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ʳ (π ⟨$⟩ˡ i) ≡ i
-inverseʳ π = Inverse.inverseˡ π _
+inverseʳ π = Inverse.inverseˡ π refl
 
 ------------------------------------------------------------------------
 -- Equality
@@ -105,7 +104,7 @@ reverse = permutation opposite opposite PC.reverse-involutive PC.reverse-involut
 
 infixr 9 _∘ₚ_
 _∘ₚ_ : Permutation m n → Permutation n o → Permutation m o
-π₁ ∘ₚ π₂ = π₁ ↔-∘ π₂
+π₁ ∘ₚ π₂ = π₂ ↔-∘ π₁
 
 -- Flip
 
@@ -142,7 +141,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
   from : Fin n → Fin m
   from j = punchOut {j = πˡ (punchIn (πʳ i) j)} from-punchOut
 
-  inverseʳ′ : Inverseʳ _≡_ _≡_ to from
+  inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ j = begin
     from (to j)                                                      ≡⟨⟩
     punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut _)) ⟩
@@ -150,7 +149,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
     punchOut {i = i} {punchIn i j}                                _  ≡⟨ punchOut-punchIn i ⟩
     j                                                                ∎
 
-  inverseˡ′ : Inverseˡ _≡_ _≡_ to from
+  inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ j = begin
     to (from j)                                                       ≡⟨⟩
     punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _  ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
@@ -171,11 +170,11 @@ lift₀ {m} {n} π = permutation to from inverseˡ′ inverseʳ′
   from 0F      = 0F
   from (suc i) = suc (π ⟨$⟩ˡ i)
 
-  inverseʳ′ : Inverseʳ _≡_ _≡_ to from
+  inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ 0F      = refl
   inverseʳ′ (suc j) = cong suc (inverseˡ π)
 
-  inverseˡ′ : Inverseˡ _≡_ _≡_ to from
+  inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ 0F      = refl
   inverseˡ′ (suc j) = cong suc (inverseʳ π)
 
@@ -194,7 +193,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
   ... | yes j≡k = i
   ... | no  j≢k = punchIn i (π ⟨$⟩ˡ punchOut j≢k)
 
-  inverseʳ′ : Inverseʳ _≡_ _≡_ to from
+  inverseʳ′ : StrictlyInverseʳ _≡_ to from
   inverseʳ′ k with i ≟ k
   ... | yes i≡k rewrite proj₂ (dec-yes (j ≟ j) refl) = i≡k
   ... | no  i≢k
@@ -207,7 +206,7 @@ insert {m} {n} i j π = permutation to from inverseˡ′ inverseʳ′
     punchIn i (punchOut i≢k)                                              ≡⟨ punchIn-punchOut i≢k ⟩
     k                                                                     ∎
 
-  inverseˡ′ : Inverseˡ _≡_ _≡_ to from
+  inverseˡ′ : StrictlyInverseˡ _≡_ to from
   inverseˡ′ k with j ≟ k
   ... | yes j≡k rewrite proj₂ (dec-yes (i ≟ i) refl) = j≡k
   ... | no  j≢k
@@ -252,7 +251,7 @@ module _ (π : Permutation (suc m) (suc n)) where
 ↔⇒≡ {suc m} {suc n} π = cong suc (↔⇒≡ (remove 0F π))
 
 fromPermutation : Permutation m n → Permutation′ m
-fromPermutation π = P.subst (Permutation _) (sym (↔⇒≡ π)) π
+fromPermutation π = subst (Permutation _) (sym (↔⇒≡ π)) π
 
 refute : m ≢ n → ¬ Permutation m n
 refute m≢n π = contradiction (↔⇒≡ π) m≢n

@@ -4,13 +4,13 @@
 -- Pointwise lifting of relations over Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Binary.Pointwise where
 
 open import Data.Vec.Functional as VF hiding (map)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL; _⇒_)
 
 private
   variable

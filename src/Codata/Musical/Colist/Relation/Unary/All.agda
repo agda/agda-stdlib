@@ -4,7 +4,7 @@
 -- Coinductive lists where all elements satisfy a predicate
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Relation.Unary.All where
 
@@ -23,3 +23,5 @@ private
 data All {A : Set a} (P : Pred A p) : Pred (Colist A) (a ⊔ p) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : ∞ (All P (♭ xs))) → All P (x ∷ xs)
+
+infixr 5 _∷_

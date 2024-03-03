@@ -4,12 +4,16 @@
 -- The lifting of a non-strict order to incorporate a new supremum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Supremum
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Maximum; Transitive; Total; Decidable; Irrelevant; Antisymmetric)
 
 module Relation.Binary.Construct.Add.Supremum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
@@ -18,13 +22,16 @@ open import Level using (_⊔_)
 open import Data.Sum.Base as Sum
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary.Construct.Add.Supremum
 import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 
 ------------------------------------------------------------------------
 -- Definition
+
+infix 4 _≤⁺_ _≤⊤⁺
 
 data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
   [_]  : {k l : A} → k ≤ l → [ k ] ≤⁺ [ l ]
@@ -54,8 +61,8 @@ data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
 ≤⁺-total ≤-total [ k ] [ l ] = Sum.map [_] [_] (≤-total k l)
 
 ≤⁺-irrelevant : Irrelevant _≤_ → Irrelevant _≤⁺_
-≤⁺-irrelevant ≤-irr [ p ]   [ q ]    = P.cong _ (≤-irr p q)
-≤⁺-irrelevant ≤-irr (k ≤⊤⁺) (k ≤⊤⁺) = P.refl
+≤⁺-irrelevant ≤-irr [ p ]   [ q ]   = cong _ (≤-irr p q)
+≤⁺-irrelevant ≤-irr (k ≤⊤⁺) (k ≤⊤⁺) = refl
 
 ------------------------------------------------------------------------
 -- Relational properties + propositional equality
@@ -66,7 +73,7 @@ data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
 
 ≤⁺-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤⁺_
 ≤⁺-antisym-≡ antisym (_ ≤⊤⁺) (_ ≤⊤⁺) = refl
-≤⁺-antisym-≡ antisym [ p ] [ q ]       = P.cong [_] (antisym p q)
+≤⁺-antisym-≡ antisym [ p ] [ q ]     = cong [_] (antisym p q)
 
 ------------------------------------------------------------------------
 -- Relation properties + setoid equality
@@ -88,7 +95,7 @@ module _ {e} {_≈_ : Rel A e} where
 
 ≤⁺-isPreorder-≡ : IsPreorder _≡_ _≤_ → IsPreorder _≡_ _≤⁺_
 ≤⁺-isPreorder-≡ ≤-isPreorder = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; reflexive     = ≤⁺-reflexive-≡ reflexive
   ; trans         = ≤⁺-trans trans
   } where open IsPreorder ≤-isPreorder

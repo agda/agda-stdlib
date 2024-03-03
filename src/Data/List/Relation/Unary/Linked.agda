@@ -4,19 +4,20 @@
 -- Lists where every consecutative pair of elements is related.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Linked {a} {A : Set a} where
 
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
-open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
+open import Data.Product.Base as Prod using (_,_; _×_; uncurry; <_,_>)
 open import Data.Maybe.Base using (just)
 open import Data.Maybe.Relation.Binary.Connected
   using (Connected; just; just-nothing)
 open import Function.Base using (id; _∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary as B using (Rel; _⇒_)
+open import Relation.Binary.Definitions as B
+open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)

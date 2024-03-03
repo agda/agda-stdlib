@@ -4,7 +4,7 @@
 -- Instances for the reader monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Reader.Instances where
 
@@ -22,6 +22,7 @@ instance
   readerTMonadPlus = λ {s} {S} {f} {M} {{mpl}} → monadPlus {s} {S} {f} {M} mpl
   readerTMonadT = λ {s} {S} {f} {M} {{mon}} → monadT {s} {S} {f} {M} mon
   readerTMonadReader = λ {s} {S} {f} {M} {{mon}} → monadReader {s} {S} {f} {M} mon
-  readerTLiftStateT = λ {s} {S₁} {S₂} {f} {M} {{mon}} {{ms}} → liftStateT {s} {S₁} {S₂} {f} {M} mon ms
+  readerTLiftWriterT = λ {s} {S₁} {S₂} {f} {M} {{mo}} {{fun}} {{mr}} → liftWriterT {s} {S₁} {S₂} {f} {M} mo fun mr
+  readerTLiftStateT = λ {s} {S₁} {S₂} {f} {M} {{fun}} {{mr}} → liftStateT {s} {S₁} {S₂} {f} {M} fun mr
   -- the following instance conflicts with readerTMonadReader so we don't include it
   -- readerTLiftReaderT = λ {R} {s} {S} {f} {M} {{ms}} → liftReaderT {R} {s} {S} {f} {M} ms

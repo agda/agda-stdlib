@@ -7,6 +7,7 @@ open import Data.Bool.Base using (if_then_else_)
 open import Data.List.Base using (List; []; _∷_; concatMap; map)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; suc)
+open import Data.Product.Base using (_×_; _,_)
 open import Level using (Level)
 open import Data.Unit.Base using (⊤)
 open import Function.Base using (case_of_; _$_)
@@ -39,11 +40,11 @@ private
 -- before being compared to the type of the most local variable. The goal
 -- indeed lives below that variable's binding site!
 
-searchEntry : ℕ → Type → List Type → Maybe ℕ
+searchEntry : ℕ → Type → List (String × Arg Type) → Maybe ℕ
 searchEntry n ty [] = nothing
-searchEntry n ty (e ∷ es) = do
+searchEntry n ty ((_ , e) ∷ es) = do
   ty ← strengthen ty
-  if does (ty ≟ e)
+  if does (ty ≟ unArg e)
     then just n
     else searchEntry (suc n) ty es
 
@@ -54,8 +55,8 @@ macro
     goal ← inferType hole
     debugPrint "" 10
       (strErr "Context : "
-       ∷ concatMap (λ where (arg info ty) → strErr "\n  " ∷ termErr ty ∷ []) asss)
-    let res = searchEntry 0 goal (map unArg asss)
+       ∷ concatMap (λ where (_ , arg info ty) → strErr "\n  " ∷ termErr ty ∷ []) asss)
+    let res = searchEntry 0 goal asss
     case res of λ where
       nothing → typeError (strErr "Couldn't find an assumption of type: " ∷ termErr goal ∷ [])
       (just idx) → unify hole (var idx [])

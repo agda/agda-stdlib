@@ -4,7 +4,7 @@
 -- Rational numbers in non-reduced form.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Rational.Unnormalised.Base where
 
@@ -12,10 +12,10 @@ open import Algebra.Bundles.Raw
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
+  hiding (module ℤ)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -66,8 +66,8 @@ infix 4 _≃_ _≠_
 data _≃_ : Rel ℚᵘ 0ℓ where
   *≡* : ∀ {p q} → (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p) → p ≃ q
 
-_≠_ : Rel ℚᵘ 0ℓ
-p ≠ q = ¬ (p ≃ q)
+_≄_ : Rel ℚᵘ 0ℓ
+p ≄ q = ¬ (p ≃ q)
 
 ------------------------------------------------------------------------
 -- Ordering of rationals
@@ -117,7 +117,7 @@ infixl 7 _/_
 _/_ : (n : ℤ) (d : ℕ) .{{_ : ℕ.NonZero d}} → ℚᵘ
 n / suc d = mkℚᵘ n d
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some constants
 
 0ℚᵘ : ℚᵘ
@@ -150,13 +150,18 @@ NonPositive p = ℤ.NonPositive (↥ p)
 NonNegative : Pred ℚᵘ 0ℓ
 NonNegative p = ℤ.NonNegative (↥ p)
 
+-- Instances
+
+open ℤ public
+  using (nonZero; pos; nonNeg; nonPos0; nonPos; neg)
+
 -- Constructors and destructors
 
 -- Note: these could be proved more elegantly using the constructors
 -- from ℤ but it requires importing `Data.Integer.Properties` which
 -- we would like to avoid doing.
 
-≢-nonZero : ∀ {p} → p ≠ 0ℚᵘ → NonZero p
+≢-nonZero : ∀ {p} → p ≄ 0ℚᵘ → NonZero p
 ≢-nonZero {mkℚᵘ -[1+ _ ] _      } _   = _
 ≢-nonZero {mkℚᵘ +[1+ _ ] _      } _   = _
 ≢-nonZero {mkℚᵘ +0       zero   } p≢0 = contradiction (*≡* refl) p≢0
@@ -190,24 +195,25 @@ nonNegative : ∀ {p} → p ≥ 0ℚᵘ → NonNegative p
 nonNegative {mkℚᵘ +0       _} (*≤* _) = _
 nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Operations on rationals
 
--- Explanation for `@record{}` everywhere: combined with no-eta-equality on
--- the record definition of ℚᵘ above, these annotations prevent the operations
--- from automatically expanding unless their arguments are explicitly pattern
--- matched on.
+-- Explanation for `@record{}` everywhere: combined with no-eta-equality
+-- on the record definition of ℚᵘ above, these annotations prevent the
+-- operations from automatically expanding unless their arguments are
+-- explicitly pattern matched on.
 --
--- For example prior to their addition, `p + q` would often be normalised by
--- Agda to `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`. While in this
--- small example this isn't a big problem, it leads to an exponential blowup
--- when you have large arithmetic expressions which would often choke
--- both type-checking and the display code. For example, the normalised
--- form of `p + q + r + s + t + u` would be ~300 lines long.
+-- For example prior to their addition, `p + q` would often be
+-- normalised by Agda to `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`.
+-- While in this small example this isn't a big problem, it leads to an
+-- exponential blowup when you have large arithmetic expressions which
+-- would often choke both type-checking and the display code. For
+-- example, the normalised form of `p + q + r + s + t + u` would be
+-- ~300 lines long.
 --
--- This is fundementally a problem with Agda, so if over-eager normalisation
--- is ever fixed in Agda (e.g. with glued representation of terms) these
--- annotations can be removed.
+-- This is fundementally a problem with Agda, so if over-eager
+-- normalisation is ever fixed in Agda (e.g. with glued representation
+-- of terms) these annotations can be removed.
 
 infix  8 -_ 1/_
 infixl 7 _*_ _÷_ _⊓_
@@ -376,4 +382,9 @@ Please use +-0-rawMonoid instead."
 {-# WARNING_ON_USAGE *-rawMonoid
 "Warning: *-rawMonoid was deprecated in v2.0
 Please use *-1-rawMonoid instead."
+#-}
+_≠_ = _≄_
+{-# WARNING_ON_USAGE _≠_
+"Warning: _≠_ was deprecated in v2.0
+Please use _≄_ instead."
 #-}

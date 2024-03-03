@@ -4,22 +4,25 @@
 -- Lexicographic ordering of same-length vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Binary.Lex.Core {a} {A : Set a} where
 
 open import Data.Empty
 open import Data.Nat using (ℕ; suc)
 import Data.Nat.Properties as ℕ
-open import Data.Product using (_×_; _,_; proj₁; proj₂; uncurry)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
-open import Data.Vec using (Vec; []; _∷_)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Vec.Base using (Vec; []; _∷_)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Relation.Binary.Pointwise.Inductive using (Pointwise; []; _∷_)
 open import Function.Base using (flip)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Asymmetric; Antisymmetric; Irreflexive; Trans; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Decidable; Irrelevant)
+open import Relation.Binary.Structures using (IsPartialEquivalence)
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong)
 import Relation.Nullary as Nullary
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_; _⊎-dec_)
@@ -98,9 +101,9 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
     transitive′ : ∀ {m n o P₂} → Trans (Lex P _≈_ _≺_ {m} {n}) (Lex P₂ _≈_ _≺_ {n} {o}) (Lex (P × P₂) _≈_ _≺_)
     transitive′ (base p₁)        (base p₂)        = base (p₁ , p₂)
-    transitive′ (this x≺y m≡n)   (this y≺z n≡o)   = this (≺-trans x≺y y≺z) (P.trans m≡n n≡o)
-    transitive′ (this x≺y m≡n)   (next y≈z ys<zs) = this (≺-respʳ-≈ y≈z x≺y) (P.trans m≡n (length-equal ys<zs))
-    transitive′ (next x≈y xs<ys) (this y≺z n≡o)   = this (≺-respˡ-≈ (sym x≈y) y≺z) (P.trans (length-equal xs<ys) n≡o)
+    transitive′ (this x≺y m≡n)   (this y≺z n≡o)   = this (≺-trans x≺y y≺z) (≡.trans m≡n n≡o)
+    transitive′ (this x≺y m≡n)   (next y≈z ys<zs) = this (≺-respʳ-≈ y≈z x≺y) (≡.trans m≡n (length-equal ys<zs))
+    transitive′ (next x≈y xs<ys) (this y≺z n≡o)   = this (≺-respˡ-≈ (sym x≈y) y≺z) (≡.trans (length-equal xs<ys) n≡o)
     transitive′ (next x≈y xs<ys) (next y≈z ys<zs) = next (trans x≈y y≈z) (transitive′ xs<ys ys<zs)
 
     transitive : ∀ {m n o} → Trans (_<ₗₑₓ_ {m} {n}) (_<ₗₑₓ_ {n} {o}) _<ₗₑₓ_
@@ -150,4 +153,3 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     irrelevant (this x≺y m≡n)     (next x≈y xs<ys₂)  = contradiction x≺y (≺-irrefl x≈y)
     irrelevant (next x≈y xs<ys₁)  (this x≺y m≡n)     = contradiction x≺y (≺-irrefl x≈y)
     irrelevant (next x≈y₁ xs<ys₁) (next x≈y₂ xs<ys₂) rewrite ≈-irrel x≈y₁ x≈y₂ | irrelevant xs<ys₁ xs<ys₂ = refl
-

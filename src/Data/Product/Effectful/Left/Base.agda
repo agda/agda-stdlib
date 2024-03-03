@@ -10,14 +10,14 @@
 -- done.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 
 module Data.Product.Effectful.Left.Base
   {a} (A : Set a) (b : Level) where
 
-open import Data.Product using (_×_; map₂; proj₁; proj₂; <_,_>)
+open import Data.Product.Base using (_×_; map₂; proj₁; proj₂; <_,_>)
 open import Effect.Functor using (RawFunctor)
 open import Effect.Comonad using (RawComonad)
 

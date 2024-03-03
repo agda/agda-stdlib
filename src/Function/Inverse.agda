@@ -1,17 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Inverses
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
--- Note: use of the standard function hierarchy is encouraged. The
--- module `Function` re-exports `Inverseᵇ`, `IsInverse` and
--- `Inverse`. The alternative definitions found in this file will
--- eventually be deprecated.
+{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Inverse where
+
+{-# WARNING_ON_IMPORT
+"Function.Inverse was deprecated in v2.0.
+Use the standard function hierarchy in Function/Function.Bundles instead."
+#-}
 
 open import Level
 open import Function.Base using (flip)
@@ -19,8 +20,9 @@ open import Function.Bijection hiding (id; _∘_; bijection)
 open import Function.Equality as F
   using (_⟶_) renaming (_∘_ to _⟪∘⟫_)
 open import Function.LeftInverse as Left hiding (id; _∘_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≗_; _≡_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Reflexive; TransFlip; Sym)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≗_; _≡_)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -33,6 +35,10 @@ record _InverseOf_ {f₁ f₂ t₁ t₂}
   field
     left-inverse-of  : from LeftInverseOf  to
     right-inverse-of : from RightInverseOf to
+{-# WARNING_ON_USAGE _InverseOf_
+"Warning: _InverseOf_ was deprecated in v2.0.
+Please use Function.(Structures.)IsInverse instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all inverses between two setoids
@@ -72,6 +78,10 @@ record Inverse {f₁ f₂ t₁ t₂}
   open Bijection bijection public
     using (equivalence; surjective; surjection; right-inverse;
            to-from; from-to)
+{-# WARNING_ON_USAGE Inverse
+"Warning: Inverse was deprecated in v2.0.
+Please use Function.(Bundles.)Inverse instead."
+#-}
 
 ------------------------------------------------------------------------
 -- The set of all inverses between two sets (i.e. inverses with
@@ -80,10 +90,18 @@ record Inverse {f₁ f₂ t₁ t₂}
 infix 3 _↔_ _↔̇_
 
 _↔_ : ∀ {f t} → Set f → Set t → Set _
-From ↔ To = Inverse (P.setoid From) (P.setoid To)
+From ↔ To = Inverse (≡.setoid From) (≡.setoid To)
+{-# WARNING_ON_USAGE _↔_
+"Warning: _↔_ was deprecated in v2.0.
+Please use Function.(Bundles.)_↔_ instead."
+#-}
 
 _↔̇_ : ∀ {i f t} {I : Set i} → Pred I f → Pred I t → Set _
 From ↔̇ To = ∀ {i} → From i ↔ To i
+{-# WARNING_ON_USAGE _↔̇_
+"Warning: _↔̇_ was deprecated in v2.0.
+Please use Function.Indexed.(Bundles.)_↔ᵢ_ instead."
+#-}
 
 inverse : ∀ {f t} {From : Set f} {To : Set t} →
           (to : From → To) (from : To → From) →
@@ -91,13 +109,17 @@ inverse : ∀ {f t} {From : Set f} {To : Set t} →
           (∀ x → to (from x) ≡ x) →
           From ↔ To
 inverse to from from∘to to∘from = record
-  { to   = P.→-to-⟶ to
-  ; from = P.→-to-⟶ from
+  { to   = F.→-to-⟶ to
+  ; from = F.→-to-⟶ from
   ; inverse-of = record
     { left-inverse-of  = from∘to
     ; right-inverse-of = to∘from
     }
   }
+{-# WARNING_ON_USAGE inverse
+"Warning: inverse was deprecated in v2.0.
+Please use Function.(Bundles.)mk↔ instead."
+#-}
 
 ------------------------------------------------------------------------
 -- If two setoids are in bijective correspondence, then there is an
@@ -129,6 +151,11 @@ id {x = S} = record
     ; right-inverse-of = LeftInverse.left-inverse-of id′
     }
   } where id′ = Left.id {S = S}
+{-# WARNING_ON_USAGE id
+"Warning: id was deprecated in v2.0.
+Please use either Function.Properties.Inverse.refl or
+Function.Construct.Identity.inverse instead."
+#-}
 
 -- Transitivity
 
@@ -146,6 +173,11 @@ f ∘ g = record
     ; right-inverse-of = LeftInverse.left-inverse-of (Left._∘_ (right-inverse g) (right-inverse f))
     }
   } where open Inverse
+{-# WARNING_ON_USAGE _∘_
+"Warning: _∘_ was deprecated in v2.0.
+Please use either Function.Properties.Inverse.trans or
+Function.Construct.Composition.inverse instead."
+#-}
 
 -- Symmetry.
 
@@ -159,6 +191,11 @@ sym inv = record
     ; right-inverse-of = left-inverse-of
     }
   } where open Inverse inv
+{-# WARNING_ON_USAGE sym
+"Warning: sym was deprecated in v2.0.
+Please use either Function.Properties.Inverse.sym or
+Function.Construct.Symmetry.inverse instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Transformations

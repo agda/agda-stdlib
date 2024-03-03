@@ -4,7 +4,7 @@
 -- Greatest Common Divisor for integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.GCD where
 
@@ -13,7 +13,7 @@ open import Data.Integer.Divisibility
 open import Data.Integer.Properties
 open import Data.Nat.Base
 import Data.Nat.GCD as ℕ
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Relation.Binary.PropositionalEquality
 
 open import Algebra.Definitions {A = ℤ} _≡_ as Algebra

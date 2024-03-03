@@ -4,15 +4,16 @@
 -- Properties of products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Properties where
 
 open import Axiom.UniquenessOfIdentityProofs
-open import Data.Product
-open import Function
+open import Data.Product.Base
+open import Function.Base using (_∋_; _∘_; id)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
-open import Relation.Binary using (DecidableEquality)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no)
 
@@ -81,7 +82,7 @@ module _ {A : Set a} {B : A → Set b} {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : 
     right-inverse-of refl = refl
 
   Σ-≡,≡↔≡ : (∃ λ (p : a₁ ≡ a₂) → subst B p b₁ ≡ b₂) ↔ p₁ ≡ p₂
-  Σ-≡,≡↔≡ = mk↔′ Σ-≡,≡→≡ Σ-≡,≡←≡ right-inverse-of left-inverse-of
+  Σ-≡,≡↔≡ = mk↔ₛ′ Σ-≡,≡→≡ Σ-≡,≡←≡ right-inverse-of left-inverse-of
 
 -- the non-dependent case. Proofs are exactly as above, and straightforward.
 module _ {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} where
@@ -92,7 +93,7 @@ module _ {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} where
   ×-≡,≡←≡ refl = refl , refl
 
   ×-≡,≡↔≡ : (a₁ ≡ a₂ × b₁ ≡ b₂) ↔ p₁ ≡ p₂
-  ×-≡,≡↔≡ = mk↔′
+  ×-≡,≡↔≡ = mk↔ₛ′
     ×-≡,≡→≡
     ×-≡,≡←≡
     (λ { refl          → refl        })
@@ -102,7 +103,7 @@ module _ {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} where
 -- The order of ∃₂ can be swapped
 
 ∃∃↔∃∃ : (R : A → B → Set ℓ) → (∃₂ λ x y → R x y) ↔ (∃₂ λ y x → R x y)
-∃∃↔∃∃ R = mk↔′ to from cong′ cong′
+∃∃↔∃∃ R = mk↔ₛ′ to from cong′ cong′
   where
   to : (∃₂ λ x y → R x y) → (∃₂ λ y x → R x y)
   to (x , y , Rxy) = (y , x , Rxy)

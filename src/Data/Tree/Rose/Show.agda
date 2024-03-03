@@ -4,7 +4,7 @@
 -- 1 dimensional pretty printing of rose trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Data.Tree.Rose.Show where
 
@@ -14,8 +14,8 @@ open import Data.Bool.Base using (Bool; true; false; if_then_else_; _∧_)
 open import Data.DifferenceList as DList renaming (DiffList to DList) using ()
 open import Data.List.Base as List using (List; []; [_]; _∷_; _∷ʳ_)
 open import Data.Nat.Base using (ℕ; _∸_)
-open import Data.Product using (_×_; _,_)
-open import Data.String.Base hiding (show)
+open import Data.Product.Base using (_×_; _,_)
+open import Data.String.Base using (String; _++_)
 open import Data.Tree.Rose using (Rose; node; map; fromBinary)
 open import Function.Base using (flip; _∘′_; id)
 

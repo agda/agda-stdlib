@@ -9,9 +9,10 @@
 module Data.Star.Decoration where
 
 open import Data.Unit
-open import Function
+open import Function.Base using (flip)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Definitions using (NonEmpty; nonEmpty)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
 -- A predicate on relation "edges" (think of the relation as a graph).
@@ -28,7 +29,7 @@ data NonEmptyEdgePred {ℓ r p : Level} {I : Set ℓ} (T : Rel I r)
 -- Decorating an edge with more information.
 
 data DecoratedWith {ℓ r p : Level} {I : Set ℓ} {T : Rel I r} (P : EdgePred p T)
-       : Rel (NonEmpty (Star T)) p where
+       : Rel (NonEmpty (Star T)) (ℓ ⊔ r ⊔ p) where
   ↦ : ∀ {i j k} {x : T i j} {xs : Star T j k}
       (p : P x) → DecoratedWith P (nonEmpty (x ◅ xs)) (nonEmpty xs)
 

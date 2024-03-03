@@ -8,21 +8,21 @@
 -- See `Data.Nat.Properties` or `Relation.Binary.Reasoning.PartialOrder`
 -- for examples of how to instantiate this module.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Level using (_⊔_)
+open import Function using (case_of_)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions using (Reflexive; Trans)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.Reasoning.Syntax
+
 
 module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
-  {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} (isPreorder : IsPreorder _≈_ _∼_)
+  {_≈_ : Rel A ℓ₁} {_≲_ : Rel A ℓ₂} (isPreorder : IsPreorder _≈_ _≲_)
   where
-
-open import Data.Product using (proj₁; proj₂)
-open import Level using (Level; _⊔_; Lift; lift)
-open import Function.Base using (case_of_; id)
-open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; sym)
-open import Relation.Nullary.Decidable using (Dec; yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
 
 open IsPreorder isPreorder
 
@@ -32,8 +32,27 @@ open IsPreorder isPreorder
 infix 4 _IsRelatedTo_
 
 data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
-  nonstrict : (x∼y : x ∼ y) → x IsRelatedTo y
+  nonstrict : (x≲y : x ≲ y) → x IsRelatedTo y
   equals    : (x≈y : x ≈ y) → x IsRelatedTo y
+
+start : _IsRelatedTo_ ⇒ _≲_
+start (equals x≈y) = reflexive x≈y
+start (nonstrict x≲y) = x≲y
+
+≡-go : Trans _≡_ _IsRelatedTo_ _IsRelatedTo_
+≡-go x≡y (equals y≈z) = equals (case x≡y of λ where ≡.refl → y≈z)
+≡-go x≡y (nonstrict y≤z) = nonstrict (case x≡y of λ where ≡.refl → y≤z)
+
+≲-go : Trans _≲_ _IsRelatedTo_ _IsRelatedTo_
+≲-go x≲y (equals y≈z) = nonstrict (∼-respʳ-≈ y≈z x≲y)
+≲-go x≲y (nonstrict y≲z) = nonstrict (trans x≲y y≲z)
+
+≈-go : Trans _≈_ _IsRelatedTo_ _IsRelatedTo_
+≈-go x≈y (equals y≈z) = equals (Eq.trans x≈y y≈z)
+≈-go x≈y (nonstrict y≲z) = nonstrict (∼-respˡ-≈ (Eq.sym x≈y) y≲z)
+
+stop : Reflexive _IsRelatedTo_
+stop = equals Eq.refl
 
 ------------------------------------------------------------------------
 -- A record that is used to ensure that the final relation proved by the
@@ -49,67 +68,34 @@ IsEquality? (equals x≈y)  = yes (isEquality x≈y)
 extractEquality : ∀ {x y} {x≲y : x IsRelatedTo y} → IsEquality x≲y → x ≈ y
 extractEquality (isEquality x≈y) = x≈y
 
+equalitySubRelation : SubRelation  _IsRelatedTo_ _ _
+equalitySubRelation = record
+  { IsS = IsEquality
+  ; IsS? = IsEquality?
+  ; extract = extractEquality
+  }
+
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
--- See `Relation.Binary.Reasoning.Base.Partial` for the design decisions
--- behind these combinators.
+open begin-syntax  _IsRelatedTo_ start public
+open begin-equality-syntax  _IsRelatedTo_ equalitySubRelation public
+open ≡-syntax _IsRelatedTo_ ≡-go public
+open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ ≈-go Eq.sym public
+open ≲-syntax _IsRelatedTo_ _IsRelatedTo_ ≲-go public
+open end-syntax _IsRelatedTo_ stop public
 
-infix  1 begin_ begin-equality_
-infixr 2 step-∼ step-≈ step-≈˘ step-≡ step-≡˘ _≡⟨⟩_
-infix  3 _∎
 
--- Beginnings of various types of proofs
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-begin_ : ∀ {x y} (r : x IsRelatedTo y) → x ∼ y
-begin (nonstrict x∼y) = x∼y
-begin (equals    x≈y) = reflexive x≈y
+-- Version 2.0
 
-begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
-begin-equality_ r {s} = extractEquality (toWitness s)
-
--- Step with the main relation
-
-step-∼ : ∀ (x : A) {y z} → y IsRelatedTo z → x ∼ y → x IsRelatedTo z
-step-∼ x (nonstrict y∼z) x∼y = nonstrict (trans x∼y y∼z)
-step-∼ x (equals    y≈z) x∼y = nonstrict (∼-respʳ-≈ y≈z x∼y)
-
--- Step with the setoid equality
-
-step-≈ : ∀ (x : A) {y z} → y IsRelatedTo z → x ≈ y → x IsRelatedTo z
-step-≈ x (nonstrict y∼z) x≈y = nonstrict (∼-respˡ-≈ (Eq.sym x≈y) y∼z)
-step-≈ x (equals    y≈z) x≈y = equals    (Eq.trans x≈y y≈z)
-
--- Flipped step with the setoid equality
-
-step-≈˘ : ∀ x {y z} → y IsRelatedTo z → y ≈ x → x IsRelatedTo z
-step-≈˘ x y∼z x≈y = step-≈ x y∼z (Eq.sym x≈y)
-
--- Step with non-trivial propositional equality
-
-step-≡ : ∀ (x : A) {y z} → y IsRelatedTo z → x ≡ y → x IsRelatedTo z
-step-≡ x (nonstrict y∼z) x≡y = nonstrict (case x≡y of λ where refl → y∼z)
-step-≡ x (equals    y≈z) x≡y = equals    (case x≡y of λ where refl → y≈z)
-
--- Flipped step with non-trivial propositional equality
-
-step-≡˘ : ∀ x {y z} → y IsRelatedTo z → y ≡ x → x IsRelatedTo z
-step-≡˘ x y∼z x≡y = step-≡ x y∼z (sym x≡y)
-
--- Step with trivial propositional equality
-
-_≡⟨⟩_ : ∀ (x : A) {y} → x IsRelatedTo y → x IsRelatedTo y
-x ≡⟨⟩ x≲y = x≲y
-
--- Termination step
-
-_∎ : ∀ x → x IsRelatedTo x
-x ∎ = equals Eq.refl
-
--- Syntax declarations
-
-syntax step-∼  x y∼z x∼y = x ∼⟨  x∼y ⟩ y∼z
-syntax step-≈  x y∼z x≈y = x ≈⟨  x≈y ⟩ y∼z
-syntax step-≈˘ x y∼z y≈x = x ≈˘⟨ y≈x ⟩ y∼z
-syntax step-≡  x y∼z x≡y = x ≡⟨  x≡y ⟩ y∼z
-syntax step-≡˘ x y∼z y≡x = x ≡˘⟨ y≡x ⟩ y∼z
+open ∼-syntax _IsRelatedTo_ _IsRelatedTo_ ≲-go public
+{-# WARNING_ON_USAGE step-∼
+"Warning: step-∼ and _∼⟨_⟩_ syntax was deprecated in v2.0.
+Please use step-≲ and _≲⟨_⟩_ instead. "
+#-}

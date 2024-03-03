@@ -4,7 +4,7 @@
 -- Vectors, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Base where
 
@@ -12,12 +12,12 @@ open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
-open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
+open import Data.Product.Base as Product using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
-open import Relation.Nullary.Decidable using (does)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; trans; cong)
+open import Relation.Nullary.Decidable.Core using (does; T?)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -60,32 +60,30 @@ lookup : Vec A n → Fin n → A
 lookup (x ∷ xs) zero    = x
 lookup (x ∷ xs) (suc i) = lookup xs i
 
-iterate : (A → A) → A → ∀ {n} → Vec A n
-iterate s z {zero}  = []
-iterate s z {suc n} = z ∷ iterate s (s z)
+iterate : (A → A) → A → ∀ n → Vec A n
+iterate s z zero    = []
+iterate s z (suc n) = z ∷ iterate s (s z) n
 
-insert : Vec A n → Fin (suc n) → A → Vec A (suc n)
-insert xs       zero     v = v ∷ xs
-insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
+insertAt : Vec A n → Fin (suc n) → A → Vec A (suc n)
+insertAt xs       zero     v = v ∷ xs
+insertAt (x ∷ xs) (suc i)  v = x ∷ insertAt xs i v
 
-remove : Vec A (suc n) → Fin (suc n) → Vec A n
-remove (_ ∷ xs)     zero     = xs
-remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
+removeAt : Vec A (suc n) → Fin (suc n) → Vec A n
+removeAt (x ∷ xs)         zero    = xs
+removeAt (x ∷ xs@(_ ∷ _)) (suc i) = x ∷ removeAt xs i
 
-updateAt : Fin n → (A → A) → Vec A n → Vec A n
-updateAt zero    f (x ∷ xs) = f x ∷ xs
-updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
+updateAt : Vec A n → Fin n → (A → A) → Vec A n
+updateAt (x ∷ xs) zero    f = f x ∷ xs
+updateAt (x ∷ xs) (suc i) f = x   ∷ updateAt xs i f
 
 -- xs [ i ]%= f  modifies the i-th element of xs according to f
 
-infixl 6 _[_]%=_
+infixl 6 _[_]%=_ _[_]≔_
 
 _[_]%=_ : Vec A n → Fin n → (A → A) → Vec A n
-xs [ i ]%= f = updateAt i f xs
+xs [ i ]%= f = updateAt xs i f
 
 -- xs [ i ]≔ y  overwrites the i-th element of xs with y
-
-infixl 6 _[_]≔_
 
 _[_]≔_ : Vec A n → Fin n → A → Vec A n
 xs [ i ]≔ y = xs [ i ]%= const y
@@ -93,6 +91,8 @@ xs [ i ]≔ y = xs [ i ]%= const y
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
 
+-- See README.Data.Vec.Relation.Binary.Equality.Cast for the reasoning
+-- system of `cast`-ed equality.
 cast : .(eq : m ≡ n) → Vec A m → Vec A n
 cast {n = zero}  eq []       = []
 cast {n = suc _} eq (x ∷ xs) = x ∷ cast (cong pred eq) xs
@@ -131,7 +131,7 @@ zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
 
 unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
 unzipWith f []       = [] , []
-unzipWith f (a ∷ as) = Prod.zip _∷_ _∷_ (f a) (unzipWith f as)
+unzipWith f (a ∷ as) = Product.zip _∷_ _∷_ (f a) (unzipWith f as)
 
 align : Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
 align = alignWith id
@@ -189,8 +189,6 @@ module DiagonalBind where
   _>>=_ : Vec A n → (A → Vec B n) → Vec B n
   xs >>= f = diagonal (map f xs)
 
-  join : Vec (Vec A n) n → Vec A n
-  join = _>>= id
 
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
@@ -232,12 +230,14 @@ foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 sum : Vec ℕ n → ℕ
 sum = foldr _ _+_ 0
 
-countᵇ : (A → Bool) → Vec A n → ℕ
-countᵇ p []       = zero
-countᵇ p (x ∷ xs) = if p x then suc (countᵇ p xs) else countᵇ p xs
-
 count : ∀ {P : Pred A p} → Decidable P → Vec A n → ℕ
-count P? = countᵇ (does ∘ P?)
+count P? []       = zero
+count P? (x ∷ xs) with does (P? x)
+... | true  = suc (count P? xs)
+... | false = count P? xs
+
+countᵇ : (A → Bool) → Vec A n → ℕ
+countᵇ p = count (T? ∘ p)
 
 ------------------------------------------------------------------------
 -- Operations for building vectors
@@ -245,9 +245,9 @@ count P? = countᵇ (does ∘ P?)
 [_] : A → Vec A 1
 [ x ] = x ∷ []
 
-replicate : A → Vec A n
-replicate {n = zero}  x = []
-replicate {n = suc n} x = x ∷ replicate x
+replicate : (n : ℕ) → A → Vec A n
+replicate zero    x = []
+replicate (suc n) x = x ∷ replicate n x
 
 tabulate : (Fin n → A) → Vec A n
 tabulate {n = zero}  f = []
@@ -261,31 +261,28 @@ allFin _ = tabulate id
 
 splitAt : ∀ m {n} (xs : Vec A (m + n)) →
           ∃₂ λ (ys : Vec A m) (zs : Vec A n) → xs ≡ ys ++ zs
-splitAt zero    xs                = ([] , xs , refl)
-splitAt (suc m) (x ∷ xs)          with splitAt m xs
-splitAt (suc m) (x ∷ .(ys ++ zs)) | (ys , zs , refl) =
-  ((x ∷ ys) , zs , refl)
+splitAt zero    xs                = [] , xs , refl
+splitAt (suc m) (x ∷ xs) =
+  let ys , zs , eq = splitAt m xs in x ∷ ys , zs , cong (x ∷_) eq
 
 take : ∀ m {n} → Vec A (m + n) → Vec A m
-take m xs          with splitAt m xs
-take m .(ys ++ zs) | (ys , zs , refl) = ys
+take m xs = proj₁ (splitAt m xs)
 
 drop : ∀ m {n} → Vec A (m + n) → Vec A n
-drop m xs          with splitAt m xs
-drop m .(ys ++ zs) | (ys , zs , refl) = zs
+drop m xs = proj₁ (proj₂ (splitAt m xs))
 
 group : ∀ n k (xs : Vec A (n * k)) →
         ∃ λ (xss : Vec (Vec A k) n) → xs ≡ concat xss
 group zero    k []                  = ([] , refl)
-group (suc n) k xs                  with splitAt k xs
-group (suc n) k .(ys ++ zs)         | (ys , zs , refl) with group n k zs
-group (suc n) k .(ys ++ concat zss) | (ys , ._ , refl) | (zss , refl) =
-  ((ys ∷ zss) , refl)
+group (suc n) k xs  =
+  let ys , zs , eq-split = splitAt k xs in
+  let zss , eq-group     = group n k zs in
+   (ys ∷ zss) , trans eq-split (cong (ys ++_) eq-group)
 
 split : Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
 split (x ∷ [])     = (x ∷ [] , [])
-split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
+split (x ∷ y ∷ xs) = Product.map (x ∷_) (y ∷_) (split xs)
 
 uncons : Vec A (suc n) → A × Vec A n
 uncons (x ∷ xs) = x , xs
@@ -295,12 +292,12 @@ uncons (x ∷ xs) = x , xs
 
 -- Take the first 'm' elements of a vector.
 truncate : ∀ {m n} → m ≤ n → Vec A n → Vec A m
-truncate z≤n      _        = []
+truncate {m = zero} _ _    = []
 truncate (s≤s le) (x ∷ xs) = x ∷ (truncate le xs)
 
 -- Pad out a vector with extra elements.
 padRight : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
-padRight z≤n      a xs       = replicate a
+padRight z≤n      a xs       = replicate _ a
 padRight (s≤s le) a (x ∷ xs) = x ∷ padRight le a xs
 
 ------------------------------------------------------------------------
@@ -340,21 +337,39 @@ xs ʳ++ ys = foldl (Vec _ ∘ (_+ _)) (λ rev x → x ∷ rev) ys xs
 -- init and last
 
 initLast : ∀ (xs : Vec A (1 + n)) → ∃₂ λ ys y → xs ≡ ys ∷ʳ y
-initLast {n = zero}  (x ∷ []) = ([] , x , refl)
-initLast {n = suc n} (x ∷ xs) with initLast xs
-... | (ys , y , refl) = (x ∷ ys , y , refl)
+initLast {n = zero}  (x ∷ []) = [] , x , refl
+initLast {n = suc n} (x ∷ xs) =
+  let ys , y , eq = initLast xs in
+  x ∷ ys , y , cong (x ∷_) eq
 
 init : Vec A (1 + n) → Vec A n
-init xs with initLast xs
-... | (ys , y , refl) = ys
+init xs = proj₁ (initLast xs)
 
 last : Vec A (1 + n) → A
-last xs with initLast xs
-... | (ys , y , refl) = y
+last xs = proj₁ (proj₂ (initLast xs))
 
 ------------------------------------------------------------------------
 -- Other operations
 
 transpose : Vec (Vec A n) m → Vec (Vec A m) n
-transpose []         = replicate []
-transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+transpose {n = n} []          = replicate n []
+transpose {n = n} (as ∷ ass) = ((replicate n _∷_) ⊛ as) ⊛ transpose ass
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+remove = removeAt
+{-# WARNING_ON_USAGE remove
+"Warning: remove was deprecated in v2.0.
+Please use removeAt instead."
+#-}
+insert = insertAt
+{-# WARNING_ON_USAGE insert
+"Warning: insert was deprecated in v2.0.
+Please use insertAt instead."
+#-}

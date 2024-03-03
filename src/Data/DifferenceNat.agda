@@ -5,12 +5,12 @@
 -- DifferenceVec)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.DifferenceNat where
 
-open import Data.Nat.Base as N using (ℕ)
-open import Function
+open import Data.Nat.Base as ℕ using (ℕ)
+open import Function.Base using (_⟨_⟩_)
 
 infixl 6 _+_
 
@@ -21,7 +21,7 @@ Diffℕ = ℕ → ℕ
 0# = λ k → k
 
 suc : Diffℕ → Diffℕ
-suc n = λ k → N.suc (n k)
+suc n = λ k → ℕ.suc (n k)
 
 1# : Diffℕ
 1# = suc 0#
@@ -35,4 +35,4 @@ toℕ n = n 0
 -- fromℕ n is linear in the size of n.
 
 fromℕ : ℕ → Diffℕ
-fromℕ n = λ k → n ⟨ N._+_ ⟩ k
+fromℕ n = λ k → n ⟨ ℕ._+_ ⟩ k

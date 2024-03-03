@@ -4,7 +4,7 @@
 -- Properties related to Any
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Any.Properties where
 
@@ -12,7 +12,7 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.List.Base as List
+open import Data.List.Base as List hiding (find)
 open import Data.List.Properties using (ʳ++-defn)
 open import Data.List.Effectful as Listₑ using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -25,7 +25,7 @@ open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
-open import Data.Product as Prod
+open import Data.Product.Base as Product
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
 open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
@@ -35,14 +35,16 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Effect.Monad
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
-open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
-open import Function.Related as Related using (Kind; Related; SK-sym)
+open import Function.Bundles
+import Function.Properties.Inverse as Inverse
+open import Function.Related.Propositional as Related using (Kind; Related)
 open import Level using (Level)
-open import Relation.Binary as B hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; inspect)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.Definitions as B
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong; cong₂; subst)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ; yes; no)
@@ -55,9 +57,7 @@ private
 private
   variable
     a b c p q r ℓ : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    A B C : Set a
     P Q R : Pred A p
     x y : A
     xs ys : List A
@@ -89,8 +89,8 @@ Any-cong : ∀ {k : Kind} → (∀ x → Related k (P x) (Q x)) →
            (∀ {z} → Related k (z ∈ xs) (z ∈ ys)) →
            Related k (Any P xs) (Any Q ys)
 Any-cong {P = P} {Q = Q} {xs = xs} {ys} P↔Q xs≈ys =
-  Any P xs                ↔⟨ SK-sym Any↔ ⟩
-  (∃ λ x → x ∈ xs × P x)  ∼⟨ Σ.cong Inv.id (xs≈ys ×-cong P↔Q _) ⟩
+  Any P xs                ↔⟨ Related.SK-sym Any↔ ⟩
+  (∃ λ x → x ∈ xs × P x)  ∼⟨ Σ.cong Inverse.↔-refl (xs≈ys ×-cong P↔Q _) ⟩
   (∃ λ x → x ∈ ys × Q x)  ↔⟨ Any↔ ⟩
   Any Q ys                ∎
   where open Related.EquationalReasoning
@@ -100,13 +100,13 @@ Any-cong {P = P} {Q = Q} {xs = xs} {ys} P↔Q xs≈ys =
 
 map-id : ∀ (f : P ⋐ P) → (∀ {x} (p : P x) → f p ≡ p) →
          (p : Any P xs) → Any.map f p ≡ p
-map-id f hyp (here  p) = P.cong here (hyp p)
-map-id f hyp (there p) = P.cong there $ map-id f hyp p
+map-id f hyp (here  p) = cong here (hyp p)
+map-id f hyp (there p) = cong there $ map-id f hyp p
 
 map-∘ : ∀ (f : Q ⋐ R) (g : P ⋐ Q) (p : Any P xs) →
         Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
 map-∘ f g (here  p) = refl
-map-∘ f g (there p) = P.cong there $ map-∘ f g p
+map-∘ f g (there p) = cong there $ map-∘ f g p
 
 ------------------------------------------------------------------------
 -- Any.lookup
@@ -133,32 +133,32 @@ swap-there : ∀ {P : A → B → Set ℓ} →
              (any : Any (λ x → Any (P x) ys) xs) →
              swap (Any.map (there {x = x}) any) ≡ there (swap any)
 swap-there (here  pys)  = refl
-swap-there (there pxys) = P.cong (Any.map there) (swap-there pxys)
+swap-there (there pxys) = cong (Any.map there) (swap-there pxys)
 
 swap-invol : ∀ {P : A → B → Set ℓ} →
              (any : Any (λ x → Any (P x) ys) xs) →
              swap (swap any) ≡ any
 swap-invol (here (here px))   = refl
 swap-invol (here (there pys)) =
-  P.cong (Any.map there) (swap-invol (here pys))
+  cong (Any.map there) (swap-invol (here pys))
 swap-invol (there pxys)       =
-  P.trans (swap-there (swap pxys)) (P.cong there (swap-invol pxys))
+  trans (swap-there (swap pxys)) (cong there (swap-invol pxys))
 
 swap↔ : ∀ {P : A → B → Set ℓ} →
        Any (λ x → Any (P x) ys) xs ↔ Any (λ y → Any (flip P y) xs) ys
-swap↔ = inverse swap swap swap-invol swap-invol
+swap↔ = mk↔ₛ′ swap swap swap-invol swap-invol
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any to ⊥
 
 ⊥↔Any⊥ : ⊥ ↔ Any (const ⊥) xs
-⊥↔Any⊥ = inverse (λ()) (λ p → from p) (λ()) (λ p → from p)
+⊥↔Any⊥ = mk↔ₛ′ (λ()) (λ p → from p) (λ p → from p) (λ())
   where
   from : Any (const ⊥) xs → B
   from (there p) = from p
 
 ⊥↔Any[] : ⊥ ↔ Any P []
-⊥↔Any[] = inverse (λ()) (λ()) (λ()) (λ())
+⊥↔Any[] = mk↔ₛ′ (λ()) (λ()) (λ()) (λ())
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any to ⊤
@@ -166,18 +166,18 @@ swap↔ = inverse swap swap swap-invol swap-invol
 -- These introduction and elimination rules are not inverses, though.
 
 any⁺ : ∀ (p : A → Bool) → Any (T ∘ p) xs → T (any p xs)
-any⁺ p (here  px)          = Equivalence.from T-∨ ⟨$⟩ inj₁ px
+any⁺ p (here  px)          = Equivalence.from T-∨ (inj₁ px)
 any⁺ p (there {x = x} pxs) with p x
 ... | true  = _
 ... | false = any⁺ p pxs
 
 any⁻ : ∀ (p : A → Bool) xs → T (any p xs) → Any (T ∘ p) xs
-any⁻ p (x ∷ xs) px∷xs with p x | inspect p x
-... | true  | P.[ eq ] = here (Equivalence.from T-≡ ⟨$⟩ eq)
-... | false | _        = there (any⁻ p xs px∷xs)
+any⁻ p (x ∷ xs) px∷xs with p x in eq
+... | true  = here (Equivalence.from T-≡ eq)
+... | false = there (any⁻ p xs px∷xs)
 
 any⇔ : ∀ {p : A → Bool} → Any (T ∘ p) xs ⇔ T (any p xs)
-any⇔ = equivalence (any⁺ _) (any⁻ _ _)
+any⇔ = mk⇔ (any⁺ _) (any⁻ _ _)
 
 ------------------------------------------------------------------------
 -- Sums commute with Any
@@ -191,7 +191,7 @@ Any-⊎⁻ (here (inj₂ q)) = inj₂ (here q)
 Any-⊎⁻ (there p)       = Sum.map there there (Any-⊎⁻ p)
 
 ⊎↔ : (Any P xs ⊎ Any Q xs) ↔ Any (λ x → P x ⊎ Q x) xs
-⊎↔ {P = P} {Q = Q} = inverse Any-⊎⁺ Any-⊎⁻ from∘to to∘from
+⊎↔ {P = P} {Q = Q} = mk↔ₛ′ Any-⊎⁺ Any-⊎⁻ to∘from from∘to
   where
   from∘to : (p : Any P xs ⊎ Any Q xs) → Any-⊎⁻ (Any-⊎⁺ p) ≡ p
   from∘to (inj₁ (here  p)) = refl
@@ -203,8 +203,8 @@ Any-⊎⁻ (there p)       = Sum.map there there (Any-⊎⁻ p)
   to∘from (here (inj₁ p)) = refl
   to∘from (here (inj₂ q)) = refl
   to∘from (there p) with Any-⊎⁻ p | to∘from p
-  to∘from (there .(Any.map inj₁ p)) | inj₁ p | refl = refl
-  to∘from (there .(Any.map inj₂ q)) | inj₂ q | refl = refl
+  ... | inj₁ p | refl = refl
+  ... | inj₂ q | refl = refl
 
 ------------------------------------------------------------------------
 -- Products "commute" with Any.
@@ -214,67 +214,65 @@ Any-×⁺ (p , q) = Any.map (λ p → Any.map (λ q → (p , q)) q) p
 
 Any-×⁻ : Any (λ x → Any (λ y → P x × Q y) ys) xs →
          Any P xs × Any Q ys
-Any-×⁻ pq with Prod.map₂ (Prod.map₂ find) (find pq)
+Any-×⁻ pq with Product.map₂ (Product.map₂ find) (find pq)
 ... | (x , x∈xs , y , y∈ys , p , q) = lose x∈xs p , lose y∈ys q
 
 ×↔ : ∀ {xs ys} →
      (Any P xs × Any Q ys) ↔ Any (λ x → Any (λ y → P x × Q y) ys) xs
-×↔ {P = P} {Q = Q} {xs} {ys} = inverse Any-×⁺ Any-×⁻ from∘to to∘from
+×↔ {P = P} {Q = Q} {xs} {ys} = mk↔ₛ′ Any-×⁺ Any-×⁻ to∘from from∘to
   where
-  open P.≡-Reasoning
+  open ≡-Reasoning
 
   from∘to : ∀ pq → Any-×⁻ (Any-×⁺ pq) ≡ pq
   from∘to (p , q) =
 
     Any-×⁻ (Any-×⁺ (p , q))
 
-      ≡⟨⟩
+     ≡⟨⟩
 
     (let (x , x∈xs , pq)    = find (Any-×⁺ (p , q))
          (y , y∈ys , p , q) = find pq
      in  lose x∈xs p , lose y∈ys q)
 
-     ≡⟨ P.cong (λ • → let (x , x∈xs , pq)    = •
-                          (y , y∈ys , p , q) = find pq
-                      in  lose x∈xs p , lose y∈ys q)
-               (find∘map p (λ p → Any.map (p ,_) q)) ⟩
+     ≡⟨ cong (λ • → let (x , x∈xs , pq)    = •
+                        (y , y∈ys , p , q) = find pq
+                    in  lose x∈xs p , lose y∈ys q)
+             (find∘map p (λ p → Any.map (p ,_) q)) ⟩
 
     (let (x , x∈xs , p)     = find p
          (y , y∈ys , p , q) = find (Any.map (p ,_) q)
      in  lose x∈xs p , lose y∈ys q)
 
-     ≡⟨ P.cong (λ • → let (x , x∈xs , p)     = find p
-                          (y , y∈ys , p , q) = •
-                      in  lose x∈xs p , lose y∈ys q)
-               (find∘map q (proj₂ (proj₂ (find p)) ,_)) ⟩
+     ≡⟨ cong (λ • → let (x , x∈xs , p)     = find p
+                        (y , y∈ys , p , q) = •
+                    in  lose x∈xs p , lose y∈ys q)
+             (find∘map q (proj₂ (proj₂ (find p)) ,_)) ⟩
 
     (let (x , x∈xs , p) = find p
          (y , y∈ys , q) = find q
      in  lose x∈xs p , lose y∈ys q)
 
-     ≡⟨ P.cong₂ _,_ (lose∘find p) (lose∘find q) ⟩
+     ≡⟨ cong₂ _,_ (lose∘find p) (lose∘find q) ⟩
 
     (p , q) ∎
 
-
   to∘from : ∀ pq → Any-×⁺ {xs = xs} (Any-×⁻ pq) ≡ pq
-  to∘from pq
-    with find pq
+  to∘from pq with find pq
       | (λ (f : (proj₁ (find pq) ≡_) ⋐ _) → map∘find pq {f})
   ... | (x , x∈xs , pq′) | lem₁
     with find pq′
       | (λ (f : (proj₁ (find pq′) ≡_) ⋐ _) → map∘find pq′ {f})
   ... | (y , y∈ys , p , q) | lem₂
-    rewrite P.sym $ map-∘ {R = λ x → Any (λ y → P x × Q y) ys}
-                          (λ p → Any.map (λ q → p , q) (lose y∈ys q))
-                          (λ y → P.subst P y p)
-                          x∈xs
+    rewrite sym $ map-∘ {R = λ x → Any (λ y → P x × Q y) ys}
+                        (λ p → Any.map (λ q → p , q) (lose y∈ys q))
+                        (λ y → subst P y p)
+                        x∈xs
             = lem₁ _ helper
     where
     helper : Any.map (λ q → p , q) (lose y∈ys q) ≡ pq′
-    helper rewrite P.sym $ map-∘ (λ q → p , q)
-                                 (λ y → P.subst Q y q)
-                                 y∈ys
+    helper rewrite sym $ map-∘ (λ q → p , q)
+                               (λ y → subst Q y q)
+                               y∈ys
            = lem₂ _ refl
 
 ------------------------------------------------------------------------
@@ -288,7 +286,7 @@ module _ {_~_ : REL A B r} where
 
   Any-Σ⁻ʳ : Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
   Any-Σ⁻ʳ (here (b , x)) = b , here x
-  Any-Σ⁻ʳ (there xs) = Prod.map₂ there $ Any-Σ⁻ʳ xs
+  Any-Σ⁻ʳ (there xs) = Product.map₂ there $ Any-Σ⁻ʳ xs
 
 ------------------------------------------------------------------------
 -- Invertible introduction (⁺) and elimination (⁻) rules for various
@@ -319,15 +317,15 @@ module _ {f : A → B} where
 
   map⁺∘map⁻ : (p : Any P (List.map f xs)) → map⁺ (map⁻ p) ≡ p
   map⁺∘map⁻ {xs = x ∷ xs} (here  p) = refl
-  map⁺∘map⁻ {xs = x ∷ xs} (there p) = P.cong there (map⁺∘map⁻ p)
+  map⁺∘map⁻ {xs = x ∷ xs} (there p) = cong there (map⁺∘map⁻ p)
 
   map⁻∘map⁺ : ∀ (P : Pred B p) →
               (p : Any (P ∘ f) xs) → map⁻ {P = P} (map⁺ p) ≡ p
   map⁻∘map⁺ P (here  p) = refl
-  map⁻∘map⁺ P (there p) = P.cong there (map⁻∘map⁺ P p)
+  map⁻∘map⁺ P (there p) = cong there (map⁻∘map⁺ P p)
 
   map↔ : Any (P ∘ f) xs ↔ Any P (List.map f xs)
-  map↔ = inverse map⁺ map⁻ (map⁻∘map⁺ _) map⁺∘map⁻
+  map↔ = mk↔ₛ′ map⁺ map⁻ map⁺∘map⁻ (map⁻∘map⁺ _)
 
   gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
   gmap g = map⁺ ∘ Any.map g
@@ -365,8 +363,8 @@ module _ {P : A → Set p} where
   ++⁺∘++⁻ []       p         = refl
   ++⁺∘++⁻ (x ∷ xs) (here  p) = refl
   ++⁺∘++⁻ (x ∷ xs) (there p) with ++⁻ xs p | ++⁺∘++⁻ xs p
-  ... | inj₁ p′ | ih = P.cong there ih
-  ... | inj₂ p′ | ih = P.cong there ih
+  ... | inj₁ p′ | ih = cong there ih
+  ... | inj₂ p′ | ih = cong there ih
 
   ++⁻∘++⁺ : ∀ xs {ys} (p : Any P xs ⊎ Any P ys) →
             ++⁻ xs ([ ++⁺ˡ , ++⁺ʳ xs ]′ p) ≡ p
@@ -376,7 +374,7 @@ module _ {P : A → Set p} where
   ++⁻∘++⁺ (x ∷ xs)      (inj₂ p)         rewrite ++⁻∘++⁺ xs      (inj₂ p) = refl
 
   ++↔ : ∀ {xs ys} → (Any P xs ⊎ Any P ys) ↔ Any P (xs ++ ys)
-  ++↔ {xs = xs} = inverse [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs) (++⁻∘++⁺ xs) (++⁺∘++⁻ xs)
+  ++↔ {xs = xs} = mk↔ₛ′ [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs) (++⁺∘++⁻ xs) (++⁻∘++⁺ xs)
 
   ++-comm : ∀ xs ys → Any P (xs ++ ys) → Any P (ys ++ xs)
   ++-comm xs ys = [ ++⁺ʳ ys , ++⁺ˡ ]′ ∘ ++⁻ xs
@@ -398,8 +396,8 @@ module _ {P : A → Set p} where
           | ++⁻∘++⁺ ys {ys = x ∷ xs} (inj₁ p) = refl
 
   ++↔++ : ∀ xs ys → Any P (xs ++ ys) ↔ Any P (ys ++ xs)
-  ++↔++ xs ys = inverse (++-comm xs ys) (++-comm ys xs)
-                        (++-comm∘++-comm xs) (++-comm∘++-comm ys)
+  ++↔++ xs ys = mk↔ₛ′ (++-comm xs ys) (++-comm ys xs)
+                        (++-comm∘++-comm ys) (++-comm∘++-comm xs)
 
   ++-insert : ∀ xs {ys} → P x → Any P (xs ++ [ x ] ++ ys)
   ++-insert xs Px = ++⁺ʳ xs (++⁺ˡ (singleton⁺ Px))
@@ -443,10 +441,10 @@ module _ {P : A → Set p} where
   concat⁻∘concat⁺ (here                      p) = concat⁻∘++⁺ˡ _ p
   concat⁻∘concat⁺ (there {x = xs} {xs = xss} p)
     rewrite concat⁻∘++⁺ʳ xs xss (concat⁺ p) =
-      P.cong there $ concat⁻∘concat⁺ p
+      cong there $ concat⁻∘concat⁺ p
 
   concat↔ : ∀ {xss} → Any (Any P) xss ↔ Any P (concat xss)
-  concat↔ {xss} = inverse concat⁺ (concat⁻ xss) concat⁻∘concat⁺ (concat⁺∘concat⁻ xss)
+  concat↔ {xss} = mk↔ₛ′ concat⁺ (concat⁻ xss) (concat⁺∘concat⁻ xss) concat⁻∘concat⁺
 
 ------------------------------------------------------------------------
 -- cartesianProductWith
@@ -496,18 +494,16 @@ applyUpTo⁻ f {suc n} (there p) with applyUpTo⁻ (f ∘ suc) p
 ------------------------------------------------------------------------
 -- applyDownFrom
 
-module _ {P : A → Set p} where
+applyDownFrom⁺ : ∀ f {i n} → P (f i) → i < n → Any P (applyDownFrom f n)
+applyDownFrom⁺ f {i} {suc n} p (s≤s i≤n) with i ≟ n
+... | yes refl = here p
+... | no  i≢n    = there (applyDownFrom⁺ f p (≤∧≢⇒< i≤n i≢n))
 
-  applyDownFrom⁺ : ∀ f {i n} → P (f i) → i < n → Any P (applyDownFrom f n)
-  applyDownFrom⁺ f {i} {suc n} p (s≤s i≤n) with i ≟ n
-  ... | yes P.refl = here p
-  ... | no  i≢n    = there (applyDownFrom⁺ f p (≤∧≢⇒< i≤n i≢n))
-
-  applyDownFrom⁻ : ∀ f {n} → Any P (applyDownFrom f n) →
-                   ∃ λ i → i < n × P (f i)
-  applyDownFrom⁻ f {suc n} (here p)  = n , ≤-refl , p
-  applyDownFrom⁻ f {suc n} (there p) with applyDownFrom⁻ f p
-  ... | i , i<n , pf = i , m<n⇒m<1+n i<n , pf
+applyDownFrom⁻ : ∀ f {n} → Any P (applyDownFrom f n) →
+                 ∃ λ i → i < n × P (f i)
+applyDownFrom⁻ f {suc n} (here p)  = n , ≤-refl , p
+applyDownFrom⁻ f {suc n} (there p) with applyDownFrom⁻ f p
+... | i , i<n , pf = i , m<n⇒m<1+n i<n , pf
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -518,7 +514,7 @@ tabulate⁺ (suc i) p = there (tabulate⁺ i p)
 
 tabulate⁻ : ∀ {n} {f : Fin n → A} → Any P (tabulate f) → ∃ λ i → P (f i)
 tabulate⁻ {n = suc _} (here p)  = zero , p
-tabulate⁻ {n = suc _} (there p) = Prod.map suc id (tabulate⁻ p)
+tabulate⁻ {n = suc _} (there p) = Product.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- filter
@@ -597,11 +593,11 @@ module _ {P : B → Set p} where
                 ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)
   mapWith∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
   mapWith∈⁻ (y ∷ xs) f (there p) =
-    Prod.map₂ (Prod.map there id) $ mapWith∈⁻ xs (f ∘ there) p
+    Product.map₂ (Product.map there id) $ mapWith∈⁻ xs (f ∘ there) p
 
   mapWith∈↔ : ∀ {xs : List A} {f : ∀ {x} → x ∈ xs → B} →
                 (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (mapWith∈ xs f)
-  mapWith∈↔ = inverse (mapWith∈⁺ _) (mapWith∈⁻ _ _) (from∘to _) (to∘from _ _)
+  mapWith∈↔ = mk↔ₛ′ (mapWith∈⁺ _) (mapWith∈⁻ _ _) (to∘from _ _) (from∘to _)
     where
     from∘to : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B)
               (p : ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
@@ -615,7 +611,7 @@ module _ {P : B → Set p} where
               mapWith∈⁺ f (mapWith∈⁻ xs f p) ≡ p
     to∘from (y ∷ xs) f (here  p) = refl
     to∘from (y ∷ xs) f (there p) =
-      P.cong there $ to∘from xs (f ∘ there) p
+      cong there $ to∘from xs (f ∘ there) p
 
 ------------------------------------------------------------------------
 -- reverse
@@ -644,34 +640,30 @@ reverse⁻ ps with reverseAcc⁻ [] _ ps
 ------------------------------------------------------------------------
 -- pure
 
-module _ {P : A → Set p} where
+pure⁺ : P x → Any P (pure x)
+pure⁺ = here
 
-  pure⁺ : P x → Any P (pure x)
-  pure⁺ = here
+pure⁻ : Any P (pure x) → P x
+pure⁻ (here p) = p
 
-  pure⁻ : Any P (pure x) → P x
-  pure⁻ (here p) = p
+pure⁺∘pure⁻ : (p : Any P (pure x)) → pure⁺ (pure⁻ p) ≡ p
+pure⁺∘pure⁻ (here p) = refl
 
-  pure⁺∘pure⁻ : (p : Any P (pure x)) → pure⁺ (pure⁻ p) ≡ p
-  pure⁺∘pure⁻ (here p) = refl
+pure⁻∘pure⁺ : (p : P x) → pure⁻ {P = P} (pure⁺ p) ≡ p
+pure⁻∘pure⁺ p = refl
 
-  pure⁻∘pure⁺ : (p : P x) → pure⁻ (pure⁺ p) ≡ p
-  pure⁻∘pure⁺ p = refl
-
-  pure↔ : P x ↔ Any P (pure x)
-  pure↔ = inverse pure⁺ pure⁻ pure⁻∘pure⁺ pure⁺∘pure⁻
+pure↔ : P x ↔ Any P (pure x)
+pure↔ {P = P} = mk↔ₛ′ pure⁺ pure⁻ pure⁺∘pure⁻ (pure⁻∘pure⁺ {P = P})
 
 ------------------------------------------------------------------------
 -- _∷_
 
-module _ (P : Pred A p) where
-
-  ∷↔ : (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
-  ∷↔ {x = x} {xs} =
-    (P x         ⊎ Any P xs)  ↔⟨ pure↔ {P = P} ⊎-cong (Any P xs ∎) ⟩
-    (Any P [ x ] ⊎ Any P xs)  ↔⟨ ++↔ {P = P} {xs = [ x ]} ⟩
-    Any P (x ∷ xs)            ∎
-    where open Related.EquationalReasoning
+∷↔ : (P : Pred A p) → (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
+∷↔ {x = x} {xs} P =
+  (P x         ⊎ Any P xs)  ↔⟨ pure↔ ⊎-cong (Any P xs ∎) ⟩
+  (Any P [ x ] ⊎ Any P xs)  ↔⟨ ++↔ ⟩
+  Any P (x ∷ xs)            ∎
+  where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -694,17 +686,16 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ f → Any (P ∘ f) xs) fs                ↔⟨ Any-cong (λ _ → Any-cong (λ _ → pure↔) (_ ∎)) (_ ∎) ⟩
   Any (λ f → Any (Any P ∘ pure ∘ f) xs) fs     ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
   Any (λ f → Any P (xs >>= pure ∘ f)) fs       ↔⟨ >>=↔ ⟩
-  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡˘⟨ P.cong (Any P) (Listₑ.Applicative.unfold-⊛ fs xs) ⟩
-  Any P (fs ⊛ xs)                              ∎
+  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡⟨ cong (Any P) (Listₑ.Applicative.unfold-⊛ fs xs) ⟨
+  Any P (fs ⊛ xs)                               ∎
   where open Related.EquationalReasoning
+
 
 -- An alternative introduction rule for _⊛_
 
-⊛⁺′ : ∀ {P : A → Set ℓ} {Q : B → Set ℓ} {fs : List (A → B)} {xs} →
+⊛⁺′ : ∀ {P : Pred A ℓ} {Q : Pred B ℓ} {fs : List (A → B)} {xs} →
       Any (P ⟨→⟩ Q) fs → Any P xs → Any Q (fs ⊛ xs)
-⊛⁺′ pq p =
-  Inverse.to ⊛↔ ⟨$⟩
-    Any.map (λ pq → Any.map (λ {x} → pq {x}) p) pq
+⊛⁺′ pq p = Inverse.to ⊛↔ (Any.map (λ pq → Any.map (λ {x} → pq {x}) p) pq)
 
 ------------------------------------------------------------------------
 -- _⊗_
@@ -715,7 +706,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ x → Any (λ y → P (x , y)) ys) xs                           ↔⟨ pure↔ ⟩
   Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (pure _,_)  ↔⟨ ⊛↔ ⟩
   Any (λ x, → Any (P ∘ x,) ys) (pure _,_ ⊛ xs)                      ↔⟨ ⊛↔ ⟩
-  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡˘⟨ P.cong (Any P ∘′ (_⊛ ys)) (Listₑ.Applicative.unfold-<$> _,_ xs) ⟩
+  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡⟨ cong (Any P ∘′ (_⊛ ys)) (Listₑ.Applicative.unfold-<$> _,_ xs) ⟨
   Any P (xs ⊗ ys)                                                   ∎
   where open Related.EquationalReasoning
 

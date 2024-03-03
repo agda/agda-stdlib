@@ -4,11 +4,11 @@
 -- Alternative definition of divisibility without using modulus.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Divisibility.Signed where
 
-open import Function
+open import Function.Base using (_⟨_⟩_; _$_; _$′_; _∘_; _∘′_)
 open import Data.Integer.Base
 open import Data.Integer.Properties
 open import Data.Integer.Divisibility as Unsigned
@@ -18,14 +18,18 @@ import Data.Nat.Base as ℕ
 import Data.Nat.Divisibility as ℕ
 import Data.Nat.Coprimality as ℕ
 import Data.Nat.Properties as ℕ
-import Data.Sign as S
-import Data.Sign.Properties as SProp
+import Data.Sign as Sign
+import Data.Sign.Properties as Sign
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
+open import Relation.Binary.Bundles using (Preorder)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Decidable)
 open import Relation.Binary.PropositionalEquality
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
-open import Relation.Nullary.Decidable using (yes; no)
-import Relation.Nullary.Decidable as DEC
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+open import Relation.Nullary.Decidable as Dec using (yes; no)
+open import Relation.Binary.Reasoning.Syntax
 
 ------------------------------------------------------------------------
 -- Type
@@ -45,19 +49,19 @@ open _∣_ using (quotient) public
 ∣ᵤ⇒∣ {k} {i} (divides 0           eq) = divides (+ 0) (∣i∣≡0⇒i≡0 eq)
 ∣ᵤ⇒∣ {k} {i} (divides q@(ℕ.suc _) eq) with k ≟ +0
 ... | yes refl = divides +0 (∣i∣≡0⇒i≡0 (trans eq (ℕ.*-zeroʳ q)))
-... | no  neq  = divides (sign i S.* sign k ◃ q) (◃-cong sign-eq abs-eq)
+... | no  neq  = divides (sign i Sign.* sign k ◃ q) (◃-cong sign-eq abs-eq)
   where
-  ikq = sign i S.* sign k ◃ q
+  ikq = sign i Sign.* sign k ◃ q
 
   *-nonZero : ∀ m n .{{_ : ℕ.NonZero m}} .{{_ : ℕ.NonZero n}} → ℕ.NonZero (m ℕ.* n)
   *-nonZero (ℕ.suc _) (ℕ.suc _) = _
 
   ◃-nonZero : ∀ s n .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
-  ◃-nonZero S.- (ℕ.suc _) = _
-  ◃-nonZero S.+ (ℕ.suc _) = _
+  ◃-nonZero Sign.- (ℕ.suc _) = _
+  ◃-nonZero Sign.+ (ℕ.suc _) = _
 
   ikq≢0 : NonZero ikq
-  ikq≢0 = ◃-nonZero (sign i S.* sign k) q
+  ikq≢0 = ◃-nonZero (sign i Sign.* sign k) q
 
   instance
     ikq*∣k∣≢0 : ℕ.NonZero (∣ ikq ∣ ℕ.* ∣ k ∣)
@@ -65,18 +69,18 @@ open _∣_ using (quotient) public
 
   sign-eq : sign i ≡ sign (ikq * k)
   sign-eq = sym $ begin
-    sign (ikq * k)                  ≡⟨ sign-◃ (sign ikq S.* sign k) (∣ ikq ∣ ℕ.* ∣ k ∣) ⟩
-    sign ikq S.* sign k             ≡⟨ cong (S._* sign k) (sign-◃ (sign i S.* sign k) q) ⟩
-    (sign i S.* sign k) S.* sign k  ≡⟨ SProp.*-assoc (sign i) (sign k) (sign k) ⟩
-    sign i S.* (sign k S.* sign k)  ≡⟨ cong (sign i S.*_) (SProp.s*s≡+ (sign k)) ⟩
-    sign i S.* S.+                  ≡⟨ SProp.*-identityʳ (sign i) ⟩
+    sign (ikq * k)                        ≡⟨ sign-◃ (sign ikq Sign.* sign k) (∣ ikq ∣ ℕ.* ∣ k ∣) ⟩
+    sign ikq Sign.* sign k                ≡⟨ cong (Sign._* sign k) (sign-◃ (sign i Sign.* sign k) q) ⟩
+    (sign i Sign.* sign k) Sign.* sign k  ≡⟨ Sign.*-assoc (sign i) (sign k) (sign k) ⟩
+    sign i Sign.* (sign k Sign.* sign k)  ≡⟨ cong (sign i Sign.*_) (Sign.s*s≡+ (sign k)) ⟩
+    sign i Sign.* Sign.+                  ≡⟨ Sign.*-identityʳ (sign i) ⟩
     sign i                          ∎
     where open ≡-Reasoning
 
   abs-eq : ∣ i ∣ ≡ ∣ ikq * k ∣
   abs-eq = sym $ begin
     ∣ ikq * k ∣        ≡⟨ ∣i*j∣≡∣i∣*∣j∣ ikq k ⟩
-    ∣ ikq ∣ ℕ.* ∣ k ∣  ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ (sign i S.* sign k) q) ⟩
+    ∣ ikq ∣ ℕ.* ∣ k ∣  ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ (sign i Sign.* sign k) q) ⟩
     q ℕ.* ∣ k ∣        ≡⟨ sym eq ⟩
     ∣ i ∣              ∎
     where open ≡-Reasoning
@@ -114,15 +118,13 @@ open _∣_ using (quotient) public
 -- Divisibility reasoning
 
 module ∣-Reasoning where
-  private
-    module Base = PreorderReasoning ∣-preorder
+  private module Base = ≲-Reasoning ∣-preorder
 
   open Base public
-    hiding (step-∼; step-≈; step-≈˘)
+    hiding (step-≲; step-∼; step-≈; step-≈˘)
+    renaming (≲-go to ∣-go)
 
-  infixr 2 step-∣
-  step-∣ = Base.step-∼
-  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
+  open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ ∣-go public
 
 ------------------------------------------------------------------------
 -- Other properties of _∣_
@@ -130,7 +132,7 @@ module ∣-Reasoning where
 infix 4 _∣?_
 
 _∣?_ : Decidable _∣_
-k ∣? m = DEC.map′ ∣ᵤ⇒∣ ∣⇒∣ᵤ (∣ k ∣ ℕ.∣? ∣ m ∣)
+k ∣? m = Dec.map′ ∣ᵤ⇒∣ ∣⇒∣ᵤ (∣ k ∣ ℕ.∣? ∣ m ∣)
 
 0∣⇒≡0 : ∀ {m} → 0ℤ ∣ m → m ≡ 0ℤ
 0∣⇒≡0 0|m = ∣i∣≡0⇒i≡0 (ℕ.0∣⇒≡0 (∣⇒∣ᵤ 0|m))

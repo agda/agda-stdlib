@@ -11,9 +11,9 @@
 -- Parameterized data modules (https://github.com/agda/agda/issues/3210)
 -- may simplify this setup, making this module obsolete.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (REL)
+open import Relation.Binary.Core using (REL)
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous.Core
        {a b r} {A : Set a} {B : Set b} (R : REL A B r)

@@ -4,7 +4,7 @@
 -- Some theory for commutative semigroup
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (CommutativeSemigroup)
 
@@ -16,30 +16,31 @@ open CommutativeSemigroup CS
 
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
+open import Data.Product.Base using (_,_)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-export the contents of semigroup
 
 open import Algebra.Properties.Semigroup semigroup public
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties
 
 interchange : Interchangable _∙_ _∙_
 interchange a b c d = begin
   (a ∙ b) ∙ (c ∙ d)  ≈⟨  assoc a b (c ∙ d) ⟩
-  a ∙ (b ∙ (c ∙ d))  ≈˘⟨ ∙-congˡ (assoc b c d) ⟩
+  a ∙ (b ∙ (c ∙ d))  ≈⟨ ∙-congˡ (assoc b c d) ⟨
   a ∙ ((b ∙ c) ∙ d)  ≈⟨  ∙-congˡ (∙-congʳ (comm b c)) ⟩
   a ∙ ((c ∙ b) ∙ d)  ≈⟨  ∙-congˡ (assoc c b d) ⟩
-  a ∙ (c ∙ (b ∙ d))  ≈˘⟨ assoc a c (b ∙ d) ⟩
+  a ∙ (c ∙ (b ∙ d))  ≈⟨ assoc a c (b ∙ d) ⟨
   (a ∙ c) ∙ (b ∙ d)  ∎
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Permutation laws for _∙_ for three factors.
 
 -- There are five nontrivial permutations.
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Partitions (1,1).
 
 x∙yz≈y∙xz :  ∀ x y z → x ∙ (y ∙ z) ≈ y ∙ (x ∙ z)
@@ -71,7 +72,7 @@ x∙yz≈z∙xy x y z = begin
   (x ∙ y) ∙ z   ≈⟨ comm _ z ⟩
   z ∙ (x ∙ y)   ∎
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Partitions (1,2).
 
 -- These permutation laws are proved by composing the proofs for
@@ -92,7 +93,7 @@ x∙yz≈yz∙x x y z =  trans (x∙yz≈y∙zx _ _ _) (sym (assoc y z x))
 x∙yz≈zx∙y :  ∀ x y z → x ∙ (y ∙ z) ≈ (z ∙ x) ∙ y
 x∙yz≈zx∙y x y z =  trans (x∙yz≈z∙xy x y z) (sym (assoc z x y))
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Partitions (2,1).
 
 -- Their laws are proved by composing proofs for partitions (1,1) with
@@ -113,7 +114,7 @@ xy∙z≈y∙zx x y z =  trans (assoc x y z) (x∙yz≈y∙zx x y z)
 xy∙z≈z∙xy :  ∀ x y z → (x ∙ y) ∙ z ≈ z ∙ (x ∙ y)
 xy∙z≈z∙xy x y z =  trans (assoc x y z) (x∙yz≈z∙xy x y z)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Partitions (2,2).
 
 -- These proofs are by composing with the proofs for (2,1).
@@ -133,13 +134,13 @@ xy∙z≈yz∙x x y z =  trans (xy∙z≈y∙zx x y z) (sym (assoc y z x))
 xy∙z≈zx∙y :  ∀ x y z → (x ∙ y) ∙ z ≈ (z ∙ x) ∙ y
 xy∙z≈zx∙y x y z =  trans (xy∙z≈z∙xy x y z) (sym (assoc z x y))
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- commutative semigroup has Jordan identity
 
 xy∙xx≈x∙yxx : ∀ x y → (x ∙ y) ∙ (x ∙ x) ≈ x ∙ (y ∙ (x ∙ x))
 xy∙xx≈x∙yxx x y = assoc x y ((x ∙ x))
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- commutative semigroup is left/right/middle semiMedial
 
 semimedialˡ : LeftSemimedial _∙_
@@ -168,3 +169,6 @@ middleSemimedial x y z = begin
   x ∙ ((z ∙ y) ∙ x) ≈⟨ ∙-congˡ ( assoc z y x) ⟩
   x ∙ (z ∙ (y ∙ x)) ≈⟨ sym (assoc x z ((y ∙ x))) ⟩
   (x ∙ z) ∙ (y ∙ x) ∎
+
+semimedial : Semimedial _∙_
+semimedial = semimedialˡ , semimedialʳ

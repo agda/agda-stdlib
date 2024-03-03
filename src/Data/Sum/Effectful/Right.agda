@@ -4,7 +4,7 @@
 -- An effectful view of the Sum type (Right-biased)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 
@@ -55,6 +55,9 @@ monad = record
   { rawApplicative = applicative
   ; _>>=_ = [ _|>′_ , const ∘′ inj₂ ]′
   }
+
+join : {A : Set (a ⊔ b)} → Sumᵣ (Sumᵣ A) → Sumᵣ A
+join = Join.join monad
 
 monadZero : B → RawMonadZero Sumᵣ
 monadZero b = record

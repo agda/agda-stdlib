@@ -4,7 +4,7 @@
 -- Refinement type: a value together with a proof irrelevant witness.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Refinement where
 
@@ -23,6 +23,7 @@ record Refinement {a p} (A : Set a) (P : A → Set p) : Set (a ⊔ p) where
   constructor _,_
   field value : A
         proof : Irrelevant (P value)
+infixr 4 _,_
 open Refinement public
 
 -- The syntax declaration below is meant to mimick set comprehension.

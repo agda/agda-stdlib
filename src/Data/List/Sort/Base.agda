@@ -4,12 +4,12 @@
 -- The core definition of a sorting algorithm
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.List.Base using (List)
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Level using (_⊔_)
-open import Relation.Binary using (TotalOrder)
+open import Relation.Binary.Bundles using (TotalOrder)
 
 module Data.List.Sort.Base
   {a ℓ₁ ℓ₂} (totalOrder : TotalOrder a ℓ₁ ℓ₂)

@@ -1,17 +1,17 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Logarithm base 2 and respective properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Logarithm where
 
 open import Data.Nat
 open import Data.Nat.Induction using (<-wellFounded)
 open import Data.Nat.Logarithm.Core
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Logarithm base 2

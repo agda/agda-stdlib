@@ -4,21 +4,25 @@
 -- The lifting of a non-strict order to incorporate a new infimum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Infimum
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures
+  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans; Trichotomous; tri≈; tri<; tri>; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 
 module Relation.Binary.Construct.Add.Infimum.Strict
   {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
-open import Data.Product
+open import Data.Product.Base using (_,_; map)
 open import Function.Base
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; subst)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
 open import Relation.Nullary hiding (Irrelevant)
@@ -27,6 +31,8 @@ import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
 -- Definition
+
+infix 4 _<₋_
 
 data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
   ⊥₋<[_] : (l : A)           → ⊥₋    <₋ [ l ]
@@ -52,8 +58,8 @@ data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
 <₋-dec _<?_ [ k ] [ l ] = Dec.map′ [_] [<]-injective (k <? l)
 
 <₋-irrelevant : Irrelevant _<_ → Irrelevant _<₋_
-<₋-irrelevant <-irr ⊥₋<[ l ] ⊥₋<[ l ] = P.refl
-<₋-irrelevant <-irr [ p ]    [ q ]    = P.cong _ (<-irr p q)
+<₋-irrelevant <-irr ⊥₋<[ l ] ⊥₋<[ l ] = refl
+<₋-irrelevant <-irr [ p ]    [ q ]    = cong _ (<-irr p q)
 
 module _ {r} {_≤_ : Rel A r} where
 
@@ -84,10 +90,10 @@ module _ {r} {_≤_ : Rel A r} where
 <₋-irrefl-≡ <-irrefl refl [ x ] = <-irrefl refl x
 
 <₋-respˡ-≡ : _<₋_ Respectsˡ _≡_
-<₋-respˡ-≡ = P.subst (_<₋ _)
+<₋-respˡ-≡ = subst (_<₋ _)
 
 <₋-respʳ-≡ : _<₋_ Respectsʳ _≡_
-<₋-respʳ-≡ = P.subst (_ <₋_)
+<₋-respʳ-≡ = subst (_ <₋_)
 
 <₋-resp-≡ : _<₋_ Respects₂ _≡_
 <₋-resp-≡ = <₋-respʳ-≡ , <₋-respˡ-≡
@@ -129,7 +135,7 @@ module _ {e} {_≈_ : Rel A e} where
 <₋-isStrictPartialOrder-≡ : IsStrictPartialOrder _≡_ _<_ →
                             IsStrictPartialOrder _≡_ _<₋_
 <₋-isStrictPartialOrder-≡ strict = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; irrefl        = <₋-irrefl-≡ irrefl
   ; trans         = <₋-trans trans
   ; <-resp-≈      = <₋-resp-≡
@@ -146,9 +152,8 @@ module _ {e} {_≈_ : Rel A e} where
 <₋-isStrictTotalOrder-≡ : IsStrictTotalOrder _≡_ _<_ →
                           IsStrictTotalOrder _≡_ _<₋_
 <₋-isStrictTotalOrder-≡ strictot = record
-  { isEquivalence = P.isEquivalence
-  ; trans         = <₋-trans trans
-  ; compare       = <₋-cmp-≡ compare
+  { isStrictPartialOrder = <₋-isStrictPartialOrder-≡ isStrictPartialOrder
+  ; compare              = <₋-cmp-≡ compare
   } where open IsStrictTotalOrder strictot
 
 ------------------------------------------------------------------------
@@ -178,7 +183,6 @@ module _ {e} {_≈_ : Rel A e} where
   <₋-isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_ →
                           IsStrictTotalOrder _≈₋_ _<₋_
   <₋-isStrictTotalOrder strictot = record
-    { isEquivalence = ≈₋-isEquivalence isEquivalence
-    ; trans         = <₋-trans trans
-    ; compare       = <₋-cmp compare
+    { isStrictPartialOrder = <₋-isStrictPartialOrder isStrictPartialOrder
+    ; compare              = <₋-cmp compare
     } where open IsStrictTotalOrder strictot

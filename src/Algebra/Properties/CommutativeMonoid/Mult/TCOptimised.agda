@@ -5,12 +5,11 @@
 -- type checking.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 module Algebra.Properties.CommutativeMonoid.Mult.TCOptimised
   {a ℓ} (M : CommutativeMonoid a ℓ) where
@@ -41,7 +40,7 @@ open import Algebra.Properties.Monoid.Mult.TCOptimised monoid public
 
 ×-distrib-+ : ∀ x y n → n × (x + y) ≈ n × x + n × y
 ×-distrib-+ x y n = begin
-  n ×  (x + y)    ≈˘⟨ ×ᵤ≈× n (x + y) ⟩
+  n ×  (x + y)    ≈⟨ ×ᵤ≈× n (x + y) ⟨
   n ×ᵤ (x + y)    ≈⟨  U.×-distrib-+ x y n ⟩
   n ×ᵤ x + n ×ᵤ y ≈⟨  +-cong (×ᵤ≈× n x) (×ᵤ≈× n y) ⟩
   n ×  x + n ×  y ∎

@@ -4,15 +4,16 @@
 -- Property that elements are grouped
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Grouped where
 
-open import Data.List using (List; []; _∷_; map)
+open import Data.List.Base using (List; []; _∷_; map)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_; all?)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Data.Product using (_×_; _,_)
-open import Relation.Binary as B using (REL; Rel)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Product.Base using (_×_; _,_)
+open import Relation.Binary.Core using (REL; Rel)
+open import Relation.Binary.Definitions as B
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable as Dec using (yes; ¬?; _⊎-dec_; _×-dec_)

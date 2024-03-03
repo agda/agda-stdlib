@@ -4,7 +4,7 @@
 -- Bisimilarity for Cowriter
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Cowriter.Bisimilarity where
 
@@ -12,8 +12,13 @@ open import Level using (Level; _⊔_)
 open import Size
 open import Codata.Sized.Thunk
 open import Codata.Sized.Cowriter
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Binary.Core using (REL; Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Sym; Trans)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -32,6 +37,8 @@ data Bisim {V : Set v} {W : Set w} {A : Set a} {B : Set b}
   [_] : ∀ {a b} → S a b → Bisim R S i [ a ] [ b ]
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R S) i xs ys →
         Bisim R S i (x ∷ xs) (y ∷ ys)
+
+infixr 5 _∷_
 
 module _ {R : Rel W r} {S : Rel A s}
          (refl^R : Reflexive R) (refl^S : Reflexive S) where
@@ -67,16 +74,16 @@ module _ {W : Set w} {A : Set a} where
   _⊢_≈_ = Bisim _≡_ _≡_
 
   refl : Reflexive (i ⊢_≈_)
-  refl = reflexive Eq.refl Eq.refl
+  refl = reflexive ≡.refl ≡.refl
 
   fromEq : ∀ {as bs} → as ≡ bs → i ⊢ as ≈ bs
-  fromEq Eq.refl = refl
+  fromEq ≡.refl = refl
 
   sym : Symmetric (i ⊢_≈_)
-  sym = symmetric Eq.sym Eq.sym
+  sym = symmetric ≡.sym ≡.sym
 
   trans : Transitive (i ⊢_≈_)
-  trans = transitive Eq.trans Eq.trans
+  trans = transitive ≡.trans ≡.trans
 
 module _ {R : Rel W r} {S : Rel A s}
          (equiv^R : IsEquivalence R) (equiv^S : IsEquivalence S) where
@@ -101,4 +108,4 @@ setoid R S i = record
 module ≈-Reasoning {W : Set w} {A : Set a} {i} where
 
   open import Relation.Binary.Reasoning.Setoid
-              (setoid (Eq.setoid W) (Eq.setoid A) i) public
+              (setoid (≡.setoid W) (≡.setoid A) i) public

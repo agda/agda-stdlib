@@ -4,10 +4,10 @@
 -- Properties of divisibility over commutative magmas
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (CommutativeMagma)
-open import Data.Product using (_×_; _,_; map)
+open import Data.Product.Base using (_×_; _,_; map)
 
 module Algebra.Properties.CommutativeMagma.Divisibility
   {a ℓ} (CM : CommutativeMagma a ℓ)
@@ -17,12 +17,12 @@ open CommutativeMagma CM
 
 open import Relation.Binary.Reasoning.Setoid setoid
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-export the contents of magmas
 
 open import Algebra.Properties.Magma.Divisibility magma public
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Further properties
 
 x∣xy : ∀ x y → x ∣ x ∙ y

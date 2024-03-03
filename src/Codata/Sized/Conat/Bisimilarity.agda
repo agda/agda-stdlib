@@ -4,7 +4,7 @@
 -- Bisimilarity for Conats
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module Codata.Sized.Conat.Bisimilarity where
 
@@ -12,7 +12,8 @@ open import Level using (0ℓ)
 open import Size
 open import Codata.Sized.Thunk
 open import Codata.Sized.Conat
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 infix 1 _⊢_≈_
 data _⊢_≈_ i : (m n : Conat ∞) → Set where

@@ -4,7 +4,7 @@
 -- Properties of permutation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 
@@ -13,7 +13,7 @@ open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat using (suc)
-open import Data.Product using (-,_; proj₂)
+open import Data.Product.Base using (-,_; proj₂)
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -21,15 +21,14 @@ open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as Lₚ
-open import Data.Product using (_,_; _×_; ∃; ∃₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (inverse)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
+open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Definitions using (_Respects_; Decidable)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_ ; refl ; cong; cong₂; _≢_)
 open import Relation.Nullary
 
 open PermutationReasoning
@@ -244,7 +243,7 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
   x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
-  x ∷ ys ++ xs   ↭˘⟨ shift x ys xs ⟩
+  x ∷ ys ++ xs   ↭⟨ shift x ys xs ⟨
   ys ++ (x ∷ xs) ∎
 
 ++-isMagma : IsMagma {A = List A} _↭_ _++_
@@ -297,7 +296,7 @@ module _ {a} {A : Set a} where
 
 shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
 shifts xs ys {zs} = begin
-   xs ++ ys  ++ zs ↭˘⟨ ++-assoc xs ys zs ⟩
+   xs ++ ys  ++ zs ↭⟨ ++-assoc xs ys zs ⟨
   (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
   (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
    ys ++ xs  ++ zs ∎
@@ -325,6 +324,18 @@ drop-∷ = drop-mid [] []
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (shift x xs ys)) (++↭ʳ++ xs (x ∷ ys))
 
 ------------------------------------------------------------------------
+-- reverse
+
+↭-reverse : (xs : List A) → reverse xs ↭ xs
+↭-reverse [] = ↭-refl
+↭-reverse (x ∷ xs) = begin
+  reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
+  reverse xs ∷ʳ x ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
+  x ∷ reverse xs   ↭⟨ prep x (↭-reverse xs) ⟩
+  x ∷ xs ∎
+  where open PermutationReasoning
+
+------------------------------------------------------------------------
 -- merge
 
 module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
@@ -338,7 +349,7 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
   ... | true  | rec | _   = prep x rec
   ... | false | _   | rec = begin
     y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
-    y ∷ x ∷ xs ++ ys         ↭˘⟨ shift y (x ∷ xs) ys ⟩
-    (x ∷ xs) ++ y ∷ ys       ≡˘⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟩
+    y ∷ x ∷ xs ++ ys         ↭⟨ shift y (x ∷ xs) ys ⟨
+    (x ∷ xs) ++ y ∷ ys       ≡⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning

@@ -4,17 +4,18 @@
 -- Vectors where every consecutative pair of elements is related.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Unary.Linked {a} {A : Set a} where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
-open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
+open import Data.Product.Base as Product using (_,_; _×_; uncurry; <_,_>)
 open import Function.Base using (id; _∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary as B using (Rel; _⇒_)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions as B
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
@@ -65,7 +66,7 @@ zipWith f (px ∷ pxs , qx ∷ qxs) = f (px , qx) ∷ zipWith f (pxs , qxs)
 unzipWith : R ⇒ P ∩ᵇ Q → Linked R {n} ⊆ Linked P ∩ᵘ Linked Q
 unzipWith f []         = [] , []
 unzipWith f [-]        = [-] , [-]
-unzipWith f (rx ∷ rxs) = Prod.zip _∷_ _∷_ (f rx) (unzipWith f rxs)
+unzipWith f (rx ∷ rxs) = Product.zip _∷_ _∷_ (f rx) (unzipWith f rxs)
 
 zip : Linked P {n} ∩ᵘ Linked Q ⊆ Linked (P ∩ᵇ Q)
 zip = zipWith id

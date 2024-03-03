@@ -4,11 +4,11 @@
 -- Lists which contain every element of a given type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.List
+open import Data.List.Base using (List)
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Relation.Unary.Enumerates.Setoid
   {a ℓ} (S : Setoid a ℓ) where

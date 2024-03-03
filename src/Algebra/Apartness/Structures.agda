@@ -4,7 +4,7 @@
 -- Algebraic structures with an apartness relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core using (Op₁; Op₂)
 open import Relation.Binary.Core using (Rel)
@@ -17,7 +17,7 @@ module Algebra.Apartness.Structures
   where
 
 open import Level using (_⊔_; suc)
-open import Data.Product using (∃-syntax; _×_; _,_; proj₂)
+open import Data.Product.Base using (∃-syntax; _×_; _,_; proj₂)
 open import Algebra.Definitions _≈_ using (Invertible)
 open import Algebra.Structures _≈_ using (IsCommutativeRing)
 open import Relation.Binary.Structures using (IsEquivalence; IsApartnessRelation)

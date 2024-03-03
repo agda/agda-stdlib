@@ -4,7 +4,7 @@
 -- Results concerning double negation elimination.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Axiom.DoubleNegationElimination where
 
@@ -32,4 +32,4 @@ em⇒dne : ∀ {ℓ} → ExcludedMiddle ℓ → DoubleNegationElimination ℓ
 em⇒dne em = decidable-stable em
 
 dne⇒em : ∀ {ℓ} → DoubleNegationElimination ℓ → ExcludedMiddle ℓ
-dne⇒em dne = dne excluded-middle
+dne⇒em dne = dne ¬¬-excluded-middle

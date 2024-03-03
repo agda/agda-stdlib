@@ -7,11 +7,11 @@
 -- Relation.Binary.PropositionalEquality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.PropositionalEquality.Core where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary.Core
@@ -91,35 +91,3 @@ resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
 
 ≢-sym : Symmetric {A = A} _≢_
 ≢-sym x≢y =  x≢y ∘ sym
-
-------------------------------------------------------------------------
--- Convenient syntax for equational reasoning
-
--- This is a special instance of `Relation.Binary.Reasoning.Setoid`.
--- Rather than instantiating the latter with (setoid A), we reimplement
--- equation chains from scratch since then goals are printed much more
--- readably.
-
-module ≡-Reasoning {A : Set a} where
-
-  infix  3 _∎
-  infixr 2 _≡⟨⟩_ step-≡ step-≡˘
-  infix  1 begin_
-
-  begin_ : ∀{x y : A} → x ≡ y → x ≡ y
-  begin_ x≡y = x≡y
-
-  _≡⟨⟩_ : ∀ (x {y} : A) → x ≡ y → x ≡ y
-  _ ≡⟨⟩ x≡y = x≡y
-
-  step-≡ : ∀ (x {y z} : A) → y ≡ z → x ≡ y → x ≡ z
-  step-≡ _ y≡z x≡y = trans x≡y y≡z
-
-  step-≡˘ : ∀ (x {y z} : A) → y ≡ z → y ≡ x → x ≡ z
-  step-≡˘ _ y≡z y≡x = trans (sym y≡x) y≡z
-
-  _∎ : ∀ (x : A) → x ≡ x
-  _∎ _ = refl
-
-  syntax step-≡  x y≡z x≡y = x ≡⟨  x≡y ⟩ y≡z
-  syntax step-≡˘ x y≡z y≡x = x ≡˘⟨ y≡x ⟩ y≡z

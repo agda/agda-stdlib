@@ -4,7 +4,7 @@
 -- Heterogeneous N-ary Relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nary where
 
@@ -19,7 +19,7 @@ open import Data.Unit.Base
 open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.Nat.Base using (zero; suc)
-open import Data.Product as Prod using (_×_; _,_)
+open import Data.Product.Base as Product using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_$_; _∘′_)
@@ -27,7 +27,7 @@ open import Function.Nary.NonDependent
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _because_; _×-dec_)
 import Relation.Unary as Unary
-open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 
 private
   variable
@@ -105,10 +105,10 @@ module _ {n r ls} {as : Sets n ls} (P : as ⇉ Set r) where
 ------------------------------------------------------------------------
 -- Pointwise liftings of k-ary operators
 
--- Rather than having multiple ad-hoc lifting functions for various arities
--- we have a fully generic liftₙ functional which lifts a k-ary operator
--- to work with k n-ary functions whose respective codomains match the domains
--- of the operator.
+-- Rather than having multiple ad-hoc lifting functions for various
+-- arities we have a fully generic liftₙ functional which lifts a k-ary
+-- operator to work with k n-ary functions whose respective codomains
+-- match the domains of the operator.
 -- The type of liftₙ is fairly unreadable. Here it is written with ellipsis:
 
 -- liftₙ : ∀ k n. (B₁ → ⋯ → Bₖ → R) →

@@ -4,7 +4,7 @@
 -- Properties satisfied by join semilattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Lattice
 
@@ -16,11 +16,11 @@ open JoinSemilattice J
 import Algebra.Lattice as Alg
 import Algebra.Structures as Alg
 open import Algebra.Definitions _≈_
-open import Algebra.Ordered.Structures using (IsPosemigroup)
-open import Algebra.Ordered.Bundles using (Posemigroup)
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; flip)
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves₂_⟶_⟶_)
+open import Relation.Binary.Structures using (IsDecPartialOrder)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.Properties.Poset poset
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contraposition)
@@ -94,26 +94,6 @@ isAlgSemilattice = record
 
 algSemilattice : Alg.Semilattice c ℓ₁
 algSemilattice = record { isSemilattice = isAlgSemilattice }
-
--- Every semilattice gives rise to a posemigroup
-
-isPosemigroup : IsPosemigroup _≈_ _≤_ _∨_
-isPosemigroup = record
-  { isPomagma        = record
-    { isPartialOrder = isPartialOrder
-    ; mono           = ∨-monotonic
-    }
-  ; assoc            = ∨-assoc
-  }
-
-posemigroup : Posemigroup c ℓ₁ ℓ₂
-posemigroup = record
-  { Carrier           = Carrier
-  ; _≈_               = _≈_
-  ; _≤_               = _≤_
-  ; _∙_               = _∨_
-  ; isPosemigroup     = isPosemigroup
-  }
 
 ------------------------------------------------------------------------
 -- The dual construction is a meet semilattice.

@@ -4,12 +4,12 @@
 -- Basic definition and functions on the state monad transformer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 
 module Effect.Monad.State.Transformer.Base where
 
-open import Data.Product using (_×_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; proj₁; proj₂)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Function.Base using (_∘′_; const; id)
 open import Level using (Level; suc; _⊔_)

@@ -4,7 +4,7 @@
 -- Properties of linear maps.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 import Algebra.Module.Properties            as ModuleProperties
 import Algebra.Module.Morphism.Structures   as MorphismStructures
@@ -17,15 +17,15 @@ module Algebra.Module.Morphism.ModuleHomomorphism
   {r ℓr m ℓm : Level}
   {ring      : CommutativeRing r ℓr}
   (modA modB  : Module ring m ℓm)
-  (open Module modA using () renaming (Carrierᴹ to A))
-  (open Module modB using () renaming (Carrierᴹ to B))
+  (open Module modA using () renaming (Carrierᴹ to A; rawModule to rawModA))
+  (open Module modB using () renaming (Carrierᴹ to B; rawModule to rawModB))
   {f : A → B}
-  (open MorphismStructures.ModuleMorphisms modA modB)
+  (open MorphismStructures.ModuleMorphisms rawModA rawModB)
   (isModuleHomomorphism : IsModuleHomomorphism f)
   where
 
 open import Axiom.DoubleNegationElimination
-open import Data.Product
+open import Data.Product.Base using (∃₂; _×_; _,_)
 open import Relation.Binary.Reasoning.MultiSetoid
 open import Relation.Nullary          using (¬_)
 open import Relation.Nullary.Negation using (contraposition)

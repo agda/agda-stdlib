@@ -4,7 +4,7 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist where
 
@@ -21,22 +21,24 @@ open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
+open import Function.Bundles
 open import Level using (_⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles using (Poset; Setoid; Preorder)
+open import Relation.Binary.Definitions using (Transitive; Antisymmetric)
 import Relation.Binary.Construct.FromRel as Ind
-import Relation.Binary.Reasoning.Preorder as PreR
-import Relation.Binary.Reasoning.PartialOrder as POR
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Binary.Reasoning.Syntax
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Nullary.Decidable using (excluded-middle)
+open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
 open import Relation.Unary using (Pred)
 
 private
@@ -66,8 +68,8 @@ take (suc n) []       = Vec≤.[]
 take (suc n) (x ∷ xs) = x Vec≤.∷ take n (♭ xs)
 
 
-module ¬¬Monad {p} where
-  open RawMonad (¬¬-Monad {p}) public
+module ¬¬Monad {a} where
+  open RawMonad (¬¬-Monad {a}) public
 open ¬¬Monad  -- we don't want the RawMonad content to be opened publicly
 
 ------------------------------------------------------------------------
@@ -98,33 +100,30 @@ data _⊑_ {A : Set a} : Rel (Colist A) a where
 -- Any can be expressed using _∈_ (and vice versa).
 
 Any-∈ : ∀ {xs} → Any P xs ↔ ∃ λ x → x ∈ xs × P x
-Any-∈ {P = P} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ (λ { (x , x∈xs , p) → from x∈xs p })
-  ; inverse-of = record
-    { left-inverse-of  = from∘to
-    ; right-inverse-of = λ { (x , x∈xs , p) → to∘from x∈xs p }
-    }
-  }
+Any-∈ {P = P} = mk↔ₛ′
+  to
+  (λ { (x , x∈xs , p) → from x∈xs p })
+  (λ { (x , x∈xs , p) → to∘from x∈xs p })
+  from∘to
   where
   to : ∀ {xs} → Any P xs → ∃ λ x → x ∈ xs × P x
-  to (here  p) = _ , here P.refl , p
-  to (there p) = Prod.map id (Prod.map there id) (to p)
+  to (here  p) = _ , here refl , p
+  to (there p) = Product.map id (Product.map there id) (to p)
 
   from : ∀ {x xs} → x ∈ xs → P x → Any P xs
-  from (here P.refl) p = here p
+  from (here refl) p = here p
   from (there x∈xs)  p = there (from x∈xs p)
 
   to∘from : ∀ {x xs} (x∈xs : x ∈ xs) (p : P x) →
             to (from x∈xs p) ≡ (x , x∈xs , p)
-  to∘from (here P.refl) p = P.refl
+  to∘from (here refl) p = refl
   to∘from (there x∈xs)  p =
-    P.cong (Prod.map id (Prod.map there id)) (to∘from x∈xs p)
+    cong (Product.map id (Product.map there id)) (to∘from x∈xs p)
 
   from∘to : ∀ {xs} (p : Any P xs) →
             let (x , x∈xs , px) = to p in from x∈xs px ≡ p
-  from∘to (here _)  = P.refl
-  from∘to (there p) = P.cong there (from∘to p)
+  from∘to (here _)  = refl
+  from∘to (there p) = cong there (from∘to p)
 
 -- Prefixes are subsets.
 
@@ -165,38 +164,39 @@ Any-∈ {P = P} = record
   antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
 module ⊑-Reasoning {a} {A : Set a} where
-  private module Base = POR (⊑-Poset A)
+  private module Base = ≤-Reasoning (⊑-Poset A)
 
-  open Base public
-    hiding (step-<; begin-strict_; step-≤)
+  open Base public hiding (step-<; step-≤)
 
-  infixr 2 step-⊑
-  step-⊑ = Base.step-≤
-  syntax step-⊑ x ys⊑zs xs⊑ys = x ⊑⟨ xs⊑ys ⟩ ys⊑zs
+  open ⊑-syntax _IsRelatedTo_ _IsRelatedTo_ Base.≤-go public
+  open ⊏-syntax _IsRelatedTo_ _IsRelatedTo_ Base.<-go public
+
 
 -- The subset relation forms a preorder.
 
 ⊆-Preorder : ∀ {ℓ} → Set ℓ → Preorder _ _ _
 ⊆-Preorder A = Ind.preorder (setoid A) _∈_
-                 (λ xs≈ys → ⊑⇒⊆ (⊑P.reflexive xs≈ys))
-  where module ⊑P = Poset (⊑-Poset A)
+                 (λ xs≈ys → ⊑⇒⊆ (⊑A.reflexive xs≈ys))
+  where module ⊑A = Poset (⊑-Poset A)
 
+-- Example uses:
+--
+--    x∈zs : x ∈ zs
+--    x∈zs =
+--      x  ∈⟨ x∈xs ⟩
+--      xs ⊆⟨ xs⊆ys ⟩
+--      ys ≡⟨ ys≡zs ⟩
+--      zs  ∎
 module ⊆-Reasoning {A : Set a} where
-  private module Base = PreR (⊆-Preorder A)
+  private module Base = ≲-Reasoning (⊆-Preorder A)
 
   open Base public
-    hiding (step-∼)
+    hiding (step-≲; step-∼)
+    renaming (≲-go to ⊆-go)
 
-  infixr 2 step-⊆
-  infix  1 step-∈
+  open begin-membership-syntax _IsRelatedTo_ _∈_ (λ x → begin x)
+  open ⊆-syntax _IsRelatedTo_ _IsRelatedTo_ ⊆-go public
 
-  step-⊆ = Base.step-∼
-
-  step-∈ : ∀ (x : A) {xs ys} → xs IsRelatedTo ys → x ∈ xs → x ∈ ys
-  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
-
-  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
-  syntax step-∈ x  xs⊆ys x∈xs  = x  ∈⟨ x∈xs  ⟩ xs⊆ys
 
 -- take returns a prefix.
 take-⊑ : ∀ n (xs : Colist A) →
@@ -215,10 +215,12 @@ data Finite {A : Set a} : Colist A → Set a where
   []  : Finite []
   _∷_ : ∀ x {xs} (fin : Finite (♭ xs)) → Finite (x ∷ xs)
 
+infixr 5 _∷_
+
 module Finite-injective where
 
  ∷-injective : ∀ {x : A} {xs p q} → (Finite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
- ∷-injective P.refl = P.refl
+ ∷-injective refl = refl
 
 -- Infinite xs means that xs has infinite length.
 
@@ -228,7 +230,7 @@ data Infinite {A : Set a} : Colist A → Set a where
 module Infinite-injective where
 
  ∷-injective : ∀ {x : A} {xs p q} → (Infinite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
- ∷-injective P.refl = P.refl
+ ∷-injective refl = refl
 
 -- Colists which are not finite are infinite.
 
@@ -242,7 +244,7 @@ not-finite-is-infinite (x ∷ xs) hyp =
 
 finite-or-infinite :
   (xs : Colist A) → ¬ ¬ (Finite xs ⊎ Infinite xs)
-finite-or-infinite xs = helper <$> excluded-middle
+finite-or-infinite xs = helper <$> ¬¬-excluded-middle
   where
   helper : Dec (Finite xs) → Finite xs ⊎ Infinite xs
   helper ( true because  [fin]) = inj₁ (invert [fin])

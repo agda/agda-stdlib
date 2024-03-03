@@ -4,16 +4,20 @@
 -- Pointwise lifting of relations over Vector
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat.Base using (ℕ)
-open import Data.Vec.Functional as VF hiding (map)
+open import Data.Vec.Functional hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
   using (Pointwise)
 import Data.Vec.Functional.Relation.Binary.Pointwise.Properties as PW
 open import Level using (Level)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 module Data.Vec.Functional.Relation.Binary.Equality.Setoid
   {a ℓ} (S : Setoid a ℓ) where
@@ -23,6 +27,8 @@ open Setoid S renaming (Carrier to A)
 ------------------------------------------------------------------------
 -- Definition
 ------------------------------------------------------------------------
+
+infix 4 _≋_
 
 _≋_ : ∀ {n} → Vector A n → Vector A n → Set ℓ
 _≋_ = Pointwise _≈_
@@ -35,7 +41,7 @@ _≋_ = Pointwise _≈_
 ≋-refl {n} = PW.refl {R = _≈_} refl
 
 ≋-reflexive : ∀ {n} → _≡_ ⇒ (_≋_ {n = n})
-≋-reflexive P.refl = ≋-refl
+≋-reflexive ≡.refl = ≋-refl
 
 ≋-sym : ∀ {n} → Symmetric (_≋_ {n = n})
 ≋-sym = PW.sym {R = _≈_} sym

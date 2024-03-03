@@ -4,9 +4,9 @@
 -- Decidable setoid membership over vectors.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecSetoid)
+open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.Vec.Membership.DecSetoid {c ℓ} (DS : DecSetoid c ℓ) where
 

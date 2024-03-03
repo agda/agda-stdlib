@@ -18,12 +18,12 @@
 --    u≈w = begin-equality
 --      u  ≈⟨ u≈v ⟩
 --      v  ≡⟨ v≡w ⟩
---      w  ≡˘⟨ x≡w ⟩
+--      w  ≡⟨ x≡w ⟨
 --      x  ∎
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Preorder)
 
 module Relation.Binary.Reasoning.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where

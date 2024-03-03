@@ -4,7 +4,7 @@
 -- Morphisms between algebraic structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Core
 
@@ -14,7 +14,7 @@ open import Algebra.Core
 open import Algebra.Bundles
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)
-import Function.Definitions as FunctionDefinitions
+open import Function.Definitions
 open import Relation.Binary.Morphism.Structures
 
 private
@@ -30,7 +30,6 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
   open RawMagma M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_)
   open RawMagma M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_)
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
 
 
   record IsMagmaHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -45,7 +44,7 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
   record IsMagmaMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isMagmaHomomorphism : IsMagmaHomomorphism ⟦_⟧
-      injective           : Injective ⟦_⟧
+      injective           : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsMagmaHomomorphism isMagmaHomomorphism public
 
@@ -59,7 +58,7 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
   record IsMagmaIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isMagmaMonomorphism : IsMagmaMonomorphism ⟦_⟧
-      surjective          : Surjective ⟦_⟧
+      surjective          : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsMagmaMonomorphism isMagmaMonomorphism public
 
@@ -79,7 +78,6 @@ module MonoidMorphisms (M₁ : RawMonoid a ℓ₁) (M₂ : RawMonoid b ℓ₂) w
   open RawMonoid M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_; ε to ε₁)
   open RawMonoid M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; ε to ε₂)
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
   open MagmaMorphisms (RawMonoid.rawMagma M₁) (RawMonoid.rawMagma M₂)
 
 
@@ -94,7 +92,7 @@ module MonoidMorphisms (M₁ : RawMonoid a ℓ₁) (M₂ : RawMonoid b ℓ₂) w
   record IsMonoidMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isMonoidHomomorphism : IsMonoidHomomorphism ⟦_⟧
-      injective            : Injective ⟦_⟧
+      injective            : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsMonoidHomomorphism isMonoidHomomorphism public
 
@@ -111,7 +109,7 @@ module MonoidMorphisms (M₁ : RawMonoid a ℓ₁) (M₂ : RawMonoid b ℓ₂) w
   record IsMonoidIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isMonoidMonomorphism : IsMonoidMonomorphism ⟦_⟧
-      surjective           : Surjective ⟦_⟧
+      surjective           : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsMonoidMonomorphism isMonoidMonomorphism public
 
@@ -136,7 +134,6 @@ module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) wher
   open RawGroup G₂ renaming
     (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; _⁻¹ to _⁻¹₂; ε to ε₂)
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
   open MagmaMorphisms  (RawGroup.rawMagma  G₁) (RawGroup.rawMagma  G₂)
   open MonoidMorphisms (RawGroup.rawMonoid G₁) (RawGroup.rawMonoid G₂)
 
@@ -152,7 +149,7 @@ module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) wher
   record IsGroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
-      injective           : Injective ⟦_⟧
+      injective           : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsGroupHomomorphism isGroupHomomorphism public
       renaming (homo to ∙-homo)
@@ -170,7 +167,7 @@ module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) wher
   record IsGroupIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isGroupMonomorphism : IsGroupMonomorphism ⟦_⟧
-      surjective          : Surjective ⟦_⟧
+      surjective          : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsGroupMonomorphism isGroupMonomorphism public
 
@@ -207,7 +204,6 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
     module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
 
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
 
 
   record IsNearSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -227,7 +223,7 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
   record IsNearSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isNearSemiringHomomorphism : IsNearSemiringHomomorphism ⟦_⟧
-      injective          : Injective ⟦_⟧
+      injective          : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsNearSemiringHomomorphism isNearSemiringHomomorphism public
 
@@ -250,7 +246,7 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
   record IsNearSemiringIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isNearSemiringMonomorphism : IsNearSemiringMonomorphism ⟦_⟧
-      surjective                 : Surjective ⟦_⟧
+      surjective                 : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsNearSemiringMonomorphism isNearSemiringMonomorphism public
 
@@ -292,7 +288,6 @@ module SemiringMorphisms (R₁ : RawSemiring a ℓ₁) (R₂ : RawSemiring b ℓ
     module * = MonoidMorphisms *-rawMonoid₁ *-rawMonoid₂
 
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
   open NearSemiringMorphisms rawNearSemiring₁ rawNearSemiring₂
 
   record IsSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -311,7 +306,7 @@ module SemiringMorphisms (R₁ : RawSemiring a ℓ₁) (R₂ : RawSemiring b ℓ
   record IsSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isSemiringHomomorphism : IsSemiringHomomorphism ⟦_⟧
-      injective              : Injective ⟦_⟧
+      injective              : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsSemiringHomomorphism isSemiringHomomorphism public
 
@@ -333,7 +328,7 @@ module SemiringMorphisms (R₁ : RawSemiring a ℓ₁) (R₂ : RawSemiring b ℓ
   record IsSemiringIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isSemiringMonomorphism : IsSemiringMonomorphism ⟦_⟧
-      surjective             : Surjective ⟦_⟧
+      surjective             : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsSemiringMonomorphism isSemiringMonomorphism public
 
@@ -375,7 +370,6 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
     module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
 
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
 
   record IsRingWithoutOneHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -394,7 +388,7 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
   record IsRingWithoutOneMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism ⟦_⟧
-      injective                    : Injective ⟦_⟧
+      injective                    : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsRingWithoutOneHomomorphism isRingWithoutOneHomomorphism public
 
@@ -417,7 +411,7 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
   record IsRingWithoutOneIsoMorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRingWithoutOneMonomorphism : IsRingWithoutOneMonomorphism ⟦_⟧
-      surjective                   : Surjective ⟦_⟧
+      surjective                   : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsRingWithoutOneMonomorphism isRingWithoutOneMonomorphism public
 
@@ -462,7 +456,6 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
   module * = MonoidMorphisms *-rawMonoid₁ *-rawMonoid₂
 
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
   open SemiringMorphisms rawSemiring₁ rawSemiring₂
 
 
@@ -482,7 +475,7 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
   record IsRingMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRingHomomorphism : IsRingHomomorphism ⟦_⟧
-      injective          : Injective ⟦_⟧
+      injective          : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsRingHomomorphism isRingHomomorphism public
 
@@ -518,7 +511,7 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
   record IsRingIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRingMonomorphism : IsRingMonomorphism ⟦_⟧
-      surjective         : Surjective ⟦_⟧
+      surjective         : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsRingMonomorphism isRingMonomorphism public
 
@@ -568,7 +561,6 @@ module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup
   module // = MagmaMorphisms //-rawMagma₁ //-rawMagma₂
 
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
 
   record IsQuasigroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -601,7 +593,7 @@ module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup
   record IsQuasigroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isQuasigroupHomomorphism : IsQuasigroupHomomorphism ⟦_⟧
-      injective                : Injective ⟦_⟧
+      injective                : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsQuasigroupHomomorphism isQuasigroupHomomorphism public
 
@@ -631,7 +623,7 @@ module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup
   record IsQuasigroupIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isQuasigroupMonomorphism : IsQuasigroupMonomorphism ⟦_⟧
-      surjective               : Surjective ⟦_⟧
+      surjective               : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsQuasigroupMonomorphism isQuasigroupMonomorphism public
 
@@ -669,7 +661,6 @@ module LoopMorphisms (L₁ : RawLoop a ℓ₁) (L₂ : RawLoop b ℓ₂) where
                             \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;
                             _≈_ to _≈₂_; _∙_ to _∙₂_; _\\_ to _\\₂_; _//_ to _//₂_ ; ε to ε₂)
   open MorphismDefinitions A B _≈₂_
-  open FunctionDefinitions _≈₁_ _≈₂_
 
   open QuasigroupMorphisms (RawLoop.rawQuasigroup L₁) (RawLoop.rawQuasigroup L₂)
 
@@ -683,16 +674,57 @@ module LoopMorphisms (L₁ : RawLoop a ℓ₁) (L₂ : RawLoop b ℓ₂) where
   record IsLoopMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isLoopHomomorphism   : IsLoopHomomorphism ⟦_⟧
-      injective            : Injective ⟦_⟧
+      injective            : Injective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsLoopHomomorphism isLoopHomomorphism public
 
   record IsLoopIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isLoopMonomorphism   : IsLoopMonomorphism ⟦_⟧
-      surjective           : Surjective ⟦_⟧
+      surjective           : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
     open IsLoopMonomorphism isLoopMonomorphism public
+
+------------------------------------------------------------------------
+-- Morphisms over Kleene algebra structures
+------------------------------------------------------------------------
+module KleeneAlgebraMorphisms (R₁ : RawKleeneAlgebra a ℓ₁) (R₂ : RawKleeneAlgebra b ℓ₂) where
+
+  open RawKleeneAlgebra R₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; _⋆ to _⋆₁
+    ; rawSemiring to rawSemiring₁
+    )
+
+  open RawKleeneAlgebra R₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; _⋆ to _⋆₂
+    ; rawSemiring to rawSemiring₂
+    )
+
+  open MorphismDefinitions A B _≈₂_
+  open SemiringMorphisms rawSemiring₁ rawSemiring₂
+
+  record IsKleeneAlgebraHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isSemiringHomomorphism : IsSemiringHomomorphism ⟦_⟧
+      ⋆-homo :  Homomorphic₁ ⟦_⟧ _⋆₁ _⋆₂
+
+    open IsSemiringHomomorphism isSemiringHomomorphism public
+
+  record IsKleeneAlgebraMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isKleeneAlgebraHomomorphism   : IsKleeneAlgebraHomomorphism ⟦_⟧
+      injective                     : Injective  _≈₁_ _≈₂_ ⟦_⟧
+
+    open IsKleeneAlgebraHomomorphism isKleeneAlgebraHomomorphism public
+
+  record IsKleeneAlgebraIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isKleeneAlgebraMonomorphism   : IsKleeneAlgebraMonomorphism ⟦_⟧
+      surjective                    : Surjective  _≈₁_ _≈₂_ ⟦_⟧
+
+    open IsKleeneAlgebraMonomorphism isKleeneAlgebraMonomorphism public
 
 ------------------------------------------------------------------------
 -- Re-export contents of modules publicly
@@ -706,3 +738,4 @@ open RingWithoutOneMorphisms public
 open RingMorphisms public
 open QuasigroupMorphisms public
 open LoopMorphisms public
+open KleeneAlgebraMorphisms public

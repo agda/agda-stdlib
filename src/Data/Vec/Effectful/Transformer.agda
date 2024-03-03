@@ -4,7 +4,7 @@
 -- An effectful view of Vec
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Effectful.Transformer where
 
@@ -40,7 +40,7 @@ functor M = record
 applicative : RawApplicative M → RawApplicative {f} (VecT n M)
 applicative M = record
   { rawFunctor = functor rawFunctor
-  ; pure = mkVecT ∘′ pure ∘′ Vec.replicate
+  ; pure = mkVecT ∘′ pure ∘′ Vec.replicate _
   ; _<*>_  = λ mf ma → mkVecT (Vec.zipWith _$_ <$> runVecT mf <*> runVecT ma)
   } where open RawApplicative M
 
@@ -50,11 +50,11 @@ monad {f} {g} M = record
   ; _>>=_ = λ ma k → mkVecT $ do
                       a ← runVecT ma
                       bs ← mapM {a = f} (runVecT ∘′ k) a
-                      pure (Vec.DiagonalBind.join bs)
+                      pure (Vec.diagonal bs)
   } where open RawMonad M; open Vec.TraversableM {m = f} {n = g} M
 
 monadT : RawMonadT {f} {g} (VecT n)
 monadT M = record
-  { lift = mkVecT ∘′ (Vec.replicate <$>_)
+  { lift = mkVecT ∘′ (Vec.replicate _ <$>_)
   ; rawMonad = monad M
   } where open RawMonad M

@@ -7,13 +7,13 @@
 -- Note that currently the applicative functor laws are not included
 -- here.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Applicative.Predicate where
 
 open import Effect.Functor.Predicate
-open import Data.Product
-open import Function
+open import Data.Product.Base using (_,_)
+open import Function.Base using (const; constᵣ)
 open import Level
 open import Relation.Unary
 open import Relation.Unary.PredicateTransformer using (Pt)

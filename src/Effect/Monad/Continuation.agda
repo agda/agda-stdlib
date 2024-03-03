@@ -4,7 +4,7 @@
 -- A delimited continuation monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Effect.Monad.Continuation where
 
@@ -13,7 +13,7 @@ open import Effect.Applicative.Indexed
 open import Effect.Monad
 open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Monad.Indexed
-open import Function
+open import Function.Base using (flip)
 open import Level
 
 private

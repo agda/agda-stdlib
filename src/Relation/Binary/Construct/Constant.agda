@@ -4,12 +4,14 @@
 -- The binary relation defined by a constant
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Constant where
 
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
 
 private
   variable

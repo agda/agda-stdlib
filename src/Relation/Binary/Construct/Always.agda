@@ -4,11 +4,14 @@
 -- The universal binary relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Always where
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
 open import Relation.Binary.Construct.Constant using (Const)
 open import Data.Unit.Polymorphic using (⊤; tt)
 

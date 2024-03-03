@@ -4,7 +4,7 @@
 -- Nondependent heterogeneous N-ary products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Product.Nary.NonDependent where
 
@@ -16,25 +16,26 @@ module Data.Product.Nary.NonDependent where
 
 open import Level as L using (Level; _⊔_; Lift; 0ℓ)
 open import Agda.Builtin.Unit
-open import Data.Product as Prod
+open import Data.Product.Base as Prod
 import Data.Product.Properties as Prodₚ
 open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function.Base using (const; _∘′_; _∘_)
-open import Relation.Nullary.Decidable using (Dec; yes; no; _×-dec_)
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
+open import Relation.Nullary.Decidable.Core using (Dec; yes; no; _×-dec_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 
 open import Function.Nary.NonDependent.Base
 
--- Provided n Levels and a corresponding "vector" of `n` Sets, we can build a big
--- right-nested product type packing a value for each one of these Sets.
+-- Provided n Levels and a corresponding "vector" of `n` Sets, we can
+-- build a big right-nested product type packing a value for each one
+-- of these Sets.
 -- We have two distinct but equivalent definitions:
 -- the first which is always ⊤-terminated
--- the other which has a special case for n = 1 because we want our `(un)curryₙ`
--- functions to work for user-written functions and products and they rarely are
--- ⊤-terminated.
+-- the other which has a special case for n = 1 because we want our
+-- `(un)curryₙ` functions to work for user-written functions and
+-- products and they rarely are ⊤-terminated.
 
 Product⊤ : ∀ n {ls} → Sets n ls → Set (⨆ n ls)
 Product⊤ zero    as       = ⊤
@@ -143,8 +144,8 @@ fromEqualₙ (suc n@(suc _)) eq = uncurry (cong₂ _,_) (Prod.map₂ (fromEqual�
 ------------------------------------------------------------------------
 -- projection of the k-th component
 
--- To know at which Set level the k-th projection out of an n-ary product
--- lives, we need to extract said level, by induction on k.
+-- To know at which Set level the k-th projection out of an n-ary
+-- product lives, we need to extract said level, by induction on k.
 
 Levelₙ : ∀ {n} → Levels n → Fin n → Level
 Levelₙ (l , _)  zero    = l
@@ -157,10 +158,11 @@ Projₙ : ∀ {n ls} → Sets n ls → ∀ k → Set (Levelₙ ls k)
 Projₙ (a , _)  zero    = a
 Projₙ (_ , as) (suc k) = Projₙ as k
 
--- Finally, provided a Product of these sets, we can extract the k-th value.
--- `projₙ` takes both `n` and `k` explicitly because we expect the user will
--- be using a concrete `k` (potentially manufactured using `Data.Fin`'s `#_`)
--- and it will not be possible to infer `n` from it.
+-- Finally, provided a Product of these sets, we can extract the k-th
+-- value. `projₙ` takes both `n` and `k` explicitly because we expect
+-- the user will be using a concrete `k` (potentially manufactured
+-- using `Data.Fin`'s `#_`) and it will not be possible to infer `n`
+-- from it.
 
 projₙ : ∀ n {ls} {as : Sets n ls} k → Product n as → Projₙ as k
 projₙ 1               zero    v        = v

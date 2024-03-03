@@ -4,7 +4,7 @@
 -- Extensional pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Relation.Binary.Pointwise.Extensional where
 
@@ -18,8 +18,11 @@ open import Function.Base using (_∘_)
 open import Function.Bundles using (module Equivalence; _⇔_; mk⇔)
 open import Function.Properties.Equivalence using (⇔-setoid)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel; REL; _⇒_; _=[_]⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Sym; Trans; Decidable)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
 open import Relation.Nullary
@@ -131,12 +134,12 @@ isDecEquivalence decEquiv = record
 -- Pointwise _≡_ is equivalent to _≡_.
 
 Pointwise-≡⇒≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys → xs ≡ ys
-Pointwise-≡⇒≡ {xs = []}     {[]}     (ext app) = P.refl
+Pointwise-≡⇒≡ {xs = []}     {[]}     (ext app) = ≡.refl
 Pointwise-≡⇒≡ {xs = x ∷ xs} {y ∷ ys} xs∼ys     =
-  P.cong₂ _∷_ (head xs∼ys) (Pointwise-≡⇒≡ (tail xs∼ys))
+  ≡.cong₂ _∷_ (head xs∼ys) (Pointwise-≡⇒≡ (tail xs∼ys))
 
 ≡⇒Pointwise-≡ : ∀ {n} {xs ys : Vec A n} → xs ≡ ys → Pointwise _≡_ xs ys
-≡⇒Pointwise-≡ P.refl = refl P.refl
+≡⇒Pointwise-≡ ≡.refl = refl ≡.refl
 
 Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
 Pointwise-≡↔≡ {ℓ} {A} = mk⇔ Pointwise-≡⇒≡ ≡⇒Pointwise-≡
@@ -211,4 +214,3 @@ private
     ¬ix⁺∙jz (Equivalence.to Plus.equivalent
               (Plus.map (Equivalence.to equivalent)
                 (∙⁺⇒⁺∙ (Equivalence.from equivalent ix∙⁺jz))))
-

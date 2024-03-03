@@ -4,7 +4,7 @@
 -- Properties of the Any predicate on colists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Colist.Relation.Unary.Any.Properties where
 
@@ -18,11 +18,10 @@ open import Data.Nat.Base using (suc; _≥′_; ≤′-refl; ≤′-step)
 open import Data.Nat.Properties using (s≤′s)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′; [_,_])
 open import Function.Base using (_∋_; _∘_)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
+open import Function.Bundles
 open import Level using (Level; _⊔_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong)
 open import Relation.Unary using (Pred)
 
@@ -53,35 +52,29 @@ Any-resp f (x ∷ xs≈) (there p) = there (Any-resp f (♭ xs≈) p)
 -- isomorphic types.
 
 Any-cong : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q}
-           {xs ys} → P ↔̇ Q → xs ≈ ys → Any P xs ↔ Any Q ys
-Any-cong {A = A} {P} {Q} {xs} {ys} P↔Q = λ xs≈ys → record
-  { to         = P.→-to-⟶ (to xs≈ys)
-  ; from       = P.→-to-⟶ (from xs≈ys)
-  ; inverse-of = record
-    { left-inverse-of  = from∘to _
-    ; right-inverse-of = to∘from _
-    }
-  }
+           {xs ys} → (∀ {i} → P i ↔ Q i) → xs ≈ ys → Any P xs ↔ Any Q ys
+Any-cong {A = A} {P} {Q} {xs} {ys} P↔Q xs≈ys =
+  mk↔ₛ′ (to xs≈ys) (from xs≈ys) (to∘from _) (from∘to _)
   where
   open Setoid (setoid _) using (sym)
 
   to : ∀ {xs ys} → xs ≈ ys → Any P xs → Any Q ys
-  to xs≈ys = Any-resp (Inverse.to P↔Q ⟨$⟩_) xs≈ys
+  to xs≈ys = Any-resp (Inverse.to P↔Q) xs≈ys
 
   from : ∀ {xs ys} → xs ≈ ys → Any Q ys → Any P xs
-  from xs≈ys = Any-resp (Inverse.from P↔Q ⟨$⟩_) (sym xs≈ys)
+  from xs≈ys = Any-resp (Inverse.from P↔Q) (sym xs≈ys)
 
   to∘from : ∀ {xs ys} (xs≈ys : xs ≈ ys) (q : Any Q ys) →
             to xs≈ys (from xs≈ys q) ≡ q
-  to∘from (x ∷ xs≈) (there q) = P.cong there (to∘from (♭ xs≈) q)
+  to∘from (x ∷ xs≈) (there q) = cong there (to∘from (♭ xs≈) q)
   to∘from (x ∷ xs≈) (here qx) =
-    P.cong here (Inverse.right-inverse-of P↔Q qx)
+    cong here (Inverse.strictlyInverseˡ P↔Q qx)
 
   from∘to : ∀ {xs ys} (xs≈ys : xs ≈ ys) (p : Any P xs) →
             from xs≈ys (to xs≈ys p) ≡ p
-  from∘to (x ∷ xs≈) (there p) = P.cong there (from∘to (♭ xs≈) p)
+  from∘to (x ∷ xs≈) (there p) = cong there (from∘to (♭ xs≈) p)
   from∘to (x ∷ xs≈) (here px) =
-    P.cong here (Inverse.left-inverse-of P↔Q px)
+    cong here (Inverse.strictlyInverseʳ P↔Q px)
 
 ------------------------------------------------------------------------
 -- map
@@ -97,8 +90,8 @@ module _ {f : A → B} where
   map⁺ (there p) = there (map⁺ p)
 
   Any-map : ∀ {xs} → Any P (map f xs) ↔ Any (P ∘ f) xs
-  Any-map {xs = xs} = inverse map⁻ map⁺ from∘to to∘from where
-
+  Any-map {xs = xs} = mk↔ₛ′ map⁻ map⁺ to∘from from∘to
+    where
     from∘to : ∀ {xs} (p : Any P (map f xs)) → map⁺ (map⁻ p) ≡ p
     from∘to {xs = x ∷ xs} (here px) = refl
     from∘to {xs = x ∷ xs} (there p) = cong there (from∘to p)
@@ -130,14 +123,7 @@ mutual
 
 Any-⋎ : ∀ {a p} {A : Set a} {P : A → Set p} xs {ys} →
         Any P (xs ⋎ ys) ↔ (Any P xs ⊎ Any P ys)
-Any-⋎ {P = P} = λ xs → record
-  { to         = P.→-to-⟶ (⋎⁻ xs)
-  ; from       = P.→-to-⟶ (⋎⁺ xs)
-  ; inverse-of = record
-    { left-inverse-of  = from∘to xs
-    ; right-inverse-of = to∘from xs
-    }
-  }
+Any-⋎ {P = P} xs = mk↔ₛ′ (⋎⁻ xs) (⋎⁺ xs) (to∘from xs) (from∘to xs)
   where
 
   from∘to : ∀ xs {ys} (p : Any P (xs ⋎ ys)) → ⋎⁺ xs (⋎⁻ xs p) ≡ p
@@ -178,7 +164,7 @@ lookup-index (there p) = lookup-index p
 index-Any-resp : ∀ {f : ∀ {x} → P x → Q x} {xs ys}
                  (xs≈ys : xs ≈ ys) (p : Any P xs) →
                  index (Any-resp f xs≈ys p) ≡ index p
-index-Any-resp (x ∷ xs≈) (here px) = P.refl
+index-Any-resp (x ∷ xs≈) (here px) = refl
 index-Any-resp (x ∷ xs≈) (there p) =
   cong suc (index-Any-resp (♭ xs≈) p)
 
@@ -186,10 +172,10 @@ index-Any-resp (x ∷ xs≈) (there p) =
 -- no larger than that of the input proof.
 
 index-Any-⋎ : ∀ xs {ys} (p : Any P (xs ⋎ ys)) →
-              index p ≥′ [ index , index ]′ (Inverse.to (Any-⋎ xs) ⟨$⟩ p)
+              index p ≥′ [ index , index ]′ (Inverse.to (Any-⋎ xs) p)
 index-Any-⋎ []                 p         = ≤′-refl
 index-Any-⋎ (x ∷ xs)           (here px) = ≤′-refl
 index-Any-⋎ (x ∷ xs) {ys = ys} (there p)
-  with Inverse.to (Any-⋎ ys) ⟨$⟩ p | index-Any-⋎ ys p
+  with Inverse.to (Any-⋎ ys) p | index-Any-⋎ ys p
 ... | inj₁ q | q≤p = ≤′-step q≤p
 ... | inj₂ q | q≤p = s≤′s    q≤p

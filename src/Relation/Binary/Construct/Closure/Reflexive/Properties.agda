@@ -4,18 +4,23 @@
 -- Some properties of reflexive closures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
 open import Data.Sum.Base as Sum
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Function.Base using (id)
 open import Level
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel; REL; _=[_]⇒_)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsStrictPartialOrder; IsPartialOrder; IsDecStrictPartialOrder; IsDecPartialOrder; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Reflexive; Asymmetric; Antisymmetric; Trichotomous; Total; Decidable; tri<; tri≈; tri>; _Respectsˡ_; _Respectsʳ_; _Respects_; _Respects₂_)
 open import Relation.Binary.Construct.Closure.Reflexive
-open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary using (Pred)
@@ -98,7 +103,7 @@ module _ {_~_ : Rel A ℓ} {P : Pred A p} where
 module _ {_~_ : Rel A ℓ} {P : Rel A p} where
 
   resp₂ : P Respects₂ _~_ → P Respects₂ (ReflClosure _~_)
-  resp₂ = Prod.map respˡ respʳ
+  resp₂ = Product.map respˡ respʳ
 
 ------------------------------------------------------------------------
 -- Structures
@@ -110,7 +115,7 @@ module _ {_~_ : Rel A ℓ} where
 
   isPreorder : Transitive _~_ → IsPreorder _≡_ _~ᵒ_
   isPreorder ~-trans = record
-    { isEquivalence = PropEq.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = λ { refl → refl }
     ; trans         = trans ~-trans
     }

@@ -4,13 +4,15 @@
 -- Properties of the homogeneous suffix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Suffix.Homogeneous.Properties where
 
 open import Level
 open import Function.Base using (_∘′_)
-open import Relation.Binary
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsDecPartialOrder)
 
 open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Suffix.Heterogeneous

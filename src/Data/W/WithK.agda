@@ -8,7 +8,7 @@
 
 module Data.W.WithK where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.Container.Core
 open import Data.W
 open import Agda.Builtin.Equality

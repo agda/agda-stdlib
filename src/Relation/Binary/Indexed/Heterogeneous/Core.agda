@@ -7,14 +7,13 @@
 -- The contents of this module should be accessed via
 -- `Relation.Binary.Indexed.Heterogeneous`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Indexed.Heterogeneous.Core where
 
 open import Level
 import Relation.Binary.Core as B
 import Relation.Binary.Definitions as B
-import Relation.Binary.PropositionalEquality.Core as P
 
 ------------------------------------------------------------------------
 -- Indexed binary relations

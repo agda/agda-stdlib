@@ -4,7 +4,7 @@
 -- Relations between properties of scaling and other operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Module.Consequences where
 
@@ -14,8 +14,9 @@ open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Module.Definitions
 open import Function.Base using (flip)
 open import Level using (Level)
-open import Relation.Binary using (Rel; Setoid)
-import Relation.Binary.Reasoning.Setoid as Rea
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
@@ -26,7 +27,7 @@ private
 module _ (_≈ᴬ_ : Rel {a} A ℓa) (S : Setoid c ℓ) where
 
   open Setoid S
-  open Rea S
+  open ≈-Reasoning S
   open Defs _≈ᴬ_
 
   private
@@ -44,7 +45,7 @@ module _ (_≈ᴬ_ : Rel {a} A ℓa) (S : Setoid c ℓ) where
       L.Associative _*_ _*ₗ_ → Commutative _*_ → R.Associative _*_ _*ᵣ_
     *ₗ-assoc+comm⇒*ᵣ-assoc *ₗ-congʳ *ₗ-assoc *-comm m x y = begin
       (m *ᵣ x) *ᵣ y  ≈⟨ refl ⟩
-      y *ₗ (x *ₗ m)  ≈˘⟨ *ₗ-assoc _ _ _ ⟩
+      y *ₗ (x *ₗ m)  ≈⟨ *ₗ-assoc _ _ _ ⟨
       (y * x) *ₗ m   ≈⟨ *ₗ-congʳ (*-comm y x) ⟩
       (x * y) *ₗ m   ≈⟨ refl ⟩
       m *ᵣ (x * y)   ∎
@@ -54,7 +55,7 @@ module _ (_≈ᴬ_ : Rel {a} A ℓa) (S : Setoid c ℓ) where
       L.Associative _*_ _*ₗ_ → Commutative _*_ → B.Associative _*ₗ_ _*ᵣ_
     *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc *ₗ-congʳ *ₗ-assoc *-comm x m y = begin
       ((x *ₗ m) *ᵣ y)  ≈⟨ refl ⟩
-      (y *ₗ (x *ₗ m))  ≈˘⟨ *ₗ-assoc _ _ _ ⟩
+      (y *ₗ (x *ₗ m))  ≈⟨ *ₗ-assoc _ _ _ ⟨
       ((y * x) *ₗ m)   ≈⟨ *ₗ-congʳ (*-comm y x) ⟩
       ((x * y) *ₗ m)   ≈⟨ *ₗ-assoc _ _ _ ⟩
       (x *ₗ (y *ₗ m))  ≈⟨ refl ⟩
@@ -71,7 +72,7 @@ module _ (_≈ᴬ_ : Rel {a} A ℓa) (S : Setoid c ℓ) where
     *ᵣ-assoc+comm⇒*ₗ-assoc *ᵣ-congˡ *ᵣ-assoc *-comm x y m = begin
       ((x * y) *ₗ m)   ≈⟨ refl ⟩
       (m *ᵣ (x * y))   ≈⟨ *ᵣ-congˡ (*-comm x y) ⟩
-      (m *ᵣ (y * x))   ≈˘⟨ *ᵣ-assoc _ _ _ ⟩
+      (m *ᵣ (y * x))   ≈⟨ *ᵣ-assoc _ _ _ ⟨
       ((m *ᵣ y) *ᵣ x)  ≈⟨ refl ⟩
       (x *ₗ (y *ₗ m))  ∎
 
@@ -82,6 +83,6 @@ module _ (_≈ᴬ_ : Rel {a} A ℓa) (S : Setoid c ℓ) where
       ((x *ₗ m) *ᵣ y)  ≈⟨ refl ⟩
       ((m *ᵣ x) *ᵣ y)  ≈⟨ *ᵣ-assoc _ _ _ ⟩
       (m *ᵣ (x * y))   ≈⟨ *ᵣ-congˡ (*-comm x y) ⟩
-      (m *ᵣ (y * x))   ≈˘⟨ *ᵣ-assoc _ _ _ ⟩
+      (m *ᵣ (y * x))   ≈⟨ *ᵣ-assoc _ _ _ ⟨
       ((m *ᵣ y) *ᵣ x)  ≈⟨ refl ⟩
       (x *ₗ (m *ᵣ y))  ∎

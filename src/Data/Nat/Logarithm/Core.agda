@@ -1,10 +1,10 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Logarithm base 2 core definitions and properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Logarithm.Core where
 
@@ -23,7 +23,7 @@ open import Data.Unit
 ⌊log2⌋ : ∀ n → Acc _<_ n → ℕ
 ⌊log2⌋ 0          _        = 0
 ⌊log2⌋ 1          _        = 0
-⌊log2⌋ (suc n′@(suc n)) (acc rs) = 1 + ⌊log2⌋ (suc ⌊ n /2⌋) (rs _ (⌊n/2⌋<n n′))
+⌊log2⌋ (suc n′@(suc n)) (acc rs) = 1 + ⌊log2⌋ (suc ⌊ n /2⌋) (rs (⌊n/2⌋<n n′))
 
 
 -- Ceil version
@@ -31,7 +31,7 @@ open import Data.Unit
 ⌈log2⌉ : ∀ n → Acc _<_ n → ℕ
 ⌈log2⌉ 0                _        = 0
 ⌈log2⌉ 1                _        = 0
-⌈log2⌉ (suc (suc n)) (acc rs) = 1 + ⌈log2⌉ (suc ⌈ n /2⌉) (rs _ (⌈n/2⌉<n n))
+⌈log2⌉ (suc (suc n)) (acc rs) = 1 + ⌈log2⌉ (suc ⌈ n /2⌉) (rs (⌈n/2⌉<n n))
 
 ------------------------------------------------------------------------
 -- Properties of ⌊log2⌋
@@ -72,7 +72,7 @@ open import Data.Unit
 ⌊log2⌋2^n≡n : ∀ n {acc} → ⌊log2⌋ (2 ^ n) acc ≡ n
 ⌊log2⌋2^n≡n zero    = refl
 ⌊log2⌋2^n≡n (suc n) = begin
-  ⌊log2⌋ ((2 ^ n) + ((2 ^ n) + zero)) _ ≡⟨ ⌊log2⌋2*b≡1+⌊log2⌋b (2 ^ n) {{>-nonZero (2^n>0 n)}} ⟩
+  ⌊log2⌋ ((2 ^ n) + ((2 ^ n) + zero)) _ ≡⟨ ⌊log2⌋2*b≡1+⌊log2⌋b (2 ^ n) {{m^n≢0 2 n}} ⟩
   1 + ⌊log2⌋ (2 ^ n) (<-wellFounded _)  ≡⟨ cong suc (⌊log2⌋2^n≡n n) ⟩
   suc n                                 ∎
   where open ≡-Reasoning
@@ -116,7 +116,7 @@ open import Data.Unit
 ⌈log2⌉2^n≡n : ∀ n {acc} → ⌈log2⌉ (2 ^ n) acc ≡ n
 ⌈log2⌉2^n≡n zero    = refl
 ⌈log2⌉2^n≡n (suc n) = begin
-  ⌈log2⌉ ((2 ^ n) + ((2 ^ n) + zero)) _ ≡⟨ ⌈log2⌉2*n≡1+⌈log2⌉n (2 ^ n) {{>-nonZero (2^n>0 n)}} ⟩
+  ⌈log2⌉ ((2 ^ n) + ((2 ^ n) + zero)) _ ≡⟨ ⌈log2⌉2*n≡1+⌈log2⌉n (2 ^ n) {{m^n≢0 2 n}} ⟩
   1 + ⌈log2⌉ (2 ^ n) (<-wellFounded _)  ≡⟨ cong suc (⌈log2⌉2^n≡n n) ⟩
   suc n                                 ∎
   where open ≡-Reasoning

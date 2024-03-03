@@ -4,13 +4,13 @@
 -- Lexicographic ordering of lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Lex where
 
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
-open import Data.Product using (_×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_; flip; id)
@@ -19,7 +19,10 @@ open import Level using (_⊔_)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; yes; no; _×-dec_; _⊎-dec_)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Symmetric; Transitive; Irreflexive; Asymmetric; Antisymmetric; Decidable; _Respects₂_; _Respects_)
 open import Data.List.Relation.Binary.Pointwise.Base
    using (Pointwise; []; _∷_; head; tail)
 

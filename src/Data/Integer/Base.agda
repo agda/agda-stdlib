@@ -7,21 +7,20 @@
 -- See README.Data.Integer for examples of how to use and reason about
 -- integers.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Integer.Base where
 
 open import Algebra.Bundles.Raw
   using (RawMagma; RawMonoid; RawGroup; RawNearSemiring; RawSemiring; RawRing)
 open import Data.Bool.Base using (Bool; T; true; false)
-open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s)
+open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s) hiding (module ℕ)
 open import Data.Sign.Base as Sign using (Sign)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred)
 
 infix  8 -_
@@ -140,6 +139,9 @@ record Negative (i : ℤ) : Set where
     neg : T (i ≤ᵇ -1ℤ)
 
 -- Instances
+
+open ℕ public
+  using (nonZero)
 
 instance
   pos : ∀ {n} → Positive +[1+ n ]

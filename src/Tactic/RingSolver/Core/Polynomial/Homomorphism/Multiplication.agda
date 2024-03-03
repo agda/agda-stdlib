@@ -4,7 +4,7 @@
 -- Homomorphism proofs for multiplication over polynomials
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 
@@ -16,10 +16,10 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication
 open import Data.Nat.Base as ℕ     using (ℕ; suc; zero; _<′_; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Nat.Properties    using (≤′-trans)
 open import Data.Nat.Induction
-open import Data.Product           using (_×_; _,_; proj₁; proj₂; map₁)
+open import Data.Product.Base      using (_×_; _,_; proj₁; proj₂; map₁)
 open import Data.List.Kleene
-open import Data.Vec               using (Vec)
-open import Function
+open import Data.Vec.Base          using (Vec)
+open import Function.Base using (_⟨_⟩_; flip)
 open import Induction.WellFounded
 open import Relation.Unary
 
@@ -58,10 +58,10 @@ mutual
   ⊠-Κ-hom (acc _)  x (Κ y  ⊐ i≤n) ρ = *-homo x y
   ⊠-Κ-hom (acc wf) x (⅀ xs ⊐ i≤n) ρ =
     begin
-      ⟦ ⊠-Κ-inj (wf _ i≤n) x xs ⊐↓ i≤n ⟧ ρ
-    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf _ i≤n) x xs) i≤n ρ ⟩
-      ⅀?⟦ ⊠-Κ-inj (wf _ i≤n) x xs ⟧ (drop-1 i≤n ρ)
-    ≈⟨ ⊠-Κ-inj-hom (wf _ i≤n) x xs (drop-1 i≤n ρ) ⟩
+      ⟦ ⊠-Κ-inj (wf i≤n) x xs ⊐↓ i≤n ⟧ ρ
+    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf i≤n) x xs) i≤n ρ ⟩
+      ⅀?⟦ ⊠-Κ-inj (wf i≤n) x xs ⟧ (drop-1 i≤n ρ)
+    ≈⟨ ⊠-Κ-inj-hom (wf i≤n) x xs (drop-1 i≤n ρ) ⟩
       ⟦ x ⟧ᵣ * ⅀⟦ xs ⟧ (drop-1 i≤n ρ)
     ∎
 
@@ -94,10 +94,10 @@ mutual
   ⊠-⅀-hom (acc wf) xs i<n (⅀ ys ⊐ j≤n) = ⊠-match-hom (acc wf) (inj-compare i<n j≤n) xs ys
   ⊠-⅀-hom (acc wf) xs i<n (Κ y  ⊐ _) ρ =
     begin
-      ⟦ ⊠-Κ-inj (wf _ i<n) y xs ⊐↓ i<n ⟧ ρ
-    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf _ i<n) y xs) i<n ρ ⟩
-      ⅀?⟦ ⊠-Κ-inj (wf _ i<n) y xs ⟧ (drop-1 i<n ρ)
-    ≈⟨ ⊠-Κ-inj-hom (wf _ i<n) y xs (drop-1 i<n ρ) ⟩
+      ⟦ ⊠-Κ-inj (wf i<n) y xs ⊐↓ i<n ⟧ ρ
+    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf i<n) y xs) i<n ρ ⟩
+      ⅀?⟦ ⊠-Κ-inj (wf i<n) y xs ⟧ (drop-1 i<n ρ)
+    ≈⟨ ⊠-Κ-inj-hom (wf i<n) y xs (drop-1 i<n ρ) ⟩
       ⟦ y ⟧ᵣ * ⅀⟦ xs ⟧ (drop-1 i<n ρ)
     ≈⟨ *-comm _ _ ⟩
       ⅀⟦ xs ⟧ (drop-1 i<n ρ) * ⟦ y ⟧ᵣ
@@ -113,10 +113,10 @@ mutual
   ⊠-⅀-inj-hom (acc wf) i<k x (⅀ ys ⊐ j≤k) = ⊠-match-hom (acc wf) (inj-compare i<k j≤k) x ys
   ⊠-⅀-inj-hom (acc wf) i<k x (Κ y ⊐ j≤k) ρ =
     begin
-      ⟦ ⊠-Κ-inj (wf _ i<k) y x ⊐↓ i<k ⟧ ρ
-    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf _ i<k) y x) i<k ρ ⟩
-      ⅀?⟦ ⊠-Κ-inj (wf _ i<k) y x ⟧ (drop-1 i<k ρ)
-    ≈⟨ ⊠-Κ-inj-hom (wf _ i<k) y x (drop-1 i<k ρ) ⟩
+      ⟦ ⊠-Κ-inj (wf i<k) y x ⊐↓ i<k ⟧ ρ
+    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf i<k) y x) i<k ρ ⟩
+      ⅀?⟦ ⊠-Κ-inj (wf i<k) y x ⟧ (drop-1 i<k ρ)
+    ≈⟨ ⊠-Κ-inj-hom (wf i<k) y x (drop-1 i<k ρ) ⟩
       ⟦ y ⟧ᵣ * ⅀⟦ x ⟧ (drop-1 i<k ρ)
     ≈⟨ *-comm _ _ ⟩
       ⅀⟦ x ⟧ (drop-1 i<k ρ) * ⟦ y ⟧ᵣ
@@ -137,15 +137,15 @@ mutual
         xs′ = ⅀⟦ xs ⟧ (drop-1 (≤′-trans (≤′-step i≤j-1) j≤n) Ρ′)
     in
     begin
-      ⟦ poly-map ( (⊠-⅀-inj (wf _ j≤n) i≤j-1 xs)) ys ⊐↓ j≤n ⟧ Ρ′
-    ≈⟨ ⊐↓-hom (poly-map ( (⊠-⅀-inj (wf _ j≤n) i≤j-1 xs)) ys) j≤n Ρ′ ⟩
-      ⅀?⟦ poly-map ( (⊠-⅀-inj (wf _ j≤n) i≤j-1 xs)) ys ⟧ (ρ , Ρ)
-    ≈⟨ poly-mapR ρ Ρ (⊠-⅀-inj (wf _ j≤n) i≤j-1 xs)
+      ⟦ poly-map ( (⊠-⅀-inj (wf j≤n) i≤j-1 xs)) ys ⊐↓ j≤n ⟧ Ρ′
+    ≈⟨ ⊐↓-hom (poly-map ( (⊠-⅀-inj (wf j≤n) i≤j-1 xs)) ys) j≤n Ρ′ ⟩
+      ⅀?⟦ poly-map ( (⊠-⅀-inj (wf j≤n) i≤j-1 xs)) ys ⟧ (ρ , Ρ)
+    ≈⟨ poly-mapR ρ Ρ (⊠-⅀-inj (wf j≤n) i≤j-1 xs)
                      (_ *_)
                      (*-cong refl)
                      reassoc
                      (distribˡ _)
-                     (λ y → ⊠-⅀-inj-hom (wf _ j≤n) i≤j-1 xs y _)
+                     (λ y → ⊠-⅀-inj-hom (wf j≤n) i≤j-1 xs y _)
                      (zeroʳ _) ys ⟩
        ⅀⟦ xs ⟧ (drop-1 i≤j-1 Ρ) * ⅀⟦ ys ⟧ (ρ , Ρ)
     ≈⟨ ≪* trans-join-coeffs-hom i≤j-1 j≤n xs Ρ′ ⟩
@@ -156,15 +156,15 @@ mutual
         ys′ = ⅀⟦ ys ⟧ (drop-1 (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n) Ρ′)
     in
     begin
-      ⟦ poly-map ( (⊠-⅀-inj (wf _ i≤n) j≤i-1 ys)) xs ⊐↓ i≤n ⟧ Ρ′
-    ≈⟨ ⊐↓-hom (poly-map ( (⊠-⅀-inj (wf _ i≤n) j≤i-1 ys)) xs) i≤n Ρ′ ⟩
-      ⅀?⟦ poly-map ( (⊠-⅀-inj (wf _ i≤n) j≤i-1 ys)) xs ⟧ (ρ , Ρ)
-    ≈⟨ poly-mapR ρ Ρ (⊠-⅀-inj (wf _ i≤n) j≤i-1 ys)
+      ⟦ poly-map ( (⊠-⅀-inj (wf i≤n) j≤i-1 ys)) xs ⊐↓ i≤n ⟧ Ρ′
+    ≈⟨ ⊐↓-hom (poly-map ( (⊠-⅀-inj (wf i≤n) j≤i-1 ys)) xs) i≤n Ρ′ ⟩
+      ⅀?⟦ poly-map ( (⊠-⅀-inj (wf i≤n) j≤i-1 ys)) xs ⟧ (ρ , Ρ)
+    ≈⟨ poly-mapR ρ Ρ (⊠-⅀-inj (wf i≤n) j≤i-1 ys)
                      (_ *_)
                      (*-cong refl)
                      reassoc
                      (distribˡ _)
-                     (λ x → ⊠-⅀-inj-hom (wf _ i≤n) j≤i-1 ys x _)
+                     (λ x → ⊠-⅀-inj-hom (wf i≤n) j≤i-1 ys x _)
                      (zeroʳ _) xs ⟩
       ⅀⟦ ys ⟧ (drop-1 j≤i-1 Ρ) * ⅀⟦ xs ⟧ (ρ , Ρ)
     ≈⟨ ≪* trans-join-coeffs-hom j≤i-1 i≤n ys Ρ′ ⟩
@@ -174,10 +174,10 @@ mutual
     ∎
   ⊠-match-hom (acc wf) (inj-eq ij≤n) xs ys Ρ =
     begin
-      ⟦ ⊠-coeffs (wf _ ij≤n) xs ys ⊐↓ ij≤n ⟧ Ρ
-    ≈⟨ ⊐↓-hom (⊠-coeffs (wf _ ij≤n) xs ys) ij≤n Ρ ⟩
-      ⅀?⟦ ⊠-coeffs (wf _ ij≤n) xs ys ⟧ (drop-1 ij≤n Ρ)
-    ≈⟨ ⊠-coeffs-hom (wf _ ij≤n) xs ys (drop-1 ij≤n Ρ) ⟩
+      ⟦ ⊠-coeffs (wf ij≤n) xs ys ⊐↓ ij≤n ⟧ Ρ
+    ≈⟨ ⊐↓-hom (⊠-coeffs (wf ij≤n) xs ys) ij≤n Ρ ⟩
+      ⅀?⟦ ⊠-coeffs (wf ij≤n) xs ys ⟧ (drop-1 ij≤n Ρ)
+    ≈⟨ ⊠-coeffs-hom (wf ij≤n) xs ys (drop-1 ij≤n Ρ) ⟩
       ⅀⟦ xs ⟧ (drop-1 ij≤n Ρ) * ⅀⟦ ys ⟧ (drop-1 ij≤n Ρ)
     ∎
 

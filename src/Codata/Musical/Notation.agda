@@ -4,7 +4,7 @@
 -- Basic types related to coinduction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --cubical-compatible --safe --guardedness #-}
 
 module Codata.Musical.Notation where
 

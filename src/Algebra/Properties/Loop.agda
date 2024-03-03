@@ -4,7 +4,7 @@
 -- Some basic properties of Quasigroup
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Loop)
 
@@ -13,7 +13,6 @@ module Algebra.Properties.Loop {l₁ l₂} (L : Loop l₁ l₂) where
 open Loop L
 open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Data.Product
 open import Algebra.Properties.Quasigroup
 
 x//x≈ε : ∀ x → x // x ≈ ε

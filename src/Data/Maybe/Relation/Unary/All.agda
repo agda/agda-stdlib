@@ -4,7 +4,7 @@
 -- Maybes where all the elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Unary.All where
 
@@ -12,11 +12,11 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (Any; just)
-open import Data.Product as Prod using (_,_)
+open import Data.Product.Base as Product using (_,_)
 open import Function.Base using (id; _∘′_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
-open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Unary
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
@@ -56,7 +56,7 @@ module _ {a p q r} {A : Set a} {P : Pred A p} {Q : Pred A q} {R : Pred A r} wher
   zipWith f (nothing , nothing) = nothing
 
   unzipWith : P ⊆ Q ∩ R → All P ⊆ All Q ∩ All R
-  unzipWith f (just px) = Prod.map just just (f px)
+  unzipWith f (just px) = Product.map just just (f px)
   unzipWith f nothing   = nothing , nothing
 
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
@@ -114,7 +114,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 
   irrelevant : Irrelevant P → Irrelevant (All P)
   irrelevant P-irrelevant (just p) (just q) = cong just (P-irrelevant p q)
-  irrelevant P-irrelevant nothing  nothing  = P.refl
+  irrelevant P-irrelevant nothing  nothing  = refl
 
   satisfiable : Satisfiable (All P)
   satisfiable = nothing , nothing

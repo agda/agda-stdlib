@@ -4,12 +4,13 @@
 -- The TC (Type Checking) monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Reflection.TCM where
 
-open import Reflection.AST.Term
 import Agda.Builtin.Reflection as Builtin
+
+open import Reflection.AST.Term
 import Reflection.TCM.Format as Format
 
 ------------------------------------------------------------------------
@@ -29,7 +30,9 @@ open Builtin public
   ; getContext; extendContext; inContext; freshName
   ; declareDef; declarePostulate; defineFun; getType; getDefinition
   ; blockOnMeta; commitTC; isMacro; withNormalisation
-  ; debugPrint; noConstraints; runSpeculative)
+  ; debugPrint; noConstraints; runSpeculative
+  ; Blocker; blockerMeta; blockerAny; blockerAll; blockTC
+  )
   renaming (returnTC to pure)
 
 open Format public

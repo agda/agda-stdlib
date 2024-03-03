@@ -4,7 +4,7 @@
 -- An effectful view of Maybe
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Effectful where
 
@@ -66,6 +66,9 @@ monad = record
   { rawApplicative = applicative
   ; _>>=_ = _>>=_
   }
+
+join : Maybe (Maybe A) → Maybe A
+join = Join.join monad
 
 monadZero : RawMonadZero {f} Maybe
 monadZero = record

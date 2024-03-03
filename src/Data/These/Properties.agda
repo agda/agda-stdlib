@@ -4,14 +4,14 @@
 -- Properties of These
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.These.Properties where
 
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_; <_,_>; uncurry)
 open import Data.These.Base
 open import Function.Base using (_∘_)
-open import Relation.Binary using (Decidable)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no; map′; _×-dec_)
 

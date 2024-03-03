@@ -4,7 +4,7 @@
 -- The reader monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
 
@@ -51,6 +51,9 @@ applicative = Trans.applicative Id.applicative
 
 monad : RawMonad (Reader R)
 monad = Trans.monad Id.monad
+
+join : Reader R (Reader R A) → Reader R A
+join = Join.join monad
 
 ------------------------------------------------------------------------
 -- Reader monad specifics
