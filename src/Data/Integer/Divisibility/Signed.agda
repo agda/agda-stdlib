@@ -182,4 +182,3 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
 
 *-cancelʳ-∣ : ∀ k {i j} .{{_ : NonZero k}} → i * k ∣ j * k → i ∣ j
 *-cancelʳ-∣ k {i} {j} = ∣ᵤ⇒∣ ∘′ Unsigned.*-cancelʳ-∣ k {i} {j} ∘′ ∣⇒∣ᵤ
-
