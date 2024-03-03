@@ -150,7 +150,7 @@ automate most of this.
   identifiers, in favour of using the long(er) qualified name,
   although similar remarks about legacy failure to observe this
   recommendation apply!
-  NB. `renaming` directives are, of course permitted when a module is
+  NB. `renaming` directives are, of course, permitted when a module is
   imported qualified, in order to be *subsequently* `open`ed for
   `public` export (see below).
 
