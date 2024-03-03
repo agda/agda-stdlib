@@ -24,7 +24,7 @@ open import Data.List.Relation.Binary.Equality.Setoid S
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   module Eq = Setoid S
@@ -88,7 +88,7 @@ steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 
 module PermutationReasoning where
 
-  private module Base = SetoidReasoning ↭-setoid
+  private module Base = ≈-Reasoning ↭-setoid
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)

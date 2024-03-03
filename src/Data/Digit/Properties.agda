@@ -7,13 +7,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Digit
-import Data.Char.Properties as Charₚ
+import Data.Char.Properties as Char
 open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Properties using (_≤?_)
 open import Data.Fin.Properties using (inject≤-injective)
 open import Data.Product.Base using (_,_; proj₁)
 open import Data.Vec.Relation.Unary.Unique.Propositional using (Unique)
-import Data.Vec.Relation.Unary.Unique.Propositional.Properties as Uniqueₚ
+import Data.Vec.Relation.Unary.Unique.Propositional.Properties as Unique
 open import Data.Vec.Relation.Unary.AllPairs using (allPairs?)
 open import Relation.Nullary.Decidable.Core using (True; from-yes; ¬?)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
@@ -22,7 +22,7 @@ open import Function.Base using (_∘_)
 module Data.Digit.Properties where
 
 digitCharsUnique : Unique digitChars
-digitCharsUnique = from-yes (allPairs? (λ x y → ¬? (x Charₚ.≟ y)) digitChars)
+digitCharsUnique = from-yes (allPairs? (λ x y → ¬? (x Char.≟ y)) digitChars)
 
 module _ (base : ℕ) where
   module _ {base≥2 base≥2′ : True (2 ≤? base)} where
@@ -32,4 +32,4 @@ module _ (base : ℕ) where
 
   module _ {base≤16 base≤16′ : True (base ≤? 16)} where
     showDigit-injective : (n m : Digit base) → showDigit {base} {base≤16} n ≡ showDigit {base} {base≤16′} m → n ≡ m
-    showDigit-injective n m = inject≤-injective _ _ n m ∘ Uniqueₚ.lookup-injective digitCharsUnique _ _
+    showDigit-injective n m = inject≤-injective _ _ n m ∘ Unique.lookup-injective digitCharsUnique _ _

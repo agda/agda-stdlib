@@ -13,7 +13,7 @@ open import Level using (Level)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions using (Reflexive; Trans)
-open import Relation.Binary.PropositionalEquality as P using (setoid)
+open import Relation.Binary.PropositionalEquality as ≡ using (setoid)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Function.Base using (_∘_)
 open import Function.Properties.Surjection using (injective⇒to⁻-cong)
@@ -37,7 +37,7 @@ refl = Identity.bijection _
 
 -- Can't prove full symmetry as we have no proof that the witness
 -- produced by the surjection proof preserves equality
-sym-≡ : Bijection S (P.setoid B) → Bijection (P.setoid B) S
+sym-≡ : Bijection S (≡.setoid B) → Bijection (≡.setoid B) S
 sym-≡ = Symmetry.bijection-≡
 
 trans : Trans (Bijection {a} {ℓ₁} {b} {ℓ₂}) (Bijection {b} {ℓ₂} {c} {ℓ₃}) Bijection

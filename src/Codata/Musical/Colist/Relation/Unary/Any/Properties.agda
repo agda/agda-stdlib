@@ -21,7 +21,7 @@ open import Function.Base using (_∋_; _∘_)
 open import Function.Bundles
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong)
 open import Relation.Unary using (Pred)
 
@@ -66,15 +66,15 @@ Any-cong {A = A} {P} {Q} {xs} {ys} P↔Q xs≈ys =
 
   to∘from : ∀ {xs ys} (xs≈ys : xs ≈ ys) (q : Any Q ys) →
             to xs≈ys (from xs≈ys q) ≡ q
-  to∘from (x ∷ xs≈) (there q) = P.cong there (to∘from (♭ xs≈) q)
+  to∘from (x ∷ xs≈) (there q) = cong there (to∘from (♭ xs≈) q)
   to∘from (x ∷ xs≈) (here qx) =
-    P.cong here (Inverse.strictlyInverseˡ P↔Q qx)
+    cong here (Inverse.strictlyInverseˡ P↔Q qx)
 
   from∘to : ∀ {xs ys} (xs≈ys : xs ≈ ys) (p : Any P xs) →
             from xs≈ys (to xs≈ys p) ≡ p
-  from∘to (x ∷ xs≈) (there p) = P.cong there (from∘to (♭ xs≈) p)
+  from∘to (x ∷ xs≈) (there p) = cong there (from∘to (♭ xs≈) p)
   from∘to (x ∷ xs≈) (here px) =
-    P.cong here (Inverse.strictlyInverseʳ P↔Q px)
+    cong here (Inverse.strictlyInverseʳ P↔Q px)
 
 ------------------------------------------------------------------------
 -- map
@@ -164,7 +164,7 @@ lookup-index (there p) = lookup-index p
 index-Any-resp : ∀ {f : ∀ {x} → P x → Q x} {xs ys}
                  (xs≈ys : xs ≈ ys) (p : Any P xs) →
                  index (Any-resp f xs≈ys p) ≡ index p
-index-Any-resp (x ∷ xs≈) (here px) = P.refl
+index-Any-resp (x ∷ xs≈) (here px) = refl
 index-Any-resp (x ∷ xs≈) (there p) =
   cong suc (index-Any-resp (♭ xs≈) p)
 

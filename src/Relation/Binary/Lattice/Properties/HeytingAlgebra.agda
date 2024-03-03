@@ -19,13 +19,13 @@ open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; flip; _∘_)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-import Relation.Binary.Reasoning.PartialOrder as POR
+import Relation.Binary.Reasoning.PartialOrder as ≤-Reasoning
 open import Relation.Binary.Lattice.Properties.MeetSemilattice meetSemilattice
 open import Relation.Binary.Lattice.Properties.JoinSemilattice joinSemilattice
 import Relation.Binary.Lattice.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
 open import Relation.Binary.Lattice.Properties.Lattice lattice
 open import Relation.Binary.Lattice.Properties.BoundedLattice boundedLattice
-import Relation.Binary.Reasoning.Setoid as EqReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Useful lemmas
@@ -62,7 +62,7 @@ y≤x⇨y = transpose-⇨ (x∧y≤x _ _)
   x ⇨ u ≤⟨ ⇨ʳ-covariant u≤v ⟩
   x ⇨ v ≤⟨ ⇨ˡ-contravariant y≤x ⟩
   y ⇨ v ∎
-  where open POR poset
+  where open ≤-Reasoning poset
 
 ⇨-cong : _⇨_ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
 ⇨-cong x≈y u≈v = antisym (⇨-relax (reflexive $ Eq.sym x≈y) (reflexive u≈v))
@@ -113,7 +113,7 @@ y≤x⇨y = transpose-⇨ (x∧y≤x _ _)
   (((x ⇨ y) ∧ x) ∧ (x ⇨ z)) ∧ x  ≈⟨ ∧-assoc _ _ _ ⟩
   (((x ⇨ y) ∧ x) ∧ (x ⇨ z)  ∧ x) ≤⟨ ∧-monotonic ⇨-eval ⇨-eval ⟩
   y ∧ z                          ∎)
-  where open POR poset
+  where open ≤-Reasoning poset
 
 ⇨-distribˡ-∧ : _⇨_ DistributesOverˡ _∧_
 ⇨-distribˡ-∧ x y z = antisym (⇨-distribˡ-∧-≤ x y z) (⇨-distribˡ-∧-≥ x y z)
@@ -175,7 +175,7 @@ de-morgan₂-≤ x y = transpose-⇨ $ begin
       ¬ ¬ y ∧ ¬ y               ≤⟨ ⇨-eval ⟩
       ⊥                         ∎ ⟩
   ⊥                             ∎
-  where open POR poset
+  where open ≤-Reasoning poset
 
 de-morgan₂-≥ : ∀ x y → ¬ ¬ (¬ x ∨ ¬ y) ≤ ¬ (x ∧ y)
 de-morgan₂-≥ x y = transpose-⇨ $ ⇨-applyˡ $ transpose-⇨ $ begin
@@ -184,7 +184,7 @@ de-morgan₂-≥ x y = transpose-⇨ $ ⇨-applyˡ $ transpose-⇨ $ begin
                                                (⇨-applyʳ (x∧y≤y _ _)) ⟩
   ⊥ ∨ ⊥                         ≈⟨ ∨-idempotent _ ⟩
   ⊥                             ∎
-  where open POR poset
+  where open ≤-Reasoning poset
 
 de-morgan₂ : ∀ x y → ¬ (x ∧ y) ≈ ¬ ¬ (¬ x ∨ ¬ y)
 de-morgan₂ x y = antisym (de-morgan₂-≤ x y) (de-morgan₂-≥ x y)
@@ -196,4 +196,4 @@ weak-lem {x} = begin
   ⊥ ∧ (x ⇨ ⊥) ⇨ ⊥ ≈⟨ ⇨-cong (∧-zeroˡ _) Eq.refl ⟩
   ⊥ ⇨ ⊥           ≈⟨ ⇨-unit ⟩
   ⊤               ∎
-  where open EqReasoning setoid
+  where open ≈-Reasoning setoid
