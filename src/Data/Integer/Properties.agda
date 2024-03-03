@@ -23,7 +23,7 @@ import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
 open import Data.Product.Base using (proj₁; proj₂; _,_; _×_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Sign as Sign using (Sign) renaming (_*_ to _𝕊*_)
+open import Data.Sign as Sign using (Sign)
 import Data.Sign.Properties as Sign
 open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
@@ -507,6 +507,10 @@ neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ m<n) = -<- (s<s⁻¹ m<n)
 
 ------------------------------------------------------------------------
 -- Properties of sign and _◃_
+
+◃-nonZero : ∀ s n .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
+◃-nonZero Sign.- (ℕ.suc _) = _
+◃-nonZero Sign.+ (ℕ.suc _) = _
 
 ◃-inverse : ∀ i → sign i ◃ ∣ i ∣ ≡ i
 ◃-inverse -[1+ n ] = refl
@@ -1348,7 +1352,7 @@ private
 *-assoc i j +0 rewrite
     ℕ.*-zeroʳ ∣ j ∣
   | ℕ.*-zeroʳ ∣ i ∣
-  | ℕ.*-zeroʳ ∣ sign i 𝕊* sign j ◃ ∣ i ∣ ℕ.* ∣ j ∣ ∣
+  | ℕ.*-zeroʳ ∣ sign i Sign.* sign j ◃ ∣ i ∣ ℕ.* ∣ j ∣ ∣
   = refl
 *-assoc -[1+ m ] -[1+ n ] +[1+ o ] = cong (+_ ∘ suc) (lemma m n o)
 *-assoc -[1+ m ] +[1+ n ] -[1+ o ] = cong (+_ ∘ suc) (lemma m n o)
@@ -1390,11 +1394,11 @@ private
         = refl
 *-distribʳ-+ x +0 z
   rewrite +-identityˡ z
-        | +-identityˡ (sign z 𝕊* sign x ◃ ∣ z ∣ ℕ.* ∣ x ∣)
+        | +-identityˡ (sign z Sign.* sign x ◃ ∣ z ∣ ℕ.* ∣ x ∣)
         = refl
 *-distribʳ-+ x y +0
   rewrite +-identityʳ y
-        | +-identityʳ (sign y 𝕊* sign x ◃ ∣ y ∣ ℕ.* ∣ x ∣)
+        | +-identityʳ (sign y Sign.* sign x ◃ ∣ y ∣ ℕ.* ∣ x ∣)
         = refl
 *-distribʳ-+ -[1+ m ] -[1+ n ] -[1+ o ] = cong (+_) $
   solve 3 (λ m n o → (con 2 :+ n :+ o) :* (con 1 :+ m)
@@ -1594,6 +1598,9 @@ private
 abs-* : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
 abs-* i j = abs-◃ _ _
 
+sign-* : ∀ i j → {{NonZero (i * j)}} → sign (i * j) ≡ sign i Sign.* sign j
+sign-* i j rewrite abs-* i j = sign-◃ (sign i Sign.* sign j) (∣ i ∣ ℕ.* ∣ j ∣)
+
 *-cancelʳ-≡ : ∀ i j k .{{_ : NonZero k}} → i * k ≡ j * k → i ≡ j
 *-cancelʳ-≡ i j k eq with sign-cong′ eq
 ... | inj₁ s[ik]≡s[jk] = ◃-cong
@@ -1630,6 +1637,15 @@ i*j≡0⇒i≡0∨j≡0 : ∀ i {j} → i * j ≡ 0ℤ → i ≡ 0ℤ ⊎ j ≡ 
 i*j≡0⇒i≡0∨j≡0 i p with ℕ.m*n≡0⇒m≡0∨n≡0 ∣ i ∣ (abs-cong {t = Sign.+} p)
 ... | inj₁ ∣i∣≡0 = inj₁ (∣i∣≡0⇒i≡0 ∣i∣≡0)
 ... | inj₂ ∣j∣≡0 = inj₂ (∣i∣≡0⇒i≡0 ∣j∣≡0)
+
+i*j≢0 : ∀ i j .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
+i*j≢0 i j rewrite abs-* i j = ℕ.m*n≢0 ∣ i ∣ ∣ j ∣
+
+i*j≢0⇒i≢0 : ∀ i {j} → .{{NonZero (i * j)}} → NonZero i
+i*j≢0⇒i≢0 i {j} rewrite abs-* i j = ℕ.m*n≢0⇒m≢0 ∣ i ∣
+
+i*j≢0⇒j≢0 : ∀ i {j} → .{{NonZero (i * j)}} → NonZero j
+i*j≢0⇒j≢0 i {j} rewrite *-comm i j = i*j≢0⇒i≢0 j {i}
 
 ------------------------------------------------------------------------
 -- Properties of _^_
@@ -1704,7 +1720,7 @@ neg-distribʳ-* i j = begin
 ------------------------------------------------------------------------
 -- Properties of _*_ and _◃_
 
-◃-distrib-* :  ∀ s t m n → (s 𝕊* t) ◃ (m ℕ.* n) ≡ (s ◃ m) * (t ◃ n)
+◃-distrib-* :  ∀ s t m n → (s Sign.* t) ◃ (m ℕ.* n) ≡ (s ◃ m) * (t ◃ n)
 ◃-distrib-* s t zero    zero    = refl
 ◃-distrib-* s t zero    (suc n) = refl
 ◃-distrib-* s t (suc m) zero    =
@@ -1713,7 +1729,7 @@ neg-distribʳ-* i j = begin
     (*-comm (t ◃ zero) (s ◃ suc m))
 ◃-distrib-* s t (suc m) (suc n) =
   sym (cong₂ _◃_
-    (cong₂ _𝕊*_ (sign-◃ s (suc m)) (sign-◃ t (suc n)))
+    (cong₂ Sign._*_ (sign-◃ s (suc m)) (sign-◃ t (suc n)))
     (∣s◃m∣*∣t◃n∣≡m*n s t (suc m) (suc n)))
 
 ------------------------------------------------------------------------
@@ -1828,7 +1844,7 @@ neg-distribʳ-* i j = begin
 -- Properties of _*_ and ∣_∣
 
 ∣i*j∣≡∣i∣*∣j∣ : ∀ i j → ∣ i * j ∣ ≡ ∣ i ∣ ℕ.* ∣ j ∣
-∣i*j∣≡∣i∣*∣j∣ i j = abs-◃ (sign i 𝕊* sign j) (∣ i ∣ ℕ.* ∣ j ∣)
+∣i*j∣≡∣i∣*∣j∣ = abs-*
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_

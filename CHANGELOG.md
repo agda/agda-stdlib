@@ -127,9 +127,18 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
-* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+* In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
+  ```
+
+* In `Data.Integer.Properties`:
+  ```agda
+  ◃-nonZero : {{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
+  sign-*    : {{NonZero (i * j)}} → sign (i * j) ≡ sign i Sign.* sign j
+  i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
+  i*j≢0⇒i≢0 : .{{NonZero (i * j)}} → NonZero i
+  i*j≢0⇒j≢0 : .{{NonZero (i * j)}} → NonZero j
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
