@@ -146,6 +146,14 @@ automate most of this.
   as `Structures` etc.
   NB. Historical legacy means that these conventions have not always been observed!
 
+* Qualified `open import`s should, in general, avoid `renaming`
+  identifiers, in favour of using the long(er) qualified name,
+  although similar remarks about legacy failure to observe this
+  recommendation apply!
+  NB `renaming` directives are, of course permitted when a module is
+  imported qualified, in order to be *subsequently* `open`ed for
+  `public` export (see below).
+
 * When using only a few items (i.e. < 5) from a module, it is a good practice to
   enumerate the items that will be used by declaring the import statement
   with the directive `using`. This makes the dependencies clearer, e.g.
