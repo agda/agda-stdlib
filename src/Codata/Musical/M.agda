@@ -4,13 +4,13 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Musical.M where
 
 open import Codata.Musical.Notation
 open import Level
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.Container.Core as C hiding (map)
 
 -- The family of M-types.

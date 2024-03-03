@@ -9,18 +9,19 @@
 -- by Hancock and Hyvernat in "Programming interfaces and basic
 -- topology" (2006).
 
-{-# OPTIONS --with-K --safe --guardedness #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Data.Container.Indexed.WithK where
 
 open import Axiom.Extensionality.Heterogeneous using (Extensionality)
 open import Data.Container.Indexed hiding (module PlainMorphism)
-open import Data.Product as Prod hiding (map)
-open import Function renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
+open import Data.Product.Base
+  using (_,_; -,_; _×_; ∃; proj₁; proj₂; Σ-syntax)
+open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Level
 open import Relation.Unary using (Pred; _⊆_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
-open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl)
+open import Relation.Binary.HeterogeneousEquality as ≅ using (_≅_; refl)
 open import Relation.Binary.Indexed.Heterogeneous
 
 ------------------------------------------------------------------------
@@ -42,7 +43,7 @@ private
          {xs : ⟦ C ⟧ X o₁} {ys : ⟦ C ⟧ X o₂} → Extensionality r ℓ →
          Eq C X X (λ x₁ x₂ → x₁ ≅ x₂) xs ys → xs ≅ ys
   Eq⇒≅ {xs = c , k} {.c , k′} ext (refl , refl , k≈k′) =
-    H.cong (_,_ c) (ext (λ _ → refl) (λ r → k≈k′ r r refl))
+    ≅.cong (_,_ c) (ext (λ _ → refl) (λ r → k≈k′ r r refl))
 
 setoid : ∀ {i o c r s} {I : Set i} {O : Set o} →
          Container I O c r → IndexedSetoid I s _ → IndexedSetoid O _ _
@@ -121,7 +122,7 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
     module Y = IndexedSetoid Y
 
     lemma : ∀ {i j} (eq : i ≡ j) {x} →
-            P.subst Y.Carrier eq (f x) Y.≈ f (P.subst X eq x)
+            ≡.subst Y.Carrier eq (f x) Y.≈ f (≡.subst X eq x)
     lemma refl = Y.refl
 
   -- In fact, all natural functions of the right type are container
@@ -134,7 +135,7 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
                      Eq C₂ X.Carrier X.Carrier X._≈_
                        (proj₁ nt X.Carrier xs) (⟪ m ⟫ X.Carrier {o} xs)
   complete {C₁} {C₂} (nt , nat) = m , (λ X xs → nat X
-    (λ { (r , eq) → P.subst (IndexedSetoid.Carrier X) eq (proj₂ xs r) })
+    (λ { (r , eq) → ≡.subst (IndexedSetoid.Carrier X) eq (proj₂ xs r) })
     (proj₁ xs , (λ r → r , refl)))
     where
 
@@ -166,9 +167,9 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
     module X = IndexedSetoid X
 
     lemma : ∀ {i j k} (eq₁ : i ≡ j) (eq₂ : j ≡ k) {x} →
-      P.subst X.Carrier (P.trans eq₁ eq₂) x
+      ≡.subst X.Carrier (≡.trans eq₁ eq₂) x
       X.≈
-      P.subst X.Carrier eq₂ (P.subst X.Carrier eq₁ x)
+      ≡.subst X.Carrier eq₂ (≡.subst X.Carrier eq₁ x)
     lemma refl refl = X.refl
 
 ------------------------------------------------------------------------

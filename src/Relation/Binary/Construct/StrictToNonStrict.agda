@@ -8,22 +8,25 @@
 -- relation equivalent to the original one (and similarly for
 -- < → ≤ → <).
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsPreorder; IsStrictPartialOrder; IsPartialOrder; IsStrictTotalOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Irreflexive; Antisymmetric; Trichotomous; Decidable; Trans; Total; _Respects₂_; _Respectsʳ_; _Respectsˡ_; tri<; tri≈; tri>)
 
 module Relation.Binary.Construct.StrictToNonStrict
   {a ℓ₁ ℓ₂} {A : Set a}
   (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂)
   where
 
-open import Data.Product
+open import Data.Product.Base
 open import Data.Sum.Base
 open import Data.Empty
 open import Function.Base
 open import Relation.Binary.Consequences
-open import Relation.Nullary
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Nullary.Decidable using (_⊎-dec_; yes; no)
 
 ------------------------------------------------------------------------
 -- Conversion

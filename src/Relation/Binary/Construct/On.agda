@@ -4,15 +4,21 @@
 -- Many properties which hold for `_∼_` also hold for `_∼_ on f`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.On where
 
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Function.Base using (_on_; _∘_)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; Setoid; DecSetoid; Poset; DecPoset; StrictPartialOrder; TotalOrder; DecTotalOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsStrictPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Irreflexive; Symmetric; Transitive; Antisymmetric; Asymmetric; Decidable; Total; Trichotomous; _Respects_; _Respects₂_)
 
 private
   variable
@@ -68,7 +74,7 @@ module _ (f : B → A) where
   trichotomous _ _ compare x y = compare (f x) (f y)
 
   accessible : ∀ {∼ : Rel A ℓ} {x} → Acc ∼ (f x) → Acc (∼ on f) x
-  accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
+  accessible (acc rs) = acc (λ fy<fx → accessible (rs fy<fx))
 
   wellFounded : {∼ : Rel A ℓ} → WellFounded ∼ → WellFounded (∼ on f)
   wellFounded wf x = accessible (wf (f x))
@@ -144,9 +150,8 @@ module _ (f : B → A) {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
   isStrictTotalOrder : IsStrictTotalOrder ≈ ∼ →
                        IsStrictTotalOrder (≈ on f) (∼ on f)
   isStrictTotalOrder sto = record
-    { isEquivalence = isEquivalence f Sto.isEquivalence
-    ; trans         = transitive f ∼ Sto.trans
-    ; compare       = trichotomous f ≈ ∼ Sto.compare
+    { isStrictPartialOrder = isStrictPartialOrder Sto.isStrictPartialOrder
+    ; compare              = trichotomous _ _ _ Sto.compare
     } where module Sto = IsStrictTotalOrder sto
 
 ------------------------------------------------------------------------

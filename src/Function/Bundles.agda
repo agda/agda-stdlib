@@ -15,17 +15,21 @@
 -- other library hierarchies, as this would duplicate the equality
 -- axioms.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Bundles where
 
-import Function.Definitions as FunctionDefinitions
+open import Function.Base using (_∘_)
+open import Function.Definitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
-open import Data.Product using (_,_; proj₁; proj₂)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as ≡
+open import Data.Product.Base using (_,_; proj₁; proj₂)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
+open import Function.Consequences.Propositional
 open Setoid using (isEquivalence)
 
 private
@@ -40,8 +44,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
   open Setoid From using () renaming (Carrier to A; _≈_ to _≈₁_)
   open Setoid To   using () renaming (Carrier to B; _≈_ to _≈₂_)
-  open FunctionDefinitions _≈₁_ _≈₂_
-  open FunctionStructures  _≈₁_ _≈₂_
+  open FunctionStructures _≈₁_ _≈₂_
 
 ------------------------------------------------------------------------
 -- Bundles with one element
@@ -50,10 +53,10 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   -- with the top-level module.
   record Func : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f    : A → B
-      cong : f Preserves _≈₁_ ⟶ _≈₂_
+      to   : A → B
+      cong : Congruent _≈₁_ _≈₂_ to
 
-    isCongruent : IsCongruent f
+    isCongruent : IsCongruent to
     isCongruent = record
       { cong           = cong
       ; isEquivalence₁ = isEquivalence From
@@ -66,20 +69,20 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
   record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f           : A → B
-      cong        : f Preserves _≈₁_ ⟶ _≈₂_
-      injective   : Injective f
+      to          : A → B
+      cong        : Congruent _≈₁_ _≈₂_ to
+      injective   : Injective _≈₁_ _≈₂_ to
 
     function : Func
     function = record
-      { f    = f
+      { to   = to
       ; cong = cong
       }
 
     open Func function public
-      hiding (f; cong)
+      hiding (to; cong)
 
-    isInjection : IsInjection f
+    isInjection : IsInjection to
     isInjection = record
       { isCongruent = isCongruent
       ; injective   = injective
@@ -88,36 +91,47 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
   record Surjection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f          : A → B
-      cong       : f Preserves _≈₁_ ⟶ _≈₂_
-      surjective : Surjective f
+      to         : A → B
+      cong       : Congruent _≈₁_ _≈₂_ to
+      surjective : Surjective _≈₁_ _≈₂_ to
 
-    isCongruent : IsCongruent f
-    isCongruent = record
-      { cong           = cong
-      ; isEquivalence₁ = isEquivalence From
-      ; isEquivalence₂ = isEquivalence To
+    function : Func
+    function = record
+      { to   = to
+      ; cong = cong
       }
 
-    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
+    open Func function public
+      hiding (to; cong)
 
-    isSurjection : IsSurjection f
+    isSurjection : IsSurjection to
     isSurjection = record
       { isCongruent = isCongruent
       ; surjective  = surjective
       }
 
+    open IsSurjection isSurjection public
+      using
+      ( strictlySurjective
+      )
+
+    to⁻ : B → A
+    to⁻ = proj₁ ∘ surjective
+
+    to∘to⁻ : ∀ x → to (to⁻ x) ≈₂ x
+    to∘to⁻ = proj₂ ∘ strictlySurjective
+
 
   record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f         : A → B
-      cong      : f Preserves _≈₁_ ⟶ _≈₂_
-      bijective : Bijective f
+      to        : A → B
+      cong      : Congruent _≈₁_ _≈₂_ to
+      bijective : Bijective _≈₁_ _≈₂_ to
 
-    injective : Injective f
+    injective : Injective _≈₁_ _≈₂_ to
     injective = proj₁ bijective
 
-    surjective : Surjective f
+    surjective : Surjective _≈₁_ _≈₂_ to
     surjective = proj₂ bijective
 
     injection : Injection
@@ -133,9 +147,9 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
     open Injection  injection  public using (isInjection)
-    open Surjection surjection public using (isSurjection)
+    open Surjection surjection public using (isSurjection; to⁻;  strictlySurjective)
 
-    isBijection : IsBijection f
+    isBijection : IsBijection to
     isBijection = record
       { isInjection = isInjection
       ; surjective  = surjective
@@ -147,106 +161,150 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- Bundles with two elements
 
+module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
+
+  open Setoid From using () renaming (Carrier to A; _≈_ to _≈₁_)
+  open Setoid To   using () renaming (Carrier to B; _≈_ to _≈₂_)
+  open FunctionStructures _≈₁_ _≈₂_
+
   record Equivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f     : A → B
-      g     : B → A
-      cong₁ : f Preserves _≈₁_ ⟶ _≈₂_
-      cong₂ : g Preserves _≈₂_ ⟶ _≈₁_
+      to        : A → B
+      from      : B → A
+      to-cong   : Congruent _≈₁_ _≈₂_ to
+      from-cong : Congruent _≈₂_ _≈₁_ from
+
+    toFunction : Func From To
+    toFunction = record
+      { to = to
+      ; cong = to-cong
+      }
+
+    open Func toFunction public
+      using (module Eq₁; module Eq₂)
+      renaming (isCongruent to to-isCongruent)
+
+    fromFunction : Func To From
+    fromFunction = record
+      { to = from
+      ; cong = from-cong
+      }
+
+    open Func fromFunction public
+      using ()
+      renaming (isCongruent to from-isCongruent)
 
 
   record LeftInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f         : A → B
-      g         : B → A
-      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
-      cong₂     : g Preserves _≈₂_ ⟶ _≈₁_
-      inverseˡ  : Inverseˡ f g
+      to        : A → B
+      from      : B → A
+      to-cong   : Congruent _≈₁_ _≈₂_ to
+      from-cong : Congruent _≈₂_ _≈₁_ from
+      inverseˡ  : Inverseˡ _≈₁_ _≈₂_ to from
 
-    isCongruent : IsCongruent f
+    isCongruent : IsCongruent to
     isCongruent = record
-      { cong           = cong₁
+      { cong           = to-cong
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
       }
 
-    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
-
-    isLeftInverse : IsLeftInverse f g
+    isLeftInverse : IsLeftInverse to from
     isLeftInverse = record
       { isCongruent = isCongruent
-      ; cong₂       = cong₂
+      ; from-cong   = from-cong
       ; inverseˡ    = inverseˡ
       }
 
+    open IsLeftInverse isLeftInverse public
+      using (module Eq₁; module Eq₂; strictlyInverseˡ; isSurjection)
+
     equivalence : Equivalence
     equivalence = record
-      { cong₁ = cong₁
-      ; cong₂ = cong₂
+      { to-cong   = to-cong
+      ; from-cong = from-cong
       }
+
+    isSplitSurjection : IsSplitSurjection to
+    isSplitSurjection = record
+      { from = from
+      ; isLeftInverse = isLeftInverse
+      }
+
+    surjection : Surjection From To
+    surjection = record
+      { to = to
+      ; cong = to-cong
+      ; surjective = λ y → from y , inverseˡ
+      }
+
 
 
   record RightInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f         : A → B
-      g         : B → A
-      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
-      cong₂     : g Preserves _≈₂_ ⟶ _≈₁_
-      inverseʳ  : Inverseʳ f g
+      to        : A → B
+      from      : B → A
+      to-cong   : Congruent _≈₁_ _≈₂_ to
+      from-cong : from Preserves _≈₂_ ⟶ _≈₁_
+      inverseʳ  : Inverseʳ _≈₁_ _≈₂_ to from
 
-    isCongruent : IsCongruent f
+    isCongruent : IsCongruent to
     isCongruent = record
-      { cong           = cong₁
+      { cong           = to-cong
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
       }
 
-    isRightInverse : IsRightInverse f g
+    isRightInverse : IsRightInverse to from
     isRightInverse = record
       { isCongruent = isCongruent
-      ; cong₂       = cong₂
+      ; from-cong   = from-cong
       ; inverseʳ    = inverseʳ
       }
 
+    open IsRightInverse isRightInverse public
+      using (module Eq₁; module Eq₂; strictlyInverseʳ)
+
     equivalence : Equivalence
     equivalence = record
-      { cong₁ = cong₁
-      ; cong₂ = cong₂
+      { to-cong   = to-cong
+      ; from-cong = from-cong
       }
 
 
   record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f         : A → B
-      f⁻¹       : B → A
-      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
-      cong₂     : f⁻¹ Preserves _≈₂_ ⟶ _≈₁_
-      inverse   : Inverseᵇ f f⁻¹
+      to        : A → B
+      from      : B → A
+      to-cong   : Congruent _≈₁_ _≈₂_ to
+      from-cong : Congruent _≈₂_ _≈₁_ from
+      inverse   : Inverseᵇ _≈₁_ _≈₂_ to from
 
-    inverseˡ : Inverseˡ f f⁻¹
+    inverseˡ : Inverseˡ _≈₁_ _≈₂_ to from
     inverseˡ = proj₁ inverse
 
-    inverseʳ : Inverseʳ f f⁻¹
+    inverseʳ : Inverseʳ _≈₁_ _≈₂_ to from
     inverseʳ = proj₂ inverse
 
     leftInverse : LeftInverse
     leftInverse = record
-      { cong₁    = cong₁
-      ; cong₂    = cong₂
-      ; inverseˡ = inverseˡ
+      { to-cong   = to-cong
+      ; from-cong = from-cong
+      ; inverseˡ  = inverseˡ
       }
 
     rightInverse : RightInverse
     rightInverse = record
-      { cong₁    = cong₁
-      ; cong₂    = cong₂
-      ; inverseʳ = inverseʳ
+      { to-cong   = to-cong
+      ; from-cong = from-cong
+      ; inverseʳ  = inverseʳ
       }
 
-    open LeftInverse leftInverse   public using (isLeftInverse)
-    open RightInverse rightInverse public using (isRightInverse)
+    open LeftInverse leftInverse   public using (isLeftInverse; strictlyInverseˡ)
+    open RightInverse rightInverse public using (isRightInverse; strictlyInverseʳ)
 
-    isInverse : IsInverse f f⁻¹
+    isInverse : IsInverse to from
     isInverse = record
       { isLeftInverse = isLeftInverse
       ; inverseʳ      = inverseʳ
@@ -260,48 +318,98 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
   record BiEquivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f     : A → B
-      g₁    : B → A
-      g₂    : B → A
-      cong₁ : f Preserves _≈₁_ ⟶ _≈₂_
-      cong₂ : g₁ Preserves _≈₂_ ⟶ _≈₁_
-      cong₃ : g₂ Preserves _≈₂_ ⟶ _≈₁_
+      to         : A → B
+      from₁      : B → A
+      from₂      : B → A
+      to-cong    : Congruent _≈₁_ _≈₂_ to
+      from₁-cong : Congruent _≈₂_ _≈₁_ from₁
+      from₂-cong : Congruent _≈₂_ _≈₁_ from₂
 
 
   record BiInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f         : A → B
-      g₁        : B → A
-      g₂        : B → A
-      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
-      cong₂     : g₁ Preserves _≈₂_ ⟶ _≈₁_
-      cong₃     : g₂ Preserves _≈₂_ ⟶ _≈₁_
-      inverseˡ  : Inverseˡ f g₁
-      inverseʳ  : Inverseʳ f g₂
+      to          : A → B
+      from₁       : B → A
+      from₂       : B → A
+      to-cong     : Congruent _≈₁_ _≈₂_ to
+      from₁-cong  : Congruent _≈₂_ _≈₁_ from₁
+      from₂-cong  : Congruent _≈₂_ _≈₁_ from₂
+      inverseˡ  : Inverseˡ _≈₁_ _≈₂_ to from₁
+      inverseʳ  : Inverseʳ _≈₁_ _≈₂_ to from₂
 
-    f-isCongruent : IsCongruent f
-    f-isCongruent = record
-      { cong           = cong₁
+    to-isCongruent : IsCongruent to
+    to-isCongruent = record
+      { cong           = to-cong
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
       }
 
-    isBiInverse : IsBiInverse f g₁ g₂
+    isBiInverse : IsBiInverse to from₁ from₂
     isBiInverse = record
-      { f-isCongruent = f-isCongruent
-      ; cong₂         = cong₂
-      ; inverseˡ      = inverseˡ
-      ; cong₃         = cong₃
-      ; inverseʳ      = inverseʳ
+      { to-isCongruent = to-isCongruent
+      ; from₁-cong     = from₁-cong
+      ; from₂-cong     = from₂-cong
+      ; inverseˡ       = inverseˡ
+      ; inverseʳ       = inverseʳ
       }
 
     biEquivalence : BiEquivalence
     biEquivalence = record
-      { cong₁ = cong₁
-      ; cong₂ = cong₂
-      ; cong₃ = cong₃
+      { to-cong    = to-cong
+      ; from₁-cong = from₁-cong
+      ; from₂-cong = from₂-cong
       }
 
+------------------------------------------------------------------------
+-- Other
+
+  -- A left inverse is also known as a “split surjection”.
+  --
+  -- As the name implies, a split surjection is a special kind of
+  -- surjection where the witness generated in the domain in the
+  -- function for elements `x₁` and `x₂` are equal if `x₁ ≈ x₂` .
+  --
+  -- The difference is the `from-cong` law --- generally, the section
+  -- (called `Surjection.to⁻` or `SplitSurjection.from`) of a surjection
+  -- need not respect equality, whereas it must in a split surjection.
+  --
+  -- The two notions coincide when the equivalence relation on `B` is
+  -- propositional equality (because all functions respect propositional
+  -- equality).
+  --
+  -- For further background on (split) surjections, one may consult any
+  -- general mathematical references which work without the principle
+  -- of choice. For example:
+  --
+  --   https://ncatlab.org/nlab/show/split+epimorphism.
+  --
+  -- The connection to set-theoretic notions with the same names is
+  -- justified by the setoid type theory/homotopy type theory
+  -- observation/definition that (∃x : A. P) = ∥ Σx : A. P ∥ --- i.e.,
+  -- we can read set-theoretic ∃ as squashed/propositionally truncated Σ.
+  --
+  -- We see working with setoids as working in the MLTT model of a setoid
+  -- type theory, in which ∥ X ∥ is interpreted as the setoid with carrier
+  -- set X and the equivalence relation that relates all elements.
+  -- All maps into ∥ X ∥ respect equality, so in the idiomatic definitions
+  -- here, we drop the corresponding trivial `cong` field completely.
+
+  SplitSurjection : Set _
+  SplitSurjection = LeftInverse
+
+  module SplitSurjection (splitSurjection : SplitSurjection) =
+    LeftInverse splitSurjection
+
+------------------------------------------------------------------------
+-- Infix abbreviations for oft-used items
+------------------------------------------------------------------------
+
+-- Same naming convention as used for propositional equality below, with
+-- appended ₛ (for 'S'etoid).
+
+infixr 0 _⟶ₛ_
+_⟶ₛ_ : Setoid a ℓ₁ → Setoid b ℓ₂ → Set _
+_⟶ₛ_ = Func
 
 ------------------------------------------------------------------------
 -- Bundles specialised for propositional equality
@@ -340,83 +448,104 @@ A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
 
 module _ {A : Set a} {B : Set b} where
 
-  open FunctionDefinitions {A = A} {B} _≡_ _≡_
-
   mk⟶ : (A → B) → A ⟶ B
-  mk⟶ f = record
-    { f         = f
-    ; cong      = ≡.cong f
+  mk⟶ to = record
+    { to        = to
+    ; cong      = ≡.cong to
     }
 
-  mk↣ : ∀ {f : A → B} → Injective f → A ↣ B
-  mk↣ {f} inj = record
-    { f         = f
-    ; cong      = ≡.cong f
+  mk↣ : ∀ {to : A → B} → Injective _≡_ _≡_ to → A ↣ B
+  mk↣ {to} inj = record
+    { to         = to
+    ; cong      = ≡.cong to
     ; injective = inj
     }
 
-  mk↠ : ∀ {f : A → B} → Surjective f → A ↠ B
-  mk↠ {f} surj = record
-    { f          = f
-    ; cong       = ≡.cong f
+  mk↠ : ∀ {to : A → B} → Surjective _≡_ _≡_ to → A ↠ B
+  mk↠ {to} surj = record
+    { to         = to
+    ; cong       = ≡.cong to
     ; surjective = surj
     }
 
-  mk⤖ : ∀ {f : A → B} → Bijective f → A ⤖ B
-  mk⤖ {f} bij = record
-    { f         = f
-    ; cong      = ≡.cong f
+  mk⤖ : ∀ {to : A → B} → Bijective _≡_ _≡_ to → A ⤖ B
+  mk⤖ {to} bij = record
+    { to        = to
+    ; cong      = ≡.cong to
     ; bijective = bij
     }
 
-  mk⇔ : ∀ (f : A → B) (g : B → A) → A ⇔ B
-  mk⇔ f g = record
-    { f     = f
-    ; g     = g
-    ; cong₁ = ≡.cong f
-    ; cong₂ = ≡.cong g
+  mk⇔ : ∀ (to : A → B) (from : B → A) → A ⇔ B
+  mk⇔ to from = record
+    { to        = to
+    ; from      = from
+    ; to-cong   = ≡.cong to
+    ; from-cong = ≡.cong from
     }
 
-  mk↩ : ∀ {f : A → B} {g : B → A} → Inverseˡ f g → A ↩ B
-  mk↩ {f} {g} invˡ = record
-    { f        = f
-    ; g        = g
-    ; cong₁    = ≡.cong f
-    ; cong₂    = ≡.cong g
-    ; inverseˡ = invˡ
+  mk↩ : ∀ {to : A → B} {from : B → A} → Inverseˡ _≡_ _≡_ to from → A ↩ B
+  mk↩ {to} {from} invˡ = record
+    { to        = to
+    ; from      = from
+    ; to-cong   = ≡.cong to
+    ; from-cong = ≡.cong from
+    ; inverseˡ  = invˡ
     }
 
-  mk↪ : ∀ {f : A → B} {g : B → A} → Inverseʳ f g → A ↪ B
-  mk↪ {f} {g} invʳ = record
-    { f        = f
-    ; g        = g
-    ; cong₁    = ≡.cong f
-    ; cong₂    = ≡.cong g
-    ; inverseʳ = invʳ
+  mk↪ : ∀ {to : A → B} {from : B → A} → Inverseʳ _≡_ _≡_ to from → A ↪ B
+  mk↪ {to} {from} invʳ = record
+    { to        = to
+    ; from      = from
+    ; to-cong   = ≡.cong to
+    ; from-cong = ≡.cong from
+    ; inverseʳ  = invʳ
     }
 
-  mk↩↪ : ∀ {f : A → B} {g₁ : B → A} {g₂ : B → A} →
-         Inverseˡ f g₁ → Inverseʳ f g₂ → A ↩↪ B
-  mk↩↪ {f} {g₁} {g₂} invˡ invʳ = record
-    { f        = f
-    ; g₁       = g₁
-    ; g₂       = g₂
-    ; cong₁    = ≡.cong f
-    ; cong₂    = ≡.cong g₁
-    ; cong₃    = ≡.cong g₂
-    ; inverseˡ = invˡ
-    ; inverseʳ = invʳ
+  mk↩↪ : ∀ {to : A → B} {from₁ : B → A} {from₂ : B → A} →
+         Inverseˡ _≡_ _≡_ to from₁ → Inverseʳ _≡_ _≡_ to from₂ → A ↩↪ B
+  mk↩↪ {to} {from₁} {from₂} invˡ invʳ = record
+    { to         = to
+    ; from₁      = from₁
+    ; from₂      = from₂
+    ; to-cong    = ≡.cong to
+    ; from₁-cong = ≡.cong from₁
+    ; from₂-cong = ≡.cong from₂
+    ; inverseˡ   = invˡ
+    ; inverseʳ   = invʳ
     }
 
-  mk↔ : ∀ {f : A → B} {f⁻¹ : B → A} → Inverseᵇ f f⁻¹ → A ↔ B
-  mk↔ {f} {f⁻¹} inv = record
-    { f       = f
-    ; f⁻¹     = f⁻¹
-    ; cong₁   = ≡.cong f
-    ; cong₂   = ≡.cong f⁻¹
-    ; inverse = inv
+  mk↔ : ∀ {to : A → B} {from : B → A} → Inverseᵇ _≡_ _≡_ to from → A ↔ B
+  mk↔ {to} {from} inv = record
+    { to        = to
+    ; from      = from
+    ; to-cong   = ≡.cong to
+    ; from-cong = ≡.cong from
+    ; inverse   = inv
     }
 
-  -- Sometimes the implicit arguments above cannot be inferred
-  mk↔′ : ∀ (f : A → B) (f⁻¹ : B → A) → Inverseˡ f f⁻¹ → Inverseʳ f f⁻¹ → A ↔ B
-  mk↔′ f f⁻¹ invˡ invʳ = mk↔ {f = f} {f⁻¹ = f⁻¹} (invˡ , invʳ)
+
+  -- Strict variant of the above.
+  mk↠ₛ : ∀ {to : A → B} → StrictlySurjective _≡_ to → A ↠ B
+  mk↠ₛ = mk↠ ∘ strictlySurjective⇒surjective
+
+  mk↔ₛ′ : ∀ (to : A → B) (from : B → A) →
+          StrictlyInverseˡ _≡_ to from →
+          StrictlyInverseʳ _≡_ to from →
+          A ↔ B
+  mk↔ₛ′ to from invˡ invʳ = mk↔ {to} {from}
+    ( strictlyInverseˡ⇒inverseˡ to invˡ
+    , strictlyInverseʳ⇒inverseʳ to invʳ
+    )
+
+------------------------------------------------------------------------
+-- Other
+------------------------------------------------------------------------
+
+-- Alternative syntax for the application of functions
+
+module _ {From : Setoid a ℓ₁} {To : Setoid b ℓ₂} where
+  open Setoid
+
+  infixl 5 _⟨$⟩_
+  _⟨$⟩_ : Func From To → Carrier From → Carrier To
+  _⟨$⟩_ = Func.to

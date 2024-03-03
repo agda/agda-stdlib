@@ -4,18 +4,17 @@
 -- Unary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Unary where
 
-open import Data.Empty
+open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤)
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_; Σ-syntax; ∃; uncurry; swap)
 open import Data.Sum.Base using (_⊎_; [_,_])
-open import Function.Base
-open import Level
-open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Nullary.Decidable.Core using (True)
+open import Function.Base using (_∘_; _|>_)
+open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
+open import Relation.Nullary as Nullary using (¬_; Dec; True)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
@@ -70,7 +69,7 @@ x ∉ P = ¬ x ∈ P
 ------------------------------------------------------------------------
 -- Subset relations
 
-infix 4 _⊆_ _⊇_ _⊈_ _⊉_ _⊂_ _⊃_ _⊄_ _⊅_
+infix 4 _⊆_ _⊇_ _⊈_ _⊉_ _⊂_ _⊃_ _⊄_ _⊅_ _≐_ _≐′_
 
 _⊆_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ⊆ Q = ∀ {x} → x ∈ P → x ∈ Q
@@ -95,6 +94,9 @@ P ⊄ Q = ¬ (P ⊂ Q)
 
 _⊅_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ⊅ Q = ¬ (P ⊃ Q)
+
+_≐_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ≐ Q = (P ⊆ Q) × (Q ⊆ P)
 
 -- The following primed variants of _⊆_ can be used when 'x' can't
 -- be inferred from 'x ∈ P'.
@@ -124,6 +126,9 @@ P ⊄′ Q = ¬ (P ⊂′ Q)
 
 _⊅′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ⊅′ Q = ¬ (P ⊃′ Q)
+
+_≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ≐′ Q = (P ⊆′ Q) × (Q ⊆′ P)
 
 ------------------------------------------------------------------------
 -- Properties of sets
@@ -156,6 +161,28 @@ IUniversal P = ∀ {x} → x ∈ P
 
 syntax IUniversal P = ∀[ P ]
 
+-- Irrelevance - any two proofs that an element satifies P are
+-- indistinguishable.
+
+Irrelevant : Pred A ℓ → Set _
+Irrelevant P = ∀ {x} → Nullary.Irrelevant (P x)
+
+-- Recomputability - we can rebuild a relevant proof given an
+-- irrelevant one.
+
+Recomputable : Pred A ℓ → Set _
+Recomputable P = ∀ {x} → Nullary.Recomputable (P x)
+
+-- Weak Decidability
+
+Stable : Pred A ℓ → Set _
+Stable P = ∀ x → Nullary.Stable (P x)
+
+-- Weak Decidability
+
+WeaklyDecidable : Pred A ℓ → Set _
+WeaklyDecidable P = ∀ x → Nullary.WeaklyDecidable (P x)
+
 -- Decidability - it is possible to determine if an arbitrary element
 -- satisfies P.
 
@@ -168,18 +195,6 @@ Decidable P = ∀ x → Dec (P x)
 ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
 ⌊ P? ⌋ a = Lift _ (True (P? a))
 
--- Irrelevance - any two proofs that an element satifies P are
--- indistinguishable.
-
-Irrelevant : Pred A ℓ → Set _
-Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
-
--- Recomputability - we can rebuild a relevant proof given an
--- irrelevant one.
-
-Recomputable : Pred A ℓ → Set _
-Recomputable P = ∀ {x} → .(P x) → P x
-
 ------------------------------------------------------------------------
 -- Operations on sets
 
@@ -188,6 +203,7 @@ infixr 9 _⊢_
 infixr 8 _⇒_
 infixr 7 _∩_
 infixr 6 _∪_
+infixr 6 _∖_
 infix 4 _≬_
 
 -- Complement.
@@ -209,6 +225,11 @@ P ∪ Q = λ x → x ∈ P ⊎ x ∈ Q
 
 _∩_ : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
 P ∩ Q = λ x → x ∈ P × x ∈ Q
+
+-- Difference.
+
+_∖_ : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
+P ∖ Q = λ x → x ∈ P × x ∉ Q
 
 -- Infinitary union.
 
@@ -273,7 +294,7 @@ _⟨→⟩_ : Pred A ℓ₁ → Pred B ℓ₂ → Pred (A → B) _
 -- Product.
 
 _⟨·⟩_ : (P : Pred A ℓ₁) (Q : Pred B ℓ₂) →
-        (P ⟨×⟩ (P ⟨→⟩ Q)) ⊆ Q ∘ uncurry (flip _$_)
+        (P ⟨×⟩ (P ⟨→⟩ Q)) ⊆ Q ∘ uncurry _|>_
 (P ⟨·⟩ Q) (p , f) = f p
 
 -- Converse.

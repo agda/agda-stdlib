@@ -4,14 +4,14 @@
 -- Properties of lists made up entirely of decidably unique elements
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.List
+open import Data.List.Base using ([]; _∷_; deduplicate)
 import Data.List.Relation.Unary.Unique.DecSetoid as Unique
 open import Data.List.Relation.Unary.All.Properties using (all-filter)
 open import Data.List.Relation.Unary.Unique.Setoid.Properties
 open import Level
-open import Relation.Binary using (DecSetoid)
+open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.List.Relation.Unary.Unique.DecSetoid.Properties where
 
@@ -29,4 +29,4 @@ module _ (DS : DecSetoid a ℓ) where
 
   deduplicate-! : ∀ xs → Unique (deduplicate _≟_ xs)
   deduplicate-! []       = []
-  deduplicate-! (x ∷ xs) = all-filter _ (deduplicate _ xs) ∷ filter⁺ S _ (deduplicate-! xs)
+  deduplicate-! (x ∷ xs) = all-filter _ (deduplicate _≟_ xs) ∷ filter⁺ S _ (deduplicate-! xs)

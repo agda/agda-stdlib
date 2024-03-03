@@ -4,14 +4,12 @@
 -- Universal lifting of predicates over Vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.Functional.Relation.Unary.All where
 
-open import Data.Fin.Base
-open import Data.Fin.Properties
-open import Data.Nat.Base
-open import Data.Product using (_,_)
+open import Data.Fin.Properties using (all?)
+open import Data.Product.Base using (_,_)
 open import Data.Vec.Functional as VF hiding (map)
 open import Level using (Level)
 open import Relation.Unary

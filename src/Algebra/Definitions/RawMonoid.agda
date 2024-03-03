@@ -4,7 +4,7 @@
 -- Basic auxiliary definitions for monoid-like structures
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (RawMonoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)

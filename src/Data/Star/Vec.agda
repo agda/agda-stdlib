@@ -13,54 +13,59 @@ open import Data.Star.Fin using (Fin)
 open import Data.Star.Decoration
 open import Data.Star.Pointer as Pointer hiding (lookup)
 open import Data.Star.List using (List)
-open import Relation.Binary
+open import Level using (Level)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Function.Base
 open import Data.Unit
 
+private
+  variable
+    a : Level
+    A : Set a
+
 -- The vector type. Vectors are natural numbers decorated with extra
 -- information (i.e. elements).
 
-Vec : Set → ℕ → Set
+Vec : Set a → ℕ → Set a
 Vec A = All (λ _ → A)
 
 -- Nil and cons.
 
-[] : ∀ {A} → Vec A zero
+[] : Vec A zero
 [] = ε
 
 infixr 5 _∷_
 
-_∷_ : ∀ {A n} → A → Vec A n → Vec A (suc n)
+_∷_ : ∀ {n} → A → Vec A n → Vec A (suc n)
 x ∷ xs = ↦ x ◅ xs
 
 -- Projections.
 
-head : ∀ {A n} → Vec A (1# + n) → A
+head : ∀ {n} → Vec A (1# + n) → A
 head (↦ x ◅ _) = x
 
-tail : ∀ {A n} → Vec A (1# + n) → Vec A n
+tail : ∀ {n} → Vec A (1# + n) → Vec A n
 tail (↦ _ ◅ xs) = xs
 
 -- Append.
 
 infixr 5 _++_
 
-_++_ : ∀ {A m n} → Vec A m → Vec A n → Vec A (m + n)
+_++_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m + n)
 _++_ = _◅◅◅_
 
 -- Safe lookup.
 
-lookup : ∀ {A n} → Fin n → Vec A n → A
-lookup i xs with Pointer.lookup i xs
+lookup : ∀ {n} → Vec A n → Fin n → A
+lookup xs i with Pointer.lookup xs i
 ... | result _ x = x
 
 ------------------------------------------------------------------------
 -- Conversions
 
-fromList : ∀ {A} → (xs : List A) → Vec A (length xs)
+fromList : (xs : List A) → Vec A (length xs)
 fromList ε        = []
 fromList (x ◅ xs) = x ∷ fromList xs
 
-toList : ∀ {A n} → Vec A n → List A
+toList : ∀ {n} → Vec A n → List A
 toList = gmap (const tt) decoration

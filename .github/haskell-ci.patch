@@ -1,0 +1,23 @@
+--- .github/workflows/haskell-ci.yml	2023-02-22 18:05:26.000000000 +0100
++++ .github/workflows/haskell-ci.yml-patched	2023-02-22 18:04:31.000000000 +0100
+@@ -18,10 +18,20 @@
+     branches:
+       - master
+       - experimental
++    paths:
++      - .github/workflows/haskell-ci.yml
++      - agda-stdlib-utils.cabal
++      - cabal.haskell-ci
++      - "*.hs"
+   pull_request:
+     branches:
+       - master
+       - experimental
++    paths:
++      - .github/workflows/haskell-ci.yml
++      - agda-stdlib-utils.cabal
++      - cabal.haskell-ci
++      - "*.hs"
+ jobs:
+   linux:
+     name: Haskell-CI - Linux - ${{ matrix.compiler }}

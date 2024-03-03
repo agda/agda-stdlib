@@ -4,7 +4,7 @@
 -- Properties of homogeneous binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary where
 
@@ -14,4 +14,5 @@ module Relation.Binary where
 open import Relation.Binary.Core public
 open import Relation.Binary.Definitions public
 open import Relation.Binary.Structures public
+open import Relation.Binary.Structures.Biased public
 open import Relation.Binary.Bundles public

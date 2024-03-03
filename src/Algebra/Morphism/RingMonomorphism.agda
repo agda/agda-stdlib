@@ -7,10 +7,12 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
+import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphism
+import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Relation.Binary.Core
 
 module Algebra.Morphism.RingMonomorphism
@@ -26,50 +28,52 @@ open RawRing R₂ renaming
 
 open import Algebra.Definitions
 open import Algebra.Structures
-open import Data.Product
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+open import Data.Product.Base using (proj₁; proj₂; _,_)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Re-export all properties of group and monoid monomorphisms
 
-open import Algebra.Morphism.GroupMonomorphism
-  +-isGroupMonomorphism renaming
-  ( assoc to +-assoc
-  ; comm to +-comm
-  ; cong to +-cong
-  ; idem to +-idem
+open GroupMonomorphism +-isGroupMonomorphism public
+  renaming
+  ( assoc   to +-assoc
+  ; comm    to +-comm
+  ; cong    to +-cong
+  ; idem    to +-idem
+  ; sel     to +-sel
   ; ⁻¹-cong to neg-cong
-  ; identity to +-identity; identityˡ to +-identityˡ; identityʳ to +-identityʳ
-  ; cancel to +-cancel; cancelˡ to +-cancelˡ; cancelʳ to +-cancelʳ
-  ; zero to +-zero; zeroˡ to +-zeroˡ; zeroʳ to +-zeroʳ
-  ; isMagma to +-isMagma
-  ; isSemigroup to +-isSemigroup
-  ; isMonoid to +-isMonoid
-  ; isSelectiveMagma to +-isSelectiveMagma
-  ; isSemilattice to +-isSemilattice
-  ; sel to +-sel
-  ; isBand to +-isBand
-  ; isCommutativeMonoid to +-isCommutativeMonoid
-  ) public
 
-open import Algebra.Morphism.MonoidMonomorphism
-  *-isMonoidMonomorphism renaming
+  ; identity to +-identity; identityˡ to +-identityˡ; identityʳ to +-identityʳ
+  ; cancel   to +-cancel;   cancelˡ   to +-cancelˡ;   cancelʳ   to +-cancelʳ
+  ; zero     to +-zero;     zeroˡ     to +-zeroˡ;     zeroʳ     to +-zeroʳ
+
+  ; isMagma             to +-isMagma
+  ; isSemigroup         to +-isSemigroup
+  ; isMonoid            to +-isMonoid
+  ; isSelectiveMagma    to +-isSelectiveMagma
+  ; isBand              to +-isBand
+  ; isCommutativeMonoid to +-isCommutativeMonoid
+  )
+
+open MonoidMonomorphism *-isMonoidMonomorphism public
+  renaming
   ( assoc to *-assoc
-  ; comm to *-comm
-  ; cong to *-cong
-  ; idem to *-idem
+  ; comm  to *-comm
+  ; cong  to *-cong
+  ; idem  to *-idem
+  ; sel   to *-sel
+
   ; identity to *-identity; identityˡ to *-identityˡ; identityʳ to *-identityʳ
-  ; cancel to *-cancel; cancelˡ to *-cancelˡ; cancelʳ to *-cancelʳ
-  ; zero to *-zero; zeroˡ to *-zeroˡ; zeroʳ to *-zeroʳ
-  ; isMagma to *-isMagma
-  ; isSemigroup to *-isSemigroup
-  ; isMonoid to *-isMonoid
-  ; isSelectiveMagma to *-isSelectiveMagma
-  ; isSemilattice to *-isSemilattice
-  ; sel to *-sel
-  ; isBand to *-isBand
+  ; cancel   to *-cancel;   cancelˡ   to *-cancelˡ;   cancelʳ   to *-cancelʳ
+  ; zero     to *-zero;     zeroˡ     to *-zeroˡ;     zeroʳ     to *-zeroʳ
+
+  ; isMagma             to *-isMagma
+  ; isSemigroup         to *-isSemigroup
+  ; isMonoid            to *-isMonoid
+  ; isSelectiveMagma    to *-isSelectiveMagma
+  ; isBand              to *-isBand
   ; isCommutativeMonoid to *-isCommutativeMonoid
-  ) public
+  )
 
 ------------------------------------------------------------------------
 -- Properties
@@ -79,15 +83,15 @@ module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
 
   open IsGroup +-isGroup hiding (setoid; refl; sym)
   open IsMagma *-isMagma renaming (∙-cong to ◦-cong)
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   distribˡ : _DistributesOverˡ_ _≈₂_ _⊛_ _⊕_ → _DistributesOverˡ_ _≈₁_ _*_ _+_
   distribˡ distribˡ x y z = injective (begin
     ⟦ x * (y + z) ⟧               ≈⟨ *-homo x (y + z) ⟩
     ⟦ x ⟧ ⊛ ⟦ y + z ⟧             ≈⟨ ◦-cong refl (+-homo y z) ⟩
     ⟦ x ⟧ ⊛ (⟦ y ⟧ ⊕ ⟦ z ⟧)       ≈⟨ distribˡ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
-    ⟦ x ⟧ ⊛ ⟦ y ⟧ ⊕ ⟦ x ⟧ ⊛ ⟦ z ⟧ ≈˘⟨ ∙-cong (*-homo x y) (*-homo x z) ⟩
-    ⟦ x * y ⟧ ⊕ ⟦ x * z ⟧         ≈˘⟨ +-homo (x * y) (x * z) ⟩
+    ⟦ x ⟧ ⊛ ⟦ y ⟧ ⊕ ⟦ x ⟧ ⊛ ⟦ z ⟧ ≈⟨ ∙-cong (*-homo x y) (*-homo x z) ⟨
+    ⟦ x * y ⟧ ⊕ ⟦ x * z ⟧         ≈⟨ +-homo (x * y) (x * z) ⟨
     ⟦ x * y + x * z ⟧ ∎)
 
   distribʳ : _DistributesOverʳ_ _≈₂_ _⊛_ _⊕_ → _DistributesOverʳ_ _≈₁_ _*_ _+_
@@ -95,8 +99,8 @@ module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
     ⟦ (y + z) * x ⟧               ≈⟨ *-homo (y + z) x ⟩
     ⟦ y + z ⟧ ⊛ ⟦ x ⟧             ≈⟨ ◦-cong (+-homo y z) refl ⟩
     (⟦ y ⟧ ⊕ ⟦ z ⟧) ⊛ ⟦ x ⟧       ≈⟨ distribˡ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
-    ⟦ y ⟧ ⊛ ⟦ x ⟧ ⊕ ⟦ z ⟧ ⊛ ⟦ x ⟧ ≈˘⟨ ∙-cong (*-homo y x) (*-homo z x) ⟩
-    ⟦ y * x ⟧ ⊕ ⟦ z * x ⟧         ≈˘⟨ +-homo (y * x) (z * x) ⟩
+    ⟦ y ⟧ ⊛ ⟦ x ⟧ ⊕ ⟦ z ⟧ ⊛ ⟦ x ⟧ ≈⟨ ∙-cong (*-homo y x) (*-homo z x) ⟨
+    ⟦ y * x ⟧ ⊕ ⟦ z * x ⟧         ≈⟨ +-homo (y * x) (z * x) ⟨
     ⟦ y * x + z * x ⟧ ∎)
 
   distrib : _DistributesOver_ _≈₂_ _⊛_ _⊕_ → _DistributesOver_ _≈₁_ _*_ _+_
@@ -107,7 +111,7 @@ module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
     ⟦ 0# * x ⟧     ≈⟨ *-homo 0# x ⟩
     ⟦ 0# ⟧ ⊛ ⟦ x ⟧ ≈⟨ ◦-cong 0#-homo refl ⟩
     0#₂ ⊛ ⟦ x ⟧    ≈⟨ zeroˡ ⟦ x ⟧ ⟩
-    0#₂            ≈˘⟨ 0#-homo ⟩
+    0#₂            ≈⟨ 0#-homo ⟨
     ⟦ 0# ⟧         ∎)
 
   zeroʳ : RightZero _≈₂_ 0#₂ _⊛_ → RightZero _≈₁_ 0# _*_
@@ -115,7 +119,7 @@ module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
     ⟦ x * 0# ⟧     ≈⟨ *-homo x 0# ⟩
     ⟦ x ⟧ ⊛ ⟦ 0# ⟧ ≈⟨ ◦-cong refl 0#-homo ⟩
     ⟦ x ⟧ ⊛ 0#₂    ≈⟨ zeroʳ ⟦ x ⟧ ⟩
-    0#₂            ≈˘⟨ 0#-homo ⟩
+    0#₂            ≈⟨ 0#-homo ⟨
     ⟦ 0# ⟧         ∎)
 
   zero : Zero _≈₂_ 0#₂ _⊛_ → Zero _≈₁_ 0# _*_
@@ -123,28 +127,29 @@ module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
 
   neg-distribˡ-* : (∀ x y → (⊝ (x ⊛ y)) ≈₂ ((⊝ x) ⊛ y)) → (∀ x y → (- (x * y)) ≈₁ ((- x) * y))
   neg-distribˡ-* neg-distribˡ-* x y = injective (begin
-    ⟦ - (x * y) ⟧     ≈⟨ ⁻¹-homo (x * y) ⟩
+    ⟦ - (x * y) ⟧     ≈⟨ -‿homo (x * y) ⟩
     ⊝ ⟦ x * y ⟧       ≈⟨ ⁻¹-cong (*-homo x y) ⟩
     ⊝ (⟦ x ⟧ ⊛ ⟦ y ⟧) ≈⟨ neg-distribˡ-* ⟦ x ⟧ ⟦ y ⟧ ⟩
-    ⊝ ⟦ x ⟧ ⊛ ⟦ y ⟧   ≈⟨ ◦-cong (sym (⁻¹-homo x)) refl ⟩
+    ⊝ ⟦ x ⟧ ⊛ ⟦ y ⟧   ≈⟨ ◦-cong (sym (-‿homo x)) refl ⟩
     ⟦ - x ⟧ ⊛ ⟦ y ⟧   ≈⟨ sym (*-homo (- x) y) ⟩
     ⟦ - x * y ⟧       ∎)
 
   neg-distribʳ-* : (∀ x y → (⊝ (x ⊛ y)) ≈₂ (x ⊛ (⊝ y))) → (∀ x y → (- (x * y)) ≈₁ (x * (- y)))
   neg-distribʳ-* neg-distribʳ-* x y = injective (begin
-    ⟦ - (x * y) ⟧     ≈⟨ ⁻¹-homo (x * y) ⟩
+    ⟦ - (x * y) ⟧     ≈⟨ -‿homo (x * y) ⟩
     ⊝ ⟦ x * y ⟧       ≈⟨ ⁻¹-cong (*-homo x y) ⟩
     ⊝ (⟦ x ⟧ ⊛ ⟦ y ⟧) ≈⟨ neg-distribʳ-* ⟦ x ⟧ ⟦ y ⟧ ⟩
-    ⟦ x ⟧ ⊛ ⊝ ⟦ y ⟧   ≈⟨ ◦-cong refl (sym (⁻¹-homo y)) ⟩
+    ⟦ x ⟧ ⊛ ⊝ ⟦ y ⟧   ≈⟨ ◦-cong refl (sym (-‿homo y)) ⟩
     ⟦ x ⟧ ⊛ ⟦ - y ⟧   ≈⟨ sym (*-homo x (- y)) ⟩
     ⟦ x * - y ⟧       ∎)
 
 isRing : IsRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ → IsRing _≈₁_ _+_ _*_ -_ 0# 1#
 isRing isRing = record
   { +-isAbelianGroup = isAbelianGroup R.+-isAbelianGroup
-  ; *-isMonoid       = *-isMonoid R.*-isMonoid
+  ; *-cong           = *-cong R.*-isMagma
+  ; *-assoc          = *-assoc R.*-isMagma R.*-assoc
+  ; *-identity       = *-identity R.*-isMagma R.*-identity
   ; distrib          = distrib R.+-isGroup R.*-isMagma R.distrib
-  ; zero             = zero R.+-isGroup R.*-isMagma R.zero
   } where module R = IsRing isRing
 
 isCommutativeRing : IsCommutativeRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ →

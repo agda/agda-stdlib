@@ -4,19 +4,20 @@
 -- Property related to Grouped
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Grouped.Properties where
 
 open import Data.Bool using (true; false)
-open import Data.List
+open import Data.List.Base using ([]; [_]; _∷_; map; derun)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
 open import Data.List.Relation.Unary.Grouped
-open import Function using (_∘_; _⇔_; Equivalence)
-open import Function.Equality using (_⟨$⟩_)
-open import Relation.Binary as B using (REL; Rel)
+open import Data.Product.Base using (_,_)
+open import Function.Base using (_∘_; _on_)
+open import Relation.Binary.Definitions as B
+open import Relation.Binary.Core using (_⇔_; REL; Rel)
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
@@ -25,31 +26,23 @@ open import Level
 private
   variable
     a b c p q : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- map
 
 module _ (P : Rel A p) (Q : Rel B q) where
 
-  map⁺ : ∀ {f xs} → (∀ {x y} → P x y ⇔ Q (f x) (f y)) → Grouped P xs → Grouped Q (map f xs)
-  map⁺ {f} {[]} P⇔Q [] = []
-  map⁺ {f} {x ∷ xs} P⇔Q (all[¬Px,xs] ∷≉ g) = aux all[¬Px,xs] ∷≉ map⁺ P⇔Q g where
-    aux : ∀ {ys} → All (λ y → ¬ P x y) ys → All (λ y → ¬ Q (f x) y) (map f ys)
-    aux [] = []
-    aux (py ∷ pys) = py ∘ Equivalence.g P⇔Q ∷ aux pys
-  map⁺ {f} {x₁ ∷ x₂ ∷ xs} P⇔Q (Px₁x₂ ∷≈ g) = Equivalence.f P⇔Q Px₁x₂ ∷≈ map⁺ P⇔Q g
+  map⁺ : ∀ {f xs} → P ⇔ (Q on f) → Grouped P xs → Grouped Q (map f xs)
+  map⁺ P⇔Q            []                      = []
+  map⁺ P⇔Q@(_ , Q⇒P) (all[¬Px,xs] ∷≉ g[xs]) = All.gmap⁺ (_∘ Q⇒P) all[¬Px,xs] ∷≉ map⁺ P⇔Q g[xs]
+  map⁺ P⇔Q@(P⇒Q , _) (Px₁x₂ ∷≈ g[xs])       = P⇒Q Px₁x₂ ∷≈ map⁺ P⇔Q g[xs]
 
-  map⁻ : ∀ {f xs} → (∀ {x y} → P x y ⇔ Q (f x) (f y)) → Grouped Q (map f xs) → Grouped P xs
-  map⁻ {f} {[]} P⇔Q [] = []
-  map⁻ {f} {x ∷ []} P⇔Q ([] ∷≉ []) = [] ∷≉ []
-  map⁻ {f} {x₁ ∷ x₂ ∷ xs} P⇔Q (all[¬Qx,xs] ∷≉ g) = aux all[¬Qx,xs] ∷≉ map⁻ P⇔Q g where
-    aux : ∀ {ys} → All (λ y → ¬ Q (f x₁) y) (map f ys) → All (λ y → ¬ P x₁ y) ys
-    aux {[]} [] = []
-    aux {y ∷ ys} (py ∷ pys) = py ∘ Equivalence.f P⇔Q ∷ aux pys
-  map⁻ {f} {x₁ ∷ x₂ ∷ xs} P⇔Q (Qx₁x₂ ∷≈ g) = Equivalence.g P⇔Q Qx₁x₂ ∷≈ map⁻ P⇔Q g
+  map⁻ : ∀ {f xs} → P ⇔ (Q on f) → Grouped Q (map f xs) → Grouped P xs
+  map⁻ {xs = []}          P⇔Q            []                  = []
+  map⁻ {xs = _ ∷ []}     P⇔Q            ([] ∷≉ [])         = [] ∷≉ []
+  map⁻ {xs = _ ∷ _ ∷ _} P⇔Q@(P⇒Q , _) (all[¬Qx,xs] ∷≉ g) = All.gmap⁻ (_∘ P⇒Q) all[¬Qx,xs] ∷≉ map⁻ P⇔Q g
+  map⁻ {xs = _ ∷ _ ∷ _} P⇔Q@(_ , Q⇒P) (Qx₁x₂ ∷≈ g)       = Q⇒P Qx₁x₂ ∷≈ map⁻ P⇔Q g
 
 ------------------------------------------------------------------------
 -- [_]

@@ -4,66 +4,103 @@
 -- Divisibility
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.Divisibility where
 
-open import Algebra
 open import Data.Nat.Base
 open import Data.Nat.DivMod
+  using (m≡m%n+[m/n]*n; m%n≡m∸m/n*n; m*n/n≡m; m*n%n≡0; *-/-assoc)
 open import Data.Nat.Properties
-open import Data.Product
-open import Function.Base
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Base using (_∘′_; _$_; flip)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
-open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable as Dec using (False)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
-open import Relation.Binary.PropositionalEquality as PropEq
-  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
+open import Relation.Nullary.Decidable as Dec using (yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Preorder; Poset)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Antisymmetric; Decidable)
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl; sym; cong; subst)
+open import Relation.Binary.Reasoning.Syntax
+open import Relation.Binary.PropositionalEquality.Properties
+  using (isEquivalence; module ≡-Reasoning)
+
+private
+  variable d m n o p : ℕ
+
 
 ------------------------------------------------------------------------
--- Definition
+-- Definition and derived properties
 
-open import Data.Nat.Divisibility.Core public
+open import Data.Nat.Divisibility.Core public hiding (*-pres-∣)
+
+quotient≢0 : (m∣n : m ∣ n) → .{{NonZero n}} → NonZero (quotient m∣n)
+quotient≢0 m∣n rewrite _∣_.equality m∣n = m*n≢0⇒m≢0 (quotient m∣n)
+
+m∣n⇒n≡quotient*m : (m∣n : m ∣ n) → n ≡ (quotient m∣n) * m
+m∣n⇒n≡quotient*m m∣n = _∣_.equality m∣n
+
+m∣n⇒n≡m*quotient : (m∣n : m ∣ n) → n ≡ m * (quotient m∣n)
+m∣n⇒n≡m*quotient {m = m} m∣n rewrite _∣_.equality m∣n = *-comm (quotient m∣n) m
+
+quotient-∣ : (m∣n : m ∣ n) → (quotient m∣n) ∣ n
+quotient-∣ {m = m} m∣n = divides m (m∣n⇒n≡m*quotient m∣n)
+
+quotient>1 : (m∣n : m ∣ n) → m < n → 1 < quotient m∣n
+quotient>1 {m} {n} m∣n m<n = *-cancelˡ-< m 1 (quotient m∣n) $ begin-strict
+    m * 1        ≡⟨ *-identityʳ m ⟩
+    m            <⟨ m<n ⟩
+    n            ≡⟨ m∣n⇒n≡m*quotient m∣n ⟩
+    m * quotient m∣n ∎
+  where open ≤-Reasoning
+
+quotient-< : (m∣n : m ∣ n) → .{{NonTrivial m}} → .{{NonZero n}} → quotient m∣n < n
+quotient-< {m} {n} m∣n = begin-strict
+  quotient m∣n     <⟨ m<m*n (quotient m∣n) m (nonTrivial⇒n>1 m) ⟩
+  quotient m∣n * m ≡⟨ _∣_.equality m∣n ⟨
+  n                ∎
+  where open ≤-Reasoning; instance _ = quotient≢0 m∣n
+
+------------------------------------------------------------------------
+-- Relating _/_ and quotient
+
+n/m≡quotient : (m∣n : m ∣ n) .{{_ : NonZero m}} → n / m ≡ quotient m∣n
+n/m≡quotient {m = m} (divides-refl q) = m*n/n≡m q m
 
 ------------------------------------------------------------------------
 -- Relationship with _%_
 
-m%n≡0⇒n∣m : ∀ m n → m % suc n ≡ 0 → suc n ∣ m
-m%n≡0⇒n∣m m n eq = divides (m / suc n) (begin-equality
-  m                               ≡⟨ m≡m%n+[m/n]*n m n ⟩
-  m % suc n + m / suc n * (suc n) ≡⟨ cong₂ _+_ eq refl ⟩
-  m / suc n * (suc n)             ∎)
-  where open ≤-Reasoning
+m%n≡0⇒n∣m : ∀ m n .{{_ : NonZero n}} → m % n ≡ 0 → n ∣ m
+m%n≡0⇒n∣m m n eq = divides (m / n) $ begin
+  m                ≡⟨ m≡m%n+[m/n]*n m n ⟩
+  m % n + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) eq ⟩
+  [m/n]*n          ∎
+  where open ≡-Reasoning; [m/n]*n = m / n * n
 
-n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
-n∣m⇒m%n≡0 m n (divides v eq) = begin-equality
-  m           % suc n  ≡⟨ cong (_% suc n) eq ⟩
-  (v * suc n) % suc n  ≡⟨ m*n%n≡0 v n ⟩
-  0                    ∎
-  where open ≤-Reasoning
+n∣m⇒m%n≡0 : ∀ m n .{{_ : NonZero n}} → n ∣ m → m % n ≡ 0
+n∣m⇒m%n≡0 .(q * n) n (divides-refl q) = m*n%n≡0 q n
 
-m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
-m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
+m%n≡0⇔n∣m : ∀ m n .{{_ : NonZero n}} → m % n ≡ 0 ⇔ n ∣ m
+m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _≤_
 
-∣⇒≤ : ∀ {m n} → m ∣ suc n → m ≤ suc n
-∣⇒≤ {m} {n} (divides (suc q) eq) = begin
-  m          ≤⟨ m≤m+n m (q * m) ⟩
-  suc q * m  ≡⟨ sym eq ⟩
-  suc n      ∎
-  where open ≤-Reasoning
+∣⇒≤ : .{{_ : NonZero n}} → m ∣ n → m ≤ n
+∣⇒≤ {n@.(q * m)} {m} (divides-refl q@(suc p)) = m≤m+n m (p * m)
 
->⇒∤ : ∀ {m n} → m > suc n → m ∤ suc n
->⇒∤ (s≤s m>n) m∣n = contradiction (∣⇒≤ m∣n) (≤⇒≯ m>n)
+>⇒∤ : .{{_ : NonZero n}} → m > n → m ∤ n
+>⇒∤ {n@(suc _)} n<m@(s<s _) m∣n = contradiction (∣⇒≤ m∣n) (<⇒≱ n<m)
 
 ------------------------------------------------------------------------
 -- _∣_ is a partial order
+
+-- these could/should inherit from Algebra.Properties.Monoid.Divisibility
 
 ∣-reflexive : _≡_ ⇒ _∣_
 ∣-reflexive {n} refl = divides 1 (sym (*-identityˡ n))
@@ -72,24 +109,24 @@ m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 ∣-refl = ∣-reflexive refl
 
 ∣-trans : Transitive _∣_
-∣-trans (divides p refl) (divides q refl) =
+∣-trans (divides-refl p) (divides-refl q) =
   divides (q * p) (sym (*-assoc q p _))
 
 ∣-antisym : Antisymmetric _≡_ _∣_
-∣-antisym {m}     {zero}  _ (divides q refl) = *-zeroʳ q
-∣-antisym {zero}  {n}     (divides p eq) _   = sym (trans eq (*-comm p 0))
-∣-antisym {suc m} {suc n} p∣q           q∣p  = ≤-antisym (∣⇒≤ p∣q) (∣⇒≤ q∣p)
+∣-antisym {m}     {zero}   _  q∣p = m∣n⇒n≡m*quotient q∣p
+∣-antisym {zero}  {n}     p∣q  _  = sym (m∣n⇒n≡m*quotient p∣q)
+∣-antisym {suc m} {suc n} p∣q q∣p = ≤-antisym (∣⇒≤ p∣q) (∣⇒≤ q∣p)
 
 infix 4 _∣?_
 
 _∣?_ : Decidable _∣_
-zero  ∣? zero   = yes (divides 0 refl)
-zero  ∣? suc m  = no ((λ()) ∘′ ∣-antisym (divides 0 refl))
-suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % suc n ≟ 0)
+zero  ∣? zero   = yes (divides-refl 0)
+zero  ∣? suc m  = no ((λ()) ∘′ ∣-antisym (divides-refl 0))
+n@(suc _) ∣? m  = Dec.map (m%n≡0⇔n∣m m n) (m % n ≟ 0)
 
 ∣-isPreorder : IsPreorder _≡_ _∣_
 ∣-isPreorder = record
-  { isEquivalence = PropEq.isEquivalence
+  { isEquivalence = isEquivalence
   ; reflexive     = ∣-reflexive
   ; trans         = ∣-trans
   }
@@ -114,52 +151,51 @@ suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % suc n ≟ 0)
 -- A reasoning module for the _∣_ relation
 
 module ∣-Reasoning where
-  private
-    module Base = PreorderReasoning ∣-preorder
+  private module Base = ≲-Reasoning ∣-preorder
 
   open Base public
-    hiding (step-≈; step-≈˘; step-∼)
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
+    renaming (≲-go to ∣-go)
 
-  infixr 2 step-∣
-  step-∣ = Base.step-∼
-  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
+  open ∣-syntax _IsRelatedTo_ _IsRelatedTo_ ∣-go public
+
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_
 
-infix 10 1∣_ _∣0
+infix 10 _∣0 1∣_
+
+_∣0 : ∀ n → n ∣ 0
+n ∣0 = divides-refl 0
+
+0∣⇒≡0 : 0 ∣ n → n ≡ 0
+0∣⇒≡0 {n} 0∣n = ∣-antisym (n ∣0) 0∣n
 
 1∣_ : ∀ n → 1 ∣ n
 1∣ n = divides n (sym (*-identityʳ n))
 
-_∣0 : ∀ n → n ∣ 0
-n ∣0 = divides 0 refl
-
-0∣⇒≡0 : ∀ {n} → 0 ∣ n → n ≡ 0
-0∣⇒≡0 {n} 0∣n = ∣-antisym (n ∣0) 0∣n
-
-∣1⇒≡1 : ∀ {n} → n ∣ 1 → n ≡ 1
+∣1⇒≡1 : n ∣ 1 → n ≡ 1
 ∣1⇒≡1 {n} n∣1 = ∣-antisym n∣1 (1∣ n)
 
-n∣n : ∀ {n} → n ∣ n
-n∣n {n} = ∣-refl
+n∣n : n ∣ n
+n∣n = ∣-refl
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _+_
 
-∣m∣n⇒∣m+n : ∀ {i m n} → i ∣ m → i ∣ n → i ∣ m + n
-∣m∣n⇒∣m+n (divides p refl) (divides q refl) =
+∣m∣n⇒∣m+n : d ∣ m → d ∣ n → d ∣ m + n
+∣m∣n⇒∣m+n (divides-refl p) (divides-refl q) =
   divides (p + q) (sym (*-distribʳ-+ _ p q))
 
-∣m+n∣m⇒∣n : ∀ {i m n} → i ∣ m + n → i ∣ m → i ∣ n
-∣m+n∣m⇒∣n {i} {m} {n} (divides p m+n≡p*i) (divides q m≡q*i) =
+∣m+n∣m⇒∣n : d ∣ m + n → d ∣ m → d ∣ n
+∣m+n∣m⇒∣n {d} {m} {n} (divides p m+n≡p*d) (divides-refl q) =
   divides (p ∸ q) $ begin-equality
-    n             ≡⟨ sym (m+n∸n≡m n m) ⟩
+    n             ≡⟨ m+n∸n≡m n m ⟨
     n + m ∸ m     ≡⟨ cong (_∸ m) (+-comm n m) ⟩
-    m + n ∸ m     ≡⟨ cong₂ _∸_ m+n≡p*i m≡q*i ⟩
-    p * i ∸ q * i ≡⟨ sym (*-distribʳ-∸ i p q) ⟩
-    (p ∸ q) * i   ∎
-  where open ∣-Reasoning
+    m + n ∸ m     ≡⟨ cong (_∸ m) m+n≡p*d ⟩
+    p * d ∸ q * d ≡⟨ *-distribʳ-∸ d p q ⟨
+    (p ∸ q) * d   ∎
+    where open ∣-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _*_
@@ -170,89 +206,95 @@ n∣m*n m = divides m refl
 m∣m*n : ∀ {m} n → m ∣ m * n
 m∣m*n n = divides n (*-comm _ n)
 
-∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
-∣m⇒∣m*n {i} {m} n (divides q refl) = ∣-trans (n∣m*n q) (m∣m*n n)
+n∣m*n*o : ∀ m {n} o → n ∣ m * n * o
+n∣m*n*o m o = ∣-trans (n∣m*n m) (m∣m*n o)
 
-∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
-∣n⇒∣m*n {i} m {n} i∣n = subst (i ∣_) (*-comm n m) (∣m⇒∣m*n m i∣n)
+∣m⇒∣m*n : ∀ n → d ∣ m → d ∣ m * n
+∣m⇒∣m*n n (divides-refl q) = ∣-trans (n∣m*n q) (m∣m*n n)
 
-*-monoʳ-∣ : ∀ {i j} k → i ∣ j → k * i ∣ k * j
-*-monoʳ-∣ {i} {j} k (divides q refl) = divides q $ begin-equality
-  k * (q * i)  ≡⟨ sym (*-assoc k q i) ⟩
-  (k * q) * i  ≡⟨ cong (_* i) (*-comm k q) ⟩
-  (q * k) * i  ≡⟨ *-assoc q k i ⟩
-  q * (k * i)  ∎
-  where open ≤-Reasoning
+∣n⇒∣m*n : ∀ m {n} → d ∣ n → d ∣ m * n
+∣n⇒∣m*n m {n} rewrite *-comm m n = ∣m⇒∣m*n m
 
-*-monoˡ-∣ : ∀ {i j} k → i ∣ j → i * k ∣ j * k
-*-monoˡ-∣ {i} {j} k rewrite *-comm i k | *-comm j k = *-monoʳ-∣ k
+m*n∣⇒m∣ : ∀ m n → m * n ∣ d → m ∣ d
+m*n∣⇒m∣ m n (divides-refl q) = ∣n⇒∣m*n q (m∣m*n n)
 
-*-cancelˡ-∣ : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
-*-cancelˡ-∣ {i} {j} k (divides q eq) =
-  divides q $ *-cancelʳ-≡ j (q * i) $ begin-equality
-    j * (suc k)      ≡⟨ *-comm j (suc k) ⟩
-    suc k * j        ≡⟨ eq ⟩
-    q * (suc k * i)  ≡⟨ cong (q *_) (*-comm (suc k) i) ⟩
-    q * (i * suc k)  ≡⟨ sym (*-assoc q i (suc k)) ⟩
-    (q * i) * suc k  ∎
-    where open ≤-Reasoning
+m*n∣⇒n∣ : ∀ m n → m * n ∣ d → n ∣ d
+m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
-*-cancelʳ-∣ : ∀ {i j} k {k≢0 : False (k ≟ 0)} → i * k ∣ j * k → i ∣ j
-*-cancelʳ-∣ {i} {j} k@(suc k-1) rewrite *-comm i k | *-comm j k = *-cancelˡ-∣ k-1
+*-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
+*-pres-∣ {o} {m@.(q * o)} {p} {n@.(r * p)} (divides-refl q) (divides-refl r) =
+  divides (q * r) ([m*n]*[o*p]≡[m*o]*[n*p] q o r p)
+
+*-monoʳ-∣ : ∀ o → m ∣ n → o * m ∣ o * n
+*-monoʳ-∣ o = *-pres-∣ (∣-refl {o})
+
+*-monoˡ-∣ : ∀ o → m ∣ n → m * o ∣ n * o
+*-monoˡ-∣ o = flip *-pres-∣ (∣-refl {o})
+
+*-cancelˡ-∣ : ∀ o .{{_ : NonZero o}} → o * m ∣ o * n → m ∣ n
+*-cancelˡ-∣ {m} {n} o o*m∣o*n = divides q $ *-cancelˡ-≡ n (q * m) o $ begin-equality
+  o * n       ≡⟨ m∣n⇒n≡m*quotient o*m∣o*n ⟩
+  o * m * q   ≡⟨ *-assoc o m q ⟩
+  o * (m * q) ≡⟨ cong (o *_) (*-comm q m) ⟨
+  o * (q * m) ∎
+  where
+  open ∣-Reasoning
+  q = quotient o*m∣o*n
+
+*-cancelʳ-∣ : ∀ o .{{_ : NonZero o}} → m * o ∣ n * o → m ∣ n
+*-cancelʳ-∣ {m} {n} o rewrite *-comm m o | *-comm n o = *-cancelˡ-∣ o
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _∸_
 
-∣m∸n∣n⇒∣m : ∀ i {m n} → n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
-∣m∸n∣n⇒∣m i {m} {n} n≤m (divides p m∸n≡p*i) (divides q n≡q*o) =
+∣m∸n∣n⇒∣m : ∀ d → n ≤ m → d ∣ m ∸ n → d ∣ n → d ∣ m
+∣m∸n∣n⇒∣m {n} {m} d n≤m (divides p m∸n≡p*d) (divides-refl q) =
   divides (p + q) $ begin-equality
-    m             ≡⟨ sym (m+[n∸m]≡n n≤m) ⟩
+    m             ≡⟨ m+[n∸m]≡n n≤m ⟨
     n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
-    m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
-    p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
-    (p + q) * i   ∎
-  where open ≤-Reasoning
+    m ∸ n + n     ≡⟨ cong (_+ n) m∸n≡p*d ⟩
+    p * d + q * d ≡⟨ *-distribʳ-+ d p q ⟨
+    (p + q) * d   ∎
+  where open ∣-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _/_
 
-m/n∣m : ∀ {m n n≢0} → n ∣ m → (m / n) {n≢0} ∣ m
-m/n∣m {m} {n} (divides p refl) = begin
-  p * n / n ≡⟨ m*n/n≡m p n ⟩
-  p         ∣⟨ m∣m*n n ⟩
-  p * n     ∎
+m/n∣m : .{{_ : NonZero n}} → n ∣ m → m / n ∣ m
+m/n∣m {n} {m} n∣m = begin
+  m / n        ≡⟨ n/m≡quotient n∣m ⟩
+  quotient n∣m ∣⟨ quotient-∣ n∣m ⟩
+  m            ∎
   where open ∣-Reasoning
 
-m*n∣o⇒m∣o/n : ∀ m n {o n≢0} → m * n ∣ o → m ∣ (o / n) {n≢0}
-m*n∣o⇒m∣o/n m n {_} {≢0} (divides p refl) = begin
-  m               ∣⟨ n∣m*n p ⟩
-  p * m           ≡⟨ sym (*-identityʳ (p * m)) ⟩
-  p * m * 1       ≡⟨ sym (cong (p * m *_) (n/n≡1 n)) ⟩
-  p * m * (n / n) ≡⟨ sym (*-/-assoc (p * m) {≢0 = ≢0} (n∣n {n})) ⟩
-  p * m * n / n   ≡⟨ cong (λ v → (v / n) {≢0}) (*-assoc p m n) ⟩
-  p * (m * n) / n ∎
+m*n∣o⇒m∣o/n : ∀ m n .{{_ : NonZero n}} → m * n ∣ o → m ∣ o / n
+m*n∣o⇒m∣o/n m n (divides-refl p) = divides p $ begin-equality
+  p * (m * n) / n   ≡⟨ *-/-assoc p (n∣m*n m) ⟩
+  p * ((m * n) / n) ≡⟨ cong (p *_) (m*n/n≡m m n) ⟩
+  p * m ∎
   where open ∣-Reasoning
 
-m*n∣o⇒n∣o/m : ∀ m n {o n≢0} → m * n ∣ o → n ∣ (o / m) {n≢0}
-m*n∣o⇒n∣o/m m n {o} {≢0} rewrite *-comm m n = m*n∣o⇒m∣o/n n m {o} {≢0}
+m*n∣o⇒n∣o/m : ∀ m n .{{_ : NonZero m}} → m * n ∣ o → n ∣ (o / m)
+m*n∣o⇒n∣o/m m n rewrite *-comm m n = m*n∣o⇒m∣o/n n m
 
-m∣n/o⇒m*o∣n : ∀ {m n o n≢0} → o ∣ n → m ∣ (n / o) {n≢0} → m * o ∣ n
-m∣n/o⇒m*o∣n {m} {n} {o} (divides p refl) m∣p*o/o = begin
+m∣n/o⇒m*o∣n : .{{_ : NonZero o}} → o ∣ n → m ∣ n / o → m * o ∣ n
+m∣n/o⇒m*o∣n {o} {n@.(p * o)} {m} (divides-refl p) m∣p*o/o = begin
   m * o ∣⟨ *-monoˡ-∣ o (subst (m ∣_) (m*n/n≡m p o) m∣p*o/o) ⟩
   p * o ∎
   where open ∣-Reasoning
 
-m∣n/o⇒o*m∣n : ∀ {m n o o≢0} → o ∣ n → m ∣ (n / o) {o≢0} → o * m ∣ n
-m∣n/o⇒o*m∣n {m} {_} {o} {≢0} rewrite *-comm o m = m∣n/o⇒m*o∣n {n≢0 = ≢0}
+m∣n/o⇒o*m∣n : .{{_ : NonZero o}} → o ∣ n → m ∣ n / o → o * m ∣ n
+m∣n/o⇒o*m∣n {o} {_} {m} rewrite *-comm o m = m∣n/o⇒m*o∣n
 
-m/n∣o⇒m∣o*n : ∀ {m n o n≢0} → n ∣ m → (m / n) {n≢0} ∣ o → m ∣ o * n
-m/n∣o⇒m∣o*n {_} {n} {o} (divides p refl) p*n/n∣o = begin
+m/n∣o⇒m∣o*n : .{{_ : NonZero n}} → n ∣ m → m / n ∣ o → m ∣ o * n
+m/n∣o⇒m∣o*n {n} {m@.(p * n)} {o} (divides-refl p) p*n/n∣o = begin
   p * n ∣⟨ *-monoˡ-∣ n (subst (_∣ o) (m*n/n≡m p n) p*n/n∣o) ⟩
   o * n ∎
   where open ∣-Reasoning
 
-m∣n*o⇒m/n∣o : ∀ {m n o n≢0} → n ∣ m → m ∣ o * n → (m / n) {n≢0} ∣ o
-m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
+m∣n*o⇒m/n∣o : .{{_ : NonZero n}} → n ∣ m → m ∣ o * n → m / n ∣ o
+m∣n*o⇒m/n∣o {n} {m@.(p * n)} {o} (divides-refl p) pn∣on = begin
+  m / n     ≡⟨⟩
   p * n / n ≡⟨ m*n/n≡m p n ⟩
   p         ∣⟨ *-cancelʳ-∣ n pn∣on ⟩
   o         ∎
@@ -261,94 +303,58 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
 
-∣n∣m%n⇒∣m : ∀ {m n d ≢0} → d ∣ n → d ∣ (m % n) {≢0} → d ∣ m
-∣n∣m%n⇒∣m {m} {n@(suc n-1)} {d} (divides a n≡ad) (divides b m%n≡bd) =
-  divides (b + (m / n) * a) (begin-equality
-    m                         ≡⟨ m≡m%n+[m/n]*n m n-1 ⟩
-    m % n + (m / n) * n       ≡⟨ cong₂ _+_ m%n≡bd (cong (m / n *_) n≡ad) ⟩
-    b * d + (m / n) * (a * d) ≡⟨ sym (cong (b * d +_) (*-assoc (m / n) a d)) ⟩
-    b * d + ((m / n) * a) * d ≡⟨ sym (*-distribʳ-+ d b _) ⟩
-    (b + (m / n) * a) * d     ∎)
-    where open ≤-Reasoning
+∣n∣m%n⇒∣m : .{{_ : NonZero n}} → d ∣ n → d ∣ m % n → d ∣ m
+∣n∣m%n⇒∣m {n@.(p * d)} {d} {m} (divides-refl p) (divides q m%n≡qd) =
+  divides (q + (m / n) * p) $ begin-equality
+    m                         ≡⟨ m≡m%n+[m/n]*n m n ⟩
+    m % n + (m / n) * n       ≡⟨ cong (_+ (m / n) * n) m%n≡qd ⟩
+    q * d + (m / n) * n       ≡⟨⟩
+    q * d + (m / n) * (p * d) ≡⟨ cong (q * d +_) (*-assoc (m / n) p d) ⟨
+    q * d + ((m / n) * p) * d ≡⟨ *-distribʳ-+ d q _ ⟨
+    (q + (m / n) * p) * d     ∎
+  where open ∣-Reasoning
 
-%-presˡ-∣ : ∀ {m n d ≢0} → d ∣ m → d ∣ n → d ∣ (m % n) {≢0}
-%-presˡ-∣ {m} {n@(suc n-1)} {d} (divides a refl) (divides b 1+n≡bd) =
-  divides (a ∸ ad/n * b) $ begin-equality
-    a * d % n              ≡⟨ m%n≡m∸m/n*n (a * d) n-1 ⟩
-    a * d ∸ ad/n * n       ≡⟨ cong (λ v → a * d ∸ ad/n * v) 1+n≡bd ⟩
-    a * d ∸ ad/n * (b * d) ≡⟨ sym (cong (a * d ∸_) (*-assoc ad/n b d)) ⟩
-    a * d ∸ (ad/n * b) * d ≡⟨ sym (*-distribʳ-∸ d a (ad/n * b)) ⟩
-    (a ∸ ad/n * b) * d     ∎
-  where open ≤-Reasoning; ad/n = a * d / n
+%-presˡ-∣ : .{{_ : NonZero n}} → d ∣ m → d ∣ n → d ∣ m % n
+%-presˡ-∣ {n} {d} {m@.(p * d)} (divides-refl p) (divides q 1+n≡qd) =
+  divides (p ∸ m / n * q) $ begin-equality
+    m % n                   ≡⟨ m%n≡m∸m/n*n m n ⟩
+    m ∸ m / n * n           ≡⟨ cong (λ v → m ∸ m / n * v) 1+n≡qd ⟩
+    m ∸ m / n * (q * d)     ≡⟨ cong (m ∸_) (*-assoc (m / n) q d) ⟨
+    m  ∸ (m / n * q) * d    ≡⟨⟩
+    p * d ∸ (m / n * q) * d ≡⟨ *-distribʳ-∸ d p (m / n * q) ⟨
+    (p ∸ m / n * q) * d     ∎
+  where open ∣-Reasoning
 
 ------------------------------------------------------------------------
--- DEPRECATED - please use new names as continuing support for the old
--- names is not guaranteed.
+-- Properties of _∣_ and !_
 
--- Version 0.14
-
-∣-+ = ∣m∣n⇒∣m+n
-{-# WARNING_ON_USAGE ∣-+
-"Warning: ∣-+ was deprecated in v0.14.
-Please use ∣m∣n⇒∣m+n instead."
-#-}
-∣-∸ = ∣m+n∣m⇒∣n
-{-# WARNING_ON_USAGE ∣-∸
-"Warning: ∣-∸ was deprecated in v0.14.
-Please use ∣m+n∣m⇒∣n instead."
-#-}
-∣-* = n∣m*n
-{-# WARNING_ON_USAGE ∣-*
-"Warning: ∣-* was deprecated in v0.14.
-Please use n∣m*n instead."
-#-}
-
--- Version 0.17
-
-open import Data.Fin.Base using (Fin; zero; suc; toℕ)
-import Data.Fin.Properties as FP
-open import Data.Nat.Solver
-open +-*-Solver
-
-nonZeroDivisor-lemma : ∀ m q (r : Fin (1 + m)) → toℕ r ≢ 0 →
-                       1 + m ∤ toℕ r + q * (1 + m)
-nonZeroDivisor-lemma m zero r r≢zero (divides zero eq) = r≢zero $ begin-equality
-  toℕ r      ≡⟨ sym (*-identityˡ (toℕ r)) ⟩
-  1 * toℕ r  ≡⟨ eq ⟩
-  0          ∎
-  where open ≤-Reasoning
-nonZeroDivisor-lemma m zero r r≢zero (divides (suc q) eq) =
-  m+1+n≰m m $ begin
-    m + suc (q * suc m) ≡⟨ +-suc m (q * suc m) ⟩
-    suc (m + q * suc m) ≡⟨ sym eq ⟩
-    1 * toℕ r           ≡⟨ *-identityˡ (toℕ r) ⟩
-    toℕ r               ≤⟨ FP.toℕ≤pred[n] r ⟩
-    m                   ∎
-    where open ≤-Reasoning
-nonZeroDivisor-lemma m (suc q) r r≢zero d =
-  nonZeroDivisor-lemma m q r r≢zero (∣m+n∣m⇒∣n d′ ∣-refl)
+m≤n⇒m!∣n! : m ≤ n → m ! ∣ n !
+m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   where
-  lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
-                refl (suc m) (toℕ r) (q * suc m)
-  d′ = subst (1 + m ∣_) lem d
-{-# WARNING_ON_USAGE nonZeroDivisor-lemma
-"Warning: nonZeroDivisor-lemma was deprecated in v0.17."
-#-}
+  help : m ≤′ n → m ! ∣ n !
+  help         ≤′-refl       = ∣-refl
+  help {n = n} (≤′-step m≤n) = ∣n⇒∣m*n n (help m≤n)
 
--- Version 1.1
+------------------------------------------------------------------------
+-- Properties of _HasNonTrivialDivisorLessThan_
 
-poset = ∣-poset
-{-# WARNING_ON_USAGE poset
-"Warning: poset was deprecated in v1.1.
-Please use ∣-poset instead."
-#-}
-*-cong = *-monoʳ-∣
-{-# WARNING_ON_USAGE *-cong
-"Warning: *-cong was deprecated in v1.1.
-Please use *-monoʳ-∣ instead."
-#-}
-/-cong = *-cancelˡ-∣
-{-# WARNING_ON_USAGE /-cong
-"Warning: /-cong was deprecated in v1.1.
-Please use *-cancelˡ-∣ instead."
-#-}
+-- Smart constructor
+
+hasNonTrivialDivisor-≢ : .{{NonTrivial d}} → .{{NonZero n}} →
+                         d ≢ n → d ∣ n → n HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisor-≢ d≢n d∣n
+  = hasNonTrivialDivisor (≤∧≢⇒< (∣⇒≤ d∣n) d≢n) d∣n
+
+-- Monotonicity wrt ∣
+
+hasNonTrivialDivisor-∣ : m HasNonTrivialDivisorLessThan n → m ∣ o →
+                         o HasNonTrivialDivisorLessThan n
+hasNonTrivialDivisor-∣ (hasNonTrivialDivisor d<n d∣m) m∣o
+  = hasNonTrivialDivisor d<n (∣-trans d∣m m∣o)
+
+-- Monotonicity wrt ≤
+
+hasNonTrivialDivisor-≤ : m HasNonTrivialDivisorLessThan n → n ≤ o →
+                         m HasNonTrivialDivisorLessThan o
+hasNonTrivialDivisor-≤ (hasNonTrivialDivisor d<n d∣m) n≤o
+  = hasNonTrivialDivisor (<-≤-trans d<n n≤o) d∣m

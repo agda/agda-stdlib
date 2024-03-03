@@ -8,7 +8,7 @@
 -- you should instead use Text.Tabular.List.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 module Text.Tabular.Base where
 

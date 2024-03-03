@@ -4,9 +4,9 @@
 -- Regular expressions: search algorithms
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (DecPoset)
+open import Relation.Binary.Bundles using (DecPoset)
 
 module Text.Regex.Search {a e r} (P? : DecPoset a e r) where
 
@@ -29,8 +29,9 @@ open import Data.List.Relation.Binary.Suffix.Heterogeneous
 open import Relation.Nullary using (Dec; ¬_; yes; no)
 open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary using (Rel; Decidable; _⇒_)
-open import Relation.Binary.PropositionalEquality hiding (preorder)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.PropositionalEquality.Core
 
 open DecPoset P? using (preorder) renaming (Carrier to A)
 open import Text.Regex.Base preorder
@@ -40,9 +41,9 @@ open import Text.Regex.Derivative.Brzozowski P?
 ------------------------------------------------------------------------
 -- Type corresponding to a match
 
--- Users have control over whether the match should start at the beginning
--- or stop at the end. So we have a precise type of spans ensuring their
--- demands are respected
+-- Users have control over whether the match should start at the
+-- beginning or stop at the end. So we have a precise type of spans
+-- ensuring their demands are respected
 Span : ∀ {r} → Regex → Rel A r → Rel (List A) (a ⊔ r)
 Span regex =
   if Regex.fromStart regex
@@ -87,6 +88,8 @@ module Prefix where
   []⁻¹ᴹ : ∀ {e} → Match (Prefix _≡_) [] e → [] ∈ e
   []⁻¹ᴹ (mkMatch .[] p []) = p
 
+  infixr 5 _∷ᴹ_ _∷⁻¹ᴹ_
+
   _∷ᴹ_ : ∀ {xs e} x → Match (Prefix _≡_) xs (eat x e) → Match (Prefix _≡_) (x ∷ xs) e
   x ∷ᴹ (mkMatch ys ys∈e\x ys≤xs) = mkMatch (x ∷ ys) (eat-sound x _ ys∈e\x) (refl ∷ ys≤xs)
 
@@ -96,6 +99,7 @@ module Prefix where
   []∉e ∷⁻¹ᴹ (mkMatch (._ ∷ ys) ys∈e (refl ∷ ys≤xs)) = mkMatch ys (eat-complete _ _ ys∈e) ys≤xs
 
   shortest : Decidable (Match (Prefix _≡_))
+  shortest xs ∅ = no (∉∅ ∘ match)
   shortest xs e with []∈? e
   ... | yes []∈e = yes ([]ᴹ []∈e)
   shortest []       e | no []∉e = no ([]∉e ∘′ []⁻¹ᴹ)
@@ -105,6 +109,7 @@ module Prefix where
 
   longest : Decidable (Match (Prefix _≡_))
   longest []       e = map′ []ᴹ []⁻¹ᴹ ([]∈? e)
+  longest xs       ∅ = no (∉∅ ∘ match)
   longest (x ∷ xs) e with longest xs (eat x e)
   ... | yes p = yes (x ∷ᴹ p)
   ... | no ¬p with []∈? e
@@ -117,17 +122,17 @@ module Infix where
   []⁻¹ᴹ (inj₁ (mkMatch .[] []∈e (here []))) = inj₁ []∈e
   []⁻¹ᴹ (inj₂ (mkMatch .[] []∈acc []))      = inj₂ []∈acc
 
-  step : ∀ {e acc} x {xs} → Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (e ∣ acc)) →
+  step : ∀ {e acc} x {xs} → Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (acc ∣ e)) →
                             Match (Infix _≡_) (x ∷ xs) e ⊎ Match (Prefix _≡_) (x ∷ xs) acc
   step x (inj₁ (mkMatch ys ys∈e p)) = inj₁ (mkMatch ys ys∈e (there p))
-  step {e} {acc} x (inj₂ (mkMatch ys ys∈e p)) with eat-sound x (e ∣ acc) ys∈e
-  ... | sum (inj₁ xys∈e) = inj₁ (mkMatch (x ∷ ys) xys∈e (here (refl ∷ p)))
-  ... | sum (inj₂ xys∈e) = inj₂ (mkMatch (x ∷ ys) xys∈e (refl ∷ p))
+  step {e} {acc} x (inj₂ (mkMatch ys ys∈e p)) with eat-sound x (acc ∣ e) ys∈e
+  ... | sum (inj₂ xys∈e) = inj₁ (mkMatch (x ∷ ys) xys∈e (here (refl ∷ p)))
+  ... | sum (inj₁ xys∈e) = inj₂ (mkMatch (x ∷ ys) xys∈e (refl ∷ p))
 
   step⁻¹ : ∀ {e acc} x {xs} →
            [] ∉ e → [] ∉ acc →
            Match (Infix _≡_) (x ∷ xs) e ⊎ Match (Prefix _≡_) (x ∷ xs) acc →
-           Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (e ∣ acc))
+           Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (acc ∣ e))
   -- can't possibly be the empty match
   step⁻¹ x []∉e []∉acc (inj₁ (mkMatch .[] ys∈e (here []))) = contradiction ys∈e []∉e
   step⁻¹ x []∉e []∉acc (inj₂ (mkMatch .[] ys∈e []))        = contradiction ys∈e []∉acc
@@ -135,18 +140,20 @@ module Infix where
   step⁻¹ x []∉e []∉acc (inj₁ (mkMatch ys ys∈e (there p))) = inj₁ (mkMatch ys ys∈e p)
   -- if it starts 'here' we're in prefix territory
   step⁻¹ {e} {acc} x []∉e []∉acc (inj₁ (mkMatch (.x ∷ ys) ys∈e (here (refl ∷ p))))
-    = inj₂ (mkMatch ys (eat-complete x (e ∣ acc) (sum (inj₁ ys∈e))) p)
+    = inj₂ (mkMatch ys (eat-complete x (acc ∣ e) (sum (inj₂ ys∈e))) p)
   step⁻¹ {e} {acc} x []∉e []∉acc (inj₂ (mkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
-    = inj₂ (mkMatch ys (eat-complete x (e ∣ acc) (sum (inj₂ ys∈e))) p)
+    = inj₂ (mkMatch ys (eat-complete x (acc ∣ e) (sum (inj₁ ys∈e))) p)
 
-  -- search non-deterministically: at each step, the `acc` regex is changed
-  -- to accomodate the fact the match may be starting just now
+  -- search non-deterministically: at each step, the `acc` regex is
+  -- changed to accomodate the fact the match may be starting just now
   searchND : ∀ xs e acc → [] ∉ e → Dec (Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs acc)
   searchND xs e acc []∉e with []∈? acc
-  ... | yes []∈acc = yes (inj₂ (mkMatch [] []∈acc []))
+  ... | yes []∈acc with Prefix.longest xs acc -- get the best match possible
+  ...               | yes longer = yes (inj₂ longer)
+  ...               | no noMatch = contradiction (mkMatch [] []∈acc []) noMatch
   searchND [] e acc []∉e | no []∉acc = no ([ []∉e , []∉acc ]′ ∘′ []⁻¹ᴹ)
   searchND (x ∷ xs) e acc []∉e | no []∉acc
-    = map′ (step x) (step⁻¹ x []∉e []∉acc) (searchND xs e (eat x (e ∣ acc)) []∉e)
+    = map′ (step x) (step⁻¹ x []∉e []∉acc) (searchND xs e (eat x (acc ∣ e)) []∉e)
 
   search : Decidable (Match (Infix _≡_))
   search xs e with []∈? e

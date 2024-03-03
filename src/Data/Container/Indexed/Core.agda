@@ -4,12 +4,12 @@
 -- Indexed containers core
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Indexed.Core where
 
 open import Level
-open import Data.Product
+open import Data.Product.Base using (Σ; Σ-syntax; _,_; ∃)
 open import Relation.Unary
 
 private variable

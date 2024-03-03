@@ -1,0 +1,15 @@
+ID "fix"
+ID "f"
+ID "x"
+EQ
+LET
+ID "b"
+EQ
+ID "fix"
+ID "f"
+IN
+LPAR
+ID "f"
+ID "b"
+RPAR
+ID "x"

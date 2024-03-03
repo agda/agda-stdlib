@@ -4,7 +4,7 @@
 -- The Either type which calls out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module Foreign.Haskell.Either where
 
@@ -33,7 +33,15 @@ data Either (A : Set a) (B : Set b) : Set (a ⊔ b) where
 toForeign : A ⊎ B → Either A B
 toForeign (inj₁ a) = left a
 toForeign (inj₂ b) = right b
+{-# WARNING_ON_USAGE toForeign
+"Warning: toForeign was deprecated in 2.0.
+Please use Foreign.Haskell.Coerce.coerce instead."
+#-}
 
 fromForeign : Either A B → A ⊎ B
 fromForeign (left a)  = inj₁ a
 fromForeign (right b) = inj₂ b
+{-# WARNING_ON_USAGE fromForeign
+"Warning: fromForeign was deprecated in 2.0.
+Please use Foreign.Haskell.Coerce.coerce instead."
+#-}

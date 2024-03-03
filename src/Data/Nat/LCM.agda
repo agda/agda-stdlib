@@ -4,7 +4,7 @@
 -- Least common multiple
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat.LCM where
 
@@ -14,64 +14,67 @@ open import Data.Nat.Coprimality using (Coprime)
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
-open import Data.Nat.Solver
 open import Data.Nat.GCD
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_; uncurry′; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Function
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; sym; trans; cong; cong₂; module ≡-Reasoning)
-open import Relation.Binary
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong; cong₂; subst)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
 
-open +-*-Solver
-
 private
-  gcd≢0′ : ∀ m n → False (gcd (suc m) n ≟ 0)
-  gcd≢0′ m n = fromWitnessFalse (gcd[m,n]≢0 (suc m) n (inj₁ (λ())))
+  -- instance
+    gcd≢0ˡ : ∀ {m n} {{_ : NonZero m}} → NonZero (gcd m n)
+    gcd≢0ˡ {m@(suc _)} {n} = ≢-nonZero (gcd[m,n]≢0 m n (inj₁ λ()))
 
 ------------------------------------------------------------------------
 -- Definition
 
 lcm : ℕ → ℕ → ℕ
-lcm zero        n = zero
-lcm m@(suc m-1) n = m * (n / gcd m n) {gcd≢0′ m-1 n}
+lcm zero      n = zero
+lcm m@(suc _) n = m * (n / gcd m n)
+  where instance _ = gcd≢0ˡ {m} {n}
 
 ------------------------------------------------------------------------
 -- Core properties
 
 private
-  rearrange : ∀ m-1 n → lcm (suc m-1) n ≡ ((suc m-1) * n / gcd (suc m-1) n) {gcd≢0′ m-1 n}
-  rearrange m-1 n = sym (*-/-assoc m {n} {gcd m n} {gcd≢0′ m-1 n} (gcd[m,n]∣n m n))
-    where m = suc m-1
+  rearrange : ∀ m n .{{_ : NonZero m}} →
+              lcm m n ≡ (m * n / gcd m n) {{gcd≢0ˡ {m} {n}}}
+  rearrange m@(suc _) n = sym (*-/-assoc m {{gcd≢0ˡ {m} {n}}} (gcd[m,n]∣n m n))
 
 m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
 m∣lcm[m,n] zero      n = 0 ∣0
 m∣lcm[m,n] m@(suc _) n = m∣m*n (n / gcd m n)
+  where instance _ = gcd≢0ˡ {m} {n}
 
 n∣lcm[m,n] : ∀ m n → n ∣ lcm m n
 n∣lcm[m,n] zero        n = n ∣0
 n∣lcm[m,n] m@(suc m-1) n = begin
-  n                 ∣⟨ m∣m*n (m / gcd m n) ⟩
-  n * (m / gcd m n) ≡⟨ sym (*-/-assoc n {≢0 = gcd≢0′ m-1 n} (gcd[m,n]∣m m n)) ⟩
-  n * m / gcd m n   ≡⟨ cong (λ v → (v / gcd m n) {gcd≢0′ m-1 n}) (*-comm n m) ⟩
-  m * n / gcd m n   ≡⟨ sym (rearrange m-1 n) ⟩
+  n                 ∣⟨  m∣m*n (m / gcd m n) ⟩
+  n * (m / gcd m n) ≡⟨ *-/-assoc n (gcd[m,n]∣m m n) ⟨
+  n * m / gcd m n   ≡⟨  cong (_/ gcd m n) (*-comm n m) ⟩
+  m * n / gcd m n   ≡⟨ rearrange m n ⟨
   m * (n / gcd m n) ∎
-  where open ∣-Reasoning
+  where open ∣-Reasoning; instance _ = gcd≢0ˡ {m} {n}
+
 
 lcm-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
-lcm-least {zero}        {n} {c} 0∣c _   = 0∣c
-lcm-least {m@(suc m-1)} {n} {c} m∣c n∣c = P.subst (_∣ c) (sym (rearrange m-1 n))
-  (m∣n*o⇒m/n∣o {n≢0 = gcd≢0′ m-1 n} gcd[m,n]∣m*n mn∣c*gcd)
+lcm-least {zero}      {n} {c} 0∣c _   = 0∣c
+lcm-least {m@(suc _)} {n} {c} m∣c n∣c = subst (_∣ c) (sym (rearrange m n))
+  (m∣n*o⇒m/n∣o gcd[m,n]∣m*n mn∣c*gcd)
   where
+  instance _ = gcd≢0ˡ {m} {n}
+
   open ∣-Reasoning
   gcd[m,n]∣m*n : gcd m n ∣ m * n
   gcd[m,n]∣m*n = ∣-trans (gcd[m,n]∣m m n) (m∣m*n n)
 
   mn∣c*gcd : m * n ∣ c * gcd m n
   mn∣c*gcd = begin
-    m * n               ∣⟨ gcd-greatest (P.subst (_∣ c * m) (*-comm n m) (*-monoˡ-∣ m n∣c)) (*-monoˡ-∣ n m∣c) ⟩
-    gcd (c * m) (c * n) ≡⟨ sym (c*gcd[m,n]≡gcd[cm,cn] c m n) ⟩
+    m * n               ∣⟨  gcd-greatest (subst (_∣ c * m) (*-comm n m) (*-monoˡ-∣ m n∣c)) (*-monoˡ-∣ n m∣c) ⟩
+    gcd (c * m) (c * n) ≡⟨ c*gcd[m,n]≡gcd[cm,cn] c m n ⟨
     c * gcd m n         ∎
 
 ------------------------------------------------------------------------
@@ -82,11 +85,11 @@ lcm-least {m@(suc m-1)} {n} {c} m∣c n∣c = P.subst (_∣ c) (sym (rearrange m
 
 gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
 gcd*lcm zero        n = *-zeroʳ (gcd 0 n)
-gcd*lcm m@(suc m-1) n = trans (cong (gcd m n *_) (rearrange m-1 n)) (m*[n/m]≡n {gcd m n} (begin
+gcd*lcm m@(suc m-1) n = trans (cong (gcd m n *_) (rearrange m n)) (m*[n/m]≡n (begin
   gcd m n ∣⟨ gcd[m,n]∣m m n ⟩
   m       ∣⟨ m∣m*n n ⟩
   m * n   ∎))
-  where open ∣-Reasoning
+  where open ∣-Reasoning; instance gcd≢0 = gcd≢0ˡ {m} {n}
 
 lcm[0,n]≡0 : ∀ n → lcm 0 n ≡ 0
 lcm[0,n]≡0 n = 0∣⇒≡0 (m∣lcm[m,n] 0 n)

@@ -1,53 +1,21 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Wrapper for the erased modality
---
--- This allows us to store erased proofs in a record and use projections
--- to manipulate them without having to turn on the unsafe option
--- --irrelevant-projections.
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Erased where
 
-open import Level using (Level)
+{-# WARNING_ON_IMPORT
+"Data.Erased was deprecated in v2.0.
+Use Data.Irrelevant instead."
+#-}
 
-private
-  variable
-    a b c : Level
-    A : Set a
-    B : Set b
-    C : Set c
-
-------------------------------------------------------------------------
--- Type
-
-record Erased (A : Set a) : Set a where
-  constructor [_]
-  field .erased : A
-open Erased public
-
-------------------------------------------------------------------------
--- Algebraic structure: Functor, Appplicative and Monad-like
-
-map : (A → B) → Erased A → Erased B
-map f [ a ] = [ f a ]
-
-pure : A → Erased A
-pure x = [ x ]
-
-infixl 4 _<*>_
-_<*>_ : Erased (A → B) → Erased A → Erased B
-[ f ] <*> [ a ] = [ f a ]
-
-infixl 1 _>>=_
-_>>=_ : Erased A → (.A → Erased B) → Erased B
-[ a ] >>= f = f a
-
-------------------------------------------------------------------------
--- Other functions
-
-zipWith : (A → B → C) → Erased A → Erased B → Erased C
-zipWith f a b = ⦇ f a b ⦈
+open import Data.Irrelevant public
+  using ([_]; map; pure; _<*>_; _>>=_; zipWith)
+  renaming
+  ( Irrelevant to Erased
+  ; irrelevant to erased
+  )

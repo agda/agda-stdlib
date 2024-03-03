@@ -4,18 +4,19 @@
 -- Definitions of the lexicographic product of two operators.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Bool using (true; false)
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction; contradiction₂)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 module Algebra.Construct.LexProduct
   {ℓ₁ ℓ₂ ℓ₃ ℓ₄} (M : Magma ℓ₁ ℓ₂) (N : Magma ℓ₃ ℓ₄)

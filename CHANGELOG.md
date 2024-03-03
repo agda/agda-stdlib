@@ -1,121 +1,34 @@
-Version 1.7
-===========
+Version 2.1-dev
+===============
 
-The library has been tested using Agda 2.6.2 release candidate 1.
+The library has been tested using Agda 2.6.4 and 2.6.4.1.
 
 Highlights
 ----------
 
-* New module for making system calls during type checking, `Reflection.External`,
-  which re-exports `Agda.Builtin.Reflection.External`.
-  
-* New predicate for lists that are enumerations their type in
-  `Data.List.Relation.Unary.Enumerates`.
-  
-* New weak induction schemes in `Data.Fin.Induction` that allows one to avoid 
-  the complicated use of `Acc`/`inject`/`raise` when proving inductive properties
-  over finite sets.
-
 Bug-fixes
 ---------
 
-* Added missing module `Function.Metric` which re-exports
-  `Function.Metric.(Core/Definitions/Structures/Bundles)`. This module was referred
-  to in the documentation of its children but until now was not present.
+* Fix statement of `Data.Vec.Properties.toList-replicate`, where `replicate`
+  was mistakenly applied to the level of the type `A` instead of the
+  variable `x` of type `A`.
 
-* Added missing fixity declaration to `_<_` in 
-  `Relation.Binary.Construct.NonStrictToStrict`.
+* Module `Data.List.Relation.Ternary.Appending.Setoid.Properties` no longer
+  exports the `Setoid` module under the alias `S`.
 
 Non-backwards compatible changes
 --------------------------------
 
-#### Floating-point arithmetic
+* The modules and morphisms in `Algebra.Module.Morphism.Structures` are now
+  parametrized by _raw_ bundles rather than lawful bundles, in line with other
+  modules defining morphism structures.
+* The definitions in `Algebra.Module.Morphism.Construct.Composition` are now
+  parametrized by _raw_ bundles, and as such take a proof of transitivity.
+* The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
+  parametrized by _raw_ bundles, and as such take a proof of reflexivity.
 
-* The functions in `Data.Float.Base` were updated following changes upstream,
-  in `Agda.Builtin.Float`, see <https://github.com/agda/agda/pull/4885>.
-
-* The bitwise binary relations on floating-point numbers (`_<_`, `_≈ᵇ_`, `_==_`)
-  have been removed without replacement, as they were deeply unintuitive, 
-  e.g., `∀ x → x < -x`.
-
-#### Reflection
-
-* The representation of reflected syntax in `Reflection.Term`,
-  `Reflection.Pattern`, `Reflection.Argument` and
-  `Reflection.Argument.Information` has been updated to match the new
-  representation used in Agda 2.6.2. Specifically, the following
-  changes were made:
-
-  * The type of the `var` constructor of the `Pattern` datatype has
-    been changed from `(x : String) → Pattern` to `(x : Int) →
-    Pattern`.
-
-  * The type of the `dot` constructor of the `Pattern` datatype has
-    been changed from `Pattern` to `(t : Term) → Pattern`.
-
-  * The types of the `clause` and `absurd-clause` constructors of the
-    `Clause` datatype now take an extra argument `(tel : Telescope)`,
-    where `Telescope = List (String × Arg Type)`.
-
-  * The following constructors have been added to the `Sort` datatype:
-    `prop : (t : Term) → Sort`, `propLit : (n : Nat) → Sort`, and
-    `inf : (n : Nat) → Sort`.
-
-  * In `Reflection.Argument.Information` the function `relevance` was
-    replaced by `modality`.
-
-  * The type of the `arg-info` constructor is now
-    `(v : Visibility) (m : Modality) → ArgInfo`.
-
-  * In `Reflection.Argument` (as well as `Reflection`) there is a new
-    pattern synonym `defaultModality`, and the pattern synonyms
-    `vArg`, `hArg` and `iArg` have been changed.
-
-  * Two new modules have been added, `Reflection.Argument.Modality`
-    and `Reflection.Argument.Quantity`. The constructors of the types
-    `Modality` and `Quantity` are reexported from `Reflection`.
-
-#### Sized types
-
-* Sized types are no longer considered safe in Agda 2.6.2. As a
-  result, all modules that use `--sized-types` no longer have the
-  `--safe` flag.  For a full list of affected modules, refer to the
-  relevant [commit](https://github.com/agda/agda-stdlib/pull/1465/files#diff-e1c0e3196e4cea6ff808f5d2906031a7657130e10181516206647b83c7014584R91-R131.)
-
-* In order to keep `Data.Nat.Pseudorandom.LCG` safe, the function
-  `stream` that relies on the newly unsafe `Codata` modules has
-  been moved to the new module `Data.Nat.Pseudorandom.LCG.Unsafe`.
-
-* In order to avoid the unsafe usage of the `--sized-types` in the
-  `Codata.Musical` directory, the functions `fromMusical` and
-  `toMusical` defined in:
-  ```
-  Codata.Musical.Colist
-  Codata.Musical.Conat
-  Codata.Musical.Cofin
-  Codata.Musical.M
-  Codata.Musical.Stream
-  ```
-  have been moved to a new module `Codata.Musical.Conversion` and renamed to
-  ```
-  fromMusicalColist/toMusicalColist
-  fromMusicalConat/toMusicalConat
-  fromMusicalCofin/toMusicalCofin
-  fromMusicalM/toMusicalM
-  fromMusicalStream/toMusicalStream
-  ```
-  respectively.
-
-#### Other
-
-* Replaced existing O(n) implementation of `Data.Nat.Binary.fromℕ` with a new O(log n)
-  implementation. The old implementation is maintained under `Data.Nat.Binary.fromℕ'`
-  and proven to be equivalent to the new one.
-
-* `Data.Maybe.Base` now re-exports the definition of `Maybe` given by
-  `Agda.Builtin.Maybe`. The `Foreign.Haskell` modules and definitions
-  corresponding to `Maybe` have been removed. See the release notes of
-  Agda 2.6.2 for more information.
+Other major improvements
+------------------------
 
 Deprecated modules
 ------------------
@@ -123,94 +36,223 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.Semiring.Mult`:
+  ```agda
+  1×-identityʳ  ↦  ×-homo-1
+  ```
+
+* In `Data.Nat.Divisibility.Core`:
+  ```agda
+  *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
+  ```
+
 New modules
 -----------
 
-* New module for making system calls during type checking:
+* Symmetric interior of a binary relation
+  ```
+  Relation.Binary.Construct.Interior.Symmetric
+  ```
+
+* `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
+
+* Nagata's construction of the "idealization of a module":
   ```agda
-  Reflection.External
+  Algebra.Module.Construct.Idealization
   ```
 
-* New modules for universes and annotations of reflected syntax:
-  ```
-  Reflection.Universe
-  Reflection.Annotated
-  Reflection.Annotated.Free
-  ```
+Additions to existing modules
+-----------------------------
 
-* Added new module for unary relations over sized types now that `Size`
-  lives in it's own universe since Agda 2.6.2.
+* Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
   ```agda
-  Relation.Unary.Sized
+  rawNearSemiring   : RawNearSemiring _ _
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  +-rawGroup        : RawGroup _ _
   ```
 
-* Metrics specialised to co-domains with rational numbers:
-  ```
-  Function.Metric.Rational
-  Function.Metric.Rational.Definitions
-  Function.Metric.Rational.Structures
-  Function.Metric.Rational.Bundles
-  ```
+* In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
 
-* Lists that contain every element of a type:
-  ```
-  Data.List.Relation.Unary.Enumerates.Setoid
-  Data.List.Relation.Unary.Enumerates.Setoid.Properties
-  ```
-
-Other minor additions
----------------------
-
-* Added new relations to `Data.Fin.Base`:
+* In `Algebra.Module.Construct.DirectProduct`:
   ```agda
-  _≥_ = ℕ._≥_ on toℕ
-  _>_ = ℕ._>_ on toℕ
+  rawLeftSemimodule  : RawLeftSemimodule R m ℓm → RawLeftSemimodule m′ ℓm′ → RawLeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawLeftModule      : RawLeftModule R m ℓm → RawLeftModule m′ ℓm′ → RawLeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawRightSemimodule : RawRightSemimodule R m ℓm → RawRightSemimodule m′ ℓm′ → RawRightSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawRightModule     : RawRightModule R m ℓm → RawRightModule m′ ℓm′ → RawRightModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawBisemimodule    : RawBisemimodule R m ℓm → RawBisemimodule m′ ℓm′ → RawBisemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawBimodule        : RawBimodule R m ℓm → RawBimodule m′ ℓm′ → RawBimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawSemimodule      : RawSemimodule R m ℓm → RawSemimodule m′ ℓm′ → RawSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawModule          : RawModule R m ℓm → RawModule m′ ℓm′ → RawModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
   ```
 
-* Added new proofs to `Data.Fin.Induction`:
+* In `Algebra.Module.Construct.TensorUnit`:
   ```agda
-  >-wellFounded   : WellFounded {A = Fin n} _>_
-  
-  <-weakInduction : P zero      → (∀ i → P (inject₁ i) → P (suc i)) → ∀ i → P i
-  >-weakInduction : P (fromℕ n) → (∀ i → P (suc i) → P (inject₁ i)) → ∀ i → P i
+  rawLeftSemimodule  : RawLeftSemimodule _ c ℓ
+  rawLeftModule      : RawLeftModule _ c ℓ
+  rawRightSemimodule : RawRightSemimodule _ c ℓ
+  rawRightModule     : RawRightModule _ c ℓ
+  rawBisemimodule    : RawBisemimodule _ _ c ℓ
+  rawBimodule        : RawBimodule _ _ c ℓ
+  rawSemimodule      : RawSemimodule _ c ℓ
+  rawModule          : RawModule _ c ℓ
   ```
 
-* Added new proofs to `Relation.Binary.Properties.Setoid`:
+* In `Algebra.Module.Construct.Zero`:
   ```agda
-  respʳ-flip : _≈_ Respectsʳ (flip _≈_)
-  respˡ-flip : _≈_ Respectsˡ (flip _≈_)
+  rawLeftSemimodule  : RawLeftSemimodule R c ℓ
+  rawLeftModule      : RawLeftModule R c ℓ
+  rawRightSemimodule : RawRightSemimodule R c ℓ
+  rawRightModule     : RawRightModule R c ℓ
+  rawBisemimodule    : RawBisemimodule R c ℓ
+  rawBimodule        : RawBimodule R c ℓ
+  rawSemimodule      : RawSemimodule R c ℓ
+  rawModule          : RawModule R c ℓ
   ```
 
-* Added new function to `Data.Fin.Base`:
+* In `Algebra.Properties.Monoid.Mult`:
   ```agda
-  pinch : Fin n → Fin (suc n) → Fin n
+  ×-homo-0 : ∀ x → 0 × x ≈ 0#
+  ×-homo-1 : ∀ x → 1 × x ≈ x
   ```
 
-* Added new proofs to `Data.Fin.Properties`:
+* In `Algebra.Properties.Semiring.Mult`:
   ```agda
-  pinch-surjective : Surjective _≡_ (pinch i)
-  pinch-mono-≤     : (pinch i) Preserves _≤_ ⟶ _≤_
+  ×-homo-0#     : ∀ x → 0 × x ≈ 0# * x
+  ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
+  idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
-* Added new proofs to `Data.Nat.Binary.Properties`:
+* In `Data.Fin.Properties`:
   ```agda
-  fromℕ≡fromℕ'  : fromℕ ≗ fromℕ'
-  toℕ-fromℕ'    : toℕ ∘ fromℕ' ≗ id
-  fromℕ'-homo-+ : fromℕ' (m ℕ.+ n) ≡ fromℕ' m + fromℕ' n
+  nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
-* Rewrote proofs in `Data.Nat.Binary.Properties` for new implementation of `fromℕ`:
+* In `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  toℕ-fromℕ    : toℕ ∘ fromℕ ≗ id
-  fromℕ-homo-+ : fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
+  All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
+  Any-catMaybes⁺ : All (Maybe.Any P) xs → All P (catMaybes xs)
   ```
 
-* Added new proof to `Data.Nat.DivMod`:
+* In `Data.List.Relation.Unary.AllPairs.Properties`:
   ```agda
-  m/n≤m : (m / n) {≢0} ≤ m
+  catMaybes⁺ : AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
+  tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
   ```
 
-* Added new type in `Size`:
+* In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
-  SizedSet ℓ = Size → Set ℓ
+  through→ : ∃[ xs ] Pointwise _≈_ as xs × Appending xs bs cs →
+             ∃[ ys ] Appending as bs ys × Pointwise _≈_ ys cs
+  through← : ∃[ ys ] Appending as bs ys × Pointwise _≈_ ys cs →
+             ∃[ xs ] Pointwise _≈_ as xs × Appending xs bs cs
+  assoc→   : ∃[ xs ] Appending as bs xs × Appending xs cs ds →
+             ∃[ ys ] Appending bs cs ys × Appending as ys ds
+  ```
+
+* In `Data.List.Relation.Ternary.Appending.Properties`:
+  ```agda
+  through→ : (R ⇒ (S ; T)) → ((U ; V) ⇒ (W ; T)) →
+                 ∃[ xs ] Pointwise U as xs × Appending V R xs bs cs →
+                         ∃[ ys ] Appending W S as bs ys × Pointwise T ys cs
+  through← : ((R ; S) ⇒ T) → ((U ; S) ⇒ (V ; W)) →
+                 ∃[ ys ] Appending U R as bs ys × Pointwise S ys cs →
+                         ∃[ xs ] Pointwise V as xs × Appending W T xs bs cs
+  assoc→ :   (R ⇒ (S ; T)) → ((U ; V) ⇒ (W ; T)) → ((Y ; V) ⇒ X) →
+                     ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds →
+                         ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds
+  assoc← :   ((S ; T) ⇒ R) → ((W ; T) ⇒ (U ; V)) → (X ⇒ (Y ; V)) →
+             ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds →
+                         ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds
+  ```
+
+* In `Data.List.Relation.Binary.Pointwise.Base`:
+  ```agda
+  unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
+  ```
+
+* In `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
+  ```
+
+* In `Data.Nat.Divisibility`:
+  ```agda
+  quotient≢0       : m ∣ n → .{{NonZero n}} → NonZero quotient
+
+  m∣n⇒n≡quotient*m : m ∣ n → n ≡ quotient * m
+  m∣n⇒n≡m*quotient : m ∣ n → n ≡ m * quotient
+  quotient-∣       : m ∣ n → quotient ∣ n
+  quotient>1       : m ∣ n → m < n → 1 < quotient
+  quotient-<       : m ∣ n → .{{NonTrivial m}} → .{{NonZero n}} → quotient < n
+  n/m≡quotient     : m ∣ n → .{{_ : NonZero m}} → n / m ≡ quotient
+
+  m/n≡0⇒m<n    : .{{_ : NonZero n}} → m / n ≡ 0 → m < n
+  m/n≢0⇒n≤m    : .{{_ : NonZero n}} → m / n ≢ 0 → n ≤ m
+
+  nonZeroDivisor : DivMod dividend divisor → NonZero divisor
+  ```
+
+* Added new proofs in `Data.Nat.Properties`:
+  ```agda
+  m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
+  m<n+o⇒m∸n<o : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
+  pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
+  pred-cancel-< : pred m < pred n → m < n
+  pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
+  pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+  ```
+
+* Added new functions in `Data.String.Base`:
+  ```agda
+  map : (Char → Char) → String → String
+  ```
+
+* In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
+  be used infix.
+
+* Added new proofs in `Relation.Binary.Construct.Composition`:
+  ```agda
+  transitive⇒≈;≈⊆≈ : Transitive ≈ → (≈ ; ≈) ⇒ ≈
+  ```
+
+* Added new definitions in `Relation.Binary.Definitions`
+  ```
+  Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
+  Empty  _∼_ = ∀ {x y} → x ∼ y → ⊥
+  ```
+
+* Added new proofs in `Relation.Binary.Properties.Setoid`:
+  ```agda
+  ≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
+  ≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
+  ```
+
+* Added new definitions in `Relation.Nullary`
+  ```
+  Recomputable    : Set _
+  WeaklyDecidable : Set _
+  ```
+
+* Added new definitions in `Relation.Unary`
+  ```
+  Stable          : Pred A ℓ → Set _
+  WeaklyDecidable : Pred A ℓ → Set _
+  ```
+
+* Added new proof in `Relation.Nullary.Decidable`:
+  ```agda
+  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
+* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
+  ```agda
+  _↭_ : IRel (Vector A) _
+  ```
+
+* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
   ```

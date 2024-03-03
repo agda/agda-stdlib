@@ -5,17 +5,16 @@
 -- proof by reflection
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Fin.Base
-open import Data.Nat.Base
-open import Data.Vec.Base as Vec
-open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (module Equivalence)
-open import Level
-open import Relation.Binary
-import Relation.Binary.PropositionalEquality as P
+open import Data.Fin.Base using (Fin)
+open import Data.Nat.Base using (ℕ)
+open import Data.Vec.Base as Vec using (Vec; allFin)
+open import Function.Base using (id; _⟨_⟩_)
+open import Function.Bundles using (module Equivalence)
+open import Level using (Level)
+open import Relation.Binary.Bundles using (Setoid)
+import Relation.Binary.PropositionalEquality.Core as ≡
 
 -- Think of the parameters as follows:
 --
@@ -42,11 +41,11 @@ module Relation.Binary.Reflection
          where
 
 open import Data.Vec.N-ary
-open import Data.Product
-import Relation.Binary.Reasoning.Setoid as Eq
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open Setoid Sem
-open Eq Sem
+open ≈-Reasoning Sem
 
 -- If two normalised expressions are semantically equal, then their
 -- non-normalised forms are also equal.
@@ -91,8 +90,8 @@ solve₁ : ∀ n (f : N-ary n (Expr n) (Expr n × Expr n)) →
                  ⟦ proj₁ (close n f) ⇓⟧ ρ ≈ ⟦ proj₂ (close n f) ⇓⟧ ρ →
                  ⟦ proj₁ (close n f)  ⟧ ρ ≈ ⟦ proj₂ (close n f)  ⟧ ρ)
 solve₁ n f =
-  Equivalence.from (uncurry-∀ⁿ n) ⟨$⟩ λ ρ →
-    P.subst id (P.sym (left-inverse (λ _ → _ ≈ _ → _ ≈ _) ρ))
+  Equivalence.from (uncurry-∀ⁿ n) λ ρ →
+    ≡.subst id (≡.sym (left-inverse (λ _ → _ ≈ _ → _ ≈ _) ρ))
       (prove ρ (proj₁ (close n f)) (proj₂ (close n f)))
 
 -- A variant of _,_ which is intended to make uses of solve and solve₁

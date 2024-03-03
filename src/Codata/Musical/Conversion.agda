@@ -8,26 +8,26 @@
 -- known to be unsound, so use these conversions at your own risk.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types --guardedness #-}
+{-# OPTIONS --cubical-compatible --sized-types --guardedness #-}
 
 module Codata.Musical.Conversion where
 
 open import Level using (Level)
-import Codata.Cofin as Sized
-import Codata.Colist as Sized
-import Codata.Conat as Sized
-import Codata.Covec as Sized
-import Codata.M
-import Codata.Stream as Sized
-open import Codata.Musical.Cofin
-open import Codata.Musical.Colist
+import Codata.Sized.Cofin  as Sized
+import Codata.Sized.Colist as Sized
+import Codata.Sized.Conat  as Sized
+import Codata.Sized.Covec  as Sized
+import Codata.Sized.M      as Sized
+import Codata.Sized.Stream as Sized
+open import Codata.Sized.Thunk
+open import Codata.Musical.Cofin hiding (module Cofin)
+open import Codata.Musical.Colist hiding (module Colist)
 open import Codata.Musical.Conat
-open import Codata.Musical.Covec
-open import Codata.Musical.M
+open import Codata.Musical.Covec hiding (module Covec)
+open import Codata.Musical.M hiding (module M)
 open import Codata.Musical.Notation
-open import Codata.Musical.Stream
-open import Codata.Thunk
-open import Data.Product
+open import Codata.Musical.Stream hiding (module Stream)
+open import Data.Product.Base using (_,_)
 open import Data.Container.Core as C using (Container)
 import Size
 
@@ -36,49 +36,59 @@ private
     a : Level
     A : Set a
 
-fromMusicalColist : ∀ {i} → Colist A → Sized.Colist A i
-fromMusicalColist []       = Sized.[]
-fromMusicalColist (x ∷ xs) = x Sized.∷ λ where .force → fromMusicalColist (♭ xs)
+module Colist where
 
-toMusicalColist : Sized.Colist A Size.∞ → Colist A
-toMusicalColist Sized.[]       = []
-toMusicalColist (x Sized.∷ xs) = x ∷ ♯ toMusicalColist (xs .force)
+  fromMusical : ∀ {i} → Colist A → Sized.Colist A i
+  fromMusical []       = Sized.[]
+  fromMusical (x ∷ xs) = x Sized.∷ λ where .force → fromMusical (♭ xs)
 
-fromMusicalConat : ∀ {i} → Coℕ → Sized.Conat i
-fromMusicalConat zero    = Sized.zero
-fromMusicalConat (suc n) = Sized.suc λ where .force → fromMusicalConat (♭ n)
+  toMusical : Sized.Colist A Size.∞ → Colist A
+  toMusical Sized.[]       = []
+  toMusical (x Sized.∷ xs) = x ∷ ♯ toMusical (xs .force)
 
-toMusicalConat : Sized.Conat Size.∞ → Coℕ
-toMusicalConat Sized.zero    = zero
-toMusicalConat (Sized.suc n) = suc (♯ toMusicalConat (n .force))
+module Conat where
 
-fromMusicalCofin : ∀ {n} → Cofin n → Sized.Cofin (fromMusicalConat n)
-fromMusicalCofin zero    = Sized.zero
-fromMusicalCofin (suc n) = Sized.suc (fromMusicalCofin n)
+  fromMusical : ∀ {i} → Coℕ → Sized.Conat i
+  fromMusical zero    = Sized.zero
+  fromMusical (suc n) = Sized.suc λ where .force → fromMusical (♭ n)
 
-toMusicalCofin : ∀ {n} → Sized.Cofin n → Cofin (toMusicalConat n)
-toMusicalCofin Sized.zero    = zero
-toMusicalCofin (Sized.suc n) = suc (toMusicalCofin n)
+  toMusical : Sized.Conat Size.∞ → Coℕ
+  toMusical Sized.zero    = zero
+  toMusical (Sized.suc n) = suc (♯ toMusical (n .force))
 
-fromMusicalCovec : ∀ {i n} → Covec A n → Sized.Covec A i (fromMusicalConat n)
-fromMusicalCovec []       = Sized.[]
-fromMusicalCovec (x ∷ xs) = x Sized.∷ λ where .force → fromMusicalCovec (♭ xs)
+module Cofin where
 
-toMusicalCovec : ∀ {n} → Sized.Covec A Size.∞ n → Covec A (toMusicalConat n)
-toMusicalCovec Sized.[]       = []
-toMusicalCovec (x Sized.∷ xs) = x ∷ ♯ toMusicalCovec (xs .force)
+  fromMusical : ∀ {n} → Cofin n → Sized.Cofin (Conat.fromMusical n)
+  fromMusical zero    = Sized.zero
+  fromMusical (suc n) = Sized.suc (fromMusical n)
 
-module _ {s p} {C : Container s p} where
+  toMusical : ∀ {n} → Sized.Cofin n → Cofin (Conat.toMusical n)
+  toMusical Sized.zero    = zero
+  toMusical (Sized.suc n) = suc (toMusical n)
 
-  fromMusicalM : ∀ {i} → M C → Codata.M.M C i
-  fromMusicalM (inf t) = Codata.M.inf (C.map rec t) where
-    rec = λ x → λ where .force → fromMusicalM (♭ x)
+module Covec where
 
-  toMusicalM : Codata.M.M C Size.∞ → M C
-  toMusicalM (Codata.M.inf (s , f)) = inf (s , λ p → ♯ toMusicalM (f p .force))
+  fromMusical : ∀ {i n} → Covec A n → Sized.Covec A i (Conat.fromMusical n)
+  fromMusical []       = Sized.[]
+  fromMusical (x ∷ xs) = x Sized.∷ λ where .force → fromMusical (♭ xs)
 
-fromMusicalStream : ∀ {i} → Stream A → Sized.Stream A i
-fromMusicalStream (x ∷ xs) = x Sized.∷ λ where .force → fromMusicalStream (♭ xs)
+  toMusical : ∀ {n} → Sized.Covec A Size.∞ n → Covec A (Conat.toMusical n)
+  toMusical Sized.[]       = []
+  toMusical (x Sized.∷ xs) = x ∷ ♯ toMusical (xs .force)
 
-toMusicalStream : Sized.Stream A Size.∞ → Stream A
-toMusicalStream (x Sized.∷ xs) = x ∷ ♯ toMusicalStream (xs .force)
+module M {s p} {C : Container s p} where
+
+  fromMusical : ∀ {i} → M C → Sized.M C i
+  fromMusical (inf t) = Sized.M.inf (C.map rec t) where
+    rec = λ x → λ where .force → fromMusical (♭ x)
+
+  toMusical : Sized.M C Size.∞ → M C
+  toMusical (Sized.M.inf (s , f)) = inf (s , λ p → ♯ toMusical (f p .force))
+
+module Stream where
+
+  fromMusical : ∀ {i} → Stream A → Sized.Stream A i
+  fromMusical (x ∷ xs) = x Sized.∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : Sized.Stream A Size.∞ → Stream A
+  toMusical (x Sized.∷ xs) = x ∷ ♯ toMusical (xs .force)

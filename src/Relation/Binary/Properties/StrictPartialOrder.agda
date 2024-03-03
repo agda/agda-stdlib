@@ -4,19 +4,38 @@
 -- Properties satisfied by strict partial orders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (StrictPartialOrder; Poset)
 
 module Relation.Binary.Properties.StrictPartialOrder
        {s₁ s₂ s₃} (SPO : StrictPartialOrder s₁ s₂ s₃) where
 
-open Relation.Binary.StrictPartialOrder SPO
-  renaming (trans to <-trans)
-open import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_
+import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
+import Relation.Binary.Construct.StrictToNonStrict
+
+open StrictPartialOrder SPO
+
+------------------------------------------------------------------------
+-- The converse relation is also a strict partial order.
+
+>-strictPartialOrder : StrictPartialOrder s₁ s₂ s₃
+>-strictPartialOrder = EqAndOrd.strictPartialOrder SPO
+
+open StrictPartialOrder >-strictPartialOrder public
+  using ()
+  renaming
+  ( _<_                  to _>_
+  ; irrefl               to >-irrefl
+  ; trans                to >-trans
+  ; <-resp-≈             to >-resp-≈
+  ; isStrictPartialOrder to >-isStrictPartialOrder
+  )
 
 ------------------------------------------------------------------------
 -- Strict partial orders can be converted to posets
+
+open Relation.Binary.Construct.StrictToNonStrict _≈_ _<_
 
 poset : Poset _ _ _
 poset = record

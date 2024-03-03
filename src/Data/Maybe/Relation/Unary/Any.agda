@@ -4,16 +4,16 @@
 -- Maybes where one of the elements satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Maybe.Relation.Unary.Any where
 
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Product as Prod using (∃; _,_; -,_)
+open import Data.Product.Base as Product using (∃; _,_; -,_)
 open import Function.Base using (id)
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
-open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 open import Relation.Unary
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
@@ -33,7 +33,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   drop-just (just px) = px
 
   just-equivalence : ∀ {x} → P x ⇔ Any P (just x)
-  just-equivalence = equivalence just drop-just
+  just-equivalence = mk⇔ just drop-just
 
   map : ∀ {q} {Q : Pred A q} → P ⊆ Q → Any P ⊆ Any Q
   map f (just px) = just (f px)
@@ -50,7 +50,7 @@ module _ {a p q r} {A : Set a} {P : Pred A p} {Q : Pred A q} {R : Pred A r} wher
   zipWith f (just px , just qx) = just (f (px , qx))
 
   unzipWith : P ⊆ Q ∩ R → Any P ⊆ Any Q ∩ Any R
-  unzipWith f (just px) = Prod.map just just (f px)
+  unzipWith f (just px) = Product.map just just (f px)
 
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
@@ -73,4 +73,4 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   irrelevant P-irrelevant (just p) (just q) = cong just (P-irrelevant p q)
 
   satisfiable : Satisfiable P → Satisfiable (Any P)
-  satisfiable P-satisfiable = Prod.map just just P-satisfiable
+  satisfiable P-satisfiable = Product.map just just P-satisfiable

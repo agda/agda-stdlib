@@ -7,7 +7,7 @@
 -- See README.Data.Nat for examples of how to use and reason about
 -- naturals.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Nat where
 
@@ -21,11 +21,20 @@ open import Data.Nat.Base public
 
 open import Data.Nat.Properties public
   using
-  ( _≟_
+  -- key values
+  ( nonZero?
+  -- equalities
+  ; _≟_ ; eq?
+  -- standard orders & their relationship
   ; _≤?_ ; _≥?_ ; _<?_ ; _>?_
+  ; ≤-<-connex ; ≥->-connex ; <-≤-connex ; >-≥-connex
+  ; <-cmp
+  -- alternative definitions of the orders
   ; _≤′?_; _≥′?_; _<′?_; _>′?_
   ; _≤″?_; _<″?_; _≥″?_; _>″?_
   ; _<‴?_; _≤‴?_; _≥‴?_; _>‴?_
+  -- bounded predicates
+  ; anyUpTo? ; allUpTo?
   )
 
 ------------------------------------------------------------------------
@@ -33,5 +42,8 @@ open import Data.Nat.Properties public
 
 -- Version 0.17
 
+-- Version 2.0
+
+-- solely for the re-export of this name, formerly in `Data.Nat.Properties.Core`
 open import Data.Nat.Properties public
   using (≤-pred)

@@ -4,14 +4,15 @@
 -- Simple combinators working solely on and with functions
 ------------------------------------------------------------------------
 
--- The contents of this file can be accessed from `Function`.
+-- The contents of this module is also accessible via the `Function`
+-- module. See `Function.Strict` for strict versions of these
+-- combinators.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Function.Base where
 
-open import Level
-open import Strict
+open import Level using (Level)
 
 private
   variable
@@ -44,7 +45,7 @@ infixr 9 _∘_ _∘₂_
 infixl 8 _ˢ_
 infixl 0 _|>_
 infix  0 case_return_of_
-infixr -1 _$_ _$!_
+infixr -1 _$_
 
 -- Composition
 
@@ -71,18 +72,12 @@ flip f = λ y x → f x y
 
 -- Application - note that _$_ is right associative, as in Haskell.
 -- If you want a left associative infix application operator, use
--- Category.Functor._<$>_ from Category.Monad.Identity.IdentityMonad.
+-- RawFunctor._<$>_ from Effect.Functor.
 
 _$_ : ∀ {A : Set a} {B : A → Set b} →
       ((x : A) → B x) → ((x : A) → B x)
 f $ x = f x
 {-# INLINE _$_ #-}
-
--- Strict (call-by-value) application
-
-_$!_ : ∀ {A : Set a} {B : A → Set b} →
-       ((x : A) → B x) → ((x : A) → B x)
-_$!_ = flip force
 
 -- Flipped application (aka pipe-forward)
 
@@ -115,10 +110,10 @@ f $- = f _
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).
 
-case_return_of_ : ∀ {A : Set a} (x : A) (B : A → Set b) →
+case_returning_of_ : ∀ {A : Set a} (x : A) (B : A → Set b) →
                   ((x : A) → B x) → B x
-case x return B of f = f x
-{-# INLINE case_return_of_ #-}
+case x returning B of f = f x
+{-# INLINE case_returning_of_ #-}
 
 ------------------------------------------------------------------------
 -- Non-dependent versions of dependent operations
@@ -132,7 +127,7 @@ case x return B of f = f x
 infixr 9 _∘′_ _∘₂′_
 infixl 0 _|>′_
 infix  0 case_of_
-infixr -1 _$′_ _$!′_
+infixr -1 _$′_
 
 -- Composition
 
@@ -142,15 +137,15 @@ f ∘′ g = _∘_ f g
 _∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
 f ∘₂′ g = _∘₂_ f g
 
+-- Flipping order of arguments
+
+flip′ : (A → B → C) → (B → A → C)
+flip′ = flip
+
 -- Application
 
 _$′_ : (A → B) → (A → B)
 _$′_ = _$_
-
--- Strict (call-by-value) application
-
-_$!′_ : (A → B) → (A → B)
-_$!′_ = _$!_
 
 -- Flipped application (aka pipe-forward)
 
@@ -161,7 +156,7 @@ _|>′_ = _|>_
 -- README.Case).
 
 case_of_ : A → (A → B) → B
-case x of f = case x return _ of f
+case x of f = case x returning _ of f
 {-# INLINE case_of_ #-}
 
 ------------------------------------------------------------------------
@@ -250,8 +245,26 @@ _*_ on₂ f = f -⟪ _*_ ⟫- f
 _on_ : (B → B → C) → (A → B) → (A → A → C)
 _*_ on f = f -⟨ _*_ ⟩- f
 
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.4
+
 _-[_]-_ = _-⟪_⟫-_
 {-# WARNING_ON_USAGE _-[_]-_
 "Warning: Function._-[_]-_ was deprecated in v1.4.
 Please use _-⟪_⟫-_ instead."
 #-}
+
+-- Version 2.0
+
+case_return_of_ = case_returning_of_
+{-# WARNING_ON_USAGE case_return_of_
+"case_return_of_ was deprecated in v2.0.
+Please use case_returning_of_ instead."
+#-}
+

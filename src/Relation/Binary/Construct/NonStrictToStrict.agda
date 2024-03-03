@@ -4,19 +4,23 @@
 -- Conversion of _≤_ to _<_
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures
+  using (IsPartialOrder; IsEquivalence; IsStrictPartialOrder; IsDecPartialOrder; IsDecStrictPartialOrder; IsTotalOrder; IsStrictTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Trichotomous; Antisymmetric; Symmetric; Total; Decidable; Irreflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Trans; Asymmetric; tri≈; tri<; tri>)
 
 module Relation.Binary.Construct.NonStrictToStrict
   {a ℓ₁ ℓ₂} {A : Set a} (_≈_ : Rel A ℓ₁) (_≤_ : Rel A ℓ₂) where
 
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_; flip)
 open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Negation using (contradiction; ¬?)
-open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable using (¬?; _×-dec_)
 
 private
   _≉_ : Rel A ℓ₁
@@ -134,61 +138,11 @@ x < y = x ≤ y × x ≉ y
 <-isStrictTotalOrder₁ : Decidable _≈_ → IsTotalOrder _≈_ _≤_ →
                         IsStrictTotalOrder _≈_ _<_
 <-isStrictTotalOrder₁ ≟ tot = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans isPartialOrder
-  ; compare       = <-trichotomous Eq.sym ≟ antisym total
+  { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
+  ; compare              = <-trichotomous Eq.sym ≟ antisym total
   } where open IsTotalOrder tot
 
 <-isStrictTotalOrder₂ : IsDecTotalOrder _≈_ _≤_ →
                         IsStrictTotalOrder _≈_ _<_
 <-isStrictTotalOrder₂ dtot = <-isStrictTotalOrder₁ _≟_ isTotalOrder
   where open IsDecTotalOrder dtot
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.16
-
-irrefl         = <-irrefl
-{-# WARNING_ON_USAGE irrefl
-"Warning: irrefl was deprecated in v0.16.
-Please use <-irrefl instead."
-#-}
-trans          = <-trans
-{-# WARNING_ON_USAGE trans
-"Warning: trans was deprecated in v0.16.
-Please use <-trans instead."
-#-}
-antisym⟶asym = <-asym
-{-# WARNING_ON_USAGE antisym⟶asym
-"Warning: antisym⟶asym was deprecated in v0.16.
-Please use <-asym instead."
-#-}
-decidable      = <-decidable
-{-# WARNING_ON_USAGE decidable
-"Warning: decidable was deprecated in v0.16.
-Please use <-decidable instead."
-#-}
-trichotomous   = <-trichotomous
-{-# WARNING_ON_USAGE trichotomous
-"Warning: trichotomous was deprecated in v0.16.
-Please use <-trichotomous instead."
-#-}
-isPartialOrder⟶isStrictPartialOrder = <-isStrictPartialOrder
-{-# WARNING_ON_USAGE isPartialOrder⟶isStrictPartialOrder
-"Warning: isPartialOrder⟶isStrictPartialOrder was deprecated in v0.16.
-Please use <-isStrictPartialOrder instead."
-#-}
-isTotalOrder⟶isStrictTotalOrder     = <-isStrictTotalOrder₁
-{-# WARNING_ON_USAGE isTotalOrder⟶isStrictTotalOrder
-"Warning: isTotalOrder⟶isStrictTotalOrder was deprecated in v0.16.
-Please use <-isStrictTotalOrder₁ instead."
-#-}
-isDecTotalOrder⟶isStrictTotalOrder  = <-isStrictTotalOrder₂
-{-# WARNING_ON_USAGE isDecTotalOrder⟶isStrictTotalOrder
-"Warning: isDecTotalOrder⟶isStrictTotalOrder was deprecated in v0.16.
-Please use <-isStrictTotalOrder₂ instead."
-#-}

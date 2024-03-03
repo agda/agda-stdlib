@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Core
 open import Algebra.Bundles
@@ -25,9 +25,9 @@ open RawMagma M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_)
 
 open import Algebra.Structures
 open import Algebra.Definitions
-open import Data.Product
+open import Data.Product.Base using (map)
 open import Data.Sum.Base using (inj₁; inj₂)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Morphism.RelMonomorphism isRelMonomorphism as RelMorphism
 
 ------------------------------------------------------------------------
@@ -36,13 +36,13 @@ import Relation.Binary.Morphism.RelMonomorphism isRelMonomorphism as RelMorphism
 module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   cong : Congruent₂ _≈₁_ _∙_
   cong {x} {y} {u} {v} x≈y u≈v = injective (begin
     ⟦ x ∙ u ⟧      ≈⟨  homo x u ⟩
     ⟦ x ⟧ ◦ ⟦ u ⟧  ≈⟨  ◦-cong (⟦⟧-cong x≈y) (⟦⟧-cong u≈v) ⟩
-    ⟦ y ⟧ ◦ ⟦ v ⟧  ≈˘⟨ homo y v ⟩
+    ⟦ y ⟧ ◦ ⟦ v ⟧  ≈⟨ homo y v ⟨
     ⟦ y ∙ v ⟧      ∎)
 
   assoc : Associative _≈₂_ _◦_ → Associative _≈₁_ _∙_
@@ -50,15 +50,15 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ (x ∙ y) ∙ z ⟧          ≈⟨  homo (x ∙ y) z ⟩
     ⟦ x ∙ y ⟧ ◦ ⟦ z ⟧        ≈⟨  ◦-cong (homo x y) refl ⟩
     (⟦ x ⟧ ◦ ⟦ y ⟧) ◦ ⟦ z ⟧  ≈⟨  assoc ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ ⟩
-    ⟦ x ⟧ ◦ (⟦ y ⟧ ◦ ⟦ z ⟧)  ≈˘⟨ ◦-cong refl (homo y z) ⟩
-    ⟦ x ⟧ ◦ ⟦ y ∙ z ⟧        ≈˘⟨ homo x (y ∙ z) ⟩
+    ⟦ x ⟧ ◦ (⟦ y ⟧ ◦ ⟦ z ⟧)  ≈⟨ ◦-cong refl (homo y z) ⟨
+    ⟦ x ⟧ ◦ ⟦ y ∙ z ⟧        ≈⟨ homo x (y ∙ z) ⟨
     ⟦ x ∙ (y ∙ z) ⟧          ∎)
 
   comm : Commutative _≈₂_ _◦_ → Commutative _≈₁_ _∙_
   comm comm x y = injective (begin
     ⟦ x ∙ y ⟧      ≈⟨  homo x y ⟩
     ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨  comm ⟦ x ⟧ ⟦ y ⟧ ⟩
-    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈˘⟨ homo y x ⟩
+    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ homo y x ⟨
     ⟦ y ∙ x ⟧      ∎)
 
   idem : Idempotent _≈₂_ _◦_ → Idempotent _≈₁_ _∙_
@@ -79,15 +79,15 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ y ⟧          ∎))
 
   cancelˡ : LeftCancellative _≈₂_ _◦_ → LeftCancellative _≈₁_ _∙_
-  cancelˡ cancelˡ x {y} {z} x∙y≈x∙z = injective (cancelˡ ⟦ x ⟧ (begin
-    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈˘⟨ homo x y ⟩
+  cancelˡ cancelˡ x y z x∙y≈x∙z = injective (cancelˡ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
+    ⟦ x ⟧ ◦ ⟦ y ⟧  ≈⟨ homo x y ⟨
     ⟦ x ∙ y ⟧      ≈⟨  ⟦⟧-cong x∙y≈x∙z ⟩
     ⟦ x ∙ z ⟧      ≈⟨  homo x z ⟩
     ⟦ x ⟧ ◦ ⟦ z ⟧  ∎))
 
   cancelʳ : RightCancellative _≈₂_ _◦_ → RightCancellative _≈₁_ _∙_
-  cancelʳ cancelʳ {x} y z y∙x≈z∙x = injective (cancelʳ ⟦ y ⟧ ⟦ z ⟧ (begin
-    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈˘⟨ homo y x ⟩
+  cancelʳ cancelʳ x y z y∙x≈z∙x = injective (cancelʳ ⟦ x ⟧ ⟦ y ⟧ ⟦ z ⟧ (begin
+    ⟦ y ⟧ ◦ ⟦ x ⟧  ≈⟨ homo y x ⟨
     ⟦ y ∙ x ⟧      ≈⟨  ⟦⟧-cong y∙x≈z∙x ⟩
     ⟦ z ∙ x ⟧      ≈⟨  homo z x ⟩
     ⟦ z ⟧ ◦ ⟦ x ⟧  ∎))
@@ -115,12 +115,6 @@ isBand isBand = record
   { isSemigroup = isSemigroup B.isSemigroup
   ; idem        = idem        B.isMagma B.idem
   } where module B = IsBand isBand
-
-isSemilattice : IsSemilattice _≈₂_ _◦_ → IsSemilattice _≈₁_ _∙_
-isSemilattice isSemilattice = record
-  { isBand = isBand S.isBand
-  ; comm   = comm   S.isMagma S.comm
-  } where module S = IsSemilattice isSemilattice
 
 isSelectiveMagma : IsSelectiveMagma _≈₂_ _◦_ → IsSelectiveMagma _≈₁_ _∙_
 isSelectiveMagma isSelMagma = record

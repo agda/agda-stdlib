@@ -12,8 +12,8 @@ module Data.Vec.Properties.WithK where
 open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc)
 open import Data.Vec.Base
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
-open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Binary.HeterogeneousEquality as ≅ using (_≅_; refl)
 
 ------------------------------------------------------------------------
 -- _[_]=_
@@ -24,7 +24,7 @@ module _ {a} {A : Set a} where
                     (p q : xs [ i ]= x) → p ≡ q
   []=-irrelevant here            here             = refl
   []=-irrelevant (there xs[i]=x) (there xs[i]=x′) =
-    P.cong there ([]=-irrelevant xs[i]=x xs[i]=x′)
+    cong there ([]=-irrelevant xs[i]=x xs[i]=x′)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -35,7 +35,7 @@ module _ {a} {A : Set a} where
              (xs ++ ys) ++ zs ≅ xs ++ (ys ++ zs)
   ++-assoc         []       ys zs = refl
   ++-assoc {suc m} (x ∷ xs) ys zs =
-    H.icong (Vec A) (+-assoc m _ _) (x ∷_) (++-assoc xs ys zs)
+    ≅.icong (Vec A) (+-assoc m _ _) (x ∷_) (++-assoc xs ys zs)
 
 ------------------------------------------------------------------------
 -- foldr
@@ -60,17 +60,3 @@ foldl-cong : ∀ {a b} {A : Set a}
              foldl B f d xs ≅ foldl C g e xs
 foldl-cong _   d≅e []       = d≅e
 foldl-cong f≅g d≅e (x ∷ xs) = foldl-cong f≅g (f≅g d≅e) xs
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-[]=-irrelevance = []=-irrelevant
-{-# WARNING_ON_USAGE []=-irrelevance
-"Warning: []=-irrelevance was deprecated in v1.0.
-Please use []=-irrelevant instead."
-#-}

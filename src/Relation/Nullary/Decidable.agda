@@ -4,28 +4,28 @@
 -- Operations on and properties of decidable relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Decidable where
 
 open import Level using (Level)
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.Empty using (⊥-elim)
+open import Data.Product.Base using (∃; _,_)
 open import Function.Base
-open import Function.Equality    using (_⟨$⟩_; module Π)
-open import Function using (_↔_; mk↔′)
-open import Function.Equivalence using (_⇔_; equivalence; module Equivalence)
-open import Function.Injection   using (Injection; module Injection)
-open import Relation.Binary      using (Setoid; module Setoid; Decidable)
+open import Function.Bundles using
+  (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔ₛ′)
+open import Relation.Binary.Bundles using (Setoid; module Setoid)
+open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Binary.PropositionalEquality using (cong′)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong′)
 
 private
   variable
-    p q : Level
-    P : Set p
-    Q : Set q
+    a b ℓ₁ ℓ₂ : Level
+    A B : Set a
 
 ------------------------------------------------------------------------
 -- Re-exporting the core definitions
@@ -35,29 +35,52 @@ open import Relation.Nullary.Decidable.Core public
 ------------------------------------------------------------------------
 -- Maps
 
-map : P ⇔ Q → Dec P → Dec Q
-map P⇔Q = map′ (to ⟨$⟩_) (from ⟨$⟩_)
-  where open Equivalence P⇔Q
+map : A ⇔ B → Dec A → Dec B
+map A⇔B = map′ to from
+  where open Equivalence A⇔B
 
-module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
-         (inj : Injection A B)
-  where
-
-  open Injection inj
-  open Setoid A using () renaming (_≈_ to _≈A_)
-  open Setoid B using () renaming (_≈_ to _≈B_)
-
-  -- If there is an injection from one setoid to another, and the
-  -- latter's equivalence relation is decidable, then the former's
-  -- equivalence relation is also decidable.
-
-  via-injection : Decidable _≈B_ → Decidable _≈A_
-  via-injection dec x y =
-    map′ injective (Π.cong to) (dec (to ⟨$⟩ x) (to ⟨$⟩ y))
+-- If there is an injection from one setoid to another, and the
+-- latter's equivalence relation is decidable, then the former's
+-- equivalence relation is also decidable.
+via-injection : {S : Setoid a ℓ₁} {T : Setoid b ℓ₂}
+                (inj : Injection S T) (open Injection inj) →
+                Decidable Eq₂._≈_ → Decidable Eq₁._≈_
+via-injection inj _≟_ x y = map′ injective cong (to x ≟ to y)
+  where open Injection inj
 
 ------------------------------------------------------------------------
 -- A lemma relating True and Dec
 
-True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
-True-↔ (true  because  [p]) irr = mk↔′ (λ _ → invert [p]) _ (irr (invert [p])) cong′
-True-↔ (false because ofⁿ ¬p) _ = mk↔′ (λ ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) λ ()
+True-↔ : (a? : Dec A) → Irrelevant A → True a? ↔ A
+True-↔ (true  because [a]) irr = mk↔ₛ′ (λ _ → invert [a]) _ (irr (invert [a])) cong′
+True-↔ (false because ofⁿ ¬a) _ = mk↔ₛ′ (λ ()) (invert (ofⁿ ¬a)) (⊥-elim ∘ ¬a) λ ()
+
+------------------------------------------------------------------------
+-- Result of decidability
+
+isYes≗does : (a? : Dec A) → isYes a? ≡ does a?
+isYes≗does (true  because _) = refl
+isYes≗does (false because _) = refl
+
+dec-true : (a? : Dec A) → A → does a? ≡ true
+dec-true (true  because   _ ) a = refl
+dec-true (false because [¬a]) a = ⊥-elim (invert [¬a] a)
+
+dec-false : (a? : Dec A) → ¬ A → does a? ≡ false
+dec-false (false because  _ ) ¬a = refl
+dec-false (true  because [a]) ¬a = ⊥-elim (¬a (invert [a]))
+
+dec-yes : (a? : Dec A) → A → ∃ λ a → a? ≡ yes a
+dec-yes a? a with dec-true a? a
+dec-yes (yes a′) a | refl = a′ , refl
+
+dec-no : (a? : Dec A) (¬a : ¬ A) → a? ≡ no ¬a
+dec-no a? ¬a with dec-false a? ¬a
+dec-no (no _) _ | refl = refl
+
+dec-yes-irr : (a? : Dec A) → Irrelevant A → (a : A) → a? ≡ yes a
+dec-yes-irr a? irr a with dec-yes a? a
+... | a′ , eq rewrite irr a a′ = eq
+
+⌊⌋-map′ : ∀ t f (a? : Dec A) → ⌊ map′ {B = B} t f a? ⌋ ≡ ⌊ a? ⌋
+⌊⌋-map′ t f a? = trans (isYes≗does (map′ t f a?)) (sym (isYes≗does a?))

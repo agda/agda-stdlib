@@ -4,12 +4,12 @@
 -- Multiplication over a monoid (i.e. repeated addition)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 module Algebra.Properties.Monoid.Mult {a ℓ} (M : Monoid a ℓ) where
 
@@ -44,9 +44,18 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×-congʳ (suc n) x≈x′ = +-cong x≈x′ (×-congʳ n x≈x′)
 
 ×-cong : _×_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
-×-cong {n} P.refl x≈x′ = ×-congʳ n x≈x′
+×-cong {n} ≡.refl x≈x′ = ×-congʳ n x≈x′
+
+×-congˡ : ∀ {x} → (_× x) Preserves _≡_ ⟶ _≈_
+×-congˡ m≡n = ×-cong m≡n refl
 
 -- _×_ is homomorphic with respect to _ℕ+_/_+_.
+
+×-homo-0 : ∀ x → 0 × x ≈ 0#
+×-homo-0 x = refl
+
+×-homo-1 : ∀ x → 1 × x ≈ x
+×-homo-1 = +-identityʳ
 
 ×-homo-+ : ∀ x m n → (m ℕ.+ n) × x ≈ m × x + n × x
 ×-homo-+ x 0       n = sym (+-identityˡ (n × x))
@@ -58,14 +67,14 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×-idem : ∀ {c} → _+_ IdempotentOn c →
          ∀ n → .{{_ : NonZero n}} → n × c ≈ c
 ×-idem {c} idem (suc zero)    = +-identityʳ c
-×-idem {c} idem (suc (suc n)) = begin
-  c + (suc n × c) ≈⟨ +-congˡ (×-idem idem (suc n) ) ⟩
-  c + c           ≈⟨ idem ⟩
-  c               ∎
+×-idem {c} idem (suc n@(suc _)) = begin
+  c + (n × c) ≈⟨ +-congˡ (×-idem idem n ) ⟩
+  c + c       ≈⟨ idem ⟩
+  c           ∎
 
 ×-assocˡ : ∀ x m n → m × (n × x) ≈ (m ℕ.* n) × x
 ×-assocˡ x zero    n = refl
 ×-assocˡ x (suc m) n = begin
   n × x + m × n × x     ≈⟨ +-congˡ (×-assocˡ x m n) ⟩
-  n × x + (m ℕ.* n) × x ≈˘⟨ ×-homo-+ x n (m ℕ.* n) ⟩
+  n × x + (m ℕ.* n) × x ≈⟨ ×-homo-+ x n (m ℕ.* n) ⟨
   (suc m ℕ.* n) × x     ∎

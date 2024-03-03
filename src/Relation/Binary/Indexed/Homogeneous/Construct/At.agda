@@ -4,10 +4,12 @@
 -- Instantiating homogeneously indexed bundles at a particular index
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid; DecSetoid; Preorder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder)
 open import Relation.Binary.Indexed.Homogeneous
 
 module Relation.Binary.Indexed.Homogeneous.Construct.At where
@@ -65,6 +67,8 @@ preorder O index = record
 
 ------------------------------------------------------------------------
 -- Some useful shorthand infix notation
+
+infixr -1 _atₛ_
 
 _atₛ_ : ∀ {ℓ} → IndexedSetoid I a ℓ → I → Setoid a ℓ
 _atₛ_ = setoid

@@ -3,25 +3,64 @@
 --
 -- Propositional equality
 --
--- This file contains some core properies of propositional equality which
--- are re-exported by Relation.Binary.PropositionalEquality. They are
--- ``equality rearrangement'' lemmas.
+-- This file contains some core properies of propositional equality
+-- which are re-exported by Relation.Binary.PropositionalEquality. They
+-- are ``equality rearrangement'' lemmas.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.PropositionalEquality.Properties where
 
 open import Function.Base using (id; _∘_)
-open import Level
-open import Relation.Binary
+open import Level using (Level)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; DecidableEquality)
+import Relation.Binary.Properties.Setoid as Setoid
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Unary using (Pred)
+open import Relation.Binary.Reasoning.Syntax
+
 
 private
   variable
-    a p : Level
+    a b c p : Level
     A B C : Set a
+
+------------------------------------------------------------------------
+-- Standard eliminator for the propositional equality type
+
+J : {A : Set a} {x : A} (B : (y : A) → x ≡ y → Set b)
+    {y : A} (p : x ≡ y) → B x refl → B y p
+J B refl b = b
+
+------------------------------------------------------------------------
+-- Binary and/or dependent versions of standard operations on equality
+
+dcong : ∀ {A : Set a} {B : A → Set b} (f : (x : A) → B x) {x y}
+      → (p : x ≡ y) → subst B p (f x) ≡ f y
+dcong f refl = refl
+
+dcong₂ : ∀ {A : Set a} {B : A → Set b} {C : Set c}
+         (f : (x : A) → B x → C) {x₁ x₂ y₁ y₂}
+       → (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂
+       → f x₁ y₁ ≡ f x₂ y₂
+dcong₂ f refl refl = refl
+
+dsubst₂ : ∀ {A : Set a} {B : A → Set b} (C : (x : A) → B x → Set c)
+          {x₁ x₂ y₁ y₂} (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂
+        → C x₁ y₁ → C x₂ y₂
+dsubst₂ C refl refl c = c
+
+ddcong₂ : ∀ {A : Set a} {B : A → Set b} {C : (x : A) → B x → Set c}
+         (f : (x : A) (y : B x) → C x y) {x₁ x₂ y₁ y₂}
+         (p : x₁ ≡ x₂) (q : subst B p y₁ ≡ y₂)
+       → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
+ddcong₂ f refl refl = refl
 
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
@@ -53,6 +92,9 @@ cong-id refl = refl
 cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
          cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
+
+sym-cong : ∀ {x y : A} {f : A → B} (p : x ≡ y) → sym (cong f p) ≡ cong f (sym p)
+sym-cong refl = refl
 
 trans-cong : ∀ {x y z : A} {f : A → B} (p : x ≡ y) {q : y ≡ z} →
              trans (cong f p) (cong f q) ≡ cong f (trans p q)
@@ -89,6 +131,15 @@ subst-∘ : ∀ {x y : A} {P : Pred B p} {f : A → B}
           subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
 subst-∘ refl = refl
 
+-- Lemma 2.3.11 in the HoTT book, and `transport_map` in the UniMath
+-- library
+subst-application′ : ∀ {a b₁ b₂} {A : Set a}
+                     (B₁ : A → Set b₁) {B₂ : A → Set b₂}
+                     {x₁ x₂ : A} {y : B₁ x₁}
+                     (g : ∀ x → B₁ x → B₂ x) (eq : x₁ ≡ x₂) →
+                     subst B₂ eq (g x₁ y) ≡ g x₂ (subst B₁ eq y)
+subst-application′ _ _ refl = refl
+
 subst-application : ∀ {a₁ a₂ b₁ b₂} {A₁ : Set a₁} {A₂ : Set a₂}
                     (B₁ : A₁ → Set b₁) {B₂ : A₂ → Set b₂}
                     {f : A₂ → A₁} {x₁ x₂ : A₂} {y : B₁ (f x₁)}
@@ -112,16 +163,6 @@ isDecEquivalence _≟_ = record
   ; _≟_           = _≟_
   }
 
-isPreorder : IsPreorder {A = A} _≡_ _≡_
-isPreorder = record
-  { isEquivalence = isEquivalence
-  ; reflexive     = id
-  ; trans         = trans
-  }
-
-------------------------------------------------------------------------
--- Bundles for equality as a binary relation
-
 setoid : Set a → Setoid _ _
 setoid A = record
   { Carrier       = A
@@ -129,16 +170,36 @@ setoid A = record
   ; isEquivalence = isEquivalence
   }
 
-decSetoid : Decidable {A = A} _≡_ → DecSetoid _ _
+decSetoid : DecidableEquality A → DecSetoid _ _
 decSetoid _≟_ = record
   { _≈_              = _≡_
   ; isDecEquivalence = isDecEquivalence _≟_
   }
 
+------------------------------------------------------------------------
+-- Bundles for equality as a binary relation
+
+isPreorder : IsPreorder {A = A} _≡_ _≡_
+isPreorder = Setoid.≈-isPreorder (setoid _)
+
+isPartialOrder : IsPartialOrder {A = A} _≡_ _≡_
+isPartialOrder = Setoid.≈-isPartialOrder (setoid _)
+
 preorder : Set a → Preorder _ _ _
-preorder A = record
-  { Carrier    = A
-  ; _≈_        = _≡_
-  ; _∼_        = _≡_
-  ; isPreorder = isPreorder
-  }
+preorder A = Setoid.≈-preorder (setoid A)
+
+poset : Set a → Poset _ _ _
+poset A = Setoid.≈-poset (setoid A)
+
+------------------------------------------------------------------------
+-- Reasoning
+
+-- This is a special instance of `Relation.Binary.Reasoning.Setoid`.
+-- Rather than instantiating the latter with (setoid A), we reimplement
+-- equation chains from scratch since then goals are printed much more
+-- readably.
+module ≡-Reasoning {a} {A : Set a} where
+
+  open begin-syntax {A = A} _≡_ id public
+  open ≡-syntax {A = A} _≡_ trans public
+  open end-syntax {A = A} _≡_ refl public

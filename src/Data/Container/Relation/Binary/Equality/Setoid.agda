@@ -4,14 +4,17 @@
 -- Equality over container extensions parametrised by some setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Data.Container.Relation.Binary.Equality.Setoid {c e} (S : Setoid c e) where
 
 open import Level using (_⊔_; suc)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
 
 open import Data.Container.Core
 open import Data.Container.Relation.Binary.Pointwise

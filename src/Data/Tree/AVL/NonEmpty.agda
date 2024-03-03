@@ -9,9 +9,9 @@
 -- The search tree invariant is specified using the technique
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.NonEmpty
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂) where
@@ -21,9 +21,9 @@ open import Data.Empty
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_; _++⁺_)
 open import Data.Maybe.Base hiding (map)
 open import Data.Nat.Base hiding (_<_; _⊔_; compare)
-open import Data.Product hiding (map)
+open import Data.Product.Base hiding (map)
 open import Data.Unit
-open import Function
+open import Function.Base using (_$_; _∘′_)
 open import Level using (_⊔_; Lift; lift)
 open import Relation.Unary
 
@@ -35,8 +35,8 @@ open Indexed using (⊥⁺; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
 
--- NB: the height is non-zero thus guaranteeing that the AVL tree contains
--- at least one value.
+-- NB: the height is non-zero thus guaranteeing that the AVL tree
+-- contains at least one value.
 
 data Tree⁺ {v} (V : Value v) : Set (a ⊔ v ⊔ ℓ₂) where
   tree : ∀ {h} → Indexed.Tree V ⊥⁺ ⊤⁺ (suc h) → Tree⁺ V
@@ -65,8 +65,8 @@ module _ {v} {V : Value v} where
   delete k (tree {0}     t) | Indexed.0# , t′ = nothing
   delete k (tree {suc h} t) | Indexed.0# , t′ = just (tree t′)
 
-  lookup : (k : Key) → Tree⁺ V → Maybe (Val k)
-  lookup k (tree t) = Indexed.lookup k t ⊥⁺<[ k ]<⊤⁺
+  lookup : Tree⁺ V → (k : Key) → Maybe (Val k)
+  lookup (tree t) k = Indexed.lookup t k ⊥⁺<[ k ]<⊤⁺
 
 module _ {v w} {V : Value v} {W : Value w} where
 

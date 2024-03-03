@@ -22,60 +22,55 @@
 -- as this introduces unsolved metas as the underlying base module
 -- `Base.Single` does not require `_≈_` be symmetric.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Reasoning.MultiSetoid where
 
-open import Function.Base using (flip)
-open import Level using (_⊔_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Level using (Level; _⊔_)
+open import Function.Base using (case_of_)
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Definitions using (Trans; Reflexive)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.Reasoning.Syntax
 
-import Relation.Binary.Reasoning.Setoid as EqR
+private
+  variable
+    a ℓ : Level
 
 ------------------------------------------------------------------------
 -- Combinators that take the current setoid as an explicit argument.
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid a ℓ) where
   open Setoid S
 
-  data IsRelatedTo (x y : _) : Set (c ⊔ ℓ) where
-    relTo : (x∼y : x ≈ y) → IsRelatedTo x y
+  data IsRelatedTo (x y : _) : Set (a ⊔ ℓ) where
+    relTo : (x≈y : x ≈ y) → IsRelatedTo x y
 
-  infix 1 begin⟨_⟩_
+  start : IsRelatedTo ⇒ _≈_
+  start (relTo x≈y) = x≈y
 
-  begin⟨_⟩_ : ∀ {x y} → IsRelatedTo x y → x ≈ y
-  begin⟨_⟩_ (relTo eq) = eq
+  ≡-go : Trans _≡_ IsRelatedTo IsRelatedTo
+  ≡-go x≡y (relTo y∼z) = relTo (case x≡y of λ where ≡.refl → y∼z)
+
+  ≈-go : Trans _≈_ IsRelatedTo IsRelatedTo
+  ≈-go x≈y (relTo y≈z) = relTo (trans x≈y y≈z)
+
+  end : Reflexive IsRelatedTo
+  end = relTo refl
 
 ------------------------------------------------------------------------
--- Combinators that take the current setoid as an implicit argument.
+-- Reasoning combinators
 
-module _ {c ℓ} {S : Setoid c ℓ} where
+-- Those that take the current setoid as an explicit argument.
+  open begin-syntax IsRelatedTo start public
+    renaming (begin_ to begin⟨_⟩_)
 
-  open Setoid S renaming (_≈_ to _≈_)
 
-  infixr 2 step-≈ step-≈˘ step-≡ step-≡˘ _≡⟨⟩_
-  infix 3 _∎
+-- Those that take the current setoid as an implicit argument.
+module _ {S : Setoid a ℓ} where
+  open Setoid S
 
-  step-≈ : ∀ x {y z} → IsRelatedTo S y z → x ≈ y → IsRelatedTo S x z
-  step-≈ x (relTo y∼z) x∼y = relTo (trans x∼y y∼z)
-
-  step-≈˘ : ∀ x {y z} → IsRelatedTo S y z → y ≈ x → IsRelatedTo S x z
-  step-≈˘ x y∼z x≈y = step-≈ x y∼z (sym x≈y)
-
-  step-≡ : ∀ x {y z} → IsRelatedTo S y z → x ≡ y → IsRelatedTo S x z
-  step-≡ _ x∼z P.refl = x∼z
-
-  step-≡˘ : ∀ x {y z} → IsRelatedTo S y z → y ≡ x → IsRelatedTo S x z
-  step-≡˘ _ x∼z P.refl = x∼z
-
-  _≡⟨⟩_ : ∀ x {y} → IsRelatedTo S x y → IsRelatedTo S x y
-  _ ≡⟨⟩ x∼y = x∼y
-
-  _∎ : ∀ x → IsRelatedTo S x x
-  _∎ _ = relTo refl
-
-  syntax step-≈  x y∼z x≈y = x ≈⟨  x≈y ⟩ y∼z
-  syntax step-≈˘ x y∼z y≈x = x ≈˘⟨ y≈x ⟩ y∼z
-  syntax step-≡  x y≡z x≡y = x ≡⟨  x≡y ⟩ y≡z
-  syntax step-≡˘ x y≡z y≡x = x ≡˘⟨ y≡x ⟩ y≡z
+  open ≡-syntax (IsRelatedTo S) (≡-go S)
+  open ≈-syntax (IsRelatedTo S) (IsRelatedTo S) (≈-go S) sym public
+  open end-syntax (IsRelatedTo S) (end S) public

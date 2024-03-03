@@ -6,19 +6,20 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Definitions where
 
 open import Agda.Builtin.Equality using (_≡_)
 
+open import Data.Empty using (⊥)
 open import Data.Maybe.Base using (Maybe)
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_; ∃-syntax)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_; flip)
 open import Level
 open import Relation.Binary.Core
-open import Relation.Nullary using (Dec; ¬_)
+open import Relation.Nullary as Nullary using (¬_; Dec)
 
 private
   variable
@@ -57,6 +58,12 @@ Symmetric _∼_ = Sym _∼_ _∼_
 Trans : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
 Trans P Q R = ∀ {i j k} → P i j → Q j k → R i k
 
+RightTrans : REL A B ℓ₁ → REL B B ℓ₂ → Set _
+RightTrans R S = Trans R S R
+
+LeftTrans : REL A A ℓ₁ → REL A B ℓ₂ → Set _
+LeftTrans S R = Trans S R R
+
 -- A flipped variant of generalised transitivity.
 
 TransFlip : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
@@ -87,7 +94,12 @@ Irreflexive _≈_ _<_ = ∀ {x y} → x ≈ y → ¬ (x < y)
 Asymmetric : Rel A ℓ → Set _
 Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 
--- Generalised connex - exactly one of the two relations holds.
+-- Density
+
+Dense : Rel A ℓ → Set _
+Dense _<_ = ∀ {x y} → x < y → ∃[ z ] x < z × z < y
+
+-- Generalised connex - at least one of the two relations holds.
 
 Connex : REL A B ℓ₁ → REL B A ℓ₂ → Set _
 Connex P Q = ∀ x y → P x y ⊎ Q y x
@@ -130,6 +142,38 @@ Min R = Max (flip R)
 Minimum : Rel A ℓ → A → Set _
 Minimum = Min
 
+-- Definitions for apartness relations
+
+-- Note that Cotransitive's arguments are permuted with respect to Transitive's.
+Cotransitive : Rel A ℓ → Set _
+Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
+
+Tight : Rel A ℓ₁ → Rel A ℓ₂ → Set _
+Tight _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
+
+-- Properties of order morphisms, aka order-preserving maps
+
+Monotonic₁ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
+Monotonic₁ _≤_ _⊑_ f = f Preserves _≤_ ⟶ _⊑_
+
+Antitonic₁ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
+Antitonic₁ _≤_ _⊑_ f = f Preserves (flip _≤_) ⟶ _⊑_
+
+Monotonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+Monotonic₂ _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ _⊑_ ⟶ _≼_
+
+MonotonicAntitonic : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+MonotonicAntitonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ _≤_ ⟶ (flip _⊑_) ⟶ _≼_
+
+AntitonicMonotonic : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+AntitonicMonotonic _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ _⊑_ ⟶ _≼_
+
+Antitonic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → (A → B → C) → Set _
+Antitonic₂ _≤_ _⊑_ _≼_ ∙ = ∙ Preserves₂ (flip _≤_) ⟶ (flip _⊑_) ⟶ _≼_
+
+Adjoint : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → (B → A) → Set _
+Adjoint _≤_ _⊑_ f g = ∀ {x y} → (f x ⊑ y → x ≤ g y) × (x ≤ g y → f x ⊑ y)
+
 -- Unary relations respecting a binary relation.
 
 _⟶_Respects_ : (A → Set ℓ₁) → (B → Set ℓ₂) → REL A B ℓ₃ → Set _
@@ -162,39 +206,49 @@ P Respects₂ _∼_ = (P Respectsʳ _∼_) × (P Respectsˡ _∼_)
 Substitutive : Rel A ℓ₁ → (ℓ₂ : Level) → Set _
 Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
 
+-- Irrelevancy - all proofs that a given pair of elements are related
+-- are indistinguishable.
+
+Irrelevant : REL A B ℓ → Set _
+Irrelevant _∼_ = ∀ {x y} → Nullary.Irrelevant (x ∼ y)
+
+-- Recomputability - we can rebuild a relevant proof given an
+-- irrelevant one.
+
+Recomputable : REL A B ℓ → Set _
+Recomputable _∼_ = ∀ {x y} → Nullary.Recomputable (x ∼ y)
+
+-- Stability
+
+Stable : REL A B ℓ → Set _
+Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
+
+-- Weak decidability - it is sometimes possible to determine if a given
+-- pair of elements are related.
+
+WeaklyDecidable : REL A B ℓ → Set _
+WeaklyDecidable _∼_ = ∀ x y → Nullary.WeaklyDecidable (x ∼ y)
+
 -- Decidability - it is possible to determine whether a given pair of
 -- elements are related.
 
 Decidable : REL A B ℓ → Set _
 Decidable _∼_ = ∀ x y → Dec (x ∼ y)
 
--- Weak decidability - it is sometimes possible to determine if a given
--- pair of elements are related.
-
-WeaklyDecidable : REL A B ℓ → Set _
-WeaklyDecidable _∼_ = ∀ x y → Maybe (x ∼ y)
-
 -- Propositional equality is decidable for the type.
 
 DecidableEquality : (A : Set a) → Set _
 DecidableEquality A = Decidable {A = A} _≡_
 
--- Irrelevancy - all proofs that a given pair of elements are related
--- are indistinguishable.
-
-Irrelevant : REL A B ℓ → Set _
-Irrelevant _∼_ = ∀ {x y} (a b : x ∼ y) → a ≡ b
-
--- Recomputability - we can rebuild a relevant proof given an
--- irrelevant one.
-
-Recomputable : REL A B ℓ → Set _
-Recomputable _∼_ = ∀ {x y} → .(x ∼ y) → x ∼ y
-
 -- Universal - all pairs of elements are related
 
 Universal : REL A B ℓ → Set _
 Universal _∼_ = ∀ x y → x ∼ y
+
+-- Empty - no elements are related
+
+Empty : REL A B ℓ → Set _
+Empty _∼_ = ∀ {x y} → x ∼ y → ⊥
 
 -- Non-emptiness - at least one pair of elements are related.
 
@@ -205,19 +259,3 @@ record NonEmpty {A : Set a} {B : Set b}
     {x}   : A
     {y}   : B
     proof : T x y
-
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-Conn = Connex
-{-# WARNING_ON_USAGE Conn
-"Warning: Conn was deprecated in v1.1.
-Please use Connex instead."
-#-}

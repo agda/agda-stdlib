@@ -4,19 +4,15 @@
 -- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
--- Disabled to prevent warnings from deprecated Table
-{-# OPTIONS --warn=noUserWarning #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.Fin.Base using (Fin; zero)
-open import Data.Table.Base as Table using (Table)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 module Algebra.Operations.CommutativeMonoid
   {s₁ s₂} (CM : CommutativeMonoid s₁ s₂)
@@ -40,23 +36,6 @@ open CommutativeMonoid CM
 
 open import Relation.Binary.Reasoning.Setoid setoid
 
--- Summation over lists/tables
-
-sumₗ : List Carrier → Carrier
-sumₗ = List.foldr _+_ 0#
-
-sumₜ : ∀ {n} → Table Carrier n → Carrier
-sumₜ = Table.foldr _+_ 0#
-
--- An alternative mathematical-style syntax for sumₜ
-
-infixl 10 sumₜ-syntax
-
-sumₜ-syntax : ∀ n → (Fin n → Carrier) → Carrier
-sumₜ-syntax _ = sumₜ ∘ Table.tabulate
-
-syntax sumₜ-syntax n (λ i → x) = ∑[ i < n ] x
-
 ------------------------------------------------------------------------
 -- Multiplication
 
@@ -79,7 +58,7 @@ suc n ×′ x = x + n ×′ x
 ×-congʳ (suc n) x≈x′ = +-cong x≈x′ (×-congʳ n x≈x′)
 
 ×-cong : _×_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
-×-cong {u} P.refl x≈x′ = ×-congʳ u x≈x′
+×-cong {u} ≡.refl x≈x′ = ×-congʳ u x≈x′
 
 -- _×_ is homomorphic with respect to _ℕ+_/_+_.
 
@@ -119,7 +98,7 @@ suc n ×′ x = x + n ×′ x
 -- _×′_ preserves equality.
 
 ×′-cong : _×′_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
-×′-cong {n} {_} {x} {y} P.refl x≈y = begin
+×′-cong {n} {_} {x} {y} ≡.refl x≈y = begin
   n  ×′ x ≈⟨ sym (×≈×′ n x) ⟩
   n  ×  x ≈⟨ ×-congʳ n x≈y ⟩
   n  ×  y ≈⟨ ×≈×′ n y ⟩

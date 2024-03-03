@@ -4,19 +4,20 @@
 -- Code for converting Vec A n → B to and from n-ary functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Vec.N-ary where
 
+open import Axiom.Extensionality.Propositional using (Extensionality)
+open import Function.Bundles using (_↔_; Inverse; mk↔ₛ′)
 open import Data.Nat.Base hiding (_⊔_)
-open import Data.Product as Prod
-open import Data.Vec.Base
-open import Function.Base
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Data.Product.Base as Product using (∃; _,_)
+open import Data.Vec.Base using (Vec; []; _∷_; head; tail)
+open import Function.Base using (_∘_; id; flip; constᵣ)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable
+open import Relation.Binary.Core using (REL)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 private
   variable
@@ -42,6 +43,8 @@ N-ary (suc n) A B = A → N-ary n A B
 curryⁿ : ∀ {n} → (Vec A n → B) → N-ary n A B
 curryⁿ {n = zero}  f = f []
 curryⁿ {n = suc n} f = λ x → curryⁿ (f ∘ _∷_ x)
+
+infix -1 _$ⁿ_
 
 _$ⁿ_ : ∀ {n} → N-ary n A B → (Vec A n → B)
 f $ⁿ []       = f
@@ -102,7 +105,7 @@ right-inverse (suc n) f = λ x → right-inverse n (f x)
 
 uncurry-∀ⁿ : ∀ n {P : N-ary n A (Set ℓ)} →
              ∀ⁿ n P ⇔ (∀ (xs : Vec A n) → P $ⁿ xs)
-uncurry-∀ⁿ {a} {A} {ℓ} n = equivalence (⇒ n) (⇐ n)
+uncurry-∀ⁿ {a} {A} {ℓ} n = mk⇔ (⇒ n) (⇐ n)
   where
   ⇒ : ∀ n {P : N-ary n A (Set ℓ)} →
       ∀ⁿ n P → (∀ (xs : Vec A n) → P $ⁿ xs)
@@ -118,12 +121,12 @@ uncurry-∀ⁿ {a} {A} {ℓ} n = equivalence (⇒ n) (⇐ n)
 
 uncurry-∃ⁿ : ∀ n {P : N-ary n A (Set ℓ)} →
              ∃ⁿ n P ⇔ (∃ λ (xs : Vec A n) → P $ⁿ xs)
-uncurry-∃ⁿ {a} {A} {ℓ} n = equivalence (⇒ n) (⇐ n)
+uncurry-∃ⁿ {a} {A} {ℓ} n = mk⇔ (⇒ n) (⇐ n)
   where
   ⇒ : ∀ n {P : N-ary n A (Set ℓ)} →
       ∃ⁿ n P → (∃ λ (xs : Vec A n) → P $ⁿ xs)
   ⇒ zero    p       = ([] , p)
-  ⇒ (suc n) (x , p) = Prod.map (_∷_ x) id (⇒ n p)
+  ⇒ (suc n) (x , p) = Product.map (_∷_ x) id (⇒ n p)
 
   ⇐ : ∀ n {P : N-ary n A (Set ℓ)} →
       (∃ λ (xs : Vec A n) → P $ⁿ xs) → ∃ⁿ n P
@@ -172,3 +175,14 @@ Eqʰ-to-Eq : ∀ n (_∼_ : REL B C ℓ) {f : N-ary n A B} {g : N-ary n A C} →
             Eqʰ n _∼_ f g → Eq n _∼_ f g
 Eqʰ-to-Eq zero    _∼_ eq = eq
 Eqʰ-to-Eq (suc n) _∼_ eq = λ _ → Eqʰ-to-Eq n _∼_ eq
+
+module _ (ext : ∀ {a b} → Extensionality a b) where
+
+  Vec↔N-ary : ∀ n → (Vec A n → B) ↔ N-ary n A B
+  Vec↔N-ary zero = mk↔ₛ′ (λ vxs → vxs []) (flip constᵣ) (λ _ → refl)
+    (λ vxs → ext λ where [] → refl)
+  Vec↔N-ary (suc n) = let open Inverse (Vec↔N-ary n) in
+    mk↔ₛ′ (λ vxs x → to λ xs → vxs (x ∷ xs))
+    (λ any xs → from (any (head xs)) (tail xs))
+    (λ any → ext λ x → strictlyInverseˡ _)
+    (λ vxs → ext λ where (x ∷ xs) → cong (λ f → f xs) (strictlyInverseʳ (λ ys → vxs (x ∷ ys))))

@@ -4,7 +4,7 @@
 -- This module is DEPRECATED. Please use the builtin Maybe instead.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module Foreign.Haskell.Maybe where
 

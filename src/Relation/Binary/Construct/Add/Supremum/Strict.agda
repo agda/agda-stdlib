@@ -4,23 +4,27 @@
 -- The lifting of a strict order to incorporate a new supremum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Supremum
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures
+  using (IsStrictPartialOrder; IsDecStrictPartialOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Asymmetric; Transitive; Decidable; Irrelevant; Irreflexive; Trans; Trichotomous; tri≈; tri>; tri<; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 
 module Relation.Binary.Construct.Add.Supremum.Strict
   {a r} {A : Set a} (_<_ : Rel A r) where
 
 open import Level using (_⊔_)
-open import Data.Product
+open import Data.Product.Base using (_,_; map)
 open import Function.Base
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; subst)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary.Construct.Add.Supremum
 import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 import Relation.Binary.Construct.Add.Supremum.NonStrict as NonStrict
@@ -54,8 +58,8 @@ data _<⁺_ : Rel (A ⁺) (a ⊔ r) where
 <⁺-dec _<?_ ⊤⁺    ⊤⁺    = no (λ ())
 
 <⁺-irrelevant : Irrelevant _<_ → Irrelevant _<⁺_
-<⁺-irrelevant <-irr [ p ]    [ q ]    = P.cong _ (<-irr p q)
-<⁺-irrelevant <-irr [ k ]<⊤⁺ [ k ]<⊤⁺ = P.refl
+<⁺-irrelevant <-irr [ p ]    [ q ]    = cong _ (<-irr p q)
+<⁺-irrelevant <-irr [ k ]<⊤⁺ [ k ]<⊤⁺ = refl
 
 
 module _ {r} {_≤_ : Rel A r} where
@@ -87,10 +91,10 @@ module _ {r} {_≤_ : Rel A r} where
 <⁺-irrefl-≡ <-irrefl refl [ x ] = <-irrefl refl x
 
 <⁺-respˡ-≡ : _<⁺_ Respectsˡ _≡_
-<⁺-respˡ-≡ = P.subst (_<⁺ _)
+<⁺-respˡ-≡ = subst (_<⁺ _)
 
 <⁺-respʳ-≡ : _<⁺_ Respectsʳ _≡_
-<⁺-respʳ-≡ = P.subst (_ <⁺_)
+<⁺-respʳ-≡ = subst (_ <⁺_)
 
 <⁺-resp-≡ : _<⁺_ Respects₂ _≡_
 <⁺-resp-≡ = <⁺-respʳ-≡ , <⁺-respˡ-≡
@@ -132,7 +136,7 @@ module _ {e} {_≈_ : Rel A e} where
 <⁺-isStrictPartialOrder-≡ : IsStrictPartialOrder _≡_ _<_ →
                             IsStrictPartialOrder _≡_ _<⁺_
 <⁺-isStrictPartialOrder-≡ strict = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; irrefl        = <⁺-irrefl-≡ irrefl
   ; trans         = <⁺-trans trans
   ; <-resp-≈      = <⁺-resp-≡
@@ -149,9 +153,8 @@ module _ {e} {_≈_ : Rel A e} where
 <⁺-isStrictTotalOrder-≡ : IsStrictTotalOrder _≡_ _<_ →
                           IsStrictTotalOrder _≡_ _<⁺_
 <⁺-isStrictTotalOrder-≡ strictot = record
-  { isEquivalence = P.isEquivalence
-  ; trans         = <⁺-trans trans
-  ; compare       = <⁺-cmp-≡ compare
+  { isStrictPartialOrder = <⁺-isStrictPartialOrder-≡ isStrictPartialOrder
+  ; compare              = <⁺-cmp-≡ compare
   } where open IsStrictTotalOrder strictot
 
 ------------------------------------------------------------------------
@@ -181,7 +184,6 @@ module _ {e} {_≈_ : Rel A e} where
   <⁺-isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_ →
                           IsStrictTotalOrder _≈⁺_ _<⁺_
   <⁺-isStrictTotalOrder strictot = record
-    { isEquivalence = ≈⁺-isEquivalence isEquivalence
-    ; trans         = <⁺-trans trans
-    ; compare       = <⁺-cmp compare
+    { isStrictPartialOrder = <⁺-isStrictPartialOrder isStrictPartialOrder
+    ; compare              = <⁺-cmp compare
     } where open IsStrictTotalOrder strictot

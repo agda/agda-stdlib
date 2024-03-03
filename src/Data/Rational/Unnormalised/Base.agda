@@ -4,19 +4,20 @@
 -- Rational numbers in non-reduced form.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Rational.Unnormalised.Base where
 
-open import Data.Bool.Base using (Bool; if_then_else_)
+open import Algebra.Bundles.Raw
+open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
-open import Data.Nat as ℕ using (ℕ; zero; suc)
+  hiding (module ℤ)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
-open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Decidable using (False)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Unary using (Pred)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 
@@ -33,6 +34,12 @@ open import Relation.Binary.PropositionalEquality.Core
 -- into the normalised rationals.
 
 record ℚᵘ : Set where
+  -- We add "no-eta-equality; pattern" to the record to stop Agda
+  -- automatically unfolding rationals when arithmetic operations are
+  -- applied to them (see definition of operators below and Issue #1753
+  -- for details).
+  no-eta-equality; pattern
+
   constructor mkℚᵘ
   field
     numerator     : ℤ
@@ -59,8 +66,8 @@ infix 4 _≃_ _≠_
 data _≃_ : Rel ℚᵘ 0ℓ where
   *≡* : ∀ {p q} → (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p) → p ≃ q
 
-_≠_ : Rel ℚᵘ 0ℓ
-p ≠ q = ¬ (p ≃ q)
+_≄_ : Rel ℚᵘ 0ℓ
+p ≄ q = ¬ (p ≃ q)
 
 ------------------------------------------------------------------------
 -- Ordering of rationals
@@ -102,69 +109,15 @@ p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 ------------------------------------------------------------------------
 -- Constructing rationals
 
-infix 4 _≢0
-_≢0 : ℕ → Set
-n ≢0 = False (n ℕ.≟ 0)
-
 -- An alternative constructor for ℚᵘ. See the constants section below
 -- for examples of how to use this operator.
 
 infixl 7 _/_
 
-_/_ : (n : ℤ) (d : ℕ) .{d≢0 : d ≢0} → ℚᵘ
+_/_ : (n : ℤ) (d : ℕ) .{{_ : ℕ.NonZero d}} → ℚᵘ
 n / suc d = mkℚᵘ n d
 
-------------------------------------------------------------------------------
--- Operations on rationals
-
-infix  8 -_ 1/_
-infixl 7 _*_ _÷_ _⊓_
-infixl 6 _-_ _+_ _⊔_
-
--- negation
-
--_ : ℚᵘ → ℚᵘ
-- mkℚᵘ n d = mkℚᵘ (ℤ.- n) d
-
--- addition
-
-_+_ : ℚᵘ → ℚᵘ → ℚᵘ
-p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
-
--- multiplication
-
-_*_ : ℚᵘ → ℚᵘ → ℚᵘ
-p * q = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
-
--- subtraction
-
-_-_ : ℚᵘ → ℚᵘ → ℚᵘ
-p - q = p + (- q)
-
--- reciprocal: requires a proof that the numerator is not zero
-
-1/_ : (p : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ p ∣ ≢0} → ℚᵘ
-1/ mkℚᵘ +[1+ n ] d = mkℚᵘ +[1+ d ] n
-1/ mkℚᵘ -[1+ n ] d = mkℚᵘ -[1+ d ] n
-
--- division: requires a proof that the denominator is not zero
-
-_÷_ : (p q : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ q ∣ ≢0} → ℚᵘ
-(p ÷ q) {n≢0} = p * (1/_ q {n≢0})
-
--- max
-_⊔_ : (p q : ℚᵘ) → ℚᵘ
-p ⊔ q = if p ≤ᵇ q then q else p
-
--- min
-_⊓_ : (p q : ℚᵘ) → ℚᵘ
-p ⊓ q = if p ≤ᵇ q then p else q
-
--- absolute value
-∣_∣ : ℚᵘ → ℚᵘ
-∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ℤ.∣ p ∣) q
-
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some constants
 
 0ℚᵘ : ℚᵘ
@@ -177,7 +130,7 @@ p ⊓ q = if p ≤ᵇ q then p else q
 ½ = + 1 / 2
 
 -½ : ℚᵘ
--½ = - ½
+-½ = ℤ.- (+ 1) / 2
 
 ------------------------------------------------------------------------
 -- Simple predicates
@@ -197,17 +150,22 @@ NonPositive p = ℤ.NonPositive (↥ p)
 NonNegative : Pred ℚᵘ 0ℓ
 NonNegative p = ℤ.NonNegative (↥ p)
 
--- Constructors
+-- Instances
+
+open ℤ public
+  using (nonZero; pos; nonNeg; nonPos0; nonPos; neg)
+
+-- Constructors and destructors
 
 -- Note: these could be proved more elegantly using the constructors
 -- from ℤ but it requires importing `Data.Integer.Properties` which
 -- we would like to avoid doing.
 
-≢-nonZero : ∀ {p} → p ≠ 0ℚᵘ → NonZero p
+≢-nonZero : ∀ {p} → p ≄ 0ℚᵘ → NonZero p
 ≢-nonZero {mkℚᵘ -[1+ _ ] _      } _   = _
 ≢-nonZero {mkℚᵘ +[1+ _ ] _      } _   = _
-≢-nonZero {mkℚᵘ +0       zero   } p≢0 = p≢0 (*≡* refl)
-≢-nonZero {mkℚᵘ +0       (suc d)} p≢0 = p≢0 (*≡* refl)
+≢-nonZero {mkℚᵘ +0       zero   } p≢0 = contradiction (*≡* refl) p≢0
+≢-nonZero {mkℚᵘ +0       (suc d)} p≢0 = contradiction (*≡* refl) p≢0
 
 >-nonZero : ∀ {p} → p > 0ℚᵘ → NonZero p
 >-nonZero {mkℚᵘ +0       _} (*<* (+<+ ()))
@@ -236,3 +194,197 @@ nonPositive {mkℚᵘ -[1+ n ] _} (*≤* _) = _
 nonNegative : ∀ {p} → p ≥ 0ℚᵘ → NonNegative p
 nonNegative {mkℚᵘ +0       _} (*≤* _) = _
 nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _
+
+------------------------------------------------------------------------
+-- Operations on rationals
+
+-- Explanation for `@record{}` everywhere: combined with no-eta-equality
+-- on the record definition of ℚᵘ above, these annotations prevent the
+-- operations from automatically expanding unless their arguments are
+-- explicitly pattern matched on.
+--
+-- For example prior to their addition, `p + q` would often be
+-- normalised by Agda to `(↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)`.
+-- While in this small example this isn't a big problem, it leads to an
+-- exponential blowup when you have large arithmetic expressions which
+-- would often choke both type-checking and the display code. For
+-- example, the normalised form of `p + q + r + s + t + u` would be
+-- ~300 lines long.
+--
+-- This is fundementally a problem with Agda, so if over-eager
+-- normalisation is ever fixed in Agda (e.g. with glued representation
+-- of terms) these annotations can be removed.
+
+infix  8 -_ 1/_
+infixl 7 _*_ _÷_ _⊓_
+infixl 6 _-_ _+_ _⊔_
+
+-- negation
+
+-_ : ℚᵘ → ℚᵘ
+- mkℚᵘ n d = mkℚᵘ (ℤ.- n) d
+
+-- addition
+
+_+_ : ℚᵘ → ℚᵘ → ℚᵘ
+p@record{} + q@record{} = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
+
+-- multiplication
+
+_*_ : ℚᵘ → ℚᵘ → ℚᵘ
+p@record{} * q@record{} = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
+
+-- subtraction
+
+_-_ : ℚᵘ → ℚᵘ → ℚᵘ
+p - q = p + (- q)
+
+-- reciprocal: requires a proof that the numerator is not zero
+
+1/_ : (p : ℚᵘ) → .{{_ : NonZero p}} → ℚᵘ
+1/ mkℚᵘ +[1+ n ] d = mkℚᵘ +[1+ d ] n
+1/ mkℚᵘ -[1+ n ] d = mkℚᵘ -[1+ d ] n
+
+-- division: requires a proof that the denominator is not zero
+
+_÷_ : (p q : ℚᵘ) → .{{_ : NonZero q}} → ℚᵘ
+p@record{} ÷ q@record{} = p * (1/ q)
+
+-- max
+_⊔_ : (p q : ℚᵘ) → ℚᵘ
+p@record{} ⊔ q@record{} = if p ≤ᵇ q then q else p
+
+-- min
+_⊓_ : (p q : ℚᵘ) → ℚᵘ
+p@record{} ⊓ q@record{} = if p ≤ᵇ q then p else q
+
+-- absolute value
+∣_∣ : ℚᵘ → ℚᵘ
+∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ℤ.∣ p ∣) q
+
+------------------------------------------------------------------------
+-- Rounding functions
+
+-- Floor (round towards -∞)
+floor : ℚᵘ → ℤ
+floor p@record{} = ↥ p ℤ./ ↧ p
+
+-- Ceiling (round towards +∞)
+ceiling : ℚᵘ → ℤ
+ceiling p@record{} = ℤ.- floor (- p)
+
+-- Truncate  (round towards 0)
+truncate : ℚᵘ → ℤ
+truncate p with p ≤ᵇ 0ℚᵘ
+... | true  = ceiling p
+... | false = floor p
+
+-- Round (to nearest integer)
+round : ℚᵘ → ℤ
+round p with p ≤ᵇ 0ℚᵘ
+... | true  = ceiling (p - ½)
+... | false = floor (p + ½)
+
+-- Fractional part (remainder after floor)
+fracPart : ℚᵘ → ℚᵘ
+fracPart p@record{} = ∣ p - truncate p / 1 ∣
+
+-- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [ ] truncate
+syntax floor    p = ⌊ p ⌋
+syntax ceiling  p = ⌈ p ⌉
+syntax truncate p = [ p ]
+
+------------------------------------------------------------------------
+-- Raw bundles for _+_
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≃_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε   = 0ℚᵘ
+  }
+
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε = 0ℚᵘ
+  ; _⁻¹ = -_
+  }
+
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℚᵘ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
+------------------------------------------------------------------------
+-- Raw bundles for _*_
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≃_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≃_
+  ; _∙_ = _*_
+  ; ε   = 1ℚᵘ
+  }
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
++-rawMonoid = +-0-rawMonoid
+{-# WARNING_ON_USAGE +-rawMonoid
+"Warning: +-rawMonoid was deprecated in v2.0
+Please use +-0-rawMonoid instead."
+#-}
+*-rawMonoid = *-1-rawMonoid
+{-# WARNING_ON_USAGE *-rawMonoid
+"Warning: *-rawMonoid was deprecated in v2.0
+Please use *-1-rawMonoid instead."
+#-}
+_≠_ = _≄_
+{-# WARNING_ON_USAGE _≠_
+"Warning: _≠_ was deprecated in v2.0
+Please use _≄_ instead."
+#-}

@@ -4,11 +4,10 @@
 -- Properties of unique lists (setoid equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
-open import Data.Fin.Base using (Fin)
 open import Data.List.Base
 open import Data.List.Membership.Setoid.Properties
 open import Data.List.Relation.Binary.Disjoint.Setoid
@@ -17,16 +16,18 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties using (All¬⇒¬Any)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Unique.Setoid
-open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
-open import Data.Nat.Base
+open import Data.Fin.Base using (Fin)
+open import Data.Nat.Base using (_<_)
 open import Function.Base using (_∘_; id)
 open import Level using (Level)
-open import Relation.Binary using (Rel; Setoid)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (contraposition)
 
 private
@@ -40,8 +41,8 @@ private
 
 module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
 
-  open Setoid S renaming (Carrier to A; _≈_ to _≈₁_)
-  open Setoid R renaming (Carrier to B; _≈_ to _≈₂_)
+  open Setoid S renaming (_≈_ to _≈₁_)
+  open Setoid R renaming (_≈_ to _≈₂_)
 
   map⁺ : ∀ {f} → (∀ {x y} → f x ≈₂ f y → x ≈₁ y) →
          ∀ {xs} → Unique S xs → Unique R (map f xs)
@@ -152,8 +153,6 @@ module _ (S : Setoid a ℓ) where
 -- filter
 
 module _ (S : Setoid a ℓ) {P : Pred _ p} (P? : Decidable P) where
-
-  open Setoid S renaming (Carrier to A)
 
   filter⁺ : ∀ {xs} → Unique S xs → Unique S (filter P? xs)
   filter⁺ = AllPairs.filter⁺ P?

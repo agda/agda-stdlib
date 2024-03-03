@@ -4,13 +4,13 @@
 -- Properties of indexed negation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Indexed.Negation where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Empty.Polymorphic
-open import Function
+open import Function.Bundles using (_↔_)
 open import Function.Properties
 import Function.Construct.Identity as Identity
 open import Relation.Nullary.Indexed
@@ -21,4 +21,4 @@ open import Relation.Nullary.Indexed
 ¬-cong : ∀ {a b c} {A : Set a} {B : Set b} →
          Extensionality a c → Extensionality b c →
          A ↔ B → (¬ c A) ↔ (¬ c B)
-¬-cong extA extB A≈B = →-cong-↔ extA extB A≈B (Identity.id-↔ ⊥)
+¬-cong extA extB A≈B = →-cong-↔ extA extB A≈B (Identity.↔-id ⊥)

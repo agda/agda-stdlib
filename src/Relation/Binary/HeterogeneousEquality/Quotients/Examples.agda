@@ -10,12 +10,13 @@ module Relation.Binary.HeterogeneousEquality.Quotients.Examples where
 
 open import Relation.Binary.HeterogeneousEquality.Quotients
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.HeterogeneousEquality hiding (isEquivalence)
-import Relation.Binary.PropositionalEquality as ≡
+import Relation.Binary.PropositionalEquality.Core as ≡
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Product
+open import Data.Product.Base using (_×_; _,_)
 open import Function.Base
 
 open ≅-Reasoning
@@ -29,7 +30,7 @@ infix 10 _∼_
 
 ∼-trans : ∀ {i j k} → i ∼ j → j ∼ k → i ∼ k
 ∼-trans {x₁ , y₁} {x₂ , y₂} {x₃ , y₃} p q =
-  ≡-to-≅ $ +-cancelˡ-≡ y₂ $ ≅-to-≡ $ begin
+  ≡-to-≅ $ +-cancelˡ-≡ y₂ _ _ $ ≅-to-≡ $ begin
   y₂ + (x₁ + y₃) ≡⟨ ≡.sym (+-assoc y₂ x₁ y₃) ⟩
   y₂ + x₁ + y₃   ≡⟨ ≡.cong (_+ y₃) (+-comm y₂ x₁) ⟩
   x₁ + y₂ + y₃   ≅⟨ cong (_+ y₃) p ⟩
@@ -58,10 +59,12 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
 
   open Quotient Int renaming (Q to ℤ)
 
+  infixl 6 _+²_
+
   _+²_ : ℕ² → ℕ² → ℕ²
   (x₁ , y₁) +² (x₂ , y₂) = x₁ + x₂ , y₁ + y₂
 
-  +²-cong : ∀{a b a′ b′} → a ∼ a′ → b ∼ b′ → a +² b ∼ a′ +² b′
+  +²-cong : ∀{a b a′ b′} → a ∼ a′ → b ∼ b′ → (a +² b) ∼ (a′ +² b′)
   +²-cong {a₁ , b₁} {c₁ , d₁} {a₂ , b₂} {c₂ , d₂} ab∼cd₁ ab∼cd₂ = begin
     (a₁ + c₁) + (b₂ + d₂) ≡⟨ ≡.cong (_+ (b₂ + d₂)) (+-comm a₁ c₁) ⟩
     (c₁ + a₁) + (b₂ + d₂) ≡⟨ +-assoc c₁ a₁ (b₂ + d₂) ⟩
@@ -81,6 +84,8 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
 
   module _ (ext : ∀ {a b} {A : Set a} {B₁ B₂ : A → Set b} {f₁ : ∀ a → B₁ a}
                   {f₂ : ∀ a → B₂ a} → (∀ a → f₁ a ≅ f₂ a) → f₁ ≅ f₂) where
+
+    infixl 6 _+ℤ_
 
     _+ℤ_ : ℤ → ℤ → ℤ
     _+ℤ_ = Properties₂.lift₂ ext Int Int (λ i j → abs (i +² j))
@@ -125,7 +130,7 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
         abs (zero² +² a)   ≅⟨ compat-abs (+²-identityˡ a) ⟩
         abs a              ∎
 
-    +²-assoc : (i j k : ℕ²) → (i +² j) +² k ∼ i +² (j +² k)
+    +²-assoc : (i j k : ℕ²) → ((i +² j) +² k) ∼ (i +² (j +² k))
     +²-assoc (a , b) (c , d) (e , f) = begin
       ((a + c) + e) + (b + (d + f)) ≡⟨ ≡.cong (_+ (b + (d + f))) (+-assoc a c e) ⟩
       (a + (c + e)) + (b + (d + f)) ≡⟨ ≡.cong ((a + (c + e)) +_) (≡.sym (+-assoc b d f)) ⟩

@@ -28,8 +28,8 @@
 --      w  <⟨ w<x ⟩
 --      x  ≤⟨ x≤y ⟩
 --      y  <⟨ y<z ⟩
---      z  ≡˘⟨ d≡z ⟩
---      d  ≈˘⟨ e≈d ⟩
+--      z  ≡⟨ d≡z ⟨
+--      d  ≈⟨ e≈d ⟨
 --      e  ∎
 --
 --    u≈w : u ≈ w
@@ -38,9 +38,9 @@
 --      v  ≡⟨ v≡w ⟩
 --      w  ∎
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (StrictPartialOrder)
 
 module Relation.Binary.Reasoning.StrictPartialOrder
   {p₁ p₂ p₃} (S : StrictPartialOrder p₁ p₂ p₃) where
@@ -53,9 +53,11 @@ import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_ as NonStrict
 
 open import Relation.Binary.Reasoning.Base.Triple
   (NonStrict.isPreorder₂ isStrictPartialOrder)
+  asym
   trans
   <-resp-≈
   NonStrict.<⇒≤
   (NonStrict.<-≤-trans trans <-respʳ-≈)
   (NonStrict.≤-<-trans Eq.sym trans <-respˡ-≈)
   public
+

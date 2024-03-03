@@ -4,7 +4,7 @@
 -- "Finite" sets indexed on coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe --without-K --guardedness #-}
+{-# OPTIONS --safe --cubical-compatible --guardedness #-}
 
 module Codata.Musical.Cofin where
 
@@ -12,8 +12,8 @@ open import Codata.Musical.Notation
 open import Codata.Musical.Conat as Conat using (Coℕ; suc; ∞ℕ)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
-open import Function
+open import Relation.Binary.PropositionalEquality.Core using (_≡_ ; refl)
+open import Function.Base using (_∋_)
 
 ------------------------------------------------------------------------
 -- The type

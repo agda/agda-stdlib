@@ -7,7 +7,7 @@
 -- This module illustrates how Data.Fin.Substitution.Lemmas.AppLemmas
 -- can be used.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin.Substitution.Lemmas
 open import Data.Nat.Base using (ℕ)
@@ -17,19 +17,27 @@ module Data.Fin.Substitution.List {ℓ} {T : ℕ → Set ℓ} (lemmas₄ : Lemma
 open import Data.List.Base
 open import Data.List.Properties
 open import Data.Fin.Substitution
-import Function as Fun
+import Function.Base as Fun
 open import Relation.Binary.PropositionalEquality
-open ≡-Reasoning
 
 private
+  variable
+    m n : ℕ
+
+  ListT : ℕ → Set ℓ
+  ListT = List Fun.∘ T
+
   open module L = Lemmas₄ lemmas₄ using (_/_; id; _⊙_)
+
+------------------------------------------------------------------------
+-- Listwise application of a substitution, plus lemmas about it
 
 infixl 8 _//_
 
-_//_ : ∀ {m n} → List (T m) → Sub T m n → List (T n)
+_//_ : ListT m → Sub T m n → ListT n
 ts // ρ = map (λ σ → σ / ρ) ts
 
-appLemmas : AppLemmas (λ n → List (T n)) T
+appLemmas : AppLemmas ListT T
 appLemmas = record
   { application = record { _/_ = _//_ }
   ; lemmas₄     = lemmas₄
@@ -39,9 +47,9 @@ appLemmas = record
       ts             ∎
   ; /-⊙ = λ {_ _ _ ρ₁ ρ₂} ts → begin
       ts // ρ₁ ⊙ ρ₂               ≡⟨ map-cong L./-⊙ ts ⟩
-      map (λ σ → σ / ρ₁ / ρ₂) ts  ≡⟨ map-compose ts ⟩
+      map (λ σ → σ / ρ₁ / ρ₂) ts  ≡⟨ map-∘ ts ⟩
       ts // ρ₁ // ρ₂              ∎
-  }
+  } where open ≡-Reasoning
 
 open AppLemmas appLemmas public
   hiding (_/_) renaming (_/✶_ to _//✶_)

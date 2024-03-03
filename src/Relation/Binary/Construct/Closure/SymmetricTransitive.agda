@@ -4,13 +4,18 @@
 -- Symmetric transitive closures of binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Closure.SymmetricTransitive where
 
 open import Level
 open import Function.Base
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Bundles using (PartialSetoid; Setoid)
+open import Relation.Binary.Structures
+  using (IsPartialEquivalence; IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Transitive; Symmetric; Reflexive)
 
 private
   variable

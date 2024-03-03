@@ -4,15 +4,15 @@
 -- Propertiers of any for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Container.Morphism.Properties where
 
 open import Level using (_⊔_; suc)
-open import Function as F using (_$_)
-open import Data.Product using (∃; proj₁; proj₂; _,_)
-open import Relation.Binary using (Setoid)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
+open import Function.Base as F using (_$_)
+open import Data.Product.Base using (∃; proj₁; proj₂; _,_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; _≗_)
 
 open import Data.Container.Core
 open import Data.Container.Morphism
@@ -23,7 +23,7 @@ open import Data.Container.Relation.Binary.Equality.Setoid
 module _ {s p} (C : Container s p) where
 
   id-correct : ∀ {x} {X : Set x} → ⟪ id C ⟫ {X = X} ≗ F.id
-  id-correct x = P.refl
+  id-correct x = ≡.refl
 
 -- Composition.
 
@@ -33,7 +33,7 @@ module _ {s₁ s₂ s₃ p₁ p₂ p₃}
 
   ∘-correct : (f : C₂ ⇒ C₃) (g : C₁ ⇒ C₂) → ∀ {x} {X : Set x} →
               ⟪ f ∘ g ⟫ {X = X} ≗ (⟪ f ⟫ F.∘ ⟪ g ⟫)
-  ∘-correct f g xs = P.refl
+  ∘-correct f g xs = ≡.refl
 
 module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} where
 

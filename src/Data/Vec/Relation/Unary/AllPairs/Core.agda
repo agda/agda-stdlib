@@ -10,9 +10,9 @@
 -- This module should be removable if and when Agda issue
 -- https://github.com/agda/agda/issues/3210 is fixed
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 
 module Data.Vec.Relation.Unary.AllPairs.Core
   {a ℓ} {A : Set a} (R : Rel A ℓ) where

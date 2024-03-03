@@ -4,7 +4,7 @@
 -- Endomorphisms on a Set
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
@@ -16,14 +16,15 @@ open import Algebra.Morphism; open Definitions
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 
-open import Function
+open import Function.Base using (id; _∘′_; _∋_)
 open import Function.Equality using (_⟨$⟩_)
-open import Relation.Binary using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
-import Function.Endomorphism.Setoid (P.setoid A) as Setoid
+import Function.Endomorphism.Setoid (≡.setoid A) as Setoid
 
 Endo : Set a
 Endo = A → A
@@ -37,11 +38,13 @@ fromSetoidEndo = _⟨$⟩_
 toSetoidEndo : Endo → Setoid.Endo
 toSetoidEndo f = record
   { _⟨$⟩_ = f
-  ; cong  = P.cong f
+  ; cong  = cong f
   }
 
 ------------------------------------------------------------------------
 -- N-th composition
+
+infixr 8 _^_
 
 _^_ : Endo → ℕ → Endo
 f ^ zero  = id
@@ -49,15 +52,15 @@ f ^ suc n = f ∘′ (f ^ n)
 
 ^-homo : ∀ f → Homomorphic₂ ℕ Endo _≡_ (f ^_) _+_ _∘′_
 ^-homo f zero    n = refl
-^-homo f (suc m) n = P.cong (f ∘′_) (^-homo f m n)
+^-homo f (suc m) n = cong (f ∘′_) (^-homo f m n)
 
 ------------------------------------------------------------------------
 -- Structures
 
 ∘-isMagma : IsMagma _≡_ (Op₂ Endo ∋ _∘′_)
 ∘-isMagma = record
-  { isEquivalence = P.isEquivalence
-  ; ∙-cong        = P.cong₂ _∘′_
+  { isEquivalence = ≡.isEquivalence
+  ; ∙-cong        = cong₂ _∘′_
   }
 
 ∘-magma : Magma _ _
@@ -86,7 +89,7 @@ f ^ suc n = f ∘′ (f ^ n)
 
 ^-isSemigroupMorphism : ∀ f → IsSemigroupMorphism +-semigroup ∘-semigroup (f ^_)
 ^-isSemigroupMorphism f = record
-  { ⟦⟧-cong = P.cong (f ^_)
+  { ⟦⟧-cong = cong (f ^_)
   ; ∙-homo  = ^-homo f
   }
 

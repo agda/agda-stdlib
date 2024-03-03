@@ -13,27 +13,27 @@ module Text.Pretty.Core where
 import Level
 
 open import Data.Bool.Base using (Bool)
-open import Data.Erased    as Erased using (Erased) hiding (module Erased)
+open import Data.Irrelevant as Irrelevant using (Irrelevant) hiding (module Irrelevant)
 open import Data.List.Base as List   using (List; []; _∷_)
 open import Data.Nat.Base            using (ℕ; zero; suc; _+_; _⊔_; _≤_; z≤n)
 open import Data.Nat.Properties
-open import Data.Product as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
+open import Data.Product.Base as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
 import Data.Product.Relation.Unary.All as Allᴾ
 
 open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; mapₙ)
 open import Data.Tree.Binary.Relation.Unary.All as Allᵀ using (leaf; node)
 open import Data.Unit using (⊤; tt)
-import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀₚ
-import Data.Tree.Binary.Properties as Treeₚ
+import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀ
+import Data.Tree.Binary.Properties as Tree
 
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Relation.Unary.All as Allᴹ using (nothing; just)
 
 open import Data.String.Base as String
   using (String; length; replicate; _++_; unlines)
-open import Data.String.Unsafe as Stringₚ
+open import Data.String.Unsafe as String
 open import Function.Base
-open import Relation.Nullary using (Dec)
+open import Relation.Nullary.Decidable using (Dec)
 open import Relation.Unary using (IUniversal; _⇒_; U)
 open import Relation.Binary.PropositionalEquality
 
@@ -43,10 +43,11 @@ import Data.Refinement.Relation.Unary.All as Allᴿ
 ------------------------------------------------------------------------
 -- Block of text
 
--- Content is a representation of the first line and the middle of the block.
--- We use a tree rather than a list for the middle of the block so that we can
--- extend it with lines on the left and on the line for free. We will ultimately
--- render the block by traversing the tree left to right in a depth-first manner.
+-- Content is a representation of the first line and the middle of the
+-- block. We use a tree rather than a list for the middle of the block
+-- so that we can extend it with lines on the left and on the line for
+-- free. We will ultimately render the block by traversing the tree left
+-- to right in a depth-first manner.
 
 Content : Set
 Content = Maybe (String × Tree String ⊤)
@@ -80,7 +81,7 @@ text s = record
   ; lastWidth = width
   ; last      = s , ⦇ refl ⦈
   ; maxWidth  = width , ⦇ (≤-refl , nothing) ⦈
-  } where width = length s; open Erased
+  } where width = length s; open Irrelevant
 
 ------------------------------------------------------------------------
 -- Empty
@@ -161,10 +162,10 @@ private
 
     size-indents : ∀ ma t → #nodes (indents ma t) ≡ #nodes t
     size-indents nothing    t = refl
-    size-indents (just pad) t = Treeₚ.#nodes-mapₙ (pad ++_) t
+    size-indents (just pad) t = Tree.#nodes-mapₙ (pad ++_) t
 
     unfold-indents : ∀ ma t → indents ma t ≡ mapₙ (indent ma) t
-    unfold-indents nothing    t = sym (Treeₚ.map-id t)
+    unfold-indents nothing    t = sym (Tree.map-id t)
     unfold-indents (just pad) t = refl
 
     vContent : Content × String
@@ -189,7 +190,7 @@ private
     isBlock ∣x∣ ∣y∣ with blocky
     ... | nothing        = begin
       size blockx         ≡⟨ ∣x∣ ⟩
-      x.height            ≡˘⟨ +-identityʳ x.height ⟩
+      x.height            ≡⟨ +-identityʳ x.height ⟨
       x.height + 0        ≡⟨ cong (_ +_) ∣y∣ ⟩
       x.height + y.height ∎ where open ≡-Reasoning
     ... | just (hd , tl) = begin
@@ -208,7 +209,7 @@ private
     block : [ xs ∈ Content ∣ size xs ≡ height ]
     block .value = vBlock
     block .proof = ⦇ isBlock (Block.block x .proof) (Block.block y .proof) ⦈
-      where open Erased
+      where open Irrelevant
 
     isLastLine : length lastx ≡ x.lastWidth →
                  length lasty ≡ y.lastWidth →
@@ -226,7 +227,7 @@ private
     last : [ s ∈ String ∣ length s ≡ lastWidth ]
     last .value = vLast
     last .proof = ⦇ isLastLine (Block.last x .proof) (Block.last y .proof) ⦈
-      where open Erased
+      where open Irrelevant
 
     vMaxWidth : ℕ
     vMaxWidth = widthx ⊔ (x.lastWidth + widthy)
@@ -249,7 +250,7 @@ private
       All≤-node? (≤-Content (m≤m⊔n _ _) ∣xs∣)
                  middle
                  (subst (Allᵀ.All _ U) (sym $ unfold-indents pad tl)
-                 $ Allᵀₚ.mapₙ⁺ (indent pad) (Allᵀ.mapₙ (indented _) ∣tl∣))
+                 $ Allᵀ.mapₙ⁺ (indent pad) (Allᵀ.mapₙ (indented _) ∣tl∣))
       where
 
       middle : length (lastx ++ hd) ≤ vMaxWidth
@@ -278,7 +279,7 @@ private
                           (map proj₂ (Block.maxWidth x .proof))
                           (map proj₂ (Block.maxWidth y .proof))
             ⦈
-      ⦈ where open Erased
+      ⦈ where open Irrelevant
 
 infixl 4 _<>_
 _<>_ : Block → Block → Block
@@ -301,7 +302,7 @@ private
     vMaxWidth = widthx
 
     last : [ s ∈ String ∣ length s ≡ lastWidth ]
-    last = "" , ⦇ refl ⦈ where open Erased
+    last = "" , ⦇ refl ⦈ where open Irrelevant
 
     vContent = node? blockx lastx (leaf tt)
 
@@ -314,7 +315,7 @@ private
 
     block : [ xs ∈ Content ∣ size xs ≡ height ]
     block .value = vContent
-    block .proof = Erased.map isBlock $ Block.block x .proof
+    block .proof = Irrelevant.map isBlock $ Block.block x .proof
 
     maxWidth : [ n ∈ ℕ ∣ lastWidth ≤ n × All≤ n vContent ]
     maxWidth .value = widthx
@@ -324,7 +325,7 @@ private
                    (pure (leaf tt))
       ⦈ where
 
-      open Erased
+      open Irrelevant
 
       middle : length lastx ≡ x.lastWidth → x.lastWidth ≤ vMaxWidth →
                length lastx ≤ vMaxWidth

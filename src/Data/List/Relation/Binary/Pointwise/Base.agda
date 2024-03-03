@@ -4,20 +4,20 @@
 -- Pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Pointwise.Base where
 
-open import Data.Product using (_×_; <_,_>)
+open import Data.Product.Base as Product using (_×_; _,_; <_,_>; ∃-syntax)
 open import Data.List.Base using (List; []; _∷_)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (REL; _⇒_)
+open import Relation.Binary.Construct.Composition using (_;_)
 
 private
   variable
     a b c ℓ : Level
-    A : Set a
-    B : Set b
+    A B : Set a
     x y : A
     xs ys : List A
     R S : REL A B ℓ
@@ -58,3 +58,8 @@ rec P c n (Rxy ∷ Rxsys) = c Rxy (rec P c n Rxsys)
 map : R ⇒ S → Pointwise R ⇒ Pointwise S
 map R⇒S []            = []
 map R⇒S (Rxy ∷ Rxsys) = R⇒S Rxy ∷ map R⇒S Rxsys
+
+unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
+unzip [] = [] , [] , []
+unzip ((y , r , s) ∷ xs∼ys) =
+  Product.map (y ∷_) (Product.map (r ∷_) (s ∷_)) (unzip xs∼ys)

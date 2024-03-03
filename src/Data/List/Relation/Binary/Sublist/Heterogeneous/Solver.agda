@@ -4,9 +4,10 @@
 -- A solver for proving that one list is a sublist of the other.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Reflexive; Decidable)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Reflexive; Decidable)
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
   {a r} {A : Set a} (R : Rel A r)
@@ -20,22 +21,22 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
-open import Data.Maybe.Base as M
-open import Data.Nat.Base as Nat using (ℕ)
-open import Data.Product
+open import Data.Maybe.Base as Maybe
+open import Data.Nat.Base as ℕ using (ℕ)
+open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
-open import Data.List hiding (lookup)
+open import Data.List.Base hiding (lookup)
 open import Data.List.Properties
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
   hiding (lookup)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
 open import Function
 
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
 open import Relation.Nullary
 
-open P.≡-Reasoning
+open ≡.≡-Reasoning
 
 infix 4  _⊆I_ _⊆R_ _⊆T_
 
@@ -86,7 +87,7 @@ d ⊆R e = ∀ ρ → Sublist R (⟦ d ⟧R ρ) (⟦ e ⟧R ρ)
 -- Flattening in a semantics-respecting manner
 
 ⟦++⟧R : ∀ {n} xs ys (ρ : Vec (List A) n) → ⟦ xs ++ ys ⟧R ρ ≡ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
-⟦++⟧R []       ys ρ = P.refl
+⟦++⟧R []       ys ρ = ≡.refl
 ⟦++⟧R (x ∷ xs) ys ρ = begin
   ⟦ x ⟧I ρ ++ ⟦ xs ++ ys ⟧R ρ
     ≡⟨ cong (⟦ x ⟧I ρ ++_) (⟦++⟧R xs ys ρ) ⟩
@@ -96,7 +97,7 @@ d ⊆R e = ∀ ρ → Sublist R (⟦ d ⟧R ρ) (⟦ e ⟧R ρ)
     ∎
 
 flatten : ∀ {n} (t : TList n) → Σ[ r ∈ RList n ] ⟦ r ⟧R ≗ ⟦ t ⟧T
-flatten []       = [] , λ _ → P.refl
+flatten []       = [] , λ _ → ≡.refl
 flatten (It it)  = it ∷ [] , λ ρ → ++-identityʳ (⟦ It it ⟧T ρ)
 flatten (t <> u) =
   let (rt , eqt) = flatten t
@@ -123,8 +124,8 @@ private
 
 -- Solver for items
 solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)
-solveI (var k) (var l) = M.map var $ decToMaybe (k Fin.≟ l)
-solveI (val a) (val b) = M.map val $ decToMaybe (R? a b)
+solveI (var k) (var l) = Maybe.map var $ decToMaybe (k Fin.≟ l)
+solveI (val a) (val b) = Maybe.map val $ decToMaybe (R? a b)
 solveI _ _ = nothing
 
 -- Solver for linearised expressions
@@ -134,8 +135,8 @@ solveR [] e  = just (λ ρ → minimum _)
 solveR d  [] = nothing
 -- actual work
 solveR (a ∷ d) (b ∷ e) with solveI a b
-... | just it = M.map (keep-it it d e) (solveR d e)
-... | nothing = M.map (skip-it b (a ∷ d) e) (solveR (a ∷ d) e)
+... | just it = Maybe.map (keep-it it d e) (solveR d e)
+... | nothing = Maybe.map (skip-it b (a ∷ d) e) (solveR (a ∷ d) e)
 
 -- Coming back to ASTs thanks to flatten
 

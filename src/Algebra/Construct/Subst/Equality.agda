@@ -7,9 +7,9 @@
 -- For more general transformations between algebraic structures see
 -- `Algebra.Morphisms`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
+open import Data.Product.Base as Product
 open import Relation.Binary.Core
 
 module Algebra.Construct.Subst.Equality
@@ -19,7 +19,7 @@ module Algebra.Construct.Subst.Equality
 
 open import Algebra.Definitions
 open import Algebra.Structures
-import Data.Sum as Sum
+import Data.Sum.Base as Sum
 open import Function.Base
 open import Relation.Binary.Construct.Subst.Equality equiv
 
@@ -45,13 +45,13 @@ sel : ∀ {∙} → Selective ≈₁ ∙ → Selective ≈₂ ∙
 sel sel x y = Sum.map to to (sel x y)
 
 identity : ∀ {∙ e} → Identity ≈₁ e ∙ → Identity ≈₂ e ∙
-identity = Prod.map (to ∘_) (to ∘_)
+identity = Product.map (to ∘_) (to ∘_)
 
 inverse : ∀ {∙ e ⁻¹} → Inverse ≈₁ ⁻¹ ∙ e → Inverse ≈₂ ⁻¹ ∙ e
-inverse = Prod.map (to ∘_) (to ∘_)
+inverse = Product.map (to ∘_) (to ∘_)
 
 absorptive : ∀ {∙ ◦} → Absorptive ≈₁ ∙ ◦ → Absorptive ≈₂ ∙ ◦
-absorptive = Prod.map (λ f x y → to (f x y)) (λ f x y → to (f x y))
+absorptive = Product.map (λ f x y → to (f x y)) (λ f x y → to (f x y))
 
 distribˡ : ∀ {∙ ◦} → _DistributesOverˡ_ ≈₁ ∙ ◦ → _DistributesOverˡ_ ≈₂ ∙ ◦
 distribˡ distribˡ x y z = to (distribˡ x y z)
@@ -60,7 +60,7 @@ distribʳ : ∀ {∙ ◦} → _DistributesOverʳ_ ≈₁ ∙ ◦ → _Distribute
 distribʳ distribʳ x y z = to (distribʳ x y z)
 
 distrib : ∀ {∙ ◦} → _DistributesOver_ ≈₁ ∙ ◦ → _DistributesOver_ ≈₂ ∙ ◦
-distrib {∙} {◦} = Prod.map (distribˡ {∙} {◦}) (distribʳ {∙} {◦})
+distrib {∙} {◦} = Product.map (distribˡ {∙} {◦}) (distribʳ {∙} {◦})
 
 ------------------------------------------------------------------------
 -- Structures
@@ -83,12 +83,6 @@ isBand {∙} S = record
   ; idem        = idem {∙} S.idem
   } where module S = IsBand S
 
-isSemilattice : ∀ {∧} → IsSemilattice ≈₁ ∧ → IsSemilattice ≈₂ ∧
-isSemilattice S = record
-  { isBand = isBand S.isBand
-  ; comm   = comm S.comm
-  } where module S = IsSemilattice S
-
 isSelectiveMagma : ∀ {∙} → IsSelectiveMagma ≈₁ ∙ → IsSelectiveMagma ≈₂ ∙
 isSelectiveMagma S = record
   { isMagma = isMagma S.isMagma
@@ -98,7 +92,7 @@ isSelectiveMagma S = record
 isMonoid : ∀ {∙ ε} → IsMonoid ≈₁ ∙ ε → IsMonoid ≈₂ ∙ ε
 isMonoid S = record
   { isSemigroup = isSemigroup S.isSemigroup
-  ; identity    = Prod.map (to ∘_) (to ∘_) S.identity
+  ; identity    = Product.map (to ∘_) (to ∘_) S.identity
   } where module S = IsMonoid S
 
 isCommutativeMonoid : ∀ {∙ ε} →
@@ -119,7 +113,7 @@ isIdempotentCommutativeMonoid {∙} S = record
 isGroup : ∀ {∙ ε ⁻¹} → IsGroup ≈₁ ∙ ε ⁻¹ → IsGroup ≈₂ ∙ ε ⁻¹
 isGroup S = record
   { isMonoid = isMonoid S.isMonoid
-  ; inverse  = Prod.map (to ∘_) (to ∘_) S.inverse
+  ; inverse  = Product.map (to ∘_) (to ∘_) S.inverse
   ; ⁻¹-cong  = cong₁ S.⁻¹-cong
   } where module S = IsGroup S
 
@@ -130,39 +124,12 @@ isAbelianGroup S = record
   ; comm    = comm S.comm
   } where module S = IsAbelianGroup S
 
-isLattice : ∀ {∨ ∧} → IsLattice ≈₁ ∨ ∧ → IsLattice ≈₂ ∨ ∧
-isLattice {∨} {∧} S = record
-  { isEquivalence = isEquivalence S.isEquivalence
-  ; ∨-comm        = comm S.∨-comm
-  ; ∨-assoc       = assoc {∨} S.∨-assoc
-  ; ∨-cong        = cong₂ S.∨-cong
-  ; ∧-comm        = comm S.∧-comm
-  ; ∧-assoc       = assoc {∧} S.∧-assoc
-  ; ∧-cong        = cong₂ S.∧-cong
-  ; absorptive    = absorptive {∨} {∧} S.absorptive
-  } where module S = IsLattice S
-
-isDistributiveLattice : ∀ {∨ ∧} →
-  IsDistributiveLattice ≈₁ ∨ ∧ → IsDistributiveLattice ≈₂ ∨ ∧
-isDistributiveLattice S = record
-  { isLattice    = isLattice S.isLattice
-  ; ∨-distribʳ-∧ = λ x y z → to (S.∨-distribʳ-∧ x y z)
-  } where module S = IsDistributiveLattice S
-
-isBooleanAlgebra : ∀ {∨ ∧ ¬ ⊤ ⊥} →
-  IsBooleanAlgebra ≈₁ ∨ ∧ ¬ ⊤ ⊥ → IsBooleanAlgebra ≈₂ ∨ ∧ ¬ ⊤ ⊥
-isBooleanAlgebra S = record
-  { isDistributiveLattice = isDistributiveLattice S.isDistributiveLattice
-  ; ∨-complementʳ         = to ∘ S.∨-complementʳ
-  ; ∧-complementʳ         = to ∘ S.∧-complementʳ
-  ; ¬-cong                = cong₁ S.¬-cong
-  } where module S = IsBooleanAlgebra S
-
 isNearSemiring : ∀ {+ * 0#} →
   IsNearSemiring ≈₁ + * 0# → IsNearSemiring ≈₂ + * 0#
-isNearSemiring S = record
+isNearSemiring {* = *} S = record
   { +-isMonoid    = isMonoid S.+-isMonoid
-  ; *-isSemigroup = isSemigroup S.*-isSemigroup
+  ; *-cong        = cong₂ S.*-cong
+  ; *-assoc       = assoc {*} S.*-assoc
   ; distribʳ      = λ x y z → to (S.distribʳ x y z)
   ; zeroˡ         = to ∘ S.zeroˡ
   } where module S = IsNearSemiring S
@@ -171,9 +138,10 @@ isSemiringWithoutOne : ∀ {+ * 0#} →
   IsSemiringWithoutOne ≈₁ + * 0# → IsSemiringWithoutOne ≈₂ + * 0#
 isSemiringWithoutOne {+} {*} S = record
   { +-isCommutativeMonoid = isCommutativeMonoid S.+-isCommutativeMonoid
-  ; *-isSemigroup         = isSemigroup S.*-isSemigroup
+  ; *-cong                = cong₂ S.*-cong
+  ; *-assoc               = assoc {*} S.*-assoc
   ; distrib               = distrib {*} {+} S.distrib
-  ; zero                  = Prod.map (to ∘_) (to ∘_) S.zero
+  ; zero                  = Product.map (to ∘_) (to ∘_) S.zero
   } where module S = IsSemiringWithoutOne S
 
 isCommutativeSemiringWithoutOne : ∀ {+ * 0#} →

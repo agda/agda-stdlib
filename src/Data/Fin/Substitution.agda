@@ -4,26 +4,31 @@
 -- Substitutions
 ------------------------------------------------------------------------
 
--- Uses a variant of Conor McBride's technique from "Type-Preserving
--- Renaming and Substitution".
+-- Uses a variant of Conor McBride's technique from his paper
+-- "Type-Preserving Renaming and Substitution".
 
--- See Data.Fin.Substitution.Example for an example of how this module
--- can be used: a definition of substitution for the untyped
--- λ-calculus.
+-- See README.Data.Fin.Substitution.UntypedLambda for an example
+-- of how this module can be used: a definition of substitution for
+-- the untyped λ-calculus.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Substitution where
 
-open import Data.Nat hiding (_⊔_)
+open import Data.Nat.Base hiding (_⊔_; _/_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Vec.Base
-open import Function as Fun using (flip)
+open import Function.Base as Fun using (flip)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   as Star using (Star; ε; _◅_)
-open import Level using (Level; _⊔_)
-import Level as L
+open import Level using (Level; _⊔_; 0ℓ)
 open import Relation.Unary using (Pred)
+
+private
+  variable
+    ℓ ℓ₁ ℓ₂ : Level
+    k m n o : ℕ
+
 
 ------------------------------------------------------------------------
 -- General functionality
@@ -31,17 +36,17 @@ open import Relation.Unary using (Pred)
 -- A Sub T m n is a substitution which, when applied to something with
 -- at most m variables, yields something with at most n variables.
 
-Sub : ∀ {ℓ} → Pred ℕ ℓ → ℕ → ℕ → Set ℓ
+Sub : Pred ℕ ℓ → ℕ → ℕ → Set ℓ
 Sub T m n = Vec (T n) m
 
 -- A /reversed/ sequence of matching substitutions.
 
-Subs : ∀ {ℓ} → Pred ℕ ℓ → ℕ → ℕ → Set ℓ
+Subs : Pred ℕ ℓ → ℕ → ℕ → Set ℓ
 Subs T = flip (Star (flip (Sub T)))
 
 -- Some simple substitutions.
 
-record Simple {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
+record Simple (T : Pred ℕ ℓ) : Set ℓ where
   infix  10 _↑
   infixl 10 _↑⋆_ _↑✶_
 
@@ -51,40 +56,39 @@ record Simple {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
 
   -- Lifting.
 
-  _↑ : ∀ {m n} → Sub T m n → Sub T (suc m) (suc n)
+  _↑ : Sub T m n → Sub T (suc m) (suc n)
   ρ ↑ = var zero ∷ map weaken ρ
 
-  _↑⋆_ : ∀ {m n} → Sub T m n → ∀ k → Sub T (k + m) (k + n)
+  _↑⋆_ : Sub T m n → ∀ k → Sub T (k + m) (k + n)
   ρ ↑⋆ zero  = ρ
   ρ ↑⋆ suc k = (ρ ↑⋆ k) ↑
 
-  _↑✶_ : ∀ {m n} → Subs T m n → ∀ k → Subs T (k + m) (k + n)
+  _↑✶_ : Subs T m n → ∀ k → Subs T (k + m) (k + n)
   ρs ↑✶ k = Star.gmap (_+_ k) (λ ρ → ρ ↑⋆ k) ρs
 
   -- The identity substitution.
 
-  id : ∀ {n} → Sub T n n
+  id : Sub T n n
   id {zero}  = []
   id {suc n} = id ↑
 
   -- Weakening.
 
-  wk⋆ : ∀ k {n} → Sub T n (k + n)
+  wk⋆ : ∀ k → Sub T n (k + n)
   wk⋆ zero    = id
   wk⋆ (suc k) = map weaken (wk⋆ k)
 
-  wk : ∀ {n} → Sub T n (suc n)
+  wk : Sub T n (suc n)
   wk = wk⋆ 1
 
   -- A substitution which only replaces the first variable.
 
-  sub : ∀ {n} → T n → Sub T (suc n) n
+  sub : T n → Sub T (suc n) n
   sub t = t ∷ id
 
 -- Application of substitutions.
 
-record Application {ℓ₁ ℓ₂ : Level} (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) :
-    Set (ℓ₁ ⊔ ℓ₂) where
+record Application (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   infixl 8 _/_ _/✶_
   infixl 9 _⊙_
 
@@ -94,17 +98,17 @@ record Application {ℓ₁ ℓ₂ : Level} (T₁ : Pred ℕ ℓ₁) (T₂ : Pred
 
   -- Reverse composition. (Fits well with post-application.)
 
-  _⊙_ : ∀ {m n k} → Sub T₁ m n → Sub T₂ n k → Sub T₁ m k
-  ρ₁ ⊙ ρ₂ = map (λ t → t / ρ₂) ρ₁
+  _⊙_ : Sub T₁ m n → Sub T₂ n o → Sub T₁ m o
+  ρ₁ ⊙ ρ₂ = map (_/ ρ₂) ρ₁
 
   -- Application of multiple substitutions.
 
-  _/✶_ : ∀ {m n} → T₁ m → Subs T₂ m n → T₁ n
+  _/✶_ : T₁ m → Subs T₂ m n → T₁ n
   _/✶_ = Star.gfold Fun.id _ (flip _/_) {k = zero}
 
 -- A combination of the two records above.
 
-record Subst {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
+record Subst (T : Pred ℕ ℓ) : Set ℓ where
   field
     simple      : Simple      T
     application : Application T T
@@ -114,7 +118,7 @@ record Subst {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
 
   -- Composition of multiple substitutions.
 
-  ⨀ : ∀ {m n} → Subs T m n → Sub T m n
+  ⨀ : Subs T m n → Sub T m n
   ⨀ ε        = id
   ⨀ (ρ ◅ ε)  = ρ  -- Convenient optimisation; simplifies some proofs.
   ⨀ (ρ ◅ ρs) = ⨀ ρs ⊙ ρ
@@ -124,8 +128,7 @@ record Subst {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
 
 -- Liftings from T₁ to T₂.
 
-record Lift {ℓ₁ ℓ₂ : Level} (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) :
-    Set (ℓ₁ ⊔ ℓ₂) where
+record Lift (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   field
     simple : Simple T₁
     lift   : ∀ {n} → T₁ n → T₂ n
@@ -146,12 +149,12 @@ module VarSubst where
 
 -- "Term" substitutions.
 
-record TermSubst (T : Pred ℕ L.zero) : Set₁ where
+record TermSubst (T : Pred ℕ 0ℓ) : Set₁ where
   field
     var : ∀ {n} → Fin n → T n
-    app : ∀ {T′ : Pred ℕ L.zero} → Lift T′ T → ∀ {m n} → T m → Sub T′ m n → T n
+    app : ∀ {T′ : Pred ℕ 0ℓ} → Lift T′ T → ∀ {m n} → T m → Sub T′ m n → T n
 
-  module Lifted {T′ : Pred ℕ L.zero} (lift : Lift T′ T) where
+  module Lifted {T′ : Pred ℕ 0ℓ} (lift : Lift T′ T) where
     application : Application T T′
     application = record { _/_ = app lift }
 
@@ -161,9 +164,9 @@ record TermSubst (T : Pred ℕ L.zero) : Set₁ where
   varLift : Lift Fin T
   varLift = record { simple = VarSubst.simple; lift = var }
 
-  infix 8 _/Var_
+  infixl 8 _/Var_
 
-  _/Var_ : ∀ {m n} → T m → Sub Fin m n → T n
+  _/Var_ : T m → Sub Fin m n → T n
   _/Var_ = app varLift
 
   simple : Simple T

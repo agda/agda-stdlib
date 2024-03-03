@@ -6,11 +6,11 @@
 
 -- The contents of this module should be accessed via `Relation.Binary`.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Core where
 
-open import Data.Product using (_×_)
+open import Data.Product.Base using (_×_)
 open import Function.Base using (_on_)
 open import Level using (Level; _⊔_; suc)
 

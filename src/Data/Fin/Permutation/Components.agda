@@ -4,7 +4,7 @@
 -- Component functions of permutations found in `Data.Fin.Permutation`
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Fin.Permutation.Components where
 
@@ -12,8 +12,7 @@ open import Data.Bool.Base using (Bool; true; false)
 open import Data.Fin.Base
 open import Data.Fin.Properties
 open import Data.Nat.Base as ℕ using (zero; suc; _∸_)
-import Data.Nat.Properties as ℕₚ
-open import Data.Product using (proj₂)
+open import Data.Product.Base using (proj₂)
 open import Function.Base using (_∘_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (does; _because_; yes; no)
@@ -22,9 +21,9 @@ open import Relation.Binary.PropositionalEquality
 open import Algebra.Definitions using (Involutive)
 open ≡-Reasoning
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 --  Functions
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 -- 'tranpose i j' swaps the places of 'i' and 'j'.
 
@@ -35,14 +34,9 @@ transpose i j k with does (k ≟ i)
 ...   | true  = i
 ...   | false = k
 
--- reverse i = n ∸ 1 ∸ i
-
-reverse : ∀ {n} → Fin n → Fin n
-reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.m∸n≤m (suc n) (toℕ i))
-
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 --  Properties
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 transpose-inverse : ∀ {n} (i j : Fin n) {k} →
                     transpose i j (transpose j i k) ≡ k
@@ -56,23 +50,35 @@ transpose-inverse i j {k} with k ≟ j
 ...   | false because [k≢i] rewrite dec-false (k ≟ i) (invert [k≢i])
                                   | dec-false (k ≟ j) (invert [k≢j]) = refl
 
-reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
-reverse-prop {suc n} i = begin
-  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ toℕ-inject≤ _ (ℕₚ.m∸n≤m (suc n) (toℕ i)) ⟩
-  toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
-  n ∸ toℕ i                 ∎
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-reverse-involutive : ∀ {n} → Involutive _≡_ (reverse {n})
-reverse-involutive {suc n} i = toℕ-injective (begin
-  toℕ (reverse (reverse i)) ≡⟨ reverse-prop (reverse i) ⟩
-  n ∸ (toℕ (reverse i))     ≡⟨ cong (n ∸_) (reverse-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕₚ.≤-pred (toℕ<n i)) ⟩
-  toℕ i                     ∎)
+-- Version 2.0
 
-reverse-suc : ∀ {n} {i : Fin n} → toℕ (reverse (suc i)) ≡ toℕ (reverse i)
-reverse-suc {n} {i} = begin
-  toℕ (reverse (suc i))      ≡⟨ reverse-prop (suc i) ⟩
-  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
-  n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡⟨ sym (reverse-prop i) ⟩
-  toℕ (reverse i)            ∎
+reverse = opposite
+{-# WARNING_ON_USAGE reverse
+"Warning: reverse was deprecated in v2.0.
+Please use opposite from Data.Fin.Base instead."
+#-}
+
+reverse-prop = opposite-prop
+{-# WARNING_ON_USAGE reverse
+"Warning: reverse-prop was deprecated in v2.0.
+Please use opposite-prop from Data.Fin.Properties instead."
+#-}
+
+reverse-involutive = opposite-involutive
+{-# WARNING_ON_USAGE reverse
+"Warning: reverse-involutive was deprecated in v2.0.
+Please use opposite-involutive from Data.Fin.Properties instead."
+#-}
+
+reverse-suc : ∀ {n} {i : Fin n} → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
+reverse-suc {i = i} = opposite-suc i
+{-# WARNING_ON_USAGE reverse
+"Warning: reverse-suc was deprecated in v2.0.
+Please use opposite-suc from Data.Fin.Properties instead."
+#-}

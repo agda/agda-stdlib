@@ -4,7 +4,7 @@
 -- An inductive definition of the heterogeneous prefix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Prefix.Heterogeneous where
 
@@ -12,8 +12,8 @@ open import Level
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Product using (∃; _×_; _,_; uncurry)
-open import Relation.Binary using (REL; _⇒_)
+open import Data.Product.Base using (∃; _×_; _,_; uncurry)
+open import Relation.Binary.Core using (REL; _⇒_)
 
 module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
 
@@ -44,6 +44,8 @@ module _ {a b r s} {A : Set a} {B : Set b} {R : REL A B r} {S : REL A B s} where
   map R⇒S (r ∷ rs) = R⇒S r ∷ map R⇒S rs
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  infixr 5 _++ᵖ_
 
   _++ᵖ_ : ∀ {as bs} → Prefix R as bs → ∀ suf → Prefix R as (bs List.++ suf)
   []       ++ᵖ suf = []

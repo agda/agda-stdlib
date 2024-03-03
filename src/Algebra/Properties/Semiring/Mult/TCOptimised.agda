@@ -4,7 +4,7 @@
 -- Multiplication over a semiring optimised for type-checking.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra
 open import Data.Nat.Base as ℕ using (zero; suc)
@@ -30,7 +30,7 @@ open import Algebra.Properties.Monoid.Mult.TCOptimised +-monoid public
 
 ×1-homo-* : ∀ m n → (m ℕ.* n) × 1# ≈ (m × 1#) * (n × 1#)
 ×1-homo-* m n = begin
-  (m ℕ.* n) ×  1#        ≈˘⟨ ×ᵤ≈× (m ℕ.* n) 1# ⟩
+  (m ℕ.* n) ×  1#        ≈⟨ ×ᵤ≈× (m ℕ.* n) 1# ⟨
   (m ℕ.* n) ×ᵤ 1#        ≈⟨  U.×1-homo-* m n ⟩
   (m ×ᵤ 1#) * (n ×ᵤ 1#)  ≈⟨  *-cong (×ᵤ≈× m 1#) (×ᵤ≈× n 1#) ⟩
   (m ×  1#) * (n ×  1#)  ∎

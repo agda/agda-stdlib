@@ -7,7 +7,7 @@
 -- See Data.Nat.Binary.Properties for examples of how this and similar
 -- modules can be used to easily translate properties between types.
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
@@ -26,8 +26,8 @@ open RawGroup G₂ renaming
 
 open import Algebra.Definitions
 open import Algebra.Structures
-open import Data.Product
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+open import Data.Product.Base using (_,_)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Re-export all properties of monoid monomorphisms
@@ -41,14 +41,14 @@ open import Algebra.Morphism.MonoidMonomorphism
 module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   inverseˡ : LeftInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → LeftInverse _≈₁_ ε₁ _⁻¹₁ _∙_
   inverseˡ invˡ x = injective (begin
     ⟦ x ⁻¹₁ ∙ x ⟧     ≈⟨ ∙-homo (x ⁻¹₁ ) x ⟩
     ⟦ x ⁻¹₁ ⟧ ◦ ⟦ x ⟧ ≈⟨ ◦-cong (⁻¹-homo x) refl ⟩
     ⟦ x ⟧ ⁻¹₂ ◦ ⟦ x ⟧ ≈⟨ invˡ ⟦ x ⟧ ⟩
-    ε₂                ≈˘⟨ ε-homo ⟩
+    ε₂                ≈⟨ ε-homo ⟨
     ⟦ ε₁ ⟧ ∎)
 
   inverseʳ : RightInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → RightInverse _≈₁_ ε₁ _⁻¹₁ _∙_
@@ -56,7 +56,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ⟦ x ∙ x ⁻¹₁ ⟧     ≈⟨ ∙-homo x (x ⁻¹₁) ⟩
     ⟦ x ⟧ ◦ ⟦ x ⁻¹₁ ⟧ ≈⟨ ◦-cong refl (⁻¹-homo x) ⟩
     ⟦ x ⟧ ◦ ⟦ x ⟧ ⁻¹₂ ≈⟨ invʳ ⟦ x ⟧ ⟩
-    ε₂                ≈˘⟨ ε-homo ⟩
+    ε₂                ≈⟨ ε-homo ⟨
     ⟦ ε₁ ⟧ ∎)
 
   inverse : Inverse _≈₂_ ε₂ _⁻¹₂ _◦_ → Inverse _≈₁_ ε₁ _⁻¹₁ _∙_
@@ -66,13 +66,13 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
   ⁻¹-cong ⁻¹-cong {x} {y} x≈y = injective (begin
     ⟦ x ⁻¹₁ ⟧ ≈⟨ ⁻¹-homo x ⟩
     ⟦ x ⟧ ⁻¹₂ ≈⟨ ⁻¹-cong (⟦⟧-cong x≈y) ⟩
-    ⟦ y ⟧ ⁻¹₂ ≈˘⟨ ⁻¹-homo y ⟩
+    ⟦ y ⟧ ⁻¹₂ ≈⟨ ⁻¹-homo y ⟨
     ⟦ y ⁻¹₁ ⟧ ∎)
 
 module _ (◦-isAbelianGroup : IsAbelianGroup _≈₂_ _◦_ ε₂ _⁻¹₂) where
 
   open IsAbelianGroup ◦-isAbelianGroup renaming (∙-cong to ◦-cong; ⁻¹-cong to ⁻¹₂-cong)
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   ⁻¹-distrib-∙ : (∀ x y → (x ◦ y) ⁻¹₂ ≈₂ (x ⁻¹₂) ◦ (y ⁻¹₂)) → (∀ x y → (x ∙ y) ⁻¹₁ ≈₁ (x ⁻¹₁) ∙ (y ⁻¹₁))
   ⁻¹-distrib-∙ ⁻¹-distrib-∙ x y = injective (begin

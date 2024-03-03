@@ -4,20 +4,19 @@
 -- Any predicate transformer for fresh lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Fresh.Relation.Unary.Any where
 
 open import Level using (Level; _⊔_; Lift)
 open import Data.Empty
-open import Data.Product using (∃; _,_; -,_)
+open import Data.Product.Base using (∃; _,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
-open import Function.Equivalence using (_⇔_; equivalence)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Function.Bundles using (_⇔_; mk⇔)
+open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _⊎-dec_)
 open import Relation.Unary  as U
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
 
 open import Data.List.Fresh using (List#; []; cons; _∷#_; _#_)
 
@@ -50,7 +49,7 @@ module _ {R : Rel A r} {P : Pred A p} {x} {xs : List# A R} {pr} where
   fromSum = [ here , there ]′
 
   ⊎⇔Any : (P x ⊎ Any P xs) ⇔ Any P (cons x xs pr)
-  ⊎⇔Any = equivalence fromSum toSum
+  ⊎⇔Any = mk⇔ fromSum toSum
 
 module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
 

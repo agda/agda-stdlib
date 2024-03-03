@@ -4,14 +4,12 @@
 -- Pairs of lists that share no common elements (propositional equality)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
-
-open import Relation.Binary
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Disjoint.Propositional
   {a} {A : Set a} where
 
-open import Relation.Binary.PropositionalEquality using (setoid)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Data.List.Relation.Binary.Disjoint.Setoid as DisjointUnique
 
 ------------------------------------------------------------------------

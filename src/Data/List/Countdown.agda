@@ -5,10 +5,10 @@
 -- of elements /not/ in a given list
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (0ℓ)
-open import Relation.Binary
+open import Relation.Binary.Bundles using (DecSetoid)
 
 module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 
@@ -17,22 +17,22 @@ open import Data.Fin.Base using (Fin; zero; suc; punchOut)
 open import Data.Fin.Properties
   using (suc-injective; punchOut-injective)
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Injection
+open import Function.Bundles
   using (Injection; module Injection)
 open import Data.Bool.Base using (true; false)
-open import Data.List hiding (lookup)
+open import Data.List.Base hiding (lookup)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product
+open import Data.Product.Base using (∃; _,_; _×_)
 open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (dec-true; dec-false)
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; cong)
-open PropEq.≡-Reasoning
+import Relation.Binary.PropositionalEquality.Properties as ≡
+open ≡.≡-Reasoning
 
 private
   open module D = DecSetoid D
@@ -124,13 +124,13 @@ record _⊕_ (counted : List Elem) (n : ℕ) : Set where
 
 -- A countdown can be initialised by proving that Elem is finite.
 
-empty : ∀ {n} → Injection D.setoid (PropEq.setoid (Fin n)) → [] ⊕ n
+empty : ∀ {n} → Injection D.setoid (≡.setoid (Fin n)) → [] ⊕ n
 empty inj =
-  record { kind      = inj₂ ∘ _⟨$⟩_ to
+  record { kind      = inj₂ ∘ to
          ; injective = λ {x} {y} {i} eq₁ eq₂ → injective (begin
-             to ⟨$⟩ x  ≡⟨ inj₂-injective eq₁ ⟩
-             i         ≡⟨ PropEq.sym $ inj₂-injective eq₂ ⟩
-             to ⟨$⟩ y  ∎)
+             to x ≡⟨ inj₂-injective eq₁ ⟩
+             i    ≡⟨ ≡.sym $ inj₂-injective eq₂ ⟩
+             to y ∎)
          }
   where open Injection inj
 
@@ -139,10 +139,8 @@ empty inj =
 emptyFromList : (counted : List Elem) → (∀ x → x ∈ counted) →
                 [] ⊕ length counted
 emptyFromList counted complete = empty record
-  { to = record
-    { _⟨$⟩_ = λ x → first-index x (complete x)
-    ; cong  = first-index-cong (complete _) (complete _)
-    }
+  { to        = λ x → first-index x (complete x)
+  ; cong      = first-index-cong (complete _) (complete _)
   ; injective = first-index-injective (complete _) (complete _)
   }
 
@@ -201,7 +199,7 @@ insert {counted} {n} counted⊕1+n x x∉counted =
   inj eq₁ eq₂ | no  _ | no  _ | inj₂ i         | inj₂ _ | inj₂ _ | _ | _ | hlp =
     hlp _ refl refl $
       punchOut-injective {i = i} _ _ $
-        (PropEq.trans (inj₂-injective eq₁) (PropEq.sym (inj₂-injective eq₂)))
+        (≡.trans (inj₂-injective eq₁) (≡.sym (inj₂-injective eq₂)))
 
 -- Counts an element if it has not already been counted.
 

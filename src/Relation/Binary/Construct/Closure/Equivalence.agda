@@ -5,40 +5,34 @@
 -- relation (aka the equivalence closure).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Closure.Equivalence where
 
-open import Function.Base using (flip; id; _∘_)
+open import Function.Base using (flip; id; _∘_; _on_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Symmetric)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive as Star
   using (Star; ε; _◅◅_; reverse)
 open import Relation.Binary.Construct.Closure.Symmetric as SC
   using (SymClosure)
+import Relation.Binary.Construct.On as On
 
 private
   variable
     a ℓ ℓ₁ ℓ₂ : Level
     A B : Set a
+    R S : Rel A ℓ
 
 ------------------------------------------------------------------------
 -- Definition
 
 EqClosure : {A : Set a} → Rel A ℓ → Rel A (a ⊔ ℓ)
-EqClosure _∼_ = Star (SymClosure _∼_)
-
-------------------------------------------------------------------------
--- Operations
-
--- A generalised variant of map which allows the index type to change.
-gmap : {P : Rel A ℓ₁} {Q : Rel B ℓ₂} →
-       (f : A → B) → P =[ f ]⇒ Q → EqClosure P =[ f ]⇒ EqClosure Q
-gmap {Q = Q} f = Star.gmap f ∘ SC.gmap {Q = Q} f
-
-map : ∀ {P : Rel A ℓ₁} {Q : Rel A ℓ₂} →
-      P ⇒ Q → EqClosure P ⇒ EqClosure Q
-map = gmap id
+EqClosure R = Star (SymClosure R)
 
 ------------------------------------------------------------------------
 -- Properties
@@ -66,3 +60,34 @@ setoid _∼_ = record
   { _≈_           = EqClosure _∼_
   ; isEquivalence = isEquivalence _∼_
   }
+
+------------------------------------------------------------------------
+-- Operations
+
+-- A generalised variant of `map` which allows the index type to change.
+gmap : (f : A → B) → R =[ f ]⇒ S → EqClosure R =[ f ]⇒ EqClosure S
+gmap f = Star.gmap f ∘ SC.gmap f
+
+map : R ⇒ S → EqClosure R ⇒ EqClosure S
+map = gmap id
+
+fold : IsEquivalence S → R ⇒ S → EqClosure R ⇒ S
+fold S-equiv R⇒S = Star.fold _ (trans ∘ SC.fold sym R⇒S) refl
+  where open IsEquivalence S-equiv
+
+-- A generalised variant of `fold`.
+gfold : IsEquivalence S → (f : A → B) → R =[ f ]⇒ S → EqClosure R =[ f ]⇒ S
+gfold S-equiv f R⇒S = fold (On.isEquivalence f S-equiv) R⇒S
+
+-- `return` could also be called `singleton`.
+return : R ⇒ EqClosure R
+return = Star.return ∘ SC.return
+
+-- `join` could also be called `concat`.
+join : EqClosure (EqClosure R) ⇒ EqClosure R
+join = fold (isEquivalence _) id
+
+infix 10 _⋆
+
+_⋆ : R ⇒ EqClosure S → EqClosure R ⇒ EqClosure S
+_⋆ f m = join (map f m)

@@ -4,93 +4,72 @@
 -- Core properties related to negation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Nullary.Negation.Core where
 
 open import Data.Bool.Base using (not)
-open import Data.Empty
-open import Data.Product
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
-open import Relation.Nullary
-open import Relation.Unary using (Pred)
 
 private
   variable
     a p q w : Level
-    A : Set a
-    P : Set p
-    Q : Set q
+    A B C : Set a
     Whatever : Set w
+
+------------------------------------------------------------------------
+-- Negation.
+
+infix 3 ¬_
+¬_ : Set a → Set a
+¬ A = A → ⊥
+
+------------------------------------------------------------------------
+-- Stability.
+
+-- Double-negation
+DoubleNegation : Set a → Set a
+DoubleNegation A = ¬ ¬ A
+
+-- Stability under double-negation.
+Stable : Set a → Set a
+Stable A = ¬ ¬ A → A
+
+------------------------------------------------------------------------
+-- Relationship to sum
+
+infixr 1 _¬-⊎_
+_¬-⊎_ : ¬ A → ¬ B → ¬ (A ⊎ B)
+_¬-⊎_ = [_,_]
 
 ------------------------------------------------------------------------
 -- Uses of negation
 
-contradiction : P → ¬ P → Whatever
-contradiction p ¬p = ⊥-elim (¬p p)
+contradiction : A → ¬ A → Whatever
+contradiction a ¬a = ⊥-elim (¬a a)
 
-contradiction₂ : P ⊎ Q → ¬ P → ¬ Q → Whatever
-contradiction₂ (inj₁ p) ¬p ¬q = contradiction p ¬p
-contradiction₂ (inj₂ q) ¬p ¬q = contradiction q ¬q
+contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
+contradiction₂ (inj₁ a) ¬a ¬b = contradiction a ¬a
+contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 
-contraposition : (P → Q) → ¬ Q → ¬ P
-contraposition f ¬q p = contradiction (f p) ¬q
-
--- Note also the following use of flip:
-
-private
-  note : (P → ¬ Q) → Q → ¬ P
-  note = flip
-
--- If we can decide P, then we can decide its negation.
-
-¬-reflects : ∀ {b} → Reflects P b → Reflects (¬ P) (not b)
-¬-reflects (ofʸ  p) = ofⁿ (_$ p)
-¬-reflects (ofⁿ ¬p) = ofʸ ¬p
-
-¬? : Dec P → Dec (¬ P)
-does  (¬? p?) = not (does p?)
-proof (¬? p?) = ¬-reflects (proof p?)
-
-------------------------------------------------------------------------
--- Quantifier juggling
-
-module _ {P : Pred A p} where
-
-  ∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
-  ∃⟶¬∀¬ = flip uncurry
-
-  ∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
-  ∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
-
-  ¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
-  ¬∃⟶∀¬ = curry
-
-  ∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
-  ∀¬⟶¬∃ = uncurry
-
-  ∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
-  ∃¬⟶¬∀ = flip ∀⟶¬∃¬
-
-------------------------------------------------------------------------
--- Double-negation
-
-¬¬-map : (P → Q) → ¬ ¬ P → ¬ ¬ Q
-¬¬-map f = contraposition (contraposition f)
-
--- Stability under double-negation.
-
-Stable : Set p → Set p
-Stable P = ¬ ¬ P → P
+contraposition : (A → B) → ¬ B → ¬ A
+contraposition f ¬b a = contradiction (f a) ¬b
 
 -- Everything is stable in the double-negation monad.
-
-stable : ¬ ¬ Stable P
-stable ¬[¬¬p→p] = ¬[¬¬p→p] (λ ¬¬p → ⊥-elim (¬¬p (¬[¬¬p→p] ∘ const)))
+stable : ¬ ¬ Stable A
+stable ¬[¬¬a→a] = ¬[¬¬a→a] (λ ¬¬a → ⊥-elim (¬¬a (¬[¬¬a→a] ∘ const)))
 
 -- Negated predicates are stable.
+negated-stable : Stable (¬ A)
+negated-stable ¬¬¬a a = ¬¬¬a (_$ a)
 
-negated-stable : Stable (¬ P)
-negated-stable ¬¬¬P P = ¬¬¬P (λ ¬P → ¬P P)
+¬¬-map : (A → B) → ¬ ¬ A → ¬ ¬ B
+¬¬-map f = contraposition (contraposition f)
+
+-- Note also the following use of flip:
+private
+  note : (A → ¬ B) → B → ¬ A
+  note = flip

@@ -4,34 +4,25 @@
 -- Convenient syntax for reasoning with a partial setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (PartialSetoid)
+open import Relation.Binary.Reasoning.Syntax
 
 module Relation.Binary.Reasoning.PartialSetoid
   {s₁ s₂} (S : PartialSetoid s₁ s₂) where
 
 open PartialSetoid S
-import Relation.Binary.Reasoning.Base.Partial _≈_ trans as Base
+
+import Relation.Binary.Reasoning.Base.Partial _≈_ trans
+  as ≈-Reasoning
 
 ------------------------------------------------------------------------
--- Re-export the contents of the base module
+-- Reasoning combinators
 
-open Base public
-  hiding (step-∼)
+-- Export the combinators for partial relation reasoning, hiding the
+-- single misnamed combinator.
+open ≈-Reasoning public hiding (step-∼)
 
-------------------------------------------------------------------------
--- Additional reasoning combinators
-
-infixr 2 step-≈ step-≈˘
-
--- A step using an equality
-
-step-≈ = Base.step-∼
-syntax step-≈ x y≈z x≈y = x ≈⟨ x≈y ⟩ y≈z
-
--- A step using a symmetric equality
-
-step-≈˘ : ∀ x {y z} → y IsRelatedTo z → y ≈ x → x IsRelatedTo z
-step-≈˘ x y∼z y≈x = x ≈⟨ sym y≈x ⟩ y∼z
-syntax step-≈˘ x y≈z y≈x = x ≈˘⟨ y≈x ⟩ y≈z
+-- Re-export the equality-based combinators instead
+open ≈-syntax _IsRelatedTo_ _IsRelatedTo_ ≈-Reasoning.∼-go sym public

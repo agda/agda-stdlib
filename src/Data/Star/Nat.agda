@@ -4,13 +4,13 @@
 -- Natural numbers defined using the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Star.Nat where
 
 open import Data.Unit
-open import Function
-open import Relation.Binary
+open import Function.Base using (const)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.Construct.Always using (Always)
 

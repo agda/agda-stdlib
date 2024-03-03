@@ -4,11 +4,10 @@
 -- Universes
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Universe where
 
-open import Data.Product
 open import Level
 
 ------------------------------------------------------------------------

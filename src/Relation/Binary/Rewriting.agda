@@ -5,14 +5,13 @@
 -- Definitions are based on "Term Rewriting Systems" by J.W. Klop
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Rewriting where
 
 open import Agda.Builtin.Equality using (_≡_ ; refl)
-open import Data.Product using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
 open import Data.Empty
-open import Data.Sum.Base as Sum using (_⊎_)
 open import Function.Base using (flip)
 open import Induction.WellFounded
 open import Level
@@ -118,8 +117,8 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
         jToInner = proj₁ (proj₂ wcrProof)
         kToInner = proj₂ (proj₂ wcrProof)
 
-        lhs = helper (g _ [ toJ ]) fst jToInner
-        rhs = helper (g _ [ toK ]) snd kToInner
+        lhs = helper (g [ toJ ]) fst jToInner
+        rhs = helper (g [ toK ]) snd kToInner
 
         fromAB = proj₁ (proj₂ lhs)
         fromInnerB = proj₂ (proj₂ lhs)
@@ -130,7 +129,7 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
         aToInner : _ ⟶₊ innerPoint
         aToInner = starToPlus toJ jToInner
 
-        finalRecursion = helper (g innerPoint aToInner) fromInnerB fromInnerC
+        finalRecursion = helper (g aToInner) fromInnerB fromInnerC
 
         bMidToDest = proj₁ (proj₂ finalRecursion)
         cMidToDest = proj₂ (proj₂ finalRecursion)

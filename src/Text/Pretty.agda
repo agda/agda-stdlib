@@ -13,42 +13,46 @@ open import Data.Nat.Base using (ℕ)
 module Text.Pretty (width : ℕ) where
 
 import Level
-open import Data.Char.Base     using (Char)
+open import Data.Char.Base using (Char)
 open import Data.List.Base
   using (List; _∷_; []; [_]; uncons; _++_; map; filter)
 open import Data.List.NonEmpty as List⁺ using (foldr₁)
-open import Data.Maybe.Base    using (maybe′)
-open import Data.Product       using (uncurry)
-open import Data.String.Base   using (String; fromList; replicate)
-open import Function.Base
+open import Data.Maybe.Base using (maybe′)
+open import Data.Product.Base using (uncurry)
+open import Data.String.Base using (String; fromList; replicate)
+open import Function.Base using (_∘_; _∘′_; _$_)
 
-open import Category.Monad using (RawMonad)
-import Data.List.Categorical as Cat
-open RawMonad (Cat.monad {Level.zero})
+open import Effect.Monad using (RawMonad)
+import Data.List.Effectful as List
+open RawMonad (List.monad {Level.zero})
 
-import Data.Nat.Properties as ℕₚ
-open import Data.List.Extrema.Core ℕₚ.≤-totalOrder using (⊓ᴸ)
+import Data.Nat.Properties as ℕ
+open import Data.List.Extrema.Core ℕ.≤-totalOrder using (⊓ᴸ)
 
 ------------------------------------------------------------------------
 -- Internal representation of documents and rendering function
 
 import Text.Pretty.Core as Core
 
-Doc = List Core.Block
+record Doc : Set where
+  constructor mkDoc
+  field runDoc : List Core.Block
+open Doc public
 
 render : Doc → String
 render = Core.render
        ∘ maybe′ (foldr₁ (⊓ᴸ Core.Block.height) ∘′ uncurry List⁺._∷_) Core.empty
        ∘ uncons
+       ∘′ runDoc
 
 ------------------------------------------------------------------------
 -- Basic building blocks
 
 fail : Doc
-fail = []
+fail = mkDoc []
 
 text : String → Doc
-text = filter (Core.valid width) ∘ pure ∘ Core.text
+text = mkDoc ∘′ filter (Core.valid width) ∘ pure ∘ Core.text
 
 empty : Doc
 empty = text ""
@@ -86,10 +90,13 @@ llbracket = char '⟦'; rrbracket = char '⟧'
 
 infixr 5 _<>_
 _<>_ : Doc → Doc → Doc
-xs <> ys = filter (Core.valid width) (Core._<>_ <$> xs ⊛ ys)
+xs <> ys = mkDoc $
+  let candidates = Core._<>_ <$> runDoc xs ⊛ runDoc ys in
+  filter (Core.valid width) candidates
+
 
 flush : Doc → Doc
-flush = map Core.flush
+flush = mkDoc ∘′ map Core.flush ∘′ runDoc
 
 infixr 5 _<+>_
 _<+>_ : Doc → Doc → Doc
@@ -101,7 +108,7 @@ x $$ y = flush x <> y
 
 infixr 4 _<|>_
 _<|>_ : Doc → Doc → Doc
-x <|> y = x ++ y
+x <|> y = mkDoc (runDoc x ++ runDoc y)
 
 ------------------------------------------------------------------------
 -- Combining lists of documents

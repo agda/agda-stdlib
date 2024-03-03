@@ -4,17 +4,18 @@
 -- Union of two binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Relation.Binary.Construct.Union where
 
-open import Data.Product
+open import Data.Product.Base
 open import Data.Sum.Base as Sum
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
-open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Total; Minimum; Maximum; Symmetric; Irreflexive; Decidable; _Respects_; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
+open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_)
 
 private
   variable
@@ -25,8 +26,9 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-_∪_ : ∀ {A : Set a} {B : Set b} →
-      REL A B ℓ₁ → REL A B ℓ₂ → REL A B (ℓ₁ ⊔ ℓ₂)
+infixr 6 _∪_
+
+_∪_ : REL A B ℓ₁ → REL A B ℓ₂ → REL A B (ℓ₁ ⊔ ℓ₂)
 L ∪ R = λ i j → L i j ⊎ R i j
 
 ------------------------------------------------------------------------
