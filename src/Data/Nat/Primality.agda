@@ -8,6 +8,8 @@
 
 module Data.Nat.Primality where
 
+open import Data.List.Base using ([]; _∷_; product)
+open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
@@ -299,7 +301,7 @@ rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prim
 rough∧square>⇒prime rough m*m>n = prime ¬composite
   where
     ¬composite : ¬ Composite _
-    ¬composite (hasNonTrivialDivisor d<n d∣n) = contradiction (m∣n⇒n≡quotient*m d∣n)
+    ¬composite (composite d<n d∣n) = contradiction (m∣n⇒n≡quotient*m d∣n)
       (<⇒≢ (<-≤-trans m*m>n (*-mono-≤
         (rough⇒≤ (rough∧∣⇒rough rough (quotient-∣ d∣n)))
         (rough⇒≤ (rough∧∣⇒rough rough d∣n)))))
@@ -319,6 +321,16 @@ prime⇒¬composite (prime p) = p
 ¬prime⇒composite : .{{NonTrivial n}} → ¬ Prime n → Composite n
 ¬prime⇒composite {n} ¬prime[n] =
   decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime)
+
+productOfPrimes≢0 : ∀ {as} → All Prime as → NonZero (product as)
+productOfPrimes≢0 pas = product≢0 (All.map prime⇒nonZero pas)
+  where
+  product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
+  product≢0 [] = _
+  product≢0 {n ∷ ns} (nzn ∷ nzns) = m*n≢0 n _ {{nzn}} {{product≢0 nzns}}
+
+productOfPrimes≥1 : ∀ {as} → All Prime as → product as ≥ 1
+productOfPrimes≥1 {as} pas = >-nonZero⁻¹ _ {{productOfPrimes≢0 pas}}
 
 ------------------------------------------------------------------------
 -- Basic (counter-)examples of Irreducible
