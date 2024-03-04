@@ -55,6 +55,9 @@ open import Reflection.AST.Term                 as Term
 
 open import Reflection.TCM.Syntax
 
+⌞_⌟ : ∀ {a} {A : Set a} → A → A
+⌞_⌟ x = x
+
 ------------------------------------------------------------------------
 -- Utilities
 ------------------------------------------------------------------------
@@ -136,6 +139,8 @@ private
   antiUnifyClauses : ℕ → Clauses → Clauses → Maybe Clauses
   antiUnifyClause  : ℕ → Clause → Clause → Maybe Clause
 
+  pattern apply-⌞⌟ t = (def (quote ⌞_⌟) (_ ∷ _ ∷ arg _ t ∷ []))
+
   antiUnify ϕ (var x args) (var y args') with x ℕ.≡ᵇ y | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ uargs
@@ -144,6 +149,7 @@ private
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ []
   ... | true  | just uargs = con c uargs
+  antiUnify ϕ (def f args) (apply-⌞⌟ t) = antiUnify ϕ (def f args) t
   antiUnify ϕ (def f args) (def f' args') with f Name.≡ᵇ f' | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ []
