@@ -18,6 +18,8 @@
 --   ≡⟨ cong! (+-identityʳ n) ⟨
 --     suc (suc n) + (n + 0)
 --   ∎
+--
+-- Please see README.Tactic.Cong for more details.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -55,6 +57,17 @@ open import Reflection.AST.Term                 as Term
 
 open import Reflection.TCM.Syntax
 
+-- Marker to keep anti-unification from descending into the wrapped
+-- subterm.
+--
+-- For instance, anti-unification of ⌞ a + b ⌟ + c and b + a + c
+-- yields λ ϕ → ϕ + c, as opposed to λ ϕ → ϕ + ϕ + c without ⌞_⌟.
+--
+-- The marker is only visible to the cong! tactic, which inhibits
+-- normalisation. Anywhere else, ⌞ a + b ⌟ reduces to a + b.
+--
+-- Thus, proving ⌞ a + b ⌟ + c ≡ b + a + c via cong! (+-comm a b)
+-- also proves a + b + c ≡ b + a + c.
 ⌞_⌟ : ∀ {a} {A : Set a} → A → A
 ⌞_⌟ x = x
 
