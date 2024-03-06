@@ -146,6 +146,12 @@ automate most of this.
   as `Structures` etc.
   NB. Historical legacy means that these conventions have not always been observed!
 
+* Special case of the above for `*-Reasoning` (sub-)modules: by analogy with
+  `Relation.Binary.PropositionalEquality.≡-Reasoning`, when importing qualified
+  the `-Reasoning` (sub-)module associated with a given (canonical) choice of
+  symbol (eg. `≲` for `Preorder` reasoning), use the qualified name
+  `<symbol>-Reasoning`, ie. `≲-Reasoning` for the example given.
+
 * Qualified `open import`s should, in general, avoid `renaming`
   identifiers, in favour of using the long(er) qualified name,
   although similar remarks about legacy failure to observe this
