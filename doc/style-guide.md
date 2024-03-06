@@ -146,6 +146,12 @@ automate most of this.
   as `Structures` etc.
   NB. Historical legacy means that these conventions have not always been observed!
 
+* Special case of the above for `*-Reasoning` (sub-)modules: by analogy with
+  `Relation.Binary.PropositionalEquality.≡-Reasoning`, when importing qualified
+  the `-Reasoning` (sub-)module associated with a given (canonical) choice of
+  symbol (eg. `≲` for `Preorder` reasoning), use the qualified name
+  `<symbol>-Reasoning`, ie. `≲-Reasoning` for the example given.
+
 * When using only a few items (i.e. < 5) from a module, it is a good practice to
   enumerate the items that will be used by declaring the import statement
   with the directive `using`. This makes the dependencies clearer, e.g.
