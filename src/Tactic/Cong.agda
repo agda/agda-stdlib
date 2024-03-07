@@ -236,6 +236,12 @@ macro
     withNormalisation false $ do
       goal ← inferType hole
       eqGoal ← destructEqualityGoal goal
-      let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
-      cong-tm ← `cong eqGoal cong-lam x≡y
-      unify cong-tm hole
+      let uni = do
+        let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
+        cong-tm ← `cong eqGoal cong-lam x≡y
+        unify cong-tm hole
+      let uni' = do
+        let cong-lam = antiUnify 0 (EqualityGoal.rhs eqGoal) (EqualityGoal.lhs eqGoal)
+        cong-tm ← `cong eqGoal cong-lam x≡y
+        unify cong-tm hole
+      catchTC uni uni'
