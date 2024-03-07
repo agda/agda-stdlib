@@ -16,12 +16,12 @@ open import Data.Unit
 open import Data.Bool.Base using (Bool; true)
 open import Data.Nat
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Product.Base renaming (_×_ to _⟨×⟩_)
+open import Data.Product.Base as Product hiding (_×_)
 open import Data.Container using (Container; _▷_)
 open import Data.Container.Combinator
-open import Data.Container.FreeMonad as FreeMonad
+open import Data.Container.FreeMonad
 open import Data.W
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as ≡
 
 ------------------------------------------------------------------------
 -- Defining the signature of an effect and building trees describing
@@ -51,13 +51,13 @@ prog =
   where
   open RawMonad monad using (_>>_)
 
-runState : {S X : Set} → State S ⋆ X → (S → X ⟨×⟩ S)
+runState : {S X : Set} → State S ⋆ X → (S → X Product.× S)
 runState (pure x)                = λ s → x , s
 runState (impure ((inj₁ _) , k)) = λ s → runState (k s) s
 runState (impure ((inj₂ s) , k)) = λ _ → runState (k _) s
 
 test : runState prog 0 ≡ (true , 1)
-test = P.refl
+test = ≡.refl
 
 -- It should be noted that @State S ⋆ X@ is not the state monad. If we
 -- could quotient @State S ⋆ X@ by the seven axioms of state (see
