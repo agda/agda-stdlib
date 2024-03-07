@@ -241,7 +241,9 @@ macro
         cong-tm ← `cong eqGoal cong-lam x≡y
         unify cong-tm hole
       let uni' = do
+        -- Like uni, but with RHS and LHS swapped.
         let cong-lam = antiUnify 0 (EqualityGoal.rhs eqGoal) (EqualityGoal.lhs eqGoal)
         cong-tm ← `cong eqGoal cong-lam x≡y
         unify cong-tm hole
+      -- When using ⌞_⌟ with ≡˘⟨ ... ⟩, uni fails and uni' succeeds.
       catchTC uni uni'
