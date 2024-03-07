@@ -134,7 +134,7 @@ automate most of this.
 * Naming conventions for qualified `import`s: if importing a module under
   a root of the form `Data.X` (e.g. the `Base` module for basic operations,
   or `Properties` for lemmas about them etc.) then conventionally, the
-  qualified name(s) for the import(s) should (all) share as qualfied name
+  qualified name(s) for the import(s) should (all) share as qualified name
   that of the name of the `X` datatype defined: i.e. `Data.Nat.Base`
   should be imported as `ℕ`, `Data.List.Properties` as `List`,  etc.
   In this spirit, the convention applies also to (the datatype defined by)
@@ -142,7 +142,7 @@ automate most of this.
   with the name `≡`.
   Other modules should be given a 'suitable' qualified name based on its 'long'
   path-derived name (such as `SetoidEquality` in the example above); commonly
-  occcurring examples such as `Algebra.Structures` should be imported qualified
+  occurring examples such as `Algebra.Structures` should be imported qualified
   as `Structures` etc.
   NB. Historical legacy means that these conventions have not always been observed!
 
@@ -151,6 +151,14 @@ automate most of this.
   the `-Reasoning` (sub-)module associated with a given (canonical) choice of
   symbol (eg. `≲` for `Preorder` reasoning), use the qualified name
   `<symbol>-Reasoning`, ie. `≲-Reasoning` for the example given.
+
+* Qualified `open import`s should, in general, avoid `renaming`
+  identifiers, in favour of using the long(er) qualified name,
+  although similar remarks about legacy failure to observe this
+  recommendation apply!
+  NB. `renaming` directives are, of course, permitted when a module is
+  imported qualified, in order to be *subsequently* `open`ed for
+  `public` export (see below).
 
 * When using only a few items (i.e. < 5) from a module, it is a good practice to
   enumerate the items that will be used by declaring the import statement
