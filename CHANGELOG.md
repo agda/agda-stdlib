@@ -48,17 +48,25 @@ Deprecated names
 
 New modules
 -----------
-
-* Symmetric interior of a binary relation
-  ```
-  Relation.Binary.Construct.Interior.Symmetric
-  ```
-
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
 * Nagata's construction of the "idealization of a module":
   ```agda
   Algebra.Module.Construct.Idealization
+  ```
+  
+* `Function.Relation.Binary.Equality`
+  ```agda
+  setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
+  ```
+  and a convenient infix version
+  ```agda
+  _⇨_ = setoid
+  ```
+
+* Symmetric interior of a binary relation
+  ```
+  Relation.Binary.Construct.Interior.Symmetric
   ```
 
 Additions to existing modules
@@ -125,6 +133,11 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
+  ```
+
+* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+  ```agda
+  pattern divides k eq = Data.Nat.Divisibility.divides k eq
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
