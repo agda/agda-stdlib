@@ -271,4 +271,3 @@ Additions to existing modules
   Stable          : Pred A ℓ → Set _
   WeaklyDecidable : Pred A ℓ → Set _
   ```
-
