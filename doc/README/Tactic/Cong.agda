@@ -69,8 +69,8 @@ succinct-example m n eq =
 -- of an equality like 'm + n ≡ n + m', it will anti-unify to
 -- 'ϕ + ϕ', which is too specific.
 --
--- In these cases, you may explicitly mark the subterms to be
--- generalized by wrapping them in the marker function, ⌞_⌟.
+-- In cases like these, you may explicitly mark the subterms to
+-- be generalized by wrapping them in the marker function, ⌞_⌟.
 
 marker-example₁ : ∀ m n o p → m + n + (o + p) ≡ n + m + (p + o)
 marker-example₁ m n o p =

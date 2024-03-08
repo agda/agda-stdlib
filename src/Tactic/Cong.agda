@@ -236,14 +236,12 @@ macro
     withNormalisation false $ do
       goal ← inferType hole
       eqGoal ← destructEqualityGoal goal
-      let uni = do
-        let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
+      let uni = λ lhs rhs → do
+        let cong-lam = antiUnify 0 lhs rhs
         cong-tm ← `cong eqGoal cong-lam x≡y
         unify cong-tm hole
-      let uni' = do
-        -- Like uni, but with RHS and LHS swapped.
-        let cong-lam = antiUnify 0 (EqualityGoal.rhs eqGoal) (EqualityGoal.lhs eqGoal)
-        cong-tm ← `cong eqGoal cong-lam x≡y
-        unify cong-tm hole
-      -- When using ⌞_⌟ with ≡˘⟨ ... ⟩, uni fails and uni' succeeds.
-      catchTC uni uni'
+      let lhs = EqualityGoal.rhs eqGoal
+      let rhs = EqualityGoal.lhs eqGoal
+      -- When using ⌞_⌟ with ≡˘⟨ ... ⟩, (uni lhs rhs) fails and
+      -- (uni rhs lhs) succeeds.
+      catchTC (uni lhs rhs) (uni rhs lhs)
