@@ -40,7 +40,7 @@ proj₁ (↭-sym (xs↭ys , _)) = flip xs↭ys
 proj₂ (↭-sym {x = xs} {ys} (xs↭ys , xs↭ys≡)) i = begin
   ys (flip xs↭ys ⟨$⟩ʳ i)              ≡⟨ xs↭ys≡ _ ⟨
   xs (xs↭ys ⟨$⟩ʳ (flip xs↭ys ⟨$⟩ʳ i)) ≡⟨ cong xs (inverseʳ xs↭ys) ⟩
-  xs i ∎
+  xs i                                ∎
   where open ≡-Reasoning
 
 ↭-trans : Transitive (Vector A) _↭_
