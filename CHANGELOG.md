@@ -261,14 +261,14 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
+* Added new proof in `Relation.Nullary.Decidable`:
+  ```agda
+  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
 * Added new definitions in `Relation.Unary`
   ```
   Stable          : Pred A ℓ → Set _
   WeaklyDecidable : Pred A ℓ → Set _
-  ```
-
-* Added new proof in `Relation.Nullary.Decidable`:
-  ```agda
-  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
   ```
 
