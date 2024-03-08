@@ -8,7 +8,7 @@
 
 module Data.Sum.Function.Setoid where
 
-open import Data.Product.Base as Prod using (_,_)
+open import Data.Product.Base as Product using (_,_)
 open import Data.Sum.Base as Sum
 open import Data.Sum.Relation.Binary.Pointwise as Pointwise
 open import Relation.Binary
@@ -60,8 +60,8 @@ swapₛ = [ inj₂ₛ , inj₁ₛ ]ₛ
               StrictlySurjective ≈₂ g →
               StrictlySurjective (Pointwise ≈₁ ≈₂) (Sum.map f g)
 ⊎-strictlySurjective f-sur g-sur =
-  [ Prod.map inj₁ inj₁ ∘ f-sur
-  , Prod.map inj₂ inj₂ ∘ g-sur
+  [ Product.map inj₁ inj₁ ∘ f-sur
+  , Product.map inj₂ inj₂ ∘ g-sur
   ]
 
 ⊎-surjective : ∀ {f : A → B} {g : C → D} →
@@ -69,8 +69,8 @@ swapₛ = [ inj₂ₛ , inj₁ₛ ]ₛ
               Surjective ≈₃ ≈₄ g →
               Surjective (Pointwise ≈₁ ≈₃) (Pointwise ≈₂ ≈₄) (Sum.map f g)
 ⊎-surjective f-sur g-sur =
-  [ Prod.map inj₁ (λ { fwd (inj₁ x) → inj₁ (fwd x)}) ∘ f-sur
-  , Prod.map inj₂ (λ { fwd (inj₂ y) → inj₂ (fwd y)}) ∘ g-sur
+  [ Product.map inj₁ (λ { fwd (inj₁ x) → inj₁ (fwd x)}) ∘ f-sur
+  , Product.map inj₂ (λ { fwd (inj₂ y) → inj₂ (fwd y)}) ∘ g-sur
   ]
 
 

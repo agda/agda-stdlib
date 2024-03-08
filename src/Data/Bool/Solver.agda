@@ -4,7 +4,7 @@
 -- Automatic solvers for equations over booleans
 ------------------------------------------------------------------------
 
--- See README.Nat for examples of how to use similar solvers
+-- See README.Data.Nat for examples of how to use similar solvers
 
 {-# OPTIONS --cubical-compatible --safe #-}
 

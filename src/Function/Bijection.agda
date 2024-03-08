@@ -16,7 +16,7 @@ Use the standard function hierarchy in Function/Function.Bundles instead."
 
 open import Level
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as ≡
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
 open import Function.Injection   as Inj  hiding (id; _∘_; injection)
@@ -90,7 +90,7 @@ Please use Function.(Bundles.)Bijection instead."
 infix 3 _⤖_
 
 _⤖_ : ∀ {f t} → Set f → Set t → Set _
-From ⤖ To = Bijection (P.setoid From) (P.setoid To)
+From ⤖ To = Bijection (≡.setoid From) (≡.setoid To)
 {-# WARNING_ON_USAGE _⤖_
 "Warning: _⤖_ was deprecated in v2.0.
 Please use Function.(Bundles.)mk⤖ instead."

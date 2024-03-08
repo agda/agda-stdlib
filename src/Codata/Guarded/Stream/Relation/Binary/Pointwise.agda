@@ -17,8 +17,8 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions
   using (Reflexive; Sym; Trans; Antisym; Symmetric; Transitive)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -114,16 +114,16 @@ module _ {A : Set a} where
  _≈_ = Pointwise _≡_
 
  refl : Reflexive _≈_
- refl = reflexive P.refl
+ refl = reflexive ≡.refl
 
  sym : Symmetric _≈_
- sym = symmetric P.sym
+ sym = symmetric ≡.sym
 
  trans : Transitive _≈_
- trans = transitive P.trans
+ trans = transitive ≡.trans
 
  ≈-setoid : Setoid _ _
- ≈-setoid = setoid (P.setoid A)
+ ≈-setoid = setoid (≡.setoid A)
 
 ------------------------------------------------------------------------
 -- Pointwise DSL
@@ -161,7 +161,7 @@ module pw-Reasoning (S : Setoid a ℓ) where
 
   `head : ∀ {as bs} → `Pointwise as bs → as .head ∼ bs .head
   `head (`lift rs)         = rs .head
-  `head (`refl eq)         = S.reflexive (P.cong head eq)
+  `head (`refl eq)         = S.reflexive (≡.cong head eq)
   `head (`bisim rs)        = S.reflexive (rs .head)
   `head (`step `rs)        = `rs .head
   `head (`sym `rs)         = S.sym (`head `rs)
@@ -169,7 +169,7 @@ module pw-Reasoning (S : Setoid a ℓ) where
 
   `tail : ∀ {as bs} → `Pointwise as bs → `Pointwise (as .tail)  (bs .tail)
   `tail (`lift rs)         = `lift (rs .tail)
-  `tail (`refl eq)         = `refl (P.cong tail eq)
+  `tail (`refl eq)         = `refl (≡.cong tail eq)
   `tail (`bisim rs)        = `bisim (rs .tail)
   `tail (`step `rs)        = `rs .tail
   `tail (`sym `rs)         = `sym (`tail `rs)
@@ -196,8 +196,8 @@ module pw-Reasoning (S : Setoid a ℓ) where
   pattern _≈⟨_⟨_ as bs∼as bs∼cs = `trans {as = as} (`sym (`bisim bs∼as)) bs∼cs
   pattern _≡⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`refl as∼bs) bs∼cs
   pattern _≡⟨_⟨_ as bs∼as bs∼cs = `trans {as = as} (`sym (`refl bs∼as)) bs∼cs
-  pattern _≡⟨⟩_   as as∼bs       = `trans {as = as} (`refl P.refl) as∼bs
-  pattern _∎      as             = `refl  {as = as} P.refl
+  pattern _≡⟨⟩_   as as∼bs       = `trans {as = as} (`refl ≡.refl) as∼bs
+  pattern _∎      as             = `refl  {as = as} ≡.refl
 
 
   -- Deprecated v2.0
@@ -226,7 +226,7 @@ module pw-Reasoning (S : Setoid a ℓ) where
 
 module ≈-Reasoning {a} {A : Set a} where
 
-  open pw-Reasoning (P.setoid A) public
+  open pw-Reasoning (≡.setoid A) public
 
   infix 4 _≈∞_
   _≈∞_ = `Pointwise∞
