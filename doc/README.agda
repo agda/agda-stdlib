@@ -222,6 +222,10 @@ import Text.Printf
 
 import README.Case
 
+-- Showcasing the framework for well-scoped substitutions
+
+import README.Data.Fin.Substitution.UntypedLambda
+
 -- Some examples showing how combinators can be used to emulate
 -- "functional reasoning"
 

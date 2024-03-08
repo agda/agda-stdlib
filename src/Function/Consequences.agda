@@ -10,7 +10,7 @@
 
 module Function.Consequences where
 
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
 open import Function.Definitions
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
@@ -28,9 +28,9 @@ private
 ------------------------------------------------------------------------
 -- Injective
 
-contraInjective : Injective ≈₁ ≈₂ f →
+contraInjective : ∀ (≈₂ : Rel B ℓ₂) → Injective ≈₁ ≈₂ f →
                   ∀ {x y} → ¬ (≈₁ x y) → ¬ (≈₂ (f x) (f y))
-contraInjective inj p = contraposition inj p
+contraInjective _ inj p = contraposition inj p
 
 ------------------------------------------------------------------------
 -- Inverseˡ
@@ -72,14 +72,14 @@ surjective⇒strictlySurjective : ∀ (≈₂ : Rel B ℓ₂) →
                                  Surjective ≈₁ ≈₂ f →
                                  StrictlySurjective ≈₂ f
 surjective⇒strictlySurjective _ refl surj x =
-  Prod.map₂ (λ v → v refl) (surj x)
+  Product.map₂ (λ v → v refl) (surj x)
 
 strictlySurjective⇒surjective : Transitive ≈₂ →
                                  Congruent ≈₁ ≈₂ f →
                                  StrictlySurjective ≈₂ f →
                                  Surjective ≈₁ ≈₂ f
 strictlySurjective⇒surjective trans cong surj x =
-  Prod.map₂ (λ fy≈x z≈y → trans (cong z≈y) fy≈x) (surj x)
+  Product.map₂ (λ fy≈x z≈y → trans (cong z≈y) fy≈x) (surj x)
 
 ------------------------------------------------------------------------
 -- StrictlyInverseˡ

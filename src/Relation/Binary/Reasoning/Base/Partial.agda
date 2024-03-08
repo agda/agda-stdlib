@@ -11,7 +11,7 @@ open import Level using (_⊔_)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
 open import Relation.Nullary.Decidable using (Dec; yes; no)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Reasoning.Syntax
 
 

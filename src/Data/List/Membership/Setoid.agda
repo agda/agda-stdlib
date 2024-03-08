@@ -15,7 +15,7 @@ open import Function.Base using (_∘_; id; flip)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
 open import Data.List.Relation.Unary.Any as Any
   using (Any; index; map; here; there)
-open import Data.Product.Base as Prod using (∃; _×_; _,_)
+open import Data.Product.Base as Product using (∃; _×_; _,_)
 open import Relation.Unary using (Pred)
 open import Relation.Nullary.Negation using (¬_)
 
@@ -50,7 +50,7 @@ module _ {p} {P : Pred A p} where
 
   find : ∀ {xs} → Any P xs → ∃ λ x → x ∈ xs × P x
   find (here px)   = (_ , here refl , px)
-  find (there pxs) = Prod.map id (Prod.map there id) (find pxs)
+  find (there pxs) = Product.map id (Product.map there id) (find pxs)
 
   lose : P Respects _≈_ →  ∀ {x xs} → x ∈ xs → P x → Any P xs
   lose resp x∈xs px = map (flip resp px) x∈xs

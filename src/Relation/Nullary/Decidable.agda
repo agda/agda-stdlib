@@ -98,3 +98,6 @@ dec-no (no _) _ | refl = refl
 dec-yes-irr : (a? : Dec A) → Irrelevant A → (a : A) → a? ≡ yes a
 dec-yes-irr a? irr a with dec-yes a? a
 ... | a′ , eq rewrite irr a a′ = eq
+
+⌊⌋-map′ : ∀ t f (a? : Dec A) → ⌊ map′ {B = B} t f a? ⌋ ≡ ⌊ a? ⌋
+⌊⌋-map′ t f a? = trans (isYes≗does (map′ t f a?)) (sym (isYes≗does a?))

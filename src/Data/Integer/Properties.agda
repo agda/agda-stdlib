@@ -24,7 +24,7 @@ open import Data.Nat.Solver
 open import Data.Product.Base using (proj₁; proj₂; _,_; _×_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _𝕊*_)
-import Data.Sign.Properties as 𝕊ₚ
+import Data.Sign.Properties as Sign
 open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
@@ -810,7 +810,7 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
 +-identityˡ (+ _)    = refl
 
 +-identityʳ : RightIdentity +0 _+_
-+-identityʳ = comm+idˡ⇒idʳ +-comm +-identityˡ
++-identityʳ = comm∧idˡ⇒idʳ +-comm +-identityˡ
 
 +-identity : Identity +0 _+_
 +-identity = +-identityˡ , +-identityʳ
@@ -904,7 +904,7 @@ distribʳ-⊖-+-neg m n o = begin
 +-inverseˡ +[1+ n ] = n⊖n≡0 (suc n)
 
 +-inverseʳ : RightInverse +0 -_ _+_
-+-inverseʳ = comm+invˡ⇒invʳ +-comm +-inverseˡ
++-inverseʳ = comm∧invˡ⇒invʳ +-comm +-inverseˡ
 
 +-inverse : Inverse +0 -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
@@ -1319,7 +1319,7 @@ pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
 *-identityˡ +[1+ n ] rewrite ℕ.+-identityʳ n = refl
 
 *-identityʳ : RightIdentity 1ℤ _*_
-*-identityʳ = comm+idˡ⇒idʳ *-comm *-identityˡ
+*-identityʳ = comm∧idˡ⇒idʳ *-comm *-identityˡ
 
 *-identity : Identity 1ℤ _*_
 *-identity = *-identityˡ , *-identityʳ
@@ -1328,7 +1328,7 @@ pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
 *-zeroˡ _ = refl
 
 *-zeroʳ : RightZero 0ℤ _*_
-*-zeroʳ = comm+zeˡ⇒zeʳ *-comm *-zeroˡ
+*-zeroʳ = comm∧zeˡ⇒zeʳ *-comm *-zeroˡ
 
 *-zero : Zero 0ℤ _*_
 *-zero = *-zeroˡ , *-zeroʳ
@@ -1469,7 +1469,7 @@ private
         = refl
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
+*-distribˡ-+ = comm∧distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -1532,7 +1532,6 @@ private
   ; *-assoc          = *-assoc
   ; *-identity       = *-identity
   ; distrib          = *-distrib-+
-  ; zero             = *-zero
   }
 
 +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℤ 1ℤ
@@ -1598,7 +1597,7 @@ abs-* i j = abs-◃ _ _
 *-cancelʳ-≡ : ∀ i j k .{{_ : NonZero k}} → i * k ≡ j * k → i ≡ j
 *-cancelʳ-≡ i j k eq with sign-cong′ eq
 ... | inj₁ s[ik]≡s[jk] = ◃-cong
-  (𝕊ₚ.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
+  (Sign.*-cancelʳ-≡ (sign k) (sign i) (sign j) s[ik]≡s[jk])
   (ℕ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ _ (abs-cong eq))
 ... | inj₂ (∣ik∣≡0 , ∣jk∣≡0) = trans
   (∣i∣≡0⇒i≡0 (ℕ.m*n≡0⇒m≡0 _ _ ∣ik∣≡0))
@@ -1710,7 +1709,7 @@ neg-distribʳ-* i j = begin
 ◃-distrib-* s t zero    (suc n) = refl
 ◃-distrib-* s t (suc m) zero    =
   trans
-    (cong₂ _◃_ (𝕊ₚ.*-comm s t) (ℕ.*-comm m 0))
+    (cong₂ _◃_ (Sign.*-comm s t) (ℕ.*-comm m 0))
     (*-comm (t ◃ zero) (s ◃ suc m))
 ◃-distrib-* s t (suc m) (suc n) =
   sym (cong₂ _◃_

@@ -21,7 +21,7 @@ open import Relation.Binary.Core using (_⇒_; _=[_]⇒_)
 open import Relation.Binary.Bundles using (Setoid; Poset)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Antisymmetric)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
   variable
@@ -38,10 +38,10 @@ data Covec (A : Set a) : Coℕ → Set a where
   _∷_ : ∀ {n} (x : A) (xs : ∞ (Covec A (♭ n))) → Covec A (suc n)
 
 ∷-injectiveˡ : ∀ {a b} {n} {as bs} → (Covec A (suc n) ∋ a ∷ as) ≡ b ∷ bs → a ≡ b
-∷-injectiveˡ P.refl = P.refl
+∷-injectiveˡ ≡.refl = ≡.refl
 
 ∷-injectiveʳ : ∀ {a b} {n} {as bs} → (Covec A (suc n) ∋ a ∷ as) ≡ b ∷ bs → as ≡ bs
-∷-injectiveʳ P.refl = P.refl
+∷-injectiveʳ ≡.refl = ≡.refl
 
 ------------------------------------------------------------------------
 -- Some operations

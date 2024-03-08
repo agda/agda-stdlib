@@ -21,7 +21,7 @@ open import Data.Nat.DivMod
 open import Data.Nat.Induction
 open import Relation.Nullary.Decidable using (True; does; toWitness)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; cong)
 open import Function.Base using (_$_)
 
 ------------------------------------------------------------------------
@@ -55,11 +55,8 @@ toNatDigits base@(suc (suc _)) n = aux (<-wellFounded-fast n) []
   aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
   aux {zero}        _      xs =  (0 ∷ xs)
   aux {n@(suc _)} (acc wf) xs with does (0 <? n / base)
-  ... | false = (n % base) ∷ xs
-  ... | true  = aux (wf q<n) ((n % base) ∷ xs)
-    where
-    q<n : n / base < n
-    q<n = m/n<m n base (s<s z<s)
+  ... | false = (n % base) ∷ xs -- Could this more simply be n ∷ xs here?
+  ... | true  = aux (wf (m/n<m n base sz<ss)) ((n % base) ∷ xs)
 
 ------------------------------------------------------------------------
 -- Converting between `ℕ` and expansions of `Digit base`
@@ -88,7 +85,7 @@ toDigits base@(suc (suc k)) n = <′-rec Pred helper n
   Pred = λ n → ∃ λ ds → fromDigits ds ≡ n
 
   cons : ∀ {m} (r : Digit base) → Pred m → Pred (toℕ r + m * base)
-  cons r (ds , eq) = (r ∷ ds , P.cong (λ i → toℕ r + i * base) eq)
+  cons r (ds , eq) = (r ∷ ds , cong (λ i → toℕ r + i * base) eq)
 
   open ≤-Reasoning
   open +-*-Solver
@@ -107,7 +104,7 @@ toDigits base@(suc (suc k)) n = <′-rec Pred helper n
 
   helper : ∀ n → <′-Rec Pred n → Pred n
   helper n                       rec with n divMod base
-  ... | result zero    r eq = ([ r ] , P.sym eq)
+  ... | result zero    r eq = ([ r ] , sym eq)
   ... | result (suc x) r refl = cons r (rec (lem x k (toℕ r)))
 
 ------------------------------------------------------------------------

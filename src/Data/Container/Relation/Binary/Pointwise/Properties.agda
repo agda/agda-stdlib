@@ -17,19 +17,19 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality.Core as P
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; subst; cong)
 
 module _ {s p x r} {X : Set x} (C : Container s p) (R : Rel X r) where
 
   refl : Reflexive R → Reflexive (Pointwise C R)
-  refl R-refl = P.refl , λ p → R-refl
+  refl R-refl = ≡.refl , λ p → R-refl
 
   sym : Symmetric R → Symmetric (Pointwise C R)
-  sym R-sym (P.refl , f) = P.refl , λ p → R-sym (f p)
+  sym R-sym (≡.refl , f) = ≡.refl , λ p → R-sym (f p)
 
   trans : Transitive R → Transitive (Pointwise C R)
-  trans R-trans (P.refl , f) (P.refl , g) = P.refl , λ p → R-trans (f p) (g p)
+  trans R-trans (≡.refl , f) (≡.refl , g) = ≡.refl , λ p → R-trans (f p) (g p)
 
 private
 
@@ -38,4 +38,4 @@ private
 
   Eq⇒≡ : ∀ {s p x} {C : Container s p} {X : Set x} {xs ys : ⟦ C ⟧ X} →
          Extensionality p x → Pointwise C _≡_ xs ys → xs ≡ ys
-  Eq⇒≡ ext (P.refl , f≈f′) = cong -,_ (ext f≈f′)
+  Eq⇒≡ ext (≡.refl , f≈f′) = cong -,_ (ext f≈f′)
