@@ -31,14 +31,14 @@ infix 4 _≟₀_ _≟₁_ _≟₂_
 -- a proof of `Reflects P false` amounts to a refutation of `P`.
 
 ex₀ : (n : ℕ) → Reflects (n ≡ n) true
-ex₀ n = ofʸ refl
+ex₀ n = of refl
 
 ex₁ : (n : ℕ) → Reflects (zero ≡ suc n) false
-ex₁ n = ofⁿ λ ()
+ex₁ n = of λ ()
 
 ex₂ : (b : Bool) → Reflects (T b) b
-ex₂ false = ofⁿ id
-ex₂ true  = ofʸ tt
+ex₂ false = of id
+ex₂ true  = of tt
 
 ------------------------------------------------------------------------
 -- Dec
@@ -85,8 +85,8 @@ zero  ≟₁ suc n = no λ ()
 suc m ≟₁ zero  = no λ ()
 does  (suc m ≟₁ suc n) = does (m ≟₁ n)
 proof (suc m ≟₁ suc n) with m ≟₁ n
-... | yes p = ofʸ (cong suc p)
-... | no ¬p = ofⁿ (¬p ∘ suc-injective)
+... | yes p = of (cong suc p)
+... | no ¬p = of (¬p ∘ suc-injective)
 
 -- We now get definitional equalities such as the following.
 
