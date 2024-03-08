@@ -38,7 +38,7 @@ open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
 
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong ; sym ; trans)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the
 -- builtin for maximum speed.
@@ -132,6 +132,17 @@ private
     `y ← quoteTC y
     pure $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
 
+  -- Helper for constructing applications of 'trans'
+  `trans : ∀ {a} {A : Set a} (x : A) {y z : A} → Term → y ≡ z → TC Term
+  `trans {a} {A} x {y} {z} x≡y y≡z = do
+    eq ← quoteTC y≡z
+    `a ← quoteTC a
+    `A ← quoteTC A
+    `x ← quoteTC x
+    `y ← quoteTC y
+    `z ← quoteTC z
+    pure $ def (quote trans) $ `a ⟅∷⟆ `A ⟅∷⟆ `x ⟅∷⟆ `y ⟅∷⟆ `z ⟅∷⟆ x≡y ⟨∷⟩ eq ⟨∷⟩ []
+
 ------------------------------------------------------------------------
 -- Anti-Unification
 --
@@ -220,6 +231,20 @@ private
   antiUnifyClauses ϕ _ _ =
     just []
 
+  makeGoal : ∀ {a} {A : Set a} (x : A) {y z : A} → y ≡ z → Term → TC Term
+  makeGoal x y≡z hole = do
+    inner ← checkType unknown unknown
+    trans-tm ← `trans x inner y≡z
+    unify trans-tm hole
+    pure inner
+
+  solveGoal : ∀ {a} {A : Set a} {x y : A} → x ≡ y → Term → TC ⊤
+  solveGoal x≡y hole = do
+    goal ← inferType hole
+    eqGoal ← destructEqualityGoal goal
+    let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
+    cong-tm ← `cong eqGoal cong-lam x≡y
+    unify cong-tm hole
 
 ------------------------------------------------------------------------
 -- Rewriting
@@ -233,15 +258,17 @@ macro
     -- the endpoints of the equality are already specified in
     -- the form that the -- programmer expects them to be in,
     -- so normalising buys us nothing.
-    withNormalisation false $ do
-      goal ← inferType hole
-      eqGoal ← destructEqualityGoal goal
-      let uni = λ lhs rhs → do
-        let cong-lam = antiUnify 0 lhs rhs
-        cong-tm ← `cong eqGoal cong-lam x≡y
-        unify cong-tm hole
-      let lhs = EqualityGoal.lhs eqGoal
-      let rhs = EqualityGoal.rhs eqGoal
-      -- When using ⌞_⌟ with ≡˘⟨ ... ⟩, (uni lhs rhs) fails and
-      -- (uni rhs lhs) succeeds.
-      catchTC (uni lhs rhs) (uni rhs lhs)
+    withNormalisation false (solveGoal x≡y hole)
+
+  cong!-≡-⟫ : ∀ {a} {A : Set a} (x : A) {x' y' y z : A} → y ≡ z → x' ≡ y' → Term → TC ⊤
+  cong!-≡-⟫ x y≡z x'≡y' outer = withNormalisation false $
+    makeGoal x y≡z outer >>= solveGoal x'≡y'
+
+  cong!-≡-⟪ : ∀ {a} {A : Set a} (x : A) {x' y' y z : A} → y ≡ z → y' ≡ x' → Term → TC ⊤
+  cong!-≡-⟪ x y≡z y'≡x' outer = withNormalisation false $
+    makeGoal x y≡z outer >>= solveGoal (sym y'≡x')
+
+infixr 2 cong!-≡-⟫ cong!-≡-⟪
+
+syntax cong!-≡-⟫ x y≡z x'≡y' = x ≡⟪ x'≡y' ⟫ y≡z
+syntax cong!-≡-⟪ x y≡z y'≡x' = x ≡⟪ y'≡x' ⟪ y≡z
