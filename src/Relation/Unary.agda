@@ -195,18 +195,6 @@ Decidable P = ∀ x → Dec (P x)
 ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
 ⌊ P? ⌋ a = Lift _ (True (P? a))
 
--- Irrelevance - any two proofs that an element satifies P are
--- indistinguishable.
-
-Irrelevant : Pred A ℓ → Set _
-Irrelevant P = ∀ {x} → Nullary.Irrelevant (P x)
-
--- Recomputability - we can rebuild a relevant proof given an
--- irrelevant one.
-
-Recomputable : Pred A ℓ → Set _
-Recomputable P = ∀ {x} → Nullary.Recomputable (P x)
-
 ------------------------------------------------------------------------
 -- Operations on sets
 
