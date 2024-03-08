@@ -17,7 +17,8 @@ open import Function.Bundles using
 open import Relation.Binary.Bundles using (Setoid; module Setoid)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary using (invert; ¬_; contradiction; Irrelevant)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong′)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong′)
 
 private
   variable
