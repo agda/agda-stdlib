@@ -31,7 +31,7 @@ open import Relation.Binary.Definitions
   using (Reflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects_)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 
 open Setoid using (Carrier)
@@ -115,7 +115,7 @@ module _ (S : Setoid a ℓ) where
 module ⊆-Reasoning (S : Setoid a ℓ) where
   open Membership S using (_∈_)
 
-  private module Base = PreorderReasoning (⊆-preorder S)
+  private module Base = ≲-Reasoning (⊆-preorder S)
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-≲; step-∼)

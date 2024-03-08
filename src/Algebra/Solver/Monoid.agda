@@ -22,7 +22,7 @@ open import Data.Vec.Base using (Vec; lookup)
 open import Function.Base using (_∘_; _$_)
 open import Relation.Binary.Definitions using (Decidable)
 
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 import Relation.Binary.Reflection
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
@@ -128,7 +128,7 @@ prove′ e₁ e₂ =
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
   lemma eq ρ =
     R.prove ρ e₁ e₂ (begin
-      ⟦ normalise e₁ ⟧⇓ ρ  ≡⟨ P.cong (λ e → ⟦ e ⟧⇓ ρ) eq ⟩
+      ⟦ normalise e₁ ⟧⇓ ρ  ≡⟨ cong (λ e → ⟦ e ⟧⇓ ρ) eq ⟩
       ⟦ normalise e₂ ⟧⇓ ρ  ∎)
 
 -- This procedure can be combined with from-just.

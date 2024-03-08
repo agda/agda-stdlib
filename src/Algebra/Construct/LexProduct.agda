@@ -16,7 +16,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction; contradiction₂)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 module Algebra.Construct.LexProduct
   {ℓ₁ ℓ₂ ℓ₃ ℓ₄} (M : Magma ℓ₁ ℓ₂) (N : Magma ℓ₃ ℓ₄)

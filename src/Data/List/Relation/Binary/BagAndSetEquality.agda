@@ -15,10 +15,11 @@ open import Data.Empty
 open import Data.Fin.Base
 open import Data.List.Base
 open import Data.List.Effectful using (monad; module Applicative; module MonadProperties)
-import Data.List.Properties as LP
+import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties hiding (++-comm)
 open import Data.List.Membership.Propositional using (_∈_)
+open import Data.List.Membership.Propositional.Properties
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
@@ -39,13 +40,12 @@ open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Definitions using (Trans)
 open import Relation.Binary.Bundles using (Preorder; Setoid)
-import Relation.Binary.Reasoning.Setoid as EqR
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
+open import Relation.Binary.PropositionalEquality as ≡
+  using (_≡_; _≢_; _≗_; refl; module ≡-Reasoning)
 open import Relation.Binary.Reasoning.Syntax
 open import Relation.Nullary.Negation using (¬_)
-open import Data.List.Membership.Propositional.Properties
 
 private
   variable
@@ -93,7 +93,7 @@ bag-=⇒ xs≈ys = ↔⇒ xs≈ys
 -- "Equational" reasoning for _⊆_ along with an additional relatedness
 
 module ⊆-Reasoning {A : Set a} where
-  private module Base = PreorderReasoning (⊆-preorder A)
+  private module Base = ≲-Reasoning (⊆-preorder A)
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
@@ -140,10 +140,10 @@ module _ {k} {f g : A → B} {xs ys} where
 
     helper : ∀ y → x ≡ f y ↔ x ≡ g y
     helper y = mk↔ₛ′
-      (λ x≡fy → P.trans x≡fy (        f≗g y))
-      (λ x≡gy → P.trans x≡gy (P.sym $ f≗g y))
-      (λ { P.refl → P.trans-symˡ (f≗g y) })
-      λ { P.refl → P.trans-symʳ (f≗g y) }
+      (λ x≡fy → ≡.trans x≡fy (        f≗g y))
+      (λ x≡gy → ≡.trans x≡gy (≡.sym $ f≗g y))
+      (λ { ≡.refl → ≡.trans-symˡ (f≗g y) })
+      λ { ≡.refl → ≡.trans-symʳ (f≗g y) }
 
 ------------------------------------------------------------------------
 -- _++_
@@ -195,11 +195,11 @@ module _ {k} {A B : Set a} {fs gs : List (A → B)} {xs ys} where
   ⊛-cong : fs ∼[ k ] gs → xs ∼[ k ] ys → (fs ⊛ xs) ∼[ k ] (gs ⊛ ys)
   ⊛-cong fs≈gs xs≈ys {x} = begin
     x ∈ (fs ⊛ xs)
-      ≡⟨ P.cong (x ∈_) (Applicative.unfold-⊛ fs xs) ⟩
+      ≡⟨ ≡.cong (x ∈_) (Applicative.unfold-⊛ fs xs) ⟩
     x ∈ (fs >>= λ f → xs >>= λ x → pure (f x))
       ∼⟨ >>=-cong fs≈gs (λ f → >>=-cong xs≈ys λ x → K-refl) ⟩
     x ∈ (gs >>= λ g → ys >>= λ y → pure (g y))
-      ≡⟨ P.cong (x ∈_) (Applicative.unfold-⊛ gs ys) ⟨
+      ≡⟨ ≡.cong (x ∈_) (Applicative.unfold-⊛ gs ys) ⟨
     x ∈ (gs ⊛ ys) ∎
     where open Related.EquationalReasoning
 
@@ -232,7 +232,7 @@ commutativeMonoid {a} k A = record
         ; ∙-cong        = ++-cong
         }
       ; assoc         = λ xs ys zs →
-                          Eq.reflexive (LP.++-assoc xs ys zs)
+                          Eq.reflexive (List.++-assoc xs ys zs)
       }
     ; identityˡ = λ xs → K-refl
     ; comm      = λ xs ys → ↔⇒ (++↔++ xs ys)
@@ -284,10 +284,10 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
                 (xs₂ >>= pure ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
 
   (fs >>= λ f → xs₁ >>= pure ∘ f) ++
-  (fs >>= λ f → xs₂ >>= pure ∘ f)         ≡⟨ P.cong₂ _++_ (Applicative.unfold-⊛ fs xs₁) (Applicative.unfold-⊛ fs xs₂) ⟨
+  (fs >>= λ f → xs₂ >>= pure ∘ f)         ≡⟨ ≡.cong₂ _++_ (Applicative.unfold-⊛ fs xs₁) (Applicative.unfold-⊛ fs xs₂) ⟨
 
   (fs ⊛ xs₁) ++ (fs ⊛ xs₂)                ∎
-  where open EqR ([ bag ]-Equality B)
+  where open ≈-Reasoning ([ bag ]-Equality B)
 
 private
 
@@ -397,7 +397,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
     to (Fin-length-cong xs≈ys) (index-of p)                        ∎
     where
-    open P.≡-Reasoning
+    open ≡-Reasoning
     open Inverse
 
     lemma :
@@ -423,11 +423,11 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (Inverse.to xs≈ys q)
   index-equality-preserved {p = p} {q} xs≈ys eq =
     index-of (Inverse.to xs≈ys p)                  ≡⟨ index-of-commutes xs≈ys p ⟩
-    Inverse.to (Fin-length-cong xs≈ys) (index-of p)  ≡⟨ P.cong (Inverse.to (Fin-length-cong xs≈ys)) eq ⟩
-    Inverse.to (Fin-length-cong xs≈ys) (index-of q)  ≡⟨ P.sym $ index-of-commutes xs≈ys q ⟩
+    Inverse.to (Fin-length-cong xs≈ys) (index-of p)  ≡⟨ ≡.cong (Inverse.to (Fin-length-cong xs≈ys)) eq ⟩
+    Inverse.to (Fin-length-cong xs≈ys) (index-of q)  ≡⟨ ≡.sym $ index-of-commutes xs≈ys q ⟩
     index-of (Inverse.to xs≈ys q)                  ∎
     where
-    open P.≡-Reasoning
+    open ≡-Reasoning
 
   -- The old inspect idiom.
 
@@ -487,17 +487,17 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
           ∀ b → g (from f) from-hyp (g (to f) to-hyp b) ≡ b
     g∘g f to-hyp from-hyp b = g∘g′
       where
-      open P.≡-Reasoning
+      open ≡-Reasoning
 
       g∘g′ : g (from f) from-hyp (g (to f) to-hyp b) ≡ b
       g∘g′ with inspect (to f (inj₂ b))
       g∘g′ | inj₂ c , eq₁ with inspect (from f (inj₂ c))
       ...   | inj₂ b′ , eq₂ = inj₂-injective (
-        inj₂ b′            ≡⟨ P.sym eq₂ ⟩
+        inj₂ b′            ≡⟨ ≡.sym eq₂ ⟩
         from f (inj₂ c)   ≡⟨ to-from f eq₁ ⟩
         inj₂ b            ∎)
       ...   | inj₁ a  , eq₂ with
-        inj₁ a             ≡⟨ P.sym eq₂ ⟩
+        inj₁ a             ≡⟨ ≡.sym eq₂ ⟩
         from f (inj₂ c)    ≡⟨ to-from f eq₁ ⟩
         inj₂ b             ∎
       ... | ()
@@ -505,7 +505,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
       g∘g′ | inj₁ a , eq₁ | inj₁ a′ , eq₂ = ⊥-elim $ to-hyp eq₁ eq₂
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ with inspect (from f (inj₂ c))
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₂ b′ , eq₃ with
-        inj₁ a             ≡⟨ P.sym (to-from f eq₂) ⟩
+        inj₁ a             ≡⟨ ≡.sym (to-from f eq₂) ⟩
         from f (inj₂ c)    ≡⟨ eq₃ ⟩
         inj₂ b′            ∎
       ... | ()
@@ -513,12 +513,12 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₁ a″ , eq₄ = ⊥-elim $ from-hyp eq₃ eq₄
       g∘g′ | inj₁ a , eq₁ | inj₂ c  , eq₂ | inj₁ a′ , eq₃ | inj₂ b′ , eq₄ = inj₂-injective (
         let lemma =
-              inj₁ a′             ≡⟨ P.sym eq₃ ⟩
+              inj₁ a′             ≡⟨ ≡.sym eq₃ ⟩
               from f (inj₂ c)    ≡⟨ to-from f eq₂ ⟩
               inj₁ a             ∎
         in
-        inj₂ b′             ≡⟨ P.sym eq₄ ⟩
-        from f (inj₁ a′)    ≡⟨ P.cong (from f ∘ inj₁) $ inj₁-injective lemma ⟩
+        inj₂ b′             ≡⟨ ≡.sym eq₄ ⟩
+        from f (inj₁ a′)    ≡⟨ ≡.cong (from f ∘ inj₁) $ inj₁-injective lemma ⟩
         from f (inj₁ a)    ≡⟨ to-from f eq₁ ⟩
         inj₂ b              ∎)
 
@@ -541,21 +541,21 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ with
     zero                                                                  ≡⟨⟩
     index-of {xs = x ∷ xs} (here p)                                       ≡⟨⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)                         ≡⟨ P.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ P.sym $
+    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)                         ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ ≡.sym $
                                                                                to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))  ≡⟨ P.cong index-of $
+    index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))  ≡⟨ ≡.cong index-of $
                                                                                strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
     index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)                   ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)                   ≡⟨ P.cong index-of $ P.sym $
+    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)                   ≡⟨ ≡.cong index-of $ ≡.sym $
                                                                                strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))  ≡⟨ P.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $
+    index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))  ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $
                                                                                to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
     index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)                      ≡⟨⟩
     index-of {xs = x ∷ xs} (there z∈xs)                                   ≡⟨⟩
     suc (index-of {xs = xs} z∈xs)                                         ∎
     where
     open Inverse
-    open P.≡-Reasoning
+    open ≡-Reasoning
   ... | ()
 
 ------------------------------------------------------------------------
@@ -573,10 +573,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
   from∘to refl          v∈xs                 = refl
   from∘to (prep _ _)    (here refl)          = refl
-  from∘to (prep _ p)    (there v∈xs)         = P.cong there (from∘to p v∈xs)
+  from∘to (prep _ p)    (there v∈xs)         = ≡.cong there (from∘to p v∈xs)
   from∘to (swap x y p)  (here refl)          = refl
   from∘to (swap x y p)  (there (here refl))  = refl
-  from∘to (swap x y p)  (there (there v∈xs)) = P.cong (there ∘ there) (from∘to p v∈xs)
+  from∘to (swap x y p)  (there (there v∈xs)) = ≡.cong (there ∘ there) (from∘to p v∈xs)
   from∘to (trans p₁ p₂) v∈xs
     rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
           | from∘to p₁ v∈xs                  = refl
@@ -588,7 +588,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
 ∼bag⇒↭ {A = A} {[]} eq with empty-unique (↔-sym eq)
 ... | refl = refl
-∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here P.refl))
+∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl))
 ... | zs₁ , zs₂ , p rewrite p = begin
   x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
   x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩

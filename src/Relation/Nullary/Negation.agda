@@ -10,7 +10,7 @@ module Relation.Nullary.Negation where
 
 open import Effect.Monad using (RawMonad; mkRawMonad)
 open import Data.Bool.Base using (Bool; false; true; if_then_else_; not)
-open import Data.Product.Base as Prod using (_,_; Σ; Σ-syntax; ∃; curry; uncurry)
+open import Data.Product.Base as Product using (_,_; Σ; Σ-syntax; ∃; curry; uncurry)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (flip; _∘_; const; _∘′_)
 open import Level using (Level)
@@ -81,7 +81,7 @@ independence-of-premise : A → (B → Σ A P) → DoubleNegation (Σ[ x ∈ A ]
 independence-of-premise {A = A} {B = B} {P = P} q f = ¬¬-map helper ¬¬-excluded-middle
   where
   helper : Dec B → Σ[ x ∈ A ] (B → P x)
-  helper (yes p) = Prod.map₂ const (f p)
+  helper (yes p) = Product.map₂ const (f p)
   helper (no ¬p) = (q , contradictionᵒ ¬p)
 
 -- The independence of premise rule for binary sums.

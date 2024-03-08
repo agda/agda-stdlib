@@ -23,15 +23,15 @@ import Data.Product.Relation.Unary.All as Allᴾ
 open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; mapₙ)
 open import Data.Tree.Binary.Relation.Unary.All as Allᵀ using (leaf; node)
 open import Data.Unit using (⊤; tt)
-import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀₚ
-import Data.Tree.Binary.Properties as Treeₚ
+import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀ
+import Data.Tree.Binary.Properties as Tree
 
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Relation.Unary.All as Allᴹ using (nothing; just)
 
 open import Data.String.Base as String
   using (String; length; replicate; _++_; unlines)
-open import Data.String.Unsafe as Stringₚ
+open import Data.String.Unsafe as String
 open import Function.Base
 open import Relation.Nullary.Decidable using (Dec)
 open import Relation.Unary using (IUniversal; _⇒_; U)
@@ -162,10 +162,10 @@ private
 
     size-indents : ∀ ma t → #nodes (indents ma t) ≡ #nodes t
     size-indents nothing    t = refl
-    size-indents (just pad) t = Treeₚ.#nodes-mapₙ (pad ++_) t
+    size-indents (just pad) t = Tree.#nodes-mapₙ (pad ++_) t
 
     unfold-indents : ∀ ma t → indents ma t ≡ mapₙ (indent ma) t
-    unfold-indents nothing    t = sym (Treeₚ.map-id t)
+    unfold-indents nothing    t = sym (Tree.map-id t)
     unfold-indents (just pad) t = refl
 
     vContent : Content × String
@@ -250,7 +250,7 @@ private
       All≤-node? (≤-Content (m≤m⊔n _ _) ∣xs∣)
                  middle
                  (subst (Allᵀ.All _ U) (sym $ unfold-indents pad tl)
-                 $ Allᵀₚ.mapₙ⁺ (indent pad) (Allᵀ.mapₙ (indented _) ∣tl∣))
+                 $ Allᵀ.mapₙ⁺ (indent pad) (Allᵀ.mapₙ (indented _) ∣tl∣))
       where
 
       middle : length (lastx ++ hd) ≤ vMaxWidth

@@ -22,7 +22,7 @@ open import Relation.Binary.Core using (Rel; REL)
 open import Relation.Binary.Definitions
   using (Transitive; Symmetric; Asymmetric; Antisymmetric; Irreflexive; Trans; _Respects₂_; _Respectsˡ_; _Respectsʳ_; Decidable; Irrelevant)
 open import Relation.Binary.Structures using (IsPartialEquivalence)
-open import Relation.Binary.PropositionalEquality.Core as P
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong)
 import Relation.Nullary as Nullary
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_; _⊎-dec_)
@@ -101,9 +101,9 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
     transitive′ : ∀ {m n o P₂} → Trans (Lex P _≈_ _≺_ {m} {n}) (Lex P₂ _≈_ _≺_ {n} {o}) (Lex (P × P₂) _≈_ _≺_)
     transitive′ (base p₁)        (base p₂)        = base (p₁ , p₂)
-    transitive′ (this x≺y m≡n)   (this y≺z n≡o)   = this (≺-trans x≺y y≺z) (P.trans m≡n n≡o)
-    transitive′ (this x≺y m≡n)   (next y≈z ys<zs) = this (≺-respʳ-≈ y≈z x≺y) (P.trans m≡n (length-equal ys<zs))
-    transitive′ (next x≈y xs<ys) (this y≺z n≡o)   = this (≺-respˡ-≈ (sym x≈y) y≺z) (P.trans (length-equal xs<ys) n≡o)
+    transitive′ (this x≺y m≡n)   (this y≺z n≡o)   = this (≺-trans x≺y y≺z) (≡.trans m≡n n≡o)
+    transitive′ (this x≺y m≡n)   (next y≈z ys<zs) = this (≺-respʳ-≈ y≈z x≺y) (≡.trans m≡n (length-equal ys<zs))
+    transitive′ (next x≈y xs<ys) (this y≺z n≡o)   = this (≺-respˡ-≈ (sym x≈y) y≺z) (≡.trans (length-equal xs<ys) n≡o)
     transitive′ (next x≈y xs<ys) (next y≈z ys<zs) = next (trans x≈y y≈z) (transitive′ xs<ys ys<zs)
 
     transitive : ∀ {m n o} → Trans (_<ₗₑₓ_ {m} {n}) (_<ₗₑₓ_ {n} {o}) _<ₗₑₓ_

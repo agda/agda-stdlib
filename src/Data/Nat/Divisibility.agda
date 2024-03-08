@@ -23,7 +23,7 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder)
 open import Relation.Binary.Definitions
   using (Reflexive; Transitive; Antisymmetric; Decidable)
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; sym; cong; subst)
 open import Relation.Binary.Reasoning.Syntax
@@ -151,7 +151,7 @@ n@(suc _) ∣? m  = Dec.map (m%n≡0⇔n∣m m n) (m % n ≟ 0)
 -- A reasoning module for the _∣_ relation
 
 module ∣-Reasoning where
-  private module Base = PreorderReasoning ∣-preorder
+  private module Base = ≲-Reasoning ∣-preorder
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-∼; step-≲)
