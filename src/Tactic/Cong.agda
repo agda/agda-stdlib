@@ -240,8 +240,8 @@ macro
         let cong-lam = antiUnify 0 lhs rhs
         cong-tm ← `cong eqGoal cong-lam x≡y
         unify cong-tm hole
-      let lhs = EqualityGoal.rhs eqGoal
-      let rhs = EqualityGoal.lhs eqGoal
+      let lhs = EqualityGoal.lhs eqGoal
+      let rhs = EqualityGoal.rhs eqGoal
       -- When using ⌞_⌟ with ≡˘⟨ ... ⟩, (uni lhs rhs) fails and
       -- (uni rhs lhs) succeeds.
       catchTC (uni lhs rhs) (uni rhs lhs)
