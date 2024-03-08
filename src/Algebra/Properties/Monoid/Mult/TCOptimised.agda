@@ -10,7 +10,7 @@
 open import Algebra.Bundles using (Monoid)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 module Algebra.Properties.Monoid.Mult.TCOptimised
   {a ℓ} (M : Monoid a ℓ) where
@@ -75,7 +75,7 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×-congʳ (suc n@(suc _)) x≈y = +-cong (×-congʳ n x≈y) x≈y
 
 ×-cong : _×_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
-×-cong {n} P.refl x≈y = ×-congʳ n x≈y
+×-cong {n} ≡.refl x≈y = ×-congʳ n x≈y
 
 ×-assocˡ : ∀ x m n → m × (n × x) ≈ (m ℕ.* n) × x
 ×-assocˡ x m n = begin

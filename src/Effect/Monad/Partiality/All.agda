@@ -15,7 +15,7 @@ open import Function.Base using (flip; _∘_)
 open import Level
 open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 open Partiality._⊥
 open Partiality.Equality using (Rel)
@@ -82,7 +82,7 @@ module Reasoning {P : A → Set p}
   infixr 2 _≡⟨_⟩_ _∼⟨_⟩_
 
   _≡⟨_⟩_ : ∀ x {y} → x ≡ y → All P y → All P x
-  _ ≡⟨ P.refl ⟩ p = p
+  _ ≡⟨ ≡.refl ⟩ p = p
 
   _∼⟨_⟩_ : ∀ {k} x {y} → Rel _∼_ k x y → All P y → All P x
   _ ∼⟨ x∼y ⟩ p = respects-flip resp (⇒≈ x∼y) p
@@ -98,7 +98,7 @@ module Reasoning {P : A → Set p}
 -- equality.
 
 module Reasoning-≡ {a p} {A : Set a} {P : A → Set p}
-  = Reasoning {P = P} {_∼_ = _≡_} (P.subst P ∘ P.sym)
+  = Reasoning {P = P} {_∼_ = _≡_} (≡.subst P ∘ ≡.sym)
 
 ------------------------------------------------------------------------
 -- An alternative, but equivalent, formulation of All
@@ -140,12 +140,12 @@ module Alternative {a p : Level} where
 
     trans-≅ : {P : A → Set p} {x y : A ⊥} →
               x ≅ y → AllW P y → AllW P x
-    trans-≅ (now P.refl) (now   p) = now p
+    trans-≅ (now ≡.refl) (now   p) = now p
     trans-≅ (later  x≅y) (later p) = later (_ ≅⟨ ♭ x≅y ⟩P p)
 
     trans-≳ : {P : A → Set p} {x y : A ⊥} →
               x ≳ y → AllW P y → AllW P x
-    trans-≳ (now P.refl) (now   p) = now p
+    trans-≳ (now ≡.refl) (now   p) = now p
     trans-≳ (later  x≳y) (later p) = later (_ ≳⟨ ♭ x≳y ⟩P p)
     trans-≳ (laterˡ x≳y)        p  = later (_ ≳⟨   x≳y ⟩P program p)
 

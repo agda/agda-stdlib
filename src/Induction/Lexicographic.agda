@@ -68,13 +68,13 @@ RecA ⊗ RecB = Σ-Rec RecA (λ _ → RecB)
 private
 
   open import Data.Nat.Base
-  open import Data.Nat.Induction as N
+  open import Data.Nat.Induction as ℕ
 
   -- The Ackermann function à la Rózsa Péter.
 
   ackermann : ℕ → ℕ → ℕ
   ackermann m n =
-    build [ N.recBuilder ⊗ N.recBuilder ]
+    build [ ℕ.recBuilder ⊗ ℕ.recBuilder ]
           (λ _ → ℕ)
           (λ { (zero  , n)     _                   → 1 + n
              ; (suc m , zero)  (_         , ackm•) → ackm• 1

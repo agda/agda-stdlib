@@ -12,7 +12,7 @@
 module Data.List.Extrema.Nat where
 
 open import Data.Nat.Base using (ℕ; _≤_; _<_)
-open import Data.Nat.Properties as ℕₚ using (≤∧≢⇒<; <⇒≤; <⇒≢)
+open import Data.Nat.Properties as ℕ using (≤∧≢⇒<; <⇒≤; <⇒≢)
 open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.List.Base using (List)
 import Data.List.Extrema
@@ -33,7 +33,7 @@ private
   <×⇒< : ∀ {x y} → x ≤ y × x ≢ y → x < y
   <×⇒< (x≤y , x≢y) = ≤∧≢⇒< x≤y x≢y
 
-  module Extrema = Data.List.Extrema ℕₚ.≤-totalOrder
+  module Extrema = Data.List.Extrema ℕ.≤-totalOrder
 
 ------------------------------------------------------------------------
 -- Re-export the contents of Extrema

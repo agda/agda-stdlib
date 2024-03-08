@@ -8,9 +8,9 @@
 
 module Text.Regex.String where
 
-import Data.Char.Properties as Charₚ
+import Data.Char.Properties as Char
 
 ------------------------------------------------------------------------
 -- Re-exporting definitions
 
-open import Text.Regex Charₚ.≤-decPoset public
+open import Text.Regex Char.≤-decPoset public
