@@ -54,7 +54,7 @@ New modules
   ```agda
   Algebra.Module.Construct.Idealization
   ```
-  
+
 * `Function.Relation.Binary.Equality`
   ```agda
   setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
@@ -269,3 +269,6 @@ Additions to existing modules
   ↭-sym       : Symmetric (Vector A) _↭_
   ↭-trans     : Transitive (Vector A) _↭_
   ```
+
+* `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
+  anti-unification.
