@@ -54,7 +54,22 @@ New modules
   ```agda
   Algebra.Module.Construct.Idealization
   ```
-  
+
+* `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
+  ```agda
+  _↭_ : IRel (Vector A) _
+  ```
+
+* `Data.Vec.Functional.Relation.Binary.Permutation.Properties` of the above:
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  isIndexedEquivalence : {A : Set a} → IsIndexedEquivalence (Vector A) _↭_
+  indexedSetoid        : {A : Set a} → IndexedSetoid ℕ a _
+  ```
+
 * `Function.Relation.Binary.Equality`
   ```agda
   setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
@@ -257,15 +272,3 @@ Additions to existing modules
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
   ```
 
-* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
-  ```agda
-  _↭_ : IRel (Vector A) _
-  ```
-
-* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
-  ```agda
-  ↭-refl      : Reflexive (Vector A) _↭_
-  ↭-reflexive : xs ≡ ys → xs ↭ ys
-  ↭-sym       : Symmetric (Vector A) _↭_
-  ↭-trans     : Transitive (Vector A) _↭_
-  ```
