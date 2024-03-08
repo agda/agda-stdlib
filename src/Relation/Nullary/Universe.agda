@@ -19,7 +19,7 @@ import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
 open import Data.Sum.Base as Sum  hiding (map)
 open import Data.Sum.Relation.Binary.Pointwise using (_⊎ₛ_; inj₁; inj₂)
-open import Data.Product.Base as Prod hiding (map)
+open import Data.Product.Base as Product hiding (map)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Function.Base using (_∘_; id)
 open import Function.Indexed.Relation.Binary.Equality using (≡-setoid)
@@ -69,7 +69,7 @@ map : ∀ {p} (F : PropF p) {P Q} → (P → Q) → ⟦ F ⟧ P → ⟦ F ⟧ Q
 map Id        f  p = f p
 map (K P)     f  p = p
 map (F₁ ∨ F₂) f FP = Sum.map  (map F₁ f) (map F₂ f) FP
-map (F₁ ∧ F₂) f FP = Prod.map (map F₁ f) (map F₂ f) FP
+map (F₁ ∧ F₂) f FP = Product.map (map F₁ f) (map F₂ f) FP
 map (P₁ ⇒ F₂) f FP = map F₂ f ∘ FP
 map (¬¬ F)    f FP = ¬¬-map (map F f) FP
 

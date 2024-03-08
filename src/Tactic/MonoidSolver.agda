@@ -88,7 +88,7 @@ import Reflection.AST.Name as Name
 open import Reflection.TCM
 open import Reflection.TCM.Syntax
 
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- The Expr type with homomorphism proofs
@@ -103,7 +103,7 @@ data Expr {a} (A : Set a) : Set a where
 module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
 
   open Monoid monoid
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   -- Convert the AST to an expression (i.e. evaluate it) without
   -- normalising.

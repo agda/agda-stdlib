@@ -17,7 +17,7 @@ open import Data.Bool.Base as Bool
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
+open import Data.Product.Base as Product using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base
@@ -96,13 +96,13 @@ zipWith f _        _        = []
 unalignWith : (A → These B C) → List A → List B × List C
 unalignWith f []       = [] , []
 unalignWith f (a ∷ as) with f a
-... | this b    = Prod.map₁ (b ∷_) (unalignWith f as)
-... | that c    = Prod.map₂ (c ∷_) (unalignWith f as)
-... | these b c = Prod.map (b ∷_) (c ∷_) (unalignWith f as)
+... | this b    = Product.map₁ (b ∷_) (unalignWith f as)
+... | that c    = Product.map₂ (c ∷_) (unalignWith f as)
+... | these b c = Product.map (b ∷_) (c ∷_) (unalignWith f as)
 
 unzipWith : (A → B × C) → List A → List B × List C
 unzipWith f []         = [] , []
-unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
+unzipWith f (xy ∷ xys) = Product.zip _∷_ _∷_ (f xy) (unzipWith f xys)
 
 partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
 partitionSumsWith f = unalignWith (These.fromSum ∘′ f)
@@ -349,7 +349,7 @@ drop (suc n) (x ∷ xs) = drop n xs
 splitAt : ℕ → List A → List A × List A
 splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
-splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
+splitAt (suc n) (x ∷ xs) = Product.map₁ (x ∷_) (splitAt n xs)
 
 removeAt : (xs : List A) → Fin (length xs) → List A
 removeAt (x ∷ xs) zero     = xs
@@ -415,7 +415,7 @@ partitionᵇ p = partition (T? ∘ p)
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 span P? []       = ([] , [])
 span P? ys@(x ∷ xs) with does (P? x)
-... | true  = Prod.map (x ∷_) id (span P? xs)
+... | true  = Product.map (x ∷_) id (span P? xs)
 ... | false = ([] , ys)
 
 

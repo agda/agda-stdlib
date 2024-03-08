@@ -18,9 +18,9 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Function.Base
 open import Level
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; _≢_; _≗_; refl)
-open P.≡-Reasoning
+open ≡.≡-Reasoning
 
 private
   variable
@@ -125,7 +125,7 @@ module MonadProperties where
   right-identity : ∀ {ℓ} {A : Set ℓ} (xs : List A) →
                    (xs >>= pure) ≡ xs
   right-identity []       = refl
-  right-identity (x ∷ xs) = P.cong (x ∷_) (right-identity xs)
+  right-identity (x ∷ xs) = ≡.cong (x ∷_) (right-identity xs)
 
   left-zero : ∀ {ℓ} {A B : Set ℓ} (f : A → List B) → (∅ >>= f) ≡ ∅
   left-zero f = refl
@@ -147,8 +147,8 @@ module MonadProperties where
                        (xs ∣ ys >>= f) ≡ ((xs >>= f) ∣ (ys >>= f))
   right-distributive []       ys f = refl
   right-distributive (x ∷ xs) ys f = begin
-    f x ∣ (xs ∣ ys >>= f)              ≡⟨ P.cong (f x ∣_) $ right-distributive xs ys f ⟩
-    f x ∣ ((xs >>= f) ∣ (ys >>= f))    ≡⟨ P.sym $ ++-assoc (f x) _ _ ⟩
+    f x ∣ (xs ∣ ys >>= f)              ≡⟨ ≡.cong (f x ∣_) $ right-distributive xs ys f ⟩
+    f x ∣ ((xs >>= f) ∣ (ys >>= f))    ≡⟨ ≡.sym $ ++-assoc (f x) _ _ ⟩
     ((f x ∣ (xs >>= f)) ∣ (ys >>= f))  ∎
 
   associative : ∀ {ℓ} {A B C : Set ℓ}
@@ -156,13 +156,13 @@ module MonadProperties where
                 (xs >>= λ x → f x >>= g) ≡ (xs >>= f >>= g)
   associative []       f g = refl
   associative (x ∷ xs) f g = begin
-    (f x >>= g) ∣ (xs >>= λ x → f x >>= g)  ≡⟨ P.cong ((f x >>= g) ∣_) $ associative xs f g ⟩
-    (f x >>= g) ∣ (xs >>= f >>= g)          ≡⟨ P.sym $ right-distributive (f x) (xs >>= f) g ⟩
+    (f x >>= g) ∣ (xs >>= λ x → f x >>= g)  ≡⟨ ≡.cong ((f x >>= g) ∣_) $ associative xs f g ⟩
+    (f x >>= g) ∣ (xs >>= f >>= g)          ≡⟨ ≡.sym $ right-distributive (f x) (xs >>= f) g ⟩
     (f x ∣ (xs >>= f) >>= g)                ∎
 
   cong : ∀ {ℓ} {A B : Set ℓ} {xs₁ xs₂} {f₁ f₂ : A → List B} →
          xs₁ ≡ xs₂ → f₁ ≗ f₂ → (xs₁ >>= f₁) ≡ (xs₂ >>= f₂)
-  cong {xs₁ = xs} refl f₁≗f₂ = P.cong concat (map-cong f₁≗f₂ xs)
+  cong {xs₁ = xs} refl f₁≗f₂ = ≡.cong concat (map-cong f₁≗f₂ xs)
 
 ------------------------------------------------------------------------
 -- The applicative functor derived from the list monad.
@@ -202,14 +202,14 @@ module Applicative where
 
   unfold-<$> : ∀ {ℓ} {A B : Set ℓ} → (f : A → B) (as : List A) →
                (f <$> as) ≡ (pure f ⊛ as)
-  unfold-<$> f as = P.sym (++-identityʳ (f <$> as))
+  unfold-<$> f as = ≡.sym (++-identityʳ (f <$> as))
 
   -- _⊛_ unfolds to binds.
   unfold-⊛ : ∀ {ℓ} {A B : Set ℓ} → (fs : List (A → B)) (as : List A) →
              (fs ⊛ as) ≡ (fs >>= pam as)
   unfold-⊛ fs as = begin
     fs ⊛ as
-      ≡⟨ concatMap-cong (λ f → P.cong (map f) (concatMap-pure as)) fs ⟨
+      ≡⟨ concatMap-cong (λ f → ≡.cong (map f) (concatMap-pure as)) fs ⟨
     concatMap (λ f → map f (concatMap pure as)) fs
       ≡⟨ concatMap-cong (λ f → map-concatMap f pure as) fs ⟩
     concatMap (λ f → concatMap (λ x → pure (f x)) as) fs
@@ -224,7 +224,7 @@ module Applicative where
   right-distributive fs₁ fs₂ xs = begin
     (fs₁ ∣ fs₂) ⊛ xs                     ≡⟨ unfold-⊛ (fs₁ ∣ fs₂) xs ⟩
     (fs₁ ∣ fs₂ >>= pam xs)               ≡⟨ MonadProperties.right-distributive fs₁ fs₂ (pam xs) ⟩
-    (fs₁ >>= pam xs) ∣ (fs₂ >>= pam xs)  ≡⟨ P.cong₂ _∣_ (unfold-⊛ fs₁ xs) (unfold-⊛ fs₂ xs) ⟨
+    (fs₁ >>= pam xs) ∣ (fs₂ >>= pam xs)  ≡⟨ ≡.cong₂ _∣_ (unfold-⊛ fs₁ xs) (unfold-⊛ fs₂ xs) ⟨
     (fs₁ ⊛ xs ∣ fs₂ ⊛ xs)                ∎
 
   -- _⊛_ does not distribute over _∣_ from the left.
@@ -262,9 +262,9 @@ module Applicative where
     pure _∘′_ ⊛ fs ⊛ gs ⊛ xs
       ≡⟨ unfold-⊛ (pure _∘′_ ⊛ fs ⊛ gs) xs ⟩
     (pure _∘′_ ⊛ fs ⊛ gs >>= pam xs)
-      ≡⟨ P.cong (_>>= pam xs) (unfold-⊛ (pure _∘′_ ⊛ fs) gs) ⟩
+      ≡⟨ ≡.cong (_>>= pam xs) (unfold-⊛ (pure _∘′_ ⊛ fs) gs) ⟩
     (pure _∘′_ ⊛ fs >>= pam gs >>= pam xs)
-      ≡⟨ P.cong (λ h → h >>= pam gs >>= pam xs) (unfold-⊛ (pure _∘′_) fs) ⟩
+      ≡⟨ ≡.cong (λ h → h >>= pam gs >>= pam xs) (unfold-⊛ (pure _∘′_) fs) ⟩
     (pure _∘′_ >>= pam fs >>= pam gs >>= pam xs)
       ≡⟨ MP.cong (MP.cong (MP.left-identity _∘′_ (pam fs))
                  (λ f → refl {x = pam gs f}))
@@ -278,13 +278,13 @@ module Applicative where
     (fs >>= λ f → gs >>= λ g → pam xs (f ∘′ g))
       ≡⟨ (MP.cong (refl {x = fs}) λ f →
          MP.cong (refl {x = gs}) λ g →
-         P.sym $ pam-lemma xs g (pure ∘ f)) ⟩
+         ≡.sym $ pam-lemma xs g (pure ∘ f)) ⟩
     (fs >>= λ f → gs >>= λ g → pam (pam xs g) f)
       ≡⟨ MP.cong (refl {x = fs}) (λ f → MP.associative gs (pam xs) (pure ∘ f)) ⟩
     (fs >>= pam (gs >>= pam xs))
       ≡⟨ unfold-⊛ fs (gs >>= pam xs) ⟨
     fs ⊛ (gs >>= pam xs)
-      ≡⟨ P.cong (fs ⊛_) (unfold-⊛ gs xs) ⟨
+      ≡⟨ ≡.cong (fs ⊛_) (unfold-⊛ gs xs) ⟨
     fs ⊛ (gs ⊛ xs)
       ∎
 
@@ -303,6 +303,6 @@ module Applicative where
     (fs >>= pam (pure x))      ≡⟨ (MP.cong (refl {x = fs}) λ f →
                                       MP.left-identity x (pure ∘ f)) ⟩
     (fs >>= λ f → pure (f x))  ≡⟨⟩
-    (pam fs (_$′ x))           ≡⟨ P.sym $ MP.left-identity (_$′ x) (pam fs) ⟩
+    (pam fs (_$′ x))           ≡⟨ ≡.sym $ MP.left-identity (_$′ x) (pam fs) ⟩
     (pure (_$′ x) >>= pam fs)  ≡⟨ unfold-⊛ (pure (_$′ x)) fs ⟨
     pure (_$′ x) ⊛ fs          ∎
