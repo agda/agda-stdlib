@@ -11,7 +11,7 @@ module Data.List.Relation.Binary.Permutation.Homogeneous where
 open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
-  using (Pointwise; _∷_)
+  using (Pointwise; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
@@ -68,6 +68,16 @@ module _ {R : Rel A r}  where
   ↭-pointwise : (Pointwise R) ⇒ Permutation R
   ↭-pointwise = refl
 
+-- Smart eliminators
+
+  ↭-[]-invˡ : Permutation R [] xs → xs ≡ []
+  ↭-[]-invˡ (refl [])           = ≡.refl
+  ↭-[]-invˡ (trans xs↭ys ys↭zs) with ≡.refl ← ↭-[]-invˡ xs↭ys = ↭-[]-invˡ ys↭zs
+
+  ↭-[]-invʳ : Permutation R xs [] → xs ≡ []
+  ↭-[]-invʳ (refl [])           = ≡.refl
+  ↭-[]-invʳ (trans xs↭ys ys↭zs) with ≡.refl ← ↭-[]-invʳ ys↭zs = ↭-[]-invʳ xs↭ys
+
 
 ------------------------------------------------------------------------
 -- The Permutation relation is an equivalence
@@ -94,6 +104,20 @@ module _ {R : Rel A r}  where
   setoid R-refl R-sym = record
     { isEquivalence = isEquivalence R-refl R-sym
     }
+
+------------------------------------------------------------------------
+-- A smart version of trans that pushes `refl`s to the leaves (see #1113).
+
+module _ {R : Rel A r}
+         (↭-transˡ-≋ : LeftTrans (Pointwise R) (Permutation R))
+         (↭-transʳ-≋ : RightTrans (Permutation R) (Pointwise R))
+         where
+
+  ↭-trans′ : Transitive (Permutation R)
+  ↭-trans′ (refl xs≋ys) ys↭zs = ↭-transˡ-≋ xs≋ys ys↭zs
+  ↭-trans′ xs↭ys (refl ys≋zs) = ↭-transʳ-≋ xs↭ys ys≋zs
+  ↭-trans′ xs↭ys ys↭zs        = trans xs↭ys ys↭zs
+
 
 ------------------------------------------------------------------------
 -- Map
@@ -196,11 +220,8 @@ module _ {R : Rel A r} (R-trans : Transitive R) where
   ↭-transʳ-≋ (swap eq₁ eq₂ xs↭ys) (x≈w ∷ y≈z ∷ ys≋zs) = swap (R-trans eq₁ y≈z) (R-trans eq₂ x≈w) (↭-transʳ-≋ xs↭ys ys≋zs)
   ↭-transʳ-≋ (trans xs↭ws ws↭ys) ys≋zs = trans xs↭ws (↭-transʳ-≋ ws↭ys ys≋zs)
 
--- A smart version of trans that pushes `refl`s to the leaves (see #1113).
   ↭-trans : Transitive (Permutation R)
-  ↭-trans (refl xs≋ys) ys↭zs = ↭-transˡ-≋ xs≋ys ys↭zs
-  ↭-trans xs↭ys (refl ys≋zs) = ↭-transʳ-≋ xs↭ys ys≋zs
-  ↭-trans xs↭ys ys↭zs        = trans xs↭ys ys↭zs
+  ↭-trans = ↭-trans′ ↭-transˡ-≋ ↭-transʳ-≋
 
 
 module _ {R : Rel A r} (R-sym : Symmetric R) (R-trans : Transitive R) where
