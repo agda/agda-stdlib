@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Binary.Permutation.Homogeneous where
 
-open import Algebra using (IsCommutativeMonoid; Op₂)
+open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; _∷_)
@@ -366,9 +366,8 @@ module _ {R : Rel A r} (R-sym : Symmetric R)
 
 -- foldr of Commutative Monoid
 
-module _ {_≈_ : Rel A r} {_∙_ : Op₂ A} {ε : A}
-         (isCommutativeMonoid : IsCommutativeMonoid _≈_ _∙_ ε) where
-  open module CM = IsCommutativeMonoid isCommutativeMonoid
+module _ (commutativeMonoid : CommutativeMonoid a r) where
+  open module CM = CommutativeMonoid commutativeMonoid
 
   private foldr = List.foldr
 

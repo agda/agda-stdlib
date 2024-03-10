@@ -311,5 +311,9 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
 module _ {_∙_ : Op₂ A} {ε : A}
          (isCommutativeMonoid : IsCommutativeMonoid _≈_ _∙_ ε) where
 
+  private
+    commutativeMonoid : CommutativeMonoid _ _
+    commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
+
   foldr-commMonoid : ∀ {xs ys} → xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
-  foldr-commMonoid = Properties.foldr-commMonoid isCommutativeMonoid
+  foldr-commMonoid = Properties.foldr-commMonoid commutativeMonoid
