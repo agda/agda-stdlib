@@ -83,15 +83,20 @@ steps = Homogeneous.steps
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs
 
-module PermutationReasoning where
+module ↭-Reasoning (↭-isEquivalence : IsEquivalence _↭_)
+                   (↭-pointwise : _≋_ ⇒ _↭_)
+                   (↭-prep : ∀ x {xs ys} → xs ↭ ys → x ∷ xs ↭ x ∷ ys)
+                   (↭-swap : ∀ x y {xs ys} → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys)
+                   where
 
-  private module Base = ≈-Reasoning ↭-setoid
+  private
+    module Base = ≈-Reasoning (record { isEquivalence = ↭-isEquivalence })
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
     renaming (≈-go to ↭-go)
 
-  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym public
+  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go (IsEquivalence.sym ↭-isEquivalence) public
   open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ (↭-go ∘′ ↭-pointwise) ≋-sym public
 
   -- Some extra combinators that allow us to skip certain elements
@@ -110,3 +115,6 @@ module PermutationReasoning where
 
   syntax step-prep x xs y↭z x↭y = x ∷ xs <⟨ x↭y ⟩ y↭z
   syntax step-swap x y xs y↭z x↭y = x ∷ y ∷ xs <<⟨ x↭y ⟩ y↭z
+
+module PermutationReasoning = ↭-Reasoning ↭-isEquivalence ↭-pointwise ↭-prep ↭-swap
+
