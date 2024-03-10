@@ -15,7 +15,7 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions using (Reflexive; Transitive)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-import Relation.Binary.Reasoning.Setoid as EqReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 
 ------------------------------------------------------------------------
@@ -74,7 +74,7 @@ data _↭_ : Rel (List A) a where
 
 module PermutationReasoning where
 
-  private module Base = EqReasoning ↭-setoid
+  private module Base = ≈-Reasoning ↭-setoid
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)

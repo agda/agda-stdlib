@@ -26,7 +26,7 @@ open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
-  using ( Reflexive; Symmetric; Transitive
+  using ( Reflexive; Symmetric; Transitive; LeftTrans; RightTrans
         ; _Respects_; _Respects₂_; _Respectsˡ_; _Respectsʳ_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; cong)
@@ -63,13 +63,19 @@ module _ {R : Rel A r}  where
   steps (swap _ _ xs↭ys)    = suc (steps xs↭ys)
   steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 
+-- Constructor alias
+
+  ↭-pointwise : (Pointwise R) ⇒ Permutation R
+  ↭-pointwise = refl
+
+
 ------------------------------------------------------------------------
 -- The Permutation relation is an equivalence
 
 module _ {R : Rel A r}  where
 
-  perm-refl : Reflexive R → Reflexive (Permutation R)
-  perm-refl R-refl = refl (Pointwise.refl R-refl)
+  ↭-refl′ : Reflexive R → Reflexive (Permutation R)
+  ↭-refl′ R-refl = ↭-pointwise (Pointwise.refl R-refl)
 
   sym : Symmetric R → Symmetric (Permutation R)
   sym R-sym (refl xs∼ys)           = refl (Pointwise.symmetric R-sym xs∼ys)
@@ -79,7 +85,7 @@ module _ {R : Rel A r}  where
 
   isEquivalence : Reflexive R → Symmetric R → IsEquivalence (Permutation R)
   isEquivalence R-refl R-sym = record
-    { refl  = perm-refl R-refl
+    { refl  = ↭-refl′ R-refl
     ; sym   = sym R-sym
     ; trans = trans
     }
@@ -150,6 +156,15 @@ module _ {R : Rel A r} where
     <-≤-trans (0<steps xs↭ys) (m≤m+n (steps xs↭ys) (steps xs↭ys₁))
 
 
+module _ {R : Rel A r} (R-refl : Reflexive R) where
+
+  ↭-prep : ∀ x {xs ys} → Permutation R xs ys → Permutation R (x ∷ xs) (x ∷ ys)
+  ↭-prep _ xs↭ys = prep R-refl xs↭ys
+
+  ↭-swap : ∀ x y {xs ys} → Permutation R xs ys → Permutation R (x ∷ y ∷ xs) (y ∷ x ∷ ys)
+  ↭-swap _ _ xs↭ys = swap R-refl R-refl xs↭ys
+
+
 module _ {R : Rel A r} (R-trans : Transitive R) where
 
   private
@@ -168,6 +183,24 @@ module _ {R : Rel A r} (R-trans : Transitive R) where
   steps-respʳ (_ ∷ ys≋xs)     (prep _ ys↭zs)      = cong suc (steps-respʳ ys≋xs ys↭zs)
   steps-respʳ (_ ∷ _ ∷ ys≋xs) (swap _ _ ys↭zs)    = cong suc (steps-respʳ ys≋xs ys↭zs)
   steps-respʳ ys≋xs           (trans ys↭ws ws↭zs) = cong (steps ys↭ws +_) (steps-respʳ ys≋xs ws↭zs)
+
+  ↭-transˡ-≋ : LeftTrans (Pointwise R) (Permutation R)
+  ↭-transˡ-≋ xs≋ys               (refl ys≋zs)         = refl (≋-trans xs≋ys ys≋zs)
+  ↭-transˡ-≋ (x≈y ∷ xs≋ys)       (prep y≈z ys↭zs)     = prep (R-trans x≈y y≈z) (↭-transˡ-≋ xs≋ys ys↭zs)
+  ↭-transˡ-≋ (x≈y ∷ w≈z ∷ xs≋ys) (swap eq₁ eq₂ ys↭zs) = swap (R-trans x≈y eq₁) (R-trans w≈z eq₂) (↭-transˡ-≋ xs≋ys ys↭zs)
+  ↭-transˡ-≋ xs≋ys               (trans ys↭ws ws↭zs)  = trans (↭-transˡ-≋ xs≋ys ys↭ws) ws↭zs
+
+  ↭-transʳ-≋ : RightTrans (Permutation R) (Pointwise R)
+  ↭-transʳ-≋ (refl xs≋ys) ys≋zs = refl (≋-trans xs≋ys ys≋zs)
+  ↭-transʳ-≋ (prep x≈y xs↭ys) (y≈z ∷ ys≋zs) = prep (R-trans x≈y y≈z) (↭-transʳ-≋ xs↭ys ys≋zs)
+  ↭-transʳ-≋ (swap eq₁ eq₂ xs↭ys) (x≈w ∷ y≈z ∷ ys≋zs) = swap (R-trans eq₁ y≈z) (R-trans eq₂ x≈w) (↭-transʳ-≋ xs↭ys ys≋zs)
+  ↭-transʳ-≋ (trans xs↭ws ws↭ys) ys≋zs = trans xs↭ws (↭-transʳ-≋ ws↭ys ys≋zs)
+
+-- A smart version of trans that pushes `refl`s to the leaves (see #1113).
+  ↭-trans : Transitive (Permutation R)
+  ↭-trans (refl xs≋ys) ys↭zs = ↭-transˡ-≋ xs≋ys ys↭zs
+  ↭-trans xs↭ys (refl ys≋zs) = ↭-transʳ-≋ xs↭ys ys≋zs
+  ↭-trans xs↭ys ys↭zs        = trans xs↭ys ys↭zs
 
 
 module _ {R : Rel A r} (R-sym : Symmetric R) (R-trans : Transitive R) where
@@ -191,11 +224,12 @@ module _ {R : Rel A r} (R-sym : Symmetric R) (R-trans : Transitive R) where
   steps-respˡ (_ ∷ _ ∷ ys≋xs) (swap _ _ ys↭zs)    = cong suc (steps-respˡ ys≋xs ys↭zs)
   steps-respˡ ys≋xs           (trans ys↭ws ws↭zs) = cong (_+ steps ws↭zs) (steps-respˡ ys≋xs ys↭ws)
 
+
 module _ {R : Rel A r} (R-refl : Reflexive R) (R-trans : Transitive R) where
 
   private
     ≋-refl = Pointwise.refl {R = R} R-refl
-    ↭-refl = perm-refl {R = R} R-refl
+    ↭-refl = ↭-refl′ {R = R} R-refl
     _++[_]++_ = λ (xs : List A) z ys → xs List.++ List.[ z ] List.++ ys
 
   split-↭ : ∀ v as bs {xs} → Permutation R xs (as ++[ v ]++ bs) →
@@ -236,21 +270,21 @@ module _ {R : Rel A r}
   private
     ≋-refl = Pointwise.refl {R = R} R-refl
     ≋-sym  = Pointwise.symmetric {R = R} R-sym
-    ↭-refl = perm-refl {R = R} R-refl
+    ↭-refl = ↭-refl′ {R = R} R-refl
     ↭-sym  = sym {R = R} R-sym
     _++[_]++_ = λ (xs : List A) z ys → xs List.++ List.[ z ] List.++ ys
 
   shift : ∀ {v w} → R v w → ∀ xs {ys} →
           Permutation R (xs ++[ v ]++ ys) (w ∷ xs List.++ ys)
   shift {v} {w} v≈w []       = refl (v≈w ∷ ≋-refl)
-  shift {v} {w} v≈w (x ∷ xs) = trans (prep R-refl (shift v≈w xs)) (swap R-refl R-refl ↭-refl)
+  shift {v} {w} v≈w (x ∷ xs) = trans (↭-prep R-refl x (shift v≈w xs)) (↭-swap R-refl x w ↭-refl)
 
   dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
                         Pointwise R (ws ++[ x ]++ ys) (xs ++[ x ]++ zs) →
                         Permutation R (ws List.++ ys) (xs List.++ zs)
   dropMiddleElement-≋ []       []       (_   ∷ eq) = refl eq
-  dropMiddleElement-≋ []       (x ∷ xs) (w≈v ∷ eq) = trans (refl eq) (shift w≈v xs)
-  dropMiddleElement-≋ (w ∷ ws) []       (w≈x ∷ eq) = trans (↭-sym (shift (R-sym w≈x) ws)) (refl eq)
+  dropMiddleElement-≋ []       (x ∷ xs) (w≈v ∷ eq) = ↭-transˡ-≋ R-trans eq (shift w≈v xs)
+  dropMiddleElement-≋ (w ∷ ws) []       (w≈x ∷ eq) = ↭-transʳ-≋ R-trans (↭-sym (shift (R-sym w≈x) ws)) eq
   dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (dropMiddleElement-≋ ws xs eq)
 
   dropMiddleElement : ∀ {v} ws xs {ys zs} →

@@ -20,7 +20,7 @@ open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
-import Data.List.Properties as Lₚ
+import Data.List.Properties as List
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
 open import Level using (Level)
@@ -180,7 +180,7 @@ drop-mid-≡ []       []       eq   with cong tail eq
 drop-mid-≡ []       []       eq   | refl = refl
 drop-mid-≡ []       (x ∷ xs) refl = shift _ xs _
 drop-mid-≡ (w ∷ ws) []       refl = ↭-sym (shift _ ws _)
-drop-mid-≡ (w ∷ ws) (x ∷ xs) eq with Lₚ.∷-injective eq
+drop-mid-≡ (w ∷ ws) (x ∷ xs) eq with List.∷-injective eq
 ... | refl , eq′ = prep w (drop-mid-≡ ws xs eq′)
 
 drop-mid : ∀ {x : A} ws xs {ys zs} →
@@ -231,13 +231,13 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
 ++-identityˡ xs = refl
 
 ++-identityʳ : RightIdentity {A = List A} _↭_ [] _++_
-++-identityʳ xs = ↭-reflexive (Lₚ.++-identityʳ xs)
+++-identityʳ xs = ↭-reflexive (List.++-identityʳ xs)
 
 ++-identity : Identity {A = List A} _↭_ [] _++_
 ++-identity = ++-identityˡ , ++-identityʳ
 
 ++-assoc : Associative {A = List A} _↭_ _++_
-++-assoc xs ys zs = ↭-reflexive (Lₚ.++-assoc xs ys zs)
+++-assoc xs ys zs = ↭-reflexive (List.++-assoc xs ys zs)
 
 ++-comm : Commutative {A = List A} _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
@@ -313,7 +313,7 @@ drop-∷ = drop-mid [] []
 ∷↭∷ʳ : ∀ (x : A) xs → x ∷ xs ↭ xs ∷ʳ x
 ∷↭∷ʳ x xs = ↭-sym (begin
   xs ++ [ x ]   ↭⟨ shift x xs [] ⟩
-  x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
+  x ∷ xs ++ []  ≡⟨ List.++-identityʳ _ ⟩
   x ∷ xs        ∎)
 
 ------------------------------------------------------------------------
@@ -329,10 +329,10 @@ drop-∷ = drop-mid [] []
 ↭-reverse : (xs : List A) → reverse xs ↭ xs
 ↭-reverse [] = ↭-refl
 ↭-reverse (x ∷ xs) = begin
-  reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
-  reverse xs ∷ʳ x ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
-  x ∷ reverse xs   ↭⟨ prep x (↭-reverse xs) ⟩
-  x ∷ xs ∎
+  reverse (x ∷ xs) ≡⟨ List.unfold-reverse x xs ⟩
+  reverse xs ∷ʳ x  ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
+  x ∷ reverse xs   <⟨ ↭-reverse xs ⟩
+  x ∷ xs           ∎
   where open PermutationReasoning
 
 ------------------------------------------------------------------------
@@ -346,10 +346,13 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
   merge-↭ (x ∷ xs) []       = ↭-sym (++-identityʳ (x ∷ xs))
   merge-↭ (x ∷ xs) (y ∷ ys)
     with does (R? x y) | merge-↭ xs (y ∷ ys) | merge-↭ (x ∷ xs) ys
-  ... | true  | rec | _   = prep x rec
+  ... | true  | rec | _   = begin
+    x ∷ merge R? xs (y ∷ ys) <⟨ rec ⟩
+    x ∷ xs ++ y ∷ ys         ∎
+    where open PermutationReasoning
   ... | false | _   | rec = begin
     y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
     y ∷ x ∷ xs ++ ys         ↭⟨ shift y (x ∷ xs) ys ⟨
-    (x ∷ xs) ++ y ∷ ys       ≡⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟨
+    (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
