@@ -260,7 +260,7 @@ module _ {R : Rel A r} (R-refl : Reflexive R) (R-trans : Transitive R) where
       with ps′ , qs′ , eq′ , ↭′ ← helper ps qs (↭-respʳ-≋ R-trans eq xs↭ys)
         (rec (≡.subst (_< _) (≡.sym (steps-respʳ R-trans eq xs↭ys))
              (m<m+n (steps xs↭ys) (0<steps ys↭zs))))
-      = ps′ , qs′ , eq′ , trans ↭′ ↭
+      = ps′ , qs′ , eq′ , ↭-trans R-trans ↭′ ↭
 
 module _ {R : Rel A r}
          (R-refl : Reflexive R)
@@ -292,7 +292,7 @@ module _ {R : Rel A r}
                       Permutation R (ws List.++ ys) (xs List.++ zs)
   dropMiddleElement {v} ws xs {ys} {zs} p
     with ps , qs , eq , ↭ ← split-↭ R-refl R-trans v xs zs p
-    = trans (dropMiddleElement-≋ ws ps eq) ↭
+    = ↭-trans R-trans (dropMiddleElement-≋ ws ps eq) ↭
 
 
 ------------------------------------------------------------------------
@@ -329,28 +329,28 @@ module _ {R : Rel A r} (R-refl : Reflexive R) where
 
 -- filter
 
-module _ {R : Rel A r} (sym : Symmetric R)
+module _ {R : Rel A r} (R-sym : Symmetric R)
          {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects R) where
 
   filter⁺ : Permutation R xs ys →
             Permutation R (List.filter P? xs) (List.filter P? ys)
-  filter⁺ (refl xs≋ys)        = refl (Pointwise.filter⁺ P? P? P≈ (P≈ ∘ sym) xs≋ys)
+  filter⁺ (refl xs≋ys)        = refl (Pointwise.filter⁺ P? P? P≈ (P≈ ∘ R-sym) xs≋ys)
   filter⁺ (trans xs↭zs zs↭ys) = trans (filter⁺ xs↭zs) (filter⁺ zs↭ys)
   filter⁺ {x ∷ xs} {y ∷ ys} (prep x≈y xs↭ys) with P? x | P? y
   ... | yes _  | yes _  = prep x≈y (filter⁺ xs↭ys)
   ... | yes Px | no ¬Py = contradiction (P≈ x≈y Px) ¬Py
-  ... | no ¬Px | yes Py = contradiction (P≈ (sym x≈y) Py) ¬Px
+  ... | no ¬Px | yes Py = contradiction (P≈ (R-sym x≈y) Py) ¬Px
   ... | no  _  | no  _  = filter⁺ xs↭ys
   filter⁺ {x ∷ w ∷ xs} {y ∷ z ∷ ys} (swap x≈z w≈y xs↭ys) with P? x | P? y
   filter⁺ {x ∷ w ∷ xs} {y ∷ z ∷ ys} (swap x≈z w≈y xs↭ys) | no ¬Px | no ¬Py
     with P? z | P? w
   ... | _      | yes Pw = contradiction (P≈ w≈y Pw) ¬Py
-  ... | yes Pz | _      = contradiction (P≈ (sym x≈z) Pz) ¬Px
+  ... | yes Pz | _      = contradiction (P≈ (R-sym x≈z) Pz) ¬Px
   ... | no _   | no  _  = filter⁺ xs↭ys
   filter⁺ {x ∷ w ∷ xs} {y ∷ z ∷ ys} (swap x≈z w≈y xs↭ys) | no ¬Px | yes Py
     with P? z | P? w
-  ... | _      | no ¬Pw = contradiction (P≈ (sym w≈y) Py) ¬Pw
-  ... | yes Pz | _      = contradiction (P≈ (sym x≈z) Pz) ¬Px
+  ... | _      | no ¬Pw = contradiction (P≈ (R-sym w≈y) Py) ¬Pw
+  ... | yes Pz | _      = contradiction (P≈ (R-sym x≈z) Pz) ¬Px
   ... | no _   | yes _  = prep w≈y (filter⁺ xs↭ys)
   filter⁺ {x ∷ w ∷ xs} {y ∷ z ∷ ys} (swap x≈z w≈y xs↭ys)  | yes Px | no ¬Py
     with P? z | P? w
@@ -360,7 +360,7 @@ module _ {R : Rel A r} (sym : Symmetric R)
   filter⁺ {x ∷ w ∷ xs} {y ∷ z ∷ ys} (swap x≈z w≈y xs↭ys) | yes Px | yes Py
     with P? z | P? w
   ... | no ¬Pz | _      = contradiction (P≈ x≈z Px) ¬Pz
-  ... | _      | no ¬Pw = contradiction (P≈ (sym w≈y) Py) ¬Pw
+  ... | _      | no ¬Pw = contradiction (P≈ (R-sym w≈y) Py) ¬Pw
   ... | yes _  | yes _  = swap x≈z w≈y (filter⁺ xs↭ys)
 
 
