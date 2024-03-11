@@ -11,7 +11,7 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive)
+  using (Reflexive; Symmetric; Transitive; LeftTrans; RightTrans)
 open import Relation.Binary.Reasoning.Syntax
 
 module Data.List.Relation.Binary.Permutation.Setoid
@@ -38,7 +38,7 @@ _↭_ : Rel (List A) (a ⊔ ℓ)
 _↭_ = Homogeneous.Permutation _≈_
 
 ------------------------------------------------------------------------
--- Constructor aliases
+-- Smart constructor aliases
 
 -- These provide aliases for the `Homogeneous` smart constructors, in
 -- particular for `swap` and `prep` when the elements being swapped or
@@ -53,11 +53,11 @@ _↭_ = Homogeneous.Permutation _≈_
 ↭-swap : ∀ x y {xs ys} → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
 ↭-swap = Homogeneous.↭-swap ≈-refl
 
-↭-trans : Transitive _↭_
-↭-trans = Homogeneous.↭-trans ≈-trans
+↭-trans′ : LeftTrans _≋_ _↭_ → RightTrans _↭_ _≋_ → Transitive _↭_
+↭-trans′ = Homogeneous.↭-trans′
 
 ------------------------------------------------------------------------
--- Functions over permutations
+-- Functions over permutations (retained for legacy)
 
 steps : ∀ {xs ys} → xs ↭ ys → ℕ
 steps = Homogeneous.steps
@@ -74,29 +74,31 @@ steps = Homogeneous.steps
 ↭-sym : Symmetric _↭_
 ↭-sym = Homogeneous.sym ≈-sym
 
+↭-trans : Transitive _↭_
+↭-trans = Homogeneous.↭-trans ≈-trans
+
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record { refl = ↭-refl ; sym = ↭-sym ; trans = ↭-trans }
-
-↭-setoid : Setoid _ _
-↭-setoid = record { isEquivalence = ↭-isEquivalence }
 
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs
 
 module ↭-Reasoning (↭-isEquivalence : IsEquivalence _↭_)
                    (↭-pointwise : _≋_ ⇒ _↭_)
-                   (↭-prep : ∀ x {xs ys} → xs ↭ ys → x ∷ xs ↭ x ∷ ys)
-                   (↭-swap : ∀ x y {xs ys} → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys)
                    where
 
+  ↭-setoid : Setoid _ _
+  ↭-setoid = record { isEquivalence = ↭-isEquivalence }
+
   private
-    module Base = ≈-Reasoning (record { isEquivalence = ↭-isEquivalence })
+    open IsEquivalence ↭-isEquivalence using () renaming (sym to ↭-sym′)
+    module Base = ≈-Reasoning ↭-setoid
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
     renaming (≈-go to ↭-go)
 
-  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go (IsEquivalence.sym ↭-isEquivalence) public
+  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym′ public
   open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ (↭-go ∘′ ↭-pointwise) ≋-sym public
 
   -- Some extra combinators that allow us to skip certain elements
@@ -116,5 +118,10 @@ module ↭-Reasoning (↭-isEquivalence : IsEquivalence _↭_)
   syntax step-prep x xs y↭z x↭y = x ∷ xs <⟨ x↭y ⟩ y↭z
   syntax step-swap x y xs y↭z x↭y = x ∷ y ∷ xs <<⟨ x↭y ⟩ y↭z
 
-module PermutationReasoning = ↭-Reasoning ↭-isEquivalence ↭-pointwise ↭-prep ↭-swap
+module PermutationReasoning = ↭-Reasoning ↭-isEquivalence ↭-pointwise
+
+------------------------------------------------------------------------
+-- Bundle export
+
+open PermutationReasoning public using (↭-setoid)
 
