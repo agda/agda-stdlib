@@ -31,14 +31,14 @@ open import Function.Base using (_$_)
 open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
 open import Data.Char.Base   as Char  using (toℕ)
 open import Data.Float.Base  as Float using (_≡ᵇ_)
-open import Data.List.Base   as List  using ([]; _∷_)
+open import Data.List.Base   as List  using (List; []; _∷_; _++_)
 open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base    as ℕ     using (ℕ; zero; suc; _≡ᵇ_; _+_)
 open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
 
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong ; sym ; trans)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong ; sym)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the
 -- builtin for maximum speed.
@@ -132,17 +132,6 @@ private
     `y ← quoteTC y
     pure $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
 
-  -- Helper for constructing applications of 'trans'
-  `trans : ∀ {a} {A : Set a} (x : A) {y z : A} → Term → y ≡ z → TC Term
-  `trans {a} {A} x {y} {z} x≡y y≡z = do
-    eq ← quoteTC y≡z
-    `a ← quoteTC a
-    `A ← quoteTC A
-    `x ← quoteTC x
-    `y ← quoteTC y
-    `z ← quoteTC z
-    pure $ def (quote trans) $ `a ⟅∷⟆ `A ⟅∷⟆ `x ⟅∷⟆ `y ⟅∷⟆ `z ⟅∷⟆ x≡y ⟨∷⟩ eq ⟨∷⟩ []
-
 ------------------------------------------------------------------------
 -- Anti-Unification
 --
@@ -231,13 +220,6 @@ private
   antiUnifyClauses ϕ _ _ =
     just []
 
-  makeGoal : ∀ {a} {A : Set a} (x : A) {y z : A} → y ≡ z → Term → TC Term
-  makeGoal x y≡z hole = do
-    inner ← checkType unknown unknown
-    trans-tm ← `trans x inner y≡z
-    unify trans-tm hole
-    pure inner
-
   solveGoal : ∀ {a} {A : Set a} {x y : A} → x ≡ y → Term → TC ⊤
   solveGoal x≡y hole = do
     goal ← inferType hole
@@ -245,6 +227,69 @@ private
     let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
     cong-tm ← `cong eqGoal cong-lam x≡y
     unify cong-tm hole
+
+  -- Associate each relation with its step function
+  module _ where
+    open import Relation.Binary.PropositionalEquality using (_≡_ ; trans)
+
+    go₁ : Name × Name
+    go₁ = quote _≡_ , quote trans
+
+  module _ where
+    open import Relation.Binary.Reasoning.Base.Single using (_IsRelatedTo_ ; ≡-go)
+
+    go₂ : Name × Name
+    go₂ = quote _IsRelatedTo_ , quote ≡-go
+
+  module _ where
+    open import Relation.Binary.Reasoning.Base.Double using (_IsRelatedTo_ ; ≡-go)
+
+    go₃ : Name × Name
+    go₃ = quote _IsRelatedTo_ , quote ≡-go
+
+  module _ where
+    open import Relation.Binary.Reasoning.Base.Triple using (_IsRelatedTo_ ; ≡-go)
+
+    go₄ : Name × Name
+    go₄ = quote _IsRelatedTo_ , quote ≡-go
+
+  goMap : List (Name × Name)
+  goMap = go₁ ∷ go₂ ∷ go₃ ∷ go₄ ∷ []
+
+  -- Map a relation to its step function
+  relToGo : Name → List (Name × Name) → TC Name
+  relToGo rel [] = typeError (strErr "cong! - unsupported relation: " ∷ nameErr rel ∷ [])
+  relToGo rel ((rel' , go) ∷ gos) = if rel' Name.≡ᵇ rel then pure go else relToGo rel gos
+
+  -- Drop the last two arguments to a relation, e.g., the x and y in x ≡ y
+  dropArgs : Args Term → TC (Args Term)
+  dropArgs (_ ∷ _ ∷ []) = pure []
+  dropArgs (a₁ ∷ a₂ ∷ a₃ ∷ as) = (a₁ ∷_) <$> dropArgs (a₂ ∷ a₃ ∷ as)
+  dropArgs _ = typeError (strErr "cong! - short argument list" ∷ [])
+
+  parseRel : Term → TC (Name × Args Term)
+  parseRel `yRz = inferType `yRz >>= λ where
+    (def rel args) → pure $ rel , args
+    term → typeError (strErr "cong! - not a relation: " ∷ termErr term ∷ [])
+
+  -- Construct an application of the given relation's step function
+  `go : ∀ {a r} {A : Set a} {R : Set r} → A → Term → R → TC Term
+  `go {a = a} {A = A} x inner yRz = do
+    `x ← quoteTC x
+    `yRz ← quoteTC yRz
+    rel , args ← parseRel `yRz
+    go ← relToGo rel goMap
+    args' ← dropArgs args
+    -- Assume that the step function has arguments args' followed by
+    -- {x} {y} {z} x≡y yRz. We skip {y} and {z}, which we don't know.
+    pure $ def go $ args' ++ `x ⟅∷⟆ inner ⟨∷⟩ `yRz ⟨∷⟩ []
+
+  makeGoal : ∀ {a r} {A : Set a} {R : Set r} → A → R → Term → TC Term
+  makeGoal x yRz outer = do
+    inner ← checkType unknown unknown
+    go-tm ← `go x inner yRz
+    unify go-tm outer
+    pure inner
 
 ------------------------------------------------------------------------
 -- Rewriting
@@ -260,15 +305,15 @@ macro
     -- so normalising buys us nothing.
     withNormalisation false (solveGoal x≡y hole)
 
-  cong!-≡-⟫ : ∀ {a} {A : Set a} (x : A) {x' y' y z : A} → y ≡ z → x' ≡ y' → Term → TC ⊤
-  cong!-≡-⟫ x y≡z x'≡y' outer = withNormalisation false $
-    makeGoal x y≡z outer >>= solveGoal x'≡y'
+  cong!-≡-⟩ : ∀ {a r} {A : Set a} {R : Set r} {x' y' : A} → A → R → x' ≡ y' → Term → TC ⊤
+  cong!-≡-⟩ x yRz x'≡y' outer = withNormalisation false $ do
+    makeGoal x yRz outer >>= solveGoal x'≡y'
 
-  cong!-≡-⟪ : ∀ {a} {A : Set a} (x : A) {x' y' y z : A} → y ≡ z → y' ≡ x' → Term → TC ⊤
-  cong!-≡-⟪ x y≡z y'≡x' outer = withNormalisation false $
-    makeGoal x y≡z outer >>= solveGoal (sym y'≡x')
+  cong!-≡-⟨ : ∀ {a r} {A : Set a} {R : Set r} {x' y' : A} → A → R → y' ≡ x' → Term → TC ⊤
+  cong!-≡-⟨ x yRz y'≡x' outer = withNormalisation false $
+    makeGoal x yRz outer >>= solveGoal (sym y'≡x')
 
-infixr 2 cong!-≡-⟫ cong!-≡-⟪
+infixr 2 cong!-≡-⟩ cong!-≡-⟨
 
-syntax cong!-≡-⟫ x y≡z x'≡y' = x ≡⟪ x'≡y' ⟫ y≡z
-syntax cong!-≡-⟪ x y≡z y'≡x' = x ≡⟪ y'≡x' ⟪ y≡z
+syntax cong!-≡-⟩ x yRz x'≡y' = x ≡⟨! x'≡y' ⟩ yRz
+syntax cong!-≡-⟨ x yRz y'≡x' = x ≡⟨! y'≡x' ⟨ yRz
