@@ -26,7 +26,7 @@
 
 module Tactic.Cong where
 
-open import Function.Base using (_$_)
+open import Function.Base using (_$_ ; case_of_)
 
 open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
 open import Data.Char.Base   as Char  using (toℕ)
@@ -257,15 +257,17 @@ private
   goMap = go₁ ∷ go₂ ∷ go₃ ∷ go₄ ∷ []
 
   -- Map a relation to its step function
-  relToGo : Name → List (Name × Name) → TC Name
-  relToGo rel [] = typeError (strErr "cong! - unsupported relation: " ∷ nameErr rel ∷ [])
-  relToGo rel ((rel' , go) ∷ gos) = if rel' Name.≡ᵇ rel then pure go else relToGo rel gos
+  relToGo : Name → List (Name × Name) → Maybe Name
+  relToGo rel [] = nothing
+  relToGo rel ((rel' , go) ∷ gos) = if rel' Name.≡ᵇ rel then just go else relToGo rel gos
 
   -- Drop the last two arguments to a relation, e.g., the x and y in x ≡ y
-  dropArgs : Args Term → TC (Args Term)
-  dropArgs (_ ∷ _ ∷ []) = pure []
-  dropArgs (a₁ ∷ a₂ ∷ a₃ ∷ as) = (a₁ ∷_) <$> dropArgs (a₂ ∷ a₃ ∷ as)
-  dropArgs _ = typeError (strErr "cong! - short argument list" ∷ [])
+  dropArgs : Args Term → Maybe (Args Term)
+  dropArgs (_ ∷ _ ∷ []) = just []
+  dropArgs (a₁ ∷ a₂ ∷ a₃ ∷ as) = case dropArgs (a₂ ∷ a₃ ∷ as) of λ where
+    nothing → nothing
+    (just as') → just (a₁ ∷ as')
+  dropArgs _ = nothing
 
   parseRel : Term → TC (Name × Args Term)
   parseRel `yRz = inferType `yRz >>= λ where
@@ -278,8 +280,13 @@ private
     `x ← quoteTC x
     `yRz ← quoteTC yRz
     rel , args ← parseRel `yRz
-    go ← relToGo rel goMap
-    args' ← dropArgs args
+    -- Recursing in Maybe seems faster than recursing in TC.
+    go ← case relToGo rel goMap of λ where
+      nothing → typeError (strErr "cong! - short argument list" ∷ [])
+      (just go) → pure go
+    args' ← case dropArgs args of λ where
+      nothing → typeError (strErr "cong! - unsupported relation: " ∷ nameErr rel ∷ [])
+      (just args') → pure args'
     -- Assume that the step function has arguments args' followed by
     -- {x} {y} {z} x≡y yRz. We skip {y} and {z}, which we don't know.
     -- We must specify {x}, because the x we have at hand had
