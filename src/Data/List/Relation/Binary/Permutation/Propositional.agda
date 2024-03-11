@@ -10,18 +10,15 @@ module Data.List.Relation.Binary.Permutation.Propositional
   {a} {A : Set a} where
 
 open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Relation.Binary.Equality.Propositional using (_≋_; ≋⇒≡)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Reflexive; Transitive; LeftTrans; RightTrans)
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; refl; setoid)
-import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-open import Relation.Binary.Reasoning.Syntax
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; setoid)
 
-open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
-import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
 
 
 ------------------------------------------------------------------------
@@ -42,7 +39,10 @@ data _↭_ : Rel (List A) a where
   trans : ∀ {xs ys zs}  → xs ↭ ys → ys ↭ zs → xs ↭ zs
 -}
 open module ↭ = Permutation (setoid A) public
-  using (_↭_; ↭-refl; ↭-sym; ↭-prep; ↭-swap; module ↭-Reasoning)
+  hiding ( ↭-reflexive; ↭-pointwise; ↭-trans
+         ; ↭-isEquivalence; ↭-setoid; module PermutationReasoning
+         )
+
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
@@ -50,18 +50,18 @@ open module ↭ = Permutation (setoid A) public
 ↭-reflexive : _≡_ ⇒ _↭_
 ↭-reflexive refl = ↭-refl
 
-↭-pointwise : (Pointwise _≡_) ⇒ _↭_
-↭-pointwise xs≋ys = ↭-reflexive (Pointwise.Pointwise-≡⇒≡ xs≋ys)
+↭-pointwise : _≋_ ⇒ _↭_
+↭-pointwise xs≋ys = ↭-reflexive (≋⇒≡ xs≋ys)
 
 -- A smart version of trans that avoids unnecessary `refl`s (see #1113).
 ↭-trans : Transitive _↭_
-↭-trans = Properties.↭-trans′ ↭-transˡ-≋ ↭-transʳ-≋
+↭-trans = ↭-trans′ ↭-transˡ-≋ ↭-transʳ-≋
   where
-  ↭-transˡ-≋ : LeftTrans (Pointwise _≡_) _↭_
-  ↭-transˡ-≋ xs≋ys ys↭zs with refl ← Pointwise.Pointwise-≡⇒≡ xs≋ys = ys↭zs
+  ↭-transˡ-≋ : LeftTrans _≋_ _↭_
+  ↭-transˡ-≋ xs≋ys ys↭zs with refl ← ≋⇒≡ xs≋ys = ys↭zs
 
-  ↭-transʳ-≋ : RightTrans _↭_ (Pointwise _≡_)
-  ↭-transʳ-≋ xs↭ys ys≋zs with refl ← Pointwise.Pointwise-≡⇒≡ ys≋zs = xs↭ys
+  ↭-transʳ-≋ : RightTrans _↭_ _≋_
+  ↭-transʳ-≋ xs↭ys ys≋zs with refl ← ≋⇒≡ ys≋zs = xs↭ys
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record
@@ -70,13 +70,15 @@ open module ↭ = Permutation (setoid A) public
   ; trans = ↭-trans
   }
 
-↭-setoid : Setoid _ _
-↭-setoid = record
-  { isEquivalence = ↭-isEquivalence
-  }
-
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs and allow "zooming in"
--- to localised reasoning.
+-- to localised reasoning. For details of the axiomatisation, and
+-- in particular the refactored dependencies,
+-- see `Data.List.Relation.Binary.Permutation.Setoid`
 
 module PermutationReasoning = ↭-Reasoning ↭-isEquivalence ↭-pointwise
+
+------------------------------------------------------------------------
+-- Bundle export
+
+open PermutationReasoning public using (↭-setoid)
