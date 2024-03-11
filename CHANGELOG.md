@@ -135,9 +135,23 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
-* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+* In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits⁺     : List A → List⁺ (List A)
+  scanl⁺     : (A → B → A) → A → List B → List⁺ A
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-map    : (f : A → B) → toList ∘ map f ≗ List.map f ∘ toList
+  toList-inits⁺ : toList ∘ inits⁺ ≗ List.inits
+  scanl⁺-defn   : scanl⁺ f e ≗ map (List.foldl f e) ∘ inits⁺
+  toList-scanl⁺ : toList ∘ scanl⁺ f e ≗ List.map (List.foldl f e) ∘ List.inits
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

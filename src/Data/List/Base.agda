@@ -193,12 +193,18 @@ iterate f e zero    = []
 iterate f e (suc n) = e ∷ iterate f (f e) n
 
 inits : List A → List (List A)
-inits []       = [] ∷ []
-inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
+inits {A = A} xs = [] ∷ go xs
+  where
+  go : List A → List (List A)
+  go []       = []
+  go (x ∷ xs) = [ x ] ∷ map (x ∷_) (go xs)
 
 tails : List A → List (List A)
-tails []       = [] ∷ []
-tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
+tails {A = A} xs = xs ∷ go xs
+  where
+  go : List A → List (List A)
+  go []       = []
+  go (_ ∷ xs) = xs ∷ go xs
 
 insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
 insertAt xs       zero    v = v ∷ xs
@@ -217,8 +223,11 @@ scanr f e (x ∷ xs) with scanr f e xs
 ... | y ∷ ys = f x y ∷ y ∷ ys
 
 scanl : (A → B → A) → A → List B → List A
-scanl f e []       = e ∷ []
-scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
+scanl {A = A} {B = B} f e xs = e ∷ go e xs
+  where
+  go : A → List B → List A
+  go _ []       = []
+  go e (x ∷ xs) = let fex = f e x in fex ∷ go fex xs
 
 -- Tabulation
 

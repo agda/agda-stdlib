@@ -113,6 +113,39 @@ map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
 
+toList-map : ∀ (f : A → B) xs → toList (map f xs) ≡ List.map f (toList xs)
+toList-map f (x ∷ xs) = refl
+
+------------------------------------------------------------------------
+-- inits
+
+toList-inits⁺ : (xs : List A) → toList (inits⁺ xs) ≡ List.inits xs
+toList-inits⁺ []       = refl
+toList-inits⁺ (x ∷ xs) = cong (([] ∷_) ∘ List.map (x ∷_)) (toList-inits⁺ xs)
+
+------------------------------------------------------------------------
+-- scanl
+
+module _ (f : A → B → A) where
+  
+  private
+    h = List.foldl f
+
+  scanl⁺-defn : ∀ e → scanl⁺ f e ≗ map (h e) ∘ inits⁺
+  scanl⁺-defn e []       = refl
+  scanl⁺-defn e (x ∷ xs) = let eq = scanl⁺-defn (f e x) xs in
+    cong (e ∷_) $ cong (f e x ∷_) $ trans (cong tail eq) (List.map-∘ _)
+
+  toList-scanl⁺ : ∀ e → toList ∘ scanl⁺ f e ≗ List.map (h e) ∘ List.inits
+  toList-scanl⁺ e xs = begin
+    toList (scanl⁺ f e xs)
+      ≡⟨ cong toList (scanl⁺-defn e xs) ⟩
+    toList (map (h e) (inits⁺ xs))
+      ≡⟨ toList-map (h e) (inits⁺ xs) ⟩
+    List.map (h e) (toList (inits⁺ xs))
+      ≡⟨ cong (List.map (h e)) (toList-inits⁺ xs) ⟩
+    List.map (h e) (List.inits xs) ∎
+
 ------------------------------------------------------------------------
 -- groupSeqs
 
