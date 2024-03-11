@@ -282,6 +282,10 @@ private
     args' ← dropArgs args
     -- Assume that the step function has arguments args' followed by
     -- {x} {y} {z} x≡y yRz. We skip {y} and {z}, which we don't know.
+    -- We must specify {x}, because the x we have at hand had
+    -- normalisation inhibited and thus still contains the markers,
+    -- ⌞_⌟. If we let Agda figure out {x} instead, then any markers
+    -- would be lost.
     pure $ def go $ args' ++ `x ⟅∷⟆ inner ⟨∷⟩ `yRz ⟨∷⟩ []
 
   makeGoal : ∀ {a r} {A : Set a} {R : Set r} → A → R → Term → TC Term
