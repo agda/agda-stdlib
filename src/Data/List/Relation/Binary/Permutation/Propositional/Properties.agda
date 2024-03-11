@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Data.List.Relation.Binary.Permutation.Propositional.Properties where
+module Data.List.Relation.Binary.Permutation.Propositional.Properties {a} {A : Set a} where
 
 open import Algebra.Bundles
 open import Algebra.Definitions
@@ -14,8 +14,7 @@ open import Algebra.Structures
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat using (suc)
 open import Data.Product.Base using (-,_; proj₂)
-open import Data.List.Base as List
-open import Data.List.Relation.Binary.Permutation.Propositional
+open import Data.List.Base as List using (List; []; _∷_; [_]; _++_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
@@ -27,65 +26,44 @@ open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Definitions using (_Respects_; Decidable)
-open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_ ; refl ; cong; cong₂; _≢_)
+open import Relation.Binary.PropositionalEquality as ≡
+  using (_≡_ ; refl ; cong; cong₂; _≢_; setoid)
 open import Relation.Nullary
 
-open PermutationReasoning
+import Data.List.Relation.Binary.Permutation.Propositional as Propositional
+import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutation
+import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
 
 private
   variable
-    a b p : Level
-    A : Set a
+    b p : Level
     B : Set b
+    x y z : A
+    xs ys zs : List A
+
+open Propositional {A = A}
+open Permutation (setoid A) public
+
 
 ------------------------------------------------------------------------
 -- Permutations of empty and singleton lists
 
-↭-empty-inv : ∀ {xs : List A} → xs ↭ [] → xs ≡ []
-↭-empty-inv refl = refl
-↭-empty-inv (trans p q) with refl ← ↭-empty-inv q = ↭-empty-inv p
-
-¬x∷xs↭[] : ∀ {x} {xs : List A} → ¬ ((x ∷ xs) ↭ [])
-¬x∷xs↭[] (trans s₁ s₂) with ↭-empty-inv s₂
-... | refl = ¬x∷xs↭[] s₁
-
-↭-singleton-inv : ∀ {x} {xs : List A} → xs ↭ [ x ] → xs ≡ [ x ]
-↭-singleton-inv refl                                             = refl
-↭-singleton-inv (prep _ ρ) with refl ← ↭-empty-inv ρ             = refl
-↭-singleton-inv (trans ρ₁ ρ₂) with refl ← ↭-singleton-inv ρ₂ = ↭-singleton-inv ρ₁
+↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
+↭-singleton-inv ρ with _ , refl , refl ← ↭-singleton⁻¹ ρ = refl
 
 ------------------------------------------------------------------------
 -- sym
-
+{-
 ↭-sym-involutive : ∀ {xs ys : List A} (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
 ↭-sym-involutive refl          = refl
 ↭-sym-involutive (prep x ↭)    = cong (prep x) (↭-sym-involutive ↭)
 ↭-sym-involutive (swap x y ↭)  = cong (swap x y) (↭-sym-involutive ↭)
 ↭-sym-involutive (trans ↭₁ ↭₂) =
   cong₂ trans (↭-sym-involutive ↭₁) (↭-sym-involutive ↭₂)
-
+-}
 ------------------------------------------------------------------------
 -- Relationships to other predicates
-
-All-resp-↭ : ∀ {P : Pred A p} → (All P) Respects _↭_
-All-resp-↭ refl wit                     = wit
-All-resp-↭ (prep x p) (px ∷ wit)        = px ∷ All-resp-↭ p wit
-All-resp-↭ (swap x y p) (px ∷ py ∷ wit) = py ∷ px ∷ All-resp-↭ p wit
-All-resp-↭ (trans p₁ p₂) wit            = All-resp-↭ p₂ (All-resp-↭ p₁ wit)
-
-Any-resp-↭ : ∀ {P : Pred A p} → (Any P) Respects _↭_
-Any-resp-↭ refl         wit                 = wit
-Any-resp-↭ (prep x p)   (here px)           = here px
-Any-resp-↭ (prep x p)   (there wit)         = there (Any-resp-↭ p wit)
-Any-resp-↭ (swap x y p) (here px)           = there (here px)
-Any-resp-↭ (swap x y p) (there (here px))   = here px
-Any-resp-↭ (swap x y p) (there (there wit)) = there (there (Any-resp-↭ p wit))
-Any-resp-↭ (trans p p₁) wit                 = Any-resp-↭ p₁ (Any-resp-↭ p wit)
-
-∈-resp-↭ : ∀ {x : A} → (x ∈_) Respects _↭_
-∈-resp-↭ = Any-resp-↭
-
+{-
 Any-resp-[σ⁻¹∘σ] : {xs ys : List A} {P : Pred A p} →
                    (σ : xs ↭ ys) →
                    (ix : Any P xs) →
@@ -110,10 +88,10 @@ Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
                  (ix : x ∈ xs) →
                  ∈-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
 ∈-resp-[σ⁻¹∘σ] = Any-resp-[σ⁻¹∘σ]
-
+-}
 ------------------------------------------------------------------------
 -- map
-
+{-
 module _ (f : A → B) where
 
   map⁺ : ∀ {xs ys} → xs ↭ ys → map f xs ↭ map f ys
@@ -123,7 +101,7 @@ module _ (f : A → B) where
   map⁺ (trans p₁ p₂) = trans (map⁺ p₁) (map⁺ p₂)
 
   -- permutations preserve 'being a mapped list'
-  ↭-map-inv : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  ↭-map-inv : ∀ {xs zs} → map f xs ↭ zs → ∃ λ ys → zs ≡ map f ys × xs ↭ ys
   ↭-map-inv {[]}     ρ                                                  = -, ↭-empty-inv (↭-sym ρ) , ↭-refl
   ↭-map-inv {x ∷ []} ρ                                                  = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
   ↭-map-inv {_ ∷ _ ∷ _} refl                                            = -, refl , ↭-refl
@@ -131,16 +109,8 @@ module _ (f : A → B) where
   ↭-map-inv {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ′ ← ↭-map-inv ρ  = -, refl , swap _ _ ρ′
   ↭-map-inv {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← ↭-map-inv ρ₁
                                       with _ , refl , ρ₄ ← ↭-map-inv ρ₂ = -, refl , trans ρ₃ ρ₄
-
-------------------------------------------------------------------------
--- length
-
-↭-length : ∀ {xs ys : List A} → xs ↭ ys → length xs ≡ length ys
-↭-length refl            = refl
-↭-length (prep x lr)     = cong suc (↭-length lr)
-↭-length (swap x y lr)   = cong (suc ∘ suc) (↭-length lr)
-↭-length (trans lr₁ lr₂) = ≡.trans (↭-length lr₁) (↭-length lr₂)
-
+-}
+{-
 ------------------------------------------------------------------------
 -- _++_
 
@@ -356,3 +326,20 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
     (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
+
+-}
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.1
+
+↭-empty-inv = ↭-[]-invʳ
+{-# WARNING_ON_USAGE ↭-empty-inv
+"Warning: ↭-empty-inv was deprecated in v2.1.
+Please use ↭-[]-invʳ instead."
+#-}
+
+

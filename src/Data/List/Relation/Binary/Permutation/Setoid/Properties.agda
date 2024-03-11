@@ -14,9 +14,9 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
 
 open import Algebra
 open import Data.Bool.Base using (true; false)
-open import Data.List.Base as List hiding (head; tail)
+open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as Pointwise
-  using (Pointwise; head; tail)
+  using (Pointwise)
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
@@ -25,7 +25,6 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 import Data.List.Membership.Setoid as Membership
-open import Data.List.Membership.Setoid.Properties using (∈-∃++; ∈-insert)
 import Data.List.Properties as List
 open import Data.Nat hiding (_⊔_)
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
@@ -39,12 +38,8 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Nullary.Decidable using (yes; no; does)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; Decidable)
-
-private
-  variable
-    b p r : Level
 
 open Setoid S
   using (_≈_)
@@ -55,6 +50,11 @@ open Unique S using (Unique)
 open module ≋ = Equality S
   using (_≋_; []; _∷_; ≋-refl; ≋-sym; ≋-trans)
 
+private
+  variable
+    b p r : Level
+    xs ys zs : List A
+    x y z v w : A
 
 ------------------------------------------------------------------------
 -- Relationships to other predicates
@@ -108,6 +108,27 @@ steps-respʳ = Properties.steps-respʳ ≈-trans
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
+-- Permutations of empty and singleton lists
+
+↭-[]-invˡ : [] ↭ xs → xs ≡ []
+↭-[]-invˡ = Properties.↭-[]-invˡ
+
+↭-[]-invʳ : xs ↭ [] → xs ≡ []
+↭-[]-invʳ = Properties.↭-[]-invʳ
+
+¬x∷xs↭[] : ¬ ((x ∷ xs) ↭ [])
+¬x∷xs↭[] = Properties.¬x∷xs↭[]
+
+↭-singleton⁻¹ : xs ↭ [ x ] → ∃ λ y → xs ≡ [ y ] × y ≈ x
+↭-singleton⁻¹ = Properties.↭-singleton⁻¹ ≈-trans
+
+------------------------------------------------------------------------
+-- length
+
+↭-length : xs ↭ ys → length xs ≡ length ys
+↭-length = Properties.↭-length
+
+------------------------------------------------------------------------
 -- map
 
 module _ (T : Setoid b ℓ) where
@@ -116,23 +137,27 @@ module _ (T : Setoid b ℓ) where
   open Permutation T using () renaming (_↭_ to _↭′_)
 
   map⁺ : ∀ {f} → f Preserves _≈_ ⟶ _≈′_ →
-         ∀ {xs ys} → xs ↭ ys → map f xs ↭′ map f ys
-  map⁺ = Properties.map⁺
-
+         xs ↭ ys → map f xs ↭′ map f ys
+  map⁺ pres = Properties.map⁺ pres
+{-
+  -- permutations preserve 'being a mapped list'
+  ↭-map-inv : map f xs ↭ zs → ∃ λ ys → zs ≡ map f ys × xs ↭ ys
+  ↭-map-inv p = 
+-}
 ------------------------------------------------------------------------
 -- _++_
 
-shift : ∀ {v w} → v ≈ w → (xs ys : List A) → xs ++ [ v ] ++ ys ↭ w ∷ xs ++ ys
+shift : v ≈ w → ∀ xs ys → xs ++ [ v ] ++ ys ↭ w ∷ xs ++ ys
 shift v≈w xs ys = Properties.shift ≈-refl ≈-sym ≈-trans v≈w xs {ys}
 
-↭-shift : ∀ {v} (xs ys : List A) → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+↭-shift : ∀ xs ys → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
 ↭-shift = shift ≈-refl
 
-++⁺ˡ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
+++⁺ˡ : ∀ xs {ys zs} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
 ++⁺ˡ []       ys↭zs = ys↭zs
 ++⁺ˡ (x ∷ xs) ys↭zs = ↭-prep x (++⁺ˡ xs ys↭zs)
 
-++⁺ʳ : ∀ {xs ys : List A} zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
+++⁺ʳ : ∀  zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
 ++⁺ʳ = Properties.++⁺ʳ ≈-refl
 
 ++⁺ : _++_ Preserves₂ _↭_ ⟶ _↭_ ⟶ _↭_
@@ -210,14 +235,14 @@ shift v≈w xs ys = Properties.shift ≈-refl ≈-sym ≈-trans v≈w xs {ys}
 
 -- Some other useful lemmas
 
-zoom : ∀ h {t xs ys : List A} → xs ↭ ys → h ++ xs ++ t ↭ h ++ ys ++ t
+zoom : ∀ h {t xs ys} → xs ↭ ys → h ++ xs ++ t ↭ h ++ ys ++ t
 zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
 
-inject : ∀ (v : A) {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
+inject : ∀ v {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
          ws ++ [ v ] ++ xs ↭ ys ++ [ v ] ++ zs
 inject v ws↭ys xs↭zs = ↭-trans (++⁺ˡ _ (↭-prep _ xs↭zs)) (++⁺ʳ _ ws↭ys)
 
-shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
+shifts : ∀ xs ys {zs} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
 shifts xs ys {zs} = begin
    xs ++ ys  ++ zs ↭⟨ ++-assoc xs ys zs ⟨
   (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
@@ -262,7 +287,7 @@ module _ {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects _≈_) where
 
 module _ {p} {P : Pred A p} (P? : Decidable P) where
 
-  partition-↭ : ∀ xs → (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
+  partition-↭ : ∀ xs → let ys , zs = partition P? xs in xs ↭ ys ++ zs
   partition-↭ []       = ↭-refl
   partition-↭ (x ∷ xs) with does (P? x)
   ... | true  = ↭-prep x (partition-↭ xs)

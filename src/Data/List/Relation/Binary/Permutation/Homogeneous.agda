@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Permutation.Homogeneous where
 
 open import Algebra.Bundles using (CommutativeMonoid)
-open import Data.List.Base as List using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; _∷_; [_])
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -18,7 +18,7 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Nat.Base using (ℕ; suc; _+_; _<_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Data.Product.Base using (_,_; _×_; ∃₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
@@ -31,7 +31,7 @@ open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; cong)
 open import Relation.Nullary.Decidable using (yes; no; does)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -39,6 +39,8 @@ private
     a p r s : Level
     A B : Set a
     xs ys zs : List A
+    x y z v w : A
+
 
 ------------------------------------------------------------------------
 -- Definition
@@ -68,7 +70,7 @@ module _ {R : Rel A r}  where
   ↭-pointwise : (Pointwise R) ⇒ Permutation R
   ↭-pointwise = refl
 
--- Smart eliminators
+-- Smart inversions
 
   ↭-[]-invˡ : Permutation R [] xs → xs ≡ []
   ↭-[]-invˡ (refl [])           = ≡.refl
@@ -77,6 +79,9 @@ module _ {R : Rel A r}  where
   ↭-[]-invʳ : Permutation R xs [] → xs ≡ []
   ↭-[]-invʳ (refl [])           = ≡.refl
   ↭-[]-invʳ (trans xs↭ys ys↭zs) with ≡.refl ← ↭-[]-invʳ ys↭zs = ↭-[]-invʳ xs↭ys
+
+  ¬x∷xs↭[] : ¬ (Permutation R (x ∷ xs) [])
+  ¬x∷xs↭[] (trans xs↭ys ys↭zs) with ≡.refl ← ↭-[]-invʳ ys↭zs = ¬x∷xs↭[] xs↭ys
 
 
 ------------------------------------------------------------------------
@@ -223,6 +228,17 @@ module _ {R : Rel A r} (R-trans : Transitive R) where
   ↭-trans : Transitive (Permutation R)
   ↭-trans = ↭-trans′ ↭-transˡ-≋ ↭-transʳ-≋
 
+-- Smart inversion
+
+  ↭-singleton⁻¹ : Permutation R xs [ x ] → ∃ λ y → xs ≡ [ y ] × R y x
+  ↭-singleton⁻¹ (refl (yRx ∷ [])) = _ , ≡.refl , yRx
+  ↭-singleton⁻¹ (prep yRx p)
+    with ≡.refl ← ↭-[]-invʳ p     = _ , ≡.refl , yRx
+  ↭-singleton⁻¹ (trans r s)
+    with _ , ≡.refl , yRx ← ↭-singleton⁻¹ s
+    with _ , ≡.refl , zRy ← ↭-singleton⁻¹ r
+    = _ , ≡.refl , R-trans zRy yRx
+
 
 module _ {R : Rel A r} (R-sym : Symmetric R) (R-trans : Transitive R) where
 
@@ -320,6 +336,17 @@ module _ {R : Rel A r}
 -- Properties of List functions
 ------------------------------------------------------------------------
 
+
+-- length
+
+module _ {R : Rel A r} where
+
+  ↭-length : Permutation R xs ys → List.length xs ≡ List.length ys
+  ↭-length (refl xs≋ys)        = Pointwise.Pointwise-length xs≋ys
+  ↭-length (prep _ xs↭ys)      = cong suc (↭-length xs↭ys)
+  ↭-length (swap _ _ xs↭ys)    = cong (suc ∘ suc) (↭-length xs↭ys)
+  ↭-length (trans xs↭ys ys↭zs) = ≡.trans (↭-length xs↭ys) (↭-length ys↭zs)
+
 -- map
 
 module _ {R : Rel A r} {S : Rel B s} {f} (pres : f Preserves R ⟶ S) where
@@ -330,7 +357,12 @@ module _ {R : Rel A r} {S : Rel B s} {f} (pres : f Preserves R ⟶ S) where
   map⁺ (prep x xs↭ys)      = prep (pres x) (map⁺ xs↭ys)
   map⁺ (swap x y xs↭ys)    = swap (pres x) (pres y) (map⁺ xs↭ys)
   map⁺ (trans xs↭ys ys↭zs) = trans (map⁺ xs↭ys) (map⁺ ys↭zs)
-
+{-
+  -- permutations preserve 'being a mapped list'
+  ↭-map-inv : ∀ {zs : List B} → Permutation S (List.map f xs) zs →
+              ∃ λ ys → zs ≡ List.map f ys × Permutation R xs ys
+  ↭-map-inv p = {!p!}
+-}
 
 ------------------------------------------------------------------------
 -- Properties of List functions which depend on
