@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Pointwise.Properties where
 
 open import Data.Product.Base using (_,_; uncurry)
-open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Level
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions
@@ -25,6 +25,8 @@ private
     A : Set a
     B : Set b
     R S T : REL A B ℓ
+    xs : List A
+    ys : List B
 
 ------------------------------------------------------------------------
 -- Relational properties
