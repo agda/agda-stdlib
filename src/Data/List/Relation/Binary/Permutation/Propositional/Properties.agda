@@ -17,6 +17,8 @@ open import Data.Product.Base using (-,_; proj₂)
 open import Data.List.Base as List using (List; []; _∷_; [_]; _++_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
+open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
+import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as List
@@ -32,15 +34,16 @@ open import Relation.Nullary
 
 import Data.List.Relation.Binary.Permutation.Propositional as Propositional
 import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutation
-import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
 
 private
   variable
-    b p : Level
+    b p r : Level
     B : Set b
     x y z : A
     ws xs ys zs : List A
     vs : List B
+    P : Pred A p
+    R : Rel A r
 
   module ↭ = Permutation (setoid A)
 
@@ -50,9 +53,11 @@ open ↭ public
 -- legacy variation in naming
   renaming (dropMiddleElement-≋ to drop-mid-≡; dropMiddleElement to drop-mid)
 -- legacy variation in implicit/explicit parametrisation
-  hiding (shift; map⁺)
+  hiding (shift)
+-- needing to specialise to ≡, where `Respects` and `Preserves` are trivial
+  hiding (map⁺; All-resp-↭; Any-resp-↭; ∈-resp-↭)
 
-{- not sure we need either of these for their proofs?
+{- not sure we need either of these for their proofs? so renaming above
 ------------------------------------------------------------------------
 -- Some useful lemmas, optimised for the Propositional case
 
@@ -131,11 +136,23 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
 -}
 ------------------------------------------------------------------------
 -- Relationships to other predicates
+------------------------------------------------------------------------
+
+All-resp-↭ : (All P) Respects _↭_
+All-resp-↭ = ↭.All-resp-↭ (≡.resp _)
+
+Any-resp-↭ : (Any P) Respects _↭_
+Any-resp-↭ = ↭.Any-resp-↭ (≡.resp _)
+
+∈-resp-↭ : (x ∈_) Respects _↭_
+∈-resp-↭ = Any-resp-↭
+
 {-
 Any-resp-[σ⁻¹∘σ] : {xs ys : List A} {P : Pred A p} →
                    (σ : xs ↭ ys) →
                    (ix : Any P xs) →
-                   Any-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+                   Any-resp-↭ (↭-trans σ (↭-sym σ)) ix ≡ ix
+Any-resp-[σ⁻¹∘σ] = {!!}
 Any-resp-[σ⁻¹∘σ] refl          ix               = refl
 Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
 Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
