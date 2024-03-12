@@ -20,29 +20,18 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; setoid)
 
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 
-
 ------------------------------------------------------------------------
--- An inductive definition of permutation
+-- Definition of permutation
 
--- Note that one would expect that this would be defined in terms of
--- `Permutation.Setoid`. This is not currently the case as it involves
--- adding in a bunch of trivial `_≡_` proofs to the constructors which
--- a) adds noise and b) prevents easy access to the variables `x`, `y`.
--- This may be changed in future when a better solution is found.
-{-
-infix 3 _↭_
+private
+  module ↭ = Permutation (setoid A)
 
-data _↭_ : Rel (List A) a where
-  refl  : ∀ {xs}        → xs ↭ xs
-  prep  : ∀ {xs ys} x   → xs ↭ ys → x ∷ xs ↭ x ∷ ys
-  swap  : ∀ {xs ys} x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
-  trans : ∀ {xs ys zs}  → xs ↭ ys → ys ↭ zs → xs ↭ zs
--}
-open module ↭ = Permutation (setoid A) public
-  hiding ( ↭-reflexive; ↭-pointwise; ↭-trans
-         ; ↭-isEquivalence; ↭-setoid; module PermutationReasoning
+-- Note that this is now defined in terms of `Permutation.Setoid` (#2317)
+
+open ↭ public
+  hiding ( ↭-reflexive; ↭-pointwise; ↭-trans; ↭-isEquivalence
+         ; module PermutationReasoning; ↭-setoid
          )
-
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
@@ -74,7 +63,7 @@ open module ↭ = Permutation (setoid A) public
 -- A reasoning API to chain permutation proofs and allow "zooming in"
 -- to localised reasoning. For details of the axiomatisation, and
 -- in particular the refactored dependencies,
--- see `Data.List.Relation.Binary.Permutation.Setoid`
+-- see `Data.List.Relation.Binary.Permutation.Setoid.↭-Reasoning`. 
 
 module PermutationReasoning = ↭-Reasoning ↭-isEquivalence ↭-pointwise
 
