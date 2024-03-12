@@ -4,7 +4,7 @@
 -- Properties of permutation in the Propositional case
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Propositional.Properties {a} {A : Set a} where
 
@@ -74,7 +74,7 @@ open ↭ public
 -- sym
 
 ↭-sym-involutive : (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
-↭-sym-involutive = ↭.↭-sym-involutive {!≡.sym-involutive!}
+↭-sym-involutive = ↭.↭-sym-involutive ≡.sym-involutive
 
 ------------------------------------------------------------------------
 -- Relationships to other predicates
@@ -88,11 +88,11 @@ Any-resp-↭ = ↭.Any-resp-↭ (≡.resp _)
 
 ∈-resp-↭ : (x ∈_) Respects _↭_
 ∈-resp-↭ = Any-resp-↭
-
+{-
 Any-resp-[σ⁻¹∘σ] : (σ : xs ↭ ys) (ix : Any P xs) →
                    Any-resp-↭ (↭-trans σ (↭-sym σ)) ix ≡ ix
 Any-resp-[σ⁻¹∘σ] p ix = {!p!}
-{-
+
 Any-resp-[σ⁻¹∘σ] refl          ix               = refl
 Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
 Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
@@ -107,11 +107,11 @@ Any-resp-[σ⁻¹∘σ] (prep _ σ)    (there ix)
 Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
   rewrite Any-resp-[σ⁻¹∘σ] σ ix
   = refl
--}
+
 ∈-resp-[σ⁻¹∘σ] : (σ : xs ↭ ys) (ix : x ∈ xs) →
                  ∈-resp-↭ (↭-trans σ (↭-sym σ)) ix ≡ ix
 ∈-resp-[σ⁻¹∘σ] = Any-resp-[σ⁻¹∘σ]
-
+-}
 ------------------------------------------------------------------------
 -- map
 

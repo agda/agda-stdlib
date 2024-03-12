@@ -180,7 +180,10 @@ module _ {R : Rel A r} {P : Pred A p} (resp : P Respects R) where
   Any-resp-↭ (swap x y p) (there (here px))   = here (resp y px)
   Any-resp-↭ (swap x y p) (there (there pxs)) = there (there (Any-resp-↭ p pxs))
   Any-resp-↭ (trans p₁ p₂) pxs                = Any-resp-↭ p₂ (Any-resp-↭ p₁ pxs)
-
+{-
+  Any-resp-↭-here : ∀ x≈y xs↭ys px → Any-resp-↭ (x≈y ∷ xs↭ys) (here px) ≡ here (resp x≈y px)
+  Any-resp-↭-here xs↭ys px = ?
+-}
 module _ {R : Rel A r} {S : Rel A s}
          (sym : Symmetric S) (resp@(rʳ , rˡ) : S Respects₂ R) where
   
