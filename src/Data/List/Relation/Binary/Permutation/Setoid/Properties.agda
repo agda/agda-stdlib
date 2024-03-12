@@ -150,8 +150,8 @@ module _ (T : Setoid b r) where
 shift : v ≈ w → ∀ xs ys → xs ++ [ v ] ++ ys ↭ w ∷ xs ++ ys
 shift v≈w xs ys = Properties.shift ≈-refl ≈-sym ≈-trans v≈w xs {ys}
 
-↭-shift : ∀ xs ys → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
-↭-shift = shift ≈-refl
+↭-shift : ∀ xs {ys} → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+↭-shift xs {ys} = shift ≈-refl xs ys
 
 ++⁺ˡ : ∀ xs {ys zs} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
 ++⁺ˡ []       ys↭zs = ys↭zs
@@ -181,7 +181,7 @@ shift v≈w xs ys = Properties.shift ≈-refl ≈-sym ≈-trans v≈w xs {ys}
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
   x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
-  x ∷ ys ++ xs   ↭⟨ ↭-shift ys xs ⟨
+  x ∷ ys ++ xs   ↭⟨ ↭-shift ys ⟨
   ys ++ (x ∷ xs) ∎
   where open PermutationReasoning
 
@@ -297,14 +297,14 @@ module _ (P? : Decidable P) where
   partition-↭ []       = ↭-refl
   partition-↭ (x ∷ xs) with does (P? x)
   ... | true  = ↭-prep x (partition-↭ xs)
-  ... | false = ↭-trans (↭-prep x (partition-↭ xs)) (↭-sym (↭-shift _ _))
+  ... | false = ↭-trans (↭-prep x (partition-↭ xs)) (↭-sym (↭-shift _))
 
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
 ∷↭∷ʳ : ∀ x xs → x ∷ xs ↭ xs ∷ʳ x
 ∷↭∷ʳ x xs = ↭-sym (begin
-  xs ++ [ x ]   ↭⟨ ↭-shift xs [] ⟩
+  xs ++ [ x ]   ↭⟨ ↭-shift xs ⟩
   x ∷ xs ++ []  ≡⟨ List.++-identityʳ _ ⟩
   x ∷ xs        ∎)
   where open PermutationReasoning
@@ -314,7 +314,7 @@ module _ (P? : Decidable P) where
 
 ++↭ʳ++ : ∀ xs ys → xs ++ ys ↭ xs ʳ++ ys
 ++↭ʳ++ []       ys = ↭-refl
-++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (↭-shift xs ys)) (++↭ʳ++ xs (x ∷ ys))
+++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (↭-shift xs)) (++↭ʳ++ xs (x ∷ ys))
 
 ------------------------------------------------------------------------
 -- reverse
@@ -342,7 +342,7 @@ module _ (R? : B.Decidable R) where
   ... | true  | rec | _   = ↭-prep x rec
   ... | false | _   | rec = begin
     y ∷ merge R? x∷xs ys <⟨ rec ⟩
-    y ∷ x∷xs ++ ys       ↭⟨ ↭-shift x∷xs ys ⟨
+    y ∷ x∷xs ++ ys       ↭⟨ ↭-shift x∷xs ⟨
     x∷xs ++ y∷ys         ≡⟨ List.++-assoc [ x ] xs y∷ys ⟨
     x∷xs ++ y∷ys         ∎
     where open PermutationReasoning

@@ -537,21 +537,18 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
   lemma : ∀ {xs ys} (inv : x ∷ xs ∼[ bag ] x ∷ ys) {z} →
           Well-behaved (Inverse.to (∼→⊎↔⊎ inv {z}))
-  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ with
-    zero                                                                  ≡⟨⟩
-    index-of {xs = x ∷ xs} (here p)                                       ≡⟨⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)                         ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ ≡.sym $
-                                                                               to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟩
+  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ with begin
+    zero                                                              ≡⟨⟩
+    index-of {xs = x ∷ xs} (here p)                                   ≡⟨⟩
+    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)                       ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ ≡.sym $ to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟩
     index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))  ≡⟨ ≡.cong index-of $
                                                                                strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)                   ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)                   ≡⟨ ≡.cong index-of $ ≡.sym $
-                                                                               strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))  ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $
-                                                                               to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)                      ≡⟨⟩
-    index-of {xs = x ∷ xs} (there z∈xs)                                   ≡⟨⟩
-    suc (index-of {xs = xs} z∈xs)                                         ∎
+    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)                 ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
+    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)                 ≡⟨ ≡.cong index-of $ ≡.sym $ strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟩
+    index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))    ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
+    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)                    ≡⟨⟩
+    index-of {xs = x ∷ xs} (there z∈xs)                               ≡⟨⟩
+    suc (index-of {xs = xs} z∈xs)                                     ∎
     where
     open Inverse
     open ≡-Reasoning
@@ -591,7 +588,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 ... | zs₁ , zs₂ , p rewrite p = begin
   x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
   x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-  x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
+  x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-shift zs₁ zs₂ ⟨
   zs₁ ++ x ∷ zs₂   ∎
   where
   open CommutativeMonoid (commutativeMonoid bag A)

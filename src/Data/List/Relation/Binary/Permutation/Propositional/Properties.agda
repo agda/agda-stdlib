@@ -52,15 +52,9 @@ open ↭ public
 -- legacy variation in implicit/explicit parametrisation
   hiding (shift; map⁺)
 
-------------------------------------------------------------------------
--- Some useful lemmas
-
-shift : ∀ v (xs ys : List A) → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
-shift v = ↭-shift {v = v}
-
 {- not sure we need either of these for their proofs?
 ------------------------------------------------------------------------
--- Some other useful lemmas, optimised for the Propositional case
+-- Some useful lemmas, optimised for the Propositional case
 
 drop-mid-≡ : ∀ {x : A} ws xs {ys} {zs} →
              ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
@@ -198,6 +192,14 @@ module _  {B : Set b} (f : A → B) where
 {-# WARNING_ON_USAGE ↭-empty-inv
 "Warning: ↭-empty-inv was deprecated in v2.1.
 Please use ↭-[]-invʳ instead."
+#-}
+
+shift : ∀ v xs ys → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+shift v xs ys = ↭-shift {v = v} xs {ys}
+{-# WARNING_ON_USAGE shift
+"Warning: shift was deprecated in v2.1.
+Please use ↭-shift instead. \\
+NB. Parametrisation has changed to make v and ys implicit."
 #-}
 
 
