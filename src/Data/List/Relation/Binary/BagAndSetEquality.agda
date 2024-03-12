@@ -22,7 +22,6 @@ open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Membership.Propositional.Properties
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
-open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
 open import Data.Product.Base as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
