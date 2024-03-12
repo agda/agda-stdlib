@@ -42,12 +42,15 @@ private
     ws xs ys zs : List A
     vs : List B
 
-open Propositional {A = A}
-open module P = Permutation (setoid A) public
+  module ↭ = Permutation (setoid A)
+
+
+open Propositional {A = A} public
+open ↭ public
 -- legacy variations in naming
   renaming (dropMiddleElement-≋ to drop-mid-≡; dropMiddleElement to drop-mid)
 -- legacy variation in implicit/explicit parametrisation
-  hiding (shift)
+  hiding (shift; map⁺)
 
 ------------------------------------------------------------------------
 -- Some useful lemmas
@@ -166,7 +169,9 @@ Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
 module _  {B : Set b} (f : A → B) where
 
   open Propositional {A = B} using () renaming (_↭_ to _↭′_)
-  private module ↭′ = Permutation (setoid B)
+
+  map⁺ : xs ↭ ys → List.map f xs ↭′ List.map f ys
+  map⁺ = ↭.map⁺ (setoid B) {!≡.cong f!}
 {-
   -- permutations preserve 'being a mapped list'
   ↭-map-inv : List.map f xs ↭′ vs → ∃ λ ys → vs ≡ List.map f ys × xs ↭ ys
