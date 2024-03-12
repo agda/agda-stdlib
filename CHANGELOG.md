@@ -147,7 +147,7 @@ Additions to existing modules
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
   downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
   reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
-  reverse-downFrom      : reverse (upTo n) ≡ downFrom n
+  reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
   reverse-downFrom      : reverse (downFrom n) ≡ upTo n
   ```
