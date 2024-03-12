@@ -588,7 +588,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 ... | zs₁ , zs₂ , p rewrite p = begin
   x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
   x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-  x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-shift zs₁ zs₂ ⟨
+  x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-shift zs₁ ⟨
   zs₁ ++ x ∷ zs₂   ∎
   where
   open CommutativeMonoid (commutativeMonoid bag A)
