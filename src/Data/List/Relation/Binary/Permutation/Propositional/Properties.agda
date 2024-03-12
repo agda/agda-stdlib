@@ -12,25 +12,22 @@ open import Algebra.Bundles
 open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Nat using (suc)
 open import Data.Product.Base using (-,_; proj₂)
 open import Data.List.Base as List using (List; []; _∷_; [_]; _++_)
-open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.All using (All; []; _∷_)
-open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
-import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as List
+open import Data.List.Relation.Unary.Any using (Any; here; there)
+open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
 open import Level using (Level)
-open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.Definitions using (_Respects_; Decidable)
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl ; cong; cong₂; _≢_; setoid)
+  using (_≡_ ; refl ; cong; setoid)
 open import Relation.Nullary
+open import Relation.Unary using (Pred)
 
 import Data.List.Relation.Binary.Permutation.Propositional as Propositional
 import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutation
@@ -58,8 +55,10 @@ open ↭ public
   renaming (dropMiddleElement-≋ to drop-mid-≡; dropMiddleElement to drop-mid)
 -- DEPRECATION: legacy variation in implicit/explicit parametrisation
   hiding (shift)
--- needing to specialise to ≡, where `Respects` and `Preserves` are trivial
-  hiding (map⁺; All-resp-↭; Any-resp-↭; ∈-resp-↭)
+-- more efficient versions defined in `Propositional`
+  hiding (↭-transˡ-≋; ↭-transʳ-≋)
+-- needing to specialise to ≡, where `Respects` and `Preserves` etc. are trivial
+  hiding (map⁺; All-resp-↭; Any-resp-↭; ∈-resp-↭; ↭-sym-involutive)
 
 ------------------------------------------------------------------------
 -- Additional/specialised properties which hold in the case _≈_ = _≡_
@@ -75,14 +74,8 @@ open ↭ public
 -- sym
 
 ↭-sym-involutive : (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
-↭-sym-involutive p          = {!p!}
-{-
-↭-sym-involutive refl          = refl
-↭-sym-involutive (prep x ↭)    = cong (prep x) (↭-sym-involutive ↭)
-↭-sym-involutive (swap x y ↭)  = cong (swap x y) (↭-sym-involutive ↭)
-↭-sym-involutive (trans ↭₁ ↭₂) =
-  cong₂ trans (↭-sym-involutive ↭₁) (↭-sym-involutive ↭₂)
--}
+↭-sym-involutive = ↭.↭-sym-involutive {!≡.sym-involutive!}
+
 ------------------------------------------------------------------------
 -- Relationships to other predicates
 ------------------------------------------------------------------------

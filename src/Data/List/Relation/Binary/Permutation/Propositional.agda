@@ -43,14 +43,14 @@ open ↭ public
 ↭-pointwise xs≋ys = ↭-reflexive (≋⇒≡ xs≋ys)
 
 -- A smart version of trans that avoids unnecessary `refl`s (see #1113).
+↭-transˡ-≋ : LeftTrans _≋_ _↭_
+↭-transˡ-≋ xs≋ys ys↭zs with refl ← ≋⇒≡ xs≋ys = ys↭zs
+
+↭-transʳ-≋ : RightTrans _↭_ _≋_
+↭-transʳ-≋ xs↭ys ys≋zs with refl ← ≋⇒≡ ys≋zs = xs↭ys
+
 ↭-trans : Transitive _↭_
 ↭-trans = ↭-trans′ ↭-transˡ-≋ ↭-transʳ-≋
-  where
-  ↭-transˡ-≋ : LeftTrans _≋_ _↭_
-  ↭-transˡ-≋ xs≋ys ys↭zs with refl ← ≋⇒≡ xs≋ys = ys↭zs
-
-  ↭-transʳ-≋ : RightTrans _↭_ _≋_
-  ↭-transʳ-≋ xs↭ys ys≋zs with refl ← ≋⇒≡ ys≋zs = xs↭ys
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record

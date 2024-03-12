@@ -91,8 +91,20 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 ↭-respˡ-≋ : _↭_ Respectsˡ _≋_
 ↭-respˡ-≋ = Properties.↭-respˡ-≋ ≈-sym ≈-trans
 
+↭-transˡ-≋ : LeftTrans _≋_ _↭_
+↭-transˡ-≋ = Properties.↭-transˡ-≋ ≈-trans
+
+↭-transʳ-≋ : RightTrans _↭_ _≋_
+↭-transʳ-≋ = Properties.↭-transʳ-≋ ≈-trans
+
+module _ (≈-sym-involutive : ∀ {x y} → (p : x ≈ y) → ≈-sym (≈-sym p) ≡ p)
+         where
+
+  ↭-sym-involutive : (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
+  ↭-sym-involutive = Properties.↭-sym-involutive′ ≈-sym-involutive
+
 ------------------------------------------------------------------------
--- Properties of steps
+-- Properties of steps (legacy)
 ------------------------------------------------------------------------
 
 0<steps : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
@@ -153,12 +165,12 @@ shift v≈w xs ys = Properties.shift ≈-refl ≈-sym ≈-trans v≈w xs {ys}
 ↭-shift : ∀ xs {ys} → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
 ↭-shift xs {ys} = shift ≈-refl xs ys
 
+++⁺ʳ : ∀  zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
+++⁺ʳ = Properties.++⁺ʳ ≈-refl
+
 ++⁺ˡ : ∀ xs {ys zs} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
 ++⁺ˡ []       ys↭zs = ys↭zs
 ++⁺ˡ (x ∷ xs) ys↭zs = ↭-prep x (++⁺ˡ xs ys↭zs)
-
-++⁺ʳ : ∀  zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
-++⁺ʳ = Properties.++⁺ʳ ≈-refl
 
 ++⁺ : _++_ Preserves₂ _↭_ ⟶ _↭_ ⟶ _↭_
 ++⁺ ws↭xs ys↭zs = ↭-trans (++⁺ʳ _ ws↭xs) (++⁺ˡ _ ys↭zs)
