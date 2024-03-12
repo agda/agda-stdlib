@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some examples showing how the Function.Reasoning module
--- can be used to perform "functional reasoning" similar to what is being
--- described in: https://stackoverflow.com/q/22676703/3168666
+-- Some examples showing how the Function.Reasoning module can be used
+-- to perform "functional reasoning" similar to what is being described
+-- in: https://stackoverflow.com/q/22676703/3168666
 ------------------------------------------------------------------------
 
 {-# OPTIONS --with-K #-}
@@ -39,7 +39,7 @@ open import Data.String.Base as String using (String; toList; fromList)
 open import Data.String.Properties as String using (_==_)
 open import Function.Base using (_∘_)
 open import Data.Bool hiding (_≤?_)
-open import Data.Product.Base as Product using (_×_; <_,_>; uncurry; proj₁)
+open import Data.Product.Base using (_×_; <_,_>; uncurry; proj₁)
 open import Agda.Builtin.Equality
 
 -- This can give us for instance this decomposition of a function

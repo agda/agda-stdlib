@@ -16,9 +16,9 @@ open import Data.Unit
 open import Data.Bool.Base using (Bool; true)
 open import Data.Nat
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Product.Base as Product hiding (_×_)
+open import Data.Product.Base
 open import Data.Container using (Container; _▷_)
-open import Data.Container.Combinator
+open import Data.Container.Combinator hiding (_×_)
 open import Data.Container.FreeMonad
 open import Data.W
 open import Relation.Binary.PropositionalEquality as ≡
@@ -51,7 +51,7 @@ prog =
   where
   open RawMonad monad using (_>>_)
 
-runState : {S X : Set} → State S ⋆ X → (S → X Product.× S)
+runState : {S X : Set} → State S ⋆ X → (S → X × S)
 runState (pure x)                = λ s → x , s
 runState (impure ((inj₁ _) , k)) = λ s → runState (k s) s
 runState (impure ((inj₂ s) , k)) = λ _ → runState (k _) s
