@@ -26,18 +26,18 @@ open import Relation.Binary.PropositionalEquality
 open import Data.List.Relation.Binary.Permutation.Propositional
 
 -- The permutation relation is written as `_↭_` and has four
--- constructors. The first `refl` says that a list is always
--- a permutation of itself, the second `prep` says that if the
+-- *smart* constructors. The first `↭-refl` says that a list is
+-- a permutation of itself, the second `↭-prep` says that if the
 -- heads of the lists are the same they can be skipped, the third
--- `swap` says that the first two elements of the lists can be
--- swapped and the fourth `trans` says that permutation proofs
+-- `↭-swap` says that the first two elements of the lists can be
+-- swapped and the fourth `↭trans` says that permutation proofs
 -- can be chained transitively.
 
 -- For example a proof that two lists are a permutation of one
 -- another can be written as follows:
 
 lem₁ : 1 ∷ 2 ∷ 3 ∷ [] ↭ 3 ∷ 1 ∷ 2 ∷ []
-lem₁ = trans (prep 1 (swap 2 3 refl)) (swap 1 3 refl)
+lem₁ = ↭-trans (↭-prep 1 (↭-swap 2 3 ↭-refl)) (↭-swap 1 3 ↭-refl)
 
 -- In practice it is difficult to parse the constructors in the
 -- proof above and hence understand why it holds. The
@@ -48,10 +48,21 @@ open PermutationReasoning
 
 lem₂ : 1 ∷ 2 ∷ 3 ∷ [] ↭ 3 ∷ 1 ∷ 2 ∷ []
 lem₂ = begin
-  1 ∷ 2 ∷ 3 ∷ []  ↭⟨ prep 1 (swap 2 3 refl) ⟩
-  1 ∷ 3 ∷ 2 ∷ []  ↭⟨ swap 1 3 refl ⟩
+  1 ∷ 2 ∷ 3 ∷ []  ↭⟨ ↭-prep 1 (↭-swap 2 3 ↭-refl) ⟩
+  1 ∷ 3 ∷ 2 ∷ []  ↭⟨ ↭-swap 1 3 ↭-refl ⟩
   3 ∷ 1 ∷ 2 ∷ []  ∎
 
+-- In practice it is further useful to extend `PermutationReasoning`
+-- with specialised combinators `<⟨_⟩` and `<<⟨_⟩` to support the
+-- distinguished use of the `↭-prep ` and `↭-prep ` steps, allowing
+-- the above proof to be recast in the following form:
+{-
+lem₂ᵣ : 1 ∷ 2 ∷ 3 ∷ [] ↭ 3 ∷ 1 ∷ 2 ∷ []
+lem₂ᵣ = begin
+  (1 ∷ 2 ∷ 3 ∷ [])  <⟨ swap 2 3 ↭-refl ⟩
+  (1 ∷ 3 ∷ 2 ∷ [])  <<⟨ ↭-refl ⟩
+  (3 ∷ 1 ∷ 2 ∷ [])  ∎
+-}
 -- As might be expected, properties of the permutation relation may be
 -- found in:
 
