@@ -1190,27 +1190,27 @@ reverse-foldl f b xs = foldl-ʳ++ f b xs
 ------------------------------------------------------------------------
 -- reverse, applyUpTo, and applyDownFrom
 
-applyUpTo-applyDownFrom : ∀ (f : ℕ → A) n → reverse (applyUpTo f n) ≡ applyDownFrom f n
-applyUpTo-applyDownFrom f zero = refl
-applyUpTo-applyDownFrom f (suc n) = begin
+reverse-applyUpTo : ∀ (f : ℕ → A) n → reverse (applyUpTo f n) ≡ applyDownFrom f n
+reverse-applyUpTo f zero = refl
+reverse-applyUpTo f (suc n) = begin
   reverse (f 0 ∷ applyUpTo (f ∘ suc) n)  ≡⟨ reverse-++ [ f 0 ] (applyUpTo (f ∘ suc) n) ⟩
-  reverse (applyUpTo (f ∘ suc) n) ∷ʳ f 0 ≡⟨ cong (_∷ʳ f 0) (applyUpTo-applyDownFrom (f ∘ suc) n) ⟩
+  reverse (applyUpTo (f ∘ suc) n) ∷ʳ f 0 ≡⟨ cong (_∷ʳ f 0) (reverse-applyUpTo (f ∘ suc) n) ⟩
   applyDownFrom (f ∘ suc) n ∷ʳ f 0       ≡⟨ applyDownFrom-∷ʳ f n ⟩
   applyDownFrom f (suc n)                ∎
 
-upTo-downFrom : ∀ n → reverse (upTo n) ≡ downFrom n
-upTo-downFrom = applyUpTo-applyDownFrom id
+reverse-upTo : ∀ n → reverse (upTo n) ≡ downFrom n
+reverse-upTo = reverse-applyUpTo id
 
-applyDownFrom-applyUpTo : ∀ (f : ℕ → A) n → reverse (applyDownFrom f n) ≡ applyUpTo f n
-applyDownFrom-applyUpTo f zero = refl
-applyDownFrom-applyUpTo f (suc n) = begin
+reverse-applyDownFrom : ∀ (f : ℕ → A) n → reverse (applyDownFrom f n) ≡ applyUpTo f n
+reverse-applyDownFrom f zero = refl
+reverse-applyDownFrom f (suc n) = begin
   reverse (f n ∷ applyDownFrom f n)  ≡⟨ reverse-++ [ f n ] (applyDownFrom f n) ⟩
-  reverse (applyDownFrom f n) ∷ʳ f n ≡⟨ cong (_∷ʳ f n) (applyDownFrom-applyUpTo f n) ⟩
+  reverse (applyDownFrom f n) ∷ʳ f n ≡⟨ cong (_∷ʳ f n) (reverse-applyDownFrom f n) ⟩
   applyUpTo f n ∷ʳ f n               ≡⟨ applyUpTo-∷ʳ f n ⟩
   applyUpTo f (suc n)                ∎
 
-downFrom-upTo : ∀ n → reverse (downFrom n) ≡ upTo n
-downFrom-upTo = applyDownFrom-applyUpTo id
+reverse-downFrom : ∀ n → reverse (downFrom n) ≡ upTo n
+reverse-downFrom = reverse-applyDownFrom id
 
 ------------------------------------------------------------------------
 -- _∷ʳ_

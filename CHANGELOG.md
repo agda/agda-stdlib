@@ -142,14 +142,14 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
-  applyUpTo-∷ʳ            : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
-  applyDownFrom-∷ʳ        : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
-  upTo-∷ʳ                 : upTo n ∷ʳ n ≡ upTo (suc n)
-  downFrom-∷ʳ             : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
-  applyUpTo-applyDownFrom : reverse (applyUpTo f n) ≡ applyDownFrom f n
-  upTo-downFrom           : reverse (upTo n) ≡ downFrom n
-  applyDownFrom-applyUpTo : reverse (applyDownFrom f n) ≡ applyUpTo f n
-  downFrom-upTo           : reverse (downFrom n) ≡ upTo n
+  applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
+  applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
+  upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
+  downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
+  reverse-downFrom      : reverse (upTo n) ≡ downFrom n
+  reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
+  reverse-downFrom      : reverse (downFrom n) ≡ upTo n
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
