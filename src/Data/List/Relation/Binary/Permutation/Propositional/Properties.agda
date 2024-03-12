@@ -47,7 +47,7 @@ private
 
 open Propositional {A = A} public
 open ↭ public
--- legacy variations in naming
+-- legacy variation in naming
   renaming (dropMiddleElement-≋ to drop-mid-≡; dropMiddleElement to drop-mid)
 -- legacy variation in implicit/explicit parametrisation
   hiding (shift; map⁺)
@@ -171,7 +171,7 @@ module _  {B : Set b} (f : A → B) where
   open Propositional {A = B} using () renaming (_↭_ to _↭′_)
 
   map⁺ : xs ↭ ys → List.map f xs ↭′ List.map f ys
-  map⁺ = ↭.map⁺ (setoid B) {!≡.cong f!}
+  map⁺ = ↭.map⁺ (setoid B) (≡.cong f)
 {-
   -- permutations preserve 'being a mapped list'
   ↭-map-inv : List.map f xs ↭′ vs → ∃ λ ys → vs ≡ List.map f ys × xs ↭ ys
