@@ -4,7 +4,7 @@
 -- Bag and set equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
@@ -556,17 +556,19 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
 ------------------------------------------------------------------------
 -- Relationships to other relations
-{-
+
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
 ↭⇒∼bag {A = A} xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
   where
-  to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
-  to xs↭ys = Any-resp-↭ {A = A} xs↭ys
+  to : xs ↭ ys → v ∈ xs → v ∈ ys
+  to = ∈-resp-↭
 
-  from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
-  from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
+  from : xs ↭ ys → v ∈ ys → v ∈ xs
+  from = ∈-resp-↭ ∘ ↭-sym
 
-  from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
+  from∘to : (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
+  from∘to p          v∈xs                 = {!p!}
+{-
   from∘to refl          v∈xs                 = refl
   from∘to (prep _ _)    (here refl)          = refl
   from∘to (prep _ p)    (there v∈xs)         = ≡.cong there (from∘to p v∈xs)
@@ -574,22 +576,20 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   from∘to (swap x y p)  (there (here refl))  = refl
   from∘to (swap x y p)  (there (there v∈xs)) = ≡.cong (there ∘ there) (from∘to p v∈xs)
   from∘to (trans p₁ p₂) v∈xs
-    rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
+    rewrite from∘to p₂ (∈-resp-↭ p₁ v∈xs)
           | from∘to p₁ v∈xs                  = refl
-
-  to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
-  to∘from p with from∘to (↭-sym p)
-  ... | res rewrite ↭-sym-involutive p = res
 -}
+  to∘from : (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
+  to∘from p with res ← from∘to (↭-sym p) rewrite ↭-sym-involutive p = res
+
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
-∼bag⇒↭ {A = A} {[]} eq with empty-unique (↔-sym eq)
-... | refl = ↭-refl
-∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl))
-... | zs₁ , zs₂ , p rewrite p = begin
-  x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
-  x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-  x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-shift zs₁ ⟨
-  zs₁ ++ x ∷ zs₂   ∎
+∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq)      = ↭-refl
+∼bag⇒↭ {A = A} {x ∷ xs} eq
+  with zs₁ , zs₂ , refl ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) = begin
+    x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
+    x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
+    x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-shift zs₁ ⟨
+    zs₁ ++ x ∷ zs₂   ∎
   where
   open CommutativeMonoid (commutativeMonoid bag A)
   open PermutationReasoning

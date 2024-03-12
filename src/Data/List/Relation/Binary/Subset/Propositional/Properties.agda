@@ -4,7 +4,7 @@
 -- Properties of the sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible #-}
 
 open import Relation.Binary.Definitions hiding (Decidable)
 open import Relation.Binary.Structures using (IsPreorder)
