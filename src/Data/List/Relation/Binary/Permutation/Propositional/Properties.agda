@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of permutation
+-- Properties of permutation in the Propositional case
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -39,114 +39,30 @@ private
     b p : Level
     B : Set b
     x y z : A
-    xs ys zs : List A
+    ws xs ys zs : List A
+    vs : List B
 
 open Propositional {A = A}
-open Permutation (setoid A) public
-
-
-------------------------------------------------------------------------
--- Permutations of empty and singleton lists
-
-↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
-↭-singleton-inv ρ with _ , refl , refl ← ↭-singleton⁻¹ ρ = refl
+open module P = Permutation (setoid A) public
+-- legacy variations in naming
+  renaming (dropMiddleElement-≋ to drop-mid-≡; dropMiddleElement to drop-mid)
+-- legacy variation in implicit/explicit parametrisation
+  hiding (shift)
 
 ------------------------------------------------------------------------
--- sym
-{-
-↭-sym-involutive : ∀ {xs ys : List A} (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
-↭-sym-involutive refl          = refl
-↭-sym-involutive (prep x ↭)    = cong (prep x) (↭-sym-involutive ↭)
-↭-sym-involutive (swap x y ↭)  = cong (swap x y) (↭-sym-involutive ↭)
-↭-sym-involutive (trans ↭₁ ↭₂) =
-  cong₂ trans (↭-sym-involutive ↭₁) (↭-sym-involutive ↭₂)
--}
-------------------------------------------------------------------------
--- Relationships to other predicates
-{-
-Any-resp-[σ⁻¹∘σ] : {xs ys : List A} {P : Pred A p} →
-                   (σ : xs ↭ ys) →
-                   (ix : Any P xs) →
-                   Any-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
-Any-resp-[σ⁻¹∘σ] refl          ix               = refl
-Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (there (here _)) = refl
-Any-resp-[σ⁻¹∘σ] (trans σ₁ σ₂) ix
-  rewrite Any-resp-[σ⁻¹∘σ] σ₂ (Any-resp-↭ σ₁ ix)
-  rewrite Any-resp-[σ⁻¹∘σ] σ₁ ix
-  = refl
-Any-resp-[σ⁻¹∘σ] (prep _ σ)    (there ix)
-  rewrite Any-resp-[σ⁻¹∘σ] σ ix
-  = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
-  rewrite Any-resp-[σ⁻¹∘σ] σ ix
-  = refl
-
-∈-resp-[σ⁻¹∘σ] : {xs ys : List A} {x : A} →
-                 (σ : xs ↭ ys) →
-                 (ix : x ∈ xs) →
-                 ∈-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
-∈-resp-[σ⁻¹∘σ] = Any-resp-[σ⁻¹∘σ]
--}
-------------------------------------------------------------------------
--- map
-{-
-module _ (f : A → B) where
-
-  map⁺ : ∀ {xs ys} → xs ↭ ys → map f xs ↭ map f ys
-  map⁺ refl          = refl
-  map⁺ (prep x p)    = prep _ (map⁺ p)
-  map⁺ (swap x y p)  = swap _ _ (map⁺ p)
-  map⁺ (trans p₁ p₂) = trans (map⁺ p₁) (map⁺ p₂)
-
-  -- permutations preserve 'being a mapped list'
-  ↭-map-inv : ∀ {xs zs} → map f xs ↭ zs → ∃ λ ys → zs ≡ map f ys × xs ↭ ys
-  ↭-map-inv {[]}     ρ                                                  = -, ↭-empty-inv (↭-sym ρ) , ↭-refl
-  ↭-map-inv {x ∷ []} ρ                                                  = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
-  ↭-map-inv {_ ∷ _ ∷ _} refl                                            = -, refl , ↭-refl
-  ↭-map-inv {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ′ ← ↭-map-inv ρ  = -, refl , prep _ ρ′
-  ↭-map-inv {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ′ ← ↭-map-inv ρ  = -, refl , swap _ _ ρ′
-  ↭-map-inv {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← ↭-map-inv ρ₁
-                                      with _ , refl , ρ₄ ← ↭-map-inv ρ₂ = -, refl , trans ρ₃ ρ₄
--}
-{-
-------------------------------------------------------------------------
--- _++_
-
-++⁺ˡ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
-++⁺ˡ []       ys↭zs = ys↭zs
-++⁺ˡ (x ∷ xs) ys↭zs = prep x (++⁺ˡ xs ys↭zs)
-
-++⁺ʳ : ∀ {xs ys : List A} zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
-++⁺ʳ zs refl          = refl
-++⁺ʳ zs (prep x ↭)    = prep x (++⁺ʳ zs ↭)
-++⁺ʳ zs (swap x y ↭)  = swap x y (++⁺ʳ zs ↭)
-++⁺ʳ zs (trans ↭₁ ↭₂) = trans (++⁺ʳ zs ↭₁) (++⁺ʳ zs ↭₂)
-
-++⁺ : _++_ {A = A} Preserves₂ _↭_ ⟶ _↭_ ⟶ _↭_
-++⁺ ws↭xs ys↭zs = trans (++⁺ʳ _ ws↭xs) (++⁺ˡ _ ys↭zs)
-
 -- Some useful lemmas
 
-zoom : ∀ h {t xs ys : List A} → xs ↭ ys → h ++ xs ++ t ↭ h ++ ys ++ t
-zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
-
-inject : ∀  (v : A) {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
-        ws ++ [ v ] ++ xs ↭ ys ++ [ v ] ++ zs
-inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (prep v xs↭zs)) (++⁺ʳ _ ws↭ys)
-
 shift : ∀ v (xs ys : List A) → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
-shift v []       ys = refl
-shift v (x ∷ xs) ys = begin
-  x ∷ (xs ++ [ v ] ++ ys) <⟨ shift v xs ys ⟩
-  x ∷ v ∷ xs ++ ys        <<⟨ refl ⟩
-  v ∷ x ∷ xs ++ ys        ∎
+shift v = ↭-shift {v = v}
+
+{- not sure we need either of these for their proofs?
+------------------------------------------------------------------------
+-- Some other useful lemmas, optimised for the Propositional case
 
 drop-mid-≡ : ∀ {x : A} ws xs {ys} {zs} →
              ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
              ws ++ ys ↭ xs ++ zs
-drop-mid-≡ []       []       eq   with cong tail eq
+drop-mid-≡ []       []       eq   with cong List.tail eq
 drop-mid-≡ []       []       eq   | refl = refl
 drop-mid-≡ []       (x ∷ xs) refl = shift _ xs _
 drop-mid-≡ (w ∷ ws) []       refl = ↭-sym (shift _ ws _)
@@ -194,140 +110,77 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
   drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid′ p _ _ refl refl)
   drop-mid′ (trans p₁ p₂) ws  xs refl refl with ∈-∃++ (∈-resp-↭ p₁ (∈-insert ws))
   ... | (h , t , refl) = trans (drop-mid′ p₁ ws h refl refl) (drop-mid′ p₂ h xs refl refl)
-
--- Algebraic properties
-
-++-identityˡ : LeftIdentity {A = List A} _↭_ [] _++_
-++-identityˡ xs = refl
-
-++-identityʳ : RightIdentity {A = List A} _↭_ [] _++_
-++-identityʳ xs = ↭-reflexive (List.++-identityʳ xs)
-
-++-identity : Identity {A = List A} _↭_ [] _++_
-++-identity = ++-identityˡ , ++-identityʳ
-
-++-assoc : Associative {A = List A} _↭_ _++_
-++-assoc xs ys zs = ↭-reflexive (List.++-assoc xs ys zs)
-
-++-comm : Commutative {A = List A} _↭_ _++_
-++-comm []       ys = ↭-sym (++-identityʳ ys)
-++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
-  x ∷ ys ++ xs   ↭⟨ shift x ys xs ⟨
-  ys ++ (x ∷ xs) ∎
-
-++-isMagma : IsMagma {A = List A} _↭_ _++_
-++-isMagma = record
-  { isEquivalence = ↭-isEquivalence
-  ; ∙-cong        = ++⁺
-  }
-
-++-isSemigroup : IsSemigroup {A = List A} _↭_ _++_
-++-isSemigroup = record
-  { isMagma = ++-isMagma
-  ; assoc   = ++-assoc
-  }
-
-++-isMonoid : IsMonoid {A = List A} _↭_ _++_ []
-++-isMonoid = record
-  { isSemigroup = ++-isSemigroup
-  ; identity    = ++-identity
-  }
-
-++-isCommutativeMonoid : IsCommutativeMonoid {A = List A} _↭_ _++_ []
-++-isCommutativeMonoid = record
-  { isMonoid = ++-isMonoid
-  ; comm     = ++-comm
-  }
-
-module _ {a} {A : Set a} where
-
-  ++-magma : Magma _ _
-  ++-magma = record
-    { isMagma = ++-isMagma {A = A}
-    }
-
-  ++-semigroup : Semigroup a _
-  ++-semigroup = record
-    { isSemigroup = ++-isSemigroup {A = A}
-    }
-
-  ++-monoid : Monoid a _
-  ++-monoid = record
-    { isMonoid = ++-isMonoid {A = A}
-    }
-
-  ++-commutativeMonoid : CommutativeMonoid _ _
-  ++-commutativeMonoid = record
-    { isCommutativeMonoid = ++-isCommutativeMonoid {A = A}
-    }
-
--- Another useful lemma
-
-shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
-shifts xs ys {zs} = begin
-   xs ++ ys  ++ zs ↭⟨ ++-assoc xs ys zs ⟨
-  (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
-  (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
-   ys ++ xs  ++ zs ∎
-
-------------------------------------------------------------------------
--- _∷_
-
-drop-∷ : ∀ {x : A} {xs ys} → x ∷ xs ↭ x ∷ ys → xs ↭ ys
-drop-∷ = drop-mid [] []
-
-------------------------------------------------------------------------
--- _∷ʳ_
-
-∷↭∷ʳ : ∀ (x : A) xs → x ∷ xs ↭ xs ∷ʳ x
-∷↭∷ʳ x xs = ↭-sym (begin
-  xs ++ [ x ]   ↭⟨ shift x xs [] ⟩
-  x ∷ xs ++ []  ≡⟨ List.++-identityʳ _ ⟩
-  x ∷ xs        ∎)
-
-------------------------------------------------------------------------
--- ʳ++
-
-++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
-++↭ʳ++ []       ys = ↭-refl
-++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (shift x xs ys)) (++↭ʳ++ xs (x ∷ ys))
-
-------------------------------------------------------------------------
--- reverse
-
-↭-reverse : (xs : List A) → reverse xs ↭ xs
-↭-reverse [] = ↭-refl
-↭-reverse (x ∷ xs) = begin
-  reverse (x ∷ xs) ≡⟨ List.unfold-reverse x xs ⟩
-  reverse xs ∷ʳ x  ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
-  x ∷ reverse xs   <⟨ ↭-reverse xs ⟩
-  x ∷ xs           ∎
-  where open PermutationReasoning
-
-------------------------------------------------------------------------
--- merge
-
-module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
-
-  merge-↭ : ∀ xs ys → merge R? xs ys ↭ xs ++ ys
-  merge-↭ []       []       = ↭-refl
-  merge-↭ []       (y ∷ ys) = ↭-refl
-  merge-↭ (x ∷ xs) []       = ↭-sym (++-identityʳ (x ∷ xs))
-  merge-↭ (x ∷ xs) (y ∷ ys)
-    with does (R? x y) | merge-↭ xs (y ∷ ys) | merge-↭ (x ∷ xs) ys
-  ... | true  | rec | _   = begin
-    x ∷ merge R? xs (y ∷ ys) <⟨ rec ⟩
-    x ∷ xs ++ y ∷ ys         ∎
-    where open PermutationReasoning
-  ... | false | _   | rec = begin
-    y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
-    y ∷ x ∷ xs ++ ys         ↭⟨ shift y (x ∷ xs) ys ⟨
-    (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
-    x ∷ xs ++ y ∷ ys         ∎
-    where open PermutationReasoning
-
 -}
+
+------------------------------------------------------------------------
+-- Additional/specialised properties which hold in the case _≈_ = _≡_
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Permutations of singleton lists
+
+↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
+↭-singleton-inv ρ with _ , refl , refl ← ↭-singleton⁻¹ ρ = refl
+
+------------------------------------------------------------------------
+-- sym
+{-
+↭-sym-involutive : ∀ {xs ys : List A} (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
+↭-sym-involutive refl          = refl
+↭-sym-involutive (prep x ↭)    = cong (prep x) (↭-sym-involutive ↭)
+↭-sym-involutive (swap x y ↭)  = cong (swap x y) (↭-sym-involutive ↭)
+↭-sym-involutive (trans ↭₁ ↭₂) =
+  cong₂ trans (↭-sym-involutive ↭₁) (↭-sym-involutive ↭₂)
+-}
+------------------------------------------------------------------------
+-- Relationships to other predicates
+{-
+Any-resp-[σ⁻¹∘σ] : {xs ys : List A} {P : Pred A p} →
+                   (σ : xs ↭ ys) →
+                   (ix : Any P xs) →
+                   Any-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+Any-resp-[σ⁻¹∘σ] refl          ix               = refl
+Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (there (here _)) = refl
+Any-resp-[σ⁻¹∘σ] (trans σ₁ σ₂) ix
+  rewrite Any-resp-[σ⁻¹∘σ] σ₂ (Any-resp-↭ σ₁ ix)
+  rewrite Any-resp-[σ⁻¹∘σ] σ₁ ix
+  = refl
+Any-resp-[σ⁻¹∘σ] (prep _ σ)    (there ix)
+  rewrite Any-resp-[σ⁻¹∘σ] σ ix
+  = refl
+Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
+  rewrite Any-resp-[σ⁻¹∘σ] σ ix
+  = refl
+
+∈-resp-[σ⁻¹∘σ] : {xs ys : List A} {x : A} →
+                 (σ : xs ↭ ys) →
+                 (ix : x ∈ xs) →
+                 ∈-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+∈-resp-[σ⁻¹∘σ] = Any-resp-[σ⁻¹∘σ]
+-}
+------------------------------------------------------------------------
+-- map
+
+module _  {B : Set b} (f : A → B) where
+
+  open Propositional {A = B} using () renaming (_↭_ to _↭′_)
+  private module ↭′ = Permutation (setoid B)
+{-
+  -- permutations preserve 'being a mapped list'
+  ↭-map-inv : List.map f xs ↭′ vs → ∃ λ ys → vs ≡ List.map f ys × xs ↭ ys
+  ↭-map-inv {xs = []} f*xs↭vs
+    with ≡.refl ← ↭′.↭-[]-invˡ f*xs↭vs  = [] , ≡.refl , ↭-refl
+  ↭-map-inv {xs = x ∷ []} (Properties.refl f*xs≋vs) = {!f*xs≋vs!}
+  ↭-map-inv {xs = x ∷ []} (Properties.prep eq p) = {!!}
+  ↭-map-inv {xs = x ∷ []} (Properties.trans p p₁) = {!!}
+  ↭-map-inv {xs = x ∷ y ∷ xs} (Properties.refl x₁) = {!!}
+  ↭-map-inv {xs = x ∷ y ∷ xs} (Properties.prep eq p) = {!!}
+  ↭-map-inv {xs = x ∷ y ∷ xs} (Properties.swap eq₁ eq₂ p) = {!!}
+  ↭-map-inv {xs = x ∷ y ∷ xs} (Properties.trans p p₁) = {!!}
+-}
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
