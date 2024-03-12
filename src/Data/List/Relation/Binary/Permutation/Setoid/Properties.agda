@@ -139,11 +139,8 @@ module _ (T : Setoid b ℓ) where
   map⁺ : ∀ {f} → f Preserves _≈_ ⟶ _≈′_ →
          xs ↭ ys → map f xs ↭′ map f ys
   map⁺ pres = Properties.map⁺ pres
-{-
-  -- permutations preserve 'being a mapped list'
-  ↭-map-inv : map f xs ↭ zs → ∃ λ ys → zs ≡ map f ys × xs ↭ ys
-  ↭-map-inv p = 
--}
+
+
 ------------------------------------------------------------------------
 -- _++_
 
@@ -266,6 +263,9 @@ dropMiddle : ∀ {vs} ws xs {ys zs} →
 dropMiddle {[]}     ws xs p = p
 dropMiddle {v ∷ vs} ws xs p = dropMiddle ws xs (dropMiddleElement ws xs p)
 
+drop-∷ : x ∷ xs ↭ x ∷ ys → xs ↭ ys
+drop-∷ = dropMiddleElement [] []
+
 split-↭ : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs →
           ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs × ps ++ qs ↭ as ++ bs
 split-↭ v as bs p = Properties.split-↭ ≈-refl ≈-trans v as bs p
@@ -293,30 +293,10 @@ module _ {p} {P : Pred A p} (P? : Decidable P) where
   ... | true  = ↭-prep x (partition-↭ xs)
   ... | false = ↭-trans (↭-prep x (partition-↭ xs)) (↭-sym (↭-shift _ _))
 
-
-------------------------------------------------------------------------
--- merge
-
-module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
-
-  merge-↭ : ∀ xs ys → merge R? xs ys ↭ xs ++ ys
-  merge-↭ []       []       = ↭-refl
-  merge-↭ []       (y ∷ ys) = ↭-refl
-  merge-↭ (x ∷ xs) []       = ↭-sym (++-identityʳ (x ∷ xs))
-  merge-↭ (x ∷ xs) (y ∷ ys)
-    with does (R? x y) | merge-↭ xs (y ∷ ys) | merge-↭ (x ∷ xs) ys
-  ... | true  | rec | _   = ↭-prep x rec
-  ... | false | _   | rec = begin
-    y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
-    y ∷ x ∷ xs ++ ys         ↭⟨ ↭-shift (x ∷ xs) ys ⟨
-    (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
-    x ∷ xs ++ y ∷ ys         ∎
-    where open PermutationReasoning
-
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
-∷↭∷ʳ : ∀ (x : A) xs → x ∷ xs ↭ xs ∷ʳ x
+∷↭∷ʳ : ∀ x xs → x ∷ xs ↭ xs ∷ʳ x
 ∷↭∷ʳ x xs = ↭-sym (begin
   xs ++ [ x ]   ↭⟨ ↭-shift xs [] ⟩
   x ∷ xs ++ []  ≡⟨ List.++-identityʳ _ ⟩
@@ -326,9 +306,40 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
 ------------------------------------------------------------------------
 -- ʳ++
 
-++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
+++↭ʳ++ : ∀ xs ys → xs ++ ys ↭ xs ʳ++ ys
 ++↭ʳ++ []       ys = ↭-refl
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (↭-shift xs ys)) (++↭ʳ++ xs (x ∷ ys))
+
+------------------------------------------------------------------------
+-- reverse
+
+↭-reverse : ∀ xs → reverse xs ↭ xs
+↭-reverse [] = ↭-refl
+↭-reverse (x ∷ xs) = begin
+  reverse (x ∷ xs) ≡⟨ List.unfold-reverse x xs ⟩
+  reverse xs ∷ʳ x  ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
+  x ∷ reverse xs   <⟨ ↭-reverse xs ⟩
+  x ∷ xs           ∎
+  where open PermutationReasoning
+
+------------------------------------------------------------------------
+-- merge
+
+module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
+
+  merge-↭ : ∀ xs ys → merge R? xs ys ↭ xs ++ ys
+  merge-↭ []            []            = ↭-refl
+  merge-↭ []            y∷ys@(_ ∷ _)  = ↭-refl
+  merge-↭ x∷xs@(_ ∷ _)  []            = ↭-sym (++-identityʳ x∷xs)
+  merge-↭ x∷xs@(x ∷ xs) y∷ys@(y ∷ ys)
+    with does (R? x y) | merge-↭ xs y∷ys | merge-↭ x∷xs ys
+  ... | true  | rec | _   = ↭-prep x rec
+  ... | false | _   | rec = begin
+    y ∷ merge R? x∷xs ys <⟨ rec ⟩
+    y ∷ x∷xs ++ ys       ↭⟨ ↭-shift x∷xs ys ⟨
+    x∷xs ++ y∷ys         ≡⟨ List.++-assoc [ x ] xs y∷ys ⟨
+    x∷xs ++ y∷ys         ∎
+    where open PermutationReasoning
 
 ------------------------------------------------------------------------
 -- foldr of Commutative Monoid
