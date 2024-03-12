@@ -17,9 +17,6 @@ open import Data.Bool.Base using (true; false)
 open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise)
-import Data.List.Relation.Binary.Equality.Setoid as Equality
-import Data.List.Relation.Binary.Permutation.Setoid as Permutation
-import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
@@ -41,6 +38,10 @@ open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; Decidable)
 
+import Data.List.Relation.Binary.Equality.Setoid as Equality
+import Data.List.Relation.Binary.Permutation.Setoid as Permutation
+import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
+
 open Setoid S
   using (_≈_)
   renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
@@ -55,21 +56,23 @@ private
     b p r : Level
     xs ys zs : List A
     x y z v w : A
+    P : Pred A p
+    R : Rel A r
 
 ------------------------------------------------------------------------
 -- Relationships to other predicates
 ------------------------------------------------------------------------
 
-All-resp-↭ : ∀ {P : Pred A p} → P Respects _≈_ → (All P) Respects _↭_
+All-resp-↭ : P Respects _≈_ → (All P) Respects _↭_
 All-resp-↭ = Properties.All-resp-↭
 
-Any-resp-↭ : ∀ {P : Pred A p} → P Respects _≈_ → (Any P) Respects _↭_
+Any-resp-↭ : P Respects _≈_ → (Any P) Respects _↭_
 Any-resp-↭ = Properties.Any-resp-↭
 
-AllPairs-resp-↭ : ∀ {R : Rel A r} → Symmetric R → R Respects₂ _≈_ → (AllPairs R) Respects _↭_
+AllPairs-resp-↭ : Symmetric R → R Respects₂ _≈_ → (AllPairs R) Respects _↭_
 AllPairs-resp-↭ = Properties.AllPairs-resp-↭
 
-∈-resp-↭ : ∀ {x} → (x ∈_) Respects _↭_
+∈-resp-↭ : (x ∈_) Respects _↭_
 ∈-resp-↭ = Any-resp-↭ (flip ≈-trans)
 
 Unique-resp-↭ : Unique Respects _↭_
@@ -92,14 +95,14 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 -- Properties of steps
 ------------------------------------------------------------------------
 
-0<steps : ∀ {xs ys} (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
+0<steps : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
 0<steps = Properties.0<steps
 
-steps-respˡ : ∀ {xs ys zs} (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) →
+steps-respˡ : (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) →
               steps (↭-respˡ-≋ ys≋xs ys↭zs) ≡ steps ys↭zs
 steps-respˡ = Properties.steps-respˡ ≈-sym ≈-trans
 
-steps-respʳ : ∀ {xs ys zs} (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) →
+steps-respʳ : (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) →
               steps (↭-respʳ-≋ xs≋ys zs↭xs) ≡ steps zs↭xs
 steps-respʳ = Properties.steps-respʳ ≈-trans
 
@@ -267,7 +270,7 @@ split-↭ : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs →
           ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs × ps ++ qs ↭ as ++ bs
 split-↭ v as bs p = Properties.split-↭ ≈-refl ≈-trans v as bs p
 
-split : ∀ (v : A) as bs {xs} → xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
+split : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
 split v as bs p with ps , qs , eq , _ ← split-↭ v as bs p = ps , qs , eq
 
 
@@ -280,15 +283,15 @@ drop-∷ = dropMiddleElement [] []
 ------------------------------------------------------------------------
 -- filter
 
-module _ {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects _≈_) where
+module _ (P? : Decidable P) (P≈ : P Respects _≈_) where
 
-  filter⁺ : ∀ {xs ys : List A} → xs ↭ ys → filter P? xs ↭ filter P? ys
+  filter⁺ : xs ↭ ys → filter P? xs ↭ filter P? ys
   filter⁺ = Properties.filter⁺ ≈-sym P? P≈
 
 ------------------------------------------------------------------------
 -- partition
 
-module _ {p} {P : Pred A p} (P? : Decidable P) where
+module _ (P? : Decidable P) where
 
   partition-↭ : ∀ xs → let ys , zs = partition P? xs in xs ↭ ys ++ zs
   partition-↭ []       = ↭-refl
@@ -328,7 +331,7 @@ module _ {p} {P : Pred A p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- merge
 
-module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
+module _ (R? : B.Decidable R) where
 
   merge-↭ : ∀ xs ys → merge R? xs ys ↭ xs ++ ys
   merge-↭ []            []            = ↭-refl
@@ -354,5 +357,5 @@ module _ {_∙_ : Op₂ A} {ε : A}
     commutativeMonoid : CommutativeMonoid _ _
     commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
 
-  foldr-commMonoid : ∀ {xs ys} → xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
+  foldr-commMonoid : xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
   foldr-commMonoid = Properties.foldr-commMonoid commutativeMonoid
