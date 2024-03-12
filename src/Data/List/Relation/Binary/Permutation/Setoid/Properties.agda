@@ -263,9 +263,6 @@ dropMiddle : ∀ {vs} ws xs {ys zs} →
 dropMiddle {[]}     ws xs p = p
 dropMiddle {v ∷ vs} ws xs p = dropMiddle ws xs (dropMiddleElement ws xs p)
 
-drop-∷ : x ∷ xs ↭ x ∷ ys → xs ↭ ys
-drop-∷ = dropMiddleElement [] []
-
 split-↭ : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs →
           ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs × ps ++ qs ↭ as ++ bs
 split-↭ v as bs p = Properties.split-↭ ≈-refl ≈-trans v as bs p
@@ -273,6 +270,12 @@ split-↭ v as bs p = Properties.split-↭ ≈-refl ≈-trans v as bs p
 split : ∀ (v : A) as bs {xs} → xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
 split v as bs p with ps , qs , eq , _ ← split-↭ v as bs p = ps , qs , eq
 
+
+------------------------------------------------------------------------
+-- _∷_
+
+drop-∷ : x ∷ xs ↭ x ∷ ys → xs ↭ ys
+drop-∷ = dropMiddleElement [] []
 
 ------------------------------------------------------------------------
 -- filter

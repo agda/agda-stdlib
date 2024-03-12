@@ -560,7 +560,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
 ------------------------------------------------------------------------
 -- Relationships to other relations
-
+{-
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
 ↭⇒∼bag {A = A} xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
   where
@@ -584,10 +584,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
   to∘from p with from∘to (↭-sym p)
   ... | res rewrite ↭-sym-involutive p = res
-
+-}
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
 ∼bag⇒↭ {A = A} {[]} eq with empty-unique (↔-sym eq)
-... | refl = refl
+... | refl = ↭-refl
 ∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl))
 ... | zs₁ , zs₂ , p rewrite p = begin
   x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
