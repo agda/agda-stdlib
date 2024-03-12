@@ -131,7 +131,7 @@ steps-respʳ = Properties.steps-respʳ ≈-trans
 ------------------------------------------------------------------------
 -- map
 
-module _ (T : Setoid b ℓ) where
+module _ (T : Setoid b r) where
 
   open Setoid T using () renaming (_≈_ to _≈′_)
   open Permutation T using () renaming (_↭_ to _↭′_)
