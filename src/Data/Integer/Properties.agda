@@ -1598,7 +1598,7 @@ private
 abs-* : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
 abs-* i j = abs-◃ _ _
 
-sign-* : ∀ i j → {{NonZero (i * j)}} → sign (i * j) ≡ sign i Sign.* sign j
+sign-* : ∀ i j → .{{NonZero (i * j)}} → sign (i * j) ≡ sign i Sign.* sign j
 sign-* i j rewrite abs-* i j = sign-◃ (sign i Sign.* sign j) (∣ i ∣ ℕ.* ∣ j ∣)
 
 *-cancelʳ-≡ : ∀ i j k .{{_ : NonZero k}} → i * k ≡ j * k → i ≡ j
