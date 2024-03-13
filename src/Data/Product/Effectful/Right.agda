@@ -48,7 +48,7 @@ monad = record
   ; _>>=_ = uncurry λ a w₁ f → map₂ (w₁ ∙_) (f a)
   }
 
-monadT : RawMonadT (_∘′ Productᵣ)
+monadT : ∀ {ℓ} → RawMonadT {g₁ = ℓ} (_∘′ Productᵣ)
 monadT M = record
   { lift = (_, ε) <$>_
   ; rawMonad = mkRawMonad _

@@ -49,7 +49,7 @@ monad = record
   }
 
 -- The monad instance also requires some mucking about with universe levels.
-monadT : RawMonadT (_∘′ Productₗ)
+monadT : ∀ {ℓ} → RawMonadT {g₁ = ℓ} (_∘′ Productₗ)
 monadT M = record
   { lift = (ε ,_) <$>_
   ; rawMonad = mkRawMonad _
