@@ -36,7 +36,7 @@ private
   variable
     b p r : Level
     B : Set b
-    x y z : A
+    v x y z : A
     ws xs ys zs : List A
     vs : List B
     P : Pred A p
@@ -87,31 +87,16 @@ Any-resp-↭ : (Any P) Respects _↭_
 Any-resp-↭ = ↭.Any-resp-↭ (≡.resp _)
 
 ∈-resp-↭ : (x ∈_) Respects _↭_
-∈-resp-↭ = Any-resp-↭
-{-
-Any-resp-[σ⁻¹∘σ] : (σ : xs ↭ ys) (ix : Any P xs) →
-                   Any-resp-↭ (↭-trans σ (↭-sym σ)) ix ≡ ix
-Any-resp-[σ⁻¹∘σ] p ix = {!p!}
+∈-resp-↭ = ↭.∈-resp-↭
 
-Any-resp-[σ⁻¹∘σ] refl          ix               = refl
-Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (there (here _)) = refl
-Any-resp-[σ⁻¹∘σ] (trans σ₁ σ₂) ix
-  rewrite Any-resp-[σ⁻¹∘σ] σ₂ (Any-resp-↭ σ₁ ix)
-  rewrite Any-resp-[σ⁻¹∘σ] σ₁ ix
-  = refl
-Any-resp-[σ⁻¹∘σ] (prep _ σ)    (there ix)
-  rewrite Any-resp-[σ⁻¹∘σ] σ ix
-  = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
-  rewrite Any-resp-[σ⁻¹∘σ] σ ix
-  = refl
+∈-resp-↭-from∘to : (p : xs ↭ ys) {ix : v ∈ xs} {iy : v ∈ ys} →
+                   ix ≡ ∈-resp-↭ (↭-sym p) iy → ∈-resp-↭ p ix ≡ iy
+∈-resp-↭-from∘to p = ↭.∈-resp-↭-sym⁻¹ ≡.sym-involutive p
 
-∈-resp-[σ⁻¹∘σ] : (σ : xs ↭ ys) (ix : x ∈ xs) →
-                 ∈-resp-↭ (↭-trans σ (↭-sym σ)) ix ≡ ix
-∈-resp-[σ⁻¹∘σ] = Any-resp-[σ⁻¹∘σ]
--}
+∈-resp-↭-to∘from : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
+                   ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
+∈-resp-↭-to∘from p = ↭.∈-resp-↭-sym   ≡.sym-involutive p
+
 ------------------------------------------------------------------------
 -- map
 

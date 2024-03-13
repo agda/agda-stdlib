@@ -4,7 +4,7 @@
 -- Bag and set equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
@@ -558,7 +558,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 -- Relationships to other relations
 
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
-↭⇒∼bag {A = A} xs↭ys {v} = mk↔ {to = to xs↭ys} {from = from xs↭ys} (from∘to xs↭ys , to∘from xs↭ys)
+↭⇒∼bag {A = A} xs↭ys {v} = mk↔ (from∘to xs↭ys , to∘from xs↭ys)
   --mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
   where
   to : xs ↭ ys → v ∈ xs → v ∈ ys

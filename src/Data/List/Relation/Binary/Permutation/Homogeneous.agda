@@ -4,7 +4,7 @@
 -- A definition for the permutation relation using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
 
 module Data.List.Relation.Binary.Permutation.Homogeneous where
 
@@ -128,28 +128,6 @@ module _ {R : Rel A r}
 
 
 ------------------------------------------------------------------------
--- A higher-dimensional property useful for the `Propositional` case
-
-module _ {R : Rel A r} {R-sym : Symmetric R}
-         (R-sym-involutive : ∀ {x y} → (p : R x y) → R-sym (R-sym p) ≡ p)
-         where
-
-  ≋-sym-involutive′ : (p : Pointwise R xs ys) →
-                      Pointwise.symmetric R-sym (Pointwise.symmetric R-sym p) ≡ p
-  ≋-sym-involutive′ [] = ≡.refl
-  ≋-sym-involutive′ (x∼y ∷ xs≋ys)
-    rewrite R-sym-involutive x∼y = ≡.cong (_ ∷_) (≋-sym-involutive′ xs≋ys)
-
-  ↭-sym-involutive′ : (p : Permutation R xs ys) → ↭-sym′ R-sym (↭-sym′ R-sym p) ≡ p
-  ↭-sym-involutive′ (refl xs≋ys) = ≡.cong refl (≋-sym-involutive′ xs≋ys)
-  ↭-sym-involutive′ (prep eq p) = ≡.cong₂ prep (R-sym-involutive eq) (↭-sym-involutive′ p)
-  ↭-sym-involutive′ (swap eq₁ eq₂ p)
-    rewrite R-sym-involutive eq₁ | R-sym-involutive eq₂
-    = ≡.cong (swap _ _) (↭-sym-involutive′ p)
-  ↭-sym-involutive′ (trans p q) = ≡.cong₂ trans (↭-sym-involutive′ p) (↭-sym-involutive′ q)
-
-
-------------------------------------------------------------------------
 -- Map
 
 module _ {R : Rel A r} {S : Rel A s} where
@@ -180,10 +158,84 @@ module _ {R : Rel A r} {P : Pred A p} (resp : P Respects R) where
   Any-resp-↭ (swap x y p) (there (here px))   = here (resp y px)
   Any-resp-↭ (swap x y p) (there (there pxs)) = there (there (Any-resp-↭ p pxs))
   Any-resp-↭ (trans p₁ p₂) pxs                = Any-resp-↭ p₂ (Any-resp-↭ p₁ pxs)
+
 {-
-  Any-resp-↭-here : ∀ x≈y xs↭ys px → Any-resp-↭ (x≈y ∷ xs↭ys) (here px) ≡ here (resp x≈y px)
-  Any-resp-↭-here xs↭ys px = ?
+  module _ {R-refl : Reflexive R} {R-sym : Symmetric R} {R-trans : Transitive R}
+           (R-sym-involutive : ∀ {x y} (p : R x y) → R-sym (R-sym p) ≡ p)
+           (R-trans-sym : ∀ {x y} (p : R x y) → R-trans p (R-sym p) ≡ R-refl {x = x})
+           (R-resp-refl : ∀ {z} (pz : P z) → resp R-refl pz ≡ pz)
+           (R-resp-trans : ∀ {x y z} (p : R x y) (q : R y z) (px : P x) →
+                           resp (R-trans p q) px ≡ resp q (resp p px))
+           where
+
+    Any-resp-↭-trans-sym : ∀ {xs ys} (xs↭ys : Permutation R xs ys) px →
+                           Any-resp-↭ (↭-sym′ R-sym xs↭ys) (Any-resp-↭ xs↭ys px) ≡ px
+    Any-resp-↭-trans-sym (refl xs≋ys) pxs = {!!}
+    Any-resp-↭-trans-sym (prep x≈y xs↭ys) (here px)
+      rewrite ≡.sym (R-resp-trans x≈y (R-sym x≈y) px)
+            | R-trans-sym x≈y
+            | R-resp-refl px
+      = ≡.refl
+    Any-resp-↭-trans-sym (prep x≈y xs↭ys) (there pys) = {!!}
+    Any-resp-↭-trans-sym (swap eq₁ eq₂ xs↭ys) px = {!!}
+    Any-resp-↭-trans-sym (trans xs↭ys ys↭zs) px = {!!}
 -}
+
+------------------------------------------------------------------------
+-- A higher-dimensional property useful for the `Propositional` case
+-- used in the equivalence proof between `Bag` equality and `_↭_`
+
+
+------------------------------------------------------------------------
+-- Two higher-dimensional properties useful in the `Propositional` case,
+-- specifically in the equivalence proof between `Bag` equality and `_↭_`
+
+module _ {_≈_ : Rel A r} (isEquivalence : IsEquivalence _≈_) where
+
+  open IsEquivalence isEquivalence
+    renaming (refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
+
+  ∈-resp-↭ : (Any (x ≈_)) Respects (Permutation _≈_)
+  ∈-resp-↭ (refl xs≋ys) ixs                 = ∈-resp-Pointwise xs≋ys ixs
+    where
+    ∈-resp-Pointwise : (Any (x ≈_)) Respects (Pointwise _≈_)
+    ∈-resp-Pointwise (x≈y ∷ xs) (here ix)   = here (≈-trans ix x≈y)
+    ∈-resp-Pointwise (x≈y ∷ xs) (there ixs) = there (∈-resp-Pointwise xs ixs)
+  ∈-resp-↭ (prep x≈y p) (here ix)           = here (≈-trans ix x≈y)
+  ∈-resp-↭ (prep x≈y p) (there ixs)         = there (∈-resp-↭ p ixs)
+  ∈-resp-↭ (swap x y p) (here ix)           = there (here (≈-trans ix x))
+  ∈-resp-↭ (swap x y p) (there (here ix))   = here (≈-trans ix y)
+  ∈-resp-↭ (swap x y p) (there (there ixs)) = there (there (∈-resp-↭ p ixs))
+  ∈-resp-↭ (trans p₁ p₂) ixs                = ∈-resp-↭ p₂ (∈-resp-↭ p₁ ixs)
+
+  module _ (≈-sym-involutive : ∀ {x y} (p : x ≈ y) → ≈-sym (≈-sym p) ≡ p) where
+
+    ↭-sym-involutive′ : (p : Permutation _≈_ xs ys) → ↭-sym′ ≈-sym (↭-sym′ ≈-sym p) ≡ p
+    ↭-sym-involutive′ (refl xs≋ys) = ≡.cong refl (≋-sym-involutive′ xs≋ys)
+      where
+      ≋-sym-involutive′ : (p : Pointwise _≈_ xs ys) →
+        Pointwise.symmetric ≈-sym (Pointwise.symmetric ≈-sym p) ≡ p
+      ≋-sym-involutive′ [] = ≡.refl
+      ≋-sym-involutive′ (x≈y ∷ xs≋ys) rewrite ≈-sym-involutive x≈y
+        = ≡.cong (_ ∷_) (≋-sym-involutive′ xs≋ys)
+    ↭-sym-involutive′ (prep eq p) = ≡.cong₂ prep (≈-sym-involutive eq) (↭-sym-involutive′ p)
+    ↭-sym-involutive′ (swap eq₁ eq₂ p) rewrite ≈-sym-involutive eq₁ | ≈-sym-involutive eq₂
+      = ≡.cong (swap _ _) (↭-sym-involutive′ p)
+    ↭-sym-involutive′ (trans p q) = ≡.cong₂ trans (↭-sym-involutive′ p) (↭-sym-involutive′ q)
+
+    ∈-resp-↭-sym   : (p : Permutation _≈_ ys xs) {iy : Any (x ≈_) ys} {ix : Any (x ≈_) xs} →
+                     ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym′ ≈-sym p) ix ≡ iy
+    ∈-resp-↭-sym   p eq = {!!}
+
+    ∈-resp-↭-sym⁻¹ : (p : Permutation _≈_ xs ys) {ix : Any (x ≈_) xs} {iy : Any (x ≈_) ys} →
+                     ix ≡ ∈-resp-↭ (↭-sym′ ≈-sym p) iy → ∈-resp-↭ p ix ≡ iy
+    ∈-resp-↭-sym⁻¹ p eq
+      with eq′ ← ∈-resp-↭-sym (↭-sym′ ≈-sym p) rewrite ↭-sym-involutive′ p = eq′ eq
+
+
+------------------------------------------------------------------------
+-- 
+
 module _ {R : Rel A r} {S : Rel A s}
          (sym : Symmetric S) (resp@(rʳ , rˡ) : S Respects₂ R) where
   
