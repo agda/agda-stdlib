@@ -5,8 +5,8 @@ module README.Tactic.Cong where
 open import Data.Nat
 open import Data.Nat.Properties
 
-open import Relation.Binary.PropositionalEquality as Eq
-import Relation.Binary.Reasoning.Preorder as PR
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; sym; cong; module ≡-Reasoning)
 
 open import Tactic.Cong using (cong!)
 
@@ -26,7 +26,7 @@ open import Tactic.Cong using (cong!)
 
 verbose-example : ∀ m n → m ≡ n → suc (suc (m + 0)) + m ≡ suc (suc n) + (n + 0)
 verbose-example m n eq =
-  let open Eq.≡-Reasoning in
+  let open ≡-Reasoning in
   begin
     suc (suc (m + 0)) + m
   ≡⟨ cong (λ ϕ → suc (suc (ϕ + m))) (+-identityʳ m) ⟩
@@ -44,7 +44,7 @@ verbose-example m n eq =
 
 succinct-example : ∀ m n → m ≡ n → suc (suc (m + 0)) + m ≡ suc (suc n) + (n + 0)
 succinct-example m n eq =
-  let open Eq.≡-Reasoning in
+  let open ≡-Reasoning in
   begin
     suc (suc (m + 0)) + m
   ≡⟨ cong! (+-identityʳ m) ⟩
@@ -117,7 +117,7 @@ module EquationalReasoningTests where
 
   test₁ : ∀ m n → m ≡ n → suc (suc (m + 0)) + m ≡ suc (suc n) + (n + 0)
   test₁ m n eq =
-    let open Eq.≡-Reasoning in
+    let open ≡-Reasoning in
     begin
       suc (suc (m + 0)) + m
     ≡⟨ cong! (+-identityʳ m) ⟩
@@ -130,11 +130,11 @@ module EquationalReasoningTests where
 
   test₂ : ∀ m n → m ≡ n → suc (m + m) ≤ suc (suc (n + n))
   test₂ m n eq =
-    let open PR ≤-preorder in
+    let open ≤-Reasoning in
     begin
       suc (m + m)
     ≡⟨ cong! eq ⟩
       suc (n + n)
-    ∼⟨ ≤-step ≤-refl ⟩
+    ≤⟨ n≤1+n _ ⟩
       suc (suc (n + n))
     ∎
