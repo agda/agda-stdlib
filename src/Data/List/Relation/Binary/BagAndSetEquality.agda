@@ -4,7 +4,7 @@
 -- Bag and set equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible #-}
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
@@ -30,7 +30,7 @@ open import Data.Sum.Properties hiding (map-cong)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit.Polymorphic.Base
 open import Function.Base
-open import Function.Bundles using (_↔_; Inverse; Equivalence; mk↔ₛ′; mk⇔)
+open import Function.Bundles using (_↔_; Inverse; Equivalence; mk↔ₛ′; mk↔; mk⇔)
 open import Function.Related.Propositional as Related
   using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→; K-refl; SK-sym)
 open import Function.Related.TypeIsomorphisms
@@ -556,9 +556,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
 ------------------------------------------------------------------------
 -- Relationships to other relations
-{-
+
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
-↭⇒∼bag {A = A} xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
+↭⇒∼bag {A = A} xs↭ys {v} = mk↔ {to = to xs↭ys} {from = from xs↭ys} (from∘to xs↭ys , to∘from xs↭ys)
+  --mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
   where
   to : xs ↭ ys → v ∈ xs → v ∈ ys
   to = ∈-resp-↭
@@ -566,22 +567,14 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   from : xs ↭ ys → v ∈ ys → v ∈ xs
   from = ∈-resp-↭ ∘ ↭-sym
 
-  from∘to : (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-  from∘to p          v∈xs                 = {!p!}
-{-
-  from∘to refl          v∈xs                 = refl
-  from∘to (prep _ _)    (here refl)          = refl
-  from∘to (prep _ p)    (there v∈xs)         = ≡.cong there (from∘to p v∈xs)
-  from∘to (swap x y p)  (here refl)          = refl
-  from∘to (swap x y p)  (there (here refl))  = refl
-  from∘to (swap x y p)  (there (there v∈xs)) = ≡.cong (there ∘ there) (from∘to p v∈xs)
-  from∘to (trans p₁ p₂) v∈xs
-    rewrite from∘to p₂ (∈-resp-↭ p₁ v∈xs)
-          | from∘to p₁ v∈xs                  = refl
--}
-  to∘from : (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
-  to∘from p with res ← from∘to (↭-sym p) rewrite ↭-sym-involutive p = res
--}
+  from∘to : (p : xs ↭ ys) {ix : v ∈ xs} {iy : v ∈ ys} →
+            ix ≡ from p iy → to p ix ≡ iy
+  from∘to = ∈-resp-↭-from∘to
+
+  to∘from : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
+            ix ≡ to p iy → from p ix ≡ iy
+  to∘from = ∈-resp-↭-to∘from
+
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
 ∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq)      = ↭-refl
 ∼bag⇒↭ {A = A} {x ∷ xs} eq
