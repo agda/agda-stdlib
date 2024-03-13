@@ -4,7 +4,7 @@
 -- A definition for the permutation relation using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Homogeneous where
 
@@ -195,12 +195,12 @@ module _ {_≈_ : Rel A r} (isEquivalence : IsEquivalence _≈_) where
   open IsEquivalence isEquivalence
     renaming (refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
 
+  ∈-resp-Pointwise : (Any (x ≈_)) Respects (Pointwise _≈_)
+  ∈-resp-Pointwise (x≈y ∷ xs) (here ix)   = here (≈-trans ix x≈y)
+  ∈-resp-Pointwise (x≈y ∷ xs) (there ixs) = there (∈-resp-Pointwise xs ixs)
+
   ∈-resp-↭ : (Any (x ≈_)) Respects (Permutation _≈_)
   ∈-resp-↭ (refl xs≋ys) ixs                 = ∈-resp-Pointwise xs≋ys ixs
-    where
-    ∈-resp-Pointwise : (Any (x ≈_)) Respects (Pointwise _≈_)
-    ∈-resp-Pointwise (x≈y ∷ xs) (here ix)   = here (≈-trans ix x≈y)
-    ∈-resp-Pointwise (x≈y ∷ xs) (there ixs) = there (∈-resp-Pointwise xs ixs)
   ∈-resp-↭ (prep x≈y p) (here ix)           = here (≈-trans ix x≈y)
   ∈-resp-↭ (prep x≈y p) (there ixs)         = there (∈-resp-↭ p ixs)
   ∈-resp-↭ (swap x y p) (here ix)           = there (here (≈-trans ix x))
@@ -208,13 +208,22 @@ module _ {_≈_ : Rel A r} (isEquivalence : IsEquivalence _≈_) where
   ∈-resp-↭ (swap x y p) (there (there ixs)) = there (there (∈-resp-↭ p ixs))
   ∈-resp-↭ (trans p₁ p₂) ixs                = ∈-resp-↭ p₂ (∈-resp-↭ p₁ ixs)
 
-  module _ (≈-sym-involutive : ∀ {x y} (p : x ≈ y) → ≈-sym (≈-sym p) ≡ p) where
+  module _ (≈-sym-involutive : ∀ {x y} (p : x ≈ y) → ≈-sym (≈-sym p) ≡ p)
+           (≈-trans-trans-sym : ∀ {x y z} (p : x ≈ y) (q : y ≈ z) →
+                                ≈-trans (≈-trans p q) (≈-sym q) ≡ p)
 
-    ↭-sym-involutive′ : (p : Permutation _≈_ xs ys) → ↭-sym′ ≈-sym (↭-sym′ ≈-sym p) ≡ p
+    where
+
+    private
+      ≋-sym : Symmetric (Pointwise _≈_)
+      ≋-sym = Pointwise.symmetric ≈-sym
+      ↭-sym : Symmetric (Permutation _≈_)
+      ↭-sym = ↭-sym′ ≈-sym
+
+    ↭-sym-involutive′ : (p : Permutation _≈_ xs ys) → ↭-sym (↭-sym p) ≡ p
     ↭-sym-involutive′ (refl xs≋ys) = ≡.cong refl (≋-sym-involutive′ xs≋ys)
       where
-      ≋-sym-involutive′ : (p : Pointwise _≈_ xs ys) →
-        Pointwise.symmetric ≈-sym (Pointwise.symmetric ≈-sym p) ≡ p
+      ≋-sym-involutive′ : (p : Pointwise _≈_ xs ys) → ≋-sym (≋-sym p) ≡ p
       ≋-sym-involutive′ [] = ≡.refl
       ≋-sym-involutive′ (x≈y ∷ xs≋ys) rewrite ≈-sym-involutive x≈y
         = ≡.cong (_ ∷_) (≋-sym-involutive′ xs≋ys)
@@ -223,9 +232,31 @@ module _ {_≈_ : Rel A r} (isEquivalence : IsEquivalence _≈_) where
       = ≡.cong (swap _ _) (↭-sym-involutive′ p)
     ↭-sym-involutive′ (trans p q) = ≡.cong₂ trans (↭-sym-involutive′ p) (↭-sym-involutive′ q)
 
+    ∈-resp-Pointwise-sym : (p : Pointwise _≈_ ys xs) →
+                           {iy : Any (x ≈_) ys} {ix : Any (x ≈_) xs} →
+                           ix ≡ ∈-resp-Pointwise p iy →
+                           ∈-resp-Pointwise (≋-sym p) ix ≡ iy
+    ∈-resp-Pointwise-sym (x≈y ∷ xs≋ys) {here ix} {here iy} eq
+      with ≡.refl ← eq = cong here (≈-trans-trans-sym ix x≈y)
+    ∈-resp-Pointwise-sym (x≈y ∷ xs≋ys) {there ixs} {there iys} eq
+      with ≡.refl ← eq = cong there (∈-resp-Pointwise-sym xs≋ys ≡.refl)
+
     ∈-resp-↭-sym   : (p : Permutation _≈_ ys xs) {iy : Any (x ≈_) ys} {ix : Any (x ≈_) xs} →
-                     ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym′ ≈-sym p) ix ≡ iy
-    ∈-resp-↭-sym   p eq = {!!}
+                     ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
+    ∈-resp-↭-sym (refl xs≋ys) eq = ∈-resp-Pointwise-sym xs≋ys eq
+    ∈-resp-↭-sym (prep eq₁ p) {here iy} {here ix} eq
+      with ≡.refl ← eq = cong here (≈-trans-trans-sym iy eq₁)
+    ∈-resp-↭-sym (prep eq₁ p) {there iys} {there ixs} eq
+      with ≡.refl ← eq = cong there (∈-resp-↭-sym p ≡.refl)
+    ∈-resp-↭-sym (swap eq₁ eq₂ p) {here ix} {here iy} ()
+    ∈-resp-↭-sym (swap eq₁ eq₂ p) {here ix} {there iys} eq
+      with ≡.refl ← eq = cong here (≈-trans-trans-sym ix eq₁)
+    ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (here ix)} {there (here iy)} ()
+    ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (here ix)} {here iy} eq
+      with ≡.refl ← eq = cong (there ∘ here) (≈-trans-trans-sym ix eq₂)
+    ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (there ixs)} {there (there iys)} eq
+      with ≡.refl ← eq = cong (there ∘ there) (∈-resp-↭-sym p ≡.refl)
+    ∈-resp-↭-sym (trans p₁ p₂) eq = ∈-resp-↭-sym p₁ (∈-resp-↭-sym p₂ eq)
 
     ∈-resp-↭-sym⁻¹ : (p : Permutation _≈_ xs ys) {ix : Any (x ≈_) xs} {iy : Any (x ≈_) ys} →
                      ix ≡ ∈-resp-↭ (↭-sym′ ≈-sym p) iy → ∈-resp-↭ p ix ≡ iy
