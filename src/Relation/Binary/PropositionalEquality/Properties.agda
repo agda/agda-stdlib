@@ -93,9 +93,6 @@ cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
          cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
 
-sym-involutive : ∀ {x y : A} (p : x ≡ y) → sym (sym p) ≡ p
-sym-involutive refl = refl
-
 sym-cong : ∀ {x y : A} {f : A → B} (p : x ≡ y) → sym (cong f p) ≡ cong f (sym p)
 sym-cong refl = refl
 

@@ -51,18 +51,25 @@ private
 
 open Propositional {A = A} public
 open ↭ public
--- legacy variations in naming
+-- POSSIBLE DEPRECATION: legacy variations in naming
   renaming (dropMiddleElement-≋ to drop-mid-≡; dropMiddleElement to drop-mid)
 -- DEPRECATION: legacy variation in implicit/explicit parametrisation
   hiding (shift)
 -- more efficient versions defined in `Propositional`
   hiding (↭-transˡ-≋; ↭-transʳ-≋)
 -- needing to specialise to ≡, where `Respects` and `Preserves` etc. are trivial
-  hiding (map⁺; All-resp-↭; Any-resp-↭; ∈-resp-↭; ↭-sym-involutive)
+  hiding ( map⁺; All-resp-↭; Any-resp-↭; ∈-resp-↭; ↭-sym-involutive
+         ; ∈-resp-↭-sym⁻¹; ∈-resp-↭-sym)
 
 ------------------------------------------------------------------------
 -- Additional/specialised properties which hold in the case _≈_ = _≡_
 ------------------------------------------------------------------------
+
+sym-involutive : (p : x ≡ y) → ≡.sym (≡.sym p) ≡ p
+sym-involutive refl = refl
+
+trans-trans-sym : (p : x ≡ y) (q : y ≡ z) → ≡.trans (≡.trans p q) (≡.sym q) ≡ p
+trans-trans-sym refl refl = refl
 
 ------------------------------------------------------------------------
 -- Permutations of singleton lists
@@ -74,7 +81,7 @@ open ↭ public
 -- sym
 
 ↭-sym-involutive : (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
-↭-sym-involutive = ↭.↭-sym-involutive ≡.sym-involutive
+↭-sym-involutive = ↭.↭-sym-involutive sym-involutive
 
 ------------------------------------------------------------------------
 -- Relationships to other predicates
@@ -89,13 +96,13 @@ Any-resp-↭ = ↭.Any-resp-↭ (≡.resp _)
 ∈-resp-↭ : (x ∈_) Respects _↭_
 ∈-resp-↭ = ↭.∈-resp-↭
 
-∈-resp-↭-from∘to : (p : xs ↭ ys) {ix : v ∈ xs} {iy : v ∈ ys} →
+∈-resp-↭-sym⁻¹ : (p : xs ↭ ys) {ix : v ∈ xs} {iy : v ∈ ys} →
                    ix ≡ ∈-resp-↭ (↭-sym p) iy → ∈-resp-↭ p ix ≡ iy
-∈-resp-↭-from∘to p = ↭.∈-resp-↭-sym⁻¹ ≡.sym-involutive p
+∈-resp-↭-sym⁻¹ p = ↭.∈-resp-↭-sym⁻¹ sym-involutive trans-trans-sym p
 
-∈-resp-↭-to∘from : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
+∈-resp-↭-sym : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
                    ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
-∈-resp-↭-to∘from p = ↭.∈-resp-↭-sym   ≡.sym-involutive p
+∈-resp-↭-sym   p = ↭.∈-resp-↭-sym   sym-involutive trans-trans-sym p
 
 ------------------------------------------------------------------------
 -- map

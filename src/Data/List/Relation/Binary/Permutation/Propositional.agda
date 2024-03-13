@@ -4,7 +4,7 @@
 -- An inductive definition for the permutation relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.List.Relation.Binary.Permutation.Propositional
   {a} {A : Set a} where
