@@ -137,8 +137,6 @@ Additions to existing modules
   ◃-nonZero : .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
   sign-*    : .{{NonZero (i * j)}} → sign (i * j) ≡ sign i Sign.* sign j
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
-  i*j≢0⇒i≢0 : .{{NonZero (i * j)}} → NonZero i
-  i*j≢0⇒j≢0 : .{{NonZero (i * j)}} → NonZero j
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

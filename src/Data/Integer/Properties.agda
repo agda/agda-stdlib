@@ -1641,12 +1641,6 @@ i*j≡0⇒i≡0∨j≡0 i p with ℕ.m*n≡0⇒m≡0∨n≡0 ∣ i ∣ (abs-cong
 i*j≢0 : ∀ i j .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
 i*j≢0 i j rewrite abs-* i j = ℕ.m*n≢0 ∣ i ∣ ∣ j ∣
 
-i*j≢0⇒i≢0 : ∀ i {j} → .{{NonZero (i * j)}} → NonZero i
-i*j≢0⇒i≢0 i {j} rewrite abs-* i j = ℕ.m*n≢0⇒m≢0 ∣ i ∣
-
-i*j≢0⇒j≢0 : ∀ i {j} → .{{NonZero (i * j)}} → NonZero j
-i*j≢0⇒j≢0 i {j} rewrite *-comm i j = i*j≢0⇒i≢0 j {i}
-
 ------------------------------------------------------------------------
 -- Properties of _^_
 ------------------------------------------------------------------------
