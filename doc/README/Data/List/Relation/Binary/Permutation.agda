@@ -30,7 +30,7 @@ open import Data.List.Relation.Binary.Permutation.Propositional
 -- a permutation of itself, the second `↭-prep` says that if the
 -- heads of the lists are the same they can be skipped, the third
 -- `↭-swap` says that the first two elements of the lists can be
--- swapped and the fourth `↭trans` says that permutation proofs
+-- swapped and the fourth `↭-trans` says that permutation proofs
 -- can be chained transitively.
 
 -- For example a proof that two lists are a permutation of one
