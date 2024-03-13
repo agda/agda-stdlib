@@ -569,11 +569,11 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
   from∘to : (p : xs ↭ ys) {ix : v ∈ xs} {iy : v ∈ ys} →
             ix ≡ from p iy → to p ix ≡ iy
-  from∘to = ∈-resp-↭-from∘to
+  from∘to = ∈-resp-↭-sym⁻¹
 
   to∘from : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
             ix ≡ to p iy → from p ix ≡ iy
-  to∘from = ∈-resp-↭-to∘from
+  to∘from = ∈-resp-↭-sym
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
 ∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq)      = ↭-refl
