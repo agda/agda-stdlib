@@ -98,23 +98,24 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 ↭-transʳ-≋ = Properties.↭-transʳ-≋ ≈-trans
 
 module _ (≈-sym-involutive : ∀ {x y} → (p : x ≈ y) → ≈-sym (≈-sym p) ≡ p)
-         where
+
+  where
 
   ↭-sym-involutive : (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
   ↭-sym-involutive = Properties.↭-sym-involutive′ isEquivalence ≈-sym-involutive
 
-  module _ {-(≈-trans-sym : ∀ {x y} (p : x ≈ y) → ≈-trans p (≈-sym p) ≡ ≈-refl {x = x})
-           (≈-resp-refl : ∀ {x z} (p : x ≈ z) → ≈-trans p ≈-refl ≡ p)
-           (≈-resp-trans : ∀ {w x y z} (p : x ≈ y) (q : y ≈ z) (r : w ≈ x) →
-                           ≈-trans r (≈-trans p q) ≡ ≈-trans (≈-trans r p) q)-}
-           where
+  module _ (≈-trans-trans-sym : ∀ {x y z} (p : x ≈ y) (q : y ≈ z) →
+                                ≈-trans (≈-trans p q) (≈-sym q) ≡ p)
+    where
 
     ∈-resp-↭-sym⁻¹ : ∀ (p : xs ↭ ys) {ix : x ∈ xs} {iy : x ∈ ys} →
                      ix ≡ ∈-resp-↭ (↭-sym p) iy → ∈-resp-↭ p ix ≡ iy
-    ∈-resp-↭-sym⁻¹ p = Properties.∈-resp-↭-sym⁻¹ isEquivalence ≈-sym-involutive p
+    ∈-resp-↭-sym⁻¹ p = Properties.∈-resp-↭-sym⁻¹
+      isEquivalence ≈-sym-involutive ≈-trans-trans-sym p
     ∈-resp-↭-sym   : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
                      ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
-    ∈-resp-↭-sym   p = Properties.∈-resp-↭-sym isEquivalence ≈-sym-involutive p
+    ∈-resp-↭-sym   p = Properties.∈-resp-↭-sym
+      isEquivalence ≈-sym-involutive ≈-trans-trans-sym p
 
 ------------------------------------------------------------------------
 -- Properties of steps (legacy)

@@ -159,33 +159,6 @@ module _ {R : Rel A r} {P : Pred A p} (resp : P Respects R) where
   Any-resp-↭ (swap x y p) (there (there pxs)) = there (there (Any-resp-↭ p pxs))
   Any-resp-↭ (trans p₁ p₂) pxs                = Any-resp-↭ p₂ (Any-resp-↭ p₁ pxs)
 
-{-
-  module _ {R-refl : Reflexive R} {R-sym : Symmetric R} {R-trans : Transitive R}
-           (R-sym-involutive : ∀ {x y} (p : R x y) → R-sym (R-sym p) ≡ p)
-           (R-trans-sym : ∀ {x y} (p : R x y) → R-trans p (R-sym p) ≡ R-refl {x = x})
-           (R-resp-refl : ∀ {z} (pz : P z) → resp R-refl pz ≡ pz)
-           (R-resp-trans : ∀ {x y z} (p : R x y) (q : R y z) (px : P x) →
-                           resp (R-trans p q) px ≡ resp q (resp p px))
-           where
-
-    Any-resp-↭-trans-sym : ∀ {xs ys} (xs↭ys : Permutation R xs ys) px →
-                           Any-resp-↭ (↭-sym′ R-sym xs↭ys) (Any-resp-↭ xs↭ys px) ≡ px
-    Any-resp-↭-trans-sym (refl xs≋ys) pxs = {!!}
-    Any-resp-↭-trans-sym (prep x≈y xs↭ys) (here px)
-      rewrite ≡.sym (R-resp-trans x≈y (R-sym x≈y) px)
-            | R-trans-sym x≈y
-            | R-resp-refl px
-      = ≡.refl
-    Any-resp-↭-trans-sym (prep x≈y xs↭ys) (there pys) = {!!}
-    Any-resp-↭-trans-sym (swap eq₁ eq₂ xs↭ys) px = {!!}
-    Any-resp-↭-trans-sym (trans xs↭ys ys↭zs) px = {!!}
--}
-
-------------------------------------------------------------------------
--- A higher-dimensional property useful for the `Propositional` case
--- used in the equivalence proof between `Bag` equality and `_↭_`
-
-
 ------------------------------------------------------------------------
 -- Two higher-dimensional properties useful in the `Propositional` case,
 -- specifically in the equivalence proof between `Bag` equality and `_↭_`
@@ -209,8 +182,6 @@ module _ {_≈_ : Rel A r} (isEquivalence : IsEquivalence _≈_) where
   ∈-resp-↭ (trans p₁ p₂) ixs                = ∈-resp-↭ p₂ (∈-resp-↭ p₁ ixs)
 
   module _ (≈-sym-involutive : ∀ {x y} (p : x ≈ y) → ≈-sym (≈-sym p) ≡ p)
-           (≈-trans-trans-sym : ∀ {x y z} (p : x ≈ y) (q : y ≈ z) →
-                                ≈-trans (≈-trans p q) (≈-sym q) ≡ p)
 
     where
 
@@ -232,36 +203,41 @@ module _ {_≈_ : Rel A r} (isEquivalence : IsEquivalence _≈_) where
       = ≡.cong (swap _ _) (↭-sym-involutive′ p)
     ↭-sym-involutive′ (trans p q) = ≡.cong₂ trans (↭-sym-involutive′ p) (↭-sym-involutive′ q)
 
-    ∈-resp-Pointwise-sym : (p : Pointwise _≈_ ys xs) →
-                           {iy : Any (x ≈_) ys} {ix : Any (x ≈_) xs} →
-                           ix ≡ ∈-resp-Pointwise p iy →
-                           ∈-resp-Pointwise (≋-sym p) ix ≡ iy
-    ∈-resp-Pointwise-sym (x≈y ∷ xs≋ys) {here ix} {here iy} eq
-      with ≡.refl ← eq = cong here (≈-trans-trans-sym ix x≈y)
-    ∈-resp-Pointwise-sym (x≈y ∷ xs≋ys) {there ixs} {there iys} eq
-      with ≡.refl ← eq = cong there (∈-resp-Pointwise-sym xs≋ys ≡.refl)
+    module _ (≈-trans-trans-sym : ∀ {x y z} (p : x ≈ y) (q : y ≈ z) →
+                                  ≈-trans (≈-trans p q) (≈-sym q) ≡ p)
 
-    ∈-resp-↭-sym   : (p : Permutation _≈_ ys xs) {iy : Any (x ≈_) ys} {ix : Any (x ≈_) xs} →
-                     ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
-    ∈-resp-↭-sym (refl xs≋ys) eq = ∈-resp-Pointwise-sym xs≋ys eq
-    ∈-resp-↭-sym (prep eq₁ p) {here iy} {here ix} eq
-      with ≡.refl ← eq = cong here (≈-trans-trans-sym iy eq₁)
-    ∈-resp-↭-sym (prep eq₁ p) {there iys} {there ixs} eq
-      with ≡.refl ← eq = cong there (∈-resp-↭-sym p ≡.refl)
-    ∈-resp-↭-sym (swap eq₁ eq₂ p) {here ix} {here iy} ()
-    ∈-resp-↭-sym (swap eq₁ eq₂ p) {here ix} {there iys} eq
-      with ≡.refl ← eq = cong here (≈-trans-trans-sym ix eq₁)
-    ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (here ix)} {there (here iy)} ()
-    ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (here ix)} {here iy} eq
-      with ≡.refl ← eq = cong (there ∘ here) (≈-trans-trans-sym ix eq₂)
-    ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (there ixs)} {there (there iys)} eq
-      with ≡.refl ← eq = cong (there ∘ there) (∈-resp-↭-sym p ≡.refl)
-    ∈-resp-↭-sym (trans p₁ p₂) eq = ∈-resp-↭-sym p₁ (∈-resp-↭-sym p₂ eq)
+      where
 
-    ∈-resp-↭-sym⁻¹ : (p : Permutation _≈_ xs ys) {ix : Any (x ≈_) xs} {iy : Any (x ≈_) ys} →
-                     ix ≡ ∈-resp-↭ (↭-sym′ ≈-sym p) iy → ∈-resp-↭ p ix ≡ iy
-    ∈-resp-↭-sym⁻¹ p eq
-      with eq′ ← ∈-resp-↭-sym (↭-sym′ ≈-sym p) rewrite ↭-sym-involutive′ p = eq′ eq
+      ∈-resp-Pointwise-sym : (p : Pointwise _≈_ ys xs) →
+                             {iy : Any (x ≈_) ys} {ix : Any (x ≈_) xs} →
+                             ix ≡ ∈-resp-Pointwise p iy →
+                             ∈-resp-Pointwise (≋-sym p) ix ≡ iy
+      ∈-resp-Pointwise-sym (x≈y ∷ xs≋ys) {here ix} {here iy} eq
+        with ≡.refl ← eq = cong here (≈-trans-trans-sym ix x≈y)
+      ∈-resp-Pointwise-sym (x≈y ∷ xs≋ys) {there ixs} {there iys} eq
+        with ≡.refl ← eq = cong there (∈-resp-Pointwise-sym xs≋ys ≡.refl)
+
+      ∈-resp-↭-sym   : (p : Permutation _≈_ ys xs) {iy : Any (x ≈_) ys} {ix : Any (x ≈_) xs} →
+                       ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
+      ∈-resp-↭-sym (refl xs≋ys) eq = ∈-resp-Pointwise-sym xs≋ys eq
+      ∈-resp-↭-sym (prep eq₁ p) {here iy} {here ix} eq
+        with ≡.refl ← eq = cong here (≈-trans-trans-sym iy eq₁)
+      ∈-resp-↭-sym (prep eq₁ p) {there iys} {there ixs} eq
+        with ≡.refl ← eq = cong there (∈-resp-↭-sym p ≡.refl)
+      ∈-resp-↭-sym (swap eq₁ eq₂ p) {here ix} {here iy} ()
+      ∈-resp-↭-sym (swap eq₁ eq₂ p) {here ix} {there iys} eq
+        with ≡.refl ← eq = cong here (≈-trans-trans-sym ix eq₁)
+      ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (here ix)} {there (here iy)} ()
+      ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (here ix)} {here iy} eq
+        with ≡.refl ← eq = cong (there ∘ here) (≈-trans-trans-sym ix eq₂)
+      ∈-resp-↭-sym (swap eq₁ eq₂ p) {there (there ixs)} {there (there iys)} eq
+        with ≡.refl ← eq = cong (there ∘ there) (∈-resp-↭-sym p ≡.refl)
+      ∈-resp-↭-sym (trans p₁ p₂) eq = ∈-resp-↭-sym p₁ (∈-resp-↭-sym p₂ eq)
+
+      ∈-resp-↭-sym⁻¹ : (p : Permutation _≈_ xs ys) {ix : Any (x ≈_) xs} {iy : Any (x ≈_) ys} →
+                       ix ≡ ∈-resp-↭ (↭-sym′ ≈-sym p) iy → ∈-resp-↭ p ix ≡ iy
+      ∈-resp-↭-sym⁻¹ p eq
+        with eq′ ← ∈-resp-↭-sym (↭-sym′ ≈-sym p) rewrite ↭-sym-involutive′ p = eq′ eq
 
 
 ------------------------------------------------------------------------

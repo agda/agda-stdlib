@@ -4,7 +4,7 @@
 -- A definition for the permutation relation using setoid equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible -safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Function.Base using (_∘′_)
 open import Relation.Binary.Core using (Rel; _⇒_)
