@@ -537,36 +537,52 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
   lemma : ∀ {xs ys} (inv : x ∷ xs ∼[ bag ] x ∷ ys) {z} →
           Well-behaved (Inverse.to (∼→⊎↔⊎ inv {z}))
-  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ with begin
-    zero                                                              ≡⟨⟩
-    index-of {xs = x ∷ xs} (here p)                                   ≡⟨⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)                       ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ ≡.sym $ to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))  ≡⟨ ≡.cong index-of $
-                                                                               strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)                 ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)                 ≡⟨ ≡.cong index-of $ ≡.sym $ strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))    ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)                    ≡⟨⟩
-    index-of {xs = x ∷ xs} (there z∈xs)                               ≡⟨⟩
-    suc (index-of {xs = xs} z∈xs)                                     ∎
+  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ = case contra of λ ()
     where
     open Inverse
     open ≡-Reasoning
-  ... | ()
+    contra : zero ≡ suc (index-of {xs = xs} z∈xs)
+    contra = begin
+      zero
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (here p)
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)
+        ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟨
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))
+        ≡⟨ ≡.cong index-of $ strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
+      index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)
+        ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
+      index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)
+        ≡⟨ ≡.cong index-of $ strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟨
+      index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))
+        ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (there z∈xs)
+        ≡⟨⟩
+      suc (index-of {xs = xs} z∈xs)
+        ∎
 
 ------------------------------------------------------------------------
 -- Relationships to other relations
 
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
 ↭⇒∼bag {A = A} xs↭ys {v} = mk↔ (from∘to xs↭ys , to∘from xs↭ys)
-  --mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
+  -- mk↔ₛ′ (to xs↭ys) (from xs↭ys) {!to∘from xs↭ys!} {!from∘to xs↭ys!}
   where
   to : xs ↭ ys → v ∈ xs → v ∈ ys
   to = ∈-resp-↭
 
   from : xs ↭ ys → v ∈ ys → v ∈ xs
   from = ∈-resp-↭ ∘ ↭-sym
+{-
+  from∘to : (p : xs ↭ ys) {ix : v ∈ xs} → from p (to p ix) ≡ ix
+  from∘to p = ∈-resp-↭-sym p refl
 
+  to∘from : (p : ys ↭ xs) {ix : v ∈ xs} → to p (from p ix) ≡ ix
+  to∘from p = ∈-resp-↭-sym⁻¹ p refl
+-}
   from∘to : (p : xs ↭ ys) {ix : v ∈ xs} {iy : v ∈ ys} →
             ix ≡ from p iy → to p ix ≡ iy
   from∘to = ∈-resp-↭-sym⁻¹
