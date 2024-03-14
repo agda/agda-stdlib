@@ -568,28 +568,20 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 -- Relationships to other relations
 
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
-↭⇒∼bag {A = A} xs↭ys {v} = mk↔ (from∘to xs↭ys , to∘from xs↭ys)
-  -- mk↔ₛ′ (to xs↭ys) (from xs↭ys) {!to∘from xs↭ys!} {!from∘to xs↭ys!}
+↭⇒∼bag {A = A} xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
   where
+
   to : xs ↭ ys → v ∈ xs → v ∈ ys
   to = ∈-resp-↭
 
   from : xs ↭ ys → v ∈ ys → v ∈ xs
   from = ∈-resp-↭ ∘ ↭-sym
-{-
-  from∘to : (p : xs ↭ ys) {ix : v ∈ xs} → from p (to p ix) ≡ ix
-  from∘to p = ∈-resp-↭-sym p refl
 
-  to∘from : (p : ys ↭ xs) {ix : v ∈ xs} → to p (from p ix) ≡ ix
-  to∘from p = ∈-resp-↭-sym⁻¹ p refl
--}
-  from∘to : (p : xs ↭ ys) {ix : v ∈ xs} {iy : v ∈ ys} →
-            ix ≡ from p iy → to p ix ≡ iy
-  from∘to = ∈-resp-↭-sym⁻¹
+  from∘to : (p : xs ↭ ys) (ix : v ∈ xs) → from p (to p ix) ≡ ix
+  from∘to p _ = ∈-resp-↭-sym p refl
 
-  to∘from : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
-            ix ≡ to p iy → from p ix ≡ iy
-  to∘from = ∈-resp-↭-sym
+  to∘from : (p : xs ↭ ys) (iy : v ∈ ys) → to p (from p iy) ≡ iy
+  to∘from p _ = ∈-resp-↭-sym⁻¹ p refl
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
 ∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq)      = ↭-refl
