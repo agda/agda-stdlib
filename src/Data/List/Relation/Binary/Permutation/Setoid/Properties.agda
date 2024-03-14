@@ -43,7 +43,7 @@ import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
 
 open Setoid S
-  using (_≈_; isEquivalence)
+  using (_≈_; isPartialEquivalence)
   renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
 open Permutation S
 open Membership S
@@ -73,7 +73,7 @@ AllPairs-resp-↭ : Symmetric R → R Respects₂ _≈_ → (AllPairs R) Respect
 AllPairs-resp-↭ = Properties.AllPairs-resp-↭
 
 ∈-resp-↭ : (x ∈_) Respects _↭_
-∈-resp-↭ = Properties.∈-resp-↭ isEquivalence
+∈-resp-↭ = Properties.∈-resp-↭ isPartialEquivalence
 
 Unique-resp-↭ : Unique Respects _↭_
 Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
@@ -102,7 +102,7 @@ module _ (≈-sym-involutive : ∀ {x y} → (p : x ≈ y) → ≈-sym (≈-sym 
   where
 
   ↭-sym-involutive : (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
-  ↭-sym-involutive = Properties.↭-sym-involutive′ isEquivalence ≈-sym-involutive
+  ↭-sym-involutive = Properties.↭-sym-involutive′ isPartialEquivalence ≈-sym-involutive
 
   module _ (≈-trans-trans-sym : ∀ {x y z} (p : x ≈ y) (q : y ≈ z) →
                                 ≈-trans (≈-trans p q) (≈-sym q) ≡ p)
@@ -111,11 +111,11 @@ module _ (≈-sym-involutive : ∀ {x y} → (p : x ≈ y) → ≈-sym (≈-sym 
     ∈-resp-↭-sym⁻¹ : ∀ (p : xs ↭ ys) {ix : x ∈ xs} {iy : x ∈ ys} →
                      ix ≡ ∈-resp-↭ (↭-sym p) iy → ∈-resp-↭ p ix ≡ iy
     ∈-resp-↭-sym⁻¹ p = Properties.∈-resp-↭-sym⁻¹
-      isEquivalence ≈-sym-involutive ≈-trans-trans-sym p
+      isPartialEquivalence ≈-sym-involutive ≈-trans-trans-sym p
     ∈-resp-↭-sym   : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
                      ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
     ∈-resp-↭-sym   p = Properties.∈-resp-↭-sym
-      isEquivalence ≈-sym-involutive ≈-trans-trans-sym p
+      isPartialEquivalence ≈-sym-involutive ≈-trans-trans-sym p
 
 ------------------------------------------------------------------------
 -- Properties of steps (legacy)

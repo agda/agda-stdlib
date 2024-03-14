@@ -48,7 +48,7 @@ _↭_ = Homogeneous.Permutation _≈_
 ↭-pointwise = Homogeneous.↭-pointwise
 
 ↭-prep : ∀ x {xs ys} → xs ↭ ys → x ∷ xs ↭ x ∷ ys
-↭-prep = Homogeneous.↭-prep ≈-refl
+↭-prep _ = Homogeneous.↭-prep ≈-refl
 
 ↭-swap : ∀ x y {xs ys} → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
 ↭-swap = Homogeneous.↭-swap ≈-refl
