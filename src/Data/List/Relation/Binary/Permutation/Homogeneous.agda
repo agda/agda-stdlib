@@ -13,6 +13,7 @@ open import Data.List.Base as List using (List; []; _∷_; [_])
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+import Data.List.Relation.Unary.Any.Properties as Any
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Nat.Base using (ℕ; suc; _+_; _<_)
@@ -24,7 +25,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; _⇒_; _Preserves_⟶_)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Structures using (IsEquivalence; IsPartialEquivalence)
 open import Relation.Binary.Definitions
   using ( Reflexive; Symmetric; Transitive; LeftTrans; RightTrans
         ; _Respects_; _Respects₂_; _Respectsˡ_; _Respectsʳ_)
@@ -163,10 +164,10 @@ module _ {R : Rel A r} {P : Pred A p} (resp : P Respects R) where
 -- Two higher-dimensional properties useful in the `Propositional` case,
 -- specifically in the equivalence proof between `Bag` equality and `_↭_`
 
-module _ {_≈_ : Rel A r} (isEquivalence : IsEquivalence _≈_) where
+module _ {_≈_ : Rel A r} (isPartialEquivalence : IsPartialEquivalence _≈_) where
 
-  open IsEquivalence isEquivalence
-    renaming (refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
+  open IsPartialEquivalence isPartialEquivalence
+    renaming (sym to ≈-sym; trans to ≈-trans)
 
   ∈-resp-Pointwise : (Any (x ≈_)) Respects (Pointwise _≈_)
   ∈-resp-Pointwise (x≈y ∷ xs) (here ix)   = here (≈-trans ix x≈y)
@@ -235,9 +236,9 @@ module _ {_≈_ : Rel A r} (isEquivalence : IsEquivalence _≈_) where
       ∈-resp-↭-sym (trans p₁ p₂) eq = ∈-resp-↭-sym p₁ (∈-resp-↭-sym p₂ eq)
 
       ∈-resp-↭-sym⁻¹ : (p : Permutation _≈_ xs ys) {ix : Any (x ≈_) xs} {iy : Any (x ≈_) ys} →
-                       ix ≡ ∈-resp-↭ (↭-sym′ ≈-sym p) iy → ∈-resp-↭ p ix ≡ iy
+                       ix ≡ ∈-resp-↭ (↭-sym p) iy → ∈-resp-↭ p ix ≡ iy
       ∈-resp-↭-sym⁻¹ p eq
-        with eq′ ← ∈-resp-↭-sym (↭-sym′ ≈-sym p) rewrite ↭-sym-involutive′ p = eq′ eq
+        with eq′ ← ∈-resp-↭-sym (↭-sym p) rewrite ↭-sym-involutive′ p = eq′ eq
 
 
 ------------------------------------------------------------------------
@@ -274,8 +275,8 @@ module _ {R : Rel A r} where
 
 module _ {R : Rel A r} (R-refl : Reflexive R) where
 
-  ↭-prep : ∀ x {xs ys} → Permutation R xs ys → Permutation R (x ∷ xs) (x ∷ ys)
-  ↭-prep _ xs↭ys = prep R-refl xs↭ys
+  ↭-prep : ∀ {x} {xs ys} → Permutation R xs ys → Permutation R (x ∷ xs) (x ∷ ys)
+  ↭-prep xs↭ys = prep R-refl xs↭ys
 
   ↭-swap : ∀ x y {xs ys} → Permutation R xs ys → Permutation R (x ∷ y ∷ xs) (y ∷ x ∷ ys)
   ↭-swap _ _ xs↭ys = swap R-refl R-refl xs↭ys
@@ -352,39 +353,46 @@ module _ {R : Rel A r} (R-sym : Symmetric R) (R-trans : Transitive R) where
 module _ {R : Rel A r} (R-refl : Reflexive R) (R-trans : Transitive R) where
 
   private
-    ≋-refl = Pointwise.refl {R = R} R-refl
-    ↭-refl = ↭-refl′ {R = R} R-refl
+    ≋-refl : Reflexive (Pointwise R)
+    ≋-refl = Pointwise.refl R-refl
+    ↭-refl : Reflexive (Permutation R)
+    ↭-refl = ↭-refl′ R-refl
+    ≋-trans : Transitive (Pointwise R)
+    ≋-trans = Pointwise.transitive R-trans
     _++[_]++_ = λ (xs : List A) z ys → xs List.++ List.[ z ] List.++ ys
 
   split-↭ : ∀ v as bs {xs} → Permutation R xs (as ++[ v ]++ bs) →
             ∃₂ λ ps qs → Pointwise R xs (ps ++[ v ]++ qs)
                        × Permutation R (ps List.++ qs) (as List.++ bs)
-  split-↭ v as bs p = helper as bs p (<-wellFounded (steps p))
+  split-↭ v as bs p = -- no longer requires `Acc`-induction or `steps`...
+    helper as bs p ≋-refl
     where
-    helper : ∀ as bs {xs} (p : Permutation R xs (as ++[ v ]++ bs)) →
-             Acc _<_ (steps p) →
+    helper : ∀ as bs {xs ys} (p : Permutation R xs ys) →
+             Pointwise R ys (as ++[ v ]++ bs) →
              ∃₂ λ ps qs → Pointwise R xs (ps ++[ v ]++ qs)
                         × Permutation R (ps List.++ qs) (as List.++ bs)
-    helper []           bs (refl eq)        _ = []         , bs , eq , ↭-refl
-    helper (a ∷ [])     bs (refl eq)        _ = List.[ a ]      , bs , eq , ↭-refl
-    helper (a ∷ b ∷ as) bs (refl eq)        _ = a ∷ b ∷ as , bs , eq , ↭-refl
-    helper []           bs (prep v≈x xs↭bs) _ = [] , _ , v≈x ∷ ≋-refl , xs↭bs
-    helper (a ∷ as)     bs (prep eq as↭xs) (acc rec)
-      with ps , qs , eq₂ , ↭ ← helper as bs as↭xs (rec (n<1+n _))
-      = a ∷ ps , qs , eq ∷ eq₂ , prep R-refl ↭
-    helper [] (b ∷ bs)     (swap x≈b y≈v xs↭bs) _
-      = List.[ b ] , _ , x≈b ∷ y≈v ∷ ≋-refl , prep R-refl xs↭bs
-    helper (a ∷ [])     bs (swap x≈v y≈a xs↭bs) _
-      = []     , a ∷ _ , x≈v ∷ y≈a ∷ ≋-refl , prep R-refl xs↭bs
-    helper (a ∷ b ∷ as) bs (swap x≈b y≈a as↭xs) (acc rec)
-      with ps , qs , eq , ↭ ← helper as bs as↭xs (rec (n<1+n _))
-      = b ∷ a ∷ ps , qs , x≈b ∷ y≈a ∷ eq , swap R-refl R-refl ↭
-    helper as           bs (trans xs↭ys ys↭zs) (acc rec)
-      with ps , qs , eq , ↭ ← helper as bs ys↭zs (rec (m<n+m (steps ys↭zs) (0<steps xs↭ys)))
-      with ps′ , qs′ , eq′ , ↭′ ← helper ps qs (↭-respʳ-≋ R-trans eq xs↭ys)
-        (rec (≡.subst (_< _) (≡.sym (steps-respʳ R-trans eq xs↭ys))
-             (m<m+n (steps xs↭ys) (0<steps ys↭zs))))
+    helper []           _ (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
+      = [] , _ , R-trans x≈v v≈y ∷ ≋-refl , refl (≋-trans xs≋vs vs≋ys)
+    helper (a ∷ as) bs (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
+      = _ ∷ as , bs , R-trans x≈v v≈y ∷ ≋-trans xs≋vs vs≋ys , ↭-refl
+    helper []           bs (prep {xs = xs} x≈v xs↭vs) (v≈y ∷ vs≋ys)
+      = [] , xs , R-trans x≈v v≈y ∷ ≋-refl , ↭-transʳ-≋ R-trans xs↭vs vs≋ys
+    helper (a ∷ as)     bs (prep x≈v as↭vs) (v≈y ∷ vs≋ys)
+      with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
+      = a ∷ ps , qs , R-trans x≈v v≈y ∷ eq , prep R-refl ↭
+    helper [] [] (swap _ _ _) (_ ∷ ())
+    helper [] (b ∷ bs)     (swap x≈v y≈w xs↭vs) (w≈z ∷ v≈y ∷ vs≋ys)
+      = List.[ b ] , _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl , ↭-prep R-refl (↭-transʳ-≋ R-trans xs↭vs vs≋ys)
+    helper (a ∷ [])     ys (swap x≈v y≈w xs↭vs)  (w≈z ∷ v≈y ∷ vs≋ys)
+      = []     , a ∷ _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl , ↭-prep R-refl (↭-transʳ-≋ R-trans xs↭vs vs≋ys)
+    helper (a ∷ b ∷ as) ys (swap x≈v y≈w as↭vs) (w≈a ∷ v≈b ∷ vs≋ys)
+      with ps , qs , eq , ↭ ← helper as ys as↭vs vs≋ys
+      = b ∷ a ∷ ps , qs , R-trans x≈v v≈b ∷ R-trans y≈w w≈a ∷ eq , swap R-refl R-refl ↭
+    helper as           ys (trans xs↭ys ys↭zs) zs≋as++[v]++ys
+      with ps , qs , eq , ↭ ← helper as ys ys↭zs zs≋as++[v]++ys
+      with ps′ , qs′ , eq′ , ↭′ ← helper ps qs xs↭ys eq
       = ps′ , qs′ , eq′ , ↭-trans R-trans ↭′ ↭
+
 
 module _ {R : Rel A r}
          (R-refl : Reflexive R)
@@ -401,7 +409,7 @@ module _ {R : Rel A r}
   shift : ∀ {v w} → R v w → ∀ xs {ys} →
           Permutation R (xs ++[ v ]++ ys) (w ∷ xs List.++ ys)
   shift {v} {w} v≈w []       = refl (v≈w ∷ ≋-refl)
-  shift {v} {w} v≈w (x ∷ xs) = trans (↭-prep R-refl x (shift v≈w xs)) (↭-swap R-refl x w ↭-refl)
+  shift {v} {w} v≈w (x ∷ xs) = trans (↭-prep R-refl (shift v≈w xs)) (↭-swap R-refl x w ↭-refl)
 
   dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
                         Pointwise R (ws ++[ x ]++ ys) (xs ++[ x ]++ zs) →
