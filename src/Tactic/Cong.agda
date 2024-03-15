@@ -242,6 +242,6 @@ macro
         unify cong-tm hole
       let lhs = EqualityGoal.lhs eqGoal
       let rhs = EqualityGoal.rhs eqGoal
-      -- When using ⌞_⌟ with ≡˘⟨ ... ⟩, (uni lhs rhs) fails and
+      -- When using ⌞_⌟ with ≡⟨ ... ⟨, (uni lhs rhs) fails and
       -- (uni rhs lhs) succeeds.
       catchTC (uni lhs rhs) (uni rhs lhs)
