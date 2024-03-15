@@ -176,7 +176,9 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
       _ ∷ _ ∷ xs ++ _   ∎
   drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ [])     refl refl = begin
       _ ∷ _ ∷ ws ++ _   <<⟨ refl ⟩
+-- *** NB the next step can't be replaced with <⟨ shift _ _ _ ⟨ for some reason? ***
       _ ∷ (_ ∷ ws ++ _) <⟨ ↭-sym (shift _ _ _) ⟩
+-- *** because of parsing problems for that use of the `Reasoning` combinators!? ***
       _ ∷ (ws ++ _ ∷ _) <⟨ p ⟩
       _ ∷ _             ∎
   drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid′ p _ _ refl refl)
