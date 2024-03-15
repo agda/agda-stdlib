@@ -17,7 +17,6 @@ import Data.List.Relation.Unary.Any.Properties as Any
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Nat.Base using (ℕ; suc; _+_; _<_)
-open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_)
