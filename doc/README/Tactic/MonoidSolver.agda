@@ -10,11 +10,9 @@ module README.Tactic.MonoidSolver {a ℓ} (M : Monoid a ℓ) where
 
 open Monoid M
 
-open import Data.Nat as Nat using (ℕ; suc; zero; _+_)
-open import Data.Nat.Properties as Properties using (+-0-monoid; +-comm)
 open import Relation.Binary.Reasoning.Setoid setoid
 
-open import Tactic.MonoidSolver using (solve; solve-macro)
+open import Tactic.MonoidSolver using (solve)
 
 -- The monoid solver is capable to of solving equations without having
 -- to specify the equation itself in the proof.
