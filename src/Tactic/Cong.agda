@@ -26,19 +26,19 @@
 
 module Tactic.Cong where
 
-open import Function.Base using (_$_ ; case_of_)
+open import Function.Base using (_$_)
 
 open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
 open import Data.Char.Base   as Char  using (toℕ)
 open import Data.Float.Base  as Float using (_≡ᵇ_)
-open import Data.List.Base   as List  using (List; []; _∷_; _++_)
+open import Data.List.Base   as List  using ([]; _∷_)
 open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base    as ℕ     using (ℕ; zero; suc; _≡ᵇ_; _+_)
 open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
 
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong ; sym)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the
 -- builtin for maximum speed.
@@ -220,87 +220,6 @@ private
   antiUnifyClauses ϕ _ _ =
     just []
 
-  solveGoal : ∀ {a} {A : Set a} {x y : A} → x ≡ y → Term → TC ⊤
-  solveGoal x≡y hole = do
-    goal ← inferType hole
-    eqGoal ← destructEqualityGoal goal
-    let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
-    cong-tm ← `cong eqGoal cong-lam x≡y
-    unify cong-tm hole
-
-  -- Associate each relation with its step function
-  module _ where
-    open import Relation.Binary.PropositionalEquality using (_≡_ ; trans)
-
-    go₁ : Name × Name
-    go₁ = quote _≡_ , quote trans
-
-  module _ where
-    open import Relation.Binary.Reasoning.Base.Single using (_IsRelatedTo_ ; ≡-go)
-
-    go₂ : Name × Name
-    go₂ = quote _IsRelatedTo_ , quote ≡-go
-
-  module _ where
-    open import Relation.Binary.Reasoning.Base.Double using (_IsRelatedTo_ ; ≡-go)
-
-    go₃ : Name × Name
-    go₃ = quote _IsRelatedTo_ , quote ≡-go
-
-  module _ where
-    open import Relation.Binary.Reasoning.Base.Triple using (_IsRelatedTo_ ; ≡-go)
-
-    go₄ : Name × Name
-    go₄ = quote _IsRelatedTo_ , quote ≡-go
-
-  goMap : List (Name × Name)
-  goMap = go₁ ∷ go₂ ∷ go₃ ∷ go₄ ∷ []
-
-  -- Map a relation to its step function
-  relToGo : Name → List (Name × Name) → Maybe Name
-  relToGo rel [] = nothing
-  relToGo rel ((rel' , go) ∷ gos) = if rel' Name.≡ᵇ rel then just go else relToGo rel gos
-
-  -- Drop the last two arguments to a relation, e.g., the x and y in x ≡ y
-  dropArgs : Args Term → Maybe (Args Term)
-  dropArgs (_ ∷ _ ∷ []) = just []
-  dropArgs (a₁ ∷ a₂ ∷ a₃ ∷ as) = case dropArgs (a₂ ∷ a₃ ∷ as) of λ where
-    nothing → nothing
-    (just as') → just (a₁ ∷ as')
-  dropArgs _ = nothing
-
-  parseRel : Term → TC (Name × Args Term)
-  parseRel `yRz = inferType `yRz >>= λ where
-    (def rel args) → pure $ rel , args
-    term → typeError (strErr "cong! - not a relation: " ∷ termErr term ∷ [])
-
-  -- Construct an application of the given relation's step function
-  `go : ∀ {a r} {A : Set a} {R : Set r} → A → Term → R → TC Term
-  `go {a = a} {A = A} x inner yRz = do
-    `x ← quoteTC x
-    `yRz ← quoteTC yRz
-    rel , args ← parseRel `yRz
-    -- Recursing in Maybe seems faster than recursing in TC.
-    go ← case relToGo rel goMap of λ where
-      nothing → typeError (strErr "cong! - short argument list" ∷ [])
-      (just go) → pure go
-    args' ← case dropArgs args of λ where
-      nothing → typeError (strErr "cong! - unsupported relation: " ∷ nameErr rel ∷ [])
-      (just args') → pure args'
-    -- Assume that the step function has arguments args' followed by
-    -- {x} {y} {z} x≡y yRz. We skip {y} and {z}, which we don't know.
-    -- We must specify {x}, because the x we have at hand had
-    -- normalisation inhibited and thus still contains the markers,
-    -- ⌞_⌟. If we let Agda figure out {x} instead, then any markers
-    -- would be lost.
-    pure $ def go $ args' ++ `x ⟅∷⟆ inner ⟨∷⟩ `yRz ⟨∷⟩ []
-
-  makeGoal : ∀ {a r} {A : Set a} {R : Set r} → A → R → Term → TC Term
-  makeGoal x yRz outer = do
-    inner ← checkType unknown unknown
-    go-tm ← `go x inner yRz
-    unify go-tm outer
-    pure inner
 
 ------------------------------------------------------------------------
 -- Rewriting
@@ -314,17 +233,15 @@ macro
     -- the endpoints of the equality are already specified in
     -- the form that the -- programmer expects them to be in,
     -- so normalising buys us nothing.
-    withNormalisation false (solveGoal x≡y hole)
-
-  cong!-≡-⟩ : ∀ {a r} {A : Set a} {R : Set r} {x' y' : A} → A → R → x' ≡ y' → Term → TC ⊤
-  cong!-≡-⟩ x yRz x'≡y' outer = withNormalisation false $ do
-    makeGoal x yRz outer >>= solveGoal x'≡y'
-
-  cong!-≡-⟨ : ∀ {a r} {A : Set a} {R : Set r} {x' y' : A} → A → R → y' ≡ x' → Term → TC ⊤
-  cong!-≡-⟨ x yRz y'≡x' outer = withNormalisation false $
-    makeGoal x yRz outer >>= solveGoal (sym y'≡x')
-
-infixr 2 cong!-≡-⟩ cong!-≡-⟨
-
-syntax cong!-≡-⟩ x yRz x'≡y' = x ≡⟨! x'≡y' ⟩ yRz
-syntax cong!-≡-⟨ x yRz y'≡x' = x ≡⟨! y'≡x' ⟨ yRz
+    withNormalisation false $ do
+      goal ← inferType hole
+      eqGoal ← destructEqualityGoal goal
+      let uni = λ lhs rhs → do
+        let cong-lam = antiUnify 0 lhs rhs
+        cong-tm ← `cong eqGoal cong-lam x≡y
+        unify cong-tm hole
+      let lhs = EqualityGoal.lhs eqGoal
+      let rhs = EqualityGoal.rhs eqGoal
+      -- When using ⌞_⌟ with ≡˘⟨ ... ⟩, (uni lhs rhs) fails and
+      -- (uni rhs lhs) succeeds.
+      catchTC (uni lhs rhs) (uni rhs lhs)

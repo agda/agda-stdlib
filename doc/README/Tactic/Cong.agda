@@ -8,7 +8,7 @@ open import Data.Nat.Properties
 open import Relation.Binary.PropositionalEquality as Eq
 import Relation.Binary.Reasoning.Preorder as PR
 
-open import Tactic.Cong
+open import Tactic.Cong using (cong! ; ⌞_⌟)
 
 ----------------------------------------------------------------------
 -- Usage
@@ -77,10 +77,10 @@ marker-example₁ m n o p =
   let open Eq.≡-Reasoning in
   begin
     ⌞ m + n ⌟ + (o + p)
-  ≡⟨! +-comm m n ⟩
+  ≡⟨ cong! (+-comm m n) ⟩
     n + m + ⌞ o + p ⌟
-  ≡⟨! +-comm p o ⟨
-    n + m + (p + o)
+  ≡⟨ cong! (+-comm p o) ⟨
+     + m + (p + o)
   ∎
 
 marker-example₂ : ∀ m n → m + n + (m + n) ≡ n + m + (n + m)
@@ -88,7 +88,7 @@ marker-example₂ m n =
   let open ≤-Reasoning in
   begin-equality
     ⌞ m + n ⌟ + ⌞ m + n ⌟
-  ≡⟨! +-comm m n ⟩
+  ≡⟨ cong! (+-comm m n) ⟩
     n + m + (n + m)
   ∎
 
