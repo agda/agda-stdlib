@@ -74,13 +74,13 @@ succinct-example m n eq =
 
 marker-example₁ : ∀ m n o p → m + n + (o + p) ≡ n + m + (p + o)
 marker-example₁ m n o p =
-  let open Eq.≡-Reasoning in
+  let open ≡-Reasoning in
   begin
     ⌞ m + n ⌟ + (o + p)
   ≡⟨ cong! (+-comm m n) ⟩
     n + m + ⌞ o + p ⌟
   ≡⟨ cong! (+-comm p o) ⟨
-     + m + (p + o)
+    n + m + (p + o)
   ∎
 
 marker-example₂ : ∀ m n → m + n + (m + n) ≡ n + m + (n + m)
