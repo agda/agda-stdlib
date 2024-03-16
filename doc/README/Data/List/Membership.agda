@@ -7,11 +7,11 @@
 module README.Data.List.Membership where
 
 open import Data.Char.Base using (Char; fromℕ)
-open import Data.Char.Properties as CharProp hiding (setoid)
-open import Data.Nat as ℕ using (ℕ; _+_; _<_; s≤s; z≤n; _*_; _∸_; _≤_)
+open import Data.Char.Properties as Char hiding (setoid)
 open import Data.List.Base using (List; []; _∷_; map)
+open import Data.Nat as ℕ using (ℕ)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; sym; cong; setoid)
+  using (_≡_; refl; cong; setoid)
 
 ------------------------------------------------------------------------
 -- Membership
@@ -66,7 +66,7 @@ import Data.List.Membership.Propositional.Properties as PropProperties
 -- following the first `∈` refers to lists of type `List ℕ` whereas
 -- the second `∈` refers to lists of type `List Char`.
 
-open DecPropMembership CharProp._≟_ renaming (_∈_ to _∈ᶜ_)
+open DecPropMembership Char._≟_ renaming (_∈_ to _∈ᶜ_)
 open SetoidProperties using (∈-map⁺)
 
 lem₂ : {v : ℕ} {xs : List ℕ} → v ∈ xs → fromℕ v ∈ᶜ map fromℕ xs

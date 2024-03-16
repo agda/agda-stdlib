@@ -49,16 +49,6 @@ Deprecated names
 New modules
 -----------
 
-* Symmetric interior of a binary relation
-  ```
-  Relation.Binary.Construct.Interior.Symmetric
-  ```
-
-* Raw bundles for module-like algebraic structures
-  ```
-  Algebra.Module.Bundles.Raw
-  ```
-
 * Prime factorisation of natural numbers.
   ```
   Data.Nat.Primality.Factorisation
@@ -67,6 +57,20 @@ New modules
 * Nagata's construction of the "idealization of a module":
   ```agda
   Algebra.Module.Construct.Idealization
+  ```
+  
+* `Function.Relation.Binary.Equality`
+  ```agda
+  setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
+  ```
+  and a convenient infix version
+  ```agda
+  _⇨_ = setoid
+  ```
+
+* Symmetric interior of a binary relation
+  ```
+  Relation.Binary.Construct.Interior.Symmetric
   ```
 
 Additions to existing modules
@@ -133,6 +137,23 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
+  ```
+
+* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+  ```agda
+  pattern divides k eq = Data.Nat.Divisibility.divides k eq
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
+  applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
+  upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
+  downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
+  reverse-upTo          : reverse (upTo n) ≡ downFrom n
+  reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
+  reverse-downFrom      : reverse (downFrom n) ≡ upTo n
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
