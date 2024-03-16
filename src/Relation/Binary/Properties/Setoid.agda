@@ -9,11 +9,14 @@
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
 open import Relation.Binary.Definitions
   using (Symmetric; _Respectsˡ_; _Respectsʳ_; _Respects₂_)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
+open import Relation.Binary.Construct.Composition
+  using (_;_; impliesˡ; transitive⇒≈;≈⊆≈)
 
 module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 
@@ -76,6 +79,15 @@ preorder = record
 
 ≉-resp₂ : _≉_ Respects₂ _≈_
 ≉-resp₂ = ≉-respʳ , ≉-respˡ
+
+------------------------------------------------------------------------
+-- Equality is closed under composition
+
+≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
+≈;≈⇒≈ = transitive⇒≈;≈⊆≈ _ trans
+
+≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
+≈⇒≈;≈ = impliesˡ _≈_ _≈_ refl id
 
 ------------------------------------------------------------------------
 -- Other properties

@@ -77,7 +77,7 @@ module _ where
 
   -- Smart constructor
   mkRawApplicative :
-    (F : Set f → Set f) →
+    (F : Set f → Set g) →
     (pure : ∀ {A} → A → F A) →
     (app : ∀ {A B} → F (A → B) → F A → F B) →
     RawApplicative F

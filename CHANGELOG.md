@@ -13,6 +13,9 @@ Bug-fixes
   was mistakenly applied to the level of the type `A` instead of the
   variable `x` of type `A`.
 
+* Module `Data.List.Relation.Ternary.Appending.Setoid.Properties` no longer
+  exports the `Setoid` module under the alias `S`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -45,7 +48,6 @@ Deprecated names
 
 New modules
 -----------
-
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
 * Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
@@ -53,9 +55,29 @@ New modules
   Induction.InfiniteDescent
   ```
 
+* The unique morphism from the initial, resp. terminal, algebra:
+  ```agda
+  Algebra.Morphism.Construct.Initial
+  Algebra.Morphism.Construct.Terminal
+  ```
+
 * Nagata's construction of the "idealization of a module":
   ```agda
   Algebra.Module.Construct.Idealization
+  ```
+  
+* `Function.Relation.Binary.Equality`
+  ```agda
+  setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
+  ```
+  and a convenient infix version
+  ```agda
+  _⇨_ = setoid
+  ```
+
+* Symmetric interior of a binary relation
+  ```
+  Relation.Binary.Construct.Interior.Symmetric
   ```
 
 Additions to existing modules
@@ -106,6 +128,12 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
+  ```
+
 * In `Algebra.Properties.Monoid.Mult`:
   ```agda
   ×-homo-0 : ∀ x → 0 × x ≈ 0#
@@ -124,6 +152,23 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
+* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+  ```agda
+  pattern divides k eq = Data.Nat.Divisibility.divides k eq
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
+  applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
+  upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
+  downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
+  reverse-upTo          : reverse (upTo n) ≡ downFrom n
+  reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
+  reverse-downFrom      : reverse (downFrom n) ≡ upTo n
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
@@ -134,6 +179,37 @@ Additions to existing modules
   ```agda
   catMaybes⁺ : AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
   tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
+  ```
+
+* In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
+  ```agda
+  through→ : ∃[ xs ] Pointwise _≈_ as xs × Appending xs bs cs →
+             ∃[ ys ] Appending as bs ys × Pointwise _≈_ ys cs
+  through← : ∃[ ys ] Appending as bs ys × Pointwise _≈_ ys cs →
+             ∃[ xs ] Pointwise _≈_ as xs × Appending xs bs cs
+  assoc→   : ∃[ xs ] Appending as bs xs × Appending xs cs ds →
+             ∃[ ys ] Appending bs cs ys × Appending as ys ds
+  ```
+
+* In `Data.List.Relation.Ternary.Appending.Properties`:
+  ```agda
+  through→ : (R ⇒ (S ; T)) → ((U ; V) ⇒ (W ; T)) →
+                 ∃[ xs ] Pointwise U as xs × Appending V R xs bs cs →
+                         ∃[ ys ] Appending W S as bs ys × Pointwise T ys cs
+  through← : ((R ; S) ⇒ T) → ((U ; S) ⇒ (V ; W)) →
+                 ∃[ ys ] Appending U R as bs ys × Pointwise S ys cs →
+                         ∃[ xs ] Pointwise V as xs × Appending W T xs bs cs
+  assoc→ :   (R ⇒ (S ; T)) → ((U ; V) ⇒ (W ; T)) → ((Y ; V) ⇒ X) →
+                     ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds →
+                         ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds
+  assoc← :   ((S ; T) ⇒ R) → ((W ; T) ⇒ (U ; V)) → (X ⇒ (Y ; V)) →
+             ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds →
+                         ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds
+  ```
+
+* In `Data.List.Relation.Binary.Pointwise.Base`:
+  ```agda
+  unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
   ```
 
 * In `Data.Maybe.Relation.Binary.Pointwise`:
@@ -185,9 +261,21 @@ Additions to existing modules
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
   be used infix.
 
-* Added new definitions in `Relation.Binary`
+* Added new proofs in `Relation.Binary.Construct.Composition`:
+  ```agda
+  transitive⇒≈;≈⊆≈ : Transitive ≈ → (≈ ; ≈) ⇒ ≈
   ```
-  Stable          : Pred A ℓ → Set _
+
+* Added new definitions in `Relation.Binary.Definitions`
+  ```
+  Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
+  Empty  _∼_ = ∀ {x y} → x ∼ y → ⊥
+  ```
+
+* Added new proofs in `Relation.Binary.Properties.Setoid`:
+  ```agda
+  ≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
+  ≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
   ```
 
 * Added new definitions in `Relation.Nullary`
