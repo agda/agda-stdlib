@@ -41,6 +41,11 @@ Deprecated names
   1×-identityʳ  ↦  ×-homo-1
   ```
 
+* In `Algebra.Structures.IsGroup`:
+  ```agda
+  _-_  ↦  _//_
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -135,6 +140,32 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Properties.Group`:
+  ```agda
+  isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
+  quasigroup      : Quasigroup _ _
+  isLoop          : IsLoop _∙_ _\\_ _//_ ε
+  loop            : Loop _ _
+  
+  \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
+  \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
+  \\-leftDivides   : LeftDivides _∙_ _\\_
+  //-rightDividesˡ : RightDividesˡ _∙_ _//_
+  //-rightDividesʳ : RightDividesʳ _∙_ _//_
+  //-rightDivides  : RightDivides _∙_ _//_
+
+  ⁻¹-selfInverse  : SelfInverse _⁻¹
+  \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
+  comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
+  ```
+
+* In `Algebra.Properties.Loop`:
+  ```agda
+  identityˡ-unique : x ∙ y ≈ y → x ≈ ε
+  identityʳ-unique : x ∙ y ≈ x → y ≈ ε
+  identity-unique  : Identity x _∙_ → x ≈ ε
+  ```
+ 
 * In `Algebra.Construct.Terminal`:
   ```agda
   rawNearSemiring : RawNearSemiring c ℓ
@@ -154,6 +185,16 @@ Additions to existing modules
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
+* In `Algebra.Structures.IsGroup`:
+  ```agda
+  infixl 6 _//_
+  _//_ : Op₂ A
+  x // y = x ∙ (y ⁻¹)
+  infixr 6 _\\_
+  _\\_ : Op₂ A
+  x \\ y = (x ⁻¹) ∙ y
+  ```
+ 
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
