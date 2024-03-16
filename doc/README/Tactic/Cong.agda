@@ -56,7 +56,7 @@ succinct-example m n eq =
   ∎
 
 ----------------------------------------------------------------------
--- Limitations
+-- Explicit markings
 ----------------------------------------------------------------------
 
 -- The 'cong!' tactic can handle simple cases, but will

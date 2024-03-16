@@ -283,4 +283,4 @@ Additions to existing modules
   ```
 
 * `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
-  anti-unification.
+  anti-unification. See README.Tactic.Cong for details.
