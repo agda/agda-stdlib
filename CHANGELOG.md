@@ -106,6 +106,14 @@ Additions to existing modules
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
+  
+  \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
+  \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
+  \\-leftDivides   : LeftDivides _∙_ _\\_
+  //-rightDividesˡ : RightDividesˡ _∙_ _//_
+  //-rightDividesʳ : RightDividesʳ _∙_ _//_
+  //-rightDivides  : RightDivides _∙_ _//_
+
   ⁻¹-selfInverse  : SelfInverse _⁻¹
   \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
   comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
