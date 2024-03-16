@@ -50,6 +50,12 @@ New modules
 -----------
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
+* The unique morphism from the initial, resp. terminal, algebra:
+  ```agda
+  Algebra.Morphism.Construct.Initial
+  Algebra.Morphism.Construct.Terminal
+  ```
+
 * Nagata's construction of the "idealization of a module":
   ```agda
   Algebra.Module.Construct.Idealization
@@ -115,6 +121,12 @@ Additions to existing modules
   rawBimodule        : RawBimodule R c ℓ
   rawSemimodule      : RawSemimodule R c ℓ
   rawModule          : RawModule R c ℓ
+  ```
+
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Properties.Monoid.Mult`:
