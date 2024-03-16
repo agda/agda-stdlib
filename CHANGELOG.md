@@ -49,6 +49,11 @@ Deprecated names
 New modules
 -----------
 
+* Raw bundles for module-like algebraic structures:
+  ```
+  Algebra.Module.Bundles.Raw
+  ```
+
 * Prime factorisation of natural numbers.
   ```
   Data.Nat.Primality.Factorisation
