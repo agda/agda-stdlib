@@ -22,7 +22,6 @@ open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Membership.Propositional.Properties
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
-open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
 open import Data.Product.Base as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
@@ -31,7 +30,7 @@ open import Data.Sum.Properties hiding (map-cong)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit.Polymorphic.Base
 open import Function.Base
-open import Function.Bundles using (_↔_; Inverse; Equivalence; mk↔ₛ′; mk⇔)
+open import Function.Bundles using (_↔_; Inverse; Equivalence; mk↔ₛ′; mk↔; mk⇔)
 open import Function.Related.Propositional as Related
   using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→; K-refl; SK-sym)
 open import Function.Related.TypeIsomorphisms
@@ -538,25 +537,32 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
   lemma : ∀ {xs ys} (inv : x ∷ xs ∼[ bag ] x ∷ ys) {z} →
           Well-behaved (Inverse.to (∼→⊎↔⊎ inv {z}))
-  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ with
-    zero                                                                  ≡⟨⟩
-    index-of {xs = x ∷ xs} (here p)                                       ≡⟨⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)                         ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ ≡.sym $
-                                                                               to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))  ≡⟨ ≡.cong index-of $
-                                                                               strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)                   ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)                   ≡⟨ ≡.cong index-of $ ≡.sym $
-                                                                               strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))  ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $
-                                                                               to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)                      ≡⟨⟩
-    index-of {xs = x ∷ xs} (there z∈xs)                                   ≡⟨⟩
-    suc (index-of {xs = xs} z∈xs)                                         ∎
+  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ = case contra of λ ()
     where
     open Inverse
     open ≡-Reasoning
-  ... | ()
+    contra : zero ≡ suc (index-of {xs = xs} z∈xs)
+    contra = begin
+      zero
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (here p)
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)
+        ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟨
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))
+        ≡⟨ ≡.cong index-of $ strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
+      index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)
+        ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
+      index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)
+        ≡⟨ ≡.cong index-of $ strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟨
+      index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))
+        ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (there z∈xs)
+        ≡⟨⟩
+      suc (index-of {xs = xs} z∈xs)
+        ∎
 
 ------------------------------------------------------------------------
 -- Relationships to other relations
@@ -564,36 +570,27 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
 ↭⇒∼bag {A = A} xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
   where
-  to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
-  to xs↭ys = Any-resp-↭ {A = A} xs↭ys
 
-  from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
-  from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
+  to : xs ↭ ys → v ∈ xs → v ∈ ys
+  to = ∈-resp-↭
 
-  from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-  from∘to refl          v∈xs                 = refl
-  from∘to (prep _ _)    (here refl)          = refl
-  from∘to (prep _ p)    (there v∈xs)         = ≡.cong there (from∘to p v∈xs)
-  from∘to (swap x y p)  (here refl)          = refl
-  from∘to (swap x y p)  (there (here refl))  = refl
-  from∘to (swap x y p)  (there (there v∈xs)) = ≡.cong (there ∘ there) (from∘to p v∈xs)
-  from∘to (trans p₁ p₂) v∈xs
-    rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
-          | from∘to p₁ v∈xs                  = refl
+  from : xs ↭ ys → v ∈ ys → v ∈ xs
+  from = ∈-resp-↭ ∘ ↭-sym
 
-  to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
-  to∘from p with from∘to (↭-sym p)
-  ... | res rewrite ↭-sym-involutive p = res
+  from∘to : (p : xs ↭ ys) (ix : v ∈ xs) → from p (to p ix) ≡ ix
+  from∘to p _ = ∈-resp-↭-sym p refl
+
+  to∘from : (p : xs ↭ ys) (iy : v ∈ ys) → to p (from p iy) ≡ iy
+  to∘from p _ = ∈-resp-↭-sym⁻¹ p refl
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
-∼bag⇒↭ {A = A} {[]} eq with empty-unique (↔-sym eq)
-... | refl = refl
-∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl))
-... | zs₁ , zs₂ , p rewrite p = begin
-  x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
-  x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-  x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
-  zs₁ ++ x ∷ zs₂   ∎
+∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq)      = ↭-refl
+∼bag⇒↭ {A = A} {x ∷ xs} eq
+  with zs₁ , zs₂ , refl ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) = begin
+    x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
+    x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
+    x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-shift zs₁ ⟨
+    zs₁ ++ x ∷ zs₂   ∎
   where
   open CommutativeMonoid (commutativeMonoid bag A)
   open PermutationReasoning

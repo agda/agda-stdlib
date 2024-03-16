@@ -10,91 +10,64 @@ module Data.List.Relation.Binary.Permutation.Propositional
   {a} {A : Set a} where
 
 open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Relation.Binary.Equality.Propositional using (_≋_; ≋⇒≡)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.Definitions using (Reflexive; Transitive)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
-import Relation.Binary.Reasoning.Setoid as EqReasoning
-open import Relation.Binary.Reasoning.Syntax
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; LeftTrans; RightTrans)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; setoid)
+
+import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 
 ------------------------------------------------------------------------
--- An inductive definition of permutation
+-- Definition of permutation
 
--- Note that one would expect that this would be defined in terms of
--- `Permutation.Setoid`. This is not currently the case as it involves
--- adding in a bunch of trivial `_≡_` proofs to the constructors which
--- a) adds noise and b) prevents easy access to the variables `x`, `y`.
--- This may be changed in future when a better solution is found.
+private
+  module ↭ = Permutation (setoid A)
 
-infix 3 _↭_
+-- Note that this is now defined in terms of `Permutation.Setoid` (#2317)
 
-data _↭_ : Rel (List A) a where
-  refl  : ∀ {xs}        → xs ↭ xs
-  prep  : ∀ {xs ys} x   → xs ↭ ys → x ∷ xs ↭ x ∷ ys
-  swap  : ∀ {xs ys} x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
-  trans : ∀ {xs ys zs}  → xs ↭ ys → ys ↭ zs → xs ↭ zs
+open ↭ public
+  hiding ( ↭-reflexive; ↭-pointwise; ↭-trans; ↭-isEquivalence
+         ; module PermutationReasoning; ↭-setoid
+         )
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
 
 ↭-reflexive : _≡_ ⇒ _↭_
-↭-reflexive refl = refl
+↭-reflexive refl = ↭-refl
 
-↭-refl : Reflexive _↭_
-↭-refl = refl
-
-↭-sym : ∀ {xs ys} → xs ↭ ys → ys ↭ xs
-↭-sym refl                = refl
-↭-sym (prep x xs↭ys)      = prep x (↭-sym xs↭ys)
-↭-sym (swap x y xs↭ys)    = swap y x (↭-sym xs↭ys)
-↭-sym (trans xs↭ys ys↭zs) = trans (↭-sym ys↭zs) (↭-sym xs↭ys)
+↭-pointwise : _≋_ ⇒ _↭_
+↭-pointwise xs≋ys = ↭-reflexive (≋⇒≡ xs≋ys)
 
 -- A smart version of trans that avoids unnecessary `refl`s (see #1113).
+↭-transˡ-≋ : LeftTrans _≋_ _↭_
+↭-transˡ-≋ xs≋ys ys↭zs with refl ← ≋⇒≡ xs≋ys = ys↭zs
+
+↭-transʳ-≋ : RightTrans _↭_ _≋_
+↭-transʳ-≋ xs↭ys ys≋zs with refl ← ≋⇒≡ ys≋zs = xs↭ys
+
 ↭-trans : Transitive _↭_
-↭-trans refl ρ₂ = ρ₂
-↭-trans ρ₁ refl = ρ₁
-↭-trans ρ₁ ρ₂   = trans ρ₁ ρ₂
+↭-trans = ↭-trans′ ↭-transˡ-≋ ↭-transʳ-≋
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record
-  { refl  = refl
+  { refl  = ↭-refl
   ; sym   = ↭-sym
   ; trans = ↭-trans
   }
 
-↭-setoid : Setoid _ _
-↭-setoid = record
-  { isEquivalence = ↭-isEquivalence
-  }
-
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs and allow "zooming in"
--- to localised reasoning.
+-- to localised reasoning. For details of the axiomatisation, and
+-- in particular the refactored dependencies,
+-- see `Data.List.Relation.Binary.Permutation.Setoid.↭-Reasoning`. 
 
-module PermutationReasoning where
+module PermutationReasoning = ↭-Reasoning ↭-isEquivalence ↭-pointwise
 
-  private module Base = EqReasoning ↭-setoid
+------------------------------------------------------------------------
+-- Bundle export
 
-  open Base public
-    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
-    renaming (≈-go to ↭-go)
-
-  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym public
-
-  -- Some extra combinators that allow us to skip certain elements
-
-  infixr 2 step-swap step-prep
-
-  -- Skip reasoning on the first element
-  step-prep : ∀ x xs {ys zs : List A} → (x ∷ ys) IsRelatedTo zs →
-              xs ↭ ys → (x ∷ xs) IsRelatedTo zs
-  step-prep x xs rel xs↭ys = relTo (trans (prep x xs↭ys) (begin rel))
-
-  -- Skip reasoning about the first two elements
-  step-swap : ∀ x y xs {ys zs : List A} → (y ∷ x ∷ ys) IsRelatedTo zs →
-              xs ↭ ys → (x ∷ y ∷ xs) IsRelatedTo zs
-  step-swap x y xs rel xs↭ys = relTo (trans (swap x y xs↭ys) (begin rel))
-
-  syntax step-prep x xs y↭z x↭y = x ∷ xs <⟨ x↭y ⟩ y↭z
-  syntax step-swap x y xs y↭z x↭y = x ∷ y ∷ xs <<⟨ x↭y ⟩ y↭z
+open PermutationReasoning public using (↭-setoid)

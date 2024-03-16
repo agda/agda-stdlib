@@ -14,7 +14,7 @@ open import Relation.Binary.Core using (_⇒_)
 
 module Data.List.Relation.Binary.Equality.Propositional {a} {A : Set a} where
 
-open import Data.List.Base
+import Data.List.Base as List
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 import Relation.Binary.PropositionalEquality.Properties as ≡
@@ -29,7 +29,7 @@ open SetoidEquality (≡.setoid A) public
 
 ≋⇒≡ : _≋_ ⇒ _≡_
 ≋⇒≡ []             = refl
-≋⇒≡ (refl ∷ xs≈ys) = cong (_ ∷_) (≋⇒≡ xs≈ys)
+≋⇒≡ (refl ∷ xs≈ys) = cong (_ List.∷_) (≋⇒≡ xs≈ys)
 
 ≡⇒≋ : _≡_ ⇒ _≋_
 ≡⇒≋ refl = ≋-refl
