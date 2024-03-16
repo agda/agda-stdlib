@@ -15,7 +15,7 @@ open import Codata.Sized.Conat hiding (_⊔_)
 open import Codata.Sized.Covec
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Sym; Trans)
-open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) (i : Size) :
            ∀ m n (xs : Covec A ∞ m) (ys : Covec B ∞ n) → Set (r ⊔ a ⊔ b) where
@@ -56,10 +56,10 @@ module _ {ℓ} {A : Set ℓ} where
  _,_⊢_≈_ i m = Bisim _≡_ i m m
 
  refl : ∀ {i m} → Reflexive (i , m ⊢_≈_)
- refl = reflexive Eq.refl
+ refl = reflexive ≡.refl
 
  sym : ∀ {i m} → Symmetric (i , m ⊢_≈_)
- sym = symmetric Eq.sym
+ sym = symmetric ≡.sym
 
  trans : ∀ {i m} → Transitive (i , m ⊢_≈_)
- trans = transitive Eq.trans
+ trans = transitive ≡.trans

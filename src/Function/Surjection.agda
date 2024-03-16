@@ -21,7 +21,7 @@ open import Function.Equivalence using (Equivalence)
 open import Function.Injection           hiding (id; _∘_; injection)
 open import Function.LeftInverse as Left hiding (id; _∘_)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
 ------------------------------------------------------------------------
 -- Surjective functions.
@@ -100,7 +100,7 @@ Please use Function.(Properties.)RightInverse.RightInverse⇒Surjection instead.
 infix 3 _↠_
 
 _↠_ : ∀ {f t} → Set f → Set t → Set _
-From ↠ To = Surjection (P.setoid From) (P.setoid To)
+From ↠ To = Surjection (≡.setoid From) (≡.setoid To)
 {-# WARNING_ON_USAGE _↠_
 "Warning: _↠_ was deprecated in v2.0.
 Please use Function.(Bundles.)_↠_ instead."

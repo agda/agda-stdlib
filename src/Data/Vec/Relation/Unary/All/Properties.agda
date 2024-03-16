@@ -12,9 +12,8 @@ open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
-open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec.Base as Vec
-import Data.Vec.Properties as Vecₚ
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Level using (Level)
 open import Function.Base using (_∘_; id)
@@ -82,7 +81,7 @@ gmap g = map⁺ ∘ All.map g
 ++⁻ : (xs : Vec A m) {ys : Vec A n} →
       All P (xs ++ ys) → All P xs × All P ys
 ++⁻ []       p          = [] , p
-++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map₁ (px ∷_) (++⁻ _ pxs)
+++⁻ (x ∷ xs) (px ∷ pxs) = Product.map₁ (px ∷_) (++⁻ _ pxs)
 
 ++⁺∘++⁻ : (xs : Vec A m) {ys : Vec A n} →
           (p : All P (xs ++ ys)) →

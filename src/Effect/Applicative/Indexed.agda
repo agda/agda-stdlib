@@ -15,7 +15,7 @@ open import Effect.Functor using (RawFunctor)
 open import Data.Product.Base using (_×_; _,_)
 open import Function.Base
 open import Level
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 
@@ -111,6 +111,6 @@ record Morphism {I : Set i} {F₁ F₂ : IFun I f}
            op (f A₁.<$> x) ≡ (f A₂.<$> op x)
   op-<$> f x = begin
     op (A₁._⊛_ (A₁.pure f) x)       ≡⟨ op-⊛ _ _ ⟩
-    A₂._⊛_ (op (A₁.pure f)) (op x)  ≡⟨ P.cong₂ A₂._⊛_ (op-pure _) P.refl ⟩
+    A₂._⊛_ (op (A₁.pure f)) (op x)  ≡⟨ cong₂ A₂._⊛_ (op-pure _) refl ⟩
     A₂._⊛_ (A₂.pure f) (op x)       ∎
     where open ≡-Reasoning

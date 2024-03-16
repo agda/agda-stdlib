@@ -16,7 +16,7 @@ import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Linked as Linked using (Linked; [-]; _∷_)
-import Data.Vec.Relation.Unary.Linked.Properties as Linkedₚ
+import Data.Vec.Relation.Unary.Linked.Properties as Linked
 open import Function.Base using (flip; _$_)
 open import Induction
 open import Induction.WellFounded as WF
@@ -124,7 +124,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
     pigeon : {xs : Vec (Fin n) n} → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_
     pigeon {xs} i∷xs↑ =
       let (i₁ , i₂ , i₁<i₂ , xs[i₁]≡xs[i₂]) = pigeonhole (n<1+n n) (Vec.lookup (i ∷ xs)) in
-      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Ord.transitive _⊏_ ⊏.trans) i∷xs↑ i₁<i₂ in
+      let xs[i₁]⊏xs[i₂] = Linked.lookup⁺ (Ord.transitive _⊏_ ⊏.trans) i∷xs↑ i₁<i₂ in
       let xs[i₁]⊏xs[i₁] = ⊏.<-respʳ-≈ (⊏.Eq.reflexive xs[i₁]≡xs[i₂]) xs[i₁]⊏xs[i₂] in
       contradiction xs[i₁]⊏xs[i₁] (⊏.irrefl ⊏.Eq.refl)
 

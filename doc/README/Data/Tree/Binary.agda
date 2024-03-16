@@ -4,7 +4,7 @@
 -- Some examples showing how the Binary tree module can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe --sized-types #-}
+{-# OPTIONS --cubical-compatible --sized-types #-}
 
 module README.Data.Tree.Binary where
 

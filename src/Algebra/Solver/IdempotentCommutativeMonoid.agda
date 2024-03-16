@@ -20,19 +20,19 @@ open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
 open import Function.Base using (_∘_)
 
-import Relation.Binary.Reasoning.Setoid  as EqReasoning
+import Relation.Binary.Reasoning.Setoid  as ≈-Reasoning
 import Relation.Binary.Reflection            as Reflection
 import Relation.Nullary.Decidable            as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
-open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; decSetoid)
 open import Relation.Nullary.Decidable using (Dec)
 
 module Algebra.Solver.IdempotentCommutativeMonoid
   {m₁ m₂} (M : IdempotentCommutativeMonoid m₁ m₂) where
 
 open IdempotentCommutativeMonoid M
-open EqReasoning setoid
+open ≈-Reasoning setoid
 
 private
   variable
@@ -202,7 +202,7 @@ prove′ e₁ e₂ =
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
   lemma eq ρ =
     R.prove ρ e₁ e₂ (begin
-      ⟦ normalise e₁ ⟧⇓ ρ  ≡⟨ P.cong (λ e → ⟦ e ⟧⇓ ρ) eq ⟩
+      ⟦ normalise e₁ ⟧⇓ ρ  ≡⟨ ≡.cong (λ e → ⟦ e ⟧⇓ ρ) eq ⟩
       ⟦ normalise e₂ ⟧⇓ ρ  ∎)
 
 -- This procedure can be combined with from-just.

@@ -8,7 +8,7 @@
 
 module Data.Product.Relation.Binary.Pointwise.Dependent where
 
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
 open import Level
 open import Function.Base
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
@@ -17,7 +17,7 @@ open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions as B
 open import Relation.Binary.Indexed.Heterogeneous as I
   using (IREL; IRel; IndexedSetoid; IsIndexedEquivalence)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Pointwise lifting

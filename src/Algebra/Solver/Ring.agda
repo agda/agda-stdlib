@@ -41,7 +41,7 @@ open import Algebra.Properties.Semiring.Exp semiring
 
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Binary.Reasoning.Setoid setoid
-import Relation.Binary.PropositionalEquality.Core as PropEq
+import Relation.Binary.PropositionalEquality.Core as ≡
 import Relation.Binary.Reflection as Reflection
 
 open import Data.Nat.Base using (ℕ; suc; zero)
@@ -534,7 +534,7 @@ correct (con c)  ρ = correct-con c ρ
 correct (var i)  ρ = correct-var i ρ
 correct (p :^ k) ρ = begin
   ⟦ normalise p ^N k ⟧N ρ  ≈⟨ ^N-homo (normalise p) k ρ ⟩
-  ⟦ p ⟧↓ ρ ^ k             ≈⟨ correct p ρ ⟨ ^-cong ⟩ PropEq.refl {x = k} ⟩
+  ⟦ p ⟧↓ ρ ^ k             ≈⟨ correct p ρ ⟨ ^-cong ⟩ ≡.refl {x = k} ⟩
   ⟦ p ⟧ ρ ^ k              ∎
 correct (:- p) ρ = begin
   ⟦ -N normalise p ⟧N ρ  ≈⟨ -N‿-homo (normalise p) ρ ⟩

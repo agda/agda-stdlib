@@ -8,7 +8,7 @@
 
 module Reflection.AST.Meta where
 
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Function.Base                              using (_on_)
 open import Relation.Nullary.Decidable.Core            using (map′)
 open import Relation.Binary.Core                       using (Rel)
@@ -30,7 +30,7 @@ _≈_ : Rel Meta _
 _≈_ = _≡_ on toℕ
 
 _≈?_ : Decidable _≈_
-_≈?_ = On.decidable toℕ _≡_ ℕₚ._≟_
+_≈?_ = On.decidable toℕ _≡_ ℕ._≟_
 
 _≟_ : DecidableEquality Meta
 m ≟ n = map′ (toℕ-injective _ _) (cong toℕ) (m ≈? n)

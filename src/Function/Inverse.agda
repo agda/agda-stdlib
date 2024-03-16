@@ -22,7 +22,7 @@ open import Function.Equality as F
 open import Function.LeftInverse as Left hiding (id; _∘_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (Reflexive; TransFlip; Sym)
-open import Relation.Binary.PropositionalEquality as P using (_≗_; _≡_)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≗_; _≡_)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -90,7 +90,7 @@ Please use Function.(Bundles.)Inverse instead."
 infix 3 _↔_ _↔̇_
 
 _↔_ : ∀ {f t} → Set f → Set t → Set _
-From ↔ To = Inverse (P.setoid From) (P.setoid To)
+From ↔ To = Inverse (≡.setoid From) (≡.setoid To)
 {-# WARNING_ON_USAGE _↔_
 "Warning: _↔_ was deprecated in v2.0.
 Please use Function.(Bundles.)_↔_ instead."
