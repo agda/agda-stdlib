@@ -53,7 +53,16 @@ Deprecated names
 
 New modules
 -----------
-* `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
+
+* Raw bundles for module-like algebraic structures:
+  ```
+  Algebra.Module.Bundles.Raw
+  ```
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
 
 * Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
   ```agda
@@ -295,6 +304,18 @@ Additions to existing modules
   pred-cancel-< : pred m < pred n → m < n
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+  ```
+  
+* Added new proofs to `Data.Nat.Primality`:
+  ```agda
+  rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
+  productOfPrimes≢0 : All Prime as → NonZero (product as)
+  productOfPrimes≥1 : All Prime as → product as ≥ 1
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  product-↭ : product Preserves _↭_ ⟶ _≡_
   ```
 
 * Added new functions in `Data.String.Base`:
