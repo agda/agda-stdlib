@@ -75,6 +75,13 @@ New modules
   Relation.Binary.Construct.Interior.Symmetric
   ```
 
+* Pointwise and equality relations over indexed containers:
+  ```agda
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
 Additions to existing modules
 -----------------------------
 
@@ -140,6 +147,11 @@ Additions to existing modules
   ×-homo-0#     : ∀ x → 0 × x ≈ 0# * x
   ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
+  ```
+
+* In `Data.Container.Indexed.Core`:
+  ```agda
+  Subtrees o c = (r : Response c) → X (next c r)
   ```
 
 * In `Data.Fin.Properties`:
