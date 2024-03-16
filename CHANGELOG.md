@@ -50,6 +50,11 @@ New modules
 -----------
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
+  ```
+
 * The unique morphism from the initial, resp. terminal, algebra:
   ```agda
   Algebra.Morphism.Construct.Initial
@@ -254,6 +259,15 @@ Additions to existing modules
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+
+* Added new definition in `Relation.Binary.Construct.Closure.Transitive`
+  ```
+  transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
+  ```
+
+* Added new definition in `Relation.Unary`
+  ```
+  Stable : Pred A ℓ → Set _
   ```
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
