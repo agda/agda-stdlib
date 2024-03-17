@@ -6,9 +6,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)
+open import Data.Product.Base using (∃)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsStrictTotalOrder)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong; subst)
 import Data.Tree.AVL.Value
 
 module Data.AVL.IndexedMap

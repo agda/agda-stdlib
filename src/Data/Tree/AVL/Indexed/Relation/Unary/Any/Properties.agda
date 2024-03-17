@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -16,13 +16,13 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Properties using (just-injective)
 open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product as Prod using (∃; ∃-syntax; _×_; _,_; proj₁; proj₂)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Product.Base as Prod using (∃; ∃-syntax; _×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base as F
 open import Level using (Level)
 
-open import Relation.Binary using (_Respects_; tri<; tri≈; tri>)
-open import Relation.Binary.PropositionalEquality using (_≡_) renaming (refl to ≡-refl)
+open import Relation.Binary.Definitions using (_Respects_; tri<; tri≈; tri>)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_) renaming (refl to ≡-refl)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; _∩_)
@@ -34,7 +34,6 @@ open StrictTotalOrder sto renaming (Carrier to Key; trans to <-trans); open Eq u
 open import Relation.Binary.Construct.Add.Extrema.Strict _<_ using ([<]-injective)
 
 import Relation.Binary.Reasoning.StrictPartialOrder as <-Reasoning
-
 
 private
   variable
@@ -244,7 +243,7 @@ module _ {V : Value v} where
                Any P (singleton k v l<k<u) → P (k , v)
   singleton⁻ k v l<k<u (here Pkv) = Pkv
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- insert
 
   module _ (k : Key) (f : Maybe (Val k) → Val k) where
@@ -278,33 +277,33 @@ module _ {V : Value v} where
                                      joinʳ⁺-right⁺ kv lk ku′ bal (Any-insertWith-just ku seg′ pr rp)
 
     -- impossible cases
-    ... | here eq  | tri< k<k′ _ _ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | here eq  | tri< k<k′ _ _ = begin-contradiction
       [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
       [ k′ ] ≈⟨ [ sym eq ]ᴱ ⟩
       [ k  ] ∎
-    ... | here eq  | tri> _ _ k>k′ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | here eq  | tri> _ _ k>k′ = begin-contradiction
       [ k  ] ≈⟨ [ eq ]ᴱ ⟩
       [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
       [ k  ] ∎
-    ... | left lp  | tri≈ _ k≈k′ _ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | left lp  | tri≈ _ k≈k′ _ = begin-contradiction
       let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
       [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
       [ k″ ] <⟨ k″<k′ ⟩
       [ k′ ] ≈⟨ [ sym k≈k′ ]ᴱ ⟩
       [ k  ] ∎
-    ... | left lp  | tri> _ _ k>k′ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | left lp  | tri> _ _ k>k′ = begin-contradiction
       let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
       [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
       [ k″ ] <⟨ k″<k′ ⟩
       [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
       [ k  ] ∎
-    ... | right rp | tri< k<k′ _ _ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | right rp | tri< k<k′ _ _ = begin-contradiction
       let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
       [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
       [ k′ ] <⟨ k′<k″ ⟩
       [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
       [ k  ] ∎
-    ... | right rp | tri≈ _ k≈k′ _ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | right rp | tri≈ _ k≈k′ _ = begin-contradiction
       let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
       [ k  ] ≈⟨ [ k≈k′ ]ᴱ ⟩
       [ k′ ] <⟨ k′<k″ ⟩

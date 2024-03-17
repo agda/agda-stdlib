@@ -8,21 +8,18 @@
 
 module Data.Vec.Relation.Unary.Linked.Properties where
 
-open import Data.Bool.Base using (true; false)
 open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
-import Data.Vec.Relation.Unary.All.Properties as Allₚ
+import Data.Vec.Relation.Unary.All.Properties as All
 open import Data.Vec.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
 open import Data.Fin.Base using (zero; suc; _<_)
-open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
-open import Data.Nat.Properties using (<-pred)
+open import Data.Nat.Base using (ℕ; zero; suc; s<s⁻¹)
 open import Level using (Level)
-open import Function.Base using (_∘_; flip; _on_)
-open import Relation.Binary using (Rel; Transitive; DecSetoid)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Function.Base using (_on_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Transitive)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Decidable using (yes; no; does)
 
 private
   variable
@@ -46,8 +43,8 @@ module _ (trans : Transitive R) where
   lookup⁺ : ∀ {i j} {xs : Vec _ n} →
            Linked R xs → i < j →
            R (lookup xs i) (lookup xs j)
-  lookup⁺ {i = zero}  {j = suc j} (rx ∷ rxs) i<j = Allₚ.lookup⁺ (Linked⇒All rx rxs) j
-  lookup⁺ {i = suc i} {j = suc j} (_  ∷ rxs) i<j = lookup⁺ rxs (<-pred i<j)
+  lookup⁺ {i = zero}  {j = suc j} (rx ∷ rxs) i<j = All.lookup⁺ (Linked⇒All rx rxs) j
+  lookup⁺ {i = suc i} {j = suc j} (_  ∷ rxs) i<j = lookup⁺ rxs (s<s⁻¹ i<j)
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for vec operations

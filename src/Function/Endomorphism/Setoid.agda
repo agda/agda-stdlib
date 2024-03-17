@@ -9,7 +9,8 @@
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Function.Endomorphism.Setoid {c e} (S : Setoid c e) where
 
@@ -18,10 +19,10 @@ open import Agda.Builtin.Equality
 open import Algebra
 open import Algebra.Structures
 open import Algebra.Morphism; open Definitions
-open import Function.Equality
+open import Function.Equality using (setoid; _⟶_; id; _∘_; cong)
 open import Data.Nat.Base using (ℕ; _+_); open ℕ
 open import Data.Nat.Properties
-open import Data.Product
+open import Data.Product.Base using (_,_)
 
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial as Trivial
 

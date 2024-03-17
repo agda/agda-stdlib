@@ -12,8 +12,9 @@ open import Algebra.Bundles
 open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Nat using (suc)
-open import Data.Product using (-,_; proj₂)
+open import Data.Nat.Base using (suc; _*_)
+open import Data.Nat.Properties using (*-assoc; *-comm)
+open import Data.Product.Base using (-,_; proj₂)
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -21,18 +22,16 @@ open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as Lₚ
-open import Data.Product using (_,_; _×_; ∃; ∃₂)
+open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (inverse)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Definitions using (_Respects_; Decidable)
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_)
+open import Relation.Binary.PropositionalEquality.Properties using (module ≡-Reasoning)
 open import Relation.Nullary
-
-open PermutationReasoning
 
 private
   variable
@@ -173,6 +172,7 @@ shift v (x ∷ xs) ys = begin
   x ∷ (xs ++ [ v ] ++ ys) <⟨ shift v xs ys ⟩
   x ∷ v ∷ xs ++ ys        <<⟨ refl ⟩
   v ∷ x ∷ xs ++ ys        ∎
+  where open PermutationReasoning
 
 drop-mid-≡ : ∀ {x : A} ws xs {ys} {zs} →
              ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
@@ -217,11 +217,13 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
       _ ∷ (xs ++ _ ∷ _) <⟨ shift _ _ _ ⟩
       _ ∷ _ ∷ xs ++ _   <<⟨ refl ⟩
       _ ∷ _ ∷ xs ++ _   ∎
+      where open PermutationReasoning
   drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ [])     refl refl = begin
       _ ∷ _ ∷ ws ++ _   <<⟨ refl ⟩
       _ ∷ (_ ∷ ws ++ _) <⟨ ↭-sym (shift _ _ _) ⟩
       _ ∷ (ws ++ _ ∷ _) <⟨ p ⟩
       _ ∷ _             ∎
+      where open PermutationReasoning
   drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid′ p _ _ refl refl)
   drop-mid′ (trans p₁ p₂) ws  xs refl refl with ∈-∃++ (∈-resp-↭ p₁ (∈-insert ws))
   ... | (h , t , refl) = trans (drop-mid′ p₁ ws h refl refl) (drop-mid′ p₂ h xs refl refl)
@@ -244,8 +246,9 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
   x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
-  x ∷ ys ++ xs   ↭˘⟨ shift x ys xs ⟩
+  x ∷ ys ++ xs   ↭⟨ shift x ys xs ⟨
   ys ++ (x ∷ xs) ∎
+  where open PermutationReasoning
 
 ++-isMagma : IsMagma {A = List A} _↭_ _++_
 ++-isMagma = record
@@ -297,10 +300,11 @@ module _ {a} {A : Set a} where
 
 shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
 shifts xs ys {zs} = begin
-   xs ++ ys  ++ zs ↭˘⟨ ++-assoc xs ys zs ⟩
+   xs ++ ys  ++ zs ↭⟨ ++-assoc xs ys zs ⟨
   (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
   (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
    ys ++ xs  ++ zs ∎
+   where open PermutationReasoning
 
 ------------------------------------------------------------------------
 -- _∷_
@@ -316,6 +320,7 @@ drop-∷ = drop-mid [] []
   xs ++ [ x ]   ↭⟨ shift x xs [] ⟩
   x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
   x ∷ xs        ∎)
+  where open PermutationReasoning
 
 ------------------------------------------------------------------------
 -- ʳ++
@@ -331,7 +336,7 @@ drop-∷ = drop-mid [] []
 ↭-reverse [] = ↭-refl
 ↭-reverse (x ∷ xs) = begin
   reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
-  reverse xs ∷ʳ x ↭˘⟨ ∷↭∷ʳ x (reverse xs) ⟩
+  reverse xs ∷ʳ x ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
   x ∷ reverse xs   ↭⟨ prep x (↭-reverse xs) ⟩
   x ∷ xs ∎
   where open PermutationReasoning
@@ -350,7 +355,21 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
   ... | true  | rec | _   = prep x rec
   ... | false | _   | rec = begin
     y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
-    y ∷ x ∷ xs ++ ys         ↭˘⟨ shift y (x ∷ xs) ys ⟩
-    (x ∷ xs) ++ y ∷ ys       ≡˘⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟩
+    y ∷ x ∷ xs ++ ys         ↭⟨ shift y (x ∷ xs) ys ⟨
+    (x ∷ xs) ++ y ∷ ys       ≡⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
+
+------------------------------------------------------------------------
+-- product
+
+product-↭ : product Preserves _↭_ ⟶ _≡_
+product-↭ refl = refl
+product-↭ (prep x r) = cong (x *_) (product-↭ r)
+product-↭ (trans r s) = ≡.trans (product-↭ r) (product-↭ s)
+product-↭ (swap {xs} {ys} x y r) = begin
+  x * (y * product xs) ≡˘⟨ *-assoc x y (product xs) ⟩
+  (x * y) * product xs ≡⟨ cong₂ _*_ (*-comm x y) (product-↭ r) ⟩
+  (y * x) * product ys ≡⟨ *-assoc y x (product ys) ⟩
+  y * (x * product ys) ∎
+  where open ≡-Reasoning

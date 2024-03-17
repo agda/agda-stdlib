@@ -12,15 +12,14 @@ open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
-open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec.Base as Vec
-import Data.Vec.Properties as Vecₚ
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Level using (Level)
 open import Function.Base using (_∘_; id)
-open import Function.Inverse using (_↔_; inverse)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
-open import Relation.Binary as B using (REL)
+open import Relation.Binary.Core using (REL)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; →-to-⟶)
 
@@ -82,7 +81,7 @@ gmap g = map⁺ ∘ All.map g
 ++⁻ : (xs : Vec A m) {ys : Vec A n} →
       All P (xs ++ ys) → All P xs × All P ys
 ++⁻ []       p          = [] , p
-++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map₁ (px ∷_) (++⁻ _ pxs)
+++⁻ (x ∷ xs) (px ∷ pxs) = Product.map₁ (px ∷_) (++⁻ _ pxs)
 
 ++⁺∘++⁻ : (xs : Vec A m) {ys : Vec A n} →
           (p : All P (xs ++ ys)) →
@@ -98,7 +97,7 @@ gmap g = map⁺ ∘ All.map g
 
 ++↔ : {xs : Vec A m} {ys : Vec A n} →
       (All P xs × All P ys) ↔ All P (xs ++ ys)
-++↔ {xs = xs} = inverse (uncurry ++⁺) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
+++↔ {xs = xs} = mk↔ₛ′ (uncurry ++⁺) (++⁻ xs) (++⁺∘++⁻ xs) ++⁻∘++⁺
 
 ------------------------------------------------------------------------
 -- concat
@@ -148,13 +147,11 @@ module _ {P : A → Set p} where
 
 drop⁺ : ∀ m {xs} → All P {m + n} xs → All P {n} (drop m xs)
 drop⁺ zero pxs = pxs
-drop⁺ (suc m) {x ∷ xs} (px ∷ pxs)
-  rewrite Vecₚ.unfold-drop m x xs = drop⁺ m pxs
+drop⁺ (suc m) {x ∷ xs} (px ∷ pxs) = drop⁺ m pxs
 
 take⁺ : ∀ m {xs} → All P {m + n} xs → All P {m} (take m xs)
 take⁺ zero pxs = []
-take⁺ (suc m) {x ∷ xs} (px ∷ pxs)
-  rewrite Vecₚ.unfold-take m x xs = px ∷ take⁺ m pxs
+take⁺ (suc m) {x ∷ xs} (px ∷ pxs) = px ∷ take⁺ m pxs
 
 ------------------------------------------------------------------------
 -- toList

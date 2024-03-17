@@ -16,9 +16,9 @@ open import Data.Empty
 open import Relation.Nullary
 open import Data.Nat.Base
 open import Data.Maybe.Base hiding (map ; fromMaybe ; zipWith ; alignWith ; zip ; align)
-open import Data.Product as P hiding (map ; zip)
-open import Data.Sum.Base as S hiding (map)
-open import Data.These.Base as T using (These; this; that; these)
+open import Data.Product.Base hiding (map ; zip)
+open import Data.Sum.Base hiding (map)
+open import Data.These.Base using (These; this; that; these)
 open import Function.Base using (id)
 
 ------------------------------------------------------------------------

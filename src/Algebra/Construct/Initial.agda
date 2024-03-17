@@ -4,8 +4,8 @@
 -- Instances of algebraic structures where the carrier is ⊥.
 -- In mathematics, this is usually called 0.
 --
--- From monoids up, these are zero-objects – i.e, the initial
--- object is the terminal object in the relevant category.
+-- From monoids up, these are zero-objects – i.e, the terminal
+-- object is *also* the initial object in the relevant category.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -22,7 +22,10 @@ open import Algebra.Core using (Op₂)
 open import Algebra.Definitions using (Congruent₂)
 open import Algebra.Structures using (IsMagma; IsSemigroup; IsBand)
 open import Data.Empty.Polymorphic
-open import Relation.Binary using (Rel; Reflexive; Symmetric; Transitive; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
 
 
 ------------------------------------------------------------------------

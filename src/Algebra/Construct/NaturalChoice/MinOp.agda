@@ -11,9 +11,11 @@ open import Algebra.Core
 open import Algebra.Bundles
 open import Algebra.Construct.NaturalChoice.Base
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_)
-open import Relation.Binary
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.Bundles using (TotalPreorder)
+open import Relation.Binary.Definitions using (Maximum; Minimum)
 open import Relation.Binary.Consequences
 
 module Algebra.Construct.NaturalChoice.MinOp
@@ -57,17 +59,17 @@ x⊓y≤y x y with total x y
 ⊓-congˡ x {y} {r} y≈r with total x y
 ... | inj₁ x≤y = begin-equality
   x ⊓ y  ≈⟨  x≤y⇒x⊓y≈x x≤y ⟩
-  x      ≈˘⟨ x≤y⇒x⊓y≈x (≤-respʳ-≈ y≈r x≤y) ⟩
+  x      ≈⟨ x≤y⇒x⊓y≈x (≤-respʳ-≈ y≈r x≤y) ⟨
   x ⊓ r  ∎
 ... | inj₂ y≤x = begin-equality
   x ⊓ y  ≈⟨  x≥y⇒x⊓y≈y y≤x ⟩
   y      ≈⟨  y≈r ⟩
-  r      ≈˘⟨ x≥y⇒x⊓y≈y (≤-respˡ-≈ y≈r y≤x) ⟩
+  r      ≈⟨ x≥y⇒x⊓y≈y (≤-respˡ-≈ y≈r y≤x) ⟨
   x ⊓ r  ∎
 
 ⊓-congʳ : ∀ x → Congruent₁ (_⊓ x)
 ⊓-congʳ x {y₁} {y₂} y₁≈y₂ = begin-equality
-  y₁ ⊓ x  ≈˘⟨ ⊓-comm x y₁ ⟩
+  y₁ ⊓ x  ≈⟨ ⊓-comm x y₁ ⟨
   x  ⊓ y₁ ≈⟨  ⊓-congˡ x y₁≈y₂ ⟩
   x  ⊓ y₂ ≈⟨  ⊓-comm x y₂ ⟩
   y₂ ⊓ x  ∎
@@ -80,16 +82,16 @@ x⊓y≤y x y with total x y
 ⊓-assoc x y r | inj₁ x≤y | inj₁ y≤r = begin-equality
   (x ⊓ y) ⊓ r  ≈⟨ ⊓-congʳ r (x≤y⇒x⊓y≈x x≤y) ⟩
   x ⊓ r        ≈⟨ x≤y⇒x⊓y≈x (trans x≤y y≤r) ⟩
-  x            ≈˘⟨ x≤y⇒x⊓y≈x x≤y ⟩
-  x ⊓ y        ≈˘⟨ ⊓-congˡ x (x≤y⇒x⊓y≈x y≤r) ⟩
+  x            ≈⟨ x≤y⇒x⊓y≈x x≤y ⟨
+  x ⊓ y        ≈⟨ ⊓-congˡ x (x≤y⇒x⊓y≈x y≤r) ⟨
   x ⊓ (y ⊓ r)  ∎
 ⊓-assoc x y r | inj₁ x≤y | inj₂ r≤y = begin-equality
   (x ⊓ y) ⊓ r  ≈⟨ ⊓-congʳ r (x≤y⇒x⊓y≈x x≤y) ⟩
-  x ⊓ r        ≈˘⟨ ⊓-congˡ x (x≥y⇒x⊓y≈y r≤y) ⟩
+  x ⊓ r        ≈⟨ ⊓-congˡ x (x≥y⇒x⊓y≈y r≤y) ⟨
   x ⊓ (y ⊓ r)  ∎
 ⊓-assoc x y r | inj₂ y≤x | _ = begin-equality
   (x ⊓ y) ⊓ r  ≈⟨ ⊓-congʳ r (x≥y⇒x⊓y≈y y≤x) ⟩
-  y ⊓ r        ≈˘⟨ x≥y⇒x⊓y≈y (trans (x⊓y≤x y r) y≤x) ⟩
+  y ⊓ r        ≈⟨ x≥y⇒x⊓y≈y (trans (x⊓y≤x y r) y≤x) ⟨
   x ⊓ (y ⊓ r)  ∎
 
 ⊓-idem : Idempotent _⊓_
@@ -213,11 +215,11 @@ mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≈_ ⟶ _≈_ → f Preserves _
 mono-≤-distrib-⊓ {f} cong mono x y with total x y
 ... | inj₁ x≤y = begin-equality
   f (x ⊓ y)  ≈⟨ cong (x≤y⇒x⊓y≈x x≤y) ⟩
-  f x        ≈˘⟨ x≤y⇒x⊓y≈x (mono x≤y) ⟩
+  f x        ≈⟨ x≤y⇒x⊓y≈x (mono x≤y) ⟨
   f x ⊓ f y  ∎
 ... | inj₂ y≤x = begin-equality
   f (x ⊓ y)  ≈⟨ cong (x≥y⇒x⊓y≈y y≤x) ⟩
-  f y        ≈˘⟨ x≥y⇒x⊓y≈y (mono y≤x) ⟩
+  f y        ≈⟨ x≥y⇒x⊓y≈y (mono y≤x) ⟨
   f x ⊓ f y  ∎
 
 x≤y⇒x⊓z≤y : ∀ {x y} z → x ≤ y → x ⊓ z ≤ y
@@ -248,8 +250,8 @@ x≤y⊓z⇒x≤z y z x≤y⊓z = trans x≤y⊓z (x⊓y≤y y z)
 
 ⊓-triangulate : ∀ x y z → x ⊓ y ⊓ z ≈ (x ⊓ y) ⊓ (y ⊓ z)
 ⊓-triangulate x y z = begin-equality
-  x ⊓ y ⊓ z           ≈˘⟨ ⊓-congʳ z (⊓-congˡ x (⊓-idem y)) ⟩
+  x ⊓ y ⊓ z           ≈⟨ ⊓-congʳ z (⊓-congˡ x (⊓-idem y)) ⟨
   x ⊓ (y ⊓ y) ⊓ z     ≈⟨  ⊓-assoc x _ _ ⟩
   x ⊓ ((y ⊓ y) ⊓ z)   ≈⟨  ⊓-congˡ x (⊓-assoc y y z) ⟩
-  x ⊓ (y ⊓ (y ⊓ z))   ≈˘⟨ ⊓-assoc x y (y ⊓ z) ⟩
+  x ⊓ (y ⊓ (y ⊓ z))   ≈⟨ ⊓-assoc x y (y ⊓ z) ⟨
   (x ⊓ y) ⊓ (y ⊓ z)   ∎

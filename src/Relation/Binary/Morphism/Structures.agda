@@ -6,15 +6,15 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core
+open import Relation.Binary.Core using (Rel)
 
 module Relation.Binary.Morphism.Structures
   {a b} {A : Set a} {B : Set b}
   where
 
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Function.Definitions
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Binary.Morphism.Definitions A B
 
 private
@@ -57,29 +57,29 @@ record IsRelIsomorphism (_∼₁_ : Rel A ℓ₁) (_∼₂_ : Rel B ℓ₂)
 ------------------------------------------------------------------------
 
 record IsOrderHomomorphism (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
-                           (_∼₁_ : Rel A ℓ₃) (_∼₂_ : Rel B ℓ₄)
+                           (_≲₁_ : Rel A ℓ₃) (_≲₂_ : Rel B ℓ₄)
                            (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃ ⊔ ℓ₄)
                            where
   field
     cong  : Homomorphic₂ _≈₁_ _≈₂_ ⟦_⟧
-    mono  : Homomorphic₂ _∼₁_ _∼₂_ ⟦_⟧
+    mono  : Homomorphic₂ _≲₁_ _≲₂_ ⟦_⟧
 
   module Eq where
     isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
     isRelHomomorphism = record { cong = cong }
 
-  isRelHomomorphism : IsRelHomomorphism _∼₁_ _∼₂_ ⟦_⟧
+  isRelHomomorphism : IsRelHomomorphism _≲₁_ _≲₂_ ⟦_⟧
   isRelHomomorphism = record { cong = mono }
 
 
 record IsOrderMonomorphism (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
-                           (_∼₁_ : Rel A ℓ₃) (_∼₂_ : Rel B ℓ₄)
+                           (_≲₁_ : Rel A ℓ₃) (_≲₂_ : Rel B ℓ₄)
                            (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃ ⊔ ℓ₄)
                            where
   field
-    isOrderHomomorphism : IsOrderHomomorphism _≈₁_ _≈₂_ _∼₁_ _∼₂_ ⟦_⟧
+    isOrderHomomorphism : IsOrderHomomorphism _≈₁_ _≈₂_ _≲₁_ _≲₂_ ⟦_⟧
     injective           : Injective _≈₁_ _≈₂_ ⟦_⟧
-    cancel              : Injective _∼₁_ _∼₂_ ⟦_⟧
+    cancel              : Injective _≲₁_ _≲₂_ ⟦_⟧
 
   open IsOrderHomomorphism isOrderHomomorphism public
     hiding (module Eq)
@@ -91,7 +91,7 @@ record IsOrderMonomorphism (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
       ; injective      = injective
       }
 
-  isRelMonomorphism : IsRelMonomorphism _∼₁_ _∼₂_ ⟦_⟧
+  isRelMonomorphism : IsRelMonomorphism _≲₁_ _≲₂_ ⟦_⟧
   isRelMonomorphism = record
     { isHomomorphism = isRelHomomorphism
     ; injective      = cancel
@@ -99,11 +99,11 @@ record IsOrderMonomorphism (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
 
 
 record IsOrderIsomorphism (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
-                          (_∼₁_ : Rel A ℓ₃) (_∼₂_ : Rel B ℓ₄)
+                          (_≲₁_ : Rel A ℓ₃) (_≲₂_ : Rel B ℓ₄)
                           (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃ ⊔ ℓ₄)
                           where
   field
-    isOrderMonomorphism : IsOrderMonomorphism _≈₁_ _≈₂_ _∼₁_ _∼₂_ ⟦_⟧
+    isOrderMonomorphism : IsOrderMonomorphism _≈₁_ _≈₂_ _≲₁_ _≲₂_ ⟦_⟧
     surjective          : Surjective _≈₁_ _≈₂_ ⟦_⟧
 
   open IsOrderMonomorphism isOrderMonomorphism public

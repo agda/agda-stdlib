@@ -6,21 +6,21 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Bundles using (TotalOrder; DecTotalOrder)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.Structures using (IsTotalOrder)
 
 module Relation.Binary.Properties.TotalOrder
   {t₁ t₂ t₃} (T : TotalOrder t₁ t₂ t₃) where
 
 open TotalOrder T
 
-open import Data.Product using (proj₁)
+open import Data.Product.Base using (proj₁)
 open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Construct.Flip.EqAndOrd as EqAndOrd
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Poset poset as PosetProperties
 open import Relation.Binary.Consequences
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
 
 ------------------------------------------------------------------------
 -- Total orders are almost decidable total orders
@@ -39,8 +39,7 @@ decTotalOrder ≟ = record
 
 open PosetProperties public
   using
-  ( _≥_
-  ; ≥-refl
+  ( ≥-refl
   ; ≥-reflexive
   ; ≥-trans
   ; ≥-antisym
@@ -90,8 +89,7 @@ open PosetProperties public
 
 open PosetProperties public
   using
-  ( _≰_
-  ; ≰-respʳ-≈
+  ( ≰-respʳ-≈
   ; ≰-respˡ-≈
   )
 

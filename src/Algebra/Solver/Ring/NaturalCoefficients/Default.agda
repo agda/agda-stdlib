@@ -5,8 +5,8 @@
 -- equality induced by ℕ.
 --
 -- This is sufficient for proving equalities that are independent of the
--- characteristic.  In particular, this is enough for equalities in rings of
--- characteristic 0.
+-- characteristic.  In particular, this is enough for equalities in
+-- rings of characteristic 0.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -20,13 +20,13 @@ import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; map)
 open import Data.Nat using (_≟_)
 open import Relation.Binary.Consequences using (dec⇒weaklyDec)
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as ≡
 
 open CommutativeSemiring R
 open SemiringMultiplication semiring
 
 private
   dec : ∀ m n → Maybe (m × 1# ≈ n × 1#)
-  dec m n = map (λ { P.refl → refl }) (dec⇒weaklyDec _≟_ m n)
+  dec m n = map (λ { ≡.refl → refl }) (dec⇒weaklyDec _≟_ m n)
 
 open import Algebra.Solver.Ring.NaturalCoefficients R dec public

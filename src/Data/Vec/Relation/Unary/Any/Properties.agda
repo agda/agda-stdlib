@@ -15,21 +15,23 @@ open import Data.List.Base using ([]; _∷_)
 import Data.List.Relation.Unary.Any as List
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Product as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
-open import Data.Vec hiding (here; there)
+open import Data.Product.Base as Product using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
+open import Data.Vec.Base hiding (here; there)
 open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
   using (_∈_; mapWith∈; find; lose)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive
   using (Pointwise; []; _∷_)
 open import Function.Base
-open import Function.Inverse using (_↔_; inverse)
-  renaming (_∘_ to _∘↔_; id to id↔)
+open import Function.Bundles using (_↔_; mk↔ₛ′)
+open import Function.Properties.Inverse using (↔-refl; ↔-trans)
 open import Level using (Level)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary hiding (_∈_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (_Respects_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong)
 
 private
   variable
@@ -92,15 +94,15 @@ module _ {P : Pred A p} where
 map-id : ∀ {P : Pred A p} (f : P ⊆ P) {n xs} →
          (∀ {x} (p : P x) → f p ≡ p) →
          (p : Any P {n} xs) → Any.map f p ≡ p
-map-id f hyp (here  p) = P.cong here (hyp p)
-map-id f hyp (there p) = P.cong there $ map-id f hyp p
+map-id f hyp (here  p) = cong here (hyp p)
+map-id f hyp (there p) = cong there $ map-id f hyp p
 
 map-∘ : ∀ {P : Pred A p} {Q : A → Set q} {R : A → Set r}
         (f : Q ⊆ R) (g : P ⊆ Q)
         {n xs} (p : Any P {n} xs) →
         Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
 map-∘ f g (here  p) = refl
-map-∘ f g (there p) = P.cong there $ map-∘ f g p
+map-∘ f g (there p) = cong there $ map-∘ f g p
 
 ------------------------------------------------------------------------
 -- Swapping
@@ -116,7 +118,7 @@ module _ {P : A → B → Set ℓ} where
   swap-there : ∀ {n m x xs ys} → (any : Any (λ x → Any (P x) {n} ys) {m} xs) →
                swap (Any.map (there {x = x}) any) ≡ there (swap any)
   swap-there (here  pys)  = refl
-  swap-there (there pxys) = P.cong (Any.map there) (swap-there pxys)
+  swap-there (there pxys) = cong (Any.map there) (swap-there pxys)
 
 module _ {P : A → B → Set ℓ} where
 
@@ -124,27 +126,27 @@ module _ {P : A → B → Set ℓ} where
                (any : Any (λ x → Any (P x) ys) xs) →
                swap (swap any) ≡ any
   swap-invol (here (here _)) = refl
-  swap-invol (here (there pys)) = P.cong (Any.map there) (swap-invol (here pys))
-  swap-invol (there pxys) = P.trans (swap-there (swap pxys))
-                          $ P.cong there (swap-invol pxys)
+  swap-invol (here (there pys)) = cong (Any.map there) (swap-invol (here pys))
+  swap-invol (there pxys) = trans (swap-there (swap pxys))
+                          $ cong there (swap-invol pxys)
 
 module _ {P : A → B → Set ℓ} where
 
   swap↔ : ∀ {n m} {xs : Vec A n} {ys : Vec B m} →
           Any (λ x → Any (P x) ys) xs ↔ Any (λ y → Any (flip P y) xs) ys
-  swap↔ = inverse swap swap swap-invol swap-invol
+  swap↔ = mk↔ₛ′ swap swap swap-invol swap-invol
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any to ⊥
 
 ⊥↔Any⊥ : ∀ {n} {xs : Vec A n} → ⊥ ↔ Any (const ⊥) xs
-⊥↔Any⊥ = inverse (λ ()) (λ p → from p) (λ ()) (λ p → from p)
+⊥↔Any⊥ = mk↔ₛ′ (λ ()) (λ p → from p) (λ p → from p) (λ ())
   where
   from : ∀ {n xs} → Any (const ⊥) {n} xs → ∀ {b} {B : Set b} → B
   from (there p) = from p
 
 ⊥↔Any[] : ∀ {P : Pred A p} → ⊥ ↔ Any P []
-⊥↔Any[] = inverse (λ()) (λ()) (λ()) (λ())
+⊥↔Any[] = mk↔ₛ′ (λ()) (λ()) (λ()) (λ())
 
 ------------------------------------------------------------------------
 -- Sums commute with Any
@@ -160,7 +162,7 @@ module _ {P : Pred A p} {Q : A → Set q} where
   Any-⊎⁻ (there p)       = Sum.map there there (Any-⊎⁻ p)
 
   ⊎↔ : ∀ {n} {xs : Vec A n} → (Any P xs ⊎ Any Q xs) ↔ Any (λ x → P x ⊎ Q x) xs
-  ⊎↔ = inverse Any-⊎⁺ Any-⊎⁻ from∘to to∘from
+  ⊎↔ = mk↔ₛ′ Any-⊎⁺ Any-⊎⁻ to∘from from∘to
     where
     from∘to : ∀ {n} {xs : Vec A n} (p : Any P xs ⊎ Any Q xs) → Any-⊎⁻ (Any-⊎⁺ p) ≡ p
     from∘to (inj₁ (here  p)) = refl
@@ -216,7 +218,7 @@ module _ {P : Pred A p} where
   singleton⁻∘singleton⁺ p = refl
 
   singleton↔ : ∀ {x} → P x ↔ Any P [ x ]
-  singleton↔ = inverse singleton⁺ singleton⁻ singleton⁻∘singleton⁺ singleton⁺∘singleton⁻
+  singleton↔ = mk↔ₛ′ singleton⁺ singleton⁻ singleton⁺∘singleton⁻ singleton⁻∘singleton⁺
 
 ------------------------------------------------------------------------
 -- map
@@ -236,16 +238,16 @@ module _ {f : A → B} where
   map⁺∘map⁻ : ∀ {P : Pred B p} {n} {xs : Vec A n} →
               (p : Any P (map f xs)) → map⁺ (map⁻ p) ≡ p
   map⁺∘map⁻ {xs = x ∷ xs} (here  p) = refl
-  map⁺∘map⁻ {xs = x ∷ xs} (there p) = P.cong there (map⁺∘map⁻ p)
+  map⁺∘map⁻ {xs = x ∷ xs} (there p) = cong there (map⁺∘map⁻ p)
 
   map⁻∘map⁺ : ∀ (P : Pred B p) {n} {xs : Vec A n} →
               (p : Any (P ∘ f) xs) → map⁻ {P = P} (map⁺ p) ≡ p
   map⁻∘map⁺ P (here  p) = refl
-  map⁻∘map⁺ P (there p) = P.cong there (map⁻∘map⁺ P p)
+  map⁻∘map⁺ P (there p) = cong there (map⁻∘map⁺ P p)
 
   map↔ : ∀ {P : Pred B p} {n} {xs : Vec A n} →
          Any (P ∘ f) xs ↔ Any P (map f xs)
-  map↔ = inverse map⁺ map⁻ (map⁻∘map⁺ _) map⁺∘map⁻
+  map↔ = mk↔ₛ′ map⁺ map⁻ map⁺∘map⁻ (map⁻∘map⁺ _)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -270,8 +272,8 @@ module _ {P : Pred A p} where
   ++⁺∘++⁻ []       p         = refl
   ++⁺∘++⁻ (x ∷ xs) (here  p) = refl
   ++⁺∘++⁻ (x ∷ xs) (there p) with ++⁻ xs p | ++⁺∘++⁻ xs p
-  ++⁺∘++⁻ (x ∷ xs) (there p) | inj₁ p′ | ih = P.cong there ih
-  ++⁺∘++⁻ (x ∷ xs) (there p) | inj₂ p′ | ih = P.cong there ih
+  ++⁺∘++⁻ (x ∷ xs) (there p) | inj₁ p′ | ih = cong there ih
+  ++⁺∘++⁻ (x ∷ xs) (there p) | inj₂ p′ | ih = cong there ih
 
   ++⁻∘++⁺ : ∀ {n m} (xs : Vec A n) {ys : Vec A m} (p : Any P xs ⊎ Any P ys) →
             ++⁻ xs ([ ++⁺ˡ , ++⁺ʳ xs ]′ p) ≡ p
@@ -282,7 +284,7 @@ module _ {P : Pred A p} where
 
   ++↔ : ∀ {n m} {xs : Vec A n} {ys : Vec A m} →
         (Any P xs ⊎ Any P ys) ↔ Any P (xs ++ ys)
-  ++↔ {xs = xs} = inverse [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs) (++⁻∘++⁺ xs) (++⁺∘++⁻ xs)
+  ++↔ {xs = xs} = mk↔ₛ′ [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs) (++⁺∘++⁻ xs) (++⁻∘++⁺ xs)
 
   ++-comm : ∀ {n m} (xs : Vec A n) (ys : Vec A m) →
             Any P (xs ++ ys) → Any P (ys ++ xs)
@@ -305,8 +307,8 @@ module _ {P : Pred A p} where
             | ++⁻∘++⁺ ys {ys = x ∷ xs} (inj₁ p) = refl
 
   ++↔++ : ∀ {n m} (xs : Vec A n) (ys : Vec A m) → Any P (xs ++ ys) ↔ Any P (ys ++ xs)
-  ++↔++ xs ys = inverse (++-comm xs ys) (++-comm ys xs)
-                        (++-comm∘++-comm xs) (++-comm∘++-comm ys)
+  ++↔++ xs ys = mk↔ₛ′ (++-comm xs ys) (++-comm ys xs)
+                        (++-comm∘++-comm ys) (++-comm∘++-comm xs)
 
   ++-insert : ∀ {n m x} (xs : Vec A n) {ys : Vec A m} → P x → Any P (xs ++ [ x ] ++ ys)
   ++-insert xs Px = ++⁺ʳ xs (++⁺ˡ (singleton⁺ Px))
@@ -335,10 +337,10 @@ module _ {P : Pred A p} where
                    concat⁺ (concat⁻ xss p) ≡ p
   concat⁺∘concat⁻ (xs ∷ xss) p  with ++⁻ xs p in eq
   ... | inj₁ pxs
-    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym eq))
+    = trans (cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (sym eq))
     $ ++⁺∘++⁻ xs p
   ... | inj₂ pxss rewrite concat⁺∘concat⁻ xss pxss
-    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym eq))
+    = trans (cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (sym eq))
     $ ++⁺∘++⁻ xs p
 
   concat⁻∘concat⁺ : ∀ {n m} {xss : Vec (Vec A n) m} (p : Any (Any P) xss) →
@@ -350,7 +352,7 @@ module _ {P : Pred A p} where
             | concat⁻∘concat⁺ p = refl
 
   concat↔ : ∀ {n m} {xss : Vec (Vec A n) m} → Any (Any P) xss ↔ Any P (concat xss)
-  concat↔ {xss = xss} = inverse concat⁺ (concat⁻ xss) concat⁻∘concat⁺ (concat⁺∘concat⁻ xss)
+  concat↔ {xss = xss} = mk↔ₛ′ concat⁺ (concat⁻ xss) (concat⁺∘concat⁻ xss) concat⁻∘concat⁺
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -364,7 +366,7 @@ module _ {P : Pred A p} where
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               Any P (tabulate f) → ∃ λ i → P (f i)
   tabulate⁻ (here p)  = zero , p
-  tabulate⁻ (there p) = Prod.map suc id (tabulate⁻ p)
+  tabulate⁻ (there p) = Product.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- mapWith∈
@@ -383,11 +385,11 @@ module _ {P : Pred B p} where
               ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)
   mapWith∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
   mapWith∈⁻ (y ∷ xs) f (there p) =
-    Prod.map id (Prod.map there id) $ mapWith∈⁻ xs (f ∘ there) p
+    Product.map id (Product.map there id) $ mapWith∈⁻ xs (f ∘ there) p
 
   mapWith∈↔ : ∀ {n} {xs : Vec A n} {f : ∀ {x} → x ∈ xs → B} →
     (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (mapWith∈ xs f)
-  mapWith∈↔ = inverse (mapWith∈⁺ _) (mapWith∈⁻ _ _) (from∘to _) (to∘from _ _)
+  mapWith∈↔ = mk↔ₛ′ (mapWith∈⁺ _) (mapWith∈⁻ _ _) (to∘from _ _) (from∘to _)
     where
     from∘to : ∀ {n} {xs : Vec A n} (f : ∀ {x} → x ∈ xs → B)
               (p : ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
@@ -401,14 +403,14 @@ module _ {P : Pred B p} where
               mapWith∈⁺ f (mapWith∈⁻ xs f p) ≡ p
     to∘from (y ∷ xs) f (here  p) = refl
     to∘from (y ∷ xs) f (there p) =
-      P.cong there $ to∘from xs (f ∘ there) p
+      cong there $ to∘from xs (f ∘ there) p
 
 ------------------------------------------------------------------------
 -- _∷_
 
 ∷↔ : ∀ {n} (P : Pred A p) {x} {xs : Vec A n} →
      (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
-∷↔ P {x} {xs} = ++↔ ∘↔ (singleton↔ ⊎-cong id↔)
+∷↔ P {x} {xs} = ↔-trans (singleton↔ ⊎-cong ↔-refl) ++↔
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -418,4 +420,4 @@ module _ {A B : Set a} {P : Pred B p} {m} {f : A → Vec B m} where
   open CartesianBind
 
   >>=↔ : ∀ {n} {xs : Vec A n} → Any (Any P ∘ f) xs ↔ Any P (xs >>= f)
-  >>=↔ = concat↔ ∘↔ map↔
+  >>=↔ = ↔-trans map↔ concat↔

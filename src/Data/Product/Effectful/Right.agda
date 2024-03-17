@@ -18,7 +18,7 @@ open import Level
 module Data.Product.Effectful.Right
   (a : Level) {b e} (B : RawMonoid b e) where
 
-open import Data.Product
+open import Data.Product.Base
 import Data.Product.Effectful.Right.Base as Base
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)
@@ -48,7 +48,7 @@ monad = record
   ; _>>=_ = uncurry λ a w₁ f → map₂ (w₁ ∙_) (f a)
   }
 
-monadT : RawMonadT (_∘′ Productᵣ)
+monadT : ∀ {ℓ} → RawMonadT {g₁ = ℓ} (_∘′ Productᵣ)
 monadT M = record
   { lift = (_, ε) <$>_
   ; rawMonad = mkRawMonad _

@@ -14,7 +14,7 @@ open import Codata.Sized.Conat
 open import Codata.Sized.Covec
 open import Codata.Sized.Covec.Bisimilarity
 open import Function.Base using (id; _∘_)
-open import Relation.Binary.PropositionalEquality as Eq
+open import Relation.Binary.PropositionalEquality.Core as ≡
 
 -- Functor laws
 
@@ -22,13 +22,13 @@ module _ {a} {A : Set a} where
 
  map-id : ∀ {m} (as : Covec A ∞ m) {i} → i , m ⊢ map id as ≈ as
  map-id []       = []
- map-id (a ∷ as) = Eq.refl ∷ λ where .force → map-id (as .force)
+ map-id (a ∷ as) = ≡.refl ∷ λ where .force → map-id (as .force)
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
  map-∘ : ∀ (f : A → B) (g : B → C) {m} as {i} → i , m ⊢ map g (map f as) ≈ map (g ∘ f) as
  map-∘ f g []       = []
- map-∘ f g (a ∷ as) = Eq.refl ∷ λ where .force → map-∘ f g (as .force)
+ map-∘ f g (a ∷ as) = ≡.refl ∷ λ where .force → map-∘ f g (as .force)
 
 ------------------------------------------------------------------------
 -- DEPRECATED

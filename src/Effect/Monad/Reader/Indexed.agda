@@ -10,7 +10,7 @@ open import Level
 
 module Effect.Monad.Reader.Indexed {r} (R : Set r) (a : Level) where
 
-open import Function
+open import Function.Base using (const; flip; _∘_)
 open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Applicative.Indexed
 open import Effect.Monad.Indexed
@@ -30,7 +30,7 @@ IReaderT M i j A = R → M i j A
 
 module _ {M : IFun I (r ⊔ a)} where
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Indexed reader applicative
 
   ReaderTIApplicative : RawIApplicative M → RawIApplicative (IReaderT M)
@@ -52,7 +52,7 @@ module _ {M : IFun I (r ⊔ a)} where
     ; _∣_ = λ m n r → m r ∣ n r
     } where open RawIAlternative Alt
 
-  ------------------------------------------------------------------------
+  ----------------------------------------------------------------------
   -- Indexed reader monad
 
   ReaderTIMonad : RawIMonad M → RawIMonad (IReaderT M)

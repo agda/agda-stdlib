@@ -3,9 +3,9 @@
 --
 -- Propositional equality
 --
--- This file contains some core properies of propositional equality which
--- are re-exported by Relation.Binary.PropositionalEquality. They are
--- ``equality rearrangement'' lemmas.
+-- This file contains some core properies of propositional equality
+-- which are re-exported by Relation.Binary.PropositionalEquality. They
+-- are ``equality rearrangement'' lemmas.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -13,11 +13,18 @@
 module Relation.Binary.PropositionalEquality.Properties where
 
 open import Function.Base using (id; _∘_)
-open import Level
-open import Relation.Binary
+open import Level using (Level)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder)
+open import Relation.Binary.Definitions
+  using (Decidable; DecidableEquality)
 import Relation.Binary.Properties.Setoid as Setoid
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Unary using (Pred)
+open import Relation.Binary.Reasoning.Syntax
+
 
 private
   variable
@@ -183,3 +190,16 @@ preorder A = Setoid.≈-preorder (setoid A)
 
 poset : Set a → Poset _ _ _
 poset A = Setoid.≈-poset (setoid A)
+
+------------------------------------------------------------------------
+-- Reasoning
+
+-- This is a special instance of `Relation.Binary.Reasoning.Setoid`.
+-- Rather than instantiating the latter with (setoid A), we reimplement
+-- equation chains from scratch since then goals are printed much more
+-- readably.
+module ≡-Reasoning {a} {A : Set a} where
+
+  open begin-syntax {A = A} _≡_ id public
+  open ≡-syntax {A = A} _≡_ trans public
+  open end-syntax {A = A} _≡_ refl public

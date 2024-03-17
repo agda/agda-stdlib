@@ -8,12 +8,12 @@
 
 module Data.List.Relation.Binary.Pointwise.Properties where
 
-open import Data.Product using (_,_; uncurry)
+open import Data.Product.Base using (_,_; uncurry)
 open import Data.List.Base using (List; []; _∷_)
 open import Level
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Nullary using (yes; no; _×-dec_)
 import Relation.Nullary.Decidable as Dec
 
@@ -72,6 +72,6 @@ decidable R? (x ∷ xs) (y ∷ ys) = Dec.map′ (uncurry _∷_) uncons
   (R? x y ×-dec decidable R? xs ys)
 
 irrelevant : Irrelevant R → Irrelevant (Pointwise R)
-irrelevant irr []       []         = P.refl
+irrelevant irr []       []         = ≡.refl
 irrelevant irr (r ∷ rs) (r₁ ∷ rs₁) =
-  P.cong₂ _∷_ (irr r r₁) (irrelevant irr rs rs₁)
+  ≡.cong₂ _∷_ (irr r r₁) (irrelevant irr rs rs₁)

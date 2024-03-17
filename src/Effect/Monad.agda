@@ -16,7 +16,7 @@ open import Data.Unit.Polymorphic.Base using (⊤)
 open import Effect.Choice
 open import Effect.Empty
 open import Effect.Applicative
-open import Function.Base using (flip; _$′_; _∘′_)
+open import Function.Base using (id; flip; _$′_; _∘′_)
 open import Level using (Level; suc; _⊔_)
 
 private
@@ -58,14 +58,23 @@ record RawMonad (F : Set f → Set g) : Set (suc f ⊔ g) where
   unless : Bool → F ⊤ → F ⊤
   unless = when ∘′ not
 
+-- When level g=f, a join/μ operator is definable
+
+module Join {F : Set f → Set f} (M : RawMonad F) where
+  open RawMonad M
+
+  join : F (F A) → F A
+  join = _>>= id
+
 -- Smart constructor
+
 module _ where
 
   open RawMonad
   open RawApplicative
 
   mkRawMonad :
-    (F : Set f → Set f) →
+    (F : Set f → Set g) →
     (pure : ∀ {A} → A → F A) →
     (bind : ∀ {A B} → F A → (A → F B) → F B) →
     RawMonad F

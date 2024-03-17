@@ -1,13 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A universe which includes several kinds of "relatedness" for sets,
--- such as equivalences, surjections and bijections
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-}
 
 module Function.Related where
+
+{-# WARNING_ON_IMPORT
+"Function.Related was deprecated in v2.0.
+Use Function.Related.Propositional instead."
+#-}
 
 open import Level
 open import Function.Base
@@ -17,9 +22,14 @@ open import Function.Injection   as Inj     using (Injection; _↣_)
 open import Function.Inverse     as Inv     using (Inverse; _↔_)
 open import Function.LeftInverse as LeftInv using (LeftInverse)
 open import Function.Surjection  as Surj    using (Surjection)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
+open import Function.Consequences.Propositional
+open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Bundles using (Setoid; Preorder)
+open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
+open import Relation.Binary.Definitions using (Reflexive; Trans; Sym)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
+open import Data.Product.Base using (_,_; proj₁; proj₂; <_,_>)
 
 import Function.Related.Propositional as R
 import Function.Bundles as B
@@ -80,12 +90,17 @@ infix 4 _∼[_]_
 _∼[_]_ : ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Kind → Set ℓ₂ → Set _
 A ∼[ implication         ] B = A → B
 A ∼[ reverse-implication ] B = A ← B
-A ∼[ equivalence         ] B = Equivalence (P.setoid A) (P.setoid B)
-A ∼[ injection           ] B = Injection   (P.setoid A) (P.setoid B)
+A ∼[ equivalence         ] B = Equivalence (≡.setoid A) (≡.setoid B)
+A ∼[ injection           ] B = Injection   (≡.setoid A) (≡.setoid B)
 A ∼[ reverse-injection   ] B = A ↢ B
-A ∼[ left-inverse        ] B = LeftInverse (P.setoid A) (P.setoid B)
-A ∼[ surjection          ] B = Surjection  (P.setoid A) (P.setoid B)
-A ∼[ bijection           ] B = Inverse     (P.setoid A) (P.setoid B)
+A ∼[ left-inverse        ] B = LeftInverse (≡.setoid A) (≡.setoid B)
+A ∼[ surjection          ] B = Surjection  (≡.setoid A) (≡.setoid B)
+A ∼[ bijection           ] B = Inverse     (≡.setoid A) (≡.setoid B)
+
+-- A non-infix synonym.
+
+Related : Kind → ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Set ℓ₂ → Set _
+Related k A B = A ∼[ k ] B
 
 toRelated : {K : Kind} → A R.∼[ K ] B → A ∼[ K ] B
 toRelated {K = implication}         rel = B.Func.to rel
@@ -93,12 +108,12 @@ toRelated {K = reverse-implication} rel = lam (B.Func.to rel)
 toRelated {K = equivalence}         rel = Eq.equivalence (B.Equivalence.to rel) (B.Equivalence.from rel)
 toRelated {K = injection}           rel = Inj.injection (B.Injection.to rel) (B.Injection.injective rel)
 toRelated {K = reverse-injection}   rel = lam (Inj.injection (B.Injection.to rel) (B.Injection.injective rel))
-toRelated {K = left-inverse}        rel =
-  LeftInv.leftInverse (B.RightInverse.to rel) (B.RightInverse.from rel) (B.RightInverse.inverseʳ rel)
-toRelated {K = surjection}          rel with B.Surjection.surjective rel
-... | surj = Surj.surjection (B.Surjection.to rel) (proj₁ ∘ surj) (proj₂ ∘ surj)
-toRelated {K = bijection}           rel with B.Bijection.bijective rel
-... | (inj , surj) = Inv.inverse (B.Bijection.to rel) (proj₁ ∘ surj) (inj ∘ proj₂ ∘ surj ∘ (B.Bijection.to rel)) (proj₂ ∘ surj)
+toRelated {K = left-inverse}        rel = LeftInv.leftInverse to from strictlyInverseʳ where open B.RightInverse rel
+toRelated {K = surjection}          rel = Surj.surjection to (proj₁ ∘ strictlySurjective) (proj₂ ∘ strictlySurjective)
+  where open B.Surjection rel
+toRelated {K = bijection}           rel =
+             Inv.inverse to from strictlyInverseʳ strictlyInverseˡ
+  where open B.Inverse rel
 
 fromRelated : {K : Kind} → A ∼[ K ] B → A R.∼[ K ] B
 fromRelated {K = implication}         rel = B.mk⟶ rel
@@ -107,18 +122,12 @@ fromRelated {K = equivalence}         record { to = to ; from = from } = B.mk⇔
 fromRelated {K = injection}           rel = B.mk↣ (Inj.Injection.injective rel)
 fromRelated {K = reverse-injection}   (lam app-↢) = B.mk↣ (Inj.Injection.injective app-↢)
 fromRelated {K = left-inverse}        record { to = to ; from = from ; left-inverse-of = left-inverse-of } =
-  B.mk↪ {to = to ⟨$⟩_} {from = from ⟨$⟩_} left-inverse-of
+  B.mk↪ {to = to ⟨$⟩_} {from = from ⟨$⟩_} (strictlyInverseʳ⇒inverseʳ (to ⟨$⟩_) left-inverse-of)
 fromRelated {K = surjection}          record { to = to ; surjective = surjective } with surjective
-... | record { from = from ; right-inverse-of = right-inverse-of } = B.mk↠ {to = to ⟨$⟩_} < from ⟨$⟩_ , right-inverse-of >
-fromRelated {K = bijection}           record { to = to ; from = from ; inverse-of = inverse-of } with inverse-of
-... | record { left-inverse-of = left-inverse-of ; right-inverse-of = right-inverse-of } = B.mk⤖
-  ((λ {x y} h → P.subst₂ P._≡_ (left-inverse-of x) (left-inverse-of y) (P.cong (from ⟨$⟩_) h)) ,
-  < from ⟨$⟩_ , right-inverse-of >)
-
--- A non-infix synonym.
-
-Related : Kind → ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Set ℓ₂ → Set _
-Related k A B = A ∼[ k ] B
+... | record { from = from ; right-inverse-of = right-inverse-of } =
+  B.mk↠ {to = to ⟨$⟩_} < from ⟨$⟩_ , (λ { x ≡.refl → right-inverse-of x }) >
+fromRelated {K = bijection}           rel = B.mk↔ₛ′ (to ⟨$⟩_) (from ⟨$⟩_) right-inverse-of left-inverse-of
+  where open Inverse rel
 
 -- The bijective equality implies any kind of relatedness.
 
@@ -136,7 +145,7 @@ Related k A B = A ∼[ k ] B
 -- Actual equality also implies any kind of relatedness.
 
 ≡⇒ : ∀ {k ℓ} {X Y : Set ℓ} → X ≡ Y → X ∼[ k ] Y
-≡⇒ P.refl = ↔⇒ Inv.id
+≡⇒ ≡.refl = ↔⇒ Inv.id
 
 ------------------------------------------------------------------------
 -- Special kinds of kinds
@@ -304,7 +313,7 @@ K-refl {surjection}          = Surj.id
 K-refl {bijection}           = Inv.id
 
 K-reflexive : ∀ {k ℓ} → _≡_ ⇒ Related k {ℓ}
-K-reflexive P.refl = K-refl
+K-reflexive ≡.refl = K-refl
 
 K-trans : ∀ {k ℓ₁ ℓ₂ ℓ₃} → Trans (Related k {ℓ₁} {ℓ₂})
                                 (Related k {ℓ₂} {ℓ₃})
@@ -374,7 +383,7 @@ module EquationalReasoning where
 
   _≡˘⟨_⟩_ : ∀ {k ℓ z} (X : Set ℓ) {Y : Set ℓ} {Z : Set z} →
             Y ≡ X → Y ∼[ k ] Z → X ∼[ k ] Z
-  X ≡˘⟨ Y≡X ⟩ Y⇔Z = X ∼⟨ ≡⇒ (P.sym Y≡X) ⟩ Y⇔Z
+  X ≡˘⟨ Y≡X ⟩ Y⇔Z = X ∼⟨ ≡⇒ (≡.sym Y≡X) ⟩ Y⇔Z
 
   _≡⟨_⟩_ : ∀ {k ℓ z} (X : Set ℓ) {Y : Set ℓ} {Z : Set z} →
            X ≡ Y → Y ∼[ k ] Z → X ∼[ k ] Z
@@ -395,12 +404,12 @@ InducedPreorder₁ : Kind → ∀ {a s} {A : Set a} →
                    (A → Set s) → Preorder _ _ _
 InducedPreorder₁ k S = record
   { _≈_        = _≡_
-  ; _∼_        = InducedRelation₁ k S
+  ; _≲_        = InducedRelation₁ k S
   ; isPreorder = record
-    { isEquivalence = P.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = reflexive ∘
                       K-reflexive ∘
-                      P.cong S
+                      ≡.cong S
     ; trans         = K-trans
     }
   } where open Preorder (K-preorder _ _)
@@ -428,13 +437,13 @@ InducedPreorder₂ : Kind → ∀ {a b s} {A : Set a} {B : Set b} →
                    (A → B → Set s) → Preorder _ _ _
 InducedPreorder₂ k _S_ = record
   { _≈_        = _≡_
-  ; _∼_        = InducedRelation₂ k _S_
+  ; _≲_        = InducedRelation₂ k _S_
   ; isPreorder = record
-    { isEquivalence = P.isEquivalence
+    { isEquivalence = ≡.isEquivalence
     ; reflexive     = λ x≡y {z} →
                         reflexive $
                         K-reflexive $
-                        P.cong (_S_ z) x≡y
+                        ≡.cong (_S_ z) x≡y
 
     ; trans         = λ i↝j j↝k → K-trans i↝j j↝k
     }

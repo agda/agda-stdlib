@@ -14,25 +14,31 @@ module Data.List.Relation.Binary.Lex.Strict where
 open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤; tt)
 open import Function.Base using (_∘_; id)
-open import Data.Product using (_,_)
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.List.Base using (List; []; _∷_)
 open import Level using (_⊔_)
 open import Relation.Nullary using (yes; no; ¬_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (StrictPartialOrder; StrictTotalOrder; Preorder; Poset; DecPoset; DecTotalOrder)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Irreflexive; Symmetric; _Respects₂_; Total; Asymmetric; Antisymmetric; Transitive; Trichotomous; Decidable; tri≈; tri<; tri>)
 open import Relation.Binary.Consequences
 open import Data.List.Relation.Binary.Pointwise as Pointwise
    using (Pointwise; []; _∷_; head; tail)
 
 import Data.List.Relation.Binary.Lex as Core
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-exporting core definitions
 
 open Core public
   using (Lex-<; Lex-≤; base; halt; this; next; ¬≤-this; ¬≤-next)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Strict lexicographic ordering.
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where
@@ -45,11 +51,11 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
       _≋_ = Pointwise _≈_
       _<_ = Lex-< _≈_ _≺_
 
-    xs≮[] : ∀ xs → ¬ xs < []
-    xs≮[] _ (base ())
+    xs≮[] : ∀ {xs} → ¬ xs < []
+    xs≮[] (base ())
 
     ¬[]<[] : ¬ [] < []
-    ¬[]<[] = xs≮[] []
+    ¬[]<[] = xs≮[]
 
     <-irreflexive : Irreflexive _≈_ _≺_ → Irreflexive _≋_ _<_
     <-irreflexive irr (x≈y ∷ xs≋ys) (this x<y)     = irr x≈y x<y
@@ -115,9 +121,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     <-isStrictTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
                            IsStrictTotalOrder _≋_ _<_
     <-isStrictTotalOrder sto = record
-      { isEquivalence = Pointwise.isEquivalence isEquivalence
-      ; trans         = <-transitive isEquivalence <-resp-≈ trans
-      ; compare       = <-compare Eq.sym compare
+      { isStrictPartialOrder = <-isStrictPartialOrder isStrictPartialOrder
+      ; compare              = <-compare Eq.sym compare
       } where open IsStrictTotalOrder sto
 
 <-strictPartialOrder : ∀ {a ℓ₁ ℓ₂} → StrictPartialOrder a ℓ₁ ℓ₂ →
@@ -132,7 +137,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
   { isStrictTotalOrder = <-isStrictTotalOrder isStrictTotalOrder
   } where open StrictTotalOrder sto
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Non-strict lexicographic ordering.
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where

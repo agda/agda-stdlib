@@ -8,8 +8,8 @@
 
 open import Algebra
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Data.Nat.Properties as ℕ
 
 module Algebra.Properties.Semiring.Exp
@@ -57,16 +57,16 @@ y*x^m*y^n≈x^m*y^[n+1] {x} {y} x*y≈y*x = helper
       y * (x ^ ℕ.zero * y ^ n)  ≡⟨⟩
       y * (1# * y ^ n)          ≈⟨ *-congˡ (*-identityˡ (y ^ n)) ⟩
       y * (y ^ n)               ≡⟨⟩
-      y ^ (suc n)               ≈˘⟨ *-identityˡ (y ^ suc n) ⟩
+      y ^ (suc n)               ≈⟨ *-identityˡ (y ^ suc n) ⟨
       1# * y ^ (suc n)          ≡⟨⟩
       x ^ ℕ.zero * y ^ (suc n)  ∎
     helper (suc m) n = begin
       y * (x ^ suc m * y ^ n)    ≡⟨⟩
       y * ((x * x ^ m) * y ^ n)  ≈⟨ *-congˡ (*-assoc x (x ^ m) (y ^ n)) ⟩
-      y * (x * (x ^ m * y ^ n))  ≈˘⟨ *-assoc y x (x ^ m * y ^ n) ⟩
-      y * x * (x ^ m * y ^ n)    ≈˘⟨ *-congʳ x*y≈y*x ⟩
+      y * (x * (x ^ m * y ^ n))  ≈⟨ *-assoc y x (x ^ m * y ^ n) ⟨
+      y * x * (x ^ m * y ^ n)    ≈⟨ *-congʳ x*y≈y*x ⟨
       x * y * (x ^ m * y ^ n)    ≈⟨ *-assoc x y _ ⟩
       x * (y * (x ^ m * y ^ n))  ≈⟨ *-congˡ (helper m n) ⟩
-      x * (x ^ m * y ^ suc n)    ≈˘⟨ *-assoc x (x ^ m) (y ^ suc n) ⟩
+      x * (x ^ m * y ^ suc n)    ≈⟨ *-assoc x (x ^ m) (y ^ suc n) ⟨
       (x * x ^ m) * y ^ suc n    ≡⟨⟩
       x ^ suc m * y ^ suc n      ∎

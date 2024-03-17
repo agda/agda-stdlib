@@ -12,7 +12,7 @@
 module Effect.Applicative where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 
 open import Effect.Choice using (RawChoice)
@@ -21,7 +21,7 @@ open import Effect.Functor as Fun using (RawFunctor)
 
 open import Function.Base using (const; flip; _∘′_)
 open import Level using (Level; suc; _⊔_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
@@ -53,6 +53,10 @@ record RawApplicative (F : Set f → Set g) : Set (suc f ⊔ g) where
   zip : F A → F B → F (A × B)
   zip = zipWith _,_
 
+  -- Haskell-style alternative name for pure
+  return : A → F A
+  return = pure
+
   -- backwards compatibility: unicode variants
   _⊛_ : F (A → B) → F A → F B
   _⊛_ = _<*>_
@@ -73,7 +77,7 @@ module _ where
 
   -- Smart constructor
   mkRawApplicative :
-    (F : Set f → Set f) →
+    (F : Set f → Set g) →
     (pure : ∀ {A} → A → F A) →
     (app : ∀ {A B} → F (A → B) → F A → F B) →
     RawApplicative F

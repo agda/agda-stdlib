@@ -10,8 +10,8 @@
 module Algebra.Construct.Flip.Op where
 
 open import Algebra
-import Data.Product as Prod
-import Data.Sum as Sum
+import Data.Product.Base as Product
+import Data.Sum.Base as Sum
 open import Function.Base using (flip)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_)
@@ -39,7 +39,7 @@ module _ (≈ : Rel A ℓ) (∙ : Op₂ A) where
   associative sym assoc x y z = sym (assoc z y x)
 
   identity : Identity ≈ ε ∙ → Identity ≈ ε (flip ∙)
-  identity id = Prod.swap id
+  identity id = Product.swap id
 
   commutative : Commutative ≈ ∙ → Commutative ≈ (flip ∙)
   commutative comm = flip comm
@@ -51,7 +51,7 @@ module _ (≈ : Rel A ℓ) (∙ : Op₂ A) where
   idempotent idem = idem
 
   inverse : Inverse ≈ ε ⁻¹ ∙ → Inverse ≈ ε ⁻¹ (flip ∙)
-  inverse inv = Prod.swap inv
+  inverse inv = Product.swap inv
 
 ------------------------------------------------------------------------
 -- Structures

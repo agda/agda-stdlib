@@ -12,8 +12,10 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Induction.WellFounded
 open import Level
-open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
   variable
@@ -39,6 +41,8 @@ module _ {_∼_ : Rel A ℓ} where
   private
     _∼⁺_ = TransClosure _∼_
 
+  infixr 5 _∷ʳ_
+
   _∷ʳ_ : ∀ {x y z} → (x∼⁺y : x ∼⁺ y) (y∼z : y ∼ z) → x ∼⁺ z
   [ x∼y ]      ∷ʳ y∼z = x∼y ∷ [ y∼z ]
   (x∼y ∷ x∼⁺y) ∷ʳ y∼z = x∼y ∷ (x∼⁺y ∷ʳ y∼z)
@@ -54,6 +58,7 @@ module _ {_∼_ : Rel A ℓ} where
 module _ (_∼_ : Rel A ℓ) where
   private
     _∼⁺_ = TransClosure _∼_
+    module ∼⊆∼⁺ = Subrelation {_<₂_ = _∼⁺_} [_]
 
   reflexive : Reflexive _∼_ → Reflexive _∼⁺_
   reflexive refl = [ refl ]
@@ -65,17 +70,25 @@ module _ (_∼_ : Rel A ℓ) where
   transitive : Transitive _∼⁺_
   transitive = _++_
 
-  wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
-  wellFounded wf = λ x → acc (accessible′ (wf x))
+  transitive⁻ : Transitive _∼_ → _∼⁺_ ⇒ _∼_
+  transitive⁻ trans [ x∼y ]      = x∼y
+  transitive⁻ trans (x∼y ∷ x∼⁺y) = trans x∼y (transitive⁻ trans x∼⁺y)
+
+  accessible⁻ : ∀ {x} → Acc _∼⁺_ x → Acc _∼_ x
+  accessible⁻ = ∼⊆∼⁺.accessible
+
+  wellFounded⁻ : WellFounded _∼⁺_ → WellFounded _∼_
+  wellFounded⁻ = ∼⊆∼⁺.wellFounded
+
+  accessible : ∀ {x} → Acc _∼_ x → Acc _∼⁺_ x
+  accessible acc[x] = acc (wf-acc acc[x])
     where
-    downwardsClosed : ∀ {x y} → Acc _∼⁺_ y → x ∼ y → Acc _∼⁺_ x
-    downwardsClosed (acc rec) x∼y = acc (λ z z∼x → rec z (z∼x ∷ʳ x∼y))
+    wf-acc : ∀ {x} → Acc _∼_ x → WfRec _∼⁺_ (Acc _∼⁺_) x
+    wf-acc (acc rec) [ y∼x ]   = acc (wf-acc (rec y∼x))
+    wf-acc acc[x] (y∼z ∷ z∼⁺x) = acc-inverse (wf-acc acc[x] z∼⁺x) [ y∼z ]
 
-    accessible′ : ∀ {x} → Acc _∼_ x → WfRec _∼⁺_ (Acc _∼⁺_) x
-    accessible′ (acc rec) y [ y∼x ]      = acc (accessible′ (rec y y∼x))
-    accessible′ acc[x]    y (y∼z ∷ z∼⁺x) =
-      downwardsClosed (accessible′ acc[x] _ z∼⁺x) y∼z
-
+  wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
+  wellFounded wf x = accessible (wf x)
 
 
 ------------------------------------------------------------------------
@@ -93,7 +106,7 @@ data Plus {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
 module _ {_∼_ : Rel A ℓ} where
 
  []-injective : ∀ {x y p q} → (x [ _∼_ ]⁺ y ∋ [ p ]) ≡ [ q ] → p ≡ q
- []-injective P.refl = P.refl
+ []-injective ≡.refl = ≡.refl
 
  -- See also ∼⁺⟨⟩-injectiveˡ and ∼⁺⟨⟩-injectiveʳ in
  -- Relation.Binary.Construct.Closure.Transitive.WithK.

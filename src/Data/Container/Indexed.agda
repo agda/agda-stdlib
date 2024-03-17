@@ -12,14 +12,13 @@
 module Data.Container.Indexed where
 
 open import Level
-open import Data.Product as Prod hiding (map)
+open import Data.Product.Base as Prod hiding (map)
 open import Data.W.Indexed
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse using (_↔_; module Inverse)
+open import Function using (_↔_; Inverse)
 open import Relation.Unary using (Pred; _⊆_)
-import Relation.Binary as B
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
+open import Relation.Binary.Core using (Rel; REL)
+open import Relation.Binary.PropositionalEquality using (_≡_; _≗_; refl; trans; subst)
 
 ------------------------------------------------------------------------
 
@@ -66,7 +65,7 @@ module _ {i₁ i₂ o₁ o₂}
   record ContainerMorphism {c₁ c₂ r₁ r₂ ℓ₁ ℓ₂}
          (C₁ : Container I₁ O₁ c₁ r₁) (C₂ : Container I₂ O₂ c₂ r₂)
          (f : I₁ → I₂) (g : O₁ → O₂)
-         (_∼_ : B.Rel I₂ ℓ₁) (_≈_ : B.REL (Set r₂) (Set r₁) ℓ₂)
+         (_∼_ : Rel I₂ ℓ₁) (_≈_ : REL (Set r₂) (Set r₁) ℓ₂)
          (_·_ : ∀ {A B} → A ≈ B → A → B) :
          Set (i₁ ⊔ i₂ ⊔ o₁ ⊔ o₂ ⊔ c₁ ⊔ c₂ ⊔ r₁ ⊔ r₂ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -91,7 +90,7 @@ module _ {i₁ i₂ o₁ o₂}
              Container I₁ O₁ c₁ r₁ → (I₁ → I₂) → (O₁ → O₂) →
              Container I₂ O₂ c₂ r₂ → Set _
   C₁ ⊸[ f / g ] C₂ = ContainerMorphism C₁ C₂ f g _≡_ _↔_
-                                       (λ r₂↔r₁ r₂ → Inverse.to r₂↔r₁ ⟨$⟩ r₂)
+                                       (λ r₂↔r₁ r₂ → Inverse.to r₂↔r₁ r₂)
 
   -- Cartesian container morphism.
 
@@ -99,7 +98,7 @@ module _ {i₁ i₂ o₁ o₂}
               Container I₁ O₁ c₁ r → (I₁ → I₂) → (O₁ → O₂) →
               Container I₂ O₂ c₂ r → Set _
   C₁ ⇒C[ f / g ] C₂ = ContainerMorphism C₁ C₂ f g _≡_ (λ R₂ R₁ → R₂ ≡ R₁)
-                                        (λ r₂≡r₁ r₂ → P.subst ⟨id⟩ r₂≡r₁ r₂)
+                                        (λ r₂≡r₁ r₂ → subst ⟨id⟩ r₂≡r₁ r₂)
 
 -- Degenerate cases where no reindexing is performed.
 
@@ -107,13 +106,13 @@ module _ {i o c r} {I : Set i} {O : Set o} where
 
   infixr 8 _⇒_ _⊸_ _⇒C_
 
-  _⇒_ : B.Rel (Container I O c r) _
+  _⇒_ : Rel (Container I O c r) _
   C₁ ⇒ C₂ = C₁ ⇒[ ⟨id⟩ / ⟨id⟩ ] C₂
 
-  _⊸_ : B.Rel (Container I O c r) _
+  _⊸_ : Rel (Container I O c r) _
   C₁ ⊸ C₂ = C₁ ⊸[ ⟨id⟩ / ⟨id⟩ ] C₂
 
-  _⇒C_ : B.Rel (Container I O c r) _
+  _⇒C_ : Rel (Container I O c r) _
   C₁ ⇒C C₂ = C₁ ⇒C[ ⟨id⟩ / ⟨id⟩ ] C₂
 
 ------------------------------------------------------------------------
@@ -124,7 +123,7 @@ module _ {i o c r} {I : Set i} {O : Set o} where
 ⟪_⟫ : ∀ {i o c r ℓ} {I : Set i} {O : Set o} {C₁ C₂ : Container I O c r} →
       C₁ ⇒ C₂ → (X : Pred I ℓ) → ⟦ C₁ ⟧ X ⊆ ⟦ C₂ ⟧ X
 ⟪ m ⟫ X (c , k) = command m c , λ r₂ →
-  P.subst X (coherent m) (k (response m r₂))
+  subst X (coherent m) (k (response m r₂))
 
 module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
 
@@ -146,7 +145,7 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
   f ∘ g = record
     { command  = command  f ⟨∘⟩ command g
     ; response = response g ⟨∘⟩ response f
-    ; coherent = coherent g ⟨ P.trans ⟩ coherent f
+    ; coherent = coherent g ⟨ trans ⟩ coherent f
     }
 
   -- Identity commutes with ⟪_⟫.
@@ -168,7 +167,7 @@ module LinearMorphism
   morphism : C₁ ⇒ C₂
   morphism = record
     { command  = command m
-    ; response = _⟨$⟩_ (Inverse.to (response m))
+    ; response = Inverse.to (response m)
     ; coherent = coherent m
     }
 
@@ -188,7 +187,7 @@ module CartesianMorphism
   morphism : C₁ ⇒ C₂
   morphism = record
     { command  = command m
-    ; response = P.subst ⟨id⟩ (response m)
+    ; response = subst ⟨id⟩ (response m)
     ; coherent = coherent m
     }
 

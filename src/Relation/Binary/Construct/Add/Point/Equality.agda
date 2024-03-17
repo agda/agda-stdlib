@@ -9,20 +9,26 @@
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Point
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures
+  using (IsEquivalence; IsDecEquivalence)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; Decidable; Irrelevant; Substitutive)
 
 module Relation.Binary.Construct.Add.Point.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
 open import Function.Base
-import Relation.Binary.PropositionalEquality as P
+import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Point
 import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
 -- Definition
+
+infix 4 _≈∙_
 
 data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
   ∙≈∙ :                     ∙     ≈∙ ∙
@@ -53,8 +59,8 @@ data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
 ≈∙-dec _≟_ [ k ] [ l ] = Dec.map′ [_] [≈]-injective (k ≟ l)
 
 ≈∙-irrelevant : Irrelevant _≈_ → Irrelevant _≈∙_
-≈∙-irrelevant ≈-irr ∙≈∙   ∙≈∙   = P.refl
-≈∙-irrelevant ≈-irr [ p ] [ q ] = P.cong _ (≈-irr p q)
+≈∙-irrelevant ≈-irr ∙≈∙   ∙≈∙   = ≡.refl
+≈∙-irrelevant ≈-irr [ p ] [ q ] = ≡.cong _ (≈-irr p q)
 
 ≈∙-substitutive : ∀ {ℓ} → Substitutive _≈_ ℓ → Substitutive _≈∙_ ℓ
 ≈∙-substitutive ≈-subst P ∙≈∙   = id

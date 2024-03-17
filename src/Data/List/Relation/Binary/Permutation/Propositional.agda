@@ -10,9 +10,13 @@ module Data.List.Relation.Binary.Permutation.Propositional
   {a} {A : Set a} where
 
 open import Data.List.Base using (List; []; _∷_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Transitive)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
+open import Relation.Binary.Reasoning.Syntax
 
 ------------------------------------------------------------------------
 -- An inductive definition of permutation
@@ -70,16 +74,17 @@ data _↭_ : Rel (List A) a where
 
 module PermutationReasoning where
 
-  private
-    module Base = EqReasoning ↭-setoid
+  private module Base = EqReasoning ↭-setoid
 
-  open EqReasoning ↭-setoid public
-    hiding (step-≈; step-≈˘)
+  open Base public
+    hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨)
+    renaming (≈-go to ↭-go)
 
-  infixr 2 step-↭  step-↭˘ step-swap step-prep
+  open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym public
 
-  step-↭  = Base.step-≈
-  step-↭˘ = Base.step-≈˘
+  -- Some extra combinators that allow us to skip certain elements
+
+  infixr 2 step-swap step-prep
 
   -- Skip reasoning on the first element
   step-prep : ∀ x xs {ys zs : List A} → (x ∷ ys) IsRelatedTo zs →
@@ -91,7 +96,5 @@ module PermutationReasoning where
               xs ↭ ys → (x ∷ y ∷ xs) IsRelatedTo zs
   step-swap x y xs rel xs↭ys = relTo (trans (swap x y xs↭ys) (begin rel))
 
-  syntax step-↭  x y↭z x↭y = x ↭⟨  x↭y ⟩ y↭z
-  syntax step-↭˘ x y↭z y↭x = x ↭˘⟨  y↭x ⟩ y↭z
   syntax step-prep x xs y↭z x↭y = x ∷ xs <⟨ x↭y ⟩ y↭z
   syntax step-swap x y xs y↭z x↭y = x ∷ y ∷ xs <<⟨ x↭y ⟩ y↭z

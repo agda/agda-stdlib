@@ -6,7 +6,11 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Structures
+  using (IsPartialOrder; IsEquivalence; IsStrictPartialOrder; IsDecPartialOrder; IsDecStrictPartialOrder; IsTotalOrder; IsStrictTotalOrder; IsDecTotalOrder)
+open import Relation.Binary.Definitions
+  using (Trichotomous; Antisymmetric; Symmetric; Total; Decidable; Irreflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Trans; Asymmetric; tri≈; tri<; tri>)
 
 module Relation.Binary.Construct.NonStrictToStrict
   {a ℓ₁ ℓ₂} {A : Set a} (_≈_ : Rel A ℓ₁) (_≤_ : Rel A ℓ₂) where
@@ -134,9 +138,8 @@ x < y = x ≤ y × x ≉ y
 <-isStrictTotalOrder₁ : Decidable _≈_ → IsTotalOrder _≈_ _≤_ →
                         IsStrictTotalOrder _≈_ _<_
 <-isStrictTotalOrder₁ ≟ tot = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans isPartialOrder
-  ; compare       = <-trichotomous Eq.sym ≟ antisym total
+  { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
+  ; compare              = <-trichotomous Eq.sym ≟ antisym total
   } where open IsTotalOrder tot
 
 <-isStrictTotalOrder₂ : IsDecTotalOrder _≈_ _≤_ →

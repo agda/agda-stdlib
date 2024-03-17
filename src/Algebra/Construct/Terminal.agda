@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Instances of algebraic structures where the carrier is ⊤.
--- In mathematics, this is usually called 0 (1 in the case of Group).
+-- Instances of algebraic structures where the carrier is ⊤. In
+-- mathematics, this is usually called 0 (1 in the case of Monoid, Group).
 --
 -- From monoids up, these are zero-objects – i.e, both the initial
 -- and the terminal object in the relevant category.
@@ -27,7 +27,7 @@ module 𝕆ne where
   Carrier : Set c
   Carrier = ⊤
 
-  _≈_     : Rel Carrier ℓ
+  _≈_   : Rel Carrier ℓ
   _ ≈ _ = ⊤
 
 ------------------------------------------------------------------------
@@ -41,6 +41,9 @@ rawMonoid = record { 𝕆ne }
 
 rawGroup : RawGroup c ℓ
 rawGroup = record { 𝕆ne }
+
+rawNearSemiring : RawNearSemiring c ℓ
+rawNearSemiring = record { 𝕆ne }
 
 rawSemiring : RawSemiring c ℓ
 rawSemiring = record { 𝕆ne }
@@ -77,6 +80,9 @@ group = record { 𝕆ne }
 
 abelianGroup : AbelianGroup c ℓ
 abelianGroup = record { 𝕆ne }
+
+nearSemiring : NearSemiring c ℓ
+nearSemiring = record { 𝕆ne }
 
 semiring : Semiring c ℓ
 semiring = record { 𝕆ne }

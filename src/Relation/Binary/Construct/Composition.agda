@@ -8,10 +8,13 @@
 
 module Relation.Binary.Construct.Composition where
 
-open import Data.Product
+open import Data.Product.Base using (∃; _×_; _,_)
 open import Function.Base
 open import Level
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; REL; _⇒_)
+open import Relation.Binary.Structures using (IsPreorder)
+open import Relation.Binary.Definitions
+  using (_Respects_; _Respectsʳ_; _Respectsˡ_; _Respects₂_; Reflexive; Transitive)
 
 private
   variable
@@ -22,6 +25,8 @@ private
 
 ------------------------------------------------------------------------
 -- Definition
+
+infixr 9 _;_
 
 _;_ : {A : Set a} {B : Set b} {C : Set c} →
       REL A B ℓ₁ → REL B C ℓ₂ → REL A C (b ⊔ ℓ₁ ⊔ ℓ₂)
@@ -77,3 +82,6 @@ module _ (L : Rel A ℓ₁) (R : Rel A ℓ₂) (comm : R ; L ⇒ L ; R) where
     ; trans         = transitive Oˡ.trans Oʳ.trans
     }
     where module Oˡ = IsPreorder Oˡ; module Oʳ = IsPreorder Oʳ
+
+transitive⇒≈;≈⊆≈ : (≈ : Rel A ℓ) → Transitive ≈ → (≈ ; ≈) ⇒ ≈
+transitive⇒≈;≈⊆≈ _ trans (_ , l , r) = trans l r

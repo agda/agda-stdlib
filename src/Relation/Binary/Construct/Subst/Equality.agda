@@ -9,8 +9,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
-open import Relation.Binary
+open import Data.Product.Base using (_,_)
+open import Relation.Binary.Core using (Rel; _⇔_)
+open import Relation.Binary.Structures using (IsEquivalence)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
 
 module Relation.Binary.Construct.Subst.Equality
   {a ℓ₁ ℓ₂} {A : Set a} {≈₁ : Rel A ℓ₁} {≈₂ : Rel A ℓ₂}

@@ -9,7 +9,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product as Prod
+open import Data.Product.Base as Product
 open import Relation.Binary.Core
 
 module Algebra.Construct.Subst.Equality
@@ -19,7 +19,7 @@ module Algebra.Construct.Subst.Equality
 
 open import Algebra.Definitions
 open import Algebra.Structures
-import Data.Sum as Sum
+import Data.Sum.Base as Sum
 open import Function.Base
 open import Relation.Binary.Construct.Subst.Equality equiv
 
@@ -45,13 +45,13 @@ sel : ∀ {∙} → Selective ≈₁ ∙ → Selective ≈₂ ∙
 sel sel x y = Sum.map to to (sel x y)
 
 identity : ∀ {∙ e} → Identity ≈₁ e ∙ → Identity ≈₂ e ∙
-identity = Prod.map (to ∘_) (to ∘_)
+identity = Product.map (to ∘_) (to ∘_)
 
 inverse : ∀ {∙ e ⁻¹} → Inverse ≈₁ ⁻¹ ∙ e → Inverse ≈₂ ⁻¹ ∙ e
-inverse = Prod.map (to ∘_) (to ∘_)
+inverse = Product.map (to ∘_) (to ∘_)
 
 absorptive : ∀ {∙ ◦} → Absorptive ≈₁ ∙ ◦ → Absorptive ≈₂ ∙ ◦
-absorptive = Prod.map (λ f x y → to (f x y)) (λ f x y → to (f x y))
+absorptive = Product.map (λ f x y → to (f x y)) (λ f x y → to (f x y))
 
 distribˡ : ∀ {∙ ◦} → _DistributesOverˡ_ ≈₁ ∙ ◦ → _DistributesOverˡ_ ≈₂ ∙ ◦
 distribˡ distribˡ x y z = to (distribˡ x y z)
@@ -60,7 +60,7 @@ distribʳ : ∀ {∙ ◦} → _DistributesOverʳ_ ≈₁ ∙ ◦ → _Distribute
 distribʳ distribʳ x y z = to (distribʳ x y z)
 
 distrib : ∀ {∙ ◦} → _DistributesOver_ ≈₁ ∙ ◦ → _DistributesOver_ ≈₂ ∙ ◦
-distrib {∙} {◦} = Prod.map (distribˡ {∙} {◦}) (distribʳ {∙} {◦})
+distrib {∙} {◦} = Product.map (distribˡ {∙} {◦}) (distribʳ {∙} {◦})
 
 ------------------------------------------------------------------------
 -- Structures
@@ -92,7 +92,7 @@ isSelectiveMagma S = record
 isMonoid : ∀ {∙ ε} → IsMonoid ≈₁ ∙ ε → IsMonoid ≈₂ ∙ ε
 isMonoid S = record
   { isSemigroup = isSemigroup S.isSemigroup
-  ; identity    = Prod.map (to ∘_) (to ∘_) S.identity
+  ; identity    = Product.map (to ∘_) (to ∘_) S.identity
   } where module S = IsMonoid S
 
 isCommutativeMonoid : ∀ {∙ ε} →
@@ -113,7 +113,7 @@ isIdempotentCommutativeMonoid {∙} S = record
 isGroup : ∀ {∙ ε ⁻¹} → IsGroup ≈₁ ∙ ε ⁻¹ → IsGroup ≈₂ ∙ ε ⁻¹
 isGroup S = record
   { isMonoid = isMonoid S.isMonoid
-  ; inverse  = Prod.map (to ∘_) (to ∘_) S.inverse
+  ; inverse  = Product.map (to ∘_) (to ∘_) S.inverse
   ; ⁻¹-cong  = cong₁ S.⁻¹-cong
   } where module S = IsGroup S
 
@@ -141,7 +141,7 @@ isSemiringWithoutOne {+} {*} S = record
   ; *-cong                = cong₂ S.*-cong
   ; *-assoc               = assoc {*} S.*-assoc
   ; distrib               = distrib {*} {+} S.distrib
-  ; zero                  = Prod.map (to ∘_) (to ∘_) S.zero
+  ; zero                  = Product.map (to ∘_) (to ∘_) S.zero
   } where module S = IsSemiringWithoutOne S
 
 isCommutativeSemiringWithoutOne : ∀ {+ * 0#} →

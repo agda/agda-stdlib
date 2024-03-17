@@ -6,11 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice
-open import Algebra.Structures
-open import Function
-open import Data.Product
-open import Relation.Binary
+open import Algebra.Lattice.Bundles using (Semilattice)
+open import Relation.Binary.Bundles using (Poset)
 import Relation.Binary.Lattice as B
 import Relation.Binary.Properties.Poset as PosetProperties
 
@@ -30,8 +27,8 @@ import Relation.Binary.Construct.NaturalOrder.Left _≈_ _∧_
 poset : Poset c ℓ ℓ
 poset = LeftNaturalOrder.poset isSemilattice
 
-open Poset poset using (_≤_; isPartialOrder)
-open PosetProperties poset using (_≥_; ≥-isPartialOrder)
+open Poset poset using (_≤_; _≥_; isPartialOrder)
+open PosetProperties poset using (≥-isPartialOrder)
 
 ------------------------------------------------------------------------
 -- Every algebraic semilattice can be turned into an order-theoretic one.

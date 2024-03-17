@@ -15,7 +15,7 @@
 --     suc (suc m) + m
 --   ≡⟨ cong! eq ⟩
 --     suc (suc n) + n
---   ≡˘⟨ cong! (+-identityʳ n) ⟩
+--   ≡⟨ cong! (+-identityʳ n) ⟨
 --     suc (suc n) + (n + 0)
 --   ∎
 ------------------------------------------------------------------------
@@ -24,22 +24,22 @@
 
 module Tactic.Cong where
 
-open import Function using (_$_)
+open import Function.Base using (_$_)
 
 open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
 open import Data.Char.Base   as Char  using (toℕ)
 open import Data.Float.Base  as Float using (_≡ᵇ_)
 open import Data.List.Base   as List  using ([]; _∷_)
 open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
-open import Data.Nat.Base    as Nat   using (ℕ; zero; suc; _≡ᵇ_; _+_)
+open import Data.Nat.Base    as ℕ     using (ℕ; zero; suc; _≡ᵇ_; _+_)
 open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
-open import Data.Product
+open import Data.Product.Base         using (_×_; map₁; _,_)
 
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
--- 'Data.String.Properties' defines this via 'Dec', so let's use the builtin
--- for maximum speed.
+-- 'Data.String.Properties' defines this via 'Dec', so let's use the
+-- builtin for maximum speed.
 import Agda.Builtin.String as String renaming (primStringEquality to _≡ᵇ_)
 
 open import Reflection
@@ -55,14 +55,14 @@ open import Reflection.AST.Term                 as Term
 
 open import Reflection.TCM.Syntax
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Utilities
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 private
   -- Descend past a variable.
   varDescend : ℕ → ℕ → ℕ
-  varDescend ϕ x = if ϕ Nat.≤ᵇ x then suc x else x
+  varDescend ϕ x = if ϕ ℕ.≤ᵇ x then suc x else x
 
   -- Descend a variable underneath pattern variables.
   patternDescend : ℕ → Pattern → Pattern × ℕ
@@ -116,7 +116,7 @@ private
     `y ← quoteTC y
     pure $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Anti-Unification
 --
 -- The core idea of the tactic is that we can compute the input
@@ -128,7 +128,7 @@ private
 -- For instance, the two terms 'suc (m + (m + 0)) + (m + 0)' and
 -- 'suc (m + m) + (m + 0)' would anti unify to 'suc (m + _) + (m + 0)'
 -- which we can then use to construct the lambda 'λ ϕ → suc (m + ϕ) + (m + 0)'.
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 private
   antiUnify        : ℕ → Term → Term → Term
@@ -136,7 +136,7 @@ private
   antiUnifyClauses : ℕ → Clauses → Clauses → Maybe Clauses
   antiUnifyClause  : ℕ → Clause → Clause → Maybe Clause
 
-  antiUnify ϕ (var x args) (var y args') with x Nat.≡ᵇ y | antiUnifyArgs ϕ args args'
+  antiUnify ϕ (var x args) (var y args') with x ℕ.≡ᵇ y | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ uargs
   ... | true  | just uargs = var (varDescend ϕ x) uargs
@@ -158,13 +158,13 @@ private
     Π[ s ∶ arg i (antiUnify ϕ a a') ] antiUnify (suc ϕ) b b'
   antiUnify ϕ (sort (set t)) (sort (set t')) =
     sort (set (antiUnify ϕ t t'))
-  antiUnify ϕ (sort (lit n)) (sort (lit n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (lit n)) (sort (lit n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (lit n)
   ... | false = var ϕ []
-  antiUnify ϕ (sort (propLit n)) (sort (propLit n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (propLit n)) (sort (propLit n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (propLit n)
   ... | false = var ϕ []
-  antiUnify ϕ (sort (inf n)) (sort (inf n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (inf n)) (sort (inf n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (inf n)
   ... | false = var ϕ []
   antiUnify ϕ (sort unknown) (sort unknown) =
@@ -202,9 +202,9 @@ private
     just []
 
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Rewriting
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 
 macro
   cong! : ∀ {a} {A : Set a} {x y : A} → x ≡ y → Term → TC ⊤

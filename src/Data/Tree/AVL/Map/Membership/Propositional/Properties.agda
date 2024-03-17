@@ -1,13 +1,13 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of the membership relation for AVL Maps identifying values up to
--- propositional equality.
+-- Properties of the membership relation for AVL Maps identifying values
+-- up to propositional equality.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (StrictTotalOrder)
+open import Relation.Binary.Bundles using (StrictTotalOrder)
 
 module Data.Tree.AVL.Map.Membership.Propositional.Properties
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
@@ -15,13 +15,13 @@ module Data.Tree.AVL.Map.Membership.Propositional.Properties
 
 open import Data.Bool.Base using (true; false)
 open import Data.Maybe.Base using (just; nothing; is-just)
-open import Data.Product as Prod using (_×_; ∃-syntax; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (_×_; ∃-syntax; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent renaming (Pointwise to _×ᴿ_)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _∘′_)
 open import Level using (Level)
 
-open import Relation.Binary using (Transitive; Symmetric; _Respectsˡ_)
+open import Relation.Binary.Definitions using (Transitive; Symmetric; _Respectsˡ_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Intersection using (_∩_)
 open import Relation.Binary.PropositionalEquality
@@ -37,7 +37,7 @@ import Data.Tree.AVL.Indexed.Relation.Unary.Any strictTotalOrder as IAny
 import Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties strictTotalOrder as IAnyₚ
 open import Data.Tree.AVL.Key strictTotalOrder using (⊥⁺<[_]<⊤⁺)
 open import Data.Tree.AVL.Map strictTotalOrder
-open import Data.Tree.AVL.Map.Relation.Unary.Any strictTotalOrder as Mapₚ using (Any)
+open import Data.Tree.AVL.Map.Relation.Unary.Any strictTotalOrder as Map using (Any)
 open import Data.Tree.AVL.Map.Membership.Propositional strictTotalOrder
 open import Data.Tree.AVL.Relation.Unary.Any strictTotalOrder as Any using (tree)
 
@@ -113,7 +113,7 @@ private
 
 ∈ₖᵥ-lookup⁻ : lookup m k ≡ just x → (k , x) ∈ₖᵥ m
 ∈ₖᵥ-lookup⁻ {m = tree t} {k = k} {x = x} eq
-  = tree (IAny.map (Prod.map sym ≡-sym) (IAnyₚ.lookup⁻ t k x (⊥⁺<[ _ ]<⊤⁺) eq))
+  = tree (IAny.map (Product.map sym ≡-sym) (IAnyₚ.lookup⁻ t k x (⊥⁺<[ _ ]<⊤⁺) eq))
 
 ∈ₖᵥ-lookup-nothing⁺ : (∀ x → (k , x) ∉ₖᵥ m) → lookup m k ≡ nothing
 ∈ₖᵥ-lookup-nothing⁺ {k = k} {m = m@(tree t)} k∉m with lookup m k in eq

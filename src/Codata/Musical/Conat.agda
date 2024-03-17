@@ -11,8 +11,10 @@ module Codata.Musical.Conat where
 open import Codata.Musical.Notation
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∋_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 ------------------------------------------------------------------------
 -- Re-exporting the type and basic operations
@@ -25,11 +27,11 @@ open import Codata.Musical.Conat.Base public
 module Coℕ-injective where
 
  suc-injective : ∀ {m n} → (Coℕ ∋ suc m) ≡ suc n → m ≡ n
- suc-injective P.refl = P.refl
+ suc-injective ≡.refl = ≡.refl
 
 fromℕ-injective : ∀ {m n} → fromℕ m ≡ fromℕ n → m ≡ n
-fromℕ-injective {zero}  {zero}  eq = P.refl
-fromℕ-injective {suc m} {suc n} eq = P.cong suc (fromℕ-injective (P.cong pred eq))
+fromℕ-injective {zero}  {zero}  eq = ≡.refl
+fromℕ-injective {suc m} {suc n} eq = ≡.cong suc (fromℕ-injective (≡.cong pred eq))
 
 ------------------------------------------------------------------------
 -- Equality
@@ -43,7 +45,7 @@ data _≈_ : Coℕ → Coℕ → Set where
 module ≈-injective where
 
  suc-injective : ∀ {m n p q} → (suc m ≈ suc n ∋ suc p) ≡ suc q → p ≡ q
- suc-injective P.refl = P.refl
+ suc-injective ≡.refl = ≡.refl
 
 setoid : Setoid _ _
 setoid = record

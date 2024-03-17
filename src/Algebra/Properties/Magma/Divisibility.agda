@@ -7,7 +7,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra using (Magma)
-open import Data.Product using (_×_; _,_; ∃; map; swap)
+open import Data.Product.Base using (_×_; _,_; ∃; map; swap)
 open import Relation.Binary.Definitions
 
 module Algebra.Properties.Magma.Divisibility {a ℓ} (M : Magma a ℓ) where
@@ -18,7 +18,7 @@ open Magma M
 -- Re-export divisibility relations publicly
 
 open import Algebra.Definitions.RawMagma rawMagma public
-  using (_∣_; _∤_; _∣∣_; _∤∤_; _∣ˡ_; _∤ˡ_; _∣ʳ_; _∤ʳ_)
+  using (_∣_; _∤_; _∣∣_; _∤∤_; _∣ˡ_; _∤ˡ_; _∣ʳ_; _∤ʳ_; _,_)
 
 ------------------------------------------------------------------------
 -- Properties of divisibility

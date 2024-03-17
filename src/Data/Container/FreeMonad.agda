@@ -10,7 +10,7 @@ module Data.Container.FreeMonad where
 
 open import Level using (Level; _⊔_)
 open import Data.Sum.Base using (inj₁; inj₂ ; [_,_]′)
-open import Data.Product using (_,_; -,_)
+open import Data.Product.Base using (_,_; -,_)
 open import Data.Container using (Container; ⟦_⟧; μ)
 open import Data.Container.Relation.Unary.All using (□; all)
 open import Data.Container.Combinator using (const; _⊎_)
@@ -47,7 +47,7 @@ infix  1 _⋆_
 ------------------------------------------------------------------------
 -- Type definition
 
--- The free moand can be defined as the least fixpoint `μ (C ⋆C X)`
+-- The free monad can be defined as the least fixpoint `μ (C ⋆C X)`
 
 _⋆C_ : ∀ {x s p} → Container s p → Set x → Container (s ⊔ x) p
 C ⋆C X = const X ⊎ C

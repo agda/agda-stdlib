@@ -13,8 +13,10 @@ open import Codata.Musical.Notation
 open import Codata.Musical.Colist using (Colist; []; _∷_)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 private
   variable
@@ -142,13 +144,13 @@ setoid A = record
   }
   where
   refl : Reflexive _≈_
-  refl {_ ∷ _} = P.refl ∷ ♯ refl
+  refl {_ ∷ _} = ≡.refl ∷ ♯ refl
 
   sym : Symmetric _≈_
-  sym (x≡ ∷ xs≈) = P.sym x≡ ∷ ♯ sym (♭ xs≈)
+  sym (x≡ ∷ xs≈) = ≡.sym x≡ ∷ ♯ sym (♭ xs≈)
 
   trans : Transitive _≈_
-  trans (x≡ ∷ xs≈) (y≡ ∷ ys≈) = P.trans x≡ y≡ ∷ ♯ trans (♭ xs≈) (♭ ys≈)
+  trans (x≡ ∷ xs≈) (y≡ ∷ ys≈) = ≡.trans x≡ y≡ ∷ ♯ trans (♭ xs≈) (♭ ys≈)
 
 head-cong : {xs ys : Stream A} → xs ≈ ys → head xs ≡ head ys
 head-cong (x≡ ∷ _) = x≡
@@ -158,13 +160,13 @@ tail-cong (_ ∷ xs≈) = ♭ xs≈
 
 map-cong : ∀ (f : A → B) {xs ys} →
            xs ≈ ys → map f xs ≈ map f ys
-map-cong f (x≡ ∷ xs≈) = P.cong f x≡ ∷ ♯ map-cong f (♭ xs≈)
+map-cong f (x≡ ∷ xs≈) = ≡.cong f x≡ ∷ ♯ map-cong f (♭ xs≈)
 
 zipWith-cong : ∀ (_∙_ : A → B → C) {xs xs′ ys ys′} →
                xs ≈ xs′ → ys ≈ ys′ →
                zipWith _∙_ xs ys ≈ zipWith _∙_ xs′ ys′
 zipWith-cong _∙_ (x≡ ∷ xs≈) (y≡ ∷ ys≈) =
-  P.cong₂ _∙_ x≡ y≡ ∷ ♯ zipWith-cong _∙_ (♭ xs≈) (♭ ys≈)
+  ≡.cong₂ _∙_ x≡ y≡ ∷ ♯ zipWith-cong _∙_ (♭ xs≈) (♭ ys≈)
 
 infixr 5 _⋎-cong_
 

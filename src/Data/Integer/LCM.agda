@@ -11,9 +11,8 @@ module Data.Integer.LCM where
 open import Data.Integer.Base
 open import Data.Integer.Divisibility
 open import Data.Integer.GCD
-open import Data.Nat.Base using (ℕ)
 import Data.Nat.LCM as ℕ
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 
 ------------------------------------------------------------------------
 -- Definition

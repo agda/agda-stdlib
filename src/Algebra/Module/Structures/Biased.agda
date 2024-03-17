@@ -7,7 +7,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Structures using (IsEquivalence)
 
 module Algebra.Module.Structures.Biased where
 
@@ -55,7 +57,10 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
       }
 
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ *ₗ (flip *ₗ)
-    isSemimodule = record { isBisemimodule = isBisemimodule }
+    isSemimodule = record
+      { isBisemimodule = isBisemimodule
+      ; *ₗ-*ᵣ-coincident = λ _ _ → ≈ᴹ-refl
+      }
 
   -- Similarly, a right semimodule over a commutative semiring
   -- is already a semimodule.
@@ -86,7 +91,10 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
       }
 
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ (flip *ᵣ) *ᵣ
-    isSemimodule = record { isBisemimodule = isBisemimodule }
+    isSemimodule = record
+      { isBisemimodule = isBisemimodule
+      ; *ₗ-*ᵣ-coincident = λ _ _ → ≈ᴹ-refl
+      }
 
 
 module _ (commutativeRing : CommutativeRing r ℓr) where
@@ -111,6 +119,7 @@ module _ (commutativeRing : CommutativeRing r ℓr) where
         ; -ᴹ‿cong = -ᴹ‿cong
         ; -ᴹ‿inverse = -ᴹ‿inverse
         }
+      ; *ₗ-*ᵣ-coincident = λ _ _ → ≈ᴹ-refl
       }
 
   -- Similarly, a right module over a commutative ring is already a module.
@@ -132,4 +141,5 @@ module _ (commutativeRing : CommutativeRing r ℓr) where
         ; -ᴹ‿cong = -ᴹ‿cong
         ; -ᴹ‿inverse = -ᴹ‿inverse
         }
+      ; *ₗ-*ᵣ-coincident = λ _ _ → ≈ᴹ-refl
       }

@@ -11,10 +11,9 @@ module Data.Integer.GCD where
 open import Data.Integer.Base
 open import Data.Integer.Divisibility
 open import Data.Integer.Properties
-open import Data.Nat.Base
 import Data.Nat.GCD as ℕ
-open import Data.Product
-open import Relation.Binary.PropositionalEquality
+open import Data.Product.Base using (_,_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 
 open import Algebra.Definitions {A = ℤ} _≡_ as Algebra
   using (Associative; Commutative; LeftIdentity; RightIdentity; LeftZero; RightZero; Zero)

@@ -13,7 +13,7 @@
 .*.swp
 .#*
 \#*
-./_build/*
+_build
 .DS_Store
 .vscode/*
 dist

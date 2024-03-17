@@ -116,7 +116,7 @@ module _ where
 module _ where
 
   private
-    anyApplicative : RawApplicative (λ _ → Bool)
+    anyApplicative : ∀ {ℓ} → RawApplicative {ℓ} (λ _ → Bool)
     anyApplicative = mkRawApplicative _ (λ _ → false)  _∨_
 
   open Traverse anyApplicative
@@ -127,6 +127,8 @@ module _ where
 
     actions : ℕ → Actions
     actions i = record defaultActions { onVar = fvVar i }
+
+  infix 4 _∈FV_
 
   _∈FV_ : ℕ → Term → Bool
   i ∈FV t = traverseTerm (actions i) (0 , []) t

@@ -18,7 +18,7 @@ open import Level
 module Data.Product.Effectful.Left
   {a e} (A : RawMonoid a e) (b : Level) where
 
-open import Data.Product
+open import Data.Product.Base
 import Data.Product.Effectful.Left.Base as Base
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Monad using (RawMonad; RawMonadT; mkRawMonad)
@@ -49,7 +49,7 @@ monad = record
   }
 
 -- The monad instance also requires some mucking about with universe levels.
-monadT : RawMonadT (_∘′ Productₗ)
+monadT : ∀ {ℓ} → RawMonadT {g₁ = ℓ} (_∘′ Productₗ)
 monadT M = record
   { lift = (ε ,_) <$>_
   ; rawMonad = mkRawMonad _

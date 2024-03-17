@@ -116,7 +116,7 @@ liftReaderT MRead = record
   ; local = λ f mx → mkReaderT (λ r₂ → local f (runReaderT mx r₂))
   } where open RawMonadReader MRead
 
-open import Data.Product using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_)
 open import Effect.Monad.Writer.Transformer.Base
 
 liftWriterT : (MR : RawMonoid r g) →

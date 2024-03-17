@@ -17,21 +17,25 @@ open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
-open import Data.Product using (_×_; uncurry)
+open import Data.Product.Base using (_×_; uncurry)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
 open import Function.Base using (_∘_)
 
-import Relation.Binary.Reasoning.Setoid as EqReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Reflection as Reflection
 import Relation.Nullary.Decidable as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
-open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Decidable using (Dec)
 
 open CommutativeMonoid M
-open EqReasoning setoid
+open ≈-Reasoning setoid
+
+private
+  variable
+    n : ℕ
 
 ------------------------------------------------------------------------
 -- Monoid expressions
@@ -55,7 +59,7 @@ Env n = Vec Carrier n
 -- The semantics of an expression is a function from an environment to
 -- a value.
 
-⟦_⟧ : ∀ {n} → Expr n → Env n → Carrier
+⟦_⟧ : Expr n → Env n → Carrier
 ⟦ var x   ⟧ ρ = lookup ρ x
 ⟦ id      ⟧ ρ = ε
 ⟦ e₁ ⊕ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
@@ -70,27 +74,27 @@ Normal n = Vec ℕ n
 
 -- The semantics of a normal form.
 
-⟦_⟧⇓ : ∀ {n} → Normal n → Env n → Carrier
+⟦_⟧⇓ : Normal n → Env n → Carrier
 ⟦ []    ⟧⇓ _ = ε
-⟦ n ∷ v ⟧⇓ (a ∷ ρ) = fold (⟦ v ⟧⇓ ρ) (λ b → a ∙ b) n
+⟦ n ∷ v ⟧⇓ (a ∷ ρ) = fold (⟦ v ⟧⇓ ρ) (a ∙_) n
 
 ------------------------------------------------------------------------
 -- Constructions on normal forms
 
 -- The empty bag.
 
-empty : ∀{n} → Normal n
-empty = replicate 0
+empty : Normal n
+empty = replicate _ 0
 
 -- A singleton bag.
 
-sg : ∀{n} (i : Fin n) → Normal n
+sg : (i : Fin n) → Normal n
 sg zero    = 1 ∷ empty
 sg (suc i) = 0 ∷ sg i
 
 -- The composition of normal forms.
 
-_•_  : ∀{n} (v w : Normal n) → Normal n
+_•_  : (v w : Normal n) → Normal n
 []      • []      = []
 (l ∷ v) • (m ∷ w) = l + m ∷ v • w
 
@@ -99,13 +103,13 @@ _•_  : ∀{n} (v w : Normal n) → Normal n
 
 -- The empty bag stands for the unit ε.
 
-empty-correct : ∀{n} (ρ : Env n) → ⟦ empty ⟧⇓ ρ ≈ ε
+empty-correct : (ρ : Env n) → ⟦ empty ⟧⇓ ρ ≈ ε
 empty-correct [] = refl
 empty-correct (a ∷ ρ) = empty-correct ρ
 
 -- The singleton bag stands for a single variable.
 
-sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
+sg-correct : (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
     x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
     x ∙ ε              ≈⟨ identityʳ _ ⟩
@@ -114,7 +118,7 @@ sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
 
 -- Normal form composition corresponds to the composition of the monoid.
 
-comp-correct : ∀ {n} (v w : Normal n) (ρ : Env n) →
+comp-correct : (v w : Normal n) (ρ : Env n) →
               ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 comp-correct [] [] ρ =  sym (identityˡ _)
 comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = lemma l m (comp-correct v w ρ)
@@ -136,14 +140,14 @@ comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = lemma l m (comp-correct v w ρ)
 
 -- A normaliser.
 
-normalise : ∀ {n} → Expr n → Normal n
+normalise : Expr n → Normal n
 normalise (var x)   = sg x
 normalise id        = empty
 normalise (e₁ ⊕ e₂) = normalise e₁ • normalise e₂
 
 -- The normaliser preserves the semantics of the expression.
 
-normalise-correct : ∀ {n} (e : Expr n) (ρ : Env n) →
+normalise-correct : (e : Expr n) (ρ : Env n) →
     ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
 normalise-correct (var x)   ρ = sg-correct x ρ
 normalise-correct id        ρ = empty-correct ρ
@@ -171,21 +175,21 @@ open module R = Reflection
 
 infix 5 _≟_
 
-_≟_ : ∀ {n} (nf₁ nf₂ : Normal n) → Dec (nf₁ ≡ nf₂)
+_≟_ : (nf₁ nf₂ : Normal n) → Dec (nf₁ ≡ nf₂)
 nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
   where open Pointwise
 
 -- We can also give a sound, but not necessarily complete, procedure
 -- for determining if two expressions have the same semantics.
 
-prove′ : ∀ {n} (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
+prove′ : (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
 prove′ e₁ e₂ =
   Maybe.map lemma (decToMaybe (normalise e₁ ≟ normalise e₂))
   where
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
   lemma eq ρ =
     R.prove ρ e₁ e₂ (begin
-      ⟦ normalise e₁ ⟧⇓ ρ  ≡⟨ P.cong (λ e → ⟦ e ⟧⇓ ρ) eq ⟩
+      ⟦ normalise e₁ ⟧⇓ ρ  ≡⟨ ≡.cong (λ e → ⟦ e ⟧⇓ ρ) eq ⟩
       ⟦ normalise e₂ ⟧⇓ ρ  ∎)
 
 -- This procedure can be combined with from-just.

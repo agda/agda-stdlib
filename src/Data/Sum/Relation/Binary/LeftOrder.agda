@@ -11,16 +11,22 @@ module Data.Sum.Relation.Binary.LeftOrder where
 open import Data.Sum.Base as Sum
 open import Data.Sum.Relation.Binary.Pointwise as PW
   using (Pointwise; inj₁; inj₂)
-open import Data.Product
+open import Data.Product.Base using (_,_)
 open import Data.Empty
-open import Function
+open import Function.Base using (_$_; _∘_)
 open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Preorder; Poset; StrictPartialOrder; TotalOrder; DecTotalOrder; StrictTotalOrder)
+open import Relation.Binary.Structures
+  using (IsPreorder; IsPartialOrder; IsStrictPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictTotalOrder)
+open import Relation.Binary.Definitions
+  using (Reflexive; Transitive; Asymmetric; Total; Decidable; Irreflexive; Antisymmetric; Trichotomous; _Respectsʳ_; _Respectsˡ_; _Respects₂_; tri<; tri>; tri≈)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 infixr 1 _⊎-<_
@@ -32,7 +38,7 @@ data _⊎-<_ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ₁∼₁ : ∀ {x y} (x∼₁y : x ∼₁ y) → (_∼₁_ ⊎-< _∼₂_) (inj₁ x) (inj₁ y)
   ₂∼₂ : ∀ {x y} (x∼₂y : x ∼₂ y) → (_∼₁_ ⊎-< _∼₂_) (inj₂ x) (inj₂ y)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some properties which are preserved by _⊎-<_
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
@@ -127,7 +133,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ... | tri≈ x≮y x≈y x≯y = tri≈ (x≮y ∘ drop-inj₂) (inj₂ x≈y) (x≯y ∘ drop-inj₂)
   ... | tri> x≮y x≉y x>y = tri> (x≮y ∘ drop-inj₂) (x≉y ∘ PW.drop-inj₂) (₂∼₂ x>y)
 
-----------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Some collections of properties which are preserved
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
@@ -186,9 +192,8 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
                            IsStrictTotalOrder ≈₂ ∼₂ →
                            IsStrictTotalOrder (Pointwise ≈₁ ≈₂) (∼₁ ⊎-< ∼₂)
   ⊎-<-isStrictTotalOrder sto₁ sto₂ = record
-    { isEquivalence = PW.⊎-isEquivalence (isEquivalence sto₁) (isEquivalence sto₂)
-    ; trans         = ⊎-<-transitive (trans sto₁) (trans sto₂)
-    ; compare       = ⊎-<-trichotomous (compare sto₁) (compare sto₂)
+    { isStrictPartialOrder = ⊎-<-isStrictPartialOrder (isStrictPartialOrder sto₁) (isStrictPartialOrder sto₂)
+    ; compare              = ⊎-<-trichotomous (compare sto₁) (compare sto₂)
     }
     where open IsStrictTotalOrder
 

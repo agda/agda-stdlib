@@ -13,22 +13,21 @@
 module Data.Graph.Acyclic where
 
 open import Level using (_⊔_)
-open import Data.Nat.Base as Nat using (ℕ; zero; suc; _<′_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _<′_)
 open import Data.Nat.Induction using (<′-rec; <′-Rec)
-import Data.Nat.Properties as Nat
+import Data.Nat.Properties as ℕ
 open import Data.Fin as Fin
   using (Fin; Fin′; zero; suc; #_; toℕ; _≟_; opposite) renaming (_ℕ-ℕ_ to _-_)
-import Data.Fin.Properties as FP
-import Data.Fin.Permutation.Components as PC
-open import Data.Product as Prod using (∃; _×_; _,_)
+import Data.Fin.Properties as Fin
+open import Data.Product.Base as Prod using (∃; _×_; _,_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
 open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
-open import Function
+open import Function.Base using (_$_; _∘′_; _∘_; id)
 open import Relation.Nullary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- A lemma
@@ -36,7 +35,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 private
 
   lemma : ∀ n (i : Fin n) → n - suc i <′ n
-  lemma (suc n) i  = Nat.≤⇒≤′ $ Nat.s≤s $ FP.nℕ-ℕi≤n n i
+  lemma (suc n) i  = ℕ.≤⇒≤′ $ ℕ.s≤s $ Fin.nℕ-ℕi≤n n i
 
 ------------------------------------------------------------------------
 -- Node contexts
@@ -187,7 +186,7 @@ private
 
   test-nodes : nodes example ≡ (# 0 , 0) ∷ (# 1 , 1) ∷ (# 2 , 2) ∷
                                (# 3 , 3) ∷ (# 4 , 4) ∷ []
-  test-nodes = P.refl
+  test-nodes = refl
 
 
 module _ {ℓ e} {N : Set ℓ} {E : Set e} where
@@ -214,7 +213,7 @@ private
 
   test-edges : edges example ≡ (# 1 , 10 , # 1) ∷ (# 1 , 11 , # 1) ∷
                                (# 2 , 12 , # 0) ∷ []
-  test-edges = P.refl
+  test-edges = refl
 
 -- The successors of a given node i (edge label × node number relative
 -- to i).
@@ -226,7 +225,7 @@ sucs g i = successors $ head (g [ i ])
 private
 
   test-sucs : sucs example (# 1) ≡ (10 , # 1) ∷ (11 , # 1) ∷ []
-  test-sucs = P.refl
+  test-sucs = refl
 
 -- The predecessors of a given node i (node number relative to i ×
 -- edge label).
@@ -239,13 +238,13 @@ preds (c & g) (suc i) =
             (List.map (Prod.map suc id) $ preds g i)
   where
   p : ∀ {e} {E : Set e} {n} (i : Fin n) → E × Fin n → Maybe (Fin′ (suc i) × E)
-  p i (e , j) = Maybe.map (λ{ P.refl → zero , e }) (decToMaybe (i ≟ j))
+  p i (e , j) = Maybe.map (λ{ refl → zero , e }) (decToMaybe (i ≟ j))
 
 private
 
   test-preds : preds example (# 3) ≡
                (# 1 , 10) ∷ (# 1 , 11) ∷ (# 2 , 12) ∷ []
-  test-preds = P.refl
+  test-preds = refl
 
 ------------------------------------------------------------------------
 -- Operations
@@ -253,7 +252,7 @@ private
 -- Weakens a node label.
 
 weaken : ∀ {n} {i : Fin n} → Fin (n - suc i) → Fin n
-weaken {n} {i} j = Fin.inject≤ j (FP.nℕ-ℕi≤n n (suc i))
+weaken {n} {i} j = Fin.inject≤ j (Fin.nℕ-ℕi≤n n (suc i))
 
 -- Labels each node with its node number.
 
@@ -273,7 +272,7 @@ private
                  context (# 3 , 3) [] &
                  context (# 4 , 4) [] &
                  ∅)
-  test-number = P.refl
+  test-number = refl
 
 -- Reverses all the edges in the graph.
 
@@ -291,7 +290,7 @@ reverse {N = N} {E} g =
 private
 
   test-reverse : reverse (reverse example) ≡ example
-  test-reverse = P.refl
+  test-reverse = refl
 
 ------------------------------------------------------------------------
 -- Views
@@ -313,7 +312,7 @@ module _ {ℓ e} {N : Set ℓ} {E : Set e} where
     expand n rec (c & g) =
       node (label c)
            (List.map
-              (Prod.map id (λ i → rec (n - suc i) (lemma n i) (g [ i ])))
+              (Prod.map id (λ i → rec (lemma n i) (g [ i ])))
               (successors c))
 
 -- Performs the toTree expansion once for each node.
@@ -331,4 +330,4 @@ private
                     node 3 [] ∷
                     node 4 [] ∷
                     []
-  test-toForest = P.refl
+  test-toForest = refl
