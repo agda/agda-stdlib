@@ -82,7 +82,7 @@ New modules
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
 
-* New module defining Naperian functors, 'logarithms of containers'
+* New module defining Naperian functors, 'logarithms of containers' (Hancock/McBride)
   ```
   Effect.Functor.Naperian
   ```
