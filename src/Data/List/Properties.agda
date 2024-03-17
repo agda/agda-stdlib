@@ -646,8 +646,12 @@ lookup-applyUpTo : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (t
 lookup-applyUpTo f (suc n) zero    = refl
 lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
 
+applyUpTo-∷ʳ : ∀ (f : ℕ → A) n → applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
+applyUpTo-∷ʳ f zero = refl
+applyUpTo-∷ʳ f (suc n) = cong (f 0 ∷_) (applyUpTo-∷ʳ (f ∘ suc) n)
+
 ------------------------------------------------------------------------
--- applyUpTo
+-- applyDownFrom
 
 module _ (f : ℕ → A) where
 
@@ -659,6 +663,10 @@ module _ (f : ℕ → A) where
   lookup-applyDownFrom (suc n) zero    = refl
   lookup-applyDownFrom (suc n) (suc i) = lookup-applyDownFrom n i
 
+  applyDownFrom-∷ʳ : ∀ n → applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
+  applyDownFrom-∷ʳ zero = refl
+  applyDownFrom-∷ʳ (suc n) = cong (f (suc n) ∷_) (applyDownFrom-∷ʳ n)
+
 ------------------------------------------------------------------------
 -- upTo
 
@@ -668,6 +676,9 @@ length-upTo = length-applyUpTo id
 lookup-upTo : ∀ n i → lookup (upTo n) i ≡ toℕ i
 lookup-upTo = lookup-applyUpTo id
 
+upTo-∷ʳ : ∀ n → upTo n ∷ʳ n ≡ upTo (suc n)
+upTo-∷ʳ = applyUpTo-∷ʳ id
+
 ------------------------------------------------------------------------
 -- downFrom
 
@@ -676,6 +687,9 @@ length-downFrom = length-applyDownFrom id
 
 lookup-downFrom : ∀ n i → lookup (downFrom n) i ≡ n ∸ (suc (toℕ i))
 lookup-downFrom = lookup-applyDownFrom id
+
+downFrom-∷ʳ : ∀ n → applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+downFrom-∷ʳ = applyDownFrom-∷ʳ id
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -1161,6 +1175,31 @@ reverse-foldr f b xs = foldr-ʳ++ f b xs
 reverse-foldl : ∀ (f : B → A → B) b xs →
                 foldl f b (reverse xs) ≡ foldr (flip f) b xs
 reverse-foldl f b xs = foldl-ʳ++ f b xs
+
+------------------------------------------------------------------------
+-- reverse, applyUpTo, and applyDownFrom
+
+reverse-applyUpTo : ∀ (f : ℕ → A) n → reverse (applyUpTo f n) ≡ applyDownFrom f n
+reverse-applyUpTo f zero = refl
+reverse-applyUpTo f (suc n) = begin
+  reverse (f 0 ∷ applyUpTo (f ∘ suc) n)  ≡⟨ reverse-++ [ f 0 ] (applyUpTo (f ∘ suc) n) ⟩
+  reverse (applyUpTo (f ∘ suc) n) ∷ʳ f 0 ≡⟨ cong (_∷ʳ f 0) (reverse-applyUpTo (f ∘ suc) n) ⟩
+  applyDownFrom (f ∘ suc) n ∷ʳ f 0       ≡⟨ applyDownFrom-∷ʳ f n ⟩
+  applyDownFrom f (suc n)                ∎
+
+reverse-upTo : ∀ n → reverse (upTo n) ≡ downFrom n
+reverse-upTo = reverse-applyUpTo id
+
+reverse-applyDownFrom : ∀ (f : ℕ → A) n → reverse (applyDownFrom f n) ≡ applyUpTo f n
+reverse-applyDownFrom f zero = refl
+reverse-applyDownFrom f (suc n) = begin
+  reverse (f n ∷ applyDownFrom f n)  ≡⟨ reverse-++ [ f n ] (applyDownFrom f n) ⟩
+  reverse (applyDownFrom f n) ∷ʳ f n ≡⟨ cong (_∷ʳ f n) (reverse-applyDownFrom f n) ⟩
+  applyUpTo f n ∷ʳ f n               ≡⟨ applyUpTo-∷ʳ f n ⟩
+  applyUpTo f (suc n)                ∎
+
+reverse-downFrom : ∀ n → reverse (downFrom n) ≡ upTo n
+reverse-downFrom = reverse-applyDownFrom id
 
 ------------------------------------------------------------------------
 -- _∷ʳ_
