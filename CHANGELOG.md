@@ -104,6 +104,11 @@ New modules
   ```
   Effect.Functor.Naperian
   ```
+  defining
+  ```agda
+   record RawNaperian (RF : RawFunctor F) : Set _
+   record Naperian (RF : RawFunctor F) : Set _
+  ```
 
 * `Function.Relation.Binary.Equality`
   ```agda
