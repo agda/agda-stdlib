@@ -20,7 +20,7 @@ import Data.Tree.AVL
 -- natural numbers as keys and vectors of strings as values.
 
 open import Data.Nat.Properties using (<-strictTotalOrder)
-open import Data.Product.Base as Prod using (_,_; _,′_)
+open import Data.Product.Base as Product using (_,_; _,′_)
 open import Data.String.Base using (String)
 open import Data.Vec.Base using (Vec; _∷_; [])
 open import Relation.Binary.PropositionalEquality
@@ -111,14 +111,14 @@ open import Function.Base using (id)
 v₆ : headTail t₀ ≡ nothing
 v₆ = refl
 
-v₇ : Maybe.map (Prod.map₂ toList) (headTail t₂) ≡
+v₇ : Maybe.map (Product.map₂ toList) (headTail t₂) ≡
      just ((1 , v₁) , ((2 , v₂) ∷ []))
 v₇ = refl
 
 v₈ : initLast t₀ ≡ nothing
 v₈ = refl
 
-v₉ : Maybe.map (Prod.map₁ toList) (initLast t₄) ≡
+v₉ : Maybe.map (Product.map₁ toList) (initLast t₄) ≡
      just (((1 , v₁) ∷ []) ,′ (2 , v₂))
 v₉ = refl
 

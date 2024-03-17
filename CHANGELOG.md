@@ -41,6 +41,11 @@ Deprecated names
   1×-identityʳ  ↦  ×-homo-1
   ```
 
+* In `Algebra.Structures.IsGroup`:
+  ```agda
+  _-_  ↦  _//_
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -49,13 +54,30 @@ Deprecated names
 New modules
 -----------
 
-* `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
+
+* Raw bundles for module-like algebraic structures:
+  ```
+  Algebra.Module.Bundles.Raw
+  ```
 
 * Nagata's construction of the "idealization of a module":
   ```agda
   Algebra.Module.Construct.Idealization
   ```
   
+* The unique morphism from the initial, resp. terminal, algebra:
+  ```agda
+  Algebra.Morphism.Construct.Initial
+  Algebra.Morphism.Construct.Terminal
+  ```
+
+* Pointwise and equality relations over indexed containers:
+  ```agda
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
 * Isomorphism between `Fin` and an 'obvious' definition `ℕ<` of
   'bounded natural number' type, in:
   ```agda
@@ -65,6 +87,11 @@ New modules
   Data.Nat.Bounded.Properties
   ```
 
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
+
 * `Function.Relation.Binary.Equality`
   ```agda
   setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
@@ -72,6 +99,11 @@ New modules
   and a convenient infix version
   ```agda
   _⇨_ = setoid
+  ```
+
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
   ```
 
 * Symmetric interior of a binary relation
@@ -87,6 +119,12 @@ Additions to existing modules
   rawNearSemiring   : RawNearSemiring _ _
   rawRingWithoutOne : RawRingWithoutOne _ _
   +-rawGroup        : RawGroup _ _
+  ```
+
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
@@ -127,6 +165,32 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Properties.Group`:
+  ```agda
+  isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
+  quasigroup      : Quasigroup _ _
+  isLoop          : IsLoop _∙_ _\\_ _//_ ε
+  loop            : Loop _ _
+  
+  \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
+  \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
+  \\-leftDivides   : LeftDivides _∙_ _\\_
+  //-rightDividesˡ : RightDividesˡ _∙_ _//_
+  //-rightDividesʳ : RightDividesʳ _∙_ _//_
+  //-rightDivides  : RightDivides _∙_ _//_
+
+  ⁻¹-selfInverse  : SelfInverse _⁻¹
+  \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
+  comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
+  ```
+
+* In `Algebra.Properties.Loop`:
+  ```agda
+  identityˡ-unique : x ∙ y ≈ y → x ≈ ε
+  identityʳ-unique : x ∙ y ≈ x → y ≈ ε
+  identity-unique  : Identity x _∙_ → x ≈ ε
+  ```
+ 
 * In `Algebra.Properties.Monoid.Mult`:
   ```agda
   ×-homo-0 : ∀ x → 0 × x ≈ 0#
@@ -140,6 +204,21 @@ Additions to existing modules
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
+* In `Algebra.Structures.IsGroup`:
+  ```agda
+  infixl 6 _//_
+  _//_ : Op₂ A
+  x // y = x ∙ (y ⁻¹)
+  infixr 6 _\\_
+  _\\_ : Op₂ A
+  x \\ y = (x ⁻¹) ∙ y
+  ```
+ 
+* In `Data.Container.Indexed.Core`:
+  ```agda
+  Subtrees o c = (r : Response c) → X (next c r)
+  ```
+
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
@@ -148,6 +227,18 @@ Additions to existing modules
 * In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
+  applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
+  upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
+  downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
+  reverse-upTo          : reverse (upTo n) ≡ downFrom n
+  reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
+  reverse-downFrom      : reverse (downFrom n) ≡ upTo n
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
@@ -224,10 +315,31 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
+  
+* Added new proofs to `Data.Nat.Primality`:
+  ```agda
+  rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
+  productOfPrimes≢0 : All Prime as → NonZero (product as)
+  productOfPrimes≥1 : All Prime as → product as ≥ 1
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  product-↭ : product Preserves _↭_ ⟶ _≡_
+  ```
 
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+
+* Added new definition in `Relation.Binary.Construct.Closure.Transitive`
+  ```
+  transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
+  ```
+
+* Added new definition in `Relation.Unary`
+  ```
+  Stable : Pred A ℓ → Set _
   ```
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
