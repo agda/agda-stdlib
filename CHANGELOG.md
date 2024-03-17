@@ -59,17 +59,17 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
+* Nagata's construction of the "idealization of a module":
+  ```agda
+  Algebra.Module.Construct.Idealization
+  ```
+
 * The unique morphism from the initial, resp. terminal, algebra:
   ```agda
   Algebra.Morphism.Construct.Initial
   Algebra.Morphism.Construct.Terminal
   ```
 
-* Nagata's construction of the "idealization of a module":
-  ```agda
-  Algebra.Module.Construct.Idealization
-  ```
-  
 * Pointwise and equality relations over indexed containers:
   ```agda
   Data.Container.Indexed.Relation.Binary.Pointwise
@@ -80,6 +80,29 @@ New modules
 * Prime factorisation of natural numbers.
   ```
   Data.Nat.Primality.Factorisation
+  ```
+
+* Permutation relation for functional vectors:
+  ```agda
+  Data.Vec.Functional.Relation.Binary.Permutation
+  ```
+  defining `_↭_ : IRel (Vector A) _`
+
+* Properties of `Data.Vec.Functional.Relation.Binary.Permutation`:
+    ```agda
+  Data.Vec.Functional.Relation.Binary.Permutation.Properties
+  ```
+  defining
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  ```
+
+* New module defining Naperian functors, 'logarithms of containers' (Hancock/McBride)
+  ```
+  Effect.Functor.Naperian
   ```
 
 * `Function.Relation.Binary.Equality`
@@ -104,11 +127,55 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
+  ```agda
+  rawNearSemiring   : RawNearSemiring _ _
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  +-rawGroup        : RawGroup _ _
+  ```
+
+* In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
+
+* In `Algebra.Module.Construct.DirectProduct`:
+  ```agda
+  rawLeftSemimodule  : RawLeftSemimodule R m ℓm → RawLeftSemimodule m′ ℓm′ → RawLeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawLeftModule      : RawLeftModule R m ℓm → RawLeftModule m′ ℓm′ → RawLeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawRightSemimodule : RawRightSemimodule R m ℓm → RawRightSemimodule m′ ℓm′ → RawRightSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawRightModule     : RawRightModule R m ℓm → RawRightModule m′ ℓm′ → RawRightModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawBisemimodule    : RawBisemimodule R m ℓm → RawBisemimodule m′ ℓm′ → RawBisemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawBimodule        : RawBimodule R m ℓm → RawBimodule m′ ℓm′ → RawBimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawSemimodule      : RawSemimodule R m ℓm → RawSemimodule m′ ℓm′ → RawSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  rawModule          : RawModule R m ℓm → RawModule m′ ℓm′ → RawModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+  ```
+
+* In `Algebra.Module.Construct.TensorUnit`:
+  ```agda
+  rawLeftSemimodule  : RawLeftSemimodule _ c ℓ
+  rawLeftModule      : RawLeftModule _ c ℓ
+  rawRightSemimodule : RawRightSemimodule _ c ℓ
+  rawRightModule     : RawRightModule _ c ℓ
+  rawBisemimodule    : RawBisemimodule _ _ c ℓ
+  rawBimodule        : RawBimodule _ _ c ℓ
+  rawSemimodule      : RawSemimodule _ c ℓ
+  rawModule          : RawModule _ c ℓ
+  ```
 
 * In `Algebra.Construct.Terminal`:
   ```agda
   rawNearSemiring : RawNearSemiring c ℓ
   nearSemiring    : NearSemiring c ℓ
+  ```
+
+* In `Algebra.Module.Construct.Zero`:
+  ```agda
+  rawLeftSemimodule  : RawLeftSemimodule R c ℓ
+  rawLeftModule      : RawLeftModule R c ℓ
+  rawRightSemimodule : RawRightSemimodule R c ℓ
+  rawRightModule     : RawRightModule R c ℓ
+  rawBisemimodule    : RawBisemimodule R c ℓ
+  rawBimodule        : RawBimodule R c ℓ
+  rawSemimodule      : RawSemimodule R c ℓ
+  rawModule          : RawModule R c ℓ
   ```
 
 * In `Algebra.Properties.Group`:
@@ -117,7 +184,7 @@ Additions to existing modules
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
-  
+
   \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
   \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
   \\-leftDivides   : LeftDivides _∙_ _\\_
@@ -170,7 +237,7 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
-* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+* In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
   ```
@@ -278,13 +345,18 @@ Additions to existing modules
   ```agda
   map : (Char → Char) → String → String
 
-* In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
-  be used infix.
-
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
   ```
   transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
   ```
+
+* Added new definition in `Relation.Unary`
+  ```
+  Stable : Pred A ℓ → Set _
+  ```
+
+* In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
+  be used infix.
 
 * Added new proofs in `Relation.Binary.Construct.Composition`:
   ```agda
@@ -309,26 +381,14 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
-* Added new proof in `Relation.Nullary.Decidable`:
-  ```agda
-  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
-  ```
-
 * Added new definitions in `Relation.Unary`
   ```
   Stable          : Pred A ℓ → Set _
   WeaklyDecidable : Pred A ℓ → Set _
   ```
 
-* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
+* Added new proof in `Relation.Nullary.Decidable`:
   ```agda
-  _↭_ : IRel (Vector A) _
+  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
   ```
 
-* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
-  ```agda
-  ↭-refl      : Reflexive (Vector A) _↭_
-  ↭-reflexive : xs ≡ ys → xs ↭ ys
-  ↭-sym       : Symmetric (Vector A) _↭_
-  ↭-trans     : Transitive (Vector A) _↭_
-  ```
