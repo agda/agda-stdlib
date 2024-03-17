@@ -245,16 +245,15 @@ commutativeMonoid {a} k A = record
 
 empty-unique : ∀ {k} → xs ∼[ ⌊ k ⌋→ ] [] → xs ≡ []
 empty-unique {xs = []}    _    = refl
-empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
-... | ()
+empty-unique {xs = _ ∷ _} ∷∼[] with () ← ⇒→ ∷∼[] (here refl)
 
 -- _++_ is idempotent (under set equality).
 
 ++-idempotent : Idempotent {A = List A} _∼[ set ]_ _++_
 ++-idempotent xs {x} =
-  x ∈ xs ++ xs  ∼⟨ mk⇔ ([ id , id ]′ ∘ (Inverse.from $ ++↔))
-                                  (Inverse.to ++↔ ∘ inj₁) ⟩
-  x ∈ xs        ∎
+  x ∈ xs ++ xs
+    ∼⟨ mk⇔ ([ id , id ]′ ∘ (Inverse.from $ ++↔)) (Inverse.to ++↔ ∘ inj₁) ⟩
+  x ∈ xs ∎
   where open Related.EquationalReasoning
 
 -- The list monad's bind distributes from the left over _++_.
