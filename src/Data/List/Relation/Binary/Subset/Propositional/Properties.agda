@@ -55,7 +55,7 @@ private
 ------------------------------------------------------------------------
 
 ⊆-reflexive : _≡_ {A = List A} ⇒ _⊆_
-⊆-reflexive ≡.refl = id
+⊆-reflexive refl = id
 
 ⊆-refl : Reflexive {A = List A} _⊆_
 ⊆-refl x∈xs = x∈xs
