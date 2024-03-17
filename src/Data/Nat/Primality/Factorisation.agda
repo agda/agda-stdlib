@@ -22,14 +22,16 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭-refl; module PermutationReasoning)
-open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (product-↭; All-resp-↭; shift)
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties
+  using (product-↭; All-resp-↭; shift)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; trans; cong; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; sym; trans; cong; module ≡-Reasoning)
 
 private
   variable
