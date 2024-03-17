@@ -16,7 +16,6 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
   where
 
 open import Algebra
-import Algebra.Properties.CommutativeMonoid as ACM
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
@@ -29,7 +28,7 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties using (∈-∃++; ∈-insert)
-import Data.List.Properties as Lₚ
+import Data.List.Properties as List
 open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
@@ -48,7 +47,9 @@ private
   variable
     b p r : Level
 
-open Setoid S using (_≈_) renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
+open Setoid S
+  using (_≈_)
+  renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
 open Permutation S
 open Membership S
 open Unique S using (Unique)
@@ -189,13 +190,13 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-identityˡ xs = ↭-refl
 
 ++-identityʳ : RightIdentity _↭_ [] _++_
-++-identityʳ xs = ↭-reflexive (Lₚ.++-identityʳ xs)
+++-identityʳ xs = ↭-reflexive (List.++-identityʳ xs)
 
 ++-identity : Identity _↭_ [] _++_
 ++-identity = ++-identityˡ , ++-identityʳ
 
 ++-assoc : Associative _↭_ _++_
-++-assoc xs ys zs = ↭-reflexive (Lₚ.++-assoc xs ys zs)
+++-assoc xs ys zs = ↭-reflexive (List.++-assoc xs ys zs)
 
 ++-comm : Commutative _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
@@ -459,7 +460,7 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
   ... | false | _   | rec = begin
     y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
     y ∷ x ∷ xs ++ ys         ↭⟨ ↭-shift (x ∷ xs) ys ⟨
-    (x ∷ xs) ++ y ∷ ys       ≡⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟨
+    (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
 
@@ -475,7 +476,7 @@ drop-∷ = dropMiddleElement [] []
 ∷↭∷ʳ : ∀ (x : A) xs → x ∷ xs ↭ xs ∷ʳ x
 ∷↭∷ʳ x xs = ↭-sym (begin
   xs ++ [ x ]   ↭⟨ ↭-shift xs [] ⟩
-  x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
+  x ∷ xs ++ []  ≡⟨ List.++-identityʳ _ ⟩
   x ∷ xs        ∎)
   where open PermutationReasoning
 
@@ -492,7 +493,7 @@ drop-∷ = dropMiddleElement [] []
 ↭-reverse : (xs : List A) → reverse xs ↭ xs
 ↭-reverse [] = ↭-refl
 ↭-reverse (x ∷ xs) = begin
-  reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
+  reverse (x ∷ xs) ≡⟨ List.unfold-reverse x xs ⟩
   reverse xs ∷ʳ x  ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
   x ∷ reverse xs   <⟨ ↭-reverse xs ⟩
   x ∷ xs ∎
