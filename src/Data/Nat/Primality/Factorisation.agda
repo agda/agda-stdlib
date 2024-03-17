@@ -21,7 +21,7 @@ open import Data.List.Membership.Propositional.Properties using (∈-∃++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Binary.Permutation.Propositional
-  using (_↭_; prep; swap; ↭-reflexive; ↭-refl; ↭-trans; refl; module PermutationReasoning)
+  using (_↭_; ↭-reflexive; ↭-refl; ↭-trans; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (product-↭; All-resp-↭; shift)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
@@ -139,7 +139,7 @@ factorisationHasAllPrimeFactors {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPr
 
 private
   factorisationUnique′ : (as bs : List ℕ) → product as ≡ product bs → All Prime as → All Prime bs → as ↭ bs
-  factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = refl
+  factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = ↭-refl
   factorisationUnique′ [] (b@(2+ _) ∷ bs) Πas≡Πbs prime[as] (_ ∷ prime[bs]) =
     contradiction Πas≡Πbs (<⇒≢ Πas<Πbs)
     where
