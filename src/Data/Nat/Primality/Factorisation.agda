@@ -8,7 +8,6 @@
 
 module Data.Nat.Primality.Factorisation where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
@@ -23,7 +22,7 @@ open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭-refl; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-  using (product-↭; All-resp-↭; shift)
+  using (product-↭; All-resp-↭; ↭-shift)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
 open import Induction using (build)
@@ -167,7 +166,7 @@ private
       shuffle : ∃[ bs′ ] bs ↭ a ∷ bs′
       shuffle
         with ys , zs , refl ← ∈-∃++ (factorisationHasAllPrimeFactors prime[a] a∣Πbs prime[bs])
-        = ys ++ zs , shift a ys zs
+        = ys ++ zs , ↭-shift ys zs
 
       bs′ = proj₁ shuffle
       bs↭a∷bs′ = proj₂ shuffle
