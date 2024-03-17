@@ -586,7 +586,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   to∘from p with res ← from∘to (↭-sym p) rewrite ↭-sym-involutive p = res
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
-∼bag⇒↭ {A = A} {[]} eq with refl ← empty-unique (↔-sym eq) = refl
+∼bag⇒↭ {A = A} {[]} eq with refl ← empty-unique (↔-sym eq) = ↭-refl
 ∼bag⇒↭ {A = A} {x ∷ xs} eq
   with zs₁ , zs₂ , p ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) rewrite p = begin
     x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
