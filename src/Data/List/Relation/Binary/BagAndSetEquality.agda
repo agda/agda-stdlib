@@ -25,6 +25,7 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭-refl; ↭-sym; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
+  using (↭-sym-involutive; ∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ++-comm; shift)
 open import Data.Product.Base as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum hiding (map)
