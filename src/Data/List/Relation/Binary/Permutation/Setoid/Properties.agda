@@ -16,7 +16,6 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
   where
 
 open import Algebra
-import Algebra.Properties.CommutativeMonoid as ACM
 open import Data.Bool.Base using (true; false)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
@@ -29,7 +28,7 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties using (∈-∃++; ∈-insert)
-import Data.List.Properties as Lₚ
+import Data.List.Properties as List
 open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
@@ -37,7 +36,7 @@ open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
 open import Function.Base using (_∘_; _⟨_⟩_; flip)
 open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)
-import Relation.Binary.Reasoning.Setoid as RelSetoid
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
@@ -48,13 +47,15 @@ private
   variable
     b p r : Level
 
-open Setoid S using (_≈_) renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
+open Setoid S
+  using (_≈_)
+  renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
 open Permutation S
 open Membership S
 open Unique S using (Unique)
 open module ≋ = Equality S
   using (_≋_; []; _∷_; ≋-refl; ≋-sym; ≋-trans; All-resp-≋; Any-resp-≋; AllPairs-resp-≋)
-open PermutationReasoning
+
 
 ------------------------------------------------------------------------
 -- Relationships to other predicates
@@ -98,7 +99,7 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 ------------------------------------------------------------------------
 
 ≋⇒↭ : _≋_ ⇒ _↭_
-≋⇒↭ = refl
+≋⇒↭ = ↭-pointwise
 
 ↭-respʳ-≋ : _↭_ Respectsʳ _≋_
 ↭-respʳ-≋ xs≋ys               (refl zs≋xs)         = refl (≋-trans zs≋xs xs≋ys)
@@ -165,6 +166,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
   x ∷ (xs ++ [ v ] ++ ys) <⟨ shift v≈w xs ys ⟩
   x ∷ w ∷ xs ++ ys        <<⟨ ↭-refl ⟩
   w ∷ x ∷ xs ++ ys        ∎
+  where open PermutationReasoning
 
 ↭-shift : ∀ {v} (xs ys : List A) → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
 ↭-shift = shift ≈-refl
@@ -188,13 +190,13 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-identityˡ xs = ↭-refl
 
 ++-identityʳ : RightIdentity _↭_ [] _++_
-++-identityʳ xs = ↭-reflexive (Lₚ.++-identityʳ xs)
+++-identityʳ xs = ↭-reflexive (List.++-identityʳ xs)
 
 ++-identity : Identity _↭_ [] _++_
 ++-identity = ++-identityˡ , ++-identityʳ
 
 ++-assoc : Associative _↭_ _++_
-++-assoc xs ys zs = ↭-reflexive (Lₚ.++-assoc xs ys zs)
+++-assoc xs ys zs = ↭-reflexive (List.++-assoc xs ys zs)
 
 ++-comm : Commutative _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
@@ -202,6 +204,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
   x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
   x ∷ ys ++ xs   ↭⟨ ↭-shift ys xs ⟨
   ys ++ (x ∷ xs) ∎
+  where open PermutationReasoning
 
 -- Structures
 
@@ -266,6 +269,7 @@ shifts xs ys {zs} = begin
   (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
   (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
    ys ++ xs  ++ zs ∎
+   where open PermutationReasoning
 
 dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
            ws ++ [ x ] ++ ys ≋ xs ++ [ x ] ++ zs →
@@ -456,9 +460,15 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
   ... | false | _   | rec = begin
     y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
     y ∷ x ∷ xs ++ ys         ↭⟨ ↭-shift (x ∷ xs) ys ⟨
-    (x ∷ xs) ++ y ∷ ys       ≡⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟨
+    (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
+
+------------------------------------------------------------------------
+-- _∷_
+
+drop-∷ : ∀ {x : A} {xs ys} → x ∷ xs ↭ x ∷ ys → xs ↭ ys
+drop-∷ = dropMiddleElement [] []
 
 ------------------------------------------------------------------------
 -- _∷ʳ_
@@ -466,7 +476,7 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
 ∷↭∷ʳ : ∀ (x : A) xs → x ∷ xs ↭ xs ∷ʳ x
 ∷↭∷ʳ x xs = ↭-sym (begin
   xs ++ [ x ]   ↭⟨ ↭-shift xs [] ⟩
-  x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
+  x ∷ xs ++ []  ≡⟨ List.++-identityʳ _ ⟩
   x ∷ xs        ∎)
   where open PermutationReasoning
 
@@ -478,28 +488,38 @@ module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (↭-shift xs ys)) (++↭ʳ++ xs (x ∷ ys))
 
 ------------------------------------------------------------------------
+-- reverse
+
+↭-reverse : (xs : List A) → reverse xs ↭ xs
+↭-reverse [] = ↭-refl
+↭-reverse (x ∷ xs) = begin
+  reverse (x ∷ xs) ≡⟨ List.unfold-reverse x xs ⟩
+  reverse xs ∷ʳ x  ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
+  x ∷ reverse xs   <⟨ ↭-reverse xs ⟩
+  x ∷ xs ∎
+  where open PermutationReasoning
+
+------------------------------------------------------------------------
 -- foldr of Commutative Monoid
 
 module _ {_∙_ : Op₂ A} {ε : A} (isCmonoid : IsCommutativeMonoid _≈_ _∙_ ε) where
   open module CM = IsCommutativeMonoid isCmonoid
 
   private
-    module S = RelSetoid setoid
 
     cmonoid : CommutativeMonoid _ _
     cmonoid = record { isCommutativeMonoid = isCmonoid }
-
-  open ACM cmonoid
 
   foldr-commMonoid : ∀ {xs ys} → xs ↭ ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
   foldr-commMonoid (refl []) = CM.refl
   foldr-commMonoid (refl (x≈y ∷ xs≈ys)) = ∙-cong x≈y (foldr-commMonoid (Permutation.refl xs≈ys))
   foldr-commMonoid (prep x≈y xs↭ys) = ∙-cong x≈y (foldr-commMonoid xs↭ys)
-  foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = S.begin
-    x ∙ (y ∙ foldr _∙_ ε xs)   S.≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
-    x ∙ (y ∙ foldr _∙_ ε ys)   S.≈⟨ assoc x y (foldr _∙_ ε ys) ⟨
-    (x ∙ y) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (comm x y) ⟩
-    (y ∙ x) ∙ foldr _∙_ ε ys   S.≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
-    (y′ ∙ x′) ∙ foldr _∙_ ε ys S.≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
-    y′ ∙ (x′ ∙ foldr _∙_ ε ys) S.∎
+  foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
+    x ∙ (y ∙ foldr _∙_ ε xs)   ≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
+    x ∙ (y ∙ foldr _∙_ ε ys)   ≈⟨ assoc x y (foldr _∙_ ε ys) ⟨
+    (x ∙ y) ∙ foldr _∙_ ε ys   ≈⟨ ∙-congʳ (comm x y) ⟩
+    (y ∙ x) ∙ foldr _∙_ ε ys   ≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
+    (y′ ∙ x′) ∙ foldr _∙_ ε ys ≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
+    y′ ∙ (x′ ∙ foldr _∙_ ε ys) ∎
+    where open ≈-Reasoning setoid
   foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)

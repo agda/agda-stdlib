@@ -27,6 +27,13 @@ Non-backwards compatible changes
 * The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
   parametrized by _raw_ bundles, and as such take a proof of reflexivity.
 
+* In `Data.List.Relation.Binary.Permutation.Homogeneous`, the explicit use of `Pointwise`
+  has been removed in favour of an additional relation on lists. This enables us to keep
+  using `Pointwise _≈_` in the setoid case but use the more convenient `_≡_` instead in
+  the propositional one.
+  Correspondingly, `Data.List.Relation.Binary.Permutation.Propositional` has been refactored
+  as an instance of the generic data structure.
+
 Other major improvements
 ------------------------
 
@@ -79,7 +86,7 @@ New modules
   ```agda
   Algebra.Module.Construct.Idealization
   ```
-  
+
 * `Function.Relation.Binary.Equality`
   ```agda
   setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
@@ -155,7 +162,7 @@ Additions to existing modules
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
-  
+
   \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
   \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
   \\-leftDivides   : LeftDivides _∙_ _\\_
@@ -174,7 +181,7 @@ Additions to existing modules
   identityʳ-unique : x ∙ y ≈ x → y ≈ ε
   identity-unique  : Identity x _∙_ → x ≈ ε
   ```
- 
+
 * In `Algebra.Construct.Terminal`:
   ```agda
   rawNearSemiring : RawNearSemiring c ℓ
@@ -203,7 +210,7 @@ Additions to existing modules
   _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
   ```
- 
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
@@ -305,7 +312,7 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
-  
+
 * Added new proofs to `Data.Nat.Primality`:
   ```agda
   rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
