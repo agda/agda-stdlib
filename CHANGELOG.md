@@ -59,14 +59,9 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+* Nagata's construction of the "idealization of a module":
   ```agda
-  Induction.InfiniteDescent
+  Algebra.Module.Construct.Idealization
   ```
 
 * The unique morphism from the initial, resp. terminal, algebra:
@@ -75,11 +70,46 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
-* Nagata's construction of the "idealization of a module":
+* Pointwise and equality relations over indexed containers:
   ```agda
-  Algebra.Module.Construct.Idealization
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
-  
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
+
+* Permutation relation for functional vectors:
+  ```agda
+  Data.Vec.Functional.Relation.Binary.Permutation
+  ```
+  defining `_↭_ : IRel (Vector A) _`
+
+* Properties of `Data.Vec.Functional.Relation.Binary.Permutation`:
+    ```agda
+  Data.Vec.Functional.Relation.Binary.Permutation.Properties
+  ```
+  defining
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  ```
+
+* New module defining Naperian functors, 'logarithms of containers' (Hancock/McBride)
+  ```
+  Effect.Functor.Naperian
+  ```
+  defining
+  ```agda
+   record RawNaperian (RF : RawFunctor F) : Set _
+   record Naperian (RF : RawFunctor F) : Set _
+  ```
+
 * `Function.Relation.Binary.Equality`
   ```agda
   setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
@@ -89,16 +119,14 @@ New modules
   _⇨_ = setoid
   ```
 
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
+  ```
+
 * Symmetric interior of a binary relation
   ```
   Relation.Binary.Construct.Interior.Symmetric
-  ```
-
-* Pointwise and equality relations over indexed containers:
-  ```agda
-  Data.Container.Indexed.Relation.Binary.Pointwise
-  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
-  Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
 
 Additions to existing modules
@@ -137,6 +165,12 @@ Additions to existing modules
   rawModule          : RawModule _ c ℓ
   ```
 
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
+  ```
+
 * In `Algebra.Module.Construct.Zero`:
   ```agda
   rawLeftSemimodule  : RawLeftSemimodule R c ℓ
@@ -155,7 +189,7 @@ Additions to existing modules
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
-  
+
   \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
   \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
   \\-leftDivides   : LeftDivides _∙_ _\\_
@@ -173,12 +207,6 @@ Additions to existing modules
   identityˡ-unique : x ∙ y ≈ y → x ≈ ε
   identityʳ-unique : x ∙ y ≈ x → y ≈ ε
   identity-unique  : Identity x _∙_ → x ≈ ε
-  ```
- 
-* In `Algebra.Construct.Terminal`:
-  ```agda
-  rawNearSemiring : RawNearSemiring c ℓ
-  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Properties.Monoid.Mult`:
@@ -203,7 +231,7 @@ Additions to existing modules
   _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
   ```
- 
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
@@ -214,7 +242,7 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
-* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+* In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
   ```
@@ -305,7 +333,7 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
-  
+
 * Added new proofs to `Data.Nat.Primality`:
   ```agda
   rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
@@ -369,15 +397,3 @@ Additions to existing modules
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
   ```
 
-* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
-  ```agda
-  _↭_ : IRel (Vector A) _
-  ```
-
-* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
-  ```agda
-  ↭-refl      : Reflexive (Vector A) _↭_
-  ↭-reflexive : xs ≡ ys → xs ↭ ys
-  ↭-sym       : Symmetric (Vector A) _↭_
-  ↭-trans     : Transitive (Vector A) _↭_
-  ```
