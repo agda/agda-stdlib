@@ -14,8 +14,8 @@ open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions using (Reflexive; Transitive)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 
