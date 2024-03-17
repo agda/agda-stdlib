@@ -28,7 +28,7 @@ open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Definitions
   using (Trans; Antisym; Irrelevant; Decidable)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_; _≢_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong₂)
 
 private
   variable
@@ -158,7 +158,7 @@ replicate⁺ (s≤s m≤n) r = r ∷ replicate⁺ m≤n r
 
 replicate⁻ : ∀ {m n a b} → m ≢ 0 →
              Prefix R (replicate m a) (replicate n b) → R a b
-replicate⁻ {m = zero}  {n}     m≢0 r  = ⊥-elim (m≢0 P.refl)
+replicate⁻ {m = zero}  {n}     m≢0 r  = ⊥-elim (m≢0 refl)
 replicate⁻ {m = suc m} {suc n} m≢0 rs = Prefix.head rs
 
 ------------------------------------------------------------------------
@@ -208,9 +208,9 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   irrelevant : Irrelevant R → Irrelevant (Prefix R)
-  irrelevant R-irr []       []         = P.refl
+  irrelevant R-irr []       []         = refl
   irrelevant R-irr (r ∷ rs) (r′ ∷ rs′) =
-    P.cong₂ _∷_ (R-irr r r′) (irrelevant R-irr rs rs′)
+    cong₂ _∷_ (R-irr r r′) (irrelevant R-irr rs rs′)
 
 ------------------------------------------------------------------------
 -- Decidability

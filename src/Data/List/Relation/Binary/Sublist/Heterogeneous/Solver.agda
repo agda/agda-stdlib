@@ -32,11 +32,11 @@ open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
 open import Function
 
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
 open import Relation.Nullary
 
-open P.≡-Reasoning
+open ≡.≡-Reasoning
 
 infix 4  _⊆I_ _⊆R_ _⊆T_
 
@@ -87,7 +87,7 @@ d ⊆R e = ∀ ρ → Sublist R (⟦ d ⟧R ρ) (⟦ e ⟧R ρ)
 -- Flattening in a semantics-respecting manner
 
 ⟦++⟧R : ∀ {n} xs ys (ρ : Vec (List A) n) → ⟦ xs ++ ys ⟧R ρ ≡ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
-⟦++⟧R []       ys ρ = P.refl
+⟦++⟧R []       ys ρ = ≡.refl
 ⟦++⟧R (x ∷ xs) ys ρ = begin
   ⟦ x ⟧I ρ ++ ⟦ xs ++ ys ⟧R ρ
     ≡⟨ cong (⟦ x ⟧I ρ ++_) (⟦++⟧R xs ys ρ) ⟩
@@ -97,7 +97,7 @@ d ⊆R e = ∀ ρ → Sublist R (⟦ d ⟧R ρ) (⟦ e ⟧R ρ)
     ∎
 
 flatten : ∀ {n} (t : TList n) → Σ[ r ∈ RList n ] ⟦ r ⟧R ≗ ⟦ t ⟧T
-flatten []       = [] , λ _ → P.refl
+flatten []       = [] , λ _ → ≡.refl
 flatten (It it)  = it ∷ [] , λ ρ → ++-identityʳ (⟦ It it ⟧T ρ)
 flatten (t <> u) =
   let (rt , eqt) = flatten t

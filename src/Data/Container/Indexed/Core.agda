@@ -12,34 +12,46 @@ open import Level
 open import Data.Product.Base using (Σ; Σ-syntax; _,_; ∃)
 open import Relation.Unary
 
+private variable
+  i o c r ℓ ℓ′ : Level
+  I : Set i
+  O : Set o
+
+------------------------------------------------------------------------
+-- Definition
+
 infix 5 _◃_/_
 
-record Container {i o} (I : Set i) (O : Set o) (c r : Level) :
-                 Set (i ⊔ o ⊔ suc c ⊔ suc r) where
+record Container (I : Set i) (O : Set o) c r : Set (i ⊔ o ⊔ suc c ⊔ suc r) where
   constructor _◃_/_
   field
     Command  : (o : O) → Set c
     Response : ∀ {o} → Command o → Set r
     next     : ∀ {o} (c : Command o) → Response c → I
 
+------------------------------------------------------------------------
 -- The semantics ("extension") of an indexed container.
 
-⟦_⟧ : ∀ {i o c r ℓ} {I : Set i} {O : Set o} → Container I O c r →
-      Pred I ℓ → Pred O _
-⟦ C ◃ R / n ⟧ X o = Σ[ c ∈ C o ] ((r : R c) → X (n c r))
+module _ (C : Container I O c r) (X : Pred I ℓ) where
+  open Container C
+
+  Subtrees : ∀ o → Command o → Set _
+  Subtrees o c = (r : Response c) → X (next c r)
+
+  ⟦_⟧ : Pred O _
+  ⟦_⟧ o = Σ (Command o) (Subtrees o)
 
 ------------------------------------------------------------------------
 -- All and any
 
-module _ {i o c r ℓ} {I : Set i} {O : Set o}
-         (C : Container I O c r) {X : Pred I ℓ} where
+module _ (C : Container I O c r) {X : Pred I ℓ} where
 
   -- All.
 
-  □ : ∀ {ℓ′} → Pred (Σ I X) ℓ′ → Pred (Σ O (⟦ C ⟧ X)) _
+  □ : Pred (Σ I X) ℓ′ → Pred (Σ O (⟦ C ⟧ X)) _
   □ P (_ , _ , k) = ∀ r → P (_ , k r)
 
   -- Any.
 
-  ◇ : ∀ {ℓ′} → Pred (Σ I X) ℓ′ → Pred (Σ O (⟦ C ⟧ X)) _
+  ◇ : Pred (Σ I X) ℓ′ → Pred (Σ O (⟦ C ⟧ X)) _
   ◇ P (_ , _ , k) = ∃ λ r → P (_ , k r)

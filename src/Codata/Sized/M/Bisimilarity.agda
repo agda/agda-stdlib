@@ -21,7 +21,7 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
-import Relation.Binary.PropositionalEquality.Core as P
+import Relation.Binary.PropositionalEquality.Core as ≡
 
 data Bisim {s p} (C : Container s p) (i : Size) : Rel (M C ∞) (s ⊔ p) where
   inf : ∀ {t u} → Pointwise C (Thunk^R (Bisim C) i) t u → Bisim C i (inf t) (inf u)
@@ -32,14 +32,14 @@ module _ {s p} {C : Container s p} where
   -- combinators C.refl, C.sym and C.trans
 
   refl : ∀ {i} → Reflexive (Bisim C i)
-  refl {x = inf t} = inf (P.refl , λ where p .force → refl)
+  refl {x = inf t} = inf (≡.refl , λ where p .force → refl)
 
   sym : ∀ {i} → Symmetric (Bisim C i)
-  sym  (inf (P.refl , f)) = inf (P.refl , λ where p .force → sym (f p .force))
+  sym  (inf (≡.refl , f)) = inf (≡.refl , λ where p .force → sym (f p .force))
 
   trans : ∀ {i} → Transitive (Bisim C i)
-  trans (inf (P.refl , f)) (inf (P.refl , g)) =
-    inf (P.refl , λ where p .force → trans (f p .force) (g p .force))
+  trans (inf (≡.refl , f)) (inf (≡.refl , g)) =
+    inf (≡.refl , λ where p .force → trans (f p .force) (g p .force))
 
   isEquivalence : ∀ {i} → IsEquivalence (Bisim C i)
   isEquivalence = record

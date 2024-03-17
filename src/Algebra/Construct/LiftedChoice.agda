@@ -17,7 +17,7 @@ open import Relation.Nullary using (¬_; yes; no)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Product.Base using (_×_; _,_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Unary using (Pred)
 
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -55,8 +55,8 @@ module _ {_≈_ : Rel B ℓ} {_∙_ : Op₂ B}
 
     sel-≡ : Selective _≡_ _◦_
     sel-≡ x y with M.sel (f x) (f y)
-    ... | inj₁ _ = inj₁ P.refl
-    ... | inj₂ _ = inj₂ P.refl
+    ... | inj₁ _ = inj₁ ≡.refl
+    ... | inj₂ _ = inj₂ ≡.refl
 
     distrib : ∀ x y → ((f x) ∙ (f y)) ≈ f (x ◦ y)
     distrib x y with M.sel (f x) (f y)
