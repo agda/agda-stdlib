@@ -245,16 +245,15 @@ commutativeMonoid {a} k A = record
 
 empty-unique : ∀ {k} → xs ∼[ ⌊ k ⌋→ ] [] → xs ≡ []
 empty-unique {xs = []}    _    = refl
-empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
-... | ()
+empty-unique {xs = _ ∷ _} ∷∼[] with () ← ⇒→ ∷∼[] (here refl)
 
 -- _++_ is idempotent (under set equality).
 
 ++-idempotent : Idempotent {A = List A} _∼[ set ]_ _++_
 ++-idempotent xs {x} =
-  x ∈ xs ++ xs  ∼⟨ mk⇔ ([ id , id ]′ ∘ (Inverse.from $ ++↔))
-                                  (Inverse.to ++↔ ∘ inj₁) ⟩
-  x ∈ xs        ∎
+  x ∈ xs ++ xs
+    ∼⟨ mk⇔ ([ id , id ]′ ∘ (Inverse.from $ ++↔)) (Inverse.to ++↔ ∘ inj₁) ⟩
+  x ∈ xs ∎
   where open Related.EquationalReasoning
 
 -- The list monad's bind distributes from the left over _++_.
@@ -538,62 +537,60 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
   lemma : ∀ {xs ys} (inv : x ∷ xs ∼[ bag ] x ∷ ys) {z} →
           Well-behaved (Inverse.to (∼→⊎↔⊎ inv {z}))
-  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ with
-    zero                                                                  ≡⟨⟩
-    index-of {xs = x ∷ xs} (here p)                                       ≡⟨⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)                         ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ ≡.sym $
-                                                                               to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))  ≡⟨ ≡.cong index-of $
-                                                                               strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)                   ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
-    index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)                   ≡⟨ ≡.cong index-of $ ≡.sym $
-                                                                               strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))  ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $
-                                                                               to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
-    index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)                      ≡⟨⟩
-    index-of {xs = x ∷ xs} (there z∈xs)                                   ≡⟨⟩
-    suc (index-of {xs = xs} z∈xs)                                         ∎
+  lemma {xs} inv {b = z∈xs} {a = p} {a′ = q} hyp₁ hyp₂ = case contra of λ ()
     where
     open Inverse
     open ≡-Reasoning
-  ... | ()
+    contra : zero ≡ suc (index-of {xs = xs} z∈xs)
+    contra = begin
+      zero
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (here p)
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₁ p)
+        ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₁ p} hyp₂ ⟨
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ (from (∼→⊎↔⊎ inv) $ inj₁ q))
+        ≡⟨ ≡.cong index-of $ strictlyInverseˡ (∷↔ _) (from inv (here q)) ⟩
+      index-of {xs = x ∷ xs} (to (SK-sym inv) $ here q)
+        ≡⟨ index-equality-preserved (SK-sym inv) refl ⟩
+      index-of {xs = x ∷ xs} (to (SK-sym inv) $ here p)
+        ≡⟨ ≡.cong index-of $ strictlyInverseˡ (∷↔ _) (from inv (here p)) ⟨
+      index-of {xs = x ∷ xs} (to (∷↔ _) (from (∼→⊎↔⊎ inv) $ inj₁ p))
+        ≡⟨ ≡.cong (index-of ∘ (to (∷↔ (_ ≡_)))) $ to-from (∼→⊎↔⊎ inv) {x = inj₂ z∈xs} hyp₁ ⟩
+      index-of {xs = x ∷ xs} (to (∷↔ _) $ inj₂ z∈xs)
+        ≡⟨⟩
+      index-of {xs = x ∷ xs} (there z∈xs)
+        ≡⟨⟩
+      suc (index-of {xs = xs} z∈xs)
+        ∎
+
 
 ------------------------------------------------------------------------
 -- Relationships to other relations
 
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
-↭⇒∼bag {A = A} xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
+↭⇒∼bag xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
   where
   to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
-  to xs↭ys = Any-resp-↭ {A = A} xs↭ys
+  to xs↭ys = ∈-resp-↭ xs↭ys
 
   from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
-  from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
+  from xs↭ys = ∈-resp-↭ (↭-sym xs↭ys)
 
   from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-  from∘to refl          v∈xs                 = refl
-  from∘to (prep _ _)    (here refl)          = refl
-  from∘to (prep _ p)    (there v∈xs)         = ≡.cong there (from∘to p v∈xs)
-  from∘to (swap x y p)  (here refl)          = refl
-  from∘to (swap x y p)  (there (here refl))  = refl
-  from∘to (swap x y p)  (there (there v∈xs)) = ≡.cong (there ∘ there) (from∘to p v∈xs)
-  from∘to (trans p₁ p₂) v∈xs
-    rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
-          | from∘to p₁ v∈xs                  = refl
+  from∘to = ∈-resp-[σ⁻¹∘σ]
 
   to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
-  to∘from p with from∘to (↭-sym p)
-  ... | res rewrite ↭-sym-involutive p = res
+  to∘from p with res ← from∘to (↭-sym p) rewrite ↭-sym-involutive p = res
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
-∼bag⇒↭ {A = A} {[]} eq with empty-unique (↔-sym eq)
-... | refl = refl
-∼bag⇒↭ {A = A} {x ∷ xs} eq with ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl))
-... | zs₁ , zs₂ , p rewrite p = begin
-  x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
-  x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-  x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
-  zs₁ ++ x ∷ zs₂   ∎
-  where
-  open CommutativeMonoid (commutativeMonoid bag A)
-  open PermutationReasoning
+∼bag⇒↭ {A = A} {[]} eq with refl ← empty-unique (↔-sym eq) = refl
+∼bag⇒↭ {A = A} {x ∷ xs} eq
+  with zs₁ , zs₂ , p ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) rewrite p = begin
+    x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
+    x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
+    x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
+    zs₁ ++ x ∷ zs₂   ∎
+    where
+    open CommutativeMonoid (commutativeMonoid bag A)
+    open PermutationReasoning

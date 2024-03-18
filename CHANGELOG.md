@@ -41,6 +41,11 @@ Deprecated names
   1×-identityʳ  ↦  ×-homo-1
   ```
 
+* In `Algebra.Structures.IsGroup`:
+  ```agda
+  _-_  ↦  _//_
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -48,11 +53,46 @@ Deprecated names
 
 New modules
 -----------
-* `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
+
+* Raw bundles for module-like algebraic structures:
+  ```
+  Algebra.Module.Bundles.Raw
+  ```
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
+
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
+  ```
+
+* The unique morphism from the initial, resp. terminal, algebra:
+  ```agda
+  Algebra.Morphism.Construct.Initial
+  Algebra.Morphism.Construct.Terminal
+  ```
 
 * Nagata's construction of the "idealization of a module":
   ```agda
   Algebra.Module.Construct.Idealization
+  ```
+
+* `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
+  ```agda
+  _↭_ : IRel (Vector A) _
+  ```
+
+* `Data.Vec.Functional.Relation.Binary.Permutation.Properties` of the above:
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  isIndexedEquivalence : {A : Set a} → IsIndexedEquivalence (Vector A) _↭_
+  indexedSetoid        : {A : Set a} → IndexedSetoid ℕ a _
   ```
 
 * `Function.Relation.Binary.Equality`
@@ -67,6 +107,13 @@ New modules
 * Symmetric interior of a binary relation
   ```
   Relation.Binary.Construct.Interior.Symmetric
+  ```
+
+* Pointwise and equality relations over indexed containers:
+  ```agda
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
 
 Additions to existing modules
@@ -117,6 +164,38 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Properties.Group`:
+  ```agda
+  isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
+  quasigroup      : Quasigroup _ _
+  isLoop          : IsLoop _∙_ _\\_ _//_ ε
+  loop            : Loop _ _
+  
+  \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
+  \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
+  \\-leftDivides   : LeftDivides _∙_ _\\_
+  //-rightDividesˡ : RightDividesˡ _∙_ _//_
+  //-rightDividesʳ : RightDividesʳ _∙_ _//_
+  //-rightDivides  : RightDivides _∙_ _//_
+
+  ⁻¹-selfInverse  : SelfInverse _⁻¹
+  \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
+  comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
+  ```
+
+* In `Algebra.Properties.Loop`:
+  ```agda
+  identityˡ-unique : x ∙ y ≈ y → x ≈ ε
+  identityʳ-unique : x ∙ y ≈ x → y ≈ ε
+  identity-unique  : Identity x _∙_ → x ≈ ε
+  ```
+ 
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
+  ```
+
 * In `Algebra.Properties.Monoid.Mult`:
   ```agda
   ×-homo-0 : ∀ x → 0 × x ≈ 0#
@@ -128,6 +207,21 @@ Additions to existing modules
   ×-homo-0#     : ∀ x → 0 × x ≈ 0# * x
   ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
+  ```
+
+* In `Algebra.Structures.IsGroup`:
+  ```agda
+  infixl 6 _//_
+  _//_ : Op₂ A
+  x // y = x ∙ (y ⁻¹)
+  infixr 6 _\\_
+  _\\_ : Op₂ A
+  x \\ y = (x ⁻¹) ∙ y
+  ```
+ 
+* In `Data.Container.Indexed.Core`:
+  ```agda
+  Subtrees o c = (r : Response c) → X (next c r)
   ```
 
 * In `Data.Fin.Properties`:
@@ -226,10 +320,31 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
+  
+* Added new proofs to `Data.Nat.Primality`:
+  ```agda
+  rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
+  productOfPrimes≢0 : All Prime as → NonZero (product as)
+  productOfPrimes≥1 : All Prime as → product as ≥ 1
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  product-↭ : product Preserves _↭_ ⟶ _≡_
+  ```
 
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+
+* Added new definition in `Relation.Binary.Construct.Closure.Transitive`
+  ```
+  transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
+  ```
+
+* Added new definition in `Relation.Unary`
+  ```
+  Stable : Pred A ℓ → Set _
   ```
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can
@@ -258,28 +373,15 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
-* Added new definitions in `Relation.Unary`
-  ```
-  Stable          : Pred A ℓ → Set _
-  WeaklyDecidable : Pred A ℓ → Set _
-  ```
-
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
   ```
 
-* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
-  ```agda
-  _↭_ : IRel (Vector A) _
+* Added new definitions in `Relation.Unary`
   ```
-
-* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
-  ```agda
-  ↭-refl      : Reflexive (Vector A) _↭_
-  ↭-reflexive : xs ≡ ys → xs ↭ ys
-  ↭-sym       : Symmetric (Vector A) _↭_
-  ↭-trans     : Transitive (Vector A) _↭_
+  Stable          : Pred A ℓ → Set _
+  WeaklyDecidable : Pred A ℓ → Set _
   ```
 
 * `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided

@@ -131,6 +131,10 @@ automate most of this.
   open SetoidEquality S
   ```
 
+* If importing a parametrised module, qualified or otherwise, with its
+  parameters instantiated, then such 'instantiated imports' should be placed
+  *after* the main block of `import`s, and *before* any `variable` declarations.
+
 * Naming conventions for qualified `import`s: if importing a module under
   a root of the form `Data.X` (e.g. the `Base` module for basic operations,
   or `Properties` for lemmas about them etc.) then conventionally, the
