@@ -359,7 +359,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     (∃ λ z → z ∈ xs)                   ↔⟨ Σ.cong K-refl (∈-index xs) ⟩
     (∃ λ z → ∃ λ i → z ≡ lookup xs i)  ↔⟨ ∃∃↔∃∃ _ ⟩
     (∃ λ i → ∃ λ z → z ≡ lookup xs i)  ↔⟨ Σ.cong K-refl (mk↔ₛ′ _ (λ _ → _ , refl) (λ _ → refl) (λ { (_ , refl) → refl })) ⟩
-   (Fin (length xs) × ⊤)              ↔⟨ ×-identityʳ _ _ ⟩
+    (Fin (length xs) × ⊤)              ↔⟨ ×-identityʳ _ _ ⟩
     Fin (length xs)                    ∎
     where
     open Related.EquationalReasoning
