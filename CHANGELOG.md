@@ -92,6 +92,21 @@ New modules
   Data.Nat.Primality.Factorisation
   ```
 
+* `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
+  ```agda
+  _↭_ : IRel (Vector A) _
+  ```
+
+* `Data.Vec.Functional.Relation.Binary.Permutation.Properties` of the above:
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  isIndexedEquivalence : {A : Set a} → IsIndexedEquivalence (Vector A) _↭_
+  indexedSetoid        : {A : Set a} → IndexedSetoid ℕ a _
+  ```
+
 * `Function.Relation.Binary.Equality`
   ```agda
   setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
@@ -368,13 +383,14 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
+* Added new proof in `Relation.Nullary.Decidable`:
+  ```agda
+  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
 * Added new definitions in `Relation.Unary`
   ```
   Stable          : Pred A ℓ → Set _
   WeaklyDecidable : Pred A ℓ → Set _
   ```
 
-* Added new proof in `Relation.Nullary.Decidable`:
-  ```agda
-  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
-  ```
