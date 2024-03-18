@@ -25,7 +25,7 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; ↭-refl; ↭-sym; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-  using (↭-sym-involutive; ∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ++-comm; shift)
+  using (↭-sym-involutive; ∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ++-comm; ↭-shift)
 open import Data.Product.Base as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum hiding (map)
@@ -592,7 +592,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   with zs₁ , zs₂ , p ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) rewrite p = begin
     x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
     x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-    x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
+    x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-shift zs₁ ⟨
     zs₁ ++ x ∷ zs₂   ∎
     where
     open CommutativeMonoid (commutativeMonoid bag A)

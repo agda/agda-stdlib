@@ -174,6 +174,10 @@ shift v (x ∷ xs) ys = begin
   v ∷ x ∷ xs ++ ys        ∎
   where open PermutationReasoning
 
+-- a better parametrisation
+↭-shift : ∀ {v : A} xs {ys} → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+↭-shift {v = v} xs {ys} = shift v xs ys
+
 drop-mid-≡ : ∀ {x : A} ws xs {ys} {zs} →
              ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
              ws ++ ys ↭ xs ++ zs

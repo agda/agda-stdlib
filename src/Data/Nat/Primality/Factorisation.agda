@@ -166,7 +166,7 @@ private
       shuffle : ∃[ bs′ ] bs ↭ a ∷ bs′
       shuffle
         with ys , zs , refl ← ∈-∃++ (factorisationHasAllPrimeFactors prime[a] a∣Πbs prime[bs])
-        = ys ++ zs , ↭-shift ys zs
+        = ys ++ zs , ↭-shift ys
 
       bs′ = proj₁ shuffle
       bs↭a∷bs′ = proj₂ shuffle
