@@ -8,7 +8,7 @@ open import Data.Nat.Properties
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; module ≡-Reasoning)
 
-open import Tactic.Cong using (cong!)
+open import Tactic.Cong using (cong! ; ⌞_⌟)
 
 ----------------------------------------------------------------------
 -- Usage
@@ -56,7 +56,7 @@ succinct-example m n eq =
   ∎
 
 ----------------------------------------------------------------------
--- Limitations
+-- Explicit markings
 ----------------------------------------------------------------------
 
 -- The 'cong!' tactic can handle simple cases, but will
@@ -68,6 +68,29 @@ succinct-example m n eq =
 -- to deduce where to generalize. When presented with two sides
 -- of an equality like 'm + n ≡ n + m', it will anti-unify to
 -- 'ϕ + ϕ', which is too specific.
+--
+-- In cases like these, you may explicitly mark the subterms to
+-- be generalized by wrapping them in the marker function, ⌞_⌟.
+
+marker-example₁ : ∀ m n o p → m + n + (o + p) ≡ n + m + (p + o)
+marker-example₁ m n o p =
+  let open ≡-Reasoning in
+  begin
+    ⌞ m + n ⌟ + (o + p)
+  ≡⟨ cong! (+-comm m n) ⟩
+    n + m + ⌞ o + p ⌟
+  ≡⟨ cong! (+-comm p o) ⟨
+    n + m + (p + o)
+  ∎
+
+marker-example₂ : ∀ m n → m + n + (m + n) ≡ n + m + (n + m)
+marker-example₂ m n =
+  let open ≤-Reasoning in
+  begin-equality
+    ⌞ m + n ⌟ + ⌞ m + n ⌟
+  ≡⟨ cong! (+-comm m n) ⟩
+    n + m + (n + m)
+  ∎
 
 ----------------------------------------------------------------------
 -- Unit Tests

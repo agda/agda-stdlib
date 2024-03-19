@@ -394,3 +394,5 @@ Additions to existing modules
   WeaklyDecidable : Pred A ℓ → Set _
   ```
 
+* `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
+  anti-unification. See README.Tactic.Cong for details.
