@@ -173,7 +173,7 @@ Irrelevant P = ∀ {x} → Nullary.Irrelevant (P x)
 Recomputable : Pred A ℓ → Set _
 Recomputable P = ∀ {x} → Nullary.Recomputable (P x)
 
--- Weak Decidability
+-- Stability - instances of P are stable wrt double negation
 
 Stable : Pred A ℓ → Set _
 Stable P = ∀ x → Nullary.Stable (P x)

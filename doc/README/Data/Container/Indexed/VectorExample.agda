@@ -6,7 +6,7 @@
 
 {-# OPTIONS --with-K --safe --guardedness #-}
 
-module README.Data.Container.Indexed where
+module README.Data.Container.Indexed.VectorExample where
 
 open import Data.Unit
 open import Data.Empty
@@ -27,12 +27,14 @@ module _ {a} (A : Set a) where
 -- 2. Responses the indexed container returns to these commands
 -- 3. Update of the index based on the command and the response issued.
 
--- For a vector, commands are constructors, responses are the number of subvectors
--- (0 if the vector is empty, 1 otherwise) and the update corresponds to setting the
--- size of the tail (if it exists). We can formalize these ideas like so:
+-- For a vector, commands are constructors, responses are the number
+-- of subvectors (0 if the vector is empty, 1 otherwise) and the
+-- update corresponds to setting the size of the tail (if it exists).
+-- We can formalize these ideas like so:
 
--- Depending on the size of the vector, we may have reached the end already (nil)
--- or we may specify what the head should be (cons). This is the type of commands.
+-- Depending on the size of the vector, we may have reached the end
+-- already (nil) or we may specify what the head should be (cons).
+-- This is the type of commands.
 
   data VecC : ℕ → Set a where
     nil  :           VecC zero

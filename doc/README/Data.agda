@@ -218,7 +218,8 @@ import README.Data.Vec.Relation.Binary.Equality.Cast
 -- monad, least fixed point, etc.) can be used
 
 import README.Data.Container.FreeMonad
-import README.Data.Container.Indexed
+import README.Data.Container.Indexed.VectorExample
+import README.Data.Container.Indexed.MultiSortedAlgebraExample
 
 -- Wrapping n-ary relations into a record definition so type-inference
 -- remembers the things being related.
