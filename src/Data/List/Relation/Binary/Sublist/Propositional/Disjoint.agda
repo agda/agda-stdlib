@@ -2,7 +2,8 @@
 -- The Agda standard library
 --
 -- This module is DEPRECATED.
--- Please use `Data.List.Relation.Binary.Sublist.Propositional` instead.
+-- Please use `Data.List.Relation.Binary.Sublist.Propositional.Slice`
+-- instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -12,20 +13,21 @@ module Data.List.Relation.Binary.Sublist.Propositional.Disjoint
 
 {-# WARNING_ON_IMPORT
 "Data.List.Relation.Binary.Sublist.Propositional.Disjoint was deprecated in v2.1.
-Use Data.List.Relation.Binary.Sublist.Propositional instead."
+Use Data.List.Relation.Binary.Sublist.Propositional.Slice instead."
 #-}
 
 open import Data.List.Base using (List)
-import Data.List.Relation.Binary.Sublist.Propositional as SLP
-open SLP using
+open import Data.List.Relation.Binary.Sublist.Propositional using
   ( _⊆_; _∷_; _∷ʳ_
-  ; Disjoint; ⊆-disjoint-union
-  ; ⊆-upper-bound-is-cospan; ⊆-upper-bound-cospan; _∷ₙ_; _∷ₗ_; _∷ᵣ_
+  ; Disjoint; ⊆-disjoint-union; _∷ₙ_; _∷ₗ_; _∷ᵣ_
   )
+import Data.List.Relation.Binary.Sublist.Propositional.Slice as SPSlice
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
+open SPSlice using (⊆-upper-bound-is-cospan; ⊆-upper-bound-cospan)
+
 -- For backward compatibility reexport these:
-open SLP public using ( IsCospan; Cospan )
+open SPSlice public using ( IsCospan; Cospan )
 
 open IsCospan
 open Cospan
@@ -62,10 +64,10 @@ module _
 
 {-# WARNING_ON_USAGE ⊆-disjoint-union-is-cospan
 "Warning: ⊆-disjoint-union-is-cospan was deprecated in v2.1.
-Please use `⊆-upper-bound-is-cospan` from `Data.List.Relation.Binary.Sublist.Propositional` instead."
+Please use `⊆-upper-bound-is-cospan` from `Data.List.Relation.Binary.Sublist.Propositional.Slice` instead."
 #-}
 
 {-# WARNING_ON_USAGE ⊆-disjoint-union-cospan
 "Warning: ⊆-disjoint-union-cospan was deprecated in v2.1.
-Please use `⊆-upper-bound-cospan` from `Data.List.Relation.Binary.Sublist.Propositional` instead."
+Please use `⊆-upper-bound-cospan` from `Data.List.Relation.Binary.Sublist.Propositional.Slice` instead."
 #-}
