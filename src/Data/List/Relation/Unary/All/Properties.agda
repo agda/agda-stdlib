@@ -14,19 +14,19 @@ open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (lookup; updateAt)
-open import Data.List.Properties as Listₚ using (partition-defn)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Membership.Setoid as SetoidMembership
+import Data.List.Properties as List
+import Data.List.Relation.Binary.Equality.Setoid as ≋
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
   ; _[_]=_; here; there
   ; Null
   )
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
-open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; []; _∷_)
-open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing; fromAny)
 open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
@@ -523,7 +523,7 @@ takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
 takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
 takeWhile⁻ {xs = []}     P? eq = []
 takeWhile⁻ {xs = x ∷ xs} P? eq with P? x
-... | yes px = px ∷ takeWhile⁻ P? (Listₚ.∷-injectiveʳ eq)
+... | yes px = px ∷ takeWhile⁻ P? (List.∷-injectiveʳ eq)
 ... | no ¬px = case eq of λ ()
 
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
@@ -595,7 +595,7 @@ module _ (P? : Decidable P) where
   all-filter : ∀ xs → All P (filter P? xs)
   all-filter []       = []
   all-filter (x ∷ xs) with P? x
-  ... |  true because [Px] = invert [Px] ∷ all-filter xs
+  ... | true  because [Px] = invert [Px] ∷ all-filter xs
   ... | false because  _   = all-filter xs
 
   filter⁺ : All Q xs → All Q (filter P? xs)
@@ -605,12 +605,12 @@ module _ (P? : Decidable P) where
   ... | true  = Qx ∷ filter⁺ Qxs
 
   filter⁻ : All Q (filter P? xs) → All Q (filter (¬? ∘ P?) xs) → All Q xs
-  filter⁻ {xs = []}           []          []                           = []
-  filter⁻ {xs = x ∷ xs}       all⁺        all⁻ with P? x  | ¬? (P? x)
-  filter⁻ {xs = x ∷ xs}       all⁺        all⁻  | yes  Px | yes  ¬Px = contradiction Px ¬Px
-  filter⁻ {xs = x ∷ xs} (qx ∷ all⁺)       all⁻  | yes  Px | no  ¬¬Px = qx ∷ filter⁻ all⁺ all⁻
-  filter⁻ {xs = x ∷ xs}       all⁺  (qx ∷ all⁻) | no    _ | yes  ¬Px = qx ∷ filter⁻ all⁺ all⁻
-  filter⁻ {xs = x ∷ xs}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
+  filter⁻ {xs = []}          []          []                         = []
+  filter⁻ {xs = x ∷ _}       all⁺        all⁻ with P? x  | ¬? (P? x)
+  filter⁻ {xs = x ∷ _}       all⁺        all⁻  | yes  Px | yes  ¬Px = contradiction Px ¬Px
+  filter⁻ {xs = x ∷ _} (qx ∷ all⁺)       all⁻  | yes  Px | no  ¬¬Px = qx ∷ filter⁻ all⁺ all⁻
+  filter⁻ {xs = x ∷ _}       all⁺  (qx ∷ all⁻) | no    _ | yes  ¬Px = qx ∷ filter⁻ all⁺ all⁻
+  filter⁻ {xs = x ∷ _}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
 
 ------------------------------------------------------------------------
 -- partition
@@ -619,7 +619,7 @@ module _ {P : A → Set p} (P? : Decidable P) where
 
   partition-All : ∀ xs → (let ys , zs = partition P? xs) →
                   All P ys × All (∁ P) zs
-  partition-All xs rewrite partition-defn P? xs =
+  partition-All xs rewrite List.partition-defn P? xs =
     all-filter P? xs , all-filter (∁? P?) xs
 
 ------------------------------------------------------------------------
@@ -635,7 +635,7 @@ module _ {R : A → A → Set q} (R? : B.Decidable R) where
   ... | true  = derun⁺ all[P,y∷xs]
 
   deduplicate⁺ : All P xs → All P (deduplicate R? xs)
-  deduplicate⁺ []               = []
+  deduplicate⁺ []         = []
   deduplicate⁺ (px ∷ pxs) = px ∷ filter⁺ (¬? ∘ R? _) (deduplicate⁺ pxs)
 
   derun⁻ : P B.Respects (flip R) → ∀ xs → All P (derun R? xs) → All P xs
@@ -645,8 +645,8 @@ module _ {R : A → A → Set q} (R? : B.Decidable R) where
     aux : ∀ x xs → All P (derun R? (x ∷ xs)) → All P (x ∷ xs)
     aux x []       (px ∷ []) = px ∷ []
     aux x (y ∷ xs) all[P,x∷y∷xs] with R? x y
-    aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy with aux y xs all[P,y∷xs]
-    aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy | r@(py ∷ _) = P-resp-R Rxy py ∷ r
+    aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy
+      with r@(py ∷ _) ← aux y xs all[P,y∷xs] = P-resp-R Rxy py ∷ r
     aux x (y ∷ xs) (px ∷ all[P,y∷xs]) | no _ = px ∷ aux y xs all[P,y∷xs]
 
   deduplicate⁻ : P B.Respects R → ∀ xs → All P (deduplicate R? xs) → All P xs
@@ -719,9 +719,9 @@ tails⁻ (x ∷ xs) (pxxs ∷ _) = pxxs
 module _ (p : A → Bool) where
 
   all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
-  all⁺ []       _     = []
-  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) px∷xs
-  ... | (px , pxs) = px ∷ all⁺ xs pxs
+  all⁺ []       _      = []
+  all⁺ (x ∷ xs) px∷pxs
+    with px , pxs ← Equivalence.to (T-∧ {p x}) px∷pxs = px ∷ all⁺ xs pxs
 
   all⁻ : All (T ∘ p) xs → T (all p xs)
   all⁻ []         = _
@@ -743,7 +743,7 @@ all-anti-mono p xs⊆ys = all⁻ p ∘ anti-mono xs⊆ys ∘ all⁺ p _
 module _ (S : Setoid c ℓ) where
 
   open Setoid S
-  open ListEq S
+  open ≋ S
 
   respects : P B.Respects _≈_ → (All P) B.Respects _≋_
   respects p≈ []            []         = []
