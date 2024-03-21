@@ -13,8 +13,8 @@
 module Data.List.Membership.Propositional.Properties.Core where
 
 open import Data.List.Base using (List)
-open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Product.Base as Product using (_,_)
 open import Function.Base using (flip; id; _∘_)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
