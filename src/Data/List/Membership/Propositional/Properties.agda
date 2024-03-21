@@ -55,7 +55,7 @@ private
 ------------------------------------------------------------------------
 -- Publicly re-export properties from Core
 
-open import Data.List.Membership.Propositional.Properties.CoreNEW public
+open import Data.List.Membership.Propositional.Properties.Core public
 
 ------------------------------------------------------------------------
 -- Equality
