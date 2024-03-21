@@ -14,6 +14,20 @@ open import Level using (suc; _⊔_)
 open import Relation.Nullary.Negation.Core using (¬_)
 
 ------------------------------------------------------------------------
+-- Raw bundles with 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+-- A raw SuccessorSet is a SuccessorSet without any laws.
+
+record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    suc#    : Op₁ Carrier
+    zero#   : Carrier
+
+------------------------------------------------------------------------
 -- Raw bundles with 1 binary operation
 ------------------------------------------------------------------------
 
