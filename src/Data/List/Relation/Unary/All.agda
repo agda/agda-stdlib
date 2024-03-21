@@ -8,9 +8,6 @@
 
 module Data.List.Relation.Unary.All where
 
-open import Effect.Applicative
-open import Effect.Monad
-open import Data.Empty using (⊥)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_; ∀∈ to ∀∈ₚ)
@@ -18,6 +15,8 @@ import Data.List.Membership.Setoid as SetoidMembership
 open import Data.Product.Base as Product
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
+open import Effect.Applicative
+open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; const)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
