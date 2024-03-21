@@ -234,6 +234,12 @@ Additions to existing modules
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
   ```
 
+* In `Data.List.Membership.Propositional.Properties.Core`:
+  ```agda
+  find∘∃∈-Any : (p : ∃∈ P xs) → find (∃∈-Any p) ≡ p
+  ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
+  ```
+
 * In `Data.List.Membership.Setoid`: two abbreviations for predicate transformers
   ```agda
   ∃∈ P xs = ∃ λ x → x ∈ xs × P x
@@ -250,6 +256,11 @@ Additions to existing modules
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
   reverse-downFrom      : reverse (downFrom n) ≡ upTo n
+  ```
+
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  universal-U : Universal (All U)
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
