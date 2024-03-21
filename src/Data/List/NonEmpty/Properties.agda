@@ -46,6 +46,9 @@ private
 η : ∀ (xs : List⁺ A) → head xs ∷ tail xs ≡ toList xs
 η _ = refl
 
+toList-injective : {xs ys : List⁺ A} → toList xs ≡ toList ys → xs ≡ ys
+toList-injective refl = refl
+
 toList-fromList : ∀ x (xs : List A) → x ∷ xs ≡ toList (x ∷ xs)
 toList-fromList _ _ = refl
 
@@ -112,6 +115,39 @@ map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 
 map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
+
+toList-map : (f : A → B) → toList ∘ map f ≗ List.map f ∘ toList
+toList-map f (x ∷ xs) = refl
+
+------------------------------------------------------------------------
+-- tails
+
+toList-tails⁺ : toList ∘ tails⁺ ≗ List.tails {A = A}
+toList-tails⁺ []          = refl
+toList-tails⁺ ys@(_ ∷ xs) = cong (ys ∷_) (toList-tails⁺ xs)
+
+------------------------------------------------------------------------
+-- scanr
+
+module _ (f : A → B → B) (e : B) where
+
+  private
+    h = List.foldr f e
+
+  scanr⁺-defn : scanr⁺ f e ≗ map h ∘ tails⁺
+  scanr⁺-defn []       = refl
+  scanr⁺-defn (x ∷ xs) = let eq = scanr⁺-defn xs
+    in cong₂ (λ z → f x z ∷_) (cong head eq) (cong toList eq)
+
+  toList-scanr⁺ : toList ∘ scanr⁺ f e ≗ List.map h ∘ List.tails
+  toList-scanr⁺ xs = begin
+    toList (scanr⁺ f e xs)
+      ≡⟨ cong toList (scanr⁺-defn xs) ⟩
+    toList (map h (tails⁺ xs))
+      ≡⟨ toList-map h (tails⁺ xs) ⟩
+    List.map h (toList (tails⁺ xs))
+      ≡⟨ cong (List.map h) (toList-tails⁺ xs) ⟩
+    List.map h (List.tails xs) ∎
 
 ------------------------------------------------------------------------
 -- groupSeqs

@@ -46,6 +46,15 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  scanr    ↦  Data.List.scanr
+  ```
+
+* In `Data.List.Properties`: (but not an exact replacement)
+  ```agda
+  scanr-defn   ↦  Data.List.NonEmpty.Properties.toList-scanr⁺
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -229,10 +238,29 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
-* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+* In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
   ```
+
+* In `Data.List`:
+  ```agda
+  scanr      : (A → B → B) → B → List A → List B
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  tails⁺     : List A → List⁺ (List A)
+  scanr⁺     : (A → B → B) → B → List A → List⁺ B
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-injective : toList xs ≡ toList ys → xs ≡ ys
+  toList-map    : (f : A → B) → toList ∘ map f ≗ List.map f ∘ toList
+  toList-tails⁺ : toList ∘ tails⁺ ≗ List.tails
+  scanr⁺-defn   : scanr⁺ f e ≗ map (List.foldr f e) ∘ tails⁺
+  toList-scanr⁺ : toList ∘ scanr⁺ f e ≗ List.map (List.foldr f e) ∘ List.tails
 
 * In `Data.List.Properties`:
   ```agda
