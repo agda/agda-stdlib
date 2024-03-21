@@ -5,8 +5,8 @@
 ------------------------------------------------------------------------
 
 -- This file is needed to break the cyclic dependency with the proof
--- `Any-cong` in `Data.Any.Properties` which relies on `Any↔` in this
--- file.
+-- `Any-cong` in `Data.List.Relation.Unary.Any.Properties` which relies
+-- on `Any↔` defined in this file.
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
