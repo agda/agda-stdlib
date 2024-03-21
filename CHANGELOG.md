@@ -54,19 +54,15 @@ Deprecated names
 New modules
 -----------
 
+
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
   ```
 
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+* Nagata's construction of the "idealization of a module":
   ```agda
-  Induction.InfiniteDescent
+  Algebra.Module.Construct.Idealization
   ```
 
 * The unique morphism from the initial, resp. terminal, algebra:
@@ -75,9 +71,25 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
-* Nagata's construction of the "idealization of a module":
+* Pointwise and equality relations over indexed containers:
   ```agda
-  Algebra.Module.Construct.Idealization
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* Isomorphism between `Fin` and an 'obvious' definition `ℕ<` of
+  'bounded natural number' type, in:
+  ```agda
+  Data.Nat.Bounded
+  Data.Nat.Bounded.Base
+  Data.Nat.Bounded.Literals
+  Data.Nat.Bounded.Properties
+  ```
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
   ```
 
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
@@ -104,16 +116,14 @@ New modules
   _⇨_ = setoid
   ```
 
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
+  ```
+
 * Symmetric interior of a binary relation
   ```
   Relation.Binary.Construct.Interior.Symmetric
-  ```
-
-* Pointwise and equality relations over indexed containers:
-  ```agda
-  Data.Container.Indexed.Relation.Binary.Pointwise
-  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
-  Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
 
 Additions to existing modules
@@ -124,6 +134,12 @@ Additions to existing modules
   rawNearSemiring   : RawNearSemiring _ _
   rawRingWithoutOne : RawRingWithoutOne _ _
   +-rawGroup        : RawGroup _ _
+  ```
+
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
@@ -170,7 +186,7 @@ Additions to existing modules
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
-  
+
   \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
   \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
   \\-leftDivides   : LeftDivides _∙_ _\\_
@@ -188,12 +204,6 @@ Additions to existing modules
   identityˡ-unique : x ∙ y ≈ y → x ≈ ε
   identityʳ-unique : x ∙ y ≈ x → y ≈ ε
   identity-unique  : Identity x _∙_ → x ≈ ε
-  ```
- 
-* In `Algebra.Construct.Terminal`:
-  ```agda
-  rawNearSemiring : RawNearSemiring c ℓ
-  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Properties.Monoid.Mult`:
@@ -218,7 +228,7 @@ Additions to existing modules
   _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
   ```
- 
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
@@ -320,7 +330,7 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
-  
+
 * Added new proofs to `Data.Nat.Primality`:
   ```agda
   rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
