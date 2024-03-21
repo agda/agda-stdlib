@@ -16,7 +16,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Nullary using (¬_; yes; no; _⊎-dec_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Unary hiding (_∈_)
+open import Relation.Unary using (Pred; _⊆_; Decidable; Satisfiable)
 
 private
   variable
