@@ -9,7 +9,7 @@
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (_Respects_)
 
-module Data.List.Membership.SetoidNEW {c ℓ} (S : Setoid c ℓ) where
+module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Function.Base using (_∘_; id; flip; const)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
