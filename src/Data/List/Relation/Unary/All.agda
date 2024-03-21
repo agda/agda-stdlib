@@ -13,7 +13,7 @@ open import Effect.Monad
 open import Data.Empty using (⊥)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_)
+open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_; ∀∈ to ∀∈ₚ)
 import Data.List.Membership.Setoid as SetoidMembership
 open import Data.Product.Base as Product
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
@@ -23,6 +23,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
+import Relation.Unary.Properties as Unary
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
@@ -68,7 +69,7 @@ data _[_]=_ {A : Set a} {P : Pred A p} :
 -- A list is empty if having an element is impossible.
 
 Null : Pred (List A) _
-Null = All (λ _ → ⊥)
+Null = All ∅
 
 ------------------------------------------------------------------------
 -- Operations on All
@@ -116,17 +117,17 @@ unzip : All (P ∩ Q) ⊆ All P ∩ All Q
 unzip = unzipWith id
 
 module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
-  open Setoid S renaming (Carrier to C; refl to refl₁)
+  open Setoid S renaming (refl to ≈-refl)
   open SetoidMembership S
 
-  tabulateₛ : (∀ {x} → x ∈ xs → P x) → All P xs
-  tabulateₛ {[]}     hyp = []
-  tabulateₛ {x ∷ xs} hyp = hyp (here refl₁) ∷ tabulateₛ (hyp ∘ there)
+  tabulateₛ : ∀∈ P xs → All P xs
+  tabulateₛ {[]}    hyp = []
+  tabulateₛ {_ ∷ _} hyp = hyp (here ≈-refl) ∷ tabulateₛ (hyp ∘ there)
 
-tabulate : (∀ {x} → x ∈ₚ xs → P x) → All P xs
+tabulate : ∀∈ₚ P xs → All P xs
 tabulate = tabulateₛ (≡.setoid _)
 
-self : ∀ {xs : List A} → All (const A) xs
+self : ∀ {xs} → All (const A) xs
 self = tabulate (λ {x} _ → x)
 
 ------------------------------------------------------------------------
@@ -191,15 +192,15 @@ lookupAny (px ∷ pxs) (there i) = lookupAny pxs i
 lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
 lookupWith f pxs i = Product.uncurry f (lookupAny pxs i)
 
-lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
+lookup : All P xs → ∀∈ₚ P xs
 lookup pxs = lookupWith (λ { px refl → px }) pxs
 
 module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
-  open Setoid S renaming (sym to sym₁)
+  open Setoid S renaming (sym to ≈-sym)
   open SetoidMembership S
 
-  lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
-  lookupₛ resp pxs = lookupWith (λ py x=y → resp (sym₁ x=y) py) pxs
+  lookupₛ : P Respects _≈_ → All P xs → ∀∈ P xs
+  lookupₛ resp pxs = lookupWith (λ py x≈y → resp (≈-sym x≈y) py) pxs
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All
@@ -211,6 +212,9 @@ all? p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×-dec all? p xs)
 universal : Universal P → Universal (All P)
 universal u []       = []
 universal u (x ∷ xs) = u x ∷ universal u xs
+
+universal-U : Universal (All (U {A = A}))
+universal-U = universal Unary.U-Universal
 
 irrelevant : Irrelevant P → Irrelevant (All P)
 irrelevant irr []           []           = ≡.refl
