@@ -231,7 +231,7 @@ Any-×⁻ pq = let x , x∈xs , pq′ = find pq in
   open ≡-Reasoning
 
   from∘to : ∀ pq → Any-×⁻ (Any-×⁺ pq) ≡ pq
-  from∘to (p , q) =
+  from∘to (p , q) = let x , x∈xs , px = find p in
 
     Any-×⁻ (Any-×⁺ (p , q))
 
@@ -250,10 +250,10 @@ Any-×⁻ pq = let x , x∈xs , pq′ = find pq in
          (y , y∈ys , p , q) = find (Any.map (p ,_) q)
      in  lose x∈xs p , lose y∈ys q)
 
-     ≡⟨ cong (λ • → let (x , x∈xs , p)     = find p
+     ≡⟨ cong (λ • → let (x , x∈xs , _)     = find p
                         (y , y∈ys , p , q) = •
                     in  lose x∈xs p , lose y∈ys q)
-             (find∘map q (proj₂ (proj₂ (find p)) ,_)) ⟩
+             (find∘map q (px ,_)) ⟩
 
     (let (x , x∈xs , p) = find p
          (y , y∈ys , q) = find q
