@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Permutation.Homogeneous where
 
 open import Algebra.Bundles using (CommutativeMonoid)
-open import Data.List.Base as List using (List; []; _∷_; [_])
+open import Data.List.Base as List using (List; []; _∷_; [_]; _++_; length)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -135,13 +135,12 @@ module _ {R : Rel A r}  where
     ↭-swap _ _ xs↭ys = swap R-refl R-refl xs↭ys
 
     ↭-shift : ∀ {v w} → R v w → ∀ xs {ys zs} → Permutation R ys zs →
-              Permutation R (xs List.++ v ∷ ys) (w ∷ xs List.++ zs)
+              Permutation R (xs ++ v ∷ ys) (w ∷ xs ++ zs)
     ↭-shift {v} {w} v≈w []       rel = prep v≈w rel
     ↭-shift {v} {w} v≈w (x ∷ xs) rel
       = trans (↭-prep (↭-shift v≈w xs rel)) (↭-swap x w ↭-refl′)
 
-    shift : ∀ {v w} → R v w → ∀ xs {ys} →
-          Permutation R (xs List.++  v ∷ ys) (w ∷ xs List.++ ys)
+    shift : ∀ {v w} → R v w → ∀ xs {ys} → Permutation R (xs ++ v ∷ ys) (w ∷ xs ++ ys)
     shift v≈w xs = ↭-shift v≈w xs ↭-refl′
 
 -- Symmetry and its consequences
@@ -214,17 +213,17 @@ module _ {R : Rel A r} (R-refl : Reflexive R) (R-trans : Transitive R)
     ≋-refl = Pointwise.refl R-refl
     ≋-trans : Transitive (Pointwise R)
     ≋-trans = Pointwise.transitive R-trans
-    _++[_]++_ = λ xs (z : A) ys → xs List.++ List.[ z ] List.++ ys
+    _++[_]++_ = λ xs (z : A) ys → xs ++ [ z ] ++ ys
 
   ↭-split : ∀ v as bs {xs} → Permutation R xs (as ++[ v ]++ bs) →
             ∃₂ λ ps qs → Pointwise R xs (ps ++[ v ]++ qs)
-                       × Permutation R (ps List.++ qs) (as List.++ bs)
+                       × Permutation R (ps ++ qs) (as ++ bs)
   ↭-split v as bs p = helper as bs p ≋-refl
     where
     helper : ∀ as bs {xs ys} (p : Permutation R xs ys) →
              Pointwise R ys (as ++[ v ]++ bs) →
              ∃₂ λ ps qs → Pointwise R xs (ps ++[ v ]++ qs)
-                        × Permutation R (ps List.++ qs) (as List.++ bs)
+                        × Permutation R (ps ++ qs) (as ++ bs)
     helper as           bs (trans xs↭ys ys↭zs) zs≋as++[v]++ys
       with ps , qs , eq , ↭ ← helper as bs ys↭zs zs≋as++[v]++ys
       with ps′ , qs′ , eq′ , ↭′ ← helper ps qs xs↭ys eq
@@ -269,8 +268,8 @@ module _ {R : Rel A r} (R-equiv : IsEquivalence R) where
   setoid = record { isEquivalence = isEquivalence }
 
   dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
-                        Pointwise R (ws List.++ x ∷ ys) (xs List.++ x ∷ zs) →
-                        Permutation R (ws List.++ ys) (xs List.++ zs)
+                        Pointwise R (ws ++ x ∷ ys) (xs ++ x ∷ zs) →
+                        Permutation R (ws ++ ys) (xs ++ zs)
   dropMiddleElement-≋ []       []       (_   ∷ eq) = ↭-pointwise eq
   dropMiddleElement-≋ []       (x ∷ xs) (w≈v ∷ eq)
     = ↭-transˡ-≋ ≈.trans eq (shift ≈.refl w≈v xs)
@@ -279,8 +278,8 @@ module _ {R : Rel A r} (R-equiv : IsEquivalence R) where
   dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (dropMiddleElement-≋ ws xs eq)
 
   dropMiddleElement : ∀ {x} ws xs {ys zs} →
-                      Permutation R (ws List.++ x ∷ ys) (xs List.++ x ∷ zs) →
-                      Permutation R (ws List.++ ys) (xs List.++ zs)
+                      Permutation R (ws ++ x ∷ ys) (xs ++ x ∷ zs) →
+                      Permutation R (ws ++ ys) (xs ++ zs)
   dropMiddleElement {x} ws xs {ys} {zs} p
     with ps , qs , eq , ↭ ← ↭-split ≈.refl ≈.trans x xs zs p
     = ↭-trans ≈.trans (dropMiddleElement-≋ ws ps eq) ↭
@@ -415,7 +414,7 @@ module _ {R : Rel A r} {S : Rel A s}
 
 module _ {R : Rel A r} where
 
-  ↭-length : Permutation R xs ys → List.length xs ≡ List.length ys
+  ↭-length : Permutation R xs ys → length xs ≡ length ys
   ↭-length (refl xs≋ys)        = Pointwise.Pointwise-length xs≋ys
   ↭-length (prep _ xs↭ys)      = cong suc (↭-length xs↭ys)
   ↭-length (swap _ _ xs↭ys)    = cong (suc ∘ suc) (↭-length xs↭ys)
