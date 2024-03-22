@@ -67,7 +67,7 @@ module _ {R : Rel A r} {S : Rel A s} where
 
 
 ------------------------------------------------------------------------
--- Smart inversions
+-- Inversion principles
 
 module _ {R : Rel A r}  where
 
@@ -220,8 +220,6 @@ module _ {R : Rel A r} (R-refl : Reflexive R) (R-trans : Transitive R)
   private
     ≋-refl : Reflexive (Pointwise R)
     ≋-refl = Pointwise.refl R-refl
-    ↭-refl : Reflexive (Permutation R)
-    ↭-refl = ↭-refl′ R-refl
     ≋-trans : Transitive (Pointwise R)
     ≋-trans = Pointwise.transitive R-trans
     _++[_]++_ = λ xs (z : A) ys → xs List.++ List.[ z ] List.++ ys
@@ -249,9 +247,9 @@ module _ {R : Rel A r} (R-refl : Reflexive R) (R-trans : Transitive R)
       with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
       = a ∷ ps , qs , R-trans x≈v v≈y ∷ eq , prep R-refl ↭
     helper []           [] (swap _ _ _) (_ ∷ ())
-    helper []     (b ∷ bs) (swap x≈v y≈w xs↭vs) (w≈z ∷ v≈y ∷ vs≋ys)
-      = List.[ b ] , _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl
-                       , ↭-prep R-refl (↭-transʳ-≋ R-trans xs↭vs vs≋ys)
+    helper []      (b ∷ _) (swap x≈v y≈w xs↭vs) (w≈z ∷ v≈y ∷ vs≋ys)
+      = b ∷ [] , _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl
+                   , ↭-prep R-refl (↭-transʳ-≋ R-trans xs↭vs vs≋ys)
     helper (a ∷ [])     bs (swap x≈v y≈w xs↭vs)  (w≈z ∷ v≈y ∷ vs≋ys)
       = []     , a ∷ _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl
                        , ↭-prep R-refl (↭-transʳ-≋ R-trans xs↭vs vs≋ys)
@@ -289,11 +287,11 @@ module _ {R : Rel A r} (R-equiv : IsEquivalence R) where
     = ↭-transʳ-≋ ≈.trans (↭-sym′ ≈.sym (shift ≈.refl (≈.sym w≈x) ws)) eq
   dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (dropMiddleElement-≋ ws xs eq)
 
-  dropMiddleElement : ∀ {v : A} ws xs {ys zs} →
+  dropMiddleElement : ∀ {x} ws xs {ys zs} →
                       Permutation R (ws List.++ x ∷ ys) (xs List.++ x ∷ zs) →
                       Permutation R (ws List.++ ys) (xs List.++ zs)
-  dropMiddleElement {v} ws xs {ys} {zs} p
-    with ps , qs , eq , ↭ ← ↭-split ≈.refl ≈.trans v xs zs p
+  dropMiddleElement {x} ws xs {ys} {zs} p
+    with ps , qs , eq , ↭ ← ↭-split ≈.refl ≈.trans x xs zs p
     = ↭-trans ≈.trans (dropMiddleElement-≋ ws ps eq) ↭
 
 
@@ -580,8 +578,16 @@ module Steps {R : Rel A r} where
 -- Version 2.1
 
 ¬x∷xs↭[] = ¬x∷xs↭[]ʳ
+{-# WARNING_ON_USAGE ¬x∷xs↭[]
+"Warning: ¬x∷xs↭[] was deprecated in v2.1.
+Please use ¬x∷xs↭[]ʳ instead."
+#-}
 
 ↭-singleton⁻¹ : {R : Rel A r} → Transitive R →
                 ∀ {xs x} → Permutation R xs [ x ] → ∃ λ y → xs ≡ [ y ] × R y x
 ↭-singleton⁻¹ = ↭-singleton-invʳ
+{-# WARNING_ON_USAGE ↭-singleton⁻¹
+"Warning: ↭-singleton⁻¹ was deprecated in v2.1.
+Please use ↭-singleton-invʳ instead."
+#-}
 
