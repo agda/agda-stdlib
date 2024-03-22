@@ -146,10 +146,10 @@ steps-respʳ = Properties.Steps.steps-respʳ ≈-trans
 ↭-[]-invʳ = Properties.↭-[]-invʳ
 
 ¬x∷xs↭[] : ¬ ((x ∷ xs) ↭ [])
-¬x∷xs↭[] = Properties.¬x∷xs↭[]
+¬x∷xs↭[] = Properties.¬x∷xs↭[]ʳ
 
 ↭-singleton⁻¹ : xs ↭ [ x ] → ∃ λ y → xs ≡ [ y ] × y ≈ x
-↭-singleton⁻¹ = Properties.↭-singleton⁻¹ ≈-trans
+↭-singleton⁻¹ = Properties.↭-singleton-invʳ ≈-trans
 
 ------------------------------------------------------------------------
 -- length
@@ -284,7 +284,7 @@ dropMiddleElement-≋ = Properties.dropMiddleElement-≋ isEquivalence
 dropMiddleElement : ∀ {v} ws xs {ys zs} →
                     ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs →
                     ws ++ ys ↭ xs ++ zs
-dropMiddleElement {v} = Properties.dropMiddleElement isEquivalence {v = v}
+dropMiddleElement {v} = Properties.dropMiddleElement isEquivalence {x = v}
 
 dropMiddle : ∀ {vs} ws xs {ys zs} →
              ws ++ vs ++ ys ↭ xs ++ vs ++ zs →

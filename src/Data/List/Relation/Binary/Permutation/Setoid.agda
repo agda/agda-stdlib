@@ -60,7 +60,7 @@ _↭_ = Homogeneous.Permutation _≈_
 -- Functions over permutations (retained for legacy)
 
 steps : ∀ {xs ys} → xs ↭ ys → ℕ
-steps = Homogeneous.steps
+steps = Homogeneous.Steps.steps
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence

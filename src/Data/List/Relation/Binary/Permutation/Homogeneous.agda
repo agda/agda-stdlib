@@ -121,14 +121,6 @@ module _ {R : Rel A r}  where
   ↭-pointwise : _≋_ ⇒ _↭_
   ↭-pointwise = refl
 
--- Steps: legacy definition
-
-  steps : Permutation R xs ys → ℕ
-  steps (refl _)            = 1
-  steps (prep _ xs↭ys)      = suc (steps xs↭ys)
-  steps (swap _ _ xs↭ys)    = suc (steps xs↭ys)
-  steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
-
 -- Reflexivity and its consequences
 
   module _ (R-refl : Reflexive R) where
@@ -276,7 +268,6 @@ module _ {R : Rel A r} (R-equiv : IsEquivalence R) where
   setoid : Setoid _ _
   setoid = record { isEquivalence = isEquivalence }
 
-
   dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
                         Pointwise R (ws List.++ x ∷ ys) (xs List.++ x ∷ zs) →
                         Permutation R (ws List.++ ys) (xs List.++ zs)
@@ -293,6 +284,12 @@ module _ {R : Rel A r} (R-equiv : IsEquivalence R) where
   dropMiddleElement {x} ws xs {ys} {zs} p
     with ps , qs , eq , ↭ ← ↭-split ≈.refl ≈.trans x xs zs p
     = ↭-trans ≈.trans (dropMiddleElement-≋ ws ps eq) ↭
+
+  syntax dropMiddleElement-≋ ws xs ws++x∷ys≋xs++x∷zs
+    = ws ++≋[ ws++x∷ys≋xs++x∷zs ]++ xs
+
+  syntax dropMiddleElement ws xs ws++x∷ys↭xs++x∷zs
+    = ws ++↭[ ws++x∷ys↭xs++x∷zs ]++ xs
 
 
 ------------------------------------------------------------------------
@@ -520,6 +517,14 @@ module _ (commutativeMonoid : CommutativeMonoid a r) where
 ------------------------------------------------------------------------
 
 module Steps {R : Rel A r} where
+
+-- Definition
+
+  steps : Permutation R xs ys → ℕ
+  steps (refl _)            = 1
+  steps (prep _ xs↭ys)      = suc (steps xs↭ys)
+  steps (swap _ _ xs↭ys)    = suc (steps xs↭ys)
+  steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 
 -- Basic property
 
