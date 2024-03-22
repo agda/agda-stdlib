@@ -56,8 +56,7 @@ module _ {p} {P : Pred A p} where
 
   find : ∀ {xs} → Any P xs → ∃∈ P xs
   find (here px)   = _ , here refl , px
-  find (there pxs) = Product.map id (Product.map there id) (find pxs)
-  -- better? let x , x∈xs , px = find pxs in x , there x∈xs , px
+  find (there pxs) = let x , x∈xs , px = find pxs in x , there x∈xs , px
 
   lose : P Respects _≈_ →  ∀ {x xs} → x ∈ xs → P x → Any P xs
   lose resp x∈xs px = map (flip resp px) x∈xs
