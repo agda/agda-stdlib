@@ -43,7 +43,7 @@ import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
 
 open Setoid S
-  using (_≈_; isPartialEquivalence)
+  using (_≈_; isEquivalence)
   renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
 open Permutation S
 open Membership S
@@ -86,10 +86,10 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 ≋⇒↭ = ↭-pointwise
 
 ↭-respʳ-≋ : _↭_ Respectsʳ _≋_
-↭-respʳ-≋ = Properties.↭-respʳ-≋ ≈-trans
+↭-respʳ-≋ = Properties.Steps.↭-respʳ-≋ ≈-trans
 
 ↭-respˡ-≋ : _↭_ Respectsˡ _≋_
-↭-respˡ-≋ = Properties.↭-respˡ-≋ ≈-sym ≈-trans
+↭-respˡ-≋ = Properties.Steps.↭-respˡ-≋ ≈-trans ≈-sym
 
 ↭-transˡ-≋ : LeftTrans _≋_ _↭_
 ↭-transˡ-≋ = Properties.↭-transˡ-≋ ≈-trans
@@ -122,15 +122,15 @@ module _ (≈-sym-involutive : ∀ {x y} → (p : x ≈ y) → ≈-sym (≈-sym 
 ------------------------------------------------------------------------
 
 0<steps : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
-0<steps = Properties.0<steps
+0<steps = Properties.Steps.0<steps
 
 steps-respˡ : (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) →
               steps (↭-respˡ-≋ ys≋xs ys↭zs) ≡ steps ys↭zs
-steps-respˡ = Properties.steps-respˡ ≈-sym ≈-trans
+steps-respˡ = Properties.Steps.steps-respˡ ≈-trans ≈-sym
 
 steps-respʳ : (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) →
               steps (↭-respʳ-≋ xs≋ys zs↭xs) ≡ steps zs↭xs
-steps-respʳ = Properties.steps-respʳ ≈-trans
+steps-respʳ = Properties.Steps.steps-respʳ ≈-trans
 
 ------------------------------------------------------------------------
 -- Properties of list functions
@@ -279,12 +279,12 @@ shifts xs ys {zs} = begin
 dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
            ws ++ [ x ] ++ ys ≋ xs ++ [ x ] ++ zs →
            ws ++ ys ↭ xs ++ zs
-dropMiddleElement-≋ = Properties.dropMiddleElement-≋ ≈-refl ≈-sym ≈-trans
+dropMiddleElement-≋ = Properties.dropMiddleElement-≋ isEquivalence
 
 dropMiddleElement : ∀ {v} ws xs {ys zs} →
                     ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs →
                     ws ++ ys ↭ xs ++ zs
-dropMiddleElement = Properties.dropMiddleElement ≈-refl ≈-sym ≈-trans
+dropMiddleElement {v} = Properties.dropMiddleElement isEquivalence {v = v}
 
 dropMiddle : ∀ {vs} ws xs {ys zs} →
              ws ++ vs ++ ys ↭ xs ++ vs ++ zs →
@@ -294,7 +294,7 @@ dropMiddle {v ∷ vs} ws xs p = dropMiddle ws xs (dropMiddleElement ws xs p)
 
 split-↭ : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs →
           ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs × ps ++ qs ↭ as ++ bs
-split-↭ v as bs p = Properties.split-↭ ≈-refl ≈-trans v as bs p
+split-↭ v as bs p = Properties.↭-split ≈-refl ≈-trans v as bs p
 
 split : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
 split v as bs p with ps , qs , eq , _ ← split-↭ v as bs p = ps , qs , eq

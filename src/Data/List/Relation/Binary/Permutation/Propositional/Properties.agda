@@ -96,13 +96,13 @@ Any-resp-↭ = ↭.Any-resp-↭ (≡.resp _)
 ∈-resp-↭ : (x ∈_) Respects _↭_
 ∈-resp-↭ = ↭.∈-resp-↭
 
-∈-resp-↭-sym⁻¹ : (p : xs ↭ ys) {ix : v ∈ xs} {iy : v ∈ ys} →
-                   ix ≡ ∈-resp-↭ (↭-sym p) iy → ∈-resp-↭ p ix ≡ iy
-∈-resp-↭-sym⁻¹ p = ↭.∈-resp-↭-sym⁻¹ sym-involutive trans-trans-sym p
+∈-resp-↭-sym⁻¹ : (p : xs ↭ ys) {iy : v ∈ ys} →
+                 ∈-resp-↭ p (∈-resp-↭ (↭-sym p) iy) ≡ iy
+∈-resp-↭-sym⁻¹ = ↭.∈-resp-↭-sym⁻¹ sym-involutive trans-trans-sym
 
-∈-resp-↭-sym : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
-                   ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
-∈-resp-↭-sym   p = ↭.∈-resp-↭-sym   sym-involutive trans-trans-sym p
+∈-resp-↭-sym : (p : xs ↭ ys) {ix : v ∈ xs} →
+               ∈-resp-↭ (↭-sym p) (∈-resp-↭ p ix) ≡ ix
+∈-resp-↭-sym = ↭.∈-resp-↭-sym sym-involutive trans-trans-sym
 
 ------------------------------------------------------------------------
 -- map
