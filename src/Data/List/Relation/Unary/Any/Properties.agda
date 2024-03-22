@@ -280,8 +280,8 @@ Any-×⁻ pq = let x , x∈xs , pq′ = find pq in
         helper : Any.map (p ,_) (lose y∈ys q) ≡ pq′
         helper = begin
           Any.map (p ,_) (lose y∈ys q)
-            ≡⟨ map-∘ (p ,_) (λ y → resp Q y q) y∈ys ⟨
-          _
+            ≡⟨ map-∘ (p ,_) (λ z → resp Q z q) y∈ys ⟨
+          Any.map (λ z → p , resp Q z q) y∈ys
             ≡⟨ lem₂ refl ⟩
           pq′
             ∎
@@ -294,7 +294,7 @@ Any-×⁻ pq = let x , x∈xs , pq′ = find pq in
         ≡⟨⟩
       Any.map h (lose x∈xs p)
         ≡⟨ map-∘ h (λ z → resp P z p) x∈xs ⟨
-      _
+      Any.map (λ z → Any.map (resp P z p ,_) (lose y∈ys q)) x∈xs
         ≡⟨ lem₁ helper ⟩
       pq
         ∎
