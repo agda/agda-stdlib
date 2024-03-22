@@ -12,10 +12,10 @@ open import Algebra.Bundles using (CommutativeMonoid)
 open import Data.List.Base as List using (List; []; _∷_; [_])
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; []; _∷_)
-open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-import Data.List.Relation.Unary.Any.Properties as Any
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+import Data.List.Relation.Unary.Any.Properties as Any
 open import Data.Nat.Base using (ℕ; suc; _+_; _<_)
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)

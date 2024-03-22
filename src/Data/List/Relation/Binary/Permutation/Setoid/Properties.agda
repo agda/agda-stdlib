@@ -17,9 +17,9 @@ open import Data.Bool.Base using (true; false)
 open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise)
-open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 import Data.List.Membership.Setoid as Membership
 import Data.List.Properties as List
