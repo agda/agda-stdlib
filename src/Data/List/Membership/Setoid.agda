@@ -10,11 +10,11 @@ open import Relation.Binary.Bundles using (Setoid)
 
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
-open import Data.List.Base using (List; []; _∷_; length; lookup)
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any
   using (Any; map; here; there)
 open import Data.Product.Base as Product using (∃; _×_; _,_)
-open import Function.Base using (_∘_; id; flip; const)
+open import Function.Base using (_∘_; flip; const)
 open import Relation.Binary.Definitions using (_Respects_)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Unary using (Pred)
