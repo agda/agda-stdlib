@@ -39,7 +39,7 @@ open import Relation.Binary.Definitions as Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; _≢_; refl; sym; trans; cong; resp; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
-open import Relation.Nullary.Decidable using (Dec; does; yes; no; ¬¬-excluded-middle)
+open import Relation.Nullary.Decidable using (Dec; yes; no; ¬¬-excluded-middle)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Unary using (_⟨×⟩_; Decidable)
