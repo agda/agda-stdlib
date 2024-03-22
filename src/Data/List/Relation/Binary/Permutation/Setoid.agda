@@ -72,7 +72,7 @@ steps = Homogeneous.steps
 ↭-refl = ↭-reflexive refl
 
 ↭-sym : Symmetric _↭_
-↭-sym = Homogeneous.sym ≈-sym
+↭-sym = Homogeneous.↭-sym′ ≈-sym
 
 ↭-trans : Transitive _↭_
 ↭-trans = Homogeneous.↭-trans ≈-trans

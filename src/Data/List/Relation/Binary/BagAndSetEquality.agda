@@ -578,10 +578,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
   from = ∈-resp-↭ ∘ ↭-sym
 
   from∘to : (p : xs ↭ ys) (ix : v ∈ xs) → from p (to p ix) ≡ ix
-  from∘to p _ = ∈-resp-↭-sym p refl
+  from∘to p _ = ∈-resp-↭-sym p
 
   to∘from : (p : xs ↭ ys) (iy : v ∈ ys) → to p (from p iy) ≡ iy
-  to∘from p _ = ∈-resp-↭-sym⁻¹ p refl
+  to∘from p _ = ∈-resp-↭-sym⁻¹ p
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
 ∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq)      = ↭-refl

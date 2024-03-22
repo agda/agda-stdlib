@@ -73,7 +73,7 @@ AllPairs-resp-↭ : Symmetric R → R Respects₂ _≈_ → (AllPairs R) Respect
 AllPairs-resp-↭ = Properties.AllPairs-resp-↭
 
 ∈-resp-↭ : (x ∈_) Respects _↭_
-∈-resp-↭ = Properties.∈-resp-↭ isPartialEquivalence
+∈-resp-↭ = Properties.∈-resp-↭ ≈-trans
 
 Unique-resp-↭ : Unique Respects _↭_
 Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
@@ -102,20 +102,20 @@ module _ (≈-sym-involutive : ∀ {x y} → (p : x ≈ y) → ≈-sym (≈-sym 
   where
 
   ↭-sym-involutive : (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
-  ↭-sym-involutive = Properties.↭-sym-involutive′ isPartialEquivalence ≈-sym-involutive
+  ↭-sym-involutive = Properties.↭-sym-involutive′ ≈-trans ≈-sym ≈-sym-involutive
 
   module _ (≈-trans-trans-sym : ∀ {x y z} (p : x ≈ y) (q : y ≈ z) →
                                 ≈-trans (≈-trans p q) (≈-sym q) ≡ p)
     where
 
-    ∈-resp-↭-sym⁻¹ : ∀ (p : xs ↭ ys) {ix : x ∈ xs} {iy : x ∈ ys} →
-                     ix ≡ ∈-resp-↭ (↭-sym p) iy → ∈-resp-↭ p ix ≡ iy
-    ∈-resp-↭-sym⁻¹ p = Properties.∈-resp-↭-sym⁻¹
-      isPartialEquivalence ≈-sym-involutive ≈-trans-trans-sym p
-    ∈-resp-↭-sym   : (p : ys ↭ xs) {iy : v ∈ ys} {ix : v ∈ xs} →
-                     ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
-    ∈-resp-↭-sym   p = Properties.∈-resp-↭-sym
-      isPartialEquivalence ≈-sym-involutive ≈-trans-trans-sym p
+    ∈-resp-↭-sym⁻¹ : ∀ (p : xs ↭ ys) {iy : x ∈ ys} →
+                     ∈-resp-↭ p (∈-resp-↭ (↭-sym p) iy) ≡ iy
+    ∈-resp-↭-sym⁻¹ = Properties.∈-resp-↭-sym⁻¹
+      ≈-trans ≈-sym ≈-sym-involutive ≈-trans-trans-sym
+    ∈-resp-↭-sym   : (p : xs ↭ ys) {ix : v ∈ xs} →
+                     ∈-resp-↭ (↭-sym p) (∈-resp-↭ p ix) ≡ ix
+    ∈-resp-↭-sym   = Properties.∈-resp-↭-sym
+      ≈-trans ≈-sym ≈-sym-involutive ≈-trans-trans-sym
 
 ------------------------------------------------------------------------
 -- Properties of steps (legacy)
@@ -174,7 +174,7 @@ module _ (T : Setoid b r) where
 -- _++_
 
 shift : v ≈ w → ∀ xs ys → xs ++ [ v ] ++ ys ↭ w ∷ xs ++ ys
-shift v≈w xs ys = Properties.shift ≈-refl ≈-sym ≈-trans v≈w xs {ys}
+shift v≈w xs ys = Properties.shift ≈-refl v≈w xs {ys}
 
 ↭-shift : ∀ xs {ys} → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
 ↭-shift xs {ys} = shift ≈-refl xs ys
