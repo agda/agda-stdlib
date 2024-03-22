@@ -9,7 +9,6 @@
 module Data.List.Membership.Propositional.Properties where
 
 open import Algebra using (Op₂; Selective)
-open import Data.Bool.Base using (Bool; false; true; if_then_else_)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List
 open import Data.List.Effectful using (monad)
