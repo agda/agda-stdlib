@@ -142,9 +142,9 @@ module _ {v : A} where
     Membership.∈-concat⁺′ (≡.setoid A) v∈vs (Any.map ≡⇒≋ vs∈xss)
 
   ∈-concat⁻′ : ∀ xss → v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ xss
-  ∈-concat⁻′ xss v∈c
-    with xs , v∈xs , xs∈xss ← Membership.∈-concat⁻′ (≡.setoid A) xss v∈c
-    = xs , v∈xs , Any.map ≋⇒≡ xs∈xss
+  ∈-concat⁻′ xss v∈c =
+    let xs , v∈xs , xs∈xss = Membership.∈-concat⁻′ (≡.setoid A) xss v∈c
+    in xs , v∈xs , Any.map ≋⇒≡ xs∈xss
 
   concat-∈↔ : ∀ {xss : List (List A)} →
               (∃ λ xs → v ∈ xs × xs ∈ xss) ↔ v ∈ concat xss
