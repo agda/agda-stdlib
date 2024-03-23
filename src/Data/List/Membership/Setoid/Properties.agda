@@ -211,8 +211,8 @@ module _ (S : Setoid c ℓ) where
   ∈-∃++ : ∀ {v xs} → v ∈ xs → ∃₂ λ ys zs → ∃ λ w →
           v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ∈-∃++ (here px)        = [] , _ , _ , px , ≋-refl
-  ∈-∃++ (there {d} v∈xs) with hs , _ , _ , v≈v′ , eq ← ∈-∃++ v∈xs
-                         = d ∷ hs , _ , _ , v≈v′ , refl ∷ eq
+  ∈-∃++ (there {d} v∈xs) = let hs , _ , _ , v≈v′ , eq = ∈-∃++ v∈xs
+                           in d ∷ hs , _ , _ , v≈v′ , refl ∷ eq
 
 ------------------------------------------------------------------------
 -- concat
@@ -234,8 +234,8 @@ module _ (S : Setoid c ℓ) where
   ∈-concat⁺′ v∈vs = ∈-concat⁺ ∘ Any.map (flip (∈-resp-≋ S) v∈vs)
 
   ∈-concat⁻′ : ∀ {v} xss → v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ₗ xss
-  ∈-concat⁻′ xss v∈c[xss]
-    with xs , xs∈xss , v∈xs ← find (∈-concat⁻ xss v∈c[xss]) = xs , v∈xs , xs∈xss
+  ∈-concat⁻′ xss v∈c[xss] =
+    let xs , xs∈xss , v∈xs = find (∈-concat⁻ xss v∈c[xss]) in xs , v∈xs , xs∈xss
 
 ------------------------------------------------------------------------
 -- cartesianProductWith
@@ -257,10 +257,12 @@ module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) (S₃ : Setoid 
   ∈-cartesianProductWith⁻ : ∀ f xs ys {v} → v ∈₃ cartesianProductWith f xs ys →
                             ∃₂ λ a b → a ∈₁ xs × b ∈₂ ys × v ≈₃ f a b
   ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c with ∈-++⁻ S₃ (map (f x) ys) v∈c
-  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c | inj₁ v∈map with ∈-map⁻ S₂ S₃ v∈map
-  ... | (b , b∈ys , v≈fxb) = x , b , here refl₁ , b∈ys , v≈fxb
-  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c | inj₂ v∈com with ∈-cartesianProductWith⁻ f xs ys v∈com
-  ... | (a , b , a∈xs , b∈ys , v≈fab) = a , b , there a∈xs , b∈ys , v≈fab
+  ... | inj₁ v∈map =
+    let b , b∈ys , v≈fxb = ∈-map⁻ S₂ S₃ v∈map
+    in x , b , here refl₁ , b∈ys , v≈fxb
+  ... | inj₂ v∈com =
+    let a , b , a∈xs , b∈ys , v≈fab = ∈-cartesianProductWith⁻ f xs ys v∈com
+    in  a , b , there a∈xs , b∈ys , v≈fab
 
 ------------------------------------------------------------------------
 -- cartesianProduct
