@@ -485,10 +485,10 @@ module _ (f : A → B → C) where
                           Any R (cartesianProductWith f xs ys) →
                           Any P xs × Any Q ys
   cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys with ++⁻ (map (f x) ys) Rxsys
-  cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys | inj₁ Rfxys with map⁻ Rfxys
-  ... | Rxys = here (proj₁ (resp (proj₂ (Any.satisfied Rxys)))) , Any.map (proj₂ ∘ resp) Rxys
-  cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys | inj₂ Rc with cartesianProductWith⁻ resp xs ys Rc
-  ... | pxs , qys = there pxs , qys
+  ... | inj₁ Rfxys = let Rxys = map⁻ Rfxys
+    in here (proj₁ (resp (proj₂ (Any.satisfied Rxys)))) , Any.map (proj₂ ∘ resp) Rxys
+  ... | inj₂ Rc    = let pxs , qys = cartesianProductWith⁻ resp xs ys Rc
+    in there pxs , qys
 
 ------------------------------------------------------------------------
 -- cartesianProduct
@@ -512,8 +512,8 @@ applyUpTo⁺ f p (s<s i<n@(s≤s _)) =
 applyUpTo⁻ : ∀ f {n} → Any P (applyUpTo f n) →
              ∃ λ i → i < n × P (f i)
 applyUpTo⁻ f {suc n} (here p)  = zero , z<s , p
-applyUpTo⁻ f {suc n} (there p)
-  with i , i<n , q ← applyUpTo⁻ (f ∘ suc) p = suc i , s<s i<n , q
+applyUpTo⁻ f {suc n} (there p) =
+  let i , i<n , q = applyUpTo⁻ (f ∘ suc) p in suc i , s<s i<n , q
 
 ------------------------------------------------------------------------
 -- applyDownFrom
@@ -526,8 +526,8 @@ applyDownFrom⁺ f {i} {suc n} p (s≤s i≤n) with i ≟ n
 applyDownFrom⁻ : ∀ f {n} → Any P (applyDownFrom f n) →
                  ∃ λ i → i < n × P (f i)
 applyDownFrom⁻ f {suc n} (here p)  = n , ≤-refl , p
-applyDownFrom⁻ f {suc n} (there p)
-  with i , i<n , q ← applyDownFrom⁻ f p = i , m<n⇒m<1+n i<n , q
+applyDownFrom⁻ f {suc n} (there p) =
+  let i , i<n , q = applyDownFrom⁻ f p in i , m<n⇒m<1+n i<n , q
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -581,9 +581,10 @@ module _ {R : Rel A r} (R? : B.Decidable R) where
   deduplicate⁺ {xs = x ∷ xs} resp (here px)   = here px
   deduplicate⁺ {xs = x ∷ xs} resp (there pxs)
     with filter⁺ (¬? ∘ R? x) (deduplicate⁺ resp pxs)
-  ... | inj₁ p = there p
-  ... | inj₂ ¬¬q with decidable-stable (R? x (Any.lookup (deduplicate⁺ resp pxs))) ¬¬q
-  ...  | q = here (resp q (lookup-result (deduplicate⁺ resp pxs)))
+  ... | inj₁ p   = there p
+  ... | inj₂ ¬¬q =
+    let q = decidable-stable (R? x (Any.lookup (deduplicate⁺ resp pxs))) ¬¬q
+    in  here (resp q (lookup-result (deduplicate⁺ resp pxs)))
 
   private
     derun⁻-aux : Any P (derun R? (x ∷ xs)) → Any P (x ∷ xs)
