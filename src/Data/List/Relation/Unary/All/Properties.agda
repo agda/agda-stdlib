@@ -386,8 +386,7 @@ mapMaybe⁺ : ∀ {f : A → Maybe B} →
 mapMaybe⁺ {xs = []}     {f = f} []         = []
 mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ... | nothing = mapMaybe⁺ pxs
-... | just v with px
-...   | just pv = pv ∷ mapMaybe⁺ pxs
+... | just v with just pv ← px = pv ∷ mapMaybe⁺ pxs
 
 ------------------------------------------------------------------------
 -- catMaybes
@@ -720,8 +719,9 @@ module _ (p : A → Bool) where
 
   all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
   all⁺ []       _      = []
-  all⁺ (x ∷ xs) px∷pxs
-    with px , pxs ← Equivalence.to (T-∧ {p x}) px∷pxs = px ∷ all⁺ xs pxs
+  all⁺ (x ∷ xs) px∷pxs =
+    let px , pxs = Equivalence.to (T-∧ {p x}) px∷pxs
+    in px ∷ all⁺ xs pxs
 
   all⁻ : All (T ∘ p) xs → T (all p xs)
   all⁻ []         = _
