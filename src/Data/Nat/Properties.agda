@@ -2117,13 +2117,10 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 ≤″-proof : (le : m ≤″ n) → let less-than-or-equal {k} _ = le in m + k ≡ n
 ≤″-proof (less-than-or-equal prf) = prf
 
--- yielding corresponding proof and `pattern` aliases for _≤″_/_<_
+-- yielding corresponding proof _≤″_
 
 m≤n⇒∃[o]m+o≡n : m ≤ n → ∃ λ k → m + k ≡ n
 m≤n⇒∃[o]m+o≡n le with less-than-or-equal {k} refl ← ≤⇒≤″ le = k , refl
-
-pattern ≤-offset k = k , refl
-pattern <-offset k = ≤-offset k
 
 -- equivalence of _<″_ to _<ᵇ_
 
