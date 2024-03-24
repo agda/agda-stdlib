@@ -363,8 +363,6 @@ infix 4 _≤″_ _<″_ _≥″_ _>″_
 _≤″_ : (m n : ℕ)  → Set
 _≤″_ = _∣ˡ_ +-rawMagma
 
-pattern less-than-or-equal {k} proof = k , proof
-
 _<″_ : Rel ℕ 0ℓ
 m <″ n = suc m ≤″ n
 
@@ -373,6 +371,11 @@ m ≥″ n = n ≤″ m
 
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
+
+-- Smart destructor of _<″_
+
+s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
+s<″s⁻¹ (k , refl) = k , refl
 
 -- _≤‴_: this definition is useful for induction with an upper bound.
 
@@ -439,11 +442,3 @@ s≤″s⁻¹ (k , refl) = k , refl
 {-# WARNING_ON_USAGE s≤″s⁻¹
 "Warning: s≤″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) instead. "
 #-}
-
-s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
-s<″s⁻¹ (k , refl) = k , refl
-{-# WARNING_ON_USAGE s<″s⁻¹
-"Warning: s<″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) instead. "
-#-}
-
-
