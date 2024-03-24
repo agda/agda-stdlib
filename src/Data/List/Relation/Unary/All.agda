@@ -212,7 +212,7 @@ universal : Universal P → Universal (All P)
 universal u []       = []
 universal u (x ∷ xs) = u x ∷ universal u xs
 
-universal-U : Universal (All (U {A = A}))
+universal-U : Universal (All {A = A} U)
 universal-U = universal Unary.U-Universal
 
 irrelevant : Irrelevant P → Irrelevant (All P)
