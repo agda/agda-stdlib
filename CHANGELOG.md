@@ -170,7 +170,7 @@ Additions to existing modules
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
-  
+
   \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
   \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
   \\-leftDivides   : LeftDivides _∙_ _\\_
@@ -189,7 +189,7 @@ Additions to existing modules
   identityʳ-unique : x ∙ y ≈ x → y ≈ ε
   identity-unique  : Identity x _∙_ → x ≈ ε
   ```
- 
+
 * In `Algebra.Construct.Terminal`:
   ```agda
   rawNearSemiring : RawNearSemiring c ℓ
@@ -218,7 +218,7 @@ Additions to existing modules
   _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
   ```
- 
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
@@ -327,7 +327,7 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
-  
+
 * Added new proofs to `Data.Nat.Primality`:
   ```agda
   rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n

@@ -39,7 +39,7 @@ zero ()
 -- Basic properties
 
 cong : (≈ : Rel A ℓm) → Rel.Homomorphic₂ ℤero.Carrier A ℤero._≈_ ≈ zero
-cong _ {x = ()} 
+cong _ {x = ()}
 
 injective : (≈ : Rel A ℓm) → Injective ℤero._≈_ ≈ zero
 injective _ {x = ()}
@@ -52,7 +52,7 @@ isMagmaHomomorphism : (M : RawMagma m ℓm) →
 isMagmaHomomorphism M = record
   { isRelHomomorphism = record { cong = cong (RawMagma._≈_ M) }
   ; homo = λ()
-  } 
+  }
 
 isMagmaMonomorphism : (M : RawMagma m ℓm) →
                       IsMagmaMonomorphism rawMagma M zero
