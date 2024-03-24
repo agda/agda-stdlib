@@ -211,8 +211,9 @@ module _ (S : Setoid c ℓ) where
   ∈-∃++ : ∀ {v xs} → v ∈ xs → ∃₂ λ ys zs → ∃ λ w →
           v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ∈-∃++ (here px)        = [] , _ , _ , px , ≋-refl
-  ∈-∃++ (there {d} v∈xs) = let hs , _ , _ , v≈v′ , eq = ∈-∃++ v∈xs
-                           in d ∷ hs , _ , _ , v≈v′ , refl ∷ eq
+  ∈-∃++ (there {d} v∈xs) =
+    let hs , _ , _ , v≈v′ , eq = ∈-∃++ v∈xs
+    in d ∷ hs , _ , _ , v≈v′ , refl ∷ eq
 
 ------------------------------------------------------------------------
 -- concat
