@@ -16,9 +16,7 @@ import Function.Construct.Composition as Compose
 open import Level using (Level)
 open import Data.Product.Base using (proj₁; proj₂)
 open import Relation.Binary.Definitions
-open import Relation.Binary.PropositionalEquality using ()
 open import Relation.Binary using (Setoid)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private
   variable

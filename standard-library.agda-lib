@@ -1,4 +1,5 @@
-name: standard-library-2.1
+name: standard-library-tbt
 include: src
 flags:
   --warning=noUnsupportedIndexedMatch
+--   --type-based-termination

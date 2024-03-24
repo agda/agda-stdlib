@@ -27,8 +27,8 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Bundles
   using (Preorder; Setoid; Poset)
 import Relation.Binary.Properties.Setoid as SetoidProperties
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary
 open import Relation.Nullary.Decidable hiding (map)
 open import Relation.Nullary.Negation
@@ -117,13 +117,13 @@ data Kind : Set where
 infix 4 _≟-Kind_
 
 _≟-Kind_ : Decidable (_≡_ {A = Kind})
-_≟-Kind_ strong       strong       = yes P.refl
+_≟-Kind_ strong       strong       = yes ≡.refl
 _≟-Kind_ strong       (other k)    = no λ()
 _≟-Kind_ (other k)    strong       = no λ()
-_≟-Kind_ (other geq)  (other geq)  = yes P.refl
+_≟-Kind_ (other geq)  (other geq)  = yes ≡.refl
 _≟-Kind_ (other geq)  (other weak) = no λ()
 _≟-Kind_ (other weak) (other geq)  = no λ()
-_≟-Kind_ (other weak) (other weak) = yes P.refl
+_≟-Kind_ (other weak) (other weak) = yes ≡.refl
 
 -- A predicate which is satisfied only for equalities. Note that, for
 -- concrete inputs, this predicate evaluates to ⊤ or ⊥.
@@ -303,14 +303,14 @@ module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
     ; _≈_        = _≡_
     ; _≲_        = Rel k
     ; isPreorder = record
-      { isEquivalence = P.isEquivalence
+      { isEquivalence = ≡.isEquivalence
       ; reflexive     = refl′
       ; trans         = Equivalence.trans (IsPreorder.trans pre)
       }
     }
     where
     refl′ : ∀ {k} {x y : A ⊥} → x ≡ y → Rel k x y
-    refl′ P.refl = Equivalence.refl (IsPreorder.refl pre)
+    refl′ ≡.refl = Equivalence.refl (IsPreorder.refl pre)
 
   private
     preorder′ : IsEquivalence _∼_ → Kind → Preorder _ _ _
@@ -371,7 +371,7 @@ module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
     infixr 2 _≡⟨_⟩_ _≅⟨_⟩_ _≳⟨_⟩_ _≈⟨_⟩_
 
     _≡⟨_⟩_ : ∀ {k} x {y z : A ⊥} → x ≡ y → Rel k y z → Rel k x z
-    _ ≡⟨ P.refl ⟩ y∼z = y∼z
+    _ ≡⟨ ≡.refl ⟩ y∼z = y∼z
 
     _≅⟨_⟩_ : ∀ {k} x {y z : A ⊥} → x ≅ y → Rel k y z → Rel k x z
     _ ≅⟨ x≅y ⟩ y∼z = Pre.trans (≅⇒ x≅y) y∼z
@@ -436,7 +436,7 @@ module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
 
   ≡⇒ : Reflexive _∼_ →
        ∀ {k x y} → Equality.Rel _≡_ k x y → Rel k x y
-  ≡⇒ refl-∼ = map (flip (P.subst (_∼_ _)) refl-∼)
+  ≡⇒ refl-∼ = map (flip (≡.subst (_∼_ _)) refl-∼)
 
 ------------------------------------------------------------------------
 -- Steps
@@ -454,17 +454,17 @@ module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
       ∀ {k x y} {z : A}
       (x≅y : x ≅ y) (y⇓z : y ⇓[ k ] z) →
       steps (Equivalence.trans trans-∼ (≅⇒ x≅y) y⇓z) ≡ steps y⇓z
-    left-identity (now _)     (now _)      = P.refl
+    left-identity (now _)     (now _)      = ≡.refl
     left-identity (later x≅y) (laterˡ y⇓z) =
-      P.cong suc $ left-identity (♭ x≅y) y⇓z
+      ≡.cong suc $ left-identity (♭ x≅y) y⇓z
 
     right-identity :
       ∀ {k x} {y z : A}
       (x⇓y : x ⇓[ k ] y) (y≈z : now y ⇓[ k ] z) →
       steps (Equivalence.trans trans-∼ x⇓y y≈z) ≡ steps x⇓y
-    right-identity (now x∼y)    (now y∼z) = P.refl
+    right-identity (now x∼y)    (now y∼z) = ≡.refl
     right-identity (laterˡ x∼y) (now y∼z) =
-      P.cong suc $ right-identity x∼y (now y∼z)
+      ≡.cong suc $ right-identity x∼y (now y∼z)
 
 ------------------------------------------------------------------------
 -- Laws related to bind
@@ -538,9 +538,9 @@ module _ {A B : Set s}
     ∃ λ z → ∃₂ λ (x⇓ : x ⇓[ k ]A z) (fz⇓ : f z ⇓[ k ]B y) →
                  steps x⇓ + steps fz⇓ ≡ steps x>>=f⇓
   >>=-inversion-⇓ refl (now x) fx⇓ =
-    (x , now refl , fx⇓ , P.refl)
+    (x , now refl , fx⇓ , ≡.refl)
   >>=-inversion-⇓ refl (later x) (laterˡ x>>=f⇓) =
-    Prod.map id (Prod.map laterˡ (Prod.map id (P.cong suc))) $
+    Prod.map id (Prod.map laterˡ (Prod.map id (≡.cong suc))) $
       >>=-inversion-⇓ refl (♭ x) x>>=f⇓
 
   >>=-inversion-⇑ : IsEquivalence _∼A_ →
@@ -589,7 +589,7 @@ module _ {A B : Set ℓ} {_∼_ : B → B → Set ℓ} where
     Rel _∼_ k (x₁ >>= f₁) (x₂ >>= f₂)
   _≡->>=-cong_ {k} {f₁ = f₁} {f₂} x₁≈x₂ f₁≈f₂ =
     x₁≈x₂ >>=-cong λ {x} x≡x′ →
-    P.subst (λ y → Rel _∼_ k (f₁ x) (f₂ y)) x≡x′ (f₁≈f₂ x)
+    ≡.subst (λ y → Rel _∼_ k (f₁ x) (f₂ y)) x≡x′ (f₁≈f₂ x)
 
 ------------------------------------------------------------------------
 -- Productivity checker workaround
@@ -641,7 +641,7 @@ module Workaround {a} where
 
     private
       open module Eq {A : Set a} = Equality  {A = A} _≡_
-      open module R  {A : Set a} = Reasoning (P.isEquivalence {A = A})
+      open module R  {A : Set a} = Reasoning (≡.isEquivalence {A = A})
 
     now-hom : (x : A) → ⟦ now x ⟧P ≅ now x
     now-hom x = now x ∎
@@ -820,7 +820,7 @@ module AlternativeEquality {a ℓ} where
     whnf≅ (x₁≅x₂ >>= f₁≅f₂)   = whnf≅ x₁≅x₂ >>=W λ xRy → whnf≅ (f₁≅f₂ xRy)
     whnf≅ (x ∎)               = reflW x
     whnf≅ (sym x≅y)           = symW _ (whnf≅ x≅y)
-    whnf≅ (x ≡⟨ P.refl ⟩ y≅z) = whnf≅ y≅z
+    whnf≅ (x ≡⟨ ≡.refl ⟩ y≅z) = whnf≅ y≅z
     whnf≅ (x ≅⟨ x≅y    ⟩ y≅z) = trans≅W (whnf≅ x≅y) (whnf≅ y≅z)
 
     -- More transitivity lemmas.
@@ -853,7 +853,7 @@ module AlternativeEquality {a ℓ} where
     whnf≳ (laterˡ x≲y)         = laterˡ (whnf≳ x≲y)
     whnf≳ (x₁∼x₂ >>= f₁∼f₂)    = whnf≳ x₁∼x₂ >>=W λ xRy → whnf≳ (f₁∼f₂ xRy)
     whnf≳ (x ∎)                = reflW x
-    whnf≳ (x ≡⟨ P.refl ⟩  y≳z) = whnf≳ y≳z
+    whnf≳ (x ≡⟨ ≡.refl ⟩  y≳z) = whnf≳ y≳z
     whnf≳ (x ≅⟨ x≅y    ⟩  y≳z) = trans≅∼W (whnf≅ x≅y) (whnf≳ y≳z)
     whnf≳ (x ≳⟨ x≳y    ⟩  y≳z) = trans≳-W        x≳y  (whnf≳ y≳z)
     whnf≳ (x ≳⟨ x≳y    ⟩≅ y≅z) = trans∼≅W (whnf≳ x≳y) (whnf≅ y≅z)
@@ -879,7 +879,7 @@ module AlternativeEquality {a ℓ} where
     whnf (x₁∼x₂ >>= f₁∼f₂)    = whnf x₁∼x₂ >>=W λ xRy → whnf (f₁∼f₂ xRy)
     whnf (x ∎)                = reflW x
     whnf (sym {eq = eq} x≈y)  = symW eq (whnf x≈y)
-    whnf (x ≡⟨ P.refl ⟩  y∼z) = whnf y∼z
+    whnf (x ≡⟨ ≡.refl ⟩  y∼z) = whnf y∼z
     whnf (x ≅⟨ x≅y    ⟩  y∼z) = trans≅∼W (whnf x≅y) (whnf y∼z)
     whnf (x ≳⟨ x≳y    ⟩  y≳z) = trans≳-W       x≳y  (whnf y≳z)
     whnf (x ≳⟨ x≳y    ⟩≅ y≅z) = trans∼≅W (whnf x≳y) (whnf y≅z)
@@ -930,7 +930,7 @@ idempotent {A = A} B x f = sound (idem x)
              (x >>= λ y′ → f y′ y′)
   idem (now   x) = f x x ∎
   idem (later x) = later (♯ (
-    (♭ x >>= λ y′ → later x >>= λ y″ → f y′ y″)  ≳⟨ (refl P.refl {x = ♭ x} ≡->>=-cong λ _ →
+    (♭ x >>= λ y′ → later x >>= λ y″ → f y′ y″)  ≳⟨ (refl ≡.refl {x = ♭ x} ≡->>=-cong λ _ →
                                                      laterˡ (refl (Setoid.refl B))) ⟩
     (♭ x >>= λ y′ →     ♭ x >>= λ y″ → f y′ y″)  ≳⟨ idem (♭ x) ⟩≅
     (♭ x >>= λ y′ → f y′ y′)                     ∎))

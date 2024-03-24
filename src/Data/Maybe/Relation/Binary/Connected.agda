@@ -13,7 +13,7 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary.Core using (REL; _⇒_)
 open import Relation.Binary.Definitions using (Reflexive; Sym; Decidable)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 
@@ -52,7 +52,7 @@ refl R-refl {just _}  = just R-refl
 refl R-refl {nothing} = nothing
 
 reflexive : _≡_ ⇒ R → _≡_ ⇒ Connected R
-reflexive reflexive P.refl = refl (reflexive P.refl)
+reflexive reflexive ≡.refl = refl (reflexive ≡.refl)
 
 sym : Sym R S → Sym (Connected R) (Connected S)
 sym R-sym (just p)     = just (R-sym p)

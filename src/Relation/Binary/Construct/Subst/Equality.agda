@@ -9,7 +9,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Product.Base as Prod
+open import Data.Product.Base using (_,_)
 open import Relation.Binary.Core using (Rel; _⇔_)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)

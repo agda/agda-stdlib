@@ -29,7 +29,7 @@ open import Data.Product.Base using (∃; ∃₂; _×_; _,_; proj₂)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 
 open Setoid S renaming (Carrier to A)
@@ -162,7 +162,7 @@ record RawPushout {xs ys zs : List A} (τ : xs ⊆ ys) (σ : xs ⊆ zs) : Set (c
     leg₁         : ys ⊆ upperBound
     leg₂         : zs ⊆ upperBound
 
-open RawPushout
+open RawPushout using (leg₁; leg₂)
 
 ------------------------------------------------------------------------
 -- Extending corners of a raw pushout square
@@ -211,13 +211,25 @@ z ∷ʳ₂ rpo = record
 
 ⊆-joinˡ : ∀ {xs ys zs : List A} →
           (τ : xs ⊆ ys) (σ : xs ⊆ zs) → ∃ λ us → xs ⊆ us
-⊆-joinˡ τ σ = upperBound rpo , ⊆-trans τ (leg₁ rpo)
+⊆-joinˡ τ σ = RawPushout.upperBound rpo , ⊆-trans τ (leg₁ rpo)
   where
   rpo = ⊆-pushoutˡ τ σ
 
 
 ------------------------------------------------------------------------
 -- Upper bound of two sublists xs,ys ⊆ zs
+--
+-- Two sublists τ : xs ⊆ zs and σ : ys ⊆ zs
+-- can be joined in a unique way if τ and σ are respected.
+--
+-- For instance, if τ : [x] ⊆ [x,y,x] and σ : [y] ⊆ [x,y,x]
+-- then the union will be [x,y] or [y,x], depending on whether
+-- τ picks the first x or the second one.
+--
+-- NB: If the content of τ and σ were ignored then the union would not
+-- be unique.  Expressing uniqueness would require a notion of equality
+-- of sublist proofs, which we do not (yet) have for the setoid case
+-- (however, for the propositional case).
 
 record UpperBound {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) where
   field
@@ -254,24 +266,26 @@ x≈y ∷ᵣ-ub u = record
   ; inj₂ = x≈y  ∷ u .inj₂
   }
 
+_,_∷-ub_ : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x y z} →
+         (x≈z : x ≈ z) (y≈z : y ≈ z) → UpperBound τ σ → UpperBound (x≈z ∷ τ) (y≈z ∷ σ)
+x≈z , y≈z ∷-ub u = record
+  { sub  =  refl ∷ u .sub
+  ; inj₁ =  x≈z  ∷ u .inj₁
+  ; inj₂ =  y≈z  ∷ u .inj₂
+  }
+
+⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
+⊆-upper-bound []        []        = record { sub = [] ; inj₁ = [] ; inj₂ = [] }
+⊆-upper-bound (y ∷ʳ τ)  (.y ∷ʳ σ) = ∷ₙ-ub (⊆-upper-bound τ σ)
+⊆-upper-bound (y ∷ʳ τ)  (x≈y ∷ σ) = x≈y ∷ᵣ-ub ⊆-upper-bound τ σ
+⊆-upper-bound (x≈y ∷ τ) (y  ∷ʳ σ) = x≈y ∷ₗ-ub ⊆-upper-bound τ σ
+⊆-upper-bound (x≈z ∷ τ) (y≈z ∷ σ) = x≈z , y≈z ∷-ub ⊆-upper-bound τ σ
+
 ------------------------------------------------------------------------
 -- Disjoint union
 --
--- Two non-overlapping sublists τ : xs ⊆ zs and σ : ys ⊆ zs
--- can be joined in a unique way if τ and σ are respected.
---
--- For instance, if τ : [x] ⊆ [x,y,x] and σ : [y] ⊆ [x,y,x]
--- then the union will be [x,y] or [y,x], depending on whether
--- τ picks the first x or the second one.
---
--- NB: If the content of τ and σ were ignored then the union would not
--- be unique.  Expressing uniqueness would require a notion of equality
--- of sublist proofs, which we do not (yet) have for the setoid case
--- (however, for the propositional case).
+-- Upper bound of two non-overlapping sublists.
 
 ⊆-disjoint-union : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} →
                    Disjoint τ σ → UpperBound τ σ
-⊆-disjoint-union []         = record { sub = [] ; inj₁ = [] ; inj₂ = [] }
-⊆-disjoint-union (x   ∷ₙ d) = ∷ₙ-ub (⊆-disjoint-union d)
-⊆-disjoint-union (x≈y ∷ₗ d) = x≈y ∷ₗ-ub (⊆-disjoint-union d)
-⊆-disjoint-union (x≈y ∷ᵣ d) = x≈y ∷ᵣ-ub (⊆-disjoint-union d)
+⊆-disjoint-union {τ = τ} {σ = σ} _ = ⊆-upper-bound τ σ

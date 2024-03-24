@@ -14,7 +14,7 @@ open import Codata.Sized.Delay
 open import Level
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Sym; Trans)
-open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) i :
            (xs : Delay A ∞) (ys : Delay B ∞) → Set (a ⊔ b ⊔ r) where
@@ -53,10 +53,10 @@ module _ {ℓ} {A : Set ℓ} where
  _⊢_≈_ = Bisim _≡_
 
  refl : ∀ {i} → Reflexive (i ⊢_≈_)
- refl = reflexive Eq.refl
+ refl = reflexive ≡.refl
 
  sym : ∀ {i} → Symmetric (i ⊢_≈_)
- sym = symmetric Eq.sym
+ sym = symmetric ≡.sym
 
  trans : ∀ {i} → Transitive (i ⊢_≈_)
- trans = transitive Eq.trans
+ trans = transitive ≡.trans
