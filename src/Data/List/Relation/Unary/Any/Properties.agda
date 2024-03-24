@@ -265,23 +265,23 @@ Any-×⁻ pq = let x , x∈xs , pq′ = find pq in
   to∘from : ∀ pq → Any-×⁺ (Any-×⁻ pq) ≡ pq
   to∘from pq =
     let x , x∈xs , pq′ = find pq
-
+{-
         lem₁ : {f : (x ≡_) ⋐ λ x → Any (λ y → (P x) × (Q y)) ys} →
                (f-refl : f refl ≡ pq′) → Any.map f _ ≡ pq
         lem₁ {f} = map∘find pq {f = f}
-
+-}
         y , y∈ys , p , q = find pq′
-
+{-
         lem₂ : {g : (y ≡_) ⋐ λ y → (P x) × (Q y)} →
                (g-refl : g refl ≡ (p , q)) → Any.map g _ ≡ pq′
         lem₂ {g} = map∘find pq′ {f = g}
-
+-}
         helper : Any.map (p ,_) (lose y∈ys q) ≡ pq′
         helper = begin
           Any.map (p ,_) (lose y∈ys q)
             ≡⟨ map-∘ (p ,_) (λ z → resp Q z q) y∈ys ⟨
           Any.map (λ z → p , resp Q z q) y∈ys
-            ≡⟨ lem₂ refl ⟩
+            ≡⟨ map∘find pq′ refl ⟩
           pq′
             ∎
 
@@ -294,7 +294,7 @@ Any-×⁻ pq = let x , x∈xs , pq′ = find pq in
       Any.map h (lose x∈xs p)
         ≡⟨ map-∘ h (λ z → resp P z p) x∈xs ⟨
       Any.map (λ z → Any.map (resp P z p ,_) (lose y∈ys q)) x∈xs
-        ≡⟨ lem₁ helper ⟩
+        ≡⟨ map∘find pq helper ⟩
       pq
         ∎
 
