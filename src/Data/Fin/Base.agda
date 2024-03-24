@@ -11,6 +11,7 @@
 
 module Data.Fin.Base where
 
+open import Algebra.Definitions.RawMagma using (_,_)
 open import Data.Bool.Base using (Bool; T)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
@@ -75,7 +76,11 @@ fromℕ< {suc m} {suc _} m<n = suc (fromℕ< (ℕ.s<s⁻¹ m<n))
 
 fromℕ<″ : ∀ m {n} → .(m ℕ.<″ n) → Fin n
 fromℕ<″ zero    {suc _} _    = zero
-fromℕ<″ (suc m) {suc _} m<″n = suc (fromℕ<″ m (ℕ.s<″s⁻¹ m<″n))
+fromℕ<″ (suc m) {suc _} m<″n = suc (fromℕ<″ m (s<″s⁻¹ m<″n))
+  where
+  s<″s⁻¹ : ∀ {m n} → suc m ℕ.<″ suc n → m ℕ.<″ n
+  s<″s⁻¹ (k , refl) = k , refl
+
 
 -- canonical liftings of i:Fin m to larger index
 
