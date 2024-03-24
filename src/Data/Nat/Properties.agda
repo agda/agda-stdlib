@@ -2126,7 +2126,7 @@ m≤n⇒∃[o]m+o≡n m≤n = _ , m+[n∸m]≡n (recompute (_ ≤? _) m≤n)
 -- and a 'guarded' version of monus
 
 guarded-∸ : ∀ n m → .(m ≤ n) → ℕ
-guarded-∸ n m m≤n = let k , _ = m≤n⇒∃[o]m+o≡n (recompute (m ≤? n) m≤n) in k
+guarded-∸ n m m≤n = let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k
 
 guarded-∸≗∸ : ∀ {m n} → .(m≤n : m ≤ n) → guarded-∸ n m m≤n ≡ n ∸ m
 guarded-∸≗∸ m≤n = refl
@@ -2167,8 +2167,7 @@ _>″?_ : Decidable _>″_
 _>″?_ = flip _<″?_
 
 ≤″-irrelevant : Irrelevant _≤″_
-≤″-irrelevant {m} (_ , eq₁)
-                  (_ , eq₂)
+≤″-irrelevant {m} (_ , eq₁) (_ , eq₂)
   with refl ← +-cancelˡ-≡ m _ _ (trans eq₁ (sym eq₂))
   = cong (_ ,_) (≡-irrelevant eq₁ eq₂)
 
@@ -2186,7 +2185,7 @@ _>″?_ = flip _<″?_
 ------------------------------------------------------------------------
 
 ≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
-≤‴⇒≤″ {m = m} ≤‴-refl       = 0 , (+-identityʳ m)
+≤‴⇒≤″ {m = m} ≤‴-refl       = 0 , +-identityʳ m
 ≤‴⇒≤″ {m = m} (≤‴-step m≤n) = _ , trans (+-suc m _) (≤″-proof (≤‴⇒≤″ m≤n))
 
 m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
