@@ -1,7 +1,9 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Sublist-related properties
+-- This module is DEPRECATED.
+-- Please use `Data.List.Relation.Binary.Sublist.Propositional.Slice`
+-- instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -9,26 +11,23 @@
 module Data.List.Relation.Binary.Sublist.Propositional.Disjoint
   {a} {A : Set a} where
 
+{-# WARNING_ON_IMPORT
+"Data.List.Relation.Binary.Sublist.Propositional.Disjoint was deprecated in v2.1.
+Use Data.List.Relation.Binary.Sublist.Propositional.Slice instead."
+#-}
+
 open import Data.List.Base using (List)
-open import Data.List.Relation.Binary.Sublist.Propositional
+open import Data.List.Relation.Binary.Sublist.Propositional using
+  ( _⊆_; _∷_; _∷ʳ_
+  ; Disjoint; ⊆-disjoint-union; _∷ₙ_; _∷ₗ_; _∷ᵣ_
+  )
+import Data.List.Relation.Binary.Sublist.Propositional.Slice as SPSlice
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
-------------------------------------------------------------------------
--- A Union where the triangles commute is a
--- Cospan in the slice category (_ ⊆ zs).
+open SPSlice using (⊆-upper-bound-is-cospan; ⊆-upper-bound-cospan)
 
-record IsCospan {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (u : UpperBound τ₁ τ₂) : Set a where
-  field
-    tri₁ : ⊆-trans (UpperBound.inj₁ u) (UpperBound.sub u) ≡ τ₁
-    tri₂ : ⊆-trans (UpperBound.inj₂ u) (UpperBound.sub u) ≡ τ₂
-
-record Cospan {xs ys zs : List A} (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) : Set a where
-  field
-    upperBound : UpperBound τ₁ τ₂
-    isCospan   : IsCospan upperBound
-
-  open UpperBound upperBound public
-  open IsCospan isCospan public
+-- For backward compatibility reexport these:
+open SPSlice public using ( IsCospan; Cospan )
 
 open IsCospan
 open Cospan
@@ -57,14 +56,18 @@ module _
 
 ⊆-disjoint-union-is-cospan : ∀ {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
   (d : Disjoint τ₁ τ₂) → IsCospan (⊆-disjoint-union d)
-⊆-disjoint-union-is-cospan [] = record { tri₁ = refl ; tri₂ = refl }
-⊆-disjoint-union-is-cospan (x    ∷ₙ d) = ∷ₙ-cospan d (⊆-disjoint-union-is-cospan d)
-⊆-disjoint-union-is-cospan (refl ∷ₗ d) = ∷ₗ-cospan d (⊆-disjoint-union-is-cospan d)
-⊆-disjoint-union-is-cospan (refl ∷ᵣ d) = ∷ᵣ-cospan d (⊆-disjoint-union-is-cospan d)
+⊆-disjoint-union-is-cospan {τ₁ = τ₁} {τ₂ = τ₂} _ = ⊆-upper-bound-is-cospan τ₁ τ₂
 
 ⊆-disjoint-union-cospan : ∀ {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
   Disjoint τ₁ τ₂ → Cospan τ₁ τ₂
-⊆-disjoint-union-cospan d = record
-  { upperBound = ⊆-disjoint-union d
-  ; isCospan   = ⊆-disjoint-union-is-cospan d
-  }
+⊆-disjoint-union-cospan {τ₁ = τ₁} {τ₂ = τ₂} _ = ⊆-upper-bound-cospan τ₁ τ₂
+
+{-# WARNING_ON_USAGE ⊆-disjoint-union-is-cospan
+"Warning: ⊆-disjoint-union-is-cospan was deprecated in v2.1.
+Please use `⊆-upper-bound-is-cospan` from `Data.List.Relation.Binary.Sublist.Propositional.Slice` instead."
+#-}
+
+{-# WARNING_ON_USAGE ⊆-disjoint-union-cospan
+"Warning: ⊆-disjoint-union-cospan was deprecated in v2.1.
+Please use `⊆-upper-bound-cospan` from `Data.List.Relation.Binary.Sublist.Propositional.Slice` instead."
+#-}

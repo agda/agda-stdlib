@@ -1,7 +1,7 @@
 Version 2.1-dev
 ===============
 
-The library has been tested using Agda 2.6.4 and 2.6.4.1.
+The library has been tested using Agda 2.6.4, 2.6.4.1, and 2.6.4.3.
 
 Highlights
 ----------
@@ -32,6 +32,9 @@ Other major improvements
 
 Deprecated modules
 ------------------
+
+* `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` deprecated in favour of
+  `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
 
 Deprecated names
 ----------------
@@ -84,6 +87,12 @@ New modules
   ```agda
   Algebra.Module.Construct.Idealization
   ```
+
+* `Data.List.Relation.Binary.Sublist.Propositional.Slice`
+  replacing `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` (*)
+  and adding new functions:
+  - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
+  - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
 
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
   ```agda
@@ -239,6 +248,13 @@ Additions to existing modules
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
   ```
 
+* In `Data.Integer.Properties`:
+  ```agda
+  ◃-nonZero : .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
+  sign-*    : .{{NonZero (i * j)}} → sign (i * j) ≡ sign i Sign.* sign j
+  i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
+  ```
+
 * In `Data.List.Membership.Propositional.Properties.Core`:
   ```agda
   find∘∃∈-Any : (p : ∃∈ P xs) → find (∃∈-Any p) ≡ p
@@ -320,6 +336,11 @@ Additions to existing modules
 * In `Data.Maybe.Relation.Binary.Pointwise`:
   ```agda
   pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
   ```
 
 * In `Data.Nat.Divisibility`:
