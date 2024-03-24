@@ -17,14 +17,14 @@ open import Data.List.Base
 open import Data.List.Effectful using (monad; module Applicative; module MonadProperties)
 import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.Any.Properties hiding (++-comm)
+open import Data.List.Relation.Unary.Any.Properties hiding (map-cong; ++-comm)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Membership.Propositional.Properties
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-open import Data.Product.Base as Prod hiding (map)
+open import Data.Product.Base as Product hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum hiding (map)
 open import Data.Sum.Properties hiding (map-cong)
@@ -388,10 +388,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (to xs≈ys (proj₂
       (from (Fin-length xs) (to (Fin-length xs) (z , p)))))   ≡⟨⟩
 
-    index-of (proj₂ (Prod.map id (to xs≈ys)
+    index-of (proj₂ (Product.map id (to xs≈ys)
       (from (Fin-length xs) (to (Fin-length xs) (z , p)))))  ≡⟨⟩
 
-    to (Fin-length ys) (Prod.map id (to xs≈ys)
+    to (Fin-length ys) (Product.map id (to xs≈ys)
       (from (Fin-length xs) (index-of p)))                          ≡⟨⟩
 
     to (Fin-length-cong xs≈ys) (index-of p)                        ∎
