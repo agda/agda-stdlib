@@ -388,7 +388,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (to xs≈ys (proj₂
       (from (Fin-length xs) (to (Fin-length xs) (z , p)))))   ≡⟨⟩
 
-    index-of (proj₂ (Product.map id (to xs≈ys)
+    index-of (proj₂ (Product.map₁ (to xs≈ys)
       (from (Fin-length xs) (to (Fin-length xs) (z , p)))))  ≡⟨⟩
 
     to (Fin-length ys) (Product.map id (to xs≈ys)
