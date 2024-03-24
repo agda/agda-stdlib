@@ -58,12 +58,12 @@ fromVec v = v , ℕ.≤-refl
 
 padRight : A → Vec≤ A n → Vec A n
 padRight a as@(vs , m≤n)
-  with ℕ.≤-offset k ← ℕ.≤-proof (isBounded as)
+  with ℕ.≤-offset k ← ℕ.m≤n⇒∃[o]m+o≡n (isBounded as)
   = vs Vec.++ Vec.replicate k a
 
 padLeft : A → Vec≤ A n → Vec A n
 padLeft a record { length = m ; vec = vs ; bound = m≤n }
-  with ℕ.≤-offset k ← ℕ.≤-proof (recompute (_ ℕ.≤? _) m≤n)
+  with ℕ.≤-offset k ← ℕ.m≤n⇒∃[o]m+o≡n (recompute (_ ℕ.≤? _) m≤n)
   rewrite ℕ.+-comm m k
   = Vec.replicate k a Vec.++ vs
 
@@ -79,7 +79,7 @@ private
 
 padBoth : A → A → Vec≤ A n → Vec A n
 padBoth aₗ aᵣ record { length = m ; vec = vs ; bound = m≤n }
-  with ℕ.≤-offset k ← ℕ.≤-proof (recompute (_ ℕ.≤? _) m≤n)
+  with ℕ.≤-offset k ← ℕ.m≤n⇒∃[o]m+o≡n (recompute (_ ℕ.≤? _) m≤n)
   rewrite split m k
   = Vec.replicate ⌊ k /2⌋ aₗ
       Vec.++ vs

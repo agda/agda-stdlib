@@ -2119,8 +2119,8 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 
 -- yielding corresponding proof and `pattern` aliases for _≤″_/_<_
 
-≤-proof : m ≤ n → ∃ λ k → m + k ≡ n
-≤-proof le = _ , ≤″-proof (≤⇒≤″ le)
+m≤n⇒∃[o]m+o≡n : m ≤ n → ∃ λ k → m + k ≡ n
+m≤n⇒∃[o]m+o≡n le with less-than-or-equal {k} refl ← ≤⇒≤″ le = k , refl
 
 pattern ≤-offset k = k , refl
 pattern <-offset k = ≤-offset k

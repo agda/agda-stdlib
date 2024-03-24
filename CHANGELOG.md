@@ -84,8 +84,8 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
 
-  <⇒<″    : _<_ ⇒ _<″_
-  ≤-proof : m ≤ n → ∃ λ k → m + k ≡ n
+  <⇒<″          : _<_ ⇒ _<″_
+  m≤n⇒∃[o]m+o≡n : m ≤ n → ∃ λ k → m + k ≡ n
 
   pattern ≤-offset k = k , refl
   pattern <-offset k = ≤-offset k
