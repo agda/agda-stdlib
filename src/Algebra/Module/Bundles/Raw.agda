@@ -200,7 +200,7 @@ record RawBimodule (R : Set r) (S : Set s) m ℓm : Set (r ⊔ s ⊔ suc (m ⊔ 
     ; 0ᴹ = 0ᴹ
     ; -ᴹ_ = -ᴹ_
     }
- 
+
   rawRightModule : RawRightModule S m ℓm
   rawRightModule = record
     { _≈ᴹ_ = _≈ᴹ_

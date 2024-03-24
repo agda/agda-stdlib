@@ -23,7 +23,7 @@ open import Relation.Binary.PropositionalEquality.Core using (refl)
 open import Relation.Binary.Construct.Composition using (_;_)
 
 open Setoid S renaming (Carrier to A)
-open import Relation.Binary.Properties.Setoid S using (≈;≈⇒≈; ≈⇒≈;≈)  
+open import Relation.Binary.Properties.Setoid S using (≈;≈⇒≈; ≈⇒≈;≈)
 open import Data.List.Relation.Ternary.Appending.Setoid S
 
 private
