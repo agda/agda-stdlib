@@ -50,7 +50,8 @@ module _ {P : Pred A p} where
   map∘find (there p) hyp = cong there (map∘find p hyp)
 
   find∘map : ∀ {Q : Pred A q} {xs} (p : Any P xs) (f : P ⊆ Q) →
-             find (Any.map f p) ≡ Product.map id (Product.map id f) (find p)
+             let x , x∈xs , px = find p in
+             find (Any.map f p) ≡ (x , x∈xs , f px)
   find∘map (here  p) f = refl
   find∘map (there p) f rewrite find∘map p f = refl
 
