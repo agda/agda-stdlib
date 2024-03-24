@@ -46,6 +46,11 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  map-compose  ↦  map-∘
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -408,4 +413,4 @@ Additions to existing modules
   ```
 
 * `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
-  anti-unification. See README.Tactic.Cong for details.
+  anti-unification. See `README.Tactic.Cong` for details.

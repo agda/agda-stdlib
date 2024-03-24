@@ -176,19 +176,19 @@ lookup⇒[]= pxs i refl = []=lookup pxs i
 ------------------------------------------------------------------------
 -- map
 
-map-id : ∀ (pxs : All P xs) → All.map id pxs ≡ pxs
-map-id []         = refl
-map-id (px ∷ pxs) = cong (px ∷_)  (map-id pxs)
-
 map-cong : ∀ {f : P ⋐ Q} {g : P ⋐ Q} (pxs : All P xs) →
            (∀ {x} → f {x} ≗ g) → All.map f pxs ≡ All.map g pxs
 map-cong []         _   = refl
 map-cong (px ∷ pxs) feq = cong₂ _∷_ (feq px) (map-cong pxs feq)
 
-map-compose : ∀ {f : P ⋐ Q} {g : Q ⋐ R} (pxs : All P xs) →
-              All.map g (All.map f pxs) ≡ All.map (g ∘ f) pxs
-map-compose []         = refl
-map-compose (px ∷ pxs) = cong (_ ∷_) (map-compose pxs)
+map-id : ∀ (pxs : All P xs) → All.map id pxs ≡ pxs
+map-id []         = refl
+map-id (px ∷ pxs) = cong (px ∷_)  (map-id pxs)
+
+map-∘ : ∀ {f : P ⋐ Q} {g : Q ⋐ R} (pxs : All P xs) →
+        All.map g (All.map f pxs) ≡ All.map (g ∘ f) pxs
+map-∘ []         = refl
+map-∘ (px ∷ pxs) = cong (_ ∷_) (map-∘ pxs)
 
 lookup-map : ∀ {f : P ⋐ Q} (pxs : All P xs) (i : x ∈ xs) →
              lookup (All.map f pxs) i ≡ f (lookup pxs i)
@@ -793,4 +793,12 @@ gmap = gmap⁺
 {-# WARNING_ON_USAGE gmap
 "Warning: gmap was deprecated in v2.0.
 Please use gmap⁺ instead."
+#-}
+
+-- Version 2.1
+
+map-compose = map-∘
+{-# WARNING_ON_USAGE map-compose
+"Warning: map-compose was deprecated in v2.1.
+Please use map-∘ instead."
 #-}
