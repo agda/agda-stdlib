@@ -25,6 +25,17 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Data.Nat.Base`: the following pattern synonyms and definitions are all
+  deprecated in favour of direct pattern matching on (_,_)
+  ```agda
+  pattern less-than-or-equal {k} eq = k , eq
+  pattern ≤″-offset k = k , refl
+  pattern <″-offset k = k , refl
+
+  s≤″s⁻¹
+  s<″s⁻¹
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -75,7 +86,7 @@ Additions to existing modules
   nonZeroDivisor : DivMod dividend divisor → NonZero divisor
   ```
 
-* Added new proofs in `Data.Nat.Properties`:
+* Added new proofs and 'guarded' version of `_∸_` in `Data.Nat.Properties`:
   ```agda
   m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
   m<n+o⇒m∸n<o : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
@@ -85,7 +96,9 @@ Additions to existing modules
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
 
   <⇒<″ : _<_ ⇒ _<″_
-  m≤n⇒∃[o]m+o≡n : m ≤ n → ∃ λ k → m + k ≡ n
+  m≤n⇒∃[o]m+o≡n : .(m ≤ n) → ∃ λ k → m + k ≡ n
+  guarded-∸   : ∀ n m → .(m ≤ n) → ℕ
+  guarded-∸≗∸ : .(m≤n : m ≤ n) → guarded-∸ n m m≤n ≡ n ∸ m
   ```
 
 * Added new functions in `Data.String.Base`:
