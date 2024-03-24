@@ -48,8 +48,7 @@ Recursor Rec = ∀ P → Rec P ⊆′ P → Universal P
 
 -- And recursors can be constructed from recursor builders.
 
-build : RecursorBuilder Rec →
-        Recursor Rec
+build : RecursorBuilder Rec → Recursor Rec
 build builder P f x = f x (builder P f x)
 
 -- We can repeat the exercise above for subsets of the type we are
@@ -61,6 +60,5 @@ SubsetRecursorBuilder Q Rec = ∀ P → Rec P ⊆′ P → Q ⊆′ Rec P
 SubsetRecursor : Pred A ℓ → RecStruct A ℓ₁ ℓ₂ → Set _
 SubsetRecursor Q Rec = ∀ P → Rec P ⊆′ P → Q ⊆′ P
 
-subsetBuild : SubsetRecursorBuilder Q Rec →
-              SubsetRecursor Q Rec
+subsetBuild : SubsetRecursorBuilder Q Rec → SubsetRecursor Q Rec
 subsetBuild builder P f x q = f x (builder P f x q)
