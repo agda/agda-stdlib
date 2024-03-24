@@ -26,7 +26,6 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product.Base as Product
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂)
-open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
   using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
@@ -97,10 +96,10 @@ Any-cong {P = P} {Q = Q} {xs = xs} {ys} P↔Q xs≈ys =
 ------------------------------------------------------------------------
 -- Any.map
 
-map-ext : (f g : P ⋐ P) → (∀ {x} (p : P x) → f p ≡ g p) →
+map-cong : (f g : P ⋐ Q) → (∀ {x} (p : P x) → f p ≡ g p) →
           (p : Any P xs) → Any.map f p ≡ Any.map g p
-map-ext f g hyp (here  p) = cong here (hyp p)
-map-ext f g hyp (there p) = cong there $ map-ext f g hyp p
+map-cong f g hyp (here  p) = cong here (hyp p)
+map-cong f g hyp (there p) = cong there $ map-cong f g hyp p
 
 map-id : ∀ (f : P ⋐ P) → (∀ {x} (p : P x) → f p ≡ p) →
          (p : Any P xs) → Any.map f p ≡ p

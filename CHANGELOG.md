@@ -275,6 +275,12 @@ Additions to existing modules
   tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
   ```
 
+* In `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  map-cong : (f g : P ⋐ Q) → (∀ {x} (p : P x) → f p ≡ g p) →
+             (p : Any P xs) → Any.map f p ≡ Any.map g p
+  ```
+
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
   ```agda
   through→ : ∃[ xs ] Pointwise _≈_ as xs × Appending xs bs cs →
