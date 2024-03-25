@@ -68,6 +68,7 @@ module _ {A : Set a} where
 
 -- Given an irrelevant proof of a decidable type, a proof can
 -- be recomputed and subsequently used in relevant contexts.
+
 recompute : Dec A → Recomputable A
 recompute = Reflects.recompute ∘ proof
 
@@ -159,8 +160,8 @@ from-no (true  because   _ ) = _
 
 map′ : (A → B) → (B → A) → Dec A → Dec B
 does  (map′ A→B B→A a?)                   = does a?
-proof (map′ A→B B→A (true  because  [a])) = ofʸ (A→B (invert [a]))
-proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A)
+proof (map′ A→B B→A (true  because  [a])) = of (A→B (invert [a]))
+proof (map′ A→B B→A (false because [¬a])) = of (invert [¬a] ∘ B→A)
 
 ------------------------------------------------------------------------
 -- Relationship with double-negation
