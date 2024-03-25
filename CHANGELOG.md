@@ -62,16 +62,6 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
-  ```agda
-  Induction.InfiniteDescent
-  ```
-
 * The unique morphism from the initial, resp. terminal, algebra:
   ```agda
   Algebra.Morphism.Construct.Initial
@@ -97,6 +87,11 @@ New modules
   - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
   ```
 
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
+
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
   ```agda
   _↭_ : IRel (Vector A) _
@@ -119,6 +114,11 @@ New modules
   and a convenient infix version
   ```agda
   _⇨_ = setoid
+  ```
+
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
   ```
 
 * Symmetric interior of a binary relation
