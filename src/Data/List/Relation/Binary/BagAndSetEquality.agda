@@ -388,10 +388,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (to xs≈ys (proj₂
       (from (Fin-length xs) (to (Fin-length xs) (z , p)))))   ≡⟨⟩
 
-    index-of (proj₂ (Product.map id (to xs≈ys)
+    index-of (proj₂ (Product.map₂ (to xs≈ys)
       (from (Fin-length xs) (to (Fin-length xs) (z , p)))))   ≡⟨⟩
 
-    to (Fin-length ys) (Product.map id (to xs≈ys)
+    to (Fin-length ys) (Product.map₂ (to xs≈ys)
       (from (Fin-length xs) (index-of p)))                    ≡⟨⟩
 
     to (Fin-length-cong xs≈ys) (index-of p)                   ∎
@@ -421,10 +421,10 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
     index-of (Inverse.to xs≈ys p) ≡
     index-of (Inverse.to xs≈ys q)
   index-equality-preserved {p = p} {q} xs≈ys eq =
-    index-of (Inverse.to xs≈ys p)                  ≡⟨ index-of-commutes xs≈ys p ⟩
-    Inverse.to (Fin-length-cong xs≈ys) (index-of p)  ≡⟨ ≡.cong (Inverse.to (Fin-length-cong xs≈ys)) eq ⟩
-    Inverse.to (Fin-length-cong xs≈ys) (index-of q)  ≡⟨ ≡.sym $ index-of-commutes xs≈ys q ⟩
-    index-of (Inverse.to xs≈ys q)                  ∎
+    index-of (Inverse.to xs≈ys p)                   ≡⟨ index-of-commutes xs≈ys p ⟩
+    Inverse.to (Fin-length-cong xs≈ys) (index-of p) ≡⟨ ≡.cong (Inverse.to (Fin-length-cong xs≈ys)) eq ⟩
+    Inverse.to (Fin-length-cong xs≈ys) (index-of q) ≡⟨ ≡.sym $ index-of-commutes xs≈ys q ⟩
+    index-of (Inverse.to xs≈ys q)                   ∎
     where
     open ≡-Reasoning
 
