@@ -11,7 +11,6 @@
 
 module Data.Fin.Base where
 
-open import Algebra.Definitions.RawMagma using (_,_)
 open import Data.Bool.Base using (Bool; T)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
