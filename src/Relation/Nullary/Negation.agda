@@ -8,10 +8,10 @@
 
 module Relation.Nullary.Negation where
 
-open import Effect.Monad using (RawMonad; mkRawMonad)
-open import Data.Bool.Base using (Bool; false; true; if_then_else_; not)
+open import Data.Bool.Base using (Bool; false; true; if_then_else_)
 open import Data.Product.Base as Product using (_,_; Σ; Σ-syntax; ∃; curry; uncurry)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Effect.Monad using (RawMonad; mkRawMonad)
 open import Function.Base using (flip; _∘_; const; _∘′_)
 open import Level using (Level)
 open import Relation.Nullary.Decidable.Core using (Dec; yes; no; ¬¬-excluded-middle)
