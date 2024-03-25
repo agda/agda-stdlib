@@ -49,8 +49,11 @@ _¬-⊎_ = [_,_]
 ------------------------------------------------------------------------
 -- Uses of negation
 
+weak-contradiction : .A → ¬ A → Whatever
+weak-contradiction a ¬a = ⊥-elim-irr (¬a a)
+
 contradiction : A → ¬ A → Whatever
-contradiction a ¬a = ⊥-elim (¬a a)
+contradiction a = weak-contradiction a
 
 contradictionᵒ : ¬ A → A → Whatever
 contradictionᵒ = flip contradiction
@@ -62,15 +65,9 @@ contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
 contraposition : (A → B) → ¬ B → ¬ A
 contraposition f ¬b a = contradiction (f a) ¬b
 
-weak-contradiction : .A → ¬ A → Whatever
-weak-contradiction a ¬a = ⊥-elim-irr (¬a a)
-
-irr-contradiction : .A → .(¬ A) → Whatever
-irr-contradiction a ¬a = ⊥-elim-irr (¬a a)
-
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
-stable ¬[¬¬a→a] = ¬[¬¬a→a] (λ ¬¬a → ⊥-elim (¬¬a (¬[¬¬a→a] ∘ const)))
+stable ¬[¬¬a→a] = ¬[¬¬a→a] λ ¬¬a → {!⊥-elim (¬¬a (¬[¬¬a→a] ∘ const))!}
 
 -- Negated predicates are stable.
 negated-stable : Stable (¬ A)
