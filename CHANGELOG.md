@@ -410,9 +410,8 @@ Additions to existing modules
 
 * Added new definitions in `Relation.Nullary.Negation.Core`:
   ```agda
-  contradictionᵒ     : ¬ A → A → Whatever
   weak-contradiction : .A → ¬ A → Whatever
-  irr-contradiction  : .A → .(¬ A) → Whatever
+  contradictionᵒ     : ¬ A → A → Whatever
   ¬-recompute        : Recomputable (¬ A)
   ```
 
@@ -434,4 +433,4 @@ Additions to existing modules
   ```
 
 * `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
-  anti-unification. See README.Tactic.Cong for details.
+  anti-unification. See `README.Tactic.Cong` for details.
