@@ -9,7 +9,7 @@
 module Relation.Nullary.Negation.Core where
 
 open import Data.Bool.Base using (not)
-open import Data.Empty using (⊥; ⊥-elim; ⊥-recompute; ⊥-elim-irr)
+open import Data.Empty using (⊥; ⊥-recompute; ⊥-elim-irr)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
@@ -67,7 +67,7 @@ contraposition f ¬b a = contradiction (f a) ¬b
 
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
-stable ¬[¬¬a→a] = ¬[¬¬a→a] λ ¬¬a → {!⊥-elim (¬¬a (¬[¬¬a→a] ∘ const))!}
+stable ¬[¬¬a→a] = ¬[¬¬a→a] λ ¬¬a → ⊥-elim-irr (¬¬a (¬[¬¬a→a] ∘ const))
 
 -- Negated predicates are stable.
 negated-stable : Stable (¬ A)
