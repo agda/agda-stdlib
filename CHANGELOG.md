@@ -50,14 +50,12 @@ Deprecated names
   ```
 
 * In `Data.Nat.Base`: the following pattern synonyms and definitions are all
-  deprecated in favour of direct pattern matching on (_,_)
+  deprecated in favour of direct pattern matching on `Algebra.RawMagma._∣ˡ_._,_`
   ```agda
   pattern less-than-or-equal {k} eq = k , eq
   pattern ≤″-offset k = k , refl
   pattern <″-offset k = k , refl
-
   s≤″s⁻¹
-  s<″s⁻¹
   ```
 
 * In `Data.Nat.Divisibility.Core`:

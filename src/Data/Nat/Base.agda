@@ -424,15 +424,15 @@ compare (suc m) (suc n) with compare m n
 -- Smart constructors of _≤″_ and _<″_
 pattern less-than-or-equal {k} eq = k , eq
 {-# WARNING_ON_USAGE less-than-or-equal
-"Warning: less-than-or-equal was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_,_) instead. "
+"Warning: less-than-or-equal was deprecated in v2.1. Please match directly on proofs of ≤″ using constructor Algebra.RawMagma._∣ˡ_._,_ instead. "
 #-}
 pattern ≤″-offset k = k , refl
 {-# WARNING_ON_USAGE ≤″-offset
-"Warning: ≤″-offset was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) instead. "
+"Warning: ≤″-offset was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.RawMagma._∣ˡ_ instead. "
 #-}
 pattern <″-offset k = k , refl
 {-# WARNING_ON_USAGE <″-offset
-"Warning: <″-offset was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) instead. "
+"Warning: <″-offset was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.RawMagma._∣ˡ_ instead. "
 #-}
 
 -- Smart destructors of _<″_
@@ -440,5 +440,5 @@ pattern <″-offset k = k , refl
 s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
 s≤″s⁻¹ (k , refl) = k , refl
 {-# WARNING_ON_USAGE s≤″s⁻¹
-"Warning: s≤″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) instead. "
+"Warning: s≤″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.RawMagma._∣ˡ_ instead. "
 #-}
