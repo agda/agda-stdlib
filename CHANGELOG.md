@@ -261,10 +261,15 @@ Additions to existing modules
   ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
   ```
 
-* In `Data.List.Membership.Setoid`: two abbreviations for predicate transformers
+* In `Data.List.Membership.Setoid`: two abbreviations for predicate transformers,
+  with associated `syntax` declarations
   ```agda
-  ∃∈ P xs = ∃ λ x → x ∈ xs × P x
-  ∀∈ P xs = ∀ {x} → x ∈ xs → P x
+  ∃∈-syntax : ∀ {p} (P : Pred A p) → Pred (List A) _
+  ∃∈-syntax P xs = ∃ λ x → x ∈ xs × P x
+  ∀∈-syntax : ∀ {p} (P : Pred A p) → Pred (List A) _
+  ∀∈-syntax P xs = ∀ {x} → x ∈ xs → P x
+  syntax ∃∈-syntax (λ x → P) xs = ∃[ x ∈ xs ] P
+  syntax ∀∈-syntax (λ x → P) xs = ∀[ x ∈ xs ] P
   ```
 
 * In `Data.List.Properties`:
