@@ -13,8 +13,7 @@ open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (find)
-open import Data.List.Properties using (ʳ++-defn)
-open import Data.List.Effectful as Listₑ using (monad)
+open import Data.List.Effectful as List using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties.Core
@@ -624,18 +623,16 @@ reverseAcc⁺ acc (x ∷ xs) (inj₂ (there y)) = reverseAcc⁺ (x ∷ acc) xs (
 
 reverseAcc⁻ : ∀ acc xs → Any P (reverseAcc acc xs) → Any P acc ⊎ Any P xs
 reverseAcc⁻ acc []       ps = inj₁ ps
-reverseAcc⁻ acc (x ∷ xs) ps rewrite ʳ++-defn xs {x ∷ acc} with ++⁻ (reverseAcc [] xs) ps
-... | inj₂ (here p') = inj₂ (here p')
-... | inj₂ (there ps') = inj₁ ps'
-... | inj₁ ps' with reverseAcc⁻ [] xs ps'
-...   | inj₂ ps'' = inj₂ (there ps'')
+reverseAcc⁻ acc (x ∷ xs) ps with reverseAcc⁻ (x ∷ acc) xs ps
+... | inj₁ (here px) = inj₂ (here px)
+... | inj₁ (there pxs) = inj₁ pxs
+... | inj₂ pxs = inj₂ (there pxs)
 
 reverse⁺ : Any P xs → Any P (reverse xs)
 reverse⁺ ps = reverseAcc⁺ [] _ (inj₂ ps)
 
 reverse⁻ : Any P (reverse xs) → Any P xs
-reverse⁻ ps with reverseAcc⁻ [] _ ps
-... | inj₂ ps' = ps'
+reverse⁻ ps with inj₂ pxs ← reverseAcc⁻ [] _ ps = pxs
 
 ------------------------------------------------------------------------
 -- pure
@@ -686,7 +683,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ f → Any (P ∘ f) xs) fs                ↔⟨ Any-cong (λ _ → Any-cong (λ _ → pure↔) (_ ∎)) (_ ∎) ⟩
   Any (λ f → Any (Any P ∘ pure ∘ f) xs) fs     ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
   Any (λ f → Any P (xs >>= pure ∘ f)) fs       ↔⟨ >>=↔ ⟩
-  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡⟨ cong (Any P) (Listₑ.Applicative.unfold-⊛ fs xs) ⟨
+  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡⟨ cong (Any P) (List.Applicative.unfold-⊛ fs xs) ⟨
   Any P (fs ⊛ xs)                               ∎
   where open Related.EquationalReasoning
 
@@ -706,7 +703,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ x → Any (λ y → P (x , y)) ys) xs                           ↔⟨ pure↔ ⟩
   Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (pure _,_)  ↔⟨ ⊛↔ ⟩
   Any (λ x, → Any (P ∘ x,) ys) (pure _,_ ⊛ xs)                      ↔⟨ ⊛↔ ⟩
-  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡⟨ cong (Any P ∘′ (_⊛ ys)) (Listₑ.Applicative.unfold-<$> _,_ xs) ⟨
+  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡⟨ cong (Any P ∘′ (_⊛ ys)) (List.Applicative.unfold-<$> _,_ xs) ⟨
   Any P (xs ⊗ ys)                                                   ∎
   where open Related.EquationalReasoning
 

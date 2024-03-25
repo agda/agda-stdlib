@@ -29,6 +29,7 @@ import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Nullary.Decidable as Dec using (yes; no)
 open import Relation.Binary.Reasoning.Syntax
 
+
 ------------------------------------------------------------------------
 -- Type
 
@@ -44,43 +45,35 @@ open _∣_ using (quotient) public
 -- Conversion between signed and unsigned divisibility
 
 ∣ᵤ⇒∣ : ∀ {k i} → k Unsigned.∣ i → k ∣ i
-∣ᵤ⇒∣ {k} {i} (Unsigned.divides 0           eq) = divides (+ 0) (∣i∣≡0⇒i≡0 eq)
+∣ᵤ⇒∣ {k} {i} (Unsigned.divides 0           eq) = divides +0 (∣i∣≡0⇒i≡0 eq)
 ∣ᵤ⇒∣ {k} {i} (Unsigned.divides q@(ℕ.suc _) eq) with k ≟ +0
 ... | yes refl = divides +0 (∣i∣≡0⇒i≡0 (trans eq (ℕ.*-zeroʳ q)))
-... | no  neq  = divides (sign i Sign.* sign k ◃ q) (◃-cong sign-eq abs-eq)
+... | no  neq  = divides s[i*k]◃q (◃-cong sign-eq abs-eq)
   where
-  ikq = sign i Sign.* sign k ◃ q
-
-  *-nonZero : ∀ m n .{{_ : ℕ.NonZero m}} .{{_ : ℕ.NonZero n}} → ℕ.NonZero (m ℕ.* n)
-  *-nonZero (ℕ.suc _) (ℕ.suc _) = _
-
-  ◃-nonZero : ∀ s n .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
-  ◃-nonZero Sign.- (ℕ.suc _) = _
-  ◃-nonZero Sign.+ (ℕ.suc _) = _
-
-  ikq≢0 : NonZero ikq
-  ikq≢0 = ◃-nonZero (sign i Sign.* sign k) q
+  s[i*k] = sign i Sign.* sign k
+  s[i*k]◃q = s[i*k] ◃ q
 
   instance
-    ikq*∣k∣≢0 : ℕ.NonZero (∣ ikq ∣ ℕ.* ∣ k ∣)
-    ikq*∣k∣≢0 = *-nonZero ∣ ikq ∣ ∣ k ∣ {{ikq≢0}} {{≢-nonZero neq}}
+    _ = ≢-nonZero neq
+    _ = ◃-nonZero s[i*k] q
+    _ = i*j≢0 s[i*k]◃q k
 
-  sign-eq : sign i ≡ sign (ikq * k)
+  sign-eq : sign i ≡ sign (s[i*k]◃q * k)
   sign-eq = sym $ begin
-    sign (ikq * k)                        ≡⟨ sign-◃ (sign ikq Sign.* sign k) (∣ ikq ∣ ℕ.* ∣ k ∣) ⟩
-    sign ikq Sign.* sign k                ≡⟨ cong (Sign._* sign k) (sign-◃ (sign i Sign.* sign k) q) ⟩
-    (sign i Sign.* sign k) Sign.* sign k  ≡⟨ Sign.*-assoc (sign i) (sign k) (sign k) ⟩
+    sign (s[i*k]◃q * k)                   ≡⟨ sign-* s[i*k]◃q k ⟩
+    sign s[i*k]◃q Sign.* sign k           ≡⟨ cong (Sign._* _) (sign-◃ s[i*k] q) ⟩
+    s[i*k] Sign.* sign k                  ≡⟨ Sign.*-assoc (sign i) (sign k) (sign k) ⟩
     sign i Sign.* (sign k Sign.* sign k)  ≡⟨ cong (sign i Sign.*_) (Sign.s*s≡+ (sign k)) ⟩
     sign i Sign.* Sign.+                  ≡⟨ Sign.*-identityʳ (sign i) ⟩
-    sign i                          ∎
+    sign i                                ∎
     where open ≡-Reasoning
 
-  abs-eq : ∣ i ∣ ≡ ∣ ikq * k ∣
+  abs-eq : ∣ i ∣ ≡ ∣ s[i*k]◃q * k ∣
   abs-eq = sym $ begin
-    ∣ ikq * k ∣        ≡⟨ ∣i*j∣≡∣i∣*∣j∣ ikq k ⟩
-    ∣ ikq ∣ ℕ.* ∣ k ∣  ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ (sign i Sign.* sign k) q) ⟩
-    q ℕ.* ∣ k ∣        ≡⟨ sym eq ⟩
-    ∣ i ∣              ∎
+    ∣ s[i*k]◃q * k ∣        ≡⟨ abs-* s[i*k]◃q k ⟩
+    ∣ s[i*k]◃q ∣ ℕ.* ∣ k ∣  ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ s[i*k] q) ⟩
+    q ℕ.* ∣ k ∣             ≡⟨ eq ⟨
+    ∣ i ∣                   ∎
     where open ≡-Reasoning
 
 ∣⇒∣ᵤ : ∀ {k i} → k ∣ i → k Unsigned.∣ i
@@ -148,7 +141,7 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
 ∣m⇒∣-m : ∀ {i m} → i ∣ m → i ∣ - m
 ∣m⇒∣-m {i} {m} i∣m = ∣ᵤ⇒∣ $′ begin
   ∣ i ∣   ∣⟨ ∣⇒∣ᵤ i∣m ⟩
-  ∣ m ∣   ≡⟨ sym (∣-i∣≡∣i∣ m) ⟩
+  ∣ m ∣   ≡⟨ ∣-i∣≡∣i∣ m ⟨
   ∣ - m ∣ ∎
   where open ℕ.∣-Reasoning
 
@@ -159,7 +152,7 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
 ∣m+n∣m⇒∣n {i} {m} {n} i∣m+n i∣m = begin
   i             ∣⟨ ∣m∣n⇒∣m-n i∣m+n i∣m ⟩
   m + n - m     ≡⟨ +-comm (m + n) (- m) ⟩
-  - m + (m + n) ≡⟨ sym (+-assoc (- m) m n) ⟩
+  - m + (m + n) ≡⟨ +-assoc (- m) m n ⟨
   - m + m + n   ≡⟨ cong (_+ n) (+-inverseˡ m) ⟩
   + 0 + n       ≡⟨ +-identityˡ n ⟩
   n             ∎
@@ -171,7 +164,7 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
 ∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
 ∣n⇒∣m*n {i} m {n} (divides q eq) = divides (m * q) $′ begin
   m * n       ≡⟨ cong (m *_) eq ⟩
-  m * (q * i) ≡⟨ sym (*-assoc m q i) ⟩
+  m * (q * i) ≡⟨ *-assoc m q i ⟨
   m * q * i   ∎
   where open ≡-Reasoning
 

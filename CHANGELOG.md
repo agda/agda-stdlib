@@ -1,7 +1,7 @@
 Version 2.1-dev
 ===============
 
-The library has been tested using Agda 2.6.4 and 2.6.4.1.
+The library has been tested using Agda 2.6.4, 2.6.4.1, and 2.6.4.3.
 
 Highlights
 ----------
@@ -32,6 +32,9 @@ Other major improvements
 
 Deprecated modules
 ------------------
+
+* `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` deprecated in favour of
+  `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
 
 Deprecated names
 ----------------
@@ -85,6 +88,13 @@ New modules
   Data.Container.Indexed.Relation.Binary.Pointwise
   Data.Container.Indexed.Relation.Binary.Pointwise.Properties
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* `Data.List.Relation.Binary.Sublist.Propositional.Slice`
+  replacing `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` (*)
+  and adding new functions:
+  - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
+  - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
   ```
 
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
@@ -177,7 +187,7 @@ Additions to existing modules
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
-  
+
   \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
   \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
   \\-leftDivides   : LeftDivides _∙_ _\\_
@@ -196,7 +206,7 @@ Additions to existing modules
   identityʳ-unique : x ∙ y ≈ x → y ≈ ε
   identity-unique  : Identity x _∙_ → x ≈ ε
   ```
- 
+
 * In `Algebra.Construct.Terminal`:
   ```agda
   rawNearSemiring : RawNearSemiring c ℓ
@@ -225,7 +235,7 @@ Additions to existing modules
   _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
   ```
- 
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
@@ -242,9 +252,16 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
-* In `Data.Integer.Divisisbility`: introduce `divides` as an explicit pattern synonym
+* In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
+  ```
+
+* In `Data.Integer.Properties`:
+  ```agda
+  ◃-nonZero : .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
+  sign-*    : .{{NonZero (i * j)}} → sign (i * j) ≡ sign i Sign.* sign j
+  i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
 * In `Data.List.Properties`:
@@ -307,6 +324,11 @@ Additions to existing modules
   pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
+  ```
+
 * In `Data.Nat.Divisibility`:
   ```agda
   quotient≢0       : m ∣ n → .{{NonZero n}} → NonZero quotient
@@ -333,7 +355,7 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
-  
+
 * Added new proofs to `Data.Nat.Primality`:
   ```agda
   rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
