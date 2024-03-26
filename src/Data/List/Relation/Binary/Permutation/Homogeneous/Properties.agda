@@ -25,7 +25,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 open import Relation.Binary.Definitions
-  using ( Reflexive; Symmetric; Transitive; LeftTrans; RightTrans
+  using ( Reflexive; Symmetric; Transitive
         ; _Respects_; _Respects₂_; _Respectsˡ_; _Respectsʳ_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; cong; cong₂)
@@ -245,7 +245,7 @@ module _ (sym : Symmetric S) (resp@(rʳ , rˡ) : S Respects₂ R) where
 ------------------------------------------------------------------------
 -- Properties of steps, and related properties of Permutation
 -- previously required for proofs by well-founded induction
--- rendered obsolete/deprecatable by ↭-transˡ-≋ , ↭-transʳ-≋
+-- rendered obsolete/deprecatable by Core.↭-transˡ-≋ , Core.↭-transʳ-≋
 ------------------------------------------------------------------------
 
 module Steps {R : Rel A r} where
