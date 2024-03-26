@@ -14,13 +14,34 @@ open import Relation.Nullary.Negation.Core
 
 private
   variable
-    a b c ℓ : Level
-    A B : Set a
+    a b c ℓ p q r s : Level
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Definition of dependent products
 
 open import Data.Product.Base public
+
+-- These are here as they are not 'basic' but instead "very dependent",
+-- i.e. the result type depends on the full input 'point' v.
+dep-map : {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Set q} →
+   (f : (x : A) → B x) → (∀ {x} → (y : P x) → Q y (f x)) →
+   (v : Σ A P) → Σ (B (proj₁ v)) (Q (proj₂ v))
+dep-map f g (x , y) = (f x , g y)
+
+-- This is a "non-dependent" version of dep-map whereby the input is actually
+-- a pair (i.e. _×_ ) but the output type still depends on the input 'point' v.
+dep-map′ : {B : A → Set b} {P : Set p} {Q : P → Set q} →
+  (f : (x : A) → B x) → ((x : P) → Q x) → (v : A × P) → B (proj₁ v) × Q (proj₂ v)
+dep-map′ f g (x , y) = (f x , g y)
+
+-- This is a generic zipWith for Σ where different functions are applied to each
+-- component pair, and recombined.
+zipWith : {P : A → Set p} {Q : B → Set q} {R : C → Set r} {S : (x : C) → R x → Set s}
+  (_∙_ : A → B → C) → (_∘_ : ∀ {x y} → P x → Q y → R (x ∙ y)) →
+  (_*_ : (x : C) → (y : R x) → S x y) →
+  (x : Σ A P) → (y : Σ B Q) → S (proj₁ x ∙ proj₁ y) (proj₂ x ∘ proj₂ y)
+zipWith _∙_ _∘_ _*_ (a , p) (b , q) = (a ∙ b) * (p ∘ q)
 
 ------------------------------------------------------------------------
 -- Negation of existential quantifier
