@@ -55,9 +55,6 @@ weak-contradiction a ¬a = ⊥-elim-irr (¬a a)
 contradiction : A → ¬ A → Whatever
 contradiction a = weak-contradiction a
 
-contradictionᵒ : ¬ A → .A → Whatever
-contradictionᵒ ¬a a = weak-contradiction a ¬a
-
 contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
 contradiction₂ (inj₁ a) ¬a ¬b = weak-contradiction a ¬a
 contradiction₂ (inj₂ b) ¬a ¬b = weak-contradiction b ¬b

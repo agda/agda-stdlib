@@ -170,10 +170,10 @@ proof (map′ A→B B→A (false because [¬a])) = of (invert [¬a] ∘ B→A)
 
 decidable-stable : Dec A → Stable A
 decidable-stable (yes a) ¬¬a = a
-decidable-stable (no ¬a) ¬¬a = contradiction ¬a ¬¬a
+decidable-stable (no ¬a) ¬¬a = weak-contradiction ¬a ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
-¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
+¬-drop-Dec ¬¬a? = map′ negated-stable (λ ¬a ¬¬a → weak-contradiction ¬a ¬¬a) (¬? ¬¬a?)
 
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).

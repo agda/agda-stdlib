@@ -92,7 +92,7 @@ _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                 Reflects (A → B) (not a ∨ b)
 ofʸ  a →-reflects ofʸ  b = of (const b)
 ofʸ  a →-reflects ofⁿ ¬b = of (¬b ∘ (_$ a))
-ofⁿ ¬a →-reflects _      = of (contradictionᵒ ¬a)
+ofⁿ ¬a →-reflects _      = of (λ a → weak-contradiction a ¬a)
 
 ------------------------------------------------------------------------
 -- Other lemmas
@@ -104,8 +104,8 @@ fromEquivalence {b = false} sound complete = of complete
 -- `Reflects` is deterministic.
 det : ∀ {b b′} → Reflects A b → Reflects A b′ → b ≡ b′
 det (ofʸ  a) (ofʸ  _) = refl
-det (ofʸ  a) (ofⁿ ¬a) = contradiction a ¬a
-det (ofⁿ ¬a) (ofʸ  a) = contradiction a ¬a
+det (ofʸ  a) (ofⁿ ¬a) = weak-contradiction a ¬a
+det (ofⁿ ¬a) (ofʸ  a) = weak-contradiction a ¬a
 det (ofⁿ ¬a) (ofⁿ  _) = refl
 
 T-reflects-elim : ∀ {a b} → Reflects (T a) b → b ≡ a
