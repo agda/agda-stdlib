@@ -29,7 +29,7 @@ open import Relation.Binary.Definitions
   using ( Reflexive; Symmetric; Transitive; LeftTrans; RightTrans
         ; _Respects_; _Respects₂_; _Respectsˡ_; _Respectsʳ_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_ ; cong)
+  using (_≡_ ; cong; cong₂)
 open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Unary using (Pred; Decidable)
@@ -65,6 +65,17 @@ module _ {R : Rel A r} {S : Rel A s} where
   map R⇒S (swap e₁ e₂ xs∼ys)   = swap (R⇒S e₁) (R⇒S e₂) (map R⇒S xs∼ys)
   map R⇒S (trans xs∼ys ys∼zs)  = trans (map R⇒S xs∼ys) (map R⇒S ys∼zs)
 
+
+------------------------------------------------------------------------
+-- Steps
+
+module _ {R : Rel A r} where
+
+  steps : Permutation R xs ys → ℕ
+  steps (refl _)            = 1
+  steps (prep _ xs↭ys)      = suc (steps xs↭ys)
+  steps (swap _ _ xs↭ys)    = suc (steps xs↭ys)
+  steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 
 ------------------------------------------------------------------------
 -- Inversion principles
@@ -121,6 +132,7 @@ module _ {R : Rel A r}  where
   ↭-pointwise : _≋_ ⇒ _↭_
   ↭-pointwise = refl
 
+------------------------------------------------------------------------
 -- Reflexivity and its consequences
 
   module _ (R-refl : Reflexive R) where
@@ -143,6 +155,10 @@ module _ {R : Rel A r}  where
     shift : ∀ {v w} → R v w → ∀ xs {ys} → Permutation R (xs ++ v ∷ ys) (w ∷ xs ++ ys)
     shift v≈w xs = ↭-shift v≈w xs ↭-refl′
 
+    shift≈ : ∀ v xs {ys} → Permutation R (xs ++ v ∷ ys) (v ∷ xs ++ ys)
+    shift≈ v xs = shift R-refl xs
+
+------------------------------------------------------------------------
 -- Symmetry and its consequences
 
   module _ (R-sym : Symmetric R) where
@@ -153,6 +169,7 @@ module _ {R : Rel A r}  where
     ↭-sym′ (swap x∼x′ y∼y′ xs↭ys) = swap (R-sym y∼y′) (R-sym x∼x′) (↭-sym′ xs↭ys)
     ↭-sym′ (trans xs↭ys ys↭zs)    = trans (↭-sym′ ys↭zs) (↭-sym′ xs↭ys)
 
+------------------------------------------------------------------------
 -- Transitivity and its consequences
 
 -- A smart version of trans that pushes `refl`s to the leaves (see #1113).
@@ -166,7 +183,93 @@ module _ {R : Rel A r}  where
     ↭-trans′ xs↭ys (refl ys≋zs) = ↭-transʳ-≋ xs↭ys ys≋zs
     ↭-trans′ xs↭ys ys↭zs        = trans xs↭ys ys↭zs
 
--- But Left and Right Transitivity hold!
+------------------------------------------------------------------------
+-- Two important inversion properties of Permutation R, which
+-- no longer require `steps` or  well-founded induction... but
+-- which follow from ↭-transˡ-≋, ↭-transʳ-≋ and properties of R
+------------------------------------------------------------------------
+
+-- first inversion: split on a 'middle' element
+
+    module _ (R-refl : Reflexive R) (R-trans : Transitive R)
+      where
+
+      private
+        ≋-refl : Reflexive (Pointwise R)
+        ≋-refl = Pointwise.refl R-refl
+        ≋-trans : Transitive (Pointwise R)
+        ≋-trans = Pointwise.transitive R-trans
+        _++[_]++_ = λ xs (z : A) ys → xs ++ [ z ] ++ ys
+
+        helper : ∀ as bs {xs ys} (p : Permutation R xs ys) →
+                 Pointwise R ys (as ++[ v ]++ bs) →
+                 ∃₂ λ ps qs → Pointwise R xs (ps ++[ v ]++ qs)
+                            × Permutation R (ps ++ qs) (as ++ bs)
+        helper as           bs (trans xs↭ys ys↭zs) zs≋as++[v]++ys
+          with ps , qs , eq , ↭ ← helper as bs ys↭zs zs≋as++[v]++ys
+          with ps′ , qs′ , eq′ , ↭′ ← helper ps qs xs↭ys eq
+          = ps′ , qs′ , eq′ , ↭-trans′ ↭′ ↭
+        helper []           _  (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
+          = [] , _ , R-trans x≈v v≈y ∷ ≋-refl , refl (≋-trans xs≋vs vs≋ys)
+        helper (a ∷ as)     bs (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
+          = _ ∷ as , bs , R-trans x≈v v≈y ∷ ≋-trans xs≋vs vs≋ys , ↭-refl′ R-refl
+        helper []           bs (prep {xs = xs} x≈v xs↭vs) (v≈y ∷ vs≋ys)
+          = [] , xs , R-trans x≈v v≈y ∷ ≋-refl , ↭-transʳ-≋ xs↭vs vs≋ys
+        helper (a ∷ as)     bs (prep x≈v as↭vs) (v≈y ∷ vs≋ys)
+          with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
+          = a ∷ ps , qs , R-trans x≈v v≈y ∷ eq , prep R-refl ↭
+        helper []           [] (swap _ _ _) (_ ∷ ())
+        helper []      (b ∷ _) (swap x≈v y≈w xs↭vs) (w≈z ∷ v≈y ∷ vs≋ys)
+          = b ∷ [] , _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl
+                       , ↭-prep R-refl (↭-transʳ-≋ xs↭vs vs≋ys)
+        helper (a ∷ [])     bs (swap x≈v y≈w xs↭vs)  (w≈z ∷ v≈y ∷ vs≋ys)
+          = []     , a ∷ _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl
+                           , ↭-prep R-refl (↭-transʳ-≋ xs↭vs vs≋ys)
+        helper (a ∷ b ∷ as) bs (swap x≈v y≈w as↭vs) (w≈a ∷ v≈b ∷ vs≋ys)
+          with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
+          = b ∷ a ∷ ps , qs , R-trans x≈v v≈b ∷ R-trans y≈w w≈a ∷ eq
+                            , ↭-swap R-refl _ _ ↭
+
+      ↭-split : ∀ v as bs {xs} → Permutation R xs (as ++[ v ]++ bs) →
+                ∃₂ λ ps qs → Pointwise R xs (ps ++[ v ]++ qs)
+                           × Permutation R (ps ++ qs) (as ++ bs)
+      ↭-split v as bs p = helper as bs p ≋-refl
+
+
+-- second inversion: using ↭-split, drop the middle element
+
+    module _ (R-equiv : IsEquivalence R) where
+
+      private module ≈ = IsEquivalence R-equiv
+
+      dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
+                            Pointwise R (ws ++ x ∷ ys) (xs ++ x ∷ zs) →
+                            Permutation R (ws ++ ys) (xs ++ zs)
+      dropMiddleElement-≋ []       []       (_   ∷ eq)
+        = ↭-pointwise eq
+      dropMiddleElement-≋ []       (x ∷ xs) (w≈v ∷ eq)
+        = ↭-transˡ-≋ eq (shift ≈.refl w≈v xs)
+      dropMiddleElement-≋ (w ∷ ws) []       (w≈x ∷ eq)
+        = ↭-transʳ-≋ (↭-sym′ ≈.sym (shift ≈.refl (≈.sym w≈x) ws)) eq
+      dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq)
+        = prep w≈x (dropMiddleElement-≋ ws xs eq)
+
+      dropMiddleElement : ∀ {x} ws xs {ys zs} →
+                          Permutation R (ws ++ x ∷ ys) (xs ++ x ∷ zs) →
+                          Permutation R (ws ++ ys) (xs ++ zs)
+      dropMiddleElement {x} ws xs {ys} {zs} p
+        with ps , qs , eq , ↭ ← ↭-split ≈.refl ≈.trans x xs zs p
+        = ↭-trans′ (dropMiddleElement-≋ ws ps eq) ↭
+
+      syntax dropMiddleElement-≋ ws xs ws++x∷ys≋xs++x∷zs
+        = ws ++≋[ ws++x∷ys≋xs++x∷zs ]++ xs
+
+      syntax dropMiddleElement ws xs ws++x∷ys↭xs++x∷zs
+        = ws ++↭[ ws++x∷ys↭xs++x∷zs ]++ xs
+
+
+------------------------------------------------------------------------
+-- Now: Left and Right Transitivity hold!
 
   module _ (R-trans : Transitive R) where
 
@@ -201,57 +304,7 @@ module _ {R : Rel A r}  where
 
 
 ------------------------------------------------------------------------
--- An important inversion property of Permutation R, which
--- no longer requires `steps` or  well-founded induction...
-------------------------------------------------------------------------
-
-module _ {R : Rel A r} (R-refl : Reflexive R) (R-trans : Transitive R)
-  where
-
-  private
-    ≋-refl : Reflexive (Pointwise R)
-    ≋-refl = Pointwise.refl R-refl
-    ≋-trans : Transitive (Pointwise R)
-    ≋-trans = Pointwise.transitive R-trans
-    _++[_]++_ = λ xs (z : A) ys → xs ++ [ z ] ++ ys
-
-  ↭-split : ∀ v as bs {xs} → Permutation R xs (as ++[ v ]++ bs) →
-            ∃₂ λ ps qs → Pointwise R xs (ps ++[ v ]++ qs)
-                       × Permutation R (ps ++ qs) (as ++ bs)
-  ↭-split v as bs p = helper as bs p ≋-refl
-    where
-    helper : ∀ as bs {xs ys} (p : Permutation R xs ys) →
-             Pointwise R ys (as ++[ v ]++ bs) →
-             ∃₂ λ ps qs → Pointwise R xs (ps ++[ v ]++ qs)
-                        × Permutation R (ps ++ qs) (as ++ bs)
-    helper as           bs (trans xs↭ys ys↭zs) zs≋as++[v]++ys
-      with ps , qs , eq , ↭ ← helper as bs ys↭zs zs≋as++[v]++ys
-      with ps′ , qs′ , eq′ , ↭′ ← helper ps qs xs↭ys eq
-      = ps′ , qs′ , eq′ , ↭-trans R-trans ↭′ ↭
-    helper []           _  (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
-      = [] , _ , R-trans x≈v v≈y ∷ ≋-refl , refl (≋-trans xs≋vs vs≋ys)
-    helper (a ∷ as)     bs (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
-      = _ ∷ as , bs , R-trans x≈v v≈y ∷ ≋-trans xs≋vs vs≋ys , ↭-refl′ R-refl
-    helper []           bs (prep {xs = xs} x≈v xs↭vs) (v≈y ∷ vs≋ys)
-      = [] , xs , R-trans x≈v v≈y ∷ ≋-refl , ↭-transʳ-≋ R-trans xs↭vs vs≋ys
-    helper (a ∷ as)     bs (prep x≈v as↭vs) (v≈y ∷ vs≋ys)
-      with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
-      = a ∷ ps , qs , R-trans x≈v v≈y ∷ eq , prep R-refl ↭
-    helper []           [] (swap _ _ _) (_ ∷ ())
-    helper []      (b ∷ _) (swap x≈v y≈w xs↭vs) (w≈z ∷ v≈y ∷ vs≋ys)
-      = b ∷ [] , _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl
-                   , ↭-prep R-refl (↭-transʳ-≋ R-trans xs↭vs vs≋ys)
-    helper (a ∷ [])     bs (swap x≈v y≈w xs↭vs)  (w≈z ∷ v≈y ∷ vs≋ys)
-      = []     , a ∷ _ , R-trans x≈v v≈y ∷ R-trans y≈w w≈z ∷ ≋-refl
-                       , ↭-prep R-refl (↭-transʳ-≋ R-trans xs↭vs vs≋ys)
-    helper (a ∷ b ∷ as) bs (swap x≈v y≈w as↭vs) (w≈a ∷ v≈b ∷ vs≋ys)
-      with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
-      = b ∷ a ∷ ps , qs , R-trans x≈v v≈b ∷ R-trans y≈w w≈a ∷ eq
-                        , ↭-swap R-refl _ _ ↭
-
-
-------------------------------------------------------------------------
--- Permutation is an equivalence satisfying another inversion property
+-- Permutation is an equivalence (Setoid version)
 
 module _ {R : Rel A r} (R-equiv : IsEquivalence R) where
 
@@ -266,29 +319,6 @@ module _ {R : Rel A r} (R-equiv : IsEquivalence R) where
 
   setoid : Setoid _ _
   setoid = record { isEquivalence = isEquivalence }
-
-  dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
-                        Pointwise R (ws ++ x ∷ ys) (xs ++ x ∷ zs) →
-                        Permutation R (ws ++ ys) (xs ++ zs)
-  dropMiddleElement-≋ []       []       (_   ∷ eq) = ↭-pointwise eq
-  dropMiddleElement-≋ []       (x ∷ xs) (w≈v ∷ eq)
-    = ↭-transˡ-≋ ≈.trans eq (shift ≈.refl w≈v xs)
-  dropMiddleElement-≋ (w ∷ ws) []       (w≈x ∷ eq)
-    = ↭-transʳ-≋ ≈.trans (↭-sym′ ≈.sym (shift ≈.refl (≈.sym w≈x) ws)) eq
-  dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (dropMiddleElement-≋ ws xs eq)
-
-  dropMiddleElement : ∀ {x} ws xs {ys zs} →
-                      Permutation R (ws ++ x ∷ ys) (xs ++ x ∷ zs) →
-                      Permutation R (ws ++ ys) (xs ++ zs)
-  dropMiddleElement {x} ws xs {ys} {zs} p
-    with ps , qs , eq , ↭ ← ↭-split ≈.refl ≈.trans x xs zs p
-    = ↭-trans ≈.trans (dropMiddleElement-≋ ws ps eq) ↭
-
-  syntax dropMiddleElement-≋ ws xs ws++x∷ys≋xs++x∷zs
-    = ws ++≋[ ws++x∷ys≋xs++x∷zs ]++ xs
-
-  syntax dropMiddleElement ws xs ws++x∷ys↭xs++x∷zs
-    = ws ++↭[ ws++x∷ys↭xs++x∷zs ]++ xs
 
 
 ------------------------------------------------------------------------
@@ -319,7 +349,7 @@ module _ {R : Rel A r} {P : Pred A p} (resp : P Respects R) where
 module _ {_≈_ : Rel A r} (≈-trans : Transitive _≈_) where
 
   private
-    ∈-resp : ∀ {x} → (_≈_ x) Respects _≈_
+    ∈-resp : ∀ {x} → (x ≈_) Respects _≈_
     ∈-resp = flip ≈-trans
 
   ∈-resp-Pointwise : (Any (x ≈_)) Respects (Pointwise _≈_)
@@ -339,16 +369,16 @@ module _ {_≈_ : Rel A r} (≈-trans : Transitive _≈_) where
       ↭-sym = ↭-sym′ ≈-sym
 
     ↭-sym-involutive′ : (p : Permutation _≈_ xs ys) → ↭-sym (↭-sym p) ≡ p
-    ↭-sym-involutive′ (refl xs≋ys) = ≡.cong refl (≋-sym-involutive′ xs≋ys)
+    ↭-sym-involutive′ (refl xs≋ys) = cong refl (≋-sym-involutive′ xs≋ys)
       where
       ≋-sym-involutive′ : (p : Pointwise _≈_ xs ys) → ≋-sym (≋-sym p) ≡ p
       ≋-sym-involutive′ [] = ≡.refl
       ≋-sym-involutive′ (x≈y ∷ xs≋ys) rewrite ≈-sym-involutive x≈y
-        = ≡.cong (_ ∷_) (≋-sym-involutive′ xs≋ys)
-    ↭-sym-involutive′ (prep eq p) = ≡.cong₂ prep (≈-sym-involutive eq) (↭-sym-involutive′ p)
+        = cong (_ ∷_) (≋-sym-involutive′ xs≋ys)
+    ↭-sym-involutive′ (prep eq p) = cong₂ prep (≈-sym-involutive eq) (↭-sym-involutive′ p)
     ↭-sym-involutive′ (swap eq₁ eq₂ p) rewrite ≈-sym-involutive eq₁ | ≈-sym-involutive eq₂
-      = ≡.cong (swap _ _) (↭-sym-involutive′ p)
-    ↭-sym-involutive′ (trans p q) = ≡.cong₂ trans (↭-sym-involutive′ p) (↭-sym-involutive′ q)
+      = cong (swap _ _) (↭-sym-involutive′ p)
+    ↭-sym-involutive′ (trans p q) = cong₂ trans (↭-sym-involutive′ p) (↭-sym-involutive′ q)
 
     module _ (≈-trans-trans-sym : ∀ {x y z} (p : x ≈ y) (q : y ≈ z) →
                                   ≈-trans (≈-trans p q) (≈-sym q) ≡ p)
@@ -516,14 +546,6 @@ module _ (commutativeMonoid : CommutativeMonoid a r) where
 ------------------------------------------------------------------------
 
 module Steps {R : Rel A r} where
-
--- Definition
-
-  steps : Permutation R xs ys → ℕ
-  steps (refl _)            = 1
-  steps (prep _ xs↭ys)      = suc (steps xs↭ys)
-  steps (swap _ _ xs↭ys)    = suc (steps xs↭ys)
-  steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
 
 -- Basic property
 
