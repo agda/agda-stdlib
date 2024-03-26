@@ -177,7 +177,7 @@ module _ (commutativeMonoid : CommutativeMonoid a r) where
   foldr-commMonoid : Permutation _≈_ xs ys → foldr _∙_ ε xs ≈ foldr _∙_ ε ys
   foldr-commMonoid (refl xs≋ys) = Pointwise.foldr⁺ ∙-cong CM.refl xs≋ys
   foldr-commMonoid (prep x≈y xs↭ys) = ∙-cong x≈y (foldr-commMonoid xs↭ys)
-  foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
+  foldr-commMonoid (swap {x} {x′} {y} {y′} {xs} {ys} x≈x′ y≈y′ xs↭ys) = begin
     x ∙ (y ∙ foldr _∙_ ε xs)   ≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
     x ∙ (y ∙ foldr _∙_ ε ys)   ≈⟨ assoc x y (foldr _∙_ ε ys) ⟨
     (x ∙ y) ∙ foldr _∙_ ε ys   ≈⟨ ∙-congʳ (comm x y) ⟩
