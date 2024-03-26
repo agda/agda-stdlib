@@ -40,7 +40,8 @@ open import Relation.Unary using (Pred; Decidable)
 
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
-import Data.List.Relation.Binary.Permutation.Homogeneous as Properties
+import Data.List.Relation.Binary.Permutation.Homogeneous.Properties as Properties
+--import Data.List.Relation.Binary.Permutation.Homogeneous.Properties.Core as Core
 
 open Setoid S
   using (_≈_; isEquivalence)
@@ -92,11 +93,11 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 ↭-respˡ-≋ = Properties.Steps.↭-respˡ-≋ ≈-trans ≈-sym
 
 ↭-transˡ-≋ : LeftTrans _≋_ _↭_
-↭-transˡ-≋ = Properties.↭-transˡ-≋ ≈-trans
+↭-transˡ-≋ = Properties.Transitivity.↭-transˡ-≋ ≈-trans
 
 ↭-transʳ-≋ : RightTrans _↭_ _≋_
-↭-transʳ-≋ = Properties.↭-transʳ-≋ ≈-trans
-
+↭-transʳ-≋ = Properties.Transitivity.↭-transʳ-≋ ≈-trans
+{-
 module _ (≈-sym-involutive : ∀ {x y} → (p : x ≈ y) → ≈-sym (≈-sym p) ≡ p)
 
   where
@@ -116,11 +117,11 @@ module _ (≈-sym-involutive : ∀ {x y} → (p : x ≈ y) → ≈-sym (≈-sym 
                      ∈-resp-↭ (↭-sym p) (∈-resp-↭ p ix) ≡ ix
     ∈-resp-↭-sym   = Properties.∈-resp-↭-sym
       ≈-trans ≈-sym ≈-sym-involutive ≈-trans-trans-sym
-
+-}
 ------------------------------------------------------------------------
 -- Properties of steps (legacy)
 ------------------------------------------------------------------------
-
+{-
 0<steps : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
 0<steps = Properties.Steps.0<steps
 
@@ -131,7 +132,7 @@ steps-respˡ = Properties.Steps.steps-respˡ ≈-trans ≈-sym
 steps-respʳ : (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) →
               steps (↭-respʳ-≋ xs≋ys zs↭xs) ≡ steps zs↭xs
 steps-respʳ = Properties.Steps.steps-respʳ ≈-trans
-
+-}
 ------------------------------------------------------------------------
 -- Properties of list functions
 ------------------------------------------------------------------------
@@ -174,7 +175,7 @@ module _ (T : Setoid b r) where
 -- _++_
 
 shift : v ≈ w → ∀ xs ys → xs ++ [ v ] ++ ys ↭ w ∷ xs ++ ys
-shift v≈w xs ys = Properties.shift ≈-refl v≈w xs {ys}
+shift v≈w xs ys = Properties.Reflexivity.shift ≈-refl v≈w xs {ys}
 
 ↭-shift : ∀ xs {ys} → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
 ↭-shift xs {ys} = shift ≈-refl xs ys
@@ -276,28 +277,32 @@ shifts xs ys {zs} = begin
    ys ++ xs  ++ zs ∎
   where open PermutationReasoning
 
-dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
-           ws ++ [ x ] ++ ys ≋ xs ++ [ x ] ++ zs →
-           ws ++ ys ↭ xs ++ zs
-dropMiddleElement-≋ = Properties.dropMiddleElement-≋ isEquivalence
+module _ where
 
-dropMiddleElement : ∀ {v} ws xs {ys zs} →
+  open Properties.LRTransitivity ↭-transˡ-≋ ↭-transʳ-≋
+
+  dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
+                        ws ++ [ x ] ++ ys ≋ xs ++ [ x ] ++ zs →
+                        ws ++ ys ↭ xs ++ zs
+  dropMiddleElement-≋ = DropMiddle.dropMiddleElement-≋ isEquivalence
+
+  dropMiddleElement : ∀ {v} ws xs {ys zs} →
                     ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs →
                     ws ++ ys ↭ xs ++ zs
-dropMiddleElement {v} = Properties.dropMiddleElement isEquivalence {x = v}
+  dropMiddleElement {v} = DropMiddle.dropMiddleElement isEquivalence {x = v}
 
-dropMiddle : ∀ {vs} ws xs {ys zs} →
-             ws ++ vs ++ ys ↭ xs ++ vs ++ zs →
-             ws ++ ys ↭ xs ++ zs
-dropMiddle {[]}     ws xs p = p
-dropMiddle {v ∷ vs} ws xs p = dropMiddle ws xs (dropMiddleElement ws xs p)
+  dropMiddle : ∀ {vs} ws xs {ys zs} →
+               ws ++ vs ++ ys ↭ xs ++ vs ++ zs →
+               ws ++ ys ↭ xs ++ zs
+  dropMiddle {[]}     ws xs p = p
+  dropMiddle {v ∷ vs} ws xs p = dropMiddle ws xs (dropMiddleElement ws xs p)
 
-split-↭ : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs →
-          ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs × ps ++ qs ↭ as ++ bs
-split-↭ v as bs p = Properties.↭-split ≈-refl ≈-trans v as bs p
+  split-↭ : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs →
+            ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs × ps ++ qs ↭ as ++ bs
+  split-↭ v as bs p = Split.↭-split ≈-refl ≈-trans v as bs p
 
-split : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
-split v as bs p with ps , qs , eq , _ ← split-↭ v as bs p = ps , qs , eq
+  split : ∀ v as bs {xs} → xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
+  split v as bs p with ps , qs , eq , _ ← split-↭ v as bs p = ps , qs , eq
 
 
 ------------------------------------------------------------------------
