@@ -55,15 +55,15 @@ weak-contradiction a ¬a = ⊥-elim-irr (¬a a)
 contradiction : A → ¬ A → Whatever
 contradiction a = weak-contradiction a
 
-contradictionᵒ : ¬ A → A → Whatever
-contradictionᵒ = flip contradiction
+contradictionᵒ : ¬ A → .A → Whatever
+contradictionᵒ ¬a a = weak-contradiction a ¬a
 
 contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
-contradiction₂ (inj₁ a) ¬a ¬b = contradiction a ¬a
-contradiction₂ (inj₂ b) ¬a ¬b = contradiction b ¬b
+contradiction₂ (inj₁ a) ¬a ¬b = weak-contradiction a ¬a
+contradiction₂ (inj₂ b) ¬a ¬b = weak-contradiction b ¬b
 
 contraposition : (A → B) → ¬ B → ¬ A
-contraposition f ¬b a = contradiction (f a) ¬b
+contraposition f ¬b a = weak-contradiction (f a) ¬b
 
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
