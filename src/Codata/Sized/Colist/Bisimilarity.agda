@@ -20,8 +20,8 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Sym; Trans)
-open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_)
-import Relation.Binary.PropositionalEquality.Properties as Eq
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   variable
@@ -82,16 +82,16 @@ module _ {A : Set a} where
   _⊢_≈_ = Bisim _≡_
 
   refl : Reflexive (i ⊢_≈_)
-  refl = reflexive Eq.refl
+  refl = reflexive ≡.refl
 
   fromEq : ∀ {as bs} → as ≡ bs → i ⊢ as ≈ bs
-  fromEq Eq.refl = refl
+  fromEq ≡.refl = refl
 
   sym : Symmetric (i ⊢_≈_)
-  sym = symmetric Eq.sym
+  sym = symmetric ≡.sym
 
   trans : Transitive (i ⊢_≈_)
-  trans = transitive Eq.trans
+  trans = transitive ≡.trans
 
 isEquivalence : {R : Rel A r} → IsEquivalence R → IsEquivalence (Bisim R i)
 isEquivalence equiv^R = record
@@ -107,4 +107,4 @@ setoid S i = record
 
 module ≈-Reasoning {a} {A : Set a} {i} where
 
-  open import Relation.Binary.Reasoning.Setoid (setoid (Eq.setoid A) i) public
+  open import Relation.Binary.Reasoning.Setoid (setoid (≡.setoid A) i) public

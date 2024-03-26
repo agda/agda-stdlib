@@ -14,9 +14,9 @@ open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_])
   hiding (module ℤ)
 open import Data.Nat.GCD
-open import Data.Nat.Coprimality as C
+open import Data.Nat.Coprimality as ℕ
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; 2+) hiding (module ℕ)
 open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ)
 open import Data.Sum.Base using (inj₂)
 open import Function.Base using (id)
@@ -189,10 +189,11 @@ open ℤ public
 -- Constructors
 
 ≢-nonZero : ∀ {p} → p ≢ 0ℚ → NonZero p
-≢-nonZero {mkℚ -[1+ _ ] _       _} _   = _
-≢-nonZero {mkℚ +[1+ _ ] _       _} _   = _
-≢-nonZero {mkℚ +0       zero    _} p≢0 = contradiction refl p≢0
-≢-nonZero {mkℚ +0       (suc d) c} p≢0 = contradiction (λ {i} → C.recompute c {i}) ¬0-coprimeTo-2+
+≢-nonZero {mkℚ -[1+ _ ] _         _} _   = _
+≢-nonZero {mkℚ +[1+ _ ] _         _} _   = _
+≢-nonZero {mkℚ +0       zero      _} p≢0 = contradiction refl p≢0
+≢-nonZero {mkℚ +0       d@(suc m) c} p≢0 =
+  contradiction (λ {d} → ℕ.recompute c {d}) (¬0-coprimeTo-2+ {{ℕ.nonTrivial {m}}})
 
 >-nonZero : ∀ {p} → p > 0ℚ → NonZero p
 >-nonZero {p@(mkℚ _ _ _)} (*<* p<q) = ℚᵘ.>-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)
@@ -236,8 +237,8 @@ p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
 1/_ : (p : ℚ) → .{{_ : NonZero p}} → ℚ
-1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (C.sym prf)
-1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (C.sym prf)
+1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (ℕ.sym prf)
+1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (ℕ.sym prf)
 
 -- division: requires a proof that the denominator is not zero
 _÷_ : (p q : ℚ) → .{{_ : NonZero q}} → ℚ

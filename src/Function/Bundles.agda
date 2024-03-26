@@ -401,6 +401,17 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     LeftInverse splitSurjection
 
 ------------------------------------------------------------------------
+-- Infix abbreviations for oft-used items
+------------------------------------------------------------------------
+
+-- Same naming convention as used for propositional equality below, with
+-- appended ₛ (for 'S'etoid).
+
+infixr 0 _⟶ₛ_
+_⟶ₛ_ : Setoid a ℓ₁ → Setoid b ℓ₂ → Set _
+_⟶ₛ_ = Func
+
+------------------------------------------------------------------------
 -- Bundles specialised for propositional equality
 ------------------------------------------------------------------------
 

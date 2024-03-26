@@ -8,24 +8,25 @@
 
 module Algebra.Module.Morphism.Construct.Composition where
 
-open import Algebra.Bundles
-open import Algebra.Module.Bundles
+open import Algebra.Module.Bundles.Raw
 open import Algebra.Module.Morphism.Structures
 open import Algebra.Morphism.Construct.Composition
 open import Function.Base using (_∘_)
 import Function.Construct.Composition as Func
 open import Level using (Level)
+open import Relation.Binary.Definitions using (Transitive)
 
 private
   variable
-    r ℓr s ℓs m₁ ℓm₁ m₂ ℓm₂ m₃ ℓm₃ : Level
+    r s m₁ ℓm₁ m₂ ℓm₂ m₃ ℓm₃ : Level
 
 module _
-  {semiring : Semiring r ℓr}
-  {M₁ : LeftSemimodule semiring m₁ ℓm₁}
-  {M₂ : LeftSemimodule semiring m₂ ℓm₂}
-  {M₃ : LeftSemimodule semiring m₃ ℓm₃}
-  (open LeftSemimodule)
+  {R : Set r}
+  {M₁ : RawLeftSemimodule R m₁ ℓm₁}
+  {M₂ : RawLeftSemimodule R m₂ ℓm₂}
+  {M₃ : RawLeftSemimodule R m₃ ℓm₃}
+  (open RawLeftSemimodule)
+  (≈ᴹ₃-trans : Transitive (_≈ᴹ_ M₃))
   {f : Carrierᴹ M₁ → Carrierᴹ M₂}
   {g : Carrierᴹ M₂ → Carrierᴹ M₃}
   where
@@ -34,8 +35,8 @@ module _
                                  IsLeftSemimoduleHomomorphism M₂ M₃ g →
                                  IsLeftSemimoduleHomomorphism M₁ M₃ (g ∘ f)
   isLeftSemimoduleHomomorphism f-homo g-homo = record
-    { +ᴹ-isMonoidHomomorphism = isMonoidHomomorphism (≈ᴹ-trans M₃) F.+ᴹ-isMonoidHomomorphism G.+ᴹ-isMonoidHomomorphism
-    ; *ₗ-homo                 = λ r x → ≈ᴹ-trans M₃ (G.⟦⟧-cong (F.*ₗ-homo r x)) (G.*ₗ-homo r (f x))
+    { +ᴹ-isMonoidHomomorphism = isMonoidHomomorphism ≈ᴹ₃-trans F.+ᴹ-isMonoidHomomorphism G.+ᴹ-isMonoidHomomorphism
+    ; *ₗ-homo                 = λ r x → ≈ᴹ₃-trans (G.⟦⟧-cong (F.*ₗ-homo r x)) (G.*ₗ-homo r (f x))
     } where module F = IsLeftSemimoduleHomomorphism f-homo; module G = IsLeftSemimoduleHomomorphism g-homo
 
   isLeftSemimoduleMonomorphism : IsLeftSemimoduleMonomorphism M₁ M₂ f →
@@ -55,11 +56,12 @@ module _
     } where module F = IsLeftSemimoduleIsomorphism f-iso; module G = IsLeftSemimoduleIsomorphism g-iso
 
 module _
-  {ring : Ring r ℓr}
-  {M₁ : LeftModule ring m₁ ℓm₁}
-  {M₂ : LeftModule ring m₂ ℓm₂}
-  {M₃ : LeftModule ring m₃ ℓm₃}
-  (open LeftModule)
+  {R : Set r}
+  {M₁ : RawLeftModule R m₁ ℓm₁}
+  {M₂ : RawLeftModule R m₂ ℓm₂}
+  {M₃ : RawLeftModule R m₃ ℓm₃}
+  (open RawLeftModule)
+  (≈ᴹ₃-trans : Transitive (_≈ᴹ_ M₃))
   {f : Carrierᴹ M₁ → Carrierᴹ M₂}
   {g : Carrierᴹ M₂ → Carrierᴹ M₃}
   where
@@ -68,8 +70,8 @@ module _
                              IsLeftModuleHomomorphism M₂ M₃ g →
                              IsLeftModuleHomomorphism M₁ M₃ (g ∘ f)
   isLeftModuleHomomorphism f-homo g-homo = record
-    { +ᴹ-isGroupHomomorphism = isGroupHomomorphism (≈ᴹ-trans M₃) F.+ᴹ-isGroupHomomorphism G.+ᴹ-isGroupHomomorphism
-    ; *ₗ-homo = λ r x → ≈ᴹ-trans M₃ (G.⟦⟧-cong (F.*ₗ-homo r x)) (G.*ₗ-homo r (f x))
+    { +ᴹ-isGroupHomomorphism = isGroupHomomorphism ≈ᴹ₃-trans F.+ᴹ-isGroupHomomorphism G.+ᴹ-isGroupHomomorphism
+    ; *ₗ-homo = λ r x → ≈ᴹ₃-trans (G.⟦⟧-cong (F.*ₗ-homo r x)) (G.*ₗ-homo r (f x))
     } where module F = IsLeftModuleHomomorphism f-homo; module G = IsLeftModuleHomomorphism g-homo
 
   isLeftModuleMonomorphism : IsLeftModuleMonomorphism M₁ M₂ f →
@@ -89,11 +91,12 @@ module _
     } where module F = IsLeftModuleIsomorphism f-iso; module G = IsLeftModuleIsomorphism g-iso
 
 module _
-  {semiring : Semiring r ℓr}
-  {M₁ : RightSemimodule semiring m₁ ℓm₁}
-  {M₂ : RightSemimodule semiring m₂ ℓm₂}
-  {M₃ : RightSemimodule semiring m₃ ℓm₃}
-  (open RightSemimodule)
+  {R : Set r}
+  {M₁ : RawRightSemimodule R m₁ ℓm₁}
+  {M₂ : RawRightSemimodule R m₂ ℓm₂}
+  {M₃ : RawRightSemimodule R m₃ ℓm₃}
+  (open RawRightSemimodule)
+  (≈ᴹ₃-trans : Transitive (_≈ᴹ_ M₃))
   {f : Carrierᴹ M₁ → Carrierᴹ M₂}
   {g : Carrierᴹ M₂ → Carrierᴹ M₃}
   where
@@ -102,8 +105,8 @@ module _
                                   IsRightSemimoduleHomomorphism M₂ M₃ g →
                                   IsRightSemimoduleHomomorphism M₁ M₃ (g ∘ f)
   isRightSemimoduleHomomorphism f-homo g-homo = record
-    { +ᴹ-isMonoidHomomorphism = isMonoidHomomorphism (≈ᴹ-trans M₃) F.+ᴹ-isMonoidHomomorphism G.+ᴹ-isMonoidHomomorphism
-    ; *ᵣ-homo                 = λ r x → ≈ᴹ-trans M₃ (G.⟦⟧-cong (F.*ᵣ-homo r x)) (G.*ᵣ-homo r (f x))
+    { +ᴹ-isMonoidHomomorphism = isMonoidHomomorphism ≈ᴹ₃-trans F.+ᴹ-isMonoidHomomorphism G.+ᴹ-isMonoidHomomorphism
+    ; *ᵣ-homo                 = λ r x → ≈ᴹ₃-trans (G.⟦⟧-cong (F.*ᵣ-homo r x)) (G.*ᵣ-homo r (f x))
     } where module F = IsRightSemimoduleHomomorphism f-homo; module G = IsRightSemimoduleHomomorphism g-homo
 
   isRightSemimoduleMonomorphism : IsRightSemimoduleMonomorphism M₁ M₂ f →
@@ -123,11 +126,12 @@ module _
     } where module F = IsRightSemimoduleIsomorphism f-iso; module G = IsRightSemimoduleIsomorphism g-iso
 
 module _
-  {ring : Ring r ℓr}
-  {M₁ : RightModule ring m₁ ℓm₁}
-  {M₂ : RightModule ring m₂ ℓm₂}
-  {M₃ : RightModule ring m₃ ℓm₃}
-  (open RightModule)
+  {R : Set r}
+  {M₁ : RawRightModule R m₁ ℓm₁}
+  {M₂ : RawRightModule R m₂ ℓm₂}
+  {M₃ : RawRightModule R m₃ ℓm₃}
+  (open RawRightModule)
+  (≈ᴹ₃-trans : Transitive (_≈ᴹ_ M₃))
   {f : Carrierᴹ M₁ → Carrierᴹ M₂}
   {g : Carrierᴹ M₂ → Carrierᴹ M₃}
   where
@@ -136,8 +140,8 @@ module _
                               IsRightModuleHomomorphism M₂ M₃ g →
                               IsRightModuleHomomorphism M₁ M₃ (g ∘ f)
   isRightModuleHomomorphism f-homo g-homo = record
-    { +ᴹ-isGroupHomomorphism = isGroupHomomorphism (≈ᴹ-trans M₃) F.+ᴹ-isGroupHomomorphism G.+ᴹ-isGroupHomomorphism
-    ; *ᵣ-homo                = λ r x → ≈ᴹ-trans M₃ (G.⟦⟧-cong (F.*ᵣ-homo r x)) (G.*ᵣ-homo r (f x))
+    { +ᴹ-isGroupHomomorphism = isGroupHomomorphism ≈ᴹ₃-trans F.+ᴹ-isGroupHomomorphism G.+ᴹ-isGroupHomomorphism
+    ; *ᵣ-homo                = λ r x → ≈ᴹ₃-trans (G.⟦⟧-cong (F.*ᵣ-homo r x)) (G.*ᵣ-homo r (f x))
     } where module F = IsRightModuleHomomorphism f-homo; module G = IsRightModuleHomomorphism g-homo
 
   isRightModuleMonomorphism : IsRightModuleMonomorphism M₁ M₂ f →
@@ -157,12 +161,13 @@ module _
     } where module F = IsRightModuleIsomorphism f-iso; module G = IsRightModuleIsomorphism g-iso
 
 module _
-  {R-semiring : Semiring r ℓr}
-  {S-semiring : Semiring s ℓs}
-  {M₁ : Bisemimodule R-semiring S-semiring m₁ ℓm₁}
-  {M₂ : Bisemimodule R-semiring S-semiring m₂ ℓm₂}
-  {M₃ : Bisemimodule R-semiring S-semiring m₃ ℓm₃}
-  (open Bisemimodule)
+  {R : Set r}
+  {S : Set s}
+  {M₁ : RawBisemimodule R S m₁ ℓm₁}
+  {M₂ : RawBisemimodule R S m₂ ℓm₂}
+  {M₃ : RawBisemimodule R S m₃ ℓm₃}
+  (open RawBisemimodule)
+  (≈ᴹ₃-trans : Transitive (_≈ᴹ_ M₃))
   {f : Carrierᴹ M₁ → Carrierᴹ M₂}
   {g : Carrierᴹ M₂ → Carrierᴹ M₃}
   where
@@ -171,9 +176,9 @@ module _
                                IsBisemimoduleHomomorphism M₂ M₃ g →
                                IsBisemimoduleHomomorphism M₁ M₃ (g ∘ f)
   isBisemimoduleHomomorphism f-homo g-homo = record
-    { +ᴹ-isMonoidHomomorphism = isMonoidHomomorphism (≈ᴹ-trans M₃) F.+ᴹ-isMonoidHomomorphism G.+ᴹ-isMonoidHomomorphism
-    ; *ₗ-homo                 = λ r x → ≈ᴹ-trans M₃ (G.⟦⟧-cong (F.*ₗ-homo r x)) (G.*ₗ-homo r (f x))
-    ; *ᵣ-homo                 = λ r x → ≈ᴹ-trans M₃ (G.⟦⟧-cong (F.*ᵣ-homo r x)) (G.*ᵣ-homo r (f x))
+    { +ᴹ-isMonoidHomomorphism = isMonoidHomomorphism ≈ᴹ₃-trans F.+ᴹ-isMonoidHomomorphism G.+ᴹ-isMonoidHomomorphism
+    ; *ₗ-homo                 = λ r x → ≈ᴹ₃-trans (G.⟦⟧-cong (F.*ₗ-homo r x)) (G.*ₗ-homo r (f x))
+    ; *ᵣ-homo                 = λ r x → ≈ᴹ₃-trans (G.⟦⟧-cong (F.*ᵣ-homo r x)) (G.*ᵣ-homo r (f x))
     } where module F = IsBisemimoduleHomomorphism f-homo; module G = IsBisemimoduleHomomorphism g-homo
 
   isBisemimoduleMonomorphism : IsBisemimoduleMonomorphism M₁ M₂ f →
@@ -193,12 +198,13 @@ module _
     } where module F = IsBisemimoduleIsomorphism f-iso; module G = IsBisemimoduleIsomorphism g-iso
 
 module _
-  {R-ring : Ring r ℓr}
-  {S-ring : Ring s ℓs}
-  {M₁ : Bimodule R-ring S-ring m₁ ℓm₁}
-  {M₂ : Bimodule R-ring S-ring m₂ ℓm₂}
-  {M₃ : Bimodule R-ring S-ring m₃ ℓm₃}
-  (open Bimodule)
+  {R : Set r}
+  {S : Set s}
+  {M₁ : RawBimodule R S m₁ ℓm₁}
+  {M₂ : RawBimodule R S m₂ ℓm₂}
+  {M₃ : RawBimodule R S m₃ ℓm₃}
+  (open RawBimodule)
+  (≈ᴹ₃-trans : Transitive (_≈ᴹ_ M₃))
   {f : Carrierᴹ M₁ → Carrierᴹ M₂}
   {g : Carrierᴹ M₂ → Carrierᴹ M₃}
   where
@@ -207,9 +213,9 @@ module _
                            IsBimoduleHomomorphism M₂ M₃ g →
                            IsBimoduleHomomorphism M₁ M₃ (g ∘ f)
   isBimoduleHomomorphism f-homo g-homo = record
-    { +ᴹ-isGroupHomomorphism = isGroupHomomorphism (≈ᴹ-trans M₃) F.+ᴹ-isGroupHomomorphism G.+ᴹ-isGroupHomomorphism
-    ; *ₗ-homo                = λ r x → ≈ᴹ-trans M₃ (G.⟦⟧-cong (F.*ₗ-homo r x)) (G.*ₗ-homo r (f x))
-    ; *ᵣ-homo                = λ r x → ≈ᴹ-trans M₃ (G.⟦⟧-cong (F.*ᵣ-homo r x)) (G.*ᵣ-homo r (f x))
+    { +ᴹ-isGroupHomomorphism = isGroupHomomorphism ≈ᴹ₃-trans F.+ᴹ-isGroupHomomorphism G.+ᴹ-isGroupHomomorphism
+    ; *ₗ-homo                = λ r x → ≈ᴹ₃-trans (G.⟦⟧-cong (F.*ₗ-homo r x)) (G.*ₗ-homo r (f x))
+    ; *ᵣ-homo                = λ r x → ≈ᴹ₃-trans (G.⟦⟧-cong (F.*ᵣ-homo r x)) (G.*ᵣ-homo r (f x))
     } where module F = IsBimoduleHomomorphism f-homo; module G = IsBimoduleHomomorphism g-homo
 
   isBimoduleMonomorphism : IsBimoduleMonomorphism M₁ M₂ f →
@@ -229,11 +235,12 @@ module _
     } where module F = IsBimoduleIsomorphism f-iso; module G = IsBimoduleIsomorphism g-iso
 
 module _
-  {commutativeSemiring : CommutativeSemiring r ℓr}
-  {M₁ : Semimodule commutativeSemiring m₁ ℓm₁}
-  {M₂ : Semimodule commutativeSemiring m₂ ℓm₂}
-  {M₃ : Semimodule commutativeSemiring m₃ ℓm₃}
-  (open Semimodule)
+  {R : Set r}
+  {M₁ : RawSemimodule R m₁ ℓm₁}
+  {M₂ : RawSemimodule R m₂ ℓm₂}
+  {M₃ : RawSemimodule R m₃ ℓm₃}
+  (open RawSemimodule)
+  (≈ᴹ₃-trans : Transitive (_≈ᴹ_ M₃))
   {f : Carrierᴹ M₁ → Carrierᴹ M₂}
   {g : Carrierᴹ M₂ → Carrierᴹ M₃}
   where
@@ -242,7 +249,7 @@ module _
                              IsSemimoduleHomomorphism M₂ M₃ g →
                              IsSemimoduleHomomorphism M₁ M₃ (g ∘ f)
   isSemimoduleHomomorphism f-homo g-homo = record
-    { isBisemimoduleHomomorphism = isBisemimoduleHomomorphism F.isBisemimoduleHomomorphism G.isBisemimoduleHomomorphism
+    { isBisemimoduleHomomorphism = isBisemimoduleHomomorphism ≈ᴹ₃-trans F.isBisemimoduleHomomorphism G.isBisemimoduleHomomorphism
     } where module F = IsSemimoduleHomomorphism f-homo; module G = IsSemimoduleHomomorphism g-homo
 
   isSemimoduleMonomorphism : IsSemimoduleMonomorphism M₁ M₂ f →
@@ -262,11 +269,12 @@ module _
     } where module F = IsSemimoduleIsomorphism f-iso; module G = IsSemimoduleIsomorphism g-iso
 
 module _
-  {commutativeRing : CommutativeRing r ℓr}
-  {M₁ : Module commutativeRing m₁ ℓm₁}
-  {M₂ : Module commutativeRing m₂ ℓm₂}
-  {M₃ : Module commutativeRing m₃ ℓm₃}
-  (open Module)
+  {R : Set r}
+  {M₁ : RawModule R m₁ ℓm₁}
+  {M₂ : RawModule R m₂ ℓm₂}
+  {M₃ : RawModule R m₃ ℓm₃}
+  (open RawModule)
+  (≈ᴹ₃-trans : Transitive (_≈ᴹ_ M₃))
   {f : Carrierᴹ M₁ → Carrierᴹ M₂}
   {g : Carrierᴹ M₂ → Carrierᴹ M₃}
   where
@@ -275,7 +283,7 @@ module _
                          IsModuleHomomorphism M₂ M₃ g →
                          IsModuleHomomorphism M₁ M₃ (g ∘ f)
   isModuleHomomorphism f-homo g-homo = record
-    { isBimoduleHomomorphism = isBimoduleHomomorphism F.isBimoduleHomomorphism G.isBimoduleHomomorphism
+    { isBimoduleHomomorphism = isBimoduleHomomorphism ≈ᴹ₃-trans F.isBimoduleHomomorphism G.isBimoduleHomomorphism
     } where module F = IsModuleHomomorphism f-homo; module G = IsModuleHomomorphism g-homo
 
   isModuleMonomorphism : IsModuleMonomorphism M₁ M₂ f →

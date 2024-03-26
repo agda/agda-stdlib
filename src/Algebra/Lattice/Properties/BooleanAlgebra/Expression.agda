@@ -20,13 +20,13 @@ open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
-import Data.Vec.Effectful as VecCat
-import Function.Identity.Effectful as IdCat
+import Data.Vec.Effectful as Vec
+import Function.Identity.Effectful as Identity
 open import Data.Vec.Properties using (lookup-map)
 open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
   using (Pointwise; ext)
 open import Function.Base using (_∘_; _$_; flip)
-open import Relation.Binary.PropositionalEquality as P using (_≗_)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≗_)
 import Relation.Binary.Reflection as Reflection
 
 -- Expressions made up of variables and the operations of a boolean
@@ -68,7 +68,7 @@ module Naturality
   (f : Applicative.Morphism A₁ A₂)
   where
 
-  open P.≡-Reasoning
+  open ≡.≡-Reasoning
   open Applicative.Morphism f
   open Semantics A₁ renaming (⟦_⟧ to ⟦_⟧₁)
   open Semantics A₂ renaming (⟦_⟧ to ⟦_⟧₂)
@@ -77,21 +77,21 @@ module Naturality
 
   natural : ∀ {n} (e : Expr n) → op ∘ ⟦ e ⟧₁ ≗ ⟦ e ⟧₂ ∘ Vec.map op
   natural (var x) ρ = begin
-    op (Vec.lookup ρ x)                                            ≡⟨ P.sym $ lookup-map x op ρ ⟩
+    op (Vec.lookup ρ x)                                            ≡⟨ ≡.sym $ lookup-map x op ρ ⟩
     Vec.lookup (Vec.map op ρ) x                                    ∎
   natural (e₁ or e₂) ρ = begin
     op (_∨_ <$>₁ ⟦ e₁ ⟧₁ ρ ⊛₁ ⟦ e₂ ⟧₁ ρ)                       ≡⟨ op-⊛ _ _ ⟩
-    op (_∨_ <$>₁ ⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ P.cong₂ _⊛₂_ (op-<$> _ _) P.refl ⟩
-    _∨_ <$>₂ op (⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ P.cong₂ (λ e₁ e₂ → _∨_ <$>₂ e₁ ⊛₂ e₂) (natural e₁ ρ) (natural e₂ ρ) ⟩
+    op (_∨_ <$>₁ ⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ ≡.cong₂ _⊛₂_ (op-<$> _ _) ≡.refl ⟩
+    _∨_ <$>₂ op (⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ ≡.cong₂ (λ e₁ e₂ → _∨_ <$>₂ e₁ ⊛₂ e₂) (natural e₁ ρ) (natural e₂ ρ) ⟩
     _∨_ <$>₂ ⟦ e₁ ⟧₂ (Vec.map op ρ) ⊛₂ ⟦ e₂ ⟧₂ (Vec.map op ρ)  ∎
   natural (e₁ and e₂) ρ = begin
     op (_∧_ <$>₁ ⟦ e₁ ⟧₁ ρ ⊛₁ ⟦ e₂ ⟧₁ ρ)                       ≡⟨ op-⊛ _ _ ⟩
-    op (_∧_ <$>₁ ⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ P.cong₂ _⊛₂_ (op-<$> _ _) P.refl ⟩
-    _∧_ <$>₂ op (⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ P.cong₂ (λ e₁ e₂ → _∧_ <$>₂ e₁ ⊛₂ e₂) (natural e₁ ρ) (natural e₂ ρ) ⟩
+    op (_∧_ <$>₁ ⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ ≡.cong₂ _⊛₂_ (op-<$> _ _) ≡.refl ⟩
+    _∧_ <$>₂ op (⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ ≡.cong₂ (λ e₁ e₂ → _∧_ <$>₂ e₁ ⊛₂ e₂) (natural e₁ ρ) (natural e₂ ρ) ⟩
     _∧_ <$>₂ ⟦ e₁ ⟧₂ (Vec.map op ρ) ⊛₂ ⟦ e₂ ⟧₂ (Vec.map op ρ)  ∎
   natural (not e) ρ = begin
     op (¬_ <$>₁ ⟦ e ⟧₁ ρ)                                      ≡⟨ op-<$> _ _ ⟩
-    ¬_ <$>₂ op (⟦ e ⟧₁ ρ)                                      ≡⟨ P.cong (¬_ <$>₂_) (natural e ρ) ⟩
+    ¬_ <$>₂ op (⟦ e ⟧₁ ρ)                                      ≡⟨ ≡.cong (¬_ <$>₂_) (natural e ρ) ⟩
     ¬_ <$>₂ ⟦ e ⟧₂ (Vec.map op ρ)                              ∎
   natural top ρ = begin
     op (pure₁ ⊤)                                                   ≡⟨ op-pure _ ⟩
@@ -165,18 +165,18 @@ lift n = record
     }
   }
   where
-  open RawApplicative VecCat.applicative
+  open RawApplicative Vec.applicative
     using (pure; zipWith) renaming (_<$>_ to map)
 
   ⟦_⟧Id : ∀ {n} → Expr n → Vec Carrier n → Carrier
-  ⟦_⟧Id = Semantics.⟦_⟧ IdCat.applicative
+  ⟦_⟧Id = Semantics.⟦_⟧ Identity.applicative
 
   ⟦_⟧Vec : ∀ {m n} → Expr n → Vec (Vec Carrier m) n → Vec Carrier m
-  ⟦_⟧Vec = Semantics.⟦_⟧ VecCat.applicative
+  ⟦_⟧Vec = Semantics.⟦_⟧ Vec.applicative
 
   open module R {n} (i : Fin n) =
     Reflection setoid var
       (λ e ρ → Vec.lookup (⟦ e ⟧Vec ρ) i)
       (λ e ρ → ⟦ e ⟧Id (Vec.map (flip Vec.lookup i) ρ))
       (λ e ρ → sym $ reflexive $
-                 Naturality.natural (VecCat.lookup-morphism i) e ρ)
+                 Naturality.natural (Vec.lookup-morphism i) e ρ)

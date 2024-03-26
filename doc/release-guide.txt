@@ -3,7 +3,7 @@ procedure should be followed:
 
 #### Pre-release changes
 
-* Update `README.agda` by replacing 'development version' by 'version X.Y' in the title.
+* Update `doc/README.agda` by replacing 'development version' by 'version X.Y' in the title.
 
 * Update the version to `X.Y` in:
   - `agda-stdlib-utils.cabal`
@@ -11,7 +11,7 @@ procedure should be followed:
   - `CITATION.cff`
   - `CHANGELOG.md`
   - `README.md`
-  - `notes/installation-guide.txt`
+  - `doc/installation-guide.md`
 
 * Update the copyright year range in the LICENSE file, if necessary.
 
@@ -64,7 +64,7 @@ procedure should be followed:
 * Generate and upload documentation for the released version:
 
     cp .github/tooling/* .
-    runhaskell GenerateEverything.hs
+    cabal run GenerateEverything.hs
     ./index.sh
     agda -i. -idoc -isrc --html index.agda
     mv html v$VERSION
@@ -82,4 +82,4 @@ procedure should be followed:
 
 * Create new CHANGELOG.md file
 
-* Revert changes in README.md to reference development version
+* Update `standard-library.agda-lib` to the new version/milestone on `master`

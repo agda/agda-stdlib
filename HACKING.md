@@ -4,7 +4,7 @@ Contributing to the library
 Thank you for your interest in contributing to the Agda standard library.
 Hopefully this guide should make it easy to do so! Feel free to ask any
 questions on the Agda mailing list. Before you start please read the
-[style-guide](https://github.com/agda/agda-stdlib/blob/master/notes/style-guide.md).
+[style-guide](https://github.com/agda/agda-stdlib/blob/master/doc/style-guide.md).
 
 What is an acceptable contribution?
 ===================================
@@ -26,6 +26,18 @@ What is an acceptable contribution?
 
 In general, if something is in a general undergraduate Computer Science or Mathematics
 textbook it is probably (!) contributable.
+
+Note on contributions to related/'coupled' modules
+==================================================
+
+Before making changes to a `Data` module please have a look at related modules
+and see if they have any content along similar lines. If so, then please
+follow those conventions (e.g. naming, argument order).
+For example, if working on `Data.Rational`, please check `Data.Rational.Unnormalised`
+or if working on `Data.Vec` please check `Data.List` and vice versa.
+Likewise, if adding to such modules, please try to make companion additions
+to the related ones, or at least to make a task-list in the comments on your PR,
+indicating what outstanding work may be left for subsequent contributions/contributors.
 
 Setup
 =====
@@ -110,9 +122,9 @@ git checkout master
 git pull
 ```
 
-The second step is to create a branch for that feature based off of `master`.
+The second step is to create a branch for that feature based off `master`.
 Make sure to pick a fresh name in place of `new_feature`. We promptly push
-this new branch to our fork using the `-u` option fo `push`.
+this new branch to our fork using the `-u` option for `push`.
 
 ```shell
 git checkout -b new_feature
@@ -124,7 +136,7 @@ git push USER -u new_feature
 
 You can then proceed to make your changes. Please follow existing
 conventions in the library, see
-[style-guide](https://github.com/agda/agda-stdlib/blob/master/notes/style-guide.md).
+[style-guide](https://github.com/agda/agda-stdlib/blob/master/doc/style-guide.md).
 for details. Document your changes in `agda-stdlib-fork/CHANGELOG.md`.
 
 If you are creating new modules, please make sure you are having a

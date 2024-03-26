@@ -121,14 +121,48 @@ automate most of this.
 
 * If it is important that certain names only come into scope later in
   the file then the module should still be imported at the top of the
-  file but it can be given a shorter name using the keyword `as` and then
-  opened later on in the file when needed, e.g.
+  file but it can be imported *qualified*, i.e. given a shorter name
+  using the keyword `as` and then opened later on in the file when needed,
+  e.g.
   ```agda
   import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
   ...
   ...
   open SetoidEquality S
   ```
+
+* If importing a parametrised module, qualified or otherwise, with its
+  parameters instantiated, then such 'instantiated imports' should be placed
+  *after* the main block of `import`s, and *before* any `variable` declarations.
+
+* Naming conventions for qualified `import`s: if importing a module under
+  a root of the form `Data.X` (e.g. the `Base` module for basic operations,
+  or `Properties` for lemmas about them etc.) then conventionally, the
+  qualified name(s) for the import(s) should (all) share as qualified name
+  that of the name of the `X` datatype defined: i.e. `Data.Nat.Base`
+  should be imported as `ℕ`, `Data.List.Properties` as `List`,  etc.
+  In this spirit, the convention applies also to (the datatype defined by)
+  `Relation.Binary.PropositionalEquality.*` which should be imported qualified
+  with the name `≡`.
+  Other modules should be given a 'suitable' qualified name based on its 'long'
+  path-derived name (such as `SetoidEquality` in the example above); commonly
+  occurring examples such as `Algebra.Structures` should be imported qualified
+  as `Structures` etc.
+  NB. Historical legacy means that these conventions have not always been observed!
+
+* Special case of the above for `*-Reasoning` (sub-)modules: by analogy with
+  `Relation.Binary.PropositionalEquality.≡-Reasoning`, when importing qualified
+  the `-Reasoning` (sub-)module associated with a given (canonical) choice of
+  symbol (eg. `≲` for `Preorder` reasoning), use the qualified name
+  `<symbol>-Reasoning`, ie. `≲-Reasoning` for the example given.
+
+* Qualified `open import`s should, in general, avoid `renaming`
+  identifiers, in favour of using the long(er) qualified name,
+  although similar remarks about legacy failure to observe this
+  recommendation apply!
+  NB. `renaming` directives are, of course, permitted when a module is
+  imported qualified, in order to be *subsequently* `open`ed for
+  `public` export (see below).
 
 * When using only a few items (i.e. < 5) from a module, it is a good practice to
   enumerate the items that will be used by declaring the import statement
@@ -333,6 +367,16 @@ line of code, indented by two spaces.
   ...                  | false = filter p xs
   ```
 
+* Instance arguments, and their types, should use the vanilla ASCII/UTF-8 `{{_}}`
+  syntax in preference to the Unicode `⦃_⦄` syntax (written using `\{{`/`\}}`),
+  which moreover requires additional whitespace to parse correctly.
+  NB. Even for irrelevant instances, such as typically for `NonZero` arguments,
+  neverthelesss it is necessary to supply an underscore binding `{{_ : NonZero n}}`
+  if subsequent terms occurring in the type rely on that argument to be well-formed:
+  eg in `Data.Nat.DivMod`, in the use of `_/ n` and `_% n`
+  ```agda
+  m≡m%n+[m/n]*n : ∀ m n .{{_ : NonZero n}} → m ≡ m % n + (m / n) * n
+  ```
 
 ## Types
 
@@ -522,3 +566,22 @@ word within a compound word is capitalized except for the first word.
 
 * The names of patterns for reflected syntax are also *appended* with an
   additional backtick.
+
+#### Specific pragmatics/idiomatic patterns
+
+## Use of `with` notation
+
+Thinking on this has changed since the early days of the library, with
+a desire to avoid 'unnecessary' uses of `with`: see Issues
+[#1937](https://github.com/agda/agda-stdlib/issues/1937) and
+[#2123](https://github.com/agda/agda-stdlib/issues/2123).
+
+## Proving instances of `Decidable` for sets, predicates, relations, ...
+
+Issue [#803](https://github.com/agda/agda-stdlib/issues/803)
+articulates a programming pattern for writing proofs of decidability,
+used successfully in PR
+[#799](https://github.com/agda/agda-stdlib/pull/799) and made
+systematic for `Nary` relations in PR
+[#811](https://github.com/agda/agda-stdlib/pull/811)
+

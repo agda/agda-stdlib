@@ -19,7 +19,7 @@ open import Data.Unit.Base
 open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.Nat.Base using (zero; suc)
-open import Data.Product.Base as Prod using (_×_; _,_)
+open import Data.Product.Base as Product using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_$_; _∘′_)

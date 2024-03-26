@@ -18,6 +18,8 @@
 --   ≡⟨ cong! (+-identityʳ n) ⟨
 --     suc (suc n) + (n + 0)
 --   ∎
+--
+-- Please see README.Tactic.Cong for more details.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -31,12 +33,12 @@ open import Data.Char.Base   as Char  using (toℕ)
 open import Data.Float.Base  as Float using (_≡ᵇ_)
 open import Data.List.Base   as List  using ([]; _∷_)
 open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
-open import Data.Nat.Base    as Nat   using (ℕ; zero; suc; _≡ᵇ_; _+_)
+open import Data.Nat.Base    as ℕ     using (ℕ; zero; suc; _≡ᵇ_; _+_)
 open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
 
-open import Relation.Binary.PropositionalEquality.Core as Eq using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the
 -- builtin for maximum speed.
@@ -55,6 +57,20 @@ open import Reflection.AST.Term                 as Term
 
 open import Reflection.TCM.Syntax
 
+-- Marker to keep anti-unification from descending into the wrapped
+-- subterm.
+--
+-- For instance, anti-unification of ⌞ a + b ⌟ + c and b + a + c
+-- yields λ ϕ → ϕ + c, as opposed to λ ϕ → ϕ + ϕ + c without ⌞_⌟.
+--
+-- The marker is only visible to the cong! tactic, which inhibits
+-- normalisation. Anywhere else, ⌞ a + b ⌟ reduces to a + b.
+--
+-- Thus, proving ⌞ a + b ⌟ + c ≡ b + a + c via cong! (+-comm a b)
+-- also proves a + b + c ≡ b + a + c.
+⌞_⌟ : ∀ {a} {A : Set a} → A → A
+⌞_⌟ x = x
+
 ------------------------------------------------------------------------
 -- Utilities
 ------------------------------------------------------------------------
@@ -62,7 +78,7 @@ open import Reflection.TCM.Syntax
 private
   -- Descend past a variable.
   varDescend : ℕ → ℕ → ℕ
-  varDescend ϕ x = if ϕ Nat.≤ᵇ x then suc x else x
+  varDescend ϕ x = if ϕ ℕ.≤ᵇ x then suc x else x
 
   -- Descend a variable underneath pattern variables.
   patternDescend : ℕ → Pattern → Pattern × ℕ
@@ -136,7 +152,9 @@ private
   antiUnifyClauses : ℕ → Clauses → Clauses → Maybe Clauses
   antiUnifyClause  : ℕ → Clause → Clause → Maybe Clause
 
-  antiUnify ϕ (var x args) (var y args') with x Nat.≡ᵇ y | antiUnifyArgs ϕ args args'
+  pattern apply-⌞⌟ t = (def (quote ⌞_⌟) (_ ∷ _ ∷ arg _ t ∷ []))
+
+  antiUnify ϕ (var x args) (var y args') with x ℕ.≡ᵇ y | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ uargs
   ... | true  | just uargs = var (varDescend ϕ x) uargs
@@ -144,6 +162,7 @@ private
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ []
   ... | true  | just uargs = con c uargs
+  antiUnify ϕ (def f args) (apply-⌞⌟ t) = antiUnify ϕ (def f args) t
   antiUnify ϕ (def f args) (def f' args') with f Name.≡ᵇ f' | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ []
@@ -158,13 +177,13 @@ private
     Π[ s ∶ arg i (antiUnify ϕ a a') ] antiUnify (suc ϕ) b b'
   antiUnify ϕ (sort (set t)) (sort (set t')) =
     sort (set (antiUnify ϕ t t'))
-  antiUnify ϕ (sort (lit n)) (sort (lit n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (lit n)) (sort (lit n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (lit n)
   ... | false = var ϕ []
-  antiUnify ϕ (sort (propLit n)) (sort (propLit n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (propLit n)) (sort (propLit n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (propLit n)
   ... | false = var ϕ []
-  antiUnify ϕ (sort (inf n)) (sort (inf n')) with n Nat.≡ᵇ n'
+  antiUnify ϕ (sort (inf n)) (sort (inf n')) with n ℕ.≡ᵇ n'
   ... | true  = sort (inf n)
   ... | false = var ϕ []
   antiUnify ϕ (sort unknown) (sort unknown) =
@@ -217,6 +236,12 @@ macro
     withNormalisation false $ do
       goal ← inferType hole
       eqGoal ← destructEqualityGoal goal
-      let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
-      cong-tm ← `cong eqGoal cong-lam x≡y
-      unify cong-tm hole
+      let uni = λ lhs rhs → do
+        let cong-lam = antiUnify 0 lhs rhs
+        cong-tm ← `cong eqGoal cong-lam x≡y
+        unify cong-tm hole
+      let lhs = EqualityGoal.lhs eqGoal
+      let rhs = EqualityGoal.rhs eqGoal
+      -- When using ⌞_⌟ with ≡⟨ ... ⟨, (uni lhs rhs) fails and
+      -- (uni rhs lhs) succeeds.
+      catchTC (uni lhs rhs) (uni rhs lhs)
