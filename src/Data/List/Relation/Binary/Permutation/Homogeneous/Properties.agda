@@ -19,7 +19,7 @@ open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Unary.Any.Properties as Any
 open import Data.Nat.Base using (ℕ; suc; _+_; _<_)
 import Data.Nat.Properties as ℕ
-open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
+open import Data.Product.Base using (_,_; _×_; ∃)
 open import Function.Base using (_∘_; flip)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_)
@@ -44,7 +44,7 @@ private
     x y z v w : A
     P : Pred A p
     R : Rel A r
-    S : Rel A s 
+    S : Rel A s
 
 ------------------------------------------------------------------------
 -- Re-export `Core` properties
@@ -212,25 +212,8 @@ module _ (resp : P Respects R) where
   Any-resp-↭ (swap ≈₁ ≈₂ p) (there (there pxs)) = there (there (Any-resp-↭ p pxs))
   Any-resp-↭ (trans p₁ p₂) pxs                  = Any-resp-↭ p₂ (Any-resp-↭ p₁ pxs)
 
--- AllPairs
+-- Membership
 
-module _ (sym : Symmetric S) (resp@(rʳ , rˡ) : S Respects₂ R) where
-  
-  AllPairs-resp-↭ : (AllPairs S) Respects (Permutation R)
-  AllPairs-resp-↭ (refl xs≋ys)     pxs             =
-    Pointwise.AllPairs-resp-Pointwise resp xs≋ys pxs
-  AllPairs-resp-↭ (prep x≈y p)     (∼ ∷ pxs)       =
-    All-resp-↭ rʳ p (All.map (rˡ x≈y) ∼) ∷ AllPairs-resp-↭ p pxs
-  AllPairs-resp-↭ (swap eq₁ eq₂ p) ((∼₁ ∷ ∼₂) ∷ ∼₃ ∷ pxs) =
-    (sym (rʳ eq₂ (rˡ eq₁ ∼₁)) ∷ All-resp-↭ rʳ p (All.map (rˡ eq₂) ∼₃)) ∷
-    All-resp-↭ rʳ p (All.map (rˡ eq₁) ∼₂) ∷ AllPairs-resp-↭ p pxs
-  AllPairs-resp-↭ (trans p₁ p₂)    pxs             =
-    AllPairs-resp-↭ p₂ (AllPairs-resp-↭ p₁ pxs)
-
-------------------------------------------------------------------------
--- Two higher-dimensional properties useful in the `Propositional` case,
--- specifically in the equivalence proof between `Bag` equality and `_↭_`
-{-
 module _ {_≈_ : Rel A r} (≈-trans : Transitive _≈_) where
 
   private
@@ -243,62 +226,22 @@ module _ {_≈_ : Rel A r} (≈-trans : Transitive _≈_) where
   ∈-resp-↭ : (Any (x ≈_)) Respects (Permutation _≈_)
   ∈-resp-↭ = Any-resp-↭ ∈-resp
 
-  module _ (≈-sym : Symmetric _≈_)
-           (≈-sym-involutive : ∀ {x y} (p : x ≈ y) → ≈-sym (≈-sym p) ≡ p)
-    where
+-- AllPairs
 
-    open Symmetry ≈-sym using (≋-sym; ↭-sym)
+module _ (sym : Symmetric S) (resp@(rʳ , rˡ) : S Respects₂ R) where
 
-    ↭-sym-involutive : (p : Permutation _≈_ xs ys) → ↭-sym (↭-sym p) ≡ p
-    ↭-sym-involutive (refl xs≋ys) = cong refl (≋-sym-involutive xs≋ys)
-      where
-      ≋-sym-involutive : (p : Pointwise _≈_ xs ys) → ≋-sym (≋-sym p) ≡ p
-      ≋-sym-involutive [] = ≡.refl
-      ≋-sym-involutive (x≈y ∷ xs≋ys) rewrite ≈-sym-involutive x≈y
-        = cong (_ ∷_) (≋-sym-involutive xs≋ys)
-    ↭-sym-involutive (prep eq p) = cong₂ prep (≈-sym-involutive eq) (↭-sym-involutive p)
-    ↭-sym-involutive (swap eq₁ eq₂ p) rewrite ≈-sym-involutive eq₁ | ≈-sym-involutive eq₂
-      = cong (swap _ _) (↭-sym-involutive p)
-    ↭-sym-involutive (trans p q) = cong₂ trans (↭-sym-involutive p) (↭-sym-involutive q)
+  AllPairs-resp-↭ : (AllPairs S) Respects (Permutation R)
+  AllPairs-resp-↭ (refl xs≋ys)     pxs             =
+    Pointwise.AllPairs-resp-Pointwise resp xs≋ys pxs
+  AllPairs-resp-↭ (prep x≈y p)     (∼ ∷ pxs)       =
+    All-resp-↭ rʳ p (All.map (rˡ x≈y) ∼) ∷ AllPairs-resp-↭ p pxs
+  AllPairs-resp-↭ (swap eq₁ eq₂ p) ((∼₁ ∷ ∼₂) ∷ ∼₃ ∷ pxs) =
+    (sym (rʳ eq₂ (rˡ eq₁ ∼₁)) ∷ All-resp-↭ rʳ p (All.map (rˡ eq₂) ∼₃)) ∷
+    All-resp-↭ rʳ p (All.map (rˡ eq₁) ∼₂) ∷ AllPairs-resp-↭ p pxs
+  AllPairs-resp-↭ (trans p₁ p₂)    pxs             =
+    AllPairs-resp-↭ p₂ (AllPairs-resp-↭ p₁ pxs)
 
-    module _ (≈-trans-trans-sym : ∀ {x y z} (p : x ≈ y) (q : y ≈ z) →
-                                  ≈-trans (≈-trans p q) (≈-sym q) ≡ p)
-      where
 
-      ∈-resp-Pointwise-sym : (p : Pointwise _≈_ xs ys) {ix : Any (x ≈_) xs} →
-                             ∈-resp-Pointwise (≋-sym p) (∈-resp-Pointwise p ix) ≡ ix
-      ∈-resp-Pointwise-sym (x≈y ∷ xs≋ys) {here ix} 
-        = cong here (≈-trans-trans-sym ix x≈y)
-      ∈-resp-Pointwise-sym (x≈y ∷ xs≋ys) {there ixs}
-        = cong there (∈-resp-Pointwise-sym xs≋ys)
-
-      ∈-resp-↭-sym′   : (p : Permutation _≈_ ys xs) {iy : Any (x ≈_) ys} {ix : Any (x ≈_) xs} →
-                       ix ≡ ∈-resp-↭ p iy → ∈-resp-↭ (↭-sym p) ix ≡ iy
-      ∈-resp-↭-sym′ (refl xs≋ys) ≡.refl = ∈-resp-Pointwise-sym xs≋ys
-      ∈-resp-↭-sym′ (prep eq₁ p) {here iy} {here ix} eq
-        with ≡.refl ← eq = cong here (≈-trans-trans-sym iy eq₁)
-      ∈-resp-↭-sym′ (prep eq₁ p) {there iys} {there ixs} eq
-        with ≡.refl ← eq = cong there (∈-resp-↭-sym′ p ≡.refl)
-      ∈-resp-↭-sym′ (swap eq₁ eq₂ p) {here ix} {here iy} ()
-      ∈-resp-↭-sym′ (swap eq₁ eq₂ p) {here ix} {there iys} eq
-        with ≡.refl ← eq = cong here (≈-trans-trans-sym ix eq₁)
-      ∈-resp-↭-sym′ (swap eq₁ eq₂ p) {there (here ix)} {there (here iy)} ()
-      ∈-resp-↭-sym′ (swap eq₁ eq₂ p) {there (here ix)} {here iy} eq
-        with ≡.refl ← eq = cong (there ∘ here) (≈-trans-trans-sym ix eq₂)
-      ∈-resp-↭-sym′ (swap eq₁ eq₂ p) {there (there ixs)} {there (there iys)} eq
-        with ≡.refl ← eq = cong (there ∘ there) (∈-resp-↭-sym′ p ≡.refl)
-      ∈-resp-↭-sym′ (trans p₁ p₂) eq = ∈-resp-↭-sym′ p₁ (∈-resp-↭-sym′ p₂ eq)
-
-      ∈-resp-↭-sym : (p : Permutation _≈_ xs ys) {ix : Any (x ≈_) xs} →
-                     ∈-resp-↭ (↭-sym p) (∈-resp-↭ p ix) ≡ ix
-      ∈-resp-↭-sym p = ∈-resp-↭-sym′ p ≡.refl
-
-      ∈-resp-↭-sym⁻¹ : (p : Permutation _≈_ xs ys) {iy : Any (x ≈_) ys} →
-                       ∈-resp-↭ p (∈-resp-↭ (↭-sym p) iy) ≡ iy
-      ∈-resp-↭-sym⁻¹ p with eq′ ← ∈-resp-↭-sym′ (↭-sym p)
-                       rewrite ↭-sym-involutive p = eq′ ≡.refl
-
--}
 ------------------------------------------------------------------------
 -- Properties of steps, and related properties of Permutation
 -- previously required for proofs by well-founded induction

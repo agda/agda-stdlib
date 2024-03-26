@@ -18,20 +18,22 @@ open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; LeftTrans; RightTrans)
-open import Relation.Binary.Structures using (IsEquivalence; IsPreorder)
+open import Relation.Binary.Structures using (IsEquivalence)
 
-open import Data.List.Relation.Binary.Permutation.Homogeneous
+open import Data.List.Relation.Binary.Permutation.Homogeneous public
+  using (Permutation; refl; prep; swap; trans)
 
 private
   variable
     xs ys zs : List A
     x y z v w : A
 
-  _≋_ _↭_ : Rel (List A) _
-  _≋_ = Pointwise R
-  _↭_ = Permutation R
-
   _++[_]++_ = λ xs (z : A) ys → xs ++ [ z ] ++ ys
+
+_≋_ _↭_ : Rel (List A) _
+_≋_ = Pointwise R
+_↭_ = Permutation R
+
 
 ------------------------------------------------------------------------
 -- Properties of _↭_ depending on suitable assumptions on R
