@@ -230,7 +230,7 @@ module _ (sym : Symmetric S) (resp@(rʳ , rˡ) : S Respects₂ R) where
 ------------------------------------------------------------------------
 -- Two higher-dimensional properties useful in the `Propositional` case,
 -- specifically in the equivalence proof between `Bag` equality and `_↭_`
-
+{-
 module _ {_≈_ : Rel A r} (≈-trans : Transitive _≈_) where
 
   private
@@ -298,7 +298,7 @@ module _ {_≈_ : Rel A r} (≈-trans : Transitive _≈_) where
       ∈-resp-↭-sym⁻¹ p with eq′ ← ∈-resp-↭-sym′ (↭-sym p)
                        rewrite ↭-sym-involutive p = eq′ ≡.refl
 
-
+-}
 ------------------------------------------------------------------------
 -- Properties of steps, and related properties of Permutation
 -- previously required for proofs by well-founded induction
