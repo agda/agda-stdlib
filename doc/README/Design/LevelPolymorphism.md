@@ -9,3 +9,7 @@ versions to be monomorphic (at Level 0).
 But there are other cases where exactly the opposite is needed.  for that purpose,
 there are level-polymorphic versions in `Data.Empty.Polymorphic` and
 `Data.Unit.Polymorphic` respectively.
+
+The same issue happens in `Relation.Unary` which defines `Ø` and `U` at `Level` 0, else
+a lot of unsolved metas appear (for example in `Relation.Unary.Properties`). For that
+purpose, `Relation.Unary.Polymorphic` exists.
