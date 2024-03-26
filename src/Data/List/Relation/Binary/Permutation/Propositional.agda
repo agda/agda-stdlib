@@ -19,6 +19,7 @@ open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; setoid)
 
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
+import Data.List.Relation.Binary.Permutation.Homogeneous.Properties.Core as Core
 
 ------------------------------------------------------------------------
 -- Definition of permutation
@@ -50,7 +51,7 @@ open ↭ public
 ↭-transʳ-≋ xs↭ys ys≋zs with refl ← ≋⇒≡ ys≋zs = xs↭ys
 
 ↭-trans : Transitive _↭_
-↭-trans = ↭-trans′ ↭-transˡ-≋ ↭-transʳ-≋
+↭-trans = Core.LRTransitivity.↭-trans ↭-transˡ-≋ ↭-transʳ-≋
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record

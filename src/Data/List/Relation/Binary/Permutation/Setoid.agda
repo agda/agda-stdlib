@@ -5,6 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated function `steps`
 
 open import Function.Base using (_∘′_)
 open import Relation.Binary.Core using (Rel; _⇒_)
@@ -19,6 +20,7 @@ module Data.List.Relation.Binary.Permutation.Setoid
 
 open import Data.List.Base using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
+import Data.List.Relation.Binary.Permutation.Homogeneous.Properties.Core as Core
 open import Data.List.Relation.Binary.Equality.Setoid S
 open import Data.Nat.Base using (ℕ)
 open import Level using (_⊔_)
@@ -35,7 +37,7 @@ open Setoid S
 infix 3 _↭_
 
 _↭_ : Rel (List A) (a ⊔ ℓ)
-_↭_ = Homogeneous.Permutation _≈_
+_↭_ = Core._↭_ {R = _≈_}
 
 ------------------------------------------------------------------------
 -- Smart constructor aliases
@@ -45,37 +47,37 @@ _↭_ = Homogeneous.Permutation _≈_
 -- prepended are *propositionally* equal
 
 ↭-pointwise : _≋_ ⇒ _↭_
-↭-pointwise = Homogeneous.↭-pointwise
+↭-pointwise = Core.↭-pointwise
 
 ↭-prep : ∀ x {xs ys} → xs ↭ ys → x ∷ xs ↭ x ∷ ys
-↭-prep _ = Homogeneous.↭-prep ≈-refl
+↭-prep _ = Core.Reflexivity.↭-prep ≈-refl
 
 ↭-swap : ∀ x y {xs ys} → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
-↭-swap = Homogeneous.↭-swap ≈-refl
+↭-swap = Core.Reflexivity.↭-swap ≈-refl
 
 ↭-trans′ : LeftTrans _≋_ _↭_ → RightTrans _↭_ _≋_ → Transitive _↭_
-↭-trans′ = Homogeneous.↭-trans′
+↭-trans′ = Core.LRTransitivity.↭-trans
 
 ------------------------------------------------------------------------
 -- Functions over permutations (retained for legacy)
 
 steps : ∀ {xs ys} → xs ↭ ys → ℕ
-steps = Homogeneous.Steps.steps
+steps = Homogeneous.steps
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
 
 ↭-reflexive : _≡_ ⇒ _↭_
-↭-reflexive refl = Homogeneous.↭-refl′ ≈-refl
+↭-reflexive refl = Core.Reflexivity.↭-refl ≈-refl
 
 ↭-refl : Reflexive _↭_
 ↭-refl = ↭-reflexive refl
 
 ↭-sym : Symmetric _↭_
-↭-sym = Homogeneous.↭-sym′ ≈-sym
+↭-sym = Core.Symmetry.↭-sym ≈-sym
 
 ↭-trans : Transitive _↭_
-↭-trans = Homogeneous.↭-trans ≈-trans
+↭-trans = Core.Transitivity.↭-trans ≈-trans
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record { refl = ↭-refl ; sym = ↭-sym ; trans = ↭-trans }
