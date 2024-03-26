@@ -171,7 +171,7 @@ proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A
 
 decidable-stable : Dec A → Stable A
 decidable-stable (yes a) ¬¬a = a
-decidable-stable (no ¬a) ¬¬a = ⊥-elim (¬¬a ¬a)
+decidable-stable (no ¬a) ¬¬a = contradiction ¬a ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
 ¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
