@@ -30,6 +30,15 @@ Non-backwards compatible changes
 Other major improvements
 ------------------------
 
+* Module `Data.List.Relation.Binary.Permutation.Homogeneous` has
+  been comprehensively refactored, introducing
+  ```agda
+  Data.List.Relation.Binary.Permutation.Homogeneous.Properties
+  Data.List.Relation.Binary.Permutation.Homogeneous.Properties.Core
+  ```
+  which then re-export to `Data.List.Relation.Binary.Permutation.Setoid.Properties`
+  and `Data.List.Relation.Binary.Permutation.Propositional.Properties`
+
 Deprecated modules
 ------------------
 
