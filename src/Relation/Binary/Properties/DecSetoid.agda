@@ -31,7 +31,7 @@ open import Relation.Binary.Properties.Setoid setoid
 ≉-cotrans {x} {y} x≉y z with x ≟ z | z ≟ y
 ≉-cotrans {x} {y} x≉y z | _ | no z≉y = inj₂ z≉y
 ≉-cotrans {x} {y} x≉y z | no x≉z | _ = inj₁ x≉z
-≉-cotrans {x} {y} x≉y z | yes x≈z | yes z≈y = inj₁ λ _ → x≉y (trans x≈z z≈y) 
+≉-cotrans {x} {y} x≉y z | yes x≈z | yes z≈y = inj₁ λ _ → x≉y (trans x≈z z≈y)
 
 ≉-isApartnessRelation : IsApartnessRelation _≈_ _≉_
 ≉-isApartnessRelation =
