@@ -125,6 +125,12 @@ New modules
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
 
+* `Data.List.Effectful.Foldable`: instance(s) of the following typeclass
+
+* `Data.Vec.Effectful.Foldable`: instance(s) of the following typeclass
+
+* `Effect.Foldable`: implementation of haskell-like typeclass
+
 Additions to existing modules
 -----------------------------
 
