@@ -25,6 +25,7 @@ private
 
 open import Relation.Nullary.Negation.Core public
 open import Relation.Nullary.Reflects public
+  hiding (recompute; fromEquivalence)
 open import Relation.Nullary.Decidable.Core public
 
 ------------------------------------------------------------------------
@@ -35,11 +36,11 @@ Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
 
 ------------------------------------------------------------------------
 -- Recomputability - we can rebuild a relevant proof given an
--- irrelevant one.
-
+-- irrelevant one. NOW moved to Relation.Nullary.Reflects
+{-
 Recomputable : Set p → Set p
 Recomputable P = .P → P
-
+-}
 ------------------------------------------------------------------------
 -- Weak decidability
 -- `nothing` is 'don't know'/'give up'; `just` is `yes`/`definitely`

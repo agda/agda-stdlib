@@ -20,7 +20,6 @@ import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base
 open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum
@@ -35,10 +34,10 @@ open import Relation.Binary.Core
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary hiding (Irrelevant)
-open import Relation.Nullary.Decidable using (True; via-injection; map′)
+open import Relation.Nullary.Decidable
+  using (Dec; yes; no; T?; True; via-injection; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Nullary.Reflects using (fromEquivalence)
+open import Relation.Nullary.Reflects as Reflects using (Reflects)
 
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
@@ -135,7 +134,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 <⇒<ᵇ (s<s m<n@(s≤s _)) = <⇒<ᵇ m<n
 
 <ᵇ-reflects-< : ∀ m n → Reflects (m < n) (m <ᵇ n)
-<ᵇ-reflects-< m n = fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
+<ᵇ-reflects-< m n = Reflects.fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
 
 ------------------------------------------------------------------------
 -- Properties of _≤ᵇ_
@@ -150,7 +149,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≤⇒≤ᵇ m≤n@(s≤s _) = <⇒<ᵇ m≤n
 
 ≤ᵇ-reflects-≤ : ∀ m n → Reflects (m ≤ n) (m ≤ᵇ n)
-≤ᵇ-reflects-≤ m n = fromEquivalence (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ
+≤ᵇ-reflects-≤ m n = Reflects.fromEquivalence (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
