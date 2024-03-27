@@ -49,6 +49,11 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  map-compose  ↦  map-∘
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -250,6 +255,23 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
+* In `Data.List.Membership.Propositional.Properties.Core`:
+  ```agda
+  find∘∃∈-Any : (p : ∃∈ P xs) → find (∃∈-Any p) ≡ p
+  ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
+  ```
+
+* In `Data.List.Membership.Setoid`: two abbreviations for predicate transformers,
+  with associated `syntax` declarations
+  ```agda
+  ∃∈-syntax : ∀ {p} (P : Pred A p) → Pred (List A) _
+  ∃∈-syntax P xs = ∃ λ x → x ∈ xs × P x
+  ∀∈-syntax : ∀ {p} (P : Pred A p) → Pred (List A) _
+  ∀∈-syntax P xs = ∀ {x} → x ∈ xs → P x
+  syntax ∃∈-syntax (λ x → P) xs = ∃[ x ∈ xs ] P
+  syntax ∀∈-syntax (λ x → P) xs = ∀[ x ∈ xs ] P
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
@@ -262,6 +284,11 @@ Additions to existing modules
   reverse-downFrom      : reverse (downFrom n) ≡ upTo n
   ```
 
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  universal-U : Universal (All U)
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
@@ -272,6 +299,12 @@ Additions to existing modules
   ```agda
   catMaybes⁺ : AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
   tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
+  ```
+
+* In `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  map-cong : (f g : P ⋐ Q) → (∀ {x} (p : P x) → f p ≡ g p) →
+             (p : Any P xs) → Any.map f p ≡ Any.map g p
   ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
@@ -406,4 +439,4 @@ Additions to existing modules
   ```
 
 * `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
-  anti-unification. See README.Tactic.Cong for details.
+  anti-unification. See `README.Tactic.Cong` for details.

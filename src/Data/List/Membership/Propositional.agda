@@ -10,7 +10,7 @@
 module Data.List.Membership.Propositional {a} {A : Set a} where
 
 open import Data.List.Relation.Unary.Any using (Any)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; resp; subst)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 import Data.List.Membership.Setoid as SetoidMembership
@@ -32,4 +32,4 @@ _≢∈_ x∈xs y∈xs = ∀ x≡y → subst (_∈ _) x≡y x∈xs ≢ y∈xs
 -- Other operations
 
 lose : ∀ {p} {P : A → Set p} {x xs} → x ∈ xs → P x → Any P xs
-lose = SetoidMembership.lose (setoid A) (subst _)
+lose = SetoidMembership.lose (setoid A) (resp _)
