@@ -411,6 +411,7 @@ Additions to existing modules
 * Added new definitions in `Relation.Nullary.Negation.Core`:
   ```agda
   weak-contradiction : .A → ¬ A → Whatever
+  contradictionᵒ     : ¬ A → A → Whatever
   ¬-recompute        : Recomputable (¬ A)
   ```
 
