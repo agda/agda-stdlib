@@ -170,11 +170,11 @@ proof (map′ A→B B→A (false because [¬a])) = of (invert [¬a] ∘ B→A)
 -- Decidable predicates are stable.
 
 decidable-stable : Dec A → Stable A
-decidable-stable (yes a) ¬¬a = a
-decidable-stable (no ¬a) ¬¬a = contradiction ¬a ¬¬a
+decidable-stable (true  because  [a]) ¬¬a = invert [a]
+decidable-stable (false because [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
-¬-drop-Dec ¬¬a? = map′ negated-stable (λ ¬a ¬¬a → contradiction ¬a ¬¬a) (¬? ¬¬a?)
+¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
 
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).
