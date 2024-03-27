@@ -10,7 +10,7 @@ module Data.List.Relation.Ternary.Interleaving.Propositional {a} {A : Set a} whe
 
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Relation.Binary.Permutation.Propositional as Perm using (_↭_)
-open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (↭-shift)
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (shift)
 import Data.List.Relation.Ternary.Interleaving.Setoid as General
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 open import Relation.Binary.PropositionalEquality.Properties using (setoid)
@@ -38,5 +38,5 @@ toPermutation []         = Perm.↭-refl
 toPermutation (consˡ sp) = Perm.↭-prep _ (toPermutation sp)
 toPermutation {l} {r ∷ rs} {a ∷ as} (consʳ sp) = begin
   a ∷ as       <⟨ toPermutation sp ⟩
-  a ∷ l ++ rs  ↭⟨ ↭-shift l ⟨
+  a ∷ l ++ rs  ↭⟨ shift a l rs ⟨
   l ++ a ∷ rs  ∎
