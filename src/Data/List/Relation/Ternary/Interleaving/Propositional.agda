@@ -34,8 +34,8 @@ pattern consʳ xs = refl ∷ʳ xs
 -- New combinators
 
 toPermutation : ∀ {l r as} → Interleaving l r as → as ↭ l ++ r
-toPermutation []         = Perm.↭-refl
-toPermutation (consˡ sp) = Perm.↭-prep _ (toPermutation sp)
+toPermutation []         = Perm.refl
+toPermutation (consˡ sp) = Perm.prep _ (toPermutation sp)
 toPermutation {l} {r ∷ rs} {a ∷ as} (consʳ sp) = begin
   a ∷ as       <⟨ toPermutation sp ⟩
   a ∷ l ++ rs  ↭⟨ shift a l rs ⟨
