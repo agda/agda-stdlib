@@ -31,7 +31,7 @@ private
 open import Relation.Nullary.Decidable.Core public
 
 ------------------------------------------------------------------------
--- Characterisation : Dec A ⇔ there exists a Bool b st A ⇔ T b 
+-- Characterisation : Dec A ⇔ there exists a Bool b st A ⇔ T b
 
 -- forwards direction: use `does`
 
