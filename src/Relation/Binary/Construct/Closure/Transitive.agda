@@ -70,6 +70,10 @@ module _ (_∼_ : Rel A ℓ) where
   transitive : Transitive _∼⁺_
   transitive = _++_
 
+  transitive⁻ : Transitive _∼_ → _∼⁺_ ⇒ _∼_
+  transitive⁻ trans [ x∼y ]      = x∼y
+  transitive⁻ trans (x∼y ∷ x∼⁺y) = trans x∼y (transitive⁻ trans x∼⁺y)
+
   accessible⁻ : ∀ {x} → Acc _∼⁺_ x → Acc _∼_ x
   accessible⁻ = ∼⊆∼⁺.accessible
 

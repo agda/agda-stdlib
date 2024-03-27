@@ -12,8 +12,8 @@
 module Relation.Nullary.Decidable.Core where
 
 open import Level using (Level; Lift)
-open import Data.Bool.Base
-open import Data.Unit.Base using (⊤)
+open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (id; _∘_; const; _$_; flip)
@@ -88,10 +88,12 @@ fromEquivalence {b = b} sound complete
 module _ {A : Set a} where
 
   From-yes : Dec A → Set a
-  From-yes a? = if (does a?) then A else Lift a ⊤
+  From-yes (true  because _) = A
+  From-yes (false because _) = ⊤
 
   From-no : Dec A → Set a
-  From-no  a? = if (does a?) then Lift a ⊤ else ¬ A
+  From-no (false because _) = ¬ A
+  From-no (true  because _) = ⊤
 
 ------------------------------------------------------------------------
 -- Recompute

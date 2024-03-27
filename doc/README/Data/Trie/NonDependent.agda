@@ -51,15 +51,15 @@ module README.Data.Trie.NonDependent where
 open import Level
 open import Data.Unit
 open import Data.Bool
-open import Data.Char        as Char
-import Data.Char.Properties  as Char
-open import Data.List.Base   as List using (List; []; _∷_)
-open import Data.List.Fresh  as List# using (List#; []; _∷#_)
-open import Data.Maybe       as Maybe
-open import Data.Product.Base as Prod using (_×_; ∃; proj₁; _,_)
-open import Data.String.Base as String using (String)
+open import Data.Char              as Char
+import Data.Char.Properties        as Char
+open import Data.List.Base         as List using (List; []; _∷_)
+open import Data.List.Fresh        as List# using (List#; []; _∷#_)
+open import Data.Maybe             as Maybe
+open import Data.Product.Base      as Product using (_×_; ∃; proj₁; _,_)
+open import Data.String.Base       as String using (String)
 open import Data.String.Properties as String using (_≟_)
-open import Data.These       as These
+open import Data.These             as These
 
 open import Function.Base using (case_of_; _$_; _∘′_; id; _on_)
 open import Relation.Nary
@@ -127,7 +127,7 @@ module _ {t} (L : Lexer t) where
     -- characters one by one
 
     init : Keywords
-    init = fromList $ List.map (Prod.map₁ String.toList) $ proj₁ $ List#.toList keywords
+    init = fromList $ List.map (Product.map₁ String.toList) $ proj₁ $ List#.toList keywords
 
     -- Kickstart the tokeniser with an empty accumulator and the initial
     -- trie.
