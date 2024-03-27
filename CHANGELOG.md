@@ -62,16 +62,6 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
-  ```agda
-  Induction.InfiniteDescent
-  ```
-
 * The unique morphism from the initial, resp. terminal, algebra:
   ```agda
   Algebra.Morphism.Construct.Initial
@@ -83,11 +73,24 @@ New modules
   Algebra.Module.Construct.Idealization
   ```
 
+* Pointwise and equality relations over indexed containers:
+  ```agda
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
 * `Data.List.Relation.Binary.Sublist.Propositional.Slice`
   replacing `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` (*)
   and adding new functions:
   - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
   - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
+  ```
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
 
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
   ```agda
@@ -113,17 +116,22 @@ New modules
   _⇨_ = setoid
   ```
 
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
+  ```
+
 * Symmetric interior of a binary relation
   ```
   Relation.Binary.Construct.Interior.Symmetric
   ```
 
-* Pointwise and equality relations over indexed containers:
+* Systematise the use of `Recomputable A = .A → A`:
   ```agda
-  Data.Container.Indexed.Relation.Binary.Pointwise
-  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
-  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  Relation.Nullary.Recomputable
   ```
+  with `Recomputable` exported publicly from `Relation.Nullary`.
+
 
 Additions to existing modules
 -----------------------------
@@ -231,6 +239,12 @@ Additions to existing modules
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
+  ```
+
+* In `Data.Empty`:
+  ```agda
+  ⊥-recompute : Recomputable ⊥
+  ⊥-elim-irr  : .⊥ → Whatever
   ```
 
 * In `Data.Fin.Properties`:
@@ -394,6 +408,13 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
+* Added new definitions in `Relation.Nullary.Negation.Core`:
+  ```agda
+  weak-contradiction : .A → ¬ A → Whatever
+  contradictionᵒ     : ¬ A → A → Whatever
+  ¬-recompute        : Recomputable (¬ A)
+  ```
+
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
@@ -405,5 +426,11 @@ Additions to existing modules
   WeaklyDecidable : Pred A ℓ → Set _
   ```
 
+* Added new definitions in `Relation.Unary`
+  ```
+  Stable          : Pred A ℓ → Set _
+  WeaklyDecidable : Pred A ℓ → Set _
+  ```
+
 * `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
-  anti-unification. See README.Tactic.Cong for details.
+  anti-unification. See `README.Tactic.Cong` for details.
