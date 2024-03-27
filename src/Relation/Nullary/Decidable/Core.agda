@@ -13,13 +13,14 @@ module Relation.Nullary.Decidable.Core where
 
 open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
-open import Data.Unit.Base using (⊤)
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Recomputable
 open import Relation.Nullary.Reflects as Reflects hiding (recompute)
 open import Relation.Nullary.Negation.Core
+  using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
 
 private
   variable
@@ -57,11 +58,11 @@ module _ {A : Set a} where
 
   From-yes : Dec A → Set a
   From-yes (true  because _) = A
-  From-yes (false because _) = Lift a ⊤
+  From-yes (false because _) = ⊤
 
   From-no : Dec A → Set a
   From-no (false because _) = ¬ A
-  From-no (true  because _) = Lift a ⊤
+  From-no (true  because _) = ⊤
 
 ------------------------------------------------------------------------
 -- Recompute
@@ -170,10 +171,10 @@ proof (map′ A→B B→A (false because [¬a])) = of (invert [¬a] ∘ B→A)
 
 decidable-stable : Dec A → Stable A
 decidable-stable (yes a) ¬¬a = a
-decidable-stable (no ¬a) ¬¬a = weak-contradiction ¬a ¬¬a
+decidable-stable (no ¬a) ¬¬a = contradiction ¬a ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
-¬-drop-Dec ¬¬a? = map′ negated-stable (λ ¬a ¬¬a → weak-contradiction ¬a ¬¬a) (¬? ¬¬a?)
+¬-drop-Dec ¬¬a? = map′ negated-stable (λ ¬a ¬¬a → contradiction ¬a ¬¬a) (¬? ¬¬a?)
 
 -- A double-negation-translated variant of excluded middle (or: every
 -- nullary relation is decidable in the double-negation monad).
