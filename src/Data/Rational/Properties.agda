@@ -21,6 +21,7 @@ import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphisms
 import Algebra.Morphism.RingMonomorphism   as RingMonomorphisms
 import Algebra.Lattice.Morphism.LatticeMonomorphism as LatticeMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
+open import Algebra.Apartness
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
@@ -94,6 +95,9 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ = map′
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
+
+1≢0 : 1ℚ ≢ 0ℚ
+1≢0 = λ ()
 
 ------------------------------------------------------------------------
 -- mkℚ+
@@ -1236,6 +1240,75 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 +-*-commutativeRing = record
   { isCommutativeRing = +-*-isCommutativeRing
   }
+
+
+------------------------------------------------------------------------
+-- Field-like structures and bundles
+module _ where
+  open CommutativeRing +-*-commutativeRing
+    using (+-group; zeroˡ; *-congʳ; isCommutativeRing)
+
+  open import Algebra.Properties.Group +-group
+  open import Relation.Binary.Reasoning.Setoid ≡-setoid
+  open import Relation.Binary.Properties.DecSetoid ≡-decSetoid
+
+  isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingCommutativeRing =
+    record
+    { isCommutativeRing = isCommutativeRing
+    ; isApartnessRelation = ≉-isApartnessRelation
+    ; #⇒invertible = #⇒invertible
+    ; invertible⇒# = invertible⇒#
+    }
+    where
+      x*y≡z→x≢0 : ∀ x y z → z ≢ 0ℚ → x * y ≡ z → x ≢ 0ℚ
+      x*y≡z→x≢0 x y z z≉0 x*y≡z x≡0 =
+        z≉0
+        $ begin
+            z
+          ≈⟨ sym x*y≡z ⟩
+            x * y
+          ≈⟨ *-congʳ x≡0 ⟩
+            0ℚ * y
+          ≈⟨ zeroˡ y ⟩
+            0ℚ
+          ∎
+        where
+          open import Function using (_$_)
+
+      #⇒invertible : {x y : ℚ} → x ≢ y → Invertible 1ℚ _*_ (x - y)
+      #⇒invertible {x} {y} x≢y =
+        let instance _ = ≢-nonZero (x≉y→x∙y⁻¹≉ε x y x≢y)
+        in
+          ( 1/_ (x - y)
+          , *-inverseˡ (x - y)
+          , *-inverseʳ (x - y)
+          )
+
+      invertible⇒# : ∀ {i j} → Invertible 1ℚ _*_ (i - j) → i ≢ j
+      invertible⇒# {i} {j} (1/[i-j] , _ , [i-j]/[i-j]≡1) i≡j =
+        x*y≡z→x≢0
+          (i - j)
+          1/[i-j]
+          1ℚ
+          1≢0
+          [i-j]/[i-j]≡1
+          (x≈y→x∙y⁻¹≈ε i j i≡j)
+
+  isHeytingField : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingField =
+    record
+    { isHeytingCommutativeRing = isHeytingCommutativeRing
+    ; tight = ≉-tight
+    }
+
+  heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  heytingCommutativeRing =
+    record { isHeytingCommutativeRing = isHeytingCommutativeRing }
+
+  heytingField : HeytingField 0ℓ 0ℓ 0ℓ
+  heytingField = record { isHeytingField = isHeytingField }
+
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
