@@ -17,6 +17,7 @@ open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
 open import Data.Nat.Properties
+open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
 open import Relation.Binary.PropositionalEquality
@@ -104,7 +105,7 @@ m%n≤m : ∀ m n .{{_ : NonZero n}} → m % n ≤ m
 m%n≤m m (suc n-1) = a[modₕ]n≤a 0 m n-1
 
 m≤n⇒m%n≡m : m ≤ n → m % suc n ≡ m
-m≤n⇒m%n≡m {m = m} m≤n with ≤″-offset k ← ≤⇒≤″ m≤n
+m≤n⇒m%n≡m {m = m} m≤n with k , refl ← m≤n⇒∃[o]m+o≡n m≤n
   = a≤n⇒a[modₕ]n≡a 0 (m + k) m k
 
 m<n⇒m%n≡m : .{{_ : NonZero n}} → m < n → m % n ≡ m
