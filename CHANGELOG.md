@@ -125,6 +125,13 @@ New modules
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
 
+* Integer arithmetic modulo `n`, based on `Data.Nat.Bounded.*`:
+  ```agda
+  Data.Integer.Modulo.Base
+  Data.Integer.Modulo.Literals
+  Data.Integer.Modulo.Properties
+  ```
+
 Additions to existing modules
 -----------------------------
 
