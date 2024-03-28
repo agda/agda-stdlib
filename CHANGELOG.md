@@ -57,7 +57,7 @@ Deprecated names
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
   split  ↦  ↭-split
-        ```
+  ```
   with a more informative type, and a simple renaming
   ```agda
   foldr-commMonoid  ↦  foldr-pres-↭
@@ -278,16 +278,18 @@ Additions to existing modules
 
 * In `Data.List.Relation.Binary.Permutation.Propositional`:
   ```agda
-  steps : Permutation R xs ys → ℕ
-  ```
-
-* In `Data.List.Relation.Binary.Permutation.Setoid`:
-  ```agda
   ↭-pointwise : _≋_ ⇒ _↭_
-  ↭⇒↭ₛ        : _↭_ ⇒ _↭ₛ_
+  ↭⇒↭ₛ        : _↭_  ⇒ _↭ₛ_
   ↭ₛ⇒↭        : _↭ₛ_ ⇒ _↭_
   ```
   where `_↭ₛ_` is the `Setoid (setoid _)` instance of `Permutation`
+
+* In `Data.List.Relation.Binary.Permutation.Setoid`:
+  ```agda
+  ↭-pointwise : _≋_  ⇒ _↭_
+  ↭-transˡ-≋  : LeftTrans _≋_ _↭_
+  ↭-transʳ-≋  : RightTrans _↭_ _≋_
+  ```
 
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda

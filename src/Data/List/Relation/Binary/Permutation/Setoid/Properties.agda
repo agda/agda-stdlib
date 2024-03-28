@@ -122,35 +122,35 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
                      × (ps ++ qs) ↭ (as ++ bs)
 ↭-split v as bs p = helper as bs p ≋-refl
   where
-    helper : ∀ as bs → xs ↭ ys → ys ≋ (as ++[ v ]++ bs) →
-             ∃₂ λ ps qs → xs ≋ (ps ++[ v ]++ qs)
-                        × (ps ++ qs) ↭ (as ++ bs)
-    helper as           bs (trans xs↭ys ys↭zs) zs≋as++[v]++ys
-      with ps , qs , eq , ↭ ← helper as bs ys↭zs zs≋as++[v]++ys
-      with ps′ , qs′ , eq′ , ↭′ ← helper ps qs xs↭ys eq
-      = ps′ , qs′ , eq′ , ↭-trans ↭′ ↭
-    helper []           _  (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
-      = [] , _ , ≈-trans x≈v v≈y ∷ ≋-refl , refl (≋-trans xs≋vs vs≋ys)
-    helper (a ∷ as)     bs (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
-      = _ ∷ as , bs , ≈-trans x≈v v≈y ∷ ≋-trans xs≋vs vs≋ys , ↭-refl
-    helper []           bs (prep {xs = xs} x≈v xs↭vs) (v≈y ∷ vs≋ys)
-      = [] , xs , ≈-trans x≈v v≈y ∷ ≋-refl , ↭-transʳ-≋ xs↭vs vs≋ys
-    helper (a ∷ as)     bs (prep x≈v as↭vs) (v≈y ∷ vs≋ys)
-      with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
-      = a ∷ ps , qs , ≈-trans x≈v v≈y ∷ eq , prep ≈-refl ↭
-    helper []           [] (swap _ _ _) (_ ∷ ())
-    helper []      (b ∷ _) (swap x≈v y≈w xs↭vs) (w≈z ∷ v≈y ∷ vs≋ys)
-      = b ∷ [] , _ , ≈-trans x≈v v≈y ∷ ≈-trans y≈w w≈z ∷ ≋-refl
-                   , ↭-prep b (↭-transʳ-≋ xs↭vs vs≋ys)
-    helper (a ∷ [])     bs (swap x≈v y≈w xs↭vs)  (w≈z ∷ v≈y ∷ vs≋ys)
-      = []     , a ∷ _ , ≈-trans x≈v v≈y ∷ ≈-trans y≈w w≈z ∷ ≋-refl
-                       , ↭-prep a (↭-transʳ-≋ xs↭vs vs≋ys)
-    helper (a ∷ b ∷ as) bs (swap x≈v y≈w as↭vs) (w≈a ∷ v≈b ∷ vs≋ys)
-      with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
-      = b ∷ a ∷ ps , qs , ≈-trans x≈v v≈b ∷ ≈-trans y≈w w≈a ∷ eq
-                        , ↭-swap _ _ ↭
+  helper : ∀ as bs → xs ↭ ys → ys ≋ (as ++[ v ]++ bs) →
+           ∃₂ λ ps qs → xs ≋ (ps ++[ v ]++ qs)
+                      × (ps ++ qs) ↭ (as ++ bs)
+  helper as           bs (trans xs↭ys ys↭zs) zs≋as++[v]++ys
+    with ps , qs , eq , ↭ ← helper as bs ys↭zs zs≋as++[v]++ys
+    with ps′ , qs′ , eq′ , ↭′ ← helper ps qs xs↭ys eq
+    = ps′ , qs′ , eq′ , ↭-trans ↭′ ↭
+  helper []           _  (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
+    = [] , _ , ≈-trans x≈v v≈y ∷ ≋-refl , refl (≋-trans xs≋vs vs≋ys)
+  helper (a ∷ as)     bs (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
+    = _ ∷ as , bs , ≈-trans x≈v v≈y ∷ ≋-trans xs≋vs vs≋ys , ↭-refl
+  helper []           bs (prep {xs = xs} x≈v xs↭vs) (v≈y ∷ vs≋ys)
+    = [] , xs , ≈-trans x≈v v≈y ∷ ≋-refl , ↭-transʳ-≋ xs↭vs vs≋ys
+  helper (a ∷ as)     bs (prep x≈v as↭vs) (v≈y ∷ vs≋ys)
+    with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
+    = a ∷ ps , qs , ≈-trans x≈v v≈y ∷ eq , prep ≈-refl ↭
+  helper []           [] (swap _ _ _) (_ ∷ ())
+  helper []      (b ∷ _) (swap x≈v y≈w xs↭vs) (w≈z ∷ v≈y ∷ vs≋ys)
+    = b ∷ [] , _ , ≈-trans x≈v v≈y ∷ ≈-trans y≈w w≈z ∷ ≋-refl
+                 , ↭-prep b (↭-transʳ-≋ xs↭vs vs≋ys)
+  helper (a ∷ [])     bs (swap x≈v y≈w xs↭vs)  (w≈z ∷ v≈y ∷ vs≋ys)
+    = []     , a ∷ _ , ≈-trans x≈v v≈y ∷ ≈-trans y≈w w≈z ∷ ≋-refl
+                     , ↭-prep a (↭-transʳ-≋ xs↭vs vs≋ys)
+  helper (a ∷ b ∷ as) bs (swap x≈v y≈w as↭vs) (w≈a ∷ v≈b ∷ vs≋ys)
+    with ps , qs , eq , ↭ ← helper as bs as↭vs vs≋ys
+    = b ∷ a ∷ ps , qs , ≈-trans x≈v v≈b ∷ ≈-trans y≈w w≈a ∷ eq
+                      , ↭-swap _ _ ↭
 
------------------------------------------------------------
+------------------------------------------------------------------------
 -- Core properties of lists depending on the representation of _↭_
 ------------------------------------------------------------------------
 
@@ -327,7 +327,7 @@ shifts xs ys {zs} = begin
   }
 
 ------------------------------------------------------------------------
--- dropMiddleElelment, dropMiddle, and inversion for _∷_
+-- dropMiddleElement, dropMiddle, and inversion for _∷_
 
 dropMiddleElement : ∀ {v} ws xs {ys zs} →
                     ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs →
