@@ -6,26 +6,26 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Function.Base using (_∘′_)
-open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Structures using (IsEquivalence)
-open import Relation.Binary.Definitions
-  using (Reflexive; Symmetric; Transitive; LeftTrans; RightTrans)
-open import Relation.Binary.Reasoning.Syntax
 
 module Data.List.Relation.Binary.Permutation.Setoid
   {a ℓ} (S : Setoid a ℓ) where
 
 open import Data.List.Base using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
-import Data.List.Relation.Binary.Pointwise.Properties as Pointwise using (refl)
-open import Data.List.Relation.Binary.Equality.Setoid S
+import Data.List.Relation.Binary.Equality.Setoid as ≋
+open import Function.Base using (_∘′_)
 open import Level using (_⊔_)
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Definitions
+  using (Reflexive; Symmetric; Transitive; LeftTrans; RightTrans)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+open import Relation.Binary.Reasoning.Syntax
+open import Relation.Binary.Structures using (IsEquivalence)
 
 open module ≈ = Setoid S using (_≈_) renaming (Carrier to A)
+open ≋ S using (_≋_; _∷_; ≋-refl; ≋-sym; ≋-trans)
 
 ------------------------------------------------------------------------
 -- Definition
