@@ -49,6 +49,15 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  split  ↦  ↭-split
+  ```
+  with a more informative type, and a simple renaming
+  ```agda
+  foldr-commMonoid  ↦  foldr-pres-↭
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -262,6 +271,43 @@ Additions to existing modules
   reverse-downFrom      : reverse (downFrom n) ≡ upTo n
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Homogeneous`:
+  ```agda
+  steps : Permutation R xs ys → ℕ
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional`:
+  constructor aliases
+  ```agda
+  ↭-refl  : Reflexive _↭_
+  ↭-prep  : ∀ x → xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  ↭-swap  : ∀ x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+  ```
+  and properties
+  ```agda
+  ↭-reflexive-≋ : _≋_ ⇒ _↭_
+  ↭⇒↭ₛ          : _↭_  ⇒ _↭ₛ_
+  ↭ₛ⇒↭          : _↭ₛ_ ⇒ _↭_
+  ```
+  where `_↭ₛ_` is the `Setoid (setoid _)` instance of `Permutation`
+
+* In `Data.List.Relation.Binary.Permutation.Setoid`:
+  ```agda
+  ↭-reflexive-≋ : _≋_  ⇒ _↭_
+  ↭-transˡ-≋    : LeftTrans _≋_ _↭_
+  ↭-transʳ-≋    : RightTrans _↭_ _≋_
+  ↭-trans′      : Transitive _↭_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  ↭-split : xs ↭ (as ++[ v ]++ bs) →
+            ∃₂ λ ps qs → xs ≋ (ps ++[ v ]++ qs) × (ps ++ qs) ↭ (as ++ bs)
+  drop-∷  : x ∷ xs ↭ x ∷ ys → xs ↭ ys
+
+  foldr-pres-↭ : (IsCommutativeMonoid _≈_ _∙_ ε) → (foldr _∙_ ε) Preserves _↭_ ⟶ _≈_
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
@@ -351,6 +397,8 @@ Additions to existing modules
 
 * Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
+  Any-resp-[σ∘σ⁻¹] : (σ : xs ↭ ys) (iy : Any P ys) →
+                     Any-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
   product-↭ : product Preserves _↭_ ⟶ _≡_
   ```
 
