@@ -21,7 +21,6 @@ open import Data.List.Base using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
 import Data.List.Relation.Binary.Pointwise.Properties as Pointwise using (refl)
 open import Data.List.Relation.Binary.Equality.Setoid S
-open import Data.Nat.Base using (ℕ)
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -142,8 +141,7 @@ module PermutationReasoning where
 
 -- Version 2.1
 
-steps : ∀ {xs ys} → xs ↭ ys → ℕ
-steps = Homogeneous.steps
+steps = Homogeneous.steps {R = _≈_}
 {-# WARNING_ON_USAGE steps
 "Warning: steps was deprecated in v2.1.
 Please use Homogeneous.steps explicitly instead."
