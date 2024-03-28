@@ -108,8 +108,8 @@ Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 shift : v ≈ w → ∀ xs ys → xs ++ [ v ] ++ ys ↭ w ∷ xs ++ ys
 shift {v} {w} v≈w []       ys = prep v≈w ↭-refl
 shift {v} {w} v≈w (x ∷ xs) ys = begin
-  x ∷ (xs ++ [ v ] ++ ys) <⟨ shift v≈w xs ys ⟩
-  x ∷ w ∷ xs ++ ys        <<⟨ ↭-refl ⟩
+  x ∷ (xs ++ [ v ] ++ ys) ↭⟨ ↭-prep x (shift v≈w xs ys) ⟩
+  x ∷ w ∷ xs ++ ys        ↭⟨ ↭-swap x w ↭-refl ⟩
   w ∷ x ∷ xs ++ ys        ∎
   where open PermutationReasoning
 
@@ -263,7 +263,7 @@ inject v ws↭ys xs↭zs = ↭-trans (++⁺ˡ _ (↭-prep _ xs↭zs)) (++⁺ʳ _
 ++-comm : Commutative _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
+  x ∷ xs ++ ys   ↭⟨ ↭-prep x (++-comm xs ys) ⟩
   x ∷ ys ++ xs   ↭⟨ ↭-shift ys xs ⟨
   ys ++ (x ∷ xs) ∎
   where open PermutationReasoning
@@ -399,7 +399,7 @@ module _ (R? : B.Decidable R) where
     with does (R? x y) | merge-↭ xs (y ∷ ys) | merge-↭ (x ∷ xs) ys
   ... | true  | rec | _   = ↭-prep x rec
   ... | false | _   | rec = begin
-    y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
+    y ∷ merge R? (x ∷ xs) ys ↭⟨ ↭-prep _ rec ⟩
     y ∷ x ∷ xs ++ ys         ↭⟨ ↭-shift (x ∷ xs) ys ⟨
     (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
