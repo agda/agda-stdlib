@@ -21,17 +21,15 @@ open import Data.List.Membership.Propositional.Properties using (∈-∃++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Binary.Permutation.Propositional
-  using (_↭_; ↭-refl; ↭-prep; module PermutationReasoning)
-open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-  using (product-↭; All-resp-↭; shift)
+  using (_↭_; prep; swap; ↭-reflexive; ↭-refl; ↭-trans; refl; module PermutationReasoning)
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (product-↭; All-resp-↭; shift)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; sym; trans; cong; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; trans; cong; module ≡-Reasoning)
 
 private
   variable
@@ -141,7 +139,7 @@ factorisationHasAllPrimeFactors {a ∷ as} {p} pPrime p∣aΠas (aPrime ∷ asPr
 
 private
   factorisationUnique′ : (as bs : List ℕ) → product as ≡ product bs → All Prime as → All Prime bs → as ↭ bs
-  factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = ↭-refl
+  factorisationUnique′ [] [] Πas≡Πbs asPrime bsPrime = refl
   factorisationUnique′ [] (b@(2+ _) ∷ bs) Πas≡Πbs prime[as] (_ ∷ prime[bs]) =
     contradiction Πas≡Πbs (<⇒≢ Πas<Πbs)
     where
@@ -165,26 +163,25 @@ private
         where open ≡-Reasoning
 
       shuffle : ∃[ bs′ ] bs ↭ a ∷ bs′
-      shuffle
-        with ys , zs , refl ← ∈-∃++ (factorisationHasAllPrimeFactors prime[a] a∣Πbs prime[bs])
-        = ys ++ zs , shift a ys zs
+      shuffle with ys , zs , p ← ∈-∃++ (factorisationHasAllPrimeFactors prime[a] a∣Πbs prime[bs])
+        = ys ++ zs , ↭-trans (↭-reflexive p) (shift a ys zs)
 
       bs′ = proj₁ shuffle
       bs↭a∷bs′ = proj₂ shuffle
 
       Πas≡Πbs′ : product as ≡ product bs′
-      Πas≡Πbs′ = *-cancelˡ-≡ (product as) (product bs′) a $ begin
+      Πas≡Πbs′ = *-cancelˡ-≡ (product as) (product bs′) a {{prime⇒nonZero prime[a]}} $ begin
         a * product as  ≡⟨ Πas≡Πbs ⟩
         product bs      ≡⟨ product-↭ bs↭a∷bs′ ⟩
         a * product bs′ ∎
-        where open ≡-Reasoning ; instance _ = prime⇒nonZero prime[a]
+        where open ≡-Reasoning
 
       prime[bs'] : All Prime bs′
       prime[bs'] = All.tail (All-resp-↭ bs↭a∷bs′ prime[bs])
 
       a∷as↭bs : a ∷ as ↭ bs
       a∷as↭bs = begin
-        a ∷ as  ↭⟨ ↭-prep a (factorisationUnique′ as bs′ Πas≡Πbs′ prime[as] prime[bs']) ⟩
+        a ∷ as  <⟨ factorisationUnique′ as bs′ Πas≡Πbs′ prime[as] prime[bs'] ⟩
         a ∷ bs′ ↭⟨ bs↭a∷bs′ ⟨
         bs      ∎
         where open PermutationReasoning
