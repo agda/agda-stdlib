@@ -63,6 +63,11 @@ Deprecated names
   foldr-commMonoid  ↦  foldr-pres-↭
   ```
 
+* In `Data.Nat.Divisibility.Core`:
+  ```agda
+  *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
+  ```
+
 New modules
 -----------
 
@@ -396,6 +401,8 @@ Additions to existing modules
 
 * Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
+  Any-resp-[σ∘σ⁻¹] : (σ : xs ↭ ys) (iy : Any P ys) →
+                     Any-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
   product-↭ : product Preserves _↭_ ⟶ _≡_
   ```
 
