@@ -43,9 +43,6 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
 open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 
-private
-  variable
-    b p r : Level
 
 open Setoid S using (_≈_)
   renaming (Carrier to A; refl to ≈-refl; sym to ≈-sym; trans to ≈-trans)
@@ -59,6 +56,7 @@ open module ≋ = Equality S
 
 private
   variable
+    b p r : Level
     x y z v w : A
     xs ys zs vs ws : List A
     P : Pred A p
@@ -70,13 +68,13 @@ private
 -- Relationships to other predicates
 ------------------------------------------------------------------------
 
-All-resp-↭ : ∀ {P : Pred A p} → P Respects _≈_ → (All P) Respects _↭_
+All-resp-↭ : P Respects _≈_ → (All P) Respects _↭_
 All-resp-↭ resp (refl xs≋ys)   pxs             = All-resp-≋ resp xs≋ys pxs
 All-resp-↭ resp (prep x≈y p)   (px ∷ pxs)      = resp x≈y px ∷ All-resp-↭ resp p pxs
 All-resp-↭ resp (swap ≈₁ ≈₂ p) (px ∷ py ∷ pxs) = resp ≈₂ py ∷ resp ≈₁ px ∷ All-resp-↭ resp p pxs
 All-resp-↭ resp (trans p₁ p₂)  pxs             = All-resp-↭ resp p₂ (All-resp-↭ resp p₁ pxs)
 
-Any-resp-↭ : ∀ {P : Pred A p} → P Respects _≈_ → (Any P) Respects _↭_
+Any-resp-↭ : P Respects _≈_ → (Any P) Respects _↭_
 Any-resp-↭ resp (refl xs≋ys) pxs                 = Any-resp-≋ resp xs≋ys pxs
 Any-resp-↭ resp (prep x≈y p) (here px)           = here (resp x≈y px)
 Any-resp-↭ resp (prep x≈y p) (there pxs)         = there (Any-resp-↭ resp p pxs)
@@ -85,7 +83,7 @@ Any-resp-↭ resp (swap x y p) (there (here px))   = here (resp y px)
 Any-resp-↭ resp (swap x y p) (there (there pxs)) = there (there (Any-resp-↭ resp p pxs))
 Any-resp-↭ resp (trans p₁ p₂) pxs                = Any-resp-↭ resp p₂ (Any-resp-↭ resp p₁ pxs)
 
-AllPairs-resp-↭ : ∀ {R : Rel A r} → Symmetric R → R Respects₂ _≈_ → (AllPairs R) Respects _↭_
+AllPairs-resp-↭ : Symmetric R → R Respects₂ _≈_ → (AllPairs R) Respects _↭_
 AllPairs-resp-↭ sym resp (refl xs≋ys)     pxs             = AllPairs-resp-≋ resp xs≋ys pxs
 AllPairs-resp-↭ sym resp (prep x≈y p)     (∼ ∷ pxs)       =
   All-resp-↭ (proj₁ resp) p (All.map (proj₂ resp x≈y) ∼) ∷
@@ -97,7 +95,7 @@ AllPairs-resp-↭ sym resp@(rʳ , rˡ) (swap eq₁ eq₂ p) ((∼₁ ∷ ∼₂)
 AllPairs-resp-↭ sym resp (trans p₁ p₂)    pxs             =
   AllPairs-resp-↭ sym resp p₂ (AllPairs-resp-↭ sym resp p₁ pxs)
 
-∈-resp-↭ : ∀ {x} → (x ∈_) Respects _↭_
+∈-resp-↭ : (x ∈_) Respects _↭_
 ∈-resp-↭ = Any-resp-↭ (flip ≈-trans)
 
 Unique-resp-↭ : Unique Respects _↭_
@@ -173,7 +171,7 @@ module _ (T : Setoid b r) where
 ------------------------------------------------------------------------
 -- filter
 
-module _ {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects _≈_) where
+module _ (P? : Decidable P) (P≈ : P Respects _≈_) where
 
   filter⁺ : ∀ {xs ys : List A} → xs ↭ ys → filter P? xs ↭ filter P? ys
   filter⁺ (refl xs≋ys)        = refl (≋.filter⁺ P? P≈ xs≋ys)
@@ -208,7 +206,7 @@ module _ {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects _≈_) where
 ------------------------------------------------------------------------
 -- _++_
 
-++⁺ʳ : ∀ {xs ys : List A} zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
+++⁺ʳ : ∀ zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
 ++⁺ʳ zs (refl xs≋ys)  = refl (Pointwise.++⁺ xs≋ys ≋-refl)
 ++⁺ʳ zs (prep x ↭)    = prep x (++⁺ʳ zs ↭)
 ++⁺ʳ zs (swap x y ↭)  = swap x y (++⁺ʳ zs ↭)
@@ -229,7 +227,7 @@ dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (dropMid
 -- Properties depending on the core properties of _↭_
 ------------------------------------------------------------------------
 
-↭-shift : ∀ {v : A} xs ys → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+↭-shift : ∀ {v} xs ys → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
 ↭-shift = shift ≈-refl
 
 ++⁺ˡ : ∀ xs {ys zs} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
@@ -244,7 +242,7 @@ dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (dropMid
 zoom : ∀ h {t xs ys} → xs ↭ ys → h ++ xs ++ t ↭ h ++ ys ++ t
 zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
 
-inject : ∀ (v : A) {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
+inject : ∀ v {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
          ws ++ [ v ] ++ xs ↭ ys ++ [ v ] ++ zs
 inject v ws↭ys xs↭zs = ↭-trans (++⁺ˡ _ (↭-prep _ xs↭zs)) (++⁺ʳ _ ws↭ys)
 
@@ -344,7 +342,7 @@ dropMiddle : ∀ {vs} ws xs {ys zs} →
 dropMiddle {[]}     ws xs p = p
 dropMiddle {v ∷ vs} ws xs p = dropMiddle ws xs (dropMiddleElement ws xs p)
 
-drop-∷ : ∀ {x : A} {xs ys} → x ∷ xs ↭ x ∷ ys → xs ↭ ys
+drop-∷ : x ∷ xs ↭ x ∷ ys → xs ↭ ys
 drop-∷ = dropMiddleElement [] []
 
 ------------------------------------------------------------------------
