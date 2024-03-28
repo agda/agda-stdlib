@@ -146,4 +146,3 @@ module PermutationReasoning where
 
 -- Version 2.1
 
-
