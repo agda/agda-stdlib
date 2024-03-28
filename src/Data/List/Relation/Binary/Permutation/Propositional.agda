@@ -43,11 +43,19 @@ data _↭_ : Rel (List A) a where
   swap  : ∀ x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
   trans : xs ↭ ys → ys ↭ zs → xs ↭ zs
 
-------------------------------------------------------------------------
--- _↭_ is an equivalence
+-- Constructor aliases
 
 ↭-refl : Reflexive _↭_
 ↭-refl = refl
+
+↭-prep  : ∀ x → xs ↭ ys → x ∷ xs ↭ x ∷ ys
+↭-prep = prep
+
+↭-swap  : ∀ x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+↭-swap = swap
+
+------------------------------------------------------------------------
+-- _↭_ is an equivalence
 
 ↭-reflexive : _≡_ ⇒ _↭_
 ↭-reflexive refl = ↭-refl
@@ -55,7 +63,7 @@ data _↭_ : Rel (List A) a where
 ↭-pointwise : _≋_ ⇒ _↭_
 ↭-pointwise xs≋ys = ↭-reflexive (≋⇒≡ xs≋ys)
 
-↭-sym : ∀ {xs ys} → xs ↭ ys → ys ↭ xs
+↭-sym : xs ↭ ys → ys ↭ xs
 ↭-sym refl                = refl
 ↭-sym (prep x xs↭ys)      = prep x (↭-sym xs↭ys)
 ↭-sym (swap x y xs↭ys)    = swap y x (↭-sym xs↭ys)
@@ -69,7 +77,7 @@ data _↭_ : Rel (List A) a where
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record
-  { refl  = refl
+  { refl  = ↭-refl
   ; sym   = ↭-sym
   ; trans = ↭-trans
   }
@@ -96,8 +104,8 @@ private
 
 ↭ₛ⇒↭ : _↭ₛ_ ⇒ _↭_
 ↭ₛ⇒↭ (↭ₛ.refl xs≋ys)       = ↭-pointwise xs≋ys
-↭ₛ⇒↭ (↭ₛ.prep refl p)      = prep _ (↭ₛ⇒↭ p)
-↭ₛ⇒↭ (↭ₛ.swap refl refl p) = swap _ _ (↭ₛ⇒↭ p)
+↭ₛ⇒↭ (↭ₛ.prep refl p)      = ↭-prep _ (↭ₛ⇒↭ p)
+↭ₛ⇒↭ (↭ₛ.swap refl refl p) = ↭-swap _ _ (↭ₛ⇒↭ p)
 ↭ₛ⇒↭ (↭ₛ.trans p q)        = ↭-trans (↭ₛ⇒↭ p) (↭ₛ⇒↭ q)
 
 

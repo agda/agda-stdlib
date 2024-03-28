@@ -277,6 +277,13 @@ Additions to existing modules
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Propositional`:
+  constructor aliases
+  ```agda
+  ↭-refl  : Reflexive _↭_
+  ↭-prep  : ∀ x → xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  ↭-swap  : ∀ x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+  ```
+  and properties
   ```agda
   ↭-pointwise : _≋_ ⇒ _↭_
   ↭⇒↭ₛ        : _↭_  ⇒ _↭ₛ_
