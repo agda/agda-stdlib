@@ -566,27 +566,16 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 
 
 ------------------------------------------------------------------------
--- Relationships to other relations
+-- Relationships to propositional permutation
 
 ↭⇒∼bag : _↭_ {A = A} ⇒ _∼[ bag ]_
-↭⇒∼bag xs↭ys {v} = mk↔ₛ′ (to xs↭ys) (from xs↭ys) (to∘from xs↭ys) (from∘to xs↭ys)
-  where
-  to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
-  to xs↭ys = ∈-resp-↭ xs↭ys
-
-  from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
-  from xs↭ys = ∈-resp-↭ (↭-sym xs↭ys)
-
-  from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-  from∘to = ∈-resp-[σ⁻¹∘σ]
-
-  to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
-  to∘from p with res ← from∘to (↭-sym p) rewrite ↭-sym-involutive p = res
+↭⇒∼bag xs↭ys {v} =
+  mk↔ₛ′ (∈-resp-↭ xs↭ys) (∈-resp-↭ (↭-sym xs↭ys)) (∈-resp-[σ∘σ⁻¹] xs↭ys) (∈-resp-[σ⁻¹∘σ] xs↭ys)
 
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
-∼bag⇒↭ {A = A} {[]} eq with refl ← empty-unique (↔-sym eq) = refl
+∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq) = refl
 ∼bag⇒↭ {A = A} {x ∷ xs} eq
-  with zs₁ , zs₂ , p ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) rewrite p = begin
+  with zs₁ , zs₂ , refl ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) = begin
     x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂)))) ⟩
     x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
     x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨

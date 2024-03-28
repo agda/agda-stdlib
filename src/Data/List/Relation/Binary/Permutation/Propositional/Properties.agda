@@ -70,48 +70,57 @@ private
 ------------------------------------------------------------------------
 -- Relationships to other predicates
 
-All-resp-↭ : ∀ {P : Pred A p} → (All P) Respects _↭_
-All-resp-↭ refl wit                     = wit
-All-resp-↭ (prep x p) (px ∷ wit)        = px ∷ All-resp-↭ p wit
-All-resp-↭ (swap x y p) (px ∷ py ∷ wit) = py ∷ px ∷ All-resp-↭ p wit
-All-resp-↭ (trans p₁ p₂) wit            = All-resp-↭ p₂ (All-resp-↭ p₁ wit)
+module _ {P : Pred A p} where
 
-Any-resp-↭ : ∀ {P : Pred A p} → (Any P) Respects _↭_
-Any-resp-↭ refl         wit                 = wit
-Any-resp-↭ (prep x p)   (here px)           = here px
-Any-resp-↭ (prep x p)   (there wit)         = there (Any-resp-↭ p wit)
-Any-resp-↭ (swap x y p) (here px)           = there (here px)
-Any-resp-↭ (swap x y p) (there (here px))   = here px
-Any-resp-↭ (swap x y p) (there (there wit)) = there (there (Any-resp-↭ p wit))
-Any-resp-↭ (trans p p₁) wit                 = Any-resp-↭ p₁ (Any-resp-↭ p wit)
+  All-resp-↭ : (All P) Respects _↭_
+  All-resp-↭ refl wit                     = wit
+  All-resp-↭ (prep x p) (px ∷ wit)        = px ∷ All-resp-↭ p wit
+  All-resp-↭ (swap x y p) (px ∷ py ∷ wit) = py ∷ px ∷ All-resp-↭ p wit
+  All-resp-↭ (trans p₁ p₂) wit            = All-resp-↭ p₂ (All-resp-↭ p₁ wit)
+
+  Any-resp-↭ : (Any P) Respects _↭_
+  Any-resp-↭ refl         wit                 = wit
+  Any-resp-↭ (prep x p)   (here px)           = here px
+  Any-resp-↭ (prep x p)   (there wit)         = there (Any-resp-↭ p wit)
+  Any-resp-↭ (swap x y p) (here px)           = there (here px)
+  Any-resp-↭ (swap x y p) (there (here px))   = here px
+  Any-resp-↭ (swap x y p) (there (there wit)) = there (there (Any-resp-↭ p wit))
+  Any-resp-↭ (trans p p₁) wit                 = Any-resp-↭ p₁ (Any-resp-↭ p wit)
+
+  Any-resp-[σ⁻¹∘σ] : ∀ {xs ys} (σ : xs ↭ ys) (ix : Any P xs) →
+                     Any-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
+  Any-resp-[σ⁻¹∘σ] refl          ix               = refl
+  Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
+  Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
+  Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (there (here _)) = refl
+  Any-resp-[σ⁻¹∘σ] (trans σ₁ σ₂) ix
+    rewrite Any-resp-[σ⁻¹∘σ] σ₂ (Any-resp-↭ σ₁ ix)
+    rewrite Any-resp-[σ⁻¹∘σ] σ₁ ix
+    = refl
+  Any-resp-[σ⁻¹∘σ] (prep _ σ)    (there ix)
+    rewrite Any-resp-[σ⁻¹∘σ] σ ix
+    = refl
+  Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
+    rewrite Any-resp-[σ⁻¹∘σ] σ ix
+    = refl
+
+  Any-resp-[σ∘σ⁻¹] : ∀ {xs ys} (σ : xs ↭ ys) (iy : Any P ys) →
+                     Any-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+  Any-resp-[σ∘σ⁻¹] p
+    with res ← Any-resp-[σ⁻¹∘σ] (↭-sym p)
+    rewrite ↭-sym-involutive p
+    = res
 
 ∈-resp-↭ : ∀ {x : A} → (x ∈_) Respects _↭_
 ∈-resp-↭ = Any-resp-↭
 
-Any-resp-[σ⁻¹∘σ] : {xs ys : List A} {P : Pred A p} →
-                   (σ : xs ↭ ys) →
-                   (ix : Any P xs) →
-                   Any-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
-Any-resp-[σ⁻¹∘σ] refl          ix               = refl
-Any-resp-[σ⁻¹∘σ] (prep _ _)    (here _)         = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (here _)         = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ _)  (there (here _)) = refl
-Any-resp-[σ⁻¹∘σ] (trans σ₁ σ₂) ix
-  rewrite Any-resp-[σ⁻¹∘σ] σ₂ (Any-resp-↭ σ₁ ix)
-  rewrite Any-resp-[σ⁻¹∘σ] σ₁ ix
-  = refl
-Any-resp-[σ⁻¹∘σ] (prep _ σ)    (there ix)
-  rewrite Any-resp-[σ⁻¹∘σ] σ ix
-  = refl
-Any-resp-[σ⁻¹∘σ] (swap _ _ σ)  (there (there ix))
-  rewrite Any-resp-[σ⁻¹∘σ] σ ix
-  = refl
-
-∈-resp-[σ⁻¹∘σ] : {xs ys : List A} {x : A} →
-                 (σ : xs ↭ ys) →
-                 (ix : x ∈ xs) →
+∈-resp-[σ⁻¹∘σ] : ∀ {xs ys} {x : A} (σ : xs ↭ ys) (ix : x ∈ xs) →
                  ∈-resp-↭ (trans σ (↭-sym σ)) ix ≡ ix
 ∈-resp-[σ⁻¹∘σ] = Any-resp-[σ⁻¹∘σ]
+
+∈-resp-[σ∘σ⁻¹] : ∀ {xs ys} {y : A} (σ : xs ↭ ys) (iy : y ∈ ys) →
+                 ∈-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+∈-resp-[σ∘σ⁻¹] = Any-resp-[σ∘σ⁻¹]
 
 ------------------------------------------------------------------------
 -- map
