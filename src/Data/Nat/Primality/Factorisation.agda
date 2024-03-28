@@ -21,7 +21,7 @@ open import Data.List.Membership.Propositional.Properties using (∈-∃++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Binary.Permutation.Propositional
-  using (_↭_; ↭-refl; module PermutationReasoning)
+  using (_↭_; ↭-refl; ↭-prep; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
   using (product-↭; All-resp-↭; shift)
 open import Data.Sum.Base using (inj₁; inj₂)
@@ -184,7 +184,7 @@ private
 
       a∷as↭bs : a ∷ as ↭ bs
       a∷as↭bs = begin
-        a ∷ as  <⟨ factorisationUnique′ as bs′ Πas≡Πbs′ prime[as] prime[bs'] ⟩
+        a ∷ as  ↭⟨ ↭-prep a (factorisationUnique′ as bs′ Πas≡Πbs′ prime[as] prime[bs']) ⟩
         a ∷ bs′ ↭⟨ bs↭a∷bs′ ⟨
         bs      ∎
         where open PermutationReasoning
