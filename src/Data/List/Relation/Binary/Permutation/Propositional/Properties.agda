@@ -198,43 +198,44 @@ drop-mid-≡ (w ∷ ws) (x ∷ xs) eq
 drop-mid : ∀ {x : A} ws xs {ys zs} →
            ws ++ [ x ] ++ ys ↭ xs ++ [ x ] ++ zs →
            ws ++ ys ↭ xs ++ zs
-drop-mid′ : ∀ {as bs} → as ↭ bs →
-            ∀ {x : A} ws xs {ys zs} →
-            as ≡ ws ++ [ x ] ++ ys →
-            bs ≡ xs ++ [ x ] ++ zs →
-            ws ++ ys ↭ xs ++ zs
 drop-mid ws xs p = drop-mid′ p ws xs refl refl
-drop-mid′ refl ws xs refl eq = drop-mid-≡ ws xs eq
-drop-mid′ (trans p q) ws  xs refl refl
-  with h , t , refl ← ∈-∃++ (∈-resp-↭ p (∈-insert ws))
-  = trans (drop-mid ws h p) (drop-mid h xs q)
-drop-mid′ (prep x p)   []           []           refl eq
-  with refl ← List.∷-injectiveʳ eq  = p
-drop-mid′ (prep x p)   []           (x ∷ xs)     refl refl = trans p (shift _ _ _)
-drop-mid′ (prep x p)   (w ∷ ws)     []           refl refl = trans (↭-sym (shift _ _ _)) p
-drop-mid′ (prep x p)   (w ∷ ws)     (x ∷ xs)     refl refl = prep _ (drop-mid ws xs p)
-drop-mid′ (swap y z p) []           []           refl refl = prep _ p
-drop-mid′ (swap y z p) []           (x ∷ [])     refl eq
-  with refl , eq′ ← List.∷-injective eq
-  with refl ← List.∷-injectiveʳ eq′ = prep _ p
-drop-mid′ (swap y z p) []           (x ∷ _ ∷ xs) refl refl = prep _ (trans p (shift _ _ _))
-drop-mid′ (swap y z p) (w ∷ [])     []           refl eq
-  with refl ← List.∷-injectiveʳ eq  = prep _ p
-drop-mid′ (swap y z p) (w ∷ x ∷ ws) []           refl refl = prep _ (trans (↭-sym (shift _ _ _)) p)
-drop-mid′ (swap y y p) (y ∷ [])     (y ∷ [])     refl refl = prep _ p
-drop-mid′ (swap y z p) (y ∷ [])     (z ∷ y ∷ xs) refl refl = begin
-    _ ∷ _             ↭⟨ prep _ p ⟩
-    _ ∷ (xs ++ _ ∷ _) ↭⟨ prep _ (shift _ _ _) ⟩
-    _ ∷ _ ∷ xs ++ _   ↭⟨ swap _ _ refl ⟩
-    _ ∷ _ ∷ xs ++ _   ∎
-    where open PermutationReasoning
-drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ [])     refl refl = begin
-    _ ∷ _ ∷ ws ++ _   ↭⟨ swap _ _ refl ⟩
-    _ ∷ (_ ∷ ws ++ _) ↭⟨ prep _ (shift _ _ _) ⟨
-    _ ∷ (ws ++ _ ∷ _) ↭⟨ prep _ p ⟩
-    _ ∷ _             ∎
-    where open PermutationReasoning
-drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid _ _ p)
+  where
+  drop-mid′ : ∀ {as bs} → as ↭ bs →
+              ∀ {x : A} ws xs {ys zs} →
+              as ≡ ws ++ [ x ] ++ ys →
+              bs ≡ xs ++ [ x ] ++ zs →
+              ws ++ ys ↭ xs ++ zs
+  drop-mid′ refl ws xs refl eq = drop-mid-≡ ws xs eq
+  drop-mid′ (trans p q) ws  xs refl refl
+    with h , t , refl ← ∈-∃++ (∈-resp-↭ p (∈-insert ws))
+    = trans (drop-mid ws h p) (drop-mid h xs q)
+  drop-mid′ (prep x p)   []           []           refl eq
+    with refl ← List.∷-injectiveʳ eq  = p
+  drop-mid′ (prep x p)   []           (x ∷ xs)     refl refl = trans p (shift _ _ _)
+  drop-mid′ (prep x p)   (w ∷ ws)     []           refl refl = trans (↭-sym (shift _ _ _)) p
+  drop-mid′ (prep x p)   (w ∷ ws)     (x ∷ xs)     refl refl = prep _ (drop-mid ws xs p)
+  drop-mid′ (swap y z p) []           []           refl refl = prep _ p
+  drop-mid′ (swap y z p) []           (x ∷ [])     refl eq
+    with refl , eq′ ← List.∷-injective eq
+    with refl ← List.∷-injectiveʳ eq′ = prep _ p
+  drop-mid′ (swap y z p) []           (x ∷ _ ∷ xs) refl refl = prep _ (trans p (shift _ _ _))
+  drop-mid′ (swap y z p) (w ∷ [])     []           refl eq
+    with refl ← List.∷-injectiveʳ eq  = prep _ p
+  drop-mid′ (swap y z p) (w ∷ x ∷ ws) []           refl refl = prep _ (trans (↭-sym (shift _ _ _)) p)
+  drop-mid′ (swap y y p) (y ∷ [])     (y ∷ [])     refl refl = prep _ p
+  drop-mid′ (swap y z p) (y ∷ [])     (z ∷ y ∷ xs) refl refl = begin
+      _ ∷ _             ↭⟨ prep _ p ⟩
+      _ ∷ (xs ++ _ ∷ _) ↭⟨ prep _ (shift _ _ _) ⟩
+      _ ∷ _ ∷ xs ++ _   ↭⟨ swap _ _ refl ⟩
+      _ ∷ _ ∷ xs ++ _   ∎
+      where open PermutationReasoning
+  drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ [])     refl refl = begin
+      _ ∷ _ ∷ ws ++ _   ↭⟨ swap _ _ refl ⟩
+      _ ∷ (_ ∷ ws ++ _) ↭⟨ prep _ (shift _ _ _) ⟨
+      _ ∷ (ws ++ _ ∷ _) ↭⟨ prep _ p ⟩
+      _ ∷ _             ∎
+      where open PermutationReasoning
+  drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid _ _ p)
 
 
 -- Algebraic properties
