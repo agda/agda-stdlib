@@ -28,7 +28,7 @@ open module ≈ = Setoid S using (_≈_) renaming (Carrier to A)
 open ≋ S using (_≋_; _∷_; ≋-refl; ≋-sym; ≋-trans)
 
 ------------------------------------------------------------------------
--- Definition
+-- Definition, based on `Homogeneous`
 
 open Homogeneous public
   using (refl; prep; swap; trans)
@@ -38,13 +38,18 @@ infix 3 _↭_
 _↭_ : Rel (List A) (a ⊔ ℓ)
 _↭_ = Homogeneous.Permutation _≈_
 
+steps = Homogeneous.steps {R = _≈_}
+
 ------------------------------------------------------------------------
 -- Constructor aliases
 
 -- Constructor alias
 
-↭-pointwise : _≋_ ⇒ _↭_
-↭-pointwise = refl
+↭-reflexive-≋ : _≋_ ⇒ _↭_
+↭-reflexive-≋ = refl
+
+↭-trans : Transitive _↭_
+↭-trans = trans
 
 -- These provide aliases for `swap` and `prep` when the elements being
 -- swapped or prepended are propositionally equal
@@ -59,7 +64,7 @@ _↭_ = Homogeneous.Permutation _≈_
 -- _↭_ is an equivalence
 
 ↭-reflexive : _≡_ ⇒ _↭_
-↭-reflexive refl = ↭-pointwise ≋-refl
+↭-reflexive refl = ↭-reflexive-≋ ≋-refl
 
 ↭-refl : Reflexive _↭_
 ↭-refl = ↭-reflexive refl
@@ -87,10 +92,10 @@ _↭_ = Homogeneous.Permutation _≈_
 ↭-transʳ-≋ (trans xs↭ws ws↭ys)  ys≋zs
   = trans xs↭ws (↭-transʳ-≋ ws↭ys ys≋zs)
 
-↭-trans : Transitive _↭_
-↭-trans (refl xs≋ys) ys↭zs = ↭-transˡ-≋ xs≋ys ys↭zs
-↭-trans xs↭ys (refl ys≋zs) = ↭-transʳ-≋ xs↭ys ys≋zs
-↭-trans xs↭ys ys↭zs        = trans xs↭ys ys↭zs
+↭-trans′ : Transitive _↭_
+↭-trans′ (refl xs≋ys) ys↭zs = ↭-transˡ-≋ xs≋ys ys↭zs
+↭-trans′ xs↭ys (refl ys≋zs) = ↭-transʳ-≋ xs↭ys ys≋zs
+↭-trans′ xs↭ys ys↭zs        = trans xs↭ys ys↭zs
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record
@@ -114,7 +119,7 @@ module PermutationReasoning where
     renaming (≈-go to ↭-go)
 
   open ↭-syntax _IsRelatedTo_ _IsRelatedTo_ ↭-go ↭-sym public
-  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ (↭-go ∘′ ↭-pointwise) ≋-sym public
+  open ≋-syntax _IsRelatedTo_ _IsRelatedTo_ (↭-go ∘′ ↭-reflexive-≋) ≋-sym public
 
   -- Some extra combinators that allow us to skip certain elements
 
@@ -141,9 +146,4 @@ module PermutationReasoning where
 
 -- Version 2.1
 
-steps = Homogeneous.steps {R = _≈_}
-{-# WARNING_ON_USAGE steps
-"Warning: steps was deprecated in v2.1.
-Please use Homogeneous.steps explicitly instead."
-#-}
 

@@ -49,11 +49,6 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
-* In `Data.List.Relation.Binary.Permutation.Setoid`:
-  ```agda
-  steps  ↦  Data.List.Relation.Binary.Permutation.Homogeneous.steps
-  ```
-
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
   split  ↦  ↭-split
@@ -290,17 +285,18 @@ Additions to existing modules
   ```
   and properties
   ```agda
-  ↭-pointwise : _≋_ ⇒ _↭_
-  ↭⇒↭ₛ        : _↭_  ⇒ _↭ₛ_
-  ↭ₛ⇒↭        : _↭ₛ_ ⇒ _↭_
+  ↭-reflexive-≋ : _≋_ ⇒ _↭_
+  ↭⇒↭ₛ          : _↭_  ⇒ _↭ₛ_
+  ↭ₛ⇒↭          : _↭ₛ_ ⇒ _↭_
   ```
   where `_↭ₛ_` is the `Setoid (setoid _)` instance of `Permutation`
 
 * In `Data.List.Relation.Binary.Permutation.Setoid`:
   ```agda
-  ↭-pointwise : _≋_  ⇒ _↭_
-  ↭-transˡ-≋  : LeftTrans _≋_ _↭_
-  ↭-transʳ-≋  : RightTrans _↭_ _≋_
+  ↭-reflexive-≋ : _≋_  ⇒ _↭_
+  ↭-transˡ-≋    : LeftTrans _≋_ _↭_
+  ↭-transʳ-≋    : RightTrans _↭_ _≋_
+  ↭-trans′      : Transitive _↭_
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:

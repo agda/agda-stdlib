@@ -62,7 +62,6 @@ private
     P : Pred A p
     R : Rel A r
 
-  _++[_]++_ = λ xs (z : A) ys → xs ++ [ z ] ++ ys
 
 ------------------------------------------------------------------------
 -- Relationships to other predicates
@@ -117,18 +116,18 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 -- Relationship to `_≋_`
 ------------------------------------------------------------------------
 
-↭-split : ∀ v as bs {xs} → xs ↭ (as ++[ v ]++ bs) →
-          ∃₂ λ ps qs → xs ≋ (ps ++[ v ]++ qs)
+↭-split : ∀ v as bs → xs ↭ (as ++ [ v ] ++ bs) →
+          ∃₂ λ ps qs → xs ≋ (ps ++ [ v ] ++ qs)
                      × (ps ++ qs) ↭ (as ++ bs)
 ↭-split v as bs p = helper as bs p ≋-refl
   where
-  helper : ∀ as bs → xs ↭ ys → ys ≋ (as ++[ v ]++ bs) →
-           ∃₂ λ ps qs → xs ≋ (ps ++[ v ]++ qs)
+  helper : ∀ as bs → xs ↭ ys → ys ≋ (as ++ [ v ] ++ bs) →
+           ∃₂ λ ps qs → xs ≋ (ps ++ [ v ] ++ qs)
                       × (ps ++ qs) ↭ (as ++ bs)
   helper as           bs (trans xs↭ys ys↭zs) zs≋as++[v]++ys
     with ps , qs , eq , ↭ ← helper as bs ys↭zs zs≋as++[v]++ys
     with ps′ , qs′ , eq′ , ↭′ ← helper ps qs xs↭ys eq
-    = ps′ , qs′ , eq′ , ↭-trans ↭′ ↭
+    = ps′ , qs′ , eq′ , ↭-trans′ ↭′ ↭
   helper []           _  (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
     = [] , _ , ≈-trans x≈v v≈y ∷ ≋-refl , refl (≋-trans xs≋vs vs≋ys)
   helper (a ∷ as)     bs (refl (x≈v ∷ xs≋vs)) (v≈y ∷ vs≋ys)
@@ -218,7 +217,7 @@ module _ (P? : Decidable P) (P≈ : P Respects _≈_) where
 dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
            ws ++ [ x ] ++ ys ≋ xs ++ [ x ] ++ zs →
            ws ++ ys ↭ xs ++ zs
-dropMiddleElement-≋ []       []       (_   ∷ eq) = ↭-pointwise eq
+dropMiddleElement-≋ []       []       (_   ∷ eq) = ↭-reflexive-≋ eq
 dropMiddleElement-≋ []       (x ∷ xs) (w≈v ∷ eq) = ↭-transˡ-≋ eq (shift w≈v xs _)
 dropMiddleElement-≋ (w ∷ ws) []       (w≈x ∷ eq) = ↭-transʳ-≋ (↭-sym (shift (≈-sym w≈x) ws _)) eq
 dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (dropMiddleElement-≋ ws xs eq)
@@ -435,7 +434,7 @@ module _{_∙_ : Op₂ A} {ε : A}
 -- TOWARDS DEPRECATION
 ------------------------------------------------------------------------
 
-≋⇒↭ = ↭-pointwise
+≋⇒↭ = ↭-reflexive-≋
 
 -- These are easily superseded by ↭-transˡ-≋, ↭-transʳ-≋
 -- But for the properties of steps which require precise measurement

@@ -60,8 +60,8 @@ data _↭_ : Rel (List A) a where
 ↭-reflexive : _≡_ ⇒ _↭_
 ↭-reflexive refl = ↭-refl
 
-↭-pointwise : _≋_ ⇒ _↭_
-↭-pointwise xs≋ys = ↭-reflexive (≋⇒≡ xs≋ys)
+↭-reflexive-≋ : _≋_ ⇒ _↭_
+↭-reflexive-≋ xs≋ys = ↭-reflexive (≋⇒≡ xs≋ys)
 
 ↭-sym : xs ↭ ys → ys ↭ xs
 ↭-sym refl                = refl
@@ -99,11 +99,11 @@ private
 ↭⇒↭ₛ refl         = ↭ₛ.↭-refl
 ↭⇒↭ₛ (prep x p)   = ↭ₛ.↭-prep x (↭⇒↭ₛ p)
 ↭⇒↭ₛ (swap x y p) = ↭ₛ.↭-swap x y (↭⇒↭ₛ p)
-↭⇒↭ₛ (trans p q)  = ↭ₛ.↭-trans (↭⇒↭ₛ p) (↭⇒↭ₛ q)
+↭⇒↭ₛ (trans p q)  = ↭ₛ.↭-trans′ (↭⇒↭ₛ p) (↭⇒↭ₛ q)
 
 
 ↭ₛ⇒↭ : _↭ₛ_ ⇒ _↭_
-↭ₛ⇒↭ (↭ₛ.refl xs≋ys)       = ↭-pointwise xs≋ys
+↭ₛ⇒↭ (↭ₛ.refl xs≋ys)       = ↭-reflexive-≋ xs≋ys
 ↭ₛ⇒↭ (↭ₛ.prep refl p)      = ↭-prep _ (↭ₛ⇒↭ p)
 ↭ₛ⇒↭ (↭ₛ.swap refl refl p) = ↭-swap _ _ (↭ₛ⇒↭ p)
 ↭ₛ⇒↭ (↭ₛ.trans p q)        = ↭-trans (↭ₛ⇒↭ p) (↭ₛ⇒↭ q)
