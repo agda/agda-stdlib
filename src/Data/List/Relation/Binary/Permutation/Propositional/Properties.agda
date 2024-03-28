@@ -12,16 +12,16 @@ open import Algebra.Bundles
 open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Nat.Base using (suc; _*_)
-open import Data.Nat.Properties using (*-assoc; *-comm)
-open import Data.Product.Base using (-,_; proj₂)
+open import Data.Nat.Base using (ℕ; suc)
+import Data.Nat.Properties as ℕ
+open import Data.Product.Base using (-,_)
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
-import Data.List.Properties as Lₚ
+import Data.List.Properties as List
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
 open import Function.Base using (_∘_; _⟨_⟩_)
 open import Level using (Level)
@@ -32,6 +32,8 @@ open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_)
 open import Relation.Binary.PropositionalEquality.Properties using (module ≡-Reasoning)
 open import Relation.Nullary
+
+import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutation
 
 private
   variable
@@ -169,64 +171,62 @@ inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (prep v xs↭zs)) (++⁺ʳ _ ws↭ys
 shift : ∀ v (xs ys : List A) → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
 shift v []       ys = refl
 shift v (x ∷ xs) ys = begin
-  x ∷ (xs ++ [ v ] ++ ys) <⟨ shift v xs ys ⟩
-  x ∷ v ∷ xs ++ ys        <<⟨ refl ⟩
+  x ∷ (xs ++ [ v ] ++ ys) ↭⟨ prep _ (shift v xs ys) ⟩
+  x ∷ v ∷ xs ++ ys        ↭⟨ swap _ _ refl ⟩
   v ∷ x ∷ xs ++ ys        ∎
   where open PermutationReasoning
 
 drop-mid-≡ : ∀ {x : A} ws xs {ys} {zs} →
              ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
              ws ++ ys ↭ xs ++ zs
-drop-mid-≡ []       []       eq   with cong tail eq
-drop-mid-≡ []       []       eq   | refl = refl
+drop-mid-≡ []       []       eq
+  with refl ← List.∷-injectiveʳ eq = refl
 drop-mid-≡ []       (x ∷ xs) refl = shift _ xs _
 drop-mid-≡ (w ∷ ws) []       refl = ↭-sym (shift _ ws _)
-drop-mid-≡ (w ∷ ws) (x ∷ xs) eq with Lₚ.∷-injective eq
-... | refl , eq′ = prep w (drop-mid-≡ ws xs eq′)
+drop-mid-≡ (w ∷ ws) (x ∷ xs) eq
+  with refl , eq′ ← List.∷-injective eq = prep w (drop-mid-≡ ws xs eq′)
 
 drop-mid : ∀ {x : A} ws xs {ys zs} →
            ws ++ [ x ] ++ ys ↭ xs ++ [ x ] ++ zs →
            ws ++ ys ↭ xs ++ zs
-drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
-  where
-  drop-mid′ : ∀ {l′ l″ : List A} → l′ ↭ l″ →
-              ∀ ws xs {ys zs} →
-              ws ++ [ x ] ++ ys ≡ l′ →
-              xs ++ [ x ] ++ zs ≡ l″ →
-              ws ++ ys ↭ xs ++ zs
-  drop-mid′ refl         ws           xs           refl eq   = drop-mid-≡ ws xs (≡.sym eq)
-  drop-mid′ (prep x p)   []           []           refl eq   with cong tail eq
-  drop-mid′ (prep x p)   []           []           refl eq   | refl = p
-  drop-mid′ (prep x p)   []           (x ∷ xs)     refl refl = trans p (shift _ _ _)
-  drop-mid′ (prep x p)   (w ∷ ws)     []           refl refl = trans (↭-sym (shift _ _ _)) p
-  drop-mid′ (prep x p)   (w ∷ ws)     (x ∷ xs)     refl refl = prep _ (drop-mid′ p ws xs refl refl)
-  drop-mid′ (swap y z p) []           []           refl refl = prep _ p
-  drop-mid′ (swap y z p) []           (x ∷ [])     refl eq   with cong {B = List _}
-                                                                       (λ { (x ∷ _ ∷ xs) → x ∷ xs
-                                                                          ; _            → []
-                                                                          })
-                                                                       eq
-  drop-mid′ (swap y z p) []           (x ∷ [])     refl eq   | refl = prep _ p
-  drop-mid′ (swap y z p) []           (x ∷ _ ∷ xs) refl refl = prep _ (trans p (shift _ _ _))
-  drop-mid′ (swap y z p) (w ∷ [])     []           refl eq   with cong tail eq
-  drop-mid′ (swap y z p) (w ∷ [])     []           refl eq   | refl = prep _ p
-  drop-mid′ (swap y z p) (w ∷ x ∷ ws) []           refl refl = prep _ (trans (↭-sym (shift _ _ _)) p)
-  drop-mid′ (swap y y p) (y ∷ [])     (y ∷ [])     refl refl = prep _ p
-  drop-mid′ (swap y z p) (y ∷ [])     (z ∷ y ∷ xs) refl refl = begin
-      _ ∷ _             <⟨ p ⟩
-      _ ∷ (xs ++ _ ∷ _) <⟨ shift _ _ _ ⟩
-      _ ∷ _ ∷ xs ++ _   <<⟨ refl ⟩
-      _ ∷ _ ∷ xs ++ _   ∎
-      where open PermutationReasoning
-  drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ [])     refl refl = begin
-      _ ∷ _ ∷ ws ++ _   <<⟨ refl ⟩
-      _ ∷ (_ ∷ ws ++ _) <⟨ ↭-sym (shift _ _ _) ⟩
-      _ ∷ (ws ++ _ ∷ _) <⟨ p ⟩
-      _ ∷ _             ∎
-      where open PermutationReasoning
-  drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid′ p _ _ refl refl)
-  drop-mid′ (trans p₁ p₂) ws  xs refl refl with ∈-∃++ (∈-resp-↭ p₁ (∈-insert ws))
-  ... | (h , t , refl) = trans (drop-mid′ p₁ ws h refl refl) (drop-mid′ p₂ h xs refl refl)
+drop-mid′ : ∀ {as bs} → as ↭ bs →
+            ∀ {x : A} ws xs {ys zs} →
+            as ≡ ws ++ [ x ] ++ ys →
+            bs ≡ xs ++ [ x ] ++ zs →
+            ws ++ ys ↭ xs ++ zs
+drop-mid ws xs p = drop-mid′ p ws xs refl refl
+drop-mid′ refl ws xs refl eq = drop-mid-≡ ws xs eq
+drop-mid′ (trans p q) ws  xs refl refl
+  with h , t , refl ← ∈-∃++ (∈-resp-↭ p (∈-insert ws))
+  = trans (drop-mid ws h p) (drop-mid h xs q)
+drop-mid′ (prep x p)   []           []           refl eq
+  with refl ← List.∷-injectiveʳ eq  = p
+drop-mid′ (prep x p)   []           (x ∷ xs)     refl refl = trans p (shift _ _ _)
+drop-mid′ (prep x p)   (w ∷ ws)     []           refl refl = trans (↭-sym (shift _ _ _)) p
+drop-mid′ (prep x p)   (w ∷ ws)     (x ∷ xs)     refl refl = prep _ (drop-mid ws xs p)
+drop-mid′ (swap y z p) []           []           refl refl = prep _ p
+drop-mid′ (swap y z p) []           (x ∷ [])     refl eq
+  with refl , eq′ ← List.∷-injective eq
+  with refl ← List.∷-injectiveʳ eq′ = prep _ p
+drop-mid′ (swap y z p) []           (x ∷ _ ∷ xs) refl refl = prep _ (trans p (shift _ _ _))
+drop-mid′ (swap y z p) (w ∷ [])     []           refl eq
+  with refl ← List.∷-injectiveʳ eq  = prep _ p
+drop-mid′ (swap y z p) (w ∷ x ∷ ws) []           refl refl = prep _ (trans (↭-sym (shift _ _ _)) p)
+drop-mid′ (swap y y p) (y ∷ [])     (y ∷ [])     refl refl = prep _ p
+drop-mid′ (swap y z p) (y ∷ [])     (z ∷ y ∷ xs) refl refl = begin
+    _ ∷ _             ↭⟨ prep _ p ⟩
+    _ ∷ (xs ++ _ ∷ _) ↭⟨ prep _ (shift _ _ _) ⟩
+    _ ∷ _ ∷ xs ++ _   ↭⟨ swap _ _ refl ⟩
+    _ ∷ _ ∷ xs ++ _   ∎
+    where open PermutationReasoning
+drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ [])     refl refl = begin
+    _ ∷ _ ∷ ws ++ _   ↭⟨ swap _ _ refl ⟩
+    _ ∷ (_ ∷ ws ++ _) ↭⟨ prep _ (shift _ _ _) ⟨
+    _ ∷ (ws ++ _ ∷ _) ↭⟨ prep _ p ⟩
+    _ ∷ _             ∎
+    where open PermutationReasoning
+drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid _ _ p)
+
 
 -- Algebraic properties
 
@@ -234,18 +234,18 @@ drop-mid {A = A} {x} ws xs p = drop-mid′ p ws xs refl refl
 ++-identityˡ xs = refl
 
 ++-identityʳ : RightIdentity {A = List A} _↭_ [] _++_
-++-identityʳ xs = ↭-reflexive (Lₚ.++-identityʳ xs)
+++-identityʳ xs = ↭-reflexive (List.++-identityʳ xs)
 
 ++-identity : Identity {A = List A} _↭_ [] _++_
 ++-identity = ++-identityˡ , ++-identityʳ
 
 ++-assoc : Associative {A = List A} _↭_ _++_
-++-assoc xs ys zs = ↭-reflexive (Lₚ.++-assoc xs ys zs)
+++-assoc xs ys zs = ↭-reflexive (List.++-assoc xs ys zs)
 
 ++-comm : Commutative {A = List A} _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys   <⟨ ++-comm xs ys ⟩
+  x ∷ xs ++ ys   ↭⟨ prep _ (++-comm xs ys) ⟩
   x ∷ ys ++ xs   ↭⟨ shift x ys xs ⟨
   ys ++ (x ∷ xs) ∎
   where open PermutationReasoning
@@ -318,7 +318,7 @@ drop-∷ = drop-mid [] []
 ∷↭∷ʳ : ∀ (x : A) xs → x ∷ xs ↭ xs ∷ʳ x
 ∷↭∷ʳ x xs = ↭-sym (begin
   xs ++ [ x ]   ↭⟨ shift x xs [] ⟩
-  x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
+  x ∷ xs ++ []  ≡⟨ List.++-identityʳ _ ⟩
   x ∷ xs        ∎)
   where open PermutationReasoning
 
@@ -335,7 +335,7 @@ drop-∷ = drop-mid [] []
 ↭-reverse : (xs : List A) → reverse xs ↭ xs
 ↭-reverse [] = ↭-refl
 ↭-reverse (x ∷ xs) = begin
-  reverse (x ∷ xs) ≡⟨ Lₚ.unfold-reverse x xs ⟩
+  reverse (x ∷ xs) ≡⟨ List.unfold-reverse x xs ⟩
   reverse xs ∷ʳ x ↭⟨ ∷↭∷ʳ x (reverse xs) ⟨
   x ∷ reverse xs   ↭⟨ prep x (↭-reverse xs) ⟩
   x ∷ xs ∎
@@ -354,9 +354,9 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
     with does (R? x y) | merge-↭ xs (y ∷ ys) | merge-↭ (x ∷ xs) ys
   ... | true  | rec | _   = prep x rec
   ... | false | _   | rec = begin
-    y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
+    y ∷ merge R? (x ∷ xs) ys ↭⟨ prep _ rec ⟩
     y ∷ x ∷ xs ++ ys         ↭⟨ shift y (x ∷ xs) ys ⟨
-    (x ∷ xs) ++ y ∷ ys       ≡⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟨
+    (x ∷ xs) ++ y ∷ ys       ≡⟨ List.++-assoc [ x ] xs (y ∷ ys) ⟨
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
 
@@ -364,12 +364,7 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
 -- product
 
 product-↭ : product Preserves _↭_ ⟶ _≡_
-product-↭ refl = refl
-product-↭ (prep x r) = cong (x *_) (product-↭ r)
-product-↭ (trans r s) = ≡.trans (product-↭ r) (product-↭ s)
-product-↭ (swap {xs} {ys} x y r) = begin
-  x * (y * product xs) ≡˘⟨ *-assoc x y (product xs) ⟩
-  (x * y) * product xs ≡⟨ cong₂ _*_ (*-comm x y) (product-↭ r) ⟩
-  (y * x) * product ys ≡⟨ *-assoc y x (product ys) ⟩
-  y * (x * product ys) ∎
-  where open ≡-Reasoning
+product-↭ p = foldr-pres-↭ ℕ-*-1.isCommutativeMonoid (↭⇒↭ₛ p)
+  where
+  module ℕ-*-1 = CommutativeMonoid ℕ.*-1-commutativeMonoid
+  open Permutation ℕ-*-1.setoid
