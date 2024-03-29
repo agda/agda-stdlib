@@ -72,6 +72,21 @@ steps = Homogeneous.steps {R = _≈_}
 ↭-sym : Symmetric _↭_
 ↭-sym = Homogeneous.sym ≈.sym
 
+-- As with the existing proofs `↭-respʳ-≋` and `↭-respˡ-≋` in `Setoid.Properties`
+-- (which appeal to symmetry of the underlying equality, and its effect on the
+-- proofs of symmetry for both pointwise equality and permutation) to the effect
+-- that _↭_ respects _≋_ on the left and right, such arguments can be both
+-- streamlined, and used to define a 'smart' constructor `↭-trans′` for transitivity.
+--
+-- The arguments below show how proofs of permutation can have all transitive
+-- compositions with instances of `refl` pushed to the leaves of derivations,
+-- thereby addressing the inefficiencies analysed in issue #1113
+--
+-- Conjecture: these transformations are `steps` invariant, but that is moot,
+-- given their use here, and in `Setoid.Properties.↭-split` (without requiring
+-- WF-induction on `steps`) to enable a new, sharper, analysis of lists `xs`
+-- such that `xs ↭ ys ++ [ x ] ++ zs` in terms of `x`, `ys`, and `zs`.
+
 ↭-transˡ-≋ : LeftTrans _≋_ _↭_
 ↭-transˡ-≋ xs≋ys               (refl ys≋zs)
   = refl (≋-trans xs≋ys ys≋zs)
