@@ -11,12 +11,13 @@ module Data.List.Relation.Unary.All.Properties where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
-open import Data.Empty
+open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (lookup; updateAt)
 open import Data.List.Properties as Listₚ using (partition-defn)
-open import Data.List.Membership.Propositional
+open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
+  using (there-injective-≢∈; ∈-filter⁻)
 import Data.List.Membership.Setoid as SetoidMembership
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
@@ -33,15 +34,15 @@ open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
 open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
-open import Function.Base
-open import Function.Bundles
+open import Function.Base using (_∘_; _$_; id; case_of_; flip)
+open import Function.Bundles using (_↠_; mk↠ₛ; _⇔_; mk⇔; _↔_; mk↔ₛ′; Equivalence)
 open import Level using (Level)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; _≗_)
-open import Relation.Nullary
+open import Relation.Nullary using (¬_; does; yes; no; _because_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (¬?; decidable-stable)

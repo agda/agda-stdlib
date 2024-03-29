@@ -37,13 +37,8 @@ open import Relation.Binary.PropositionalEquality.Algebra public
 ------------------------------------------------------------------------
 -- Pointwise equality
 
-infix 4 _≗_
-
 _→-setoid_ : ∀ (A : Set a) (B : Set b) → Setoid _ _
 A →-setoid B = ≡-setoid A (Trivial.indexedSetoid (setoid B))
-
-_≗_ : (f g : A → B) → Set _
-_≗_ {A = A} {B = B} = Setoid._≈_ (A →-setoid B)
 
 :→-to-Π : ∀ {A : Set a} {B : IndexedSetoid A b ℓ} →
           ((x : A) → IndexedSetoid.Carrier B x) →
