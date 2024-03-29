@@ -575,7 +575,7 @@ drop-cons {x = x} {xs} {ys} x∷xs≈x∷ys =
 ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_ {A = A}
 ∼bag⇒↭ {A = A} {[]}     eq with refl ← empty-unique (↔-sym eq) = ↭-refl
 ∼bag⇒↭ {A = A} {x ∷ xs} eq
-  with zs₁ , zs₂ , refl ← ∈-∃++ (Inverse.to (eq {x}) (here ≡.refl)) = begin
+  with zs₁ , zs₂ , refl ← ∈-∃++ (Inverse.to (eq {x}) (here refl)) = begin
     x ∷ xs           ↭⟨ ↭-prep x (∼bag⇒↭ (drop-cons (↔-trans eq (comm zs₁ (x ∷ zs₂))))) ⟩
     x ∷ (zs₂ ++ zs₁) ↭⟨ ↭-prep x (++-comm zs₂ zs₁) ⟩
     x ∷ (zs₁ ++ zs₂) ↭⟨ shift x zs₁ zs₂ ⟨
