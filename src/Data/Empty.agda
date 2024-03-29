@@ -9,7 +9,6 @@
 module Data.Empty where
 
 open import Data.Irrelevant using (Irrelevant)
-open import Relation.Nullary.Recomputable using (Recomputable)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -30,12 +29,6 @@ private
 ⊥ = Irrelevant Empty
 
 {-# DISPLAY Irrelevant Empty = ⊥ #-}
-
-------------------------------------------------------------------------
--- ⊥ is Recomputable
-
-⊥-recompute : Recomputable ⊥
-⊥-recompute ()
 
 ------------------------------------------------------------------------
 -- Functions
