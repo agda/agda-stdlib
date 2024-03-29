@@ -9,14 +9,14 @@
 module Relation.Nullary.Decidable where
 
 open import Level using (Level)
-open import Data.Bool.Base using (true; false; if_then_else_)
+open import Data.Bool.Base using (true; false)
 open import Data.Product.Base using (∃; _,_)
-open import Function.Base
 open import Function.Bundles using
   (Injection; module Injection; module Equivalence; _⇔_; _↔_; mk↔ₛ′)
 open import Relation.Binary.Bundles using (Setoid; module Setoid)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary
+open import Relation.Nullary using (Irrelevant)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym; trans; cong′)
@@ -70,12 +70,10 @@ dec-false (false because  _ ) ¬a = refl
 dec-false (true  because [a]) ¬a = contradiction (invert [a]) ¬a
 
 dec-yes : (a? : Dec A) → A → ∃ λ a → a? ≡ yes a
-dec-yes a? a with dec-true a? a
-dec-yes (yes a′) a | refl = a′ , refl
+dec-yes a? a with yes a′ ← a? | refl ← dec-true a? a = a′ , refl
 
 dec-no : (a? : Dec A) (¬a : ¬ A) → a? ≡ no ¬a
-dec-no a? ¬a with dec-false a? ¬a
-dec-no (no _) _ | refl = refl
+dec-no a? ¬a with no _ ← a? | refl ← dec-false a? ¬a = refl
 
 dec-yes-irr : (a? : Dec A) → Irrelevant A → (a : A) → a? ≡ yes a
 dec-yes-irr a? irr a with a′ , eq ← dec-yes a? a rewrite irr a a′ = eq
