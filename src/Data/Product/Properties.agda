@@ -8,13 +8,14 @@
 
 module Data.Product.Properties where
 
-open import Axiom.UniquenessOfIdentityProofs
-open import Data.Product.Base
+open import Axiom.UniquenessOfIdentityProofs using (UIP; module Decidable⇒UIP)
+open import Data.Product.Base using (_,_; Σ; _×_; map; swap; ∃; ∃₂)
 open import Function.Base using (_∋_; _∘_; id)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
+  using (_≡_; _≗_; subst; cong; cong₂; cong′; refl)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no)
 
 private
