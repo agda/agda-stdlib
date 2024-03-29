@@ -8,12 +8,10 @@
 
 module Relation.Nullary.Negation.Core where
 
-open import Data.Bool.Base using (not)
-open import Data.Empty using (⊥; ⊥-recompute; ⊥-elim-irr)
+open import Data.Empty using (⊥; ⊥-elim-irr)
 open import Data.Sum.Base using (_⊎_; [_,_]; inj₁; inj₂)
-open import Function.Base using (flip; _$_; _∘_; const)
+open import Function.Base using (flip; _∘_; const)
 open import Level
-open import Relation.Nullary.Recomputable
 
 private
   variable
@@ -55,9 +53,6 @@ weak-contradiction a ¬a = ⊥-elim-irr (¬a a)
 contradiction : A → ¬ A → Whatever
 contradiction a = weak-contradiction a
 
-contradictionᵒ : ¬ A → A → Whatever
-contradictionᵒ = flip contradiction
-
 contradiction₂ : A ⊎ B → ¬ A → ¬ B → Whatever
 contradiction₂ (inj₁ a) ¬a ¬b = weak-contradiction a ¬a
 contradiction₂ (inj₂ b) ¬a ¬b = weak-contradiction b ¬b
@@ -67,11 +62,11 @@ contraposition f ¬b a = weak-contradiction (f a) ¬b
 
 -- Everything is stable in the double-negation monad.
 stable : ¬ ¬ Stable A
-stable ¬[¬¬a→a] = ¬[¬¬a→a] λ ¬¬a → ⊥-elim-irr (¬¬a (¬[¬¬a→a] ∘ const))
+stable ¬[¬¬a→a] = ¬[¬¬a→a] (weak-contradiction (¬[¬¬a→a] ∘ const))
 
 -- Negated predicates are stable.
 negated-stable : Stable (¬ A)
-negated-stable ¬¬¬a a = ¬¬¬a (_$ a)
+negated-stable ¬¬¬a a = ¬¬¬a (weak-contradiction a)
 
 ¬¬-map : (A → B) → ¬ ¬ A → ¬ ¬ B
 ¬¬-map f = contraposition (contraposition f)
@@ -80,10 +75,4 @@ negated-stable ¬¬¬a a = ¬¬¬a (_$ a)
 private
   note : (A → ¬ B) → B → ¬ A
   note = flip
-
-------------------------------------------------------------------------
--- recompute: negated propositions are Recomputable
-
-¬-recompute : Recomputable (¬ A)
-¬-recompute {A = A} = A →-recompute ⊥-recompute
 
