@@ -416,18 +416,18 @@ module _{_∙_ : Op₂ A} {ε : A}
     open module CM = CommutativeMonoid commutativeMonoid
       using (∙-cong; ∙-congˡ; ∙-congʳ; assoc; comm)
 
-  foldr-pres-↭ : (foldr _∙_ ε) Preserves _↭_ ⟶ _≈_
-  foldr-pres-↭ (refl xs≋ys)        = Pointwise.foldr⁺ ∙-cong CM.refl xs≋ys
-  foldr-pres-↭ (prep x≈y xs↭ys)    = ∙-cong x≈y (foldr-pres-↭ xs↭ys)
-  foldr-pres-↭ (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
-    x ∙ (y ∙ foldr _∙_ ε xs)    ≈⟨ ∙-congˡ (∙-congˡ (foldr-pres-↭ xs↭ys)) ⟩
+  foldr-commMonoid : (foldr _∙_ ε) Preserves _↭_ ⟶ _≈_
+  foldr-commMonoid (refl xs≋ys)        = Pointwise.foldr⁺ ∙-cong CM.refl xs≋ys
+  foldr-commMonoid (prep x≈y xs↭ys)    = ∙-cong x≈y (foldr-commMonoid xs↭ys)
+  foldr-commMonoid (swap {xs} {ys} {x} {y} {x′} {y′} x≈x′ y≈y′ xs↭ys) = begin
+    x ∙ (y ∙ foldr _∙_ ε xs)    ≈⟨ ∙-congˡ (∙-congˡ (foldr-commMonoid xs↭ys)) ⟩
     x ∙ (y ∙ foldr _∙_ ε ys)    ≈⟨ assoc x y (foldr _∙_ ε ys) ⟨
     (x ∙ y) ∙ foldr _∙_ ε ys    ≈⟨ ∙-congʳ (comm x y) ⟩
     (y ∙ x) ∙ foldr _∙_ ε ys    ≈⟨ ∙-congʳ (∙-cong y≈y′ x≈x′) ⟩
     (y′ ∙ x′) ∙ foldr _∙_ ε ys  ≈⟨ assoc y′ x′ (foldr _∙_ ε ys) ⟩
     y′ ∙ (x′ ∙ foldr _∙_ ε ys)  ∎
     where open ≈-Reasoning CM.setoid
-  foldr-pres-↭ (trans xs↭ys ys↭zs) = CM.trans (foldr-pres-↭ xs↭ys) (foldr-pres-↭ ys↭zs)
+  foldr-commMonoid (trans xs↭ys ys↭zs) = CM.trans (foldr-commMonoid xs↭ys) (foldr-commMonoid ys↭zs)
 
 
 ------------------------------------------------------------------------
@@ -490,10 +490,4 @@ split v as bs xs↭as++[v]++bs
 {-# WARNING_ON_USAGE split
 "Warning: split was deprecated in v2.1.
 Please use the sharper lemma ↭-split instead."
-#-}
-
-foldr-commMonoid = foldr-pres-↭
-{-# WARNING_ON_USAGE foldr-commMonoid
-"Warning: foldr-commMonoid was deprecated in v2.1.
-Please use foldr-pres-↭ instead."
 #-}

@@ -53,10 +53,7 @@ Deprecated names
   ```agda
   split  ↦  ↭-split
   ```
-  with a more informative type, and a simple renaming
-  ```agda
-  foldr-commMonoid  ↦  foldr-pres-↭
-  ```
+  with a more informative type.
 
 * In `Data.Nat.Divisibility.Core`:
   ```agda
@@ -304,8 +301,6 @@ Additions to existing modules
   ↭-split : xs ↭ (as ++ [ v ] ++ bs) →
             ∃₂ λ ps qs → xs ≋ (ps ++ [ v ] ++ qs) × (ps ++ qs) ↭ (as ++ bs)
   drop-∷  : x ∷ xs ↭ x ∷ ys → xs ↭ ys
-
-  foldr-pres-↭ : (IsCommutativeMonoid _≈_ _∙_ ε) → (foldr _∙_ ε) Preserves _↭_ ⟶ _≈_
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

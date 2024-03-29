@@ -374,7 +374,7 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
 -- product
 
 product-↭ : product Preserves _↭_ ⟶ _≡_
-product-↭ p = foldr-pres-↭ ℕ-*-1.isCommutativeMonoid (↭⇒↭ₛ p)
+product-↭ p = foldr-commMonoid ℕ-*-1.isCommutativeMonoid (↭⇒↭ₛ p)
   where
   module ℕ-*-1 = CommutativeMonoid ℕ.*-1-commutativeMonoid
   open Permutation ℕ-*-1.setoid
