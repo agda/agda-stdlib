@@ -42,10 +42,10 @@ open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; _≗_)
-open import Relation.Nullary using (¬_; does; yes; no; _because_)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬?; decidable-stable)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Decidable
+  using (Dec; does; yes; no; _because_; ¬?; decidable-stable)
 open import Relation.Unary
   using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
