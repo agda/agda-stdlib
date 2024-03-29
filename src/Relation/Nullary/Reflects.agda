@@ -15,8 +15,8 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
 open import Function.Base using (_$_; _∘_; const; id; flip)
-open import Relation.Nullary.Negation.Core
-open import Relation.Nullary.Recomputable
+open import Relation.Nullary.Negation.Core using (¬_; weak-contradiction; _¬-⊎_)
+open import Relation.Nullary.Recomputable using (Recomputable)
 
 private
   variable
