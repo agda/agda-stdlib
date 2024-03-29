@@ -243,7 +243,6 @@ Additions to existing modules
 
 * In `Data.Empty`:
   ```agda
-  ⊥-recompute : Recomputable ⊥
   ⊥-elim-irr  : .⊥ → Whatever
   ```
 
@@ -393,7 +392,7 @@ Additions to existing modules
 * Added new definitions in `Relation.Binary.Definitions`
   ```
   Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
-  Empty  _∼_ = ∀ {x y} → x ∼ y → ⊥
+  Empty  _∼_ = ∀ {x y} → ¬ (x ∼ y)
   ```
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
@@ -411,8 +410,6 @@ Additions to existing modules
 * Added new definitions in `Relation.Nullary.Negation.Core`:
   ```agda
   weak-contradiction : .A → ¬ A → Whatever
-  contradictionᵒ     : ¬ A → A → Whatever
-  ¬-recompute        : Recomputable (¬ A)
   ```
 
 * Added new proof in `Relation.Nullary.Decidable`:
