@@ -14,7 +14,7 @@ module Algebra.Solver.CommutativeMonoid {m₁ m₂} (M : CommutativeMonoid m₁ 
 
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe
-  using (Maybe; decToMaybe; From-just; from-just)
+  using (Maybe; From-just; from-just)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Product.Base using (_×_; uncurry)
@@ -28,7 +28,7 @@ import Relation.Nullary.Decidable as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Nullary.Decidable using (Dec)
+open import Relation.Nullary.Decidable using (Dec; decToMaybe)
 
 open CommutativeMonoid M
 open ≈-Reasoning setoid

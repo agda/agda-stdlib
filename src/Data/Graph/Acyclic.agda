@@ -20,13 +20,13 @@ open import Data.Fin as Fin
   using (Fin; Fin′; zero; suc; #_; toℕ; _≟_; opposite) renaming (_ℕ-ℕ_ to _-_)
 import Data.Fin.Properties as Fin
 open import Data.Product.Base as Prod using (∃; _×_; _,_)
-open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
-open import Data.Empty
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
+open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Function.Base using (_$_; _∘′_; _∘_; id)
-open import Relation.Nullary
+open import Relation.Nullary.Decidable.Core using (decToMaybe)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------

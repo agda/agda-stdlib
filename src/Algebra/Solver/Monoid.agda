@@ -15,7 +15,7 @@ import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Binary.Equality.DecPropositional as ListEq
 open import Data.Maybe.Base as Maybe
-  using (Maybe; decToMaybe; From-just; from-just)
+  using (Maybe; From-just; from-just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_×_; uncurry)
 open import Data.Vec.Base using (Vec; lookup)
@@ -24,8 +24,7 @@ open import Relation.Binary.Definitions using (Decidable)
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 import Relation.Binary.Reflection
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+import Relation.Nullary.Decidable.Core as Dec
 
 open Monoid M
 open import Relation.Binary.Reasoning.Setoid setoid
@@ -123,7 +122,7 @@ nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
 
 prove′ : ∀ {n} (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
 prove′ e₁ e₂ =
-  Maybe.map lemma $ decToMaybe (normalise e₁ ≟ normalise e₂)
+  Maybe.map lemma $ Dec.decToMaybe (normalise e₁ ≟ normalise e₂)
   where
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
   lemma eq ρ =

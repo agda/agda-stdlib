@@ -10,14 +10,12 @@
 
 module Data.Maybe.Base where
 
-open import Level
+open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Base using (⊤)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Product.Base as Prod using (_×_; _,_)
-open import Function.Base
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Decidable.Core
+open import Function.Base using (_∘_; id; const)
 
 private
   variable
@@ -45,10 +43,6 @@ is-just nothing  = false
 
 is-nothing : Maybe A → Bool
 is-nothing = not ∘ is-just
-
-decToMaybe : Dec A → Maybe A
-decToMaybe ( true because [a]) = just (invert [a])
-decToMaybe (false because  _ ) = nothing
 
 -- A dependent eliminator.
 
@@ -137,3 +131,22 @@ thisM a = maybe′ (these a) (this a)
 
 thatM : Maybe A → B → These A B
 thatM = maybe′ these that
+
+------------------------------------------------------------------------
+-- Deprecated
+
+-- Version 2.1
+-- decToMaybe
+
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary.Decidable.Core
+  using (_because_; Dec)
+
+decToMaybe : Dec A → Maybe A
+decToMaybe ( true because [a]) = just (invert [a])
+decToMaybe (false because  _ ) = nothing
+
+{-# WARNING_ON_USAGE decToMaybe
+"Warning: decToMaybe was deprecated in v2.1.
+Please use Relation.Nullary.Decidable's decToMaybe instead."
+#-}

@@ -21,7 +21,7 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
-open import Data.Maybe.Base as Maybe
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
@@ -30,11 +30,11 @@ open import Data.List.Properties
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
   hiding (lookup)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
-open import Function
+open import Function.Base
 
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
-open import Relation.Nullary
+open import Relation.Nullary.Decidable.Core using (decToMaybe)
 
 open ≡.≡-Reasoning
 
@@ -150,5 +150,5 @@ solveT t u =
 
 -- Prover for ASTs
 
-prove : ∀ {n} (d e : TList n) → From-just (solveT d e)
-prove d e = from-just (solveT d e)
+prove : ∀ {n} (d e : TList n) → Maybe.From-just (solveT d e)
+prove d e = Maybe.from-just (solveT d e)

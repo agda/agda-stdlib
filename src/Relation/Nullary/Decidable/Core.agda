@@ -11,6 +11,9 @@
 
 module Relation.Nullary.Decidable.Core where
 
+-- this can go through `Data.Maybe.Base` once the deprecation of `decToMaybe`
+-- is fully done.
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
@@ -97,6 +100,13 @@ proof (a? ⊎-dec b?) = proof a? ⊎-reflects proof b?
 _→-dec_ : Dec A → Dec B → Dec (A → B)
 does  (a? →-dec b?) = not (does a?) ∨ does b?
 proof (a? →-dec b?) = proof a? →-reflects proof b?
+
+------------------------------------------------------------------------
+-- Relationship with Maybe
+
+decToMaybe : Dec A → Maybe A
+decToMaybe ( true because [a]) = just (invert [a])
+decToMaybe (false because  _ ) = nothing
 
 ------------------------------------------------------------------------
 -- Relationship with booleans
