@@ -61,9 +61,7 @@ map R⇒S (swap e₁ e₂ xs∼ys)   = swap (R⇒S e₁) (R⇒S e₂) (map R⇒S
 map R⇒S (trans xs∼ys ys∼zs)  = trans (map R⇒S xs∼ys) (map R⇒S ys∼zs)
 
 ------------------------------------------------------------------------
--- Steps moves here towards eventual deprecation, because it is
--- * representation-dependent
--- * now obsolete wrt `Setoid.Properties.{dropMiddleElement,split}`
+-- Steps moves here because it is representation-dependent
 
 steps : ∀ {R : Rel A r} {xs ys} → Permutation R xs ys → ℕ
 steps (refl _)            = 1
