@@ -301,8 +301,8 @@ Additions to existing modules
 
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
-  ↭-split : xs ↭ (as ++[ v ]++ bs) →
-            ∃₂ λ ps qs → xs ≋ (ps ++[ v ]++ qs) × (ps ++ qs) ↭ (as ++ bs)
+  ↭-split : xs ↭ (as ++ [ v ] ++ bs) →
+            ∃₂ λ ps qs → xs ≋ (ps ++ [ v ] ++ qs) × (ps ++ qs) ↭ (as ++ bs)
   drop-∷  : x ∷ xs ↭ x ∷ ys → xs ↭ ys
 
   foldr-pres-↭ : (IsCommutativeMonoid _≈_ _∙_ ε) → (foldr _∙_ ε) Preserves _↭_ ⟶ _≈_
