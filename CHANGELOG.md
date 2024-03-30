@@ -402,6 +402,7 @@ Additions to existing modules
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+  ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
   ```
