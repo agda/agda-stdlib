@@ -394,7 +394,9 @@ Additions to existing modules
   ```agda
   Any-resp-[σ∘σ⁻¹] : (σ : xs ↭ ys) (iy : Any P ys) →
                      Any-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
-  product-↭ : product Preserves _↭_ ⟶ _≡_
+  ∈-resp-[σ∘σ⁻¹]   : (σ : xs ↭ ys) (iy : y ∈ ys) →
+                     ∈-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+  product-↭        : product Preserves _↭_ ⟶ _≡_
   ```
 
 * Added new functions in `Data.String.Base`:
