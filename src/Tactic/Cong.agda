@@ -31,12 +31,13 @@ open import Function.Base using (_$_)
 open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
 open import Data.Char.Base   as Char  using (toℕ)
 open import Data.Float.Base  as Float using (_≡ᵇ_)
-open import Data.List.Base   as List  using ([]; _∷_)
+open import Data.List.Base   as List  using (List; []; _∷_; _++_)
 open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base    as ℕ     using (ℕ; zero; suc; _≡ᵇ_; _+_)
-open import Data.Unit.Base            using (⊤)
+open import Data.Unit.Base            using (⊤; tt)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
+open import Effect.Applicative        using (RawApplicative; mkRawApplicative)
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
@@ -54,6 +55,7 @@ open import Reflection.AST.Literal              as Literal
 open import Reflection.AST.Meta                 as Meta
 open import Reflection.AST.Name                 as Name
 open import Reflection.AST.Term                 as Term
+import Reflection.AST.Traversal                 as Traversal
 
 open import Reflection.TCM.Syntax
 
@@ -113,8 +115,6 @@ private
   destructEqualityGoal : Term → TC EqualityGoal
   destructEqualityGoal goal@(def (quote _≡_) (lvl ∷ tp ∷ lhs ∷ rhs ∷ [])) =
     pure $ equals (unArg lvl) (unArg tp) (unArg lhs) (unArg rhs)
-  destructEqualityGoal (meta m args) =
-    blockOnMeta m
   destructEqualityGoal goal =
     notEqualityError goal
 
@@ -131,6 +131,21 @@ private
     `x ← quoteTC x
     `y ← quoteTC y
     pure $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
+
+  module _ where
+    private
+      applicative : ∀ {ℓ} → RawApplicative {ℓ} λ _ → List Meta
+      applicative = mkRawApplicative (λ _ → List Meta) (λ _ → []) _++_
+
+      open Traversal applicative
+
+      actions : Actions
+      actions = record defaultActions { onMeta = λ _ x → x ∷ [] }
+
+    disallowMetas : Term → TC ⊤
+    disallowMetas t with traverseTerm actions (0 , []) t
+    ... | []         = pure tt
+    ... | xs@(_ ∷ _) = blockTC (blockerAll (List.map blockerMeta xs))
 
 ------------------------------------------------------------------------
 -- Anti-Unification
@@ -235,6 +250,7 @@ macro
     -- so normalising buys us nothing.
     withNormalisation false $ do
       goal ← inferType hole
+      disallowMetas goal
       eqGoal ← destructEqualityGoal goal
       let uni = λ lhs rhs → do
         let cong-lam = antiUnify 0 lhs rhs
