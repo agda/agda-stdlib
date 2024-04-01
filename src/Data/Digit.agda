@@ -103,7 +103,7 @@ toDigits base@(suc (suc k)) n = <′-rec Pred helper n
       x * 2+ k              ∎) ⟩
     k + x * 2+ k          ∎
     where open ≡-Reasoning
-  
+
   lem : ∀ x k r → 2 + x ≤′ r + (1 + x) * (2 + k)
   lem x k r = ≤⇒≤′ $ begin
     2 + x                             ≤⟨ m≤m+n _ _ ⟩

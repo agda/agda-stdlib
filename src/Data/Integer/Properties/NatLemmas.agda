@@ -44,7 +44,7 @@ private
     a + (c + b + d)   ≡⟨ cong (a +_) (+-assoc c b d) ⟩
     a + (c + (b + d)) ≡⟨ +-assoc a c _ ⟨
     a + c + (b + d)   ∎
-  
+
 assoc₁ : ∀ m n o → (2 + n + o) * (1 + m) ≡ (1 + n) * (1 + m) + (1 + o) * (1 + m)
 assoc₁ m n o = begin
   (2 + n + o) * (1 + m)                  ≡⟨ cong (_* (1 + m)) (assoc-comm 1 1 n o) ⟩

@@ -51,7 +51,7 @@ private
     x * y + x * y ≡⟨ times2 (x * y) ⟩
     2 * (x * y)   ≡⟨ *-assoc 2 x y ⟨
     2 * x * y     ∎
-    
+
 lem₂ : ∀ d x {k n} →
        d + x * k ≡ x * n → d + x * (n + k) ≡ 2 * x * n
 lem₂ d x {k} {n} eq = begin
@@ -79,7 +79,7 @@ private
     a + (c + b + d)   ≡⟨ cong (a +_) (+-assoc c b d) ⟩
     a + (c + (b + d)) ≡⟨ +-assoc a c _ ⟨
     (a + c) + (b + d) ∎
-    
+
   *-on-right : ∀ a b c {d} → b * c ≡ d → a * b * c ≡ a * d
   *-on-right a b c {d} eq = begin
     a * b * c   ≡⟨ *-assoc a b c ⟩
@@ -103,12 +103,12 @@ private
     a + (b + c) ≡⟨ +-assoc a b c ⟨
     a + b + c   ≡⟨ cong (_+ c) eq ⟩
     d + c       ∎
-    
+
   +-focus-mid : ∀ a b c d → a + b + c + d ≡ a + (b + c) + d
   +-focus-mid a b c d = begin
     a + b + c + d     ≡⟨ cong (_+ d) (+-assoc a b c) ⟩
     a + (b + c) + d   ∎
-  
+
   +-assoc-comm′ : ∀ a b c d → a + b + c + d ≡ a + (b + d) + c
   +-assoc-comm′ a b c d = begin
     a + b + c + d     ≡⟨ +-on-left a (b + c) d (a + b + c) (sym $ +-assoc a b c) ⟨
@@ -116,7 +116,7 @@ private
     a + (b + (d + c)) ≡⟨ cong (a +_) (+-assoc b d c) ⟨
     a + (b + d + c)   ≡⟨ +-assoc a _ c ⟨
     a + (b + d) + c   ∎
-  
+
   lem₃₂ : ∀ a b c n → a * n + (b * n + a * n + c * n) ≡ (a + a + (b + c)) * n
   lem₃₂ a b c n = begin
     a * n + (b * n + a * n + c * n) ≡⟨ cong (a * n +_) (distrib₃ b a c n) ⟨
@@ -136,7 +136,7 @@ private
     a + (b + b) + c ≡⟨ cong (_+ c) (+-on-left a b b _ (+-comm a b)) ⟩
     b + a + b + c   ≡⟨ +-on-left b (a + b) c (b + a + b) (sym $ +-assoc b a b) ⟨
     b + (a + b + c) ∎
-  
+
 lem₃ : ∀ d x {i k n} →
        d + (1 + x + i) * k ≡ x * n →
        d + (1 + x + i) * (n + k) ≡ (1 + 2 * x + i) * n
@@ -146,7 +146,7 @@ lem₃ d x {i} {k} {n} eq = begin
   x * n + y * n                       ≡⟨ cong (x * n +_) (distrib₃ 1 x i n) ⟩
   x * n + (1 * n + x * n + i * n)     ≡⟨ lem₃₂ x 1 i n  ⟩
   (x + x + (1 + i)) * n               ≡⟨ cong (_* n) (cong (_+ (1 + i)) (times2 x)) ⟩
-  (2 * x + (1 + i)) * n               ≡⟨ cong (_* n) (lem₃₁ (2 * x) 1 i) ⟩ 
+  (2 * x + (1 + i)) * n               ≡⟨ cong (_* n) (lem₃₁ (2 * x) 1 i) ⟩
   (1 + 2 * x + i) * n                 ∎
   where y = 1 + x + i
 
