@@ -20,7 +20,6 @@ import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
-open import Data.Nat.Solver renaming (module +-*-Solver to ℕ-solver)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
@@ -1124,11 +1123,13 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-inverseˡ p@(mkℚᵘ +[1+ n ] d) = *≡* $ cong +[1+_] $ begin
   (n ℕ.+ d ℕ.* suc n) ℕ.* 1 ≡⟨ ℕ.*-identityʳ _ ⟩
   (n ℕ.+ d ℕ.* suc n)       ≡⟨ cong (n ℕ.+_) (ℕ.*-suc d n) ⟩
-  (n ℕ.+ (d ℕ.+ d ℕ.* n))   ≡⟨ solve 2 (λ n d → n :+ (d :+ d :* n) := d :+ (n :+ n :* d)) refl n d ⟩
+  (n ℕ.+ (d ℕ.+ d ℕ.* n))   ≡⟨ trans (sym $ ℕ.+-assoc n d _) (trans
+                                      (cong₂ ℕ._+_ (ℕ.+-comm n d) (ℕ.*-comm d n))
+                                      (ℕ.+-assoc d n _)) ⟩
   (d ℕ.+ (n ℕ.+ n ℕ.* d))   ≡⟨ cong (d ℕ.+_) (sym (ℕ.*-suc n d)) ⟩
   d ℕ.+ n ℕ.* suc d         ≡⟨ ℕ.+-identityʳ _ ⟨
   d ℕ.+ n ℕ.* suc d ℕ.+ 0   ∎
-  where open ≡-Reasoning; open ℕ-solver
+  where open ≡-Reasoning
 
 *-inverseʳ : ∀ p .{{_ : NonZero p}} → p * 1/ p ≃ 1ℚᵘ
 *-inverseʳ p = ≃-trans (*-comm p (1/ p)) (*-inverseˡ p)
