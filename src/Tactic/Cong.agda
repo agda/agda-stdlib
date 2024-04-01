@@ -38,8 +38,10 @@ open import Data.Unit.Base            using (⊤; tt)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
 open import Effect.Applicative        using (RawApplicative; mkRawApplicative)
+open import Function                  using (flip; case_of_)
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Nullary.Decidable.Core            using (yes; no)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the
 -- builtin for maximum speed.
@@ -104,6 +106,16 @@ private
   notEqualityError : ∀ {A : Set} Term → TC A
   notEqualityError goal = typeError (strErr "Cannot rewrite a goal that is not equality: " ∷ termErr goal ∷ [])
 
+  unificationError : ∀ {A : Set} → TC Term → TC Term → TC A
+  unificationError term symTerm = do
+    term' ← term
+    symTerm' ← symTerm
+    -- Don't show the same term twice.
+    let symErr = case term' Term.≟ symTerm' of λ where
+      (yes _) → []
+      (no _) → strErr "\n" ∷ termErr symTerm' ∷ []
+    typeError (strErr "cong! failed, tried:\n" ∷ termErr term' ∷ symErr)
+
   record EqualityGoal : Set where
     constructor equals
     field
@@ -115,6 +127,8 @@ private
   destructEqualityGoal : Term → TC EqualityGoal
   destructEqualityGoal goal@(def (quote _≡_) (lvl ∷ tp ∷ lhs ∷ rhs ∷ [])) =
     pure $ equals (unArg lvl) (unArg tp) (unArg lhs) (unArg rhs)
+  destructEqualityGoal (meta m args) =
+    blockOnMeta m
   destructEqualityGoal goal =
     notEqualityError goal
 
@@ -142,8 +156,8 @@ private
       actions : Actions
       actions = record defaultActions { onMeta = λ _ x → x ∷ [] }
 
-    disallowMetas : Term → TC ⊤
-    disallowMetas t with traverseTerm actions (0 , []) t
+    blockOnMetas : Term → TC ⊤
+    blockOnMetas t with traverseTerm actions (0 , []) t
     ... | []         = pure tt
     ... | xs@(_ ∷ _) = blockTC (blockerAll (List.map blockerMeta xs))
 
@@ -250,14 +264,18 @@ macro
     -- so normalising buys us nothing.
     withNormalisation false $ do
       goal ← inferType hole
-      disallowMetas goal
       eqGoal ← destructEqualityGoal goal
-      let uni = λ lhs rhs → do
-        let cong-lam = antiUnify 0 lhs rhs
-        cong-tm ← `cong eqGoal cong-lam x≡y
-        unify cong-tm hole
+      let makeTerm = λ lhs rhs → `cong eqGoal (antiUnify 0 lhs rhs) x≡y
       let lhs = EqualityGoal.lhs eqGoal
       let rhs = EqualityGoal.rhs eqGoal
-      -- When using ⌞_⌟ with ≡⟨ ... ⟨, (uni lhs rhs) fails and
-      -- (uni rhs lhs) succeeds.
-      catchTC (uni lhs rhs) (uni rhs lhs)
+      let term = makeTerm lhs rhs
+      let symTerm = makeTerm rhs lhs
+      let uni = _>>= flip unify hole
+      catchTC
+        -- When using ⌞_⌟ with ≡⟨ ... ⟨, (uni term) fails and
+        -- (uni symTerm) succeeds.
+        (catchTC (uni term) (uni symTerm)) $ do
+          -- If we failed because of unresolved metas, restart.
+          blockOnMetas goal
+          -- If we failed for a different reason, show an error.
+          unificationError term symTerm
