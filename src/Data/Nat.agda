@@ -40,8 +40,6 @@ open import Data.Nat.Properties public
 ------------------------------------------------------------------------
 -- Deprecated
 
--- Version 0.17
-
 -- Version 2.0
 
 -- solely for the re-export of this name, formerly in `Data.Nat.Properties.Core`

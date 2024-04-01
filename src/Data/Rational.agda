@@ -18,11 +18,6 @@ open import Data.Rational.Properties public
 ------------------------------------------------------------------------
 -- Deprecated
 
--- Version 1.0
-
-open import Data.Rational.Properties public
-  using (drop-*≤*; ≃⇒≡; ≡⇒≃)
-
 -- Version 1.5
 
 import Data.Integer.Show as ℤ
