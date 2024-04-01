@@ -34,7 +34,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; trans
 private
   variable
     n : ℕ
-    
+
 ------------------------------------------------------------------------
 -- Core definition
 
@@ -107,18 +107,18 @@ factorise n₀@(2+ _) = build [ <-recBuilder ⊗ <-recBuilder ] P facRec (n₀ ,
         pred (m * m) <⟨ s<s⁻¹ (m∸n≢0⇒n<m λ eq′ → 0≢1+n (trans (sym eq′) eq)) ⟩
         n            ∎
         where open ≤-Reasoning
-        
+
       q = quotient m∣n
-      
+
       instance _  = n>1⇒nonTrivial (quotient>1 m∣n m<n)
-      
+
       factorisation[q] : PrimeFactorisation q
       factorisation[q] = recQuotient (quotient-< m∣n) (suc q ∸ m * m) (rough∧∣⇒rough rough (quotient-∣ m∣n)) refl
-      
+
       ps = factors factorisation[q]
-      
+
       primes = factorsPrime factorisation[q]
-      
+
       m*Πps≡n : m * product ps ≡ n
       m*Πps≡n = begin
         m * product ps ≡⟨ cong (m *_) (isFactorisation factorisation[q]) ⟨

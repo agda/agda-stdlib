@@ -18,6 +18,8 @@
 --   ≡⟨ cong! (+-identityʳ n) ⟨
 --     suc (suc n) + (n + 0)
 --   ∎
+--
+-- Please see README.Tactic.Cong for more details.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -54,6 +56,20 @@ open import Reflection.AST.Name                 as Name
 open import Reflection.AST.Term                 as Term
 
 open import Reflection.TCM.Syntax
+
+-- Marker to keep anti-unification from descending into the wrapped
+-- subterm.
+--
+-- For instance, anti-unification of ⌞ a + b ⌟ + c and b + a + c
+-- yields λ ϕ → ϕ + c, as opposed to λ ϕ → ϕ + ϕ + c without ⌞_⌟.
+--
+-- The marker is only visible to the cong! tactic, which inhibits
+-- normalisation. Anywhere else, ⌞ a + b ⌟ reduces to a + b.
+--
+-- Thus, proving ⌞ a + b ⌟ + c ≡ b + a + c via cong! (+-comm a b)
+-- also proves a + b + c ≡ b + a + c.
+⌞_⌟ : ∀ {a} {A : Set a} → A → A
+⌞_⌟ x = x
 
 ------------------------------------------------------------------------
 -- Utilities
@@ -136,6 +152,8 @@ private
   antiUnifyClauses : ℕ → Clauses → Clauses → Maybe Clauses
   antiUnifyClause  : ℕ → Clause → Clause → Maybe Clause
 
+  pattern apply-⌞⌟ t = (def (quote ⌞_⌟) (_ ∷ _ ∷ arg _ t ∷ []))
+
   antiUnify ϕ (var x args) (var y args') with x ℕ.≡ᵇ y | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ uargs
@@ -144,6 +162,7 @@ private
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ []
   ... | true  | just uargs = con c uargs
+  antiUnify ϕ (def f args) (apply-⌞⌟ t) = antiUnify ϕ (def f args) t
   antiUnify ϕ (def f args) (def f' args') with f Name.≡ᵇ f' | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ []
@@ -217,6 +236,12 @@ macro
     withNormalisation false $ do
       goal ← inferType hole
       eqGoal ← destructEqualityGoal goal
-      let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
-      cong-tm ← `cong eqGoal cong-lam x≡y
-      unify cong-tm hole
+      let uni = λ lhs rhs → do
+        let cong-lam = antiUnify 0 lhs rhs
+        cong-tm ← `cong eqGoal cong-lam x≡y
+        unify cong-tm hole
+      let lhs = EqualityGoal.lhs eqGoal
+      let rhs = EqualityGoal.rhs eqGoal
+      -- When using ⌞_⌟ with ≡⟨ ... ⟨, (uni lhs rhs) fails and
+      -- (uni rhs lhs) succeeds.
+      catchTC (uni lhs rhs) (uni rhs lhs)
