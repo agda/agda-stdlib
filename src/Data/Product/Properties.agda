@@ -14,8 +14,8 @@ open import Function.Base using (_∋_; _∘_; id)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≗_; subst; cong; cong₂; cong′; refl)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; _≗_; subst; cong; cong₂; cong′)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no)
 
 private
