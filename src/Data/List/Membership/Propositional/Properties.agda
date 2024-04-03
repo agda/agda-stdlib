@@ -37,7 +37,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
 import Relation.Nullary.Reflects as Reflects

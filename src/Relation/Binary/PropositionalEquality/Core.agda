@@ -33,6 +33,15 @@ _≢_ : {A : Set a} → Rel A a
 x ≢ y = ¬ x ≡ y
 
 ------------------------------------------------------------------------
+-- Pointwise equality
+
+infix 4 _≗_
+
+_≗_ : (f g : A → B) → Set _
+_≗_ {A = A} {B = B} f g = ∀ x → f x ≡ g x
+
+
+------------------------------------------------------------------------
 -- A variant of `refl` where the argument is explicit
 
 pattern erefl x = refl {x = x}
