@@ -11,6 +11,7 @@
 
 module Relation.Nullary.Decidable.Core where
 
+-- decToMaybe was deprecated in v2.1
 -- this can go through `Data.Maybe.Base` once the deprecation of `decToMaybe`
 -- is fully done.
 open import Agda.Builtin.Maybe using (Maybe; just; nothing)
