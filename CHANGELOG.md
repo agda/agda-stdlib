@@ -36,6 +36,13 @@ Deprecated modules
 * `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` deprecated in favour of
   `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
 
+Un-deprecated modules
+---------------------
+
+* The modules `Function.Endomorphism.Propositional` and
+  `Function.Endomorphism.Setoid` previously used the old `Function`
+  hierarchy but have now been ported to using the new one.
+  
 Deprecated names
 ----------------
 
@@ -173,7 +180,14 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
-* In `Algebra.Properties.Group`:
+* In `Algebra.Morphism.Structures`:
+  ```agda
+  IsSemigroupHomomorphism : (A → B) → Set _
+  IsSemigroupMonomorphism : (A → B) → Set _
+  IsSemigroupIsomorphism : (A → B) → Set _
+  ```
+  
+ * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
   quasigroup      : Quasigroup _ _
