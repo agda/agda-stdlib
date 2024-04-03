@@ -97,7 +97,7 @@ private
   { isRelHomomorphism = record { cong = cong (f ^_) }
   ; homo = ^-homo f
   }
-  
+
 ^-isMonoidMorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
 ^-isMonoidMorphism f = record
   { isMagmaHomomorphism = ^-isSemigroupMorphism f

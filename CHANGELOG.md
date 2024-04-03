@@ -42,7 +42,7 @@ Un-deprecated modules
 * The modules `Function.Endomorphism.Propositional` and
   `Function.Endomorphism.Setoid` previously used the old `Function`
   hierarchy but have now been ported to using the new one.
-  
+
 Deprecated names
 ----------------
 
@@ -186,7 +186,7 @@ Additions to existing modules
   IsSemigroupMonomorphism : (A → B) → Set _
   IsSemigroupIsomorphism : (A → B) → Set _
   ```
-  
+
  * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
