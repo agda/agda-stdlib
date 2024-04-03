@@ -1122,11 +1122,11 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-inverseˡ p@(mkℚᵘ -[1+ n ] d) = *-inverseˡ (mkℚᵘ +[1+ n ] d)
 *-inverseˡ p@(mkℚᵘ +[1+ n ] d) = *≡* $ cong +[1+_] $ begin
   (n ℕ.+ d ℕ.* suc n) ℕ.* 1 ≡⟨ ℕ.*-identityʳ _ ⟩
-  (n ℕ.+ d ℕ.* suc n)       ≡⟨ cong (n ℕ.+_) (ℕ.*-suc d n) ⟩
-  (n ℕ.+ (d ℕ.+ d ℕ.* n))   ≡⟨ trans (sym $ ℕ.+-assoc n d _) (trans
+  n ℕ.+ d ℕ.* suc n         ≡⟨ cong (n ℕ.+_) (ℕ.*-suc d n) ⟩
+  n ℕ.+ (d ℕ.+ d ℕ.* n)     ≡⟨ trans (sym $ ℕ.+-assoc n d _) (trans
                                       (cong₂ ℕ._+_ (ℕ.+-comm n d) (ℕ.*-comm d n))
                                       (ℕ.+-assoc d n _)) ⟩
-  (d ℕ.+ (n ℕ.+ n ℕ.* d))   ≡⟨ cong (d ℕ.+_) (sym (ℕ.*-suc n d)) ⟩
+  d ℕ.+ (n ℕ.+ n ℕ.* d)     ≡⟨ cong (d ℕ.+_) (sym (ℕ.*-suc n d)) ⟩
   d ℕ.+ n ℕ.* suc d         ≡⟨ ℕ.+-identityʳ _ ⟨
   d ℕ.+ n ℕ.* suc d ℕ.+ 0   ∎
   where open ≡-Reasoning
