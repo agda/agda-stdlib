@@ -5,21 +5,19 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-
--- Disabled to prevent warnings from deprecated names
-{-# OPTIONS --warn=noUserWarning #-}
-
 module Function.Endomorphism.Propositional {a} (A : Set a) where
 
 open import Algebra
-open import Algebra.Morphism; open Definitions
+open import Algebra.Structures
+open import Algebra.Morphism
+open Definitions
 
-open import Data.Nat.Base using (ℕ; zero; suc; _+_)
+open import Data.Nat.Base using (ℕ; _+_; zero; suc; +-rawMagma; +-0-rawMonoid)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
 open import Data.Product.Base using (_,_)
 
 open import Function.Base using (id; _∘′_; _∋_)
-open import Function.Equality using (_⟨$⟩_)
+open import Function.Bundles using (Func; _⟶ₛ_; _⟨$⟩_)
 open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
 import Relation.Binary.PropositionalEquality.Properties as ≡
@@ -37,7 +35,7 @@ fromSetoidEndo = _⟨$⟩_
 
 toSetoidEndo : Endo → Setoid.Endo
 toSetoidEndo f = record
-  { _⟨$⟩_ = f
+  { to = f
   ; cong  = cong f
   }
 
@@ -84,17 +82,24 @@ f ^ suc n = f ∘′ (f ^ n)
 ∘-id-monoid : Monoid _ _
 ∘-id-monoid = record { isMonoid = ∘-id-isMonoid }
 
+private
+  ∘-rawMagma : RawMagma a a
+  ∘-rawMagma = Semigroup.rawMagma ∘-semigroup
+
+  ∘-id-rawMonoid : RawMonoid a a
+  ∘-id-rawMonoid = Monoid.rawMonoid ∘-id-monoid
+
 ------------------------------------------------------------------------
 -- Homomorphism
 
-^-isSemigroupMorphism : ∀ f → IsSemigroupMorphism +-semigroup ∘-semigroup (f ^_)
+^-isSemigroupMorphism : ∀ f → IsSemigroupHomomorphism +-rawMagma ∘-rawMagma (f ^_)
 ^-isSemigroupMorphism f = record
-  { ⟦⟧-cong = cong (f ^_)
-  ; ∙-homo  = ^-homo f
+  { isRelHomomorphism = record { cong = cong (f ^_) }
+  ; homo = ^-homo f
   }
-
-^-isMonoidMorphism : ∀ f → IsMonoidMorphism +-0-monoid ∘-id-monoid (f ^_)
+  
+^-isMonoidMorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
 ^-isMonoidMorphism f = record
-  { sm-homo = ^-isSemigroupMorphism f
-  ; ε-homo  = refl
+  { isMagmaHomomorphism = ^-isSemigroupMorphism f
+  ; ε-homo = refl
   }

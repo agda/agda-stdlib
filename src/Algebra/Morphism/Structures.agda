@@ -68,6 +68,14 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
       ; surjective     = surjective
       }
 
+  IsSemigroupHomomorphism : (⟦_⟧ : A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemigroupHomomorphism = IsMagmaHomomorphism
+
+  IsSemigroupMonomorphism : (⟦_⟧ : A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemigroupMonomorphism = IsMagmaMonomorphism
+
+  IsSemigroupIsomorphism : (⟦_⟧ : A → B) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemigroupIsomorphism = IsMagmaIsomorphism
 
 ------------------------------------------------------------------------
 -- Morphisms over monoid-like structures
