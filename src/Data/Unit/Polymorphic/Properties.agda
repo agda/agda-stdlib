@@ -23,6 +23,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Decidable; Antisymmetric; Total)
 open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; trans; decSetoid; setoid; isEquivalence)
 
 private
   variable
