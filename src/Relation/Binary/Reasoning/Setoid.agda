@@ -21,7 +21,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Reasoning.Syntax
+open import Relation.Binary.Reasoning.Syntax using (module ≈-syntax)
 
 module Relation.Binary.Reasoning.Setoid {s₁ s₂} (S : Setoid s₁ s₂) where
 
