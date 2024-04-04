@@ -180,13 +180,6 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
-* In `Algebra.Morphism.Structures`:
-  ```agda
-  IsSemigroupHomomorphism : (A → B) → Set _
-  IsSemigroupMonomorphism : (A → B) → Set _
-  IsSemigroupIsomorphism : (A → B) → Set _
-  ```
-
  * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_

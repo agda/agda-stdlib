@@ -15,7 +15,7 @@ open import Agda.Builtin.Equality
 open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
 open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 open import Algebra.Morphism
-  using (module Definitions; IsSemigroupHomomorphism; IsMonoidHomomorphism)
+  using (module Definitions; IsMagmaHomomorphism; IsMonoidHomomorphism)
 open Definitions using (Homomorphic₂)
 open import Data.Nat.Base using (ℕ; _+_; +-rawMagma; +-0-rawMonoid)
 open ℕ
@@ -98,7 +98,7 @@ private
 ------------------------------------------------------------------------
 -- Homomorphism
 
-^-isSemigroupHomomorphism : ∀ f → IsSemigroupHomomorphism +-rawMagma ∘-rawMagma (f ^_)
+^-isSemigroupHomomorphism : ∀ f → IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
 ^-isSemigroupHomomorphism f = record
   { isRelHomomorphism = record { cong = ^-cong₂ f }
   ; homo = ^-homo f

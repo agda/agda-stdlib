@@ -7,10 +7,12 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 module Function.Endomorphism.Propositional {a} (A : Set a) where
 
-open import Algebra
-open import Algebra.Structures
+open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
+open import Algebra.Core
+open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 open import Algebra.Morphism
-open Definitions
+  using (module Definitions; IsMagmaHomomorphism; IsMonoidHomomorphism)
+open Definitions using (Homomorphic₂)
 
 open import Data.Nat.Base using (ℕ; _+_; zero; suc; +-rawMagma; +-0-rawMonoid)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
@@ -92,7 +94,7 @@ private
 ------------------------------------------------------------------------
 -- Homomorphism
 
-^-isSemigroupMorphism : ∀ f → IsSemigroupHomomorphism +-rawMagma ∘-rawMagma (f ^_)
+^-isSemigroupMorphism : ∀ f → IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
 ^-isSemigroupMorphism f = record
   { isRelHomomorphism = record { cong = cong (f ^_) }
   ; homo = ^-homo f
