@@ -21,7 +21,7 @@ module Algebra.Structures
 -- The file is divided into sections depending on the arities of the
 -- components of the algebraic structure.
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)

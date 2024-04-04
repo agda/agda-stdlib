@@ -11,11 +11,10 @@
 module Relation.Binary.Bundles where
 
 open import Function.Base using (flip)
-open import Level
-open import Relation.Nullary.Negation using (¬_)
-open import Relation.Binary.Core
-open import Relation.Binary.Definitions
-open import Relation.Binary.Structures
+open import Level using (Level; suc; _⊔_)
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures -- most of it
 
 ------------------------------------------------------------------------
 -- Setoids
