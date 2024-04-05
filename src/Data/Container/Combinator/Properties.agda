@@ -9,16 +9,15 @@
 module Data.Container.Combinator.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
-open import Data.Container.Core
+open import Data.Container.Core using (Container; ⟦_⟧)
 open import Data.Container.Combinator
-open import Data.Container.Relation.Unary.Any
 open import Data.Empty using (⊥-elim)
 open import Data.Product.Base as P using (∃; _,_; proj₁; proj₂; <_,_>; uncurry; curry)
 open import Data.Sum.Base as S using (inj₁; inj₂; [_,_]′; [_,_])
 open import Function.Base as F using (_∘′_)
-open import Function.Bundles
+open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (_⊔_; lower)
-open import Relation.Binary.PropositionalEquality using (_≡_; _≗_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≗_; refl; cong)
 
 -- I have proved some of the correctness statements under the
 -- assumption of functional extensionality. I could have reformulated

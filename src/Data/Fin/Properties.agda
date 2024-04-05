@@ -41,8 +41,10 @@ open import Relation.Binary.Bundles
   using (Preorder; Setoid; DecSetoid; Poset; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Structures
   using (IsDecEquivalence; IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
+  using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec
   using (Dec; _because_; yes; no; _×-dec_; _⊎-dec_; map′)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
