@@ -271,10 +271,10 @@ macro
       let term = makeTerm lhs rhs
       let symTerm = makeTerm rhs lhs
       let uni = _>>= flip unify hole
-      catchTC
-        -- When using ⌞_⌟ with ≡⟨ ... ⟨, (uni term) fails and
-        -- (uni symTerm) succeeds.
-        (catchTC (uni term) (uni symTerm)) $ do
+      -- When using ⌞_⌟ with ≡⟨ ... ⟨, (uni term) fails and
+      -- (uni symTerm) succeeds.
+      catchTC (uni term) $
+        catchTC (uni symTerm) $ do
           -- If we failed because of unresolved metas, restart.
           blockOnMetas goal
           -- If we failed for a different reason, show an error.
