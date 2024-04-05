@@ -8,7 +8,7 @@
 
 module Function.Indexed.Relation.Binary.Equality where
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Indexed.Heterogeneous using (IndexedSetoid)
 
 -- A variant of setoid which uses the propositional equality setoid
