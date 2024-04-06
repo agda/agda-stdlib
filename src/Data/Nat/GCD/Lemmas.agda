@@ -10,9 +10,12 @@ module Data.Nat.GCD.Lemmas where
 
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Nat.Solver
+open import Data.Nat.Solver using (module +-*-Solver)
 open import Function.Base using (_$_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; sym)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 open +-*-Solver
 open ≡-Reasoning

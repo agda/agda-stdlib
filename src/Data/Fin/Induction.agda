@@ -7,7 +7,10 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
-open import Data.Fin.Base
+module Data.Fin.Induction where
+
+open import Data.Fin.Base using (Fin; zero; suc; _<_; toℕ; inject₁;
+  _≥_; _>_; fromℕ; _≺_)
 open import Data.Fin.Properties
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_; s≤s)
 open import Data.Nat.Properties using (n<1+n; ≤⇒≯)
@@ -34,8 +37,6 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
-
-module Data.Fin.Induction where
 
 private
   variable

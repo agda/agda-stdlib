@@ -8,12 +8,15 @@
 
 module Data.Nat.Binary.Subtraction where
 
-open import Algebra using (Op₂; Magma)
+open import Algebra.Core using (Op₂)
+open import Algebra.Bundles using (Magma)
 open import Algebra.Consequences.Propositional using (comm∧distrˡ⇒distrʳ)
 open import Algebra.Morphism.Consequences using (homomorphic₂-inv)
 open import Data.Bool.Base using (true; false)
-open import Data.Nat as ℕ using (ℕ)
-open import Data.Nat.Binary.Base
+open import Data.Nat.Base as ℕ using (ℕ)
+open import Data.Nat.Binary.Base using (ℕᵇ; 0ᵇ; 2[1+_]; 1+[2_]; double;
+  pred; toℕ; fromℕ; even<odd; odd<even; _≥_; _>_; _≤_; _<_; _+_; zero; suc; 1ᵇ;
+  _*_)
 open import Data.Nat.Binary.Properties
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; ∃)

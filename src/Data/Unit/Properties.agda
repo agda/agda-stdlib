@@ -8,16 +8,19 @@
 
 module Data.Unit.Properties where
 
-open import Data.Sum.Base
-open import Data.Unit.Base
+open import Data.Sum.Base using (inj₁)
+open import Data.Unit.Base using (⊤)
 open import Level using (0ℓ)
-open import Relation.Nullary
+open import Relation.Nullary using (Irrelevant; yes)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Poset; DecTotalOrder)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions using (Decidable; Total; Antisymmetric)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; trans)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; decSetoid; isEquivalence)
 
 ------------------------------------------------------------------------
 -- Irrelevancy

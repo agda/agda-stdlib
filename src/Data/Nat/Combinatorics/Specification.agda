@@ -11,18 +11,19 @@
 module Data.Nat.Combinatorics.Specification where
 
 open import Data.Bool using (T; true; false)
-open import Data.Nat.Base
-open import Data.Nat.DivMod
-open import Data.Nat.Divisibility
+open import Data.Nat.Base using (zero; suc; _≤ᵇ_; _≤_; _!; _∸_; pred;
+  >-nonZero; _*_; NonZero; _+_; s≤s; z≤n; _>_)
+open import Data.Nat.DivMod using (_/_; n/n≡1; /-congʳ; m*n/m!≡n/[m∸1]!;
+  *-/-assoc; n/1≡n; m/n/o≡m/[n*o]; /-congˡ)
+open import Data.Nat.Divisibility using (m≤n⇒m!∣n!; _∣_; ∣-refl;
+  ∣-reflexive; module ∣-Reasoning; ∣m∣n⇒∣m+n; *-monoʳ-∣; m∣n/o⇒o*m∣n)
 open import Data.Nat.Properties
 open import Data.Nat.Combinatorics.Base
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; trans; _≢_)
 open import Relation.Nullary.Decidable using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality
-  using (subst; refl; sym; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; trans; _≢_; subst; refl; sym; cong; cong₂)
 
 import Algebra.Properties.CommutativeSemigroup *-commutativeSemigroup as *-CS
 

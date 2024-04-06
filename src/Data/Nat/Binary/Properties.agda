@@ -15,12 +15,11 @@ open import Algebra.Consequences.Propositional
 open import Data.Bool.Base using (if_then_else_; Bool; true; false)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Binary.Base
-open import Data.Nat as ℕ using (ℕ; z≤n; s≤s; s<s⁻¹)
+open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; s<s⁻¹)
 open import Data.Nat.DivMod using (_%_; _/_; m/n≤m; +-distrib-/-∣ˡ)
 open import Data.Nat.Divisibility using (∣-refl)
-import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕ
-open import Data.Nat.Solver
+open import Data.Nat.Solver using (module +-*-Solver)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
