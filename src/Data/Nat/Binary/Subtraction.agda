@@ -26,7 +26,11 @@ open import Function.Base using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Tri; tri<; tri≈; tri>; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Algebra using (magma)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; sym; trans; subst; _≢_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Nullary using (Dec; yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 

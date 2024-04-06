@@ -8,13 +8,13 @@
 
 module Data.Vec.Relation.Unary.Unique.Propositional.Properties where
 
-open import Data.Vec.Base
+open import Data.Vec.Base using (Vec; map; take; drop; tabulate; lookup)
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Vec.Relation.Unary.AllPairs as AllPairs using (AllPairs)
-open import Data.Vec.Relation.Unary.Unique.Propositional
+open import Data.Vec.Relation.Unary.Unique.Propositional using (Unique)
 import Data.Vec.Relation.Unary.Unique.Setoid.Properties as Setoid
-open import Data.Fin.Base using(Fin)
-open import Data.Nat.Base
+open import Data.Fin.Base using (Fin)
+open import Data.Nat.Base using (_+_)
 open import Data.Nat.Properties using (<⇒≢)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡⇒≡×≡)
@@ -22,10 +22,11 @@ open import Function.Base using (id; _∘_)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality
-  using (refl; _≡_; _≢_; sym; setoid)
+open import Relation.Binary.PropositionalEquality.Core
+  using (refl; _≡_; _≢_; sym)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable

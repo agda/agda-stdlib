@@ -8,15 +8,15 @@
 
 module Data.Sum.Properties where
 
-open import Level
-open import Data.Sum.Base
+open import Level using (Level)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; swap; [_,_]; map;
+  map₁; map₂; assocˡ; assocʳ)
 open import Function.Base using (_∋_; _∘_; id)
 open import Function.Bundles using (mk↔ₛ′; _↔_)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (yes; no)
-open import Relation.Nullary.Decidable using (map′)
-
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≗_; refl; cong)
+open import Relation.Nullary.Decidable.Core using (yes; no; map′)
 
 private
   variable
