@@ -60,8 +60,7 @@ map R⇒S (prep e xs∼ys)       = prep (R⇒S e) (map R⇒S xs∼ys)
 map R⇒S (swap e₁ e₂ xs∼ys)   = swap (R⇒S e₁) (R⇒S e₂) (map R⇒S xs∼ys)
 map R⇒S (trans xs∼ys ys∼zs)  = trans (map R⇒S xs∼ys) (map R⇒S ys∼zs)
 
-------------------------------------------------------------------------
--- Steps moves here because it is representation-dependent
+-- Measures the number of constructors, can be useful for termination proofs
 
 steps : ∀ {R : Rel A r} {xs ys} → Permutation R xs ys → ℕ
 steps (refl _)            = 1

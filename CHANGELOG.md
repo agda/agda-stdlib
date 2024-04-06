@@ -53,7 +53,7 @@ Deprecated names
   ```agda
   split  ↦  ↭-split
   ```
-  with a more informative type.
+  with a more informative type (see below).
 
 * In `Data.Nat.Divisibility.Core`:
   ```agda
