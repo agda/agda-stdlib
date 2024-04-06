@@ -305,6 +305,21 @@ Additions to existing modules
   reverse-downFrom      : reverse (downFrom n) ≡ upTo n
   ```
 
+* In `Data.List.Relation.Binary.Pointwise.Base`:
+  ```agda
+  unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
+  ```
+
+* In `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
+  ```
+
 * In `Data.List.Relation.Unary.All`:
   ```agda
   universal-U : Universal (All U)
@@ -352,21 +367,6 @@ Additions to existing modules
   assoc← :   ((S ; T) ⇒ R) → ((W ; T) ⇒ (U ; V)) → (X ⇒ (Y ; V)) →
              ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds →
                          ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds
-  ```
-
-* In `Data.List.Relation.Binary.Pointwise.Base`:
-  ```agda
-  unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
-  ```
-
-* In `Data.Maybe.Relation.Binary.Pointwise`:
-  ```agda
-  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
-  ```
-
-* In `Data.List.Relation.Binary.Sublist.Setoid`:
-  ```agda
-  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
   ```
 
 * In `Data.Nat.Divisibility`:
