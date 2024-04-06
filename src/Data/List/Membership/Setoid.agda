@@ -32,19 +32,19 @@ x ∈ xs = Any (x ≈_) xs
 _∉_ : A → List A → Set _
 x ∉ xs = ¬ x ∈ xs
 
-∃∈ : ∀ {p} (P : Pred A p) → Pred (List A) _
-∃∈ P xs = ∃ λ x → x ∈ xs × P x
+∃[x∈xs] : ∀ {p} (P : Pred A p) → Pred (List A) _
+∃[x∈xs] P xs = ∃ λ x → x ∈ xs × P x
 
 ∃∈-syntax : ∀ {p} (P : Pred A p) → Pred (List A) _
-∃∈-syntax = ∃∈
+∃∈-syntax = ∃[x∈xs]
 
 syntax ∃∈-syntax (λ x → P) xs = ∃[ x ∈ xs ] P
 
-∀∈ : ∀ {p} (P : Pred A p) → Pred (List A) _
-∀∈ P xs = ∀ {x} → x ∈ xs → P x
+∀[x∈xs] : ∀ {p} (P : Pred A p) → Pred (List A) _
+∀[x∈xs] P xs = ∀ {x} → x ∈ xs → P x
 
 ∀∈-syntax : ∀ {p} (P : Pred A p) → Pred (List A) _
-∀∈-syntax = ∀∈
+∀∈-syntax = ∀[x∈xs]
 
 syntax ∀∈-syntax (λ x → P) xs = ∀[ x ∈ xs ] P
 

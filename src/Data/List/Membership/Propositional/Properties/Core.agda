@@ -60,17 +60,17 @@ module _ {P : Pred A p} where
 
 module _ {P : Pred A p} where
 
-  ∃∈-Any : ∃∈ P xs → Any P xs
+  ∃∈-Any : ∃[x∈xs] P xs → Any P xs
   ∃∈-Any (x , x∈xs , px) = lose {P = P} x∈xs px
 
   ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
   ∃∈-Any∘find p = map∘find p refl
 
-  find∘∃∈-Any : (p : ∃∈ P xs) → find (∃∈-Any p) ≡ p
+  find∘∃∈-Any : (p : ∃[x∈xs] P xs) → find (∃∈-Any p) ≡ p
   find∘∃∈-Any p@(x , x∈xs , px)
     rewrite find∘map x∈xs (flip (resp P) px) | find-∈ x∈xs = refl
 
-  Any↔ : ∃∈ P xs ↔ Any P xs
+  Any↔ : ∃[x∈xs] P xs ↔ Any P xs
   Any↔ = mk↔ₛ′ ∃∈-Any find ∃∈-Any∘find find∘∃∈-Any
 
 ------------------------------------------------------------------------
