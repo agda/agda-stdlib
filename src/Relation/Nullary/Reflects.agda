@@ -15,7 +15,8 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
 open import Function.Base using (_$_; _∘_; const; id)
-open import Relation.Nullary.Negation.Core using (¬_; weak-contradiction; _¬-⊎_)
+open import Relation.Nullary.Negation.Core
+  using (¬_; contradiction-irr; contradiction; _¬-⊎_)
 open import Relation.Nullary.Recomputable using (Recomputable)
 
 private
@@ -58,7 +59,7 @@ invert (ofⁿ ¬a) = ¬a
 
 recompute : ∀ {b} → Reflects A b → Recomputable A
 recompute (ofʸ  a) _ = a
-recompute (ofⁿ ¬a) a = weak-contradiction a ¬a
+recompute (ofⁿ ¬a) a = contradiction-irr a ¬a
 
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
@@ -92,7 +93,7 @@ _→-reflects_ : ∀ {a b} → Reflects A a → Reflects B b →
                 Reflects (A → B) (not a ∨ b)
 ofʸ  a →-reflects ofʸ  b = of (const b)
 ofʸ  a →-reflects ofⁿ ¬b = of (¬b ∘ (_$ a))
-ofⁿ ¬a →-reflects _      = of (λ a → weak-contradiction a ¬a)
+ofⁿ ¬a →-reflects _      = of (λ a → contradiction a ¬a)
 
 ------------------------------------------------------------------------
 -- Other lemmas
@@ -104,8 +105,8 @@ fromEquivalence {b = false} sound complete = of complete
 -- `Reflects` is deterministic.
 det : ∀ {b b′} → Reflects A b → Reflects A b′ → b ≡ b′
 det (ofʸ  a) (ofʸ  _) = refl
-det (ofʸ  a) (ofⁿ ¬a) = weak-contradiction a ¬a
-det (ofⁿ ¬a) (ofʸ  a) = weak-contradiction a ¬a
+det (ofʸ  a) (ofⁿ ¬a) = contradiction a ¬a
+det (ofⁿ ¬a) (ofʸ  a) = contradiction a ¬a
 det (ofⁿ ¬a) (ofⁿ  _) = refl
 
 T-reflects-elim : ∀ {a b} → Reflects (T a) b → b ≡ a

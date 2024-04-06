@@ -21,15 +21,18 @@ private
 
 ------------------------------------------------------------------------
 -- Definition
+--
+-- The idea of being 'recomputable' is that, given an *irrelevant* proof
+-- of a proposition `A` (signalled by being a value of type `.A`, all of
+-- whose inhabitants are identified up to definitional equality, and hence
+-- do *not* admit pattern-matching), one may 'promote' such a value to a
+-- 'genuine' value of `A`, available for subsequent eg. pattern-matching.
 
 Recomputable : (A : Set a) → Set a
 Recomputable A = .A → A
 
 ------------------------------------------------------------------------
 -- Constructions
-
-------------------------------------------------------------------------
--- Recomputable types are Harrop
 
 ⊥-recompute : Recomputable ⊥
 ⊥-recompute ()

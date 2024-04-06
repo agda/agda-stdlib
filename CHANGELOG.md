@@ -407,14 +407,19 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
-* Added new definitions in `Relation.Nullary.Negation.Core`:
-  ```agda
-  weak-contradiction : .A → ¬ A → Whatever
-  ```
-
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
+* Added new definitions in `Relation.Nullary.Negation.Core`:
+  ```agda
+  contradiction-irr : .A → ¬ A → Whatever
+  ```
+
+* Added new definitions in `Relation.Nullary.Reflects`:
+  ```agda
+  recompute : Reflects A b → Recomputable A
   ```
 
 * Added new definitions in `Relation.Unary`
