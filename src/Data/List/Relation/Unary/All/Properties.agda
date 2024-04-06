@@ -11,7 +11,6 @@ module Data.List.Relation.Unary.All.Properties where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
-open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (lookup; updateAt)
 open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
@@ -98,7 +97,7 @@ All¬⇒¬Any (¬p ∷ _)  (here  p) = ¬p p
 All¬⇒¬Any (_  ∷ ¬p) (there p) = All¬⇒¬Any ¬p p
 
 ¬All⇒Any¬ : Decidable P → ∀ xs → ¬ All P xs → Any (¬_ ∘ P) xs
-¬All⇒Any¬ dec []       ¬∀ = ⊥-elim (¬∀ [])
+¬All⇒Any¬ dec []       ¬∀ = contradiction [] ¬∀
 ¬All⇒Any¬ dec (x ∷ xs) ¬∀ with dec x
 ... |  true because  [p] = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ (invert [p])))
 ... | false because [¬p] = here (invert [¬p])
@@ -133,7 +132,7 @@ private
   -- equivalence could be strengthened to a surjection.
   to∘from : Extensionality _ _ → (dec : Decidable P) →
             (¬∀ : ¬ All P xs) → Any¬⇒¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
-  to∘from ext P ¬∀ = ext (⊥-elim ∘ ¬∀)
+  to∘from ext P ¬∀ = ext λ ∀P → contradiction ∀P ¬∀
 
 module _ {_~_ : REL A B ℓ} where
 
@@ -218,7 +217,7 @@ updateAt-minimal : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                    pxs              [ i ]= px →
                    updateAt j f pxs [ i ]= px
 updateAt-minimal (here .refl) (here refl) (px ∷ pxs) i≢j here        =
-  ⊥-elim (i≢j refl refl)
+  contradiction refl (i≢j refl)
 updateAt-minimal (here .refl) (there j)   (px ∷ pxs) i≢j here        = here
 updateAt-minimal (there i)    (here refl) (px ∷ pxs) i≢j (there val) = there val
 updateAt-minimal (there i)    (there j)   (px ∷ pxs) i≢j (there val) =
@@ -311,7 +310,7 @@ updateAt-commutes : ∀ (i : x ∈ xs) (j : y ∈ xs) →
                     i ≢∈ j →
                     updateAt {P = P} i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
 updateAt-commutes (here refl) (here refl) i≢j (px ∷ pxs) =
-  ⊥-elim (i≢j refl refl)
+  contradiction refl (i≢j refl)
 updateAt-commutes (here refl) (there j)   i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (here refl) i≢j (px ∷ pxs) = refl
 updateAt-commutes (there i)   (there j)   i≢j (px ∷ pxs) =
