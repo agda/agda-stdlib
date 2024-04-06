@@ -8,7 +8,6 @@
 
 module Data.List.Relation.Unary.First.Properties where
 
-open import Data.Empty
 open import Data.Fin.Base using (suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -16,9 +15,9 @@ open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.List.Relation.Unary.First
 import Data.Sum as Sum
 open import Function.Base using (_∘′_; _$_; _∘_; id)
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; refl; _≗_)
-open import Relation.Unary
-open import Relation.Nullary.Negation
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; _≗_)
+open import Relation.Unary using (Pred; _⊆_; ∁; Irrelevant; Decidable)
+open import Relation.Nullary.Negation using (contradiction)
 
 ------------------------------------------------------------------------
 -- map
@@ -52,7 +51,7 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
   All⇒¬First : P ⊆ ∁ Q → All P ⊆ ∁ (First P Q)
-  All⇒¬First p⇒¬q (px ∷ pxs) [ qx ]   = ⊥-elim (p⇒¬q px qx)
+  All⇒¬First p⇒¬q (px ∷ pxs) [ qx ]   = contradiction qx (p⇒¬q px)
   All⇒¬First p⇒¬q (_ ∷ pxs)  (_ ∷ hf) = All⇒¬First p⇒¬q pxs hf
 
   First⇒¬All : Q ⊆ ∁ P → First P Q ⊆ ∁ (All P)
@@ -64,16 +63,16 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
   unique-index : ∀ {xs} → P ⊆ ∁ Q → (f₁ f₂ : First P Q xs) → index f₁ ≡ index f₂
   unique-index p⇒¬q [ _ ]    [ _ ]    = refl
-  unique-index p⇒¬q [ qx ]   (px ∷ _) = ⊥-elim (p⇒¬q px qx)
-  unique-index p⇒¬q (px ∷ _) [ qx ]   = ⊥-elim (p⇒¬q px qx)
+  unique-index p⇒¬q [ qx ]   (px ∷ _) = contradiction qx (p⇒¬q px)
+  unique-index p⇒¬q (px ∷ _) [ qx ]   = contradiction qx (p⇒¬q px)
   unique-index p⇒¬q (_ ∷ f₁) (_ ∷ f₂) = ≡.cong suc (unique-index p⇒¬q f₁ f₂)
 
   irrelevant : P ⊆ ∁ Q → Irrelevant P → Irrelevant Q → Irrelevant (First P Q)
-  irrelevant p⇒¬q p-irr q-irr [ qx₁ ]    [ qx₂ ]    = ≡.cong [_] (q-irr qx₁ qx₂)
-  irrelevant p⇒¬q p-irr q-irr [ qx₁ ]    (px₂ ∷ f₂) = ⊥-elim (p⇒¬q px₂ qx₁)
-  irrelevant p⇒¬q p-irr q-irr (px₁ ∷ f₁) [ qx₂ ]    = ⊥-elim (p⇒¬q px₁ qx₂)
-  irrelevant p⇒¬q p-irr q-irr (px₁ ∷ f₁) (px₂ ∷ f₂) =
-    ≡.cong₂ _∷_ (p-irr px₁ px₂) (irrelevant p⇒¬q p-irr q-irr f₁ f₂)
+  irrelevant p⇒¬q p-irr q-irr [ px ]    [ qx ]    = ≡.cong [_] (q-irr px qx)
+  irrelevant p⇒¬q p-irr q-irr [ qx ]    (px ∷ _)  = contradiction qx (p⇒¬q px)
+  irrelevant p⇒¬q p-irr q-irr (px ∷ _)  [ qx ]    = contradiction qx (p⇒¬q px)
+  irrelevant p⇒¬q p-irr q-irr (px ∷ f)  (qx ∷ g) =
+    ≡.cong₂ _∷_ (p-irr px qx) (irrelevant p⇒¬q p-irr q-irr f g)
 
 ------------------------------------------------------------------------
 -- Decidability

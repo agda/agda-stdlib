@@ -10,14 +10,19 @@ module Data.List.Effectful where
 
 open import Data.Bool.Base using (false; true)
 open import Data.List.Base
+  using (List; map; [_]; ap; []; _∷_; _++_; concat; concatMap)
 open import Data.List.Properties
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
+  using (++-identityʳ; ++-assoc; map-cong; concatMap-cong; map-concatMap;
+    concatMap-pure)
+open import Effect.Choice using (RawChoice)
+open import Effect.Empty using (RawEmpty)
+open import Effect.Functor using (RawFunctor)
 open import Effect.Applicative
+  using (RawApplicative; RawApplicativeZero; RawAlternative)
 open import Effect.Monad
-open import Function.Base
-open import Level
+  using (RawMonad; module Join; RawMonadZero; RawMonadPlus)
+open import Function.Base using (flip; _∘_; const; _$_; id; _∘′_; _$′_)
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; _≢_; _≗_; refl)
 open ≡.≡-Reasoning

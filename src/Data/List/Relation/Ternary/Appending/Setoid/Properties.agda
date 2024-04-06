@@ -13,17 +13,17 @@ module Data.List.Relation.Ternary.Appending.Setoid.Properties
   where
 
 open import Data.List.Base as List using (List; [])
-import Data.List.Properties as Listₚ
+import Data.List.Properties as List
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise; [])
 import Data.List.Relation.Ternary.Appending.Properties as Appendingₚ
-open import Data.Product using (∃-syntax; _×_; _,_)
+open import Data.Product.Base using (∃-syntax; _×_; _,_)
 open import Function.Base using (id)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 open import Relation.Binary.Construct.Composition using (_;_)
 
 open Setoid S renaming (Carrier to A)
-open import Relation.Binary.Properties.Setoid S using (≈;≈⇒≈; ≈⇒≈;≈)  
+open import Relation.Binary.Properties.Setoid S using (≈;≈⇒≈; ≈⇒≈;≈)
 open import Data.List.Relation.Ternary.Appending.Setoid S
 
 private
@@ -45,7 +45,7 @@ open Appendingₚ public
 ++[]⁻¹ : Appending as [] cs → Pointwise _≈_ as cs
 ++[]⁻¹ {as} {cs} ls with break ls
 ... | cs₁ , cs₂ , refl , pw , []
-  rewrite Listₚ.++-identityʳ cs₁
+  rewrite List.++-identityʳ cs₁
   = pw
 
 respʳ-≋ : ∀ {cs′} → Appending as bs cs → Pointwise _≈_ cs cs′ →
