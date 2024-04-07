@@ -9,11 +9,12 @@
 module Data.Fin.Substitution.Lemmas where
 
 open import Data.Fin.Substitution
-open import Data.Nat hiding (_⊔_; _/_)
+open import Data.Nat.Base using (ℕ; _+_; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc; lift)
-open import Data.Vec.Base
+open import Data.Vec.Base using (lookup; []; _∷_; map)
 import Data.Vec.Properties as Vec
 open import Function.Base as Fun using (_∘_; _$_; flip)
+open import Level using (Level; _⊔_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; cong; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -21,7 +22,6 @@ open import Relation.Binary.PropositionalEquality.Properties
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (Star; ε; _◅_; _▻_)
 open ≡-Reasoning
-open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred)
 
 private
