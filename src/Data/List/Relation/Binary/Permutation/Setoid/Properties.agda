@@ -331,9 +331,9 @@ shifts xs ys {zs} = begin
 dropMiddleElement : ∀ {v} ws xs {ys zs} →
                     ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs →
                     ws ++ ys ↭ xs ++ zs
-dropMiddleElement {v} ws xs {ys} {zs} p
-  with ps , qs , eq , ↭ ← ↭-split v xs zs p
-  = ↭-trans (dropMiddleElement-≋ ws ps eq) ↭
+dropMiddleElement {v} ws xs {ys} {zs} p =
+  let ps , qs , eq , ↭ = ↭-split v xs zs p
+  in ↭-trans (dropMiddleElement-≋ ws ps eq) ↭
 
 dropMiddle : ∀ {vs} ws xs {ys zs} →
              ws ++ vs ++ ys ↭ xs ++ vs ++ zs →
