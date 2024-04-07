@@ -164,6 +164,7 @@ module EquationalReasoningTests where
     ∎
 
 module MetaTests where
+
   test₁ : ∀ m n o → .⦃ _ : NonZero o ⦄ → (m + n) / o ≡ (n + m) / o
   test₁ m n o =
     let open ≤-Reasoning in

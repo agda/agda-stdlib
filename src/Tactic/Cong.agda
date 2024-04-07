@@ -31,13 +31,12 @@ open import Function.Base using (_$_)
 open import Data.Bool.Base            using (true; false; if_then_else_; _∧_)
 open import Data.Char.Base   as Char  using (toℕ)
 open import Data.Float.Base  as Float using (_≡ᵇ_)
-open import Data.List.Base   as List  using (List; []; _∷_; _++_)
+open import Data.List.Base   as List  using ([]; _∷_)
 open import Data.Maybe.Base  as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base    as ℕ     using (ℕ; zero; suc; _≡ᵇ_; _+_)
-open import Data.Unit.Base            using (⊤; tt)
+open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product.Base         using (_×_; map₁; _,_)
-open import Effect.Applicative        using (RawApplicative; mkRawApplicative)
 open import Function                  using (flip; case_of_)
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
@@ -60,6 +59,7 @@ open import Reflection.AST.Term                 as Term
 import Reflection.AST.Traversal                 as Traversal
 
 open import Reflection.TCM.Syntax
+open import Reflection.TCM.Utilities
 
 -- Marker to keep anti-unification from descending into the wrapped
 -- subterm.
@@ -145,21 +145,6 @@ private
     `x ← quoteTC x
     `y ← quoteTC y
     pure $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
-
-  module _ where
-    private
-      applicative : ∀ {ℓ} → RawApplicative {ℓ} λ _ → List Meta
-      applicative = mkRawApplicative (λ _ → List Meta) (λ _ → []) _++_
-
-      open Traversal applicative
-
-      actions : Actions
-      actions = record defaultActions { onMeta = λ _ x → x ∷ [] }
-
-    blockOnMetas : Term → TC ⊤
-    blockOnMetas t with traverseTerm actions (0 , []) t
-    ... | []         = pure tt
-    ... | xs@(_ ∷ _) = blockTC (blockerAll (List.map blockerMeta xs))
 
 ------------------------------------------------------------------------
 -- Anti-Unification
