@@ -9,8 +9,9 @@
 module Data.Vec.Functional.Properties where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Fin.Base
-open import Data.Nat as ℕ
+open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ<; reduce≥;
+  _↑ˡ_; _↑ʳ_; punchIn; punchOut)
+open import Data.Nat as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.List.Base as List using (List)
@@ -18,11 +19,15 @@ import Data.List.Properties as List
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base as Vec using (Vec)
 import Data.Vec.Properties as Vec
-open import Data.Vec.Functional
-open import Function.Base
+open import Data.Vec.Functional using (Vector; head; tail; updateAt;
+  map; _++_; insertAt; removeAt; toVec; fromVec; toList; fromList)
+open import Function.Base using (_∘_; id)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality; Decidable)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≗_; refl; _≢_; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Nullary.Decidable
   using (Dec; does; yes; no; map′; _×-dec_)
 

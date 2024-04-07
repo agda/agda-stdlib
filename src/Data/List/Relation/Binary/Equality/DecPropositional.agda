@@ -11,7 +11,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 module Data.List.Relation.Binary.Equality.DecPropositional
   {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_) where
@@ -20,6 +20,7 @@ open import Data.List.Base using (List)
 open import Data.List.Properties using (≡-dec)
 import Data.List.Relation.Binary.Equality.Propositional as PropositionalEq
 import Data.List.Relation.Binary.Equality.DecSetoid as DecSetoidEq
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
 ------------------------------------------------------------------------
 -- Publically re-export everything from decSetoid and propositional

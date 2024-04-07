@@ -30,7 +30,7 @@ open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Coprimality as C using (Coprime; coprime?)
-open import Data.Nat.Divisibility
+open import Data.Nat.Divisibility using (_∣_; divides; ∣-antisym; *-pres-∣)
 import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
 open import Data.Product.Base using (proj₁; proj₂; _×_; _,_; uncurry)
@@ -43,20 +43,22 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ
   ; _+_ to _+ᵘ_
   )
 import Data.Rational.Unnormalised.Properties as ℚᵘ
-open import Data.Sum.Base as Sum
-open import Data.Unit using (tt)
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′; _⊎_)
 import Data.Sign as S
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; sym; trans; _≢_; subst; subst₂; resp₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; decSetoid; module ≡-Reasoning; isEquivalence)
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
 open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Binary.Reasoning.Syntax
+open import Relation.Binary.Reasoning.Syntax using (module ≃-syntax)
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_

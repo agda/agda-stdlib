@@ -34,10 +34,13 @@ open import Relation.Binary.Structures
   using (IsPreorder; IsTotalPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder; IsStrictPartialOrder; IsStrictTotalOrder)
 open import Relation.Binary.Definitions
   using (DecidableEquality; Reflexive; Transitive; Antisymmetric; Total; Decidable; Irrelevant; Irreflexive; Asymmetric; LeftTrans; RightTrans; Trichotomous; tri≈; tri<; tri>)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no; ¬_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; sym; _≢_; subst; resp₂; trans)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning; setoid; decSetoid; isEquivalence)
+open import Relation.Nullary.Decidable.Core using (yes; no)
 import Relation.Nullary.Reflects as Reflects
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 import Relation.Nullary.Decidable as Dec
 
 open import Algebra.Definitions {A = ℤ} _≡_

@@ -10,16 +10,18 @@ module Data.Word.Properties where
 
 import Data.Nat.Base as ℕ
 open import Data.Bool.Base using (Bool)
-open import Data.Word.Base
+open import Data.Word.Base using (_≈_; toℕ; Word64; _<_)
 import Data.Nat.Properties as ℕ
-open import Function.Base
-open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
+open import Relation.Nullary.Decidable.Core using (map′; ⌊_⌋)
 open import Relation.Binary
   using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
         ; Decidable; DecidableEquality; IsEquivalence; IsDecEquivalence
         ; Setoid; DecSetoid; StrictTotalOrder)
 import Relation.Binary.Construct.On as On
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; sym; trans; subst)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; decSetoid)
 
 ------------------------------------------------------------------------
 -- Primitive properties

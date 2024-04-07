@@ -6,24 +6,25 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Definitions hiding (Decidable)
-open import Relation.Binary.Structures using (IsPreorder)
-
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
 open import Data.Bool.Base using (Bool; true; false; T)
-open import Data.List.Base
+open import Data.List.Base using (List; map; _∷_; _++_; concat; applyUpTo;
+  any; filter)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
-open import Data.List.Effectful
+open import Data.List.Effectful using (monad)
 open import Data.List.Relation.Unary.Any using (Any)
-open import Data.List.Membership.Propositional
+open import Data.List.Membership.Propositional using (_∈_; mapWith∈)
 open import Data.List.Membership.Propositional.Properties
+  using (map-∈↔; concat-∈↔; >>=-∈↔; ⊛-∈↔; ⊗-∈↔)
 import Data.List.Relation.Binary.Subset.Setoid.Properties as Subset
 open import Data.List.Relation.Binary.Subset.Propositional
+  using (_⊆_; _⊇_)
 open import Data.List.Relation.Binary.Permutation.Propositional
+  using (_↭_; ↭-sym; ↭-isEquivalence)
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 open import Data.Nat using (ℕ; _≤_)
 import Data.Product.Base as Product
@@ -36,8 +37,12 @@ open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
+open import Relation.Binary.Definitions hiding (Decidable)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≗_; subst; resp; refl)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (isEquivalence; setoid; module ≡-Reasoning)
+open import Relation.Binary.Structures using (IsPreorder)
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 
 private
