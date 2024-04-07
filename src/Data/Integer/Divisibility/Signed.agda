@@ -16,7 +16,7 @@ import Data.Nat.Base as ℕ
 import Data.Nat.Divisibility as ℕ
 import Data.Nat.Coprimality as ℕ
 import Data.Nat.Properties as ℕ
-import Data.Sign as Sign
+import Data.Sign.Base as Sign
 import Data.Sign.Properties as Sign
 open import Level
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)

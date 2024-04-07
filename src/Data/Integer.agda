@@ -31,13 +31,13 @@ open import Data.Integer.Properties public
 -- Show
 
 import Data.Nat.Show as ℕ using (show)
-open import Data.Sign as Sign using (Sign)
+open import Data.Sign.Base as Sign using (Sign)
 open import Data.String.Base using (String; _++_)
 
 show : ℤ → String
 show i = showSign (sign i) ++ ℕ.show ∣ i ∣
   where
-  showSign : Sign → String
+  showSign : Sign.Sign → String
   showSign Sign.- = "-"
   showSign Sign.+ = ""
 
