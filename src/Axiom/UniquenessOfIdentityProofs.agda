@@ -69,7 +69,7 @@ module Decidable⇒UIP (_≟_ : Decidable {A = A} _≡_) where
   ≡-normalise {x} {y} x≡y = recompute (x ≟ y) x≡y
 
   ≡-normalise-constant : (p q : x ≡ y) → ≡-normalise p ≡ ≡-normalise q
-  ≡-normalise-constant {x = x} {y = y} = recompute-irr (x ≟ y)
+  ≡-normalise-constant {x = x} {y = y} = recompute-constant (x ≟ y)
 
   ≡-irrelevant : UIP A
   ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant
