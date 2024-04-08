@@ -85,6 +85,9 @@ Recomputable A = .A → A
 recompute : ∀ {b} → Reflects A b → Recomputable A
 recompute {A = A} = reflects′ (Recomputable A) (λ a _ → a) (λ ¬a a → ⊥-elim (¬a a))
 
+recompute-irr : ∀ {b} (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
+recompute-irr {A = A} r p q = refl
+
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
 

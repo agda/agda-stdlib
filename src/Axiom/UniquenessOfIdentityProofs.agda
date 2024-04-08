@@ -10,7 +10,7 @@ module Axiom.UniquenessOfIdentityProofs where
 
 open import Function.Base using (id; const; flip)
 open import Level using (Level)
-open import Relation.Nullary using (contradiction; reflects′; recompute; proof)
+open import Relation.Nullary.Decidable.Core using (recompute; recompute-irr)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core
@@ -68,8 +68,7 @@ module Decidable⇒UIP (_≟_ : Decidable {A = A} _≡_) where
   ≡-normalise {x} {y} x≡y = recompute (x ≟ y) x≡y
 
   ≡-normalise-constant : ∀ {x y} (p q : x ≡ y) → ≡-normalise p ≡ ≡-normalise q
-  ≡-normalise-constant {x} {y} x≡y _
-    = reflects′ _ (λ _ → refl) (contradiction x≡y) (proof (x ≟ y))
+  ≡-normalise-constant {x} {y} = recompute-irr (x ≟ y)
 
   ≡-irrelevant : UIP A
   ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant

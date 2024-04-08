@@ -25,7 +25,7 @@ private
 
 open import Relation.Nullary.Negation.Core public
 open import Relation.Nullary.Reflects public
-  hiding (recompute; fromEquivalence)
+  hiding (recompute; recompute-irr; fromEquivalence)
 open import Relation.Nullary.Decidable.Core public
 
 ------------------------------------------------------------------------

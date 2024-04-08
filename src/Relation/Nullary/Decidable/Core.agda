@@ -18,9 +18,10 @@ open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (id; _∘_; const; _$_; flip)
 open import Relation.Nullary.Reflects as Reflects
-  using (Reflects; of; invert; Recomputable)
+  using (Reflects; of; invert; reflects′; Recomputable)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction; Stable; DoubleNegation; negated-stable)
+open import Agda.Builtin.Equality using (_≡_)
 
 private
   variable
@@ -102,6 +103,9 @@ module _ {A : Set a} where
 -- be recomputed and subsequently used in relevant contexts.
 recompute : Dec A → Recomputable A
 recompute = Reflects.recompute ∘ proof
+
+recompute-irr : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+recompute-irr = Reflects.recompute-irr ∘ proof
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
