@@ -127,7 +127,7 @@ toList-inits⁺ (x ∷ xs) = cong (([] ∷_) ∘ List.map (x ∷_)) (toList-init
 -- scanl
 
 module _ (f : A → B → A) where
-  
+
   private
     h = List.foldl f
 
