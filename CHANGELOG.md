@@ -1,7 +1,7 @@
 Version 2.1-dev
 ===============
 
-The library has been tested using Agda 2.6.4 and 2.6.4.1.
+The library has been tested using Agda 2.6.4, 2.6.4.1, and 2.6.4.3.
 
 Highlights
 ----------
@@ -32,6 +32,9 @@ Other major improvements
 
 Deprecated modules
 ------------------
+
+* `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` deprecated in favour of
+  `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
 
 Deprecated names
 ----------------
@@ -88,7 +91,28 @@ New modules
   ```agda
   Algebra.Module.Construct.Idealization
   ```
-  
+
+* `Data.List.Relation.Binary.Sublist.Propositional.Slice`
+  replacing `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` (*)
+  and adding new functions:
+  - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
+  - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
+
+* `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
+  ```agda
+  _↭_ : IRel (Vector A) _
+  ```
+
+* `Data.Vec.Functional.Relation.Binary.Permutation.Properties` of the above:
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  isIndexedEquivalence : {A : Set a} → IsIndexedEquivalence (Vector A) _↭_
+  indexedSetoid        : {A : Set a} → IndexedSetoid ℕ a _
+  ```
+
 * `Function.Relation.Binary.Equality`
   ```agda
   setoid : Setoid a₁ a₂ → Setoid b₁ b₂ → Setoid _ _
@@ -113,11 +137,27 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Bundles`
+  ```agda
+  record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* In `Algebra.Bundles.Raw`
+  ```agda
+  record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
   ```agda
   rawNearSemiring   : RawNearSemiring _ _
   rawRingWithoutOne : RawRingWithoutOne _ _
   +-rawGroup        : RawGroup _ _
+  ```
+
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
@@ -158,13 +198,20 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Morphism.Structures`
+  ```agda
+  module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
+    record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+
 * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
   quasigroup      : Quasigroup _ _
   isLoop          : IsLoop _∙_ _\\_ _//_ ε
   loop            : Loop _ _
-  
+
   \\-leftDividesˡ  : LeftDividesˡ _∙_ _\\_
   \\-leftDividesʳ  : LeftDividesʳ _∙_ _\\_
   \\-leftDivides   : LeftDivides _∙_ _\\_
@@ -183,12 +230,6 @@ Additions to existing modules
   identityʳ-unique : x ∙ y ≈ x → y ≈ ε
   identity-unique  : Identity x _∙_ → x ≈ ε
   ```
- 
-* In `Algebra.Construct.Terminal`:
-  ```agda
-  rawNearSemiring : RawNearSemiring c ℓ
-  nearSemiring    : NearSemiring c ℓ
-  ```
 
 * In `Algebra.Properties.Monoid.Mult`:
   ```agda
@@ -203,6 +244,10 @@ Additions to existing modules
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
+* In `Algebra.Structures`
+  ```agda
+  record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _
+
 * In `Algebra.Structures.IsGroup`:
   ```agda
   infixl 6 _//_
@@ -212,7 +257,7 @@ Additions to existing modules
   _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
   ```
- 
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
@@ -226,6 +271,13 @@ Additions to existing modules
 * In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
+  ```
+
+* In `Data.Integer.Properties`:
+  ```agda
+  ◃-nonZero : .{{_ : ℕ.NonZero n}} → NonZero (s ◃ n)
+  sign-*    : .{{NonZero (i * j)}} → sign (i * j) ≡ sign i Sign.* sign j
+  i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
 * In `Data.List`:
@@ -246,6 +298,7 @@ Additions to existing modules
   toList-tails⁺ : toList ∘ tails⁺ ≗ List.tails
   scanr⁺-defn   : scanr⁺ f e ≗ map (List.foldr f e) ∘ tails⁺
   toList-scanr⁺ : toList ∘ scanr⁺ f e ≗ List.map (List.foldr f e) ∘ List.tails
+  ```
 
 * In `Data.List.Properties`:
   ```agda
@@ -307,6 +360,11 @@ Additions to existing modules
   pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
+  ```
+
 * In `Data.Nat.Divisibility`:
   ```agda
   quotient≢0       : m ∣ n → .{{NonZero n}} → NonZero quotient
@@ -333,7 +391,7 @@ Additions to existing modules
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
   pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
   ```
-  
+
 * Added new proofs to `Data.Nat.Primality`:
   ```agda
   rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
@@ -386,26 +444,16 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
+* Added new proof in `Relation.Nullary.Decidable`:
+  ```agda
+  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
 * Added new definitions in `Relation.Unary`
   ```
   Stable          : Pred A ℓ → Set _
   WeaklyDecidable : Pred A ℓ → Set _
   ```
 
-* Added new proof in `Relation.Nullary.Decidable`:
-  ```agda
-  ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
-  ```
-
-* Added module `Data.Vec.Functional.Relation.Binary.Permutation`:
-  ```agda
-  _↭_ : IRel (Vector A) _
-  ```
-
-* Added new file `Data.Vec.Functional.Relation.Binary.Permutation.Properties`:
-  ```agda
-  ↭-refl      : Reflexive (Vector A) _↭_
-  ↭-reflexive : xs ≡ ys → xs ↭ ys
-  ↭-sym       : Symmetric (Vector A) _↭_
-  ↭-trans     : Transitive (Vector A) _↭_
-  ```
+* `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
+  anti-unification. See README.Tactic.Cong for details.

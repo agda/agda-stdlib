@@ -17,8 +17,8 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
   variable
-    ℓ : Level
-    A : Set ℓ
+    a : Level
+    A : Set a
 
 infix 3 _↭_
 

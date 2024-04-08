@@ -24,7 +24,7 @@ open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility
+open import Data.Nat.Divisibility using (_∣_; divides; ∣n⇒∣m*n)
 open import Data.Nat.Properties
 open import Data.Product.Base as Product
   using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)

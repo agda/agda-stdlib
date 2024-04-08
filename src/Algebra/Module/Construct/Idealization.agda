@@ -43,9 +43,11 @@ import Algebra.Definitions as Definitions
 import Algebra.Module.Construct.DirectProduct as DirectProduct
 import Algebra.Module.Construct.TensorUnit as TensorUnit
 open import Algebra.Structures using (IsAbelianGroup; IsRing)
-open import Data.Product using (_,_; ∃-syntax)
+open import Data.Product.Base using (_,_; ∃-syntax)
 open import Level using (Level; _⊔_)
-open import Relation.Binary using (Rel; Setoid; IsEquivalence)
+open import Relation.Binary.Bundles using  (Setoid)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Structures using (IsEquivalence)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
