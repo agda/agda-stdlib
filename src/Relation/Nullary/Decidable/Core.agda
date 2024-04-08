@@ -18,7 +18,7 @@ open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Recomputable
-open import Relation.Nullary.Reflects as Reflects hiding (recompute; recompute-irr)
+open import Relation.Nullary.Reflects as Reflects hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
   using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
 open import Agda.Builtin.Equality using (_≡_)

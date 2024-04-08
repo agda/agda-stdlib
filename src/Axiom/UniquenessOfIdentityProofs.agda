@@ -9,7 +9,7 @@
 module Axiom.UniquenessOfIdentityProofs where
 
 open import Level using (Level)
-open import Relation.Nullary.Decidable.Core using (recompute; recompute-irr)
+open import Relation.Nullary.Decidable.Core using (recompute; recompute-constant)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core
