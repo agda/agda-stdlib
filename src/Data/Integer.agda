@@ -37,7 +37,7 @@ open import Data.String.Base using (String; _++_)
 show : ℤ → String
 show i = showSign (sign i) ++ ℕ.show ∣ i ∣
   where
-  showSign : Sign.Sign → String
+  showSign : Sign → String
   showSign Sign.- = "-"
   showSign Sign.+ = ""
 

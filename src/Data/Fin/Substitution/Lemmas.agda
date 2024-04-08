@@ -9,7 +9,7 @@
 module Data.Fin.Substitution.Lemmas where
 
 open import Data.Fin.Substitution
-open import Data.Nat.Base using (ℕ; _+_; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Fin.Base using (Fin; zero; suc; lift)
 open import Data.Vec.Base using (lookup; []; _∷_; map)
 import Data.Vec.Properties as Vec
