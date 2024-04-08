@@ -292,6 +292,10 @@ Additions to existing modules
   uncons-map            : uncons ∘ map f ≗ map (map f (map f)) ∘ uncons
   last-map              : last ∘ map f ≗ map f ∘ last
   tail-map              : tail ∘ map f ≗ map (map f) ∘ tail
+  mapMaybe-cong         : f ≗ g → mapMaybe f ≗ mapMaybe g
+  zipWith-cong          : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
+  unzipWith-cong        : f ≗ g → unzipWith f ≗ unzipWith g
+  foldl-cong            : (∀ x y → f x y ≡ g x y) → d ≡ e → foldl f d ≗ foldl g e
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

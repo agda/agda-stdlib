@@ -122,6 +122,15 @@ map-injective finj {x ∷ xs} {y ∷ ys} eq =
 ------------------------------------------------------------------------
 -- mapMaybe
 
+module _ {f g : A → Maybe B} where
+
+  mapMaybe-cong : f ≗ g → mapMaybe f ≗ mapMaybe g
+  mapMaybe-cong f≗g [] = refl
+  mapMaybe-cong f≗g (x ∷ xs) rewrite f≗g x
+    with ih ← mapMaybe-cong f≗g xs | g x
+  ... | just y  = cong (y ∷_) ih
+  ... | nothing = ih
+
 mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
 mapMaybe-just []       = refl
 mapMaybe-just (x ∷ xs) = cong (x ∷_) (mapMaybe-just xs)
@@ -346,6 +355,14 @@ align-map f g xs ys = trans
 ------------------------------------------------------------------------
 -- zipWith
 
+module _ {f g : A → B → C} where
+
+  zipWith-cong : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
+  zipWith-cong f≗g []         bs       = refl
+  zipWith-cong f≗g as@(_ ∷ _) []       = refl
+  zipWith-cong f≗g (a ∷ as)   (b ∷ bs) =
+    cong₂ _∷_ (f≗g a b) (zipWith-cong f≗g as bs)
+
 module _ (f : A → A → B) where
 
   zipWith-comm : (∀ x y → f x y ≡ f y x) →
@@ -457,6 +474,13 @@ module _ (f : C → These A B) where
 
 ------------------------------------------------------------------------
 -- unzipWith
+
+module _ {f g : A → B × C} where
+
+  unzipWith-cong : f ≗ g → unzipWith f ≗ unzipWith g
+  unzipWith-cong f≗g [] = refl
+  unzipWith-cong f≗g (x ∷ xs) =
+    cong₂ (Product.zip _∷_ _∷_) (f≗g x) (unzipWith-cong f≗g xs)
 
 module _ (f : A → B × C) where
 
@@ -584,6 +608,12 @@ module _ {P : Pred A p} {f : A → A → A} where
 
 ------------------------------------------------------------------------
 -- foldl
+
+foldl-cong : ∀ {f g : B → A → B} {d e : B} →
+             (∀ x y → f x y ≡ g x y) → d ≡ e →
+             foldl f d ≗ foldl g e
+foldl-cong f≗g refl []      = refl
+foldl-cong f≗g d≡e (x ∷ xs) rewrite d≡e = foldl-cong f≗g (f≗g _ x) xs
 
 foldl-++ : ∀ (f : A → B → A) x ys zs →
            foldl f x (ys ++ zs) ≡ foldl f (foldl f x ys) zs
