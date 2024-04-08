@@ -16,6 +16,7 @@ open import Data.Unit.Base using (⊤)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Product.Base as Prod using (_×_; _,_)
 open import Function.Base using (_∘_; id; const)
+import Relation.Nullary.Decidable.Core
 
 private
   variable
@@ -138,15 +139,8 @@ thatM = maybe′ these that
 -- Version 2.1
 -- decToMaybe
 
-open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Decidable.Core
-  using (_because_; Dec)
-
-decToMaybe : Dec A → Maybe A
-decToMaybe ( true because [a]) = just (invert [a])
-decToMaybe (false because  _ ) = nothing
-
+decToMaybe = Relation.Nullary.Decidable.Core.decToMaybe
 {-# WARNING_ON_USAGE decToMaybe
 "Warning: decToMaybe was deprecated in v2.1.
-Please use Relation.Nullary.Decidable's decToMaybe instead."
+Please use Relation.Nullary.Decidable.Core.decToMaybe instead."
 #-}
