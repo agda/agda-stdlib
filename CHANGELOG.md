@@ -407,6 +407,11 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
+* Added new proof in `Relation.Nullary.Decidable.Core`:
+  ```agda
+  recompute-irr : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+  ```
+
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
@@ -419,13 +424,8 @@ Additions to existing modules
 
 * Added new definitions in `Relation.Nullary.Reflects`:
   ```agda
-  recompute : Reflects A b → Recomputable A
-  ```
-
-* Added new definitions in `Relation.Unary`
-  ```
-  Stable          : Pred A ℓ → Set _
-  WeaklyDecidable : Pred A ℓ → Set _
+  recompute     : Reflects A b → Recomputable A
+  recompute-irr : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
   ```
 
 * Added new definitions in `Relation.Unary`

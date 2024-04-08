@@ -61,6 +61,9 @@ recompute : ∀ {b} → Reflects A b → Recomputable A
 recompute (ofʸ  a) _ = a
 recompute (ofⁿ ¬a) a = contradiction-irr a ¬a
 
+recompute-irr : ∀ {b} (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
+recompute-irr r p q = refl
+
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
 
