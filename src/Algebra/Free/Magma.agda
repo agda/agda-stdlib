@@ -46,7 +46,7 @@ private
     𝓒 : Setoid c ℓc
     𝓜 : Magma m ℓm
     𝓝 : Magma n ℓn
-  
+
 
 ------------------------------------------------------------------------
 -- Syntax: 'pre'-free algebra
@@ -319,7 +319,7 @@ module LeftAdjoint {𝓐 : Setoid a ℓa} (𝓜 : Magma m ℓm)
       ⟦ s ⟧η M.∙ ⟦ t ⟧η  ∎
 
   module Corollary (𝓗 𝓚 : η-MagmaHomomorphism) where
-  
+
     open η-MagmaHomomorphism 𝓗 using () renaming (⟦_⟧ to ⟦_⟧ᴴ)
     open η-MagmaHomomorphism 𝓚 using () renaming (⟦_⟧ to ⟦_⟧ᴷ)
     open Uniqueness 𝓗 renaming (isUnique⟦_⟧ to isUnique⟦_⟧ᴴ)
@@ -348,7 +348,7 @@ module FreeMagmaFunctor (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
   private
     module FA = FreeMagma 𝓐
     module FB = FreeMagma 𝓑
-  
+
   magmaHomomorphism : MagmaHomomorphism FA.magma FB.magma
   magmaHomomorphism = Existence.magmaHomomorphism
     where open LeftAdjoint FB.magma (Compose.setoidHomomorphism 𝓗 FB.varSetoidHomomorphism)
@@ -358,14 +358,14 @@ module FreeMagmaFunctor (𝓗 : SetoidHomomorphism 𝓐 𝓑) where
 
 module Naturality (𝓕 : MagmaHomomorphism 𝓜 𝓝) where
 
-  private 
+  private
     module M = Magma 𝓜
     module N = Magma 𝓝
     module F = MagmaHomomorphism 𝓕
     Free𝓕 = FreeMagmaFunctor.magmaHomomorphism (F.setoidHomomorphism)
     module AlgM = MagmaHomomorphism (algMagmaHomomorphism 𝓜)
     module AlgN = MagmaHomomorphism (algMagmaHomomorphism 𝓝)
-    
+
     module Map = MagmaHomomorphism Free𝓕
 
   naturality : ∀ t → F.⟦ AlgM.⟦ t ⟧ ⟧ N.≈ AlgN.⟦ Map.⟦ t ⟧ ⟧
