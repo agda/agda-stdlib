@@ -21,11 +21,25 @@ module Algebra.Structures
 -- The file is divided into sections depending on the arities of the
 -- components of the algebraic structure.
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
+
+------------------------------------------------------------------------
+-- Structures with 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set (a ⊔ ℓ) where
+  field
+    isEquivalence : IsEquivalence _≈_
+    suc#-cong     : Congruent₁ suc#
+
+  open IsEquivalence isEquivalence public
+
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation
@@ -253,9 +267,22 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
 
   open IsMonoid isMonoid public
 
+  infixr 6 _\\_
+  _\\_ : Op₂ A
+  x \\ y = (x ⁻¹) ∙ y
+
+  infixl 6 _//_
+  _//_ : Op₂ A
+  x // y = x ∙ (y ⁻¹)
+
+  -- Deprecated.
   infixl 6 _-_
   _-_ : Op₂ A
-  x - y = x ∙ (y ⁻¹)
+  _-_ = _//_
+  {-# WARNING_ON_USAGE _-_
+  "Warning: _-_ was deprecated in v2.1.
+  Please use _//_ instead. "
+  #-}
 
   inverseˡ : LeftInverse ε _⁻¹ _∙_
   inverseˡ = proj₁ inverse
@@ -291,7 +318,7 @@ record IsAbelianGroup (∙ : Op₂ A)
     isGroup : IsGroup ∙ ε ⁻¹
     comm    : Commutative ∙
 
-  open IsGroup isGroup public
+  open IsGroup isGroup public renaming (_//_ to _-_) hiding (_\\_; _-_)
 
   isCommutativeMonoid : IsCommutativeMonoid ∙ ε
   isCommutativeMonoid = record

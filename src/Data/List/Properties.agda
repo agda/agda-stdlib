@@ -23,11 +23,11 @@ open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base
-open import Data.Nat.Divisibility
+open import Data.Nat.Divisibility using (_∣_; divides; ∣n⇒∣m*n)
 open import Data.Nat.Properties
-open import Data.Product.Base as Prod
+open import Data.Product.Base as Product
   using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
-import Data.Product.Relation.Unary.All as Prod using (All)
+import Data.Product.Relation.Unary.All as Product using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Fin.Properties using (toℕ-cast)
@@ -35,8 +35,8 @@ open import Function.Base using (id; _∘_; _∘′_; _∋_; _-⟨_∣; ∣_⟩-
 open import Function.Definitions using (Injective)
 open import Level using (Level)
 open import Relation.Binary.Definitions as B using (DecidableEquality)
-import Relation.Binary.Reasoning.Setoid as EqR
-open import Relation.Binary.PropositionalEquality as P hiding ([_])
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+open import Relation.Binary.PropositionalEquality as ≡ hiding ([_])
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)
@@ -370,20 +370,20 @@ module _ (f : A → B → C) where
 
 unalignWith-this : unalignWith ((A → These A B) ∋ this) ≗ (_, [])
 unalignWith-this []       = refl
-unalignWith-this (a ∷ as) = cong (Prod.map₁ (a ∷_)) (unalignWith-this as)
+unalignWith-this (a ∷ as) = cong (Product.map₁ (a ∷_)) (unalignWith-this as)
 
 unalignWith-that : unalignWith ((B → These A B) ∋ that) ≗ ([] ,_)
 unalignWith-that []       = refl
-unalignWith-that (b ∷ bs) = cong (Prod.map₂ (b ∷_)) (unalignWith-that bs)
+unalignWith-that (b ∷ bs) = cong (Product.map₂ (b ∷_)) (unalignWith-that bs)
 
 module _ {f g : C → These A B} where
 
   unalignWith-cong : f ≗ g → unalignWith f ≗ unalignWith g
   unalignWith-cong f≗g []       = refl
   unalignWith-cong f≗g (c ∷ cs) with f c | g c | f≗g c
-  ... | this a    | ._ | refl = cong (Prod.map₁ (a ∷_)) (unalignWith-cong f≗g cs)
-  ... | that b    | ._ | refl = cong (Prod.map₂ (b ∷_)) (unalignWith-cong f≗g cs)
-  ... | these a b | ._ | refl = cong (Prod.map (a ∷_) (b ∷_)) (unalignWith-cong f≗g cs)
+  ... | this a    | ._ | refl = cong (Product.map₁ (a ∷_)) (unalignWith-cong f≗g cs)
+  ... | that b    | ._ | refl = cong (Product.map₂ (b ∷_)) (unalignWith-cong f≗g cs)
+  ... | these a b | ._ | refl = cong (Product.map (a ∷_) (b ∷_)) (unalignWith-cong f≗g cs)
 
 module _ (f : C → These A B) where
 
@@ -391,17 +391,17 @@ module _ (f : C → These A B) where
                     unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
   unalignWith-map g []       = refl
   unalignWith-map g (d ∷ ds) with f (g d)
-  ... | this a    = cong (Prod.map₁ (a ∷_)) (unalignWith-map g ds)
-  ... | that b    = cong (Prod.map₂ (b ∷_)) (unalignWith-map g ds)
-  ... | these a b = cong (Prod.map (a ∷_) (b ∷_)) (unalignWith-map g ds)
+  ... | this a    = cong (Product.map₁ (a ∷_)) (unalignWith-map g ds)
+  ... | that b    = cong (Product.map₂ (b ∷_)) (unalignWith-map g ds)
+  ... | these a b = cong (Product.map (a ∷_) (b ∷_)) (unalignWith-map g ds)
 
   map-unalignWith : (g : A → D) (h : B → E) →
-    Prod.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
+    Product.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
   map-unalignWith g h []       = refl
   map-unalignWith g h (c ∷ cs) with f c
-  ... | this a    = cong (Prod.map₁ (g a ∷_)) (map-unalignWith g h cs)
-  ... | that b    = cong (Prod.map₂ (h b ∷_)) (map-unalignWith g h cs)
-  ... | these a b = cong (Prod.map (g a ∷_) (h b ∷_)) (map-unalignWith g h cs)
+  ... | this a    = cong (Product.map₁ (g a ∷_)) (map-unalignWith g h cs)
+  ... | that b    = cong (Product.map₂ (h b ∷_)) (map-unalignWith g h cs)
+  ... | these a b = cong (Product.map (g a ∷_) (h b ∷_)) (map-unalignWith g h cs)
 
   unalignWith-alignWith : (g : These A B → C) → f ∘′ g ≗ id → ∀ as bs →
                           unalignWith f (alignWith g as bs) ≡ (as , bs)
@@ -417,7 +417,7 @@ module _ (f : C → These A B) where
     as , []                            ∎
   unalignWith-alignWith g g∘f≗id (a ∷ as)   (b ∷ bs)
     rewrite g∘f≗id (these a b) =
-    cong (Prod.map (a ∷_) (b ∷_)) (unalignWith-alignWith g g∘f≗id as bs)
+    cong (Product.map (a ∷_) (b ∷_)) (unalignWith-alignWith g g∘f≗id as bs)
 
 ------------------------------------------------------------------------
 -- unzipWith
@@ -657,8 +657,12 @@ lookup-applyUpTo : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (t
 lookup-applyUpTo f (suc n) zero    = refl
 lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
 
+applyUpTo-∷ʳ : ∀ (f : ℕ → A) n → applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
+applyUpTo-∷ʳ f zero = refl
+applyUpTo-∷ʳ f (suc n) = cong (f 0 ∷_) (applyUpTo-∷ʳ (f ∘ suc) n)
+
 ------------------------------------------------------------------------
--- applyUpTo
+-- applyDownFrom
 
 module _ (f : ℕ → A) where
 
@@ -670,6 +674,10 @@ module _ (f : ℕ → A) where
   lookup-applyDownFrom (suc n) zero    = refl
   lookup-applyDownFrom (suc n) (suc i) = lookup-applyDownFrom n i
 
+  applyDownFrom-∷ʳ : ∀ n → applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
+  applyDownFrom-∷ʳ zero = refl
+  applyDownFrom-∷ʳ (suc n) = cong (f (suc n) ∷_) (applyDownFrom-∷ʳ n)
+
 ------------------------------------------------------------------------
 -- upTo
 
@@ -679,6 +687,9 @@ length-upTo = length-applyUpTo id
 lookup-upTo : ∀ n i → lookup (upTo n) i ≡ toℕ i
 lookup-upTo = lookup-applyUpTo id
 
+upTo-∷ʳ : ∀ n → upTo n ∷ʳ n ≡ upTo (suc n)
+upTo-∷ʳ = applyUpTo-∷ʳ id
+
 ------------------------------------------------------------------------
 -- downFrom
 
@@ -687,6 +698,9 @@ length-downFrom = length-applyDownFrom id
 
 lookup-downFrom : ∀ n i → lookup (downFrom n) i ≡ n ∸ (suc (toℕ i))
 lookup-downFrom = lookup-applyDownFrom id
+
+downFrom-∷ʳ : ∀ n → applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+downFrom-∷ʳ = applyDownFrom-∷ʳ id
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -896,7 +910,7 @@ lookup-iterate f x (suc n) (suc i) = lookup-iterate f (f x) n i
 splitAt-defn : ∀ n → splitAt {A = A} n ≗ < take n , drop n >
 splitAt-defn zero    xs       = refl
 splitAt-defn (suc n) []       = refl
-splitAt-defn (suc n) (x ∷ xs) = cong (Prod.map (x ∷_) id) (splitAt-defn n xs)
+splitAt-defn (suc n) (x ∷ xs) = cong (Product.map (x ∷_) id) (splitAt-defn n xs)
 
 ------------------------------------------------------------------------
 -- takeWhile, dropWhile, and span
@@ -912,7 +926,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   span-defn : span P? ≗ < takeWhile P? , dropWhile P? >
   span-defn []       = refl
   span-defn (x ∷ xs) with does (P? x)
-  ... | true  = cong (Prod.map (x ∷_) id) (span-defn xs)
+  ... | true  = cong (Product.map (x ∷_) id) (span-defn xs)
   ... | false = refl
 
 ------------------------------------------------------------------------
@@ -1023,15 +1037,15 @@ module _ {P : Pred A p} (P? : Decidable P) where
   partition-defn : partition P? ≗ < filter P? , filter (∁? P?) >
   partition-defn []       = refl
   partition-defn (x ∷ xs) with ih ← partition-defn xs | does (P? x)
-  ...  | true  = cong (Prod.map (x ∷_) id) ih
-  ...  | false = cong (Prod.map id (x ∷_)) ih
+  ...  | true  = cong (Product.map (x ∷_) id) ih
+  ...  | false = cong (Product.map id (x ∷_)) ih
 
   length-partition : ∀ xs → (let (ys , zs) = partition P? xs) →
                      length ys ≤ length xs × length zs ≤ length xs
   length-partition []       = z≤n , z≤n
   length-partition (x ∷ xs) with ih ← length-partition xs | does (P? x)
-  ...  | true  = Prod.map s≤s m≤n⇒m≤1+n ih
-  ...  | false = Prod.map m≤n⇒m≤1+n s≤s ih
+  ...  | true  = Product.map s≤s m≤n⇒m≤1+n ih
+  ...  | false = Product.map m≤n⇒m≤1+n s≤s ih
 
 ------------------------------------------------------------------------
 -- _ʳ++_
@@ -1174,6 +1188,31 @@ reverse-foldl : ∀ (f : B → A → B) b xs →
 reverse-foldl f b xs = foldl-ʳ++ f b xs
 
 ------------------------------------------------------------------------
+-- reverse, applyUpTo, and applyDownFrom
+
+reverse-applyUpTo : ∀ (f : ℕ → A) n → reverse (applyUpTo f n) ≡ applyDownFrom f n
+reverse-applyUpTo f zero = refl
+reverse-applyUpTo f (suc n) = begin
+  reverse (f 0 ∷ applyUpTo (f ∘ suc) n)  ≡⟨ reverse-++ [ f 0 ] (applyUpTo (f ∘ suc) n) ⟩
+  reverse (applyUpTo (f ∘ suc) n) ∷ʳ f 0 ≡⟨ cong (_∷ʳ f 0) (reverse-applyUpTo (f ∘ suc) n) ⟩
+  applyDownFrom (f ∘ suc) n ∷ʳ f 0       ≡⟨ applyDownFrom-∷ʳ f n ⟩
+  applyDownFrom f (suc n)                ∎
+
+reverse-upTo : ∀ n → reverse (upTo n) ≡ downFrom n
+reverse-upTo = reverse-applyUpTo id
+
+reverse-applyDownFrom : ∀ (f : ℕ → A) n → reverse (applyDownFrom f n) ≡ applyUpTo f n
+reverse-applyDownFrom f zero = refl
+reverse-applyDownFrom f (suc n) = begin
+  reverse (f n ∷ applyDownFrom f n)  ≡⟨ reverse-++ [ f n ] (applyDownFrom f n) ⟩
+  reverse (applyDownFrom f n) ∷ʳ f n ≡⟨ cong (_∷ʳ f n) (reverse-applyDownFrom f n) ⟩
+  applyUpTo f n ∷ʳ f n               ≡⟨ applyUpTo-∷ʳ f n ⟩
+  applyUpTo f (suc n)                ∎
+
+reverse-downFrom : ∀ n → reverse (downFrom n) ≡ upTo n
+reverse-downFrom = reverse-applyDownFrom id
+
+------------------------------------------------------------------------
 -- _∷ʳ_
 
 module _ {x y : A} where
@@ -1181,7 +1220,7 @@ module _ {x y : A} where
   ∷ʳ-injective : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
   ∷ʳ-injective []          []          refl = (refl , refl)
   ∷ʳ-injective (x ∷ xs)    (y  ∷ ys)   eq   with refl , eq′  ← ∷-injective eq
-    = Prod.map (cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
+    = Product.map (cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
   ∷ʳ-injective []          (_ ∷ _ ∷ _) ()
   ∷ʳ-injective (_ ∷ _ ∷ _) []          ()
 

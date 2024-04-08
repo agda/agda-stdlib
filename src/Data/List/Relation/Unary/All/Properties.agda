@@ -11,12 +11,13 @@ module Data.List.Relation.Unary.All.Properties where
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
-open import Data.Empty
+open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (lookup; updateAt)
 open import Data.List.Properties as Listₚ using (partition-defn)
-open import Data.List.Membership.Propositional
+open import Data.List.Membership.Propositional using (_∈_; _≢∈_)
 open import Data.List.Membership.Propositional.Properties
+  using (there-injective-≢∈; ∈-filter⁻)
 import Data.List.Membership.Setoid as SetoidMembership
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
@@ -32,19 +33,19 @@ open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing; fromAny
 open import Data.Maybe.Relation.Unary.Any as Maybe using (just)
 open import Data.Nat.Base using (zero; suc; s≤s; _<_; z<s; s<s)
 open import Data.Nat.Properties using (≤-refl; m≤n⇒m≤1+n)
-open import Data.Product.Base as Prod using (_×_; _,_; uncurry; uncurry′)
-open import Function.Base
-open import Function.Bundles
+open import Data.Product.Base as Product using (_×_; _,_; uncurry; uncurry′)
+open import Function.Base using (_∘_; _$_; id; case_of_; flip)
+open import Function.Bundles using (_↠_; mk↠ₛ; _⇔_; mk⇔; _↔_; mk↔ₛ′; Equivalence)
 open import Level using (Level)
 open import Relation.Binary.Core using (REL)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.Definitions as B
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; _≗_)
-open import Relation.Nullary
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬?; decidable-stable)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
+open import Relation.Nullary.Decidable
+  using (Dec; does; yes; no; _because_; ¬?; decidable-stable)
 open import Relation.Unary
   using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Unary.Properties using (∁?)
@@ -417,7 +418,7 @@ Any-catMaybes⁺ = All-catMaybes⁺ ∘ All.map fromAny
 
 ++⁻ : ∀ xs {ys} → All P (xs ++ ys) → All P xs × All P ys
 ++⁻ []       p          = [] , p
-++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
+++⁻ (x ∷ xs) (px ∷ pxs) = Product.map (px ∷_) id (++⁻ _ pxs)
 
 ++↔ : (All P xs × All P ys) ↔ All P (xs ++ ys)
 ++↔ {xs = zs} = mk↔ₛ′ (uncurry ++⁺) (++⁻ zs) (++⁺∘++⁻ zs) ++⁻∘++⁺
@@ -448,7 +449,7 @@ concat⁻ {xss = xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
 ∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
 
 ∷ʳ⁻ : All P (xs ∷ʳ x) → All P xs × P x
-∷ʳ⁻ pxs = Prod.map₂ singleton⁻ $ ++⁻ _ pxs
+∷ʳ⁻ pxs = Product.map₂ singleton⁻ $ ++⁻ _ pxs
 
 -- unsnoc
 
@@ -656,7 +657,7 @@ module _ {R : A → A → Set q} (R? : B.Decidable R) where
     where
     aux : ∀ {z} → z ∈ filter (¬? ∘ ¬? ∘ R? x) (deduplicate R? xs) → P z
     aux {z = z} z∈filter = resp (decidable-stable (R? x z)
-      (Prod.proj₂ (∈-filter⁻ (¬? ∘ ¬? ∘ R? x) {z} {deduplicate R? xs} z∈filter))) px
+      (Product.proj₂ (∈-filter⁻ (¬? ∘ ¬? ∘ R? x) {z} {deduplicate R? xs} z∈filter))) px
 
 ------------------------------------------------------------------------
 -- zipWith

@@ -9,10 +9,11 @@
 open import Level using (Level; _⊔_; suc)
 open import Relation.Nullary.Decidable.Core
   using (Dec; True; toWitness)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Definitions
-open import Relation.Binary.PropositionalEquality.Core as P
+  using (_Respectsʳ_; Asymmetric; Trans; Sym; Reflexive)
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_)
 
 -- List of `Reasoning` modules that do not use this framework and so
@@ -395,7 +396,7 @@ module ≡-syntax
   step-≡-∣ : ∀ x {y} → R x y → R x y
   step-≡-∣ x xRy = xRy
 
-  step-≡-⟨ = backward R R step P.sym
+  step-≡-⟨ = backward R R step ≡.sym
 
   syntax step-≡-⟩ x yRz x≡y = x ≡⟨ x≡y ⟩ yRz
   syntax step-≡-∣ x xRy     = x ≡⟨⟩ xRy
@@ -424,7 +425,7 @@ module ≡-noncomputing-syntax (R : REL A B ℓ₁) where
 
   private
     step : Trans _≡_ R R
-    step P.refl xRy = xRy
+    step ≡.refl xRy = xRy
 
   open ≡-syntax R step public
 

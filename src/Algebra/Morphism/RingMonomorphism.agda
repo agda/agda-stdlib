@@ -29,7 +29,7 @@ open RawRing R₂ renaming
 open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Product.Base using (proj₁; proj₂; _,_)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- Re-export all properties of group and monoid monomorphisms
@@ -83,7 +83,7 @@ module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
 
   open IsGroup +-isGroup hiding (setoid; refl; sym)
   open IsMagma *-isMagma renaming (∙-cong to ◦-cong)
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   distribˡ : _DistributesOverˡ_ _≈₂_ _⊛_ _⊕_ → _DistributesOverˡ_ _≈₁_ _*_ _+_
   distribˡ distribˡ x y z = injective (begin

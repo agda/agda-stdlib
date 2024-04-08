@@ -23,7 +23,7 @@ open import Function.Related.Propositional as Related using (Related; SK-sym)
 open import Function.Related.TypeIsomorphisms
 open import Relation.Unary using (Pred ; _∪_ ; _∩_)
 open import Relation.Binary.Core using (REL)
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_; _≗_; refl)
 
 private
@@ -42,21 +42,21 @@ module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 -- ◇ can be unwrapped to reveal the Σ type
 
   ↔Σ : ∀ {xs : ⟦ C ⟧ X} → ◇ C P xs ↔ ∃ λ p → P (proj₂ xs p)
-  ↔Σ {xs} = mk↔ₛ′ ◇.proof any (λ _ → P.refl) (λ _ → P.refl)
+  ↔Σ {xs} = mk↔ₛ′ ◇.proof any (λ _ → refl) (λ _ → refl)
 
 -- ◇ can be expressed using _∈_.
 
   ↔∈ : ∀ {xs : ⟦ C ⟧ X} → ◇ C P xs ↔ (∃ λ x → x ∈ xs × P x)
-  ↔∈ {xs} = mk↔ₛ′ to from to∘from (λ _ → P.refl) where
+  ↔∈ {xs} = mk↔ₛ′ to from to∘from (λ _ → refl) where
 
     to : ◇ C P xs → ∃ λ x → x ∈ xs × P x
-    to (any (p , Px)) = (proj₂ xs p , (any (p , P.refl)) , Px)
+    to (any (p , Px)) = (proj₂ xs p , (any (p , refl)) , Px)
 
     from : (∃ λ x → x ∈ xs × P x) → ◇ C P xs
     from (.(proj₂ xs p) , (any (p , refl)) , Px) = any (p , Px)
 
     to∘from : to ∘ from ≗ id
-    to∘from (.(proj₂ xs p) , any (p , refl) , Px) = P.refl
+    to∘from (.(proj₂ xs p) , any (p , refl) , Px) = refl
 
 module _ {s p} {C : Container s p} {x} {X : Set x}
          {ℓ₁ ℓ₂} {P₁ : Pred X ℓ₁} {P₂ : Pred X ℓ₂} where
@@ -105,7 +105,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
   flatten : ∀ (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
             ◇ C₁ (◇ C₂ P) xss ↔
             ◇ (C₁ C.∘ C₂) P (Inverse.from (Composition.correct C₁ C₂) xss)
-  flatten xss = mk↔ₛ′ t f (λ _ → P.refl) (λ _ → P.refl) where
+  flatten xss = mk↔ₛ′ t f (λ _ → refl) (λ _ → refl) where
 
     ◇₁ = ◇ C₁; ◇₂ = ◇ C₂; ◇₁₂ = ◇ (C₁ C.∘ C₂)
     open Inverse
@@ -132,11 +132,11 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
     from = [ Any.map₂ inj₁ , Any.map₂ inj₂ ]
 
     from∘to : from ∘ to ≗ id
-    from∘to (any (pos , inj₁ p)) = P.refl
-    from∘to (any (pos , inj₂ q)) = P.refl
+    from∘to (any (pos , inj₁ p)) = refl
+    from∘to (any (pos , inj₂ q)) = refl
 
     to∘from : to ∘ from ≗ id
-    to∘from = [ (λ _ → P.refl) , (λ _ → P.refl) ]
+    to∘from = [ (λ _ → refl) , (λ _ → refl) ]
 
 -- Products "commute" with ◇.
 
@@ -145,7 +145,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 
   ×◇↔◇◇× : ∀ {xs : ⟦ C₁ ⟧ X} {ys : ⟦ C₂ ⟧ Y} →
            ◇ C₁ (λ x → ◇ C₂ (λ y → P x × Q y) ys) xs ↔ (◇ C₁ P xs × ◇ C₂ Q ys)
-  ×◇↔◇◇× {xs} {ys} = mk↔ₛ′ to from (λ _ → P.refl) (λ _ → P.refl)
+  ×◇↔◇◇× {xs} {ys} = mk↔ₛ′ to from (λ _ → refl) (λ _ → refl)
     where
     ◇₁ = ◇ C₁; ◇₂ = ◇ C₂
 
@@ -209,7 +209,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
   remove-linear {xs} m = mk↔ₛ′ t f t∘f f∘t
     where
     open _≃_
-    open P.≡-Reasoning
+    open ≡.≡-Reasoning
 
     position⊸m : ∀ {s} → Position C₂ (shape⊸ m s) ≃ Position C₁ s
     position⊸m = ↔⇒≃ (position⊸ m)
@@ -222,66 +222,66 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
     f : ◇₁ P xs → ◇₂ P (⟪ m ⟫⊸ xs)
     f (any (x , p)) =
       any $ from position⊸m x
-          , P.subst (P ∘′ proj₂ xs) (P.sym (right-inverse-of position⊸m _)) p
+          , ≡.subst (P ∘′ proj₂ xs) (≡.sym (right-inverse-of position⊸m _)) p
 
     f∘t : f ∘ t ≗ id
-    f∘t (any (p₂ , p)) = P.cong any $ Σ-≡,≡→≡
+    f∘t (any (p₂ , p)) = ≡.cong any $ Σ-≡,≡→≡
       ( left-inverse-of position⊸m p₂
-      , (P.subst (P ∘ proj₂ xs ∘ to position⊸m)
+      , (≡.subst (P ∘ proj₂ xs ∘ to position⊸m)
            (left-inverse-of position⊸m p₂)
-           (P.subst (P ∘ proj₂ xs)
-              (P.sym (right-inverse-of position⊸m
+           (≡.subst (P ∘ proj₂ xs)
+              (≡.sym (right-inverse-of position⊸m
                         (to position⊸m p₂)))
-              p)                                                ≡⟨ P.subst-∘ (left-inverse-of position⊸m _) ⟩
+              p)                                                ≡⟨ ≡.subst-∘ (left-inverse-of position⊸m _) ⟩
 
-         P.subst (P ∘ proj₂ xs)
-           (P.cong (to position⊸m)
+         ≡.subst (P ∘ proj₂ xs)
+           (≡.cong (to position⊸m)
               (left-inverse-of position⊸m p₂))
-           (P.subst (P ∘ proj₂ xs)
-              (P.sym (right-inverse-of position⊸m
+           (≡.subst (P ∘ proj₂ xs)
+              (≡.sym (right-inverse-of position⊸m
                         (to position⊸m p₂)))
-              p)                                                ≡⟨ P.cong (λ eq → P.subst (P ∘ proj₂ xs) eq
-                                                                                    (P.subst (P ∘ proj₂ xs)
-                                                                                       (P.sym (right-inverse-of position⊸m _)) _))
+              p)                                                ≡⟨ ≡.cong (λ eq → ≡.subst (P ∘ proj₂ xs) eq
+                                                                                    (≡.subst (P ∘ proj₂ xs)
+                                                                                       (≡.sym (right-inverse-of position⊸m _)) _))
                                                                      (_≃_.left-right position⊸m _) ⟩
-         P.subst (P ∘ proj₂ xs)
+         ≡.subst (P ∘ proj₂ xs)
            (right-inverse-of position⊸m
               (to position⊸m p₂))
-           (P.subst (P ∘ proj₂ xs)
-              (P.sym (right-inverse-of position⊸m
+           (≡.subst (P ∘ proj₂ xs)
+              (≡.sym (right-inverse-of position⊸m
                         (to position⊸m p₂)))
-              p)                                                ≡⟨ P.subst-subst (P.sym (right-inverse-of position⊸m _)) ⟩
+              p)                                                ≡⟨ ≡.subst-subst (≡.sym (right-inverse-of position⊸m _)) ⟩
 
-         P.subst (P ∘ proj₂ xs)
-           (P.trans
-              (P.sym (right-inverse-of position⊸m
+         ≡.subst (P ∘ proj₂ xs)
+           (≡.trans
+              (≡.sym (right-inverse-of position⊸m
                         (to position⊸m p₂)))
               (right-inverse-of position⊸m
                  (to position⊸m p₂)))
-           p                                                    ≡⟨ P.cong (λ eq → P.subst (P ∘ proj₂ xs) eq p)
-                                                                     (P.trans-symˡ (right-inverse-of position⊸m _)) ⟩
+           p                                                    ≡⟨ ≡.cong (λ eq → ≡.subst (P ∘ proj₂ xs) eq p)
+                                                                     (≡.trans-symˡ (right-inverse-of position⊸m _)) ⟩
 
-         P.subst (P ∘ proj₂ xs) P.refl p                        ≡⟨⟩
+         ≡.subst (P ∘ proj₂ xs) ≡.refl p                        ≡⟨⟩
 
         p                                                       ∎)
       )
 
     t∘f : t ∘ f ≗ id
-    t∘f (any (p₁ , p)) = P.cong any $ Σ-≡,≡→≡
+    t∘f (any (p₁ , p)) = ≡.cong any $ Σ-≡,≡→≡
       ( right-inverse-of position⊸m p₁
-      , (P.subst (P ∘ proj₂ xs)
+      , (≡.subst (P ∘ proj₂ xs)
            (right-inverse-of position⊸m p₁)
-           (P.subst (P ∘ proj₂ xs)
-              (P.sym (right-inverse-of position⊸m p₁))
-              p)                                                ≡⟨ P.subst-subst (P.sym (right-inverse-of position⊸m _)) ⟩
+           (≡.subst (P ∘ proj₂ xs)
+              (≡.sym (right-inverse-of position⊸m p₁))
+              p)                                                ≡⟨ ≡.subst-subst (≡.sym (right-inverse-of position⊸m _)) ⟩
 
-         P.subst (P ∘ proj₂ xs)
-           (P.trans
-              (P.sym (right-inverse-of position⊸m p₁))
+         ≡.subst (P ∘ proj₂ xs)
+           (≡.trans
+              (≡.sym (right-inverse-of position⊸m p₁))
               (right-inverse-of position⊸m p₁))
-           p                                                    ≡⟨ P.cong (λ eq → P.subst (P ∘ proj₂ xs) eq p)
-                                                                     (P.trans-symˡ (right-inverse-of position⊸m _)) ⟩
-         P.subst (P ∘ proj₂ xs) P.refl p                        ≡⟨⟩
+           p                                                    ≡⟨ ≡.cong (λ eq → ≡.subst (P ∘ proj₂ xs) eq p)
+                                                                     (≡.trans-symˡ (right-inverse-of position⊸m _)) ⟩
+         ≡.subst (P ∘ proj₂ xs) ≡.refl p                        ≡⟨⟩
 
         p                                                       ∎)
       )

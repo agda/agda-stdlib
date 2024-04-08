@@ -20,9 +20,8 @@ module Relation.Binary.Construct.Add.Infimum.NonStrict
 
 open import Level using (_⊔_)
 open import Data.Sum.Base as Sum
-open import Relation.Binary.PropositionalEquality.Core as P
-  using (_≡_; refl)
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+import Relation.Binary.PropositionalEquality.Properties as ≡
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum
@@ -60,8 +59,8 @@ data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
 ≤₋-total ≤-total [ k ] [ l ] = Sum.map [_] [_] (≤-total k l)
 
 ≤₋-irrelevant : Irrelevant _≤_ → Irrelevant _≤₋_
-≤₋-irrelevant ≤-irr (⊥₋≤ k) (⊥₋≤ k) = P.refl
-≤₋-irrelevant ≤-irr [ p ]   [ q ]   = P.cong _ (≤-irr p q)
+≤₋-irrelevant ≤-irr (⊥₋≤ k) (⊥₋≤ k) = refl
+≤₋-irrelevant ≤-irr [ p ]   [ q ]   = cong _ (≤-irr p q)
 
 ------------------------------------------------------------------------
 -- Relational properties + propositional equality
@@ -72,7 +71,7 @@ data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
 
 ≤₋-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤₋_
 ≤₋-antisym-≡ antisym (⊥₋≤ _) (⊥₋≤ _) = refl
-≤₋-antisym-≡ antisym [ p ] [ q ]       = P.cong [_] (antisym p q)
+≤₋-antisym-≡ antisym [ p ] [ q ]     = cong [_] (antisym p q)
 
 ------------------------------------------------------------------------
 -- Relational properties + setoid equality
@@ -94,7 +93,7 @@ module _ {e} {_≈_ : Rel A e} where
 
 ≤₋-isPreorder-≡ : IsPreorder _≡_ _≤_ → IsPreorder _≡_ _≤₋_
 ≤₋-isPreorder-≡ ≤-isPreorder = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = ≡.isEquivalence
   ; reflexive     = ≤₋-reflexive-≡ reflexive
   ; trans         = ≤₋-trans trans
   } where open IsPreorder ≤-isPreorder

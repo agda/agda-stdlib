@@ -74,7 +74,7 @@ module _ where
   open RawApplicative
 
   mkRawMonad :
-    (F : Set f → Set f) →
+    (F : Set f → Set g) →
     (pure : ∀ {A} → A → F A) →
     (bind : ∀ {A B} → F A → (A → F B) → F B) →
     RawMonad F

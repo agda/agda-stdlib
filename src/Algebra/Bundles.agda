@@ -15,18 +15,36 @@ import Algebra.Bundles.Raw as Raw
 open import Algebra.Core
 open import Algebra.Structures
 open import Relation.Binary.Core using (Rel)
-open import Function.Base
-import Relation.Nullary as N
 open import Level
 
 ------------------------------------------------------------------------
 -- Re-export definitions of 'raw' bundles
 
 open Raw public
-  using (RawMagma; RawMonoid; RawGroup
+  using ( RawSuccessorSet; RawMagma; RawMonoid; RawGroup
         ; RawNearSemiring; RawSemiring
         ; RawRingWithoutOne; RawRing
         ; RawQuasigroup; RawLoop; RawKleeneAlgebra)
+
+------------------------------------------------------------------------
+-- Bundles with 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  4 _≈_
+  field
+    Carrier          : Set c
+    _≈_              : Rel Carrier ℓ
+    suc#             : Op₁ Carrier
+    zero#            : Carrier
+    isSuccessorSet   : IsSuccessorSet _≈_ suc# zero#
+
+  open IsSuccessorSet isSuccessorSet public
+
+  rawSuccessorSet : RawSuccessorSet _ _
+  rawSuccessorSet = record { _≈_ = _≈_; suc# = suc#; zero# = zero# }
+
+  open RawSuccessorSet rawSuccessorSet public
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation
@@ -961,6 +979,9 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semiringWithoutAnnihilatingZero
     )
 
+  open NearSemiring nearSemiring public
+    using (rawNearSemiring)
+
   open AbelianGroup +-abelianGroup public
     using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
 
@@ -973,6 +994,9 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; 0#  = 0#
     ; 1#  = 1#
     }
+
+  open RawRing rawRing public
+    using (rawRingWithoutOne; +-rawGroup)
 
 
 record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where

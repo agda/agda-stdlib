@@ -13,7 +13,8 @@ open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit.Base using (tt)
 open import Level using (Level)
 open import Relation.Binary.Core as Binary
-open import Relation.Binary.Definitions hiding (Decidable; Universal; Irrelevant)
+open import Relation.Binary.Definitions
+  hiding (Decidable; Universal; Irrelevant; Empty)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 open import Relation.Unary
 open import Relation.Nullary.Decidable using (yes; no; _⊎-dec_; _×-dec_; ¬?)

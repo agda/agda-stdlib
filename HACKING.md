@@ -31,7 +31,7 @@ Note on contributions to related/'coupled' modules
 ==================================================
 
 Before making changes to a `Data` module please have a look at related modules
-and see if they have any content along similar lines. If so, then please 
+and see if they have any content along similar lines. If so, then please
 follow those conventions (e.g. naming, argument order).
 For example, if working on `Data.Rational`, please check `Data.Rational.Unnormalised`
 or if working on `Data.Vec` please check `Data.List` and vice versa.

@@ -9,10 +9,8 @@
 module README.Data.List.Relation.Binary.Equality where
 
 open import Data.Nat using (ℕ; _+_; _<_; s≤s; z≤n; _*_; _∸_; _≤_)
-open import Data.Nat.Properties as NatProp
+open import Data.Nat.Properties as ℕ
 open import Data.List.Base
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; sym; cong; setoid)
 
 ------------------------------------------------------------------------
 -- Pointwise equality

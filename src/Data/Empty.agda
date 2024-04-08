@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Empty type, judgementally proof irrelevant
+-- Empty type, judgementally proof irrelevant, Level-monomorphic
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

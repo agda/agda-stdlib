@@ -20,7 +20,7 @@ open import Data.Product.Base  using (_,_; _×_; proj₁; proj₂)
 open import Data.List.Kleene
 open import Data.Vec.Base      using (Vec)
 
-import Data.Nat.Properties as ℕ-Prop
+import Data.Nat.Properties as ℕ
 import Relation.Binary.PropositionalEquality.Core as ≡
 
 open Homomorphism homo
@@ -64,7 +64,7 @@ pow-eval-hom x (suc i) = (*-homo _ x) ⟨ trans ⟩ (≪* pow-eval-hom x i)
   rearrange zero =
     begin
       (ρ′ RawPow.^ (i ℕ.* 0)) * (⟦ x ⟧ Ρ RawPow.^ suc i)
-    ≡⟨ ≡.cong (λ k →  (ρ′ RawPow.^ k) * (⟦ x ⟧ Ρ RawPow.^ suc i)) (ℕ-Prop.*-zeroʳ i) ⟩
+    ≡⟨ ≡.cong (λ k →  (ρ′ RawPow.^ k) * (⟦ x ⟧ Ρ RawPow.^ suc i)) (ℕ.*-zeroʳ i) ⟩
       1# * (⟦ x ⟧ Ρ RawPow.^ suc i)
     ≈⟨ *-identityˡ _ ⟩
       ⟦ x ⟧ Ρ RawPow.^ suc i
@@ -72,7 +72,7 @@ pow-eval-hom x (suc i) = (*-homo _ x) ⟨ trans ⟩ (≪* pow-eval-hom x i)
   rearrange j@(suc j′) =
     begin
       (ρ′ RawPow.^ (suc i ℕ.* j))           * (⟦ x ⟧ Ρ RawPow.^ suc i)
-    ≡⟨ ≡.cong (λ v → (ρ′ RawPow.^ v) * (⟦ x ⟧ Ρ RawPow.^ suc i)) (ℕ-Prop.*-comm (suc i) j) ⟩
+    ≡⟨ ≡.cong (λ v → (ρ′ RawPow.^ v) * (⟦ x ⟧ Ρ RawPow.^ suc i)) (ℕ.*-comm (suc i) j) ⟩
       (ρ′ RawPow.^ (j ℕ.* suc i))           * (⟦ x ⟧ Ρ RawPow.^ suc i)
     ≈⟨ ≪* sym (RawPow.^-assocʳ ρ′ j (suc i)) ⟩
       ((ρ′ RawPow.^ suc j′) RawPow.^ suc i) * (⟦ x ⟧ Ρ RawPow.^ suc i)

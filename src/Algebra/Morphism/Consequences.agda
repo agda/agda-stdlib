@@ -13,7 +13,7 @@ open import Algebra.Morphism.Definitions
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘_)
 open import Function.Definitions
-import Relation.Binary.Reasoning.Setoid as EqR
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- If f and g are mutually inverse maps between A and B, g is congruent,
@@ -34,7 +34,7 @@ module _ {α α= β β=} (M₁ : Magma α α=) (M₂ : Magma β β=) where
     g (f (g x) ∙₂ f (g y)) ≈⟨ g-cong (homo (g x) (g y)) ⟨
     g (f (g x ∙₁ g y))     ≈⟨ invʳ M₂.refl ⟩
     g x ∙₁ g y             ∎
-    where open EqR M₁.setoid
+    where open ≈-Reasoning M₁.setoid
 
   homomorphic₂-inj  : ∀ {f g} → Injective _≈₁_ _≈₂_ f →
                       Inverseˡ _≈₁_ _≈₂_ f g →
@@ -45,4 +45,4 @@ module _ {α α= β β=} (M₁ : Magma α α=) (M₂ : Magma β β=) where
     x ∙₂ y              ≈⟨ M₂.∙-cong (invˡ M₁.refl) (invˡ M₁.refl) ⟨
     f (g x) ∙₂ f (g y)  ≈⟨ homo (g x) (g y) ⟨
     f (g x ∙₁ g y)      ∎)
-    where open EqR M₂.setoid
+    where open ≈-Reasoning M₂.setoid

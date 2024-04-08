@@ -4,8 +4,8 @@
 -- Instances of algebraic structures where the carrier is ⊥.
 -- In mathematics, this is usually called 0.
 --
--- From monoids up, these are zero-objects – i.e, the initial
--- object is the terminal object in the relevant category.
+-- From monoids up, these are zero-objects – i.e, the terminal
+-- object is *also* the initial object in the relevant category.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
