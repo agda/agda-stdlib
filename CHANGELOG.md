@@ -305,6 +305,8 @@ Additions to existing modules
   zip-flip              : zip xs ys ≡ map swap (zip ys xs)
   unzipWith-swap        : unzipWith (swap ∘ f) ≗ swap ∘ unzipWith f
   unzip-swap            : unzip ∘ map swap ≗ swap ∘ unzip
+  take-take             : take n (take m xs) ≡ take (n ⊓ m) xs
+  take-drop             : take n (drop m xs) ≡ drop m (take (m + n) xs)
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

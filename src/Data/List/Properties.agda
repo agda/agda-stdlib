@@ -956,6 +956,21 @@ take-[] : ∀ m → take {A = A} m [] ≡ []
 take-[] zero = refl
 take-[] (suc m) = refl
 
+-- Taking twice takes the minimum of both counts.
+take-take : ∀ n m (xs : List A) → take n (take m xs) ≡ take (n ⊓ m) xs
+take-take zero    m       xs       = refl
+take-take (suc n) zero    xs       = refl
+take-take (suc n) (suc m) []       = refl
+take-take (suc n) (suc m) (x ∷ xs) = cong (x ∷_) (take-take n m xs)
+
+-- Dropping m elements and then taking n is the same as
+-- taking n + m elements and then dropping m.
+take-drop : ∀ n m (xs : List A) →
+            take n (drop m xs) ≡ drop m (take (m + n) xs)
+take-drop n zero    xs       = refl
+take-drop n (suc m) []       = take-[] n
+take-drop n (suc m) (x ∷ xs) = take-drop n m xs
+
 ------------------------------------------------------------------------
 -- drop
 
