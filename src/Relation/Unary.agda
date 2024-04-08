@@ -14,7 +14,8 @@ open import Data.Product.Base using (_×_; _,_; Σ-syntax; ∃; uncurry; swap)
 open import Data.Sum.Base using (_⊎_; [_,_])
 open import Function.Base using (_∘_; _|>_)
 open import Level using (Level; _⊔_; 0ℓ; suc; Lift)
-open import Relation.Nullary as Nullary using (¬_; Dec; True)
+open import Relation.Nullary.Decidable.Core using (Dec; True)
+open import Relation.Nullary as Nullary using (¬_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
@@ -41,6 +42,8 @@ Pred A ℓ = A → Set ℓ
 -- Special sets
 
 -- The empty set.
+-- Explicitly not level polymorphic as this often causes unsolved metas;
+-- see `Relation.Unary.Polymorphic` for a level-polymorphic version.
 
 ∅ : Pred A 0ℓ
 ∅ = λ _ → ⊥
@@ -51,6 +54,7 @@ Pred A ℓ = A → Set ℓ
 ｛ x ｝ = x ≡_
 
 -- The universal set.
+-- Explicitly not level polymorphic (see comments for `∅` for more details)
 
 U : Pred A 0ℓ
 U = λ _ → ⊤
@@ -173,7 +177,7 @@ Irrelevant P = ∀ {x} → Nullary.Irrelevant (P x)
 Recomputable : Pred A ℓ → Set _
 Recomputable P = ∀ {x} → Nullary.Recomputable (P x)
 
--- Weak Decidability
+-- Stability - instances of P are stable wrt double negation
 
 Stable : Pred A ℓ → Set _
 Stable P = ∀ x → Nullary.Stable (P x)

@@ -12,7 +12,7 @@
 
 open import Data.Product.Base using (proj₁; proj₂)
 open import Level using (_⊔_)
-open import Function using (case_of_)
+open import Function.Base using (case_of_)
 open import Relation.Nullary.Decidable.Core
   using (Dec; yes; no)
 open import Relation.Binary.Core using (Rel; _⇒_)

@@ -116,7 +116,7 @@ module _ where
 module _ where
 
   private
-    anyApplicative : RawApplicative (λ _ → Bool)
+    anyApplicative : ∀ {ℓ} → RawApplicative {ℓ} (λ _ → Bool)
     anyApplicative = mkRawApplicative _ (λ _ → false)  _∨_
 
   open Traverse anyApplicative
