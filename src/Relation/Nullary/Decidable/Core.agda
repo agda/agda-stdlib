@@ -74,8 +74,8 @@ module _ {A : Set a} where
 recompute : Dec A → Recomputable A
 recompute = Reflects.recompute ∘ proof
 
-recompute-irr : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
-recompute-irr = Reflects.recompute-irr ∘ proof
+recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+recompute-constant = Reflects.recompute-constant ∘ proof
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.

@@ -409,7 +409,7 @@ Additions to existing modules
 
 * Added new proof in `Relation.Nullary.Decidable.Core`:
   ```agda
-  recompute-irr : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+  recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
   ```
 
 * Added new proof in `Relation.Nullary.Decidable`:
@@ -424,8 +424,8 @@ Additions to existing modules
 
 * Added new definitions in `Relation.Nullary.Reflects`:
   ```agda
-  recompute     : Reflects A b → Recomputable A
-  recompute-irr : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
+  recompute          : Reflects A b → Recomputable A
+  recompute-constant : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
   ```
 
 * Added new definitions in `Relation.Unary`
