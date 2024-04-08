@@ -320,6 +320,8 @@ module _ {f g : These A B → C} where
   alignWith-cong f≗g (a ∷ as)   (b ∷ bs) =
     cong₂ _∷_ (f≗g (these a b)) (alignWith-cong f≗g as bs)
 
+module _ {f : These A B → C} where
+
   length-alignWith : ∀ xs ys →
                    length (alignWith f xs ys) ≡ length xs ⊔ length ys
   length-alignWith []         ys       = length-map (f ∘′ that) ys

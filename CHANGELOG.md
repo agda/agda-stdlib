@@ -16,6 +16,9 @@ Bug-fixes
 * Module `Data.List.Relation.Ternary.Appending.Setoid.Properties` no longer
   exports the `Setoid` module under the alias `S`.
 
+* Remove unbound parameter from `Data.List.Properties.length-alignWith`,
+  `alignWith-map` and `map-alignWith`.
+
 Non-backwards compatible changes
 --------------------------------
 
