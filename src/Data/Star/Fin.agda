@@ -9,8 +9,8 @@
 module Data.Star.Fin where
 
 open import Data.Star.Nat as ℕ using (ℕ)
-open import Data.Star.Pointer
-open import Data.Unit
+open import Data.Star.Pointer using (Any; this; that)
+open import Data.Unit.Base using (⊤; tt)
 
 -- Finite sets are undecorated pointers into natural numbers.
 

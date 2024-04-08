@@ -9,18 +9,16 @@
 
 open import Relation.Binary.Bundles
   using (StrictTotalOrder; StrictPartialOrder)
-open import Relation.Binary.Definitions using (Reflexive)
 
 module Data.Tree.AVL.Key
   {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Level
-open import Data.Empty
-open import Data.Unit
+open import Level using (Level; _⊔_)
 open import Data.Product.Base using (_×_; _,_)
+open import Relation.Binary.Definitions using (Reflexive)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_ ; refl)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary.Construct.Add.Extrema
   as AddExtremaToSet using (_±)
 import Relation.Binary.Construct.Add.Extrema.Equality

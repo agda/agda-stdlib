@@ -11,15 +11,17 @@
 module Data.Star.BoundedVec where
 
 import Data.Maybe.Base as Maybe
-open import Data.Star.Nat
-open import Data.Star.Decoration
+open import Data.Star.Nat using (ℕ; suc; length)
+open import Data.Star.Decoration using (decoration)
 open import Data.Star.Pointer
+  using (Any; this; that; Pointer; step; done; init)
 open import Data.Star.List using (List)
-open import Data.Unit
+open import Data.Unit.Base using (⊤; tt)
 open import Function.Base using (const)
 open import Relation.Binary.Core using (_=[_]⇒_)
-open import Relation.Binary.Consequences
+open import Relation.Binary.Consequences using (map-NonEmpty)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+  using (gmap; ε; _◅_)
 
 ------------------------------------------------------------------------
 -- The type
