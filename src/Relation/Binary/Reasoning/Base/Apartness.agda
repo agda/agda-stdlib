@@ -8,7 +8,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (Level; _⊔_)
-open import Function using (case_of_)
+open import Function.Base using (case_of_)
 open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
