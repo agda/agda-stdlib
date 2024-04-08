@@ -21,11 +21,25 @@ module Algebra.Structures
 -- The file is divided into sections depending on the arities of the
 -- components of the algebraic structure.
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
+
+------------------------------------------------------------------------
+-- Structures with 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set (a ⊔ ℓ) where
+  field
+    isEquivalence : IsEquivalence _≈_
+    suc#-cong     : Congruent₁ suc#
+
+  open IsEquivalence isEquivalence public
+
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation

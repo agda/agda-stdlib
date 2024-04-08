@@ -6,8 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Core
-
 module Algebra.Morphism.Structures where
 
 open import Algebra.Core
@@ -15,11 +13,61 @@ open import Algebra.Bundles
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Level using (Level; _⊔_)
 open import Function.Definitions
+open import Relation.Binary.Core
 open import Relation.Binary.Morphism.Structures
 
 private
   variable
     a b ℓ₁ ℓ₂ : Level
+
+------------------------------------------------------------------------
+-- Morphisms over SuccessorSet-like structures
+------------------------------------------------------------------------
+
+module SuccessorSetMorphisms
+  (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂)
+  where
+
+  open RawSuccessorSet N₁
+    renaming (Carrier to A; _≈_ to _≈₁_; suc# to suc#₁; zero# to zero#₁)
+  open RawSuccessorSet N₂
+    renaming (Carrier to B; _≈_ to _≈₂_; suc# to suc#₂; zero# to zero#₂)
+  open MorphismDefinitions A B _≈₂_
+
+
+  record IsSuccessorSetHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
+      suc#-homo         : Homomorphic₁ ⟦_⟧ suc#₁ suc#₂
+      zero#-homo        : Homomorphic₀ ⟦_⟧ zero#₁ zero#₂
+
+  record IsSuccessorSetMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isSuccessorSetHomomorphism : IsSuccessorSetHomomorphism ⟦_⟧
+      injective                  : Injective _≈₁_ _≈₂_ ⟦_⟧
+
+    open IsSuccessorSetHomomorphism isSuccessorSetHomomorphism public
+
+    isRelMonomorphism : IsRelMonomorphism _≈₁_ _≈₂_ ⟦_⟧
+    isRelMonomorphism = record
+      { isHomomorphism = isRelHomomorphism
+      ; injective      = injective
+      }
+
+
+  record IsSuccessorSetIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isSuccessorSetMonomorphism : IsSuccessorSetMonomorphism ⟦_⟧
+      surjective                 : Surjective _≈₁_ _≈₂_ ⟦_⟧
+
+    open IsSuccessorSetMonomorphism isSuccessorSetMonomorphism public
+
+    isRelIsomorphism : IsRelIsomorphism _≈₁_ _≈₂_ ⟦_⟧
+    isRelIsomorphism = record
+      { isMonomorphism = isRelMonomorphism
+      ; surjective     = surjective
+      }
+
 
 ------------------------------------------------------------------------
 -- Morphisms over magma-like structures
