@@ -49,6 +49,11 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Data.Maybe.Base`:
+  ```agda
+  decToMaybe  ↦  Relation.Nullary.Decidable.Core.decToMaybe
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -397,6 +402,11 @@ Additions to existing modules
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
+* Added new proof in `Relation.Nullary.Decidable.Core`:
+  ```agda
+  decToMaybe : Dec A → Maybe A
   ```
 
 * Added new definitions in `Relation.Unary`
