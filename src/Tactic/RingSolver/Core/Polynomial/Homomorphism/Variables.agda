@@ -15,7 +15,7 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables
 
 open import Data.Product.Base    using (_,_)
 open import Data.Vec.Base as Vec using (Vec)
-open import Data.Fin             using (Fin)
+open import Data.Fin.Base        using (Fin)
 open import Data.List.Kleene
 
 open Homomorphism homo

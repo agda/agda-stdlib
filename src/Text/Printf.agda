@@ -12,7 +12,7 @@ open import Data.String.Base using (String; fromChar; concat)
 open import Function.Base using (id)
 
 import Data.Integer.Show as ℤ
-import Data.Float        as Float
+import Data.Float.Base   as Float
 import Data.Nat.Show     as ℕ
 
 open import Text.Format as Format hiding (Error)

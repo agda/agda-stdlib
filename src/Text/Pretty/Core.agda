@@ -16,13 +16,14 @@ open import Data.Bool.Base using (Bool)
 open import Data.Irrelevant as Irrelevant using (Irrelevant) hiding (module Irrelevant)
 open import Data.List.Base as List   using (List; []; _∷_)
 open import Data.Nat.Base            using (ℕ; zero; suc; _+_; _⊔_; _≤_; z≤n)
-open import Data.Nat.Properties
+open import Data.Nat.Properties      using (≤-refl; ≤-trans; +-identityʳ;
+  module ≤-Reasoning; m≤n⊔m; +-monoʳ-≤; m≤m⊔n; +-comm; _≤?_)
 open import Data.Product.Base as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
 import Data.Product.Relation.Unary.All as Allᴾ
 
 open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; mapₙ)
 open import Data.Tree.Binary.Relation.Unary.All as Allᵀ using (leaf; node)
-open import Data.Unit using (⊤; tt)
+open import Data.Unit.Base using (⊤; tt)
 import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀ
 import Data.Tree.Binary.Properties as Tree
 

@@ -44,8 +44,7 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ
   )
 import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base as Sum
-open import Data.Unit using (tt)
-import Data.Sign as S
+import Data.Sign.Base as S
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)

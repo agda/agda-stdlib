@@ -6,16 +6,16 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Level
+open import Level using (Level; _⊔_; suc; Lift; lift)
 
 module Effect.Monad.Reader.Indexed {r} (R : Set r) (a : Level) where
 
 open import Function.Base using (const; flip; _∘_)
 open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Applicative.Indexed
-open import Effect.Monad.Indexed
-open import Effect.Monad
-open import Data.Unit
+  using (IFun; RawIApplicative; RawIApplicativeZero; RawIAlternative)
+open import Effect.Monad.Indexed using (RawIMonad; RawIMonadZero;
+  RawIMonadPlus)
 
 private
   variable
