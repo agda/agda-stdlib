@@ -78,7 +78,7 @@ module _ {c a ℓ r} {M : Set c} {A : Set a}
     field
       _ᴬ∙ᴹ_ : A → M → A
       ∙-cong : x ≈ y → m ≈ᴹ n → (x ᴬ∙ᴹ m) ≈ (y ᴬ∙ᴹ n)
-    
+
 -- derived form: iterated action, satisfying congruence
 
     _ᴬ⋆ᴹ_ : A → List M → A
