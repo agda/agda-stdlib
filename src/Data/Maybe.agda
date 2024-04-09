@@ -9,10 +9,10 @@
 module Data.Maybe where
 
 open import Data.Empty using (⊥)
-open import Data.Unit using (⊤)
+open import Data.Unit.Base using (⊤)
 open import Data.Bool.Base using (T)
-open import Data.Maybe.Relation.Unary.All
-open import Data.Maybe.Relation.Unary.Any
+open import Data.Maybe.Relation.Unary.All using (All)
+open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Level using (Level)
 
 private
