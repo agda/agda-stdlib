@@ -11,17 +11,18 @@
 
 module Relation.Nullary.Decidable.Core where
 
+open import Agda.Builtin.Equality using (_≡_)
 open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
-open import Relation.Nullary.Recomputable
+open import Relation.Nullary.Recomputable as Recomputable hiding (recompute-constant)
 open import Relation.Nullary.Reflects as Reflects hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
   using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
-open import Agda.Builtin.Equality using (_≡_)
+
 
 private
   variable
@@ -75,7 +76,7 @@ recompute : Dec A → Recomputable A
 recompute = Reflects.recompute ∘ proof
 
 recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
-recompute-constant = Reflects.recompute-constant ∘ proof
+recompute-constant = Recomputable.recompute-constant ∘ recompute
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.

@@ -8,6 +8,7 @@
 
 module Relation.Nullary.Recomputable where
 
+open import Agda.Builtin.Equality using (_≡_; refl)
 open import Data.Empty using (⊥)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂)
 open import Level using (Level)
@@ -30,6 +31,12 @@ private
 
 Recomputable : (A : Set a) → Set a
 Recomputable A = .A → A
+
+------------------------------------------------------------------------
+-- Fundamental property: 'promotion' is a constant function
+
+recompute-constant : (r : Recomputable A) (p q : A) → r p ≡ r q
+recompute-constant r p q = refl
 
 ------------------------------------------------------------------------
 -- Constructions

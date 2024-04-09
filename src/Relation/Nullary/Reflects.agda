@@ -17,7 +17,7 @@ open import Level using (Level)
 open import Function.Base using (_$_; _∘_; const; id)
 open import Relation.Nullary.Negation.Core
   using (¬_; contradiction-irr; contradiction; _¬-⊎_)
-open import Relation.Nullary.Recomputable using (Recomputable)
+open import Relation.Nullary.Recomputable as Recomputable using (Recomputable)
 
 private
   variable
@@ -61,8 +61,9 @@ recompute : ∀ {b} → Reflects A b → Recomputable A
 recompute (ofʸ  a) _ = a
 recompute (ofⁿ ¬a) a = contradiction-irr a ¬a
 
-recompute-constant : ∀ {b} (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
-recompute-constant r p q = refl
+recompute-constant : ∀ {b} (r : Reflects A b) (p q : A) →
+                     recompute r p ≡ recompute r q
+recompute-constant = Recomputable.recompute-constant ∘ recompute
 
 ------------------------------------------------------------------------
 -- Interaction with negation, product, sums etc.
