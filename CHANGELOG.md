@@ -296,6 +296,12 @@ Additions to existing modules
   zipWith-cong          : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
   unzipWith-cong        : f ≗ g → unzipWith f ≗ unzipWith g
   foldl-cong            : (∀ x y → f x y ≡ g x y) → d ≡ e → foldl f d ≗ foldl g e
+  alignWith-flip        : alignWith f xs ys ≡ alignWith (f ∘ swap) ys xs
+  alignWith-comm        : f ∘ swap ≗ f → alignWith f xs ys ≡ alignWith f ys xs
+  align-flip            : align xs ys ≡ map swap (align ys xs)
+  zip-flip              : zip xs ys ≡ map swap (zip ys xs)
+  unzipWith-swap        : unzipWith (swap ∘ f) ≗ swap ∘ unzipWith f
+  unzip-swap            : unzip ∘ map swap ≗ swap ∘ unzip
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

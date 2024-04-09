@@ -342,6 +342,21 @@ module _ {f g : These A B → C} where
   map-alignWith g (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ refl (map-alignWith g xs ys)
 
+  alignWith-flip : ∀ xs ys →
+                 alignWith f xs ys ≡ alignWith (f ∘ These.swap) ys xs
+  alignWith-flip []       []       = refl
+  alignWith-flip []       (y ∷ ys) = refl
+  alignWith-flip (x ∷ xs) []       = refl
+  alignWith-flip (x ∷ xs) (y ∷ ys) = cong (_ ∷_) (alignWith-flip xs ys)
+
+module _ {f : These A A → B} where
+
+  alignWith-comm : f ∘ These.swap ≗ f →
+                 ∀ xs ys → alignWith f xs ys ≡ alignWith f ys xs
+  alignWith-comm f-comm xs ys = trans
+    (alignWith-flip xs ys)
+    (alignWith-cong f-comm ys xs)
+
 ------------------------------------------------------------------------
 -- align
 
@@ -351,6 +366,13 @@ align-map : ∀ (f : A → B) (g : C → D) →
 align-map f g xs ys = trans
   (alignWith-map f g xs ys)
   (sym (map-alignWith (These.map f g) xs ys))
+
+module _ (xs : List A) (ys : List B) where
+
+  align-flip : align xs ys ≡ map These.swap (align ys xs)
+  align-flip = trans
+    (alignWith-flip xs ys)
+    (sym (map-alignWith These.swap ys xs))
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -362,16 +384,6 @@ module _ {f g : A → B → C} where
   zipWith-cong f≗g as@(_ ∷ _) []       = refl
   zipWith-cong f≗g (a ∷ as)   (b ∷ bs) =
     cong₂ _∷_ (f≗g a b) (zipWith-cong f≗g as bs)
-
-module _ (f : A → A → B) where
-
-  zipWith-comm : (∀ x y → f x y ≡ f y x) →
-                 ∀ xs ys → zipWith f xs ys ≡ zipWith f ys xs
-  zipWith-comm f-comm []       []       = refl
-  zipWith-comm f-comm []       (x ∷ ys) = refl
-  zipWith-comm f-comm (x ∷ xs) []       = refl
-  zipWith-comm f-comm (x ∷ xs) (y ∷ ys) =
-    cong₂ _∷_ (f-comm x y) (zipWith-comm f-comm xs ys)
 
 module _ (f : A → B → C) where
 
@@ -408,6 +420,20 @@ module _ (f : A → B → C) where
   map-zipWith g (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ refl (map-zipWith g xs ys)
 
+  zipWith-flip : ∀ xs ys → zipWith f xs ys ≡ zipWith (flip f) ys xs
+  zipWith-flip []       []       = refl
+  zipWith-flip []       (x ∷ ys) = refl
+  zipWith-flip (x ∷ xs) []       = refl
+  zipWith-flip (x ∷ xs) (y ∷ ys) = cong (f x y ∷_) (zipWith-flip xs ys)
+
+module _ (f : A → A → B) where
+
+  zipWith-comm : (∀ x y → f x y ≡ f y x) →
+                 ∀ xs ys → zipWith f xs ys ≡ zipWith f ys xs
+  zipWith-comm f-comm xs ys = trans
+    (zipWith-flip f xs ys)
+    (zipWith-cong (flip f-comm) ys xs)
+
 ------------------------------------------------------------------------
 -- zip
 
@@ -417,6 +443,13 @@ zip-map : ∀ (f : A → B) (g : C → D) →
 zip-map f g xs ys = trans
   (zipWith-map _,_ f g xs ys)
   (sym (map-zipWith _,_ (Product.map f g) xs ys))
+
+module _ (xs : List A) (ys : List B) where
+
+  zip-flip : zip xs ys ≡ map Product.swap (zip ys xs)
+  zip-flip = trans
+    (zipWith-flip _,_ xs ys)
+    (sym (map-zipWith _,_ Product.swap ys xs))
 
 ------------------------------------------------------------------------
 -- unalignWith
@@ -512,6 +545,12 @@ module _ (f : A → B × C) where
   map-unzipWith g h (x ∷ xs) =
     cong (Product.zip _∷_ _∷_ _) (map-unzipWith g h xs)
 
+  unzipWith-swap : unzipWith (Product.swap ∘ f) ≗
+                   Product.swap ∘ unzipWith f
+  unzipWith-swap []       = refl
+  unzipWith-swap (x ∷ xs) =
+    cong (Product.zip _∷_ _∷_ _) (unzipWith-swap xs)
+
 ------------------------------------------------------------------------
 -- unzip
 
@@ -521,6 +560,11 @@ unzip-map : ∀ (f : A → B) (g : C → D) →
 unzip-map f g xs = trans
   (unzipWith-map id (Product.map f g) xs)
   (sym (map-unzipWith id f g xs))
+
+unzip-swap : unzip ∘ map Product.swap ≗ Product.swap ∘ unzip {A = A} {B = B}
+unzip-swap xs = trans
+  (unzipWith-map id Product.swap xs)
+  (unzipWith-swap id xs)
 
 ------------------------------------------------------------------------
 -- foldr
