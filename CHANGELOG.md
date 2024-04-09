@@ -180,7 +180,7 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
- * In `Algebra.Properties.Group`:
+* In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
   quasigroup      : Quasigroup _ _

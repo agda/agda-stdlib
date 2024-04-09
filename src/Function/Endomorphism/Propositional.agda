@@ -14,7 +14,7 @@ open import Algebra.Morphism
   using (module Definitions; IsMagmaHomomorphism; IsMonoidHomomorphism)
 open Definitions using (Homomorphic₂)
 
-open import Data.Nat.Base using (ℕ; _+_; zero; suc; +-rawMagma; +-0-rawMonoid)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_; +-rawMagma; +-0-rawMonoid)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
 open import Data.Product.Base using (_,_)
 
@@ -94,14 +94,31 @@ private
 ------------------------------------------------------------------------
 -- Homomorphism
 
-^-isSemigroupMorphism : ∀ f → IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
-^-isSemigroupMorphism f = record
+^-isMagmaHomomorphism : ∀ f → IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
+^-isMagmaHomomorphism f = record
   { isRelHomomorphism = record { cong = cong (f ^_) }
   ; homo = ^-homo f
   }
 
-^-isMonoidMorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
-^-isMonoidMorphism f = record
-  { isMagmaHomomorphism = ^-isSemigroupMorphism f
+^-isMonoidHomomorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
+^-isMonoidHomomorphism f = record
+  { isMagmaHomomorphism = ^-isMagmaHomomorphism f
   ; ε-homo = refl
   }
+
+------------------------------------------------------------------------
+-- Deprecations
+
+-- Version 2.1
+
+^-isSemigroupMorphism = ^-isMagmaHomomorphism
+{-# WARNING_ON_USAGE ^-isSemigroupMorphism
+"Warning: ^-isSemigroupMorphism was deprecated in v2.1.
+Please use ^-isMagmaHomomorphism instead."
+#-}
+
+^-isMonoidMorphism = ^-isMonoidHomomorphism
+{-# WARNING_ON_USAGE ^-isMonoidMorphism
+"Warning: ^-isMonoidMorphism was deprecated in v2.1.
+Please use ^-isMonoidHomomorphism instead."
+#-}
