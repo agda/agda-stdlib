@@ -145,6 +145,22 @@ module _ (f : A → Maybe B) where
   ... | just y  = s≤s ih
   ... | nothing = m≤n⇒m≤1+n ih
 
+module _ (f : B → Maybe C) (g : A → B) where
+
+  mapMaybe-map : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
+  mapMaybe-map []       = refl
+  mapMaybe-map (x ∷ xs) with ih ← mapMaybe-map xs | f (g x)
+  ... | just y  = cong (y ∷_) ih
+  ... | nothing = ih
+
+module _ (g : B → C) (f : A → Maybe B) where
+
+  map-mapMaybe : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
+  map-mapMaybe []       = refl
+  map-mapMaybe (x ∷ xs) with ih ← map-mapMaybe xs | f x
+  ... | just y  = cong (g y ∷_) ih
+  ... | nothing = ih
+
 ------------------------------------------------------------------------
 -- _++_
 
@@ -318,6 +334,16 @@ module _ {f g : These A B → C} where
     cong₂ _∷_ refl (map-alignWith g xs ys)
 
 ------------------------------------------------------------------------
+-- align
+
+align-map : ∀ (f : A → B) (g : C → D) →
+            ∀ xs ys → align (map f xs) (map g ys) ≡
+                      map (These.map f g) (align xs ys)
+align-map f g xs ys = trans
+  (alignWith-map f g xs ys)
+  (sym (map-alignWith (These.map f g) xs ys))
+
+------------------------------------------------------------------------
 -- zipWith
 
 module _ (f : A → A → B) where
@@ -347,7 +373,7 @@ module _ (f : A → B → C) where
   length-zipWith (x ∷ xs) []       = refl
   length-zipWith (x ∷ xs) (y ∷ ys) = cong suc (length-zipWith xs ys)
 
-  zipWith-map : ∀ {d e} {D : Set d} {E : Set e} (g : D → A) (h : E → B) →
+  zipWith-map : ∀ (g : D → A) (h : E → B) →
                 ∀ xs ys → zipWith f (map g xs) (map h ys) ≡
                           zipWith (λ x y → f (g x) (h y)) xs ys
   zipWith-map g h []       []       = refl
@@ -356,7 +382,7 @@ module _ (f : A → B → C) where
   zipWith-map g h (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ refl (zipWith-map g h xs ys)
 
-  map-zipWith : ∀ {d} {D : Set d} (g : C → D) → ∀ xs ys →
+  map-zipWith : ∀ (g : C → D) → ∀ xs ys →
                 map g (zipWith f xs ys) ≡
                 zipWith (λ x y → g (f x y)) xs ys
   map-zipWith g []       []       = refl
@@ -364,6 +390,16 @@ module _ (f : A → B → C) where
   map-zipWith g (x ∷ xs) []       = refl
   map-zipWith g (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ refl (map-zipWith g xs ys)
+
+------------------------------------------------------------------------
+-- zip
+
+zip-map : ∀ (f : A → B) (g : C → D) →
+          ∀ xs ys → zip (map f xs) (map g ys) ≡
+                    map (Product.map f g) (zip xs ys)
+zip-map f g xs ys = trans
+  (zipWith-map _,_ f g xs ys)
+  (sym (map-zipWith _,_ (Product.map f g) xs ys))
 
 ------------------------------------------------------------------------
 -- unalignWith
@@ -439,6 +475,28 @@ module _ (f : A → B × C) where
   zipWith-unzipWith g f∘g≗id []       = refl
   zipWith-unzipWith g f∘g≗id (x ∷ xs) =
     cong₂ _∷_ (f∘g≗id x) (zipWith-unzipWith g f∘g≗id xs)
+
+  unzipWith-map : (g : D → A) → unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
+  unzipWith-map g []       = refl
+  unzipWith-map g (x ∷ xs) =
+    cong (Product.zip _∷_ _∷_ (f (g x))) (unzipWith-map g xs)
+
+  map-unzipWith : (g : B → D) (h : C → E) →
+                  Product.map (map g) (map h) ∘ unzipWith f ≗
+                  unzipWith (Product.map g h ∘ f)
+  map-unzipWith g h []       = refl
+  map-unzipWith g h (x ∷ xs) =
+    cong (Product.zip _∷_ _∷_ _) (map-unzipWith g h xs)
+
+------------------------------------------------------------------------
+-- unzip
+
+unzip-map : ∀ (f : A → B) (g : C → D) →
+            unzip ∘ map (Product.map f g) ≗
+            Product.map (map f) (map g) ∘ unzip
+unzip-map f g xs = trans
+  (unzipWith-map id (Product.map f g) xs)
+  (sym (map-unzipWith id f g xs))
 
 ------------------------------------------------------------------------
 -- foldr
@@ -912,6 +970,15 @@ splitAt-defn zero    xs       = refl
 splitAt-defn (suc n) []       = refl
 splitAt-defn (suc n) (x ∷ xs) = cong (Product.map (x ∷_) id) (splitAt-defn n xs)
 
+module _ (f : A → B) where
+
+  splitAt-map : ∀ n → splitAt n ∘ map f ≗
+                      Product.map (map f) (map f) ∘ splitAt n
+  splitAt-map zero    xs       = refl
+  splitAt-map (suc n) []       = refl
+  splitAt-map (suc n) (x ∷ xs) =
+    cong (Product.map₁ (f x ∷_)) (splitAt-map n xs)
+
 ------------------------------------------------------------------------
 -- takeWhile, dropWhile, and span
 
@@ -1233,15 +1300,46 @@ module _ {x y : A} where
 ∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
 ∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
 
+------------------------------------------------------------------------
+-- uncons
 
+module _ (f : A → B) where
+
+  -- 'commute' List.uncons and List.map to obtain a Maybe.map and List.uncons.
+  uncons-map : uncons ∘ map f ≗ Maybe.map (Product.map f (map f)) ∘ uncons
+  uncons-map []       = refl
+  uncons-map (x ∷ xs) = refl
 
 ------------------------------------------------------------------------
 -- head
 
--- 'commute' List.head and List.map to obtain a Maybe.map and List.head.
-head-map : ∀ {f : A → B} xs → head (map f xs) ≡ Maybe.map f (head xs)
-head-map [] = refl
-head-map (_ ∷ _) = refl
+module _ {f : A → B} where
+
+  -- 'commute' List.head and List.map to obtain a Maybe.map and List.head.
+  head-map : head ∘ map f ≗ Maybe.map f ∘ head
+  head-map []      = refl
+  head-map (_ ∷ _) = refl
+
+------------------------------------------------------------------------
+-- last
+
+module _ (f : A → B) where
+
+  -- 'commute' List.last and List.map to obtain a Maybe.map and List.last.
+  last-map : last ∘ map f ≗ Maybe.map f ∘ last
+  last-map []               = refl
+  last-map (x ∷ [])         = refl
+  last-map (x ∷ xs@(_ ∷ _)) = last-map xs
+
+------------------------------------------------------------------------
+-- tail
+
+module _ (f : A → B) where
+
+  -- 'commute' List.tail and List.map to obtain a Maybe.map and List.tail.
+  tail-map : tail ∘ map f ≗ Maybe.map (map f) ∘ tail
+  tail-map []       = refl
+  tail-map (x ∷ xs) = refl
 
 
 

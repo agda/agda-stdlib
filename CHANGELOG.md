@@ -281,6 +281,17 @@ Additions to existing modules
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
   reverse-downFrom      : reverse (downFrom n) ≡ upTo n
+  mapMaybe-map          : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
+  map-mapMaybe          : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
+  align-map             : align (map f xs) (map g ys) ≡ map (map f g) (align xs ys)
+  zip-map               : zip (map f xs) (map g ys) ≡ map (map f g) (zip xs ys)
+  unzipWith-map         : unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
+  map-unzipWith         : map (map g) (map h) ∘ unzipWith f ≗ unzipWith (map g h ∘ f)
+  unzip-map             : unzip ∘ map (map f g) ≗ map (map f) (map g) ∘ unzip
+  splitAt-map           : splitAt n ∘ map f ≗ map (map f) (map f) ∘ splitAt n
+  uncons-map            : uncons ∘ map f ≗ map (map f (map f)) ∘ uncons
+  last-map              : last ∘ map f ≗ map f ∘ last
+  tail-map              : tail ∘ map f ≗ map (map f) ∘ tail
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
