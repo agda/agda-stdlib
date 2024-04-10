@@ -531,9 +531,17 @@ module _ (f : A → B × C) where
 
   zipWith-unzipWith : (g : B → C → A) → uncurry′ g ∘ f ≗ id →
                       uncurry′ (zipWith g) ∘ (unzipWith f)  ≗ id
-  zipWith-unzipWith g f∘g≗id []       = refl
-  zipWith-unzipWith g f∘g≗id (x ∷ xs) =
-    cong₂ _∷_ (f∘g≗id x) (zipWith-unzipWith g f∘g≗id xs)
+  zipWith-unzipWith g g∘f≗id []       = refl
+  zipWith-unzipWith g g∘f≗id (x ∷ xs) =
+    cong₂ _∷_ (g∘f≗id x) (zipWith-unzipWith g g∘f≗id xs)
+
+  unzipWith-zipWith : (g : B → C → A) → f ∘ uncurry′ g ≗ id →
+                      ∀ xs ys → length xs ≡ length ys →
+                      unzipWith f (zipWith g xs ys) ≡ (xs , ys)
+  unzipWith-zipWith g f∘g≗id []       []       l≡l = refl
+  unzipWith-zipWith g f∘g≗id (x ∷ xs) (y ∷ ys) l≡l  =
+    cong₂ (Product.zip _∷_ _∷_) (f∘g≗id (x , y))
+          (unzipWith-zipWith g f∘g≗id xs ys (suc-injective l≡l))
 
   unzipWith-map : (g : D → A) → unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
   unzipWith-map g []       = refl
@@ -567,6 +575,13 @@ unzip-swap : unzip ∘ map Product.swap ≗ Product.swap ∘ unzip {A = A} {B = 
 unzip-swap xs = trans
   (unzipWith-map id Product.swap xs)
   (unzipWith-swap id xs)
+
+zip-unzip : uncurry′ zip ∘ unzip ≗ id {A = List (A × B)}
+zip-unzip = zipWith-unzipWith id _,_ λ _ → refl
+
+unzip-zip : ∀ (xs : List A) (ys : List B) →
+            length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
+unzip-zip = unzipWith-zipWith id _,_ λ _ → refl
 
 ------------------------------------------------------------------------
 -- foldr
