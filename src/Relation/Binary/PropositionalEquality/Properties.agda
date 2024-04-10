@@ -157,7 +157,7 @@ isEquivalence = record
   ; trans = trans
   }
 
-isDecEquivalence : DecidableEquality A → IsDecEquivalence {A = A} _≡_
+isDecEquivalence : DecidableEquality A → IsDecEquivalence _≡_
 isDecEquivalence _≟_ = record
   { isEquivalence = isEquivalence
   ; _≟_           = _≟_
