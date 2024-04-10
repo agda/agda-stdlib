@@ -16,15 +16,14 @@ open import Data.Product.Base hiding (proj₁; proj₂)
 open import Data.Unit.Polymorphic
 open import Function.Base using (id; _∘_)
 open import Level
-open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
 
 -- The module is parametrised by the type of labels, which should come
 -- with decidable equality.
 
-module Data.Record {ℓ} (Label : Set ℓ) (_≟_ : Decidable {A = Label} _≡_) where
+module Data.Record {ℓ} (Label : Set ℓ) (_≟_ : DecidableEquality Label) where
 
 ------------------------------------------------------------------------
 -- A Σ-type with a manifest field
