@@ -57,6 +57,26 @@ Deprecated names
 New modules
 -----------
 
+* Bundles for left- and right- actions:
+  ```
+  Algebra.Action.Bundles
+  ```
+
+* The free `List` actions over a `SetoidAction`:
+  ```
+  Algebra.Action.Construct.Free
+  ```
+
+* The left- and right- regular actions (of a `Monoid`) over itself:
+  ```
+  Algebra.Action.Construct.Self
+  ```
+
+* Raw structures for left- and right- actions:
+  ```
+  Algebra.Action.Structures.Raw
+  ```
+
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
