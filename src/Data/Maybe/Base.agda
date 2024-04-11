@@ -15,9 +15,9 @@ open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Base using (⊤)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Product.Base as Prod using (_×_; _,_)
-open import Function.Base
-open import Relation.Nullary.Reflects
-open import Relation.Nullary.Decidable.Core
+open import Function.Base using (const; _∘_; id)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary.Decidable.Core using (Dec; _because_)
 
 private
   variable

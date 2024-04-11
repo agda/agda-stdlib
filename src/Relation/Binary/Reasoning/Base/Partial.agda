@@ -6,10 +6,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Function using (case_of_)
+open import Function.Base using (case_of_)
 open import Level using (_⊔_)
-open import Relation.Binary.Core
-open import Relation.Binary.Definitions
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Transitive; Trans; Reflexive)
 open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Reasoning.Syntax

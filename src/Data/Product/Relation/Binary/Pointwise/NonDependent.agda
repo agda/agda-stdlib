@@ -9,13 +9,16 @@
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
 open import Data.Product.Base as Product
-open import Data.Product.Properties using (≡-dec)
-open import Data.Sum.Base
-open import Data.Unit.Base using (⊤)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Function
+open import Function.Base using (_on_; id)
+open import Function.Bundles using (Inverse)
 open import Relation.Nullary.Decidable using (_×-dec_)
-open import Relation.Binary
+open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Bundles
+  using (Setoid; DecSetoid; Preorder; Poset; StrictPartialOrder)
+open import Relation.Binary.Definitions
+open import Relation.Binary.Structures
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
 
