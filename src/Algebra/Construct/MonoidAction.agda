@@ -64,10 +64,10 @@ module _ {c a ℓ r} {M : Set c} {A : Set a}
     ⋆-cong []            x≈y = x≈y
     ⋆-cong (m≈n ∷ ms≋ns) x≈y = ∙-cong m≈n (⋆-cong ms≋ns x≈y)
 
-    ⋆-act-cong : Reflexive _≈ᴹ_ →
-                 ∀ ms ns → x ≈ y → ((ms ++ ns) ᴹ⋆ᴬ x) ≈ (ms ᴹ⋆ᴬ ns ᴹ⋆ᴬ y)
-    ⋆-act-cong refl []       ns x≈y = ⋆-cong {ns = ns} (Pointwise.refl refl) x≈y
-    ⋆-act-cong refl (m ∷ ms) ns x≈y = ∙-cong refl (⋆-act-cong refl ms ns x≈y)
+    ⋆-act-cong : ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
+                 x ≈ y → (ps ᴹ⋆ᴬ x) ≈ (ms ᴹ⋆ᴬ ns ᴹ⋆ᴬ y)
+    ⋆-act-cong []       ps≋ns             x≈y = ⋆-cong ps≋ns x≈y
+    ⋆-act-cong (m ∷ ms) (p≈m ∷ ps≋ms++ns) x≈y = ∙-cong p≈m (⋆-act-cong ms ps≋ms++ns x≈y)
 
     []-act-cong : x ≈ y → ([] ᴹ⋆ᴬ x) ≈ y
     []-act-cong = id
@@ -88,10 +88,10 @@ module _ {c a ℓ r} {M : Set c} {A : Set a}
     ⋆-cong x≈y []            = x≈y
     ⋆-cong x≈y (m≈n ∷ ms≋ns) = ⋆-cong (∙-cong x≈y m≈n) ms≋ns
 
-    ⋆-act-cong : Reflexive _≈ᴹ_ →
-                 x ≈ y → ∀ ms ns → (x ᴬ⋆ᴹ (ms ++ ns)) ≈ (y ᴬ⋆ᴹ ms ᴬ⋆ᴹ ns)
-    ⋆-act-cong refl x≈y []       ns = ⋆-cong {ns = ns} x≈y (Pointwise.refl refl)
-    ⋆-act-cong refl x≈y (m ∷ ms) ns = ⋆-act-cong refl (∙-cong x≈y refl) ms ns
+    ⋆-act-cong : x ≈ y → ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
+                 (x ᴬ⋆ᴹ ps) ≈ (y ᴬ⋆ᴹ ms ᴬ⋆ᴹ ns)
+    ⋆-act-cong x≈y []       ps≋ns             = ⋆-cong x≈y ps≋ns
+    ⋆-act-cong x≈y (m ∷ ms) (p≈m ∷ ps≋ms++ns) = ⋆-act-cong (∙-cong x≈y p≈m) ms ps≋ms++ns
 
     []-act-cong : x ≈ y → (x ᴬ⋆ᴹ []) ≈ y
     []-act-cong = id
@@ -106,7 +106,7 @@ module _ (M : Monoid c ℓ) (A : Setoid a r) where
 
     open module M = Monoid M using () renaming (Carrier to M)
     open module A = Setoid A using (_≈_) renaming (Carrier to A)
-    open ≋ M.setoid using (_≋_; [] ; _∷_)
+    open ≋ M.setoid using (_≋_; [] ; _∷_; ≋-refl)
 
     variable
       x y z : A.Carrier
@@ -130,7 +130,7 @@ module _ (M : Monoid c ℓ) (A : Setoid a r) where
     ∙-congʳ m≈n = ∙-cong m≈n A.refl
 
     ⋆-act : ∀ ms ns x → (ms ++ ns) ⋆ x ≈ ms ⋆ ns ⋆ x
-    ⋆-act ms ns x = ⋆-act-cong M.refl ms ns A.refl
+    ⋆-act ms ns x = ⋆-act-cong ms ≋-refl A.refl
 
     []-act : ∀ x → [] ⋆ x ≈ x
     []-act _ = []-act-cong A.refl
@@ -152,7 +152,7 @@ module _ (M : Monoid c ℓ) (A : Setoid a r) where
     ∙-congʳ m≈n = ∙-cong A.refl m≈n
 
     ⋆-act : ∀ x ms ns → x ⋆ (ms ++ ns) ≈ x ⋆ ms ⋆ ns
-    ⋆-act _ = ⋆-act-cong M.refl A.refl
+    ⋆-act x ms ns = ⋆-act-cong A.refl ms ≋-refl
 
     []-act : ∀ x → x ⋆ [] ≈ x
     []-act x = []-act-cong A.refl
@@ -212,7 +212,7 @@ module Free (M : Setoid c ℓ) (S : Setoid a r) where
                (open RawLeftAction rawLeftAction) →
                LeftAction monoid S (record { _ᴹ∙ᴬ_ = _ᴹ⋆ᴬ_  ; ∙-cong = ⋆-cong })
   leftAction rawLeftAction = record
-    { ∙-act = λ ms ns x → ⋆-act-cong M.refl ms ns A.refl
+    { ∙-act = λ ms ns x → ⋆-act-cong ms ≋-refl A.refl
     ; ε-act = λ _ → []-act-cong A.refl
     }
     where open RawLeftAction rawLeftAction
@@ -221,7 +221,7 @@ module Free (M : Setoid c ℓ) (S : Setoid a r) where
                 (open RawRightAction rawRightAction) →
                 RightAction monoid S (record { _ᴬ∙ᴹ_ = _ᴬ⋆ᴹ_  ; ∙-cong = ⋆-cong })
   rightAction rawRightAction = record
-    { ∙-act = λ _ → ⋆-act-cong M.refl A.refl
+    { ∙-act = λ x ms ns → ⋆-act-cong A.refl ms ≋-refl
     ; ε-act = λ _ → []-act-cong A.refl
     }
     where open RawRightAction rawRightAction
