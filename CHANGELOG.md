@@ -308,7 +308,7 @@ Additions to existing modules
   take-take             : take n (take m xs) ≡ take (n ⊓ m) xs
   take-drop             : take n (drop m xs) ≡ drop m (take (m + n) xs)
   zip-unzip             : uncurry′ zip ∘ unzip ≗ id
-  unzipWith-zipWith     : length xs ≡ length ys → unzipWith f (zipWith g xs ys) ≡ (xs , ys)
+  unzipWith-zipWith     : f ∘ uncurry′ g ≗ id → length xs ≡ length ys → unzipWith f (zipWith g xs ys) ≡ (xs , ys)
   unzip-zip             : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
   ```
 
