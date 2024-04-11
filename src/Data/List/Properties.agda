@@ -369,12 +369,11 @@ align-map f g xs ys = trans
   (alignWith-map f g xs ys)
   (sym (map-alignWith (These.map f g) xs ys))
 
-module _ (xs : List A) (ys : List B) where
-
-  align-flip : align xs ys ≡ map These.swap (align ys xs)
-  align-flip = trans
-    (alignWith-flip xs ys)
-    (sym (map-alignWith These.swap ys xs))
+align-flip : ∀ (xs : List A) (ys : List B) →
+             align xs ys ≡ map These.swap (align ys xs)
+align-flip xs ys = trans
+  (alignWith-flip xs ys)
+  (sym (map-alignWith These.swap ys xs))
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -446,12 +445,11 @@ zip-map f g xs ys = trans
   (zipWith-map _,_ f g xs ys)
   (sym (map-zipWith _,_ (Product.map f g) xs ys))
 
-module _ (xs : List A) (ys : List B) where
-
-  zip-flip : zip xs ys ≡ map Product.swap (zip ys xs)
-  zip-flip = trans
-    (zipWith-flip _,_ xs ys)
-    (sym (map-zipWith _,_ Product.swap ys xs))
+zip-flip : ∀ (xs : List A) (ys : List B) →
+           zip xs ys ≡ map Product.swap (zip ys xs)
+zip-flip xs ys = trans
+  (zipWith-flip _,_ xs ys)
+  (sym (map-zipWith _,_ Product.swap ys xs))
 
 ------------------------------------------------------------------------
 -- unalignWith
