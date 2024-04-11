@@ -355,9 +355,10 @@ module _ {f : These A A → B} where
 
   alignWith-comm : f ∘ These.swap ≗ f →
                  ∀ xs ys → alignWith f xs ys ≡ alignWith f ys xs
-  alignWith-comm f-comm xs ys = trans
-    (alignWith-flip xs ys)
-    (alignWith-cong f-comm ys xs)
+  alignWith-comm f-comm xs ys = begin
+    alignWith f xs ys                ≡⟨ alignWith-flip xs ys ⟩
+    alignWith (f ∘ These.swap) ys xs ≡⟨ alignWith-cong f-comm ys xs ⟩
+    alignWith f ys xs                ∎
 
 ------------------------------------------------------------------------
 -- align
@@ -365,15 +366,17 @@ module _ {f : These A A → B} where
 align-map : ∀ (f : A → B) (g : C → D) →
             ∀ xs ys → align (map f xs) (map g ys) ≡
                       map (These.map f g) (align xs ys)
-align-map f g xs ys = trans
-  (alignWith-map f g xs ys)
-  (sym (map-alignWith (These.map f g) xs ys))
+align-map f g xs ys = begin
+  align (map f xs) (map g ys)       ≡⟨ alignWith-map f g xs ys ⟩
+  alignWith (These.map f g) xs ys   ≡⟨ sym (map-alignWith (These.map f g) xs ys) ⟩
+  map (These.map f g) (align xs ys) ∎
 
 align-flip : ∀ (xs : List A) (ys : List B) →
              align xs ys ≡ map These.swap (align ys xs)
-align-flip xs ys = trans
-  (alignWith-flip xs ys)
-  (sym (map-alignWith These.swap ys xs))
+align-flip xs ys = begin
+  align xs ys                  ≡⟨ alignWith-flip xs ys ⟩
+  alignWith These.swap ys xs   ≡⟨ sym (map-alignWith These.swap ys xs) ⟩
+  map These.swap (align ys xs) ∎
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -431,9 +434,10 @@ module _ (f : A → A → B) where
 
   zipWith-comm : (∀ x y → f x y ≡ f y x) →
                  ∀ xs ys → zipWith f xs ys ≡ zipWith f ys xs
-  zipWith-comm f-comm xs ys = trans
-    (zipWith-flip f xs ys)
-    (zipWith-cong (flip f-comm) ys xs)
+  zipWith-comm f-comm xs ys = begin
+    zipWith f xs ys        ≡⟨ zipWith-flip f xs ys ⟩
+    zipWith (flip f) ys xs ≡⟨ zipWith-cong (flip f-comm) ys xs ⟩
+    zipWith f ys xs        ∎
 
 ------------------------------------------------------------------------
 -- zip
@@ -441,15 +445,17 @@ module _ (f : A → A → B) where
 zip-map : ∀ (f : A → B) (g : C → D) →
           ∀ xs ys → zip (map f xs) (map g ys) ≡
                     map (Product.map f g) (zip xs ys)
-zip-map f g xs ys = trans
-  (zipWith-map _,_ f g xs ys)
-  (sym (map-zipWith _,_ (Product.map f g) xs ys))
+zip-map f g xs ys = begin
+  zip (map f xs) (map g ys)         ≡⟨ zipWith-map _,_ f g xs ys ⟩
+  zipWith (λ x y → f x , g y) xs ys ≡⟨ sym (map-zipWith _,_ (Product.map f g) xs ys) ⟩
+  map (Product.map f g) (zip xs ys) ∎
 
 zip-flip : ∀ (xs : List A) (ys : List B) →
            zip xs ys ≡ map Product.swap (zip ys xs)
-zip-flip xs ys = trans
-  (zipWith-flip _,_ xs ys)
-  (sym (map-zipWith _,_ Product.swap ys xs))
+zip-flip xs ys = begin
+  zip xs ys                    ≡⟨ zipWith-flip _,_ xs ys ⟩
+  zipWith (flip _,_) ys xs     ≡⟨ sym (map-zipWith _,_ Product.swap ys xs) ⟩
+  map Product.swap (zip ys xs) ∎
 
 ------------------------------------------------------------------------
 -- unalignWith
@@ -565,14 +571,16 @@ module _ (f : A → B × C) where
 unzip-map : ∀ (f : A → B) (g : C → D) →
             unzip ∘ map (Product.map f g) ≗
             Product.map (map f) (map g) ∘ unzip
-unzip-map f g xs = trans
-  (unzipWith-map id (Product.map f g) xs)
-  (sym (map-unzipWith id f g xs))
+unzip-map f g xs = begin
+  unzip (map (Product.map f g) xs)       ≡⟨ unzipWith-map id (Product.map f g) xs ⟩
+  unzipWith (Product.map f g) xs         ≡⟨ sym (map-unzipWith id f g xs) ⟩
+  Product.map (map f) (map g) (unzip xs) ∎
 
 unzip-swap : unzip ∘ map Product.swap ≗ Product.swap ∘ unzip {A = A} {B = B}
-unzip-swap xs = trans
-  (unzipWith-map id Product.swap xs)
-  (unzipWith-swap id xs)
+unzip-swap xs = begin
+  unzip (map Product.swap xs) ≡⟨ unzipWith-map id Product.swap xs ⟩
+  unzipWith Product.swap xs   ≡⟨ unzipWith-swap id xs ⟩
+  Product.swap (unzip xs)     ∎
 
 zip-unzip : uncurry′ zip ∘ unzip ≗ id {A = List (A × B)}
 zip-unzip = zipWith-unzipWith id _,_ λ _ → refl
