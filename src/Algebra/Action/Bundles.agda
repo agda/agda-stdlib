@@ -4,8 +4,8 @@
 -- Monoid Actions and the free Monoid Action on a Setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
-
+{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --allow-unsolved-metas #-}
 module Algebra.Action.Bundles where
 
 open import Algebra.Action.Structures.Raw using (IsRawLeftAction; IsRawRightAction)
@@ -55,6 +55,22 @@ module SetoidAction (M : Setoid c ℓ) (A : Setoid a r) where
     isRawRightAction = record { _ᴬ∙ᴹ_ = curry to ; ∙-cong = curry cong }
       where open Func act
 
+  
+------------------------------------------------------------------------
+-- A Setoid action yields an iterated List action
+
+module _ {M : Setoid c ℓ} {A : Setoid a r} where
+
+  open SetoidAction
+
+  open ≋ M using (≋-setoid)
+
+  leftListAction : (leftAction : Left M A) → Left ≋-setoid A
+  leftListAction leftAction = {!!}
+
+  rightListAction : (rightAction : Right M A) → Right ≋-setoid A
+  rightListAction rightAction = {!!}
+  
 
 ------------------------------------------------------------------------
 -- Definition: indexed over an underlying raw action

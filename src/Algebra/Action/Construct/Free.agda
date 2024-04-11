@@ -4,7 +4,7 @@
 -- The free MonoidAction on a SetoidAction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
@@ -55,18 +55,29 @@ private
 ------------------------------------------------------------------------
 -- Second: define the actions of that Monoid
 
-leftAction : (leftAction : SetoidAction.Left M S) →
-             Left monoid S {!leftAction!}
-leftAction leftAction = record
-  { ∙-act = λ ms ns x → ⋆-act-cong ms ≋-refl A.refl
-  ; ε-act = λ _ → []-act-cong A.refl
-  }
-  where open SetoidAction.Left leftAction; open IsRawLeftAction isRawLeftAction
+module _ (left : SetoidAction.Left M S) where
 
-rightAction : (rightAction : SetoidAction.Right M S) →
-              Right monoid S {!rightAction!}
-rightAction rightAction = record
-  { ∙-act = λ x ms ns → ⋆-act-cong A.refl ms ≋-refl
-  ; ε-act = λ _ → []-act-cong A.refl
-  }
-  where open SetoidAction.Right rightAction; open IsRawRightAction isRawRightAction
+  private listAction = leftListAction left
+
+  open SetoidAction.Left listAction
+  open IsRawLeftAction isRawLeftAction
+
+  leftAction : Left monoid S listAction
+  leftAction = record
+    { ∙-act = λ ms ns x → ∙-cong ≋-refl A.refl
+    ; ε-act = λ _ → []-act-cong A.refl
+    }
+
+module _ (right : SetoidAction.Right M S) where
+
+  private listAction = rightListAction right
+
+  open SetoidAction.Right listAction
+  open IsRawRightAction isRawRightAction
+
+  rightAction : Right monoid S listAction
+  rightAction = record
+    { ∙-act = λ x ms ns → ⋆-act-cong A.refl ms ≋-refl
+    ; ε-act = λ _ → []-act-cong A.refl
+    }
+
