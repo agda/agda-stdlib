@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Monoid Actions and the free Monoid Action on a Setoid
+-- The free MonoidAction on a SetoidAction
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -26,47 +26,47 @@ open import Function.Base using (_∘_)
 
 open import Level using (Level; _⊔_)
 
+open ≋ M using (_≋_; ≋-refl; ≋-reflexive; ≋-isEquivalence; ++⁺)
+open MonoidAction
 
 ------------------------------------------------------------------------
--- Distinguished *free* action: lifting a raw action to a List action
+-- First: define the Monoid structure on List M.Carrier
 
-module Free where
+private
 
-  open ≋ M using (_≋_; ≋-refl; ≋-reflexive; ≋-isEquivalence; ++⁺)
-  open MonoidAction
+  module M = Setoid M
+  module A = Setoid S
 
-  private
-
-    module M = Setoid M
-    module A = Setoid S
-
-    isMonoid : IsMonoid _≋_ _++_ []
-    isMonoid = record
-      { isSemigroup = record
-        { isMagma = record
-          { isEquivalence = ≋-isEquivalence
-          ; ∙-cong = ++⁺
-          }
-        ; assoc = λ xs ys zs → ≋-reflexive (List.++-assoc xs ys zs)
+  isMonoid : IsMonoid _≋_ _++_ []
+  isMonoid = record
+    { isSemigroup = record
+      { isMagma = record
+        { isEquivalence = ≋-isEquivalence
+        ; ∙-cong = ++⁺
         }
-      ; identity = (λ _ → ≋-refl) , ≋-reflexive ∘ List.++-identityʳ }
+      ; assoc = λ xs ys zs → ≋-reflexive (List.++-assoc xs ys zs)
+      }
+    ; identity = (λ _ → ≋-refl) , ≋-reflexive ∘ List.++-identityʳ }
 
-    monoid : Monoid c (c ⊔ ℓ)
-    monoid = record { isMonoid = isMonoid }
+  monoid : Monoid c (c ⊔ ℓ)
+  monoid = record { isMonoid = isMonoid }
 
 
-  leftAction : (leftAction : SetoidAction.Left M S) →
-               Left monoid S {!leftAction!}
-  leftAction leftAction = record
-    { ∙-act = λ ms ns x → ⋆-act-cong ms ≋-refl A.refl
-    ; ε-act = λ _ → []-act-cong A.refl
-    }
-    where open SetoidAction.Left leftAction; open IsRawLeftAction isRawLeftAction
+------------------------------------------------------------------------
+-- Second: define the actions of that Monoid
 
-  rightAction : (rightAction : SetoidAction.Right M S) →
-                Right monoid S {!rightAction!}
-  rightAction rightAction = record
-    { ∙-act = λ x ms ns → ⋆-act-cong A.refl ms ≋-refl
-    ; ε-act = λ _ → []-act-cong A.refl
-    }
-    where open SetoidAction.Right rightAction; open IsRawRightAction isRawRightAction
+leftAction : (leftAction : SetoidAction.Left M S) →
+             Left monoid S {!leftAction!}
+leftAction leftAction = record
+  { ∙-act = λ ms ns x → ⋆-act-cong ms ≋-refl A.refl
+  ; ε-act = λ _ → []-act-cong A.refl
+  }
+  where open SetoidAction.Left leftAction; open IsRawLeftAction isRawLeftAction
+
+rightAction : (rightAction : SetoidAction.Right M S) →
+              Right monoid S {!rightAction!}
+rightAction rightAction = record
+  { ∙-act = λ x ms ns → ⋆-act-cong A.refl ms ≋-refl
+  ; ε-act = λ _ → []-act-cong A.refl
+  }
+  where open SetoidAction.Right rightAction; open IsRawRightAction isRawRightAction
