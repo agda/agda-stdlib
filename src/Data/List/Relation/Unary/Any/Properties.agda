@@ -20,7 +20,7 @@ open import Data.List.Membership.Propositional.Properties.Core
   using (Any↔; find∘map; map∘find; lose∘find)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
+open import Data.Nat.Base using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
@@ -31,8 +31,8 @@ open import Data.Product.Function.NonDependent.Propositional
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Effect.Monad
-open import Function.Base
+open import Effect.Monad using (RawMonad)
+open import Function.Base using (_$_; _∘_; flip; const; id; _∘′_)
 open import Function.Bundles
 import Function.Properties.Inverse as Inverse
 open import Function.Related.Propositional as Related using (Kind; Related)

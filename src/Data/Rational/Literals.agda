@@ -8,9 +8,9 @@
 
 module Data.Rational.Literals where
 
-open import Agda.Builtin.FromNat
-open import Agda.Builtin.FromNeg
-open import Data.Unit using (⊤)
+open import Agda.Builtin.FromNat using (Number)
+open import Agda.Builtin.FromNeg using (Negative)
+open import Data.Unit.Base using (⊤)
 open import Data.Nat.Base using (ℕ; zero)
 open import Data.Nat.Coprimality using (sym; 1-coprimeTo)
 open import Data.Integer.Base using (ℤ; ∣_∣; +_; -_)

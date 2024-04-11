@@ -6,17 +6,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.List
-import Data.List.Relation.Unary.Unique.DecSetoid.Properties as Setoid
-open import Data.List.Relation.Unary.All.Properties using (all-filter)
-open import Level
 open import Relation.Binary.Definitions using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
 module Data.List.Relation.Unary.Unique.DecPropositional.Properties
   {a} {A : Set a} (_≟_ : DecidableEquality A) where
 
+open import Data.List.Base using (deduplicate)
+open import Data.List.Relation.Unary.All.Properties using (all-filter)
 open import Data.List.Relation.Unary.Unique.DecPropositional _≟_
+import Data.List.Relation.Unary.Unique.DecSetoid.Properties as Setoid
+open import Level
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
 ------------------------------------------------------------------------
 -- Re-export propositional properties
