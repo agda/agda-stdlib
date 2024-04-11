@@ -1,11 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Monoid Actions and the free Monoid Action on a Setoid
+-- Setoid Actions and Monoid Actions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --cubical-compatible --safe #-}
+
 module Algebra.Action.Bundles where
 
 open import Algebra.Action.Structures.Raw using (IsRawLeftAction; IsRawRightAction)
@@ -13,7 +13,7 @@ open import Algebra.Bundles using (Monoid)
 
 open import Data.List.Base using ([]; _++_)
 import Data.List.Relation.Binary.Equality.Setoid as ≋
-open import Data.Product.Base using (curry)
+open import Data.Product.Base using (curry; uncurry)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 
 open import Function.Bundles using (Func)
@@ -66,10 +66,18 @@ module _ {M : Setoid c ℓ} {A : Setoid a r} where
   open ≋ M using (≋-setoid)
 
   leftListAction : (leftAction : Left M A) → Left ≋-setoid A
-  leftListAction leftAction = {!!}
+  leftListAction leftAction = record
+    { act = record
+      { to = uncurry _ᴹ⋆ᴬ_ ; cong = uncurry ⋆-cong }
+    }
+    where open Left leftAction; open IsRawLeftAction isRawLeftAction
 
   rightListAction : (rightAction : Right M A) → Right ≋-setoid A
-  rightListAction rightAction = {!!}
+  rightListAction rightAction = record
+    { act = record
+      { to = uncurry _ᴬ⋆ᴹ_ ; cong = uncurry ⋆-cong }
+    }
+    where open Right rightAction; open IsRawRightAction isRawRightAction
   
 
 ------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 -- The free MonoidAction on a SetoidAction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.Bundles using (Setoid)
 
@@ -59,25 +59,25 @@ module _ (left : SetoidAction.Left M S) where
 
   private listAction = leftListAction left
 
-  open SetoidAction.Left listAction
+  open SetoidAction.Left left
   open IsRawLeftAction isRawLeftAction
 
   leftAction : Left monoid S listAction
   leftAction = record
-    { ∙-act = λ ms ns x → ∙-cong ≋-refl A.refl
-    ; ε-act = λ _ → []-act-cong A.refl
+    { ∙-act = λ ms ns x → ⋆-act-cong ms ≋-refl A.refl
+    ; ε-act = λ _ → A.refl
     }
 
 module _ (right : SetoidAction.Right M S) where
 
   private listAction = rightListAction right
 
-  open SetoidAction.Right listAction
+  open SetoidAction.Right right
   open IsRawRightAction isRawRightAction
 
   rightAction : Right monoid S listAction
   rightAction = record
     { ∙-act = λ x ms ns → ⋆-act-cong A.refl ms ≋-refl
-    ; ε-act = λ _ → []-act-cong A.refl
+    ; ε-act = λ _ → A.refl
     }
 
