@@ -30,6 +30,12 @@ Non-backwards compatible changes
 Other major improvements
 ------------------------
 
+Minor improvements
+------------------
+The size of the dependency graph for many modules has been
+reduced. This may lead to speed ups for first-time loading of some
+modules.
+
 Deprecated modules
 ------------------
 

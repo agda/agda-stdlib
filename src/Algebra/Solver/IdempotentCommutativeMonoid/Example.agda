@@ -19,7 +19,7 @@ open import Data.Vec.Base using ([]; _∷_)
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
-open ICM-Solver  ∨-idempotentCommutativeMonoid
+open ICM-Solver ∨-idempotentCommutativeMonoid
 
 test : ∀ x y z → (x ∨ y) ∨ (x ∨ z) ≡ (z ∨ y) ∨ x
 test a b c = let _∨_ = _⊕_ in

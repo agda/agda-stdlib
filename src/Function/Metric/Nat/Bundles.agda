@@ -21,8 +21,6 @@ open import Relation.Binary.PropositionalEquality.Properties using (isEquivalenc
 
 open import Function.Metric.Nat.Core using (DistanceFunction)
 open import Function.Metric.Nat.Structures
-  using (IsProtoMetric; IsPreMetric; IsQuasiSemiMetric; IsSemiMetric; IsMetric;
-         IsUltraMetric)
 open import Function.Metric.Bundles as Base
   using (GeneralMetric)
 

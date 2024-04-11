@@ -20,8 +20,6 @@ open import Relation.Binary.PropositionalEquality.Properties using (isEquivalenc
 
 open import Function.Metric.Rational.Core using (DistanceFunction)
 open import Function.Metric.Rational.Structures
-  using (IsProtoMetric; IsPreMetric; IsQuasiSemiMetric; IsSemiMetric; IsMetric;
-         IsUltraMetric)
 open import Function.Metric.Bundles as Base
   using (GeneralMetric)
 
