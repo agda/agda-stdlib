@@ -55,7 +55,7 @@ module SetoidAction (M : Setoid c ℓ) (A : Setoid a r) where
     isRawRightAction = record { _ᴬ∙ᴹ_ = curry to ; ∙-cong = curry cong }
       where open Func act
 
-  
+
 ------------------------------------------------------------------------
 -- A Setoid action yields an iterated List action
 
@@ -78,7 +78,7 @@ module _ {M : Setoid c ℓ} {A : Setoid a r} where
       { to = uncurry _ᴬ⋆ᴹ_ ; cong = uncurry ⋆-cong }
     }
     where open Right rightAction; open IsRawRightAction isRawRightAction
-  
+
 
 ------------------------------------------------------------------------
 -- Definition: indexed over an underlying raw action
