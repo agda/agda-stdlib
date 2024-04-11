@@ -18,12 +18,6 @@ open Monoid M
 open MonoidAction M setoid
 
 private
-  isRawLeftAction : IsRawLeftAction _≈_ _≈_
-  isRawLeftAction = record { _ᴹ∙ᴬ_ = _∙_ ; ∙-cong = ∙-cong }
-
-  isRawRightAction : IsRawRightAction _≈_ _≈_
-  isRawRightAction = record { _ᴬ∙ᴹ_ = _∙_ ; ∙-cong = ∙-cong }
-
   leftSetoidAction : SetoidAction.Left setoid setoid
   leftSetoidAction = record
     { act = record
@@ -39,6 +33,12 @@ private
       ; cong = uncurry ∙-cong
       }
     }
+
+isRawLeftAction : IsRawLeftAction _≈_ _≈_
+isRawLeftAction = record { _ᴹ∙ᴬ_ = _∙_ ; ∙-cong = ∙-cong }
+
+isRawRightAction : IsRawRightAction _≈_ _≈_
+isRawRightAction = record { _ᴬ∙ᴹ_ = _∙_ ; ∙-cong = ∙-cong }
 
 leftAction : Left leftSetoidAction
 leftAction = record
