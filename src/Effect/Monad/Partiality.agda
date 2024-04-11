@@ -21,7 +21,7 @@ open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core as B hiding (Rel; _⇔_)
 open import Relation.Binary.Definitions
-  using (Decidable; Reflexive; Symmetric; Transitive)
+  using (DecidableEquality; Reflexive; Symmetric; Transitive)
 open import Relation.Binary.Structures
   using (IsPreorder; IsEquivalence)
 open import Relation.Binary.Bundles
@@ -115,7 +115,7 @@ data Kind : Set where
 
 infix 4 _≟-Kind_
 
-_≟-Kind_ : Decidable (_≡_ {A = Kind})
+_≟-Kind_ : DecidableEquality Kind
 _≟-Kind_ strong       strong       = yes ≡.refl
 _≟-Kind_ strong       (other k)    = no λ()
 _≟-Kind_ (other k)    strong       = no λ()
