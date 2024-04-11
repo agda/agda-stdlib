@@ -13,7 +13,7 @@ open import Data.Star.List using (List)
 open import Data.Star.Decoration using (All)
 open import Data.Star.Pointer as Pointer using (Any; this; that; result)
 open import Data.Unit.Polymorphic.Base using (⊤)
-open import Function.Base hiding (_∋_)
+open import Function.Base using (const)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (_▻_)

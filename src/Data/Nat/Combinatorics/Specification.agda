@@ -10,7 +10,7 @@
 
 module Data.Nat.Combinatorics.Specification where
 
-open import Data.Bool using (T; true; false)
+open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base using (zero; suc; _≤ᵇ_; _≤_; _!; _∸_; pred;
   >-nonZero; _*_; NonZero; _+_; s≤s; z≤n; _>_)
 open import Data.Nat.DivMod using (_/_; n/n≡1; /-congʳ; m*n/m!≡n/[m∸1]!;

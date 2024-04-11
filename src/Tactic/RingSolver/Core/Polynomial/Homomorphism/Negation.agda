@@ -15,7 +15,7 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation
 
 open import Data.Vec.Base         using (Vec)
 open import Data.Product.Base     using (_,_)
-open import Data.Nat              using (_<′_)
+open import Data.Nat.Base         using (_<′_)
 open import Data.Nat.Induction
 
 open import Function.Base using (_⟨_⟩_; flip)

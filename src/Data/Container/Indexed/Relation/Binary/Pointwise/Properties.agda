@@ -12,7 +12,7 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Container.Indexed.Core using (Container; ⟦_⟧)
 open import Data.Container.Indexed.Relation.Binary.Pointwise
   using (Pointwise)
-open import Data.Product using (_,_; Σ-syntax; -,_)
+open import Data.Product.Base using (_,_; Σ-syntax; -,_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)

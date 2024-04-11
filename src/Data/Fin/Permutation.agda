@@ -8,7 +8,7 @@
 
 module Data.Fin.Permutation where
 
-open import Data.Bool using (true; false)
+open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; suc; opposite; punchIn; punchOut)
 open import Data.Fin.Patterns using (0F)
 open import Data.Fin.Properties using (punchInᵢ≢i; punchOut-punchIn;

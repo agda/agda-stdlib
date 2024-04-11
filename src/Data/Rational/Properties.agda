@@ -44,7 +44,7 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ
   )
 import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′; _⊎_)
-import Data.Sign as S
+import Data.Sign.Base as Sign
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
@@ -257,8 +257,8 @@ normalize-coprime {n} {d-1} c = begin
 ↥-normalize i n = begin
   ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ (n ℕ./ g)) ⟩
   + i/g     ℤ.* + g          ≡⟨⟩
-  S.+ ◃ i/g ℕ.* g            ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
-  S.+ ◃ i                    ≡⟨ ℤ.+◃n≡+n i ⟩
+  Sign.+ ◃ i/g ℕ.* g         ≡⟨ cong (Sign.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
+  Sign.+ ◃ i                 ≡⟨ ℤ.+◃n≡+n i ⟩
   + i                        ∎
   where
   open ≡-Reasoning
@@ -271,8 +271,8 @@ normalize-coprime {n} {d-1} c = begin
 ↧-normalize i n = begin
   ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ (n ℕ./ g)) ⟩
   + (n ℕ./ g)       ℤ.* + g  ≡⟨⟩
-  S.+ ◃ n ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
-  S.+ ◃ n                    ≡⟨ ℤ.+◃n≡+n n ⟩
+  Sign.+ ◃ n ℕ./ g     ℕ.* g ≡⟨ cong (Sign.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
+  Sign.+ ◃ n                 ≡⟨ ℤ.+◃n≡+n n ⟩
   + n                        ∎
   where
   open ≡-Reasoning
@@ -355,7 +355,7 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
   ↥ (- norm)   ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-neg norm) ⟩
   ℤ.- (↥ norm) ℤ.* + g  ≡⟨ sym (ℤ.neg-distribˡ-* (↥ norm) (+ g)) ⟩
   ℤ.- (↥ norm  ℤ.* + g) ≡⟨ cong (ℤ.-_) (↥-normalize (suc m) n) ⟩
-  S.- ◃ suc m           ≡⟨⟩
+  Sign.- ◃ suc m        ≡⟨⟩
   -[1+ m ]              ∎
   where
   open ℤ.≤-Reasoning
@@ -404,13 +404,13 @@ private
 
 /-injective-≃ : ∀ p q → ↥ᵘ p / ↧ₙᵘ p ≡ ↥ᵘ q / ↧ₙᵘ q → p ≃ᵘ q
 /-injective-≃ (mkℚᵘ (+ m)    c-1) (mkℚᵘ (+ n)    d-1) eq =
-  *≡* (cong (S.+ ◃_) (normalize-injective-≃ m n _ _ eq))
+  *≡* (cong (Sign.+ ◃_) (normalize-injective-≃ m n _ _ eq))
 /-injective-≃ (mkℚᵘ (+ m)    c-1) (mkℚᵘ -[1+ n ] d-1) eq =
   ℚᵘ.≃-sym (/-injective-≃-helper (sym eq))
 /-injective-≃ (mkℚᵘ -[1+ m ] c-1) (mkℚᵘ (+ n)    d-1) eq =
   /-injective-≃-helper eq
 /-injective-≃ (mkℚᵘ -[1+ m ] c-1) (mkℚᵘ -[1+ n ] d-1) eq =
-  *≡* (cong (S.- ◃_) (normalize-injective-≃ (suc m) (suc n) _ _ (neg-injective eq)))
+  *≡* (cong (Sign.- ◃_) (normalize-injective-≃ (suc m) (suc n) _ _ (neg-injective eq)))
 
 ------------------------------------------------------------------------
 -- Properties of toℚ/fromℚ

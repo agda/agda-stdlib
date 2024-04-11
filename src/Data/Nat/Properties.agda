@@ -27,7 +27,7 @@ open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base
 open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; _⊎_; [_,_]′)
-open import Data.Unit using (tt)
+open import Data.Unit.Base using (tt)
 open import Function.Base using (_∘_; flip; _$_; id; _∘′_; _$′_)
 open import Function.Bundles using (_↣_)
 open import Function.Metric.Nat using (TriangleInequality; IsProtoMetric; IsPreMetric;

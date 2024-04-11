@@ -16,7 +16,7 @@ open import Data.Maybe.Base using (just; nothing)
 open import Data.Integer.Base using (+0)
 open import Data.Integer.Properties using (+-*-commutativeRing)
 open import Level using (0ℓ)
-open import Data.Unit using (⊤)
+open import Data.Unit.Base using (⊤)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 import Tactic.RingSolver as Solver
 import Tactic.RingSolver.Core.AlmostCommutativeRing as ACR

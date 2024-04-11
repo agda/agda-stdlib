@@ -11,7 +11,7 @@ module Data.Vec.Functional.Properties where
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; fromℕ<; reduce≥;
   _↑ˡ_; _↑ʳ_; punchIn; punchOut)
-open import Data.Nat as ℕ using (ℕ; zero; suc)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.List.Base as List using (List)

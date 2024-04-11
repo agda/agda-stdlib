@@ -8,7 +8,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra.Bundles using (IdempotentCommutativeMonoid)
 
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)

@@ -15,7 +15,6 @@ open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ
 import Data.Nat.DivMod as ℕ
-import Data.Sign as S
 open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; cong; sym; subst)
