@@ -310,6 +310,8 @@ Additions to existing modules
   zip-unzip             : uncurry′ zip ∘ unzip ≗ id
   unzipWith-zipWith     : f ∘ uncurry′ g ≗ id → length xs ≡ length ys → unzipWith f (zipWith g xs ys) ≡ (xs , ys)
   unzip-zip             : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
+  mapMaybe-++           : mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
+  unzipWith-++          : unzipWith f (xs ++ ys) ≡ zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

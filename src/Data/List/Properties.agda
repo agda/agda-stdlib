@@ -154,6 +154,13 @@ module _ (f : A → Maybe B) where
   ... | just y  = s≤s ih
   ... | nothing = m≤n⇒m≤1+n ih
 
+  mapMaybe-++ : ∀ xs ys →
+                mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
+  mapMaybe-++ []       ys = refl
+  mapMaybe-++ (x ∷ xs) ys with ih ← mapMaybe-++ xs ys | f x
+  ... | just y  = cong (y ∷_) ih
+  ... | nothing = ih
+
 module _ (f : B → Maybe C) (g : A → B) where
 
   mapMaybe-map : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
@@ -564,6 +571,13 @@ module _ (f : A → B × C) where
   unzipWith-swap []       = refl
   unzipWith-swap (x ∷ xs) =
     cong (Product.zip _∷_ _∷_ _) (unzipWith-swap xs)
+
+  unzipWith-++ : ∀ xs ys →
+                 unzipWith f (xs ++ ys) ≡
+                 Product.zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
+  unzipWith-++ []       ys = refl
+  unzipWith-++ (x ∷ xs) ys =
+    cong (Product.zip _∷_ _∷_ (f x)) (unzipWith-++ xs ys)
 
 ------------------------------------------------------------------------
 -- unzip
