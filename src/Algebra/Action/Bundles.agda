@@ -4,6 +4,16 @@
 -- Setoid Actions and Monoid Actions
 ------------------------------------------------------------------------
 
+------------------------------------------------------------------------
+-- Currently, this module (attempts to) systematically distinguish
+-- between left- and right- actions, but unfortunately, trying to avoid
+-- long names such as `Algebra.Action.Bundles.MonoidAction.LeftAction`
+-- leads to the possibly/probably suboptimal use of `Left` and `Right` as
+-- submodule names, when these are intended only to be used qualified by
+-- the type of Action to which they refer, eg. as MonoidAction.Left etc.
+------------------------------------------------------------------------
+
+
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Action.Bundles where
