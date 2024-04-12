@@ -81,7 +81,7 @@ module _ {M : Setoid c ℓ} {A : Setoid a r} where
 
 
 ------------------------------------------------------------------------
--- Definition: indexed over an underlying raw action
+-- Definition: indexed over an underlying SetoidAction
 
 module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
 
