@@ -72,9 +72,9 @@ New modules
   Algebra.Action.Construct.Self
   ```
 
-* Raw structures for left- and right- actions:
+* Structures for left- and right- actions:
   ```
-  Algebra.Action.Structures.Raw
+  Algebra.Action.Structures
   ```
 
 * Raw bundles for module-like algebraic structures:

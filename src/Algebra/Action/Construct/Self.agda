@@ -1,54 +1,59 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The left- and right- regular actions: of a Monoid over itself
+-- Left- and right- regular actions
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles using (Monoid)
-
-module Algebra.Action.Construct.Self {c ℓ} (M : Monoid c ℓ) where
+module Algebra.Action.Construct.Self where
 
 open import Algebra.Action.Bundles
-open import Algebra.Action.Structures.Raw using (IsRawLeftAction; IsRawRightAction)
+open import Algebra.Action.Structures using (IsLeftAction; IsRightAction)
+open import Algebra.Bundles using (Monoid)
+
 open import Data.Product.Base using (uncurry)
 
-open Monoid M
-open MonoidAction M setoid
+------------------------------------------------------------------------
+-- Action of a Monoid over itself
 
-private
-  leftSetoidAction : SetoidAction.Left setoid setoid
-  leftSetoidAction = record
-    { act = record
-      { to = uncurry _∙_
-      ; cong = uncurry ∙-cong
+module Regular {c ℓ} (M : Monoid c ℓ) where
+
+  open Monoid M
+  open MonoidAction M setoid
+
+  private
+    leftSetoidAction : SetoidAction.Left setoid setoid
+    leftSetoidAction = record
+      { act = record
+        { to = uncurry _∙_
+        ; cong = uncurry ∙-cong
+        }
       }
+
+    rightSetoidAction : SetoidAction.Right setoid setoid
+    rightSetoidAction = record
+      { act = record
+        { to = uncurry _∙_
+        ; cong = uncurry ∙-cong
+        }
+      }
+
+  isLeftAction : IsLeftAction _≈_ _≈_
+  isLeftAction = record { _ᴹ∙ᴬ_ = _∙_ ; ∙-cong = ∙-cong }
+
+  isRightAction : IsRightAction _≈_ _≈_
+  isRightAction = record { _ᴬ∙ᴹ_ = _∙_ ; ∙-cong = ∙-cong }
+
+  leftAction : Left leftSetoidAction
+  leftAction = record
+    { ∙-act = assoc
+    ; ε-act = identityˡ
     }
 
-  rightSetoidAction : SetoidAction.Right setoid setoid
-  rightSetoidAction = record
-    { act = record
-      { to = uncurry _∙_
-      ; cong = uncurry ∙-cong
-      }
+  rightAction : Right rightSetoidAction
+  rightAction = record
+    { ∙-act = λ x m n → sym (assoc x m n)
+    ; ε-act = identityʳ
     }
-
-isRawLeftAction : IsRawLeftAction _≈_ _≈_
-isRawLeftAction = record { _ᴹ∙ᴬ_ = _∙_ ; ∙-cong = ∙-cong }
-
-isRawRightAction : IsRawRightAction _≈_ _≈_
-isRawRightAction = record { _ᴬ∙ᴹ_ = _∙_ ; ∙-cong = ∙-cong }
-
-leftAction : Left leftSetoidAction
-leftAction = record
-  { ∙-act = assoc
-  ; ε-act = identityˡ
-  }
-
-rightAction : Right rightSetoidAction
-rightAction = record
-  { ∙-act = λ x m n → sym (assoc x m n)
-  ; ε-act = identityʳ
-  }
 

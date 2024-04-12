@@ -8,7 +8,7 @@
 
 module Algebra.Action.Bundles where
 
-open import Algebra.Action.Structures.Raw using (IsRawLeftAction; IsRawRightAction)
+open import Algebra.Action.Structures using (IsLeftAction; IsRightAction)
 open import Algebra.Bundles using (Monoid)
 
 open import Data.List.Base using ([]; _++_)
@@ -42,8 +42,8 @@ module SetoidAction (M : Setoid c ℓ) (A : Setoid a r) where
     field
       act : Func (M ×ₛ A) A
 
-    isRawLeftAction : IsRawLeftAction M._≈_ _≈_
-    isRawLeftAction = record { _ᴹ∙ᴬ_ = curry to ; ∙-cong = curry cong }
+    isLeftAction : IsLeftAction M._≈_ _≈_
+    isLeftAction = record { _ᴹ∙ᴬ_ = curry to ; ∙-cong = curry cong }
       where open Func act
 
   record Right : Set (a ⊔ r ⊔ c ⊔ ℓ) where
@@ -51,8 +51,8 @@ module SetoidAction (M : Setoid c ℓ) (A : Setoid a r) where
     field
       act : Func (A ×ₛ M) A
 
-    isRawRightAction : IsRawRightAction M._≈_ _≈_
-    isRawRightAction = record { _ᴬ∙ᴹ_ = curry to ; ∙-cong = curry cong }
+    isRightAction : IsRightAction M._≈_ _≈_
+    isRightAction = record { _ᴬ∙ᴹ_ = curry to ; ∙-cong = curry cong }
       where open Func act
 
 
@@ -70,14 +70,14 @@ module _ {M : Setoid c ℓ} {A : Setoid a r} where
     { act = record
       { to = uncurry _ᴹ⋆ᴬ_ ; cong = uncurry ⋆-cong }
     }
-    where open Left leftAction; open IsRawLeftAction isRawLeftAction
+    where open Left leftAction; open IsLeftAction isLeftAction
 
   rightListAction : (rightAction : Right M A) → Right ≋-setoid A
   rightListAction rightAction = record
     { act = record
       { to = uncurry _ᴬ⋆ᴹ_ ; cong = uncurry ⋆-cong }
     }
-    where open Right rightAction; open IsRawRightAction isRawRightAction
+    where open Right rightAction; open IsRightAction isRightAction
 
 
 ------------------------------------------------------------------------
@@ -87,55 +87,55 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
 
   private
 
-    module M = Monoid M
-    module A = Setoid A
+    open module M = Monoid M using (ε) renaming (_∙_ to _∙ᴹ_)
+    open module A = Setoid A using (_≈_)
     open ≋ M.setoid using (≋-refl)
 
   record Left (leftAction : SetoidAction.Left M.setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
     where
 
     open SetoidAction.Left leftAction public
-      using (isRawLeftAction)
-    open IsRawLeftAction isRawLeftAction public
+      using (isLeftAction)
+    open IsLeftAction isLeftAction public
       renaming (_ᴹ∙ᴬ_ to _∙_; _ᴹ⋆ᴬ_ to _⋆_)
 
     field
-      ∙-act  : ∀ m n x → m M.∙ n ∙ x A.≈ m ∙ n ∙ x
-      ε-act  : ∀ x → M.ε ∙ x A.≈ x
+      ∙-act  : ∀ m n x → m ∙ᴹ n ∙ x ≈ m ∙ n ∙ x
+      ε-act  : ∀ x → ε ∙ x ≈ x
 
-    ∙-congˡ : ∀ {m x y} → x A.≈ y → m ∙ x A.≈ m ∙ y
+    ∙-congˡ : ∀ {m x y} → x ≈ y → m ∙ x ≈ m ∙ y
     ∙-congˡ x≈y = ∙-cong M.refl x≈y
 
-    ∙-congʳ : ∀ {m n x} → m M.≈ n → m ∙ x A.≈ n ∙ x
+    ∙-congʳ : ∀ {m n x} → m M.≈ n → m ∙ x ≈ n ∙ x
     ∙-congʳ m≈n = ∙-cong m≈n A.refl
 
-    ⋆-act : ∀ ms ns x → (ms ++ ns) ⋆ x A.≈ ms ⋆ ns ⋆ x
+    ⋆-act : ∀ ms ns x → (ms ++ ns) ⋆ x ≈ ms ⋆ ns ⋆ x
     ⋆-act ms ns x = ⋆-act-cong ms ≋-refl A.refl
 
-    []-act : ∀ x → [] ⋆ x A.≈ x
+    []-act : ∀ x → [] ⋆ x ≈ x
     []-act _ = []-act-cong A.refl
 
   record Right (rightAction : SetoidAction.Right M.setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
     where
 
     open SetoidAction.Right rightAction public
-      using (isRawRightAction)
-    open IsRawRightAction isRawRightAction public
+      using (isRightAction)
+    open IsRightAction isRightAction public
       renaming (_ᴬ∙ᴹ_ to _∙_; _ᴬ⋆ᴹ_ to _⋆_)
 
     field
-      ∙-act  : ∀ x m n → x ∙ m M.∙ n A.≈ x ∙ m ∙ n
-      ε-act  : ∀ x → x ∙ M.ε A.≈ x
+      ∙-act  : ∀ x m n → x ∙ m ∙ᴹ n ≈ x ∙ m ∙ n
+      ε-act  : ∀ x → x ∙ ε ≈ x
 
-    ∙-congˡ : ∀ {x y m} → x A.≈ y → x ∙ m A.≈ y ∙ m
+    ∙-congˡ : ∀ {x y m} → x ≈ y → x ∙ m ≈ y ∙ m
     ∙-congˡ x≈y = ∙-cong x≈y M.refl
 
-    ∙-congʳ : ∀ {m n x} → m M.≈ n → x ∙ m A.≈ x ∙ n
+    ∙-congʳ : ∀ {m n x} → m M.≈ n → x ∙ m ≈ x ∙ n
     ∙-congʳ m≈n = ∙-cong A.refl m≈n
 
-    ⋆-act : ∀ x ms ns → x ⋆ (ms ++ ns) A.≈ x ⋆ ms ⋆ ns
+    ⋆-act : ∀ x ms ns → x ⋆ (ms ++ ns) ≈ x ⋆ ms ⋆ ns
     ⋆-act x ms ns = ⋆-act-cong A.refl ms ≋-refl
 
-    []-act : ∀ x → x ⋆ [] A.≈ x
+    []-act : ∀ x → x ⋆ [] ≈ x
     []-act x = []-act-cong A.refl
 

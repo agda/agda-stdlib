@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Core using (Rel)
 
-module Algebra.Action.Structures.Raw
+module Algebra.Action.Structures
   {c a ℓ r} {M : Set c} {A : Set a} (_≈ᴹ_ : Rel M ℓ) (_≈_ : Rel A r)
   where
 
@@ -28,7 +28,7 @@ private
 ------------------------------------------------------------------------
 -- Basic definitions: fix notation
 
-record IsRawLeftAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
+record IsLeftAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   infixr 5 _ᴹ∙ᴬ_ _ᴹ⋆ᴬ_
 
   field
@@ -52,7 +52,7 @@ record IsRawLeftAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   []-act-cong : x ≈ y → ([] ᴹ⋆ᴬ x) ≈ y
   []-act-cong = id
 
-record IsRawRightAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
+record IsRightAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   infixl 5 _ᴬ∙ᴹ_ _ᴬ⋆ᴹ_
 
   field
