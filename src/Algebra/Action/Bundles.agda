@@ -87,11 +87,11 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
 
   private
 
-    open module M = Monoid M using (ε) renaming (_∙_ to _∙ᴹ_)
+    open module M = Monoid M using (ε; setoid) renaming (_∙_ to _∙ᴹ_)
     open module A = Setoid A using (_≈_)
-    open ≋ M.setoid using (≋-refl)
+    open ≋ setoid using (≋-refl)
 
-  record Left (leftAction : SetoidAction.Left M.setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
+  record Left (leftAction : SetoidAction.Left setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
     where
 
     open SetoidAction.Left leftAction public
@@ -115,7 +115,7 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
     []-act : ∀ x → [] ⋆ x ≈ x
     []-act _ = []-act-cong A.refl
 
-  record Right (rightAction : SetoidAction.Right M.setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
+  record Right (rightAction : SetoidAction.Right setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
     where
 
     open SetoidAction.Right rightAction public
