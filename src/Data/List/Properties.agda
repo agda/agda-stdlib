@@ -62,16 +62,16 @@ private
 
 module _ {x y : A} {xs ys : List A} where
 
-  ∷-injective : x ∷ xs ≡ y List.∷ ys → x ≡ y × xs ≡ ys
+  ∷-injective : x ∷ xs ≡ y ∷ ys → x ≡ y × xs ≡ ys
   ∷-injective refl = (refl , refl)
 
-  ∷-injectiveˡ : x ∷ xs ≡ y List.∷ ys → x ≡ y
+  ∷-injectiveˡ : x ∷ xs ≡ y ∷ ys → x ≡ y
   ∷-injectiveˡ refl = refl
 
-  ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
+  ∷-injectiveʳ : x ∷ xs ≡ y ∷ ys → xs ≡ ys
   ∷-injectiveʳ refl = refl
 
-  ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y ∷ ys)
+  ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x ∷ xs ≡ y ∷ ys)
   ∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
@@ -122,28 +122,50 @@ map-injective finj {x ∷ xs} {y ∷ ys} eq =
 ------------------------------------------------------------------------
 -- mapMaybe
 
+length-catMaybes : ∀ xs → length (catMaybes′ {A = A} xs) ≤ length xs
+length-catMaybes []             = ≤-refl
+length-catMaybes (just x  ∷ xs) = s≤s (length-catMaybes xs)
+length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n (length-catMaybes xs)
+
+catMaybesTest : catMaybes {A = A} ≗ catMaybes′
+catMaybesTest []             = refl
+catMaybesTest (just x ∷ xs)  = cong (x ∷_) (catMaybesTest xs)
+catMaybesTest (nothing ∷ xs) = catMaybesTest xs
+
+mapMaybeTest : (p : A → Maybe B) → mapMaybe p ≗ mapMaybe′ p
+mapMaybeTest p []       = refl
+mapMaybeTest p (x ∷ xs) with ih ← mapMaybeTest p xs | p x
+... | nothing = ih
+... | just y  = cong (y ∷_) ih
+
 mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
 mapMaybe-just []       = refl
 mapMaybe-just (x ∷ xs) = cong (x ∷_) (mapMaybe-just xs)
 
+mapMaybe′-just : (xs : List A) → mapMaybe′ just xs ≡ xs
+mapMaybe′-just []       = refl
+mapMaybe′-just (x ∷ xs) = cong (x ∷_) (mapMaybe′-just xs)
+
 mapMaybe-nothing : (xs : List A) →
-                   mapMaybe {B = A} (λ _ → nothing) xs ≡ []
+                   mapMaybe (λ _ → nothing {A = A}) xs ≡ []
 mapMaybe-nothing []       = refl
 mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
 
+mapMaybe′-nothing : (xs : List A) →
+                    mapMaybe′ (λ _ → nothing {A = A}) xs ≡ []
+mapMaybe′-nothing []       = refl
+mapMaybe′-nothing (x ∷ xs) = mapMaybe′-nothing xs
+
 module _ (f : A → Maybe B) where
 
-  mapMaybe-concatMap : mapMaybe f ≗ concatMap (fromMaybe ∘ f)
-  mapMaybe-concatMap [] = refl
+  mapMaybe-concatMap : mapMaybe′ f ≗ concatMap (fromMaybe ∘ f)
+  mapMaybe-concatMap []       = refl
   mapMaybe-concatMap (x ∷ xs) with ih ← mapMaybe-concatMap xs | f x
   ... | just y  = cong (y ∷_) ih
   ... | nothing = ih
 
-  length-mapMaybe : ∀ xs → length (mapMaybe f xs) ≤ length xs
-  length-mapMaybe []       = z≤n
-  length-mapMaybe (x ∷ xs) with ih ← length-mapMaybe xs | f x
-  ... | just y  = s≤s ih
-  ... | nothing = m≤n⇒m≤1+n ih
+  length-mapMaybe : ∀ xs → length (mapMaybe′ f xs) ≤ length xs
+  length-mapMaybe xs = ≤-trans (length-catMaybes (map f xs)) (≤-reflexive (length-map f xs))
 
 ------------------------------------------------------------------------
 -- _++_
@@ -175,14 +197,14 @@ module _ {A : Set a} where
   ++-identityʳ-unique : ∀ (xs : List A) {ys} → xs ≡ xs ++ ys → ys ≡ []
   ++-identityʳ-unique []       refl = refl
   ++-identityʳ-unique (x ∷ xs) eq   =
-    ++-identityʳ-unique xs (proj₂ (∷-injective eq))
+    ++-identityʳ-unique xs (∷-injectiveʳ eq)
 
   ++-identityˡ-unique : ∀ {xs} (ys : List A) → xs ≡ ys ++ xs → ys ≡ []
   ++-identityˡ-unique               []       _  = refl
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ ys) eq
     with ++-identityˡ-unique (ys ++ [ x ]) (begin
-         xs                  ≡⟨ proj₂ (∷-injective eq) ⟩
-         ys ++ x ∷ xs        ≡⟨ sym (++-assoc ys [ x ] xs) ⟩
+         xs                  ≡⟨ ∷-injectiveʳ eq ⟩
+         ys ++ x ∷ xs        ≡⟨ ++-assoc ys [ x ] xs ⟨
          (ys ++ [ x ]) ++ xs ∎)
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ []   ) eq | ()
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ _ ∷ _) eq | ()

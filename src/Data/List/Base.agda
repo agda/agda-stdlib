@@ -49,6 +49,14 @@ map : (A → B) → List A → List B
 map f []       = []
 map f (x ∷ xs) = f x ∷ map f xs
 
+catMaybes′ : List (Maybe A) → List A
+catMaybes′ []             = []
+catMaybes′ (nothing ∷ xs) = catMaybes′ xs
+catMaybes′ (just x  ∷ xs) = x ∷ catMaybes′ xs
+
+mapMaybe′ : (A → Maybe B) → List A → List B
+mapMaybe′ p = catMaybes′ ∘ map p
+
 mapMaybe : (A → Maybe B) → List A → List B
 mapMaybe p []       = []
 mapMaybe p (x ∷ xs) with p x
