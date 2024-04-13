@@ -50,9 +50,8 @@ map f []       = []
 map f (x ∷ xs) = f x ∷ map f xs
 
 catMaybes′ : List (Maybe A) → List A
-catMaybes′ []             = []
-catMaybes′ (nothing ∷ xs) = catMaybes′ xs
-catMaybes′ (just x  ∷ xs) = x ∷ catMaybes′ xs
+catMaybes′ []       = []
+catMaybes′ (x ∷ xs) = maybe′ _∷_ id x $ catMaybes′ xs
 
 mapMaybe′ : (A → Maybe B) → List A → List B
 mapMaybe′ p = catMaybes′ ∘ map p
@@ -181,6 +180,12 @@ product = foldr _*_ 1
 
 length : List A → ℕ
 length = foldr (const suc) 0
+
+catMaybes″ : List (Maybe A) → List A
+catMaybes″ = foldr (maybe′ _∷_ id) []
+
+mapMaybe″ : (A → Maybe B) → List A → List B
+mapMaybe″ p = catMaybes″ ∘ map p
 
 ------------------------------------------------------------------------
 -- Operations for constructing lists

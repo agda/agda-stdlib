@@ -132,7 +132,7 @@ catMaybesTest []             = refl
 catMaybesTest (just x ∷ xs)  = cong (x ∷_) (catMaybesTest xs)
 catMaybesTest (nothing ∷ xs) = catMaybesTest xs
 
-mapMaybeTest : (p : A → Maybe B) → mapMaybe p ≗ mapMaybe′ p
+mapMaybeTest : (p : A → Maybe B) → mapMaybe p ≗ mapMaybe″ p
 mapMaybeTest p []       = refl
 mapMaybeTest p (x ∷ xs) with ih ← mapMaybeTest p xs | p x
 ... | nothing = ih
