@@ -113,6 +113,5 @@ _>>=_ : ∀ {i} → Cowriter W A i → (A → Cowriter W X i) → Cowriter W X i
 -- Construction.
 
 unfold : ∀ {i} → (X → (W × X) ⊎ A) → X → Cowriter W A i
-unfold next seed with next seed
-... | inj₁ (w , seed′) = w ∷ λ where .force → unfold next seed′
-... | inj₂ a           = [ a ]
+unfold next seed =
+  Sum.[ (λ {(w , seed′) → w ∷ λ where .force → unfold next seed′}) , [_] ] (next seed) 

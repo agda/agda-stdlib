@@ -17,7 +17,7 @@ open import Data.Sum.Relation.Binary.Pointwise
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (_×ₛ_)
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; case_of_)
 open import Function.Bundles using (Surjection)
 open import Function.Definitions using (Surjective)
 open import Function.Consequences using (strictlySurjective⇒surjective)
@@ -40,8 +40,8 @@ module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (surj : Surjection S T) whe
   open Surjection surj
 
   map⁺ : ∀ {xs} → IsEnumeration S xs → IsEnumeration T (map to xs)
-  map⁺ _∈xs y with strictlySurjective y
-  ... | (x , fx≈y) = ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
+  map⁺ _∈xs y = case strictlySurjective y of
+                  λ where (x , fx≈y) → ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
 
 ------------------------------------------------------------------------
 -- _++_

@@ -144,9 +144,7 @@ join m n = [ _↑ˡ n , m ↑ʳ_ ]′
 -- This is dual to group from Data.Vec.
 
 quotRem : ∀ n → Fin (m ℕ.* n) → Fin n × Fin m
-quotRem {suc m} n i with splitAt n i
-... | inj₁ j = j , zero
-... | inj₂ j = Product.map₂ suc (quotRem {m} n j)
+quotRem {suc m} n i = [ (_, zero) , Product.map₂ suc ∘ quotRem {m} n ]′ (splitAt n i)
 
 -- a variant of quotRem the type of whose result matches the order of multiplication
 remQuot : ∀ n → Fin (m ℕ.* n) → Fin m × Fin n

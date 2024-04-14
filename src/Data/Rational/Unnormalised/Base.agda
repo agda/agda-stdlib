@@ -276,15 +276,11 @@ ceiling p@record{} = ℤ.- floor (- p)
 
 -- Truncate  (round towards 0)
 truncate : ℚᵘ → ℤ
-truncate p with p ≤ᵇ 0ℚᵘ
-... | true  = ceiling p
-... | false = floor p
+truncate p = if p ≤ᵇ 0ℚᵘ then ceiling p else floor p
 
 -- Round (to nearest integer)
 round : ℚᵘ → ℤ
-round p with p ≤ᵇ 0ℚᵘ
-... | true  = ceiling (p - ½)
-... | false = floor (p + ½)
+round p = if p ≤ᵇ 0ℚᵘ then ceiling (p - ½) else floor (p + ½)
 
 -- Fractional part (remainder after floor)
 fracPart : ℚᵘ → ℚᵘ

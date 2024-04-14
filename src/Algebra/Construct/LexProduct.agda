@@ -11,8 +11,8 @@ open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
-open import Data.Sum.Base using (inj₁; inj₂)
-open import Function.Base using (_∘_)
+open import Data.Sum.Base using (inj₁; inj₂; map)
+open import Function.Base using (_∘_; _$_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable.Core using (does; yes; no)
@@ -107,6 +107,4 @@ sel ∙-sel ◦-sel (a , x) (b , y) with (a ∙ b) ≟₁ a | (a ∙ b) ≟₁ b
 ... | no  ab≉a | no  ab≉b  = contradiction₂ (∙-sel a b) ab≉a ab≉b
 ... | yes ab≈a | no  _     = inj₁ (ab≈a , ≈₂-refl)
 ... | no  _    | yes ab≈b  = inj₂ (ab≈b , ≈₂-refl)
-... | yes ab≈a | yes ab≈b  with ◦-sel x y
-...   | inj₁ xy≈x = inj₁ (ab≈a , xy≈x)
-...   | inj₂ xy≈y = inj₂ (ab≈b , xy≈y)
+... | yes ab≈a | yes ab≈b  = map (ab≈a ,_) (ab≈b ,_) $ ◦-sel x y

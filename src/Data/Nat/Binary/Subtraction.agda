@@ -11,7 +11,7 @@ module Data.Nat.Binary.Subtraction where
 open import Algebra using (Op₂; Magma)
 open import Algebra.Consequences.Propositional using (comm∧distrˡ⇒distrʳ)
 open import Algebra.Morphism.Consequences using (homomorphic₂-inv)
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.Nat as ℕ using (ℕ)
 open import Data.Nat.Binary.Base
 open import Data.Nat.Binary.Properties
@@ -46,12 +46,8 @@ zero     ∸ _        = 0ᵇ
 x        ∸ zero     = x
 2[1+ x ] ∸ 2[1+ y ] = double (x ∸ y)
 1+[2 x ] ∸ 1+[2 y ] = double (x ∸ y)
-2[1+ x ] ∸ 1+[2 y ] with does (x <? y)
-... | true  = 0ᵇ
-... | false = 1+[2 (x ∸ y) ]
-1+[2 x ] ∸ 2[1+ y ] with does (x ≤? y)
-... | true  = 0ᵇ
-... | false = pred (double (x ∸ y))
+2[1+ x ] ∸ 1+[2 y ] = if does (x <? y) then 0ᵇ else 1+[2 (x ∸ y) ]
+1+[2 x ] ∸ 2[1+ y ] = if does (x ≤? y) then 0ᵇ else pred (double (x ∸ y))
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≡_

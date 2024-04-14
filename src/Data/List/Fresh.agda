@@ -14,7 +14,7 @@
 module Data.List.Fresh where
 
 open import Level using (Level; _⊔_)
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product.Base using (∃; _×_; _,_; -,_; proj₁; proj₂)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
@@ -161,10 +161,10 @@ module _ {P : Pred A p} (P? : U.Decidable P) where
   takeWhile-# : ∀ {R : Rel A r} a (as : List# A R) → a # as → a # takeWhile as
 
   takeWhile []             = []
-  takeWhile (cons a as ps) with does (P? a)
-  ... | true  = cons a (takeWhile as) (takeWhile-# a as ps)
-  ... | false = []
+  takeWhile (cons a as ps) =
+    if does (P? a) then cons a (takeWhile as) (takeWhile-# a as ps) else []
 
+  -- this 'with' is crucial to get things to reduce enough
   takeWhile-# a []        _        = _
   takeWhile-# a (x ∷# xs) (p , ps) with does (P? x)
   ... | true  = p , takeWhile-# a xs ps
@@ -172,18 +172,17 @@ module _ {P : Pred A p} (P? : U.Decidable P) where
 
   dropWhile : {R : Rel A r} → List# A R → List# A R
   dropWhile []            = []
-  dropWhile aas@(a ∷# as) with does (P? a)
-  ... | true  = dropWhile as
-  ... | false = aas
+  dropWhile aas@(a ∷# as)  = if does (P? a) then dropWhile as else aas
 
   filter   : {R : Rel A r} → List# A R → List# A R
   filter-# : ∀ {R : Rel A r} a (as : List# A R) → a # as → a # filter as
 
   filter []             = []
-  filter (cons a as ps) with does (P? a)
-  ... | true  = cons a (filter as) (filter-# a as ps)
-  ... | false = filter as
+  filter (cons a as ps) =
+    let l = filter as in
+    if does (P? a) then cons a l (filter-# a as ps) else l
 
+  -- this 'with' is also crucial
   filter-# a []        _        = _
   filter-# a (x ∷# xs) (p , ps) with does (P? x)
   ... | true  = p , filter-# a xs ps
