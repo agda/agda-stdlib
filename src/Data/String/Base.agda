@@ -129,7 +129,7 @@ a <+> b = a ++ " " ++ b
 -- it is equal to 0.
 
 padLeft : Char → ℕ → String → String
-padLeft c n str = 
+padLeft c n str =
   let l = n ∸ length str in
   if l ≡ᵇ 0 then str else replicate l c ++ str
 

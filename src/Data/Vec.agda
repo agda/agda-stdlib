@@ -43,7 +43,7 @@ module _ {P : A → Set p} (P? : Decidable P) where
   filter : ∀ {n} → Vec A n → Vec≤ A n
   filter []       = Vec≤.[]
   filter (a ∷ as) = if does (P? a) then a Vec≤.∷_ else ≤-cast (ℕ.n≤1+n _) $ filter as
-  
+
   takeWhile : ∀ {n} → Vec A n → Vec≤ A n
   takeWhile []       = Vec≤.[]
   takeWhile (a ∷ as) = if does (P? a) then a Vec≤.∷ takeWhile as else Vec≤.[]
