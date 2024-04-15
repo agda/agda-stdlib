@@ -253,10 +253,12 @@ unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
          ∀ {n} → P n → List A
 unfold P f {n = zero}  s = []
-unfold P f {n = suc n} s with f s
+unfold P f {n = suc n} s = maybe′ {!λ (x , s′) → x ∷ unfold P f s′!} [] (f s)
+{-
+with f s
 ... | nothing       = []
 ... | just (x , s′) = x ∷ unfold P f s′
-
+-}
 ------------------------------------------------------------------------
 -- Operations for reversing lists
 
