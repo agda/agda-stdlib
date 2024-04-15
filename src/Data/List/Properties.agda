@@ -21,7 +21,7 @@ open import Data.List.Base as List
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; maybe)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility using (_∣_; divides; ∣n⇒∣m*n)
 open import Data.Nat.Properties
@@ -122,49 +122,56 @@ map-injective finj {x ∷ xs} {y ∷ ys} eq =
 ------------------------------------------------------------------------
 -- mapMaybe
 
-length-catMaybes : ∀ xs → length (catMaybes′ {A = A} xs) ≤ length xs
-length-catMaybes []             = ≤-refl
-length-catMaybes (just x  ∷ xs) = s≤s (length-catMaybes xs)
-length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n (length-catMaybes xs)
-
-catMaybesTest : catMaybes {A = A} ≗ catMaybes′
-catMaybesTest []             = refl
-catMaybesTest (just x ∷ xs)  = cong (x ∷_) (catMaybesTest xs)
-catMaybesTest (nothing ∷ xs) = catMaybesTest xs
-
-mapMaybeTest : (p : A → Maybe B) → mapMaybe p ≗ mapMaybe″ p
-mapMaybeTest p []       = refl
-mapMaybeTest p (x ∷ xs) with ih ← mapMaybeTest p xs | p x
-... | nothing = ih
-... | just y  = cong (y ∷_) ih
+length-catMaybes : ∀ xs → length (catMaybes {A = A} xs) ≤ length xs
+length-catMaybes []        = ≤-refl
+length-catMaybes (x  ∷ xs) = let ih = length-catMaybes xs
+  in maybe {B = λ x → length (catMaybes (x ∷ xs)) ≤ suc (length xs)}
+     (λ _ → s≤s ih)
+     (m≤n⇒m≤1+n ih)
+     x
 
 mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
 mapMaybe-just []       = refl
 mapMaybe-just (x ∷ xs) = cong (x ∷_) (mapMaybe-just xs)
 
-mapMaybe′-just : (xs : List A) → mapMaybe′ just xs ≡ xs
-mapMaybe′-just []       = refl
-mapMaybe′-just (x ∷ xs) = cong (x ∷_) (mapMaybe′-just xs)
-
 mapMaybe-nothing : (xs : List A) →
-                   mapMaybe (λ _ → nothing {A = B}) xs ≡ []
+                   mapMaybe {B = B} (λ _ → nothing) xs ≡ []
 mapMaybe-nothing []       = refl
 mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
 
-mapMaybe′-nothing : (xs : List A) →
-                    mapMaybe′ (λ _ → nothing {A = A}) xs ≡ []
-mapMaybe′-nothing []       = refl
-mapMaybe′-nothing (x ∷ xs) = mapMaybe′-nothing xs
+module MapMaybeTest where
+
+  mapMaybeOld : (A → Maybe B) → List A → List B
+  mapMaybeOld p []       = []
+  mapMaybeOld p (x ∷ xs) with p x
+  ... | just y  = y ∷ mapMaybeOld p xs
+  ... | nothing = mapMaybeOld p xs
+
+  catMaybesOld : List (Maybe A) → List A
+  catMaybesOld = mapMaybe id
+
+  catMaybesTest : catMaybes {A = A} ≗ catMaybesOld
+  catMaybesTest []       = refl
+  catMaybesTest (x ∷ xs) = let ih = catMaybesTest xs
+    in maybe {B = λ x → catMaybes (x ∷ xs) ≡ catMaybesOld (x ∷ xs)}
+       (λ x → cong (x ∷_) ih) ih x
+
+  mapMaybeTest : (p : A → Maybe B) → mapMaybe p ≗ mapMaybeOld p
+  mapMaybeTest p []       = refl
+  mapMaybeTest p (x ∷ xs) with ih ← mapMaybeTest p xs | p x
+  ... | nothing = ih
+  ... | just y  = cong (y ∷_) ih
+
 
 module _ (f : A → Maybe B) where
 
-  mapMaybe-concatMap : mapMaybe′ f ≗ concatMap (fromMaybe ∘ f)
+  mapMaybe-concatMap : mapMaybe f ≗ concatMap (fromMaybe ∘ f)
   mapMaybe-concatMap []       = refl
   mapMaybe-concatMap (x ∷ xs) with ih ← mapMaybe-concatMap xs | f x
   ... | just y  = cong (y ∷_) ih
   ... | nothing = ih
 
-  length-mapMaybe : ∀ xs → length (mapMaybe′ f xs) ≤ length xs
+  length-mapMaybe : ∀ xs → length (mapMaybe f xs) ≤ length xs
   length-mapMaybe xs = ≤-trans (length-catMaybes (map f xs)) (≤-reflexive (length-map f xs))
 
 ------------------------------------------------------------------------
@@ -1351,3 +1358,6 @@ map-─ = map-removeAt
 "Warning: map-─ was deprecated in v2.0.
 Please use map-removeAt instead."
 #-}
+
+-- Version 2.1
+
