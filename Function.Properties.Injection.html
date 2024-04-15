@@ -1,54 +1,13 @@
-<!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Function.Properties.Injection</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
-<a id="74" class="Comment">-- The Agda standard library</a>
-<a id="103" class="Comment">--</a>
-<a id="106" class="Comment">-- Properties for injections</a>
-<a id="135" class="Comment">------------------------------------------------------------------------</a>
-
-<a id="209" class="Symbol">{-#</a> <a id="213" class="Keyword">OPTIONS</a> <a id="221" class="Pragma">--cubical-compatible</a> <a id="242" class="Pragma">--safe</a> <a id="249" class="Symbol">#-}</a>
-
-<a id="254" class="Keyword">module</a> <a id="261" href="Function.Properties.Injection.html" class="Module">Function.Properties.Injection</a> <a id="291" class="Keyword">where</a>
-
-<a id="298" class="Keyword">open</a> <a id="303" class="Keyword">import</a> <a id="310" href="Function.Base.html" class="Module">Function.Base</a>
-<a id="324" class="Keyword">open</a> <a id="329" class="Keyword">import</a> <a id="336" href="Function.Definitions.html" class="Module">Function.Definitions</a>
-<a id="357" class="Keyword">open</a> <a id="362" class="Keyword">import</a> <a id="369" href="Function.Bundles.html" class="Module">Function.Bundles</a>
-<a id="386" class="Keyword">import</a> <a id="393" href="Function.Construct.Identity.html" class="Module">Function.Construct.Identity</a> <a id="421" class="Symbol">as</a> <a id="424" class="Module">Identity</a>
-<a id="433" class="Keyword">import</a> <a id="440" href="Function.Construct.Composition.html" class="Module">Function.Construct.Composition</a> <a id="471" class="Symbol">as</a> <a id="474" class="Module">Compose</a>
-<a id="482" class="Keyword">open</a> <a id="487" class="Keyword">import</a> <a id="494" href="Level.html" class="Module">Level</a> <a id="500" class="Keyword">using</a> <a id="506" class="Symbol">(</a><a id="507" href="Agda.Primitive.html#742" class="Postulate">Level</a><a id="512" class="Symbol">)</a>
-<a id="514" class="Keyword">open</a> <a id="519" class="Keyword">import</a> <a id="526" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="544" class="Keyword">using</a> <a id="550" class="Symbol">(</a><a id="551" href="Data.Product.Base.html#636" class="Field">proj₁</a><a id="556" class="Symbol">;</a> <a id="558" href="Data.Product.Base.html#650" class="Field">proj₂</a><a id="563" class="Symbol">)</a>
-<a id="565" class="Keyword">open</a> <a id="570" class="Keyword">import</a> <a id="577" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
-<a id="615" class="Keyword">open</a> <a id="620" class="Keyword">import</a> <a id="627" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="643" class="Keyword">using</a> <a id="649" class="Symbol">(</a><a id="650" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a><a id="656" class="Symbol">)</a>
-<a id="658" class="Keyword">import</a> <a id="665" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="698" class="Symbol">as</a> <a id="701" class="Module">SetoidReasoning</a>
-
-<a id="718" class="Keyword">private</a>
-  <a id="728" class="Keyword">variable</a>
-    <a id="741" href="Function.Properties.Injection.html#741" class="Generalizable">a</a> <a id="743" href="Function.Properties.Injection.html#743" class="Generalizable">b</a> <a id="745" href="Function.Properties.Injection.html#745" class="Generalizable">ℓ</a> <a id="747" class="Symbol">:</a> <a id="749" href="Agda.Primitive.html#742" class="Postulate">Level</a>
-    <a id="759" href="Function.Properties.Injection.html#759" class="Generalizable">A</a> <a id="761" href="Function.Properties.Injection.html#761" class="Generalizable">B</a> <a id="763" class="Symbol">:</a> <a id="765" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="769" href="Function.Properties.Injection.html#741" class="Generalizable">a</a>
-    <a id="775" href="Function.Properties.Injection.html#775" class="Generalizable">T</a> <a id="777" href="Function.Properties.Injection.html#777" class="Generalizable">S</a> <a id="779" href="Function.Properties.Injection.html#779" class="Generalizable">U</a> <a id="781" class="Symbol">:</a> <a id="783" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a> <a id="790" href="Function.Properties.Injection.html#741" class="Generalizable">a</a> <a id="792" href="Function.Properties.Injection.html#745" class="Generalizable">ℓ</a>
-
-<a id="795" class="Comment">------------------------------------------------------------------------</a>
-<a id="868" class="Comment">-- Constructors</a>
-
-<a id="mkInjection"></a><a id="885" href="Function.Properties.Injection.html#885" class="Function">mkInjection</a> <a id="897" class="Symbol">:</a> <a id="899" class="Symbol">(</a><a id="900" href="Function.Properties.Injection.html#900" class="Bound">f</a> <a id="902" class="Symbol">:</a> <a id="904" href="Function.Bundles.html#2043" class="Record">Func</a> <a id="909" href="Function.Properties.Injection.html#777" class="Generalizable">S</a> <a id="911" href="Function.Properties.Injection.html#775" class="Generalizable">T</a><a id="912" class="Symbol">)</a> <a id="914" class="Symbol">(</a><a id="915" class="Keyword">open</a> <a id="920" href="Function.Bundles.html#2043" class="Module">Func</a> <a id="925" href="Function.Properties.Injection.html#900" class="Bound">f</a><a id="926" class="Symbol">)</a> <a id="928" class="Symbol">→</a>
-              <a id="944" href="Function.Definitions.html#842" class="Function">Injective</a> <a id="954" href="Relation.Binary.Bundles.html#1169" class="Function Operator">Eq₁._≈_</a> <a id="962" href="Relation.Binary.Bundles.html#1169" class="Function Operator">Eq₂._≈_</a> <a id="970" href="Function.Bundles.html#2094" class="Field">to</a>  <a id="974" class="Symbol">→</a>
-              <a id="990" href="Function.Bundles.html#2415" class="Record">Injection</a> <a id="1000" href="Function.Properties.Injection.html#777" class="Generalizable">S</a> <a id="1002" href="Function.Properties.Injection.html#775" class="Generalizable">T</a>
-<a id="1004" href="Function.Properties.Injection.html#885" class="Function">mkInjection</a> <a id="1016" href="Function.Properties.Injection.html#1016" class="Bound">f</a> <a id="1018" href="Function.Properties.Injection.html#1018" class="Bound">injective</a> <a id="1028" class="Symbol">=</a> <a id="1030" class="Keyword">record</a>
-  <a id="1039" class="Symbol">{</a> <a id="1041" href="Function.Properties.Injection.html#1041" class="Module">Func</a> <a id="1046" href="Function.Properties.Injection.html#1016" class="Bound">f</a>
-  <a id="1050" class="Symbol">;</a> <a id="1052" href="Function.Bundles.html#2540" class="Field">injective</a> <a id="1062" class="Symbol">=</a> <a id="1064" href="Function.Properties.Injection.html#1018" class="Bound">injective</a>
-  <a id="1076" class="Symbol">}</a>
-
-<a id="1079" class="Comment">------------------------------------------------------------------------</a>
-<a id="1152" class="Comment">-- Conversion functions</a>
-
-<a id="↣⇒⟶"></a><a id="1177" href="Function.Properties.Injection.html#1177" class="Function">↣⇒⟶</a> <a id="1181" class="Symbol">:</a> <a id="1183" href="Function.Properties.Injection.html#759" class="Generalizable">A</a> <a id="1185" href="Function.Bundles.html#9743" class="Function Operator">↣</a> <a id="1187" href="Function.Properties.Injection.html#761" class="Generalizable">B</a> <a id="1189" class="Symbol">→</a> <a id="1191" href="Function.Properties.Injection.html#759" class="Generalizable">A</a> <a id="1193" href="Function.Bundles.html#9675" class="Function Operator">⟶</a> <a id="1195" href="Function.Properties.Injection.html#761" class="Generalizable">B</a>
-<a id="1197" href="Function.Properties.Injection.html#1177" class="Function">↣⇒⟶</a> <a id="1201" class="Symbol">=</a> <a id="1203" href="Function.Bundles.html#2582" class="Function">Injection.function</a>
-
-<a id="1223" class="Comment">------------------------------------------------------------------------</a>
-<a id="1296" class="Comment">-- Properties</a>
-
-<a id="↣-refl"></a><a id="1311" href="Function.Properties.Injection.html#1311" class="Function">↣-refl</a> <a id="1318" class="Symbol">:</a> <a id="1320" href="Function.Bundles.html#2415" class="Record">Injection</a> <a id="1330" href="Function.Properties.Injection.html#777" class="Generalizable">S</a> <a id="1332" href="Function.Properties.Injection.html#777" class="Generalizable">S</a>
-<a id="1334" href="Function.Properties.Injection.html#1311" class="Function">↣-refl</a> <a id="1341" class="Symbol">=</a> <a id="1343" href="Function.Construct.Identity.html#2894" class="Function">Identity.injection</a> <a id="1362" class="Symbol">_</a>
-
-<a id="↣-trans"></a><a id="1365" href="Function.Properties.Injection.html#1365" class="Function">↣-trans</a> <a id="1373" class="Symbol">:</a> <a id="1375" href="Function.Bundles.html#2415" class="Record">Injection</a> <a id="1385" href="Function.Properties.Injection.html#777" class="Generalizable">S</a> <a id="1387" href="Function.Properties.Injection.html#775" class="Generalizable">T</a> <a id="1389" class="Symbol">→</a> <a id="1391" href="Function.Bundles.html#2415" class="Record">Injection</a> <a id="1401" href="Function.Properties.Injection.html#775" class="Generalizable">T</a> <a id="1403" href="Function.Properties.Injection.html#779" class="Generalizable">U</a> <a id="1405" class="Symbol">→</a> <a id="1407" href="Function.Bundles.html#2415" class="Record">Injection</a> <a id="1417" href="Function.Properties.Injection.html#777" class="Generalizable">S</a> <a id="1419" href="Function.Properties.Injection.html#779" class="Generalizable">U</a>
-<a id="1421" href="Function.Properties.Injection.html#1365" class="Function">↣-trans</a> <a id="1429" class="Symbol">=</a> <a id="1431" href="Function.Construct.Composition.html#5438" class="Function">Compose.injection</a>
-</pre></body></html>
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>Documentation page moved</title>
+    <meta http-equiv="refresh" content="3; url='https://agda.github.io/agda-stdlib/master/Function.Properties.Injection.html'" />
+  </head>
+  <body>
+    <p>
+      The documentation has been moved to <a href="master/Function.Properties.Injection.html">master/Function.Properties.Injection.html</a>.<br />
+      You should be redirected within 3 seconds.
+    </p>
+  </body>
+</html>

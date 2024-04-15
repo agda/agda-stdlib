@@ -1,48 +1,13 @@
-<!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Relation.Binary.Reasoning.Setoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
-<a id="74" class="Comment">-- The Agda standard library</a>
-<a id="103" class="Comment">--</a>
-<a id="106" class="Comment">-- Convenient syntax for reasoning with a setoid</a>
-<a id="155" class="Comment">------------------------------------------------------------------------</a>
-
-<a id="229" class="Comment">-- Example use:</a>
-
-<a id="246" class="Comment">-- n*0≡0 : ∀ n → n * 0 ≡ 0</a>
-<a id="273" class="Comment">-- n*0≡0 zero    = refl</a>
-<a id="297" class="Comment">-- n*0≡0 (suc n) = begin</a>
-<a id="322" class="Comment">--   suc n * 0 ≈⟨ refl ⟩</a>
-<a id="347" class="Comment">--   n * 0 + 0 ≈⟨ ... ⟩</a>
-<a id="371" class="Comment">--   n * 0     ≈⟨ n*0≡0 n ⟩</a>
-<a id="399" class="Comment">--   0         ∎</a>
-
-<a id="417" class="Comment">-- Module `≡-Reasoning` in `Relation.Binary.PropositionalEquality`</a>
-<a id="484" class="Comment">-- is recommended for equational reasoning when the underlying equality</a>
-<a id="556" class="Comment">-- is `_≡_`.</a>
-
-<a id="570" class="Symbol">{-#</a> <a id="574" class="Keyword">OPTIONS</a> <a id="582" class="Pragma">--cubical-compatible</a> <a id="603" class="Pragma">--safe</a> <a id="610" class="Symbol">#-}</a>
-
-<a id="615" class="Keyword">open</a> <a id="620" class="Keyword">import</a> <a id="627" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="651" class="Keyword">using</a> <a id="657" class="Symbol">(</a><a id="658" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a><a id="664" class="Symbol">)</a>
-
-<a id="667" class="Keyword">module</a> <a id="674" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="707" class="Symbol">{</a><a id="708" href="Relation.Binary.Reasoning.Setoid.html#708" class="Bound">s₁</a> <a id="711" href="Relation.Binary.Reasoning.Setoid.html#711" class="Bound">s₂</a><a id="713" class="Symbol">}</a> <a id="715" class="Symbol">(</a><a id="716" href="Relation.Binary.Reasoning.Setoid.html#716" class="Bound">S</a> <a id="718" class="Symbol">:</a> <a id="720" href="Relation.Binary.Bundles.html#1080" class="Record">Setoid</a> <a id="727" href="Relation.Binary.Reasoning.Setoid.html#708" class="Bound">s₁</a> <a id="730" href="Relation.Binary.Reasoning.Setoid.html#711" class="Bound">s₂</a><a id="732" class="Symbol">)</a> <a id="734" class="Keyword">where</a>
-
-<a id="741" class="Keyword">open</a> <a id="746" href="Relation.Binary.Bundles.html#1080" class="Module">Setoid</a> <a id="753" href="Relation.Binary.Reasoning.Setoid.html#716" class="Bound">S</a>
-
-<a id="756" class="Comment">------------------------------------------------------------------------</a>
-<a id="829" class="Comment">-- Reasoning combinators</a>
-
-<a id="855" class="Keyword">open</a> <a id="860" class="Keyword">import</a> <a id="867" href="Relation.Binary.Reasoning.Base.Single.html" class="Module">Relation.Binary.Reasoning.Base.Single</a> <a id="905" href="Relation.Binary.Bundles.html#1169" class="Field Operator">_≈_</a> <a id="909" href="Relation.Binary.Structures.html#1596" class="Function">refl</a> <a id="914" href="Relation.Binary.Structures.html#1648" class="Function">trans</a> as <a id="Base"></a><a id="923" href="Relation.Binary.Reasoning.Setoid.html#923" class="Module">Base</a> <a id="928" class="Keyword">public</a>
-  <a id="937" class="Keyword">hiding</a> <a id="944" class="Symbol">(</a><a id="945" href="Relation.Binary.Reasoning.Base.Single.html#2114" class="Function">step-∼</a><a id="951" class="Symbol">)</a>
-
-<a id="954" class="Keyword">infixr</a> <a id="961" class="Number">2</a> <a id="963" href="Relation.Binary.Reasoning.Setoid.html#1008" class="Function">step-≈</a> <a id="970" href="Relation.Binary.Reasoning.Setoid.html#1109" class="Function">step-≈˘</a>
-
-<a id="979" class="Comment">-- A step using an equality</a>
-
-<a id="step-≈"></a><a id="1008" href="Relation.Binary.Reasoning.Setoid.html#1008" class="Function">step-≈</a> <a id="1015" class="Symbol">=</a> <a id="1017" href="Relation.Binary.Reasoning.Base.Single.html#2114" class="Function">Base.step-∼</a>
-<a id="1029" class="Keyword">syntax</a> <a id="1036" href="Relation.Binary.Reasoning.Setoid.html#1008" class="Function">step-≈</a> <a id="1043" class="Bound">x</a> <a id="1045" class="Bound">y≈z</a> <a id="1049" class="Bound">x≈y</a> <a id="1053" class="Symbol">=</a> <a id="1055" class="Bound">x</a> <a id="1057" class="Function">≈⟨</a> <a id="1060" class="Bound">x≈y</a> <a id="1064" class="Function">⟩</a> <a id="1066" class="Bound">y≈z</a>
-
-<a id="1071" class="Comment">-- A step using a symmetric equality</a>
-
-<a id="step-≈˘"></a><a id="1109" href="Relation.Binary.Reasoning.Setoid.html#1109" class="Function">step-≈˘</a> <a id="1117" class="Symbol">:</a> <a id="1119" class="Symbol">∀</a> <a id="1121" href="Relation.Binary.Reasoning.Setoid.html#1121" class="Bound">x</a> <a id="1123" class="Symbol">{</a><a id="1124" href="Relation.Binary.Reasoning.Setoid.html#1124" class="Bound">y</a> <a id="1126" href="Relation.Binary.Reasoning.Setoid.html#1126" class="Bound">z</a><a id="1127" class="Symbol">}</a> <a id="1129" class="Symbol">→</a> <a id="1131" href="Relation.Binary.Reasoning.Setoid.html#1124" class="Bound">y</a> <a id="1133" href="Relation.Binary.Reasoning.Base.Single.html#1149" class="Datatype Operator">IsRelatedTo</a> <a id="1145" href="Relation.Binary.Reasoning.Setoid.html#1126" class="Bound">z</a> <a id="1147" class="Symbol">→</a> <a id="1149" href="Relation.Binary.Reasoning.Setoid.html#1124" class="Bound">y</a> <a id="1151" href="Relation.Binary.Bundles.html#1169" class="Field Operator">≈</a> <a id="1153" href="Relation.Binary.Reasoning.Setoid.html#1121" class="Bound">x</a> <a id="1155" class="Symbol">→</a> <a id="1157" href="Relation.Binary.Reasoning.Setoid.html#1121" class="Bound">x</a> <a id="1159" href="Relation.Binary.Reasoning.Base.Single.html#1149" class="Datatype Operator">IsRelatedTo</a> <a id="1171" href="Relation.Binary.Reasoning.Setoid.html#1126" class="Bound">z</a>
-<a id="1173" href="Relation.Binary.Reasoning.Setoid.html#1109" class="Function">step-≈˘</a> <a id="1181" href="Relation.Binary.Reasoning.Setoid.html#1181" class="Bound">x</a> <a id="1183" href="Relation.Binary.Reasoning.Setoid.html#1183" class="Bound">y∼z</a> <a id="1187" href="Relation.Binary.Reasoning.Setoid.html#1187" class="Bound">y≈x</a> <a id="1191" class="Symbol">=</a> <a id="1193" href="Relation.Binary.Reasoning.Setoid.html#1181" class="Bound">x</a> <a id="1195" href="Relation.Binary.Reasoning.Setoid.html#1008" class="Function">≈⟨</a> <a id="1198" href="Relation.Binary.Structures.html#1622" class="Function">sym</a> <a id="1202" href="Relation.Binary.Reasoning.Setoid.html#1187" class="Bound">y≈x</a> <a id="1206" href="Relation.Binary.Reasoning.Setoid.html#1008" class="Function">⟩</a> <a id="1208" href="Relation.Binary.Reasoning.Setoid.html#1183" class="Bound">y∼z</a>
-<a id="1212" class="Keyword">syntax</a> <a id="1219" href="Relation.Binary.Reasoning.Setoid.html#1109" class="Function">step-≈˘</a> <a id="1227" class="Bound">x</a> <a id="1229" class="Bound">y≈z</a> <a id="1233" class="Bound">y≈x</a> <a id="1237" class="Symbol">=</a> <a id="1239" class="Bound">x</a> <a id="1241" class="Function">≈˘⟨</a> <a id="1245" class="Bound">y≈x</a> <a id="1249" class="Function">⟩</a> <a id="1251" class="Bound">y≈z</a>
-</pre></body></html>
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>Documentation page moved</title>
+    <meta http-equiv="refresh" content="3; url='https://agda.github.io/agda-stdlib/master/Relation.Binary.Reasoning.Setoid.html'" />
+  </head>
+  <body>
+    <p>
+      The documentation has been moved to <a href="master/Relation.Binary.Reasoning.Setoid.html">master/Relation.Binary.Reasoning.Setoid.html</a>.<br />
+      You should be redirected within 3 seconds.
+    </p>
+  </body>
+</html>

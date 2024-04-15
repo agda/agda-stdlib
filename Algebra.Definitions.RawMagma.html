@@ -1,75 +1,13 @@
-<!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Algebra.Definitions.RawMagma</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
-<a id="74" class="Comment">-- The Agda standard library</a>
-<a id="103" class="Comment">--</a>
-<a id="106" class="Comment">-- Basic auxiliary definitions for magma-like structures</a>
-<a id="163" class="Comment">------------------------------------------------------------------------</a>
-
-<a id="237" class="Comment">-- You&#39;re unlikely to want to use this module directly. Instead you</a>
-<a id="305" class="Comment">-- probably want to be importing the appropriate module from</a>
-<a id="366" class="Comment">-- `Algebra.Properties.(Magma/Semigroup/...).Divisibility`</a>
-
-<a id="426" class="Symbol">{-#</a> <a id="430" class="Keyword">OPTIONS</a> <a id="438" class="Pragma">--cubical-compatible</a> <a id="459" class="Pragma">--safe</a> <a id="466" class="Symbol">#-}</a>
-
-<a id="471" class="Keyword">open</a> <a id="476" class="Keyword">import</a> <a id="483" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="499" class="Keyword">using</a> <a id="505" class="Symbol">(</a><a id="506" href="Algebra.Bundles.Raw.html#644" class="Record">RawMagma</a><a id="514" class="Symbol">)</a>
-<a id="516" class="Keyword">open</a> <a id="521" class="Keyword">import</a> <a id="528" href="Data.Product.Base.html" class="Module">Data.Product.Base</a> <a id="546" class="Keyword">using</a> <a id="552" class="Symbol">(</a><a id="553" href="Data.Product.Base.html#1618" class="Function Operator">_×_</a><a id="556" class="Symbol">;</a> <a id="558" href="Data.Product.Base.html#852" class="Function">∃</a><a id="559" class="Symbol">)</a>
-<a id="561" class="Keyword">open</a> <a id="566" class="Keyword">import</a> <a id="573" href="Level.html" class="Module">Level</a> <a id="579" class="Keyword">using</a> <a id="585" class="Symbol">(</a><a id="586" href="Agda.Primitive.html#961" class="Primitive Operator">_⊔_</a><a id="589" class="Symbol">)</a>
-<a id="591" class="Keyword">open</a> <a id="596" class="Keyword">import</a> <a id="603" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a>
-<a id="624" class="Keyword">open</a> <a id="629" class="Keyword">import</a> <a id="636" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a> <a id="662" class="Keyword">using</a> <a id="668" class="Symbol">(</a><a id="669" href="Relation.Nullary.Negation.Core.html#698" class="Function Operator">¬_</a><a id="671" class="Symbol">)</a>
-
-<a id="674" class="Keyword">module</a> <a id="681" href="Algebra.Definitions.RawMagma.html" class="Module">Algebra.Definitions.RawMagma</a>
-  <a id="712" class="Symbol">{</a><a id="713" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="715" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="716" class="Symbol">}</a> <a id="718" class="Symbol">(</a><a id="719" href="Algebra.Definitions.RawMagma.html#719" class="Bound">M</a> <a id="721" class="Symbol">:</a> <a id="723" href="Algebra.Bundles.Raw.html#644" class="Record">RawMagma</a> <a id="732" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="734" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="735" class="Symbol">)</a>
-  <a id="739" class="Keyword">where</a>
-
-<a id="746" class="Keyword">open</a> <a id="751" href="Algebra.Bundles.Raw.html#644" class="Module">RawMagma</a> <a id="760" href="Algebra.Definitions.RawMagma.html#719" class="Bound">M</a> <a id="762" class="Keyword">renaming</a> <a id="771" class="Symbol">(</a><a id="772" href="Algebra.Bundles.Raw.html#725" class="Field">Carrier</a> <a id="780" class="Symbol">to</a> <a id="783" class="Field">A</a><a id="784" class="Symbol">)</a>
-
-<a id="787" class="Comment">------------------------------------------------------------------------</a>
-<a id="860" class="Comment">-- Divisibility</a>
-
-<a id="877" class="Keyword">infix</a> <a id="883" class="Number">5</a> <a id="885" href="Algebra.Definitions.RawMagma.html#945" class="Function Operator">_∣ˡ_</a> <a id="890" href="Algebra.Definitions.RawMagma.html#996" class="Function Operator">_∤ˡ_</a> <a id="895" href="Algebra.Definitions.RawMagma.html#1068" class="Function Operator">_∣ʳ_</a> <a id="900" href="Algebra.Definitions.RawMagma.html#1119" class="Function Operator">_∤ʳ_</a> <a id="905" href="Algebra.Definitions.RawMagma.html#1331" class="Function Operator">_∣_</a> <a id="909" href="Algebra.Definitions.RawMagma.html#1363" class="Function Operator">_∤_</a>
-
-<a id="914" class="Comment">-- Divisibility from the left</a>
-
-<a id="_∣ˡ_"></a><a id="945" href="Algebra.Definitions.RawMagma.html#945" class="Function Operator">_∣ˡ_</a> <a id="950" class="Symbol">:</a> <a id="952" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="956" href="Algebra.Definitions.RawMagma.html#783" class="Field">A</a> <a id="958" class="Symbol">(</a><a id="959" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="961" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="963" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="964" class="Symbol">)</a>
-<a id="966" href="Algebra.Definitions.RawMagma.html#966" class="Bound">x</a> <a id="968" href="Algebra.Definitions.RawMagma.html#945" class="Function Operator">∣ˡ</a> <a id="971" href="Algebra.Definitions.RawMagma.html#971" class="Bound">y</a> <a id="973" class="Symbol">=</a> <a id="975" href="Data.Product.Base.html#852" class="Function">∃</a> <a id="977" class="Symbol">λ</a> <a id="979" href="Algebra.Definitions.RawMagma.html#979" class="Bound">q</a> <a id="981" class="Symbol">→</a> <a id="983" class="Symbol">(</a><a id="984" href="Algebra.Definitions.RawMagma.html#966" class="Bound">x</a> <a id="986" href="Algebra.Bundles.Raw.html#773" class="Field Operator">∙</a> <a id="988" href="Algebra.Definitions.RawMagma.html#979" class="Bound">q</a><a id="989" class="Symbol">)</a> <a id="991" href="Algebra.Bundles.Raw.html#745" class="Field Operator">≈</a> <a id="993" href="Algebra.Definitions.RawMagma.html#971" class="Bound">y</a>
-
-<a id="_∤ˡ_"></a><a id="996" href="Algebra.Definitions.RawMagma.html#996" class="Function Operator">_∤ˡ_</a> <a id="1001" class="Symbol">:</a> <a id="1003" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="1007" href="Algebra.Definitions.RawMagma.html#783" class="Field">A</a> <a id="1009" class="Symbol">(</a><a id="1010" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="1012" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1014" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="1015" class="Symbol">)</a>
-<a id="1017" href="Algebra.Definitions.RawMagma.html#1017" class="Bound">x</a> <a id="1019" href="Algebra.Definitions.RawMagma.html#996" class="Function Operator">∤ˡ</a> <a id="1022" href="Algebra.Definitions.RawMagma.html#1022" class="Bound">y</a> <a id="1024" class="Symbol">=</a> <a id="1026" href="Relation.Nullary.Negation.Core.html#698" class="Function Operator">¬</a> <a id="1028" href="Algebra.Definitions.RawMagma.html#1017" class="Bound">x</a> <a id="1030" href="Algebra.Definitions.RawMagma.html#945" class="Function Operator">∣ˡ</a> <a id="1033" href="Algebra.Definitions.RawMagma.html#1022" class="Bound">y</a>
-
-<a id="1036" class="Comment">-- Divisibility from the right</a>
-
-<a id="_∣ʳ_"></a><a id="1068" href="Algebra.Definitions.RawMagma.html#1068" class="Function Operator">_∣ʳ_</a> <a id="1073" class="Symbol">:</a> <a id="1075" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="1079" href="Algebra.Definitions.RawMagma.html#783" class="Field">A</a> <a id="1081" class="Symbol">(</a><a id="1082" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="1084" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1086" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="1087" class="Symbol">)</a>
-<a id="1089" href="Algebra.Definitions.RawMagma.html#1089" class="Bound">x</a> <a id="1091" href="Algebra.Definitions.RawMagma.html#1068" class="Function Operator">∣ʳ</a> <a id="1094" href="Algebra.Definitions.RawMagma.html#1094" class="Bound">y</a> <a id="1096" class="Symbol">=</a> <a id="1098" href="Data.Product.Base.html#852" class="Function">∃</a> <a id="1100" class="Symbol">λ</a> <a id="1102" href="Algebra.Definitions.RawMagma.html#1102" class="Bound">q</a> <a id="1104" class="Symbol">→</a> <a id="1106" class="Symbol">(</a><a id="1107" href="Algebra.Definitions.RawMagma.html#1102" class="Bound">q</a> <a id="1109" href="Algebra.Bundles.Raw.html#773" class="Field Operator">∙</a> <a id="1111" href="Algebra.Definitions.RawMagma.html#1089" class="Bound">x</a><a id="1112" class="Symbol">)</a> <a id="1114" href="Algebra.Bundles.Raw.html#745" class="Field Operator">≈</a> <a id="1116" href="Algebra.Definitions.RawMagma.html#1094" class="Bound">y</a>
-
-<a id="_∤ʳ_"></a><a id="1119" href="Algebra.Definitions.RawMagma.html#1119" class="Function Operator">_∤ʳ_</a> <a id="1124" class="Symbol">:</a> <a id="1126" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="1130" href="Algebra.Definitions.RawMagma.html#783" class="Field">A</a> <a id="1132" class="Symbol">(</a><a id="1133" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="1135" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1137" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="1138" class="Symbol">)</a>
-<a id="1140" href="Algebra.Definitions.RawMagma.html#1140" class="Bound">x</a> <a id="1142" href="Algebra.Definitions.RawMagma.html#1119" class="Function Operator">∤ʳ</a> <a id="1145" href="Algebra.Definitions.RawMagma.html#1145" class="Bound">y</a> <a id="1147" class="Symbol">=</a> <a id="1149" href="Relation.Nullary.Negation.Core.html#698" class="Function Operator">¬</a> <a id="1151" href="Algebra.Definitions.RawMagma.html#1140" class="Bound">x</a> <a id="1153" href="Algebra.Definitions.RawMagma.html#1068" class="Function Operator">∣ʳ</a> <a id="1156" href="Algebra.Definitions.RawMagma.html#1145" class="Bound">y</a>
-
-<a id="1159" class="Comment">-- General divisibility</a>
-
-<a id="1184" class="Comment">-- The relations _∣ˡ_ and _∣ʳ_ are only equivalent when _∙_ is</a>
-<a id="1247" class="Comment">-- commutative. When that is not the case we take `_∣ʳ_` to be the</a>
-<a id="1314" class="Comment">-- primary one.</a>
-
-<a id="_∣_"></a><a id="1331" href="Algebra.Definitions.RawMagma.html#1331" class="Function Operator">_∣_</a> <a id="1335" class="Symbol">:</a> <a id="1337" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="1341" href="Algebra.Definitions.RawMagma.html#783" class="Field">A</a> <a id="1343" class="Symbol">(</a><a id="1344" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="1346" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1348" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="1349" class="Symbol">)</a>
-<a id="1351" href="Algebra.Definitions.RawMagma.html#1331" class="Function Operator">_∣_</a> <a id="1355" class="Symbol">=</a> <a id="1357" href="Algebra.Definitions.RawMagma.html#1068" class="Function Operator">_∣ʳ_</a>
-
-<a id="_∤_"></a><a id="1363" href="Algebra.Definitions.RawMagma.html#1363" class="Function Operator">_∤_</a> <a id="1367" class="Symbol">:</a> <a id="1369" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="1373" href="Algebra.Definitions.RawMagma.html#783" class="Field">A</a> <a id="1375" class="Symbol">(</a><a id="1376" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="1378" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1380" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="1381" class="Symbol">)</a>
-<a id="1383" href="Algebra.Definitions.RawMagma.html#1383" class="Bound">x</a> <a id="1385" href="Algebra.Definitions.RawMagma.html#1363" class="Function Operator">∤</a> <a id="1387" href="Algebra.Definitions.RawMagma.html#1387" class="Bound">y</a> <a id="1389" class="Symbol">=</a> <a id="1391" href="Relation.Nullary.Negation.Core.html#698" class="Function Operator">¬</a> <a id="1393" href="Algebra.Definitions.RawMagma.html#1383" class="Bound">x</a> <a id="1395" href="Algebra.Definitions.RawMagma.html#1331" class="Function Operator">∣</a> <a id="1397" href="Algebra.Definitions.RawMagma.html#1387" class="Bound">y</a>
-
-<a id="1400" class="Comment">------------------------------------------------------------------------</a>
-<a id="1473" class="Comment">-- Mutual divisibility.</a>
-
-<a id="1498" class="Comment">-- In a  monoid, this is an equivalence relation extending _≈_.</a>
-<a id="1562" class="Comment">-- When in a cancellative monoid,  elements related by _∣∣_ are called</a>
-<a id="1633" class="Comment">-- associated, and `x ∣∣ y` means that `x` and `y` differ by some</a>
-<a id="1699" class="Comment">-- invertible factor.</a>
-
-<a id="1722" class="Comment">-- Example: for ℕ  this is equivalent to x ≡ y,</a>
-<a id="1770" class="Comment">--          for ℤ  this is equivalent to (x ≡ y or x ≡ - y).</a>
-
-<a id="_∣∣_"></a><a id="1832" href="Algebra.Definitions.RawMagma.html#1832" class="Function Operator">_∣∣_</a> <a id="1837" class="Symbol">:</a> <a id="1839" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="1843" href="Algebra.Definitions.RawMagma.html#783" class="Field">A</a> <a id="1845" class="Symbol">(</a><a id="1846" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="1848" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1850" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="1851" class="Symbol">)</a>
-<a id="1853" href="Algebra.Definitions.RawMagma.html#1853" class="Bound">x</a> <a id="1855" href="Algebra.Definitions.RawMagma.html#1832" class="Function Operator">∣∣</a> <a id="1858" href="Algebra.Definitions.RawMagma.html#1858" class="Bound">y</a> <a id="1860" class="Symbol">=</a> <a id="1862" href="Algebra.Definitions.RawMagma.html#1853" class="Bound">x</a> <a id="1864" href="Algebra.Definitions.RawMagma.html#1331" class="Function Operator">∣</a> <a id="1866" href="Algebra.Definitions.RawMagma.html#1858" class="Bound">y</a> <a id="1868" href="Data.Product.Base.html#1618" class="Function Operator">×</a> <a id="1870" href="Algebra.Definitions.RawMagma.html#1858" class="Bound">y</a> <a id="1872" href="Algebra.Definitions.RawMagma.html#1331" class="Function Operator">∣</a> <a id="1874" href="Algebra.Definitions.RawMagma.html#1853" class="Bound">x</a>
-
-<a id="_∤∤_"></a><a id="1877" href="Algebra.Definitions.RawMagma.html#1877" class="Function Operator">_∤∤_</a> <a id="1882" class="Symbol">:</a> <a id="1884" href="Relation.Binary.Core.html#896" class="Function">Rel</a> <a id="1888" href="Algebra.Definitions.RawMagma.html#783" class="Field">A</a> <a id="1890" class="Symbol">(</a><a id="1891" href="Algebra.Definitions.RawMagma.html#713" class="Bound">a</a> <a id="1893" href="Agda.Primitive.html#961" class="Primitive Operator">⊔</a> <a id="1895" href="Algebra.Definitions.RawMagma.html#715" class="Bound">ℓ</a><a id="1896" class="Symbol">)</a>
-<a id="1898" href="Algebra.Definitions.RawMagma.html#1898" class="Bound">x</a> <a id="1900" href="Algebra.Definitions.RawMagma.html#1877" class="Function Operator">∤∤</a> <a id="1903" href="Algebra.Definitions.RawMagma.html#1903" class="Bound">y</a> <a id="1905" class="Symbol">=</a> <a id="1907" href="Relation.Nullary.Negation.Core.html#698" class="Function Operator">¬</a> <a id="1909" href="Algebra.Definitions.RawMagma.html#1898" class="Bound">x</a> <a id="1911" href="Algebra.Definitions.RawMagma.html#1832" class="Function Operator">∣∣</a> <a id="1914" href="Algebra.Definitions.RawMagma.html#1903" class="Bound">y</a>
-</pre></body></html>
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>Documentation page moved</title>
+    <meta http-equiv="refresh" content="3; url='https://agda.github.io/agda-stdlib/master/Algebra.Definitions.RawMagma.html'" />
+  </head>
+  <body>
+    <p>
+      The documentation has been moved to <a href="master/Algebra.Definitions.RawMagma.html">master/Algebra.Definitions.RawMagma.html</a>.<br />
+      You should be redirected within 3 seconds.
+    </p>
+  </body>
+</html>

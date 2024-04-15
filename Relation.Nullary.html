@@ -1,39 +1,13 @@
-<!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Relation.Nullary</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
-<a id="74" class="Comment">-- The Agda standard library</a>
-<a id="103" class="Comment">--</a>
-<a id="106" class="Comment">-- Operations on nullary relations (like negation and decidability)</a>
-<a id="174" class="Comment">------------------------------------------------------------------------</a>
-
-<a id="248" class="Comment">-- Some operations on/properties of nullary relations, i.e. sets.</a>
-
-<a id="315" class="Symbol">{-#</a> <a id="319" class="Keyword">OPTIONS</a> <a id="327" class="Pragma">--cubical-compatible</a> <a id="348" class="Pragma">--safe</a> <a id="355" class="Symbol">#-}</a>
-
-<a id="360" class="Keyword">module</a> <a id="367" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="384" class="Keyword">where</a>
-
-<a id="391" class="Keyword">open</a> <a id="396" class="Keyword">import</a> <a id="403" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
-
-<a id="426" class="Comment">------------------------------------------------------------------------</a>
-<a id="499" class="Comment">-- Re-exports</a>
-
-<a id="514" class="Keyword">open</a> <a id="519" class="Keyword">import</a> <a id="526" href="Relation.Nullary.Negation.Core.html" class="Module">Relation.Nullary.Negation.Core</a> <a id="557" class="Keyword">public</a> <a id="564" class="Keyword">using</a>
-  <a id="572" class="Symbol">(</a> <a id="574" href="Relation.Nullary.Negation.Core.html#698" class="Function Operator">¬_</a><a id="576" class="Symbol">;</a> <a id="578" href="Relation.Nullary.Negation.Core.html#1087" class="Function Operator">_¬-⊎_</a>
-  <a id="586" class="Symbol">;</a> <a id="588" href="Relation.Nullary.Negation.Core.html#1226" class="Function">contradiction</a><a id="601" class="Symbol">;</a> <a id="603" href="Relation.Nullary.Negation.Core.html#1297" class="Function">contradiction₂</a><a id="617" class="Symbol">;</a> <a id="619" href="Relation.Nullary.Negation.Core.html#1446" class="Function">contraposition</a>
-  <a id="636" class="Symbol">)</a>
-
-<a id="639" class="Keyword">open</a> <a id="644" class="Keyword">import</a> <a id="651" href="Relation.Nullary.Reflects.html" class="Module">Relation.Nullary.Reflects</a> <a id="677" class="Keyword">public</a> <a id="684" class="Keyword">using</a>
-  <a id="692" class="Symbol">(</a> <a id="694" href="Relation.Nullary.Reflects.html#897" class="Datatype">Reflects</a><a id="702" class="Symbol">;</a> <a id="704" href="Relation.Nullary.Reflects.html#941" class="InductiveConstructor">ofʸ</a><a id="707" class="Symbol">;</a> <a id="709" href="Relation.Nullary.Reflects.html#978" class="InductiveConstructor">ofⁿ</a>
-  <a id="715" class="Symbol">;</a> <a id="717" href="Relation.Nullary.Reflects.html#2020" class="Function Operator">_×-reflects_</a><a id="729" class="Symbol">;</a> <a id="731" href="Relation.Nullary.Reflects.html#2266" class="Function Operator">_⊎-reflects_</a><a id="743" class="Symbol">;</a> <a id="745" href="Relation.Nullary.Reflects.html#2507" class="Function Operator">_→-reflects_</a>
-  <a id="760" class="Symbol">)</a>
-
-<a id="763" class="Keyword">open</a> <a id="768" class="Keyword">import</a> <a id="775" href="Relation.Nullary.Decidable.Core.html" class="Module">Relation.Nullary.Decidable.Core</a> <a id="807" class="Keyword">public</a> <a id="814" class="Keyword">using</a>
-  <a id="822" class="Symbol">(</a> <a id="824" href="Relation.Nullary.Decidable.Core.html#1478" class="Record">Dec</a><a id="827" class="Symbol">;</a> <a id="829" href="Relation.Nullary.Decidable.Core.html#1544" class="Field">does</a><a id="833" class="Symbol">;</a> <a id="835" href="Relation.Nullary.Decidable.Core.html#1561" class="Field">proof</a><a id="840" class="Symbol">;</a> <a id="842" href="Relation.Nullary.Decidable.Core.html#1611" class="InductiveConstructor">yes</a><a id="845" class="Symbol">;</a> <a id="847" href="Relation.Nullary.Decidable.Core.html#1648" class="InductiveConstructor">no</a><a id="849" class="Symbol">;</a> <a id="851" href="Relation.Nullary.Decidable.Core.html#1522" class="InductiveConstructor Operator">_because_</a><a id="860" class="Symbol">;</a> <a id="862" href="Relation.Nullary.Decidable.Core.html#2205" class="Function">recompute</a>
-  <a id="874" class="Symbol">;</a> <a id="876" href="Relation.Nullary.Decidable.Core.html#2458" class="Function">¬?</a><a id="878" class="Symbol">;</a> <a id="880" href="Relation.Nullary.Decidable.Core.html#2550" class="Function Operator">_×-dec_</a><a id="887" class="Symbol">;</a> <a id="889" href="Relation.Nullary.Decidable.Core.html#2680" class="Function Operator">_⊎-dec_</a><a id="896" class="Symbol">;</a> <a id="898" href="Relation.Nullary.Decidable.Core.html#2810" class="Function Operator">_→-dec_</a>
-  <a id="908" class="Symbol">)</a>
-
-<a id="911" class="Comment">------------------------------------------------------------------------</a>
-<a id="984" class="Comment">-- Irrelevant types</a>
-
-<a id="Irrelevant"></a><a id="1005" href="Relation.Nullary.html#1005" class="Function">Irrelevant</a> <a id="1016" class="Symbol">:</a> <a id="1018" class="Symbol">∀</a> <a id="1020" class="Symbol">{</a><a id="1021" href="Relation.Nullary.html#1021" class="Bound">p</a><a id="1022" class="Symbol">}</a> <a id="1024" class="Symbol">→</a> <a id="1026" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1030" href="Relation.Nullary.html#1021" class="Bound">p</a> <a id="1032" class="Symbol">→</a> <a id="1034" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1038" href="Relation.Nullary.html#1021" class="Bound">p</a>
-<a id="1040" href="Relation.Nullary.html#1005" class="Function">Irrelevant</a> <a id="1051" href="Relation.Nullary.html#1051" class="Bound">P</a> <a id="1053" class="Symbol">=</a> <a id="1055" class="Symbol">∀</a> <a id="1057" class="Symbol">(</a><a id="1058" href="Relation.Nullary.html#1058" class="Bound">p₁</a> <a id="1061" href="Relation.Nullary.html#1061" class="Bound">p₂</a> <a id="1064" class="Symbol">:</a> <a id="1066" href="Relation.Nullary.html#1051" class="Bound">P</a><a id="1067" class="Symbol">)</a> <a id="1069" class="Symbol">→</a> <a id="1071" href="Relation.Nullary.html#1058" class="Bound">p₁</a> <a id="1074" href="Agda.Builtin.Equality.html#150" class="Datatype Operator">≡</a> <a id="1076" href="Relation.Nullary.html#1061" class="Bound">p₂</a>
-</pre></body></html>
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>Documentation page moved</title>
+    <meta http-equiv="refresh" content="3; url='https://agda.github.io/agda-stdlib/master/Relation.Nullary.html'" />
+  </head>
+  <body>
+    <p>
+      The documentation has been moved to <a href="master/Relation.Nullary.html">master/Relation.Nullary.html</a>.<br />
+      You should be redirected within 3 seconds.
+    </p>
+  </body>
+</html>

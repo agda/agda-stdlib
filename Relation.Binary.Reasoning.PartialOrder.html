@@ -1,65 +1,13 @@
-<!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Relation.Binary.Reasoning.PartialOrder</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
-<a id="74" class="Comment">-- The Agda standard library</a>
-<a id="103" class="Comment">--</a>
-<a id="106" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a partial order</a>
-<a id="176" class="Comment">------------------------------------------------------------------------</a>
-
-<a id="250" class="Comment">-- Example uses:</a>
-<a id="267" class="Comment">--</a>
-<a id="270" class="Comment">--    u≤x : u ≤ x</a>
-<a id="288" class="Comment">--    u≤x = begin</a>
-<a id="306" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
-<a id="326" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
-<a id="346" class="Comment">--      w  &lt;⟨ w≤x ⟩</a>
-<a id="366" class="Comment">--      x  ∎</a>
-<a id="379" class="Comment">--</a>
-<a id="382" class="Comment">--    u&lt;x : u &lt; x</a>
-<a id="400" class="Comment">--    u&lt;x = begin-strict</a>
-<a id="425" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
-<a id="445" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
-<a id="465" class="Comment">--      w  &lt;⟨ w≤x ⟩</a>
-<a id="485" class="Comment">--      x  ∎</a>
-<a id="498" class="Comment">--</a>
-<a id="501" class="Comment">--    u&lt;e : u &lt; e</a>
-<a id="519" class="Comment">--    u&lt;e = begin-strict</a>
-<a id="544" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
-<a id="564" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
-<a id="584" class="Comment">--      w  &lt;⟨ w&lt;x ⟩</a>
-<a id="604" class="Comment">--      x  ≤⟨ x≤y ⟩</a>
-<a id="624" class="Comment">--      y  &lt;⟨ y&lt;z ⟩</a>
-<a id="644" class="Comment">--      z  ≡˘⟨ d≡z ⟩</a>
-<a id="665" class="Comment">--      d  ≈˘⟨ e≈d ⟩</a>
-<a id="686" class="Comment">--      e  ∎</a>
-<a id="699" class="Comment">--</a>
-<a id="702" class="Comment">--    u≈w : u ≈ w</a>
-<a id="720" class="Comment">--    u≈w = begin-equality</a>
-<a id="747" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
-<a id="767" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
-<a id="787" class="Comment">--      w  ∎</a>
-
-<a id="801" class="Symbol">{-#</a> <a id="805" class="Keyword">OPTIONS</a> <a id="813" class="Pragma">--cubical-compatible</a> <a id="834" class="Pragma">--safe</a> <a id="841" class="Symbol">#-}</a>
-
-<a id="846" class="Keyword">open</a> <a id="851" class="Keyword">import</a> <a id="858" href="Relation.Binary.Bundles.html" class="Module">Relation.Binary.Bundles</a> <a id="882" class="Keyword">using</a> <a id="888" class="Symbol">(</a><a id="889" href="Relation.Binary.Bundles.html#3343" class="Record">Poset</a><a id="894" class="Symbol">)</a>
-
-<a id="897" class="Keyword">module</a> <a id="904" href="Relation.Binary.Reasoning.PartialOrder.html" class="Module">Relation.Binary.Reasoning.PartialOrder</a>
-  <a id="945" class="Symbol">{</a><a id="946" href="Relation.Binary.Reasoning.PartialOrder.html#946" class="Bound">p₁</a> <a id="949" href="Relation.Binary.Reasoning.PartialOrder.html#949" class="Bound">p₂</a> <a id="952" href="Relation.Binary.Reasoning.PartialOrder.html#952" class="Bound">p₃</a><a id="954" class="Symbol">}</a> <a id="956" class="Symbol">(</a><a id="957" href="Relation.Binary.Reasoning.PartialOrder.html#957" class="Bound">P</a> <a id="959" class="Symbol">:</a> <a id="961" href="Relation.Binary.Bundles.html#3343" class="Record">Poset</a> <a id="967" href="Relation.Binary.Reasoning.PartialOrder.html#946" class="Bound">p₁</a> <a id="970" href="Relation.Binary.Reasoning.PartialOrder.html#949" class="Bound">p₂</a> <a id="973" href="Relation.Binary.Reasoning.PartialOrder.html#952" class="Bound">p₃</a><a id="975" class="Symbol">)</a> <a id="977" class="Keyword">where</a>
-
-<a id="984" class="Keyword">open</a> <a id="989" href="Relation.Binary.Bundles.html#3343" class="Module">Poset</a> <a id="995" href="Relation.Binary.Reasoning.PartialOrder.html#957" class="Bound">P</a>
-<a id="997" class="Keyword">open</a> <a id="1002" class="Keyword">import</a> <a id="1009" href="Relation.Binary.Construct.NonStrictToStrict.html" class="Module">Relation.Binary.Construct.NonStrictToStrict</a> <a id="1053" href="Relation.Binary.Bundles.html#3446" class="Field Operator">_≈_</a> <a id="1057" href="Relation.Binary.Bundles.html#3482" class="Field Operator">_≤_</a>
-  as <a id="Strict"></a><a id="1066" href="Relation.Binary.Reasoning.PartialOrder.html#1066" class="Module">Strict</a>
-  <a id="1075" class="Keyword">using</a> <a id="1081" class="Symbol">(</a><a id="1082" href="Relation.Binary.Construct.NonStrictToStrict.html#1319" class="Function Operator">_&lt;_</a><a id="1085" class="Symbol">)</a>
-
-<a id="1088" class="Comment">------------------------------------------------------------------------</a>
-<a id="1161" class="Comment">-- Re-export contents of base module</a>
-
-<a id="1199" class="Keyword">open</a> <a id="1204" class="Keyword">import</a> <a id="1211" href="Relation.Binary.Reasoning.Base.Triple.html" class="Module">Relation.Binary.Reasoning.Base.Triple</a>
-  <a id="1251" href="Relation.Binary.Structures.html#3271" class="Function">isPreorder</a>
-  <a id="1264" href="Relation.Binary.Construct.NonStrictToStrict.html#2396" class="Function">Strict.&lt;-irrefl</a>
-  <a id="1282" class="Symbol">(</a><a id="1283" href="Relation.Binary.Construct.NonStrictToStrict.html#2461" class="Function">Strict.&lt;-trans</a> <a id="1298" href="Relation.Binary.Bundles.html#3518" class="Field">isPartialOrder</a><a id="1312" class="Symbol">)</a>
-  <a id="1316" class="Symbol">(</a><a id="1317" href="Relation.Binary.Construct.NonStrictToStrict.html#3549" class="Function">Strict.&lt;-resp-≈</a> <a id="1333" href="Relation.Binary.Structures.html#2256" class="Function">isEquivalence</a> <a id="1347" href="Relation.Binary.Structures.html#3465" class="Function">≤-resp-≈</a><a id="1355" class="Symbol">)</a>
-  <a id="1359" href="Relation.Binary.Construct.NonStrictToStrict.html#1464" class="Function">Strict.&lt;⇒≤</a>
-  <a id="1372" class="Symbol">(</a><a id="1373" href="Relation.Binary.Construct.NonStrictToStrict.html#2651" class="Function">Strict.&lt;-≤-trans</a> <a id="1390" href="Relation.Binary.Structures.html#1622" class="Function">Eq.sym</a> <a id="1397" href="Relation.Binary.Structures.html#2389" class="Function">trans</a> <a id="1403" href="Relation.Binary.Structures.html#3303" class="Function">antisym</a> <a id="1411" href="Relation.Binary.Structures.html#3436" class="Function">≤-respʳ-≈</a><a id="1420" class="Symbol">)</a>
-  <a id="1424" class="Symbol">(</a><a id="1425" href="Relation.Binary.Construct.NonStrictToStrict.html#2890" class="Function">Strict.≤-&lt;-trans</a> <a id="1442" href="Relation.Binary.Structures.html#2389" class="Function">trans</a> <a id="1448" href="Relation.Binary.Structures.html#3303" class="Function">antisym</a> <a id="1456" href="Relation.Binary.Structures.html#3407" class="Function">≤-respˡ-≈</a><a id="1465" class="Symbol">)</a>
-  <a id="1469" class="Keyword">public</a>
-</pre></body></html>
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>Documentation page moved</title>
+    <meta http-equiv="refresh" content="3; url='https://agda.github.io/agda-stdlib/master/Relation.Binary.Reasoning.PartialOrder.html'" />
+  </head>
+  <body>
+    <p>
+      The documentation has been moved to <a href="master/Relation.Binary.Reasoning.PartialOrder.html">master/Relation.Binary.Reasoning.PartialOrder.html</a>.<br />
+      You should be redirected within 3 seconds.
+    </p>
+  </body>
+</html>
