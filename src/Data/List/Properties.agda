@@ -56,23 +56,23 @@ private
     C : Set c
     D : Set d
     E : Set e
+    x y z w : A
+    xs ys zs ws : List A
 
 ------------------------------------------------------------------------
 -- _∷_
 
-module _ {x y : A} {xs ys : List A} where
+∷-injective : x List.∷ xs ≡ y List.∷ ys → x ≡ y × xs ≡ ys
+∷-injective refl = (refl , refl)
 
-  ∷-injective : x ∷ xs ≡ y ∷ ys → x ≡ y × xs ≡ ys
-  ∷-injective refl = (refl , refl)
+∷-injectiveˡ : x List.∷ xs ≡ y List.∷ ys → x ≡ y
+∷-injectiveˡ refl = refl
 
-  ∷-injectiveˡ : x ∷ xs ≡ y ∷ ys → x ≡ y
-  ∷-injectiveˡ refl = refl
+∷-injectiveʳ : x List.∷ xs ≡ y List.∷ ys → xs ≡ ys
+∷-injectiveʳ refl = refl
 
-  ∷-injectiveʳ : x ∷ xs ≡ y ∷ ys → xs ≡ ys
-  ∷-injectiveʳ refl = refl
-
-  ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x ∷ xs ≡ y ∷ ys)
-  ∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y List.∷ ys)
+∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
 ≡-dec _≟_ []       []       = yes refl
@@ -147,7 +147,7 @@ mapMaybe′-just []       = refl
 mapMaybe′-just (x ∷ xs) = cong (x ∷_) (mapMaybe′-just xs)
 
 mapMaybe-nothing : (xs : List A) →
-                   mapMaybe (λ _ → nothing {A = A}) xs ≡ []
+                   mapMaybe (λ _ → nothing {A = B}) xs ≡ []
 mapMaybe-nothing []       = refl
 mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
 
@@ -1237,22 +1237,20 @@ reverse-downFrom = reverse-applyDownFrom id
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
-module _ {x y : A} where
+∷ʳ-injective : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
+∷ʳ-injective []          []          refl = (refl , refl)
+∷ʳ-injective (x ∷ xs)    (y  ∷ ys)   eq   with refl , eq′  ← ∷-injective eq
+  = Product.map (cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
+∷ʳ-injective []          (_ ∷ _ ∷ _) ()
+∷ʳ-injective (_ ∷ _ ∷ _) []          ()
 
-  ∷ʳ-injective : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
-  ∷ʳ-injective []          []          refl = (refl , refl)
-  ∷ʳ-injective (x ∷ xs)    (y  ∷ ys)   eq   with refl , eq′  ← ∷-injective eq
-    = Product.map (cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
-  ∷ʳ-injective []          (_ ∷ _ ∷ _) ()
-  ∷ʳ-injective (_ ∷ _ ∷ _) []          ()
+∷ʳ-injectiveˡ : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
+∷ʳ-injectiveˡ xs ys eq = proj₁ (∷ʳ-injective xs ys eq)
 
-  ∷ʳ-injectiveˡ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
-  ∷ʳ-injectiveˡ xs ys eq = proj₁ (∷ʳ-injective xs ys eq)
+∷ʳ-injectiveʳ : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
-  ∷ʳ-injectiveʳ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
-  ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
-
-∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
+∷ʳ-++ : ∀ xs (a : A) ys → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
 ∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
 
 
