@@ -12,7 +12,7 @@ open import Effect.Monad
 open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Maybe.Properties using (just-injective)
-open import Data.Bool using (Bool; true; false)
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Effectful using () renaming (monad to listMonad)
 open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)

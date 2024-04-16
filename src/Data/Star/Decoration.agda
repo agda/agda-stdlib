@@ -8,9 +8,9 @@
 
 module Data.Star.Decoration where
 
-open import Data.Unit
+open import Data.Unit.Base using (⊤; tt)
 open import Function.Base using (flip)
-open import Level
+open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Core using (Rel; _=[_]⇒_; _⇒_)
 open import Relation.Binary.Definitions using (NonEmpty; nonEmpty)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
@@ -19,7 +19,6 @@ open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
 EdgePred : {ℓ r : Level} (p : Level) {I : Set ℓ} → Rel I r → Set (suc p ⊔ ℓ ⊔ r)
 EdgePred p T = ∀ {i j} → T i j → Set p
-
 
 data NonEmptyEdgePred {ℓ r p : Level} {I : Set ℓ} (T : Rel I r)
                       (P : EdgePred p T) : Set (ℓ ⊔ r ⊔ p) where

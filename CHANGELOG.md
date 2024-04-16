@@ -134,11 +134,27 @@ New modules
 Additions to existing modules
 -----------------------------
 
+* In `Algebra.Bundles`
+  ```agda
+  record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* In `Algebra.Bundles.Raw`
+  ```agda
+  record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
   ```agda
   rawNearSemiring   : RawNearSemiring _ _
   rawRingWithoutOne : RawRingWithoutOne _ _
   +-rawGroup        : RawGroup _ _
+  ```
+
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Module.Bundles`, raw bundles are re-exported and the bundles expose their raw counterparts.
@@ -179,6 +195,13 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Morphism.Structures`
+  ```agda
+  module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
+    record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+
 * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
@@ -205,12 +228,6 @@ Additions to existing modules
   identity-unique  : Identity x _∙_ → x ≈ ε
   ```
 
-* In `Algebra.Construct.Terminal`:
-  ```agda
-  rawNearSemiring : RawNearSemiring c ℓ
-  nearSemiring    : NearSemiring c ℓ
-  ```
-
 * In `Algebra.Properties.Monoid.Mult`:
   ```agda
   ×-homo-0 : ∀ x → 0 × x ≈ 0#
@@ -223,6 +240,10 @@ Additions to existing modules
   ×-homo-1#     : ∀ x → 1 × x ≈ 1# * x
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
+
+* In `Algebra.Structures`
+  ```agda
+  record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _
 
 * In `Algebra.Structures.IsGroup`:
   ```agda

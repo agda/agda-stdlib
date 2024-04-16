@@ -37,7 +37,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
 import Relation.Nullary.Reflects as Reflects
@@ -259,7 +259,7 @@ module _ {r} {R : Rel A r} (R? : Binary.Decidable R) where
   ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
   ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membership.∈-deduplicate⁻ (≡.setoid A) R? xs z∈dedup[R,xs]
 
-module _ (_≈?_ : Binary.Decidable {A = A} _≡_) where
+module _ (_≈?_ : DecidableEquality A) where
 
   ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
   ∈-derun⁺ z∈xs = Membership.∈-derun⁺ (≡.setoid A) _≈?_ (flip trans) z∈xs

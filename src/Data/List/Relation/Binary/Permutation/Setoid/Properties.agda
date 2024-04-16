@@ -29,7 +29,7 @@ import Data.List.Relation.Unary.Unique.Setoid as Unique
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties using (∈-∃++; ∈-insert)
 import Data.List.Properties as List
-open import Data.Nat hiding (_⊔_)
+open import Data.Nat.Base using (ℕ; suc; _<_; z<s; _+_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
