@@ -1334,6 +1334,3 @@ map-─ = map-removeAt
 "Warning: map-─ was deprecated in v2.0.
 Please use map-removeAt instead."
 #-}
-
--- Version 2.1
-
