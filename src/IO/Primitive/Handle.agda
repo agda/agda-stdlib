@@ -16,28 +16,28 @@ open import Data.Nat.Base using (ℕ)
 data BufferMode : Set where
   noBuffering lineBuffering : BufferMode
   blockBuffering : Maybe ℕ → BufferMode
-{-# FOREIGN GHC import qualified System.IO as SIO #-}
+{-# FOREIGN GHC import System.IO #-}
 {-# FOREIGN GHC
     data AgdaBufferMode
-      = NoBuffering
-      | LineBuffering
-      | BlockBuffering (Maybe Integer)
-    toBufferMode :: AgdaBufferMode -> SIO.BufferMode
+      = AgdaNoBuffering
+      | AgdaLineBuffering
+      | AgdaBlockBuffering (Maybe Integer)
+    toBufferMode :: AgdaBufferMode -> BufferMode
     toBufferMode x = case x of
-      NoBuffering       -> SIO.NoBuffering
-      LineBuffering     -> SIO.LineBuffering
-      BlockBuffering mi -> SIO.BlockBuffering (fromIntegral <$> mi)
-    fromBufferMode :: SIO.BufferMode -> AgdaBufferMode
+      AgdaNoBuffering       -> NoBuffering
+      AgdaLineBuffering     -> LineBuffering
+      AgdaBlockBuffering mi -> BlockBuffering (fromIntegral <$> mi)
+    fromBufferMode :: BufferMode -> AgdaBufferMode
     fromBufferMode x = case x of
-      SIO.NoBuffering       -> NoBuffering
-      SIO.LineBuffering     -> LineBuffering
-      SIO.BlockBuffering mi -> BlockBuffering (fromIntegral <$> mi)
+      NoBuffering       -> AgdaNoBuffering
+      LineBuffering     -> AgdaLineBuffering
+      BlockBuffering mi -> AgdaBlockBuffering (fromIntegral <$> mi)
 #-}
 
 {-# COMPILE GHC BufferMode = data AgdaBufferMode
-                           ( NoBuffering
-                           | LineBuffering
-                           | BlockBuffering
+                           ( AgdaNoBuffering
+                           | AgdaLineBuffering
+                           | AgdaBlockBuffering
                            )
 #-}
 
