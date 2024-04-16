@@ -61,6 +61,7 @@ unsafeModules = map modToFile
   , "IO.Instances"
   , "IO.Effectful"
   , "IO.Finite"
+  , "IO.Primitive"
   , "IO.Primitive.Core"
   , "IO.Primitive.Handle"
   , "IO.Primitive.Infinite"
