@@ -54,6 +54,11 @@ Deprecated names
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
   ```
 
+* In `IO.Base`:
+  ```agda
+  untilRight  ↦  untilInj₂
+  ```
+
 New modules
 -----------
 
@@ -378,9 +383,16 @@ Additions to existing modules
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+  ```
+
+* Added new functions in `IO.Base`:
+  ```agda
+  whenInj₂ : E ⊎ A → (A → IO ⊤) → IO ⊤
+  forever : IO ⊤ → IO ⊤
+  ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
-  ```
+  ```agda
   transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
   ```
 

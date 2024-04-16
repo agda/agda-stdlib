@@ -20,9 +20,10 @@ import IO.Primitive as Prim
 
 private
   variable
-    a b : Level
+    a b e : Level
     A : Set a
     B : Set b
+    E : Set e
 
 ------------------------------------------------------------------------
 -- The IO monad
@@ -106,17 +107,36 @@ lift′ io = lift (io Prim.>>= λ _ → Prim.pure _)
 ignore : IO A → IO ⊤
 ignore io = io >> pure _
 
+
+------------------------------------------------------------------------
 -- Conditional executions
+
+-- Only run the action if the boolean is true
 when : Bool → IO {a} ⊤ → IO ⊤
 when true m = m
 when false _ = pure _
 
+-- Only run the action if the boolean is false
 unless : Bool → IO {a} ⊤ → IO ⊤
 unless = when ∘′ not
 
+-- Run the action if the `Maybe` computation was successful
 whenJust : Maybe A → (A → IO {a} ⊤) → IO ⊤
 whenJust (just a) k = k a
 whenJust nothing  _ = pure _
+
+-- Run the action if the `E ⊎_` computation was successful
+whenInj₂ : E ⊎ A → (A → IO {a} ⊤) → IO ⊤
+whenInj₂ (inj₂ a) k = k a
+whenInj₂ (inj₁ _) _ = pure _
+
+
+------------------------------------------------------------------------
+-- Loops
+
+-- Keep running the action forever
+forever : IO {a} ⊤ → IO {a} ⊤
+forever act = seq (♯ act) (♯ forever act)
 
 -- Keep running an IO action until we get a value. Convenient when user
 -- input is involved and it may be malformed.
@@ -127,7 +147,22 @@ untilJust m = bind (♯ m) λ where
   nothing  → ♯ untilJust m
   (just a) → ♯ pure a
 
-untilRight : {A B : Set a} → (A → IO (A ⊎ B)) → A → IO B
-untilRight f x = bind (♯ f x) λ where
-  (inj₁ x′) → ♯ untilRight f x′
+untilInj₂ : {A B : Set a} → (A → IO (A ⊎ B)) → A → IO B
+untilInj₂ f x = bind (♯ f x) λ where
+  (inj₁ x′) → ♯ untilInj₂ f x′
   (inj₂ y) → ♯ pure y
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATIONS
+
+untilRight = untilInj₂
+{-# WARNING_ON_USAGE untilRight
+"Warning: untilRight was deprecated in v2.1.
+Please use untilInj₂ instead."
+#-}
