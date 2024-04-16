@@ -8,7 +8,7 @@
 
 module IO.Primitive where
 
-open import IO.Primitive public
+open import IO.Primitive.Core public
 
 {-# WARNING_ON_IMPORT
 "IO.Primitive was deprecated in v2.1. Use IO.Primitive.Core instead."
