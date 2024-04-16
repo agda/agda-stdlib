@@ -62,16 +62,16 @@ private
 ------------------------------------------------------------------------
 -- _∷_
 
-∷-injective : x List.∷ xs ≡ y List.∷ ys → x ≡ y × xs ≡ ys
-∷-injective refl = (refl , refl)
+∷-injective : x ∷ xs ≡ y List.∷ ys → x ≡ y × xs ≡ ys
+∷-injective refl = refl , refl
 
-∷-injectiveˡ : x List.∷ xs ≡ y List.∷ ys → x ≡ y
+∷-injectiveˡ : x ∷ xs ≡ y List.∷ ys → x ≡ y
 ∷-injectiveˡ refl = refl
 
-∷-injectiveʳ : x List.∷ xs ≡ y List.∷ ys → xs ≡ ys
+∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
 ∷-injectiveʳ refl = refl
 
-∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y List.∷ ys)
+∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x ∷ xs ≡ y List.∷ ys)
 ∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
@@ -138,30 +138,6 @@ mapMaybe-nothing : (xs : List A) →
                    mapMaybe {B = B} (λ _ → nothing) xs ≡ []
 mapMaybe-nothing []       = refl
 mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
-
-module MapMaybeTest where
-
-  mapMaybeOld : (A → Maybe B) → List A → List B
-  mapMaybeOld p []       = []
-  mapMaybeOld p (x ∷ xs) with p x
-  ... | just y  = y ∷ mapMaybeOld p xs
-  ... | nothing = mapMaybeOld p xs
-
-  catMaybesOld : List (Maybe A) → List A
-  catMaybesOld = mapMaybe id
-
-  catMaybesTest : catMaybes {A = A} ≗ catMaybesOld
-  catMaybesTest []       = refl
-  catMaybesTest (x ∷ xs) = let ih = catMaybesTest xs
-    in maybe {B = λ x → catMaybes (x ∷ xs) ≡ catMaybesOld (x ∷ xs)}
-       (λ x → cong (x ∷_) ih) ih x
-
-  mapMaybeTest : (p : A → Maybe B) → mapMaybe p ≗ mapMaybeOld p
-  mapMaybeTest p []       = refl
-  mapMaybeTest p (x ∷ xs) with ih ← mapMaybeTest p xs | p x
-  ... | nothing = ih
-  ... | just y  = cong (y ∷_) ih
-
 
 module _ (f : A → Maybe B) where
 
@@ -1245,7 +1221,7 @@ reverse-downFrom = reverse-applyDownFrom id
 -- _∷ʳ_
 
 ∷ʳ-injective : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
-∷ʳ-injective []          []          refl = (refl , refl)
+∷ʳ-injective []          []          refl = refl , refl
 ∷ʳ-injective (x ∷ xs)    (y  ∷ ys)   eq   with refl , eq′  ← ∷-injective eq
   = Product.map (cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
 ∷ʳ-injective []          (_ ∷ _ ∷ _) ()
