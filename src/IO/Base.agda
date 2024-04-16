@@ -16,7 +16,7 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 import Agda.Builtin.Unit as Unit0
 open import Data.Unit.Polymorphic.Base
 open import Function.Base using (_∘′_; const; flip)
-import IO.Primitive as Prim
+import IO.Primitive.Core as Prim
 
 private
   variable

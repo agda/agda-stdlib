@@ -8,7 +8,7 @@
 
 {-# OPTIONS --cubical-compatible #-}
 
-module IO.Primitive where
+module IO.Primitive.Core where
 
 open import Level using (Level)
 private

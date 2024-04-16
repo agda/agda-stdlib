@@ -26,6 +26,7 @@ Non-backwards compatible changes
   parametrized by _raw_ bundles, and as such take a proof of transitivity.
 * The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
   parametrized by _raw_ bundles, and as such take a proof of reflexivity.
+* The module `IO.Primitive` was moved to `IO.Primitive.Core`.
 
 Other major improvements
 ------------------------
@@ -128,6 +129,12 @@ New modules
   Data.Container.Indexed.Relation.Binary.Pointwise
   Data.Container.Indexed.Relation.Binary.Pointwise.Properties
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* New IO primitives to handle buffering
+  ```agda
+  IO.Primitive.Handle
+  IO.Handle
   ```
 
 Additions to existing modules
