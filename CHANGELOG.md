@@ -125,6 +125,12 @@ New modules
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
 
+* `System.Random` bindings:
+  ```agda
+  System.Random.Primitive
+  System.Random
+  ```
+
 Additions to existing modules
 -----------------------------
 
@@ -259,6 +265,11 @@ Additions to existing modules
   nonZeroIndex : Fin n → ℕ.NonZero n
   ```
 
+* In `Data.Float.Base`:
+  ```agda
+  _≤_ : Rel Float _
+  ```
+
 * In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
   ```agda
   pattern divides k eq = Data.Nat.Divisibility.divides k eq
@@ -378,6 +389,12 @@ Additions to existing modules
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+  ```
+
+* In `Data.Word.Base`:
+  ```agda
+  _≤_ : Rel Word64 zero
+  ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
   ```

@@ -8,11 +8,12 @@
 
 module Data.Float.Base where
 
-open import Relation.Binary.Core using (Rel)
+open import Data.Bool.Base using (T)
 import Data.Word.Base as Word
 import Data.Maybe.Base as Maybe
 open import Function.Base using (_on_; _∘_)
 open import Agda.Builtin.Equality
+open import Relation.Binary.Core using (Rel)
 
 ------------------------------------------------------------------------
 -- Re-export built-ins publically
@@ -69,3 +70,8 @@ infix 4 _≈_
 
 _≈_ : Rel Float _
 _≈_ = _≡_ on Maybe.map Word.toℕ ∘ toWord
+
+
+infix 4 _≤_
+_≤_ : Rel Float _
+x ≤ y = T (x ≤ᵇ y)
