@@ -36,7 +36,7 @@ postulate
 {-# COMPILE GHC randomRIO-Int = randomRIO #-}
 {-# COMPILE GHC randomIO-Float = randomIO #-}
 {-# COMPILE GHC randomRIO-Float = randomRIO #-}
-{-# COMPILE GHC randomIO-Nat = randomIO #-}
+{-# COMPILE GHC randomIO-Nat = abs <$> randomIO #-}
 {-# COMPILE GHC randomRIO-Nat = randomRIO #-}
 {-# COMPILE GHC randomIO-Word64 = randomIO #-}
 {-# COMPILE GHC randomRIO-Word64 = randomRIO #-}
