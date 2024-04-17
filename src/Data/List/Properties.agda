@@ -1021,13 +1021,13 @@ module _ {R : Rel A p} (R? : B.Decidable R) where
 
   derun-reject : ∀ {x y} xs → R x y → derun R? (x ∷ y ∷ xs) ≡ derun R? (y ∷ xs)
   derun-reject {x} {y} xs Rxy with R? x y
-  ... | true  because _      = refl
-  ... | false because [¬Rxy] = contradiction Rxy (invert [¬Rxy])
+  ... | yes _    = refl
+  ... | no  ¬Rxy = contradiction Rxy ¬Rxy
 
   derun-accept : ∀ {x y} xs → ¬ R x y → derun R? (x ∷ y ∷ xs) ≡ x ∷ derun R? (y ∷ xs)
   derun-accept {x} {y} xs ¬Rxy with R? x y
-  ... | true  because [Rxy] = contradiction (invert [Rxy]) ¬Rxy
-  ... | false because  _    = refl
+  ... | yes Rxy = contradiction Rxy ¬Rxy
+  ... | no  _   = refl
 
 ------------------------------------------------------------------------
 -- partition
