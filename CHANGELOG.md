@@ -135,6 +135,7 @@ New modules
   ```agda
   Data.List.Show
   Data.Vec.Show
+  Data.Vec.Bounded.Show
   ```
 
 Additions to existing modules
