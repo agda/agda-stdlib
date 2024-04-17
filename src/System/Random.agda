@@ -14,7 +14,7 @@ open import Data.Bool.Base using (T)
 open import Data.Nat.Base using (ℕ) hiding (module ℕ)
 open import Foreign.Haskell.Pair using (_,_)
 open import Function.Base using (_$_)
-open import IO.Base using (IO; lift; lift!; _>>=_; pure)
+open import IO.Base using (IO; lift; lift!; _<$>_; _>>=_; pure)
 import IO.Effectful as IO
 open import Level using (0ℓ; suc; _⊔_; lift)
 open import Relation.Binary.Core using (Rel)
@@ -156,3 +156,10 @@ module Vec {a} {A : Set a} (rIO : IO A) (n : ℕ) where
 
   randomIO : IO (Vec A n)
   randomIO = TraversableA.sequenceA IO.applicative $ replicate n rIO
+
+module String where
+
+  open import Data.String.Base using (String; fromList)
+
+  randomIO : IO String
+  randomIO = fromList <$> List.randomIO Char.randomIO

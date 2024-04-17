@@ -131,6 +131,12 @@ New modules
   System.Random
   ```
 
+* Show modules:
+  ```agda
+  Data.List.Show
+  Data.Vec.Show
+  ```
+
 Additions to existing modules
 -----------------------------
 
@@ -389,6 +395,7 @@ Additions to existing modules
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+  between : String → String → String → String
   ```
 
 * In `Data.Word.Base`:
