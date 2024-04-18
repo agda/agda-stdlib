@@ -10,7 +10,6 @@ module Data.List.Relation.Binary.Suffix.Heterogeneous where
 
 open import Level
 open import Relation.Binary.Core using (REL; _⇒_)
-open import Function.Base using (case_of_)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
   using (Pointwise; []; _∷_)
@@ -48,7 +47,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   toView : ∀ {as bs} → Suffix R as bs → SuffixView R as bs
   toView (here rs) = [] ++ rs
-  toView (there {c} suf) = case toView suf of λ {(cs ++ rs) → (c ∷ cs) ++ rs }
+  toView (there {c} suf) with cs ++ rs ← toView suf = (c ∷ cs) ++ rs
 
   fromView : ∀ {as bs} → SuffixView R as bs → Suffix R as bs
   fromView ([]       ++ rs) = here rs
