@@ -13,7 +13,6 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
 open import Data.Product.Base using (∃; _×_; _,_; uncurry)
-open import Function.Base using (case_of_)
 open import Relation.Binary.Core using (REL; _⇒_)
 
 module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
@@ -54,7 +53,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   toView : ∀ {as bs} → Prefix R as bs → PrefixView R as bs
   toView []       = [] ++ _
-  toView (r ∷ rs) = case toView rs of λ {(rs′ ++ ds) → (r ∷ rs′) ++ ds}
+  toView (r ∷ rs) with rs′ ++ ds ← toView rs = (r ∷ rs′) ++ ds
 
   fromView : ∀ {as bs} → PrefixView R as bs → Prefix R as bs
   fromView ([]       ++ ds) = []
