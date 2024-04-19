@@ -124,11 +124,8 @@ map-injective finj {x ∷ xs} {y ∷ ys} eq =
 
 length-catMaybes : ∀ xs → length (catMaybes {A = A} xs) ≤ length xs
 length-catMaybes []        = ≤-refl
-length-catMaybes (x  ∷ xs) = let ih = length-catMaybes xs
-  in maybe {B = λ x → length (catMaybes (x ∷ xs)) ≤ suc (length xs)}
-     (λ _ → s≤s ih)
-     (m≤n⇒m≤1+n ih)
-     x
+length-catMaybes (just x ∷ xs) = s≤s (length-catMaybes xs)
+length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n (length-catMaybes xs)
 
 mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
 mapMaybe-just []       = refl
@@ -148,8 +145,11 @@ module _ (f : A → Maybe B) where
   ... | nothing = ih
 
   length-mapMaybe : ∀ xs → length (mapMaybe f xs) ≤ length xs
-  length-mapMaybe xs =
-    ≤-trans (length-catMaybes (map f xs)) (≤-reflexive (length-map f xs))
+  length-mapMaybe xs = ≤-begin
+    length (mapMaybe f xs)      ≤⟨ length-catMaybes (map f xs) ⟩
+    length (map f xs)           ≤⟨ ≤-reflexive (length-map f xs) ⟩
+    length xs                   ≤-∎
+    where open ≤-Reasoning renaming (begin_ to ≤-begin_; _∎ to _≤-∎)
 
 ------------------------------------------------------------------------
 -- _++_
