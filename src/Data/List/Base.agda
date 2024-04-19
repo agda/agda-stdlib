@@ -117,8 +117,8 @@ merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
 merge R? []           ys           = ys
 merge R? xs           []           = xs
 merge R? x∷xs@(x ∷ xs) y∷ys@(y ∷ ys) = if does (R? x y)
-  then x ∷ merge R? x∷xs ys
-  else y ∷ merge R? xs   y∷ys
+  then x ∷ merge R? xs   y∷ys
+  else y ∷ merge R? x∷xs ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
