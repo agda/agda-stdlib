@@ -116,9 +116,9 @@ partitionSums = partitionSumsWith id
 merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
 merge R? []           ys           = ys
 merge R? xs           []           = xs
-merge R? xs@(x ∷ xs₁) ys@(y ∷ ys₁) = if does (R? x y)
-  then x ∷ merge R? xs₁ ys
-  else y ∷ merge R? xs  ys₁
+merge R? x∷xs@(x ∷ xs) y∷ys@(y ∷ ys) = if does (R? x y)
+  then x ∷ merge R? x∷xs ys
+  else y ∷ merge R? xs   y∷ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
