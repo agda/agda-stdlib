@@ -148,7 +148,8 @@ module _ (f : A → Maybe B) where
   ... | nothing = ih
 
   length-mapMaybe : ∀ xs → length (mapMaybe f xs) ≤ length xs
-  length-mapMaybe xs = ≤-trans (length-catMaybes (map f xs)) (≤-reflexive (length-map f xs))
+  length-mapMaybe xs =
+    ≤-trans (length-catMaybes (map f xs)) (≤-reflexive (length-map f xs))
 
 ------------------------------------------------------------------------
 -- _++_
