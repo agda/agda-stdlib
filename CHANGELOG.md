@@ -273,6 +273,7 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
+  length-catMaybes      : length (catMaybes xs) ≤ length xs
   applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
   applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
