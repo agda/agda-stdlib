@@ -20,10 +20,13 @@ open import Data.List.Relation.Binary.Sublist.Propositional
 import Data.List.Relation.Binary.Sublist.Setoid.Properties
   as SetoidProperties
 open import Data.Product.Base using (∃; _,_; proj₂)
-open import Function.Base
+open import Function.Base using (id; _∘_; _∘′_)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (_Respects_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; _≗_; trans)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; subst-injective)
 open import Relation.Unary using (Pred)
 
 private

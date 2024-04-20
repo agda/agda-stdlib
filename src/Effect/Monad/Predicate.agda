@@ -10,15 +10,12 @@
 
 module Effect.Monad.Predicate where
 
-open import Effect.Applicative.Indexed
-open import Effect.Monad
-open import Effect.Monad.Indexed
-open import Data.Unit
+open import Effect.Monad.Indexed using (RawIMonad)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (const; id; _∘_)
-open import Level
-open import Relation.Binary.PropositionalEquality
-open import Relation.Unary
+open import Level using (Level; suc; _⊔_)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
+open import Relation.Unary using (_⊆_; _⇒_; _∈_; _∩_; ｛_｝)
 open import Relation.Unary.PredicateTransformer using (Pt)
 
 private

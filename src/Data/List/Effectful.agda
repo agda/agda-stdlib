@@ -23,8 +23,10 @@ open import Effect.Monad
   using (RawMonad; module Join; RawMonadZero; RawMonadPlus)
 open import Function.Base using (flip; _∘_; const; _$_; id; _∘′_; _$′_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; _≗_; refl)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
+
 open ≡.≡-Reasoning
 
 private
