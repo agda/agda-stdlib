@@ -18,6 +18,7 @@ open import Data.List.Relation.Binary.Equality.DecPropositional _≟_
   using (_≡?_)
 import Data.List.Relation.Binary.Sublist.DecSetoid as DecSetoidSublist
 import Data.List.Relation.Binary.Sublist.Propositional as PropositionalSublist
+open import Relation.Binary.Bundles using (DecPoset)
 open import Relation.Binary.Structures using (IsDecPartialOrder)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
