@@ -263,7 +263,7 @@ module _ {r} {R : Rel A r} (R? : Binary.Decidable R) where
   ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
   ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membership.∈-deduplicate⁻ (≡.setoid A) R? xs z∈dedup[R,xs]
 
-module _ (_≈?_ : Binary.Decidable {A = A} _≡_) where
+module _ (_≈?_ : DecidableEquality A) where
 
   ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
   ∈-derun⁺ z∈xs = Membership.∈-derun⁺ (≡.setoid A) _≈?_ (flip trans) z∈xs

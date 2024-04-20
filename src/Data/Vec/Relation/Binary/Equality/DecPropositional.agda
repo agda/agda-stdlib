@@ -6,11 +6,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.Definitions using (DecidableEquality)
 
 module Data.Vec.Relation.Binary.Equality.DecPropositional
-  {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_) where
+  {a} {A : Set a} (_≟_ : DecidableEquality A) where
 
 import Data.Vec.Relation.Binary.Equality.Propositional as PEq
 import Data.Vec.Relation.Binary.Equality.DecSetoid as DSEq

@@ -10,11 +10,10 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.Definitions using (DecidableEquality)
 
 module Data.List.Relation.Binary.Equality.DecPropositional
-  {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_) where
+  {a} {A : Set a} (_≟_ : DecidableEquality A) where
 
 open import Data.List.Base using (List)
 open import Data.List.Properties using (≡-dec)
@@ -35,5 +34,5 @@ open DecSetoidEq (decSetoid _≟_) public
 
 infix 4 _≡?_
 
-_≡?_ : Decidable (_≡_ {A = List A})
+_≡?_ : DecidableEquality (List A)
 _≡?_ = ≡-dec _≟_

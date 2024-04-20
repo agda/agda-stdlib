@@ -31,3 +31,7 @@ _≈_ = _≡_ on toℕ
 infix 4 _<_
 _<_ : Rel Word64 zero
 _<_ = ℕ._<_ on toℕ
+
+infix 4 _≤_
+_≤_ : Rel Word64 zero
+_≤_ = ℕ._≤_ on toℕ

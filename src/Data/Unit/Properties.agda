@@ -16,7 +16,7 @@ open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Poset; DecTotalOrder)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
-open import Relation.Binary.Definitions using (Decidable; Total; Antisymmetric)
+open import Relation.Binary.Definitions using (DecidableEquality; Total; Antisymmetric)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; trans)
 open import Relation.Binary.PropositionalEquality.Properties
@@ -33,7 +33,7 @@ open import Relation.Binary.PropositionalEquality.Properties
 
 infix 4 _≟_
 
-_≟_ : Decidable {A = ⊤} _≡_
+_≟_ : DecidableEquality ⊤
 _ ≟ _ = yes refl
 
 ≡-setoid : Setoid 0ℓ 0ℓ

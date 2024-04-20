@@ -77,7 +77,7 @@ infix 4  _<?_ _≟_ _≤?_
 1+[2_]-injective : Injective _≡_ _≡_ 1+[2_]
 1+[2_]-injective refl = refl
 
-_≟_ : Decidable {A = ℕᵇ} _≡_
+_≟_ : DecidableEquality ℕᵇ
 zero     ≟ zero     =  yes refl
 zero     ≟ 2[1+ _ ] =  no λ()
 zero     ≟ 1+[2 _ ] =  no λ()

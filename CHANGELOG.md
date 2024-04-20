@@ -55,6 +55,12 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Algebra.Structures.Biased`:
+  ```agda
+  IsRing*  ↦  Algebra.Structures.IsRing
+  isRing*  ↦  Algebra.Structures.isRing
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -129,6 +135,19 @@ New modules
   Data.Container.Indexed.Relation.Binary.Pointwise
   Data.Container.Indexed.Relation.Binary.Pointwise.Properties
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* `System.Random` bindings:
+  ```agda
+  System.Random.Primitive
+  System.Random
+  ```
+
+* Show modules:
+  ```agda
+  Data.List.Show
+  Data.Vec.Show
+  Data.Vec.Bounded.Show
   ```
 
 Additions to existing modules
@@ -255,6 +274,12 @@ Additions to existing modules
   x \\ y = (x ⁻¹) ∙ y
   ```
 
+* In `Algebra.Structures.IsCancellativeCommutativeSemiring` add the
+  extra property as an exposed definition:
+  ```agda
+    *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  ```
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
@@ -263,6 +288,11 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
+  ```
+
+* In `Data.Float.Base`:
+  ```agda
+  _≤_ : Rel Float _
   ```
 
 * In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
@@ -279,6 +309,7 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
+  length-catMaybes      : length (catMaybes xs) ≤ length xs
   applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
   applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
@@ -384,6 +415,13 @@ Additions to existing modules
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+  between : String → String → String → String
+  ```
+
+* In `Data.Word.Base`:
+  ```agda
+  _≤_ : Rel Word64 zero
+  ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
   ```
@@ -432,5 +470,7 @@ Additions to existing modules
   WeaklyDecidable : Pred A ℓ → Set _
   ```
 
-* `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
-  anti-unification. See README.Tactic.Cong for details.
+* Enhancements to `Tactic.Cong` - see `README.Tactic.Cong` for details.
+  - Provide a marker function, `⌞_⌟`, for user-guided anti-unification.
+  - Improved support for equalities between terms with instance arguments,
+    such as terms that contain `_/_` or `_%_`.
