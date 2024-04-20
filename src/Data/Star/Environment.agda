@@ -8,12 +8,12 @@
 
 module Data.Star.Environment {ℓ} (Ty : Set ℓ) where
 
-open import Level
-open import Data.Star.List
-open import Data.Star.Decoration
-open import Data.Star.Pointer as Pointer hiding (lookup)
-open import Data.Unit
-open import Function.Base hiding (_∋_)
+open import Level using (_⊔_)
+open import Data.Star.List using (List)
+open import Data.Star.Decoration using (All)
+open import Data.Star.Pointer as Pointer using (Any; this; that; result)
+open import Data.Unit.Polymorphic using (⊤)
+open import Function.Base using (const)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
@@ -27,7 +27,7 @@ Ctxt = List Ty
 infix 4 _∋_
 
 _∋_ : Ctxt → Ty → Set ℓ
-Γ ∋ σ = Any (const (Lift ℓ ⊤)) (σ ≡_) Γ
+Γ ∋ σ = Any (const (⊤ {ℓ})) (σ ≡_) Γ
 
 vz : ∀ {Γ σ} → Γ ▻ σ ∋ σ
 vz = this refl

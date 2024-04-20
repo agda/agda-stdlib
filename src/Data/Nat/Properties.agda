@@ -24,7 +24,7 @@ open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base
 open import Data.Product.Base using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum
-open import Data.Unit using (tt)
+open import Data.Unit.Base using (tt)
 open import Function.Base
 open import Function.Bundles using (_↣_)
 open import Function.Metric.Nat

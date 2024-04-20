@@ -13,7 +13,7 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Nat            as ℕ using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Base       as ℕ using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Nat.Properties as ℕ using (≤′-trans)
 open import Data.Product.Base        using (_,_; _×_; proj₂)
 open import Data.List.Base           using (_∷_; [])

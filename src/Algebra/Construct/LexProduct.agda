@@ -6,16 +6,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
-open import Data.Bool using (true; false)
+open import Algebra.Bundles using (Magma)
+open import Algebra.Definitions
+open import Data.Bool.Base using (true; false)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary using (¬_; does; yes; no)
-open import Relation.Nullary.Negation using (contradiction; contradiction₂)
+open import Relation.Nullary.Decidable.Core using (does; yes; no)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction; contradiction₂)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 module Algebra.Construct.LexProduct

@@ -17,15 +17,13 @@ module Data.Tree.AVL.NonEmpty
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂) where
 
 open import Data.Bool.Base using (Bool)
-open import Data.Empty
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_; _++⁺_)
 open import Data.Maybe.Base hiding (map)
 open import Data.Nat.Base hiding (_<_; _⊔_; compare)
 open import Data.Product.Base hiding (map)
-open import Data.Unit
 open import Function.Base using (_$_; _∘′_)
-open import Level using (_⊔_; Lift; lift)
-open import Relation.Unary
+open import Level using (_⊔_)
+open import Relation.Unary using (IUniversal; _⇒_)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 open import Data.Tree.AVL.Value Eq.setoid

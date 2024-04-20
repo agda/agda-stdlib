@@ -8,7 +8,7 @@
 
 module Data.Fin.Permutation where
 
-open import Data.Bool using (true; false)
+open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns

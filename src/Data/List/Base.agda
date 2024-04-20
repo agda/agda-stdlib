@@ -49,15 +49,6 @@ map : (A → B) → List A → List B
 map f []       = []
 map f (x ∷ xs) = f x ∷ map f xs
 
-mapMaybe : (A → Maybe B) → List A → List B
-mapMaybe p []       = []
-mapMaybe p (x ∷ xs) with p x
-... | just y  = y ∷ mapMaybe p xs
-... | nothing = mapMaybe p xs
-
-catMaybes : List (Maybe A) → List A
-catMaybes = mapMaybe id
-
 infixr 5 _++_
 
 _++_ : List A → List A → List A
@@ -123,11 +114,11 @@ partitionSums : List (A ⊎ B) → List A × List B
 partitionSums = partitionSumsWith id
 
 merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
-merge R? []       ys       = ys
-merge R? xs       []       = xs
-merge R? (x ∷ xs) (y ∷ ys) = if does (R? x y)
-  then x ∷ merge R? xs (y ∷ ys)
-  else y ∷ merge R? (x ∷ xs) ys
+merge R? []           ys           = ys
+merge R? xs           []           = xs
+merge R? x∷xs@(x ∷ xs) y∷ys@(y ∷ ys) = if does (R? x y)
+  then x ∷ merge R? xs   y∷ys
+  else y ∷ merge R? x∷xs ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -148,6 +139,12 @@ concatMap f = concat ∘ map f
 
 ap : List (A → B) → List A → List B
 ap fs as = concatMap (flip map as) fs
+
+catMaybes : List (Maybe A) → List A
+catMaybes = foldr (maybe′ _∷_ id) []
+
+mapMaybe : (A → Maybe B) → List A → List B
+mapMaybe p = catMaybes ∘ map p
 
 null : List A → Bool
 null []       = true
@@ -253,9 +250,7 @@ unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
          ∀ {n} → P n → List A
 unfold P f {n = zero}  s = []
-unfold P f {n = suc n} s with f s
-... | nothing       = []
-... | just (x , s′) = x ∷ unfold P f s′
+unfold P f {n = suc n} s = maybe′ (λ (x , s′) → x ∷ unfold P f s′) [] (f s)
 
 ------------------------------------------------------------------------
 -- Operations for reversing lists
