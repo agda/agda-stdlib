@@ -16,11 +16,11 @@ import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.AbelianGroup
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base renaming (suc to sucℤ)
+open import Data.Integer.Properties.NatLemmas
 open import Data.Nat.Base as ℕ
   using (ℕ; suc; zero; _∸_; s≤s; z≤n; s<s; z<s; s≤s⁻¹; s<s⁻¹)
   hiding (module ℕ)
 import Data.Nat.Properties as ℕ
-open import Data.Nat.Solver
 open import Data.Product.Base using (proj₁; proj₂; _,_; _×_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sign.Base as Sign using (Sign)
@@ -45,7 +45,6 @@ open import Algebra.Consequences.Propositional
 open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
 module ℕtoℤ = Morphism.Definitions ℕ ℤ _≡_
-open +-*-Solver
 
 private
   variable
@@ -1337,15 +1336,6 @@ pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
 *-zero : Zero 0ℤ _*_
 *-zero = *-zeroˡ , *-zeroʳ
 
-private
-  lemma : ∀ m n o → o ℕ.+ (n ℕ.+ m ℕ.* suc n) ℕ.* suc o
-                  ≡ o ℕ.+ n ℕ.* suc o ℕ.+ m ℕ.* suc (o ℕ.+ n ℕ.* suc o)
-  lemma =
-    solve 3 (λ m n o → o :+ (n :+ m :* (con 1 :+ n)) :* (con 1 :+ o)
-                    := o :+ n :* (con 1 :+ o) :+
-                       m :* (con 1 :+ (o :+ n :* (con 1 :+ o))))
-            refl
-
 *-assoc : Associative _*_
 *-assoc +0 _ _ = refl
 *-assoc i +0 _ rewrite ℕ.*-zeroʳ ∣ i ∣ = refl
@@ -1354,14 +1344,14 @@ private
   | ℕ.*-zeroʳ ∣ i ∣
   | ℕ.*-zeroʳ ∣ sign i Sign.* sign j ◃ ∣ i ∣ ℕ.* ∣ j ∣ ∣
   = refl
-*-assoc -[1+ m ] -[1+ n ] +[1+ o ] = cong (+_ ∘ suc) (lemma m n o)
-*-assoc -[1+ m ] +[1+ n ] -[1+ o ] = cong (+_ ∘ suc) (lemma m n o)
-*-assoc +[1+ m ] +[1+ n ] +[1+ o ] = cong (+_ ∘ suc) (lemma m n o)
-*-assoc +[1+ m ] -[1+ n ] -[1+ o ] = cong (+_ ∘ suc) (lemma m n o)
-*-assoc -[1+ m ] -[1+ n ] -[1+ o ] = cong -[1+_] (lemma m n o)
-*-assoc -[1+ m ] +[1+ n ] +[1+ o ] = cong -[1+_] (lemma m n o)
-*-assoc +[1+ m ] -[1+ n ] +[1+ o ] = cong -[1+_] (lemma m n o)
-*-assoc +[1+ m ] +[1+ n ] -[1+ o ] = cong -[1+_] (lemma m n o)
+*-assoc -[1+ m ] -[1+ n ] +[1+ o ] = cong (+_ ∘ suc) (inner-assoc m n o)
+*-assoc -[1+ m ] +[1+ n ] -[1+ o ] = cong (+_ ∘ suc) (inner-assoc m n o)
+*-assoc +[1+ m ] +[1+ n ] +[1+ o ] = cong (+_ ∘ suc) (inner-assoc m n o)
+*-assoc +[1+ m ] -[1+ n ] -[1+ o ] = cong (+_ ∘ suc) (inner-assoc m n o)
+*-assoc -[1+ m ] -[1+ n ] -[1+ o ] = cong -[1+_] (inner-assoc m n o)
+*-assoc -[1+ m ] +[1+ n ] +[1+ o ] = cong -[1+_] (inner-assoc m n o)
+*-assoc +[1+ m ] -[1+ n ] +[1+ o ] = cong -[1+_] (inner-assoc m n o)
+*-assoc +[1+ m ] +[1+ n ] -[1+ o ] = cong -[1+_] (inner-assoc m n o)
 
 private
 
@@ -1400,26 +1390,10 @@ private
   rewrite +-identityʳ y
         | +-identityʳ (sign y Sign.* sign x ◃ ∣ y ∣ ℕ.* ∣ x ∣)
         = refl
-*-distribʳ-+ -[1+ m ] -[1+ n ] -[1+ o ] = cong (+_) $
-  solve 3 (λ m n o → (con 2 :+ n :+ o) :* (con 1 :+ m)
-                  := (con 1 :+ n) :* (con 1 :+ m) :+
-                     (con 1 :+ o) :* (con 1 :+ m))
-          refl m n o
-*-distribʳ-+ +[1+ m ] +[1+ n ] +[1+ o ] = cong (+_) $
-  solve 3 (λ m n o → (con 1 :+ n :+ (con 1 :+ o)) :* (con 1 :+ m)
-                  := (con 1 :+ n) :* (con 1 :+ m) :+
-                     (con 1 :+ o) :* (con 1 :+ m))
-        refl m n o
-*-distribʳ-+ -[1+ m ] +[1+ n ] +[1+ o ] = cong -[1+_] $
-  solve 3 (λ m n o → m :+ (n :+ (con 1 :+ o)) :* (con 1 :+ m)
-                   := (con 1 :+ n) :* (con 1 :+ m) :+
-                      (m :+ o :* (con 1 :+ m)))
-         refl m n o
-*-distribʳ-+ +[1+ m ] -[1+ n ] -[1+ o ] = cong -[1+_] $
-  solve 3 (λ m n o → m :+ (con 1 :+ m :+ (n :+ o) :* (con 1 :+ m))
-                  := (con 1 :+ n) :* (con 1 :+ m) :+
-                     (m :+ o :* (con 1 :+ m)))
-         refl m n o
+*-distribʳ-+ -[1+ m ] -[1+ n ] -[1+ o ] = cong (+_) $ assoc₁ m n o
+*-distribʳ-+ +[1+ m ] +[1+ n ] +[1+ o ] = cong +[1+_] $ ℕ.suc-injective (assoc₂ m n o)
+*-distribʳ-+ -[1+ m ] +[1+ n ] +[1+ o ] = cong -[1+_] $ assoc₃ m n o
+*-distribʳ-+ +[1+ m ] -[1+ n ] -[1+ o ] = cong -[1+_] $ assoc₄ m n o
 *-distribʳ-+ -[1+ m ] -[1+ n ] +[1+ o ] = begin
   (suc o ⊖ suc n) * -[1+ m ]                ≡⟨ cong (_* -[1+ m ]) ([1+m]⊖[1+n]≡m⊖n o n) ⟩
   (o ⊖ n) * -[1+ m ]                        ≡⟨ distrib-lemma m n o ⟩
