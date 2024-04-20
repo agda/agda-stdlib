@@ -36,7 +36,8 @@ open import Function.Definitions using (Injective)
 open import Level using (Level)
 open import Relation.Binary.Definitions as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-open import Relation.Binary.PropositionalEquality as ≡ hiding ([_])
+open import Relation.Binary.PropositionalEquality.Core as ≡
+open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no; contradiction)

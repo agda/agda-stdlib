@@ -24,7 +24,10 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive; Substitutive; Decidable; DecidableEquality)
 import Relation.Binary.Construct.On as On
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; sym; trans; subst)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; decSetoid)
 
 ------------------------------------------------------------------------
 -- Primitive properties

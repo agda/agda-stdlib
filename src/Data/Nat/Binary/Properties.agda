@@ -11,30 +11,40 @@ module Data.Nat.Binary.Properties where
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
-open import Algebra.Consequences.Propositional
+open import Algebra.Consequences.Propositional using (comm∧distrˡ⇒distrʳ)
 open import Data.Bool.Base using (if_then_else_; Bool; true; false)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Binary.Base
-open import Data.Nat as ℕ using (ℕ; z≤n; s≤s; s<s⁻¹)
+open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; s<s⁻¹)
 open import Data.Nat.DivMod using (_%_; _/_; m/n≤m; +-distrib-/-∣ˡ)
 open import Data.Nat.Divisibility using (∣-refl)
-import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕ
-open import Data.Nat.Solver
+open import Data.Nat.Solver using (module +-*-Solver)
 open import Data.Product.Base using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
-open import Function.Definitions
+open import Function.Definitions using (Injective; Surjective;
+  Inverseˡ; Inverseʳ; Inverseᵇ)
 open import Function.Consequences.Propositional
+ using (strictlySurjective⇒surjective; strictlyInverseˡ⇒inverseˡ;
+        strictlyInverseʳ⇒inverseʳ)
 open import Level using (0ℓ)
 open import Relation.Binary
-open import Relation.Binary.Consequences
+open import Relation.Binary.Consequences using (trans∧irr⇒asym; tri⇒dec<)
 open import Relation.Binary.Morphism
+ using (IsRelHomomorphism; IsOrderHomomorphism; IsOrderMonomorphism)
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Algebra
+  using (magma; isMagma)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl; cong; cong₂; sym; _≗_; trans; ≢-sym; subst₂;
+        subst; resp₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (isDecEquivalence; setoid; decSetoid; module ≡-Reasoning;
+         isEquivalence)
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open import Algebra.Definitions {A = ℕᵇ} _≡_
 open import Algebra.Structures {A = ℕᵇ} _≡_
