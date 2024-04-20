@@ -21,7 +21,7 @@ open import Data.List.Base as List
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; maybe)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility using (_∣_; divides; ∣n⇒∣m*n)
 open import Data.Nat.Properties
@@ -56,23 +56,23 @@ private
     C : Set c
     D : Set d
     E : Set e
+    x y z w : A
+    xs ys zs ws : List A
 
 ------------------------------------------------------------------------
 -- _∷_
 
-module _ {x y : A} {xs ys : List A} where
+∷-injective : x ∷ xs ≡ y List.∷ ys → x ≡ y × xs ≡ ys
+∷-injective refl = refl , refl
 
-  ∷-injective : x ∷ xs ≡ y List.∷ ys → x ≡ y × xs ≡ ys
-  ∷-injective refl = (refl , refl)
+∷-injectiveˡ : x ∷ xs ≡ y List.∷ ys → x ≡ y
+∷-injectiveˡ refl = refl
 
-  ∷-injectiveˡ : x ∷ xs ≡ y List.∷ ys → x ≡ y
-  ∷-injectiveˡ refl = refl
+∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
+∷-injectiveʳ refl = refl
 
-  ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
-  ∷-injectiveʳ refl = refl
-
-  ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y ∷ ys)
-  ∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x ∷ xs ≡ y List.∷ ys)
+∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
 ≡-dec _≟_ []       []       = yes refl
@@ -131,28 +131,34 @@ module _ {f g : A → Maybe B} where
   ... | just y  = cong (y ∷_) ih
   ... | nothing = ih
 
+length-catMaybes : ∀ xs → length (catMaybes {A = A} xs) ≤ length xs
+length-catMaybes []        = ≤-refl
+length-catMaybes (just x ∷ xs) = s≤s (length-catMaybes xs)
+length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n (length-catMaybes xs)
+
 mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
 mapMaybe-just []       = refl
 mapMaybe-just (x ∷ xs) = cong (x ∷_) (mapMaybe-just xs)
 
 mapMaybe-nothing : (xs : List A) →
-                   mapMaybe {B = A} (λ _ → nothing) xs ≡ []
+                   mapMaybe {B = B} (λ _ → nothing) xs ≡ []
 mapMaybe-nothing []       = refl
 mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
 
 module _ (f : A → Maybe B) where
 
   mapMaybe-concatMap : mapMaybe f ≗ concatMap (fromMaybe ∘ f)
-  mapMaybe-concatMap [] = refl
+  mapMaybe-concatMap []       = refl
   mapMaybe-concatMap (x ∷ xs) with ih ← mapMaybe-concatMap xs | f x
   ... | just y  = cong (y ∷_) ih
   ... | nothing = ih
 
   length-mapMaybe : ∀ xs → length (mapMaybe f xs) ≤ length xs
-  length-mapMaybe []       = z≤n
-  length-mapMaybe (x ∷ xs) with ih ← length-mapMaybe xs | f x
-  ... | just y  = s≤s ih
-  ... | nothing = m≤n⇒m≤1+n ih
+  length-mapMaybe xs = ≤-begin
+    length (mapMaybe f xs)      ≤⟨ length-catMaybes (map f xs) ⟩
+    length (map f xs)           ≤⟨ ≤-reflexive (length-map f xs) ⟩
+    length xs                   ≤-∎
+    where open ≤-Reasoning renaming (begin_ to ≤-begin_; _∎ to _≤-∎)
 
   mapMaybe-++ : ∀ xs ys →
                 mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
@@ -207,14 +213,14 @@ module _ {A : Set a} where
   ++-identityʳ-unique : ∀ (xs : List A) {ys} → xs ≡ xs ++ ys → ys ≡ []
   ++-identityʳ-unique []       refl = refl
   ++-identityʳ-unique (x ∷ xs) eq   =
-    ++-identityʳ-unique xs (proj₂ (∷-injective eq))
+    ++-identityʳ-unique xs (∷-injectiveʳ eq)
 
   ++-identityˡ-unique : ∀ {xs} (ys : List A) → xs ≡ ys ++ xs → ys ≡ []
   ++-identityˡ-unique               []       _  = refl
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ ys) eq
     with ++-identityˡ-unique (ys ++ [ x ]) (begin
-         xs                  ≡⟨ proj₂ (∷-injective eq) ⟩
-         ys ++ x ∷ xs        ≡⟨ sym (++-assoc ys [ x ] xs) ⟩
+         xs                  ≡⟨ ∷-injectiveʳ eq ⟩
+         ys ++ x ∷ xs        ≡⟨ ++-assoc ys [ x ] xs ⟨
          (ys ++ [ x ]) ++ xs ∎)
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ []   ) eq | ()
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ _ ∷ _) eq | ()
@@ -1408,22 +1414,20 @@ reverse-downFrom = reverse-applyDownFrom id
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
-module _ {x y : A} where
+∷ʳ-injective : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
+∷ʳ-injective []          []          refl = refl , refl
+∷ʳ-injective (x ∷ xs)    (y  ∷ ys)   eq   with refl , eq′  ← ∷-injective eq
+  = Product.map (cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
+∷ʳ-injective []          (_ ∷ _ ∷ _) ()
+∷ʳ-injective (_ ∷ _ ∷ _) []          ()
 
-  ∷ʳ-injective : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
-  ∷ʳ-injective []          []          refl = (refl , refl)
-  ∷ʳ-injective (x ∷ xs)    (y  ∷ ys)   eq   with refl , eq′  ← ∷-injective eq
-    = Product.map (cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
-  ∷ʳ-injective []          (_ ∷ _ ∷ _) ()
-  ∷ʳ-injective (_ ∷ _ ∷ _) []          ()
+∷ʳ-injectiveˡ : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
+∷ʳ-injectiveˡ xs ys eq = proj₁ (∷ʳ-injective xs ys eq)
 
-  ∷ʳ-injectiveˡ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
-  ∷ʳ-injectiveˡ xs ys eq = proj₁ (∷ʳ-injective xs ys eq)
+∷ʳ-injectiveʳ : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
-  ∷ʳ-injectiveʳ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
-  ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
-
-∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
+∷ʳ-++ : ∀ xs (a : A) ys → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
 ∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
 
 ------------------------------------------------------------------------

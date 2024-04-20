@@ -12,7 +12,7 @@ open import Level
 open import Data.Sum.Base
 open import Function.Base using (_∋_; _∘_; id)
 open import Function.Bundles using (mk↔ₛ′; _↔_)
-open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′)
@@ -34,10 +34,10 @@ inj₁-injective refl = refl
 inj₂-injective : ∀ {x y} → (A ⊎ B ∋ inj₂ x) ≡ inj₂ y → x ≡ y
 inj₂-injective refl = refl
 
-module _ (dec₁ : Decidable {A = A} {B = A} _≡_)
-         (dec₂ : Decidable {A = B} {B = B} _≡_) where
+module _ (dec₁ : DecidableEquality A)
+         (dec₂ : DecidableEquality B) where
 
-  ≡-dec : Decidable {A = A ⊎ B} _≡_
+  ≡-dec : DecidableEquality (A ⊎ B)
   ≡-dec (inj₁ x) (inj₁ y) = map′ (cong inj₁) inj₁-injective (dec₁ x y)
   ≡-dec (inj₁ x) (inj₂ y) = no λ()
   ≡-dec (inj₂ x) (inj₁ y) = no λ()

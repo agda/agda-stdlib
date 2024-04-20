@@ -11,7 +11,7 @@ module Data.Container.Indexed.Relation.Binary.Pointwise.Properties where
 open import Axiom.Extensionality.Propositional
 open import Data.Container.Indexed.Core
 open import Data.Container.Indexed.Relation.Binary.Pointwise
-open import Data.Product using (_,_; Σ-syntax; -,_)
+open import Data.Product.Base using (_,_; Σ-syntax; -,_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P

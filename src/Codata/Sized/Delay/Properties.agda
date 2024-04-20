@@ -10,7 +10,7 @@ module Codata.Sized.Delay.Properties where
 
 open import Size
 import Data.Sum.Base as Sum
-import Data.Nat as ℕ
+import Data.Nat.Base as ℕ
 open import Codata.Sized.Thunk using (Thunk; force)
 open import Codata.Sized.Conat
 open import Codata.Sized.Conat.Bisimilarity as Coℕ using (zero ; suc)

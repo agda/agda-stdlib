@@ -23,7 +23,7 @@ import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
 open import Data.Product.Base using (proj₁; proj₂; _,_; _×_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Sign as Sign using (Sign)
+open import Data.Sign.Base as Sign using (Sign)
 import Data.Sign.Properties as Sign
 open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
