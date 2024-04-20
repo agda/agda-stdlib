@@ -49,6 +49,12 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Algebra.Structures.Biased`:
+  ```agda
+  IsRing*  ↦  Algebra.Structures.IsRing
+  isRing*  ↦  Algebra.Structures.isRing
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
