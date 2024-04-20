@@ -21,8 +21,9 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Decidable; Antisymmetric; Total)
+  using (DecidableEquality; Antisymmetric; Total)
 open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; trans; decSetoid; setoid; isEquivalence)
 
 private
   variable
@@ -34,7 +35,7 @@ private
 
 infix 4 _≟_
 
-_≟_ : Decidable {A = ⊤ {ℓ}} _≡_
+_≟_ : DecidableEquality (⊤ {ℓ})
 _ ≟ _ = yes refl
 
 ≡-setoid : ∀ ℓ → Setoid ℓ ℓ

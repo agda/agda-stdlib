@@ -18,7 +18,7 @@ open import IO.Primitive using (IO)
 open import Data.List.Base using (List)
 open import Data.Maybe.Base using (Maybe)
 open import Data.String.Base using (String)
-open import Data.Unit using (⊤)
+open import Data.Unit.Base using (⊤)
 
 open import Foreign.Haskell.Pair using (Pair)
 

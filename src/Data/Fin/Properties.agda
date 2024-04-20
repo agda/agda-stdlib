@@ -21,7 +21,7 @@ open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ
   using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; s<s⁻¹; _∸_; _^_)
 import Data.Nat.Properties as ℕ
-open import Data.Unit using (⊤; tt)
+open import Data.Unit.Base using (⊤; tt)
 open import Data.Product.Base as Product
   using (∃; ∃₂; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)

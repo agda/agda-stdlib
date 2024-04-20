@@ -75,10 +75,10 @@ module Tactic.MonoidSolver where
 open import Algebra
 open import Function.Base using (_⟨_⟩_)
 
-open import Data.Bool         as Bool    using (Bool; _∨_; if_then_else_)
-open import Data.Maybe        as Maybe   using (Maybe; just; nothing; maybe)
+open import Data.Bool.Base    as Bool    using (Bool; _∨_; if_then_else_)
+open import Data.Maybe.Base   as Maybe   using (Maybe; just; nothing; maybe)
 open import Data.List.Base    as List    using (List; _∷_; [])
-open import Data.Nat          as ℕ       using (ℕ; suc; zero)
+open import Data.Nat.Base     as ℕ       using (ℕ; suc; zero)
 open import Data.Product.Base as Product using (_×_; _,_)
 
 open import Reflection.AST

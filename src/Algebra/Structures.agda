@@ -28,6 +28,20 @@ open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
+-- Structures with 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set (a ⊔ ℓ) where
+  field
+    isEquivalence : IsEquivalence _≈_
+    suc#-cong     : Congruent₁ suc#
+
+  open IsEquivalence isEquivalence public
+
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
+
+------------------------------------------------------------------------
 -- Structures with 1 binary operation
 ------------------------------------------------------------------------
 
@@ -558,6 +572,10 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
     *-cancelˡ-nonZero     : AlmostLeftCancellative 0# *
 
   open IsCommutativeSemiring isCommutativeSemiring public
+
+  *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  *-cancelʳ-nonZero = Consequences.comm∧almostCancelˡ⇒almostCancelʳ setoid
+      *-comm *-cancelˡ-nonZero
 
 record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field

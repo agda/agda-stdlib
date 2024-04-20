@@ -185,7 +185,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
 
 {-# WARNING_ON_USAGE IsSemigroupMorphism
 "Warning: IsSemigroupMorphism was deprecated in v1.5.
-Please use IsSemigroupHomomorphism instead."
+Please use IsMagmaHomomorphism instead."
 #-}
 {-# WARNING_ON_USAGE IsMonoidMorphism
 "Warning: IsMonoidMorphism was deprecated in v1.5.

@@ -13,7 +13,7 @@ module Tactic.RingSolver.Core.Polynomial.Semantics
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Nat          using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Base     using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Vec.Base     using (Vec; []; _∷_; uncons)
 open import Data.List.Base    using ([]; _∷_)
 open import Data.Product.Base using (_,_; _×_)

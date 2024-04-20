@@ -8,20 +8,20 @@
 
 module Effect.Monad.Partiality where
 
-open import Codata.Musical.Notation
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
+open import Codata.Musical.Notation using (∞; ♯_; ♭)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad; module Join)
 open import Data.Bool.Base using (Bool; false; true)
-open import Data.Nat using (ℕ; zero; suc; _+_)
-open import Data.Product as Prod hiding (map)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
+open import Data.Product as Prod using (∃; ∄; -,_; ∃₂; _,_; _×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Function.Base
+open import Function.Base using (_∘′_; flip; id; _∘_; _$_; _⟨_⟩_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core as B hiding (Rel; _⇔_)
 open import Relation.Binary.Definitions
-  using (Decidable; Reflexive; Symmetric; Transitive)
+  using (DecidableEquality; Reflexive; Symmetric; Transitive)
 open import Relation.Binary.Structures
   using (IsPreorder; IsEquivalence)
 open import Relation.Binary.Bundles
@@ -29,9 +29,8 @@ open import Relation.Binary.Bundles
 import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 import Relation.Binary.PropositionalEquality.Properties as ≡
-open import Relation.Nullary
-open import Relation.Nullary.Decidable hiding (map)
-open import Relation.Nullary.Negation
+open import Relation.Nullary.Decidable using (yes; no; False; Dec; ¬¬-excluded-middle)
+open import Relation.Nullary.Negation using (¬_; ¬¬-Monad)
 
 private
   variable
@@ -116,7 +115,7 @@ data Kind : Set where
 
 infix 4 _≟-Kind_
 
-_≟-Kind_ : Decidable (_≡_ {A = Kind})
+_≟-Kind_ : DecidableEquality Kind
 _≟-Kind_ strong       strong       = yes ≡.refl
 _≟-Kind_ strong       (other k)    = no λ()
 _≟-Kind_ (other k)    strong       = no λ()
@@ -934,22 +933,3 @@ idempotent {A = A} B x f = sound (idem x)
                                                      laterˡ (refl (Setoid.refl B))) ⟩
     (♭ x >>= λ y′ →     ♭ x >>= λ y″ → f y′ y″)  ≳⟨ idem (♭ x) ⟩≅
     (♭ x >>= λ y′ → f y′ y′)                     ∎))
-
-------------------------------------------------------------------------
--- Example
-
-private
- module Example where
-
-  open Data.Nat
-  open Workaround
-
-  -- McCarthy's f91:
-
-  f91′ : ℕ → ℕ ⊥P
-  f91′ n with does (n ≤? 100)
-  ... | true  = later (♯ (f91′ (11 + n) >>= f91′))
-  ... | false = now (n ∸ 10)
-
-  f91 : ℕ → ℕ ⊥
-  f91 n = ⟦ f91′ n ⟧P
