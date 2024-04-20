@@ -249,6 +249,12 @@ Additions to existing modules
   x \\ y = (x ⁻¹) ∙ y
   ```
 
+* In `Algebra.Structures.IsCancellativeCommutativeSemiring` add the
+  extra property as an exposed definition:
+  ```agda
+    *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  ```
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
