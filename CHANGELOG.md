@@ -337,6 +337,9 @@ Additions to existing modules
   unzip-zip             : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
   mapMaybe-++           : mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
   unzipWith-++          : unzipWith f (xs ++ ys) ≡ zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
+  catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
+  catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
+  map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:

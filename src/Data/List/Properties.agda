@@ -120,6 +120,32 @@ map-injective finj {x ∷ xs} {y ∷ ys} eq =
   cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
 
 ------------------------------------------------------------------------
+-- catMaybes
+
+catMaybes-concatMap : catMaybes {A = A} ≗ concatMap fromMaybe
+catMaybes-concatMap []             = refl
+catMaybes-concatMap (just x  ∷ xs) = cong (x ∷_) (catMaybes-concatMap xs)
+catMaybes-concatMap (nothing ∷ xs) = catMaybes-concatMap xs
+
+length-catMaybes : ∀ xs → length (catMaybes {A = A} xs) ≤ length xs
+length-catMaybes []             = ≤-refl
+length-catMaybes (just x  ∷ xs) = s≤s (length-catMaybes xs)
+length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n (length-catMaybes xs)
+
+catMaybes-++ : (xs ys : List (Maybe A)) →
+               catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
+catMaybes-++ []             ys = refl
+catMaybes-++ (just x  ∷ xs) ys = cong (x ∷_) (catMaybes-++ xs ys)
+catMaybes-++ (nothing ∷ xs) ys = catMaybes-++ xs ys
+
+module _ (f : A → B) where
+
+  map-catMaybes : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  map-catMaybes []             = refl
+  map-catMaybes (just x  ∷ xs) = cong (f x ∷_) (map-catMaybes xs)
+  map-catMaybes (nothing ∷ xs) = map-catMaybes xs
+
+------------------------------------------------------------------------
 -- mapMaybe
 
 module _ {f g : A → Maybe B} where
@@ -130,11 +156,6 @@ module _ {f g : A → Maybe B} where
     with ih ← mapMaybe-cong f≗g xs | g x
   ... | just y  = cong (y ∷_) ih
   ... | nothing = ih
-
-length-catMaybes : ∀ xs → length (catMaybes {A = A} xs) ≤ length xs
-length-catMaybes []        = ≤-refl
-length-catMaybes (just x ∷ xs) = s≤s (length-catMaybes xs)
-length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n (length-catMaybes xs)
 
 mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
 mapMaybe-just []       = refl
