@@ -26,6 +26,7 @@ Non-backwards compatible changes
   parametrized by _raw_ bundles, and as such take a proof of transitivity.
 * The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
   parametrized by _raw_ bundles, and as such take a proof of reflexivity.
+* The module `IO.Primitive` was moved to `IO.Primitive.Core`.
 
 Other major improvements
 ------------------------
@@ -64,6 +65,11 @@ Deprecated names
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
+  ```
+
+* In `IO.Base`:
+  ```agda
+  untilRight  ↦  untilInj₂
   ```
 
 New modules
@@ -135,6 +141,12 @@ New modules
   Data.Container.Indexed.Relation.Binary.Pointwise
   Data.Container.Indexed.Relation.Binary.Pointwise.Properties
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* New IO primitives to handle buffering
+  ```agda
+  IO.Primitive.Handle
+  IO.Handle
   ```
 
 * `System.Random` bindings:
@@ -418,13 +430,34 @@ Additions to existing modules
   between : String → String → String → String
   ```
 
+* Re-exported new types and functions in `IO`:
+  ```agda
+  BufferMode : Set
+  noBuffering : BufferMode
+  lineBuffering : BufferMode
+  blockBuffering : Maybe ℕ → BufferMode
+  Handle : Set
+  stdin : Handle
+  stdout : Handle
+  stderr : Handle
+  hSetBuffering : Handle → BufferMode → IO ⊤
+  hGetBuffering : Handle → IO BufferMode
+  hFlush : Handle → IO ⊤
+  ```
+
+* Added new functions in `IO.Base`:
+  ```agda
+  whenInj₂ : E ⊎ A → (A → IO ⊤) → IO ⊤
+  forever : IO ⊤ → IO ⊤
+  ```
+
 * In `Data.Word.Base`:
   ```agda
   _≤_ : Rel Word64 zero
   ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
-  ```
+  ```agda
   transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
   ```
 
