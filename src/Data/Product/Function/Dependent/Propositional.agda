@@ -9,22 +9,25 @@
 
 module Data.Product.Function.Dependent.Propositional where
 
-open import Data.Product.Base as Product
-open import Data.Product.Function.NonDependent.Setoid using ()
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using ()
+open import Data.Product.Base as Product using (Σ; map; proj₂; _,_)
 open import Data.Product.Properties using (Σ-≡,≡→≡; Σ-≡,≡↔≡; Σ-≡,≡←≡)
 open import Level using (Level; 0ℓ)
-open import Function.Related.TypeIsomorphisms
 open import Function.Related.Propositional
-open import Function.Base
-open import Function.Properties.Inverse
-open import Function.Properties.RightInverse
+  using (_∼[_]_; module EquationalReasoning; K-reflexive;
+         implication; reverseImplication; equivalence; injection;
+         reverseInjection; leftInverse; surjection; bijection)
+open import Function.Base using (_$_; _∘_; _∘′_)
+open import Function.Properties.Inverse using (↔⇒↠; ↔⇒⟶; ↔⇒⟵; ↔-sym; ↔⇒↩)
+open import Function.Properties.RightInverse using (↩⇒↪; ↪⇒↩)
 open import Function.Properties.Inverse.HalfAdjointEquivalence
+  using (↔⇒≃; _≃_; ≃⇒↔)
 open import Function.Consequences.Propositional
   using (inverseʳ⇒injective; strictlySurjective⇒surjective)
 open import Function.Definitions using (Inverseˡ; Inverseʳ; Injective; StrictlySurjective)
 open import Function.Bundles
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
+  using (module ≡-Reasoning)
 
 private
   variable

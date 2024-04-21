@@ -12,7 +12,7 @@ open import Level using (zero)
 import Data.Nat.Base as ℕ
 open import Function.Base using (_on_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Re-export built-ins publicly
@@ -31,3 +31,7 @@ _≈_ = _≡_ on toℕ
 infix 4 _<_
 _<_ : Rel Word64 zero
 _<_ = ℕ._<_ on toℕ
+
+infix 4 _≤_
+_≤_ : Rel Word64 zero
+_≤_ = ℕ._≤_ on toℕ

@@ -79,6 +79,8 @@ unsafeModules = map modToFile
   , "System.FilePath.Posix.Primitive"
   , "System.Process"
   , "System.Process.Primitive"
+  , "System.Random"
+  , "System.Random.Primitive"
   , "Test.Golden"
   , "Text.Pretty.Core"
   , "Text.Pretty"

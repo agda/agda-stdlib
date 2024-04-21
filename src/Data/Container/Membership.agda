@@ -10,10 +10,10 @@ module Data.Container.Membership where
 
 open import Level using (_⊔_)
 open import Relation.Unary using (Pred)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
-open import Data.Container.Core
-open import Data.Container.Relation.Unary.Any
+open import Data.Container.Core using (Container; ⟦_⟧)
+open import Data.Container.Relation.Unary.Any using (◇)
 
 module _ {s p} {C : Container s p} {x} {X : Set x} where
 

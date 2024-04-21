@@ -3,6 +3,7 @@
 module README.Tactic.Cong where
 
 open import Data.Nat
+open import Data.Nat.DivMod
 open import Data.Nat.Properties
 
 open import Relation.Binary.PropositionalEquality
@@ -160,4 +161,36 @@ module EquationalReasoningTests where
       suc (n + n)
     ≤⟨ n≤1+n _ ⟩
       suc (suc (n + n))
+    ∎
+
+module MetaTests where
+
+  test₁ : ∀ m n o → .⦃ _ : NonZero o ⦄ → (m + n) / o ≡ (n + m) / o
+  test₁ m n o =
+    let open ≤-Reasoning in
+    begin-equality
+      ⌞ m + n ⌟ / o
+     ≡⟨ cong! (+-comm m n) ⟩
+      (n + m) / o
+    ∎
+
+  test₂ : ∀ m n o p q r → .⦃ _ : NonZero o ⦄ → .⦃ _ : NonZero p ⦄ →
+          .⦃ _ : NonZero q ⦄ → p ≡ q ^ r → (m + n) % o % p ≡ (n + m) % o % p
+  test₂ m n o p q r eq =
+    let
+      open ≤-Reasoning
+      instance q^r≢0 = m^n≢0 q r
+    in
+    begin-equality
+      (m + n) % o % p
+     ≡⟨ %-congʳ eq ⟩
+      ⌞ m + n ⌟ % o % q ^ r
+     ≡⟨ cong! (+-comm m n) ⟩
+      ⌞ n + m ⌟ % o % q ^ r
+     ≡⟨ cong! (+-comm m n) ⟨
+      ⌞ m + n ⌟ % o % q ^ r
+     ≡⟨ cong! (+-comm m n) ⟩
+      (n + m) % o % q ^ r
+     ≡⟨ %-congʳ eq ⟨
+      (n + m) % o % p
     ∎

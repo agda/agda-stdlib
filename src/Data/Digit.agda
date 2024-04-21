@@ -9,20 +9,24 @@
 module Data.Digit where
 
 open import Data.Nat.Base
-open import Data.Nat.Properties using (_≤?_; _<?_; ≤⇒≤′; module ≤-Reasoning; m≤m+n)
-open import Data.Nat.Solver using (module +-*-Solver)
+  using (ℕ; zero; suc; _<_; _/_; _%_; sz<ss; _+_; _*_; 2+; _≤′_)
+open import Data.Nat.Properties
+  using (_≤?_; _<?_; ≤⇒≤′; module ≤-Reasoning; m≤m+n; +-comm; +-assoc;
+    *-distribˡ-+; *-identityʳ)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Char.Base using (Char)
-open import Data.List.Base
+open import Data.List.Base using (List; replicate; [_]; _∷_; [])
 open import Data.Product.Base using (∃; _,_)
 open import Data.Vec.Base as Vec using (Vec; _∷_; [])
-open import Data.Nat.DivMod
+open import Data.Nat.DivMod using (m/n<m; _divMod_; result)
 open import Data.Nat.Induction
+  using (Acc; acc; <-wellFounded-fast; <′-Rec; <′-rec)
+open import Function.Base using (_$_)
 open import Relation.Nullary.Decidable using (True; does; toWitness)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; cong)
-open import Function.Base using (_$_)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; sym; cong; cong₂; module ≡-Reasoning)
 
 ------------------------------------------------------------------------
 -- Digits
@@ -87,20 +91,32 @@ toDigits base@(suc (suc k)) n = <′-rec Pred helper n
   cons : ∀ {m} (r : Digit base) → Pred m → Pred (toℕ r + m * base)
   cons r (ds , eq) = (r ∷ ds , cong (λ i → toℕ r + i * base) eq)
 
-  open ≤-Reasoning
-  open +-*-Solver
+  lem′ : ∀ x k → x + x + (k + x * k) ≡ k + x * 2+ k
+  lem′ x k = begin
+    x + x + (k + x * k)   ≡⟨ +-assoc (x + x) k _ ⟨
+    x + x + k + x * k     ≡⟨ cong (_+ x * k) (+-comm _ k) ⟩
+    k + (x + x) + x * k   ≡⟨ +-assoc k (x + x) _ ⟩
+    k + ((x + x) + x * k) ≡⟨ cong (k +_) (begin
+      (x + x) + x * k       ≡⟨ +-assoc x x _ ⟩
+      x + (x + x * k)       ≡⟨ cong (x +_) (cong (_+ x * k) (*-identityʳ x)) ⟨
+      x + (x * 1 + x * k)   ≡⟨ cong₂ _+_ (*-identityʳ x) (*-distribˡ-+ x 1 k ) ⟨
+      x * 1 + (x * suc k)   ≡⟨ *-distribˡ-+ x 1 (1 + k) ⟨
+      x * 2+ k              ∎) ⟩
+    k + x * 2+ k          ∎
+    where open ≡-Reasoning
 
   lem : ∀ x k r → 2 + x ≤′ r + (1 + x) * (2 + k)
   lem x k r = ≤⇒≤′ $ begin
-    2 + x
-      ≤⟨ m≤m+n _ _ ⟩
-    2 + x + (x + (1 + x) * k + r)
-      ≡⟨ solve 3 (λ x r k → con 2 :+ x :+ (x :+ (con 1 :+ x) :* k :+ r)
-                              :=
-                            r :+ (con 1 :+ x) :* (con 2 :+ k))
-                 refl x r k ⟩
-    r + (1 + x) * (2 + k)
-      ∎
+    2 + x                             ≤⟨ m≤m+n _ _ ⟩
+    2 + x + (x + (1 + x) * k + r)     ≡⟨ cong ((2 + x) +_) (+-comm _ r) ⟩
+    2 + x + (r + (x + (1 + x) * k))   ≡⟨ +-assoc (2 + x) r _ ⟨
+    2 + x + r + (x + (1 + x) * k)     ≡⟨ cong (_+ (x + (1 + x) * k)) (+-comm (2 + x) r) ⟩
+    r + (2 + x) + (x + (1 + x) * k)   ≡⟨ +-assoc r (2 + x) _ ⟩
+    r + ((2 + x) + (x + (1 + x) * k)) ≡⟨ cong (r +_) (cong 2+ (+-assoc x x _)) ⟨
+    r + (2 + (x + x + (1 + x) * k))   ≡⟨ cong (λ z → r + (2+ z)) (lem′ x k) ⟩
+    r + (2 + (k + x * (2 + k)))       ≡⟨⟩
+    r + (1 + x) * (2 + k)             ∎
+    where open ≤-Reasoning
 
   helper : ∀ n → <′-Rec Pred n → Pred n
   helper n                       rec with n divMod base

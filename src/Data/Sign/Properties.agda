@@ -8,17 +8,21 @@
 
 module Data.Sign.Properties where
 
-open import Algebra.Bundles
-open import Data.Empty
-open import Data.Sign.Base
+open import Algebra.Bundles using (Magma; Semigroup; CommutativeSemigroup;
+  Monoid; CommutativeMonoid; Group; AbelianGroup)
+open import Data.Sign.Base using (Sign; opposite; _*_; +; -)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_$_; id)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; _≢_; sym; cong₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; decSetoid; isDecEquivalence; isEquivalence)
 open import Relation.Nullary.Decidable using (yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open import Algebra.Structures {A = Sign} _≡_
 open import Algebra.Definitions {A = Sign} _≡_
@@ -102,8 +106,8 @@ s*s≡+ - = refl
 
 *-cancelʳ-≡ : RightCancellative _*_
 *-cancelʳ-≡ _ - - _  = refl
-*-cancelʳ-≡ _ - + eq = ⊥-elim (s≢opposite[s] _ $ sym eq)
-*-cancelʳ-≡ _ + - eq = ⊥-elim (s≢opposite[s] _ eq)
+*-cancelʳ-≡ _ - + eq = contradiction (sym eq) (s≢opposite[s] _)
+*-cancelʳ-≡ _ + - eq = contradiction eq (s≢opposite[s] _)
 *-cancelʳ-≡ _ + + _  = refl
 
 *-cancelˡ-≡ : LeftCancellative _*_
