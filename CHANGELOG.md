@@ -16,6 +16,9 @@ Bug-fixes
 * Module `Data.List.Relation.Ternary.Appending.Setoid.Properties` no longer
   exports the `Setoid` module under the alias `S`.
 
+* Remove unbound parameter from `Data.List.Properties.length-alignWith`,
+  `alignWith-map` and `map-alignWith`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -330,6 +333,37 @@ Additions to existing modules
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
   reverse-downFrom      : reverse (downFrom n) ≡ upTo n
+  mapMaybe-map          : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
+  map-mapMaybe          : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
+  align-map             : align (map f xs) (map g ys) ≡ map (map f g) (align xs ys)
+  zip-map               : zip (map f xs) (map g ys) ≡ map (map f g) (zip xs ys)
+  unzipWith-map         : unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
+  map-unzipWith         : map (map g) (map h) ∘ unzipWith f ≗ unzipWith (map g h ∘ f)
+  unzip-map             : unzip ∘ map (map f g) ≗ map (map f) (map g) ∘ unzip
+  splitAt-map           : splitAt n ∘ map f ≗ map (map f) (map f) ∘ splitAt n
+  uncons-map            : uncons ∘ map f ≗ map (map f (map f)) ∘ uncons
+  last-map              : last ∘ map f ≗ map f ∘ last
+  tail-map              : tail ∘ map f ≗ map (map f) ∘ tail
+  mapMaybe-cong         : f ≗ g → mapMaybe f ≗ mapMaybe g
+  zipWith-cong          : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
+  unzipWith-cong        : f ≗ g → unzipWith f ≗ unzipWith g
+  foldl-cong            : (∀ x y → f x y ≡ g x y) → ∀ x → foldl f x ≗ foldl g x
+  alignWith-flip        : alignWith f xs ys ≡ alignWith (f ∘ swap) ys xs
+  alignWith-comm        : f ∘ swap ≗ f → alignWith f xs ys ≡ alignWith f ys xs
+  align-flip            : align xs ys ≡ map swap (align ys xs)
+  zip-flip              : zip xs ys ≡ map swap (zip ys xs)
+  unzipWith-swap        : unzipWith (swap ∘ f) ≗ swap ∘ unzipWith f
+  unzip-swap            : unzip ∘ map swap ≗ swap ∘ unzip
+  take-take             : take n (take m xs) ≡ take (n ⊓ m) xs
+  take-drop             : take n (drop m xs) ≡ drop m (take (m + n) xs)
+  zip-unzip             : uncurry′ zip ∘ unzip ≗ id
+  unzipWith-zipWith     : f ∘ uncurry′ g ≗ id → length xs ≡ length ys → unzipWith f (zipWith g xs ys) ≡ (xs , ys)
+  unzip-zip             : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
+  mapMaybe-++           : mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
+  unzipWith-++          : unzipWith f (xs ++ ys) ≡ zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
+  catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
+  catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
+  map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
