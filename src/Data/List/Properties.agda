@@ -146,65 +146,6 @@ module _ (f : A → B) where
   map-catMaybes (nothing ∷ xs) = map-catMaybes xs
 
 ------------------------------------------------------------------------
--- mapMaybe
-
-module _ {f g : A → Maybe B} where
-
-  mapMaybe-cong : f ≗ g → mapMaybe f ≗ mapMaybe g
-  mapMaybe-cong f≗g [] = refl
-  mapMaybe-cong f≗g (x ∷ xs) rewrite f≗g x
-    with ih ← mapMaybe-cong f≗g xs | g x
-  ... | just y  = cong (y ∷_) ih
-  ... | nothing = ih
-
-mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
-mapMaybe-just []       = refl
-mapMaybe-just (x ∷ xs) = cong (x ∷_) (mapMaybe-just xs)
-
-mapMaybe-nothing : (xs : List A) →
-                   mapMaybe {B = B} (λ _ → nothing) xs ≡ []
-mapMaybe-nothing []       = refl
-mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
-
-module _ (f : A → Maybe B) where
-
-  mapMaybe-concatMap : mapMaybe f ≗ concatMap (fromMaybe ∘ f)
-  mapMaybe-concatMap []       = refl
-  mapMaybe-concatMap (x ∷ xs) with ih ← mapMaybe-concatMap xs | f x
-  ... | just y  = cong (y ∷_) ih
-  ... | nothing = ih
-
-  length-mapMaybe : ∀ xs → length (mapMaybe f xs) ≤ length xs
-  length-mapMaybe xs = ≤-begin
-    length (mapMaybe f xs)      ≤⟨ length-catMaybes (map f xs) ⟩
-    length (map f xs)           ≤⟨ ≤-reflexive (length-map f xs) ⟩
-    length xs                   ≤-∎
-    where open ≤-Reasoning renaming (begin_ to ≤-begin_; _∎ to _≤-∎)
-
-  mapMaybe-++ : ∀ xs ys →
-                mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
-  mapMaybe-++ []       ys = refl
-  mapMaybe-++ (x ∷ xs) ys with ih ← mapMaybe-++ xs ys | f x
-  ... | just y  = cong (y ∷_) ih
-  ... | nothing = ih
-
-module _ (f : B → Maybe C) (g : A → B) where
-
-  mapMaybe-map : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
-  mapMaybe-map []       = refl
-  mapMaybe-map (x ∷ xs) with ih ← mapMaybe-map xs | f (g x)
-  ... | just y  = cong (y ∷_) ih
-  ... | nothing = ih
-
-module _ (g : B → C) (f : A → Maybe B) where
-
-  map-mapMaybe : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
-  map-mapMaybe []       = refl
-  map-mapMaybe (x ∷ xs) with ih ← map-mapMaybe xs | f x
-  ... | just y  = cong (g y ∷_) ih
-  ... | nothing = ih
-
-------------------------------------------------------------------------
 -- _++_
 
 length-++ : ∀ (xs : List A) {ys} →
@@ -795,6 +736,65 @@ map-concatMap f g xs = begin
     ≡⟨⟩
   concatMap (map f ∘′ g) xs
     ∎
+
+------------------------------------------------------------------------
+-- mapMaybe
+
+module _ {f g : A → Maybe B} where
+
+  mapMaybe-cong : f ≗ g → mapMaybe f ≗ mapMaybe g
+  mapMaybe-cong f≗g [] = refl
+  mapMaybe-cong f≗g (x ∷ xs) rewrite f≗g x
+    with ih ← mapMaybe-cong f≗g xs | g x
+  ... | just y  = cong (y ∷_) ih
+  ... | nothing = ih
+
+mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
+mapMaybe-just []       = refl
+mapMaybe-just (x ∷ xs) = cong (x ∷_) (mapMaybe-just xs)
+
+mapMaybe-nothing : (xs : List A) →
+                   mapMaybe {B = B} (λ _ → nothing) xs ≡ []
+mapMaybe-nothing []       = refl
+mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
+
+module _ (f : A → Maybe B) where
+
+  mapMaybe-concatMap : mapMaybe f ≗ concatMap (fromMaybe ∘ f)
+  mapMaybe-concatMap []       = refl
+  mapMaybe-concatMap (x ∷ xs) with ih ← mapMaybe-concatMap xs | f x
+  ... | just y  = cong (y ∷_) ih
+  ... | nothing = ih
+
+  length-mapMaybe : ∀ xs → length (mapMaybe f xs) ≤ length xs
+  length-mapMaybe xs = ≤-begin
+    length (mapMaybe f xs)      ≤⟨ length-catMaybes (map f xs) ⟩
+    length (map f xs)           ≤⟨ ≤-reflexive (length-map f xs) ⟩
+    length xs                   ≤-∎
+    where open ≤-Reasoning renaming (begin_ to ≤-begin_; _∎ to _≤-∎)
+
+  mapMaybe-++ : ∀ xs ys →
+                mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
+  mapMaybe-++ []       ys = refl
+  mapMaybe-++ (x ∷ xs) ys with ih ← mapMaybe-++ xs ys | f x
+  ... | just y  = cong (y ∷_) ih
+  ... | nothing = ih
+
+module _ (f : B → Maybe C) (g : A → B) where
+
+  mapMaybe-map : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
+  mapMaybe-map []       = refl
+  mapMaybe-map (x ∷ xs) with ih ← mapMaybe-map xs | f (g x)
+  ... | just y  = cong (y ∷_) ih
+  ... | nothing = ih
+
+module _ (g : B → C) (f : A → Maybe B) where
+
+  map-mapMaybe : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
+  map-mapMaybe []       = refl
+  map-mapMaybe (x ∷ xs) with ih ← map-mapMaybe xs | f x
+  ... | just y  = cong (g y ∷_) ih
+  ... | nothing = ih
 
 ------------------------------------------------------------------------
 -- sum
