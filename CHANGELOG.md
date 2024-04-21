@@ -392,6 +392,21 @@ Additions to existing modules
   map : (Char → Char) → String → String
   ```
 
+* Re-exported new types and functions in `IO`:
+  ```agda
+  BufferMode : Set
+  noBuffering : BufferMode
+  lineBuffering : BufferMode
+  blockBuffering : Maybe ℕ → BufferMode
+  Handle : Set
+  stdin : Handle
+  stdout : Handle
+  stderr : Handle
+  hSetBuffering : Handle → BufferMode → IO ⊤
+  hGetBuffering : Handle → IO BufferMode
+  hFlush : Handle → IO ⊤
+  ```
+
 * Added new functions in `IO.Base`:
   ```agda
   whenInj₂ : E ⊎ A → (A → IO ⊤) → IO ⊤
