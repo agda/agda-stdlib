@@ -10,10 +10,10 @@
 
 module Effect.Monad.Predicate where
 
-open import Effect.Monad.Indexed using (RawIMonad)
 open import Data.Product.Base using (_,_)
+open import Effect.Monad.Indexed using (RawIMonad)
 open import Function.Base using (const; id; _∘_)
-open import Level using (Level; suc; _⊔_)
+open import Level using (Level; _⊔_; suc)
 open import Relation.Binary.PropositionalEquality.Core using (refl)
 open import Relation.Unary using (_⊆_; _⇒_; _∈_; _∩_; ｛_｝)
 open import Relation.Unary.PredicateTransformer using (Pt)
@@ -24,7 +24,7 @@ private
 
 ------------------------------------------------------------------------
 
-record RawPMonad {I : Set i} (M : Pt I (i ⊔ ℓ)) : Set (suc i ⊔ suc ℓ) where
+record RawPMonad {I : Set i} (M : Pt I (i ⊔ ℓ)) : Set (suc (i ⊔ ℓ)) where
 
   infixl 1 _?>=_ _?>_ _>?>_ _?>=′_
   infixr 1 _=<?_ _<?<_

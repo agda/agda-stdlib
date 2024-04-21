@@ -6,21 +6,20 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Level using (Level; suc; _⊔_)
 
 module Effect.Monad.State.Transformer where
 
 open import Algebra using (RawMonoid)
 open import Data.Product.Base using (_×_; _,_; map₂; proj₁; proj₂)
-open import Data.Unit.Polymorphic.Base
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-open import Function.Base
+open import Data.Unit.Polymorphic.Base using (tt)
+open import Effect.Choice using (RawChoice)
+open import Effect.Empty using (RawEmpty)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative; RawApplicativeZero; RawAlternative)
+open import Effect.Monad using (RawMonad; RawMonadZero; RawMonadPlus; RawMonadT; RawMonadTd)
+open import Function.Base using (_∘′_; _$_; const)
+open import Level using (Level; _⊔_)
 
-open import Effect.Monad.Reader.Transformer using (RawMonadReader)
 
 private
   variable
