@@ -323,7 +323,7 @@ Additions to existing modules
   mapMaybe-cong         : f ≗ g → mapMaybe f ≗ mapMaybe g
   zipWith-cong          : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
   unzipWith-cong        : f ≗ g → unzipWith f ≗ unzipWith g
-  foldl-cong            : (∀ x y → f x y ≡ g x y) → d ≡ e → foldl f d ≗ foldl g e
+  foldl-cong            : (∀ x y → f x y ≡ g x y) → ∀ x → foldl f x ≗ foldl g x
   alignWith-flip        : alignWith f xs ys ≡ alignWith (f ∘ swap) ys xs
   alignWith-comm        : f ∘ swap ≗ f → alignWith f xs ys ≡ alignWith f ys xs
   align-flip            : align xs ys ≡ map swap (align ys xs)

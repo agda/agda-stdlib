@@ -696,11 +696,10 @@ module _ {P : Pred A p} {f : A → A → A} where
 ------------------------------------------------------------------------
 -- foldl
 
-foldl-cong : ∀ {f g : B → A → B} {d e : B} →
-             (∀ x y → f x y ≡ g x y) → d ≡ e →
-             foldl f d ≗ foldl g e
-foldl-cong f≗g refl []      = refl
-foldl-cong f≗g d≡e (x ∷ xs) rewrite d≡e = foldl-cong f≗g (f≗g _ x) xs
+foldl-cong : ∀ {f g : B → A → B} → (∀ x y → f x y ≡ g x y) →
+             ∀ x → foldl f x ≗ foldl g x
+foldl-cong f≗g x []       = refl
+foldl-cong f≗g x (y ∷ xs) rewrite f≗g x y = foldl-cong f≗g _ xs
 
 foldl-++ : ∀ (f : A → B → A) x ys zs →
            foldl f x (ys ++ zs) ≡ foldl f (foldl f x ys) zs
