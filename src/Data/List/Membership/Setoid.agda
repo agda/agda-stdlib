@@ -32,22 +32,6 @@ x ∈ xs = Any (x ≈_) xs
 _∉_ : A → List A → Set _
 x ∉ xs = ¬ x ∈ xs
 
-∃[x∈xs] : ∀ {p} (P : Pred A p) → Pred (List A) _
-∃[x∈xs] P xs = ∃ λ x → x ∈ xs × P x
-
-∃∈-syntax : ∀ {p} (P : Pred A p) → Pred (List A) _
-∃∈-syntax = ∃[x∈xs]
-
-syntax ∃∈-syntax (λ x → P) xs = ∃[ x ∈ xs ] P
-
-∀[x∈xs] : ∀ {p} (P : Pred A p) → Pred (List A) _
-∀[x∈xs] P xs = ∀ {x} → x ∈ xs → P x
-
-∀∈-syntax : ∀ {p} (P : Pred A p) → Pred (List A) _
-∀∈-syntax = ∀[x∈xs]
-
-syntax ∀∈-syntax (λ x → P) xs = ∀[ x ∈ xs ] P
-
 ------------------------------------------------------------------------
 -- Operations
 
@@ -55,7 +39,7 @@ _∷=_ = Any._∷=_ {A = A}
 _─_ = Any._─_ {A = A}
 
 mapWith∈ : ∀ {b} {B : Set b}
-           (xs : List A) → ∀[ _ ∈ xs ] B → List B
+           (xs : List A) → (∀ {x} → x ∈ xs → B) → List B
 mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 
@@ -64,7 +48,7 @@ mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 
 module _ {p} {P : Pred A p} where
 
-  find : ∀ {xs} → Any P xs → ∃[ x ∈ xs ] P x
+  find : ∀ {xs} → Any P xs → ∃ λ x → x ∈ xs × P x
   find (here px)   = _ , here refl , px
   find (there pxs) = let x , x∈xs , px = find pxs in x , there x∈xs , px
 

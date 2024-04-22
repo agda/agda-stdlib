@@ -329,21 +329,8 @@ Additions to existing modules
 
 * In `Data.List.Membership.Propositional.Properties.Core`:
   ```agda
-  find∘∃∈-Any : (p : ∃[x∈xs] P xs) → find (∃∈-Any p) ≡ p
+  find∘∃∈-Any : (p : ∃ λ x → x ∈ xs × P x) → find (∃∈-Any p) ≡ p
   ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
-  ```
-
-* In `Data.List.Membership.Setoid`: two abbreviations for predicate transformers,
-  with associated `syntax` declarations
-  ```agda
-  ∃[x∈xs] : ∀ {p} (P : Pred A p) → Pred (List A) _
-  ∃[x∈xs] P xs = ∃ λ x → x ∈ xs × P x
-  ∃∈-syntax = ∃[x∈xs]
-  ∀[x∈xs] : ∀ {p} (P : Pred A p) → Pred (List A) _
-  ∀[x∈xs] P xs = ∀ {x} → x ∈ xs → P x
-  ∀∈-syntax = ∀[x∈xs]
-  syntax ∃∈-syntax (λ x → P) xs = ∃[ x ∈ xs ] P
-  syntax ∀∈-syntax (λ x → P) xs = ∀[ x ∈ xs ] P
   ```
 
 * In `Data.List.Properties`:

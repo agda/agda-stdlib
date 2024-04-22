@@ -15,7 +15,7 @@ module Data.List.Membership.Propositional.Properties.Core where
 open import Data.List.Base using (List)
 open import Data.List.Membership.Propositional
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-open import Data.Product.Base as Product using (_,_)
+open import Data.Product.Base as Product using (_,_; ∃; _×_)
 open import Function.Base using (flip; id; _∘_)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
@@ -60,17 +60,17 @@ module _ {P : Pred A p} where
 
 module _ {P : Pred A p} where
 
-  ∃∈-Any : ∃[x∈xs] P xs → Any P xs
+  ∃∈-Any : (∃ λ x → x ∈ xs × P x) → Any P xs
   ∃∈-Any (x , x∈xs , px) = lose {P = P} x∈xs px
 
   ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
   ∃∈-Any∘find p = map∘find p refl
 
-  find∘∃∈-Any : (p : ∃[x∈xs] P xs) → find (∃∈-Any p) ≡ p
+  find∘∃∈-Any : (p : ∃ λ x → x ∈ xs × P x) → find (∃∈-Any p) ≡ p
   find∘∃∈-Any p@(x , x∈xs , px)
     rewrite find∘map x∈xs (flip (resp P) px) | find-∈ x∈xs = refl
 
-  Any↔ : ∃[x∈xs] P xs ↔ Any P xs
+  Any↔ : (∃ λ x → x ∈ xs × P x) ↔ Any P xs
   Any↔ = mk↔ₛ′ ∃∈-Any find ∃∈-Any∘find find∘∃∈-Any
 
 ------------------------------------------------------------------------
