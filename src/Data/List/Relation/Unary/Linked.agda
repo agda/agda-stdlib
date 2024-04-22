@@ -19,7 +19,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.Definitions as B
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (refl; cong₂)
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
 open import Relation.Nullary.Decidable using (yes; no; map′; _×-dec_)
 

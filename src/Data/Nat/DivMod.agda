@@ -19,7 +19,8 @@ open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; cong; cong₂; refl; trans; _≢_; sym)
 open import Relation.Nullary.Negation using (contradiction)
 
 open ≤-Reasoning

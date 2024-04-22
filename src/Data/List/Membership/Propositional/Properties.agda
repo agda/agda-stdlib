@@ -8,36 +8,40 @@
 
 module Data.List.Membership.Propositional.Properties where
 
-open import Algebra using (Op₂; Selective)
+open import Algebra.Core using (Op₂)
+open import Algebra.Definitions using (Selective)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List
 open import Data.List.Effectful using (monad)
 open import Data.List.Membership.Propositional
+  using (_∈_; _∉_; mapWith∈; _≢∈_)
 import Data.List.Membership.Setoid.Properties as Membership
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
+  using (map↔; concat↔; >>=↔; ⊛↔; Any-cong; ⊗↔′; ¬Any[])
 open import Data.Nat.Base using (ℕ; suc; s≤s; _≤_; _<_; _≰_)
 open import Data.Nat.Properties
   using (suc-injective; m≤n⇒m≤1+n; _≤?_; <⇒≢; ≰⇒>)
-open import Data.Product.Base hiding (map)
+open import Data.Product.Base using (∃; ∃₂; _×_; _,_)
 open import Data.Product.Properties using (×-≡,≡↔≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Effect.Monad using (RawMonad)
-open import Function.Base
-open import Function.Definitions
+open import Function.Base using (_∘_; _∘′_; _$_; id; flip; _⟨_⟩_)
+open import Function.Definitions using (Injective)
 import Function.Related.Propositional as Related
-open import Function.Bundles
-open import Function.Related.TypeIsomorphisms
+open import Function.Bundles using (_↔_; _↣_; Injection)
+open import Function.Related.TypeIsomorphisms using (×-comm; ∃∃↔∃∃)
 open import Function.Construct.Identity using (↔-id)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≢_; refl; sym; trans; cong; resp; _≗_)
+open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Nullary.Decidable.Core
   using (Dec; yes; no; ¬¬-excluded-middle)
@@ -73,7 +77,7 @@ mapWith∈-cong : ∀ (xs : List A) → (f g : ∀ {x} → x ∈ xs → B) →
                 (∀ {x} → (x∈xs : x ∈ xs) → f x∈xs ≡ g x∈xs) →
                 mapWith∈ xs f ≡ mapWith∈ xs g
 mapWith∈-cong []       f g cong = refl
-mapWith∈-cong (x ∷ xs) f g cong = ≡.cong₂ _∷_ (cong (here refl))
+mapWith∈-cong (x ∷ xs) f g cong = cong₂ _∷_ (cong (here refl))
   (mapWith∈-cong xs (f ∘ there) (g ∘ there) (cong ∘ there))
 
 mapWith∈≗map : ∀ (f : A → B) xs → mapWith∈ xs (λ {x} _ → f x) ≡ map f xs
@@ -93,7 +97,7 @@ map-mapWith∈ = Membership.map-mapWith∈ (≡.setoid _)
 module _ (f : A → B) where
 
   ∈-map⁺ : ∀ {x xs} → x ∈ xs → f x ∈ map f xs
-  ∈-map⁺ = Membership.∈-map⁺ (≡.setoid A) (≡.setoid B) (≡.cong f)
+  ∈-map⁺ = Membership.∈-map⁺ (≡.setoid A) (≡.setoid B) (cong f)
 
   ∈-map⁻ : ∀ {y xs} → y ∈ map f xs → ∃ λ x → x ∈ xs × y ≡ f x
   ∈-map⁻ = Membership.∈-map⁻ (≡.setoid A) (≡.setoid B)
@@ -164,7 +168,7 @@ module _ (f : A → B → C) where
   ∈-cartesianProductWith⁺ : ∀ {xs ys a b} → a ∈ xs → b ∈ ys →
                             f a b ∈ cartesianProductWith f xs ys
   ∈-cartesianProductWith⁺ = Membership.∈-cartesianProductWith⁺
-    (≡.setoid A) (≡.setoid B) (≡.setoid C) (≡.cong₂ f)
+    (≡.setoid A) (≡.setoid B) (≡.setoid C) (cong₂ f)
 
   ∈-cartesianProductWith⁻ : ∀ xs ys {v} → v ∈ cartesianProductWith f xs ys →
                             ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
