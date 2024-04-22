@@ -13,6 +13,7 @@ open import Data.Nat.Base
 open import Data.Nat.Show using (show)
 open import Data.String.Base using (String; _++_; lines)
 open import Data.Unit.Polymorphic
+open import Function.Base using (_$_)
 open import IO
 
 ------------------------------------------------------------------------
@@ -86,10 +87,21 @@ cat fp = do
   let ls = lines content
   List.mapM′ putStrLn ls
 
-open import Codata.Musical.Notation
-open import Codata.Musical.Colist
-open import Data.Bool
-open import Data.Unit.Polymorphic.Base
+------------------------------------------------------------------------
+-- TOP-LEVEL LOOP
+
+-- If you simply want to repeat the same action over and over again, you
+-- can use `forever` e.g. the following defines a REPL that echos whatever
+-- the user types
+
+echo : IO ⊤
+echo = do
+  hSetBuffering stdout noBuffering
+  forever $ do
+    putStr "echo< "
+    str ← getLine
+    putStrLn ("echo> " ++ str)
+
 
 ------------------------------------------------------------------------
 -- GUARDEDNESS
@@ -101,6 +113,10 @@ open import Data.Unit.Polymorphic.Base
 -- In this case you cannot use the convenient combinators that make `do`-notations
 -- and have to revert back to the underlying coinductive constructors.
 
+open import Codata.Musical.Notation
+open import Codata.Musical.Colist using (Colist; []; _∷_)
+open import Data.Bool
+open import Data.Unit.Polymorphic.Base
 
 -- Whether a colist is finite is semi decidable: just let the user wait until
 -- you reach the end!

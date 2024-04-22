@@ -19,9 +19,11 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product.Base using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
+  using (Product; uncurryₙ; Equalₙ; curryₙ; fromEqualₙ; toEqualₙ)
 open import Function.Base using (_∘′_; _$′_; const; flip)
 open import Relation.Unary using (IUniversal)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; cong)
 
 private
   variable

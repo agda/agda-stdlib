@@ -8,13 +8,12 @@
 
 module Effect.Monad.Continuation where
 
-open import Effect.Applicative
-open import Effect.Applicative.Indexed
-open import Effect.Monad
+open import Effect.Applicative.Indexed using (IFun)
+open import Effect.Monad using (RawMonad)
 open import Function.Identity.Effectful as Id using (Identity)
-open import Effect.Monad.Indexed
+open import Effect.Monad.Indexed using (RawIMonad)
 open import Function.Base using (flip)
-open import Level
+open import Level using (Level; _⊔_; suc)
 
 private
   variable

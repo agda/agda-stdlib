@@ -18,7 +18,10 @@ open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder; Poset)
 open import Relation.Binary.Structures using (IsPreorder; IsPartialOrder)
 open import Relation.Binary.Definitions using (Antisymmetric)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (subst; _≡_; refl)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; isEquivalence)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------

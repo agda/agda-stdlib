@@ -9,13 +9,13 @@
 module Effect.Monad.Partiality where
 
 open import Codata.Musical.Notation using (∞; ♯_; ♭)
-open import Effect.Functor using (RawFunctor)
-open import Effect.Applicative using (RawApplicative)
-open import Effect.Monad using (RawMonad; module Join)
 open import Data.Bool.Base using (Bool; false; true)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product as Prod using (∃; ∄; -,_; ∃₂; _,_; _×_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad; module Join)
 open import Function.Base using (_∘′_; flip; id; _∘_; _$_; _⟨_⟩_)
 open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level; _⊔_)
