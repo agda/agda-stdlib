@@ -428,10 +428,11 @@ linesBy {A = A} P? = go nothing where
 
   go : Maybe (List A) → List A → List (List A)
   go acc []       = maybe′ ([_] ∘′ reverse) [] acc
-  go acc (c ∷ cs) = let acc′ = Maybe.fromMaybe [] acc in
+  go acc (c ∷ cs) =
+    let acc′ = Maybe.fromMaybe [] acc in
     if does (P? c)
-    then reverse acc′ ∷ go nothing cs
-    else go (just (c ∷ acc′)) cs
+      then reverse acc′ ∷ go nothing cs
+      else go (just (c ∷ acc′)) cs
 
 linesByᵇ : (A → Bool) → List A → List (List A)
 linesByᵇ p = linesBy (T? ∘ p)
