@@ -364,45 +364,49 @@ removeAt (x ∷ xs) (suc i)  = x ∷ removeAt xs i
 
 takeWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 takeWhile P? []       = []
-takeWhile P? (x ∷ xs) with does (P? x)
-... | true  = x ∷ takeWhile P? xs
-... | false = []
+takeWhile P? (x ∷ xs) = if does (P? x)
+  then x ∷ takeWhile P? xs
+  else []
 
 takeWhileᵇ : (A → Bool) → List A → List A
 takeWhileᵇ p = takeWhile (T? ∘ p)
 
 dropWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 dropWhile P? []       = []
-dropWhile P? (x ∷ xs) with does (P? x)
-... | true  = dropWhile P? xs
-... | false = x ∷ xs
+dropWhile P? (x ∷ xs) = if does (P? x)
+  then dropWhile P? xs
+  else x ∷ xs
 
 dropWhileᵇ : (A → Bool) → List A → List A
 dropWhileᵇ p = dropWhile (T? ∘ p)
 
 filter : ∀ {P : Pred A p} → Decidable P → List A → List A
 filter P? [] = []
-filter P? (x ∷ xs) with does (P? x)
-... | false = filter P? xs
-... | true  = x ∷ filter P? xs
+filter P? (x ∷ xs) =
+  let xs′ = filter P? xs in
+  if does (P? x)
+    then x ∷ xs′
+    else xs′
 
 filterᵇ : (A → Bool) → List A → List A
 filterᵇ p = filter (T? ∘ p)
 
 partition : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-partition P? []       = ([] , [])
-partition P? (x ∷ xs) with does (P? x) | partition P? xs
-... | true  | (ys , zs) = (x ∷ ys , zs)
-... | false | (ys , zs) = (ys , x ∷ zs)
+partition P? []       = [] , []
+partition P? (x ∷ xs) =
+  let ys , zs = partition P? xs in
+  if does (P? x)
+    then (x ∷ ys , zs)
+    else (ys , x ∷ zs)
 
 partitionᵇ : (A → Bool) → List A → List A × List A
 partitionᵇ p = partition (T? ∘ p)
 
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-span P? []       = ([] , [])
-span P? ys@(x ∷ xs) with does (P? x)
-... | true  = Product.map (x ∷_) id (span P? xs)
-... | false = ([] , ys)
+span P? []          = [] , []
+span P? ys@(x ∷ xs) = if does (P? x)
+  then Product.map (x ∷_) id (span P? xs)
+  else ([] , ys)
 
 
 spanᵇ : (A → Bool) → List A → List A × List A
@@ -453,9 +457,11 @@ wordsByᵇ p = wordsBy (T? ∘ p)
 derun : ∀ {R : Rel A p} → B.Decidable R → List A → List A
 derun R? [] = []
 derun R? (x ∷ []) = x ∷ []
-derun R? (x ∷ xs@(y ∷ _)) with does (R? x y) | derun R? xs
-... | true  | ys = ys
-... | false | ys = x ∷ ys
+derun R? (x ∷ xs@(y ∷ _)) =
+  let ys = derun R? xs in
+  if does (R? x y)
+    then ys
+    else x ∷ ys
 
 derunᵇ : (A → A → Bool) → List A → List A
 derunᵇ r = derun (T? ∘₂ r)
