@@ -40,7 +40,7 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality.Core as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; resp; _≗_)
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; resp; _≗_)
 open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Nullary.Decidable.Core
