@@ -156,6 +156,7 @@ New modules
   ```agda
   System.Random.Primitive
   System.Random
+  Effect.Monad.Random
   ```
 
 * Show modules:
