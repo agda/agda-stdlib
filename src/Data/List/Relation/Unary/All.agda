@@ -10,7 +10,7 @@ module Data.List.Relation.Unary.All where
 
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_; ∀[x∈xs] to ∀[x∈ₚxs])
+open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_)
 import Data.List.Membership.Setoid as SetoidMembership
 open import Data.Product.Base as Product
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
@@ -119,11 +119,11 @@ module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
   open Setoid S renaming (refl to ≈-refl)
   open SetoidMembership S
 
-  tabulateₛ : ∀[x∈xs] P ⊆ All P
+  tabulateₛ : (∀ {x} → x ∈ xs → P x) → All P xs
   tabulateₛ {[]}    hyp = []
   tabulateₛ {_ ∷ _} hyp = hyp (here ≈-refl) ∷ tabulateₛ (hyp ∘ there)
 
-tabulate : ∀[x∈ₚxs] P ⊆ All P
+tabulate : (∀ {x} → x ∈ₚ xs → P x) → All P xs
 tabulate = tabulateₛ (≡.setoid _)
 
 self : ∀ {xs} → All (const A) xs
@@ -191,14 +191,14 @@ lookupAny (px ∷ pxs) (there i) = lookupAny pxs i
 lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (Any.lookup i)
 lookupWith f pxs i = Product.uncurry f (lookupAny pxs i)
 
-lookup : All P ⊆ ∀[x∈ₚxs] P
+lookup : All P xs → (∀ {x} → x ∈ₚ xs → P x)
 lookup pxs = lookupWith (λ { px refl → px }) pxs
 
 module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
   open Setoid S renaming (sym to ≈-sym)
   open SetoidMembership S
 
-  lookupₛ : P Respects _≈_ → All P ⊆ ∀[x∈xs] P
+  lookupₛ : P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
   lookupₛ resp pxs = lookupWith (λ py x≈y → resp (≈-sym x≈y) py) pxs
 
 ------------------------------------------------------------------------
