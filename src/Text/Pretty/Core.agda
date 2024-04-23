@@ -145,8 +145,8 @@ private
 
     pad : Maybe String
     pad with x.lastWidth
-    ... | 0 = nothing
-    ... | l = just (replicate l ' ')
+    ... | 0         = nothing
+    ... | l@(suc _) = just (replicate l ' ')
 
     size-pad : maybe′ length 0 pad ≡ x.lastWidth
     size-pad with x.lastWidth
