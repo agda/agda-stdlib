@@ -12,11 +12,14 @@ open import Level using (Level)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Nat.Base using (ℕ)
 open import Data.Fin.Permutation using (id; flip; _⟨$⟩ʳ_; inverseʳ; _∘ₚ_)
-open import Data.Vec.Functional
-open import Data.Vec.Functional.Relation.Binary.Permutation
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; trans; cong; module ≡-Reasoning)
+open import Data.Vec.Functional using (Vector)
+open import Data.Vec.Functional.Relation.Binary.Permutation using (_↭_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; trans; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Binary.Indexed.Heterogeneous
+  using (Reflexive; Symmetric; Transitive; IsIndexedEquivalence; IndexedSetoid)
 
 private
   variable

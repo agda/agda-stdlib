@@ -102,11 +102,14 @@ unwords = intersperse " "
 unlines : List String → String
 unlines = intersperse "\n"
 
+between : String → String → String → String
+between left right middle = left ++ middle ++ right
+
 parens : String → String
-parens s = "(" ++ s ++ ")"
+parens = between "(" ")"
 
 braces : String → String
-braces s = "{" ++ s ++ "}"
+braces = between "{" "}"
 
 -- append that also introduces spaces, if necessary
 infixr 5 _<+>_

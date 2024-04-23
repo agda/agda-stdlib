@@ -573,6 +573,10 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
 
   open IsCommutativeSemiring isCommutativeSemiring public
 
+  *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  *-cancelʳ-nonZero = Consequences.comm∧almostCancelˡ⇒almostCancelʳ setoid
+      *-comm *-cancelˡ-nonZero
+
 record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isSemiring     : IsSemiring + * 0# 1#

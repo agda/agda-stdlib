@@ -11,7 +11,10 @@ module Data.List.Relation.Binary.Sublist.Propositional.Slice
 
 open import Data.List.Base using (List)
 open import Data.List.Relation.Binary.Sublist.Propositional
-open import Relation.Binary.PropositionalEquality
+ using (_⊆_; UpperBound; ⊆-trans; ∷ₙ-ub; _∷ʳ_; _∷ₗ-ub_; _∷_; _∷ᵣ-ub_;
+        _,_∷-ub_; ⊆-upper-bound; [])
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------
 -- A Union where the triangles commute is a

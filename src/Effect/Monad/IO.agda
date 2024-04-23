@@ -6,15 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --guardedness #-}
 
-open import Level
-
 module Effect.Monad.IO where
 
 open import Data.Product.Base using (_,_)
-open import Function.Base
+open import Effect.Functor using (RawFunctor)
+open import Function.Base using (id)
 open import IO.Base using (IO)
-open import Effect.Functor
-open import Effect.Monad
+open import Level using (Level; suc)
 
 private
   variable

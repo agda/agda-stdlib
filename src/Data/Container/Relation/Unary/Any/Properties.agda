@@ -8,23 +8,25 @@
 
 module Data.Container.Relation.Unary.Any.Properties where
 
-open import Level
-open import Algebra
+open import Algebra.Bundles using (CommutativeSemiring)
 open import Data.Product.Base using (∃; _×_; ∃₂; _,_; proj₂)
 open import Data.Product.Properties using (Σ-≡,≡→≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
-open import Function.Base
-open import Function.Bundles
+open import Function.Base using (_∘_; _∘′_; id; flip; _$_)
+open import Function.Bundles using (_↔_; mk↔ₛ′; Inverse)
 open import Function.Properties.Inverse using (↔-refl)
 open import Function.Properties.Inverse.HalfAdjointEquivalence using (_≃_; ↔⇒≃)
 open import Function.Related.Propositional as Related using (Related; SK-sym)
 open import Function.Related.TypeIsomorphisms
+  using (×-⊎-commutativeSemiring; ∃∃↔∃∃; Σ-assoc; ×-comm)
+open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred ; _∪_ ; _∩_)
 open import Relation.Binary.Core using (REL)
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≗_; refl)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
 
 private
   module ×⊎ {k ℓ} = CommutativeSemiring (×-⊎-commutativeSemiring k ℓ)

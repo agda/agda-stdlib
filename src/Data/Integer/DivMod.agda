@@ -8,15 +8,16 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Integer.Base
+open import Data.Integer.Base using (+_; -[1+_]; +[1+_]; NonZero; _%_; ∣_∣;
+  _%ℕ_; _/ℕ_; _+_; _*_; -_; _-_; pred; -1ℤ; 0ℤ; _⊖_; _≤_; _<_; +≤+; suc;
+  +<+)
 open import Data.Integer.Properties
 open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ
 import Data.Nat.DivMod as ℕ
 open import Function.Base using (_∘′_)
-open import Relation.Nullary.Decidable
-open import Relation.Binary.PropositionalEquality
-
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; cong; sym; subst)
 open ≤-Reasoning
 
 ------------------------------------------------------------------------

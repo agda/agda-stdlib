@@ -6,16 +6,12 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Level
+open import Level using (Level; _⊔_; suc)
 
 module Effect.Monad.Error.Transformer {e} (E : Set e) (a : Level) where
 
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
-open import Function.Base
+open import Effect.Monad using (RawMonad)
+open import Function.Base using (_∘′_; _$_)
 
 private
   variable

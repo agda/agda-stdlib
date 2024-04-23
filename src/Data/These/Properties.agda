@@ -9,10 +9,11 @@
 module Data.These.Properties where
 
 open import Data.Product.Base using (_×_; _,_; <_,_>; uncurry)
-open import Data.These.Base
+open import Data.These.Base using (These; this; that; these)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Definitions using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂)
 open import Relation.Nullary.Decidable using (yes; no; map′; _×-dec_)
 
 ------------------------------------------------------------------------

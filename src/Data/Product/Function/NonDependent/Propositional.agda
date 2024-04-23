@@ -12,13 +12,20 @@ module Data.Product.Function.NonDependent.Propositional where
 open import Data.Product.Base using (_×_; map)
 open import Data.Product.Function.NonDependent.Setoid
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
-open import Function
+  using (_×ₛ_; Pointwise-≡↔≡)
+open import Function.Base using (id)
+open import Function.Bundles
+  using (Inverse; _⟶_; _⇔_; _↣_; _↠_; _⤖_; _↩_; _↪_; _↔_)
 open import Function.Properties.Inverse as Inv
+  using (Inverse⇒Equivalence; Inverse⇒Injection; Inverse⇒Surjection;
+         Inverse⇒Bijection)
 open import Function.Related.Propositional
-open import Function.Construct.Composition as Compose
+  using (_∼[_]_; implication; reverseImplication; equivalence; injection;
+         reverseInjection; leftInverse; surjection; bijection)
+import Function.Construct.Composition as Compose
 open import Level using (Level; _⊔_)
 open import Relation.Binary hiding (_⇔_)
-open import Relation.Binary.PropositionalEquality using (setoid)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 private
   variable
@@ -41,7 +48,7 @@ private
 ------------------------------------------------------------------------
 -- Combinators for various function types
 
-infixr 2 _×-⇔_ _×-↣_ _×-↠_ _×-⤖_ _×-↩_ _×-↪_ _×-↔_
+infixr 2 _×-⟶_ _×-⇔_ _×-↣_ _×-↠_ _×-⤖_ _×-↩_ _×-↪_ _×-↔_
 
 _×-⟶_ : A ⟶ B → C ⟶ D → (A × C) ⟶ (B × D)
 _×-⟶_ = liftViaInverse Compose.function Inv.toFunction _×-function_
