@@ -76,4 +76,6 @@ module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
   decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
   decide p∪q [] = inj₁ []
   decide p∪q (x ∷# xs) =
-    [ (λ px → Sum.map (px ∷_) there (decide p∪q xs)) , inj₂ ∘ here ]′ $ p∪q x
+    [ (λ px → Sum.map (px ∷_) there (decide p∪q xs))
+    , inj₂ ∘ here
+    ]′ $ p∪q x
