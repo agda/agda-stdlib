@@ -43,4 +43,4 @@ Env T Γ = All T Γ
 -- A safe lookup function for environments.
 
 lookup : ∀ {Γ σ} {T : Ty → Set} → Env T Γ → Γ ∋ σ → T σ
-lookup ρ i = case Pointer.lookup ρ i of λ where (result refl x) → x
+lookup ρ i with result refl x ← Pointer.lookup ρ i = x

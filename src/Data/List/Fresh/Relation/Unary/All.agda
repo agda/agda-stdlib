@@ -11,7 +11,7 @@ module Data.List.Fresh.Relation.Unary.All where
 open import Level using (Level; _⊔_; Lift)
 open import Data.Product.Base using (_×_; _,_; proj₁; uncurry)
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; _$_)
 open import Relation.Nullary.Decidable as Dec using (Dec; yes; no; _×-dec_)
 open import Relation.Unary  as U
 open import Relation.Binary.Core using (Rel)
@@ -76,4 +76,4 @@ module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
   decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
   decide p∪q [] = inj₁ []
   decide p∪q (x ∷# xs) =
-    [ (λ px → Sum.map (px ∷_) there (decide p∪q xs)) , inj₂ ∘ here ]′ (p∪q x)
+    [ (λ px → Sum.map (px ∷_) there (decide p∪q xs)) , inj₂ ∘ here ]′ $ p∪q x

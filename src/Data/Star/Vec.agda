@@ -58,7 +58,7 @@ _++_ = _◅◅◅_
 -- Safe lookup.
 
 lookup : ∀ {n} → Vec A n → Fin n → A
-lookup xs i = case Pointer.lookup xs i of λ where (result _ x) → x
+lookup xs i with result _ x ← Pointer.lookup xs i = x
 
 ------------------------------------------------------------------------
 -- Conversions

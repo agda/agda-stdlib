@@ -164,7 +164,7 @@ module _ {P : Pred A p} (P? : U.Decidable P) where
   takeWhile (cons a as ps) =
     if does (P? a) then cons a (takeWhile as) (takeWhile-# a as ps) else []
 
-  -- this 'with' is crucial to get things to reduce enough
+  -- this 'with' is needed to cause reduction in the type of 'takeWhile (a ∷# as)'
   takeWhile-# a []        _        = _
   takeWhile-# a (x ∷# xs) (p , ps) with does (P? x)
   ... | true  = p , takeWhile-# a xs ps
@@ -182,7 +182,7 @@ module _ {P : Pred A p} (P? : U.Decidable P) where
     let l = filter as in
     if does (P? a) then cons a l (filter-# a as ps) else l
 
-  -- this 'with' is also crucial
+  -- this 'with' is needed to cause reduction in the type of 'filter-# a (x ∷# xs)'
   filter-# a []        _        = _
   filter-# a (x ∷# xs) (p , ps) with does (P? x)
   ... | true  = p , filter-# a xs ps

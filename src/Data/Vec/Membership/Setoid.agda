@@ -51,8 +51,8 @@ _∷=_ {xs = xs} x∈xs v = xs Vec.[ index x∈xs ]≔ v
 module _ {p} {P : Pred A p} where
 
   find : ∀ {n} {xs : Vec A n} → Any P xs → ∃ λ x → x ∈ xs × P x
-  find (here px)   = (_ , here refl , px)
-  find (there pxs) = let (x , x∈xs , px) = find pxs in (x , there x∈xs , px)
+  find (here px)   = _ , here refl , px
+  find (there pxs) = let x , x∈xs , px = find pxs in x , there x∈xs , px
 
   lose : P Respects _≈_ → ∀ {x n} {xs : Vec A n} → x ∈ xs → P x → Any P xs
   lose resp x∈xs px = Any.map (flip resp px) x∈xs
