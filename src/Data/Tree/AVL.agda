@@ -92,13 +92,13 @@ module _ {v} {V : Value v} where
 
   headTail : Tree V → Maybe (K& V × Tree V)
   headTail (tree (Indexed.leaf _)) = nothing
-  headTail (tree {h = suc _} t)    with Indexed.headTail t
-  ... | (k , _ , _ , t′) = just (k , tree (Indexed.castˡ ⊥⁺<[ _ ] t′))
+  headTail (tree {h = suc _} t) with (k , _ , _ , t′) ← Indexed.headTail t
+    = just (k , tree (Indexed.castˡ ⊥⁺<[ _ ] t′))
 
   initLast : Tree V → Maybe (Tree V × K& V)
   initLast (tree (Indexed.leaf _)) = nothing
-  initLast (tree {h = suc _} t)    with Indexed.initLast t
-  ... | (k , _ , _ , t′) = just (tree (Indexed.castʳ t′ [ _ ]<⊤⁺) , k)
+  initLast (tree {h = suc _} t) with (k , _ , _ , t′) ← Indexed.initLast t
+    = just (tree (Indexed.castʳ t′ [ _ ]<⊤⁺) , k)
 
   foldr : (∀ {k} → Val k → A → A) → A → Tree V → A
   foldr cons nil (tree t) = Indexed.foldr cons nil t
