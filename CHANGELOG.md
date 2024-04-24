@@ -16,6 +16,9 @@ Bug-fixes
 * Module `Data.List.Relation.Ternary.Appending.Setoid.Properties` no longer
   exports the `Setoid` module under the alias `S`.
 
+* Remove unbound parameter from `Data.List.Properties.length-alignWith`,
+  `alignWith-map` and `map-alignWith`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -26,9 +29,16 @@ Non-backwards compatible changes
   parametrized by _raw_ bundles, and as such take a proof of transitivity.
 * The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
   parametrized by _raw_ bundles, and as such take a proof of reflexivity.
+* The module `IO.Primitive` was moved to `IO.Primitive.Core`.
 
 Other major improvements
 ------------------------
+
+Minor improvements
+------------------
+The size of the dependency graph for many modules has been
+reduced. This may lead to speed ups for first-time loading of some
+modules.
 
 Deprecated modules
 ------------------
@@ -49,15 +59,27 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Algebra.Structures.Biased`:
+  ```agda
+  IsRing*  ↦  Algebra.Structures.IsRing
+  isRing*  ↦  Algebra.Structures.isRing
+  ```
+
 * In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
   split  ↦  ↭-split
   ```
   with a more informative type (see below).
+  ```
 
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
+  ```
+
+* In `IO.Base`:
+  ```agda
+  untilRight  ↦  untilInj₂
   ```
 
 New modules
@@ -129,6 +151,25 @@ New modules
   Data.Container.Indexed.Relation.Binary.Pointwise
   Data.Container.Indexed.Relation.Binary.Pointwise.Properties
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* New IO primitives to handle buffering
+  ```agda
+  IO.Primitive.Handle
+  IO.Handle
+  ```
+
+* `System.Random` bindings:
+  ```agda
+  System.Random.Primitive
+  System.Random
+  ```
+
+* Show modules:
+  ```agda
+  Data.List.Show
+  Data.Vec.Show
+  Data.Vec.Bounded.Show
   ```
 
 Additions to existing modules
@@ -255,6 +296,12 @@ Additions to existing modules
   x \\ y = (x ⁻¹) ∙ y
   ```
 
+* In `Algebra.Structures.IsCancellativeCommutativeSemiring` add the
+  extra property as an exposed definition:
+  ```agda
+    *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  ```
+
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
@@ -263,6 +310,11 @@ Additions to existing modules
 * In `Data.Fin.Properties`:
   ```agda
   nonZeroIndex : Fin n → ℕ.NonZero n
+  ```
+
+* In `Data.Float.Base`:
+  ```agda
+  _≤_ : Rel Float _
   ```
 
 * In `Data.Integer.Divisibility`: introduce `divides` as an explicit pattern synonym
@@ -279,6 +331,7 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
+  length-catMaybes      : length (catMaybes xs) ≤ length xs
   applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
   applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
@@ -287,6 +340,37 @@ Additions to existing modules
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
   reverse-downFrom      : reverse (downFrom n) ≡ upTo n
+  mapMaybe-map          : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
+  map-mapMaybe          : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
+  align-map             : align (map f xs) (map g ys) ≡ map (map f g) (align xs ys)
+  zip-map               : zip (map f xs) (map g ys) ≡ map (map f g) (zip xs ys)
+  unzipWith-map         : unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
+  map-unzipWith         : map (map g) (map h) ∘ unzipWith f ≗ unzipWith (map g h ∘ f)
+  unzip-map             : unzip ∘ map (map f g) ≗ map (map f) (map g) ∘ unzip
+  splitAt-map           : splitAt n ∘ map f ≗ map (map f) (map f) ∘ splitAt n
+  uncons-map            : uncons ∘ map f ≗ map (map f (map f)) ∘ uncons
+  last-map              : last ∘ map f ≗ map f ∘ last
+  tail-map              : tail ∘ map f ≗ map (map f) ∘ tail
+  mapMaybe-cong         : f ≗ g → mapMaybe f ≗ mapMaybe g
+  zipWith-cong          : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
+  unzipWith-cong        : f ≗ g → unzipWith f ≗ unzipWith g
+  foldl-cong            : (∀ x y → f x y ≡ g x y) → ∀ x → foldl f x ≗ foldl g x
+  alignWith-flip        : alignWith f xs ys ≡ alignWith (f ∘ swap) ys xs
+  alignWith-comm        : f ∘ swap ≗ f → alignWith f xs ys ≡ alignWith f ys xs
+  align-flip            : align xs ys ≡ map swap (align ys xs)
+  zip-flip              : zip xs ys ≡ map swap (zip ys xs)
+  unzipWith-swap        : unzipWith (swap ∘ f) ≗ swap ∘ unzipWith f
+  unzip-swap            : unzip ∘ map swap ≗ swap ∘ unzip
+  take-take             : take n (take m xs) ≡ take (n ⊓ m) xs
+  take-drop             : take n (drop m xs) ≡ drop m (take (m + n) xs)
+  zip-unzip             : uncurry′ zip ∘ unzip ≗ id
+  unzipWith-zipWith     : f ∘ uncurry′ g ≗ id → length xs ≡ length ys → unzipWith f (zipWith g xs ys) ≡ (xs , ys)
+  unzip-zip             : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
+  mapMaybe-++           : mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
+  unzipWith-++          : unzipWith f (xs ++ ys) ≡ zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
+  catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
+  catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
+  map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
   ```
 
 * In `Data.List.Relation.Binary.Permutation.Homogeneous`:
@@ -423,10 +507,37 @@ Additions to existing modules
 * Added new functions in `Data.String.Base`:
   ```agda
   map : (Char → Char) → String → String
+  between : String → String → String → String
+  ```
+
+* Re-exported new types and functions in `IO`:
+  ```agda
+  BufferMode : Set
+  noBuffering : BufferMode
+  lineBuffering : BufferMode
+  blockBuffering : Maybe ℕ → BufferMode
+  Handle : Set
+  stdin : Handle
+  stdout : Handle
+  stderr : Handle
+  hSetBuffering : Handle → BufferMode → IO ⊤
+  hGetBuffering : Handle → IO BufferMode
+  hFlush : Handle → IO ⊤
+  ```
+
+* Added new functions in `IO.Base`:
+  ```agda
+  whenInj₂ : E ⊎ A → (A → IO ⊤) → IO ⊤
+  forever : IO ⊤ → IO ⊤
+  ```
+
+* In `Data.Word.Base`:
+  ```agda
+  _≤_ : Rel Word64 zero
   ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
-  ```
+  ```agda
   transitive⁻ : Transitive _∼_ → TransClosure _∼_ ⇒ _∼_
   ```
 
@@ -472,5 +583,7 @@ Additions to existing modules
   WeaklyDecidable : Pred A ℓ → Set _
   ```
 
-* `Tactic.Cong` now provides a marker function, `⌞_⌟`, for user-guided
-  anti-unification. See README.Tactic.Cong for details.
+* Enhancements to `Tactic.Cong` - see `README.Tactic.Cong` for details.
+  - Provide a marker function, `⌞_⌟`, for user-guided anti-unification.
+  - Improved support for equalities between terms with instance arguments,
+    such as terms that contain `_/_` or `_%_`.

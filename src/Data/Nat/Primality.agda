@@ -23,7 +23,7 @@ open import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (¬_; contradiction; contradiction₂)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; cong)
 
 private

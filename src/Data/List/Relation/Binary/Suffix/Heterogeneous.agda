@@ -47,8 +47,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   toView : ∀ {as bs} → Suffix R as bs → SuffixView R as bs
   toView (here rs) = [] ++ rs
-  toView (there {c} suf) with toView suf
-  ... | cs ++ rs = (c ∷ cs) ++ rs
+  toView (there {c} suf) with cs ++ rs ← toView suf = (c ∷ cs) ++ rs
 
   fromView : ∀ {as bs} → SuffixView R as bs → Suffix R as bs
   fromView ([]       ++ rs) = here rs

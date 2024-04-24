@@ -53,8 +53,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   toView : ∀ {as bs} → Prefix R as bs → PrefixView R as bs
   toView []       = [] ++ _
-  toView (r ∷ rs) with toView rs
-  ... | rs′ ++ ds = (r ∷ rs′) ++ ds
+  toView (r ∷ rs) with rs′ ++ ds ← toView rs = (r ∷ rs′) ++ ds
 
   fromView : ∀ {as bs} → PrefixView R as bs → Prefix R as bs
   fromView ([]       ++ ds) = []

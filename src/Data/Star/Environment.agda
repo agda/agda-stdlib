@@ -12,10 +12,11 @@ open import Level using (_⊔_)
 open import Data.Star.List using (List)
 open import Data.Star.Decoration using (All)
 open import Data.Star.Pointer as Pointer using (Any; this; that; result)
-open import Data.Unit.Polymorphic using (⊤)
-open import Function.Base using (const)
-open import Relation.Binary.PropositionalEquality
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Function.Base using (const; case_of_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+  using (_▻_)
 
 -- Contexts, listing the types of all the elements in an environment.
 
@@ -43,5 +44,4 @@ Env T Γ = All T Γ
 -- A safe lookup function for environments.
 
 lookup : ∀ {Γ σ} {T : Ty → Set} → Env T Γ → Γ ∋ σ → T σ
-lookup ρ i with Pointer.lookup ρ i
-... | result refl x = x
+lookup ρ i with result refl x ← Pointer.lookup ρ i = x

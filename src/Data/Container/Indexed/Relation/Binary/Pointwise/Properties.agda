@@ -8,13 +8,15 @@
 
 module Data.Container.Indexed.Relation.Binary.Pointwise.Properties where
 
-open import Axiom.Extensionality.Propositional
-open import Data.Container.Indexed.Core
+open import Axiom.Extensionality.Propositional using (Extensionality)
+open import Data.Container.Indexed.Core using (Container; ⟦_⟧)
 open import Data.Container.Indexed.Relation.Binary.Pointwise
+  using (Pointwise)
 open import Data.Product.Base using (_,_; Σ-syntax; -,_)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; subst; cong)
 
 private variable
@@ -28,13 +30,13 @@ module _
   where
 
   refl : (∀ i → Reflexive (R i)) → Reflexive (Pointwise C R o)
-  refl R-refl = P.refl , λ p → R-refl _
+  refl R-refl = ≡.refl , λ p → R-refl _
 
   sym : (∀ i → Symmetric (R i)) → Symmetric (Pointwise C R o)
-  sym R-sym (P.refl , f) = P.refl , λ p → R-sym _ (f p)
+  sym R-sym (≡.refl , f) = ≡.refl , λ p → R-sym _ (f p)
 
   trans : (∀ i → Transitive (R i)) → Transitive (Pointwise C R o)
-  trans R-trans (P.refl , f) (P.refl , g) = P.refl , λ p → R-trans _ (f p) (g p)
+  trans R-trans (≡.refl , f) (≡.refl , g) = ≡.refl , λ p → R-trans _ (f p) (g p)
 
 -- If propositional equality is extensional, then `Eq _≡_` and `_≡_` coincide.
 Eq⇒≡ : {C : Container I O ℓˢ ℓᵖ} {X : I → Set ℓˣ} {R : (i : I) → Rel (X i) ℓᵉ}
@@ -42,4 +44,4 @@ Eq⇒≡ : {C : Container I O ℓˢ ℓᵖ} {X : I → Set ℓˣ} {R : (i : I) �
        Extensionality ℓᵖ ℓˣ →
        Pointwise C (λ (i : I) → _≡_ {A = X i}) o xs ys →
        xs ≡ ys
-Eq⇒≡ ext (P.refl , f≈f′) = cong -,_ (ext f≈f′)
+Eq⇒≡ ext (≡.refl , f≈f′) = cong -,_ (ext f≈f′)
