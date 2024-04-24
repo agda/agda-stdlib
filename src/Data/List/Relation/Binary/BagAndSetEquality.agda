@@ -27,9 +27,9 @@ open import Data.List.Membership.Propositional.Properties
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
-  using (_↭_; ↭-sym; refl; module PermutationReasoning)
+  using (_↭_; ↭-refl; ↭-sym; ↭-prep; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-  using (∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ↭-sym-involutive; shift; ++-comm)
+  using (∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ∈-resp-[σ∘σ⁻¹]; shift; ++-comm)
 open import Data.Product.Base as Prod using (∃; _,_; proj₁; proj₂; _×_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
