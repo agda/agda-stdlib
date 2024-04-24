@@ -236,6 +236,11 @@ Additions to existing modules
     record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
     record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
 
+* In `Algebra.Properties.AbelianGroup`:
+  ```
+  ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
+  ```
+
 * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
@@ -253,6 +258,8 @@ Additions to existing modules
   ⁻¹-selfInverse  : SelfInverse _⁻¹
   \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
   comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
+  ⁻¹-anti-homo-// : (x // y) ⁻¹ ≈ y // x
+  ⁻¹-anti-homo-\\ : (x \\ y) ⁻¹ ≈ y \\ x
   ```
 
 * In `Algebra.Properties.Loop`:
