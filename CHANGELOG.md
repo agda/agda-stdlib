@@ -196,6 +196,11 @@ Additions to existing modules
     record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
     record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
 
+* In `Algebra.Properties.AbelianGroup`:
+  ```
+  ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
+  ```
+
 * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
