@@ -10,10 +10,12 @@
 module Data.Product.Function.NonDependent.Setoid where
 
 open import Data.Product.Base as Product
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Level using (Level)
-open import Relation.Binary
-open import Function
+open import Relation.Binary.Bundles using (Setoid)
+open import Function.Bundles
+  using (Func; Equivalence; Injection; Surjection; Bijection; LeftInverse;
+         RightInverse; Inverse)
 
 private
   variable

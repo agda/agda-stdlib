@@ -3,12 +3,13 @@
 module README.Tactic.Cong where
 
 open import Data.Nat
+open import Data.Nat.DivMod
 open import Data.Nat.Properties
 
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; module ≡-Reasoning)
 
-open import Tactic.Cong using (cong!)
+open import Tactic.Cong using (cong! ; ⌞_⌟)
 
 ----------------------------------------------------------------------
 -- Usage
@@ -56,7 +57,7 @@ succinct-example m n eq =
   ∎
 
 ----------------------------------------------------------------------
--- Limitations
+-- Explicit markings
 ----------------------------------------------------------------------
 
 -- The 'cong!' tactic can handle simple cases, but will
@@ -68,6 +69,29 @@ succinct-example m n eq =
 -- to deduce where to generalize. When presented with two sides
 -- of an equality like 'm + n ≡ n + m', it will anti-unify to
 -- 'ϕ + ϕ', which is too specific.
+--
+-- In cases like these, you may explicitly mark the subterms to
+-- be generalized by wrapping them in the marker function, ⌞_⌟.
+
+marker-example₁ : ∀ m n o p → m + n + (o + p) ≡ n + m + (p + o)
+marker-example₁ m n o p =
+  let open ≡-Reasoning in
+  begin
+    ⌞ m + n ⌟ + (o + p)
+  ≡⟨ cong! (+-comm m n) ⟩
+    n + m + ⌞ o + p ⌟
+  ≡⟨ cong! (+-comm p o) ⟨
+    n + m + (p + o)
+  ∎
+
+marker-example₂ : ∀ m n → m + n + (m + n) ≡ n + m + (n + m)
+marker-example₂ m n =
+  let open ≤-Reasoning in
+  begin-equality
+    ⌞ m + n ⌟ + ⌞ m + n ⌟
+  ≡⟨ cong! (+-comm m n) ⟩
+    n + m + (n + m)
+  ∎
 
 ----------------------------------------------------------------------
 -- Unit Tests
@@ -137,4 +161,36 @@ module EquationalReasoningTests where
       suc (n + n)
     ≤⟨ n≤1+n _ ⟩
       suc (suc (n + n))
+    ∎
+
+module MetaTests where
+
+  test₁ : ∀ m n o → .⦃ _ : NonZero o ⦄ → (m + n) / o ≡ (n + m) / o
+  test₁ m n o =
+    let open ≤-Reasoning in
+    begin-equality
+      ⌞ m + n ⌟ / o
+     ≡⟨ cong! (+-comm m n) ⟩
+      (n + m) / o
+    ∎
+
+  test₂ : ∀ m n o p q r → .⦃ _ : NonZero o ⦄ → .⦃ _ : NonZero p ⦄ →
+          .⦃ _ : NonZero q ⦄ → p ≡ q ^ r → (m + n) % o % p ≡ (n + m) % o % p
+  test₂ m n o p q r eq =
+    let
+      open ≤-Reasoning
+      instance q^r≢0 = m^n≢0 q r
+    in
+    begin-equality
+      (m + n) % o % p
+     ≡⟨ %-congʳ eq ⟩
+      ⌞ m + n ⌟ % o % q ^ r
+     ≡⟨ cong! (+-comm m n) ⟩
+      ⌞ n + m ⌟ % o % q ^ r
+     ≡⟨ cong! (+-comm m n) ⟨
+      ⌞ m + n ⌟ % o % q ^ r
+     ≡⟨ cong! (+-comm m n) ⟩
+      (n + m) % o % q ^ r
+     ≡⟨ %-congʳ eq ⟨
+      (n + m) % o % p
     ∎

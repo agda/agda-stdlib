@@ -9,7 +9,7 @@
 module Data.String where
 
 open import Data.Bool.Base using (if_then_else_)
-open import Data.Char as Char using (Char)
+open import Data.Char.Base as Char using (Char)
 open import Function.Base using (_∘_; _$_)
 open import Data.Nat.Base as ℕ using (ℕ)
 import Data.Nat.Properties as ℕ

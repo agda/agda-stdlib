@@ -8,15 +8,16 @@
 
 module Data.Star.Vec where
 
-open import Data.Star.Nat
+open import Data.Star.Nat using (ℕ; zero; suc; 1#; _+_; length)
 open import Data.Star.Fin using (Fin)
-open import Data.Star.Decoration
-open import Data.Star.Pointer as Pointer hiding (lookup)
+open import Data.Star.Decoration using (All; ↦; _◅◅◅_; decoration)
+open import Data.Star.Pointer as Pointer using (result)
 open import Data.Star.List using (List)
 open import Level using (Level)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Function.Base
-open import Data.Unit
+  using (ε; _◅_; gmap)
+open import Function.Base using (const; case_of_)
+open import Data.Unit.Base using (tt)
 
 private
   variable
@@ -57,8 +58,7 @@ _++_ = _◅◅◅_
 -- Safe lookup.
 
 lookup : ∀ {n} → Vec A n → Fin n → A
-lookup xs i with Pointer.lookup xs i
-... | result _ x = x
+lookup xs i with result _ x ← Pointer.lookup xs i = x
 
 ------------------------------------------------------------------------
 -- Conversions

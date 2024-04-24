@@ -8,10 +8,10 @@
 
 module Data.Container.Core where
 
-open import Level
+open import Level using (Level; _⊔_; suc)
 open import Data.Product.Base as Product using (Σ-syntax)
-open import Function.Base
-open import Function using (Inverse; _↔_)
+open import Function.Base using (_∘_; _∘′_)
+open import Function.Bundles using (Inverse; _↔_)
 open import Relation.Unary using (Pred; _⊆_)
 
 -- Definition of Containers

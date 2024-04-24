@@ -42,6 +42,8 @@ Pred A ℓ = A → Set ℓ
 -- Special sets
 
 -- The empty set.
+-- Explicitly not level polymorphic as this often causes unsolved metas;
+-- see `Relation.Unary.Polymorphic` for a level-polymorphic version.
 
 ∅ : Pred A 0ℓ
 ∅ = λ _ → ⊥
@@ -52,6 +54,7 @@ Pred A ℓ = A → Set ℓ
 ｛ x ｝ = x ≡_
 
 -- The universal set.
+-- Explicitly not level polymorphic (see comments for `∅` for more details)
 
 U : Pred A 0ℓ
 U = λ _ → ⊤

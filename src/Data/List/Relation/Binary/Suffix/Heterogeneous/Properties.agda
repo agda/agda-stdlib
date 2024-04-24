@@ -40,8 +40,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   fromPrefix : ∀ {as bs} → Prefix R as bs →
                Suffix R (reverse as) (reverse bs)
-  fromPrefix {as} {bs} p with Prefix.toView p
-  ... | Prefix._++_ {cs} rs ds =
+  fromPrefix {as} {bs} p with Prefix._++_ {cs} rs ds ← Prefix.toView p =
     subst (Suffix R (reverse as))
       (sym (List.reverse-++ cs ds))
       (Suffix.fromView (reverse ds Suffix.++ Pw.reverse⁺ rs))
@@ -56,8 +55,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   toPrefix-rev : ∀ {as bs} → Suffix R as bs →
                  Prefix R (reverse as) (reverse bs)
-  toPrefix-rev {as} {bs} s with Suffix.toView s
-  ... | Suffix._++_ cs {ds} rs =
+  toPrefix-rev {as} {bs} s with Suffix._++_ cs {ds} rs ← Suffix.toView s =
     subst (Prefix R (reverse as))
       (sym (List.reverse-++ cs ds))
       (Prefix.fromView (Pw.reverse⁺ rs Prefix.++ reverse cs))

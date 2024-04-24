@@ -14,7 +14,7 @@ module Data.Product.Nary.NonDependent where
 -- behind the design decisions.
 ------------------------------------------------------------------------
 
-open import Level as L using (Level; _⊔_; Lift; 0ℓ)
+open import Level using (Level)
 open import Agda.Builtin.Unit
 open import Data.Product.Base as Prod
 import Data.Product.Properties as Prodₚ

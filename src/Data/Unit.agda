@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The unit type
+-- The unit type, Level-monomorphic version
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

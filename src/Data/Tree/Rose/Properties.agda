@@ -11,12 +11,15 @@ module Data.Tree.Rose.Properties where
 open import Level using (Level)
 open import Size
 open import Data.List.Base as List using (List)
-open import Data.List.Extrema.Nat
+open import Data.List.Extrema.Nat using (max)
 import Data.List.Properties as List
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Tree.Rose
-open import Function.Base
-open import Relation.Binary.PropositionalEquality
+open import Data.Tree.Rose using (Rose; node; map; depth; foldr)
+open import Function.Base using (_∘′_; _$_; _∘_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≗_; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open ≡-Reasoning
 
 private

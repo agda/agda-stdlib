@@ -13,15 +13,14 @@ open import Algebra
 open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
-open import Data.Empty using (⊥-elim)
-open import Data.Empty.Polymorphic using (⊥) renaming (⊥-elim to ⊥ₚ-elim)
+open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product.Base as Product
   using (_×_; Σ; curry; uncurry; _,_; -,_; <_,_>; proj₁; proj₂; ∃₂; ∃)
 open import Data.Product.Function.NonDependent.Propositional
 open import Data.Sum.Base as Sum
 open import Data.Sum.Properties using (swap-involutive)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Unit.Polymorphic using (⊤)
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Level using (Level; Lift; 0ℓ; suc)
 open import Function.Base
 open import Function.Bundles
@@ -32,7 +31,7 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ)
+open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ; contradiction)
 import Relation.Nullary.Indexed as I
 open import Relation.Nullary.Decidable using (True)
 
@@ -68,10 +67,10 @@ private
 -- × has ⊥ has its zero
 
 ×-zeroˡ : ∀ ℓ → LeftZero {ℓ = ℓ} _↔_ ⊥ _×_
-×-zeroˡ ℓ A = mk↔ₛ′ proj₁ < id , ⊥ₚ-elim > (λ _ → refl) (λ { () })
+×-zeroˡ ℓ A = mk↔ₛ′ proj₁ < id , ⊥-elim > (λ _ → refl) (λ { () })
 
 ×-zeroʳ : ∀ ℓ → RightZero {ℓ = ℓ} _↔_ ⊥ _×_
-×-zeroʳ ℓ A = mk↔ₛ′ proj₂ < ⊥ₚ-elim , id > (λ _ → refl) (λ { () })
+×-zeroʳ ℓ A = mk↔ₛ′ proj₂ < ⊥-elim , id > (λ _ → refl) (λ { () })
 
 ×-zero : ∀ ℓ → Zero _↔_ ⊥ _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
@@ -332,4 +331,4 @@ True↔ : ∀ {p} {P : Set p}
 True↔ ( true because  [p]) irr =
   mk↔ₛ′ (λ _ → invert [p]) (λ _ → _) (irr _) (λ _ → refl)
 True↔ (false because ofⁿ ¬p) _ =
-  mk↔ₛ′ (λ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) (λ ())
+  mk↔ₛ′ (λ()) (invert (ofⁿ ¬p)) (λ x → flip contradiction ¬p x) (λ ())
