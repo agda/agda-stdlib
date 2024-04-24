@@ -29,7 +29,7 @@ module _ {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Se
      (∀ {x} → (y : P x) → h y ≡ i y) →
      (v : Σ A P) → dep-map f h v ≡ dep-map g i v
   dep-map-cong f≗g h≗i (x , y) = cong₂ _,_ (f≗g x) (h≗i y)
-  
+
 ------------------------------------------------------------------------
 -- dep-map′
 
