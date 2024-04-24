@@ -8,9 +8,8 @@
 
 module Data.Product where
 
-open import Function.Base
-open import Level
-open import Relation.Nullary.Negation.Core
+open import Level using (Level; _⊔_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable
