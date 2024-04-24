@@ -128,11 +128,19 @@ inverseʳ-unique x y eq = trans (y≈x\\z x y ε eq) (identityʳ _)
 
 ⁻¹-anti-homo-// : ∀ x y → (x // y) ⁻¹ ≈ y // x
 ⁻¹-anti-homo-// x y = begin
-  (x // y) ⁻¹       ≡⟨⟩
+  (x // y) ⁻¹      ≡⟨⟩
   (x ∙ y ⁻¹) ⁻¹    ≈⟨ ⁻¹-anti-homo-∙ x (y ⁻¹) ⟩
   (y ⁻¹) ⁻¹ ∙ x ⁻¹ ≈⟨ ∙-congʳ (⁻¹-involutive y) ⟩
   y ∙ x ⁻¹         ≡⟨⟩
   y // x ∎
+
+⁻¹-anti-homo-\\ : ∀ x y → (x \\ y) ⁻¹ ≈ y \\ x
+⁻¹-anti-homo-\\ x y = begin
+  (x \\ y) ⁻¹      ≡⟨⟩
+  (x ⁻¹ ∙ y) ⁻¹    ≈⟨ ⁻¹-anti-homo-∙ (x ⁻¹) y ⟩
+  y ⁻¹ ∙ (x ⁻¹) ⁻¹ ≈⟨ ∙-congˡ (⁻¹-involutive x) ⟩
+  y ⁻¹ ∙ x         ≡⟨⟩
+  y \\ x ∎
 
 \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
 \\≗flip-//⇒comm \\≗//ᵒ x y = begin
