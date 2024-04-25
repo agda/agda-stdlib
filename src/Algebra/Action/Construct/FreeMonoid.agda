@@ -8,7 +8,7 @@
 
 open import Relation.Binary.Bundles using (Setoid)
 
-module Algebra.Action.Construct.Free
+module Algebra.Action.Construct.FreeMonoid
   {a c r ℓ} (M : Setoid c ℓ) (S : Setoid a r)
   where
 
@@ -63,27 +63,27 @@ module FreeMonoidAction where
 
   module _ (left : SetoidAction.Left M S) where
 
-    private listAction = leftListAction left
+    private listAction = ListAction.leftAction left
 
     open SetoidAction.Left left
     open IsLeftAction isLeftAction
 
     leftAction : Left monoid S listAction
     leftAction = record
-      { ∙-act = λ ms ns x → ⋆-act-cong ms ≋-refl A.refl
+      { ▷-act = λ ms _ _ → ▷⋆-act-cong ms ≋-refl A.refl
       ; ε-act = λ _ → A.refl
       }
 
   module _ (right : SetoidAction.Right M S) where
 
-    private listAction = rightListAction right
+    private listAction = ListAction.rightAction right
 
     open SetoidAction.Right right
     open IsRightAction isRightAction
 
     rightAction : Right monoid S listAction
     rightAction = record
-      { ∙-act = λ x ms ns → ⋆-act-cong A.refl ms ≋-refl
+      { ◁-act = λ _ ms _ → ◁⋆-act-cong A.refl ms ≋-refl
       ; ε-act = λ _ → A.refl
       }
 
