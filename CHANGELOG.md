@@ -62,9 +62,9 @@ New modules
   Algebra.Action.Bundles
   ```
 
-* The free `List` actions over a `SetoidAction`:
+* The free `Monoid` actions over a `SetoidAction`:
   ```
-  Algebra.Action.Construct.Free
+  Algebra.Action.Construct.FreeMonoid
   ```
 
 * The left- and right- regular actions (of a `Monoid`) over itself:
