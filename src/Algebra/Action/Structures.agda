@@ -31,58 +31,58 @@ private
 -- Basic definitions: fix notation
 
 record IsLeftAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
-  infixr 5 _◁_ _◁⋆_ _◁⁺_
+  infixr 5 _▷_ _▷⋆_ _▷⁺_
 
   field
-    _◁_  : M → A → A
-    ◁-cong : m ≈ᴹ n → x ≈ y → (m ◁ x) ≈ (n ◁ y)
+    _▷_  : M → A → A
+    ▷-cong : m ≈ᴹ n → x ≈ y → (m ▷ x) ≈ (n ▷ y)
 
 -- derived form: iterated action, satisfying congruence
 
-  _◁⋆_ : List M → A → A
-  ms ◁⋆ a = foldr _◁_ a ms
+  _▷⋆_ : List M → A → A
+  ms ▷⋆ a = foldr _▷_ a ms
 
-  _◁⁺_ : List⁺ M → A → A
-  (m ∷ ms) ◁⁺ a = m ◁ ms ◁⋆ a
+  _▷⁺_ : List⁺ M → A → A
+  (m ∷ ms) ▷⁺ a = m ▷ ms ▷⋆ a
 
-  ◁⋆-cong : Pointwise _≈ᴹ_ ms ns → x ≈ y → (ms ◁⋆ x) ≈ (ns ◁⋆ y)
-  ◁⋆-cong []            x≈y = x≈y
-  ◁⋆-cong (m≈n ∷ ms≋ns) x≈y = ◁-cong m≈n (◁⋆-cong ms≋ns x≈y)
+  ▷⋆-cong : Pointwise _≈ᴹ_ ms ns → x ≈ y → (ms ▷⋆ x) ≈ (ns ▷⋆ y)
+  ▷⋆-cong []            x≈y = x≈y
+  ▷⋆-cong (m≈n ∷ ms≋ns) x≈y = ▷-cong m≈n (▷⋆-cong ms≋ns x≈y)
 {-
-  ◁⁺-cong : Pointwise _≈ᴹ_ ms ns → x ≈ y → (ms ◁⁺ x) ≈ (ns ◁⁺ y)
-  ◁⁺-cong (m≈n ∷ ms≋ns) x≈y = ◁-cong m≈n (◁⋆-cong ms≋ns x≈y)
+  ▷⁺-cong : Pointwise _≈ᴹ_ ms ns → x ≈ y → (ms ▷⁺ x) ≈ (ns ▷⁺ y)
+  ▷⁺-cong (m≈n ∷ ms≋ns) x≈y = ▷-cong m≈n (▷⋆-cong ms≋ns x≈y)
 -}
-  ◁⋆-act-cong : ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
-                x ≈ y → (ps ◁⋆ x) ≈ (ms ◁⋆ ns ◁⋆ y)
-  ◁⋆-act-cong []       ps≋ns             x≈y = ◁⋆-cong ps≋ns x≈y
-  ◁⋆-act-cong (m ∷ ms) (p≈m ∷ ps≋ms++ns) x≈y = ◁-cong p≈m (◁⋆-act-cong ms ps≋ms++ns x≈y)
+  ▷⋆-act-cong : ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
+                x ≈ y → (ps ▷⋆ x) ≈ (ms ▷⋆ ns ▷⋆ y)
+  ▷⋆-act-cong []       ps≋ns             x≈y = ▷⋆-cong ps≋ns x≈y
+  ▷⋆-act-cong (m ∷ ms) (p≈m ∷ ps≋ms++ns) x≈y = ▷-cong p≈m (▷⋆-act-cong ms ps≋ms++ns x≈y)
 
-  []-act-cong : x ≈ y → ([] ◁⋆ x) ≈ y
+  []-act-cong : x ≈ y → ([] ▷⋆ x) ≈ y
   []-act-cong = id
 
 record IsRightAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
-  infixl 5 _▷_ _▷⋆_ _▷⁺_
+  infixl 5 _◁_ _◁⋆_ _◁⁺_
 
   field
-    _▷_  : A → M → A
-    ▷-cong : x ≈ y → m ≈ᴹ n → (x ▷ m) ≈ (y ▷ n)
+    _◁_  : A → M → A
+    ◁-cong : x ≈ y → m ≈ᴹ n → (x ◁ m) ≈ (y ◁ n)
 
 -- derived form: iterated action, satisfying congruence
 
-  _▷⋆_ : A → List M → A
-  a ▷⋆ ms = foldl _▷_ a ms
+  _◁⋆_ : A → List M → A
+  a ◁⋆ ms = foldl _◁_ a ms
 
-  _▷⁺_ : A → List⁺ M → A
-  a ▷⁺ (m ∷ ms) = a ▷ m ▷⋆ ms
+  _◁⁺_ : A → List⁺ M → A
+  a ◁⁺ (m ∷ ms) = a ◁ m ◁⋆ ms
 
-  ▷⋆-cong : x ≈ y → Pointwise _≈ᴹ_ ms ns → (x ▷⋆ ms) ≈ (y ▷⋆ ns)
-  ▷⋆-cong x≈y []            = x≈y
-  ▷⋆-cong x≈y (m≈n ∷ ms≋ns) = ▷⋆-cong (▷-cong x≈y m≈n) ms≋ns
+  ◁⋆-cong : x ≈ y → Pointwise _≈ᴹ_ ms ns → (x ◁⋆ ms) ≈ (y ◁⋆ ns)
+  ◁⋆-cong x≈y []            = x≈y
+  ◁⋆-cong x≈y (m≈n ∷ ms≋ns) = ◁⋆-cong (◁-cong x≈y m≈n) ms≋ns
 
-  ▷⋆-act-cong : x ≈ y → ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
-               (x ▷⋆ ps) ≈ (y ▷⋆ ms ▷⋆ ns)
-  ▷⋆-act-cong x≈y []       ps≋ns             = ▷⋆-cong x≈y ps≋ns
-  ▷⋆-act-cong x≈y (m ∷ ms) (p≈m ∷ ps≋ms++ns) = ▷⋆-act-cong (▷-cong x≈y p≈m) ms ps≋ms++ns
+  ◁⋆-act-cong : x ≈ y → ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
+               (x ◁⋆ ps) ≈ (y ◁⋆ ms ◁⋆ ns)
+  ◁⋆-act-cong x≈y []       ps≋ns             = ◁⋆-cong x≈y ps≋ns
+  ◁⋆-act-cong x≈y (m ∷ ms) (p≈m ∷ ps≋ms++ns) = ◁⋆-act-cong (◁-cong x≈y p≈m) ms ps≋ms++ns
 
-  []-act-cong : x ≈ y → (x ▷⋆ []) ≈ y
+  []-act-cong : x ≈ y → (x ◁⋆ []) ≈ y
   []-act-cong = id
