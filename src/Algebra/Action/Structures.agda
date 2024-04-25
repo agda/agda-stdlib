@@ -48,10 +48,10 @@ record IsLeftAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   ▷⋆-cong : Pointwise _≈ᴹ_ ms ns → x ≈ y → (ms ▷⋆ x) ≈ (ns ▷⋆ y)
   ▷⋆-cong []            x≈y = x≈y
   ▷⋆-cong (m≈n ∷ ms≋ns) x≈y = ▷-cong m≈n (▷⋆-cong ms≋ns x≈y)
-{-
-  ▷⁺-cong : Pointwise _≈ᴹ_ ms ns → x ≈ y → (ms ▷⁺ x) ≈ (ns ▷⁺ y)
-  ▷⁺-cong (m≈n ∷ ms≋ns) x≈y = ▷-cong m≈n (▷⋆-cong ms≋ns x≈y)
--}
+
+  ▷⁺-cong : m ≈ᴹ n → Pointwise _≈ᴹ_ ms ns → x ≈ y → ((m ∷ ms) ▷⁺ x) ≈ ((n ∷ ns) ▷⁺ y)
+  ▷⁺-cong m≈n ms≋ns x≈y = ▷-cong m≈n (▷⋆-cong ms≋ns x≈y)
+
   ▷⋆-act-cong : ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
                 x ≈ y → (ps ▷⋆ x) ≈ (ms ▷⋆ ns ▷⋆ y)
   ▷⋆-act-cong []       ps≋ns             x≈y = ▷⋆-cong ps≋ns x≈y
@@ -78,6 +78,9 @@ record IsRightAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   ◁⋆-cong : x ≈ y → Pointwise _≈ᴹ_ ms ns → (x ◁⋆ ms) ≈ (y ◁⋆ ns)
   ◁⋆-cong x≈y []            = x≈y
   ◁⋆-cong x≈y (m≈n ∷ ms≋ns) = ◁⋆-cong (◁-cong x≈y m≈n) ms≋ns
+
+  ◁⁺-cong : x ≈ y → m ≈ᴹ n → Pointwise _≈ᴹ_ ms ns → (x ◁⁺ (m ∷ ms)) ≈ (y ◁⁺ (n ∷ ns))
+  ◁⁺-cong x≈y m≈n ms≋ns = ◁⋆-cong (◁-cong x≈y m≈n) (ms≋ns)
 
   ◁⋆-act-cong : x ≈ y → ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
                (x ◁⋆ ps) ≈ (y ◁⋆ ms ◁⋆ ns)
