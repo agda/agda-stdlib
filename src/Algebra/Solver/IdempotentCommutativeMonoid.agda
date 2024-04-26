@@ -26,7 +26,7 @@ import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
-open import Relation.Nullary.Decidable.Core as Dec using (Dec; decToMaybe)
+open import Relation.Nullary.Decidable as Dec using (Dec; decToMaybe)
 
 
 module Algebra.Solver.IdempotentCommutativeMonoid
