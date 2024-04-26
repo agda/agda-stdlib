@@ -11,11 +11,14 @@
 
 module Data.Nat.Properties where
 
-open import Axiom.UniquenessOfIdentityProofs
-open import Algebra.Bundles
+open import Axiom.UniquenessOfIdentityProofs using (module Decidable⇒UIP)
+open import Algebra.Bundles using (Magma; Semigroup; CommutativeSemigroup;
+  CommutativeMonoid; Monoid; Semiring; CommutativeSemiring; CommutativeSemiringWithoutOne)
 open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
+  using (comm+cancelˡ⇒cancelʳ; comm∧distrʳ⇒distrˡ; comm∧distrˡ⇒distrʳ)
 open import Algebra.Construct.NaturalChoice.Base
+  using (MinOperator; MaxOperator)
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
@@ -23,11 +26,13 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base
 open import Data.Product.Base using (∃; _×_; _,_)
-open import Data.Sum.Base as Sum
+open import Data.Sum.Base as Sum using (inj₁; inj₂; _⊎_; [_,_]′)
 open import Data.Unit.Base using (tt)
-open import Function.Base
+open import Function.Base using (_∘_; flip; _$_; id; _∘′_; _$′_)
 open import Function.Bundles using (_↣_)
-open import Function.Metric.Nat
+open import Function.Metric.Nat using (TriangleInequality; IsProtoMetric; IsPreMetric;
+  IsQuasiSemiMetric; IsSemiMetric; IsMetric; PreMetric; QuasiSemiMetric;
+  SemiMetric; Metric)
 open import Level using (0ℓ)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.Core

@@ -8,9 +8,10 @@
 
 module Data.Container.Relation.Binary.Pointwise.Properties where
 
-open import Axiom.Extensionality.Propositional
-open import Data.Container.Core
+open import Axiom.Extensionality.Propositional using (Extensionality)
+open import Data.Container.Core using (Container; ⟦_⟧)
 open import Data.Container.Relation.Binary.Pointwise
+  using (Pointwise; _,_)
 open import Data.Product.Base using (_,_; Σ-syntax; -,_)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)

@@ -14,7 +14,7 @@ open import Data.Unit.Polymorphic.Base
 open import Data.String.Base using (String)
 import Data.Unit.Base as Unit0
 open import Function.Base using (_∘_; flip)
-import IO.Primitive as Prim
+import IO.Primitive.Core as Prim
 open import Level
 
 private
@@ -27,6 +27,7 @@ private
 -- Re-exporting the basic type and functions
 
 open import IO.Base public
+open import IO.Handle public
 
 ------------------------------------------------------------------------
 -- Utilities

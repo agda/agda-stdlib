@@ -33,8 +33,10 @@ open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; sym; trans; cong; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable

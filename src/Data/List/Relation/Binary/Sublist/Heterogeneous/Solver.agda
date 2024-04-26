@@ -25,15 +25,16 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
-open import Data.List.Base hiding (lookup)
-open import Data.List.Properties
+open import Data.List.Base using (List; []; _∷_; [_]; _++_)
+open import Data.List.Properties using (++-assoc; ++-identityʳ)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
-  hiding (lookup)
+  using (Sublist; minimum; _∷_)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
-open import Function.Base
+open import Function.Base using (_$_; case_of_)
 
-open import Relation.Binary.PropositionalEquality as ≡
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
 open import Relation.Nullary.Decidable.Core using (decToMaybe)
 
 open ≡.≡-Reasoning

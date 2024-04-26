@@ -13,8 +13,8 @@ module
 
 open import Function.Base using (_∋_)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive using (Star; _◅_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- Equality

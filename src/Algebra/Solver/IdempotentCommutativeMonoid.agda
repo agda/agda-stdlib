@@ -22,11 +22,12 @@ open import Function.Base using (_∘_)
 
 import Relation.Binary.Reasoning.Setoid  as ≈-Reasoning
 import Relation.Binary.Reflection            as Reflection
-import Relation.Nullary.Decidable            as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; decSetoid)
-open Dec using (Dec; decToMaybe)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
+open import Relation.Nullary.Decidable.Core as Dec using (Dec; decToMaybe)
+
 
 module Algebra.Solver.IdempotentCommutativeMonoid
   {m₁ m₂} (M : IdempotentCommutativeMonoid m₁ m₂) where

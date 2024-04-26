@@ -16,7 +16,7 @@ open import Data.Star.List using (List)
 open import Level using (Level)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (ε; _◅_; gmap)
-open import Function.Base using (const)
+open import Function.Base using (const; case_of_)
 open import Data.Unit.Base using (tt)
 
 private
@@ -58,8 +58,7 @@ _++_ = _◅◅◅_
 -- Safe lookup.
 
 lookup : ∀ {n} → Vec A n → Fin n → A
-lookup xs i with Pointer.lookup xs i
-... | result _ x = x
+lookup xs i with result _ x ← Pointer.lookup xs i = x
 
 ------------------------------------------------------------------------
 -- Conversions
