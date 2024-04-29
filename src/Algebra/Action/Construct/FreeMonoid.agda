@@ -63,7 +63,6 @@ module _ (left : SetoidAction.Left M S) where
   private listAction = ListAction.leftAction left
 
   open SetoidAction.Left left
-  open IsLeftAction isLeftAction
 
   leftAction : Left listAction
   leftAction = record
@@ -76,7 +75,6 @@ module _ (right : SetoidAction.Right M S) where
   private listAction = ListAction.rightAction right
 
   open SetoidAction.Right right
-  open IsRightAction isRightAction
 
   rightAction : Right listAction
   rightAction = record

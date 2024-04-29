@@ -33,52 +33,56 @@ private
 
 
 ------------------------------------------------------------------------
--- Basic definition: a Setoid action yields underlying raw action
+-- Basic definition: a Setoid action yields underlying action structure
 
-module SetoidAction (M : Setoid c ℓ) (A : Setoid a r) where
+module SetoidAction (S : Setoid c ℓ) (A : Setoid a r) where
 
   private
 
-    module M = Setoid M
+    module S = Setoid S
     module A = Setoid A
 
   record Left : Set (a ⊔ r ⊔ c ⊔ ℓ) where
 
     field
-      isLeftAction : IsLeftAction M._≈_ A._≈_
+      isLeftAction : IsLeftAction S._≈_ A._≈_
+
+    open IsLeftAction isLeftAction public
 
   record Right : Set (a ⊔ r ⊔ c ⊔ ℓ) where
 
     field
-      isRightAction : IsRightAction M._≈_ A._≈_
+      isRightAction : IsRightAction S._≈_ A._≈_
+
+    open IsRightAction isRightAction public
 
 
 ------------------------------------------------------------------------
 -- A Setoid action yields an iterated List action
 
-module ListAction {M : Setoid c ℓ} {A : Setoid a r} where
+module ListAction {S : Setoid c ℓ} {A : Setoid a r} where
 
   open SetoidAction
 
-  open ≋ M using (≋-setoid)
+  open ≋ S using (≋-setoid)
 
-  leftAction : (left : Left M A) → Left ≋-setoid A
+  leftAction : (left : Left S A) → Left ≋-setoid A
   leftAction left = record
     { isLeftAction = record
       { _▷_ = _▷⋆_
       ; ▷-cong = ▷⋆-cong
       }
     }
-    where open Left left; open IsLeftAction isLeftAction
+    where open Left left
 
-  rightAction : (right : Right M A) → Right ≋-setoid A
+  rightAction : (right : Right S A) → Right ≋-setoid A
   rightAction right = record
     { isRightAction = record
       { _◁_ = _◁⋆_
       ; ◁-cong = ◁⋆-cong
       }
     }
-    where open Right right; open IsRightAction isRightAction
+    where open Right right
 
 
 ------------------------------------------------------------------------
@@ -96,8 +100,6 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
     where
 
     open SetoidAction.Left leftAction public
-      using (isLeftAction)
-    open IsLeftAction isLeftAction public
 
     field
       ▷-act  : ∀ m n x → m ∙ n ▷ x ≈ m ▷ n ▷ x
@@ -119,9 +121,7 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
     where
 
     open SetoidAction.Right rightAction public
-      using (isRightAction)
-    open IsRightAction isRightAction public
-
+ 
     field
       ◁-act  : ∀ x m n → x ◁ m ∙ n ≈ x ◁ m ◁ n
       ε-act  : ∀ x → x ◁ ε ≈ x
