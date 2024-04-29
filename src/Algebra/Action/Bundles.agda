@@ -121,7 +121,7 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
     where
 
     open SetoidAction.Right rightAction public
- 
+
     field
       ◁-act  : ∀ x m n → x ◁ m ∙ n ≈ x ◁ m ◁ n
       ε-act  : ∀ x → x ◁ ε ≈ x
