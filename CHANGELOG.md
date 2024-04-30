@@ -492,6 +492,11 @@ Additions to existing modules
   forever : IO ⊤ → IO ⊤
   ```
 
+* In `IO.Primitive.Core`:
+  ```agda
+  _>>_ : IO A → IO B → IO B
+  ```
+
 * In `Data.Word.Base`:
   ```agda
   _≤_ : Rel Word64 zero
