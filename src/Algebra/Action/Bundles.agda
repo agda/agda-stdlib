@@ -42,6 +42,8 @@ module SetoidAction (S : Setoid c ℓ) (A : Setoid a r) where
     module S = Setoid S
     module A = Setoid A
 
+    open ≋ S using (≋-refl)
+
   record Left : Set (a ⊔ r ⊔ c ⊔ ℓ) where
 
     field
@@ -49,12 +51,36 @@ module SetoidAction (S : Setoid c ℓ) (A : Setoid a r) where
 
     open IsLeftAction isLeftAction public
 
+    ▷-congˡ : ∀ {m x y} → x A.≈ y → m ▷ x A.≈ m ▷ y
+    ▷-congˡ x≈y = ▷-cong S.refl x≈y
+
+    ▷-congʳ : ∀ {m n x} → m S.≈ n → m ▷ x A.≈ n ▷ x
+    ▷-congʳ m≈n = ▷-cong m≈n A.refl
+
+    []-act : ∀ x → [] ▷⋆ x A.≈ x
+    []-act _ = []-act-cong A.refl
+
+    ▷⋆-act : ∀ ms ns x → (ms ++ ns) ▷⋆ x A.≈ ms ▷⋆ ns ▷⋆ x
+    ▷⋆-act ms ns x = ▷⋆-act-cong ms ≋-refl A.refl
+
   record Right : Set (a ⊔ r ⊔ c ⊔ ℓ) where
 
     field
       isRightAction : IsRightAction S._≈_ A._≈_
 
     open IsRightAction isRightAction public
+
+    ◁-congˡ : ∀ {x y m} → x A.≈ y → x ◁ m A.≈ y ◁ m
+    ◁-congˡ x≈y = ◁-cong x≈y S.refl
+
+    ◁-congʳ : ∀ {m n x} → m S.≈ n → x ◁ m A.≈ x ◁ n
+    ◁-congʳ m≈n = ◁-cong A.refl m≈n
+
+    ◁⋆-act : ∀ x ms ns → x ◁⋆ (ms ++ ns) A.≈ x ◁⋆ ms ◁⋆ ns
+    ◁⋆-act x ms ns = ◁⋆-act-cong A.refl ms ≋-refl
+
+    []-act : ∀ x → x ◁⋆ [] A.≈ x
+    []-act x = []-act-cong A.refl
 
 
 ------------------------------------------------------------------------
@@ -94,7 +120,6 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
 
     open module M = Monoid M using (ε; _∙_; setoid)
     open module A = Setoid A using (_≈_)
-    open ≋ setoid using (≋-refl)
 
   record Left (leftAction : SetoidAction.Left setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
     where
@@ -105,18 +130,6 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
       ▷-act  : ∀ m n x → m ∙ n ▷ x ≈ m ▷ n ▷ x
       ε-act  : ∀ x → ε ▷ x ≈ x
 
-    ▷-congˡ : ∀ {m x y} → x ≈ y → m ▷ x ≈ m ▷ y
-    ▷-congˡ x≈y = ▷-cong M.refl x≈y
-
-    ▷-congʳ : ∀ {m n x} → m M.≈ n → m ▷ x ≈ n ▷ x
-    ▷-congʳ m≈n = ▷-cong m≈n A.refl
-
-    ▷⋆-act : ∀ ms ns x → (ms ++ ns) ▷⋆ x ≈ ms ▷⋆ ns ▷⋆ x
-    ▷⋆-act ms ns x = ▷⋆-act-cong ms ≋-refl A.refl
-
-    []-act : ∀ x → [] ▷⋆ x ≈ x
-    []-act _ = []-act-cong A.refl
-
   record Right (rightAction : SetoidAction.Right setoid A) : Set (a ⊔ r ⊔ c ⊔ ℓ)
     where
 
@@ -125,16 +138,3 @@ module MonoidAction (M : Monoid c ℓ) (A : Setoid a r) where
     field
       ◁-act  : ∀ x m n → x ◁ m ∙ n ≈ x ◁ m ◁ n
       ε-act  : ∀ x → x ◁ ε ≈ x
-
-    ◁-congˡ : ∀ {x y m} → x ≈ y → x ◁ m ≈ y ◁ m
-    ◁-congˡ x≈y = ◁-cong x≈y M.refl
-
-    ◁-congʳ : ∀ {m n x} → m M.≈ n → x ◁ m ≈ x ◁ n
-    ◁-congʳ m≈n = ◁-cong A.refl m≈n
-
-    ◁⋆-act : ∀ x ms ns → x ◁⋆ (ms ++ ns) ≈ x ◁⋆ ms ◁⋆ ns
-    ◁⋆-act x ms ns = ◁⋆-act-cong A.refl ms ≋-refl
-
-    []-act : ∀ x → x ◁⋆ [] ≈ x
-    []-act x = []-act-cong A.refl
-
