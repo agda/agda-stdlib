@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Raw Actions of one (pre-)Setoid on another
+-- Structure of the Action of one (pre-)Setoid on another
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -26,6 +26,7 @@ private
     x y z : A
     m n p : M
     ms ns ps : List M
+
 
 ------------------------------------------------------------------------
 -- Basic definitions: fix notation
@@ -52,10 +53,10 @@ record IsLeftAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   ▷⁺-cong : m ≈ᴹ n → Pointwise _≈ᴹ_ ms ns → x ≈ y → ((m ∷ ms) ▷⁺ x) ≈ ((n ∷ ns) ▷⁺ y)
   ▷⁺-cong m≈n ms≋ns x≈y = ▷-cong m≈n (▷⋆-cong ms≋ns x≈y)
 
-  ▷⋆-act-cong : ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
+  ++-act-cong : ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
                 x ≈ y → (ps ▷⋆ x) ≈ (ms ▷⋆ ns ▷⋆ y)
-  ▷⋆-act-cong []       ps≋ns             x≈y = ▷⋆-cong ps≋ns x≈y
-  ▷⋆-act-cong (m ∷ ms) (p≈m ∷ ps≋ms++ns) x≈y = ▷-cong p≈m (▷⋆-act-cong ms ps≋ms++ns x≈y)
+  ++-act-cong []       ps≋ns             x≈y = ▷⋆-cong ps≋ns x≈y
+  ++-act-cong (m ∷ ms) (p≈m ∷ ps≋ms++ns) x≈y = ▷-cong p≈m (++-act-cong ms ps≋ms++ns x≈y)
 
   []-act-cong : x ≈ y → ([] ▷⋆ x) ≈ y
   []-act-cong = id
@@ -82,10 +83,10 @@ record IsRightAction : Set (a ⊔ r ⊔ c ⊔ ℓ) where
   ◁⁺-cong : x ≈ y → m ≈ᴹ n → Pointwise _≈ᴹ_ ms ns → (x ◁⁺ (m ∷ ms)) ≈ (y ◁⁺ (n ∷ ns))
   ◁⁺-cong x≈y m≈n ms≋ns = ◁⋆-cong (◁-cong x≈y m≈n) (ms≋ns)
 
-  ◁⋆-act-cong : x ≈ y → ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
+  ++-act-cong : x ≈ y → ∀ ms → Pointwise _≈ᴹ_ ps (ms ++ ns) →
                (x ◁⋆ ps) ≈ (y ◁⋆ ms ◁⋆ ns)
-  ◁⋆-act-cong x≈y []       ps≋ns             = ◁⋆-cong x≈y ps≋ns
-  ◁⋆-act-cong x≈y (m ∷ ms) (p≈m ∷ ps≋ms++ns) = ◁⋆-act-cong (◁-cong x≈y p≈m) ms ps≋ms++ns
+  ++-act-cong x≈y []       ps≋ns             = ◁⋆-cong x≈y ps≋ns
+  ++-act-cong x≈y (m ∷ ms) (p≈m ∷ ps≋ms++ns) = ++-act-cong (◁-cong x≈y p≈m) ms ps≋ms++ns
 
   []-act-cong : x ≈ y → (x ◁⋆ []) ≈ y
   []-act-cong = id

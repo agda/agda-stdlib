@@ -66,8 +66,8 @@ module _ (left : SetoidAction.Left M S) where
 
   leftAction : Left listAction
   leftAction = record
-    { ▷-act = λ ms _ _ → ▷⋆-act-cong ms ≋-refl A.refl
-    ; ε-act = λ _ → A.refl
+    { ∙-act = ++-act
+    ; ε-act = []-act
     }
 
 module _ (right : SetoidAction.Right M S) where
@@ -78,7 +78,7 @@ module _ (right : SetoidAction.Right M S) where
 
   rightAction : Right listAction
   rightAction = record
-    { ◁-act = λ _ ms _ → ◁⋆-act-cong A.refl ms ≋-refl
-    ; ε-act = λ _ → A.refl
+    { ∙-act = ++-act
+    ; ε-act = []-act
     }
 
