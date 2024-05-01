@@ -28,13 +28,13 @@ module Regular {c ℓ} (M : Monoid c ℓ) where
 
   leftAction : Left record { isLeftAction = isLeftAction }
   leftAction = record
-    { ▷-act = assoc
+    { ∙-act = assoc
     ; ε-act = identityˡ
     }
 
   rightAction : Right record { isRightAction = isRightAction }
   rightAction = record
-    { ◁-act = λ x m n → sym (assoc x m n)
+    { ∙-act = λ x m n → sym (assoc x m n)
     ; ε-act = identityʳ
     }
 
