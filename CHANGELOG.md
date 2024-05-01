@@ -177,6 +177,13 @@ New modules
   Data.Vec.Bounded.Show
   ```
 
+* A type of bytes:
+  ```agda
+  Data.Word8.Primitive
+  Data.Word8.Base
+  Data.Word8.Literals
+  ```
+
 Additions to existing modules
 -----------------------------
 
