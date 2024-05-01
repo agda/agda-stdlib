@@ -26,16 +26,14 @@ open import Function.Base using (_∘_)
 
 open import Level using (Level; _⊔_)
 
-open ≋ M using (_≋_; ≋-refl; ≋-reflexive; ≋-isEquivalence; ++⁺)
-
 
 ------------------------------------------------------------------------
 -- First: define the Monoid structure on List M.Carrier
+-- NB should be defined somewhere under `Data.List`!?
 
 private
 
-  module M = Setoid M
-  module A = Setoid S
+  open ≋ M using (_≋_; ≋-refl; ≋-reflexive; ≋-isEquivalence; ++⁺)
 
   isMonoid : IsMonoid _≋_ _++_ []
   isMonoid = record
