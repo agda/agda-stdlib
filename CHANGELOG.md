@@ -30,6 +30,8 @@ Non-backwards compatible changes
 * The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
   parametrized by _raw_ bundles, and as such take a proof of reflexivity.
 * The module `IO.Primitive` was moved to `IO.Primitive.Core`.
+* The modules in the `Data.Word` hierarchy were moved to the `Data.Word64`
+  one instead.
 
 Other major improvements
 ------------------------
@@ -73,6 +75,16 @@ Deprecated names
 * In `IO.Base`:
   ```agda
   untilRight  ↦  untilInj₂
+  ```
+
+* In `Data.Float.Base`:
+  ```agda
+  toWord ↦ toWord64
+  ```
+
+* In `Data.Float.Properties`:
+  ```agda
+  toWord-injective ↦ toWord64-injective
   ```
 
 New modules
