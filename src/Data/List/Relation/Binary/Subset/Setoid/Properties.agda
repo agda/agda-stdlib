@@ -215,9 +215,6 @@ module _ (S : Setoid a ℓ) (R : Setoid b r) where
     module S = Setoid S
     module R = Setoid R
 
-    module S∈ = Membership S
-    module R∈ = Membership R
-
     module S⊆ = Subset S
     module R⊆ = Subset R
 
