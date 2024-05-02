@@ -219,7 +219,7 @@ module _ (S : Setoid a ℓ) where
   open Subset S
 
   reverse-selfAdjoint : ∀ {as bs} → as ⊆ reverse bs → reverse as ⊆ bs
-  reverse-selfAdjoint {as = as} {bs = bs} rs x∈asʳ = reverse⁻ (rs (reverse⁻ x∈asʳ))
+  reverse-selfAdjoint {as = as} {bs = bs} rs = reverse⁻ ∘ rs ∘ reverse⁻
     where reverse⁻ = Membershipₚ.reverse⁻ S
 
   reverse⁺ : ∀ {as bs} → as ⊆ bs → reverse as ⊆ reverse bs
