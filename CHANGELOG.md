@@ -336,6 +336,7 @@ Additions to existing modules
   applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
   downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-selfInverse   : SelfInverse {A = List A} _≡_ reverse
   reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
