@@ -1382,7 +1382,7 @@ reverse-involutive = selfInverse⇒involutive reverse-selfInverse
 
 -- reverse is injective.
 
-reverse-injective : ∀ {xs ys : List A} → reverse xs ≡ reverse ys → xs ≡ ys
+reverse-injective : Injective {A = List A} _≡_ _≡_ reverse
 reverse-injective = selfInverse⇒injective reverse-selfInverse
 
 -- reverse preserves length.
