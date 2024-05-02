@@ -9,8 +9,9 @@
 module Data.Word64.Base where
 
 open import Level using (zero)
-import Data.Nat.Base as ℕ
-open import Function.Base using (_on_)
+open import Algebra.Core using (Op₂)
+open import Data.Nat.Base as ℕ using (ℕ)
+open import Function.Base using (_on_; _∘₂′_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
@@ -23,6 +24,9 @@ open import Agda.Builtin.Word public
   ( primWord64ToNat   to toℕ
   ; primWord64FromNat to fromℕ
   )
+
+liftOp₂ : Op₂ ℕ → Op₂ Word64
+liftOp₂ op = fromℕ ∘₂′ op on toℕ
 
 infix 4 _≈_
 _≈_ : Rel Word64 zero

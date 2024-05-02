@@ -184,6 +184,16 @@ New modules
   Data.Word8.Literals
   ```
 
+* Bytestrings and builders:
+  ```agda
+  Data.Bytestring.Base
+  Data.Bytestring.Builder.Base
+  Data.Bytestring.Builder.Primitive
+  Data.Bytestring.IO
+  Data.Bytestring.IO.Primitive
+  Data.Bytestring.Primitive
+  ```
+
 Additions to existing modules
 -----------------------------
 
