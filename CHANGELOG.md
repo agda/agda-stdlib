@@ -329,6 +329,12 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  reverse⁺ : x ∈ xs → x ∈ reverse xs
+  reverse⁻ : x ∈ reverse xs → x ∈ xs
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   length-catMaybes      : length (catMaybes xs) ≤ length xs
@@ -372,6 +378,13 @@ Additions to existing modules
   catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
   catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
   map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
+  reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
+  reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
