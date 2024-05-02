@@ -26,7 +26,7 @@ open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable) renaming (_⊆_ to _⋐_)
-open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
 open import Relation.Binary.Definitions
   using (Reflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects_)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
@@ -38,7 +38,7 @@ open Setoid using (Carrier)
 
 private
   variable
-    a p q ℓ : Level
+    a b p q r ℓ : Level
 
 ------------------------------------------------------------------------
 -- Relational properties with _≋_ (pointwise equality)
@@ -205,6 +205,28 @@ module _ (S : Setoid a ℓ) where
 
   ++⁺ : ∀ {ws xs ys zs} → ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
   ++⁺ ws⊆xs ys⊆zs = ⊆-trans S (++⁺ˡ _ ws⊆xs) (++⁺ʳ _ ys⊆zs)
+
+------------------------------------------------------------------------
+-- map
+
+module _ (S : Setoid a ℓ) (R : Setoid b r) where
+
+  private
+    module S = Setoid S
+    module R = Setoid R
+
+    module S∈ = Membership S
+    module R∈ = Membership R
+
+    module S⊆ = Subset S
+    module R⊆ = Subset R
+
+  map⁺ : ∀ {as bs} {f : S.Carrier → R.Carrier} →
+         f Preserves S._≈_ ⟶ R._≈_ →
+         as S⊆.⊆ bs → map f as R⊆.⊆ map f bs
+  map⁺ {f = f} f-pres as⊆bs v∈f[as] =
+    let x , x∈as , v≈f[x] = ∈-map⁻ S R v∈f[as] in
+    ∈-resp-≈ R (R.sym v≈f[x]) (∈-map⁺ S R f-pres (as⊆bs x∈as))
 
 ------------------------------------------------------------------------
 -- filter
