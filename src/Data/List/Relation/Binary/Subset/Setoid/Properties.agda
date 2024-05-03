@@ -222,6 +222,12 @@ module _ (S : Setoid a ℓ) where
   reverse-selfAdjoint rs = reverse⁻ ∘ rs ∘ reverse⁻
     where reverse⁻ = Membershipₚ.reverse⁻ S
 
+-- NB. the unit and counit of this adjunction are given by:
+-- reverse-η : ∀ {xs} → xs ⊆ reverse xs
+-- reverse-η = Membershipₚ.reverse⁺ S
+-- reverse-ε : ∀ {xs} → reverse xs ⊆ xs
+-- reverse-ε = Membershipₚ.reverse⁻ S
+
   reverse⁺ : ∀ {as bs} → as ⊆ bs → reverse as ⊆ reverse bs
   reverse⁺ {as} {bs} rs = reverse-selfAdjoint $ begin
     as                   ⊆⟨ rs ⟩
