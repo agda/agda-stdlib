@@ -8,7 +8,7 @@
 
 module Data.Product.Properties.Dependent where
 
-open import Data.Product using (Σ; _×_; _,_; dep-map; dep-map′; zipWith)
+open import Data.Product using (Σ; _×_; _,_; map-Σ; map-Σ′; zipWith)
 open import Function.Base using (id; flip)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
@@ -27,7 +27,7 @@ module _ {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Se
   dep-map-cong : {f g : (x : A) → B x} → {h i : ∀ {x} → (y : P x) → Q y (f x)} →
      (∀ x → f x ≡ g x) →
      (∀ {x} → (y : P x) → h y ≡ i y) →
-     (v : Σ A P) → dep-map f h v ≡ dep-map g i v
+     (v : Σ A P) → map-Σ f h v ≡ map-Σ g i v
   dep-map-cong f≗g h≗i (x , y) = cong₂ _,_ (f≗g x) (h≗i y)
 
 ------------------------------------------------------------------------
@@ -38,7 +38,7 @@ module _ {B : A → Set b} {P : Set p} {Q : P → Set q} where
   dep-map′-cong : {f g : (x : A) → B x} → {h i : (x : P) → Q x} →
      (∀ x → f x ≡ g x) →
      ((y : P) → h y ≡ i y) →
-     (v : A × P) → dep-map′ f h v ≡ dep-map′ g i v
+     (v : A × P) → map-Σ′ f h v ≡ map-Σ′ g i v
   dep-map′-cong f≗g h≗i (x , y) = cong₂ _,_ (f≗g x) (h≗i y)
 
 ------------------------------------------------------------------------
