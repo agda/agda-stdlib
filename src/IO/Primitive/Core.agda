@@ -36,3 +36,6 @@ postulate
 -- Haskell-style alternative syntax
 return : A → IO A
 return = pure
+
+_>>_ : IO A → IO B → IO B
+a >> b = a >>= λ _ → b
