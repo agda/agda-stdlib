@@ -48,11 +48,11 @@ New modules
 
 * `Algebra.Module.Bundles.Raw`: raw bundles for module-like algebraic structures
 
-* `Data.List.Effectful.Foldable`: instance(s) of the following typeclass
+* `Data.List.Effectful.Foldable`: `List` is `Foldable`
 
-* `Data.Vec.Effectful.Foldable`: instance(s) of the following typeclass
+* `Data.Vec.Effectful.Foldable`: `Vec` is `Foldable`
 
-* `Effect.Foldable`: implementation of haskell-like typeclass
+* `Effect.Foldable`: implementation of haskell-like `Foldable`
 
 Additions to existing modules
 -----------------------------

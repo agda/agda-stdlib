@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The Foldable instance of List
+-- List is Foldable
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -12,17 +12,15 @@ open import Algebra.Bundles using (Monoid)
 open import Algebra.Bundles.Raw using (RawMonoid)
 open import Algebra.Morphism.Structures using (IsMonoidHomomorphism)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
-open import Effect.Foldable
-open import Function.Base
-open import Level
-import Relation.Binary.PropositionalEquality as ≡
-
+open import Effect.Foldable using (RawFoldableWithDefaults; RawFoldable)
+open import Function.Base using (_∘_; id)
+open import Level using (Level)
+import Relation.Binary.PropositionalEquality.Core as ≡
 
 private
   variable
     a c ℓ : Level
     A : Set a
-
 
 ------------------------------------------------------------------------
 -- Root implementation
@@ -36,13 +34,13 @@ module _ (M : RawMonoid c ℓ) where
   foldMap f (x ∷ xs) = f x ∙ foldMap f xs
 
 ------------------------------------------------------------------------
--- Basic instance: using supplied defaults
+-- Basic implementation using supplied defaults
 
 foldableWithDefaults : RawFoldableWithDefaults (List {a})
 foldableWithDefaults = record { foldMap = λ M → foldMap M }
 
 ------------------------------------------------------------------------
--- Specialised instance: using optimised implementations
+-- Specialised version using optimised implementations
 
 foldable : RawFoldable (List {a})
 foldable = record
