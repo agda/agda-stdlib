@@ -21,7 +21,7 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
-open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Product.Base using (Σ-syntax; _,_)
 open import Data.Vec.Base as Vec using (Vec ; lookup)
@@ -35,7 +35,7 @@ open import Function.Base using (_$_; case_of_)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
 open import Relation.Binary.PropositionalEquality.Properties as ≡
-open import Relation.Nullary.Decidable.Core using (decToMaybe)
+import Relation.Nullary.Decidable.Core as Dec
 
 open ≡.≡-Reasoning
 
@@ -125,8 +125,8 @@ private
 
 -- Solver for items
 solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)
-solveI (var k) (var l) = Maybe.map var $ decToMaybe (k Fin.≟ l)
-solveI (val a) (val b) = Maybe.map val $ decToMaybe (R? a b)
+solveI (var k) (var l) = Maybe.map var $ Dec.decToMaybe (k Fin.≟ l)
+solveI (val a) (val b) = Maybe.map val $ Dec.decToMaybe (R? a b)
 solveI _ _ = nothing
 
 -- Solver for linearised expressions
@@ -151,5 +151,5 @@ solveT t u =
 
 -- Prover for ASTs
 
-prove : ∀ {n} (d e : TList n) → Maybe.From-just (solveT d e)
-prove d e = Maybe.from-just (solveT d e)
+prove : ∀ {n} (d e : TList n) → From-just (solveT d e)
+prove d e = from-just (solveT d e)
