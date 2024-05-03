@@ -478,7 +478,7 @@ Additions to existing modules
     (_∙_ : A → B → C) → (_∘_ : ∀ {x y} → P x → Q y → R (x ∙ y)) →
     (_*_ : (x : C) → (y : R x) → S x y) →
     ((a , p) : Σ A P) → ((b , q) : Σ B Q) →
-	S (a ∙ b) (p ∘ q)
+        S (a ∙ b) (p ∘ q)
 
   ```
 * Added new functions in `Data.String.Base`:
