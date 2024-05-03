@@ -58,11 +58,9 @@ open MonoidAction monoid S
 
 module _ (left : SetoidAction.Left M S) where
 
-  private listAction = ListAction.leftAction left
-
   open SetoidAction.Left left
 
-  leftAction : Left listAction
+  leftAction : Left (ListAction.leftAction left)
   leftAction = record
     { ∙-act = ++-act
     ; ε-act = []-act
@@ -70,11 +68,9 @@ module _ (left : SetoidAction.Left M S) where
 
 module _ (right : SetoidAction.Right M S) where
 
-  private listAction = ListAction.rightAction right
-
   open SetoidAction.Right right
 
-  rightAction : Right listAction
+  rightAction : Right (ListAction.rightAction right)
   rightAction = record
     { ∙-act = ++-act
     ; ε-act = []-act
