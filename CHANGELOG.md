@@ -78,6 +78,11 @@ Deprecated names
 New modules
 -----------
 
+* Pointwise algebraic structures and bundles:
+  ```
+  Algebra.Construct.Pointwise
+  ```
+
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
