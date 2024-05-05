@@ -13,7 +13,7 @@ open import Agda.Builtin.List
 open import Agda.Builtin.String
 open import Agda.Builtin.Unit
 open import Foreign.Haskell using (Pair)
-open import IO.Primitive using (IO)
+open import IO.Primitive.Core using (IO)
 open import System.Exit.Primitive using (ExitCode)
 
 postulate

@@ -8,11 +8,12 @@
 
 module Data.Star.List where
 
-open import Data.Star.Nat
-open import Data.Unit
+open import Data.Star.Nat using (ℕ; _+_; zero)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.Construct.Always using (Always)
 open import Relation.Binary.Construct.Constant using (Const)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+  using (Star; ε; _◅_; fold)
 
 -- Lists.
 

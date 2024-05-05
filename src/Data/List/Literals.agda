@@ -8,10 +8,10 @@
 
 module Data.List.Literals where
 
-open import Agda.Builtin.FromString
-open import Data.Unit
-open import Agda.Builtin.Char
-open import Agda.Builtin.List
+open import Agda.Builtin.FromString using (IsString)
+open import Data.Unit.Base using (⊤)
+open import Agda.Builtin.Char using (Char)
+open import Agda.Builtin.List using (List)
 open import Data.String.Base using (toList)
 
 isString : IsString (List Char)

@@ -21,6 +21,7 @@ open import Data.Bool.Base
 import Data.Nat.Properties as ℕ
 open import Data.Vec.Bounded.Base as Vec≤
   using (Vec≤; ≤-cast; fromVec)
+open import Function.Base using (_$_)
 open import Relation.Nullary
 open import Relation.Unary
 
@@ -41,18 +42,14 @@ module _ {P : A → Set p} (P? : Decidable P) where
 
   filter : ∀ {n} → Vec A n → Vec≤ A n
   filter []       = Vec≤.[]
-  filter (a ∷ as) with does (P? a)
-  ... | true  = a Vec≤.∷ filter as
-  ... | false = ≤-cast (ℕ.n≤1+n _) (filter as)
+  filter (a ∷ as) = if does (P? a) then a Vec≤.∷_ else ≤-cast (ℕ.n≤1+n _) $ filter as
 
   takeWhile : ∀ {n} → Vec A n → Vec≤ A n
   takeWhile []       = Vec≤.[]
-  takeWhile (a ∷ as) with does (P? a)
-  ... | true  = a Vec≤.∷ takeWhile as
-  ... | false = Vec≤.[]
+  takeWhile (a ∷ as) = if does (P? a) then a Vec≤.∷ takeWhile as else Vec≤.[]
 
   dropWhile : ∀ {n} → Vec A n → Vec≤ A n
   dropWhile Vec.[]       = Vec≤.[]
-  dropWhile (a Vec.∷ as) with does (P? a)
-  ... | true  = ≤-cast (ℕ.n≤1+n _) (dropWhile as)
-  ... | false = fromVec (a Vec.∷ as)
+  dropWhile (a Vec.∷ as) =
+    if does (P? a) then ≤-cast (ℕ.n≤1+n _) (dropWhile as)
+    else fromVec (a Vec.∷ as)

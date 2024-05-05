@@ -8,8 +8,8 @@
 
 module Data.Product.Properties where
 
-open import Axiom.UniquenessOfIdentityProofs
-open import Data.Product.Base
+open import Axiom.UniquenessOfIdentityProofs using (UIP; module Decidable⇒UIP)
+open import Data.Product.Base using (_,_; Σ; _×_; map; swap; ∃; ∃₂)
 open import Function.Base using (_∋_; _∘_; id)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)

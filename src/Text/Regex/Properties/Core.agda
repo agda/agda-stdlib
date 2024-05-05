@@ -23,13 +23,13 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 open Preorder P using (_≈_) renaming (Carrier to A; _∼_ to _≤_)
 open import Text.Regex.Base P
 
-open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 open import Data.List.Relation.Ternary.Appending.Propositional.Properties {A = A}
+  using (++[]⁻¹; []++⁻¹; conicalˡ; conicalʳ)
 
 ------------------------------------------------------------------------
 -- Views

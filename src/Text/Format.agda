@@ -12,11 +12,11 @@ open import Data.Maybe.Base
 open import Text.Format.Generic
 
 -- Formatted types
-open import Data.Char.Base
-open import Data.Integer.Base
-open import Data.Float
-open import Data.Nat.Base
-open import Data.String.Base
+open import Data.Char.Base using (Char)
+open import Data.Integer.Base using (ℤ)
+open import Data.Float.Base using (Float)
+open import Data.Nat.Base using (ℕ)
+open import Data.String.Base using (String)
 
 ------------------------------------------------------------------------
 -- Basic types

@@ -8,9 +8,9 @@
 
 module Data.Nat.Literals where
 
-open import Agda.Builtin.FromNat
-open import Agda.Builtin.Nat
-open import Data.Unit
+open import Agda.Builtin.FromNat using (Number)
+open import Agda.Builtin.Nat using (Nat)
+open import Data.Unit.Base using (⊤)
 
 number : Number Nat
 number = record
