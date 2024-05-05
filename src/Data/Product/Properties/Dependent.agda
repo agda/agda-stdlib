@@ -24,22 +24,22 @@ private
 
 module _ {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Set q} where
 
-  dep-map-cong : {f g : (x : A) → B x} → {h i : ∀ {x} → (y : P x) → Q y (f x)} →
+  map-Σ-cong : {f g : (x : A) → B x} → {h k : ∀ {x} → (y : P x) → Q y (f x)} →
      (∀ x → f x ≡ g x) →
-     (∀ {x} → (y : P x) → h y ≡ i y) →
-     (v : Σ A P) → map-Σ f h v ≡ map-Σ g i v
-  dep-map-cong f≗g h≗i (x , y) = cong₂ _,_ (f≗g x) (h≗i y)
+     (∀ {x} → (y : P x) → h y ≡ k y) →
+     (v : Σ A P) → map-Σ f h v ≡ map-Σ g k v
+  map-Σ-cong f≗g h≗k (x , y) = cong₂ _,_ (f≗g x) (h≗k y)
 
 ------------------------------------------------------------------------
 -- dep-map′
 
 module _ {B : A → Set b} {P : Set p} {Q : P → Set q} where
 
-  dep-map′-cong : {f g : (x : A) → B x} → {h i : (x : P) → Q x} →
+  map-Σ′-cong : {f g : (x : A) → B x} → {h k : (x : P) → Q x} →
      (∀ x → f x ≡ g x) →
-     ((y : P) → h y ≡ i y) →
-     (v : A × P) → map-Σ′ f h v ≡ map-Σ′ g i v
-  dep-map′-cong f≗g h≗i (x , y) = cong₂ _,_ (f≗g x) (h≗i y)
+     ((y : P) → h y ≡ k y) →
+     (v : A × P) → map-Σ′ f h v ≡ map-Σ′ g k v
+  map-Σ′-cong f≗g h≗k (x , y) = cong₂ _,_ (f≗g x) (h≗k y)
 
 ------------------------------------------------------------------------
 -- zipWith

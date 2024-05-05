@@ -28,7 +28,7 @@ map-Σ : {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Se
    ((x , y) : Σ A P) → Σ (B x) (Q y)
 map-Σ f g (x , y) = (f x , g y)
 
--- This is a "non-dependent" version of dep-map whereby the input is actually
+-- This is a "non-dependent" version of map-Σ whereby the input is actually
 -- a pair (i.e. _×_ ) but the output type still depends on the input 'point' (x , y).
 map-Σ′ : {B : A → Set b} {P : Set p} {Q : P → Set q} →
   (f : (x : A) → B x) → ((x : P) → Q x) → ((x , y) : A × P) → B x × Q y
