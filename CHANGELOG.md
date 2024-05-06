@@ -78,7 +78,8 @@ Deprecated names
 New modules
 -----------
 
-* Pointwise algebraic structures and bundles:
+* Pointwise lifting of algebraic structures `IsX` and bundles `X` from
+  carrier set `C` to function space `A → C`:
   ```
   Algebra.Construct.Pointwise
   ```
