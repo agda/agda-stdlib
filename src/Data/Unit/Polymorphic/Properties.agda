@@ -9,21 +9,23 @@
 
 module Data.Unit.Polymorphic.Properties where
 
-open import Level
+open import Level using (Level)
 open import Function.Bundles using (_↔_; mk↔)
 open import Data.Product.Base using (_,_)
 open import Data.Sum.Base using (inj₁)
 open import Data.Unit.Base renaming (⊤ to ⊤*)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
-open import Relation.Nullary
+open import Relation.Nullary.Decidable using (yes)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; Poset; TotalOrder; DecTotalOrder)
 open import Relation.Binary.Structures
   using (IsPreorder; IsPartialOrder; IsTotalOrder; IsDecTotalOrder)
 open import Relation.Binary.Definitions
-  using (Decidable; Antisymmetric; Total)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; trans; decSetoid; setoid; isEquivalence)
+  using (DecidableEquality; Antisymmetric; Total)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; trans)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (decSetoid; setoid; isEquivalence)
 
 private
   variable
@@ -35,7 +37,7 @@ private
 
 infix 4 _≟_
 
-_≟_ : Decidable {A = ⊤ {ℓ}} _≡_
+_≟_ : DecidableEquality (⊤ {ℓ})
 _ ≟ _ = yes refl
 
 ≡-setoid : ∀ ℓ → Setoid ℓ ℓ

@@ -11,19 +11,19 @@ module Relation.Binary.Rewriting where
 
 open import Agda.Builtin.Equality using (_≡_ ; refl)
 open import Data.Product.Base using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
-open import Data.Empty
+open import Data.Empty using (⊥-elim)
 open import Function.Base using (flip)
-open import Induction.WellFounded
-open import Level
-open import Relation.Binary.Core
+open import Induction.WellFounded using (WellFounded; Acc; acc)
+open import Relation.Binary.Core using (REL; Rel)
 open import Relation.Binary.Construct.Closure.Equivalence using (EqClosure)
 open import Relation.Binary.Construct.Closure.Equivalence.Properties
-open import Relation.Binary.Construct.Closure.Reflexive
+  using (a—↠b&a—↠c⇒b↔c)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.Construct.Closure.Symmetric
+  using (Star; _◅_; ε; _◅◅_)
+open import Relation.Binary.Construct.Closure.Symmetric using (fwd; bwd)
 open import Relation.Binary.Construct.Closure.Transitive
-open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary
+  using (Plus; [_]; _∼⁺⟨_⟩_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 -- The following definitions are taken from Klop [5]
 module _ {a ℓ} {A : Set a} (_⟶_ : Rel A ℓ) where

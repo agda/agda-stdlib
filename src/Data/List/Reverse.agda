@@ -8,10 +8,12 @@
 
 module Data.List.Reverse where
 
-open import Data.List.Base as L hiding (reverse)
+open import Data.List.Base as L using (List; []; _∷_; _∷ʳ_)
 open import Data.List.Properties
+  using (unfold-reverse; reverse-involutive)
 open import Function.Base using (_$_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (subst; sym)
 
 -- If you want to traverse a list from the end, then you can use the
 -- reverse view of it.

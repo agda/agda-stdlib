@@ -8,12 +8,14 @@
 
 module Data.Nat.Combinatorics where
 
-open import Data.Nat.Base
-open import Data.Nat.DivMod
-open import Data.Nat.Divisibility
+open import Data.Nat.Base using (ℕ; zero; suc; _!; _∸_; z≤n; s≤s; _≤_;
+  _+_; _*_; _<_; s<s; ≢-nonZero)
+open import Data.Nat.DivMod using (_/_; n/1≡n; /-congˡ; /-congʳ; m*n/n≡m;
+  m/n/o≡m/[n*o]; n/n≡1; +-distrib-/-∣ˡ; m*n/m*o≡n/o)
+open import Data.Nat.Divisibility using (_∣_; *-monoʳ-∣)
 open import Data.Nat.Properties
-open import Relation.Binary.Definitions
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Definitions using (tri>; tri≈; tri<)
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym; cong; subst)
 
 import Data.Nat.Combinatorics.Base          as Base

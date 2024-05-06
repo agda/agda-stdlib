@@ -6,7 +6,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Lattice
+open import Algebra.Lattice using (BooleanAlgebra; isBooleanAlgebraʳ;
+  isDistributiveLatticeʳʲᵐ)
 
 module Algebra.Lattice.Properties.BooleanAlgebra.Expression
   {b} (B : BooleanAlgebra b b)
@@ -14,10 +15,8 @@ module Algebra.Lattice.Properties.BooleanAlgebra.Expression
 
 open BooleanAlgebra B
 
-open import Effect.Applicative as Applicative
-open import Effect.Monad
 open import Data.Fin.Base using (Fin)
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
 import Data.Vec.Effectful as Vec
@@ -25,8 +24,11 @@ import Function.Identity.Effectful as Identity
 open import Data.Vec.Properties using (lookup-map)
 open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
   using (Pointwise; ext)
+open import Effect.Applicative as Applicative
 open import Function.Base using (_∘_; _$_; flip)
-open import Relation.Binary.PropositionalEquality as ≡ using (_≗_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≗_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 import Relation.Binary.Reflection as Reflection
 
 -- Expressions made up of variables and the operations of a boolean
@@ -68,7 +70,7 @@ module Naturality
   (f : Applicative.Morphism A₁ A₂)
   where
 
-  open ≡.≡-Reasoning
+  open ≡-Reasoning
   open Applicative.Morphism f
   open Semantics A₁ renaming (⟦_⟧ to ⟦_⟧₁)
   open Semantics A₂ renaming (⟦_⟧ to ⟦_⟧₂)

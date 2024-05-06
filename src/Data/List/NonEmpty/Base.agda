@@ -203,9 +203,12 @@ snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
 
 -- The last element in the list.
 
+private
+  last′ : ∀ {l} → SnocView {A = A} l → A
+  last′ (_ ∷ʳ′ y) = y
+
 last : List⁺ A → A
-last xs with snocView xs
-last .(ys ∷ʳ y) | ys ∷ʳ′ y = y
+last = last′ ∘ snocView
 
 -- Groups all contiguous elements for which the predicate returns the
 -- same result into lists. The left sums are the ones for which the

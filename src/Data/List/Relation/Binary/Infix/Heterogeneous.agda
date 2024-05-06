@@ -49,10 +49,8 @@ map R⇒S (here pref) = here (Prefix.map R⇒S pref)
 map R⇒S (there inf) = there (map R⇒S inf)
 
 toView : ∀ {as bs} → Infix R as bs → View R as bs
-toView (here p) with Prefix.toView p
-...| inf Prefix.++ suff = MkView [] inf suff
-toView (there p) with toView p
-... | MkView pref inf suff = MkView (_ ∷ pref) inf suff
+toView (here p)  with inf Prefix.++ suff ← Prefix.toView p = MkView [] inf suff
+toView (there p) with MkView pref inf suff ← toView p      = MkView (_ ∷ pref) inf suff
 
 fromView : ∀ {as bs} → View R as bs → Infix R as bs
 fromView (MkView []         inf suff) = here (Prefix.fromView (inf Prefix.++ suff))

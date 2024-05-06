@@ -20,7 +20,7 @@ open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_×_; uncurry)
 open import Data.Vec.Base using (Vec; lookup)
 open import Function.Base using (_∘_; _$_)
-open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Binary.Definitions using (DecidableEquality)
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
 import Relation.Binary.Reflection
@@ -114,7 +114,7 @@ open module R = Relation.Binary.Reflection
 
 infix 5 _≟_
 
-_≟_ : ∀ {n} → Decidable {A = Normal n} _≡_
+_≟_ : ∀ {n} → DecidableEquality (Normal n)
 nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
   where open ListEq Fin._≟_
 

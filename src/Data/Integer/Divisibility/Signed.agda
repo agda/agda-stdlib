@@ -9,22 +9,25 @@
 module Data.Integer.Divisibility.Signed where
 
 open import Function.Base using (_⟨_⟩_; _$_; _$′_; _∘_; _∘′_)
-open import Data.Integer.Base
+open import Data.Integer.Base using (ℤ; _*_; +0; sign; _◃_; ≢-nonZero;
+  ∣_∣; 0ℤ; +_; _+_; _-_; -_; NonZero)
 open import Data.Integer.Properties
 import Data.Integer.Divisibility as Unsigned
 import Data.Nat.Base as ℕ
 import Data.Nat.Divisibility as ℕ
 import Data.Nat.Coprimality as ℕ
 import Data.Nat.Properties as ℕ
-import Data.Sign as Sign
+import Data.Sign.Base as Sign
 import Data.Sign.Properties as Sign
-open import Level
 open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
 open import Relation.Binary.Bundles using (Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
 open import Relation.Binary.Definitions
   using (Reflexive; Transitive; Decidable)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; trans; sym; cong; refl)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning; isEquivalence)
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Nullary.Decidable as Dec using (yes; no)
 open import Relation.Binary.Reasoning.Syntax

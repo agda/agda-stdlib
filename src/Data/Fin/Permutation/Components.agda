@@ -9,15 +9,19 @@
 module Data.Fin.Permutation.Components where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Fin.Base
+open import Data.Fin.Base using (Fin; suc; opposite; toℕ)
 open import Data.Fin.Properties
+  using (_≟_; opposite-prop; opposite-involutive; opposite-suc)
 open import Data.Nat.Base as ℕ using (zero; suc; _∸_)
 open import Data.Product.Base using (proj₂)
 open import Function.Base using (_∘_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (does; _because_; yes; no)
 open import Relation.Nullary.Decidable using (dec-true; dec-false)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Algebra.Definitions using (Involutive)
 open ≡-Reasoning
 
