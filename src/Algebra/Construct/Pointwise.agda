@@ -50,16 +50,13 @@ private
 ------------------------------------------------------------------------
 -- Setoid structure: here rather than elsewhere? (could be imported?)
 
-module _ (isEquivalenceC : IsEquivalence _≈_) where
-
-  open IsEquivalence isEquivalenceC
-
-  isEquivalence : IsEquivalence (liftRel _≈_)
-  isEquivalence = record
-    { refl = λ {f} x → refl {f x}
-    ; sym = λ f≈g x → sym (f≈g x)
-    ; trans = λ f≈g g≈h x → trans (f≈g x) (g≈h x)
-    }
+isEquivalence : IsEquivalence _≈_ → IsEquivalence (liftRel _≈_)
+isEquivalence isEquivalence = record
+  { refl = λ {f} x → refl {f x}
+  ; sym = λ f≈g x → sym (f≈g x)
+  ; trans = λ f≈g g≈h x → trans (f≈g x) (g≈h x)
+  }
+  where open IsEquivalence isEquivalence
 
 ------------------------------------------------------------------------
 -- Structures
