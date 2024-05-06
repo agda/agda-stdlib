@@ -17,6 +17,7 @@ open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Structures
 open import Data.Product.Base using (_,_)
 open import Function.Base using (id; _∘′_; const)
+import Function.Relation.Binary.Setoid.Equality as FunctionEquality
 open import Level
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (Setoid)
