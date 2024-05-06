@@ -8,12 +8,13 @@
 
 module Data.List.Relation.Unary.AllPairs.Properties where
 
-open import Data.List.Base hiding (any)
+open import Data.List.Base using (List; []; _∷_; map; _++_; concat; take; drop;
+  applyUpTo; applyDownFrom; tabulate; filter; catMaybes)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.All.Properties as All using (Any-catMaybes⁺)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
 open import Data.Bool.Base using (true; false)
-open import Data.Maybe using (Maybe; nothing; just)
+open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Maybe.Relation.Binary.Pointwise using (pointwise⊆any; Pointwise)
 open import Data.Fin.Base as F using (Fin)
 open import Data.Fin.Properties using (suc-injective; <⇒≢)
@@ -25,7 +26,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (DecSetoid)
 open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Unary using (Pred; Decidable; _⊆_)
-open import Relation.Nullary.Decidable using (does)
+open import Relation.Nullary.Decidable.Core using (does)
 
 private
   variable

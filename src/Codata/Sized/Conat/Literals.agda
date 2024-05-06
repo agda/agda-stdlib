@@ -8,9 +8,9 @@
 
 module Codata.Sized.Conat.Literals where
 
-open import Agda.Builtin.FromNat
-open import Data.Unit
-open import Codata.Sized.Conat
+open import Agda.Builtin.FromNat using (Number)
+open import Data.Unit.Base using (⊤)
+open import Codata.Sized.Conat using (Conat; fromℕ)
 
 number : ∀ {i} → Number (Conat i)
 number = record

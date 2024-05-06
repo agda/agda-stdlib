@@ -9,9 +9,10 @@
 open import Level using (Level; _⊔_; suc)
 open import Relation.Nullary.Decidable.Core
   using (Dec; True; toWitness)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Binary.Core using (Rel; REL; _⇒_)
 open import Relation.Binary.Definitions
+  using (_Respectsʳ_; Asymmetric; Trans; Sym; Reflexive)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_)
 

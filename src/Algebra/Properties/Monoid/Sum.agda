@@ -7,15 +7,16 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Monoid)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
-open import Data.Vec.Functional as Vector
-open import Data.Fin.Base using (zero; suc)
-open import Data.Unit using (tt)
-open import Function.Base using (_∘_)
-open import Relation.Binary.Core using (_Preserves_⟶_)
-open import Relation.Binary.PropositionalEquality as ≡ using (_≗_; _≡_)
 
 module Algebra.Properties.Monoid.Sum {a ℓ} (M : Monoid a ℓ) where
+
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
+open import Data.Vec.Functional as Vector using (Vector; replicate; init;
+  last; head; tail)
+open import Data.Fin.Base using (zero; suc)
+open import Function.Base using (_∘_)
+open import Relation.Binary.Core using (_Preserves_⟶_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≗_; _≡_)
 
 open Monoid M
   renaming

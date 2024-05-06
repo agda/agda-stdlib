@@ -9,13 +9,15 @@
 module Effect.Monad.State.Indexed where
 
 open import Effect.Applicative.Indexed
-open import Effect.Monad
+  using (IFun; RawIApplicative; RawIApplicativeZero; RawIAlternative)
+open import Effect.Monad using (RawMonad; RawMonadZero; RawMonadPlus)
 open import Function.Identity.Effectful as Id using (Identity)
-open import Effect.Monad.Indexed
+open import Effect.Monad.Indexed using (RawIMonad; RawIMonadZero;
+  RawIMonadPlus)
 open import Data.Product.Base using (_×_; _,_; uncurry)
-open import Data.Unit
-open import Function.Base
-open import Level
+open import Data.Unit.Polymorphic using (⊤)
+open import Function.Base using (const; _∘_)
+open import Level using (Level; _⊔_; suc)
 
 private
   variable
@@ -86,11 +88,11 @@ record RawIMonadState {I : Set i} (S : I → Set f)
   field
     monad : RawIMonad M
     get   : ∀ {i} → M i i (S i)
-    put   : ∀ {i j} → S j → M i j (Lift f ⊤)
+    put   : ∀ {i j} → S j → M i j ⊤
 
   open RawIMonad monad public
 
-  modify : ∀ {i j} → (S i → S j) → M i j (Lift f ⊤)
+  modify : ∀ {i j} → (S i → S j) → M i j ⊤
   modify f = get >>= put ∘ f
 
 StateTIMonadState : ∀ {i f} {I : Set i} (S : I → Set f) {M} →

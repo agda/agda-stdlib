@@ -10,21 +10,19 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Bool.Base using (true; false; if_then_else_)
-open import Data.Empty
-open import Data.List.Base
+open import Data.Empty using (⊥)
+open import Data.List.Base using (List; []; _∷_; foldr)
 open import Data.Product.Base hiding (proj₁; proj₂)
-open import Data.Unit.Polymorphic
+open import Data.Unit.Polymorphic using (⊤)
 open import Function.Base using (id; _∘_)
-open import Level
-open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary
-open import Relation.Nullary.Decidable
+open import Level using (suc; _⊔_)
+open import Relation.Binary.Definitions using (DecidableEquality)
+open import Relation.Nullary.Decidable using (does)
 
 -- The module is parametrised by the type of labels, which should come
 -- with decidable equality.
 
-module Data.Record {ℓ} (Label : Set ℓ) (_≟_ : Decidable {A = Label} _≡_) where
+module Data.Record {ℓ} (Label : Set ℓ) (_≟_ : DecidableEquality Label) where
 
 ------------------------------------------------------------------------
 -- A Σ-type with a manifest field

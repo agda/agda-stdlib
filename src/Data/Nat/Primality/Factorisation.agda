@@ -8,13 +8,16 @@
 
 module Data.Nat.Primality.Factorisation where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
+  using (_∣?_; quotient; quotient>1; quotient-<; quotient-∣; m∣n⇒n≡m*quotient; _∣_; ∣1⇒≡1;
+        divides)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-Rec; <-rec; <-recBuilder)
 open import Data.Nat.Primality
-open import Data.Product as Π using (∃-syntax; _×_; _,_; proj₁; proj₂)
+  using (Prime; _Rough_; rough∧square>⇒prime; ∤⇒rough-suc; rough∧∣⇒rough; rough∧∣⇒prime;
+         2-rough; euclidsLemma; prime⇒irreducible; ¬prime[1]; productOfPrimes≥1; prime⇒nonZero)
+open import Data.Product.Base using (∃-syntax; _×_; _,_; proj₁; proj₂)
 open import Data.List.Base using (List; []; _∷_; _++_; product)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Membership.Propositional.Properties using (∈-∃++)
@@ -22,19 +25,23 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.List.Relation.Binary.Permutation.Propositional
   using (_↭_; prep; swap; ↭-reflexive; ↭-refl; ↭-trans; refl; module PermutationReasoning)
-open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (product-↭; All-resp-↭; shift)
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties
+  using (product-↭; All-resp-↭; shift)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Function.Base using (_$_; _∘_; _|>_; flip)
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; trans; cong; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; trans; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable
     n : ℕ
-    
+
 ------------------------------------------------------------------------
 -- Core definition
 
@@ -107,18 +114,18 @@ factorise n₀@(2+ _) = build [ <-recBuilder ⊗ <-recBuilder ] P facRec (n₀ ,
         pred (m * m) <⟨ s<s⁻¹ (m∸n≢0⇒n<m λ eq′ → 0≢1+n (trans (sym eq′) eq)) ⟩
         n            ∎
         where open ≤-Reasoning
-        
+
       q = quotient m∣n
-      
+
       instance _  = n>1⇒nonTrivial (quotient>1 m∣n m<n)
-      
+
       factorisation[q] : PrimeFactorisation q
       factorisation[q] = recQuotient (quotient-< m∣n) (suc q ∸ m * m) (rough∧∣⇒rough rough (quotient-∣ m∣n)) refl
-      
+
       ps = factors factorisation[q]
-      
+
       primes = factorsPrime factorisation[q]
-      
+
       m*Πps≡n : m * product ps ≡ n
       m*Πps≡n = begin
         m * product ps ≡⟨ cong (m *_) (isFactorisation factorisation[q]) ⟨

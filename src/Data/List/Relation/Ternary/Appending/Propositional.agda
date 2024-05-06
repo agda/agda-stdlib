@@ -15,8 +15,10 @@ open import Data.Product.Base using (_,_)
 
 import Data.List.Properties as List
 import Data.List.Relation.Binary.Pointwise as Pw using (≡⇒Pointwise-≡; Pointwise-≡⇒≡)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; setoid; refl; trans; cong₂; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; trans; cong₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning; setoid)
 
 import Data.List.Relation.Ternary.Appending.Setoid (setoid A) as General
 import Data.List.Relation.Ternary.Appending.Setoid.Properties (setoid A)

@@ -14,7 +14,8 @@ open import Data.Fin.Base as Fin
   using (Fin; zero; suc; toℕ; fromℕ<; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 import Data.List.Properties as List
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; zero; suc; _+_; _≤_; _<_; s≤s; pred; s<s⁻¹; _≥_;
+  s≤s⁻¹; z≤n)
 open import Data.Nat.Properties
   using (+-assoc; m≤n⇒m≤1+n; m≤m+n; ≤-refl; ≤-trans; ≤-irrelevant; ≤⇒≤″; suc-injective; +-comm; +-suc)
 open import Data.Product.Base as Product
@@ -24,12 +25,14 @@ open import Data.Sum.Properties using ([,]-map)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Equality.Cast as VecCast
   using (_≈[_]_; ≈-sym; module CastReasoning)
-open import Function.Base
+open import Function.Base using (_∘_; id; _$_; const; _ˢ_; flip)
 open import Function.Bundles using (_↔_; mk↔ₛ′)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (DecidableEquality)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; _≗_; refl; sym; trans; cong; cong₂; subst)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary.Decidable.Core using (Dec; does; yes; _×-dec_; map′)
 open import Relation.Nullary.Negation.Core using (contradiction)

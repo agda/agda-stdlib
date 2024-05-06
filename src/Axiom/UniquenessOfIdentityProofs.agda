@@ -60,7 +60,7 @@ module Constant⇒UIP
 -- proof produced by the decision procedure.
 
 module Decidable⇒UIP
-  {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_)
+  {a} {A : Set a} (_≟_ : DecidableEquality A)
   where
 
   ≡-normalise : _≡_ {A = A} ⇒ _≡_
