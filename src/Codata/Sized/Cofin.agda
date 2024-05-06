@@ -8,15 +8,15 @@
 
 module Codata.Sized.Cofin where
 
-open import Size
-open import Codata.Sized.Thunk
+open import Size using (∞)
+open import Codata.Sized.Thunk using (force)
 open import Codata.Sized.Conat as Conat
   using (Conat; zero; suc; infinity; _ℕ<_; sℕ≤s; _ℕ≤infinity)
 open import Codata.Sized.Conat.Bisimilarity as Bisim using (_⊢_≲_ ; s≲s)
-open import Data.Nat.Base
-open import Data.Fin.Base as Fin hiding (fromℕ; fromℕ<; toℕ)
+open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Function.Base using (_∋_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- The type

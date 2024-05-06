@@ -10,19 +10,18 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Rational.Base hiding (_⊔_)
+module Function.Metric.Rational.Bundles where
+
 open import Function.Base using (const)
 open import Level using (Level; suc; _⊔_)
-open import Relation.Binary.Core
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; isEquivalence)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties using (isEquivalence)
 
-open import Function.Metric.Rational.Core
+open import Function.Metric.Rational.Core using (DistanceFunction)
 open import Function.Metric.Rational.Structures
 open import Function.Metric.Bundles as Base
   using (GeneralMetric)
-
-module Function.Metric.Rational.Bundles where
 
 ------------------------------------------------------------------------
 -- Proto-metric

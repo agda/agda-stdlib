@@ -23,7 +23,7 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
   using (IsDecEquivalence; IsStrictPartialOrder; IsStrictTotalOrder; IsPreorder; IsPartialOrder; IsDecPartialOrder; IsEquivalence)
 open import Relation.Binary.Definitions
-  using (Decidable; Trichotomous; Irreflexive; Transitive; Asymmetric; Antisymmetric; Symmetric; Substitutive; Reflexive; tri<; tri≈; tri>)
+  using (Decidable; DecidableEquality; Trichotomous; Irreflexive; Transitive; Asymmetric; Antisymmetric; Symmetric; Substitutive; Reflexive; tri<; tri≈; tri>)
 import Relation.Binary.Construct.On as On
 import Relation.Binary.Construct.Subst.Equality as Subst
 import Relation.Binary.Construct.Closure.Reflexive as Refl
@@ -55,7 +55,7 @@ open import Agda.Builtin.Char.Properties
 -- Properties of _≡_
 
 infix 4 _≟_
-_≟_ : Decidable {A = Char} _≡_
+_≟_ : DecidableEquality Char
 x ≟ y = map′ ≈⇒≡ ≈-reflexive (toℕ x ℕ.≟ toℕ y)
 
 setoid : Setoid _ _

@@ -8,16 +8,17 @@
 
 module Data.Nat.DivMod.WithK where
 
-open import Data.Nat using (ℕ; NonZero; _+_; _*_)
+open import Data.Nat.Base using (ℕ; NonZero; _+_; _*_)
 open import Data.Nat.DivMod hiding (_mod_; _divMod_)
 open import Data.Nat.Properties using (≤⇒≤″)
-open import Data.Nat.WithK
+open import Data.Nat.WithK using (≤″-erase)
 open import Data.Fin.Base using (Fin; toℕ; fromℕ<″)
 open import Data.Fin.Properties using (toℕ-fromℕ<″)
 open import Function.Base using (_$_)
-open import Relation.Binary.PropositionalEquality
-  using (cong; module ≡-Reasoning)
-open import Relation.Binary.PropositionalEquality.WithK
+open import Relation.Binary.PropositionalEquality.Core using (cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.WithK using (≡-erase)
 
 open ≡-Reasoning
 

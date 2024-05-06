@@ -9,21 +9,23 @@
 module Data.Parity.Properties where
 
 open import Algebra.Bundles
-open import Data.Empty
 open import Data.Nat.Base as ℕ using (zero; suc; parity)
 open import Data.Parity.Base as ℙ using (Parity; 0ℙ; 1ℙ; _⁻¹; toSign; fromSign)
 open import Data.Product.Base using (_,_)
-open import Data.Sign.Base as 𝕊
+import Data.Sign.Base as 𝕊
 open import Function.Base using (_$_; id)
 open import Function.Definitions
 open import Function.Consequences.Propositional
+  using (inverseʳ⇒injective; inverseˡ⇒surjective)
 open import Level using (0ℓ)
 open import Relation.Binary
   using (Decidable; DecidableEquality; Setoid; DecSetoid; IsDecEquivalence)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; refl; sym; cong; cong₂; module ≡-Reasoning
-        ; setoid; isEquivalence; decSetoid; isDecEquivalence)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl; sym; cong; cong₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning; setoid; isEquivalence; decSetoid; isDecEquivalence)
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Negation.Core using (contradiction)
 
 open import Algebra.Structures {A = Parity} _≡_
 open import Algebra.Definitions {A = Parity} _≡_
@@ -129,8 +131,8 @@ p+p≡0ℙ 1ℙ = refl
 
 +-cancelʳ-≡ : RightCancellative ℙ._+_
 +-cancelʳ-≡ _ 1ℙ 1ℙ _  = refl
-+-cancelʳ-≡ _ 1ℙ 0ℙ eq = ⊥-elim (p≢p⁻¹ _ $ sym eq)
-+-cancelʳ-≡ _ 0ℙ 1ℙ eq = ⊥-elim (p≢p⁻¹ _ eq)
++-cancelʳ-≡ _ 1ℙ 0ℙ eq = contradiction (sym eq) (p≢p⁻¹ _)
++-cancelʳ-≡ _ 0ℙ 1ℙ eq = contradiction eq (p≢p⁻¹ _)
 +-cancelʳ-≡ _ 0ℙ 0ℙ _  = refl
 
 +-cancelˡ-≡ : LeftCancellative ℙ._+_
@@ -407,8 +409,8 @@ toSign-inverseʳ {0ℙ} refl = refl
 toSign-inverseʳ {1ℙ} refl = refl
 
 toSign-inverseˡ : Inverseˡ _≡_ _≡_ toSign fromSign
-toSign-inverseˡ { + }  refl = refl
-toSign-inverseˡ { - } refl = refl
+toSign-inverseˡ { 𝕊.+ } refl = refl
+toSign-inverseˡ { 𝕊.- } refl = refl
 
 toSign-injective : Injective _≡_ _≡_ toSign
 toSign-injective = inverseʳ⇒injective toSign toSign-inverseʳ

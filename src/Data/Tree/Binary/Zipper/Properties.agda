@@ -8,17 +8,22 @@
 
 module Data.Tree.Binary.Zipper.Properties where
 
-open import Data.Tree.Binary as BT using (Tree; node; leaf)
-open import Data.Tree.Binary.Zipper
-open import Data.Nat using (ℕ; suc; _+_)
-open import Data.Nat.Properties
 open import Data.List.Base as List using (List ; [] ; _∷_; sum)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
-open import Relation.Binary.PropositionalEquality
-open ≡-Reasoning
+open import Data.Nat.Base using (ℕ; suc; _+_)
+open import Data.Nat.Properties using (+-identityʳ; +-comm; +-assoc)
+open import Data.Tree.Binary as BT using (Tree; node; leaf)
+open import Data.Tree.Binary.Zipper using (Zipper; toTree; up; mkZipper;
+  leftBranch; rightBranch; left; right; #nodes; Crumb; getTree; #leaves;
+  map; foldr; _⟪_⟫ˡ_; _⟪_⟫ʳ_)
 open import Function.Base using (_on_; _∘_; _$_)
 open import Level using (Level)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
+open ≡-Reasoning
 
 private
   variable

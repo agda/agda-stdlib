@@ -8,7 +8,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra.Bundles using (IdempotentCommutativeMonoid)
 
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)
@@ -25,7 +25,8 @@ import Relation.Binary.Reflection            as Reflection
 import Relation.Nullary.Decidable            as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_; decSetoid)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 open import Relation.Nullary.Decidable using (Dec)
 
 module Algebra.Solver.IdempotentCommutativeMonoid

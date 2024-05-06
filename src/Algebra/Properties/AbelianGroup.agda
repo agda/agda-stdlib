@@ -23,6 +23,9 @@ open import Algebra.Properties.Group group public
 ------------------------------------------------------------------------
 -- Properties of abelian groups
 
+⁻¹-anti-homo‿- : ∀ x y → (x - y) ⁻¹ ≈ y - x
+⁻¹-anti-homo‿- = ⁻¹-anti-homo-//
+
 xyx⁻¹≈y : ∀ x y → x ∙ y ∙ x ⁻¹ ≈ y
 xyx⁻¹≈y x y = begin
   x ∙ y ∙ x ⁻¹    ≈⟨ ∙-congʳ $ comm _ _ ⟩

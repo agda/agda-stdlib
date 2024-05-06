@@ -9,10 +9,11 @@
 module Data.These.Properties where
 
 open import Data.Product.Base using (_×_; _,_; <_,_>; uncurry)
-open import Data.These.Base
+open import Data.These.Base using (These; this; that; these)
 open import Function.Base using (_∘_)
-open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Definitions using (DecidableEquality)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂)
 open import Relation.Nullary.Decidable using (yes; no; map′; _×-dec_)
 
 ------------------------------------------------------------------------
@@ -35,7 +36,7 @@ module _ {a b} {A : Set a} {B : Set b} where
   these-injective : ∀ {x y : A} {a b : B} → these x a ≡ these y b → x ≡ y × a ≡ b
   these-injective = < these-injectiveˡ , these-injectiveʳ >
 
-  ≡-dec : Decidable _≡_ → Decidable _≡_ → Decidable {A = These A B} _≡_
+  ≡-dec : DecidableEquality A → DecidableEquality B → DecidableEquality (These A B)
   ≡-dec dec₁ dec₂ (this x)    (this y) =
     map′ (cong this) this-injective (dec₁ x y)
   ≡-dec dec₁ dec₂ (this x)    (that y)    = no λ()

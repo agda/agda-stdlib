@@ -8,7 +8,7 @@
 
 module Data.Fin.Permutation.Transposition.List where
 
-open import Data.Fin.Base
+open import Data.Fin.Base using (Fin; suc)
 open import Data.Fin.Patterns using (0F)
 open import Data.Fin.Permutation as P hiding (lift₀)
 import Data.Fin.Permutation.Components as PC
@@ -16,8 +16,10 @@ open import Data.List.Base using (List; []; _∷_; map)
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product.Base using (_×_; _,_)
 open import Function.Base using (_∘_)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; sym; cong; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; sym; cong)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open ≡-Reasoning
 
 private

@@ -9,7 +9,7 @@
 module System.Clock.Primitive where
 
 open import Agda.Builtin.Nat using (Nat)
-open import IO.Primitive using (IO)
+open import IO.Primitive.Core using (IO)
 open import Foreign.Haskell using (Pair)
 
 data Clock : Set where

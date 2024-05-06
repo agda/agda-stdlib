@@ -25,7 +25,7 @@ open import Relation.Binary.Structures
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Poset; Preorder; TotalOrder; DecTotalOrder; StrictPartialOrder; StrictTotalOrder)
 open import Relation.Binary.Definitions
-  using (Decidable; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
+  using (Decidable; DecidableEquality; Reflexive; Transitive; Antisymmetric; Minimum; Maximum; Total; Irrelevant; Irreflexive; Asymmetric; Trans; Trichotomous; tri≈; tri<; tri>; _Respects₂_)
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
 open import Relation.Nullary.Decidable.Core using (True; yes; no; fromWitness)
@@ -48,7 +48,7 @@ private
 
 infix 4 _≟_
 
-_≟_ : Decidable {A = Bool} _≡_
+_≟_ : DecidableEquality Bool
 true  ≟ true  = yes refl
 false ≟ false = yes refl
 true  ≟ false = no λ()

@@ -11,9 +11,14 @@ module Data.List.Zipper.Properties where
 open import Data.List.Base as List using (List ; [] ; _∷_)
 open import Data.List.Properties
 open import Data.List.Zipper
+  using (Zipper; toList; left; right; mkZipper; reverse; _ˡ++_; _ʳ++_;
+         _++ˡ_; _++ʳ_; map; foldr)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; sym)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open ≡-Reasoning
 open import Function.Base using (_on_; _$′_; _$_; flip)
 
