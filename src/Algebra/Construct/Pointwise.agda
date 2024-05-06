@@ -61,133 +61,96 @@ isEquivalence isEquivalence = record
 ------------------------------------------------------------------------
 -- Structures
 
-module _ (isMagmaC : IsMagma _≈_ _∙_) where
+isMagma : IsMagma _≈_ _∙_ → IsMagma (liftRel _≈_) (lift₂ _∙_)
+isMagma isMagma = record
+  { isEquivalence = isEquivalence M.isEquivalence
+  ; ∙-cong = λ g h x → M.∙-cong (g x) (h x)
+  }
+  where module M = IsMagma isMagma
 
-  private
-    module M = IsMagma isMagmaC
+isSemigroup : IsSemigroup _≈_ _∙_ → IsSemigroup (liftRel _≈_) (lift₂ _∙_)
+isSemigroup isSemigroup = record
+  { isMagma = isMagma M.isMagma
+  ; assoc = λ f g h x → M.assoc (f x) (g x) (h x)
+  }
+  where module M = IsSemigroup isSemigroup
 
-  isMagma : IsMagma (liftRel _≈_) (lift₂ _∙_)
-  isMagma = record
-    { isEquivalence = isEquivalence M.isEquivalence
-    ; ∙-cong = λ g h x → M.∙-cong (g x) (h x)
-    }
+isBand : IsBand _≈_ _∙_ → IsBand (liftRel _≈_) (lift₂ _∙_)
+isBand isBand = record
+  { isSemigroup = isSemigroup M.isSemigroup
+  ; idem = λ f x → M.idem (f x)
+  }
+  where module M = IsBand isBand
 
-module _ (isSemigroupC : IsSemigroup _≈_ _∙_) where
+isCommutativeSemigroup : IsCommutativeSemigroup _≈_ _∙_ →
+                         IsCommutativeSemigroup (liftRel _≈_) (lift₂ _∙_)
+isCommutativeSemigroup isCommutativeSemigroup = record
+  { isSemigroup = isSemigroup M.isSemigroup
+  ; comm = λ f g x → M.comm (f x) (g x)
+  }
+  where module M = IsCommutativeSemigroup isCommutativeSemigroup
 
-  private
-    module M = IsSemigroup isSemigroupC
+isMonoid : IsMonoid _≈_ _∙_ ε → IsMonoid (liftRel _≈_) (lift₂ _∙_) (lift₀ ε)
+isMonoid isMonoid = record
+  { isSemigroup = isSemigroup M.isSemigroup
+  ; identity = (λ f x → M.identityˡ (f x)) , λ f x → M.identityʳ (f x)
+  }
+  where module M = IsMonoid isMonoid
 
-  isSemigroup : IsSemigroup (liftRel _≈_) (lift₂ _∙_)
-  isSemigroup = record
-    { isMagma = isMagma M.isMagma
-    ; assoc = λ f g h x → M.assoc (f x) (g x) (h x)
-    }
+isCommutativeMonoid : IsCommutativeMonoid _≈_ _∙_ ε →
+                      IsCommutativeMonoid (liftRel _≈_) (lift₂ _∙_) (lift₀ ε)
+isCommutativeMonoid isCommutativeMonoid = record
+  { isMonoid = isMonoid M.isMonoid
+  ; comm = λ f g x → M.comm (f x) (g x)
+  }
+  where module M = IsCommutativeMonoid isCommutativeMonoid
 
-module _ (isBandC : IsBand _≈_ _∙_) where
+isGroup : IsGroup _≈_ _∙_ ε _⁻¹ →
+          IsGroup (liftRel _≈_) (lift₂ _∙_) (lift₀ ε) (lift₁ _⁻¹)
+isGroup isGroup = record
+  { isMonoid = isMonoid M.isMonoid
+  ; inverse = (λ f x → M.inverseˡ (f x)) , λ f x → M.inverseʳ (f x)
+  ; ⁻¹-cong = λ f x → M.⁻¹-cong (f x)
+  }
+  where module M = IsGroup isGroup
 
-  private
-    module M = IsBand isBandC
+isAbelianGroup : IsAbelianGroup _≈_ _∙_ ε _⁻¹ →
+                 IsAbelianGroup (liftRel _≈_) (lift₂ _∙_) (lift₀ ε) (lift₁ _⁻¹)
+isAbelianGroup isAbelianGroup = record
+  { isGroup = isGroup M.isGroup
+  ; comm = λ f g x → M.comm (f x) (g x)
+  }
+  where module M = IsAbelianGroup isAbelianGroup
 
-  isBand : IsBand (liftRel _≈_) (lift₂ _∙_)
-  isBand = record
-    { isSemigroup = isSemigroup M.isSemigroup
-    ; idem = λ f x → M.idem (f x)
-    }
+isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _≈_ _+_ _*_ 0# 1# →
+  IsSemiringWithoutAnnihilatingZero (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
+isSemiringWithoutAnnihilatingZero isSemiringWithoutAnnihilatingZero = record
+  { +-isCommutativeMonoid = isCommutativeMonoid M.+-isCommutativeMonoid
+  ; *-cong =  λ g h x → M.*-cong (g x) (h x)
+  ; *-assoc =  λ f g h x → M.*-assoc (f x) (g x) (h x)
+  ; *-identity = (λ f x → M.*-identityˡ (f x)) , λ f x → M.*-identityʳ (f x)
+  ; distrib = (λ f g h x → M.distribˡ (f x) (g x) (h x)) , λ f g h x → M.distribʳ (f x) (g x) (h x)
+  }
+  where module M = IsSemiringWithoutAnnihilatingZero isSemiringWithoutAnnihilatingZero
 
-module _ (isCommutativeSemigroupC : IsCommutativeSemigroup _≈_ _∙_) where
+isSemiring : IsSemiring _≈_ _+_ _*_ 0# 1# →
+             IsSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
+isSemiring isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = isSemiringWithoutAnnihilatingZero M.isSemiringWithoutAnnihilatingZero
+  ; zero = (λ f x → M.zeroˡ (f x)) , λ f x → M.zeroʳ (f x)
+  }
+  where module M = IsSemiring isSemiring
 
-  private
-    module M = IsCommutativeSemigroup isCommutativeSemigroupC
-
-  isCommutativeSemigroup : IsCommutativeSemigroup (liftRel _≈_) (lift₂ _∙_)
-  isCommutativeSemigroup = record
-    { isSemigroup = isSemigroup M.isSemigroup
-    ; comm = λ f g x → M.comm (f x) (g x)
-    }
-
-module _ (isMonoidC : IsMonoid _≈_ _∙_ ε) where
-
-  private
-    module M = IsMonoid isMonoidC
-
-  isMonoid : IsMonoid (liftRel _≈_) (lift₂ _∙_) (lift₀ ε)
-  isMonoid = record
-    { isSemigroup = isSemigroup M.isSemigroup
-    ; identity = (λ f x → M.identityˡ (f x)) , λ f x → M.identityʳ (f x)
-    }
-
-module _ (isCommutativeMonoidC : IsCommutativeMonoid _≈_ _∙_ ε) where
-
-  private
-    module M = IsCommutativeMonoid isCommutativeMonoidC
-
-  isCommutativeMonoid : IsCommutativeMonoid (liftRel _≈_) (lift₂ _∙_) (lift₀ ε)
-  isCommutativeMonoid = record
-    { isMonoid = isMonoid M.isMonoid
-    ; comm = λ f g x → M.comm (f x) (g x)
-    }
-
-module _ (isGroupC : IsGroup _≈_ _∙_ ε _⁻¹) where
-
-  private
-    module M = IsGroup isGroupC
-
-  isGroup : IsGroup (liftRel _≈_) (lift₂ _∙_) (lift₀ ε) (lift₁ _⁻¹)
-  isGroup = record
-    { isMonoid = isMonoid M.isMonoid
-    ; inverse = (λ f x → M.inverseˡ (f x)) , λ f x → M.inverseʳ (f x)
-    ; ⁻¹-cong = λ f x → M.⁻¹-cong (f x)
-    }
-
-module _ (isAbelianGroupC : IsAbelianGroup _≈_ _∙_ ε _⁻¹) where
-
-  private
-    module M = IsAbelianGroup isAbelianGroupC
-
-  isAbelianGroup : IsAbelianGroup (liftRel _≈_) (lift₂ _∙_) (lift₀ ε) (lift₁ _⁻¹)
-  isAbelianGroup = record
-    { isGroup = isGroup M.isGroup
-    ; comm = λ f g x → M.comm (f x) (g x)
-    }
-
-module _ (isSemiringWithoutAnnihilatingZeroC : IsSemiringWithoutAnnihilatingZero _≈_ _+_ _*_ 0# 1#) where
-
-  private
-    module M = IsSemiringWithoutAnnihilatingZero isSemiringWithoutAnnihilatingZeroC
-
-  isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
-  isSemiringWithoutAnnihilatingZero = record
-    { +-isCommutativeMonoid = isCommutativeMonoid M.+-isCommutativeMonoid
-    ; *-cong =  λ g h x → M.*-cong (g x) (h x)
-    ; *-assoc =  λ f g h x → M.*-assoc (f x) (g x) (h x)
-    ; *-identity = (λ f x → M.*-identityˡ (f x)) , λ f x → M.*-identityʳ (f x)
-    ; distrib = (λ f g h x → M.distribˡ (f x) (g x) (h x)) , λ f g h x → M.distribʳ (f x) (g x) (h x)
-    }
-
-module _ (isSemiringC : IsSemiring _≈_ _+_ _*_ 0# 1#) where
-
-  private
-    module M = IsSemiring isSemiringC
-
-  isSemiring : IsSemiring (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₀ 0#) (lift₀ 1#)
-  isSemiring = record
-    { isSemiringWithoutAnnihilatingZero = isSemiringWithoutAnnihilatingZero M.isSemiringWithoutAnnihilatingZero
-    ; zero = (λ f x → M.zeroˡ (f x)) , λ f x → M.zeroʳ (f x)
-    }
-
-module _ (isRingC : IsRing _≈_ _+_ _*_ -_ 0# 1#) where
-
-  private
-    module M = IsRing isRingC
-
-  isRing : IsRing (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ -_) (lift₀ 0#) (lift₀ 1#)
-  isRing = record
-    { +-isAbelianGroup = isAbelianGroup M.+-isAbelianGroup
-    ; *-cong = λ g h x → M.*-cong (g x) (h x)
-    ; *-assoc = λ f g h x → M.*-assoc (f x) (g x) (h x)
-    ; *-identity = (λ f x → M.*-identityˡ (f x)) , λ f x → M.*-identityʳ (f x)
-    ; distrib = (λ f g h x → M.distribˡ (f x) (g x) (h x)) , λ f g h x → M.distribʳ (f x) (g x) (h x)
-    }
+isRing : IsRing _≈_ _+_ _*_ -_ 0# 1# →
+         IsRing (liftRel _≈_) (lift₂ _+_) (lift₂ _*_) (lift₁ -_) (lift₀ 0#) (lift₀ 1#)
+isRing isRing = record
+  { +-isAbelianGroup = isAbelianGroup M.+-isAbelianGroup
+  ; *-cong = λ g h x → M.*-cong (g x) (h x)
+  ; *-assoc = λ f g h x → M.*-assoc (f x) (g x) (h x)
+  ; *-identity = (λ f x → M.*-identityˡ (f x)) , λ f x → M.*-identityʳ (f x)
+  ; distrib = (λ f g h x → M.distribˡ (f x) (g x) (h x)) , λ f g h x → M.distribʳ (f x) (g x) (h x)
+  }
+  where module M = IsRing isRing
 
 
 ------------------------------------------------------------------------
