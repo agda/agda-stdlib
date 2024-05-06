@@ -8,12 +8,16 @@
 
 module Data.Sum.Algebra where
 
-open import Algebra
+open import Algebra.Bundles
+  using (Magma; Semigroup; Monoid; CommutativeMonoid)
+open import Algebra.Definitions
+open import Algebra.Structures
+  using (IsMagma; IsSemigroup; IsMonoid; IsCommutativeMonoid)
 open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product.Base using (_,_)
-open import Data.Sum.Base
-open import Data.Sum.Properties
-open import Data.Unit.Polymorphic using (⊤; tt)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; map; [_,_]; swap; assocʳ; assocˡ)
+open import Data.Sum.Properties using (swap-involutive)
+open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Function.Base using (id; _∘_)
 open import Function.Properties.Inverse using (↔-isEquivalence)
 open import Function.Bundles using (_↔_; Inverse; mk↔ₛ′)

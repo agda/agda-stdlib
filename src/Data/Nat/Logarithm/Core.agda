@@ -8,12 +8,15 @@
 
 module Data.Nat.Logarithm.Core where
 
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; _<_; zero; suc; _+_; ⌊_/2⌋; ⌈_/2⌉;
+  _≤_; z≤n; s≤s; _∸_; NonZero; _*_; _^_)
 open import Data.Nat.Properties
 open import Data.Nat.Induction using (<-wellFounded)
 open import Induction.WellFounded using (Acc; acc)
-open import Relation.Binary.PropositionalEquality
-open import Data.Unit
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; sym)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 ------------------------------------------------------------------------
 -- Logarithm base 2

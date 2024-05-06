@@ -13,8 +13,9 @@ open import Function.Nary.NonDependent using (congₙ)
 open import Level using (Level)
 open import Data.Nat.Base using (suc; _+_)
 open import Data.Tree.Binary
-open import Function.Base
-open import Relation.Binary.PropositionalEquality
+open import Function.Base using (id; flip)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; _≗_)
 
 private
   variable

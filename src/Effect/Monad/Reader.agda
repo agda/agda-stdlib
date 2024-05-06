@@ -6,15 +6,11 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Level
-
 module Effect.Monad.Reader where
 
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad; module Join)
 open import Effect.Monad.Identity as Id using (Identity; runIdentity)
 open import Level using (Level)
 

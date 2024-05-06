@@ -13,28 +13,26 @@ open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List hiding (find)
-open import Data.List.Properties using (ʳ++-defn)
-open import Data.List.Effectful as Listₑ using (monad)
+open import Data.List.Effectful as List using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties.Core
   using (Any↔; find∘map; map∘find; lose∘find)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
+open import Data.Nat.Base using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; m<n⇒m<1+n)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product.Base as Product
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
-open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
   using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Effect.Monad
-open import Function.Base
+open import Effect.Monad using (RawMonad)
+open import Function.Base using (_$_; _∘_; flip; const; id; _∘′_)
 open import Function.Bundles
 import Function.Properties.Inverse as Inverse
 open import Function.Related.Propositional as Related using (Kind; Related)
@@ -624,18 +622,16 @@ reverseAcc⁺ acc (x ∷ xs) (inj₂ (there y)) = reverseAcc⁺ (x ∷ acc) xs (
 
 reverseAcc⁻ : ∀ acc xs → Any P (reverseAcc acc xs) → Any P acc ⊎ Any P xs
 reverseAcc⁻ acc []       ps = inj₁ ps
-reverseAcc⁻ acc (x ∷ xs) ps rewrite ʳ++-defn xs {x ∷ acc} with ++⁻ (reverseAcc [] xs) ps
-... | inj₂ (here p') = inj₂ (here p')
-... | inj₂ (there ps') = inj₁ ps'
-... | inj₁ ps' with reverseAcc⁻ [] xs ps'
-...   | inj₂ ps'' = inj₂ (there ps'')
+reverseAcc⁻ acc (x ∷ xs) ps with reverseAcc⁻ (x ∷ acc) xs ps
+... | inj₁ (here px) = inj₂ (here px)
+... | inj₁ (there pxs) = inj₁ pxs
+... | inj₂ pxs = inj₂ (there pxs)
 
 reverse⁺ : Any P xs → Any P (reverse xs)
 reverse⁺ ps = reverseAcc⁺ [] _ (inj₂ ps)
 
 reverse⁻ : Any P (reverse xs) → Any P xs
-reverse⁻ ps with reverseAcc⁻ [] _ ps
-... | inj₂ ps' = ps'
+reverse⁻ ps with inj₂ pxs ← reverseAcc⁻ [] _ ps = pxs
 
 ------------------------------------------------------------------------
 -- pure
@@ -686,7 +682,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ f → Any (P ∘ f) xs) fs                ↔⟨ Any-cong (λ _ → Any-cong (λ _ → pure↔) (_ ∎)) (_ ∎) ⟩
   Any (λ f → Any (Any P ∘ pure ∘ f) xs) fs     ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
   Any (λ f → Any P (xs >>= pure ∘ f)) fs       ↔⟨ >>=↔ ⟩
-  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡⟨ cong (Any P) (Listₑ.Applicative.unfold-⊛ fs xs) ⟨
+  Any P (fs >>= λ f → xs >>= λ x → pure (f x)) ≡⟨ cong (Any P) (List.Applicative.unfold-⊛ fs xs) ⟨
   Any P (fs ⊛ xs)                               ∎
   where open Related.EquationalReasoning
 
@@ -706,7 +702,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ x → Any (λ y → P (x , y)) ys) xs                           ↔⟨ pure↔ ⟩
   Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (pure _,_)  ↔⟨ ⊛↔ ⟩
   Any (λ x, → Any (P ∘ x,) ys) (pure _,_ ⊛ xs)                      ↔⟨ ⊛↔ ⟩
-  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡⟨ cong (Any P ∘′ (_⊛ ys)) (Listₑ.Applicative.unfold-<$> _,_ xs) ⟨
+  Any P (pure _,_ ⊛ xs ⊛ ys)                                        ≡⟨ cong (Any P ∘′ (_⊛ ys)) (List.Applicative.unfold-<$> _,_ xs) ⟨
   Any P (xs ⊗ ys)                                                   ∎
   where open Related.EquationalReasoning
 

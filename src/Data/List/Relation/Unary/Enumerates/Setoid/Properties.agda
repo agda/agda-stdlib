@@ -40,8 +40,8 @@ module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (surj : Surjection S T) whe
   open Surjection surj
 
   map⁺ : ∀ {xs} → IsEnumeration S xs → IsEnumeration T (map to xs)
-  map⁺ _∈xs y with strictlySurjective y
-  ... | (x , fx≈y) = ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
+  map⁺ _∈xs y with (x , fx≈y) ← strictlySurjective y =
+      ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
 
 ------------------------------------------------------------------------
 -- _++_

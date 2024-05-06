@@ -20,11 +20,12 @@ open import Effect.Applicative using (RawApplicative)
 open import Effect.Monad using (RawMonad)
 open import Function.Base as Function using (_$_; _∘_)
 
-variable
-  x y s p ℓ : Level
-  C : Container s p
-  X : Set x
-  Y : Set y
+private
+  variable
+    x y s p ℓ : Level
+    C : Container s p
+    X : Set x
+    Y : Set y
 
 infixl 1 _⋆C_
 infix  1 _⋆_
