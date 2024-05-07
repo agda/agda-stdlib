@@ -83,6 +83,11 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
+* Bundled morphisms between algebraic structures:
+  ```
+  Algebra.Morphism.Bundles
+ ```
+
 * Prime factorisation of natural numbers.
   ```
   Data.Nat.Primality.Factorisation
