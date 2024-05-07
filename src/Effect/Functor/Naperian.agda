@@ -4,7 +4,7 @@
 -- Naperian functor
 --
 -- Definitions of Naperian Functors, as named by Hancock and McBride,
--- and subsequently documented by Jeremy Gibbons 
+-- and subsequently documented by Jeremy Gibbons
 -- in the article "APLicative Programming with Naperian Functors"
 -- which appeared at ESOP 2017.
 -- https://link.springer.com/chapter/10.1007/978-3-662-54434-1_21
@@ -12,7 +12,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Effect.Functor.Naperian where 
+module Effect.Functor.Naperian where
 
 open import Effect.Functor using (RawFunctor)
 open import Function.Bundles using (_⟶ₛ_; _⟨$⟩_; Func)
@@ -65,7 +65,7 @@ module _ {F : Set a → Set b} c (RF : RawFunctor F) where
       where
         open Setoid AS renaming (Carrier to X)
         open RawNaperian rn
-        
+
   record Naperian (AS : Setoid a e) : Set (suc a ⊔ b ⊔ suc c ⊔ e) where
     field
       rawNaperian : RawNaperian c RF
