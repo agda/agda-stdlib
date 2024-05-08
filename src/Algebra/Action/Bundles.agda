@@ -20,11 +20,9 @@ module Algebra.Action.Bundles where
 
 open import Algebra.Action.Structures using (IsLeftAction; IsRightAction)
 open import Algebra.Bundles using (Monoid)
-
+open import Level using (Level; _⊔_)
 open import Data.List.Base using ([]; _++_)
 import Data.List.Relation.Binary.Equality.Setoid as ≋
-open import Level using (Level; _⊔_)
-
 open import Relation.Binary.Bundles using (Setoid)
 
 private
@@ -81,34 +79,6 @@ module SetoidAction (S : Setoid c ℓ) (A : Setoid a r) where
 
     []-act : ∀ x → x ◁⋆ [] A.≈ x
     []-act x = []-act-cong A.refl
-
-
-------------------------------------------------------------------------
--- A Setoid action yields an iterated List action
-
-module ListAction {S : Setoid c ℓ} {A : Setoid a r} where
-
-  open SetoidAction
-
-  open ≋ S using (≋-setoid)
-
-  leftAction : (left : Left S A) → Left ≋-setoid A
-  leftAction left = record
-    { isLeftAction = record
-      { _▷_ = _▷⋆_
-      ; ▷-cong = ▷⋆-cong
-      }
-    }
-    where open Left left
-
-  rightAction : (right : Right S A) → Right ≋-setoid A
-  rightAction right = record
-    { isRightAction = record
-      { _◁_ = _◁⋆_
-      ; ◁-cong = ◁⋆-cong
-      }
-    }
-    where open Right right
 
 
 ------------------------------------------------------------------------

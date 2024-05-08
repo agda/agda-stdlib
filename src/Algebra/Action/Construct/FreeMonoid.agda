@@ -9,7 +9,7 @@
 open import Relation.Binary.Bundles using (Setoid)
 
 module Algebra.Action.Construct.FreeMonoid
-  {a c r ℓ} (M : Setoid c ℓ) (S : Setoid a r)
+  {a c r ℓ} (S : Setoid c ℓ) (A : Setoid a r)
   where
 
 open import Algebra.Action.Bundles
@@ -28,12 +28,12 @@ open import Level using (Level; _⊔_)
 
 
 ------------------------------------------------------------------------
--- First: define the Monoid structure on List M.Carrier
+-- Temporary: define the Monoid structure on List S.Carrier
 -- NB should be defined somewhere under `Data.List`!?
 
 private
 
-  open ≋ M using (_≋_; ≋-refl; ≋-reflexive; ≋-isEquivalence; ++⁺)
+  open ≋ S using (_≋_; ≋-refl; ≋-reflexive; ≋-isEquivalence; ++⁺)
 
   isMonoid : IsMonoid _≋_ _++_ []
   isMonoid = record
@@ -52,27 +52,51 @@ private
 
 
 ------------------------------------------------------------------------
--- Second: define the actions of that Monoid
+-- A Setoid action yields an iterated ListS action, which is
+-- the underlying SetoidAction of the FreeMonoid construction
 
-open MonoidAction monoid S
+module SetoidActions where
 
-module _ (left : SetoidAction.Left M S) where
+  open SetoidAction
+  open ≋ S renaming (≋-setoid to ListS)
 
-  open SetoidAction.Left left
+  leftAction : (left : Left S A) → Left ListS A
+  leftAction left = record
+    { isLeftAction = record
+      { _▷_ = _▷⋆_
+      ; ▷-cong = ▷⋆-cong
+      }
+    }
+    where open Left left
 
-  leftAction : Left (ListAction.leftAction left)
-  leftAction = record
+  rightAction : (right : Right S A) → Right ListS A
+  rightAction right = record
+    { isRightAction = record
+      { _◁_ = _◁⋆_
+      ; ◁-cong = ◁⋆-cong
+      }
+    }
+    where open Right right
+
+
+------------------------------------------------------------------------
+-- Now: define the MonoidActions of the (Monoid based on) ListS on A
+
+module MonoidActions where
+
+  open MonoidAction monoid A
+
+  leftAction : (left : SetoidAction.Left S A) → Left (SetoidActions.leftAction left)
+  leftAction left = record
     { ∙-act = ++-act
     ; ε-act = []-act
     }
+    where open SetoidAction.Left left
 
-module _ (right : SetoidAction.Right M S) where
-
-  open SetoidAction.Right right
-
-  rightAction : Right (ListAction.rightAction right)
-  rightAction = record
+  rightAction : (right : SetoidAction.Right S A) → Right (SetoidActions.rightAction right)
+  rightAction right = record
     { ∙-act = ++-act
     ; ε-act = []-act
     }
+    where open SetoidAction.Right right
 
