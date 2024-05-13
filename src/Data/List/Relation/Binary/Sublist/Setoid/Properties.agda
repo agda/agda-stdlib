@@ -315,8 +315,7 @@ module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) �
   ⊆-assoc ps qs (_ ∷ʳ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
   ⊆-assoc ps (_ ∷ʳ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
   ⊆-assoc (_ ∷ʳ ps) (_ ∷ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
-  ⊆-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs)
-    rewrite ≈-assoc p q r = cong ((trans p (trans q r)) ∷_ ) (⊆-assoc ps qs rs)
+  ⊆-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-assoc ps qs rs)
   ⊆-assoc [] [] [] = refl
 
 
