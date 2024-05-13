@@ -84,19 +84,6 @@ module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) whe
   right-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (right-unit pxs)
   right-unit (x ∷ pxs) rewrite trans-reflʳ x = cong (x ∷_) (right-unit pxs)
 
-module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
-                    trans (trans p q) r ≡ trans p (trans q r)) where
-
-  ⊆-assoc : (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
-            ⊆-trans (⊆-trans ps qs) rs ≡ ⊆-trans ps (⊆-trans qs rs)
-  ⊆-assoc [] [] [] = refl
-  ⊆-assoc [] [] (r ∷ʳ rs) = cong (r ∷ʳ_) (⊆-assoc [] [] rs)
-  ⊆-assoc [] (q ∷ʳ qs) rs = {!!}
-  ⊆-assoc (p ∷ʳ ps) (q ∷ʳ qs) rs = {!!}
-  ⊆-assoc (p ∷ʳ ps) (q ∷ qs) rs = {!!}
-  ⊆-assoc (p ∷ ps) (q ∷ʳ qs) rs = {!!}
-  ⊆-assoc (p ∷ ps) (q ∷ qs) rs = {!!}
-
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
