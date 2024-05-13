@@ -22,7 +22,7 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
-open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong; cong₂)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
@@ -294,14 +294,14 @@ module _ (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) whe
   left-unit : (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
   left-unit [] = refl
   left-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (left-unit pxs)
-  left-unit (x ∷ pxs) rewrite trans-reflˡ x = cong (x ∷_) (left-unit pxs)
+  left-unit (x ∷ pxs) = cong₂ _∷_ (trans-reflˡ x) (left-unit pxs)
 
 module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) where
 
   right-unit : (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
   right-unit [] = refl
   right-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (right-unit pxs)
-  right-unit (x ∷ pxs) rewrite trans-reflʳ x = cong (x ∷_) (right-unit pxs)
+  right-unit (x ∷ pxs) = cong₂ _∷_ (trans-reflʳ x) (right-unit pxs)
 
 module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
                     trans (trans p q) r ≡ trans p (trans q r)) where
