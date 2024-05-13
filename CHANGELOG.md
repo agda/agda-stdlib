@@ -373,6 +373,14 @@ Additions to existing modules
   map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  left-unit : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
+	      (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  right-unit : (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) →
+	       (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
