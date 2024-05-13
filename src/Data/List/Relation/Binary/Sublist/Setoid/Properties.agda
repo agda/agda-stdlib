@@ -306,10 +306,6 @@ module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) whe
 module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
                     trans (trans p q) r ≡ trans p (trans q r)) where
 
-  private
-    []⊆-trans : (ps : [] ⊆ as) → ⊆-trans [] ps ≡ ps
-    []⊆-trans ps = []⊆-irrelevant (⊆-trans [] ps) ps
-
   ⊆-assoc : (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
             ⊆-trans (⊆-trans ps qs) rs ≡ ⊆-trans ps (⊆-trans qs rs)
   ⊆-assoc ps qs (_ ∷ʳ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
