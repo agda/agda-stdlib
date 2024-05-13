@@ -375,10 +375,14 @@ Additions to existing modules
 
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
   ```agda
-  left-unit : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
-	      (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  left-unit  : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
+               (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
   right-unit : (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) →
-	       (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+               (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ⊆-assoc    : (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                          trans (trans p q) r ≡ trans p (trans q r)) →
+	       (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+               ⊆-trans (⊆-trans ps qs) rs ≡ ⊆-trans ps (⊆-trans qs rs)
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
