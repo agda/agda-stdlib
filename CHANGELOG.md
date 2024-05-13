@@ -381,7 +381,7 @@ Additions to existing modules
                (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
   ⊆-assoc    : (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
                           trans (trans p q) r ≡ trans p (trans q r)) →
-	       (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+               (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
                ⊆-trans (⊆-trans ps qs) rs ≡ ⊆-trans ps (⊆-trans qs rs)
   ```
 

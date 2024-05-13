@@ -22,7 +22,7 @@ open import Function.Base
 open import Function.Bundles using (_⇔_; _⤖_)
 open import Level
 open import Relation.Binary.Definitions using () renaming (Decidable to Decidable₂)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_; refl; cong)
 open import Relation.Binary.Structures using (IsDecTotalOrder)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
 open import Relation.Nullary.Negation using (¬_)
@@ -65,25 +65,6 @@ module _ where
 
   ∷ʳ-injective : ∀ {pxs qxs : xs ⊆ ys} → y ∷ʳ pxs ≡ y ∷ʳ qxs → pxs ≡ qxs
   ∷ʳ-injective refl = refl
-
-------------------------------------------------------------------------
--- Categorical properties
-------------------------------------------------------------------------
-
-module _ (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) where
-
-  left-unit : (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
-  left-unit [] = refl
-  left-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (left-unit pxs)
-  left-unit (x ∷ pxs) rewrite trans-reflˡ x = cong (x ∷_) (left-unit pxs)
-
-module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) where
-
-  right-unit : (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
-  right-unit [] = refl
-  right-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (right-unit pxs)
-  right-unit (x ∷ pxs) rewrite trans-reflʳ x = cong (x ∷_) (right-unit pxs)
-
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
@@ -303,6 +284,41 @@ module _ where
 
   [x]⊆xs⤖x∈xs : ([ x ] ⊆ xs) ⤖ (x ∈ xs)
   [x]⊆xs⤖x∈xs = HeteroProperties.Sublist-[x]-bijection
+
+------------------------------------------------------------------------
+-- Categorical properties
+------------------------------------------------------------------------
+
+module _ (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) where
+
+  left-unit : (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  left-unit [] = refl
+  left-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (left-unit pxs)
+  left-unit (x ∷ pxs) rewrite trans-reflˡ x = cong (x ∷_) (left-unit pxs)
+
+module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) where
+
+  right-unit : (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  right-unit [] = refl
+  right-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (right-unit pxs)
+  right-unit (x ∷ pxs) rewrite trans-reflʳ x = cong (x ∷_) (right-unit pxs)
+
+module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                    trans (trans p q) r ≡ trans p (trans q r)) where
+
+  private
+    []⊆-trans : (ps : [] ⊆ as) → ⊆-trans [] ps ≡ ps
+    []⊆-trans ps = []⊆-irrelevant (⊆-trans [] ps) ps
+
+  ⊆-assoc : (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+            ⊆-trans (⊆-trans ps qs) rs ≡ ⊆-trans ps (⊆-trans qs rs)
+  ⊆-assoc [] [] rs rewrite []⊆-trans rs = ≡.sym ([]⊆-trans rs)
+  ⊆-assoc ps qs (_ ∷ʳ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
+  ⊆-assoc ps (_ ∷ʳ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
+  ⊆-assoc (_ ∷ʳ ps) (_ ∷ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
+  ⊆-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs)
+    rewrite ≈-assoc p q r = cong ((trans p (trans q r)) ∷_ ) (⊆-assoc ps qs rs)
+
 
 ------------------------------------------------------------------------
 -- Properties of Disjoint(ness) and DisjointUnion
