@@ -15,7 +15,7 @@ module Data.List.Relation.Binary.Sublist.Setoid.Properties
 open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Relation.Unary.Any using (Any)
 import Data.Maybe.Relation.Unary.All as Maybe
-open import Data.Nat.Base using (_≤_; _≥_)
+open import Data.Nat.Base using (ℕ; _≤_; _≥_)
 import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base
@@ -39,22 +39,64 @@ open SetoidEquality S using (_≋_; ≋-refl)
 open SetoidSublist S hiding (map)
 open SetoidMembership S using (_∈_)
 
+private
+  variable
+    p q r s t : Level
+    a b x y : A
+    as bs cs ds xs ys : List A
+    P : Pred A p
+    Q : Pred A q
+    m n : ℕ
+
+
 ------------------------------------------------------------------------
 -- Injectivity of constructors
 ------------------------------------------------------------------------
 
-module _ {xs ys : List A} where
+module _ where
 
-  ∷-injectiveˡ : ∀ {x y} {px qx : x ≈ y} {pxs qxs : xs ⊆ ys} →
+  ∷-injectiveˡ : ∀ {px qx : x ≈ y} {pxs qxs : xs ⊆ ys} →
                  ((x ∷ xs) ⊆ (y ∷ ys) ∋ px ∷ pxs) ≡ (qx ∷ qxs) → px ≡ qx
   ∷-injectiveˡ refl = refl
 
-  ∷-injectiveʳ : ∀ {x y} {px qx : x ≈ y} {pxs qxs : xs ⊆ ys} →
+  ∷-injectiveʳ : ∀ {px qx : x ≈ y} {pxs qxs : xs ⊆ ys} →
                  ((x ∷ xs) ⊆ (y ∷ ys) ∋ px ∷ pxs) ≡ (qx ∷ qxs) → pxs ≡ qxs
   ∷-injectiveʳ refl = refl
 
-  ∷ʳ-injective : ∀ {y} {pxs qxs : xs ⊆ ys} → y ∷ʳ pxs ≡ y ∷ʳ qxs → pxs ≡ qxs
+  ∷ʳ-injective : ∀ {pxs qxs : xs ⊆ ys} → y ∷ʳ pxs ≡ y ∷ʳ qxs → pxs ≡ qxs
   ∷ʳ-injective refl = refl
+
+------------------------------------------------------------------------
+-- Categorical properties
+------------------------------------------------------------------------
+
+module _ (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) where
+
+  left-unit : (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  left-unit [] = refl
+  left-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (left-unit pxs)
+  left-unit (x ∷ pxs) rewrite trans-reflˡ x = cong (x ∷_) (left-unit pxs)
+
+module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) where
+
+  right-unit : (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  right-unit [] = refl
+  right-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (right-unit pxs)
+  right-unit (x ∷ pxs) rewrite trans-reflʳ x = cong (x ∷_) (right-unit pxs)
+
+module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                    trans (trans p q) r ≡ trans p (trans q r)) where
+
+  ⊆-assoc : (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+            ⊆-trans (⊆-trans ps qs) rs ≡ ⊆-trans ps (⊆-trans qs rs)
+  ⊆-assoc [] [] [] = refl
+  ⊆-assoc [] [] (r ∷ʳ rs) = cong (r ∷ʳ_) (⊆-assoc [] [] rs)
+  ⊆-assoc [] (q ∷ʳ qs) rs = {!!}
+  ⊆-assoc (p ∷ʳ ps) (q ∷ʳ qs) rs = {!!}
+  ⊆-assoc (p ∷ʳ ps) (q ∷ qs) rs = {!!}
+  ⊆-assoc (p ∷ ps) (q ∷ʳ qs) rs = {!!}
+  ⊆-assoc (p ∷ ps) (q ∷ qs) rs = {!!}
+
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
@@ -69,7 +111,7 @@ take-⊆ n xs = HeteroProperties.take-Sublist n ⊆-refl
 drop-⊆ : ∀ n xs → drop n xs ⊆ xs
 drop-⊆ n xs = HeteroProperties.drop-Sublist n ⊆-refl
 
-module _ {p} {P : Pred A p} (P? : Decidable P) where
+module _ (P? : Decidable P) where
 
   takeWhile-⊆ : ∀ xs → takeWhile P? xs ⊆ xs
   takeWhile-⊆ xs = HeteroProperties.takeWhile-Sublist P? ⊆-refl
@@ -80,7 +122,7 @@ module _ {p} {P : Pred A p} (P? : Decidable P) where
   filter-⊆ : ∀ xs → filter P? xs ⊆ xs
   filter-⊆ xs = HeteroProperties.filter-Sublist P? ⊆-refl
 
-module _ {p} {P : Pred A p} (P? : Decidable P) where
+module _ (P? : Decidable P) where
 
   takeWhile⊆filter : ∀ xs → takeWhile P? xs ⊆ filter P? xs
   takeWhile⊆filter xs = HeteroProperties.takeWhile-filter P? {xs} ≋-refl
@@ -94,15 +136,15 @@ module _ {p} {P : Pred A p} (P? : Decidable P) where
 -- We write f⁺ for the proof that `xs ⊆ ys → f xs ⊆ f ys`
 -- and f⁻ for the one that `f xs ⊆ f ys → xs ⊆ ys`.
 
-module _ {as bs : List A} where
+module _ where
 
-  ∷ˡ⁻ : ∀ {a} → a ∷ as ⊆ bs → as ⊆ bs
+  ∷ˡ⁻ : a ∷ as ⊆ bs → as ⊆ bs
   ∷ˡ⁻ = HeteroProperties.∷ˡ⁻
 
-  ∷ʳ⁻ : ∀ {a b} → ¬ (a ≈ b) → a ∷ as ⊆ b ∷ bs → a ∷ as ⊆ bs
+  ∷ʳ⁻ : ¬ (a ≈ b) → a ∷ as ⊆ b ∷ bs → a ∷ as ⊆ bs
   ∷ʳ⁻ = HeteroProperties.∷ʳ⁻
 
-  ∷⁻ : ∀ {a b} → a ∷ as ⊆ b ∷ bs → as ⊆ bs
+  ∷⁻ : a ∷ as ⊆ b ∷ bs → as ⊆ bs
   ∷⁻ = HeteroProperties.∷⁻
 
 ------------------------------------------------------------------------
@@ -121,7 +163,7 @@ module _ {b ℓ} (R : Setoid b ℓ) where
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {as bs : List A} where
+module _ where
 
   ++⁺ˡ : ∀ cs → as ⊆ bs → as ⊆ cs ++ bs
   ++⁺ˡ = HeteroProperties.++ˡ
@@ -129,16 +171,16 @@ module _ {as bs : List A} where
   ++⁺ʳ : ∀ cs → as ⊆ bs → as ⊆ bs ++ cs
   ++⁺ʳ = HeteroProperties.++ʳ
 
-  ++⁺ : ∀ {cs ds} → as ⊆ bs → cs ⊆ ds → as ++ cs ⊆ bs ++ ds
+  ++⁺ : as ⊆ bs → cs ⊆ ds → as ++ cs ⊆ bs ++ ds
   ++⁺ = HeteroProperties.++⁺
 
-  ++⁻ : ∀ {cs ds} → length as ≡ length bs → as ++ cs ⊆ bs ++ ds → cs ⊆ ds
+  ++⁻ : length as ≡ length bs → as ++ cs ⊆ bs ++ ds → cs ⊆ ds
   ++⁻ = HeteroProperties.++⁻
 
 ------------------------------------------------------------------------
 -- take
 
-module _ {m n} {xs} where
+module _ where
 
   take⁺ : m ≤ n → take m xs ⊆ take n xs
   take⁺ m≤n = HeteroProperties.take⁺ m≤n ≋-refl
@@ -146,17 +188,17 @@ module _ {m n} {xs} where
 ------------------------------------------------------------------------
 -- drop
 
-module _ {m n} {xs ys : List A} where
+module _ where
 
   drop⁺ : m ≥ n → xs ⊆ ys → drop m xs ⊆ drop n ys
   drop⁺ = HeteroProperties.drop⁺
 
-module _ {m n} {xs : List A} where
+module _ where
 
   drop⁺-≥ : m ≥ n → drop m xs ⊆ drop n xs
   drop⁺-≥ m≥n = drop⁺ m≥n ⊆-refl
 
-module _ {xs ys : List A} where
+module _ where
 
   drop⁺-⊆ : ∀ n → xs ⊆ ys → drop n xs ⊆ drop n ys
   drop⁺-⊆ n xs⊆ys = drop⁺ {n} ℕ.≤-refl xs⊆ys
@@ -164,8 +206,7 @@ module _ {xs ys : List A} where
 ------------------------------------------------------------------------
 -- takeWhile / dropWhile
 
-module _ {p q} {P : Pred A p} {Q : Pred A q}
-         (P? : Decidable P) (Q? : Decidable Q) where
+module _ (P? : Decidable P) (Q? : Decidable Q) where
 
   takeWhile⁺ : ∀ {xs} → (∀ {a b} → a ≈ b → P a → Q b) →
                takeWhile P? xs ⊆ takeWhile Q? xs
@@ -178,25 +219,22 @@ module _ {p q} {P : Pred A p} {Q : Pred A q}
 ------------------------------------------------------------------------
 -- filter
 
-module _ {p q} {P : Pred A p} {Q : Pred A q}
-         (P? : Decidable P) (Q? : Decidable Q) where
+module _ (P? : Decidable P) (Q? : Decidable Q) where
 
-  filter⁺ : ∀ {as bs} → (∀ {a b} → a ≈ b → P a → Q b) →
+  filter⁺ : (∀ {a b} → a ≈ b → P a → Q b) →
             as ⊆ bs → filter P? as ⊆ filter Q? bs
   filter⁺ = HeteroProperties.⊆-filter-Sublist P? Q?
 
 ------------------------------------------------------------------------
 -- reverse
 
-module _ {as bs : List A} where
+module _ where
 
-  reverseAcc⁺ : ∀ {cs ds} → as ⊆ bs → cs ⊆ ds →
+  reverseAcc⁺ : as ⊆ bs → cs ⊆ ds →
                 reverseAcc cs as ⊆ reverseAcc ds bs
   reverseAcc⁺ = HeteroProperties.reverseAcc⁺
 
-  ʳ++⁺ : ∀ {cs ds} →
-         as ⊆ bs →
-         cs ⊆ ds →
+  ʳ++⁺ : as ⊆ bs → cs ⊆ ds →
          as ʳ++ cs ⊆ bs ʳ++ ds
   ʳ++⁺ = reverseAcc⁺
 
@@ -233,7 +271,7 @@ module _ {ℓ′} {_≤_ : Rel A ℓ′} (_≤?_ : Decidable₂ _≤_) where
 -- Inversion lemmas
 ------------------------------------------------------------------------
 
-module _ {a as b bs} where
+module _ where
 
   ∷⁻¹ : a ≈ b → as ⊆ bs ⇔ a ∷ as ⊆ b ∷ bs
   ∷⁻¹ = HeteroProperties.∷⁻¹
@@ -247,13 +285,13 @@ module _ {a as b bs} where
 
 module _ where
 
-  length-mono-≤ : ∀ {as bs} → as ⊆ bs → length as ≤ length bs
+  length-mono-≤ : as ⊆ bs → length as ≤ length bs
   length-mono-≤ = HeteroProperties.length-mono-≤
 
 ------------------------------------------------------------------------
 -- Conversion to and from list equality
 
-  to-≋ : ∀ {as bs} → length as ≡ length bs → as ⊆ bs → as ≋ bs
+  to-≋ : length as ≡ length bs → as ⊆ bs → as ≋ bs
   to-≋ = HeteroProperties.toPointwise
 
 ------------------------------------------------------------------------
@@ -265,7 +303,7 @@ module _ where
 ------------------------------------------------------------------------
 -- (to/from)∈ is a bijection
 
-module _ {x xs} where
+module _ where
 
   to∈-injective : ∀ {p q : [ x ] ⊆ xs} → to∈ p ≡ to∈ q → p ≡ q
   to∈-injective = HeteroProperties.toAny-injective
