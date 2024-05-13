@@ -11,7 +11,6 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 open import Level
 
 open import Data.Bool.Base using (true; false)
-open import Data.Empty
 open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
@@ -92,7 +91,7 @@ module _ {R : REL A B r} where
   toPointwise {bs = []}     eq []         = []
   toPointwise {bs = b ∷ bs} eq (r ∷ rs)   = r ∷ toPointwise (ℕ.suc-injective eq) rs
   toPointwise {bs = b ∷ bs} eq (b ∷ʳ rs) =
-    ⊥-elim $ ℕ.<-irrefl eq (s≤s (length-mono-≤ rs))
+    contradiction (s≤s (length-mono-≤ rs)) (ℕ.<-irrefl eq)
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
