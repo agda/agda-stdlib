@@ -569,9 +569,12 @@ Reasoning:
 * begin  `infix  1 begin_`
 
 Type formers:
+
 * product-like `infixr 2 _×_ _-×-_ _-,-_`
+
 * sum-like `infixr 1 _⊎_`
 
+*  binary properties `infix 4 _Absorbs_`
 
 #### Functions and relations over specific datatypes
 
