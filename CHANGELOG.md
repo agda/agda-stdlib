@@ -78,6 +78,12 @@ Deprecated names
 New modules
 -----------
 
+* Algebraic structures obtained as the free thing (for their signature):
+  ```
+  Algebra.Free
+  Algebra.Free.Magma
+  ```
+
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
@@ -92,6 +98,11 @@ New modules
   ```agda
   Induction.InfiniteDescent
   ```
+
+* Bundled morphisms between algebraic structures:
+  ```
+  Algebra.Morphism.Bundles
+ ```
 
 * The unique morphism from the initial, resp. terminal, algebra:
   ```agda
@@ -227,6 +238,17 @@ Additions to existing modules
   rawBimodule        : RawBimodule R c ℓ
   rawSemimodule      : RawSemimodule R c ℓ
   rawModule          : RawModule R c ℓ
+  ```
+
+* In `Algebra.Morphism.Construct.Composition`:
+  ```
+  magmaHomomorphism : MagmaHomomorphism M₁ M₂ → MagmaHomomorphism M₂ M₃ →
+                      MagmaHomomorphism M₁ M₃
+  ```
+
+* In `Algebra.Morphism.Construct.Identity`:
+  ```
+  magmaHomomorphism : MagmaHomomorphism M M
   ```
 
 * In `Algebra.Morphism.Structures`
