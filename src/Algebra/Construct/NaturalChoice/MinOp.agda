@@ -39,13 +39,13 @@ open import Relation.Binary.Reasoning.Preorder preorder
 
 x⊓y≤x : ∀ x y → x ⊓ y ≤ x
 x⊓y≤x x y with total x y
-... | inj₁ x≤y = ≤-respˡ-≈ (Eq.sym (x≤y⇒x⊓y≈x x≤y)) refl
+... | inj₁ x≤y = reflexive (x≤y⇒x⊓y≈x x≤y)
 ... | inj₂ y≤x = ≤-respˡ-≈ (Eq.sym (x≥y⇒x⊓y≈y y≤x)) y≤x
 
 x⊓y≤y : ∀ x y → x ⊓ y ≤ y
 x⊓y≤y x y with total x y
 ... | inj₁ x≤y = ≤-respˡ-≈ (Eq.sym (x≤y⇒x⊓y≈x x≤y)) x≤y
-... | inj₂ y≤x = ≤-respˡ-≈ (Eq.sym (x≥y⇒x⊓y≈y y≤x)) refl
+... | inj₂ y≤x = reflexive (x≥y⇒x⊓y≈y y≤x)
 
 ------------------------------------------------------------------------
 -- Algebraic properties

@@ -12,7 +12,9 @@
 module Data.List.Properties where
 
 open import Algebra.Bundles
-open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
+open import Algebra.Consequences.Propositional
+ using (selfInverse⇒involutive; selfInverse⇒injective)
+open import Algebra.Definitions as AlgebraicDefinitions using (SelfInverse; Involutive)
 open import Algebra.Morphism.Structures using (IsMagmaHomomorphism; IsMonoidHomomorphism)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
@@ -1156,13 +1158,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
   filter-all {[]}     []         = refl
   filter-all {x ∷ xs} (px ∷ pxs) with P? x
-  ... | no          ¬px = contradiction px ¬px
-  ... | true  because _ = cong (x ∷_) (filter-all pxs)
+  ... | false because [¬px] = contradiction px (invert [¬px])
+  ... | true  because _     = cong (x ∷_) (filter-all pxs)
 
   filter-notAll : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
   filter-notAll (x ∷ xs) (here ¬px) with P? x
-  ... | false because _ = s≤s (length-filter xs)
-  ... | yes          px = contradiction px ¬px
+  ... | false because _    = s≤s (length-filter xs)
+  ... | true  because [px] = contradiction (invert [px]) ¬px
   filter-notAll (x ∷ xs) (there any) with ih ← filter-notAll xs any | does (P? x)
   ... | false = m≤n⇒m≤1+n ih
   ... | true  = s≤s ih
@@ -1178,8 +1180,8 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
   filter-none {[]}     []           = refl
   filter-none {x ∷ xs} (¬px ∷ ¬pxs) with P? x
-  ... | false because _ = filter-none ¬pxs
-  ... | yes          px = contradiction px ¬px
+  ... | false because _    = filter-none ¬pxs
+  ... | true  because [px] = contradiction (invert [px]) ¬px
 
   filter-complete : ∀ {xs} → length (filter P? xs) ≡ length xs →
                     filter P? xs ≡ xs
@@ -1190,13 +1192,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-accept : ∀ {x xs} → P x → filter P? (x ∷ xs) ≡ x ∷ (filter P? xs)
   filter-accept {x} Px with P? x
-  ... | true because _ = refl
-  ... | no         ¬Px = contradiction Px ¬Px
+  ... | true  because _     = refl
+  ... | false because [¬Px] = contradiction Px (invert [¬Px])
 
   filter-reject : ∀ {x xs} → ¬ P x → filter P? (x ∷ xs) ≡ filter P? xs
   filter-reject {x} ¬Px with P? x
-  ... | yes          Px = contradiction Px ¬Px
-  ... | false because _ = refl
+  ... | true  because [Px] = contradiction (invert [Px]) ¬Px
+  ... | false because _    = refl
 
   filter-idem : filter P? ∘ filter P? ≗ filter P?
   filter-idem []       = refl
@@ -1234,13 +1236,13 @@ module _ {R : Rel A p} (R? : B.Decidable R) where
 
   derun-reject : ∀ {x y} xs → R x y → derun R? (x ∷ y ∷ xs) ≡ derun R? (y ∷ xs)
   derun-reject {x} {y} xs Rxy with R? x y
-  ... | yes _    = refl
-  ... | no  ¬Rxy = contradiction Rxy ¬Rxy
+  ... | true  because _      = refl
+  ... | false because [¬Rxy] = contradiction Rxy (invert [¬Rxy])
 
   derun-accept : ∀ {x y} xs → ¬ R x y → derun R? (x ∷ y ∷ xs) ≡ x ∷ derun R? (y ∷ xs)
   derun-accept {x} {y} xs ¬Rxy with R? x y
-  ... | yes Rxy = contradiction Rxy ¬Rxy
-  ... | no  _   = refl
+  ... | true  because [Rxy] = contradiction (invert [Rxy]) ¬Rxy
+  ... | false because  _    = refl
 
 ------------------------------------------------------------------------
 -- partition
@@ -1253,7 +1255,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ...  | true  = cong (Product.map (x ∷_) id) ih
   ...  | false = cong (Product.map id (x ∷_)) ih
 
-  length-partition : ∀ xs → (let (ys , zs) = partition P? xs) →
+  length-partition : ∀ xs → (let ys , zs = partition P? xs) →
                      length ys ≤ length xs × length zs ≤ length xs
   length-partition []       = z≤n , z≤n
   length-partition (x ∷ xs) with ih ← length-partition xs | does (P? x)
@@ -1350,7 +1352,7 @@ foldl-ʳ++ f b (x ∷ xs) {ys} = begin
 unfold-reverse : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
 unfold-reverse x xs = ʳ++-defn xs
 
--- reverse is an involution with respect to append.
+-- reverse is an anti-homomorphism with respect to append.
 
 reverse-++ : (xs ys : List A) →
                      reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
@@ -1361,20 +1363,27 @@ reverse-++ xs ys = begin
   ys ʳ++ reverse xs          ≡⟨ ʳ++-defn ys ⟩
   reverse ys ++ reverse xs   ∎
 
+-- reverse is self-inverse.
+
+reverse-selfInverse : SelfInverse {A = List A} _≡_ reverse
+reverse-selfInverse {x = xs} {y = ys} xs⁻¹≈ys = begin
+  reverse ys         ≡⟨⟩
+  ys ʳ++ []          ≡⟨ cong (_ʳ++ []) xs⁻¹≈ys ⟨
+  reverse xs ʳ++ []  ≡⟨⟩
+  (xs ʳ++ []) ʳ++ [] ≡⟨ ʳ++-ʳ++ xs ⟩
+  [] ʳ++ xs ++ []    ≡⟨⟩
+  xs ++ []           ≡⟨ ++-identityʳ xs ⟩
+  xs                 ∎
+
 -- reverse is involutive.
 
 reverse-involutive : Involutive {A = List A} _≡_ reverse
-reverse-involutive xs = begin
-  reverse (reverse xs)  ≡⟨⟩
-  (xs ʳ++ []) ʳ++ []    ≡⟨ ʳ++-ʳ++ xs ⟩
-  [] ʳ++  xs ++ []      ≡⟨⟩
-  xs ++ []              ≡⟨ ++-identityʳ xs ⟩
-  xs                    ∎
+reverse-involutive = selfInverse⇒involutive reverse-selfInverse
 
 -- reverse is injective.
 
-reverse-injective : ∀ {xs ys : List A} → reverse xs ≡ reverse ys → xs ≡ ys
-reverse-injective = subst₂ _≡_ (reverse-involutive _) (reverse-involutive _) ∘ cong reverse
+reverse-injective : Injective {A = List A} _≡_ _≡_ reverse
+reverse-injective = selfInverse⇒injective reverse-selfInverse
 
 -- reverse preserves length.
 
