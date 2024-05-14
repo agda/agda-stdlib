@@ -222,6 +222,8 @@ module _ (S : Setoid a ℓ) (R : Setoid b r) where
     module S⊆ = Subset S
     module R⊆ = Subset R
 
+  open Membershipₚ
+
   map⁺ : ∀ {as bs} {f : S.Carrier → R.Carrier} →
          f Preserves S._≈_ ⟶ R._≈_ →
          as S⊆.⊆ bs → map f as R⊆.⊆ map f bs
