@@ -103,13 +103,13 @@ module _ {R : REL A B r} where
 
 module _ {R : REL A B r} where
 
-  tail-Sublist : ∀ {as bs} → Sublist R as bs →
+  tail-Sublist : Sublist R as bs →
                  Maybe.All (λ as → Sublist R as bs) (tail as)
   tail-Sublist []        = nothing
   tail-Sublist (b ∷ʳ ps) = Maybe.map (b ∷ʳ_) (tail-Sublist ps)
   tail-Sublist (p ∷ ps)  = just (_ ∷ʳ ps)
 
-  take-Sublist : ∀ {as bs} n → Sublist R as bs → Sublist R (take n as) bs
+  take-Sublist : ∀ n → Sublist R as bs → Sublist R (take n as) bs
   take-Sublist n       (y ∷ʳ rs) = y ∷ʳ take-Sublist n rs
   take-Sublist zero    rs        = minimum _
   take-Sublist (suc n) []        = []
@@ -269,7 +269,7 @@ module _ {R : REL A B r} {P : Pred A p} {Q : Pred B q}
   ... | false because _ | false because _ = p ∷ fromPointwise ps
   ... | no ¬pa          | yes qb          = contradiction (rq⇒p p qb) ¬pa
 
-  ⊆-filter-Sublist : ∀ {as bs} → (∀ {a b} → R a b → P a → Q b) →
+  ⊆-filter-Sublist : (∀ {a b} → R a b → P a → Q b) →
                      Sublist R as bs → Sublist R (filter P? as) (filter Q? bs)
   ⊆-filter-Sublist rp⇒q [] = []
   ⊆-filter-Sublist rp⇒q (y ∷ʳ rs) with does (Q? y)

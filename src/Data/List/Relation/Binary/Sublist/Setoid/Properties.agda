@@ -291,28 +291,28 @@ module _ where
 
 module _ (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) where
 
-  left-unit : (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
-  left-unit [] = refl
-  left-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (left-unit pxs)
-  left-unit (x ∷ pxs) = cong₂ _∷_ (trans-reflˡ x) (left-unit pxs)
+  ⊆-trans-idˡ : (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  ⊆-trans-idˡ [] = refl
+  ⊆-trans-idˡ (y ∷ʳ pxs) = cong (y ∷ʳ_) (⊆-trans-idˡ pxs)
+  ⊆-trans-idˡ (x ∷ pxs) = cong₂ _∷_ (trans-reflˡ x) (⊆-trans-idˡ pxs)
 
 module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) where
 
-  right-unit : (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
-  right-unit [] = refl
-  right-unit (y ∷ʳ pxs) = cong (y ∷ʳ_) (right-unit pxs)
-  right-unit (x ∷ pxs) = cong₂ _∷_ (trans-reflʳ x) (right-unit pxs)
+  ⊆-trans-idʳ : (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ⊆-trans-idʳ [] = refl
+  ⊆-trans-idʳ (y ∷ʳ pxs) = cong (y ∷ʳ_) (⊆-trans-idʳ pxs)
+  ⊆-trans-idʳ (x ∷ pxs) = cong₂ _∷_ (trans-reflʳ x) (⊆-trans-idʳ pxs)
 
 module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
-                    trans (trans p q) r ≡ trans p (trans q r)) where
+                    trans p (trans q r) ≡ trans (trans p q) r) where
 
-  ⊆-assoc : (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
-            ⊆-trans (⊆-trans ps qs) rs ≡ ⊆-trans ps (⊆-trans qs rs)
-  ⊆-assoc ps qs (_ ∷ʳ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
-  ⊆-assoc ps (_ ∷ʳ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
-  ⊆-assoc (_ ∷ʳ ps) (_ ∷ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-assoc ps qs rs)
-  ⊆-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-assoc ps qs rs)
-  ⊆-assoc [] [] [] = refl
+  ⊆-trans-assoc : (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+            ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
+  ⊆-trans-assoc ps qs (_ ∷ʳ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
+  ⊆-trans-assoc ps (_ ∷ʳ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
+  ⊆-trans-assoc (_ ∷ʳ ps) (_ ∷ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
+  ⊆-trans-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-trans-assoc ps qs rs)
+  ⊆-trans-assoc [] [] [] = refl
 
 
 ------------------------------------------------------------------------
