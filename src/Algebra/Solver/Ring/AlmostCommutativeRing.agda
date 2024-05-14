@@ -76,6 +76,8 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Homomorphisms
 
+infix 4 _-Raw-AlmostCommutative⟶_
+
 record _-Raw-AlmostCommutative⟶_
   {r₁ r₂ r₃ r₄}
   (From : RawRing r₁ r₄)

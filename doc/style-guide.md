@@ -532,7 +532,12 @@ anything that has a `_` in its name) should have an explicit fixity
 declared for it. The guidelines for these are as follows:
 
 General operations and relations:
+
 * binary relations of all kinds are `infix 4`
+
+* unary prefix relations `infix 4 ε∣_`
+
+* unary postfix relations `infixr 8 _∣0`
 
 * multiplication-like: `infixl 7 _*_`
 
