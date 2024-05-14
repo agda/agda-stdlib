@@ -382,6 +382,8 @@ Additions to existing modules
 
 * In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
+  map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
+
   reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
   reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
   reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
