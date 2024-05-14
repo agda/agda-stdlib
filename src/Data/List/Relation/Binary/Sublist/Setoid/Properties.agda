@@ -67,6 +67,36 @@ module _ where
   ∷ʳ-injective refl = refl
 
 ------------------------------------------------------------------------
+-- Categorical properties
+------------------------------------------------------------------------
+
+module _ (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) where
+
+  ⊆-trans-idˡ : (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  ⊆-trans-idˡ [] = refl
+  ⊆-trans-idˡ (y ∷ʳ pxs) = cong (y ∷ʳ_) (⊆-trans-idˡ pxs)
+  ⊆-trans-idˡ (x ∷ pxs) = cong₂ _∷_ (trans-reflˡ x) (⊆-trans-idˡ pxs)
+
+module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) where
+
+  ⊆-trans-idʳ : (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ⊆-trans-idʳ [] = refl
+  ⊆-trans-idʳ (y ∷ʳ pxs) = cong (y ∷ʳ_) (⊆-trans-idʳ pxs)
+  ⊆-trans-idʳ (x ∷ pxs) = cong₂ _∷_ (trans-reflʳ x) (⊆-trans-idʳ pxs)
+
+module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                    trans p (trans q r) ≡ trans (trans p q) r) where
+
+  ⊆-trans-assoc : (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+            ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
+  ⊆-trans-assoc ps qs (_ ∷ʳ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
+  ⊆-trans-assoc ps (_ ∷ʳ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
+  ⊆-trans-assoc (_ ∷ʳ ps) (_ ∷ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
+  ⊆-trans-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-trans-assoc ps qs rs)
+  ⊆-trans-assoc [] [] [] = refl
+
+
+------------------------------------------------------------------------
 -- Various functions' outputs are sublists
 ------------------------------------------------------------------------
 
@@ -284,36 +314,6 @@ module _ where
 
   [x]⊆xs⤖x∈xs : ([ x ] ⊆ xs) ⤖ (x ∈ xs)
   [x]⊆xs⤖x∈xs = HeteroProperties.Sublist-[x]-bijection
-
-------------------------------------------------------------------------
--- Categorical properties
-------------------------------------------------------------------------
-
-module _ (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) where
-
-  ⊆-trans-idˡ : (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
-  ⊆-trans-idˡ [] = refl
-  ⊆-trans-idˡ (y ∷ʳ pxs) = cong (y ∷ʳ_) (⊆-trans-idˡ pxs)
-  ⊆-trans-idˡ (x ∷ pxs) = cong₂ _∷_ (trans-reflˡ x) (⊆-trans-idˡ pxs)
-
-module _ (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) where
-
-  ⊆-trans-idʳ : (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
-  ⊆-trans-idʳ [] = refl
-  ⊆-trans-idʳ (y ∷ʳ pxs) = cong (y ∷ʳ_) (⊆-trans-idʳ pxs)
-  ⊆-trans-idʳ (x ∷ pxs) = cong₂ _∷_ (trans-reflʳ x) (⊆-trans-idʳ pxs)
-
-module _ (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
-                    trans p (trans q r) ≡ trans (trans p q) r) where
-
-  ⊆-trans-assoc : (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
-            ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
-  ⊆-trans-assoc ps qs (_ ∷ʳ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
-  ⊆-trans-assoc ps (_ ∷ʳ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
-  ⊆-trans-assoc (_ ∷ʳ ps) (_ ∷ qs) (_ ∷ rs) = cong (_ ∷ʳ_) (⊆-trans-assoc ps qs rs)
-  ⊆-trans-assoc (p ∷ ps) (q ∷ qs) (r ∷ rs) = cong₂ _∷_ (≈-assoc p q r) (⊆-trans-assoc ps qs rs)
-  ⊆-trans-assoc [] [] [] = refl
-
 
 ------------------------------------------------------------------------
 -- Properties of Disjoint(ness) and DisjointUnion
