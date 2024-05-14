@@ -329,6 +329,12 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  reverse⁺ : x ∈ xs → x ∈ reverse xs
+  reverse⁻ : x ∈ reverse xs → x ∈ xs
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   length-catMaybes      : length (catMaybes xs) ≤ length xs
@@ -336,6 +342,7 @@ Additions to existing modules
   applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
   downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-selfInverse   : SelfInverse {A = List A} _≡_ reverse
   reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
@@ -373,9 +380,13 @@ Additions to existing modules
   map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
   ```
 
-* In `Data.List.Relation.Binary.Subset.Setoid.Properties`
-  ```
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
   map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
+
+  reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
+  reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
+  reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
@@ -495,6 +506,11 @@ Additions to existing modules
   ```agda
   whenInj₂ : E ⊎ A → (A → IO ⊤) → IO ⊤
   forever : IO ⊤ → IO ⊤
+  ```
+
+* In `IO.Primitive.Core`:
+  ```agda
+  _>>_ : IO A → IO B → IO B
   ```
 
 * In `Data.Word.Base`:
