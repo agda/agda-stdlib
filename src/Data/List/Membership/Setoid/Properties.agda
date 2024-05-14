@@ -239,6 +239,19 @@ module _ (S : Setoid c ℓ) where
   ... | xs , t , s = xs , s , t
 
 ------------------------------------------------------------------------
+-- reverse
+
+module _ (S : Setoid c ℓ) where
+
+  open Membership S using (_∈_)
+
+  reverse⁺ : ∀ {x xs} → x ∈ xs → x ∈ reverse xs
+  reverse⁺ = Any.reverse⁺
+
+  reverse⁻ : ∀ {x xs} → x ∈ reverse xs → x ∈ xs
+  reverse⁻ = Any.reverse⁻
+
+------------------------------------------------------------------------
 -- cartesianProductWith
 
 module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) (S₃ : Setoid c₃ ℓ₃) where
