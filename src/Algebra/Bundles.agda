@@ -868,18 +868,6 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsRingWithoutOne isRingWithoutOne public
 
-  rawRingWithoutOne : RawRingWithoutOne _ _
-  rawRingWithoutOne = record
-    { Carrier = Carrier
-    ; _≈_ = _≈_
-    ; _+_ = _+_
-    ; _*_ = _*_
-    ; -_  = -_
-    ; 0#  = 0#
-    }
-
-  open RawRingWithoutOne rawRingWithoutOne public
-
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
 
@@ -895,6 +883,18 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   open Semigroup *-semigroup public
     using ()
     renaming (magma to *-magma)
+
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  rawRingWithoutOne = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; -_  = -_
+    ; 0#  = 0#
+    }
+
+  open RawRingWithoutOne rawRingWithoutOne public
+    using (+-rawGroup; *-rawMagma)
 
 
 ------------------------------------------------------------------------

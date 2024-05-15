@@ -135,7 +135,7 @@ record RingWithoutOneHomomorphism (A : RingWithoutOne a ℓa) (B : RingWithoutOn
     module B = RingWithoutOne B
 
   field
-    ⟦_⟧ : _ → _ -- A.Carrier → B.Carrier causes an disambiguation error!?
+    ⟦_⟧ : A.Carrier → B.Carrier
     isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism A.rawRingWithoutOne B.rawRingWithoutOne ⟦_⟧
 
   open IsRingWithoutOneHomomorphism isRingWithoutOneHomomorphism public
