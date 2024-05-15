@@ -380,6 +380,18 @@ Additions to existing modules
   map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  ⊆-trans-idˡ   : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  ⊆-trans-idʳ   : (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ⊆-trans-assoc : (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                             trans p (trans q r) ≡ trans (trans p q) r) →
+                  (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+                  ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
+  ```
+
 * In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
   map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
