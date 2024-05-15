@@ -868,6 +868,17 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsRingWithoutOne isRingWithoutOne public
 
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  rawRingWithoutOne = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; -_  = -_
+    ; 0#  = 0#
+    }
+
+  open RawRingWithoutOne rawRingWithoutOne public
+
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
 
@@ -875,13 +886,15 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   *-semigroup = record { isSemigroup = *-isSemigroup }
 
   open AbelianGroup +-abelianGroup public
-    using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
+    using ()
+    renaming (group to +-group;
+      invertibleMagma to +-invertibleMagma;
+      invertibleUnitalMagma to +-invertibleUnitalMagma)
 
   open Semigroup *-semigroup public
-    using () renaming
-    ( rawMagma to *-rawMagma
-    ; magma    to *-magma
-    )
+    using ()
+    renaming (magma to *-magma)
+
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
