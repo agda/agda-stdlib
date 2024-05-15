@@ -85,6 +85,12 @@ Deprecated names
 New modules
 -----------
 
+* Pointwise lifting of algebraic structures `IsX` and bundles `X` from
+  carrier set `C` to function space `A → C`:
+  ```
+  Algebra.Construct.Pointwise
+  ```
+
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
@@ -422,8 +428,22 @@ Additions to existing modules
   drop-∷  : x ∷ xs ↭ x ∷ ys → xs ↭ ys
   ```
 
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  ⊆-trans-idˡ   : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  ⊆-trans-idʳ   : (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ⊆-trans-assoc : (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                             trans p (trans q r) ≡ trans (trans p q) r) →
+                  (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+                  ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
+  ```
+
 * In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
+  map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
+
   reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
   reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
   reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
