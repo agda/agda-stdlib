@@ -128,9 +128,6 @@ record SemiringHomomorphism (A : Semiring a ℓa) (B : Semiring b ℓb) : Set (a
 ------------------------------------------------------------------------
 -- Morphisms between RingWithoutOnes
 ------------------------------------------------------------------------
-{-
-
-Problem: bundle RingWithoutOne doesn't re-export its underlying RawRingWithoutOne!
 
 record RingWithoutOneHomomorphism (A : RingWithoutOne a ℓa) (B : RingWithoutOne b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
   private
@@ -138,7 +135,7 @@ record RingWithoutOneHomomorphism (A : RingWithoutOne a ℓa) (B : RingWithoutOn
     module B = RingWithoutOne B
 
   field
-    ⟦_⟧ : A.Carrier → B.Carrier
+    ⟦_⟧ : _ → _ -- A.Carrier → B.Carrier causes an disambiguation error!?
     isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism A.rawRingWithoutOne B.rawRingWithoutOne ⟦_⟧
 
   open IsRingWithoutOneHomomorphism isRingWithoutOneHomomorphism public
@@ -148,11 +145,12 @@ record RingWithoutOneHomomorphism (A : RingWithoutOne a ℓa) (B : RingWithoutOn
 
   open GroupHomomorphism +-groupHomomorphism public
 
-  *-monoidHomomorphism : MonoidHomomorphism A.*-monoid B.*-monoid
-  *-monoidHomomorphism = record { isMonoidHomomorphism = *-isMonoidHomomorphism }
+  *-magmaHomomorphism : MagmaHomomorphism A.*-magma B.*-magma
+  *-magmaHomomorphism = record { isMagmaHomomorphism = *-isMagmaHomomorphism }
 
-  open MonoidHomomorphism *-monoidHomomorphism public
--}
+  open MagmaHomomorphism *-magmaHomomorphism public
+    hiding (setoidHomomorphism)
+
 ------------------------------------------------------------------------
 -- Morphisms between Rings
 ------------------------------------------------------------------------

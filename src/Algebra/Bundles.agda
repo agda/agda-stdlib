@@ -870,7 +870,8 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   rawRingWithoutOne : RawRingWithoutOne _ _
   rawRingWithoutOne = record
-    { _≈_ = _≈_
+    { Carrier = Carrier
+    ; _≈_ = _≈_
     ; _+_ = _+_
     ; _*_ = _*_
     ; -_  = -_

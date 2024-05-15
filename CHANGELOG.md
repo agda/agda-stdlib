@@ -190,6 +190,11 @@ Additions to existing modules
   +-rawGroup        : RawGroup _ _
   ```
 
+* Exporting `RawRingWithoutOne` substructure from `Algebra.Bundles.RingWithoutOne`:
+  ```agda
+  rawRingWithoutOne : RawRingWithoutOne _ _
+  ```
+
 * In `Algebra.Construct.Terminal`:
   ```agda
   rawNearSemiring : RawNearSemiring c ℓ
