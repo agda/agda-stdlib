@@ -543,11 +543,15 @@ General operations and relations:
 
 * addition-like  `infixl 6 _+_`
 
-* negation-like  `infix  8 ¬_`
+* arithmetic prefix minus-like  `infix  8 -_`
+
+* arithmetic infix binary minus-like `infixl 6 _-_`
 
 * and-like  `infixr 7 _∧_`
 
 * or-like  `infixr 6 _∨_`
+
+* negation-like `infix 3 ¬_`
 
 * post-fix inverse  `infix  8 _⁻¹`
 
