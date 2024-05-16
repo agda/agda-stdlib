@@ -8,33 +8,39 @@
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
-open import Algebra using (Idempotent; CommutativeMonoid)
+open import Algebra.Bundles using (CommutativeMonoid)
+open import Algebra.Definitions using (Idempotent)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
 open import Effect.Monad using (RawMonad)
-open import Data.Empty
-open import Data.Fin.Base
+open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base
+  using (List; []; _∷_; map; _++_; concat; [_]; lookup; length)
 open import Data.List.Effectful using (monad; module Applicative; module MonadProperties)
 import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.Any.Properties hiding (++-comm)
+open import Data.List.Relation.Unary.Any.Properties
+  using (∷↔; map↔; Any-cong; ++↔; concat↔; >>=↔; ++↔++; ⊎↔; ⊥↔Any[])
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Membership.Propositional.Properties
+  using (∈-∃++)
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.List.Relation.Binary.Permutation.Propositional
+  using (_↭_; ↭-sym; refl; module PermutationReasoning)
 open import Data.List.Relation.Binary.Permutation.Propositional.Properties
-open import Data.Product.Base as Prod hiding (map)
+  using (∈-resp-↭; ∈-resp-[σ⁻¹∘σ]; ↭-sym-involutive; shift; ++-comm)
+open import Data.Product.Base as Prod using (∃; _,_; proj₁; proj₂; _×_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum.Base as Sum hiding (map)
-open import Data.Sum.Properties hiding (map-cong)
+open import Data.Sum.Base as Sum using (_⊎_; [_,_]′; inj₁; inj₂)
+open import Data.Sum.Properties using (inj₂-injective; inj₁-injective)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Unit.Polymorphic.Base
-open import Function.Base
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Function.Base using (_∘_; _$_; id; _⟨_⟩_; case_of_)
 open import Function.Bundles using (_↔_; Inverse; Equivalence; mk↔ₛ′; mk⇔)
 open import Function.Related.Propositional as Related
   using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→; K-refl; SK-sym)
-open import Function.Related.TypeIsomorphisms
+open import Function.Related.TypeIsomorphisms using (×-identityʳ; ∃∃↔∃∃)
 open import Function.Properties.Inverse using (↔-sym; ↔-trans; to-from)
 open import Level using (Level)
 open import Relation.Binary.Core using (_⇒_)
@@ -42,10 +48,12 @@ open import Relation.Binary.Definitions using (Trans)
 open import Relation.Binary.Bundles using (Preorder; Setoid)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; _≢_; _≗_; refl; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; _≢_; _≗_; refl)
+open import Relation.Binary.PropositionalEquality.Properties as ≡
+  using (module ≡-Reasoning)
 open import Relation.Binary.Reasoning.Syntax
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 private
   variable

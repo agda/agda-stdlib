@@ -20,8 +20,8 @@ open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions using (Reflexive; Symmetric; Transitive)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; cong; setoid)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality.Properties using (setoid)
 
 private
   variable

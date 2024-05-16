@@ -97,6 +97,8 @@ RightConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → y ≈ e
 Conical : A → Op₂ A → Set _
 Conical e ∙ = (LeftConical e ∙) × (RightConical e ∙)
 
+infix 4 _DistributesOverˡ_ _DistributesOverʳ_ _DistributesOver_
+
 _DistributesOverˡ_ : Op₂ A → Op₂ A → Set _
 _*_ DistributesOverˡ _+_ =
   ∀ x y z → (x * (y + z)) ≈ ((x * y) + (x * z))
@@ -107,6 +109,8 @@ _*_ DistributesOverʳ _+_ =
 
 _DistributesOver_ : Op₂ A → Op₂ A → Set _
 * DistributesOver + = (* DistributesOverˡ +) × (* DistributesOverʳ +)
+
+infix 4 _MiddleFourExchange_ _IdempotentOn_ _Absorbs_
 
 _MiddleFourExchange_ : Op₂ A → Op₂ A → Set _
 _*_ MiddleFourExchange _+_ =

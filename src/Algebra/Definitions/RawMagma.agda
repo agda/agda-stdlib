@@ -10,11 +10,11 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles using (RawMagma)
+open import Algebra.Bundles.Raw using (RawMagma)
 open import Data.Product.Base using (_×_; ∃)
 open import Level using (_⊔_)
-open import Relation.Binary.Core
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Nullary.Negation.Core using (¬_)
 
 module Algebra.Definitions.RawMagma
   {a ℓ} (M : RawMagma a ℓ)
@@ -25,7 +25,7 @@ open RawMagma M renaming (Carrier to A)
 ------------------------------------------------------------------------
 -- Divisibility
 
-infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_
+infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_ _∣∣_ _∤∤_
 
 -- Divisibility from the left.
 --

@@ -6,18 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-
 module Effect.Monad.State where
 
 open import Data.Product.Base using (_×_)
-open import Effect.Choice
-open import Effect.Empty
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
+open import Effect.Functor using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad; module Join)
 open import Effect.Monad.Identity as Id using (Identity; runIdentity)
-open import Function.Base
-open import Level
+open import Level using (Level)
 
 import Effect.Monad.State.Transformer as Trans
 

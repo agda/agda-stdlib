@@ -8,17 +8,21 @@
 
 module Data.Maybe.Properties where
 
-open import Algebra.Bundles
+open import Algebra.Bundles using (Semigroup; Monoid)
 import Algebra.Structures as Structures
 import Algebra.Definitions as Definitions
-open import Data.Maybe.Base
+open import Data.Maybe.Base using (Maybe; just; nothing; map; _<∣>_;
+  maybe; maybe′)
 open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∋_; id; _∘_; _∘′_)
 open import Function.Definitions using (Injective)
 open import Level using (Level)
-open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; _≗_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (isEquivalence)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Decidable using (map′)
 
@@ -35,7 +39,7 @@ private
 just-injective : ∀ {x y} → (Maybe A ∋ just x) ≡ just y → x ≡ y
 just-injective refl = refl
 
-≡-dec : Decidable _≡_ → Decidable {A = Maybe A} _≡_
+≡-dec : DecidableEquality A → DecidableEquality (Maybe A)
 ≡-dec _≟_ nothing  nothing  = yes refl
 ≡-dec _≟_ (just x) nothing  = no λ()
 ≡-dec _≟_ nothing  (just y) = no λ()

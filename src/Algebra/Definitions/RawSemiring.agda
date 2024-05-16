@@ -8,7 +8,7 @@
 
 open import Algebra.Bundles using (RawSemiring)
 open import Data.Sum.Base using (_⊎_)
-open import Data.Nat using (ℕ; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
 

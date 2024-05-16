@@ -8,11 +8,11 @@
 
 module Data.Container.Indexed.Relation.Binary.Pointwise where
 
-open import Data.Product using (_,_; Σ-syntax)
-open import Function
+open import Data.Product.Base using (_,_; Σ-syntax)
+open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary using (REL; _⇒_)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 open import Data.Container.Indexed.Core using (Container; Subtrees; ⟦_⟧)
 

@@ -11,12 +11,12 @@ module Data.Nat.InfinitelyOften where
 open import Effect.Monad using (RawMonad)
 open import Level using (Level; 0ℓ)
 open import Data.Empty using (⊥-elim)
-open import Data.Nat.Base
+open import Data.Nat.Base using (ℕ; _≤_; _⊔_; _+_; suc; zero; s≤s)
 open import Data.Nat.Properties
 open import Data.Product.Base as Prod hiding (map)
 open import Data.Sum.Base using (inj₁; inj₂; _⊎_)
 open import Function.Base using (_∘_; id)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core using (_≢_)
 open import Relation.Nullary.Negation using (¬_)
 open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
 open import Relation.Unary using (Pred; _∪_; _⊆_)

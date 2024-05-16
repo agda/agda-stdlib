@@ -9,16 +9,17 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Fin.Substitution.Lemmas
+open import Data.Fin.Substitution.Lemmas using (Lemmas₄; AppLemmas)
 open import Data.Nat.Base using (ℕ)
 
 module Data.Fin.Substitution.List {ℓ} {T : ℕ → Set ℓ} (lemmas₄ : Lemmas₄ T) where
 
-open import Data.List.Base
-open import Data.List.Properties
-open import Data.Fin.Substitution
+open import Data.List.Base using (List; map)
+open import Data.List.Properties using (map-id; map-cong; map-∘)
+open import Data.Fin.Substitution using (Sub)
 import Function.Base as Fun
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
 private
   variable

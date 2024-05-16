@@ -11,14 +11,14 @@
 
 module Data.Container.Indexed where
 
-open import Level
+open import Level using (Level; zero; _⊔_)
 open import Data.Product.Base as Prod hiding (map)
-open import Data.W.Indexed
+open import Data.W.Indexed using (W)
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
-open import Function using (_↔_; Inverse)
+open import Function.Bundles using (_↔_; Inverse)
 open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary.Core using (Rel; REL)
-open import Relation.Binary.PropositionalEquality using (_≡_; _≗_; refl; trans; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≗_; refl; trans; subst)
 
 ------------------------------------------------------------------------
 

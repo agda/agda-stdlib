@@ -8,36 +8,40 @@
 
 module Data.List.Membership.Propositional.Properties where
 
-open import Algebra using (Op₂; Selective)
+open import Algebra.Core using (Op₂)
+open import Algebra.Definitions using (Selective)
 open import Effect.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
+  using (map↔; concat↔; >>=↔; ⊛↔; Any-cong; ⊗↔′; ¬Any[])
 open import Data.List.Membership.Propositional
+  using (_∈_; _∉_; mapWith∈; _≢∈_)
 import Data.List.Membership.Setoid.Properties as Membership
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Effectful using (monad)
 open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
-open import Data.Nat.Properties
-open import Data.Product.Base hiding (map)
+open import Data.Nat.Properties using (_≤?_; m≤n⇒m≤1+n; ≤ᵇ-reflects-≤; <⇒≢; ≰⇒>)
+open import Data.Product.Base using (∃; ∃₂; _×_; _,_)
 open import Data.Product.Properties using (×-≡,≡↔≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Function.Base
-open import Function.Definitions
+open import Function.Base using (_∘_; _∘′_; _$_; id; flip; _⟨_⟩_)
+open import Function.Definitions using (Injective)
 import Function.Related.Propositional as Related
-open import Function.Bundles
-open import Function.Related.TypeIsomorphisms
+open import Function.Bundles using (_↔_; _↣_; Injection)
+open import Function.Related.TypeIsomorphisms using (×-comm; ∃∃↔∃∃)
 open import Function.Construct.Identity using (↔-id)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_)
+open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
 import Relation.Nullary.Reflects as Reflects
@@ -74,7 +78,7 @@ mapWith∈-cong : ∀ (xs : List A) → (f g : ∀ {x} → x ∈ xs → B) →
                 (∀ {x} → (x∈xs : x ∈ xs) → f x∈xs ≡ g x∈xs) →
                 mapWith∈ xs f ≡ mapWith∈ xs g
 mapWith∈-cong []       f g cong = refl
-mapWith∈-cong (x ∷ xs) f g cong = ≡.cong₂ _∷_ (cong (here refl))
+mapWith∈-cong (x ∷ xs) f g cong = cong₂ _∷_ (cong (here refl))
   (mapWith∈-cong xs (f ∘ there) (g ∘ there) (cong ∘ there))
 
 mapWith∈≗map : ∀ (f : A → B) xs → mapWith∈ xs (λ {x} _ → f x) ≡ map f xs
@@ -94,7 +98,7 @@ map-mapWith∈ = Membership.map-mapWith∈ (≡.setoid _)
 module _ (f : A → B) where
 
   ∈-map⁺ : ∀ {x xs} → x ∈ xs → f x ∈ map f xs
-  ∈-map⁺ = Membership.∈-map⁺ (≡.setoid A) (≡.setoid B) (≡.cong f)
+  ∈-map⁺ = Membership.∈-map⁺ (≡.setoid A) (≡.setoid B) (cong f)
 
   ∈-map⁻ : ∀ {y xs} → y ∈ map f xs → ∃ λ x → x ∈ xs × y ≡ f x
   ∈-map⁻ = Membership.∈-map⁻ (≡.setoid A) (≡.setoid B)
@@ -163,7 +167,7 @@ module _ (f : A → B → C) where
   ∈-cartesianProductWith⁺ : ∀ {xs ys a b} → a ∈ xs → b ∈ ys →
                             f a b ∈ cartesianProductWith f xs ys
   ∈-cartesianProductWith⁺ = Membership.∈-cartesianProductWith⁺
-    (≡.setoid A) (≡.setoid B) (≡.setoid C) (≡.cong₂ f)
+    (≡.setoid A) (≡.setoid B) (≡.setoid C) (cong₂ f)
 
   ∈-cartesianProductWith⁻ : ∀ xs ys {v} → v ∈ cartesianProductWith f xs ys →
                             ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
@@ -243,10 +247,10 @@ module _ {n} {f : Fin n → A} where
 module _ {p} {P : A → Set p} (P? : Decidable P) where
 
   ∈-filter⁺ : ∀ {x xs} → x ∈ xs → P x → x ∈ filter P? xs
-  ∈-filter⁺ = Membership.∈-filter⁺ (≡.setoid A) P? (≡.subst P)
+  ∈-filter⁺ = Membership.∈-filter⁺ (≡.setoid A) P? (subst P)
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
-  ∈-filter⁻ = Membership.∈-filter⁻ (≡.setoid A) P? (≡.subst P)
+  ∈-filter⁻ = Membership.∈-filter⁻ (≡.setoid A) P? (subst P)
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
@@ -259,7 +263,7 @@ module _ {r} {R : Rel A r} (R? : Binary.Decidable R) where
   ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
   ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membership.∈-deduplicate⁻ (≡.setoid A) R? xs z∈dedup[R,xs]
 
-module _ (_≈?_ : Binary.Decidable {A = A} _≡_) where
+module _ (_≈?_ : DecidableEquality A) where
 
   ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
   ∈-derun⁺ z∈xs = Membership.∈-derun⁺ (≡.setoid A) _≈?_ (flip trans) z∈xs

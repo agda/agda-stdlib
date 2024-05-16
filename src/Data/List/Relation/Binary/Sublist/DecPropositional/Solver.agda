@@ -7,13 +7,12 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Relation.Binary.Definitions using (DecidableEquality)
 
 module Data.List.Relation.Binary.Sublist.DecPropositional.Solver
-       {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_)
+       {a} {A : Set a} (_≟_ : DecidableEquality A)
        where
 
-import Relation.Binary.PropositionalEquality.Properties as P
+open import Relation.Binary.PropositionalEquality.Properties using (decSetoid)
 
-open import Data.List.Relation.Binary.Sublist.DecSetoid.Solver (P.decSetoid _≟_) public
+open import Data.List.Relation.Binary.Sublist.DecSetoid.Solver (decSetoid _≟_) public

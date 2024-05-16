@@ -32,7 +32,7 @@ open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Coprimality as C using (Coprime; coprime?)
-open import Data.Nat.Divisibility
+open import Data.Nat.Divisibility using (_∣_; divides; ∣-antisym; *-pres-∣)
 import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
 open import Data.Product.Base using (proj₁; proj₂; _×_; _,_; uncurry)
@@ -45,19 +45,21 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ
   ; _+_ to _+ᵘ_
   )
 import Data.Rational.Unnormalised.Properties as ℚᵘ
-open import Data.Sum.Base as Sum
-open import Data.Unit using (tt)
-import Data.Sign as S
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′; _⊎_)
+import Data.Sign.Base as Sign
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
-open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; sym; trans; _≢_; subst; subst₂; resp₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; decSetoid; module ≡-Reasoning; isEquivalence)
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-open import Relation.Binary.Reasoning.Syntax
+open import Relation.Binary.Reasoning.Syntax using (module ≃-syntax)
 open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
@@ -262,8 +264,8 @@ normalize-coprime {n} {d-1} c = begin
 ↥-normalize i n = begin
   ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ (n ℕ./ g)) ⟩
   + i/g     ℤ.* + g          ≡⟨⟩
-  S.+ ◃ i/g ℕ.* g            ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
-  S.+ ◃ i                    ≡⟨ ℤ.+◃n≡+n i ⟩
+  Sign.+ ◃ i/g ℕ.* g         ≡⟨ cong (Sign.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
+  Sign.+ ◃ i                 ≡⟨ ℤ.+◃n≡+n i ⟩
   + i                        ∎
   where
   open ≡-Reasoning
@@ -276,8 +278,8 @@ normalize-coprime {n} {d-1} c = begin
 ↧-normalize i n = begin
   ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ (n ℕ./ g)) ⟩
   + (n ℕ./ g)       ℤ.* + g  ≡⟨⟩
-  S.+ ◃ n ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
-  S.+ ◃ n                    ≡⟨ ℤ.+◃n≡+n n ⟩
+  Sign.+ ◃ n ℕ./ g     ℕ.* g ≡⟨ cong (Sign.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
+  Sign.+ ◃ n                 ≡⟨ ℤ.+◃n≡+n n ⟩
   + n                        ∎
   where
   open ≡-Reasoning
@@ -360,7 +362,7 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
   ↥ (- norm)   ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-neg norm) ⟩
   ℤ.- (↥ norm) ℤ.* + g  ≡⟨ sym (ℤ.neg-distribˡ-* (↥ norm) (+ g)) ⟩
   ℤ.- (↥ norm  ℤ.* + g) ≡⟨ cong (ℤ.-_) (↥-normalize (suc m) n) ⟩
-  S.- ◃ suc m           ≡⟨⟩
+  Sign.- ◃ suc m        ≡⟨⟩
   -[1+ m ]              ∎
   where
   open ℤ.≤-Reasoning
@@ -409,13 +411,13 @@ private
 
 /-injective-≃ : ∀ p q → ↥ᵘ p / ↧ₙᵘ p ≡ ↥ᵘ q / ↧ₙᵘ q → p ≃ᵘ q
 /-injective-≃ (mkℚᵘ (+ m)    c-1) (mkℚᵘ (+ n)    d-1) eq =
-  *≡* (cong (S.+ ◃_) (normalize-injective-≃ m n _ _ eq))
+  *≡* (cong (Sign.+ ◃_) (normalize-injective-≃ m n _ _ eq))
 /-injective-≃ (mkℚᵘ (+ m)    c-1) (mkℚᵘ -[1+ n ] d-1) eq =
   ℚᵘ.≃-sym (/-injective-≃-helper (sym eq))
 /-injective-≃ (mkℚᵘ -[1+ m ] c-1) (mkℚᵘ (+ n)    d-1) eq =
   /-injective-≃-helper eq
 /-injective-≃ (mkℚᵘ -[1+ m ] c-1) (mkℚᵘ -[1+ n ] d-1) eq =
-  *≡* (cong (S.- ◃_) (normalize-injective-≃ (suc m) (suc n) _ _ (neg-injective eq)))
+  *≡* (cong (Sign.- ◃_) (normalize-injective-≃ (suc m) (suc n) _ _ (neg-injective eq)))
 
 ------------------------------------------------------------------------
 -- Properties of toℚ/fromℚ
