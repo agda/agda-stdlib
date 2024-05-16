@@ -6,55 +6,48 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+-- Disabled to prevent warnings from deprecated names
+{-# OPTIONS --warn=noUserWarning #-}
+
+open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.Bundles using (Setoid)
 
 module Function.Endomorphism.Setoid {c e} (S : Setoid c e) where
 
 open import Agda.Builtin.Equality
 
-open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
-open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
-open import Algebra.Morphism
-  using (module Definitions; IsSemigroupHomomorphism; IsMonoidHomomorphism)
-open Definitions using (Homomorphic₂)
-open import Data.Nat.Base using (ℕ; _+_; +-rawMagma; +-0-rawMonoid)
-open ℕ
-open import Data.Nat.Properties using (+-semigroup; +-identityʳ)
+open import Algebra
+open import Algebra.Structures
+open import Algebra.Morphism; open Definitions
+open import Function.Equality using (setoid; _⟶_; id; _∘_; cong)
+open import Data.Nat.Base using (ℕ; _+_); open ℕ
+open import Data.Nat.Properties
 open import Data.Product.Base using (_,_)
-open import Function.Bundles using (Func; _⟶ₛ_; _⟨$⟩_)
-open import Function.Construct.Identity using () renaming (function to identity)
-open import Function.Construct.Composition using () renaming (function to _∘_)
-open import Function.Relation.Binary.Setoid.Equality as Eq using (_⇨_)
-open import Level using (Level; _⊔_)
-open import Relation.Binary.Core using (_Preserves_⟶_)
+
+import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial as Trivial
 
 private
-  module E = Setoid (S ⇨ S)
+  module E = Setoid (setoid S (Trivial.indexedSetoid S))
   open E hiding (refl)
-  open Func using (cong)
+
 ------------------------------------------------------------------------
 -- Basic type and functions
 
 Endo : Set _
-Endo = S ⟶ₛ S
+Endo = S ⟶ S
 
 infixr 8 _^_
 
-private
-  id : Endo
-  id = identity S
-  
 _^_ : Endo → ℕ → Endo
 f ^ zero  = id
 f ^ suc n = f ∘ (f ^ n)
 
 ^-cong₂ : ∀ f → (f ^_) Preserves _≡_ ⟶ _≈_
-^-cong₂ f {n} refl = cong (f ^ n) (Setoid.refl S)
+^-cong₂ f {n} refl = cong (f ^ n)
 
 ^-homo : ∀ f → Homomorphic₂ ℕ Endo _≈_ (f ^_) _+_ _∘_
-^-homo f zero    n           = Setoid.refl S
-^-homo f (suc m) zero    = ^-cong₂ f (+-identityʳ m)
-^-homo f (suc m) (suc n) = ^-homo f m (suc n)
+^-homo f zero    n x≈y = cong (f ^ n) x≈y
+^-homo f (suc m) n x≈y = cong f (^-homo f m n x≈y)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -62,54 +55,41 @@ f ^ suc n = f ∘ (f ^ n)
 ∘-isMagma : IsMagma _≈_ _∘_
 ∘-isMagma = record
   { isEquivalence = isEquivalence
-  ; ∙-cong        = λ {_} {_} {_} {v} x≈y u≈v → S.trans u≈v (cong v x≈y) 
+  ; ∙-cong        = λ g f x → g (f x)
   }
-  where
-    module S = Setoid S
 
-∘-magma : Magma (c ⊔ e) (c ⊔ e)
+∘-magma : Magma _ _
 ∘-magma = record { isMagma = ∘-isMagma }
 
 ∘-isSemigroup : IsSemigroup _≈_ _∘_
 ∘-isSemigroup = record
   { isMagma = ∘-isMagma
-  ; assoc   = λ h g f {s} → Setoid.refl S
+  ; assoc   = λ h g f x≈y → cong h (cong g (cong f x≈y))
   }
 
-∘-semigroup : Semigroup (c ⊔ e) (c ⊔ e)
+∘-semigroup : Semigroup _ _
 ∘-semigroup = record { isSemigroup = ∘-isSemigroup }
 
 ∘-id-isMonoid : IsMonoid _≈_ _∘_ id
 ∘-id-isMonoid = record
   { isSemigroup = ∘-isSemigroup
-  ; identity    = (λ f → Setoid.refl S) , (λ _ → Setoid.refl S)
+  ; identity    = cong , cong
   }
 
-∘-id-monoid : Monoid (c ⊔ e) (c ⊔ e)
+∘-id-monoid : Monoid _ _
 ∘-id-monoid = record { isMonoid = ∘-id-isMonoid }
 
-private
-  ∘-rawMagma : RawMagma (c ⊔ e) (c ⊔ e)
-  ∘-rawMagma = Semigroup.rawMagma ∘-semigroup
-
-  ∘-id-rawMonoid : RawMonoid (c ⊔ e) (c ⊔ e)
-  ∘-id-rawMonoid = Monoid.rawMonoid ∘-id-monoid
-  
 ------------------------------------------------------------------------
 -- Homomorphism
 
-^-isSemigroupHomomorphism : ∀ f → IsSemigroupHomomorphism +-rawMagma ∘-rawMagma (f ^_)
-^-isSemigroupHomomorphism f = record
-  { isRelHomomorphism = record { cong = ^-cong₂ f }
-  ; homo = ^-homo f
+^-isSemigroupMorphism : ∀ f → IsSemigroupMorphism +-semigroup ∘-semigroup (f ^_)
+^-isSemigroupMorphism f = record
+  { ⟦⟧-cong = ^-cong₂ f
+  ; ∙-homo  = ^-homo f
   }
 
-^-isMonoidHomoorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
-^-isMonoidHomoorphism f = record
-  { isMagmaHomomorphism = record
-    { isRelHomomorphism = record { cong = ^-cong₂ f }
-    ; homo = ^-homo f
-    }
-  ; ε-homo = Setoid.refl S
+^-isMonoidMorphism : ∀ f → IsMonoidMorphism +-0-monoid ∘-id-monoid (f ^_)
+^-isMonoidMorphism f = record
+  { sm-homo = ^-isSemigroupMorphism f
+  ; ε-homo  = λ x≈y → x≈y
   }
-
