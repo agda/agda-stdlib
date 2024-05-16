@@ -245,19 +245,18 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
-* In `Algebra.Morphism.Structures`
+* In `Algebra.Morphism.Structures`:
   ```agda
-  module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
-    record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+  IsSemigroupHomomorphism : (A → B) → Set _
+  IsSemigroupMonomorphism : (A → B) → Set _
+  IsSemigroupIsomorphism : (A → B) → Set _
+  ```
 
 * In `Algebra.Properties.AbelianGroup`:
   ```
   ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
   ```
 
-* In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
   quasigroup      : Quasigroup _ _
