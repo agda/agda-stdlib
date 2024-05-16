@@ -282,130 +282,113 @@ module _ (K : RawKleeneAlgebra c ℓ) (open RawKleeneAlgebra K) (refl : Reflexiv
 
 -- Magma
 
-module _ (M : Magma c ℓ) where
-
+magmaHomomorphism : (M : Magma c ℓ) → MagmaHomomorphism M M
+magmaHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isMagmaHomomorphism = isMagmaHomomorphism rawMagma refl
+  }
+  where
   open Magma M using (rawMagma; refl)
   open MagmaMorphisms rawMagma rawMagma
 
-  magmaHomomorphism : MagmaHomomorphism M M
-  magmaHomomorphism = record
-    { ⟦_⟧ = id
-    ; isMagmaHomomorphism = isMagmaHomomorphism rawMagma refl
-    }
 
 -- Monoid
 
-module _ (M : Monoid c ℓ) where
-
+monoidHomomorphism : (M : Monoid c ℓ) → MonoidHomomorphism M M
+monoidHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isMonoidHomomorphism = isMonoidHomomorphism rawMonoid refl
+  }
+  where
   open Monoid M using (rawMonoid; refl)
   open MonoidMorphisms rawMonoid rawMonoid
 
-  monoidHomomorphism : MonoidHomomorphism M M
-  monoidHomomorphism = record
-    { ⟦_⟧ = id
-    ; isMonoidHomomorphism = isMonoidHomomorphism rawMonoid refl
-    }
-
 -- Group
 
-module _ (M : Group c ℓ) where
-
+groupHomomorphism : (M : Group c ℓ) → GroupHomomorphism M M
+groupHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isGroupHomomorphism = isGroupHomomorphism rawGroup refl
+  }
+  where
   open Group M using (rawGroup; refl)
   open GroupMorphisms rawGroup rawGroup
 
-  groupHomomorphism : GroupHomomorphism M M
-  groupHomomorphism = record
-    { ⟦_⟧ = id
-    ; isGroupHomomorphism = isGroupHomomorphism rawGroup refl
-    }
-
 -- NearSemiring
 
-module _ (M : NearSemiring c ℓ) where
-
+nearSemiringHomomorphism : (M : NearSemiring c ℓ) → NearSemiringHomomorphism M M
+nearSemiringHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isNearSemiringHomomorphism = isNearSemiringHomomorphism rawNearSemiring refl
+  }
+  where
   open NearSemiring M using (rawNearSemiring; refl)
   open NearSemiringMorphisms rawNearSemiring rawNearSemiring
 
-  nearSemiringHomomorphism : NearSemiringHomomorphism M M
-  nearSemiringHomomorphism = record
-    { ⟦_⟧ = id
-    ; isNearSemiringHomomorphism = isNearSemiringHomomorphism rawNearSemiring refl
-    }
-
 -- Semiring
 
-module _ (M : Semiring c ℓ) where
-
+semiringHomomorphism : (M : Semiring c ℓ) → SemiringHomomorphism M M
+semiringHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isSemiringHomomorphism = isSemiringHomomorphism rawSemiring refl
+  }
+  where
   open Semiring M using (rawSemiring; refl)
   open SemiringMorphisms rawSemiring rawSemiring
 
-  semiringHomomorphism : SemiringHomomorphism M M
-  semiringHomomorphism = record
-    { ⟦_⟧ = id
-    ; isSemiringHomomorphism = isSemiringHomomorphism rawSemiring refl
-    }
-
 -- KleeneAlgebra
 
-module _ (M : KleeneAlgebra c ℓ) where
-
+kleeneAlgebraHomomorphism : (M : KleeneAlgebra c ℓ) → KleeneAlgebraHomomorphism M M
+kleeneAlgebraHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isKleeneAlgebraHomomorphism = isKleeneAlgebraHomomorphism rawKleeneAlgebra refl
+  }
+  where
   open KleeneAlgebra M using (rawKleeneAlgebra; refl)
   open KleeneAlgebraMorphisms rawKleeneAlgebra rawKleeneAlgebra
 
-  kleeneAlgebraHomomorphism : KleeneAlgebraHomomorphism M M
-  kleeneAlgebraHomomorphism = record
-    { ⟦_⟧ = id
-    ; isKleeneAlgebraHomomorphism = isKleeneAlgebraHomomorphism rawKleeneAlgebra refl
-    }
-
 -- RingWithoutOne
 
-module _ (M : RingWithoutOne c ℓ) where
-
+ringWithoutOneHomomorphism : (M : RingWithoutOne c ℓ) → RingWithoutOneHomomorphism M M
+ringWithoutOneHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isRingWithoutOneHomomorphism = isRingWithoutOneHomomorphism rawRingWithoutOne refl
+  }
+  where
   open RingWithoutOne M using (rawRingWithoutOne; refl)
   open RingWithoutOneMorphisms rawRingWithoutOne rawRingWithoutOne
 
-  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M M
-  ringWithoutOneHomomorphism = record
-    { ⟦_⟧ = id
-    ; isRingWithoutOneHomomorphism = isRingWithoutOneHomomorphism rawRingWithoutOne refl
-    }
-
 -- Ring
 
-module _ (M : Ring c ℓ) where
-
+ringHomomorphism : (M : Ring c ℓ) → RingHomomorphism M M
+ringHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isRingHomomorphism = isRingHomomorphism rawRing refl
+  }
+  where
   open Ring M using (rawRing; refl)
   open RingMorphisms rawRing rawRing
 
-  ringHomomorphism : RingHomomorphism M M
-  ringHomomorphism = record
-    { ⟦_⟧ = id
-    ; isRingHomomorphism = isRingHomomorphism rawRing refl
-    }
 
 -- Quasigroup
 
-module _ (M : Quasigroup c ℓ) where
-
+quasigroupHomomorphism : (M : Quasigroup c ℓ) → QuasigroupHomomorphism M M
+quasigroupHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isQuasigroupHomomorphism = isQuasigroupHomomorphism rawQuasigroup refl
+  }
+  where
   open Quasigroup M using (rawQuasigroup; refl)
   open QuasigroupMorphisms rawQuasigroup rawQuasigroup
 
-  quasigroupHomomorphism : QuasigroupHomomorphism M M
-  quasigroupHomomorphism = record
-    { ⟦_⟧ = id
-    ; isQuasigroupHomomorphism = isQuasigroupHomomorphism rawQuasigroup refl
-    }
-
 -- Loop
 
-module _ (M : Loop c ℓ) where
-
+loopHomomorphism : (M : Loop c ℓ) → LoopHomomorphism M M
+loopHomomorphism M = record
+  { ⟦_⟧ = id
+  ; isLoopHomomorphism = isLoopHomomorphism rawLoop refl
+  }
+  where
   open Loop M using (rawLoop; refl)
   open LoopMorphisms rawLoop rawLoop
-
-  loopHomomorphism : LoopHomomorphism M M
-  loopHomomorphism = record
-    { ⟦_⟧ = id
-    ; isLoopHomomorphism = isLoopHomomorphism rawLoop refl
-    }
+    
