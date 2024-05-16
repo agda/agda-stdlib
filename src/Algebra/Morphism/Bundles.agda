@@ -114,6 +114,12 @@ record SemiringHomomorphism (A : Semiring a ℓa) (B : Semiring b ℓb) : Set (a
 
   open IsSemiringHomomorphism isSemiringHomomorphism public
 
+  nearSemiringHomomorphism : NearSemiringHomomorphism A.nearSemiring B.nearSemiring
+  nearSemiringHomomorphism = record { isNearSemiringHomomorphism = isNearSemiringHomomorphism }
+
+  open NearSemiringHomomorphism nearSemiringHomomorphism public
+    using (*-magmaHomomorphism; +-monoidHomomorphism)
+
   *-monoidHomomorphism : MonoidHomomorphism A.*-monoid B.*-monoid
   *-monoidHomomorphism = record { isMonoidHomomorphism = *-isMonoidHomomorphism }
 
