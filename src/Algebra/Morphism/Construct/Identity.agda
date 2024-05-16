@@ -291,7 +291,6 @@ magmaHomomorphism M = record
   open Magma M using (rawMagma; refl)
   open MagmaMorphisms rawMagma rawMagma
 
-
 -- Monoid
 
 monoidHomomorphism : (M : Monoid c ℓ) → MonoidHomomorphism M M
@@ -391,4 +390,3 @@ loopHomomorphism M = record
   where
   open Loop M using (rawLoop; refl)
   open LoopMorphisms rawLoop rawLoop
-    
