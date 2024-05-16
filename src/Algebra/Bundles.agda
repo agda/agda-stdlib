@@ -810,6 +810,16 @@ record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawSemiring; semiring
     )
 
+  rawKleeneAlgebra : RawKleeneAlgebra _ _
+  rawKleeneAlgebra = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; _⋆  = _⋆
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
 record Quasiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_

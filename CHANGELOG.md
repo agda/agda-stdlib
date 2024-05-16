@@ -183,6 +183,11 @@ Additions to existing modules
   record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
+* Exporting `RawKleeneAlgebra` substructure from `Algebra.Bundles.KleeneAlgebra`:
+  ```agda
+  rawKleeneAlgebra : RawKleeneAlgebra _ _
+  ```
+
 * Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
   ```agda
   rawNearSemiring   : RawNearSemiring _ _
