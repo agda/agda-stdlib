@@ -384,6 +384,7 @@ Additions to existing modules
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
   ```agda
+  ≉-irrefl : Irreflexive _≈_ _≉_
   ≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
   ≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
   ```

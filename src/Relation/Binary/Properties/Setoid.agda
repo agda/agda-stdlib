@@ -8,7 +8,7 @@
 
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Bundles using (Setoid; Preorder; Poset)
@@ -81,7 +81,7 @@ preorder = record
 ≉-resp₂ = ≉-respʳ , ≉-respˡ
 
 ≉-irrefl : Irreflexive _≈_ _≉_
-≉-irrefl x≈y x≉y = x≉y x≈y
+≉-irrefl x≈y x≉y = contradiction x≈y x≉y
 
 ------------------------------------------------------------------------
 -- Equality is closed under composition
