@@ -1246,7 +1246,8 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 
 
 ------------------------------------------------------------------------
--- Field-like structures and bundles
+-- HeytingField structures and bundles
+
 module _ where
   open CommutativeRing +-*-commutativeRing
     using (+-group; zeroˡ; *-congʳ; isCommutativeRing)
@@ -1254,24 +1255,20 @@ module _ where
   open GroupProperties +-group
   open DecSetoidProperties ≡-decSetoid
 
-  p*q≡r→p≢0 : r ≢ 0ℚ → p * q ≡ r → p ≢ 0ℚ
-  p*q≡r→p≢0 {r} {p} {q} r≉0 p*q≡r p≡0 = contradiction r≈0 r≉0
-    where
-    open ≈-Reasoning ≡-setoid
-    r≈0 : r ≡ 0ℚ
-    r≈0 = begin
-      r      ≈⟨ p*q≡r ⟨
-      p * q  ≈⟨ *-congʳ p≡0 ⟩
-      0ℚ * q ≈⟨ zeroˡ q ⟩
-      0ℚ     ∎
-
   #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
   #⇒invertible {p} {q} p≢q = let r = p - q in 1/ r , *-inverseˡ r , *-inverseʳ r
     where instance _ = ≢-nonZero (p≢q ∘ (x∙y⁻¹≈ε⇒x≈y p q))
 
   invertible⇒# : Invertible 1ℚ _*_ (p - q) → p ≢ q
-  invertible⇒# {p} {q} (1/[p-q] , _ , [p-q]/[p-q]≡1) p≡q =
-    p*q≡r→p≢0 1≢0 [p-q]/[p-q]≡1 (x≈y⇒x∙y⁻¹≈ε p≡q)
+  invertible⇒# {p} {q} (1/[p-q] , _ , [p-q]/[p-q]≡1) p≡q = contradiction 1≡0 1≢0
+    where
+    open ≈-Reasoning ≡-setoid
+    1≡0 : 1ℚ ≡ 0ℚ
+    1≡0 = begin
+      1ℚ                 ≈⟨ [p-q]/[p-q]≡1 ⟨
+      (p - q) * 1/[p-q]  ≈⟨ *-congʳ (x≈y⇒x∙y⁻¹≈ε p≡q) ⟩
+      0ℚ * 1/[p-q]       ≈⟨ zeroˡ 1/[p-q] ⟩
+      0ℚ                 ∎
 
   isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
   isHeytingCommutativeRing = record
