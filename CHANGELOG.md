@@ -251,12 +251,12 @@ Additions to existing modules
   IsSemigroupMonomorphism : (A → B) → Set _
   IsSemigroupIsomorphism : (A → B) → Set _
   ```
-
 * In `Algebra.Properties.AbelianGroup`:
   ```
   ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
   ```
 
+ * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
   quasigroup      : Quasigroup _ _

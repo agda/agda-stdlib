@@ -43,7 +43,7 @@ infixr 8 _^_
 private
   id : Endo
   id = identity S
-
+  
 _^_ : Endo → ℕ → Endo
 f ^ zero  = id
 f ^ suc n = f ∘ (f ^ n)
@@ -62,7 +62,7 @@ f ^ suc n = f ∘ (f ^ n)
 ∘-isMagma : IsMagma _≈_ _∘_
 ∘-isMagma = record
   { isEquivalence = isEquivalence
-  ; ∙-cong        = λ {_} {_} {_} {v} x≈y u≈v → S.trans u≈v (cong v x≈y)
+  ; ∙-cong        = λ {_} {_} {_} {v} x≈y u≈v → S.trans u≈v (cong v x≈y) 
   }
   where
     module S = Setoid S
@@ -94,7 +94,7 @@ private
 
   ∘-id-rawMonoid : RawMonoid (c ⊔ e) (c ⊔ e)
   ∘-id-rawMonoid = Monoid.rawMonoid ∘-id-monoid
-
+  
 ------------------------------------------------------------------------
 -- Homomorphism
 
