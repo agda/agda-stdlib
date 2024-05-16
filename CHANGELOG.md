@@ -256,7 +256,7 @@ Additions to existing modules
   ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
   ```
 
- * In `Algebra.Properties.Group`:
+* In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
   quasigroup      : Quasigroup _ _
