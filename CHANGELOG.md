@@ -118,6 +118,11 @@ New modules
   Relation.Binary.Construct.Interior.Symmetric
   ```
 
+* Properties of `Setoid`s with decidable equality relation:
+  ```
+  Relation.Binary.Properties.DecSetoid
+  ```
+
 * Pointwise and equality relations over indexed containers:
   ```agda
   Data.Container.Indexed.Relation.Binary.Pointwise
