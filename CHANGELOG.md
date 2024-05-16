@@ -244,6 +244,55 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
+* In `Algebra.Morphism.Construct.Composition`:
+  ```
+  magmaHomomorphism          : MagmaHomomorphism M₁ M₂ →
+                               MagmaHomomorphism M₂ M₃ →
+                               MagmaHomomorphism M₁ M₃
+  monoidHomomorphism         : MonoidHomomorphism M₁ M₂ →
+                               MagmaHomomorphism M₂ M₃ →
+                               MagmaHomomorphism M₁ M₃
+  groupHomomorphism          : GroupHomomorphism M₁ M₂ →
+                               MagmaHomomorphism M₂ M₃ →
+                               MagmaHomomorphism M₁ M₃
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M₁ M₂ →
+                               NearSemiringHomomorphism M₂ M₃ →
+                               NearSemiringHomomorphism M₁ M₃
+  semiringHomomorphism       : SemiringHomomorphism M₁ M₂ →
+                               SemiringHomomorphism M₂ M₃ →
+                               SemiringHomomorphism M₁ M₃
+  kleeneAlgebraHomomorphism  : KleeneAlgebraHomomorphism M₁ M₂ →
+                               KleeneAlgebraHomomorphism M₂ M₃ →
+                               KleeneAlgebraHomomorphism M₁ M₃
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M₁ M₂ →
+                               RingWithoutOneHomomorphism M₂ M₃ →
+                               RingWithoutOneHomomorphism M₁ M₃
+  ringHomomorphism           : RingHomomorphism M₁ M₂ →
+                               RingHomomorphism M₂ M₃ →
+                               RingHomomorphism M₁ M₃
+  quasigroupHomomorphism     : QuasigroupHomomorphism M₁ M₂ →
+                               QuasigroupHomomorphism M₂ M₃ →
+                               QuasigroupHomomorphism M₁ M₃
+  loopHomomorphism           : LoopHomomorphism M₁ M₂ →
+                               LoopHomomorphism M₂ M₃ →
+                               LoopHomomorphism M₁ M₃
+  ```
+
+* In `Algebra.Morphism.Construct.Identity`:
+  ```
+  magmaHomomorphism          : MagmaHomomorphism M M
+  monoidHomomorphism         : MonoidHomomorphism M M
+  groupHomomorphism          : GroupHomomorphism M M
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M M
+  semiringHomomorphism       : SemiringHomomorphism M M
+  kleeneAlgebraHomomorphism  : KleeneAlgebraHomomorphism M M
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M M
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M M
+  ringHomomorphism           : RingHomomorphism M M
+  quasigroupHomomorphism     : QuasigroupHomomorphism M M
+  loopHomomorphism           : LoopHomomorphism M M
+  ```
+
 * In `Algebra.Morphism.Structures`
   ```agda
   module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where

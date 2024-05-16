@@ -9,6 +9,7 @@
 module Algebra.Morphism.Construct.Composition where
 
 open import Algebra.Bundles
+open import Algebra.Morphism.Bundles
 open import Algebra.Morphism.Structures
 open import Function.Base using (_∘_)
 import Function.Construct.Composition as Func
@@ -423,3 +424,168 @@ module _ {K₁ : RawKleeneAlgebra a ℓ₁}
     ; surjective                  = Func.surjective (_≈_ K₁) (_≈_ K₂) (_≈_ K₃) F.surjective G.surjective
     } where module F = IsKleeneAlgebraIsomorphism f-iso; module G = IsKleeneAlgebraIsomorphism g-iso
 
+-----------------------------------------------------------------------
+-- Bundled morphisms between algebras
+------------------------------------------------------------------------
+
+-- Magma
+
+module _ {M₁ : Magma a ℓ₁}
+         {M₂ : Magma b ℓ₂}
+         {M₃ : Magma c ℓ₃}
+         (h : MagmaHomomorphism M₁ M₂)
+         (k : MagmaHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = MagmaHomomorphism h
+    module K = MagmaHomomorphism k
+
+  magmaHomomorphism : MagmaHomomorphism M₁ M₃
+  magmaHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isMagmaHomomorphism = isMagmaHomomorphism (Magma.trans M₃) H.isMagmaHomomorphism K.isMagmaHomomorphism }
+
+-- Monoid
+
+module _ {M₁ : Monoid a ℓ₁}
+         {M₂ : Monoid b ℓ₂}
+         {M₃ : Monoid c ℓ₃}
+         (h : MonoidHomomorphism M₁ M₂)
+         (k : MonoidHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = MonoidHomomorphism h
+    module K = MonoidHomomorphism k
+
+  monoidHomomorphism : MonoidHomomorphism M₁ M₃
+  monoidHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isMonoidHomomorphism = isMonoidHomomorphism (Monoid.trans M₃) H.isMonoidHomomorphism K.isMonoidHomomorphism }
+
+-- Group
+
+module _ {M₁ : Group a ℓ₁}
+         {M₂ : Group b ℓ₂}
+         {M₃ : Group c ℓ₃}
+         (h : GroupHomomorphism M₁ M₂)
+         (k : GroupHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = GroupHomomorphism h
+    module K = GroupHomomorphism k
+
+  groupHomomorphism : GroupHomomorphism M₁ M₃
+  groupHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isGroupHomomorphism = isGroupHomomorphism (Group.trans M₃) H.isGroupHomomorphism K.isGroupHomomorphism }
+
+-- NearSemiring
+
+module _ {M₁ : NearSemiring a ℓ₁}
+         {M₂ : NearSemiring b ℓ₂}
+         {M₃ : NearSemiring c ℓ₃}
+         (h : NearSemiringHomomorphism M₁ M₂)
+         (k : NearSemiringHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = NearSemiringHomomorphism h
+    module K = NearSemiringHomomorphism k
+
+  nearSemiringHomomorphism : NearSemiringHomomorphism M₁ M₃
+  nearSemiringHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isNearSemiringHomomorphism = isNearSemiringHomomorphism (NearSemiring.trans M₃) H.isNearSemiringHomomorphism K.isNearSemiringHomomorphism }
+
+-- Semiring
+
+module _ {M₁ : Semiring a ℓ₁}
+         {M₂ : Semiring b ℓ₂}
+         {M₃ : Semiring c ℓ₃}
+         (h : SemiringHomomorphism M₁ M₂)
+         (k : SemiringHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = SemiringHomomorphism h
+    module K = SemiringHomomorphism k
+
+  semiringHomomorphism : SemiringHomomorphism M₁ M₃
+  semiringHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isSemiringHomomorphism = isSemiringHomomorphism (Semiring.trans M₃) H.isSemiringHomomorphism K.isSemiringHomomorphism }
+
+-- RingWithoutOne
+
+module _ {M₁ : RingWithoutOne a ℓ₁}
+         {M₂ : RingWithoutOne b ℓ₂}
+         {M₃ : RingWithoutOne c ℓ₃}
+         (h : RingWithoutOneHomomorphism M₁ M₂)
+         (k : RingWithoutOneHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = RingWithoutOneHomomorphism h
+    module K = RingWithoutOneHomomorphism k
+
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M₁ M₃
+  ringWithoutOneHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isRingWithoutOneHomomorphism = isRingWithoutOneHomomorphism (RingWithoutOne.trans M₃) H.isRingWithoutOneHomomorphism K.isRingWithoutOneHomomorphism }
+
+-- Ring
+
+module _ {M₁ : Ring a ℓ₁}
+         {M₂ : Ring b ℓ₂}
+         {M₃ : Ring c ℓ₃}
+         (h : RingHomomorphism M₁ M₂)
+         (k : RingHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = RingHomomorphism h
+    module K = RingHomomorphism k
+
+  ringHomomorphism : RingHomomorphism M₁ M₃
+  ringHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isRingHomomorphism = isRingHomomorphism (Ring.trans M₃) H.isRingHomomorphism K.isRingHomomorphism }
+
+-- Quasigroup
+
+module _ {M₁ : Quasigroup a ℓ₁}
+         {M₂ : Quasigroup b ℓ₂}
+         {M₃ : Quasigroup c ℓ₃}
+         (h : QuasigroupHomomorphism M₁ M₂)
+         (k : QuasigroupHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = QuasigroupHomomorphism h
+    module K = QuasigroupHomomorphism k
+
+  quasigroupHomomorphism : QuasigroupHomomorphism M₁ M₃
+  quasigroupHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isQuasigroupHomomorphism = isQuasigroupHomomorphism (Quasigroup.trans M₃) H.isQuasigroupHomomorphism K.isQuasigroupHomomorphism }
+
+-- Loop
+
+module _ {M₁ : Loop a ℓ₁}
+         {M₂ : Loop b ℓ₂}
+         {M₃ : Loop c ℓ₃}
+         (h : LoopHomomorphism M₁ M₂)
+         (k : LoopHomomorphism M₂ M₃)
+         where
+
+  private
+    module H = LoopHomomorphism h
+    module K = LoopHomomorphism k
+
+  loopHomomorphism : LoopHomomorphism M₁ M₃
+  loopHomomorphism = record
+    { ⟦_⟧ = K.⟦_⟧ ∘ H.⟦_⟧
+    ; isLoopHomomorphism = isLoopHomomorphism (Loop.trans M₃) H.isLoopHomomorphism K.isLoopHomomorphism }
