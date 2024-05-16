@@ -57,8 +57,6 @@ record MonoidHomomorphism (A : Monoid a ℓa) (B : Monoid b ℓb) : Set (a ⊔ b
   magmaHomomorphism : MagmaHomomorphism A.magma B.magma
   magmaHomomorphism = record { isMagmaHomomorphism = isMagmaHomomorphism }
 
-  open MagmaHomomorphism magmaHomomorphism public
-
 ------------------------------------------------------------------------
 -- Morphisms between Groups
 ------------------------------------------------------------------------
@@ -78,8 +76,6 @@ record GroupHomomorphism (A : Group a ℓa) (B : Group b ℓb) : Set (a ⊔ b �
   monoidHomomorphism : MonoidHomomorphism A.monoid B.monoid
   monoidHomomorphism = record { isMonoidHomomorphism = isMonoidHomomorphism }
 
-  open MonoidHomomorphism monoidHomomorphism public
-
 ------------------------------------------------------------------------
 -- Morphisms between NearSemirings
 ------------------------------------------------------------------------
@@ -98,8 +94,6 @@ record NearSemiringHomomorphism (A : NearSemiring a ℓa) (B : NearSemiring b �
 
   +-monoidHomomorphism : MonoidHomomorphism A.+-monoid B.+-monoid
   +-monoidHomomorphism = record { isMonoidHomomorphism = +-isMonoidHomomorphism }
-
-  open MonoidHomomorphism +-monoidHomomorphism public
 
   *-magmaHomomorphism : MagmaHomomorphism A.*-magma B.*-magma
   *-magmaHomomorphism = record { isMagmaHomomorphism = *-isMagmaHomomorphism }
@@ -122,8 +116,6 @@ record SemiringHomomorphism (A : Semiring a ℓa) (B : Semiring b ℓb) : Set (a
 
   *-monoidHomomorphism : MonoidHomomorphism A.*-monoid B.*-monoid
   *-monoidHomomorphism = record { isMonoidHomomorphism = *-isMonoidHomomorphism }
-
-  open MonoidHomomorphism *-monoidHomomorphism public
 
 ------------------------------------------------------------------------
 -- Morphisms between KleeneAlgebras
@@ -164,13 +156,8 @@ record RingWithoutOneHomomorphism (A : RingWithoutOne a ℓa) (B : RingWithoutOn
   +-groupHomomorphism : GroupHomomorphism A.+-group B.+-group
   +-groupHomomorphism = record { isGroupHomomorphism = +-isGroupHomomorphism }
 
-  open GroupHomomorphism +-groupHomomorphism public
-
   *-magmaHomomorphism : MagmaHomomorphism A.*-magma B.*-magma
   *-magmaHomomorphism = record { isMagmaHomomorphism = *-isMagmaHomomorphism }
-
-  open MagmaHomomorphism *-magmaHomomorphism public
-    hiding (setoidHomomorphism)
 
 ------------------------------------------------------------------------
 -- Morphisms between Rings
@@ -189,8 +176,6 @@ record RingHomomorphism (A : Ring a ℓa) (B : Ring b ℓb) : Set (a ⊔ b ⊔ �
 
   +-groupHomomorphism : GroupHomomorphism A.+-group B.+-group
   +-groupHomomorphism = record { isGroupHomomorphism = +-isGroupHomomorphism }
-
-  open GroupHomomorphism +-groupHomomorphism public
 
   *-monoidHomomorphism : MonoidHomomorphism A.*-monoid B.*-monoid
   *-monoidHomomorphism = record { isMonoidHomomorphism = *-isMonoidHomomorphism }
@@ -212,8 +197,6 @@ record QuasigroupHomomorphism (A : Quasigroup a ℓa) (B : Quasigroup b ℓb) : 
 
   magmaHomomorphism : MagmaHomomorphism A.magma B.magma
   magmaHomomorphism = record { isMagmaHomomorphism = ∙-isMagmaHomomorphism }
-
-  open MagmaHomomorphism magmaHomomorphism public
 
 ------------------------------------------------------------------------
 -- Morphisms between Loops
