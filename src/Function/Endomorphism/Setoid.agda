@@ -17,7 +17,8 @@ open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 open import Algebra.Morphism
   using (module Definitions; IsMagmaHomomorphism; IsMonoidHomomorphism)
 open Definitions using (Homomorphic₂)
-open import Data.Nat.Base using (ℕ; zero; suc; _+_; +-rawMagma; +-0-rawMonoid)
+open import Data.Nat.Base using (ℕ; _+_; +-rawMagma; +-0-rawMonoid)
+open ℕ
 open import Data.Nat.Properties using (+-semigroup; +-identityʳ)
 open import Data.Product.Base using (_,_)
 open import Function.Bundles using (Func; _⟶ₛ_; _⟨$⟩_)
@@ -28,8 +29,8 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (_Preserves_⟶_)
 
 private
-  open module E = Setoid (S ⇨ S) hiding (refl)
-  module S = Setoid S
+  module E = Setoid (S ⇨ S)
+  open E hiding (refl)
   open Func using (cong)
 ------------------------------------------------------------------------
 -- Basic type and functions
@@ -48,10 +49,10 @@ f ^ zero  = id
 f ^ suc n = f ∘ (f ^ n)
 
 ^-cong₂ : ∀ f → (f ^_) Preserves _≡_ ⟶ _≈_
-^-cong₂ f {n} refl = cong (f ^ n) S.refl
+^-cong₂ f {n} refl = cong (f ^ n) (Setoid.refl S)
 
 ^-homo : ∀ f → Homomorphic₂ ℕ Endo _≈_ (f ^_) _+_ _∘_
-^-homo f zero    n           = S.refl
+^-homo f zero    n           = Setoid.refl S
 ^-homo f (suc m) zero    = ^-cong₂ f (+-identityʳ m)
 ^-homo f (suc m) (suc n) = ^-homo f m (suc n)
 
@@ -63,6 +64,8 @@ f ^ suc n = f ∘ (f ^ n)
   { isEquivalence = isEquivalence
   ; ∙-cong        = λ {_} {_} {_} {v} x≈y u≈v → S.trans u≈v (cong v x≈y)
   }
+  where
+    module S = Setoid S
 
 ∘-magma : Magma (c ⊔ e) (c ⊔ e)
 ∘-magma = record { isMagma = ∘-isMagma }
@@ -70,7 +73,7 @@ f ^ suc n = f ∘ (f ^ n)
 ∘-isSemigroup : IsSemigroup _≈_ _∘_
 ∘-isSemigroup = record
   { isMagma = ∘-isMagma
-  ; assoc   = λ _ _ _ → S.refl
+  ; assoc   = λ h g f {s} → Setoid.refl S
   }
 
 ∘-semigroup : Semigroup (c ⊔ e) (c ⊔ e)
@@ -79,7 +82,7 @@ f ^ suc n = f ∘ (f ^ n)
 ∘-id-isMonoid : IsMonoid _≈_ _∘_ id
 ∘-id-isMonoid = record
   { isSemigroup = ∘-isSemigroup
-  ; identity    = (λ _ → S.refl) , (λ _ → S.refl)
+  ; identity    = (λ f → Setoid.refl S) , (λ _ → Setoid.refl S)
   }
 
 ∘-id-monoid : Monoid (c ⊔ e) (c ⊔ e)
@@ -95,34 +98,18 @@ private
 ------------------------------------------------------------------------
 -- Homomorphism
 
-^-isMagmaHomomorphism : ∀ f → IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
-^-isMagmaHomomorphism f = record
+^-isSemigroupHomomorphism : ∀ f → IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
+^-isSemigroupHomomorphism f = record
   { isRelHomomorphism = record { cong = ^-cong₂ f }
   ; homo = ^-homo f
   }
 
-^-isMonoidHomomorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
-^-isMonoidHomomorphism f = record
+^-isMonoidHomoorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
+^-isMonoidHomoorphism f = record
   { isMagmaHomomorphism = record
     { isRelHomomorphism = record { cong = ^-cong₂ f }
     ; homo = ^-homo f
     }
-  ; ε-homo = S.refl
+  ; ε-homo = Setoid.refl S
   }
 
-------------------------------------------------------------------------
--- Deprecations
-
--- Version 2.1
-
-^-isSemigroupMorphism = ^-isMagmaHomomorphism
-{-# WARNING_ON_USAGE ^-isSemigroupMorphism
-"Warning: ^-isSemigroupMorphism was deprecated in v2.1.
-Please use ^-isMagmaHomomorphism instead."
-#-}
-
-^-isMonoidMorphism = ^-isMonoidHomomorphism
-{-# WARNING_ON_USAGE ^-isMonoidMorphism
-"Warning: ^-isMonoidMorphism was deprecated in v2.1.
-Please use ^-isMonoidHomomorphism instead."
-#-}
