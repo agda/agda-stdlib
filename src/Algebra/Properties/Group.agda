@@ -115,20 +115,17 @@ inverseʳ-unique x y eq = trans (y≈x\\z x y ε eq) (identityʳ _)
 ⁻¹-involutive : Involutive _⁻¹
 ⁻¹-involutive = selfInverse⇒involutive ⁻¹-selfInverse
 
-x∙y⁻¹≈ε→x≈y : (x y : Carrier) → (x ∙ y ⁻¹) ≈ ε → x ≈ y
-x∙y⁻¹≈ε→x≈y x y x∙y⁻¹≈ε = begin
+x∙y⁻¹≈ε⇒x≈y : ∀ x y → (x ∙ y ⁻¹) ≈ ε → x ≈ y
+x∙y⁻¹≈ε⇒x≈y x y x∙y⁻¹≈ε = begin
   x         ≈⟨ inverseˡ-unique x (y ⁻¹) x∙y⁻¹≈ε ⟩
-  y ⁻¹ ⁻¹  ≈⟨ ⁻¹-involutive y ⟩
+  y ⁻¹ ⁻¹   ≈⟨ ⁻¹-involutive y ⟩
   y         ∎
 
-x≈y→x∙y⁻¹≈ε : (x y : Carrier) → x ≈ y → (x ∙ y ⁻¹) ≈ ε
-x≈y→x∙y⁻¹≈ε x y x≈y = begin
+x≈y⇒x∙y⁻¹≈ε : ∀ {x y} → x ≈ y → (x ∙ y ⁻¹) ≈ ε
+x≈y⇒x∙y⁻¹≈ε {x} {y} x≈y = begin
   x ∙ y ⁻¹ ≈⟨ ∙-congʳ x≈y ⟩
   y ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
   ε        ∎
-
-x≉y→x∙y⁻¹≉ε : (x y : Carrier) → x ≉ y → (x ∙ y ⁻¹) ≉ ε
-x≉y→x∙y⁻¹≉ε x y x≉y x∙y⁻¹≈ε = x≉y (x∙y⁻¹≈ε→x≈y x y x∙y⁻¹≈ε)
 
 ⁻¹-injective : Injective _≈_ _≈_ _⁻¹
 ⁻¹-injective = selfInverse⇒injective ⁻¹-selfInverse
