@@ -85,6 +85,12 @@ Deprecated names
 New modules
 -----------
 
+* Pointwise lifting of algebraic structures `IsX` and bundles `X` from
+  carrier set `C` to function space `A → C`:
+  ```
+  Algebra.Construct.Pointwise
+  ```
+
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
@@ -336,6 +342,12 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  reverse⁺ : x ∈ xs → x ∈ reverse xs
+  reverse⁻ : x ∈ reverse xs → x ∈ xs
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   length-catMaybes      : length (catMaybes xs) ≤ length xs
@@ -343,6 +355,7 @@ Additions to existing modules
   applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
   downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-selfInverse   : SelfInverse {A = List A} _≡_ reverse
   reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
@@ -378,6 +391,27 @@ Additions to existing modules
   catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
   catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
   map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  ⊆-trans-idˡ   : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  ⊆-trans-idʳ   : (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ⊆-trans-assoc : (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                             trans p (trans q r) ≡ trans (trans p q) r) →
+                  (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+                  ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
+
+  reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
+  reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
+  reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
