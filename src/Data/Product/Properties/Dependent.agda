@@ -20,7 +20,7 @@ private
     A B C : Set a
 
 ------------------------------------------------------------------------
--- dep-map
+-- map-Σ
 
 module _ {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Set q} where
 
@@ -31,7 +31,7 @@ module _ {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Se
   map-Σ-cong f≗g h≗k (x , y) = cong₂ _,_ (f≗g x) (h≗k y)
 
 ------------------------------------------------------------------------
--- dep-map′
+-- map-Σ′
 
 module _ {B : A → Set b} {P : Set p} {Q : P → Set q} where
 
