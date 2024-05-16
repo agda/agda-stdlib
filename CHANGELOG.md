@@ -46,12 +46,10 @@ Deprecated modules
 * `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` deprecated in favour of
   `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
 
-Un-deprecated modules
----------------------
-
 * The modules `Function.Endomorphism.Propositional` and
-  `Function.Endomorphism.Setoid` previously used the old `Function`
-  hierarchy but have now been ported to using the new one.
+  `Function.Endomorphism.Setoid` that use the old `Function`
+  hierarchy. Use `Function.Endo.Propositional` and
+  `Function.Endo.Setoid` instead.
 
 Deprecated names
 ----------------
@@ -137,6 +135,11 @@ New modules
   isIndexedEquivalence : {A : Set a} → IsIndexedEquivalence (Vector A) _↭_
   indexedSetoid        : {A : Set a} → IndexedSetoid ℕ a _
   ```
+
+* The modules `Function.Endo.Propositional` and
+  `Function.Endo.Setoid` are new but are actually proper ports of
+  `Function.Endomorphism.Propositional` and
+  `Function.Endomorphism.Setoid`.
 
 * `Function.Relation.Binary.Equality`
   ```agda
