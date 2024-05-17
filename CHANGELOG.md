@@ -309,6 +309,11 @@ Additions to existing modules
     record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
   ```
 
+* In `Algebra.Morphism.Structures.RingWithoutOneMorphisms`
+  ```agda
+  isNearSemiringHomomorphism : IsNearSemiringHomomorphism ⟦_⟧
+  ```
+
 * In `Algebra.Properties.AbelianGroup`:
   ```
   ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x

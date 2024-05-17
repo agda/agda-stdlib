@@ -405,17 +405,20 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
     ( Carrier to A; _≈_ to _≈₁_
     ; _*_ to _*₁_
     ; *-rawMagma to *-rawMagma₁
-    ; +-rawGroup to +-rawGroup₁)
+    ; +-rawGroup to +-rawGroup₁
+    ; rawNearSemiring to rawNearSemiring₁)
 
   open RawRingWithoutOne R₂ renaming
     ( Carrier to B; _≈_ to _≈₂_
     ; _*_ to _*₂_
     ; *-rawMagma to *-rawMagma₂
-    ; +-rawGroup to +-rawGroup₂)
+    ; +-rawGroup to +-rawGroup₂
+    ; rawNearSemiring to rawNearSemiring₂)
 
   private
     module + = GroupMorphisms  +-rawGroup₁  +-rawGroup₂
     module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
+    module +* = NearSemiringMorphisms rawNearSemiring₁ rawNearSemiring₂
 
   open MorphismDefinitions A B _≈₂_
 
@@ -425,7 +428,13 @@ module RingWithoutOneMorphisms (R₁ : RawRingWithoutOne a ℓ₁) (R₂ : RawRi
       *-homo : Homomorphic₂ ⟦_⟧ _*₁_ _*₂_
 
     open +.IsGroupHomomorphism +-isGroupHomomorphism public
-      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism)
+      renaming (homo to +-homo; ε-homo to 0#-homo; isMagmaHomomorphism to +-isMagmaHomomorphism; isMonoidHomomorphism to +-isMonoidHomomorphism)
+
+    isNearSemiringHomomorphism : +*.IsNearSemiringHomomorphism ⟦_⟧
+    isNearSemiringHomomorphism = record
+      { +-isMonoidHomomorphism = +-isMonoidHomomorphism
+      ; *-homo = *-homo
+      }
 
     *-isMagmaHomomorphism : *.IsMagmaHomomorphism ⟦_⟧
     *-isMagmaHomomorphism = record

@@ -76,6 +76,9 @@ record GroupHomomorphism (A : Group a ℓa) (B : Group b ℓb) : Set (a ⊔ b �
   monoidHomomorphism : MonoidHomomorphism A.monoid B.monoid
   monoidHomomorphism = record { isMonoidHomomorphism = isMonoidHomomorphism }
 
+  open MonoidHomomorphism monoidHomomorphism public
+    using (magmaHomomorphism)
+
 ------------------------------------------------------------------------
 -- Morphisms between NearSemirings
 ------------------------------------------------------------------------
@@ -98,6 +101,9 @@ record NearSemiringHomomorphism (A : NearSemiring a ℓa) (B : NearSemiring b �
   *-magmaHomomorphism : MagmaHomomorphism A.*-magma B.*-magma
   *-magmaHomomorphism = record { isMagmaHomomorphism = *-isMagmaHomomorphism }
 
+  open MonoidHomomorphism +-monoidHomomorphism public
+    renaming (magmaHomomorphism to +-magmaHomomorphism)
+
 ------------------------------------------------------------------------
 -- Morphisms between Semirings
 ------------------------------------------------------------------------
@@ -118,7 +124,7 @@ record SemiringHomomorphism (A : Semiring a ℓa) (B : Semiring b ℓb) : Set (a
   nearSemiringHomomorphism = record { isNearSemiringHomomorphism = isNearSemiringHomomorphism }
 
   open NearSemiringHomomorphism nearSemiringHomomorphism public
-    using (*-magmaHomomorphism; +-monoidHomomorphism)
+    using (*-magmaHomomorphism; +-monoidHomomorphism; +-magmaHomomorphism)
 
   *-monoidHomomorphism : MonoidHomomorphism A.*-monoid B.*-monoid
   *-monoidHomomorphism = record { isMonoidHomomorphism = *-isMonoidHomomorphism }
@@ -159,11 +165,14 @@ record RingWithoutOneHomomorphism (A : RingWithoutOne a ℓa) (B : RingWithoutOn
 
   open IsRingWithoutOneHomomorphism isRingWithoutOneHomomorphism public
 
+  nearSemiringHomomorphism : NearSemiringHomomorphism A.nearSemiring B.nearSemiring
+  nearSemiringHomomorphism = record { isNearSemiringHomomorphism = isNearSemiringHomomorphism }
+
+  open NearSemiringHomomorphism nearSemiringHomomorphism public
+    using (*-magmaHomomorphism; +-magmaHomomorphism; +-monoidHomomorphism)
+
   +-groupHomomorphism : GroupHomomorphism A.+-group B.+-group
   +-groupHomomorphism = record { isGroupHomomorphism = +-isGroupHomomorphism }
-
-  *-magmaHomomorphism : MagmaHomomorphism A.*-magma B.*-magma
-  *-magmaHomomorphism = record { isMagmaHomomorphism = *-isMagmaHomomorphism }
 
 ------------------------------------------------------------------------
 -- Morphisms between Rings
