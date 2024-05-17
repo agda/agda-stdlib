@@ -903,7 +903,7 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   open RawRingWithoutOne rawRingWithoutOne public
-    using (+-rawGroup; *-rawMagma)
+    using (+-rawGroup; *-rawMagma; rawNearSemiring)
 
 
 ------------------------------------------------------------------------

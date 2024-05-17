@@ -178,14 +178,19 @@ Additions to existing modules
   record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
+* In `Algebra.Bundles.KleeneAlgebra`:
+  ```agda
+  rawKleeneAlgebra : RawKleeneAlgebra _ _
+  ```
+
 * In `Algebra.Bundles.Raw`
   ```agda
   record RawSuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
-* Exporting `RawKleeneAlgebra` substructure from `Algebra.Bundles.KleeneAlgebra`:
+* In `Algebra.Bundles.Raw.RawRingWithoutOne`
   ```agda
-  rawKleeneAlgebra : RawKleeneAlgebra _ _
+  rawNearSemiring : RawNearSemiring c ℓ
   ```
 
 * Exporting more `Raw` substructures from `Algebra.Bundles.Ring`:
@@ -195,10 +200,11 @@ Additions to existing modules
   +-rawGroup        : RawGroup _ _
   ```
 
-* Exporting `RawRingWithoutOne` and `NearSemiring` subbundles from
+* Exporting `RawRingWithoutOne` and `(Raw)NearSemiring` subbundles from
   `Algebra.Bundles.RingWithoutOne`:
   ```agda
   nearSemiring      : NearSemiring _ _
+  rawNearSemiring   : RawNearSemiring _ _
   rawRingWithoutOne : RawRingWithoutOne _ _
   ```
 
@@ -301,6 +307,7 @@ Additions to existing modules
     record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
     record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
     record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+  ```
 
 * In `Algebra.Properties.AbelianGroup`:
   ```
