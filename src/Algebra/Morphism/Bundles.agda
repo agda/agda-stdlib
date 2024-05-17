@@ -102,6 +102,7 @@ record NearSemiringHomomorphism (A : NearSemiring a â„“a) (B : NearSemiring b â„
   *-magmaHomomorphism = record { isMagmaHomomorphism = *-isMagmaHomomorphism }
 
   open MonoidHomomorphism +-monoidHomomorphism public
+    using ()
     renaming (magmaHomomorphism to +-magmaHomomorphism)
 
 ------------------------------------------------------------------------
