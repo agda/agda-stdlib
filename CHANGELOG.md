@@ -195,8 +195,10 @@ Additions to existing modules
   +-rawGroup        : RawGroup _ _
   ```
 
-* Exporting `RawRingWithoutOne` substructure from `Algebra.Bundles.RingWithoutOne`:
+* Exporting `RawRingWithoutOne` and `NearSemiring` subbundles from
+  `Algebra.Bundles.RingWithoutOne`:
   ```agda
+  nearSemiring      : NearSemiring _ _
   rawRingWithoutOne : RawRingWithoutOne _ _
   ```
 
@@ -349,6 +351,7 @@ Additions to existing modules
 * In `Algebra.Structures`
   ```agda
   record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _
+  ```
 
 * In `Algebra.Structures.IsGroup`:
   ```agda
@@ -358,6 +361,11 @@ Additions to existing modules
   infixr 6 _\\_
   _\\_ : Op₂ A
   x \\ y = (x ⁻¹) ∙ y
+  ```
+
+* In `Algebra.Structures.RingWithoutOne`:
+  ```agda
+  isNearSemiring      : IsNearSemiring _ _
   ```
 
 * In `Algebra.Structures.IsCancellativeCommutativeSemiring` add the

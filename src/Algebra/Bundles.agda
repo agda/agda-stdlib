@@ -878,21 +878,20 @@ record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsRingWithoutOne isRingWithoutOne public
 
+  nearSemiring : NearSemiring _ _
+  nearSemiring = record { isNearSemiring = isNearSemiring }
+
+  open NearSemiring nearSemiring public
+    using (*-semigroup; *-magma)
+
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
-
-  *-semigroup : Semigroup _ _
-  *-semigroup = record { isSemigroup = *-isSemigroup }
 
   open AbelianGroup +-abelianGroup public
     using ()
     renaming (group to +-group;
       invertibleMagma to +-invertibleMagma;
       invertibleUnitalMagma to +-invertibleUnitalMagma)
-
-  open Semigroup *-semigroup public
-    using ()
-    renaming (magma to *-magma)
 
   rawRingWithoutOne : RawRingWithoutOne _ _
   rawRingWithoutOne = record
