@@ -190,11 +190,19 @@ record RingHomomorphism (A : Ring a ℓa) (B : Ring b ℓb) : Set (a ⊔ b ⊔ �
 
   open IsRingHomomorphism isRingHomomorphism public
 
-  +-groupHomomorphism : GroupHomomorphism A.+-group B.+-group
-  +-groupHomomorphism = record { isGroupHomomorphism = +-isGroupHomomorphism }
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism A.ringWithoutOne B.ringWithoutOne
+  ringWithoutOneHomomorphism = record { isRingWithoutOneHomomorphism = isRingWithoutOneHomomorphism }
 
-  *-monoidHomomorphism : MonoidHomomorphism A.*-monoid B.*-monoid
-  *-monoidHomomorphism = record { isMonoidHomomorphism = *-isMonoidHomomorphism }
+  open RingWithoutOneHomomorphism ringWithoutOneHomomorphism public
+    using (+-groupHomomorphism)
+
+  semiringHomomorphism : SemiringHomomorphism A.semiring B.semiring
+  semiringHomomorphism = record { isSemiringHomomorphism = isSemiringHomomorphism }
+
+  open SemiringHomomorphism semiringHomomorphism public
+    using ( nearSemiringHomomorphism
+          ; *-monoidHomomorphism; *-magmaHomomorphism
+          ; +-monoidHomomorphism; +-magmaHomomorphism)
 
 ------------------------------------------------------------------------
 -- Morphisms between Quasigroups

@@ -498,6 +498,7 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
   open RawRing R₁ renaming
     ( Carrier to A; _≈_ to _≈₁_
     ; -_ to -₁_
+    ; rawRingWithoutOne to rawRingWithoutOne₁
     ; rawSemiring to rawSemiring₁
     ; *-rawMonoid to *-rawMonoid₁
     ; +-rawGroup to +-rawGroup₁)
@@ -505,12 +506,14 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
   open RawRing R₂ renaming
     ( Carrier to B; _≈_ to _≈₂_
     ; -_ to -₂_
+    ; rawRingWithoutOne to rawRingWithoutOne₂
     ; rawSemiring to rawSemiring₂
     ; *-rawMonoid to *-rawMonoid₂
     ; +-rawGroup to +-rawGroup₂)
 
   module + = GroupMorphisms  +-rawGroup₁  +-rawGroup₂
   module * = MonoidMorphisms *-rawMonoid₁ *-rawMonoid₂
+  module *+0 = RingWithoutOneMorphisms rawRingWithoutOne₁ rawRingWithoutOne₂
 
   open MorphismDefinitions A B _≈₂_
   open SemiringMorphisms rawSemiring₁ rawSemiring₂
@@ -527,6 +530,12 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
     +-isGroupHomomorphism = record
       { isMonoidHomomorphism = +-isMonoidHomomorphism
       ; ⁻¹-homo = -‿homo
+      }
+
+    isRingWithoutOneHomomorphism : *+0.IsRingWithoutOneHomomorphism ⟦_⟧
+    isRingWithoutOneHomomorphism = record
+      { +-isGroupHomomorphism = +-isGroupHomomorphism
+      ; *-homo = *-homo
       }
 
   record IsRingMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where

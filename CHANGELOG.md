@@ -309,6 +309,11 @@ Additions to existing modules
     record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
   ```
 
+* In `Algebra.Morphism.Structures.RingMorphisms`
+  ```agda
+  isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism ⟦_⟧
+  ```
+
 * In `Algebra.Morphism.Structures.RingWithoutOneMorphisms`
   ```agda
   isNearSemiringHomomorphism : IsNearSemiringHomomorphism ⟦_⟧
