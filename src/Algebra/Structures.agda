@@ -726,6 +726,18 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
   zero : Zero 0# *
   zero = zeroˡ , zeroʳ
 
+  isNearSemiring′ : IsNearSemiring + * 0#
+  isNearSemiring′ = record
+    { +-isMonoid = +-isMonoid
+    ; *-cong = *-cong
+    ; *-assoc = *-assoc
+    ; distribʳ = distribʳ
+    ; zeroˡ = zeroˡ
+    }
+
+  open IsNearSemiring isNearSemiring′ public
+    using (*-isMagma; *-isSemigroup; *-congˡ; *-congʳ)
+{-
   *-isMagma : IsMagma *
   *-isMagma = record
     { isEquivalence = isEquivalence
@@ -744,7 +756,7 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
     ( ∙-congˡ   to *-congˡ
     ; ∙-congʳ   to *-congʳ
     )
-
+-}
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------
