@@ -89,6 +89,11 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
+* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
+  ```
+  Data.List.Relation.Binary.Equality.Setoid.Properties
+  ```
+
 * Prime factorisation of natural numbers.
   ```
   Data.Nat.Primality.Factorisation
