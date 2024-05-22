@@ -105,20 +105,3 @@ private
   { isMagmaHomomorphism = ^-isMagmaHomomorphism f
   ; ε-homo = refl
   }
-
-------------------------------------------------------------------------
--- Deprecations
-
--- Version 2.1
-
-^-isSemigroupMorphism = ^-isMagmaHomomorphism
-{-# WARNING_ON_USAGE ^-isSemigroupMorphism
-"Warning: ^-isSemigroupMorphism was deprecated in v2.1.
-Please use ^-isMagmaHomomorphism instead."
-#-}
-
-^-isMonoidMorphism = ^-isMonoidHomomorphism
-{-# WARNING_ON_USAGE ^-isMonoidMorphism
-"Warning: ^-isMonoidMorphism was deprecated in v2.1.
-Please use ^-isMonoidHomomorphism instead."
-#-}
