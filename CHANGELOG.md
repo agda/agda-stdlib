@@ -247,6 +247,11 @@ Additions to existing modules
 
 * In `Algebra.Morphism.Structures`:
   ```agda
+  module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
+    record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier →  N₂.Carrier) : Set _
+
   IsSemigroupHomomorphism : (A → B) → Set _
   IsSemigroupMonomorphism : (A → B) → Set _
   IsSemigroupIsomorphism : (A → B) → Set _
