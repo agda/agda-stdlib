@@ -11,8 +11,8 @@ module Data.List.Relation.Binary.Permutation.Homogeneous where
 open import Data.List.Base using (List; _∷_)
 open import Data.List.Relation.Binary.Pointwise.Base as Pointwise
   using (Pointwise)
-open import Data.List.Relation.Binary.Pointwise.Properties as Pointwise
-  using (symmetric)
+import Data.List.Relation.Binary.Pointwise.Properties as Pointwise
+open import Data.Nat.Base using (ℕ; suc; _+_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary.Core using (Rel; _⇒_)
 open import Relation.Binary.Bundles using (Setoid)
@@ -59,3 +59,11 @@ map R⇒S (refl xs∼ys)         = refl (Pointwise.map R⇒S xs∼ys)
 map R⇒S (prep e xs∼ys)       = prep (R⇒S e) (map R⇒S xs∼ys)
 map R⇒S (swap e₁ e₂ xs∼ys)   = swap (R⇒S e₁) (R⇒S e₂) (map R⇒S xs∼ys)
 map R⇒S (trans xs∼ys ys∼zs)  = trans (map R⇒S xs∼ys) (map R⇒S ys∼zs)
+
+-- Measures the number of constructors, can be useful for termination proofs
+
+steps : ∀ {R : Rel A r} {xs ys} → Permutation R xs ys → ℕ
+steps (refl _)            = 1
+steps (prep _ xs↭ys)      = suc (steps xs↭ys)
+steps (swap _ _ xs↭ys)    = suc (steps xs↭ys)
+steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs

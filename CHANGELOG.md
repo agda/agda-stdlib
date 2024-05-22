@@ -65,6 +65,13 @@ Deprecated names
   isRing*  ↦  Algebra.Structures.isRing
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  split  ↦  ↭-split
+  ```
+  with a more informative type (see below).
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -393,6 +400,41 @@ Additions to existing modules
   map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Homogeneous`:
+  ```agda
+  steps : Permutation R xs ys → ℕ
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Propositional`:
+  constructor aliases
+  ```agda
+  ↭-refl  : Reflexive _↭_
+  ↭-prep  : ∀ x → xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  ↭-swap  : ∀ x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+  ```
+  and properties
+  ```agda
+  ↭-reflexive-≋ : _≋_ ⇒ _↭_
+  ↭⇒↭ₛ          : _↭_  ⇒ _↭ₛ_
+  ↭ₛ⇒↭          : _↭ₛ_ ⇒ _↭_
+  ```
+  where `_↭ₛ_` is the `Setoid (setoid _)` instance of `Permutation`
+
+* In `Data.List.Relation.Binary.Permutation.Setoid`:
+  ```agda
+  ↭-reflexive-≋ : _≋_  ⇒ _↭_
+  ↭-transˡ-≋    : LeftTrans _≋_ _↭_
+  ↭-transʳ-≋    : RightTrans _↭_ _≋_
+  ↭-trans′      : Transitive _↭_
+  ```
+
+* In `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  ↭-split : xs ↭ (as ++ [ v ] ++ bs) →
+            ∃₂ λ ps qs → xs ≋ (ps ++ [ v ] ++ qs) × (ps ++ qs) ↭ (as ++ bs)
+  drop-∷  : x ∷ xs ↭ x ∷ ys → xs ↭ ys
+  ```
+
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
   ```agda
   ⊆-trans-idˡ   : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
@@ -503,7 +545,11 @@ Additions to existing modules
 
 * Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
-  product-↭ : product Preserves _↭_ ⟶ _≡_
+  Any-resp-[σ∘σ⁻¹] : (σ : xs ↭ ys) (iy : Any P ys) →
+                     Any-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+  ∈-resp-[σ∘σ⁻¹]   : (σ : xs ↭ ys) (iy : y ∈ ys) →
+                     ∈-resp-↭ (trans (↭-sym σ) σ) iy ≡ iy
+  product-↭        : product Preserves _↭_ ⟶ _≡_
   ```
 
 * In `Data.Rational.Properties`:
