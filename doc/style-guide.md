@@ -525,6 +525,66 @@ word within a compound word is capitalized except for the first word.
 * Any exceptions to these conventions should be flagged on the GitHub
   `agda-stdlib` issue tracker in the usual way.
 
+#### Fixity
+
+All functions and operators that are not purely prefix (typically
+anything that has a `_` in its name) should have an explicit fixity
+declared for it. The guidelines for these are as follows:
+
+General operations and relations:
+
+* binary relations of all kinds are `infix 4`
+
+* unary prefix relations `infix 4 ε∣_`
+
+* unary postfix relations `infixr 8 _∣0`
+
+* multiplication-like: `infixl 7 _*_`
+
+* addition-like  `infixl 6 _+_`
+
+* arithmetic prefix minus-like  `infix  8 -_`
+
+* arithmetic infix binary minus-like `infixl 6 _-_`
+
+* and-like  `infixr 7 _∧_`
+
+* or-like  `infixr 6 _∨_`
+
+* negation-like `infix 3 ¬_`
+
+* post-fix inverse  `infix  8 _⁻¹`
+
+* bind `infixl 1 _>>=_`
+
+* list concat-like `infixr 5 _∷_`
+
+* ternary reasoning `infix 1 _⊢_≈_`
+
+* composition `infixr 9 _∘_`
+
+* application `infixr -1 _$_ _$!_`
+
+* combinatorics `infixl 6.5 _P_ _P′_ _C_ _C′_`
+
+* pair `infixr 4 _,_`
+
+Reasoning:
+
+* QED  `infix  3 _∎`
+
+* stepping  `infixr 2 _≡⟨⟩_ step-≡ step-≡˘`
+
+* begin  `infix  1 begin_`
+
+Type formers:
+
+* product-like `infixr 2 _×_ _-×-_ _-,-_`
+
+* sum-like `infixr 1 _⊎_`
+
+*  binary properties `infix 4 _Absorbs_`
+
 #### Functions and relations over specific datatypes
 
 * When defining a new relation `P` over a datatype `X` in a `Data.X.Relation` module,

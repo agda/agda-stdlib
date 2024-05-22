@@ -78,6 +78,12 @@ Deprecated names
 New modules
 -----------
 
+* Pointwise lifting of algebraic structures `IsX` and bundles `X` from
+  carrier set `C` to function space `A → C`:
+  ```
+  Algebra.Construct.Pointwise
+  ```
+
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
@@ -147,12 +153,16 @@ New modules
   Relation.Binary.Construct.Interior.Symmetric
   ```
 
+* Properties of `Setoid`s with decidable equality relation:
+  ```
+  Relation.Binary.Properties.DecSetoid
+  ```
+
 * Systematise the use of `Recomputable A = .A → A`:
   ```agda
   Relation.Nullary.Recomputable
   ```
   with `Recomputable` exported publicly from `Relation.Nullary`.
-
 
 * New IO primitives to handle buffering
   ```agda
@@ -244,6 +254,11 @@ Additions to existing modules
     record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
     record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
 
+* In `Algebra.Properties.AbelianGroup`:
+  ```
+  ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
+  ```
+
 * In `Algebra.Properties.Group`:
   ```agda
   isQuasigroup    : IsQuasigroup _∙_ _\\_ _//_
@@ -259,8 +274,12 @@ Additions to existing modules
   //-rightDivides  : RightDivides _∙_ _//_
 
   ⁻¹-selfInverse  : SelfInverse _⁻¹
+  x∙y⁻¹≈ε⇒x≈y     : ∀ x y → (x ∙ y ⁻¹) ≈ ε → x ≈ y
+  x≈y⇒x∙y⁻¹≈ε     : ∀ {x y} → x ≈ y → (x ∙ y ⁻¹) ≈ ε
   \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
   comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
+  ⁻¹-anti-homo-// : (x // y) ⁻¹ ≈ y // x
+  ⁻¹-anti-homo-\\ : (x \\ y) ⁻¹ ≈ y \\ x
   ```
 
 * In `Algebra.Properties.Loop`:
@@ -335,6 +354,12 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  reverse⁺ : x ∈ xs → x ∈ reverse xs
+  reverse⁻ : x ∈ reverse xs → x ∈ xs
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   length-catMaybes      : length (catMaybes xs) ≤ length xs
@@ -342,6 +367,7 @@ Additions to existing modules
   applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
   downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-selfInverse   : SelfInverse {A = List A} _≡_ reverse
   reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
@@ -377,6 +403,27 @@ Additions to existing modules
   catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
   catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
   map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  ⊆-trans-idˡ   : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  ⊆-trans-idʳ   : (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ⊆-trans-assoc : (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                             trans p (trans q r) ≡ trans (trans p q) r) →
+                  (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+                  ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
+
+  reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
+  reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
+  reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
@@ -471,9 +518,22 @@ Additions to existing modules
   product-↭ : product Preserves _↭_ ⟶ _≡_
   ```
 
+* In `Data.Rational.Properties`:
+  ```agda
+  1≢0 : 1ℚ ≢ 0ℚ
+
+  #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
+  invertible⇒# : Invertible 1ℚ _*_ (p - q) → p ≢ q
+
+  isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingField           : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  heytingCommutativeRing   : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  heytingField             : HeytingField 0ℓ 0ℓ 0ℓ
+  ```
+
 * Added new functions in `Data.String.Base`:
   ```agda
-  map : (Char → Char) → String → String
+  map     : (Char → Char) → String → String
   between : String → String → String → String
   ```
 
@@ -496,6 +556,11 @@ Additions to existing modules
   ```agda
   whenInj₂ : E ⊎ A → (A → IO ⊤) → IO ⊤
   forever : IO ⊤ → IO ⊤
+  ```
+
+* In `IO.Primitive.Core`:
+  ```agda
+  _>>_ : IO A → IO B → IO B
   ```
 
 * In `Data.Word.Base`:
@@ -529,6 +594,7 @@ Additions to existing modules
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
   ```agda
+  ≉-irrefl : Irreflexive _≈_ _≉_
   ≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
   ≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
   ```

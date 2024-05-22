@@ -115,6 +115,18 @@ inverseʳ-unique x y eq = trans (y≈x\\z x y ε eq) (identityʳ _)
 ⁻¹-involutive : Involutive _⁻¹
 ⁻¹-involutive = selfInverse⇒involutive ⁻¹-selfInverse
 
+x∙y⁻¹≈ε⇒x≈y : ∀ x y → (x ∙ y ⁻¹) ≈ ε → x ≈ y
+x∙y⁻¹≈ε⇒x≈y x y x∙y⁻¹≈ε = begin
+  x         ≈⟨ inverseˡ-unique x (y ⁻¹) x∙y⁻¹≈ε ⟩
+  y ⁻¹ ⁻¹   ≈⟨ ⁻¹-involutive y ⟩
+  y         ∎
+
+x≈y⇒x∙y⁻¹≈ε : ∀ {x y} → x ≈ y → (x ∙ y ⁻¹) ≈ ε
+x≈y⇒x∙y⁻¹≈ε {x} {y} x≈y = begin
+  x ∙ y ⁻¹ ≈⟨ ∙-congʳ x≈y ⟩
+  y ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
+  ε        ∎
+
 ⁻¹-injective : Injective _≈_ _≈_ _⁻¹
 ⁻¹-injective = selfInverse⇒injective ⁻¹-selfInverse
 
@@ -125,6 +137,22 @@ inverseʳ-unique x y eq = trans (y≈x\\z x y ε eq) (identityʳ _)
   x ∙ x ⁻¹              ≈⟨ ∙-congʳ (//-rightDividesʳ y x) ⟨
   (x ∙ y) ∙ y ⁻¹ ∙ x ⁻¹ ≈⟨ assoc (x ∙ y) (y ⁻¹) (x ⁻¹) ⟩
   x ∙ y ∙ (y ⁻¹ ∙ x ⁻¹) ∎
+
+⁻¹-anti-homo-// : ∀ x y → (x // y) ⁻¹ ≈ y // x
+⁻¹-anti-homo-// x y = begin
+  (x // y) ⁻¹      ≡⟨⟩
+  (x ∙ y ⁻¹) ⁻¹    ≈⟨ ⁻¹-anti-homo-∙ x (y ⁻¹) ⟩
+  (y ⁻¹) ⁻¹ ∙ x ⁻¹ ≈⟨ ∙-congʳ (⁻¹-involutive y) ⟩
+  y ∙ x ⁻¹         ≡⟨⟩
+  y // x ∎
+
+⁻¹-anti-homo-\\ : ∀ x y → (x \\ y) ⁻¹ ≈ y \\ x
+⁻¹-anti-homo-\\ x y = begin
+  (x \\ y) ⁻¹      ≡⟨⟩
+  (x ⁻¹ ∙ y) ⁻¹    ≈⟨ ⁻¹-anti-homo-∙ (x ⁻¹) y ⟩
+  y ⁻¹ ∙ (x ⁻¹) ⁻¹ ≈⟨ ∙-congˡ (⁻¹-involutive x) ⟩
+  y ⁻¹ ∙ x         ≡⟨⟩
+  y \\ x ∎
 
 \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
 \\≗flip-//⇒comm \\≗//ᵒ x y = begin
