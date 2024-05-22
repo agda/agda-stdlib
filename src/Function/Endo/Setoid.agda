@@ -31,6 +31,8 @@ private
   open module E = Setoid (S ⇨ S) hiding (refl)
   module S = Setoid S
   open Func using (cong)
+
+
 ------------------------------------------------------------------------
 -- Basic type and functions
 
