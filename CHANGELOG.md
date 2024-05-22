@@ -145,6 +145,11 @@ New modules
   Relation.Binary.Construct.Interior.Symmetric
   ```
 
+* Properties of `Setoid`s with decidable equality relation:
+  ```
+  Relation.Binary.Properties.DecSetoid
+  ```
+
 * Pointwise and equality relations over indexed containers:
   ```agda
   Data.Container.Indexed.Relation.Binary.Pointwise
@@ -262,6 +267,8 @@ Additions to existing modules
   //-rightDivides  : RightDivides _∙_ _//_
 
   ⁻¹-selfInverse  : SelfInverse _⁻¹
+  x∙y⁻¹≈ε⇒x≈y     : ∀ x y → (x ∙ y ⁻¹) ≈ ε → x ≈ y
+  x≈y⇒x∙y⁻¹≈ε     : ∀ {x y} → x ≈ y → (x ∙ y ⁻¹) ≈ ε
   \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
   comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
   ⁻¹-anti-homo-// : (x // y) ⁻¹ ≈ y // x
@@ -499,9 +506,22 @@ Additions to existing modules
   product-↭ : product Preserves _↭_ ⟶ _≡_
   ```
 
+* In `Data.Rational.Properties`:
+  ```agda
+  1≢0 : 1ℚ ≢ 0ℚ
+
+  #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
+  invertible⇒# : Invertible 1ℚ _*_ (p - q) → p ≢ q
+
+  isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingField           : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  heytingCommutativeRing   : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  heytingField             : HeytingField 0ℓ 0ℓ 0ℓ
+  ```
+
 * Added new functions in `Data.String.Base`:
   ```agda
-  map : (Char → Char) → String → String
+  map     : (Char → Char) → String → String
   between : String → String → String → String
   ```
 
@@ -562,6 +582,7 @@ Additions to existing modules
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
   ```agda
+  ≉-irrefl : Irreflexive _≈_ _≉_
   ≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
   ≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
   ```
