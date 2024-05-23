@@ -28,24 +28,6 @@ private
 ------------------------------------------------------------------------
 -- Definitions
 
--- Inits
-
-inits⁺ : List A → List⁺ (List A)
-inits⁺ xs = [] ∷ go xs
-  where
-  go : List A → List (List A)
-  go []       = []
-  go (x ∷ xs) = List.[ x ] ∷ List.map (x ∷_) (go xs)
-
--- Tails
-
-tails⁺ : List A → List⁺ (List A)
-tails⁺ xs = xs ∷ go xs
-  where
-  go : List A → List (List A)
-  go []       = []
-  go (x ∷ xs) = xs ∷ go xs
-
 -- Scanr
 
 module _ (f : A → B → B) where
@@ -74,18 +56,6 @@ module _ (f : A → B → A) where
 ------------------------------------------------------------------------
 -- Properties
 
--- inits
-
-toList-inits⁺ : toList ∘ inits⁺ ≗ List.inits {A = A}
-toList-inits⁺ []       = refl
-toList-inits⁺ (x ∷ xs) = cong (([] ∷_) ∘ List.map (x ∷_)) (toList-inits⁺ xs)
-
--- tails
-
-toList-tails⁺ : toList ∘ tails⁺ ≗ List.tails {A = A}
-toList-tails⁺ []          = refl
-toList-tails⁺ ys@(_ ∷ xs) = cong (ys ∷_) (toList-tails⁺ xs)
-
 -- scanr⁺ and scanr
 
 module _ (f : A → B → B) (e : B) where
@@ -93,7 +63,7 @@ module _ (f : A → B → B) (e : B) where
   private
     h = List.foldr f e
 
-  scanr⁺-defn : scanr⁺ f e ≗ List⁺.map h ∘ tails⁺
+  scanr⁺-defn : scanr⁺ f e ≗ List⁺.map h ∘ List⁺.tails
   scanr⁺-defn []       = refl
   scanr⁺-defn (x ∷ xs) = let eq = scanr⁺-defn xs
     in cong₂ (λ z → f x z ∷_) (cong List⁺.head eq) (cong toList eq)
@@ -102,10 +72,10 @@ module _ (f : A → B → B) (e : B) where
   scanr-defn xs = begin
     scanr f e xs
       ≡⟨ cong toList (scanr⁺-defn xs) ⟩
-    toList (List⁺.map h (tails⁺ xs))
+    toList (List⁺.map h (List⁺.tails xs))
       ≡⟨⟩
-    List.map h (toList (tails⁺ xs))
-      ≡⟨ cong (List.map h) (toList-tails⁺ xs) ⟩
+    List.map h (toList (List⁺.tails xs))
+      ≡⟨ cong (List.map h) (List⁺.toList-tails xs) ⟩
     List.map h (List.tails xs)
       ∎
     where open ≡-Reasoning
@@ -117,7 +87,7 @@ module _ (f : A → B → A) where
   private
     h = List.foldl f
 
-  scanl⁺-defn : ∀ e → scanl⁺ f e ≗ List⁺.map (h e) ∘ inits⁺
+  scanl⁺-defn : ∀ e → scanl⁺ f e ≗ List⁺.map (h e) ∘ List⁺.inits
   scanl⁺-defn e []       = refl
   scanl⁺-defn e (x ∷ xs) = let eq = scanl⁺-defn (f e x) xs in
     cong (e ∷_) $ cong (f e x ∷_) $ trans (cong List⁺.tail eq) (List.map-∘ _)
@@ -132,5 +102,5 @@ module _ (f : A → B → A) where
     List.map (h e ∘ (x ∷_)) (List.inits xs)
       ≡⟨ List.map-∘ (List.inits xs) ⟩
     List.map (h e) (List.map (x ∷_) (List.inits xs))
-     ∎
+      ∎
     where open ≡-Reasoning

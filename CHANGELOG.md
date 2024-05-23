@@ -77,6 +77,18 @@ Deprecated names
   scanl-defn  ↦  Data.List.Scans.scanl-defn
   ```
 
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits : List A → List⁺ (List A)
+  tails : List A → List⁺ (List A)
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-inits : toList ∘ List⁺.inits ≗ List.inits
+  toList-tails : toList ∘ List⁺.tails ≗ List.tails
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
