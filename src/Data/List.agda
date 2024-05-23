@@ -16,6 +16,6 @@ module Data.List where
 -- Types and basic operations
 
 open import Data.List.Base public
-  hiding (inits; tails; scanr; scanl)
+  hiding (scanr; scanl)
 open import Data.List.Scans public
-  using (inits; tails; scanr; scanl)
+  using (scanr; scanl)

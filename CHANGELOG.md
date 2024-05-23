@@ -67,8 +67,6 @@ Deprecated names
 
 * In `Data.List.Base`:
   ```agda
-  inits  ↦  Data.List.Scans.inits
-  tails  ↦  Data.List.Scans.tails
   scanr  ↦  Data.List.Scans.scanr
   scanl  ↦  Data.List.Scans.scanl
   ```
@@ -103,7 +101,7 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
-* Refactoring of `Data.List.Base.{inits|tails|scanr|scanl}`:
+* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
   ```
   Data.List.Scans
   ```

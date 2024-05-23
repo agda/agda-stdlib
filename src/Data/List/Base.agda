@@ -189,6 +189,20 @@ iterate : (A → A) → A → ℕ → List A
 iterate f e zero    = []
 iterate f e (suc n) = e ∷ iterate f (f e) n
 
+inits : List A → List (List A)
+inits {A = A} xs = [] ∷ go xs
+  where
+  go : List A → List (List A)
+  go []       = []
+  go (x ∷ xs) = [ x ] ∷ map (x ∷_) (go xs)
+
+tails : List A → List (List A)
+tails {A = A} xs = xs ∷ go xs
+  where
+  go : List A → List (List A)
+  go []       = []
+  go (_ ∷ xs) = xs ∷ go xs
+
 insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
 insertAt xs       zero    v = v ∷ xs
 insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
@@ -553,22 +567,6 @@ Please use removeAt instead."
 #-}
 
 -- Version 2.1
-
-inits : List A → List (List A)
-inits []       = [] ∷ []
-inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
-{-# WARNING_ON_USAGE inits
-"Warning: inits was deprecated in v2.1.
-Please use Data.List.Scans.inits instead."
-#-}
-
-tails : List A → List (List A)
-tails []       = [] ∷ []
-tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
-{-# WARNING_ON_USAGE tails
-"Warning: tails was deprecated in v2.1.
-Please use Data.List.Scans.tails instead."
-#-}
 
 scanr : (A → B → B) → B → List A → List B
 scanr f e []       = e ∷ []
