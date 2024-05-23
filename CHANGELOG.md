@@ -65,6 +65,20 @@ Deprecated names
   isRing*  ↦  Algebra.Structures.isRing
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  inits  ↦  Data.List.Scans.inits
+  tails  ↦  Data.List.Scans.tails
+  scanr  ↦  Data.List.Scans.scanr
+  scanl  ↦  Data.List.Scans.scanl
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  scanr-defn  ↦  Data.List.Scans.scanr-defn
+  scanl-defn  ↦  Data.List.Scans.scanl-defn
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -87,6 +101,11 @@ New modules
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
+  ```
+
+* Refactoring of `Data.List.Base.{inits|tails|scanr|scanl}`:
+  ```
+  Data.List.Scans
   ```
 
 * Prime factorisation of natural numbers.

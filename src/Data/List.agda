@@ -8,6 +8,7 @@
 -- lists.
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated scans etc.
 
 module Data.List where
 
@@ -15,3 +16,6 @@ module Data.List where
 -- Types and basic operations
 
 open import Data.List.Base public
+  hiding (inits; tails; scanr; scanl)
+open import Data.List.Scans public
+  using (inits; tails; scanr; scanl)
