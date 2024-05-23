@@ -23,7 +23,8 @@ open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Properties as Lₚ
 open import Data.Product.Base using (_,_; _×_; ∃; ∃₂)
-open import Function.Base using (_∘_; _⟨_⟩_)
+open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Function.Base using (_∘_; _⟨_⟩_; _$_)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.Core using (Rel; _Preserves_⟶_; _Preserves₂_⟶_⟶_)
@@ -38,6 +39,7 @@ private
     a b p : Level
     A : Set a
     B : Set b
+    xs ys : List A
 
 ------------------------------------------------------------------------
 -- Permutations of empty and singleton lists
@@ -373,3 +375,24 @@ product-↭ (swap {xs} {ys} x y r) = begin
   (y * x) * product ys ≡⟨ *-assoc y x (product ys) ⟩
   y * (x * product ys) ∎
   where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- catMaybes
+
+catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
+catMaybes-↭ refl = refl
+catMaybes-↭ (trans xs↭ ↭ys) = trans (catMaybes-↭ xs↭) (catMaybes-↭ ↭ys)
+catMaybes-↭ (prep mx xs↭) with ih ← catMaybes-↭ xs↭ | mx
+... | nothing = ih
+... | just x  = prep x ih
+catMaybes-↭ (swap mx my xs↭) with ih ← catMaybes-↭ xs↭ | mx | my
+... | nothing | nothing = ih
+... | nothing | just y  = prep y ih
+... | just x  | nothing = prep x ih
+... | just x  | just y  = swap x y ih
+
+------------------------------------------------------------------------
+-- mapMaybe
+
+mapMaybe-↭ : (f : A → Maybe B) → xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
+mapMaybe-↭ f = catMaybes-↭ ∘ map⁺ f

@@ -343,47 +343,55 @@ Additions to existing modules
 
 * In `Data.List.Properties`:
   ```agda
-  length-catMaybes      : length (catMaybes xs) ≤ length xs
-  applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
-  applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
-  upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
-  downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
-  reverse-selfInverse   : SelfInverse {A = List A} _≡_ reverse
-  reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
-  reverse-upTo          : reverse (upTo n) ≡ downFrom n
-  reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
-  reverse-downFrom      : reverse (downFrom n) ≡ upTo n
-  mapMaybe-map          : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
-  map-mapMaybe          : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
-  align-map             : align (map f xs) (map g ys) ≡ map (map f g) (align xs ys)
-  zip-map               : zip (map f xs) (map g ys) ≡ map (map f g) (zip xs ys)
-  unzipWith-map         : unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
-  map-unzipWith         : map (map g) (map h) ∘ unzipWith f ≗ unzipWith (map g h ∘ f)
-  unzip-map             : unzip ∘ map (map f g) ≗ map (map f) (map g) ∘ unzip
-  splitAt-map           : splitAt n ∘ map f ≗ map (map f) (map f) ∘ splitAt n
-  uncons-map            : uncons ∘ map f ≗ map (map f (map f)) ∘ uncons
-  last-map              : last ∘ map f ≗ map f ∘ last
-  tail-map              : tail ∘ map f ≗ map (map f) ∘ tail
-  mapMaybe-cong         : f ≗ g → mapMaybe f ≗ mapMaybe g
-  zipWith-cong          : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
-  unzipWith-cong        : f ≗ g → unzipWith f ≗ unzipWith g
-  foldl-cong            : (∀ x y → f x y ≡ g x y) → ∀ x → foldl f x ≗ foldl g x
-  alignWith-flip        : alignWith f xs ys ≡ alignWith (f ∘ swap) ys xs
-  alignWith-comm        : f ∘ swap ≗ f → alignWith f xs ys ≡ alignWith f ys xs
-  align-flip            : align xs ys ≡ map swap (align ys xs)
-  zip-flip              : zip xs ys ≡ map swap (zip ys xs)
-  unzipWith-swap        : unzipWith (swap ∘ f) ≗ swap ∘ unzipWith f
-  unzip-swap            : unzip ∘ map swap ≗ swap ∘ unzip
-  take-take             : take n (take m xs) ≡ take (n ⊓ m) xs
-  take-drop             : take n (drop m xs) ≡ drop m (take (m + n) xs)
-  zip-unzip             : uncurry′ zip ∘ unzip ≗ id
-  unzipWith-zipWith     : f ∘ uncurry′ g ≗ id → length xs ≡ length ys → unzipWith f (zipWith g xs ys) ≡ (xs , ys)
-  unzip-zip             : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
-  mapMaybe-++           : mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
-  unzipWith-++          : unzipWith f (xs ++ ys) ≡ zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
-  catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
-  catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
-  map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  length-catMaybes       : length (catMaybes xs) ≤ length xs
+  applyUpTo-∷ʳ           : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
+  applyDownFrom-∷ʳ       : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
+  upTo-∷ʳ                : upTo n ∷ʳ n ≡ upTo (suc n)
+  downFrom-∷ʳ            : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-selfInverse    : SelfInverse {A = List A} _≡_ reverse
+  reverse-applyUpTo      : reverse (applyUpTo f n) ≡ applyDownFrom f n
+  reverse-upTo           : reverse (upTo n) ≡ downFrom n
+  reverse-applyDownFrom  : reverse (applyDownFrom f n) ≡ applyUpTo f n
+  reverse-downFrom       : reverse (downFrom n) ≡ upTo n
+  mapMaybe-map           : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
+  map-mapMaybe           : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
+  align-map              : align (map f xs) (map g ys) ≡ map (map f g) (align xs ys)
+  zip-map                : zip (map f xs) (map g ys) ≡ map (map f g) (zip xs ys)
+  unzipWith-map          : unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
+  map-unzipWith          : map (map g) (map h) ∘ unzipWith f ≗ unzipWith (map g h ∘ f)
+  unzip-map              : unzip ∘ map (map f g) ≗ map (map f) (map g) ∘ unzip
+  splitAt-map            : splitAt n ∘ map f ≗ map (map f) (map f) ∘ splitAt n
+  uncons-map             : uncons ∘ map f ≗ map (map f (map f)) ∘ uncons
+  last-map               : last ∘ map f ≗ map f ∘ last
+  tail-map               : tail ∘ map f ≗ map (map f) ∘ tail
+  mapMaybe-cong          : f ≗ g → mapMaybe f ≗ mapMaybe g
+  zipWith-cong           : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
+  unzipWith-cong         : f ≗ g → unzipWith f ≗ unzipWith g
+  foldl-cong             : (∀ x y → f x y ≡ g x y) → ∀ x → foldl f x ≗ foldl g x
+  alignWith-flip         : alignWith f xs ys ≡ alignWith (f ∘ swap) ys xs
+  alignWith-comm         : f ∘ swap ≗ f → alignWith f xs ys ≡ alignWith f ys xs
+  align-flip             : align xs ys ≡ map swap (align ys xs)
+  zip-flip               : zip xs ys ≡ map swap (zip ys xs)
+  unzipWith-swap         : unzipWith (swap ∘ f) ≗ swap ∘ unzipWith f
+  unzip-swap             : unzip ∘ map swap ≗ swap ∘ unzip
+  take-take              : take n (take m xs) ≡ take (n ⊓ m) xs
+  take-drop              : take n (drop m xs) ≡ drop m (take (m + n) xs)
+  zip-unzip              : uncurry′ zip ∘ unzip ≗ id
+  unzipWith-zipWith      : f ∘ uncurry′ g ≗ id →
+                           length xs ≡ length ys →
+                           unzipWith f (zipWith g xs ys) ≡ (xs , ys)
+  unzip-zip              : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
+  mapMaybe-++            : mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
+  unzipWith-++           : unzipWith f (xs ++ ys) ≡
+                           zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
+  catMaybes-concatMap    : catMaybes ≗ concatMap fromMaybe
+  catMaybes-++           : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
+  map-catMaybes          : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  Any-catMaybes⁺         : Any (M.Any P) xs → Any P (catMaybes xs)
+  mapMaybeIsInj₁∘mapInj₁ : mapMaybe isInj₁ (map inj₁ xs) ≡ xs
+  mapMaybeIsInj₁∘mapInj₂ : mapMaybe isInj₁ (map inj₂ xs) ≡ []
+  mapMaybeIsInj₂∘mapInj₂ : mapMaybe isInj₂ (map inj₂ xs) ≡ xs
+  mapMaybeIsInj₂∘mapInj₁ : mapMaybe isInj₂ (map inj₁ xs) ≡ []
   ```
 
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
@@ -496,7 +504,15 @@ Additions to existing modules
 
 * Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
-  product-↭ : product Preserves _↭_ ⟶ _≡_
+  product-↭   : product Preserves _↭_ ⟶ _≡_
+  catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
+  mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Setoid.Properties.Maybe`:
+  ```agda
+  catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
+  mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
   ```
 
 * Added new functions in `Data.String.Base`:
