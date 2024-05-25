@@ -53,7 +53,7 @@ f ^ suc n = f ∘ (f ^ n)
 ^-cong₂ f {n} refl = cong (f ^ n) S.refl
 
 ^-homo : ∀ f → Homomorphic₂ ℕ Endo _≈_ (f ^_) _+_ _∘_
-^-homo f zero    n           = S.refl
+^-homo f zero    n       = S.refl
 ^-homo f (suc m) zero    = ^-cong₂ f (+-identityʳ m)
 ^-homo f (suc m) (suc n) = ^-homo f m (suc n)
 
@@ -105,9 +105,6 @@ private
 
 ^-isMonoidHomomorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
 ^-isMonoidHomomorphism f = record
-  { isMagmaHomomorphism = record
-    { isRelHomomorphism = record { cong = ^-cong₂ f }
-    ; homo = ^-homo f
-    }
+  { isMagmaHomomorphism = ^-isMagmaHomomorphism f
   ; ε-homo = S.refl
   }

@@ -5,6 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+
 module Function.Endo.Propositional {a} (A : Set a) where
 
 open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
