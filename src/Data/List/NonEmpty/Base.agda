@@ -146,20 +146,12 @@ ap fs as = concatMap (λ f → map f as) fs
 -- Inits
 
 inits : List A → List⁺ (List A)
-inits xs = [] ∷ go xs
-  where
-  go : List A → List (List A)
-  go []       = []
-  go (x ∷ xs) = List.[ x ] ∷ List.map (x ∷_) (go xs)
+inits xs = [] ∷ List.inits-tail xs
 
 -- Tails
 
 tails : List A → List⁺ (List A)
-tails xs = xs ∷ go xs
-  where
-  go : List A → List (List A)
-  go []       = []
-  go (x ∷ xs) = xs ∷ go xs
+tails xs = xs ∷ List.tails-tail xs
 
 -- Reverse
 

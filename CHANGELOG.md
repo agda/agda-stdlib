@@ -115,7 +115,8 @@ New modules
 
 * Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
   ```
-  Data.List.Scans
+  Data.List.Scans.Base
+  Data.List.Scans.Properties
   ```
 
 * Prime factorisation of natural numbers.
@@ -371,10 +372,22 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
+* In `Data.List.Base` redefine `inits` and `tails` in terms of:
+  ```agda
+  inits-tail : List A → List (List A)
+  tails-tail : List A → List (List A)
+  ```
+
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
   reverse⁺ : x ∈ xs → x ∈ reverse xs
   reverse⁻ : x ∈ reverse xs → x ∈ xs
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits : List A → List⁺ (List A)
+  tails : List A → List⁺ (List A)
   ```
 
 * In `Data.List.Properties`:
