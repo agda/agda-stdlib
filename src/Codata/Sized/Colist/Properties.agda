@@ -22,7 +22,7 @@ open import Codata.Sized.Stream as Stream using (Stream; _∷_)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
-import Data.List.Scans as Scans
+import Data.List.Scans.Base as Scans
 open import Data.List.Relation.Binary.Equality.Propositional using (≋-refl)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybe

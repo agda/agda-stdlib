@@ -38,7 +38,7 @@ module Tactic.RingSolver.Core.NatSet where
 
 open import Data.Nat.Base   as ℕ     using (ℕ; suc; zero)
 open import Data.List.Base  as List  using (List; _∷_; [])
-open import Data.List.Scans as Scans using (scanl)
+open import Data.List.Scans.Base as Scans using (scanl)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Bool.Base  as Bool  using (Bool)
 open import Function.Base            using (const; _∘_)
