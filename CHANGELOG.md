@@ -374,8 +374,8 @@ Additions to existing modules
 
 * In `Data.List.Base` redefine `inits` and `tails` in terms of:
   ```agda
-  inits-tail : List A → List (List A)
-  tails-tail : List A → List (List A)
+  tail∘inits : List A → List (List A)
+  tail∘tails : List A → List (List A)
   ```
 
 * In `Data.List.Membership.Setoid.Properties`:
