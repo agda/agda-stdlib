@@ -17,5 +17,5 @@ module Data.List where
 
 open import Data.List.Base public
   hiding (scanr; scanl)
-open import Data.List.Scans public
+open import Data.List.Scans.Base public
   using (scanr; scanl)
