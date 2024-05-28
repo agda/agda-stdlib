@@ -1568,7 +1568,7 @@ scanr-defn f e (x ∷ xs@(_ ∷ _))
   = cong₂ (λ z → f x z ∷_) (∷-injectiveˡ eq) eq
 {-# WARNING_ON_USAGE scanr-defn
 "Warning: scanr-defn was deprecated in v2.1.
-Please use Data.List.Scans.scanr-defn instead."
+Please use Data.List.Scans.Properties.scanr-defn instead."
 #-}
 
 scanl-defn : ∀ (f : A → B → A) (e : A) →
@@ -1585,5 +1585,5 @@ scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
  ∎)
 {-# WARNING_ON_USAGE scanl-defn
 "Warning: scanl-defn was deprecated in v2.1.
-Please use Data.List.Scans.scanl-defn instead."
+Please use Data.List.Scans.Properties.scanl-defn instead."
 #-}
