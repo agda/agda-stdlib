@@ -67,8 +67,8 @@ Deprecated names
 
 * In `Data.List.Base`:
   ```agda
-  scanr  ↦  Data.List.Scans.scanr
-  scanl  ↦  Data.List.Scans.scanl
+  scanr  ↦  Data.List.Scans.Base.scanr
+  scanl  ↦  Data.List.Scans.Base.scanl
   ```
 
 * In `Data.List.Properties`:
