@@ -122,15 +122,13 @@ map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
 -- inits
 
 toList-inits : toList ∘ inits ≗ List.inits {A = A}
-toList-inits []       = refl
-toList-inits (x ∷ xs) = cong (([] ∷_) ∘ List.map (x ∷_)) (toList-inits xs)
+toList-inits _ = refl
 
 ------------------------------------------------------------------------
 -- tails
 
 toList-tails : toList ∘ tails ≗ List.tails {A = A}
-toList-tails []          = refl
-toList-tails ys@(_ ∷ xs) = cong (ys ∷_) (toList-tails xs)
+toList-tails _ = refl
 
 ------------------------------------------------------------------------
 -- groupSeqs

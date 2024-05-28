@@ -48,8 +48,6 @@ module _ (f : A → B → B) (e : B) where
       ≡⟨ cong toList (scanr⁺-defn xs) ⟩
     toList (List⁺.map h (List⁺.tails xs))
       ≡⟨⟩
-    List.map h (toList (List⁺.tails xs))
-      ≡⟨ cong (List.map h) (List⁺.toList-tails xs) ⟩
     List.map h (List.tails xs)
       ∎
     where open ≡-Reasoning
@@ -67,14 +65,11 @@ module _ (f : A → B → A) where
     cong (e ∷_) $ cong (f e x ∷_) $ trans (cong List⁺.tail eq) (List.map-∘ _)
 
   scanl-defn : ∀ e → scanl f e ≗ List.map (h e) ∘ List.inits
-  scanl-defn e []       = refl
-  scanl-defn e (x ∷ xs) = cong (e ∷_) $ begin
-    scanl f (f e x) xs
-      ≡⟨ scanl-defn (f e x) xs ⟩
-    List.map (h (f e x)) (List.inits xs)
+  scanl-defn e xs = begin
+    scanl f e xs
+      ≡⟨ cong toList (scanl⁺-defn e xs) ⟩
+    toList (List⁺.map (h e) (List⁺.inits xs))
       ≡⟨⟩
-    List.map (h e ∘ (x ∷_)) (List.inits xs)
-      ≡⟨ List.map-∘ (List.inits xs) ⟩
-    List.map (h e) (List.map (x ∷_) (List.inits xs))
+    List.map (h e) (List.inits xs)
       ∎
     where open ≡-Reasoning
