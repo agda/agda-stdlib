@@ -575,7 +575,7 @@ scanr f e (x ∷ xs) with scanr f e xs
 ... | ys@(y ∷ _) = f x y ∷ ys
 {-# WARNING_ON_USAGE scanr
 "Warning: scanr was deprecated in v2.1.
-Please use Data.List.Scans.scanr instead."
+Please use Data.List.Scans.Base.scanr instead."
 #-}
 
 scanl : (A → B → A) → A → List B → List A
@@ -583,5 +583,5 @@ scanl f e []       = e ∷ []
 scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 {-# WARNING_ON_USAGE scanl
 "Warning: scanl was deprecated in v2.1.
-Please use Data.List.Scans.scanl instead."
+Please use Data.List.Scans.Base.scanl instead."
 #-}
