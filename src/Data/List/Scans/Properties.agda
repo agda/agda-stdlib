@@ -17,8 +17,6 @@ open import Function.Base using (_∘_; _$_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≗_; refl; trans; cong; cong₂)
-open import Relation.Binary.PropositionalEquality.Properties
-  using (module ≡-Reasoning)
 
 private
   variable
@@ -43,14 +41,7 @@ module _ (f : A → B → B) (e : B) where
     in cong₂ (λ z → f x z ∷_) (cong List⁺.head eq) (cong toList eq)
 
   scanr-defn : scanr f e ≗ List.map h ∘ List.tails
-  scanr-defn xs = begin
-    scanr f e xs
-      ≡⟨ cong toList (scanr⁺-defn xs) ⟩
-    toList (List⁺.map h (List⁺.tails xs))
-      ≡⟨⟩
-    List.map h (List.tails xs)
-      ∎
-    where open ≡-Reasoning
+  scanr-defn xs = cong toList (scanr⁺-defn xs)
 
 -- scanl⁺ and scanl
 
@@ -65,11 +56,4 @@ module _ (f : A → B → A) where
     cong (e ∷_) $ cong (f e x ∷_) $ trans (cong List⁺.tail eq) (List.map-∘ _)
 
   scanl-defn : ∀ e → scanl f e ≗ List.map (h e) ∘ List.inits
-  scanl-defn e xs = begin
-    scanl f e xs
-      ≡⟨ cong toList (scanl⁺-defn e xs) ⟩
-    toList (List⁺.map (h e) (List⁺.inits xs))
-      ≡⟨⟩
-    List.map (h e) (List.inits xs)
-      ∎
-    where open ≡-Reasoning
+  scanl-defn e xs = cong toList (scanl⁺-defn e xs)
