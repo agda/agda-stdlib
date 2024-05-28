@@ -73,8 +73,8 @@ Deprecated names
 
 * In `Data.List.Properties`:
   ```agda
-  scanr-defn  ↦  Data.List.Scans.scanr-defn
-  scanl-defn  ↦  Data.List.Scans.scanl-defn
+  scanr-defn  ↦  Data.List.Scans.Properties.scanr-defn
+  scanl-defn  ↦  Data.List.Scans.Properties.scanl-defn
   ```
 
 * In `Data.List.NonEmpty.Base`:
