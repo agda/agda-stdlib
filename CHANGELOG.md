@@ -89,14 +89,9 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+* Nagata's construction of the "idealization of a module":
   ```agda
-  Induction.InfiniteDescent
+  Algebra.Module.Construct.Idealization
   ```
 
 * The unique morphism from the initial, resp. terminal, algebra:
@@ -105,9 +100,44 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
-* Nagata's construction of the "idealization of a module":
+* Pointwise and equality relations over indexed containers:
   ```agda
-  Algebra.Module.Construct.Idealization
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
+
+* Permutation relation for functional vectors:
+  ```agda
+  Data.Vec.Functional.Relation.Binary.Permutation
+  ```
+  defining `_↭_ : IRel (Vector A) _`
+
+* Properties of `Data.Vec.Functional.Relation.Binary.Permutation`:
+    ```agda
+  Data.Vec.Functional.Relation.Binary.Permutation.Properties
+  ```
+  defining
+  ```agda
+  ↭-refl      : Reflexive (Vector A) _↭_
+  ↭-reflexive : xs ≡ ys → xs ↭ ys
+  ↭-sym       : Symmetric (Vector A) _↭_
+  ↭-trans     : Transitive (Vector A) _↭_
+  ```
+
+* New module defining Naperian functors, 'logarithms of containers' (Hancock/McBride)
+  ```
+  Effect.Functor.Naperian
+  ```
+  defining
+  ```agda
+   record RawNaperian (RF : RawFunctor F) : Set _
+   record Naperian (RF : RawFunctor F) : Set _
   ```
 
 * `Data.List.Relation.Binary.Sublist.Propositional.Slice`
@@ -138,6 +168,11 @@ New modules
   and a convenient infix version
   ```agda
   _⇨_ = setoid
+  ```
+
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
   ```
 
 * Symmetric interior of a binary relation
@@ -226,6 +261,12 @@ Additions to existing modules
   rawBimodule        : RawBimodule _ _ c ℓ
   rawSemimodule      : RawSemimodule _ c ℓ
   rawModule          : RawModule _ c ℓ
+  ```
+
+* In `Algebra.Construct.Terminal`:
+  ```agda
+  rawNearSemiring : RawNearSemiring c ℓ
+  nearSemiring    : NearSemiring c ℓ
   ```
 
 * In `Algebra.Module.Construct.Zero`:
