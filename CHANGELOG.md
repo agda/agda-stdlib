@@ -65,6 +65,30 @@ Deprecated names
   isRing*  ↦  Algebra.Structures.isRing
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  scanr  ↦  Data.List.Scans.Base.scanr
+  scanl  ↦  Data.List.Scans.Base.scanl
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  scanr-defn  ↦  Data.List.Scans.Properties.scanr-defn
+  scanl-defn  ↦  Data.List.Scans.Properties.scanl-defn
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits : List A → List⁺ (List A)
+  tails : List A → List⁺ (List A)
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-inits : toList ∘ List⁺.inits ≗ List.inits
+  toList-tails : toList ∘ List⁺.tails ≗ List.tails
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -87,6 +111,12 @@ New modules
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
+  ```
+
+* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
+  ```
+  Data.List.Scans.Base
+  Data.List.Scans.Properties
   ```
 
 * Prime factorisation of natural numbers.
@@ -342,10 +372,22 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
+* In `Data.List.Base` redefine `inits` and `tails` in terms of:
+  ```agda
+  tail∘inits : List A → List (List A)
+  tail∘tails : List A → List (List A)
+  ```
+
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
   reverse⁺ : x ∈ xs → x ∈ reverse xs
   reverse⁻ : x ∈ reverse xs → x ∈ xs
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits : List A → List⁺ (List A)
+  tails : List A → List⁺ (List A)
   ```
 
 * In `Data.List.Properties`:
