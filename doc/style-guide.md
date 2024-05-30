@@ -229,6 +229,34 @@ automate most of this.
     }
   ```
 
+#### Layout of initial `private` block
+
+* Since the introduction of generalizable `variable`s (see below),
+  this block provides a very useful way to 'fix'/standardise notation
+  for the rest of the module, as well as introducing local
+  instantiations of parameterised `module` definitions, again for the
+  sake of fixing notation via qualified names.
+
+* It should typically follow the `import` and `open` declarations, as
+  above, separated by one blankline, and be followed by *two* blank
+  lines ahead of the main module body.
+
+* The current preferred layout is to use successive indentation by two spaces, eg.
+  ```agda
+  private
+    variable
+      a : Level
+      A : Set a
+  ```
+  rather than to use the more permissive 'stacked' style, available
+  since [agda/agda#5319](https://github.com/agda/agda/pull/5319).
+
+* A possible exception to the above rule is when a *single* declaration
+  is made, such as eg.
+  ```agda
+  private open module M = ...
+  ```
+
 #### Layout of `where` blocks
 
 * `where` blocks are preferred rather than the `let` construction.
