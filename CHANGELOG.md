@@ -113,6 +113,11 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
+* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
+  ```
+  Data.List.Relation.Binary.Equality.Setoid.Properties
+  ```
+
 * Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
   ```
   Data.List.Scans.Base
