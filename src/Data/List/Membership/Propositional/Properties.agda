@@ -338,8 +338,7 @@ module _ {_•_ : Op₂ A} where
 -- inits
 
 []∈inits : ∀ {a} {A : Set a} (as : List A) → [] ∈ inits as
-[]∈inits []       = here refl
-[]∈inits (a ∷ as) = here refl
+[]∈inits _ = here refl
 
 ------------------------------------------------------------------------
 -- Other properties
