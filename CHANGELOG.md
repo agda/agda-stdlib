@@ -211,6 +211,18 @@ New modules
   Data.Vec.Bounded.Show
   ```
 
+* Decidability for the subset relation on lists:
+  ```agda
+  Data.List.Relation.Binary.Subset.DecSetoid (_⊆?_)
+  Data.List.Relation.Binary.Subset.DecPropositional
+  ```
+
+* Decidability for the disjoint relation on lists:
+  ```agda
+  Data.List.Relation.Binary.Disjoint.DecSetoid (disjoint?)
+  Data.List.Relation.Binary.Disjoint.DecPropositional
+  ```
+
 Additions to existing modules
 -----------------------------
 
