@@ -940,6 +940,7 @@ record NonAssociativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     using () renaming (magma to *-magma; identity to *-identity)
 
 record Nearring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
   infixl 7 _*_
   infixl 6 _+_
   infix  4 _≈_

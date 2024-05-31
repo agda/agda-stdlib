@@ -279,6 +279,7 @@ record Bimodule (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) m ℓm
     module R = Ring R-ring
     module S = Ring S-ring
 
+  infix 8 -ᴹ_
   infixr 7 _*ₗ_
   infixl 7 _*ᵣ_
   infixl 6 _+ᴹ_

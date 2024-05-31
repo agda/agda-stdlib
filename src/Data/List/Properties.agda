@@ -8,11 +8,14 @@
 -- equalities than _≡_.
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated scans
 
 module Data.List.Properties where
 
 open import Algebra.Bundles
-open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
+open import Algebra.Consequences.Propositional
+ using (selfInverse⇒involutive; selfInverse⇒injective)
+open import Algebra.Definitions as AlgebraicDefinitions using (SelfInverse; Involutive)
 open import Algebra.Morphism.Structures using (IsMagmaHomomorphism; IsMonoidHomomorphism)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
@@ -808,34 +811,6 @@ sum-++ (x ∷ xs) ys = begin
 ∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
 
 ------------------------------------------------------------------------
--- scanr
-
-scanr-defn : ∀ (f : A → B → B) (e : B) →
-             scanr f e ≗ map (foldr f e) ∘ tails
-scanr-defn f e []             = refl
-scanr-defn f e (x ∷ [])       = refl
-scanr-defn f e (x ∷ y∷xs@(_ ∷ _))
-  with eq ← scanr-defn f e y∷xs
-  with z ∷ zs ← scanr f e y∷xs
-  = let z≡fy⦇f⦈xs , _ = ∷-injective eq in cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
-
-------------------------------------------------------------------------
--- scanl
-
-scanl-defn : ∀ (f : A → B → A) (e : A) →
-             scanl f e ≗ map (foldl f e) ∘ inits
-scanl-defn f e []       = refl
-scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
-   scanl f (f e x) xs
- ≡⟨ scanl-defn f (f e x) xs ⟩
-   map (foldl f (f e x)) (inits xs)
- ≡⟨ refl ⟩
-   map (foldl f e ∘ (x ∷_)) (inits xs)
- ≡⟨ map-∘ (inits xs) ⟩
-   map (foldl f e) (map (x ∷_) (inits xs))
- ∎)
-
-------------------------------------------------------------------------
 -- applyUpTo
 
 length-applyUpTo : ∀ (f : ℕ → A) n → length (applyUpTo f n) ≡ n
@@ -1350,7 +1325,7 @@ foldl-ʳ++ f b (x ∷ xs) {ys} = begin
 unfold-reverse : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
 unfold-reverse x xs = ʳ++-defn xs
 
--- reverse is an involution with respect to append.
+-- reverse is an anti-homomorphism with respect to append.
 
 reverse-++ : (xs ys : List A) →
                      reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
@@ -1361,20 +1336,27 @@ reverse-++ xs ys = begin
   ys ʳ++ reverse xs          ≡⟨ ʳ++-defn ys ⟩
   reverse ys ++ reverse xs   ∎
 
+-- reverse is self-inverse.
+
+reverse-selfInverse : SelfInverse {A = List A} _≡_ reverse
+reverse-selfInverse {x = xs} {y = ys} xs⁻¹≈ys = begin
+  reverse ys         ≡⟨⟩
+  ys ʳ++ []          ≡⟨ cong (_ʳ++ []) xs⁻¹≈ys ⟨
+  reverse xs ʳ++ []  ≡⟨⟩
+  (xs ʳ++ []) ʳ++ [] ≡⟨ ʳ++-ʳ++ xs ⟩
+  [] ʳ++ xs ++ []    ≡⟨⟩
+  xs ++ []           ≡⟨ ++-identityʳ xs ⟩
+  xs                 ∎
+
 -- reverse is involutive.
 
 reverse-involutive : Involutive {A = List A} _≡_ reverse
-reverse-involutive xs = begin
-  reverse (reverse xs)  ≡⟨⟩
-  (xs ʳ++ []) ʳ++ []    ≡⟨ ʳ++-ʳ++ xs ⟩
-  [] ʳ++  xs ++ []      ≡⟨⟩
-  xs ++ []              ≡⟨ ++-identityʳ xs ⟩
-  xs                    ∎
+reverse-involutive = selfInverse⇒involutive reverse-selfInverse
 
 -- reverse is injective.
 
-reverse-injective : ∀ {xs ys : List A} → reverse xs ≡ reverse ys → xs ≡ ys
-reverse-injective = subst₂ _≡_ (reverse-involutive _) (reverse-involutive _) ∘ cong reverse
+reverse-injective : Injective {A = List A} _≡_ _≡_ reverse
+reverse-injective = selfInverse⇒injective reverse-selfInverse
 
 -- reverse preserves length.
 
@@ -1572,4 +1554,36 @@ map-─ = map-removeAt
 {-# WARNING_ON_USAGE map-─
 "Warning: map-─ was deprecated in v2.0.
 Please use map-removeAt instead."
+#-}
+
+-- Version 2.1
+
+scanr-defn : ∀ (f : A → B → B) (e : B) →
+             scanr f e ≗ map (foldr f e) ∘ tails
+scanr-defn f e []             = refl
+scanr-defn f e (x ∷ [])       = refl
+scanr-defn f e (x ∷ xs@(_ ∷ _))
+  with eq ← scanr-defn f e xs
+  with ys@(_ ∷ _) ← scanr f e xs
+  = cong₂ (λ z → f x z ∷_) (∷-injectiveˡ eq) eq
+{-# WARNING_ON_USAGE scanr-defn
+"Warning: scanr-defn was deprecated in v2.1.
+Please use Data.List.Scans.Properties.scanr-defn instead."
+#-}
+
+scanl-defn : ∀ (f : A → B → A) (e : A) →
+             scanl f e ≗ map (foldl f e) ∘ inits
+scanl-defn f e []       = refl
+scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
+   scanl f (f e x) xs
+ ≡⟨ scanl-defn f (f e x) xs ⟩
+   map (foldl f (f e x)) (inits xs)
+ ≡⟨ refl ⟩
+   map (foldl f e ∘ (x ∷_)) (inits xs)
+ ≡⟨ map-∘ (inits xs) ⟩
+   map (foldl f e) (map (x ∷_) (inits xs))
+ ∎)
+{-# WARNING_ON_USAGE scanl-defn
+"Warning: scanl-defn was deprecated in v2.1.
+Please use Data.List.Scans.Properties.scanl-defn instead."
 #-}

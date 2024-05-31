@@ -23,10 +23,10 @@ open import Data.Product.Base using (∃; _,_; proj₂)
 open import Function.Base using (id; _∘_; _∘′_)
 open import Level using (Level)
 open import Relation.Binary.Definitions using (_Respects_)
-open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; cong; _≗_; trans)
 open import Relation.Binary.PropositionalEquality.Properties
-  using (setoid; subst-injective)
+  using (setoid; subst-injective; trans-reflʳ; trans-assoc)
 open import Relation.Unary using (Pred)
 
 private
@@ -38,7 +38,7 @@ private
 -- Re-exporting setoid properties
 
 open SetoidProperties (setoid A) public
-  hiding (map⁺)
+  hiding (map⁺; ⊆-trans-idˡ; ⊆-trans-idʳ; ⊆-trans-assoc)
 
 map⁺ : ∀ {as bs} (f : A → B) → as ⊆ bs → map f as ⊆ map f bs
 map⁺ {B = B} f = SetoidProperties.map⁺ (setoid A) (setoid B) (cong f)
@@ -48,16 +48,11 @@ map⁺ {B = B} f = SetoidProperties.map⁺ (setoid A) (setoid B) (cong f)
 
 ⊆-trans-idˡ : ∀ {xs ys : List A} {τ : xs ⊆ ys} →
               ⊆-trans ⊆-refl τ ≡ τ
-⊆-trans-idˡ {_}     {τ = []    } = refl
-⊆-trans-idˡ {_}     {τ = _ ∷  _} = cong (_ ∷_ ) ⊆-trans-idˡ
-⊆-trans-idˡ {[]}    {τ = _ ∷ʳ _} = cong (_ ∷ʳ_) ⊆-trans-idˡ
-⊆-trans-idˡ {_ ∷ _} {τ = _ ∷ʳ _} = cong (_ ∷ʳ_) ⊆-trans-idˡ
+⊆-trans-idˡ {τ = τ} = SetoidProperties.⊆-trans-idˡ (setoid A) (λ _ → refl) τ
 
 ⊆-trans-idʳ : ∀ {xs ys : List A} {τ : xs ⊆ ys} →
               ⊆-trans τ ⊆-refl ≡ τ
-⊆-trans-idʳ {τ = []      } = refl
-⊆-trans-idʳ {τ = _ ∷ʳ _  } = cong (_  ∷ʳ_ ) ⊆-trans-idʳ
-⊆-trans-idʳ {τ = refl ∷ _} = cong (refl ∷_) ⊆-trans-idʳ
+⊆-trans-idʳ {τ = τ} = SetoidProperties.⊆-trans-idʳ (setoid A) trans-reflʳ τ
 
 -- Note: The associativity law is oriented such that rewriting with it
 -- may trigger reductions of ⊆-trans, which matches first on its
@@ -66,11 +61,8 @@ map⁺ {B = B} f = SetoidProperties.map⁺ (setoid A) (setoid B) (cong f)
 ⊆-trans-assoc : ∀ {ws xs ys zs : List A}
                 {τ₁ : ws ⊆ xs} {τ₂ : xs ⊆ ys} {τ₃ : ys ⊆ zs} →
                 ⊆-trans τ₁ (⊆-trans τ₂ τ₃) ≡ ⊆-trans (⊆-trans τ₁ τ₂) τ₃
-⊆-trans-assoc {τ₁ = _}        {_}      {_ ∷ʳ _} = cong (_ ∷ʳ_) ⊆-trans-assoc
-⊆-trans-assoc {τ₁ = _}        {_ ∷ʳ _} {_ ∷  _} = cong (_ ∷ʳ_) ⊆-trans-assoc
-⊆-trans-assoc {τ₁ = _ ∷ʳ _  } {_ ∷  _} {_ ∷  _} = cong (_ ∷ʳ_) ⊆-trans-assoc
-⊆-trans-assoc {τ₁ = refl ∷ _} {_ ∷  _} {_ ∷  _} = cong (_ ∷_ ) ⊆-trans-assoc
-⊆-trans-assoc {τ₁ = []}       {[]}     {[]}     = refl
+⊆-trans-assoc {τ₁ = τ₁} {τ₂ = τ₂} {τ₃ = τ₃} =
+  SetoidProperties.⊆-trans-assoc (setoid A) (λ p _ _ → ≡.sym (trans-assoc p)) τ₁ τ₂ τ₃
 
 ------------------------------------------------------------------------
 -- Laws concerning ⊆-trans and ∷ˡ⁻
