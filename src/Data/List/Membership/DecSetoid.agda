@@ -6,13 +6,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Binary.Bundles using (DecSetoid)
-open import Relation.Nullary.Decidable using (¬?)
 
 module Data.List.Membership.DecSetoid {a ℓ} (DS : DecSetoid a ℓ) where
 
 open import Data.List.Relation.Unary.Any using (any?)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Nullary.Decidable using (¬?)
+
 open DecSetoid DS
 
 ------------------------------------------------------------------------
