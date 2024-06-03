@@ -9,6 +9,7 @@
 
 module Data.Rational.Properties where
 
+open import Algebra.Apartness
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
@@ -21,6 +22,7 @@ import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphisms
 import Algebra.Morphism.RingMonomorphism   as RingMonomorphisms
 import Algebra.Lattice.Morphism.LatticeMonomorphism as LatticeMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
+import Algebra.Properties.Group as GroupProperties
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
@@ -49,16 +51,18 @@ open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
+open import Relation.Binary.Morphism.Structures
+import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
+import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; cong; cong₂; sym; trans; _≢_; subst; subst₂; resp₂)
 open import Relation.Binary.PropositionalEquality.Properties
   using (setoid; decSetoid; module ≡-Reasoning; isEquivalence)
-open import Relation.Binary.Morphism.Structures
-import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+open import Relation.Binary.Reasoning.Syntax using (module ≃-syntax)
 open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Binary.Reasoning.Syntax using (module ≃-syntax)
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
@@ -96,6 +100,9 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ = map′
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
+
+1≢0 : 1ℚ ≢ 0ℚ
+1≢0 = λ ()
 
 ------------------------------------------------------------------------
 -- mkℚ+
@@ -1238,6 +1245,53 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 +-*-commutativeRing = record
   { isCommutativeRing = +-*-isCommutativeRing
   }
+
+
+------------------------------------------------------------------------
+-- HeytingField structures and bundles
+
+module _ where
+  open CommutativeRing +-*-commutativeRing
+    using (+-group; zeroˡ; *-congʳ; isCommutativeRing)
+
+  open GroupProperties +-group
+  open DecSetoidProperties ≡-decSetoid
+
+  #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
+  #⇒invertible {p} {q} p≢q = let r = p - q in 1/ r , *-inverseˡ r , *-inverseʳ r
+    where instance _ = ≢-nonZero (p≢q ∘ (x∙y⁻¹≈ε⇒x≈y p q))
+
+  invertible⇒# : Invertible 1ℚ _*_ (p - q) → p ≢ q
+  invertible⇒# {p} {q} (1/[p-q] , _ , [p-q]/[p-q]≡1) p≡q = contradiction 1≡0 1≢0
+    where
+    open ≈-Reasoning ≡-setoid
+    1≡0 : 1ℚ ≡ 0ℚ
+    1≡0 = begin
+      1ℚ                 ≈⟨ [p-q]/[p-q]≡1 ⟨
+      (p - q) * 1/[p-q]  ≈⟨ *-congʳ (x≈y⇒x∙y⁻¹≈ε p≡q) ⟩
+      0ℚ * 1/[p-q]       ≈⟨ zeroˡ 1/[p-q] ⟩
+      0ℚ                 ∎
+
+  isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingCommutativeRing = record
+    { isCommutativeRing = isCommutativeRing
+    ; isApartnessRelation = ≉-isApartnessRelation
+    ; #⇒invertible = #⇒invertible
+    ; invertible⇒# = invertible⇒#
+    }
+
+  isHeytingField : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingField = record
+    { isHeytingCommutativeRing = isHeytingCommutativeRing
+    ; tight = ≉-tight
+    }
+
+  heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  heytingCommutativeRing = record { isHeytingCommutativeRing = isHeytingCommutativeRing }
+
+  heytingField : HeytingField 0ℓ 0ℓ 0ℓ
+  heytingField = record { isHeytingField = isHeytingField }
+
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_

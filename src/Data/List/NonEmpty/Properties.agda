@@ -18,7 +18,7 @@ open import Data.List.Effectful using () renaming (monad to listMonad)
 open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty
   using (List⁺; _∷_; tail; head; toList; _⁺++_; _⁺++⁺_; _++⁺_; length; fromList;
-    drop+; map; groupSeqs; ungroupSeqs)
+    drop+; map; inits; tails; groupSeqs; ungroupSeqs)
 open import Data.List.NonEmpty.Relation.Unary.All using (All; toList⁺; _∷_)
 open import Data.List.Relation.Unary.All using ([]; _∷_) renaming (All to ListAll)
 import Data.List.Properties as List
@@ -117,6 +117,18 @@ map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 
 map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
+
+------------------------------------------------------------------------
+-- inits
+
+toList-inits : toList ∘ inits ≗ List.inits {A = A}
+toList-inits _ = refl
+
+------------------------------------------------------------------------
+-- tails
+
+toList-tails : toList ∘ tails ≗ List.tails {A = A}
+toList-tails _ = refl
 
 ------------------------------------------------------------------------
 -- groupSeqs

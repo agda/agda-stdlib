@@ -15,6 +15,8 @@ module Function.Relation.Binary.Setoid.Equality {a₁ a₂ b₁ b₂ : Level}
 open import Function.Bundles using (Func; _⟨$⟩_)
 open import Relation.Binary.Definitions
   using (Reflexive; Symmetric; Transitive)
+open import Relation.Binary.Structures
+  using (IsEquivalence)
 
 private
   module To = Setoid To
@@ -33,16 +35,15 @@ sym = λ f≈g → To.sym f≈g
 trans : Transitive _≈_
 trans = λ f≈g g≈h → To.trans f≈g g≈h
 
-setoid : Setoid _ _
-setoid = record
-  { Carrier = Func From To
-  ; _≈_ = _≈_
-  ; isEquivalence = record  -- need to η-expand else Agda gets confused
-    { refl = λ {f} → refl {f}
-    ; sym = λ {f} {g} → sym {f} {g}
-    ; trans = λ {f} {g} {h} → trans {f} {g} {h}
-    }
+isEquivalence : IsEquivalence _≈_
+isEquivalence = record  -- need to η-expand else Agda gets confused
+  { refl = λ {f} → refl {f}
+  ; sym = λ {f} {g} → sym {f} {g}
+  ; trans = λ {f} {g} {h} → trans {f} {g} {h}
   }
+
+setoid : Setoid _ _
+setoid = record { isEquivalence = isEquivalence }
 
 -- most of the time, this infix version is nicer to use
 infixr 9 _⇨_

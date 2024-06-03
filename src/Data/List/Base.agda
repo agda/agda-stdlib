@@ -189,13 +189,19 @@ iterate : (A → A) → A → ℕ → List A
 iterate f e zero    = []
 iterate f e (suc n) = e ∷ iterate f (f e) n
 
+tail∘inits : List A → List (List A)
+tail∘inits []       = []
+tail∘inits (x ∷ xs) = [ x ] ∷ map (x ∷_) (tail∘inits xs)
+
 inits : List A → List (List A)
-inits []       = [] ∷ []
-inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
+inits xs = [] ∷ tail∘inits xs
+
+tail∘tails : List A → List (List A)
+tail∘tails []       = []
+tail∘tails (_ ∷ xs) = xs ∷ tail∘tails xs
 
 tails : List A → List (List A)
-tails []       = [] ∷ []
-tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
+tails xs = xs ∷ tail∘tails xs
 
 insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
 insertAt xs       zero    v = v ∷ xs
@@ -204,18 +210,6 @@ insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
 updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
 updateAt (x ∷ xs) zero    f = f x ∷ xs
 updateAt (x ∷ xs) (suc i) f = x ∷ updateAt xs i f
-
--- Scans
-
-scanr : (A → B → B) → B → List A → List B
-scanr f e []       = e ∷ []
-scanr f e (x ∷ xs) with scanr f e xs
-... | []     = []                -- dead branch
-... | y ∷ ys = f x y ∷ y ∷ ys
-
-scanl : (A → B → A) → A → List B → List A
-scanl f e []       = e ∷ []
-scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 
 -- Tabulation
 
@@ -570,4 +564,24 @@ _─_ = removeAt
 {-# WARNING_ON_USAGE _─_
 "Warning: _─_ was deprecated in v2.0.
 Please use removeAt instead."
+#-}
+
+-- Version 2.1
+
+scanr : (A → B → B) → B → List A → List B
+scanr f e []       = e ∷ []
+scanr f e (x ∷ xs) with scanr f e xs
+... | []         = []                -- dead branch
+... | ys@(y ∷ _) = f x y ∷ ys
+{-# WARNING_ON_USAGE scanr
+"Warning: scanr was deprecated in v2.1.
+Please use Data.List.Scans.Base.scanr instead."
+#-}
+
+scanl : (A → B → A) → A → List B → List A
+scanl f e []       = e ∷ []
+scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
+{-# WARNING_ON_USAGE scanl
+"Warning: scanl was deprecated in v2.1.
+Please use Data.List.Scans.Base.scanl instead."
 #-}
