@@ -65,6 +65,30 @@ Deprecated names
   isRing*  ↦  Algebra.Structures.isRing
   ```
 
+* In `Data.List.Base`:
+  ```agda
+  scanr  ↦  Data.List.Scans.Base.scanr
+  scanl  ↦  Data.List.Scans.Base.scanl
+  ```
+
+* In `Data.List.Properties`:
+  ```agda
+  scanr-defn  ↦  Data.List.Scans.Properties.scanr-defn
+  scanl-defn  ↦  Data.List.Scans.Properties.scanl-defn
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits : List A → List⁺ (List A)
+  tails : List A → List⁺ (List A)
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-inits : toList ∘ List⁺.inits ≗ List.inits
+  toList-tails : toList ∘ List⁺.tails ≗ List.tails
+  ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -78,6 +102,11 @@ Deprecated names
 New modules
 -----------
 
+* Pointwise lifting of algebraic structures `IsX` and bundles `X` from
+  carrier set `C` to function space `A → C`:
+  ```
+  Algebra.Construct.Pointwise
+  ```
 
 * Raw bundles for module-like algebraic structures:
   ```
@@ -102,6 +131,24 @@ New modules
   Data.Container.Indexed.Relation.Binary.Equality.Setoid
   ```
 
+* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
+  ```
+  Data.List.Relation.Binary.Equality.Setoid.Properties
+  ```
+
+* `Data.List.Relation.Binary.Sublist.Propositional.Slice`
+  replacing `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` (*)
+  and adding new functions:
+  - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
+  - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
+ ```
+
+* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
+  ```
+  Data.List.Scans.Base
+  Data.List.Scans.Properties
+  ```
+
 * Isomorphism between `Fin` and an 'obvious' definition `ℕ<` of
   'bounded natural number' type, in:
   ```agda
@@ -115,12 +162,6 @@ New modules
   ```
   Data.Nat.Primality.Factorisation
   ```
-
-* `Data.List.Relation.Binary.Sublist.Propositional.Slice`
-  replacing `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` (*)
-  and adding new functions:
-  - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
-  - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
 
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
   ```agda
@@ -156,6 +197,11 @@ New modules
   Relation.Binary.Construct.Interior.Symmetric
   ```
 
+* Properties of `Setoid`s with decidable equality relation:
+  ```
+  Relation.Binary.Properties.DecSetoid
+  ```
+
 * Pointwise and equality relations over indexed containers:
   ```agda
   Data.Container.Indexed.Relation.Binary.Pointwise
@@ -180,6 +226,18 @@ New modules
   Data.List.Show
   Data.Vec.Show
   Data.Vec.Bounded.Show
+  ```
+
+* Decidability for the subset relation on lists:
+  ```agda
+  Data.List.Relation.Binary.Subset.DecSetoid (_⊆?_)
+  Data.List.Relation.Binary.Subset.DecPropositional
+  ```
+
+* Decidability for the disjoint relation on lists:
+  ```agda
+  Data.List.Relation.Binary.Disjoint.DecSetoid (disjoint?)
+  Data.List.Relation.Binary.Disjoint.DecPropositional
   ```
 
 Additions to existing modules
@@ -273,6 +331,8 @@ Additions to existing modules
   //-rightDivides  : RightDivides _∙_ _//_
 
   ⁻¹-selfInverse  : SelfInverse _⁻¹
+  x∙y⁻¹≈ε⇒x≈y     : ∀ x y → (x ∙ y ⁻¹) ≈ ε → x ≈ y
+  x≈y⇒x∙y⁻¹≈ε     : ∀ {x y} → x ≈ y → (x ∙ y ⁻¹) ≈ ε
   \\≗flip-//⇒comm : (∀ x y → x \\ y ≈ y // x) → Commutative _∙_
   comm⇒\\≗flip-// : Commutative _∙_ → ∀ x y → x \\ y ≈ y // x
   ⁻¹-anti-homo-// : (x // y) ⁻¹ ≈ y // x
@@ -346,6 +406,24 @@ Additions to existing modules
   i*j≢0     : .{{_ : NonZero i}} .{{_ : NonZero j}} → NonZero (i * j)
   ```
 
+* In `Data.List.Base` redefine `inits` and `tails` in terms of:
+  ```agda
+  tail∘inits : List A → List (List A)
+  tail∘tails : List A → List (List A)
+  ```
+
+* In `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  reverse⁺ : x ∈ xs → x ∈ reverse xs
+  reverse⁻ : x ∈ reverse xs → x ∈ xs
+  ```
+
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  inits : List A → List⁺ (List A)
+  tails : List A → List⁺ (List A)
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   length-catMaybes      : length (catMaybes xs) ≤ length xs
@@ -353,6 +431,7 @@ Additions to existing modules
   applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
   upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
   downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-selfInverse   : SelfInverse {A = List A} _≡_ reverse
   reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
   reverse-upTo          : reverse (upTo n) ≡ downFrom n
   reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
@@ -388,6 +467,27 @@ Additions to existing modules
   catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
   catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
   map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  ⊆-trans-idˡ   : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans ⊆-refl pxs ≡ pxs
+  ⊆-trans-idʳ   : (trans-reflʳ : ∀ {x y} (p : x ≈ y) → trans p ≈-refl ≡ p) →
+                  (pxs : xs ⊆ ys) → ⊆-trans pxs ⊆-refl ≡ pxs
+  ⊆-trans-assoc : (≈-assoc : ∀ {w x y z} (p : w ≈ x) (q : x ≈ y) (r : y ≈ z) →
+                             trans p (trans q r) ≡ trans (trans p q) r) →
+                  (ps : as ⊆ bs) (qs : bs ⊆ cs) (rs : cs ⊆ ds) →
+                  ⊆-trans ps (⊆-trans qs rs) ≡ ⊆-trans (⊆-trans ps qs) rs
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  map⁺ : f Preserves _≈_ ⟶ _≈′_ → as ⊆ bs → map f as ⊆′ map f bs
+
+  reverse-selfAdjoint : as ⊆ reverse bs → reverse as ⊆ bs
+  reverse⁺            : as ⊆ bs → reverse as ⊆ reverse bs
+  reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
   ```
 
 * In `Data.List.Relation.Unary.All.Properties`:
@@ -482,9 +582,22 @@ Additions to existing modules
   product-↭ : product Preserves _↭_ ⟶ _≡_
   ```
 
+* In `Data.Rational.Properties`:
+  ```agda
+  1≢0 : 1ℚ ≢ 0ℚ
+
+  #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
+  invertible⇒# : Invertible 1ℚ _*_ (p - q) → p ≢ q
+
+  isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingField           : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  heytingCommutativeRing   : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  heytingField             : HeytingField 0ℓ 0ℓ 0ℓ
+  ```
+
 * Added new functions in `Data.String.Base`:
   ```agda
-  map : (Char → Char) → String → String
+  map     : (Char → Char) → String → String
   between : String → String → String → String
   ```
 
@@ -545,6 +658,7 @@ Additions to existing modules
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
   ```agda
+  ≉-irrefl : Irreflexive _≈_ _≉_
   ≈;≈⇒≈ : _≈_ ; _≈_ ⇒ _≈_
   ≈⇒≈;≈ : _≈_ ⇒ _≈_ ; _≈_
   ```
