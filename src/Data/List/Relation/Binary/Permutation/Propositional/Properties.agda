@@ -380,16 +380,14 @@ product-↭ (swap {xs} {ys} x y r) = begin
 -- catMaybes
 
 catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
-catMaybes-↭ refl = refl
-catMaybes-↭ (trans xs↭ ↭ys) = trans (catMaybes-↭ xs↭) (catMaybes-↭ ↭ys)
-catMaybes-↭ (prep mx xs↭) with ih ← catMaybes-↭ xs↭ | mx
-... | nothing = ih
-... | just x  = prep x ih
-catMaybes-↭ (swap mx my xs↭) with ih ← catMaybes-↭ xs↭ | mx | my
-... | nothing | nothing = ih
-... | nothing | just y  = prep y ih
-... | just x  | nothing = prep x ih
-... | just x  | just y  = swap x y ih
+catMaybes-↭ refl                         = refl
+catMaybes-↭ (trans xs↭ ↭ys)              = trans (catMaybes-↭ xs↭) (catMaybes-↭ ↭ys)
+catMaybes-↭ (prep nothing  xs↭)          = catMaybes-↭ xs↭
+catMaybes-↭ (prep (just x) xs↭)          = prep x $ catMaybes-↭ xs↭
+catMaybes-↭ (swap nothing  nothing  xs↭) = catMaybes-↭ xs↭
+catMaybes-↭ (swap nothing  (just y) xs↭) = prep y $ catMaybes-↭ xs↭
+catMaybes-↭ (swap (just x) nothing  xs↭) = prep x $ catMaybes-↭ xs↭
+catMaybes-↭ (swap (just x) (just y) xs↭) = swap x y $ catMaybes-↭ xs↭
 
 ------------------------------------------------------------------------
 -- mapMaybe

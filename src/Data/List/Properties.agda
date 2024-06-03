@@ -718,29 +718,25 @@ map-concatMap f g xs = begin
 -- catMaybes
 
 catMaybes-concatMap : catMaybes {A = A} ≗ concatMap fromMaybe
-catMaybes-concatMap [] = refl
-catMaybes-concatMap (mx ∷ xs) with ih ← catMaybes-concatMap xs | mx
-... | just x  = cong (x ∷_) ih
-... | nothing = ih
+catMaybes-concatMap []             = refl
+catMaybes-concatMap (just x  ∷ xs) = cong (x ∷_) $ catMaybes-concatMap xs
+catMaybes-concatMap (nothing ∷ xs) = catMaybes-concatMap xs
 
 length-catMaybes : ∀ xs → length (catMaybes {A = A} xs) ≤ length xs
-length-catMaybes [] = ≤-refl
-length-catMaybes (mx ∷ xs) with ih ← length-catMaybes xs | mx
-... | just _  = s≤s ih
-... | nothing = m≤n⇒m≤1+n ih
+length-catMaybes []             = ≤-refl
+length-catMaybes (just _  ∷ xs) = s≤s $ length-catMaybes xs
+length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n $ length-catMaybes xs
 
 catMaybes-++ : (xs ys : List (Maybe A)) →
                catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
-catMaybes-++ []        _  = refl
-catMaybes-++ (mx ∷ xs) ys with ih ← catMaybes-++ xs ys | mx
-... | just x  = cong (x ∷_) ih
-... | nothing = ih
+catMaybes-++ []             _  = refl
+catMaybes-++ (just x  ∷ xs) ys = cong (x ∷_) $ catMaybes-++ xs ys
+catMaybes-++ (nothing ∷ xs) ys = catMaybes-++ xs ys
 
 map-catMaybes : (f : A → B) → map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
-map-catMaybes _ [] = refl
-map-catMaybes f (mx ∷ xs) with ih ← map-catMaybes f xs | mx
-... | just x  = cong (f x ∷_) ih
-... | nothing = ih
+map-catMaybes _ []             = refl
+map-catMaybes f (just x  ∷ xs) = cong (f x ∷_) $ map-catMaybes f xs
+map-catMaybes f (nothing ∷ xs) = map-catMaybes f xs
 
 Any-catMaybes⁺ : ∀ {P : Pred A ℓ} {xs : List (Maybe A)} →
                  Any (MAny P) xs → Any P (catMaybes xs)
