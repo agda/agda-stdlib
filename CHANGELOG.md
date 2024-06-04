@@ -36,9 +36,14 @@ Other major improvements
 
 Minor improvements
 ------------------
-The size of the dependency graph for many modules has been
-reduced. This may lead to speed ups for first-time loading of some
-modules.
+
+* The size of the dependency graph for many modules has been
+  reduced. This may lead to speed ups for first-time loading of some
+  modules.
+
+* The definition of the `Pointwise` relational combinator in
+  `Data.Product.Relation.Binary.Pointwise.NonDependent.Pointwise`
+  has been generalised to take heterogeneous arguments in `REL`.
 
 Deprecated modules
 ------------------
