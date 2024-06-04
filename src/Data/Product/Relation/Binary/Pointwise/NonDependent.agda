@@ -11,10 +11,10 @@ module Data.Product.Relation.Binary.Pointwise.NonDependent where
 open import Data.Product.Base as Product
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Function.Base using (_on_; id)
+open import Function.Base using (id)
 open import Function.Bundles using (Inverse)
 open import Relation.Nullary.Decidable using (_×-dec_)
-open import Relation.Binary.Core using (Rel; _⇒_)
+open import Relation.Binary.Core using (REL; Rel; _⇒_)
 open import Relation.Binary.Bundles
   using (Setoid; DecSetoid; Preorder; Poset; StrictPartialOrder)
 open import Relation.Binary.Definitions
@@ -25,14 +25,14 @@ import Relation.Binary.PropositionalEquality.Properties as ≡
 private
   variable
     a b ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
-    A B : Set a
+    A B C D : Set a
     R S ≈₁ ≈₂ : Rel A ℓ₁
 
 ------------------------------------------------------------------------
 -- Definition
 
-Pointwise : Rel A ℓ₁ → Rel B ℓ₂ → Rel (A × B) (ℓ₁ ⊔ ℓ₂)
-Pointwise R S = (R on proj₁) -×- (S on proj₂)
+Pointwise : REL A B ℓ₁ → REL C D ℓ₂ → REL (A × C) (B × D) (ℓ₁ ⊔ ℓ₂)
+Pointwise R S (a , c) (b , d) = (R a b) × (S c d)
 
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
