@@ -144,7 +144,7 @@ steps-respʳ ys≋xs           (trans ys↭ws ws↭zs) = cong (steps ys↭ws +_)
 ------------------------------------------------------------------------
 -- map
 
-module _ (T : Setoid b ℓ) where
+module _ {ℓ} (T : Setoid b ℓ) where
 
   open Setoid T using () renaming (_≈_ to _≈′_)
   open Permutation T using () renaming (_↭_ to _↭′_)
