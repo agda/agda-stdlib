@@ -586,6 +586,23 @@ Additions to existing modules
   mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
   ```
 
+* Added some very-dependent map and zipWith to `Data.Product`.
+  ```agda
+  map-Σ : {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Set q} →
+   (f : (x : A) → B x) → (∀ {x} → (y : P x) → Q y (f x)) →
+   ((x , y) : Σ A P) → Σ (B x) (Q y)
+
+  map-Σ′ : {B : A → Set b} {P : Set p} {Q : P → Set q} →
+    (f : (x : A) → B x) → ((x : P) → Q x) → ((x , y) : A × P) → B x × Q y
+
+  zipWith : {P : A → Set p} {Q : B → Set q} {R : C → Set r} {S : (x : C) → R x → Set s}
+    (_∙_ : A → B → C) → (_∘_ : ∀ {x y} → P x → Q y → R (x ∙ y)) →
+    (_*_ : (x : C) → (y : R x) → S x y) →
+    ((a , p) : Σ A P) → ((b , q) : Σ B Q) →
+        S (a ∙ b) (p ∘ q)
+
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   1≢0 : 1ℚ ≢ 0ℚ
