@@ -247,6 +247,9 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
   open IsIdempotentMonoid isIdempotentMonoid public
     using (isBand)
 
+  isCommutativeBand : IsCommutativeBand ∙
+  isCommutativeBand = record { isBand = isBand ; comm = comm }
+    
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------
