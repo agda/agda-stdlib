@@ -421,9 +421,10 @@ linesBy {A = A} P? = go nothing where
 
   go : Maybe (List A) → List A → List (List A)
   go acc []       = maybe′ ([_] ∘′ reverse) [] acc
-  go acc (c ∷ cs) with does (P? c)
-  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
-  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+  go acc (c ∷ cs) = if does (P? c)
+    then reverse acc′ ∷ go nothing cs
+    else go (just (c ∷ acc′)) cs
+    where acc′ = Maybe.fromMaybe [] acc
 
 linesByᵇ : (A → Bool) → List A → List (List A)
 linesByᵇ p = linesBy (T? ∘ p)
@@ -441,9 +442,9 @@ wordsBy {A = A} P? = go [] where
 
   go : List A → List A → List (List A)
   go acc []       = cons acc []
-  go acc (c ∷ cs) with does (P? c)
-  ... | true  = cons acc (go [] cs)
-  ... | false = go (c ∷ acc) cs
+  go acc (c ∷ cs) = if does (P? c)
+    then cons acc (go [] cs)
+    else go (c ∷ acc) cs
 
 wordsByᵇ : (A → Bool) → List A → List (List A)
 wordsByᵇ p = wordsBy (T? ∘ p)
