@@ -13,6 +13,8 @@ module Function.Endo.Setoid {c e} (S : Setoid c e) where
 open import Agda.Builtin.Equality
 
 open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
+import Algebra.Definitions.RawMonoid as RawMonoidDefinitions
+import Algebra.Properties.Monoid.Mult as MonoidMultProperties
 open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 open import Algebra.Morphism
   using (module Definitions; IsMagmaHomomorphism; IsMonoidHomomorphism)
@@ -34,30 +36,23 @@ private
 
 
 ------------------------------------------------------------------------
--- Basic type and functions
+-- Basic type and raw bundles
 
 Endo : Set _
 Endo = S ⟶ₛ S
-
-infixr 8 _^_
 
 private
   id : Endo
   id = identity S
 
-_^_ : Endo → ℕ → Endo
-f ^ zero  = id
-f ^ suc n = f ∘ (f ^ n)
+  ∘-id-rawMonoid : RawMonoid (c ⊔ e) (c ⊔ e)
+  ∘-id-rawMonoid = record { Carrier = Endo; _≈_ = _≈_ ; _∙_ = _∘_ ; ε = id }
 
-^-cong₂ : ∀ f → (f ^_) Preserves _≡_ ⟶ _≈_
-^-cong₂ f {n} refl = cong (f ^ n) S.refl
+  open RawMonoid ∘-id-rawMonoid
+    using ()
+    renaming (rawMagma to ∘-rawMagma)
 
-^-homo : ∀ f → Homomorphic₂ ℕ Endo _≈_ (f ^_) _+_ _∘_
-^-homo f zero    n       = S.refl
-^-homo f (suc m) zero    = ^-cong₂ f (+-identityʳ m)
-^-homo f (suc m) (suc n) = ^-homo f m (suc n)
-
-------------------------------------------------------------------------
+--------------------------------------------------------------
 -- Structures
 
 ∘-isMagma : IsMagma _≈_ _∘_
@@ -87,24 +82,36 @@ f ^ suc n = f ∘ (f ^ n)
 ∘-id-monoid : Monoid (c ⊔ e) (c ⊔ e)
 ∘-id-monoid = record { isMonoid = ∘-id-isMonoid }
 
-private
-  ∘-rawMagma : RawMagma (c ⊔ e) (c ⊔ e)
-  ∘-rawMagma = Semigroup.rawMagma ∘-semigroup
+------------------------------------------------------------------------
+-- -- n-th iterated composition
 
-  ∘-id-rawMonoid : RawMonoid (c ⊔ e) (c ⊔ e)
-  ∘-id-rawMonoid = Monoid.rawMonoid ∘-id-monoid
+infixr 8 _^_
+
+_^_ : Endo → ℕ → Endo
+f ^ n = n × f where open RawMonoidDefinitions ∘-id-rawMonoid
 
 ------------------------------------------------------------------------
 -- Homomorphism
 
-^-isMagmaHomomorphism : ∀ f → IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
-^-isMagmaHomomorphism f = record
-  { isRelHomomorphism = record { cong = ^-cong₂ f }
-  ; homo = ^-homo f
-  }
+module _ (f : Endo) where
 
-^-isMonoidHomomorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
-^-isMonoidHomomorphism f = record
-  { isMagmaHomomorphism = ^-isMagmaHomomorphism f
-  ; ε-homo = S.refl
-  }
+  open MonoidMultProperties ∘-id-monoid
+
+  ^-cong₂ : (f ^_) Preserves _≡_ ⟶ _≈_
+  ^-cong₂ = ×-congˡ {f}
+
+  ^-homo : Homomorphic₂ ℕ Endo _≈_ (f ^_) _+_ _∘_
+  ^-homo = ×-homo-+ f
+
+  ^-isMagmaHomomorphism : IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
+  ^-isMagmaHomomorphism = record
+    { isRelHomomorphism = record { cong = ^-cong₂ }
+    ; homo = ^-homo
+    }
+
+  ^-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
+  ^-isMonoidHomomorphism = record
+    { isMagmaHomomorphism = ^-isMagmaHomomorphism
+    ; ε-homo = S.refl
+    }
+

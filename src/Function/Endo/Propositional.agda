@@ -10,6 +10,8 @@ module Function.Endo.Propositional {a} (A : Set a) where
 
 open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
 open import Algebra.Core
+import Algebra.Definitions.RawMonoid as RawMonoidDefinitions
+import Algebra.Properties.Monoid.Mult as MonoidMultProperties
 open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 open import Algebra.Morphism
   using (module Definitions; IsMagmaHomomorphism; IsMonoidHomomorphism)
@@ -19,7 +21,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; _+_; +-rawMagma; +-0-rawMonoid)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)
 open import Data.Product.Base using (_,_)
 
-open import Function.Base using (id; _∘′_; _∋_)
+open import Function.Base using (id; _∘′_; _∋_; flip)
 open import Function.Bundles using (Func; _⟶ₛ_; _⟨$⟩_)
 open import Relation.Binary.Core using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong; cong₂)
@@ -27,8 +29,24 @@ import Relation.Binary.PropositionalEquality.Properties as ≡
 
 import Function.Endo.Setoid (≡.setoid A) as Setoid
 
+------------------------------------------------------------------------
+-- Basic type and raw bundles
+
 Endo : Set a
 Endo = A → A
+
+private
+
+  _∘_ : Op₂ Endo
+  _∘_ = _∘′_
+
+  ∘-id-rawMonoid : RawMonoid a a
+  ∘-id-rawMonoid = record { Carrier = Endo; _≈_ = _≡_ ; _∙_ = _∘_ ; ε = id }
+
+  open RawMonoid ∘-id-rawMonoid
+    using ()
+    renaming (rawMagma to ∘-rawMagma)
+
 
 ------------------------------------------------------------------------
 -- Conversion back and forth with the Setoid-based notion of Endomorphism
@@ -43,31 +61,18 @@ toSetoidEndo f = record
   }
 
 ------------------------------------------------------------------------
--- N-th composition
-
-infixr 8 _^_
-
-_^_ : Endo → ℕ → Endo
-f ^ zero  = id
-f ^ suc n = f ∘′ (f ^ n)
-
-^-homo : ∀ f → Homomorphic₂ ℕ Endo _≡_ (f ^_) _+_ _∘′_
-^-homo f zero    n = refl
-^-homo f (suc m) n = cong (f ∘′_) (^-homo f m n)
-
-------------------------------------------------------------------------
 -- Structures
 
-∘-isMagma : IsMagma _≡_ (Op₂ Endo ∋ _∘′_)
+∘-isMagma : IsMagma _≡_ _∘_
 ∘-isMagma = record
   { isEquivalence = ≡.isEquivalence
-  ; ∙-cong        = cong₂ _∘′_
+  ; ∙-cong        = cong₂ _∘_
   }
 
 ∘-magma : Magma _ _
 ∘-magma = record { isMagma = ∘-isMagma }
 
-∘-isSemigroup : IsSemigroup _≡_ (Op₂ Endo ∋ _∘′_)
+∘-isSemigroup : IsSemigroup _≡_ _∘_
 ∘-isSemigroup = record
   { isMagma = ∘-isMagma
   ; assoc   = λ _ _ _ → refl
@@ -76,7 +81,7 @@ f ^ suc n = f ∘′ (f ^ n)
 ∘-semigroup : Semigroup _ _
 ∘-semigroup = record { isSemigroup = ∘-isSemigroup }
 
-∘-id-isMonoid : IsMonoid _≡_ _∘′_ id
+∘-id-isMonoid : IsMonoid _≡_ _∘_ id
 ∘-id-isMonoid = record
   { isSemigroup = ∘-isSemigroup
   ; identity    = (λ _ → refl) , (λ _ → refl)
@@ -85,24 +90,32 @@ f ^ suc n = f ∘′ (f ^ n)
 ∘-id-monoid : Monoid _ _
 ∘-id-monoid = record { isMonoid = ∘-id-isMonoid }
 
-private
-  ∘-rawMagma : RawMagma a a
-  ∘-rawMagma = Semigroup.rawMagma ∘-semigroup
+------------------------------------------------------------------------
+-- n-th iterated composition
 
-  ∘-id-rawMonoid : RawMonoid a a
-  ∘-id-rawMonoid = Monoid.rawMonoid ∘-id-monoid
+infixr 8 _^_
+
+_^_ : Endo → ℕ → Endo
+_^_ = flip _×_ where open RawMonoidDefinitions ∘-id-rawMonoid
 
 ------------------------------------------------------------------------
 -- Homomorphism
 
-^-isMagmaHomomorphism : ∀ f → IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
-^-isMagmaHomomorphism f = record
-  { isRelHomomorphism = record { cong = cong (f ^_) }
-  ; homo = ^-homo f
-  }
+module _ (f : Endo) where
 
-^-isMonoidHomomorphism : ∀ f → IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
-^-isMonoidHomomorphism f = record
-  { isMagmaHomomorphism = ^-isMagmaHomomorphism f
-  ; ε-homo = refl
-  }
+  open MonoidMultProperties ∘-id-monoid
+
+  ^-homo : Homomorphic₂ ℕ Endo _≡_ (f ^_) _+_ _∘_
+  ^-homo = ×-homo-+ f
+
+  ^-isMagmaHomomorphism : IsMagmaHomomorphism +-rawMagma ∘-rawMagma (f ^_)
+  ^-isMagmaHomomorphism = record
+    { isRelHomomorphism = record { cong = cong (f ^_) }
+    ; homo = ^-homo
+    }
+
+  ^-isMonoidHomomorphism : IsMonoidHomomorphism +-0-rawMonoid ∘-id-rawMonoid (f ^_)
+  ^-isMonoidHomomorphism = record
+    { isMagmaHomomorphism = ^-isMagmaHomomorphism
+    ; ε-homo = refl
+    }
