@@ -153,6 +153,20 @@ record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     ; comm    = comm
     }
 
+
+record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isBand : IsBand ∙
+    comm   : Commutative ∙
+
+  open IsBand isBand public
+
+  isCommutativeSemigroup : IsCommutativeSemigroup ∙
+  isCommutativeSemigroup = record { isSemigroup = isSemigroup ; comm = {!comm!} }
+
+  open IsCommutativeSemigroup isCommutativeSemigroup public
+    using (isCommutativeMagma)
+
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 ------------------------------------------------------------------------
@@ -208,6 +222,17 @@ record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     using (isCommutativeMagma)
 
 
+record IsIdempotentMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isMonoid : IsMonoid ∙ ε
+    idem     : Idempotent ∙
+
+  open IsMonoid isMonoid public
+
+  isBand : IsBand ∙
+  isBand = record { isSemigroup = isSemigroup ; idem = idem }
+
+
 record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
                                      (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -216,9 +241,11 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
 
   open IsCommutativeMonoid isCommutativeMonoid public
 
-  isBand : IsBand ∙
-  isBand = record { isSemigroup = isSemigroup ; idem = idem }
+  isIdempotentMonoid : IsIdempotentMonoid ∙ ε
+  isIdempotentMonoid = record { isMonoid = isMonoid ; idem = idem }
 
+  open IsIdempotentMonoid isIdempotentMonoid public
+    using (isBand)
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation, 1 unary operation & 1 element

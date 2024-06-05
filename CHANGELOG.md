@@ -350,6 +350,9 @@ Additions to existing modules
 * In `Algebra.Structures`
   ```agda
   record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _
+  record IsCommutativeBand (∙ : Op₂ A) : Set _
+  record IsIdempotentMonoid (∙ : Op₂ A) (ε : A) : Set _
+  ```
 
 * In `Algebra.Structures.IsGroup`:
   ```agda
