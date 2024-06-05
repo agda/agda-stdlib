@@ -118,25 +118,9 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
-* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
-  ```
-  Data.List.Relation.Binary.Equality.Setoid.Properties
-  ```
-
-* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
-  ```
-  Data.List.Scans.Base
-  Data.List.Scans.Properties
-  ```
-
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+* Nagata's construction of the "idealization of a module":
   ```agda
-  Induction.InfiniteDescent
+  Algebra.Module.Construct.Idealization
   ```
 
 * The unique morphism from the initial, resp. terminal, algebra:
@@ -145,9 +129,16 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
-* Nagata's construction of the "idealization of a module":
+* Pointwise and equality relations over indexed containers:
   ```agda
-  Algebra.Module.Construct.Idealization
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
+  ```
+  Data.List.Relation.Binary.Equality.Setoid.Properties
   ```
 
 * `Data.List.Relation.Binary.Sublist.Propositional.Slice`
@@ -155,6 +146,27 @@ New modules
   and adding new functions:
   - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
   - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
+ ```
+
+* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
+  ```
+  Data.List.Scans.Base
+  Data.List.Scans.Properties
+  ```
+
+* Isomorphism between `Fin` and an 'obvious' definition `ℕ<` of
+  'bounded natural number' type, in:
+  ```agda
+  Data.Nat.Bounded
+  Data.Nat.Bounded.Base
+  Data.Nat.Bounded.Literals
+  Data.Nat.Bounded.Properties
+  ```
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
 
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
   ```agda
@@ -178,6 +190,11 @@ New modules
   and a convenient infix version
   ```agda
   _⇨_ = setoid
+  ```
+
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
   ```
 
 * Symmetric interior of a binary relation
