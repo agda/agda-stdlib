@@ -234,6 +234,8 @@ Additions to existing modules
 * In `Algebra.Bundles`
   ```agda
   record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
+  record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ))
+  record IdempotentMonoid c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * In `Algebra.Bundles.Raw`

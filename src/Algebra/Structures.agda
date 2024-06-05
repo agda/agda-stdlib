@@ -162,7 +162,7 @@ record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   open IsBand isBand public
 
   isCommutativeSemigroup : IsCommutativeSemigroup ∙
-  isCommutativeSemigroup = record { isSemigroup = isSemigroup ; comm = {!comm!} }
+  isCommutativeSemigroup = record { isSemigroup = isSemigroup ; comm = comm }
 
   open IsCommutativeSemigroup isCommutativeSemigroup public
     using (isCommutativeMagma)
