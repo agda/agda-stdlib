@@ -2128,12 +2128,10 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 m≤n⇒∃[o]m+o≡n : .(m ≤ n) → ∃ λ k → m + k ≡ n
 m≤n⇒∃[o]m+o≡n m≤n = _ , m+[n∸m]≡n (recompute (_ ≤? _) m≤n)
 
--- and a 'guarded' version of monus
+-- and a 'guarded' implementation of monus equivalent to the 'official' one
 
-guarded-∸ : ∀ n m → .(m ≤ n) → ℕ
-guarded-∸ n m m≤n = let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k
-
-guarded-∸≗∸ : ∀ {m n} → .(m≤n : m ≤ n) → guarded-∸ n m m≤n ≡ n ∸ m
+guarded-∸≗∸ : ∀ {m n} → .(m≤n : m ≤ n) →
+              let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k ≡ n ∸ m
 guarded-∸≗∸ m≤n = refl
 
 -- equivalence of _<″_ to _<ᵇ_

@@ -554,17 +554,16 @@ Additions to existing modules
 
 * Added new proofs and 'guarded' version of `_∸_` in `Data.Nat.Properties`:
   ```agda
-  m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
-  m<n+o⇒m∸n<o : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
-  pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
-  pred-cancel-< : pred m < pred n → m < n
+  m≤n+o⇒m∸n≤o    : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
+  m<n+o⇒m∸n<o    : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
+  pred-cancel-≤  : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
+  pred-cancel-<  : pred m < pred n → m < n
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
-  pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+  pred-cancel-≡  : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
 
-  <⇒<″ : _<_ ⇒ _<″_
+  <⇒<″          : _<_ ⇒ _<″_
   m≤n⇒∃[o]m+o≡n : .(m ≤ n) → ∃ λ k → m + k ≡ n
-  guarded-∸   : ∀ n m → .(m ≤ n) → ℕ
-  guarded-∸≗∸ : .(m≤n : m ≤ n) → guarded-∸ n m m≤n ≡ n ∸ m
+  guarded-∸≗∸   : .(m≤n : m ≤ n) → let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k ≡ n ∸ m
   ```
 
 * Added new proofs to `Data.Nat.Primality`:
