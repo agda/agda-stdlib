@@ -118,25 +118,9 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
-* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
-  ```
-  Data.List.Relation.Binary.Equality.Setoid.Properties
-  ```
-
-* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
-  ```
-  Data.List.Scans.Base
-  Data.List.Scans.Properties
-  ```
-
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+* Nagata's construction of the "idealization of a module":
   ```agda
-  Induction.InfiniteDescent
+  Algebra.Module.Construct.Idealization
   ```
 
 * The unique morphism from the initial, resp. terminal, algebra:
@@ -145,9 +129,22 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
-* Nagata's construction of the "idealization of a module":
+* Pointwise and equality relations over indexed containers:
   ```agda
-  Algebra.Module.Construct.Idealization
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
+  ```
+  Data.List.Scans.Base
+  Data.List.Scans.Properties
+  ```
+
+* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
+  ```
+  Data.List.Relation.Binary.Equality.Setoid.Properties
   ```
 
 * `Data.List.Relation.Binary.Sublist.Propositional.Slice`
@@ -155,6 +152,12 @@ New modules
   and adding new functions:
   - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
   - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
+  ```
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
 
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
   ```agda
@@ -180,6 +183,11 @@ New modules
   _⇨_ = setoid
   ```
 
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
+  ```agda
+  Induction.InfiniteDescent
+  ```
+
 * Symmetric interior of a binary relation
   ```
   Relation.Binary.Construct.Interior.Symmetric
@@ -190,12 +198,11 @@ New modules
   Relation.Binary.Properties.DecSetoid
   ```
 
-* Pointwise and equality relations over indexed containers:
+* Systematise the use of `Recomputable A = .A → A`:
   ```agda
-  Data.Container.Indexed.Relation.Binary.Pointwise
-  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
-  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  Relation.Nullary.Recomputable
   ```
+  with `Recomputable` exported publicly from `Relation.Nullary`.
 
 * New IO primitives to handle buffering
   ```agda
@@ -370,6 +377,11 @@ Additions to existing modules
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
+  ```
+
+* In `Data.Empty`:
+  ```agda
+  ⊥-elim-irr  : .⊥ → Whatever
   ```
 
 * In `Data.Fin.Properties`:
@@ -674,7 +686,7 @@ Additions to existing modules
 * Added new definitions in `Relation.Binary.Definitions`
   ```
   Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
-  Empty  _∼_ = ∀ {x y} → x ∼ y → ⊥
+  Empty  _∼_ = ∀ {x y} → ¬ (x ∼ y)
   ```
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
@@ -690,9 +702,25 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
+* Added new proof in `Relation.Nullary.Decidable.Core`:
+  ```agda
+  recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+  ```
+
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
+* Added new definitions in `Relation.Nullary.Negation.Core`:
+  ```agda
+  contradiction-irr : .A → ¬ A → Whatever
+  ```
+
+* Added new definitions in `Relation.Nullary.Reflects`:
+  ```agda
+  recompute          : Reflects A b → Recomputable A
+  recompute-constant : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
   ```
 
 * Added new definitions in `Relation.Unary`

@@ -23,8 +23,9 @@ private
 ------------------------------------------------------------------------
 -- Re-exports
 
+open import Relation.Nullary.Recomputable public using (Recomputable)
 open import Relation.Nullary.Negation.Core public
-open import Relation.Nullary.Reflects public
+open import Relation.Nullary.Reflects public hiding (recompute; recompute-constant)
 open import Relation.Nullary.Decidable.Core public
 
 ------------------------------------------------------------------------
@@ -32,13 +33,6 @@ open import Relation.Nullary.Decidable.Core public
 
 Irrelevant : Set p → Set p
 Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
-
-------------------------------------------------------------------------
--- Recomputability - we can rebuild a relevant proof given an
--- irrelevant one.
-
-Recomputable : Set p → Set p
-Recomputable P = .P → P
 
 ------------------------------------------------------------------------
 -- Weak decidability

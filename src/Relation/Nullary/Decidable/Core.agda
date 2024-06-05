@@ -11,16 +11,18 @@
 
 module Relation.Nullary.Decidable.Core where
 
+open import Agda.Builtin.Equality using (_≡_)
 open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
-open import Data.Empty.Irrelevant using (⊥-elim)
 open import Data.Product.Base using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_∘_; const; _$_; flip)
-open import Relation.Nullary.Reflects
+open import Relation.Nullary.Recomputable as Recomputable hiding (recompute-constant)
+open import Relation.Nullary.Reflects as Reflects hiding (recompute; recompute-constant)
 open import Relation.Nullary.Negation.Core
   using (¬_; Stable; negated-stable; contradiction; DoubleNegation)
+
 
 private
   variable
@@ -69,9 +71,12 @@ module _ {A : Set a} where
 
 -- Given an irrelevant proof of a decidable type, a proof can
 -- be recomputed and subsequently used in relevant contexts.
-recompute : Dec A → .A → A
-recompute (yes a) _ = a
-recompute (no ¬a) a = ⊥-elim (¬a a)
+
+recompute : Dec A → Recomputable A
+recompute = Reflects.recompute ∘ proof
+
+recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+recompute-constant = Recomputable.recompute-constant ∘ recompute
 
 ------------------------------------------------------------------------
 -- Interaction with negation, sum, product etc.
@@ -161,8 +166,8 @@ from-no (true  because   _ ) = _
 
 map′ : (A → B) → (B → A) → Dec A → Dec B
 does  (map′ A→B B→A a?)                   = does a?
-proof (map′ A→B B→A (true  because  [a])) = ofʸ (A→B (invert [a]))
-proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A)
+proof (map′ A→B B→A (true  because  [a])) = of (A→B (invert [a]))
+proof (map′ A→B B→A (false because [¬a])) = of (invert [¬a] ∘ B→A)
 
 ------------------------------------------------------------------------
 -- Relationship with double-negation
@@ -170,8 +175,8 @@ proof (map′ A→B B→A (false because [¬a])) = ofⁿ (invert [¬a] ∘ B→A
 -- Decidable predicates are stable.
 
 decidable-stable : Dec A → Stable A
-decidable-stable (yes a) ¬¬a = a
-decidable-stable (no ¬a) ¬¬a = contradiction ¬a ¬¬a
+decidable-stable (true  because  [a]) ¬¬a = invert [a]
+decidable-stable (false because [¬a]) ¬¬a = contradiction (invert [¬a]) ¬¬a
 
 ¬-drop-Dec : Dec (¬ ¬ A) → Dec (¬ A)
 ¬-drop-Dec ¬¬a? = map′ negated-stable contradiction (¬? ¬¬a?)
