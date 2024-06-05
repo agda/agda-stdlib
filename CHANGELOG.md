@@ -82,16 +82,9 @@ Deprecated names
   scanl-defn  ↦  Data.List.Scans.Properties.scanl-defn
   ```
 
-* In `Data.List.NonEmpty.Base`:
+* In `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  inits : List A → List⁺ (List A)
-  tails : List A → List⁺ (List A)
-  ```
-
-* In `Data.List.NonEmpty.Properties`:
-  ```agda
-  toList-inits : toList ∘ List⁺.inits ≗ List.inits
-  toList-tails : toList ∘ List⁺.tails ≗ List.tails
+  map-compose  ↦  map-∘
   ```
 
 * In `Data.Nat.Divisibility.Core`:
@@ -412,6 +405,12 @@ Additions to existing modules
   tail∘tails : List A → List (List A)
   ```
 
+* In `Data.List.Membership.Propositional.Properties.Core`:
+  ```agda
+  find∘∃∈-Any : (p : ∃ λ x → x ∈ xs × P x) → find (∃∈-Any p) ≡ p
+  ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
+  ```
+
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
   reverse⁺ : x ∈ xs → x ∈ reverse xs
@@ -422,6 +421,12 @@ Additions to existing modules
   ```agda
   inits : List A → List⁺ (List A)
   tails : List A → List⁺ (List A)
+  ```
+
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-inits : toList ∘ List⁺.inits ≗ List.inits
+  toList-tails : toList ∘ List⁺.tails ≗ List.tails
   ```
 
 * In `Data.List.Properties`:
@@ -477,6 +482,21 @@ Additions to existing modules
   mapMaybeIsInj₂∘mapInj₁ : mapMaybe isInj₂ (map inj₁ xs) ≡ []
   ```
 
+* In `Data.List.Relation.Binary.Pointwise.Base`:
+  ```agda
+  unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
+  ```
+
+* In `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
+  ```
+
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
   ```agda
   ⊆-trans-idˡ   : (trans-reflˡ : ∀ {x y} (p : x ≈ y) → trans ≈-refl p ≡ p) →
@@ -498,6 +518,11 @@ Additions to existing modules
   reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
   ```
 
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  universal-U : Universal (All U)
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
@@ -508,6 +533,12 @@ Additions to existing modules
   ```agda
   catMaybes⁺ : AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
   tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
+  ```
+
+* In `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  map-cong : (f g : P ⋐ Q) → (∀ {x} (p : P x) → f p ≡ g p) →
+             (p : Any P xs) → Any.map f p ≡ Any.map g p
   ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
@@ -534,21 +565,6 @@ Additions to existing modules
   assoc← :   ((S ; T) ⇒ R) → ((W ; T) ⇒ (U ; V)) → (X ⇒ (Y ; V)) →
              ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds →
                          ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds
-  ```
-
-* In `Data.List.Relation.Binary.Pointwise.Base`:
-  ```agda
-  unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
-  ```
-
-* In `Data.Maybe.Relation.Binary.Pointwise`:
-  ```agda
-  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
-  ```
-
-* In `Data.List.Relation.Binary.Sublist.Setoid`:
-  ```agda
-  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
   ```
 
 * In `Data.Nat.Divisibility`:
