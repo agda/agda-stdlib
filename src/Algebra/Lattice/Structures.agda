@@ -34,7 +34,7 @@ open import Algebra.Structures _≈_
 IsSemilattice = IsCommutativeBand
 module IsSemilattice {∙} (L : IsSemilattice ∙) where
   open IsCommutativeBand L public
-    using (isBand)
+    using (isBand; comm)
   open IsBand isBand public
 
 -- Used to bring names appropriate for a meet semilattice into scope.
