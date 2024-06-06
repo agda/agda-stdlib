@@ -744,7 +744,7 @@ Additions to existing modules
   recompute          : Reflects A b → Recomputable A
   recompute-constant : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
  ```
-
+ 
 * Added new definitions in `Relation.Unary`
   ```
   Stable          : Pred A ℓ → Set _
