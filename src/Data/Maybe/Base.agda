@@ -16,7 +16,7 @@ open import Data.Unit.Base using (⊤)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Product.Base as Prod using (_×_; _,_)
 open import Function.Base using (_∘_; id; const)
-import Relation.Nullary.Decidable.Core
+import Relation.Nullary.Decidable.Core as Dec
 
 private
   variable
@@ -134,12 +134,15 @@ thatM : Maybe A → B → These A B
 thatM = maybe′ these that
 
 ------------------------------------------------------------------------
--- Deprecated
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
 -- Version 2.1
--- decToMaybe
+-- decToMaybe #2330/2336
 
-decToMaybe = Relation.Nullary.Decidable.Core.decToMaybe
+open Dec public using (decToMaybe)
 {-# WARNING_ON_USAGE decToMaybe
 "Warning: decToMaybe was deprecated in v2.1.
 Please use Relation.Nullary.Decidable.Core.decToMaybe instead."
