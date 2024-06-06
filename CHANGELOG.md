@@ -45,6 +45,11 @@ Minor improvements
   `Data.Product.Relation.Binary.Pointwise.NonDependent.Pointwise`
   has been generalised to take heterogeneous arguments in `REL`.
 
+* The structures `IsSemilattice` and `IsBoundedSemilattice` in
+  `Algebra.Lattice.Structures` have been redefined as aliases of
+  `IsCommutativeBand` and `IsIdempotentMonoid` in `Algebra.Structures`.
+
+
 Deprecated modules
 ------------------
 
