@@ -8,11 +8,14 @@
 -- equalities than _≡_.
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --warn=noUserWarning #-} -- for deprecated scans
 
 module Data.List.Properties where
 
 open import Algebra.Bundles
-open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
+open import Algebra.Consequences.Propositional
+ using (selfInverse⇒involutive; selfInverse⇒injective)
+open import Algebra.Definitions as AlgebraicDefinitions using (SelfInverse; Involutive)
 open import Algebra.Morphism.Structures using (IsMagmaHomomorphism; IsMonoidHomomorphism)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
@@ -21,14 +24,15 @@ open import Data.List.Base as List
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; maybe)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Relation.Unary.Any using (just) renaming (Any to MAny)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility using (_∣_; divides; ∣n⇒∣m*n)
 open import Data.Nat.Properties
 open import Data.Product.Base as Product
   using (_×_; _,_; uncurry; uncurry′; proj₁; proj₂; <_,_>)
 import Data.Product.Relation.Unary.All as Product using (All)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Data.Sum using (_⊎_; inj₁; inj₂; isInj₁; isInj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Fin.Properties using (toℕ-cast)
 open import Function.Base using (id; _∘_; _∘′_; _∋_; _-⟨_∣; ∣_⟩-_; _$_; const; flip)
@@ -46,12 +50,11 @@ open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 import Data.Nat.GeneralisedArithmetic as ℕ
 
-
 open ≡-Reasoning
 
 private
   variable
-    a b c d e p : Level
+    a b c d e p ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -119,32 +122,6 @@ map-injective finj {[]} {[]} eq = refl
 map-injective finj {x ∷ xs} {y ∷ ys} eq =
   let fx≡fy , fxs≡fys = ∷-injective eq in
   cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
-
-------------------------------------------------------------------------
--- catMaybes
-
-catMaybes-concatMap : catMaybes {A = A} ≗ concatMap fromMaybe
-catMaybes-concatMap []             = refl
-catMaybes-concatMap (just x  ∷ xs) = cong (x ∷_) (catMaybes-concatMap xs)
-catMaybes-concatMap (nothing ∷ xs) = catMaybes-concatMap xs
-
-length-catMaybes : ∀ xs → length (catMaybes {A = A} xs) ≤ length xs
-length-catMaybes []             = ≤-refl
-length-catMaybes (just x  ∷ xs) = s≤s (length-catMaybes xs)
-length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n (length-catMaybes xs)
-
-catMaybes-++ : (xs ys : List (Maybe A)) →
-               catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
-catMaybes-++ []             ys = refl
-catMaybes-++ (just x  ∷ xs) ys = cong (x ∷_) (catMaybes-++ xs ys)
-catMaybes-++ (nothing ∷ xs) ys = catMaybes-++ xs ys
-
-module _ (f : A → B) where
-
-  map-catMaybes : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
-  map-catMaybes []             = refl
-  map-catMaybes (just x  ∷ xs) = cong (f x ∷_) (map-catMaybes xs)
-  map-catMaybes (nothing ∷ xs) = map-catMaybes xs
 
 ------------------------------------------------------------------------
 -- _++_
@@ -739,12 +716,40 @@ map-concatMap f g xs = begin
     ∎
 
 ------------------------------------------------------------------------
+-- catMaybes
+
+catMaybes-concatMap : catMaybes {A = A} ≗ concatMap fromMaybe
+catMaybes-concatMap []             = refl
+catMaybes-concatMap (just x  ∷ xs) = cong (x ∷_) $ catMaybes-concatMap xs
+catMaybes-concatMap (nothing ∷ xs) = catMaybes-concatMap xs
+
+length-catMaybes : ∀ xs → length (catMaybes {A = A} xs) ≤ length xs
+length-catMaybes []             = ≤-refl
+length-catMaybes (just _  ∷ xs) = s≤s $ length-catMaybes xs
+length-catMaybes (nothing ∷ xs) = m≤n⇒m≤1+n $ length-catMaybes xs
+
+catMaybes-++ : (xs ys : List (Maybe A)) →
+               catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
+catMaybes-++ []             _  = refl
+catMaybes-++ (just x  ∷ xs) ys = cong (x ∷_) $ catMaybes-++ xs ys
+catMaybes-++ (nothing ∷ xs) ys = catMaybes-++ xs ys
+
+map-catMaybes : (f : A → B) → map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+map-catMaybes _ []             = refl
+map-catMaybes f (just x  ∷ xs) = cong (f x ∷_) $ map-catMaybes f xs
+map-catMaybes f (nothing ∷ xs) = map-catMaybes f xs
+
+Any-catMaybes⁺ : ∀ {P : Pred A ℓ} {xs : List (Maybe A)} →
+                 Any (MAny P) xs → Any P (catMaybes xs)
+Any-catMaybes⁺ {xs = nothing ∷ xs} (there x∈)       = Any-catMaybes⁺ x∈
+Any-catMaybes⁺ {xs = just x  ∷ xs} (here (just px)) = here px
+Any-catMaybes⁺ {xs = just x  ∷ xs} (there x∈)       = there $ Any-catMaybes⁺ x∈
+
+------------------------------------------------------------------------
 -- mapMaybe
 
-module _ {f g : A → Maybe B} where
-
-  mapMaybe-cong : f ≗ g → mapMaybe f ≗ mapMaybe g
-  mapMaybe-cong f≗g = cong catMaybes ∘ map-cong f≗g
+mapMaybe-cong : {f g : A → Maybe B} → f ≗ g → mapMaybe f ≗ mapMaybe g
+mapMaybe-cong f≗g = cong catMaybes ∘ map-cong f≗g
 
 mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
 mapMaybe-just []       = refl
@@ -790,6 +795,36 @@ module _ (g : B → C) (f : A → Maybe B) where
     mapMaybe (Maybe.map g) (map f xs)  ≡⟨ mapMaybe-map _ f xs ⟩
     mapMaybe (Maybe.map g ∘ f) xs      ∎
 
+-- embedding-projection pairs
+module _ {proj : B → Maybe A} {emb : A → B} where
+  mapMaybe-map-retract : proj ∘ emb ≗ just → mapMaybe proj ∘ map emb ≗ id
+  mapMaybe-map-retract retract xs = begin
+    mapMaybe proj (map emb xs) ≡⟨ mapMaybe-map _ _ xs ⟩
+    mapMaybe (proj ∘ emb) xs   ≡⟨ mapMaybe-cong retract xs ⟩
+    mapMaybe just xs           ≡⟨ mapMaybe-just _ ⟩
+    xs                         ∎
+
+module _ {proj : C → Maybe B} {emb : A → C} where
+  mapMaybe-map-none : proj ∘ emb ≗ const nothing → mapMaybe proj ∘ map emb ≗ const []
+  mapMaybe-map-none retract xs = begin
+    mapMaybe proj (map emb xs)  ≡⟨ mapMaybe-map _ _ xs ⟩
+    mapMaybe (proj ∘ emb) xs    ≡⟨ mapMaybe-cong retract xs ⟩
+    mapMaybe (const nothing) xs ≡⟨ mapMaybe-nothing xs ⟩
+    []                          ∎
+
+-- embedding-projection pairs on sums
+mapMaybeIsInj₁∘mapInj₁ : (xs : List A) → mapMaybe (isInj₁ {B = B}) (map inj₁ xs) ≡ xs
+mapMaybeIsInj₁∘mapInj₁ = mapMaybe-map-retract λ _ → refl
+
+mapMaybeIsInj₁∘mapInj₂ : (xs : List B) → mapMaybe (isInj₁ {A = A}) (map inj₂ xs) ≡ []
+mapMaybeIsInj₁∘mapInj₂ = mapMaybe-map-none λ _ → refl
+
+mapMaybeIsInj₂∘mapInj₂ : (xs : List B) → mapMaybe (isInj₂ {A = A}) (map inj₂ xs) ≡ xs
+mapMaybeIsInj₂∘mapInj₂ = mapMaybe-map-retract λ _ → refl
+
+mapMaybeIsInj₂∘mapInj₁ : (xs : List A) → mapMaybe (isInj₂ {B = B}) (map inj₁ xs) ≡ []
+mapMaybeIsInj₂∘mapInj₁ = mapMaybe-map-none λ _ → refl
+
 ------------------------------------------------------------------------
 -- sum
 
@@ -806,34 +841,6 @@ sum-++ (x ∷ xs) ys = begin
 ∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
 ∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
 ∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
-
-------------------------------------------------------------------------
--- scanr
-
-scanr-defn : ∀ (f : A → B → B) (e : B) →
-             scanr f e ≗ map (foldr f e) ∘ tails
-scanr-defn f e []             = refl
-scanr-defn f e (x ∷ [])       = refl
-scanr-defn f e (x ∷ y∷xs@(_ ∷ _))
-  with eq ← scanr-defn f e y∷xs
-  with z ∷ zs ← scanr f e y∷xs
-  = let z≡fy⦇f⦈xs , _ = ∷-injective eq in cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
-
-------------------------------------------------------------------------
--- scanl
-
-scanl-defn : ∀ (f : A → B → A) (e : A) →
-             scanl f e ≗ map (foldl f e) ∘ inits
-scanl-defn f e []       = refl
-scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
-   scanl f (f e x) xs
- ≡⟨ scanl-defn f (f e x) xs ⟩
-   map (foldl f (f e x)) (inits xs)
- ≡⟨ refl ⟩
-   map (foldl f e ∘ (x ∷_)) (inits xs)
- ≡⟨ map-∘ (inits xs) ⟩
-   map (foldl f e) (map (x ∷_) (inits xs))
- ∎)
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -1350,7 +1357,7 @@ foldl-ʳ++ f b (x ∷ xs) {ys} = begin
 unfold-reverse : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
 unfold-reverse x xs = ʳ++-defn xs
 
--- reverse is an involution with respect to append.
+-- reverse is an anti-homomorphism with respect to append.
 
 reverse-++ : (xs ys : List A) →
                      reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
@@ -1361,20 +1368,27 @@ reverse-++ xs ys = begin
   ys ʳ++ reverse xs          ≡⟨ ʳ++-defn ys ⟩
   reverse ys ++ reverse xs   ∎
 
+-- reverse is self-inverse.
+
+reverse-selfInverse : SelfInverse {A = List A} _≡_ reverse
+reverse-selfInverse {x = xs} {y = ys} xs⁻¹≈ys = begin
+  reverse ys         ≡⟨⟩
+  ys ʳ++ []          ≡⟨ cong (_ʳ++ []) xs⁻¹≈ys ⟨
+  reverse xs ʳ++ []  ≡⟨⟩
+  (xs ʳ++ []) ʳ++ [] ≡⟨ ʳ++-ʳ++ xs ⟩
+  [] ʳ++ xs ++ []    ≡⟨⟩
+  xs ++ []           ≡⟨ ++-identityʳ xs ⟩
+  xs                 ∎
+
 -- reverse is involutive.
 
 reverse-involutive : Involutive {A = List A} _≡_ reverse
-reverse-involutive xs = begin
-  reverse (reverse xs)  ≡⟨⟩
-  (xs ʳ++ []) ʳ++ []    ≡⟨ ʳ++-ʳ++ xs ⟩
-  [] ʳ++  xs ++ []      ≡⟨⟩
-  xs ++ []              ≡⟨ ++-identityʳ xs ⟩
-  xs                    ∎
+reverse-involutive = selfInverse⇒involutive reverse-selfInverse
 
 -- reverse is injective.
 
-reverse-injective : ∀ {xs ys : List A} → reverse xs ≡ reverse ys → xs ≡ ys
-reverse-injective = subst₂ _≡_ (reverse-involutive _) (reverse-involutive _) ∘ cong reverse
+reverse-injective : Injective {A = List A} _≡_ _≡_ reverse
+reverse-injective = selfInverse⇒injective reverse-selfInverse
 
 -- reverse preserves length.
 
@@ -1572,4 +1586,36 @@ map-─ = map-removeAt
 {-# WARNING_ON_USAGE map-─
 "Warning: map-─ was deprecated in v2.0.
 Please use map-removeAt instead."
+#-}
+
+-- Version 2.1
+
+scanr-defn : ∀ (f : A → B → B) (e : B) →
+             scanr f e ≗ map (foldr f e) ∘ tails
+scanr-defn f e []             = refl
+scanr-defn f e (x ∷ [])       = refl
+scanr-defn f e (x ∷ xs@(_ ∷ _))
+  with eq ← scanr-defn f e xs
+  with ys@(_ ∷ _) ← scanr f e xs
+  = cong₂ (λ z → f x z ∷_) (∷-injectiveˡ eq) eq
+{-# WARNING_ON_USAGE scanr-defn
+"Warning: scanr-defn was deprecated in v2.1.
+Please use Data.List.Scans.Properties.scanr-defn instead."
+#-}
+
+scanl-defn : ∀ (f : A → B → A) (e : A) →
+             scanl f e ≗ map (foldl f e) ∘ inits
+scanl-defn f e []       = refl
+scanl-defn f e (x ∷ xs) = cong (e ∷_) (begin
+   scanl f (f e x) xs
+ ≡⟨ scanl-defn f (f e x) xs ⟩
+   map (foldl f (f e x)) (inits xs)
+ ≡⟨ refl ⟩
+   map (foldl f e ∘ (x ∷_)) (inits xs)
+ ≡⟨ map-∘ (inits xs) ⟩
+   map (foldl f e) (map (x ∷_) (inits xs))
+ ∎)
+{-# WARNING_ON_USAGE scanl-defn
+"Warning: scanl-defn was deprecated in v2.1.
+Please use Data.List.Scans.Properties.scanl-defn instead."
 #-}
