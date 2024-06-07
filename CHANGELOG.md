@@ -51,6 +51,11 @@ Deprecated modules
 * `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` deprecated in favour of
   `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
 
+* The modules `Function.Endomorphism.Propositional` and
+  `Function.Endomorphism.Setoid` that use the old `Function`
+  hierarchy. Use `Function.Endo.Propositional` and
+  `Function.Endo.Setoid` instead.
+
 Deprecated names
 ----------------
 
@@ -166,6 +171,11 @@ New modules
   isIndexedEquivalence : {A : Set a} → IsIndexedEquivalence (Vector A) _↭_
   indexedSetoid        : {A : Set a} → IndexedSetoid ℕ a _
   ```
+
+* The modules `Function.Endo.Propositional` and
+  `Function.Endo.Setoid` are new but are actually proper ports of
+  `Function.Endomorphism.Propositional` and
+  `Function.Endomorphism.Setoid`.
 
 * `Function.Relation.Binary.Equality`
   ```agda
@@ -292,13 +302,17 @@ Additions to existing modules
   rawModule          : RawModule R c ℓ
   ```
 
-* In `Algebra.Morphism.Structures`
+* In `Algebra.Morphism.Structures`:
   ```agda
   module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
     record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
     record IsSuccessorSetMonomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
-    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
+    record IsSuccessorSetIsomorphism  (⟦_⟧ : N₁.Carrier →  N₂.Carrier) : Set _
 
+  IsSemigroupHomomorphism : (A → B) → Set _
+  IsSemigroupMonomorphism : (A → B) → Set _
+  IsSemigroupIsomorphism : (A → B) → Set _
+  ```
 * In `Algebra.Properties.AbelianGroup`:
   ```
   ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
