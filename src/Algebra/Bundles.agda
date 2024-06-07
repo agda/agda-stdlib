@@ -379,6 +379,9 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   idempotentMonoid : IdempotentMonoid _ _
   idempotentMonoid = record { isIdempotentMonoid = isIdempotentMonoid }
 
+  commutativeBand : CommutativeBand _ _
+  commutativeBand = record { isCommutativeBand = isCommutativeBand }
+
   open CommutativeMonoid commutativeMonoid public
     using
     ( _≉_; rawMagma; magma; unitalMagma; commutativeMagma
@@ -386,9 +389,8 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawMonoid; monoid
     )
 
-  open IdempotentMonoid idempotentMonoid public
+  open CommutativeBand commutativeBand public
     using (band)
-
 
 -- Idempotent commutative monoids are also known as bounded lattices.
 -- Note that the BoundedLattice necessarily uses the notation inherited
@@ -828,6 +830,16 @@ record IdempotentSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semiringWithoutAnnihilatingZero
     ; rawSemiring
     )
+
+  +-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+  +-idempotentCommutativeMonoid = record { isIdempotentCommutativeMonoid = +-isIdempotentCommutativeMonoid }
+
+  open IdempotentCommutativeMonoid +-idempotentCommutativeMonoid public
+    using ()
+    renaming ( band to +-band
+             ; commutativeBand to +-commutativeBand
+             ; idempotentMonoid to +-idempotentMonoid
+             )
 
 record KleeneAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⋆
