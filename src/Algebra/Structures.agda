@@ -614,6 +614,20 @@ record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 
   open IsSemiring isSemiring public
 
+  +-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid + 0#
+  +-isIdempotentCommutativeMonoid = record
+    { isCommutativeMonoid = +-isCommutativeMonoid
+    ; idem = +-idem
+    }
+
+  open IsIdempotentCommutativeMonoid +-isIdempotentCommutativeMonoid public
+    using ()
+    renaming ( isCommutativeBand to +-isCommutativeBand
+             ; isBand to +-isBand
+             ; isIdempotentMonoid to +-isIdempotentMonoid
+             )
+
+
 record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isIdempotentSemiring  : IsIdempotentSemiring + * 0# 1#

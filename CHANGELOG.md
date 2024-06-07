@@ -360,6 +360,11 @@ Additions to existing modules
   record IsCommutativeBand (∙ : Op₂ A) : Set _
   record IsIdempotentMonoid (∙ : Op₂ A) (ε : A) : Set _
   ```
+  and additional manifest fields for substructures arising from these in:
+  ```agda
+  IsIdempotentCommutativeMonoid
+  IsIdempotentSemiring
+  ```
 
 * In `Algebra.Structures.IsGroup`:
   ```agda
