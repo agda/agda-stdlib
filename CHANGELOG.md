@@ -242,6 +242,12 @@ Additions to existing modules
   record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ))
   record IdempotentMonoid c ℓ : Set (suc (c ⊔ ℓ))
   ```
+  and additional manifest fields for sub-bundles arising from these in:
+  ```agda
+  IdempotentCommutativeMonoid
+  IdempotentSemiring
+  ```
+
 
 * In `Algebra.Bundles.Raw`
   ```agda
