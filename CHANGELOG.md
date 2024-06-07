@@ -45,6 +45,11 @@ Minor improvements
   `Data.Product.Relation.Binary.Pointwise.NonDependent.Pointwise`
   has been generalised to take heterogeneous arguments in `REL`.
 
+* The structures `IsSemilattice` and `IsBoundedSemilattice` in
+  `Algebra.Lattice.Structures` have been redefined as aliases of
+  `IsCommutativeBand` and `IsIdempotentMonoid` in `Algebra.Structures`.
+
+
 Deprecated modules
 ------------------
 
@@ -244,7 +249,15 @@ Additions to existing modules
 * In `Algebra.Bundles`
   ```agda
   record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
+  record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ))
+  record IdempotentMonoid c ℓ : Set (suc (c ⊔ ℓ))
   ```
+  and additional manifest fields for sub-bundles arising from these in:
+  ```agda
+  IdempotentCommutativeMonoid
+  IdempotentSemiring
+  ```
+
 
 * In `Algebra.Bundles.Raw`
   ```agda
@@ -364,6 +377,14 @@ Additions to existing modules
 * In `Algebra.Structures`
   ```agda
   record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _
+  record IsCommutativeBand (∙ : Op₂ A) : Set _
+  record IsIdempotentMonoid (∙ : Op₂ A) (ε : A) : Set _
+  ```
+  and additional manifest fields for substructures arising from these in:
+  ```agda
+  IsIdempotentCommutativeMonoid
+  IsIdempotentSemiring
+  ```
 
 * In `Algebra.Structures.IsGroup`:
   ```agda
