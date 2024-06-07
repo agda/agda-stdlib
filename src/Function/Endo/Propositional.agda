@@ -96,14 +96,14 @@ toSetoidEndo f = record
 infixr 8 _^_
 
 _^_ : Endo → ℕ → Endo
-_^_ = flip _×_ where open RawMonoidDefinitions ∘-id-rawMonoid
+_^_ = flip _×_ where open RawMonoidDefinitions ∘-id-rawMonoid using (_×_)
 
 ------------------------------------------------------------------------
 -- Homomorphism
 
 module _ (f : Endo) where
 
-  open MonoidMultProperties ∘-id-monoid
+  open MonoidMultProperties ∘-id-monoid using (×-homo-+)
 
   ^-homo : Homomorphic₂ ℕ Endo _≡_ (f ^_) _+_ _∘_
   ^-homo = ×-homo-+ f

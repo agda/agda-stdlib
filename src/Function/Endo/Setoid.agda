@@ -10,7 +10,7 @@ open import Relation.Binary.Bundles using (Setoid)
 
 module Function.Endo.Setoid {c e} (S : Setoid c e) where
 
-open import Agda.Builtin.Equality
+open import Agda.Builtin.Equality using (_≡_)
 
 open import Algebra using (Semigroup; Magma; RawMagma; Monoid; RawMonoid)
 import Algebra.Definitions.RawMonoid as RawMonoidDefinitions
@@ -88,14 +88,14 @@ private
 infixr 8 _^_
 
 _^_ : Endo → ℕ → Endo
-f ^ n = n × f where open RawMonoidDefinitions ∘-id-rawMonoid
+f ^ n = n × f where open RawMonoidDefinitions ∘-id-rawMonoid using (_×_)
 
 ------------------------------------------------------------------------
 -- Homomorphism
 
 module _ (f : Endo) where
 
-  open MonoidMultProperties ∘-id-monoid
+  open MonoidMultProperties ∘-id-monoid using (×-congˡ; ×-homo-+)
 
   ^-cong₂ : (f ^_) Preserves _≡_ ⟶ _≈_
   ^-cong₂ = ×-congˡ {f}
