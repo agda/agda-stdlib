@@ -8,9 +8,10 @@
 
 module Data.Bytestring.Primitive where
 
-open import Agda.Builtin.Nat
-open import Agda.Builtin.Word
-open import Data.Word8.Primitive
+open import Agda.Builtin.Nat using (Nat)
+open import Agda.Builtin.String using (String)
+open import Agda.Builtin.Word using (Word64)
+open import Data.Word8.Primitive using (Word8)
 
 -- NB: the bytestring package uses `Int` as the indexing type which
 -- Haskell's base specifies as:
@@ -30,10 +31,14 @@ postulate
   length : Bytestring → Nat
   take : Word64 → Bytestring → Bytestring
   drop : Word64 → Bytestring → Bytestring
+  show : Bytestring → String
 
 {-# FOREIGN GHC import qualified Data.ByteString as B #-}
+{-# FOREIGN GHC import qualified Data.Text as T #-}
+
 {-# COMPILE GHC Bytestring = type B.ByteString #-}
 {-# COMPILE GHC index = \ buf idx -> B.index buf (fromIntegral idx) #-}
 {-# COMPILE GHC length = \ buf -> fromIntegral (B.length buf) #-}
 {-# COMPILE GHC take = B.take . fromIntegral #-}
 {-# COMPILE GHC drop = B.drop . fromIntegral #-}
+{-# COMPILE GHC show = T.pack . Prelude.show #-}

@@ -177,11 +177,19 @@ New modules
   Data.Vec.Bounded.Show
   ```
 
+* Word64 literals and bit-based functions:
+  ```agda
+  Data.Word64.Literals
+  Data.Word64.Unsafe
+  Data.Word64.Show
+  ```
+
 * A type of bytes:
   ```agda
   Data.Word8.Primitive
   Data.Word8.Base
   Data.Word8.Literals
+  Data.Word8.Show
   ```
 
 * Bytestrings and builders:
@@ -329,6 +337,11 @@ Additions to existing modules
   extra property as an exposed definition:
   ```agda
     *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  ```
+
+* In `Data.Bool.Show`:
+  ```agda
+  showBit : Bool → Char
   ```
 
 * In `Data.Container.Indexed.Core`:
@@ -521,9 +534,10 @@ Additions to existing modules
   forever : IO ⊤ → IO ⊤
   ```
 
-* In `Data.Word.Base`:
+* In `Data.Word64.Base`:
   ```agda
   _≤_ : Rel Word64 zero
+  show : Word64 → String
   ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`

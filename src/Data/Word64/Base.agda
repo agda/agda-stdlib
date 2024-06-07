@@ -8,10 +8,10 @@
 
 module Data.Word64.Base where
 
-open import Level using (zero)
 open import Algebra.Core using (Op₂)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Function.Base using (_on_; _∘₂′_)
+open import Level using (zero)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 

@@ -26,6 +26,7 @@ open import Data.Bytestring.Primitive as Prim public
         ; length
         ; take
         ; drop
+        ; show
         )
   renaming (index to getWord8)
 
@@ -53,6 +54,12 @@ fromWord8sLE f ws = f (Vec.foldr′ (λ w acc → Word8.toℕ w + acc * (2 ^ 8))
 -- Big place values first
 fromWord8sBE : ∀ {n w} {W : Set w} → (fromℕ : ℕ → W) → Vec Word8 n → W
 fromWord8sBE f ws = f (Vec.foldl′ (λ acc w → acc * (2 ^ 8) + Word8.toℕ w) 0 ws)
+
+------------------------------------------------------------------------------
+-- Decoding to a vector of bytes
+
+toWord8s : (b : Bytestring) → Vec Word8 (length b)
+toWord8s b = getWord8s _ b (Word64.fromℕ 0)
 
 ------------------------------------------------------------------------------
 -- Getting Word64
