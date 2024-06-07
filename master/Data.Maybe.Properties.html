@@ -9,7 +9,7 @@
 
 <a id="253" class="Keyword">module</a> <a id="260" href="Data.Maybe.Properties.html" class="Module">Data.Maybe.Properties</a> <a id="282" class="Keyword">where</a>
 
-<a id="289" class="Keyword">open</a> <a id="294" class="Keyword">import</a> <a id="301" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="317" class="Keyword">using</a> <a id="323" class="Symbol">(</a><a id="324" href="Algebra.Bundles.html#4756" class="Record">Semigroup</a><a id="333" class="Symbol">;</a> <a id="335" href="Algebra.Bundles.html#6668" class="Record">Monoid</a><a id="341" class="Symbol">)</a>
+<a id="289" class="Keyword">open</a> <a id="294" class="Keyword">import</a> <a id="301" href="Algebra.Bundles.html" class="Module">Algebra.Bundles</a> <a id="317" class="Keyword">using</a> <a id="323" class="Symbol">(</a><a id="324" href="Algebra.Bundles.html#4756" class="Record">Semigroup</a><a id="333" class="Symbol">;</a> <a id="335" href="Algebra.Bundles.html#7315" class="Record">Monoid</a><a id="341" class="Symbol">)</a>
 <a id="343" class="Keyword">import</a> <a id="350" href="Algebra.Structures.html" class="Module">Algebra.Structures</a> <a id="369" class="Symbol">as</a> <a id="372" class="Module">Structures</a>
 <a id="383" class="Keyword">import</a> <a id="390" href="Algebra.Definitions.html" class="Module">Algebra.Definitions</a> <a id="410" class="Symbol">as</a> <a id="413" class="Module">Definitions</a>
 <a id="425" class="Keyword">open</a> <a id="430" class="Keyword">import</a> <a id="437" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="453" class="Keyword">using</a> <a id="459" class="Symbol">(</a><a id="460" href="Agda.Builtin.Maybe.html#135" class="Datatype">Maybe</a><a id="465" class="Symbol">;</a> <a id="467" href="Agda.Builtin.Maybe.html#173" class="InductiveConstructor">just</a><a id="471" class="Symbol">;</a> <a id="473" href="Agda.Builtin.Maybe.html#194" class="InductiveConstructor">nothing</a><a id="480" class="Symbol">;</a> <a id="482" href="Data.Maybe.Base.html#2110" class="Function">map</a><a id="485" class="Symbol">;</a> <a id="487" href="Data.Maybe.Base.html#2440" class="Function Operator">_&lt;∣&gt;_</a><a id="492" class="Symbol">;</a>
@@ -140,10 +140,10 @@
     <a id="4225" class="Symbol">;</a> <a id="4227" href="Algebra.Structures.html#3460" class="Field">assoc</a>   <a id="4235" class="Symbol">=</a> <a id="4237" href="Data.Maybe.Properties.html#3445" class="Function">&lt;∣&gt;-assoc</a>
     <a id="4251" class="Symbol">}</a>
 
-  <a id="4256" href="Data.Maybe.Properties.html#4256" class="Function">&lt;∣&gt;-isMonoid</a> <a id="4269" class="Symbol">:</a> <a id="4271" href="Algebra.Structures.html#4457" class="Record">IsMonoid</a> <a id="4280" href="Data.Maybe.Base.html#2440" class="Function Operator">_&lt;∣&gt;_</a> <a id="4286" href="Agda.Builtin.Maybe.html#194" class="InductiveConstructor">nothing</a>
+  <a id="4256" href="Data.Maybe.Properties.html#4256" class="Function">&lt;∣&gt;-isMonoid</a> <a id="4269" class="Symbol">:</a> <a id="4271" href="Algebra.Structures.html#4825" class="Record">IsMonoid</a> <a id="4280" href="Data.Maybe.Base.html#2440" class="Function Operator">_&lt;∣&gt;_</a> <a id="4286" href="Agda.Builtin.Maybe.html#194" class="InductiveConstructor">nothing</a>
   <a id="4296" href="Data.Maybe.Properties.html#4256" class="Function">&lt;∣&gt;-isMonoid</a> <a id="4309" class="Symbol">=</a> <a id="4311" class="Keyword">record</a>
-    <a id="4322" class="Symbol">{</a> <a id="4324" href="Algebra.Structures.html#4518" class="Field">isSemigroup</a> <a id="4336" class="Symbol">=</a> <a id="4338" href="Data.Maybe.Properties.html#4130" class="Function">&lt;∣&gt;-isSemigroup</a>
-    <a id="4358" class="Symbol">;</a> <a id="4360" href="Algebra.Structures.html#4550" class="Field">identity</a>    <a id="4372" class="Symbol">=</a> <a id="4374" href="Data.Maybe.Properties.html#3763" class="Function">&lt;∣&gt;-identity</a>
+    <a id="4322" class="Symbol">{</a> <a id="4324" href="Algebra.Structures.html#4886" class="Field">isSemigroup</a> <a id="4336" class="Symbol">=</a> <a id="4338" href="Data.Maybe.Properties.html#4130" class="Function">&lt;∣&gt;-isSemigroup</a>
+    <a id="4358" class="Symbol">;</a> <a id="4360" href="Algebra.Structures.html#4918" class="Field">identity</a>    <a id="4372" class="Symbol">=</a> <a id="4374" href="Data.Maybe.Properties.html#3763" class="Function">&lt;∣&gt;-identity</a>
     <a id="4391" class="Symbol">}</a>
 
   <a id="4396" href="Data.Maybe.Properties.html#4396" class="Function">&lt;∣&gt;-semigroup</a> <a id="4410" class="Symbol">:</a> <a id="4412" href="Algebra.Bundles.html#4756" class="Record">Semigroup</a> <a id="4422" href="Data.Maybe.Properties.html#3951" class="Bound">a</a> <a id="4424" href="Data.Maybe.Properties.html#3951" class="Bound">a</a>
@@ -151,9 +151,9 @@
     <a id="4455" class="Symbol">{</a> <a id="4457" href="Algebra.Bundles.html#4924" class="Field">isSemigroup</a> <a id="4469" class="Symbol">=</a> <a id="4471" href="Data.Maybe.Properties.html#4130" class="Function">&lt;∣&gt;-isSemigroup</a>
     <a id="4491" class="Symbol">}</a>
 
-  <a id="4496" href="Data.Maybe.Properties.html#4496" class="Function">&lt;∣&gt;-monoid</a> <a id="4507" class="Symbol">:</a> <a id="4509" href="Algebra.Bundles.html#6668" class="Record">Monoid</a> <a id="4516" href="Data.Maybe.Properties.html#3951" class="Bound">a</a> <a id="4518" href="Data.Maybe.Properties.html#3951" class="Bound">a</a>
+  <a id="4496" href="Data.Maybe.Properties.html#4496" class="Function">&lt;∣&gt;-monoid</a> <a id="4507" class="Symbol">:</a> <a id="4509" href="Algebra.Bundles.html#7315" class="Record">Monoid</a> <a id="4516" href="Data.Maybe.Properties.html#3951" class="Bound">a</a> <a id="4518" href="Data.Maybe.Properties.html#3951" class="Bound">a</a>
   <a id="4522" href="Data.Maybe.Properties.html#4496" class="Function">&lt;∣&gt;-monoid</a> <a id="4533" class="Symbol">=</a> <a id="4535" class="Keyword">record</a>
-    <a id="4546" class="Symbol">{</a> <a id="4548" href="Algebra.Bundles.html#6847" class="Field">isMonoid</a> <a id="4557" class="Symbol">=</a> <a id="4559" href="Data.Maybe.Properties.html#4256" class="Function">&lt;∣&gt;-isMonoid</a>
+    <a id="4546" class="Symbol">{</a> <a id="4548" href="Algebra.Bundles.html#7494" class="Field">isMonoid</a> <a id="4557" class="Symbol">=</a> <a id="4559" href="Data.Maybe.Properties.html#4256" class="Function">&lt;∣&gt;-isMonoid</a>
     <a id="4576" class="Symbol">}</a>
 
 <a id="4579" class="Comment">------------------------------------------------------------------------</a>
