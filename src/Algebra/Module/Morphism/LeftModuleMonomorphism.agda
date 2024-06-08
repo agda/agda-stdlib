@@ -25,7 +25,7 @@ open import Algebra.Structures
 open import Relation.Binary.Core
 
 ------------------------------------------------------------------------
--- Rexports
+-- Re-exports
 
 open import Algebra.Morphism.GroupMonomorphism +ᴹ-isGroupMonomorphism public
   using () renaming
