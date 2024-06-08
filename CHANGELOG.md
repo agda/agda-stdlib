@@ -552,7 +552,7 @@ Additions to existing modules
   nonZeroDivisor : DivMod dividend divisor → NonZero divisor
   ```
 
-* Added new proofs and 'guarded' version of `_∸_` in `Data.Nat.Properties`:
+* Added new proofs in `Data.Nat.Properties`:
   ```agda
   m≤n+o⇒m∸n≤o    : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
   m<n+o⇒m∸n<o    : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o

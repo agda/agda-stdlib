@@ -2128,7 +2128,7 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 m≤n⇒∃[o]m+o≡n : .(m ≤ n) → ∃ λ k → m + k ≡ n
 m≤n⇒∃[o]m+o≡n m≤n = _ , m+[n∸m]≡n (recompute (_ ≤? _) m≤n)
 
--- and a 'guarded' implementation of monus equivalent to the 'official' one
+-- whose witness is equal to monus
 
 guarded-∸≗∸ : ∀ {m n} → .(m≤n : m ≤ n) →
               let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k ≡ n ∸ m
