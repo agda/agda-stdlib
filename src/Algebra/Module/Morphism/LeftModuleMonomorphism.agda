@@ -15,8 +15,9 @@ module Algebra.Module.Morphism.LeftModuleMonomorphism
   where
 
 open IsLeftModuleMonomorphism isLeftModuleMonomorphism
-module M = RawLeftModule M
-module N = RawLeftModule N
+private
+  module M = RawLeftModule M
+  module N = RawLeftModule N
 
 open import Algebra.Bundles
 open import Algebra.Core
