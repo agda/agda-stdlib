@@ -95,7 +95,12 @@ sem : Op → Op₂ Carrier
 sem [+] = _+_
 sem [*] = _*_
 
-⟦_⟧ : ∀ {n} → Polynomial n → Vec Carrier n → Carrier
+-- An environment contains one value for every variable.
+
+Env : ℕ → Set _
+Env = Vec Carrier
+
+⟦_⟧ : ∀ {n} → Polynomial n → Env n → Carrier
 ⟦ op o p₁ p₂ ⟧ ρ = ⟦ p₁ ⟧ ρ ⟨ sem o ⟩ ⟦ p₂ ⟧ ρ
 ⟦ con c      ⟧ ρ = ⟦ c ⟧′
 ⟦ var x      ⟧ ρ = lookup ρ x
@@ -147,11 +152,11 @@ mutual
 
   -- Semantics.
 
-  ⟦_⟧H : ∀ {n} → HNF (suc n) → Vec Carrier (suc n) → Carrier
+  ⟦_⟧H : ∀ {n} → HNF (suc n) → Env (suc n) → Carrier
   ⟦ ∅       ⟧H _       = 0#
   ⟦ p *x+ c ⟧H (x ∷ ρ) = ⟦ p ⟧H (x ∷ ρ) * x + ⟦ c ⟧N ρ
 
-  ⟦_⟧N : ∀ {n} → Normal n → Vec Carrier n → Carrier
+  ⟦_⟧N : ∀ {n} → Normal n → Env n → Carrier
   ⟦ con c  ⟧N _ = ⟦ c ⟧′
   ⟦ poly p ⟧N ρ = ⟦ p ⟧H ρ
 
@@ -325,7 +330,7 @@ normalise (:- t)         = -N normalise t
 
 -- Evaluation after normalisation.
 
-⟦_⟧↓ : ∀ {n} → Polynomial n → Vec Carrier n → Carrier
+⟦_⟧↓ : ∀ {n} → Polynomial n → Env n → Carrier
 ⟦ p ⟧↓ ρ = ⟦ normalise p ⟧N ρ
 
 ------------------------------------------------------------------------
@@ -502,7 +507,7 @@ mutual
 ------------------------------------------------------------------------
 -- Correctness
 
-correct-con : ∀ {n} (c : C.Carrier) (ρ : Vec Carrier n) →
+correct-con : ∀ {n} (c : C.Carrier) (ρ : Env n) →
               ⟦ normalise-con c ⟧N ρ ≈ ⟦ c ⟧′
 correct-con c []      = refl
 correct-con c (x ∷ ρ) = begin

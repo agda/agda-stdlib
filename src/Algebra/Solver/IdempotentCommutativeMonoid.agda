@@ -13,13 +13,15 @@ open import Algebra.Bundles using (IdempotentCommutativeMonoid)
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe
-  using (Maybe; decToMaybe; From-just; from-just)
+  using (Maybe; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Product.Base using (_×_; uncurry)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; _$_)
 
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
+open import Relation.Binary.Definitions using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid  as ≈-Reasoning
 import Relation.Binary.Reflection            as Reflection
 import Relation.Nullary.Decidable            as Dec
@@ -46,7 +48,6 @@ private
 -- variables; there may be at most n variables.
 
 infixr 5 _⊕_
-infixr 10 _•_
 
 data Expr (n : ℕ) : Set where
   var : Fin n → Expr n
@@ -61,7 +62,7 @@ Env n = Vec Carrier n
 -- The semantics of an expression is a function from an environment to
 -- a value.
 
-⟦_⟧ : ∀ {n} → Expr n → Env n → Carrier
+⟦_⟧ : Expr n → Env n → Carrier
 ⟦ var x   ⟧ ρ = lookup ρ x
 ⟦ id      ⟧ ρ = ε
 ⟦ e₁ ⊕ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
@@ -95,10 +96,19 @@ sg zero    = true ∷ empty
 sg (suc i) = false ∷ sg i
 
 -- The composition of normal forms.
+infixr 10 _•_
 
 _•_ : (v w : Normal n) → Normal n
 []      • []      = []
 (l ∷ v) • (m ∷ w) = (l ∨ m) ∷ v • w
+
+-- We can decide if two normal forms are /syntactically/ equal.
+
+infix 5 _≟_
+
+_≟_ : DecidableEquality (Normal n)
+nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable Bool._≟_ nf₁ nf₂)
+  where open Pointwise
 
 ------------------------------------------------------------------------
 -- Correctness of the constructions on normal forms
@@ -185,20 +195,12 @@ open module R = Reflection
                   setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) normalise-correct
   public using (solve; _⊜_)
 
--- We can decide if two normal forms are /syntactically/ equal.
-
-infix 5 _≟_
-
-_≟_ : (nf₁ nf₂ : Normal n) → Dec (nf₁ ≡ nf₂)
-nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable Bool._≟_ nf₁ nf₂)
-  where open Pointwise
-
 -- We can also give a sound, but not necessarily complete, procedure
 -- for determining if two expressions have the same semantics.
 
 prove′ : (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
 prove′ e₁ e₂ =
-  Maybe.map lemma (decToMaybe (normalise e₁ ≟ normalise e₂))
+  Maybe.map lemma $ dec⇒weaklyDec _≟_ (normalise e₁) (normalise e₂)
   where
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
   lemma eq ρ =

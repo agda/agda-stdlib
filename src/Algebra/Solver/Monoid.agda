@@ -15,11 +15,12 @@ import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Binary.Equality.DecPropositional as ListEq
 open import Data.Maybe.Base as Maybe
-  using (Maybe; decToMaybe; From-just; from-just)
+  using (Maybe; From-just; from-just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (_×_; uncurry)
 open import Data.Vec.Base using (Vec; lookup)
 open import Function.Base using (_∘_; _$_)
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
 open import Relation.Binary.Definitions using (DecidableEquality)
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
@@ -29,6 +30,10 @@ import Relation.Nullary.Decidable as Dec
 
 open Monoid M
 open import Relation.Binary.Reasoning.Setoid setoid
+
+private
+  variable
+    n : ℕ
 
 ------------------------------------------------------------------------
 -- Monoid expressions
@@ -51,7 +56,7 @@ Env n = Vec Carrier n
 -- The semantics of an expression is a function from an environment to
 -- a value.
 
-⟦_⟧ : ∀ {n} → Expr n → Env n → Carrier
+⟦_⟧ : Expr n → Env n → Carrier
 ⟦ var x   ⟧ ρ = lookup ρ x
 ⟦ id      ⟧ ρ = ε
 ⟦ e₁ ⊕ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
@@ -69,6 +74,13 @@ Normal n = List (Fin n)
 ⟦_⟧⇓ : ∀ {n} → Normal n → Env n → Carrier
 ⟦ []     ⟧⇓ ρ = ε
 ⟦ x ∷ nf ⟧⇓ ρ = lookup ρ x ∙ ⟦ nf ⟧⇓ ρ
+
+-- We can decide if two normal forms are /syntactically/ equal.
+
+infix 5 _≟_
+
+_≟_ : DecidableEquality (Normal n)
+nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂) where open ListEq Fin._≟_
 
 -- A normaliser.
 
@@ -110,20 +122,12 @@ open module R = Relation.Binary.Reflection
                   setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) normalise-correct
   public using (solve; _⊜_)
 
--- We can decide if two normal forms are /syntactically/ equal.
-
-infix 5 _≟_
-
-_≟_ : ∀ {n} → DecidableEquality (Normal n)
-nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
-  where open ListEq Fin._≟_
-
 -- We can also give a sound, but not necessarily complete, procedure
 -- for determining if two expressions have the same semantics.
 
 prove′ : ∀ {n} (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
 prove′ e₁ e₂ =
-  Maybe.map lemma $ decToMaybe (normalise e₁ ≟ normalise e₂)
+  Maybe.map lemma $ dec⇒weaklyDec _≟_ (normalise e₁) (normalise e₂)
   where
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
   lemma eq ρ =
