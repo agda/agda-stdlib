@@ -17,7 +17,7 @@ open import Relation.Binary.Core
 open import Relation.Binary.Definitions
 open import Relation.Nullary.Negation.Core using (¬_)
 open import Relation.Nullary.Decidable.Core
-  using (yes; no; recompute; map′; decToMaybe)
+  using (yes; no; recompute; map′; dec⇒maybe)
 open import Relation.Unary using (∁; Pred)
 
 private
@@ -193,7 +193,7 @@ module _  {_R_ : Rel A ℓ₁} {Q : Rel A ℓ₂} where
 module _ {R : REL A B p} where
 
   dec⇒weaklyDec : Decidable R → WeaklyDecidable R
-  dec⇒weaklyDec dec x y = decToMaybe (dec x y)
+  dec⇒weaklyDec dec x y = dec⇒maybe (dec x y)
 
   dec⇒recomputable : Decidable R → Recomputable R
   dec⇒recomputable dec {a} {b} = recompute $ dec a b
