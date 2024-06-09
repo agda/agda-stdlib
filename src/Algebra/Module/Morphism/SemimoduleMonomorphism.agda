@@ -36,8 +36,8 @@ open import Algebra.Module.Morphism.BisemimoduleMonomorphism isBisemimoduleMonom
 ------------------------------------------------------------------------
 -- Properties
 
-module _ (+ᴹ-isMonoid : IsMonoid N._≈ᴹ_ N._+ᴹ_ N.0ᴹ) where
-  open IsMonoid +ᴹ-isMonoid
+module _ (+ᴹ-isMagma : IsMagma N._≈ᴹ_ N._+ᴹ_) where
+  open IsMagma +ᴹ-isMagma
     using (setoid)
     renaming (∙-cong to +ᴹ-cong)
   open SetoidReasoning setoid
@@ -64,7 +64,7 @@ isSemimodule :
   → IsSemimodule R-commutativeSemiring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M._*ₗ_ M._*ᵣ_
 isSemimodule R-isCommutativeSemiring isSemimodule = record
   { isBisemimodule = isBisemimodule R.isSemiring R.isSemiring NN.isBisemimodule
-  ; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident NN.+ᴹ-isMonoid NN.*ₗ-*ᵣ-coincident
+  ; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident NN.+ᴹ-isMagma NN.*ₗ-*ᵣ-coincident
   }
   where
     module R = IsCommutativeSemiring R-isCommutativeSemiring

@@ -57,9 +57,9 @@ open import Algebra.Morphism.MonoidMonomorphism
 ----------------------------------------------------------------------------------
 -- Properties
 
-module _ (⊕ᴹ-isMonoid : IsMonoid N._≈ᴹ_ N._+ᴹ_ N.0ᴹ) where
+module _ (+ᴹ-isMagma : IsMagma N._≈ᴹ_ N._+ᴹ_) where
 
-  open IsMonoid ⊕ᴹ-isMonoid
+  open IsMagma +ᴹ-isMagma
     using (setoid)
     renaming (∙-cong to +ᴹ-cong′)
   open SetoidReasoning setoid
@@ -131,12 +131,12 @@ isLeftSemimodule :
 isLeftSemimodule isSemiring isLeftSemimodule = record
   { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid NN.+ᴹ-isCommutativeMonoid
   ; isPreleftSemimodule = record
-    { *ₗ-cong = *ₗ-cong NN.+ᴹ-isMonoid NN.*ₗ-cong
-    ; *ₗ-zeroˡ = *ₗ-zeroˡ NN.+ᴹ-isMonoid NN.*ₗ-zeroˡ
-    ; *ₗ-distribʳ = *ₗ-distribʳ NN.+ᴹ-isMonoid NN.*ₗ-distribʳ
-    ; *ₗ-identityˡ = *ₗ-identityˡ NN.+ᴹ-isMonoid NN.*ₗ-identityˡ
-    ; *ₗ-assoc = *ₗ-assoc NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-assoc
-    ; *ₗ-zeroʳ = *ₗ-zeroʳ NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-zeroʳ
-    ; *ₗ-distribˡ = *ₗ-distribˡ NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-distribˡ
+    { *ₗ-cong = *ₗ-cong NN.+ᴹ-isMagma NN.*ₗ-cong
+    ; *ₗ-zeroˡ = *ₗ-zeroˡ NN.+ᴹ-isMagma NN.*ₗ-zeroˡ
+    ; *ₗ-distribʳ = *ₗ-distribʳ NN.+ᴹ-isMagma NN.*ₗ-distribʳ
+    ; *ₗ-identityˡ = *ₗ-identityˡ NN.+ᴹ-isMagma NN.*ₗ-identityˡ
+    ; *ₗ-assoc = *ₗ-assoc NN.+ᴹ-isMagma NN.*ₗ-congˡ NN.*ₗ-assoc
+    ; *ₗ-zeroʳ = *ₗ-zeroʳ NN.+ᴹ-isMagma NN.*ₗ-congˡ NN.*ₗ-zeroʳ
+    ; *ₗ-distribˡ = *ₗ-distribˡ NN.+ᴹ-isMagma NN.*ₗ-congˡ NN.*ₗ-distribˡ
     }
   } where module NN = IsLeftSemimodule isLeftSemimodule

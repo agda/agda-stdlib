@@ -77,9 +77,9 @@ open import Algebra.Module.Morphism.RightSemimoduleMonomorphism
 ------------------------------------------------------------------------
 -- Properties
 
-module _ (+ᴹ-isMonoid : IsMonoid N._≈ᴹ_ N._+ᴹ_ N.0ᴹ) where
+module _ (+ᴹ-isMagma : IsMagma N._≈ᴹ_ N._+ᴹ_) where
 
-  open IsMonoid +ᴹ-isMonoid
+  open IsMagma +ᴹ-isMagma
     using (setoid)
     renaming (∙-cong to +ᴹ-cong)
   open SetoidReasoning setoid
@@ -117,24 +117,24 @@ isBisemimodule :
 isBisemimodule R-semiring S-semiring isBisemimodule = record
   { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid NN.+ᴹ-isCommutativeMonoid
   ; isPreleftSemimodule = record
-    { *ₗ-cong = *ₗ-cong NN.+ᴹ-isMonoid NN.*ₗ-cong
-    ; *ₗ-zeroˡ = *ₗ-zeroˡ NN.+ᴹ-isMonoid NN.*ₗ-zeroˡ
-    ; *ₗ-distribʳ = *ₗ-distribʳ NN.+ᴹ-isMonoid NN.*ₗ-distribʳ
-    ; *ₗ-identityˡ = *ₗ-identityˡ NN.+ᴹ-isMonoid NN.*ₗ-identityˡ
-    ; *ₗ-assoc = *ₗ-assoc NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-assoc
-    ; *ₗ-zeroʳ = *ₗ-zeroʳ NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-zeroʳ
-    ; *ₗ-distribˡ = *ₗ-distribˡ NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ₗ-distribˡ
+    { *ₗ-cong = *ₗ-cong NN.+ᴹ-isMagma NN.*ₗ-cong
+    ; *ₗ-zeroˡ = *ₗ-zeroˡ NN.+ᴹ-isMagma NN.*ₗ-zeroˡ
+    ; *ₗ-distribʳ = *ₗ-distribʳ NN.+ᴹ-isMagma NN.*ₗ-distribʳ
+    ; *ₗ-identityˡ = *ₗ-identityˡ NN.+ᴹ-isMagma NN.*ₗ-identityˡ
+    ; *ₗ-assoc = *ₗ-assoc NN.+ᴹ-isMagma NN.*ₗ-congˡ NN.*ₗ-assoc
+    ; *ₗ-zeroʳ = *ₗ-zeroʳ NN.+ᴹ-isMagma NN.*ₗ-congˡ NN.*ₗ-zeroʳ
+    ; *ₗ-distribˡ = *ₗ-distribˡ NN.+ᴹ-isMagma NN.*ₗ-congˡ NN.*ₗ-distribˡ
     }
   ; isPrerightSemimodule = record
-    { *ᵣ-cong = *ᵣ-cong NN.+ᴹ-isMonoid NN.*ᵣ-cong
-    ; *ᵣ-zeroʳ = *ᵣ-zeroʳ NN.+ᴹ-isMonoid NN.*ᵣ-zeroʳ
-    ; *ᵣ-distribˡ = *ᵣ-distribˡ NN.+ᴹ-isMonoid NN.*ᵣ-distribˡ
-    ; *ᵣ-identityʳ = *ᵣ-identityʳ NN.+ᴹ-isMonoid NN.*ᵣ-identityʳ
-    ; *ᵣ-assoc = *ᵣ-assoc NN.+ᴹ-isMonoid NN.*ᵣ-congʳ NN.*ᵣ-assoc
-    ; *ᵣ-zeroˡ = *ᵣ-zeroˡ NN.+ᴹ-isMonoid NN.*ᵣ-congʳ NN.*ᵣ-zeroˡ
-    ; *ᵣ-distribʳ = *ᵣ-distribʳ NN.+ᴹ-isMonoid NN.*ᵣ-congʳ NN.*ᵣ-distribʳ
+    { *ᵣ-cong = *ᵣ-cong NN.+ᴹ-isMagma NN.*ᵣ-cong
+    ; *ᵣ-zeroʳ = *ᵣ-zeroʳ NN.+ᴹ-isMagma NN.*ᵣ-zeroʳ
+    ; *ᵣ-distribˡ = *ᵣ-distribˡ NN.+ᴹ-isMagma NN.*ᵣ-distribˡ
+    ; *ᵣ-identityʳ = *ᵣ-identityʳ NN.+ᴹ-isMagma NN.*ᵣ-identityʳ
+    ; *ᵣ-assoc = *ᵣ-assoc NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-assoc
+    ; *ᵣ-zeroˡ = *ᵣ-zeroˡ NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-zeroˡ
+    ; *ᵣ-distribʳ = *ᵣ-distribʳ NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-distribʳ
     }
-  ; *ₗ-*ᵣ-assoc = *ₗ-*ᵣ-assoc NN.+ᴹ-isMonoid NN.*ₗ-congˡ NN.*ᵣ-congʳ NN.*ₗ-*ᵣ-assoc
+  ; *ₗ-*ᵣ-assoc = *ₗ-*ᵣ-assoc NN.+ᴹ-isMagma NN.*ₗ-congˡ NN.*ᵣ-congʳ NN.*ₗ-*ᵣ-assoc
   }
   where
     module NN = IsBisemimodule isBisemimodule

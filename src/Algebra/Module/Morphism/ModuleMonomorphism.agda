@@ -43,7 +43,7 @@ isModule :
   → IsModule R-commutativeRing M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M.-ᴹ_ M._*ₗ_ M._*ᵣ_
 isModule R-isCommutativeRing isModule = record
   { isBimodule = isBimodule R.isRing R.isRing NN.isBimodule
-  ; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident NN.+ᴹ-isMonoid NN.*ₗ-*ᵣ-coincident
+  ; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident NN.+ᴹ-isMagma NN.*ₗ-*ᵣ-coincident
   }
   where
     module R = IsCommutativeRing R-isCommutativeRing
