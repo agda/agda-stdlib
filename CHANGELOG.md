@@ -66,7 +66,7 @@ Deprecated names
 
 * In `Data.Maybe.Base`:
   ```agda
-  decToMaybe  ↦  Relation.Nullary.Decidable.Core.decToMaybe
+  decToMaybe  ↦  Relation.Nullary.Decidable.Core.dec⇒maybe
   ```
 
 * In `Algebra.Structures.Biased`:
@@ -723,9 +723,9 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
-* Added new proof in `Relation.Nullary.Decidable.Core`:
+* Added new definition and proof in `Relation.Nullary.Decidable.Core`:
   ```agda
-  decToMaybe : Dec A → Maybe A
+  dec⇒maybe : Dec A → Maybe A
   recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
   ```
 
