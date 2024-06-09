@@ -71,7 +71,7 @@ Normal n = List (Fin n)
 
 -- The semantics of a normal form.
 
-⟦_⟧⇓ : ∀ {n} → Normal n → Env n → Carrier
+⟦_⟧⇓ : Normal n → Env n → Carrier
 ⟦ []     ⟧⇓ ρ = ε
 ⟦ x ∷ nf ⟧⇓ ρ = lookup ρ x ∙ ⟦ nf ⟧⇓ ρ
 
@@ -84,14 +84,14 @@ nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂) where open L
 
 -- A normaliser.
 
-normalise : ∀ {n} → Expr n → Normal n
+normalise : Expr n → Normal n
 normalise (var x)   = x ∷ []
 normalise id        = []
 normalise (e₁ ⊕ e₂) = normalise e₁ ++ normalise e₂
 
 -- The normaliser is homomorphic with respect to _++_/_∙_.
 
-homomorphic : ∀ {n} (nf₁ nf₂ : Normal n) (ρ : Env n) →
+homomorphic : (nf₁ nf₂ : Normal n) (ρ : Env n) →
               ⟦ nf₁ ++ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
 homomorphic [] nf₂ ρ = begin
   ⟦ nf₂ ⟧⇓ ρ      ≈⟨ sym $ identityˡ _ ⟩
@@ -104,7 +104,7 @@ homomorphic (x ∷ nf₁) nf₂ ρ = begin
 -- The normaliser preserves the semantics of the expression.
 
 normalise-correct :
-  ∀ {n} (e : Expr n) (ρ : Env n) → ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
+  (e : Expr n) (ρ : Env n) → ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
 normalise-correct (var x) ρ = begin
   lookup ρ x ∙ ε  ≈⟨ identityʳ _ ⟩
   lookup ρ x      ∎
@@ -125,7 +125,7 @@ open module R = Relation.Binary.Reflection
 -- We can also give a sound, but not necessarily complete, procedure
 -- for determining if two expressions have the same semantics.
 
-prove′ : ∀ {n} (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
+prove′ : (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
 prove′ e₁ e₂ =
   Maybe.map lemma $ dec⇒weaklyDec _≟_ (normalise e₁) (normalise e₂)
   where
