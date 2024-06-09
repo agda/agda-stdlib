@@ -35,6 +35,9 @@ private
     _+_ _*_ : Op₂ R
     0# 1# : R
 
+------------------------------------------------------------------------
+-- Re-exports
+
 open import Algebra.Morphism.MonoidMonomorphism
   +ᴹ-isMonoidMonomorphism public
     using ()

@@ -30,7 +30,7 @@ open import Relation.Binary.Core
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------
--- Reexports
+-- Re-exports
 
 open import Algebra.Morphism.MonoidMonomorphism
   +ᴹ-isMonoidMonomorphism public
