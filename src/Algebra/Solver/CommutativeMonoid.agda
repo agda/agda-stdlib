@@ -27,6 +27,7 @@ import Relation.Binary.Reflection as Reflection
 import Relation.Nullary.Decidable as Dec
 import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Nullary.Decidable as Dec using (Dec)
 
@@ -184,7 +185,7 @@ nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
 
 prove′ : (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
 prove′ e₁ e₂ =
-  Maybe.map lemma (Dec.decToMaybe (normalise e₁ ≟ normalise e₂))
+  Maybe.map lemma (dec⇒weaklyDec _≟_ (normalise e₁) (normalise e₂))
   where
   lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
   lemma eq ρ =
