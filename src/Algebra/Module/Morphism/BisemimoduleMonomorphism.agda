@@ -15,8 +15,9 @@ module Algebra.Module.Morphism.BisemimoduleMonomorphism
   where
 
 open IsBisemimoduleMonomorphism isBisemimoduleMonomorphism
-module M = RawBisemimodule M
-module N = RawBisemimodule N
+private
+  module M = RawBisemimodule M
+  module N = RawBisemimodule N
 
 open import Algebra.Core
 import Algebra.Module.Definitions.Bi as BiDefs
