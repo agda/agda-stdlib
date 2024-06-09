@@ -143,6 +143,16 @@ concatMap f = concat ∘′ map f
 ap : List⁺ (A → B) → List⁺ A → List⁺ B
 ap fs as = concatMap (λ f → map f as) fs
 
+-- Inits
+
+inits : List A → List⁺ (List A)
+inits xs = [] ∷ List.tail∘inits xs
+
+-- Tails
+
+tails : List A → List⁺ (List A)
+tails xs = xs ∷ List.tail∘tails xs
+
 -- Reverse
 
 reverse : List⁺ A → List⁺ A
@@ -203,9 +213,12 @@ snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
 
 -- The last element in the list.
 
+private
+  last′ : ∀ {l} → SnocView {A = A} l → A
+  last′ (_ ∷ʳ′ y) = y
+
 last : List⁺ A → A
-last xs with snocView xs
-last .(ys ∷ʳ y) | ys ∷ʳ′ y = y
+last = last′ ∘ snocView
 
 -- Groups all contiguous elements for which the predicate returns the
 -- same result into lists. The left sums are the ones for which the

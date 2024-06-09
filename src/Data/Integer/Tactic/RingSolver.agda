@@ -4,7 +4,7 @@
 -- Automatic solvers for equations over integers
 ------------------------------------------------------------------------
 
--- See README.Integer for examples of how to use this solver
+-- See README.Tactic.RingSolver for examples of how to use this solver
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
@@ -13,11 +13,11 @@ module Data.Integer.Tactic.RingSolver where
 open import Agda.Builtin.Reflection
 
 open import Data.Maybe.Base using (just; nothing)
-open import Data.Integer.Base
-open import Data.Integer.Properties
+open import Data.Integer.Base using (+0)
+open import Data.Integer.Properties using (+-*-commutativeRing)
 open import Level using (0ℓ)
-open import Data.Unit using (⊤)
-open import Relation.Binary.PropositionalEquality
+open import Data.Unit.Base using (⊤)
+open import Relation.Binary.PropositionalEquality.Core using (refl)
 import Tactic.RingSolver as Solver
 import Tactic.RingSolver.Core.AlmostCommutativeRing as ACR
 

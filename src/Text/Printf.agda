@@ -11,18 +11,17 @@ module Text.Printf where
 open import Data.String.Base using (String; fromChar; concat)
 open import Function.Base using (id)
 
-import Data.Char.Base    as Cₛ
-import Data.Integer.Show as ℤₛ
-import Data.Float        as Fₛ
-import Data.Nat.Show     as ℕₛ  using (show)
+import Data.Integer.Show as ℤ
+import Data.Float.Base   as Float
+import Data.Nat.Show     as ℕ
 
 open import Text.Format as Format hiding (Error)
 open import Text.Printf.Generic
 
 printfSpec : PrintfSpec formatSpec String
-printfSpec .PrintfSpec.renderArg ℕArg      = ℕₛ.show
-printfSpec .PrintfSpec.renderArg ℤArg      = ℤₛ.show
-printfSpec .PrintfSpec.renderArg FloatArg  = Fₛ.show
+printfSpec .PrintfSpec.renderArg ℕArg      = ℕ.show
+printfSpec .PrintfSpec.renderArg ℤArg      = ℤ.show
+printfSpec .PrintfSpec.renderArg FloatArg  = Float.show
 printfSpec .PrintfSpec.renderArg CharArg   = fromChar
 printfSpec .PrintfSpec.renderArg StringArg = id
 printfSpec .PrintfSpec.renderStr           = id

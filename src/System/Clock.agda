@@ -14,7 +14,7 @@ open import Data.Fin.Base using (Fin; toℕ)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _∸_; _^_; _<ᵇ_)
 import Data.Nat.Show as ℕ using (show)
 open import Data.Nat.DivMod using (_/_)
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Data.String.Base using (String; _++_; padLeft)
 
 open import IO.Base
@@ -104,5 +104,5 @@ show : Time →   -- Time in seconds and nanoseconds
 show (mkTime s ns) prec = secs ++ "s" ++ padLeft '0' decimals nsecs where
   decimals = toℕ prec
   secs     = ℕ.show s
-  prf      = ℕₚ.m^n≢0 10 (9 ∸ decimals)
+  prf      = ℕ.m^n≢0 10 (9 ∸ decimals)
   nsecs    = ℕ.show ((ns / (10 ^ (9 ∸ decimals))) {{prf}})

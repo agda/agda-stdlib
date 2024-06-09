@@ -19,7 +19,7 @@ open import Relation.Binary.Bundles
 open import Relation.Binary.Structures
   using (IsEquivalence; IsDecEquivalence; IsPreorder; IsPartialOrder)
 open import Relation.Binary.Definitions
-  using (Decidable; DecidableEquality)
+  using (DecidableEquality)
 import Relation.Binary.Properties.Setoid as Setoid
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Unary using (Pred)
@@ -157,7 +157,7 @@ isEquivalence = record
   ; trans = trans
   }
 
-isDecEquivalence : Decidable _≡_ → IsDecEquivalence {A = A} _≡_
+isDecEquivalence : DecidableEquality A → IsDecEquivalence _≡_
 isDecEquivalence _≟_ = record
   { isEquivalence = isEquivalence
   ; _≟_           = _≟_

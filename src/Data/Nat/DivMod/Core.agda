@@ -11,11 +11,13 @@ module Data.Nat.DivMod.Core where
 open import Agda.Builtin.Nat using ()
   renaming (div-helper to divₕ; mod-helper to modₕ)
 
-open import Data.Nat.Base
+open import Data.Nat.Base using (zero; suc; _+_; _*_; _∸_; _≤_; _<_;
+ _≥_; z≤n; s≤s)
 open import Data.Nat.Properties
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product.Base using (_×_; _,_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; sym; subst; trans)
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 

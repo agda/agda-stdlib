@@ -31,7 +31,7 @@ open import Function.Base using (case_of_)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Definitions using (Trans; Reflexive)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Reasoning.Syntax
 
 private
@@ -51,7 +51,7 @@ module _ (S : Setoid a ℓ) where
   start (relTo x≈y) = x≈y
 
   ≡-go : Trans _≡_ IsRelatedTo IsRelatedTo
-  ≡-go x≡y (relTo y∼z) = relTo (case x≡y of λ where P.refl → y∼z)
+  ≡-go x≡y (relTo y∼z) = relTo (case x≡y of λ where ≡.refl → y∼z)
 
   ≈-go : Trans _≈_ IsRelatedTo IsRelatedTo
   ≈-go x≈y (relTo y≈z) = relTo (trans x≈y y≈z)

@@ -6,27 +6,28 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.Definitions hiding (Decidable)
-open import Relation.Binary.Structures using (IsPreorder)
-
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
 open import Data.Bool.Base using (Bool; true; false; T)
-open import Data.List.Base
+open import Data.List.Base using (List; map; _∷_; _++_; concat; applyUpTo;
+  any; filter)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
-open import Data.List.Effectful
+open import Data.List.Effectful using (monad)
 open import Data.List.Relation.Unary.Any using (Any)
-open import Data.List.Membership.Propositional
+open import Data.List.Membership.Propositional using (_∈_; mapWith∈)
 open import Data.List.Membership.Propositional.Properties
-import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
+  using (map-∈↔; concat-∈↔; >>=-∈↔; ⊛-∈↔; ⊗-∈↔)
+import Data.List.Relation.Binary.Subset.Setoid.Properties as Subset
 open import Data.List.Relation.Binary.Subset.Propositional
+  using (_⊆_; _⊇_)
 open import Data.List.Relation.Binary.Permutation.Propositional
+  using (_↭_; ↭-sym; ↭-isEquivalence)
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
-open import Data.Nat using (ℕ; _≤_)
-import Data.Product.Base as Prod
+open import Data.Nat.Base using (ℕ; _≤_)
+import Data.Product.Base as Product
 import Data.Sum.Base as Sum
 open import Effect.Monad
 open import Function.Base using (_∘_; _∘′_; id; _$_)
@@ -36,9 +37,13 @@ open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.Core using (_⇒_)
 open import Relation.Binary.Bundles using (Preorder)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
+open import Relation.Binary.Definitions hiding (Decidable)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≗_; subst; resp; refl)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (isEquivalence; setoid; module ≡-Reasoning)
+open import Relation.Binary.Structures using (IsPreorder)
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -79,7 +84,7 @@ module _ (A : Set a) where
 ------------------------------------------------------------------------
 -- Relational properties with _↭_ (permutation)
 ------------------------------------------------------------------------
--- See issue #1354 for why these proofs can't be taken from `Setoidₚ`
+-- See issue #1354 for why these proofs can't be taken from `Subset`
 
 ⊆-reflexive-↭ : _↭_ {A = A} ⇒ _⊆_
 ⊆-reflexive-↭ xs↭ys = Permutation.∈-resp-↭ xs↭ys
@@ -109,7 +114,7 @@ module _ (A : Set a) where
 ------------------------------------------------------------------------
 
 module ⊆-Reasoning (A : Set a) where
-  open Setoidₚ.⊆-Reasoning (setoid A) public
+  open Subset.⊆-Reasoning (setoid A) public
     hiding (step-≋; step-≋˘)
 
 ------------------------------------------------------------------------
@@ -117,10 +122,10 @@ module ⊆-Reasoning (A : Set a) where
 ------------------------------------------------------------------------
 
 Any-resp-⊆ : ∀ {P : Pred A p} → (Any P) Respects _⊆_
-Any-resp-⊆ = Setoidₚ.Any-resp-⊆ (setoid _) (subst _)
+Any-resp-⊆ = Subset.Any-resp-⊆ (setoid _) (subst _)
 
 All-resp-⊇ : ∀ {P : Pred A p} → (All P) Respects _⊇_
-All-resp-⊇ = Setoidₚ.All-resp-⊇ (setoid _) (subst _)
+All-resp-⊇ = Subset.All-resp-⊇ (setoid _) (subst _)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
@@ -130,38 +135,38 @@ All-resp-⊇ = Setoidₚ.All-resp-⊇ (setoid _) (subst _)
 map⁺ : ∀ (f : A → B) → xs ⊆ ys → map f xs ⊆ map f ys
 map⁺ f xs⊆ys =
   Inverse.to (map-∈↔ f) ∘
-  Prod.map₂ (Prod.map₁ xs⊆ys) ∘
+  Product.map₂ (Product.map₁ xs⊆ys) ∘
   Inverse.from (map-∈↔ f)
 
 ------------------------------------------------------------------------
 -- ∷
 
 xs⊆x∷xs : ∀ (xs : List A) x → xs ⊆ x ∷ xs
-xs⊆x∷xs = Setoidₚ.xs⊆x∷xs (setoid _)
+xs⊆x∷xs = Subset.xs⊆x∷xs (setoid _)
 
 ∷⁺ʳ : ∀ x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
-∷⁺ʳ = Setoidₚ.∷⁺ʳ (setoid _)
+∷⁺ʳ = Subset.∷⁺ʳ (setoid _)
 
 ∈-∷⁺ʳ : ∀ {x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
-∈-∷⁺ʳ = Setoidₚ.∈-∷⁺ʳ (setoid _)
+∈-∷⁺ʳ = Subset.∈-∷⁺ʳ (setoid _)
 
 ------------------------------------------------------------------------
 -- _++_
 
 xs⊆xs++ys : ∀ (xs ys : List A) → xs ⊆ xs ++ ys
-xs⊆xs++ys = Setoidₚ.xs⊆xs++ys (setoid _)
+xs⊆xs++ys = Subset.xs⊆xs++ys (setoid _)
 
 xs⊆ys++xs : ∀ (xs ys : List A) → xs ⊆ ys ++ xs
-xs⊆ys++xs = Setoidₚ.xs⊆ys++xs (setoid _)
+xs⊆ys++xs = Subset.xs⊆ys++xs (setoid _)
 
 ++⁺ʳ : ∀ zs → xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
-++⁺ʳ = Setoidₚ.++⁺ʳ (setoid _)
+++⁺ʳ = Subset.++⁺ʳ (setoid _)
 
 ++⁺ˡ : ∀ zs → xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
-++⁺ˡ = Setoidₚ.++⁺ˡ (setoid _)
+++⁺ˡ = Subset.++⁺ˡ (setoid _)
 
 ++⁺ : ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
-++⁺ = Setoidₚ.++⁺ (setoid _)
+++⁺ = Subset.++⁺ (setoid _)
 
 ------------------------------------------------------------------------
 -- concat
@@ -171,14 +176,14 @@ module _ {xss yss : List (List A)} where
   concat⁺ : xss ⊆ yss → concat xss ⊆ concat yss
   concat⁺ xss⊆yss =
     Inverse.to concat-∈↔ ∘
-    Prod.map₂ (Prod.map₂ xss⊆yss) ∘
+    Product.map₂ (Product.map₂ xss⊆yss) ∘
     Inverse.from concat-∈↔
 
 ------------------------------------------------------------------------
 -- applyUpTo
 
 applyUpTo⁺ : ∀ (f : ℕ → A) {m n} → m ≤ n → applyUpTo f m ⊆ applyUpTo f n
-applyUpTo⁺ = Setoidₚ.applyUpTo⁺ (setoid _)
+applyUpTo⁺ = Subset.applyUpTo⁺ (setoid _)
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -188,7 +193,7 @@ module _ {A B : Set a} (f g : A → List B) where
   >>=⁺ : xs ⊆ ys → (∀ {x} → f x ⊆ g x) → (xs >>= f) ⊆ (ys >>= g)
   >>=⁺ xs⊆ys f⊆g =
     Inverse.to >>=-∈↔ ∘
-    Prod.map₂ (Prod.map xs⊆ys f⊆g) ∘
+    Product.map₂ (Product.map xs⊆ys f⊆g) ∘
     Inverse.from >>=-∈↔
 
 ------------------------------------------------------------------------
@@ -199,7 +204,7 @@ module _ {A B : Set a} {fs gs : List (A → B)} where
   ⊛⁺ : fs ⊆ gs → xs ⊆ ys → (fs ⊛ xs) ⊆ (gs ⊛ ys)
   ⊛⁺ fs⊆gs xs⊆ys =
     (Inverse.to $ ⊛-∈↔ gs) ∘
-    Prod.map₂ (Prod.map₂ (Prod.map fs⊆gs (Prod.map₁ xs⊆ys))) ∘
+    Product.map₂ (Product.map₂ (Product.map fs⊆gs (Product.map₁ xs⊆ys))) ∘
     (Inverse.from $ ⊛-∈↔ fs)
 
 ------------------------------------------------------------------------
@@ -210,7 +215,7 @@ module _ {A B : Set a} {ws xs : List A} {ys zs : List B} where
   ⊗⁺ : ws ⊆ xs → ys ⊆ zs → (ws ⊗ ys) ⊆ (xs ⊗ zs)
   ⊗⁺ ws⊆xs ys⊆zs =
     Inverse.to ⊗-∈↔ ∘
-    Prod.map ws⊆xs ys⊆zs ∘
+    Product.map ws⊆xs ys⊆zs ∘
     Inverse.from ⊗-∈↔
 
 ------------------------------------------------------------------------
@@ -235,7 +240,7 @@ module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
                 mapWith∈ xs f ⊆ mapWith∈ ys g
   mapWith∈⁺ xs⊆ys f≈g {x} =
     Inverse.to Any.mapWith∈↔ ∘
-    Prod.map₂ (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
+    Product.map₂ (Product.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
       x               ≡⟨ x≡fx∈xs ⟩
       f x∈xs          ≡⟨ f≈g x∈xs ⟩
       g (xs⊆ys x∈xs)  ∎)) ∘
@@ -248,12 +253,12 @@ module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
 module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-⊆ : ∀ xs → filter P? xs ⊆ xs
-  filter-⊆ = Setoidₚ.filter-⊆ (setoid A) P?
+  filter-⊆ = Subset.filter-⊆ (setoid A) P?
 
   module _ {Q : Pred A q} (Q? : Decidable Q) where
 
     filter⁺′ : P ⋐ Q → ∀ {xs ys} → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
-    filter⁺′ = Setoidₚ.filter⁺′ (setoid A) P? (resp P) Q? (resp Q)
+    filter⁺′ = Subset.filter⁺′ (setoid A) P? (resp P) Q? (resp Q)
 
 
 ------------------------------------------------------------------------

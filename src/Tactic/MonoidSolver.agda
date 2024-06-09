@@ -75,10 +75,10 @@ module Tactic.MonoidSolver where
 open import Algebra
 open import Function.Base using (_⟨_⟩_)
 
-open import Data.Bool         as Bool    using (Bool; _∨_; if_then_else_)
-open import Data.Maybe        as Maybe   using (Maybe; just; nothing; maybe)
+open import Data.Bool.Base    as Bool    using (Bool; _∨_; if_then_else_)
+open import Data.Maybe.Base   as Maybe   using (Maybe; just; nothing; maybe)
 open import Data.List.Base    as List    using (List; _∷_; [])
-open import Data.Nat          as ℕ       using (ℕ; suc; zero)
+open import Data.Nat.Base     as ℕ       using (ℕ; suc; zero)
 open import Data.Product.Base as Product using (_×_; _,_)
 
 open import Reflection.AST
@@ -88,7 +88,7 @@ import Reflection.AST.Name as Name
 open import Reflection.TCM
 open import Reflection.TCM.Syntax
 
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 ------------------------------------------------------------------------
 -- The Expr type with homomorphism proofs
@@ -103,7 +103,7 @@ data Expr {a} (A : Set a) : Set a where
 module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
 
   open Monoid monoid
-  open SetoidReasoning setoid
+  open ≈-Reasoning setoid
 
   -- Convert the AST to an expression (i.e. evaluate it) without
   -- normalising.

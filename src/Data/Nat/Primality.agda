@@ -8,6 +8,8 @@
 
 module Data.Nat.Primality where
 
+open import Data.List.Base using ([]; _∷_; product)
+open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD using (module GCD; module Bézout)
@@ -21,7 +23,7 @@ open import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (¬_; contradiction; contradiction₂)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl; cong)
 
 private
@@ -294,6 +296,17 @@ prime⇒rough (prime pr) = pr
 rough∧∣⇒prime : .{{NonTrivial p}} → p Rough n → p ∣ n → Prime p
 rough∧∣⇒prime r p∣n = prime (rough∧∣⇒rough r p∣n)
 
+-- If a number n is m-rough, and m * m > n, then n must be prime.
+rough∧square>⇒prime : .{{NonTrivial n}} → m Rough n → m * m > n → Prime n
+rough∧square>⇒prime rough m*m>n = prime ¬composite
+  where
+    ¬composite : ¬ Composite _
+    ¬composite (composite d<n d∣n) = contradiction (m∣n⇒n≡quotient*m d∣n)
+      (<⇒≢ (<-≤-trans m*m>n (*-mono-≤
+        (rough⇒≤ (rough∧∣⇒rough rough (quotient-∣ d∣n)))
+        (rough⇒≤ (rough∧∣⇒rough rough d∣n)))))
+      where instance _ = n>1⇒nonTrivial (quotient>1 d∣n d<n)
+
 -- Relationship between compositeness and primality.
 composite⇒¬prime : Composite n → ¬ Prime n
 composite⇒¬prime composite[d] (prime p) = p composite[d]
@@ -308,6 +321,16 @@ prime⇒¬composite (prime p) = p
 ¬prime⇒composite : .{{NonTrivial n}} → ¬ Prime n → Composite n
 ¬prime⇒composite {n} ¬prime[n] =
   decidable-stable (composite? n) (¬prime[n] ∘′ ¬composite⇒prime)
+
+productOfPrimes≢0 : ∀ {as} → All Prime as → NonZero (product as)
+productOfPrimes≢0 pas = product≢0 (All.map prime⇒nonZero pas)
+  where
+  product≢0 : ∀ {ns} → All NonZero ns → NonZero (product ns)
+  product≢0 [] = _
+  product≢0 {n ∷ ns} (nzn ∷ nzns) = m*n≢0 n _ {{nzn}} {{product≢0 nzns}}
+
+productOfPrimes≥1 : ∀ {as} → All Prime as → product as ≥ 1
+productOfPrimes≥1 {as} pas = >-nonZero⁻¹ _ {{productOfPrimes≢0 pas}}
 
 ------------------------------------------------------------------------
 -- Basic (counter-)examples of Irreducible

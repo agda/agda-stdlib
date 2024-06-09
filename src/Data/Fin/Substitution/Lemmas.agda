@@ -9,19 +9,19 @@
 module Data.Fin.Substitution.Lemmas where
 
 open import Data.Fin.Substitution
-open import Data.Nat hiding (_⊔_; _/_)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Fin.Base using (Fin; zero; suc; lift)
-open import Data.Vec.Base
-import Data.Vec.Properties as VecProp
+open import Data.Vec.Base using (lookup; []; _∷_; map)
+import Data.Vec.Properties as Vec
 open import Function.Base as Fun using (_∘_; _$_; flip)
-open import Relation.Binary.PropositionalEquality.Core as PropEq
+open import Level using (Level; _⊔_)
+open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; refl; sym; cong; cong₂)
 open import Relation.Binary.PropositionalEquality.Properties
   using (module ≡-Reasoning)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (Star; ε; _◅_; _▻_)
 open ≡-Reasoning
-open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred)
 
 private
@@ -68,9 +68,9 @@ record Lemmas₀ (T : Pred ℕ ℓ) : Set ℓ where
   lookup-map-weaken-↑⋆ zero    x           = refl
   lookup-map-weaken-↑⋆ (suc k) zero        = refl
   lookup-map-weaken-↑⋆ (suc k) (suc x) {ρ} = begin
-    lookup (map weaken (map weaken ρ ↑⋆ k)) x        ≡⟨ VecProp.lookup-map x weaken (map weaken ρ ↑⋆ k) ⟩
+    lookup (map weaken (map weaken ρ ↑⋆ k)) x        ≡⟨ Vec.lookup-map x weaken (map weaken ρ ↑⋆ k) ⟩
     weaken (lookup (map weaken ρ ↑⋆ k) x)            ≡⟨ cong weaken (lookup-map-weaken-↑⋆ k x) ⟩
-    weaken (lookup ((ρ ↑) ↑⋆ k) (lift k suc x))      ≡⟨ sym $ VecProp.lookup-map (lift k suc x) weaken ((ρ ↑) ↑⋆ k) ⟩
+    weaken (lookup ((ρ ↑) ↑⋆ k) (lift k suc x))      ≡⟨ sym $ Vec.lookup-map (lift k suc x) weaken ((ρ ↑) ↑⋆ k) ⟩
     lookup (map weaken ((ρ ↑) ↑⋆ k)) (lift k suc x)  ∎
 
 record Lemmas₁ (T : Pred ℕ ℓ) : Set ℓ where
@@ -85,7 +85,7 @@ record Lemmas₁ (T : Pred ℕ ℓ) : Set ℓ where
                       lookup             ρ  x ≡ var      y →
                       lookup (map weaken ρ) x ≡ var (suc y)
   lookup-map-weaken x {y} {ρ} hyp = begin
-    lookup (map weaken ρ) x  ≡⟨ VecProp.lookup-map x weaken ρ ⟩
+    lookup (map weaken ρ) x  ≡⟨ Vec.lookup-map x weaken ρ ⟩
     weaken (lookup ρ x)      ≡⟨ cong weaken hyp ⟩
     weaken (var y)           ≡⟨ weaken-var ⟩
     var (suc y)              ∎
@@ -153,7 +153,7 @@ record Lemmas₂ (T : Pred ℕ ℓ) : Set ℓ where
 
   lookup-⊙ : ∀ x {ρ₁ : Sub T m n} {ρ₂ : Sub T n o} →
              lookup (ρ₁ ⊙ ρ₂) x ≡ lookup ρ₁ x / ρ₂
-  lookup-⊙ x {ρ₁} {ρ₂} = VecProp.lookup-map x (λ t → t / ρ₂) ρ₁
+  lookup-⊙ x {ρ₁} {ρ₂} = Vec.lookup-map x (λ t → t / ρ₂) ρ₁
 
   lookup-⨀ : ∀ x (ρs : Subs T m n) →
              lookup (⨀ ρs) x ≡ var x /✶ ρs
@@ -239,8 +239,8 @@ record Lemmas₃ (T : Pred ℕ ℓ) : Set ℓ where
 
   ⊙-id : {ρ : Sub T m n} → ρ ⊙ id ≡ ρ
   ⊙-id {ρ = ρ} = begin
-    map (λ t → t / id) ρ  ≡⟨ VecProp.map-cong id-vanishes ρ ⟩
-    map Fun.id         ρ  ≡⟨ VecProp.map-id ρ ⟩
+    map (λ t → t / id) ρ  ≡⟨ Vec.map-cong id-vanishes ρ ⟩
+    map Fun.id         ρ  ≡⟨ Vec.map-id ρ ⟩
     ρ                     ∎
 
   open Lemmas₂ lemmas₂ public hiding (wk-⊙-sub′)
@@ -264,13 +264,13 @@ record Lemmas₄ (T : Pred ℕ ℓ) : Set ℓ where
       ρ₁ ↑ ⊙ ρ₂ ↑                             ∎
       where
       lemma = begin
-        map weaken (map (λ t → t / ρ₂) ρ₁)    ≡⟨ sym (VecProp.map-∘ _ _ _) ⟩
-        map (λ t → weaken (t / ρ₂)) ρ₁        ≡⟨ VecProp.map-cong (λ t → begin
+        map weaken (map (λ t → t / ρ₂) ρ₁)    ≡⟨ sym (Vec.map-∘ _ _ _) ⟩
+        map (λ t → weaken (t / ρ₂)) ρ₁        ≡⟨ Vec.map-cong (λ t → begin
                                                    weaken (t / ρ₂)  ≡⟨ sym /-wk ⟩
                                                    t / ρ₂ / wk      ≡⟨ hyp t ⟩
                                                    t / wk / ρ₂ ↑    ≡⟨ cong₂ _/_ /-wk refl ⟩
                                                    weaken t / ρ₂ ↑  ∎) ρ₁ ⟩
-        map (λ t → weaken t / ρ₂ ↑) ρ₁        ≡⟨ VecProp.map-∘ _ _ _ ⟩
+        map (λ t → weaken t / ρ₂ ↑) ρ₁        ≡⟨ Vec.map-∘ _ _ _ ⟩
         map (λ t → t / ρ₂ ↑) (map weaken ρ₁)  ∎
 
     ↑⋆-distrib′ : {ρ₁ : Sub T m n} {ρ₂ : Sub T n o} →
@@ -284,7 +284,7 @@ record Lemmas₄ (T : Pred ℕ ℓ) : Set ℓ where
 
   map-weaken : {ρ : Sub T m n} → map weaken ρ ≡ ρ ⊙ wk
   map-weaken {ρ = ρ} = begin
-    map weaken ρ          ≡⟨ VecProp.map-cong (λ _ → sym /-wk) ρ ⟩
+    map weaken ρ          ≡⟨ Vec.map-cong (λ _ → sym /-wk) ρ ⟩
     map (λ t → t / wk) ρ  ≡⟨ refl ⟩
     ρ ⊙ wk                ∎
 
@@ -324,8 +324,8 @@ record Lemmas₄ (T : Pred ℕ ℓ) : Set ℓ where
   ⊙-assoc : {ρ₁ : Sub T m n} {ρ₂ : Sub T n o} {ρ₃ : Sub T o p} →
             ρ₁ ⊙ (ρ₂ ⊙ ρ₃) ≡ (ρ₁ ⊙ ρ₂) ⊙ ρ₃
   ⊙-assoc {ρ₁ = ρ₁} {ρ₂} {ρ₃} = begin
-    map (λ t → t / ρ₂ ⊙ ρ₃) ρ₁                  ≡⟨ VecProp.map-cong /-⊙ ρ₁ ⟩
-    map (λ t → t / ρ₂ / ρ₃) ρ₁                  ≡⟨ VecProp.map-∘ _ _ _ ⟩
+    map (λ t → t / ρ₂ ⊙ ρ₃) ρ₁                  ≡⟨ Vec.map-cong /-⊙ ρ₁ ⟩
+    map (λ t → t / ρ₂ / ρ₃) ρ₁                  ≡⟨ Vec.map-∘ _ _ _ ⟩
     map (λ t → t / ρ₃) (map (λ t → t / ρ₂) ρ₁)  ∎
 
   map-weaken-⊙-sub : ∀ {ρ : Sub T m n} {t} → map weaken ρ ⊙ sub t ≡ ρ
@@ -560,7 +560,7 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
              (∀ x → lookup ρ₂ x ≡ T.var (f x)) →
              map T.var ρ₁ ≡ ρ₂
   map-var≡ {ρ₁ = ρ₁} {ρ₂ = ρ₂} {f = f} hyp₁ hyp₂ = extensionality λ x →
-    lookup (map T.var ρ₁) x  ≡⟨ VecProp.lookup-map x _ ρ₁ ⟩
+    lookup (map T.var ρ₁) x  ≡⟨ Vec.lookup-map x _ ρ₁ ⟩
     T.var (lookup ρ₁ x)      ≡⟨ cong T.var $ hyp₁ x ⟩
     T.var (f x)              ≡⟨ sym $ hyp₂ x ⟩
     lookup ρ₂ x              ∎
@@ -577,7 +577,7 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
   ↑≡↑ : {ρ : Sub Fin m n} → map T.var (ρ VarSubst.↑) ≡ map T.var ρ T.↑
   ↑≡↑ {ρ = ρ} = map-var≡
     (VarLemmas.lookup-↑⋆ (lookup ρ) (λ _ → refl) 1)
-    (lookup-↑⋆ (lookup ρ) (λ _ → VecProp.lookup-map _ _ ρ) 1)
+    (lookup-↑⋆ (lookup ρ) (λ _ → Vec.lookup-map _ _ ρ) 1)
 
   /Var≡/ : ∀ {ρ : Sub Fin m n} {t} → t /Var ρ ≡ t T./ map T.var ρ
   /Var≡/ {ρ = ρ} {t = t} =
@@ -585,7 +585,7 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
       (λ k x →
          T.var x /Var ρ VarSubst.↑⋆ k        ≡⟨ app-var ⟩
          T.var (lookup (ρ VarSubst.↑⋆ k) x)  ≡⟨ cong T.var $ VarLemmas.lookup-↑⋆ _ (λ _ → refl) k _ ⟩
-         T.var (lift k (VarSubst._/ ρ) x)    ≡⟨ sym $ lookup-↑⋆ _ (λ _ → VecProp.lookup-map _ _ ρ) k _ ⟩
+         T.var (lift k (VarSubst._/ ρ) x)    ≡⟨ sym $ lookup-↑⋆ _ (λ _ → Vec.lookup-map _ _ ρ) k _ ⟩
          lookup (map T.var ρ T.↑⋆ k) x       ≡⟨ sym app-var ⟩
          T.var x T./ map T.var ρ T.↑⋆ k      ∎)
       zero t

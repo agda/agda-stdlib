@@ -10,16 +10,18 @@ module Data.Word.Properties where
 
 import Data.Nat.Base as ℕ
 open import Data.Bool.Base using (Bool)
-open import Data.Word.Base
-import Data.Nat.Properties as ℕₚ
-open import Function.Base
-open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
+open import Data.Word.Base using (_≈_; toℕ; Word64; _<_)
+import Data.Nat.Properties as ℕ
+open import Relation.Nullary.Decidable.Core using (map′; ⌊_⌋)
 open import Relation.Binary
   using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
         ; Decidable; DecidableEquality; IsEquivalence; IsDecEquivalence
         ; Setoid; DecSetoid; StrictTotalOrder)
 import Relation.Binary.Construct.On as On
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; sym; trans; subst)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; decSetoid)
 
 ------------------------------------------------------------------------
 -- Primitive properties
@@ -51,7 +53,7 @@ open import Agda.Builtin.Word.Properties
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = toℕ x ℕₚ.≟ toℕ y
+x ≈? y = toℕ x ℕ.≟ toℕ y
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -100,7 +102,7 @@ w₁ == w₂ = ⌊ w₁ ≟ w₂ ⌋
 
 infix 4 _<?_
 _<?_ : Decidable _<_
-_<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
+_<?_ = On.decidable toℕ ℕ._<_ ℕ._<?_
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
-<-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+<-strictTotalOrder-≈ = On.strictTotalOrder ℕ.<-strictTotalOrder toℕ

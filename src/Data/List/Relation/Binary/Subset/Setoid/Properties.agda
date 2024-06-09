@@ -10,10 +10,11 @@ module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base hiding (_∷ʳ_; find)
+import Data.List.Properties as List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Membership.Setoid as Membership
-open import Data.List.Membership.Setoid.Properties
+import Data.List.Membership.Setoid.Properties as Membershipₚ
 open import Data.Nat.Base using (ℕ; s≤s; _≤_)
 import Data.List.Relation.Binary.Subset.Setoid as Subset
 import Data.List.Relation.Binary.Sublist.Setoid as Sublist
@@ -21,24 +22,24 @@ import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutationₚ
 open import Data.Product.Base using (_,_)
-open import Function.Base using (_∘_; _∘₂_)
+open import Function.Base using (_∘_; _∘₂_; _$_)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; does; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred; Decidable) renaming (_⊆_ to _⋐_)
-open import Relation.Binary.Core using (_⇒_)
+open import Relation.Binary.Core using (_⇒_; _Preserves_⟶_)
 open import Relation.Binary.Definitions
   using (Reflexive; Transitive; _Respectsʳ_; _Respectsˡ_; _Respects_)
 open import Relation.Binary.Bundles using (Setoid; Preorder)
 open import Relation.Binary.Structures using (IsPreorder)
-import Relation.Binary.Reasoning.Preorder as PreorderReasoning
+import Relation.Binary.Reasoning.Preorder as ≲-Reasoning
 open import Relation.Binary.Reasoning.Syntax
 
 open Setoid using (Carrier)
 
 private
   variable
-    a p q ℓ : Level
+    a b p q r ℓ : Level
 
 ------------------------------------------------------------------------
 -- Relational properties with _≋_ (pointwise equality)
@@ -49,6 +50,7 @@ module _ (S : Setoid a ℓ) where
   open Subset S
   open Equality S
   open Membership S
+  open Membershipₚ
 
   ⊆-reflexive : _≋_ ⇒ _⊆_
   ⊆-reflexive xs≋ys = ∈-resp-≋ S xs≋ys
@@ -115,7 +117,7 @@ module _ (S : Setoid a ℓ) where
 module ⊆-Reasoning (S : Setoid a ℓ) where
   open Membership S using (_∈_)
 
-  private module Base = PreorderReasoning (⊆-preorder S)
+  private module Base = ≲-Reasoning (⊆-preorder S)
 
   open Base public
     hiding (step-≈; step-≈˘; step-≈-⟩; step-≈-⟨; step-≲; step-∼)
@@ -167,6 +169,7 @@ module _ (S : Setoid a ℓ) where
   open Setoid S
   open Subset S
   open Membership S
+  open Membershipₚ
 
   xs⊆x∷xs : ∀ xs x → xs ⊆ x ∷ xs
   xs⊆x∷xs xs x = there
@@ -186,6 +189,7 @@ module _ (S : Setoid a ℓ) where
 
   open Subset S
   open Membership S
+  open Membershipₚ
 
   xs⊆xs++ys : ∀ xs ys → xs ⊆ xs ++ ys
   xs⊆xs++ys xs ys = ∈-++⁺ˡ S
@@ -207,12 +211,66 @@ module _ (S : Setoid a ℓ) where
   ++⁺ ws⊆xs ys⊆zs = ⊆-trans S (++⁺ˡ _ ws⊆xs) (++⁺ʳ _ ys⊆zs)
 
 ------------------------------------------------------------------------
+-- map
+
+module _ (S : Setoid a ℓ) (R : Setoid b r) where
+
+  private
+    module S = Setoid S
+    module R = Setoid R
+
+    module S⊆ = Subset S
+    module R⊆ = Subset R
+
+  open Membershipₚ
+
+  map⁺ : ∀ {as bs} {f : S.Carrier → R.Carrier} →
+         f Preserves S._≈_ ⟶ R._≈_ →
+         as S⊆.⊆ bs → map f as R⊆.⊆ map f bs
+  map⁺ {f = f} f-pres as⊆bs v∈f[as] =
+    let x , x∈as , v≈f[x] = ∈-map⁻ S R v∈f[as] in
+    ∈-resp-≈ R (R.sym v≈f[x]) (∈-map⁺ S R f-pres (as⊆bs x∈as))
+
+------------------------------------------------------------------------
+-- reverse
+
+module _ (S : Setoid a ℓ) where
+
+  open Setoid S renaming (Carrier to A)
+  open Subset S
+
+  reverse-selfAdjoint : ∀ {as bs} → as ⊆ reverse bs → reverse as ⊆ bs
+  reverse-selfAdjoint rs = reverse⁻ ∘ rs ∘ reverse⁻
+    where reverse⁻ = Membershipₚ.reverse⁻ S
+
+-- NB. the unit and counit of this adjunction are given by:
+-- reverse-η : ∀ {xs} → xs ⊆ reverse xs
+-- reverse-η = Membershipₚ.reverse⁺ S
+-- reverse-ε : ∀ {xs} → reverse xs ⊆ xs
+-- reverse-ε = Membershipₚ.reverse⁻ S
+
+  reverse⁺ : ∀ {as bs} → as ⊆ bs → reverse as ⊆ reverse bs
+  reverse⁺ {as} {bs} rs = reverse-selfAdjoint $ begin
+    as                   ⊆⟨ rs ⟩
+    bs                   ≡⟨ List.reverse-involutive bs ⟨
+    reverse (reverse bs) ∎
+    where open ⊆-Reasoning S
+
+  reverse⁻ : ∀ {as bs} → reverse as ⊆ reverse bs → as ⊆ bs
+  reverse⁻ {as} {bs} rs = begin
+    as                   ≡⟨ List.reverse-involutive as ⟨
+    reverse (reverse as) ⊆⟨ reverse-selfAdjoint rs ⟩
+    bs                   ∎
+    where open ⊆-Reasoning S
+
+------------------------------------------------------------------------
 -- filter
 
 module _ (S : Setoid a ℓ) where
 
   open Setoid S renaming (Carrier to A)
   open Subset S
+  open Membershipₚ
 
   filter-⊆ : ∀ {P : Pred A p} (P? : Decidable P) →
              ∀ xs → filter P? xs ⊆ xs

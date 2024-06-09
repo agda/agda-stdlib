@@ -34,3 +34,4 @@ module README.Design.Fixity where
 -- type formers:
 -- product-like infixr 2 _×_ _-×-_ _-,-_
 -- sum-like infixr 1 _⊎_
+-- binary properties infix 4 _Absorbs_

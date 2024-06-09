@@ -8,43 +8,46 @@
 
 module Data.List.Membership.Propositional.Properties where
 
-open import Algebra using (Op₂; Selective)
-open import Effect.Monad using (RawMonad)
-open import Data.Bool.Base using (Bool; false; true; T)
+open import Algebra.Core using (Op₂)
+open import Algebra.Definitions using (Selective)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List
-open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-open import Data.List.Relation.Unary.Any.Properties
+open import Data.List.Effectful using (monad)
 open import Data.List.Membership.Propositional
-import Data.List.Membership.Setoid.Properties as Membershipₛ
+  using (_∈_; _∉_; mapWith∈; _≢∈_)
+import Data.List.Membership.Setoid.Properties as Membership
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
-open import Data.List.Effectful using (monad)
-open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+open import Data.List.Relation.Unary.Any.Properties
+  using (map↔; concat↔; >>=↔; ⊛↔; Any-cong; ⊗↔′; ¬Any[])
+open import Data.Nat.Base using (ℕ; suc; s≤s; _≤_; _<_; _≰_)
 open import Data.Nat.Properties
-open import Data.Product.Base hiding (map)
+  using (suc-injective; m≤n⇒m≤1+n; _≤?_; <⇒≢; ≰⇒>)
+open import Data.Product.Base using (∃; ∃₂; _×_; _,_)
 open import Data.Product.Properties using (×-≡,≡↔≡)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Function.Base
-open import Function.Definitions
+open import Effect.Monad using (RawMonad)
+open import Function.Base using (_∘_; _∘′_; _$_; id; flip; _⟨_⟩_)
+open import Function.Definitions using (Injective)
 import Function.Related.Propositional as Related
-open import Function.Bundles
-open import Function.Related.TypeIsomorphisms
+open import Function.Bundles using (_↔_; _↣_; Injection)
+open import Function.Related.TypeIsomorphisms using (×-comm; ∃∃↔∃∃)
 open import Function.Construct.Identity using (↔-id)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.Definitions as B hiding (Decidable)
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
+open import Relation.Binary.Definitions as Binary hiding (Decidable)
+open import Relation.Binary.PropositionalEquality.Core as ≡
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; resp; _≗_)
+open import Relation.Binary.PropositionalEquality.Properties as ≡ using (setoid)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
-open import Relation.Unary using (_⟨×⟩_; Decidable)
-import Relation.Nullary.Reflects as Reflects
+open import Relation.Nullary.Decidable.Core
+  using (Dec; yes; no; ¬¬-excluded-middle)
+open import Relation.Nullary.Negation.Core using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬¬-excluded-middle)
+open import Relation.Unary using (_⟨×⟩_; Decidable)
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -62,10 +65,10 @@ open import Data.List.Membership.Propositional.Properties.Core public
 -- Equality
 
 ∈-resp-≋ : ∀ {x : A} → (x ∈_) Respects _≋_
-∈-resp-≋ = Membershipₛ.∈-resp-≋ (P.setoid _)
+∈-resp-≋ = Membership.∈-resp-≋ (≡.setoid _)
 
 ∉-resp-≋ : ∀ {x : A} → (x ∉_) Respects _≋_
-∉-resp-≋ = Membershipₛ.∉-resp-≋ (P.setoid _)
+∉-resp-≋ = Membership.∉-resp-≋ (≡.setoid _)
 
 ------------------------------------------------------------------------
 -- mapWith∈
@@ -74,19 +77,19 @@ mapWith∈-cong : ∀ (xs : List A) → (f g : ∀ {x} → x ∈ xs → B) →
                 (∀ {x} → (x∈xs : x ∈ xs) → f x∈xs ≡ g x∈xs) →
                 mapWith∈ xs f ≡ mapWith∈ xs g
 mapWith∈-cong []       f g cong = refl
-mapWith∈-cong (x ∷ xs) f g cong = P.cong₂ _∷_ (cong (here refl))
+mapWith∈-cong (x ∷ xs) f g cong = cong₂ _∷_ (cong (here refl))
   (mapWith∈-cong xs (f ∘ there) (g ∘ there) (cong ∘ there))
 
 mapWith∈≗map : ∀ (f : A → B) xs → mapWith∈ xs (λ {x} _ → f x) ≡ map f xs
 mapWith∈≗map f xs =
-  ≋⇒≡ (Membershipₛ.mapWith∈≗map (P.setoid _) (P.setoid _) f xs)
+  ≋⇒≡ (Membership.mapWith∈≗map (≡.setoid _) (≡.setoid _) f xs)
 
 mapWith∈-id : (xs : List A) → mapWith∈ xs (λ {x} _ → x) ≡ xs
-mapWith∈-id = Membershipₛ.mapWith∈-id (P.setoid _)
+mapWith∈-id = Membership.mapWith∈-id (≡.setoid _)
 
 map-mapWith∈ : (xs : List A) (f : ∀ {x} → x ∈ xs → B) (g : B → C) →
                map g (mapWith∈ xs f) ≡ mapWith∈ xs (g ∘′ f)
-map-mapWith∈ = Membershipₛ.map-mapWith∈ (P.setoid _)
+map-mapWith∈ = Membership.map-mapWith∈ (≡.setoid _)
 
 ------------------------------------------------------------------------
 -- map
@@ -94,10 +97,10 @@ map-mapWith∈ = Membershipₛ.map-mapWith∈ (P.setoid _)
 module _ (f : A → B) where
 
   ∈-map⁺ : ∀ {x xs} → x ∈ xs → f x ∈ map f xs
-  ∈-map⁺ = Membershipₛ.∈-map⁺ (P.setoid A) (P.setoid B) (P.cong f)
+  ∈-map⁺ = Membership.∈-map⁺ (≡.setoid A) (≡.setoid B) (cong f)
 
   ∈-map⁻ : ∀ {y xs} → y ∈ map f xs → ∃ λ x → x ∈ xs × y ≡ f x
-  ∈-map⁻ = Membershipₛ.∈-map⁻ (P.setoid A) (P.setoid B)
+  ∈-map⁻ = Membership.∈-map⁻ (≡.setoid A) (≡.setoid B)
 
   map-∈↔ : ∀ {y xs} → (∃ λ x → x ∈ xs × y ≡ f x) ↔ y ∈ map f xs
   map-∈↔ {y} {xs} =
@@ -112,20 +115,21 @@ module _ (f : A → B) where
 module _ {v : A} where
 
   ∈-++⁺ˡ : ∀ {xs ys} → v ∈ xs → v ∈ xs ++ ys
-  ∈-++⁺ˡ = Membershipₛ.∈-++⁺ˡ (P.setoid A)
+  ∈-++⁺ˡ = Membership.∈-++⁺ˡ (≡.setoid A)
 
   ∈-++⁺ʳ : ∀ xs {ys} → v ∈ ys → v ∈ xs ++ ys
-  ∈-++⁺ʳ = Membershipₛ.∈-++⁺ʳ (P.setoid A)
+  ∈-++⁺ʳ = Membership.∈-++⁺ʳ (≡.setoid A)
 
   ∈-++⁻ : ∀ xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
-  ∈-++⁻ = Membershipₛ.∈-++⁻ (P.setoid A)
+  ∈-++⁻ = Membership.∈-++⁻ (≡.setoid A)
 
   ∈-insert : ∀ xs {ys} → v ∈ xs ++ [ v ] ++ ys
-  ∈-insert xs = Membershipₛ.∈-insert (P.setoid A) xs refl
+  ∈-insert xs = Membership.∈-insert (≡.setoid A) xs refl
 
   ∈-∃++ : ∀ {xs} → v ∈ xs → ∃₂ λ ys zs → xs ≡ ys ++ [ v ] ++ zs
-  ∈-∃++ v∈xs with Membershipₛ.∈-∃++ (P.setoid A) v∈xs
-  ... | ys , zs , _ , refl , eq = ys , zs , ≋⇒≡ eq
+  ∈-∃++ v∈xs
+    with ys , zs , _ , refl , eq ← Membership.∈-∃++ (≡.setoid A) v∈xs
+    = ys , zs , ≋⇒≡ eq
 
 ------------------------------------------------------------------------
 -- concat
@@ -133,18 +137,19 @@ module _ {v : A} where
 module _ {v : A} where
 
   ∈-concat⁺ : ∀ {xss} → Any (v ∈_) xss → v ∈ concat xss
-  ∈-concat⁺ = Membershipₛ.∈-concat⁺ (P.setoid A)
+  ∈-concat⁺ = Membership.∈-concat⁺ (≡.setoid A)
 
   ∈-concat⁻ : ∀ xss → v ∈ concat xss → Any (v ∈_) xss
-  ∈-concat⁻ = Membershipₛ.∈-concat⁻ (P.setoid A)
+  ∈-concat⁻ = Membership.∈-concat⁻ (≡.setoid A)
 
   ∈-concat⁺′ : ∀ {vs xss} → v ∈ vs → vs ∈ xss → v ∈ concat xss
   ∈-concat⁺′ v∈vs vs∈xss =
-    Membershipₛ.∈-concat⁺′ (P.setoid A) v∈vs (Any.map ≡⇒≋ vs∈xss)
+    Membership.∈-concat⁺′ (≡.setoid A) v∈vs (Any.map ≡⇒≋ vs∈xss)
 
   ∈-concat⁻′ : ∀ xss → v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ xss
-  ∈-concat⁻′ xss v∈c with Membershipₛ.∈-concat⁻′ (P.setoid A) xss v∈c
-  ... | xs , v∈xs , xs∈xss = xs , v∈xs , Any.map ≋⇒≡ xs∈xss
+  ∈-concat⁻′ xss v∈c =
+    let xs , v∈xs , xs∈xss = Membership.∈-concat⁻′ (≡.setoid A) xss v∈c
+    in xs , v∈xs , Any.map ≋⇒≡ xs∈xss
 
   concat-∈↔ : ∀ {xss : List (List A)} →
               (∃ λ xs → v ∈ xs × xs ∈ xss) ↔ v ∈ concat xss
@@ -162,13 +167,13 @@ module _ (f : A → B → C) where
 
   ∈-cartesianProductWith⁺ : ∀ {xs ys a b} → a ∈ xs → b ∈ ys →
                             f a b ∈ cartesianProductWith f xs ys
-  ∈-cartesianProductWith⁺ = Membershipₛ.∈-cartesianProductWith⁺
-    (P.setoid A) (P.setoid B) (P.setoid C) (P.cong₂ f)
+  ∈-cartesianProductWith⁺ = Membership.∈-cartesianProductWith⁺
+    (≡.setoid A) (≡.setoid B) (≡.setoid C) (cong₂ f)
 
   ∈-cartesianProductWith⁻ : ∀ xs ys {v} → v ∈ cartesianProductWith f xs ys →
                             ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
-  ∈-cartesianProductWith⁻ = Membershipₛ.∈-cartesianProductWith⁻
-    (P.setoid A) (P.setoid B) (P.setoid C) f
+  ∈-cartesianProductWith⁻ = Membership.∈-cartesianProductWith⁻
+    (≡.setoid A) (≡.setoid B) (≡.setoid C) f
 
 ------------------------------------------------------------------------
 -- cartesianProduct
@@ -179,8 +184,9 @@ module _ (f : A → B → C) where
 
 ∈-cartesianProduct⁻ : ∀ xs ys {xy@(x , y) : A × B} →
                       xy ∈ cartesianProduct xs ys → x ∈ xs × y ∈ ys
-∈-cartesianProduct⁻ xs ys xy∈p[xs,ys] with ∈-cartesianProductWith⁻ _,_ xs ys xy∈p[xs,ys]
-... | (x , y , x∈xs , y∈ys , refl) = x∈xs , y∈ys
+∈-cartesianProduct⁻ xs ys xy∈p[xs,ys]
+  with _ , _ , x∈xs , y∈ys , refl ← ∈-cartesianProductWith⁻ _,_ xs ys xy∈p[xs,ys]
+  = x∈xs , y∈ys
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -188,11 +194,11 @@ module _ (f : A → B → C) where
 module _ (f : ℕ → A) where
 
   ∈-applyUpTo⁺ : ∀ {i n} → i < n → f i ∈ applyUpTo f n
-  ∈-applyUpTo⁺ = Membershipₛ.∈-applyUpTo⁺ (P.setoid _) f
+  ∈-applyUpTo⁺ = Membership.∈-applyUpTo⁺ (≡.setoid _) f
 
   ∈-applyUpTo⁻ : ∀ {v n} → v ∈ applyUpTo f n →
                  ∃ λ i → i < n × v ≡ f i
-  ∈-applyUpTo⁻ = Membershipₛ.∈-applyUpTo⁻ (P.setoid _) f
+  ∈-applyUpTo⁻ = Membership.∈-applyUpTo⁻ (≡.setoid _) f
 
 ------------------------------------------------------------------------
 -- upTo
@@ -201,8 +207,7 @@ module _ (f : ℕ → A) where
 ∈-upTo⁺ = ∈-applyUpTo⁺ id
 
 ∈-upTo⁻ : ∀ {n i} → i ∈ upTo n → i < n
-∈-upTo⁻ p with ∈-applyUpTo⁻ id p
-... | _ , i<n , refl = i<n
+∈-upTo⁻ p with _ , i<n , refl ← ∈-applyUpTo⁻ id p = i<n
 
 ------------------------------------------------------------------------
 -- applyDownFrom
@@ -210,11 +215,11 @@ module _ (f : ℕ → A) where
 module _ (f : ℕ → A) where
 
   ∈-applyDownFrom⁺ : ∀ {i n} → i < n → f i ∈ applyDownFrom f n
-  ∈-applyDownFrom⁺ = Membershipₛ.∈-applyDownFrom⁺ (P.setoid _) f
+  ∈-applyDownFrom⁺ = Membership.∈-applyDownFrom⁺ (≡.setoid _) f
 
   ∈-applyDownFrom⁻ : ∀ {v n} → v ∈ applyDownFrom f n →
                      ∃ λ i → i < n × v ≡ f i
-  ∈-applyDownFrom⁻ = Membershipₛ.∈-applyDownFrom⁻ (P.setoid _) f
+  ∈-applyDownFrom⁻ = Membership.∈-applyDownFrom⁻ (≡.setoid _) f
 
 ------------------------------------------------------------------------
 -- downFrom
@@ -223,8 +228,7 @@ module _ (f : ℕ → A) where
 ∈-downFrom⁺ i<n = ∈-applyDownFrom⁺ id i<n
 
 ∈-downFrom⁻ : ∀ {n i} → i ∈ downFrom n → i < n
-∈-downFrom⁻ p with ∈-applyDownFrom⁻ id p
-... | _ , i<n , refl = i<n
+∈-downFrom⁻ p with _ , i<n , refl ← ∈-applyDownFrom⁻ id p = i<n
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -232,10 +236,10 @@ module _ (f : ℕ → A) where
 module _ {n} {f : Fin n → A} where
 
   ∈-tabulate⁺ : ∀ i → f i ∈ tabulate f
-  ∈-tabulate⁺ = Membershipₛ.∈-tabulate⁺ (P.setoid _)
+  ∈-tabulate⁺ = Membership.∈-tabulate⁺ (≡.setoid _)
 
   ∈-tabulate⁻ : ∀ {v} → v ∈ tabulate f → ∃ λ i → v ≡ f i
-  ∈-tabulate⁻ = Membershipₛ.∈-tabulate⁻ (P.setoid _)
+  ∈-tabulate⁻ = Membership.∈-tabulate⁻ (≡.setoid _)
 
 ------------------------------------------------------------------------
 -- filter
@@ -243,29 +247,29 @@ module _ {n} {f : Fin n → A} where
 module _ {p} {P : A → Set p} (P? : Decidable P) where
 
   ∈-filter⁺ : ∀ {x xs} → x ∈ xs → P x → x ∈ filter P? xs
-  ∈-filter⁺ = Membershipₛ.∈-filter⁺ (P.setoid A) P? (P.subst P)
+  ∈-filter⁺ = Membership.∈-filter⁺ (≡.setoid A) P? (≡.resp P)
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
-  ∈-filter⁻ = Membershipₛ.∈-filter⁻ (P.setoid A) P? (P.subst P)
+  ∈-filter⁻ = Membership.∈-filter⁻ (≡.setoid A) P? (≡.resp P)
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
 
-module _ {r} {R : Rel A r} (R? : B.Decidable R) where
+module _ {r} {R : Rel A r} (R? : Binary.Decidable R) where
 
   ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
-  ∈-derun⁻ xs z∈derun[R,xs] = Membershipₛ.∈-derun⁻ (P.setoid A) R? xs z∈derun[R,xs]
+  ∈-derun⁻ xs z∈derun[R,xs] = Membership.∈-derun⁻ (≡.setoid A) R? xs z∈derun[R,xs]
 
   ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
-  ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membershipₛ.∈-deduplicate⁻ (P.setoid A) R? xs z∈dedup[R,xs]
+  ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membership.∈-deduplicate⁻ (≡.setoid A) R? xs z∈dedup[R,xs]
 
-module _ (_≈?_ : B.Decidable {A = A} _≡_) where
+module _ (_≈?_ : DecidableEquality A) where
 
   ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
-  ∈-derun⁺ z∈xs = Membershipₛ.∈-derun⁺ (P.setoid A) _≈?_ (flip trans) z∈xs
+  ∈-derun⁺ z∈xs = Membership.∈-derun⁺ (≡.setoid A) _≈?_ (flip trans) z∈xs
 
   ∈-deduplicate⁺ : ∀ {xs z} → z ∈ xs → z ∈ deduplicate _≈?_ xs
-  ∈-deduplicate⁺ z∈xs = Membershipₛ.∈-deduplicate⁺ (P.setoid A) _≈?_ (λ c≡b a≡b → trans a≡b (sym c≡b)) z∈xs
+  ∈-deduplicate⁺ z∈xs = Membership.∈-deduplicate⁺ (≡.setoid A) _≈?_ (λ c≡b a≡b → trans a≡b (sym c≡b)) z∈xs
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -306,14 +310,14 @@ module _ (_≈?_ : B.Decidable {A = A} _≡_) where
 ------------------------------------------------------------------------
 -- length
 
-∈-length : ∀ {x : A} {xs} → x ∈ xs → 1 ≤ length xs
-∈-length = Membershipₛ.∈-length (P.setoid _)
+∈-length : ∀ {x : A} {xs} → x ∈ xs → 0 < length xs
+∈-length = Membership.∈-length (≡.setoid _)
 
 ------------------------------------------------------------------------
 -- lookup
 
 ∈-lookup : ∀ {xs : List A} i → lookup xs i ∈ xs
-∈-lookup {xs = xs} i = Membershipₛ.∈-lookup (P.setoid _) xs i
+∈-lookup {xs = xs} i = Membership.∈-lookup (≡.setoid _) xs i
 
 ------------------------------------------------------------------------
 -- foldr
@@ -322,7 +326,7 @@ module _ {_•_ : Op₂ A} where
 
   foldr-selective : Selective _≡_ _•_ → ∀ e xs →
                     (foldr _•_ e xs ≡ e) ⊎ (foldr _•_ e xs ∈ xs)
-  foldr-selective = Membershipₛ.foldr-selective (P.setoid A)
+  foldr-selective = Membership.foldr-selective (≡.setoid A)
 
 ------------------------------------------------------------------------
 -- allFin
@@ -334,8 +338,7 @@ module _ {_•_ : Op₂ A} where
 -- inits
 
 []∈inits : ∀ {a} {A : Set a} (as : List A) → [] ∈ inits as
-[]∈inits []       = here refl
-[]∈inits (a ∷ as) = here refl
+[]∈inits _ = here refl
 
 ------------------------------------------------------------------------
 -- Other properties
@@ -362,33 +365,32 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
   helper (yes (i , fᵢ≡x)) = finite f′-inj xs f′ⱼ∈xs
     where
     f′ : ℕ → _
-    f′ j with does (i ≤? j)
-    ... | true  = f (suc j)
-    ... | false = f j
+    f′ j with i ≤? j
+    ... | yes _ = f (suc j)
+    ... | no  _ = f j
 
     ∈-if-not-i : ∀ {j} → i ≢ j → f j ∈ xs
     ∈-if-not-i i≢j = not-x (i≢j ∘ f-inj ∘ trans fᵢ≡x ∘ sym)
 
-    lemma : ∀ {k j} → i ≤ j → ¬ (i ≤ k) → suc j ≢ k
+    lemma : ∀ {k j} → i ≤ j → i ≰ k → suc j ≢ k
     lemma i≤j i≰1+j refl = i≰1+j (m≤n⇒m≤1+n i≤j)
 
     f′ⱼ∈xs : ∀ j → f′ j ∈ xs
-    f′ⱼ∈xs j with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
-    ... | true  | p = ∈-if-not-i (<⇒≢ (s≤s p))
-    ... | false | p = ∈-if-not-i (<⇒≢ (≰⇒> p) ∘ sym)
+    f′ⱼ∈xs j with i ≤? j
+    ... | yes i≤j = ∈-if-not-i (<⇒≢ (s≤s i≤j))
+    ... | no  i≰j = ∈-if-not-i (<⇒≢ (≰⇒> i≰j) ∘ sym)
 
     f′-injective′ : Injective _≡_ _≡_ f′
-    f′-injective′ {j} {k} eq with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
-                                | i ≤ᵇ k | Reflects.invert (≤ᵇ-reflects-≤ i k)
-    ... | true  | p | true  | q = P.cong pred (f-inj eq)
-    ... | true  | p | false | q = contradiction (f-inj eq) (lemma p q)
-    ... | false | p | true  | q = contradiction (f-inj eq) (lemma q p ∘ sym)
-    ... | false | p | false | q = f-inj eq
+    f′-injective′ {j} {k} eq with i ≤? j | i ≤? k
+    ... | yes i≤j | yes i≤k = suc-injective (f-inj eq)
+    ... | yes i≤j | no  i≰k = contradiction (f-inj eq) (lemma i≤j i≰k)
+    ... | no  i≰j | yes i≤k = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
+    ... | no  i≰j | no  i≰k = f-inj eq
 
     f′-inj : ℕ ↣ _
     f′-inj = record
       { to        = f′
-      ; cong      = P.cong f′
+      ; cong      = ≡.cong f′
       ; injective = f′-injective′
       }
 
@@ -398,4 +400,4 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = ¬¬-excluded-middle helper
 there-injective-≢∈ : ∀ {xs} {x y z : A} {x∈xs : x ∈ xs} {y∈xs : y ∈ xs} →
                      there {x = z} x∈xs ≢∈ there y∈xs →
                      x∈xs ≢∈ y∈xs
-there-injective-≢∈ neq refl eq = neq refl (P.cong there eq)
+there-injective-≢∈ neq refl eq = neq refl (≡.cong there eq)

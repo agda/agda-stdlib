@@ -13,19 +13,19 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Bool                                       using (Bool;true;false)
+open import Data.Bool.Base                                  using (Bool;true;false)
 open import Data.Nat.Base as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Nat.Properties as ℕₚ                       using (≤′-trans)
+open import Data.Nat.Properties as ℕ                        using (≤′-trans)
 open import Data.Vec.Base as Vec                            using (Vec; _∷_)
-open import Data.Fin                                        using (Fin; zero; suc)
+open import Data.Fin.Base                                   using (Fin; zero; suc)
 open import Data.List.Base                                  using (_∷_; [])
-open import Data.Unit using (tt)
+open import Data.Unit.Base using (tt)
 open import Data.List.Kleene
 open import Data.Product.Base                               using (_,_; proj₁; proj₂; map₁; _×_)
-open import Data.Maybe                                      using (nothing; just)
+open import Data.Maybe.Base                                 using (nothing; just)
 open import Function.Base                                   using (_⟨_⟩_)
 open import Level                                           using (lift)
-open import Relation.Nullary                                using (Dec; yes; no)
+open import Relation.Nullary.Decidable.Core                 using (Dec; yes; no)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 
 open Homomorphism homo hiding (_^_)
@@ -65,7 +65,7 @@ pow-hom : ∀ {n} i
         → (xs : Coeff n +)
         → ∀ ρ ρs
         → ⅀⟦ xs ⟧ (ρ , ρs) *⟨ ρ ⟩^ i ≈ ⅀⟦ xs ⍓+ i ⟧ (ρ , ρs)
-pow-hom zero (x Δ j & xs) ρ ρs rewrite ℕₚ.+-identityʳ j = refl
+pow-hom zero (x Δ j & xs) ρ ρs rewrite ℕ.+-identityʳ j = refl
 pow-hom (suc i) (x ≠0 Δ j & xs) ρ ρs =
   begin
     ρ ^ (suc i) * (((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ j)

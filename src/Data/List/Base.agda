@@ -17,7 +17,7 @@ open import Data.Bool.Base as Bool
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Product.Base as Prod using (_×_; _,_; map₁; map₂′)
+open import Data.Product.Base as Product using (_×_; _,_; map₁; map₂′)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base
@@ -48,15 +48,6 @@ open import Agda.Builtin.List public
 map : (A → B) → List A → List B
 map f []       = []
 map f (x ∷ xs) = f x ∷ map f xs
-
-mapMaybe : (A → Maybe B) → List A → List B
-mapMaybe p []       = []
-mapMaybe p (x ∷ xs) with p x
-... | just y  = y ∷ mapMaybe p xs
-... | nothing = mapMaybe p xs
-
-catMaybes : List (Maybe A) → List A
-catMaybes = mapMaybe id
 
 infixr 5 _++_
 
@@ -96,13 +87,13 @@ zipWith f _        _        = []
 unalignWith : (A → These B C) → List A → List B × List C
 unalignWith f []       = [] , []
 unalignWith f (a ∷ as) with f a
-... | this b    = Prod.map₁ (b ∷_) (unalignWith f as)
-... | that c    = Prod.map₂ (c ∷_) (unalignWith f as)
-... | these b c = Prod.map (b ∷_) (c ∷_) (unalignWith f as)
+... | this b    = Product.map₁ (b ∷_) (unalignWith f as)
+... | that c    = Product.map₂ (c ∷_) (unalignWith f as)
+... | these b c = Product.map (b ∷_) (c ∷_) (unalignWith f as)
 
 unzipWith : (A → B × C) → List A → List B × List C
 unzipWith f []         = [] , []
-unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
+unzipWith f (xy ∷ xys) = Product.zip _∷_ _∷_ (f xy) (unzipWith f xys)
 
 partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
 partitionSumsWith f = unalignWith (These.fromSum ∘′ f)
@@ -123,11 +114,11 @@ partitionSums : List (A ⊎ B) → List A × List B
 partitionSums = partitionSumsWith id
 
 merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
-merge R? []       ys       = ys
-merge R? xs       []       = xs
-merge R? (x ∷ xs) (y ∷ ys) = if does (R? x y)
-  then x ∷ merge R? xs (y ∷ ys)
-  else y ∷ merge R? (x ∷ xs) ys
+merge R? []           ys           = ys
+merge R? xs           []           = xs
+merge R? x∷xs@(x ∷ xs) y∷ys@(y ∷ ys) = if does (R? x y)
+  then x ∷ merge R? xs   y∷ys
+  else y ∷ merge R? x∷xs ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -148,6 +139,12 @@ concatMap f = concat ∘ map f
 
 ap : List (A → B) → List A → List B
 ap fs as = concatMap (flip map as) fs
+
+catMaybes : List (Maybe A) → List A
+catMaybes = foldr (maybe′ _∷_ id) []
+
+mapMaybe : (A → Maybe B) → List A → List B
+mapMaybe p = catMaybes ∘ map p
 
 null : List A → Bool
 null []       = true
@@ -192,13 +189,19 @@ iterate : (A → A) → A → ℕ → List A
 iterate f e zero    = []
 iterate f e (suc n) = e ∷ iterate f (f e) n
 
+tail∘inits : List A → List (List A)
+tail∘inits []       = []
+tail∘inits (x ∷ xs) = [ x ] ∷ map (x ∷_) (tail∘inits xs)
+
 inits : List A → List (List A)
-inits []       = [] ∷ []
-inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
+inits xs = [] ∷ tail∘inits xs
+
+tail∘tails : List A → List (List A)
+tail∘tails []       = []
+tail∘tails (_ ∷ xs) = xs ∷ tail∘tails xs
 
 tails : List A → List (List A)
-tails []       = [] ∷ []
-tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
+tails xs = xs ∷ tail∘tails xs
 
 insertAt : (xs : List A) → Fin (suc (length xs)) → A → List A
 insertAt xs       zero    v = v ∷ xs
@@ -207,18 +210,6 @@ insertAt (x ∷ xs) (suc i) v = x ∷ insertAt xs i v
 updateAt : (xs : List A) → Fin (length xs) → (A → A) → List A
 updateAt (x ∷ xs) zero    f = f x ∷ xs
 updateAt (x ∷ xs) (suc i) f = x ∷ updateAt xs i f
-
--- Scans
-
-scanr : (A → B → B) → B → List A → List B
-scanr f e []       = e ∷ []
-scanr f e (x ∷ xs) with scanr f e xs
-... | []     = []                -- dead branch
-... | y ∷ ys = f x y ∷ y ∷ ys
-
-scanl : (A → B → A) → A → List B → List A
-scanl f e []       = e ∷ []
-scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 
 -- Tabulation
 
@@ -253,9 +244,7 @@ unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
          ∀ {n} → P n → List A
 unfold P f {n = zero}  s = []
-unfold P f {n = suc n} s with f s
-... | nothing       = []
-... | just (x , s′) = x ∷ unfold P f s′
+unfold P f {n = suc n} s = maybe′ (λ (x , s′) → x ∷ unfold P f s′) [] (f s)
 
 ------------------------------------------------------------------------
 -- Operations for reversing lists
@@ -340,7 +329,7 @@ drop (suc n) (x ∷ xs) = drop n xs
 splitAt : ℕ → List A → List A × List A
 splitAt zero    xs       = ([] , xs)
 splitAt (suc n) []       = ([] , [])
-splitAt (suc n) (x ∷ xs) = Prod.map₁ (x ∷_) (splitAt n xs)
+splitAt (suc n) (x ∷ xs) = Product.map₁ (x ∷_) (splitAt n xs)
 
 removeAt : (xs : List A) → Fin (length xs) → List A
 removeAt (x ∷ xs) zero     = xs
@@ -369,45 +358,49 @@ removeAt (x ∷ xs) (suc i)  = x ∷ removeAt xs i
 
 takeWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 takeWhile P? []       = []
-takeWhile P? (x ∷ xs) with does (P? x)
-... | true  = x ∷ takeWhile P? xs
-... | false = []
+takeWhile P? (x ∷ xs) = if does (P? x)
+  then x ∷ takeWhile P? xs
+  else []
 
 takeWhileᵇ : (A → Bool) → List A → List A
 takeWhileᵇ p = takeWhile (T? ∘ p)
 
 dropWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 dropWhile P? []       = []
-dropWhile P? (x ∷ xs) with does (P? x)
-... | true  = dropWhile P? xs
-... | false = x ∷ xs
+dropWhile P? (x ∷ xs) = if does (P? x)
+  then dropWhile P? xs
+  else x ∷ xs
 
 dropWhileᵇ : (A → Bool) → List A → List A
 dropWhileᵇ p = dropWhile (T? ∘ p)
 
 filter : ∀ {P : Pred A p} → Decidable P → List A → List A
 filter P? [] = []
-filter P? (x ∷ xs) with does (P? x)
-... | false = filter P? xs
-... | true  = x ∷ filter P? xs
+filter P? (x ∷ xs) =
+  let xs′ = filter P? xs in
+  if does (P? x)
+    then x ∷ xs′
+    else xs′
 
 filterᵇ : (A → Bool) → List A → List A
 filterᵇ p = filter (T? ∘ p)
 
 partition : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-partition P? []       = ([] , [])
-partition P? (x ∷ xs) with does (P? x) | partition P? xs
-... | true  | (ys , zs) = (x ∷ ys , zs)
-... | false | (ys , zs) = (ys , x ∷ zs)
+partition P? []       = [] , []
+partition P? (x ∷ xs) =
+  let ys , zs = partition P? xs in
+  if does (P? x)
+    then (x ∷ ys , zs)
+    else (ys , x ∷ zs)
 
 partitionᵇ : (A → Bool) → List A → List A × List A
 partitionᵇ p = partition (T? ∘ p)
 
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
-span P? []       = ([] , [])
-span P? ys@(x ∷ xs) with does (P? x)
-... | true  = Prod.map (x ∷_) id (span P? xs)
-... | false = ([] , ys)
+span P? []          = [] , []
+span P? ys@(x ∷ xs) = if does (P? x)
+  then Product.map (x ∷_) id (span P? xs)
+  else ([] , ys)
 
 
 spanᵇ : (A → Bool) → List A → List A × List A
@@ -428,9 +421,10 @@ linesBy {A = A} P? = go nothing where
 
   go : Maybe (List A) → List A → List (List A)
   go acc []       = maybe′ ([_] ∘′ reverse) [] acc
-  go acc (c ∷ cs) with does (P? c)
-  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
-  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+  go acc (c ∷ cs) = if does (P? c)
+    then reverse acc′ ∷ go nothing cs
+    else go (just (c ∷ acc′)) cs
+    where acc′ = Maybe.fromMaybe [] acc
 
 linesByᵇ : (A → Bool) → List A → List (List A)
 linesByᵇ p = linesBy (T? ∘ p)
@@ -448,9 +442,9 @@ wordsBy {A = A} P? = go [] where
 
   go : List A → List A → List (List A)
   go acc []       = cons acc []
-  go acc (c ∷ cs) with does (P? c)
-  ... | true  = cons acc (go [] cs)
-  ... | false = go (c ∷ acc) cs
+  go acc (c ∷ cs) = if does (P? c)
+    then cons acc (go [] cs)
+    else go (c ∷ acc) cs
 
 wordsByᵇ : (A → Bool) → List A → List (List A)
 wordsByᵇ p = wordsBy (T? ∘ p)
@@ -458,9 +452,11 @@ wordsByᵇ p = wordsBy (T? ∘ p)
 derun : ∀ {R : Rel A p} → B.Decidable R → List A → List A
 derun R? [] = []
 derun R? (x ∷ []) = x ∷ []
-derun R? (x ∷ xs@(y ∷ _)) with does (R? x y) | derun R? xs
-... | true  | ys = ys
-... | false | ys = x ∷ ys
+derun R? (x ∷ xs@(y ∷ _)) =
+  let ys = derun R? xs in
+  if does (R? x y)
+    then ys
+    else x ∷ ys
 
 derunᵇ : (A → A → Bool) → List A → List A
 derunᵇ r = derun (T? ∘₂ r)
@@ -569,4 +565,24 @@ _─_ = removeAt
 {-# WARNING_ON_USAGE _─_
 "Warning: _─_ was deprecated in v2.0.
 Please use removeAt instead."
+#-}
+
+-- Version 2.1
+
+scanr : (A → B → B) → B → List A → List B
+scanr f e []       = e ∷ []
+scanr f e (x ∷ xs) with scanr f e xs
+... | []         = []                -- dead branch
+... | ys@(y ∷ _) = f x y ∷ ys
+{-# WARNING_ON_USAGE scanr
+"Warning: scanr was deprecated in v2.1.
+Please use Data.List.Scans.Base.scanr instead."
+#-}
+
+scanl : (A → B → A) → A → List B → List A
+scanl f e []       = e ∷ []
+scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
+{-# WARNING_ON_USAGE scanl
+"Warning: scanl was deprecated in v2.1.
+Please use Data.List.Scans.Base.scanl instead."
 #-}

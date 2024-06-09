@@ -21,11 +21,25 @@ module Algebra.Structures
 -- The file is divided into sections depending on the arities of the
 -- components of the algebraic structure.
 
-open import Algebra.Core
+open import Algebra.Core using (Op₁; Op₂)
 open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product.Base using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
+
+------------------------------------------------------------------------
+-- Structures with 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set (a ⊔ ℓ) where
+  field
+    isEquivalence : IsEquivalence _≈_
+    suc#-cong     : Congruent₁ suc#
+
+  open IsEquivalence isEquivalence public
+
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation
@@ -139,6 +153,20 @@ record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     ; comm    = comm
     }
 
+
+record IsCommutativeBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isBand : IsBand ∙
+    comm   : Commutative ∙
+
+  open IsBand isBand public
+
+  isCommutativeSemigroup : IsCommutativeSemigroup ∙
+  isCommutativeSemigroup = record { isSemigroup = isSemigroup ; comm = comm }
+
+  open IsCommutativeSemigroup isCommutativeSemigroup public
+    using (isCommutativeMagma)
+
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 ------------------------------------------------------------------------
@@ -194,6 +222,17 @@ record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     using (isCommutativeMagma)
 
 
+record IsIdempotentMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isMonoid : IsMonoid ∙ ε
+    idem     : Idempotent ∙
+
+  open IsMonoid isMonoid public
+
+  isBand : IsBand ∙
+  isBand = record { isSemigroup = isSemigroup ; idem = idem }
+
+
 record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
                                      (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -202,9 +241,14 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
 
   open IsCommutativeMonoid isCommutativeMonoid public
 
-  isBand : IsBand ∙
-  isBand = record { isSemigroup = isSemigroup ; idem = idem }
+  isIdempotentMonoid : IsIdempotentMonoid ∙ ε
+  isIdempotentMonoid = record { isMonoid = isMonoid ; idem = idem }
 
+  open IsIdempotentMonoid isIdempotentMonoid public
+    using (isBand)
+
+  isCommutativeBand : IsCommutativeBand ∙
+  isCommutativeBand = record { isBand = isBand ; comm = comm }
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation, 1 unary operation & 1 element
@@ -253,9 +297,22 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
 
   open IsMonoid isMonoid public
 
+  infixr 6 _\\_
+  _\\_ : Op₂ A
+  x \\ y = (x ⁻¹) ∙ y
+
+  infixl 6 _//_
+  _//_ : Op₂ A
+  x // y = x ∙ (y ⁻¹)
+
+  -- Deprecated.
   infixl 6 _-_
   _-_ : Op₂ A
-  x - y = x ∙ (y ⁻¹)
+  _-_ = _//_
+  {-# WARNING_ON_USAGE _-_
+  "Warning: _-_ was deprecated in v2.1.
+  Please use _//_ instead. "
+  #-}
 
   inverseˡ : LeftInverse ε _⁻¹ _∙_
   inverseˡ = proj₁ inverse
@@ -291,7 +348,7 @@ record IsAbelianGroup (∙ : Op₂ A)
     isGroup : IsGroup ∙ ε ⁻¹
     comm    : Commutative ∙
 
-  open IsGroup isGroup public
+  open IsGroup isGroup public renaming (_//_ to _-_) hiding (_\\_; _-_)
 
   isCommutativeMonoid : IsCommutativeMonoid ∙ ε
   isCommutativeMonoid = record
@@ -546,12 +603,30 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
 
   open IsCommutativeSemiring isCommutativeSemiring public
 
+  *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  *-cancelʳ-nonZero = Consequences.comm∧almostCancelˡ⇒almostCancelʳ setoid
+      *-comm *-cancelˡ-nonZero
+
 record IsIdempotentSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isSemiring     : IsSemiring + * 0# 1#
     +-idem         : Idempotent +
 
   open IsSemiring isSemiring public
+
+  +-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid + 0#
+  +-isIdempotentCommutativeMonoid = record
+    { isCommutativeMonoid = +-isCommutativeMonoid
+    ; idem = +-idem
+    }
+
+  open IsIdempotentCommutativeMonoid +-isIdempotentCommutativeMonoid public
+    using ()
+    renaming ( isCommutativeBand to +-isCommutativeBand
+             ; isBand to +-isBand
+             ; isIdempotentMonoid to +-isIdempotentMonoid
+             )
+
 
 record IsKleeneAlgebra (+ * : Op₂ A) (⋆ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field

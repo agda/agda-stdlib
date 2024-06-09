@@ -121,14 +121,48 @@ automate most of this.
 
 * If it is important that certain names only come into scope later in
   the file then the module should still be imported at the top of the
-  file but it can be given a shorter name using the keyword `as` and then
-  opened later on in the file when needed, e.g.
+  file but it can be imported *qualified*, i.e. given a shorter name
+  using the keyword `as` and then opened later on in the file when needed,
+  e.g.
   ```agda
   import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
   ...
   ...
   open SetoidEquality S
   ```
+
+* If importing a parametrised module, qualified or otherwise, with its
+  parameters instantiated, then such 'instantiated imports' should be placed
+  *after* the main block of `import`s, and *before* any `variable` declarations.
+
+* Naming conventions for qualified `import`s: if importing a module under
+  a root of the form `Data.X` (e.g. the `Base` module for basic operations,
+  or `Properties` for lemmas about them etc.) then conventionally, the
+  qualified name(s) for the import(s) should (all) share as qualified name
+  that of the name of the `X` datatype defined: i.e. `Data.Nat.Base`
+  should be imported as `ℕ`, `Data.List.Properties` as `List`,  etc.
+  In this spirit, the convention applies also to (the datatype defined by)
+  `Relation.Binary.PropositionalEquality.*` which should be imported qualified
+  with the name `≡`.
+  Other modules should be given a 'suitable' qualified name based on its 'long'
+  path-derived name (such as `SetoidEquality` in the example above); commonly
+  occurring examples such as `Algebra.Structures` should be imported qualified
+  as `Structures` etc.
+  NB. Historical legacy means that these conventions have not always been observed!
+
+* Special case of the above for `*-Reasoning` (sub-)modules: by analogy with
+  `Relation.Binary.PropositionalEquality.≡-Reasoning`, when importing qualified
+  the `-Reasoning` (sub-)module associated with a given (canonical) choice of
+  symbol (eg. `≲` for `Preorder` reasoning), use the qualified name
+  `<symbol>-Reasoning`, ie. `≲-Reasoning` for the example given.
+
+* Qualified `open import`s should, in general, avoid `renaming`
+  identifiers, in favour of using the long(er) qualified name,
+  although similar remarks about legacy failure to observe this
+  recommendation apply!
+  NB. `renaming` directives are, of course, permitted when a module is
+  imported qualified, in order to be *subsequently* `open`ed for
+  `public` export (see below).
 
 * When using only a few items (i.e. < 5) from a module, it is a good practice to
   enumerate the items that will be used by declaring the import statement
@@ -193,6 +227,34 @@ automate most of this.
     ; reflexive     = ≤-reflexive
     ; trans         = ≤-trans
     }
+  ```
+
+#### Layout of initial `private` block
+
+* Since the introduction of generalizable `variable`s (see below),
+  this block provides a very useful way to 'fix'/standardise notation
+  for the rest of the module, as well as introducing local
+  instantiations of parameterised `module` definitions, again for the
+  sake of fixing notation via qualified names.
+
+* It should typically follow the `import` and `open` declarations, as
+  above, separated by one blankline, and be followed by *two* blank
+  lines ahead of the main module body.
+
+* The current preferred layout is to use successive indentation by two spaces, eg.
+  ```agda
+  private
+    variable
+      a : Level
+      A : Set a
+  ```
+  rather than to use the more permissive 'stacked' style, available
+  since [agda/agda#5319](https://github.com/agda/agda/pull/5319).
+
+* A possible exception to the above rule is when a *single* declaration
+  is made, such as eg.
+  ```agda
+  private open module M = ...
   ```
 
 #### Layout of `where` blocks
@@ -491,6 +553,66 @@ word within a compound word is capitalized except for the first word.
 * Any exceptions to these conventions should be flagged on the GitHub
   `agda-stdlib` issue tracker in the usual way.
 
+#### Fixity
+
+All functions and operators that are not purely prefix (typically
+anything that has a `_` in its name) should have an explicit fixity
+declared for it. The guidelines for these are as follows:
+
+General operations and relations:
+
+* binary relations of all kinds are `infix 4`
+
+* unary prefix relations `infix 4 ε∣_`
+
+* unary postfix relations `infixr 8 _∣0`
+
+* multiplication-like: `infixl 7 _*_`
+
+* addition-like  `infixl 6 _+_`
+
+* arithmetic prefix minus-like  `infix  8 -_`
+
+* arithmetic infix binary minus-like `infixl 6 _-_`
+
+* and-like  `infixr 7 _∧_`
+
+* or-like  `infixr 6 _∨_`
+
+* negation-like `infix 3 ¬_`
+
+* post-fix inverse  `infix  8 _⁻¹`
+
+* bind `infixl 1 _>>=_`
+
+* list concat-like `infixr 5 _∷_`
+
+* ternary reasoning `infix 1 _⊢_≈_`
+
+* composition `infixr 9 _∘_`
+
+* application `infixr -1 _$_ _$!_`
+
+* combinatorics `infixl 6.5 _P_ _P′_ _C_ _C′_`
+
+* pair `infixr 4 _,_`
+
+Reasoning:
+
+* QED  `infix  3 _∎`
+
+* stepping  `infixr 2 _≡⟨⟩_ step-≡ step-≡˘`
+
+* begin  `infix  1 begin_`
+
+Type formers:
+
+* product-like `infixr 2 _×_ _-×-_ _-,-_`
+
+* sum-like `infixr 1 _⊎_`
+
+*  binary properties `infix 4 _Absorbs_`
+
 #### Functions and relations over specific datatypes
 
 * When defining a new relation `P` over a datatype `X` in a `Data.X.Relation` module,
@@ -532,3 +654,22 @@ word within a compound word is capitalized except for the first word.
 
 * The names of patterns for reflected syntax are also *appended* with an
   additional backtick.
+
+#### Specific pragmatics/idiomatic patterns
+
+## Use of `with` notation
+
+Thinking on this has changed since the early days of the library, with
+a desire to avoid 'unnecessary' uses of `with`: see Issues
+[#1937](https://github.com/agda/agda-stdlib/issues/1937) and
+[#2123](https://github.com/agda/agda-stdlib/issues/2123).
+
+## Proving instances of `Decidable` for sets, predicates, relations, ...
+
+Issue [#803](https://github.com/agda/agda-stdlib/issues/803)
+articulates a programming pattern for writing proofs of decidability,
+used successfully in PR
+[#799](https://github.com/agda/agda-stdlib/pull/799) and made
+systematic for `Nary` relations in PR
+[#811](https://github.com/agda/agda-stdlib/pull/811)
+

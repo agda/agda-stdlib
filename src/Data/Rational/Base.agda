@@ -14,7 +14,7 @@ open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_])
   hiding (module ℤ)
 open import Data.Nat.GCD
-open import Data.Nat.Coprimality as C
+open import Data.Nat.Coprimality as ℕ
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; 2+) hiding (module ℕ)
 open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ)
@@ -193,7 +193,7 @@ open ℤ public
 ≢-nonZero {mkℚ +[1+ _ ] _         _} _   = _
 ≢-nonZero {mkℚ +0       zero      _} p≢0 = contradiction refl p≢0
 ≢-nonZero {mkℚ +0       d@(suc m) c} p≢0 =
-  contradiction (λ {d} → C.recompute c {d}) (¬0-coprimeTo-2+ {{ℕ.nonTrivial {m}}})
+  contradiction (λ {d} → ℕ.recompute c {d}) (¬0-coprimeTo-2+ {{ℕ.nonTrivial {m}}})
 
 >-nonZero : ∀ {p} → p > 0ℚ → NonZero p
 >-nonZero {p@(mkℚ _ _ _)} (*<* p<q) = ℚᵘ.>-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)
@@ -237,8 +237,8 @@ p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
 1/_ : (p : ℚ) → .{{_ : NonZero p}} → ℚ
-1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (C.sym prf)
-1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (C.sym prf)
+1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (ℕ.sym prf)
+1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (ℕ.sym prf)
 
 -- division: requires a proof that the denominator is not zero
 _÷_ : (p q : ℚ) → .{{_ : NonZero q}} → ℚ
@@ -269,15 +269,11 @@ ceiling p@record{} = ℤ.- floor (- p)
 
 -- Truncate  (round towards 0)
 truncate : ℚ → ℤ
-truncate p with p ≤ᵇ 0ℚ
-... | true  = ceiling p
-... | false = floor p
+truncate p = if p ≤ᵇ 0ℚ then ceiling p else floor p
 
 -- Round (to nearest integer)
 round : ℚ → ℤ
-round p with p ≤ᵇ 0ℚ
-... | true  = ceiling (p - ½)
-... | false = floor (p + ½)
+round p = if p ≤ᵇ 0ℚ then ceiling (p - ½) else floor (p + ½)
 
 -- Fractional part (remainder after floor)
 fracPart : ℚ → ℚ

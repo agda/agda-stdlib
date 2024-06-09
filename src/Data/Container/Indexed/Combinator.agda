@@ -9,7 +9,8 @@
 module Data.Container.Indexed.Combinator where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
-open import Data.Container.Indexed
+open import Data.Container.Indexed using (Container; _◃_/_; ⟦_⟧;
+  Command; Response; ◇; next)
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product.Base as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
@@ -18,11 +19,11 @@ open import Data.Sum.Relation.Unary.All as All using (All)
 open import Function.Base as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
 open import Function.Bundles using (mk↔ₛ′)
 open import Function.Indexed.Bundles using (_↔ᵢ_)
-open import Level
+open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; _⊆_; _∪_; _∩_; ⋃; ⋂)
   renaming (_⟨×⟩_ to _⟪×⟫_; _⟨⊙⟩_ to _⟪⊙⟫_; _⟨⊎⟩_ to _⟪⊎⟫_)
-open import Relation.Binary.PropositionalEquality as P
-  using (_≗_; refl)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≗_; refl; cong)
 
 private
   variable
@@ -167,7 +168,7 @@ module Constant (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
     from = < F.id , F.const ⊥-elim >
 
     to∘from : _
-    to∘from xs = P.cong (proj₁ xs ,_) (ext ⊥-elim)
+    to∘from xs = cong (proj₁ xs ,_) (ext ⊥-elim)
 
 module Duality where
 
@@ -202,7 +203,7 @@ module Product (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
 
     from∘to : from ⟨∘⟩ to ≗ F.id
     from∘to (c , _) =
-      P.cong (c ,_) (ext [ (λ _ → refl) , (λ _ → refl) ])
+      cong (c ,_) (ext [ (λ _ → refl) , (λ _ → refl) ])
 
 module IndexedProduct where
 
@@ -231,8 +232,8 @@ module Sum (ext : ∀ {ℓ₁ ℓ₂} → Extensionality ℓ₁ ℓ₂) where
     from (inj₂ (c , f)) = inj₂ c , λ{ (All.inj₂ r) → f r}
 
     from∘to : from ⟨∘⟩ to ≗ F.id
-    from∘to (inj₁ _ , _) = P.cong (inj₁ _ ,_) (ext λ{ (All.inj₁ r) → refl})
-    from∘to (inj₂ _ , _) = P.cong (inj₂ _ ,_) (ext λ{ (All.inj₂ r) → refl})
+    from∘to (inj₁ _ , _) = cong (inj₁ _ ,_) (ext λ{ (All.inj₁ r) → refl})
+    from∘to (inj₂ _ , _) = cong (inj₂ _ ,_) (ext λ{ (All.inj₂ r) → refl})
 
     to∘from : to ⟨∘⟩ from ≗ F.id
     to∘from =  [ (λ _ → refl) , (λ _ → refl) ]

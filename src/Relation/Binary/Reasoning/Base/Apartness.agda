@@ -8,12 +8,12 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (Level; _⊔_)
-open import Function using (case_of_)
+open import Function.Base using (case_of_)
 open import Relation.Nullary.Decidable using (Dec; yes; no)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Binary.Definitions using (Reflexive; Transitive; Symmetric; Trans)
-open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
 open import Relation.Binary.Reasoning.Syntax
 
 
@@ -38,8 +38,8 @@ data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
 
 ≡-go : Trans _≡_ _IsRelatedTo_ _IsRelatedTo_
 ≡-go x≡y nothing = nothing
-≡-go x≡y (apartness y#z) = apartness (case x≡y of λ where P.refl → y#z)
-≡-go x≡y (equals y≈z) = equals (case x≡y of λ where P.refl → y≈z)
+≡-go x≡y (apartness y#z) = apartness (case x≡y of λ where ≡.refl → y#z)
+≡-go x≡y (equals y≈z) = equals (case x≡y of λ where ≡.refl → y≈z)
 
 ≈-go  : Trans _≈_ _IsRelatedTo_ _IsRelatedTo_
 ≈-go x≈y nothing         = nothing

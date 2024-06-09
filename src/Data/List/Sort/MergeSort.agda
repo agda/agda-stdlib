@@ -10,8 +10,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Bool using (true; false)
+open import Relation.Binary.Bundles using (DecTotalOrder)
+
+module Data.List.Sort.MergeSort
+  {a ℓ₁ ℓ₂} (O : DecTotalOrder a ℓ₁ ℓ₂) where
+open import Data.Bool.Base using (true; false)
 open import Data.List.Base
+  using (List; []; _∷_; merge; length; map; [_]; concat; _++_)
 open import Data.List.Properties using (length-partition; ++-assoc; concat-[-])
 open import Data.List.Relation.Unary.Linked using ([]; [-])
 import Data.List.Relation.Unary.Sorted.TotalOrder.Properties as Sorted
@@ -20,17 +25,13 @@ import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Perm
 open import Data.Maybe.Base using (just)
-open import Relation.Nullary.Decidable using (does)
 open import Data.Nat.Base using (_<_; _>_; z<s; s<s)
 open import Data.Nat.Induction
 open import Data.Nat.Properties using (m<n⇒m<1+n)
-open import Data.Product.Base as Prod using (_,_)
+open import Data.Product.Base as Product using (_,_)
 open import Function.Base using (_∘_)
-open import Relation.Binary.Bundles using (DecTotalOrder)
-open import Relation.Nullary.Negation using (¬_)
-
-module Data.List.Sort.MergeSort
-  {a ℓ₁ ℓ₂} (O : DecTotalOrder a ℓ₁ ℓ₂) where
+open import Relation.Nullary.Negation.Core using (¬_)
+open import Relation.Nullary.Decidable.Core using (does)
 
 open DecTotalOrder O renaming (Carrier to A)
 

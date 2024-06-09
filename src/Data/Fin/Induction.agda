@@ -7,8 +7,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --warn=noUserWarning #-} -- for deprecated _≺_ (issue #1726)
 
-open import Data.Fin.Base
-open import Data.Fin.Properties
+module Data.Fin.Induction where
+
+open import Data.Fin.Base using (Fin; zero; suc; _<_; toℕ; inject₁;
+  _≥_; _>_; fromℕ; _≺_)
+open import Data.Fin.Properties using (toℕ-inject₁; ≤-refl; <-cmp;
+  toℕ≤n; toℕ-injective; toℕ-fromℕ; toℕ-lower₁; inject₁-lower₁;
+  pigeonhole; ≺⇒<′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _∸_; s≤s)
 open import Data.Nat.Properties using (n<1+n; ≤⇒≯)
 import Data.Nat.Induction as ℕ
@@ -16,10 +21,11 @@ import Data.Nat.Properties as ℕ
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.Linked as Linked using (Linked; [-]; _∷_)
-import Data.Vec.Relation.Unary.Linked.Properties as Linkedₚ
+import Data.Vec.Relation.Unary.Linked.Properties as Linked
 open import Function.Base using (flip; _$_)
-open import Induction
-open import Induction.WellFounded as WF
+open import Induction using (RecStruct)
+open import Induction.WellFounded as WF using (WellFounded; WfRec;
+  module Subrelation)
 open import Level using (Level)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Bundles using (StrictPartialOrder)
@@ -30,12 +36,11 @@ import Relation.Binary.Construct.Flip.Ord as Ord
 import Relation.Binary.Construct.NonStrictToStrict as ToStrict
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.Definitions using (Tri; tri<; tri≈; tri>)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; subst; trans; cong)
 open import Relation.Nullary.Decidable using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
-
-module Data.Fin.Induction where
 
 private
   variable
@@ -124,7 +129,7 @@ module _ {_≈_ : Rel (Fin n) ℓ} where
     pigeon : {xs : Vec (Fin n) n} → Linked (flip _⊏_) (i ∷ xs) → WellFounded _⊏_
     pigeon {xs} i∷xs↑ =
       let (i₁ , i₂ , i₁<i₂ , xs[i₁]≡xs[i₂]) = pigeonhole (n<1+n n) (Vec.lookup (i ∷ xs)) in
-      let xs[i₁]⊏xs[i₂] = Linkedₚ.lookup⁺ (Ord.transitive _⊏_ ⊏.trans) i∷xs↑ i₁<i₂ in
+      let xs[i₁]⊏xs[i₂] = Linked.lookup⁺ (Ord.transitive _⊏_ ⊏.trans) i∷xs↑ i₁<i₂ in
       let xs[i₁]⊏xs[i₁] = ⊏.<-respʳ-≈ (⊏.Eq.reflexive xs[i₁]≡xs[i₂]) xs[i₁]⊏xs[i₂] in
       contradiction xs[i₁]⊏xs[i₁] (⊏.irrefl ⊏.Eq.refl)
 

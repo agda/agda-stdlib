@@ -8,24 +8,29 @@
 
 module Data.List.NonEmpty.Properties where
 
-open import Effect.Monad
-open import Data.Nat
-open import Data.Nat.Properties
+open import Effect.Monad using (RawMonad)
+open import Data.Nat.Base using (suc; _+_)
+open import Data.Nat.Properties using (suc-injective)
 open import Data.Maybe.Properties using (just-injective)
-open import Data.Bool using (Bool; true; false)
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Effectful using () renaming (monad to listMonad)
 open import Data.List.NonEmpty.Effectful using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty
-open import Data.List.NonEmpty.Relation.Unary.All
+  using (List⁺; _∷_; tail; head; toList; _⁺++_; _⁺++⁺_; _++⁺_; length; fromList;
+    drop+; map; inits; tails; groupSeqs; ungroupSeqs)
+open import Data.List.NonEmpty.Relation.Unary.All using (All; toList⁺; _∷_)
 open import Data.List.Relation.Unary.All using ([]; _∷_) renaming (All to ListAll)
 import Data.List.Properties as List
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Sum.Relation.Unary.All using (inj₁; inj₂)
 import Data.Sum.Relation.Unary.All as Sum using (All; inj₁; inj₂)
 open import Level using (Level)
-open import Function.Base
-open import Relation.Binary.PropositionalEquality
+open import Function.Base using (_∘_; _$_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; _≗_)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Nullary using (¬_; does; yes; no)
 
@@ -112,6 +117,18 @@ map-cong f≗g (x ∷ xs) = cong₂ _∷_ (f≗g x) (List.map-cong f≗g xs)
 
 map-∘ : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-∘ (x ∷ xs) = cong (_ ∷_) (List.map-∘ xs)
+
+------------------------------------------------------------------------
+-- inits
+
+toList-inits : toList ∘ inits ≗ List.inits {A = A}
+toList-inits _ = refl
+
+------------------------------------------------------------------------
+-- tails
+
+toList-tails : toList ∘ tails ≗ List.tails {A = A}
+toList-tails _ = refl
 
 ------------------------------------------------------------------------
 -- groupSeqs

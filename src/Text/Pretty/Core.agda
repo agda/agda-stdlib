@@ -16,28 +16,32 @@ open import Data.Bool.Base using (Bool)
 open import Data.Irrelevant as Irrelevant using (Irrelevant) hiding (module Irrelevant)
 open import Data.List.Base as List   using (List; []; _∷_)
 open import Data.Nat.Base            using (ℕ; zero; suc; _+_; _⊔_; _≤_; z≤n)
-open import Data.Nat.Properties
+open import Data.Nat.Properties      using (≤-refl; ≤-trans; +-identityʳ;
+  module ≤-Reasoning; m≤n⊔m; +-monoʳ-≤; m≤m⊔n; +-comm; _≤?_)
 open import Data.Product.Base as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
 import Data.Product.Relation.Unary.All as Allᴾ
 
 open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; mapₙ)
 open import Data.Tree.Binary.Relation.Unary.All as Allᵀ using (leaf; node)
-open import Data.Unit using (⊤; tt)
-import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀₚ
-import Data.Tree.Binary.Properties as Treeₚ
+open import Data.Unit.Base using (⊤; tt)
+import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀ
+import Data.Tree.Binary.Properties as Tree
 
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Relation.Unary.All as Allᴹ using (nothing; just)
 
 open import Data.String.Base as String
   using (String; length; replicate; _++_; unlines)
-open import Data.String.Unsafe as Stringₚ
-open import Function.Base
-open import Relation.Nullary.Decidable using (Dec)
+import Data.String.Unsafe as String
+open import Function.Base using (_∘_; flip; _on_; id; _∘′_; _$_)
+open import Relation.Nullary.Decidable.Core using (Dec)
 open import Relation.Unary using (IUniversal; _⇒_; U)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym; cong; cong₂; subst)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (module ≡-Reasoning)
 
-open import Data.Refinement hiding (map)
+open import Data.Refinement using (Refinement-syntax; _,_; value; proof)
 import Data.Refinement.Relation.Unary.All as Allᴿ
 
 ------------------------------------------------------------------------
@@ -141,13 +145,13 @@ private
 
     pad : Maybe String
     pad with x.lastWidth
-    ... | 0 = nothing
-    ... | l = just (replicate l ' ')
+    ... | 0         = nothing
+    ... | l@(suc _) = just (replicate l ' ')
 
     size-pad : maybe′ length 0 pad ≡ x.lastWidth
     size-pad with x.lastWidth
     ... | 0         = refl
-    ... | l@(suc _) = length-replicate l
+    ... | l@(suc _) = String.length-replicate l
 
     indent : Maybe String → String → String
     indent = maybe′ _++_ id
@@ -155,17 +159,17 @@ private
     size-indent : ∀ ma str → length (indent ma str)
                 ≡ maybe′ length 0 ma + length str
     size-indent nothing    str = refl
-    size-indent (just pad) str = length-++ pad str
+    size-indent (just pad) str = String.length-++ pad str
 
     indents : Maybe String → Tree String ⊤ → Tree String ⊤
     indents = maybe′ (mapₙ ∘ _++_) id
 
     size-indents : ∀ ma t → #nodes (indents ma t) ≡ #nodes t
     size-indents nothing    t = refl
-    size-indents (just pad) t = Treeₚ.#nodes-mapₙ (pad ++_) t
+    size-indents (just pad) t = Tree.#nodes-mapₙ (pad ++_) t
 
     unfold-indents : ∀ ma t → indents ma t ≡ mapₙ (indent ma) t
-    unfold-indents nothing    t = sym (Treeₚ.map-id t)
+    unfold-indents nothing    t = sym (Tree.map-id t)
     unfold-indents (just pad) t = refl
 
     vContent : Content × String
@@ -216,7 +220,7 @@ private
                  length vLast ≡ lastWidth
     isLastLine ∣x∣ ∣y∣ with blocky
     ... | nothing        = begin
-      length (lastx ++ lasty)       ≡⟨ length-++ lastx lasty ⟩
+      length (lastx ++ lasty)       ≡⟨ String.length-++ lastx lasty ⟩
       length lastx + length lasty   ≡⟨ cong₂ _+_ ∣x∣ ∣y∣ ⟩
       x.lastWidth + y.lastWidth     ∎ where open ≡-Reasoning
     ... | just (hd , tl) = begin
@@ -250,12 +254,12 @@ private
       All≤-node? (≤-Content (m≤m⊔n _ _) ∣xs∣)
                  middle
                  (subst (Allᵀ.All _ U) (sym $ unfold-indents pad tl)
-                 $ Allᵀₚ.mapₙ⁺ (indent pad) (Allᵀ.mapₙ (indented _) ∣tl∣))
+                 $ Allᵀ.mapₙ⁺ (indent pad) (Allᵀ.mapₙ (indented _) ∣tl∣))
       where
 
       middle : length (lastx ++ hd) ≤ vMaxWidth
       middle = begin
-        length (lastx ++ hd)     ≡⟨ length-++ lastx hd ⟩
+        length (lastx ++ hd)     ≡⟨ String.length-++ lastx hd ⟩
         length lastx + length hd ≡⟨ cong (_+ _) ∣x∣≡ ⟩
         x.lastWidth + length hd  ≤⟨ +-monoʳ-≤ x.lastWidth ∣hd∣ ⟩
         x.lastWidth + widthy     ≤⟨ m≤n⊔m _ _ ⟩

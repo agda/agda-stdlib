@@ -23,6 +23,8 @@ systemTests = mkTestPool "System modules"
   $ "ansi"
   ∷ "directory"
   ∷ "environment"
+  ∷ "io"
+  ∷ "random"
   ∷ []
 
 showTests : TestPool

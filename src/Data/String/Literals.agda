@@ -8,9 +8,9 @@
 
 module Data.String.Literals where
 
-open import Agda.Builtin.FromString
-open import Data.Unit
-open import Agda.Builtin.String
+open import Agda.Builtin.FromString using (IsString)
+open import Data.Unit.Base using (⊤)
+open import Agda.Builtin.String using (String)
 
 isString : IsString String
 isString = record

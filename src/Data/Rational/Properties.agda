@@ -9,6 +9,7 @@
 
 module Data.Rational.Properties where
 
+open import Algebra.Apartness
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
@@ -21,6 +22,7 @@ import Algebra.Morphism.GroupMonomorphism  as GroupMonomorphisms
 import Algebra.Morphism.RingMonomorphism   as RingMonomorphisms
 import Algebra.Lattice.Morphism.LatticeMonomorphism as LatticeMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
+import Algebra.Properties.Group as GroupProperties
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
@@ -30,7 +32,7 @@ open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Coprimality as C using (Coprime; coprime?)
-open import Data.Nat.Divisibility
+open import Data.Nat.Divisibility using (_∣_; divides; ∣-antisym; *-pres-∣)
 import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
 open import Data.Product.Base using (proj₁; proj₂; _×_; _,_; uncurry)
@@ -43,20 +45,24 @@ open import Data.Rational.Unnormalised.Base as ℚᵘ
   ; _+_ to _+ᵘ_
   )
 import Data.Rational.Unnormalised.Properties as ℚᵘ
-open import Data.Sum.Base as Sum
-open import Data.Unit using (tt)
-import Data.Sign as S
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′; _⊎_)
+import Data.Sign.Base as Sign
 open import Function.Base using (_∘_; _∘′_; _∘₂_; _$_; flip)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.Morphism.Structures
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphisms
+import Relation.Binary.Properties.DecSetoid as DecSetoidProperties
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong₂; sym; trans; _≢_; subst; subst₂; resp₂)
+open import Relation.Binary.PropositionalEquality.Properties
+  using (setoid; decSetoid; module ≡-Reasoning; isEquivalence)
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
+open import Relation.Binary.Reasoning.Syntax using (module ≃-syntax)
 open import Relation.Nullary.Decidable.Core as Dec
   using (yes; no; recompute; map′; _×-dec_)
 open import Relation.Nullary.Negation.Core using (¬_; contradiction)
-open import Relation.Binary.Reasoning.Syntax
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
@@ -94,6 +100,9 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ = map′
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
+
+1≢0 : 1ℚ ≢ 0ℚ
+1≢0 = λ ()
 
 ------------------------------------------------------------------------
 -- mkℚ+
@@ -255,8 +264,8 @@ normalize-coprime {n} {d-1} c = begin
 ↥-normalize i n = begin
   ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ (n ℕ./ g)) ⟩
   + i/g     ℤ.* + g          ≡⟨⟩
-  S.+ ◃ i/g ℕ.* g            ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
-  S.+ ◃ i                    ≡⟨ ℤ.+◃n≡+n i ⟩
+  Sign.+ ◃ i/g ℕ.* g         ≡⟨ cong (Sign.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
+  Sign.+ ◃ i                 ≡⟨ ℤ.+◃n≡+n i ⟩
   + i                        ∎
   where
   open ≡-Reasoning
@@ -269,8 +278,8 @@ normalize-coprime {n} {d-1} c = begin
 ↧-normalize i n = begin
   ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ (n ℕ./ g)) ⟩
   + (n ℕ./ g)       ℤ.* + g  ≡⟨⟩
-  S.+ ◃ n ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
-  S.+ ◃ n                    ≡⟨ ℤ.+◃n≡+n n ⟩
+  Sign.+ ◃ n ℕ./ g     ℕ.* g ≡⟨ cong (Sign.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
+  Sign.+ ◃ n                 ≡⟨ ℤ.+◃n≡+n n ⟩
   + n                        ∎
   where
   open ≡-Reasoning
@@ -353,7 +362,7 @@ normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
   ↥ (- norm)   ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-neg norm) ⟩
   ℤ.- (↥ norm) ℤ.* + g  ≡⟨ sym (ℤ.neg-distribˡ-* (↥ norm) (+ g)) ⟩
   ℤ.- (↥ norm  ℤ.* + g) ≡⟨ cong (ℤ.-_) (↥-normalize (suc m) n) ⟩
-  S.- ◃ suc m           ≡⟨⟩
+  Sign.- ◃ suc m        ≡⟨⟩
   -[1+ m ]              ∎
   where
   open ℤ.≤-Reasoning
@@ -402,13 +411,13 @@ private
 
 /-injective-≃ : ∀ p q → ↥ᵘ p / ↧ₙᵘ p ≡ ↥ᵘ q / ↧ₙᵘ q → p ≃ᵘ q
 /-injective-≃ (mkℚᵘ (+ m)    c-1) (mkℚᵘ (+ n)    d-1) eq =
-  *≡* (cong (S.+ ◃_) (normalize-injective-≃ m n _ _ eq))
+  *≡* (cong (Sign.+ ◃_) (normalize-injective-≃ m n _ _ eq))
 /-injective-≃ (mkℚᵘ (+ m)    c-1) (mkℚᵘ -[1+ n ] d-1) eq =
   ℚᵘ.≃-sym (/-injective-≃-helper (sym eq))
 /-injective-≃ (mkℚᵘ -[1+ m ] c-1) (mkℚᵘ (+ n)    d-1) eq =
   /-injective-≃-helper eq
 /-injective-≃ (mkℚᵘ -[1+ m ] c-1) (mkℚᵘ -[1+ n ] d-1) eq =
-  *≡* (cong (S.- ◃_) (normalize-injective-≃ (suc m) (suc n) _ _ (neg-injective eq)))
+  *≡* (cong (Sign.- ◃_) (normalize-injective-≃ (suc m) (suc n) _ _ (neg-injective eq)))
 
 ------------------------------------------------------------------------
 -- Properties of toℚ/fromℚ
@@ -1236,6 +1245,53 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 +-*-commutativeRing = record
   { isCommutativeRing = +-*-isCommutativeRing
   }
+
+
+------------------------------------------------------------------------
+-- HeytingField structures and bundles
+
+module _ where
+  open CommutativeRing +-*-commutativeRing
+    using (+-group; zeroˡ; *-congʳ; isCommutativeRing)
+
+  open GroupProperties +-group
+  open DecSetoidProperties ≡-decSetoid
+
+  #⇒invertible : p ≢ q → Invertible 1ℚ _*_ (p - q)
+  #⇒invertible {p} {q} p≢q = let r = p - q in 1/ r , *-inverseˡ r , *-inverseʳ r
+    where instance _ = ≢-nonZero (p≢q ∘ (x∙y⁻¹≈ε⇒x≈y p q))
+
+  invertible⇒# : Invertible 1ℚ _*_ (p - q) → p ≢ q
+  invertible⇒# {p} {q} (1/[p-q] , _ , [p-q]/[p-q]≡1) p≡q = contradiction 1≡0 1≢0
+    where
+    open ≈-Reasoning ≡-setoid
+    1≡0 : 1ℚ ≡ 0ℚ
+    1≡0 = begin
+      1ℚ                 ≈⟨ [p-q]/[p-q]≡1 ⟨
+      (p - q) * 1/[p-q]  ≈⟨ *-congʳ (x≈y⇒x∙y⁻¹≈ε p≡q) ⟩
+      0ℚ * 1/[p-q]       ≈⟨ zeroˡ 1/[p-q] ⟩
+      0ℚ                 ∎
+
+  isHeytingCommutativeRing : IsHeytingCommutativeRing _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingCommutativeRing = record
+    { isCommutativeRing = isCommutativeRing
+    ; isApartnessRelation = ≉-isApartnessRelation
+    ; #⇒invertible = #⇒invertible
+    ; invertible⇒# = invertible⇒#
+    }
+
+  isHeytingField : IsHeytingField _≡_ _≢_ _+_ _*_ -_ 0ℚ 1ℚ
+  isHeytingField = record
+    { isHeytingCommutativeRing = isHeytingCommutativeRing
+    ; tight = ≉-tight
+    }
+
+  heytingCommutativeRing : HeytingCommutativeRing 0ℓ 0ℓ 0ℓ
+  heytingCommutativeRing = record { isHeytingCommutativeRing = isHeytingCommutativeRing }
+
+  heytingField : HeytingField 0ℓ 0ℓ 0ℓ
+  heytingField = record { isHeytingField = isHeytingField }
+
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_

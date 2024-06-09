@@ -12,9 +12,9 @@ open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
-open import Data.Product.Base as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
+open import Data.Product.Base as Product using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Function.Base using (const; _∘′_; id; _∘_)
+open import Function.Base using (const; _∘′_; id; _∘_; _$_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; trans; cong)
 open import Relation.Nullary.Decidable.Core using (does; T?)
@@ -131,7 +131,7 @@ zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
 
 unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
 unzipWith f []       = [] , []
-unzipWith f (a ∷ as) = Prod.zip _∷_ _∷_ (f a) (unzipWith f as)
+unzipWith f (a ∷ as) = Product.zip _∷_ _∷_ (f a) (unzipWith f as)
 
 align : Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
 align = alignWith id
@@ -232,9 +232,7 @@ sum = foldr _ _+_ 0
 
 count : ∀ {P : Pred A p} → Decidable P → Vec A n → ℕ
 count P? []       = zero
-count P? (x ∷ xs) with does (P? x)
-... | true  = suc (count P? xs)
-... | false = count P? xs
+count P? (x ∷ xs) = if does (P? x) then suc else id $ count P? xs
 
 countᵇ : (A → Bool) → Vec A n → ℕ
 countᵇ p = count (T? ∘ p)
@@ -282,7 +280,7 @@ group (suc n) k xs  =
 split : Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
 split (x ∷ [])     = (x ∷ [] , [])
-split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
+split (x ∷ y ∷ xs) = Product.map (x ∷_) (y ∷_) (split xs)
 
 uncons : Vec A (suc n) → A × Vec A n
 uncons (x ∷ xs) = x , xs

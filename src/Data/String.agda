@@ -9,12 +9,12 @@
 module Data.String where
 
 open import Data.Bool.Base using (if_then_else_)
-open import Data.Char as Char using (Char)
+open import Data.Char.Base as Char using (Char)
 open import Function.Base using (_∘_; _$_)
 open import Data.Nat.Base as ℕ using (ℕ)
-import Data.Nat.Properties as ℕₚ
+import Data.Nat.Properties as ℕ
 open import Data.List.Base as List using (List)
-open import Data.List.Extrema ℕₚ.≤-totalOrder
+open import Data.List.Extrema ℕ.≤-totalOrder
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
 import Data.Char.Properties as Char using (_≟_)

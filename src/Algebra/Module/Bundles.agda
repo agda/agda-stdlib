@@ -37,7 +37,7 @@ open import Function.Base
 open import Level
 open import Relation.Binary.Core using (Rel)
 open import Relation.Nullary    using (¬_)
-import Relation.Binary.Reasoning.Setoid as SetR
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 private
   variable
@@ -279,6 +279,7 @@ record Bimodule (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) m ℓm
     module R = Ring R-ring
     module S = Ring S-ring
 
+  infix 8 -ᴹ_
   infixr 7 _*ₗ_
   infixl 7 _*ᵣ_
   infixl 6 _+ᴹ_
@@ -364,7 +365,7 @@ record Semimodule (commutativeSemiring : CommutativeSemiring r ℓr) m ℓm
           ; rawBisemimodule; _≉ᴹ_
           )
 
-  open SetR ≈ᴹ-setoid
+  open ≈-Reasoning ≈ᴹ-setoid
 
   *ₗ-comm : L.Commutative _*ₗ_
   *ₗ-comm x y m = begin

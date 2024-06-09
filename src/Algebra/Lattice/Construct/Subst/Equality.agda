@@ -12,7 +12,7 @@
 open import Algebra.Core using (Op₂)
 open import Algebra.Definitions
 open import Algebra.Lattice.Structures
-open import Data.Product.Base as Prod
+open import Data.Product.Base using (_,_)
 open import Function.Base
 open import Relation.Binary.Core
 
@@ -35,7 +35,7 @@ isSemilattice : IsSemilattice ≈₁ ∧ → IsSemilattice ≈₂ ∧
 isSemilattice S = record
   { isBand = isBand S.isBand
   ; comm   = comm S.comm
-  } where module S = IsSemilattice S
+  } where module S = IsSemilattice ≈₁ S
 
 isLattice : IsLattice ≈₁ ∨ ∧ → IsLattice ≈₂ ∨ ∧
 isLattice {∨} {∧} S = record
