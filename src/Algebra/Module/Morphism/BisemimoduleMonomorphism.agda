@@ -113,7 +113,7 @@ isBisemimodule :
   (let R-semiring = record { isSemiring = R-isSemiring })
   (let S-semiring = record { isSemiring = S-isSemiring })
   → IsBisemimodule R-semiring S-semiring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N._*ₗ_ N._*ᵣ_
-  → IsBisemimodule R-semiring S-semiring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M._*ₗ_ M._*ᵣ_ 
+  → IsBisemimodule R-semiring S-semiring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M._*ₗ_ M._*ᵣ_
 isBisemimodule R-semiring S-semiring isBisemimodule = record
   { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid NN.+ᴹ-isCommutativeMonoid
   ; isPreleftSemimodule = record

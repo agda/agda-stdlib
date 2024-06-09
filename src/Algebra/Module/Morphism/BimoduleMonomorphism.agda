@@ -50,7 +50,7 @@ isBimodule :
   (S-isRing : IsRing _≈s_ _+s_ _*s_ -s_ 0s 1s)
   (let R-ring = record { isRing = R-isRing })
   (let S-ring = record { isRing = S-isRing })
-  → IsBimodule R-ring S-ring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ₗ_ N._*ᵣ_ 
+  → IsBimodule R-ring S-ring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ₗ_ N._*ᵣ_
   → IsBimodule R-ring S-ring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M.-ᴹ_ M._*ₗ_ M._*ᵣ_
 isBimodule R-isRing S-isRing isBimodule = record
   { isBisemimodule = isBisemimodule R-isRing.isSemiring S-isRing.isSemiring NN.isBisemimodule

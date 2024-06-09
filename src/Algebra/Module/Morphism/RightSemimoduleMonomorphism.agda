@@ -60,7 +60,7 @@ module _ (+ᴹ-isMonoid : IsMonoid N._≈ᴹ_ N._+ᴹ_ N.0ᴹ) where
     using (setoid)
     renaming (∙-cong to +ᴹ-cong′)
   open SetoidReasoning setoid
-  
+
   module MDefs = RightDefs R M._≈ᴹ_
   module NDefs = RightDefs R N._≈ᴹ_
 
