@@ -134,13 +134,12 @@ thatM : Maybe A → B → These A B
 thatM = maybe′ these that
 
 ------------------------------------------------------------------------
--- Deprecated
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
 -- Version 2.1
 -- decToMaybe
 
 open Dec using (decToMaybe) public
-{-# WARNING_ON_USAGE decToMaybe
-"Warning: decToMaybe was deprecated in v2.1.
-Please use Relation.Nullary.Decidable.Core.decToMaybe instead."
-#-}
