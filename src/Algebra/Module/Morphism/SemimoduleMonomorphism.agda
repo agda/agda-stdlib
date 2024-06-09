@@ -7,7 +7,7 @@
 open import Algebra.Module.Bundles.Raw
 open import Algebra.Module.Morphism.Structures
 
-module Algebra.Module.Morphism.Semimodule
+module Algebra.Module.Morphism.SemimoduleMonomorphism
   {r a b ℓ₁ ℓ₂} {R : Set r} {M : RawSemimodule R a ℓ₁} {N : RawSemimodule R b ℓ₂} {⟦_⟧}
   (isSemimoduleMonomorphism : IsSemimoduleMonomorphism M N ⟦_⟧)
   where

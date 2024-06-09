@@ -9,7 +9,7 @@
 open import Algebra.Module.Bundles.Raw
 open import Algebra.Module.Morphism.Structures
 
-module Algebra.Module.Morphism.Bimodule
+module Algebra.Module.Morphism.BimoduleMonomorphism
   {r s a b ℓ₁ ℓ₂} {R : Set r} {S : Set s} {M : RawBimodule R S a ℓ₁} {N : RawBimodule R S b ℓ₂} {⟦_⟧}
   (isBimoduleMonomorphism : IsBimoduleMonomorphism M N ⟦_⟧)
   where
