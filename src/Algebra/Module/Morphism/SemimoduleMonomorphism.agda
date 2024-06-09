@@ -4,6 +4,8 @@
 -- Properties of a monomorphism between semimodules
 ------------------------------------------------------------------------
 
+{-# OPTIONS --safe --cubical-compatible #-}
+
 open import Algebra.Module.Bundles.Raw
 open import Algebra.Module.Morphism.Structures
 
