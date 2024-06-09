@@ -32,6 +32,8 @@ open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
 open import Function.Base using (_$_; case_of_)
 
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality.Core as ≡
   using (_≡_; _≗_; sym; cong; cong₂; subst₂)
 open import Relation.Binary.PropositionalEquality.Properties as ≡
@@ -124,8 +126,8 @@ private
 
 -- Solver for items
 solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)
-solveI (var k) (var l) = Maybe.map var $ decToMaybe (k Fin.≟ l)
-solveI (val a) (val b) = Maybe.map val $ decToMaybe (R? a b)
+solveI (var k) (var l) = Maybe.map var $ dec⇒weaklyDec Fin._≟_ k  l
+solveI (val a) (val b) = Maybe.map val $ dec⇒weaklyDec R? a b
 solveI _ _ = nothing
 
 -- Solver for linearised expressions
