@@ -110,9 +110,9 @@ proof (a? →-dec b?) = proof a? →-reflects proof b?
 ------------------------------------------------------------------------
 -- Relationship with Maybe
 
-decToMaybe : Dec A → Maybe A
-decToMaybe ( true because [a]) = just (invert [a])
-decToMaybe (false because  _ ) = nothing
+dec⇒maybe : Dec A → Maybe A
+dec⇒maybe ( true because [a]) = just (invert [a])
+dec⇒maybe (false because  _ ) = nothing
 
 ------------------------------------------------------------------------
 -- Relationship with booleans
@@ -212,3 +212,12 @@ excluded-middle = ¬¬-excluded-middle
 "Warning: excluded-middle was deprecated in v2.0.
 Please use ¬¬-excluded-middle instead."
 #-}
+
+-- Version 2.1
+
+decToMaybe = dec⇒maybe
+{-# WARNING_ON_USAGE decToMaybe
+"Warning: decToMaybe was deprecated in v2.1.
+Please use Relation.Nullary.Decidable.Core.dec⇒maybe instead."
+#-}
+
