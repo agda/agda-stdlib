@@ -102,6 +102,12 @@ Deprecated names
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
   ```
 
+* In `Data.Sum`:
+  ```agda
+  fromDec  ↦  Relation.Nullary.Decidable.Core.toSum
+  toDec    ↦  Relation.Nullary.Decidable.Core.fromSum
+  ```
+
 * In `IO.Base`:
   ```agda
   untilRight  ↦  untilInj₂
@@ -756,6 +762,8 @@ Additions to existing modules
 * Added new proof in `Relation.Nullary.Decidable.Core`:
   ```agda
   recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+  toSum              : Dec A → A ⊎ ¬ A
+  fromSum            : A ⊎ ¬ A → Dec A
   ```
 
 * Added new proof in `Relation.Nullary.Decidable`:
