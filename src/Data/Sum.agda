@@ -8,12 +8,8 @@
 
 module Data.Sum where
 
-open import Agda.Builtin.Equality
-
-open import Data.Bool.Base using (true; false)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Function.Base
 open import Level
 import Relation.Nullary.Decidable.Core as Dec
 
@@ -30,7 +26,7 @@ open import Data.Sum.Base public
 ------------------------------------------------------------------------
 -- Additional functions
 
-module _ {a b} {A : Set a} {B : Set b} where
+module _ {A : Set a} {B : Set b} where
 
   isInj₁ : A ⊎ B → Maybe A
   isInj₁ (inj₁ x) = just x
