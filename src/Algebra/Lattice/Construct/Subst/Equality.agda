@@ -35,7 +35,7 @@ isSemilattice : IsSemilattice ≈₁ ∧ → IsSemilattice ≈₂ ∧
 isSemilattice S = record
   { isBand = isBand S.isBand
   ; comm   = comm S.comm
-  } where module S = IsSemilattice S
+  } where module S = IsSemilattice ≈₁ S
 
 isLattice : IsLattice ≈₁ ∨ ∧ → IsLattice ≈₂ ∨ ∧
 isLattice {∨} {∧} S = record
