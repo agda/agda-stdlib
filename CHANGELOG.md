@@ -116,7 +116,7 @@ New modules
   Algebra.Construct.Pointwise
   ```
 
-* `Number` literals derivable from any `SuccessorSet`:
+* `Number` literals derivable from any `RawSuccessorSet`:
   ```
   Algebra.Literals
   ```

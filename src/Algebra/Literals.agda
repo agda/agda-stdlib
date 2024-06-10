@@ -6,15 +6,15 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles using (SuccessorSet)
+open import Algebra.Bundles.Raw using (RawSuccessorSet)
 
-module Algebra.Literals {c ℓ} (successorSet : SuccessorSet c ℓ) where
+module Algebra.Literals {c ℓ} (rawSuccessorSet : RawSuccessorSet c ℓ) where
 
 open import Agda.Builtin.FromNat using (Number)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Data.Unit.Polymorphic.Base
+open import Data.Unit.Polymorphic.Base using (⊤)
 
-open SuccessorSet successorSet
+open RawSuccessorSet rawSuccessorSet
 
 
 ------------------------------------------------------------------------
