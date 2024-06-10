@@ -12,7 +12,7 @@
 module Relation.Nullary.Decidable.Core where
 
 open import Agda.Builtin.Equality using (_≡_)
-open import Level using (Level; Lift)
+open import Level using (Level)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product.Base using (_×_)
