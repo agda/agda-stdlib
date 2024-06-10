@@ -44,7 +44,6 @@ record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ)) where
   rawSuccessorSet : RawSuccessorSet _ _
   rawSuccessorSet = record { _≈_ = _≈_; suc# = suc#; zero# = zero# }
 
-  open RawSuccessorSet rawSuccessorSet public
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation
