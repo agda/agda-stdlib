@@ -401,6 +401,12 @@ Additions to existing modules
   idem-×-homo-* : (_*_ IdempotentOn x) → (m × x) * (n × x) ≈ (m ℕ.* n) × x
   ```
 
+* In `Algebra.Solver.Ring`
+  ```agda
+  Env : ℕ → Set _
+  Env = Vec Carrier
+  ```
+
 * In `Algebra.Structures`
   ```agda
   record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _

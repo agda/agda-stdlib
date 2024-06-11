@@ -21,7 +21,7 @@ open import Function.Base using (_∘_)
 -- Normal forms
 
 open module N = Normal M public
-  renaming (correct to normalise-correct)
+  renaming (comp-correct to homomorphic; correct to normalise-correct)
 
 ------------------------------------------------------------------------
 -- Tactic
