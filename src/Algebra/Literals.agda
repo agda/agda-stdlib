@@ -20,10 +20,10 @@ open RawSuccessorSet rawSuccessorSet
 ------------------------------------------------------------------------
 -- Number instance
 
-fromℕ : (n : ℕ) → Carrier
-fromℕ zero    = zero#
-fromℕ (suc n) = suc# (fromℕ n)
+number : Number Carrier
+number = record { Constraint = λ _ → ⊤ ; fromNat = λ n → fromℕ n }
+  where
+  fromℕ : (n : ℕ) → Carrier
+  fromℕ zero    = zero#
+  fromℕ (suc n) = suc# (fromℕ n)
 
-instance
-  number : Number Carrier
-  number = record { Constraint = λ _ → ⊤ ; fromNat = λ n → fromℕ n }
