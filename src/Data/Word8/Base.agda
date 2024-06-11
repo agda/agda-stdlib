@@ -35,7 +35,7 @@ testBit w i = Prim.testBit w (Fin.toℕ i)
 
 _[_]≔_ : Word8 → Fin 8 → Bool → Word8
 w [ i ]≔ false = Prim.clearBit w (Fin.toℕ i)
-w [ i ]≔ true  = Prim.clearBit w (Fin.toℕ i)
+w [ i ]≔ true  = Prim.setBit w (Fin.toℕ i)
 
 ------------------------------------------------------------------------------
 -- Basic functions

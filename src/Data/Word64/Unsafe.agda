@@ -27,7 +27,7 @@ testBit w i = Prim.testBit w (Fin.toℕ i)
 
 _[_]≔_ : Word64 → Fin 64 → Bool → Word64
 w [ i ]≔ false = Prim.clearBit w (Fin.toℕ i)
-w [ i ]≔ true  = Prim.clearBit w (Fin.toℕ i)
+w [ i ]≔ true  = Prim.setBit w (Fin.toℕ i)
 
 ------------------------------------------------------------------------
 -- Convert to its components
