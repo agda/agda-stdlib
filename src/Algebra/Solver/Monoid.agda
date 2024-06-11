@@ -6,137 +6,27 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra
+open import Algebra.Bundles using (Monoid)
 
-module Algebra.Solver.Monoid {m₁ m₂} (M : Monoid m₁ m₂) where
+module Algebra.Solver.Monoid {c ℓ} (M : Monoid c ℓ) where
 
-open import Data.Fin.Base as Fin
-import Data.Fin.Properties as Fin
-open import Data.List.Base hiding (lookup)
-import Data.List.Relation.Binary.Equality.DecPropositional as ListEq
+import Algebra.Solver.Monoid.Normal as Normal
+import Algebra.Solver.Monoid.Tactic as Tactic
 open import Data.Maybe.Base as Maybe
-  using (Maybe; From-just; from-just)
-open import Data.Nat.Base using (ℕ)
+  using (From-just; from-just)
 open import Data.Product.Base using (_×_; uncurry)
-open import Data.Vec.Base using (Vec; lookup)
-open import Function.Base using (_∘_; _$_)
-open import Relation.Binary.Consequences using (dec⇒weaklyDec)
-open import Relation.Binary.Definitions using (DecidableEquality)
-
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; cong)
-import Relation.Binary.Reflection
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-
-open Monoid M
-open import Relation.Binary.Reasoning.Setoid setoid
-
-private
-  variable
-    n : ℕ
-
-------------------------------------------------------------------------
--- Monoid expressions
-
--- There is one constructor for every operation, plus one for
--- variables; there may be at most n variables.
-
-infixr 5 _⊕_
-
-data Expr (n : ℕ) : Set where
-  var : Fin n → Expr n
-  id  : Expr n
-  _⊕_ : Expr n → Expr n → Expr n
-
--- An environment contains one value for every variable.
-
-Env : ℕ → Set _
-Env n = Vec Carrier n
-
--- The semantics of an expression is a function from an environment to
--- a value.
-
-⟦_⟧ : Expr n → Env n → Carrier
-⟦ var x   ⟧ ρ = lookup ρ x
-⟦ id      ⟧ ρ = ε
-⟦ e₁ ⊕ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
+open import Function.Base using (_∘_)
 
 ------------------------------------------------------------------------
 -- Normal forms
 
--- A normal form is a list of variables.
-
-Normal : ℕ → Set
-Normal n = List (Fin n)
-
--- The semantics of a normal form.
-
-⟦_⟧⇓ : Normal n → Env n → Carrier
-⟦ []     ⟧⇓ ρ = ε
-⟦ x ∷ nf ⟧⇓ ρ = lookup ρ x ∙ ⟦ nf ⟧⇓ ρ
-
--- We can decide if two normal forms are /syntactically/ equal.
-
-infix 5 _≟_
-
-_≟_ : DecidableEquality (Normal n)
-nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂) where open ListEq Fin._≟_
-
--- A normaliser.
-
-normalise : Expr n → Normal n
-normalise (var x)   = x ∷ []
-normalise id        = []
-normalise (e₁ ⊕ e₂) = normalise e₁ ++ normalise e₂
-
--- The normaliser is homomorphic with respect to _++_/_∙_.
-
-homomorphic : (nf₁ nf₂ : Normal n) (ρ : Env n) →
-              ⟦ nf₁ ++ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
-homomorphic [] nf₂ ρ = begin
-  ⟦ nf₂ ⟧⇓ ρ      ≈⟨ sym $ identityˡ _ ⟩
-  ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
-homomorphic (x ∷ nf₁) nf₂ ρ = begin
-  lookup ρ x ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-congˡ (homomorphic nf₁ nf₂ ρ) ⟩
-  lookup ρ x ∙ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)  ≈⟨ sym $ assoc _ _ _ ⟩
-  lookup ρ x ∙ ⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ    ∎
-
--- The normaliser preserves the semantics of the expression.
-
-normalise-correct :
-  (e : Expr n) (ρ : Env n) → ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
-normalise-correct (var x) ρ = begin
-  lookup ρ x ∙ ε  ≈⟨ identityʳ _ ⟩
-  lookup ρ x      ∎
-normalise-correct id ρ = begin
-  ε  ∎
-normalise-correct (e₁ ⊕ e₂) ρ = begin
-  ⟦ normalise e₁ ++ normalise e₂ ⟧⇓ ρ        ≈⟨ homomorphic (normalise e₁) (normalise e₂) ρ ⟩
-  ⟦ normalise e₁ ⟧⇓ ρ ∙ ⟦ normalise e₂ ⟧⇓ ρ  ≈⟨ ∙-cong (normalise-correct e₁ ρ) (normalise-correct e₂ ρ) ⟩
-  ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ                        ∎
+open module N = Normal M public
 
 ------------------------------------------------------------------------
--- "Tactic.
+-- Tactic
 
-open module R = Relation.Binary.Reflection
-                  setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) normalise-correct
-  public using (solve; _⊜_)
+open module T = Tactic M (record { N }) public
+  hiding (prove)
 
--- We can also give a sound, but not necessarily complete, procedure
--- for determining if two expressions have the same semantics.
-
-prove′ : (e₁ e₂ : Expr n) → Maybe (∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ)
-prove′ e₁ e₂ =
-  Maybe.map lemma $ dec⇒weaklyDec _≟_ (normalise e₁) (normalise e₂)
-  where
-  lemma : normalise e₁ ≡ normalise e₂ → ∀ ρ → ⟦ e₁ ⟧ ρ ≈ ⟦ e₂ ⟧ ρ
-  lemma eq ρ =
-    R.prove ρ e₁ e₂ (begin
-      ⟦ normalise e₁ ⟧⇓ ρ  ≡⟨ cong (λ e → ⟦ e ⟧⇓ ρ) eq ⟩
-      ⟦ normalise e₂ ⟧⇓ ρ  ∎)
-
--- This procedure can be combined with from-just.
-
-prove : ∀ n (es : Expr n × Expr n) →
-        From-just (uncurry prove′ es)
+prove : ∀ n (es : Expr n × Expr n) → From-just (uncurry prove′ es)
 prove _ = from-just ∘ uncurry prove′

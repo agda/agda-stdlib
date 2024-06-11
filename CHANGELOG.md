@@ -132,6 +132,17 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
+* Refactoring of the `Algebra.Solver.*Monoid` implementations, via
+  a single `Tactic` module API based on the existing `Expr`, and
+  a common `Normal`-form API:
+  ```agda
+  Algebra.Solver.CommutativeMonoid.Normal
+  Algebra.Solver.IdempotentCommutativeMonoid.Normal
+  Algebra.Solver.Monoid.Expression
+  Algebra.Solver.Monoid.Normal
+  Algebra.Solver.Monoid.Tactic
+  ```
+
 * Pointwise and equality relations over indexed containers:
   ```agda
   Data.Container.Indexed.Relation.Binary.Pointwise
