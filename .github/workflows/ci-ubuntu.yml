@@ -51,7 +51,7 @@ env:
   CABAL_VERSION: 3.10.3.0
   CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
   # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
-  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -isrc -idoc
+  AGDA: agda -Werror +RTS -M4G -H3.5G -A128M -RTS -i. -isrc -idoc
 
 jobs:
   test-stdlib:
