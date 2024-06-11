@@ -65,13 +65,13 @@ normalise (e₁ ⊕ e₂) = normalise e₁ ++ normalise e₂
 
 -- The normaliser is homomorphic with respect to _++_/_∙_.
 
-homomorphic : ∀ nf₁ nf₂ (ρ : Env n) →
+comp-correct : ∀ nf₁ nf₂ (ρ : Env n) →
               ⟦ nf₁ ++ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
-homomorphic [] nf₂ ρ = begin
+comp-correct [] nf₂ ρ = begin
   ⟦ nf₂ ⟧⇓ ρ      ≈⟨ identityˡ _ ⟨
   ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
-homomorphic (x ∷ nf₁) nf₂ ρ = begin
-  lookup ρ x ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-congˡ (homomorphic nf₁ nf₂ ρ) ⟩
+comp-correct (x ∷ nf₁) nf₂ ρ = begin
+  lookup ρ x ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-congˡ (comp-correct nf₁ nf₂ ρ) ⟩
   lookup ρ x ∙ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)  ≈⟨ assoc _ _ _ ⟨
   lookup ρ x ∙ ⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ    ∎
 
@@ -84,7 +84,6 @@ correct (var x) ρ = begin
 correct id ρ = begin
   ε  ∎
 correct (e₁ ⊕ e₂) ρ = begin
-  ⟦ normalise e₁ ++ normalise e₂ ⟧⇓ ρ        ≈⟨ homomorphic (normalise e₁) (normalise e₂) ρ ⟩
+  ⟦ normalise e₁ ++ normalise e₂ ⟧⇓ ρ        ≈⟨ comp-correct (normalise e₁) (normalise e₂) ρ ⟩
   ⟦ normalise e₁ ⟧⇓ ρ ∙ ⟦ normalise e₂ ⟧⇓ ρ  ≈⟨ ∙-cong (correct e₁ ρ) (correct e₂ ρ) ⟩
   ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ                        ∎
-

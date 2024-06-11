@@ -69,6 +69,22 @@ Deprecated names
   1×-identityʳ  ↦  ×-homo-1
   ```
 
+* In `Algebra.Solver.CommutativeMonoid`:
+  ```agda
+  normalise-correct  ↦  Algebra.Solver.CommutativeMonoid.Normal.correct
+  ```
+
+* In `Algebra.Solver.IdempotentCommutativeMonoid`:
+  ```agda
+  normalise-correct  ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct
+  ```
+
+* In `Algebra.Solver.Monoid`:
+  ```agda
+  homomorphic        ↦  Algebra.Solver.Monoid.Normal.comp-correct
+  normalise-correct  ↦  Algebra.Solver.Monoid.Normal.correct
+  ```
+
 * In `Algebra.Structures.IsGroup`:
   ```agda
   _-_  ↦  _//_
