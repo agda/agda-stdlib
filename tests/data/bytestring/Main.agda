@@ -44,11 +44,23 @@ main = run $ do
   putStrLn (Bytestring.show 1⋯3)
   putStrLn separation
   let (one , two , three) = 1,⋯,3
-  putStrLn (Word8.show one ++ " = " ++ Word8.showBits one)
-  putStrLn (Word8.show one ++ " = " ++ Word8.show (Word8.fromBits (Word8.toBits one)))
-  putStrLn separation
-  putStrLn (Word64.show two ++ " = " ++ Word64.showBits two)
-  putStrLn (Word64.show two ++ " = " ++ Word64.show (Word64.fromBits (Word64.toBits two)))
-  putStrLn separation
-  putStrLn (Word64.show three ++ " = " ++ Word64.showBits three)
-  putStrLn (Word64.show three ++ " = " ++ Word64.show (Word64.fromBits (Word64.toBits three)))
+
+  let word8test : Word8 → IO _
+      word8test w = do
+        putStrLn (Word8.show w ++ " = " ++ Word8.showBits w)
+        putStrLn (Word8.show w ++ " = " ++ Word8.showHexa w)
+        putStrLn (Word8.show w ++ " = " ++ Word8.show (Word8.fromBits (Word8.toBits w)))
+
+
+  let word64test : Word64 → IO _
+      word64test w = do
+        putStrLn separation
+        putStrLn (Word64.show w ++ " = " ++ Word64.showBits w)
+        putStrLn (Word64.show w ++ " = " ++ Word64.showHexa w)
+        putStrLn (Word64.show w ++ " = " ++ Word64.show (Word64.fromBits (Word64.toBits w)))
+
+  word8test one
+  word8test (Word8.fromℕ 144)
+  word64test two
+  word64test three
+  word64test (Word64.fromℕ 2024)
