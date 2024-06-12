@@ -113,30 +113,9 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
-* Bundled morphisms between algebraic structures:
+* Bundled morphisms between (raw) algebraic structures:
   ```
   Algebra.Morphism.Bundles
- ```
-
-* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
-  ```
-  Data.List.Relation.Binary.Equality.Setoid.Properties
-  ```
-
-* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
-  ```
-  Data.List.Scans.Base
-  Data.List.Scans.Properties
-  ```
-
-* Prime factorisation of natural numbers.
-  ```
-  Data.Nat.Primality.Factorisation
-  ```
-
-* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
-  ```agda
-  Induction.InfiniteDescent
   ```
 
 * The unique morphism from the initial, resp. terminal, algebra:
@@ -150,11 +129,34 @@ New modules
   Algebra.Module.Construct.Idealization
   ```
 
+* Pointwise and equality relations over indexed containers:
+  ```agda
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
+  ```
+  Data.List.Scans.Base
+  Data.List.Scans.Properties
+  ```
+
+* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
+  ```
+  Data.List.Relation.Binary.Equality.Setoid.Properties
+  ```
+
 * `Data.List.Relation.Binary.Sublist.Propositional.Slice`
   replacing `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` (*)
   and adding new functions:
   - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
   - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
 
 * `Data.Vec.Functional.Relation.Binary.Permutation`, defining:
   ```agda
@@ -180,27 +182,25 @@ New modules
   _⇨_ = setoid
   ```
 
-* Symmetric interior of a binary relation
-  ```
-  Relation.Binary.Construct.Interior.Symmetric
-  ```
-
-* Properties of `Setoid`s with decidable equality relation:
-  ```
-  Relation.Binary.Properties.DecSetoid
-  ```
-
-* Pointwise and equality relations over indexed containers:
+* Consequences of 'infinite descent' for (accessible elements of) well-founded relations:
   ```agda
-  Data.Container.Indexed.Relation.Binary.Pointwise
-  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
-  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  Induction.InfiniteDescent
   ```
 
 * New IO primitives to handle buffering
   ```agda
   IO.Primitive.Handle
   IO.Handle
+  ```
+
+* Symmetric interior of a binary relation
+  ```agda
+  Relation.Binary.Construct.Interior.Symmetric
+  ```
+
+* Properties of `Setoid`s with decidable equality relation:
+  ```agda
+  Relation.Binary.Properties.DecSetoid
   ```
 
 * `System.Random` bindings:
@@ -299,52 +299,55 @@ Additions to existing modules
   ```
 
 * In `Algebra.Morphism.Construct.Composition`:
-  ```
-  magmaHomomorphism          : MagmaHomomorphism M₁ M₂ →
-                               MagmaHomomorphism M₂ M₃ →
-                               MagmaHomomorphism M₁ M₃
-  monoidHomomorphism         : MonoidHomomorphism M₁ M₂ →
-                               MagmaHomomorphism M₂ M₃ →
-                               MagmaHomomorphism M₁ M₃
-  groupHomomorphism          : GroupHomomorphism M₁ M₂ →
-                               MagmaHomomorphism M₂ M₃ →
-                               MagmaHomomorphism M₁ M₃
-  nearSemiringHomomorphism   : NearSemiringHomomorphism M₁ M₂ →
-                               NearSemiringHomomorphism M₂ M₃ →
-                               NearSemiringHomomorphism M₁ M₃
-  semiringHomomorphism       : SemiringHomomorphism M₁ M₂ →
-                               SemiringHomomorphism M₂ M₃ →
-                               SemiringHomomorphism M₁ M₃
-  kleeneAlgebraHomomorphism  : KleeneAlgebraHomomorphism M₁ M₂ →
-                               KleeneAlgebraHomomorphism M₂ M₃ →
-                               KleeneAlgebraHomomorphism M₁ M₃
-  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M₁ M₂ →
-                               RingWithoutOneHomomorphism M₂ M₃ →
-                               RingWithoutOneHomomorphism M₁ M₃
-  ringHomomorphism           : RingHomomorphism M₁ M₂ →
-                               RingHomomorphism M₂ M₃ →
-                               RingHomomorphism M₁ M₃
-  quasigroupHomomorphism     : QuasigroupHomomorphism M₁ M₂ →
-                               QuasigroupHomomorphism M₂ M₃ →
-                               QuasigroupHomomorphism M₁ M₃
-  loopHomomorphism           : LoopHomomorphism M₁ M₂ →
-                               LoopHomomorphism M₂ M₃ →
-                               LoopHomomorphism M₁ M₃
+  ```agda
+  magmaHomomorphism          : MagmaHomomorphism M₁.rawMagma M₂.rawMagma →
+                               MagmaHomomorphism M₂.rawMagma M₃.rawMagma →
+                               MagmaHomomorphism M₁.rawMagma M₃.rawMagma
+  monoidHomomorphism         : MonoidHomomorphism M₁.rawMonoid M₂.rawMonoid →
+                               MonoidHomomorphism M₂.rawMonoid M₃.rawMonoid →
+                               MonoidHomomorphism M₁.rawMonoid M₃.rawMonoid
+  groupHomomorphism          : GroupHomomorphism M₁.rawGroup M₂.rawGroup →
+                               GroupHomomorphism M₂.rawGroup M₃.rawGroup →
+                               GroupHomomorphism M₁.rawGroup M₃.rawGroup
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M₁.rawNearSemiring M₂.rawNearSemiring →
+                               NearSemiringHomomorphism M₂.rawNearSemiring M₃.rawNearSemiring →
+                               NearSemiringHomomorphism M₁.rawNearSemiring M₃.rawNearSemiring
+  semiringHomomorphism       : SemiringHomomorphism M₁.rawSemiring M₂.rawSemiring →
+                               SemiringHomomorphism M₂.rawSemiring M₃.rawSemiring →
+                               SemiringHomomorphism M₁.rawSemiring M₃.rawSemiring
+  kleeneAlgebraHomomorphism  : KleeneAlgebraHomomorphism M₁.rawKleeneAlgebra M₂.rawKleeneAlgebra →
+                               KleeneAlgebraHomomorphism M₂.rawKleeneAlgebra M₃.rawKleeneAlgebra →
+                               KleeneAlgebraHomomorphism M₁.rawKleeneAlgebra M₃.rawKleeneAlgebra
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M₁.rawNearSemiring M₂.rawNearSemiring →
+                               NearSemiringHomomorphism M₂.rawNearSemiring M₃.rawNearSemiring →
+                               NearSemiringHomomorphism M₁.rawNearSemiring M₃.rawNearSemiring
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M₁.rawRingWithoutOne M₂.rawRingWithoutOne →
+                               RingWithoutOneHomomorphism M₂.rawRingWithoutOne M₃.rawRingWithoutOne →
+                               RingWithoutOneHomomorphism M₁.rawRingWithoutOne M₃.rawRingWithoutOne
+  ringHomomorphism           : RingHomomorphism M₁.rawRing M₂.rawRing →
+                               RingHomomorphism M₂.rawRing M₃.rawRing →
+                               RingHomomorphism M₁.rawRing M₃.rawRing
+  quasigroupHomomorphism     : QuasigroupHomomorphism M₁.rawQuasigroup M₂.rawQuasigroup →
+                               QuasigroupHomomorphism M₂.rawQuasigroup M₃.rawQuasigroup →
+                               QuasigroupHomomorphism M₁.rawQuasigroup M₃.rawQuasigroup
+  loopHomomorphism           : LoopHomomorphism M₁.rawLoop M₂.rawLoop →
+                               LoopHomomorphism M₂.rawLoop M₃.rawLoop →
+                               LoopHomomorphism M₁.rawLoop M₃.rawLoop
   ```
 
 * In `Algebra.Morphism.Construct.Identity`:
-  ```
-  magmaHomomorphism          : MagmaHomomorphism M M
-  monoidHomomorphism         : MonoidHomomorphism M M
-  groupHomomorphism          : GroupHomomorphism M M
-  nearSemiringHomomorphism   : NearSemiringHomomorphism M M
-  semiringHomomorphism       : SemiringHomomorphism M M
-  kleeneAlgebraHomomorphism  : KleeneAlgebraHomomorphism M M
-  nearSemiringHomomorphism   : NearSemiringHomomorphism M M
-  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M M
-  ringHomomorphism           : RingHomomorphism M M
-  quasigroupHomomorphism     : QuasigroupHomomorphism M M
-  loopHomomorphism           : LoopHomomorphism M M
+  ```agda
+  magmaHomomorphism          : MagmaHomomorphism M.rawMagma M.rawMagma
+  monoidHomomorphism         : MonoidHomomorphism M.rawMonoid M.rawMonoid
+  groupHomomorphism          : GroupHomomorphism M.rawGroup M.rawGroup
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M.raw M.raw
+  semiringHomomorphism       : SemiringHomomorphism M.rawNearSemiring M.rawNearSemiring
+  kleeneAlgebraHomomorphism  : KleeneAlgebraHomomorphism M.rawKleeneAlgebra M.rawKleeneAlgebra
+  nearSemiringHomomorphism   : NearSemiringHomomorphism M.rawNearSemiring M.rawNearSemiring
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism M.rawRingWithoutOne M.rawRingWithoutOne
+  ringHomomorphism           : RingHomomorphism M.rawRing M.rawRing
+  quasigroupHomomorphism     : QuasigroupHomomorphism M.rawQuasigroup M.rawQuasigroup
+  loopHomomorphism           : LoopHomomorphism M.rawLoop M.rawLoop
   ```
 
 * In `Algebra.Morphism.Structures`
@@ -366,7 +369,7 @@ Additions to existing modules
   ```
 
 * In `Algebra.Properties.AbelianGroup`:
-  ```
+  ```agda
   ⁻¹-anti-homo‿- : (x - y) ⁻¹ ≈ y - x
   ```
 
@@ -713,7 +716,7 @@ Additions to existing modules
 * Added new definitions in `Relation.Binary.Definitions`
   ```
   Stable _∼_ = ∀ x y → Nullary.Stable (x ∼ y)
-  Empty  _∼_ = ∀ {x y} → x ∼ y → ⊥
+  Empty  _∼_ = ∀ {x y} → ¬ (x ∼ y)
   ```
 
 * Added new proofs in `Relation.Binary.Properties.Setoid`:
