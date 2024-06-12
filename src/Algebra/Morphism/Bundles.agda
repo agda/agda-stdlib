@@ -3,7 +3,7 @@
 --
 -- Bundled definitions of homomorphisms between algebras
 --
--- NB indexed by Raw bundles, just as IsXHomomorphism is 
+-- NB indexed by Raw bundles, just as IsXHomomorphism is
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

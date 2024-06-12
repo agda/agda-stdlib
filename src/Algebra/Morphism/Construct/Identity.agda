@@ -344,7 +344,7 @@ module _ (M : Semiring c ℓ) where
     { ⟦_⟧ = id
     ; isSemiringHomomorphism = isSemiringHomomorphism rawSemiring refl
     }
-  
+
 -- KleeneAlgebra
 
 module _ (M : KleeneAlgebra c ℓ) where
@@ -409,5 +409,4 @@ module _ (M : Loop c ℓ) where
     { ⟦_⟧ = id
     ; isLoopHomomorphism = isLoopHomomorphism rawLoop refl
     }
-    
 
