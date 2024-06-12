@@ -43,7 +43,7 @@ record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_           : Op₂ Carrier
     isSemilattice : IsSemilattice _≈_ _∙_
 
-  open IsSemilattice isSemilattice public
+  open IsSemilattice _≈_ isSemilattice public
 
   band : Band c ℓ
   band = record { isBand = isBand }

@@ -13,15 +13,14 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.List.Base hiding (find)
-open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-open import Data.List.Relation.Unary.All as All using (All)
-import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Binary.Equality.Setoid as Equality
+open import Data.List.Relation.Unary.All as All using (All)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Relation.Unary.Unique.Setoid as Unique
-open import Data.Nat.Base using (suc; z≤n; s≤s; _≤_; _<_)
-open import Data.Nat.Properties using (≤-trans; n≤1+n)
-open import Data.Product.Base as Product using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
+open import Data.Nat.Base using (suc; z<s; _<_)
+open import Data.Product.Base as Product using (∃; _×_; _,_ ; ∃₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (_$_; flip; _∘_; _∘′_; id)
@@ -31,11 +30,11 @@ open import Relation.Binary.Core using (Rel; _Preserves₂_⟶_⟶_; _Preserves_
 open import Relation.Binary.Definitions as Binary hiding (Decidable)
 open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.PropositionalEquality.Core as ≡ using (_≡_)
-open import Relation.Unary as Unary using (Decidable; Pred)
-open import Relation.Nullary using (¬_; does; _because_; yes; no)
+open import Relation.Nullary.Decidable using (does; _because_; yes; no)
+open import Relation.Nullary.Negation using (¬_; contradiction)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (¬?)
+open import Relation.Unary as Unary using (Decidable; Pred)
+
 open Setoid using (Carrier)
 
 private
@@ -148,24 +147,24 @@ module _ (S : Setoid c ℓ) where
 
 module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
 
-  open Setoid S₁ renaming (Carrier to A₁; _≈_ to _≈₁_; refl to refl₁)
-  open Setoid S₂ renaming (Carrier to A₂; _≈_ to _≈₂_)
+  open Setoid S₁ renaming (_≈_ to _≈₁_)
+  open Setoid S₂ renaming (_≈_ to _≈₂_)
   private module M₁ = Membership S₁; open M₁ using (find) renaming (_∈_ to _∈₁_)
   private module M₂ = Membership S₂; open M₂ using () renaming (_∈_ to _∈₂_)
 
-  ∈-map⁺ : ∀ {f} → f Preserves _≈₁_ ⟶ _≈₂_ → ∀ {v xs} →
-            v ∈₁ xs → f v ∈₂ map f xs
+  ∈-map⁺ : ∀ {f} → f Preserves _≈₁_ ⟶ _≈₂_ →
+           ∀ {v xs} → v ∈₁ xs → f v ∈₂ map f xs
   ∈-map⁺ pres x∈xs = Any.map⁺ (Any.map pres x∈xs)
 
   ∈-map⁻ : ∀ {v xs f} → v ∈₂ map f xs →
            ∃ λ x → x ∈₁ xs × v ≈₂ f x
   ∈-map⁻ x∈map = find (Any.map⁻ x∈map)
 
-  map-∷= : ∀ {f} (f≈ : f Preserves _≈₁_ ⟶ _≈₂_)
-           {xs x v} → (x∈xs : x ∈₁ xs) →
-           map f (x∈xs M₁.∷= v) ≡ ∈-map⁺ f≈ x∈xs M₂.∷= f v
-  map-∷= f≈ (here x≈y)   = ≡.refl
-  map-∷= f≈ (there x∈xs) = ≡.cong (_ ∷_) (map-∷= f≈ x∈xs)
+  map-∷= : ∀ {f} (pres : f Preserves _≈₁_ ⟶ _≈₂_) →
+           ∀ {xs x v} → (x∈xs : x ∈₁ xs) →
+           map f (x∈xs M₁.∷= v) ≡ ∈-map⁺ pres x∈xs M₂.∷= f v
+  map-∷= pres (here x≈y)   = ≡.refl
+  map-∷= pres (there x∈xs) = ≡.cong (_ ∷_) (map-∷= pres x∈xs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -211,9 +210,10 @@ module _ (S : Setoid c ℓ) where
 
   ∈-∃++ : ∀ {v xs} → v ∈ xs → ∃₂ λ ys zs → ∃ λ w →
           v ≈ w × xs ≋ ys ++ [ w ] ++ zs
-  ∈-∃++ (here px)                  = [] , _ , _ , px , ≋-refl
-  ∈-∃++ (there {d} v∈xs) with ∈-∃++ v∈xs
-  ... | hs , _ , _ , v≈v′ , eq = d ∷ hs , _ , _ , v≈v′ , refl ∷ eq
+  ∈-∃++ (here px)        = [] , _ , _ , px , ≋-refl
+  ∈-∃++ (there {d} v∈xs) =
+    let hs , _ , _ , v≈v′ , eq = ∈-∃++ v∈xs
+    in d ∷ hs , _ , _ , v≈v′ , refl ∷ eq
 
 ------------------------------------------------------------------------
 -- concat
@@ -235,8 +235,8 @@ module _ (S : Setoid c ℓ) where
   ∈-concat⁺′ v∈vs = ∈-concat⁺ ∘ Any.map (flip (∈-resp-≋ S) v∈vs)
 
   ∈-concat⁻′ : ∀ {v} xss → v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ₗ xss
-  ∈-concat⁻′ xss v∈c[xss] with find (∈-concat⁻ xss v∈c[xss])
-  ... | xs , t , s = xs , s , t
+  ∈-concat⁻′ xss v∈c[xss] =
+    let xs , xs∈xss , v∈xs = find (∈-concat⁻ xss v∈c[xss]) in xs , v∈xs , xs∈xss
 
 ------------------------------------------------------------------------
 -- reverse
@@ -271,10 +271,12 @@ module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) (S₃ : Setoid 
   ∈-cartesianProductWith⁻ : ∀ f xs ys {v} → v ∈₃ cartesianProductWith f xs ys →
                             ∃₂ λ a b → a ∈₁ xs × b ∈₂ ys × v ≈₃ f a b
   ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c with ∈-++⁻ S₃ (map (f x) ys) v∈c
-  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c | inj₁ v∈map with ∈-map⁻ S₂ S₃ v∈map
-  ... | (b , b∈ys , v≈fxb) = x , b , here refl₁ , b∈ys , v≈fxb
-  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c | inj₂ v∈com with ∈-cartesianProductWith⁻ f xs ys v∈com
-  ... | (a , b , a∈xs , b∈ys , v≈fab) = a , b , there a∈xs , b∈ys , v≈fab
+  ... | inj₁ v∈map =
+    let b , b∈ys , v≈fxb = ∈-map⁻ S₂ S₃ v∈map
+    in x , b , here refl₁ , b∈ys , v≈fxb
+  ... | inj₂ v∈com =
+    let a , b , a∈xs , b∈ys , v≈fab = ∈-cartesianProductWith⁻ f xs ys v∈com
+    in  a , b , there a∈xs , b∈ys , v≈fab
 
 ------------------------------------------------------------------------
 -- cartesianProduct
@@ -388,9 +390,9 @@ module _ (S : Setoid c ℓ) where
 
   open Membership S using (_∈_)
 
-  ∈-length : ∀ {x xs} → x ∈ xs → 1 ≤ length xs
-  ∈-length (here px)    = s≤s z≤n
-  ∈-length (there x∈xs) = ≤-trans (∈-length x∈xs) (n≤1+n _)
+  ∈-length : ∀ {x xs} → x ∈ xs → 0 < length xs
+  ∈-length (here px)    = z<s
+  ∈-length (there x∈xs) = z<s
 
 ------------------------------------------------------------------------
 -- lookup

@@ -36,15 +36,30 @@ Other major improvements
 
 Minor improvements
 ------------------
-The size of the dependency graph for many modules has been
-reduced. This may lead to speed ups for first-time loading of some
-modules.
+
+* The size of the dependency graph for many modules has been
+  reduced. This may lead to speed ups for first-time loading of some
+  modules.
+
+* The definition of the `Pointwise` relational combinator in
+  `Data.Product.Relation.Binary.Pointwise.NonDependent.Pointwise`
+  has been generalised to take heterogeneous arguments in `REL`.
+
+* The structures `IsSemilattice` and `IsBoundedSemilattice` in
+  `Algebra.Lattice.Structures` have been redefined as aliases of
+  `IsCommutativeBand` and `IsIdempotentMonoid` in `Algebra.Structures`.
+
 
 Deprecated modules
 ------------------
 
 * `Data.List.Relation.Binary.Sublist.Propositional.Disjoint` deprecated in favour of
   `Data.List.Relation.Binary.Sublist.Propositional.Slice`.
+
+* The modules `Function.Endomorphism.Propositional` and
+  `Function.Endomorphism.Setoid` that use the old `Function`
+  hierarchy. Use `Function.Endo.Propositional` and
+  `Function.Endo.Setoid` instead.
 
 Deprecated names
 ----------------
@@ -77,16 +92,9 @@ Deprecated names
   scanl-defn  ↦  Data.List.Scans.Properties.scanl-defn
   ```
 
-* In `Data.List.NonEmpty.Base`:
+* In `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  inits : List A → List⁺ (List A)
-  tails : List A → List⁺ (List A)
-  ```
-
-* In `Data.List.NonEmpty.Properties`:
-  ```agda
-  toList-inits : toList ∘ List⁺.inits ≗ List.inits
-  toList-tails : toList ∘ List⁺.tails ≗ List.tails
+  map-compose  ↦  map-∘
   ```
 
 * In `Data.Nat.Divisibility.Core`:
@@ -113,6 +121,11 @@ New modules
   Algebra.Module.Bundles.Raw
   ```
 
+* Nagata's construction of the "idealization of a module":
+  ```agda
+  Algebra.Module.Construct.Idealization
+  ```
+
 * Bundled morphisms between (raw) algebraic structures:
   ```
   Algebra.Morphism.Bundles
@@ -124,9 +137,22 @@ New modules
   Algebra.Morphism.Construct.Terminal
   ```
 
-* Nagata's construction of the "idealization of a module":
+* Pointwise and equality relations over indexed containers:
   ```agda
-  Algebra.Module.Construct.Idealization
+  Data.Container.Indexed.Relation.Binary.Pointwise
+  Data.Container.Indexed.Relation.Binary.Pointwise.Properties
+  Data.Container.Indexed.Relation.Binary.Equality.Setoid
+  ```
+
+* Refactoring of `Data.List.Base.{scanr|scanl}` and their properties:
+  ```
+  Data.List.Scans.Base
+  Data.List.Scans.Properties
+  ```
+
+* Properties of `List` modulo `Setoid` equality (currently only the ([],++) monoid):
+  ```
+  Data.List.Relation.Binary.Equality.Setoid.Properties
   ```
 
 * Pointwise and equality relations over indexed containers:
@@ -152,6 +178,24 @@ New modules
   and adding new functions:
   - `⊆-upper-bound-is-cospan` generalising `⊆-disjoint-union-is-cospan` from (*)
   - `⊆-upper-bound-cospan` generalising `⊆-disjoint-union-cospan` from (*)
+  ```
+
+* Decidability for the subset relation on lists:
+  ```agda
+  Data.List.Relation.Binary.Subset.DecSetoid (_⊆?_)
+  Data.List.Relation.Binary.Subset.DecPropositional
+  ```
+
+* Decidability for the disjoint relation on lists:
+  ```agda
+  Data.List.Relation.Binary.Disjoint.DecSetoid (disjoint?)
+  Data.List.Relation.Binary.Disjoint.DecPropositional
+  ```
+
+* Prime factorisation of natural numbers.
+  ```
+  Data.Nat.Primality.Factorisation
+  ```
 
 * Prime factorisation of natural numbers.
   ```
@@ -172,6 +216,11 @@ New modules
   isIndexedEquivalence : {A : Set a} → IsIndexedEquivalence (Vector A) _↭_
   indexedSetoid        : {A : Set a} → IndexedSetoid ℕ a _
   ```
+
+* The modules `Function.Endo.Propositional` and
+  `Function.Endo.Setoid` are new but are actually proper ports of
+  `Function.Endomorphism.Propositional` and
+  `Function.Endomorphism.Setoid`.
 
 * `Function.Relation.Binary.Equality`
   ```agda
@@ -194,14 +243,20 @@ New modules
   ```
 
 * Symmetric interior of a binary relation
-  ```agda
-  Relation.Binary.Construct.Interior.Symmetric
   ```
+  Relation.Binary.Construct.Interior.Symmetric
+ ```
 
 * Properties of `Setoid`s with decidable equality relation:
   ```agda
   Relation.Binary.Properties.DecSetoid
   ```
+
+* Systematise the use of `Recomputable A = .A → A`:
+  ```agda
+  Relation.Nullary.Recomputable
+  ```
+  with `Recomputable` exported publicly from `Relation.Nullary`.
 
 * `System.Random` bindings:
   ```agda
@@ -222,7 +277,15 @@ Additions to existing modules
 * In `Algebra.Bundles`
   ```agda
   record SuccessorSet c ℓ : Set (suc (c ⊔ ℓ))
+  record CommutativeBand c ℓ : Set (suc (c ⊔ ℓ))
+  record IdempotentMonoid c ℓ : Set (suc (c ⊔ ℓ))
   ```
+  and additional manifest fields for sub-bundles arising from these in:
+  ```agda
+  IdempotentCommutativeMonoid
+  IdempotentSemiring
+  ```
+
 
 * In `Algebra.Bundles.KleeneAlgebra`:
   ```agda
@@ -350,7 +413,7 @@ Additions to existing modules
   loopHomomorphism           : LoopHomomorphism M.rawLoop M.rawLoop
   ```
 
-* In `Algebra.Morphism.Structures`
+* In `Algebra.Morphism.Structures`:
   ```agda
   module SuccessorSetMorphisms (N₁ : RawSuccessorSet a ℓ₁) (N₂ : RawSuccessorSet b ℓ₂) where
     record IsSuccessorSetHomomorphism (⟦_⟧ : N₁.Carrier → N₂.Carrier) : Set _
@@ -419,6 +482,13 @@ Additions to existing modules
 * In `Algebra.Structures`
   ```agda
   record IsSuccessorSet (suc# : Op₁ A) (zero# : A) : Set _
+  record IsCommutativeBand (∙ : Op₂ A) : Set _
+  record IsIdempotentMonoid (∙ : Op₂ A) (ε : A) : Set _
+  ```
+  and additional manifest fields for substructures arising from these in:
+  ```agda
+  IsIdempotentCommutativeMonoid
+  IsIdempotentSemiring
   ```
 
 * In `Algebra.Structures.IsGroup`:
@@ -445,6 +515,11 @@ Additions to existing modules
 * In `Data.Container.Indexed.Core`:
   ```agda
   Subtrees o c = (r : Response c) → X (next c r)
+  ```
+
+* In `Data.Empty`:
+  ```agda
+  ⊥-elim-irr  : .⊥ → Whatever
   ```
 
 * In `Data.Fin.Properties`:
@@ -475,6 +550,12 @@ Additions to existing modules
   tail∘tails : List A → List (List A)
   ```
 
+* In `Data.List.Membership.Propositional.Properties.Core`:
+  ```agda
+  find∘∃∈-Any : (p : ∃ λ x → x ∈ xs × P x) → find (∃∈-Any p) ≡ p
+  ∃∈-Any∘find : (p : Any P xs) → ∃∈-Any (find p) ≡ p
+  ```
+
 * In `Data.List.Membership.Setoid.Properties`:
   ```agda
   reverse⁺ : x ∈ xs → x ∈ reverse xs
@@ -487,49 +568,78 @@ Additions to existing modules
   tails : List A → List⁺ (List A)
   ```
 
+* In `Data.List.NonEmpty.Properties`:
+  ```agda
+  toList-inits : toList ∘ List⁺.inits ≗ List.inits
+  toList-tails : toList ∘ List⁺.tails ≗ List.tails
+  ```
+
 * In `Data.List.Properties`:
   ```agda
-  length-catMaybes      : length (catMaybes xs) ≤ length xs
-  applyUpTo-∷ʳ          : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
-  applyDownFrom-∷ʳ      : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
-  upTo-∷ʳ               : upTo n ∷ʳ n ≡ upTo (suc n)
-  downFrom-∷ʳ           : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
-  reverse-selfInverse   : SelfInverse {A = List A} _≡_ reverse
-  reverse-applyUpTo     : reverse (applyUpTo f n) ≡ applyDownFrom f n
-  reverse-upTo          : reverse (upTo n) ≡ downFrom n
-  reverse-applyDownFrom : reverse (applyDownFrom f n) ≡ applyUpTo f n
-  reverse-downFrom      : reverse (downFrom n) ≡ upTo n
-  mapMaybe-map          : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
-  map-mapMaybe          : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
-  align-map             : align (map f xs) (map g ys) ≡ map (map f g) (align xs ys)
-  zip-map               : zip (map f xs) (map g ys) ≡ map (map f g) (zip xs ys)
-  unzipWith-map         : unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
-  map-unzipWith         : map (map g) (map h) ∘ unzipWith f ≗ unzipWith (map g h ∘ f)
-  unzip-map             : unzip ∘ map (map f g) ≗ map (map f) (map g) ∘ unzip
-  splitAt-map           : splitAt n ∘ map f ≗ map (map f) (map f) ∘ splitAt n
-  uncons-map            : uncons ∘ map f ≗ map (map f (map f)) ∘ uncons
-  last-map              : last ∘ map f ≗ map f ∘ last
-  tail-map              : tail ∘ map f ≗ map (map f) ∘ tail
-  mapMaybe-cong         : f ≗ g → mapMaybe f ≗ mapMaybe g
-  zipWith-cong          : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
-  unzipWith-cong        : f ≗ g → unzipWith f ≗ unzipWith g
-  foldl-cong            : (∀ x y → f x y ≡ g x y) → ∀ x → foldl f x ≗ foldl g x
-  alignWith-flip        : alignWith f xs ys ≡ alignWith (f ∘ swap) ys xs
-  alignWith-comm        : f ∘ swap ≗ f → alignWith f xs ys ≡ alignWith f ys xs
-  align-flip            : align xs ys ≡ map swap (align ys xs)
-  zip-flip              : zip xs ys ≡ map swap (zip ys xs)
-  unzipWith-swap        : unzipWith (swap ∘ f) ≗ swap ∘ unzipWith f
-  unzip-swap            : unzip ∘ map swap ≗ swap ∘ unzip
-  take-take             : take n (take m xs) ≡ take (n ⊓ m) xs
-  take-drop             : take n (drop m xs) ≡ drop m (take (m + n) xs)
-  zip-unzip             : uncurry′ zip ∘ unzip ≗ id
-  unzipWith-zipWith     : f ∘ uncurry′ g ≗ id → length xs ≡ length ys → unzipWith f (zipWith g xs ys) ≡ (xs , ys)
-  unzip-zip             : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
-  mapMaybe-++           : mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
-  unzipWith-++          : unzipWith f (xs ++ ys) ≡ zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
-  catMaybes-concatMap   : catMaybes ≗ concatMap fromMaybe
-  catMaybes-++          : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
-  map-catMaybes         : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  length-catMaybes       : length (catMaybes xs) ≤ length xs
+  applyUpTo-∷ʳ           : applyUpTo f n ∷ʳ f n ≡ applyUpTo f (suc n)
+  applyDownFrom-∷ʳ       : applyDownFrom (f ∘ suc) n ∷ʳ f 0 ≡ applyDownFrom f (suc n)
+  upTo-∷ʳ                : upTo n ∷ʳ n ≡ upTo (suc n)
+  downFrom-∷ʳ            : applyDownFrom suc n ∷ʳ 0 ≡ downFrom (suc n)
+  reverse-selfInverse    : SelfInverse {A = List A} _≡_ reverse
+  reverse-applyUpTo      : reverse (applyUpTo f n) ≡ applyDownFrom f n
+  reverse-upTo           : reverse (upTo n) ≡ downFrom n
+  reverse-applyDownFrom  : reverse (applyDownFrom f n) ≡ applyUpTo f n
+  reverse-downFrom       : reverse (downFrom n) ≡ upTo n
+  mapMaybe-map           : mapMaybe f ∘ map g ≗ mapMaybe (f ∘ g)
+  map-mapMaybe           : map g ∘ mapMaybe f ≗ mapMaybe (Maybe.map g ∘ f)
+  align-map              : align (map f xs) (map g ys) ≡ map (map f g) (align xs ys)
+  zip-map                : zip (map f xs) (map g ys) ≡ map (map f g) (zip xs ys)
+  unzipWith-map          : unzipWith f ∘ map g ≗ unzipWith (f ∘ g)
+  map-unzipWith          : map (map g) (map h) ∘ unzipWith f ≗ unzipWith (map g h ∘ f)
+  unzip-map              : unzip ∘ map (map f g) ≗ map (map f) (map g) ∘ unzip
+  splitAt-map            : splitAt n ∘ map f ≗ map (map f) (map f) ∘ splitAt n
+  uncons-map             : uncons ∘ map f ≗ map (map f (map f)) ∘ uncons
+  last-map               : last ∘ map f ≗ map f ∘ last
+  tail-map               : tail ∘ map f ≗ map (map f) ∘ tail
+  mapMaybe-cong          : f ≗ g → mapMaybe f ≗ mapMaybe g
+  zipWith-cong           : (∀ a b → f a b ≡ g a b) → ∀ as → zipWith f as ≗ zipWith g as
+  unzipWith-cong         : f ≗ g → unzipWith f ≗ unzipWith g
+  foldl-cong             : (∀ x y → f x y ≡ g x y) → ∀ x → foldl f x ≗ foldl g x
+  alignWith-flip         : alignWith f xs ys ≡ alignWith (f ∘ swap) ys xs
+  alignWith-comm         : f ∘ swap ≗ f → alignWith f xs ys ≡ alignWith f ys xs
+  align-flip             : align xs ys ≡ map swap (align ys xs)
+  zip-flip               : zip xs ys ≡ map swap (zip ys xs)
+  unzipWith-swap         : unzipWith (swap ∘ f) ≗ swap ∘ unzipWith f
+  unzip-swap             : unzip ∘ map swap ≗ swap ∘ unzip
+  take-take              : take n (take m xs) ≡ take (n ⊓ m) xs
+  take-drop              : take n (drop m xs) ≡ drop m (take (m + n) xs)
+  zip-unzip              : uncurry′ zip ∘ unzip ≗ id
+  unzipWith-zipWith      : f ∘ uncurry′ g ≗ id →
+                           length xs ≡ length ys →
+                           unzipWith f (zipWith g xs ys) ≡ (xs , ys)
+  unzip-zip              : length xs ≡ length ys → unzip (zip xs ys) ≡ (xs , ys)
+  mapMaybe-++            : mapMaybe f (xs ++ ys) ≡ mapMaybe f xs ++ mapMaybe f ys
+  unzipWith-++           : unzipWith f (xs ++ ys) ≡
+                           zip _++_ _++_ (unzipWith f xs) (unzipWith f ys)
+  catMaybes-concatMap    : catMaybes ≗ concatMap fromMaybe
+  catMaybes-++           : catMaybes (xs ++ ys) ≡ catMaybes xs ++ catMaybes ys
+  map-catMaybes          : map f ∘ catMaybes ≗ catMaybes ∘ map (Maybe.map f)
+  Any-catMaybes⁺         : Any (M.Any P) xs → Any P (catMaybes xs)
+  mapMaybeIsInj₁∘mapInj₁ : mapMaybe isInj₁ (map inj₁ xs) ≡ xs
+  mapMaybeIsInj₁∘mapInj₂ : mapMaybe isInj₁ (map inj₂ xs) ≡ []
+  mapMaybeIsInj₂∘mapInj₂ : mapMaybe isInj₂ (map inj₂ xs) ≡ xs
+  mapMaybeIsInj₂∘mapInj₁ : mapMaybe isInj₂ (map inj₁ xs) ≡ []
+  ```
+
+* In `Data.List.Relation.Binary.Pointwise.Base`:
+  ```agda
+  unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
+  ```
+
+* In `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
+  ```
+
+* In `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
   ```
 
 * In `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
@@ -553,6 +663,11 @@ Additions to existing modules
   reverse⁻            : reverse as ⊆ reverse bs → as ⊆ bs
   ```
 
+* In `Data.List.Relation.Unary.All`:
+  ```agda
+  universal-U : Universal (All U)
+  ```
+
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-catMaybes⁺ : All (Maybe.All P) xs → All P (catMaybes xs)
@@ -563,6 +678,12 @@ Additions to existing modules
   ```agda
   catMaybes⁺ : AllPairs (Pointwise R) xs → AllPairs R (catMaybes xs)
   tabulate⁺-< : (i < j → R (f i) (f j)) → AllPairs R (tabulate f)
+  ```
+
+* In `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  map-cong : (f g : P ⋐ Q) → (∀ {x} (p : P x) → f p ≡ g p) →
+             (p : Any P xs) → Any.map f p ≡ Any.map g p
   ```
 
 * In `Data.List.Relation.Ternary.Appending.Setoid.Properties`:
@@ -589,21 +710,6 @@ Additions to existing modules
   assoc← :   ((S ; T) ⇒ R) → ((W ; T) ⇒ (U ; V)) → (X ⇒ (Y ; V)) →
              ∃[ ys ] Appending W S bs cs ys × Appending X T as ys ds →
                          ∃[ xs ] Appending Y U as bs xs × Appending V R xs cs ds
-  ```
-
-* In `Data.List.Relation.Binary.Pointwise.Base`:
-  ```agda
-  unzip : Pointwise (R ; S) ⇒ (Pointwise R ; Pointwise S)
-  ```
-
-* In `Data.Maybe.Relation.Binary.Pointwise`:
-  ```agda
-  pointwise⊆any : Pointwise R (just x) ⊆ Any (R x)
-  ```
-
-* In `Data.List.Relation.Binary.Sublist.Setoid`:
-  ```agda
-  ⊆-upper-bound : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → UpperBound τ σ
   ```
 
 * In `Data.Nat.Divisibility`:
@@ -642,7 +748,32 @@ Additions to existing modules
 
 * Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
-  product-↭ : product Preserves _↭_ ⟶ _≡_
+  product-↭   : product Preserves _↭_ ⟶ _≡_
+  catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
+  mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Setoid.Properties.Maybe`:
+  ```agda
+  catMaybes-↭ : xs ↭ ys → catMaybes xs ↭ catMaybes ys
+  mapMaybe-↭  : xs ↭ ys → mapMaybe f xs ↭ mapMaybe f ys
+  ```
+
+* Added some very-dependent map and zipWith to `Data.Product`.
+  ```agda
+  map-Σ : {B : A → Set b} {P : A → Set p} {Q : {x : A} → P x → B x → Set q} →
+   (f : (x : A) → B x) → (∀ {x} → (y : P x) → Q y (f x)) →
+   ((x , y) : Σ A P) → Σ (B x) (Q y)
+
+  map-Σ′ : {B : A → Set b} {P : Set p} {Q : P → Set q} →
+    (f : (x : A) → B x) → ((x : P) → Q x) → ((x , y) : A × P) → B x × Q y
+
+  zipWith : {P : A → Set p} {Q : B → Set q} {R : C → Set r} {S : (x : C) → R x → Set s}
+    (_∙_ : A → B → C) → (_∘_ : ∀ {x y} → P x → Q y → R (x ∙ y)) →
+    (_*_ : (x : C) → (y : R x) → S x y) →
+    ((a , p) : Σ A P) → ((b , q) : Σ B Q) →
+        S (a ∙ b) (p ∘ q)
+
   ```
 
 * In `Data.Rational.Properties`:
@@ -732,9 +863,25 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
+* Added new proof in `Relation.Nullary.Decidable.Core`:
+  ```agda
+  recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
+  ```
+
 * Added new proof in `Relation.Nullary.Decidable`:
   ```agda
   ⌊⌋-map′ : (a? : Dec A) → ⌊ map′ t f a? ⌋ ≡ ⌊ a? ⌋
+  ```
+
+* Added new definitions in `Relation.Nullary.Negation.Core`:
+  ```agda
+  contradiction-irr : .A → ¬ A → Whatever
+  ```
+
+* Added new definitions in `Relation.Nullary.Reflects`:
+  ```agda
+  recompute          : Reflects A b → Recomputable A
+  recompute-constant : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
   ```
 
 * Added new definitions in `Relation.Unary`
