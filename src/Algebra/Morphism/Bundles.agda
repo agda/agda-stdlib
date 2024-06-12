@@ -2,17 +2,19 @@
 -- The Agda standard library
 --
 -- Bundled definitions of homomorphisms between algebras
+--
+-- NB indexed by Raw bundles, just as IsXHomomorphism is 
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Algebra.Morphism.Bundles where
 
-open import Algebra.Bundles -- using (Magma)
-open import Algebra.Morphism.Structures -- using (IsMagmaHomomorphism)
+open import Algebra.Bundles.Raw
+open import Algebra.Morphism.Structures
 open import Level using (Level; suc; _⊔_)
-open import Relation.Binary.Morphism using (IsRelHomomorphism)
-open import Relation.Binary.Morphism.Bundles using (SetoidHomomorphism)
+--open import Relation.Binary.Morphism using (IsRelHomomorphism)
+--open import Relation.Binary.Morphism.Bundles using (SetoidHomomorphism)
 
 private
   variable
@@ -23,57 +25,60 @@ private
 -- Morphisms between Magmas
 ------------------------------------------------------------------------
 
-record MagmaHomomorphism (A : Magma a ℓa) (B : Magma b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record MagmaHomomorphism
+  (A : RawMagma a ℓa) (B : RawMagma b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb)
+  where
   private
-    module A = Magma A
-    module B = Magma B
+    module A = RawMagma A
+    module B = RawMagma B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
 
-    isMagmaHomomorphism : IsMagmaHomomorphism A.rawMagma B.rawMagma ⟦_⟧
+    isMagmaHomomorphism : IsMagmaHomomorphism A B ⟦_⟧
 
   open IsMagmaHomomorphism isMagmaHomomorphism public
-
-  setoidHomomorphism : SetoidHomomorphism A.setoid B.setoid
-  setoidHomomorphism = record { isRelHomomorphism = isRelHomomorphism }
 
 ------------------------------------------------------------------------
 -- Morphisms between Monoids
 ------------------------------------------------------------------------
 
-record MonoidHomomorphism (A : Monoid a ℓa) (B : Monoid b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record MonoidHomomorphism
+  (A : RawMonoid a ℓa) (B : RawMonoid b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb)
+  where
   private
-    module A = Monoid A
-    module B = Monoid B
+    module A = RawMonoid A
+    module B = RawMonoid B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
 
-    isMonoidHomomorphism : IsMonoidHomomorphism A.rawMonoid B.rawMonoid ⟦_⟧
+    isMonoidHomomorphism : IsMonoidHomomorphism A B ⟦_⟧
 
   open IsMonoidHomomorphism isMonoidHomomorphism public
 
-  magmaHomomorphism : MagmaHomomorphism A.magma B.magma
+  magmaHomomorphism : MagmaHomomorphism A.rawMagma B.rawMagma
   magmaHomomorphism = record { isMagmaHomomorphism = isMagmaHomomorphism }
 
 ------------------------------------------------------------------------
 -- Morphisms between Groups
 ------------------------------------------------------------------------
 
-record GroupHomomorphism (A : Group a ℓa) (B : Group b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record GroupHomomorphism
+  (A : RawGroup a ℓa) (B : RawGroup b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb)
+  where
   private
-    module A = Group A
-    module B = Group B
+    module A = RawGroup A
+    module B = RawGroup B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
 
-    isGroupHomomorphism : IsGroupHomomorphism A.rawGroup B.rawGroup ⟦_⟧
+    isGroupHomomorphism : IsGroupHomomorphism A B ⟦_⟧
 
   open IsGroupHomomorphism isGroupHomomorphism public
 
-  monoidHomomorphism : MonoidHomomorphism A.monoid B.monoid
+  monoidHomomorphism : MonoidHomomorphism A.rawMonoid B.rawMonoid
   monoidHomomorphism = record { isMonoidHomomorphism = isMonoidHomomorphism }
 
   open MonoidHomomorphism monoidHomomorphism public
@@ -83,22 +88,24 @@ record GroupHomomorphism (A : Group a ℓa) (B : Group b ℓb) : Set (a ⊔ b �
 -- Morphisms between NearSemirings
 ------------------------------------------------------------------------
 
-record NearSemiringHomomorphism (A : NearSemiring a ℓa) (B : NearSemiring b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record NearSemiringHomomorphism
+  (A : RawNearSemiring a ℓa) (B : RawNearSemiring b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb)
+  where
   private
-    module A = NearSemiring A
-    module B = NearSemiring B
+    module A = RawNearSemiring A
+    module B = RawNearSemiring B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
 
-    isNearSemiringHomomorphism : IsNearSemiringHomomorphism A.rawNearSemiring B.rawNearSemiring ⟦_⟧
+    isNearSemiringHomomorphism : IsNearSemiringHomomorphism A B ⟦_⟧
 
   open IsNearSemiringHomomorphism isNearSemiringHomomorphism public
 
-  +-monoidHomomorphism : MonoidHomomorphism A.+-monoid B.+-monoid
+  +-monoidHomomorphism : MonoidHomomorphism A.+-rawMonoid B.+-rawMonoid
   +-monoidHomomorphism = record { isMonoidHomomorphism = +-isMonoidHomomorphism }
 
-  *-magmaHomomorphism : MagmaHomomorphism A.*-magma B.*-magma
+  *-magmaHomomorphism : MagmaHomomorphism A.*-rawMagma B.*-rawMagma
   *-magmaHomomorphism = record { isMagmaHomomorphism = *-isMagmaHomomorphism }
 
   open MonoidHomomorphism +-monoidHomomorphism public
@@ -109,43 +116,47 @@ record NearSemiringHomomorphism (A : NearSemiring a ℓa) (B : NearSemiring b �
 -- Morphisms between Semirings
 ------------------------------------------------------------------------
 
-record SemiringHomomorphism (A : Semiring a ℓa) (B : Semiring b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record SemiringHomomorphism
+  (A : RawSemiring a ℓa) (B : RawSemiring b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb)
+  where
   private
-    module A = Semiring A
-    module B = Semiring B
+    module A = RawSemiring A
+    module B = RawSemiring B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
 
-    isSemiringHomomorphism : IsSemiringHomomorphism A.rawSemiring B.rawSemiring ⟦_⟧
+    isSemiringHomomorphism : IsSemiringHomomorphism A B ⟦_⟧
 
   open IsSemiringHomomorphism isSemiringHomomorphism public
 
-  nearSemiringHomomorphism : NearSemiringHomomorphism A.nearSemiring B.nearSemiring
+  nearSemiringHomomorphism : NearSemiringHomomorphism A.rawNearSemiring B.rawNearSemiring
   nearSemiringHomomorphism = record { isNearSemiringHomomorphism = isNearSemiringHomomorphism }
 
   open NearSemiringHomomorphism nearSemiringHomomorphism public
     using (*-magmaHomomorphism; +-monoidHomomorphism; +-magmaHomomorphism)
 
-  *-monoidHomomorphism : MonoidHomomorphism A.*-monoid B.*-monoid
+  *-monoidHomomorphism : MonoidHomomorphism A.*-rawMonoid B.*-rawMonoid
   *-monoidHomomorphism = record { isMonoidHomomorphism = *-isMonoidHomomorphism }
 
 ------------------------------------------------------------------------
 -- Morphisms between KleeneAlgebras
 ------------------------------------------------------------------------
 
-record KleeneAlgebraHomomorphism (A : KleeneAlgebra a ℓa) (B : KleeneAlgebra b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record KleeneAlgebraHomomorphism
+  (A : RawKleeneAlgebra a ℓa) (B : RawKleeneAlgebra b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb)
+  where
   private
-    module A = KleeneAlgebra A
-    module B = KleeneAlgebra B
+    module A = RawKleeneAlgebra A
+    module B = RawKleeneAlgebra B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
-    isKleeneAlgebraHomomorphism : IsKleeneAlgebraHomomorphism A.rawKleeneAlgebra B.rawKleeneAlgebra ⟦_⟧
+    isKleeneAlgebraHomomorphism : IsKleeneAlgebraHomomorphism A B ⟦_⟧
 
   open IsKleeneAlgebraHomomorphism isKleeneAlgebraHomomorphism public
 
-  semiringHomomorphism : SemiringHomomorphism A.semiring B.semiring
+  semiringHomomorphism : SemiringHomomorphism A.rawSemiring B.rawSemiring
   semiringHomomorphism = record { isSemiringHomomorphism = isSemiringHomomorphism }
 
   open SemiringHomomorphism semiringHomomorphism public
@@ -155,48 +166,48 @@ record KleeneAlgebraHomomorphism (A : KleeneAlgebra a ℓa) (B : KleeneAlgebra b
 -- Morphisms between RingWithoutOnes
 ------------------------------------------------------------------------
 
-record RingWithoutOneHomomorphism (A : RingWithoutOne a ℓa) (B : RingWithoutOne b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record RingWithoutOneHomomorphism (A : RawRingWithoutOne a ℓa) (B : RawRingWithoutOne b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
   private
-    module A = RingWithoutOne A
-    module B = RingWithoutOne B
+    module A = RawRingWithoutOne A
+    module B = RawRingWithoutOne B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
-    isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism A.rawRingWithoutOne B.rawRingWithoutOne ⟦_⟧
+    isRingWithoutOneHomomorphism : IsRingWithoutOneHomomorphism A B ⟦_⟧
 
   open IsRingWithoutOneHomomorphism isRingWithoutOneHomomorphism public
 
-  nearSemiringHomomorphism : NearSemiringHomomorphism A.nearSemiring B.nearSemiring
+  nearSemiringHomomorphism : NearSemiringHomomorphism A.rawNearSemiring B.rawNearSemiring
   nearSemiringHomomorphism = record { isNearSemiringHomomorphism = isNearSemiringHomomorphism }
 
   open NearSemiringHomomorphism nearSemiringHomomorphism public
     using (*-magmaHomomorphism; +-magmaHomomorphism; +-monoidHomomorphism)
 
-  +-groupHomomorphism : GroupHomomorphism A.+-group B.+-group
+  +-groupHomomorphism : GroupHomomorphism A.+-rawGroup B.+-rawGroup
   +-groupHomomorphism = record { isGroupHomomorphism = +-isGroupHomomorphism }
 
 ------------------------------------------------------------------------
 -- Morphisms between Rings
 ------------------------------------------------------------------------
 
-record RingHomomorphism (A : Ring a ℓa) (B : Ring b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record RingHomomorphism (A : RawRing a ℓa) (B : RawRing b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
   private
-    module A = Ring A
-    module B = Ring B
+    module A = RawRing A
+    module B = RawRing B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
-    isRingHomomorphism : IsRingHomomorphism A.rawRing B.rawRing ⟦_⟧
+    isRingHomomorphism : IsRingHomomorphism A B ⟦_⟧
 
   open IsRingHomomorphism isRingHomomorphism public
 
-  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism A.ringWithoutOne B.ringWithoutOne
+  ringWithoutOneHomomorphism : RingWithoutOneHomomorphism A.rawRingWithoutOne B.rawRingWithoutOne
   ringWithoutOneHomomorphism = record { isRingWithoutOneHomomorphism = isRingWithoutOneHomomorphism }
 
   open RingWithoutOneHomomorphism ringWithoutOneHomomorphism public
     using (+-groupHomomorphism)
 
-  semiringHomomorphism : SemiringHomomorphism A.semiring B.semiring
+  semiringHomomorphism : SemiringHomomorphism A.rawSemiring B.rawSemiring
   semiringHomomorphism = record { isSemiringHomomorphism = isSemiringHomomorphism }
 
   open SemiringHomomorphism semiringHomomorphism public
@@ -208,34 +219,39 @@ record RingHomomorphism (A : Ring a ℓa) (B : Ring b ℓb) : Set (a ⊔ b ⊔ �
 -- Morphisms between Quasigroups
 ------------------------------------------------------------------------
 
-record QuasigroupHomomorphism (A : Quasigroup a ℓa) (B : Quasigroup b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record QuasigroupHomomorphism
+  (A : RawQuasigroup a ℓa) (B : RawQuasigroup b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb)
+  where
   private
-    module A = Quasigroup A
-    module B = Quasigroup B
+    module A = RawQuasigroup A
+    module B = RawQuasigroup B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
-    isQuasigroupHomomorphism : IsQuasigroupHomomorphism A.rawQuasigroup B.rawQuasigroup ⟦_⟧
+    isQuasigroupHomomorphism : IsQuasigroupHomomorphism A B ⟦_⟧
 
   open IsQuasigroupHomomorphism isQuasigroupHomomorphism public
 
-  magmaHomomorphism : MagmaHomomorphism A.magma B.magma
+  magmaHomomorphism : MagmaHomomorphism A.∙-rawMagma B.∙-rawMagma
   magmaHomomorphism = record { isMagmaHomomorphism = ∙-isMagmaHomomorphism }
 
 ------------------------------------------------------------------------
 -- Morphisms between Loops
 ------------------------------------------------------------------------
 
-record LoopHomomorphism (A : Loop a ℓa) (B : Loop b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb) where
+record LoopHomomorphism
+  (A : RawLoop a ℓa) (B : RawLoop b ℓb) : Set (a ⊔ b ⊔ ℓa ⊔ ℓb)
+  where
   private
-    module A = Loop A
-    module B = Loop B
+    module A = RawLoop A
+    module B = RawLoop B
 
   field
     ⟦_⟧ : A.Carrier → B.Carrier
-    isLoopHomomorphism : IsLoopHomomorphism A.rawLoop B.rawLoop ⟦_⟧
+    isLoopHomomorphism : IsLoopHomomorphism A B ⟦_⟧
 
   open IsLoopHomomorphism isLoopHomomorphism public
 
-  quasigroupHomomorphism : QuasigroupHomomorphism A.quasigroup B.quasigroup
+  quasigroupHomomorphism : QuasigroupHomomorphism A.rawQuasigroup B.rawQuasigroup
   quasigroupHomomorphism = record { isQuasigroupHomomorphism = isQuasigroupHomomorphism }
+
