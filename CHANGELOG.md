@@ -30,6 +30,8 @@ Non-backwards compatible changes
 * The definitions in `Algebra.Module.Morphism.Construct.Identity` are now
   parametrized by _raw_ bundles, and as such take a proof of reflexivity.
 * The module `IO.Primitive` was moved to `IO.Primitive.Core`.
+* The modules in the `Data.Word` hierarchy were moved to the `Data.Word64`
+  one instead.
 
 Other major improvements
 ------------------------
@@ -105,6 +107,16 @@ Deprecated names
 * In `IO.Base`:
   ```agda
   untilRight  ↦  untilInj₂
+  ```
+
+* In `Data.Float.Base`:
+  ```agda
+  toWord ↦ toWord64
+  ```
+
+* In `Data.Float.Properties`:
+  ```agda
+  toWord-injective ↦ toWord64-injective
   ```
 
 New modules
@@ -269,6 +281,43 @@ New modules
   Data.List.Show
   Data.Vec.Show
   Data.Vec.Bounded.Show
+  ```
+
+* Word64 literals and bit-based functions:
+  ```agda
+  Data.Word64.Literals
+  Data.Word64.Unsafe
+  Data.Word64.Show
+  ```
+
+* A type of bytes:
+  ```agda
+  Data.Word8.Primitive
+  Data.Word8.Base
+  Data.Word8.Literals
+  Data.Word8.Show
+  ```
+
+* Bytestrings and builders:
+  ```agda
+  Data.Bytestring.Base
+  Data.Bytestring.Builder.Base
+  Data.Bytestring.Builder.Primitive
+  Data.Bytestring.IO
+  Data.Bytestring.IO.Primitive
+  Data.Bytestring.Primitive
+  ```
+
+* Decidability for the subset relation on lists:
+  ```agda
+  Data.List.Relation.Binary.Subset.DecSetoid (_⊆?_)
+  Data.List.Relation.Binary.Subset.DecPropositional
+  ```
+
+* Decidability for the disjoint relation on lists:
+  ```agda
+  Data.List.Relation.Binary.Disjoint.DecSetoid (disjoint?)
+  Data.List.Relation.Binary.Disjoint.DecPropositional
   ```
 
 Additions to existing modules
@@ -510,6 +559,11 @@ Additions to existing modules
   extra property as an exposed definition:
   ```agda
     *-cancelʳ-nonZero : AlmostRightCancellative 0# *
+  ```
+
+* In `Data.Bool.Show`:
+  ```agda
+  showBit : Bool → Char
   ```
 
 * In `Data.Container.Indexed.Core`:
@@ -821,9 +875,10 @@ Additions to existing modules
   _>>_ : IO A → IO B → IO B
   ```
 
-* In `Data.Word.Base`:
+* In `Data.Word64.Base`:
   ```agda
   _≤_ : Rel Word64 zero
+  show : Word64 → String
   ```
 
 * Added new definition in `Relation.Binary.Construct.Closure.Transitive`
