@@ -12,6 +12,7 @@ open import Algebra.Bundles using (CommutativeMonoid)
 
 module Algebra.Solver.CommutativeMonoid.Normal {c ℓ} (M : CommutativeMonoid c ℓ) where
 
+import Algebra.Properties.CommutativeSemigroup as CSProperties
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
@@ -22,6 +23,7 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Nullary.Decidable as Dec
 
 open CommutativeMonoid M
+open CSProperties commutativeSemigroup using (x∙yz≈y∙xz)
 open ≈-Reasoning setoid
 
 private
@@ -103,16 +105,10 @@ comp-correct : ∀ v w (ρ : Env n) →
 comp-correct [] [] _ =  sym (identityˡ _)
 comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = lemma l m (comp-correct v w ρ)
   where
-  flip12 : ∀ a b c → a ∙ (b ∙ c) ≈ b ∙ (a ∙ c)
-  flip12 a b c = begin
-      a ∙ (b ∙ c)  ≈⟨ assoc _ _ _ ⟨
-      (a ∙ b) ∙ c  ≈⟨ ∙-congʳ (comm _ _) ⟩
-      (b ∙ a) ∙ c  ≈⟨ assoc _ _ _ ⟩
-      b ∙ (a ∙ c)  ∎
   lemma : ∀ l m {d b c} (p : d ≈ b ∙ c) →
           fold d (a ∙_) (l + m) ≈ fold b (a ∙_) l ∙ fold c (a ∙_) m
   lemma zero    zero    p = p
-  lemma zero    (suc m) p = trans (∙-congˡ (lemma zero m p)) (flip12 _ _ _)
+  lemma zero    (suc m) p = trans (∙-congˡ (lemma zero m p)) (x∙yz≈y∙xz _ _ _)
   lemma (suc l) m       p = trans (∙-congˡ (lemma l m p)) (sym (assoc a _ _))
 
 ------------------------------------------------------------------------

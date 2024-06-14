@@ -76,6 +76,7 @@ Deprecated names
 
 * In `Algebra.Solver.IdempotentCommutativeMonoid`:
   ```agda
+  flip12             ↦  Algebra.Properties.CommutativeSemigroup.xy∙z≈y∙xz
   normalise-correct  ↦  Algebra.Solver.IdempotentCommutativeMonoid.Normal.correct
   ```
 

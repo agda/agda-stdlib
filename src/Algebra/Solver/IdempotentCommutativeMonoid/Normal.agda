@@ -13,6 +13,7 @@ open import Algebra.Bundles using (IdempotentCommutativeMonoid)
 module Algebra.Solver.IdempotentCommutativeMonoid.Normal
   {c ℓ} (M : IdempotentCommutativeMonoid c ℓ) where
 
+import Algebra.Properties.CommutativeSemigroup as CSProperties
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ)
@@ -23,6 +24,7 @@ import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Relation.Nullary.Decidable       as Dec
 
 open IdempotentCommutativeMonoid M
+open CSProperties commutativeSemigroup using (x∙yz≈y∙xz)
 open ≈-Reasoning setoid
 
 private
@@ -99,20 +101,11 @@ sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
 
 -- Normal form composition corresponds to the composition of the monoid.
 
-flip12 : ∀ a b c → a ∙ (b ∙ c) ≈ b ∙ (a ∙ c)
-flip12 a b c = begin
-    a ∙ (b ∙ c)  ≈⟨ assoc _ _ _ ⟨
-    (a ∙ b) ∙ c  ≈⟨ ∙-congʳ (comm _ _) ⟩
-    (b ∙ a) ∙ c  ≈⟨ assoc _ _ _ ⟩
-    b ∙ (a ∙ c)  ∎
-
 distr : ∀ a b c → a ∙ (b ∙ c) ≈ (a ∙ b) ∙ (a ∙ c)
 distr a b c = begin
     a ∙ (b ∙ c)        ≈⟨ ∙-congʳ (idem a) ⟨
     (a ∙ a) ∙ (b ∙ c)  ≈⟨ assoc _ _ _ ⟩
-    a ∙ (a ∙ (b ∙ c))  ≈⟨ ∙-congˡ (assoc _ _ _) ⟨
-    a ∙ ((a ∙ b) ∙ c)  ≈⟨ ∙-congˡ (∙-congʳ (comm _ _)) ⟩
-    a ∙ ((b ∙ a) ∙ c)  ≈⟨ ∙-congˡ (assoc _ _ _) ⟩
+    a ∙ (a ∙ (b ∙ c))  ≈⟨ ∙-congˡ (x∙yz≈y∙xz _ _ _) ⟩
     a ∙ (b ∙ (a ∙ c))  ≈⟨ assoc _ _ _ ⟨
     (a ∙ b) ∙ (a ∙ c)  ∎
 
@@ -124,7 +117,7 @@ comp-correct (true ∷ v) (true ∷ w) (a ∷ ρ) =
 comp-correct (true ∷ v) (false ∷ w) (a ∷ ρ) =
   trans (∙-congˡ (comp-correct v w ρ)) (sym (assoc _ _ _))
 comp-correct (false ∷ v) (true ∷ w) (a ∷ ρ) =
-  trans (∙-congˡ (comp-correct v w ρ)) (flip12 _ _ _)
+  trans (∙-congˡ (comp-correct v w ρ)) (x∙yz≈y∙xz _ _ _)
 comp-correct (false ∷ v) (false ∷ w) (a ∷ ρ) =
   comp-correct v w ρ
 
@@ -150,3 +143,18 @@ correct (e₁ ⊕ e₂) ρ = begin
     ≈⟨ ∙-cong (correct e₁ ρ) (correct e₂ ρ) ⟩
   ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
     ∎
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.1
+
+flip12 = x∙yz≈y∙xz
+{-# WARNING_ON_USAGE flip12
+"Warning: flip12 was deprecated in v2.1.
+Please use Algebra.Properties.CommutativeSemigroup.x∙yz≈y∙xz instead."
+#-}
