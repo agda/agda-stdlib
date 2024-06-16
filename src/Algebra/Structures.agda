@@ -799,7 +799,6 @@ record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a 
     *-cong           : Congruent₂ *
     *-identity       : Identity 1# *
     distrib          : * DistributesOver +
-    zero             : Zero 0# *
 
   open IsAbelianGroup +-isAbelianGroup public
     renaming
@@ -827,17 +826,20 @@ record IsNonAssociativeRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a 
     ; isGroup                 to +-isGroup
     )
 
-  zeroˡ : LeftZero 0# *
-  zeroˡ = proj₁ zero
-
-  zeroʳ : RightZero 0# *
-  zeroʳ = proj₂ zero
-
   distribˡ : * DistributesOverˡ +
   distribˡ = proj₁ distrib
 
   distribʳ : * DistributesOverʳ +
   distribʳ = proj₂ distrib
+
+  zeroˡ : LeftZero 0# *
+  zeroˡ = Consequences.assoc∧distribʳ∧idʳ∧invʳ⇒zeˡ setoid +-cong *-cong +-assoc distribʳ +-identityʳ -‿inverseʳ
+
+  zeroʳ : RightZero 0# *
+  zeroʳ = Consequences.assoc∧distribˡ∧idʳ∧invʳ⇒zeʳ setoid +-cong *-cong +-assoc distribˡ +-identityʳ -‿inverseʳ
+
+  zero : Zero 0# *
+  zero = zeroˡ , zeroʳ
 
   *-isMagma : IsMagma *
   *-isMagma = record
