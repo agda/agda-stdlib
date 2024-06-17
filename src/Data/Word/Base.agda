@@ -1,37 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Machine words: basic type and conversion functions
+-- This module is DEPRECATED. Please use Data.Word64.Base instead
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Data.Word.Base where
 
-open import Level using (zero)
-import Data.Nat.Base as ℕ
-open import Function.Base using (_on_)
-open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_)
+open import Data.Word64.Base public
 
-------------------------------------------------------------------------
--- Re-export built-ins publicly
-
-open import Agda.Builtin.Word public
-  using (Word64)
-  renaming
-  ( primWord64ToNat   to toℕ
-  ; primWord64FromNat to fromℕ
-  )
-
-infix 4 _≈_
-_≈_ : Rel Word64 zero
-_≈_ = _≡_ on toℕ
-
-infix 4 _<_
-_<_ : Rel Word64 zero
-_<_ = ℕ._<_ on toℕ
-
-infix 4 _≤_
-_≤_ : Rel Word64 zero
-_≤_ = ℕ._≤_ on toℕ
+{-# WARNING_ON_IMPORT
+"Data.Word.Base was deprecated in v2.1. Use Data.Word64.Base instead."
+#-}
