@@ -657,6 +657,14 @@ Type formers:
 
 #### Specific pragmatics/idiomatic patterns
 
+## Use of `pattern` synonyms
+
+In general, these are intended to be used to provide specialised
+constructors for `Data` types (and sometimes, inductive
+families/binary relations such as `Data.Nat.Divisibility._∣_`), and as
+such, their use should be restricted to `Base` or `Core` modules, and
+not pollute the namespaces of `Properties` or other modules.
+
 ## Use of `with` notation
 
 Thinking on this has changed since the early days of the library, with

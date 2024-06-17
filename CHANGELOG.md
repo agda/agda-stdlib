@@ -99,6 +99,15 @@ Deprecated names
   map-compose  ↦  map-∘
   ```
 
+* In `Data.Nat.Base`: the following pattern synonyms and definitions are all
+  deprecated in favour of direct pattern matching on `Algebra.Definitions.RawMagma._∣ˡ_._,_`
+  ```agda
+  pattern less-than-or-equal {k} eq = k , eq
+  pattern ≤″-offset k = k , refl
+  pattern <″-offset k = k , refl
+  s≤″s⁻¹
+ ```
+
 * In `Data.Nat.Divisibility.Core`:
   ```agda
   *-pres-∣  ↦  Data.Nat.Divisibility.*-pres-∣
@@ -663,12 +672,16 @@ Additions to existing modules
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
-  m≤n+o⇒m∸n≤o : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
-  m<n+o⇒m∸n<o : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
-  pred-cancel-≤ : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
-  pred-cancel-< : pred m < pred n → m < n
+  m≤n+o⇒m∸n≤o    : ∀ m n {o} → m ≤ n + o → m ∸ n ≤ o
+  m<n+o⇒m∸n<o    : ∀ m n {o} → .{{NonZero o}} → m < n + o → m ∸ n < o
+  pred-cancel-≤  : pred m ≤ pred n → (m ≡ 1 × n ≡ 0) ⊎ m ≤ n
+  pred-cancel-<  : pred m < pred n → m < n
   pred-injective : .{{NonZero m}} → .{{NonZero n}} → pred m ≡ pred n → m ≡ n
-  pred-cancel-≡ : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+  pred-cancel-≡  : pred m ≡ pred n → ((m ≡ 0 × n ≡ 1) ⊎ (m ≡ 1 × n ≡ 0)) ⊎ m ≡ n
+
+  <⇒<″          : _<_ ⇒ _<″_
+  m≤n⇒∃[o]m+o≡n : .(m ≤ n) → ∃ λ k → m + k ≡ n
+  guarded-∸≗∸   : .(m≤n : m ≤ n) → let k , _ = m≤n⇒∃[o]m+o≡n m≤n in k ≡ n ∸ m
   ```
 
 * Added new proofs to `Data.Nat.Primality`:
@@ -767,6 +780,12 @@ Additions to existing modules
 * Added new definition in `Relation.Unary`
   ```
   Stable : Pred A ℓ → Set _
+  ```
+
+* Added new functions in `Data.Vec.Bounded.Base`:
+  ```agda
+  isBounded : (as : Vec≤ A n) → Vec≤.length as ≤ n
+  toVec     : (as : Vec≤ A n) → Vec A (Vec≤.length as)
   ```
 
 * In `Function.Bundles`, added `_⟶ₛ_` as a synonym for `Func` that can

@@ -363,8 +363,6 @@ infix 4 _≤″_ _<″_ _≥″_ _>″_
 _≤″_ : (m n : ℕ)  → Set
 _≤″_ = _∣ˡ_ +-rawMagma
 
-pattern less-than-or-equal {k} proof = k , proof
-
 _<″_ : Rel ℕ 0ℓ
 m <″ n = suc m ≤″ n
 
@@ -374,18 +372,10 @@ m ≥″ n = n ≤″ m
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
 
--- Smart constructors of _≤″_ and _<″_
-
-pattern ≤″-offset k = less-than-or-equal {k = k} refl
-pattern <″-offset k = ≤″-offset k
-
--- Smart destructors of _<″_
-
-s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
-s≤″s⁻¹ (≤″-offset k) = ≤″-offset k
+-- Smart destructor of _<″_
 
 s<″s⁻¹ : ∀ {m n} → suc m <″ suc n → m <″ n
-s<″s⁻¹ (<″-offset k) = <″-offset k
+s<″s⁻¹ (k , refl) = k , refl
 
 -- _≤‴_: this definition is useful for induction with an upper bound.
 
@@ -429,5 +419,26 @@ compare (suc m) (suc n) with compare m n
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 2.0
+-- Version 2.1
 
+-- Smart constructors of _≤″_ and _<″_
+pattern less-than-or-equal {k} eq = k , eq
+{-# WARNING_ON_USAGE less-than-or-equal
+"Warning: less-than-or-equal was deprecated in v2.1. Please match directly on proofs of ≤″ using constructor Algebra.Definitions.RawMagma._∣ˡ_._,_ instead. "
+#-}
+pattern ≤″-offset k = k , refl
+{-# WARNING_ON_USAGE ≤″-offset
+"Warning: ≤″-offset was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.Definitions.RawMagma._∣ˡ_ instead. "
+#-}
+pattern <″-offset k = k , refl
+{-# WARNING_ON_USAGE <″-offset
+"Warning: <″-offset was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.Definitions.RawMagma._∣ˡ_ instead. "
+#-}
+
+-- Smart destructors of _<″_
+
+s≤″s⁻¹ : ∀ {m n} → suc m ≤″ suc n → m ≤″ n
+s≤″s⁻¹ (k , refl) = k , refl
+{-# WARNING_ON_USAGE s≤″s⁻¹
+"Warning: s≤″s⁻¹ was deprecated in v2.1. Please match directly on proofs of ≤″ using pattern (_, refl) from Algebra.Definitions.RawMagma._∣ˡ_ instead. "
+#-}
