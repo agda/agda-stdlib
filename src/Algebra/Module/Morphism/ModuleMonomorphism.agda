@@ -35,16 +35,20 @@ open import Algebra.Module.Morphism.SemimoduleMonomorphism isSemimoduleMonomorph
 ------------------------------------------------------------------------
 -- Structures
 
-isModule :
-  ∀ {ℓr} {_≈_ : Rel R ℓr} {_+_ _*_ : Op₂ R} { -_ : Op₁ R} {0# 1# : R}
-  (R-isCommutativeRing : IsCommutativeRing _≈_ _+_ _*_ -_ 0# 1#)
-  (let R-commutativeRing = record { isCommutativeRing = R-isCommutativeRing })
-  → IsModule R-commutativeRing N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ₗ_ N._*ᵣ_
-  → IsModule R-commutativeRing M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M.-ᴹ_ M._*ₗ_ M._*ᵣ_
-isModule R-isCommutativeRing isModule = record
-  { isBimodule = isBimodule R.isRing R.isRing NN.isBimodule
-  ; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident NN.+ᴹ-isMagma NN.*ₗ-*ᵣ-coincident
-  }
-  where
-    module R = IsCommutativeRing R-isCommutativeRing
-    module NN = IsModule isModule
+module _ {ℓr} {_≈_ : Rel R ℓr} {_+_ _*_ -_ 0# 1#} (R-isCommutativeRing : IsCommutativeRing _≈_ _+_ _*_ -_ 0# 1#) where
+
+  private
+    R-commutativeRing : CommutativeRing _ _
+    R-commutativeRing = record { isCommutativeRing = R-isCommutativeRing }
+
+  open IsCommutativeRing R-isCommutativeRing
+
+  isModule
+    : IsModule R-commutativeRing N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ₗ_ N._*ᵣ_
+    → IsModule R-commutativeRing M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M.-ᴹ_ M._*ₗ_ M._*ᵣ_
+  isModule isModule = record
+    { isBimodule = isBimodule isRing isRing NN.isBimodule
+    ; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident NN.+ᴹ-isMagma NN.*ₗ-*ᵣ-coincident
+    }
+    where
+      module NN = IsModule isModule

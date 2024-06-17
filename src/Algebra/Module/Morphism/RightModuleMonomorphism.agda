@@ -42,17 +42,20 @@ open import Algebra.Module.Morphism.RightSemimoduleMonomorphism isRightSemimodul
 ------------------------------------------------------------------------
 -- Structures
 
-isRightModule :
-  ∀ {ℓr} {_≈_ : Rel R ℓr} {_+_ _*_ : Op₂ R} { -_ : Op₁ R} {0# 1# : R}
-  (R-isRing : IsRing _≈_ _+_ _*_ -_ 0# 1#)
-  (let R-ring = record { isRing = R-isRing })
-  → IsRightModule R-ring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ᵣ_
-  → IsRightModule R-ring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M.-ᴹ_ M._*ᵣ_
-isRightModule isRing isRightModule = record
-  { isRightSemimodule = isRightSemimodule R.isSemiring NN.isRightSemimodule
-  ; -ᴹ‿cong = -ᴹ‿cong NN.+ᴹ-isMagma NN.-ᴹ‿cong
-  ; -ᴹ‿inverse = -ᴹ‿inverse NN.+ᴹ-isMagma NN.-ᴹ‿inverse
-  }
-  where
-    module R = IsRing isRing
-    module NN = IsRightModule isRightModule
+module _ {ℓr} {_≈_ : Rel R ℓr} {_+_ _*_ -_ 0# 1#} (R-isRing : IsRing _≈_ _+_ _*_ -_ 0# 1#) where
+
+  private
+    R-ring : Ring _ _
+    R-ring = record { isRing = R-isRing}
+  open IsRing R-isRing
+
+  isRightModule
+    : IsRightModule R-ring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ᵣ_
+    → IsRightModule R-ring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M.-ᴹ_ M._*ᵣ_
+  isRightModule isRightModule = record
+    { isRightSemimodule = isRightSemimodule isSemiring NN.isRightSemimodule
+    ; -ᴹ‿cong = -ᴹ‿cong NN.+ᴹ-isMagma NN.-ᴹ‿cong
+    ; -ᴹ‿inverse = -ᴹ‿inverse NN.+ᴹ-isMagma NN.-ᴹ‿inverse
+    }
+    where
+      module NN = IsRightModule isRightModule

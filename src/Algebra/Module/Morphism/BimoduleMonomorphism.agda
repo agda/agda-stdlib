@@ -43,22 +43,31 @@ open import Algebra.Module.Morphism.BisemimoduleMonomorphism isBisemimoduleMonom
 ------------------------------------------------------------------------
 -- Structures
 
-isBimodule :
-  ∀ {ℓr} {_≈r_ : Rel R ℓr} {_+r_ _*r_ : Op₂ R} { -r_ : Op₁ R} {0r 1r : R}
-    {ℓs} {_≈s_ : Rel S ℓs} {_+s_ _*s_ : Op₂ S} { -s_ : Op₁ S} {0s 1s : S}
+module _
+  {ℓr} {_≈r_ : Rel R ℓr} {_+r_ _*r_ -r_ 0r 1r}
+  {ℓs} {_≈s_ : Rel S ℓs} {_+s_ _*s_ -s_ 0s 1s}
   (R-isRing : IsRing _≈r_ _+r_ _*r_ -r_ 0r 1r)
   (S-isRing : IsRing _≈s_ _+s_ _*s_ -s_ 0s 1s)
-  (let R-ring = record { isRing = R-isRing })
-  (let S-ring = record { isRing = S-isRing })
-  → IsBimodule R-ring S-ring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ₗ_ N._*ᵣ_
-  → IsBimodule R-ring S-ring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M.-ᴹ_ M._*ₗ_ M._*ᵣ_
-isBimodule R-isRing S-isRing isBimodule = record
-  { isBisemimodule = isBisemimodule R-isRing.isSemiring S-isRing.isSemiring NN.isBisemimodule
-  ; -ᴹ‿cong = -ᴹ‿cong NN.+ᴹ-isMagma NN.-ᴹ‿cong
-  ; -ᴹ‿inverse = -ᴹ‿inverse NN.+ᴹ-isMagma NN.-ᴹ‿inverse
-  }
   where
-    module R-isRing = IsRing R-isRing
-    module S-isRing = IsRing S-isRing
-    module NN = IsBimodule isBimodule
+
+  private
+    R-ring : Ring _ _
+    R-ring = record { isRing = R-isRing }
+
+    S-ring : Ring _ _
+    S-ring = record { isRing = S-isRing }
+
+    module R = IsRing R-isRing
+    module S = IsRing S-isRing
+
+  isBimodule
+    : IsBimodule R-ring S-ring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N.-ᴹ_ N._*ₗ_ N._*ᵣ_
+    → IsBimodule R-ring S-ring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M.-ᴹ_ M._*ₗ_ M._*ᵣ_
+  isBimodule isBimodule = record
+    { isBisemimodule = isBisemimodule R.isSemiring S.isSemiring NN.isBisemimodule
+    ; -ᴹ‿cong = -ᴹ‿cong NN.+ᴹ-isMagma NN.-ᴹ‿cong
+    ; -ᴹ‿inverse = -ᴹ‿inverse NN.+ᴹ-isMagma NN.-ᴹ‿inverse
+    }
+    where
+      module NN = IsBimodule isBimodule
 

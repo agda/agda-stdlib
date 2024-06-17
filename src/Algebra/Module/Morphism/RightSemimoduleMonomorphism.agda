@@ -19,6 +19,7 @@ private
   module M = RawRightSemimodule M
   module N = RawRightSemimodule N
 
+open import Algebra.Bundles
 open import Algebra.Core
 import Algebra.Module.Definitions.Right as RightDefs
 open import Algebra.Module.Structures
@@ -123,20 +124,24 @@ module _ (+ᴹ-isMagma : IsMagma N._≈ᴹ_ N._+ᴹ_) where
 ------------------------------------------------------------------------
 -- Structures
 
-isRightSemimodule :
-  (R-isSemiring : IsSemiring _≈_ _+_ _*_ 0# 1#)
-  (let R-semiring = record { isSemiring = R-isSemiring })
-  → IsRightSemimodule R-semiring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N._*ᵣ_
-  → IsRightSemimodule R-semiring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M._*ᵣ_
-isRightSemimodule isSemiring isRightSemimodule = record
-  { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid NN.+ᴹ-isCommutativeMonoid
-  ; isPrerightSemimodule = record
-    { *ᵣ-cong = *ᵣ-cong NN.+ᴹ-isMagma NN.*ᵣ-cong
-    ; *ᵣ-zeroʳ = *ᵣ-zeroʳ NN.+ᴹ-isMagma NN.*ᵣ-zeroʳ
-    ; *ᵣ-distribˡ = *ᵣ-distribˡ NN.+ᴹ-isMagma NN.*ᵣ-distribˡ
-    ; *ᵣ-identityʳ = *ᵣ-identityʳ NN.+ᴹ-isMagma NN.*ᵣ-identityʳ
-    ; *ᵣ-assoc = *ᵣ-assoc NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-assoc
-    ; *ᵣ-zeroˡ = *ᵣ-zeroˡ NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-zeroˡ
-    ; *ᵣ-distribʳ = *ᵣ-distribʳ NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-distribʳ
-    }
-  } where module NN = IsRightSemimodule isRightSemimodule
+module _ (R-isSemiring : IsSemiring _≈_ _+_ _*_ 0# 1#) where
+
+  private
+    R-semiring : Semiring _ _
+    R-semiring = record { isSemiring = R-isSemiring }
+
+  isRightSemimodule
+    : IsRightSemimodule R-semiring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N._*ᵣ_
+    → IsRightSemimodule R-semiring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M._*ᵣ_
+  isRightSemimodule isRightSemimodule = record
+    { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid NN.+ᴹ-isCommutativeMonoid
+    ; isPrerightSemimodule = record
+      { *ᵣ-cong = *ᵣ-cong NN.+ᴹ-isMagma NN.*ᵣ-cong
+      ; *ᵣ-zeroʳ = *ᵣ-zeroʳ NN.+ᴹ-isMagma NN.*ᵣ-zeroʳ
+      ; *ᵣ-distribˡ = *ᵣ-distribˡ NN.+ᴹ-isMagma NN.*ᵣ-distribˡ
+      ; *ᵣ-identityʳ = *ᵣ-identityʳ NN.+ᴹ-isMagma NN.*ᵣ-identityʳ
+      ; *ᵣ-assoc = *ᵣ-assoc NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-assoc
+      ; *ᵣ-zeroˡ = *ᵣ-zeroˡ NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-zeroˡ
+      ; *ᵣ-distribʳ = *ᵣ-distribʳ NN.+ᴹ-isMagma NN.*ᵣ-congʳ NN.*ᵣ-distribʳ
+      }
+    } where module NN = IsRightSemimodule isRightSemimodule

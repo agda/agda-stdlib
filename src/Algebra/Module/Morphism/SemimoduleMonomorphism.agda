@@ -56,16 +56,20 @@ module _ (+ᴹ-isMagma : IsMagma N._≈ᴹ_ N._+ᴹ_) where
 ------------------------------------------------------------------------
 -- Structures
 
-isSemimodule :
-  ∀ {ℓr} {_≈_ : Rel R ℓr} {_+_ _*_ : Op₂ R} {0# 1# : R}
-  (R-isCommutativeSemiring : IsCommutativeSemiring _≈_ _+_ _*_ 0# 1#)
-  (let R-commutativeSemiring = record { isCommutativeSemiring = R-isCommutativeSemiring })
-  → IsSemimodule R-commutativeSemiring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N._*ₗ_ N._*ᵣ_
-  → IsSemimodule R-commutativeSemiring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M._*ₗ_ M._*ᵣ_
-isSemimodule R-isCommutativeSemiring isSemimodule = record
-  { isBisemimodule = isBisemimodule R.isSemiring R.isSemiring NN.isBisemimodule
-  ; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident NN.+ᴹ-isMagma NN.*ₗ-*ᵣ-coincident
-  }
-  where
-    module R = IsCommutativeSemiring R-isCommutativeSemiring
-    module NN = IsSemimodule isSemimodule
+module _ {ℓr} {_≈_ : Rel R ℓr} {_+_ _*_ 0# 1#} (R-isCommutativeSemiring : IsCommutativeSemiring _≈_ _+_ _*_ 0# 1#) where
+
+  private
+    R-commutativeSemiring : CommutativeSemiring _ _
+    R-commutativeSemiring = record { isCommutativeSemiring = R-isCommutativeSemiring }
+
+  open IsCommutativeSemiring R-isCommutativeSemiring
+
+  isSemimodule
+    : IsSemimodule R-commutativeSemiring N._≈ᴹ_ N._+ᴹ_ N.0ᴹ N._*ₗ_ N._*ᵣ_
+    → IsSemimodule R-commutativeSemiring M._≈ᴹ_ M._+ᴹ_ M.0ᴹ M._*ₗ_ M._*ᵣ_
+  isSemimodule isSemimodule = record
+    { isBisemimodule = isBisemimodule isSemiring isSemiring NN.isBisemimodule
+    ; *ₗ-*ᵣ-coincident = *ₗ-*ᵣ-coincident NN.+ᴹ-isMagma NN.*ₗ-*ᵣ-coincident
+    }
+    where
+      module NN = IsSemimodule isSemimodule
