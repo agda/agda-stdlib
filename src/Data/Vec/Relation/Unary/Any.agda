@@ -8,7 +8,6 @@
 
 module Data.Vec.Relation.Unary.Any {a} {A : Set a} where
 
-open import Data.Empty
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Nat.Base using (ℕ; zero; suc; NonZero)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
@@ -16,7 +15,7 @@ open import Data.Vec.Base as Vec using (Vec; []; [_]; _∷_)
 open import Data.Product.Base as Product using (∃; _,_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary.Negation using (¬_; contradiction)
-open import Relation.Nullary.Decidable as Dec using (yes; no; _⊎-dec_)
+open import Relation.Nullary.Decidable as Dec using (no; _⊎-dec_)
 open import Relation.Unary
 
 private
@@ -44,7 +43,7 @@ head ¬pxs (there pxs) = contradiction pxs ¬pxs
 
 -- If the head does not satisfy the predicate, then the tail will.
 tail : ∀ {x} → ¬ P x → Any P (x ∷ xs) → Any P xs
-tail ¬px (here  px)  = ⊥-elim (¬px px)
+tail ¬px (here  px)  = contradiction px ¬px
 tail ¬px (there pxs) = pxs
 
 -- Convert back and forth with sum
