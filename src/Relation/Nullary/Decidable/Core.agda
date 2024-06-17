@@ -12,11 +12,11 @@
 module Relation.Nullary.Decidable.Core where
 
 open import Agda.Builtin.Equality using (_≡_)
-open import Level using (Level; Lift)
+open import Level using (Level)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product.Base using (_×_)
-open import Data.Sum.Base using (_⊎_)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; const; _$_; flip)
 open import Relation.Nullary.Recomputable as Recomputable hiding (recompute-constant)
 open import Relation.Nullary.Reflects as Reflects hiding (recompute; recompute-constant)
@@ -102,6 +102,17 @@ proof (a? ⊎-dec b?) = proof a? ⊎-reflects proof b?
 _→-dec_ : Dec A → Dec B → Dec (A → B)
 does  (a? →-dec b?) = not (does a?) ∨ does b?
 proof (a? →-dec b?) = proof a? →-reflects proof b?
+
+------------------------------------------------------------------------
+-- Relationship with Sum
+
+toSum : Dec A → A ⊎ ¬ A
+toSum ( true because  [p]) = inj₁ (invert  [p])
+toSum (false because [¬p]) = inj₂ (invert [¬p])
+
+fromSum : A ⊎ ¬ A → Dec A
+fromSum (inj₁ p)  = yes p
+fromSum (inj₂ ¬p) = no ¬p
 
 ------------------------------------------------------------------------
 -- Relationship with booleans
@@ -200,4 +211,18 @@ excluded-middle = ¬¬-excluded-middle
 {-# WARNING_ON_USAGE excluded-middle
 "Warning: excluded-middle was deprecated in v2.0.
 Please use ¬¬-excluded-middle instead."
+#-}
+
+-- Version 2.1
+
+fromDec = toSum
+{-# WARNING_ON_USAGE fromDec
+"Warning: fromDec was deprecated in v2.1.
+Please use Relation.Nullary.Decidable.Core.toSum instead."
+#-}
+
+toDec = fromSum
+{-# WARNING_ON_USAGE toDec
+"Warning: toDec was deprecated in v2.1.
+Please use Relation.Nullary.Decidable.Core.fromSum instead."
 #-}
