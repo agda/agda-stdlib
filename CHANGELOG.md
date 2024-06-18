@@ -148,6 +148,11 @@ New modules
   Algebra.Construct.Pointwise
   ```
 
+* `Number` literals derivable from any `RawSuccessorSet`:
+  ```
+  Algebra.Literals
+  ```
+
 * Raw bundles for module-like algebraic structures:
   ```
   Algebra.Module.Bundles.Raw
