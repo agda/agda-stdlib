@@ -76,6 +76,11 @@ Deprecated names
   _-_  ↦  _//_
   ```
 
+* In `Data.Maybe.Base`:
+  ```agda
+  decToMaybe  ↦  Relation.Nullary.Decidable.Core.dec⇒maybe
+  ```
+
 * In `Algebra.Structures.Biased`:
   ```agda
   IsRing*  ↦  Algebra.Structures.IsRing
@@ -821,8 +826,9 @@ Additions to existing modules
   WeaklyDecidable : Set _
   ```
 
-* Added new proof in `Relation.Nullary.Decidable.Core`:
+* Added new definition and proof in `Relation.Nullary.Decidable.Core`:
   ```agda
+  dec⇒maybe : Dec A → Maybe A
   recompute-constant : (a? : Dec A) (p q : A) → recompute a? p ≡ recompute a? q
   toSum              : Dec A → A ⊎ ¬ A
   fromSum            : A ⊎ ¬ A → Dec A
@@ -842,7 +848,7 @@ Additions to existing modules
   ```agda
   recompute          : Reflects A b → Recomputable A
   recompute-constant : (r : Reflects A b) (p q : A) → recompute r p ≡ recompute r q
-  ```
+ ```
 
 * Added new definitions in `Relation.Unary`
   ```

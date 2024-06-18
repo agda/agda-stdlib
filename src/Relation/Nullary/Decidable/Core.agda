@@ -11,6 +11,10 @@
 
 module Relation.Nullary.Decidable.Core where
 
+-- decToMaybe was deprecated in v2.1 #2330/#2336
+-- this can go through `Data.Maybe.Base` once that deprecation is fully done.
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+
 open import Agda.Builtin.Equality using (_≡_)
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; T; false; true; not; _∧_; _∨_)
@@ -102,6 +106,13 @@ proof (a? ⊎-dec b?) = proof a? ⊎-reflects proof b?
 _→-dec_ : Dec A → Dec B → Dec (A → B)
 does  (a? →-dec b?) = not (does a?) ∨ does b?
 proof (a? →-dec b?) = proof a? →-reflects proof b?
+
+------------------------------------------------------------------------
+-- Relationship with Maybe
+
+dec⇒maybe : Dec A → Maybe A
+dec⇒maybe ( true because [a]) = just (invert [a])
+dec⇒maybe (false because  _ ) = nothing
 
 ------------------------------------------------------------------------
 -- Relationship with Sum
@@ -214,6 +225,12 @@ Please use ¬¬-excluded-middle instead."
 #-}
 
 -- Version 2.1
+
+decToMaybe = dec⇒maybe
+{-# WARNING_ON_USAGE decToMaybe
+"Warning: decToMaybe was deprecated in v2.1.
+Please use Relation.Nullary.Decidable.Core.dec⇒maybe instead."
+#-}
 
 fromDec = toSum
 {-# WARNING_ON_USAGE fromDec
